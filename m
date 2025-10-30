@@ -1,434 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AED2C3277;
-	Thu, 30 Oct 2025 16:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44C62E336E
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Oct 2025 16:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761842854; cv=none; b=lV26Qq96BUrjSLZCDGiO5EQ5ThJgWeAjWBP2ScxDQ3yO3zDP3WSBeenKbmwU5hCo2LNJH9NeDPv7zr59RuKFReMo+YOKWpruI4KVatMOP3IehCCJcHDWZTZ7y5whWOVSULvkiEPibPgEZlgpV1c5KJrM1GhOE8pIKcH+RhvhUdE=
+	t=1761843019; cv=none; b=OpNht6EufUf1INcMFXo0eJ+lNzUi7+XQO9K7ytLuKOk8YtG5JGwVHDHbkMICEKBYbDC1C53sWgfJNUGJrhDxlme2ZVNpV04VspOitvfrnom0OoGiDPfZUy55nu6rFMN8/9Fc5IHu5OOLCeJx76WmC5WBO49gB0U9nNBeZJaVzjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761842854; c=relaxed/simple;
-	bh=ncPoNoYluH4Wu/5wuDmHoF/MvRw9SMmpIpaF+/jh+rw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=YK0qbGlCy37fBr6UwmBIfPKLJcL6GZztA+5ik8JFjOqWhBjuGwLlb7F9k3UianugC0wkGLhdheG0NKuBQIFHHnMHdQWXDJrBIctChT1doDwtAlR3FGwbdEVYLtP4BjsnfQDTLXBndsg2CbsFFfXS8pwXJjsR/dK8GZqg/BoJEmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YeRW0Y8R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761843019; c=relaxed/simple;
+	bh=VVy8tbUD3Ds1T7QsmSlLfYhJ41rXLA290c2MjqkFJVg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OkK9bBZIfws9okvRrc5KulOB0rXMEA7EW3qBeh2uZEwpZSs/7ra/MDdDOHeFb/oFeWh/UjCHK4oihE29zDHLF05AsMUBlQpuGB4IwgnkTEpQ9miesFwRgsI+Gao23QkX0decip4gfNhWGthDWSbMYrz8dsGAw5Hb16w97eBvfk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QlMB7Dxw; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YeRW0Y8R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD5AC4CEF8;
-	Thu, 30 Oct 2025 16:47:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761842853;
-	bh=ncPoNoYluH4Wu/5wuDmHoF/MvRw9SMmpIpaF+/jh+rw=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=YeRW0Y8R6fL3R1loD4tka+jJ7MHqp8+INj4T3Bmu8hew5WILurw/p8vfU/Q8X7MqO
-	 3VP8HXCJkVnusMPLOhr1ilBURZ+vHR5VhoOx2EAR16MK1E+a8P96r2+bFqMw1Zjjen
-	 m6N2RWpClpuskLpEvYwjwTWE2pP/MqxmAngNXGUCJMh1s1MkRl7m8V6wM4xTjgb2UV
-	 v1QWlc1wjAF/uUMuQvP7UKa/blDCSFZZdE11ViZw5mFi5clflIbOz+DFakPM/RUT5l
-	 HmtXJOZg9H6+rJLJ88vhYCC/DpaiqE8dmh8hDQUB8d9+F2KYmHLC7L95FsQui08sFM
-	 cLYTFyPvXDnSQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QlMB7Dxw"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-29498a10972so2368815ad.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Oct 2025 09:50:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761843017; x=1762447817; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VVy8tbUD3Ds1T7QsmSlLfYhJ41rXLA290c2MjqkFJVg=;
+        b=QlMB7Dxw+aVrAdbSUWU0bipn23Xfve7pppXiQG79QFpCrpXyoMO8KZBNoq7a1rtmbS
+         4gxFGT15a65Fa8TM8upk3VOQqJZ5+VbO7fjKGR8abQX3rkTCSXPaP1yOnflhCMKpEgcO
+         +3cy3G2+WLq6HNbhVZHDlbKmvgZoXkttFBiI1iBPqSF4RVCgoFK3Svji5aq7nLJBixog
+         Qg6bDb6tpIU7GTKMq+Y0EHmyfgfwhq3mzPbmmjNlXw23muzhxx7hGoalRFR2UQShT5oY
+         DTuB+/obSiIxwhudLi7GcUKBacHSmw/s5yKkiN+NVzuBoBzVyDMFb6ZQSdxvPFOE3n5C
+         AreA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761843017; x=1762447817;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VVy8tbUD3Ds1T7QsmSlLfYhJ41rXLA290c2MjqkFJVg=;
+        b=d19Do7bKTwS0Qs8JIOEtVyxIhlBjW2pwKKJAJS6U9/nMRfl6guCBo3F5s0mlK3YKdB
+         BgYSkLT2on1cDYZqVCtfMu6fbiWEb9dDF11Rvpl3FfnNEmAkxJdYHrSZCjjZTnNVgVZG
+         EJkkyDBtCJgxVJbhzYLEYg8ytvjF5JTIjmaToMhcOFIOgpMSF4tYP9rQyNE90+jp8/SW
+         S7IkNA2nqScjbj5jXVF+KbMTfaxvOclrYGpi/tnoeruuUJQHtCxe4236m499GK1ca+Wq
+         OBE5UTREqKF8F8PwiCIYcOiBZpaT6GfzJef8Z2RlC9tHb/lj37eNzfD8/TmIoaIfRT75
+         JuGA==
+X-Forwarded-Encrypted: i=1; AJvYcCXN241dw41noMEKHFiq5iY0pXguaic1GVJHLuab2I6yl8rKOdhcj9bMousXdPxOXjo0zNDrLd+vu5o2GimaCQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyW7nPYTvjCyRiQjL5uIvlz1kA8acsHoxWFwOFZSmx6Mi3USK5e
+	V5m98znfNQG/DqSG9JPdOLUjBVw75TNZEt7p7pCi24DgPhiT9jiBpgNfhFPEgK68s4g+m9TfxOB
+	G1lY9HoIdL46v5dn8MBtYLV+cKw8rV4A=
+X-Gm-Gg: ASbGncvnKaTYb9VmTj2iq/xqWkhiOwgqAZJTIDkQK9UZQrAbXWhhqDj8b0j6gWSDNy1
+	/UltjkvdzZk2DSD88uD3spJvNRRNoGimA2PGEwbxrS//4bRMGgNXYPlVyBIYgefuXs0bI0fUjFQ
+	vqZkoL06jY6RwfNFPH1pb7cEoqTXUOAlP4aA5J6g5fK4mTVCTUgwgCDjrAeehzdYYmCJch+K7X3
+	n02G5xCpGT6z/lVmheuZOrCoEPrCylZ8mUbvw8MImZRT//Iwmjnelbr/PilFMb1b3T9KeJ131Ny
+	RTrK5NV2SPSp5AcUrCRLIcICrRSz8r+52A0xl4rO3E4tnppzWA6CZ/zYnouKdQTT6oaO/E+fyzP
+	UKAA=
+X-Google-Smtp-Source: AGHT+IHIwOHRSXqelvV1Sdf63ytImuxsi6mN867ttFRk6bB9U4Bt6FvCqQWaRN3cWMuEbnRRwlVbLx8M4DZOhZxBczg=
+X-Received: by 2002:a17:903:234e:b0:294:b58e:6580 with SMTP id
+ d9443c01a7336-2951a545f7fmr2497775ad.10.1761843017022; Thu, 30 Oct 2025
+ 09:50:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me> <20251001-unique-ref-v12-2-fa5c31f0c0c4@pm.me>
+ <87sef08mjk.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87sef08mjk.fsf@t14s.mail-host-address-is-not-set>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 30 Oct 2025 17:50:04 +0100
+X-Gm-Features: AWmQ_bkaCQLlBdplFGaXs_s6rBEi5hnyY5mzRPNbjRg2sfBfQKwQOTLK3O0jQnQ
+Message-ID: <CANiq72kuRNvovHK5r24kh23mo5wp2bpx-EjGMOyNBOF1YzukvA@mail.gmail.com>
+Subject: Re: [PATCH v12 2/4] `AlwaysRefCounted` is renamed to `RefCounted`.
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Oliver Mangold <oliver.mangold@pm.me>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Oct 2025 17:47:26 +0100
-Message-Id: <DDVT5YA564C6.3HN9WCMQX49PC@kernel.org>
-Subject: Re: [RFC 1/2] rust: introduce abstractions for fwctl
-Cc: <rust-for-linux@vger.kernel.org>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>, <cjia@nvidia.com>,
- <smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
- <kwankhede@nvidia.com>, <targupta@nvidia.com>, <zhiwang@kernel.org>,
- <alwilliamson@nvidia.com>, <acourbot@nvidia.com>, <joelagnelf@nvidia.com>,
- <jhubbard@nvidia.com>, <jgg@nvidia.com>
-To: "Zhi Wang" <zhiw@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251030160315.451841-1-zhiw@nvidia.com>
- <20251030160315.451841-2-zhiw@nvidia.com>
-In-Reply-To: <20251030160315.451841-2-zhiw@nvidia.com>
 
-On Thu Oct 30, 2025 at 5:03 PM CET, Zhi Wang wrote:
-> diff --git a/rust/kernel/fwctl.rs b/rust/kernel/fwctl.rs
-> new file mode 100644
-> index 000000000000..21f8f7d11d6f
-> --- /dev/null
-> +++ b/rust/kernel/fwctl.rs
-> @@ -0,0 +1,254 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +//! Abstractions for the fwctl.
-> +//!
-> +//! This module provides bindings for working with fwctl devices in kern=
-el modules.
-> +//!
-> +//! C header: [`include/linux/fwctl.h`]
-> +
-> +use crate::device::Device;
-> +use crate::types::ARef;
-> +use crate::{bindings, container_of, device, error::code::*, prelude::*};
-> +
-> +use core::marker::PhantomData;
-> +use core::ptr::NonNull;
-> +use core::slice;
+On Thu, Oct 30, 2025 at 3:57=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
+>
+> Since this patch touches so many moving parts of the rust tree, it is
+> going to be a cat and mouse game regarding rebasing this thing. It also
+> touches a lot if peoples code. I am not sure how something like this
+> would merge. Do we need ACK from everyone @Miguel?
 
-Please use the import scheme as documented in [1].
+Yeah, any rename (or generally namespace/path change) is always
+painful due to the flag day change, and thus ideally best avoided if
+there is a practical way to do so (e.g. keeping the old name for a
+while).
 
-[1] https://docs.kernel.org/rust/coding-guidelines.html#imports
+And, yeah, treewide changes generally need Acked-by's from the
+relevant maintainers.
 
-> +/// The registration of a fwctl device.
-> +///
-> +/// This type represents the registration of a [`struct fwctl_device`]. =
-When an instance of this
-> +/// type is dropped, its respective fwctl device will be unregistered an=
-d freed.
-> +///
-> +/// [`struct fwctl_device`]: srctree/include/linux/device/fwctl.h
-> +pub struct Registration<T: FwCtlOps> {
-> +    fwctl_dev: NonNull<bindings::fwctl_device>,
-
-Given that this structure has to keep a reference count of the fwctl_device=
-, I'd
-prefer to have an abstraction of struct fwctl_device (fwctl::Device) which
-implements AlwaysRefCounted.
-
-This way the Registration can store an ARef<fwctl::Device> rather than a ra=
-w
-pointer.
-
-However, I wonder if we really need a reference count? Does fwctl_register(=
-) not
-take a reference count itself?
-
-> +    _marker: PhantomData<T>,
-> +}
-> +
-> +impl<T: FwCtlOps> Registration<T> {
-> +    /// Allocate and register a new fwctl device under the given parent =
-device.
-> +    pub fn new(parent: &device::Device) -> Result<Self> {
-
-AFAIK, fwctl_unregister() is synchronized against IOCTLs. Hence, if we guar=
-antee
-that a fwctl::Registration can not out-live parent device unbind, we can pr=
-ovide
-a &Device<Bound> in the FwCtlOps callbacks, which allows us to do zero-cost
-accesses of device resources with Devres::access().
-
-In order to provide this guarantee, this function should return
-impl PinInit<Devres<Self>, Error>.
-
-> +        let ops =3D &FwCtlVTable::<T>::VTABLE as *const _ as *mut _;
-
-Please use cast() and cast_mut() when possible.
-
-> +
-> +        // SAFETY: `_fwctl_alloc_device()` allocates a new `fwctl_device=
-`
-> +        // and initializes its embedded `struct device`.
-
-This safety comment should justify how you guarantee that the arguments you=
- pass
-in are valid, instead of describing what the called function does.
-
-> +        let dev =3D unsafe {
-> +            bindings::_fwctl_alloc_device(
-> +                parent.as_raw(),
-> +                ops,
-> +                core::mem::size_of::<bindings::fwctl_device>(),
-> +            )
-> +        };
-> +
-> +        let dev =3D NonNull::new(dev).ok_or(ENOMEM)?;
-> +
-> +        // SAFETY: `fwctl_register()` expects a valid device from `_fwct=
-l_alloc_device()`.
-> +        let ret =3D unsafe { bindings::fwctl_register(dev.as_ptr()) };
-> +        if ret !=3D 0 {
-> +            // SAFETY: If registration fails, release the allocated fwct=
-l_device().
-> +            unsafe {
-> +                bindings::put_device(core::ptr::addr_of_mut!((*dev.as_pt=
-r()).dev));
-> +            }
-> +            return Err(Error::from_errno(ret));
-> +        }
-> +
-> +        Ok(Self {
-> +            fwctl_dev: dev,
-> +            _marker: PhantomData,
-> +        })
-> +    }
-> +
-> +    fn as_raw(&self) -> *mut bindings::fwctl_device {
-> +        self.fwctl_dev.as_ptr()
-> +    }
-> +}
-> +
-> +impl<T: FwCtlOps> Drop for Registration<T> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: `fwctl_unregister()` expects a valid device from `_fw=
-ctl_alloc_device()`.
-> +        unsafe {
-> +            bindings::fwctl_unregister(self.as_raw());
-> +            bindings::put_device(core::ptr::addr_of_mut!((*self.as_raw()=
-).dev));
-> +        }
-> +    }
-> +}
-> +
-> +// SAFETY: The only action allowed in a `Registration` instance is dropp=
-ing it, which is safe to do
-> +// from any thread because `fwctl_unregister()/put_device()` can be call=
-ed from any sleepible
-> +// context.
-> +unsafe impl<T: FwCtlOps> Send for Registration<T> {}
-> +
-> +/// Trait implemented by each Rust driver that integrates with the fwctl=
- subsystem.
-> +///
-> +/// Each implementation corresponds to a specific device type and provid=
-es
-> +/// the vtable used by the core `fwctl` layer to manage per-FD user cont=
-exts
-> +/// and handle RPC requests.
-> +pub trait FwCtlOps: Sized {
-> +    /// Driver UCtx type.
-> +    type UCtx;
-> +
-> +    /// fwctl device type, matching the C enum `fwctl_device_type`.
-> +    const DEVICE_TYPE: u32;
-> +
-> +    /// Called when a new user context is opened by userspace.
-> +    fn open_uctx(uctx: &mut FwCtlUCtx<Self::UCtx>) -> Result<(), Error>;
-> +
-> +    /// Called when the user context is being closed.
-> +    fn close_uctx(uctx: &mut FwCtlUCtx<Self::UCtx>);
-
-Why not just open() and close()?
-
-> +    /// Return device or context information to userspace.
-> +    fn info(uctx: &mut FwCtlUCtx<Self::UCtx>) -> Result<KVec<u8>, Error>=
-;
-> +
-> +    /// Called when a userspace RPC request is received.
-> +    fn fw_rpc(
-> +        uctx: &mut FwCtlUCtx<Self::UCtx>,
-> +        scope: u32,
-> +        rpc_in: &mut [u8],
-> +        out_len: *mut usize,
-> +    ) -> Result<Option<KVec<u8>>, Error>;
-
-As mentioned above, if we ensure that a fwctl::Registration cannot out-live=
- the
-parent device being bound, we can provide a &Device<Bound> in those callbac=
-ks
-for zero-cost accesses of device resources with Devres::access().
-
-> +}
-> +
-> +/// Represents a per-FD user context (`struct fwctl_uctx`).
-> +///
-> +/// Each driver embeds `struct fwctl_uctx` as the first field of its own
-> +/// context type and uses this wrapper to access driver-specific data.
-> +#[repr(C)]
-> +#[pin_data]
-> +pub struct FwCtlUCtx<T> {
-> +    /// The core fwctl user context shared with the C implementation.
-> +    #[pin]
-> +    pub fwctl_uctx: bindings::fwctl_uctx,
-
-This should be Opaque<bindings::fwctl_uctx> and should not be a public fiel=
-d.
-
-> +    /// Driver-specific data associated with this user context.
-> +    pub uctx: T,
-
-I'd rather provide a Deref and DerefMut implementation for this.
-
-> +}
-> +
-> +impl<T> FwCtlUCtx<T> {
-> +    /// Converts a raw C pointer to `struct fwctl_uctx` into a reference=
- to the
-> +    /// enclosing `FwCtlUCtx<T>`.
-> +    ///
-> +    /// # Safety
-> +    /// * `ptr` must be a valid pointer to a `fwctl_uctx` that is embedd=
-ed
-> +    ///   inside an existing `FwCtlUCtx<T>` instance.
-> +    /// * The caller must ensure that the lifetime of the returned refer=
-ence
-> +    ///   does not outlive the underlying object managed on the C side.
-> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::fwctl_uctx) -> &'a mu=
-t Self {
-
-Why does this need to be public?
-
-> +        // SAFETY: `ptr` was originally created from a valid `FwCtlUCtx<=
-T>`.
-> +        unsafe { &mut *container_of!(ptr, FwCtlUCtx<T>, fwctl_uctx) }
-> +    }
-> +
-> +    /// Returns the parent device of this user context.
-> +    ///
-> +    /// # Safety
-> +    /// The `fwctl_device` pointer inside `fwctl_uctx` must be valid.
-> +    pub fn get_parent_device(&self) -> ARef<Device> {
-
-We the fwctl::Registration changes suggested above, this should return a
-&Device<Bound>.
-
-Regardless of this, it's better to return a &Device than an ARef<Device>. T=
-he
-caller can always obtain a reference count, i.e. ARef<Device> from a &Devic=
-e (or
-a &Device<Bound>).
-
-> +        // SAFETY: `self.fwctl_uctx.fwctl` is initialized by the fwctl s=
-ubsystem and guaranteed
-> +        // to remain valid for the lifetime of this `FwCtlUCtx`.
-> +        let raw_dev =3D
-> +            unsafe { (*(self.fwctl_uctx.fwctl)).dev.parent as *mut kerne=
-l::bindings::device };
-> +        // SAFETY: `raw_dev` points to a live device object.
-> +        unsafe { Device::get_device(raw_dev) }
-> +    }
-> +
-> +    /// Returns a mutable reference to the driver-specific context.
-> +    pub fn to_driver_uctx_mut(&mut self) -> &mut T {
-> +        &mut self.uctx
-> +    }
-
-As mentioned, I think Deref and DerefMut are a better fit for this.
-
-> +}
-> +
-> +/// Static vtable mapping Rust trait methods to C callbacks.
-> +pub struct FwCtlVTable<T: FwCtlOps>(PhantomData<T>);
-> +
-> +impl<T: FwCtlOps> FwCtlVTable<T> {
-> +    /// Static instance of `fwctl_ops` used by the C core to call into R=
-ust.
-> +    pub const VTABLE: bindings::fwctl_ops =3D bindings::fwctl_ops {
-> +        device_type: T::DEVICE_TYPE,
-> +        uctx_size: core::mem::size_of::<FwCtlUCtx<T::UCtx>>(),
-> +        open_uctx: Some(Self::open_uctx_callback),
-> +        close_uctx: Some(Self::close_uctx_callback),
-> +        info: Some(Self::info_callback),
-> +        fw_rpc: Some(Self::fw_rpc_callback),
-> +    };
-> +
-> +    /// Called when a new user context is opened by userspace.
-> +    unsafe extern "C" fn open_uctx_callback(uctx: *mut bindings::fwctl_u=
-ctx) -> ffi::c_int {
-> +        // SAFETY: `uctx` is guaranteed by the fwctl subsystem to be a v=
-alid pointer.
-> +        let ctx =3D unsafe { FwCtlUCtx::<T::UCtx>::from_raw(uctx) };
-> +        match T::open_uctx(ctx) {
-> +            Ok(()) =3D> 0,
-> +            Err(e) =3D> e.to_errno(),
-> +        }
-> +    }
-> +
-> +    /// Called when the user context is being closed.
-> +    unsafe extern "C" fn close_uctx_callback(uctx: *mut bindings::fwctl_=
-uctx) {
-> +        // SAFETY: `uctx` is guaranteed by the fwctl subsystem to be a v=
-alid pointer.
-> +        let ctx =3D unsafe { FwCtlUCtx::<T::UCtx>::from_raw(uctx) };
-> +        T::close_uctx(ctx);
-> +    }
-> +
-> +    /// Returns device or context information.
-> +    unsafe extern "C" fn info_callback(
-> +        uctx: *mut bindings::fwctl_uctx,
-> +        length: *mut usize,
-> +    ) -> *mut ffi::c_void {
-> +        // SAFETY: `uctx` is guaranteed by the fwctl subsystem to be a v=
-alid pointer.
-> +        let ctx =3D unsafe { FwCtlUCtx::<T::UCtx>::from_raw(uctx) };
-> +
-> +        match T::info(ctx) {
-> +            Ok(kvec) =3D> {
-> +                // The ownership of the buffer is now transferred to the=
- foreign
-> +                // caller. It must eventually be released by fwctl frame=
-work.
-> +                let (ptr, len, _cap) =3D kvec.into_raw_parts();
-> +
-> +                // SAFETY: `length` is a valid out-parameter provided by=
- the C
-> +                // caller. Write the number of bytes in the returned buf=
-fer.
-> +                unsafe {
-> +                    *length =3D len;
-> +                }
-> +
-> +                ptr.cast::<ffi::c_void>()
-> +            }
-> +
-> +            Err(e) =3D> Error::to_ptr(e),
-> +        }
-> +    }
-> +
-> +    /// Called when a user-space RPC request is received.
-> +    unsafe extern "C" fn fw_rpc_callback(
-> +        uctx: *mut bindings::fwctl_uctx,
-> +        scope: u32,
-> +        rpc_in: *mut ffi::c_void,
-> +        in_len: usize,
-> +        out_len: *mut usize,
-> +    ) -> *mut ffi::c_void {
-> +        // SAFETY: `uctx` is guaranteed by the fwctl framework to be a v=
-alid pointer.
-> +        let ctx =3D unsafe { FwCtlUCtx::<T::UCtx>::from_raw(uctx) };
-> +
-> +        // SAFETY: `rpc_in` points to a valid input buffer of size `in_l=
-en`
-> +        // provided by fwctl subsystem.
-
-Please see the safety requirements of slice::from_raw_parts_mut() and justi=
-fy
-all of them.
-
-> +        let rpc_in_slice: &mut [u8] =3D
-> +            unsafe { slice::from_raw_parts_mut(rpc_in as *mut u8, in_len=
-) };
-> +
-> +        match T::fw_rpc(ctx, scope, rpc_in_slice, out_len) {
-> +            // Driver allocates a new output buffer.
-> +            Ok(Some(kvec)) =3D> {
-> +                // The ownership of the buffer is now transferred to the=
- foreign
-> +                // caller. It must eventually be released by fwctl subsy=
-stem.
-> +                let (ptr, len, _cap) =3D kvec.into_raw_parts();
-> +
-> +                // SAFETY: `out_len` is a valid writable pointer provide=
-d by the C caller.
-> +                unsafe {
-> +                    *out_len =3D len;
-> +                }
-
-NIT: If you move the semicolon at the end of the unsafe block, this is form=
-atted
-in a single line.
-
-> +
-> +                ptr.cast::<ffi::c_void>()
-> +            }
-> +
-> +            // Driver re-uses the existing input buffer and writes the o=
-ut_len.
-> +            Ok(None) =3D> rpc_in,
-> +
-> +            // Return an ERR_PTR-style encoded error pointer.
-> +            Err(e) =3D> Error::to_ptr(e),
-> +        }
-> +    }
-> +}
+Cheers,
+Miguel
