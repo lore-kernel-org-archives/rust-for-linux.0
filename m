@@ -1,87 +1,163 @@
-Received: from sg-1-33.ptr.blmpb.com (sg-1-33.ptr.blmpb.com [118.26.132.33])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F0E1A3BD7
-	for <rust-for-linux@vger.kernel.org>; Thu, 30 Oct 2025 09:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159D233F372
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 Oct 2025 10:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761815282; cv=none; b=InmJfKpVQ6Tq1SAfGs+LEDidTVjlf4Adjwk0aSQiEvw7F+pi3Xgopfhwtu99yHriDbypyanPp1Rtl02MK0b/5CyNHsCFEsUzpWnYBAaVezYwa/3ktjQrjz2TWgKapJUhSLQecdVcY/BABKoJ/N65V9xDVVJk4OF8zbWxHCjTX38=
+	t=1761820873; cv=none; b=YNx35sANXdyjUinoa4nOelU+f4am4g/gNFFOsaHOMuaY8UOBpYYfz7eJQVj1E8mjObDUNHSjYYCUZ2VoYrTuW8naUsKzDbj8OUm6ipBhp2XdTYaEAc/aibikfYcZ7pJotoKBihSz02jXL5/mwoV3OABrBstFx+krepG8xpcebjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761815282; c=relaxed/simple;
-	bh=N2nhDDoVSkyl5VIjjrCqInu8j5G4Jln8Mq8+CrZWkW4=;
-	h=Mime-Version:To:Subject:Content-Type:From:Date:Cc:Message-Id; b=RHxmGUmEF+b4DJToNFwZqPOul3pStkEfP9kNhmiC6o6ApZL9CYFt/PtuQ4FztHpjnmFrPImvQ7kyXvZowb29SaZ9CQ9GaRrFoZwGK68rle0t0WjqN7R0gRKY0G1O87+Sw42M+B9ELx+yicOhL7kAbeKJkdUwHQ0X1ZdyI/IJ6yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=Ov0OdZ0M; arc=none smtp.client-ip=118.26.132.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
+	s=arc-20240116; t=1761820873; c=relaxed/simple;
+	bh=qB4+AN+XtWF1ZQlX4n330LR8dLEGK6tp50f5P7FmmOo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZDY2tea6sIEq6Jp88EUVzVPKhTlPFMDHmvys7v8YhmvhbOVB1IYUgWElNOlWnNJV3v3ITTHjqBoOZLDEY3HEeuRRDtrcNwkpQ4pnegcqPQEwNSZhZVDn7e7MdQMD2pZM9rllOVtkXLjhBmkOpcXFf1O9QPZY8rvNICowHgR4cRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lkG0Vr74; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="Ov0OdZ0M"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1761815268;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=yFLfJAIRB5GB4c3FauNgnw4VQrFIdM3sS4dAA1umawc=;
- b=Ov0OdZ0Mfeq6J2VNsJhzXMV36tJojCvos6+Bqc/r1GwSFEFwJzzbHrcUnIsRBLz+3Jw8RU
- Z3o0HDU3fTDHSuIXOmU1qunYYjq/rbOcLaTEKW7BRyMVxR687Nv9sQmkLSYDW42LjfVVce
- lU76X3719Sjwa81An82kcvuR6/xdvqmHVNw3p+kHefQzVlB290lZeP3tgOHHnCbrZMIBE3
- kUVpHKqJVUvj+z/9jhRCPk7NI+DDZGv5BmWrIKyShIT5cXgBrECGHJxQDXF9qCgSPDkceP
- fLmL76vwTT2SO/1Mfy3IYNqQh0QIo2lZ1h9tK9MqRkY6KS9rmPfOQcFJkKHLeA==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lkG0Vr74"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-63c10d86ef2so830393a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 30 Oct 2025 03:41:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761820870; x=1762425670; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=moMZ7EUS7x50M5ZOXZBq3dx7C8epDy4gJjTPsdjnRvw=;
+        b=lkG0Vr74LbPKJs67TCTXffqPScDlBa8pNOkiTgY54F2I9BVYoFGtFKWXGsVYs+IkBv
+         B3anykp4MLXL0aBHQBjq37ObZQcFftMbebTP+cF8VscvOBzBn+eGaI3BDa5Yg9FHt2f0
+         aEFnDor8Vc92RBveJlEf6DatdiEFhhMIrfHMIuJTXhBxCR5jp4V58vffYOU1PUDmkTUE
+         DLe9SvADW8AX/ahIsa7Aqad/PeHxGxQkok+crgVouvwmQbfDVpb4/lej8rny/7qDqDtt
+         4m/JK7fj5QH2DGE4ruARzooruFLwuF15XJ1nSq0HLzXWWwAk7bBB1Xf89kLk/M54XHBv
+         G5kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761820870; x=1762425670;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=moMZ7EUS7x50M5ZOXZBq3dx7C8epDy4gJjTPsdjnRvw=;
+        b=SzJU8y/Q+3PmAmxw5TMFnBZBNote6okUmf8dXJ5MzIzZF0/v8JqGbm6E2tskd1bHde
+         I1BQej76kx4zYVjDK/3bA/0RUYHK9zdLCl8hu7u1Oy6iAzOk6ZJDbDqfUVYQmO52Dtwr
+         kQhXYxu3dVTEyOS5JrT3CFOXXIzHi6/s/2N65YImqI201TleLpUUe/ZBNQ5vCYzFrgB5
+         mduQ2bJsdsq1NfF/Tzw/hNlKcrL/7JOTUVNWgAPtoWFca8KRIEqHTLZsWsksBgg/oJGJ
+         CfAqKkgTR8TbcVLltVM/+Apv5qtlqIVG/1GgIrESyoIolnVDQz/YbAaZLkCIGNYzV9gb
+         DOQA==
+X-Forwarded-Encrypted: i=1; AJvYcCWE++1jAfhe2QApUrelv9fpL7AEMabQJr9gYX7ugGzvwa1ALIqjI1Dmv/MnHxUMF4/hSxKdv1W9iwCVXqucjQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxqB5G0fljtuiJC0xTwp4FCIRyOmkAb6qNcbcWU/kx78c1MrDf
+	jQJTsdQrh4Y6CodtuAG6vVYESnwfBwy5P020Vn82oDA+BAcYdGKfdjNIQ9r1+QHsMWcMk2j10Ml
+	tbCkYXufuAsSuftxsig==
+X-Google-Smtp-Source: AGHT+IEWoYbwyLCri6MdfQcuPF9lnLunNX959SrwJVa92mvpCBGO5XoUBG1tP6cOYcaj85SnHI3H+MiMQpTdE7A=
+X-Received: from edz6.prod.google.com ([2002:a05:6402:1f46:b0:634:c016:745a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:3045:10b0:633:7017:fcc1 with SMTP id 4fb4d7f45d1cf-640619fce8cmr1783593a12.14.1761820870615;
+ Thu, 30 Oct 2025 03:41:10 -0700 (PDT)
+Date: Thu, 30 Oct 2025 10:41:04 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Lms-Return-Path: <lba+269032ae2+31a8be+vger.kernel.org+chenmiao@openatom.club>
-To: <lossin@kernel.org>, <nathan@kernel.org>
-Subject: [PATCH] Makefile: Remove the product of pin_init cleanly in mrporper
-Received: from nyaos.localdomain ([114.249.194.57]) by smtp.feishu.cn with ESMTPS; Thu, 30 Oct 2025 17:07:45 +0800
-X-Mailer: git-send-email 2.43.0
-X-Original-From: chenmiao <chenmiao@openatom.club>
-Content-Type: text/plain; charset=UTF-8
-From: "chenmiao" <chenmiao@openatom.club>
-Date: Thu, 30 Oct 2025 09:07:36 +0000
-Content-Transfer-Encoding: 7bit
-Cc: <hust-os-kernel-patches@googlegroups.com>, 
-	"Dongliang Mu" <dzm91@hust.edu.cn>, 
-	"Nicolas Schier" <nicolas.schier@linux.dev>, 
-	"Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, 
-	"Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	"Andreas Hindborg" <a.hindborg@kernel.org>, 
-	"Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, 
-	"Danilo Krummrich" <dakr@kernel.org>, 
-	"Masahiro Yamada" <masahiroy@kernel.org>, 
-	=?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	"Tamir Duberstein" <tamird@gmail.com>, 
-	"open list" <linux-kernel@vger.kernel.org>, 
-	"open list:RUST:Keyword:b(?i:rust)b" <rust-for-linux@vger.kernel.org>
-Message-Id: <9500284ff72ad4e4dc4799fa5392a7bbfdd34f3b.1761814593.git.chenmiao@openatom.club>
+X-B4-Tracking: v=1; b=H4sIAL9AA2kC/x3MywqDMBBG4VeRWTeQCy7aVxEXOvnVgTYJk1AE8
+ d0buvwW51xUoYJKr+EixVeq5NThHgPxsaQdRmI3eetHZ4M1q6QINZw/ZWmlqWRubwPmJ7wLDnG l3hbFJuf/O833/QMLUvFvZwAAAA==
+X-Change-Id: 20251030-binder-compatptrioctl-ecc9e2131edb
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2975; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=qB4+AN+XtWF1ZQlX4n330LR8dLEGK6tp50f5P7FmmOo=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpA0DAGdHfRYFrmlKBFauUCROo0RBKEkS0KgrZk
+ Ba+slMpMPeJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaQNAwAAKCRAEWL7uWMY5
+ Rh/tD/9kFcN9q5MWaJ8m+z/nA3Ho33n2cvKVN60F0+yqCMOomjfh4pMMam4+kPz28dU1oqM2e7r
+ /Wel7E+EOjGdKUlFfhRu0VuWhyInE70nQdJ9NVNbUhJfImaBFnZQ6BbIXKwTj71VI0p50jIuEUI
+ 0YLGStCSUmnCpEK9RpxA79GDpkdIBWW5afWkHcLuqDF0vf10W6+5stqc52fjz9GbZhTakGSUgol
+ OyFTpd6zTs1xmZYdxSruWacd9p4GFEhMzqOfSrQiFR4YsV12GT1mmAyQ0D+Qalz0zMtm4sv+QAO
+ Z+kkywu5WNOzDWRNpwB1BMXuV7VUA/63/FyMPZbpMXETlEpbj9TM+CT2iSaE9H6AKXPFugp6J4t
+ 6IJHnkI1/rm37n5pdhQnwbwNvP+peLTbqTuAnz2YXsWtXWkbhfNJgLaR2H54cekgMyQEo5vfm3F
+ STbDRpTCeGyEJ5xDXm44sPyDsddwDJ1ywjJixTY2EIY+4zFHrc/C+a33Db07PUAu4pTAf5JJbiy
+ Kp3d7Og24M3OBjm2yCpxEEqi8g5y+pk3hdeq5Y+vMk2vZA0HOJBrDf9pazME30tf9r8HhqtBPMl
+ aA3x4USgoQiOOHYsALnN/svqjMh1FP8EBsIZs4WMGXzJ5Nfun47ABYjjmjBWhRvl/LZMZyqcI1o MkgD+SmIM/dTMyA==
+X-Mailer: b4 0.14.2
+Message-ID: <20251030-binder-compatptrioctl-v1-1-64875010279e@google.com>
+Subject: [PATCH] rust_binder: use compat_ptr_ioctl
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Martijn Coenen <maco@android.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Christian Brauner <brauner@kernel.org>, Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-When I enabled Rust compilation, I wanted to clean up its output, so I
-used make clean and make mrproper. However, I was still able to find that
-libpin_init_internal.so in the rust directory was not deleted, while
-all other corresponding outputs were cleared.
+This is commit 1832f2d8ff69 ("compat_ioctl: move more drivers to
+compat_ptr_ioctl") but for Rust Binder.
 
-If this is an intentional design, I will drop this commit.
-
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: chenmiao <chenmiao@openatom.club>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder/process.rs          |  9 ---------
+ drivers/android/binder/rust_binder_main.rs | 22 +++-------------------
+ 2 files changed, 3 insertions(+), 28 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index b34a1f4c03967..f43a70413a6aa 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1590,7 +1590,7 @@ MRPROPER_FILES += include/config include/generated          \
- 		  certs/x509.genkey \
- 		  vmlinux-gdb.py \
- 		  rpmbuild \
--		  rust/libmacros.so rust/libmacros.dylib
-+		  rust/libmacros.so rust/libmacros.dylib rust/libpin_init_internal.so
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index f13a747e784c84a0fb09cbf47442712106eba07c..7df144d07b20d238a127299cd208f6280ba1bb7a 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -1599,15 +1599,6 @@ pub(crate) fn ioctl(this: ArcBorrow<'_, Process>, file: &File, cmd: u32, arg: us
+         }
+     }
  
- # clean - Delete most, but leave enough to build external modules
- #
+-    pub(crate) fn compat_ioctl(
+-        this: ArcBorrow<'_, Process>,
+-        file: &File,
+-        cmd: u32,
+-        arg: usize,
+-    ) -> Result {
+-        Self::ioctl(this, file, cmd, arg)
+-    }
+-
+     pub(crate) fn mmap(
+         this: ArcBorrow<'_, Process>,
+         _file: &File,
+diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
+index 6773b7c273ec9634057300954d67b51ca9b54f6f..c79a9e7422401fd50078c1902774573b8ba0076c 100644
+--- a/drivers/android/binder/rust_binder_main.rs
++++ b/drivers/android/binder/rust_binder_main.rs
+@@ -313,8 +313,8 @@ unsafe impl<T> Sync for AssertSync<T> {}
+     let ops = kernel::bindings::file_operations {
+         owner: THIS_MODULE.as_ptr(),
+         poll: Some(rust_binder_poll),
+-        unlocked_ioctl: Some(rust_binder_unlocked_ioctl),
+-        compat_ioctl: Some(rust_binder_compat_ioctl),
++        unlocked_ioctl: Some(rust_binder_ioctl),
++        compat_ioctl: Some(bindings::compat_ptr_ioctl),
+         mmap: Some(rust_binder_mmap),
+         open: Some(rust_binder_open),
+         release: Some(rust_binder_release),
+@@ -402,23 +402,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
+ 
+ /// # Safety
+ /// Only called by binderfs.
+-unsafe extern "C" fn rust_binder_compat_ioctl(
+-    file: *mut bindings::file,
+-    cmd: kernel::ffi::c_uint,
+-    arg: kernel::ffi::c_ulong,
+-) -> kernel::ffi::c_long {
+-    // SAFETY: We previously set `private_data` in `rust_binder_open`.
+-    let f = unsafe { Arc::<Process>::borrow((*file).private_data) };
+-    // SAFETY: The caller ensures that the file is valid.
+-    match Process::compat_ioctl(f, unsafe { File::from_raw_file(file) }, cmd as _, arg as _) {
+-        Ok(()) => 0,
+-        Err(err) => err.to_errno() as isize,
+-    }
+-}
+-
+-/// # Safety
+-/// Only called by binderfs.
+-unsafe extern "C" fn rust_binder_unlocked_ioctl(
++unsafe extern "C" fn rust_binder_ioctl(
+     file: *mut bindings::file,
+     cmd: kernel::ffi::c_uint,
+     arg: kernel::ffi::c_ulong,
+
+---
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+change-id: 20251030-binder-compatptrioctl-ecc9e2131edb
+
+Best regards,
 -- 
-2.43.0
+Alice Ryhl <aliceryhl@google.com>
+
