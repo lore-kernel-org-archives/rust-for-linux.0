@@ -1,83 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9897733B95D;
-	Thu, 30 Oct 2025 10:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4216E3595B;
+	Thu, 30 Oct 2025 11:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761821566; cv=none; b=X/hWr+PCN1e/14Vnki/3HEYAAxjIAHrHUunmOjBYE6I+WivOnfg4pZ6u+lf4KENFQ8EknIg6iR6MG7NLYu0psE+xNlrS04+zYOHz8LpEYT2EViD4DPms6vO380lZOKuCaPRK177FzaEE2ey1DbUJ57LIj4IYbwc9eoZJrLNolnQ=
+	t=1761822615; cv=none; b=I3JBLtayur0O5dR4x5u/gnN1p1DeukslrKvAqg23li/JmYBRyT24b/VrG2L7HcfiN52zpu+I0B/Phi3gRCXAl4vnElFrx1Y4f4SqjNHsQj/8vX8hc5TrkcT57sbuEvFnUxNI0F7Y2IBDQmNc+kMYgRjMElNQzvpDBfKQSWaJ00c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761821566; c=relaxed/simple;
-	bh=szkwGplbJ5oUlGJfPgg0WAoGQrZxT9aT4v250fXRg0U=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=KsZaAIS6LecMO9HwUrhfrY/0H/EqYETNtHU67AnKM+B+4DLUISEe1FrwvmMHdilp/IAc0lk4RXyLfNyIcCXAU+9XAywBgrorXmkDNgcCpxpuGGWJxVYih5Ul3X3Oc/8tLrlwu5RUMl24u7g3HmyEK1pmJjQtsHGnPSf741RIFkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IVec60u9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761822615; c=relaxed/simple;
+	bh=7DPscIK43top2NRqx/uD0GvM9s9v/q9ETJ+c/B9fvTM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F2Z69OZkjrAYA8wQsDUd+yIWJh70pvS8LjiVdM2jzxcegrA0H7gvHHML5LSn47C+5zjhTJQZjkMpPmg+fxJzI3VDDBQUWiyG0K7gmFxAQblti8BQAmLBk2FNjJ0JdGa4k5Wyg/eHUXuOPrEnCmEsyZHN6wi9HAMSn9TqCSVVGT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oDhkPcWz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IVec60u9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00299C4CEF1;
-	Thu, 30 Oct 2025 10:52:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDhkPcWz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5897C4CEF1;
+	Thu, 30 Oct 2025 11:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761821566;
-	bh=szkwGplbJ5oUlGJfPgg0WAoGQrZxT9aT4v250fXRg0U=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=IVec60u9rkZkxlQVIAe3UYNTGek4XsSWuHuhXNL5t3DkI0U/r/URTnVFOQLpOvMBv
-	 BBPkRZN/9dWMCkOw2Rue52ZqMcMOVnzt8t1X/qK8EXB0PJ24vlC6UpF4PmCn5Zut4S
-	 LUZRrXznUIQXL/ms94+7dgD9H+NB3wJZ1yTqc4YxGKrngShWiAPDztF6x76/hvNzb+
-	 NOvj4lpWLeRNRhNlYJLgcKuS8Elr/Df59j4r3MuVGmExKsdjykRUe5bGnU1mXFWXTG
-	 T53DeTkz1sMQhGXQPim0sp8ThZTTWaVhZ+25jivhIvMqmUF4KxHKxIDBv/6vSJl/0W
-	 9LV7ri1aelOeg==
+	s=k20201202; t=1761822615;
+	bh=7DPscIK43top2NRqx/uD0GvM9s9v/q9ETJ+c/B9fvTM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oDhkPcWzjUldtLgPpKfCaR+QVOlXQv3WVtoDkVJO2A1q0AQbE56AQlMMCEdY0jqlE
+	 fdoUoRupLV2jYgawaTZg8Nui50VMnb096AsyWBseFgJW5Y5XTX/tA51UVvg7C40WAq
+	 Ub9A76tZUTAzfJnAKRnrlDdvhYO67MjFQnb2QgHxGE209h/SHAQ+I/oJIK/wNAwgYT
+	 x1IGarw7/UVwt+CIXocPYlkBKh+zcX0+wbyuVFsJhpMSRjd91iMiyHDTGXdxd5riXc
+	 unn8YBvZMkPaktmwHktO4J0hr3DoK0HEzuGj9WxRTkPUaIQlrRvzQeQ3mdxj/P4hDG
+	 RPMXR5fHuLcDw==
+Message-ID: <88199802-293e-4c09-9078-79a5bdd2fc7c@kernel.org>
+Date: Thu, 30 Oct 2025 12:10:09 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] nova-core: remove HWCFG1 and need_riscv
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20251025014050.585153-1-jhubbard@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251025014050.585153-1-jhubbard@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Oct 2025 11:52:40 +0100
-Message-Id: <DDVLMBC40199.2BVFYHDGQP4Q4@kernel.org>
-Subject: Re: [PATCH v7 0/2] rust: leds: add led classdev abstractions
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Rafael J.
- Wysocki" <rafael@kernel.org>, "Dave Ertman" <david.m.ertman@intel.com>,
- "Ira Weiny" <ira.weiny@intel.com>, "Leon Romanovsky" <leon@kernel.org>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-leds@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Markus Probst" <markus.probst@posteo.de>, "Lee Jones" <lee@kernel.org>,
- "Pavel Machek" <pavel@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251027200547.1038967-1-markus.probst@posteo.de>
-In-Reply-To: <20251027200547.1038967-1-markus.probst@posteo.de>
+Content-Transfer-Encoding: 7bit
 
-Hi Markus,
+On 10/25/25 3:40 AM, John Hubbard wrote:
+> John Hubbard (2):
+>   nova-core: remove an unnecessary register read: HWCFG1
+>   nova-core: remove unnecessary need_riscv, bar parameters
 
-On Mon Oct 27, 2025 at 9:06 PM CET, Markus Probst wrote:
-> Markus Probst (2):
->   rust: Add trait to convert a device reference to a bus device
->     reference
->   rust: leds: add basic led classdev abstractions
-
-I don't see an entry in the MAINTAINERS file for the added LED code.
-
-Did you hear back from the LED maintainers already?
-
-@Lee, Pavel: What's your take on this?
-
-Depending on whether it is likely for the LED work to land in this cycle, I=
-'d
-otherwise pick the first patch into the driver-core tree for now, since it =
-can
-already be used in the PCI and platform code.
-
-(I'd assume you want to wait for the driver from [1] before picking the Rus=
-t LED
-code, which has to wait for the next cycle since it depends on the Rust I2C
-code.)
-
-[1] https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.p=
-robst@posteo.de/
+Acked-by: Danilo Krummrich <dakr@kernel.org>
