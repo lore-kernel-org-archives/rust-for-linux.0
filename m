@@ -1,88 +1,74 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013023.outbound.protection.outlook.com [40.107.201.23])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012000.outbound.protection.outlook.com [40.93.195.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD4C374ACF;
-	Thu, 30 Oct 2025 19:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6E437EE0E;
+	Thu, 30 Oct 2025 20:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.0
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761851203; cv=fail; b=Lz6AMD4rKN82FP5/6I+wcZZllLaxQo7QEbYbrzkPFoG2EMJ0BSjxS3tN2qlsRkxRR85aQWab9YJVSlm/SCbQBUDtZZiEaRQ0EWjdie+jBtT1vnQjrU+mfi1/389nZwaVXmimtarc0BbHziNcK8n1wK8WyITTCad4oifyuL73Qjo=
+	t=1761855015; cv=fail; b=t+emSvBzZmgYaMHHQhhP0fV24dILDrFTo4IVs15rk3mDdgRXViVCcWVJ7gDMvNt3W/4kqilryP5i/kDd6YnEK4VE89uKsoeIYYF50fS1JxWHy6+hCRnC32oEDkblsG0gl+iHCVFNekWjIVyOS5R6Rgob3IRHSjZp/M8viCQhSLk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761851203; c=relaxed/simple;
-	bh=BUXilFqNHTNTFnCgDMMv66qaq/ob8h6SRTNj0Zjr/Ks=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BN87hfwgap00RaAOprPZK2YwDoXvdeY5dtDHSvsyF08Ret/CrRyDyyVMQGznu+tq3UWOJOlgTBxDuoNpZkh9ZG7HQHx45xswS1MvmvAG2akmJ1WZzLXSbSz9Zzkdv3YVWu8Sl6wn0TDBPhYVeiePqe7YcjkJj386c72iDHytbME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UcYqluqF; arc=fail smtp.client-ip=40.107.201.23
+	s=arc-20240116; t=1761855015; c=relaxed/simple;
+	bh=cmFBwFYKCZhbUs2yPgZkmcVDuHdJw6fiqH6Q0KDOB8o=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hdDPycqAimEkp6Bwd+MQW0TbuvB1DL0AenCSRSAzpP1h+00eZEqNz1A4xv87vdm1by+uF+4QkFlL+PZ+i6eZH078D1hTtCnMMVZMyFO7dqmW788kajJmVBfj4rBZcSNzt1Z01fcgNZPkqQyLZmLGfdPWjSZ+cTQ1z0Qf1IHA3eA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EoYk+m5t; arc=fail smtp.client-ip=40.93.195.0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UcYqluqF"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EoYk+m5t"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x+mKagy0F1P3WHk0RVYJ3X2r3tVYDTs/BeGchchP2O7uutog/uvCnx1TCRwFUdCWcOXAJwg57Yf9eq+2KstekiWiB3qxQYz0yqFW/exLxwPCDU27lJmlDyxURn1WoNqSWIQvoHLvbg2QYM2fQgTNc25JOKJ5tu70gTnQVluZEcIh3NpHQXUWt3iAq0lttOzV5wE/D781vSQHSesycf4r/uo4JJlHhBFm5A42xTZKQTogSn2aM2hqhUp00esaQu4rW+/6NMdASj/5WpJo29JdwvXGpyBvx8PssD0nTI+3csiv5vPMFI/eBBU4Od+gi6UpOgAhqBdvpbjVm/Q0WOfCTg==
+ b=sZY/dBR0KiX5u1BEnspMQYXxMC5rgmqIElD5cXlKxdVdBBxn8BtvJgwoJcTCEdOkaxyg0IwXtOzOhJyIJeHAEJLpPqvsiQELUH9BYKPm4gSEshzojieiA45byJxdc6yTIiNweL8zT4yk4PuBaXFmNJKlxrLeC5h7cTDc4OMD29fQbuwXj1BtpIBFJ2fIfmO7ZHPbW1R7O+ksBjClHcAPvjt0IBBTPGyuqTgFv6dguxREEHEmKdnaH3M7oiM4R26WkVM5xgcDetOUFvsjiyw//iqZx4aKlGpywES/O+Y21FERroSytnBiZkoaFsKrPAD1HE4faQtmJVGmXvhB6+X0KA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yiVTJHiNiDjnr2NxwkAK6VVz42WDCXEUP9b3e+gcK3Y=;
- b=Ne0Zhw6MmfSONywTmO2JzLBY2vWCY0oMZSKToze7xRgv7I2XlprRjJMVixY5mVJjYELmHd8bnvRDRQSTnn/ZmJp2b8vcojW149rc/eNlwmMq7bgbxgPB364HIlGYR8aVGWicI5U385CIyockXLziWvcFtj1T7b8ALt0eB61LTa0VOq1tH6XSiaBNTJsl41L02AEDzBVEGSLqeECGrKRePrC4lTx8zZPyDYSpKfrqZWfwA/zVRveDrCijutKWbl+BE5h4XpexBasB52AZM/jI4P7eJmuZeRJpSO7nkTTmtJPU+OY7m7IRsqZI+0LKAWEMjNCmC+bM7V+MspA42u1RFA==
+ bh=iS3J+KZUcF5VWfxAeoZeaqGJDZ/Ytfnne3VCVb+E55k=;
+ b=uMNeX2IPhI0B5CRgfeEpLYWzGPwJ2gUK5g6jFqgLryxG4bp/1U5wQUyvr/VlBtBSkTMRWvo+qmApLIu7VyYqqS/8E914FSCsD8NG1k1C5ho6Q0XdxzgCqdq1C11h2vgZj2B1OO+b808N18uWURdVgpdk0XC/hlLFnRN9KzVF9yUsRv/CmG/I5WYCAp6+RwD78aPYa3KrThV6Kcf9pOoTeIDM4yCq1cNVkQ+mAUFqVO/ARNUGv+UzSuHl5ep1wIIT+bvgffyUHJFGNsQhd7ONKtsO2v2OqETct0HXvYud6HvZGOE0em+OPhpr5ZbyNDauAvhRn0yFMfutX7ro8cLwzQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yiVTJHiNiDjnr2NxwkAK6VVz42WDCXEUP9b3e+gcK3Y=;
- b=UcYqluqFz3we8cmtBMNRU9sqKbXUtSdxvQjSzdn9OMTlV30UCGpTwRCcWn7SJz2UjqP/0YIuXfdwE9gms2QzIB0R03QBNqab4j38on44pE5Wrs4yxN8iuT+AMUbE5ziwnYs7K2QHgZIFr3uWuAlS+ztCgQOC9CdgDqIwIodHKI+buFVvnga3gD/+asuCxLY9WQ3AKiJPJUSjXpqI9vhET+Pi44CRgbi+rbHF7GyJQymdhS2IRRglED6TDQ9Qe77bMscG4UudCIwRuGS87Vj+oIewS5xqDWSQGURZjLoMsNjNAhy6wKQ/UY7R2uYZYf1oAjHN/kUlb7IUc+CXrZ4yGA==
+ bh=iS3J+KZUcF5VWfxAeoZeaqGJDZ/Ytfnne3VCVb+E55k=;
+ b=EoYk+m5tVTL+ghKHubObKONj0mbMwC104e1+tKWXntY9i9BDP04ek+4Wdf5nBUS8X62g7q/eO0ynZEd69DnE8k79SygPofU2ht6DRr8Yp4Nf5am3JQ7Bp+lSL6srdrhHF7fxYsOrE0sZP7ut5Q0wC4NjM8KkPeZtMSrc4c4dDcxskWORS82JJC9kegLrGNVrbEP+7/hic7wXZq3utDG/O+wn/WNu3lv11Q+P7pj0zplbdjig52u96imyoFgLLEcXcBtORZyQ9zTDHQQQ6KCjz9E3BsU3JybB5GQINmyVInJTikg3FRD+mGOTfR5CDaGaZlBl129LcDGsuSXvBkKAag==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by DS5PPFBABE93B01.namprd12.prod.outlook.com (2603:10b6:f:fc00::65f) with
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
+ by CY8PR12MB7364.namprd12.prod.outlook.com (2603:10b6:930:50::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.14; Thu, 30 Oct
- 2025 19:06:32 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9228.015; Thu, 30 Oct 2025
- 19:06:32 +0000
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	dakr@kernel.org,
-	David Airlie <airlied@gmail.com>
-Cc: acourbot@nvidia.com,
-	Alistair Popple <apopple@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	joel@joelfernandes.org,
-	Elle Rhumsaa <elle@weathered-steel.dev>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	nouveau@lists.freedesktop.org
-Subject: [PATCH RFC 3/4] rust: drm: Add DRM buddy allocator bindings
-Date: Thu, 30 Oct 2025 15:06:12 -0400
-Message-Id: <20251030190613.1224287-4-joelagnelf@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251030190613.1224287-1-joelagnelf@nvidia.com>
-References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BL1PR13CA0133.namprd13.prod.outlook.com
- (2603:10b6:208:2bb::18) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Thu, 30 Oct
+ 2025 20:10:08 +0000
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9275.013; Thu, 30 Oct 2025
+ 20:10:08 +0000
+Message-ID: <0d591052-9c85-47a3-abf3-02a8fa9c4dae@nvidia.com>
+Date: Thu, 30 Oct 2025 13:09:42 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] nova-core: Ada: basic GPU identification
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20251025012017.573078-1-jhubbard@nvidia.com>
+ <7c8ab212-3905-4652-baa4-b422e69fea0c@kernel.org>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <7c8ab212-3905-4652-baa4-b422e69fea0c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0106.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::21) To BY5PR12MB4116.namprd12.prod.outlook.com
+ (2603:10b6:a03:210::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -90,535 +76,116 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DS5PPFBABE93B01:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7abe587f-a4e9-45b3-d345-08de17e76e5d
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|CY8PR12MB7364:EE_
+X-MS-Office365-Filtering-Correlation-Id: 82a0a895-b092-4865-f754-08de17f052a8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ZWf7Y/9J/IMP+lnG/YeGMgPKRQ76ncUvuSszILzNtqAqI7xtQu0SS3aYMNj3?=
- =?us-ascii?Q?YIunZgzjyrPybOUDzBfeY4ZSB39WcvwgUOHDXDmNhxVe7xhuPXiVTH88hVnq?=
- =?us-ascii?Q?IYBXLOF6uH46vGYkQl47RgLzTbQgcxtpIxBQzEBN0Pm5RbYJtGcY7iiIphUG?=
- =?us-ascii?Q?zayUnOUA3Fspba7LyslyMaaUtZzubQAW0pYnsRc+CXrw0wBzAb7RVD3qFDW6?=
- =?us-ascii?Q?JfmFo4IyhckVmHj7dzGzLFoyASKXBuErcQ8mYePGvuAHfULpQBCSspUcYaCw?=
- =?us-ascii?Q?b0f/QY/z+yjfo7cQLoW58AOiiojWU7IzzxJR3SHifjmGnXHKBDpf1JOb4467?=
- =?us-ascii?Q?ilVMuK0uln0DJc/qfvzPmMja/a2+uoXxRJV70bikXY5Uj8OqTlhuKsvH9NcB?=
- =?us-ascii?Q?aMx8HagUnWL2ApLmEQ4wFW5ior+FXdNDxcR4EcaVvgONjSnj/oNOcDX3kEWh?=
- =?us-ascii?Q?Rv26AfTTxvjc5CfurIbYQnCf4k8k2ZMo3a3E7TAere+y+KeaDXnkoXzoK7gJ?=
- =?us-ascii?Q?m1fu9ua+aAUFl9nf3xTLjTlU9b3I3h2Fa1vNlLCu0Xy9NcmheVdsCtc7ZCMv?=
- =?us-ascii?Q?hOSVYYJZy12CpsCwpPvoUspVIO4maocKR736+1r2XHeOJVcys6dzmLdDe8Yt?=
- =?us-ascii?Q?sGmP6/xecbxd+S40UGwFM3eJqdqXSgVU3HjJgl7U8kRaO9bTXzzzgknYT6tE?=
- =?us-ascii?Q?ffgb2tzVM+rgN4iuLrNOzIrznxuUTHglCywJyTvoDcCdMSxUSLezQ0cvvs+E?=
- =?us-ascii?Q?ZlSjMQxbus72dRJPHJHlLI+4KXWK5Ujst34deenPabNrMRNPcVXxlNQnP+t/?=
- =?us-ascii?Q?27mFhrDG8qDP1npCSyRxfNjZqmMHJzgAQd4m2nQPrgncVmDT9Y1PmT5rpGZ5?=
- =?us-ascii?Q?DtdtW8VqNERAYb75+KxuQQW2a1IwMTwzoAJF9HX+9j/eCuff8Oc2KQyELM4f?=
- =?us-ascii?Q?XoNWACVGuWhS/g6XZ0+4TUSFcVESpwgPnv8J8V/Z9YkM4J6nC+mshf1E3Cgp?=
- =?us-ascii?Q?v600MUmK1COeLli78JG3rLX7JLUhGkoQlbZ+pxXz6HfHRPQuRXglUFooOIZn?=
- =?us-ascii?Q?a46CvVZ/MYAHTVdVhVk0hlHe6Vcqr5R6Ojo4hsskW5BamNLPibAmtdIJKI+J?=
- =?us-ascii?Q?yXSRRFLoVm0OWC+px6AUjJ0Hsb+TuLRnWk/RaR7X2OVwGSteCaU5rO7AKIbq?=
- =?us-ascii?Q?OB2+sD8P4UH0aWY53jnio7wR7tScJKwGPFFw0lk5QMG13H9gJ3k0jK10jyGM?=
- =?us-ascii?Q?tf/uZ7teeyLAvz8MvUTOSPeLYoWgbUb2KT31fkhcM5bQnooy+i+of5jtbmb+?=
- =?us-ascii?Q?4spp+PNbdVDrY+zLBIwCTQvL6NbzaR5zVpFKhW7jAuIKxU6iQCNDWSOj7mTf?=
- =?us-ascii?Q?I65wanQF6nAYf79S2UNpRhy53Nba3BUGCTVRqXwwl42KQvj+cfLyY4Bsyr4e?=
- =?us-ascii?Q?MvXv4E8PKUBmE5BOvyMtHI94CnS2fkF4?=
+	=?utf-8?B?Z2RVblgyMXVkTzNIenUzOGFXTEUrajdOQzVqMU5SaWViMEpEU1haRzNiaGFm?=
+ =?utf-8?B?eUJ1QWtGNGxiZEpQRFlEM1NyVk5MMEFuQlRvMmdFNm5ZZE9rUWpMdjZUTTAv?=
+ =?utf-8?B?KzY5Y25SM2RFdlVGSEFVMkozdUNybkVlRk9lWjhZdTZGS2JIbkpzRWJrNWdJ?=
+ =?utf-8?B?S3JJeWF1MHgrV0t1OHZ4R0ZhZ2F4aGNEOEVxcitNRis4d0h3ekRva1RFOWRn?=
+ =?utf-8?B?Zlc0UmhJc0dXTSt1S2dDQjVDRDRETm1aRm1SMEpRMVBJUE5WcmsreUk1MGdh?=
+ =?utf-8?B?QlJpWHJYNjNpUHRBQjNpQUEvYzZzdk9WeWN4U0N4SUwrRmJvQm5BcXBIY0NS?=
+ =?utf-8?B?VUQ2WFZ6Y2VBTEFPSGdSMlBsZzhidEJ6TUorZTU0em9CT3E3bVQrWW9RdjBr?=
+ =?utf-8?B?VkVBTXdVU0RXTFpKb2o2VnFNQ21jQzlOQ2E1d1lnWUxzSkxldk9LWTFYOHZV?=
+ =?utf-8?B?RzVYMERwVDBSS25YeDJJT05aRG1aZUFuaHgwZTdMV3N3bmc2aENCRk1aVkFz?=
+ =?utf-8?B?RXBXV3hjbTkxYTA3Tm9ZRk5FcGk1Y05mL25ObXVMdUFLZXdBRHVDNG5jMXdM?=
+ =?utf-8?B?Wnp4djBRMkQvTXd1dy9hNTIxd2xjbmxsNlFZdHd1VFUwTUp3alc0N09adkZM?=
+ =?utf-8?B?cm5rZ3o1S3ZWZkl6V1JyL0x6emZiWGpXWGoxbllzVXFvemdQdm5nb2E4bktq?=
+ =?utf-8?B?eHdJY3NSRWJyd3lydzNmNnY5L3lTYmhaSVZFNlJaV09JL2xMWjhXQittcDhx?=
+ =?utf-8?B?TEZuMGtmMzcvR1MyL1ZkbE41NFhZMG54alo1eDJrME9iODZoUU1sR3dVT2hk?=
+ =?utf-8?B?eDlFQVQwNlhXNTQ2YjlvNGNrWEtUeXZ1RWorQ09kUDhtbUhaeGtzMXpUZkNO?=
+ =?utf-8?B?SFY4a1ZPbEsyTU03N1lldzlmdGxrQjNrakF2N1Z2YVNkWXRpNk0xN1k0S2k3?=
+ =?utf-8?B?bDNYWUZhMm1TcnlLMmYrMGdicmhZUTd0YXVWY0E4OXpSMWhQNTlTMFkvTDFL?=
+ =?utf-8?B?dk9IaGpLbHNGRHJ1Z3ZVWjVBN2hZUUM0QWRxWnlTMDVFTnZLOFE5YUZrd2NG?=
+ =?utf-8?B?N0x0M3graVg3MElLb1lrck1Fd1kwWnBrK2I1ejJUaUxSQjB0ajlsVDhseXFU?=
+ =?utf-8?B?c3pKMTV2V0ZCM2djRGQ5Tk1qYlZWR1JCdElxUTBFVWJKQ2JkMnVpeWFKREQw?=
+ =?utf-8?B?eWYvOCtESURpVkhGdEtWdTFHUkt4ZWpncE5wS0lmajVoRTFwWHRQZVpqUE9F?=
+ =?utf-8?B?cDZqOVdkTUxWSkRUOEhPSG84MEtRZ1FWU281RmIzanVueGx5K0t1aVprMCtx?=
+ =?utf-8?B?UUs1aitSeThQVnVEazlsMVo3VVdQREhoTktpbXkyUFluMUY4UFZzVk9mR2hT?=
+ =?utf-8?B?T0drSmI0LzZYVGYrQ3lrUExiK294SXJaaUFWVHM0LzJLMUxnaFQyb3FYWFYx?=
+ =?utf-8?B?eUNTK2JqOVN3K0ZhaEk1cEhXeDAxOWw2ZldkcmFjNlExYy9ReXBjTnB2WHZs?=
+ =?utf-8?B?ejFpem14Zzc1K0MyVnRnSlgxU3ltckV6Q3BBc21ZbjFGeG1zbFdaRXNjY2RZ?=
+ =?utf-8?B?SUNGWmFuRll1bDdvUlNnWVR4bndmQWxsWE1NVDUvRU5PcmQ4N0RuWld4YVB4?=
+ =?utf-8?B?Rzl3ZFZCZGp1U0pqMlhhTGUycFpaMUtkWlQ3SSsyZ3YvRVU3blhidXlNOWFR?=
+ =?utf-8?B?YS9JTzhST2V3MDRleWREdktaUkErdU9sbDVvN1duRWszbXZhb0J3YW9oQ2cy?=
+ =?utf-8?B?NlFqNGU2cEZpb2lTMG5ueU45c1cxU0h2ZDFHdHZTck82YnU1SVlUcnV5Wm8y?=
+ =?utf-8?B?M3FMNUMwdnZVVzdCd3luK1NoaUs1OThkZU5SdjRIYUxDQTBQcmFzTXB3bXJE?=
+ =?utf-8?B?Vk9SUEdVditLSDI4NW5wUk52cWdRMjBKR01XMGNZQXpiZXJxQ29xOHo1bm1M?=
+ =?utf-8?Q?YIoMX7IP1W21iWiAuCZvOWluLwj7mnXl?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dSgbk1r+jRbzAFp0uxlXmlO2CxHsGN341O7YMnKABRbT+rrwnzD0h2W7Q0TJ?=
- =?us-ascii?Q?J8VrsYPPEWXm6iNliM5+G1sSfkpl2Jf4YfqPwPb5A7CJD2ZuCA3tQCnKBmxx?=
- =?us-ascii?Q?zFJfGj2uWl5AiHQZz8PVgBkTRuMKDTMW5hWzDu69/JAmIDz7g7rZQFBTf7Jm?=
- =?us-ascii?Q?s+a9K/LqPGKsrC4ovUnySwYle7KkVe5q7WBj3puCTEP/rMO4a2Ga3fv0CG1P?=
- =?us-ascii?Q?Fh0boCDWMyftmW4dT6xz+uJ5L2+HbY9JoPyAAxYL69IIBT5xPLMQC+S7n7XT?=
- =?us-ascii?Q?PyjyaOM1g5Mrx1XFY8Hw2njQHGxA2Uqc7ijvGxHsKG37qZHTPg/jdIkE7fpn?=
- =?us-ascii?Q?r04j+jWVYKQHomCiit0FqdOE3PhEGs0lOSFEQyWP8YpFPin2I9fxOjUoWVwV?=
- =?us-ascii?Q?pd3JBWMK79a1iaP2BjMxIUIm1MNc+LGayN+Ss/N372BQj1AW+O/8nWQxvrpr?=
- =?us-ascii?Q?h/vORXp8Obdj+9zXnfXoFijd3CRwGCYwMfIzfreR8RN8oeoDtIGRG/xxJD2G?=
- =?us-ascii?Q?avGapw8zJYDp0rGajQSH91opY3bDTITh2bUT/ASQhBT8Qht2mqIuPsoGmrRy?=
- =?us-ascii?Q?eZwuPIjI6fGuy2grHG1FUTm4W7ZOeYJ6uSoysJCg89kRp3KFNRofl83hhT2/?=
- =?us-ascii?Q?Y22O3NolJHA/ZqU6ez4Cn6anhb7MaxCfxzd5KUMfWOf1RCPb+VMFEG49Md37?=
- =?us-ascii?Q?C+64OoWvSTS8OgCA4WET6BoMhteAYUBV82Qmb1pelaU4F4Wz1J12tWPYUnkw?=
- =?us-ascii?Q?OlTstiUyxzTEYBlZ5wY8aSvk3yWwBwGGrcpPLCHU0JR4E4LkwHgTJABUIYI/?=
- =?us-ascii?Q?hx7AAn5+YxYzQnZt4b6RhXEK3NFrKkloZg8CEG+Yfvqy0sFZARZ1U/wuSNEe?=
- =?us-ascii?Q?btAR4hdykjqjQ8sWNEDJqWnyv7UtHApo+nOt2DDFd37pkRDrmXCbFWNMj06Z?=
- =?us-ascii?Q?MvKKuWnLx0TA7Y8S+t9MkwgJNNGmx72syEEUkkrVdMKMUdhRMjY8aorLa67j?=
- =?us-ascii?Q?/zi6JCW4HRJ1R6PK6Tcpxyc8H7vAqLEXvkUjIXJhxaI+LLrER/P92r2lPpu0?=
- =?us-ascii?Q?a4U4/odk+74bdB7DxiNJV82ZDez93H1PoUP6+/jTcOaX8pNvmiCC3UQkVSsn?=
- =?us-ascii?Q?A6qdraq2xVEgJ6lMcEzRfl0BvUlV8rtvbWzk78G4Ww9lK0UNGafm7Cvxm7wR?=
- =?us-ascii?Q?tvBZmPzBBsAlR1WqnKa+U6h5Mb+6gG2HnGAtT7BYIGTJ0bPU0ySQtFah14dY?=
- =?us-ascii?Q?2OfY3tB4xcMXUCcUmcfyA4y03SIA4tcxeEeaJ7mt9eiAFiAfk/Typ7cATYwY?=
- =?us-ascii?Q?eg6Y3Yda5gVcnfQ+QpykZ/+0ri16m4YvXEMxexj8Si48sUE1BMmOrazUE5WZ?=
- =?us-ascii?Q?4DbQ3qclas6AWfcIGdxJFqlbPqEcXNwvfeeVmHxysug3Tng3c5Usdr1L0Rkf?=
- =?us-ascii?Q?sFCjhw+pzauh3j+WkHcltG6jRAZ+TW0PjlSk7AJ0PoEabK34ZkPkPGA9qV8j?=
- =?us-ascii?Q?0wbCuXoTNDtIjXBmsIj1LbmCsyxeR25RL85qRZMnvxMgcisdjsIevklbSVrT?=
- =?us-ascii?Q?i26ptVzCSoWKv/u5eJSTDkPg1XqojoI4GuUtS+MU?=
+	=?utf-8?B?Ymc3ZWJhVnFJbEQvNGdCTWU3cXlCQ3VuTHE3ZUhkbUVJaVlQUEVLR2pGWTZ0?=
+ =?utf-8?B?bVhuRlBZcHJBb0Q2ZFl6cUpGOThlQVcvSHhOb1ZZdk5MMmx3a21JNjYzZ29Y?=
+ =?utf-8?B?Q0ZRWUxFZFJCRHlUZUNZNFlDZ0hyOVgvYXFXd1dyZjNVN3RsQXZhS05pbHpn?=
+ =?utf-8?B?OGk2ckRvTEF1N0JldVIzaXBmUDNsK29QRUZqMSt4SzVLZlczWG4zNWFWSWc0?=
+ =?utf-8?B?eERweUx5MHJKTkNPQzFadURwVkk3aVFuaEVLUFBVbDVKTTNoWkpkQXRNWFRn?=
+ =?utf-8?B?WU1ydGlxd0FYVlQvNS82T0JLajFNK3NGOE51Q1FaZ0VrZ0xOL0FWbmE4WEVv?=
+ =?utf-8?B?UXJ2RHplTzhTNnlIZDJZREpyYnFEalA1VXV4Y01FdzhlUXhpd0g4RjhXeHJI?=
+ =?utf-8?B?SzNpSlRnZmtsUVZ2R0ZZczI4V1hEc2Jac0kxSFlsU2xtWHk5dFNCbWszMVNW?=
+ =?utf-8?B?d2wrWmNIdWZ4NWNhaUM3MWhUNEtFLzdJa2ZMU2lWK2lNQjVSK2pQQVU0c3A1?=
+ =?utf-8?B?dnlocHVvS3ZnSTVRL0RsUkpubE1hZnNOMjV1bXdZNENubnF3YVArK3VqZ1cv?=
+ =?utf-8?B?RXhib0Z6OVpOR2VnU1R1YUxIWFRseTVPck5peFVpR3hWWUNpVStaK2hWQWlv?=
+ =?utf-8?B?ZkM0T3NDZFI3dC9oWnBuOFFKcGFjZzdCVHRnN3dLTEEzWFdDb25ENG9sMURJ?=
+ =?utf-8?B?R0djMUdJSktrQmpxNEpVdmVFajgxSTA5cmFrUHpkaEhMRDNZdXI2Znh4RWNx?=
+ =?utf-8?B?ZnE5NnQvZFZ3VG4vMkMxM2I0RjFkS016N1gzS3FnQ0w5cll5T2s1NXJDV3cx?=
+ =?utf-8?B?aitBb3JqYXR5NURSR3EzUEtRRGtYUU40VWhpdThkZWp1S2pXWG5CV2xrZWlI?=
+ =?utf-8?B?MVhTcnRtRHRiTmIvVEh6SzBKNkk2aDZZR3JtRko1UkVXbWFtYk52eTR6UExk?=
+ =?utf-8?B?a1piclFvM1NNQ2doc2VNMlovSHQzdy90VWprSFVZcjNCcFk3YjU5eVptWTFx?=
+ =?utf-8?B?VVJMRndhbEwrY2NyM0lwQ29aaVNBYnBMVHJFN3JtTHVRdktBd0FIMWE3cDc5?=
+ =?utf-8?B?WlR2Qm44cExXSFBwQThSa1RKdWhwMkQ0dTZ6Q0NMb2tiSllRbEJiMk44NTZM?=
+ =?utf-8?B?aUpGVGtMZEpKUnkrcE9zZ2JqTGUyaFBsM21Fb0VDTm94SmFpTE5uNnhiVjZU?=
+ =?utf-8?B?bWhWeVh1citsVU9aQVhQRHdrcDVlYTk2YnVUTXd3eDA4bFZleE0zSnB6aitM?=
+ =?utf-8?B?K2RtMGZpUzNnc2RYa3NUWVoramhoOTB0enBwZlYzSVZWR3Y5VlgyamJINGla?=
+ =?utf-8?B?dk04OTgyOHg0UkhsazhaK0grU2RlQXUwS21Db3ZHN3BwalN2OW5BSmNNMk5P?=
+ =?utf-8?B?SUg2VUJMSmdhd3prZHY1c0ZnUnJQckkzL2lFVjhXeWg0c3hadGJHYUh0cU80?=
+ =?utf-8?B?b05qTHAxSmFvcXFpZlMxNmNUTzZKamdFNFY2ZHE1ZmlqWXB2OHg2T0pKd3ZK?=
+ =?utf-8?B?NSttLzlYalNwVTlCenBFS3AvNFJnT2V3cC9RRU53N1lHVlovNGU2REJHOVpH?=
+ =?utf-8?B?TVQ4cnFTZnpURmM1MVE3SHU4SFNXNUdiTVQ5WW9iSDhlZDFwcHVES2EwKzNU?=
+ =?utf-8?B?b2pRRnZHWjJTYlNPSjdaUDIyK3ZPQTg3Wll2R1hXTys0eXk5QmN6Szl1dmVs?=
+ =?utf-8?B?ZE1VbWE3Y0h6UlVkcXgzeTdqVWFsYnpwUDdEajZkWm1EN2JQVkE3ZUVDclFR?=
+ =?utf-8?B?eWdEcFQvMHBHRGZ3RXY2TGZ5S1ZPSjlIdHROZGZ4d2Z2YUNocUttTXgxa05p?=
+ =?utf-8?B?OTlDQVZFMFJUU0NiK080RmJBYlE1Mm5ZYk9RNXBlakp4bmszSVpyWVlKZ3Fj?=
+ =?utf-8?B?MGJTTGNZNHBydTRMMDZXdjZIczFqTXJ3RWwvVUdYVGJOOWdWUmRlVXBJMm9D?=
+ =?utf-8?B?Zll4VG9kY1BCMmErWWJMZkgwRittOThJNkdNanMyd2dRTUdzcTg3RTZwZkJ6?=
+ =?utf-8?B?QWIxalBKRkNSRm9tTmhKNHJlbEJiL0dkVGxOZnRsMURUWkRqbW9LNm5WbTlr?=
+ =?utf-8?B?U1YvME96RVVJU2ErdHZLbUZmR1RtMVczS21Kend3Z2YzN1h6Y1JZN01SbGkz?=
+ =?utf-8?Q?lQAnHrLus/No1sVZ3381o60gm?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7abe587f-a4e9-45b3-d345-08de17e76e5d
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82a0a895-b092-4865-f754-08de17f052a8
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2025 19:06:29.1549
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2025 20:10:08.2055
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P+6/SMIOOprH8FvHwK0XM9s2gqJ8Cb9VHE7PasktjYN9fycRXp2+qw1pBiGzT9u/aySt5+Xde+7Ewfh/zxP+Nw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFBABE93B01
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7+e1I49g/B3KmWw/n2SDtiT+OszbBFRrgKoa60lEtOqkk2ErREWUEvHAuvoC2qXXN8dOM6E5DbrigA+OK8vBoQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7364
 
-Add safe Rust abstractions over the Linux kernel's DRM buddy
-allocator for physical memory management. The DRM buddy allocator
-implements a binary buddy system for useful for GPU physical memory
-allocation. nova-core will use it for physical memory allocation.
+On 10/30/25 4:15 AM, Danilo Krummrich wrote:
+> On 10/25/25 3:20 AM, John Hubbard wrote:
+>> ...which is sufficient to make Ada GPUs work, because they use the
+>> pre-existing Ampere GPU code, unmodified.
+>>
+>> Tested on AD102 (RTX 6000 Ada).
+>>
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> 
+> Acked-by: Danilo Krummrich <dakr@kernel.org>
+> 
+> You may want to consider requesting committer access for the drm-rust tree [1].
+> 
 
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
----
- rust/bindings/bindings_helper.h |  11 +
- rust/helpers/drm.c              |  23 +-
- rust/kernel/drm/buddy.rs        | 357 ++++++++++++++++++++++++++++++++
- rust/kernel/drm/mod.rs          |   1 +
- 4 files changed, 391 insertions(+), 1 deletion(-)
- create mode 100644 rust/kernel/drm/buddy.rs
+I really appreciate the vote of confidence here! :)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 6b973589a546..747d4c7ef935 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -29,6 +29,7 @@
- #include <linux/hrtimer_types.h>
- 
- #include <linux/acpi.h>
-+#include <drm/drm_buddy.h>
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_file.h>
-@@ -112,6 +113,16 @@ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
- const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
- 
-+#if IS_ENABLED(CONFIG_DRM_BUDDY)
-+const unsigned long RUST_CONST_HELPER_DRM_BUDDY_RANGE_ALLOCATION = DRM_BUDDY_RANGE_ALLOCATION;
-+const unsigned long RUST_CONST_HELPER_DRM_BUDDY_TOPDOWN_ALLOCATION = DRM_BUDDY_TOPDOWN_ALLOCATION;
-+const unsigned long RUST_CONST_HELPER_DRM_BUDDY_CONTIGUOUS_ALLOCATION =
-+								DRM_BUDDY_CONTIGUOUS_ALLOCATION;
-+const unsigned long RUST_CONST_HELPER_DRM_BUDDY_CLEAR_ALLOCATION = DRM_BUDDY_CLEAR_ALLOCATION;
-+const unsigned long RUST_CONST_HELPER_DRM_BUDDY_CLEARED = DRM_BUDDY_CLEARED;
-+const unsigned long RUST_CONST_HELPER_DRM_BUDDY_TRIM_DISABLE = DRM_BUDDY_TRIM_DISABLE;
-+#endif
-+
- #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
- #include "../../drivers/android/binder/rust_binder.h"
- #include "../../drivers/android/binder/rust_binder_events.h"
-diff --git a/rust/helpers/drm.c b/rust/helpers/drm.c
-index 450b406c6f27..bd8748ade3f5 100644
---- a/rust/helpers/drm.c
-+++ b/rust/helpers/drm.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#include <drm/drm_buddy.h>
- #include <drm/drm_gem.h>
- #include <drm/drm_vma_manager.h>
- 
-@@ -20,4 +21,24 @@ __u64 rust_helper_drm_vma_node_offset_addr(struct drm_vma_offset_node *node)
- 	return drm_vma_node_offset_addr(node);
- }
- 
--#endif
-+#ifdef CONFIG_DRM_BUDDY
-+
-+u64 rust_helper_drm_buddy_block_offset(const struct drm_buddy_block *block)
-+{
-+	return drm_buddy_block_offset(block);
-+}
-+
-+unsigned int rust_helper_drm_buddy_block_order(struct drm_buddy_block *block)
-+{
-+	return drm_buddy_block_order(block);
-+}
-+
-+u64 rust_helper_drm_buddy_block_size(struct drm_buddy *mm,
-+				     struct drm_buddy_block *block)
-+{
-+	return drm_buddy_block_size(mm, block);
-+}
-+
-+#endif /* CONFIG_DRM_BUDDY */
-+
-+#endif /* CONFIG_DRM */
-diff --git a/rust/kernel/drm/buddy.rs b/rust/kernel/drm/buddy.rs
-new file mode 100644
-index 000000000000..b1cd23f81838
---- /dev/null
-+++ b/rust/kernel/drm/buddy.rs
-@@ -0,0 +1,357 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! DRM buddy allocator bindings.
-+//!
-+//! C header: [`include/drm/drm_buddy.h`](srctree/include/drm/drm_buddy.h)
-+//!
-+//! This module provides Rust abstractions over the Linux kernel's DRM buddy
-+//! allocator, which implements a binary buddy memory allocation system.
-+//!
-+//! The buddy allocator manages a contiguous address space and allocates blocks
-+//! in power-of-two sizes. It's commonly used for physical memory management.
-+//!
-+//! # Examples
-+//!
-+//! ```ignore
-+//! use kernel::{
-+//!     drm::buddy::{BuddyFlags, DrmBuddy},
-+//!     prelude::*,
-+//!     sizes::*, //
-+//! };
-+//!
-+//! let buddy = DrmBuddy::new(SZ_1G, SZ_4K)?;
-+//! let allocated = buddy.alloc_blocks(
-+//!     0, 0, SZ_16M, SZ_4K,
-+//!     BuddyFlags::RANGE_ALLOCATION,
-+//!     GFP_KERNEL,
-+//! )?;
-+//!
-+//! for block in &allocated {
-+//!     // Use block.
-+//! }
-+//! // Blocks are automatically freed when `allocated` goes out of scope.
-+//! ```
-+
-+use crate::{
-+    alloc::Flags,
-+    bindings,
-+    clist,
-+    container_of,
-+    error::{
-+        to_result,
-+        Result, //
-+    },
-+    prelude::KBox,
-+    types::Opaque, //
-+};
-+use core::ptr::NonNull;
-+
-+/// Flags for DRM buddy allocator operations.
-+///
-+/// These flags control the allocation behavior of the buddy allocator.
-+#[derive(Clone, Copy, PartialEq)]
-+pub struct BuddyFlags(u64);
-+
-+impl BuddyFlags {
-+    /// Range-based allocation from start to end addresses.
-+    pub const RANGE_ALLOCATION: BuddyFlags =
-+        BuddyFlags(bindings::DRM_BUDDY_RANGE_ALLOCATION as u64);
-+
-+    /// Allocate from top of address space downward.
-+    pub const TOPDOWN_ALLOCATION: BuddyFlags =
-+        BuddyFlags(bindings::DRM_BUDDY_TOPDOWN_ALLOCATION as u64);
-+
-+    /// Allocate physically contiguous blocks.
-+    pub const CONTIGUOUS_ALLOCATION: BuddyFlags =
-+        BuddyFlags(bindings::DRM_BUDDY_CONTIGUOUS_ALLOCATION as u64);
-+
-+    /// Clear allocated blocks (zero them).
-+    pub const CLEAR_ALLOCATION: BuddyFlags =
-+        BuddyFlags(bindings::DRM_BUDDY_CLEAR_ALLOCATION as u64);
-+
-+    /// Block has been cleared - internal flag.
-+    pub const CLEARED: BuddyFlags = BuddyFlags(bindings::DRM_BUDDY_CLEARED as u64);
-+
-+    /// Disable trimming of partially used blocks.
-+    pub const TRIM_DISABLE: BuddyFlags = BuddyFlags(bindings::DRM_BUDDY_TRIM_DISABLE as u64);
-+
-+    /// Get raw value for FFI.
-+    pub(crate) fn as_raw(self) -> u64 {
-+        self.0
-+    }
-+}
-+
-+impl core::ops::BitOr for BuddyFlags {
-+    type Output = Self;
-+
-+    fn bitor(self, rhs: Self) -> Self::Output {
-+        Self(self.0 | rhs.0)
-+    }
-+}
-+
-+/// DRM buddy allocator instance.
-+///
-+/// This structure wraps the C `drm_buddy` allocator.
-+///
-+/// # Safety
-+///
-+/// Not thread-safe. Concurrent alloc/free operations require external
-+/// synchronization (e.g., wrapping in `Arc<Mutex<DrmBuddy>>`).
-+///
-+/// # Invariants
-+///
-+/// - `mm` is initialized via `drm_buddy_init()` and remains valid until Drop.
-+pub struct DrmBuddy {
-+    mm: Opaque<bindings::drm_buddy>,
-+}
-+
-+impl DrmBuddy {
-+    /// Create a new buddy allocator.
-+    ///
-+    /// Creates a buddy allocator that manages a contiguous address space of the given
-+    /// size, with the specified minimum allocation unit (chunk_size must be at least 4KB).
-+    ///
-+    /// # Examples
-+    ///
-+    /// See the complete example in the documentation comments for [`AllocatedBlocks`].
-+    pub fn new(size: usize, chunk_size: usize) -> Result<Self> {
-+        // Create buddy allocator with zeroed memory.
-+        let buddy = Self {
-+            mm: Opaque::zeroed(),
-+        };
-+
-+        // Initialize the C buddy structure.
-+        // SAFETY: buddy.mm points to valid, zeroed memory.
-+        unsafe {
-+            to_result(bindings::drm_buddy_init(
-+                buddy.mm.get(),
-+                size as u64,
-+                chunk_size as u64,
-+            ))?;
-+        }
-+
-+        Ok(buddy)
-+    }
-+
-+    /// Get a raw pointer to the underlying C drm_buddy structure.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Caller must ensure the returned pointer is not used after this
-+    /// structure is dropped.
-+    pub unsafe fn as_raw(&self) -> *mut bindings::drm_buddy {
-+        self.mm.get()
-+    }
-+
-+    /// Get the chunk size (minimum allocation unit).
-+    pub fn chunk_size(&self) -> u64 {
-+        // SAFETY: mm is initialized and valid per struct invariant.
-+        unsafe { (*self.as_raw()).chunk_size }
-+    }
-+
-+    /// Get the total managed size.
-+    pub fn size(&self) -> u64 {
-+        // SAFETY: mm is initialized and valid per struct invariant.
-+        unsafe { (*self.as_raw()).size }
-+    }
-+
-+    /// Get the available (free) memory.
-+    pub fn avail(&self) -> u64 {
-+        // SAFETY: mm is initialized and valid per struct invariant.
-+        unsafe { (*self.as_raw()).avail }
-+    }
-+
-+    /// Allocate blocks from the buddy allocator.
-+    ///
-+    /// Returns an [`AllocatedBlocks`] structure that owns the allocated blocks and automatically
-+    /// frees them when dropped. Allocation of `list_head` uses the `gfp` flags passed.
-+    pub fn alloc_blocks(
-+        &self,
-+        start: usize,
-+        end: usize,
-+        size: usize,
-+        min_block_size: usize,
-+        flags: BuddyFlags,
-+        gfp: Flags,
-+    ) -> Result<AllocatedBlocks<'_>> {
-+        // Allocate list_head on the heap.
-+        let mut list_head = KBox::new(bindings::list_head::default(), gfp)?;
-+
-+        // SAFETY: list_head is valid and heap-allocated.
-+        unsafe {
-+            bindings::INIT_LIST_HEAD(&mut *list_head as *mut _);
-+        }
-+
-+        // SAFETY: mm is a valid DrmBuddy object per the type's invariants.
-+        unsafe {
-+            to_result(bindings::drm_buddy_alloc_blocks(
-+                self.as_raw(),
-+                start as u64,
-+                end as u64,
-+                size as u64,
-+                min_block_size as u64,
-+                &mut *list_head as *mut _,
-+                flags.as_raw() as usize,
-+            ))?;
-+        }
-+
-+        // `list_head` is now the head of a list that contains allocated blocks
-+        // from C code. The allocated blocks will be automatically freed when
-+        // `AllocatedBlocks` is dropped.
-+        Ok(AllocatedBlocks {
-+            list_head,
-+            buddy: self,
-+        })
-+    }
-+}
-+
-+impl Drop for DrmBuddy {
-+    fn drop(&mut self) {
-+        // SAFETY: self.mm is initialized and valid. drm_buddy_fini properly
-+        // cleans up all resources. This is called exactly once during Drop.
-+        unsafe {
-+            bindings::drm_buddy_fini(self.as_raw());
-+        }
-+    }
-+}
-+
-+// SAFETY: DrmBuddy can be sent between threads. Caller is responsible for
-+// ensuring thread-safe access if needed (e.g., via Mutex).
-+unsafe impl Send for DrmBuddy {}
-+
-+/// Allocated blocks from the buddy allocator with automatic cleanup.
-+///
-+/// This structure owns a list of allocated blocks and ensures they are
-+/// automatically freed when dropped. Blocks may be iterated over and are
-+/// read-only after allocation (iteration via [`IntoIterator`] and
-+/// automatic cleanup via [`Drop`] only). To share across threads, wrap
-+/// in `Arc<AllocatedBlocks>`. Rust owns the head list head of the
-+/// allocated blocks; C allocates blocks and links them to the head
-+/// list head. Clean up of the allocated blocks is handled by C code.
-+///
-+/// # Invariants
-+///
-+/// - `list_head` is an owned, valid, initialized list_head.
-+/// - `buddy` points to a valid, initialized [`DrmBuddy`].
-+pub struct AllocatedBlocks<'a> {
-+    list_head: KBox<bindings::list_head>,
-+    buddy: &'a DrmBuddy,
-+}
-+
-+impl Drop for AllocatedBlocks<'_> {
-+    fn drop(&mut self) {
-+        // Free all blocks automatically when dropped.
-+        // SAFETY: list_head is a valid list of blocks per the type's invariants.
-+        unsafe {
-+            bindings::drm_buddy_free_list(self.buddy.as_raw(), &mut *self.list_head as *mut _, 0);
-+        }
-+    }
-+}
-+
-+impl<'a> AllocatedBlocks<'a> {
-+    /// Check if the block list is empty.
-+    pub fn is_empty(&self) -> bool {
-+        // SAFETY: list_head is a valid list of blocks per the type's invariants.
-+        unsafe { clist::list_empty(&*self.list_head as *const _) }
-+    }
-+
-+    /// Iterate over allocated blocks.
-+    pub fn iter(&self) -> clist::ClistIter<'_, Block> {
-+        // SAFETY: list_head is a valid list of blocks per the type's invariants.
-+        clist::iter_list_head::<Block>(&*self.list_head)
-+    }
-+}
-+
-+/// Iteration support for allocated blocks.
-+///
-+/// # Examples
-+///
-+/// ```ignore
-+/// for block in &allocated_blocks {
-+///     // Use block.
-+/// }
-+/// ```
-+impl<'a> IntoIterator for &'a AllocatedBlocks<'_> {
-+    type Item = Block;
-+    type IntoIter = clist::ClistIter<'a, Block>;
-+
-+    fn into_iter(self) -> Self::IntoIter {
-+        self.iter()
-+    }
-+}
-+
-+/// A DRM buddy block.
-+///
-+/// Wraps a pointer to a C `drm_buddy_block` structure. This is returned
-+/// from allocation operations and used to free blocks.
-+///
-+/// # Invariants
-+///
-+/// `drm_buddy_block_ptr` points to a valid `drm_buddy_block` managed by the buddy allocator.
-+pub struct Block {
-+    drm_buddy_block_ptr: NonNull<bindings::drm_buddy_block>,
-+}
-+
-+impl Block {
-+    /// Get the block's offset in the address space.
-+    pub fn offset(&self) -> u64 {
-+        // SAFETY: drm_buddy_block_ptr is valid per the type's invariants.
-+        unsafe { bindings::drm_buddy_block_offset(self.drm_buddy_block_ptr.as_ptr()) }
-+    }
-+
-+    /// Get the block order (size = chunk_size << order).
-+    pub fn order(&self) -> u32 {
-+        // SAFETY: drm_buddy_block_ptr is valid per the type's invariants.
-+        unsafe { bindings::drm_buddy_block_order(self.drm_buddy_block_ptr.as_ptr()) }
-+    }
-+
-+    /// Get the block's size in bytes.
-+    ///
-+    /// Requires the buddy allocator to calculate size from order.
-+    pub fn size(&self, buddy: &DrmBuddy) -> u64 {
-+        // SAFETY: Both pointers are valid per the type's invariants.
-+        unsafe { bindings::drm_buddy_block_size(buddy.as_raw(), self.drm_buddy_block_ptr.as_ptr()) }
-+    }
-+
-+    /// Get a raw pointer to the underlying C block.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Caller must ensure the pointer is not used after the block is freed.
-+    pub unsafe fn as_ptr(&self) -> *mut bindings::drm_buddy_block {
-+        self.drm_buddy_block_ptr.as_ptr()
-+    }
-+}
-+
-+impl clist::FromListHead for Block {
-+    unsafe fn from_list_head(link: *const bindings::list_head) -> Self {
-+        // SAFETY: link points to a valid list_head embedded in drm_buddy_block.
-+        // The container_of macro calculates the containing struct pointer.
-+        // We need to account for the union field __bindgen_anon_1.link.
-+        //
-+        // The link is embedded in a union within drm_buddy_block:
-+        //     struct drm_buddy_block {
-+        //         [...]
-+        //         union {
-+        //             struct rb_node rb;
-+        //             struct list_head link;
-+        //         };
-+        //     }
-+        //
-+        // This is why we perform a double container_of calculation: first to get
-+        // to the union, then to get to the containing drm_buddy_block.
-+        unsafe {
-+            // First get to the union.
-+            let union_ptr = container_of!(link, bindings::drm_buddy_block__bindgen_ty_1, link);
-+            // Then get to the containing drm_buddy_block.
-+            let block_ptr =
-+                container_of!(union_ptr, bindings::drm_buddy_block, __bindgen_anon_1) as *mut _;
-+            Block {
-+                drm_buddy_block_ptr: NonNull::new_unchecked(block_ptr),
-+            }
-+        }
-+    }
-+}
-+
-+// SAFETY: Block is just a pointer wrapper and can be safely sent between threads.
-+unsafe impl Send for Block {}
-diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
-index 1b82b6945edf..ee173729eac5 100644
---- a/rust/kernel/drm/mod.rs
-+++ b/rust/kernel/drm/mod.rs
-@@ -2,6 +2,7 @@
- 
- //! DRM subsystem abstractions.
- 
-+pub mod buddy;
- pub mod device;
- pub mod driver;
- pub mod file;
+
+thanks,
 -- 
-2.34.1
+John Hubbard
 
