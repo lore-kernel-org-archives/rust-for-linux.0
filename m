@@ -1,96 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79EB283FCE;
-	Thu, 30 Oct 2025 14:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E3A2E764C;
+	Thu, 30 Oct 2025 15:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761836269; cv=none; b=LfAKhJ15xOkOJKu3mQTedEhouLmFizZUDoRqIH51ttJ6tl4SZFN/sGH1De7J7u660PbN8JMYQIZKu0ivBa1MDbrwGGMMJkYVTQpPuOcD/swkG8p87MrLLWrnuv8BuSb2psaJL74xdLPMTnXlFUrnaDszJGwRLW6TAIeItfCSi/w=
+	t=1761836777; cv=none; b=Hcs/69c09fDz/GnVMu3rPABi+nuXBIaV9VgyCwUxk4/XkoIJ0g60P81OdcWrR+Is5OSq3oSxcuxtTIaYaEVp8YgYffupQcWYLS7rEGnBVH5/nUdXC8nP1mGidEEqMGemcx3hUivKr34I56zDY15w4gNzUMNInr/Gh5Rpp6X9xpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761836269; c=relaxed/simple;
-	bh=MPH444EZaU6hB0oe8fwJQJCQuWbHbzn+g5+EsUVpY/8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KihXs2Ax3cH2oVD0pN973jrvPe2rorCPQj8pvasGthU/0WVTXraqL/evd8Hah4wOiAqBxLX8HxZGyovBM38GV3Zi6BEPtPcbyr0cWO2gnhWUcdMIPXlj9BDMBmayDSWtOp/X0HibMBVJvhRdz08gvwL7k0slifE9WiEDoEUfsfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZ/8uG9s; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761836777; c=relaxed/simple;
+	bh=AEzEyVySA2Xgebyu1JxowEscJUTQoS58os36dQ/uQkY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cBNag+jdVt1R7K9RLophbMLjG1xZih7kHxdPEp4oBKmWNbYjMYP4cGldo1t/+W7tOMcatoaasL6yNy+aqGbigDcV3xc/2eaGJYJG5vFHbypAqM9+6kBE2TzyXiH4avYCwE8ahXpLtAyfYkwtbju0NJLnPf9Imtk2kTRN/lUTzOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iK3X3H0C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZ/8uG9s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D33C4CEF8;
-	Thu, 30 Oct 2025 14:57:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761836268;
-	bh=MPH444EZaU6hB0oe8fwJQJCQuWbHbzn+g5+EsUVpY/8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=NZ/8uG9sgSxgb3j2CP8YltLWsQB47scQpxGKcbR+MrBAvSTgaYZddAH9NvQVGxgCw
-	 jMpUMahh2MOfXnnLoIWYFzo/z5SUQWH6OtWirV1MskoUFnhA0Lw3LEVhTLAJ4ge2sB
-	 EaW7Xt7Ts72Nt2tAEOjVuHrEoE4oiAUc53DYyXuydo3/t8rkO7kS4zaierKba829eG
-	 lTVRQZtleWTO1rimqLOyp5tt4yk56zMv3caXQ/wkevBe5n0RkWPmE2h5jGuWpQ60AL
-	 gx4egPU999DB+RUobTImD6plP3mbmCWsKA1FWaCseeITaGgey0cf7mVcCxCSzZaRaR
-	 zCQ0turLOoXvg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Oliver Mangold <oliver.mangold@pm.me>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Benno
- Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
- <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
- Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
- Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar
- <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd
- <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
- =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Asahi Lina
- <lina+kernel@asahilina.net>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, Oliver Mangold
- <oliver.mangold@pm.me>
-Subject: Re: [PATCH v12 2/4] `AlwaysRefCounted` is renamed to `RefCounted`.
-In-Reply-To: <20251001-unique-ref-v12-2-fa5c31f0c0c4@pm.me>
-References: <20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me>
- <20251001-unique-ref-v12-2-fa5c31f0c0c4@pm.me>
-Date: Thu, 30 Oct 2025 15:57:35 +0100
-Message-ID: <87sef08mjk.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iK3X3H0C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3540C116B1;
+	Thu, 30 Oct 2025 15:06:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761836777;
+	bh=AEzEyVySA2Xgebyu1JxowEscJUTQoS58os36dQ/uQkY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iK3X3H0CVcFRATUp1L86BontxlBhmMwHSu2kqpVy4h4ymGlhVhIx5r7K1d6cqYWPc
+	 APfZ0WjuzHF594ukH5dvA8oAd3nChieJ1UWW5Ev6u5mG/xGygyqzxfJTXouKZz8ddG
+	 blRZU2xGPebdqeZfuoRY469XPFCAA9xo4mm3kWGo=
+Date: Thu, 30 Oct 2025 16:06:14 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Carlos Llamas <cmllamas@google.com>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust_binder: use compat_ptr_ioctl
+Message-ID: <2025103009-sixfold-peculiar-496c@gregkh>
+References: <20251030-binder-compatptrioctl-v1-1-64875010279e@google.com>
+ <2025103017-driller-implant-849e@gregkh>
+ <aQNnP6FWv8dA2_1o@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQNnP6FWv8dA2_1o@google.com>
 
-Oliver Mangold <oliver.mangold@pm.me> writes:
+On Thu, Oct 30, 2025 at 01:25:19PM +0000, Alice Ryhl wrote:
+> On Thu, Oct 30, 2025 at 01:38:56PM +0100, Greg Kroah-Hartman wrote:
+> > On Thu, Oct 30, 2025 at 10:41:04AM +0000, Alice Ryhl wrote:
+> > > This is commit 1832f2d8ff69 ("compat_ioctl: move more drivers to
+> > > compat_ptr_ioctl") but for Rust Binder.
+> > 
+> > You might want to spell out why this is happening, not just refer to
+> > another commit to try to find that information to make it more clear
+> > here as to how to attempt to review this :)
+> 
+> I can replace the commit message with:
+> 
+> Binder always treats the ioctl argument as a pointer. In this scenario,
+> the idiomatic way to implement compat_ioctl is to use compat_ptr_ioctl.
+> Thus update Rust Binder to do that.
 
-> `AlwaysRefCounted` will become a marker trait to indicate that it is
-> allowed to obtain an `ARef<T>` from a `&T`, which cannot be allowed for
-> types which are also Ownable.
->
-> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-
-Please update the title to
-
- rust: rename `AlwaysRefCounted` to `RefCounted`
-
-No period in the summary line.
-
-With that, you can add my review tag.
-
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-Since this patch touches so many moving parts of the rust tree, it is
-going to be a cat and mouse game regarding rebasing this thing. It also
-touches a lot if peoples code. I am not sure how something like this
-would merge. Do we need ACK from everyone @Miguel?
-
-Best regards,
-Andreas Hindborg
-
-
-
+Sounds good to me!
