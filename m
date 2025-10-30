@@ -1,47 +1,47 @@
 Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013023.outbound.protection.outlook.com [40.107.201.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBEC836CE0E;
-	Thu, 30 Oct 2025 19:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E176374ABD;
+	Thu, 30 Oct 2025 19:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761851199; cv=fail; b=OP554+8TEvF2UfBfFFGAGuREqd2ADfmUpy9djq6DT7NgMqOYzg7NZPJ6pTHMU+IgBy5oAgCcxFdr92bw51gHr6MsqdjsRStcFxtgiEUgdPx5nPIn8gTnTe984iPn6Cly3+gM2YqpMZheRgYFQ8dxuxKqBL0ceM+6ry3c1e9nw0Q=
+	t=1761851201; cv=fail; b=dIueb1MKN/tNewAHlQHLbSbbMENawZvfKSuoDkDZNGMW1piNw1GU5hhKUWwACmG2LbZWcs2BseNgB9ex3MXBWhH/GjQoKoxx45MUaksofdtwcWhL8rIeWYo+ecIh7dTBQGs7oNtgmuOFEm5KKSeQYFKm7PCPNLB2vQT0i4tCxDA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761851199; c=relaxed/simple;
-	bh=YTrTIo4KvW8oFBf+lgY+EF3ETHMmOw3oFNKw0pMp/F4=;
+	s=arc-20240116; t=1761851201; c=relaxed/simple;
+	bh=fshyvVT/ITkFKpz3DU+UpvD2/P84EaEdYSH72L3DpqE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=icJHyxB+Bo0Xsj0WgE8wBl5ZnV34DvlNcmj+UF1i9bL8k3jCgeUbVtX1sLKBs1LaOkspnmycNJevd+RXhQvnbDgcvoEOh1FJGT+SX+RJacby4PTJK203ZTSi+v5MbgiNlqTaUrkvPpoj8wuMmpLoLU8UtZCzTFOgtZrEysOFEi0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EwZjMJTK; arc=fail smtp.client-ip=40.107.201.23
+	 Content-Type:MIME-Version; b=u8k3V2kefmYLmoOqmdoQK8aNHV8gn0jbGXmDvFWM9JumE2dChdDky3CmKboWva0woZqp9isCGwylQ32Cy93L2gQrp+5f+kAkrghL2VWJK1g6nu+pEBsyJHmLDOjGKvqT3/SCFqS7b0gr+aTDZwdbw2pFCOOAiX2deKwIDddlujs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=s85n3Gbb; arc=fail smtp.client-ip=40.107.201.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EwZjMJTK"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="s85n3Gbb"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lqxGd783p4DM1d7vwm5ZhiuGdoZmzOn8qg5sCiFT9QxD33bXUswjmCJTTSfgpSqK3FlvYbvHD5C+2Ml98JKIy2ct1jyTrTwFmTdxpUfKDjFT7yNdTWeMS6B0GX+x7mtu3r+NgsEgZpdf/JEVuE6avK3kzo2e5Y27hdvZFZ0/gTTCVH3NS4WdeVSdTsbOUOuHeSVwXX4HJJzXPxDTPDzRQj/gt0FlZMDv6nW/el/QDQSf/2KIY7pctf9lTCrBxdaxA+WbGPu27QoOufPf2DRYmr6BxnZ6IhfKu3rLUr2efEarwkkgVp4D2GSKI7RmS94N6jFnlSPx1iudKQuEHaqIZQ==
+ b=ohzp7t+3h/o/bCC/Uk0WTNNDH5H5/3+Dk8NvZ4yDqM8UxvjhVWkNlxIZuYbflLpgVB5QD0lYrbAAt67tyKL2f+M1Ys7m/xmCGNKCEY9Ej4Btt8sanG20QADCRDwxoLUwqqLiyPTn0OQld2Wi6YImPK5AX+S/IeugaAzXltNV4QZwrXzGQSm5RJVsR+LcZXtxkF5Mx1siv+5R4iM5RN9o7bZcbu27EfE/5GBuoGdTW5TScFOLCoxmLzrjmjDkPnELyJjT8MMVDOI7Sxbe593UBMi1kvZq3Dzl+l5uEJLqqgIRaZd4v5Rm9ml8B/iegbwovSWikk6fBO54hbFwrG8MCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=etJbbMeqdAuZRh/HJvZ2cLD+tgdVu/ko2JD1/SlDlII=;
- b=hdj6t9nfK43nU/+8Yp/ZfzY3jMVxzCjDCAAR/RDvLbdFZQwRaAlzvktIx0QHpUjOKJU5ghk27PI27cnef7QgE/V+JKNu9vcnQ2CT3l2KGs6B5zxS8dpcRuYcU81R2Af7Zp4yjfsgTBODAqP6ymNCzqTNjlp6MhxLVPPNfrFxQcxW6BzMVOK1tDclkb7cs4ertbwhCVlwLh/7M/VNNVYK1uZQeRSBhmH8XxgtgX7/IgM5slAXLt7j8xy41xUFhSnoHajhGlLqHYmAD1h7mQsKp+YinYWj8TMsxB7e1TLptf6qi2uYzskUTVLnU8tOhzqI70IahtmLaA4M63UHiDc0FA==
+ bh=QKodteNH7w/qQblXa9jTro7UQUGCsxy1AI+CLyMuW4A=;
+ b=pl3RqkK3qLIZELZ+KQGLNFmHPaYGoKm+3En+i4BkDTWRf2+7iKAu0rmrcGuZRIN9kJcnyri9QA+Yz7ar9NklcMirHq6x6p6QH727WDjQiyI6RH1jzY8Etu7OG1Uygz+Vk+66MfNVFHYRX59fLzJUzS9vlLGYU1xURVIHDHjpC1hztpCyyNqwzrlWx4g8vy790pj4q7YMCdxklKqVd8FxNl1eNr61sM29rL2kq6I3gS2JqTyRL2QuwQUeH8I1E5H2G/n8qNXUK/6JGLsqT1lP3VJV+osOmFUNVOEQvZN8YfKDeoFkQIXIRrEA/WlUBPPzG35iK0bkgfq9kEgW6LmeIg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=etJbbMeqdAuZRh/HJvZ2cLD+tgdVu/ko2JD1/SlDlII=;
- b=EwZjMJTKp8HeAkXV1VbWZRf01/0dTiVQuSJImA9yKN29MHjsMa6mom1clEVrXXz9GQbhIoEFByjjFkp2o5pixvmF5XhAGhT8Gch1oZIBzYH5mKaPezpntpWgA2+/KLvQ93SpRSDq7OgB7RHISWF1hHE4DdAN7WrklfTsUkRUgUf/yIqMGsE3oXlTVBPgGw4ccD88igd83So4912ryuHKWYL2F5ZPg3PLX8xba3S7UwNhJ0b0wR9I/Rjj45SYtEicpmHEShlU8jEQFIS5Xkn9odXkSKabd0SdARhIZfB0XAVLOFuOLAybAzS7kKop0cFMcxBlqHsODT9jPsckLbjeIQ==
+ bh=QKodteNH7w/qQblXa9jTro7UQUGCsxy1AI+CLyMuW4A=;
+ b=s85n3GbbtetQbxGQHY8fSiBVIrr+YdPVIYHI71p997othE7L1ma8rbsceUKQuxWD5+YllHwhFakj3j+jQk6yXggKh/T0x6A6DcnIEnpQhrtOUEmcnEZL2qk0GEBHUkg6BbnTWuOASMbPZxTz2LVSiSq2SnQz3VeaDOiKbeRwzkUVpYXbDq39CDXgGLfNR/hzSHGcmdNiANkWGILRYAlfDSoQQOOVFCkXt6dnqHce9K6bh3vUT8qhLpUBj7dqr4E0xcXzvLITqFryN/gA1L3kEh+j953qtSkgs9yaUeU0taudhQICrQ1vCN45RNLT7Ih/CYs+cY6h2ygs0wDY4doXEQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
  by DS5PPFBABE93B01.namprd12.prod.outlook.com (2603:10b6:f:fc00::65f) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.14; Thu, 30 Oct
- 2025 19:06:31 +0000
+ 2025 19:06:33 +0000
 Received: from SN7PR12MB8059.namprd12.prod.outlook.com
  ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
  ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9228.015; Thu, 30 Oct 2025
- 19:06:30 +0000
+ 19:06:32 +0000
 From: Joel Fernandes <joelagnelf@nvidia.com>
 To: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
@@ -72,16 +72,16 @@ Cc: acourbot@nvidia.com,
 	Andrea Righi <arighi@nvidia.com>,
 	Philipp Stanner <phasta@kernel.org>,
 	nouveau@lists.freedesktop.org
-Subject: [PATCH RFC 2/4] samples: rust: Add sample demonstrating C linked list iteration
-Date: Thu, 30 Oct 2025 15:06:11 -0400
-Message-Id: <20251030190613.1224287-3-joelagnelf@nvidia.com>
+Subject: [PATCH RFC 4/4] samples: rust: Add sample demonstrating DRM buddy allocator
+Date: Thu, 30 Oct 2025 15:06:13 -0400
+Message-Id: <20251030190613.1224287-5-joelagnelf@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251030190613.1224287-1-joelagnelf@nvidia.com>
 References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BN9PR03CA0579.namprd03.prod.outlook.com
- (2603:10b6:408:10d::14) To SN7PR12MB8059.namprd12.prod.outlook.com
+X-ClientProxiedBy: BN0PR02CA0047.namprd02.prod.outlook.com
+ (2603:10b6:408:e5::22) To SN7PR12MB8059.namprd12.prod.outlook.com
  (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -91,109 +91,110 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DS5PPFBABE93B01:EE_
-X-MS-Office365-Filtering-Correlation-Id: dc53d27f-b101-487b-2e9a-08de17e76d5c
+X-MS-Office365-Filtering-Correlation-Id: 78faeea4-686e-448a-277a-08de17e76f57
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YBqd2stBHY53LF/ZcGtKDnTixWwBbVdsa8mhDpPLa3gGxZRH8Ev5zxtCjeNO?=
- =?us-ascii?Q?dVHyipdS++ztJh15rFE0dYB8OEfrzK/1xe1GtBuPiyRykUKcWZjyv12DglM3?=
- =?us-ascii?Q?WqNBE5sM/OQrV/2Jc62WVM5Qq6uUNWJS1v484QTYacH9wRjMAhZqFreAzjJ/?=
- =?us-ascii?Q?cDKOtuuLXrER/eSEIJiPU0RBPDaW+bEiIsA/2dvEO/6lTtNT0DQDAeP8SNsV?=
- =?us-ascii?Q?wTzGcjwTziUF/7j303PThsIJzCOFao3qyIdPTsKn/DHCLfsSfPr1w+4rWpiV?=
- =?us-ascii?Q?Scj2VehNoCyZpCwmwtWam6M1CmQG1NocebPoJ2EKXy0omprPl0aipqm4SXtG?=
- =?us-ascii?Q?VOBmywUERDUNObgxbuTmEvZzZPWVfMUaf6SjouHlEmhRvYEUmZ5Ggorr2rEf?=
- =?us-ascii?Q?t8+BHcAX6zOuvpUMpGMN8+TCB8o/zbxpYU/R/08ccdRkMPar3iGfgsZsE3Rd?=
- =?us-ascii?Q?jmD8cH4Blfzkp/lYkMHUddkq/Kd7O+0E9Y3wreolIpR0LS0u0WhQs1CNMxie?=
- =?us-ascii?Q?8asbolwhe4xdXaLBhjqhJbl/68pd/eiSj6R07v6j0pAgUFDCyaaMmOhB3Pqd?=
- =?us-ascii?Q?dKtA+xiJCf0Oz37X8JVCbEwXT46d65a9F5nn+K9BR94hg8ivbCYuCkd0h1X0?=
- =?us-ascii?Q?vyyE1hZ1llKCw3zbouUCmi45d8kfrIGXz9AwNfEef3cbddZ0KykdAweh1Dwu?=
- =?us-ascii?Q?dFHE/sdVJ9KZDKst0dIoXfnzGP6ADvnYcGrLXueu7oMb5ZCwDEK47iFQda8+?=
- =?us-ascii?Q?6TAomRrf/ma/Zo8TT2fZLx4i1L2WHFdBXVlr5riQ7ufszp0JSdMJycEEHHbm?=
- =?us-ascii?Q?123+Sx7CbpLmSLYhj83uIYSvFuBKNSIxkjDYaTUURQxIbmAxtoyIRRqV2Je5?=
- =?us-ascii?Q?9Vev3iQ6D4gKIwFZZ0KGWDnyoyqBwo32V8fI2Db+AtZ8pdEr6CLMEaDkyBLY?=
- =?us-ascii?Q?7sd0YFV0hBEizj71wA8c0yCGVNdkdEUbJkzJ8GA2B84oi2E4CfoMknserCjt?=
- =?us-ascii?Q?aHZzE1B4hiIwNzNzdfQIemSn29ZmkASNXMkI23RQztDYPt+WJqq+JirdolcW?=
- =?us-ascii?Q?IKUjDlbqoNyyjnLQILJwcpRD/ZhCbYYm4E/i0/Qa29WNS21HWC9zx2Lxslzu?=
- =?us-ascii?Q?o0LYKcGWDK5JD6u/hkUczcrFAf1p8le6xbIFjjSM+xKoesGtTti5GMUil6WY?=
- =?us-ascii?Q?Rzb0ZSoack6uXIU/tls20KltM6Bvu94o5i9s6dFRyBleR7ZftQVHJi/1BAbQ?=
- =?us-ascii?Q?nk0SXBdV++/MZNfJgDW+QhT0NHGhYmvDALjHl3dyW7Dl95jM4VZyw/mmEhpB?=
- =?us-ascii?Q?OPcCN+g4pl57Asb5FyK3tvaApLYa+6Z3F6D+jEKrZN5IJKQgSTfUQMpqmKfN?=
- =?us-ascii?Q?0d++b9S1Gs+iUXci1ed+xmAzEsBA2KllyJMpZoyZakRwmMv7HBHR29lF8WBY?=
- =?us-ascii?Q?cRvA+dnwRMiisIfETB3rv9zQ3XHpF7fY?=
+	=?us-ascii?Q?PYYsZ7fTwjKGwT8lrXONnM3BF3YAmSpYZlZbM0ZsA39W/YkJtPm7tuvARelb?=
+ =?us-ascii?Q?+cz+uEd6FiUHVE8vTE8VVhjAmpqNqzmS52MdyFi2g9pvVQqEyEYSGfm64eXe?=
+ =?us-ascii?Q?Po3Uw9RpJy785cghCFNtad1mKn/VGRkmxTHUx60v6laYm+FRE02930cayOjT?=
+ =?us-ascii?Q?GYDC1EpqlEf668vqk1+pvZE2ZYgFrZDIMaLqImshprSk+8ABpULD4vWygGL9?=
+ =?us-ascii?Q?8giakSQSLcr/fOnQ9jS9Uib7yDkqMXLs5qwhJh7dGHfaDkDrAVNor73Aw9nu?=
+ =?us-ascii?Q?6x+4ajrtv91nu/qhHsWT4S86j9/VZ9jOkZTu+H9P0ksy1AV3uIvDRtF6AQva?=
+ =?us-ascii?Q?7P7gCZhYt//hmHMr0egvOSRmAkTOxBA3o8xDu2WHXb6EFVBlEmtRUpKyllxK?=
+ =?us-ascii?Q?iUShaZs30yGLJW56FyExPhRZeEs9c1AYn/bIkrWxbmB1Nt9N8Np3yWF9/vGA?=
+ =?us-ascii?Q?34hW5yYrB8G/jmJRgyWdResKbOrdX8nX4NRTTOQ78bK5MTPNsogODAZUxZHi?=
+ =?us-ascii?Q?S1y4vlLGaeVw/JqZ3LMuCDz9Gx2LjFjLfUUXFEz07EvxGDTl/wKDBj8Qk8D9?=
+ =?us-ascii?Q?ckED9+yLGMK+/tKjYRIwy2r9ygSkl+cDrXm73fjaWHVqsO9DGjfV/qocdTvZ?=
+ =?us-ascii?Q?MvMPpu+8GBjKze7o+uBUOMUNv8baEkSf/ltS4xg2IWG15PnF2hNGbfpfFV47?=
+ =?us-ascii?Q?uxQaO18i2XXdOtqNi4mI8PoYxmbfU3mQNiuroLIwjAguPzsiNakOY2fr6563?=
+ =?us-ascii?Q?AV3gsFDx1LH5HXJtHYbJOT/A7z3bHVG+s86p6tuvqOp9vR1FCjuNPN+zgk4C?=
+ =?us-ascii?Q?pyx+2Sj6tyzPSB6p9WU51XvCfYAmWYeQJNIzfHngQIl4wWnPE/4IXAUMum6P?=
+ =?us-ascii?Q?o4BlbPSpqilZbWdM13xtVksFgj5uVbixaoCQi0EkQMbuDxj+3dtox8T3pvLp?=
+ =?us-ascii?Q?mBsa4yeGVnpWwoXC4eHllIWXaep1QKzdsWOzh6Rkirr7VYedGtrkgOreoRR4?=
+ =?us-ascii?Q?wWO9Ccng1hgSOOSYJjj0cwtiokGBd8hCjRW2onLYDEzY97fjTRPTtZOY5hOE?=
+ =?us-ascii?Q?NhjAaRJe5L3Sbo5frFv25J/vMb+pvr8oiaoAvrVV46mG+MxYi6Bp9ASrAgxt?=
+ =?us-ascii?Q?wFJsrAxYbg8ef03sUIy6SyTtbhYjjzAoazzaX9/OT21MD0P9rmTyrcwf+94O?=
+ =?us-ascii?Q?248grmliLei8DBYhSXl9X4Ey8Ee+5FsoCyjiW5OQ+TfzLKyIz3nhKNOmcuti?=
+ =?us-ascii?Q?pMO+IPyTo3C5vNUjverhlKqqwwe8wJfAXFglzsj2vsm5TL++NyAHCQOA/Ugk?=
+ =?us-ascii?Q?LuOt2EqRfhv+56CAFBnuFP2gseMizHdGbzCyN0ThktzI7hiArS1mrMPz9l7M?=
+ =?us-ascii?Q?VA1kj/m+ciIvjuiGWudVQCPPRqzyNkuB8lbnZ4xU2PARNagXFc89rYUxk3R+?=
+ =?us-ascii?Q?4eBLOoXIsgTADWNXtNvQS60tDR/kLip8?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RsO2V4nPUA0OmFOcXsM/bosUsDyMJpgs6jvvQDQx4ebr8afg6BlPOdoScOI2?=
- =?us-ascii?Q?5yhAVrM35Bt/VzyQ7XmXdpTaVXLyQPVo8BE7FsV5w/Dqd8ufwTMliZoNRIV+?=
- =?us-ascii?Q?xkWSd9YbJbDUvX2rngoQI/xxtWZC+IWBK18t3YjR1ZdaeQf7YwKxzXmq9LYP?=
- =?us-ascii?Q?hONtdNJBzxhkdZStZ9bCMOHa1L9ynXZg0Q98h7PElaIbCvVXGXSOTudUqGDd?=
- =?us-ascii?Q?87UmJ/0qIXXM+qpjbFcwkvrO/wqaIGe1ngXJA8MKaV87FXIyjhkb9MsARma2?=
- =?us-ascii?Q?envQSQs7duU9oY2qiLlbE4jM4qE0UBNv3xukUt4XBkUoCeNcl+93ebq3CLSr?=
- =?us-ascii?Q?WfkAipEAgFDcF9GpIKwv5+WyVXWb/cg4ZJF/PFdkSxPhm7a+sfyKJyexNMM4?=
- =?us-ascii?Q?/e4DF/kaFQjcl9fbAcxBEEYYcCOGlJp2OjjQpMF+/wgSj1pxVM+Jt1R1xhxx?=
- =?us-ascii?Q?eN1v4AyJW7/2o7ROu/CTn7HYXDUaMw32cjaNmqLws+Bab7BmfLRYaNI/pXt+?=
- =?us-ascii?Q?3Oyg/QfZ+NdYYPulAffsD5p5sukaoT4eWarmnNy07Gmp8GVRKU7CXZqrSyCK?=
- =?us-ascii?Q?6NxeMLT9HQsJoRAYq7Sx2bnZlUc14fqZRO5uFK3m1gIqDxYreL92EHmnanDh?=
- =?us-ascii?Q?JQuiaVngSGoE67Bw+c1P2Z2GlALbVETuFawXEYgD9kZMlXKIYT25JIY94SFG?=
- =?us-ascii?Q?dX8DUB/REMTPLPqYfGavrHIPD+yZHZSWe04JTIaq58VeUgKUUPqW9gRFey4+?=
- =?us-ascii?Q?womrgANqoJiV1m/8ckDRvkWU0Uw78P9TpmWmaMiCWEd5seEB4tLYAqnljmPy?=
- =?us-ascii?Q?iybvKwfCdUmEDm5KA5h3kF8WoAik34JhX86t6aZsc/SnR4mAnZM0GTn3xqHO?=
- =?us-ascii?Q?dsS9/jnnK+6HnruBf5Y9zg8qaKGIiteOnP4KPbc0ucZ3jGLn/EKT74ZbRdqZ?=
- =?us-ascii?Q?YKvQ8nG0iXe0k0O0mzA7awl1w7G4ZjK4v9LbVW5rXsrkej99UcFhrTL0jGYc?=
- =?us-ascii?Q?/X0dvG1k1MqmOSsCj+WARRUc1083ByWiVQOf4qpSkbL63q3gqsTsGpwchqbA?=
- =?us-ascii?Q?1/gF22NKRvfyJ/dOmrGWphZoQbrBoR2q3riWh7okWoY8c3j9xjmTiP/Fqfii?=
- =?us-ascii?Q?ajVX3Ujn8HRGFoklSwKk7R1cYcXGs+aUAWJxTJq7QaSS04/0SFcLUm8rGyVb?=
- =?us-ascii?Q?kU+LY+vnvha1XWEZaSPlEJW2yD2y9IwguqYfpZCN+5G7uWzWuB26Mn+K1TfA?=
- =?us-ascii?Q?SkQOcJ4z/OuJYA8X97sTVeitTjaatW5+TQ3b7pZSx8GpUKSj+cXKzDoVSVLd?=
- =?us-ascii?Q?qJwPOvAkAs5gb0WdvM89h2ms4z3BZ1Az8IXVpZ7ciLABQzCCBLYUssaogW7h?=
- =?us-ascii?Q?3nkUPE2UTDkHbBSBV5iekKoMBLahxTJaeLAZczUmWsnOq0PRWsk2wPiOZY6w?=
- =?us-ascii?Q?/k1dOEgyMKg8ZS7nEpLCbn2qAftaxvgYCiRHcvuNtW5lYkzeT2tOTbI49bu8?=
- =?us-ascii?Q?s4OytqAGmgCsN9t4wCV5v5aYBC2cgtK681NwulPUw74RuvKx0QiUcDVEuMKU?=
- =?us-ascii?Q?+dKgrALP/jDGU8VebhaBhwRmxn44RPlrb2FoR0I/?=
+	=?us-ascii?Q?dmhqgWBt3sv4J2opAbZmw0SxZW9N7J/u6E3JpzneX0fDgZa1yYh6Xxjj2lK4?=
+ =?us-ascii?Q?GSpYLC3HrD43C1oxzr+S7UOkPSPKRZmjC2UOgwIRG/YWOoqS7gjqb7Mx+3cH?=
+ =?us-ascii?Q?aKr7D3ufApMVrYemWVKAcmGcrbVcH4HEOaDn0K4hRXXnpsFXv1YrBQw41jN5?=
+ =?us-ascii?Q?XBEXDS1xb+VbQjrDhuasNmmYqu9o/Iu4ZL7ucIAY8AqVKECfmp9eQqCwR37A?=
+ =?us-ascii?Q?N5/6zwrudZI9kz6ctonLDNjQWQt6/oghpDTLADAhHe5t6Ke75M6TqCQYxBkq?=
+ =?us-ascii?Q?yd2c48et3iG74edPe2oAePVotWqb3xKekm8ACZUIYLwCZpWqEXiOYMOfnhF6?=
+ =?us-ascii?Q?r4sX/8s9opIL8aiPSlyJq4F34V91eB6+VX7eTeUJGwUs2e68RYK3orJwY8PD?=
+ =?us-ascii?Q?ZDeZgUUilu18RwM93jYzcNirlVY+AvBxO9uOG6V/P017V7g8wJMjpBsX6ZA9?=
+ =?us-ascii?Q?hpP6bwQcJGgvYqFmNtuRbdKSo27fWxl63HLJmDprie2XWywFI02N5R7fKnDB?=
+ =?us-ascii?Q?7JaRwxOefTtrc9yHyTVjwEKhcXAVAF8sPS6QOdhcT8I3mpKZnEUVPcifOaIZ?=
+ =?us-ascii?Q?indSire/qRnUIHGiHIKrGKfluOa13iQ/oDB39B6GxG+27HBO4Qy+XNFjuAvX?=
+ =?us-ascii?Q?QbbAFSeEINTOdk6BN1jHY8KZ1AL14krvvrLMnEQmZs2ane+zTsfViSfPPZFM?=
+ =?us-ascii?Q?/AUBkGPGfgzScOpn5gY1KFAolX1zV08iZ0XOb0C2Jvu5s2gXbtcusvzZhrGV?=
+ =?us-ascii?Q?sQKgdpoc1Fg4osO0W1LHSmlMvUgsJ0ckxa3vznYmaVXoqzlrhZcLTJr9w/eP?=
+ =?us-ascii?Q?upxDoRXnGCPd7p0khISSEKdhpqPYqwFJmM16G6ZSKqhYcTniN+Umf+hTBUvc?=
+ =?us-ascii?Q?C/6GmWyg4GORy6yG2odEGnbVrWiBoCms4hS4+OfrnFvpLmRMxME3cKd2KXLF?=
+ =?us-ascii?Q?b0MRv6A549OB55rsazZPikN40wfSNFKrqz/n/z+VJpq647xAqt2iF+FPPrXd?=
+ =?us-ascii?Q?64/bUdoIROVVtKvZAOgHAWoNgm+jjoneZwCtxe9MLhPjrFhZpYdUO6GVeGx1?=
+ =?us-ascii?Q?MWSg7Q+CcZsRlc6VRrefadzhpkxy7gUUhj1SugQylvOCGHQIQYWC+xwsRRqW?=
+ =?us-ascii?Q?mwgANVSqfAHClqpUQKfq9IiVgCPsHq62AJyX+ZgXvYKjpeU2NmoyEOsT1bSK?=
+ =?us-ascii?Q?IvdkuMdGqB4Hhp6Hgqphahvk7Wa2axSJDHB0xP9NKGuUpMDq9Fr+AzYOiQk8?=
+ =?us-ascii?Q?tSnFd26CBgv1jruUHI8OPaHS7mLF0c8WAMhBWv56gw14ccv/ilMXnsw7YU+0?=
+ =?us-ascii?Q?4gc/NAnYTIzGwd3wudEBN5S9vGtVnUwRPGkhCQvjXrwQjuhD3/6PsYzqHnal?=
+ =?us-ascii?Q?XmGRPVnBi4E4SmruH5N+L1p+fHpVP9uIRdw6AhVczShPEDlRyWkBEwLv+F8C?=
+ =?us-ascii?Q?U4GK3KR2MCuJN15xvoOTHvPG4kepdmuuD8jt/pROTPGknsObTXQIDHcunU+u?=
+ =?us-ascii?Q?UD2MrHrXFNaJuMllpk1GOvti7++ICJCl9zHY2GrTXUJPkw5rLnjLwygX2hRF?=
+ =?us-ascii?Q?prIIES/xzKDynrZSM4XcYFuxfOWmSBWXsFfezOf8?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dc53d27f-b101-487b-2e9a-08de17e76d5c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78faeea4-686e-448a-277a-08de17e76f57
 X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2025 19:06:27.6498
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2025 19:06:30.7459
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dbfHFnTF7M4Afqlanf9AIDHlz55Y4vJnNUc5x5BqOevX7x7SRoE3yMwQhu3sJUk0ZBp1kt6+rM+Cm+Ev2xDvOg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: MW9jvN3H4NQVG2pNCQpjtP+d5n9qr/jeXQwZD68kk1PthwdKqxoXvYUiqz5YKFx1kAygaRc0aShJovayWIfP8w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFBABE93B01
 
-Demonstrates usage of the clist module for iterating over
-C-managed linked lists. C code creates and populates the list,
-Rust code performs safe iteration using the clist abstraction.
+Demonstrates usage of the DRM buddy allocator bindings through
+a simple test module that initializes the allocator, performs
+allocations, and prints information about the allocated blocks.
 
 Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 ---
- samples/rust/Kconfig            |  11 +++
- samples/rust/Makefile           |   2 +
- samples/rust/rust_clist_c.c     |  54 +++++++++++++
- samples/rust/rust_clist_main.rs | 138 ++++++++++++++++++++++++++++++++
- 4 files changed, 205 insertions(+)
- create mode 100644 samples/rust/rust_clist_c.c
- create mode 100644 samples/rust/rust_clist_main.rs
+ samples/rust/Kconfig           |  14 +++++
+ samples/rust/Makefile          |   1 +
+ samples/rust/rust_drm_buddy.rs | 106 +++++++++++++++++++++++++++++++++
+ 3 files changed, 121 insertions(+)
+ create mode 100644 samples/rust/rust_drm_buddy.rs
 
 diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index c1cc787a9add..b45631e2593c 100644
+index b45631e2593c..8ccb4064ba91 100644
 --- a/samples/rust/Kconfig
 +++ b/samples/rust/Kconfig
-@@ -10,6 +10,17 @@ menuconfig SAMPLES_RUST
+@@ -21,6 +21,20 @@ config SAMPLE_RUST_CLIST
  
- if SAMPLES_RUST
+ 	  If unsure, say N.
  
-+config SAMPLE_RUST_CLIST
-+	tristate "C Linked List sample"
++config SAMPLE_RUST_DRM_BUDDY
++	tristate "DRM buddy allocator sample"
++	depends on DRM_BUDDY
 +	help
-+	  This option builds the Rust CList sample demonstrating
-+	  the clist module for working with C list_head structures.
++	  This option builds the Rust DRM buddy allocator sample.
++
++	  The sample demonstrates using the DRM buddy allocator bindings
++	  to allocate and free memory blocks.
 +
 +	  To compile this as a module, choose M here:
-+	  the module will be called rust_clist.
++	  the module will be called rust_drm_buddy.
 +
 +	  If unsure, say N.
 +
@@ -201,227 +202,127 @@ index c1cc787a9add..b45631e2593c 100644
  	tristate "Configfs sample"
  	depends on CONFIGFS_FS
 diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index cf8422f8f219..f8899c0df762 100644
+index f8899c0df762..a56204ee4e96 100644
 --- a/samples/rust/Makefile
 +++ b/samples/rust/Makefile
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
+@@ -2,6 +2,7 @@
  ccflags-y += -I$(src)				# needed for trace events
  
-+obj-$(CONFIG_SAMPLE_RUST_CLIST)			+= rust_clist.o
+ obj-$(CONFIG_SAMPLE_RUST_CLIST)			+= rust_clist.o
++obj-$(CONFIG_SAMPLE_RUST_DRM_BUDDY)		+= rust_drm_buddy.o
  obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
  obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
  obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
-@@ -14,6 +15,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
- obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
- 
-+rust_clist-y := rust_clist_main.o rust_clist_c.o
- rust_print-y := rust_print_main.o rust_print_events.o
- 
- subdir-$(CONFIG_SAMPLE_RUST_HOSTPROGS)		+= hostprogs
-diff --git a/samples/rust/rust_clist_c.c b/samples/rust/rust_clist_c.c
+diff --git a/samples/rust/rust_drm_buddy.rs b/samples/rust/rust_drm_buddy.rs
 new file mode 100644
-index 000000000000..7a8f5e6c642a
+index 000000000000..96907bc19243
 --- /dev/null
-+++ b/samples/rust/rust_clist_c.c
-@@ -0,0 +1,54 @@
++++ b/samples/rust/rust_drm_buddy.rs
+@@ -0,0 +1,106 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+#include <linux/list.h>
-+#include <linux/slab.h>
-+
-+/* Sample item with embedded C list_head */
-+struct sample_item_c {
-+	int value;
-+	struct list_head link;
-+};
-+
-+/* Create a list_head and populate it with items */
-+struct list_head *clist_sample_create(int count)
-+{
-+	struct list_head *head;
-+	int i;
-+
-+	head = kmalloc(sizeof(*head), GFP_KERNEL);
-+	if (!head)
-+		return NULL;
-+
-+	INIT_LIST_HEAD(head);
-+
-+	/* Populate with items */
-+	for (i = 0; i < count; i++) {
-+		struct sample_item_c *item = kmalloc(sizeof(*item), GFP_KERNEL);
-+
-+		if (!item)
-+			continue;
-+
-+		item->value = i * 10;
-+		INIT_LIST_HEAD(&item->link);
-+		list_add_tail(&item->link, head);
-+	}
-+
-+	return head;
-+}
-+
-+/* Free the list_head and all items */
-+void clist_sample_free(struct list_head *head)
-+{
-+	struct sample_item_c *item, *tmp;
-+
-+	if (!head)
-+		return;
-+
-+	/* Free all items in the list */
-+	list_for_each_entry_safe(item, tmp, head, link) {
-+		list_del(&item->link);
-+		kfree(item);
-+	}
-+
-+	kfree(head);
-+}
-diff --git a/samples/rust/rust_clist_main.rs b/samples/rust/rust_clist_main.rs
-new file mode 100644
-index 000000000000..6600b0c79558
---- /dev/null
-+++ b/samples/rust/rust_clist_main.rs
-@@ -0,0 +1,138 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Sample for Rust code interfacing with C linked lists (list_head).
++//! Rust DRM buddy allocator sample.
 +//!
-+//! This sample demonstrates iteration of a C-managed linked list using the [`clist`] module.
-+//! C code creates and populates the list, Rust code performs iteration.
++//! This sample demonstrates using the DRM buddy allocator from Rust.
 +
-+use core::ptr::NonNull;
 +use kernel::{
-+    bindings,
-+    clist,
-+    container_of,
-+    prelude::*, //
++    drm::buddy::{
++        BuddyFlags,
++        DrmBuddy, //
++    },
++    prelude::*,
++    sizes::*, //
 +};
 +
 +module! {
-+    type: RustClistModule,
-+    name: "rust_clist",
++    type: RustDrmBuddySample,
++    name: "rust_drm_buddy",
 +    authors: ["Joel Fernandes"],
-+    description: "Rust Clist sample",
++    description: "DRM buddy allocator sample",
 +    license: "GPL",
 +}
 +
-+// FFI declarations for C functions
-+extern "C" {
-+    fn clist_sample_create(count: i32) -> *mut bindings::list_head;
-+    fn clist_sample_free(head: *mut bindings::list_head);
-+}
++struct RustDrmBuddySample;
 +
-+/// Sample item with embedded C list_head (This would typically be a C struct).
-+#[repr(C)]
-+struct SampleItemC {
-+    value: i32,
-+    link: bindings::list_head,
-+}
-+
-+/// Rust wrapper for SampleItemC object pointer allocated on the C side.
-+///
-+/// # Invariants
-+///
-+/// `ptr` points to a valid [`SampleItemC`] with an initialized embedded `list_head`.
-+struct SampleItem {
-+    ptr: NonNull<SampleItemC>,
-+}
-+
-+impl clist::FromListHead for SampleItem {
-+    unsafe fn from_list_head(link: *const bindings::list_head) -> Self {
-+        // SAFETY: Caller ensures link points to a valid, initialized list_head.
-+        unsafe {
-+            let item_ptr = container_of!(link, SampleItemC, link) as *mut _;
-+            SampleItem {
-+                ptr: NonNull::new_unchecked(item_ptr),
-+            }
-+        }
-+    }
-+}
-+
-+impl SampleItem {
-+    /// Get the value from the sample item.
-+    fn value(&self) -> i32 {
-+        // SAFETY: self.ptr is valid as per the SampleItem invariants.
-+        unsafe { (*self.ptr.as_ptr()).value }
-+    }
-+}
-+
-+/// Clist struct - holds the C list_head and manages its lifecycle.
-+#[repr(C)]
-+struct RustClist {
-+    list_head: NonNull<bindings::list_head>,
-+}
-+
-+// SAFETY: RustClist can be sent between threads since it only holds a pointer
-+// which can be accessed from any thread with proper synchronization.
-+unsafe impl Send for RustClist {}
-+
-+impl RustClist {
-+    /// Create a container for a pointer to a C-allocated list_head.
-+    fn new(list_head: *mut bindings::list_head) -> Self {
-+        // SAFETY: Caller ensures list_head is a valid, non-null pointer.
-+        Self {
-+            list_head: unsafe { NonNull::new_unchecked(list_head) },
-+        }
-+    }
-+
-+    /// Demonstrate iteration over the list.
-+    fn do_iteration(&self) {
-+        // Wrap the C list_head with a Rust [`Clist`].
-+        // SAFETY: list_head is a valid, initialized, populated list_head.
-+        let list = unsafe { clist::Clist::<SampleItem>::new(self.list_head.as_ptr()) };
-+        pr_info!("Created C list with items, is_empty: {}\n", list.is_empty());
-+
-+        // Iterate over the list.
-+        pr_info!("Iterating over C list from Rust:\n");
-+        for item in list.iter() {
-+            pr_info!("  Item value: {}\n", item.value());
-+        }
-+
-+        pr_info!("Iteration complete\n");
-+    }
-+}
-+
-+impl Drop for RustClist {
-+    fn drop(&mut self) {
-+        // Free the list and all items using C FFI.
-+        // SAFETY: list_head was allocated by clist_sample_create.
-+        // C side handles freeing both the list_head and all items.
-+        unsafe {
-+            clist_sample_free(self.list_head.as_ptr());
-+        }
-+    }
-+}
-+
-+struct RustClistModule;
-+
-+impl kernel::Module for RustClistModule {
++impl kernel::Module for RustDrmBuddySample {
 +    fn init(_module: &'static ThisModule) -> Result<Self> {
-+        pr_info!("Rust Clist sample (init)\n");
++        // Create a buddy allocator managing 1GB with 4KB chunks.
++        let buddy = DrmBuddy::new(SZ_1G, SZ_4K)?;
 +
-+        // C creates and populates a list_head with items.
-+        // SAFETY: clist_sample_create allocates, initializes, and populates a list.
-+        let c_list_head = unsafe { clist_sample_create(6) };
-+        if c_list_head.is_null() {
-+            pr_err!("Failed to create and populate C list\n");
-+            return Err(ENOMEM);
++        pr_info!("=== Test 1: Single 16MB block ===\n");
++        let allocated = buddy.alloc_blocks(
++            0,
++            0,
++            SZ_16M,
++            SZ_4K,
++            BuddyFlags::RANGE_ALLOCATION,
++            GFP_KERNEL,
++        )?;
++
++        let mut count = 0;
++        for block in &allocated {
++            pr_info!(
++                "  Block {}: offset=0x{:x}, order={}, size={}\n",
++                count,
++                block.offset(),
++                block.order(),
++                block.size(&buddy)
++            );
++            count += 1;
 +        }
++        pr_info!("  Total: {} blocks\n", count);
++        drop(allocated);
 +
-+        // Create the list container (separate from module).
-+        let rust_clist = RustClist::new(c_list_head);
++        pr_info!("=== Test 2: Three 4MB blocks ===\n");
++        let allocated = buddy.alloc_blocks(
++            0,
++            0,
++            SZ_4M * 3,
++            SZ_4K,
++            BuddyFlags::RANGE_ALLOCATION,
++            GFP_KERNEL,
++        )?;
 +
-+        // Demonstrate list operations.
-+        rust_clist.do_iteration();
++        count = 0;
++        for block in &allocated {
++            pr_info!(
++                "  Block {}: offset=0x{:x}, order={}, size={}\n",
++                count,
++                block.offset(),
++                block.order(),
++                block.size(&buddy)
++            );
++            count += 1;
++        }
++        pr_info!("  Total: {} blocks\n", count);
++        drop(allocated);
 +
-+        // rust_clist is dropped here, which frees the C list via Drop impl.
-+        pr_info!("Rust Clist sample (exit)\n");
++        pr_info!("=== Test 3: Two 8MB blocks ===\n");
++        let allocated = buddy.alloc_blocks(
++            0,
++            0,
++            SZ_8M * 2,
++            SZ_4K,
++            BuddyFlags::RANGE_ALLOCATION,
++            GFP_KERNEL,
++        )?;
 +
-+        Ok(RustClistModule {})
++        count = 0;
++        for block in &allocated {
++            pr_info!(
++                "  Block {}: offset=0x{:x}, order={}, size={}\n",
++                count,
++                block.offset(),
++                block.order(),
++                block.size(&buddy)
++            );
++            count += 1;
++        }
++        pr_info!("  Total: {} blocks\n", count);
++
++        pr_info!("=== All tests passed! ===\n");
++
++        Ok(RustDrmBuddySample {})
 +    }
 +}
 -- 
