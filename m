@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC15F264F96;
-	Thu, 30 Oct 2025 17:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94FF2E0B5C;
+	Thu, 30 Oct 2025 17:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761844874; cv=none; b=N2GFiXLbG8OomUTFd9azN7wIrdVRHcHzxxYaNA1yS8VH90iPG/Yh1xDju63DZL4sipvFN/kpFNePUnORUxlEIMx2Szcuh1FEBCQEeAhafVzqqQcn7f/Yv00b9EA4minqogGIp3sUd+76Plw6PQrfLj4HMyq2rcsYosno2t3OEqI=
+	t=1761845054; cv=none; b=cna1ztwDDol457yWBZXfQbawHgiI8hxS+LJQWDZP8upAbeP/MHTNZLLNQBKHgp3YqQlKAyJoh92LWB73h8TJzBwp22UxBrWV3n+Dnr/UQ9ZOjvZ+U3LGKCEYEHFrb6dgP+cZPAm2EIt7EgEgYKJDxrtyj2sVX3t8Pu6OPAbDvOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761844874; c=relaxed/simple;
-	bh=JCo5HIQRDgriwfHeMxFo07QUdYzeoGeZvmZg3jK3Ktg=;
+	s=arc-20240116; t=1761845054; c=relaxed/simple;
+	bh=WJgiqLXdNppUdDf4uQG/4N9IuzquIQiMfW1tlU3UWkM=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=qFbKVSr31rfqPffi0akDUnI+T4kY+LvPJZbUQA+0lJcQjD/jiPSaumcsIU9tWQXt4mz56RCupahjMMCXXzMFMpXKUrNHEsxe/MOh117T8/xpT/l4Poc18UtKTdJ45hEnQsYO+P7GKXPdOSii4VLtwi9xP4iOeSQMB7fmzSus1uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RkosZtNO; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=SrwG7H4aKen5FMxFPGPhnFxLsnXf5QjhUcuvkFHGnIEHVR0LoLYOG2xTZ6IgU23vX7TiMJ1gVopBLlHhq3HUgjIVmbMNgluRY5RdmsUyR9ibzW/f9m737n1Q+fQSF3DadD8FOYR4HxD7Os+6rZeAiwZrdK/fRT9GoAr6RLMEkNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IMXewI+F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RkosZtNO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57FFDC4CEF8;
-	Thu, 30 Oct 2025 17:21:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IMXewI+F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE6DC4CEF1;
+	Thu, 30 Oct 2025 17:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761844873;
-	bh=JCo5HIQRDgriwfHeMxFo07QUdYzeoGeZvmZg3jK3Ktg=;
+	s=k20201202; t=1761845051;
+	bh=WJgiqLXdNppUdDf4uQG/4N9IuzquIQiMfW1tlU3UWkM=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=RkosZtNOsm+vtoYvhZKOlYIMuXQi5jZj8S1y8yOPpfZLQBPtieRRq5wpIbSjc671s
-	 VSHS3aTFj0Fv6amYPZqUbrZzSg1xzQfPZIZ1J3vk1o8nnFo9tag/NNnGW8ccgZkvnK
-	 TIrqyrhtZljFBJyDwAl9RCFBjxKlQd711ofIBrJ5FT/Rkv+yhvZaSEtlRMxhN16D8X
-	 qfgpdTyxWx0Sbi3a8ZfRO5QeGLX7sumxLs8n7LLDFpQDT808OWkwDTPTWkE1hC7Tj0
-	 Ze5caPGHJEMqRytOgBCWpXtVsvIuaefKYz1nmRtghCH7yc/+Epl28ZWhy8hKQ6MmZl
-	 qsbGvxJ39H5/Q==
+	b=IMXewI+FRhflVmnrdALdfmKENIjzZz/2K6eq+Rf9eLA0XZaqILXCwNHQFPY3Pzcl/
+	 HbsY0HsVyPAUYkoLRVx/M4rqGp6DYyYwdbyjHw+Cyt25d93jHO8u3EWZcbyPgrO1ac
+	 aSfPGP/Kgzadk7e0QvXmAeLqVk1rozAK4x8NHIWJi+Cu1iHpleh7mlCVtwnD19GNhH
+	 PHz6DGm4Go/jZh8Nh/ZuDPeIrO7MRoY+02wD+ZoZi0Ccrkg27IomCgQKlTo5rJM0LV
+	 9QvUDdlRb1NLxYLo3LtZk+bz7P0gzZeQwplxocPjB0dzkGwPHShOU1ILF/dJ5dZeDn
+	 8GxBpw9FKFHew==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,125 +34,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Oct 2025 18:21:06 +0100
-Message-Id: <DDVTVQ54W7FM.1XS6MIH4ALW8U@kernel.org>
+Date: Thu, 30 Oct 2025 18:24:04 +0100
+Message-Id: <DDVTXZOL7O4O.SU2DN0FE9J48@kernel.org>
 Subject: Re: [RFC 1/2] rust: introduce abstractions for fwctl
-Cc: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <zhiwang@kernel.org>, <alwilliamson@nvidia.com>,
- <acourbot@nvidia.com>, <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>
-To: "Jason Gunthorpe" <jgg@nvidia.com>
+Cc: "Jason Gunthorpe" <jgg@nvidia.com>, "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>, "bhelgaas@google.com"
+ <bhelgaas@google.com>, "kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+ "ojeda@kernel.org" <ojeda@kernel.org>, "alex.gaynor@gmail.com"
+ <alex.gaynor@gmail.com>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+ "gary@garyguo.net" <gary@garyguo.net>, "bjorn3_gh@protonmail.com"
+ <bjorn3_gh@protonmail.com>, "lossin@kernel.org" <lossin@kernel.org>,
+ "a.hindborg@kernel.org" <a.hindborg@kernel.org>, "aliceryhl@google.com"
+ <aliceryhl@google.com>, "tmgross@umich.edu" <tmgross@umich.edu>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Neo Jia"
+ <cjia@nvidia.com>, "Surath Mitra" <smitra@nvidia.com>, "Ankit Agrawal"
+ <ankita@nvidia.com>, "Aniket Agashe" <aniketa@nvidia.com>, "Kirti Wankhede"
+ <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>,
+ "zhiwang@kernel.org" <zhiwang@kernel.org>, "Alex Williamson"
+ <alwilliamson@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>
+To: "Zhi Wang" <zhiw@nvidia.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20251030160315.451841-1-zhiw@nvidia.com>
  <20251030160315.451841-2-zhiw@nvidia.com>
  <20251030162207.GS1018328@nvidia.com>
-In-Reply-To: <20251030162207.GS1018328@nvidia.com>
+ <4e0be534-e3d7-4c74-b8f1-51bd869b18e4@nvidia.com>
+In-Reply-To: <4e0be534-e3d7-4c74-b8f1-51bd869b18e4@nvidia.com>
 
-On Thu Oct 30, 2025 at 5:22 PM CET, Jason Gunthorpe wrote:
-> On Thu, Oct 30, 2025 at 04:03:12PM +0000, Zhi Wang wrote:
->> +impl<T: FwCtlOps> Registration<T> {
->> +    /// Allocate and register a new fwctl device under the given parent=
- device.
->> +    pub fn new(parent: &device::Device) -> Result<Self> {
->> +        let ops =3D &FwCtlVTable::<T>::VTABLE as *const _ as *mut _;
->> +
->> +        // SAFETY: `_fwctl_alloc_device()` allocates a new `fwctl_devic=
-e`
->> +        // and initializes its embedded `struct device`.
->> +        let dev =3D unsafe {
->> +            bindings::_fwctl_alloc_device(
->> +                parent.as_raw(),
->> +                ops,
->> +                core::mem::size_of::<bindings::fwctl_device>(),
->> +            )
->> +        };
->> +
->> +        let dev =3D NonNull::new(dev).ok_or(ENOMEM)?;
->> +
->> +        // SAFETY: `fwctl_register()` expects a valid device from `_fwc=
-tl_alloc_device()`.
->> +        let ret =3D unsafe { bindings::fwctl_register(dev.as_ptr()) };
+On Thu Oct 30, 2025 at 6:19 PM CET, Zhi Wang wrote:
+> fwctl_put() is a inline function and it seem opened by the compiler when =
+bindings are
+> generated.=20
 >
-> This is a Bound device, not just any device.
-
-Indeed, the safety comment should mention this. And if it would it could no=
-t
-justify it with the current code, since the function takes a &Device instea=
-d of
-the required &Device<Bound> argument.
-
->> +        if ret !=3D 0 {
->> +            // SAFETY: If registration fails, release the allocated fwc=
-tl_device().
->> +            unsafe {
->> +                bindings::put_device(core::ptr::addr_of_mut!((*dev.as_p=
-tr()).dev));
+> $ grep -R fwctl_put *
+> $ pwd
+> /home/inno/drm-rust/rust/bindings
+> $ grep -R put_device *
+> bindings_generated.rs:    pub fn put_device(dev: *mut device);
 >
-> ?? Don't open code fwctl_put() - it should be called directly?
->
->> +            }
->> +            return Err(Error::from_errno(ret));
->> +        }
->> +
->> +        Ok(Self {
->> +            fwctl_dev: dev,
->> +            _marker: PhantomData,
->> +        })
->> +    }
->> +
->> +    fn as_raw(&self) -> *mut bindings::fwctl_device {
->> +        self.fwctl_dev.as_ptr()
->> +    }
->> +}
->> +
->> +impl<T: FwCtlOps> Drop for Registration<T> {
->> +    fn drop(&mut self) {
->> +        // SAFETY: `fwctl_unregister()` expects a valid device from `_f=
-wctl_alloc_device()`.
->
-> Incomplete safety statement, the device passed to fwctl_alloc_device must
-> still be bound prior to calling fwctl_unregister
->
->> +        unsafe {
->> +            bindings::fwctl_unregister(self.as_raw());
->> +            bindings::put_device(core::ptr::addr_of_mut!((*self.as_raw(=
-)).dev));
->
-> There for Drop can only do fwctl_put() since otherwise there is no way
-> to guarantee a Bound device.
->
-> unregister has to happen before remove() completes, Danilo had some
-> approach to this I think he told me?
+> Hehe. I am open to options.
 
-Yeah, such Registration structures of (class) devices should be wrapped int=
-o a
-Devres container (i.e. Devres<fwctl::Registration>)to be able to provide th=
-is
-guarantee. See also my other reply to this patch [1].
-
-While not a class device, the auxiliary bus with its auxiliary::Registratio=
-n
-[2], is a good example.
-
-Alternatively (or additionally), it can also be implemented in a way that t=
-he
-driver does not get control over a Registration object at all, but once cre=
-ated
-it is not accessible anymore and automatically dropped on parent device unb=
-ind.
-This approach is used by cpufreq [3].
-
-It always depends on whether a driver might want to drop the Registration
-manually before device unbind.
-
-[1] https://lore.kernel.org/lkml/DDVT5YA564C6.3HN9WCMQX49PC@kernel.org/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core=
-.git/tree/rust/kernel/auxiliary.rs?id=3Db0b7301b004301afe920b3d08caa6171dd3=
-f4011#n304
-[3] https://rust.docs.kernel.org/kernel/cpufreq/struct.Registration.html#me=
-thod.new_foreign_owned
+You can add them to rust/helpers/.
