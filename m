@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC15342CBB;
-	Thu, 30 Oct 2025 11:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01E12DF3C6;
+	Thu, 30 Oct 2025 11:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761822728; cv=none; b=YcddRsR5VT+4Bhga1q2Xh+q6c5y+F05XceEBBh9C7qgh/oxH62sXBeKLJKKxxfffvJob7SeAZ94zbyz2kB0U+S103QU6gMaMtibeCIo2169L50ev4BYTkMl+sKevKCNsdIjYwz1jpoX414SqwrvRD3xSmZQwTDSCGtjEcxn+iZo=
+	t=1761822912; cv=none; b=i38u5BN9u8SsHO3nvH6beVntV/tEW4q8DoJd5w/sx/dXQzmQSvLONN6UiMTw5ffrb82WtTHwl94gtK0c8sJPjg6PviE4ESuViPcMSNbXxD3yWwD16y8KZqIUpGyt4vu6r7VHrTrwTQdpL1j6lRSz0KhOH4EUbjdlmYEiiWLu3gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761822728; c=relaxed/simple;
-	bh=BSolpokxLywxqliZROQ9KV5FG5CYIMSvfXRul5jIyB0=;
+	s=arc-20240116; t=1761822912; c=relaxed/simple;
+	bh=gP5Y5jDLLpBVmQGmQqu9eVBjgKlOOZRJlIXu5Gz0Nm4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CjeAQEgMwu9Lo10b6fWXzCrWABe5O9+LHm7Sn8qNkl01jTxc2EjnhjwAmW/Ii4fqNesZ5n7hIb8U3R67g70s51DpkZ9e1IsbaIcp6KceErRZlACfMUJrc6l86RFd+qw0WTddGaaEHHaXWQDwFv8S2BkaBKRtxD7P+LFJU8xBei4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cgum3bRr; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=N2uDBmqpHi0k0K/dUSRuIDSqkrgvlf3TfffhP2l7S6mqCe4vcbr0Cnu+vnVfe1kYcBJF3b+8SMKXKBmWKdLnyT3zvHxXEinBkRhiYEHOBVSiR9kQ6GPtmx7ymTCA+W/HvmvvICre/hb0phS/3ilGR4p6bzc8J9gZgSFTaPck6vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=poMPAQXu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cgum3bRr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCE4C4CEF1;
-	Thu, 30 Oct 2025 11:12:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="poMPAQXu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5893AC4CEF1;
+	Thu, 30 Oct 2025 11:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761822727;
-	bh=BSolpokxLywxqliZROQ9KV5FG5CYIMSvfXRul5jIyB0=;
+	s=k20201202; t=1761822911;
+	bh=gP5Y5jDLLpBVmQGmQqu9eVBjgKlOOZRJlIXu5Gz0Nm4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cgum3bRr+d2xng6DdIy3v1BDtvsKHbN9eWzQehMlNHRh5Hanx0alkIKGGFUgorLx5
-	 CYu6xkABWusWSpXrVDHnnCwfHjdvdFg3dfA8FjF/1hXCi+genjkwvTKyn9N93nWS5L
-	 gykWg3frvVbxoHyEtjFjFkt83hYxTkSLK9KxwD+0bf6Vx8bc+HbVKkS3dhy937JLMs
-	 NeTKH4jKb3i4JmP/yZAfcwNpsWDIMeT/auysqszxvWV0KW9647BfEwXtMWIal6XG/7
-	 1RNmyjsr3bW/W/pDd5s74yqz8onJxt2SfSPayoP0ijtWRpU4B2/kLKMcBcuOvlxsFQ
-	 6jxtwBOysfXAw==
-Message-ID: <06e18028-db5c-4a4e-a96d-29ddc07485ff@kernel.org>
-Date: Thu, 30 Oct 2025 12:12:01 +0100
+	b=poMPAQXuSzuHhNnEazwK7onEIt+ouVImynsh6Oe59Qp1uSegSHuT/c3WQ+e5MB5dt
+	 mAZ3k7cQFvbEhh75Pxxl6YUZawvqRtufJ3frKlOWnf/22owMraMZiDkq4WWI3F6V/y
+	 1zLa5I4y/G0UWGfqxgcxJT0VwG8jITw1jrL2Z38QTVYraWHBUJH/aY9n1sqTvZ3vVg
+	 GvtAAHb32NHOEtIkIwfuDVfUdhryyeM4TvtEMnxw6lDrIgwFOwSVawfZW6FucuaNH7
+	 18sa/4W4j0NLODhN91BTofDBLVQavDrb/yZ/XTlW/VZ0XnM8H5A0yaRJ6GkVE/13HH
+	 EYPq3wyzwcO/g==
+Message-ID: <7c8ab212-3905-4652-baa4-b422e69fea0c@kernel.org>
+Date: Thu, 30 Oct 2025 12:15:05 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,7 +35,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] nova-core: regs: rename .alter() --> .update()
+Subject: Re: [PATCH] nova-core: Ada: basic GPU identification
 To: John Hubbard <jhubbard@nvidia.com>
 Cc: Alexandre Courbot <acourbot@nvidia.com>,
  Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
@@ -49,25 +49,24 @@ Cc: Alexandre Courbot <acourbot@nvidia.com>,
  Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
  nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
  LKML <linux-kernel@vger.kernel.org>
-References: <20251025010815.566909-1-jhubbard@nvidia.com>
- <20251025010815.566909-2-jhubbard@nvidia.com>
+References: <20251025012017.573078-1-jhubbard@nvidia.com>
 From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251025010815.566909-2-jhubbard@nvidia.com>
+In-Reply-To: <20251025012017.573078-1-jhubbard@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/25/25 3:08 AM, John Hubbard wrote:
-> This also changes .try_alter() to try_update().
+On 10/25/25 3:20 AM, John Hubbard wrote:
+> ...which is sufficient to make Ada GPUs work, because they use the
+> pre-existing Ampere GPU code, unmodified.
 > 
-> After this commit, instead of "read, write and alter", the methods
-> available for registers are now "read, write and update".
-> 
-> This reads a lot easier for people who are used to working with
-> registers.
-> 
-> No functional changes are intended.
+> Tested on AD102 (RTX 6000 Ada).
 > 
 > Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
 Acked-by: Danilo Krummrich <dakr@kernel.org>
+
+You may want to consider requesting committer access for the drm-rust tree [1].
+
+[1]
+https://drm.pages.freedesktop.org/maintainer-tools/committer/commit-access.html#access-request
