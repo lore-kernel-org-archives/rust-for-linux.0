@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C610A273D73;
-	Thu, 30 Oct 2025 21:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E0734D3BE;
+	Thu, 30 Oct 2025 21:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761858968; cv=none; b=pjj1isDPHPk8gfvxHjrzFIAnHL3ymr2gGatuNtiDSh9AhS4BCihZLs/hi69PzpkEXRKtoKJq5brOoqunXyahKx8jqM18u21Ms9v29Ma4yT4NU+xfDQ70/ufItJVo+g/MPTqbmAHDTwzokQsgL4ruivJUR3sZEQaWsf0prJTBRYg=
+	t=1761859033; cv=none; b=F5jnYWWrzvIE6KOK1HiGm01JV81qnIP9SqAl2egc0ISQJETijoLe4Gil8j043unIbJBN9zzEtIOGDFiOnXyheuDZVPvkamaMjgc95lwh9zCXcCDUyXkui0PfASlEjMaABIMlTvOfzhkWbtH+rVqZVdBiua3S56STQ5aDGoNPtSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761858968; c=relaxed/simple;
-	bh=+NHcvXtDxhDQK0BCd82yMG17qtbqNUMyemzVA1CEOZk=;
+	s=arc-20240116; t=1761859033; c=relaxed/simple;
+	bh=XermN9jQ3wZ4fqlqqOotYOXuBNHynIWoOTfpAp4RGHs=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Dw15I9VYGCkoC19+2DC603CN79zrTXKIyAPrLxgJ2Hgz4HLab/rcx9vA04Wof/8KDU61nBjC0v5w31bdB2bzEx1qikZEOUQ8TQV0hxuHLHtaYmXkMjGtATb4DFvldwjrwgHXHdGhEIuNLzcpx/zjdlHhUQXxUrEIaoksUQvHURg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PtpTPwT6; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=btakyxWdBYOprG82JL6CjAl94Dke1cRVfHXRrOQhk4xQP9N8PT1s9uFgFPyDlIwWMfbIUOZaJoHK80aNsv7FubEdsET+04yODQP5EjlIgsRwUZQ7l/o+VFaMf9Z7SJ4wnue4WG1AhpCXSznUJINefsc+KHFUCrolvHyiqTenyo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i6CKBQtA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PtpTPwT6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52408C4CEF1;
-	Thu, 30 Oct 2025 21:16:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i6CKBQtA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E9C3C4CEF1;
+	Thu, 30 Oct 2025 21:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761858966;
-	bh=+NHcvXtDxhDQK0BCd82yMG17qtbqNUMyemzVA1CEOZk=;
+	s=k20201202; t=1761859033;
+	bh=XermN9jQ3wZ4fqlqqOotYOXuBNHynIWoOTfpAp4RGHs=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=PtpTPwT6DPmp6kvIEXa7KfuxLfuk2yfzkYRFE7Yh5LQcWGvBL/ME8OoBF3BRXZ3s5
-	 icGOERXYm6Sm2t2G93oBJiybf3i8CtzsWS+91NnjsYUMqW+0CM3GsnzuAxqZ3Ay9fr
-	 4QgLPhOsWmDxzXoLCWASiYb7iyygnYz2XMJ5i4VB5b28oj8C8c3eNNV12Y0SsPVRv+
-	 txayhoac4485v4zTv4fAQqf+r/PESlV47GzIpCOV/dOCeUOFYhk6agBu3ba2kuV2fi
-	 YFMUo5UNbPHvooGMlQQOVZg6BnfZCiY99UWJ9aZPNjyGdvshyKvChlbST8+pOLF0d3
-	 4uyisTVbx5UCQ==
+	b=i6CKBQtAZlBdtQH0O7unusyS7sO0aEpyqbQLRfXvYDlYSBC1ShdDPzNSNS9wijlik
+	 mEx4tLoxpKcnpALBY9+5WuJEjuiEUNVi76+KrThmXpWcNE683gNJH3hSB2Ug3qjWXN
+	 QLXnpalf9B7HkXoZe5Fp6KxEMuKgiKYWeM+6nEYseue1SNT8p9X8hsDAcdCQnt9Wnb
+	 Q6lmf+LdtEtSk6OQTUPvLGIpTEG9aiquw3B08cvPdvHIXUy/+UcUvTmTtG2t+301am
+	 kj98w6ag8lOE4msRzrcYL8gXR5PMVsbQrRVr1s6ACdZRPLnkq96n3e82FY6zxW3sgW
+	 yLGBc9cR/tMiA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,10 +34,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 30 Oct 2025 22:15:59 +0100
-Message-Id: <DDVYVKDW8WG2.2STCJ4ZU00MZF@kernel.org>
-Subject: Re: [PATCH RFC 2/4] samples: rust: Add sample demonstrating C
- linked list iteration
+Date: Thu, 30 Oct 2025 22:17:06 +0100
+Message-Id: <DDVYWF5UL3T0.QDZNMBTX582T@kernel.org>
+Subject: Re: [PATCH RFC 4/4] samples: rust: Add sample demonstrating DRM
+ buddy allocator
 Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
  <dri-devel@lists.freedesktop.org>, "David Airlie" <airlied@gmail.com>,
  <acourbot@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Miguel
@@ -56,16 +56,14 @@ Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
 To: "Joel Fernandes" <joelagnelf@nvidia.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
- <20251030190613.1224287-3-joelagnelf@nvidia.com>
-In-Reply-To: <20251030190613.1224287-3-joelagnelf@nvidia.com>
+ <20251030190613.1224287-5-joelagnelf@nvidia.com>
+In-Reply-To: <20251030190613.1224287-5-joelagnelf@nvidia.com>
 
 On Thu Oct 30, 2025 at 8:06 PM CET, Joel Fernandes wrote:
-> Demonstrates usage of the clist module for iterating over
-> C-managed linked lists. C code creates and populates the list,
-> Rust code performs safe iteration using the clist abstraction.
+> Demonstrates usage of the DRM buddy allocator bindings through
+> a simple test module that initializes the allocator, performs
+> allocations, and prints information about the allocated blocks.
 
-I don't think a sample module is the correct choice for this. It makes it l=
-ook a
-bit like this is an API intended for drivers. I think kunit tests might be =
-a
-better fit.
+I don't think this should be a sample module either, the code looks a bit l=
+ike
+it tries to reinvents kunit tests.
