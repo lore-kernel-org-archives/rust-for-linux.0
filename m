@@ -1,156 +1,113 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE01732E6B8
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Oct 2025 09:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9FD333455;
+	Fri, 31 Oct 2025 09:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761903520; cv=none; b=S95U+uO1K9KlRLJiJSTXGHLBvO4ChOjo8CNGQJQCRiW9MwrwEboVCBQnWYXdIL1EnXYqm2uv3s49u7b8ExqsstCMc2ra9ZIg+96gEdDC7+QOrWNjeQk6P5BYeSr8PlCK53eWWGPLtPSCY4YzJS6ih/IwMHNhx2O1GXoPMTK610c=
+	t=1761904337; cv=none; b=BmpsWVfHmC94ZzdjfWaLLwT+Mm1Sfd5dTWwFDBQvQrfGS+P5wLS7RBW2efMMZhdnCd5vokrXM1liLfrtZH5aPtAsoS3WQoqBtGMOLC3Gw4cOVSsJSPAFzOHje6jr92oLoE0tiJQWDhBLFT2B7MgicQeG/Gd+w4n8RQPO0mhzX1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761903520; c=relaxed/simple;
-	bh=Nt5I0/ypLAT6txRroayncaZ3u/sU4Zqs7ILdnZSNoEw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S3R1BLMzsnK4fgluEmoeV+paZrd2LAaAU5agXPDCaQrnLPc1JW4bTLOfcsPg5A0L9esVx19yNQkj6HZBIEAu2yDtbR2VY+9puxt32jftPiKCl42qb61e5AjUivKN6Fx4h/7SD7XmCwuqjKGvqLFBSrBdqz3mtrQpgEA3zqqoNeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T8XbXsB4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761904337; c=relaxed/simple;
+	bh=HSkp7jDPDeQP9HFJEf48wH+0XtSGqoD1qmTPOJL9w5Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DA5ULdceO3KorXsMe6XHZjRA8HLvVXHNcEQomDHxHAYdT15EXjFbiKiPMvjRlLd943jnpgpBmAaT4BWtCNoR/DztT4qEM/eZXEX/yfsjxRg7lSmBosh/Mz0MqUv3hnUlO1AeINTdIpngNiXCBkn79kMXYpT3ZqHWS7EY1gsMJeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gMN9VW77; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T8XbXsB4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761903517;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=02r2jL8NwGKv+xoSmKl2Ton2WOVDTKsUsxJgoMdlPDY=;
-	b=T8XbXsB4yzmfj/XLfRK5yQsKfTvBbN42UMLaqmepOQXtFPS0KsnZikFzqnbFyDXwOvEdu2
-	wXxFYDrX/3ZSNV9VJ9rCXF53SJJznorbASR1ZDO2UMyHXZOlFuA5PDoK8qb6k5HM4XSPHc
-	TnWjM05VNTDfDE7Pfwb4rK7dWNglIso=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-362-u5DDP-B4Op6w-DY-00jjmw-1; Fri, 31 Oct 2025 05:38:36 -0400
-X-MC-Unique: u5DDP-B4Op6w-DY-00jjmw-1
-X-Mimecast-MFC-AGG-ID: u5DDP-B4Op6w-DY-00jjmw_1761903515
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4770c37331fso13483515e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Oct 2025 02:38:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761903515; x=1762508315;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=02r2jL8NwGKv+xoSmKl2Ton2WOVDTKsUsxJgoMdlPDY=;
-        b=mDlyJZhI+XgDnlvadbm9brGKTWe44tTxExeSPKqozaRlZUxSU3dxKBMH0uu0hoxExz
-         kkNHl7c1unS1ga35uY6W6tLuCF2hWG5LxGsV1ft2YtNdP09+Dxej6O81ntP1Kwid/FLu
-         /s+nSNzo6jztbN4gZSGoq/a9bNxSMOElXaXssV6qRzIM4G7ghh9UyOPo/LrZGdCRPKT6
-         K539VVlYHXX8YK+fcMKZ5e2EOvsYm4Kbg0ifDYV1D3qptR8x+chmkqWwW3cqGpXw5XVu
-         nHcZkTvhNAJNXNNIZuoU1wTCR1CECWFvQNO3UKKYIhhhK+Fl99hNr/rrlanqz0Qam3+Z
-         bl1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXB3LuL1spDclBLQztYNBpXkRH5gX01H3CWZ/mPhoed60Y+bDoFjkgH17GqTXKmss0UEJz2PB8nIlenDoCG2Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPz2DYKKAtsmjPWSYqTOLNm3nke/4l7xLS7xFMu+j4CmzD5m45
-	BoiBsczYQY45fpOevLAta2ghws3QRHlIo/GG3tvVT+vFWynFBM7qBl3Zw+GxvdOzJ3nkyICQuQ5
-	YrqIcGf7LBq3Ai0WmnqAveMugdoRyZo+LUCEcCLlWro1o8RY61+UdDFw3I7QHjL4UeVya
-X-Gm-Gg: ASbGncshf4Ut1jJ4W+1Pt7IZMamVsv5FKyhXWnHTTmhI5HFbg5wJuDTqWGzKh8UuY2D
-	8o0hkpuzvctSy/6urSCSQ8WqdbavI0dfhEgwZJfAqifUNY/CbMMPjAAUsVhHe4IYYYNP6bBWt4F
-	fkI2xdEJkvI2RdomZ+jHqTYOBwX35yQ5MvTidbxKc5VOggDMjPPf3VcPrq2GiMiocClNPBPIsfk
-	F/8Ted+T9+W4FpwnQcZsMuKneswmuB+th+KfCTMgq05t+jAXHaUnHTC1RYYoXGu66gaRe2qZNg4
-	l7tmpSaD30lZhV5R8WpEd++obxKTQeWrrP/ITiXJ7i4CZ7inHYhsr4k1uXQfF3H3s7DYdXpLxsP
-	+3D85PErmRX+WI4lXbyOb55GReyMoFxkxUcxqo3yAFVXP15L3w4fnzBNFvHMDB9G2HT3lI3okUn
-	YSZLFo
-X-Received: by 2002:a05:600c:524e:b0:475:dd8d:2f52 with SMTP id 5b1f17b1804b1-4773089c6a2mr27897735e9.32.1761903515176;
-        Fri, 31 Oct 2025 02:38:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKPPNsgtJzmw5biUQ5ItO9u/Z3xCbDPnnFiEadpPd1z4+pOhQMAMTMoHdglYjmo4QMI4f3Tg==
-X-Received: by 2002:a05:600c:524e:b0:475:dd8d:2f52 with SMTP id 5b1f17b1804b1-4773089c6a2mr27897375e9.32.1761903514741;
-        Fri, 31 Oct 2025 02:38:34 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.110.222])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-429c114be36sm2661136f8f.18.2025.10.31.02.38.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Oct 2025 02:38:34 -0700 (PDT)
-Message-ID: <288ba4d2-b7db-46cf-b979-341a58613fc0@redhat.com>
-Date: Fri, 31 Oct 2025 10:38:32 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gMN9VW77"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 87468C4CEE7;
+	Fri, 31 Oct 2025 09:52:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761904334;
+	bh=HSkp7jDPDeQP9HFJEf48wH+0XtSGqoD1qmTPOJL9w5Y=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=gMN9VW77/ZfrX/TcZ4QdmnshcEs47rr1HukdvApfBak6tZ+35jYBavIJCxCtNkh5O
+	 dYGjTKtL2ZNInBzTDujmmkJq/rpErNeIn0bWRzUmZ4rjytxg6azm0nP5rrlohYRIAl
+	 a6XK8derUi+bE5qOglBuAC0VZbZJxJ0cFhLIh/RXtDt75Q5XgWUl45rkHVqi7ALAqH
+	 TtQKrI/rsXOpycH9zQ1ky5T1wsuGHbPzH0/xeUb/YjXvE95DXG8q0nLxQRdqCvhBid
+	 72oBjYbNAzBhHXHruY7pNh3Dn1zn4SD9kvM46cVjdfMVnYGYN8Y7WKh9UW4Il9n8Nn
+	 qaEgBvrb3x5Cw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7862FCCF9F8;
+	Fri, 31 Oct 2025 09:52:14 +0000 (UTC)
+From: Moritz Zielke via B4 Relay <devnull+moritz.zielke.gmail.com@kernel.org>
+Date: Fri, 31 Oct 2025 10:51:41 +0100
+Subject: [PATCH v2] rust: of: replace `core::mem::zeroed` with
+ `pin_init::zeroed`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] rust: lock: Export Guard::do_unlocked()
-To: Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Benno Lossin <lossin@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-References: <20251029183538.226257-1-lyude@redhat.com>
- <c1ff48ea-53ca-40ea-9541-85abd1a528d0@redhat.com>
- <e0112480a6786c64fa65888b5ce8befbba72a230.camel@redhat.com>
- <CAH5fLgiWceOs-VtDnFkx5EBxCbAnJ3cLkRwp9adQC7x9oJCDFQ@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <CAH5fLgiWceOs-VtDnFkx5EBxCbAnJ3cLkRwp9adQC7x9oJCDFQ@mail.gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 8nI-eXLamsqOeDwARtEHKRBOHBV9EMREc66xquz9QTY_1761903515
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20251031-zeroed-of-rs-v2-1-f89ff71e943e@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAKyGBGkC/3WMzQrCMBCEX6Xs2ZX8aBVPvof0EJNtu2Ab2UhQS
+ 97dtHeZ0zfDfAskEqYEl2YBocyJ41zB7Brwo5sHQg6VwShz1Moq/JJEChh7lISupXvttfX2BPX
+ yFOr5veluXeWR0yvKZ7NnvbZ/RFljjT+0YZ3Nma7D5Pix93GCrpTyA1wqvbyoAAAA
+X-Change-ID: 20251030-zeroed-of-rs-a6eb25113c37
+To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: Benno Lossin <lossin@kernel.org>, devicetree@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Moritz Zielke <moritz.zielke@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761904321; l=1602;
+ i=moritz.zielke@gmail.com; s=20251030; h=from:subject:message-id;
+ bh=OnB3GPr22kqGecRkpj0YRj3co22bJtrQhNK1vieBomQ=;
+ b=Tufu5yszhlo2brG2pyeFgV4tCFZzPlNkr6s0GwoPI8AGFxG3XMtjYWQHPa0vo82qs48v2pVfR
+ FfQiIru0qadDaT+DakTg6GW4g6dhFxWCKILAYH/bdgswfukqVuONS4W
+X-Developer-Key: i=moritz.zielke@gmail.com; a=ed25519;
+ pk=TFwYpZ0YPwD8idGzvlafpvAW4DDA0FrkMEjcfZVXkN0=
+X-Endpoint-Received: by B4 Relay for moritz.zielke@gmail.com/20251030 with
+ auth_id=558
+X-Original-From: Moritz Zielke <moritz.zielke@gmail.com>
+Reply-To: moritz.zielke@gmail.com
 
-On 10/31/25 10:31, Alice Ryhl wrote:
-> I do agree that this behavior has a lot of potential to surprise
-> users, but I don't think it's incorrect per se. It was done
-> intentionally for Condvar, and it's not unsound. Just surprising.
+From: Moritz Zielke <moritz.zielke@gmail.com>
 
-Yes, I agree that it is not unsound.`
+All types in `bindings` implement `Zeroable` if they can, so use
+`pin_init::zeroed` instead of relying on `unsafe` code.
 
-For conditional variables, wait() is clearly going to release the mutex 
-to wait for someone else so the surprise factor is much less.  Having it 
-return a new guard would be closer to std::sync::Condvar::wait, but it'd 
-add churn and I'm not sure how much you all care about consistency with 
-std.  std has the extra constraint of poisoned locks so it doesn't 
-really have a choice.
+If this ends up not compiling in the future, something in bindgen or on
+the C side changed and is most likely incorrect.
 
-Paolo
+Link: https://github.com/Rust-for-Linux/linux/issues/1189
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Signed-off-by: Moritz Zielke <moritz.zielke@gmail.com>
+---
+Changes in v2:
+- Rearrange tags and `---` so tags don't get lost when patch is applied
+- Link to v1: https://lore.kernel.org/r/20251030-zeroed-of-rs-v1-1-1c46d025128e@gmail.com
+---
+ rust/kernel/of.rs | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-> Of course, that doesn't mean we can't change it. Condvar could be
-> updated to use ownership in that way, and doing say may be a good
-> idea.
+diff --git a/rust/kernel/of.rs b/rust/kernel/of.rs
+index 58b20c367..cfcfbb1fd 100644
+--- a/rust/kernel/of.rs
++++ b/rust/kernel/of.rs
+@@ -35,9 +35,7 @@ impl DeviceId {
+     /// Create a new device id from an OF 'compatible' string.
+     pub const fn new(compatible: &'static CStr) -> Self {
+         let src = compatible.to_bytes_with_nul();
+-        // Replace with `bindings::of_device_id::default()` once stabilized for `const`.
+-        // SAFETY: FFI type is valid to be zero-initialized.
+-        let mut of: bindings::of_device_id = unsafe { core::mem::zeroed() };
++        let mut of: bindings::of_device_id = pin_init::zeroed();
+ 
+         // TODO: Use `copy_from_slice` once stabilized for `const`.
+         let mut i = 0;
+
+---
+base-commit: 3b1728b74a52e8489f0c7bfd3d682572dd9901de
+change-id: 20251030-zeroed-of-rs-a6eb25113c37
+
+Best regards,
+-- 
+Moritz Zielke <moritz.zielke@gmail.com>
+
 
