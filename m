@@ -1,200 +1,116 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E364C31B822
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Oct 2025 19:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525A02222A0;
+	Fri, 31 Oct 2025 20:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761940774; cv=none; b=F5/x9DQkNbP0sHuSEx1cqq/xSdIyIftsnSWj98FxrFkTGdWHnqs8x5jxonJyVFCH5ULTPB/3CzT7eRLbETI9+awMvqvCR1wc0aqFOO6beavY2X6osz5SY4Qwv5YBvCVTismY7+g0VDoeZZ32gLgq74rkFlrMvqRFu6M8/Xj475M=
+	t=1761941259; cv=none; b=c6tHZ3XKZuyrl4kAzorwHFc8Aj6K1Bc6uhuJ8lTeUvxgeLfAa4Q7216FzvpJpo20bO2/3ZPu8tevBQMcqg0vJOYPhNzdc0E2YmEBdLeVjHjB+c0PQEIayEG1YYe2EsB0pBCl3/SNk6CZL/Msq5NiWS3/zArZecTd0yvYxKGK79c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761940774; c=relaxed/simple;
-	bh=ik1a8gZCy8OHc0UXQ1M5tX69fdcP0uB4uz3wGzgfqYU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bXBOtGe9m4vev8srkk6yqQII/+NbHfhZrqcSaXVRIK/zkgcpEDS2+TilLlu5TAzObf+p4sNEiSkTqyhpoR2ixsjJXRIac6eWoXlx+9+vP9DDurbEcIwg7xVfitDxf2xp+cTMvOSxC1b0Cw7o3kLRYqvBLIqZkAqJ411k8sxH3cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DkDybfQq; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761941259; c=relaxed/simple;
+	bh=wQet1zpVA979LHOCAKnvDe4vIz5lgogB/RiA4rvDzcE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=m8FISJOWvVyUX0TB0stp3DukBwNCanqtuY6ZUkYqeJGS8rDvLfC72cxOC8rNwoPIdykX7ht7jIPNbp2aOeqXkBtpeW4bZCpk0BBmINjwn79OodpS1hKW2ntjF7591LLaFt7HHYtSV60RwnkrvNfByFrZe1d5qDibZpXXPdsruUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eEbaFUeP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DkDybfQq"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-88032235d68so13144376d6.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Oct 2025 12:59:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761940772; x=1762545572; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8Iyen6dvY92B9sLWrKqEv//LwHqaAqRQqY1+ybrCM0Y=;
-        b=DkDybfQq/tuUPI/rIuwIuPjnSBIw3YHzZRvoev7TakyPxqhDofuaLdHBpAaOs2/8hf
-         AQyr0SlcwvRwy6nuzOYpEU9L3SlalwAYnlEFobNGEl32pOZpA6bTskkMVrWT95gxOXNH
-         EiM1eXqD6pD1HX4MErg+Ker89lVh8j2P5HW+LJFPronFS041PxulHPRyITA26I75akCY
-         AkA917JSpAj3xN/ss3VeMqOnAeZ9z/2fekzA4mAgSkw4Tn2RTeSsuXEKUpqIJzE3lbz6
-         5e5PqDxrvlDLN7OiPtrhPRKYfY+1mkgw1TobmgdxLXQf+QYxk0moOPRYkjCn2/z1Aezn
-         2rbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761940772; x=1762545572;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8Iyen6dvY92B9sLWrKqEv//LwHqaAqRQqY1+ybrCM0Y=;
-        b=c3QiRUr4NKMri5+/1iIODsZhOcmjjikorAzKaGRgkl+3TxN3sqBN7m5slNp1dX2tGE
-         0K8eMbsNR9Q8Pw8NpbQYV3EcTE+3FU62vKJx+5VZKPA6F8/oBZPFwqxAo0LA3L/ENUiZ
-         GawUPmUvlbeVgX/rbpDojbo6OhFRL6UeWZVYtwi65JkfLlT9R+ASuMdABddRf/NIw2Xl
-         /3rpw7Nx9uyYwSGS5R4xN7wxgQTLEz8OfnMNFKBLe9y3rIBKxPwgOvtPuvDNyygtpv/j
-         RvbGqsxbBrMzhjfUtBGsa3maUluFjjMvSgIfZdPK7/MjOCjJ0qDSHuFLzpiiBYR71DjZ
-         vcNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZJSzRFRP1OrcgjdhzaoOsYlcud/RpCfSW7QhSzMqcyADQeNP9+1AGdZiYQE9Q1psPhi+4TLMqXGIOLpHfsA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc5rZ1qNsqriL1J9OtYAE8OpflYg33VjLIHj2TljZ2kfdX1gp4
-	JxGEI7j+dQYIBbGkOuL7FcIt9cZ1u6mG+Y8UENKJ6xw/ZYOvUCETbt5w
-X-Gm-Gg: ASbGncvSLo+nHLylC0AM0YsEKn9BnxnrHPWvB/T/6UAq3y02uaDzcmIczOONkW3GC1R
-	9yDEGgHf5SJxeG+9645ak3p364V2jVZHNsaVGa9c1ZBb+hnDKmX3AxVFztA7PQeHIHYUtEvi1N1
-	mJZ8mlx3mTNqLlDKMmAIesr40e5QAi04YlHruWiv8KbI2paqofDKjczuPDxQOWDcWRQRIEhPz9g
-	ECfH2fMjbkFen6s3P7BckHLpkc2lBqSDkTjNHC52mnx0TwWQ1gUqVM6jch39oCMWz9YPDBVqTot
-	MsbTdlACugXu4b58eaUkPhdUSKQemm8LeFU/AxhwQ+n15fejZsZNRLINQ9FhBsP6Ge9qV4J+JUA
-	NdyWU475KIJVIfTRPlgifmAwK9URnN6fawdaawgGYH2aBnlwaYxuBLyYbzuma557Fb0g0pMC+k0
-	uae7rHIAGiF6KWKsxZxQw66VPvidWprAFlGmKV8lNSaNVls1oAQ46l/nDutAKB+G1OUdkjM5oti
-	/DUHQe5Sieuw7w=
-X-Google-Smtp-Source: AGHT+IGfg364yBfQ6pTjAFa6RKxm15WKlYb2bY+1rBy9kaSNNc/J4bnrGgtFJE+IhOXSrcpxI52U/Q==
-X-Received: by 2002:a05:6214:470b:b0:880:3a3d:8a25 with SMTP id 6a1803df08f44-8803a3dc9abmr31936456d6.49.1761940771721;
-        Fri, 31 Oct 2025 12:59:31 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-880360ffca8sm16996426d6.27.2025.10.31.12.59.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Oct 2025 12:59:31 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 49027F4006B;
-	Fri, 31 Oct 2025 15:59:30 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 31 Oct 2025 15:59:30 -0400
-X-ME-Sender: <xms:IhUFacccSkfnWblQ65-BNGAvHR9Trml7hfJfCV8JCqyMojBF7RdnoA>
-    <xme:IhUFaVzabmAdsNspNnI8XDlKZ5tV51HZmwgXnl8IsO5DFF9O5dDOzdzLf7UOPDq7J
-    iMBl2WP3sRoL_IVdP-4dElIsH1vlKIJQkLZ7ePsvhLJlL5R2lZ_rA>
-X-ME-Received: <xmr:IhUFadKr3NZREz7vJQjIXErgVM36jNyilp8IkFwRveCR1fs2AUvfJCtmXBfn7yYBxzN9CZwMLmGI3284oAl3taFid8Ehr7DE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddujedtfeelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
-    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepudeipdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplh
-    ihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhn
-    uhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlihhnuh
-    htrhhonhhigidruggvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdr
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtoh
-    hllhgrsghorhgrrdgtohhmpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhm
-    pdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoh
-    epjhhurhhirdhlvghllhhisehrvgguhhgrthdrtghomh
-X-ME-Proxy: <xmx:IhUFaeszn_PGY45eAljR22aE3YnFPpK0IPqp8-eOist3GzG2tQ9Ruw>
-    <xmx:IhUFafTEY37fDHhP6KWngtwsag2wO3_KhjTatUD7NjHWGat7E0kOPw>
-    <xmx:IhUFafRR5HueIgG-nP5PZzdyRDeZj6dNunkWhZwuTVjgNwuaiG-VpQ>
-    <xmx:IhUFabo4xHyosp7fidZvLmOjHghsjZ7xrngFcXj_H54UFWfe2OwLRQ>
-    <xmx:IhUFafCOYdPNgX9E7mZyQgSd8RBBoEHsEFuABh8aVGfyXT93kUpfKIBj>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Oct 2025 15:59:29 -0400 (EDT)
-Date: Fri, 31 Oct 2025 12:59:28 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>
-Subject: Re: [PATCH v13 03/17] preempt: Introduce HARDIRQ_DISABLE_BITS
-Message-ID: <aQUVIMElF674xTao@tardis.local>
-References: <20251013155205.2004838-1-lyude@redhat.com>
- <20251013155205.2004838-4-lyude@redhat.com>
- <87pla386cp.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eEbaFUeP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC5FC4CEE7;
+	Fri, 31 Oct 2025 20:07:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761941258;
+	bh=wQet1zpVA979LHOCAKnvDe4vIz5lgogB/RiA4rvDzcE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=eEbaFUePEqsqd1xqvFj6PfHBe6jOCi2lEMdH8TycHl0Q5Auluk8S2lpJXmv9TxFx6
+	 NusxPnTpJc0X0f0CeYGgWHWJPP+pm9H5h9r65gPGw/KCR077Hi6MKNwd20DNPMNN6b
+	 WeahrAxPZQa10FjP/DdR4c+HK/1h5x2nUAasMuSHcOITJAiV483CzwcXL5NGIqys+P
+	 mY145nVNkpzIC2zpwBWy190cfG4RZuldrQmgNpuR1kKC8i8XpoLRbm6nuQrl1TbMCc
+	 xrhLxkelxND1eIrhNaB+SV+lyaoUFqxJyBOJ8iEADXR4rSsgSzl+qs3Ga+6/bKM9QS
+	 dwrww+Tnxquiw==
+Date: Fri, 31 Oct 2025 14:07:32 -0600 (MDT)
+From: Paul Walmsley <pjw@kernel.org>
+To: Deepak Gupta <debug@rivosinc.com>, Andy Chiu <andybnac@gmail.com>
+cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+    x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Vlastimil Babka <vbabka@suse.cz>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    Paul Walmsley <paul.walmsley@sifive.com>, 
+    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Andreas Hindborg <a.hindborg@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+    richard.henderson@linaro.org, jim.shu@sifive.com, 
+    Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com, 
+    charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
+    cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
+    broonie@kernel.org, rick.p.edgecombe@intel.com, 
+    rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v22 17/28] riscv/signal: save and restore of shadow stack
+ for signal
+In-Reply-To: <20251023-v5_user_cfi_series-v22-17-1935270f7636@rivosinc.com>
+Message-ID: <a8f469b8-5750-dfec-2390-09bad4515f99@kernel.org>
+References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com> <20251023-v5_user_cfi_series-v22-17-1935270f7636@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pla386cp.fsf@t14s.mail-host-address-is-not-set>
+Content-Type: text/plain; charset=US-ASCII
 
-On Fri, Oct 31, 2025 at 03:59:34PM +0100, Andreas Hindborg wrote:
-> Lyude Paul <lyude@redhat.com> writes:
-> 
-> > From: Boqun Feng <boqun.feng@gmail.com>
-> >
-> > In order to support preempt_disable()-like interrupt disabling, that is,
-> > using part of preempt_count() to track interrupt disabling nested level,
-> > change the preempt_count() layout to contain 8-bit HARDIRQ_DISABLE
-> > count.
-> >
-> > Note that HARDIRQ_BITS and NMI_BITS are reduced by 1 because of this,
-> > and it changes the maximum of their (hardirq and nmi) nesting level.
-> >
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > Signed-off-by: Lyude Paul <lyude@redhat.com>
-> > ---
-> >  include/linux/preempt.h | 11 +++++++++--
-> >  1 file changed, 9 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-> > index 9580b972e1545..bbd2e51363d8f 100644
-> > --- a/include/linux/preempt.h
-> > +++ b/include/linux/preempt.h
-> > @@ -17,6 +17,8 @@
-> >   *
-> >   * - bits 0-7 are the preemption count (max preemption depth: 256)
-> >   * - bits 8-15 are the softirq count (max # of softirqs: 256)
-> > + * - bits 16-23 are the hardirq disable count (max # of hardirq disable: 256)
-> > + * - bits 24-27 are the hardirq count (max # of hardirqs: 16)
-> >   * - bit 28 is the NMI flag (no nesting count, tracked separately)
-> >   *
-> >   * The hardirq count could in theory be the same as the number of
-> > @@ -30,29 +32,34 @@
-> >   *
-> >   *         PREEMPT_MASK:	0x000000ff
-> >   *         SOFTIRQ_MASK:	0x0000ff00
-> > - *         HARDIRQ_MASK:	0x000f0000
-> > + * HARDIRQ_DISABLE_MASK:	0x00ff0000
-> > + *         HARDIRQ_MASK:	0x0f000000
-> >   *             NMI_MASK:	0x10000000
-> >   * PREEMPT_NEED_RESCHED:	0x80000000
-> >   */
-> >  #define PREEMPT_BITS	8
-> >  #define SOFTIRQ_BITS	8
-> > +#define HARDIRQ_DISABLE_BITS	8
-> >  #define HARDIRQ_BITS	4
-> >  #define NMI_BITS	1
-> >  
-> >  #define PREEMPT_SHIFT	0
-> >  #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
-> > -#define HARDIRQ_SHIFT	(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
-> > +#define HARDIRQ_DISABLE_SHIFT	(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
-> > +#define HARDIRQ_SHIFT	(HARDIRQ_DISABLE_SHIFT + HARDIRQ_DISABLE_BITS)
-> >  #define NMI_SHIFT	(HARDIRQ_SHIFT + HARDIRQ_BITS)
-> >  
-> >  #define __IRQ_MASK(x)	((1UL << (x))-1)
-> >  
-> >  #define PREEMPT_MASK	(__IRQ_MASK(PREEMPT_BITS) << PREEMPT_SHIFT)
-> >  #define SOFTIRQ_MASK	(__IRQ_MASK(SOFTIRQ_BITS) << SOFTIRQ_SHIFT)
-> > +#define HARDIRQ_DISABLE_MASK	(__IRQ_MASK(SOFTIRQ_BITS) << HARDIRQ_DISABLE_SHIFT)
-> 
-> Should this be HARDIRQ_DISABLE_BITS rather than SOFTIRQ_BITS ?
-> 
+On Thu, 23 Oct 2025, Deepak Gupta via B4 Relay wrote:
 
-Good catch! Yes, it' should be HARDIRQ_DISABLE_BITS. Thank you!
+> From: Deepak Gupta <debug@rivosinc.com>
+> 
+> Save shadow stack pointer in sigcontext structure while delivering signal.
+> Restore shadow stack pointer from sigcontext on sigreturn.
+> 
+> As part of save operation, kernel uses `ssamoswap` to save snapshot of
+> current shadow stack on shadow stack itself (can be called as a save
+> token). During restore on sigreturn, kernel retrieves token from top of
+> shadow stack and validates it. This allows that user mode can't arbitrary
+> pivot to any shadow stack address without having a token and thus provide
+> strong security assurance between signaly delivery and sigreturn window.
+> 
+> Use ABI compatible way of saving/restoring shadow stack pointer into
+> signal stack. This follows what Vector extension, where extra registers
+> are placed in a form of extension header + extension body in the stack.
+> The extension header indicates the size of the extra architectural
+> states plus the size of header itself, and a magic identifier of the
+> extension. Then, the extensions body contains the new architectural
+> states in the form defined by uapi.
+> 
+> Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
+> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 
-Regards,
-Boqun
+This patch causes some 'checkpatch.pl --strict' messages:
 
-> 
-> Best regards,
-> Andreas Hindborg
-> 
-> 
+CHECK: Comparison to NULL could be written "!saved_shstk_ptr"
+#271: FILE: arch/riscv/kernel/usercfi.c:186:
++	if (saved_shstk_ptr == NULL)
+
+CHECK: Lines should not end with a '('
+#300: FILE: arch/riscv/kernel/usercfi.c:215:
++		pr_info_ratelimited(
+
+I've fixed them up here in the event that v22 goes in, but please do the 
+same on your side in case a new version is needed.
+
+
+- Paul
