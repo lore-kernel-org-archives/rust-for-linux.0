@@ -1,258 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64C22F6183;
-	Fri, 31 Oct 2025 16:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04B42D97B7;
+	Fri, 31 Oct 2025 19:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761928959; cv=none; b=LuOy+aUClSBNoyoqlGCnKpEEy5r784ScXSi/0ovAGmhuP+0b4vM3wKrdEn33keQfZ4C2GfjafAMqcITjj8EXlxMfXnUON+mamABRkwC+2K4MwmUlfCzkokcFPZwZy3Cv+5ug8phdxfR6DB5dVcIObbH9fbd6cHrdrkReRUokL9g=
+	t=1761938552; cv=none; b=DD74Y5aMdn5jzFUxKEJqLEoshx1hJxxDMc/4qnP3Y7gSy+2cPHES79dpXZ70ll4GN+n26YKPqvnF5XqzDF2keVmn8Q0jY/gUtkKIGCgnasDf+1lNgerC7rEo484jpOoczB7Wl02aTmtfznssVMJAhIF8glrtUZuBqnEzu4MzOpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761928959; c=relaxed/simple;
-	bh=y9SS1AanRaN3IJF7ZKQYXKyWoIq2zbJr960kdKeZFA0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GbP2rgld+hdxkJeYvVFilNeehOyH9SfCjoQqb1A7pAHAMf6xDEPIugNFwUG7eJDeBlNr3Wnat6HlGzBSw3zXME/0CLB1FzFYEYAn5JbqaBch+I1MqJN4IGYNVSw6Bzbjg/w7gAapdKrWB5xYNGyq90/pa9DF8gPpKWYC0OZ6Qwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AKv5CfzT; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1761938552; c=relaxed/simple;
+	bh=aRO45gf5CfHW1/jbUbbLGsRCxWY7tHk3cFfnDvNsB6Y=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=IZEsEfGciCGn7YCUlhF+9OWVyY9PAO4purbzxVHeg6yD/GTVNfKoSLXV+aCWqpyTb7NXboRdqW3ytBWthejEdnrHMocqL8L4rlslaIBlByMP83BosNQXBPehuSzO3CaMi0Rd5igKsZ7BKJatoEA6WJiPTqq8QGT86zz5ECSSLL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5HDCi2R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AKv5CfzT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761928955; x=1793464955;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=y9SS1AanRaN3IJF7ZKQYXKyWoIq2zbJr960kdKeZFA0=;
-  b=AKv5CfzTW2SQUVJAULy0Mk7xoHoXqzpwdDjIl1JLBcilat6ITZaWdsqI
-   xSUQPTAofRAR4JrzrpJBEv2q5yKfh3AK+/dkV5ZZWFCQFN3zCU2xz5PcB
-   qvV8S+e1j8H7f/GMRP/Splr6tNRZrCeqPTrmdrAHxLjlp0T0u5B0w7Nnv
-   /nL8IMsNbWZ+hDIDh4L7Bfzc7rFYA3empDPCT97btvIWhMFwmhHo8y3Qi
-   Wj3i1yXCRpQhBlU0QFbyizDjhGpGg5F31aQ8NE77iEr/sbNz7gFO2a75R
-   YaKUET9ti72zwZ2c22uAb6tUWx2j9kfOhOgVEGPYljvNtrV9L0uDnsW03
-   g==;
-X-CSE-ConnectionGUID: jl5jQaLgRxSPCWE32mzneA==
-X-CSE-MsgGUID: rlSdTnIlSHmeuFJS6heH0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="67954794"
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="67954794"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 09:42:29 -0700
-X-CSE-ConnectionGUID: BoHLWMZKSxalHKuavq7lIQ==
-X-CSE-MsgGUID: JvpjFaUfTUCJl1yAWJcl3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="187016744"
-Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.244.98]) ([10.245.244.98])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 09:42:24 -0700
-Message-ID: <79bbbd8b-e60b-435b-82b6-ea59230997e2@intel.com>
-Date: Fri, 31 Oct 2025 16:42:22 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5HDCi2R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1DEC4CEE7;
+	Fri, 31 Oct 2025 19:22:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761938551;
+	bh=aRO45gf5CfHW1/jbUbbLGsRCxWY7tHk3cFfnDvNsB6Y=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=M5HDCi2R/696KAq+LQQDeEnnFTStWNLkXYwKUiU9FxJS0+SMep8pWFlpbWtMhCEDE
+	 3IqSttDBCsW639HgoIfXNDa5Rl5R2Eg3DPtIMGmbvxRmY4i0JiGYkRMvEIB/UsEAF/
+	 CpSxsd8YDaLo7qB+j1Vd4dXbW9wlxIEkOBpLnql/SBO5QE8BsCAMM0NgYXNNpBc0uG
+	 74Srbaun1zMez0S5J737hSGvZAiklmcFqDN9evPXeLKPQOTt4EkImzO1RV9Ab3ErMe
+	 U7GPDkqCNG4vnEozILb4d3SSdHavGo7+IHCu1Lfn9KlyQUdgHAk2dJZMnL8zRIQzci
+	 moNGNmIxIROuQ==
+Date: Fri, 31 Oct 2025 13:22:23 -0600 (MDT)
+From: Paul Walmsley <pjw@kernel.org>
+To: Deepak Gupta <debug@rivosinc.com>
+cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+    x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Vlastimil Babka <vbabka@suse.cz>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    Paul Walmsley <paul.walmsley@sifive.com>, 
+    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Andreas Hindborg <a.hindborg@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+    richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
+    kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
+    evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
+    samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
+    rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>
+Subject: Re: [PATCH v22 03/28] riscv: zicfiss / zicfilp enumeration
+In-Reply-To: <20251023-v5_user_cfi_series-v22-3-1d53ce35d8fd@rivosinc.com>
+Message-ID: <9230fa65-6b8e-ebf6-f215-b3a3bb7357d9@kernel.org>
+References: <20251023-v5_user_cfi_series-v22-0-1d53ce35d8fd@rivosinc.com> <20251023-v5_user_cfi_series-v22-3-1d53ce35d8fd@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 4/4] samples: rust: Add sample demonstrating DRM buddy
- allocator
-To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- dakr@kernel.org, David Airlie <airlied@gmail.com>
-Cc: acourbot@nvidia.com, Alistair Popple <apopple@nvidia.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Andrea Righi <arighi@nvidia.com>, Philipp Stanner <phasta@kernel.org>,
- nouveau@lists.freedesktop.org
-References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
- <20251030190613.1224287-5-joelagnelf@nvidia.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20251030190613.1224287-5-joelagnelf@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
-On 30/10/2025 19:06, Joel Fernandes wrote:
-> Demonstrates usage of the DRM buddy allocator bindings through
-> a simple test module that initializes the allocator, performs
-> allocations, and prints information about the allocated blocks.
+On Thu, 23 Oct 2025, Deepak Gupta wrote:
+
+> This patch adds support for detecting zicfiss and zicfilp. zicfiss and
+> zicfilp stands for unprivleged integer spec extension for shadow stack
+> and branch tracking on indirect branches, respectively.
 > 
-> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-> ---
->   samples/rust/Kconfig           |  14 +++++
->   samples/rust/Makefile          |   1 +
->   samples/rust/rust_drm_buddy.rs | 106 +++++++++++++++++++++++++++++++++
->   3 files changed, 121 insertions(+)
->   create mode 100644 samples/rust/rust_drm_buddy.rs
+> This patch looks for zicfiss and zicfilp in device tree and accordinlgy
+> lights up bit in cpu feature bitmap. Furthermore this patch adds detection
+> utility functions to return whether shadow stack or landing pads are
+> supported by cpu.
 > 
-> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-> index b45631e2593c..8ccb4064ba91 100644
-> --- a/samples/rust/Kconfig
-> +++ b/samples/rust/Kconfig
-> @@ -21,6 +21,20 @@ config SAMPLE_RUST_CLIST
->   
->   	  If unsure, say N.
->   
-> +config SAMPLE_RUST_DRM_BUDDY
-> +	tristate "DRM buddy allocator sample"
-> +	depends on DRM_BUDDY
-> +	help
-> +	  This option builds the Rust DRM buddy allocator sample.
-> +
-> +	  The sample demonstrates using the DRM buddy allocator bindings
-> +	  to allocate and free memory blocks.
-> +
-> +	  To compile this as a module, choose M here:
-> +	  the module will be called rust_drm_buddy.
-> +
-> +	  If unsure, say N.
-> +
->   config SAMPLE_RUST_CONFIGFS
->   	tristate "Configfs sample"
->   	depends on CONFIGFS_FS
-> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> index f8899c0df762..a56204ee4e96 100644
-> --- a/samples/rust/Makefile
-> +++ b/samples/rust/Makefile
-> @@ -2,6 +2,7 @@
->   ccflags-y += -I$(src)				# needed for trace events
->   
->   obj-$(CONFIG_SAMPLE_RUST_CLIST)			+= rust_clist.o
-> +obj-$(CONFIG_SAMPLE_RUST_DRM_BUDDY)		+= rust_drm_buddy.o
->   obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
->   obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
->   obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
-> diff --git a/samples/rust/rust_drm_buddy.rs b/samples/rust/rust_drm_buddy.rs
-> new file mode 100644
-> index 000000000000..96907bc19243
-> --- /dev/null
-> +++ b/samples/rust/rust_drm_buddy.rs
-> @@ -0,0 +1,106 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Rust DRM buddy allocator sample.
-> +//!
-> +//! This sample demonstrates using the DRM buddy allocator from Rust.
-> +
-> +use kernel::{
-> +    drm::buddy::{
-> +        BuddyFlags,
-> +        DrmBuddy, //
-> +    },
-> +    prelude::*,
-> +    sizes::*, //
-> +};
-> +
-> +module! {
-> +    type: RustDrmBuddySample,
-> +    name: "rust_drm_buddy",
-> +    authors: ["Joel Fernandes"],
-> +    description: "DRM buddy allocator sample",
-> +    license: "GPL",
-> +}
-> +
-> +struct RustDrmBuddySample;
-> +
-> +impl kernel::Module for RustDrmBuddySample {
-> +    fn init(_module: &'static ThisModule) -> Result<Self> {
-> +        // Create a buddy allocator managing 1GB with 4KB chunks.
-> +        let buddy = DrmBuddy::new(SZ_1G, SZ_4K)?;
-> +
-> +        pr_info!("=== Test 1: Single 16MB block ===\n");
-> +        let allocated = buddy.alloc_blocks(
-> +            0,
-> +            0,
+> Reviewed-by: Zong Li <zong.li@sifive.com>
+> Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 
-Does this map to the start/end? Surprised that this works with 
-RANGE_ALLOCATION below. I guess it works because of the end-1, but I'm 
-not sure if that was intended.
+This patch introduces some 'checkpatch.pl --strict' messages:
 
-Anyway, probably you didn't really want RANGE_ALLOCATION here? That is 
-only if you want something at a specific offset or within a special bias 
-range. So here I think it will give you a massive bias range covering 
-everything due to end-1, but all you wanted was any available 16M block, 
-which is the typical flow? It still technically works, but looks a bit 
-non-standard and will internally take the bias range path, which is not 
-ideal :)
+CHECK: Alignment should match open parenthesis
+#68: FILE: arch/riscv/kernel/cpufeature.c:278:
++static int riscv_cfilp_validate(const struct riscv_isa_ext_data *data,
++			      const unsigned long *isa_bitmap)
 
-Also I guess worth updating the example in buddy.rs, which also does this?
+CHECK: Alignment should match open parenthesis
+#77: FILE: arch/riscv/kernel/cpufeature.c:287:
++static int riscv_cfiss_validate(const struct riscv_isa_ext_data *data,
++			      const unsigned long *isa_bitmap)
 
-> +            SZ_16M,
-> +            SZ_4K,
-> +            BuddyFlags::RANGE_ALLOCATION,
-> +            GFP_KERNEL,
-> +        )?;
-> +
-> +        let mut count = 0;
-> +        for block in &allocated {
-> +            pr_info!(
-> +                "  Block {}: offset=0x{:x}, order={}, size={}\n",
-> +                count,
-> +                block.offset(),
-> +                block.order(),
-> +                block.size(&buddy)
-> +            );
-> +            count += 1;
-> +        }
-> +        pr_info!("  Total: {} blocks\n", count);
-> +        drop(allocated);
-> +
-> +        pr_info!("=== Test 2: Three 4MB blocks ===\n");
-> +        let allocated = buddy.alloc_blocks(
-> +            0,
-> +            0,
-> +            SZ_4M * 3,
-> +            SZ_4K,
-> +            BuddyFlags::RANGE_ALLOCATION,
-> +            GFP_KERNEL,
-> +        )?;
-> +
-> +        count = 0;
-> +        for block in &allocated {
-> +            pr_info!(
-> +                "  Block {}: offset=0x{:x}, order={}, size={}\n",
-> +                count,
-> +                block.offset(),
-> +                block.order(),
-> +                block.size(&buddy)
-> +            );
-> +            count += 1;
-> +        }
-> +        pr_info!("  Total: {} blocks\n", count);
-> +        drop(allocated);
-> +
-> +        pr_info!("=== Test 3: Two 8MB blocks ===\n");
-> +        let allocated = buddy.alloc_blocks(
-> +            0,
-> +            0,
-> +            SZ_8M * 2,
-> +            SZ_4K,
-> +            BuddyFlags::RANGE_ALLOCATION,
-> +            GFP_KERNEL,
-> +        )?;
-> +
-> +        count = 0;
-> +        for block in &allocated {
-> +            pr_info!(
-> +                "  Block {}: offset=0x{:x}, order={}, size={}\n",
-> +                count,
-> +                block.offset(),
-> +                block.order(),
-> +                block.size(&buddy)
-> +            );
-> +            count += 1;
-> +        }
-> +        pr_info!("  Total: {} blocks\n", count);
-> +
-> +        pr_info!("=== All tests passed! ===\n");
-> +
-> +        Ok(RustDrmBuddySample {})
-> +    }
-> +}
 
+I'll fix them up here in the event that v22 goes in, but please do the 
+same on your side in case a new version is needed.  
+
+
+thanks,
+
+- Paul 
