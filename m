@@ -1,87 +1,78 @@
-Received: from sg-1-18.ptr.blmpb.com (sg-1-18.ptr.blmpb.com [118.26.132.18])
+Received: from sg-1-17.ptr.blmpb.com (sg-1-17.ptr.blmpb.com [118.26.132.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E004126CE35
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Oct 2025 01:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D72E2E1C56
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Oct 2025 02:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761875696; cv=none; b=j9G7xqcvMpLfuj/8VSUYkFoh/CeeDILB474IbRSSLyMCXK0yfKEE7KKN8yfYT7KW5Pq/cC+irIq8urrZT4qYShY5bk7AqcIKc6+WQxUhQ0SeWFaF6UStfTg3dorYsAok4bLoD6zXkzV7dGkyjCp01bYXhSH9J0DCOvPAGGV9UUg=
+	t=1761877984; cv=none; b=qpwSoHrMLo/aMjILN553P9BKj9WGH/BxRMviELz1qnvokq5V3VxUctsR7UMuCyQ7+nbkaUJHDw/2LvUJck3XscseL/LceCSxL69nbT7XUDf/0h4vSv5zSZ8djxJ5d4VYDjYueiegONSYcn9DIqmocKuTykaTSgOrEi7BdQ0KNcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761875696; c=relaxed/simple;
-	bh=EYDna7X6Q24qhLAXylBmBQN3mnh7dUClWaMNPgBXVxo=;
-	h=To:Cc:Subject:Date:Message-Id:Mime-Version:In-Reply-To:References:
-	 From:Content-Type; b=YxKtsdjyk6YLlug8bB+pGnSMdY2X8NMgblM6LYi0sMbO2hAVgeRL7C9QC1WoMUnK+9uysVB2G3lp5/gm4s4c/P9KelQqg78i5kEDKBjCSkk7/SdrWR8A8bxwOuMRMExn36CVm1c7Db2yiPuB0krkbdmzoSc+goQXa//wWCjONdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=McGKKpkq; arc=none smtp.client-ip=118.26.132.18
+	s=arc-20240116; t=1761877984; c=relaxed/simple;
+	bh=nsDMeO0rPrnwTy57ARzThCpYti0r1NqiTgugU3Adujo=;
+	h=To:Mime-Version:Date:Cc:Message-Id:Content-Type:From:Subject; b=TU9I9QWId3chgaN33hLKfHuV+5G7Kd2Tr2DLZpukX0s7xCBId+djbBnEfwTyGPVgguxtSjurPVsfNAnm/rkt8LsO95a12CLPmmRRacG0z8+pH15zu7drR0vPdgTKwB3u9igvjJJ0+BF34CrExsQWNpGVgkRTu1nenpzJqMWiIYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=n9lD1Sja; arc=none smtp.client-ip=118.26.132.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="McGKKpkq"
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="n9lD1Sja"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1761875680;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1761877963;
   h=from:subject:mime-version:from:date:message-id:subject:to:cc:
  reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=Gp1o4UTplKCOgLfZkeY/qHSRQIpdLB1Hpz5bGpRY9ug=;
- b=McGKKpkqbwWzFlS/MYnPTGgrnSHwnGKDldrvMAjXv8KOvI+JZdMCEp5DcQeU8WS/3v9kse
- bOYA7GWFnAHiJqqcNMBaDNyIL9Glzak53wU9cnzmijhfb30uyS4sXavjGBpCWStV4IY3vX
- 23steuH7mvtW8s2Uu8yNTnWaPUWmhepETyLBZ/R17psTfpAzreQLFQ36Gtkw1IwtHxGSgp
- jur2N+s0CNOsVDwJgTl2tk4e1K9t0LjhOH71CQCCGvu+Ty6j5OgYEXP/fHK6uPbqFZuI06
- Xu0xHITe4zEGPjMPJz651SOw5GzEgpMG+TTlrPhSRXlhOe1ZBX6Z+wQgfGS99g==
-User-Agent: Mozilla Thunderbird
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, 
-	"Tamir Duberstein" <tamird@gmail.com>, 
-	"Daniel Gomez" <da.gomez@samsung.com>
-Cc: <lossin@kernel.org>, <nathan@kernel.org>, 
-	<hust-os-kernel-patches@googlegroups.com>, 
-	"Dongliang Mu" <dzm91@hust.edu.cn>, 
-	"Nicolas Schier" <nicolas.schier@linux.dev>, 
-	"Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, 
-	"Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	"Andreas Hindborg" <a.hindborg@kernel.org>, 
-	"Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, 
-	"Danilo Krummrich" <dakr@kernel.org>, 
-	"Masahiro Yamada" <masahiroy@kernel.org>, 
-	=?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	"open list" <linux-kernel@vger.kernel.org>, 
-	"open list:RUST:Keyword:b(?i:rust)b" <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] Makefile: Remove the product of pin_init cleanly in mrporper
-Date: Fri, 31 Oct 2025 09:54:36 +0800
-Message-Id: <af756391-ee14-42e3-bdc5-0558e6b4fa92@openatom.club>
+ bh=pobT/Ui3SiadYn7R34ZqS3avzSG6o5oI87gV77gbOwM=;
+ b=n9lD1SjaAfJOC8rSHymsiEauQFpHJdeuzZPHPMFfnZk+3dpE507jxZ4LYy8fs2cw9fSPEi
+ jzxSGzmg/p+avC7ctkIjI128P7qyk1XLCsaSUE7zKMOSAdBsXNLRbRj+eV49mmA06DTlWO
+ g2b4e7lP4knkoCa8HF6V7WjBqPwklrB5z89I8WoEDlp2B4WOpK+k2JC8ElNXBKNAoEJoa1
+ bnCh0H3pezc6FLnOFgqFl425I48mb3cCAios2m4AAQVANqWY+097qSp3j2e3FaRi+72IgW
+ JeNOPyEbyB6KIs/s8pN0WJUsRCKzcQAUH4Lycvvyi72pQ9Qm7Ka4xo/clxEGuw==
+To: <miguel.ojeda.sandonis@gmail.com>, <tamird@gmail.com>, 
+	<da.gomez@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-In-Reply-To: <CANiq72n3uB+sgkak=2JrPD4iY4pFidDe=TbvF8h2idGKCwedFQ@mail.gmail.com>
-References: <9500284ff72ad4e4dc4799fa5392a7bbfdd34f3b.1761814593.git.chenmiao@openatom.club> <CANiq72n3uB+sgkak=2JrPD4iY4pFidDe=TbvF8h2idGKCwedFQ@mail.gmail.com>
-Received: from [198.18.0.1] ([114.249.194.57]) by smtp.feishu.cn with ESMTPS; Fri, 31 Oct 2025 09:54:37 +0800
-Content-Transfer-Encoding: quoted-printable
-X-Lms-Return-Path: <lba+2690416de+b46a89+vger.kernel.org+chenmiao@openatom.club>
-From: "Chen Miao" <chenmiao@openatom.club>
-X-Original-From: Chen Miao <chenmiao@openatom.club>
+X-Mailer: git-send-email 2.43.0
+Date: Fri, 31 Oct 2025 02:32:39 +0000
+Received: from nyaos.localdomain ([114.249.194.57]) by smtp.feishu.cn with ESMTPS; Fri, 31 Oct 2025 10:32:40 +0800
+Cc: <hust-os-kernel-patches@googlegroups.com>, 
+	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Message-Id: <71ff222b8731e63e06059c5d8566434e508baf2b.1761876365.git.chenmiao@openatom.club>
+X-Lms-Return-Path: <lba+269041fc9+64e4ba+vger.kernel.org+chenmiao@openatom.club>
+X-Original-From: chenmiao <chenmiao@openatom.club>
 Content-Type: text/plain; charset=UTF-8
+From: "chenmiao" <chenmiao@openatom.club>
+Subject: [PATCH v2] Makefile: Remove the product of pin_init cleanly in mrporper
+Content-Transfer-Encoding: 7bit
 
-On 10/31/2025 1:41 AM, Miguel Ojeda wrote:
-> On Thu, Oct 30, 2025 at 10:08=E2=80=AFAM chenmiao <chenmiao@openatom.club=
-> wrote:
->> -                 rust/libmacros.so rust/libmacros.dylib
->> +                 rust/libmacros.so rust/libmacros.dylib rust/libpin_ini=
-t_internal.so
-> I think we will need the `.dylib` too, given the other one is there
-> (for the macOS builds some people do -- Cc'ing Daniel and Tamir). Or
-> did you avoid it for some reason?
+When I enabled Rust compilation, I wanted to clean up its output, so I
+used make clean and make mrproper. However, I was still able to find that
+libpin_init_internal.so in the rust directory was not deleted, while
+all other corresponding outputs were cleared.
 
-Hum, in fact I just seen the `.so` so I ignore the `.dylib`. I think should=
-=20
-add the `.dylib`, I'll make revision later.
+Dongliang Mu <dzm91@hust.edu.cn>
+Signed-off-by: chenmiao <chenmiao@openatom.club>
+---
+Changes in V2:
+	- Add the `.dylib` to mrproper files.
+---
+ Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Regard,
-
-Chen Miao
-
->
-> Thanks!
->
-> Cheers,
-> Miguel
+diff --git a/Makefile b/Makefile
+index b34a1f4c03967..b38b2895e1e4a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1590,7 +1590,8 @@ MRPROPER_FILES += include/config include/generated          \
+ 		  certs/x509.genkey \
+ 		  vmlinux-gdb.py \
+ 		  rpmbuild \
+-		  rust/libmacros.so rust/libmacros.dylib
++		  rust/libmacros.so rust/libmacros.dylib \
++		  rust/libpin_init_internal.so rust/libpin_init_internal.dylib
+ 
+ # clean - Delete most, but leave enough to build external modules
+ #
+-- 
+2.43.0
