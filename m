@@ -1,169 +1,247 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679A334D3A4
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Oct 2025 08:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED602EBBA1
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Oct 2025 09:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761900508; cv=none; b=b4ZSpeCM5Xul7hCHITNCbvQKyMt4Kfq8XakkefTYTOx/A/Jg0jE+ENRSWrwEaoQas7MG1499WQOwsAiP3GlXsiToMMxdiKS4RdJ1KUsTIJCPD8TI5XmgSmtDOEloz/WlbpKIM2x/fkwJRYh9aWvDMyUYmYTauCvCPNbzsha8QlI=
+	t=1761901629; cv=none; b=Eo711rAxYuTdzlxl5w68UoTEvl0iqOJnqNKMdoICQGf4lz5PbZdh0h8FEte5BL+iIGRZ+8u/mZJv3UPZK/+iqbn/l19tPvZ/Ja4fl9HEr3ER70cAl4V+Ki1mDMyCmXp2mFPUcuE8ITgcURnIOioE80dYe8AmOA2eIBOeo8cxKX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761900508; c=relaxed/simple;
-	bh=ndaQyFE2B0OkWxvkKgAAJ4xPsNlMkCgWYWVxZwI0yZo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gbR/ywHIrGOxBDpcSwPLYTtf9attixjsQiQxd923tLYzQlOI5e3+hxDLUg7QxcApD8wacEFGxZ0t0SXbdpzS3EuZKgdxiSiMU5h/tRlSQ14bQ3PKkpHANao1ExlvvqxTzH1fQj4sroe7Y3uI9bPwu+tPjikpEwY6g6vHPhmvLMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V22Zltzk; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1761901629; c=relaxed/simple;
+	bh=rQJ6m5izqAPGX/XkFvXmv2Y6nNiOodtTyPT9ISPslA4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=VxDkUE9IZN/wc8jTaDgrkzyquex99UU7cG0k/HIMSBEkE77K7c6Czm8XfKHRELdL+hpb49BF0xHAwK4A35Ma9gjEngq7umRQvPpNc0MOflWYP3TUmo3VB2ButnPUPvKAOFfdSTOJHAJsHvfl53AsTdnZpw/STHFV5lMA1Diz+w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DQiY8rpk; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V22Zltzk"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-476b8c02445so17751475e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Oct 2025 01:48:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DQiY8rpk"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b6d7405e6a8so354596166b.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 Oct 2025 02:07:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761900505; x=1762505305; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+372a3WmkEY6tgddzTdcmzcWDwIw39UAqHi/ZzXAids=;
-        b=V22ZltzkJhZU96gx8GDUa/ee8vz7Ud3eDrsY/p9ap0GhiiYnynGyLCP8mU7ZyfhzL3
-         sS3RI+suyc/eAkwHunGtkOGdrAF+1uBupDDzo5U66C5BacGNvXN4aYe4gke5lIXZZpSI
-         Kfr1Pbjt/OXoA2DTHjQhhQ6+aQoauchzg6Z01rjUREEkaf9qvTpvYzQlbOEMrYnEvBBu
-         y3LJwSkfx0fPE27bAyYNqAr+P5sG/2l/lbZxb9jTp3ykxHjiBkCwi8y4SNIo+Y/qy9Dx
-         14o5WgjQH0ZqzsReIJf++Lt27BKvuw53x89ej025/hnRknSaG6aED829R26RzSuVkdEc
-         7dDw==
+        d=google.com; s=20230601; t=1761901625; x=1762506425; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=29d2Teid1vY8nWEM/2hMCD7Hus+R2bdLREzpsdHxTuA=;
+        b=DQiY8rpkm4eZ9wBhwjojXGGYeoXR1WqMsoways3QfhHrzqoEVzOpE2FB7QGDWPY3Tp
+         ej/ct9i+6NMreNT3e1WnM2CQ8eMlRHfq6tXE0Fv7gPr950gu5I98clrkUsIlbmFqPxU1
+         Naibh7DukVK7aEmTM74JH28GgURJ+SGcv45ONNXr82qR0AEvG1sSIc8NNIrJmqpt5wcX
+         HKAvLjSvK4G74eCS88rC+3AesK5dvcLOsLyqwVCf1yWaz/YzmSvunbqDy8ZtMqvEkd8b
+         GwaKBiYq3BFrhl31pogaMjxm6FQkGLATtU/CKTsQcmb+SoqER+YK/kYzf7CNNG2XuJ0N
+         DL1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761900505; x=1762505305;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+372a3WmkEY6tgddzTdcmzcWDwIw39UAqHi/ZzXAids=;
-        b=dXhySSQftwsoqn/jXCKAuvbynyPoAYbwFXhmMET8yw8VT0/5uHYk3TR0YyoftyBxis
-         dv8HqRjFovwZkPdykN0dFnu153wCV4b6mJEJ2zO8RbUoPbtrsqjUCNKvzgzkRktwwZMy
-         /VGYijmytoTSEAAiFADaxEj//+A+EYOJ/2n7Srdo60WWwN0zTNT7XHxMLOVUJ/Q84p6k
-         x8XzotYhwvpoBec6Ldv2dygNJ24Ci3klzBwahBTv/GP8m+drJbLjhck6gBbQAT/JLEAO
-         /tzyqZoH9wWKBmJe0QqPUjjOV05ZqPijpMjjtx+1/SND7Q9GLDTZ28FBxC2/GU45ZoA4
-         27Ow==
-X-Forwarded-Encrypted: i=1; AJvYcCVg7Uw9hdhJMqMpKpeGNwn3S/tDw25gUvi/TIq0l13F2f59QGXbCvlhvFKwyVltjssdojhgVnQ0loB9Hz+Ecw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVenLdyL8nvwRZKOSVNHeBkLFggJgqG4MkcTL5o32/nl2dugPB
-	3eG9RwiPMRu6JOHaFM5gqXXYFD1f8nWG8JUCPfK81VQxbHSf0laH+alD4dKL9hNIRl5IEP5e56i
-	uC2U2CcZDP70EVrI3Gg==
-X-Google-Smtp-Source: AGHT+IGvOjm/actgy4mwcV9ArK/QT0WmXxyzpClAjkGwq0Za23DkXs2ThfcsWWR9g0eRkoQXn3I8U4T8EM5UEP4=
-X-Received: from wmwr21.prod.google.com ([2002:a05:600d:8395:b0:477:100b:1033])
+        d=1e100.net; s=20230601; t=1761901625; x=1762506425;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=29d2Teid1vY8nWEM/2hMCD7Hus+R2bdLREzpsdHxTuA=;
+        b=SCf7nNXIKF8zkzE9weppOld1xQ+NAHZCUtBouNYSj2+Vj+xKmux6AsdWFGuNVBPslF
+         P9CEaP/YMI6Tdxr0nSOcAu5dYo5w1LoUblt57saEuBp7yzfNLFLr9J/H8ldxij1J8vYR
+         H7mC8UbzCNrecUNdPWkguAxSi4ABFl6Jzbo9HwoKV+Pj7vqGiTgwTEH5dZRLAo6ExmuR
+         SOfAaDLH9TxvckLjpNWPH1DK1LCR8wh+ivdejgQC+KLbpsnF5Ac5DvMYmlAu3InyVFu5
+         AGp5kMRPXriwfZZzQrfRcRMulZFVjtfEubJGj+gYuPBr7j0HmMDZXYEOHywgg8TuTevV
+         mSTg==
+X-Gm-Message-State: AOJu0YyLozHIcPgbWiRwBDxg1hRPmK0v3lmXTBkOIdyb+A0Lzd2aGi1f
+	DgEpIR5HdvKsVQ5Yx8XA2sVZ3FRBameEI0b8tjgT0zBvt1mIPuS+t6mCUAckiml1vDV+uQUrDa0
+	LXk6/ajD3ZzvuIH5TOg==
+X-Google-Smtp-Source: AGHT+IHQfde77LTsYs+H7ayeimd+wwm/8KMTrV3Sd6Adno8GuLpiuQxfMBuEYeebpFBJheF7ldHY2iKlk8Y3ghY=
+X-Received: from ejac23.prod.google.com ([2002:a17:906:3d7:b0:b6d:6aad:e8ff])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:b85:b0:46e:4a30:2b0f with SMTP id 5b1f17b1804b1-477308908c6mr22520415e9.29.1761900504836;
- Fri, 31 Oct 2025 01:48:24 -0700 (PDT)
-Date: Fri, 31 Oct 2025 08:48:18 +0000
+ 2002:a17:907:a0c8:b0:b07:87f1:fc42 with SMTP id a640c23a62f3a-b706e54f35cmr331607566b.16.1761901624817;
+ Fri, 31 Oct 2025 02:07:04 -0700 (PDT)
+Date: Fri, 31 Oct 2025 09:07:04 +0000
+In-Reply-To: <20251030154842.450518-2-zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIANF3BGkC/4WNQQ6CMBBFr0JmbU2niAgr72FYQBnLJEibtmk0p
- He3cgGX7+f/93cI5JkC9NUOnhIHtlsBdapAL+NmSPBcGJRUDcpaiom3mbzQ9uXG6KJnq+MqSOu
- OFNZI8wRl6zw9+X14H0PhhUO0/nPcJPyl/4wJBYrr5dY2EqVqO7oba81K59KDIef8BZ7qN167A AAA
-X-Change-Id: 20251030-binder-compatptrioctl-ecc9e2131edb
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3199; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=ndaQyFE2B0OkWxvkKgAAJ4xPsNlMkCgWYWVxZwI0yZo=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpBHfTK1F9zcJOa7JIQrwi/jR5F385Pw9WGB7vx
- dAXypSuNnuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaQR30wAKCRAEWL7uWMY5
- RpsFD/9he1mRoOSXLajq2KGFMDa017We0/SV71zZUHe9jVY6x7c7220iurehk6UP4GlyP8mqJ9k
- Olg7XjDG+c0gMPUg9WrQxG4VVug8GSqR2TepqGCQA0hznIfcpIigIpOh0nfqA7stylD8YHJtkGq
- nqAvPy1QzteYQX17fsrg+38Z6DuQXTL0E73W05JDqlGS0zaNLaqdXps4nCsXI/AvO3p+N6yasDo
- DOLSx1k5A3it0B4AXYGobdqSoWgnSL1PucpAsDCHRoV0klwm8nO029I8jtHP5Prvos8XHVve/hy
- 7+eqS2Cv6f2tpExBKw5kQLxPDRMCt1gpHRYOAmXEo9OroEZehTnfTvd5Hbl+knpt+fboERZ3ihN
- sDVm7javb8FsdPaqewf1G0lxu1Pv1xOWD8JZvZFlsKx59J9w66actulD3CdT7aZdMc4n+SU91e+
- BZ39Qtx0tnwsIjSO1NGH/FugEk8u1rwByE43FeGwUxxinuJPnyoNV4eWhRgbqv1B0mhnlqhpU7c
- EfktoY9bgfBteJK8QMpBgnjec2a4WuIEEoMdejOBgqAyeAxCB/Yu5dsd9ydr4BaTXvo8ePMUM3i
- PJRGUE6GlrdiqxtnzWM1o8rJzRj8zPm5k9uGJWRz5oYAaKfG2W6vGf3Dab0eTiUhXrbc0HRob4y NYUPBrSkcKnhVrg==
-X-Mailer: b4 0.14.2
-Message-ID: <20251031-binder-compatptrioctl-v2-1-3d05b5cc058e@google.com>
-Subject: [PATCH v2] rust_binder: use compat_ptr_ioctl
+References: <20251030154842.450518-1-zhiw@nvidia.com> <20251030154842.450518-2-zhiw@nvidia.com>
+Message-ID: <aQR8OPVnU_fPJTCI@google.com>
+Subject: Re: [PATCH v3 1/5] rust: io: factor common I/O helpers into Io trait
 From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Martijn Coenen <maco@android.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Christian Brauner <brauner@kernel.org>, Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, dakr@kernel.org, bhelgaas@google.com, 
+	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, cjia@nvidia.com, 
+	smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
+	kwankhede@nvidia.com, targupta@nvidia.com, zhiwang@kernel.org, 
+	acourbot@nvidia.com, joelagnelf@nvidia.com, jhubbard@nvidia.com, 
+	markus.probst@posteo.de, Bjorn Helgaas <helgaas@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-Binder always treats the ioctl argument as a pointer. In this scenario,
-the idiomatic way to implement compat_ioctl is to use compat_ptr_ioctl.
-Thus update Rust Binder to do that.
+On Thu, Oct 30, 2025 at 03:48:38PM +0000, Zhi Wang wrote:
+> The previous Io<SIZE> type combined both the generic I/O access helpers
+> and MMIO implementation details in a single struct.
+> 
+> To establish a cleaner layering between the I/O interface and its concrete
+> backends, paving the way for supporting additional I/O mechanisms in the
+> future, Io<SIZE> need to be factored.
+> 
+> Factor the common helpers into a new Io trait, and move the MMIO-specific
+> logic into a dedicated Mmio<SIZE> type implementing that trait. Rename the
+> IoRaw to MmioRaw and update the bus MMIO implementations to use MmioRaw.
+> 
+> No functional change intended.
+> 
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Bjorn Helgaas <helgaas@kernel.org>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-Changes in v2:
-- Reword commit message.
-- Link to v1: https://lore.kernel.org/r/20251030-binder-compatptrioctl-v1-1-64875010279e@google.com
----
- drivers/android/binder/process.rs          |  9 ---------
- drivers/android/binder/rust_binder_main.rs | 22 +++-------------------
- 2 files changed, 3 insertions(+), 28 deletions(-)
+> +/// Represents a region of I/O space of a fixed size.
+> +///
+> +/// Provides common helpers for offset validation and address
+> +/// calculation on top of a base address and maximum size.
+> +///
+> +/// Types implementing this trait (e.g. MMIO BARs or PCI config
+> +/// regions) can share the same accessors.
+> +pub trait Io<const SIZE: usize> {
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index f13a747e784c84a0fb09cbf47442712106eba07c..7df144d07b20d238a127299cd208f6280ba1bb7a 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1599,15 +1599,6 @@ pub(crate) fn ioctl(this: ArcBorrow<'_, Process>, file: &File, cmd: u32, arg: us
-         }
-     }
- 
--    pub(crate) fn compat_ioctl(
--        this: ArcBorrow<'_, Process>,
--        file: &File,
--        cmd: u32,
--        arg: usize,
--    ) -> Result {
--        Self::ioctl(this, file, cmd, arg)
--    }
--
-     pub(crate) fn mmap(
-         this: ArcBorrow<'_, Process>,
-         _file: &File,
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index 6773b7c273ec9634057300954d67b51ca9b54f6f..c79a9e7422401fd50078c1902774573b8ba0076c 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -313,8 +313,8 @@ unsafe impl<T> Sync for AssertSync<T> {}
-     let ops = kernel::bindings::file_operations {
-         owner: THIS_MODULE.as_ptr(),
-         poll: Some(rust_binder_poll),
--        unlocked_ioctl: Some(rust_binder_unlocked_ioctl),
--        compat_ioctl: Some(rust_binder_compat_ioctl),
-+        unlocked_ioctl: Some(rust_binder_ioctl),
-+        compat_ioctl: Some(bindings::compat_ptr_ioctl),
-         mmap: Some(rust_binder_mmap),
-         open: Some(rust_binder_open),
-         release: Some(rust_binder_release),
-@@ -402,23 +402,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
- 
- /// # Safety
- /// Only called by binderfs.
--unsafe extern "C" fn rust_binder_compat_ioctl(
--    file: *mut bindings::file,
--    cmd: kernel::ffi::c_uint,
--    arg: kernel::ffi::c_ulong,
--) -> kernel::ffi::c_long {
--    // SAFETY: We previously set `private_data` in `rust_binder_open`.
--    let f = unsafe { Arc::<Process>::borrow((*file).private_data) };
--    // SAFETY: The caller ensures that the file is valid.
--    match Process::compat_ioctl(f, unsafe { File::from_raw_file(file) }, cmd as _, arg as _) {
--        Ok(()) => 0,
--        Err(err) => err.to_errno() as isize,
--    }
--}
--
--/// # Safety
--/// Only called by binderfs.
--unsafe extern "C" fn rust_binder_unlocked_ioctl(
-+unsafe extern "C" fn rust_binder_ioctl(
-     file: *mut bindings::file,
-     cmd: kernel::ffi::c_uint,
-     arg: kernel::ffi::c_ulong,
+I would consider moving SIZE to an associated constant.
 
----
-base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
-change-id: 20251030-binder-compatptrioctl-ecc9e2131edb
+	pub trait Io {
+	    const MIN_SIZE: usize;
+	
+	    ...
+	}
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+If it's a generic parameter, then the same type can implement both Io<5>
+and Io<7> at the same time, but I don't think it makes sense for a
+single type to implement Io with different minimum sizes.
 
+>      /// Returns the base address of this mapping.
+> -    #[inline]
+> -    pub fn addr(&self) -> usize {
+> -        self.0.addr()
+> -    }
+> +    fn addr(&self) -> usize;
+>  
+>      /// Returns the maximum size of this mapping.
+> -    #[inline]
+> -    pub fn maxsize(&self) -> usize {
+> -        self.0.maxsize()
+> -    }
+> -
+> -    #[inline]
+> -    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+> -        let type_size = core::mem::size_of::<U>();
+> -        if let Some(end) = offset.checked_add(type_size) {
+> -            end <= size && offset % type_size == 0
+> -        } else {
+> -            false
+> -        }
+> -    }
+> +    fn maxsize(&self) -> usize;
+>  
+> +    /// Returns the absolute I/O address for a given `offset`.
+> +    /// Performs runtime bounds checks using [`offset_valid`]
+>      #[inline]
+>      fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+> -        if !Self::offset_valid::<U>(offset, self.maxsize()) {
+> +        if !offset_valid::<U>(offset, self.maxsize()) {
+>              return Err(EINVAL);
+>          }
+>  
+> @@ -217,50 +215,197 @@ fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+>          self.addr().checked_add(offset).ok_or(EINVAL)
+>      }
+>  
+> +    /// Returns the absolute I/O address for a given `offset`,
+> +    /// performing compile-time bound checks.
+>      #[inline]
+>      fn io_addr_assert<U>(&self, offset: usize) -> usize {
+> -        build_assert!(Self::offset_valid::<U>(offset, SIZE));
+> +        build_assert!(offset_valid::<U>(offset, SIZE));
+>  
+>          self.addr() + offset
+>      }
+>  
+> -    define_read!(read8, try_read8, readb -> u8);
+> -    define_read!(read16, try_read16, readw -> u16);
+> -    define_read!(read32, try_read32, readl -> u32);
+> +    /// Infallible 8-bit read with compile-time bounds check.
+> +    fn read8(&self, _offset: usize) -> u8 {
+> +        !0
+> +    }
+> +
+> +    /// Infallible 16-bit read with compile-time bounds check.
+> +    fn read16(&self, _offset: usize) -> u16 {
+> +        !0
+> +    }
+> +
+> +    /// Infallible 32-bit read with compile-time bounds check.
+> +    fn read32(&self, _offset: usize) -> u32 {
+> +        !0
+> +    }
+> +
+> +    /// Infallible 64-bit read with compile-time bounds check (64-bit only).
+> +    #[cfg(CONFIG_64BIT)]
+> +    fn read64(&self, _offset: usize) -> u64 {
+> +        !0
+> +    }
+> +
+> +    /// Fallible 8-bit read with runtime bounds check.
+> +    fn try_read8(&self, _offset: usize) -> Result<u8> {
+> +        Err(ENOTSUPP)
+> +    }
+> +
+> +    /// Fallible 16-bit read with runtime bounds check.
+> +    fn try_read16(&self, _offset: usize) -> Result<u16> {
+> +        Err(ENOTSUPP)
+> +    }
+> +
+> +    /// Fallible 32-bit read with runtime bounds check.
+> +    fn try_read32(&self, _offset: usize) -> Result<u32> {
+> +        Err(ENOTSUPP)
+> +    }
+> +
+> +    /// Fallible 64-bit read with runtime bounds check (64-bit only).
+> +    #[cfg(CONFIG_64BIT)]
+> +    fn try_read64(&self, _offset: usize) -> Result<u64> {
+> +        Err(ENOTSUPP)
+> +    }
+> +
+> +    /// Infallible 8-bit write with compile-time bounds check.
+> +    fn write8(&self, _value: u8, _offset: usize) {
+> +        ()
+> +    }
+> +
+> +    /// Infallible 16-bit write with compile-time bounds check.
+> +    fn write16(&self, _value: u16, _offset: usize) {
+> +        ()
+> +    }
+> +
+> +    /// Infallible 32-bit write with compile-time bounds check.
+> +    fn write32(&self, _value: u32, _offset: usize) {
+> +        ()
+> +    }
+> +
+> +    /// Infallible 64-bit write with compile-time bounds check (64-bit only).
+> +    #[cfg(CONFIG_64BIT)]
+> +    fn write64(&self, _value: u64, _offset: usize) {
+> +        ()
+> +    }
+> +
+> +    /// Fallible 8-bit write with runtime bounds check.
+> +    fn try_write8(&self, value: u8, offset: usize) -> Result;
+> +
+> +    /// Fallible 16-bit write with runtime bounds check.
+> +    fn try_write16(&self, value: u16, offset: usize) -> Result;
+> +
+> +    /// Fallible 32-bit write with runtime bounds check.
+> +    fn try_write32(&self, value: u32, offset: usize) -> Result;
+> +
+> +    /// Fallible 64-bit write with runtime bounds check (64-bit only).
+> +    #[cfg(CONFIG_64BIT)]
+> +    fn try_write64(&self, _value: u64, _offset: usize) -> Result {
+> +        Err(ENOTSUPP)
+> +    }
+
+Why are there default implementations for all of these trait methods? I
+would suggest not providing any default implementations at all.
+
+Alice
