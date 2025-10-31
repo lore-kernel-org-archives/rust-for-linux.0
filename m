@@ -1,119 +1,258 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF47277CA1;
-	Fri, 31 Oct 2025 14:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64C22F6183;
+	Fri, 31 Oct 2025 16:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761922786; cv=none; b=qgOlRxFVFhQ3ewDCBt7JpDHzEzdJfHDZ7jdI56J7gpj/IYIDLxSYwy6U0VP0/lhwxbW22FwS+dBs4Szh9k5HhPcnCsaJ6ypvztEWZYZ//8DREHcdvp2DYHNoZJEQ7ZpDrkgapf/lfLGzhZ0uCbVIiubqOCcHQE5hJuy/QQ/xqhI=
+	t=1761928959; cv=none; b=LuOy+aUClSBNoyoqlGCnKpEEy5r784ScXSi/0ovAGmhuP+0b4vM3wKrdEn33keQfZ4C2GfjafAMqcITjj8EXlxMfXnUON+mamABRkwC+2K4MwmUlfCzkokcFPZwZy3Cv+5ug8phdxfR6DB5dVcIObbH9fbd6cHrdrkReRUokL9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761922786; c=relaxed/simple;
-	bh=Se1X+I72s40rkJM8ntQMAsthPScDNCwADTjGR+2p8i8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uUpr293flM0CAluAXhz7ZTa3DUd1Hq6GOlVQvsD+SgXL8gefOmKm6uprMIE7yUA23n5QDTB2fOEy1VLbnns6uyxQ236JEmm3vZ7KcKJzmjUfIYBeUUZiBR+95fdaeH2FCCYAQ0e0Uh6Ce9nqKc3f8Cg8TU5V0EWBEsscFm04aFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TabzbHyD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761928959; c=relaxed/simple;
+	bh=y9SS1AanRaN3IJF7ZKQYXKyWoIq2zbJr960kdKeZFA0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GbP2rgld+hdxkJeYvVFilNeehOyH9SfCjoQqb1A7pAHAMf6xDEPIugNFwUG7eJDeBlNr3Wnat6HlGzBSw3zXME/0CLB1FzFYEYAn5JbqaBch+I1MqJN4IGYNVSw6Bzbjg/w7gAapdKrWB5xYNGyq90/pa9DF8gPpKWYC0OZ6Qwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AKv5CfzT; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TabzbHyD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9E2C4CEE7;
-	Fri, 31 Oct 2025 14:59:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761922785;
-	bh=Se1X+I72s40rkJM8ntQMAsthPScDNCwADTjGR+2p8i8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TabzbHyDksb3gZOmCavUq22PsUmNwua/fz4XrJHtK90DBFupxbVOUjNqvAsWsjRsE
-	 at9BKimGYNbQY11qtTZ9Ih5wTf1k2sM3u0VVMGM8tm/qnwR/Uw/Brt9vvh7BanuXMO
-	 mXYxw1ZAWLD4DA8+p50XG5IROBwWGTY1k/+Bq214IK+BQrB9f18SzK6zzBWgbfZ6dr
-	 CgQYphcUND5E4ubz9hC2+td6P4q+N2HtXoHIEyPVbLq6Ax96+oWl98LiYJV0vq4SV4
-	 ioYSzZ4Yj/+iLA2GYYPGcDgK+Url8fR3U4UxsBi65l+sYIesHYr+l5FjsnFk42pIle
-	 tn/LMiTLkQcsw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Thomas
- Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org, Daniel Almeida
- <daniel.almeida@collabora.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel
- Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>
-Subject: Re: [PATCH v13 03/17] preempt: Introduce HARDIRQ_DISABLE_BITS
-In-Reply-To: <20251013155205.2004838-4-lyude@redhat.com>
-References: <20251013155205.2004838-1-lyude@redhat.com>
- <20251013155205.2004838-4-lyude@redhat.com>
-Date: Fri, 31 Oct 2025 15:59:34 +0100
-Message-ID: <87pla386cp.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AKv5CfzT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761928955; x=1793464955;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=y9SS1AanRaN3IJF7ZKQYXKyWoIq2zbJr960kdKeZFA0=;
+  b=AKv5CfzTW2SQUVJAULy0Mk7xoHoXqzpwdDjIl1JLBcilat6ITZaWdsqI
+   xSUQPTAofRAR4JrzrpJBEv2q5yKfh3AK+/dkV5ZZWFCQFN3zCU2xz5PcB
+   qvV8S+e1j8H7f/GMRP/Splr6tNRZrCeqPTrmdrAHxLjlp0T0u5B0w7Nnv
+   /nL8IMsNbWZ+hDIDh4L7Bfzc7rFYA3empDPCT97btvIWhMFwmhHo8y3Qi
+   Wj3i1yXCRpQhBlU0QFbyizDjhGpGg5F31aQ8NE77iEr/sbNz7gFO2a75R
+   YaKUET9ti72zwZ2c22uAb6tUWx2j9kfOhOgVEGPYljvNtrV9L0uDnsW03
+   g==;
+X-CSE-ConnectionGUID: jl5jQaLgRxSPCWE32mzneA==
+X-CSE-MsgGUID: rlSdTnIlSHmeuFJS6heH0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="67954794"
+X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
+   d="scan'208";a="67954794"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 09:42:29 -0700
+X-CSE-ConnectionGUID: BoHLWMZKSxalHKuavq7lIQ==
+X-CSE-MsgGUID: JvpjFaUfTUCJl1yAWJcl3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
+   d="scan'208";a="187016744"
+Received: from abityuts-desk.ger.corp.intel.com (HELO [10.245.244.98]) ([10.245.244.98])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 09:42:24 -0700
+Message-ID: <79bbbd8b-e60b-435b-82b6-ea59230997e2@intel.com>
+Date: Fri, 31 Oct 2025 16:42:22 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 4/4] samples: rust: Add sample demonstrating DRM buddy
+ allocator
+To: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ dakr@kernel.org, David Airlie <airlied@gmail.com>
+Cc: acourbot@nvidia.com, Alistair Popple <apopple@nvidia.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Andrea Righi <arighi@nvidia.com>, Philipp Stanner <phasta@kernel.org>,
+ nouveau@lists.freedesktop.org
+References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
+ <20251030190613.1224287-5-joelagnelf@nvidia.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20251030190613.1224287-5-joelagnelf@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Lyude Paul <lyude@redhat.com> writes:
-
-> From: Boqun Feng <boqun.feng@gmail.com>
->
-> In order to support preempt_disable()-like interrupt disabling, that is,
-> using part of preempt_count() to track interrupt disabling nested level,
-> change the preempt_count() layout to contain 8-bit HARDIRQ_DISABLE
-> count.
->
-> Note that HARDIRQ_BITS and NMI_BITS are reduced by 1 because of this,
-> and it changes the maximum of their (hardirq and nmi) nesting level.
->
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+On 30/10/2025 19:06, Joel Fernandes wrote:
+> Demonstrates usage of the DRM buddy allocator bindings through
+> a simple test module that initializes the allocator, performs
+> allocations, and prints information about the allocated blocks.
+> 
+> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 > ---
->  include/linux/preempt.h | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-> index 9580b972e1545..bbd2e51363d8f 100644
-> --- a/include/linux/preempt.h
-> +++ b/include/linux/preempt.h
-> @@ -17,6 +17,8 @@
->   *
->   * - bits 0-7 are the preemption count (max preemption depth: 256)
->   * - bits 8-15 are the softirq count (max # of softirqs: 256)
-> + * - bits 16-23 are the hardirq disable count (max # of hardirq disable: 256)
-> + * - bits 24-27 are the hardirq count (max # of hardirqs: 16)
->   * - bit 28 is the NMI flag (no nesting count, tracked separately)
->   *
->   * The hardirq count could in theory be the same as the number of
-> @@ -30,29 +32,34 @@
->   *
->   *         PREEMPT_MASK:	0x000000ff
->   *         SOFTIRQ_MASK:	0x0000ff00
-> - *         HARDIRQ_MASK:	0x000f0000
-> + * HARDIRQ_DISABLE_MASK:	0x00ff0000
-> + *         HARDIRQ_MASK:	0x0f000000
->   *             NMI_MASK:	0x10000000
->   * PREEMPT_NEED_RESCHED:	0x80000000
->   */
->  #define PREEMPT_BITS	8
->  #define SOFTIRQ_BITS	8
-> +#define HARDIRQ_DISABLE_BITS	8
->  #define HARDIRQ_BITS	4
->  #define NMI_BITS	1
->  
->  #define PREEMPT_SHIFT	0
->  #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
-> -#define HARDIRQ_SHIFT	(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
-> +#define HARDIRQ_DISABLE_SHIFT	(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
-> +#define HARDIRQ_SHIFT	(HARDIRQ_DISABLE_SHIFT + HARDIRQ_DISABLE_BITS)
->  #define NMI_SHIFT	(HARDIRQ_SHIFT + HARDIRQ_BITS)
->  
->  #define __IRQ_MASK(x)	((1UL << (x))-1)
->  
->  #define PREEMPT_MASK	(__IRQ_MASK(PREEMPT_BITS) << PREEMPT_SHIFT)
->  #define SOFTIRQ_MASK	(__IRQ_MASK(SOFTIRQ_BITS) << SOFTIRQ_SHIFT)
-> +#define HARDIRQ_DISABLE_MASK	(__IRQ_MASK(SOFTIRQ_BITS) << HARDIRQ_DISABLE_SHIFT)
+>   samples/rust/Kconfig           |  14 +++++
+>   samples/rust/Makefile          |   1 +
+>   samples/rust/rust_drm_buddy.rs | 106 +++++++++++++++++++++++++++++++++
+>   3 files changed, 121 insertions(+)
+>   create mode 100644 samples/rust/rust_drm_buddy.rs
+> 
+> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+> index b45631e2593c..8ccb4064ba91 100644
+> --- a/samples/rust/Kconfig
+> +++ b/samples/rust/Kconfig
+> @@ -21,6 +21,20 @@ config SAMPLE_RUST_CLIST
+>   
+>   	  If unsure, say N.
+>   
+> +config SAMPLE_RUST_DRM_BUDDY
+> +	tristate "DRM buddy allocator sample"
+> +	depends on DRM_BUDDY
+> +	help
+> +	  This option builds the Rust DRM buddy allocator sample.
+> +
+> +	  The sample demonstrates using the DRM buddy allocator bindings
+> +	  to allocate and free memory blocks.
+> +
+> +	  To compile this as a module, choose M here:
+> +	  the module will be called rust_drm_buddy.
+> +
+> +	  If unsure, say N.
+> +
+>   config SAMPLE_RUST_CONFIGFS
+>   	tristate "Configfs sample"
+>   	depends on CONFIGFS_FS
+> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+> index f8899c0df762..a56204ee4e96 100644
+> --- a/samples/rust/Makefile
+> +++ b/samples/rust/Makefile
+> @@ -2,6 +2,7 @@
+>   ccflags-y += -I$(src)				# needed for trace events
+>   
+>   obj-$(CONFIG_SAMPLE_RUST_CLIST)			+= rust_clist.o
+> +obj-$(CONFIG_SAMPLE_RUST_DRM_BUDDY)		+= rust_drm_buddy.o
+>   obj-$(CONFIG_SAMPLE_RUST_MINIMAL)		+= rust_minimal.o
+>   obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE)		+= rust_misc_device.o
+>   obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+> diff --git a/samples/rust/rust_drm_buddy.rs b/samples/rust/rust_drm_buddy.rs
+> new file mode 100644
+> index 000000000000..96907bc19243
+> --- /dev/null
+> +++ b/samples/rust/rust_drm_buddy.rs
+> @@ -0,0 +1,106 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Rust DRM buddy allocator sample.
+> +//!
+> +//! This sample demonstrates using the DRM buddy allocator from Rust.
+> +
+> +use kernel::{
+> +    drm::buddy::{
+> +        BuddyFlags,
+> +        DrmBuddy, //
+> +    },
+> +    prelude::*,
+> +    sizes::*, //
+> +};
+> +
+> +module! {
+> +    type: RustDrmBuddySample,
+> +    name: "rust_drm_buddy",
+> +    authors: ["Joel Fernandes"],
+> +    description: "DRM buddy allocator sample",
+> +    license: "GPL",
+> +}
+> +
+> +struct RustDrmBuddySample;
+> +
+> +impl kernel::Module for RustDrmBuddySample {
+> +    fn init(_module: &'static ThisModule) -> Result<Self> {
+> +        // Create a buddy allocator managing 1GB with 4KB chunks.
+> +        let buddy = DrmBuddy::new(SZ_1G, SZ_4K)?;
+> +
+> +        pr_info!("=== Test 1: Single 16MB block ===\n");
+> +        let allocated = buddy.alloc_blocks(
+> +            0,
+> +            0,
 
-Should this be HARDIRQ_DISABLE_BITS rather than SOFTIRQ_BITS ?
+Does this map to the start/end? Surprised that this works with 
+RANGE_ALLOCATION below. I guess it works because of the end-1, but I'm 
+not sure if that was intended.
 
+Anyway, probably you didn't really want RANGE_ALLOCATION here? That is 
+only if you want something at a specific offset or within a special bias 
+range. So here I think it will give you a massive bias range covering 
+everything due to end-1, but all you wanted was any available 16M block, 
+which is the typical flow? It still technically works, but looks a bit 
+non-standard and will internally take the bias range path, which is not 
+ideal :)
 
-Best regards,
-Andreas Hindborg
+Also I guess worth updating the example in buddy.rs, which also does this?
 
+> +            SZ_16M,
+> +            SZ_4K,
+> +            BuddyFlags::RANGE_ALLOCATION,
+> +            GFP_KERNEL,
+> +        )?;
+> +
+> +        let mut count = 0;
+> +        for block in &allocated {
+> +            pr_info!(
+> +                "  Block {}: offset=0x{:x}, order={}, size={}\n",
+> +                count,
+> +                block.offset(),
+> +                block.order(),
+> +                block.size(&buddy)
+> +            );
+> +            count += 1;
+> +        }
+> +        pr_info!("  Total: {} blocks\n", count);
+> +        drop(allocated);
+> +
+> +        pr_info!("=== Test 2: Three 4MB blocks ===\n");
+> +        let allocated = buddy.alloc_blocks(
+> +            0,
+> +            0,
+> +            SZ_4M * 3,
+> +            SZ_4K,
+> +            BuddyFlags::RANGE_ALLOCATION,
+> +            GFP_KERNEL,
+> +        )?;
+> +
+> +        count = 0;
+> +        for block in &allocated {
+> +            pr_info!(
+> +                "  Block {}: offset=0x{:x}, order={}, size={}\n",
+> +                count,
+> +                block.offset(),
+> +                block.order(),
+> +                block.size(&buddy)
+> +            );
+> +            count += 1;
+> +        }
+> +        pr_info!("  Total: {} blocks\n", count);
+> +        drop(allocated);
+> +
+> +        pr_info!("=== Test 3: Two 8MB blocks ===\n");
+> +        let allocated = buddy.alloc_blocks(
+> +            0,
+> +            0,
+> +            SZ_8M * 2,
+> +            SZ_4K,
+> +            BuddyFlags::RANGE_ALLOCATION,
+> +            GFP_KERNEL,
+> +        )?;
+> +
+> +        count = 0;
+> +        for block in &allocated {
+> +            pr_info!(
+> +                "  Block {}: offset=0x{:x}, order={}, size={}\n",
+> +                count,
+> +                block.offset(),
+> +                block.order(),
+> +                block.size(&buddy)
+> +            );
+> +            count += 1;
+> +        }
+> +        pr_info!("  Total: {} blocks\n", count);
+> +
+> +        pr_info!("=== All tests passed! ===\n");
+> +
+> +        Ok(RustDrmBuddySample {})
+> +    }
+> +}
 
