@@ -1,162 +1,203 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012023.outbound.protection.outlook.com [52.101.48.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3166E18991E;
-	Sat,  1 Nov 2025 21:39:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762033156; cv=none; b=PV59gDI03uZ/gStl8vtx7pjoiaQMqXWpHQzuHFcDG4CoptqB+4IxdVbkgef5QkeEGReq3Y//Qy9zYZVrgMkDXsu8ZrcPuP9wXxwYBAgP0BWCPRFCIH9e1vBqiqAexuFNW81sgzqwXxeRpBnPHLYsdBy5t5tIy7g+o0a2bRS9kWg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762033156; c=relaxed/simple;
-	bh=PIbJrvVkofSgsg6Fu78fTICs5kcAQfLLG7Xmzmf8J8Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AUVLpY30ZuYd5IqI3/6JWaQgjjy8ooYgDp1tm4COqt+ogDAd+dR8DkfOy56nr6aNMgsOJCut0tq3ooGINHQpbSxQAiOHfyVYGpWFnbHPNgwbN/e98rzi+FbXBKzKjJVJXnmKu7FiNjVMjvAvB6LN9x0SlOnyQwWb8cMokFXnJ6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UDVNjc+2; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66356BE49;
+	Sun,  2 Nov 2025 00:35:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762043739; cv=fail; b=neRgyIApmUkzDK55WXorlmAmAUP844jLAV16F9OLviYfRrdFIy2dtwuOml9n8o8BEl3czWu2HEu/KECDK1uyB+TYi6bmXFldDlC6m2M6vjH5QWIOuLpakrcN9zFB4nLsiSyVM7nm6QJBqi6dSkYcFzkrkehXVLNlImJhA2J4XWo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762043739; c=relaxed/simple;
+	bh=eZkxXKkGvZ8Fjs6sOzcRv8cT2aU3w3HrrHvMvMFFoK0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=iuE8idxL2tWSlO3asGc/aSCfTx2qk6TPl7SK9qFrYmKLpEE+9338sKssi3JbBzeeHwpM9d/a5UWjAog28JHw5CAhTBwBAfDBZGB+epob2JJQAAiGUOArrtWQo/Sp6F/qWy8eeOue8a3iLYfXH/Hrx2Hd2fIKjH7w7i4mb4rrxps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ej2SAkl/; arc=fail smtp.client-ip=52.101.48.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UDVNjc+2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D18C4CEF1;
-	Sat,  1 Nov 2025 21:39:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762033155;
-	bh=PIbJrvVkofSgsg6Fu78fTICs5kcAQfLLG7Xmzmf8J8Y=;
-	h=Date:Reply-To:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UDVNjc+2AK9PR0FV8xZY9ymslhNnyJD424G+Zdxnl4Rj05k5XKLUiaoNJjWByy13y
-	 ++e10JG9YTqAcrpU8SxfIf4R7ElkmwOVpCAB5yP9S4jQkENw99DcsDGpAbJFGyBaAR
-	 1DYZHcyo2+Cr1IkAjZg9GQW+ZX6dp7TRjBSDtHc3HiW/UcKkNS+0ecgEeoHenLEfj0
-	 RnY4dcHMRSw9YiJXL4aslwNTdsTgqEL4bvxceClNFHvDCL3gAizz+IY10GIb+DvLOI
-	 w8JoPvfVJ55+fxWgschILny744ODKOcFa/++e9AttrhF9m6QeOFQCv7NCdotHcf8SV
-	 +JXABEc/qgrzQ==
-Message-ID: <49af6d76-bcb7-4343-8903-390040e2c49b@kernel.org>
-Date: Sat, 1 Nov 2025 22:39:08 +0100
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ej2SAkl/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FxexHJpVc2dw70rboZujtVRcrR877ZTYVdDvpWzz4vWpahta3I7fg6HNBD+V7UIhFbnRwDKxnrsZDr2r5xHWWa+tbVOTFQEWp7RJZZtp/gE2+Ott2l6D6p5iGjdEx6PE0JcNsCsKI4oKJXpMM+uVl6K0ZjE4anKf8aq0uxegWb05Q493iVI4V8uS5/c5OPvit01Sx6qmUlJEpLSjq3rCgvEKzgBJr+YfkFc+VriI63L9UG1XetCmH5GNEAPPqW1mOVK4GEGYOyRt+4dMi6mOsrbQi6m6eTdmghu5LI3qCv69g2j3zUN0eV5bUa1gT/y1+Sio/LA5k/OdljmkvxlRQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Nlq0JSPfi712vwOpCvUa35Iod3RcFxY0gEfMDYK0VBo=;
+ b=bLURlz8L43FYUQfTLSrmsLf4M1tTRwMjrWGTxMDcekYPXYAP6Ph7bxLxIHNubeJ0jnV7oFSSqp0E+N6VNWHwvmGI3q+SyGsZE/ErLv+l9b0urf4MiH7mVxINVfGLxZ2D9WALBk4f9exe8LYuMv6nE5qIAZZlItpfWWCDf7GLfT0FQoHW8IRAtgCTwGjAYCYEHMGnpiKsxW057BYIPDBn13/rsnOJcEffsCsYWuzmE0VVm2Y+ep6BqRt7DCrgzfQxrSFg4/M3u3xqOuB6wu+hUdgWhfPQx6LWNC5AwyJ1MHI/fssz439VQiiNhzxopBovcjAJsnmBZgD7ypgNQay8Zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Nlq0JSPfi712vwOpCvUa35Iod3RcFxY0gEfMDYK0VBo=;
+ b=ej2SAkl/JieBJi+mc4kUI/Csco1AFYIFmwNcxyEXkTIwXB8ajntOd8DH9vxTaP1qYVPRADHlTYcQa/qbx3a39LxytwXKiZzYxU+D20NRNygK48UMm1OZKIRZJGqX0P+clsmS6Mro8xUD5oZ3aoDbxWAEBT3egTD1nu0Vwsle3CRPS73i0L40JngeCOrbPmx10GqheAkNI6sstLnniPIoW0Exont3RQCPUN4wrfwXZgz/syLEbPj8Bb8xs/WRwFyKJYwDChRDPtfk8WSXH9XyczqHRzNnoBfWfv1FYhf61Zv2jvSgbjXxCoTPgKrTe5c8UMY3oCptYIVutdZvYDQ9mg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13)
+ by DS0PR12MB9421.namprd12.prod.outlook.com (2603:10b6:8:1a1::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Sun, 2 Nov
+ 2025 00:35:33 +0000
+Received: from BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4]) by BY5PR12MB4116.namprd12.prod.outlook.com
+ ([fe80::81b6:1af8:921b:3fb4%4]) with mapi id 15.20.9275.013; Sun, 2 Nov 2025
+ 00:35:33 +0000
+Message-ID: <64018a2d-1c0c-4851-95d5-989f041d220d@nvidia.com>
+Date: Sat, 1 Nov 2025 17:34:41 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] gpu: nova-core: add boot42 support for next-gen
+ GPUs
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Danilo Krummrich <dakr@kernel.org>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ Nouveau <nouveau-bounces@lists.freedesktop.org>
+References: <20251029030332.514358-1-jhubbard@nvidia.com>
+ <20251029030332.514358-3-jhubbard@nvidia.com>
+ <DDUV3MZ58O0T.229A7N13MM1HN@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DDUV3MZ58O0T.229A7N13MM1HN@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY5PR17CA0028.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::41) To BY5PR12MB4116.namprd12.prod.outlook.com
+ (2603:10b6:a03:210::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Daniel Gomez <da.gomez@kernel.org>
-Subject: Re: [PATCH v18 0/7] rust: extend `module!` macro with integer
- parameter support
-To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>,
- Nicolas Schier <nicolas.schier@linux.dev>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Trevor Gross <tmgross@umich.edu>, Adam Bratschi-Kaye
- <ark.email@gmail.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
- Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>,
- Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>,
- Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>,
- Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
-References: <20250924-module-params-v3-v18-0-bf512c35d910@kernel.org>
-Content-Language: en-US
-From: Daniel Gomez <da.gomez@kernel.org>
-Organization: kernel.org
-In-Reply-To: <20250924-module-params-v3-v18-0-bf512c35d910@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4116:EE_|DS0PR12MB9421:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee446e40-67f2-4d42-4559-08de19a7bb71
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Tk8rNi9nODV0QWpvTEt3cjNtZWp3VDEyM0xWQWxyTFYzWk9mTCtTZ0d5ZTJy?=
+ =?utf-8?B?Y1JYK29kd1ZKTm5oOUs1SkV0VlFSZ0NiczlPRm5ZWHQvNS9yKzVEallYMlRG?=
+ =?utf-8?B?VDFBZnNIb3ZzcXFaWGtTemVuaDQ2VDZwc0NvNUlEMWRMN1drL2QzbnNsZGky?=
+ =?utf-8?B?ZEdzU3FCK25lS0Q4M0ZNM1daZjFQd09SZ0ZrZVYvL0VqeGVRbUFMbytMRjd0?=
+ =?utf-8?B?dTlkUG5keW0zd3NtRm1iNlB6L0pEdjNsWW9Qc2RWZEdVSlkwLzB1ZzZ5Q2lL?=
+ =?utf-8?B?enNuclJwc1NLSzFwbExZeVJJQVlNWWg3VHVCeFNwbVRaVTBYV2p5U1BiUDJK?=
+ =?utf-8?B?N1VlQXQ4Yk1xNGc1QTdHNFo2TThiRDN0K0FoTlhTNzRRWmtmTEdOSzA0NTZV?=
+ =?utf-8?B?NmNpako4U1U5Z2RaUVU4cnhjb0ErMHRvK0h3VTFnQmt2czlaY2RsTFgvYnIz?=
+ =?utf-8?B?Z1N1ekRnaitkMlJvT0RyTlQ4dnB0N09SejFZWmlIUlVCU2NQWkI5S0sxK0U4?=
+ =?utf-8?B?d1ZCNHc0VTF6ZVJmc003aWc0U3R0dlR5SERLbENsS0RpWUtBa0JDY0tPRHhj?=
+ =?utf-8?B?TGZRdE4welBtY0YrbVZSZUFqYlJSWUg3ZlhEZDU2MjA2a0ZHeVJCaloyZzNJ?=
+ =?utf-8?B?QzJLNWNpbHU1S1lFMXJ0YUFlNGRlcitoWFlBVURpRlUreEgrbmJpemsvM2hC?=
+ =?utf-8?B?cVFzNjMwbWdvaEx2WFNnZWlSOGVSZkFvdkowWGhnVldEdDNLM2hMaVNEQ1VG?=
+ =?utf-8?B?RmR6NXZoRElOaWUzaVNHSDR4N0JGVzNaakVrNFpnL0ZtVmY5b3g2czdwZ25I?=
+ =?utf-8?B?cGp5alFXeVlxR0Z1ZzBXQVl4K0d3YVpIcjFpTDArQnBXUTlaS20wSWNtT2VJ?=
+ =?utf-8?B?YmV2eWp4eWM5bVhlWmVnbVN5eUlPL1RnZ05jZWJoMVQ4KzdGQXNXWjVKRTAr?=
+ =?utf-8?B?eGFBdlg0dXdubUd1UExFV1Y2ZDcyeWlSd2VtdEtzVHJJUkYxUHBBVVo1WjJp?=
+ =?utf-8?B?NzJzMnBlajh6aFVuWlZSb0JCcDJ3WFQ5eE83YWRhaGtRQXdvay9QNlJHYzFB?=
+ =?utf-8?B?VHJIekdxbDlpbTZwcGtiZjNuSmFHaTltemR6L0V6S2JIbjRQenJoelRXakNq?=
+ =?utf-8?B?WHE5MHZ2aUZHOE5CYytiTUovUXVkYzFFSCs1c1QxWGszaE1KNlg2VFFCWU9S?=
+ =?utf-8?B?VUphZ1hZZ1JvY2Z0RkVZblkyeXdkN0RlNGtGVEpiQitWbC9uMmw0dlg0ZkVO?=
+ =?utf-8?B?NXZub3c0TVdwd3JLZUtTUDh2dkJwN2t6NDl5WnozckhDd1JVdU9leGJDV0Jp?=
+ =?utf-8?B?K3BlOWFZWUxta3ZaK3FMczlhTmVSc21NSzk3TUYwTGpRWEMvTzFYWS90K0Nl?=
+ =?utf-8?B?K1FQSGVudzRCcUpCQ1U0cUdvaE4vNzN3d0VFZVhjRnVYY1VjTHNZV1dCSFFJ?=
+ =?utf-8?B?YXFUSXBFTEFGYlc1aHpmU2xDdDhkNk5QWjZqYzh2bDVkRmtoL1dvWUVORmFX?=
+ =?utf-8?B?L0hlVUMya2tpdGQ5cFgyOWpiM25Vbm8zTTBjVkY5SU5NL2VsMitpUHJORGpo?=
+ =?utf-8?B?bURCclFUZmdKNEttWmxnbnFkM0NwejBzR3FwS1l6d29sZHRVN1BIeTJldm1Q?=
+ =?utf-8?B?RVdHeW5mTm85UllQd1NQMEdpeHNIVTBGZkJCdUtoTVYyU0pxL0ZJaUo1dW1H?=
+ =?utf-8?B?dzBrNDdhUnVBaEVWbS9uc3k5MWhJdW1mTUEySys0VFB3WTMza2cwYm0zYUtv?=
+ =?utf-8?B?OFdDVktKSkRvMFJXbmttMUl1ZkVqSzZMaXBrWElNbnhLWnhWaW1zM1JDRThR?=
+ =?utf-8?B?R0VOdmFhdXBCN3JXMWVFeFpjaitDSDVsS0EwMnExMjE2UnpYeGtVeDU0Mm9l?=
+ =?utf-8?B?MXFWSzU2SEcyTDdTU0FqbiszdmNLWit2bkN5aEs5aUJ4UVRCVE9FOG5Ucm1X?=
+ =?utf-8?Q?EjNJo3LhJLStKU1/ofYViR4TyYyW8FY1?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4116.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WkNLbUU1QkwxMzdLOGVoSngzZ3czbDUvMUhiT1cvYUNrd3F1clhyOVRDUFM2?=
+ =?utf-8?B?MEx6ME54NVhPRVNkYTI4QXpJQUdPbkdkSEpiaHJnQ2NwY1BtcStYcFpZTE9X?=
+ =?utf-8?B?d0V0cU9sbFlSZHBrcVJzczFaQnF2c2owWVJJSlQ4aFUyUUpOU0s1UTlKdE1J?=
+ =?utf-8?B?VTY0ODJmV3BPdEFLZlBtbHV5S09hZ1g4dWsxUGt5VG0yQzRDV0dnRERqdE5R?=
+ =?utf-8?B?MS9hTVlxWTd2Smk4OVVNa1RWWlVyYlR4K3g2bkE1ZmxZZC9BU0xib2FjalZw?=
+ =?utf-8?B?SDhIbitiZzZ3MDBtOE1GRStQYlJ6dTFCTHA0ZnRNTmtBT0t2QWZLSThVdTZZ?=
+ =?utf-8?B?NEsyK05aV3kxbGF1YWxCb3JOTTBsR0I5SXNJWEs4MVlmUGVlbmhJZlJlUk5o?=
+ =?utf-8?B?MWswOGU3a2tZbncvYjBrb3VnL2xFTnJ4Mk1qemFlZGtRdXc5R1RNM0M3VnZl?=
+ =?utf-8?B?VUhkMldQem9SN3k3aFpFbG0ydGR1OHYvZWg5dVFITmZnbzZxayt6RE1SR244?=
+ =?utf-8?B?OGlreWNLVjI0clUzVndMK3J6U25YQUd6NXBkekZVWml5anNvYXFVSW1IOGVJ?=
+ =?utf-8?B?OUhyUkpKcGRiekd5VXZGNFBxU1pGODFycVBjdW44THFsMTlMZ1JaU2JEQUJJ?=
+ =?utf-8?B?MnUwR2JRL1JLdUk2SWF3L0grRjJLR3RIZjVlMkQ2cnVDMS95ZzA2WE9mVTZF?=
+ =?utf-8?B?MXZJTytONzRDcXdCK3puQWtmaW14TXA4MUNzbzBxRmNyaWRqYXB4Yzh5RUVN?=
+ =?utf-8?B?Wko0WHVQMFlaOVhTdTRGNlNoa0RtaE5HTDBnMDduVkI3c2hPLzByd04va2xn?=
+ =?utf-8?B?TEV1UlNqREo2YkJZb1cwbDk5b2VHOUR3ak1vRWZveUJUU3NKK3NHVHRFZUQw?=
+ =?utf-8?B?RFY0N2t3YnlSV1FRREYrajhnUExUNGNLYStSaWljaUZ0eWF5bWloTStScXdE?=
+ =?utf-8?B?M3I5U2E4OWhKeVRYTU5VcmwrcnZtN1hydEczRCtNYngzRjRpSFppdC9JQm90?=
+ =?utf-8?B?TlgyZEtZREN2M3FZYThXck04UkFkbCtoY2xWa1FIcWNjUm9lVmhQRnFGL3lG?=
+ =?utf-8?B?M2lycEk2cmhvZy91ejVTTHhTVUNXSlY4UTBFMmJIN29NUk1ubEpoYnA0dmJZ?=
+ =?utf-8?B?T0I0cU1IT04vUzRucmtMQTZiRVRteVp4YVJYZGZScVBJTS92QWcwM1ZTUDBL?=
+ =?utf-8?B?Z0xFZmwwYlRRM1ZTTEVvVllJKzdEaDk1UWJ1V2hZM0VnMXp2RS84UExHQ2pK?=
+ =?utf-8?B?cGRncUhMUTRTdyt4UENTT1k2eXZ6NGZ5WTExOTF1Q01ZcjRVNC9DTEVUM0p1?=
+ =?utf-8?B?YlNTVmJuTGxtV0ZBOEFoT3cySlBmdEpkOWNQenQ0emZjT1BPWEJWT2NUSSt5?=
+ =?utf-8?B?L2M1eEVUbE5mUXQ1cXlxR0x2MVMxYy9zd3E5ZkhIZ3hDQ0kwME8zVEhCK1Zi?=
+ =?utf-8?B?NWtCNXVPRFpxQ0szWm5uVlV0NVV0TTZrdGhTWG5nTUJzWndsTGgyMzBjOUlV?=
+ =?utf-8?B?QlVCd21JWU03UHB5UlBtWEt5MkNvdk5zdzhMa2pka3Y0bGFsYWFYZFhRQVM5?=
+ =?utf-8?B?cGlBb1ZZQ2xpenA4RmVnakh0dG1YVXkwSWxaN2RNK0Nza2l0N3NZSUp3dlY2?=
+ =?utf-8?B?Z29ZOWhNMmFQQWt2dDNBaGc5Z0VFMUg1Zmtyd3JhaFZKN1Y4bzgwdzNlQ2xT?=
+ =?utf-8?B?NzVuUjU5YzhSZGxGVldBUG1YRGEzZ3hNYzJVREpDTDVsKys5dWlxZ2Y5YjY2?=
+ =?utf-8?B?U1VqbklNUW93RHRUbjdydjRkcS9FOENuUGlNWTg0N0liK3BQMlhCNmxxczFI?=
+ =?utf-8?B?c3JtSFJ5eW1ZbDhiS015eFA5NC9EMmNid21RNjNGNG55SzBSMVMyY044ZnNH?=
+ =?utf-8?B?RTBmMmt2OE5XaFp2dlFnZDE2NWVjNjhYbWxZSXFqMmNMdE1hRURMMXF0SlBR?=
+ =?utf-8?B?RmV4UXJIa0RsYldnbFQxUSsvVTVHYW5xaUkwejBMaGdKMEN2OS84WW80bVRM?=
+ =?utf-8?B?TWJ4QThTSXRTOVdXSUo4anFYZzFmVXBsUWJSZnQxY2NZRlNPUUF0SytSQUpo?=
+ =?utf-8?B?WU55QjRQVnI4aWZ6TXRRR3hIVmgzZ0twcHF4YTMyWU82SmxCbnNKKzdrZmJx?=
+ =?utf-8?Q?wYcD1ybTDEp2yi5APcqf59veV?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee446e40-67f2-4d42-4559-08de19a7bb71
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4116.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2025 00:35:33.0489
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 97VR+AmhpNghIdsqe/DN2TdCz+2+pTCaYix2qA5cVg94VuIiOxPD2+7tY5LEWX2ReVv8dlkC+9gD4uX1TGv+Ug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9421
 
-On 24/09/2025 14.39, Andreas Hindborg wrote:
-> Extend the `module!` macro with support module parameters. Also add some
-> string to integer parsing functions.
+On 10/29/25 7:05 AM, Alexandre Courbot wrote:
+> On Wed Oct 29, 2025 at 12:03 PM JST, John Hubbard wrote:
+> <snip>
+> This allows the implementation of `NV_PMC_BOOT_42` to mirror that of
+> `NV_PMC_BOOT_0`:
 > 
-> Based on the original module parameter support by Miguel [1],
-> later extended and generalized by Adam for more types [2][3].
-> Originally tracked at [4].
-> 
-> Link: https://github.com/Rust-for-Linux/linux/pull/7 [1]
-> Link: https://github.com/Rust-for-Linux/linux/pull/82 [2]
-> Link: https://github.com/Rust-for-Linux/linux/pull/87 [3]
-> Link: https://github.com/Rust-for-Linux/linux/issues/11 [4]
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>   impl NV_PMC_BOOT_42 {
+>       pub(crate) fn chipset(self) -> Result<Chipset> {
+>           self.architecture()
+>               .map(|arch| {
+>                   ((arch as u32) << Self::IMPLEMENTATION_RANGE.len())
 
-I tested this series with rust_minimal module. They LGTM,
+A quick note: _RANGE() and related functions are (I think?) deeply,
+madly undocumented. Not only is bitfield a macro within a macro, but
+bitfield itself leaves the user with only the following as "documentation":
 
-Tested-by: Daniel Gomez <da.gomez@samsung.com>
+    ::kernel::macros::paste!(
+    const [<$field:upper _RANGE>]: ::core::ops::RangeInclusive<u8> = $lo..=$hi;
 
-The patches did not apply cleanly to v6.18-rc3, at least not when using b4.
-However, when applying them to the base commit and then rebasing onto v6.18-rc3,
-I didn't see any conflicts.
+The net result is that those of us who did not author or carefully
+review register!() and bitfield!() are going to have a rough time
+using these facilities.
 
-I've created a temporary branch with this rebase here:
+I'm not sure of the best way to add documentation here, but just
+thought I'd better give an early warning about this.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/modules/linux.git/log/?h=rebase/20250924-module-params-v3-v18-0-bf512c35d910@kernel.org
 
-Can you take a look when you can? I'll merge this shortly after checking with
-Uwe, as there are some minor conflicts with his tree.
+thanks,
+-- 
+John Hubbard
 
-+ Uwe
-
-These are the conflicts I see when merging the patch series from Michal [1]
-(Introduce import_ns support for Rust). I believe these are trivial things that
-we will get notified from linux-next merging. But let me know what you think as
-you have requested in that thread.
-
-[1] Link: https://lore.kernel.org/all/20251028-pwm_fixes-v1-0-25a532d31998@samsung.com/
-
-...
-Applying: rust: macros: Add support for 'imports_ns' to module!
-Patch failed at 0008 rust: macros: Add support for 'imports_ns' to module!
-error: patch failed: rust/macros/module.rs:98
-error: rust/macros/module.rs: patch does not apply
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-hint: When you have resolved this problem, run "git am --continue".
-hint: If you prefer to skip this patch, run "git am --skip" instead.
-hint: To restore the original branch and stop patching, run "git am --abort".
-hint: Disable this message with "git config set advice.mergeConflict false"
-
-git am --show-current-patch=diff
----
- rust/macros/module.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
----
- rust/macros/module.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 5ee54a00c0b65699596e660b2d4d60e64be2a50c..408cd115487514c8be79724d901c676435696376 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -98,6 +98,7 @@ struct ModuleInfo {
-     description: Option<String>,
-     alias: Option<Vec<String>>,
-     firmware: Option<Vec<String>>,
-+    imports_ns: Option<Vec<String>>,
- }
-
- impl ModuleInfo {
-@@ -112,6 +113,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-             "license",
-             "alias",
-             "firmware",
-+            "imports_ns",
-         ];
-         const REQUIRED_KEYS: &[&str] = &["type", "name", "license"];
-         let mut seen_keys = Vec::new();
-@@ -137,6 +139,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-                 "license" => info.license = expect_string_ascii(it),
-                 "alias" => info.alias = Some(expect_string_array(it)),
-                 "firmware" => info.firmware = Some(expect_string_array(it)),
-+                "imports_ns" => info.imports_ns = Some(expect_string_array(it)),
-                 _ => panic!("Unknown key \"{key}\". Valid keys are: {EXPECTED_KEYS:?}."),
-             }
-
-@@ -195,6 +198,11 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-             modinfo.emit("firmware", &fw);
-         }
-     }
-+    if let Some(imports) = info.imports_ns {
-+        for ns in imports {
-+            modinfo.emit("import_ns", &ns);
-+        }
-+    }
-
-     // Built-in modules also export the `file` modinfo string.
-     let file =
