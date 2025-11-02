@@ -1,116 +1,112 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3CE1F541E
-	for <rust-for-linux@vger.kernel.org>; Sun,  2 Nov 2025 22:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5EC846F
+	for <rust-for-linux@vger.kernel.org>; Sun,  2 Nov 2025 22:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762122054; cv=none; b=rWPQ2CvLY6Hf/rxoPIk0tPBnlmRe0FW9glbuSZLJvs1kb9n2Xhbkg43lumFQsa6CdCEXk7ehm1jVoKgnoJd4BEUCQCi/USfeLtX6YcJsr9P6SGjxCDejCdzV8kYPud7yETeT4GcRutEH5/+CM3VlJrQ0W1wmOlDvnGPzlflWxHs=
+	t=1762123794; cv=none; b=QlxZD/ReNJDc2MH9o2Q3qCR32w5y1ZmmCat1Ar8iKOPp55ayylXD2umXZBskQpHut55Ut4xhFmHWHGFsXXVrCCGIcEi7Eh62d912H1aPek+LGdIt2xGqfvAEJiTI9/aeU36c0OsRGQS6GK5FgCRGeVbr6mdZEewl0Z6yE1nbPmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762122054; c=relaxed/simple;
-	bh=WT7V+mIh7biSb9hoQQKTPcN5LrBBwROnmw3huldzWHY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jMZyaqXAt0h3c+3OVEd6ZayiE1lTQTvuBRJ3/I/MMp4biB+miz3bHn3TMhVMGUu+ufpNQHxewuAKPjytco2OW8y72wOPrc6yXU+x35n+Xr61VTdyyGKZWSh2eruzxBTJRHMFcxPQvyVxHEkbWIyZNvlzabf/C2yzt2iq5X6P0U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X9oUVqV7; arc=none smtp.client-ip=209.85.216.49
+	s=arc-20240116; t=1762123794; c=relaxed/simple;
+	bh=6i0tXaGpPRHI3y0fdNRPiXjwzY/va2gCum+8pnK6wqg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c8bCb06EMhWbr8f/2MQcFDMsT6YAuqkUhOWI5hyM9+Jm/2zobebLRHwF+hnH36DsyLZjHTwG+Fs8n1CCYQ4KrnK3tX8r+KK6QBWsCRK/GRFEx1edBPsxN61OUAwFvu1PzAcWu5eC9alaFOx6oPsR/DrKTWvp4gJtIH7GtCDEFuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gh7wwobb; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X9oUVqV7"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-340ad724ea4so298905a91.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 02 Nov 2025 14:20:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gh7wwobb"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-47721743fd0so20070875e9.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 02 Nov 2025 14:49:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762122051; x=1762726851; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ldh/rrZAKoIw8nkk3grHKnCTpuj+wVkO9BtM8FlPSJs=;
-        b=X9oUVqV7P1rOUBrqf086oFJ51nz318w3F3ADuNBXg/gWop7pmvDi34Sq9j/PWbDrmx
-         cgRUQD0YzJNi13LkMEYb++llpAt0BteLJpoyTbHfeABNE3AyFMPjkJG1rbI06lxkniZP
-         NgSnoKp6tLGjLAL2Q0MVtOZKacBQwyXZriOu6K5fqSdtW1GlAVJQiwgHYJ0gM19XOnW0
-         qDZutohzS7lzLziaPN0GCwRN8Mh2/Obky1ZNSOL5c+U10tAQTs3D28oeShHE4N9qY1E9
-         /KOfiDqtCyZk+Ko8JMN0QEuCCUnYnFMfCDTueaZxkvUrdMKltok28ktEbeLYXnNwOIlR
-         e7ZA==
+        d=gmail.com; s=20230601; t=1762123791; x=1762728591; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yxZfP1EgwtZ2tiYeqX+Jv36xFp2c8XGw5hNT53dpp4c=;
+        b=gh7wwobbOnIbz661cXg6YCBqfSN6SWN1yGX76d6mtAV4Xx+8kmOV14XjHWvOMvOrsR
+         csUcI+TtTuH9gYk7NHBHP3Fk/qo5Fm/Gvi7NUkfsx+BvGCFcpkF1smR7Z+hzfH+GlTn+
+         ujrzjK/uqofSr90vc7qHitb+PJCQGrCoaD+Kx4wx6pGr/bGgYkGDhcG058iUQWXDf6xN
+         BsKjnWxChIuLgshWuwmX/CuWseBkMTekZqNmkwzuPj1QudK3uSAMAI0oUu7M5OUMekaF
+         2OuNI+dC4WnWYnly51WcZMfv8FPva70W6ThxZfEOYegraCfXSzd2jWE9J7FeD6/A80My
+         SGUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762122051; x=1762726851;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ldh/rrZAKoIw8nkk3grHKnCTpuj+wVkO9BtM8FlPSJs=;
-        b=q32qM/lw2alXntQ81Wu/vguesiSDIG4oY/avHCaOs3uZGuYU5RPkKSEGNC7fej+qsU
-         lXp0EWSehO2BU9aaEYcfMj8OZij0Zza+aT7p37HyJ+qYr8vJSQLg7gVDBlScW8fQZkhh
-         TslIlVhuyYC+MkN6BgEjZoaM1GJoPYiIoM+6vrVfLD1FtRu78Ee0vVyogCBykXzMkdlX
-         huzOsmq+2127f0WR5cjX8Ht0oRc5O79MI/ecnLhmE7mKsmjm2pEtac1Prtskt9K/UK2U
-         xn7kV7JYAeL5AzfvCtRrH9qgVbbENlpsY2fJykNp8nKY6YxpdQ1cWRRlz76OvwfgCLuO
-         XXcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUgD6XNJXXRPAi/fEPrvXrgRQ5csV2TBymEUcUrHjR+5hVw5oIzSUdpyRRYin8pLT9CiAysW5AS3jouXwdGKA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8rnwKhKwkZlLIdMd8z/lmJvuXNuD9WjM1NiSem2KE23K+xgqZ
-	sTAN2lgRRwhmObg+4Mdwt8S0PHayI7F3+NPizpTBmGwNQnf5AO4ryx0f1p0uuABrjTvOBPg1uqj
-	RKIFqFRA3m8S28ecQwfY45ZVMrB9MzDU=
-X-Gm-Gg: ASbGncvOT+Ycp3mlbsRdE54Fe09mCAliYoSj3vCT69WLLnPH3MCtuSjmND7A4x0q5QZ
-	rlIdyEO+m5sRrbEoYLjaYctZxhKvU5z1flsIZX8YSVYImAWzyIyLJxCLG33q4YkA19gcNHKZl1J
-	xPBfPzhTP17lIxSRwBoiK0GTgKm55XSLvyPic5b0ImTsNwwo+J3uVhbHzTzskDM8RSe3rHX2UDf
-	gE+AovmqZW0O6ePlX3dgACan2HNT8hOd8sG53TbZV6LzAKkh69ljHoydedWiEMkCXEPFYtwClh8
-	Ombojp5DTpRAR9DpIgv+lAWYqqP3S4V+pMHS5HEGX8r+5z2/9wFObAuSDGo0WvqMOJSKTtKCsP9
-	Koy0=
-X-Google-Smtp-Source: AGHT+IHryhoTOrFuU+nX2/XXVf7kh67HIj6pJAwGZM07cNYk4Ch5KXgJowgB3YhvDy4LBmrqXMtVIjcCmU0HL6FeUno=
-X-Received: by 2002:a17:903:188f:b0:27a:186f:53ec with SMTP id
- d9443c01a7336-2951a4da98fmr50067215ad.9.1762122050659; Sun, 02 Nov 2025
- 14:20:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762123791; x=1762728591;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yxZfP1EgwtZ2tiYeqX+Jv36xFp2c8XGw5hNT53dpp4c=;
+        b=VCeX+PxNrjo+1I3BUoiUT7sbBTCa7AqU40pW6pOLj6wpzJbakuwKp+Kq2UkZTlQRKX
+         EZFUb0RVs/9d+8NDLsd6Aia90Dyzeym+RPgL7eLd7un3v252SmT8IEUdtjzrOEmeaMgf
+         kYZ2LZTMbqXRYElGd2JmLPQA1hXCRAZ9vczgvnFMRuz4IaPj+bc6FsatJvhx8GquO3u1
+         khWgmNOs4nx3nYVjB9TVIEG8ycC74a0HwJhy/imi6+VA4oR2uOIXUOGldwDWtj18aWG5
+         fsmCTDtLgN4Lt+Bt3dY45wML8tGOirzYNbGoYZr5MJXKrM3TfgAPl35VdgwrCNHaZFSe
+         N81A==
+X-Forwarded-Encrypted: i=1; AJvYcCVQxaWhPKLBqwftg33YOq8xFAhKN0aYzjyXfsAC5x30tParbF+giEPXWyHk3wzeRb7oaDsheeb9BrxYNKTVMg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaSTClUQNSLznAVQbQDPBo8CJXO1vwndJK4BwhwVKo32UvhZ9k
+	Gv/Z6r5huZTL4pju2/yufcXqmuwMztLPEB29xvICnnxxIcnEYJlWF1Le
+X-Gm-Gg: ASbGncuMA/Sg3duK9T46fAYLodvh/+u8+b7pd4fF2PhWlDEpR8jB2UyHK1kzvU4dbzY
+	WMGhJO+mBelzDpJ6V+n+oSgDAVPbzzWdmAhhbSkjFKP8R2X8G2otkxKG1XWDErlcaFnWOyz6ky6
+	aBrKKSdSbGNWRrVzCneQuEYjZcwDsTlFdwdu35mho1p7PRgtuhJOhV5aNt7K5m+pwkKVy2B5sdY
+	JihPe7qJgWE/eOifr82fkxO0cw3ddjBC5AtlA0FCVclSQkwO72rQtx88wO4mb0rzzfnnBx1yqu/
+	Cvnm6XqE8iH/x/Qmv5E3WcRPxTCZZWJ/E8hSHDs3wGlE8FoKRGGDm4UPj0yE8Uqo83e77s0bP/o
+	tkmMMAtdomh92Lb+oAqg5cIyBfv2uT+efgBddVfP54rtcr9ZGv2w6xO/lqAgE7ZoQa/dN12SCQE
+	nZFy3bvmgXLsJQOLrhMEdnqv4sKBzuW4DGds51Mu5FR39mBrtDuvlF9NzBPIQADLLrEG0=
+X-Google-Smtp-Source: AGHT+IHLr7QHAYyCpR7esydH0iZxndus/Yszg7n3Mbh2EIBSjYHhxzLG4Xv/sUpvArKaCvluQvwAug==
+X-Received: by 2002:a05:600c:848d:b0:471:12c2:201f with SMTP id 5b1f17b1804b1-477308b5986mr103587185e9.32.1762123791099;
+        Sun, 02 Nov 2025 14:49:51 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:acc:bb60:756b:64e3:20ef:1d08? ([2a01:e0a:acc:bb60:756b:64e3:20ef:1d08])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4772ff83182sm72828245e9.4.2025.11.02.14.49.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Nov 2025 14:49:50 -0800 (PST)
+Message-ID: <4b910f6f-9144-46a8-95c6-8e53bc83cd8c@gmail.com>
+Date: Sun, 2 Nov 2025 23:49:49 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251029071406.324511-1-ojeda@kernel.org>
-In-Reply-To: <20251029071406.324511-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 2 Nov 2025 23:20:38 +0100
-X-Gm-Features: AWmQ_bmo-1G4gStAz5BNMs8sUlqk3doCuOqq-d5OyHMqc8oaNkX_-Dz-ZcwIf5I
-Message-ID: <CANiq72k-7f91kNrAAnwFoRYyFYjRB+mo3PCRFzTkn7E-7xrCNw@mail.gmail.com>
-Subject: Re: [PATCH] rust: devres: fix private intra-doc link
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] nova-core: Simplify `transmute` and
+ `transmute_mut` in fwsec.rs
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ dri-devel <dri-devel-bounces@lists.freedesktop.org>
+References: <20251023205146.196042-1-delcastillodelarosadaniel@gmail.com>
+ <DDXC17HXPXFZ.3TIX7FHUJHAI7@nvidia.com>
+ <70210168-ee28-4996-89f0-83f8590cb716@gmail.com>
+ <eb51b5d5-7f38-41f3-882c-eb87eb2b9f44@kernel.org>
+Content-Language: en-US
+From: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
+In-Reply-To: <eb51b5d5-7f38-41f3-882c-eb87eb2b9f44@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 29, 2025 at 8:15=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> The future move of pin-init to `syn` uncovers the following private
-> intra-doc link:
->
->     error: public documentation for `Devres` links to private item `Self:=
-:inner`
->        --> rust/kernel/devres.rs:106:7
->         |
->     106 | /// [`Self::inner`] is guaranteed to be initialized and is alwa=
-ys accessed read-only.
->         |       ^^^^^^^^^^^ this item is private
->         |
->         =3D note: this link will resolve properly if you pass `--document=
--private-items`
->         =3D note: `-D rustdoc::private-intra-doc-links` implied by `-D wa=
-rnings`
->         =3D help: to override `-D warnings` add `#[allow(rustdoc::private=
-_intra_doc_links)]`
->
-> Currently, when rendered, the link points to "nowhere" (an inexistent
-> anchor for a "method").
->
-> Thus fix it.
->
-> Cc: stable@vger.kernel.org
-> Fixes: f5d3ef25d238 ("rust: devres: get rid of Devres' inner Arc")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On 11/2/25 17:08, Danilo Krummrich wrote:
+> On 11/2/25 4:09 PM, Daniel del Castillo wrote:
+>> About this, I was basing myself on nova-next [1]. I will rebase on top
+>> of drm-rust-next for the next version.
+>>
+>>
+>> Link: https://gitlab.freedesktop.org/drm/nova [1]
+>> Link: https://gitlab.freedesktop.org/drm/rust/kernel/-/tree/drm-rust-next [2]
+> 
+> Yes, the nova tree is the one I started the project with. Meanwhile we have
+> moved to use a common tree for DRM Rust infrastructure and drivers [3].
+> 
+> For the time being, the "original" nova tree is not in use anymore.
+> 
+> - Danilo
+> 
+> [3] https://lore.kernel.org/r/20250901202850.208116-1-dakr@kernel.org
 
-Applied to `rust-fixes` -- thanks!
-
-Cheers,
-Miguel
+I see, thanks for the explanation!
