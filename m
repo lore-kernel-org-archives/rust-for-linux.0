@@ -1,75 +1,107 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B7A1F936;
-	Sun,  2 Nov 2025 16:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D7121A459;
+	Sun,  2 Nov 2025 17:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762099731; cv=none; b=eKU6ursDpbJf+Khl7NGbBmEjz9R91pfjg3V8KwLvZww05hTXniwlljND794zARjt2v7ZnlAcDEFzFBmoGSi7B+JrWgkVVowFRywFvLnro5PnhGM/0tb1/uAlChsPCs/owKLj3ckNF6gAGKHEJpCJv3yf5GG8V1z+2zxstjvZ4p8=
+	t=1762104425; cv=none; b=W/VWtQh4mVEZMN5dAfGhBXSZoZaUG1bXZKZ2dV8uw+5UyC3X84b8Y6npgIEJxbl3RaA1OTe+1Gxryr+HJH5s0IpP9c3j1WGD89Q77a5NQUkFKWQE4Bnz6pikflpHvy1TKJkojtPx0FtatTLLSZixoYzYyYloWiIEYIAumAJQg2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762099731; c=relaxed/simple;
-	bh=R+eQUJqY93nsA0j/rgsWshRJvg4Yt8gRY5QAT1HTwxE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vERunvf5Q88Y4U9Y/Dv/UUOq4ncoRW1nyUbWMt3RWWpoOOR3wp2/eZm3RyiOscmeMMMwwyYTGuf8cKCej0CV5R/YIMX/Jbed6cwJFy00DHkJGEGJUknODxrb11onwdMbfeuux/R+zSfra7VEuZWDsKqs9YygvxAknHsNObn1pMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTK+r+PP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762104425; c=relaxed/simple;
+	bh=zRweTz2jNpwtT0qcUeNHesBfTvTcIjBj1ikd2sZG76w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=XW9VRfmSrF1jq91BPBlIqJhgFhVr0KDmTf4HcXMzpfyWUyEPAKkQhyCqfaXMVHi3pjz6Dm1zntFZ/ixMcwPWu/lNL1mawd3AJ0sypmFUGx2DBRCAtL/MSmBxsSnw3KTx6MvUHrQuxXXeVPBxWOn3wRovTbsIdvzWB/ZygiSYBKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C1R1ubK+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTK+r+PP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58792C4CEF7;
-	Sun,  2 Nov 2025 16:08:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C1R1ubK+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19B8C4CEF7;
+	Sun,  2 Nov 2025 17:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762099730;
-	bh=R+eQUJqY93nsA0j/rgsWshRJvg4Yt8gRY5QAT1HTwxE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dTK+r+PPtpJ2OivgDQTeE0Om5Loa0FEbqXbx46BzzdjD8Gev69t5NMmO0aZWzN3AG
-	 yG6jRaxH+z9lkiOzd24I3tS02L10KpiHX2frBzb+EyznE4zsLfx35bjOlpi1yb/29l
-	 1MKBeA1rumfN7P29p2erk5baqKFo4yvxCmfZBkTRp8XyDIm4D9S0073UkFZCNTU8d7
-	 pLwFHiQEjQWqa540Z6NagKXqEfiwuLD8ViSGaSSO9c2XqMxQn1tmjhBWLkVrbOZNnl
-	 1tXqGcuKR9VUN4tlwNoBGDjte8dlPhpyoUOgs4JqfQLjBCGwcoEdQ3hMHvj6sm89/E
-	 Zx+2pN5SHNL3A==
-Message-ID: <eb51b5d5-7f38-41f3-882c-eb87eb2b9f44@kernel.org>
-Date: Sun, 2 Nov 2025 17:08:45 +0100
+	s=k20201202; t=1762104424;
+	bh=zRweTz2jNpwtT0qcUeNHesBfTvTcIjBj1ikd2sZG76w=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=C1R1ubK+DLdO+eQXmN6/rims+2JgJMgcahlKBQAZMM1uOsXexTMoXNcX+RvE144+H
+	 gxdnUJkxsnvOdKB+Ymfb6Bx0LDjEC4Bc7bcbqGhDEXSJiTh442EFAIh7sEI+ovX9so
+	 XxZYFvgSOJO6umqswLOLh1U5iTXSmvk/JNiuxfgivP1ZTYC7K2bLqNMEd9vNRt4yHa
+	 u30hZFP6zzCssl60nAC0jXvZCA9QDksnw3YEtIOB/+hLG1WrOG6M0flwRtQi7yW1oh
+	 FPUtxdSj/EGiHAynkmLQGmpl0FVEzMnMWuF/sAdr9ErPRC4tqlEZn7pU2U4mhMEHzn
+	 lywtcos/ydm2Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] nova-core: Simplify `transmute` and
- `transmute_mut` in fwsec.rs
-To: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- dri-devel <dri-devel-bounces@lists.freedesktop.org>
-References: <20251023205146.196042-1-delcastillodelarosadaniel@gmail.com>
- <DDXC17HXPXFZ.3TIX7FHUJHAI7@nvidia.com>
- <70210168-ee28-4996-89f0-83f8590cb716@gmail.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <70210168-ee28-4996-89f0-83f8590cb716@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Sun, 02 Nov 2025 18:26:58 +0100
+Message-Id: <DDYDVUFTJFVY.3U00QWH6LOF5D@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [RFC 1/2] rust: introduce abstractions for fwctl
+Cc: <rust-for-linux@vger.kernel.org>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>, <cjia@nvidia.com>,
+ <smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>, <zhiwang@kernel.org>,
+ <alwilliamson@nvidia.com>, <acourbot@nvidia.com>, <joelagnelf@nvidia.com>,
+ <jhubbard@nvidia.com>, <jgg@nvidia.com>
+To: "Zhi Wang" <zhiw@nvidia.com>
+References: <20251030160315.451841-1-zhiw@nvidia.com>
+ <20251030160315.451841-2-zhiw@nvidia.com>
+In-Reply-To: <20251030160315.451841-2-zhiw@nvidia.com>
 
-On 11/2/25 4:09 PM, Daniel del Castillo wrote:
-> About this, I was basing myself on nova-next [1]. I will rebase on top
-> of drm-rust-next for the next version.
-> 
-> 
-> Link: https://gitlab.freedesktop.org/drm/nova [1]
-> Link: https://gitlab.freedesktop.org/drm/rust/kernel/-/tree/drm-rust-next [2]
+Hi Zhi,
 
-Yes, the nova tree is the one I started the project with. Meanwhile we have
-moved to use a common tree for DRM Rust infrastructure and drivers [3].
+Additional to my other comments, some thoughts about naming.
 
-For the time being, the "original" nova tree is not in use anymore.
+On Thu Oct 30, 2025 at 5:03 PM CET, Zhi Wang wrote:
+> +/// Trait implemented by each Rust driver that integrates with the fwctl=
+ subsystem.
+> +///
+> +/// Each implementation corresponds to a specific device type and provid=
+es
+> +/// the vtable used by the core `fwctl` layer to manage per-FD user cont=
+exts
+> +/// and handle RPC requests.
+> +pub trait FwCtlOps: Sized {
 
-- Danilo
+Up to Jason, but I usually recommend to take the Rust module name into acco=
+unt,
+i.e a user of the API can refer to this as fwctl::FwCtlOps.
 
-[3] https://lore.kernel.org/r/20250901202850.208116-1-dakr@kernel.org
+Hence, I suggest to name this Ops or even Operations, such that users can r=
+efer
+to this as fwctl::Ops or fwctl::Operations.
+
+It would also be more consistent with existing code, e.g. pci::Device,
+platform::Device, etc., but also the fwctl::Registration from this patch. :=
+)
+
+> +    /// Driver UCtx type.
+> +    type UCtx;
+
+I think we can affort to be a bit more verbose here, maybe just spell it ou=
+t as
+UserContext.
+
+> +    /// fwctl device type, matching the C enum `fwctl_device_type`.
+> +    const DEVICE_TYPE: u32;
+
+I think it would make sense to have a new (Rust enum) type (fwctl::DeviceTy=
+pe)
+for this, rather than using a raw u32, see [1] for reference.
+
+[1] https://lore.kernel.org/all/20250828133323.53311-2-dakr@kernel.org/
+
+> +/// Represents a per-FD user context (`struct fwctl_uctx`).
+> +///
+> +/// Each driver embeds `struct fwctl_uctx` as the first field of its own
+> +/// context type and uses this wrapper to access driver-specific data.
+> +#[repr(C)]
+> +#[pin_data]
+> +pub struct FwCtlUCtx<T> {
+
+What about UserContext<T>? A driver would refer to this as fwctl::UserConte=
+xt.
