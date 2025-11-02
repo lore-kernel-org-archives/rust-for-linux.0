@@ -1,66 +1,66 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718431EEA54
-	for <rust-for-linux@vger.kernel.org>; Sun,  2 Nov 2025 14:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693E41C5D59
+	for <rust-for-linux@vger.kernel.org>; Sun,  2 Nov 2025 15:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762095382; cv=none; b=lpODhssNWrnHW4H4LHpI6hzeJmSv6qZClovFejc8jACLpIqyzc6ieA8F1HRtvl8AYz92NjGw+W2Jd2pSxY/RwDm0cGF2R5Yc5qjf5a+bJ1zQkJw0O6MX7nWLA3rTLGHhGWEJIQs15iAV94isGE03sUwQ+viBWBiN+mmUQrfte0A=
+	t=1762096200; cv=none; b=Hd4o+YIwbgDbRC0MWyHcIALF1NXZqJREqqYneYCyrtZ27fLiNeUdTNvGnI/SrH+dmfzurTTy/oQ3RgL7VSvYrUr91IQ58/8jLUQ5VwMTBAu/FU74kfn9Rr1cowV5YhLSw9g3E9TQYKVPNEm86N1SWZYuQGSC2VhuR10MdzEGtao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762095382; c=relaxed/simple;
-	bh=yFgefIJLP8zckZ1UG6YRxBztp31yy6enfYo3+NAi/9M=;
+	s=arc-20240116; t=1762096200; c=relaxed/simple;
+	bh=VFtW55W+C0l2GRxIradwFto3E/PPS/mhZrfmGYwcP1w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hfbIsbPSPigWiCokStQPWg4ZmrDd/m9fTuWhYXyxzz+ZxA8RhdHLdF1Edp3Y/nMIw8Gv6py1WsE8rOT0Vv1qVeipgxU7XoMjsiytxgV6lYObbmBE2yxHEjuKYhTe9Q/GlGD01R0VrqMRit+z/jAZr8VMFHbyCfjIjYdJe5HBXqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ri67TBb1; arc=none smtp.client-ip=209.85.221.45
+	 In-Reply-To:Content-Type; b=UHDdJ8bQnzl4cnjJZYu3V6tPuaYWD5YWhA3deP/p7Req5mI74pyGHSZizqIfuWC5aAm/6+1FCox+RW/DhRckQKQ6+oLdf8a1uxjKRUIQBLowR3yXWCgjVOpy+AmdWkjcf9FJ6GP6E0LNhjNBJwqr2zbtq3uj4wBiywmuj87jxc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dkwzDHQf; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ri67TBb1"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-42557c5cedcso2123685f8f.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 02 Nov 2025 06:56:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dkwzDHQf"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-47112a73785so24205235e9.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 02 Nov 2025 07:09:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762095379; x=1762700179; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762096197; x=1762700997; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=WNRp8GBQqKKuNk9ZiQRhReDm9E3VEBrBLSW1DlgX55M=;
-        b=Ri67TBb1iAqkttnpPLqRg+mSp++4WApFAxvTMRB87j8EpN/J11MPf9c15w3sv3DwTv
-         3mH4XEGL8BSxb3QI4ukGZpdn6DojxMf608xZ8vRtF8lswPlkG0Sv6NTnjrh18+vaHTBi
-         /XLtC3ClrOEhzcsA9Y35ndt4sQpJMsO1RcSR3o/mMdA9CozjwRDMaqDMjjctU4MJjauW
-         Iz6S6gLmSSQxDoIvLq+mR8jOBRHBN65isMysKgW/Hj6ulgkAU8h7t9e++Eda7uC1+HOc
-         KXmfeCMw+1E6cdtn79oMB55NVmNVei6PG1+eBNSUlE1KXkFQgnIZDKpnN3JI0Oyx9I96
-         8cjQ==
+        bh=KeEh++c4R7x24Ob6ITABSkGpnIKxyH2JeGroaXixafA=;
+        b=dkwzDHQf6aUvrak43dtmnSs3yEmAuXHmGNVc6ZWp8yuokLUv3keiXEc7X0g56RQUqW
+         mAwypnhopt71tab7IR1zKIcOu0wZ4eL58hhvUWAkiKIpeHMHErlFoWpeb4yde2PhxY1h
+         s/zeIlJ8N2lYyf5XXQMx0UC43wVdxGrrCuwH3ftDugeXTdbBplihWtmRJCn8trc7tWgS
+         7MeH0Hh3CuX+z4G+/mAssmte7DWa1dEN8rpdwww/7zZdbPY7Oa1oBIfeBzg3PmPtYio+
+         pzTqGztif9KkqUxrLI5f8DqT065A/aflwrjn4rRAZUkGc/qrtjCL3v7Kdk+VRt6A3RCO
+         9UVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762095379; x=1762700179;
+        d=1e100.net; s=20230601; t=1762096197; x=1762700997;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WNRp8GBQqKKuNk9ZiQRhReDm9E3VEBrBLSW1DlgX55M=;
-        b=cAxlx0gsx/flQOwW24AkRmu0YP3WgUrYqpO4uaGZjXJ3SjdoDofqsANn45n6YJHW1y
-         eJ9WMIKDK548m/+Iz52CL6vgyRZhdB/yPk1h1Q+YAGtuqKdqjqnUkhzA82S7DHrP5Apz
-         jCL9dhdZ8FZFz8OsHBb0s31axFn/Ejkvj3iHNZPSHIawLKrYY1xsnmtfUniDrsbTMqKE
-         8MK8abjstnrUDpxnItE9c9YQmmyjLHbzJvK8xB3SqyuUoxM/+5Q2+OanrzVPy9RePyC3
-         y/h3EXhWqTCDxBDvVo1IV44e8312s5ZPQPuBPXgq3KCS3eFNUPRXaw9igm0JaykanEjr
-         P1YQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5Ft0FHE3Y6AxCkb40GWahl3r/+XiRS1RWav1AXk6th78n8W91ltVvkg1sDhiPIokkT8cKevswEHLM0k/GMA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwN1wTX6fNiTRI+ZVAPDeLrJX+gfBZZC7Dy9aWWEn3i3qhOfGTU
-	8ShTQv47cfqK96X4syYj1HNO/t/HlcuBTV6EMGFzUBdDRdyauoTjuCW4
-X-Gm-Gg: ASbGncu1O884k5utCGPX34gfnNyvJj/rq16WwZRaOzQDssWRwgxXbJw2c59LJlT8xDy
-	iqSdLiH6vxZdgvwJKNBjRUGf4MFRvmITLBj2rsmDaM7HZl4qkacF8JrFbFMvEVhd1oSRwhnP2gp
-	TXzhJTCwWnD+rPVEAIzyRTGapzZY/ZLS/1kPv9gp794Yh7VaiD3yWs/0XCfaaxTYSvq61dc4ifN
-	WrX4HrC0jTM3FoxzMe0RwvELCZhmil8x3dUuyKyfI1lvseIKDWtsaS2a5/sE+SHgp9LVd5ucXC0
-	Q/x4MUOvoSw5YU6qIfamop3+XU/jh8uWGNH5CMjRMdhqHktFi2c+Aj/+Pmx43ik+DEw4BZKSrl5
-	E316f2rzXrtRq47JBUHQ7bEV4hpaJmbXhd9u0NJApYo5rwqe12EZ7EWz1960ToD0T6WIKQr/l35
-	7Y7EFZswT93qi6eXLfyNnZBRr6I+85tjemxKskb02AhY9s1yfwlxphavWzj7f0Ph5Ex+s=
-X-Google-Smtp-Source: AGHT+IEAwtgyxniTz4Ai5mtawKx2HjkKK2OW7gZ2ITGD+2oJ/4ffgGzrS5E/3uRYJ89wkLzNjfq3hg==
-X-Received: by 2002:a05:6000:1a85:b0:429:d2a9:5dea with SMTP id ffacd0b85a97d-429d2a95f05mr675088f8f.15.1762095378417;
-        Sun, 02 Nov 2025 06:56:18 -0800 (PST)
+        bh=KeEh++c4R7x24Ob6ITABSkGpnIKxyH2JeGroaXixafA=;
+        b=CdmAHXXth08LCaoMif/3YfH6N7xbZVXT3XuPEzVJUG/E9HNSin9tFvjV720fzQwMCr
+         6iCid5xGHGWO9ubKdBTLmVFgtEGq6AKhPzgB4ypC4YFZ292I5yaHhr3y5Pq8147+xSPI
+         /BH2YNcghsNqYixmBUR2C7VhE6XKiV6kb+te7akmaD5CvP31GYJ//fMJO/mUdrEyo1Xq
+         WdqaysHj9YITzAhkfy5O80g+RripxEY00VgNPdfQNGafJz9jHtdEV4n6qMW0Vko/Tbmm
+         C0VqUb+GMy7WsKKqcFw1a4mq6DADt5DX0UwjivFA+Iho1B2rGSan1bFJ3wiGwlqKgb7x
+         fl3w==
+X-Forwarded-Encrypted: i=1; AJvYcCV+epY/oO2UyefU3C5TJaDUjSsLq9sxA0HF8CWNE4G9QQ3Al9awMGLqWieO/DMp9WyPCoyks7sWX77I/Y70dg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8nkUvd8XFLIuqanQR8gIV6UWgbtS2U9BDNeax7XqHE2rurewM
+	I2Ptql2Q03r48YD2yGIuhrAgj3P100nUYIpvnqF8cqUg+tdSIgN0HIT/
+X-Gm-Gg: ASbGncuGsAwr6zVLQDr6KRjh7gNg8TatQM7L3kLpdjZ6/mnlyhPUE6AI91m+2+e0Ol7
+	YgisPP53rzHk+i8IepiyIO2ew1qf+fdrOu54ny6hMd1n+29/nmsoCccNqEcOQcjvXJchgrGAF70
+	qwTTla8T3QCSQ8spuBI+OhtPtiORI+ZLQA1TeeM8kYZ/VjmEO7qAujaHuxk9DsmT+4s0kJ9+zMU
+	d+uh/j6OwbMNIfdHuPdljvqzml6kGkf/z4hGJKRNV/eFv05HR+7MfTxV7QqWQmijZoxpKjkcGSI
+	1uwE7kaQCJ9Rr/wJV5VbsXUT41S1XAut08sPzO4/6wKrebEE2ql2zfG5e3eu1gaqh3+vM6qZE5w
+	Ps9pJMFKj7n0fogpSd/zTvDTVnHCzDDErKYSfYLSYVY1EjWctWdwKm/Vpqr9OJ0OTQ5aKpZFZsZ
+	3MMHL6rzBsIxlzDjRRb8sA5zBglUKIx15KVYH+KWac9PqLG4n2QrBxIuKvzHiYtyqgvFs=
+X-Google-Smtp-Source: AGHT+IHGrARufC9tZYIoG9QCHsV4kZ8J2Ovz4A4hPVeK83i602JTm5CAJj2RXLSVlTY6X+3zPvhvCQ==
+X-Received: by 2002:a05:600c:83ce:b0:471:989:9d85 with SMTP id 5b1f17b1804b1-47730871fa6mr104046745e9.19.1762096196688;
+        Sun, 02 Nov 2025 07:09:56 -0800 (PST)
 Received: from ?IPV6:2a01:e0a:acc:bb60:756b:64e3:20ef:1d08? ([2a01:e0a:acc:bb60:756b:64e3:20ef:1d08])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c13f2b5asm14807337f8f.40.2025.11.02.06.56.17
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429d1061efasm3179609f8f.24.2025.11.02.07.09.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Nov 2025 06:56:18 -0800 (PST)
-Message-ID: <51200cc6-042a-4e83-81b0-720385c67bb5@gmail.com>
-Date: Sun, 2 Nov 2025 15:56:16 +0100
+        Sun, 02 Nov 2025 07:09:55 -0800 (PST)
+Message-ID: <70210168-ee28-4996-89f0-83f8590cb716@gmail.com>
+Date: Sun, 2 Nov 2025 16:09:54 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,8 +68,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] nova-core: Simplify `DmaObject::from_data` in
- nova-core/dma.rs
+Subject: Re: [PATCH v2 1/3] nova-core: Simplify `transmute` and
+ `transmute_mut` in fwsec.rs
 To: Alexandre Courbot <acourbot@nvidia.com>,
  Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
  Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
@@ -82,69 +82,109 @@ Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
  Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
  dri-devel <dri-devel-bounces@lists.freedesktop.org>
 References: <20251023205146.196042-1-delcastillodelarosadaniel@gmail.com>
- <20251023205146.196042-2-delcastillodelarosadaniel@gmail.com>
- <DDXC0YKKJJT4.18JQ1MJQ7I31Y@nvidia.com>
+ <DDXC17HXPXFZ.3TIX7FHUJHAI7@nvidia.com>
 Content-Language: en-US
 From: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
-In-Reply-To: <DDXC0YKKJJT4.18JQ1MJQ7I31Y@nvidia.com>
+In-Reply-To: <DDXC17HXPXFZ.3TIX7FHUJHAI7@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Alexandre,
 
-On 11/1/25 12:46, Alexandre Courbot wrote:
+On 11/1/25 12:47, Alexandre Courbot wrote:
 > On Fri Oct 24, 2025 at 5:51 AM JST, Daniel del Castillo wrote:
 >> This patch solves one of the existing mentions of COHA, a task
 >> in the Nova task list about improving the `CoherentAllocation` API.
->> It uses the `write` method from `CoherentAllocation`.
+>> It uses the new `from_bytes` method from the `FromBytes` trait as
+>> well as the `as_slice` and `as_slice_mut` methods from
+>> `CoherentAllocation`.
 >>
 >> Signed-off-by: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
 >>
 >> ---
 >>
->> V1 -> V2: Split previous patch into two. One per reference to COHA.
->>           Added more details in Safety comment. Let me know your thoughts
->>           Kept the original map to avoid a temporary variable
->> ---
->>  drivers/gpu/nova-core/dma.rs | 15 +++------------
->>  1 file changed, 3 insertions(+), 12 deletions(-)
+>> I confirmed by talking to Alexandre Courbot, that the reading/writing
+>> methods in `CoherentAllocation` can never be safe, so
+>> this patch doesn't actually change `CoherentAllocation`, but rather
+>> tries to solve one of the existing references to [COHA].
 >>
->> diff --git a/drivers/gpu/nova-core/dma.rs b/drivers/gpu/nova-core/dma.rs
->> index 94f44bcfd748..620d31078858 100644
->> --- a/drivers/gpu/nova-core/dma.rs
->> +++ b/drivers/gpu/nova-core/dma.rs
->> @@ -26,18 +26,9 @@ pub(crate) fn new(dev: &device::Device<device::Bound>, len: usize) -> Result<Sel
+>> V1 -> V2: Split previous patch into two. One per reference to COHA.
+>>           Improved comments. Let me know if they are okay now.
+>>           Use of `{...}` syntax for the `if let`
+>>
+>>  drivers/gpu/nova-core/firmware/fwsec.rs | 129 +++++++++++-------------
+>>  1 file changed, 60 insertions(+), 69 deletions(-)
+>>
+>> diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
+>> index 8edbb5c0572c..507ef3868565 100644
+>> --- a/drivers/gpu/nova-core/firmware/fwsec.rs
+>> +++ b/drivers/gpu/nova-core/firmware/fwsec.rs
+>> @@ -11,12 +11,12 @@
+>>  //! - The ucode signature, so the GSP falcon can run FWSEC in HS mode.
 >>  
->>      pub(crate) fn from_data(dev: &device::Device<device::Bound>, data: &[u8]) -> Result<Self> {
->>          Self::new(dev, data.len()).map(|mut dma_obj| {
->> -            // TODO[COHA]: replace with `CoherentAllocation::write()` once available.
->> -            // SAFETY:
->> -            // - `dma_obj`'s size is at least `data.len()`.
->> -            // - We have just created this object and there is no other user at this stage.
->> -            unsafe {
->> -                core::ptr::copy_nonoverlapping(
->> -                    data.as_ptr(),
->> -                    dma_obj.dma.start_ptr_mut(),
->> -                    data.len(),
->> -                );
->> -            }
->> -
->> +            // SAFETY: We have just allocated the DMA memory, we are the only users and
->> +            // we haven't made the device aware of the handle yet.
->> +            unsafe { dma_obj.write(data, 0)? }
+>>  use core::marker::PhantomData;
+>> -use core::mem::{align_of, size_of};
+>> +use core::mem::size_of;
+>>  use core::ops::Deref;
+>>  
+>>  use kernel::device::{self, Device};
+>>  use kernel::prelude::*;
+>> -use kernel::transmute::FromBytes;
+>> +use kernel::transmute::{AsBytes, FromBytes};
+>>  
+>>  use crate::dma::DmaObject;
+>>  use crate::driver::Bar0;
+>> @@ -35,7 +35,7 @@ struct FalconAppifHdrV1 {
+>>      entry_size: u8,
+>>      entry_count: u8,
+>>  }
+>> -// SAFETY: any byte sequence is valid for this struct.
+>> +// SAFETY: Any byte sequence is valid for this struct.
+>>  unsafe impl FromBytes for FalconAppifHdrV1 {}
+>>  
+>>  #[repr(C, packed)]
+>> @@ -44,7 +44,7 @@ struct FalconAppifV1 {
+>>      id: u32,
+>>      dmem_base: u32,
+>>  }
+>> -// SAFETY: any byte sequence is valid for this struct.
+>> +// SAFETY: Any byte sequence is valid for this struct.
+>>  unsafe impl FromBytes for FalconAppifV1 {}
+>>  
+>>  #[derive(Debug)]
+>> @@ -68,8 +68,10 @@ struct FalconAppifDmemmapperV3 {
+>>      ucode_cmd_mask1: u32,
+>>      multi_tgt_tbl: u32,
+>>  }
+>> -// SAFETY: any byte sequence is valid for this struct.
+>> +// SAFETY: Any byte sequence is valid for this struct.
 > 
-> This doesn't build for me:
+> I appreciate the capitalization, but these changes are a bit
+> distracting. :) If you absolutely want to do this, let it be its own
+> patch so the current one stays focused on what it actually does.
 > 
->     error[E0277]: the `?` operator can only be used in a closure that returns `Result` or `Option` (or another type that implements `core::ops::FromResidual`)
->       --> ../drivers/gpu/nova-core/dma.rs:31:44
->       |
->     28 |         Self::new(dev, data.len()).map(|mut dma_obj| {
->       |                                        ------------- this function should return `Result` or `Option` to accept `?`
->     ...
->     31 |             unsafe { dma_obj.write(data, 0)? }
->       |                                            ^ cannot use the `?` operator in a closure that returns `dma::DmaObject`
+>>  unsafe impl FromBytes for FalconAppifDmemmapperV3 {}
+>> +// SAFETY: This struct doesn't contain unitialized bytes and doesn't have interior mutability.
 > 
-> Could you double-check? I guess you will need to change the `map` into
-> `and_then`.
+> Typo: s/unitialized/uninitialized (and in other comments as well).
+> 
+I will move the capitalization to another patch and fix the typo.
 
-You are totally right. I'm not sure what happened. I'll fix it. Thanks!
+> Otherwise this looks ok - it doesn't apply cleanly on drm-rust-next
+> though, could you rebase for the next version?
+
+About this, I was basing myself on nova-next [1]. I will rebase on top
+of drm-rust-next for the next version.
+
+
+Link: https://gitlab.freedesktop.org/drm/nova [1]
+Link:
+https://gitlab.freedesktop.org/drm/rust/kernel/-/tree/drm-rust-next [2]
+
+> 
+> Thanks for the cleanup!
+
+Thanks to you for the reviews and the patience!
+
+
+
