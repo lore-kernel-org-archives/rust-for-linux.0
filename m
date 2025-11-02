@@ -1,66 +1,33 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693E41C5D59
-	for <rust-for-linux@vger.kernel.org>; Sun,  2 Nov 2025 15:09:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B7A1F936;
+	Sun,  2 Nov 2025 16:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762096200; cv=none; b=Hd4o+YIwbgDbRC0MWyHcIALF1NXZqJREqqYneYCyrtZ27fLiNeUdTNvGnI/SrH+dmfzurTTy/oQ3RgL7VSvYrUr91IQ58/8jLUQ5VwMTBAu/FU74kfn9Rr1cowV5YhLSw9g3E9TQYKVPNEm86N1SWZYuQGSC2VhuR10MdzEGtao=
+	t=1762099731; cv=none; b=eKU6ursDpbJf+Khl7NGbBmEjz9R91pfjg3V8KwLvZww05hTXniwlljND794zARjt2v7ZnlAcDEFzFBmoGSi7B+JrWgkVVowFRywFvLnro5PnhGM/0tb1/uAlChsPCs/owKLj3ckNF6gAGKHEJpCJv3yf5GG8V1z+2zxstjvZ4p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762096200; c=relaxed/simple;
-	bh=VFtW55W+C0l2GRxIradwFto3E/PPS/mhZrfmGYwcP1w=;
+	s=arc-20240116; t=1762099731; c=relaxed/simple;
+	bh=R+eQUJqY93nsA0j/rgsWshRJvg4Yt8gRY5QAT1HTwxE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UHDdJ8bQnzl4cnjJZYu3V6tPuaYWD5YWhA3deP/p7Req5mI74pyGHSZizqIfuWC5aAm/6+1FCox+RW/DhRckQKQ6+oLdf8a1uxjKRUIQBLowR3yXWCgjVOpy+AmdWkjcf9FJ6GP6E0LNhjNBJwqr2zbtq3uj4wBiywmuj87jxc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dkwzDHQf; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=vERunvf5Q88Y4U9Y/Dv/UUOq4ncoRW1nyUbWMt3RWWpoOOR3wp2/eZm3RyiOscmeMMMwwyYTGuf8cKCej0CV5R/YIMX/Jbed6cwJFy00DHkJGEGJUknODxrb11onwdMbfeuux/R+zSfra7VEuZWDsKqs9YygvxAknHsNObn1pMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTK+r+PP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dkwzDHQf"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-47112a73785so24205235e9.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 02 Nov 2025 07:09:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762096197; x=1762700997; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KeEh++c4R7x24Ob6ITABSkGpnIKxyH2JeGroaXixafA=;
-        b=dkwzDHQf6aUvrak43dtmnSs3yEmAuXHmGNVc6ZWp8yuokLUv3keiXEc7X0g56RQUqW
-         mAwypnhopt71tab7IR1zKIcOu0wZ4eL58hhvUWAkiKIpeHMHErlFoWpeb4yde2PhxY1h
-         s/zeIlJ8N2lYyf5XXQMx0UC43wVdxGrrCuwH3ftDugeXTdbBplihWtmRJCn8trc7tWgS
-         7MeH0Hh3CuX+z4G+/mAssmte7DWa1dEN8rpdwww/7zZdbPY7Oa1oBIfeBzg3PmPtYio+
-         pzTqGztif9KkqUxrLI5f8DqT065A/aflwrjn4rRAZUkGc/qrtjCL3v7Kdk+VRt6A3RCO
-         9UVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762096197; x=1762700997;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KeEh++c4R7x24Ob6ITABSkGpnIKxyH2JeGroaXixafA=;
-        b=CdmAHXXth08LCaoMif/3YfH6N7xbZVXT3XuPEzVJUG/E9HNSin9tFvjV720fzQwMCr
-         6iCid5xGHGWO9ubKdBTLmVFgtEGq6AKhPzgB4ypC4YFZ292I5yaHhr3y5Pq8147+xSPI
-         /BH2YNcghsNqYixmBUR2C7VhE6XKiV6kb+te7akmaD5CvP31GYJ//fMJO/mUdrEyo1Xq
-         WdqaysHj9YITzAhkfy5O80g+RripxEY00VgNPdfQNGafJz9jHtdEV4n6qMW0Vko/Tbmm
-         C0VqUb+GMy7WsKKqcFw1a4mq6DADt5DX0UwjivFA+Iho1B2rGSan1bFJ3wiGwlqKgb7x
-         fl3w==
-X-Forwarded-Encrypted: i=1; AJvYcCV+epY/oO2UyefU3C5TJaDUjSsLq9sxA0HF8CWNE4G9QQ3Al9awMGLqWieO/DMp9WyPCoyks7sWX77I/Y70dg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8nkUvd8XFLIuqanQR8gIV6UWgbtS2U9BDNeax7XqHE2rurewM
-	I2Ptql2Q03r48YD2yGIuhrAgj3P100nUYIpvnqF8cqUg+tdSIgN0HIT/
-X-Gm-Gg: ASbGncuGsAwr6zVLQDr6KRjh7gNg8TatQM7L3kLpdjZ6/mnlyhPUE6AI91m+2+e0Ol7
-	YgisPP53rzHk+i8IepiyIO2ew1qf+fdrOu54ny6hMd1n+29/nmsoCccNqEcOQcjvXJchgrGAF70
-	qwTTla8T3QCSQ8spuBI+OhtPtiORI+ZLQA1TeeM8kYZ/VjmEO7qAujaHuxk9DsmT+4s0kJ9+zMU
-	d+uh/j6OwbMNIfdHuPdljvqzml6kGkf/z4hGJKRNV/eFv05HR+7MfTxV7QqWQmijZoxpKjkcGSI
-	1uwE7kaQCJ9Rr/wJV5VbsXUT41S1XAut08sPzO4/6wKrebEE2ql2zfG5e3eu1gaqh3+vM6qZE5w
-	Ps9pJMFKj7n0fogpSd/zTvDTVnHCzDDErKYSfYLSYVY1EjWctWdwKm/Vpqr9OJ0OTQ5aKpZFZsZ
-	3MMHL6rzBsIxlzDjRRb8sA5zBglUKIx15KVYH+KWac9PqLG4n2QrBxIuKvzHiYtyqgvFs=
-X-Google-Smtp-Source: AGHT+IHGrARufC9tZYIoG9QCHsV4kZ8J2Ovz4A4hPVeK83i602JTm5CAJj2RXLSVlTY6X+3zPvhvCQ==
-X-Received: by 2002:a05:600c:83ce:b0:471:989:9d85 with SMTP id 5b1f17b1804b1-47730871fa6mr104046745e9.19.1762096196688;
-        Sun, 02 Nov 2025 07:09:56 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:acc:bb60:756b:64e3:20ef:1d08? ([2a01:e0a:acc:bb60:756b:64e3:20ef:1d08])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429d1061efasm3179609f8f.24.2025.11.02.07.09.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Nov 2025 07:09:55 -0800 (PST)
-Message-ID: <70210168-ee28-4996-89f0-83f8590cb716@gmail.com>
-Date: Sun, 2 Nov 2025 16:09:54 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTK+r+PP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58792C4CEF7;
+	Sun,  2 Nov 2025 16:08:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762099730;
+	bh=R+eQUJqY93nsA0j/rgsWshRJvg4Yt8gRY5QAT1HTwxE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dTK+r+PPtpJ2OivgDQTeE0Om5Loa0FEbqXbx46BzzdjD8Gev69t5NMmO0aZWzN3AG
+	 yG6jRaxH+z9lkiOzd24I3tS02L10KpiHX2frBzb+EyznE4zsLfx35bjOlpi1yb/29l
+	 1MKBeA1rumfN7P29p2erk5baqKFo4yvxCmfZBkTRp8XyDIm4D9S0073UkFZCNTU8d7
+	 pLwFHiQEjQWqa540Z6NagKXqEfiwuLD8ViSGaSSO9c2XqMxQn1tmjhBWLkVrbOZNnl
+	 1tXqGcuKR9VUN4tlwNoBGDjte8dlPhpyoUOgs4JqfQLjBCGwcoEdQ3hMHvj6sm89/E
+	 Zx+2pN5SHNL3A==
+Message-ID: <eb51b5d5-7f38-41f3-882c-eb87eb2b9f44@kernel.org>
+Date: Sun, 2 Nov 2025 17:08:45 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,11 +37,11 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/3] nova-core: Simplify `transmute` and
  `transmute_mut` in fwsec.rs
-To: Alexandre Courbot <acourbot@nvidia.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>
-Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+To: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
  linux-kernel@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
@@ -83,108 +50,26 @@ Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
  dri-devel <dri-devel-bounces@lists.freedesktop.org>
 References: <20251023205146.196042-1-delcastillodelarosadaniel@gmail.com>
  <DDXC17HXPXFZ.3TIX7FHUJHAI7@nvidia.com>
+ <70210168-ee28-4996-89f0-83f8590cb716@gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-From: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
-In-Reply-To: <DDXC17HXPXFZ.3TIX7FHUJHAI7@nvidia.com>
+In-Reply-To: <70210168-ee28-4996-89f0-83f8590cb716@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Alexandre,
-
-On 11/1/25 12:47, Alexandre Courbot wrote:
-> On Fri Oct 24, 2025 at 5:51 AM JST, Daniel del Castillo wrote:
->> This patch solves one of the existing mentions of COHA, a task
->> in the Nova task list about improving the `CoherentAllocation` API.
->> It uses the new `from_bytes` method from the `FromBytes` trait as
->> well as the `as_slice` and `as_slice_mut` methods from
->> `CoherentAllocation`.
->>
->> Signed-off-by: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
->>
->> ---
->>
->> I confirmed by talking to Alexandre Courbot, that the reading/writing
->> methods in `CoherentAllocation` can never be safe, so
->> this patch doesn't actually change `CoherentAllocation`, but rather
->> tries to solve one of the existing references to [COHA].
->>
->> V1 -> V2: Split previous patch into two. One per reference to COHA.
->>           Improved comments. Let me know if they are okay now.
->>           Use of `{...}` syntax for the `if let`
->>
->>  drivers/gpu/nova-core/firmware/fwsec.rs | 129 +++++++++++-------------
->>  1 file changed, 60 insertions(+), 69 deletions(-)
->>
->> diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
->> index 8edbb5c0572c..507ef3868565 100644
->> --- a/drivers/gpu/nova-core/firmware/fwsec.rs
->> +++ b/drivers/gpu/nova-core/firmware/fwsec.rs
->> @@ -11,12 +11,12 @@
->>  //! - The ucode signature, so the GSP falcon can run FWSEC in HS mode.
->>  
->>  use core::marker::PhantomData;
->> -use core::mem::{align_of, size_of};
->> +use core::mem::size_of;
->>  use core::ops::Deref;
->>  
->>  use kernel::device::{self, Device};
->>  use kernel::prelude::*;
->> -use kernel::transmute::FromBytes;
->> +use kernel::transmute::{AsBytes, FromBytes};
->>  
->>  use crate::dma::DmaObject;
->>  use crate::driver::Bar0;
->> @@ -35,7 +35,7 @@ struct FalconAppifHdrV1 {
->>      entry_size: u8,
->>      entry_count: u8,
->>  }
->> -// SAFETY: any byte sequence is valid for this struct.
->> +// SAFETY: Any byte sequence is valid for this struct.
->>  unsafe impl FromBytes for FalconAppifHdrV1 {}
->>  
->>  #[repr(C, packed)]
->> @@ -44,7 +44,7 @@ struct FalconAppifV1 {
->>      id: u32,
->>      dmem_base: u32,
->>  }
->> -// SAFETY: any byte sequence is valid for this struct.
->> +// SAFETY: Any byte sequence is valid for this struct.
->>  unsafe impl FromBytes for FalconAppifV1 {}
->>  
->>  #[derive(Debug)]
->> @@ -68,8 +68,10 @@ struct FalconAppifDmemmapperV3 {
->>      ucode_cmd_mask1: u32,
->>      multi_tgt_tbl: u32,
->>  }
->> -// SAFETY: any byte sequence is valid for this struct.
->> +// SAFETY: Any byte sequence is valid for this struct.
+On 11/2/25 4:09 PM, Daniel del Castillo wrote:
+> About this, I was basing myself on nova-next [1]. I will rebase on top
+> of drm-rust-next for the next version.
 > 
-> I appreciate the capitalization, but these changes are a bit
-> distracting. :) If you absolutely want to do this, let it be its own
-> patch so the current one stays focused on what it actually does.
 > 
->>  unsafe impl FromBytes for FalconAppifDmemmapperV3 {}
->> +// SAFETY: This struct doesn't contain unitialized bytes and doesn't have interior mutability.
-> 
-> Typo: s/unitialized/uninitialized (and in other comments as well).
-> 
-I will move the capitalization to another patch and fix the typo.
+> Link: https://gitlab.freedesktop.org/drm/nova [1]
+> Link: https://gitlab.freedesktop.org/drm/rust/kernel/-/tree/drm-rust-next [2]
 
-> Otherwise this looks ok - it doesn't apply cleanly on drm-rust-next
-> though, could you rebase for the next version?
+Yes, the nova tree is the one I started the project with. Meanwhile we have
+moved to use a common tree for DRM Rust infrastructure and drivers [3].
 
-About this, I was basing myself on nova-next [1]. I will rebase on top
-of drm-rust-next for the next version.
+For the time being, the "original" nova tree is not in use anymore.
 
+- Danilo
 
-Link: https://gitlab.freedesktop.org/drm/nova [1]
-Link:
-https://gitlab.freedesktop.org/drm/rust/kernel/-/tree/drm-rust-next [2]
-
-> 
-> Thanks for the cleanup!
-
-Thanks to you for the reviews and the patience!
-
-
-
+[3] https://lore.kernel.org/r/20250901202850.208116-1-dakr@kernel.org
