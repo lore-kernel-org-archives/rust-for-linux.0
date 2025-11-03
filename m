@@ -1,65 +1,66 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539512FDC58
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Nov 2025 10:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21C02FDC2F
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Nov 2025 10:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762165626; cv=none; b=cDTTecHHRxTm9NmRAgJD29nMEyZT3v0XRn7OG4KLO08ZCS208TeZUn8SMyeY+9B+Mj/HWu37+rif0Q1tGvEWWzv8qrl8E/ab/wcsjOsJU3sevK/TWsMwmfs1MZ3u9DtPDb4z3LfQWb6Xxd+mRMoDN7L4OdG9vgyp45MNo8ksYnw=
+	t=1762165652; cv=none; b=KrRceHjHML5gEtyfAqjFri6jdyMpRudFJgE1HTcr6CoLvKvEByeB9vWajK97X474NYtex3vqiGJi8CpniYi6WRUoU1ahOt7rSZJL4OUPUols+J7F1Te6uOgaG8qV0cF9uP94jsW6YoiyBO+LIUglB+Jsfffk5PehCN8V520GzlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762165626; c=relaxed/simple;
-	bh=zeOd2iozLHY5E9/h0Dlh5Vw9vcim7rHAVynPoeVlDd8=;
+	s=arc-20240116; t=1762165652; c=relaxed/simple;
+	bh=7d+yejdsrlH3QQoIfQu3T9oGfryOAb9jPCpBbY/QV74=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=na4HMGxyw6RMJTvaaftnIvQIcTrbKJiwWALHwgJKt+2QFprJdAVGHkPTWLgUwF737mIZUCdzT4eSeixnAn8jgTSN0xWjEgLtIcIlj9brfxnLL1hsJGHnyqwcOLQalGATkE7gYUfYOgAJWWg4d6vQ2h0P7Gm7kG5liqLkLIWG7oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zIxJkZKH; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=RITKDxkvscrOWPpnPgLKRp7wJnW15C4SbBq926xQpKkTBmbscHIu1b6WU5YoO90+ztRxEqmC74BkdZ0SiDvGcO/09BBQY/pmFpAqHEBreOSonywOix+K7pNIF0nWo5BurPZzaod9i5dBsXGQ5j3vqhCyGHArmf7g6V+zUmUrsig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yOcK5tO4; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zIxJkZKH"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-640cdaf43aeso484255a12.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Nov 2025 02:27:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yOcK5tO4"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-471001b980eso28559075e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Nov 2025 02:27:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762165622; x=1762770422; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762165648; x=1762770448; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wfDOrMXlo4clgAlmd0PnLLaSk5oU7JsCtleVfGyOwWI=;
-        b=zIxJkZKHSZ3lz3lJLBL+zcCRrFzuoWJeOor3hsp6P+YtJAJPCG37FeEze8N69kb5UD
-         GW7694VoF4U5fMr2+632bubmariUisxjfBr9V5UmWcvF11ZrtJegEM89VN+g3h1pr22B
-         GLHXqIfJ/eIiP/uwPiORfCtjwf2pSkxzv9O817JXvtIs6TRyqTFQa1k0jlE0kzcyrx8u
-         EYJ5Lrg+HooYSBe2k5bPThTZYf7UzUmCZ8gZ15y78rwc+aDVA1eONWYtUQMOj4QJRB5+
-         THO01hJ+Be0ZlyVfQMQkHL/lrxo9Go9wzmpICGvycLMeqf/IcJTLKsMf8vUjT9WHw1Kg
-         VrpQ==
+        bh=4JHB89kHBneKoONN1Bve8Z56wcJWNGQNkd4dI7+uRh8=;
+        b=yOcK5tO4nuqej16kK7Atw9mDRG+3/2EeWS9Bngyk50vyOlwaMYJqtx3uxd2Ul0iD9t
+         w8haVbJdFfY906UiQkucUBXFIFpnWeFXHCH5+bbZz2Ze695tgFwxtFoB/1ih1wV2YNe8
+         qYnfE0v052voTOnwlY3CVhhZPgAh8pyzJu53RjD7vSJbUOwN8CyPCCok/nJvj65nczMu
+         dQWvofyvIKbn/4WepyUrnHFcT5vOu/QJ30Cq0JR28c7fvkxPHVDPIiYVyV30XjIki14Y
+         +cpx4uHAycK6Jhltqhv3iinvRvvOHPSDMnIpTal75jogSYmq+TtLAnKpULmdfUbV6YwH
+         EAEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762165622; x=1762770422;
+        d=1e100.net; s=20230601; t=1762165648; x=1762770448;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wfDOrMXlo4clgAlmd0PnLLaSk5oU7JsCtleVfGyOwWI=;
-        b=phRyjdOAxckTL5eigH5dPNyhzo0jdToz8OBMYfOq+8P48WX5uv7Ud1PQCz55fs+L8J
-         1fkapHjOnj/Nmfj70rPI5YzXPOLb8kWY/bsP04//UT6x66+4IYg0WWg2orCvffEYBlGb
-         d5tQ4qKM1cax3KFHl6r4T7kThvaU0tPY9/yh1q6lS4QdUMOCUwg+r8cOmX90W8+rKK5n
-         672rtEUvBWYQueCo7vw+TLohxmmw3eP0YwRidOk217KzIKJ74cmzfLwF6yXjFfAzkP3u
-         IBqgv5BlWllFgA8OFfkdsvoyn4N0IbSMCKNuRcg/BTLf4p6t4otgWnwOBr5CmeWzdXIi
-         vFpA==
-X-Forwarded-Encrypted: i=1; AJvYcCV55RgLTvMENWAkDStDSAP2Bcu+odzmt9F4M3vu5EkUnMESDst4MJ9UMz/V9c+yDwlnP8sMUSeJvZYmAQJ50g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPwdNTeaS+8G8bUvnrWF+jF4TkH3a6Ouwo9xmsFW7RPd81T8WI
-	f2RAzpSDODbMYo3KWcfr/0YfXcK4AcG+55Xvb8KEuRX+/rdvIijfqEL0Hz7n18dQUTHnOtxB1GG
-	npGUqdWMHH5GpmS92FA==
-X-Google-Smtp-Source: AGHT+IHA/3waiBho0mXu28WwEu1WqeXYiiwR6bIsXlP4vDe3/Ww+rW0qIjmyU+AvmPyU6HG0yyjcIpqx3mZy7js=
-X-Received: from ednd3.prod.google.com ([2002:a50:f683:0:b0:640:9915:7946])
+        bh=4JHB89kHBneKoONN1Bve8Z56wcJWNGQNkd4dI7+uRh8=;
+        b=uyY1/lLmSA6tOQf9MlP3ecW7eHK66djK0+VcBBUSX0vpA1C1n4EtuIGcaWiTf31gwk
+         /qV6pzqL1eUh3uhAH51l1p9Sv+NkKtqqtMSS6w/FC0FCrTPYTI7xNLT0aKVDDRzj+laG
+         BwhP/gJCn0tUGO6Iwb4K7VwQZ4ClfEiUxU8CQQUErKf7cfS6OLZR1czSSfmH+oAZ+lpg
+         takeG7AZuauEmzRWdoSx7MvC29XAS1sazcz+Hp8/1SpZOKqVlLtSoHsntORuaV77szGB
+         bSW56yRBXlg8TRqkbAFCmdqwJgZSHtGMKZ8/zd3MIzGZP13Infm2V30DK43to0337BDS
+         cOig==
+X-Forwarded-Encrypted: i=1; AJvYcCWxPFwX7xgvcwm5eBBo05tyA6TPuaS9dS2mioU3lKRqxNZ2Xn9jQOgRoyegDqSRWxWXhnCowe7blXoLOIqTlA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHwp1gPVCu2gcIgl0v2UAUzZspCpinAVnSEU7uPmIr5lJ/EUOh
+	seM2mLtXom3PfLFi/UNIdLg4JzSzPuYIqx85kfG/tbfSan8kDZ/gwI8CuPfYX8O/58LuMym1Flc
+	REhOoBHJWgyqQqe1a2g==
+X-Google-Smtp-Source: AGHT+IEOG3seXsKMf1FLja+ssKrdPSGK1FgK6Bcd/d5/Kurpa+pvamoJuJNwVwnI8+e1f24CsMe+Xpt2EsZzMZQ=
+X-Received: from wmlf12.prod.google.com ([2002:a7b:c8cc:0:b0:477:d21:4a92])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:42d2:b0:639:4c9:9c9e with SMTP id 4fb4d7f45d1cf-64076f745edmr9836758a12.10.1762165622423;
- Mon, 03 Nov 2025 02:27:02 -0800 (PST)
-Date: Mon, 3 Nov 2025 10:27:01 +0000
-In-Reply-To: <20251102212853.1505384-2-ojeda@kernel.org>
+ 2002:a05:600c:538e:b0:46e:33b2:c8da with SMTP id 5b1f17b1804b1-47730890e99mr120076125e9.32.1762165647584;
+ Mon, 03 Nov 2025 02:27:27 -0800 (PST)
+Date: Mon, 3 Nov 2025 10:27:26 +0000
+In-Reply-To: <20251102212853.1505384-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251102212853.1505384-1-ojeda@kernel.org> <20251102212853.1505384-2-ojeda@kernel.org>
-Message-ID: <aQiDdZvRNrBkrB-U@google.com>
-Subject: Re: [PATCH 2/2] rust: kbuild: workaround `rustdoc` doctests modifier bug
+References: <20251102212853.1505384-1-ojeda@kernel.org>
+Message-ID: <aQiDjuHK0qpgmj1J@google.com>
+Subject: Re: [PATCH 1/2] rust: kbuild: treat `build_error` and `rustdoc` as
+ kernel objects
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
@@ -71,22 +72,19 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
 	patches@lists.linux.dev, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sun, Nov 02, 2025 at 10:28:53PM +0100, Miguel Ojeda wrote:
-> The `rustdoc` modifiers bug [1] was fixed in Rust 1.90.0 [2], for which
-> we added a workaround in commit abbf9a449441 ("rust: workaround `rustdoc`
-> target modifiers bug").
+On Sun, Nov 02, 2025 at 10:28:52PM +0100, Miguel Ojeda wrote:
+> Even if normally `build_error` isn't a kernel object, it should still
+> be treated as such so that we pass the same flags. Similarly, `rustdoc`
+> targets are never kernel objects, but we need to treat them as such.
 > 
-> However, `rustdoc`'s doctest generation still has a similar issue [3],
-> being fixed at [4], which does not affect us because we apply the
-> workaround to both, and now, starting with Rust 1.91.0 (released
-> 2025-10-30), `-Zsanitizer` is a target modifier too [5], which means we
-> fail with:
+> Otherwise, starting with Rust 1.91.0 (released 2025-10-30), `rustc`
+> will complain about missing sanitizer flags since `-Zsanitizer` is a
+> target modifier too [1]:
 > 
->       RUSTDOC TK rust/kernel/lib.rs
->     error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `kernel`
->      --> rust/kernel/lib.rs:3:1
+>     error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `build_error`
+>      --> rust/build_error.rs:3:1
 >       |
->     3 | //! The `kernel` crate.
+>     3 | //! Build-time error.
 >       | ^
 >       |
 >       = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
@@ -94,34 +92,10 @@ On Sun, Nov 02, 2025 at 10:28:53PM +0100, Miguel Ojeda wrote:
 >       = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
 >       = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
 > 
-> A simple way around is to add the sanitizer to the list in the existing
-> workaround (especially if we had not started to pass the sanitizer
-> flags in the previous commit, since in that case that would not be
-> necessary). However, that still applies the workaround in more cases
-> than necessary.
-> 
-> Instead, only modify the doctests flags to ignore the check for
-> sanitizers, so that it is more local (and thus the compiler keeps checking
-> it for us in the normal `rustdoc` calls). Since the previous commit
-> already treated the `rustdoc` calls as kernel objects, this should allow
-> us in the future to easily remove this workaround when the time comes.
-> 
-> By the way, the `-Cunsafe-allow-abi-mismatch` flag overwrites previous
-> ones rather than appending, so it needs to be all done in the same flag.
-> Moreover, unknown modifiers are rejected, and thus we have to gate based
-> on the version too.
-
-Ah .. we may want to file a bug for that.
-
-> Finally, `-Zsanitizer-cfi-normalize-integers` is not affected, so it is
-> not needed in the workaround.
+> Thus explicitly mark them as kernel objects.
 > 
 > Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-> Link: https://github.com/rust-lang/rust/issues/144521 [1]
-> Link: https://github.com/rust-lang/rust/pull/144523 [2]
-> Link: https://github.com/rust-lang/rust/issues/146465 [3]
-> Link: https://github.com/rust-lang/rust/pull/148068 [4]
-> Link: https://github.com/rust-lang/rust/pull/138736 [5]
+> Link: https://github.com/rust-lang/rust/pull/138736 [1]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
