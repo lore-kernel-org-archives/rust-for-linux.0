@@ -1,117 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652A92FD69B;
-	Mon,  3 Nov 2025 10:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90A42FDC55;
+	Mon,  3 Nov 2025 11:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762166994; cv=none; b=lrXHJShZ7zHg+W1CrqHNpVlv5fr6g6MSYgNMYlecz89j3t3o4s98sHSr9g93uWuptp/xIVOKkHU7ajoTyOL2O461npcNvz1acCbMPV8jE49xwqy3NJn1EMJsTzaoCXYJrniVtzPSR2q4iGkPQDD7AAVOuBQDegcep59BNbNLwBw=
+	t=1762167709; cv=none; b=CIgY+aT0i2nUEUesoViWSyIE8QBid9WSYpgFQrSHSQ72jbgGsMf4+HZpcvF3wxalWYyHByjS+cE++1N0frKUG8LGia5ScF/6iqxHRn9qFGTrjwtDWE8mwxsIjCKhsfvjzgvpU2OPJlRl4FZ5qlVsJD+v2sQZR2B46ALd/P//g9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762166994; c=relaxed/simple;
-	bh=uUifxonKcla3BWytmq2yxQx+E6zovUda0T3W9rcNDck=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DJwdjAUDMje3toXMNO+ntWjEb3WifeHGybrIMO3B4jDulz5mOmd05gHiIgYSmiDsi7xrM5bgPutsy6iLOqnKJpnC3cTgeLVx6bymJP069DbBVfHbsL71YrkpjC7ovrAfCNrFHDJBJcn6Wd+M3zP2mpqQK1NwvLamnW3/PVRPw58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R654j01t; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762167709; c=relaxed/simple;
+	bh=g/qY6U/+iUJrxmuc+BElr45pPQ2XjXw6gWqTskB5DU4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WnSNJaMjB6jZl5rv6kE4D+57T+NuLEhLE8tlr1kcinbkuDYpuAjPerssr3E6IOmw3GgU+2bL9ESv2P4sFfkNnFeirZG1795uwV+AtSNXBWYef08QUAau4E5yb/wkyyt/vPCaiTokiHDmajzlNsLssRna59wRAp+XvZRzYe/QbLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpBnL0VW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R654j01t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5903DC4CEF8;
-	Mon,  3 Nov 2025 10:49:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpBnL0VW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968A6C4CEF8;
+	Mon,  3 Nov 2025 11:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762166994;
-	bh=uUifxonKcla3BWytmq2yxQx+E6zovUda0T3W9rcNDck=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R654j01tkgr7j+kGctXGIU7wXdjqv9jn/OELsSKcDst5bpbuP0wRucegkwsqf/Aiu
-	 IJktZHywCzfnkRDZsFHJQ5H6QkW9S+m31mYwJqq6gpV5PJjFrocgDpHPBnqbBoyjev
-	 YhWoKyHS3b/u2HFvQCiiTyrfOI8rGYxzpdjaAxI1kUSOl2hERJ+aV+p1HzmZw8hEOJ
-	 mqtmD7ChPljk8VWDVxn3KhmuyedV1bY1oi2UCzNup3eRP5CgmcmvRVlAPm6MLnKL33
-	 J+r3xdNbig6e9bWe+QUbIJy/JxUvmitqi78ft1WAl4qIaPguQG4mkHFlRNYDv7fxd2
-	 vyOdw0liTWB0Q==
-Message-ID: <bebb6b2b-869d-4931-adb3-de5a2a201401@kernel.org>
-Date: Mon, 3 Nov 2025 11:49:47 +0100
+	s=k20201202; t=1762167707;
+	bh=g/qY6U/+iUJrxmuc+BElr45pPQ2XjXw6gWqTskB5DU4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JpBnL0VWITv25nUMHzJpGvsSz9SrVzV+MJWWhBZjhInE3KSOB9EsMTBhFyNDGLBfo
+	 T/Kmjq6mm0FqiidT3h9lIeQ+ohAzvwa45ru0nQGtU4O4Mkp1Iwv8686EkpuZPwSa//
+	 cfTjX+OGF9q0UtsQtMaEoyC2MVGY1/jUq1UisnMyYzyK2s3EMg+F8sr4x4jMELSPUK
+	 OM36tkhpqgzz+rpd1gsBXR9fK1dz+JW8cPM7j6GtlU8IYW9tddIP+oT2izNcFWidl6
+	 kmOrU/l8r7LOdB4usAkxShK60O7QaNDIbGV97P8uZNDeUVtBBIlS9BK4GD4aCEM35e
+	 p6BrCCJt0671Q==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Cc: linux-usb@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Thorsten Leemhuis <linux@leemhuis.info>
+Subject: [PATCH] rust: usb: fix broken call to T::disconnect()
+Date: Mon,  3 Nov 2025 12:01:03 +0100
+Message-ID: <20251103110115.1925072-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Build error on -next in rust/kernel/usb.rs:92:34
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
- kwilczynski@kernel.org, david.m.ertman@intel.com, ira.weiny@intel.com,
- leon@kernel.org, acourbot@nvidia.com, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, pcolberg@redhat.com,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>, rust-for-linux@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251020223516.241050-1-dakr@kernel.org>
- <20251020223516.241050-2-dakr@kernel.org>
- <1c8afbc0-e888-4702-9e4e-fa8aef0f97ae@leemhuis.info>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <1c8afbc0-e888-4702-9e4e-fa8aef0f97ae@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/3/25 7:43 AM, Thorsten Leemhuis wrote:
-> """
-> error[E0599]: no method named `data` found for struct `core::pin::Pin<kbox::Box<T, Kmalloc>>` in the current scope
->   --> rust/kernel/usb.rs:92:34
->    |
-> 92 |         T::disconnect(intf, data.data());
->    |                                  ^^^^ method not found in `core::pin::Pin<kbox::Box<T, Kmalloc>>`
-> 
-> error: aborting due to 1 previous error
-> 
-> For more information about this error, try `rustc --explain E0599`.
-> make[2]: *** [rust/Makefile:553: rust/kernel.o] Error 1
-> make[1]: *** [/builddir/build/BUILD/kernel-6.18.0-build/kernel-next-20251103/linux-6.18.0-0.0.next.20251103.436.vanilla.fc44.x86_64/Makefile:1316: prepare] Error 2
-> make: *** [Makefile:256: __sub-make] Error 2
-> """
-> 
-> Full log:
-> https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-rawhide-aarch64/09759703-next-next-all/builder-live.log.gz
-> 
-> A quick search for "T::disconnect(intf, data.data());" on lore
-> lead me here:
-> 
->> diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
->> index 9238b96c2185..05eed3f4f73e 100644
->> --- a/rust/kernel/usb.rs
->> +++ b/rust/kernel/usb.rs
->> @@ -87,9 +87,9 @@ extern "C" fn disconnect_callback(intf: *mut bindings::usb_interface) {
->>          // SAFETY: `disconnect_callback` is only ever called after a successful call to
->>          // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
->>          // and stored a `Pin<KBox<T>>`.
->> -        let data = unsafe { dev.drvdata_obtain::<Pin<KBox<T>>>() };
->> +        let data = unsafe { dev.drvdata_obtain::<T>() };
->>  
->> -        T::disconnect(intf, data.as_ref());
->> +        T::disconnect(intf, data.data());
->>      }
->>  }
+A refactoring of Device::drvdata_obtain() broke T::disconnect() in the
+USB abstractions.
 
-This error is cause by commit 6bbaa93912bf ("rust: device: narrow the generic of
-drvdata_obtain()").
+"""
+error[E0599]: no method named `data` found for struct `core::pin::Pin<kbox::Box<T, Kmalloc>>` in the current scope
+  --> rust/kernel/usb.rs:92:34
+   |
+92 |         T::disconnect(intf, data.data());
+   |                                  ^^^^ method not found in `core::pin::Pin<kbox::Box<T, Kmalloc>>`
 
-It seems it slipped through, since the USB abstractions are disabled in all
-trees other than the USB tree. I tested with enabling them locally, but it seems
-I forgot to re-enable them after a rebase etc.
+error: aborting due to 1 previous error
 
-I will send a patch with the following fix:
+For more information about this error, try `rustc --explain E0599`.
+make[2]: *** [rust/Makefile:553: rust/kernel.o] Error 1
+make[1]: *** [/builddir/build/BUILD/kernel-6.18.0-build/kernel-next-20251103/linux-6.18.0-0.0.next.20251103.436.vanilla.fc44.x86_64/Makefile:1316: prepare] Error 2
+make: *** [Makefile:256: __sub-make] Error 2
+"""
+
+This slipped through, since the USB abstractions are globally disabled.
+However, the USB tree recently enabled them, hence it showed up in
+linux-next.
+
+Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
+Closes: https://lore.kernel.org/all/1c8afbc0-e888-4702-9e4e-fa8aef0f97ae@leemhuis.info/
+Fixes: 6bbaa93912bf ("rust: device: narrow the generic of drvdata_obtain()")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ rust/kernel/usb.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
 index 92215fdc3c6a..534e3ded5442 100644
 --- a/rust/kernel/usb.rs
 +++ b/rust/kernel/usb.rs
-@@ -89,7 +89,7 @@ extern "C" fn disconnect_callback(intf: *mut
-bindings::usb_interface) {
+@@ -89,7 +89,7 @@ extern "C" fn disconnect_callback(intf: *mut bindings::usb_interface) {
          // and stored a `Pin<KBox<T>>`.
          let data = unsafe { dev.drvdata_obtain::<T>() };
-
+ 
 -        T::disconnect(intf, data.data());
 +        T::disconnect(intf, data.as_ref());
      }
  }
+ 
+-- 
+2.51.0
+
