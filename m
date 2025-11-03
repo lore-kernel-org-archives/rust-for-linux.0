@@ -1,93 +1,117 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C0C2FFFB8
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Nov 2025 10:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652A92FD69B;
+	Mon,  3 Nov 2025 10:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762166969; cv=none; b=P6ZKpdRX3D10jYKo+X1dS5y4S69s9o/nmCUs5X8Hcdd33p/dU5TDMP9fXndzM+Y62VTi5rinGSq9ev7+Yp4xUS+T7RZLZjzRguqKr5SDorC7EJME8bmWPqmLK0H88Gw22OkoOWvITD/EST4BK04WuWM7yzwznqjYQ7y3oF5AVUU=
+	t=1762166994; cv=none; b=lrXHJShZ7zHg+W1CrqHNpVlv5fr6g6MSYgNMYlecz89j3t3o4s98sHSr9g93uWuptp/xIVOKkHU7ajoTyOL2O461npcNvz1acCbMPV8jE49xwqy3NJn1EMJsTzaoCXYJrniVtzPSR2q4iGkPQDD7AAVOuBQDegcep59BNbNLwBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762166969; c=relaxed/simple;
-	bh=Evfz1tcnqjd0f5x1YIdlbDb29zhP2FMybct8RGVgIjM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VxFtpRwfhMczW6LKHZORvjTDPRG3dKSIRO3uL2uawNHt1A2skMfqFxAUEqrA86+vCLv9m1mvy9ue5MM3MnTzL+8zDlkQk/0ubkEDF9aaWvvujukp9OuWvezsDTS6/ayzPAbnMPrEVARhEfd4KuQNoRLkV5Bu9JbgpmiTETU2XrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k76QV0pd; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1762166994; c=relaxed/simple;
+	bh=uUifxonKcla3BWytmq2yxQx+E6zovUda0T3W9rcNDck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DJwdjAUDMje3toXMNO+ntWjEb3WifeHGybrIMO3B4jDulz5mOmd05gHiIgYSmiDsi7xrM5bgPutsy6iLOqnKJpnC3cTgeLVx6bymJP069DbBVfHbsL71YrkpjC7ovrAfCNrFHDJBJcn6Wd+M3zP2mpqQK1NwvLamnW3/PVRPw58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R654j01t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k76QV0pd"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-475de0566adso31896505e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Nov 2025 02:49:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762166966; x=1762771766; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MpWdihMx06jCjHLY5EmCWwN5NA1F7kZ8RlapB6cD5OU=;
-        b=k76QV0pdbNe/7LbOu//naw1MYKjcN6XMViWCaSSaCh1xXW31822vn83SUvkd/kMczC
-         qjF/vf06TjQ5NltNvQAk7EA+DQFmX+4aHgJq3C2IAGPhcnnpQOC7QbmpGrySg4Q5EwrR
-         UinoPIbBiJX0WcNg+aohLLt1Iz3RqM4pNd8cf9TptmeuBdqJqPM0RKMHL3U+wHKR5COS
-         mYub+WEsZJtHd0rNSWcfOqaoEubSmmQjK9qK2Qnx0LJRcpa/5VyXkTo4/3k29C+XPMfc
-         sX4shZ/mY71mAoKeTniRUdvZO4ZEaTX1KujbuZZTYZ3VMNljhCCNExrZRUqLO4vFDvQ1
-         R5Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762166966; x=1762771766;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MpWdihMx06jCjHLY5EmCWwN5NA1F7kZ8RlapB6cD5OU=;
-        b=bWmTTzXS449OH0hrLXH9zob2r8W2uqZkW1AbccrJWO2tVC/mdYMYNf8v9LT2nfBd3k
-         z9Vwbp5ZzOVYfvO0SAglQRIEq3LH6OFAx59nrcBT3g1Sndgo5JCZwGQtMuQ8YJdIRAIg
-         34IJ7vWz7zG5uV/M6SoOIOK/2lUiX1x6eO3lwFP+iiAr8khuLQTE2GYGcyG6J1lZb/DN
-         1CbFu09Yy+fTVNNiU2Vt23CXvHRMlUTnZouKtjjFZ+bgyF+xw/WJPOYW94wwqf4Vw/3Y
-         i1OX9PqSzyVQpWPra4ABa/d2GRkhJIr09K0SVf3gOyw0OFDu+gQMznguN8JMUUyeQXIe
-         rZfw==
-X-Forwarded-Encrypted: i=1; AJvYcCXvNnnCpjDBSYG8LQ3wgBqtkC5joXkeRq236/6M8swUOQrYhrjSho9mwnNiODOyI/2B4JSKa4V6ZoezYwgBGQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxO0mS/tGfnFvPbRxxtJIZCSSsAa9RVNIkUMNfkwx136QGGxWPT
-	TD2NEi9oUXWUnWRQ6lsj4ahDIS/+r7W0/Rx09pv/MRy+IZnpaEt0FRo2y8cOWPk47YmozhmCnIb
-	OzBae235jPS+kYpppyA==
-X-Google-Smtp-Source: AGHT+IEQzl/e6rTwNPnjUtOH6pZmLtmwiNJNjCotzrRyo/a0nRPHwZhBiPYChczpTpEtjWOvjSdmGgtTEihcQ/k=
-X-Received: from wma5.prod.google.com ([2002:a05:600c:8905:b0:475:d8de:fe5b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:848d:b0:471:14f5:126f with SMTP id 5b1f17b1804b1-477308b222dmr106823955e9.33.1762166966577;
- Mon, 03 Nov 2025 02:49:26 -0800 (PST)
-Date: Mon, 3 Nov 2025 10:49:25 +0000
-In-Reply-To: <aQiBTOj1jl4xM3pJ@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R654j01t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5903DC4CEF8;
+	Mon,  3 Nov 2025 10:49:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762166994;
+	bh=uUifxonKcla3BWytmq2yxQx+E6zovUda0T3W9rcNDck=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=R654j01tkgr7j+kGctXGIU7wXdjqv9jn/OELsSKcDst5bpbuP0wRucegkwsqf/Aiu
+	 IJktZHywCzfnkRDZsFHJQ5H6QkW9S+m31mYwJqq6gpV5PJjFrocgDpHPBnqbBoyjev
+	 YhWoKyHS3b/u2HFvQCiiTyrfOI8rGYxzpdjaAxI1kUSOl2hERJ+aV+p1HzmZw8hEOJ
+	 mqtmD7ChPljk8VWDVxn3KhmuyedV1bY1oi2UCzNup3eRP5CgmcmvRVlAPm6MLnKL33
+	 J+r3xdNbig6e9bWe+QUbIJy/JxUvmitqi78ft1WAl4qIaPguQG4mkHFlRNYDv7fxd2
+	 vyOdw0liTWB0Q==
+Message-ID: <bebb6b2b-869d-4931-adb3-de5a2a201401@kernel.org>
+Date: Mon, 3 Nov 2025 11:49:47 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251102-bounded_ints-v2-0-7ef0c26b1d36@nvidia.com>
- <20251102-bounded_ints-v2-1-7ef0c26b1d36@nvidia.com> <aQiBTOj1jl4xM3pJ@google.com>
-Message-ID: <aQiItc35Y19l4HOc@google.com>
-Subject: Re: [PATCH v2 1/2] rust: add BitInt integer wrapping type
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Jesung Yang <y.j3ms.n@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Build error on -next in rust/kernel/usb.rs:92:34
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+ kwilczynski@kernel.org, david.m.ertman@intel.com, ira.weiny@intel.com,
+ leon@kernel.org, acourbot@nvidia.com, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, pcolberg@redhat.com,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251020223516.241050-1-dakr@kernel.org>
+ <20251020223516.241050-2-dakr@kernel.org>
+ <1c8afbc0-e888-4702-9e4e-fa8aef0f97ae@leemhuis.info>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <1c8afbc0-e888-4702-9e4e-fa8aef0f97ae@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 03, 2025 at 10:17:48AM +0000, Alice Ryhl wrote:
-> On Sun, Nov 02, 2025 at 11:24:42PM +0900, Alexandre Courbot wrote:
-> > Add the `BitInt` type, which is an integer on which the number of bits
-> > allowed to be used is restricted, capping its maximal value below that
-> > of primitive type is wraps.
-> > 
-> > This is useful to e.g. enforce guarantees when working with bit fields.
-> > 
-> > Alongside this type, provide many `From` and `TryFrom` implementations
-> > are to reduce friction when using with regular integer types. Proxy
-> > implementations of common integer traits are also provided.
-> > 
-> > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+On 11/3/25 7:43 AM, Thorsten Leemhuis wrote:
+> """
+> error[E0599]: no method named `data` found for struct `core::pin::Pin<kbox::Box<T, Kmalloc>>` in the current scope
+>   --> rust/kernel/usb.rs:92:34
+>    |
+> 92 |         T::disconnect(intf, data.data());
+>    |                                  ^^^^ method not found in `core::pin::Pin<kbox::Box<T, Kmalloc>>`
 > 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> error: aborting due to 1 previous error
+> 
+> For more information about this error, try `rustc --explain E0599`.
+> make[2]: *** [rust/Makefile:553: rust/kernel.o] Error 1
+> make[1]: *** [/builddir/build/BUILD/kernel-6.18.0-build/kernel-next-20251103/linux-6.18.0-0.0.next.20251103.436.vanilla.fc44.x86_64/Makefile:1316: prepare] Error 2
+> make: *** [Makefile:256: __sub-make] Error 2
+> """
+> 
+> Full log:
+> https://download.copr.fedorainfracloud.org/results/@kernel-vanilla/next/fedora-rawhide-aarch64/09759703-next-next-all/builder-live.log.gz
+> 
+> A quick search for "T::disconnect(intf, data.data());" on lore
+> lead me here:
+> 
+>> diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
+>> index 9238b96c2185..05eed3f4f73e 100644
+>> --- a/rust/kernel/usb.rs
+>> +++ b/rust/kernel/usb.rs
+>> @@ -87,9 +87,9 @@ extern "C" fn disconnect_callback(intf: *mut bindings::usb_interface) {
+>>          // SAFETY: `disconnect_callback` is only ever called after a successful call to
+>>          // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
+>>          // and stored a `Pin<KBox<T>>`.
+>> -        let data = unsafe { dev.drvdata_obtain::<Pin<KBox<T>>>() };
+>> +        let data = unsafe { dev.drvdata_obtain::<T>() };
+>>  
+>> -        T::disconnect(intf, data.as_ref());
+>> +        T::disconnect(intf, data.data());
+>>      }
+>>  }
 
-Actually, I saw Yury's comments on v1 and I have some additional comments
-as well. See my reply there.
+This error is cause by commit 6bbaa93912bf ("rust: device: narrow the generic of
+drvdata_obtain()").
 
-Alice
+It seems it slipped through, since the USB abstractions are disabled in all
+trees other than the USB tree. I tested with enabling them locally, but it seems
+I forgot to re-enable them after a rebase etc.
+
+I will send a patch with the following fix:
+
+diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
+index 92215fdc3c6a..534e3ded5442 100644
+--- a/rust/kernel/usb.rs
++++ b/rust/kernel/usb.rs
+@@ -89,7 +89,7 @@ extern "C" fn disconnect_callback(intf: *mut
+bindings::usb_interface) {
+         // and stored a `Pin<KBox<T>>`.
+         let data = unsafe { dev.drvdata_obtain::<T>() };
+
+-        T::disconnect(intf, data.data());
++        T::disconnect(intf, data.as_ref());
+     }
+ }
