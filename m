@@ -1,311 +1,191 @@
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012007.outbound.protection.outlook.com [52.101.43.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650F5126BF1
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Nov 2025 02:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762136260; cv=none; b=uIl8ViUvKrqAcSrJJFfrrnBPT4BAhfg+0fxZFDEo8BbB9tV+UYj/WG5JJ2BowDRe3udJjOsGjGgBass05bdm9HlSpUiX6+l7Or1XDvZutvZeyJRcp2Pn2piEG82EH59fnMssTVkfOeO9rgBWMJo+OIvTxVSDPkvUsWinSx8IZac=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762136260; c=relaxed/simple;
-	bh=F3ZgcfA13fgnBgxNIff9RS73VUalxiZK9ts7h3+HfQ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QTonkAghdp3SZJ1M3pJ75Gx7YOErLvHC5m4q3++hXfPTwg3LzXgnY2yc7nhbFCaH4PjcS8PS/Ygk8Izs2W0Cdbbeyxk/mnFIZ/2ZGLv+Sd/j4x7+AKlhKSlnrINZXK4ouHbuSLeZ3SDy0ew71bL8FilB28MVfsdeRaT2COzY5QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ELtI6Hb/; arc=none smtp.client-ip=74.125.224.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4992DB652;
+	Mon,  3 Nov 2025 04:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762145997; cv=fail; b=K3AJf4g0zB839bH1LPACBJ7d7vEhgypPJs1jC9Ze6A4WPgVspjFzITZDPkSYsoGnOW2HWuCgXSucOWiKNsz7dun+81D1V08FwfonjO1xgosSA89tKZmCiwKJK83q1YrTR9lgf51iCUjcuF4L71q7YY42YAVkqodBd6N155g9d2Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762145997; c=relaxed/simple;
+	bh=6HKsHkElqcLATgtYOZPxlfoz+UZVl2bzYLMPxNUFFDQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fxIBhAEGARosJyhERjG2Ltjvxio6bAxyyXfp8IVwoa8T5p/cSYOrBhpJwfKXNDVrucrJVToC51KHG2JFTccHhyk+FjO/i2InUZYG98tqSJ87XXQwr7G9eTj012tuIpcrHK1gE6BP2fR/Z23pfY1Axrn+A4Snx5DLUryXX6KN3FE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cQu993MO; arc=fail smtp.client-ip=52.101.43.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ELtI6Hb/"
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-63f5c80eebdso3983985d50.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 02 Nov 2025 18:17:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762136257; x=1762741057; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ctjnEIikXqfv5kNJxXpYhtFaIeFEVp3JcIWOGnMwmcc=;
-        b=ELtI6Hb/JVzTZwoLGlY2ycBDnhl7eTln7H+KyoAdkN/CFCHHdy/tTtsWiM9HECrdDv
-         XQznIfvGkQhqpMz02gNur7ZV2qnfulWEvxSYpzpPX+zQjBzHM0SASWrdgTzKv3vNkFKH
-         yOmwVixQOWmUf2WFMZ7g800jH1TpF2/E+o9zmGxrd7ZUaJuLRZTwd9ns/st7V9jyVDrB
-         I4wsEZ6kVLOgrkSdaUvDrBK6S+oDMndFM/m1FRbeANnxOG6IOrqa5spnT27tXQaeKv7c
-         9bViiM7k4gcqS07+CIrCeZmuliOgg1PMPLloyn9gCKLPCsBj3u0x6mVKPNx6BooUeQUb
-         XWww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762136257; x=1762741057;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ctjnEIikXqfv5kNJxXpYhtFaIeFEVp3JcIWOGnMwmcc=;
-        b=TKnjo6yM1Dnd5+EMT3xr/LVtaQrDyKZxnKTLsxQxyL3yXulm5rqzxIJCktw35ecebF
-         A29wDGusX3P4n7WvjW9PDpeY/2j8NFQevgFINkGEAJgJrStIqN0GXBt1+DHUPk8UG34P
-         JcsIljiUQHaeahsQOZ0wJafxM5d6sNA5ncAbcS7ea8xNd2jwEmOk1RYjWlAsq2eqn87a
-         w67mKXBWtBenOFfR65PSax4qKCaS4uF3melWWd+IoL4TQMN+qrPsMVCZFc9A1BP1Z+j5
-         XixxiZBxoD7fwUtbpPPRsWW0uy0d4S8yRM/U0+CftHNUqKqadYT5iyJP0UL/jdqvzCn1
-         C/ug==
-X-Forwarded-Encrypted: i=1; AJvYcCXnNRGuAytsWr+NGbGpzmKWJyWEJ4KOutwCcB6OIr+qDytBITSQM3e75T0dB9sO12nlLFCvaTbwH9+ipnYpeA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6oMYAF5D2dp1IZSw951581zNhMPHyrdsmRLYyC0LU9+1UOx9f
-	PJB1OYoyImqNryZ3msMe8yuNRVb9YjtsbLNEmn0u4AYcv3+4tELN02P9+ybq8Q==
-X-Gm-Gg: ASbGnctHUpE8uVTiJZvRe2bijwFwHVGIei1bdS4cAjzwG+U9INSMKnmpDRgVuUTdu2M
-	UHvzLV0Md/RC5euiUhU7bApoEBvThS+6ezYq8koR0QAAht5WRvS7GmWoSVKFxOPmcGQ1KpFTbo9
-	SnzVNT2VEo6r0NFzZikYo3bPO/NzFEu+L0UVbyM01MasQ+dBkzhegqCCey3TVdmDV8VSdwzC3c3
-	8xyeohv1uyirwl5vs9Ie2KKtQpDoTa3N99dz+nwb+bk5peN38FvoFHtFrhfY3LNi0DzpqyfoijE
-	OGM2DRj9GrlmLADrlfCxWFJBptpPwRfkSrgMKHYKpBReZtSATCuwd9Mtj3xXOE9jSbJUv6YD0DX
-	rzN/CXu3akK/7ddoREi5r1ZtBIGqNOV+YUQT+krs5M2wSr8WfU7k6tgFTgF63/oTpQReHRbbChU
-	dAaRkgf9u3QLH7hdxkdfE9Qdw9H+gH7hv/b5X+5SqCsVSFiYdapbUtKQ==
-X-Google-Smtp-Source: AGHT+IFmJEXD8Y+48yREcmRCznLGT9AO3ztvCI5onkhBTwzSaX1WEuvemOJCdpKnfwEJjbln7jTJNA==
-X-Received: by 2002:a53:d008:0:b0:63f:ae41:fbbd with SMTP id 956f58d0204a3-63fae4207f3mr3470702d50.8.1762136257216;
-        Sun, 02 Nov 2025 18:17:37 -0800 (PST)
-Received: from localhost (c-73-105-0-253.hsd1.fl.comcast.net. [73.105.0.253])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7864ba82d3bsm26409417b3.4.2025.11.02.18.17.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Nov 2025 18:17:36 -0800 (PST)
-Date: Sun, 2 Nov 2025 21:17:35 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Jesung Yang <y.j3ms.n@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: add BitInt integer wrapping type
-Message-ID: <aQgQv6F0Ao4DH6U0@yury>
-References: <20251031-bounded_ints-v1-0-e2dbcd8fda71@nvidia.com>
- <20251031-bounded_ints-v1-1-e2dbcd8fda71@nvidia.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cQu993MO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ILETZ+0X54q03VgN9E/py9x9Sduf/OEh4LfUuMXov8aAv01p2+BteGV1+R+FhTe6rwxIzuFUeR3iwmX9QyR/7k0YVrtS8V8hBhlvCFcHHWgwRRG4IymmwDkx3RZLD5oozAP0fHS4N+bnwT7HHWILTf8f2Ml2fPRf/puRE8j4luDf20ZQk3IRoVZ/wJgDUxrd+mnU9U3fkAjHLkS8t7t4zd7PnfxLsiQU+sjUPKN/xaA0BuiKIQmqFTyCrAgufEl7Rg7jmJ6ktJVuigb4Sf9pljQm7SwZPumq+BeGezh7WZ73ENGVV73rnn7mRG8HfUgdyfCHyiaYAuDkmRZkrXC99Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6HKsHkElqcLATgtYOZPxlfoz+UZVl2bzYLMPxNUFFDQ=;
+ b=N5bJ2YIG9xYvGlxbQfhw6Qhgtk0x9oZZpQdJzfGYTZFLfAToL4g+bbND3c+ELg2NGv74xLQxNlVS/96E3WJ68xns89PD93wb/L8+MLpiumgYrfXHMQt6izyRBjlimfy/Ul20knWowIwKOQLZDTBJtuhHlXbeAUltHlGw9zL/VpGIq/ng/pV26fakW56b1tppaA5dHUPxqHPwXrm6ZTepvyyisot7T9+0XuEEOB7tBCHzunTMriVSEabUszCZey+JskkWKuSPSxZHx4jsbocbejeSlPcjKLTJyLeiAlINgMNdmrj59YcLNG1jeI2qdq/uYQei7HHFhkY1eY+HU47UiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6HKsHkElqcLATgtYOZPxlfoz+UZVl2bzYLMPxNUFFDQ=;
+ b=cQu993MOy0DlSBPSBiuDtR3hCF7th1zE+x2kvzejbe5Vs6cvni9dn0eplCXPPYfAGpIRvL7CsN8cNTNkwWN4qehpl31BXIysJPXGyF4epWLJdeUXkcunBfucHDi7qaScvYFdMqpzSNaOIJyHJPIRSu/D+geuHl2l9vOra5h7wtEozADXccs9p1iZDixh9POV19psh3Ovx4YrwK07PAG5TO/My56D4Boyw/scfgUqXajSUH0M5mTUgo42a7Ro3XZzcc6wGUJZ+ZCqKYVAtJlqtZt/AUTTLL7lEev//FAW9HTb3tWaSASdlBN6Lr49lqls6a1iiVDCW4UWmP3zG9jeEA==
+Received: from CY5PR12MB6526.namprd12.prod.outlook.com (2603:10b6:930:31::20)
+ by PH7PR12MB6418.namprd12.prod.outlook.com (2603:10b6:510:1fe::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Mon, 3 Nov
+ 2025 04:59:53 +0000
+Received: from CY5PR12MB6526.namprd12.prod.outlook.com
+ ([fe80::d620:1806:4b87:6056]) by CY5PR12MB6526.namprd12.prod.outlook.com
+ ([fe80::d620:1806:4b87:6056%3]) with mapi id 15.20.9275.013; Mon, 3 Nov 2025
+ 04:59:53 +0000
+From: Timur Tabi <ttabi@nvidia.com>
+To: "dakr@kernel.org" <dakr@kernel.org>, John Hubbard <jhubbard@nvidia.com>
+CC: "lossin@kernel.org" <lossin@kernel.org>, "a.hindborg@kernel.org"
+	<a.hindborg@kernel.org>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, Zhi
+ Wang <zhiw@nvidia.com>, "simona@ffwll.ch" <simona@ffwll.ch>,
+	"tmgross@umich.edu" <tmgross@umich.edu>, "alex.gaynor@gmail.com"
+	<alex.gaynor@gmail.com>, "nouveau@lists.freedesktop.org"
+	<nouveau@lists.freedesktop.org>, "ojeda@kernel.org" <ojeda@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, Edwin Peer
+	<epeer@nvidia.com>, "airlied@gmail.com" <airlied@gmail.com>,
+	"aliceryhl@google.com" <aliceryhl@google.com>, "bhelgaas@google.com"
+	<bhelgaas@google.com>, Joel Fernandes <joelagnelf@nvidia.com>, Alexandre
+ Courbot <acourbot@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>,
+	Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH v4 3/3] gpu: nova-core: add boot42 support for next-gen
+ GPUs
+Thread-Topic: [PATCH v4 3/3] gpu: nova-core: add boot42 support for next-gen
+ GPUs
+Thread-Index: AQHcS5kvDmmWDWjtwkmv1WTC8DlzqbTfsdyAgABycACAAEHiAA==
+Date: Mon, 3 Nov 2025 04:59:53 +0000
+Message-ID: <61b8cfb9d3ae088af4c9c19973db3266aa2bfa11.camel@nvidia.com>
+References: <20251102013656.423235-1-jhubbard@nvidia.com>
+	 <20251102013656.423235-4-jhubbard@nvidia.com>
+	 <4c6df1aa00dab5b7e2a43c952180fc74e40f146a.camel@nvidia.com>
+	 <634b7879-055e-4d5c-aaa8-25f88bbdae75@nvidia.com>
+In-Reply-To: <634b7879-055e-4d5c-aaa8-25f88bbdae75@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.56.2-4 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY5PR12MB6526:EE_|PH7PR12MB6418:EE_
+x-ms-office365-filtering-correlation-id: eaf2fd31-0a18-4c2e-462b-08de1a95d391
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700021;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?dGlucytuL2RLUWYyanVlOHU4cHJjWUNZR0FBYXlWU2VlTm1ONTNhV21XcUhG?=
+ =?utf-8?B?dENHbFVXMXVRWUhlL1lFMnNOdlo1Qm9tSE56RzU5elZJTWRSUjk0dUVsS3FW?=
+ =?utf-8?B?UnZZbDVudU9IenQ3RFBFRmFZdmtYY1hGMWdIZGQ5TERacWRhRFFQRk5pSUJX?=
+ =?utf-8?B?bjBKUUlTU3dKVjlYVWpad2RBN2U4QWpEdnlzYW95L3pOdWNic2J3VnlZZUUr?=
+ =?utf-8?B?aTNtSFdIbGZYenBXY1hINUF2bk1ZSlJOM1BraEdHbDBPUVhtRXdLV0JETzBo?=
+ =?utf-8?B?M056VURKbFJaMHlCRWwzYm5rWTlxS09oOTdXdDBnZnlVcHFxT1doeWJHVkhV?=
+ =?utf-8?B?WVM2R0Q5T2Fzb3QxcDNPbTM5aStuSEhUY3lHeTdzUnlyZzNKTGhQemltai9r?=
+ =?utf-8?B?SXpGc2pONUtxeWlNMFBVNnZHRkZNenB3L3ZYZk1nNnpOWm4xM1FsZEdZbEdr?=
+ =?utf-8?B?RWVkRGtDUlNhQUtQK3FTNHJKZVNWWmJBYjU2Y2VENFF6T2ZFcEhNdE15U3NR?=
+ =?utf-8?B?c2dyUmtaemNEUDBQTzF0QUsweWVEYktiQytDRDBxQW5xRnAyWExSZmZFTWpT?=
+ =?utf-8?B?bk5oMzZPcmhVWHJndGlqbG1mc25WTDVsZGhvc0t0UEFsZm5ieHR6TTN2TEhO?=
+ =?utf-8?B?N1hPWXZJdmRRSUg1aEluVEhlYXp4eEw3dkJJay9MK21PN3MwMXowZVF6MnJN?=
+ =?utf-8?B?aVVrZHRhYXhTZm9ZU0NpUEJyblREKzRnVkVkU2NUbFZUOEtIQ2NUcXdOeGh6?=
+ =?utf-8?B?aWpjZGtuNCtqRzZObVFmWnpqVUZQaWMxNGhhNEo2UU1KdlFKTDB3R09FN01L?=
+ =?utf-8?B?cWZGWFJoWURhS3A4ZmNKNnZPZXZLTHBBZGEzYmlnSS81RkhrOC9WYTBxTlFk?=
+ =?utf-8?B?K2ZSMnUyNU94WERPU05LZnJYRlFTWGl4Ui9JWUw0bU8zSnRjcitMaTdUMlVS?=
+ =?utf-8?B?akpqTWIvc29QMzVGQjRURU1vTkFndFlkeWpLN25KVEo3N20ycG5aZCsrY0hu?=
+ =?utf-8?B?VFpSbWhRRmMxSHpwMmM1MUFKU1hqN0U2QnpUWXFvamllL1pGcUZtNUZ2NUQ3?=
+ =?utf-8?B?R2NOWWlNZ3Ztd2xVRHJmOEpncWpqY1hOMzZxUmMzcUQvdFZXTVJjV0JYVDNR?=
+ =?utf-8?B?THZZdUdOUHZxVnp6b0hIQ3hnMXZDWUduVVUwOTk5VDh1NHU4QjdCbHpwUXk4?=
+ =?utf-8?B?YTdMbkZhTitXVW5yODQ1MFNhMFdkeXdNdTdIVlY1YjlRS2E2dlcyOE10UUdM?=
+ =?utf-8?B?TVJ0MWNiNWZpeVBHdXVFeU81dDU4MVFKbWNiTE1PdzREYkR3MktuK1ZRN2xs?=
+ =?utf-8?B?bXVFNEhMdkgxNG94bmE0MUtUMDlZNG1yYjFwZ3FPZkk0cC9RcFFoSTFFbjNL?=
+ =?utf-8?B?c3lYcXpjUjBjTU9KYXcxMFZkWU55SHZkQkNLMTV5ZzNZZ0NiNzJEWGtyaXBt?=
+ =?utf-8?B?eUdsVGo0ekRZSFZ4SzFwOFlIUXBOOGNIVjVYTlArU1JzZnMzcVpNb1BYdHha?=
+ =?utf-8?B?YlVRTElOSmhEenVYMEVFSStPNjBKeVZiQkxTQ2dXOWtlcS91MEYvTnNvYm5x?=
+ =?utf-8?B?UjZWTysyWXdROEFPTUpUck5GZnB6VFY2bER3QnFUTFFVN051SjhobkJKSyt5?=
+ =?utf-8?B?c0ErTmdVc3BkSHN1ZkloSGw2V3Zhazd1eThLQTlSWGRZT1RHeDBjbGgxY3kz?=
+ =?utf-8?B?S1VJUzB1Z3FOakpqcTI3M0pxMXU4UFF2YkVpMWhIV1pCUklJSVBadVpOalh4?=
+ =?utf-8?B?WEVFTU1iMkxLVC95VU5wYk1TMVFpSjlrVWxRSTA3UTRoY1kxaWp5bmVZTG95?=
+ =?utf-8?B?UHBUQlNqdld4QWJxMlNmK21KU0luY1hzZ05kMEFUVFpMNmVZUC9nb05ua2ZX?=
+ =?utf-8?B?ZHk1ekpJZ0R5NjlhSUxrU1FMbGtQeDNpYVE1a0dQd1lZc29RSTJTMHdpb3Yr?=
+ =?utf-8?B?ZnlZVnVjK2trV05kUmZrU1JUanBlQjYxVk5xa3ltdnJqT2NhWmRvV0VqdTFw?=
+ =?utf-8?B?MUZFQllKdWo1UVJJd0tIYkJCZUEydHRQOFJEcHdiVWZ1a0JXMGJGRy9WT25Y?=
+ =?utf-8?Q?EI5/PZ?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6526.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?L3g4YWJ2UlFETTh3ay9GcG5rQ2ZlZkxoZ0pySFZmUENHYnRJbDVvZEJiT21p?=
+ =?utf-8?B?OG0wUXUvQzFkTEFUQkpXYzNzQ2p0MGhhVjRqKzVPZTdkSXRlNkJseG5WcVZx?=
+ =?utf-8?B?OTdqeDJxK3dkdnpWSjQ1TkQvamdMSXZqUTVvbExSVXA1aVVmQWhNcGVnUHUr?=
+ =?utf-8?B?N2NaZ1FiTVFTdCtRUWJVR3c2VTljM0trYWlGeUVsaW9Ka1BOOWNXangrOW1i?=
+ =?utf-8?B?cktad2N1U3Q5WkNZcjEyUDd4cEQvNGVhaGFpNDRBOExRcGNpVy9xOTRMZ2dT?=
+ =?utf-8?B?T2Znc0lKbkx4QmtabWhLcFRmVjR2QkRxUDZUbFZMTWwyVFpUR1pXSTFCd053?=
+ =?utf-8?B?RzdZTVhPWVFyNVZZaHZ3YVhCSU5KSlJFcEcrNUIzVzZZckdCZ0VkU1RzRmpj?=
+ =?utf-8?B?WnZLTnZPN0R1K2J1Z3FDTU1hVS9FaTdSTGFzZXRIVlkzMlNRaFM3UW5odWZv?=
+ =?utf-8?B?ZjZkOGFqeTJwMldqQm50b29yWTNGUVVXTEozRmJ5QTBIczVHVW5zNDZHRDhw?=
+ =?utf-8?B?b1dmcVN5UmtzQTZ3WXRqQlpKNEtld0xXR3BlQmU3NWZzbzhtTUc2YzhPNk91?=
+ =?utf-8?B?bGRQc0dURmdkanc5aU9JRFFMeVQyWmpiS3VJQTNtdFNjQU5qSGtUcXZhcDll?=
+ =?utf-8?B?NmZnSnFyQ0VxbDZualNISzdHK1ArN29vR2VyS29MdHRua0x5dEFyWUFDR1lG?=
+ =?utf-8?B?OHdSNFdFVWZra09YWStlVkJ1em93d0RReFJZdHV2M0hwMnh6ZGcyU2RTMUpI?=
+ =?utf-8?B?dEN4Rm5GYWVTcHJ0OHEyaDdjU2RoRnVSelVoKzlFdjNJM1o3TGJqbGFzVXM3?=
+ =?utf-8?B?dVBZc2tLNjhjZ3U0dWxTUFc2c3dSYjZDcUdXUHg3ZEhnSUc2VDZnaVFSc2Ix?=
+ =?utf-8?B?Qzg2VXJ4citRd3pycGtaOGNDTE41clVrZ1dZNC9Nbi9mRGp0OGQ1WDE1cXlQ?=
+ =?utf-8?B?VjVkb3pJcHdKZmxEbzBSVittOE1rMWs0UGN3bmc1RjVIRFpYancxN0ZNM281?=
+ =?utf-8?B?K09tVldjOW9Bb0wzUXZjSEJDTi9kTTZUUS9xa2FENEFLVmQrK29rOXZrUHoz?=
+ =?utf-8?B?TUJJVzBucXRZTnczekRVUEpGQklERk1zSnV2Mk9iSzRseUNIbjVrN2hnR3dt?=
+ =?utf-8?B?STFkdEMwa0NUSDF2MHFNLzRHUVJaUk5hQTdDRzVPTlNpQmdZbkdibncvZ3Fy?=
+ =?utf-8?B?dmIva2t3elllZ1pzbkc5MG9sVDJMMlVYUFdEaE5BamlENlFBS0ZZUU5vZ3BV?=
+ =?utf-8?B?aEVBQXRwblJUWklIbUxZM1MrYXc3VEZ2VVJpTzkzc1lOZ1VIb0xlUUIwY0R5?=
+ =?utf-8?B?UXFRM3VHOWtzZHNoVWVDOGtJbVEvRmREWGVXc2FjTlVvMXorUmZNdVlKRzFP?=
+ =?utf-8?B?UklHUVVYNHo5RWRhU3EvRFJNZ1A4dStrK0kvSzFmZ3hSRVJoZjVJb1VBVDVK?=
+ =?utf-8?B?MjcxN2tCVWN0NmsvTlY1QiswNDdMTWREZHp4S1YzT20wRW1LSzIxV2Jsa0Fa?=
+ =?utf-8?B?S1ZSQUZqVTVJZmwxQXNKdHE2UzVLRm1tK0V0UXJ1SWlaNHRZQ24rbk5KYUZJ?=
+ =?utf-8?B?dVdtaFU4MmNvU29LdVF6MTg4b1pwYWgweFFmRFlHTlk2dUt1bVYwVzY4YWtI?=
+ =?utf-8?B?MDVYK2FDUVltQjBxc0d3UmJab1UzdXp1ZVRaWGZwVjlYcHFZVFJLUUNqMnlC?=
+ =?utf-8?B?c05sMGpCUTcvOEQ5Q2paZGgrMVJ3anNoTVRBajV1RFNZMlBxRHEvRzcxNFZJ?=
+ =?utf-8?B?dVMybE9TdUsvZ3JDeEVHSWVsdFp1RHkvcXEzdUFyZERMUnA0ZlUxelF2K3Zn?=
+ =?utf-8?B?MGJhY2U5b1JjK3VjQW1DSWlSRFpvWGEzVG1qRjI5dWYxWTE0SnFHbExFNHNW?=
+ =?utf-8?B?M3ZTN2tqUHJzRlBOZzZWOVlUUkVuMXc3bWVjVVM0anR2M2VhT2FxbE4zQUpa?=
+ =?utf-8?B?K1hOZjZiWWtPV0dWWk83WVU2SnNiaEFxQUVlRlBXaXpReGxGaFFzbFZiQm1D?=
+ =?utf-8?B?ejAyemYyTjVvVm1sTFFhN29oNUtpN280Ry9HbHpmT2pndmtqU1ZEb1VYTktW?=
+ =?utf-8?B?TG5OcmMxcmQ3MFlrOERjUUVnbzhXaWJ1cWMzNjF5dGloT2J0bnZQU29DVDhu?=
+ =?utf-8?Q?k1SNFYuPns8A6638VK4mHzALz?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E6D78235ED562C4787AA4EB3C2387FA3@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251031-bounded_ints-v1-1-e2dbcd8fda71@nvidia.com>
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6526.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eaf2fd31-0a18-4c2e-462b-08de1a95d391
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Nov 2025 04:59:53.4714
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: rwRobJa3yFVTU+8LL/ibL98iytQyqBvxrw5+JtiYAK4DwjWQ7N3ZZg/9sy79/ve1P5RpSKITMevtwunaTHZYqQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6418
 
-On Fri, Oct 31, 2025 at 10:39:57PM +0900, Alexandre Courbot wrote:
-> Add the `BitInt` type, which is an integer on which the number of bits
-> allowed to be used is restricted, capping its maximal value below that
-> of primitive type is wraps.
-> 
-> This is useful to e.g. enforce guarantees when working with bit fields.
-> 
-> Alongside this type, provide many `From` and `TryFrom` implementations
-> are to reduce friction when using with regular integer types. Proxy
-> implementations of common integer traits are also provided.
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  rust/kernel/lib.rs        |   1 +
->  rust/kernel/num.rs        |  75 ++++
->  rust/kernel/num/bitint.rs | 896 ++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 972 insertions(+)
- 
-...
-
-> +/// Evaluates to `true` if `$value` can be represented using at most `$num_bits` on `$type`.
-> +///
-> +/// Can be used in const context.
-> +macro_rules! fits_within {
-> +    ($value:expr, $type:ty, $num_bits:expr) => {{
-> +        // Any attempt to create a `BitInt` with more bits used for representation than its backing
-> +        // type (i.e. create an invalid `BitInt`) must be aborted at build time.
-> +        build_assert!(
-> +            <$type>::BITS >= $num_bits,
-> +            "Number of bits requested for representation is larger than backing type."
-> +        );
-> +
-> +        let shift: u32 = <$type>::BITS - $num_bits;
-> +        let v = $value;
-> +
-> +        // The value fits within `NUM_BITS` if shifting it left by the number of unused bits, then
-> +        // right by the same number, doesn't change the value.
-> +        //
-> +        // This method has the benefit of working with both unsigned and signed integers.
-> +        (v << shift) >> shift == v
-
-In C it doesn't work:
-
-        int c = 0x7fffffff;
-        printf("%x\t%x\n", c, (c << 1) >> 1); // 7fffffff	ffffffff
-
-Neither in rust:   
-
-        let c: i32 = 0x7fffffff;
-        println!("{} {}", c, (c << 1) >> 1);  // 2147483647 -1
-
-Or I misunderstand something?
-
-> +    }};
-> +}
-> +
-> +/// Trait for primitive integer types that can be used to back a [`BitInt`].
-> +///
-> +/// This is mostly used to lock all the operations we need for [`BitInt`] in a single trait.
-> +pub trait Boundable
-> +where
-> +    Self: Integer
-> +        + Sized
-> +        + Copy
-> +        + core::ops::Shl<u32, Output = Self>
-> +        + core::ops::Shr<u32, Output = Self>
-> +        + core::cmp::PartialEq,
-> +    Self: TryInto<u8> + TryInto<u16> + TryInto<u32> + TryInto<u64>,
-> +    Self: TryInto<i8> + TryInto<i16> + TryInto<i32> + TryInto<i64>,
-> +{
-> +    /// Returns `true` if `value` can be represented with at most `NUM_BITS` on `T`.
-> +    fn fits_within(value: Self, num_bits: u32) -> bool {
-> +        fits_within!(value, Self, num_bits)
-> +    }
-> +}
-> +
-> +/// Inplement `Boundable` for all integers types.
-> +impl<T> Boundable for T
-> +where
-> +    T: Integer
-> +        + Sized
-> +        + Copy
-> +        + core::ops::Shl<u32, Output = Self>
-> +        + core::ops::Shr<u32, Output = Self>
-> +        + core::cmp::PartialEq,
-> +    Self: TryInto<u8> + TryInto<u16> + TryInto<u32> + TryInto<u64>,
-> +    Self: TryInto<i8> + TryInto<i16> + TryInto<i32> + TryInto<i64>,
-> +{
-> +}
-> +
-> +/// Integer type for which only the bits `0..NUM_BITS` are valid.
-> +///
-> +/// # Invariants
-> +///
-> +/// Stored values are represented with at most `NUM_BITS` bits.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::num::BitInt;
-> +///
-> +/// // An unsigned 8-bit integer, of which only the 4 LSBs can ever be set.
-> +/// // The value `15` is statically validated to fit within the specified number of bits.
-> +/// let v = BitInt::<u8, 4>::new::<15>();
-
-What for do you make user to declare the storage explicitly? From
-end-user perspective, declaring 4-bit variable must imply the most
-suitable storage... C version of the same doesn't allow user to select
-the storage as well:
-
-        _BitInt(4) x = 8;
-
-I can't think out any useful usecase for this... I believe that the
-optimal storage must be chosen by implementation. And it may even be
-different for different arches.
-
-> +/// assert_eq!(v.get(), 15);
-> +///
-> +/// let v = BitInt::<i8, 4>::new::<-8>();
-> +/// assert_eq!(v.get(), -8);
-> +///
-> +/// // This doesn't build: a `u8` is smaller than the requested 9 bits.
-> +/// // let _ = BitInt::<u8, 9>::new::<10>();
-> +///
-> +/// // This also doesn't build: the requested value doesn't fit within the requested bits.
-> +/// // let _ = BitInt::<i8, 4>::new::<8>();
-> +///
-> +/// // Values can also be validated at runtime. This succeeds because `15` can be represented
-> +/// // with 4 bits.
-> +/// assert!(BitInt::<u8, 4>::try_new(15).is_some());
-> +/// // This fails because `16` cannot be represented with 4 bits.
-> +/// assert!(BitInt::<u8, 4>::try_new(16).is_none());
-
-Nice! Maybe .is_overflow() instead of .is_none(), so that user will
-know that the variable contains truncated value. Just like C does.
-
-Can you please print the exact error that user will get on compile-
-and runtime? How big is the cost of runtime test for overflow? If it
-is indeed nonzero, can you consider making the runtime part
-configurable?
-
-> +/// // Non-constant expressions can also be validated at build-time thanks to compiler
-> +/// // optimizations. This should be used as a last resort though.
-> +/// let v = BitInt::<u8, 4>::from_expr(15);
-
-Not sure I understand that. Can you confirm my understanding?
-
-1. For compile-time initialization I use BitInt::<i8, 4>::new::<8>();
-2. For compile- or runtime initialization: BitInt::<i8, 4>::from_expr(val);
-3. For runtime-only initialization: BitInt::<i8, 4>::try_new(val);
-
-In this scheme #3 looks excessive...
-
-> +/// // Common operations are supported against the backing type.
-> +/// assert_eq!(v + 5, 20);
-> +/// assert_eq!(v / 3, 5);
-
-No, v + 5 == 20 for a different reason. There's nothing about 'backing
-storage' here.
-
-v + 5 should be 20 because addition implies typecasting to the wider
-type. In this case, 20 is numeral, or int, and BitInt(4) + int == int.
-
-I tried C23, and it works exactly like that:
-
-    unsigned _BitInt(4) x = 15;
-
-    printf("%d\n", x + 5);                              // 20
-    printf("%d\n", x / 3);                              // 5
-    printf("%d\n", x + (unsigned _BitInt(4))5);         // 4
-    x += 5;
-    printf("%d\n", x);                                  // 4
-
-Rust _must_ do the same thing to at least be arithmetically
-compatible to the big brother. 
-
-It makes me more confident that this 'backing storage' concept
-brings nothing but confusion.
-
-> +/// // The backing type can be changed while preserving the number of bits used for representation.
-> +/// assert_eq!(v.cast::<u32>(), BitInt::<u32, 4>::new::<15>());
-> +///
-> +/// // We can safely extend the number of bits...
-> +/// assert_eq!(v.extend::<5>(), BitInt::<u8, 5>::new::<15>());
-> +/// // ... but reducing the number of bits fails here as the value doesn't fit anymore.
-> +/// assert_eq!(v.try_shrink::<3>(), None);
-
-Not sure what for you need this. If I need to 'extend', I just assign
-the value to a variable:
-
-        BitInt(3) a = 3;
-        BitInt(10) b;
-        int c;
-
-        b = a + 123;    // extend
-        c = b;          // another extend
-
-How would this 'extend' and 'shrink' work with arrays of BitInts?
-
-> +/// // Conversion into primitive types is dependent on the number of useful bits, not the backing
-> +/// // type.
-> +/// //
-> +/// // Event though its backing type is `u32`, this `BitInt` only uses 8 bits and thus can safely
-> +/// // be converted to a `u8`.
-> +/// assert_eq!(u8::from(BitInt::<u32, 8>::new::<128>()), 128u8);
-
-'Backing type' is useless here too.
-
-> +/// // The same applies to signed values.
-> +/// asserkkt_eq!(i8::from(BitInt::<i32, 8>::new::<127>()), 127i8);
-> +///
-> +/// // This however is not allowed, as 10 bits won't fit into a `u8` (regardless of the actually
-> +/// // contained value).
-> +/// // let _ = u8::from(BitInt::<u32, 10>::new::<10>());
-
-If I explicitly typecast from a wider type, please just let me do
-that. In the above examples you show that .is_some() and .is_none()
-can help user to check for overflow if needed.
-
-Otherwise, user will hack your protection by just converting
-BitInt(8) to u32, and then to BitInt(10).
-
-Thanks,
-Yury
+T24gU3VuLCAyMDI1LTExLTAyIGF0IDE3OjA0IC0wODAwLCBKb2huIEh1YmJhcmQgd3JvdGU6DQo+
+IFRvIHB1dCBpdCBhbm90aGVyIHdheTogdGhlIGNvZGUgaXMgb25seSB1c2luZyBib290NDIgaWYg
+Ym9vdDAgaXMNCj4gZW5jb2RlZCwgYnkgdGhlIEhXIHRlYW0sIHRvIGdvIHJlYWQgYm9vdDQyLiBB
+cyB5b3Uga25vdywgdGhlIGZ1dHVyZQ0KPiByZWYgbWFudWFsIGxpdGVyYWxseSBzYXlzICJnbyBy
+ZWFkIGJvb3Q0Mi4iDQoNClN1cmUsIGJ1dCB0aGF0IGRvZXMgbm90IG1lYW4gdGhhdCBvbGRlciBH
+UFVzIGNhbm5vdCB1c2UgYm9vdDQyLg0KDQo+IEkgZG9uJ3QgdGhpbmsgd2UgaGF2ZSBhIGNvbmZs
+aWN0IG9uIHRoaXMgcG9pbnQsIGlmIHlvdSByZWFkIHRocm91Z2ggaG93DQo+IHRoZSBjb2RlIHdv
+cmtzLiBUaGUgb25seSBkaWZmZXJlbmNlIGlzIHRoZSBwb2ludCBJIHdyb3RlIGFib3V0IGFib3Zl
+Lg0KPiANCj4gSSdtIGhvcGluZyB5b3UnbGwgYWxsb3cgbWUgdG8gcHJvY2VlZCB3aXRoIHRoYXQu
+DQoNClllcywgcGxlYXNlLiAgDQo=
