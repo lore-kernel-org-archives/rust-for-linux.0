@@ -1,116 +1,129 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9B3302165
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Nov 2025 11:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C0A3009CC
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Nov 2025 11:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762169083; cv=none; b=fji9OVHRJfVs0dpAb9Y1j0o+lwAjnZ2DP8mSlH+VSApev6DThGchfm9aEBlidbg6/ouJ5QPHFtObnefKWQ0aGcGqWK83hqmaQLg/xLqzv0zZvkiFIZY4lrpr0jkxcWBK810aPm1FlDm48OHhgKyCcWC6iVFRDqvS2rnjWGfT1ms=
+	t=1762169438; cv=none; b=b7M8ybuzbNSNsrZtUAoszhVpT9tnUPsptuf3UdjxCSytyw6UpzME4EtlPgS9mMKHtCbCE+9sYbVG7+1zoGMMTfiHo6sV/AM0UKZDu11yjI1+9ezn2dZUxBD91LDbd/Mww89bT+q9xJL+SGWNlVprqCSDqzH0mi8ZlM5gzP6OGkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762169083; c=relaxed/simple;
-	bh=ygGB/YN2U+7m2mTyKycwXt7VfQMyJC+JIr2jtvOFeWI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mx6gvepOOrtcph5Jy+i6O+hsMbRomiBxOKWL0/mtinOMhOrlto+f79+FTjwdATxb1bZqrVJE6uSJBhw4N+Q8KcmRgt36Tao8+9Ipno+Ad0T5Un9Q2FI3BTLkFPx1+Jo4isz73ZjZyTTy5EAwGrCGs+A+BZTyz0vncWLczAE6fj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ijnyZwNt; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1762169438; c=relaxed/simple;
+	bh=0suKgHuLRwkBTP77PUvWJkf99RJxwXQOarlKT4reJUE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W/bS5uVwrh+Sp4dBjKuRZ0yRmgutnaTEkWa7ErcMaZztt4sSwSex5Q8RbYP5ynEvfNZtMONqkq9wqEdxNrZwday+UIWEy/johTZjgDnKbzRVpDRxijHyBRCxRJMZFVMrURcV9gJw9LajhjfoCB3RqveuMycLVTe7GI4aDI1yg60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=byP3W5O1; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ijnyZwNt"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-429c82bf86bso1715010f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Nov 2025 03:24:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="byP3W5O1"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7abe8442103so304026b3a.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Nov 2025 03:30:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762169080; x=1762773880; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1JCDN6Cq9Tp4TkqXv0Efe98IMAIjlCf0jxvF8wS2LXY=;
-        b=ijnyZwNtzBIqKM5Q/1u8nkEft3dm1LU/jlI7KnRBUW7cCq6AzFtwpz9DiZzRyXpHIT
-         c23TsZMUQmwEwMlFgf0h+pEkc9M21Vgxlr7qyX5oFlbK2uW9ThLT97k+YHOTT8yeoSy3
-         i4yowicAmT7pG1z2yVY4ie/cZU31Z2Q95Gr4WCKTMikd84/YRlKGpPdV72tYhH8mH7wX
-         +uhFfv7OaXl8KPL64R/anKl0UCTZeEi16fso9m4eB9y03IXJWdDUzC/e6lyUsPL18b2m
-         mb+UBuFYV5fmRAPuuy4DfQi27HszEKabvyPLREkUXV29m3StfeaQ6owvMMQCObjaAxYa
-         LzjA==
+        d=gmail.com; s=20230601; t=1762169436; x=1762774236; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=h/qh3QJ9wKU70Pva3b0Eg2Hw/21TsuzKDzuHyxygKns=;
+        b=byP3W5O1IesJt+Kyr+/uVzGRjG2XpiU4fZr4oBghP27LAvz4hmFMMvIkx6cbKwYko0
+         /wStooa9RAuYayeqeax9YbmNrX4yX0DX/reZ3FoguzsfYfcfieva9uMg2mNNoL2qBPDT
+         MeqQ7XOqB1yqQ/iZzkd9nZhriH+F2P8/2k67TkDzwimEcIJpCbyD79DDanQroEO8SmEX
+         P3BN0gTYYzy+AdMJaj/sseo/JB/pNLwdYq+sjhBBpPIUgFI9OgpMH5mJ5UNferaNTlar
+         gNtjAiLvfQaETrXNSv+Ok6UyZWjYa7QDbXIdcAkGofJ3N/ZGZvRfc6PaBS7A7QwBqb4Q
+         61Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762169080; x=1762773880;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1JCDN6Cq9Tp4TkqXv0Efe98IMAIjlCf0jxvF8wS2LXY=;
-        b=kQHECuq39wJ+KM8NNJRHK7QC/BjHksKrr1BAIcluTStC3I5hN92qHngFaCFZPwF9cQ
-         hmB+2WadmVhN1e+PONvPluXRUB/7C4812PJ5Cz7a/Qg48IkLl/Z2I+CevPEZPUROvEpq
-         K3rMJe9W5DKRbUJEuyWNlz5F0strSsC2PJarXEG73wEHjCn4XuVQjRlq8sH7tWQXw2V8
-         PhE5SfdyrxApvWHhotTc2NjohG7bPVBpr+Krlhvb1C9dq8SzSr1sTMRz2Vqvtjst6RFi
-         K7xJ72yx5PFLG7K/8Xp/iYxDvx0gDyr98gBK4U9s2hsJHMyAge5MI+45PhApU0CfMLjX
-         eLEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV3bUsNIJtR0yBCld/YubIQW9KPNuXSQFY1Vi760gDQb6Utytm0e3cXo8kpehQs7PxjOeP1+RikKys9sWl4jw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZ33wwQJQ6JQFNDkQ07Dc0aEWIbVoe/14WwIZwzqpGvlLqNO+9
-	JLE7tLMr0PpcSBMPRByQnoDjLwrB996WUN6odwgMWx2r6yBepvlihwrX6Ow5FIjbfby+mDJSvhJ
-	3jNyQ1CaBSOs7ZGcqEKLrdGT8LbzxFfiq8Ea0vNRe
-X-Gm-Gg: ASbGncvkq7dzwkW831n8J6+oneYzE7Rn3IxTiZGo+LYe+Q5jkWFWEsBcQM6O9ywjidN
-	7IroUyEuLhw2kXMnTHJ85ZRHAru8A//6DXlRhdyTGVPYy8ODy8JuAJxrHZA6gPY1cyOiemXyjLl
-	bQhD2+l9ZP0sNF67Z8ahQexRxbX/sasJmuZbCGH9eJJG4/TNaq5Qp3davC3kTb4TEqk0rGnwuG6
-	1rmd8O37VNTCAhLZZ57MyVn6NQMeqaHjLAPJROCir8f4jCP7GYtZLegc+vsGBcklEil7HDSv2tF
-	83/Zy5Zp626eNocQ6x3jjWKxcg==
-X-Google-Smtp-Source: AGHT+IEKKis+/HH3jWT32CB9QgsHkpjuV5cak8KRGxOaDTY12Fw5xz2D+VE21Hf3ijFUTW2OmLNrEQDGT1Em+RSKdMo=
-X-Received: by 2002:a05:6000:1867:b0:429:cbf8:1765 with SMTP id
- ffacd0b85a97d-429cbf817f7mr5373560f8f.33.1762169079371; Mon, 03 Nov 2025
- 03:24:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762169436; x=1762774236;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=h/qh3QJ9wKU70Pva3b0Eg2Hw/21TsuzKDzuHyxygKns=;
+        b=uRABrz/Gde2Ce2WueGPDEhSgyqS7DoA0c1LktzVAVTwJ9019B60mckXSe+RQRyLmyW
+         Z0DESDerKPkF+a2DW8DGruesQnKQ3ef1khjiN/c33YekESMloTZFtfaoYtRpRHSWRuLZ
+         M0oIfTnmPlWRSrjJu0PXyeuS0Fuk4QJ0I5WS03wH7ndFnDyMist6somkcAlGon6LhV3Z
+         qvUysm8ioisvfJwl8Cd3Aaz1ez7b6m0Cf6nRdU6Wy4umjI+KKhtG4ZMKJiVfZQc8UNZw
+         HQv9YDYZTU8TcLqtDmClr2LrxGvLReRnszqFcMPBn2Q4xQCnjOIxMA+boINBDf2dRI8Y
+         xMxw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTWZImPHAseEpUBZ/kkQ6Y2oBzxie+mxbErNJPrjmJaQTTne29M9CZLzDiMmHWu+KSEL9Mh/h1kjpSyckFlA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8ySIrXkWWC+/4UXh6PfZwbZZfPTbwyagP+lY6iKsDBWQy7j22
+	ipl4NZx4aihwOyxoEyR5mPmEn/g4NsWU2wWzRNegu98Z1ND+so3HViAE
+X-Gm-Gg: ASbGncthCoffm/qp3DE0AN9+aThJW2fzxEtaAwEG/qRinI/2cVGdPtSB7gPAk0uuw7E
+	OVI8W3PCpwn4tLOq6MoEwnZWzcGrkfLR584q09CuUNBJY1DjukfwjNks/wlzlj4ozBAfJzr8c/4
+	QpsOiGVNCGTB5N5en3VnVD3Wy4BsoXqEh3gAhYQsZzx8tg38O528JDxG3JyYmIUD8TYR7+56AAJ
+	gRWtrZVOLRkdPyex/w0ikAdjUKQhYthTVxD4BJ6TIpkkfTefSM9akF7xUf6KqRjofpXDAzw6IEs
+	+W856TpUC3Ny/t1uZZGAS5PZ9jaSPZZ6PlAt6TNdgyuD6mKGdjcWyQnodSL8qQuoiXLdjivdHEN
+	u5zcs5zVGlHSk8cwPRFXccO4lSIdsNRKkFvGBORcOFYe31qW0g3DSVR2oCGVgYqVevPYdZwFURq
+	BMy8By/x0cvzslIvjeiGFYaQEjfE/srPHCyl1h3mgdYAkxK4E4neoTT5OG14U=
+X-Google-Smtp-Source: AGHT+IE5/oLm71Mm5Mx8J4RBYI2+xTTJ8AwTf4zBrIpxR08Ev1LR4nonjYQhd6iz+19QOqH9Sq10mQ==
+X-Received: by 2002:a05:6a00:2d1d:b0:7aa:8397:7750 with SMTP id d2e1a72fcca58-7aa839780d6mr5007659b3a.12.1762169436363;
+        Mon, 03 Nov 2025 03:30:36 -0800 (PST)
+Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a7d897c632sm11011033b3a.10.2025.11.03.03.30.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 03:30:36 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	ojeda@kernel.org
+Cc: anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	frederic@kernel.org,
+	gary@garyguo.net,
+	jstultz@google.com,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	sboyd@kernel.org,
+	tglx@linutronix.de,
+	tmgross@umich.edu
+Subject: [PATCH v4 0/2] Add read_poll_timeout_atomic support
+Date: Mon,  3 Nov 2025 20:29:56 +0900
+Message-ID: <20251103112958.2961517-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251103110115.1925072-1-dakr@kernel.org>
-In-Reply-To: <20251103110115.1925072-1-dakr@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 3 Nov 2025 12:24:26 +0100
-X-Gm-Features: AWmQ_bnZiZ5Fse_UVDSHcbk9FlrG8xkBgTuDizGmSR1AoCz8I_gW748IjzTe-h0
-Message-ID: <CAH5fLgidquc4nkYpeSD=OHzxYjNWoX=2Uc6iYWd2J7Lr00Ma6g@mail.gmail.com>
-Subject: Re: [PATCH] rust: usb: fix broken call to T::disconnect()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	linux-usb@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Thorsten Leemhuis <linux@leemhuis.info>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 3, 2025 at 12:01=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> A refactoring of Device::drvdata_obtain() broke T::disconnect() in the
-> USB abstractions.
->
-> """
-> error[E0599]: no method named `data` found for struct `core::pin::Pin<kbo=
-x::Box<T, Kmalloc>>` in the current scope
->   --> rust/kernel/usb.rs:92:34
->    |
-> 92 |         T::disconnect(intf, data.data());
->    |                                  ^^^^ method not found in `core::pin=
-::Pin<kbox::Box<T, Kmalloc>>`
->
-> error: aborting due to 1 previous error
->
-> For more information about this error, try `rustc --explain E0599`.
-> make[2]: *** [rust/Makefile:553: rust/kernel.o] Error 1
-> make[1]: *** [/builddir/build/BUILD/kernel-6.18.0-build/kernel-next-20251=
-103/linux-6.18.0-0.0.next.20251103.436.vanilla.fc44.x86_64/Makefile:1316: p=
-repare] Error 2
-> make: *** [Makefile:256: __sub-make] Error 2
-> """
->
-> This slipped through, since the USB abstractions are globally disabled.
-> However, the USB tree recently enabled them, hence it showed up in
-> linux-next.
->
-> Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
-> Closes: https://lore.kernel.org/all/1c8afbc0-e888-4702-9e4e-fa8aef0f97ae@=
-leemhuis.info/
-> Fixes: 6bbaa93912bf ("rust: device: narrow the generic of drvdata_obtain(=
-)")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Add read_poll_timeout_atomic function which polls periodically until a
+condition is met, an error occurs, or the attempt limit is reached.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+This helper is used to wait for a condition in atomic context,
+mirroring the C's read_poll_timeout_atomic().
+
+In atomic context, the timekeeping infrastructure is unavailable, so
+reliable time-based timeouts cannot be implemented. So instead, the
+helper accepts a maximum number of attempts and busy-waits (udelay +
+cpu_relax) between tries.
+
+v4:
+- update the comment on udelay
+- add Alice and Andreas' Reviewed-by
+v3: https://lore.kernel.org/lkml/20251026125458.2772103-1-fujita.tomonori@gmail.com/
+- revert the function name
+- simplify the example code
+- add debug_assert to check the range for udelay
+v2: https://lore.kernel.org/lkml/20251021071146.2357069-1-fujita.tomonori@gmail.com/
+- use the attempt limit instead of timeout
+- rename the function to read_poll_count_atomic
+- add the comment about C's udelay behavior.
+v1: https://lore.kernel.org/lkml/20250821035710.3692455-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (2):
+  rust: add udelay() function
+  rust: Add read_poll_timeout_atomic function
+
+ rust/helpers/time.c       |  5 +++
+ rust/kernel/io/poll.rs    | 72 ++++++++++++++++++++++++++++++++++++++-
+ rust/kernel/time/delay.rs | 37 ++++++++++++++++++++
+ 3 files changed, 113 insertions(+), 1 deletion(-)
+
+
+base-commit: b0b7301b004301afe920b3d08caa6171dd3f4011
+-- 
+2.43.0
+
