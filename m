@@ -1,263 +1,203 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012055.outbound.protection.outlook.com [40.93.195.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5DD26560D;
-	Sun,  2 Nov 2025 23:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762127999; cv=fail; b=Yiwx8mfAWOeNZGwLJMsWfs8Yt6rbtj2ut7KfXlSATQoeFgq4RC6b3IuXWT6wfXjZ9JrgmB+6D3kNWSmiLauAb/stV7VWjDT+E/u4B1+6ke5A5UnDCeKFZgtubME5rLzkmeLl7yHqxXBdXpumdXAAdSx8OsLzCz8etbu+G2MsS90=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762127999; c=relaxed/simple;
-	bh=+MjDsz/vMuWRLN5INQA25UZZ+jS9EDRypFCxASUaOSA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uHANCu5VdaqzWTVwE4JnPrHPa2KlPKCqLQNriLjBNboyhPScJQ7dggMECBqCdA+WBKTT+B2IofMS5UcSZ8JCq8VLPy/U3BUXSTKP3facZJa3da32r/qnFIsLMnx23JWNBrZhZUp2z16vAzf7khCT5BYTCZ8Gl7YW6UJBK849zZA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ha+YEB/D; arc=fail smtp.client-ip=40.93.195.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B06134D394
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Nov 2025 00:18:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762129129; cv=none; b=TiNWleFx39E8052nrnJ50y7CeVvu2kTWfv2sEThY3mO9eFraTglsk2Yykt2nLJNgjDX5AVYlrYy56CcL0QLqx0Z3e/NAp+noP1yYkDzkeTJKl+vl/6cHdDgK+i+icyeaN7Syu3P5EMN2cmaM7gI8J9IWFLAHv8v4RxmsEO+LVy8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762129129; c=relaxed/simple;
+	bh=UhdjQQP93B6vmu1KrkGTVUK12Zh3nn6hyDInXpAyet4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y1MOK4ugFCzcza2/UrAHqiOZf2LD/+ywrT/P22Nn4p6tJhjFsRGLiIKtsKm73nGxyKOdM2r2MjfcutuXj6tGMyUE/BirE+qam7e/uYSSMKJAOeG/vIIBX8Ib6SLFvHDTdCcavScKZxlcYZzx8/0w7xd1TKPlgl5LDCHAN4QYgyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZaDKXJjg; arc=none smtp.client-ip=209.85.166.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ha+YEB/D"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rGDnkOEI1BhJASiUMN/CZfRBd9iQOxaGunuFkVxjqS+k6W22lZNZcPmwbJXOrnF4Nb3HS3hFAFZjgEMdcAxBBalyaJ9cZofXqStoB88MGUl3Pb7oRPcdsdZfYOr/wduyzyI+PYUd5DFgApgzbTFCG769TCvVxGmy3TJo4dETTUm+4dXeEGPshf7IPGXiOlg3+BriikIU8etemI3069iecjiTnr6b/ui/BxpQKZfYpYhnthiF04/kMtm3usxHpMjbqPX0wgyapAkbbxvDa8DYDMKS7pE2tJATwq+8GRereizPozqt/UkBfyJwxRFFHRfRhv0Ijp517z5Si5RVotm92Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a1JDMj/IkI6/toDKY4KrdYX0i7uYWmc/8koh4S5UELI=;
- b=Y99W37LJM1rsUlRY6USWMmqfh9qlb7lsBRGeEEoCTafpFgcFPOjnVVQfNi8ViP2THeQtMdQ8Ek2y9qcjVCMQxDAZrEbYi22Gf0NxA1071rGb0n6DSwrsGe5hYxy+n0RyF816OT5issje3orcrCpuI1+udNgqKKrZaCA/lWg++cuCZYxIYBRiZfvj3ALKvRvk5WB4gPf+oMjIw2A0ml1zSQzMoVnNRSDbueBQgYFlXFph8hhhAyovaZU377YDG7D1cxChM9eduKVHIzjaz1/7rEL1IQX67DxpTHDfG3s3LRD/1MlejiMo7B9MrHh3WoXkIdi72EjcjdoOCe1VjCUNiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a1JDMj/IkI6/toDKY4KrdYX0i7uYWmc/8koh4S5UELI=;
- b=ha+YEB/DoBL9pyqqV2Z75pQZ+gSbeRRlVAqMXqecThxtT241jkbrpfMlNM5fzAC6tBbmSZEKJNSrRl6+WpgnZ47HqGHjbfbp4uC1CMZPSuMUrHlFhU8McdBhoLnYD2QpaS7crtfC5peonC11jlJLA+MolriVcBxfcizOVBOaZxJdyUUN8u7TdyDh0NP+wFJTjp68yfRtuHMzalIdJh1BUi9VZXZfWJuIC0kV+ArN0CZ2kV5ErbSfbJfKFi4MwZeXvhtAgW2SIVYscq4j7bk8Y+12aE3ubM9wTTKgeHFjblSQD+0NaejJPgMTbGjKOECmi34T76AZ6jXUsSqGVohCgw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by SJ2PR12MB9163.namprd12.prod.outlook.com (2603:10b6:a03:559::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Sun, 2 Nov
- 2025 23:59:48 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9275.013; Sun, 2 Nov 2025
- 23:59:47 +0000
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	dakr@kernel.org,
-	acourbot@nvidia.com
-Cc: Alistair Popple <apopple@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	joel@joelfernandes.org,
-	nouveau@lists.freedesktop.org
-Subject: [PATCH v2 12/12] gpu: nova-core: gsp: Wait for gsp initialization to complete
-Date: Sun,  2 Nov 2025 18:59:20 -0500
-Message-Id: <20251102235920.3784592-13-joelagnelf@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251102235920.3784592-1-joelagnelf@nvidia.com>
-References: <20251102235920.3784592-1-joelagnelf@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BL1P223CA0007.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:208:2c4::12) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZaDKXJjg"
+Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-43323420387so3271745ab.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 02 Nov 2025 16:18:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762129127; x=1762733927; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lbukBbCI6fFMOGWwEkWiHxAZwAf/KbN3KB3I9KpMMx8=;
+        b=ZaDKXJjguIVcCgX9HrhTMnV3zSTzHh4UhPQpFgVEy4ReIy3EQtVj7hjLttOk7g2ZDZ
+         cn9KNwB7uorN1ktgjYZ8O5p29lXgRk2Ty3Q6ypFyuQ5zFhcVgB/q0cGekT/znLwcbFf+
+         Xnk4VOQd0R4d8dozWKgVc2UYAc7NnnBoL4I2zTAb3U1uOiyNoq+Rv7LSzR+rsXEFLzpU
+         GDleHsP6XtSIoE0x+H4r5/LD2d9J9gKJJTUNVUoSTKap5JAC75k6iUn1St7WKlCTqcMj
+         N9mUUXSYfjLo93Ivzmw2N31Dpdq6yxHHFOuHSi6BKeF/me1HfLbZkKcIxVcYzlyIZChi
+         D7aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762129127; x=1762733927;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lbukBbCI6fFMOGWwEkWiHxAZwAf/KbN3KB3I9KpMMx8=;
+        b=OqScOIrWCGITt071JAFUaw2I3GOteW9emFFbBuTrT/1HeSLFKee3cQlNuDXZKg+lWV
+         EJ3cW/1ChRdvLKD7+4VQ7x21/NU4iDv3m0jgxb/2NUWuTHj0jAoTVp5YwYkKGxIEVi1C
+         HNlIP0fpVUOCo7KQJi2mYqZyzNaL1dNMw2kCXmZsvXzf6YBoHEWJUu82xBTeMJvJuzQV
+         0CmW5y+1yNowd1a08MJLWBkhY1Ibumpq8l0lpf+O1hsAMhy6JdKPvJ85D99Tbt+e/e4X
+         54kbkt1e3qde6ym1HQTlRrLmMXyLbZ24sJra9z68joH+gBWWybhFN7Sx8vjQPj5GkGuq
+         yH0g==
+X-Forwarded-Encrypted: i=1; AJvYcCVMIjEy1HAt9ySuBnf5+V6KdES86rhiuCuuwb6q/5COT2UWaDUEKJlNi8tkWw9ymE6U6I80VYoVOBhIT6rLAw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm0c79Fx/3cYNz1Mbvq5SdPFrhFQGTpE+wN1jmF3bfNJqrGaCO
+	qL5gUrU/4nWt1+3Ny/BlYNchMNFH3PUJ3uijKVGcITSNV3BHqggQAA6Qy4fjlnk+aH1bv2dQbSx
+	hFIw3IWCvzmug/OPXA8GGFUbIAWKc2HE=
+X-Gm-Gg: ASbGncsSvdOE6aF7l73wLtL4P/3Qjw11zVYbKweS6DlCcQ20oSg93qZUizlvAAO2Bv0
+	n4dWmBoLuBehP0cXzz7Qzz5e2VdYy7m2i1AtnRRkcuJGGCmR47JOf76SRFffN+Miet60Rlu/Fzl
+	hdXTwIeNnu2iMWjDr7KRJTvRBLLbbgkrNsFHkhXSowyT/WaSIyWa/kC91oCpBxpZ4uRpzA6jUrH
+	20+UpS5sfGbPk5pwqQJDglMICY60rWYDoPhv08O1tCwHltt56kgLhgKIsTC28W8F4+upWIkun38
+	QLw=
+X-Google-Smtp-Source: AGHT+IEinxxKyGpY13CBZYEiEZRj5ZtrHLcrvHXjjmmISTFYSNVaHSlve6zbB1g6ISy0GNLADF79gcMJCySg/fAhlK4=
+X-Received: by 2002:a05:6e02:221e:b0:433:2d0f:e95d with SMTP id
+ e9e14a558f8ab-4332d0ff57fmr29075505ab.27.1762129127059; Sun, 02 Nov 2025
+ 16:18:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|SJ2PR12MB9163:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14013850-7c64-4fd7-2183-08de1a6be726
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3YKDnl888rs4VDhWEQL+WDr8POXOTC+TBV92Tc+lgj2xfeWLM5iQC3DG+rPP?=
- =?us-ascii?Q?8rO2J7SA/ri/OPr39JJuCObYinOggJZn5moK21Y7byqXb5sWs6j9UtV84Gbf?=
- =?us-ascii?Q?lP+ajm6k8mDP8I0atjodEWGwDDh04rmxv0hwIujC7box4Zev8oEAQzIy3VeM?=
- =?us-ascii?Q?Ji3x1OIZwWXs6diyyppbYbbUARu149SLbr4DmdSq855NUhqYG56rb+xYb/oW?=
- =?us-ascii?Q?Azl0rOYqOd96gV07Awgb+/2V+1GYVuDPqiparkFwmqCPD95w3xOWyYE1EEVJ?=
- =?us-ascii?Q?ynJ7L8xLXPBIVS9P4s6xNR2uP6oCfjSjxfZC9FjTeqHlspDF3kAf7D6aqovZ?=
- =?us-ascii?Q?Q5ZqXt6QkUykW4SrIwyDhPSTDmz5Fka9nWWIdWcGn/xWkjJrk7YYIaQmC4c0?=
- =?us-ascii?Q?DcV1MexsEGeGUAPJVH5VcdNyBKMnqPE3lqEBxB6svjMvF0MXEtwST8vaMvL2?=
- =?us-ascii?Q?ITmFsuFmpTbQiLPBv321fiTJVt8QVvHlB7sXsF/pKHC0PEMc65ThIL55Yrzt?=
- =?us-ascii?Q?zuJGIgMRwak+KWQ84y3naOYmSn2zh7qQp/u0+2FMgFXWq1RjzlROqiL353rD?=
- =?us-ascii?Q?Gpn0fcGOK6bsTKb+0oPr0aXFtPqMCfQ7DhosdxRRhdL8o3rQ68HXCrAIxuru?=
- =?us-ascii?Q?XZWUB7Txue9FUvLW1OX1sbONA217zs7y6QdWvMbQYzbtnGZhWRF4HMP1HPIn?=
- =?us-ascii?Q?VoHnLcKV2s4OtuQhAstgZUmeU9GslTpPIMPQc3cSt57kBWV+/g3buD+gc2kP?=
- =?us-ascii?Q?IlaWRzoHGLuJnBqqulo7quGWInobtdz6Zvy+VXk3JQNJXQW/5m4Flgz/s7SO?=
- =?us-ascii?Q?NjwY8m7f5ZijEFSvcQcD5LoJiXo2dTGuJ0zZXYbquMx2jGCH2d2R5aEilxJ8?=
- =?us-ascii?Q?8on404s/guDODW/flJGye09QTOt0eW6yrRYA8OoQl65OCtMFN8J0ESPN0P/F?=
- =?us-ascii?Q?5fjh3AfBzCKNPq/4n778QBIySw65tGFtbGgHB9tzwyT/bFCXMmXsO0anKVIn?=
- =?us-ascii?Q?zC+1Bl+dzGQ3GFGGZLZrqCE35G+LV7eb6cc7CQtVL5GyRVA71ZauGtxjVtZp?=
- =?us-ascii?Q?lPKmknG4RL5hnPwXUENbRLueVkweLfdPUZ0ayJmmbm5EkjgCuhfoEiwaouxZ?=
- =?us-ascii?Q?Xm/qjeid64rYWMQVAGfxJtrzSA4Y2nIvkM90lyDEun8YmdkzrF+pLHWtmF4a?=
- =?us-ascii?Q?/Zjd5JN4ys2LkZkuKLFJVeLHbXk/CSnUOwE9Ww2H0ZkRxXa2lacRRO66afwJ?=
- =?us-ascii?Q?XWOcdDDS2GeWiKym1STnIQNiPx0N5o3bfs1IgyztsUZSj+VhtOt2pJIHi9Kv?=
- =?us-ascii?Q?schrEfGR23z1nH6XtXdC9IuZXCEcU5oRy8Iw2YRgG7fxbooVLbwoN+c6C1z2?=
- =?us-ascii?Q?DQmINm8ygR6MkFcQ0JSKNLZe/bmfNLxR3tGpjLTyw53OLbUUO8GFieqrUow0?=
- =?us-ascii?Q?2jg9hFVYgvf2OvVLmSaS/6Z01viMXBcG?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xdQ+Y4hxODDXANsTiYX00iXcR7Kn7xUNGDaboz3ZdlDkakWoeZScFjuiDR7F?=
- =?us-ascii?Q?WOZ7/52Kxl1KEshHFNP0TaJlIgg0RgSbGMtuiKv26lVZQaS8fH1RFLQtYnP+?=
- =?us-ascii?Q?KZBH1u4G7jEsYwz7GurYv+QnF7YIiPV0nHYvqtqFXhycmfdS1/oPk8wI2v03?=
- =?us-ascii?Q?ZfGaeyBv6WVtd9IglciaPKaC+lz7gG9IXNtxQ8JpYvHcfUzoQOuitwDWDkqW?=
- =?us-ascii?Q?rVXqYR730JyOLnTeDsq4Hwmk3axxGjKRe68FigvXjd5FSnyrt9UhQsZIoMp7?=
- =?us-ascii?Q?Bts2+NEiro0FOOVkPmb++wvUKDU+NV0TALS2rgBpvIv6QEbllFVrVJr7IgRl?=
- =?us-ascii?Q?dzgyqqaOVo9MbhwXzjuQFsfgSk4zhLRHuqeOoaHBD3zV3LTVgeNrSx7sZTrF?=
- =?us-ascii?Q?2BPrDlm92aLBWElodg7zJXZr9ocjuoerfTLOVqdQNO3kNgwa6TlA9wOiOTDg?=
- =?us-ascii?Q?bczRNK+ixe95oQKFh77DbTk3aPqdExZx9s4e/+OmOZd0Sd448kZKo87D4gKS?=
- =?us-ascii?Q?6Z8zjkQb336t37tebPjXN8Ie6d3zt3ttb1x7UVM28i5voQ7C+UIvwZ+Zrh5t?=
- =?us-ascii?Q?foBQHMgRIXmaRPu6pNkYdBizi+cstOKfYqZQ7A+Jr6MVv4tccHTSE3rjVDCR?=
- =?us-ascii?Q?yVrlaoueXoSFOfgl++sAp70qbPtVWEZGd5GxUHdvqRcWvcFyuwyPvZy35H7p?=
- =?us-ascii?Q?1a0Lnjz9Jnf7X9r50aokW84UMoCIB8pQtjsYzLa/IXKD2txSCDdd8g30972o?=
- =?us-ascii?Q?YxEAK+7p84RHHkJU+f3ISH59WGbmUJrJpzlaeTlTsUcRWJ26MeRgPpyvyQOG?=
- =?us-ascii?Q?2bWE+nk4dSTma3Tr6Iy3cmdmFhW7RCJuTWrXSvIzY9/buNQ6yiWKX2cK++if?=
- =?us-ascii?Q?Te0vsG6bWiSVlf/l+nOyxtTMr5K9NxI/EpQVdq5S1b0YYfAK5S130Gm/TrMO?=
- =?us-ascii?Q?RUovE2dsweZ/1LAJeFIBmf5jESQnGKbCXwADb3WliwlG8HM4JI10OKAyrScD?=
- =?us-ascii?Q?7QgYDkOSYNkmoV6vWRX8qlMXSb4P4Jo21OgBoLtbA82apjuxmKYrm0UnoCyP?=
- =?us-ascii?Q?59qFrBtqT2qRQYNp5Vs4AhN2gB2NFR60ecBTm4wxkxoWBI1ORl5NZzvOX8zH?=
- =?us-ascii?Q?0aJvMlf/rNTSqINVUzTwtNzPpSKtQxsUYQXHKu+6HemRWU5VRsZIs4iDgfmK?=
- =?us-ascii?Q?M8ddSRVStMbdEN/evH6Upc9aJlx/SypNED0ZDrZ1Nl4Jr9CYjP56a0JIvD4s?=
- =?us-ascii?Q?2TlOBqGAetEkZpZEA0uRHUexeQusGSf2HE7dq+/nsq5t9I0Xo+F4m5hCPWEn?=
- =?us-ascii?Q?p38PQY7YZn19h363uNg5o+2ah4uFzrbDh1iOKnnzAuUCzCCZEBZ4qdOPbRuV?=
- =?us-ascii?Q?X9kAmrLMXLSQYcjEkrcooh6+SqUF1ltFmP6GM0ee369ZslnuFeYMghtZrdmx?=
- =?us-ascii?Q?X/RX+zDHu6kbuyAKQeBXzuxUDVX3tM+uLPQCLNQUo62qHqQuiytl25oPymKT?=
- =?us-ascii?Q?zJ1PVoyNJTchajZ5Y54nyabPkisyPo7Ud2hLZMqLkYAqMvE5e6jw/F5oE/fp?=
- =?us-ascii?Q?XA8Jxf894RwWjRRXFlsAEZ1XKRYp8TYj11z9ePem?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14013850-7c64-4fd7-2183-08de1a6be726
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2025 23:59:47.5955
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5zZuXZYgQUNHNSHLSPynSUSO3BMAVimPxf+uBKSXI9hJj6l5mvfIrEDX2uSD3RoSntlL1pgV556jHxAVosiV3Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9163
+References: <cover.1755235180.git.y.j3ms.n@gmail.com> <CANiq72nbERSOWKRUTJ96YYKCDeAoHLBuiVP+XkDUKg7JYkoyiA@mail.gmail.com>
+ <CA+tqQ4KG98XcWh3rkAxEOiACSUtPf7KM0Wqh9Af=POgVDHJzzw@mail.gmail.com>
+ <CANiq72kE89ukxpf3L0_jFOdv51TDtjjj3r=1mjJzdGWJwmAbaQ@mail.gmail.com>
+ <CA+tqQ4J7_z7_NmUNojJttF1e8GRR8Ua9w0Rap1t-U4gYPhQ1Yg@mail.gmail.com> <DDHU4LL4GGIY.16OJMIL7ZK58P@nvidia.com>
+In-Reply-To: <DDHU4LL4GGIY.16OJMIL7ZK58P@nvidia.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Mon, 3 Nov 2025 09:18:35 +0900
+X-Gm-Features: AWmQ_bmjwfOG0Fsadhki6hbGrYasLvIYy1-mvKZIH8xEYEub_dTdviKWOD4hlxE
+Message-ID: <CA+tqQ4+NY2zFJrr2omGqQcVG1N4cJBgYNO8qH=TFi5UG_vLfTA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] rust: add `TryFrom` and `Into` derive macros
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Alistair Popple <apopple@nvidia.com>
+On Tue, Oct 14, 2025 at 3:35 PM Alexandre Courbot <acourbot@nvidia.com> wrote:
+[...]
+> This might not be too difficult to shoehorn as there is an
+> `is_in_bounds!` macro (which we can turn into a const method if that's
+> more suitable) that your proc macro could leverage, but I can't help but
+> thing that maybe there is a better, more general solution than
+> special-casing this?
+>
+> [1] https://lore.kernel.org/rust-for-linux/20251009-bounded_ints-v2-0-ff3d7fee3ffd@nvidia.com/
 
-This adds the GSP init done command to wait for GSP initialization
-to complete. Once this command has been received the GSP is fully
-operational and will respond properly to normal RPC commands.
+I've tried your `BitInt` series, and I think I can generalize (at
+least the overflow check) even without the help of `fits_within!`.
+Since I can retrieve the number of valid bits and the signedness of a
+given integer type (including `BitInt`) while parsing the helper
+attributes, I can use that information to check whether casting from
+a value of type T to type U would overflow. Here's a sketch using
+declarative macro syntax to demonstrate the idea:
 
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Co-developed-by: Joel Fernandes <joelagnelf@nvidia.com>
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
----
- drivers/gpu/nova-core/gsp/boot.rs     |  8 +++++-
- drivers/gpu/nova-core/gsp/commands.rs | 39 +++++++++++++++++++++++++--
- 2 files changed, 44 insertions(+), 3 deletions(-)
+```
+// I'll write a function that returns equivalent `TokenStream`, which
+// is suitable for procedural macros.
+macro_rules! check_overflow {
+    ($val:expr, $src_ty:ty, $dst_ty:ty, $dst_nbits:expr) => {{
+        let val: $src_ty = $val;
 
-diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
-index 761020a11153..0dd8099f5f8c 100644
---- a/drivers/gpu/nova-core/gsp/boot.rs
-+++ b/drivers/gpu/nova-core/gsp/boot.rs
-@@ -18,7 +18,11 @@
-     FIRMWARE_VERSION,
- };
- use crate::gpu::Chipset;
--use crate::gsp::commands::{build_registry, set_system_info};
-+use crate::gsp::commands::{
-+    build_registry,
-+    gsp_init_done,
-+    set_system_info, //
-+};
- use crate::gsp::{
-     sequencer::{
-         GspSequencer,
-@@ -221,6 +225,8 @@ pub(crate) fn boot(
-         };
-         GspSequencer::run(&mut self.cmdq, seq_params, Delta::from_secs(10))?;
- 
-+        gsp_init_done(&mut self.cmdq, Delta::from_secs(10))?;
-+
-         Ok(())
-     }
- }
-diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-core/gsp/commands.rs
-index 338d1695027f..475c6d9410c5 100644
---- a/drivers/gpu/nova-core/gsp/commands.rs
-+++ b/drivers/gpu/nova-core/gsp/commands.rs
-@@ -4,16 +4,51 @@
- use kernel::device;
- use kernel::pci;
- use kernel::prelude::*;
--use kernel::transmute::AsBytes;
-+use kernel::time::Delta;
-+use kernel::transmute::{
-+    AsBytes,
-+    FromBytes, //
-+};
- 
- use super::fw::commands::*;
- use super::fw::MsgFunction;
- use crate::driver::Bar0;
- use crate::gsp::cmdq::Cmdq;
--use crate::gsp::cmdq::{CommandToGsp, CommandToGspBase, CommandToGspWithPayload};
-+use crate::gsp::cmdq::{
-+    CommandToGsp,
-+    CommandToGspBase,
-+    CommandToGspWithPayload,
-+    MessageFromGsp, //
-+};
- use crate::gsp::GSP_PAGE_SIZE;
- use crate::sbuffer::SBufferIter;
- 
-+/// Message type for GSP initialization done notification.
-+struct GspInitDone {}
-+
-+// SAFETY: GspInitDone is a zero-sized type with no bytes, therefore it
-+// trivially has no uninitialized bytes.
-+unsafe impl AsBytes for GspInitDone {}
-+
-+// SAFETY: GspInitDone is a zero-sized type with no bytes, therefore it
-+// trivially has no uninitialized bytes.
-+unsafe impl FromBytes for GspInitDone {}
-+
-+impl MessageFromGsp for GspInitDone {
-+    const FUNCTION: MsgFunction = MsgFunction::GspInitDone;
-+}
-+
-+/// Waits for GSP initialization to complete.
-+pub(crate) fn gsp_init_done(cmdq: &mut Cmdq, timeout: Delta) -> Result {
-+    loop {
-+        match cmdq.receive_msg_from_gsp::<GspInitDone, ()>(timeout, |_, _| Ok(())) {
-+            Ok(_) => break Ok(()),
-+            Err(ERANGE) => continue,
-+            Err(e) => break Err(e),
-+        }
-+    }
-+}
-+
- // For now we hard-code the registry entries. Future work will allow others to
- // be added as module parameters.
- const GSP_REGISTRY_NUM_ENTRIES: usize = 3;
--- 
-2.34.1
+        // For every integer type (including `BitInt`), its minimum
+        // value always fits in `i128`.
+        let dst_min =
+            (<$dst_ty>::MIN >> (<$dst_ty>::BITS - ($dst_nbits))) as i128;
+        // For every integer type (including `BitInt`), its maximum
+        // value always fits in `u128`.
+        let dst_max =
+            (<$dst_ty>::MAX >> (<$dst_ty>::BITS - ($dst_nbits))) as u128;
 
+        #[allow(unused_comparisons)]
+        let is_src_signed = <$src_ty>::MIN < 0;
+        #[allow(unused_comparisons)]
+        let is_dst_signed = dst_min < 0;
+
+        let fits = if is_src_signed && is_dst_signed {
+            // Casting from a signed value to `i128` does not
+            // overflow since `i128` is the largest signed
+            // primitive integer type.
+            (val as i128) >= dst_min && val <= dst_max
+        } else if !is_src_signed && !is_dst_signed {
+            // Casting from an unsigned value to `u128` does not
+            // overflow since `u128` is the largest unsigned
+            // primitive integer type.
+            (val as u128) <= dst_max
+        } else if is_src_signed && !is_dst_signed {
+            // Casting from a signed value greater than 0 to `u128`
+            // does not overflow since since `u128::MAX` is
+            // greater than `i128::MAX`.
+            val >= 0 && (val as u128) <= dst_max
+        } else {
+            // Casting from an unsigned value to `u128` does not
+            // overflow since `u128` is the largest unsigned
+            // primitive integer type.
+            (val as u128) <= dst_max
+        };
+
+        !fits
+    }};
+    // Yes, we can also support `bool`!
+    ($val:expr, $src_ty:ty, bool) => {{
+        let val: $src_ty = $val;
+
+        let fits = val == 0 || val == 1;
+
+        !fits
+    }};
+}
+
+// For a `#[repr(i32)]` enum with `#[try_from(BitInt<u8, 4>)]` and
+// `#[into(BitInt<u8, 4>)]`:
+check_overflow!(Enum::A as i32, i32, u8, 4);
+
+// For a `#[repr(i32)]` enum with `#[try_from(u8)]` and `#[into(u8)]`:
+check_overflow!(Enum::A as i32, i32, u8, u8::BITS);
+
+// For a `#[repr(i32)]` enum with `#[try_from(bool)]` and
+// `#[into(bool)]`:
+check_overflow!(Enum::A as i32, i32, bool);
+```
+
+It is somewhat similar to `fits_within!`, but it also cares signedness
+differences between source and destination types.
+
+It might help if `BitInt` exposed `MIN` and `MAX` associated constants
+in terms of its backing type:
+
+```
+macro_rules! impl_max_min {
+    ($($type:ty),+) => {
+        $(
+        impl<const NUM_BITS: u32> BitInt<$type, NUM_BITS> {
+            pub const MIN: $type =
+                <$type>::MIN >> (<$type>::BITS - NUM_BITS);
+            pub const MAX: $type =
+                <$type>::MAX >> (<$type>::BITS - NUM_BITS);
+        }
+        )+
+    };
+}
+impl_max_min!(u8, u16, u32, u64, i8, i16, i32, i64);
+```
+
+... but for consistency with existing primitive integer types, these
+constants would ideally be of type `BitInt` instead of the backing
+type, which unfortunately limits their usefulness in implementing
+`check_overflow!`.
+
+As a final side note: as you're already aware, breaking changes to
+`BitInt` will also affect the `TryFrom` and `Into` derive macros, since
+these macros depend on certain public APIs provided by `BitInt`. The
+same applies to any future custom types that require support from these
+macros. That said, I'll do my best to minimize the dependency wherever
+possible.
+
+Best Regards,
+Jesung
