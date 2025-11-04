@@ -1,79 +1,305 @@
-Received: from sg-1-23.ptr.blmpb.com (sg-1-23.ptr.blmpb.com [118.26.132.23])
+Received: from sg-1-17.ptr.blmpb.com (sg-1-17.ptr.blmpb.com [118.26.132.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FEB21D3E4
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 01:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458252264B0
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 02:04:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762221083; cv=none; b=bS67cD5xHRwq8QTP1Wy2HNo1/0ImjfvPslJCw/l2xO4xTqSbiXeBleVc/noXcfnG4zueGFAPbAXagOnYMP3UAK2W5Y/mRLSRSYHz0hu7e59QeMzZP5+1Z4eSDieje5NiBLNroxHgLRWfhBFNwBDTcmqcLHP/7k8Xx4zFxawx7uM=
+	t=1762221885; cv=none; b=oRf6Aix95tsPTdGVMw8ezj5zL56M0DNSb6TWEbggbCa9vSs0e+JnzR6qHGFb1qGPmEQrXJ2eP3hFaXFcuPFrE8etv8zgZLR9Kqg6MWaZCHHzmPrxklgna5PZaXNgbz5n4CW1FDWzVSWOWBAbSvpvR2eRBLQiZB3towRewh6YFGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762221083; c=relaxed/simple;
-	bh=/8xAdxlBcogZXXx8ThXWlUK/WVp0noGZQ7cMVZBio1s=;
-	h=Date:From:Mime-Version:Content-Type:To:Cc:Subject:Message-Id; b=KC5N9RzkJOxj4GrTI1sVVSCAvbYsaw8Fp0AtEiNYkADeyNUW2+W240gJ2IHEtksLWlUdhexjRrWvUPFQwfg9W982jVDSfsbtxudFA/0yji+CzA0oMLG/B+5+BGxkIm90Cey80exQfCIZGMPZfv+zYu1WdJ96ohggiQsIXPvDP4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=Z8/gLooX; arc=none smtp.client-ip=118.26.132.23
+	s=arc-20240116; t=1762221885; c=relaxed/simple;
+	bh=3dHXHFYNyWdBrj3QM1sPWTu1d7dOjFuM0sBqiRWqc84=;
+	h=Subject:Date:Message-Id:Mime-Version:To:Content-Type:Cc:From; b=pKysMFQ50i5GmPAuymhFCpRKHnEspJHrZxQGRYb2pyad0OU/qH2o9I6S4LtxXMh7ZREeQrDm+Ofl3IquKUhzfxrMrNxNwUqdmEFSmg0RqRG5SOGH2WEijNh3r0ZWIDXkVK+RvmMxuq1LOkERUFfcpuRNgNmFQpRp7ayRfv+B4bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=YAD1qoUR; arc=none smtp.client-ip=118.26.132.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="Z8/gLooX"
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="YAD1qoUR"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1762221066;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1762221867;
   h=from:subject:mime-version:from:date:message-id:subject:to:cc:
  reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=MeVylSFPK4ZB0TSQFof8l5v0htYYA51u3t6gmx5/nUc=;
- b=Z8/gLooX89VPVTa6P//iasLsyf3vn/y83WxsntCfhdkdIbL1D/miZjJLL84RbUEkw0yWSw
- hZFUJYhIYsbDZ1y4EvvF3ifODOpv35G0pOY0yzk9pdphAWJAuQETVR0we9pOc1sWbdQ9dq
- 5pJrB/jNXvj04TwMfIAhjOmLSyp/FzeH9m69cXMeoV8ZuWRQAOOzWLPOWwZkTd9464CjlB
- y3mH856S35U2mh+t/yCmXkrbCV6Mgas78JvuNkHhdajo08p0TLXmdjxMXuUMYD1UvgBQWv
- 5JmmKyH8G5naRmlkMo13rmiYIiwv7B1NCVQz5GV5sIRKgaVxf/rVDuFB5JsupQ==
-Date: Tue, 4 Nov 2025 09:51:02 +0800
-X-Original-From: Chen Miao <chenmiao@openatom.club>
-Content-Transfer-Encoding: 7bit
-From: "Chen Miao" <chenmiao@openatom.club>
+ bh=aAdyEZtvZBLjgCCraE7HYCkvc3HoTW1UVwpwoqEAgIU=;
+ b=YAD1qoURgyNSSnbxBit/Htl0VzY/z4nO9et1H+MbwZOhOIeFeqq4Y2wR6VHcyQ7F7sBN6X
+ YS98nM/OS1v+Tikcv/FskxHD6sZZV6PMBeMnH5gdyvsceAhLO9juhtrjDMkKfK6jRQEVDL
+ mNn6FVw6oBxOf2yQQvAszOsIFISPBYVvXPU9fyyXcMfLblWUIA0IuRaj3Lvw3xBdSoQFfz
+ sWuHZwV/stIrSKcFC0YZO1bC0zTD57ONQb9BVp5ZX7+UcQ6WVILV9x8k8X9EkmWIJmvJ9t
+ v0zAOIS1crx6kr+obTPrRT7CGpEM7bhytNz6yDSqmoHxgICBvwbAniCJ6CElxw==
+Subject: [PATCH] rust: kernel: Support more jump_label api
+Received: from localhost.localdomain ([114.249.49.233]) by smtp.feishu.cn with ESMTPS; Tue, 04 Nov 2025 10:04:24 +0800
+X-Lms-Return-Path: <lba+269095f29+4c89be+vger.kernel.org+chenmiao@openatom.club>
+X-Mailer: git-send-email 2.43.0
+Date: Tue,  4 Nov 2025 02:04:17 +0000
+Message-Id: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Received: from [192.168.1.5] ([114.249.49.233]) by smtp.feishu.cn with ESMTPS; Tue, 04 Nov 2025 09:51:03 +0800
+To: <ojeda@kernel.org>
+Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset=UTF-8
-To: <miguel.ojeda.sandonis@gmail.com>, <tamird@gmail.com>, 
-	<da.gomez@samsung.com>
-Cc: <hust-os-kernel-patches@googlegroups.com>, 
-	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [RESEND PATCH v2] Makefile: Remove the product of pin_init cleanly in mrporper
-User-Agent: Mozilla Thunderbird
-X-Lms-Return-Path: <lba+269095c08+cb6d43+vger.kernel.org+chenmiao@openatom.club>
-Message-Id: <d438be26-9156-4604-b96c-34e11118be0c@openatom.club>
+Cc: "Alex Gaynor" <alex.gaynor@gmail.com>, 
+	"Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, 
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	"Benno Lossin" <lossin@kernel.org>, 
+	"Andreas Hindborg" <a.hindborg@kernel.org>, 
+	"Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, 
+	"Danilo Krummrich" <dakr@kernel.org>, 
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>, 
+	"open list:RUST" <rust-for-linux@vger.kernel.org>, 
+	"open list" <linux-kernel@vger.kernel.org>
+From: "chenmiao" <chenmiao@openatom.club>
+X-Original-From: chenmiao <chenmiao@openatom.club>
 
-PING.
+The initial implementation of arch_static_branch was achieved by accessing
+the offset from the original type. However, this approach extended the
+path and introduced redundant calculations when dealing with types like
+`static_key_true/false`, as shown below:
 
-On 10/31/2025 10:32 AM, chenmiao wrote:
-> When I enabled Rust compilation, I wanted to clean up its output, so I
-> used make clean and make mrproper. However, I was still able to find that
-> libpin_init_internal.so in the rust directory was not deleted, while
-> all other corresponding outputs were cleared.
->
-> Dongliang Mu <dzm91@hust.edu.cn>
-> Signed-off-by: chenmiao <chenmiao@openatom.club>
-> ---
-> Changes in V2:
-> 	- Add the `.dylib` to mrproper files.
-> ---
->   Makefile | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/Makefile b/Makefile
-> index b34a1f4c03967..b38b2895e1e4a 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1590,7 +1590,8 @@ MRPROPER_FILES += include/config include/generated          \
->   		  certs/x509.genkey \
->   		  vmlinux-gdb.py \
->   		  rpmbuild \
-> -		  rust/libmacros.so rust/libmacros.dylib
-> +		  rust/libmacros.so rust/libmacros.dylib \
-> +		  rust/libpin_init_internal.so rust/libpin_init_internal.dylib
->   
->   # clean - Delete most, but leave enough to build external modules
->   #
+```
+static_brach_unlikely(tp, tracepoint, key)
+  => tracepoint->key->key
+  => &tracepoint->key(static_key_false) == &tracepoint->key.key(static_key)
+  => off: tracepoint->key - tracepoint
+```
+
+In practice, the implementation of `arch_static_branch` overlooked many
+detailed descriptions. To improve clarity, additional comments have been
+added to the original logic. The approach has been modified to directly
+locate the corresponding `static_key` instead of using offsets, thereby
+reducing  computational overhead.
+
+If finding the offset from the primitive type is necessary for this
+implementation, I will abandon this change.
+
+Additionally, support for the `static_branch_enable/disable` APIs has been
+introduced.
+
+Signed-off-by: chenmiao <chenmiao@openatom.club>
+---
+ .../generated_arch_static_branch_asm.rs.S     |   2 +-
+ rust/kernel/jump_label.rs                     | 169 ++++++++++++++++--
+ 2 files changed, 155 insertions(+), 16 deletions(-)
+
+diff --git a/rust/kernel/generated_arch_static_branch_asm.rs.S b/rust/kernel/generated_arch_static_branch_asm.rs.S
+index 2afb638708db3..08603dc2d61e7 100644
+--- a/rust/kernel/generated_arch_static_branch_asm.rs.S
++++ b/rust/kernel/generated_arch_static_branch_asm.rs.S
+@@ -4,4 +4,4 @@
+ 
+ // Cut here.
+ 
+-::kernel::concat_literals!(ARCH_STATIC_BRANCH_ASM("{symb} + {off} + {branch}", "{l_yes}"))
++::kernel::concat_literals!(ARCH_STATIC_BRANCH_ASM("{real_key} + {branch}", "{l_yes}"))
+diff --git a/rust/kernel/jump_label.rs b/rust/kernel/jump_label.rs
+index 4e974c768dbd5..12ae78f95c761 100644
+--- a/rust/kernel/jump_label.rs
++++ b/rust/kernel/jump_label.rs
+@@ -6,22 +6,63 @@
+ //!
+ //! C header: [`include/linux/jump_label.h`](srctree/include/linux/jump_label.h).
+ 
+-/// Branch based on a static key.
++/// The key used for the static_key_false/true.
+ ///
+-/// Takes three arguments:
++/// If the key just contains a static_key, like: `struct tracepoint`;
+ ///
+-/// * `key` - the path to the static variable containing the `static_key`.
+-/// * `keytyp` - the type of `key`.
+-/// * `field` - the name of the field of `key` that contains the `static_key`.
++/// ```
++/// pub struct tracepoint {
++///     ...,
++///     key: static_key,
++///     ...,
++/// }
+ ///
+-/// # Safety
++/// // When you use the tracepoint as the parameter.
++/// if static_branch_unlikely!(tp, tracepoint, key) {
++///     // Do something
++/// }
+ ///
+-/// The macro must be used with a real static key defined by C.
+-#[macro_export]
+-macro_rules! static_branch_unlikely {
+-    ($key:path, $keytyp:ty, $field:ident) => {{
++/// // It just like:
++/// let _key: *const crate::bindings::tracepoint = ::core::ptr::addr_of!($key);
++/// let _key: *const crate::bindings::static_key_false = ::core::ptr::addr_of!((*_key).key);
++/// let _key: *const crate::bindings::static_key = _key.cast();
++/// ```
++///
++/// If the key just contains a single static_key, like: `struct static_key_false`;
++///
++/// ```
++/// pub struct static_key_false {
++///     key: static_key,
++/// }
++///
++/// // When you use the static_key_false as the parameter.
++/// if static_branch_unlikely!(key) {
++///     // Do something
++/// }
++///
++/// // It just like:
++/// let _key: *const crate::bindings::static_key_false = ::core::ptr::addr_of!($key);
++/// let _key: *const crate::bindings::static_key = _key.cast();
++/// ```
++///
++macro_rules! __static_branch_base {
++    ($basety:ty, $branch:expr, $key:path) => {{
++        let _key: *const $basety = ::core::ptr::addr_of!($key);
++        let _key: *const $crate::bindings::static_key = _key.cast();
++
++        #[cfg(not(CONFIG_JUMP_LABEL))]
++        {
++            $crate::bindings::static_key_count(_key.cast_mut()) > 0
++        }
++
++        #[cfg(CONFIG_JUMP_LABEL)]
++        {
++            $crate::jump_label::arch_static_branch! { _key, $branch }
++        }
++    }};
++    ($basety:ty, $branch:expr, $key:path, $keytyp:ty, $field:ident) => {{
+         let _key: *const $keytyp = ::core::ptr::addr_of!($key);
+-        let _key: *const $crate::bindings::static_key_false = ::core::ptr::addr_of!((*_key).$field);
++        let _key: *const $basety = ::core::ptr::addr_of!((*_key).$field);
+         let _key: *const $crate::bindings::static_key = _key.cast();
+ 
+         #[cfg(not(CONFIG_JUMP_LABEL))]
+@@ -30,7 +71,88 @@ macro_rules! static_branch_unlikely {
+         }
+ 
+         #[cfg(CONFIG_JUMP_LABEL)]
+-        $crate::jump_label::arch_static_branch! { $key, $keytyp, $field, false }
++        {
++            $crate::jump_label::arch_static_branch! { _key, $branch }
++        }
++    }};
++}
++
++/// Branch based on a static key.
++///
++/// Takes two type arguments:
++///
++/// First Type takes one argument:
++///
++/// * `key` - the static variable containing the `static_key`.
++///
++/// Second Type takes three arguments:
++///
++/// * `key` - the path to the static variable containing the `static_key`.
++/// * `keytyp` - the type of `key`.
++/// * `field` - the name of the field of `key` that contains the `static_key`.
++///
++/// # Safety
++///
++/// ```
++/// let tp: tracepoint = tracepoint::new();
++/// if static_key_likely!(tp, tracepoint, key) {
++///     // Do something
++/// }
++///
++/// let key: static_key_false = static_key_true::new();
++/// if static_key_likely!(key) {
++///     // Do something
++/// }
++/// ```
++///
++/// The macro must be used with a real static key defined by C.
++#[macro_export]
++macro_rules! static_branch_likely {
++    ($key:path) => {{
++        __static_branch_base! { $crate::bindings::static_key_true, true, $key }
++    }};
++    ($key:path, $keytyp:ty, $field:ident) => {{
++        __static_branch_base! { $crate::bindings::static_key_true, true, $key, $keytyp, $field }
++    }};
++}
++pub use static_branch_likely;
++
++/// Branch based on a static key.
++///
++/// Takes two type arguments:
++///
++/// First Type takes one argument:
++///
++/// * `key` - the static variable containing the `static_key`.
++///
++/// Second Type takes three arguments:
++///
++/// * `key` - the path to the static variable containing the `static_key`.
++/// * `keytyp` - the type of `key`.
++/// * `field` - the name of the field of `key` that contains the `static_key`.
++///
++/// # Safety
++///
++/// ```
++/// let tp: tracepoint = tracepoint::new();
++/// if static_key_unlikely!(tp, tracepoint, key) {
++///     // Do something
++/// }
++///
++/// let key: static_key_false = static_key_false::new();
++/// if static_key_unlikely!(key) {
++///     // Do something
++/// }
++/// ```
++///
++/// The macro must be used with a real static key defined by C.
++#[macro_export]
++macro_rules! static_branch_unlikely {
++    ($key:path) => {{
++        static_branch_base! { $crate::bindings::static_key_false, false, $key }
++    }};
++    ($key:path, $keytyp:ty, $field:ident) => {{
++        static_branch_base! { $crate::bindings::static_key_false, false, $key, $keytyp, $field }
+     }};
+ }
+ pub use static_branch_unlikely;
+@@ -46,14 +168,13 @@ macro_rules! static_branch_unlikely {
+ #[doc(hidden)]
+ #[cfg(CONFIG_JUMP_LABEL)]
+ macro_rules! arch_static_branch {
+-    ($key:path, $keytyp:ty, $field:ident, $branch:expr) => {'my_label: {
++    ($key:path, $branch:expr) => {'my_label: {
+         $crate::asm!(
+             include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_static_branch_asm.rs"));
+             l_yes = label {
+                 break 'my_label true;
+             },
+-            symb = sym $key,
+-            off = const ::core::mem::offset_of!($keytyp, $field),
++            real_key = sym $key,
+             branch = const $crate::jump_label::bool_to_int($branch),
+         );
+ 
+@@ -72,3 +193,21 @@ macro_rules! arch_static_branch {
+ pub const fn bool_to_int(b: bool) -> i32 {
+     b as i32
+ }
++
++/// Enable a static branch.
++#[macro_export]
++macro_rules! static_branch_enable {
++    ($key:path) => {{
++        let _key: *const $crate::bindings::static_key = ::core::ptr::addr_of!($key);
++        $crate::bindings::static_key_enable(_key.cast_mut());
++    }};
++}
++
++/// Disable a static branch.
++#[macro_export]
++macro_rules! static_branch_disable {
++    ($key:path) => {{
++        let _key: *const $crate::bindings::static_key = ::core::ptr::addr_of!($key);
++        $crate::bindings::static_key_disable(_key.cast_mut());
++    }};
++}
+-- 
+2.43.0
