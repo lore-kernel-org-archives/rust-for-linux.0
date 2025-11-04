@@ -1,240 +1,90 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEAD317706
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 08:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C5822154F
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 08:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762245425; cv=none; b=oE0vljn6ev3kRQEIgG36BjI9NyusYPVTKONOWmynddjbqwvtyTMrbpgcfUAqaKEsURD9i6yyW0H49dn1Gv5H1v0osvtQ1aBb8I/t/wPzOF2ItvWU1Mjjivh2UaZFqTIAzELZpDT1LJ6vTwgYbN1chJxceDanuMvwbhmrJ7uVi9E=
+	t=1762245549; cv=none; b=VbXtbhI4ae4uV8Sbv/IDot9z39Xv0E+G1cldTdQHpXajG4Kr1jUcHRg8SDY2ZTIQA5kOdNJbgNekX1OmW9iprDdSN2PC3IHJpw1fdkg0bLZsHuDw6ixNlOB3Pifn7AhbdKJ6Krd32GOVwNFch/5t/A6MdBebwz+uxTH630mfKhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762245425; c=relaxed/simple;
-	bh=KjBRbZ4bkrlSakH8TMfjW4NCE/Px2HuvZ+aVWMkIPE4=;
+	s=arc-20240116; t=1762245549; c=relaxed/simple;
+	bh=t3IUp+ARaNaB8wz2LKnZxVPm5xytJ0pZwMX+fyMtQ0U=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=szwr8FSJEhY8edhzB2ZWkd4elyvhAOOh45sxtmPX5W9AiSr+V9DNnOjyEyF6uKsoWb0La7OqjpcP4fIfYCrRLFz4yxGUW5vPwiOVsapzk1aqrJU1v4se6x0PWmv/MjWmpzx/OLnMBATG+7YTIEY7uayO49b2nEUJdIfrlHBDwj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uMPvTSfW; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=JIr61kbmvg/cwObVgQjeL0jHdZPzrrV1fRLGpgGg1BkQlXDES9oIm0ZL1lzBRatLLESf2w/mBZJi4gbFPcELHnRUigrX0iowpJH7dvDKHhlsncu4aRpM283mMEU4bp712to+xnGU7Ir9zdzD4T7fjMyDGOAF6UD/dvF8J+TfSIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ijSniAux; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uMPvTSfW"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47754c0796cso5364195e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 00:37:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ijSniAux"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47717c2737bso21322355e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 00:39:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762245422; x=1762850222; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762245545; x=1762850345; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7SIFibIxGtr22aof+eoY73n2jRzngRkz56RLCEf2qwc=;
-        b=uMPvTSfWLq3fHAiX7p7s82c4FooFLNUGtYlUoo0b4LPIPhEB6b1FgB7/2f5G4r8dk6
-         V7WGhoS+hIkF+Pg/BhsAenOSklfuTm2FXnram1yQ5129weQLWaKzxOOi4zbohfP9uA4D
-         qAcHb+UgpDEEVmKDvdX71JwCBo7IV1maxOj60WSYJgwtBVjpmek/sDLb2MFZ+HDGoIJh
-         L5D4JHBMEfCVvBPoAEgnNwy52wySHlQ7w8/El9PbcvtAITC9hsiq0tG3f/JwqzrjfQGd
-         7Mn0gVmodQfmd1mjq+xKlVmomiLLtRSCg1v6cbtG3Y/4K9+nBsKsiypw2biKlkhxfKjt
-         e4IA==
+        bh=9WSx4j5h/K35W2b1U5cMePqydBqgF/bke1+7wCGvmmg=;
+        b=ijSniAuxKDJPa4ZM2zvcejUKc5nMw6zIDhWVwoTLQ1FtbnQOnGWgEjslH96U4vHTVs
+         LsSPJ/nbCiGpK9HU9U81zUq2js5wDH15U9GuVkUJdR+JR8G+YXrmEZNfUt6QZ1BE/rfK
+         gb8MGr4tujpX/goxMK8KXOhRkT5Cw6aXgsljJLQrAGZ/Y7X0UIW4rrR9b0WxPIjzo7f/
+         nVnwkaLRIiI8fW+3c+2ijNff93rdC7jNobF1bDfEZwPvSJ7h2kU840OgPjy8Wnf8TjkX
+         /WA0+HuGN0Qw4B4ExtAIcLLJRiMH6dC46OL5OLibEEEokx7D9RVnc9ryHOcctA9dsmct
+         YmIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762245422; x=1762850222;
+        d=1e100.net; s=20230601; t=1762245545; x=1762850345;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7SIFibIxGtr22aof+eoY73n2jRzngRkz56RLCEf2qwc=;
-        b=qt1YiQz/Uw+0CrI6Z5M5QI53XOZOaG8B9G5H1EfASAPlwpm5E+xMDd7GY8bx+kVAap
-         W/r0MS5Vs/nWNsDaKATtKAL13l0IudhAg/Tea/8oCuC1/y+/xZAb2S6B40HW6AxY7XTH
-         ZRF/uacLkIUMD7HtyhkU9hwdGCytl/zNZn+wFN15M2OCyd44G0k/YGdXU1XHu+cHb11V
-         FyAlzubtLzLGAe0aeNpqEDurRj8EV/FrAhviKGTOfaB2Pm9foqDasw3mhugqCDBJbMxQ
-         Qmqfs3CGFVdQQLP/6B86S1CfBRPruLRRvpfRw7vDYoxEUisglMiUT0Ro0DCHucLrJwXu
-         8TwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVIsNZGnyXbiF5nB9k5dmU4JPzhL1IkkmeLzKco1PTHN+56xgenwinPWHmkl6EhZzZmrPq9yqzq2K9yeXFO4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAWTz6872C9xGxGrhPqS0ACh7n6g7lNRm+ko+E0c5T0xY6ZyiY
-	C9/ztJNfIq4/yzME6ONeslsl3wuldwo/6Y07Hx4IeatCOEbgUAP9is++T2UPlklYFQ0yoECacj2
-	rg/U6qoQBieGVVsGrzA==
-X-Google-Smtp-Source: AGHT+IEg5xttFX2ft6eTsCCjP1/B0SKHrlRkwGAmvuAZGburwGNPSoMEYyhqVEPJi3uwc+HT+qYKC0k+Vu62A0Q=
-X-Received: from wmf19.prod.google.com ([2002:a05:600c:2293:b0:477:10f8:4597])
+        bh=9WSx4j5h/K35W2b1U5cMePqydBqgF/bke1+7wCGvmmg=;
+        b=EofUxFKEfoBn9zZYt67S2vA6lpaF8Nu1XZ32Mxv1W/9pQIUZJK1LWg20JjrI4+zULn
+         GS7+BMHfpoQaGkfXLqEvhOALR2dqZbJo/OWPAX+8E+A5G1TbL9QBCvuWYV1C4T1ZY8kY
+         AguIIfwJGOzNls4+CHPOUGyYa2thDpu9Xb+H3TkIgc5X5c5DFtoIxrSamdSvQxqE/LPZ
+         nJrkmSP1z9wOqcNrybqeo3cUfh1lF5HEy5oI36Kc3Ps6wbDOWyph6a/BYQbLzwCA8EO/
+         3F0pmTVPzG86DcPoAUVDweYgmJ6ziOjE0/q7a/nE96BLB1uK46CJzkEcZLEGsWe8O4WN
+         U+ag==
+X-Forwarded-Encrypted: i=1; AJvYcCWqEI+k10boAaeuxbr6tjCPrlPfZ406Pm7M1KVoFH3gdaNiRMG0nUH03i47lNLyKhX8wQZ6UtTWR5FGUGZksw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyybvZnuGRmlgnzf/UBZ3+8no/leg6LufM/ZygsgEYBAgOf4dh9
+	W7fWvzT1yTetcTuS2f0T8tg0dIuVmuf7YbYEJcKowYBhWjlJefF/yvYLD8QNlOSLtg+qhvs6PRT
+	SZJbnY8yR9ZPv17i3vw==
+X-Google-Smtp-Source: AGHT+IEsoqg3j0WNIpG5vxJRX/Ibh5LrVrCjTx9dh/pWH7qA/STRnKJkdScMyqeumJblHqnk9Ea0X4NaSd6gQqo=
+X-Received: from wmbb2.prod.google.com ([2002:a05:600c:5882:b0:46e:2eb4:38d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:621b:b0:475:d917:7218 with SMTP id 5b1f17b1804b1-477308a6900mr139520125e9.36.1762245421804;
- Tue, 04 Nov 2025 00:37:01 -0800 (PST)
-Date: Tue, 4 Nov 2025 08:37:00 +0000
-In-Reply-To: <DDZ5J5OC26UH.1B8CGNEJGRTS5@nvidia.com>
+ 2002:a05:600c:1553:b0:471:16e5:6d7a with SMTP id 5b1f17b1804b1-477307ba7d2mr133828385e9.13.1762245545262;
+ Tue, 04 Nov 2025 00:39:05 -0800 (PST)
+Date: Tue, 4 Nov 2025 08:39:04 +0000
+In-Reply-To: <20251103190655.2326191-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251101-b4-as-flattened-v1-1-860f2ebeedfd@nvidia.com>
- <aQiCeZE7eN_KVdZ5@google.com> <DDZ5J5OC26UH.1B8CGNEJGRTS5@nvidia.com>
-Message-ID: <aQm7LNwPwxm8HZ_I@google.com>
-Subject: Re: [PATCH RESEND] rust: enable slice_flatten feature and abstract it
- through an extension trait
+References: <20251103190655.2326191-1-dakr@kernel.org>
+Message-ID: <aQm7qLybSn6bOlCy@google.com>
+Subject: Re: [PATCH 1/2] rust: dma: make use of start_ptr() and start_ptr_mut()
 From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: abdiel.janulgue@gmail.com, daniel.almeida@collabora.com, 
+	robin.murphy@arm.com, a.hindborg@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Nov 04, 2025 at 12:06:54AM +0900, Alexandre Courbot wrote:
-> On Mon Nov 3, 2025 at 7:22 PM JST, Alice Ryhl wrote:
-> > On Sat, Nov 01, 2025 at 10:31:38PM +0900, Alexandre Courbot wrote:
-> >> In Rust 1.80, the previously unstable `slice::flatten` family of methods
-> >> have been stabilized and renamed to `as_flattened`.
-> >> 
-> >> This creates an issue as we want to use `as_flattened`, but need to
-> >> support the MSRV (which at the moment is Rust 1.78) where it is named
-> >> `flatten`.
-> >> 
-> >> Solve this by enabling the `slice_flatten` feature, and abstracting
-> >> `as_flatten` behind an extension trait that calls the right method
-> >> depending on the Rust version.
-> >> 
-> >> This extension trait can be removed once the MSRV passes 1.80.
-> >> 
-> >> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> >> Link: https://lore.kernel.org/all/CANiq72kK4pG=O35NwxPNoTO17oRcg1yfGcvr3==Fi4edr+sfmw@mail.gmail.com/
-> >> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> >> ---
-> >> This patch was part of the Nova GSP boot series [1], but since it
-> >> requires attention from the core Rust team (and possibly the build
-> >> maintainers?) and is otherwise buried under Nova patches, I am taking
-> >> the freedom to send it separately for visibility.
-> >> 
-> >> Hopefully it captures Miguel's suggestion [2] accurately, but please let
-> >> me know if I missed something.
-> >> 
-> >> Since the Nova GSP boot series makes use of this, I hope to eventually
-> >> merge it alongside the series, through the DRM tree.
-> >> 
-> >> Thanks!
-> >> 
-> >> [1] https://lore.kernel.org/all/20251029-gsp_boot-v7-0-34227afad347@nvidia.com/
-> >> [2] https://lore.kernel.org/all/CANiq72kK4pG=O35NwxPNoTO17oRcg1yfGcvr3==Fi4edr+sfmw@mail.gmail.com/
-> >> ---
-> >>  init/Kconfig           |  3 +++
-> >>  rust/kernel/lib.rs     |  4 ++++
-> >>  rust/kernel/slice.rs   | 63 ++++++++++++++++++++++++++++++++++++++++++++++++++
-> >>  scripts/Makefile.build |  3 ++-
-> >>  4 files changed, 72 insertions(+), 1 deletion(-)
-> >> 
-> >> diff --git a/init/Kconfig b/init/Kconfig
-> >> index cab3ad28ca49..7da93c9cccc3 100644
-> >> --- a/init/Kconfig
-> >> +++ b/init/Kconfig
-> >> @@ -147,6 +147,9 @@ config LD_CAN_USE_KEEP_IN_OVERLAY
-> >>  	# https://github.com/llvm/llvm-project/pull/130661
-> >>  	def_bool LD_IS_BFD || LLD_VERSION >= 210000
-> >>  
-> >> +config RUSTC_HAS_SLICE_AS_FLATTENED
-> >> +	def_bool RUSTC_VERSION >= 108000
-> >> +
-> >>  config RUSTC_HAS_COERCE_POINTEE
-> >>  	def_bool RUSTC_VERSION >= 108400
-> >>  
-> >> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> >> index 3dd7bebe7888..2581a356d114 100644
-> >> --- a/rust/kernel/lib.rs
-> >> +++ b/rust/kernel/lib.rs
-> >> @@ -21,6 +21,9 @@
-> >>  #![feature(inline_const)]
-> >>  #![feature(pointer_is_aligned)]
-> >>  //
-> >> +// Stable since Rust 1.80.0.
-> >> +#![feature(slice_flatten)]
-> >> +//
-> >>  // Stable since Rust 1.81.0.
-> >>  #![feature(lint_reasons)]
-> >>  //
-> >> @@ -128,6 +131,7 @@
-> >>  pub mod security;
-> >>  pub mod seq_file;
-> >>  pub mod sizes;
-> >> +pub mod slice;
-> >>  mod static_assert;
-> >>  #[doc(hidden)]
-> >>  pub mod std_vendor;
-> >> diff --git a/rust/kernel/slice.rs b/rust/kernel/slice.rs
-> >> new file mode 100644
-> >> index 000000000000..7e837bec4bed
-> >> --- /dev/null
-> >> +++ b/rust/kernel/slice.rs
-> >> @@ -0,0 +1,63 @@
-> >> +// SPDX-License-Identifier: GPL-2.0
-> >> +
-> >> +//! Additional (and temporary) slice helpers.
-> >> +
-> >> +/// Extension trait providing a portable version of [`as_flattened`] and
-> >> +/// [`as_flattened_mut`].
-> >> +///
-> >> +/// In Rust 1.80, the previously unstable `slice::flatten` family of methods
-> >> +/// have been stabilized and renamed from `flatten` to `as_flattened`.
-> >> +///
-> >> +/// This creates an issue for as long as the MSRV is < 1.80, as the same functionality is provided
-> >> +/// by different methods depending on the compiler version.
-> >> +///
-> >> +/// This extension trait solves this by abstracting `as_flatten` and calling the correct  method
-> >> +/// depending on the Rust version.
-> >> +///
-> >> +/// This trait can be removed once the MSRV passes 1.80.
-> >> +///
-> >> +/// [`as_flattened`]: slice::as_flattened
-> >> +/// [`as_flattened_mut`]: slice::as_flattened_mut
-> >> +pub trait AsFlattened<T> {
-> >> +    /// Takes an `&[[T; N]]` and flattens it to a `&[T]`.
-> >> +    ///
-> >> +    /// This is an portable layer on top of [`as_flattened`]; see its documentation for details.
-> >> +    ///
-> >> +    /// [`as_flattened`]: slice::as_flattened
-> >> +    fn as_flattened_slice(&self) -> &[T];
-> >> +
-> >> +    /// Takes an `&mut [[T; N]]` and flattens it to a `&mut [T]`.
-> >> +    ///
-> >> +    /// This is an portable layer on top of [`as_flattened_mut`]; see its documentation for details.
-> >> +    ///
-> >> +    /// [`as_flattened_mut`]: slice::as_flattened_mut
-> >> +    fn as_flattened_slice_mut(&mut self) -> &mut [T];
-> >> +}
-> >> +
-> >> +impl<T, const N: usize> AsFlattened<T> for [[T; N]] {
-> >> +    #[allow(clippy::incompatible_msrv)]
-> >> +    fn as_flattened_slice(&self) -> &[T] {
-> >> +        #[cfg(not(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED))]
-> >> +        {
-> >> +            self.flatten()
-> >> +        }
-> >> +
-> >> +        #[cfg(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED)]
-> >> +        {
-> >> +            self.as_flattened()
-> >> +        }
-> >> +    }
-> >> +
-> >> +    #[allow(clippy::incompatible_msrv)]
-> >> +    fn as_flattened_slice_mut(&mut self) -> &mut [T] {
-> >> +        #[cfg(not(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED))]
-> >> +        {
-> >> +            self.flatten_mut()
-> >> +        }
-> >> +
-> >> +        #[cfg(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED)]
-> >> +        {
-> >> +            self.as_flattened_mut()
-> >> +        }
-> >
-> > Hmm. Why not have this match the name that this was stabilized under?
-> > That way, when bumping the MSRV, we can just remove this trait without
-> > changing the callers.
+On Mon, Nov 03, 2025 at 08:06:49PM +0100, Danilo Krummrich wrote:
+> Using start_ptr() and start_ptr_mut() has the advantage that we inherit
+> the requirements the a mutable or immutable reference from those
+> methods.
 > 
-> I expected that doing so would clash with the methods of the same name
-> in `slice` on Rust >= 1.80, but instead I just got a warning that my
-> `AsFlattened` import was ignored - it looks like Rust did the right
-> thing and picked the non-trait method by default.
+> Hence, use them instead of self.cpu_addr.
 > 
-> So all we need to do to make your proposal work is to make the import
-> conditional on Rust being < 1.80. And we can also make the whole trait
-> and its impl block that way.
-> 
-> That would actually be much cleaner! Thanks a lot.
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-One option is to put the trait in the prelude on relevant rustc
-versions. That way, users of the method don't need any conditional
-logic.
+>          // and we've just checked that the range and index is within bounds.
+>          // - `offset` can't overflow since it is smaller than `self.count` and we've checked
+>          // that `self.count` won't overflow early in the constructor.
+> -        Ok(unsafe { self.cpu_addr.add(offset) })
+> +        Ok(unsafe { self.start_ptr().cast_mut().add(offset) })
+
+I guess this shows that the mutable/immutable requirements we inherit
+aren't actually what we need?
 
 Alice
