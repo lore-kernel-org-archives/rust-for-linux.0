@@ -1,110 +1,147 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1FB2D46DB
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 19:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC512299AAB
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 19:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762284330; cv=none; b=c0jku8y0ee2YzEoHg+6enCt91lDJ2XDdLZthIvRJgDfI3sVsw2KoSREpySDNC+NGjX0nlIBz37MNGUKkG7d52DBWwQHFiVF0geW2MwklvfvXqMY2W1VP9m9o9xkzeI76cA8J3UQtrqDEKbiQ5JYfY1N7wU5Kd+vRlr6gHZs+jbk=
+	t=1762284624; cv=none; b=QpGE3FlqgQexhD2u4LpGWSGXiLFjFDzrLIWjp6YeroUjtufBpSTH4+iNDjd7GqHN7blkANClYwLdbCM9eLrx9IHccosTooH+iAxn/osNj3iCCVP3adNFVCq73x53zZAuOrSZc/9FTs3u2eq1ht0YnVGcdbOTq9J6bc1q2/nS0dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762284330; c=relaxed/simple;
-	bh=K4Iyxi52gh1Iw5mMl2HUNeLP4ewV8sTogXEjAzGJ4AY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gXtK9looDdLCODmO+O1jNQXpDgit5fzr7BSZ1Go7DEgTOrTp4A58Di520mHlc5KuisBnAygr57+/iNrK08BF0gs+O/nIvn1e6uJllef3Dgvn+qABT0fZ+e1r48Rwhc0x98easzzXrvkFMeP7ZFuDoRO592YPqWpLsON8aBQrZGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YulHaBjQ; arc=none smtp.client-ip=209.85.215.169
+	s=arc-20240116; t=1762284624; c=relaxed/simple;
+	bh=uYoW/8o2oWvHywWaopv1m5BZj9vCw8WNveRwCymRnA8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R+9wnT22kJhfgZnNCublUiNATWcqk1blcHsPAZy0trwcdUxTHUro5IDuK7H3ClT9C4r28kV42kDEpNhHvEAQyfOYgNi70YiqbvhYfd5FF8ZVoLhG1UIPM6F4Ed5F/bXD81pD7JMuk18iw7n9U3HH4qzn7G2VkLei283In68vOI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=if1Kxuhz; arc=none smtp.client-ip=209.85.160.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YulHaBjQ"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b8b33cdf470so388063a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 11:25:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="if1Kxuhz"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ed0d2a949dso40473761cf.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 11:30:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762284328; x=1762889128; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5cZx+RW3Kt24V+mQj1nrZgt3YKwbbGOTRzEZ/APfqy8=;
-        b=YulHaBjQLep+BxaF4go+ruxEoS+ZiTtfZh4ABv90s+iVii+093rI5CCgJfusCW1O47
-         9Tj8VNSfJMJfLFLduKczLAvy7ar2TG8zjel95yMd4DsgQf8/I+BWqJ2kzNvHLN2y1/1w
-         Vvw/1yH/uF4U0JmyUSrTdwlEQibdF0+YhD4nFT2WBsSd+tTTNeYVNQMzhO7NUILHpFYV
-         9NlLEPK4NUu4dr3hZiD/AN6J4NO2O6AGR450IJ2j2+B0gJN9DqA0Ozy0gJCNI6sE5U6q
-         cSPYtRPzT2Pkw8UcFH5sxHykLnvCXrBei2HmlCrQCrkWQhrFI3HfS1U+OL6fUHEP4z+/
-         Tubg==
+        d=gmail.com; s=20230601; t=1762284622; x=1762889422; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yrkua1HDR61+GtT/9O/LrkaCogME0nTN9Kn1x1xYcQs=;
+        b=if1Kxuhz7kOn3zCAHr23JnBpzwX9jQOzEIfzra22lGBmLZXjly/JMD3rOycw6efEXk
+         WLmTjW60EotiMDg40iVrOg7LOQQGRx39YEjStsO0GsCW7PslWWBcU1DJM61wz3reADOl
+         kunzY2RcyQ4cTg5iuWcZyabLvP0jBu/e9L9eWloNWwcvFoLbj6jGSj4mhKN1IYppzjUX
+         WCudRpkCK77SMhepOClRKG6aVmFk1BA9t+g0Xr4J0jtBmCWYunjdyQgNth6qpEd07FFp
+         xgw+R6bwHmcyJrbvtK7MeMS55pbzKtbBuWbvDXiincB50nFx/NQps2E/2jOAXiSlqSJU
+         QzZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762284328; x=1762889128;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5cZx+RW3Kt24V+mQj1nrZgt3YKwbbGOTRzEZ/APfqy8=;
-        b=vyCVZ7hS/H4/vvNtdGbFEne8D4Jy3A1dpToibXVnowa4iH49tY2NV8VelNw7HvyPx7
-         /acOQBgPTw5JBeRUyQMmvCs/icuc6AkF0xVm9elLibZ6oeJAc/o646KCdU/qyAJTQ+zq
-         Y0+fk52Jf1LcKiF1GqI/xu7prR+uhj7TXLLS1jptl6NqucnJKiN/3hoqiuFLG1QwvQm3
-         Bnr5tzjov7/vbjsPLTZjyY7NW8PeYU+CeH8WiHi5utkYYzhjTrYLj7785o+h9NgeyIIk
-         LSiAGXvaB0i2noDHevzykhzocy4YQubm2S1we5JmJqF5C2ne8cGSqAmFyTA78g4oS5c6
-         l/Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCUewGZr4mbFn+isg7kSUk5OpfLkVTNkFmX3YJUcn9El/T6MiF+5SrM8kzM9ts115+YaJ3rdQbAsfeCeHNLK1w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YylesyUpzFlyu6K1KnHkUlrD2mviw7qAWdr/cfQ28K/Q1n/uVVq
-	HUA22mdipgJPCawJYJn9yrKkLNmaCoB7eV58sHO9ftWV0jyjZkLz2aPgXiNaG6zhBZlmRby+a7g
-	aPavH1Ha/ZlGrKdPe4rYiEizG4G7Y9TA=
-X-Gm-Gg: ASbGncvvYBKiN4xIjtitFfeWHuT3ViuQLt6loLtQ5j47toeSdzRxYI0aOMcaS1rMbXJ
-	2yJRd4GBFnn2LUr1stxTfZHgu4pGKvGaI8hmmmWcCmqkI3gdi38uImLf73FGKta0lQbxkhv5p51
-	1F744MeUQredsD23kZ3kTNzXSuZjHgowdX3iY0eBntybJlvHCyWW7FcWmR6HJlFO00JOuqwQ3kZ
-	+dJYZm4Ood17sIwofmWAixKO6nEAKmy9GuIbSSm2X1BE3VAy3OSUct2o2m6PuA6HPsrCD1m8YXD
-	NfcG2JlX/ndGtHOvFA7JmFHAVpoYQBvB6n8oiHP6yUrj1iYrgnw+IEFRBQ6mX0da6ynPTsZ1t9t
-	ISI0=
-X-Google-Smtp-Source: AGHT+IFWzYsYUL37lFrxSC7sVl0Ij5MeA0lOHpSQOZvdZ7ftbuS95sPOKOarVGGOk6+VoduotS4rq+ThkHUUIHnXHbM=
-X-Received: by 2002:a05:6a20:258b:b0:34e:8e9a:c610 with SMTP id
- adf61e73a8af0-34f8630155bmr221747637.6.1762284328313; Tue, 04 Nov 2025
- 11:25:28 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762284622; x=1762889422;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yrkua1HDR61+GtT/9O/LrkaCogME0nTN9Kn1x1xYcQs=;
+        b=svNmD1G0DrmeXP6NW/41/rYXRO4e4anHYdEKhB3uINr9jckHCMddsUBGn4mrJNxcLF
+         GJGRs5Q5f3hSh1Zd5jCow5zRAnF4cixSzcMP3r/YUU9zwE+FpZQp8V7eFCSx0EiRpuLp
+         UzESzooGESv48ru5mffORoPkCdCew6A4XFnpQp8JMB7U5MPQSLH90my8YRZxIRpVk2QF
+         f9jw6hQFhPDFQNYLRdg/lZj8zXzGoFDDUj9B7M5WCIV8Mg0gsLnaWMY7iONKsDksryxx
+         4ebnRAj0FvQYVEZXvT0N7mY/1llbnYgofypwNN5Yqaija4I5jWrt3nE9Z+CBQEbRsa2b
+         NRXg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ46ZDk/209nW6meoFpthUOP59pomhAb/J6hW9azS77dhS2B47UO9L3a+Ey/DQy0EWrraPBsfy4XdpTJNtTg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyiyf7CeqbOeNOaUhlP0+E3BeWabUrF2GYTBUfcTFwJBUOSxrK6
+	Kr6XxrbQfuhdxBT3bsItcPkoB14+vvd3zqijef6qZ1jECMIBfvZWTMvC
+X-Gm-Gg: ASbGncvdYABpGfDyfg2bMgag43W/qLDWz4JoFCNn1UShsHJvTSCTE3EghyxZi2lIcSL
+	BnFYZ+NS58+BtuR+TvFl4yrlRcCWlCMtqTNI0S7CTW3NVJVwc+904pMHks9722blESyiXq36Dql
+	57ezSBNbwbe6hKuI+3XiN7Q6zE7+Yww+S5t3xqNzDo7AcFJ2VBCLOliKkVMCG07Tjlc+iB9+gDI
+	m0BmcLVg+blVV/fzaP2Dc8mBK1sGOkVwBPK8m+IUbCr+kjZJQ0vHFtScdrWAcbBsGF0gEFueH69
+	s6GEojFCIasE9nff+2nUC+pNLiSDbkggpDoZ2wrAMYvycowU+QULELo2UAJsugUOGriyBKqSFGc
+	LwTAk5B5HWBGAZc4N/pqQY6dkpWrC/HTsLTEyXgjsG75PsB9QiZERYw3HqP9jgRn1Bp4P1/ZJa5
+	e13a1UXlY=
+X-Google-Smtp-Source: AGHT+IHHZ8QvW/CCOjhJABVz/T5Nuu/Qpdn9xw9nWT38C4aLePVGZ+lIedTnJOWnSxHq59U3rhqb6A==
+X-Received: by 2002:ac8:5d12:0:b0:4e8:b812:2e2a with SMTP id d75a77b69052e-4ed7237c610mr9079481cf.24.1762284621840;
+        Tue, 04 Nov 2025 11:30:21 -0800 (PST)
+Received: from localhost ([12.22.141.131])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ed5facb3efsm23437931cf.7.2025.11.04.11.30.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 11:30:21 -0800 (PST)
+Date: Tue, 4 Nov 2025 14:30:19 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Jesung Yang <y.j3ms.n@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: add BitInt integer wrapping type
+Message-ID: <aQpUSw49QptgxjFz@yury>
+References: <20251031-bounded_ints-v1-0-e2dbcd8fda71@nvidia.com>
+ <20251031-bounded_ints-v1-1-e2dbcd8fda71@nvidia.com>
+ <aQgQv6F0Ao4DH6U0@yury>
+ <DDZ3QBBUM27H.MJS1S3WHWJO0@nvidia.com>
+ <aQkEVqbhoVMUc-Km@yury>
+ <DDZKZFCK27HZ.DY3QVXKFU3BI@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251101094011.1024534-1-ojeda@kernel.org>
-In-Reply-To: <20251101094011.1024534-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 4 Nov 2025 20:25:15 +0100
-X-Gm-Features: AWmQ_bny94bBmKIB7QhLmeowyrAuyscE1LVW-SgNclTZu6rQpXUrhoj1poxn8j0
-Message-ID: <CANiq72kWcptN+hu+gMwN2n8WkXrOku4kCHkSRsMzJmQeiCAJOQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: support `-Cjump-tables=n` for Rust 1.93.0
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Huacai Chen <chenhuacai@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, loongarch@lists.linux.dev, 
-	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DDZKZFCK27HZ.DY3QVXKFU3BI@nvidia.com>
 
-On Sat, Nov 1, 2025 at 10:40=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Rust 1.93.0 (expected 2026-01-22) is stabilizing `-Zno-jump-tables`
-> [1][2] as `-Cjump-tables=3Dn` [3].
->
-> Without this change, one would eventually see:
->
->       RUSTC L rust/core.o
->     error: unknown unstable option: `no-jump-tables`
->
-> Thus support the upcoming version.
->
-> Link: https://github.com/rust-lang/rust/issues/116592 [1]
-> Link: https://github.com/rust-lang/rust/pull/105812 [2]
-> Link: https://github.com/rust-lang/rust/pull/145974 [3]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Tue, Nov 04, 2025 at 12:13:26PM +0900, Alexandre Courbot wrote:
+> On Tue Nov 4, 2025 at 4:36 AM JST, Yury Norov wrote:
+> > On Mon, Nov 03, 2025 at 10:42:13PM +0900, Alexandre Courbot wrote:
+> >> Hi Yury,
 
-It got stabilized and merged upstream.
+...
 
-Applied to `rust-fixes` -- thanks everyone!
+>     let a = BitInt::<u8, 3>::new::<3>();
+>     let b = BitInt::<u16, 10>::new::<123>() + a.cast::<u16>();
+> 
+>     let c = a.cast::<u32>() + u32::from(b);
+> 
+> Note that `b` and `c` are regular `u16` and `u32`. Arithmetic operations
+> cannot guarantee that the BitInt invariant will be maintained, so the
+> result needs to be converted back if that's what one wants.
 
-Cheers,
-Miguel
+What C does and what I proposed is to make BitInt a 1st class type,
+just like basic integers. What you implement is really a bounded int.
+
+Both have advantages. C-style BitInt() is a true type with all type
+guarantees. And I like it more because it is a natural extension of
+the existing integer scheme.
+
+Your bounded ints are actually classical integers with some limitations.
+It's not a primitive type in sense of C - it's an object. It also works
+fine. You can easily extend it to arbitrary min and max limits; you can
+expand it to floating types, and do whatever you can do with the objects.
+        
+        BitInt(i32, -128, 255)
+        BitFloat(f32, -1, 1)
+
+That's why you think that -1i32 fits into BitInt(i32, 4), and even
+into BitInt(i8, 4), while I don't.
+
+I don't know which would work better for bitfields. Most likely both
+would work reasonably well. And if bitfield will carefully hide
+internals, I hope most users will not care much.
+
+You switched name to BitInt, but still think about it as an object,
+and that brought all the confusion in my mind. Maybe switch back to
+BoundedInt then to avoid this confusion? If you find it lengthy,
+probably LimInt or simply Lint will be better for you.
+
+Looking at how good rust macros work to implement bitfields, I thought
+that they will be able to mimic native types just as well. But now it
+seems like an arbitrary-length integer types requires support on
+language side. Just like in C.
+
+With that in mind, I think that bounded integers are a bit out of
+scope of basic bit operations, and probably I'm not a right person
+to maintain them neither in Rust, nor in C.
+
+Please keep me in CC for next versions.
+
+Thanks,
+Yury
