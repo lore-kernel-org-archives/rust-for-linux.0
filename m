@@ -1,123 +1,117 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED814327783
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 14:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748C1329C44
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 14:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762265242; cv=none; b=dz+HSd6A8aDKim0C8EtKM69QrvmkmHuPSgL5C12O+dUJLGvOsyPBryVdbR2HHD9GcBhpc9rlonHnAGTuTHrGVnnn9mI30N6s4TPn/pvAHRuoOGZ2bbSkXxwEMHltq2XXCMA66ZZLs1IU1n6+UkhB6v9VF2hW1qhSlV/tDFUKnCA=
+	t=1762265249; cv=none; b=isiHDmg9UvThm3dvUd0j3RiWDVFTsL/477P87FTiOuDiTS1RpDDjfwvBtO78i27wO4TNLZXT9+mzcq4QlZBy6p7SOrS4McbCHeLS7J5tbwWz0ffZ56dLiQwhEvGnGb9HdFrlkghtc5ujg2x7SWkuHPEoKyQa8/OPYNqqofpczqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762265242; c=relaxed/simple;
-	bh=V/6GRoS3/EkiJu/PAUYjegilbyM/Kg4vWk+H06+F/xs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=E0LPqhvCM+SMiSoQ7bmO6HIb+cfzyN1PG0stRu4T2Df/ZdM1YbTOZKmOP/6vi/gR0XWK0S4asj1mRoOmJsxU3vZ8Camvj5+D/v9ToQIyglPbQdi5yZHa1tmH9S7bPKCCCIZsuu/TTzp0+HyMscEeawqjUcXt2Qe0kK5h98HIZZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YYCnTfs6; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1762265249; c=relaxed/simple;
+	bh=PEGyLJUT+zzSFJ95q6Pkl8/xdguEfP2nRB1yIszhyZY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oMdkzv+KF53+L17UUcNGBE/fJwCHx6d/Ar+WUfGDEtCsBL/C5F5ZWkA0tndObM4y2xj/+qsXfjnwMOgwXXj5XIIaLNglm5UXMaegYjcCBQckUuEXUCqY0pDtZmGzQx1c1llj5dZmvpaKevcBa845PTTmVJHsVrUFUx+1Rn3Uz0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QwBOQiR4; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YYCnTfs6"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4721b4f3afbso22045545e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 06:07:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QwBOQiR4"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7a432101883so605602b3a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 06:07:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762265239; x=1762870039; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q0XlFlPd3bHG9no4QyoaPyikiLZTerIShtsBKRlB69U=;
-        b=YYCnTfs68Gkh0hCBvgjC2OdJOcbsVth/iTjjq/bEdxKV7ET4UB+fQc0NV6OlX89XB1
-         YOPAGZK2F6ML0v7Bn+6AEkk1fXkS9Lk0452v17pqaNcpxq6l1G6HdhkJwn4zr67MXJpA
-         TH3QWwcCN4B1wiavNcQagza6myl93BlTXjK9E1lqWnl9fzmL/IUHVlBSE4L1grRbSfow
-         hk5C/g8BIrgiaLDsq0DSG5W8eYsBt/oq2k2fCjYxqRKRRsQ5vJht2tDfT077Jw7hGLfA
-         9eK7eq8Yk2VJpnuXKG3jAZqjNO9s4DHYcD005favFMUZc0OA5uSBDhN/t/Z8OTIuWXuH
-         oxOA==
+        d=gmail.com; s=20230601; t=1762265248; x=1762870048; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PEGyLJUT+zzSFJ95q6Pkl8/xdguEfP2nRB1yIszhyZY=;
+        b=QwBOQiR4q9fn59Pb4WjCrc3qUgYA1S+vIUbE8ZS4xy+UsL8t9aolAlsD2BIETdO6bd
+         1KrPXBSuJxUJINerxxiYCtZ6T7DEDXc5XsSR5iqYpLQC5rfZeo19VbUSXCnsMh8QF5Nj
+         S2fMPBhkwldM2k/EHgF/AaogANhuUSIoOELuoAC/Rs9VBQEKm1Av0gH+FxDT7sE3grbM
+         JnOn14JaJST+AqpGc40k7uh0+//NwLNDW7w6GdyTZOJ1Xzue4VM9B6uCl0jlLMKEEiat
+         Iiu6okkk8OUQd6777s/HWQjJIuOw625fON6PvbrGZfxlDd8EyxSpWyOLg8s3ejP6iPrY
+         SSWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762265239; x=1762870039;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q0XlFlPd3bHG9no4QyoaPyikiLZTerIShtsBKRlB69U=;
-        b=dGz/EwJN6ojae0fTQZPS9TwpBstSFz9GNZnMIm4ghIkUs+1TdgVBuqFcCnh41ceGfq
-         a8sYgZOMJkZpDAr4KyNxHelNCmD9MyCrMjBbHy1KcuiVMU9zLcSfQdhk1dPDTiYzg9t2
-         j9zXMwn2jJJLThvmJTzyV5PBoe+sCcK3Su249mPPzCRd/xwbKdL+HiY8BhOnokLJUga7
-         mqYT6kknbLhauFTPjqFl1Y1f1uj+m4qGaA2GvynUyQcD416hJnfJU/z2UTAkKwv7bWpK
-         rOpbPuXpV2E7jmZr2bYVHeuKcm2Cyvk93ZXAlFvWqJPldltsTq99wqOZjuL2Ofv6M2VE
-         DTnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWP8hA/sPt7og+h2eJ62HMDp3FPFj7onUcHG8J+MMKE2o1IcAzifZuXouInutXboXbgCxSIOA1/qUAwmhTMog==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuOXwQ1o7il8DPbBL6gL5i6OSafO1aW5+acu1HFI/KC9Gu8wJ8
-	YMkxrkPOTbXC7cJ/09lZxSa1jRLvRDhn4bppWNKuIf6J2vE6EcC7AAkTPNb4hQIAI2QNReH4a3F
-	iRxLWfZI30LMvDf184w==
-X-Google-Smtp-Source: AGHT+IF7Z9G2NoQdKa0kcEf+rRGi/koVH8onnac1d5yNHUsIXHgjT/z8ZkDySTLnWzF5coxstmOe5U6bx2HqTeA=
-X-Received: from wmkz14.prod.google.com ([2002:a7b:c7ce:0:b0:477:4a46:9980])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e05:b0:475:de12:d3b5 with SMTP id 5b1f17b1804b1-477308a8f1amr178307165e9.34.1762265239304;
- Tue, 04 Nov 2025 06:07:19 -0800 (PST)
-Date: Tue, 4 Nov 2025 14:07:18 +0000
-In-Reply-To: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club>
+        d=1e100.net; s=20230601; t=1762265248; x=1762870048;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PEGyLJUT+zzSFJ95q6Pkl8/xdguEfP2nRB1yIszhyZY=;
+        b=lJHT60UHQiFKC000Px206ZOv1JPWz7KnTKJ5DugQwzqpO+gcBn1SKVJ5s+B4QsEzv2
+         uPwwo3o5Nd7MG0dsexoffmdVeRMG+ZEhLPdNlCsOfHfagaJ7lGWoskmU1hiOVS9eXTeD
+         V4K2efuC8saX+/dR2dMCMiMhYCBVTF93kLwe8o1Vq8S7zZ8fTNqGfaOiruEv7EfodIa7
+         paU8qgT2bKNRFDt7Mw29FP5ccVA77KWveknau8nP3XJxd0AERXPHCmPWXN2zBda8QmbS
+         ACC2EDM+8S5IcLEgJNIUtIYlNcUVibDZQmBPELKf2ROdxaNeBSuLUBQn7Punr2Wd56DQ
+         Jy7w==
+X-Forwarded-Encrypted: i=1; AJvYcCWEqz+J4+knNT145MUBXOx0gJZOCY4tgdEAkDZWYK9SRGe2gojXAI+gI7MTt/7Ug0FDPcd8h2soomJSh+xL2Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwP2Y2b6ZODA8IU8RV60IxwBulQ5f0kseguFtYoFwYpkqrjK/ji
+	VriigQLOUNnruGL9sj7NjahDhihQVVK2Tbt+Eh42MIgG1iEOJURVRL0PoAQAwAO0nTtZVi4+Vu1
+	1Twm2XIuDXqAXl7IyPN++Iy3ecWD/75E=
+X-Gm-Gg: ASbGncuF/b7xoERlpSpOedSdYfPP3VDtTX227iRV5jub2uRiWmzAg2YmgjG4wECIcfS
+	oDu5k8ibJiLySXZ1TJDsahTxGI4l1oI7cytug1QJ8v/OlE0Pfsolt1rKec3BL7PRtCal76j9OwR
+	vPI47lfxVLQRaqgy+yTzOyRm+/yWllZ4/YZVHWByOC4E7ktSaoXjQrnfBlXmsmlOB7qh0kAcFlV
+	UN0MnszudhotaBgkN6uXIg8Ff2j2xAqAL2TFtLbc/pI/IvQVUd5vpNUVgxGX+53SHXJ8JNv46dL
+	HdDg9NZ92VLTtZA/oxVhrLiwQ5L8ynvBBQYVcRWQzRqjZ+bspjb7yXl0aqaKX/ws9Gz6LuKNvc2
+	K6O1ctn3GbZtcRg==
+X-Google-Smtp-Source: AGHT+IEoQt7wc4QhveCREcNLj59n0mc2+WwtyT6a1zVCHIjoX1thJlflh/bTa19DZhwmYOUd1dkkOIBrsDu+HwIpQfs=
+X-Received: by 2002:a05:6a21:a44:b0:2df:b68d:f7e with SMTP id
+ adf61e73a8af0-348cd411b8cmr11613230637.5.1762265245767; Tue, 04 Nov 2025
+ 06:07:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club>
-Message-ID: <aQoIliAbrn0Re7E3@google.com>
-Subject: Re: [PATCH] rust: kernel: Support more jump_label api
-From: Alice Ryhl <aliceryhl@google.com>
-To: chenmiao <chenmiao@openatom.club>
-Cc: ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>, 
-	"open list:RUST" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
+ <20251030190613.1224287-2-joelagnelf@nvidia.com> <DDX1WYWQNTAB.BBEICMO8NM30@nvidia.com>
+ <20251104005812.GA2101511@joelbox2> <DDZYCRCPYMOL.RMTIF0R404Q4@nvidia.com>
+In-Reply-To: <DDZYCRCPYMOL.RMTIF0R404Q4@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 4 Nov 2025 15:07:12 +0100
+X-Gm-Features: AWmQ_bnRfHv_8j6zHrslJDNBWq9rDs6IM9lMFZ907aXIc2-_3edh4KvJlGf8RU8
+Message-ID: <CANiq72=Cj_gJ27+EAiytxYGYk1dMwu7M3xQpLGByD4QstgDsHw@mail.gmail.com>
+Subject: Re: [PATCH RFC 1/4] rust: clist: Add abstraction for iterating over C
+ linked lists
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	dakr@kernel.org, David Airlie <airlied@gmail.com>, Alistair Popple <apopple@nvidia.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org, 
+	Elle Rhumsaa <elle@weathered-steel.dev>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Andrea Righi <arighi@nvidia.com>, Philipp Stanner <phasta@kernel.org>, nouveau@lists.freedesktop.org, 
+	Nouveau <nouveau-bounces@lists.freedesktop.org>, 
+	Guillaume Gomez <guillaume1.gomez@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 04, 2025 at 02:04:17AM +0000, chenmiao wrote:
-> The initial implementation of arch_static_branch was achieved by accessing
-> the offset from the original type. However, this approach extended the
-> path and introduced redundant calculations when dealing with types like
-> `static_key_true/false`, as shown below:
-> 
-> ```
-> static_brach_unlikely(tp, tracepoint, key)
->   => tracepoint->key->key
->   => &tracepoint->key(static_key_false) == &tracepoint->key.key(static_key)
->   => off: tracepoint->key - tracepoint
-> ```
-> 
-> In practice, the implementation of `arch_static_branch` overlooked many
-> detailed descriptions. To improve clarity, additional comments have been
-> added to the original logic. The approach has been modified to directly
-> locate the corresponding `static_key` instead of using offsets, thereby
-> reducing  computational overhead.
-> 
-> If finding the offset from the primitive type is necessary for this
-> implementation, I will abandon this change.
-> 
-> Additionally, support for the `static_branch_enable/disable` APIs has been
-> introduced.
-> 
-> Signed-off-by: chenmiao <chenmiao@openatom.club>
+On Tue, Nov 4, 2025 at 2:42=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
+>
+> What I'm more worried about is that it might be a PITA to write. :/ But
+> maybe the core folks have an example for how this could be done cleanly
+> and in a reusable way (i.e. we don't want to duplicate the dummy list
+> creation code for every example).
 
-> +    ($basety:ty, $branch:expr, $key:path, $keytyp:ty, $field:ident) => {{
->          let _key: *const $keytyp = ::core::ptr::addr_of!($key);
-> -        let _key: *const $crate::bindings::static_key_false = ::core::ptr::addr_of!((*_key).$field);
-> +        let _key: *const $basety = ::core::ptr::addr_of!((*_key).$field);
->          let _key: *const $crate::bindings::static_key = _key.cast();
->  
->          #[cfg(not(CONFIG_JUMP_LABEL))]
-> @@ -30,7 +71,88 @@ macro_rules! static_branch_unlikely {
->          }
->  
->          #[cfg(CONFIG_JUMP_LABEL)]
-> -        $crate::jump_label::arch_static_branch! { $key, $keytyp, $field, false }
-> +        {
-> +            $crate::jump_label::arch_static_branch! { _key, $branch }
-> +        }
+Using a shared module/file may be good enough, as long as the `#[path
+=3D ...] mod ...;` or `include!(...)` is hidden with `#`, i.e. as long
+as the user does not need to see that to understand the example.
 
-So ... this is changing from $key to _key. That's replacing the global
-variable with a local variable holding a pointer to the global variable.
-However, the arch_static_branch! macro uses the `sym` operand which
-requires you to pass it the global directly.
+But, yeah, we have already a few places in the tree with fake `mod
+bindings` for doctests and things like that.
 
-Did you try this code? I don't believe it will work.
+Cc'ing Guillaume in case there is a better way to do this. The "have
+something applied to several parts of docs" has come up before for
+references too (the "external references map" I proposed).
 
-Alice
+In any case, even if the example does not run, it is still way better
+to have it at least build instead of completely ignored, because that
+means it will not become stale.
+
+Cheers,
+Miguel
