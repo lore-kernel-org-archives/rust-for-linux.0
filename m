@@ -1,60 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AED3164AF;
-	Tue,  4 Nov 2025 13:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA83313543;
+	Tue,  4 Nov 2025 13:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762261795; cv=none; b=Q6mwrRPXN8o+6Ks55DBxayVaSQpBKTJ/+iBQW9NhCis5tynPi3gqNfxBWe4+XQCGqDV1RT/OF4PmuINAYkPmbt8cBcMArQlxSrbi41CaKjG4antrVa4rRL51cvImYSxD9BoNK8/Ykxk4pc8SE0TdN+MLj1Fdk/cgGS0blZ7Qshg=
+	t=1762261804; cv=none; b=tBa+o5PyDepNF5895CPmhp/YxGXid65gThvevwu82hG0quPq4oa1JBnmqVjLlF/JLEjFe22cj1xWn5YOjd8DmZCsnAQO3eR601fd9b9A7N7MtIht0+1i9nRX+CD1Ao+ytKokwzLV0H6w01YWLW46mvLOnvQe8ea9ICiHItuolx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762261795; c=relaxed/simple;
-	bh=Pqh89lUQZhJ8CsY/0xEaVx+K9g/ynb2A8QtBWjoHrnk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=pq1gfGTddP6hD3ehT6PGciKY5m4HaGZhp9W5cP3MDHu2zv6ZLc20BwyhG/UnmNY7O1SPo79fViRk7Uaw5basBVFoE69GH51I/IB6r2c1jXC/PQt/UG1yZA0pWhFmydHN1oCUMr/BK8xcIJlIQXfq+olX+oYujPK0yC/UxybVdqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZfhvFAu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762261804; c=relaxed/simple;
+	bh=7NnkJEI0oOMuq1J+RwuRG1xxy/8alW7d08R0YIaczAQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GkyC5iUPDk7VieL5cEWUXerbnshJOA9fBYYhY8WhkihcHiNiqgk84GZqNV3DwTLUBJgyJhypYO9jJcoqcJhZ9E2m8Q0EixrQiBLAVIG3tbDm8TW/vw7xGIkIMtMeF4wjxZJrzTMMpSxidIn0jvl4Ardun2ZInvhpIjNCPWPKJyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HEkNxRjM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZfhvFAu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F6CC2BC9E;
-	Tue,  4 Nov 2025 13:09:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HEkNxRjM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8438C4CEF7;
+	Tue,  4 Nov 2025 13:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762261795;
-	bh=Pqh89lUQZhJ8CsY/0xEaVx+K9g/ynb2A8QtBWjoHrnk=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=VZfhvFAuduDx6Ibe/wwDd+NE4buQo/HLV7dI7Xcb5YhqYPkkPTsdDeuh3t2QlT0XT
-	 xfunzgkf4KvEYVDrRza4rJXRRR2iEGXDhiy9RPyngeIaZDLtka36Rvl8vSfMy6ny/j
-	 2rghPVRrL5XXJ0ikNf5pWcAbrSErxmCpIttZOXh0mLW0HY6wkM2ZIGJ9mpV2XSeeL3
-	 XjwlGo7eZpEQZfBFqKPM5c3pfBS2eTNjW1+ArvwehJWuJ2Zio/tXw/xRTiGENIOj+O
-	 T03VWkw5zZsCjYSMYyaom8MR5slqXyVYTj5br3gJvQLu0oivpwY7bcrAnSkgFL2zfz
-	 xIaz0iCZFijfQ==
+	s=k20201202; t=1762261802;
+	bh=7NnkJEI0oOMuq1J+RwuRG1xxy/8alW7d08R0YIaczAQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=HEkNxRjMxnqaI7GhSVYB1QFMwrTojd7orHe9LXy4lARahl5BLt6YTSdAmTtRwErgQ
+	 UvuzRR6tvmiiOBahnVGrOEh26BUdEDQ73ZYy0Jw78/MPRU8O7ROIk+waK+sqspCXOC
+	 KBNW/ikPazv3BM2FVJfE4EHqs7gFvGs3MjdvaHuV8hp+OCQG4eet76Q2UjgnAXXHr4
+	 OPgA6Ncm91SCPLinK1Dzzf399AaMIvBZ8xfualciWhVc69l08bMwGeJVnic05CiBKj
+	 hK0n+Cycu2xb5rcyfK/0f2tstt8xVDwCxL8P6PNWpr523HK1tZ8HQ9N8gu6ItRLwOK
+	 8VFAJWCImGx2g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Thomas
+ Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>,
+ linux-kernel@vger.kernel.org, Daniel Almeida
+ <daniel.almeida@collabora.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel
+ Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v13 08/17] rust: helper: Add
+ spin_{un,}lock_irq_{enable,disable}() helpers
+In-Reply-To: <20251013155205.2004838-9-lyude@redhat.com>
+References: <20251013155205.2004838-1-lyude@redhat.com>
+ <20251013155205.2004838-9-lyude@redhat.com>
+Date: Tue, 04 Nov 2025 13:56:46 +0100
+Message-ID: <87346u7y7l.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 04 Nov 2025 14:09:49 +0100
-Message-Id: <DDZXO1Q8X0VJ.2CTDX2SFTY3FR@kernel.org>
-Subject: Re: [PATCH v4 0/2] Add read_poll_timeout_atomic support
-Cc: <a.hindborg@kernel.org>, <alex.gaynor@gmail.com>,
- <aliceryhl@google.com>, <daniel.almeida@collabora.com>, <ojeda@kernel.org>,
- <anna-maria@linutronix.de>, <bjorn3_gh@protonmail.com>,
- <boqun.feng@gmail.com>, <frederic@kernel.org>, <gary@garyguo.net>,
- <jstultz@google.com>, <linux-kernel@vger.kernel.org>, <lossin@kernel.org>,
- <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>, <sboyd@kernel.org>,
- <tglx@linutronix.de>, <tmgross@umich.edu>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251103112958.2961517-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20251103112958.2961517-1-fujita.tomonori@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Mon Nov 3, 2025 at 12:29 PM CET, FUJITA Tomonori wrote:
+Lyude Paul <lyude@redhat.com> writes:
 
-Applied to driver-core-testing, thanks!
+> From: Boqun Feng <boqun.feng@gmail.com>
+>
+> spin_lock_irq_disable() and spin_unlock_irq_enable() are inline
+> functions, to use them in Rust, helpers are introduced. This is for
+> interrupt disabling lock abstraction in Rust.
+>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-> FUJITA Tomonori (2):
->   rust: add udelay() function
->   rust: Add read_poll_timeout_atomic function
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-    [ Adjust imports to use "kernel vertical" style. - Danilo ]
+
+Best regards,
+Andreas Hindborg
+
+
+
