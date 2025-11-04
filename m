@@ -1,124 +1,240 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E061430AAB8;
-	Tue,  4 Nov 2025 07:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEAD317706
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 08:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762242784; cv=none; b=HpIv9uEBH4A1S3RR+xU4gP5mtJxKU1kAOLEvKMknty6u2NBuywqp6uWAUleGeKUa7KEGMAq3T6TvbqhOGNqqTnto1rNaAZ6lYPO8+ijNCb9h6lgRfe3dGK2tXZnDMGTGtBmEfBq8/f9/EQfGgSo95cacu01WeWQ1ZcjhAlO1MAk=
+	t=1762245425; cv=none; b=oE0vljn6ev3kRQEIgG36BjI9NyusYPVTKONOWmynddjbqwvtyTMrbpgcfUAqaKEsURD9i6yyW0H49dn1Gv5H1v0osvtQ1aBb8I/t/wPzOF2ItvWU1Mjjivh2UaZFqTIAzELZpDT1LJ6vTwgYbN1chJxceDanuMvwbhmrJ7uVi9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762242784; c=relaxed/simple;
-	bh=lGIbceyVZgdKoxAlgrENOyuI7iqdDhBBFcc98C3lKn0=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=rqDe8JC8vWeexLCQcKgdzxPhgMKA1epB0ndkEktCccV8f0JCpZXq7EZiJd0BSWJpjvKZr2939WZQN65bETTpkn/rHe8lIh8C8J5GuIOOGy5SJr6rHHnnxDnWk5Jv1LQdSmeI/1gjeuV97huhReh/X5BS1bPQZqASI69VO1ZWzz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j4yROKUV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762245425; c=relaxed/simple;
+	bh=KjBRbZ4bkrlSakH8TMfjW4NCE/Px2HuvZ+aVWMkIPE4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=szwr8FSJEhY8edhzB2ZWkd4elyvhAOOh45sxtmPX5W9AiSr+V9DNnOjyEyF6uKsoWb0La7OqjpcP4fIfYCrRLFz4yxGUW5vPwiOVsapzk1aqrJU1v4se6x0PWmv/MjWmpzx/OLnMBATG+7YTIEY7uayO49b2nEUJdIfrlHBDwj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uMPvTSfW; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j4yROKUV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8A2C4CEF7;
-	Tue,  4 Nov 2025 07:52:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762242780;
-	bh=lGIbceyVZgdKoxAlgrENOyuI7iqdDhBBFcc98C3lKn0=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=j4yROKUVgRxS9OZJC90/SHA8XCPDVvwVHDTgceh+mCs64FFENtqjNn3VC2cS3YHRS
-	 Vh89i49TvVRT0q9eqdMJYy6UnQ4flTEkFee+vNQ+LDBtPs6JzXOg9rqYQ1l4R+DhcE
-	 OKQGVXbTY9tU25yQyQP/GPDQop+9ZGgyxC6t3ereLkJQbDn6Ob5K1plMoN0NTftZxP
-	 H0zc0vdg/o5PK4tKAehZQ7H8UtwncmtwY6oH+6QVwjaU8ikukGQIRaxvlWW+ISd3QU
-	 to0NJLl+MiSLIdyT3IYNIGJSnGwpG80zYDO7P7ohAcYwUyIFI+7D4Iv2WyVwNsWwgM
-	 89d6ggsAvvugA==
-Date: Tue, 4 Nov 2025 00:52:53 -0700 (MST)
-From: Paul Walmsley <pjw@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-cc: Paul Walmsley <pjw@kernel.org>, Deepak Gupta <debug@rivosinc.com>, 
-    Andy Chiu <andybnac@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
-    Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-    Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-    "H. Peter Anvin" <hpa@zytor.com>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-    Vlastimil Babka <vbabka@suse.cz>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-    Paul Walmsley <paul.walmsley@sifive.com>, 
-    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
-    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
-    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-    Andreas Hindborg <a.hindborg@kernel.org>, 
-    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-    richard.henderson@linaro.org, jim.shu@sifive.com, kito.cheng@sifive.com, 
-    charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
-    cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
-    broonie@kernel.org, rick.p.edgecombe@intel.com, 
-    rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v22 17/28] riscv/signal: save and restore of shadow stack
- for signal
-In-Reply-To: <d442965b-8716-4f89-be88-bc62459af712@infradead.org>
-Message-ID: <febe1a8a-a68b-1af8-a9d5-1b5f510ecab3@kernel.org>
-References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com> <20251023-v5_user_cfi_series-v22-17-1935270f7636@rivosinc.com> <a8f469b8-5750-dfec-2390-09bad4515f99@kernel.org> <d442965b-8716-4f89-be88-bc62459af712@infradead.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uMPvTSfW"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47754c0796cso5364195e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 00:37:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762245422; x=1762850222; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7SIFibIxGtr22aof+eoY73n2jRzngRkz56RLCEf2qwc=;
+        b=uMPvTSfWLq3fHAiX7p7s82c4FooFLNUGtYlUoo0b4LPIPhEB6b1FgB7/2f5G4r8dk6
+         V7WGhoS+hIkF+Pg/BhsAenOSklfuTm2FXnram1yQ5129weQLWaKzxOOi4zbohfP9uA4D
+         qAcHb+UgpDEEVmKDvdX71JwCBo7IV1maxOj60WSYJgwtBVjpmek/sDLb2MFZ+HDGoIJh
+         L5D4JHBMEfCVvBPoAEgnNwy52wySHlQ7w8/El9PbcvtAITC9hsiq0tG3f/JwqzrjfQGd
+         7Mn0gVmodQfmd1mjq+xKlVmomiLLtRSCg1v6cbtG3Y/4K9+nBsKsiypw2biKlkhxfKjt
+         e4IA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762245422; x=1762850222;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7SIFibIxGtr22aof+eoY73n2jRzngRkz56RLCEf2qwc=;
+        b=qt1YiQz/Uw+0CrI6Z5M5QI53XOZOaG8B9G5H1EfASAPlwpm5E+xMDd7GY8bx+kVAap
+         W/r0MS5Vs/nWNsDaKATtKAL13l0IudhAg/Tea/8oCuC1/y+/xZAb2S6B40HW6AxY7XTH
+         ZRF/uacLkIUMD7HtyhkU9hwdGCytl/zNZn+wFN15M2OCyd44G0k/YGdXU1XHu+cHb11V
+         FyAlzubtLzLGAe0aeNpqEDurRj8EV/FrAhviKGTOfaB2Pm9foqDasw3mhugqCDBJbMxQ
+         Qmqfs3CGFVdQQLP/6B86S1CfBRPruLRRvpfRw7vDYoxEUisglMiUT0Ro0DCHucLrJwXu
+         8TwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIsNZGnyXbiF5nB9k5dmU4JPzhL1IkkmeLzKco1PTHN+56xgenwinPWHmkl6EhZzZmrPq9yqzq2K9yeXFO4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAWTz6872C9xGxGrhPqS0ACh7n6g7lNRm+ko+E0c5T0xY6ZyiY
+	C9/ztJNfIq4/yzME6ONeslsl3wuldwo/6Y07Hx4IeatCOEbgUAP9is++T2UPlklYFQ0yoECacj2
+	rg/U6qoQBieGVVsGrzA==
+X-Google-Smtp-Source: AGHT+IEg5xttFX2ft6eTsCCjP1/B0SKHrlRkwGAmvuAZGburwGNPSoMEYyhqVEPJi3uwc+HT+qYKC0k+Vu62A0Q=
+X-Received: from wmf19.prod.google.com ([2002:a05:600c:2293:b0:477:10f8:4597])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:621b:b0:475:d917:7218 with SMTP id 5b1f17b1804b1-477308a6900mr139520125e9.36.1762245421804;
+ Tue, 04 Nov 2025 00:37:01 -0800 (PST)
+Date: Tue, 4 Nov 2025 08:37:00 +0000
+In-Reply-To: <DDZ5J5OC26UH.1B8CGNEJGRTS5@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Mime-Version: 1.0
+References: <20251101-b4-as-flattened-v1-1-860f2ebeedfd@nvidia.com>
+ <aQiCeZE7eN_KVdZ5@google.com> <DDZ5J5OC26UH.1B8CGNEJGRTS5@nvidia.com>
+Message-ID: <aQm7LNwPwxm8HZ_I@google.com>
+Subject: Re: [PATCH RESEND] rust: enable slice_flatten feature and abstract it
+ through an extension trait
+From: Alice Ryhl <aliceryhl@google.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-Hi Randy,
-
-On Fri, 31 Oct 2025, Randy Dunlap wrote:
-
+On Tue, Nov 04, 2025 at 12:06:54AM +0900, Alexandre Courbot wrote:
+> On Mon Nov 3, 2025 at 7:22 PM JST, Alice Ryhl wrote:
+> > On Sat, Nov 01, 2025 at 10:31:38PM +0900, Alexandre Courbot wrote:
+> >> In Rust 1.80, the previously unstable `slice::flatten` family of methods
+> >> have been stabilized and renamed to `as_flattened`.
+> >> 
+> >> This creates an issue as we want to use `as_flattened`, but need to
+> >> support the MSRV (which at the moment is Rust 1.78) where it is named
+> >> `flatten`.
+> >> 
+> >> Solve this by enabling the `slice_flatten` feature, and abstracting
+> >> `as_flatten` behind an extension trait that calls the right method
+> >> depending on the Rust version.
+> >> 
+> >> This extension trait can be removed once the MSRV passes 1.80.
+> >> 
+> >> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> >> Link: https://lore.kernel.org/all/CANiq72kK4pG=O35NwxPNoTO17oRcg1yfGcvr3==Fi4edr+sfmw@mail.gmail.com/
+> >> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> >> ---
+> >> This patch was part of the Nova GSP boot series [1], but since it
+> >> requires attention from the core Rust team (and possibly the build
+> >> maintainers?) and is otherwise buried under Nova patches, I am taking
+> >> the freedom to send it separately for visibility.
+> >> 
+> >> Hopefully it captures Miguel's suggestion [2] accurately, but please let
+> >> me know if I missed something.
+> >> 
+> >> Since the Nova GSP boot series makes use of this, I hope to eventually
+> >> merge it alongside the series, through the DRM tree.
+> >> 
+> >> Thanks!
+> >> 
+> >> [1] https://lore.kernel.org/all/20251029-gsp_boot-v7-0-34227afad347@nvidia.com/
+> >> [2] https://lore.kernel.org/all/CANiq72kK4pG=O35NwxPNoTO17oRcg1yfGcvr3==Fi4edr+sfmw@mail.gmail.com/
+> >> ---
+> >>  init/Kconfig           |  3 +++
+> >>  rust/kernel/lib.rs     |  4 ++++
+> >>  rust/kernel/slice.rs   | 63 ++++++++++++++++++++++++++++++++++++++++++++++++++
+> >>  scripts/Makefile.build |  3 ++-
+> >>  4 files changed, 72 insertions(+), 1 deletion(-)
+> >> 
+> >> diff --git a/init/Kconfig b/init/Kconfig
+> >> index cab3ad28ca49..7da93c9cccc3 100644
+> >> --- a/init/Kconfig
+> >> +++ b/init/Kconfig
+> >> @@ -147,6 +147,9 @@ config LD_CAN_USE_KEEP_IN_OVERLAY
+> >>  	# https://github.com/llvm/llvm-project/pull/130661
+> >>  	def_bool LD_IS_BFD || LLD_VERSION >= 210000
+> >>  
+> >> +config RUSTC_HAS_SLICE_AS_FLATTENED
+> >> +	def_bool RUSTC_VERSION >= 108000
+> >> +
+> >>  config RUSTC_HAS_COERCE_POINTEE
+> >>  	def_bool RUSTC_VERSION >= 108400
+> >>  
+> >> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> >> index 3dd7bebe7888..2581a356d114 100644
+> >> --- a/rust/kernel/lib.rs
+> >> +++ b/rust/kernel/lib.rs
+> >> @@ -21,6 +21,9 @@
+> >>  #![feature(inline_const)]
+> >>  #![feature(pointer_is_aligned)]
+> >>  //
+> >> +// Stable since Rust 1.80.0.
+> >> +#![feature(slice_flatten)]
+> >> +//
+> >>  // Stable since Rust 1.81.0.
+> >>  #![feature(lint_reasons)]
+> >>  //
+> >> @@ -128,6 +131,7 @@
+> >>  pub mod security;
+> >>  pub mod seq_file;
+> >>  pub mod sizes;
+> >> +pub mod slice;
+> >>  mod static_assert;
+> >>  #[doc(hidden)]
+> >>  pub mod std_vendor;
+> >> diff --git a/rust/kernel/slice.rs b/rust/kernel/slice.rs
+> >> new file mode 100644
+> >> index 000000000000..7e837bec4bed
+> >> --- /dev/null
+> >> +++ b/rust/kernel/slice.rs
+> >> @@ -0,0 +1,63 @@
+> >> +// SPDX-License-Identifier: GPL-2.0
+> >> +
+> >> +//! Additional (and temporary) slice helpers.
+> >> +
+> >> +/// Extension trait providing a portable version of [`as_flattened`] and
+> >> +/// [`as_flattened_mut`].
+> >> +///
+> >> +/// In Rust 1.80, the previously unstable `slice::flatten` family of methods
+> >> +/// have been stabilized and renamed from `flatten` to `as_flattened`.
+> >> +///
+> >> +/// This creates an issue for as long as the MSRV is < 1.80, as the same functionality is provided
+> >> +/// by different methods depending on the compiler version.
+> >> +///
+> >> +/// This extension trait solves this by abstracting `as_flatten` and calling the correct  method
+> >> +/// depending on the Rust version.
+> >> +///
+> >> +/// This trait can be removed once the MSRV passes 1.80.
+> >> +///
+> >> +/// [`as_flattened`]: slice::as_flattened
+> >> +/// [`as_flattened_mut`]: slice::as_flattened_mut
+> >> +pub trait AsFlattened<T> {
+> >> +    /// Takes an `&[[T; N]]` and flattens it to a `&[T]`.
+> >> +    ///
+> >> +    /// This is an portable layer on top of [`as_flattened`]; see its documentation for details.
+> >> +    ///
+> >> +    /// [`as_flattened`]: slice::as_flattened
+> >> +    fn as_flattened_slice(&self) -> &[T];
+> >> +
+> >> +    /// Takes an `&mut [[T; N]]` and flattens it to a `&mut [T]`.
+> >> +    ///
+> >> +    /// This is an portable layer on top of [`as_flattened_mut`]; see its documentation for details.
+> >> +    ///
+> >> +    /// [`as_flattened_mut`]: slice::as_flattened_mut
+> >> +    fn as_flattened_slice_mut(&mut self) -> &mut [T];
+> >> +}
+> >> +
+> >> +impl<T, const N: usize> AsFlattened<T> for [[T; N]] {
+> >> +    #[allow(clippy::incompatible_msrv)]
+> >> +    fn as_flattened_slice(&self) -> &[T] {
+> >> +        #[cfg(not(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED))]
+> >> +        {
+> >> +            self.flatten()
+> >> +        }
+> >> +
+> >> +        #[cfg(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED)]
+> >> +        {
+> >> +            self.as_flattened()
+> >> +        }
+> >> +    }
+> >> +
+> >> +    #[allow(clippy::incompatible_msrv)]
+> >> +    fn as_flattened_slice_mut(&mut self) -> &mut [T] {
+> >> +        #[cfg(not(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED))]
+> >> +        {
+> >> +            self.flatten_mut()
+> >> +        }
+> >> +
+> >> +        #[cfg(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED)]
+> >> +        {
+> >> +            self.as_flattened_mut()
+> >> +        }
+> >
+> > Hmm. Why not have this match the name that this was stabilized under?
+> > That way, when bumping the MSRV, we can just remove this trait without
+> > changing the callers.
 > 
-> On 10/31/25 1:07 PM, Paul Walmsley wrote:
-> > On Thu, 23 Oct 2025, Deepak Gupta via B4 Relay wrote:
-> > 
-> >> Save shadow stack pointer in sigcontext structure while delivering signal.
-> >> Restore shadow stack pointer from sigcontext on sigreturn.
+> I expected that doing so would clash with the methods of the same name
+> in `slice` on Rust >= 1.80, but instead I just got a warning that my
+> `AsFlattened` import was ignored - it looks like Rust did the right
+> thing and picked the non-trait method by default.
 > 
-> > This patch causes some 'checkpatch.pl --strict' messages:
-> > 
-> > CHECK: Comparison to NULL could be written "!saved_shstk_ptr"
-> > #271: FILE: arch/riscv/kernel/usercfi.c:186:
-> > +	if (saved_shstk_ptr == NULL)
-> > 
-> > CHECK: Lines should not end with a '('
-> > #300: FILE: arch/riscv/kernel/usercfi.c:215:
-> > +		pr_info_ratelimited(
-> > 
-> > I've fixed them up here in the event that v22 goes in, but please do the 
-> > same on your side in case a new version is needed.
+> So all we need to do to make your proposal work is to make the import
+> conditional on Rust being < 1.80. And we can also make the whole trait
+> and its impl block that way.
 > 
-> Is checkpatch.pl --strict the norm for arch/riscv/ ?
+> That would actually be much cleaner! Thanks a lot.
 
-I run it on every patch I review.  I usually implement the formatting 
-recommendations, in the interest of keeping the codebase formatted in a 
-standard way across submitters.
+One option is to put the trait in the prelude on relevant rustc
+versions. That way, users of the method don't need any conditional
+logic.
 
-> If there are enough arch/riscv/-specific patch expectations,
-> maybe they could be documented in Documentation/process/maintainer-riscv.rst
-> (a new file).
-
-It never occurred to me as being arch/riscv specific, in the sense that, 
-if --strict wasn't more broadly useful across the entire kernel tree, then 
-we should just remove it from checkpatch.pl entirely.  In other words, 
-probably everyone should use it.  There are false positive warnings, of 
-course, including at least one with this patch set; but then again, there 
-are regular false positive warnings with non-strict checkpatch (also with 
-this patch set).
-
-In any case, thanks for the suggestion, and will consider.
-
-
-- Paul
-
+Alice
