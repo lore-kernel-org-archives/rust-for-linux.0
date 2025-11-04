@@ -1,147 +1,327 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC512299AAB
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 19:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8BC154BE2
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 19:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762284624; cv=none; b=QpGE3FlqgQexhD2u4LpGWSGXiLFjFDzrLIWjp6YeroUjtufBpSTH4+iNDjd7GqHN7blkANClYwLdbCM9eLrx9IHccosTooH+iAxn/osNj3iCCVP3adNFVCq73x53zZAuOrSZc/9FTs3u2eq1ht0YnVGcdbOTq9J6bc1q2/nS0dw=
+	t=1762285084; cv=none; b=KjL6mL6QTSAXQHA3Y1oiVnUVsKS2Lyzoj/krANz7KBALfMYnDvJjDMaXThaU52k/Yn+JnrsxPG0AsZVApcgc2G0H6p48TB0AcUBLraAhBazjYk7LnDOw8LRBlky11ZXVOh+qZxRKM+kro0gEeMT+oofJsCw5njc5vkbN2abeFVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762284624; c=relaxed/simple;
-	bh=uYoW/8o2oWvHywWaopv1m5BZj9vCw8WNveRwCymRnA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R+9wnT22kJhfgZnNCublUiNATWcqk1blcHsPAZy0trwcdUxTHUro5IDuK7H3ClT9C4r28kV42kDEpNhHvEAQyfOYgNi70YiqbvhYfd5FF8ZVoLhG1UIPM6F4Ed5F/bXD81pD7JMuk18iw7n9U3HH4qzn7G2VkLei283In68vOI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=if1Kxuhz; arc=none smtp.client-ip=209.85.160.180
+	s=arc-20240116; t=1762285084; c=relaxed/simple;
+	bh=CXtmA1MROdI7OIWq5k2s1IgsbRaGBlIyMpch00btR70=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m5Q8kJiFVTtFB99w/Dn0blcgi49iWFm2iKMOEgxdH+5nH2sOe4XOAVSlpnT1w77/vyABFQlGJEsUnX8hj9nD9w3x8Wu0UAPhKdNe7oiNJZEsOxlPmjgAXFv/Oe3o/aA27rqGHQIqqD1nhZK3HCx4XCQ7AkPfo8b31VMOP+EoEjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KJG0urUo; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="if1Kxuhz"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ed0d2a949dso40473761cf.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 11:30:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KJG0urUo"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-429c4c65485so4515725f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 11:38:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762284622; x=1762889422; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yrkua1HDR61+GtT/9O/LrkaCogME0nTN9Kn1x1xYcQs=;
-        b=if1Kxuhz7kOn3zCAHr23JnBpzwX9jQOzEIfzra22lGBmLZXjly/JMD3rOycw6efEXk
-         WLmTjW60EotiMDg40iVrOg7LOQQGRx39YEjStsO0GsCW7PslWWBcU1DJM61wz3reADOl
-         kunzY2RcyQ4cTg5iuWcZyabLvP0jBu/e9L9eWloNWwcvFoLbj6jGSj4mhKN1IYppzjUX
-         WCudRpkCK77SMhepOClRKG6aVmFk1BA9t+g0Xr4J0jtBmCWYunjdyQgNth6qpEd07FFp
-         xgw+R6bwHmcyJrbvtK7MeMS55pbzKtbBuWbvDXiincB50nFx/NQps2E/2jOAXiSlqSJU
-         QzZw==
+        d=gmail.com; s=20230601; t=1762285081; x=1762889881; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uuJYmeFC0Ns6q+GffQxcvrYZjSVkJQ1qk5T/GyXRo8M=;
+        b=KJG0urUoeNtMrzwVa4oRcxJm4Hdbk9xetrk0LxPg9K7CArFpvR184UA29mClQb1t4U
+         To0cguerusR9lLO3/4qbqdZl9XCRM8F5V6qEczZuVgAXjM6GHztJpUDUTtDgUfTOgK/h
+         s2YzsptUyO0nZf5PB5iFLz+ToLthV7j5l55jGZJcRCLIP0HrrsXhzWR2xP6OMoZc8LIH
+         Bq0u60wjJQcR8fcRe79yPFS7U8NyW6jajn0DwPcUVvdVDJLn/zbeuAxc36Gso2lAE7Gn
+         TziHIHQQRzn+7AiXul1XTVTqNXDK4nBz5/85OBSYLhCdynowkengjJI4A1RuzLMB9xGT
+         WAKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762284622; x=1762889422;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yrkua1HDR61+GtT/9O/LrkaCogME0nTN9Kn1x1xYcQs=;
-        b=svNmD1G0DrmeXP6NW/41/rYXRO4e4anHYdEKhB3uINr9jckHCMddsUBGn4mrJNxcLF
-         GJGRs5Q5f3hSh1Zd5jCow5zRAnF4cixSzcMP3r/YUU9zwE+FpZQp8V7eFCSx0EiRpuLp
-         UzESzooGESv48ru5mffORoPkCdCew6A4XFnpQp8JMB7U5MPQSLH90my8YRZxIRpVk2QF
-         f9jw6hQFhPDFQNYLRdg/lZj8zXzGoFDDUj9B7M5WCIV8Mg0gsLnaWMY7iONKsDksryxx
-         4ebnRAj0FvQYVEZXvT0N7mY/1llbnYgofypwNN5Yqaija4I5jWrt3nE9Z+CBQEbRsa2b
-         NRXg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ46ZDk/209nW6meoFpthUOP59pomhAb/J6hW9azS77dhS2B47UO9L3a+Ey/DQy0EWrraPBsfy4XdpTJNtTg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyiyf7CeqbOeNOaUhlP0+E3BeWabUrF2GYTBUfcTFwJBUOSxrK6
-	Kr6XxrbQfuhdxBT3bsItcPkoB14+vvd3zqijef6qZ1jECMIBfvZWTMvC
-X-Gm-Gg: ASbGncvdYABpGfDyfg2bMgag43W/qLDWz4JoFCNn1UShsHJvTSCTE3EghyxZi2lIcSL
-	BnFYZ+NS58+BtuR+TvFl4yrlRcCWlCMtqTNI0S7CTW3NVJVwc+904pMHks9722blESyiXq36Dql
-	57ezSBNbwbe6hKuI+3XiN7Q6zE7+Yww+S5t3xqNzDo7AcFJ2VBCLOliKkVMCG07Tjlc+iB9+gDI
-	m0BmcLVg+blVV/fzaP2Dc8mBK1sGOkVwBPK8m+IUbCr+kjZJQ0vHFtScdrWAcbBsGF0gEFueH69
-	s6GEojFCIasE9nff+2nUC+pNLiSDbkggpDoZ2wrAMYvycowU+QULELo2UAJsugUOGriyBKqSFGc
-	LwTAk5B5HWBGAZc4N/pqQY6dkpWrC/HTsLTEyXgjsG75PsB9QiZERYw3HqP9jgRn1Bp4P1/ZJa5
-	e13a1UXlY=
-X-Google-Smtp-Source: AGHT+IHHZ8QvW/CCOjhJABVz/T5Nuu/Qpdn9xw9nWT38C4aLePVGZ+lIedTnJOWnSxHq59U3rhqb6A==
-X-Received: by 2002:ac8:5d12:0:b0:4e8:b812:2e2a with SMTP id d75a77b69052e-4ed7237c610mr9079481cf.24.1762284621840;
-        Tue, 04 Nov 2025 11:30:21 -0800 (PST)
-Received: from localhost ([12.22.141.131])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ed5facb3efsm23437931cf.7.2025.11.04.11.30.20
+        d=1e100.net; s=20230601; t=1762285081; x=1762889881;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uuJYmeFC0Ns6q+GffQxcvrYZjSVkJQ1qk5T/GyXRo8M=;
+        b=JJHbze4yvKEj1C4FMR+M31lOFrXij4Q43SiJN9XK0oKcQDY+yOfw8YjqAmqnBvmWd3
+         I46E+pTrU3GcQ+siDYW2m7G2vzxAhEyZTsgaIOe5cIsia+amwdG43oB5FvrAxlspr8D+
+         UqDpLNIlr+l38UuS6KUSjVOewnYZ45XKygy8LZiYJ28qz8M59GULktuP/MVQWdZht2Ik
+         vzPkzTUQD00u9XGNyTe+qjyimP6FK/RmMdJBCT1EcwXX1VC8PEx3G3Bh9l2V0InszQvz
+         aj3fOnArC59PoW54skhw3Sy8UahDWvuNZ0MDFOEo57Q7LU/rrPiB9P2wW1ZCtmyoNGBL
+         lVDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWOVShMLPti6wNuUnWc3INtkwBekKveDpum5HPZJ/059z/HsjKMh38hdxCyOWFNrJqH8L+lKklSE2oco2XPzw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKsf8Rqqvj43Aej94pHTo0VgN63Z6bezPnqsAlitbqBR1SKNsE
+	ZRbC4SalryxMErPq7B1FnZovWVrtZMtbuu1NdkJYquTSjHU9Tu22zVT8
+X-Gm-Gg: ASbGnctSaUOouIJ5gE2+p6kfaaY7Ecvs77q5Gmu0dxUaok1/+MGs7fSJ+jdTm0lgSsG
+	EHGYCH+cMF8JF2FqzN/Lks9MEswqmdSalAJksQ5csaXN2o1qiGvLL/Pt+ZpVdE9d1T6OzKobrmq
+	BKByJuHpLerYg8ifDeRpFtF5KaizLKUVe0HD+khsa4fLl3QY/rgXW9k/n+2cE4PQb/CeWzZSl0X
+	YdxGG62bCjHMGC2SHONehsd6KmyxutG0AmA0sd3BX56wmp1vtmybBfBoNVLkvT418q6GAdVxWYD
+	EAdqleHGjzC2YLI7Jomd72KUrbB64Pqs6OLHIl8zoURo1qnNEhOCGFvApBn7NVjjtG2v2dIbQQQ
+	s+qrCqPxdlr3uYGJyJ69JE1EriA2mtRJ86o0FBSvdU1z0K0G6h//obxd+TekksqeQ8KYAsBQgGL
+	egqfR1c2FZHoqLmkmOzalC1oDsQoxP
+X-Google-Smtp-Source: AGHT+IEr7t1g0NxAiQFW6/+EQdEerO4M/416bPR5jQIpAdQF9dkOK+V+9PpJ6xeniW5e27RTsxa4bw==
+X-Received: by 2002:a05:6000:2387:b0:427:151:3db6 with SMTP id ffacd0b85a97d-429e32f48bcmr414020f8f.24.1762285081045;
+        Tue, 04 Nov 2025 11:38:01 -0800 (PST)
+Received: from archito ([2a01:e0a:acc:bb60:756b:64e3:20ef:1d08])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775ce3ef38sm5549195e9.17.2025.11.04.11.38.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 11:30:21 -0800 (PST)
-Date: Tue, 4 Nov 2025 14:30:19 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
+        Tue, 04 Nov 2025 11:38:00 -0800 (PST)
+From: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Jesung Yang <y.j3ms.n@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] rust: add BitInt integer wrapping type
-Message-ID: <aQpUSw49QptgxjFz@yury>
-References: <20251031-bounded_ints-v1-0-e2dbcd8fda71@nvidia.com>
- <20251031-bounded_ints-v1-1-e2dbcd8fda71@nvidia.com>
- <aQgQv6F0Ao4DH6U0@yury>
- <DDZ3QBBUM27H.MJS1S3WHWJO0@nvidia.com>
- <aQkEVqbhoVMUc-Km@yury>
- <DDZKZFCK27HZ.DY3QVXKFU3BI@nvidia.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
+Subject: [PATCH v3 1/4] nova-core: Simplify `transmute` and `transmute_mut` in fwsec.rs
+Date: Tue,  4 Nov 2025 20:37:48 +0100
+Message-ID: <20251104193756.57726-1-delcastillodelarosadaniel@gmail.com>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DDZKZFCK27HZ.DY3QVXKFU3BI@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 04, 2025 at 12:13:26PM +0900, Alexandre Courbot wrote:
-> On Tue Nov 4, 2025 at 4:36 AM JST, Yury Norov wrote:
-> > On Mon, Nov 03, 2025 at 10:42:13PM +0900, Alexandre Courbot wrote:
-> >> Hi Yury,
+This patch solves one of the existing mentions of COHA, a task
+in the Nova task list about improving the `CoherentAllocation` API.
+It uses the new `from_bytes` method from the `FromBytes` trait as
+well as the `as_slice` and `as_slice_mut` methods from
+`CoherentAllocation`.
 
-...
+Signed-off-by: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
 
->     let a = BitInt::<u8, 3>::new::<3>();
->     let b = BitInt::<u16, 10>::new::<123>() + a.cast::<u16>();
-> 
->     let c = a.cast::<u32>() + u32::from(b);
-> 
-> Note that `b` and `c` are regular `u16` and `u32`. Arithmetic operations
-> cannot guarantee that the BitInt invariant will be maintained, so the
-> result needs to be converted back if that's what one wants.
+---
 
-What C does and what I proposed is to make BitInt a 1st class type,
-just like basic integers. What you implement is really a bounded int.
+I confirmed by talking to Alexandre Courbot, that the reading/writing
+methods in `CoherentAllocation` can never be safe, so
+this patch doesn't actually change `CoherentAllocation`, but rather
+tries to solve one of the existing references to [COHA].
 
-Both have advantages. C-style BitInt() is a true type with all type
-guarantees. And I like it more because it is a natural extension of
-the existing integer scheme.
+V1 -> V2: Split previous patch into two. One per reference to COHA.
+          Improved comments. Let me know if they are okay now.
+          Use of `{...}` syntax for the `if let`
 
-Your bounded ints are actually classical integers with some limitations.
-It's not a primitive type in sense of C - it's an object. It also works
-fine. You can easily extend it to arbitrary min and max limits; you can
-expand it to floating types, and do whatever you can do with the objects.
-        
-        BitInt(i32, -128, 255)
-        BitFloat(f32, -1, 1)
+V2 -> V3: Further splitting.
+            Capitalization for existing comments has its own patch
+          Fix typo. s/unitialized/uninitialized
+          Rebase
+---
+ drivers/gpu/nova-core/firmware/fwsec.rs | 117 +++++++++++-------------
+ 1 file changed, 54 insertions(+), 63 deletions(-)
 
-That's why you think that -1i32 fits into BitInt(i32, 4), and even
-into BitInt(i8, 4), while I don't.
+diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
+index ce78c1563754..4f268fe09573 100644
+--- a/drivers/gpu/nova-core/firmware/fwsec.rs
++++ b/drivers/gpu/nova-core/firmware/fwsec.rs
+@@ -11,12 +11,12 @@
+ //! - The ucode signature, so the GSP falcon can run FWSEC in HS mode.
+ 
+ use core::marker::PhantomData;
+-use core::mem::{align_of, size_of};
++use core::mem::size_of;
+ use core::ops::Deref;
+ 
+ use kernel::device::{self, Device};
+ use kernel::prelude::*;
+-use kernel::transmute::FromBytes;
++use kernel::transmute::{AsBytes, FromBytes};
+ 
+ use crate::dma::DmaObject;
+ use crate::driver::Bar0;
+@@ -70,6 +70,8 @@ struct FalconAppifDmemmapperV3 {
+ }
+ // SAFETY: any byte sequence is valid for this struct.
+ unsafe impl FromBytes for FalconAppifDmemmapperV3 {}
++// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
++unsafe impl AsBytes for FalconAppifDmemmapperV3 {}
+ 
+ #[derive(Debug)]
+ #[repr(C, packed)]
+@@ -82,6 +84,8 @@ struct ReadVbios {
+ }
+ // SAFETY: any byte sequence is valid for this struct.
+ unsafe impl FromBytes for ReadVbios {}
++// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
++unsafe impl AsBytes for ReadVbios {}
+ 
+ #[derive(Debug)]
+ #[repr(C, packed)]
+@@ -94,6 +98,8 @@ struct FrtsRegion {
+ }
+ // SAFETY: any byte sequence is valid for this struct.
+ unsafe impl FromBytes for FrtsRegion {}
++// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
++unsafe impl AsBytes for FrtsRegion {}
+ 
+ const NVFW_FRTS_CMD_REGION_TYPE_FB: u32 = 2;
+ 
+@@ -104,6 +110,8 @@ struct FrtsCmd {
+ }
+ // SAFETY: any byte sequence is valid for this struct.
+ unsafe impl FromBytes for FrtsCmd {}
++// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
++unsafe impl AsBytes for FrtsCmd {}
+ 
+ const NVFW_FALCON_APPIF_DMEMMAPPER_CMD_FRTS: u32 = 0x15;
+ const NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB: u32 = 0x19;
+@@ -147,26 +155,15 @@ impl FirmwareSignature<FwsecFirmware> for Bcrt30Rsa3kSignature {}
+ ///
+ /// # Safety
+ ///
+-/// Callers must ensure that the region of memory returned is not written for as long as the
+-/// returned reference is alive.
+-///
+-/// TODO[TRSM][COHA]: Remove this and `transmute_mut` once `CoherentAllocation::as_slice` is
+-/// available and we have a way to transmute objects implementing FromBytes, e.g.:
+-/// https://lore.kernel.org/lkml/20250330234039.29814-1-christiansantoslima21@gmail.com/
+-unsafe fn transmute<'a, 'b, T: Sized + FromBytes>(
+-    fw: &'a DmaObject,
+-    offset: usize,
+-) -> Result<&'b T> {
+-    if offset + size_of::<T>() > fw.size() {
+-        return Err(EINVAL);
+-    }
+-    if (fw.start_ptr() as usize + offset) % align_of::<T>() != 0 {
+-        return Err(EINVAL);
+-    }
+-
+-    // SAFETY: we have checked that the pointer is properly aligned that its pointed memory is
+-    // large enough the contains an instance of `T`, which implements `FromBytes`.
+-    Ok(unsafe { &*(fw.start_ptr().add(offset).cast::<T>()) })
++/// * Callers must ensure that the device does not read/write to/from memory while the returned
++///   reference is live.
++/// * Callers must ensure that this call does not race with a write to the same region while
++///   the returned reference is live.
++unsafe fn transmute<T: Sized + FromBytes>(fw: &DmaObject, offset: usize) -> Result<&T> {
++    // SAFETY: The safety requirements of the function guarantee the device won't read
++    // or write to memory while the reference is alive and that this call won't race
++    // with writes to the same memory region.
++    T::from_bytes(unsafe { fw.as_slice(offset, size_of::<T>())? }).ok_or(EINVAL)
+ }
+ 
+ /// Reinterpret the area starting from `offset` in `fw` as a mutable instance of `T` (which must
+@@ -174,22 +171,18 @@ unsafe fn transmute<'a, 'b, T: Sized + FromBytes>(
+ ///
+ /// # Safety
+ ///
+-/// Callers must ensure that the region of memory returned is not read or written for as long as
+-/// the returned reference is alive.
+-unsafe fn transmute_mut<'a, 'b, T: Sized + FromBytes>(
+-    fw: &'a mut DmaObject,
++/// * Callers must ensure that the device does not read/write to/from memory while the returned
++///   slice is live.
++/// * Callers must ensure that this call does not race with a read or write to the same region
++///   while the returned slice is live.
++unsafe fn transmute_mut<T: Sized + FromBytes + AsBytes>(
++    fw: &mut DmaObject,
+     offset: usize,
+-) -> Result<&'b mut T> {
+-    if offset + size_of::<T>() > fw.size() {
+-        return Err(EINVAL);
+-    }
+-    if (fw.start_ptr_mut() as usize + offset) % align_of::<T>() != 0 {
+-        return Err(EINVAL);
+-    }
+-
+-    // SAFETY: we have checked that the pointer is properly aligned that its pointed memory is
+-    // large enough the contains an instance of `T`, which implements `FromBytes`.
+-    Ok(unsafe { &mut *(fw.start_ptr_mut().add(offset).cast::<T>()) })
++) -> Result<&mut T> {
++    // SAFETY: The safety requirements of the function guarantee the device won't read
++    // or write to memory while the reference is alive and that this call won't race
++    // with writes or reads to the same memory region.
++    T::from_bytes_mut(unsafe { fw.as_slice_mut(offset, size_of::<T>())? }).ok_or(EINVAL)
+ }
+ 
+ /// The FWSEC microcode, extracted from the BIOS and to be run on the GSP falcon.
+@@ -260,32 +253,35 @@ fn new_fwsec(dev: &Device<device::Bound>, bios: &Vbios, cmd: FwsecCommand) -> Re
+ 
+         // Find the DMEM mapper section in the firmware.
+         for i in 0..usize::from(hdr.entry_count) {
+-            let app: &FalconAppifV1 =
+             // SAFETY: we have exclusive access to `dma_object`.
+-            unsafe {
++            let app: &FalconAppifV1 = unsafe {
+                 transmute(
+                     &dma_object,
+-                    hdr_offset + usize::from(hdr.header_size) + i * usize::from(hdr.entry_size)
++                    hdr_offset + usize::from(hdr.header_size) + i * usize::from(hdr.entry_size),
+                 )
+             }?;
+ 
+             if app.id != NVFW_FALCON_APPIF_ID_DMEMMAPPER {
+                 continue;
+             }
++            let dmem_base = app.dmem_base;
+ 
+             // SAFETY: we have exclusive access to `dma_object`.
+             let dmem_mapper: &mut FalconAppifDmemmapperV3 = unsafe {
+-                transmute_mut(
+-                    &mut dma_object,
+-                    (desc.imem_load_size + app.dmem_base) as usize,
+-                )
++                transmute_mut(&mut dma_object, (desc.imem_load_size + dmem_base) as usize)
+             }?;
+ 
++            dmem_mapper.init_cmd = match cmd {
++                FwsecCommand::Frts { .. } => NVFW_FALCON_APPIF_DMEMMAPPER_CMD_FRTS,
++                FwsecCommand::Sb => NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB,
++            };
++            let cmd_in_buffer_offset = dmem_mapper.cmd_in_buffer_offset;
++
+             // SAFETY: we have exclusive access to `dma_object`.
+             let frts_cmd: &mut FrtsCmd = unsafe {
+                 transmute_mut(
+                     &mut dma_object,
+-                    (desc.imem_load_size + dmem_mapper.cmd_in_buffer_offset) as usize,
++                    (desc.imem_load_size + cmd_in_buffer_offset) as usize,
+                 )
+             }?;
+ 
+@@ -296,24 +292,19 @@ fn new_fwsec(dev: &Device<device::Bound>, bios: &Vbios, cmd: FwsecCommand) -> Re
+                 size: 0,
+                 flags: 2,
+             };
+-
+-            dmem_mapper.init_cmd = match cmd {
+-                FwsecCommand::Frts {
+-                    frts_addr,
+-                    frts_size,
+-                } => {
+-                    frts_cmd.frts_region = FrtsRegion {
+-                        ver: 1,
+-                        hdr: u32::try_from(size_of::<FrtsRegion>())?,
+-                        addr: u32::try_from(frts_addr >> 12)?,
+-                        size: u32::try_from(frts_size >> 12)?,
+-                        ftype: NVFW_FRTS_CMD_REGION_TYPE_FB,
+-                    };
+-
+-                    NVFW_FALCON_APPIF_DMEMMAPPER_CMD_FRTS
+-                }
+-                FwsecCommand::Sb => NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB,
+-            };
++            if let FwsecCommand::Frts {
++                frts_addr,
++                frts_size,
++            } = cmd
++            {
++                frts_cmd.frts_region = FrtsRegion {
++                    ver: 1,
++                    hdr: u32::try_from(size_of::<FrtsRegion>())?,
++                    addr: u32::try_from(frts_addr >> 12)?,
++                    size: u32::try_from(frts_size >> 12)?,
++                    ftype: NVFW_FRTS_CMD_REGION_TYPE_FB,
++                };
++            }
+ 
+             // Return early as we found and patched the DMEMMAPPER region.
+             return Ok(Self(dma_object, PhantomData));
+-- 
+2.51.2
 
-I don't know which would work better for bitfields. Most likely both
-would work reasonably well. And if bitfield will carefully hide
-internals, I hope most users will not care much.
-
-You switched name to BitInt, but still think about it as an object,
-and that brought all the confusion in my mind. Maybe switch back to
-BoundedInt then to avoid this confusion? If you find it lengthy,
-probably LimInt or simply Lint will be better for you.
-
-Looking at how good rust macros work to implement bitfields, I thought
-that they will be able to mimic native types just as well. But now it
-seems like an arbitrary-length integer types requires support on
-language side. Just like in C.
-
-With that in mind, I think that bounded integers are a bit out of
-scope of basic bit operations, and probably I'm not a right person
-to maintain them neither in Rust, nor in C.
-
-Please keep me in CC for next versions.
-
-Thanks,
-Yury
