@@ -1,65 +1,65 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC973161A1
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 08:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546F93164B0
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 08:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762245616; cv=none; b=gLSF0t3NIrqPuLRtIiTSACFAGruj1tRl4a9r0CLTD16d4DcOJu1VlsmTxykpuvL3WVTfNf+5ukTxSLr2iU6T3lK/A43b2BJ6mc0s02Cg/mjYkR/Gt/FIt0AI1hd6AuNgSaSJiO+pr+/Z42DoZuN2ijR3VuZluAVSq2o2c57odLM=
+	t=1762245641; cv=none; b=acfCwsHfQ5gzBXVnJ4jk37FNYi9MizOgY0DejfcJ8ACDiz2pxGmAg6wKfObsf0jeJAIZNGlygizjdY6++U1ik1m3dYchX6KDkO2vBOFH1tuhC7Bpgwk4VF00lZQYOVGKovHygOJ/4JyA/OPeE+nk0bA3GoNWSbga9TaYFfs9vdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762245616; c=relaxed/simple;
-	bh=861Choy3GbkM2iT6DyDZedv9XDJesWVVc4e/eJiX4zg=;
+	s=arc-20240116; t=1762245641; c=relaxed/simple;
+	bh=nAPc+TnO1th3O1GSH7GZu4hL5DC4Eiun1Dex1Kln7u4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UKwcGNXqwl2SzytzsKtCVHgXKBZUOEcm1ChwW/+fu6R/sg3Qrf+AUNauhYwHvYrfDd7N2PdUxoD4gtiBN0Le2rBqSSp9UAGlxVNWwBk2B8M4im8zzPkYkG42889sizkH1MbCKp6GcnWaDLuYp6lHKeHcZOIMJ8vw4I22kgwdKtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=skcmRH0a; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=ScxIcroHX3x5Hg2dMZSoUOsWXRIJ4QsLhPoVNwjmHtcPEyZcLsgrCAbw1xEVlvBgr7zr4KwhMMhsqeGjE0WZuGPOBqeDu9NWp0vGmE7l1VpgHZcHN6EM3uLdDJPMGtwGTvHu3vvWSEr/iWTWlA7BvZPYs/S61oKFDte4SOLJcPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f2JDe+wC; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="skcmRH0a"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-63bda1898c7so6123194a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 00:40:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f2JDe+wC"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47111dc7c5dso27381095e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 00:40:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762245613; x=1762850413; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762245638; x=1762850438; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wwmZ+6WBy0DpH/2X1JFXWHRC2GMTvQN+STo8LsdNvJ0=;
-        b=skcmRH0aOLQ1hLBbunxWeRC9fLyO0lK6ev8k3Uu03Vt1rbShUXQ8zHMKcCmhFphxP6
-         49w/NJ0QrZWplafLABqV03O+uZWvjXF/swrS6TdakfxDjLaLN7thhv4Wwmux25SccEoR
-         qNJkH/qzpu8wWGlF1QHqUH2yQs/BSmeWL++bTNXxf9abflQjmmMaN1aNmteMQUZhG8ZS
-         0NqhulUNLNV3X21WEIeEkS1uJcQWTTGYRnSRlb+5PBs3S7bY6Vd/t1g4s4cAt23tMmHI
-         5fgmPRTfmlUrbLI4QEyZ4fwpMVnerVk/eyliAiGJcghzcmO7BVEaJO/deKmvxbXLv6IZ
-         Wd6A==
+        bh=mtZrvT74xjLbmtOOFn7GqR44dgC2/dnDitaPuKQQAMI=;
+        b=f2JDe+wCkeUza/Ffxe926OnTZfR4l3aN2nofzypBmPvwLSHzKMIx6z+a//pKPq31aW
+         /L3/0lC60IlRRoY8qaPZv8md//gefnPP95rQS2i5N+H9lfauXMna55XZfLGPM5dyHYJq
+         1zHb6iJEmNG+Ys5fhZ/rd+nzHD7n6PH+xfrOXBrzKVR0Gu7Aotjyh0Z8+FSfRzHzqacC
+         iXtc4WPxjcRgD14o/6NioIY0Cv3X9yIin4bR1G9huPY79UUQhdAbqdvBNJdUvGjt2Qqq
+         f1WpSIInAURSSkRuldmEB8/pcqE+FBHA3cFYsH0za2eS+5jBdmwhq5jx1KFLQ600CZWt
+         JVEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762245613; x=1762850413;
+        d=1e100.net; s=20230601; t=1762245638; x=1762850438;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wwmZ+6WBy0DpH/2X1JFXWHRC2GMTvQN+STo8LsdNvJ0=;
-        b=t2do9hHoIj6/S6EwmbLKBg4qzMw+ybHJw5LiNveT7EEphK356XWPRGRii8calYl5vI
-         2U0x169rei0hlJfA7fTqyObzdacKiJjVO6ve6sGy/jf4j17dmhYxRsQtc3ol2zQlk7J4
-         g+V4qEpqrbgXA8IskuBYJgCO6DAjPOwzIFA0y5NVT+L5vbfdwmWv3SONSsZWVzZgiBh2
-         +34wou5jq739afS4g3WZ+alJksEkjL04IImuKoSuJp9PhBN9/3P2w8FWT6DqYkwpR2Ra
-         XcD/cnFQ/FqX4bdWVEn/TmuI3x1AMvuzvyp1PULKCQ8oey/rHgjEpTGcllHWFItb+11L
-         jyQA==
-X-Forwarded-Encrypted: i=1; AJvYcCXjrM58+3XM1vA4oUA7jKYwJYu5LUjJ2n5sw0TljBJRJhQohKY6/iCHct6C5cfL9ruqVRKPB2s9r+O33XZaIA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdXDBvHhPIXKiezBFhJiLWe0nR4j4CmomHvkRmGA66fMDjD9vg
-	dlkf872uT2yvthbO+gKJ7DC53jxPBD5gXFNGzfnXDgixS9+D6Xe/8srLedwh7aXoKpeJqSQDBrS
-	KW2/+zfZ2EzX4tBVSqQ==
-X-Google-Smtp-Source: AGHT+IEI2OOsck3lPELYTHDmiUDPX23aQ0zOxe2XMSiUyFnIXk35xi7d9IgnDvvQ2t8WeW+/QGu3reFub1xwlLE=
-X-Received: from eddp22.prod.google.com ([2002:a05:6402:46d6:b0:63c:592c:cf21])
+        bh=mtZrvT74xjLbmtOOFn7GqR44dgC2/dnDitaPuKQQAMI=;
+        b=DPjO+e3U015FeZmzmBKWKZ68CQYWfRRzY9n3nc+yJwqY2v5Et85Qbh/G7Z5s2CAH91
+         nidghu6eiHHu3NzuT+Dqm3kj/8lAZUEkdGZmaTtDlrrAsY47ZqI47junFhTKY1UbI5Fg
+         HLe6OYpGHjAdN3Mqhw2DGWN0A2a1UMlrKtMf6MNJ/nqbOLyiEpU5k2Zpb+1eKSwI3lXx
+         Y69NDbEA4kD8JyX3QZj8UuzNEU90F2ioEGktUt1V7QOBlfRZjAPMPjWiVYQ07oahhnWP
+         gEN8MKnNTFgxy5PRx0E65BW+NYmmVM0QabO0rq5EmKKi7cuHAhyD0dAVjsZAn1MvtXNt
+         Covg==
+X-Forwarded-Encrypted: i=1; AJvYcCWhmgekOhg23qr8nOty/juBHubR2tNM3r9v5BrDvcDq6iSCNMzSb/n/8tS4JmGxqVHfqz4+wbWJ7HOebeg5vg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2geSaPa1XitfzQintv/OHi6qlv5HuIie0eEkIOmUqg0Lzv+NL
+	PiDttbJ72ez2V41J/sQ1pEx7zQmtKu0AizDvYBCSPkp+T8y9G3PksjHc1oal5NI7PnE1TUB+LYZ
+	ncf/xZhhXk3YOuloDrw==
+X-Google-Smtp-Source: AGHT+IH7uxFg4fxwEB2oL2v1iRpwri8RqfVOUZGlKBwCB/nKMjy3SRSG5luxCaKkKVK2+FpZjZyZipAwKCX3T/o=
+X-Received: from wmwo13.prod.google.com ([2002:a05:600d:438d:b0:477:ad4:a2c6])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:4310:b0:640:b7f1:1ce0 with SMTP id 4fb4d7f45d1cf-640b7f139abmr7115706a12.23.1762245613116;
- Tue, 04 Nov 2025 00:40:13 -0800 (PST)
-Date: Tue, 4 Nov 2025 08:40:12 +0000
-In-Reply-To: <20251103203053.2348783-1-dakr@kernel.org>
+ 2002:a05:600c:282:b0:471:793:e795 with SMTP id 5b1f17b1804b1-47754b897e3mr13537495e9.0.1762245637657;
+ Tue, 04 Nov 2025 00:40:37 -0800 (PST)
+Date: Tue, 4 Nov 2025 08:40:36 +0000
+In-Reply-To: <20251103203053.2348783-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251103203053.2348783-1-dakr@kernel.org>
-Message-ID: <aQm77Iv8_odvASCV@google.com>
-Subject: Re: [PATCH 1/2] rust: pci: get rid of redundant Result in IRQ methods
+References: <20251103203053.2348783-1-dakr@kernel.org> <20251103203053.2348783-2-dakr@kernel.org>
+Message-ID: <aQm8BGphYfoqKZvk@google.com>
+Subject: Re: [PATCH 2/2] rust: platform: get rid of redundant Result in IRQ methods
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: bhelgaas@google.com, kwilczynski@kernel.org, gregkh@linuxfoundation.org, 
@@ -70,13 +70,13 @@ Cc: bhelgaas@google.com, kwilczynski@kernel.org, gregkh@linuxfoundation.org,
 	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Nov 03, 2025 at 09:30:12PM +0100, Danilo Krummrich wrote:
-> Currently request_irq() returns
+On Mon, Nov 03, 2025 at 09:30:13PM +0100, Danilo Krummrich wrote:
+> Currently request_irq_by_index() returns
 > 
-> 	Result<impl PinInit<irq::Registration<T>, Error> + 'a>
+>         Result<impl PinInit<irq::Registration<T>, Error> + 'a>
 > 
 > which may carry an error in the Result or the initializer; the same is
-> true for request_threaded_irq().
+> true for the other IRQ methods.
 > 
 > Use pin_init::pin_init_scope() to get rid of this redundancy.
 > 
