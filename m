@@ -1,124 +1,104 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCA73314BC
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 14:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363CA230BD5;
+	Tue,  4 Nov 2025 14:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762266957; cv=none; b=U/RQDF0ZhA4e+25gzrwCRRi2KqpGObrHpffabi+/LAsH0yEOQSJeF0uYsxd3jUSrx1UUpd3YG7THJjjZve2vij3Cu31GTTfYAcwmKn2GZ6q98JCt1gNfcDbxQqlMDgF8bDyDqptwfagd9rM4tXD963tMxC/bPTTNZSRcs0Ob9/s=
+	t=1762267698; cv=none; b=ZzFc5f96azyIo5SWm0laAHujkaPMTd+P//i2VAuqpOS+GXHWmg2vAKKOWp/spnrfe/BlwJePqMrQ9AoAUd40RhnUHej8cQnzDYa/mjNPTLlwq95WGCvM0v4AEYMrcItGeAcKvXlz3Hhw+4rn0aynIq6izhOGXfkNj4jSw6/7yjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762266957; c=relaxed/simple;
-	bh=GX2GI3xXEF4HI3q0KcvqQ4jEGISNdcm25fBO522FbcI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kneM4a9951WyLSE6cv6B7ARQapL4RuSe40T1yScaJ/7HfUNUiF2fkyNS0s6YVkcDMbLXdGvyj4WGOm+K4mJjS1fcpwZ4yTQBcCncWlr6ygkJas87TpMFZQLzwdbLm/2KSCzzs4wT1UYZ84RLl+MINCX+yw5KHMrEPoEYL6HVIIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=celNCeFq; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1762267698; c=relaxed/simple;
+	bh=xCBxlDXzIhVQ/B7058fyymHUafvIparv+hEqSxtneH0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=cO7TfQfnSqfaw16BVH092hJ7Mlr2C4oXcfs9mbhZ3O0Qr2v7Acukd6STJv0dr3NWosxkH1GUJEVLb5exOYI15BJHZmUGe3gHQLEne0ef1jxmHFzsa6UnmVqNi2yIr/8pH8QLRqe3ZFANbnPKnHyvW2Y9RJ4mKLc1SB7BV3rD6i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIMn1mOQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="celNCeFq"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477594aad41so2824435e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 06:35:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762266954; x=1762871754; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IOVCXPPctiOeHSzFXrhZ8UdAWinRs+tNL6RnLupq0q4=;
-        b=celNCeFqoNdguOSwp+HXD2MW1ZH/Ls4ALDcRfRBNJIb4fH6Oqmw7/X9TKKCT6N3OZ+
-         5wwdNVyeDpBz8R1hzOdnRSNDHGIlatzaeSZO9WTPqhkdo/r3YMx5svQ0EOO4wHQ6ge5w
-         u8p73ppfns3Q0m/sRBqYGObL3Lmzd4QNZwrbBns6E7lAaUUBIw1rtHghrWV22RqCh0Hd
-         jQ6zaFv/Yehxn4V9L65e6KAYscDnwRIQLf39Spypa1fUY9Q4O0P+csRsC+cdI0H2/cVi
-         1XaEmpP3c8fiL6Eytq4H753ZANweMuGAmNTr1H/kwIXkQqm8N39HmYIa/rZPsgLd93un
-         agrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762266954; x=1762871754;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IOVCXPPctiOeHSzFXrhZ8UdAWinRs+tNL6RnLupq0q4=;
-        b=CWZgjxP/J8P1Fkh3YjE9D8pupNDR8xw8xEAM4zksIqxQ8g26wKw6RL8S7ei+UbuRh6
-         J5e9LH+zv13da8phEIYQ17eWhFMJMSGyTscMUPaMnnjG0wa6g7joNv/6W7Y2leJysrkr
-         6einjoIkSJKJTKMeqW2rEqDOaQZ1EzNI6jMqPuY/35kF0twBYyL2EtuaWYZ8mcO5aOSR
-         vB7HSE5dkakWtDEsFxuFzjWjX12yz7Ykck8wWohyEc45whqYQG7uTYRtoA65joYtVFHj
-         4hMbasgfkAvotcTX3DVRSAn2NgNuSbX/qF1oXdWWueoJVvL6PnxI/nR8zbnRZjA/7F+t
-         jqrg==
-X-Forwarded-Encrypted: i=1; AJvYcCWxtOtozrbO7cUUGNcHdy7C6n5d6rpR1OvGmtWed7Qm2ERcCbCp3lq9Z+U/ImSUlPWq/8G8Nh1HLI6emJsv7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwY3RstnW7mA4MhG5XuiiAozpVGmfE5X5a4hKtr8ILgpcc04YBM
-	mfgXYCumYSqB5Mpx5VPjpGYNduYfBS9kfNvxVpdGIe2ajAdbOf12rUk663oS1sBJiGUS6AJ/cXd
-	qwRRw8xmfNEscW2OdDA==
-X-Google-Smtp-Source: AGHT+IHUIVO/JrZ+sifdGbE2HNDP12NCBQ4Gy+soRUB62GGdW8nKY8+xMnZfZi9CwRQeoxr1/8RQh5TlG7DGBL0=
-X-Received: from wmg26.prod.google.com ([2002:a05:600c:22da:b0:477:1347:d406])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8207:b0:477:55de:4ad with SMTP id 5b1f17b1804b1-47755de06bfmr24595865e9.30.1762266953468;
- Tue, 04 Nov 2025 06:35:53 -0800 (PST)
-Date: Tue, 4 Nov 2025 14:35:52 +0000
-In-Reply-To: <DDZZ1ZWIPH8P.3M7H00GIMJUXV@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIMn1mOQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F802C116B1;
+	Tue,  4 Nov 2025 14:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762267697;
+	bh=xCBxlDXzIhVQ/B7058fyymHUafvIparv+hEqSxtneH0=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=SIMn1mOQrQQxcwiBwuWqP29ydZ+FP6EcFaa3okcvWYTrLLh4dqx1Aat7xwUVxgxP0
+	 auydmpD+uvywmyro/TOJ9RZhvxObN1EV6F83xQErcgMXXiRUc2Uwl4SQDZE+kIQItk
+	 bdVmf3q3inpKZN3kfVXj06HMZAYUfhzGptBS36PkdxxrGaIBWjgkrKpRMVHhRlHX0d
+	 E2QCMTyie6s5pamvD/LI5E4V8QktSmB7hH7sB0v+HDD1MyWns7fHxF05+izv/ZK/Lg
+	 HP3m4oD3DqawLom/Qt8t+yXEPUPfxdO0RgXv2csT0YxvTNkgEM/A6orgH+LfIRcH4x
+	 ut3EPx4B99UXQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251104-b4-as-flattened-v2-1-b042d8715a8d@nvidia.com>
- <aQoJUAdFFBpQiEZU@google.com> <DDZZ1ZWIPH8P.3M7H00GIMJUXV@nvidia.com>
-Message-ID: <aQoPSH1jyv9DWhsH@google.com>
-Subject: Re: [PATCH v2] rust: enable slice_flatten feature and provide it
- through an extension trait
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 04 Nov 2025 15:48:10 +0100
+Message-Id: <DDZZRCRHBLVI.MGWBUONLZ94K@kernel.org>
+Subject: Re: [PATCH] firmware_loader: make RUST_FW_LOADER_ABSTRACTIONS
+ select FW_LOADER
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Andrew
+ Lunn" <andrew@lunn.ch>, "Heiner Kallweit" <hkallweit1@gmail.com>, "Russell
+ King" <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251104-b4-select-rust-fw-v1-1-afea175dba22@nvidia.com>
+ <2025110407-scouting-unpiloted-39f4@gregkh>
+In-Reply-To: <2025110407-scouting-unpiloted-39f4@gregkh>
 
-On Tue, Nov 04, 2025 at 11:15:03PM +0900, Alexandre Courbot wrote:
-> On Tue Nov 4, 2025 at 11:10 PM JST, Alice Ryhl wrote:
-> > On Tue, Nov 04, 2025 at 12:53:18PM +0900, Alexandre Courbot wrote:
-> >> In Rust 1.80, the previously unstable `slice::flatten` family of methods
-> >> have been stabilized and renamed to `slice::as_flattened`.
-> >> 
-> >> This creates an issue as we want to use `as_flattened`, but need to
-> >> support the MSRV (which at the moment is Rust 1.78) where it is named
-> >> `flatten`.
-> >> 
-> >> Solve this by enabling the `slice_flatten` feature, and providing an
-> >> `as_flattened` implementation through an extension trait for compiler
-> >> versions where it is not available.
-> >> 
-> >> This lets code use `as_flattened` portably by just adding
-> >> 
-> >>     #[cfg(not(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED))]
-> >>     use kernel::slice::AsFlattened;
-> >> 
-> >> This extension trait can be removed once the MSRV passes 1.80.
-> >> 
-> >> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> >> Link: https://lore.kernel.org/all/CANiq72kK4pG=O35NwxPNoTO17oRcg1yfGcvr3==Fi4edr+sfmw@mail.gmail.com/
-> >> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> >> Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> >> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> >> ---
-> >> This patch was part of the Nova GSP boot series [1], but since it
-> >> requires attention from the core Rust team (and possibly the build
-> >> maintainers?) and is otherwise buried under Nova patches, I am taking
-> >> the freedom to send it separately for visibility.
-> >> 
-> >> For v2, the methods are aligned with the final names of the standard
-> >> library, and the extension trait is only visible when needed. This
-> >> simplifies both the patch, and the extra labor for user code.
-> >> 
-> >> [1] https://lore.kernel.org/all/20251029-gsp_boot-v7-0-34227afad347@nvidia.com/
-> >> [2] https://lore.kernel.org/all/CANiq72kK4pG=O35NwxPNoTO17oRcg1yfGcvr3==Fi4edr+sfmw@mail.gmail.com/
-> >
-> > With the below concern verified, you may add:
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> Thanks! You may want to check the v3 that I just posted [1] which also
-> addressed your comment about having the extensions trait in the prelude.
-> 
-> [1] https://lore.kernel.org/rust-for-linux/20251104-b4-as-flattened-v3-1-6cb9c26b45cd@nvidia.com/T/#u
+On Tue Nov 4, 2025 at 3:35 PM CET, Greg Kroah-Hartman wrote:
+> On Tue, Nov 04, 2025 at 11:04:49PM +0900, Alexandre Courbot wrote:
+>> diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmwar=
+e_loader/Kconfig
+>> index 752b9a9bea03..15eff8a4b505 100644
+>> --- a/drivers/base/firmware_loader/Kconfig
+>> +++ b/drivers/base/firmware_loader/Kconfig
+>> @@ -38,7 +38,7 @@ config FW_LOADER_DEBUG
+>>  config RUST_FW_LOADER_ABSTRACTIONS
+>>  	bool "Rust Firmware Loader abstractions"
+>>  	depends on RUST
+>> -	depends on FW_LOADER=3Dy
+>> +	select FW_LOADER
+>
+> Please no, select should almost never be used, it causes hard-to-debug
+> issues.
 
-Looks good thanks.
+I agree that select can be very annoying at times, but in this case it seem=
+s to
+be the correct thing to do?
 
-Alice
+For instance for something like:
+
+	config MY_DRIVER
+		depends on PCI
+		depends on DRM
+		select AUXILIARY_BUS
+		select FW_LOADER
+
+In this case MY_DRIVER is only available if PCI and DRM is enabled, which m=
+akes
+sense, there is no reason to show users PCI and DRM drivers if both are
+disabled.
+
+However, for things like AUXILIARY_BUS and FW_LOADER, I'd argue that they a=
+re
+implementation details of the driver and should be selected if the driver i=
+s
+selected.
+
+Otherwise, wouldn't we expect users to know implementation details of drive=
+rs
+before being able to select them?
