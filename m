@@ -1,77 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EFB286408;
-	Tue,  4 Nov 2025 13:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD2D32938B
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 13:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762264189; cv=none; b=RG9YVrzfKGzeN4DmrPE3eLt/mBGdaoVsirEEGuUyloC17W2pNN24/slhp7FHMBO3AZ/s0bkNpD7In4ht2qqWeKpbPEgDm2/l5SxZmEHE4AAn4iOSBzSZEBiSRJIFVnMLeOX8X5oSbakKNzmxjepZIs9LeBOQu+oBnvkwu2bRy24=
+	t=1762264338; cv=none; b=gexEpcRIcZZm8BY213yBXwLtXPNTnC6z1xhMbl+u5E5IhFy/Vl9YLhWhGcaIj+IVXHQjO77NGs4UFXVm7wdeKrCrz7yGenLlBeujeUHXpUrHbzH4g+KeZWtAHxXw3+wpJgw1fxk6lBkfDg4RBU0Nqxsvdh9Ph3LVjl+0n0FlXHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762264189; c=relaxed/simple;
-	bh=qAe+WnKRhyi7M2hgYxlX4ON4RtjRVE5CgSMyQVRb7Do=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MiZE26NSUs8rCaBjEBHGRfRxNUwhbfa9fEmx3T4E3f2I+r3FqeRfidKR87OjvONvDHBQGarxY9LSgE9gw/VAaPHSsxW5lQN9owl5kvuaw8454FeIywP0d3z7egbcGNtK5dgLqKwh/FkvndxWL0G9E5uXpvD+dtQ70RQYi8QZsoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j877KRJb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762264338; c=relaxed/simple;
+	bh=r6Hua29X/7gS1gkkx42NgjYUqsmKHO9v/7TQQDlpL/8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=po5wVQ+7GFDE4POhkxFt1L7peszzSrw05opU+1OUFpsXYquEK1FdLUjhOsRZ6TLhWmrc8PNKW941VPSZiUt+trIEoq+kIIUXZEw0sBlk9zcciDEc+zJanAO9DA/teyUmmglp82VkODGY8pNIMR/ZyFoXbf96MDXXu/N1PNxqNS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DBkuWwjl; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j877KRJb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47203C16AAE;
-	Tue,  4 Nov 2025 13:49:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762264186;
-	bh=qAe+WnKRhyi7M2hgYxlX4ON4RtjRVE5CgSMyQVRb7Do=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=j877KRJbTrKeV32q1oEbIyDisS+qk+QRihArO5A2jdhVnNaVT1SsmLeR67MMCsyPI
-	 iJLwzKKR0+oWOerzl7ZV1rp6OkMR+LM5FH3PconG4wL1tSJTaNRtF7wyVuYx4iiFLV
-	 AmN34SEmK2OlyRjoJR3KwxPzeQVDtKrhcRk5pRWBsio6a+zU2x0YZdivy836nm44vC
-	 iWtwpW+kRataeuMXBXOSQcT0wncfkLqh5beI1snwT8ucbO3xVy18XbaciYbNP+U1FB
-	 xTNvix2BJm8eYYj7TljUHFAI8CTqlsQFBFOm3eLGeg5y4F3ZpBvbg2biUu++H38gSI
-	 eq1R6jjtTVzPQ==
-Message-ID: <daf3f3e9-19f8-4055-8964-a3ffba97e1ca@kernel.org>
-Date: Tue, 4 Nov 2025 14:49:39 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DBkuWwjl"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-340bb45e37cso756442a91.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 05:52:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762264336; x=1762869136; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WgxSC2aKqxilandHAezVm5gKzGGQcz0P4+qV+dri/oU=;
+        b=DBkuWwjl+yg6GnaiaExuVDPA5t/BMSFBzVn+PvRpmGFY4b8oUyASuL4lE2eO3f/ROG
+         tRUAZ8kutKsncFzzFLAgL24dubPUS5I+DBG2yrysoPFbnTqXEHfsAoA6daal469Csli0
+         USD9IMnAhovp67G4oAOzoPejKALHqsW3XxGHKkmj/3yCaHU6LPc6g9gYsfCznfYDuZ7i
+         6OXVmFzJWQmYAa15Z+v1VB36tds4Fa0K9vnqnKRrsWjOiow4pMsSFjuCDOrdllkEJOZw
+         qq0JEXfFoFuyrCOFKycAZ866VLTGPjYaJ1lnOQtlWLEohxU2X273bS1bf7O7Y/kYjzB2
+         qe5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762264336; x=1762869136;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WgxSC2aKqxilandHAezVm5gKzGGQcz0P4+qV+dri/oU=;
+        b=BaCEgsDteMsa4gGlLBARO3qGmE/fzJeHvwtgb7r3uJquSK2w77HcmdFXMOCcquQWnx
+         88jeej9zJNqPrIiohme4JQPlq5+qLiX5+Orf17tlV7Ffbx0i+oksz8SCoVt1dgb4s/WW
+         GIzJHcVUYr7DQiSOoHz2+c8aG4gosFA4EFMBPwjVsIYMrK5iNyl9G4JZTP/rra0aXIrM
+         mjRiNf+YC4f38mqOzVQVyokdLmR4srSj6CBOGrwPof4F3ogJLBj+HeWXxocerN+etKfQ
+         NXFTYDs0mb8P8cN49I+WTWmi9CyKWgRge+/TSd9yLORK7pA86EqFCE4l2ICHwkRX0Bb8
+         sSXg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4QXIkcdlipnPy3v+k71YId1XKQJHa6u91RO3W47FhIW8jdc2MO/hGRo84lPNSlwPSfnkYH5/8SmRkGHjktA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHICY9xPAdlPNefsiH9N99xiIM/i77dbjC9iI9speel9tKQr59
+	kQiuZapqGbb7a3Jt/8pYXeWfHVYIxaVxIgjkh8g65n9OAWh6qviO1eCPHl/55XGPgJc+ryPU8hJ
+	dpkPvBX4shFbbqLj1mMLwyf+mAx4osb0=
+X-Gm-Gg: ASbGncvp8+A+8iRoSusMmMt+1Aa3VLDQGPJnnPMB8kKUIjZXqlpZcJ3jDzqB8ZWMg40
+	Apjn1fE23fCTtKLVd8rAH4sUpeHYsHFrWLZc8BvL/fhGppkCbObxYQwazI3hwBTwksT48zzS9sm
+	mOvcg7wxByewo1W8UUlC+/RcjJeNfROWI8KbR9+wiA7owUawkRnjkdC6D2eD5sFj29t6uei1AEY
+	GYxyQRjkJtuG45AzzgtooTR2ACwm1svg4nzB2Azykl/m/xQ8YcAjvXtexzyzabw7/hUo80outVn
+	88EfBj0fda/5sRxsN1xQkGHpuCcRmawX44EYBljwgTe7e2hdIsZXbIP3VsXyF0nZF8Wh928mjpU
+	8wLs=
+X-Google-Smtp-Source: AGHT+IEHIHWibqjAZGWyvY0H8m2w47BvrG2lZbXh2UQMD9AI1DeCBy/GvhFpcB4QhflEwGDTQ3v2/JNfuI82Byb03zs=
+X-Received: by 2002:a17:90b:3b87:b0:340:b8f2:250c with SMTP id
+ 98e67ed59e1d1-340b8f22df9mr9464706a91.1.1762264336293; Tue, 04 Nov 2025
+ 05:52:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
+ <20251030190613.1224287-2-joelagnelf@nvidia.com> <DDX1WYWQNTAB.BBEICMO8NM30@nvidia.com>
+ <20251104005812.GA2101511@joelbox2>
+In-Reply-To: <20251104005812.GA2101511@joelbox2>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 4 Nov 2025 14:52:03 +0100
+X-Gm-Features: AWmQ_blJ7jEt0nl7CKtiOJzaUdItBJ90fhDQUgIcURkC12jl_69-w8beSolcQvU
+Message-ID: <CANiq72m692bb+W32QN1G+LJa7sHs=gU8k6dri3mu95Smj7GiRw@mail.gmail.com>
 Subject: Re: [PATCH RFC 1/4] rust: clist: Add abstraction for iterating over C
  linked lists
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Joel Fernandes <joelagnelf@nvidia.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- David Airlie <airlied@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Andrea Righi <arighi@nvidia.com>, Philipp Stanner <phasta@kernel.org>,
- nouveau@lists.freedesktop.org,
- Nouveau <nouveau-bounces@lists.freedesktop.org>
-References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
- <20251030190613.1224287-2-joelagnelf@nvidia.com>
- <DDX1WYWQNTAB.BBEICMO8NM30@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DDX1WYWQNTAB.BBEICMO8NM30@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	dakr@kernel.org, David Airlie <airlied@gmail.com>, Alistair Popple <apopple@nvidia.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org, 
+	Elle Rhumsaa <elle@weathered-steel.dev>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Andrea Righi <arighi@nvidia.com>, Philipp Stanner <phasta@kernel.org>, nouveau@lists.freedesktop.org, 
+	Nouveau <nouveau-bounces@lists.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/1/25 4:51 AM, Alexandre Courbot wrote:
-> I am wondering whether `CList` serves an actual purpose beyond providing
-> ` CListIter` to iterate on... Would it make sense to merge both types
-> into a single one that implements `Iterator`?
+On Tue, Nov 4, 2025 at 1:58=E2=80=AFAM Joel Fernandes <joelagnelf@nvidia.co=
+m> wrote:
+>
+> Perhaps wrapping it is #cfg is sufficient.
 
-I think eventually we will have a bunch of iterator types, e.g for
-list_for_each_entry_{safe,reverse,continue}() etc. (see also [1]).
+`cfg` attributes and the `cfg!` macro should work in doctests -- we
+have already a few instances, e.g. this hidden one:
 
-Hence, CList has to provide a couple of methods providing different iterator types.
+    /// ```
+    /// # #![cfg(CONFIG_OF)]
+    /// use kernel::clk::Hertz;
 
-[1] https://lore.kernel.org/lkml/DDVYV1VT441A.11L5C11F8R7C9@kernel.org/
-
+Cheers,
+Miguel
