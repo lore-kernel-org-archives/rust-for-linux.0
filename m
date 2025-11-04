@@ -1,100 +1,110 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB54C1C5F10
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 19:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1FB2D46DB
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 19:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762284236; cv=none; b=s2ufFOUzwGzPQN/DYatrRiKxK0uSGXQgck4AexJhreJOMgkUyfSBLJJ4qWQ8737YBqXpMjcCKlPXsp2uLKmv0e6aCIbbpVp+5Dagcsq5QpfPlMzI8/u2MczkGrxg8y/t6geGwhnr5KyUetw+OJGUK6FKRFcjMNZ69R0Kl8zqpTA=
+	t=1762284330; cv=none; b=c0jku8y0ee2YzEoHg+6enCt91lDJ2XDdLZthIvRJgDfI3sVsw2KoSREpySDNC+NGjX0nlIBz37MNGUKkG7d52DBWwQHFiVF0geW2MwklvfvXqMY2W1VP9m9o9xkzeI76cA8J3UQtrqDEKbiQ5JYfY1N7wU5Kd+vRlr6gHZs+jbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762284236; c=relaxed/simple;
-	bh=NqeaPpBSzYADuuHCmtIk20h3DrnAs8JxaBG6a4X0D3A=;
+	s=arc-20240116; t=1762284330; c=relaxed/simple;
+	bh=K4Iyxi52gh1Iw5mMl2HUNeLP4ewV8sTogXEjAzGJ4AY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZS1x0mSpTO0qMnvvBHyuyVs9cGgdJzb2ejFh8jR+BZttNZQV00wBAnQUz4+INcYl0Kj3OHOSXwU8OrsT4EJN7nHYZVJuAeFlzxZU4WMsF0jYFMOdQMvAfuqiCzA5vxnvwuTG+NuK9JXvakZtOwiBauJt6ihBeXrIYzK23yVZnhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DPPbhn6F; arc=none smtp.client-ip=209.85.214.180
+	 To:Cc:Content-Type; b=gXtK9looDdLCODmO+O1jNQXpDgit5fzr7BSZ1Go7DEgTOrTp4A58Di520mHlc5KuisBnAygr57+/iNrK08BF0gs+O/nIvn1e6uJllef3Dgvn+qABT0fZ+e1r48Rwhc0x98easzzXrvkFMeP7ZFuDoRO592YPqWpLsON8aBQrZGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YulHaBjQ; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DPPbhn6F"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-294e5852bf6so9024025ad.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 11:23:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YulHaBjQ"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b8b33cdf470so388063a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 11:25:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762284233; x=1762889033; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762284328; x=1762889128; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NqeaPpBSzYADuuHCmtIk20h3DrnAs8JxaBG6a4X0D3A=;
-        b=DPPbhn6Fl2RtdKfVw5zJrf2q04vo61SN5jHglAzRe+LogBirALLCM8H2Rb0W5Ox68l
-         zq2GUEF3FcaxH5J4sy81zATrTGE2GR2eW8nnZ0lkPcvgBpf8nOeidd/06miY+kAMZB+P
-         AnAsa8SFLH46FCq6g6FdK4RHyLcMOwKLX0YkziVxCO0HTqkurKqMyBvbFubBO4uhOREX
-         tFIpHP3DNC1LpL6dBSFmUmJ/XhZqsu2PmS3M1jSrssMdpSeZRSQw2cGiM9vCC7J15PMV
-         czsE+7pU+RnrXeWunughC82mL7PmT9vRvlU/znDZkb4hEPm+3BwOlDAbwJV81fZolI3W
-         1M9A==
+        bh=5cZx+RW3Kt24V+mQj1nrZgt3YKwbbGOTRzEZ/APfqy8=;
+        b=YulHaBjQLep+BxaF4go+ruxEoS+ZiTtfZh4ABv90s+iVii+093rI5CCgJfusCW1O47
+         9Tj8VNSfJMJfLFLduKczLAvy7ar2TG8zjel95yMd4DsgQf8/I+BWqJ2kzNvHLN2y1/1w
+         Vvw/1yH/uF4U0JmyUSrTdwlEQibdF0+YhD4nFT2WBsSd+tTTNeYVNQMzhO7NUILHpFYV
+         9NlLEPK4NUu4dr3hZiD/AN6J4NO2O6AGR450IJ2j2+B0gJN9DqA0Ozy0gJCNI6sE5U6q
+         cSPYtRPzT2Pkw8UcFH5sxHykLnvCXrBei2HmlCrQCrkWQhrFI3HfS1U+OL6fUHEP4z+/
+         Tubg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762284233; x=1762889033;
+        d=1e100.net; s=20230601; t=1762284328; x=1762889128;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NqeaPpBSzYADuuHCmtIk20h3DrnAs8JxaBG6a4X0D3A=;
-        b=BkUghvRLPgbm8cWmEeUCZZiAlEyANNX5FuqJtuTQBZfa/xXbnLBjPFaS6A9kwNs+eV
-         849+G/7cNTKq01veqkrlLnWYg/ZzW8v2mQl3XXptfEuOTAovQSF4sv49zNYiPl4sUfCV
-         SZpidbLiYO9V1dXXK2ODc1E/cfEZt6RQ/mpxMwbveuLPfJ1f1m8+POnKygb27f5OZFoT
-         vtkQsx2eab0WGe2aZ/MS7L89EayIFirb/Kvjwl4gn7xm4oBeU82rGA4jm9fGY7+MIf9O
-         MN8GBsWwC08PoP/Qf/x+igdgKdQKOW37OCh/mZ1bcYbuJvMDoeKTJulIVlQH3gb3AOrP
-         HViQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxVXMtfxL0LCp8lA+2tBVbXEyDoiD8kx7zD+8eL9pko1NezkBvD0PdqkgqEAO7Pk33ptb4XfgdgBxmS/+NCw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGdGtcwBdshFlDEd+2WWiwfcb028/CVQZVgfog4v9nHXUjttwB
-	LJ1RHqILieK+Bb922Ey34FxI3icd/W/hqPNELPJWpZq9btesZsG5Dw9WMncnF+izP8K/y9TeEl+
-	dzu9aqdP98zXUq8Qq0NCgUgtuKbKLvAY=
-X-Gm-Gg: ASbGnctBHACwKKU1tCwo9oSl6JZSR6FwP6j88RjRxMWOo1rmoroMAfxnT9PM+c9KCVQ
-	1QZ0nLolfz/tthmK83hrrrqFuoHDAIGz5+HEPjo3+nT1U2/5XQ2GKjo7s3H+fg0d3aWEC2WcuHr
-	FupiB05gHVXXc+CzUJlTBnEzni7mjqTTi/PgnTpGvMpUZ4hkj7gLFkqOJfvu4CVqFzjsBOR2ZQp
-	DTkRXNbVpVhM+tMbR6ZnqOH+k3WjbvhC/DexkZxfUbEhEhfLEbcoKCJM+29Et21WiDPiwTL7Sre
-	Pmqn3C+bcc6L1oe+5Y9A2NiqR+WmK9HP9qwEBZM/tLAsE2wSn+rUHqktUGgmKHDp7R3gF5vjDZT
-	OYpg=
-X-Google-Smtp-Source: AGHT+IHCk1/j2mBDXkX8+o2FTVWoribYQUy9xTzp1hxavAo8lRskxPigDirMoCigmuiFNy0hYHQN44kMGg808wTtLgk=
-X-Received: by 2002:a17:903:2448:b0:277:c230:bfca with SMTP id
- d9443c01a7336-2962ad3d590mr4530815ad.4.1762284233160; Tue, 04 Nov 2025
- 11:23:53 -0800 (PST)
+        bh=5cZx+RW3Kt24V+mQj1nrZgt3YKwbbGOTRzEZ/APfqy8=;
+        b=vyCVZ7hS/H4/vvNtdGbFEne8D4Jy3A1dpToibXVnowa4iH49tY2NV8VelNw7HvyPx7
+         /acOQBgPTw5JBeRUyQMmvCs/icuc6AkF0xVm9elLibZ6oeJAc/o646KCdU/qyAJTQ+zq
+         Y0+fk52Jf1LcKiF1GqI/xu7prR+uhj7TXLLS1jptl6NqucnJKiN/3hoqiuFLG1QwvQm3
+         Bnr5tzjov7/vbjsPLTZjyY7NW8PeYU+CeH8WiHi5utkYYzhjTrYLj7785o+h9NgeyIIk
+         LSiAGXvaB0i2noDHevzykhzocy4YQubm2S1we5JmJqF5C2ne8cGSqAmFyTA78g4oS5c6
+         l/Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCUewGZr4mbFn+isg7kSUk5OpfLkVTNkFmX3YJUcn9El/T6MiF+5SrM8kzM9ts115+YaJ3rdQbAsfeCeHNLK1w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YylesyUpzFlyu6K1KnHkUlrD2mviw7qAWdr/cfQ28K/Q1n/uVVq
+	HUA22mdipgJPCawJYJn9yrKkLNmaCoB7eV58sHO9ftWV0jyjZkLz2aPgXiNaG6zhBZlmRby+a7g
+	aPavH1Ha/ZlGrKdPe4rYiEizG4G7Y9TA=
+X-Gm-Gg: ASbGncvvYBKiN4xIjtitFfeWHuT3ViuQLt6loLtQ5j47toeSdzRxYI0aOMcaS1rMbXJ
+	2yJRd4GBFnn2LUr1stxTfZHgu4pGKvGaI8hmmmWcCmqkI3gdi38uImLf73FGKta0lQbxkhv5p51
+	1F744MeUQredsD23kZ3kTNzXSuZjHgowdX3iY0eBntybJlvHCyWW7FcWmR6HJlFO00JOuqwQ3kZ
+	+dJYZm4Ood17sIwofmWAixKO6nEAKmy9GuIbSSm2X1BE3VAy3OSUct2o2m6PuA6HPsrCD1m8YXD
+	NfcG2JlX/ndGtHOvFA7JmFHAVpoYQBvB6n8oiHP6yUrj1iYrgnw+IEFRBQ6mX0da6ynPTsZ1t9t
+	ISI0=
+X-Google-Smtp-Source: AGHT+IFWzYsYUL37lFrxSC7sVl0Ij5MeA0lOHpSQOZvdZ7ftbuS95sPOKOarVGGOk6+VoduotS4rq+ThkHUUIHnXHbM=
+X-Received: by 2002:a05:6a20:258b:b0:34e:8e9a:c610 with SMTP id
+ adf61e73a8af0-34f8630155bmr221747637.6.1762284328313; Tue, 04 Nov 2025
+ 11:25:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251012224645.1148411-1-ojeda@kernel.org>
-In-Reply-To: <20251012224645.1148411-1-ojeda@kernel.org>
+References: <20251101094011.1024534-1-ojeda@kernel.org>
+In-Reply-To: <20251101094011.1024534-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 4 Nov 2025 20:23:40 +0100
-X-Gm-Features: AWmQ_bmVIeG-cW8V3oOiaFedybQztgT0tJXqDde7XoeN52zMMEb3dKuMzzPon1s
-Message-ID: <CANiq72nHV+HoHFs_wS7B4D0s4vihPLoCKu7AaAAv2AhCN0d23g@mail.gmail.com>
-Subject: Re: [PATCH] docs: rust: quick-start: add Debian 13 (Trixie)
+Date: Tue, 4 Nov 2025 20:25:15 +0100
+X-Gm-Features: AWmQ_bny94bBmKIB7QhLmeowyrAuyscE1LVW-SgNclTZu6rQpXUrhoj1poxn8j0
+Message-ID: <CANiq72kWcptN+hu+gMwN2n8WkXrOku4kCHkSRsMzJmQeiCAJOQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: kbuild: support `-Cjump-tables=n` for Rust 1.93.0
 To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Huacai Chen <chenhuacai@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	linux-kbuild@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>, loongarch@lists.linux.dev, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 13, 2025 at 12:46=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
+On Sat, Nov 1, 2025 at 10:40=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> Debian 13 (released 2025-08-09) packages Rust 1.85.0 [1], which is recent
-> enough to build Linux.
+> Rust 1.93.0 (expected 2026-01-22) is stabilizing `-Zno-jump-tables`
+> [1][2] as `-Cjump-tables=3Dn` [3].
 >
-> Thus document it.
+> Without this change, one would eventually see:
 >
-> In fact, we are planning to propose that the minimum supported Rust
-> version in Linux follows Debian Stable releases, with Debian 13 being
-> the first one we upgrade to, i.e. Rust 1.85.
+>       RUSTC L rust/core.o
+>     error: unknown unstable option: `no-jump-tables`
 >
-> Link: https://www.debian.org/News/2025/20250809 [1]
+> Thus support the upcoming version.
+>
+> Link: https://github.com/rust-lang/rust/issues/116592 [1]
+> Link: https://github.com/rust-lang/rust/pull/105812 [2]
+> Link: https://github.com/rust-lang/rust/pull/145974 [3]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to `rust-next` -- thanks everyone!
+It got stabilized and merged upstream.
+
+Applied to `rust-fixes` -- thanks everyone!
 
 Cheers,
 Miguel
