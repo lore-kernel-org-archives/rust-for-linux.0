@@ -1,96 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B9426A1AC;
-	Tue,  4 Nov 2025 20:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B03549659
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 20:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762287723; cv=none; b=DHpwZCjX5eyc7aKKd/synujrqtiAINOxA1OvGbySy3XqowYlS4/rYe+LRDDUHWw/loDWdm3bO/KzmKv8agmFEo/Vfdeajyykt9+5/maasPTTYb4NxFy0DLu9XMfjDeo1/FS0Qyiea9NSvcWGRmYVlXt/hqdmc4qlf59WGmTLHa8=
+	t=1762288245; cv=none; b=BVV1Vpd0A2c4LBRcMeQpa7I16iYLvjcVqGQ3djn25tKECFMV4IbLEoYEnuZ/F5Fg3ctJdx3jCQG8xsCqFIVNjMu2bU9x+FWXBQzz3Wdi3v6q3+zq2PzHW5K/Ttring7fgSY7D7zFddQu4CnjEe3IQdAyJhjdrKyavL6M1UYV3Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762287723; c=relaxed/simple;
-	bh=RvBDaup8WpSALz42fvH5hCxQIBOpv+Q/H5aOOBTmmN0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ErSRVA/bqd4VbWw5TbfVeKXPBNucoEVWPSwPCDq6mh+RgqrNDK4Jzg4/0L/H3lrPBOdHr7WG09zYpGCJQBP2vg2ZltHW5fCfip+LT5qZYIJ4CMeHXbggXFMHaKbnY//Daej3jhgjTY8+JESQfhL+gtkjoMM4ZnFB4bWbdQUOySg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHvpeYQM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762288245; c=relaxed/simple;
+	bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++LfAOrCAj6OvBfk=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=jq7ee7m2eodGDpq0XeDM6gtLeArFiw5CIvTMQcJaCg4oQT1uk7i5hrRhi/l1wBFh2a0l+TjImeyTqVVaka/va+o2zCf6XhXIPfmzp0Wa107xiuQMBLM0A+6X7HZJYj2ujv8qBqmT8SSqybi5n7371NdOWlSUWyNQTZH2AncyG84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ULr64hok; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHvpeYQM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D47CC4CEF7;
-	Tue,  4 Nov 2025 20:21:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762287722;
-	bh=RvBDaup8WpSALz42fvH5hCxQIBOpv+Q/H5aOOBTmmN0=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=XHvpeYQMvHCyL1EF0nPWxsOStmqYk384hVQ25l5zcWWp0z7O5RvzLl6xo7Lh20mch
-	 YKstnnFu2AbWQEp29ii5RObFIAQCtW8DsJGbETOAb5ayElVwf6Ub54IZ+fm6qM0dk1
-	 btEG/Sibb3lI6M8xRQ5nGpe8KVGkTIYba7QDpgZFpAqunBlj/ZhXy842HzhbtlZzdB
-	 zIFMS9uzbT0EBroqveGuZ9iTBIQ6x08JlSRLQi3WCxn/CTlc0xVW9TalMRWjt7omW9
-	 KfGvIOHH36R7IN4fZoHYr9PfkQaFjZtBxGUEqYDDEZebuCCqBNra7nVags0KOkQEkN
-	 gjjT2ZYaYI3/A==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ULr64hok"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-786a317fe78so4813067b3.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 12:30:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762288243; x=1762893043; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++LfAOrCAj6OvBfk=;
+        b=ULr64hokxOATSknhWQ92/ileSAkC3Aa09IdWwzGBv3uolQkea1XzmxhRkcUj5Yv3BL
+         TNQ7f3pe98Wf2p8Dc3bmoGVHWUETrp1371fUg7ZETiwIaN2AQxFKD4NbYhF/FDHhzNmM
+         eppLcSu0UGWNPrYVziICEGX+oRza6Uuo5B648nojQXFg8rjXGaneedA9kkVCgwtRCoe0
+         At7rPUSlQEuRbi4Uz0TUXNM7pGT866aPCMn9Cv3/vsT+kxlMdPE/ALbYZ+4aWtqVWrl3
+         RdJpVv/qheSHlFTGX+EdgRfgQa8PpIyTWmbQu3epx4+9+r9RzZbQTmlav7qJfMGc5aYq
+         CC9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762288243; x=1762893043;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++LfAOrCAj6OvBfk=;
+        b=BkHZXvFI6wPKAd+2uYlz80YBd5KZA1XA/363XJ++Gi5m/YlZHrBooPPTZC3Z8f9HZ5
+         24hdF2EP6gI+smdnz/ZXclKRIcqyW3uEG1kb1GTza3wdrAlccabf62j+DK7V9hjXCpWM
+         D0TuWWgP36gdfiz0UdncohxQxNhxSrA3YAkiKPUl40xq94lAzeLcSrlHIGKgZMyR01ch
+         /rH6lXXbQeW8oE1Rm6Hm2qI3cHrJZkDboqGBBHIRQ6/IAEC+4OwhAB8MN8aVKfR9yiQb
+         sOv1OTiq5XbbEPG5oApsr3IivkIU/LSNU6TDfPBWT3xW4VmZ0nrr8EoBv0BiM6cn0p6x
+         BH7w==
+X-Gm-Message-State: AOJu0Yw1iD6jJeGFdrynaNbNMfmuMNQuhnyrntGVtgOlF9+GpBqU1e4s
+	QJ+FTYOnZK2/eChdgEJVbAHdkQAxgjSezPIomesdFjgL0ultam/j6jOK5XK9SJSTs3MQOOr7aXd
+	Gl2kmm4a2NqToarbOJm7PtZvLVuwnL+MpnQ==
+X-Gm-Gg: ASbGncuExZm2wEhghmUBxWfk4jaJ2QknbORgrzDvH8VHbjjF8pNMQnCWyeSasvP8g+j
+	6MnUA2jIRlqsJSbYYTDVpq1ge7LLY/mDqjV/yKwQD4MlH23/DpRkcZ6UbTIvlegHjulie7Vp9dz
+	ekEwmM6mqFM2HN0ZAlFK5FehzUF6Ng0k/ihsO/J/zqOWKzp4ziirIkm6WUFZaqOoAL1eP72nL4g
+	QJQ82qCZ6mPWOlIPy4eZQPmXnQyEKQpGDzmGJEdQIF/HqLbQu9KmuuNrYgDHcM=
+X-Google-Smtp-Source: AGHT+IEpomwGVBOuidgFsVX0nSJSQlKX3njJkb1DSaRJkDaHJv7lH3oWIO0GACNgLKzVQej4vqrnLmwecvyY2jnEf8U=
+X-Received: by 2002:a05:690e:4181:b0:63f:af64:ae5b with SMTP id
+ 956f58d0204a3-63fd35750c7mr681374d50.41.1762288243139; Tue, 04 Nov 2025
+ 12:30:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 04 Nov 2025 21:21:58 +0100
-Message-Id: <DE06UXBAGY09.1D2TPYL4KNU56@kernel.org>
-Subject: Re: [PATCH 1/2] rust: add BitInt integer wrapping type
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Jesung Yang" <y.j3ms.n@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Yury Norov" <yury.norov@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251031-bounded_ints-v1-0-e2dbcd8fda71@nvidia.com>
- <20251031-bounded_ints-v1-1-e2dbcd8fda71@nvidia.com>
- <aQgQv6F0Ao4DH6U0@yury> <DDZ3QBBUM27H.MJS1S3WHWJO0@nvidia.com>
- <aQkEVqbhoVMUc-Km@yury> <DDZKZFCK27HZ.DY3QVXKFU3BI@nvidia.com>
- <aQpUSw49QptgxjFz@yury>
-In-Reply-To: <aQpUSw49QptgxjFz@yury>
+MIME-Version: 1.0
+From: Don Brace <brace77070@gmail.com>
+Date: Tue, 4 Nov 2025 14:30:07 -0600
+X-Gm-Features: AWmQ_blgKfdCmksfkPVlg5MEhii6dRmPw7FRTFC-IUKzYq52GjQwiKmm-OqFa-4
+Message-ID: <CAF=wSYo12UUxfYU0oYt6xa0vaH5kq3eZp7b8rtKupKP+H04kvg@mail.gmail.com>
+Subject: subscribe
+To: rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue Nov 4, 2025 at 8:30 PM CET, Yury Norov wrote:
-> You switched name to BitInt, but still think about it as an object,
-
-Note that in Rust even "real" primitives have a strong object character, th=
-ey
-have lots of methods, trait implementation and associated constants [1].
-
-You can even implement your own custom traits for a primitive type in Rust.
-
-[1] https://rust.docs.kernel.org/core/primitive.u32.html
-
-> and that brought all the confusion in my mind. Maybe switch back to
-> BoundedInt then to avoid this confusion? If you find it lengthy,
-> probably LimInt or simply Lint will be better for you.
-
-In another thread Alex proposed Bounded, because it follows the naming sche=
-me of
-other existing numeric types in Rust, e.g. NonZero [2].
-
-[2] https://rust.docs.kernel.org/core/num/struct.NonZero.html
-
-> Looking at how good rust macros work to implement bitfields, I thought
-> that they will be able to mimic native types just as well.
-
-I assume you mean primitive types. If so, I think there isn't too much we c=
-an't
-do (e.g. literal syntax would be nice) with BitInt (or Bounded) that primit=
-ives
-can do. Especially when we consider the strong object character of "real" R=
-ust
-primitives.
-
-> With that in mind, I think that bounded integers are a bit out of
-> scope of basic bit operations, and probably I'm not a right person
-> to maintain them neither in Rust, nor in C.
-
-I think it's fair to consider this kind of type as core Rust infrastructure=
-.
-
-Maybe a RUST [NUMERICS] entry would make sense? You could be a reviewer. :)
+subscribe
