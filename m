@@ -1,125 +1,99 @@
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDAC2C3254
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 09:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82FA27E04C
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 10:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762248192; cv=none; b=g0lBb1V3ZXd5IVCeRLQSJWsCl1IhNm+94jbCxGPChQTfyFuKw2eI61efUaD0t88/fj33ViRXny1fGoSz9KWZLwrMPFgxzR1VB8B7FlhSrrZY+y8Y7aoiSJQ31O8DK2bQxqdO8S/vmVf2r1ZepFouuIp0O+/Uh3VQssCkw2rHpuM=
+	t=1762252791; cv=none; b=dkBt4nOvLzqi8xUzT0dAJ18HLfYdl8HtyVR00qPQembTKLmNspq6q3EA63+hS82KDOY41rLtklvQO1q9WlOvIrdRiyL3J/QFmjboQm/X/6dPtgNRwa7Q5STh2IgSQHgjmaRMv77Uu44iseABm+5StTJaRhv9p7ar1yJHyLThPDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762248192; c=relaxed/simple;
-	bh=Kl3ymaOvdEorHq/tMtguwV4BY2XHxKvD+d5JmI4NcA8=;
+	s=arc-20240116; t=1762252791; c=relaxed/simple;
+	bh=lp6byP8KX4UvlQ4K2Wq2P6sqE+v13ArrwWrLUiBAwdw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ibeVFNx1JwMxJle0K2i3UfBTYJRlD0s78wkj8YxPJqFti0m68rXd/Zwz8RRQiciVGNg3ISr+C1wDm6c3OhXKM1Ueezb+GXlNkdlG1w72jthJGvQcnVTXOHZhABQEVSEQKUspc63llLTMUTy1zUK47be4Bphf159cxqUHyMZL7uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tY4Qw5zC; arc=none smtp.client-ip=209.85.161.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=SxkEzGJE4tZEtXnQ7qKgl1mJf8w957IMDLpFmDoDvDzsUA9mROWlIPLILtMvUoo+GRj6Nb+SLrJeaR+YU7PUZSL6Dw7T6JUHMeWjn2r0P4rRPA4i/kCEOpGqFeQQ/0hH353RFuBLiNnvtjX+1yJRFwQPGFbY1cel7fuEz9TWmCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Np/L5Lfg; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tY4Qw5zC"
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-65682d20e4cso3618619eaf.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 01:23:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Np/L5Lfg"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-340c2dfc1daso508843a91.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 02:39:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762248187; x=1762852987; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762252789; x=1762857589; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2uEcY1THHyfzqAcDD0/EuOc65ogk6e82VPZCm7JWUeo=;
-        b=tY4Qw5zCGke4wX7tr3I0xG2ky1UINjUxh/XFUfqos3pdtBoT1okR7VUUeGhwH/pXe2
-         eq3+BJDZqiuZrkjmd/gSHf8yv9BqjSUNg2RY/OYL5eECInufDU4/6/PVKcd/JWysv874
-         9IIDbCcZX9978qJIAoG77R1zXqkLRd2ZjN+j7YqV7cV7Zw6YrUicAG3JqJ4eXjZwBaST
-         4iz8F7lHSOcEYU9hn3O/m9MVtqtKeePXW40SLVXxs3y04ZN8WZzKQUoTFHZOx14bhZ+q
-         RtQJ/HdAl3AgB1lnZcylVNu6BbFYrk2VFHmHJktQDZ15TUDnta4V16C2s1Cya+86ZSwt
-         B9Yg==
+        bh=XPEEKFqkF9DF1b8qIlfa56owOZLEN8s5W63mSioCmUo=;
+        b=Np/L5LfghTcn5nteQ9O+fpUq84/PzEUWRQmPyux0A582Jg56FIFy1JOrm2v2hYHyng
+         soD/7EuO/+mHfOqTEv4jHqPRzg5PKrrmaqq13OrIJXUqRg/ebHVGAIXqeFrssmAoWI3H
+         1sPodO35SIG8dZ6uIYwG76FXN5b37DzHBDJUziftp8OWjzEU1ZBbBp+8rs9shdig3RQP
+         klcnEdVa1gHRzAk/pm0oOMRqoZIuD2JSr0JG88T1Q3AdSkPKqQz3KowKlOu76UqGypQ5
+         5hUkPT9AlSfT9PXdat0lE7PY24DV+hvi2wBuyHNMrpxKsCAjeY71am8yIdpobfuRMqg5
+         oU/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762248187; x=1762852987;
+        d=1e100.net; s=20230601; t=1762252789; x=1762857589;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2uEcY1THHyfzqAcDD0/EuOc65ogk6e82VPZCm7JWUeo=;
-        b=WetNiAqkrMYz3ddNzi4yn+OjhSu2JhO7nkA8DlTzazDcRgXPxb/YeRAzpcb9kUXO8Y
-         c3O38QL5jzSVCEaYy/jE830TinVWvjVE2m9cBLGySU0Yh7hpSH/fTr2xaEWGwvQiqxF2
-         99ryhX8ybyayHHnjgj75RIRRgCEXh37pvyqfEC6Nfg26ughfIxtn4hHjXpwFYtqBqZPJ
-         AG5KWjt6aWcVja9sOE+icgw01kYZ4JXRh5K8x2zofNLZgitE9PMY8XRn+/rsZveO9Wqk
-         wZmLgxJohq2M2Mr5Q7uhc09GDc+h2c+EgCFcwnElQDzfZ5VpPDNuxP7BOzMjFPTVuwLb
-         j9Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwJpe7CofaUNFjKKcjZ07SHWpEfGgY4bx/flcIjygJ3LAfhNNpaoEoJwBJajwd5txMWwufARExdV+IZURgEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxyZ7yLrjxHutBTcgHl/KGKFOPp2uXezhKsT1SzwP3SvHU5KXJ
-	rIxmPbfaV411FPfnMf2TRkYashERduvVZHxacT/utdxrdDhqWwBkA5ANf6VepOlJYPJHZAX/bS6
-	upiXsIvbblF9vziS48QkkwJNc1tlIK8QpQRpo2lTd
-X-Gm-Gg: ASbGnctn2K7IZ07OayIozi4WBcJEP9nX2eWIomCoaahcJSJbvioM7/3g8Bri77hZR1M
-	YpsFyCgs+3Wh0qUvX9/F1oyEWdYpwfaCk0+9PrXX7Z4KWwprDWQCNZH/L8AEcdUW3ixIo/N6mgz
-	UAy1rkE77wpg2CNNGNDpT7anv5DvFiFUvwTeWf9ffSUuA1cuiSTqTcf0qB5/w/l6u+F65Olk/dv
-	uJMQf5HFbxF9nbY657yngtGiltqL8HZTJNqJDpkFUFyssB30VKj0h2TPWIA1vxvG1o89bCiVIdi
-	j2qMPJmREws1WX+0K/9lwzcBgktvkYmgXrDgjMtce48xUEyN1BPkBWqEx0/XgU+JnjJN
-X-Google-Smtp-Source: AGHT+IEAsy+Ag+yaItapCExK24GtCcf/j8K63MuNbVIu7hQfCrBcuGDModsryJjrA8zmOkQf1hkkbI/HJmgX9pS7YQM=
-X-Received: by 2002:a05:6820:4cc9:b0:654:f93d:fded with SMTP id
- 006d021491bc7-656afa9f1eamr1006743eaf.2.1762248187177; Tue, 04 Nov 2025
- 01:23:07 -0800 (PST)
+        bh=XPEEKFqkF9DF1b8qIlfa56owOZLEN8s5W63mSioCmUo=;
+        b=n02pgSYoeh9OX/wQLnzYDbNXrGaEgJg1Dzny7tV5z8VUcUuCJu0vxh6AdPE6NdO9DL
+         s/Ruizi+/8+GpI7H6ihF78gb8zNuR8XyPn0kliCoC2m+doojVHTP9VbetgYmqGymm87G
+         XFu4i1lANdPqYf5y+BKeMM4wmePKMvgUOe6v6xwr8VlH/KuxiLza0DfFg5YP3Aa4Jc1l
+         QG/0mTReC1ME7VZbcI8ybgu6W4AsyRo8y7xY7MHMO6bO9pqYD+ySOl0YLZ3vfu35Ptin
+         zxYaC/JS6rmwo+iMkrffEwyI3NsQx4JeLEgTx7WPDruD89Hu4eowHwDTtS21nnEC6nR6
+         YgqA==
+X-Forwarded-Encrypted: i=1; AJvYcCV5SP04uTTfWGlYQ8Y92UKyeG//Y5TB2rh5cyv47c2ekaJhTlb8AKchc1I1UOcf/v/Vd+lANsp8rTvB8F72uw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuDs3dtgkYD/PBz2/QEcNTZaNrF2sxX+MC2bY068ImGZvIQEKw
+	ScPj11zMd5nuDQ8rjhoV68F5tiZ7BnP47r7EkGXPR+2yJYbtaQXyxEA7DJ4Ygp0+OKsHMXmzKOS
+	FEvcCwWmZTzsv9g753lZHvuBqTWBbhgs=
+X-Gm-Gg: ASbGncvJ20lgvXG6qSA8TpicC+5u/BP7e3lDK9qOXA3BcAnoo8p8kAb6+SW+72TTcqz
+	89wD8X0d4ZhX7whO1lpMOLrJFfGFaN8W+4kPR3Xnx7YFveBeSKs5PjvuJHdDNtDlulXUhmNKtxf
+	Xmf6aF8FGjM7hClNBsRxKePF1LmObZ5kDysjJg0CFSVM95cfMjZHuQjnho3CQeIPOlgh1kE2WnM
+	0Jh0kXND4nuadHkZwcQDLyTehnD63kyZ6Ms9ahvTF/F1KMypjcWKprBwxq0W0UKluvdFa/du0iM
+	SUNoEuDJavpvqjHoWPlYbN9Vtwvi7eOp87nKI591HzT/uEHKp7FEL8yMGdVh6fhQ5xEJESWSqwI
+	suWJoEUKFhJy2gg==
+X-Google-Smtp-Source: AGHT+IH8Fiza6KYQ8sf9gDk9a4DBHs7Df2Dd4QQ4vuKXna4QoZxXAl1Rsm451kOpHcluydvVXxXumCr4qwrlc6KoH5k=
+X-Received: by 2002:a05:6a20:7487:b0:341:f2ca:bd73 with SMTP id
+ adf61e73a8af0-348c75c7736mr11623522637.0.1762252789132; Tue, 04 Nov 2025
+ 02:39:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6909c4a9.050a0220.98a6.00a9.GAE@google.com>
-In-Reply-To: <6909c4a9.050a0220.98a6.00a9.GAE@google.com>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Tue, 4 Nov 2025 10:22:55 +0100
-X-Gm-Features: AWmQ_bmGQf2nILT2ScyTlAWpbuk9uek2__b997E7Chd9LCNJiYdk3ZcAgWaVrbM
-Message-ID: <CANp29Y4L45Z1OK6mS2rGwHmA-0CP2a0qD7G3NCz=CcbqEFNUyQ@mail.gmail.com>
-Subject: Re: [syzbot] linux-next build error (24)
-To: syzbot <syzbot+c78a89917a1b7c0fa4c6@syzkaller.appspotmail.com>, 
-	rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-next@vger.kernel.org, 
-	sfr@canb.auug.org.au, syzkaller-bugs@googlegroups.com
+References: <2025110452-diligence-share-98d3@gregkh> <20a1d4f3-1fa3-4789-aa7d-385d33ea9324@de.bosch.com>
+ <2025110402-banister-speech-7228@gregkh>
+In-Reply-To: <2025110402-banister-speech-7228@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 4 Nov 2025 11:39:37 +0100
+X-Gm-Features: AWmQ_bkJj0B7r79XvO44DYj-gZm3gLzYhP5im_H_sCcBr56JjkstB_G_ABCxr1I
+Message-ID: <CANiq72mENsw=uVUbMFzOor8ZmoeurX+0hiN49fhzBgqMWMM-KQ@mail.gmail.com>
+Subject: Re: ABI mismatch build error for 6.17.y and rustc 1.91.0
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-+ rust-for-linux
+On Tue, Nov 4, 2025 at 8:43=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> Ok, but why am I not seeing this on 6.18-rc?
 
-On Tue, Nov 4, 2025 at 10:17=E2=80=AFAM syzbot
-<syzbot+c78a89917a1b7c0fa4c6@syzkaller.appspotmail.com> wrote:
->
-> Hello,
->
-> syzbot found the following issue on:
->
-> HEAD commit:    982312090977 Add linux-next specific files for 20251103
-> git tree:       linux-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=3D110f817c58000=
-0
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D1cf6c387ad3e8=
-e7a
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dc78a89917a1b7c0=
-fa4c6
-> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b797=
-6-1~exp1~20250708183702.136), Debian LLD 20.1.8
->
-> IMPORTANT: if you fix the issue, please add the following tag to the comm=
-it:
-> Reported-by: syzbot+c78a89917a1b7c0fa4c6@syzkaller.appspotmail.com
->
-> error[E0599]: no method named `data` found for struct `core::pin::Pin<kbo=
-x::Box<T, Kmalloc>>` in the current scope
->
-> ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
->
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
->
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
->
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
->
-> If you want to undo deduplication, reply with:
-> #syz undup
->
+It happens in mainline too, so a few possibilities are:
+
+  - You have the toolchain forced to an older one (can happen e.g. if
+you are using `rustup` and you have an override on a path, even if the
+default elsewhere is another).
+
+  - You are not enabling doctests (KUnit).
+
+  - You are not enabling KASAN.
+
+Please let me know if you still do not see it, because that it is
+definitely not expected.
+
+I committed the fix yesterday -- it should be in tomorrow's -next.
+
+Cheers,
+Miguel
