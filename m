@@ -1,82 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BC92566D9;
-	Tue,  4 Nov 2025 16:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5EA2E8B9B
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 17:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762274826; cv=none; b=hNS0O9x5u+XBUA4xxNuQf4/s8w/39eKZpbimWpHAggGbqVamoAr1hH53EHEuYzzhwG3jHicfgbDIRcoRxdz72V91ifCcE6j97j0sSX23GMP8uQSKYix4YPsybnSVzf8TX9D1ryaE5pNKtiPLB9vXUwq7EUoFyAYSm6kfDKTxiPo=
+	t=1762276412; cv=none; b=ifDQYIeluyB/k7aAw7K7fciRqSXIQANbtsJdaSVx1DGtwhg5WiY/8RvRWj+gdkSyHQXeLJGhPNPnAawNfvMA7QXvK8hZVdsts2UZQFuOCmNpbKJ+jBpUagz1NE0iCQyi6aHO1rGZuT+KlRY3Rdif6IXfv8MNuKCzfSOO5n1GnMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762274826; c=relaxed/simple;
-	bh=qf65b5IizuF32vzXmtobtoU9z/UjphUoqVhM1PSZoTA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EvssTRdhqLd7x9gKyieRJp3zj4N/TGQo6SMyI56MquYdz+mWuRAndxeR8mBiYw39pWWC9omBAHyjPxLdJCavnS6dPJrGgaYdYEekFOTkYfQWXSBQLaDaaxnKXs7hMByUvIoGCZ8QaAaJaKzZvQl1Y7+8MoqvTIBu0WffKxl8ric=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dcjkv5OQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762276412; c=relaxed/simple;
+	bh=m1XkeAEKgnYB+1UGxur6dH6wOd+HzUrXUozfaL+/uQ4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=urD/NBukgRKFMl9DFhOeSk5yVg95+4lGdi+BdzyGWxI31M8NUugSWSs3aDf8gv0bjj8WtFKnE4jah98RKwHE01xyRxkCxzs1nLdgfo+n1vq+KflLqfWHpPxHtL2d63BIAKDGvi4l6RH0u/BoQU3x4d5Zl9YIDzH3gTXrlTb4tnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=acJyscNx; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dcjkv5OQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C46C4CEF7;
-	Tue,  4 Nov 2025 16:47:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762274825;
-	bh=qf65b5IizuF32vzXmtobtoU9z/UjphUoqVhM1PSZoTA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Dcjkv5OQSy2X0d5LajExeUgioCdeG1WRENcIbMf6oWKmw8/r5Vh63SjAfsGVyihgG
-	 7h0045l+LTG4BrWbfHs0bFIEkD0I7pQxsoaCLihzYMUNbLPiCAuioFEygWgP8oYdcY
-	 xMa6frU/pnNT/2yFXJPeDRw46yO8oOjLU4aI2stYLVw3/OO8nLfI464AyvWI7t8TQc
-	 tFDsY+yoZqSrlDayUC0M3kuMBtYNmuoV/9H4WjxSFj4zWLu6brKSxonos+M2uSbdJd
-	 xYH9FRTKzuBKW9SpLi1+8Gg/+VaUGlxdivZXDkMA9AHXdmDgl+KASOMj76qojJrC8o
-	 ynapDjc2/FA9w==
-Message-ID: <e7a75899-be93-4f0f-9c9f-0d63d03f4806@kernel.org>
-Date: Tue, 4 Nov 2025 17:46:58 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="acJyscNx"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2958db8ae4fso28431915ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 09:13:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762276410; x=1762881210; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=usbtFusXECf+ztp+zNDIhf2MMecxiC++PMfHrUtumrQ=;
+        b=acJyscNx1YvB+GtAkExmVtzeAcptRjQEGsQCayEOdRuLV7/0RcbB04/pqPyiRN2XtJ
+         Pcz+OmJtgJiO4CRBChWae0sdCs6iz+aN49E97+//aNQo66IBEdAEO3PuMxKUUN+aSPAm
+         NCdWzX1AKD+z8Ke03KqBm4toO2t/O1c/e/L/mzcmDGeFEVW/oTwbI9ArzOHPqjZXaBVB
+         gNYzPIPnD9v0XO7+goVMtBAz+yiZ1r8bzbb1LT9nf1ZE0s+ss/JQgFI/LCYrw5tG4u3t
+         AI2+Jby6Z6NDC7+uG5yar0OdoEYNQ8zzAzs4TU+ifGAeMTfcb5gJ52Ly/2T5+SShxshS
+         dUNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762276410; x=1762881210;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=usbtFusXECf+ztp+zNDIhf2MMecxiC++PMfHrUtumrQ=;
+        b=OUrzVj/BzU1w8ZSuAMg3cHBgYjP4RbSsJtzfZfzuyDcZHi+ftSZrpWG7iA2+xiNdAq
+         /AtYvuUYrUzua9vFjqz6H+TO/ZIIZv8raMbSxFXYyXsdRWzt/M+gr9AfHUHmHYUD/KKg
+         sf08TcOk803SX2mqbi003g3bJsRoP1llDRx4/URkLB85rNVtFgIjbzpUWakz27kdtTag
+         9LIgPl5ymWXNahQS6Qa/sOnE/GrCLlaCANIXhYKKVvVsmyfdGrG8I67fLHtu4iNXlamU
+         PAeaJfNYcFe4TlsdxNhOYdvmhCqx0UA6Odpo0lydwglwppGlTm9tq7fE/lqugucYBpuq
+         ZAWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0jBGqYl5lMgPiLnECKBX+44wzJXTb1Vs4YKXnt1R0agqiP5qOsQD9TX6sbQde3NmVhwvGt2PoYjWZ3yEA+Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEutFRrgwe5eT6xaXJCT7gx6EgdLYX4ZEGfEtPtVO5sgogjclx
+	ZjlWPYtRPaTGKmh1t+722Z9PSGTSUXp9V3+Hid1Axb5PzBrp5CWpDDvSdUwOQ32V
+X-Gm-Gg: ASbGncuTiy+MZRFTu9lMLWprxClvf8uVwqwrpJlxHBU2hXB2gCZCcwLgMzhKP3aueQa
+	lGK+LVslf+I/S6B9mDIbIkYBgp/3eF3Pb1fuVYsqeYHExHU1WwD4p/S1MCGiKhO4AsBG+eRZFVA
+	KoCOljmNh+a4A1YqLTGAwqYn87xU9XwC2G8vQ5rcobMMGaugGeJRT5Fq33ZL8Rb+aFajdfxHUDq
+	z7wnpxTIvaXt91VH1jtTd9ttaKDjF3KBZ1FYC66XpHch7G+Jqh9KwybRqBJW6piqPNqkpKlAfPO
+	PVS9XuYp8MgsrUyp1e4dVjC9rpxDK9pZKBM7wG+I8/hPqTLuw5bOiALJazNp5qmMX3v2T/1A5V6
+	v5ixvaYjRnwkxyEAiyba5xsrzyIlw+iO0OYMWpygcjhEdrEzXwrCCPXuaWToalUOxoAjVTx5fgp
+	EFSohnBgpsUZt25GJDbOM=
+X-Google-Smtp-Source: AGHT+IHEPM6IeTHqwRglV3CNNPvXG1HRbfYSUDnDZvEYFFaMOFPrf9AoRvdMvHe2ekdTYstoOgW7Og==
+X-Received: by 2002:a17:903:3bc7:b0:295:bedb:8d7 with SMTP id d9443c01a7336-2962add071cmr4121695ad.48.1762276410092;
+        Tue, 04 Nov 2025 09:13:30 -0800 (PST)
+Received: from shankari-IdeaPad.. ([2409:408c:9413:f347:f0d6:3544:e27:d190])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-296019982c7sm32643875ad.25.2025.11.04.09.13.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 09:13:29 -0800 (PST)
+From: Shankari Anand <shankari.ak0208@gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shankari Anand <shankari.ak0208@gmail.com>
+Subject: Re:[PATCH v2] rust: block: update ARef and AlwaysRefCounted imports from sync::aref
+Date: Tue,  4 Nov 2025 22:43:16 +0530
+Message-Id: <20251104171316.6672-1-shankari.ak0208@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251012142012.166230-1-shankari.ak0208@gmail.com>
+References: <20251012142012.166230-1-shankari.ak0208@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v4 4/4] sample: rust: pci: add tests for config
- space routines
-To: Zhi Wang <zhiw@nvidia.com>
-Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, aliceryhl@google.com, bhelgaas@google.com,
- kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
- markus.probst@posteo.de, helgaas@kernel.org, cjia@nvidia.com,
- smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com,
- kwankhede@nvidia.com, targupta@nvidia.com, acourbot@nvidia.com,
- joelagnelf@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org
-References: <20251104142733.5334-1-zhiw@nvidia.com>
- <20251104142733.5334-5-zhiw@nvidia.com>
- <DE00WIVOSYC2.2CAGWUYWE6FZ@kernel.org>
- <20251104184245.2cc7e661.zhiw@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251104184245.2cc7e661.zhiw@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/4/25 5:42 PM, Zhi Wang wrote:
-> Should I arrange the traits like below?
+On Sun, Oct 12, 2025 at 07:50:12PM +0530, Shankari Anand wrote:
+> Update call sites in the block subsystem to import `ARef` and
+> `AlwaysRefCounted` from `sync::aref` instead of `types`.
 > 
-> Io trait - Main trait + 32-bit access
->  | 
->  | -- Common address/bound checks
->  |
->  |	(accessor traits)
->  | -- Io Fallible trait - (MMIO backend implements)
->  | -- Io Infallible trait - (MMIO/ConfigSpace backend implements this)
->  |
->  | -- Io64 trait - For backend supports 64 bit access
-> 	   |      (accessor traits)
->            | -- Io64 Faillable trait (MMIO backend implements this)
-> 	   | -- Io64 Infallible trait (MMIO backend implements this)
+> This aligns with the ongoing effort to move `ARef` and
+> `AlwaysRefCounted` to sync.
 > 
-> I am also thinking if we should keep 64-bit access accessor in the
-> backend implementation instead in the Io trait (like {read, write}
-> _relaxed), because I think few backend (PCI Config Space/I2C/SPI) would
-> support 64-bit atomic access except MMIO backend.
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+> ---
+> Changelog:
+> v1 -> v2:
+> Rebased it on top of the latest linux-next upstream commit
+> Dropped 1/7 from the subject as it might lead to confusion of it being a series
+> Link of v1: https://lore.kernel.org/lkml/20250716090712.809750-1-shankari.ak0208@gmail.com/
+> 
+> The original patch of moving ARef and AlwaysRefCounted to sync::aref is here:
+> (commit 07dad44aa9a93)
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=07dad44aa9a93b16af19e8609a10b241c352b440
+> 
+> 
+> Gradually the re-export from types.rs will be eliminated in the
+> future cycle.
+> ---
+>  
+>  drivers/block/rnull/rnull.rs       | 3 +--
+>  rust/kernel/block/mq.rs            | 5 ++---
+>  rust/kernel/block/mq/operations.rs | 4 ++--
+>  rust/kernel/block/mq/request.rs    | 8 ++++++--
+>  4 files changed, 11 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+> index 1ec694d7f1a6..a9d5e575a2c4 100644
+> --- a/drivers/block/rnull/rnull.rs
+> +++ b/drivers/block/rnull/rnull.rs
+> @@ -17,8 +17,7 @@
+>      error::Result,
+>      pr_info,
+>      prelude::*,
+> -    sync::Arc,
+> -    types::ARef,
+> +    sync::{aref::ARef, Arc},
+>  };
+>  use pin_init::PinInit;
+>  
+> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+> index 637018ead0ab..1fd0d54dd549 100644
+> --- a/rust/kernel/block/mq.rs
+> +++ b/rust/kernel/block/mq.rs
+> @@ -20,7 +20,7 @@
+>  //! The kernel will interface with the block device driver by calling the method
+>  //! implementations of the `Operations` trait.
+>  //!
+> -//! IO requests are passed to the driver as [`kernel::types::ARef<Request>`]
+> +//! IO requests are passed to the driver as [`kernel::sync::aref::ARef<Request>`]
+>  //! instances. The `Request` type is a wrapper around the C `struct request`.
+>  //! The driver must mark end of processing by calling one of the
+>  //! `Request::end`, methods. Failure to do so can lead to deadlock or timeout
+> @@ -61,8 +61,7 @@
+>  //!     block::mq::*,
+>  //!     new_mutex,
+>  //!     prelude::*,
+> -//!     sync::{Arc, Mutex},
+> -//!     types::{ARef, ForeignOwnable},
+> +//!     sync::{aref::ARef, Arc, Mutex},
+>  //! };
+>  //!
+>  //! struct MyBlkDevice;
+> diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
+> index f91a1719886c..8ad46129a52c 100644
+> --- a/rust/kernel/block/mq/operations.rs
+> +++ b/rust/kernel/block/mq/operations.rs
+> @@ -9,8 +9,8 @@
+>      block::mq::{request::RequestDataWrapper, Request},
+>      error::{from_result, Result},
+>      prelude::*,
+> -    sync::Refcount,
+> -    types::{ARef, ForeignOwnable},
+> +    sync::{aref::ARef, Refcount},
+> +    types::ForeignOwnable,
+>  };
+>  use core::marker::PhantomData;
+>  
+> diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+> index c5f1f6b1ccfb..ce3e30c81cb5 100644
+> --- a/rust/kernel/block/mq/request.rs
+> +++ b/rust/kernel/block/mq/request.rs
+> @@ -8,8 +8,12 @@
+>      bindings,
+>      block::mq::Operations,
+>      error::Result,
+> -    sync::{atomic::Relaxed, Refcount},
+> -    types::{ARef, AlwaysRefCounted, Opaque},
+> +    sync::{
+> +        aref::{ARef, AlwaysRefCounted},
+> +        atomic::Relaxed,
+> +        Refcount,
+> +    },
+> +    types::Opaque,
+>  };
+>  use core::{marker::PhantomData, ptr::NonNull};
+> 
+> base-commit: 2b763d4652393c90eaa771a5164502ec9dd965ae 
+> -- 
+> 2.34.1
+> 
+Hello, can this patch be reviewed?
 
-SGTM, I think it's fine to keep 64-bit in the MMIO backend for now, we can
-always split it out into a separate trait once needed.
+Thanks,
+Shankari
