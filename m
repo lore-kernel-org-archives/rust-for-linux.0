@@ -1,78 +1,84 @@
 Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD163126A9
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 08:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC973161A1
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 08:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762245570; cv=none; b=kh+vCURmoU3GnmrxGvZ4ttsrULayFZ0ZsqvqCpjpmjcq4msD62x1ekGVD2fWOC+T/47jXUtL68abXqh1NeCXwTURJdqCpMEPx3Thr0vg9ygTk1CA6xWr555hV8nnhXwfid47oMSuLcOPIcxjNfcmFFUSOba7od4CcJe14N7a3gs=
+	t=1762245616; cv=none; b=gLSF0t3NIrqPuLRtIiTSACFAGruj1tRl4a9r0CLTD16d4DcOJu1VlsmTxykpuvL3WVTfNf+5ukTxSLr2iU6T3lK/A43b2BJ6mc0s02Cg/mjYkR/Gt/FIt0AI1hd6AuNgSaSJiO+pr+/Z42DoZuN2ijR3VuZluAVSq2o2c57odLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762245570; c=relaxed/simple;
-	bh=h2sULprMiu4wN4KAUeGPmQvu2wQnnQR98dqeeRGDV44=;
+	s=arc-20240116; t=1762245616; c=relaxed/simple;
+	bh=861Choy3GbkM2iT6DyDZedv9XDJesWVVc4e/eJiX4zg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=r7k92/J07LErbwwYvPVj77hRtQWKOdwfJ7EHdCL7qdfF1AZqTGywpLibf7j4Xcj6Wx5JiM4x7yr5aPSnMTnTcr6slNEcpn8x3xD1YWSARosEORn1DPt28ljV9d6dc8sqL3KoQKnivaoBxtzKK70VrHxcg7ERVawJ4bSMdl025+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=no1UisIr; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=UKwcGNXqwl2SzytzsKtCVHgXKBZUOEcm1ChwW/+fu6R/sg3Qrf+AUNauhYwHvYrfDd7N2PdUxoD4gtiBN0Le2rBqSSp9UAGlxVNWwBk2B8M4im8zzPkYkG42889sizkH1MbCKp6GcnWaDLuYp6lHKeHcZOIMJ8vw4I22kgwdKtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=skcmRH0a; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="no1UisIr"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64095177aedso4269676a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 00:39:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="skcmRH0a"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-63bda1898c7so6123194a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 00:40:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762245567; x=1762850367; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762245613; x=1762850413; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rXJXC5xQMOSakE6z31ZXBIwOFgfH9N+KP/Twx5AGmg8=;
-        b=no1UisIrJsCM7qet0NJuKdKWova2m4Ls081wkarfe88DruZ9Pwz+a3hlgoH2qy4/e6
-         moi984qQbD6EL1DN/YEJxZTUu8CWZr6hLfOqZ0AQlj6hanDC2RXDgl9kzp68OxZbGt19
-         J2ByH2dYKW0pTU7lwFHJF7rPr4rR8iKqzr/Sy3iq1fsOKh6PQNOIJhUVBVLnhH06/egG
-         FgSXgpIfZJ7cupeS13XjcLNB4shcB8bvxGtLtMJpw8VptsbDZBuTU5b1V6boMsSQJJsP
-         DkSo43H4A4B8vEZiwJQ+1E4smYePfueBa1rRfv3DrQVPJcxIXNuyMbmgeH/vdomqSFxj
-         AtWA==
+        bh=wwmZ+6WBy0DpH/2X1JFXWHRC2GMTvQN+STo8LsdNvJ0=;
+        b=skcmRH0aOLQ1hLBbunxWeRC9fLyO0lK6ev8k3Uu03Vt1rbShUXQ8zHMKcCmhFphxP6
+         49w/NJ0QrZWplafLABqV03O+uZWvjXF/swrS6TdakfxDjLaLN7thhv4Wwmux25SccEoR
+         qNJkH/qzpu8wWGlF1QHqUH2yQs/BSmeWL++bTNXxf9abflQjmmMaN1aNmteMQUZhG8ZS
+         0NqhulUNLNV3X21WEIeEkS1uJcQWTTGYRnSRlb+5PBs3S7bY6Vd/t1g4s4cAt23tMmHI
+         5fgmPRTfmlUrbLI4QEyZ4fwpMVnerVk/eyliAiGJcghzcmO7BVEaJO/deKmvxbXLv6IZ
+         Wd6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762245567; x=1762850367;
+        d=1e100.net; s=20230601; t=1762245613; x=1762850413;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rXJXC5xQMOSakE6z31ZXBIwOFgfH9N+KP/Twx5AGmg8=;
-        b=X9NYMacaIqbZeUorU+EgNa437ckbYoay4+RtP5F0rjbS68XNLaTF/V+wvqAoG91qFO
-         cm27kHVYsR+Ks5VlhtNGlY+0pzYbeinAlWDn8PJjPrPTedz+MgVa2UrLFkhWuYHWEEXB
-         OvB/4Wixb3VHj9pPTpo1DnddvjzgjaxR6ObzWpRl7q/BoXKAH8v+sm4sDym0w5yG5LfR
-         5Ssrnm1M094XdvYOYiMX81GeLjSdjWX6xVK4cAs90bLkYMNdxE0uzgf3ux8NJ3SlD79o
-         QdLJREKQo1PeoOKRjY8prJoPo6cw0Lc9Kktt6WWLnylKW09coVa6/5bYgZJmqpo+wxCw
-         uIIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfg0bZQCPXTMnah7dCpJfsqwiRC/mUPYKSsdfC3Td6PYhtRPJTXjZaF59YCkgFnSGs0T0m0DwwJGGG2i0xkw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyki/PgFs3Yi7eOxHYEqvQqk2gdi7jvqlnKcpsSUQBBq09kk8HL
-	KdAs791j4YwVnE/paFZyXAwzlGlwSbI0lEtv2ptlNIjRf5UaxZWJIceZv9agTpByVA2vmkCcM7E
-	i38V2M3Ims2FpLy/qQQ==
-X-Google-Smtp-Source: AGHT+IHkkLru3RbEHbg6oteE557RNvxiRGcW+0DLs9KKkh37U6J5Frmy/B6gSA4955Mr/WPDvyloEY0RzOh+CrQ=
-X-Received: from ejclm4.prod.google.com ([2002:a17:907:18c4:b0:b72:41e4:7530])
+        bh=wwmZ+6WBy0DpH/2X1JFXWHRC2GMTvQN+STo8LsdNvJ0=;
+        b=t2do9hHoIj6/S6EwmbLKBg4qzMw+ybHJw5LiNveT7EEphK356XWPRGRii8calYl5vI
+         2U0x169rei0hlJfA7fTqyObzdacKiJjVO6ve6sGy/jf4j17dmhYxRsQtc3ol2zQlk7J4
+         g+V4qEpqrbgXA8IskuBYJgCO6DAjPOwzIFA0y5NVT+L5vbfdwmWv3SONSsZWVzZgiBh2
+         +34wou5jq739afS4g3WZ+alJksEkjL04IImuKoSuJp9PhBN9/3P2w8FWT6DqYkwpR2Ra
+         XcD/cnFQ/FqX4bdWVEn/TmuI3x1AMvuzvyp1PULKCQ8oey/rHgjEpTGcllHWFItb+11L
+         jyQA==
+X-Forwarded-Encrypted: i=1; AJvYcCXjrM58+3XM1vA4oUA7jKYwJYu5LUjJ2n5sw0TljBJRJhQohKY6/iCHct6C5cfL9ruqVRKPB2s9r+O33XZaIA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdXDBvHhPIXKiezBFhJiLWe0nR4j4CmomHvkRmGA66fMDjD9vg
+	dlkf872uT2yvthbO+gKJ7DC53jxPBD5gXFNGzfnXDgixS9+D6Xe/8srLedwh7aXoKpeJqSQDBrS
+	KW2/+zfZ2EzX4tBVSqQ==
+X-Google-Smtp-Source: AGHT+IEI2OOsck3lPELYTHDmiUDPX23aQ0zOxe2XMSiUyFnIXk35xi7d9IgnDvvQ2t8WeW+/QGu3reFub1xwlLE=
+X-Received: from eddp22.prod.google.com ([2002:a05:6402:46d6:b0:63c:592c:cf21])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:906:b859:b0:b70:b077:b948 with SMTP id a640c23a62f3a-b70b077bc3emr512890366b.35.1762245566871;
- Tue, 04 Nov 2025 00:39:26 -0800 (PST)
-Date: Tue, 4 Nov 2025 08:39:25 +0000
-In-Reply-To: <20251103190655.2326191-2-dakr@kernel.org>
+ 2002:a05:6402:4310:b0:640:b7f1:1ce0 with SMTP id 4fb4d7f45d1cf-640b7f139abmr7115706a12.23.1762245613116;
+ Tue, 04 Nov 2025 00:40:13 -0800 (PST)
+Date: Tue, 4 Nov 2025 08:40:12 +0000
+In-Reply-To: <20251103203053.2348783-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251103190655.2326191-1-dakr@kernel.org> <20251103190655.2326191-2-dakr@kernel.org>
-Message-ID: <aQm7vReThpKDOO67@google.com>
-Subject: Re: [PATCH 2/2] rust: dma: use NonNull<T> instead of *mut T
+References: <20251103203053.2348783-1-dakr@kernel.org>
+Message-ID: <aQm77Iv8_odvASCV@google.com>
+Subject: Re: [PATCH 1/2] rust: pci: get rid of redundant Result in IRQ methods
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: abdiel.janulgue@gmail.com, daniel.almeida@collabora.com, 
-	robin.murphy@arm.com, a.hindborg@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Cc: bhelgaas@google.com, kwilczynski@kernel.org, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Nov 03, 2025 at 08:06:50PM +0100, Danilo Krummrich wrote:
-> In struct CoherentAllocation, use NonNull<T> instead of a raw *mut T for
-> the CPU address; the CPU address of a valid CoherentAllocation won't
-> ever be NULL.
+On Mon, Nov 03, 2025 at 09:30:12PM +0100, Danilo Krummrich wrote:
+> Currently request_irq() returns
+> 
+> 	Result<impl PinInit<irq::Registration<T>, Error> + 'a>
+> 
+> which may carry an error in the Result or the initializer; the same is
+> true for request_threaded_irq().
+> 
+> Use pin_init::pin_init_scope() to get rid of this redundancy.
 > 
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
