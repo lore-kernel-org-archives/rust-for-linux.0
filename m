@@ -1,93 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C215789D;
-	Tue,  4 Nov 2025 12:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AED3164AF;
+	Tue,  4 Nov 2025 13:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762260335; cv=none; b=PRjdfvARjRGbfgavrobj5iog1F/zB9xIXlTdlAHfuky5XUVumso6JxZsl2ARmESQba+ethnjsWc5pT9hUujDCQ7K/mS95KI/K43WyzOBec0FzJjEnEljkb9wnWR649Q65T/Q1nG4aRQ6Xw4bXES82HbiB0QxnSVvLDK82Z3PKsA=
+	t=1762261795; cv=none; b=Q6mwrRPXN8o+6Ks55DBxayVaSQpBKTJ/+iBQW9NhCis5tynPi3gqNfxBWe4+XQCGqDV1RT/OF4PmuINAYkPmbt8cBcMArQlxSrbi41CaKjG4antrVa4rRL51cvImYSxD9BoNK8/Ykxk4pc8SE0TdN+MLj1Fdk/cgGS0blZ7Qshg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762260335; c=relaxed/simple;
-	bh=weQp7YKscYs55DPdc8KYB4FS7Y2EgyNmky01+EGG6e8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=U0vrDeTUBh9eDI/pWnq4darTbm2N5VDU9Sn5t9yuGnAbzMQQjAiNTUTqYYXMlCpVXnqLC80CVT4vBmmiHAkTmtiSAkFLljvxVGaL8iLiizfA+SCR2200xtodYlmrEWi4/YqzRkKCpQepEZAyaQYcXn0oTfW40NKP7eADwKDN15c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDXsodId; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762261795; c=relaxed/simple;
+	bh=Pqh89lUQZhJ8CsY/0xEaVx+K9g/ynb2A8QtBWjoHrnk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=pq1gfGTddP6hD3ehT6PGciKY5m4HaGZhp9W5cP3MDHu2zv6ZLc20BwyhG/UnmNY7O1SPo79fViRk7Uaw5basBVFoE69GH51I/IB6r2c1jXC/PQt/UG1yZA0pWhFmydHN1oCUMr/BK8xcIJlIQXfq+olX+oYujPK0yC/UxybVdqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZfhvFAu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDXsodId"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2758C116C6;
-	Tue,  4 Nov 2025 12:45:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZfhvFAu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F6CC2BC9E;
+	Tue,  4 Nov 2025 13:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762260335;
-	bh=weQp7YKscYs55DPdc8KYB4FS7Y2EgyNmky01+EGG6e8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=kDXsodIdVRsdEPRidfCu4meBFHuWVJB963Qpg7kdaOaSj8Xf3hAGgWZP4fYnbJ8Am
-	 G1Ccxljaitngi/zvAIWlQgf5KlvbWiz6eVUSFRJ8YrtuOqDddmlH2vhwHdsDyvjq73
-	 Nl+eAvVMMhzQlbVlUQJYq4IKpbuwE0HdHrqkYEZzRMxRtrQve4lAsW3LCbuO/7agsj
-	 LYpiUYfaNUBcLtZUfgk4QJ3nC7Z8p0/vlq4tVr8rwfDUsDT2DAYPTQTHtWbrbS2/jq
-	 wiL4FogITtIb76ocYSMVC+Hn1UTAaBAozJu9mKS7Gj7c//ZoHh8DFLWAoQdAjEAyNP
-	 q/Fpt+1gteHrg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Thomas
- Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org, Daniel Almeida
- <daniel.almeida@collabora.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel
- Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Will
- Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, David
- Woodhouse <dwmw@amazon.co.uk>, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, Joel Fernandes <joelagnelf@nvidia.com>, Ryo
- Takakura <ryotkkr98@gmail.com>, K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: Re: [PATCH v13 05/17] irq & spin_lock: Add counted interrupt
- disabling/enabling
-In-Reply-To: <20251013155205.2004838-6-lyude@redhat.com>
-References: <20251013155205.2004838-1-lyude@redhat.com>
- <20251013155205.2004838-6-lyude@redhat.com>
-Date: Tue, 04 Nov 2025 13:45:20 +0100
-Message-ID: <878qgm7yqn.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1762261795;
+	bh=Pqh89lUQZhJ8CsY/0xEaVx+K9g/ynb2A8QtBWjoHrnk=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=VZfhvFAuduDx6Ibe/wwDd+NE4buQo/HLV7dI7Xcb5YhqYPkkPTsdDeuh3t2QlT0XT
+	 xfunzgkf4KvEYVDrRza4rJXRRR2iEGXDhiy9RPyngeIaZDLtka36Rvl8vSfMy6ny/j
+	 2rghPVRrL5XXJ0ikNf5pWcAbrSErxmCpIttZOXh0mLW0HY6wkM2ZIGJ9mpV2XSeeL3
+	 XjwlGo7eZpEQZfBFqKPM5c3pfBS2eTNjW1+ArvwehJWuJ2Zio/tXw/xRTiGENIOj+O
+	 T03VWkw5zZsCjYSMYyaom8MR5slqXyVYTj5br3gJvQLu0oivpwY7bcrAnSkgFL2zfz
+	 xIaz0iCZFijfQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 04 Nov 2025 14:09:49 +0100
+Message-Id: <DDZXO1Q8X0VJ.2CTDX2SFTY3FR@kernel.org>
+Subject: Re: [PATCH v4 0/2] Add read_poll_timeout_atomic support
+Cc: <a.hindborg@kernel.org>, <alex.gaynor@gmail.com>,
+ <aliceryhl@google.com>, <daniel.almeida@collabora.com>, <ojeda@kernel.org>,
+ <anna-maria@linutronix.de>, <bjorn3_gh@protonmail.com>,
+ <boqun.feng@gmail.com>, <frederic@kernel.org>, <gary@garyguo.net>,
+ <jstultz@google.com>, <linux-kernel@vger.kernel.org>, <lossin@kernel.org>,
+ <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>, <sboyd@kernel.org>,
+ <tglx@linutronix.de>, <tmgross@umich.edu>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251103112958.2961517-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20251103112958.2961517-1-fujita.tomonori@gmail.com>
 
-Hi Lyude,
+On Mon Nov 3, 2025 at 12:29 PM CET, FUJITA Tomonori wrote:
 
-Lyude Paul <lyude@redhat.com> writes:
+Applied to driver-core-testing, thanks!
 
-> From: Boqun Feng <boqun.feng@gmail.com>
+> FUJITA Tomonori (2):
+>   rust: add udelay() function
+>   rust: Add read_poll_timeout_atomic function
 
-<cut>
-
-> diff --git a/include/linux/irqflags_types.h b/include/linux/irqflags_types.h
-> index c13f0d915097a..277433f7f53eb 100644
-> --- a/include/linux/irqflags_types.h
-> +++ b/include/linux/irqflags_types.h
-> @@ -19,4 +19,10 @@ struct irqtrace_events {
->  
->  #endif
->  
-> +/* Per-cpu interrupt disabling state for local_interrupt_{disable,enable}() */
-> +struct interrupt_disable_state {
-> +	unsigned long flags;
-> +	long count;
-
-Is this `count` field dead?
-
-> +};
-> +
-
-
-Best regards,
-Andreas Hindborg
-
-
+    [ Adjust imports to use "kernel vertical" style. - Danilo ]
