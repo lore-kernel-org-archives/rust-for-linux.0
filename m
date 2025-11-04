@@ -1,77 +1,124 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC2230AAAD
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 07:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E061430AAB8;
+	Tue,  4 Nov 2025 07:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762241975; cv=none; b=CGBfB5CbWkIYEdSJHyshXBCGB4u4e00+YJvgQZYd+UjlO4huTN0Kzc9YN3RvUFAvxx4i+mXx0EgaNZhs57O3yn6wWSmyChIaYCoBm5DY5QtGPh5XAg4pOw5UTcoY9HKdYa8CoDR+pqXywARvdQ2ri1xlCNTY9Y8gSVn7sbMdHyM=
+	t=1762242784; cv=none; b=HpIv9uEBH4A1S3RR+xU4gP5mtJxKU1kAOLEvKMknty6u2NBuywqp6uWAUleGeKUa7KEGMAq3T6TvbqhOGNqqTnto1rNaAZ6lYPO8+ijNCb9h6lgRfe3dGK2tXZnDMGTGtBmEfBq8/f9/EQfGgSo95cacu01WeWQ1ZcjhAlO1MAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762241975; c=relaxed/simple;
-	bh=Nso5yHJybJIz0gwCb9zziLnBUhaIu88X6JH2qlHpwLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LwxPEj7UlBycGAZe98H9HVzCHQJeZ1fcLuiUD4a83LWeyfF5d8puFb7xbONLdLystiUlLCQsp++uMXs9aPTDjj5dxLe5i5+uBsknwNeY3a2iFJLmd/RHuKYVpcGkygsl1yyKXTTaX7MxSfNnp+4VNHqgXbnB5nv2wQASscyG+H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKDNLGL6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762242784; c=relaxed/simple;
+	bh=lGIbceyVZgdKoxAlgrENOyuI7iqdDhBBFcc98C3lKn0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=rqDe8JC8vWeexLCQcKgdzxPhgMKA1epB0ndkEktCccV8f0JCpZXq7EZiJd0BSWJpjvKZr2939WZQN65bETTpkn/rHe8lIh8C8J5GuIOOGy5SJr6rHHnnxDnWk5Jv1LQdSmeI/1gjeuV97huhReh/X5BS1bPQZqASI69VO1ZWzz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j4yROKUV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKDNLGL6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16ED7C4CEF8;
-	Tue,  4 Nov 2025 07:39:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762241974;
-	bh=Nso5yHJybJIz0gwCb9zziLnBUhaIu88X6JH2qlHpwLg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qKDNLGL6nc+x0iOCHwblSAVCB0lxwkFytejHk8lnAlMUq8d0sm1I+0j21cBW8+1i3
-	 l7dtWmi6Ta04ac6E9NSA3E4k7s6IgWI66LhtqDyRABhv59dYtlV/2sOOgsanEwT1Pv
-	 VJjKnLkb/RL+p8nREgyJz92FDeyEEzd+WlXkkQnw=
-Date: Tue, 4 Nov 2025 16:39:30 +0900
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: rust-for-linux@vger.kernel.org
-Subject: Re: ABI mismatch build error for 6.17.y and rustc 1.91.0
-Message-ID: <2025110402-banister-speech-7228@gregkh>
-References: <2025110452-diligence-share-98d3@gregkh>
- <20a1d4f3-1fa3-4789-aa7d-385d33ea9324@de.bosch.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j4yROKUV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8A2C4CEF7;
+	Tue,  4 Nov 2025 07:52:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762242780;
+	bh=lGIbceyVZgdKoxAlgrENOyuI7iqdDhBBFcc98C3lKn0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=j4yROKUVgRxS9OZJC90/SHA8XCPDVvwVHDTgceh+mCs64FFENtqjNn3VC2cS3YHRS
+	 Vh89i49TvVRT0q9eqdMJYy6UnQ4flTEkFee+vNQ+LDBtPs6JzXOg9rqYQ1l4R+DhcE
+	 OKQGVXbTY9tU25yQyQP/GPDQop+9ZGgyxC6t3ereLkJQbDn6Ob5K1plMoN0NTftZxP
+	 H0zc0vdg/o5PK4tKAehZQ7H8UtwncmtwY6oH+6QVwjaU8ikukGQIRaxvlWW+ISd3QU
+	 to0NJLl+MiSLIdyT3IYNIGJSnGwpG80zYDO7P7ohAcYwUyIFI+7D4Iv2WyVwNsWwgM
+	 89d6ggsAvvugA==
+Date: Tue, 4 Nov 2025 00:52:53 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+cc: Paul Walmsley <pjw@kernel.org>, Deepak Gupta <debug@rivosinc.com>, 
+    Andy Chiu <andybnac@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
+    Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+    Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+    "H. Peter Anvin" <hpa@zytor.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Vlastimil Babka <vbabka@suse.cz>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    Paul Walmsley <paul.walmsley@sifive.com>, 
+    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Andreas Hindborg <a.hindborg@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+    richard.henderson@linaro.org, jim.shu@sifive.com, kito.cheng@sifive.com, 
+    charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
+    cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
+    broonie@kernel.org, rick.p.edgecombe@intel.com, 
+    rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v22 17/28] riscv/signal: save and restore of shadow stack
+ for signal
+In-Reply-To: <d442965b-8716-4f89-be88-bc62459af712@infradead.org>
+Message-ID: <febe1a8a-a68b-1af8-a9d5-1b5f510ecab3@kernel.org>
+References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com> <20251023-v5_user_cfi_series-v22-17-1935270f7636@rivosinc.com> <a8f469b8-5750-dfec-2390-09bad4515f99@kernel.org> <d442965b-8716-4f89-be88-bc62459af712@infradead.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20a1d4f3-1fa3-4789-aa7d-385d33ea9324@de.bosch.com>
+Content-Type: text/plain; charset=US-ASCII
 
-On Tue, Nov 04, 2025 at 08:07:13AM +0100, Dirk Behme wrote:
-> On 04/11/2025 06:27, Greg KH wrote:
-> > My laptop just upgraded rustc to 1.91.0 and now I get the following
-> > build error in 6.17.y when doing a 'allmodconfig' build:
-> > 
-> >    RUSTDOC TK rust/kernel/lib.rs
-> > error: mixing `-Zsanitizer` will cause an ABI mismatch in crate `kernel`
-> >   --> rust/kernel/lib.rs:3:1
-> >    |
-> > 3 | //! The `kernel` crate.
-> >    | ^
-> >    |
-> >    = help: the `-Zsanitizer` flag modifies the ABI so Rust crates compiled with different values of this flag cannot be used together safely
-> >    = note: unset `-Zsanitizer` in this crate is incompatible with `-Zsanitizer=kernel-address` in dependency `core`
-> >    = help: set `-Zsanitizer=kernel-address` in this crate or unset `-Zsanitizer` in `core`
-> >    = help: if you are sure this will not cause problems, you may use `-Cunsafe-allow-abi-mismatch=sanitizer` to silence this error
-> > 
-> > I don't see that on Linus's branch, but maybe I don't have the same
-> > build options enabled there.  Is 6.17.y missing a patch that is in
-> > 6.18-rc to resolve this that I just can't seem to find?
+Hi Randy,
+
+On Fri, 31 Oct 2025, Randy Dunlap wrote:
+
 > 
-> This one
+> On 10/31/25 1:07 PM, Paul Walmsley wrote:
+> > On Thu, 23 Oct 2025, Deepak Gupta via B4 Relay wrote:
+> > 
+> >> Save shadow stack pointer in sigcontext structure while delivering signal.
+> >> Restore shadow stack pointer from sigcontext on sigreturn.
 > 
-> https://github.com/Rust-for-Linux/linux/commit/16c43a56b79e2c3220b043236369a129d508c65a
+> > This patch causes some 'checkpatch.pl --strict' messages:
+> > 
+> > CHECK: Comparison to NULL could be written "!saved_shstk_ptr"
+> > #271: FILE: arch/riscv/kernel/usercfi.c:186:
+> > +	if (saved_shstk_ptr == NULL)
+> > 
+> > CHECK: Lines should not end with a '('
+> > #300: FILE: arch/riscv/kernel/usercfi.c:215:
+> > +		pr_info_ratelimited(
+> > 
+> > I've fixed them up here in the event that v22 goes in, but please do the 
+> > same on your side in case a new version is needed.
+> 
+> Is checkpatch.pl --strict the norm for arch/riscv/ ?
 
-That is not a valid git id in linux-next :(
+I run it on every patch I review.  I usually implement the formatting 
+recommendations, in the interest of keeping the codebase formatted in a 
+standard way across submitters.
 
-> https://lore.kernel.org/rust-for-linux/CANiq72=0JJz5XDHGpiyQBd9AmPCr4veJ=2oJywyyqQB8iMxqvA@mail.gmail.com/
+> If there are enough arch/riscv/-specific patch expectations,
+> maybe they could be documented in Documentation/process/maintainer-riscv.rst
+> (a new file).
 
-Ok, but why am I not seeing this on 6.18-rc?
+It never occurred to me as being arch/riscv specific, in the sense that, 
+if --strict wasn't more broadly useful across the entire kernel tree, then 
+we should just remove it from checkpatch.pl entirely.  In other words, 
+probably everyone should use it.  There are false positive warnings, of 
+course, including at least one with this patch set; but then again, there 
+are regular false positive warnings with non-strict checkpatch (also with 
+this patch set).
 
-thanks,
+In any case, thanks for the suggestion, and will consider.
 
-greg k-h
+
+- Paul
+
