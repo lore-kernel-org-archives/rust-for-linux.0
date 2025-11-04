@@ -1,61 +1,61 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7811465B4
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 18:35:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611512EC097
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 19:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762281350; cv=none; b=lBlm12uDAAfzMgkUm8QAr752keBbrg4GCqV7jniYMNAhivuwqREsapAyyZI/kEmbtYtNmf6vTVMCIk7c5YIbzdhk3nMkKbJWmPxm7NTcnGJeibn+1lZETUzBh6/By8EPrODM7b2wpGuDnLaj4Gkkt2F4vWfGbzTkgAckqBtn528=
+	t=1762283215; cv=none; b=ngGMd4CXc8tKXIGsGrC823jCe4nb/mvd8FfgxUUGZJ+hQWX9raAidhXmd3GLf75ThiB651s+pe9vfrg5rrKIJz1Vxtp8uYQyVmu1MwQnoTSQZuUJyEAHEvddmBWyPIgcfJq9RhkI2Ma8H7PGhFUtPu/2CqlHsyPQST7ZvXxMQjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762281350; c=relaxed/simple;
-	bh=pDB/Q9lx5j80vNN8jyV2lRu5iagSZIvfFZ7cYndtLs4=;
+	s=arc-20240116; t=1762283215; c=relaxed/simple;
+	bh=hcYL8k8PGVIqmqm+I5iUSWXrgxNbr2ybXnIE8pG67Wk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L6k8chJ8b0S0ubn4oWNgV6L8HgmrWRJX3Q4A4uYtAMqeIMb5ATMcWducuIXiHFo1tua6gK9SZo8etX+phFTwWXO/U3NtifNWJZNXvkPurUI7LkyLGZgmvKP2TH9DlDWzhilgNvt4rhoj+/BzSs1SCjedPkU5dKqs3e5xvrbUc8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K9gR/pui; arc=none smtp.client-ip=209.85.215.174
+	 To:Cc:Content-Type; b=lwLFP+1lzzTIAls90nCgbptoIz07Hjxm9dnMGhKNibfZN3vUGecEP5w+KL1BHjWZcb23XPXnXB5je4VWq+j+R8HtM/lUz1TjjQGxOx9F1AMbLd2cm2h87i/6lTMAo9GhLt+ze1YhRFE3MOvZjmoVfxUzkhMYo8rdDcFMlkxg0/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UG10ciNg; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K9gR/pui"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b6a42754723so433469a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 10:35:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UG10ciNg"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7810af03c69so223204b3a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 11:06:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762281348; x=1762886148; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762283214; x=1762888014; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pDB/Q9lx5j80vNN8jyV2lRu5iagSZIvfFZ7cYndtLs4=;
-        b=K9gR/pui9JmK5ZhIOvbsddgLPEXFpDeaTu2Dw2DdiRKcFJYMOHjGd5+kcMnO+NnQJh
-         0VXDKeyDxNfVN2gAv+kyPZKe43zAWn5i54xeK1Hv7FhYDuydAc/m0/aFz059VoeJ67Ss
-         GwIy7lgnmT/da01W7F/V9KS0pq6ATslD3+W/PTbgsv2ih+h2/W1iqU2y56rNGjQCbqzZ
-         /DnZbjP7m8l83NpmpkyGcDES595N68EYQcIT0C7C2uJZOdqc/ASn/C2TvoECqmAZEGSD
-         rwZiI0X1oBA9ECXthzj63v3MtbU2J4WyqoGIhe5/4PWkX84oT/g5it0SAuPE3UJntzH/
-         RFpQ==
+        bh=/wAeCuRxzb2BXeoNq8+i8slzGY9RtvDmLaGwdLPgLzA=;
+        b=UG10ciNgrf/5ojW2OtFJQcHE2fJSXCWmmcV+prCD+PLOEXg3Ev2RxMDBZKAZFWpocO
+         MdgmuqQvRvNCN3NQMPdhqYS7Z9qQ+fU7ANUcYYtLfyKwD3PPR9VdFv9Yxk4tBeuJMacE
+         umT/NGniNcvyJvj8PPAD5lQpGDNgmedXOyj7BIJXATbUGKVn4ut11pdspoHl7XxTJQpe
+         HZaVZy0sO61d0OhoASIIappR2wNFBa0BCkdenYyaM9g4d+Cb8hFqf6hXDSReLXYlzotW
+         BSsGYqbPjwQbzwo//TfLy8ueo/n6Lk+eYKPVwXBkQ4iSlh28aEObQxBjgt+9hvihXPw0
+         nRPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762281348; x=1762886148;
+        d=1e100.net; s=20230601; t=1762283214; x=1762888014;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pDB/Q9lx5j80vNN8jyV2lRu5iagSZIvfFZ7cYndtLs4=;
-        b=g1I5KnpH4wSs+KnWoqn5qH5uLfsd2K4APZt6pViQ6y+bavdunQs9uTi7AVSqHuNPWy
-         b1dUiuOa38VIULPmQrd+LPJsIZU7RsYbCymSZQcIesvWU2sznh3lX0Ln8O+ZOMODvqcT
-         e+JH3Ue5WZMdsxOdOz6P5K3+yk9duflgotFj1jmk7zrDqjeu+8/VRRoxxKGiJng8895w
-         KzZUgwTWqxEXJ+GS3bf2xMAcfp/QkRrRr+CIv2HqO0yY9nus732OCG9F8DJeF+Q7JAAK
-         LxqVUyVsObA3V97kiyFBQNRKqes7E9wqJFEglLWjJ5pUWOFM0zIfJnZbd6lDdFNK/dSi
-         WMyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWrLHVCjN4+IZRvNkji6sC5akcHHz/BKjmz11GC/9yrqXe00ux445h5aRjVnA9V5oSSTMCVIEDRhaUoInZgOw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxvc4elNoEYAP63sZdCou8oWXIUEVz+EcGCON6PrlsExwf6pfrK
-	nDveQfUrT84xnluf5ejjIW+Yj+Y7uszpmeanPJME5nzQiU5jJ109KU+ygdXmMkmSWMSE3ZGu8lk
-	00j0Xu3TZo/bDTMX6oWnT92Uc9yCS0ltUQTyX
-X-Gm-Gg: ASbGncsL7qzHWaZGisU4fZAdJS94xcsc3QkbYTmsiQ+uzeciJrJlaye1seIVpubi2G6
-	V0rLtKY5Nc9vXCJoyDaoXgrhcefbdO7GWhG3GMY9oYZkt/yQqUuvoxDCefMETu/0N6in+xjK6xq
-	wuhUyjlFZSzieTHDmH98GbAnJDE8UT8Xbeb76uAWmILJ1X0Kz3p+2nD6NJO3ob3U8qLLH473xhn
-	76iC0VFMnIslimRb76F/94Jd9VFWigZtg9yUUCKhiwn0sRamPQKl97l9z8ncRqw4yb4J6q/FoZA
-	z0YZv9z3r3XHYicGhP8mo9u8GMUgRnQhpUi+e2GdLbr2NXoVpYJSEUW/mC5UlP7fHv1oPt/8mgX
-	RJzY=
-X-Google-Smtp-Source: AGHT+IGILpSUE4gVnXtKxcfD5gs3NAicKe3yGxxboyBy/726/XJYsRyq6U0De47lxh6jH86MUyGGWjvhPdulmM5+3So=
-X-Received: by 2002:a05:6a20:6a0d:b0:244:aefe:71ef with SMTP id
- adf61e73a8af0-34f8620acbbmr152946637.6.1762281348226; Tue, 04 Nov 2025
- 10:35:48 -0800 (PST)
+        bh=/wAeCuRxzb2BXeoNq8+i8slzGY9RtvDmLaGwdLPgLzA=;
+        b=tgDA4FinbJJeOkMvh1jIYbzpYq+GMCFTriEp771i/BSSjPcWJ3QDBuMGa+begywFMK
+         rfI5ruqhicWNxftJhMKnYbEdT2/Pnxq7EQxyc0ZhZR1aFKxMMyilhTEHysB+aBOjXjNf
+         A6k0f58FwXbcKO+Ad1crXNqhxB7bqL2BhqLCjK3SUIUkMjyVYk86pX9CGVvIdp5pUWMb
+         v5Uis/S/LU5tZb1kmpJv3sV0p322Z4cp1cfiO0YnzzMPG9QFQB4yZOuyh9fFQvi0ZFpJ
+         9/nyYaYBsMn9dKxlHiPoEbiAiFwrSHhcXvT099FIibdv/y/oREMwnorfgcCz+op5VlZ9
+         9QPg==
+X-Forwarded-Encrypted: i=1; AJvYcCW8HICgE/gzc8dm3WJ/ytiXBYmzunLjfFsHz6Zetj2RLOH61ZFaelo7PQ3BQA9sFyI4dpOYyEbaFMeUoI6gRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNqLtMwV1wn22jC+oO6T+4b65WOegnXO71aHcwDmNI0Co6c8EN
+	YsvWI5vQ6C9qE2UG+b8RKNHR2Gkr2804XOYJZXVnaewLm8uV8V+F4T6+FhYOIW4VzmwVz+jz+sf
+	r6ih/XGiRfesWOs4XDuZuM0nq33t49jo=
+X-Gm-Gg: ASbGncv3DkgJ5sagCAyPHLz9CpJ/rdBTVQRC1LTjrSb2y2YMvg9+XJ+UiNjBIo1owwa
+	+YZRCxzDI0Y9nCcp8k7vGYali6yhS+aUaZuL0k2pfi0/i5C2bbyLnp2k0tOZ5ED6Wig0o2qPMgc
+	Djjybo/7+5yhrfe6wPb2jHgCA/cserwXljtb49cUYtbPtj41ME5yaZ0IoDMmpNKchnhaqXbkW42
+	ej0NOc+b+Y10nzqBTZp6k7IoMhD1ZE0drT4/koz49ez88S1h+AfPHNCSvAFaOX0WTRF4LdutK+b
+	rL0NRgQCS9slywzadVLY6TANvT6l/Mfpj5Vjz845JMKQtSawYU5/oZhx8gOzLTUnGsfQmA7iLPm
+	ipso=
+X-Google-Smtp-Source: AGHT+IE6zMw0orjCDwKe71BtT9keGPs74U4T3Nt51J7XxmrJZBuNOyX0hJ52/hdnOd+9OYS5PomAI+ZTVm+Zm9uBsjU=
+X-Received: by 2002:a05:6a20:3d8f:b0:341:29af:3be7 with SMTP id
+ adf61e73a8af0-34f86d04830mr209534637.7.1762283213593; Tue, 04 Nov 2025
+ 11:06:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,12 +65,13 @@ MIME-Version: 1.0
 References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
  <20251030190613.1224287-2-joelagnelf@nvidia.com> <DDX1WYWQNTAB.BBEICMO8NM30@nvidia.com>
  <20251104005812.GA2101511@joelbox2> <DDZYCRCPYMOL.RMTIF0R404Q4@nvidia.com>
- <CANiq72=Cj_gJ27+EAiytxYGYk1dMwu7M3xQpLGByD4QstgDsHw@mail.gmail.com> <CAAOQCfQ_d_C7oZ9uq2siJHn1+m+j059qYUMBvTWOnQ5Etk91ug@mail.gmail.com>
-In-Reply-To: <CAAOQCfQ_d_C7oZ9uq2siJHn1+m+j059qYUMBvTWOnQ5Etk91ug@mail.gmail.com>
+ <CANiq72=Cj_gJ27+EAiytxYGYk1dMwu7M3xQpLGByD4QstgDsHw@mail.gmail.com>
+ <CAAOQCfQ_d_C7oZ9uq2siJHn1+m+j059qYUMBvTWOnQ5Etk91ug@mail.gmail.com> <CANiq72nLzuCXh0r5W0HMM36f9yTSQfP9yCxXbzH+wS7VxFM2Eg@mail.gmail.com>
+In-Reply-To: <CANiq72nLzuCXh0r5W0HMM36f9yTSQfP9yCxXbzH+wS7VxFM2Eg@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 4 Nov 2025 19:35:35 +0100
-X-Gm-Features: AWmQ_bn9ka2mYlunhef8Qs1JQYv0mviCoj_SNM7trLL_sBiialuKhkFBTWi90tg
-Message-ID: <CANiq72nLzuCXh0r5W0HMM36f9yTSQfP9yCxXbzH+wS7VxFM2Eg@mail.gmail.com>
+Date: Tue, 4 Nov 2025 20:06:41 +0100
+X-Gm-Features: AWmQ_bnwMN6fmA9J5YYRK5sVTYidOU0VW_dN7yFlDXkN-QCauIAosWdhzgT_uW8
+Message-ID: <CANiq72kYYu9C94aY72HK1ELSmvktF3nq+G4+smdAW_Xaxw1kqw@mail.gmail.com>
 Subject: Re: [PATCH RFC 1/4] rust: clist: Add abstraction for iterating over C
  linked lists
 To: Guillaume Gomez <guillaume1.gomez@gmail.com>
@@ -91,35 +92,42 @@ Cc: Alexandre Courbot <acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.c
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 4, 2025 at 3:35=E2=80=AFPM Guillaume Gomez
-<guillaume1.gomez@gmail.com> wrote:
+On Tue, Nov 4, 2025 at 7:35=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> You can use `cfg(doc)` and `cfg(doctest)` to only include parts of the
-> docs when running doctests (if that's what this is about).
+> Orthogonally, the script that generates the doctests could perhaps
+> help to automate some of that. For instance, we could have a way to
+> specify an "environment" for a given Rust file or Rust `mod` or
+> similar, and then every doctests would have the code prefixed to them.
 
-Thanks for the quick reply!
+I guess this could probably best generalized as "tagging" doctests
+with custom tags that `rustdoc` just forwards in the generated JSON.
 
-I think this is more about having some code essentially "prefixed" to
-certain doctests without having to repeat it in every one. Or, more
-generally, to provide custom "environments" for certain doctests,
-including perhaps a custom prelude and things like that.
+Something like:
 
-So one way would be writing a `mod` (perhaps with a `path` attribute)
-or an `include` to manually do that. Or perhaps having an auxiliary
-crate or similar that contains those mods/files (that probably only
-gets built when the KUnit doctests are enabled).
+    /// ```tag:foo,tag:bar
 
-Orthogonally, the script that generates the doctests could perhaps
-help to automate some of that. For instance, we could have a way to
-specify an "environment" for a given Rust file or Rust `mod` or
-similar, and then every doctests would have the code prefixed to them.
-But I prefer to wait until we have real users of this and the new JSON
-generation.
+would give us a:
 
-Using `cfg(doctest)` in some code in the `kernel` crate wouldn't work,
-unless I am missing something, because we wouldn't want to have a
-"parallel `kernel` crate" in the same build that only the doctests
-would use.
+    "tags": ["foo", "bar"]
+
+in the JSON. Then a custom generator like the one we have could do
+whatever it needs with it, including prepending code or other things.
+
+Now, I see there is already an `unknown` field in the attributes which
+already give us the unrecognized ones, which is great and we could
+potentially use that.
+
+However, should there be a particular way/namespace we should create
+our custom tags so that we don't conflict in the future with `rustdoc`
+ones?
+
+I have added it to the usual list:
+
+    https://github.com/Rust-for-Linux/linux/issues/350
+
+(There is also the question about supporting the old non-JSON way for
+things like this, but I am ignoring that for now)
 
 Cheers,
 Miguel
