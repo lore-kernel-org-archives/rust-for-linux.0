@@ -1,65 +1,65 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C5822154F
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 08:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD163126A9
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 08:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762245549; cv=none; b=VbXtbhI4ae4uV8Sbv/IDot9z39Xv0E+G1cldTdQHpXajG4Kr1jUcHRg8SDY2ZTIQA5kOdNJbgNekX1OmW9iprDdSN2PC3IHJpw1fdkg0bLZsHuDw6ixNlOB3Pifn7AhbdKJ6Krd32GOVwNFch/5t/A6MdBebwz+uxTH630mfKhM=
+	t=1762245570; cv=none; b=kh+vCURmoU3GnmrxGvZ4ttsrULayFZ0ZsqvqCpjpmjcq4msD62x1ekGVD2fWOC+T/47jXUtL68abXqh1NeCXwTURJdqCpMEPx3Thr0vg9ygTk1CA6xWr555hV8nnhXwfid47oMSuLcOPIcxjNfcmFFUSOba7od4CcJe14N7a3gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762245549; c=relaxed/simple;
-	bh=t3IUp+ARaNaB8wz2LKnZxVPm5xytJ0pZwMX+fyMtQ0U=;
+	s=arc-20240116; t=1762245570; c=relaxed/simple;
+	bh=h2sULprMiu4wN4KAUeGPmQvu2wQnnQR98dqeeRGDV44=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JIr61kbmvg/cwObVgQjeL0jHdZPzrrV1fRLGpgGg1BkQlXDES9oIm0ZL1lzBRatLLESf2w/mBZJi4gbFPcELHnRUigrX0iowpJH7dvDKHhlsncu4aRpM283mMEU4bp712to+xnGU7Ir9zdzD4T7fjMyDGOAF6UD/dvF8J+TfSIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ijSniAux; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=r7k92/J07LErbwwYvPVj77hRtQWKOdwfJ7EHdCL7qdfF1AZqTGywpLibf7j4Xcj6Wx5JiM4x7yr5aPSnMTnTcr6slNEcpn8x3xD1YWSARosEORn1DPt28ljV9d6dc8sqL3KoQKnivaoBxtzKK70VrHxcg7ERVawJ4bSMdl025+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=no1UisIr; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ijSniAux"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47717c2737bso21322355e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 00:39:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="no1UisIr"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64095177aedso4269676a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 00:39:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762245545; x=1762850345; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762245567; x=1762850367; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9WSx4j5h/K35W2b1U5cMePqydBqgF/bke1+7wCGvmmg=;
-        b=ijSniAuxKDJPa4ZM2zvcejUKc5nMw6zIDhWVwoTLQ1FtbnQOnGWgEjslH96U4vHTVs
-         LsSPJ/nbCiGpK9HU9U81zUq2js5wDH15U9GuVkUJdR+JR8G+YXrmEZNfUt6QZ1BE/rfK
-         gb8MGr4tujpX/goxMK8KXOhRkT5Cw6aXgsljJLQrAGZ/Y7X0UIW4rrR9b0WxPIjzo7f/
-         nVnwkaLRIiI8fW+3c+2ijNff93rdC7jNobF1bDfEZwPvSJ7h2kU840OgPjy8Wnf8TjkX
-         /WA0+HuGN0Qw4B4ExtAIcLLJRiMH6dC46OL5OLibEEEokx7D9RVnc9ryHOcctA9dsmct
-         YmIA==
+        bh=rXJXC5xQMOSakE6z31ZXBIwOFgfH9N+KP/Twx5AGmg8=;
+        b=no1UisIrJsCM7qet0NJuKdKWova2m4Ls081wkarfe88DruZ9Pwz+a3hlgoH2qy4/e6
+         moi984qQbD6EL1DN/YEJxZTUu8CWZr6hLfOqZ0AQlj6hanDC2RXDgl9kzp68OxZbGt19
+         J2ByH2dYKW0pTU7lwFHJF7rPr4rR8iKqzr/Sy3iq1fsOKh6PQNOIJhUVBVLnhH06/egG
+         FgSXgpIfZJ7cupeS13XjcLNB4shcB8bvxGtLtMJpw8VptsbDZBuTU5b1V6boMsSQJJsP
+         DkSo43H4A4B8vEZiwJQ+1E4smYePfueBa1rRfv3DrQVPJcxIXNuyMbmgeH/vdomqSFxj
+         AtWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762245545; x=1762850345;
+        d=1e100.net; s=20230601; t=1762245567; x=1762850367;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9WSx4j5h/K35W2b1U5cMePqydBqgF/bke1+7wCGvmmg=;
-        b=EofUxFKEfoBn9zZYt67S2vA6lpaF8Nu1XZ32Mxv1W/9pQIUZJK1LWg20JjrI4+zULn
-         GS7+BMHfpoQaGkfXLqEvhOALR2dqZbJo/OWPAX+8E+A5G1TbL9QBCvuWYV1C4T1ZY8kY
-         AguIIfwJGOzNls4+CHPOUGyYa2thDpu9Xb+H3TkIgc5X5c5DFtoIxrSamdSvQxqE/LPZ
-         nJrkmSP1z9wOqcNrybqeo3cUfh1lF5HEy5oI36Kc3Ps6wbDOWyph6a/BYQbLzwCA8EO/
-         3F0pmTVPzG86DcPoAUVDweYgmJ6ziOjE0/q7a/nE96BLB1uK46CJzkEcZLEGsWe8O4WN
-         U+ag==
-X-Forwarded-Encrypted: i=1; AJvYcCWqEI+k10boAaeuxbr6tjCPrlPfZ406Pm7M1KVoFH3gdaNiRMG0nUH03i47lNLyKhX8wQZ6UtTWR5FGUGZksw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyybvZnuGRmlgnzf/UBZ3+8no/leg6LufM/ZygsgEYBAgOf4dh9
-	W7fWvzT1yTetcTuS2f0T8tg0dIuVmuf7YbYEJcKowYBhWjlJefF/yvYLD8QNlOSLtg+qhvs6PRT
-	SZJbnY8yR9ZPv17i3vw==
-X-Google-Smtp-Source: AGHT+IEsoqg3j0WNIpG5vxJRX/Ibh5LrVrCjTx9dh/pWH7qA/STRnKJkdScMyqeumJblHqnk9Ea0X4NaSd6gQqo=
-X-Received: from wmbb2.prod.google.com ([2002:a05:600c:5882:b0:46e:2eb4:38d])
+        bh=rXJXC5xQMOSakE6z31ZXBIwOFgfH9N+KP/Twx5AGmg8=;
+        b=X9NYMacaIqbZeUorU+EgNa437ckbYoay4+RtP5F0rjbS68XNLaTF/V+wvqAoG91qFO
+         cm27kHVYsR+Ks5VlhtNGlY+0pzYbeinAlWDn8PJjPrPTedz+MgVa2UrLFkhWuYHWEEXB
+         OvB/4Wixb3VHj9pPTpo1DnddvjzgjaxR6ObzWpRl7q/BoXKAH8v+sm4sDym0w5yG5LfR
+         5Ssrnm1M094XdvYOYiMX81GeLjSdjWX6xVK4cAs90bLkYMNdxE0uzgf3ux8NJ3SlD79o
+         QdLJREKQo1PeoOKRjY8prJoPo6cw0Lc9Kktt6WWLnylKW09coVa6/5bYgZJmqpo+wxCw
+         uIIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfg0bZQCPXTMnah7dCpJfsqwiRC/mUPYKSsdfC3Td6PYhtRPJTXjZaF59YCkgFnSGs0T0m0DwwJGGG2i0xkw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyki/PgFs3Yi7eOxHYEqvQqk2gdi7jvqlnKcpsSUQBBq09kk8HL
+	KdAs791j4YwVnE/paFZyXAwzlGlwSbI0lEtv2ptlNIjRf5UaxZWJIceZv9agTpByVA2vmkCcM7E
+	i38V2M3Ims2FpLy/qQQ==
+X-Google-Smtp-Source: AGHT+IHkkLru3RbEHbg6oteE557RNvxiRGcW+0DLs9KKkh37U6J5Frmy/B6gSA4955Mr/WPDvyloEY0RzOh+CrQ=
+X-Received: from ejclm4.prod.google.com ([2002:a17:907:18c4:b0:b72:41e4:7530])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1553:b0:471:16e5:6d7a with SMTP id 5b1f17b1804b1-477307ba7d2mr133828385e9.13.1762245545262;
- Tue, 04 Nov 2025 00:39:05 -0800 (PST)
-Date: Tue, 4 Nov 2025 08:39:04 +0000
-In-Reply-To: <20251103190655.2326191-1-dakr@kernel.org>
+ 2002:a17:906:b859:b0:b70:b077:b948 with SMTP id a640c23a62f3a-b70b077bc3emr512890366b.35.1762245566871;
+ Tue, 04 Nov 2025 00:39:26 -0800 (PST)
+Date: Tue, 4 Nov 2025 08:39:25 +0000
+In-Reply-To: <20251103190655.2326191-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251103190655.2326191-1-dakr@kernel.org>
-Message-ID: <aQm7qLybSn6bOlCy@google.com>
-Subject: Re: [PATCH 1/2] rust: dma: make use of start_ptr() and start_ptr_mut()
+References: <20251103190655.2326191-1-dakr@kernel.org> <20251103190655.2326191-2-dakr@kernel.org>
+Message-ID: <aQm7vReThpKDOO67@google.com>
+Subject: Re: [PATCH 2/2] rust: dma: use NonNull<T> instead of *mut T
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: abdiel.janulgue@gmail.com, daniel.almeida@collabora.com, 
@@ -69,22 +69,11 @@ Cc: abdiel.janulgue@gmail.com, daniel.almeida@collabora.com,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Nov 03, 2025 at 08:06:49PM +0100, Danilo Krummrich wrote:
-> Using start_ptr() and start_ptr_mut() has the advantage that we inherit
-> the requirements the a mutable or immutable reference from those
-> methods.
-> 
-> Hence, use them instead of self.cpu_addr.
+On Mon, Nov 03, 2025 at 08:06:50PM +0100, Danilo Krummrich wrote:
+> In struct CoherentAllocation, use NonNull<T> instead of a raw *mut T for
+> the CPU address; the CPU address of a valid CoherentAllocation won't
+> ever be NULL.
 > 
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
->          // and we've just checked that the range and index is within bounds.
->          // - `offset` can't overflow since it is smaller than `self.count` and we've checked
->          // that `self.count` won't overflow early in the constructor.
-> -        Ok(unsafe { self.cpu_addr.add(offset) })
-> +        Ok(unsafe { self.start_ptr().cast_mut().add(offset) })
-
-I guess this shows that the mutable/immutable requirements we inherit
-aren't actually what we need?
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
