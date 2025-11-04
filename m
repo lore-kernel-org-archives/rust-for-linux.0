@@ -1,89 +1,116 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E746313528
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 14:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C246C2F7AA7
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 14:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762265539; cv=none; b=m9iooSJBGdWopO27PTp7v7EdWfgihJfm6CSo0NRZpEva0GHQsnxJD+7A6qgGKxcqoOeW9KX7AVQ3+uEvpLKXKrt4ZSmQ3Hm9Kwatwcu6OPEySqCHT3ERnUMjGxcbiNSFgsk3mJ8nvkKlmMuRvuZBihH+MbyM2QcClI6JQmB6Kbg=
+	t=1762265665; cv=none; b=BH02U2d1VytakxRxx3nG3rUeJP34ESgeOPF66bBMCALO2C7m5IaOUP3UjGFDaXcHOGTSGWKqaEsksvjdEfOEmEnPVvnDw/E5Hg7ZbMhxdnBI/5rSeujFvKV5YFwl8jtVA/EatGgKBpVEI/F8tW2Sds30/7H4G98Ie109vRXUkv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762265539; c=relaxed/simple;
-	bh=LYroiBGaiqJFoYRjuCQFvHWZlCK3HdSaFOb38tGzgTY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uLmBrG1Mw8USXa0Y54J8/n7xy+g0a9sdv097T88JZG/lgZ9z2bel3Vi1aPm94PxChhwi8LZOw+KJU0IMlkccCECifUoSmMGopeDAZkLADJYSfglyITkrMsDaSf5+YPRvMFIBlrVzdYD5qYoI4YMH2WUpozVaZ2CkEsp2rcL84DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YXMOX5l0; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1762265665; c=relaxed/simple;
+	bh=SGP8JF92L/6RhRBwWPU+X1229HHx3P2St1M5nRR/lJ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kaW6OGYMIRXhLaOnwdV68TvbcVkDishsowOgBGp2PKiHGheg7PN1GeDGrvPjXNZyLesYBLa1TW/mafYKQGCJCUHgFFJqeArzqg5la6CfQKuf70+4GI8NqlVUr4iLst6GF8LiDCYd5HxCX++EB0nZP0g4qv2lBnYsecsRMGYwgMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y0EojjdD; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YXMOX5l0"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4711899ab0aso48585995e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 06:12:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y0EojjdD"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b67cd5d88ddso416536a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 06:14:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762265536; x=1762870336; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AEcbNaHwwUu98mMFzjQHBl3Ur9imCbSK1SRamisoVo0=;
-        b=YXMOX5l0MCa98HOuCNOLye8nzmjYKfBO3kDRL6JBOuxbcgBo7g4yru2YpyqVDMtqRl
-         EE3hHfFKUTIAvo0tkLz8g98Mpfv/FhQNDkJjXSEwItYkmd5UDIwC6zSp/cW5T0oZyjzf
-         ShvlfIgujf21CNtUC8npNQ3GGBFyQWOKdxo4IQRZzS6+NbIO0wKpYVUtAt69ndCxAxHP
-         O/IKsWHTw4fUcppJ6+VhVXwXUTkO4cY0dWpVbgkjwqQUWy1VDgdR1v8IcYojDbASzOMl
-         RNCri5PPoGAh23ryrD7HQP+DJV4aH/eMDCJ/b+jqBgR44EtMkJxqkM5AneyvrnIAhiPE
-         xfqQ==
+        d=gmail.com; s=20230601; t=1762265663; x=1762870463; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SGP8JF92L/6RhRBwWPU+X1229HHx3P2St1M5nRR/lJ0=;
+        b=Y0EojjdDxEpPAAdeCQL79Dmy99njNLdmS79Goutog4QWcxc1f0DC8XpkjrwSgvYve5
+         VCLKiZf7g9P2WjR1Zvz/Ki2KVk+BpDxwYx+CILMQ3G/QuDKU5dQ7/3vJO0zah14Mu6dt
+         1eVj2U1X3/IxysiDba7anRaFuspZ5EK9D1E8SBmm2dTCWdKRLuB7TpcyZ7wp0hC2B2Dq
+         B9J6qBG6zOT9nD4K7br0YD283D5nKtKvb/UvCnp3VWcYL1bLcyMNVBa/GLN4sRgNUP6w
+         7psSqmv6E1fwzeItWE67DMAMgxttQJO/GAsTXtpwmDjCu47cgiYek3n5SRLVUWDxJ1Wi
+         hMDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762265536; x=1762870336;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AEcbNaHwwUu98mMFzjQHBl3Ur9imCbSK1SRamisoVo0=;
-        b=Z+Trhbmo/fTOf85wVgfQ6wHdgH5fA5ToYS6GKM7nnXZh2QtrbvZMiALVg8f90OdOnM
-         77JI9QmkAa7HttsvwYnWN5sfFIEuu7QeEXCGw0PbaqKAj2w4jaWWNLWt+c28FxzlgP6h
-         pa8eJT+Ah5W0p8b6ANubODLLZP8ysLAX4VzpsHpaJdCaRGhrr8EwyjstSxzYe2dIGlnw
-         D9LPlFJRH49RPzOuR7UyFJZ9TuuplDZlgNBA1fDRI5PhYiGG3I8wmQbBawRgFxSbAoOu
-         7aSqn9RkfwJkP+/P4Y4xDy1Yqx6zG45bRoFck0lA3yiNvLvbdJCcqX9SZvlc0u3c9J3K
-         /KtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXKeQOvXSyd+TQ37pPRUKSWk1t9/GvYIwddxxaO93stwsqnLYJNNd4WTIg7BxCYcH/L1zIWzLIJcphBzjhsQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFPhIS8G/kVjTmXcVQrOFb10+glrHizeYJi4xWNoVbeMu0EpUt
-	u39iHab2vnVbf4+CBlLePse+0IgcLM0TC60qFeE8KjXe7W+Sipdm8lmKx4FXb81MgHA7NX9ni8S
-	wxt+aaR6sVTGMBiUQow==
-X-Google-Smtp-Source: AGHT+IGmpX17CaUkQY1Gxu1oZZH6fZFyNIPKiUmNUKaWbFGeyvKLHWQP3KgMrQGejtswKORq1dCUqZB740zTpoM=
-X-Received: from wmnv20.prod.google.com ([2002:a05:600c:4454:b0:477:54f2:85b7])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:538e:b0:46e:5100:326e with SMTP id 5b1f17b1804b1-477308a1198mr141637275e9.23.1762265536653;
- Tue, 04 Nov 2025 06:12:16 -0800 (PST)
-Date: Tue, 4 Nov 2025 14:12:15 +0000
-In-Reply-To: <20251101-b4-frombytes-prefix-v1-1-0d9c1fd63b34@nvidia.com>
+        d=1e100.net; s=20230601; t=1762265663; x=1762870463;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SGP8JF92L/6RhRBwWPU+X1229HHx3P2St1M5nRR/lJ0=;
+        b=i3gX+ZQ1Ez/dZ+y1m9Y/e43fRgchyOiMM0d5EKi435WbyesB3prSEvWhZUSoOEFbMc
+         IJhnELDXyO0CtOKEWLIKCLg0Yrnk4sq7M1W0lM11gmUyGscJT4N4be5Jf7xmQC8dIurz
+         zSsi6dkpUzYKXEfoTgRdcVVpCZ/ogUOkVu6JlGAkvJ2kiopld+Dpw5yVbZWMzNEdKDLz
+         jGkM3jLoHx4Ab7R1nU8MZ+AhbuzC+4hO38lErajDYMAWA3J5RpuZp7VjjvFHg6Uoyhdh
+         j62kE04AjhbQZgbjERc/kMwTQBtBJIorlkUEq983QOz/4/HiyoxdwmZEdG4W5YuTxFbq
+         xvUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqFYjA+ZieMInik2yj10+xFQ3voe1UIc65RUh7U2x0KC6xLQc/LZ1JLtXefxEmzyp/7DcgIC4NESGlfitsTg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZq+1s422L4HOZb5pX0k4Zr6ITn8zRyXvPrSc+SwFw2AaCNsN5
+	OJ1G79FnaKBKVtvKKpCUlF06mOgO/MN/vbTbqKxbaQb8vVTuHWS9kAedDXjlm90mgvOtgabZlbm
+	RdS3M6aGh1+UstiqxKlzjOdU2qM1QYU4=
+X-Gm-Gg: ASbGncvJxyGYPKnvoRCwEExTJCF46xM4L10rSWGmQkOs8f2Dq+j95mOoOyb3wv9RT9t
+	OC3dwfdqvMoGplnknEv1Or94SLwXIP8elbzyPDSYaWLw88XRHQw8xLpatVya1aHG5BTBkvy4s2t
+	apt338fHwSdVnZWkM/thTQkA/3SZMVY6tfYpKCnQlEf1W4esOLGuAf5Fn9lUtrO1eBSiFrP7fa8
+	fu2SBRKRPteGP0GQcnmkJwa/nhjtt4zJC3Sf3VQYgvdcy+Zl37ZzymhJ8n+xoC8iM4nkFfcugXu
+	I6KokWB6tXwOPNN30RoZEa/KxWzygqNYanEp09dLBFiCVrX8NAY1ICeLbWyjioYcdJYnZopzNBA
+	mbDYGm7fBDcZyvw==
+X-Google-Smtp-Source: AGHT+IENtmho833wN6Y44k3ZoLlyo6il7Q9SnD9Us1MRf94Lyv+kyTvd1By7QWzNerf9flzY0EtIawjmGFkh/4m0d0Q=
+X-Received: by 2002:a05:6a20:c89b:b0:342:41fd:38d5 with SMTP id
+ adf61e73a8af0-348cdb00a48mr11418895637.7.1762265662997; Tue, 04 Nov 2025
+ 06:14:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251101-b4-frombytes-prefix-v1-1-0d9c1fd63b34@nvidia.com>
-Message-ID: <aQoJv3k8sJvbWaF9@google.com>
-Subject: Re: [PATCH RESEND] rust: transmute: add `from_bytes_prefix` family of methods
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+MIME-Version: 1.0
+References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club>
+In-Reply-To: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 4 Nov 2025 15:14:09 +0100
+X-Gm-Features: AWmQ_blFZtrhuRadtbS8ZQwPdHW79l05pO_B3UA9ukD7F5PYPPp4Mnzv6n9S5i8
+Message-ID: <CANiq72=WZJ5=UACpFLWCVJ7mcXbc93X9MyYAZP8-0F==2b0adw@mail.gmail.com>
+Subject: Re: [PATCH] rust: kernel: Support more jump_label api
+To: chenmiao <chenmiao@openatom.club>
+Cc: ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>, 
+	"open list:RUST" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 01, 2025 at 10:41:21PM +0900, Alexandre Courbot wrote:
-> The `from_bytes*` family of functions expect a slice of the exact same
-> size as the requested type. This can be sometimes cumbersome for callers
-> that deal with dynamic stream of data that needs to be manually cut
-> before each invocation of `from_bytes`.
-> 
-> To simplify such callers, introduce a new `from_bytes*_prefix` family of
-> methods, which split the input slice at the index required for the
-> equivalent `from_bytes` method to succeed, and return its result
-> alongside with the remainder of the slice.
-> 
-> This design is inspired by zerocopy's `try_*_from_prefix` family of
-> methods.
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Hi chenmiao,
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+A few procedural bits below for future versions/patches...
+
+On Tue, Nov 4, 2025 at 3:04=E2=80=AFAM chenmiao <chenmiao@openatom.club> wr=
+ote:
+>
+> If finding the offset from the primitive type is necessary for this
+> implementation, I will abandon this change.
+
+In general, this should not be part of the commit message, but go
+below the `---` line.
+
+And if the commit is not ready, typically it should be marked as RFC.
+
+> Additionally, support for the `static_branch_enable/disable` APIs has bee=
+n
+> introduced.
+
+Please split different changes in different patches if possible.
+
+> Signed-off-by: chenmiao <chenmiao@openatom.club>
+
+In another email you used Chen Miao in the From -- in general, please
+note that the SoB is supposed to have the "full name" ("known
+identity") as you would normally write it. I mention this since
+sometimes people use the local part of the email address, i.e. `...@`,
+but that is usually not the normal spelling of a full name. Of course,
+please ignore this if it is correct already.
+
+Thanks!
+
+Cheers,
+Miguel
