@@ -1,133 +1,100 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611512EC097
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 19:06:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB54C1C5F10
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 19:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762283215; cv=none; b=ngGMd4CXc8tKXIGsGrC823jCe4nb/mvd8FfgxUUGZJ+hQWX9raAidhXmd3GLf75ThiB651s+pe9vfrg5rrKIJz1Vxtp8uYQyVmu1MwQnoTSQZuUJyEAHEvddmBWyPIgcfJq9RhkI2Ma8H7PGhFUtPu/2CqlHsyPQST7ZvXxMQjU=
+	t=1762284236; cv=none; b=s2ufFOUzwGzPQN/DYatrRiKxK0uSGXQgck4AexJhreJOMgkUyfSBLJJ4qWQ8737YBqXpMjcCKlPXsp2uLKmv0e6aCIbbpVp+5Dagcsq5QpfPlMzI8/u2MczkGrxg8y/t6geGwhnr5KyUetw+OJGUK6FKRFcjMNZ69R0Kl8zqpTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762283215; c=relaxed/simple;
-	bh=hcYL8k8PGVIqmqm+I5iUSWXrgxNbr2ybXnIE8pG67Wk=;
+	s=arc-20240116; t=1762284236; c=relaxed/simple;
+	bh=NqeaPpBSzYADuuHCmtIk20h3DrnAs8JxaBG6a4X0D3A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lwLFP+1lzzTIAls90nCgbptoIz07Hjxm9dnMGhKNibfZN3vUGecEP5w+KL1BHjWZcb23XPXnXB5je4VWq+j+R8HtM/lUz1TjjQGxOx9F1AMbLd2cm2h87i/6lTMAo9GhLt+ze1YhRFE3MOvZjmoVfxUzkhMYo8rdDcFMlkxg0/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UG10ciNg; arc=none smtp.client-ip=209.85.210.174
+	 To:Cc:Content-Type; b=ZS1x0mSpTO0qMnvvBHyuyVs9cGgdJzb2ejFh8jR+BZttNZQV00wBAnQUz4+INcYl0Kj3OHOSXwU8OrsT4EJN7nHYZVJuAeFlzxZU4WMsF0jYFMOdQMvAfuqiCzA5vxnvwuTG+NuK9JXvakZtOwiBauJt6ihBeXrIYzK23yVZnhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DPPbhn6F; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UG10ciNg"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7810af03c69so223204b3a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 11:06:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DPPbhn6F"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-294e5852bf6so9024025ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 11:23:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762283214; x=1762888014; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762284233; x=1762889033; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/wAeCuRxzb2BXeoNq8+i8slzGY9RtvDmLaGwdLPgLzA=;
-        b=UG10ciNgrf/5ojW2OtFJQcHE2fJSXCWmmcV+prCD+PLOEXg3Ev2RxMDBZKAZFWpocO
-         MdgmuqQvRvNCN3NQMPdhqYS7Z9qQ+fU7ANUcYYtLfyKwD3PPR9VdFv9Yxk4tBeuJMacE
-         umT/NGniNcvyJvj8PPAD5lQpGDNgmedXOyj7BIJXATbUGKVn4ut11pdspoHl7XxTJQpe
-         HZaVZy0sO61d0OhoASIIappR2wNFBa0BCkdenYyaM9g4d+Cb8hFqf6hXDSReLXYlzotW
-         BSsGYqbPjwQbzwo//TfLy8ueo/n6Lk+eYKPVwXBkQ4iSlh28aEObQxBjgt+9hvihXPw0
-         nRPg==
+        bh=NqeaPpBSzYADuuHCmtIk20h3DrnAs8JxaBG6a4X0D3A=;
+        b=DPPbhn6Fl2RtdKfVw5zJrf2q04vo61SN5jHglAzRe+LogBirALLCM8H2Rb0W5Ox68l
+         zq2GUEF3FcaxH5J4sy81zATrTGE2GR2eW8nnZ0lkPcvgBpf8nOeidd/06miY+kAMZB+P
+         AnAsa8SFLH46FCq6g6FdK4RHyLcMOwKLX0YkziVxCO0HTqkurKqMyBvbFubBO4uhOREX
+         tFIpHP3DNC1LpL6dBSFmUmJ/XhZqsu2PmS3M1jSrssMdpSeZRSQw2cGiM9vCC7J15PMV
+         czsE+7pU+RnrXeWunughC82mL7PmT9vRvlU/znDZkb4hEPm+3BwOlDAbwJV81fZolI3W
+         1M9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762283214; x=1762888014;
+        d=1e100.net; s=20230601; t=1762284233; x=1762889033;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/wAeCuRxzb2BXeoNq8+i8slzGY9RtvDmLaGwdLPgLzA=;
-        b=tgDA4FinbJJeOkMvh1jIYbzpYq+GMCFTriEp771i/BSSjPcWJ3QDBuMGa+begywFMK
-         rfI5ruqhicWNxftJhMKnYbEdT2/Pnxq7EQxyc0ZhZR1aFKxMMyilhTEHysB+aBOjXjNf
-         A6k0f58FwXbcKO+Ad1crXNqhxB7bqL2BhqLCjK3SUIUkMjyVYk86pX9CGVvIdp5pUWMb
-         v5Uis/S/LU5tZb1kmpJv3sV0p322Z4cp1cfiO0YnzzMPG9QFQB4yZOuyh9fFQvi0ZFpJ
-         9/nyYaYBsMn9dKxlHiPoEbiAiFwrSHhcXvT099FIibdv/y/oREMwnorfgcCz+op5VlZ9
-         9QPg==
-X-Forwarded-Encrypted: i=1; AJvYcCW8HICgE/gzc8dm3WJ/ytiXBYmzunLjfFsHz6Zetj2RLOH61ZFaelo7PQ3BQA9sFyI4dpOYyEbaFMeUoI6gRA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNqLtMwV1wn22jC+oO6T+4b65WOegnXO71aHcwDmNI0Co6c8EN
-	YsvWI5vQ6C9qE2UG+b8RKNHR2Gkr2804XOYJZXVnaewLm8uV8V+F4T6+FhYOIW4VzmwVz+jz+sf
-	r6ih/XGiRfesWOs4XDuZuM0nq33t49jo=
-X-Gm-Gg: ASbGncv3DkgJ5sagCAyPHLz9CpJ/rdBTVQRC1LTjrSb2y2YMvg9+XJ+UiNjBIo1owwa
-	+YZRCxzDI0Y9nCcp8k7vGYali6yhS+aUaZuL0k2pfi0/i5C2bbyLnp2k0tOZ5ED6Wig0o2qPMgc
-	Djjybo/7+5yhrfe6wPb2jHgCA/cserwXljtb49cUYtbPtj41ME5yaZ0IoDMmpNKchnhaqXbkW42
-	ej0NOc+b+Y10nzqBTZp6k7IoMhD1ZE0drT4/koz49ez88S1h+AfPHNCSvAFaOX0WTRF4LdutK+b
-	rL0NRgQCS9slywzadVLY6TANvT6l/Mfpj5Vjz845JMKQtSawYU5/oZhx8gOzLTUnGsfQmA7iLPm
-	ipso=
-X-Google-Smtp-Source: AGHT+IE6zMw0orjCDwKe71BtT9keGPs74U4T3Nt51J7XxmrJZBuNOyX0hJ52/hdnOd+9OYS5PomAI+ZTVm+Zm9uBsjU=
-X-Received: by 2002:a05:6a20:3d8f:b0:341:29af:3be7 with SMTP id
- adf61e73a8af0-34f86d04830mr209534637.7.1762283213593; Tue, 04 Nov 2025
- 11:06:53 -0800 (PST)
+        bh=NqeaPpBSzYADuuHCmtIk20h3DrnAs8JxaBG6a4X0D3A=;
+        b=BkUghvRLPgbm8cWmEeUCZZiAlEyANNX5FuqJtuTQBZfa/xXbnLBjPFaS6A9kwNs+eV
+         849+G/7cNTKq01veqkrlLnWYg/ZzW8v2mQl3XXptfEuOTAovQSF4sv49zNYiPl4sUfCV
+         SZpidbLiYO9V1dXXK2ODc1E/cfEZt6RQ/mpxMwbveuLPfJ1f1m8+POnKygb27f5OZFoT
+         vtkQsx2eab0WGe2aZ/MS7L89EayIFirb/Kvjwl4gn7xm4oBeU82rGA4jm9fGY7+MIf9O
+         MN8GBsWwC08PoP/Qf/x+igdgKdQKOW37OCh/mZ1bcYbuJvMDoeKTJulIVlQH3gb3AOrP
+         HViQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxVXMtfxL0LCp8lA+2tBVbXEyDoiD8kx7zD+8eL9pko1NezkBvD0PdqkgqEAO7Pk33ptb4XfgdgBxmS/+NCw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGdGtcwBdshFlDEd+2WWiwfcb028/CVQZVgfog4v9nHXUjttwB
+	LJ1RHqILieK+Bb922Ey34FxI3icd/W/hqPNELPJWpZq9btesZsG5Dw9WMncnF+izP8K/y9TeEl+
+	dzu9aqdP98zXUq8Qq0NCgUgtuKbKLvAY=
+X-Gm-Gg: ASbGnctBHACwKKU1tCwo9oSl6JZSR6FwP6j88RjRxMWOo1rmoroMAfxnT9PM+c9KCVQ
+	1QZ0nLolfz/tthmK83hrrrqFuoHDAIGz5+HEPjo3+nT1U2/5XQ2GKjo7s3H+fg0d3aWEC2WcuHr
+	FupiB05gHVXXc+CzUJlTBnEzni7mjqTTi/PgnTpGvMpUZ4hkj7gLFkqOJfvu4CVqFzjsBOR2ZQp
+	DTkRXNbVpVhM+tMbR6ZnqOH+k3WjbvhC/DexkZxfUbEhEhfLEbcoKCJM+29Et21WiDPiwTL7Sre
+	Pmqn3C+bcc6L1oe+5Y9A2NiqR+WmK9HP9qwEBZM/tLAsE2wSn+rUHqktUGgmKHDp7R3gF5vjDZT
+	OYpg=
+X-Google-Smtp-Source: AGHT+IHCk1/j2mBDXkX8+o2FTVWoribYQUy9xTzp1hxavAo8lRskxPigDirMoCigmuiFNy0hYHQN44kMGg808wTtLgk=
+X-Received: by 2002:a17:903:2448:b0:277:c230:bfca with SMTP id
+ d9443c01a7336-2962ad3d590mr4530815ad.4.1762284233160; Tue, 04 Nov 2025
+ 11:23:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
- <20251030190613.1224287-2-joelagnelf@nvidia.com> <DDX1WYWQNTAB.BBEICMO8NM30@nvidia.com>
- <20251104005812.GA2101511@joelbox2> <DDZYCRCPYMOL.RMTIF0R404Q4@nvidia.com>
- <CANiq72=Cj_gJ27+EAiytxYGYk1dMwu7M3xQpLGByD4QstgDsHw@mail.gmail.com>
- <CAAOQCfQ_d_C7oZ9uq2siJHn1+m+j059qYUMBvTWOnQ5Etk91ug@mail.gmail.com> <CANiq72nLzuCXh0r5W0HMM36f9yTSQfP9yCxXbzH+wS7VxFM2Eg@mail.gmail.com>
-In-Reply-To: <CANiq72nLzuCXh0r5W0HMM36f9yTSQfP9yCxXbzH+wS7VxFM2Eg@mail.gmail.com>
+References: <20251012224645.1148411-1-ojeda@kernel.org>
+In-Reply-To: <20251012224645.1148411-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 4 Nov 2025 20:06:41 +0100
-X-Gm-Features: AWmQ_bnwMN6fmA9J5YYRK5sVTYidOU0VW_dN7yFlDXkN-QCauIAosWdhzgT_uW8
-Message-ID: <CANiq72kYYu9C94aY72HK1ELSmvktF3nq+G4+smdAW_Xaxw1kqw@mail.gmail.com>
-Subject: Re: [PATCH RFC 1/4] rust: clist: Add abstraction for iterating over C
- linked lists
-To: Guillaume Gomez <guillaume1.gomez@gmail.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, dakr@kernel.org, 
-	David Airlie <airlied@gmail.com>, Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
+Date: Tue, 4 Nov 2025 20:23:40 +0100
+X-Gm-Features: AWmQ_bmVIeG-cW8V3oOiaFedybQztgT0tJXqDde7XoeN52zMMEb3dKuMzzPon1s
+Message-ID: <CANiq72nHV+HoHFs_wS7B4D0s4vihPLoCKu7AaAAv2AhCN0d23g@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: quick-start: add Debian 13 (Trixie)
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org, 
-	Elle Rhumsaa <elle@weathered-steel.dev>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Andrea Righi <arighi@nvidia.com>, Philipp Stanner <phasta@kernel.org>, nouveau@lists.freedesktop.org, 
-	Nouveau <nouveau-bounces@lists.freedesktop.org>
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 4, 2025 at 7:35=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Mon, Oct 13, 2025 at 12:46=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
 >
-> Orthogonally, the script that generates the doctests could perhaps
-> help to automate some of that. For instance, we could have a way to
-> specify an "environment" for a given Rust file or Rust `mod` or
-> similar, and then every doctests would have the code prefixed to them.
+> Debian 13 (released 2025-08-09) packages Rust 1.85.0 [1], which is recent
+> enough to build Linux.
+>
+> Thus document it.
+>
+> In fact, we are planning to propose that the minimum supported Rust
+> version in Linux follows Debian Stable releases, with Debian 13 being
+> the first one we upgrade to, i.e. Rust 1.85.
+>
+> Link: https://www.debian.org/News/2025/20250809 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-I guess this could probably best generalized as "tagging" doctests
-with custom tags that `rustdoc` just forwards in the generated JSON.
-
-Something like:
-
-    /// ```tag:foo,tag:bar
-
-would give us a:
-
-    "tags": ["foo", "bar"]
-
-in the JSON. Then a custom generator like the one we have could do
-whatever it needs with it, including prepending code or other things.
-
-Now, I see there is already an `unknown` field in the attributes which
-already give us the unrecognized ones, which is great and we could
-potentially use that.
-
-However, should there be a particular way/namespace we should create
-our custom tags so that we don't conflict in the future with `rustdoc`
-ones?
-
-I have added it to the usual list:
-
-    https://github.com/Rust-for-Linux/linux/issues/350
-
-(There is also the question about supporting the old non-JSON way for
-things like this, but I am ignoring that for now)
+Applied to `rust-next` -- thanks everyone!
 
 Cheers,
 Miguel
