@@ -1,255 +1,123 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013054.outbound.protection.outlook.com [40.107.201.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8038D32C949;
-	Tue,  4 Nov 2025 14:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762265114; cv=fail; b=U5dwz7ixZ834AZDxCEamUtsMCGVeiwLXHVAH8Mubp9n30YKxRaxRfv5Kj/JWOpJUNsrlBlt5tWZnRe0qUGvXBJX2jdBLUtl2cu5XgMdTFa8Z7k5459cuI3aCsyhdRLuUf6V1Mo6jdkLwHiOD0X++5Y2Ci1KsYlH6esdbK69mj3w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762265114; c=relaxed/simple;
-	bh=a32vJoGObDF8wfpltt+HdbmMVgLs/ZSSJ9OztUxRkuc=;
-	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=hKNMrhgDsGERILeHY1Uo8VuIWexvUXnRbqint8m1+ZPCqiJ0+s4j/2KxGkdWNYHmq6CDXCptxHCW1+59TfaW1Ssv6U59OyQhFnE8tTwBvifIbsYoZybr3EnFOqqC2dy5ATWOpI/eeCrZPwrCONYC7Kk92uDpQ5RbSXIiscYFpas=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Xi873wuU; arc=fail smtp.client-ip=40.107.201.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED814327783
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Nov 2025 14:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762265242; cv=none; b=dz+HSd6A8aDKim0C8EtKM69QrvmkmHuPSgL5C12O+dUJLGvOsyPBryVdbR2HHD9GcBhpc9rlonHnAGTuTHrGVnnn9mI30N6s4TPn/pvAHRuoOGZ2bbSkXxwEMHltq2XXCMA66ZZLs1IU1n6+UkhB6v9VF2hW1qhSlV/tDFUKnCA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762265242; c=relaxed/simple;
+	bh=V/6GRoS3/EkiJu/PAUYjegilbyM/Kg4vWk+H06+F/xs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=E0LPqhvCM+SMiSoQ7bmO6HIb+cfzyN1PG0stRu4T2Df/ZdM1YbTOZKmOP/6vi/gR0XWK0S4asj1mRoOmJsxU3vZ8Camvj5+D/v9ToQIyglPbQdi5yZHa1tmH9S7bPKCCCIZsuu/TTzp0+HyMscEeawqjUcXt2Qe0kK5h98HIZZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YYCnTfs6; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Xi873wuU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Xsr9ndEUoKsxwlezDJPBQyzR29LSf3Ywa6Z3i6ybNNaQhQb20eCcj6/eY6fsk9h8zaafzvoAj1KEG4pwGQpoGGF+qioHSOfy34ZOm0pfPcP2uXx2Skp/3CL2UqOmKlSi6uquoFsluyg4PmOBKvNEZBLCtFx9GMklVCd5wc6Mlj6VpKVHWPJ7OCZdscUeMWQz5jtF7X4o2DAbk2qpX0TVqOo89LEfQPxP2/MJSoDEv4RlXQItv5je7JgXDl72k5ZMuWmMgoepelx0Ros22M7MSICJh7Jd2tAuOKCB98vVjXZJvyqLPxOEV0QZms22xPw7GlpfVPtidqrSSaiFFk1U0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DUt+W6etxZ3XN2UCTpLlJlo5Iod+pNvUGfZlGkSoONk=;
- b=wigQJ8+F6zjKVWANbwcmYUXB7bZTt176eOz4x8AjVnywltLa6J6ZunZT10+VtmCfRzBnu1u99T25oxJ58Beue5PC6MS9kk7NImWL+JqFhYnIZnmfsc1zn7FXtTwm3Hj+8KCcpoi9dFiKwU/MP/UGJYlHKkgKM+KoI00Hb48VY2Q00zdqlM9NaOMsll4aapjAJM4WRw6RqDicCYED9ZCkpi7QDaPHW5+J/L+5zapzCVUnu5e1vGOkxMXbXqnFIqX5vmF5kUe27eOro33aUqKIHfSF5kQ77ZtUorgbqXdjSR8KabixTQ4UAgimz5wq+NA42k9Qb+8+pef/7OmyLkJj2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DUt+W6etxZ3XN2UCTpLlJlo5Iod+pNvUGfZlGkSoONk=;
- b=Xi873wuUBxg4CyFckWfDb+XcGZWNjdcH698y6jePHHdriBAITYPekULaBVydah9hAH+1xcxzQKRYVDbQ7/ttv3rl+nEATpqDV8NN+RTLE4Q+fkRWbYCFqOIbz3NR39HjBKNeZE+XE2TIOrpsdzFh52F73Ie75xjtmXDNQipJwKDgpxsxFfZVy8pmffC4+2hJ7/F38cRV5FHsqfThEtYjCa7RnoAWtT2GPuZ9AugdQDpztfdr/z73lbqZDQAdoR2yE+t9+ap6Zgd2XTi8/h+JSfD4oBOsjxdvY2pXOIYTIEyFKsyyPspfnBxvo66clw+d7+Kfdnrp2xf/I+r+wnhnug==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by LV3PR12MB9355.namprd12.prod.outlook.com (2603:10b6:408:216::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.7; Tue, 4 Nov
- 2025 14:05:08 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9275.015; Tue, 4 Nov 2025
- 14:05:07 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Tue, 04 Nov 2025 23:04:49 +0900
-Subject: [PATCH] firmware_loader: make RUST_FW_LOADER_ABSTRACTIONS select
- FW_LOADER
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251104-b4-select-rust-fw-v1-1-afea175dba22@nvidia.com>
-X-B4-Tracking: v=1; b=H4sIAAAICmkC/x3M3QpAQBCG4VvRHJuyWopbkQO7PkwJ7fgruXebw
- +fgfR9SBIFSnTwUcIrKukSYNCE/dcsIlj6a8iwvjMksO8uKGX7ncOjOw8UdnIEtnQcqit0WMMj
- 9P5v2fT8Mq2hUYwAAAA==
-X-Change-ID: 20251104-b4-select-rust-fw-aeb1e46bcee9
-To: Luis Chamberlain <mcgrof@kernel.org>, 
- Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.14.3
-X-ClientProxiedBy: TY4P286CA0077.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:36d::6) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YYCnTfs6"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4721b4f3afbso22045545e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Nov 2025 06:07:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762265239; x=1762870039; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q0XlFlPd3bHG9no4QyoaPyikiLZTerIShtsBKRlB69U=;
+        b=YYCnTfs68Gkh0hCBvgjC2OdJOcbsVth/iTjjq/bEdxKV7ET4UB+fQc0NV6OlX89XB1
+         YOPAGZK2F6ML0v7Bn+6AEkk1fXkS9Lk0452v17pqaNcpxq6l1G6HdhkJwn4zr67MXJpA
+         TH3QWwcCN4B1wiavNcQagza6myl93BlTXjK9E1lqWnl9fzmL/IUHVlBSE4L1grRbSfow
+         hk5C/g8BIrgiaLDsq0DSG5W8eYsBt/oq2k2fCjYxqRKRRsQ5vJht2tDfT077Jw7hGLfA
+         9eK7eq8Yk2VJpnuXKG3jAZqjNO9s4DHYcD005favFMUZc0OA5uSBDhN/t/Z8OTIuWXuH
+         oxOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762265239; x=1762870039;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q0XlFlPd3bHG9no4QyoaPyikiLZTerIShtsBKRlB69U=;
+        b=dGz/EwJN6ojae0fTQZPS9TwpBstSFz9GNZnMIm4ghIkUs+1TdgVBuqFcCnh41ceGfq
+         a8sYgZOMJkZpDAr4KyNxHelNCmD9MyCrMjBbHy1KcuiVMU9zLcSfQdhk1dPDTiYzg9t2
+         j9zXMwn2jJJLThvmJTzyV5PBoe+sCcK3Su249mPPzCRd/xwbKdL+HiY8BhOnokLJUga7
+         mqYT6kknbLhauFTPjqFl1Y1f1uj+m4qGaA2GvynUyQcD416hJnfJU/z2UTAkKwv7bWpK
+         rOpbPuXpV2E7jmZr2bYVHeuKcm2Cyvk93ZXAlFvWqJPldltsTq99wqOZjuL2Ofv6M2VE
+         DTnA==
+X-Forwarded-Encrypted: i=1; AJvYcCWP8hA/sPt7og+h2eJ62HMDp3FPFj7onUcHG8J+MMKE2o1IcAzifZuXouInutXboXbgCxSIOA1/qUAwmhTMog==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuOXwQ1o7il8DPbBL6gL5i6OSafO1aW5+acu1HFI/KC9Gu8wJ8
+	YMkxrkPOTbXC7cJ/09lZxSa1jRLvRDhn4bppWNKuIf6J2vE6EcC7AAkTPNb4hQIAI2QNReH4a3F
+	iRxLWfZI30LMvDf184w==
+X-Google-Smtp-Source: AGHT+IF7Z9G2NoQdKa0kcEf+rRGi/koVH8onnac1d5yNHUsIXHgjT/z8ZkDySTLnWzF5coxstmOe5U6bx2HqTeA=
+X-Received: from wmkz14.prod.google.com ([2002:a7b:c7ce:0:b0:477:4a46:9980])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4e05:b0:475:de12:d3b5 with SMTP id 5b1f17b1804b1-477308a8f1amr178307165e9.34.1762265239304;
+ Tue, 04 Nov 2025 06:07:19 -0800 (PST)
+Date: Tue, 4 Nov 2025 14:07:18 +0000
+In-Reply-To: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|LV3PR12MB9355:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12401274-ca69-46e0-6214-08de1bab28f9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|366016|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?c29jaFlJWkJiaVNJcERDaUVndDRjLzNmZm1UalZjajZRS2dBYnNxem1LaHpG?=
- =?utf-8?B?aVdPbi9wU3p1MGRGdzhmT1NpYk1DYUZYbXlmSXZNWjlvNmtKYy9PVExIdkFW?=
- =?utf-8?B?SEUxNXdFUXFRV1VOUmlocllFeWFBNXowME9CbU9McnQyWjQwSUNRV0cxTkNU?=
- =?utf-8?B?N2J2S3V1MDdvUVVCeXplRzZxTHpWSVhOYU9ocGFRaHlUSHVjVXFsN2dHM2Vo?=
- =?utf-8?B?SEl2ZGVMZ3ZyL3JOYzFnNURxbDh5NjJDVTYwMDBTVGxEaXVFWGpTMFRSaEZB?=
- =?utf-8?B?YjZTOGRORC9qZzYxWmpkMHRQMEY0QjZvRVcvMVF4Y29DVTk5NUcyald3NVI1?=
- =?utf-8?B?Y3FVMjJlbDFtWUIxdERXMTRBVTlDZUx6bjBOV0k3TnVyQ3FiWXpHMVlYdmMy?=
- =?utf-8?B?OHNFVGRwZVJyK3ZZaEE1UkwvUTB5ci9PcXNJRGc0TDlJeGhCaW5FU0d5T2FW?=
- =?utf-8?B?aHlFVXFOM054aHFhNFpmWHpoTmtmNVhGRUF0N3YyV0xXZFFCRVByWVFlMEhI?=
- =?utf-8?B?RTNxdlJjVWlMa1p2K29mL0hGL2YrbE5sRmVpVWtpOFdLTk1OR3dPMFUrcVJN?=
- =?utf-8?B?Z2JXSWNQRVhYdkN6UXlkczdMOHpibmx2aDZXTnBnS2tXdEJxeEJsM0VoMmhm?=
- =?utf-8?B?bmMzTXhGbnpMSENJOUMwSHpxUit1R2VtSEhQTVpaUzRVT1g2WU55TFlIbGFI?=
- =?utf-8?B?VkxGcFRHSmh4UkZyb1AwQnhYMjBUejFmQmExTWVMdE1nOXRYRmJzNFBwNS9u?=
- =?utf-8?B?dWRhWmorMGpycVlnUmRIU1VpakpsenBVR1c0SXoxYTROeTF1T2tScXRmLytz?=
- =?utf-8?B?a2NVRjI0Q29ncW9iRHVuRHRnaDgvK3N3ZU1jd2V4V2VRYlNtTFRFQjhWNExI?=
- =?utf-8?B?NGhNY0ZHaXpJcVVHK1p4RnZaV3ZZMVJtV0RZbUNLOURkb0Y2U05XeTZtRE9t?=
- =?utf-8?B?dXFhRUc5b3JCQWxLc0hKenhuQUxwdjNZRTVuZzlqNXB6RDdYcmZoN1YramNs?=
- =?utf-8?B?WGppWnFqWUtLaHVQcEZ5WVBWYmY1QlBTaXExR3dhVlcxRXJCZ3g4RjNzckxw?=
- =?utf-8?B?c3BwbUhVZFJoMFNOQUgyS1VHbDRwOFpzUzN1Z3pwbTVHQnhseWpNeFcxMGs1?=
- =?utf-8?B?WjdMS01ZekNaSk5ZNVh3SWZqMXBsYmprSjZrQ2ExMHI0R010VmpQWDZsekRy?=
- =?utf-8?B?dzExVWJGdUlZRExxcTl5R21rK3Yzb0FaS2FRMFBIM0dtNWpSMGM1em1VRGw1?=
- =?utf-8?B?TVdCZi81OG8rOWNmWEc0UGlSWkdKcWgyeGErT0ZEbkU4QVVlVHFTUks0QUhE?=
- =?utf-8?B?K0pCYy9tS0NNcnpzcnNtclBOcDE5V0x5M2RhZGVPVE5WakhVT1RUdXNXN0Fx?=
- =?utf-8?B?bHhpY1Z0WEMzL0NwQUFPaUNVeWhKc3VET2cwQkNRcWFrd21nQjU5NEZMTStv?=
- =?utf-8?B?L05kcjJpVmQvQlBYSnhpYmpKVUFmK01EeTA3VEdhNW9JUHprRWM2V1pjQnhE?=
- =?utf-8?B?aGpMbVVrSU0xdXJ4eER0UW8ySU44UWJmRDBuWFRFRTFsVjI4VVZIb1E1VUNa?=
- =?utf-8?B?aVpIeXdrbmsySVAyRWxQWFJqbUR2ZHBnWlNXKzlDZHQyZldxMGNJYW1JMXJq?=
- =?utf-8?B?YVpuZ1JQQXF1UWMvSU4vaWE4Rk9ZSnRyV1pJTnd0MXB4Ump6UTRSNFdhNC9B?=
- =?utf-8?B?anZ3cWxFNDFqcVVoazB2U3pBREovcFJRcjN5bUhTczlJQU1TaDVqUm5iQjBN?=
- =?utf-8?B?VEZvb0E4SUtvTXg3OExIUDdhc2JKdmhlWlZLQTZwWWlYREFVVUtpYUZmMnpm?=
- =?utf-8?B?eUh2ZXdHRW5qa28yazdnRVFwYXQvL2kvQzhqUG9pRVBoQi9sQkZiSmprOExz?=
- =?utf-8?B?OGVocTBVZE1Jb0hqNWl2RGVIQXlralEya3ZSWmtzcE5ZenNoVittdzhBMVA5?=
- =?utf-8?B?N0p5aG1HckJSamdnSi9qaE93M2pUUmZyUHV4ZW82eXhSUUxXcDFVWGJxK0Fu?=
- =?utf-8?Q?2WgWLCYAnAZ8a2Sb77JQB42l90Xc/4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(366016)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R2ZBa2tkc2lzSW1KN1FqUzdSQmtZempzV01aVlNkdktJdmZJVHExdDZzbWtR?=
- =?utf-8?B?ODdhU1lobFZvb2NsZXJmbFIwSWZBQWJ0akU2alQrOWlpMExyTGd5cEordzVV?=
- =?utf-8?B?d3JhTGlDdjJrcCtzeTlOTjBLak9rT2wwR0tsQ2RqYk0zNm43ZnhQMVl2WVhq?=
- =?utf-8?B?Y25wdGllL29mSkRnY2YvbVFwM3N4alZrVmt4TXFIZmhZUVZzSlY5M2MzQXNq?=
- =?utf-8?B?cnpEREFjaHZNWTl1WTRiTkZPOUc1YmdocWU3U09nQmJ1d0U3TDVQTGcwb3Ir?=
- =?utf-8?B?eXRPU0tPRjhWcnBoZ3ZsR0tyOW9ac3pONG5RY2h4K3hnMVFwV002SWYyQnpS?=
- =?utf-8?B?M0xkaFBSc0J6Z1VnalphWENqeC9CMDkvMTVKdE9CNUlzMVRQQWhhSmh3Y3Rr?=
- =?utf-8?B?ZHRKV05QQ2pDZlRKL0hFTFhybjRYdlRkQXVhMG10T0FOa2ZUKzFPNW9BdWZM?=
- =?utf-8?B?VFRZTi9RUUhWdG80bno0cFJranlwaHJJajkyZnp3VVluZ0V1ZHR3SHlpdldJ?=
- =?utf-8?B?UW5ZNkw3MEZVSXByZEFNM3k2OHl2WHFtVlRXdlkxTE0raExEb05MdVoxVmR5?=
- =?utf-8?B?dHdOcFU4UGZ4QzhkbFBTWVNxdkNUMTd5RjQ5N25wUXVuOVdjdklVZ011TmJI?=
- =?utf-8?B?NUpUR3RXZXJETytaVWhzY3BFRGplQ20yU3hkQ1VTUGYzODdXNVZDalFpdld4?=
- =?utf-8?B?b0M1VXlJenhZdWxuYWRoc3hjMmtQTERXVGRMZ2ZST3ZWTWdhYzczZ0xqdFp3?=
- =?utf-8?B?aG1SMTcxbzhGZld5MEpQdFZtR08zMmhYOU1hMWgxUW04bE42NlhrNTJRSjNC?=
- =?utf-8?B?RCtoZ2tGZlpGYlByVTcxWktLOExBOHFIY1BzQzd3R3EzVFMydVFEOUtnWHFB?=
- =?utf-8?B?cFpPbFU0MDFsTWRVRlJxODk4L3J0ZVRuQjVtRlh5UjJJMEZLUWNZeTBNM3pD?=
- =?utf-8?B?cUZ3T0dPbUcvNThYSlRVcXVEdVdPL1BMMmw1RzRlbHltMG0yd2RTa3FCOGdp?=
- =?utf-8?B?YnNLbWZLVGVtNStuRENjOXlBZjI1WWxUTnVwSyt4Z04yMUMwaXZSZzZTOG5R?=
- =?utf-8?B?alFDN29LSU9ieDU3cU81YnIrTzQrRG9aejNPbXh5V0c0ekVERlJ3V3lWTzlM?=
- =?utf-8?B?SUxaQ1BjMFBkTmpRK1ZWNjVNMnB1SGJUYWhMbjFqTzR3VVQ0Vk9HRU94YnFL?=
- =?utf-8?B?WnVUTktqUHN6OVIwampmUklRdzc3RDR6dlEraW1EYmN5bGFOQzNsd0NtcHlz?=
- =?utf-8?B?Ry9OSFEvRnp4YXRMMUw0RVQ2cFVFRFpOR2xGRVhKQ29wQ3FaV0c4eFR6SHpK?=
- =?utf-8?B?Q1hIR1Bud2FhNlc2ZUs2OU9iMGtuMDRkVXo5WmsvSmVuSVdTYjdJQnlLRmZs?=
- =?utf-8?B?eXhHQmJQVnNmQnd6WkdCR3o4a0dYcUdUREc3L1VEZVZYVUxwczk1ZWQxdnRo?=
- =?utf-8?B?QWsxemtIMy9MQUY2UDUzSmpLUG1ZakdoUWhOZndkMzJ1TzJueWgvcDlKUzA3?=
- =?utf-8?B?N2NJd0lqM09RSWREa29uVGFseUIxZG84VDFhZFpmSDZJM0hoR3pvbVdPbWU5?=
- =?utf-8?B?YWcwcmwveXN6QllTa2xFSEJPbGRRakJpb1N0R3VYNmVyekZTcXhLUkhmQ0lG?=
- =?utf-8?B?clgvVUE5Tmd4T1ovWXZNb090eUxBS0tPMzNJVGVLVW9tcHVWZFJST2xYTVM1?=
- =?utf-8?B?S25YRFVpWHFOU0pqWmQwd0l1SGlKaUNiUUhFTEFBT1hSZlBrQVlMRUFDZ2Yz?=
- =?utf-8?B?S3pNcVJKclpDbXVuWVhrMW9EMjdWRUdOQjRtY2I4bmVmNjE3Mm1seGsxeHFu?=
- =?utf-8?B?MkY4TndSenk4VVZTYkNRZXZydVFSZ3I0ZGMzaEl4U3ErVGR3UDNIVFc5Vjhr?=
- =?utf-8?B?Y2JzakxvalRGNk9QUy9IcWNXSi8wR1I1ZnZGMHAycEx5NlA3dXNXTlZCWGhq?=
- =?utf-8?B?aGdKZWU5bDFKbFg5VTZTMkdaNFZrc1RBSHE4cmkvcVdUQ0F4TEVOd3FFeS83?=
- =?utf-8?B?VE56VkZXcDNGQ2hzaS9RM2MzSDU5Y05kM2FCUVZOc1FyYU9tSGQ1VlpPYmxB?=
- =?utf-8?B?YUxMZ0Z6V0gyOEpZcDAydDVIQnVLTC84dHkwNVNndXdsNnI0S2VaYUlQT29l?=
- =?utf-8?B?WDNyRGVQWUYwcUNHd202YmpsWEdKZWFISmdMb1hzbzJqUTBhN3NRbERDRzhK?=
- =?utf-8?Q?zXHn/mXQgMU+8wWQeAxLqmx4fOwfujY4Hx1WtKoqeFac?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12401274-ca69-46e0-6214-08de1bab28f9
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2025 14:05:07.5363
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CjQx4ldxU8kE1zj1Y/MonbfotxrAHkAZsI08+rIpbqqO5g2/jPtKFA0PHjvWbNM4x/dGWUic5OKAr9MtuND2TA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9355
+Mime-Version: 1.0
+References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club>
+Message-ID: <aQoIliAbrn0Re7E3@google.com>
+Subject: Re: [PATCH] rust: kernel: Support more jump_label api
+From: Alice Ryhl <aliceryhl@google.com>
+To: chenmiao <chenmiao@openatom.club>
+Cc: ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>, 
+	"open list:RUST" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-I have noticed that build will fail when doing the following:
+On Tue, Nov 04, 2025 at 02:04:17AM +0000, chenmiao wrote:
+> The initial implementation of arch_static_branch was achieved by accessing
+> the offset from the original type. However, this approach extended the
+> path and introduced redundant calculations when dealing with types like
+> `static_key_true/false`, as shown below:
+> 
+> ```
+> static_brach_unlikely(tp, tracepoint, key)
+>   => tracepoint->key->key
+>   => &tracepoint->key(static_key_false) == &tracepoint->key.key(static_key)
+>   => off: tracepoint->key - tracepoint
+> ```
+> 
+> In practice, the implementation of `arch_static_branch` overlooked many
+> detailed descriptions. To improve clarity, additional comments have been
+> added to the original logic. The approach has been modified to directly
+> locate the corresponding `static_key` instead of using offsets, thereby
+> reducing  computational overhead.
+> 
+> If finding the offset from the primitive type is necessary for this
+> implementation, I will abandon this change.
+> 
+> Additionally, support for the `static_branch_enable/disable` APIs has been
+> introduced.
+> 
+> Signed-off-by: chenmiao <chenmiao@openatom.club>
 
-- Start with the x86 defconfig,
-- Using nconfig, enable `CONFIG_RUST` and `CONFIG_DRM_NOVA`,
-- Start building.
+> +    ($basety:ty, $branch:expr, $key:path, $keytyp:ty, $field:ident) => {{
+>          let _key: *const $keytyp = ::core::ptr::addr_of!($key);
+> -        let _key: *const $crate::bindings::static_key_false = ::core::ptr::addr_of!((*_key).$field);
+> +        let _key: *const $basety = ::core::ptr::addr_of!((*_key).$field);
+>          let _key: *const $crate::bindings::static_key = _key.cast();
+>  
+>          #[cfg(not(CONFIG_JUMP_LABEL))]
+> @@ -30,7 +71,88 @@ macro_rules! static_branch_unlikely {
+>          }
+>  
+>          #[cfg(CONFIG_JUMP_LABEL)]
+> -        $crate::jump_label::arch_static_branch! { $key, $keytyp, $field, false }
+> +        {
+> +            $crate::jump_label::arch_static_branch! { _key, $branch }
+> +        }
 
-The problem is that `CONFIG_RUST_FW_LOADER_ABSTRACTIONS` remains
-unselected, despite it being a dependency of `CONFIG_NOVA_CORE`. This
-seems to happen because `CONFIG_DRM_NOVA` selects `CONFIG_NOVA_CORE`.
+So ... this is changing from $key to _key. That's replacing the global
+variable with a local variable holding a pointer to the global variable.
+However, the arch_static_branch! macro uses the `sym` operand which
+requires you to pass it the global directly.
 
-Fix this by making `CONFIG_RUST_FW_LOADER_ABSTRACTIONS` select
-`CONFIG_FW_LOADER`, and by transition make all users of
-`CONFIG_RUST_FW_LOADER_ABSTRACTIONS` (so far, nova-core and net/phy)
-select it as well.
+Did you try this code? I don't believe it will work.
 
-`CONFIG_FW_LOADER` is more often selected than depended on, so this
-seems to make sense generally speaking.
-
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
-I am not 100% percent confident that this is the proper fix, but the
-problem is undeniable. :) I guess the alternative would be to make nova-drm
-depend on nova-core instead of selecting it, but I suspect that the
-`select` behavior is correct in this case - after all, firmware loading
-does not make sense without any user.
----
- drivers/base/firmware_loader/Kconfig | 2 +-
- drivers/gpu/nova-core/Kconfig        | 2 +-
- drivers/net/phy/Kconfig              | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmware_loader/Kconfig
-index 752b9a9bea03..15eff8a4b505 100644
---- a/drivers/base/firmware_loader/Kconfig
-+++ b/drivers/base/firmware_loader/Kconfig
-@@ -38,7 +38,7 @@ config FW_LOADER_DEBUG
- config RUST_FW_LOADER_ABSTRACTIONS
- 	bool "Rust Firmware Loader abstractions"
- 	depends on RUST
--	depends on FW_LOADER=y
-+	select FW_LOADER
- 	help
- 	  This enables the Rust abstractions for the firmware loader API.
- 
-diff --git a/drivers/gpu/nova-core/Kconfig b/drivers/gpu/nova-core/Kconfig
-index 20d3e6d0d796..527920f9c4d3 100644
---- a/drivers/gpu/nova-core/Kconfig
-+++ b/drivers/gpu/nova-core/Kconfig
-@@ -3,7 +3,7 @@ config NOVA_CORE
- 	depends on 64BIT
- 	depends on PCI
- 	depends on RUST
--	depends on RUST_FW_LOADER_ABSTRACTIONS
-+	select RUST_FW_LOADER_ABSTRACTIONS
- 	select AUXILIARY_BUS
- 	default n
- 	help
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 98700d069191..d4987fc6b26c 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -132,7 +132,7 @@ config ADIN1100_PHY
- config AMCC_QT2025_PHY
- 	tristate "AMCC QT2025 PHY"
- 	depends on RUST_PHYLIB_ABSTRACTIONS
--	depends on RUST_FW_LOADER_ABSTRACTIONS
-+	select RUST_FW_LOADER_ABSTRACTIONS
- 	help
- 	  Adds support for the Applied Micro Circuits Corporation QT2025 PHY.
- 
-
----
-base-commit: 6553a8f168fb7941ae73d39eccac64f3a2b9b399
-change-id: 20251104-b4-select-rust-fw-aeb1e46bcee9
-
-Best regards,
--- 
-Alexandre Courbot <acourbot@nvidia.com>
-
+Alice
