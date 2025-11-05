@@ -1,144 +1,175 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E332DEA62
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 20:01:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19848333452;
+	Wed,  5 Nov 2025 20:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762372912; cv=none; b=EiRAmF0a4P2SJ+7Q7sjdfhcv4JOMCJ7QD1PEQni+j5NX8i0n+sDhC3UcqRRJwbgaeLiI8Fx7tDhAmy0y2sYSskcj4dLOYGiRO5BrXDA2RLcItB1Nco5llnLj9qyJXkOCno3nRfWZ4X1QhuztipPznBwdG9Pk6D8AGeEr5SqDpGA=
+	t=1762375050; cv=none; b=IVL1KT7AiPE+2FSh7rRJlz/GdJSxl7ItuUgK8i+WZJdeQsWnX4D4ka8s1cpZlezgikbjj1CAyHHvufCityMsYJN2Uji+sn9lR9AgD46L1nr3ANCw+zMVuXiRtzEGxVNnRz68NwnMqtYTwoETMahyq2CbELpc8rfQCrccRmEx5v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762372912; c=relaxed/simple;
-	bh=7eexqkAR3aTk5kcNM9FozDvWuf2bX42Tll3Mr6lavRA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mb09rGeMdI0knG21Ekud06PaE5yscO6yWxxnr4slgTnzZLdNcZbYwlmudceQm6JlUSxt+Ad1ZNfBz+iCKZBWhMFLXbkI34In4dtssmol+32xvaFdeoaikyNDN5oAkG401OVzp11ov+GpgARKujdvVrrq2/UvnHdVHyl7wFkS0Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ed0sAcZa; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762375050; c=relaxed/simple;
+	bh=UTReFefAF+6gXiQ2Z4l2YL1BSXnOxNYuKlBMTtxjWIs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VMJbRKoBfog4zAy9ix2YpQq8dQeip5c34lZmj6Q7mK8oAS/aS8mS35Rj2RGU4T8chAja9MeRerPhZmqFR6IoyaQ0QyEYC3Z8Qq04veVsb7D9jL7OM8tg6CtM4HMGzxFslLkzHluYPx4kkWU3pbk0QdL9FlaZQPdFnXWQTivnu8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HVCDzFWs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ed0sAcZa"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8801e4da400so2899826d6.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 12:01:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762372910; x=1762977710; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xg7BvAvTvVVY99yfjG2FmHNYxW6OAUeHF0c7b0G9U9Q=;
-        b=Ed0sAcZaVg6f/uEsrY9BymkG+RFJFkv7EXdoUlSh++orMmfgBCkivcLMoYpKYmWXgy
-         QXinii7H0c1w95tpBfTJrHq3ZkgICmbw0VqtByyjVJ0CIALegTDJFwU1FY/ekbqwnw2V
-         C1iXpTCQ8uCx16bqX6rUP3NqlswYDyYB1hqZ8JUnuj2GfFNlGRiVgYsTDYvdEda050lV
-         PziXj22CrZ0m1QoCbDfa+fpFOUdBmJhjeqMAZoaWiSco8FSuiRonjjAhIdH9eSQc/Zxe
-         Bl97nSlwkDbEwZgOMhdj1abDbbhG5uYVTRvKGuA8yMOPjqb+6flXxdYx85ROSjBtu++4
-         94VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762372910; x=1762977710;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xg7BvAvTvVVY99yfjG2FmHNYxW6OAUeHF0c7b0G9U9Q=;
-        b=rALN1Fj9Vb2fkYewGVIGv3/+cbkEoBJ3DOd5oMJSpoQbNG09IfhlWkozbtsF6OltDK
-         QR6HmuL95hjaXdZ82i+ZXyLb67tx+XHQ9DFuQiksvMHT95vXKGQsl09DypvQPrLWSJSq
-         0Zbr8ogqu5mPp3FlF0uqkbxKJqilD8T3GRoPomAch7+vAcGqsMdk//DHe0Udz/O1WF+x
-         9serOFnKygARvYeSRNwQD49GAG800GSqrLb8T4xhGOBu0u4MvWHtuEQrQcIb6vbWe/AE
-         I2AyV/h85Gl2zJfnFTvCguV/vuyzxFKHP4Yt3JMWWllif4z+06rwc/l97O4wKnPw8WS3
-         yT1w==
-X-Gm-Message-State: AOJu0YzEXQBye2c/K68A/gI9YWndBMm/dMqTEQo5nLzfFelgj6e2Ow3E
-	ICuZcd+mnuo+UGk+PuP8LjGZBoXd+v7ZaLvNNtygPsacosD5ooYQ7xL+
-X-Gm-Gg: ASbGncskiU7skTMUqdpwpnTrgIQ+tLbyJEpooWw6+a/A2gu5uPKAc6EovHfGH6pvfnX
-	tRKEgmuF6hjo9LLPwiAr1LCwMuhA8oHKr1le7wihP+rRwGHp3bQnfAHDUU0OLwET2WR686z8+X1
-	L/2lG6uUXCMq09SzQ9Rk+yM09GkH6GfuIiIJzr10FnGhWcP1rF66Oc8iTdfHr3uhpD10qlajtUa
-	o3OF7XS3DXbxNe3E+7rEo6y9Bq/qsn4R0ONjpWTRqzFSfI5O9O5cI+Sqy1Itq+9Bgh9Q90nngIh
-	x6l7ItgLI0aodQSYe5OSdZ151DuwPzm9AqvyiQK6+aHkxBCak+3gWUA5THnUJp6T6lNXjqb8dkV
-	+NX84Wnp+9P/1lzc/nNrYrFJiCfVfee+uNCD/AHDV/2kge745JpBwOEPU0fDgI05u667Zqcv8Aw
-	iY5RlePnvRAkF8Z1XkxdNpG0JW4lnUg1Z/JnL8DkdEB+9fmK7Ltp0Uvzw0z2ufx8Zqw0/xPmCjZ
-	zG7y5s0ZV1Ue4A=
-X-Google-Smtp-Source: AGHT+IFSoM3lWfHi4jlIEW8WgXyrC0aA9EtAy/JvzGSk/v4RxXZ+0lsltA0H7C1qgeneNoZD0FnnuA==
-X-Received: by 2002:ad4:5dcf:0:b0:880:4ed1:ce5f with SMTP id 6a1803df08f44-8807120b843mr60063076d6.51.1762372909868;
-        Wed, 05 Nov 2025 12:01:49 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-880829f4dd5sm3478246d6.45.2025.11.05.12.01.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 12:01:48 -0800 (PST)
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 32DE1F40078;
-	Wed,  5 Nov 2025 15:01:47 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Wed, 05 Nov 2025 15:01:47 -0500
-X-ME-Sender: <xms:K60Laajk_IHxR8oDDZbPPh-Ix6uw7DmOiQhZWMy9E91KVA3VqNs9sg>
-    <xme:K60LaW8KQVLotCd3IRCxKb5RVV68ilfwna43BeY7eG06bsl9H2qEk0dhG8YEAar53
-    rQ5iugyDvH32qrVpCSiw30Qia6UhO1MuHZLClZOvPJxOM8YxXWgTw>
-X-ME-Received: <xmr:K60LaYPHRhgG3NhQrp5hSMswJQlny_h7MDj73xOVIhu6DRKT-66rX2psgg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeegkeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
-    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfoh
-    hrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghhrvg
-    hgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgr
-    vghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghp
-    thhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpg
-    hghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:K60LaZp9zJYqsBrK2Aq9gcuOoKG0SAaC0FRXhDhJz_CBb8ZVnSnX-Q>
-    <xmx:K60LaV6JoVADaMy5aaW3WhBg-lA-pBjPNlT2IJBwi7Q-q9RYklCJkw>
-    <xmx:K60LabqMAjqCtnSBVwMxSI7w_OtBDWe2T93bQjeaxvVsLzhipvqlmw>
-    <xmx:K60LabImnE-Q4U5xP0UDTY9Rh7n5hGJtxO9SY0IRpbDqr7ar7oi_bA>
-    <xmx:K60LaQj9cpqbCYNGODzOYgmDp1XOW53uFvmgZFSo2N0n0b0UmdbxLm7W>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 5 Nov 2025 15:01:46 -0500 (EST)
-Date: Wed, 5 Nov 2025 12:01:40 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH 0/3] Remove the usage of Rust native atomics in debugfs
-Message-ID: <aQutJAgXt4u3BOmq@tardis-2.local>
-References: <20251022035324.70785-1-boqun.feng@gmail.com>
- <ad655011-d695-4dca-bc60-902aeffe73a9@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HVCDzFWs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB13C4CEF5;
+	Wed,  5 Nov 2025 20:37:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762375049;
+	bh=UTReFefAF+6gXiQ2Z4l2YL1BSXnOxNYuKlBMTtxjWIs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=HVCDzFWsS3mRiRwZ9n4zO6J8K02zYN0I+IDaIP/Qz2UQK1klAzX7Nql2a+Lq88N9S
+	 1QIAM8LMu7LN4W3ABBVxdIFeN4eP3A5H7zln5NUyCTdJdhtcJEFCzoAzjXkqNvlNZy
+	 zBGQW3SUx1QyIwIF4KPwQlGCYHquKyutKQr1CkQRqE+ETagIJLGGt2kfh+f39GN8qZ
+	 4tZaPXQTIymYqgRNXKvJYKFNVcc+H8u1atTD5WUN3YZlRMiH9cVCYzOj4oF/+u6N4m
+	 qd2tvSpxS5PDZ4df5JxMXxxQ21LeK45fJChPRSdQXeJggqljFmafCalkdLc9Ec6DXG
+	 6N4AgiuUUz45A==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Shankari Anand <shankari.ak0208@gmail.com>, Jens Axboe
+ <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, linux-block@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Shankari
+ Anand <shankari.ak0208@gmail.com>
+Subject: Re:[PATCH v2] rust: block: update ARef and AlwaysRefCounted imports
+ from sync::aref
+In-Reply-To: <20251104171316.6672-1-shankari.ak0208@gmail.com>
+References: <20251012142012.166230-1-shankari.ak0208@gmail.com>
+ <2EAsrR9pInr4r9ZEowYQNdH4LHuonKsTkjkqwn36aqxjRO7jOAlYZOaWyRzgdl-YU_bxzR50-VFWQHwcl479iA==@protonmail.internalid>
+ <20251104171316.6672-1-shankari.ak0208@gmail.com>
+Date: Wed, 05 Nov 2025 21:37:19 +0100
+Message-ID: <87tsz86wsg.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad655011-d695-4dca-bc60-902aeffe73a9@kernel.org>
+Content-Type: text/plain
 
-On Fri, Oct 24, 2025 at 04:57:22PM +0200, Danilo Krummrich wrote:
-> On 10/22/25 5:53 AM, Boqun Feng wrote:
-> > Boqun Feng (3):
-> >   rust: sync: atomic: Make Atomic*Ops pub(crate)
-> >   rust: sync: atomic: Implement Debug for Atomic<Debug>
-> >   rust: debugfs: Replace the usage of Rust native atomics
-> 
-> I ack'd patch three for you to pick it up, but I now wonder if you want me to
+"Shankari Anand" <shankari.ak0208@gmail.com> writes:
 
-Thanks!
+> On Sun, Oct 12, 2025 at 07:50:12PM +0530, Shankari Anand wrote:
+>> Update call sites in the block subsystem to import `ARef` and
+>> `AlwaysRefCounted` from `sync::aref` instead of `types`.
+>>
+>> This aligns with the ongoing effort to move `ARef` and
+>> `AlwaysRefCounted` to sync.
+>>
+>> Suggested-by: Benno Lossin <lossin@kernel.org>
+>> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+>> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+>> ---
+>> Changelog:
+>> v1 -> v2:
+>> Rebased it on top of the latest linux-next upstream commit
+>> Dropped 1/7 from the subject as it might lead to confusion of it being a series
+>> Link of v1: https://lore.kernel.org/lkml/20250716090712.809750-1-shankari.ak0208@gmail.com/
+>>
+>> The original patch of moving ARef and AlwaysRefCounted to sync::aref is here:
+>> (commit 07dad44aa9a93)
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=07dad44aa9a93b16af19e8609a10b241c352b440
+>>
+>>
+>> Gradually the re-export from types.rs will be eliminated in the
+>> future cycle.
+>> ---
+>>
+>>  drivers/block/rnull/rnull.rs       | 3 +--
+>>  rust/kernel/block/mq.rs            | 5 ++---
+>>  rust/kernel/block/mq/operations.rs | 4 ++--
+>>  rust/kernel/block/mq/request.rs    | 8 ++++++--
+>>  4 files changed, 11 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+>> index 1ec694d7f1a6..a9d5e575a2c4 100644
+>> --- a/drivers/block/rnull/rnull.rs
+>> +++ b/drivers/block/rnull/rnull.rs
+>> @@ -17,8 +17,7 @@
+>>      error::Result,
+>>      pr_info,
+>>      prelude::*,
+>> -    sync::Arc,
+>> -    types::ARef,
+>> +    sync::{aref::ARef, Arc},
+>>  };
+>>  use pin_init::PinInit;
+>>
+>> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+>> index 637018ead0ab..1fd0d54dd549 100644
+>> --- a/rust/kernel/block/mq.rs
+>> +++ b/rust/kernel/block/mq.rs
+>> @@ -20,7 +20,7 @@
+>>  //! The kernel will interface with the block device driver by calling the method
+>>  //! implementations of the `Operations` trait.
+>>  //!
+>> -//! IO requests are passed to the driver as [`kernel::types::ARef<Request>`]
+>> +//! IO requests are passed to the driver as [`kernel::sync::aref::ARef<Request>`]
+>>  //! instances. The `Request` type is a wrapper around the C `struct request`.
+>>  //! The driver must mark end of processing by calling one of the
+>>  //! `Request::end`, methods. Failure to do so can lead to deadlock or timeout
+>> @@ -61,8 +61,7 @@
+>>  //!     block::mq::*,
+>>  //!     new_mutex,
+>>  //!     prelude::*,
+>> -//!     sync::{Arc, Mutex},
+>> -//!     types::{ARef, ForeignOwnable},
+>> +//!     sync::{aref::ARef, Arc, Mutex},
+>>  //! };
+>>  //!
+>>  //! struct MyBlkDevice;
+>> diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
+>> index f91a1719886c..8ad46129a52c 100644
+>> --- a/rust/kernel/block/mq/operations.rs
+>> +++ b/rust/kernel/block/mq/operations.rs
+>> @@ -9,8 +9,8 @@
+>>      block::mq::{request::RequestDataWrapper, Request},
+>>      error::{from_result, Result},
+>>      prelude::*,
+>> -    sync::Refcount,
+>> -    types::{ARef, ForeignOwnable},
+>> +    sync::{aref::ARef, Refcount},
+>> +    types::ForeignOwnable,
+>>  };
+>>  use core::marker::PhantomData;
+>>
+>> diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+>> index c5f1f6b1ccfb..ce3e30c81cb5 100644
+>> --- a/rust/kernel/block/mq/request.rs
+>> +++ b/rust/kernel/block/mq/request.rs
+>> @@ -8,8 +8,12 @@
+>>      bindings,
+>>      block::mq::Operations,
+>>      error::Result,
+>> -    sync::{atomic::Relaxed, Refcount},
+>> -    types::{ARef, AlwaysRefCounted, Opaque},
+>> +    sync::{
+>> +        aref::{ARef, AlwaysRefCounted},
+>> +        atomic::Relaxed,
+>> +        Refcount,
+>> +    },
+>> +    types::Opaque,
+>>  };
+>>  use core::{marker::PhantomData, ptr::NonNull};
+>>
+>> base-commit: 2b763d4652393c90eaa771a5164502ec9dd965ae
+>> --
+>> 2.34.1
+>>
+> Hello, can this patch be reviewed?
 
-> pick it up through the driver-core tree?
+I think I already ACK'ed this patch [1]. I can't apply patches for
+block. Jens or Miguel should apply this.
 
-Given there are some atomic library changes, I will send it as a PR to
-tip. Thanks for the offering!
+Best regards,
+Andreas Hindborg
 
-Regards,
-Boqun
+
+[1] https://lore.kernel.org/r/87cy965edf.fsf@kernel.org
+
