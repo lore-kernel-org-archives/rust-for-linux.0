@@ -1,184 +1,108 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1696432936A
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 14:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0569030EF69;
+	Wed,  5 Nov 2025 14:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762351997; cv=none; b=d7eJ3VyDMiwWeKgRJFHphGiHAJ4fySOuspnDuPAEj67arYy5Pw4oAjXQP29ei2CKX0kYhxhp0prOXOOwJRanpRj0fwWakPnadB7BgkZC/miX8X7QuVWdrz3Bn58aWGpB7o+IxCucM9jOqzjQpzVXbufG9DruLXzvFM00eiPSugc=
+	t=1762354464; cv=none; b=fXp3t9ZpF13TbfyyplFmop6jZsK5tXKRPpL4L0aW1ta48wwnG+/qwA7Gyt7MTokftuL/bzfEQpXybfnV46YXRCHprophkJZEM4DmxzKbRVCtaf5OoUkMuNkH3brFcWk74wIkl4/tgGGgulGKxN3NOddehartEjshsjiw6NzBiHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762351997; c=relaxed/simple;
-	bh=6cYiiw9104Yb6fMc0wD7G4qHbAAaDcdcDrHaNNwNRDE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sKPeCN/oe3IwRyb9wBtXDl0sYQWoI32Xcrxeqa6D0zOvUWwBKvATmOvC1iJux1EugJ4QZ0TC60zLoyUbjhbCkgJHve0zT5fElO0Mq7jKpPnKzvIT2j7k63pInKMWx+96qL+jwQlvehFCLJ3H9r5TKwBr0gy068hxrheAKyxlXXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H1cLUadX; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1762354464; c=relaxed/simple;
+	bh=Pe04+1UZ0UUwjeDk+3LTlXeGLffYz6sUf1Mw1rtkdhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q7g0/jzV/dyF1pVjqkQdy0xFjB+oQfh4HO2ZFkM5XTOANPsRCMr3JoVaxKxB+5wXZPMUDI3UCvRrUwGW7HvxvEt/fHCl3fTUaQxhoVFggaAXJSu9aUHiS8F6A9Uv+GMQVi2I1qIgglqtEFMZOzKjHiWgOMTzdMV1stwsY3s2HEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1XbyeTg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H1cLUadX"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4773e108333so30836795e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 06:13:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762351994; x=1762956794; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4EIDxmF8t8qJeARjr3ym13RSNGJvtuHFHsGeNEqHjS4=;
-        b=H1cLUadXE5/8ZTqg8DQtYE96KItWKYhj3iY9pce+SlSWqa3j+gopvGpFTX8BZgathj
-         lPPT8fvGAo8bioqdNpMWGbdVKYtOPa+YOUy/iGcDzHtwXaPldPGVr7Gzf1eGmG0O1EIw
-         7HQPHc6AXu5v0qUyZLvWpjH+7Hxh01sfajRcsREJMt+KogpmvHji7TJDdZhoIcdnv3r3
-         w/pD7Jt8HTEgK1bSy/7g1Fv1pKwEQ2XToWi4YP9v3TWD+Hilj0QFz+PpzB/fWxDtpZdn
-         pOc/U+ptv4CFEm7fW+xAUywMDENm+lGDQldgA/rFTx8jPSuoUYGuhpvSdJtwQjuHJJC3
-         NGgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762351994; x=1762956794;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4EIDxmF8t8qJeARjr3ym13RSNGJvtuHFHsGeNEqHjS4=;
-        b=SMmbQ/Ty2NA1VTABH4pdMDfTWvaFeyihLVotsoXXaP4x1HzWe7XfoetQmVOF/gxfpm
-         I0W67pzksEFQrdH+GjxlOYxHJrjekSEezX7psiSfGSMTEb7jDAY+DQh6EKOEPPOn75i4
-         ZB1G92wAQqERtAeroQ4w90TrkGEAgtW6wWDLgXLVNzJ5BW7Hve09JozFCVEJBSfo8XOh
-         5h48Ybk7lAzqsrmoB10uZ+uFmRXRmllg2GTaCf/YbQM3pGtR/gKsknjg+AINCk9olfM6
-         Gdi38liDvhW0iWPjh+1poGCPV1x/cKxse7ONN6XhJe0FA9aOUOucxdYrY3Cv5s+dacds
-         U5Dg==
-X-Forwarded-Encrypted: i=1; AJvYcCX22U1Byg8LWVyZZOk4JwIe52y62wJjug3V2QApIezGU1pE+0smMpEihHjRDQoCP/dvlQVwv0/ca35uu/NdyQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxucN2eLsxfWBQGOPvpoCg8vqHQ/bXU9yp9QyUa337tqDNOhPqU
-	dyTEPvqFwy1ERefZgazMd/lku3wCOWgbk1tzXC/P5brpzu5IPYwoE6UZfI0YOyBC4w+3GeUiCiq
-	BVoEKtRFZOXTqb8eiLQ==
-X-Google-Smtp-Source: AGHT+IFhgYMpKvHGI0oer51UBMb9nMj8xKyijjOOTMvZJYXyZcIs9AF61ghSjDZ5bURHFXaNxi8u/xryVkSHzIk=
-X-Received: from wmcn19.prod.google.com ([2002:a05:600c:c0d3:b0:477:11b7:17fc])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:821a:b0:471:1765:839c with SMTP id 5b1f17b1804b1-4775cdf4770mr24497135e9.20.1762351994489;
- Wed, 05 Nov 2025 06:13:14 -0800 (PST)
-Date: Wed, 5 Nov 2025 14:13:13 +0000
-In-Reply-To: <90bfcb3e-dee1-4f78-a1b2-02ce99db4997@openatom.club>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1XbyeTg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A443C4CEF5;
+	Wed,  5 Nov 2025 14:54:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762354463;
+	bh=Pe04+1UZ0UUwjeDk+3LTlXeGLffYz6sUf1Mw1rtkdhs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=f1XbyeTg729nAGqpC8++emYUHmJen/F8k6A6JcYpf6DEK1TFa5ofaoLbygMkoVqdZ
+	 EbebkV57wPl1AAhdG0TzyK71Hm6fQEbjamb1R+BJ2yM+ZhwGtSsWNsbvauB4VC19S6
+	 kTD5POvN8FR+COPNC/zkbQZAWYLLdoNNSWv5PJVZK7XyMe73s+G9F5iieHElS4YMXR
+	 +v6YqsdkTaYQMkPOM/ZPUw07r76iq7R3l9xa4cv/yKN2i7J4P9DpZpRbFa1nArF2iA
+	 LPgJ9tKgtSLFAMV2LLOsGTeOnMJ5n3zE3xwZUjoXYcvOIotyaUVsm7uV0uE06H0eyb
+	 Xpvc8FVqlV5xQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.18
+Date: Wed,  5 Nov 2025 15:54:06 +0100
+Message-ID: <20251105145406.33929-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club>
- <aQoIliAbrn0Re7E3@google.com> <b3f50745-5351-4e69-b3e2-ede99511e8dc@openatom.club>
- <aQtTRUMUaaUmTAWZ@google.com> <90bfcb3e-dee1-4f78-a1b2-02ce99db4997@openatom.club>
-Message-ID: <aQtbeWpRD7ip8-2A@google.com>
-Subject: Re: [PATCH] rust: kernel: Support more jump_label api
-From: Alice Ryhl <aliceryhl@google.com>
-To: Chen Miao <chenmiao@openatom.club>
-Cc: ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>, 
-	"open list:RUST" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	hust-os-kernel-patches@googlegroups.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 05, 2025 at 09:55:27PM +0800, Chen Miao wrote:
-> On 11/5/2025 9:38 PM, Alice Ryhl wrote:
-> > On Wed, Nov 05, 2025 at 09:28:39PM +0800, Chen Miao wrote:
-> >> On 11/4/2025 10:07 PM, Alice Ryhl wrote:
-> >>> On Tue, Nov 04, 2025 at 02:04:17AM +0000, chenmiao wrote:
-> >>>> The initial implementation of arch_static_branch was achieved by acc=
-essing
-> >>>> the offset from the original type. However, this approach extended t=
-he
-> >>>> path and introduced redundant calculations when dealing with types l=
-ike
-> >>>> `static_key_true/false`, as shown below:
-> >>>>
-> >>>> ```
-> >>>> static_brach_unlikely(tp, tracepoint, key)
-> >>>>     =3D> tracepoint->key->key
-> >>>>     =3D> &tracepoint->key(static_key_false) =3D=3D &tracepoint->key.=
-key(static_key)
-> >>>>     =3D> off: tracepoint->key - tracepoint
-> >>>> ```
-> >>>>
-> >>>> In practice, the implementation of `arch_static_branch` overlooked m=
-any
-> >>>> detailed descriptions. To improve clarity, additional comments have =
-been
-> >>>> added to the original logic. The approach has been modified to direc=
-tly
-> >>>> locate the corresponding `static_key` instead of using offsets, ther=
-eby
-> >>>> reducing  computational overhead.
-> >>>>
-> >>>> If finding the offset from the primitive type is necessary for this
-> >>>> implementation, I will abandon this change.
-> >>>>
-> >>>> Additionally, support for the `static_branch_enable/disable` APIs ha=
-s been
-> >>>> introduced.
-> >>>>
-> >>>> Signed-off-by: chenmiao <chenmiao@openatom.club>
-> >>>> +    ($basety:ty, $branch:expr, $key:path, $keytyp:ty, $field:ident)=
- =3D> {{
-> >>>>            let _key: *const $keytyp =3D ::core::ptr::addr_of!($key);
-> >>>> -        let _key: *const $crate::bindings::static_key_false =3D ::c=
-ore::ptr::addr_of!((*_key).$field);
-> >>>> +        let _key: *const $basety =3D ::core::ptr::addr_of!((*_key).=
-$field);
-> >>>>            let _key: *const $crate::bindings::static_key =3D _key.ca=
-st();
-> >>>>   =20
-> >>>>            #[cfg(not(CONFIG_JUMP_LABEL))]
-> >>>> @@ -30,7 +71,88 @@ macro_rules! static_branch_unlikely {
-> >>>>            }
-> >>>>   =20
-> >>>>            #[cfg(CONFIG_JUMP_LABEL)]
-> >>>> -        $crate::jump_label::arch_static_branch! { $key, $keytyp, $f=
-ield, false }
-> >>>> +        {
-> >>>> +            $crate::jump_label::arch_static_branch! { _key, $branch=
- }
-> >>>> +        }
-> >>> So ... this is changing from $key to _key. That's replacing the globa=
-l
-> >>> variable with a local variable holding a pointer to the global variab=
-le.
-> >>> However, the arch_static_branch! macro uses the `sym` operand which
-> >>> requires you to pass it the global directly.
-> >>>
-> >>> Did you try this code? I don't believe it will work.
-> >>>
-> >>> Alice
-> >> I'm very sorry for making a fatal mistake. My misunderstanding of sym =
-led to
-> >> this issue, so I shouldn't make any changes to that part. However, reg=
-arding
-> >> the other modifications, I believe it is necessary to support the dire=
-ct
-> >> passing of structures similar to `static_key_false`, just as in C lang=
-uage.
-> > It sounds like you are adding a new use-case for this macro. Can you
-> > provide more information for this new feature? It is currently unclear
-> > to me exactly how this will be used.
-> >
-> > Alice
->=20
-> If there's a binding-required driver implementation in the future where a=
- key=20
-> function uses if (static_branch_unlikely(&zoned_enabled))=E2=80=94 define=
-d by=20
-> DEFINE_STATIC_KEY_FALSE(zoned_enabled);=E2=80=94 then in Rust we can dire=
-ctly=20
-> implement it using if static_branch_unlikely!(zoned_enabled), without hav=
-ing=20
-> to call it via if static_branch_unlikely!(zoned_enabled,=20
-> bindings::static_key_false, key).
->=20
-> static_branch_unlikely!(zoned_enabled) instead of=20
-> static_branch_unlikely!(zoned_enabled, bindings::static_key_false, key).
+Hi Linus,
 
-In general, you would never use "static_key_false" as the second
-argument to static_branch_unlikely!. The second argument is the name of
-the struct *containing* a field of type static_key_false.
+Please pull these fixes for Rust.
 
-I guess your point is that there's no way to use the macro right now if
-the global is a bare static_key_false that is not wrapped in a struct?
+They have been only one round in linux-next.
 
-Alice
+I may have another one later in the cycle.
+
+No conflicts expected.
+
+Thanks!
+
+Cheers,
+Miguel
+
+The following changes since commit 6146a0f1dfae5d37442a9ddcba012add260bceb0:
+
+  Linux 6.18-rc4 (2025-11-02 11:28:02 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.18
+
+for you to fetch changes up to 789521b4717fd6bd85164ba5c131f621a79c9736:
+
+  rust: kbuild: support `-Cjump-tables=n` for Rust 1.93.0 (2025-11-04 19:11:39 +0100)
+
+----------------------------------------------------------------
+Rust fixes for v6.18
+
+Toolchain and infrastructure:
+
+  - Fix/workaround a couple Rust 1.91.0 build issues when sanitizers are
+    enabled due to extra checking performed by the compiler and an
+    upstream issue already fixed for Rust 1.93.0.
+
+  - Fix future Rust 1.93.0 builds by supporting the stabilized name for
+    the 'no-jump-tables' flag.
+
+  - Fix a couple private/broken intra-doc links uncovered by the future
+    move of pin-init to 'syn'.
+
+----------------------------------------------------------------
+Miguel Ojeda (5):
+      rust: devres: fix private intra-doc link
+      rust: condvar: fix broken intra-doc link
+      rust: kbuild: treat `build_error` and `rustdoc` as kernel objects
+      rust: kbuild: workaround `rustdoc` doctests modifier bug
+      rust: kbuild: support `-Cjump-tables=n` for Rust 1.93.0
+
+ arch/loongarch/Makefile     |  2 +-
+ arch/x86/Makefile           |  2 +-
+ rust/Makefile               | 15 ++++++++++++++-
+ rust/kernel/devres.rs       |  2 +-
+ rust/kernel/sync/condvar.rs |  2 +-
+ 5 files changed, 18 insertions(+), 5 deletions(-)
