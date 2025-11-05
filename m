@@ -1,70 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B52C2FB612;
-	Wed,  5 Nov 2025 10:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C242E5B2A;
+	Wed,  5 Nov 2025 11:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762340388; cv=none; b=Y0PGwK8rY4KLjeTfq5DfpD1C+mcLKrnu5ypY8iTIUQhhNGAqh2Ghs4q/8e9Z7UPR6f6GOOoER/cLcM/hcuaPtVL1YzxbZT7ECx0Eyj/4LB2WaXd4QkEQfBC0zKr2HjYnfDnnOGu96fiwP5JeX6K/smXXS+2q60E3dD5N9pv61yg=
+	t=1762341563; cv=none; b=saQ/Sw0r9u3p5qFPc1ZidVht0cbPKrzCsDXD1JUoTpKdePui/MXNVsYyygBiy6DMFjhMW/IOziKu5UgD/bWoyyZYJhQpeWVYd9buKBAjSRBySjRfJviG9lEu01ktOKvCNFFEIWeCnWWBILtgtF7uDk0H+RZV8W2IYuby7tPyi7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762340388; c=relaxed/simple;
-	bh=Djgzz+8Wq0X5WeVDrT4jXPplb0BTE8Hmc73FCm/+xkQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EGqxnEsO0IV2YUCpNxnCGJ/kC9lyFLvaxwnS5/yTkp5z1Z9jbWZdd3/oMFC5W6bnEvF8qMx4xd42dCujjT4hxBBKTgU8joiQefIZVOTTlec6nksVDf36DbAAXLvlUT9DZ9gBUQNhTp4DwJnyd+QFm0JChHzrPvJKaCdX+jHmHOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cXWGrw7o; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762341563; c=relaxed/simple;
+	bh=8fzrbqlZZIA3X+rB0huPkXNufqYWaw0N6jILyOc2Tso=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=b/NegwezgfUBrOU/YUMjIEH5ekkPjQFo6U0CTIn4Apt6qSDBV5AUKxZCSEmRGEMg6MiQwMpRZDEDDBgGlHDWp99JUa9X2yc5cJMPFrt6tBBHFPRq3fP5MWMeaPbpiK++heH7kEjNLx9lnLfAkIlm3PX3jhsx0EgPdOa7ntcIgeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hFNdm8cY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cXWGrw7o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F707C4CEFB;
-	Wed,  5 Nov 2025 10:59:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hFNdm8cY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D6AC4CEF8;
+	Wed,  5 Nov 2025 11:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762340388;
-	bh=Djgzz+8Wq0X5WeVDrT4jXPplb0BTE8Hmc73FCm/+xkQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cXWGrw7owhRC02vRSezQYB2vUZoCA8Cv8qp/6jh6ZXAxMRJfv9rzE3p+8DS7b9s5T
-	 5hPURoqjf7lf8Hh4jWMQJoHlir+m11frEjwanyZvV9XG7hwU89owhKfhGfTYaVBtwk
-	 gYxovIMS/N9QV2HybNq+8wlLJn5DTpu3I/FxQt9dRRP5ChbsGo/EcNgJD0jwflXapu
-	 IHjyrqNqrMUnIluuOtGXxHyIsw8GEKaebJuU0haozLAjVVYdSMLKHRDUFAWwEZOXXd
-	 nGkB2msvk5HEU0qzg/uHzqkiAQNOO4XhNvy/CdsaJ7W3PDDqArqGyBlsHxXVV9Yetv
-	 iTml+nAPDu8Jw==
-Date: Wed, 5 Nov 2025 11:59:41 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	viro@zeniv.linux.org.uk, jack@suse.cz, arnd@arndb.de, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Alexandre Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH 1/3] rust: fs: add a new type for file::Offset
-Message-ID: <20251105-begibt-gipfel-cf2718233888@brauner>
-References: <20251105002346.53119-1-dakr@kernel.org>
+	s=k20201202; t=1762341562;
+	bh=8fzrbqlZZIA3X+rB0huPkXNufqYWaw0N6jILyOc2Tso=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=hFNdm8cYpgm2//0cfqkf1ADYwqH9xYEq6iRjvWT7O2lNULSlXHNod7A2yIRnxirHG
+	 7uYtW0uX8fOBs55hsRL4W7YOsVq1w26+8P3H1055ZvAGg5K+5e9tp/pebGewWhX+X9
+	 ow4ponYHHptBxFWOP6LJBovdVoRsCx8K1Nants0dtbzKOLTVkOdnp8qW0CmrXZOx+7
+	 ad+B925hdAkMjIeUxBwn4m3lm6DKfpAFf2Vc3VCSqaA/Od1S8dWFGuNFI8muhpDmHc
+	 Ub5EgORY8ycYjbI2vTuLXt7HrcGYLR9OJulv40hH+1TtAUQoOU41feGQbTzAlNfwpL
+	 syzu20P51XR4w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251105002346.53119-1-dakr@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 05 Nov 2025 12:19:17 +0100
+Message-Id: <DE0PXYNG8O8W.19MUQ9TGA6C04@kernel.org>
+Subject: Re: [PATCH 1/3] rust: fs: add a new type for file::Offset
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <viro@zeniv.linux.org.uk>,
+ <jack@suse.cz>, <arnd@arndb.de>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>, "Alexandre
+ Courbot" <acourbot@nvidia.com>
+To: "Christian Brauner" <brauner@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251105002346.53119-1-dakr@kernel.org>
+ <20251105-begibt-gipfel-cf2718233888@brauner>
+In-Reply-To: <20251105-begibt-gipfel-cf2718233888@brauner>
 
-On Wed, Nov 05, 2025 at 01:22:48AM +0100, Danilo Krummrich wrote:
-> Replace the existing file::Offset type alias with a new type.
-> 
-> Compared to a type alias, a new type allows for more fine grained
-> control over the operations that (semantically) make sense for a
-> specific type.
-> 
-> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> Cc: Christian Brauner <brauner@kernel.org>
-> Cc: Jan Kara <jack@suse.cz>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1198
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
+On Wed Nov 5, 2025 at 11:59 AM CET, Christian Brauner wrote:
+> On Wed, Nov 05, 2025 at 01:22:48AM +0100, Danilo Krummrich wrote:
+>> Replace the existing file::Offset type alias with a new type.
+>>=20
+>> Compared to a type alias, a new type allows for more fine grained
+>> control over the operations that (semantically) make sense for a
+>> specific type.
+>>=20
+>> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+>> Cc: Christian Brauner <brauner@kernel.org>
+>> Cc: Jan Kara <jack@suse.cz>
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+>> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+>> Link: https://github.com/Rust-for-Linux/linux/issues/1198
+>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>> ---
+>
+> What's the base for this?
+> If it's stuff that belongs to fs/ I'd prefer if it always uses a stable
+> -rc* version as base where possible.
 
-What's the base for this?
-If it's stuff that belongs to fs/ I'd prefer if it always uses a stable
--rc* version as base where possible.
+Please see [1]; the base is [2] from the driver-core tree.
+
+[1] https://lore.kernel.org/lkml/DE0C1KA14PDQ.Q2CJDDTQPWOK@kernel.org/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core=
+.git/tree/?id=3D1bf5b90cd2f984e5d6ff6fd30d5d85f9f579b6f0
