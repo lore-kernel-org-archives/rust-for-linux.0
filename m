@@ -1,168 +1,190 @@
-Received: from sg-1-38.ptr.blmpb.com (sg-1-38.ptr.blmpb.com [118.26.132.38])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D550C2FB988
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 15:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06C33191D1
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 15:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762355013; cv=none; b=ggfGJdv3aPEotAhhsTJIcfeXLJ9103HAOlB4E0drDCjCOPlxRhzUThA3th7VeGL1aEeLFosMirO+jmodhSV228E9p7xrn7GDKAlGRpnNhiemZgHhvuN0DBkdHRkFKsfCtQ6B5RJhFku8VOzpBj2adVVArwOkzXsuBbdiNjKLaOI=
+	t=1762357540; cv=none; b=tg55JUVhYg7c8V3x0peepT/xRVwZwukGh+yyoUDl082P4VSpMIZxDy1KWFEHis5TR5pg3PAfNKWIzQSTvzs30diUgExBnhzvIrzXtO8KOTdaYbGSAl6w5GrLVBOWI05au7O4h8t7BSmUIRSfiAhDU38NgzogALbw4ymtPOaR/mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762355013; c=relaxed/simple;
-	bh=+yn8kCg0DcocwldbWqFx7eecPWeUurwZTTG8G8mO0Eo=;
-	h=Mime-Version:References:Content-Type:Subject:Message-Id:Cc:
-	 In-Reply-To:To:From:Date; b=EyExHr+aUiU3FSw4ssHUQChcSZO+zP73J3dUnywyhTj63EWk5GUUTQ+Ipn2jRh+3dxQTpvUr19EWPThmnW/wzdPu5/2vfXfLe76nxncft+P+ATeE/TCJ92xO+BG8EjzcDn5Fub026cAo3YQZIZp9y0ficS8gcnc0IQ71jvJBt1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=hVItn9BC; arc=none smtp.client-ip=118.26.132.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
+	s=arc-20240116; t=1762357540; c=relaxed/simple;
+	bh=3eIMFMFPOzh5y0kYsh/P8MA0cDRHQeNlcvOWQyDuHBY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mxuZUji98ksCiW3P84LUAWE+waZoJCgGXl2QXeILLxQ2tJaKBlHz4XH144HhQdH+P0/uQPHXbICOhVYtcSeTAJhlXXzqAGvWmY8sS6mNjp1jVyT+JLqMH7Oozbpqt0y+44pidiDPFB2tpE7zwsBoscUNQeX3dtqBoJR8OPN2Wp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TxGd8Uwo; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="hVItn9BC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1762352208;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=QPF4dN9RFRcdX3bhAtclDyHuCbEVFOt7Ivic9yuyuzg=;
- b=hVItn9BCqYjzguDumS3Z3E0yFh7ixfKp3B0OtcRLUSDYz1ptmi4yUK7P+MQY2r+IrtlbKo
- lJySlzHB6YBH+ZoyMj+hMoaNfyJWvJditUGQ9jm0cR0FyVLHanwwNYv5AqEHw8pIscnPVi
- 3HyxfoMyvKc/SxhCIATB7v/Ak7cqk5re1x46H5kRrA62yXMKVACwq1puUQCrYiN4PQM/Oj
- LBWgOz5O9Lb7hCRTjMNGyqU/m3PRIpj29VYHXrgm8gk8KjamZqf5RvvGY22lcm5FH9pW2d
- pdc3OAUY+OMBSsRiwcW+9ZKT98w6DxP0HgMb6iR8mVHE7++Hsbl4HtaoIn/8jQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TxGd8Uwo"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8801f4e308dso299716d6.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 07:45:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762357538; x=1762962338; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=co3Ih/khDOwJvwvrea/KimKwIaXUk+j+WlxpZERx3vU=;
+        b=TxGd8UwoqXd1/uvwF+IJR8kPul6vVCy0aOvfjK7QxSReAG1auyJWwCpPfg3aU3kl2O
+         cPJARN8kv03cigOJ1GbuPmHx4OmQcpzwnUjkbBjg9VUDnJAhrf0J/nKTpcQa8TOAgoUJ
+         01eNOEKTnQRktnAOwZqrcFOc67dKS+VGADv4FMiTk/ARtTstMFkBBh9yT7zX5ATKgyrr
+         6ntiOYXuXPKsv3hTJVckcSt+9Q005rMTZwQIeT3bBPVa0V/aw3oTjXjKQzk9wnswEhT9
+         Hbzyf/jmvYqHrtifups/ygxUMw1Q87qpnrKjQL3mxh862PXRTZ6zgR37KNWaCjZjZOPi
+         fkUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762357538; x=1762962338;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=co3Ih/khDOwJvwvrea/KimKwIaXUk+j+WlxpZERx3vU=;
+        b=LiWBrzv01qY5aKvUY2d0cAEnsfFwWBUW9BV7GV6eL3AQoWNHqg2MsEkovKTowHZ3HC
+         jdMHy5AUhVXLO+PsLsGAn84nLhbgMwNxEnsiwIagabnq0ucQmCLeLvSBNCU69KQ5/Tno
+         XNwwquj7U8JYWydZxkww3SSCUaUK+Kl1TLbOf6N6Yq62Jv5DMnrm545UFj84nlJUtK1V
+         d08uEiP4CP/kOcged09a0ODfOewYo+o7FLdltw1aYcpmKlNzAus4K/ljkYQfRP5fjRWT
+         MGoOIsNfE14ZuJfrETKuIgYia8rZy1f4lx9eKGPCHO92OLpLh+NSHnDpitXCb5BCPVFq
+         3JnA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpP87HPAzAk7YgqRunt2k9K9R2uWzrSDFz0V5l430CvEoKIs/9embCbLAPSWqITO2HXWL2YuZIOzhKAfxuCw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAaSkjCrxrn/TwDBnizcdsFfs/QiG2ywwp2otY+Qr2BzTWkYV7
+	K6dNLRRQFPiHPMJKdxDShJ1BwyqDlRj+WYsAv37MjNnM8GbycLAsZUVl
+X-Gm-Gg: ASbGncvbGuQAQBhtgFRGx8qyQj3vCHgYYjme9ds+hTHkFIAAlkAe04PHO88CLMd44Kb
+	4QZvX07dlZP3cqLUUW7haxzy9XnIux3xP4cLdLlLnoQYIVLJDOXhP+0dveS678RR1hBQw8Yd0oS
+	Gvz17Nm/HTL1ABlew8fSuRukurs5vw+Moqp2DNGBJ8g1EIrA37IblCGq9RudSncFdVm8Lbh+2A9
+	SzobroqiRAFkRJ3bObz9a6rech45pfUkF4YjkGsnwxfjfRSppbhSFmePYzawxT2je3uJ+8CVuMd
+	34ilmPcF8Jfh+dZEXpj32ttynnxkEgaoDDxRpzlQOwgrjuWzAn/9/U45azmjIPARl+SHm28rUdx
+	XPEjlMzLHzlVtO+J729Z1kyHbBEtQRmOKUC8QcvjxDCu8PX4vP8F5Jzaf3CXklx/5s+7C0CqfAi
+	Bx63Z7E1k=
+X-Google-Smtp-Source: AGHT+IFIgpqZI5fF/EKLLTt1u6e9u7A2K2l/zF/mlCOpK1IK47RGjupL6vDQyRIAjwkB34AmJ1293Q==
+X-Received: by 2002:ad4:5b89:0:b0:70f:a4b0:1eb8 with SMTP id 6a1803df08f44-88071093b70mr45248946d6.13.1762357537710;
+        Wed, 05 Nov 2025 07:45:37 -0800 (PST)
+Received: from localhost ([12.22.141.131])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8807a28000fsm9290676d6.47.2025.11.05.07.45.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 07:45:36 -0800 (PST)
+Date: Wed, 5 Nov 2025 10:45:35 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Jesung Yang <y.j3ms.n@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] rust: add BitInt integer wrapping type
+Message-ID: <aQtxH_7oeuE5UbRv@yury>
+References: <20251031-bounded_ints-v1-0-e2dbcd8fda71@nvidia.com>
+ <20251031-bounded_ints-v1-1-e2dbcd8fda71@nvidia.com>
+ <aQgQv6F0Ao4DH6U0@yury>
+ <DDZ3QBBUM27H.MJS1S3WHWJO0@nvidia.com>
+ <aQkEVqbhoVMUc-Km@yury>
+ <DDZKZFCK27HZ.DY3QVXKFU3BI@nvidia.com>
+ <aQpUSw49QptgxjFz@yury>
+ <DE0TFMFV6D6W.CS9KM6FNM4K5@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club> <aQoIliAbrn0Re7E3@google.com> <b3f50745-5351-4e69-b3e2-ede99511e8dc@openatom.club> <aQtTRUMUaaUmTAWZ@google.com> <90bfcb3e-dee1-4f78-a1b2-02ce99db4997@openatom.club> <aQtbeWpRD7ip8-2A@google.com>
-X-Original-From: Chen Miao <chenmiao@openatom.club>
-Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+2690b5c4e+db2974+vger.kernel.org+chenmiao@openatom.club>
-Subject: Re: [PATCH] rust: kernel: Support more jump_label api
-Message-Id: <9c01f57e-35b0-494f-9e8e-c8d44e4a7596@openatom.club>
-Received: from [198.18.0.1] ([114.249.49.233]) by smtp.feishu.cn with ESMTPS; Wed, 05 Nov 2025 22:16:45 +0800
-Cc: <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, 
-	"Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	"Benno Lossin" <lossin@kernel.org>, 
-	"Andreas Hindborg" <a.hindborg@kernel.org>, 
-	"Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, 
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>, 
-	"open list:RUST" <rust-for-linux@vger.kernel.org>, 
-	"open list" <linux-kernel@vger.kernel.org>, 
-	<hust-os-kernel-patches@googlegroups.com>
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Mozilla Thunderbird
-In-Reply-To: <aQtbeWpRD7ip8-2A@google.com>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Chen Miao" <chenmiao@openatom.club>
-Date: Wed, 5 Nov 2025 22:16:44 +0800
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DE0TFMFV6D6W.CS9KM6FNM4K5@nvidia.com>
 
-On 11/5/2025 10:13 PM, Alice Ryhl wrote:
-> On Wed, Nov 05, 2025 at 09:55:27PM +0800, Chen Miao wrote:
->> On 11/5/2025 9:38 PM, Alice Ryhl wrote:
->>> On Wed, Nov 05, 2025 at 09:28:39PM +0800, Chen Miao wrote:
->>>> On 11/4/2025 10:07 PM, Alice Ryhl wrote:
->>>>> On Tue, Nov 04, 2025 at 02:04:17AM +0000, chenmiao wrote:
->>>>>> The initial implementation of arch_static_branch was achieved by acc=
-essing
->>>>>> the offset from the original type. However, this approach extended t=
-he
->>>>>> path and introduced redundant calculations when dealing with types l=
-ike
->>>>>> `static_key_true/false`, as shown below:
->>>>>>
->>>>>> ```
->>>>>> static_brach_unlikely(tp, tracepoint, key)
->>>>>>      =3D> tracepoint->key->key
->>>>>>      =3D> &tracepoint->key(static_key_false) =3D=3D &tracepoint->key=
-.key(static_key)
->>>>>>      =3D> off: tracepoint->key - tracepoint
->>>>>> ```
->>>>>>
->>>>>> In practice, the implementation of `arch_static_branch` overlooked m=
-any
->>>>>> detailed descriptions. To improve clarity, additional comments have =
-been
->>>>>> added to the original logic. The approach has been modified to direc=
-tly
->>>>>> locate the corresponding `static_key` instead of using offsets, ther=
-eby
->>>>>> reducing  computational overhead.
->>>>>>
->>>>>> If finding the offset from the primitive type is necessary for this
->>>>>> implementation, I will abandon this change.
->>>>>>
->>>>>> Additionally, support for the `static_branch_enable/disable` APIs ha=
-s been
->>>>>> introduced.
->>>>>>
->>>>>> Signed-off-by: chenmiao <chenmiao@openatom.club>
->>>>>> +    ($basety:ty, $branch:expr, $key:path, $keytyp:ty, $field:ident)=
- =3D> {{
->>>>>>             let _key: *const $keytyp =3D ::core::ptr::addr_of!($key)=
-;
->>>>>> -        let _key: *const $crate::bindings::static_key_false =3D ::c=
-ore::ptr::addr_of!((*_key).$field);
->>>>>> +        let _key: *const $basety =3D ::core::ptr::addr_of!((*_key).=
-$field);
->>>>>>             let _key: *const $crate::bindings::static_key =3D _key.c=
-ast();
->>>>>>    =20
->>>>>>             #[cfg(not(CONFIG_JUMP_LABEL))]
->>>>>> @@ -30,7 +71,88 @@ macro_rules! static_branch_unlikely {
->>>>>>             }
->>>>>>    =20
->>>>>>             #[cfg(CONFIG_JUMP_LABEL)]
->>>>>> -        $crate::jump_label::arch_static_branch! { $key, $keytyp, $f=
-ield, false }
->>>>>> +        {
->>>>>> +            $crate::jump_label::arch_static_branch! { _key, $branch=
- }
->>>>>> +        }
->>>>> So ... this is changing from $key to _key. That's replacing the globa=
-l
->>>>> variable with a local variable holding a pointer to the global variab=
-le.
->>>>> However, the arch_static_branch! macro uses the `sym` operand which
->>>>> requires you to pass it the global directly.
->>>>>
->>>>> Did you try this code? I don't believe it will work.
->>>>>
->>>>> Alice
->>>> I'm very sorry for making a fatal mistake. My misunderstanding of sym =
-led to
->>>> this issue, so I shouldn't make any changes to that part. However, reg=
-arding
->>>> the other modifications, I believe it is necessary to support the dire=
-ct
->>>> passing of structures similar to `static_key_false`, just as in C lang=
-uage.
->>> It sounds like you are adding a new use-case for this macro. Can you
->>> provide more information for this new feature? It is currently unclear
->>> to me exactly how this will be used.
->>>
->>> Alice
->> If there's a binding-required driver implementation in the future where =
-a key
->> function uses if (static_branch_unlikely(&zoned_enabled))=E2=80=94 defin=
-ed by
->> DEFINE_STATIC_KEY_FALSE(zoned_enabled);=E2=80=94 then in Rust we can dir=
-ectly
->> implement it using if static_branch_unlikely!(zoned_enabled), without ha=
-ving
->> to call it via if static_branch_unlikely!(zoned_enabled,
->> bindings::static_key_false, key).
->>
->> static_branch_unlikely!(zoned_enabled) instead of
->> static_branch_unlikely!(zoned_enabled, bindings::static_key_false, key).
-> In general, you would never use "static_key_false" as the second
-> argument to static_branch_unlikely!. The second argument is the name of
-> the struct *containing* a field of type static_key_false.
->
-> I guess your point is that there's no way to use the macro right now if
-> the global is a bare static_key_false that is not wrapped in a struct?
->
-> Alice
-Yes, you're right. But in fact, currently there are no other uses of=20
-static_branch_unlikely in Rust for Linux (except for tracepoint), so this i=
-s=20
-also a bit awkward.
+On Wed, Nov 05, 2025 at 11:03:24PM +0900, Alexandre Courbot wrote:
+> On Wed Nov 5, 2025 at 4:30 AM JST, Yury Norov wrote:
+> > On Tue, Nov 04, 2025 at 12:13:26PM +0900, Alexandre Courbot wrote:
+> >> On Tue Nov 4, 2025 at 4:36 AM JST, Yury Norov wrote:
+> >> > On Mon, Nov 03, 2025 at 10:42:13PM +0900, Alexandre Courbot wrote:
+> >> >> Hi Yury,
+> >
+> > ...
+> >
+> >>     let a = BitInt::<u8, 3>::new::<3>();
+> >>     let b = BitInt::<u16, 10>::new::<123>() + a.cast::<u16>();
+> >> 
+> >>     let c = a.cast::<u32>() + u32::from(b);
+> >> 
+> >> Note that `b` and `c` are regular `u16` and `u32`. Arithmetic operations
+> >> cannot guarantee that the BitInt invariant will be maintained, so the
+> >> result needs to be converted back if that's what one wants.
+> >
+> > What C does and what I proposed is to make BitInt a 1st class type,
+> > just like basic integers. What you implement is really a bounded int.
+> >
+> > Both have advantages. C-style BitInt() is a true type with all type
+> > guarantees. And I like it more because it is a natural extension of
+> > the existing integer scheme.
+> 
+> Yeah, it's definitely different from what we are doing here. IIUC C's
+> _BitInt is implemented at the compiler level, here we are just a regular
+> Rust project, not touching the compiler at all.
+> 
+> >
+> > Your bounded ints are actually classical integers with some limitations.
+> 
+> That's a very accurate way to put it. It is not an unusual thing to do
+> though, there are several types in the standard library (e.g. `NonZero`)
+> that do exactly that. Putting limitations also means we get more
+> guarantees, which can remove unnecessary error handling and help the
+> compiler produce more optimized code.
+> 
+> > It's not a primitive type in sense of C - it's an object. It also works
+> > fine. You can easily extend it to arbitrary min and max limits; you can
+> > expand it to floating types, and do whatever you can do with the objects.
+> >         
+> >         BitInt(i32, -128, 255)
+> >         BitFloat(f32, -1, 1)
+> >
+> > That's why you think that -1i32 fits into BitInt(i32, 4), and even
+> > into BitInt(i8, 4), while I don't.
+> >
+> > I don't know which would work better for bitfields. Most likely both
+> > would work reasonably well. And if bitfield will carefully hide
+> > internals, I hope most users will not care much.
+> >
+> > You switched name to BitInt, but still think about it as an object,
+> > and that brought all the confusion in my mind. Maybe switch back to
+> > BoundedInt then to avoid this confusion? If you find it lengthy,
+> > probably LimInt or simply Lint will be better for you.
+> 
+> It looks like we are going to settle with just `Bounded`, to follow the
+> naming pattern of similar types in the Rust standard library.
+
+Yes, Danilo mentioned that, and I agree it's the best choice.
+ 
+
+> > Looking at how good rust macros work to implement bitfields, I thought
+> > that they will be able to mimic native types just as well. But now it
+> > seems like an arbitrary-length integer types requires support on
+> > language side. Just like in C.
+> 
+> If only to be able to express arbitrary-length immediate values, yes -
+> although I suspect macros could also help here.
+> 
+> But I believe the more fundamental question is: do we need
+> arbitrary-length (as in, larger than primitive types) integers in the
+> kernel, when Rust supports up to 128-bit primitives?
+
+Bitmaps are actually the arbitrary length integers. They support all
+the logical operations, shifts, bitsearch, bitcounts, prints and more.
+The fact that nobody's proposed arithmetics for bitmaps answers to your
+question.
+
+> > With that in mind, I think that bounded integers are a bit out of
+> > scope of basic bit operations, and probably I'm not a right person
+> > to maintain them neither in Rust, nor in C.
+> >
+> > Please keep me in CC for next versions.
+> 
+> Will do.
+> 
+> Also jumping on Danilo's suggestion I will probably propose to add a
+> MAINTAINERS entry for this in the next revision (up to the Rust core
+> team to take it or not :)). Let me know if you want to be a reviewer,
+> that would be a good way to keep up with what happens here.
+
+Sure, if you find it useful.
+
+Thanks,
+Yury
