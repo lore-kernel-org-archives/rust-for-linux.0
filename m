@@ -1,65 +1,65 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DB72FD673
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 10:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324943002B7
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 10:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762337995; cv=none; b=m7avxo/0WkVrZ6uOEz8zOoFdezeySeceKyZ92TCIsdNnSwaLwheYL4oL0U+z0RHIRZ/kOeR9bvw8+cvN0ieI/8GGUW9bhnxOlKEW9msCnjLV+BKHOgrurhPd3CBv4oYnx57u5nuRM0KTLn7ZFWULLx97hL8C/HpBuFP3sATsIE0=
+	t=1762338110; cv=none; b=Lj0odYI/Eo10xtg5yroqhMmdVjV6aRqWboOWKoy5IxEoW/jEAQ5NUY/MVF6vxvEGyyFhwj44xhW5O/CYGgMJ9wYmjzD9zp73fJO57CVc6TB2Kes+dMkEGt8joOQw5lW42EWb0FS7RlC7TKZzjI7Md3wirpm8osJPkFimKmQcdjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762337995; c=relaxed/simple;
-	bh=zcwOyR3i+iQCu6dzVq9q4dOF16E9XrrQF46JdXsYiRE=;
+	s=arc-20240116; t=1762338110; c=relaxed/simple;
+	bh=nOv5SbwEt/u7lrrZsNiTVArKA6WvbIJcj/VcuXvsciE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rfaSzByb0RUki6BEJ8Au4IYhJsqT57MVBIh5+9sDVboUUE+CphKTKbJLlH6BuEkSG2g9N/UYD0alKKbPIaxkv5pcgMxMDAtVCSc3Gi88Royf68Cs4C5mY/5ZuuTUOF2fW76fgrIg9pizO/meY0XXn0kbHsTxUVyjQTNHDaOMZl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GiEu45u9; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=AG1V9mBNsXiUS8NvVY1VG6AyskqxZtk3Io6fbL2gEMWqIrnTbKcmW7mgjhOGYy7sjvgrJtZ0t9Cb7Gj/fzLLKc3iQxYnW4GrKXstRLzusZXYzR6i0GJysLVuBwVVaxFekW8hJH1/ClmqRQEp8MkOZQ1RdlJAhjLDVJDZmtLkZAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=03bhVvY6; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GiEu45u9"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47106720618so67021235e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 02:19:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="03bhVvY6"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-471001b980eso47431325e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 02:21:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762337993; x=1762942793; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762338107; x=1762942907; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gSDrC2UXjvRn1x7EpScqa90OTfMWc8Syuy/AT16lrpE=;
-        b=GiEu45u9/dR8rnCnNVN0V16KzdhcXIB9pxPJZc4TuQneD/IkWEbO4LAoiQ4VTQGBpC
-         WqDQegWcOyOg+tUNnJjSq8meEXM5G68BMiAsOmPaZPF22/Yqj0uE2cqttOVJ5GXD/1Sz
-         LV1tJLq+teYevkGP7T1rzHqpnCBioOtPRxwtFzR5WLBfJuZ/vKetBWQ2lLHsJwFonOe4
-         tVoXY17xglTRweea04X0zlWBNH2eWhmwCNp3Ago/K02kRIYEAcMNTL2Aiki4HfWt1Olk
-         8IS2/sNULp4748hCc8ts2QQrjIDz2YszSk/4InvmxF1UcmbwQu/VeWYWqOjlPrsNg1Va
-         NWCw==
+        bh=QvaJZPWX/lBr0I8xsGU61fm8PKa7AAE0hAZtVjjW1rM=;
+        b=03bhVvY6AbWk3zQldCqvY4TjKdIeyY0W8PTk5mTJPcZlMOTGlAoMKL44WS+t+hi045
+         wW7QO73XSAkoKVSp4ttRHhRJUuaYBa/3iu/qJgxR3xaqZl9JwpNVSXSZH1u5aLd+L4E7
+         46j3ELrUUfrCEsTn/B1JVsJA4601H+OUwtvxv5JKWxmIess1YDny6UTgNG9Ntp6fyDJA
+         eBDBoSIacJ1h+xzIjmbrmp5ff3DQexeHypFwl/NRUuCgDSaa87P+DCeSYiTyZQLoZpRk
+         I95ZmCt6aHYD/Im3YGZVu6Dxx4U1913/0GyA59kVXO5i3eKVqY8l1jhp1WQjfa2LpE3M
+         xMIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762337993; x=1762942793;
+        d=1e100.net; s=20230601; t=1762338107; x=1762942907;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gSDrC2UXjvRn1x7EpScqa90OTfMWc8Syuy/AT16lrpE=;
-        b=uSBY5u8mT2Ypw9+d0zzqgw2NCZo7PMHJrKbpHJ15iDfvXblWPByVsn4xtIVRxsYSLi
-         QPFIFp2lQGs7JS5wIWSZWtzxWoLSWDXMOVcWJJT30Wwd5WD0vFyCsiJ4mEo5lfHfWB8+
-         gK7TtbHyTmY4wLp15uLfuJPzt/zf/L9dawY3NOokngkqt6/pRi64JGTSecp+Vw+i+f/6
-         zBObSZ+2CoFYkC7jyqb4lmlXYIR39xyu2A8pQZH2LINMtWUrLlfu1VSi0IyOoxEDq3NF
-         ZCAHbF1OgPLHEVPu5Hv6JVr5jfoqRKHIISBtgccHMolasloGr8XVwCbJOChgZWrqrbsQ
-         qVwA==
-X-Forwarded-Encrypted: i=1; AJvYcCUo6ww2CQfvbWMxGtQXzIfSPR70DbnIy1L6Bb1DtG3VLdWzfWnpLNc8GOHuxbgxiAWouClitI2qhhcuaEpbcA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuPK4K88kiQjvfEHhIrZYQ2vAK8+myfg3KdgKKhwtmAI8gKPY8
-	W/4mHOQScKfAoljU6KvlT+t/r06xXyiLWj9kxp920J3K+yOiMITk/GE3tCyIQQOQvvgJpbqNJ9X
-	mYCNOMmmQe8sskQ31mg==
-X-Google-Smtp-Source: AGHT+IFy6HLdLExBzNA/9DKpfS4LGeWapRstwfkqLi6/dGNf+Wnlmn+SJmKmH4X1ieaDRU09v81ykT8v7CEixB0=
-X-Received: from wmqe20.prod.google.com ([2002:a05:600c:4e54:b0:475:ddb0:71ba])
+        bh=QvaJZPWX/lBr0I8xsGU61fm8PKa7AAE0hAZtVjjW1rM=;
+        b=s2FgJ4Ntfus6xqjolKLcTj+sJEusQRJg4JcNNvimRWtGHXXETJ3O3rdGm2eMFeHT6l
+         OsxTiUFkLQCn+H67j6cxGLgpXN9VFZqeMvJoOoLKW+Y6Yy1YVYNjnJ7d8+6Q9i7mr+1g
+         CkCnoqyRwarnozTPnZk3kAnAvjlh0zFBWurYQp/jIiJV+54TCuGAP/aHQMOuaeehbPBm
+         R90EKq0Abk66tf/dQgcpOsx0BU2T84atzGxOA36h/swNvsCkNAbjIaBcenHqaxlN4sov
+         3VG/oaY8d5sYFoYIfmDCke2J/6xlO8zhi9z1sNipL7g/Xa0M6iQEkzjmqbzgYd7B1WLC
+         8yzg==
+X-Forwarded-Encrypted: i=1; AJvYcCVObhylNZs6roRYYlC0MSf29xUmV/f1bklWcE9M/8apl5bPG+X0sCV2dofxKZV/auS7k+s2xBrD9Y9Y/DnexA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwK20/Tr5b5fAMYu/BsSHOcGTpSQsvnewN0/QYowZNr8A2W/67z
+	nGAaOrJeeqdn3DLfTbM7FuUlSpRTDWECYe1IoPUy7XFvPrXmRgEGm8X0rqOgQVnk/c5LJrtoqob
+	RU4vaTf1dEXQqj08AUA==
+X-Google-Smtp-Source: AGHT+IHdi59H0AvdEqXo2GpBK/HP8BVRFrNAgC6yALK1p5tu9Pd1lI5ZwDcYaG3owUMBQGLJqr+lB+V+J/vRa0I=
+X-Received: from wmbb18.prod.google.com ([2002:a05:600c:5892:b0:477:5506:8a6d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c8d:b0:46f:b327:ecfb with SMTP id 5b1f17b1804b1-4775cdc5348mr25817385e9.9.1762337992754;
- Wed, 05 Nov 2025 02:19:52 -0800 (PST)
-Date: Wed, 5 Nov 2025 10:19:51 +0000
-In-Reply-To: <20251105002346.53119-2-dakr@kernel.org>
+ 2002:a05:600c:468d:b0:46e:33b2:c8da with SMTP id 5b1f17b1804b1-4775ce15bbamr32064945e9.32.1762338107601;
+ Wed, 05 Nov 2025 02:21:47 -0800 (PST)
+Date: Wed, 5 Nov 2025 10:21:46 +0000
+In-Reply-To: <20251105002346.53119-3-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251105002346.53119-1-dakr@kernel.org> <20251105002346.53119-2-dakr@kernel.org>
-Message-ID: <aQskx-CkI1HNycQS@google.com>
-Subject: Re: [PATCH 2/3] rust fs: kiocb: take advantage from file::Offset
+References: <20251105002346.53119-1-dakr@kernel.org> <20251105002346.53119-3-dakr@kernel.org>
+Message-ID: <aQslOtzy2PcJ4D9M@google.com>
+Subject: Re: [PATCH 3/3] rust: iov: take advantage from file::Offset
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
@@ -70,7 +70,7 @@ Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
 	linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Nov 05, 2025 at 01:22:49AM +0100, Danilo Krummrich wrote:
+On Wed, Nov 05, 2025 at 01:22:50AM +0100, Danilo Krummrich wrote:
 > Make use of file::Offset, now that we have a dedicated type for it.
 > 
 > Suggested-by: Alice Ryhl <aliceryhl@google.com>
