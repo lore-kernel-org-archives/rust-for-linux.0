@@ -1,130 +1,141 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A526F302CD8
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 10:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D745830C379
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 10:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762338942; cv=none; b=pLltCTl3IWTEVjoACjYEVVdtY+58gPUt0zqOjxFqCH0nl+CJnnxwM7d2GYbay4zi70eG5+jhC+U4W3QEc0Y1aknTV9OBL6cNOH+LOdJkj7Mee7sqX2YNNAj/3NZbQb3jdH++PwywzKefARTxAXo9jHEZq7xNi1Ac/IjXg4R0OOM=
+	t=1762340057; cv=none; b=BmfqoOinI+sRa5HX9brMU6WPHKGSEFeD4KlqKSUCiqflkmglROUeuqMYlhlFsQetIQOJZ+x76COvZ2rW6FRBHoO+DyBeR8Fe0d24xHCgjWs7SSrDGcmrXZh/7kjwe29BU0Q4vh8DrUBdeK7LBqX0WiXBexcCjCV7s84HixQYqB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762338942; c=relaxed/simple;
-	bh=zWAj4hFvDlRRGvkPhQIGQzX8CaGaPgyrLkLoh9tWm+0=;
+	s=arc-20240116; t=1762340057; c=relaxed/simple;
+	bh=rLYGShjvH0ii87qREH3WO35v8IHXOBPLvlHQQ38IJz4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g1Rk7eDtym06FsyuOqnvPkQeff1OhcRT+NBMdGj097msH25pa7zbjeZ3wY6aVlykRUfmwvKR3S6Sl++rqaBsCq4smZjpTWbImdHkev67MieMOAuEPHqhoBJxLA/IxZSJqEy9LjbKzAK5ocHlg/NPadpd4HpYfUYfpTDBFRZwSF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DHsq0cmP; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=aOj68o30QcGUh6wLwkXMpqVNN+kZBIdwaAj+/YT+E4wc/IA5x1JgVwY33+dCTKyOamyBjByLeceQGRAzBVKl7AEhsdS05wE2WJmNGnCeEC8eJGr7/9gXtlAP3o7hFoBZTBfvZlmVdt0hPlJWRYDIXH5RC+7rSBsUYgOwA75lHpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UjMcy7OW; arc=none smtp.client-ip=209.85.161.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DHsq0cmP"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7a435a3fc57so6349934b3a.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 02:35:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UjMcy7OW"
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-653652a4256so3050621eaf.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 02:54:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762338940; x=1762943740; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762340055; x=1762944855; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SejCQHn6FNdfkG92JQnDwhlszjYVGRDiwrkxK3DueRc=;
-        b=DHsq0cmP4I3p//Q6mdMFLABDZYqaEv6yXs4uhgutvdNi2u8cwkJT3pMTbmJWUULr+r
-         9hi14S210qONQKIDYKaT+2lIVIYs3OKQ2KQO3woV/cA2jT0dL3OcLyvGShTkdwaYoiC9
-         IaoxGhxGgS+4GqwylxD9f2STr5AOwYwJDm/S68Awukuv9izBTYAOwIPjD1r1qlGy02YC
-         T0XIGnYzQVjKPEDAB4y7BeG4Q8OqXUqFgSsL5ERyQrBF1Kpw2FEWlgy77tR90/+atT7X
-         WFEgVMnFbB1lnA2t66FuQkuPT0Lb2Ox63pHZhDrIAFjlz6KnfT5OyKAjka/bb7og5vpC
-         iMHA==
+        bh=UI+zvnrKdhRN8SIehVxo9mkD9QgvEwvxC3LXtBEgkQ0=;
+        b=UjMcy7OWjWCaW/DCk7GTJ1FQ67cT7FkJi1DDY8H6kgwpZmbp582osfW1a/6LLO/vz6
+         96Njttx+wh8KMTeGERtKg2chOONmr1/XY3r5s03kP4MWfe5x9K6k6Vi2tUJCpDJljUae
+         g44mr2LtI/IpJ7VzpNq55ie/c3HN5CFj07V4pnSVMDhruUPdo9anhAc5YUPJFJF3WudR
+         uQaBrFr0i4WJB8TJo3Z2HFyuv8CA3yUfw3Km2Oq2xxpvvCrQjLBm3uepCFNGffJ1+Sfi
+         erCEZF6zygeE9tvy1VtCIAPxe126MSk4HO/XYhf1RLN/dfCSPGIjd2anFtxnG42uMGz8
+         zg5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762338940; x=1762943740;
+        d=1e100.net; s=20230601; t=1762340055; x=1762944855;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SejCQHn6FNdfkG92JQnDwhlszjYVGRDiwrkxK3DueRc=;
-        b=sZQ29bQzr76hk5yHWUSsht/ZqTCSOEMXVs0UsUv4WNgFX/QRtVx5BRYyTSp23PAYjW
-         RTdQtNNtjQ/gZnxvm64jB0+gW5TG7EbwgZJQraJj1LJ2BrhXFrRCOjBnmO7OW8yM/+fe
-         8ey6GJ+UuuPyqZxaDHHpGMrPDA9ToHrZ1Jc5ICukf3ehKsQ1GvGdn0H2YtTDSEC5hORB
-         uqGGutX/QV8XBJCDcUySypFWlG+m8LAuGFPVZO4RYm884ZX7IR1zt0ilUYFjcyzw2tbe
-         yNqKu8miFl87rDtmxDOaletvBzSgASk0OzhGNb95ZCtxbCz2Am+wuvrp0sbRTTYBacDc
-         KweA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzPpScG/QuIElF4KuK1ilgEUwCPgltM5V79XDKQJTZzrHwTuqCF4iJqXJeH+9MZStnC02iwP/y+qRwdavtXg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0mcrYKW8qku4ImN3s54G1eMSI8AIMw1GzvkNHFPfSM8Mg21nz
-	8DTclVKJ3SO1Q/mR8KU6mW5MXTCN/+egdAxaNlHZsbaKIMCmdrrGlv5zyfIFLGQSeJqpM8zW4wh
-	pz9ipwoS0Sjty/pf6OI8FKkFTNcnhFUgxfJQC/dWT
-X-Gm-Gg: ASbGncs7cpgtHGF+d8IQVPNwmISt6t1YufIu0WWBBcj0OzPeLjsD83Bs/da0U1hIrn/
-	bhAeAQF10NASq6eDPxEtYorAjjwZrTjwnyayJC58rVjNTTbXS0sbrYZQXAN4ncHAfv+E9tboeJD
-	KNNvsNSNLiPEgFVDSifskUxPKICvn0wyLHtN249dHtoLzPuIzBwq7J2zuszCfEF4apPxHpmOtkR
-	3+NxQk3RXU3oSJUinu7dxcZxfTVdWWHelRjAWLntei70Mv9bb3567XBlv5DxXrKBAsis6PAsCWZ
-	OpBVQwGgMxEgdLpNsUQPnRwjzw==
-X-Google-Smtp-Source: AGHT+IEybGBw3GCplCQbLiV49SDSJO0NJhvnpunss08q7C6QXh++ygZFwWlJuPwdqztlIgMAdxYLF+5gZrLZTHucLSo=
-X-Received: by 2002:a05:6a20:2594:b0:34f:7454:b977 with SMTP id
- adf61e73a8af0-34f8620ac80mr3504731637.48.1762338939722; Wed, 05 Nov 2025
- 02:35:39 -0800 (PST)
+        bh=UI+zvnrKdhRN8SIehVxo9mkD9QgvEwvxC3LXtBEgkQ0=;
+        b=afCq2n8PK0G5ixmMqk7Osw9tcjXXoRmsridCH8YumUUtBY+ySu4AJdw4wichrV6AxX
+         tipwvOVMto1h1L2oF0eHcfTvMsBGwO6G3h/awCDQ6OMD7jgUcx1mzaUCXicy0SsBTCn7
+         KoX8/p+FUNTBD3Vdjq2sE5UPe16/aqiIdkbbOWB0oajZkSABJhEzvKac4ViiDtKJHSVm
+         FlJV2jXDb1/2hZH4M52Pj1+HdHCFEfs54QnvCwo+mY6Akc4gjJ2dVm5Xd0F/B6e38nQR
+         Pnw3DNGEbkj4tgn9I0VMhApqFNTpPrgL07OyQJXQ6Q9Hs6v+KMTwzVvMqr61zPWT9y3I
+         sVvA==
+X-Forwarded-Encrypted: i=1; AJvYcCXj18Ozmi4iRiYxAZ+Ft+5smHhEXZTke1bSYYTfrxu32baVosthkKlv0SFYtvPe4jGc2uxV/TyFSIfzVRMLSQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyczXKoPMyfkiXV2HhDQrNzuIh6X0jMi2IhcDIzB5d6Uky1S2ho
+	JJ39rfYuWsRN5NpBd7oCEFvKBuhYHRfcoP4JsOf07hqySSlC2AXqchXy1ley8++v1/Ia7gNzzxF
+	bErQGeNfmONcJp2rRZL1TzDqhEyVSxaQ=
+X-Gm-Gg: ASbGncs8Wo3D19Br/cQlFvZWVTrL+MekFHcSqd7gQ2nRf5r25lgdIKFIN58f533zADx
+	ULogBdo3B3AtBNETKef22rFB9ODRbuBlwXAc7xDyHrSXzINMRt7uIsaHJumgRIhBxpSrxgv3Dmj
+	ipBWw4uyrEXL0Ooko4CHcUsJKir6O1uC69l+ztXryal8rvDPMoUBFnVM6ZCLWgzQMdk00/8ZuV3
+	yaC+/edW29pBsQan2DqiUfan6i5tXFcCOLGG/ZFbGxTIELV0RE+3Z+iLZby0PJ79pQ9V24=
+X-Google-Smtp-Source: AGHT+IGOrCYrmHNMLavSyZ02ydICrKRBss+q8PZq/0Rzc5ZPlgYctyKGHcxtmk3f5rN9LiTKlT/v4xGFjERNNmxuico=
+X-Received: by 2002:a05:6808:21a3:b0:43f:5e91:d556 with SMTP id
+ 5614622812f47-44fed48970cmr1063735b6e.44.1762340054900; Wed, 05 Nov 2025
+ 02:54:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251105054731.3194118-1-fujita.tomonori@gmail.com>
- <20251105054731.3194118-2-fujita.tomonori@gmail.com> <20251105122125.5b84fa83@nimda>
-In-Reply-To: <20251105122125.5b84fa83@nimda>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 5 Nov 2025 11:35:21 +0100
-X-Gm-Features: AWmQ_blQGdCSKJYU9Zyd4RvbPS86C4O_Ar0tZHIfgX5KtewHYSGEYZG6uBh4sCc
-Message-ID: <CAH5fLgjyz-V7=TWU0A+Deq5VUOZNvhQYrjrreB5+dQp4w33f5Q@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] rust: Add support for calling a function exactly once
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, ojeda@kernel.org, a.hindborg@kernel.org, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
-	gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu, jens.korinth.tuta.io@kernel.org
+References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
+ <20251030190613.1224287-2-joelagnelf@nvidia.com> <DDX1WYWQNTAB.BBEICMO8NM30@nvidia.com>
+ <20251104005812.GA2101511@joelbox2> <DDZYCRCPYMOL.RMTIF0R404Q4@nvidia.com>
+ <CANiq72=Cj_gJ27+EAiytxYGYk1dMwu7M3xQpLGByD4QstgDsHw@mail.gmail.com>
+ <CAAOQCfQ_d_C7oZ9uq2siJHn1+m+j059qYUMBvTWOnQ5Etk91ug@mail.gmail.com>
+ <CANiq72nLzuCXh0r5W0HMM36f9yTSQfP9yCxXbzH+wS7VxFM2Eg@mail.gmail.com> <CANiq72kYYu9C94aY72HK1ELSmvktF3nq+G4+smdAW_Xaxw1kqw@mail.gmail.com>
+In-Reply-To: <CANiq72kYYu9C94aY72HK1ELSmvktF3nq+G4+smdAW_Xaxw1kqw@mail.gmail.com>
+From: Guillaume Gomez <guillaume1.gomez@gmail.com>
+Date: Wed, 5 Nov 2025 11:54:03 +0100
+X-Gm-Features: AWmQ_bkMmilAyN1uUJZCacC-4Uedu5I4tT8-UDX7Z-O78YpFpr8K3EAt082H5zI
+Message-ID: <CAAOQCfSRVqFZAJN_m-kGLe6fnqKYyhLUf_WOKdHHMW-C6NShkA@mail.gmail.com>
+Subject: Re: [PATCH RFC 1/4] rust: clist: Add abstraction for iterating over C
+ linked lists
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, dakr@kernel.org, 
+	David Airlie <airlied@gmail.com>, Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org, 
+	Elle Rhumsaa <elle@weathered-steel.dev>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Andrea Righi <arighi@nvidia.com>, Philipp Stanner <phasta@kernel.org>, nouveau@lists.freedesktop.org, 
+	Nouveau <nouveau-bounces@lists.freedesktop.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 5, 2025 at 10:21=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.dev=
-> wrote:
->
-> On Wed,  5 Nov 2025 14:47:30 +0900
-> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
->
-> > Add the Rust equivalent of the kernel's `DO_ONCE_LITE` macro. While it
-> > would be possible to implement the feature entirely as a Rust macro,
-> > the functionality that can be implemented as regular functions has
-> > been extracted and implemented as the `OnceLite` struct for better
-> > code maintainability.
-> >
-> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > ---
-> >  rust/kernel/lib.rs       |  1 +
-> >  rust/kernel/once_lite.rs | 71
-> > ++++++++++++++++++++++++++++++++++++++++ 2 files changed, 72
-> > insertions(+) create mode 100644 rust/kernel/once_lite.rs
-> >
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index 3dd7bebe7888..19553eb8c188 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -110,6 +110,7 @@
-> >  #[cfg(CONFIG_NET)]
-> >  pub mod net;
-> >  pub mod of;
-> > +pub mod once_lite;
-> >  #[cfg(CONFIG_PM_OPP)]
-> >  pub mod opp;
-> >  pub mod page;
-> > diff --git a/rust/kernel/once_lite.rs b/rust/kernel/once_lite.rs
-> > new file mode 100644
-> > index 000000000000..44ad5dbdc67e
-> > --- /dev/null
-> > +++ b/rust/kernel/once_lite.rs
-> > @@ -0,0 +1,71 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Support for calling a function exactly once.
-> > +//!
-> > +//! C header:
-> > [`include/linux/once_lite.h`](srctree/include/linux/once_lite.h) +
->
-> This seems like a pure Rust implementation. What exactly do we need
-> from the "once_lite.h" in this module?
+You can add your own tags in the doctests, and with our patch waiting
+to use the new rustdoc doctests extraction, it should be pretty easy
+to plug such a feature into it. We can check it together if you want
+when the patch is merged to see if we already have everything needed
+or if I need to add more things on rustdoc side.
 
-It's just a documentation link. I don't think it hurts for the Rust
-impl to link to the equivalent C feature.
-
-Alice
+Le mar. 4 nov. 2025 =C3=A0 20:06, Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> a =C3=A9crit :
+>
+> On Tue, Nov 4, 2025 at 7:35=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > Orthogonally, the script that generates the doctests could perhaps
+> > help to automate some of that. For instance, we could have a way to
+> > specify an "environment" for a given Rust file or Rust `mod` or
+> > similar, and then every doctests would have the code prefixed to them.
+>
+> I guess this could probably best generalized as "tagging" doctests
+> with custom tags that `rustdoc` just forwards in the generated JSON.
+>
+> Something like:
+>
+>     /// ```tag:foo,tag:bar
+>
+> would give us a:
+>
+>     "tags": ["foo", "bar"]
+>
+> in the JSON. Then a custom generator like the one we have could do
+> whatever it needs with it, including prepending code or other things.
+>
+> Now, I see there is already an `unknown` field in the attributes which
+> already give us the unrecognized ones, which is great and we could
+> potentially use that.
+>
+> However, should there be a particular way/namespace we should create
+> our custom tags so that we don't conflict in the future with `rustdoc`
+> ones?
+>
+> I have added it to the usual list:
+>
+>     https://github.com/Rust-for-Linux/linux/issues/350
+>
+> (There is also the question about supporting the old non-JSON way for
+> things like this, but I am ignoring that for now)
+>
+> Cheers,
+> Miguel
