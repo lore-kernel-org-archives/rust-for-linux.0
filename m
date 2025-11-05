@@ -1,115 +1,136 @@
-Received: from sg-1-22.ptr.blmpb.com (sg-1-22.ptr.blmpb.com [118.26.132.22])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF54303CAC
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 13:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CDAA41
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 13:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762349340; cv=none; b=D4ww7JDnJmJuP1YWu15wNERzyeQFpiTne6+uwllrXwIFHNMxB0r7W7tOM1N5poPFSWvQ6jayNxqeUaNMEcvd6/CEKYczoLhczdL9D1sTUi8tH1NV9XsJHbBtlaYGbZTYk0rvHskt5XHERTPdW+aPBUI28zD0KbYoH/fohGiatwo=
+	t=1762349517; cv=none; b=potRVEEBJxNArkL2dN0dirYWTHyD4g0Zeh3hI4fvYxgIbITSkoYRGkG7NhAfT9HxJAVD6+rh9D9Ird6bcgYoooyCnMrNVpJVhGjHqqynqco1pudJ00plpLVFrwems5XqRFjJAUxrJJHkjntcOquKKt6Y/q7Osl/YyswHrUThJds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762349340; c=relaxed/simple;
-	bh=OiMZQ3jxA4zt4lcULg3hbwDPjkAVEqHfaOZsr+AATKg=;
-	h=Cc:Message-Id:Content-Type:In-Reply-To:References:Subject:Date:
-	 Mime-Version:To:From; b=qF/WVFcRUEoB+jwAHaYCo81f2flY2DNxnYh3Ehw9G2jEEWa5DtELpa6xZ877LxSgvoiACF6fudofKnZei+zp7AaITJyI9zLpKlqv3uatFxg/OVD+Lq7tPUpuLAELhUZkDbqAUQYTcj16d7mthBDs3zsetTtsIffqBHAfYBeCP+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=JqT67dAC; arc=none smtp.client-ip=118.26.132.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
+	s=arc-20240116; t=1762349517; c=relaxed/simple;
+	bh=MP3cL1oYebmC+ikDcuXun/rbIUAB+b6coo4qpDEgtAQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p4Otkbf8+2hnAN88Paq4LNIPPtwWE9F+kMT9RJDTgGrTtQygXUuMOvYDyjQhBMg1PMVvqSkOhfdIYQBUxOQTYDdX1J1Je9LWUxfjEpScJ24lc5F82sQ3ORCRzB9Hpg2ZA4MtkWjhGU4B0hO3UAsnPNi7uk+4mRe0MslcRyRIN9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZKOzkVFR; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="JqT67dAC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1762349323;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=gq8PdA1jgim3bfb/guc9McLZThN4z7DOnpEn274tOao=;
- b=JqT67dACcZRF3plpzpELmnHkx1GH70oYZ9YaF5rC+guxKLKhOc/5I7PVnCPFHqrVsKPzuK
- pKx5YThEpteeTiogXltwzaPDD8RlHZWQSxvH8x9FS/pza68PfSlcFKzOj5t1UOmgI76e89
- bZnEo8DxQxkURazspQNT+52pjtvS7wY3pc9Dg7+qB7GJiy86SXkv9VIzq9VibN3DK0b6Oy
- ZIKrKDlQl3+T9kmcu2ZNXm4O+37KiKvL7mr06/s/xxJxcCX9D7L5nQYn90OsB/a+celFl2
- 6cNxHlqRtX4gRUGhvhamcPIUhxv4AM7dK+rkP0zD1Euju71mXPIMhghRq/higw==
-Received: from [198.18.0.1] ([114.249.49.233]) by smtp.feishu.cn with ESMTPS; Wed, 05 Nov 2025 21:28:40 +0800
-Cc: <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, 
-	"Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	"Benno Lossin" <lossin@kernel.org>, 
-	"Andreas Hindborg" <a.hindborg@kernel.org>, 
-	"Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, 
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>, 
-	"open list:RUST" <rust-for-linux@vger.kernel.org>, 
-	"open list" <linux-kernel@vger.kernel.org>, 
-	<hust-os-kernel-patches@googlegroups.com>
-Message-Id: <b3f50745-5351-4e69-b3e2-ede99511e8dc@openatom.club>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+2690b5109+8fadb3+vger.kernel.org+chenmiao@openatom.club>
-In-Reply-To: <aQoIliAbrn0Re7E3@google.com>
-User-Agent: Mozilla Thunderbird
-References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club> <aQoIliAbrn0Re7E3@google.com>
-X-Original-From: Chen Miao <chenmiao@openatom.club>
-Subject: Re: [PATCH] rust: kernel: Support more jump_label api
-Date: Wed, 5 Nov 2025 21:28:39 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZKOzkVFR"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7a9fb6fccabso3199177b3a.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 05:31:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762349515; x=1762954315; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9q7NmFAvFvN7/b+XYPKzCuzMXs5E1SZ+dhFSeIfp7eA=;
+        b=ZKOzkVFRQferQLJYfz8FK7HIiOFsLQT+TiB/ghnk2mkOtNzSqpBUyHvXqQ10cajnWS
+         qJ2JnlbTV/4cG/yZaUxP0cfU6i7rxg8M+V6cYUL4R1w4GlH2d3XjD7XndNAUm8poJx2f
+         2Rgg6qM4JHgNggQfAf1s6n5tpdK6amjrJhNjvsxlXtCF42hMTN/nDRpxyNwD3+iFOI8Y
+         lyHOUt0md0KHUuSpwNp39fG4SDS6BpOAHUhyfOhn46dNJ5ZLvOmSLdHIYjkX+ef2jgN9
+         lfkRHOgOEh+Qj1I2AQVz/N5vQw0tjUSF/MUdLEcBOiSaiI+eWYAvAZj/nWzq97Mz1qUV
+         qZNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762349515; x=1762954315;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9q7NmFAvFvN7/b+XYPKzCuzMXs5E1SZ+dhFSeIfp7eA=;
+        b=bbl46gB38V25QOSvZ8x3G2iLt+7FR185jfkTxGgurpSq6+eYwwoZim0e1moxsdVGiy
+         OYUCd62QQmooaIGNcUO82WamTQEwtkJAwkuspW70GE1+AiCN7h2qZzG9Co5bc8bVl41K
+         WceQ3mCEMKasZSNWrVa3+6I8B7ybgoyak6E/3NU+azr2MCLHfCFJv0bQIszmC+/Zhu6y
+         NHTaiqYjIxeI///dVODKdxm0YacqrhvsicWuW6Ofw4mfgBOA1mrjfg9O4xdcYBju4kS1
+         +Edjimpt59RWwef83LMFsrBqewasGO2j+VTNCQF+jNUGHNa0xnOuKlwnhZGVWFQpik+E
+         N1tw==
+X-Forwarded-Encrypted: i=1; AJvYcCWIhHzuSthHSrpQPllIjN+7B2245WWKE/i2u2qWE9znut4sIew1jys5A6BaCUhMSkSi/SqF1JnPDX4/BFMj/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxewFe7+xpmagVirIbMZAaXc6JezsaKQthsyJpDfik26XlJmgNp
+	ktfT7F5MMi+XaPpxZLTmh+5vBwm5eWIja7poVOBs+JU+ra588Ulf0SbG
+X-Gm-Gg: ASbGnctpXZ1A78uqSy/gteRODD7TMIMG55YJaT7a2Q0PDeiSdKvIT7qKGNQlX/O23GE
+	5Dh5oaCDWi3cTRUwKJ4ogEZTMsKUT7iYgOaEH7z2xW0mgIOXjEOOJXQnCxvlvImStsCUI7EYh7N
+	z2zsDmOtfdU/+9iNUUEeErASHIuji+ebtO7D8+bl3t7vROpy5BxwXooGaXQKZBBBw+b3BXYcdAV
+	Lp+yPb9i0sUYz2SZvFVKsHcg80RXdEB4BRV8MNt1bUs4Isifv0b4dyPPIs9ivlXvqQUp4FyWcyu
+	8+LXP768R4uaTM1jWmXWj4M1A4ve5g3JEY71B21lvqjaMFqfwerLJ8JY5ymGGhiiHS+26Zn5hbY
+	F4HlZjsNyVgi/Lrc7i66AeueDJp5Zhe+jStQ2Uypo90DGdjGyqQqoFDm+EuOdI+1QIhSp8/Pfxw
+	27nByC5ZXE3Z9Gx+hqOIVzS+1g8O5FtTL3bOndW/fyE57JXj2S
+X-Google-Smtp-Source: AGHT+IEOr6yEZt6Lg0Vg3/B7D14110LC9/cBO37o4H78DD0sx6yTnN4rQct43XksS1O46eS9oX2C9w==
+X-Received: by 2002:a05:6a00:2e91:b0:7ad:de47:f685 with SMTP id d2e1a72fcca58-7ae1e6c6a14mr4949434b3a.17.1762349515131;
+        Wed, 05 Nov 2025 05:31:55 -0800 (PST)
+Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7acd382ad96sm6419447b3a.22.2025.11.05.05.31.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 05:31:54 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: andrew@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	hkallweit1@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: linux@armlinux.org.uk,
+	netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	Alice Ryhl <aliceryhl@google.com>,
+	Gary Guo <gary@garyguo.net>
+Subject: [PATCH net-next v1] net: phy: qt2025: Wait until PHY becomes ready
+Date: Wed,  5 Nov 2025 22:31:26 +0900
+Message-ID: <20251105133126.3221948-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Chen Miao" <chenmiao@openatom.club>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On 11/4/2025 10:07 PM, Alice Ryhl wrote:
-> On Tue, Nov 04, 2025 at 02:04:17AM +0000, chenmiao wrote:
->> The initial implementation of arch_static_branch was achieved by accessing
->> the offset from the original type. However, this approach extended the
->> path and introduced redundant calculations when dealing with types like
->> `static_key_true/false`, as shown below:
->>
->> ```
->> static_brach_unlikely(tp, tracepoint, key)
->>    => tracepoint->key->key
->>    => &tracepoint->key(static_key_false) == &tracepoint->key.key(static_key)
->>    => off: tracepoint->key - tracepoint
->> ```
->>
->> In practice, the implementation of `arch_static_branch` overlooked many
->> detailed descriptions. To improve clarity, additional comments have been
->> added to the original logic. The approach has been modified to directly
->> locate the corresponding `static_key` instead of using offsets, thereby
->> reducing  computational overhead.
->>
->> If finding the offset from the primitive type is necessary for this
->> implementation, I will abandon this change.
->>
->> Additionally, support for the `static_branch_enable/disable` APIs has been
->> introduced.
->>
->> Signed-off-by: chenmiao <chenmiao@openatom.club>
->> +    ($basety:ty, $branch:expr, $key:path, $keytyp:ty, $field:ident) => {{
->>           let _key: *const $keytyp = ::core::ptr::addr_of!($key);
->> -        let _key: *const $crate::bindings::static_key_false = ::core::ptr::addr_of!((*_key).$field);
->> +        let _key: *const $basety = ::core::ptr::addr_of!((*_key).$field);
->>           let _key: *const $crate::bindings::static_key = _key.cast();
->>   
->>           #[cfg(not(CONFIG_JUMP_LABEL))]
->> @@ -30,7 +71,88 @@ macro_rules! static_branch_unlikely {
->>           }
->>   
->>           #[cfg(CONFIG_JUMP_LABEL)]
->> -        $crate::jump_label::arch_static_branch! { $key, $keytyp, $field, false }
->> +        {
->> +            $crate::jump_label::arch_static_branch! { _key, $branch }
->> +        }
-> So ... this is changing from $key to _key. That's replacing the global
-> variable with a local variable holding a pointer to the global variable.
-> However, the arch_static_branch! macro uses the `sym` operand which
-> requires you to pass it the global directly.
->
-> Did you try this code? I don't believe it will work.
->
-> Alice
+Wait until a PHY becomes ready in the probe callback by
+using read_poll_timeout function.
 
-I'm very sorry for making a fatal mistake. My misunderstanding of sym led to 
-this issue, so I shouldn't make any changes to that part. However, regarding 
-the other modifications, I believe it is necessary to support the direct 
-passing of structures similar to `static_key_false`, just as in C language.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
 
-Chen Miao
+drivers/net/phy/qt2025.rs | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+index 0b9400dcb4c1..aaaead6512a0 100644
+--- a/drivers/net/phy/qt2025.rs
++++ b/drivers/net/phy/qt2025.rs
+@@ -12,6 +12,7 @@
+ use kernel::c_str;
+ use kernel::error::code;
+ use kernel::firmware::Firmware;
++use kernel::io::poll::read_poll_timeout;
+ use kernel::net::phy::{
+     self,
+     reg::{Mmd, C45},
+@@ -19,6 +20,7 @@
+ };
+ use kernel::prelude::*;
+ use kernel::sizes::{SZ_16K, SZ_8K};
++use kernel::time::Delta;
+ 
+ kernel::module_phy_driver! {
+     drivers: [PhyQT2025],
+@@ -93,7 +95,13 @@ fn probe(dev: &mut phy::Device) -> Result<()> {
+         // The micro-controller will start running from SRAM.
+         dev.write(C45::new(Mmd::PCS, 0xe854), 0x0040)?;
+ 
+-        // TODO: sleep here until the hw becomes ready.
++        read_poll_timeout(
++            || dev.read(C45::new(Mmd::PCS, 0xd7fd)),
++            |val| *val != 0x00 && *val != 0x10,
++            Delta::from_millis(50),
++            Delta::from_secs(3),
++        )?;
++
+         Ok(())
+     }
+ 
+
+base-commit: 89aec171d9d1ab168e43fcf9754b82e4c0aef9b9
+-- 
+2.43.0
+
