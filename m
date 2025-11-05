@@ -1,195 +1,203 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012042.outbound.protection.outlook.com [40.93.195.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E645291C3F;
-	Wed,  5 Nov 2025 22:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762382580; cv=fail; b=mj6zu1MhGbCdXzR48UrKD/FghDs5dCOKCa8h6Y9l4pMSP8Y4wYFGWm49AfOzjFpORLFUlBD0qpm6E8ttex7Vq3cVaZsuMzm1Tn4UAwTIgCE3vzI5DDJxj2zqCQHv0ycoHh7QBEqdefpdhY3pfyEDiQr3ktR1HF2XdQBHSWbYHdw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762382580; c=relaxed/simple;
-	bh=4J6CL9TWHQQDM7bCuJxMox4LF/TTFOoucdad/9YCyYU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=TLt0HZl/bZtewylrP/Gzbrsd0v/rWAkLifwJLoDZwbEHml97OgxB2IRoy1uEnU1F7jLFV3u5UYjN01LOSKuaX35VivrLDiIvPmpokqixZX4wHhOJiuXwBQ9W4pdUuADoEWap8sQsO3VKwROGUx/UrwDHzM/twXkvDHqCZdG5QeE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=foW4JJHO; arc=fail smtp.client-ip=40.93.195.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBBC1DF25F
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 23:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762383748; cv=none; b=mNJ1GfANDJXpNwYChJr2WLyHMHPaPdhlxzdM2usI+y6JNqpEwxgNy2eZJdKOZktjoG5gEMnqKzxRg9hDxEiEn7U33UomBKhyH8vlSIs8FoAkH5gD3p/YKCzLD/5u+FnQxXaErosEW5OXw7D/VoRUm+Z5oby5b+G9GwEAA+m8knM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762383748; c=relaxed/simple;
+	bh=unKKUkPd5pRTqG3L9Z0F/ADhxBnwusdEiP6PTAc6qPM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NnuWuPil2jUy8M0rYC81+3Dd0HLI5qmSjVlr6IDeJDO5D4wwlGeNTTw040TT1g3AvkDnbTVTi7NXpslyxLoYZNwwjLJU2jRueTOTGgVgGOSCKPKPel8HgEr5DzbeZMgsMInbnhcr1M/OfBBX8icm/l1o5fmbKBMGqLHSzDAwj0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C+9JOsrm; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="foW4JJHO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IT6RhQiyX5lveizpEyezmP5h2mregm5WwlvqdVgmOfTYg+neM//a6rj8YQ4n9yVlhZjIDCzWOAWfwQo7sJADcyciC5HEzaKa7qN6eR+2G5d2lbPFSza2svTLk896gWsXitfPfQvfXjYVxsQEfFMmsALFOVBcFTfBY0KaJdSDz7gJjBH1L2eq4XDwrryUdCPGxw46mHkYUoKt2J6agxA84nrLOFrfBO8Hw21ZMMJClyWw+HqeI29Y+hieGnNzsb14iLW8DIKe2d7qcHfIXiQfKym/5RQir7j7kuquOtbGoTjxKGcGpea8PqinkjDrSlATtVtUFxlbeXybJTi7ozdFzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yFWtcTVvY6gIh/g1YKdw5kSyN4rJXzViA4nQQ161DlI=;
- b=dajmXzuJPwShrtGlEXkP5jpo2qWrmKya7heGt927rxqElHLUER9akqVGrhrSpAsR4PZ9xRLIvMooLmAhaAjT1koecX/DBokVTa3jjI37Si65iije8vZ5H+oW5JaO77Ph36QR7rGbDU5EtiOMaTr134Fv3nY84D5gUB0DNsgfMX/24heEqzkzA+D+QCRI43KYnxbWpZDUMNys+VHogwVsfFVxBTSdJxxI1bvNeXV+3ks6BUzZUqcAFrRUmRREiYoLu/grQb2BPjqHVSFq/n5O0k32T8MoSMjqJyOmlSa6HKum6RGpgxzIKfdUlL75UV38RNHw9f99Fce+zFVrbJbxgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yFWtcTVvY6gIh/g1YKdw5kSyN4rJXzViA4nQQ161DlI=;
- b=foW4JJHOTP42ULCAFSuOFWTt/8y1z4cfp/fQLAOegcWKrPoJG6m0KZqBkkdLBwV9QslWSjv7ef6eapyTLs8JE7B0XUhRoSbcSfKJFhRDJn6UVisl7WRysegWBDi6zCAC9tvnCDVp9k/1jzWxIktQEy4ErOOJmofdm0WgBe8xjzBnpT3bxuLXhGi9zmSbremvwxvC2VUHvP33EUQt8jN21FnWK8cWyIdxjTTTyjPNxo1oM1FyWb3yPfrHhOQSYAne3odiMjMnLajK7UF8UB7yw0mlzdlPanpZPeQX3SLvLJEDllhurn+zPGfFcXuZm2i9A7R+vzqt3C61aJ38IFoyNg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH7PR12MB8056.namprd12.prod.outlook.com (2603:10b6:510:269::21)
- by PH7PR12MB5805.namprd12.prod.outlook.com (2603:10b6:510:1d1::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.14; Wed, 5 Nov
- 2025 22:42:54 +0000
-Received: from PH7PR12MB8056.namprd12.prod.outlook.com
- ([fe80::5682:7bec:7be0:cbd6]) by PH7PR12MB8056.namprd12.prod.outlook.com
- ([fe80::5682:7bec:7be0:cbd6%4]) with mapi id 15.20.9298.007; Wed, 5 Nov 2025
- 22:42:54 +0000
-Message-ID: <b3a8e750-1991-494b-828a-59c377953870@nvidia.com>
-Date: Wed, 5 Nov 2025 17:42:50 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 1/4] rust: clist: Add abstraction for iterating over C
- linked lists
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- dakr@kernel.org, David Airlie <airlied@gmail.com>,
- Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- joel@joelfernandes.org, Elle Rhumsaa <elle@weathered-steel.dev>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Andrea Righi <arighi@nvidia.com>, Philipp Stanner <phasta@kernel.org>,
- nouveau@lists.freedesktop.org,
- Nouveau <nouveau-bounces@lists.freedesktop.org>
-References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
- <20251030190613.1224287-2-joelagnelf@nvidia.com>
- <DDX1WYWQNTAB.BBEICMO8NM30@nvidia.com> <20251104005812.GA2101511@joelbox2>
- <CANiq72m692bb+W32QN1G+LJa7sHs=gU8k6dri3mu95Smj7GiRw@mail.gmail.com>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <CANiq72m692bb+W32QN1G+LJa7sHs=gU8k6dri3mu95Smj7GiRw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BLAPR05CA0044.namprd05.prod.outlook.com
- (2603:10b6:208:335::27) To PH7PR12MB8056.namprd12.prod.outlook.com
- (2603:10b6:510:269::21)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C+9JOsrm"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b8c0c0cdd61so262041a12.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 15:02:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762383746; x=1762988546; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=m5P8jXB+dIsfoWVQD4/Et/l6O3PGrt87olQD+9nhTtY=;
+        b=C+9JOsrm3uprfGAdTQPSzpv7Y9RRwWRSAwcp+VYnEwnkiic/NbtGRaI9g7NOXLIaY8
+         aeElRLmvZ6YuFVZopO2Le1/CfzM60aWFjJ4RZVWx551CTr3VOtRAD+8z+Wg8rf1qNR7Q
+         +xYMC1iqPtZrafAFaUOUdS71xuX/ZeUoA9nYMqwcDcVkibTdmaPGEnWcJyUw+degcFya
+         sO1UQjU6gHtlkJZ2NzM7T41lzstJaLX3OW8HKQg1mw1k1FzE0746gboM4OcQLduhzvDL
+         jRPyBL5e/UB/SeS7BuKwWFPAs2NOZ3CZid3/0bKii79B+HyrVCvNebs2j15K8rGzL7lV
+         0h2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762383746; x=1762988546;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=m5P8jXB+dIsfoWVQD4/Et/l6O3PGrt87olQD+9nhTtY=;
+        b=gFv2vApFjTxP4yLe28smn7h2jXziGrZEzuzxv2nag+mfKaXn4Eyf5euWFfEbnfc8n/
+         Jq31wHdbq3cj+FWZb8Nn2kNCpPU+Ot4ZW3deDblQjd6ITuFpgCiDWcb0HiErwLnhn2vH
+         TVkSTMg4BGH8710UBgpEZZcrJjjgE3f1kXRZan1oXtA0LwNDBVgpuGvAkT90XLVxG8cX
+         fBfeydqu6zsE40gP38gUxXy/JrY/A0L1AclK8joWaQf2izS7MT+m/yY0uFnH+8FBm3YR
+         CA8dfQfQ6dQcRFwx9w3MQ0ZorpUSjgpP4Y7YhZ17gI2sSWfZpZ777zzb/XY03+XH0Kgp
+         LDow==
+X-Forwarded-Encrypted: i=1; AJvYcCWwmxhpakMSRkYFWvzPHDq6zY6tlACOBOhocNu3uuWo6Q1T1QIsHI51ViB0umMh+odnZQg/uDJGx5/bGDJ8LQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6u5Jysg8csrY+bl3cqRFsLKPlB8QnKBHepJUxfw6aet+HLMy0
+	HS+7D3yubNe+viux9SKS9vaRLdwbiUTHViaGzoKJRxnpPZ5HpXnqw+Pa
+X-Gm-Gg: ASbGncsFntzzzpRz92NQKn7t3nMA/Y+0b2QnStxonxpoaky3c1HfgSFR7OQR5CaMHE+
+	EgCxAv1Nw5XaDxd33NIN8MvznfFYkbui5m6FfnilbGvz9fBWSCAKh8wCC12gWryhk0qz8Y7tbT+
+	8Rz1AlEBO8EvntUmtZVKWRnSJhgiHaSIG64Yaf3B2eszf9ARConAF9Ac/8qrCqeWkDoL/IgeL3t
+	TDkOOruLE/++KHm6dStRWtejuDDtWjt/GymHP/6vWE+XhXGb9ewt5avF+iSBBm0ITF2bPsC+Sp8
+	IS42bSos7YnRntIX9qoeEjyc1jiRzpDQTtS8y/eZTCsWfdLMaALSIHXndr2EjZMzPps3pGeGxTb
+	ZiD5IauYwo2behh90O/Ly8L4bifY7xyY84+D0R/e+l3Jbs/mG2pOATWRxsc54fzn3Iu131syPcZ
+	39jHOMNhYIkPWGFE+B3L0lEkSEl5XdNy4k9vU2vRGKTgDk
+X-Google-Smtp-Source: AGHT+IFcWQsxhsDJYw8BvHJ+cu4xy3Cbjz4NgQDldTTtvAA02XiwTojS7CTRnWKlbDVxorN9sS9LUA==
+X-Received: by 2002:a17:902:d488:b0:26d:d860:3dae with SMTP id d9443c01a7336-2962ad83389mr72820715ad.3.1762383746250;
+        Wed, 05 Nov 2025 15:02:26 -0800 (PST)
+Received: from mitchelllevy.localdomain ([131.107.147.147])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2965096839asm6325645ad.13.2025.11.05.15.02.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 15:02:25 -0800 (PST)
+From: Mitchell Levy <levymitchell0@gmail.com>
+Subject: [PATCH v4 0/9] rust: Add Per-CPU Variable API
+Date: Wed, 05 Nov 2025 15:01:12 -0800
+Message-Id: <20251105-rust-percpu-v4-0-984b1470adcb@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB8056:EE_|PH7PR12MB5805:EE_
-X-MS-Office365-Filtering-Correlation-Id: 94fd5886-32ec-4dcb-f672-08de1cbca87f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bktROGNWcmFONWticVFHdjUyc1ppdXk3N1pIQXJ3WjhaT3RKcnFrR01LN1Yy?=
- =?utf-8?B?d2UvNFZOcHRndFFYZmFSb3BTWlNTZ3dTR1U1UzgxZGl2NjBuZ21SNXkwTEg5?=
- =?utf-8?B?aGUzcG16YVBwVm5FVUhsNTF3SWFnRGY2aDR0K1dFZ1MrS05HS0kxODE4blVS?=
- =?utf-8?B?UGJaVlpKU0ZBcWdKRUlRUW1PSjRVS2Q1a25nbmVNM1ZKenBGNFJXV2dhQVRV?=
- =?utf-8?B?YzR0Q1pJYWZMdEE5MlQzU1p2MzhUTjJ4SythbWlVZ0JwWHdIa1dDS3IrSkVI?=
- =?utf-8?B?cUhBVU1SR3RaclIzQUNnajZSYWxBTmYwSHFabnJ0bFArQTg2MUptaldwNS8y?=
- =?utf-8?B?YitiSTJXTlJlalc4Vmw3Y09VV3JVY0V6V3NaK3pnODV5YTNYWk1qRGhXV1NV?=
- =?utf-8?B?WFpiSGRZdHBGRXZubHlZR3R0Y05rSlNMM2RQZXNScU1VditlZkNuOXRCbnc1?=
- =?utf-8?B?L254d1FoVDdPWWlRUnhOMlMyM0lTOTQ0QmcyQ1Y2eHZObmk1ajlEb25vakJZ?=
- =?utf-8?B?UkpUV08wTHZ5Q0xiOHZabWJhVmtXSFJ3ajdVVGxKTlVLYXBwNjBNdFppYkpn?=
- =?utf-8?B?TTFNb2lwQVdKWU4yYVBkQlVxYnlTbm5MVWtKTUtvbi9Gc2FWcDl3NHJ1emxi?=
- =?utf-8?B?UWlraG1HNkdOM1ZBUlhmQnJlTStlS2ZxUzRpQTU0bHVnV1R6SWd2d2Nidkoy?=
- =?utf-8?B?cDBSQTV5N2FGZ1NVYytYTTJwUWJ0bW80eDc0MXllVlFXK3IwNU1HM0twNkZF?=
- =?utf-8?B?OHBDSVZVbitTODdUL1BmZzNWSU5sRk9FOFhoVURLTWpOK1dTbWpRZlV4KzBF?=
- =?utf-8?B?eVlwSGh2L0lBZ25PNWUyemdIVUpRVXNJa0pOT2x5YzF4N1U5MHpBVTU2enpR?=
- =?utf-8?B?bDNCTFZwQ1M0RUluVWozOTNFd2UvMzVPRFlLQmJKRE96LzJLZ0x0MVVMWk1N?=
- =?utf-8?B?V3dlZzdGam92bUhOaVQydWlGS09wK05xMDN0YmNUZ2xTUTVDTzJUZGNvUEVE?=
- =?utf-8?B?RklyeVRhRFlOdGF2UmVMREJsU0d1TGZmVUhCNEV6Uk1KaHlYREs0MEY1M0dO?=
- =?utf-8?B?MFgxWm9ybElKbm5CT3dEakE2OFkrd01UTmIvZGk4TUN5cFZ0TGx3YkF4MzNp?=
- =?utf-8?B?NjVLWFhuZi9vTUg3ZlgrdkZEUWljTHE4dmpBV3lzY2MxRSs2VXJtd3p3S2I4?=
- =?utf-8?B?ZThDRHZUcTRvMDJOSVZWbjNyR0ttSnQyOE9HSEkzaFo3MGgvL05mcUJLMWlU?=
- =?utf-8?B?NkxRQWZZUVpoMzROQkV1K3B1YXV4L041R2VXSmxjVWU4UC9VTWlVbS83WndT?=
- =?utf-8?B?aDM1WU81MkFBclFTNTM3ZEJYK1N6THNUekhQaDJhbGFjNmw5bHV2RkFRRjlL?=
- =?utf-8?B?MEdVb1VuV2NKaGZFOTZZeXBrcVFudW9IakxnNWQ1b2EvVVNLOHN3cWFSU3hn?=
- =?utf-8?B?di9wWm9INXFMaUhhSE5paU8xOHJxYlg3TlhGVjdjSDZ5RElqMkh6WDlVZTBx?=
- =?utf-8?B?emo4VnI1eVdLOTFXRlFzdVZaLzhWQWx2R1EwZXVyWDl1NGZ1dTFkanA4UlVx?=
- =?utf-8?B?YXlVYkM4WlZOcmtpTDNJQ2NQVE5QR2hMY2Z2dTZ2aWQ1amJBV29RU09MSW5B?=
- =?utf-8?B?cGNpUDFzb2hQdjhUTnNSWUNhVGpRWTZJR1NnK3VYTUxIYitGU1pZNG5hUE8r?=
- =?utf-8?B?V3JoYWNJeE1uKzQ0ZVhYSFNrREdySEVuMml4Zm5EalNoMlRoUlo2RVY1VFNt?=
- =?utf-8?B?cHQrS0VUc1VieWtZTWVWU2M0a0s1SGgyby9SOXYyckg3K0ErMDR3TlZJUm9K?=
- =?utf-8?B?OXdSa1lGdmZBbWtHS1hTR3E0akkwb1dCQTBvbVpDZUJhK3k2eWpMZEUzSzh4?=
- =?utf-8?B?eEQzU2U3cERXbUZFbGp5VVl6RGJCMTR3V2JodXBGVldQNUFId0RYc0ZqNDg2?=
- =?utf-8?Q?f9levdQkPHZPHnSOX1+aV+WXGZkIEo2x?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB8056.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VEgydEtzV3lxRmx4cHU2d2VORDhQT3I3WHNhV0lzZFJxVVdwamVpeWt6eVZu?=
- =?utf-8?B?ZFcwRUxZV3NSbUgrL205ZDVWZ0xkTmVnKy9MNjR1ZENCc3FGM0NDc0JPbU15?=
- =?utf-8?B?Z0IwQTZUWUFnWFNnc0RjR3Q4cUd2U2doSjV3UldINnRZQThrWWZYYkNYVktj?=
- =?utf-8?B?aHMweTMxWlJkdTBSWlZpUFM4enRYZis5K0RxYlNVL09ZUHI0bXMzZzdvVUhl?=
- =?utf-8?B?R1UwWUVGa2p3bkVTa3NCaTh4SkdJa3lMMGVvNWFZbzFpZE8zTFRCcGpWTlZB?=
- =?utf-8?B?OE40UGlkNHFpbGNROFNmd3NETGhWd3orMTQ5RlN4ckVBZE01SXl3b3hGYmpC?=
- =?utf-8?B?ZHpsYlZQRzJYSnhtbVhFSVgvUk5SZ3RjVm96N1ByRWljOXFZemdDYnB2YXl0?=
- =?utf-8?B?T2FJYWZiZ1BsZ2VkUy9pVTVGZlRvcTVrNWhMYU5BSmpkOWJockloeHR5d2J1?=
- =?utf-8?B?ZzM5aVF3bi92dFdWVFAvV2pEcExDTmJyQkFuVXZ1MmJHTEZLUHdRd2d5S0Yz?=
- =?utf-8?B?YVZxS0Q1b0RaSHVEYlFqc01OckE3MnRZMGV1RUdacHFtcGEyb2xBNDV3VEw3?=
- =?utf-8?B?V1luWFltOGZtaEEvU0RwM0lXUy9RUytnWkwxOW9CQnA2NkhtWUpWR3JXc2J6?=
- =?utf-8?B?SXdqcFY0ZkVlTlpHYnQyMnc5RlE3NnI4b3djWldCNEIyenVnb0oyYm1VVVZY?=
- =?utf-8?B?K0dIZGJvQ1lYSnhjRlZjMmtmVjNwSkpHbWc5NC9jZnFacDlhK0tFa3MvYkZw?=
- =?utf-8?B?bDY2bGEycm95anFETTZKSTR5Z2JnaVJLMmJnbkkvSHRtNDlKQnZRRldDcTBK?=
- =?utf-8?B?UFgzclFLaEVJU01tQjA4UjdRQjdWaC9iYmpIM2RXTDBmSGxET0M1dkFEbGFy?=
- =?utf-8?B?eTlQLzR3bkF2TGhRbldnQ1NuS0t1Ym54VDEzZVJlN1NWczMyVUpCYk1IY2NE?=
- =?utf-8?B?TFBFa3VxVU5mSktWT0cvbktva01yeDE0MEY4UWRvTE9YL3lRU0ZtaWFOWXNH?=
- =?utf-8?B?eGM3amZiMFJ3cHZZdjdRVDFJeDVOZEU3a0NoU2ZTYjFreks2Rk9ocWloZHVN?=
- =?utf-8?B?TmlKOUhRbTJpR1RCMEgzNFZ2ek5aN2ZtRHc4K0tsRnplSkZmOFJYS3JTRnVh?=
- =?utf-8?B?OG53SjNNQWdRc0wyT0xuQTFGamJsUHdPWXNDaVJMUE1icXBiWmVzdk9sSFhK?=
- =?utf-8?B?NnlYUFkyeSsyK1pyS0Nxd1JTRCt6eVFmZm0veERFSmZUbi9odFdaWGFXd0Er?=
- =?utf-8?B?eXhIT3J2Zk4xbzV2ZUQybHRnUjJtdHJITUNKcm5WY1k3M0Fadk9zVE85UkZk?=
- =?utf-8?B?LzNnK3Y2a2M5V01PakNvYkZlWUhEdjlJWDFqY2g2S2tNY01kTnlJeHR1eHNL?=
- =?utf-8?B?cy9VNnU4NFB4WCt4VlhYaUxFUTQvUSthOXNVM1BqekRqZm1EQ1JXZVcvYnpE?=
- =?utf-8?B?SWltcHJWemRXaGVKTkR6RWpzMWswcktBRkRXRDQ2VEc4YkFvRm5adTJkK3lM?=
- =?utf-8?B?d3VzVnczZFE0RTh5NG9zWEE3aGQra1IrUkV2Mmh5RmFyajhLV2owWmJMQkhS?=
- =?utf-8?B?RWRnUERNaGZOK3JNNW4vRWNqK1J6cXBEWHRwMXQvVk5Ra1VQenFnd01BRGNw?=
- =?utf-8?B?TW82YmFEZ1BML08xOE5zRUlsUXJJQU9WaHB1dkNla3ZyMW55T3dYQkFZUzl2?=
- =?utf-8?B?ODJnV2FiSlVrYXZuYXdwLzRUcG8zVCtjS2dUNDZ3WFpEeWU3eVNjVWFMc3RI?=
- =?utf-8?B?TjF2S1lTOGNUZ3lFb1gyUW9KWTZqek5LRnJVT2JXVnFTNkR5VXB4OWZnWGlO?=
- =?utf-8?B?N0JyNVRFbzhFaXkxZFFOanZ5WWJBUkVvdW5RSEJIdHZZVFdTTTVlaXBlS1hE?=
- =?utf-8?B?TjZmNXhyZDdnUloyanVIbERaUzNCb0pKRzM3SEJJZHJOMFhaNkREME4xdWI3?=
- =?utf-8?B?aDZLUWVFenQ5aDZ3ZGdOUDE0dm4rT3U4cXowVm1yanQxMG9xOS9Pb2g0eVda?=
- =?utf-8?B?MXJkU3ovakZqTklHTHFTVUxBK3N2eTlXSU9pOGhDZ0FsNmUzVmZkQXdGR09N?=
- =?utf-8?B?bXR1eTNkdWhYUzk1cFhZa2N6bHp0ZjZHSFpkdmhTUEJ4S2tBd2Q4SFNrTkFv?=
- =?utf-8?B?Ti9uOG0zd0xSQ2tReWx5eHFNMVROSGRoVEpISDkyV29EMEhZODFUWDRSME1B?=
- =?utf-8?B?S0E9PQ==?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94fd5886-32ec-4dcb-f672-08de1cbca87f
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB8056.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2025 22:42:54.0947
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ht2Cynooy8BlsZMl+jluQwc6PnhK8lJ939xlPQeYr/urIsqD9kV27/W2mn7Oqvws+3Hd1zlivilZPSGx2Iddog==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5805
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADjXC2kC/22Q3U7EIBBGX2XDtRhmgAJe+R7GCwrTXRJ3W6FtN
+ Ju+u7Rq3B8vv0nOOcmcWaGcqLCn3ZllmlNJ/akO9bBj4eBPe+Ip1s1QoBIWJM9TGflAOQwTJ4+
+ dVq2OXkpWiSFTlz4228tr3YdUxj5/bvIZ1uvmAQR35ZmBC47CARiyiC08748+vT2G/rhqK6NFg
+ +qecUG7VpiI3oULZm3P+NvTQsENi5XV5EUUkUB6/U/PAN4zFpsOdWM0Qnvbk389i/aalZVVMTo
+ kIOOEumSX78dlep/q98ef7y3LF3S2LbabAQAA
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>, 
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+ Christoph Lameter <cl@linux.com>, Danilo Krummrich <dakr@kernel.org>, 
+ Benno Lossin <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
+ Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Tyler Hicks <code@tyhicks.com>, Allen Pais <apais@linux.microsoft.com>, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-mm@kvack.org, Mitchell Levy <levymitchell0@gmail.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762383744; l=5076;
+ i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
+ bh=unKKUkPd5pRTqG3L9Z0F/ADhxBnwusdEiP6PTAc6qPM=;
+ b=wJYwix5/zj4Vy0vQM6M/OltQSTZy+YEPGtMMsjgYxv3Uz1EwTP5wCYJJImuAi/rTC8Jt8quPT
+ BKnBugpFEAqA+8tOxJtVekq+qC4/uZGDxtzL43n7if+USvw9ItaSj9r
+X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
+ pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
 
+This series adds an API for declaring and using per-CPU variables from
+Rust, and it also adds support for Rust access to C per-CPU variables
+(subject to some soundness requirements). It also adds a small sample
+module, samples/rust/rust_percpu.rs, in the vein of lib/percpu_test.c.
 
+---
+Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
 
-On 11/4/2025 8:52 AM, Miguel Ojeda wrote:
-> On Tue, Nov 4, 2025 at 1:58 AM Joel Fernandes <joelagnelf@nvidia.com> wrote:
->>
->> Perhaps wrapping it is #cfg is sufficient.
-> 
-> `cfg` attributes and the `cfg!` macro should work in doctests -- we
-> have already a few instances, e.g. this hidden one:
-> 
->     /// ```
->     /// # #![cfg(CONFIG_OF)]
->     /// use kernel::clk::Hertz;
+---
+Changes in v4:
+- Split what was the first patch into three patches (Thanks Yury Norov)
+- Add intra-doc links to rustdoc comments (Thanks Miguel Ojeda)
+- `get_remote_ptr` is no longer unsafe (Thanks Miguel Ojeda)
+- Renamed the CPU mask getters to be more clear (Thanks Yury Norov)
+- Add an `ExternStaticPerCpuSymbol` type for static per-CPU variables
+  shared with C in order to make the extra soundness requirements for
+  these variables more explicit.
+- Properly drop the contents of dynamically allocated per-CPUs when the
+  `DynamicPerCpu` is dropped, and properly document that
+  `PerCpuAllocation` does not handle dropping values in the allocation.
+- Functions on the numeric token types are now `#[inline]`
+- Safety requirements of `PerCpuPtr` functions now include the fact that
+  the pointed-to allocation must be live and appropriately laid out in
+  memory, and SAFETY comments of uses of these functions have been
+  updated to reflect these requirements.
+- Included the cpumask patches first, since it might make sense for
+  these to be merged separately.
+- Documentation improvements throughout.
+- Link to v3: https://lore.kernel.org/r/20250828-rust-percpu-v3-0-4dd92e1e7904@gmail.com
 
-Thanks for the example! I will guard it accordingly in my next posting.
+Changes in v3:
+- Add a `CheckedPerCpuToken` that enables usage of per-CPU variables via
+  a `&T`, allowing for a wholly safe interface when `T` allows for
+  interior mutability (Thanks Benno Lossin)
+- Add support for non-zeroable types to be used in a `DynamicPerCpu`.
+- Remove necessity for `unsafe` to get a `StaticPerCpu` from its
+  declaration (Thanks Benno Lossin)
+- Allow the declaration of static per-CPU variables of types that are
+  `!Sync`.
+- Implement `PerCpuPtr` in terms of `MaybeUninit<T>` rather than `T` so
+  as to keep all invariants in the `DynamicPerCpu` and `StaticPerCpu`
+  types --- this would also enable `PerCpuPtr` to be used in a per-CPU
+  type that does lazy initialization.
+- Link to v2: https://lore.kernel.org/r/20250712-rust-percpu-v2-0-826f2567521b@gmail.com
 
- - Joel
+Changes in v2:
+- Fix kernel test robot issues
+- Fix documentation error
+- Require `T: Zeroable` in the dynamic case
+- Link to v1: https://lore.kernel.org/r/20250624-rust-percpu-v1-0-9c59b07d2a9c@gmail.com
+
+Changes in v1:
+- Use wrapping_add in `PerCpuPtr::get_ref` since overflow is expected.
+- Separate the dynamic and static cases, with shared logic in a
+  `PerCpuPtr` type.
+- Implement pin-hole optimizations for numeric types
+- Don't assume `GFP_KERNEL` when allocating the `Arc` in the dynamic
+  case.
+- Link to RFC v2: https://lore.kernel.org/r/20250414-rust-percpu-v2-0-5ea0d0de13a5@gmail.com
+
+Changes in RFC v2:
+- Renamed PerCpuVariable to StaticPerCpuSymbol to be more descriptive
+- Support dynamically allocated per-CPU variables via the
+  PerCpuAllocation type. Rework statically allocated variables to use
+  this new type.
+- Make use of a token/closure-based API via the PerCpu and PerCpuToken
+  types, rather than an API based on PerCpuRef that automatically
+  Deref(Mut)'s into a &(mut) T.
+- Rebased
+- Link to RFC: https://lore.kernel.org/r/20241219-rust-percpu-v1-0-209117e822b1@gmail.com
+
+---
+Mitchell Levy (9):
+      rust: cpumask: Add a `Cpumask` iterator
+      rust: cpumask: Add getters for globally defined cpumasks
+      rust: percpu: Add C bindings for per-CPU variable API
+      rust: percpu: introduce a rust API for static per-CPU variables
+      rust: percpu: introduce a rust API for dynamic per-CPU variables
+      rust: percpu: add a rust per-CPU variable sample
+      rust: percpu: Support non-zeroable types for DynamicPerCpu
+      rust: percpu: Add pin-hole optimizations for numerics
+      rust: percpu: cache per-CPU pointers in the dynamic case
+
+ rust/helpers/cpumask.c          |   5 +
+ rust/helpers/helpers.c          |   2 +
+ rust/helpers/percpu.c           |  20 +++
+ rust/helpers/preempt.c          |  14 ++
+ rust/kernel/cpumask.rs          |  94 ++++++++++++-
+ rust/kernel/lib.rs              |   3 +
+ rust/kernel/percpu.rs           | 273 +++++++++++++++++++++++++++++++++++++
+ rust/kernel/percpu/cpu_guard.rs |  36 +++++
+ rust/kernel/percpu/dynamic.rs   | 184 +++++++++++++++++++++++++
+ rust/kernel/percpu/numeric.rs   | 138 +++++++++++++++++++
+ rust/kernel/percpu/static_.rs   | 218 +++++++++++++++++++++++++++++
+ samples/rust/Kconfig            |   9 ++
+ samples/rust/Makefile           |   1 +
+ samples/rust/rust_percpu.rs     | 294 ++++++++++++++++++++++++++++++++++++++++
+ 14 files changed, 1290 insertions(+), 1 deletion(-)
+---
+base-commit: f3f6b3664302e16ef1c6b91034a72df5564d6b8a
+change-id: 20240813-rust-percpu-ea2f54b5da33
+
+Best regards,
+-- 
+Mitchell Levy <levymitchell0@gmail.com>
+
