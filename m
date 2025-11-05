@@ -1,96 +1,152 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from sg-1-17.ptr.blmpb.com (sg-1-17.ptr.blmpb.com [118.26.132.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE943161A1
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 13:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C0031D386
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 13:55:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762350579; cv=none; b=KkKvyt3Ph9YbQsyu78j+88vK88UywLBdXZkjhZ7iT0tHvT6GTJKB5O8M57pmjhqXXE+DirOxoUmWgqcVJrWXzMtCszE/AgDOwAIErcY35ZQFgXtIey6Hku6CofjV9MBLiriS1AdBkUZ+I7H4JWKPPW+VWdKx1MFxnyZ4ylmm8GE=
+	t=1762350949; cv=none; b=p7ug9X2tWhihPFDjbx8/3/LLyfHxeA3Ys/WpQVFKZJeoLg/qPYKDhproYMmgiCX1ECYaVLsvTtnQG90uRKUq4xPf2qNAM76wxzjS0RiRDwmQ/U6yhlA+OYEHDJNlKPn1sd+Rx6OA+OcpF1jzXJiybqyvQENJXSZ/cvPeD4M8Mbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762350579; c=relaxed/simple;
-	bh=oIm02qwQMUr3+CCU5508/rpGiaIngAIROsHPHbOPNLc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W89n3L4wK3nF1qzjJuV8mnsHlSz9K2qrdOP/OC4XRLu1Rze72XqdDsEaj2GB2XDgjdHrgp3bbgZQYSmHf8vLf5bOOIOf8z/LTpkn1H/Ul6ntpghUhe8nh2mXTKRiATy2GMOVdKXvTDZsxQvY3tSlbl0lnxG+W4GaKjo2f86zd60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jqccyxyL; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762350949; c=relaxed/simple;
+	bh=Ne/x6WAUXKDBEfToF/9H1xkD2gW0oBLfEwKvnZaFfsI=;
+	h=From:Date:In-Reply-To:Content-Type:Subject:Mime-Version:
+	 Message-Id:References:To:Cc; b=W+ng7zlKc2c3kQB4kdHGuJ42H9yKTYflVZfKF6Mli3vhkmvifEDYQ05b/mNibbLTslLJb16vLYbfNgSnrJr/s29Amz5QRj9xxISdSpaQwJTTwkqcfcbvVz3AnwO3cLrdu/BZkSEr9K5H8x2Kb5+jA8K96ratF4eqlZWg8SYcu9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=lg5PiINu; arc=none smtp.client-ip=118.26.132.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jqccyxyL"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b62e55af64aso512891a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 05:49:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762350577; x=1762955377; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oIm02qwQMUr3+CCU5508/rpGiaIngAIROsHPHbOPNLc=;
-        b=jqccyxyLlkPLPbHtw/XfA+Uym8yLqm9tEmy2RbsIJDO9CCzg9TzcFpBPv03EZCxRGd
-         WW3kVNg39rnr4JRSOUMqZgXh4+y7ke+2LLCHDLxMV1NGMn0TzbkqVi1NNHgBFvTsIf7p
-         qLjLrb9Bgo6BVjb4DCZgBVHS99Fwo16LtgOlbLeBiRYJpZ49vodqaCZ+vNnlzeDVwP+a
-         IDyzQ1AmpYLJUPjbhMz1SPDcbSUYlJmkyi1z9jJhUcupkBUtUEq9p9N1KrZUpYoPhzNr
-         5CngbwdcKArUandkOh2JV2bNLrtrC90UysoOvJY5vkXArGC7zH+5OfsvS9xPKJYQ62wy
-         CFYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762350577; x=1762955377;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oIm02qwQMUr3+CCU5508/rpGiaIngAIROsHPHbOPNLc=;
-        b=DXjLmc2OFy4knzvO3dF0iJu2f3OjMv9TzfX/hS4PHWYTQ7gJdJnV5Nnz+6xXeLkYUj
-         co/1vtN7Fzzyn9d0Ft+24iCAgJs/yIO3OFjACDX3ozsqsjq+xJZrcdMsJIv3KOAfPvQS
-         Xit8pnEXiQYOsFS6pV3J1CsN9iW/ewMIrpnxDeMYu4VtB76chCgVbs6XXhmQ0zMHDtJ/
-         y8bpcGHs0RywPJTB3/PWzfEqJ9PPj+ICYm6HAU/dqCktYmOn1wb7kipCnZBFDAzwfzt5
-         tIRe2Q/+Y+677AX+N5z7gT+FeqyTIRs9s12c39YfkeAaLfDS9tcER69FKgcsUdZWWL3Y
-         4Y5A==
-X-Forwarded-Encrypted: i=1; AJvYcCWzWZ2Rn4KsjlNhnKs/aZu/qNj81icRpTMmL7ITeMBK7CJiy+cxRsswAxtPZ97RkvYGqEHGXSbwAH/79RYIpA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCC3qgoXynpEvO8YV84T9YuloLUTFWWl8F+Pf2EBiF/5fEQpYe
-	Fo8/VNQdP8IzPNvaj9ZEISn39qRQgvT9bqnpQwb16hDbNHP2+MbHOao56hMvxddAT3d79lo8YlA
-	MzYwfjlZt61YETADSaTF4tCwLacfSG0Q=
-X-Gm-Gg: ASbGncvJwE0MJSnGHG/FBuZnzkjgweIr//zs0EiagRQLi7HcmLiGdWKKwKlxgxm1tHr
-	xu0T1Rcl0DeZNXuGYXeHze+ukHt8CfA9kDGJQ+Rm2y3i9IuZuNSiv+PPJ55YdC8p0ou6R2F0nqi
-	Ki8Y26x96cc8zumfmOhsTNjk9ymTxOi7NB9NAWefrrAnw90JTK9FvdXlaSXjxmwrAWKhi929AGc
-	UV60EolHDsWSrzZcsu5LEq1oMjUFARKch9hKCOkbz1IEXdWNGM5AsGZWMQdukJ7nc4VUB+AJ4uw
-	6LgOmdlnEUAdg0pV9pHuGs2h/3VLRqoNMVcOH1WGbw70cmoJ2FqvIlD0UhkNcoLF6f4baj8tNLu
-	MEys=
-X-Google-Smtp-Source: AGHT+IGWLachPv11EWrLKE7rZGSMROlPAdaCj+6oHxMpOeQbc5pf72anPPI+Nftk3bVxhmwo0c7+rcHLAvKmUO+B4uU=
-X-Received: by 2002:a17:902:daca:b0:290:c3a9:42b5 with SMTP id
- d9443c01a7336-2962adee35emr23599305ad.5.1762350577024; Wed, 05 Nov 2025
- 05:49:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="lg5PiINu"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1762350931;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=c6Fob5GKK2EFqfF+QqeezHuK3XYr7a3QAGL+sni9S9w=;
+ b=lg5PiINuFJXchz+Fc4dF/6Oxh/cm+cGm5WIOE8YS+cEe0OaCX63Kpb/uk7NdJxhsjXzRJA
+ FgzRMzya9XAMfHYj1nxk+S8+Pf6J44zfBgcEmzi/5mAcyuhoF8vRCd4/Wu7+Fm+egm261p
+ 210kCs5dmxwvc2W5cQCEEr4Pv8Lw7KXchRBCbyBR93GYiX3QQfC7niG7Y/ZBsQjGWmUuq0
+ jPvh1N70c8JKv8w1vZUdkL+HuNVg9zu+ajVUveKYAhAQDqP660DGgr1nqE3nWP10+2xBW6
+ PPs+owxIY0BEexBzqtmNbi0vWa4LqHhNbwG9iRXf8Z43TVqnjo4yxZ03Gt33+g==
+Content-Transfer-Encoding: quoted-printable
+X-Lms-Return-Path: <lba+2690b5751+bbe982+vger.kernel.org+chenmiao@openatom.club>
+From: "Chen Miao" <chenmiao@openatom.club>
+Date: Wed, 5 Nov 2025 21:55:27 +0800
+In-Reply-To: <aQtTRUMUaaUmTAWZ@google.com>
+X-Original-From: Chen Miao <chenmiao@openatom.club>
+Received: from [198.18.0.1] ([114.249.49.233]) by smtp.feishu.cn with ESMTPS; Wed, 05 Nov 2025 21:55:28 +0800
+Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH] rust: kernel: Support more jump_label api
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club>
- <CANiq72=WZJ5=UACpFLWCVJ7mcXbc93X9MyYAZP8-0F==2b0adw@mail.gmail.com>
- <8d865a46-82c8-428d-a371-407889eefb62@openatom.club> <CANiq72=OE3JNpemanR-r1efbgKqQrZCiQ7hY2-=_bvxLyJZ-HQ@mail.gmail.com>
- <282bd8d5-afde-4a96-b294-bbd7b69ce684@openatom.club>
-In-Reply-To: <282bd8d5-afde-4a96-b294-bbd7b69ce684@openatom.club>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 5 Nov 2025 14:49:23 +0100
-X-Gm-Features: AWmQ_blkRqxnqjxsVLafgzdnmODrUxOguF_tNfS8UDpxdUVWCEiDo--qmwSmN-w
-Message-ID: <CANiq72n=i8DM7uwhZCK8KZztsDJxwB8PEOpN1qrQtOFkG8aqUg@mail.gmail.com>
-Subject: Re: [PATCH] rust: kernel: Support more jump_label api
-To: Chen Miao <chenmiao@openatom.club>
-Cc: ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>, 
-	"open list:RUST" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Message-Id: <90bfcb3e-dee1-4f78-a1b2-02ce99db4997@openatom.club>
+References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club> <aQoIliAbrn0Re7E3@google.com> <b3f50745-5351-4e69-b3e2-ede99511e8dc@openatom.club> <aQtTRUMUaaUmTAWZ@google.com>
+User-Agent: Mozilla Thunderbird
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, 
+	"Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, 
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	"Benno Lossin" <lossin@kernel.org>, 
+	"Andreas Hindborg" <a.hindborg@kernel.org>, 
+	"Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, 
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>, 
+	"open list:RUST" <rust-for-linux@vger.kernel.org>, 
+	"open list" <linux-kernel@vger.kernel.org>, 
+	<hust-os-kernel-patches@googlegroups.com>
 
-On Wed, Nov 5, 2025 at 2:46=E2=80=AFPM Chen Miao <chenmiao@openatom.club> w=
-rote:
+On 11/5/2025 9:38 PM, Alice Ryhl wrote:
+> On Wed, Nov 05, 2025 at 09:28:39PM +0800, Chen Miao wrote:
+>> On 11/4/2025 10:07 PM, Alice Ryhl wrote:
+>>> On Tue, Nov 04, 2025 at 02:04:17AM +0000, chenmiao wrote:
+>>>> The initial implementation of arch_static_branch was achieved by acces=
+sing
+>>>> the offset from the original type. However, this approach extended the
+>>>> path and introduced redundant calculations when dealing with types lik=
+e
+>>>> `static_key_true/false`, as shown below:
+>>>>
+>>>> ```
+>>>> static_brach_unlikely(tp, tracepoint, key)
+>>>>     =3D> tracepoint->key->key
+>>>>     =3D> &tracepoint->key(static_key_false) =3D=3D &tracepoint->key.ke=
+y(static_key)
+>>>>     =3D> off: tracepoint->key - tracepoint
+>>>> ```
+>>>>
+>>>> In practice, the implementation of `arch_static_branch` overlooked man=
+y
+>>>> detailed descriptions. To improve clarity, additional comments have be=
+en
+>>>> added to the original logic. The approach has been modified to directl=
+y
+>>>> locate the corresponding `static_key` instead of using offsets, thereb=
+y
+>>>> reducing  computational overhead.
+>>>>
+>>>> If finding the offset from the primitive type is necessary for this
+>>>> implementation, I will abandon this change.
+>>>>
+>>>> Additionally, support for the `static_branch_enable/disable` APIs has =
+been
+>>>> introduced.
+>>>>
+>>>> Signed-off-by: chenmiao <chenmiao@openatom.club>
+>>>> +    ($basety:ty, $branch:expr, $key:path, $keytyp:ty, $field:ident) =
+=3D> {{
+>>>>            let _key: *const $keytyp =3D ::core::ptr::addr_of!($key);
+>>>> -        let _key: *const $crate::bindings::static_key_false =3D ::cor=
+e::ptr::addr_of!((*_key).$field);
+>>>> +        let _key: *const $basety =3D ::core::ptr::addr_of!((*_key).$f=
+ield);
+>>>>            let _key: *const $crate::bindings::static_key =3D _key.cast=
+();
+>>>>   =20
+>>>>            #[cfg(not(CONFIG_JUMP_LABEL))]
+>>>> @@ -30,7 +71,88 @@ macro_rules! static_branch_unlikely {
+>>>>            }
+>>>>   =20
+>>>>            #[cfg(CONFIG_JUMP_LABEL)]
+>>>> -        $crate::jump_label::arch_static_branch! { $key, $keytyp, $fie=
+ld, false }
+>>>> +        {
+>>>> +            $crate::jump_label::arch_static_branch! { _key, $branch }
+>>>> +        }
+>>> So ... this is changing from $key to _key. That's replacing the global
+>>> variable with a local variable holding a pointer to the global variable=
+.
+>>> However, the arch_static_branch! macro uses the `sym` operand which
+>>> requires you to pass it the global directly.
+>>>
+>>> Did you try this code? I don't believe it will work.
+>>>
+>>> Alice
+>> I'm very sorry for making a fatal mistake. My misunderstanding of sym le=
+d to
+>> this issue, so I shouldn't make any changes to that part. However, regar=
+ding
+>> the other modifications, I believe it is necessary to support the direct
+>> passing of structures similar to `static_key_false`, just as in C langua=
+ge.
+> It sounds like you are adding a new use-case for this macro. Can you
+> provide more information for this new feature? It is currently unclear
+> to me exactly how this will be used.
 >
-> Well, I will follow this rule and change the Signed-off-by to "Chen Miao"
-> before the next push.
+> Alice
 
-Yeah, the rules are a bit particular w.r.t. other projects, so it
-takes a bit of time to get used to them -- no worries and thanks! :)
+If there's a binding-required driver implementation in the future where a k=
+ey=20
+function uses if (static_branch_unlikely(&zoned_enabled))=E2=80=94 defined =
+by=20
+DEFINE_STATIC_KEY_FALSE(zoned_enabled);=E2=80=94 then in Rust we can direct=
+ly=20
+implement it using if static_branch_unlikely!(zoned_enabled), without havin=
+g=20
+to call it via if static_branch_unlikely!(zoned_enabled,=20
+bindings::static_key_false, key).
 
-Cheers,
-Miguel
+static_branch_unlikely!(zoned_enabled) instead of=20
+static_branch_unlikely!(zoned_enabled, bindings::static_key_false, key).
+
+Chen Miao
