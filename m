@@ -1,83 +1,96 @@
-Received: from sg-1-22.ptr.blmpb.com (sg-1-22.ptr.blmpb.com [118.26.132.22])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84B331327F
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 13:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE943161A1
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 13:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762350379; cv=none; b=B5gXoD3vsBN+PbWOYF58NdOc2DjhAGCs3cNn7scQwg4HZlWBVGIi6/9zxZOiWsLmMkf+CwuVCcMxu/vSq9ei7R6NX6tpXZvuR9CfKbvM0nGXHA2DUjA2wmwdGMpVUat8vWRYNFLuuShkclI2Gq3f84QlXEokDeQiP19nTzriCvA=
+	t=1762350579; cv=none; b=KkKvyt3Ph9YbQsyu78j+88vK88UywLBdXZkjhZ7iT0tHvT6GTJKB5O8M57pmjhqXXE+DirOxoUmWgqcVJrWXzMtCszE/AgDOwAIErcY35ZQFgXtIey6Hku6CofjV9MBLiriS1AdBkUZ+I7H4JWKPPW+VWdKx1MFxnyZ4ylmm8GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762350379; c=relaxed/simple;
-	bh=8+E+wvcxBVM0MPG0WH1f2Ay5kSxXX3yb3qO1FxQOTls=;
-	h=Mime-Version:In-Reply-To:To:Cc:From:Subject:Date:Message-Id:
-	 Content-Type:References; b=N7IBbhAT2xw7xHd8HxBwPpsSs554VFz4d/87O7dTekru14jpPKvn1yC+a0zevjqxyIB8U7mGYCa8/iS+uC0FncXR0pObGOVkczAeDk1MZlVlJHsokMQdUEURUpLfnSniXnrGTnLbTE2B/hgrOaFMQFfiZjTEwqPpWpO8fN+lODk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=TTxyY3lE; arc=none smtp.client-ip=118.26.132.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
+	s=arc-20240116; t=1762350579; c=relaxed/simple;
+	bh=oIm02qwQMUr3+CCU5508/rpGiaIngAIROsHPHbOPNLc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W89n3L4wK3nF1qzjJuV8mnsHlSz9K2qrdOP/OC4XRLu1Rze72XqdDsEaj2GB2XDgjdHrgp3bbgZQYSmHf8vLf5bOOIOf8z/LTpkn1H/Ul6ntpghUhe8nh2mXTKRiATy2GMOVdKXvTDZsxQvY3tSlbl0lnxG+W4GaKjo2f86zd60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jqccyxyL; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="TTxyY3lE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1762350367;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=8+E+wvcxBVM0MPG0WH1f2Ay5kSxXX3yb3qO1FxQOTls=;
- b=TTxyY3lEsgB/ruiv12o5h9soSJW+ZDCU82keg4+yJJctTVzAv06sP3lQ4f3pUi9pGZf+kJ
- 70W8OchN4+pHhQ0bOCiosqc9Wz4cSMZyURaI/ED8ZnKpMYF3F/7nSWLUozgxFCYG3cjj8p
- iCLlDB6n39Fziu1w4/s3i6WPdtuWSOoyyUfTjxiyNZKJMjhScIj0vPTxui6txfHJs7HDUN
- z2WGKlga3x4pgkX6lrdoZrguKykgxDy9ur5GQ+vp1itYOYMc6dhaSkPW/+gQZ1hZmJpBuI
- JE+rkDmp5XKCk1NO7xv539CkHx8mh5oiJ2Tuw+WGn0xZrjNuNrvbzsP0uPaMrw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jqccyxyL"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b62e55af64aso512891a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 05:49:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762350577; x=1762955377; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oIm02qwQMUr3+CCU5508/rpGiaIngAIROsHPHbOPNLc=;
+        b=jqccyxyLlkPLPbHtw/XfA+Uym8yLqm9tEmy2RbsIJDO9CCzg9TzcFpBPv03EZCxRGd
+         WW3kVNg39rnr4JRSOUMqZgXh4+y7ke+2LLCHDLxMV1NGMn0TzbkqVi1NNHgBFvTsIf7p
+         qLjLrb9Bgo6BVjb4DCZgBVHS99Fwo16LtgOlbLeBiRYJpZ49vodqaCZ+vNnlzeDVwP+a
+         IDyzQ1AmpYLJUPjbhMz1SPDcbSUYlJmkyi1z9jJhUcupkBUtUEq9p9N1KrZUpYoPhzNr
+         5CngbwdcKArUandkOh2JV2bNLrtrC90UysoOvJY5vkXArGC7zH+5OfsvS9xPKJYQ62wy
+         CFYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762350577; x=1762955377;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oIm02qwQMUr3+CCU5508/rpGiaIngAIROsHPHbOPNLc=;
+        b=DXjLmc2OFy4knzvO3dF0iJu2f3OjMv9TzfX/hS4PHWYTQ7gJdJnV5Nnz+6xXeLkYUj
+         co/1vtN7Fzzyn9d0Ft+24iCAgJs/yIO3OFjACDX3ozsqsjq+xJZrcdMsJIv3KOAfPvQS
+         Xit8pnEXiQYOsFS6pV3J1CsN9iW/ewMIrpnxDeMYu4VtB76chCgVbs6XXhmQ0zMHDtJ/
+         y8bpcGHs0RywPJTB3/PWzfEqJ9PPj+ICYm6HAU/dqCktYmOn1wb7kipCnZBFDAzwfzt5
+         tIRe2Q/+Y+677AX+N5z7gT+FeqyTIRs9s12c39YfkeAaLfDS9tcER69FKgcsUdZWWL3Y
+         4Y5A==
+X-Forwarded-Encrypted: i=1; AJvYcCWzWZ2Rn4KsjlNhnKs/aZu/qNj81icRpTMmL7ITeMBK7CJiy+cxRsswAxtPZ97RkvYGqEHGXSbwAH/79RYIpA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCC3qgoXynpEvO8YV84T9YuloLUTFWWl8F+Pf2EBiF/5fEQpYe
+	Fo8/VNQdP8IzPNvaj9ZEISn39qRQgvT9bqnpQwb16hDbNHP2+MbHOao56hMvxddAT3d79lo8YlA
+	MzYwfjlZt61YETADSaTF4tCwLacfSG0Q=
+X-Gm-Gg: ASbGncvJwE0MJSnGHG/FBuZnzkjgweIr//zs0EiagRQLi7HcmLiGdWKKwKlxgxm1tHr
+	xu0T1Rcl0DeZNXuGYXeHze+ukHt8CfA9kDGJQ+Rm2y3i9IuZuNSiv+PPJ55YdC8p0ou6R2F0nqi
+	Ki8Y26x96cc8zumfmOhsTNjk9ymTxOi7NB9NAWefrrAnw90JTK9FvdXlaSXjxmwrAWKhi929AGc
+	UV60EolHDsWSrzZcsu5LEq1oMjUFARKch9hKCOkbz1IEXdWNGM5AsGZWMQdukJ7nc4VUB+AJ4uw
+	6LgOmdlnEUAdg0pV9pHuGs2h/3VLRqoNMVcOH1WGbw70cmoJ2FqvIlD0UhkNcoLF6f4baj8tNLu
+	MEys=
+X-Google-Smtp-Source: AGHT+IGWLachPv11EWrLKE7rZGSMROlPAdaCj+6oHxMpOeQbc5pf72anPPI+Nftk3bVxhmwo0c7+rcHLAvKmUO+B4uU=
+X-Received: by 2002:a17:902:daca:b0:290:c3a9:42b5 with SMTP id
+ d9443c01a7336-2962adee35emr23599305ad.5.1762350577024; Wed, 05 Nov 2025
+ 05:49:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+2690b551d+de204c+vger.kernel.org+chenmiao@openatom.club>
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CANiq72=OE3JNpemanR-r1efbgKqQrZCiQ7hY2-=_bvxLyJZ-HQ@mail.gmail.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, 
-	"Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	"Benno Lossin" <lossin@kernel.org>, 
-	"Andreas Hindborg" <a.hindborg@kernel.org>, 
-	"Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, 
-	"Danilo Krummrich" <dakr@kernel.org>, 
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>, 
-	"open list:RUST" <rust-for-linux@vger.kernel.org>, 
-	"open list" <linux-kernel@vger.kernel.org>
-From: "Chen Miao" <chenmiao@openatom.club>
+MIME-Version: 1.0
+References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club>
+ <CANiq72=WZJ5=UACpFLWCVJ7mcXbc93X9MyYAZP8-0F==2b0adw@mail.gmail.com>
+ <8d865a46-82c8-428d-a371-407889eefb62@openatom.club> <CANiq72=OE3JNpemanR-r1efbgKqQrZCiQ7hY2-=_bvxLyJZ-HQ@mail.gmail.com>
+ <282bd8d5-afde-4a96-b294-bbd7b69ce684@openatom.club>
+In-Reply-To: <282bd8d5-afde-4a96-b294-bbd7b69ce684@openatom.club>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 5 Nov 2025 14:49:23 +0100
+X-Gm-Features: AWmQ_blkRqxnqjxsVLafgzdnmODrUxOguF_tNfS8UDpxdUVWCEiDo--qmwSmN-w
+Message-ID: <CANiq72n=i8DM7uwhZCK8KZztsDJxwB8PEOpN1qrQtOFkG8aqUg@mail.gmail.com>
 Subject: Re: [PATCH] rust: kernel: Support more jump_label api
-Date: Wed, 5 Nov 2025 21:46:02 +0800
-X-Original-From: Chen Miao <chenmiao@openatom.club>
-Received: from [198.18.0.1] ([114.249.49.233]) by smtp.feishu.cn with ESMTPS; Wed, 05 Nov 2025 21:46:04 +0800
-Message-Id: <282bd8d5-afde-4a96-b294-bbd7b69ce684@openatom.club>
-User-Agent: Mozilla Thunderbird
-Content-Type: text/plain; charset=UTF-8
-References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club> <CANiq72=WZJ5=UACpFLWCVJ7mcXbc93X9MyYAZP8-0F==2b0adw@mail.gmail.com> <8d865a46-82c8-428d-a371-407889eefb62@openatom.club> <CANiq72=OE3JNpemanR-r1efbgKqQrZCiQ7hY2-=_bvxLyJZ-HQ@mail.gmail.com>
+To: Chen Miao <chenmiao@openatom.club>
+Cc: ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>, 
+	"open list:RUST" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/5/2025 9:40 PM, Miguel Ojeda wrote:
-> On Wed, Nov 5, 2025 at 2:35=E2=80=AFPM Chen Miao <chenmiao@openatom.club>=
- wrote:
->> I can understand, but I'd like to make a brief explanation here. "Chen M=
-iao"
->> is my name, so the prefix of all my email addresses is "chenmiao." There=
-fore,
->> "Chen Miao" and "chenmiao" are equivalent.
-> That is fine, but what I was trying to say is that, in that case the
-> Signed-off-by should be "Chen Miao".
+On Wed, Nov 5, 2025 at 2:46=E2=80=AFPM Chen Miao <chenmiao@openatom.club> w=
+rote:
 >
-> Please see https://docs.kernel.org/process/submitting-patches.html#sign-y=
-our-work-the-developer-s-certificate-of-origin
-> -- thanks!
->
-> Cheers,
-> Miguel
+> Well, I will follow this rule and change the Signed-off-by to "Chen Miao"
+> before the next push.
 
-Well, I will follow this rule and change the Signed-off-by to "Chen Miao"=
-=20
-before the next push.
+Yeah, the rules are a bit particular w.r.t. other projects, so it
+takes a bit of time to get used to them -- no worries and thanks! :)
 
-Regards,
-
-Chen Miao
+Cheers,
+Miguel
