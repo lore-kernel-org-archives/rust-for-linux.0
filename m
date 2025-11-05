@@ -1,87 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF6DEEAB;
-	Wed,  5 Nov 2025 00:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9F7EEAB;
+	Wed,  5 Nov 2025 00:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762302349; cv=none; b=Y8Ofdi97y1o0HcfFbq/YxqanS5toU2oV0BUku/0UYulZqZhbtjMFaA839IzT6WTAlxF5LMXPGzBVDd+gw1GsaV+/WNBvsK4XOJ5GHSNNxgdzKRMctNFci+xJzczgx4CHXy0UEUCwa3bEXBDcvV1R5+aLtLFK+ULmrpaK8sYrvTo=
+	t=1762302694; cv=none; b=gOq3MUZ/x226udNL/ScnPqPKvsydh1FwrESA189ITM1jto9VVaL3u/FcngfjL0ty12FyNEN5lABcnLpiffLL2j48Afn/RRIekIWUu3exvP8xzfzGu9EdtyL2qZ1zBw4BsCBxNMVID0Uf3ZUpzCRQ+wBtpMZJzoFnKVlpYnMeXbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762302349; c=relaxed/simple;
-	bh=Z8w2z+03SmQ97nB4usv2XGNg4zk5LCc+uhg74KhVCAE=;
-	h=Content-Type:Date:Message-Id:To:From:Subject:Cc:Mime-Version:
-	 References:In-Reply-To; b=EimtM2uhIV/rTdsYaC5+u5HehqAo8yLgrGH2sr/t2oeXk66xloHxFkLfyX8bOMTZPU8FW0IEZwLyqwYkkwXDyzpMEl4+hdgO9t3QGWO9FhcDYSrp4UYMT2omowALwJ1xByHf+2wyNWMjxDHg1aQ7bRAVeFdcP7nDjIbXME5Z+Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AHoP5FKW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762302694; c=relaxed/simple;
+	bh=We+izUg09eb9ItNUyWuuLLa4bSBS75HUkKyrOf0Lj6k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=WzjdQmmMM1XUiLY/XzdSCsLg6zWwrBpK+woHn/8mgQ47s6eTdzluQfVVpN8ZBOdGyxImB4sInS0+eUbDb9VgHL905Uvx/VA0D8aLtVXqK9SNvBLBB8/2FTtKvtGo1yVeT0pzoLpYfOMbOebCw2wEYL9zEREh8LXrKWRghJoYVc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVFq9yBf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AHoP5FKW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6EAC116B1;
-	Wed,  5 Nov 2025 00:25:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVFq9yBf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D92CC4CEF7;
+	Wed,  5 Nov 2025 00:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762302348;
-	bh=Z8w2z+03SmQ97nB4usv2XGNg4zk5LCc+uhg74KhVCAE=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=AHoP5FKWHvQwMDVguAOkh27Pgb/nzrse8MvVV4epZRXHRUBwUlrpH14MwU8g+vRWA
-	 GSwBlXV1Jb9xrXNvLEL5rf4VejJPtNM/SQZ5FnezjYSx32F+HFoygS4TFCCugJFpBW
-	 J1KBm2nx3UPRv3A2le48B+tHJODYxnmvSuFzlf7l3K1uOQQ77Y0arc4UySxsEqOALj
-	 C7BMiBGHkoQZY7GEMFuy26pPzU8K0LfyX7x18eMKg+KJiNEhukGAZQTXIV2kJOpyyd
-	 vnrues8Ca+jRU2CB505T1cJJmQ1rvfPotOjv24o3YPnw0LanBan02xIGVxYOnpPT2I
-	 vdXpi4l2GB7ZQ==
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 05 Nov 2025 01:25:43 +0100
-Message-Id: <DE0C1KA14PDQ.Q2CJDDTQPWOK@kernel.org>
-To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <mmaurer@google.com>,
- <brauner@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 00/10] Binary Large Objects for Rust DebugFS
-Cc: <rust-for-linux@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
+	s=k20201202; t=1762302694;
+	bh=We+izUg09eb9ItNUyWuuLLa4bSBS75HUkKyrOf0Lj6k=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=jVFq9yBfPf82b1jRb3mgPKTGUDjEiSKq9TYeYHKnsi8wLq8rwzR5rB4XSzzErEx2s
+	 wLs8YdD3XBJWh5Ufv3XgbunCVc1IHasogIFtp8ctiPKKVDwReWwyEnfCdqY0dhdtFx
+	 QGhjNuzmoGiPnxfgBrVRSwret533knqTYU5rruBOV0NgleY033zpT8W0LJFUI9Q4KP
+	 TiXluiCOEwYW1Ibg2HcYHxlm5+PUqPSJbAB7ygSvNkIBI5hj515v4SBhuaSADTXYAO
+	 oGhp+YxcmIuu/8ITKq8pNUUSJCDwzwr60c1ebzQwzgfTXQyYl5P2tscDuy/fXdAnJi
+	 4qmCOBpxouUMg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251022143158.64475-1-dakr@kernel.org>
-In-Reply-To: <20251022143158.64475-1-dakr@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 05 Nov 2025 01:31:29 +0100
+Message-Id: <DE0C5YXSZYWZ.2NND0468WA77F@kernel.org>
+Subject: Re: [PATCH] rust: auxiliary: fix false positive warning for missing
+ a safety comment
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+ <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251103203932.2361660-1-dakr@kernel.org>
+In-Reply-To: <20251103203932.2361660-1-dakr@kernel.org>
 
-On Wed Oct 22, 2025 at 4:30 PM CEST, Danilo Krummrich wrote:
+On Mon Nov 3, 2025 at 9:39 PM CET, Danilo Krummrich wrote:
+> Some older (yet supported) versions of clippy throw a false positive
+> warning for missing a safety comment when the safety comment is on a
+> multiline statement.
+>
+> warning: unsafe block missing a safety comment
+>    --> rust/kernel/auxiliary.rs:351:22
+>     |
+> 351 |                 Self(unsafe { NonNull::new_unchecked(adev) }),
+>     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>     |
+>     =3D help: consider adding a safety comment on the preceding line
+>     =3D help: for further information visit https://rust-lang.github.io/r=
+ust-clippy/master/index.html#undocumented_unsafe_blocks
+>     =3D note: requested on the command line with `-W clippy::undocumented=
+-unsafe-blocks`
+>
+> warning: 1 warning emitted
+>
+> Fix this by placing the safety comment right on top of the same line
+> introducing the unsafe block.
+>
+> Fixes: e4e679c8608e ("rust: auxiliary: unregister on parent device unbind=
+")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
 Applied to driver-core-testing, thanks!
-
-> Danilo Krummrich (10):
->   rust: fs: add new type file::Offset
-
-    I picked up the version from v2 [1] for now and send a follow-up series=
- for
-    the new type approach [2].
-
->   rust: uaccess: add UserSliceReader::read_slice_partial()
-
-    [ Replace map_or() with let-else; use saturating_add(). - Danilo ]
-
->   rust: uaccess: add UserSliceReader::read_slice_file()
-
-    [ Replace saturating_add() with the raw operator and a corresponding
-      OVERFLOW comment. - Danilo ]
-
->   rust: uaccess: add UserSliceWriter::write_slice_partial()
-
-    [ Replace map_or() with let-else; use saturating_add(). - Danilo ]
-
->   rust: uaccess: add UserSliceWriter::write_slice_file()
-
-    [ Replace saturating_add() with the raw operator and a corresponding
-      OVERFLOW comment. - Danilo ]
-
->   rust: debugfs: support for binary large objects
->   rust: debugfs: support blobs from smart pointers
->   samples: rust: debugfs: add example for blobs
->   rust: debugfs: support binary large objects for ScopedDir
->   samples: rust: debugfs_scoped: add example for blobs
-
-[1] https://lore.kernel.org/all/20251020222722.240473-2-dakr@kernel.org/
-[2] https://lore.kernel.org/lkml/20251105002346.53119-1-dakr@kernel.org/
