@@ -1,82 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-1-22.ptr.blmpb.com (sg-1-22.ptr.blmpb.com [118.26.132.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453ACBA3F;
-	Wed,  5 Nov 2025 12:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF54303CAC
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 13:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762346767; cv=none; b=rBq2INd0FzAFYO/9Njllk8CLTbkI/AFsl8hYM2q9EfgfeYh7nzDWN7vuJtxzWOMXhFw8fj6pouW7XI87pFgxOqaFaicJ14r9Ta/yR5a6ZHxswB+OlB+bTtzjBk21vCvpELH89uoN6rFEJibze8lwyx/rhVSc5rGldYVGVU7woDs=
+	t=1762349340; cv=none; b=D4ww7JDnJmJuP1YWu15wNERzyeQFpiTne6+uwllrXwIFHNMxB0r7W7tOM1N5poPFSWvQ6jayNxqeUaNMEcvd6/CEKYczoLhczdL9D1sTUi8tH1NV9XsJHbBtlaYGbZTYk0rvHskt5XHERTPdW+aPBUI28zD0KbYoH/fohGiatwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762346767; c=relaxed/simple;
-	bh=BvDEj56XAXsDodkx5Q02Yxf+Bi9/3xVLnsDizWqbYsc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jOB/hiPFjZMOeK0VaVyn0Qn8t5SMHo8o213JxP6NlsenRd41IbIQakkhwITdzHkaTyARficeMN+ves+r716BGaFBVcLCbFbj6uu5o9Fx/vy20ch3ygj2yM2gSFct9Ko/V6yghYI3BqNnLSvWr5Qn8MaCF3VAWo1rowiE7/7XL+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SeBik6wo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762349340; c=relaxed/simple;
+	bh=OiMZQ3jxA4zt4lcULg3hbwDPjkAVEqHfaOZsr+AATKg=;
+	h=Cc:Message-Id:Content-Type:In-Reply-To:References:Subject:Date:
+	 Mime-Version:To:From; b=qF/WVFcRUEoB+jwAHaYCo81f2flY2DNxnYh3Ehw9G2jEEWa5DtELpa6xZ877LxSgvoiACF6fudofKnZei+zp7AaITJyI9zLpKlqv3uatFxg/OVD+Lq7tPUpuLAELhUZkDbqAUQYTcj16d7mthBDs3zsetTtsIffqBHAfYBeCP+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=JqT67dAC; arc=none smtp.client-ip=118.26.132.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SeBik6wo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8321C4CEFB;
-	Wed,  5 Nov 2025 12:46:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762346766;
-	bh=BvDEj56XAXsDodkx5Q02Yxf+Bi9/3xVLnsDizWqbYsc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=SeBik6woaFJ+bXX3qvAsU4XjVrK1txJelzrGr66pJraD9/0mmqMzYnnX7e0QliwMx
-	 js6/DJ58gIhVGx5SupL3rZc2EiPCjFO4w0HdQFEoZioygXloAHZRRO+CqZGcoF76QG
-	 NHcyBp8ne3cwzFVBDlF5a2+IChS9yB4t9hg/RXV33D2FS+J1nVGJENQX/J9HlKEjjZ
-	 mT/mPhqKcHZQrfJa3VAE7Hrcbubizvq5m5jUt2TqBq/X7/bk+QNTVVrdXAUNeXrx28
-	 N5F5TqMLWLFrOQhNenLYtcgmQ3c+qLOgyH+hszMeSgUl34WSYhYMSEacMIeKa0D9Qa
-	 14dQ9+DPch2Eg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Thomas
- Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org, Daniel Almeida
- <daniel.almeida@collabora.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v13 11/17] rust: sync: lock: Add
- `Backend::BackendInContext`
-In-Reply-To: <20251013155205.2004838-12-lyude@redhat.com>
-References: <20251013155205.2004838-1-lyude@redhat.com>
- <20251013155205.2004838-12-lyude@redhat.com>
-Date: Wed, 05 Nov 2025 13:45:44 +0100
-Message-ID: <87wm447imf.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="JqT67dAC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1762349323;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=gq8PdA1jgim3bfb/guc9McLZThN4z7DOnpEn274tOao=;
+ b=JqT67dACcZRF3plpzpELmnHkx1GH70oYZ9YaF5rC+guxKLKhOc/5I7PVnCPFHqrVsKPzuK
+ pKx5YThEpteeTiogXltwzaPDD8RlHZWQSxvH8x9FS/pza68PfSlcFKzOj5t1UOmgI76e89
+ bZnEo8DxQxkURazspQNT+52pjtvS7wY3pc9Dg7+qB7GJiy86SXkv9VIzq9VibN3DK0b6Oy
+ ZIKrKDlQl3+T9kmcu2ZNXm4O+37KiKvL7mr06/s/xxJxcCX9D7L5nQYn90OsB/a+celFl2
+ 6cNxHlqRtX4gRUGhvhamcPIUhxv4AM7dK+rkP0zD1Euju71mXPIMhghRq/higw==
+Received: from [198.18.0.1] ([114.249.49.233]) by smtp.feishu.cn with ESMTPS; Wed, 05 Nov 2025 21:28:40 +0800
+Cc: <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, 
+	"Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, 
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	"Benno Lossin" <lossin@kernel.org>, 
+	"Andreas Hindborg" <a.hindborg@kernel.org>, 
+	"Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, 
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>, 
+	"open list:RUST" <rust-for-linux@vger.kernel.org>, 
+	"open list" <linux-kernel@vger.kernel.org>, 
+	<hust-os-kernel-patches@googlegroups.com>
+Message-Id: <b3f50745-5351-4e69-b3e2-ede99511e8dc@openatom.club>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-Lms-Return-Path: <lba+2690b5109+8fadb3+vger.kernel.org+chenmiao@openatom.club>
+In-Reply-To: <aQoIliAbrn0Re7E3@google.com>
+User-Agent: Mozilla Thunderbird
+References: <df3a68334760b2b254219a69426982bf858dee39.1762221537.git.chenmiao@openatom.club> <aQoIliAbrn0Re7E3@google.com>
+X-Original-From: Chen Miao <chenmiao@openatom.club>
+Subject: Re: [PATCH] rust: kernel: Support more jump_label api
+Date: Wed, 5 Nov 2025 21:28:39 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Chen Miao" <chenmiao@openatom.club>
 
-Lyude Paul <lyude@redhat.com> writes:
-
-> From: Boqun Feng <boqun.feng@gmail.com>
+On 11/4/2025 10:07 PM, Alice Ryhl wrote:
+> On Tue, Nov 04, 2025 at 02:04:17AM +0000, chenmiao wrote:
+>> The initial implementation of arch_static_branch was achieved by accessing
+>> the offset from the original type. However, this approach extended the
+>> path and introduced redundant calculations when dealing with types like
+>> `static_key_true/false`, as shown below:
+>>
+>> ```
+>> static_brach_unlikely(tp, tracepoint, key)
+>>    => tracepoint->key->key
+>>    => &tracepoint->key(static_key_false) == &tracepoint->key.key(static_key)
+>>    => off: tracepoint->key - tracepoint
+>> ```
+>>
+>> In practice, the implementation of `arch_static_branch` overlooked many
+>> detailed descriptions. To improve clarity, additional comments have been
+>> added to the original logic. The approach has been modified to directly
+>> locate the corresponding `static_key` instead of using offsets, thereby
+>> reducing  computational overhead.
+>>
+>> If finding the offset from the primitive type is necessary for this
+>> implementation, I will abandon this change.
+>>
+>> Additionally, support for the `static_branch_enable/disable` APIs has been
+>> introduced.
+>>
+>> Signed-off-by: chenmiao <chenmiao@openatom.club>
+>> +    ($basety:ty, $branch:expr, $key:path, $keytyp:ty, $field:ident) => {{
+>>           let _key: *const $keytyp = ::core::ptr::addr_of!($key);
+>> -        let _key: *const $crate::bindings::static_key_false = ::core::ptr::addr_of!((*_key).$field);
+>> +        let _key: *const $basety = ::core::ptr::addr_of!((*_key).$field);
+>>           let _key: *const $crate::bindings::static_key = _key.cast();
+>>   
+>>           #[cfg(not(CONFIG_JUMP_LABEL))]
+>> @@ -30,7 +71,88 @@ macro_rules! static_branch_unlikely {
+>>           }
+>>   
+>>           #[cfg(CONFIG_JUMP_LABEL)]
+>> -        $crate::jump_label::arch_static_branch! { $key, $keytyp, $field, false }
+>> +        {
+>> +            $crate::jump_label::arch_static_branch! { _key, $branch }
+>> +        }
+> So ... this is changing from $key to _key. That's replacing the global
+> variable with a local variable holding a pointer to the global variable.
+> However, the arch_static_branch! macro uses the `sym` operand which
+> requires you to pass it the global directly.
 >
-> `SpinLock`'s backend can be used for `SpinLockIrq`, if the interrupts are
-> disabled. And it actually provides performance gains since interrupts are
-> not needed to be disabled anymore. So add `Backend::BackendInContext` to
-> describe the case where one backend can be used for another. Use it to
-> implement the `lock_with()` so that `SpinLockIrq` can avoid disabling
-> interrupts by using `SpinLock`'s backend.
+> Did you try this code? I don't believe it will work.
 >
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Co-developed-by: Lyude Paul <lyude@redhat.com>
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Alice
 
-I am not convinced this makes sense. This saves us only a few
-instructions. We already have a counter on C side, so we are not going
-to update the interrupt control register if we don't need to.
+I'm very sorry for making a fatal mistake. My misunderstanding of sym led to 
+this issue, so I shouldn't make any changes to that part. However, regarding 
+the other modifications, I believe it is necessary to support the direct 
+passing of structures similar to `static_key_false`, just as in C language.
 
-I'd like to see a micro benchmark showcasing the gains that we get from
-this complexity.
-
-
-Best regards,
-Andreas Hindborg
-
-
+Chen Miao
