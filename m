@@ -1,168 +1,79 @@
-Received: from forward501d.mail.yandex.net (forward501d.mail.yandex.net [178.154.239.209])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B8D245020
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 09:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DB72FD673
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Nov 2025 10:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762334983; cv=none; b=dGc1X//IAayNOSbvZzUkBWII2exnFrfBqdnF1wIpxFpAWM+XXlKQbTmUzyCs3iKrcz6KZANw7RfCCUGW+8j7yA+KTxauwaSb/pg83OS7mz2aypyGYFyLgwHDRsEQDgs8YkhLEJSNK+pDMy3cW4tlepxd9ngFgFYv6DQKGPuanM8=
+	t=1762337995; cv=none; b=m7avxo/0WkVrZ6uOEz8zOoFdezeySeceKyZ92TCIsdNnSwaLwheYL4oL0U+z0RHIRZ/kOeR9bvw8+cvN0ieI/8GGUW9bhnxOlKEW9msCnjLV+BKHOgrurhPd3CBv4oYnx57u5nuRM0KTLn7ZFWULLx97hL8C/HpBuFP3sATsIE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762334983; c=relaxed/simple;
-	bh=WlR7mYX9yXh7o0b4eCgJx7yAzT5z5J6p6rbTgo2q/CM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WdSy3gkJKv8Tep1OLB3tvsD6VnGSttu/FRUBwJBhEY/1+Ld4pnzMF3r9VvIcZk7YJGP3y0/RfIf/ATwGKwGLwd7zIJCOUEQZ9XaKNOEP0ghC8lHIBylK7tH0njp3nngiwKx2c/e1HRzTCNZfQwWlKAarbrHF2qLNwQ10zEFMB9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=XVNskxSx; arc=none smtp.client-ip=178.154.239.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1762337995; c=relaxed/simple;
+	bh=zcwOyR3i+iQCu6dzVq9q4dOF16E9XrrQF46JdXsYiRE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=rfaSzByb0RUki6BEJ8Au4IYhJsqT57MVBIh5+9sDVboUUE+CphKTKbJLlH6BuEkSG2g9N/UYD0alKKbPIaxkv5pcgMxMDAtVCSc3Gi88Royf68Cs4C5mY/5ZuuTUOF2fW76fgrIg9pizO/meY0XXn0kbHsTxUVyjQTNHDaOMZl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GiEu45u9; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="XVNskxSx"
-Received: from mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:4ca4:0:640:f272:0])
-	by forward501d.mail.yandex.net (Yandex) with ESMTPS id 9316B81E32;
-	Wed, 05 Nov 2025 12:21:31 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id RLhAd0aLlmI0-7fy3n5G9;
-	Wed, 05 Nov 2025 12:21:30 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1762334491;
-	bh=SfHinn3WUb5RKE+2qXHDkmKOGvPGznUzs5FF+mwM4gY=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=XVNskxSxhUWEZ/H85S6XYxnW+6aasprQUx1LkqYoE5GYwCzXHjOwsjTP5IqIjMJo6
-	 bA0yGYCJ4xxkr+gqygfBuB3BV1BrBSPS8yip9P/ciXLHMis9Q51sjZhfIl6Mg+JbzR
-	 YJBL0CACme3HaQk6/AhnYt4MHIulh8nwSjQ99Q44=
-Authentication-Results: mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Wed, 5 Nov 2025 12:21:25 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: ojeda@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
- gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
- tmgross@umich.edu, jens.korinth.tuta.io@kernel.org
-Subject: Re: [PATCH v1 1/2] rust: Add support for calling a function exactly
- once
-Message-ID: <20251105122125.5b84fa83@nimda>
-In-Reply-To: <20251105054731.3194118-2-fujita.tomonori@gmail.com>
-References: <20251105054731.3194118-1-fujita.tomonori@gmail.com>
-	<20251105054731.3194118-2-fujita.tomonori@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GiEu45u9"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47106720618so67021235e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 02:19:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762337993; x=1762942793; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gSDrC2UXjvRn1x7EpScqa90OTfMWc8Syuy/AT16lrpE=;
+        b=GiEu45u9/dR8rnCnNVN0V16KzdhcXIB9pxPJZc4TuQneD/IkWEbO4LAoiQ4VTQGBpC
+         WqDQegWcOyOg+tUNnJjSq8meEXM5G68BMiAsOmPaZPF22/Yqj0uE2cqttOVJ5GXD/1Sz
+         LV1tJLq+teYevkGP7T1rzHqpnCBioOtPRxwtFzR5WLBfJuZ/vKetBWQ2lLHsJwFonOe4
+         tVoXY17xglTRweea04X0zlWBNH2eWhmwCNp3Ago/K02kRIYEAcMNTL2Aiki4HfWt1Olk
+         8IS2/sNULp4748hCc8ts2QQrjIDz2YszSk/4InvmxF1UcmbwQu/VeWYWqOjlPrsNg1Va
+         NWCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762337993; x=1762942793;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gSDrC2UXjvRn1x7EpScqa90OTfMWc8Syuy/AT16lrpE=;
+        b=uSBY5u8mT2Ypw9+d0zzqgw2NCZo7PMHJrKbpHJ15iDfvXblWPByVsn4xtIVRxsYSLi
+         QPFIFp2lQGs7JS5wIWSZWtzxWoLSWDXMOVcWJJT30Wwd5WD0vFyCsiJ4mEo5lfHfWB8+
+         gK7TtbHyTmY4wLp15uLfuJPzt/zf/L9dawY3NOokngkqt6/pRi64JGTSecp+Vw+i+f/6
+         zBObSZ+2CoFYkC7jyqb4lmlXYIR39xyu2A8pQZH2LINMtWUrLlfu1VSi0IyOoxEDq3NF
+         ZCAHbF1OgPLHEVPu5Hv6JVr5jfoqRKHIISBtgccHMolasloGr8XVwCbJOChgZWrqrbsQ
+         qVwA==
+X-Forwarded-Encrypted: i=1; AJvYcCUo6ww2CQfvbWMxGtQXzIfSPR70DbnIy1L6Bb1DtG3VLdWzfWnpLNc8GOHuxbgxiAWouClitI2qhhcuaEpbcA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuPK4K88kiQjvfEHhIrZYQ2vAK8+myfg3KdgKKhwtmAI8gKPY8
+	W/4mHOQScKfAoljU6KvlT+t/r06xXyiLWj9kxp920J3K+yOiMITk/GE3tCyIQQOQvvgJpbqNJ9X
+	mYCNOMmmQe8sskQ31mg==
+X-Google-Smtp-Source: AGHT+IFy6HLdLExBzNA/9DKpfS4LGeWapRstwfkqLi6/dGNf+Wnlmn+SJmKmH4X1ieaDRU09v81ykT8v7CEixB0=
+X-Received: from wmqe20.prod.google.com ([2002:a05:600c:4e54:b0:475:ddb0:71ba])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1c8d:b0:46f:b327:ecfb with SMTP id 5b1f17b1804b1-4775cdc5348mr25817385e9.9.1762337992754;
+ Wed, 05 Nov 2025 02:19:52 -0800 (PST)
+Date: Wed, 5 Nov 2025 10:19:51 +0000
+In-Reply-To: <20251105002346.53119-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20251105002346.53119-1-dakr@kernel.org> <20251105002346.53119-2-dakr@kernel.org>
+Message-ID: <aQskx-CkI1HNycQS@google.com>
+Subject: Re: [PATCH 2/3] rust fs: kiocb: take advantage from file::Offset
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, 
+	arnd@arndb.de, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Wed,  5 Nov 2025 14:47:30 +0900
-FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
-
-> Add the Rust equivalent of the kernel's `DO_ONCE_LITE` macro. While it
-> would be possible to implement the feature entirely as a Rust macro,
-> the functionality that can be implemented as regular functions has
-> been extracted and implemented as the `OnceLite` struct for better
-> code maintainability.
+On Wed, Nov 05, 2025 at 01:22:49AM +0100, Danilo Krummrich wrote:
+> Make use of file::Offset, now that we have a dedicated type for it.
 > 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/kernel/lib.rs       |  1 +
->  rust/kernel/once_lite.rs | 71
-> ++++++++++++++++++++++++++++++++++++++++ 2 files changed, 72
-> insertions(+) create mode 100644 rust/kernel/once_lite.rs
-> 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 3dd7bebe7888..19553eb8c188 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -110,6 +110,7 @@
->  #[cfg(CONFIG_NET)]
->  pub mod net;
->  pub mod of;
-> +pub mod once_lite;
->  #[cfg(CONFIG_PM_OPP)]
->  pub mod opp;
->  pub mod page;
-> diff --git a/rust/kernel/once_lite.rs b/rust/kernel/once_lite.rs
-> new file mode 100644
-> index 000000000000..44ad5dbdc67e
-> --- /dev/null
-> +++ b/rust/kernel/once_lite.rs
-> @@ -0,0 +1,71 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Support for calling a function exactly once.
-> +//!
-> +//! C header:
-> [`include/linux/once_lite.h`](srctree/include/linux/once_lite.h) +
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-This seems like a pure Rust implementation. What exactly do we need
-from the "once_lite.h" in this module?
-
--Onur
-
-> +use crate::sync::atomic::{Atomic, AtomicType, Relaxed};
-> +
-> +/// A lightweight `call_once` primitive.
-> +///
-> +/// This structure provides the Rust equivalent of the kernel's
-> `DO_ONCE_LITE` macro. +/// While it would be possible to implement
-> the feature entirely as a Rust macro, +/// the functionality that can
-> be implemented as regular functions has been +/// extracted and
-> implemented as the `OnceLite` struct for better code maintainability.
-> +pub struct OnceLite(Atomic<State>); +
-> +#[derive(Clone, Copy, PartialEq, Eq)]
-> +#[repr(i32)]
-> +enum State {
-> +    Incomplete = 0,
-> +    Complete = 1,
-> +}
-> +
-> +// SAFETY: `State` and `i32` has the same size and alignment, and
-> it's round-trip +// transmutable to `i32`.
-> +unsafe impl AtomicType for State {
-> +    type Repr = i32;
-> +}
-> +
-> +impl OnceLite {
-> +    /// Creates a new [`OnceLite`] in the incomplete state.
-> +    #[inline(always)]
-> +    #[allow(clippy::new_without_default)]
-> +    pub const fn new() -> Self {
-> +        OnceLite(Atomic::new(State::Incomplete))
-> +    }
-> +
-> +    /// Calls the provided function exactly once.
-> +    pub fn call_once<F>(&self, f: F) -> bool
-> +    where
-> +        F: FnOnce(),
-> +    {
-> +        let old = self.0.xchg(State::Complete, Relaxed);
-> +        if old == State::Complete {
-> +            return false;
-> +        }
-> +
-> +        f();
-> +        true
-> +    }
-> +}
-> +
-> +/// Run the given function exactly once.
-> +///
-> +/// This is equivalent to the kernel's `DO_ONCE_LITE` macro.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// kernel::do_once_lite!(|| {
-> +///     kernel::pr_info!("This will be printed only once\n");
-> +/// });
-> +/// ```
-> +#[macro_export]
-> +macro_rules! do_once_lite {
-> +    ($e:expr) => {{
-> +        #[link_section = ".data..once"]
-> +        static ONCE: $crate::once_lite::OnceLite =
-> $crate::once_lite::OnceLite::new();
-> +        ONCE.call_once($e)
-> +    }};
-> +}
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
