@@ -1,299 +1,301 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013058.outbound.protection.outlook.com [40.93.201.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3A02DEA95;
-	Tue,  4 Nov 2025 23:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762298804; cv=fail; b=E1xvX5BiWmfouSBbBrAJiDvF5zHo1kZBP+njS6Hg0iBkt0jqtJd0OHF1tl1LJYxRehBpPHzLeVuTQZSXywmkx7TfoX2q6x/sfBIzxZt5npk/LweNvFjCj6Y4V06N4Uejl5KKHJt/70nI2fLi79nH7mI/ZpymM/NMTT9TrIST474=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762298804; c=relaxed/simple;
-	bh=isQn2tN1ab7ZRHBKYRwp22lNzkTg4xMDQ05Zo9fnCBc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j8f7pAeewfTN1WDa+E9D4QGJiJbJl4rsDK+TuytWHVTdwn2GD5OLpbvhqrROOBBw6u+KLmlH52gCfSl2qu1KLU8EiBWPI8AO+ymOJkZECyfd5vZsbekdMb2H62sffHz4rpeEu56igUbp9algaivXNnBLkbl0Rg3vYJmWE/Bt2BI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oIboMO5p; arc=fail smtp.client-ip=40.93.201.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3847CEEAB;
+	Wed,  5 Nov 2025 00:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762302235; cv=none; b=XMd0+9zPZFtYnwLBAWI7hVZpmbSQYTiVwVKNfOBJq7Mz8JJEE+M7To9Su+3/9btEJ5acUr8aGxoqJ7LzsRUpHazA+Rl+56HamW6vBPKe/Ag3mc7/oF/Xds20lEYVtO2NjRvPKiiB/rdYXO95a4woEZmIAm+YnxmP5SIHIPx/P08=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762302235; c=relaxed/simple;
+	bh=x0DUEde66C9G43K+MMw5hkct3NqVabtjNSKqXrtXato=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zk8i08kMXWxIPqz9JR9oW5A8lo+sI3K2FUeU5kcAomiSCwyyWB5IBh5sO6m/rZjKoZkr0/uvo9//rlejSwc22xP/W/g20GY1KHX2Ls+SSMGUx7sJ/XaX23JW9/JZB0ZESvPcTkWxPXl3KBfnXio2AYWu9NFnbVKyloScqdYVDDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVg8cIsl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oIboMO5p"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yJo/UuXmPBk4uLgjBp0ZqytCF99pEhGW64FMS4pJOdiAoOboNscdgwqmZsf6j20ZTm1PWhIvO/hCJVZ6gmsftLpIftKvb2Pws/cWXKwf+KuQ5Wtu4OSMN1jBT/No2cFyJWXmERtA5f1yst8y88lhHuTzclc1dMyJZIXo/TWH2veloitgF8caSrMjoDMWEp9iJtr9tBCl9lDA14yTgQBQwe1L/493sctqmsut+uX0fDnmSdbwe9l8MxYFNGnJfWFtwiexFJAMARkVQgJPp/L86FnTI58zmtD+o5mUkMQDwcl9Lb7OApq1Hz3UVT6HY3Kw+UQMRBYrlmjVEmQLey3SCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n6/fUj6Ke2Gb1QIN0d4shDtlvdJyrqLDXaOtbwx08Pw=;
- b=Vm5GB/FhQElEtLBhTZUyJfC5t/vsi6NY2w6EgIvy58Q3/9KYcdmzc/z7VfkzqS2TEHepCsdpk5dwAsmq2FnorUQoFwscvmBlqrjiC9QLV/8RphtBnnSZUmyxB7JUy6HCmTAt+qMjAbbKEGaDt2AZ3ZVQujuJqXwxvNc8yLNNtoGnA0eYkWNYjwFKz98eugeHBfaCyUHv50xrRbbmHw+AkGMxXPRu7OReNSzX4Lvn0ldzj8HvPvj420mhM8AR01ws2WkSC2K6ek0XwMW7DGaX6p5bZ88gQC7DzN5YWI7LOnC6zD7+JepajzhpdrfDQqf4H4/ZlBNSM8Mm1NuqK6Xbmw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n6/fUj6Ke2Gb1QIN0d4shDtlvdJyrqLDXaOtbwx08Pw=;
- b=oIboMO5pJdQQSnOVjOlQPWFhKUw4xBvccwYQalooQKUET9jSHbasOfATKe1GVlQk6cEdiC/OKkubUn+p3lSrQnfUflkQ6Gn2xcR0bQrY07Dp3zOXXiU0YkyuAPGf2x9nMSz97I8CCEe7WMTN7E/7qycm4a+0CwzTz/TqpxJ42ytHXhQa2XIlf9iPH5RnsMqHJv/+jzdCp3+mnuh0WFTESQuL1IpeDhKmIVrKml97jR8+QYQXOVIVPUH0sfI9ejmOovPL+GsIA4iXSWn+zt/uD1UdyCfBsjczEmku+LHD5XX3tgyrH1d3wUCQxB5IrgMkzSPgl0qDmx+rX0HSuSrTuQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by DS4PR12MB9772.namprd12.prod.outlook.com (2603:10b6:8:2a6::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Tue, 4 Nov
- 2025 23:26:39 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9275.015; Tue, 4 Nov 2025
- 23:26:38 +0000
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	dakr@kernel.org,
-	acourbot@nvidia.com
-Cc: Alistair Popple <apopple@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVg8cIsl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CDDC116B1;
+	Wed,  5 Nov 2025 00:23:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762302234;
+	bh=x0DUEde66C9G43K+MMw5hkct3NqVabtjNSKqXrtXato=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YVg8cIslGHbMAhcsC1RdtzkoXQKS6xtOm7snfwUG6aG5n1AIdy0jXtG1h+zncndp1
+	 hQNlS2y8la/iDJ5IUnYFzlM4ifT8QM6L5813DOxWvKayTtc3U9HtDajX8cRFlXjr9q
+	 SFVqeZhT+7K6bRshGO5hllk51pkMlJGeLnl+GGSQFF4tmMmc53utpaLVpymtiTtQ/B
+	 7HkTn51GfMX6mo9I/lMKVKykcJSRJX7a2Vay53L32A5YB4wWjuKnePgkGlfB0Fp3fF
+	 XTavLT0Ow3n4dUyolUrutjF92Zc4OfQaIO43OUP8jAddnCo0zRwih9o5NJ3ULMOewA
+	 JNRrDWWyApmqQ==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
 	bjorn3_gh@protonmail.com,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	joel@joelfernandes.org,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	nouveau@lists.freedesktop.org
-Subject: [PATCH v2 13/12] nova-core: sequencer: Refactor run() to handle unknown messages
-Date: Tue,  4 Nov 2025 18:26:26 -0500
-Message-Id: <20251104232626.2277008-1-joelagnelf@nvidia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <3b0d776e50fc81797dec2e5d81c86390af78f848.camel@nvidia.com>
-References: <3b0d776e50fc81797dec2e5d81c86390af78f848.camel@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BN1PR10CA0029.namprd10.prod.outlook.com
- (2603:10b6:408:e0::34) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	jack@suse.cz,
+	arnd@arndb.de
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH 1/3] rust: fs: add a new type for file::Offset
+Date: Wed,  5 Nov 2025 01:22:48 +0100
+Message-ID: <20251105002346.53119-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DS4PR12MB9772:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a984682-a20c-481d-916f-08de1bf999f4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Yb6ecwOwE+/4IkZyWI+RGyXZ1nh+Vt+VXHA1fntfvhSlIdsd9oF05a8jyjdM?=
- =?us-ascii?Q?SqOxEHuReDilxq2EqGHGC3RPzZwSVQmR6XwPFeTenbS7eJK5IbWzUxEgqwh8?=
- =?us-ascii?Q?yf/xIIamVTfV7JKv8odsxoTqSZzk4sk7gI4Osfu8azddiUjyFpekgezmL8+m?=
- =?us-ascii?Q?BXz+DSUoRMAHomYAzKuwcfYvYDaKBw+L6wZf5goMZHtdW3q6+2WBC+rXlio1?=
- =?us-ascii?Q?5IRLmutIcQR7pa5r2H5WwVlHldmw+TmHT5m8PXYtJBhZ/iUDbZ91HVxrDAbR?=
- =?us-ascii?Q?FBIUND8y7tZ3y8/moWOr3VaL1O4G6Buriz9nE6Magc3WVnriHemJAs1z64Ns?=
- =?us-ascii?Q?hJXMjeyGzJMwFZBhgtHl1VuRIZ4ubVoPYTTYbrPLU5VN0bsUHq+oVWu6zztD?=
- =?us-ascii?Q?5kItxXxPhl/axBRKQDvnVODfS7UEyjhcm1GHznqVPolM1pT+SZ4rWWv7ZQ8E?=
- =?us-ascii?Q?rAeHVuAmut0BqvwcDYyViPVi/T7ciNKZ79n5vLzZs9lw0NETanb0PZT1uy0j?=
- =?us-ascii?Q?r46N+TNdEyrrFVmxGYrSuouCrvfPI+8L2FQemLI0+viqbBh+O3T/E510HEng?=
- =?us-ascii?Q?UQC9ZyyUsLG0rL+rRfS53GgKdHXzX98ITHAd0lRi581N9ycTgcMQBTwEFIt6?=
- =?us-ascii?Q?YADoUFmaFR4iBSBcvG9UZKihjX9dvnxMazPyplQbPXqtaaMImHAL8BNme+2k?=
- =?us-ascii?Q?WZeGwNMeYAttxz+pHs95GkcMQziRQEgOahFyy0OLxlxsrm6cMUmWobn+4DZk?=
- =?us-ascii?Q?Fd5XFxrEDbnjmXTXaCcTu/ROPahMwcYyn75uN1cdROebInR4h8JycrD/qFKY?=
- =?us-ascii?Q?6O8WKLeThZA3XLiArszAhPnTxUGeg9yaHdcitSu7dx8P6p4IETxDnp5in6Fh?=
- =?us-ascii?Q?BmAZoj/NTBt6h2mVumI7ycnAgxsmGZ5z/G0WTeUoN7J1d0M5ItjQEncKlLDP?=
- =?us-ascii?Q?UxJyOa6Kml2y82tDoHXYNERVTGQ5Ply1uVI2/st+AfAmOwpL2fr4AvuiZQt9?=
- =?us-ascii?Q?WGMgKBibBIS6Gf44uKSFBBl04G8DMGZ4pj8JFDcRYoqfnQCXfnBvAUENHfPL?=
- =?us-ascii?Q?Lc+a1Hq8QBHTIVbBMZwA/A6u9//K5tpF4gkZIJWs+PmuQD+2EYnvnJcNcuEU?=
- =?us-ascii?Q?lX3elIhOsiv//iZTMRGjI8VlBQL/N1SL4JTqzgCgj12QxxpwPlDcYO2MZxKn?=
- =?us-ascii?Q?vmiW7FOWXop4uvq6s6UIrSZfQgFM3D6/KKyL7SlL+IaM6Ax/BAQ9Ooou/SFx?=
- =?us-ascii?Q?GsXsk5ZWBmcChRkU1QuTwVenqEf0a8OL9skyYal/g9vtdBEb0YJ1CF2YtiWv?=
- =?us-ascii?Q?YHbV+Rq6WFbP8R+s4uTyfeq1/9WZm7rj7jQwhyjzcoJ7FTJtvwpbct9uApnZ?=
- =?us-ascii?Q?5DK0da4x8z4hryRdJV2ehsJhoGGgupbtJ90nL1CtFG7PkqxuigX2BogJvFzZ?=
- =?us-ascii?Q?ZmLKhXeQy4vughwhf9628JuKyfbyOKtu?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kudWyNJtrcHWiamWJhFJt+BTxxH9K1t1PdnkCOnQ3uHPTINtRGhhHhnnzmtA?=
- =?us-ascii?Q?SxvI83ZcPqIYWW92We+ylEFtl3DqUrv4rkV1ny0v51KHwqr+Azv7n/kZ5EWw?=
- =?us-ascii?Q?FknfG0h32dRHPLQnJ8DjZd7YKW68d1x/cgcS3HnT9mHtd1gcdrPKcc77YroQ?=
- =?us-ascii?Q?8HowRewWNTuysHHKO12+Qp41T9E7aUhKJxXPl10lzt8L+RtfJcRske9mB9Iv?=
- =?us-ascii?Q?KRuUI0hHpmyZj9BQDnkkHYTkLrpdnBouAAEow+4kcAdO8DE9J9GtBOYw0Rj5?=
- =?us-ascii?Q?Q9dAXjN3zKnyj4osira7sjmh4dpAGuMpQDfe9jZr4UKvbUATz+rEF3rPDHSn?=
- =?us-ascii?Q?zny96ab+kMil4e983aJeihTYg77rHEUFtgo8oolILHcFx1BpsAwaF/ciPAou?=
- =?us-ascii?Q?rZI0MH3yklS7Vu278BI2aGg9Vr5CJxQTkVOWkltb+5sGAgfklrYi84zV8ur2?=
- =?us-ascii?Q?zx8H13kIYvSL2tmNcUkFgkKQWQ58svekoHwcVwId7B469urpc6PRUEmG/FSb?=
- =?us-ascii?Q?sAhKWU3SsHZbbO/0zd/hQmereWkT6ceu/ZI6xro3KSnsN6R12mVQQWa6grPX?=
- =?us-ascii?Q?HKpEF0GsVcVSOmoWwKIWcRcRrLiiMTXBOCYgbyDRW+21u1zun+on6t3nF+tJ?=
- =?us-ascii?Q?8hYN7O4TGNYbvfbGWv9MXTEoAs+k8Ie0xvNlggxYb67TsgvUCf9oIORMzKVm?=
- =?us-ascii?Q?tjZHQ/sQmAAFCpgiPEQY14cqqwHVEyIHx/uZWY7WlFqAkP+bSsXfDXzrMqcC?=
- =?us-ascii?Q?TgZQ/CBikhGUsm6Fnx/filMbHhQQ4czE59XeRDbIh15jBcWixbEGONJCLAim?=
- =?us-ascii?Q?x66BqZ8BUxUx5RZ1cPtvOcLmyDEau+el/Y8ZJDQKx6wloijkKWAipCyPL3to?=
- =?us-ascii?Q?tMypS+ABibgRwhvGfTz3f+mPnxyqWRnZdOyrnnMnzAuhktyoIsddeRul/eSM?=
- =?us-ascii?Q?kt3SrqKBeCG6Hw8R1O8yZR+fANZ9YvfbI5fQ6H/jPaDt2h4zFZRRtbt5dcdo?=
- =?us-ascii?Q?aEr350kkpqNjfhNWulZbkpDs4sB4rpLrLOR91hg/AYezp/BDvgqYM5RacRRW?=
- =?us-ascii?Q?Jsy5wIJJwozVfFP/aWLliwzdLp1Tzamrwxugv3E5Ih5Q1HgbWwhEGBtO2wSs?=
- =?us-ascii?Q?0tf7vdomJOvtaghr+soZnibL2V5SQ9ovJDz/AYJQe9NkxxrtBzKvayyd8wh0?=
- =?us-ascii?Q?12jHnIMtuHgMSSuVEKmBqbQ0BDqSzgxSUOZuXXps2bV80w2ON8BSJTU745vY?=
- =?us-ascii?Q?7ryWqFu/iG4yI98mYrC4VyqgSBsdinh4rwtsD5nnmuvTeSI1uoNna5vG61PU?=
- =?us-ascii?Q?Of56OK23st5ZL9Qa4qG59l/TYhoJbf7E2KzFBchplKsk5sOyAJmqzmHoNfY7?=
- =?us-ascii?Q?G/XDxilzORQOwMeyDoctiq+lYq6KFsUVIoG+VZAPz8bn8jGLT3tWsbjIGfKe?=
- =?us-ascii?Q?/kH9hJFCHNSkg9eMmZcUOb72ayOL+Qbyb1dokoTmpYWGCmO5WiR9Jmt4D4XD?=
- =?us-ascii?Q?TqxonN312DuyIQPC1mTE8AhI3+fpG3jVAbn/OGdpJhNUfu1dOZ2CIWofHqwS?=
- =?us-ascii?Q?junofYaTJedXsVJ+Cw0TjEdGOaqra1NXBEDkdWs6?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a984682-a20c-481d-916f-08de1bf999f4
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2025 23:26:37.9402
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XRLnXpmZeLodnjFUwj6d2kRiAv4nhJx4Et3mGyub24+q4hfBlazwdo5jClTZRjdMecoxt5FCnMorNh/3JOJ89Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9772
+Content-Transfer-Encoding: 8bit
 
-Refactor GspSequencer::run() to follow the same pattern as gsp_init_done()
-by wrapping message reception in a loop that ignores unknown messages
-(ERANGE errors).
+Replace the existing file::Offset type alias with a new type.
 
-Suggested-by: Timur Tabi <ttabi@nvidia.com>
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Compared to a type alias, a new type allows for more fine grained
+control over the operations that (semantically) make sense for a
+specific type.
+
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1198
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
-Additional patch to cure probe issue on Timur's GA102 (which happens to receive
-too many NOCAT records).
+ rust/kernel/debugfs/file_ops.rs |   4 +-
+ rust/kernel/fs/file.rs          | 159 +++++++++++++++++++++++++++++++-
+ rust/kernel/uaccess.rs          |   4 +-
+ 3 files changed, 159 insertions(+), 8 deletions(-)
 
- drivers/gpu/nova-core/gsp/sequencer.rs | 86 +++++++++++++++-----------
- 1 file changed, 49 insertions(+), 37 deletions(-)
-
-diff --git a/drivers/gpu/nova-core/gsp/sequencer.rs b/drivers/gpu/nova-core/gsp/sequencer.rs
-index ecc80f668dc8..b98e5146abd8 100644
---- a/drivers/gpu/nova-core/gsp/sequencer.rs
-+++ b/drivers/gpu/nova-core/gsp/sequencer.rs
-@@ -35,8 +35,8 @@ impl MessageFromGsp for fw::rpc_run_cpu_sequencer_v17_00 {
+diff --git a/rust/kernel/debugfs/file_ops.rs b/rust/kernel/debugfs/file_ops.rs
+index 6c8928902a0b..8e45c15d3c90 100644
+--- a/rust/kernel/debugfs/file_ops.rs
++++ b/rust/kernel/debugfs/file_ops.rs
+@@ -261,7 +261,7 @@ extern "C" fn blob_read<T: BinaryWriter>(
+     // SAFETY:
+     // - `ppos` is a valid `file::Offset` pointer.
+     // - We have exclusive access to `ppos`.
+-    let pos: &mut file::Offset = unsafe { &mut *ppos };
++    let pos = unsafe { file::Offset::from_raw(ppos) };
  
- const CMD_SIZE: usize = size_of::<fw::GSP_SEQUENCER_BUFFER_CMD>();
+     let mut writer = UserSlice::new(UserPtr::from_ptr(buf.cast()), count).writer();
  
--struct GspSequencerInfo<'a> {
--    info: &'a fw::rpc_run_cpu_sequencer_v17_00,
-+struct GspSequencerInfo {
-+    cmd_index: u32,
-     cmd_data: KVec<u8>,
- }
+@@ -316,7 +316,7 @@ extern "C" fn blob_write<T: BinaryReader>(
+     // SAFETY:
+     // - `ppos` is a valid `file::Offset` pointer.
+     // - We have exclusive access to `ppos`.
+-    let pos: &mut file::Offset = unsafe { &mut *ppos };
++    let pos = unsafe { file::Offset::from_raw(ppos) };
  
-@@ -125,7 +125,7 @@ pub(crate) fn size_bytes(&self) -> usize {
- }
+     let mut reader = UserSlice::new(UserPtr::from_ptr(buf.cast_mut().cast()), count).reader();
  
- pub(crate) struct GspSequencer<'a> {
--    seq_info: GspSequencerInfo<'a>,
-+    seq_info: GspSequencerInfo,
-     bar: &'a Bar0,
-     sec2_falcon: &'a Falcon<Sec2>,
-     gsp_falcon: &'a Falcon<Gsp>,
-@@ -368,7 +368,7 @@ fn into_iter(self) -> Self::IntoIter {
-         GspSeqIter {
-             cmd_data,
-             current_offset: 0,
--            total_cmds: self.seq_info.info.cmdIndex,
-+            total_cmds: self.seq_info.cmd_index,
-             cmds_processed: 0,
-             dev: self.dev,
-         }
-@@ -387,41 +387,53 @@ pub(crate) struct GspSequencerParams<'a> {
+diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
+index 23ee689bd240..655019f336d9 100644
+--- a/rust/kernel/fs/file.rs
++++ b/rust/kernel/fs/file.rs
+@@ -15,12 +15,163 @@
+     sync::aref::{ARef, AlwaysRefCounted},
+     types::{NotThreadSafe, Opaque},
+ };
+-use core::ptr;
++use core::{num::TryFromIntError, ptr};
  
- impl<'a> GspSequencer<'a> {
-     pub(crate) fn run(cmdq: &mut Cmdq, params: GspSequencerParams<'a>, timeout: Delta) -> Result {
--        cmdq.receive_msg_from_gsp(timeout, |info, mut sbuf| {
--            let cmd_data = sbuf.flush_into_kvec(GFP_KERNEL)?;
--            let seq_info = GspSequencerInfo { info, cmd_data };
--
--            let sequencer = GspSequencer {
--                seq_info,
--                bar: params.bar,
--                sec2_falcon: params.sec2_falcon,
--                gsp_falcon: params.gsp_falcon,
--                libos_dma_handle: params.libos_dma_handle,
--                gsp_fw: params.gsp_fw,
--                dev: params.dev,
--            };
--
--            dev_dbg!(params.dev, "Running CPU Sequencer commands\n");
--
--            for cmd_result in &sequencer {
--                match cmd_result {
--                    Ok(cmd) => cmd.run(&sequencer)?,
--                    Err(e) => {
--                        dev_err!(
--                            params.dev,
--                            "Error running command at index {}\n",
--                            sequencer.seq_info.info.cmdIndex
--                        );
--                        return Err(e);
--                    }
-+        let seq_info = loop {
-+            match cmdq.receive_msg_from_gsp(
-+                timeout,
-+                |info: &fw::rpc_run_cpu_sequencer_v17_00, mut sbuf| {
-+                    let cmd_data = sbuf.flush_into_kvec(GFP_KERNEL)?;
-+                    Ok(GspSequencerInfo {
-+                        cmd_index: info.cmdIndex,
-+                        cmd_data,
-+                    })
-+                },
-+            ) {
-+                Ok(seq_info) => break seq_info,
-+                Err(ERANGE) => continue,
-+                Err(e) => return Err(e),
-+            }
-+        };
+-/// Primitive type representing the offset within a [`File`].
++/// Representation of an offset within a [`File`].
+ ///
+-/// Type alias for `bindings::loff_t`.
+-pub type Offset = bindings::loff_t;
++/// Transparent wrapper around `bindings::loff_t`.
++#[repr(transparent)]
++#[derive(Copy, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Default)]
++pub struct Offset(pub bindings::loff_t);
 +
-+        let sequencer = GspSequencer {
-+            seq_info,
-+            bar: params.bar,
-+            sec2_falcon: params.sec2_falcon,
-+            gsp_falcon: params.gsp_falcon,
-+            libos_dma_handle: params.libos_dma_handle,
-+            gsp_fw: params.gsp_fw,
-+            dev: params.dev,
-+        };
++impl Offset {
++    /// The largest value that can be represented by this type.
++    pub const MAX: Self = Self(bindings::loff_t::MAX);
 +
-+        dev_dbg!(params.dev, "Running CPU Sequencer commands\n");
++    /// The smallest value that can be represented by this type.
++    pub const MIN: Self = Self(bindings::loff_t::MIN);
 +
-+        for cmd_result in &sequencer {
-+            match cmd_result {
-+                Ok(cmd) => cmd.run(&sequencer)?,
-+                Err(e) => {
-+                    dev_err!(
-+                        params.dev,
-+                        "Error running command at index {}\n",
-+                        sequencer.seq_info.cmd_index
-+                    );
-+                    return Err(e);
-                 }
-             }
++    /// Create a mutable [`Offset`] reference from the raw `*mut bindings::loff_t`.
++    ///
++    /// # Safety
++    ///
++    /// - `offset` must be a valid pointer to a `bindings::loff_t`.
++    /// - The caller must guarantee exclusive access to `offset`.
++    #[inline]
++    pub const unsafe fn from_raw<'a>(offset: *mut bindings::loff_t) -> &'a mut Self {
++        // SAFETY: By the safety requirements of this function
++        // - `offset` is a valid pointer to a `bindings::loff_t`,
++        // - we have exclusive access to `offset`.
++        unsafe { &mut *offset.cast() }
++    }
++
++    /// Returns `true` if the [`Offset`] is negative.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::fs::file::Offset;
++    ///
++    /// let offset = Offset::from(1);
++    /// assert!(!offset.is_negative());
++    ///
++    /// let offset = Offset::from(-1);
++    /// assert!(offset.is_negative());
++    /// ```
++    #[inline]
++    pub const fn is_negative(self) -> bool {
++        self.0.is_negative()
++    }
++
++    /// Saturating addition with another [`Offset`].
++    #[inline]
++    pub fn saturating_add(self, rhs: Offset) -> Offset {
++        Self(self.0.saturating_add(rhs.0))
++    }
++
++    /// Saturating addition with a [`usize`].
++    ///
++    /// If the [`usize`] fits in `bindings::loff_t` it is converted and added; otherwise the result
++    /// saturates to [`Offset::MAX`].
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::fs::file::Offset;
++    ///
++    /// let offset = Offset::from(40);
++    ///
++    /// let offset = offset.saturating_add_usize(2);
++    /// assert_eq!(offset, Offset::from(42));
++    ///
++    /// let offset = Offset::MAX.saturating_sub_usize(1);
++    /// let offset = offset.saturating_add_usize(usize::MAX);
++    /// assert_eq!(offset, Offset::MAX);
++    /// ```
++    pub fn saturating_add_usize(self, rhs: usize) -> Offset {
++        match bindings::loff_t::try_from(rhs) {
++            Ok(rhs_loff) => Self(self.0.saturating_add(rhs_loff)),
++            Err(_) => Self::MAX,
 +        }
++    }
++
++    /// Saturating subtraction with another [`Offset`].
++    #[inline]
++    pub fn saturating_sub(self, rhs: Offset) -> Offset {
++        Offset(self.0.saturating_sub(rhs.0))
++    }
++
++    /// Saturating subtraction with a [`usize`].
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::fs::file::Offset;
++    ///
++    /// let offset = Offset::from(100);
++    /// let offset = offset.saturating_sub_usize(58);
++    /// assert_eq!(offset, Offset::from(42));
++    ///
++    /// let offset = Offset::MIN.saturating_add_usize(1);
++    /// let offset = offset.saturating_sub_usize(usize::MAX);
++    /// assert_eq!(offset, Offset::MIN);
++    /// ```
++    #[inline]
++    pub fn saturating_sub_usize(self, rhs: usize) -> Offset {
++        match bindings::loff_t::try_from(rhs) {
++            Ok(rhs_loff) => Offset(self.0.saturating_sub(rhs_loff)),
++            Err(_) => Self::MIN,
++        }
++    }
++}
++
++impl core::ops::Add<isize> for Offset {
++    type Output = Offset;
++
++    #[inline]
++    fn add(self, rhs: isize) -> Offset {
++        Offset(self.0 + rhs as bindings::loff_t)
++    }
++}
++
++impl core::ops::AddAssign<isize> for Offset {
++    #[inline]
++    fn add_assign(&mut self, rhs: isize) {
++        self.0 += rhs as bindings::loff_t;
++    }
++}
++
++impl From<bindings::loff_t> for Offset {
++    #[inline]
++    fn from(v: bindings::loff_t) -> Self {
++        Self(v)
++    }
++}
++
++impl From<Offset> for bindings::loff_t {
++    #[inline]
++    fn from(offset: Offset) -> Self {
++        offset.0
++    }
++}
++
++impl TryFrom<usize> for Offset {
++    type Error = TryFromIntError;
++
++    #[inline]
++    fn try_from(u: usize) -> Result<Self, Self::Error> {
++        Ok(Self(bindings::loff_t::try_from(u)?))
++    }
++}
++
++impl TryFrom<Offset> for usize {
++    type Error = TryFromIntError;
++
++    #[inline]
++    fn try_from(offset: Offset) -> Result<Self, Self::Error> {
++        usize::try_from(offset.0)
++    }
++}
  
--            dev_dbg!(
--                params.dev,
--                "CPU Sequencer commands completed successfully\n"
--            );
--            Ok(())
--        })
-+        dev_dbg!(
-+            params.dev,
-+            "CPU Sequencer commands completed successfully\n"
-+        );
-+        Ok(())
+ /// Flags associated with a [`File`].
+ pub mod flags {
+diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
+index f989539a31b4..7bfc212e78d1 100644
+--- a/rust/kernel/uaccess.rs
++++ b/rust/kernel/uaccess.rs
+@@ -325,7 +325,7 @@ pub fn read_slice_file(&mut self, out: &mut [u8], offset: &mut file::Offset) ->
+         let read = self.read_slice_partial(out, offset_index)?;
+ 
+         // OVERFLOW: `offset + read <= data.len() <= isize::MAX <= Offset::MAX`
+-        *offset += read as i64;
++        *offset += read as isize;
+ 
+         Ok(read)
      }
- }
+@@ -518,7 +518,7 @@ pub fn write_slice_file(&mut self, data: &[u8], offset: &mut file::Offset) -> Re
+         let written = self.write_slice_partial(data, offset_index)?;
+ 
+         // OVERFLOW: `offset + written <= data.len() <= isize::MAX <= Offset::MAX`
+-        *offset += written as i64;
++        *offset += written as isize;
+ 
+         Ok(written)
+     }
+
+base-commit: f656279afde16afee3ac163b90584ddceacb4e61
 -- 
-2.34.1
+2.51.2
 
