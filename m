@@ -1,140 +1,107 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17034145FE0
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 00:34:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9484D221545
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 01:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762389260; cv=none; b=sZCOwgjToS8dvS8gNR4xX48Pi0lIUXb91vIjk4cxLqY7SUP2vQu4mhCgBSPJdBQBWq2+bM8FIczXPNPisLLffBKnLVn+IkC1SkgqI20+7cpmQrxXQ65DFvB/neuXWuYjmyArRKy0LA5mVROKoSjUyaR59Ckl+lu8tyVPYDY+yOc=
+	t=1762392279; cv=none; b=rLbxjUKf4VDwGf7t/MJ0Dd+PKYktWtq9XAXwo245idXSwO+iSv/Ze2JyodjT6stiE9VSedl/9Zc8jgZZir66HYER5VqlBkS5kXR0gJaaWAKzdEw6+6UWr0RB/AOOlTd/XLmVZjOtVG4CWgRbkixD1N8akwvHp33pUh+qKXKN6o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762389260; c=relaxed/simple;
-	bh=FOIO48oMRggon8AwX+TpwHXuzEMe8DGysvnX8ueu6zI=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=mhzCB7EMA8wyToaf1kuB1gk8i6Lfeh2X8fmb6GzOJxVXFAiFTMOaROw3k+kvcKkMgeLM8/LfMFp1adSfMXXKm+SYQoFe9Ah4Wi1AQoJjtFLEJgNDs2D4hVCoM+99C38cY3ichOjoL0Rn0E1f+wHmpCaTjx34ZbTC/+17EXe50Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nU4UcUVX; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762392279; c=relaxed/simple;
+	bh=YuqAP9iw5m0k8yqDCbNn6GdbDJxLVkg7prdjTg/+whc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Qk67BS3QFlgndxeuvM4QPe1aybNNr6Uz2sE79EC2fJfUe/hdnKqvBZiWjSJFCNgK7Nk+yyzS+P1ZohWcr8YxNGCTGbd1IzSAM4IO6xMXtxn/iObbATz57r4XkXxBUs9Kblem+gUPyrQ8dvosgIxgJl1gf1tvMgHMeB+QtXtGkSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=hnWn1rcW; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nU4UcUVX"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-33b5a3e8ae2so1228808a91.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 16:34:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="hnWn1rcW"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-880576ebe38so5178306d6.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Nov 2025 17:24:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762389258; x=1762994058; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HC9TaW1rULAAHwJ+qglvnLaI3flhAdE+eML/wmI6ul0=;
-        b=nU4UcUVXsXQcR59EjP3xx9J4VjNA+t9PtxeobFPUrMOUA9wEPXt/FNGXxqPujfelLw
-         GSkIPYyWgE+U5GG5GtcnMXp9NbehDxRVKQc3c874V/wD0I2V+dl8R+qzZcQ7hVXXaKbU
-         eaJ76s64MMdmYOKLfgUfCYBlL0VyJf/+dOIeTwI/lKmV42e/P0an/AOLs+OQtihK8Rqp
-         HS8FwgpQ66GyhtfKK7TK/2DcfoG+tOAEOjpK4RHBbixiSA08JmeyU2slPNyXxtiFAcoa
-         yjIp5P7+jq1U1AiWZGxXtChLlaglnzZyfL82cWCzjxidGPVW2RwcK4LQSptCswYpNsOt
-         z7gQ==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1762392276; x=1762997076; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ciojNVrmV7+Z0WHPv+m6AyJCXXR4qy2RoeHAXQm3Zwg=;
+        b=hnWn1rcWiEvK+/8nGBH4voib+NAhkQMsQwYHlxXZhCot0+xsfB+pR/bZN2DmSjxBx1
+         cs9XbK7vCiqpeJG0kW+Natq/4emg2wySJpLdmcIA8JE8JD2MTAo4K7OkIPc9yGoJnaTu
+         kR5u+bt3LK1aiXklebnSquDuV6Oal+KAKtmoAPHZAL2JoB7JqhGylKelb9u1ZRVvuOPC
+         rsSOdYxCEZf03cZMp8Omn2wqMDcO/a4lEUoL87udBflbnvcZYxnDSW9i3j/Qhrucko+D
+         cGwacZZR2/srFAtxqWNMej7Z8h1Qhi4uYzlwJa39rapMpYGzefpzvFvhoyjFX3Vfdp7z
+         gSSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762389258; x=1762994058;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1762392276; x=1762997076;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HC9TaW1rULAAHwJ+qglvnLaI3flhAdE+eML/wmI6ul0=;
-        b=k4GVLMGxyyIozJB4CwS/nSHMQ5xgbemzVdm9vSo1PwYmRlGYroXVQLNo2rj2pB7/aE
-         PbVk5N9KOZmxGb0wF0o+vhfynmb2c20pZSR03I3QM80SFsxsMV51GeBW1U4erumFdaZ9
-         YqzG330mUi5yD8p/9bxXvejwFATHIwnZhXz2UL1Ddno3trkWYoHT8T5wuJFWI0xkT0K9
-         xVOPjXak5pEHUm11nQLT89arqNDza7zgg9scOhF30Cct2BSHF4qlTD7JJgebd8YuF3/r
-         csNxivVp2QWil3pA35b5hM7iruV7bT0N8nTk1gcuzzwHhA7JcbBJb/qIWDsSU9d5JiWt
-         SO8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWBsGxuZdUrVFPbiQWJ7965uNYy52unlO6AAOtTDjFX/Vq7fWGE8G12MO0UJrYPotZKRFbdGx+Mn4QE4dKxCA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3/k4SePI1ecC0410DwLo0YWrUEK6a7W5MRWmXYgndNOhoYrAb
-	SKoapBKp6mIJVQ/+byW7deFhIyAWF3zRBB4vtSIHeKnpT2iPbort6vyc
-X-Gm-Gg: ASbGnctDm/8Xowo+cDIj1nE2E2fHnNAg3wrKYR7kr3MszKxoTHBV15MZjm0st6OMZ2e
-	Vi2bS4szXFi9rG2mz75UAq5AeAbcjLMmItEz13ouhZ3Oe3oxk1szsbzFeuRShvQhCuTrpajl3Nq
-	WyDOkmnJVz1/fYVtI6S7IkoPA05jQzlqRMg+wGt2cL0r8xUgaGOx/RUKdfGRD17+44qWfmzHZ6w
-	8vjPFoP417BP8ImddBCGFKHk0n5/4u3vqBs9py4N2vErO2IndZuCSeBcwuSSg1801oQ5UDV4aSi
-	e85FrMwNCtAr0Jb2hiERt7r0CO8i7/btakFf3XZVMb0gd36QjH3dVD7l1B4xLRGJytyfIhVYybe
-	9i4i/3vfhc515T7duQcZo5IiGfsNQe/JRwDB+mnj5eQ3sFY/wqzZoC799+hrVYdSoAgcyg9PlZw
-	3kiKIcpur8Ikre+aUdhkEo/dAVRevBpAGivwRccrM/P3eb2MsGOXmz6Q==
-X-Google-Smtp-Source: AGHT+IGsHH4QHMbJDRc9qouWqgApYLEE9CwHM0YiaK6q212DW7m679H/UpWLWf2EEXAOQNFl54uoFQ==
-X-Received: by 2002:a17:90b:5343:b0:340:c094:fbff with SMTP id 98e67ed59e1d1-341cd136e0amr1424210a91.10.1762389258305;
-        Wed, 05 Nov 2025 16:34:18 -0800 (PST)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341d0c9be2fsm169820a91.7.2025.11.05.16.34.15
+        bh=ciojNVrmV7+Z0WHPv+m6AyJCXXR4qy2RoeHAXQm3Zwg=;
+        b=XnRfPzGzbC4IRqkDZqCAQ77OwjPrdxLt7veEQyqrEmuGfO46oBXALh+7m38m5n4m8j
+         RwSbM9q1bt55TYNXY8Q6jUlkBVOuDcqzIdlLqNWWbda3KY/bDfakmuww9i3QEK4FtHq3
+         uVnmoy8cwe/AJjtN1aBnOyNLEKkdtNAb5p8vRKxqhNDzvOjiEHSNakaqw1TwVwC6eAyY
+         UuXR08h+xkvEEmWXqv5clAEfzeIKWmYLi/Az8UUSYDXmTrT3P9hLk3oCCrn+iyFc5Y8q
+         9MwP0wq9yMgdWaZ1+aAfmugA4ppK3js8YaIh6qDzZG+TEeiHbGDmYagFH+s0xBZw057E
+         ODsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVh+f8QL1LV3Td1/CeS0OtUaNd+2MS7PZkIk793SqqdxEB45hVRqArT/X1HiWQY9wttZESCpoTXOCQwOEbKzw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIJgk0msPCbT9x7MUbVf+sCQlTStp7BKnbiiDpXiRujFK1juM7
+	0GG+bKJMTYkKDh/Xtb4ofstjDPzh18KDMlBEaWNjzm5gO9fSqNkHW1ZQAc6iq1XAXFc=
+X-Gm-Gg: ASbGnctx/iD6dSdnObJZMw+bZ+m+HJlLiQFFvLG5rH0Rn/Hk3AiUwTqK/+J6g3zl0Be
+	u/MbL5aL+kZKQwffEwbSGkmQVP8XVUXghaixZQmbKXv1rgwj6RBo+Khjdj9y95+99w9HtiOKBfs
+	8+qtQfZ6PSbCq68Eno0DpiOkQPvo1WUqVEio2dZhOrpeUEUtWNE8GOQtBQd+XqJANxX68fDSUi+
+	XlGE9Pl7vI6yvJ7cS6PV762K5Wwk3M6TsvXy39pCgXuo30PbU//vHHNoIQDszeHCM0D7spk65ww
+	swCnPWBHBNQhySRnyhkETLnis9Jdn+EQtHbPs5gH9ibz3A/JcCwrI5M6rq7tg71xwXx+oy2aA9u
+	IfwRDlx+LX8KWRAIg3KCW+dZnmPqDOuRTxCKhMVIez8DzAO+CRf8E6VJqvxFRegCVUkS9ZKQ=
+X-Google-Smtp-Source: AGHT+IGW8dMBI8W38mAKSfcpKPv42jStcm1Jq3Lm9nyg1mPUQx9NVElx9coA94cKj7jGyUgQKJ01ow==
+X-Received: by 2002:a05:6214:20c6:b0:880:638f:1a1e with SMTP id 6a1803df08f44-88071188e82mr86814876d6.46.1762392276316;
+        Wed, 05 Nov 2025 17:24:36 -0800 (PST)
+Received: from [127.0.0.1] ([216.235.231.34])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8808290ca3csm9180786d6.25.2025.11.05.17.24.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 16:34:17 -0800 (PST)
-Date: Thu, 06 Nov 2025 09:34:03 +0900 (JST)
-Message-Id: <20251106.093403.1018201099258988884.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, a.hindborg@kernel.org,
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
- gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
- tmgross@umich.edu
-Subject: Re: [PATCH v1 1/2] rust: Add support for calling a function
- exactly once
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <aQsnybOPSkRUEA_v@google.com>
-References: <20251105054731.3194118-1-fujita.tomonori@gmail.com>
-	<20251105054731.3194118-2-fujita.tomonori@gmail.com>
-	<aQsnybOPSkRUEA_v@google.com>
+        Wed, 05 Nov 2025 17:24:35 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: Andreas Hindborg <a.hindborg@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Shankari Anand <shankari.ak0208@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+In-Reply-To: <20251012142012.166230-1-shankari.ak0208@gmail.com>
+References: <20251012142012.166230-1-shankari.ak0208@gmail.com>
+Subject: Re: [PATCH v2] rust: block: update ARef and AlwaysRefCounted
+ imports from sync::aref
+Message-Id: <176239227492.265257.9458847625438366848.b4-ty@kernel.dk>
+Date: Wed, 05 Nov 2025 18:24:34 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-On Wed, 5 Nov 2025 10:32:41 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
 
-> On Wed, Nov 05, 2025 at 02:47:30PM +0900, FUJITA Tomonori wrote:
->> Add the Rust equivalent of the kernel's `DO_ONCE_LITE` macro. While it
->> would be possible to implement the feature entirely as a Rust macro,
->> the functionality that can be implemented as regular functions has
->> been extracted and implemented as the `OnceLite` struct for better
->> code maintainability.
->> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Sun, 12 Oct 2025 19:50:12 +0530, Shankari Anand wrote:
+> Update call sites in the block subsystem to import `ARef` and
+> `AlwaysRefCounted` from `sync::aref` instead of `types`.
 > 
-> The OnceLite implementation LGTM, but I have suggestions for the macro.
+> This aligns with the ongoing effort to move `ARef` and
+> `AlwaysRefCounted` to sync.
 > 
->> +/// Run the given function exactly once.
->> +///
->> +/// This is equivalent to the kernel's `DO_ONCE_LITE` macro.
->> +///
->> +/// # Examples
->> +///
->> +/// ```
->> +/// kernel::do_once_lite!(|| {
->> +///     kernel::pr_info!("This will be printed only once\n");
->> +/// });
->> +/// ```
->> +#[macro_export]
->> +macro_rules! do_once_lite {
->> +    ($e:expr) => {{
->> +        #[link_section = ".data..once"]
->> +        static ONCE: $crate::once_lite::OnceLite = $crate::once_lite::OnceLite::new();
->> +        ONCE.call_once($e)
->> +    }};
->> +}
 > 
-> Wouldn't it be nicer if the macro syntax looks like this?
-> 
-> 	kernel::do_once_lite! {
-> 	    kernel::pr_info!("This will be printed only once\n");
-> 	}
-> 
-> You might implement it like this:
-> 
-> 	macro_rules! do_once_lite {
-> 	    { $($e:tt)* } => {{
-> 	        #[link_section = ".data..once"]
-> 	        static ONCE: $crate::once_lite::OnceLite = $crate::once_lite::OnceLite::new();
-> 	        ONCE.call_once(|| {
-> 		    $($e)*
-> 		})
-> 	    }};
-> 	}
+> [...]
 
-Indeed, looks more readable and flexible. I'll use the syntax in the
-next version.
+Applied, thanks!
 
-Thanks!
+[1/1] rust: block: update ARef and AlwaysRefCounted imports from sync::aref
+      commit: ba13710ddd1f47884701213a3b6a5e470f6bc81e
+
+Best regards,
+-- 
+Jens Axboe
+
+
+
