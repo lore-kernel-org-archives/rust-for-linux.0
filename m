@@ -1,101 +1,93 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E1C340A63
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 16:07:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4950F21A447;
+	Thu,  6 Nov 2025 16:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762445264; cv=none; b=MNfl8Nj+Z2eQn8ppIzPcv4hgO0rOcmqeEv+qM7LTx9MfeVXyfaVCbSs0K8HztG6I4sgFCCixdHAL1p5ES81gtkAHV30z0ndXmgo1DLwDXbA6qme7gpCFUXjOKOy+mtjfBo3sOH89ZIWNz68B6hbFD0PZKP6LyOrNWGleTF2fuLw=
+	t=1762446648; cv=none; b=uZ417Z2kk/4BGS4NunszAt4VQdwz3/c4LDfZgn+q0VCSq6z3+onW1WOFF8yqqVGsrm9W5thiw5IDG+1r4KWFCS7jtLFYi/6m/1TZF93zKldQDTU1MpllODcvcrj+wlMNrjeWJv10ymHclqLq9u458tDnNy1PC3tUmV+Gyt1ZsBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762445264; c=relaxed/simple;
-	bh=Nzzlrmg2j3/3q8FevLWWH7MRQgKjJ5IbIXmjitSDalA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WtQZSWh5awkGHVD8EcXil2fd0K19YZ0WgmAQYfvrvozl6jnbdqeKu4q6Httd87Guc3/n0zeQ39S++GkRcAfwauAkn6owEdVxZepwbkcWOsUsLRCnmvWIr3hb+6dGzYQ2eKI3ixR6VHUJpTH9yOv6uTHSLU7W3k5YodCOhFboLtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Lm5rj7yE; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1762446648; c=relaxed/simple;
+	bh=2NTUHWqf1qau7veU3PKoiP154ztHLX5ZmfnSdksBHic=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WlgkdvGlbTVC1HKnpSCTRAAihUUKtvDWsy3gTzNulNLNgL3PGmZ6jbws+/OZHrT4oeN/vBs7Y6gb/fRsDnih557jID+3xmSDdpHdrWux/leABgdcN760aeQkWjU1HvrdrqrkgfKE26nW+kFzjgoNYfvta2/VagQTw7TpBakKTIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dH1JpBbk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Lm5rj7yE"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2959197b68eso198525ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Nov 2025 08:07:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762445263; x=1763050063; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Nzzlrmg2j3/3q8FevLWWH7MRQgKjJ5IbIXmjitSDalA=;
-        b=Lm5rj7yE3O01d9k4/t1bzmLKw8mOYs5iZjzs0vfaECNSIK4otIlzS2ND+dNrNrjmrP
-         S6poKgdBnHrUUWefN+E8Ue2yiBCGu//XAFDzxpCijY7nmg013eZcsbJ0RP4jfIi/gvqj
-         jtQHRL5fM1Cw2nroi9ZHn0iAGM9+jZS8rjmPVzjWPmtFzmJT7LPdmAelgMu7ZhnwxFSY
-         AJrdokhUmOZttjTCnpZwuEzlEKq6jwT3B+YxfOe6/mEYdd8/X0jkn4W7U9LF9XhxdcmG
-         vDRKqU0JsFZXYVMX5IA5+uPl4gv/WnDDe5reLHsLuQcd0nuCfuB1dLCZqwdEpTz0gELm
-         o0bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762445263; x=1763050063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Nzzlrmg2j3/3q8FevLWWH7MRQgKjJ5IbIXmjitSDalA=;
-        b=nO8f61EGtTsQcaohcJzgt6e9tzCLWybNcJ8WWCtBU4v/jxkn2N0MtrmdeO+qPBjZVF
-         CccfsIQfZeJ+qIAQjyfsPSh8RKp9ppWYZUxohHFpMW3GVFweL/cs9cZ7HmhPIZ6lDdCs
-         uSFqEI01ay9w9SxjPnV7UPE3i/wIYix+jbEob8FgHnbHCLP+IGlnFTbMNJsiXkSf/meH
-         /JQPmZEHmBAueqelTLaqplBOrMDFJetKutXoKjt3uVwE+J4EtJFjNUoqXASB/Cz2vO7S
-         1PHVNNtxl7gY2J2MLdDae8DNlRACBK6Wx7HIxZyehMgEgAiuDmGvE1U1psSYev02riUQ
-         S0Zw==
-X-Forwarded-Encrypted: i=1; AJvYcCUf2QB1MdjUUY6PtUcCrU1IUbpPdMRufgy1Qy0EPW8/jBiLseRzxHW2k6mT9lVxxEF1+bTynycD0F735M4dEw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpUEwhSHhvi0pK81pBSzZQEbRqTxmaqdc7nnu6xIBiwt27AhKk
-	a9pbrD8gd+d8JWJkOcvQd+g3zrfqLo+bDdOKt0gz/m4DbcsdU+U2vE42ZevGeBx2+MtmxHMes7I
-	eRwB6zblQCiwgKhBBSlEAWz+gaMbL2tIRE6bPnTgW
-X-Gm-Gg: ASbGncupU2nLJgVKNELU6DMZNSAP3MLx3i1Y7Bxz2TVEJ9rGPSt8Aw4x4KHzY4yX1+P
-	H+q4KXcbhiBnUXIusHxFtOGPIzB5A27QOb1nekJmvyKLt/4Gd+/sm6cUseyRnp9G9IMKI19SNdd
-	KZFlVGZT+vxWMik6hxRPbz/Pc8+hIM22jC/27dE4EM2mMSFTuRYhagtcCQjFr/8SafJZFBx5RPg
-	2Rc4h5KN85YtTrdTQ6BD4F7yB7jciSxtmqGN9D06ZGsoglsABnfrmWtVbzZFAkA5Y61
-X-Google-Smtp-Source: AGHT+IGJrSQnF3wP8OZ9swEpkYM6kSGamHzGXGAVorA64fWZ3wYfYUNWQRnDULUAfLehZdmVqoWOJHEZGY0/oHgrTL8=
-X-Received: by 2002:a17:902:e885:b0:290:d4dd:b042 with SMTP id
- d9443c01a7336-29655c7b81fmr6092435ad.16.1762445262132; Thu, 06 Nov 2025
- 08:07:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dH1JpBbk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D0FC4CEFB;
+	Thu,  6 Nov 2025 16:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762446645;
+	bh=2NTUHWqf1qau7veU3PKoiP154ztHLX5ZmfnSdksBHic=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dH1JpBbkZtmxABwSsWHd1QeVGJUmK1heuJAc7RAIsl4kdfE7dzGmhQ7MR9TIUWpvN
+	 30UqsyeOEEJ1JsJoYcwK8wKD+8bxlMqygzmzQpNx3Cgi/IQe0o5B9EskYi9smW4N4f
+	 LSxLpHz72HPdiTQVaeAE5Q9yZrrDtfxwT3llA+UdTGiWYiavIJKuKObYHwTHru1zCW
+	 ENf/uIW0jjpqcOgDizSV8RxARPFrWLkbEHnAol93LHIPa26mf1JtSjzEJcfUzrkyNn
+	 Fag6Lk1I1ygnoGE6bUtS+MVtQM7kK59DaieoJO5c6nyIPYB5mCLgBT98+lzSX4LEgo
+	 995u0ZFyhNDjQ==
+Message-ID: <d6b4df47-87f7-480b-b837-0835b8df54fb@kernel.org>
+Date: Thu, 6 Nov 2025 17:30:39 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <b8c1c73d-bf8b-4bf2-beb1-84ffdcd60547@163.com> <CANiq72kX4Yep3pNVq8Ge=txQbPnMO=zKsci5cPgz5LDS=D6NoQ@mail.gmail.com>
-In-Reply-To: <CANiq72kX4Yep3pNVq8Ge=txQbPnMO=zKsci5cPgz5LDS=D6NoQ@mail.gmail.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Thu, 6 Nov 2025 08:07:05 -0800
-X-Gm-Features: AWmQ_bnwLdgdkHf9H1YieFCO4w6r6305meY5Ank0AAAGt5lDH9YzCvkKH09X7BQ
-Message-ID: <CABCJKud0G+Xh+Wbtg4SDGvk4Yh5nmt5YgHEPj-H0y8GO5R3Amw@mail.gmail.com>
-Subject: Re: Only rust/bindings.o build fail on rust-1.91.0
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Haiyue Wang <haiyuewa@163.com>, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, linux-modules@vger.kernel.org, 
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 6/7] rust: pci: add config space read/write support
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, aliceryhl@google.com, bhelgaas@google.com,
+ kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
+ markus.probst@posteo.de, helgaas@kernel.org, cjia@nvidia.com,
+ smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com,
+ kwankhede@nvidia.com, targupta@nvidia.com, acourbot@nvidia.com,
+ joelagnelf@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org
+References: <20251106102753.2976-1-zhiw@nvidia.com>
+ <20251106102753.2976-7-zhiw@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251106102753.2976-7-zhiw@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 6, 2025 at 5:57=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Thu, Nov 6, 2025 at 2:08=E2=80=AFPM Haiyue Wang <haiyuewa@163.com> wro=
-te:
-> >
-> > Strange thing is that ONLY 'rust/bindings.o'failed. And if I add
-> > '$(obj)/bindings.o: private skip_gendwarfksyms =3D 1', rust build
-> > will be successful.
->
-> Thanks for the report!
->
-> Would you mind copy-pasting/attaching the your kernel config file
-> instead? i.e. the `.config` file (the `rustc` flags aren't the best to
-> reproduce the issue).
->
-> Cc'ing Sami as well.
+>  impl Device<device::Core> {
+> @@ -441,6 +480,20 @@ pub fn set_master(&self) {
+>          // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+>          unsafe { bindings::pci_set_master(self.as_raw()) };
+>      }
+> +
+> +    /// Return an initialized config space object.
+> +    pub fn config_space<'a>(
+> +        &'a self,
+> +    ) -> Result<ConfigSpace<'a, { ConfigSpaceSize::Normal.as_raw() }>> {
+> +        Ok(ConfigSpace { pdev: self })
+> +    }
+> +
+> +    /// Return an initialized config space object.
+> +    pub fn config_space_exteneded<'a>(
+> +        &'a self,
+> +    ) -> Result<ConfigSpace<'a, { ConfigSpaceSize::Extended.as_raw() }>> {
+> +        Ok(ConfigSpace { pdev: self })
+> +    }
+>  }
 
-I can reproduce the issue. With rustc 1.90, rust/bindings.o has
-debugging information, but with 1.91, it no longer does:
+Please implement them for Device<Bound> rather than Device<Core>. Also, the
+methods seem to be infallible, hence no need to return a Result.
 
-$ dwarfdump rust/bindings.o
-No DWARF information present in rust/bindings.o
+> +/// Represents the PCI configuration space of a device.
+> +///
+> +/// Provides typed read and write accessors for configuration registers
+> +/// using the standard `pci_read_config_*` and `pci_write_config_*` helpers.
+> +///
+> +/// The generic const parameter `SIZE` can be used to indicate the
+> +/// maximum size of the configuration space (e.g. 256 bytes for legacy,
+> +/// 4096 bytes for extended config space). The actual size is obtained
+> +/// from the underlying `struct pci_dev` via [`Device::cfg_size`].
+> +pub struct ConfigSpace<'a, const SIZE: usize = { ConfigSpaceSize::Extended as usize }> {
+> +    pub(crate) pdev: &'a Device<device::Core>,
 
-Sami
+/Core/Bound/
