@@ -1,184 +1,148 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012061.outbound.protection.outlook.com [40.93.195.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C06614E2E2;
-	Thu,  6 Nov 2025 09:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762422412; cv=fail; b=Ld5M4R1inBL8pXF/votO7d/OjP6qfjA+dcB1teKymCAjSbltPFwOhLt0Z8vtOwZZ3smUe5LyPXZE3qOVfZafhN0FHfA+DzjDrnT1rocB8OhSw9vAzsNDozHztWXsbxyPiatRK5aq0WWmUuReHN626XS+btryIJry9IDc1O5pHZI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762422412; c=relaxed/simple;
-	bh=Wrl91l/qsWhzLW8XozMwdHJFjf7R4VFySyeIcaYV3bI=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tmMAxWvnVoHlHijikTf0zVeAG+jdP+47esgXdUwXp6Hp5x6K14wYz563qIcvp9v+HN3waURrs2ihysk5Nj8IoPXZWIC+sXNsnS1VdwkqzRyueuT9eSw2VuO1+yjRetWTFO/yzlcjxWM8xkorifwxsH/OFhG6qmXoEr/pRlflmlM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ny3+BYeL; arc=fail smtp.client-ip=40.93.195.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322A730DD29
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 09:53:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762422795; cv=none; b=airoKVnPDoOm20sb3AvhlWzEp2NbAHGVhnah8m8NnQ0ZuanF7MSaCPzzHwOuWw+ulDnU4vvaXla89DHJ237F/9b+W2s5fji9zTpUjB+kiUZuIHdiZ2qQ1zbTfZaHu3F/JVZuIwjugGHv51244+SFh2mzeB81QOYxYFyXxz+U5Y0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762422795; c=relaxed/simple;
+	bh=DQzpv/TYMchRYZzNB1pDl8yk/D0X2IoZkn9PxYccw2Y=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MmLYwCAdJyWJrDzM/B+vaGEqG/28bkNrIc+d1cbdEiX9WyyTWBV+hJADKJNZpbV445QbqHmmMXrYjThlLSlRmxz1qbFWO86lynix1wirpMcxArr4H0HgQYC+haXGK18cyTCxXJiuWvtvezFbRVcqiKiorfb+1KYwsUMX8JBFShs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dZc2rnTz; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ny3+BYeL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dCroHxxxFu3bRBleHtlZkIOHRvlaffreFkx6jJjypK/Z76y3UoNpheCRud+3LBPFS9+gDpN6+sGj0oCv55DpG3koYmFww3keNjhGKoBzkAqgR/d8yMz7/+HAzYYg1udTc3c5PoVeQINSel4Y+4ef+8/MltBlFuT9FjniYRrwYLmJdNO9tjLuYmVQizSIKUYcNp1FfDWUToFE0KIjnlww7nqQrAIBjiFXNOAC9WrYmUgsNUESnC/auoKPy43C0oIOe/+Lx7fApVu9NQ8KZ0nqQj5xkFKzNN0bJRLmQPKQbqHZPlBLX7h/7cax0NNCCpM4XQF++Hy1TkWKtS6fdWdgTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g0m7IwJGSWmbPch9n/8OO0fY5kKjGECOFAck645UaLw=;
- b=TBOMe0+SxoYGDgDjUBfstMUnvFoKzYzQ5NJ6yr0JxqILBBAmLc0MlriPF6hLgVwMqcRTZRjhVot+LQXjU/Ow6XZZzYq9bq8ps4OvpQBS+jBJ1zZ51dmXBCgDw5q0jX3sd8YZ/1UAqtfkJhjO2wZLs4FVt1kDaTY1DTMq6s/ndzoUKygZ3UMing3aAo69/XuyW1iMSUjQTKOjxRZDrq1SpKrOANCP5D6F2lkYCpyQVYSuvbAbDmGNznjkigEcxwHRE/EcMq6s8iNMhhWwdv+vZ2piBGiWpKtn5n+FfNenCYiNCNOvZCFrtafoxT7vg7HPJy0hHA/3FmalSeA0BBw5Bg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g0m7IwJGSWmbPch9n/8OO0fY5kKjGECOFAck645UaLw=;
- b=Ny3+BYeLqK8smuWo7gLsOFGYoFXK1bKr+C4SmmYokR5ucqZt3Y3zeZyBZuNRIeCBAAD+zPfHkfiNTBv3/ndAmd2hhRFHgenV3DN8eLHCNJri+EBczK2+RHAlT+zJDyGZiRiFzPkvY1sBk/RN9BwpoF7K5Kuf7OjZ60zhaRTERbtcq3fet4h8igwS4VNBlEhg92wO0glE0dZi/xfb9CiaU+YEGKYQYtxh3JZftY/tM8Eop84bY3NxzwquABtZcHxsauxbwNkKe55ssI/Mu9XUVDYM9fzxbcRBtJoGDw2JUTEK88wHdvPT6lKsMQ3zupCLD3LouZ9YDznPwG4U0WiAeg==
-Received: from BN0PR03CA0016.namprd03.prod.outlook.com (2603:10b6:408:e6::21)
- by DS0PR12MB9445.namprd12.prod.outlook.com (2603:10b6:8:1a1::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Thu, 6 Nov
- 2025 09:46:47 +0000
-Received: from BN2PEPF00004FC0.namprd04.prod.outlook.com
- (2603:10b6:408:e6:cafe::26) by BN0PR03CA0016.outlook.office365.com
- (2603:10b6:408:e6::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.7 via Frontend Transport; Thu, 6
- Nov 2025 09:46:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN2PEPF00004FC0.mail.protection.outlook.com (10.167.243.186) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9298.6 via Frontend Transport; Thu, 6 Nov 2025 09:46:47 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 6 Nov
- 2025 01:46:28 -0800
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 6 Nov
- 2025 01:46:28 -0800
-Received: from inno-thin-client (10.127.8.9) by mail.nvidia.com (10.129.68.10)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 6 Nov
- 2025 01:46:23 -0800
-Date: Thu, 6 Nov 2025 11:46:22 +0200
-From: Zhi Wang <zhiw@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-CC: <aliceryhl@google.com>, <daniel.almeida@collabora.com>,
-	<ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
-	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
-	<a.hindborg@kernel.org>, <tmgross@umich.edu>,
-	<rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: io: cleanup imports and use "kernel vertical"
- style
-Message-ID: <20251106114622.18ed7628.zhiw@nvidia.com>
-In-Reply-To: <39df4761-d843-4942-9f00-a44fc8436e80@kernel.org>
-References: <20251104133301.59402-1-dakr@kernel.org>
-	<39df4761-d843-4942-9f00-a44fc8436e80@kernel.org>
-Organization: NVIDIA
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dZc2rnTz"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42814749a6fso412179f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Nov 2025 01:53:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762422791; x=1763027591; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=063+2yRbgcy5fr/+fYl2gv0i5dCoMtQowgKOfRYL/rE=;
+        b=dZc2rnTzFip+Y41VIyTuYkLOlca44urk4oewCsdjoaKAw8YQmShHd7cnWl8twv450V
+         m5a0P+zXktLEjHg99P/eOwW7z/lJVwIzCn288sEyZA1KRiJVETwDO+b3VsQI8a8uccIA
+         pmOZOZYlqbV0dO4ri695wpCHKJgQO4EFzemwGKPeMdHzxOrJ8f3PcsxMOueFmax2m1PC
+         xvWNNuRko5Bk44ap6fYw9RU8BYSXnwCegx8dZRIfd3ccpjA/mtu0PJDNHMA3+bfWwnCk
+         1FDU/xppe1gE7Fimzy6g97KLDcIAypSCiAzCu/ulgP2wAvTupt+geJY4jMH9cZcLyoBw
+         OUeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762422791; x=1763027591;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=063+2yRbgcy5fr/+fYl2gv0i5dCoMtQowgKOfRYL/rE=;
+        b=RJBvrsZKzj2Qk1RBp6ylmNNrpptTK9Ezl7WN+8kIcpJ9Jg2hdm+wgRWgEFXxn9DxEe
+         DEcFVSSp51d0HLqt0sfRnmMHPW2mfkSeMbV6LCwE+be3l6c+VzX2rnxcaV/SDFhQNX9N
+         UOrB4r44yxhrGrdkYPZXXJCutZyNWCc1dpZV9959uSnHZMC9VLrtcbfuzmxnUD1pQrz8
+         5Xw7QkPrb2CGN+p+9aMTSyg2gJuXvQFfxo0WSSl6YofRzn3EXQlh3lG3F5xrrjh3G1Yw
+         KOWqE7YYa1WgPlcQQulaueiVlTM6ivEM3D9XPSsP9ueeCV4XYSiWgUSfx4T6ZuVyiGmZ
+         SJ6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXwo72C0zk0ltxySF8xSLIqpGZ6bEfZvGjJltmTm6pD8VQN7aa8d7/pYZEYSwQKMHyme6ACEvKHa4OowovK2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YynU0E46eXhmaFzRXbs8LyBirKhQ94cZKat//0roJKtJWNefmEc
+	/9biKjdv1rUSvkb9v+9RU6wZIByrcdxZHZvzr3LbtcNZMb45gy3/J18SHaJuTC+DUu5HG+ojNNF
+	MnWxLi3+EIBUWtm8Mgg==
+X-Google-Smtp-Source: AGHT+IH4JaqOWvbda9FU3Lrm88Olxfwq8t5npRK2ZGs5JLE00pXS42s+sIVC4X/gdM3AtJgiaw2Qp62onQ7vt4s=
+X-Received: from wron10.prod.google.com ([2002:adf:f08a:0:b0:429:c8a6:4f61])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:4105:b0:429:bb53:c8f4 with SMTP id ffacd0b85a97d-429e330600emr4500043f8f.34.1762422791613;
+ Thu, 06 Nov 2025 01:53:11 -0800 (PST)
+Date: Thu, 6 Nov 2025 09:53:10 +0000
+In-Reply-To: <20251106-bounded_ints-v3-2-47104986a5c3@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF00004FC0:EE_|DS0PR12MB9445:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32980ea6-1718-485f-392f-08de1d19671e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?r9D7nbyPpbcFrCnMH6yYcD+irJyu7SkrdRCkrADwFN/kPHL39yX3u1oLxSs/?=
- =?us-ascii?Q?adLjJr8I9Y6ISrRS06WS1uarvvlmy1wPqhwDEKujCWDOuzlcZZ6+Usa9IGT6?=
- =?us-ascii?Q?9xq4qLyTJB68f/NistM8yv3BuohyfdQoMMQf/aH9H2YdmSxZ6nok4fbhkEF0?=
- =?us-ascii?Q?baolATwT5A3VlpN8gEZUB5RWY9FglH5XSOkv5v2IMsTumOUtd5EjKRwnNVdb?=
- =?us-ascii?Q?QhkAMx+HSikD01kL1/lrAW+PRX7/bZi/HkM5uS5Q7dV93WfCj9QAxxL1ktcB?=
- =?us-ascii?Q?TXcjsTDf0f54Ma0AHoi1JQKKuwBovLXqjTLc3ZZuIy+6eIIIX1gi7GaRMWeL?=
- =?us-ascii?Q?BzZNs8JHU53jlqsnaDfeTYvNKotq6EV3wkAzEdyiuosuLNuv2z+BGTlLCPXU?=
- =?us-ascii?Q?fu74Xah+/36agR06JcdPLyg5exuZLewGNqsOJIOPxnZ3Cj8w2kZ5npgtxKA8?=
- =?us-ascii?Q?idf0JjoVQ75wtTK47f5ptbFZHeQw+FsxcvYyRL7PkL5I2GlUMUPdLOxzwMNP?=
- =?us-ascii?Q?76tpA0QjQbZRjVJINZOqkBlBlARizmirZfnP/w6hc9Ld7Xu/0U5dk32WOLNy?=
- =?us-ascii?Q?pFrj5dmWpJ1cZWXIVSTzI4FIxhknlWnAVJ3Dz23+cKWZhFyuK4zE5z8fKVMF?=
- =?us-ascii?Q?17jwR9xwT9GX25KRbS/0NkcDEV5bGz/YxVK0jpNdOYF0dSZakhmqixwAYopT?=
- =?us-ascii?Q?Szz1A91LhsqtARYsamG+fdtNBLdYYVJKb0rfah9wcfpAVfajEUhWBDQBCktv?=
- =?us-ascii?Q?a3HWkuCp0Imybic/qOxN+BmmEXdiyuRvIgXCGIu3OsFDYj+v1jcA1ByvZu/r?=
- =?us-ascii?Q?iSBi/kTUM2MPLpfGVoML8m7u/FZsBC68V3YtTbTBcWM4AGDurhqbNU7ZZ8NO?=
- =?us-ascii?Q?PKh+yqukH1RwWKo0rGypbEzWQMDwFs6RDNbkn9PN3qdHRlMg+lmUCVpmVZej?=
- =?us-ascii?Q?7p2/0uNjc9nZHq6tBq/LcAp7wOGjNMFRFDodykOjilw1pSb1wv0OgZVrpcUM?=
- =?us-ascii?Q?ufe94h3UqzK5PzfXQP7e/Miey7iaqCXCER5JAsD380BnUmffB3nsAHsm9YHE?=
- =?us-ascii?Q?afTyGvO6EL9MLSjbhvDGUDw7/MbUsuaB4iqueVMZNDZ9er+wH/3XYO/Cq3yN?=
- =?us-ascii?Q?dKu95UlWeJp9NyOCtyLO1TRvPsAI+5WOgju7qDlXHnF3buT88OM71T+sDe5L?=
- =?us-ascii?Q?fYCCi+nq4IsotsiZ6PYq0IO69X1Q1bpM/7M/JLOuTs3gSRClY6Oh7S3BtK2q?=
- =?us-ascii?Q?fvWjjeyjk0z+/IJYXEE8oFL4kvsaXwcoCf8bNmhOz2S8tTRlSO438Oup1ER7?=
- =?us-ascii?Q?2O2/o7tSC7bHFh+XAIYw8Bo6e9NPB7hDSpku6zS15LeIX0uAeJV93m3sT1Fl?=
- =?us-ascii?Q?GzUJM6gzpnuJgfkiQzRYdH17Envv6U20V2PVtGK8FAI2FbMiIch40oLx4Qf0?=
- =?us-ascii?Q?BYwP23H5Fd2CgvC9cJamhzReMG+wF38NHIxWe08XSHK6bNkrOX7qR6j2fi/D?=
- =?us-ascii?Q?eWCdsN3dqL6uvBGLPJ4rDxF+pczPunmHzZNEJarizWrHgbdq5iBCwuFuSMuk?=
- =?us-ascii?Q?0N3xdoZAnmTURtRGMkQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 09:46:47.2724
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32980ea6-1718-485f-392f-08de1d19671e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF00004FC0.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9445
+Mime-Version: 1.0
+References: <20251106-bounded_ints-v3-0-47104986a5c3@nvidia.com> <20251106-bounded_ints-v3-2-47104986a5c3@nvidia.com>
+Message-ID: <aQxwBn6wOarZ5ApN@google.com>
+Subject: Re: [PATCH v3 2/4] rust: num: add Bounded integer wrapping type
+From: Alice Ryhl <aliceryhl@google.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Jesung Yang <y.j3ms.n@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, 4 Nov 2025 17:25:11 +0100
-Danilo Krummrich <dakr@kernel.org> wrote:
-
-> On 11/4/25 2:32 PM, Danilo Krummrich wrote:
-> > diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
-> > index ebc29023d59d..e21ccf98b81a 100644
-> > --- a/rust/kernel/io/poll.rs
-> > +++ b/rust/kernel/io/poll.rs
-> > @@ -5,7 +5,10 @@
-> >  //! C header:
-> > [`include/linux/iopoll.h`](srctree/include/linux/iopoll.h). 
-> >  use crate::{
-> > -    error::{code::*, Result},
-> > +    error::{
-> > +        code::*,
-> > +        Result, //
-> > +    },
-> >      processor::cpu_relax,
-> >      task::might_sleep,
-> >      time::{
+On Thu, Nov 06, 2025 at 04:07:14PM +0900, Alexandre Courbot wrote:
+> Add the `Bounded` integer wrapper type, which restricts the number of
+> bits allowed to represent of value.
 > 
-> Should instead be:
+> This is useful to e.g. enforce guarantees when working with bitfields
+> that have an arbitrary number of bits.
 > 
-
-LGTM. Tested on the driver-core-testing branch with this extra change.
-
-Reviewed-by: Zhi Wang <zhiw@nvidia.com>
-
-> diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
-> index ebc29023d59d..b1a2570364f4 100644
-> --- a/rust/kernel/io/poll.rs
-> +++ b/rust/kernel/io/poll.rs
-> @@ -5,7 +5,7 @@
->  //! C header:
-> [`include/linux/iopoll.h`](srctree/include/linux/iopoll.h).
+> Alongside this type, provide many `From` and `TryFrom` implementations
+> are to reduce friction when using with regular integer types. Proxy
+> implementations of common integer operations are also provided.
 > 
->  use crate::{
-> -    error::{code::*, Result},
-> +    prelude::*,
->      processor::cpu_relax,
->      task::might_sleep,
->      time::{
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  rust/kernel/num.rs         |    3 +
+>  rust/kernel/num/bounded.rs | 1045 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 1048 insertions(+)
 > 
+> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
+> index 3f85e50b8632..bc9abcc3a317 100644
+> --- a/rust/kernel/num.rs
+> +++ b/rust/kernel/num.rs
+> @@ -4,6 +4,9 @@
+>  
+>  use core::ops;
+>  
+> +pub mod bounded;
+> +pub use bounded::*;
+> +
+>  /// Designates unsigned primitive types.
+>  pub struct Unsigned(());
+>  
+> diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+> new file mode 100644
+> index 000000000000..2e4bc4ce9af5
+> --- /dev/null
+> +++ b/rust/kernel/num/bounded.rs
+> @@ -0,0 +1,1045 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Implementation of [`Bounded`], a wrapper around integer types limiting the number of bits
+> +//! usable for value representation.
+> +
+> +use core::{
+> +    cmp,
+> +    fmt,
+> +    ops::{
+> +        self,
+> +        Deref, //
+> +    }, //,
+> +};
+> +
+> +use kernel::{
+> +    num::Integer,
+> +    prelude::*, //
+> +};
+> +
+> +/// Evaluates to `true` if `$value` can be represented using at most `$n` bits in a `$type`.
+> +///
+> +/// Can be used in const context.
+> +macro_rules! fits_within {
+> +    ($value:expr, $type:ty, $n:expr) => {{
+> +        let shift: u32 = <$type>::BITS - $n;
+> +
+> +        // `value` fits within `$n` bits if shifting it left by the number of unused bits, then
+> +        // right by the same number, doesn't change it.
+> +        //
+> +        // This method has the benefit of working for both unsigned and signed values.
+> +        ($value << shift) >> shift == $value
 
+I'm still confused about whether this works or not for signed values.
+
+I guess for a signed 4-bit int, the range of values is -8 to 7, so those
+are the values that this shift should preserve the values of. Is that
+what it does?
+
+Alice
