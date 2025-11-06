@@ -1,229 +1,178 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012067.outbound.protection.outlook.com [40.93.195.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF403043D2
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 14:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762440404; cv=none; b=NPhVMWWW3qccIS2EUvuAY7ukrigR+yavmf86ecgcrK1W8Z5SpNl1ew/hPM4q+ONApwCLZ4nJpLJHFuucinv2szIPCQLjGOBi6K/anpzAoEd2m/qfuteosq+PiHFVFMML9rC6ckpzXlmbrFniTgTSubowSfCZTrq6vX0YdVFYMv0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762440404; c=relaxed/simple;
-	bh=A3LOlJ+2P+D2PlsFppFIIreEyjJoSaZejA1t7XVev0M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S1VSPV/Dl4ozvaANhSSnp1Q+p6baEeJVKc9gpMYv6J9i2bBZpSNhsuhX7lqWODQkE0nrlHBFmbMNxHFAgsM722p/O1b37I/J7hUo3BT+JDhST5oSvTOIodd+GuTUI5EPXctzeQTTO5d1zso0AwugXDQaZhfYM/2UvoEsMYLvU8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JA63e6/d; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBEE1FCFEF;
+	Thu,  6 Nov 2025 15:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762441865; cv=fail; b=HcvutdgzfRS7dwYNQ2oh/cT9ZvF2q3i0xLflUYU5xxdp3tHHZAQa6clNsVhUTJKKegzlu1EQKC5bqXWG0phcl917AMZHVJ/SzeJi5ETiaF0GzzzX9Nx9uJ2OBhNmEt3NYnfxQsuaU3E0fqWbRxqu5N4Utn+VjEFGcEAWKU8nxME=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762441865; c=relaxed/simple;
+	bh=MdghgW4o3k53o043mtlV/zseEf2JXpTZd/QMKYO53+o=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZH+nm3cUWZcPvwzS32D75vKbIddoMwyXorVXoxofFnfL83b4JC35ddPD1YW+Lt09GxU0Go2Lp1fq834mwYWDb5eMaMD/3SYdjI4woV44MUiKrt8GT+ypHFqtwrlZEBAnPx5QPOHuLC2c9lpFG9NSJ66ZABcWWsozwDi664ccWfY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=azYLhaCz; arc=fail smtp.client-ip=40.93.195.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JA63e6/d"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-89e93741839so70245485a.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Nov 2025 06:46:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762440402; x=1763045202; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F2GbTLjyr1l5zwMDTI/2HT/Y2ZWbOXogXnG8/4gBWBM=;
-        b=JA63e6/d9+nNLviDXD53U4yonIBpHXeh6OPy0r1drZrKpQxBpM2RCssase2kE51ZW2
-         fx+tEGK+OASe8HkPmqO20SvUjROW9ir3coU8ECflS5pKG2B5wU8XRwsaRm8KxCn+QFWg
-         QMaiN3/Gz07rwEnxM0wAnSUN+VocYvB2J4b21FdCbffMVZVscWRx7fQ9w6GE46lU1rtx
-         1Ah2L5ocbpQvITdUMOd3XuGdHEsBXHx04aSU9WRn9vTactD2vkPiiWmsoUCWlMdt8v4d
-         mbuvki9Ne5fAuZTokgN6YTE2ByMs8oa1W22A4VT9GikEWK3fFb4DFULBPLjOgUVJuHHx
-         3upw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762440402; x=1763045202;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F2GbTLjyr1l5zwMDTI/2HT/Y2ZWbOXogXnG8/4gBWBM=;
-        b=tCrAyGTExpE3BLnY3Cmfae8M/xejobH4cA5P7ckQ9XgkdCmFOFi5pOKm3AfUCCxHqh
-         kmMNXoKmIm24fA/Xt3NAoTvh0EmyVQug3l1Qn26ptArJYF4kEWH5ifS107iYGB6XYjOf
-         xWRUUAZwofcA+ljx4ky/L7GcpyrqqdMa7MqO7tqcF8h7+S9Vn2qb7sUFuRfASsg4dfKl
-         bObb5eGqdIQilUNf/b6Fnk5pnjjafvgPRxzwzJxovcfK5IPcIEaHGq6OXNT42bckkr/o
-         Y4ilRbyNcGNUeF6aDeHuzdhP4/a0yiSuzZIS0w5e43yehFrctms1ZkKxYeFDou5BcVLB
-         SKzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWpjq7NH6ttvSBranIwAj5Hwfa3fejwLlp7mRR3xk97bQtPSQBw6yDg+7d1VK1nbPhbzn4/Jv3CRyoH5c0Xog==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3E6UfO8OiGI2dptFTTPYgU8TMQvd6a2Ts9ihpJp8qAONUF8d/
-	PQdEfgVLHEbu5EmCAOEx1hzSDvVEIrNrUn+iIIuS4m8vG3pik9fRAZBz
-X-Gm-Gg: ASbGncsc5/Be8huuynx6LjVh9p8RT793Ohj/MqHpkvx+f5+O3LNcSAUKWEwAmlT7Z0d
-	IW/1/k6UpnVDkgCyLBSHe2DK5ACIi53gCvKu2AAcD2WzM4cKDEXI+u9LiatO6exjKMDCmV3QEad
-	ibTV1xr467ixfdChG6ss1sbkHeUOL9cRegwmF+mHJ64npGODEIAx8rm7NjohJ92kDmW7TNRRMJB
-	fzHD3ymFksOL78saJlHZOSWoDQV80qu79dWalw+JIqxfKL31LqJCMxYRUXSGeehhvJ5Hpx7Sazm
-	dfs98GwDUfCj4DN+QEGvpIF7HVKzNRoZZqH6F+ao0+04CuGBFmSP0ANrIm8ALjbI2+wK5gm+kps
-	KvjxeRgPM8OJrXut1lVaB0YtTDDkcLVmQ4b9dzT7v1Nb7YLctl1mICF7VD5T/C6Xqy5w1gv+yT5
-	dkzQsZLfFhK5wSLe0UO0IG19qzHpvNMfO1Y6yoo8qf4g1fblFQgMLWybP7xiH6UuR+GdTz7W1/X
-	e3tawj6xvDxObI=
-X-Google-Smtp-Source: AGHT+IG/hHFHgCeeWYjT5WILaTtyj0sDBecrTo85I45dlxkMOVZzDgoQhQVRfkv/5iZ3bTRy8wgqtw==
-X-Received: by 2002:a05:620a:29c8:b0:8a3:1b83:fd9 with SMTP id af79cd13be357-8b22083e130mr887030085a.24.1762440401676;
-        Thu, 06 Nov 2025 06:46:41 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b23580b649sm209307285a.48.2025.11.06.06.46.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 06:46:41 -0800 (PST)
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id B87A8F400E2;
-	Thu,  6 Nov 2025 09:46:40 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 06 Nov 2025 09:46:40 -0500
-X-ME-Sender: <xms:0LQMaTHcHxt7lHxZV9q3ywp-y0GJJuMY-MX3rBd_YaJEwh6RV2It2g>
-    <xme:0LQMacIxwmSoJwgT-x_H7MgfeKdXXyNT2LxqGneZa6426aFGb8ePqOs2vUM33NMfD
-    SeW-yUWTw4UWikTbtRn_RD8pXIRNm0Lg38MfQdQ5e8mN9tQ6WLQ5rk>
-X-ME-Received: <xmr:0LQMaQi1jELzP2n80E3pJ4_PzdqsERwZ-aA38vj35Y1TS4bqXdZLpq0y7GkNXn8GEb0fes7iZyadUkl4iRasjTQjy3thrvWU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeejtdeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
-    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhlrdgtohhmpdhrtghpth
-    htohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusgho
-    rhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhogh
-    hlvgdrtghomhdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdr
-    tghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgh
-    grrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:0LQMaamBnMYocUKmKSLouHi3B7bJsujGyC_owL1MfNOlamU9Qs157w>
-    <xmx:0LQMaXWhd4mWgiNjsW_MMEN7KwIKkg6QYhdxenJcxGemp9WP9AIkbw>
-    <xmx:0LQMaXuu2XvyAlLcGIWCNh9_LgFkW4hcS0qtrf5jfO56MDroc9hQ_g>
-    <xmx:0LQMaS7abptWQkST4T3_y39iJszha4GDs5McvVqVFIzy8GvXwV2MPA>
-    <xmx:0LQMaSS4Ch8o1RxPNyomo_0ilq8wtUG8cnR1l3tfieQ3tfO_aGO6SO72>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 6 Nov 2025 09:46:40 -0500 (EST)
-Date: Thu, 6 Nov 2025 06:46:39 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: ojeda@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
-	lossin@kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, jens.korinth.tuta.io@kernel.org
-Subject: Re: [PATCH v1 1/2] rust: Add support for calling a function exactly
- once
-Message-ID: <aQy0zxs53EAnntwR@tardis.local>
-References: <20251105054731.3194118-1-fujita.tomonori@gmail.com>
- <20251105054731.3194118-2-fujita.tomonori@gmail.com>
- <aQt5GR019t07U0Nk@tardis.local>
- <20251106.091026.1308953895982406095.fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="azYLhaCz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z4GnSc8HpUGLOTr+o7j3ySezbEs/DxS+sPYzZ+idGGy4RmeNVHjLEmNK0i5kU1eW++/zMw7JWh2+V+gPLl3m5AoJ5dS0qro7++MG1cxEk+KWAW6n9zSt0smaDCYEMhljYy1QS2sKF1ECj88XV6e6cEFvmFqympI4ItZvSHerpkc3uuosyHvvtucOroewza0DFKsYGJy3LR7PlakY0Xz+7NvQVadYMSLk6QJxYWU+7ztpnR4HPKq+0CIU/Y29R4RShsVnK0DZWM6s4FC3+b0pEbeZoue6kVrwFYMLE4h9jJfMDFFmopt2SImTvyweCHRerU/WI5RxCL4mwwMz4HhcQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Re962i08Ve0BvWFYHf1zi5xWUPx8PT4+vyTAybzn8zY=;
+ b=VEgsdhTZM/JmxVcYBnLE1TSSckHVVHblkcbsLOeByF8KGJ6OqO4X9ELjRcOss+badvKyK3fdxytXUIOEdWtUJcwIWxiA5YCH+OXPiA/m6L7Nd9G/fg/bbSWhKCVRXH7SPs6Z6QWQ8ONhFomNaHXzTsSi30kwsDyThljkSPwwItwMN+6Fg//cKY/OJJRttD01eSLLb+K1BqUT6rFNjrK/EOBpIOBBBGY6/ECLvpo2J1AIvhu1uUtRFuv1rvIs/y6rSPSZ8ATEEVrOooCXkTbc+egXZrP+zRP5srRs6q+aRkL69syJOEVytAaTepu0iEwnqntqC9icD3ALjb7iHWfA3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Re962i08Ve0BvWFYHf1zi5xWUPx8PT4+vyTAybzn8zY=;
+ b=azYLhaCzRg8R7nOl2kn8WLXsr4ZCQhA4VmebcUtK0ekrKYyp5vkIT/szPIlTos3evfMwjmXapeNH+F4L479PlqHwjU019NsDn3jJv1/jq+hQHyuYkcnT49J2DEXPOin6e8WuYqx3i3v93z/tEBySADKNjEfmeWD73tw2N+whOTo2jvv9mvQpy06Uf/UT97HKig2Jj41JAa4oXvISfOLdPnLtnXqX7DDJXG+oziEsMD/T5zQle9y3VULFmgFUgw+kg+OmBOBplO0FoX5aSde2SHyd2N9lpAERs+B8DhLLQdi0aF7U2d2vRbJ7QU8cp9+EG4mhnsDuutVUWUwDQj289g==
+Received: from CH2PR17CA0009.namprd17.prod.outlook.com (2603:10b6:610:53::19)
+ by MW4PR12MB7333.namprd12.prod.outlook.com (2603:10b6:303:21b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Thu, 6 Nov
+ 2025 15:10:57 +0000
+Received: from CH2PEPF00000142.namprd02.prod.outlook.com
+ (2603:10b6:610:53:cafe::a5) by CH2PR17CA0009.outlook.office365.com
+ (2603:10b6:610:53::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.12 via Frontend Transport; Thu,
+ 6 Nov 2025 15:10:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH2PEPF00000142.mail.protection.outlook.com (10.167.244.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9298.6 via Frontend Transport; Thu, 6 Nov 2025 15:10:56 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 6 Nov
+ 2025 07:10:36 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 6 Nov
+ 2025 07:10:35 -0800
+Received: from inno-thin-client (10.127.8.9) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 6 Nov
+ 2025 07:10:27 -0800
+Date: Thu, 6 Nov 2025 17:10:26 +0200
+From: Zhi Wang <zhiw@nvidia.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <aliceryhl@google.com>,
+	<bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+	<alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+	<bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+	<tmgross@umich.edu>, <markus.probst@posteo.de>, <helgaas@kernel.org>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<acourbot@nvidia.com>, <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>,
+	<zhiwang@kernel.org>
+Subject: Re: [PATCH v5 2/7] rust: devres: style for imports
+Message-ID: <20251106171021.3e724b36.zhiw@nvidia.com>
+In-Reply-To: <CANiq72kE9QFdAP2cTjBaxwsQ_H=BmMyabY9vSWUdfj0Ai0QZCA@mail.gmail.com>
+References: <20251106102753.2976-1-zhiw@nvidia.com>
+	<20251106102753.2976-3-zhiw@nvidia.com>
+	<CANiq72kE9QFdAP2cTjBaxwsQ_H=BmMyabY9vSWUdfj0Ai0QZCA@mail.gmail.com>
+Organization: NVIDIA
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251106.091026.1308953895982406095.fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000142:EE_|MW4PR12MB7333:EE_
+X-MS-Office365-Filtering-Correlation-Id: 500172f4-bb94-4afa-f161-08de1d46b008
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZWRPUUlMclRDellUaGthMzBHQlZGcWd4amhwd1FRYStSajlLUmFoL1Q0NEQ5?=
+ =?utf-8?B?WG81SDNSSUtnbnQ4bm5FU0I1NHRwT0FENnE1M1ZjLzZwakpEVVpLQ0gyWkRO?=
+ =?utf-8?B?T3hueFZWWGRpcTJoYmQxakJBUTU1cHUwRW1MMFZXTXhpM2xWSWRYck41N20r?=
+ =?utf-8?B?K284Uk01WWxSREl3ei9UYkw2RUZtOVBJMDd6RTJxZU1OUDFybDJnMm13dkR6?=
+ =?utf-8?B?eTFGMGlwS0JBbnE0aWFOM3VFYy9Td2FOYTRmMGJEalRMZ09yV25kQktkRmJZ?=
+ =?utf-8?B?bVlYRlA4NkVzRCtWVWI5NDk2cTY0RC90WFFvUW5Fa3ovRG9kekQzTUNpUWlt?=
+ =?utf-8?B?WjVZL2ZucEh5cEpjSDUyRzE1WEF2ZmR0TmZJMzhzWld3RGo4QXNFaDFSTTJs?=
+ =?utf-8?B?VFlXenZwNGhaZ1Y2bmdROXhuWUNDRkJHWEVDNVNrdU1Wdkt0SFBCSi9rYnNL?=
+ =?utf-8?B?d1gvZ3Z4MGwzWk5ZdmdYTFVkV2g4bko4Z2dWbmxnZklzNEx1UWg3aUhaZ2Ew?=
+ =?utf-8?B?aStOZW5lSkJjT1VuUjZud2dCekhJWHg1UTlXb05uRGJ4Qjg5dzgzNjR3ZEJQ?=
+ =?utf-8?B?cGUyaTAwUjFpTTVNd2RPQS9DZEdmODdUNnlGY0t0c25HZ2d3UUQ0UXlLQ2hj?=
+ =?utf-8?B?SnZZd0VBRDhCSFNCWU9XbFV2YkZPU0xDOTdSb3MwUmxlNlBJTTZzN041R0RN?=
+ =?utf-8?B?TXd5YzZ5OE1yVjhaSlFsa01ZR1k0aEFqSjNCdnFpNFZ4QzNpS0ZOSDBRL1hD?=
+ =?utf-8?B?U1VNd1U2QVBrRURVb0lQQXFkM1VWeVlveS9GdHNiK0VvL24yTzg2aGQ4dG0z?=
+ =?utf-8?B?QUZMRXBqRVZzSUY0WlRBQlNJbEh1aVpxVVBOWVh3VmtQV0pESUo3Qk4rKzA5?=
+ =?utf-8?B?QU4wT3A1amUyaDRNcXlsenZvbUxQWmkyZFRZQWJ4OHpVMGZWUlRKbnoxWmVz?=
+ =?utf-8?B?SG5NNHpxRTdEL2srUE1uQzN4MjFRZE5kZUR5QW9HbzE2S1pJZVdCVXU0Zzgz?=
+ =?utf-8?B?ejBnVjcvd3pPYllyNVp0THQ4ci94ektYUnh2bGpBL0lFZHJpUDJNU1c2a2Jt?=
+ =?utf-8?B?TU96N0llRmRra0RwRlcyV0dmYitZV2llUzVqdHV6L1p5WGpTVVBNK1lHUDg3?=
+ =?utf-8?B?RUhSN28zWmZCR290UmFZTGJYWjhsbG9jTjh0eVdRMUpGNGZiak9YMkVzS2Fz?=
+ =?utf-8?B?bzZ4Rk1QdVpKZ2VXMk92UGdoYXlZdEdEN0hhSnNyUFRSVUZVbG1hTzBxdlpR?=
+ =?utf-8?B?YVVhYW9VY0R2TlZCRGNwcG1sWnVDVDBFcjFsNVJqcTRBUHZ5NHNBKzJHTTRq?=
+ =?utf-8?B?RXR5WVlKTlF2aUVFM2NmMU4reHBvcXpTSUF5Yy95bVRDTDVuWm9lZVFKcHhY?=
+ =?utf-8?B?Z0VvaGFzT3JMUnc3OUY1b0NwQXI1Zm9senBOWHN4M25RRXZVVWlwcEovQXMy?=
+ =?utf-8?B?NzY3Ui90TUI1UGJlbWhJcUhuNzNyZHBYVmJqZEdOZTNPSTNrQ3ZMcHlIZVFO?=
+ =?utf-8?B?YW84NmlpeFpCSGpOS0NCbHhWbFMxMkpEbGVrT1BER2txVmRmUDV0SElVdVg1?=
+ =?utf-8?B?bTlHTkZBWVh2STF2R0dXY1hGZDVHdjBzcVczVnRJL3hPQVNQYUYwRnhkVkFV?=
+ =?utf-8?B?WVBESWJ1STl0cEdKcHJLZ2YzMUxhLy9oZmc2WThXY05ZbUJmVHVsS1ZMNWN4?=
+ =?utf-8?B?K3FVRzNyUTY1OXRvSGc2TmNXS2N4TVZ0MHlxd09iUnNtMlVZOTFRU2Q0U3Ez?=
+ =?utf-8?B?TGNBTHFaWGh0VGxyaVJUNHpPZ0NBRWhJZTlRbGRnNTlaL0VaYloybWNnM2pT?=
+ =?utf-8?B?OUltY0xMREppc2tLSWVXQjF2Y2ZiY1A0aHhicERYQ3R2d2Q4aVZrbzliNzc2?=
+ =?utf-8?B?c3JDb0oySzJqMUVhbDBkQThERU5zTHcrWFRQVlJyMDlOdkNiUisyWFZXSXNX?=
+ =?utf-8?B?aUxvdndyVjVKT1MxWnNSbDcxcEl5RWt0aVlTdmRTbjBTZERMZXdEeXNwQ0JC?=
+ =?utf-8?B?VFRwYnJUVVZjR1UycjZCOG1Hc2ljU1dscXRLemZDS3dvZUFOeHcvU3VhWXZH?=
+ =?utf-8?B?VWphT2sxMXUwVTd2YmpCTU9HdEtYMS8zNWVsMitGVk5tbnI2aXRkMVFnUHht?=
+ =?utf-8?Q?j7wg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 15:10:56.9965
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 500172f4-bb94-4afa-f161-08de1d46b008
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000142.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7333
 
-On Thu, Nov 06, 2025 at 09:10:26AM +0900, FUJITA Tomonori wrote:
-> On Wed, 5 Nov 2025 08:19:37 -0800
-> Boqun Feng <boqun.feng@gmail.com> wrote:
-> 
-> >> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> >> index 3dd7bebe7888..19553eb8c188 100644
-> >> --- a/rust/kernel/lib.rs
-> >> +++ b/rust/kernel/lib.rs
-> >> @@ -110,6 +110,7 @@
-> >>  #[cfg(CONFIG_NET)]
-> >>  pub mod net;
-> >>  pub mod of;
-> >> +pub mod once_lite;
-> > 
-> > Would it make more sense to put it the kernel::sync module?
-> 
-> I actually considered that as well. The OnceLite structure could
-> probably live under the sync module.
-> 
-> However, the do_once_lite macro places its data in the .data..once
-> section, which can be zero-cleared when a user writes to debugfs
-> clear_warn_once. In that case, there is no guarantee of any atomicity,
+On Thu, 6 Nov 2025 14:34:25 +0100
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-This is not true actually, clear_warn_once_set() uses memset() to zero
-the memory, which is usually implemented by kernel itself and at least
-indicates per-byte atomicity, so it totally works with other atomic
-accesses in the kernel memory model. Otherwise pr_*_once() will be
-considered as data races.
+> On Thu, Nov 6, 2025 at 11:28=E2=80=AFAM Zhi Wang <zhiw@nvidia.com> wrote:
+> >
+> > +///     device::{Bound, Device},
+>=20
+> Is this one converted?
+>=20
+> > +    /// # use kernel::{
+> > +    ///     device::Core,
+>=20
+> This hides only the first line, which will look quite confusing when
+> rendered -- please double-check with the `rustdoc` target.
+>=20
 
-> so it doesn't really fit the semantics expected for the sync module.
-> 
-> For now, OnceLite the only used by do_once_lite macro, so I didn't see
-> much benefit in splitting it into separate files.
+Thanks for the pointer. Let me take a look and fix it in the next
+re-spin.
 
-I lean towards Andreas' suggestion that we should use SetOnce() here if
-possible. I was missing that before this reply, thank Andrea for bring
-it up.
+> Thanks!
+>=20
+> Cheers,
+> Miguel
 
-> Also, data placed in the .data..once section should ideally be of a
-> type whose zero-cleared state is clearly valid, which makes it
-> doubtful that OnceLite would be generally useful in the way that other
-> synchronization primitives in sync are.
-> 
-
-Why? A lot of synchronization primitives have 0 as a valid value, no?
-
-> From a Rust perspective, data that is shared with the C side and can
-> be zero-cleared at any time might ideally require some special
-> structures? However, what we actually want to achieve here is simply
-
-I don't think special structures are required or it's already
-implemented in our Atomic type.
-
-> something like "probably print only once", which is a very simple use
-> case. So I'm not sure it's worth introducing something complicated.
-> 
-
-That's my point (and probably also Andreas' point), we already has the
-type `SetOnce` to do this, no need for a `OnceLite` type if not
-necessary, and the fact that it can be zero'd by debugfs doesn't change
-it as I explained above.
-
-> 
-> >> +impl OnceLite {
-> >> +    /// Creates a new [`OnceLite`] in the incomplete state.
-> >> +    #[inline(always)]
-> >> +    #[allow(clippy::new_without_default)]
-> >> +    pub const fn new() -> Self {
-> >> +        OnceLite(Atomic::new(State::Incomplete))
-> >> +    }
-> >> +
-> >> +    /// Calls the provided function exactly once.
-> > 
-> > I think a few more comments here won't hurt:
-> > 
-> >     /// There is no other synchronization between two `call_once()`s
-> >     /// except that only one will execute `f`, in other words, callers
-> >     /// should not use a failed `call_once()` as a proof that another
-> >     /// `call_once()` has already finished and the effect is observable
-> >     /// to this thread.
-> > 
-> > Thoughts?
-> 
-> I don't expect OnceLite to be used in cases where it matters whether
-> another thread has completed call_once(), but adding the above comment
-> wouldn't hurt, I think.
-> 
-> 
-> >> +    pub fn call_once<F>(&self, f: F) -> bool
-> >> +    where
-> >> +        F: FnOnce(),
-> >> +    {
-> >> +        let old = self.0.xchg(State::Complete, Relaxed);
-> > 
-> > And we probably want a // ORDERING: comment here to explain why
-> > `Relaxed` is used here (because of the semantics mentioned above in the
-> > comment).
-> 
-> What kind of comment do you think would be appropriate here?
-> 
-
-If we still need this (i.e not using SetOnce), then something like:
-
-// ORDERING: `Relaxed` is used here since no synchronization is required
-// for `call_once()`.
-
-Regards,
-Boqun
