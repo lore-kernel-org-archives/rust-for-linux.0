@@ -1,80 +1,80 @@
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DACE3277A4
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 12:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BDF309EE7
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 12:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762430956; cv=none; b=ZxtdwHfhQvvD2Z0Z/iaVqf13YnIi/pRuxPlsXTDAarFxw+cagHBCo6hekJS1vV/D+F1J1xpefEIPBpWFHOSWocs1Bb8svQFGpworBrnDonQEVwPv1Wd24hE60sqR6mtL/dTYl72UeaH/0tflxnm1xIM3a61GSeVbHMSfFf0mc+o=
+	t=1762430957; cv=none; b=gHkpmWybO6ODr9wsCtzV+A+599c8mVAXHim+MUNV70dUmlQuBzYdJuy3tfofUiObWwBdLUy+61IVQYTVaMOz7SOL2dAbzxtciLULUwwl1NxGy/8SrY144fXuYah4Q3X8f071zuB7Ch+5sVWqvkY06TRVAqkWbpYKaymVDnR3miA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762430956; c=relaxed/simple;
-	bh=v8C8yVAE9Ny+v9yDr6VsXp9BWcYD+xa4DF1KLCBpzIs=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Dadu2dBkTu3URnd2o4S/eqKF+MyZmQz3AxNvrQ42SSLy6PZiEjxzRbIXfVDBATWxgZyzmxYfbaVCxWAsHxEs+tRxvjF87LIi5qTRyy05DjJbOfVdULUmjH/1o5vL+xlfY2qtE0IMw3qskOm6nP7x86idgHH2nM1GnMKWaV8Igoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q7j5ya5I; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1762430957; c=relaxed/simple;
+	bh=EyMMNtp0mSRcwaDDRTyBRK9QbQwJ9nF3luBLmzZgUV8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hpNpZCwXYhvyYRBhdGH9VuNeOuiHLuwrO/NYHaCBrR+2zLxDLLXTDeKx0fe7dcXfbIaLGFtfq0s0Qg5Bf9NfzaqEYvBwJXu4mGmAu3r1lVEM2ZkZh/jx7pegg5L+1ZrXQWXZNgZxsfIsqWIWo1QpjTE3MDbWJQnRqbzp89IPxUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IIMQqhTP; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q7j5ya5I"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47740c1442dso6755265e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Nov 2025 04:09:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IIMQqhTP"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4710d174c31so7392345e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Nov 2025 04:09:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762430951; x=1763035751; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oMi8GYYBlVguXP2AF0cTsK9jLp8lS1meVWWIEbSlshI=;
-        b=Q7j5ya5IB0x/pr6ng9pNDPxd3spxe/lmh84QGr5w7rtlpjU2jSoOD016wYX40DuBFC
-         tzhA1EUkfiZfQ0e2sO/rzgWxvQly7KRt1V29XvwnpohhMJibpgRIXnBbdGIks+Rq8y3O
-         yV5ue0smcC3ckSdyj/fKrzffP3HoCTXxFNKv94UXa7Xe/GOpJFkbnHb1bbWh3zhw5VFE
-         h4z2uwZsRJXMv1f9YmIDU7ty1ADHWubMcDVrKmXvzwnybAxO/wsrYd87dSXd2yyVpBmc
-         EH1s0/gsTDUUWQ3daeFZKnj+hpPWDbSpwra1+31SNvEN+bbDKE6NxakDhRkaBQJOhYL/
-         zXdQ==
+        d=google.com; s=20230601; t=1762430953; x=1763035753; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3yuiv0vx9yyLGLEDTBN4UlwysSZbhC50Y+9LYCTdmF0=;
+        b=IIMQqhTPHoCEq99MN0aN3ICpqkC20D1pIjN24wYGqxvve7zBWgILlbZlrMCp1orKqc
+         UnxhDxLsoCcP6z4mlZPg9pYvnRKAfcvUFjZC/TmdlRRT9z19DQ6z/lTxIbFmDgSo8OhB
+         ronGJtU0mP6VC41TSNj/iGSIZ8dnl3cVmOjk+qyyCl+r4XZnCjzF3oxACm1G429mUdDo
+         YfZ01GS2zlU/Gw5YCrWgiKsv71Ph0vqmGs+WmXsq06ukJLx/jmDR7eCqIGPqgRa8zvH5
+         fDpyPTKcZUJgyC+ZTbR8Sm4re4yVObeBpwRoqoiXj3KaGf/QDVPwTVgHMrjNWyaf2xYd
+         5ttA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762430951; x=1763035751;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oMi8GYYBlVguXP2AF0cTsK9jLp8lS1meVWWIEbSlshI=;
-        b=IjzoWtHkzpqMxi2E+S47uk7SDXfBz/nY7WDk1sViNbjuAvEWtlCzF4wMjPuP6K1Jg2
-         36xVY6GN2SPr5GjGXik5JefkCVNTDFghGQ8lyLggXUBG4qnXtGu3LrRZ3xHIyNTx3YGr
-         SbBNCAATfwYOkuS1CQCgMGtG7wwwFeTO/YyOdz7G6bxuDb9tJSQ5UKyVZy3pEGbyzadN
-         2mM5Nsn9PhHeZYdVGLhNpCY67YAqrdYixXl8I+H3NyLqh+aVQ9r8zdUJAelfLfYd9Q4q
-         YFrGE5Mbtt/mZ8IsmZvv3KvB+IBeCq96epJm3wHe7F9DjCdidHYi9K1Yn84kMBlJ5mAp
-         wriQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVFdhNLv8WUxT6M0yWZYQEZo9vcOssE46ZLVHPNCrjfAwq37gaD76bz1PdvZ/8R1WHD6WEsqqpfH6hPMRObrA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYA1DrTQ6oQwB1CkZjDolcroIrNIXnjvuJrhF/h2eQ6CmZ4OJC
-	O/FGE3Yk8UNZlr8Ji6p55LLmtP13Ob4NJWwJYMVK/V3MAswG5sSbqVM/hItoYSYabNpATUy1ARd
-	bSoZbEnfX9DkVB84cRg==
-X-Google-Smtp-Source: AGHT+IEtMPrBTDtt42DdHcV8/FsihzPxKe2LPSw5tuK9yCOfw0mIa+59YYpR7BHvm8ZaRw0lQbnZQ6EGDYgr+Nc=
-X-Received: from wmf20.prod.google.com ([2002:a05:600c:2294:b0:475:d898:b23c])
+        d=1e100.net; s=20230601; t=1762430953; x=1763035753;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3yuiv0vx9yyLGLEDTBN4UlwysSZbhC50Y+9LYCTdmF0=;
+        b=jk1wKn2lOZYBtX7ayqvzXs8CDJiBq5KTgMbqoGDhq5ZHAwNwCNnwY6hku/E74YlHkr
+         wucjp8w6dvbbLMNNwYdf2zRYtBZhfJ8IRDaD7hpx9DHNNZWTluo2y32pAla5faU8jFio
+         OoOoMTyfS6nwTX5q3z11V/hW+4V2wDZUfta/aX4KtJOxLllctXuEfGVJLc7ImnxOAWrw
+         fzsHsjuL8zJciO1+bkkXxR5not+u/YrAWXtti1mQiErVwizrZp90pnSGwT068SXVjsxD
+         XnszefIphGc0iuQu2VTst7QIVxueYYSp+/4so9yqXxTKDGubvPyClhsxjPW/z4OLNSdk
+         4Ylg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHYyloaAWnIYShoysu3JIYX2xN4M+xdgcbfuURiZPD65K3iuvNNsIedb5iuJzjxucXFlCFtQ3cCBN90YIjTA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzxt8BfbiXarXU8A13JMa0lZqZ0+3bV0UstzYPdkSEcH8tob2iL
+	tOd4gLmXK0N6hDs7COCQVHQYLLvDljWjpIHFKlhBTcVFElocD9QOxIBn7ah9uQ6F45OyQJwXG7h
+	Deewh9GWH0midhqwR0w==
+X-Google-Smtp-Source: AGHT+IElAaFWCI339crOQYyZTbKzwIvBHBPj8kWMdaYs2aO2RGlRlbK/3kO4EQXfMe39+BRsQuh9Y8FQiiwzxy8=
+X-Received: from wmof6.prod.google.com ([2002:a05:600c:44c6:b0:477:40c1:3e61])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c1e:b0:477:6ae9:87d with SMTP id 5b1f17b1804b1-4776ae9091fmr2504845e9.4.1762430951751;
- Thu, 06 Nov 2025 04:09:11 -0800 (PST)
-Date: Thu, 06 Nov 2025 12:08:58 +0000
+ 2002:a05:600c:5299:b0:475:e007:bae0 with SMTP id 5b1f17b1804b1-4775ce1610fmr51085735e9.16.1762430953730;
+ Thu, 06 Nov 2025 04:09:13 -0800 (PST)
+Date: Thu, 06 Nov 2025 12:09:00 +0000
+In-Reply-To: <20251106-resource-phys-typedefs-v1-0-0c0edc7301ce@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIANqPDGkC/x3MQQqDMBBG4avIrDtgUqLoVaQLNX90Nhpm2lIR7
- 97g8lu8d5JBBUZ9dZLiKyb7VuAeFc3ruC1gicXkax+cqxtW2P7RGZzXw/h9ZEQk4yZOz7bzbXS hoxJnRZLfPR5e1/UHM5X3umgAAAA=
-X-Change-Id: 20251106-resource-phys-typedefs-6db37927d159
+References: <20251106-resource-phys-typedefs-v1-0-0c0edc7301ce@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1041; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=v8C8yVAE9Ny+v9yDr6VsXp9BWcYD+xa4DF1KLCBpzIs=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpDI/m7X+heP/YqgbiZX1Gt1RjQZsNIEEXCXzkM
- sefQqICjj+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaQyP5gAKCRAEWL7uWMY5
- RuphD/9prTANQ5o2yI3jFwYwwCJaJP3ixK22fADia1t5O/qL9B+1d6yYpVdN2u/RfEwC/g1ABXs
- 2BCEY7/CfrP9K8NsZyPxeLjnWa4ERBRy/CsJ0Pqu0Lo1mA+o55HqqRqYwzetZA494s/64C1F9DP
- ZIH/M2VBqEfpJ+C5b0y/0T6Y8dBnUS/Btxp0VY70v4pA6JZCTv4CZwAVeZFHZHDvJ9Gh/qNBMze
- gfw6YhiTljh6i2G5OtAv8AI5ZxBQ5Tp90apmU7cuTD3plpBq9h1wlv6O6TqVTyJlGPpsdpLitoC
- NNT1qxk7DHxRoTm4rZY1SnU4MXQ9ndU6kiFY8C4UA2Qry3XZviHifd2vnTr3j9dCAkxm5iMWETu
- FPYaY3BKs4+SWb3BgmYAM56VUz5GfAQsNaY3s+nE1g8s+4s2FNBAUw8BgtCM+XKtb/JFslitoGQ
- +/OgREqCgLwnkkZmN1hqVG7CvOtYMlKqCFMYR+rpcUwKUzjjVmt49e1Dpby25Ca7XrPzBy60VQh
- A8f2v99WTaKkjIQghayogekwcgtrNrD43G5OWWnKjtRJCM5kLMamzybTILXaT1Jif4TPFh8IGND
- rjufLi8PUdTpvDFq7DWEnL3y3LJL64HxiOKvJOoeOVckP+HG5eYkgacNxZeMH33hGZoU2WWPZYr tzeN1RyJ9+cYBoA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2328; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=EyMMNtp0mSRcwaDDRTyBRK9QbQwJ9nF3luBLmzZgUV8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpDI/m8hRP7JN7T3KPKvhKnddfYjNgyza2uOyvG
+ GXoq/hy16mJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaQyP5gAKCRAEWL7uWMY5
+ RkwJEACMzGjkNbU7MWw7DXBuSGxCTFwsEw5B+6RiqnXNmuh8ueJRlmmso/cKtUkBkV5ouUtc2F7
+ yoqVpS/PO6ZEmhxFsQcZlN8XZB+pv6bTaXp7QvdtLWd0cqh7IhAm0bgC2EngKN/Ekjih7GBKBTa
+ taYdYwwI2b4MY/S/ocbaqG0Zi1lHwbR3DcwXbv63f5MMqnl95O6pRK6HMop93UNVmnNo9E5ULMS
+ hvu/g03i/uBgcS9/kZSxOSQEpEbxc1tU2r3WLQT0mTk9g6atb40Wfxb9e67OfKxdxyeeYToV4gT
+ xIRBzzxc0dwG9tqb1dq7fM8KE+TIaNouAZ5shf451cJjgPd8LuDZofUuhtNULsH+lUl6KRWAUGB
+ R3gS/6YFlsNZ/iAsFTHLKJnWqNjqC7nklcuIQKbHv7LrvwDhFEOTBrkId4yhSCKiqVePfL5GW9R
+ GEUXpzrMsP51oxDXuQPqmf0Q/uYX0cMfNLjEZKsf9d/H5R7l46fugPivXXnEs7CYw01m6q1Zui5
+ 8UYK9JbgeUYOs5NaUxSTWgENUXoMRnZM7z3PUcAh2aO3DUjcLD0unWzkcXdlr9Zk3E3J7vYOGUy
+ 33YzEp+R+Ba69BMRcjpQaugcE0LFhWMHYa82Ez+GixWr0GEAciE7IL1eyi0ZUEu9QxYnpHMJApx WVcndpXIq9DUIKQ==
 X-Mailer: b4 0.14.2
-Message-ID: <20251106-resource-phys-typedefs-v1-0-0c0edc7301ce@google.com>
-Subject: [PATCH 0/4] Rust: Fix typedefs for resource_size_t and phys_addr_t
+Message-ID: <20251106-resource-phys-typedefs-v1-2-0c0edc7301ce@google.com>
+Subject: [PATCH 2/4] rust: io: move ResourceSize to top-level io module
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -86,30 +86,69 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This changes ResourceSize to use the resource_size_t typedef (currently
-ResourceSize is defined as phys_addr_t), and moves ResourceSize to
-kernel::io and defines PhysAddr next to it. Any usage of ResourceSize or
-bindings::phys_addr_t that references a physical address is updated to
-use the new PhysAddr typedef.
+Resource sizes are a general concept for dealing with physical
+addresses, and not specific to the Resource type, which is just one way
+to access physical addresses. Thus, move the typedef to the io module.
+
+Still keep a re-export under resource. This avoids this commit from
+being a flag-day, but I also think it's a useful re-export in general so
+that you can import
+
+	use kernel::io::resource::{Resource, ResourceSize};
+
+instead of having to write
+
+	use kernel::io::{
+	    resource::Resource,
+	    ResourceSize,
+	};
+
+in the specific cases where you need ResourceSize because you are using
+the Resource type. Therefore I think it makes sense to keep this
+re-export indefinitely and it is *not* intended as a temporary re-export
+for migration purposes.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (4):
-      rust: io: define ResourceSize as resource_size_t
-      rust: io: move ResourceSize to top-level io module
-      rust: scatterlist: import ResourceSize from kernel::io
-      rust: io: add typedef for phys_addr_t
+ rust/kernel/io.rs          | 6 ++++++
+ rust/kernel/io/resource.rs | 6 +-----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
- rust/kernel/devres.rs      | 18 +++++++++++++++---
- rust/kernel/io.rs          | 26 +++++++++++++++++++++++---
- rust/kernel/io/resource.rs | 13 ++++++-------
- rust/kernel/scatterlist.rs |  2 +-
- 4 files changed, 45 insertions(+), 14 deletions(-)
----
-base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
-change-id: 20251106-resource-phys-typedefs-6db37927d159
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index ee182b0b5452dfcc9891d46cc6cd84d0cf7cdae7..6465ea94e85d689aef1f9031a4a5cc9505b9af6e 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -13,6 +13,12 @@
+ 
+ pub use resource::Resource;
+ 
++/// Resource Size type.
++///
++/// This is a type alias to either `u32` or `u64` depending on the config option
++/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit architectures.
++pub type ResourceSize = bindings::resource_size_t;
++
+ /// Raw representation of an MMIO region.
+ ///
+ /// By itself, the existence of an instance of this structure does not provide any guarantees that
+diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
+index 11b6bb9678b4e36603cc26fa2d6552c0a7e8276c..7fed41fc20307fa7ce230da4b7841743631c965e 100644
+--- a/rust/kernel/io/resource.rs
++++ b/rust/kernel/io/resource.rs
+@@ -12,11 +12,7 @@
+ use crate::str::{CStr, CString};
+ use crate::types::Opaque;
+ 
+-/// Resource Size type.
+-///
+-/// This is a type alias to either `u32` or `u64` depending on the config option
+-/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit architectures.
+-pub type ResourceSize = bindings::resource_size_t;
++pub use super::ResourceSize;
+ 
+ /// A region allocated from a parent [`Resource`].
+ ///
 
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.51.2.1026.g39e6a42477-goog
 
