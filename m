@@ -1,55 +1,55 @@
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BDF309EE7
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 12:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB4D3277A7
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 12:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762430957; cv=none; b=gHkpmWybO6ODr9wsCtzV+A+599c8mVAXHim+MUNV70dUmlQuBzYdJuy3tfofUiObWwBdLUy+61IVQYTVaMOz7SOL2dAbzxtciLULUwwl1NxGy/8SrY144fXuYah4Q3X8f071zuB7Ch+5sVWqvkY06TRVAqkWbpYKaymVDnR3miA=
+	t=1762430957; cv=none; b=aeDHKUKvKXL9A4QmsdOPPKFQPzOOShsNqEyz0CeU5Ukxv0voHc+9KHeQW9MjklRgaSfwfHKkQ1DwbNM2M933LQj1FqwDMBcrLOsx4Yd8Aac2Cf3SNMAJsJhtDvyhvzvgnIiWd/8mevVLbg9oHXNUDCPIdAvM2uhkqwq7ygpec9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762430957; c=relaxed/simple;
-	bh=EyMMNtp0mSRcwaDDRTyBRK9QbQwJ9nF3luBLmzZgUV8=;
+	bh=PaKvBJJUvzklLSh/etTvpynoQWRBtbVS57WsNqJijtk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hpNpZCwXYhvyYRBhdGH9VuNeOuiHLuwrO/NYHaCBrR+2zLxDLLXTDeKx0fe7dcXfbIaLGFtfq0s0Qg5Bf9NfzaqEYvBwJXu4mGmAu3r1lVEM2ZkZh/jx7pegg5L+1ZrXQWXZNgZxsfIsqWIWo1QpjTE3MDbWJQnRqbzp89IPxUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IIMQqhTP; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=qgcwphQ01ODnNCIfPsvaHamc9hlZ9OcoQmJ17KI1MEZqinfBG+k31YmqpGeU2zFFBLFsv9SbTjcPjPMdB++1eoEhFkWv2t98tgYs5vZjFkxFLVcW7D8pfklFbNi/jPgNYXZ6HUENIBvgOm3pCtL8tQ21FoZc+HmGHouRccuePhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WU13PWU9; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IIMQqhTP"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4710d174c31so7392345e9.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WU13PWU9"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4775d8428e8so7700895e9.0
         for <rust-for-linux@vger.kernel.org>; Thu, 06 Nov 2025 04:09:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20230601; t=1762430953; x=1763035753; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3yuiv0vx9yyLGLEDTBN4UlwysSZbhC50Y+9LYCTdmF0=;
-        b=IIMQqhTPHoCEq99MN0aN3ICpqkC20D1pIjN24wYGqxvve7zBWgILlbZlrMCp1orKqc
-         UnxhDxLsoCcP6z4mlZPg9pYvnRKAfcvUFjZC/TmdlRRT9z19DQ6z/lTxIbFmDgSo8OhB
-         ronGJtU0mP6VC41TSNj/iGSIZ8dnl3cVmOjk+qyyCl+r4XZnCjzF3oxACm1G429mUdDo
-         YfZ01GS2zlU/Gw5YCrWgiKsv71Ph0vqmGs+WmXsq06ukJLx/jmDR7eCqIGPqgRa8zvH5
-         fDpyPTKcZUJgyC+ZTbR8Sm4re4yVObeBpwRoqoiXj3KaGf/QDVPwTVgHMrjNWyaf2xYd
-         5ttA==
+        bh=DYjh895sOQ0wZHG0qaTEVmBEXBySMzEq2h+tanPVig8=;
+        b=WU13PWU9+bX5YixW9URgjETjLAmL+Reju/qqOykXq1OVj8ZM94Bmfi4e0ryE0kSOqp
+         OP72mdvAzetjfmbTfC7ysj0ntAiZwxd6CB9NzbhBdQ98sAl0DyXBxv6fHlTraoBY/Umy
+         N7fnX4zLmkGYyGD15FdXbQbh667qEyhmE72bmRNn9p7unjuJlf2h+/T+TMXx0GZGC6dX
+         zlIyJfPrL+7ARnekPb5lZi+x3Cpu2wuxmCyYHLRmABogOvupx63/CLK+qXGwwL4Y24Cj
+         wnr9gfbzSGqFv/dsnakMAI4l4bXrynpaLL4DqAlAV6aZPtnUfzlyEIGNZmm1zuXDXq1H
+         ajtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1762430953; x=1763035753;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3yuiv0vx9yyLGLEDTBN4UlwysSZbhC50Y+9LYCTdmF0=;
-        b=jk1wKn2lOZYBtX7ayqvzXs8CDJiBq5KTgMbqoGDhq5ZHAwNwCNnwY6hku/E74YlHkr
-         wucjp8w6dvbbLMNNwYdf2zRYtBZhfJ8IRDaD7hpx9DHNNZWTluo2y32pAla5faU8jFio
-         OoOoMTyfS6nwTX5q3z11V/hW+4V2wDZUfta/aX4KtJOxLllctXuEfGVJLc7ImnxOAWrw
-         fzsHsjuL8zJciO1+bkkXxR5not+u/YrAWXtti1mQiErVwizrZp90pnSGwT068SXVjsxD
-         XnszefIphGc0iuQu2VTst7QIVxueYYSp+/4so9yqXxTKDGubvPyClhsxjPW/z4OLNSdk
-         4Ylg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHYyloaAWnIYShoysu3JIYX2xN4M+xdgcbfuURiZPD65K3iuvNNsIedb5iuJzjxucXFlCFtQ3cCBN90YIjTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzxt8BfbiXarXU8A13JMa0lZqZ0+3bV0UstzYPdkSEcH8tob2iL
-	tOd4gLmXK0N6hDs7COCQVHQYLLvDljWjpIHFKlhBTcVFElocD9QOxIBn7ah9uQ6F45OyQJwXG7h
-	Deewh9GWH0midhqwR0w==
-X-Google-Smtp-Source: AGHT+IElAaFWCI339crOQYyZTbKzwIvBHBPj8kWMdaYs2aO2RGlRlbK/3kO4EQXfMe39+BRsQuh9Y8FQiiwzxy8=
-X-Received: from wmof6.prod.google.com ([2002:a05:600c:44c6:b0:477:40c1:3e61])
+        bh=DYjh895sOQ0wZHG0qaTEVmBEXBySMzEq2h+tanPVig8=;
+        b=Xc79H3sZPkoxUtHcprPoVZXV4sDoNrO3Hwrcizubf142oQVDiysb8lSNq1aSFBVcO7
+         ywqN1mTXYgt5SvtC1dO802wWA8cwGdzINpdb6b76pZkP+sTLE8HhFngXwgs7yRVt60nL
+         hcKyKur/nmwq6XBkw7Zwu0z1psknPSCtQ+q/FloiWtSXB45ixULidS1Dqg4t0ffjNdn7
+         I+x/CzNCC/iAVjRwRXp7C6qIAdkRkA1i4Szuh+XshYNJMlmlioCGn+wBOlIDrmB6WInv
+         oqhES/InRzNKVzyRJzbjyDRLpz+1gIgLWdbo6Xye3ITE08ouknX6Jju5g9LJj+cqrsPq
+         Zpqw==
+X-Forwarded-Encrypted: i=1; AJvYcCWRFvl+TMB8uwrvHdgSDIvUdZT4Ewfxe98B4l4W2QZeeKk0NNSmyALmUQ1hdA0JcfXXGrCgYGVXKDAd7r8Cvg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzx7fLUYA58MvU+fZHJ86dfYa66ecrT4eyEkAM5wYhi7r5mppMf
+	aoAxOFJCK9yY0HM95VCR8ZlZ5vtmlUwmAqkV38JUXCBEmxxknrI9p+IbCYAsRNfPkYD74NttQc8
+	mglK6PpHJd/Nf2vAwiQ==
+X-Google-Smtp-Source: AGHT+IEamd18jj6uRBeSGyhGRNOi+lGXB8EXUCxbM6LPE4tOPIsbRl/P31hFj+mBgZAIWzQuRIUw83Q26LtQc4A=
+X-Received: from wmlc13.prod.google.com ([2002:a7b:c84d:0:b0:477:1449:b093])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5299:b0:475:e007:bae0 with SMTP id 5b1f17b1804b1-4775ce1610fmr51085735e9.16.1762430953730;
- Thu, 06 Nov 2025 04:09:13 -0800 (PST)
-Date: Thu, 06 Nov 2025 12:09:00 +0000
+ 2002:a05:600c:5297:b0:477:c71:1fc7 with SMTP id 5b1f17b1804b1-4775cdf61f3mr47082935e9.26.1762430952736;
+ Thu, 06 Nov 2025 04:09:12 -0800 (PST)
+Date: Thu, 06 Nov 2025 12:08:59 +0000
 In-Reply-To: <20251106-resource-phys-typedefs-v1-0-0c0edc7301ce@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251106-resource-phys-typedefs-v1-0-0c0edc7301ce@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2328; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=EyMMNtp0mSRcwaDDRTyBRK9QbQwJ9nF3luBLmzZgUV8=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpDI/m8hRP7JN7T3KPKvhKnddfYjNgyza2uOyvG
- GXoq/hy16mJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaQyP5gAKCRAEWL7uWMY5
- RkwJEACMzGjkNbU7MWw7DXBuSGxCTFwsEw5B+6RiqnXNmuh8ueJRlmmso/cKtUkBkV5ouUtc2F7
- yoqVpS/PO6ZEmhxFsQcZlN8XZB+pv6bTaXp7QvdtLWd0cqh7IhAm0bgC2EngKN/Ekjih7GBKBTa
- taYdYwwI2b4MY/S/ocbaqG0Zi1lHwbR3DcwXbv63f5MMqnl95O6pRK6HMop93UNVmnNo9E5ULMS
- hvu/g03i/uBgcS9/kZSxOSQEpEbxc1tU2r3WLQT0mTk9g6atb40Wfxb9e67OfKxdxyeeYToV4gT
- xIRBzzxc0dwG9tqb1dq7fM8KE+TIaNouAZ5shf451cJjgPd8LuDZofUuhtNULsH+lUl6KRWAUGB
- R3gS/6YFlsNZ/iAsFTHLKJnWqNjqC7nklcuIQKbHv7LrvwDhFEOTBrkId4yhSCKiqVePfL5GW9R
- GEUXpzrMsP51oxDXuQPqmf0Q/uYX0cMfNLjEZKsf9d/H5R7l46fugPivXXnEs7CYw01m6q1Zui5
- 8UYK9JbgeUYOs5NaUxSTWgENUXoMRnZM7z3PUcAh2aO3DUjcLD0unWzkcXdlr9Zk3E3J7vYOGUy
- 33YzEp+R+Ba69BMRcjpQaugcE0LFhWMHYa82Ez+GixWr0GEAciE7IL1eyi0ZUEu9QxYnpHMJApx WVcndpXIq9DUIKQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=893; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=PaKvBJJUvzklLSh/etTvpynoQWRBtbVS57WsNqJijtk=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpDI/mrOuyf/GH4VdeFehUKdKnNsLOKRAV1z6g2
+ lB5wL6TxCyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaQyP5gAKCRAEWL7uWMY5
+ RqGID/0Y4Yjkqdz8dNxoJ4kFNhRTiO2nNUx/ssl6f+4yNpiKEg40UnTc62uOKvoVNEBWvAUadY+
+ dzmY9aDGkx92EEK7Rqy36jV1NAu4DO0a9NQ8bQVajyOH/QNwve08IO/zk974tTbbpa33qv+YKnh
+ eDLSNXluSWpmK5/52cX52nzofvsGcDRiSwkVzjOF3f3Manl6ohinavzA6ZorX0j70kS0CRmu9NW
+ tXGihJ8OR7w2dlTVUHiPJuD5c9AA6yE0Y0BX0/mc64iFs9Uz4e1f5iZJuk76pnSutZMkM1IRTuL
+ IgrjdSCGhVbsjDYUI9cI/R9lyk+Ac7vNlwa2nDUW/r2fHRuYsdKwZr1llXytqBPJQmEwpQIJMxi
+ BLQLntndt/DQK9ThK6Omomds5C7wncUmhEl+c0B6Qnv61bXai8pFIB1sSjqO7xaPciFF6GshJA3
+ e2pxomSwIqsf6R2kwLSQol2np8cdPkj7h2O6yhi1OmYsXdrt5u+eXK9KRUteprOgjouKr6EhX74
+ gNWAaZsuW/b3RhhB6JI1XEtM4ayW0MJ8+02DhM3QWqDq38nzCngA9rNkOtGh6Shbp+lK5M/PqF+
+ c1I4sur2LuKtM7NzHuacGagAo1xvxX6Nra1UzkwqjssjPeH8b9XMnEccGijVERTLBl6SwtKOPnd Xn0o4TrwvxHLyzg==
 X-Mailer: b4 0.14.2
-Message-ID: <20251106-resource-phys-typedefs-v1-2-0c0edc7301ce@google.com>
-Subject: [PATCH 2/4] rust: io: move ResourceSize to top-level io module
+Message-ID: <20251106-resource-phys-typedefs-v1-1-0c0edc7301ce@google.com>
+Subject: [PATCH 1/4] rust: io: define ResourceSize as resource_size_t
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -86,65 +86,24 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Resource sizes are a general concept for dealing with physical
-addresses, and not specific to the Resource type, which is just one way
-to access physical addresses. Thus, move the typedef to the io module.
-
-Still keep a re-export under resource. This avoids this commit from
-being a flag-day, but I also think it's a useful re-export in general so
-that you can import
-
-	use kernel::io::resource::{Resource, ResourceSize};
-
-instead of having to write
-
-	use kernel::io::{
-	    resource::Resource,
-	    ResourceSize,
-	};
-
-in the specific cases where you need ResourceSize because you are using
-the Resource type. Therefore I think it makes sense to keep this
-re-export indefinitely and it is *not* intended as a temporary re-export
-for migration purposes.
+These typedefs are always equivalent so this should not change anything,
+but the code makes a lot more sense like this.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/io.rs          | 6 ++++++
- rust/kernel/io/resource.rs | 6 +-----
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ rust/kernel/io/resource.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index ee182b0b5452dfcc9891d46cc6cd84d0cf7cdae7..6465ea94e85d689aef1f9031a4a5cc9505b9af6e 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -13,6 +13,12 @@
- 
- pub use resource::Resource;
- 
-+/// Resource Size type.
-+///
-+/// This is a type alias to either `u32` or `u64` depending on the config option
-+/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit architectures.
-+pub type ResourceSize = bindings::resource_size_t;
-+
- /// Raw representation of an MMIO region.
- ///
- /// By itself, the existence of an instance of this structure does not provide any guarantees that
 diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-index 11b6bb9678b4e36603cc26fa2d6552c0a7e8276c..7fed41fc20307fa7ce230da4b7841743631c965e 100644
+index bea3ee0ed87b51816e2afb5a8a36fedee60d0e06..11b6bb9678b4e36603cc26fa2d6552c0a7e8276c 100644
 --- a/rust/kernel/io/resource.rs
 +++ b/rust/kernel/io/resource.rs
-@@ -12,11 +12,7 @@
- use crate::str::{CStr, CString};
- use crate::types::Opaque;
- 
--/// Resource Size type.
--///
--/// This is a type alias to either `u32` or `u64` depending on the config option
--/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit architectures.
--pub type ResourceSize = bindings::resource_size_t;
-+pub use super::ResourceSize;
+@@ -16,7 +16,7 @@
+ ///
+ /// This is a type alias to either `u32` or `u64` depending on the config option
+ /// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit architectures.
+-pub type ResourceSize = bindings::phys_addr_t;
++pub type ResourceSize = bindings::resource_size_t;
  
  /// A region allocated from a parent [`Resource`].
  ///
