@@ -1,47 +1,47 @@
 Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010060.outbound.protection.outlook.com [52.101.61.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFD6357707;
-	Thu,  6 Nov 2025 23:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F5B3546EF;
+	Thu,  6 Nov 2025 23:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.60
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762470738; cv=fail; b=f4UgZDf7PwitJYxjI/71igu2cXF8c+lY9BhRaPkNePmrAC4I5RIsUoYSaEXvkkFVepphDeQUDmKvsMnLGIi1FGTC/mLjOvBEPBqENHn4XcbSn66dTom+PRgcPS8rVtkphs1bbWwcVkplVRHCYNhc7Ll+cHx66wleARmwbNIz7nU=
+	t=1762470740; cv=fail; b=XG+UQmf7TP/MxcP891W98QMl2M60NkYMxa8Q+3zvszSBkfREmrZiAUncbw3eBb6pyVQL1ph2x/UgrpqOrZj6NepYkr9lPgqmahJkBJjhjYpGsykCpAWLn9Xt8B2NNOjV+IrxSJl0FkHJ5vXTj28WkLYvygRVAduqB52qWa6VwnY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762470738; c=relaxed/simple;
-	bh=X5+CBBcgn4mpc6b9MRaQhHYMIIwLafVjOr3LVM6OB5Q=;
+	s=arc-20240116; t=1762470740; c=relaxed/simple;
+	bh=D/BeQZycyoWuo6l/WNibJwDs4n5v2IMIjlwjVFuivCU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uesJJ6vuBRmRGpTPTd/BwElcratQSYoZ+udBN/Ff7uRlMxIoSHeiiqcWA30vTByY1pc8XZ9hbCMcMWew4NjwKKfydqWlOnJguXqtLi/U9oTa4iOeqscXHHkbkNWR4+g6XkvJkss1oFyZmk+oX08ed9+6N58ajE2+lEZHWqOn34A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BAOSUEDU; arc=fail smtp.client-ip=52.101.61.60
+	 Content-Type:MIME-Version; b=Y4wDoFuJM7QO/W178zeun0tOSVCLKK/OnRElP5vdKpc7jBrQaJoSwaHNSqHDNHM8bOKjL4w71hKIta/DtfY/PDOorERTAieeayl70b1hAA/kgqk8ZZX3DCjqaF2MwT1ExswSffNboKvlKhssTmrUvsuziYwGLIL8TZkkt+Z8NOQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gguoQZ9Y; arc=fail smtp.client-ip=52.101.61.60
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BAOSUEDU"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gguoQZ9Y"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dP6i/RO26FmTH6XSzqNoAceS22CCyDl2atJCSoF5YSQuuS6m/VvLgDjaF8ilcdk8sHVHOxYtWQwuScgS13AelwZ5GTxgd9GpNtxTcX0oZf3i0fOcWTJ1PjRAf1p48M9l0ywjMWW9ImzNJItfbyb0PAwC5cuPjLor3l08VcZJtI/b0chwsMokcSr0lPiw5J4WSAC59KEgDOxb6TWk9v2baSoopdvxt5WFMaRz3TTv70caoSz6nKGJBJ3SzuC+0ofbH6yzNYsinY8UxgefKmAOouDZn3c/iX8EXCXFn7D53f6nd6lOaRq513VtXzkn0CoIMn8fNjWPEvs9J6zsyF8luw==
+ b=U3gDWgYwqhvwVWyUIVXvExL9860mBozWN2kBdPwKl/HMAerlHiogHK+18Dz14yVJKgPllk3cVq3YOGU+Zhp3pwgog7+8Dont4x04fIgP1PGBmml2K6V5+hnci4pAiTUeTjNkWV0VxOTZvau+eZ20GXxtLFyIOi1dpAYW1oxPqzdKu1W6IE4tbjUp5DIcVmsE9spkI899y6m1D5HkGvi6LnYTFOY642dU9UQ5G7DWCfEcLdUt7YieZWC9hjH1zbvH7QJXCflmZeZvv5H2z6fd872BEBAzC2B7CZtohZ8OVA8cQHDco6jeaDWFfbY27Sw9y24LI1125YdzOYr2ha9lEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sS+fLi2cKCNAAGeKazVN45aaRxnRuC0Kr8JdboiMjhs=;
- b=U4Z/tudr4aPwxfYGhzuZMDpaZDa+06JWdfIMxC8RG4WKGFdqyEskaH1GIJDOUotExwKY5Xs52BbJL8oyKtUtW7yoLG7qDP3gBGQWopnI3Hfw+FMEFEJNs0ele/3yRdD+kEN0KYUDkW9Yj8ZVGDLkmfWkNzNSsZR1lIqbfWlH3s/BDPQpr07EYYGJKDAysvfUEJZkdoSoONxJ1fs+shI+wF/aIZ35MV0yguT6BormHjo033QBoI/dchuaZxOM5XsKe6Icc74xHO3RMnDypsLF/7kDFVI0xilh//od6c8KOs7Moer8Y6ckGz3uFcIpyW6kZIPJmwxT8ZNsxmZG6Kh9jA==
+ bh=EMhFXvQbaLXL30z0/SDk4Wa0rKIKhrkE/fW07/cVMio=;
+ b=tnLFoca3ePxV1Wo/QCJQrJDlTCrTNrIt2RvBlotgtsyAMbba3mB9YZgtEeE0DJg2cIjc9Hsz+Z/CvK6Du/ojqLfTSeSnfnD7pVUZM3v72iGwZiOoM3Z4yYTBv6SlNVc8rOCPmvnjGIWG8oFiOCfNAEnVOaaZjUfG2BmKS59IqebbKNowacZ1wzfM3XFISlolrPJed0fkiAzQUV5Xu8UB6SoLr7KGoySDjCxs/chTWUOn/M10w7sQXQly43G8y6KjDEoL+/UeHAUjwe4M+P9ywWDVcHvCSlVr/DW7EGPMV3C6BIXbMI4nwa6v3kcMkAESWU5mkywCvGK6OHXj6t8SJg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sS+fLi2cKCNAAGeKazVN45aaRxnRuC0Kr8JdboiMjhs=;
- b=BAOSUEDUyeeYRIIU/eSAoc4g4e9maSDkTrW4XDmQ4R6sO9hidyjeCKGBAEFCDEqPvFztiIUNLcMKxZatnG/qE2ebRn7+riKrzKFKwZvGKSkK5gmS5bqoKfKG6M5JfmPp0YwC6ot7jZBPqaANLjwqlXAQtu48THamp/7JUAhU4CBzyUPhjSCZZO/KDfhEaq/dbrzXPcBekT5GwrZDLfoNe2w6PNSnbT8Ee60tDdi/LUuLkJBD1arcF2o1GlsPXr1EaRm8XX5kUhD6+7hOWFTqFFk7z+psPpfttK35oDMwGdQdJGbOjgNZ31m3NtqBN5pKMSgPtOITrQU2IYWAuliwEA==
+ bh=EMhFXvQbaLXL30z0/SDk4Wa0rKIKhrkE/fW07/cVMio=;
+ b=gguoQZ9YcMgNg/KVQ28WdFiRdBqrTKk4jLu+NQtXJoSUZ4nKzeHZKSXfm6bF1fLummD8GiHPdDhPWEhaovIo4THAwz7AcD7ZcjgB2aT3sWVOZyqal63jnr9tQ6AmnBS7LYDNp0qXtdi6OgiL/pgrRDdW9OsXbUOWvnSr5JKm5XxQ7hBKyW/SgDpPJkS+R1ihXa86iGunEwwv77FMUGs26ZnhM7L7J39ekQ0HUKA8gjDjnICuQ8CMwCEEeVvrO6nCcANVYfZJohUQ27cmzoS6VfhtPgm7hyfnkeY8Fwgc+F5wmhkvi79WqarDnXe9o7eyYup6HhWvrKcQXzwd92NS0Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
  by BN7PPF62A0C9A68.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6d2) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Thu, 6 Nov
- 2025 23:12:09 +0000
+ 2025 23:12:13 +0000
 Received: from SN7PR12MB8059.namprd12.prod.outlook.com
  ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
  ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9298.007; Thu, 6 Nov 2025
- 23:12:09 +0000
+ 23:12:13 +0000
 From: Joel Fernandes <joelagnelf@nvidia.com>
 To: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
@@ -69,17 +69,17 @@ Cc: Alistair Popple <apopple@nvidia.com>,
 	joel@joelfernandes.org,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	nouveau@lists.freedesktop.org
-Subject: [PATCH v3 08/14] gpu: nova-core: sequencer: Add register opcodes
-Date: Thu,  6 Nov 2025 18:11:47 -0500
-Message-Id: <20251106231153.2925637-9-joelagnelf@nvidia.com>
+Subject: [PATCH v3 10/14] gpu: nova-core: sequencer: Implement basic core operations
+Date: Thu,  6 Nov 2025 18:11:49 -0500
+Message-Id: <20251106231153.2925637-11-joelagnelf@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251106231153.2925637-1-joelagnelf@nvidia.com>
 References: <3b0d776e50fc81797dec2e5d81c86390af78f848.camel@nvidia.com>
  <20251106231153.2925637-1-joelagnelf@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: MN2PR10CA0013.namprd10.prod.outlook.com
- (2603:10b6:208:120::26) To SN7PR12MB8059.namprd12.prod.outlook.com
+X-ClientProxiedBy: MN0P223CA0025.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:52b::20) To SN7PR12MB8059.namprd12.prod.outlook.com
  (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -89,232 +89,146 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|BN7PPF62A0C9A68:EE_
-X-MS-Office365-Filtering-Correlation-Id: f5e541c6-a8be-400a-54c3-08de1d89e8ea
+X-MS-Office365-Filtering-Correlation-Id: e305b70c-a19d-4e60-198d-08de1d89ea98
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?t1P+CLsthRq+/CwbVj2wLmvb0nZ+ZgbT2DHncXE8ZHGitklc17aeK9LvC+E0?=
- =?us-ascii?Q?tffH3Ay+N/Mih2+lJeSy6zcgRd7SDuOW7x/eQntJkqnkkhqeCsIKbp30NUO3?=
- =?us-ascii?Q?nGn201EwPBQScy+YEqLf9JRDp1aKDdWjsF0pbGvvV9+zII+5horjxnip4DLv?=
- =?us-ascii?Q?yOc6X8F3Kn7fzQNDjNMjIDCBzEBWoCiYWLYsHrz84DcGgOy00IS7WC0i9zp0?=
- =?us-ascii?Q?ZdKJI0WsMK9xNkBhEHk97+L+CFQ5kid7pSbXvnAcPcIx+581mssMb0M5RA3D?=
- =?us-ascii?Q?JbgFKRjs5evGDintKeuT8ZTSDd8C1Ol2j9NSpWXYY547h1z+KXj361iVPc4j?=
- =?us-ascii?Q?VeBuqGBsDaSncRVwIwniMgv+27Q+E4iX18BbGs6QNpcCzRBXi2T702P0dqCj?=
- =?us-ascii?Q?+wN39srkqVWXh6krzvr+W94oBiq5S1oO1g2OXGCSzLMSizEVZHKMS9LxfDrj?=
- =?us-ascii?Q?s/pSWFUUy2Pj7ZGF6O/ViDktgDDXMQ2qzF87R5v299tZEo52kcbeJzYBqsHY?=
- =?us-ascii?Q?61RTGLag3OeqVwG6cEBYOsg7upvEF2lcVOR5hOIx43zB/U/vXlI4yOe+xe5b?=
- =?us-ascii?Q?uDj2Qj20Khj97MNk3Rmgo3QwVpqm9kbUFfhmtS/RBXDSYnXhNIKHmNeiS4vW?=
- =?us-ascii?Q?RUCTzEj+wi2q6PN0iVTNMzk3NmF293mzKE0E2ybjJ9qKTeIH9x6Ma2G8orHx?=
- =?us-ascii?Q?NVmf+uFwZstrKbrG0EFSx1w5qMTrZ9SDTRSIUZvgxiZjRX/hBsPfSz/nuemT?=
- =?us-ascii?Q?ZywTpMb7M5Sh4yZG6djT9H9dbKncikjF6wearxMAMJMSRRA7E5MsHocJaM1v?=
- =?us-ascii?Q?4BsluvIgiWAHhrJtyojkuB6L4ZNfrPuOl5nOqEvxQrfX1l/WRviMRZBgghd+?=
- =?us-ascii?Q?9fBdQhwgpc9E1gvxHypJx2STu28yNMJxDrytHPHJ8TcIWmeMofrxrSYKABND?=
- =?us-ascii?Q?kAx+VHqmAMKZWms04Dqqh0hB1ycywpRsfsuMs2sEeJqrQuL5jQ81UJQumKPh?=
- =?us-ascii?Q?r0sxM1An75uQKw80OMzSOnxr+pIe6t21qbE8g5qKgzVuUZ9lC4MkkSHx5m8l?=
- =?us-ascii?Q?FTPF5j6bHA3KHyYzjaMFXl522LuY3A705e+rie+lZHhtMhuGcRFv5Y4CKYoq?=
- =?us-ascii?Q?pFyFmTcGtlCMcoRlI0/+7FVUXJ779BxvVcoFJq4d9znLQn46crsQjQOaPopS?=
- =?us-ascii?Q?YFkLUeu/5EPAGw4aH/lNOA4t6NGdOyl3Uxf6Bv2mdIBBcZoKwLeyGa8AkLkv?=
- =?us-ascii?Q?6bkDsfvvHGYHzPj0DYu2YeHBuQsTnvVfK/ffWE9EhSeUbbJLPOsxjftLl+Gq?=
- =?us-ascii?Q?eruSFXUayI8iKqMEaizDbKGIDbIhsO00YdFo5+B14+szepyX4Geh84jWOz+1?=
- =?us-ascii?Q?51NVgyl8/Ab3xYQVASKSY8yDlnKvdyeIIlveO0yvd315kxl6IkxtzUBiSZUJ?=
- =?us-ascii?Q?q1UhL6oMLdnYSV/wUMnNniNwfhMh1NFc?=
+	=?us-ascii?Q?Q4sxyr6a36cQCfTbhyschTbo3jFXvtnGTr+TYQDXYNjhqFJ94udU1HslpeNe?=
+ =?us-ascii?Q?ynySAOz7q3b6Nk4GhkBqSUmOX4MY2Hb0fW7lxBcWzNvgumIeDZFxRozHRRGT?=
+ =?us-ascii?Q?7d+fObBcttx/EsoNfevTPvSyOzT/pG3Ka0vkbTS3SrUoX4ZU2pRMypiEE7La?=
+ =?us-ascii?Q?lb0qqua1/ufGIEhHZAfWinTVjWfJiywHftMAJUX5b8gFSmW28eGhcdVA+Zen?=
+ =?us-ascii?Q?BrIy4yF9nIfJXUxP402GhGnrdvAhCBvqf0rXaT3P8SV/H/fLLgfDax9uwLYA?=
+ =?us-ascii?Q?hoUE3EPtzDgakJsOKkK3q3p4DXInUqZNv4lC5U/WqFE+4KFjvrOHHwI+LjpO?=
+ =?us-ascii?Q?yANeoeTdyeBpqdgVuvyRL1wgICy1E5rtDnxFjiew1ShX+/S05VVE7RR2chkG?=
+ =?us-ascii?Q?P9SEFAwH5QYcw3htShwf2XPga8HynkqDiXvOHBfpGTm1y2/XswtfzwPPRFAp?=
+ =?us-ascii?Q?cOWbmMPuijj/0FtWtxAPd8NklZf/52QfcKHBHEHn09dCJ0aDXjFekgBwjo7a?=
+ =?us-ascii?Q?kc4/0dwgEtv2mZNe0xNv+IhSHpanaKmtuoLYwxtClDGlvUQZbdhPEn3tkRgB?=
+ =?us-ascii?Q?9Nam7ne8Mu2vgyxJQxaAIct36mfyb2FQtcihFzAcyPqZcjbTvC9N9FSoYQUx?=
+ =?us-ascii?Q?pSoAdHEZRzKyBT2ZYa60ixBcDUNZx5pqg7f9PpFiwH6+jWr81UXBhOlMWDjC?=
+ =?us-ascii?Q?o8eR4bpStMlBWasU3MDeE/KbmQ+fA7wC9Q9COCj/OgsXCNq0GoP7WCtN+V/U?=
+ =?us-ascii?Q?wfiksuN+zwNZRk7Sx144KvQhovpbUHJya/cFfICKe9Z3/zTc/DCRWlIOatqB?=
+ =?us-ascii?Q?zJ3zVYAKNPS+P1/QzepNfOuugg7Un6HiAq4ixVKS8GbbD2/hsY5YUhsyORRg?=
+ =?us-ascii?Q?pD3KEiI6g+la87xCqVGCTN8v4l/UdcZvPDwdm5si6WTVeq21SZlXag8WqTkj?=
+ =?us-ascii?Q?J12wPv6UyBx82hKiQ3x8nhmVTe1A0oAEtKDimuVv8Tb5SnFbGVDt4fkkrSgT?=
+ =?us-ascii?Q?qHU5N97xMMijiPJZLlNuEST9kBwmVKOOSIWF0rHerEpjfxfidVz7Jm7YQXIw?=
+ =?us-ascii?Q?TOWIW6VWv6QPZ2b2s7Pczl4wWwKx9WsW4hADum99ay4BKWw7AluoUOKG8BHB?=
+ =?us-ascii?Q?Owl4Pt5AIGVZgASacLzp5w+K6ckkSxDLJqRpxeNIAEykC1Ks5hJhAbGOb9TE?=
+ =?us-ascii?Q?HwG9p3yyoO1Jjb0q+IrEaRmn19Z3qmZ9e5DVqBYq+QM4I5Bgad+RuMeLbCSp?=
+ =?us-ascii?Q?O+hgyQj2WIKIOJ28iIxFDrkz1dH/5qHLo+KCzlfLex4QV5Y/glCbjJ0B4RgE?=
+ =?us-ascii?Q?JNtc/rPryksx5Y+EgdulckjNNuzfGT5/EV6tRZsyD/O7w+IIv+2Q+Yy/1Bmh?=
+ =?us-ascii?Q?5tDjgOoUJweSnukMiKwJ+81C4sMYTw9vhGO+qNI121sRC046ma9Iv8TahvB8?=
+ =?us-ascii?Q?TnPQi6/iQ5S9wy+pq8fYVHtQIxDfTABi?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?p3ZNPT4aXe7ikW0jWJCJNA8bsCnrIqdcYnZYWnGnnjOkssl3hBcMV+Wi+BAN?=
- =?us-ascii?Q?xp24hihciX2SAPti69J+DIgqmRnegjd9+DabIpX3iocrP7wcnU+EQWyAz8Ko?=
- =?us-ascii?Q?20+u/Gk7VzMHp5R60P4GjyKjij5q11PGAbB8qSi3Me/9p5rdrUosXWVMnEJG?=
- =?us-ascii?Q?lDvpzkr8CyFqqK3gAL10sIhZQ5DTDxgh7d0nOiFxTHAFpkJ5sWTlp/PCPexb?=
- =?us-ascii?Q?5AARcjD5hUhR5E99uiY9M6hoYHeMEl9ihBgJ3qXQOp4lIQF/Sj/RopDxeY1H?=
- =?us-ascii?Q?M7yHg2b8K5OweqK9AV2fs7mt1JrRGXWE1GAoe+KuGioyKoQc7ZQUerYrlvcL?=
- =?us-ascii?Q?gW0uOxJ9hY+9U9MWx1HH4a0PG/ypxp4U8op2R0fSJJEXE418Lj9sHWHqA4qA?=
- =?us-ascii?Q?piItcVPY5Pl6oyj4M9qapAQXIuAI9Gag0gGPKNofFvglcX/lhLcd+cEEpMHl?=
- =?us-ascii?Q?wN5v9NvlNgtHLDVwiIB9ABRs0BtAo2in0vKPWJyY/qwf7+OsWGsIdn25ShxF?=
- =?us-ascii?Q?/uI6z0G8JWtBTgBmewQg1VoYn6sO/2ORtmuJK5hXr5IRJFSu9S/0cQnL4k+V?=
- =?us-ascii?Q?IQL63oaWWIYqxOTaLGxpdG+MzU8kNo10vat09UXVTxZsNChKfEBKlCntTOEg?=
- =?us-ascii?Q?UsNX2O8CsMONs0mLSq3zAgYYhisAMkyiH+75r8/RHchvenli85B+PAOi2lJH?=
- =?us-ascii?Q?j0LbZ91JhVBvaBwxFVO6EGl9WUKuLWJh6h9+ecWfqcjWopuoanIkWx5NwmP4?=
- =?us-ascii?Q?6AG+xA4eCHA+668T5/GiSoDAnxavCY0ERC8tMOiRw/T3BZBOy4u3RdynJz/M?=
- =?us-ascii?Q?yC4Aq5B8E8lxqSdTBmgV68g+sl9TcIS6ca4vxsiFIxenmizNHB2kFNFZeRyZ?=
- =?us-ascii?Q?9Z8s/n1Cq5iRjo1icjDtk9cchKIdYJ61/c8lj3yPacf4grhogG01QeYJG3M2?=
- =?us-ascii?Q?paPpNuiUAozr6+8SsYRpAMwzoVWSqS1LmR6FiQKEV1vTCTgWg5esJttz+irY?=
- =?us-ascii?Q?uaqzVAmQATB21Hj96SlEbuUMa5UTbCpAEQNgyZeRRTfcPpsnBnUk9gxPrf+r?=
- =?us-ascii?Q?nnGLh9BqXwWgKCQtrIhsxTAamlPPEkhQVQ/k9dBcNko7BTBKVAch4t6yggAk?=
- =?us-ascii?Q?+EOFubR5XEkpsZ8ohKiGKlyj/0YX9/F7G5vCaOiD/j8hkV0RJpixCxYhFwir?=
- =?us-ascii?Q?E4/AcaqBU9KfGZ47NWEjyzPkvOAEsVftxByM9QEUGVUDx6C2tFSN3o78AGMQ?=
- =?us-ascii?Q?2l0LkzZ9Nl7/+NdqM7nlCtoKV4J5Os5rhxgEOT4tXqd90AUd8x0JY7mmWL4M?=
- =?us-ascii?Q?rPLQDqcEx12ZUq+lPJ3bKK15D6eyf5Uo/tXa+7al8NpneadEvsMaAVmWR/I+?=
- =?us-ascii?Q?F69x1096Ed51fsKeoket8+JBuAJvtOb9mptthxWUooKHY80ZIoOJZg7kO3IP?=
- =?us-ascii?Q?MlVYkJ2ZHcKBRHCSKsxSmY+o3+8RqU5QhjkNkTq4OXRdksYkEyUUDOkBab1P?=
- =?us-ascii?Q?bRK+/RWO1uK07K7u9kJnLj53GkMhrdFdk9AWAZbrdeCloE87PyBXp+CM4ZOC?=
- =?us-ascii?Q?cghUIo9eocUSzUWGUtFfGYANpeqRfqSVvG+ac5+w?=
+	=?us-ascii?Q?Dx266i8BPHYzT+yc+axSwoEPytm+QgBeC/T68SIiFY4i9nejUT+m5A9Pa4Hm?=
+ =?us-ascii?Q?QJ4RwZfloyvLxcuZDqeLrRFy/cZJLl7VPiJoYSRwxzskUZdsUwWie4O3R+Wh?=
+ =?us-ascii?Q?73WLS8WdtqGlA7OubyynJLv3pkTN7ub+4ZD4qIi90c8UrcigVImVK6taPFW9?=
+ =?us-ascii?Q?T+I6quNWWgDofZksmeCtAaIyP4xpx/zI6JLwpuGRcQw24aiFj5hdaZHDY0PN?=
+ =?us-ascii?Q?s0sur2QC5JLzMWKlyXhvoQQ77RcdPZVEv347yCaTUHNgxAk2E892XWSm2OvD?=
+ =?us-ascii?Q?p1PCPZY0ovj3rixcyv1jjVdRVWevnRbNILa0JBR2uwyHDY0PocGQso6SOrAI?=
+ =?us-ascii?Q?fJvvTNqeSGdFN9vH6qjRp0uO+YPwbDGU8FGdcCfPu/TDwxoKmMAHy/vlOK64?=
+ =?us-ascii?Q?GjW1M2ynI1gH4steQGJ3P61EUq4vosUkzn9mb4FhZ8Uncj9Gx59yWyTgQ+eQ?=
+ =?us-ascii?Q?37idWkZPrzqZdCBCAj6aVleuQsPRj3LLFshD0lf0WrgV8zgrxn2TWpBeH3NP?=
+ =?us-ascii?Q?wzj3m+5Y9CNEg6UwsfnjgOY2G/d12/XrN4hNLN1wQY5Mxbpf5GWmDA+cP01Q?=
+ =?us-ascii?Q?nq/HuIifcIxEJkwdm9UleO/hjw69IrwjtfbVxuMNHy4J30N/BuQN8HoYg8mj?=
+ =?us-ascii?Q?sNOOVgNRo8sb8GoJY3pgecE7lT69NeePLtk66vrnao9WDM5ZZJkLIDqu+2iJ?=
+ =?us-ascii?Q?V8TqyPGIMy8cZPVTG40U8wp9vT8pX7QHssOvWnU+C+zFLtsxBZFHqGF8kQw0?=
+ =?us-ascii?Q?1fcD/kpojWNXwvUxKpebGizGh4LZx8spU3p1tEq/H7dXjUnOe9EutFLAGdRS?=
+ =?us-ascii?Q?wEJUnlueKSiDukEzYHOQo9/T6RLXm2FuefOrYR7vSCHElBZbeiT62yvTj2wP?=
+ =?us-ascii?Q?auZVPw40M4JhnvhxhzNjFz2+4PnHygX664Y442vj94zGhA48bhI/EMVZGqi8?=
+ =?us-ascii?Q?Lp6QwtOERWB8TnzRXPM/tca9j+B4pN24kqPu7EUKqBlW7585puRuvXISXc1R?=
+ =?us-ascii?Q?2OeBPo7hc7S35e993cnhnDwdthyChIj7oj8Cx/FZV/pWNz6OWJaKtTYvqh6c?=
+ =?us-ascii?Q?gc2x6DlDyVpxc3MQJTOgO2XRysmtsmzDXzO2qguHw9utjvBGYA5RSlUDHVca?=
+ =?us-ascii?Q?mLRHapGH0QBe9oriyV/fj5MEuC467AoRFADVVuxNUEfsFsARSDvAfs7vtc6y?=
+ =?us-ascii?Q?mZEWy8kKNhpBKgGLgXAiQ4OdCQDw7d0fxWS6JyVAIWp1Z1cx5ivetfNROzBM?=
+ =?us-ascii?Q?JIGkNynRCqc6l6dlUv87kIZcPBYoDMtatcoqXKrrUMByRwHtB40VIXWJe0o5?=
+ =?us-ascii?Q?xJgc4s/MyPH282VByKpzQNfZloNSTTp1YRcVpz9gAXERAqLivSVTZCR2+t9q?=
+ =?us-ascii?Q?vuTEUHu8Q+dCi93EBiP8gwOU5wWIompAjhW1RmXGWn+47QvczQ/85jFeXYDv?=
+ =?us-ascii?Q?3N52K1U06+/FyZ7o4GxuPMQQCrgmHMJKKCRGwDQ17AkK3Fm/rEJu3VxRq2FB?=
+ =?us-ascii?Q?owlHgfNHlarfADwhufsfh4w22StYwBQn7UBIxHnRZegjCNmEvt97J/lozCnR?=
+ =?us-ascii?Q?UmAf2TewGA8ZxeRl1NTfWWwPkHNiG8Ci4AiRhv1x?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f5e541c6-a8be-400a-54c3-08de1d89e8ea
+X-MS-Exchange-CrossTenant-Network-Message-Id: e305b70c-a19d-4e60-198d-08de1d89ea98
 X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 23:12:08.9679
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 23:12:11.7984
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bObcHxZsD8G/rhCuNmaS10fAYUdT8NAE6Sxg92gljESs7wWfJTOOSzfY92L1ILwjo4HPQhDTrJ7ffMXmn4F+Vw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: xtpPoymIBi95SRdmu8T0iDeC1La+IXQYC8+6JPtm1aWbODzPRlX2Wm5tniOkWaiO/zg8EbCxiCu6FS2XeV78qQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF62A0C9A68
 
-These opcodes are used for register write, modify, poll and store (save)
-sequencer operations.
+These opcodes implement various falcon-related boot operations: reset,
+start, wait-for-halt.
 
 Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 ---
- drivers/gpu/nova-core/gsp/sequencer.rs | 106 +++++++++++++++++++++++--
- 1 file changed, 99 insertions(+), 7 deletions(-)
+ drivers/gpu/nova-core/gsp/sequencer.rs | 27 ++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/drivers/gpu/nova-core/gsp/sequencer.rs b/drivers/gpu/nova-core/gsp/sequencer.rs
-index ee096c04d9eb..32a0446b8c75 100644
+index 17118967a8d4..0192ac61df4c 100644
 --- a/drivers/gpu/nova-core/gsp/sequencer.rs
 +++ b/drivers/gpu/nova-core/gsp/sequencer.rs
-@@ -5,6 +5,7 @@
- use core::mem::size_of;
- use kernel::alloc::flags::GFP_KERNEL;
- use kernel::device;
-+use kernel::io::poll::read_poll_timeout;
- use kernel::prelude::*;
- use kernel::time::Delta;
- use kernel::transmute::FromBytes;
-@@ -40,13 +41,36 @@ struct GspSequencerInfo<'a> {
- 
- /// GSP Sequencer Command types with payload data.
- /// Commands have an opcode and a opcode-dependent struct.
--#[allow(dead_code)]
--pub(crate) enum GspSeqCmd {}
-+#[allow(clippy::enum_variant_names)]
-+pub(crate) enum GspSeqCmd {
-+    RegWrite(fw::GSP_SEQ_BUF_PAYLOAD_REG_WRITE),
-+    RegModify(fw::GSP_SEQ_BUF_PAYLOAD_REG_MODIFY),
-+    RegPoll(fw::GSP_SEQ_BUF_PAYLOAD_REG_POLL),
-+    RegStore(fw::GSP_SEQ_BUF_PAYLOAD_REG_STORE),
-+}
+@@ -49,6 +49,9 @@ pub(crate) enum GspSeqCmd {
+     RegPoll(fw::GSP_SEQ_BUF_PAYLOAD_REG_POLL),
+     DelayUs(fw::GSP_SEQ_BUF_PAYLOAD_DELAY_US),
+     RegStore(fw::GSP_SEQ_BUF_PAYLOAD_REG_STORE),
++    CoreReset,
++    CoreStart,
++    CoreWaitForHalt,
+ }
  
  impl GspSeqCmd {
-     /// Creates a new GspSeqCmd from a firmware GSP_SEQUENCER_BUFFER_CMD.
--    pub(crate) fn from_fw_cmd(_cmd: &fw::GSP_SEQUENCER_BUFFER_CMD) -> Result<Self> {
--        Err(EINVAL)
-+    pub(crate) fn from_fw_cmd(cmd: &fw::GSP_SEQUENCER_BUFFER_CMD) -> Result<Self> {
-+        match cmd.opCode {
-+            fw::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_WRITE => {
-+                // SAFETY: We're using the union field that corresponds to the opCode.
-+                Ok(GspSeqCmd::RegWrite(unsafe { cmd.payload.regWrite }))
+@@ -75,6 +78,11 @@ pub(crate) fn from_fw_cmd(cmd: &fw::GSP_SEQUENCER_BUFFER_CMD) -> Result<Self> {
+                 // SAFETY: We're using the union field that corresponds to the opCode.
+                 Ok(GspSeqCmd::RegStore(unsafe { cmd.payload.regStore }))
+             }
++            fw::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_RESET => Ok(GspSeqCmd::CoreReset),
++            fw::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_START => Ok(GspSeqCmd::CoreStart),
++            fw::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_WAIT_FOR_HALT => {
++                Ok(GspSeqCmd::CoreWaitForHalt)
 +            }
-+            fw::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_MODIFY => {
-+                // SAFETY: We're using the union field that corresponds to the opCode.
-+                Ok(GspSeqCmd::RegModify(unsafe { cmd.payload.regModify }))
-+            }
-+            fw::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_POLL => {
-+                // SAFETY: We're using the union field that corresponds to the opCode.
-+                Ok(GspSeqCmd::RegPoll(unsafe { cmd.payload.regPoll }))
-+            }
-+            fw::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_STORE => {
-+                // SAFETY: We're using the union field that corresponds to the opCode.
-+                Ok(GspSeqCmd::RegStore(unsafe { cmd.payload.regStore }))
-+            }
-+            _ => Err(EINVAL),
-+        }
+             _ => Err(EINVAL),
+         }
      }
- 
-     pub(crate) fn new(data: &[u8], dev: &device::Device<device::Bound>) -> Result<Self> {
-@@ -64,7 +88,16 @@ pub(crate) fn new(data: &[u8], dev: &device::Device<device::Bound>) -> Result<Se
-     /// Get the size of this command in bytes, the command consists of
-     /// a 4-byte opcode, and a variable-sized payload.
+@@ -96,6 +104,9 @@ pub(crate) fn new(data: &[u8], dev: &device::Device<device::Bound>) -> Result<Se
      pub(crate) fn size_bytes(&self) -> usize {
--        0
-+        let opcode_size = size_of::<fw::GSP_SEQ_BUF_OPCODE>();
-+        match self {
-+            // For commands with payloads, add the payload size in bytes.
-+            GspSeqCmd::RegWrite(_) => opcode_size + size_of::<fw::GSP_SEQ_BUF_PAYLOAD_REG_WRITE>(),
-+            GspSeqCmd::RegModify(_) => {
-+                opcode_size + size_of::<fw::GSP_SEQ_BUF_PAYLOAD_REG_MODIFY>()
+         let opcode_size = size_of::<fw::GSP_SEQ_BUF_OPCODE>();
+         match self {
++            // Each simple command type just adds 4 bytes (opcode_size) for the header.
++            GspSeqCmd::CoreReset | GspSeqCmd::CoreStart | GspSeqCmd::CoreWaitForHalt => opcode_size,
++
+             // For commands with payloads, add the payload size in bytes.
+             GspSeqCmd::RegWrite(_) => opcode_size + size_of::<fw::GSP_SEQ_BUF_PAYLOAD_REG_WRITE>(),
+             GspSeqCmd::RegModify(_) => {
+@@ -200,6 +211,22 @@ fn run(&self, seq: &GspSequencer<'_>) -> Result {
+             GspSeqCmd::RegPoll(cmd) => cmd.run(seq),
+             GspSeqCmd::DelayUs(cmd) => cmd.run(seq),
+             GspSeqCmd::RegStore(cmd) => cmd.run(seq),
++            GspSeqCmd::CoreReset => {
++                dev_dbg!(seq.dev, "CoreReset\n");
++                seq.gsp_falcon.reset(seq.bar)?;
++                seq.gsp_falcon.dma_reset(seq.bar);
++                Ok(())
 +            }
-+            GspSeqCmd::RegPoll(_) => opcode_size + size_of::<fw::GSP_SEQ_BUF_PAYLOAD_REG_POLL>(),
-+            GspSeqCmd::RegStore(_) => opcode_size + size_of::<fw::GSP_SEQ_BUF_PAYLOAD_REG_STORE>(),
-+        }
++            GspSeqCmd::CoreStart => {
++                dev_dbg!(seq.dev, "CoreStart\n");
++                seq.gsp_falcon.start(seq.bar)?;
++                Ok(())
++            }
++            GspSeqCmd::CoreWaitForHalt => {
++                dev_dbg!(seq.dev, "CoreWaitForHalt\n");
++                seq.gsp_falcon.wait_till_halted(seq.bar)?;
++                Ok(())
++            }
+         }
      }
  }
- 
-@@ -83,12 +116,71 @@ pub(crate) trait GspSeqCmdRunner {
-     fn run(&self, sequencer: &GspSequencer<'_>) -> Result;
- }
- 
--impl GspSeqCmdRunner for GspSeqCmd {
--    fn run(&self, _seq: &GspSequencer<'_>) -> Result {
-+impl GspSeqCmdRunner for fw::GSP_SEQ_BUF_PAYLOAD_REG_WRITE {
-+    fn run(&self, sequencer: &GspSequencer<'_>) -> Result {
-+        let addr = self.addr as usize;
-+        let val = self.val;
-+        let _ = sequencer.bar.try_write32(val, addr);
-+        Ok(())
-+    }
-+}
-+
-+impl GspSeqCmdRunner for fw::GSP_SEQ_BUF_PAYLOAD_REG_MODIFY {
-+    fn run(&self, sequencer: &GspSequencer<'_>) -> Result {
-+        let addr = self.addr as usize;
-+        if let Ok(temp) = sequencer.bar.try_read32(addr) {
-+            let _ = sequencer
-+                .bar
-+                .try_write32((temp & !self.mask) | self.val, addr);
-+        }
-         Ok(())
-     }
- }
- 
-+impl GspSeqCmdRunner for fw::GSP_SEQ_BUF_PAYLOAD_REG_POLL {
-+    fn run(&self, sequencer: &GspSequencer<'_>) -> Result {
-+        let addr = self.addr as usize;
-+        let mut timeout_us = i64::from(self.timeout);
-+
-+        // Default timeout to 4 seconds.
-+        timeout_us = if timeout_us == 0 { 4000000 } else { timeout_us };
-+
-+        // First read.
-+        sequencer.bar.try_read32(addr)?;
-+
-+        // Poll the requested register with requested timeout.
-+        read_poll_timeout(
-+            || sequencer.bar.try_read32(addr),
-+            |current| (current & self.mask) == self.val,
-+            Delta::ZERO,
-+            Delta::from_micros(timeout_us),
-+        )
-+        .map(|_| ())
-+    }
-+}
-+
-+impl GspSeqCmdRunner for fw::GSP_SEQ_BUF_PAYLOAD_REG_STORE {
-+    fn run(&self, sequencer: &GspSequencer<'_>) -> Result {
-+        let addr = self.addr as usize;
-+        let _index = self.index;
-+
-+        let _val = sequencer.bar.try_read32(addr)?;
-+
-+        Ok(())
-+    }
-+}
-+
-+impl GspSeqCmdRunner for GspSeqCmd {
-+    fn run(&self, seq: &GspSequencer<'_>) -> Result {
-+        match self {
-+            GspSeqCmd::RegWrite(cmd) => cmd.run(seq),
-+            GspSeqCmd::RegModify(cmd) => cmd.run(seq),
-+            GspSeqCmd::RegPoll(cmd) => cmd.run(seq),
-+            GspSeqCmd::RegStore(cmd) => cmd.run(seq),
-+        }
-+    }
-+}
-+
- pub(crate) struct GspSeqIter<'a> {
-     cmd_data: &'a [u8],
-     current_offset: usize, // Tracking the current position.
 -- 
 2.34.1
 
