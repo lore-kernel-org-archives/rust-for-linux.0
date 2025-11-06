@@ -1,55 +1,55 @@
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB4D3277A7
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 12:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41236328632
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 12:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762430957; cv=none; b=aeDHKUKvKXL9A4QmsdOPPKFQPzOOShsNqEyz0CeU5Ukxv0voHc+9KHeQW9MjklRgaSfwfHKkQ1DwbNM2M933LQj1FqwDMBcrLOsx4Yd8Aac2Cf3SNMAJsJhtDvyhvzvgnIiWd/8mevVLbg9oHXNUDCPIdAvM2uhkqwq7ygpec9Y=
+	t=1762430959; cv=none; b=hQRhilBZdJ7N7fB3ijdatStlraN71gY+EO3mg0nYsR893aq0kNGQvCBgmAIvhgTNAfaNojJaMRo20mWoOyyV3f5PN7xy27+wiys7J9hNYzXdZY/wgZ7eDbuy/ShhxtTrXZPu6UqjMB4EUE4XuaCbb89lvcCpQHmzQjAV7IakXYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762430957; c=relaxed/simple;
-	bh=PaKvBJJUvzklLSh/etTvpynoQWRBtbVS57WsNqJijtk=;
+	s=arc-20240116; t=1762430959; c=relaxed/simple;
+	bh=Z0o/E9+LDcOuXxWJgzK2F5uZfv78/HzyRC5P+XWCMEU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qgcwphQ01ODnNCIfPsvaHamc9hlZ9OcoQmJ17KI1MEZqinfBG+k31YmqpGeU2zFFBLFsv9SbTjcPjPMdB++1eoEhFkWv2t98tgYs5vZjFkxFLVcW7D8pfklFbNi/jPgNYXZ6HUENIBvgOm3pCtL8tQ21FoZc+HmGHouRccuePhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WU13PWU9; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=fni12bXHENdto32130ke+NpblIBBlPNnPMGW7Xyn5zqAGMzX+mYfOAMgmrUqgSNMI0QP7LMux4WfveFJeaC1JhLXxO9YSNIgMJT8JhM/GlRraIFhcOi0qjxSkhTa7dafQOhbrR1DkqDjESTbdvKkUFoDllT1YqO3rn5lGcjhgcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M3Rp+qIs; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WU13PWU9"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4775d8428e8so7700895e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Nov 2025 04:09:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M3Rp+qIs"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4770eded72cso15392155e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Nov 2025 04:09:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762430953; x=1763035753; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762430954; x=1763035754; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DYjh895sOQ0wZHG0qaTEVmBEXBySMzEq2h+tanPVig8=;
-        b=WU13PWU9+bX5YixW9URgjETjLAmL+Reju/qqOykXq1OVj8ZM94Bmfi4e0ryE0kSOqp
-         OP72mdvAzetjfmbTfC7ysj0ntAiZwxd6CB9NzbhBdQ98sAl0DyXBxv6fHlTraoBY/Umy
-         N7fnX4zLmkGYyGD15FdXbQbh667qEyhmE72bmRNn9p7unjuJlf2h+/T+TMXx0GZGC6dX
-         zlIyJfPrL+7ARnekPb5lZi+x3Cpu2wuxmCyYHLRmABogOvupx63/CLK+qXGwwL4Y24Cj
-         wnr9gfbzSGqFv/dsnakMAI4l4bXrynpaLL4DqAlAV6aZPtnUfzlyEIGNZmm1zuXDXq1H
-         ajtA==
+        bh=UEIGWJdzKObiVmPMXxxUBYNvOzm2LzV3LBkcvQkVvV4=;
+        b=M3Rp+qIsOC0ZBekbOmJEh98LgJsM9RNyt35C/V2yh9yIshhs4Xpxz/Ox4vmiD1gBzf
+         1SU0v+Ol5IKDklPiHmDXw/gDRhL5Mkf17cNx9oN5hPd3aip2vp/MLhRhGlfzn+3BhX2o
+         sRybnbMw6O9jo6NoBF+LX3Gy/9Nn1ZbyxaCk6OoF2gVjFJOcY4sy8yBPb+jwvcXJBCja
+         sXfqhmPcQAh706/Jj7yFFMjkP0TqbmGbmJzYvs0Odq6mdeVIMtMlitefBg4wBomPScP3
+         gavI1LWjFFegKwAaRsrt043Mi0dlc2D7AYYM7gNXZKNWnwsuVuA/dE4o+s59t9E9Pwzd
+         ERfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762430953; x=1763035753;
+        d=1e100.net; s=20230601; t=1762430954; x=1763035754;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DYjh895sOQ0wZHG0qaTEVmBEXBySMzEq2h+tanPVig8=;
-        b=Xc79H3sZPkoxUtHcprPoVZXV4sDoNrO3Hwrcizubf142oQVDiysb8lSNq1aSFBVcO7
-         ywqN1mTXYgt5SvtC1dO802wWA8cwGdzINpdb6b76pZkP+sTLE8HhFngXwgs7yRVt60nL
-         hcKyKur/nmwq6XBkw7Zwu0z1psknPSCtQ+q/FloiWtSXB45ixULidS1Dqg4t0ffjNdn7
-         I+x/CzNCC/iAVjRwRXp7C6qIAdkRkA1i4Szuh+XshYNJMlmlioCGn+wBOlIDrmB6WInv
-         oqhES/InRzNKVzyRJzbjyDRLpz+1gIgLWdbo6Xye3ITE08ouknX6Jju5g9LJj+cqrsPq
-         Zpqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRFvl+TMB8uwrvHdgSDIvUdZT4Ewfxe98B4l4W2QZeeKk0NNSmyALmUQ1hdA0JcfXXGrCgYGVXKDAd7r8Cvg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx7fLUYA58MvU+fZHJ86dfYa66ecrT4eyEkAM5wYhi7r5mppMf
-	aoAxOFJCK9yY0HM95VCR8ZlZ5vtmlUwmAqkV38JUXCBEmxxknrI9p+IbCYAsRNfPkYD74NttQc8
-	mglK6PpHJd/Nf2vAwiQ==
-X-Google-Smtp-Source: AGHT+IEamd18jj6uRBeSGyhGRNOi+lGXB8EXUCxbM6LPE4tOPIsbRl/P31hFj+mBgZAIWzQuRIUw83Q26LtQc4A=
-X-Received: from wmlc13.prod.google.com ([2002:a7b:c84d:0:b0:477:1449:b093])
+        bh=UEIGWJdzKObiVmPMXxxUBYNvOzm2LzV3LBkcvQkVvV4=;
+        b=kEUEn9wfZcfdzpT+tcwy844Y360MnCp5LSOURVVxXFUPtIy1rz+h03yBXWT2QDQQ0h
+         kJzXYTg3y2IWnP6hWNtI6hRcPPxTMalEkYPFTJk0iVwcnOPcJQbm02wJ6n6wY1GChRAr
+         yo/Bbp+Z99FSkWOhA11H7FUeMobKm4IG+n4lfkrQx40EJ3SHNkhhU8FPTCu4L64PMqFD
+         L4yyDFrkK1kIbcAMnDPL90skJqAp6quKmWgqCifT8A8W2pXVfLmJMwZYJPuXdhjm1LE5
+         o3AlKZ6SO9lFxj27daEuoq5Lnwfjuj4tMYb9W9Z9cvZCZQOxy4/syVaC2L60Xv8uyaS6
+         99aw==
+X-Forwarded-Encrypted: i=1; AJvYcCXhoUXugsVF12zHzuxYcrXTHEfPckF/foYhGhC4ZA2biTGEMGqJtOeO2E8ug/WHh1DQDL2WTsPNhdgPkuFWaQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4S7GIPpFoECJGyAb9RjUl/8WpIft+GIbynByyiYoRSbx+otYR
+	56Wr70jV0LpvolQcLgR3ljTDgPQ04BGLinJ6rWpj2DUQ9Q8ZJI3l3XjcU/7IPs5jtKcdWanvdvh
+	Owle7dLjj+s3fcZrm+A==
+X-Google-Smtp-Source: AGHT+IF/vvs5ufvq/lcxCF7mkh4haHXUhg89Nr/pEBXemvk4J0V8PG8Q476djBJy/nxJnOv60LVcoNFPcu2z5sE=
+X-Received: from wmlu17.prod.google.com ([2002:a05:600c:2111:b0:477:17a3:394a])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5297:b0:477:c71:1fc7 with SMTP id 5b1f17b1804b1-4775cdf61f3mr47082935e9.26.1762430952736;
- Thu, 06 Nov 2025 04:09:12 -0800 (PST)
-Date: Thu, 06 Nov 2025 12:08:59 +0000
+ 2002:a05:600c:3b8b:b0:471:665:e688 with SMTP id 5b1f17b1804b1-477620986a4mr29031425e9.17.1762430954690;
+ Thu, 06 Nov 2025 04:09:14 -0800 (PST)
+Date: Thu, 06 Nov 2025 12:09:01 +0000
 In-Reply-To: <20251106-resource-phys-typedefs-v1-0-0c0edc7301ce@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251106-resource-phys-typedefs-v1-0-0c0edc7301ce@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=893; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=PaKvBJJUvzklLSh/etTvpynoQWRBtbVS57WsNqJijtk=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpDI/mrOuyf/GH4VdeFehUKdKnNsLOKRAV1z6g2
- lB5wL6TxCyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaQyP5gAKCRAEWL7uWMY5
- RqGID/0Y4Yjkqdz8dNxoJ4kFNhRTiO2nNUx/ssl6f+4yNpiKEg40UnTc62uOKvoVNEBWvAUadY+
- dzmY9aDGkx92EEK7Rqy36jV1NAu4DO0a9NQ8bQVajyOH/QNwve08IO/zk974tTbbpa33qv+YKnh
- eDLSNXluSWpmK5/52cX52nzofvsGcDRiSwkVzjOF3f3Manl6ohinavzA6ZorX0j70kS0CRmu9NW
- tXGihJ8OR7w2dlTVUHiPJuD5c9AA6yE0Y0BX0/mc64iFs9Uz4e1f5iZJuk76pnSutZMkM1IRTuL
- IgrjdSCGhVbsjDYUI9cI/R9lyk+Ac7vNlwa2nDUW/r2fHRuYsdKwZr1llXytqBPJQmEwpQIJMxi
- BLQLntndt/DQK9ThK6Omomds5C7wncUmhEl+c0B6Qnv61bXai8pFIB1sSjqO7xaPciFF6GshJA3
- e2pxomSwIqsf6R2kwLSQol2np8cdPkj7h2O6yhi1OmYsXdrt5u+eXK9KRUteprOgjouKr6EhX74
- gNWAaZsuW/b3RhhB6JI1XEtM4ayW0MJ8+02DhM3QWqDq38nzCngA9rNkOtGh6Shbp+lK5M/PqF+
- c1I4sur2LuKtM7NzHuacGagAo1xvxX6Nra1UzkwqjssjPeH8b9XMnEccGijVERTLBl6SwtKOPnd Xn0o4TrwvxHLyzg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=894; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Z0o/E9+LDcOuXxWJgzK2F5uZfv78/HzyRC5P+XWCMEU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpDI/m/ZEjTQJ05OQzP8gJQIqLSNxfOaV1KqkQU
+ 2IMr1tcdieJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaQyP5gAKCRAEWL7uWMY5
+ Rr/bEACOBXwt+CkUtft0v9bWbVU4nun6sj1tsjRImXUCG4esWt+YpgiQX/4tH4+rwOgX2GU0IBh
+ 0DWSEDoO8GAavDyPlvYmwLuEmcQ4VPNsk5blbCwmf3ZOBuehVrn+UsZ4tK6yDC6yW7grQNKFGsM
+ Zsm/Sf9p6sgN7qFpt5/9qJtCJ/FHY5Y48UrwF2XMmE97p80KWW/Uc1TyMLKWeDelCUbEj+tPaPp
+ t0bN+JA+DmHlL6xuWhv3VD+jIuy5siB0bJU2swlZiWNMmpoylZTmBEdcEM3lp3lUqL8nfGtx7E6
+ URJnrDAHdiGl/Ax6guf5/ioMOOWANC5kU3IZ8Tsr5KwWR859vsYxmLrLFFagNWWFBazCmJGrHGQ
+ N7cK0gOZCev1q69TuVks26vIN3erCTei0V+ip30sRrf5iH9MuocmLVLwqbrACUVvlOOJmzbFxL9
+ pWC3ZXs6RTA1xv8LXKTGpWrXVOQd3QjrfahumJWDHb9ltKjD5eo50w0eFauCvFbjO1oEyBLOGeo
+ h38FzYcEeUm0CDJHc4EVF0ZGVRLM7Xsp3A03e2H363wWIKCct5RQw9U1wFWGQO3KrmdkmAptVUS
+ KSTsBgDsMthPRk5LFuKtR+50hjMYLWldz/N3AwMrXG6qTiSA2FXg+qO3cAwarDR+umt5JzSyPjH 9JWxANRVwogVl0g==
 X-Mailer: b4 0.14.2
-Message-ID: <20251106-resource-phys-typedefs-v1-1-0c0edc7301ce@google.com>
-Subject: [PATCH 1/4] rust: io: define ResourceSize as resource_size_t
+Message-ID: <20251106-resource-phys-typedefs-v1-3-0c0edc7301ce@google.com>
+Subject: [PATCH 3/4] rust: scatterlist: import ResourceSize from kernel::io
 From: Alice Ryhl <aliceryhl@google.com>
 To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -86,27 +86,29 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-These typedefs are always equivalent so this should not change anything,
-but the code makes a lot more sense like this.
+Now that ResourceSize has been moved to kernel::io, import it from the
+io module instead of the io::resource sub-module. It makes sense in this
+case since the dma_len isn't really related to the Resource type even
+though both are sizes of allocations in physical ram.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/io/resource.rs | 2 +-
+ rust/kernel/scatterlist.rs | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-index bea3ee0ed87b51816e2afb5a8a36fedee60d0e06..11b6bb9678b4e36603cc26fa2d6552c0a7e8276c 100644
---- a/rust/kernel/io/resource.rs
-+++ b/rust/kernel/io/resource.rs
-@@ -16,7 +16,7 @@
- ///
- /// This is a type alias to either `u32` or `u64` depending on the config option
- /// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit architectures.
--pub type ResourceSize = bindings::phys_addr_t;
-+pub type ResourceSize = bindings::resource_size_t;
- 
- /// A region allocated from a parent [`Resource`].
- ///
+diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
+index 9709dff60b5a9a02ab466f3e4f1f52ab2e440d5c..196fdb9a75e788cc31093d83e412ff4d6ca56b75 100644
+--- a/rust/kernel/scatterlist.rs
++++ b/rust/kernel/scatterlist.rs
+@@ -35,7 +35,7 @@
+     device::{Bound, Device},
+     devres::Devres,
+     dma, error,
+-    io::resource::ResourceSize,
++    io::ResourceSize,
+     page,
+     prelude::*,
+     types::{ARef, Opaque},
 
 -- 
 2.51.2.1026.g39e6a42477-goog
