@@ -1,65 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F04B29898B;
-	Thu,  6 Nov 2025 09:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A680030C61F;
+	Thu,  6 Nov 2025 09:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762421248; cv=none; b=MM6Znd2RqZISOMysEPTitRBiVgFJG1S2HnWsRztCvheBq6lqCo0IasbT6hDUKpQ6xlgT9j2OmXmplF4cFfgieaNf8bMb7BdGMozOxCL2u2zl7wjjSqSFfGIAInuCK/s+YJ3SvsTgCyLt1inTR8vd+sKDhHK1PCo6J/RC55cS9Xw=
+	t=1762422252; cv=none; b=AtMl82bifZ4W7x2eggIUoAb5vrgfS3TTvK0Jsvqj7uZxtI7pdaFlWWY+474GTD0uD2ZWciFHI9N9PI276lLlwBXo2F9f63OP2PQ68s8iMoo4/4X4Vxp81W/VMt/qOTleXiR8uaNAZvAanOM+MlhCfTJbqG/WDWn7itqgwC+4vAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762421248; c=relaxed/simple;
-	bh=SodqO5o+MfH1inq/SQ+EsTztxwibl5c6EiQj5ZiKCB8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BCRhLZx22fktT9TdB/5wljdp/SQjvXsEIgEeLyP9BoKzcCjyLzs4jV/wAfQZR74b4CQwcgGlEH+C/OQWbjo44rJ+MdfYI8kesvxC3+j3h285XarZyLuQBc61UoO788bsjVU+3ybUy3IeeeCIpys2PCKLTktA3EqaR0/fQcSk+7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GiEMrqW6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762422252; c=relaxed/simple;
+	bh=diLhr3aX7Cr3ejy3u4Szb56argNLsib/ykfKtLUwPWw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=XmFEVbkqSchFquPtMh4XC4RYtEOtKb2VPSSfCj/5ENRLZ3Z5zXLlz7SJiXjopDnSksHJYuVclDMa8sOyKjUa49A7lxYA5gB+aew9gkboTQJWbOBcCwzjju0Xjt5NIqUjwFSRrfojpEadqRPo40Kr+L/G0AZAiNMrtis0FmkFGA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qfkPEZgI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GiEMrqW6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38718C4CEFB;
-	Thu,  6 Nov 2025 09:27:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qfkPEZgI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB15C4CEF7;
+	Thu,  6 Nov 2025 09:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762421248;
-	bh=SodqO5o+MfH1inq/SQ+EsTztxwibl5c6EiQj5ZiKCB8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GiEMrqW6+8KxnFGfX21rU4d8e0PsSXWeKkO8Ae7PZFTTFj8nmZri/hH9xK2TpUogS
-	 tlzD548GMskUMEfbrBx07dJYUVsT1z4r+r3pCnZ6srnikaas0cRYtVkrz6Se/QUDdQ
-	 cJiRlGQ5DRnnaOYyxknlrNj04cz8g0BLktiYhHwX5fM9QAutpBFqoY5yqVZRy62cbp
-	 q2TSfwoQofAZaIfRqnaKeIBwR/c0OCkEX2rUiWovzd4B0AdB+sOS9LTT5jgUNpnAQ/
-	 Npq7jJgeprPGpitZAxkNA5qBKxPW+RXBRHK+Qmn+PYpZKBz2QNPM4u+vFWC+Q5Yluj
-	 s8vW8P4ZAC8Ww==
-Message-ID: <e0697f46-20c6-440b-b278-0b4a36d1de2e@kernel.org>
-Date: Thu, 6 Nov 2025 10:27:23 +0100
+	s=k20201202; t=1762422251;
+	bh=diLhr3aX7Cr3ejy3u4Szb56argNLsib/ykfKtLUwPWw=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=qfkPEZgIe4YJsQkgci/RlAeP91q5VWAc2A3/FJOfsI3tR+uoAviSi+A2vxPxz/ekh
+	 x0pnG/DT0NtFKtEYKoh7BWeXa6Yh6kzEr32wr7jqzDN0SpOIMSMm1C8FIi2yMaS9A+
+	 BxLIC5pPjVG008ccr4+d9GaIul/3+Tmwcd3ER02E5m7ee1qmtpOBhU6YkNUtlMU9+A
+	 etm6UoyL1ImAev0FSJuhUjz7hz2ETp0jjHtuwIHE2JSmhu8WeatNzSUq24uI+VHUlP
+	 cXnZ+YCCzTrtSZOvJud5OYIRKNDWWWK0/onKiNMJVuMkj2Q9tRV5YRtsxLxhYvc/2w
+	 eCa+uSRtgQ1HA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] rust: pci: get rid of redundant Result in IRQ methods
-To: bhelgaas@google.com
-Cc: kwilczynski@kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20251103203053.2348783-1-dakr@kernel.org>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251103203053.2348783-1-dakr@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Thu, 06 Nov 2025 10:44:06 +0100
+Message-Id: <DE1IJMY33LSW.2X8N4PYXFITVB@kernel.org>
+Subject: Re: [PATCH 1/2] rust: dma: make use of start_ptr() and
+ start_ptr_mut()
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
+ <robin.murphy@arm.com>, <a.hindborg@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251103190655.2326191-1-dakr@kernel.org>
+In-Reply-To: <20251103190655.2326191-1-dakr@kernel.org>
 
-On 11/3/25 9:30 PM, Danilo Krummrich wrote:
-> Currently request_irq() returns
-> 
-> 	Result<impl PinInit<irq::Registration<T>, Error> + 'a>
-> 
-> which may carry an error in the Result or the initializer; the same is
-> true for request_threaded_irq().
-> 
-> Use pin_init::pin_init_scope() to get rid of this redundancy.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Mon Nov 3, 2025 at 8:06 PM CET, Danilo Krummrich wrote:
+> @@ -576,7 +580,7 @@ pub fn item_from_index(&self, offset: usize) -> Resul=
+t<*mut T> {
+>          // and we've just checked that the range and index is within bou=
+nds.
+>          // - `offset` can't overflow since it is smaller than `self.coun=
+t` and we've checked
+>          // that `self.count` won't overflow early in the constructor.
+> -        Ok(unsafe { self.cpu_addr.add(offset) })
+> +        Ok(unsafe { self.start_ptr().cast_mut().add(offset) })
 
-Applied to driver-core-testing, thanks!
+In this specific case start_ptr().cast_mut() is indeed a bit odd, I will us=
+e the
+following hunk instead and keep the raw access.
+
+@@ -576,7 +580,7 @@ pub fn item_from_index(&self, offset: usize) -> Result<=
+*mut T> {
+         // and we've just checked that the range and index is within bound=
+s.
+         // - `offset` can't overflow since it is smaller than `self.count`=
+ and we've checked
+         // that `self.count` won't overflow early in the constructor.
+-        Ok(unsafe { self.cpu_addr.add(offset) })
++        Ok(unsafe { self.cpu_addr.get().add(offset) })
