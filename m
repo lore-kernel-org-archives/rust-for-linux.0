@@ -1,99 +1,94 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B709330B16
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 13:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5AC2E6116
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Nov 2025 13:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762436080; cv=none; b=Mh9/xcb6NPldGt34Llgb3ag+dG0SwK7aRM0VQS7ajD1ixuKoLdrfrs0H7qleAzwHfE1/ytokc0mVne9pZQtj3iYxlBXbG+QVoVI1pN0RbBV9D2sb0e9VjfjyZ0CHrT9HAef2/Tn7HVzEirSjKrsqnmMX7QFWIpUEQ8FmoGzTaWQ=
+	t=1762437464; cv=none; b=cY6ZusauABu+6q81h1MLbv2yoSf4TOWsL8zj0T3NemvhuXAOfsnl8dvK7VfsX/RLbkIAOrer6WT8fF2fO1ikWvmw1r3I7n2pKADiS4/u/WJwvyjil33WnbybqG2TgjX6PwEyOJIIgBVjUSOOTpr0nvzwtYE9sJ1ZEwHwSEAyL5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762436080; c=relaxed/simple;
-	bh=j9SuhjIVPNBBqJfnVLYcJU6kiIExeCsnHgyWendxW+M=;
+	s=arc-20240116; t=1762437464; c=relaxed/simple;
+	bh=bUL9CATlSKCEFp9SchPtm2+vj/Y9WiYH7wXBHCxt2fE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sdTAXa3ICDUTXc58atUvjMyZEVHy1joqMM2PBCNWoTZOA/bhxYbTfTuZN2vo4sKmHqSfHrGXu/v7O7a1jmj3xhlPDUOWwo8bzXi4+9Xeez1eb3/9AZGD5976Gk9whIRCV/nk7XXZnfG+mVr5fcd4P/vlzctWjo/hFWrEnuWR3w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RejsDbjP; arc=none smtp.client-ip=209.85.214.172
+	 To:Cc:Content-Type; b=nlA9b7AcGVQnWWsjUWaOKcr+f46xgSqVh9H2/cduj+68Fzpqk/Vce150RyU+dDDS9FlT4cO1PMqHvcbBpilTeq8y6Uhj55gmq8hD3/fYGmTxw9WfCJCwWSO9A5OvOatDalaJxnZZtASgqlSMR6JoyVkKX8W12JWcdys1+AidWfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LKPEwIRA; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RejsDbjP"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-28d18e933a9so1191535ad.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Nov 2025 05:34:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LKPEwIRA"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7a271fc7e6bso141250b3a.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Nov 2025 05:57:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762436079; x=1763040879; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762437462; x=1763042262; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OAPFc6E2cuOBznS+PFsa8uaGEFuFxns4wE3SuTksKDk=;
-        b=RejsDbjP2jbgpCpqsdNG6OMV13aH6dy2qkkZoZiMhJdYvPthSskFOjy1WXWxigrFfT
-         x0zrGjVhvmGenH8bAspZjjV6n30oMIHvkpUflefZtXs50vZ6TmG6tE5EpfV83MSevzRu
-         /MRSVUH8RVDdhxZF6tkVgGOHj8dKEG+xvhgcu3sgjaCs7FxGjqXu3rW65Fc3DV/8qiLN
-         ksxt7atx1AX3oZTtyoEI2WsTP86YA4G1TjOGtdUPw2vAsopxkkDdqpkHD2CKB3vWn/0t
-         1eZrI8a/qn9JldEtgP0NGSzIU6nKrrST3EzNlwA4bJ4TIDNqMd5A8JUXHCVa1xGffE/A
-         M41A==
+        bh=bUL9CATlSKCEFp9SchPtm2+vj/Y9WiYH7wXBHCxt2fE=;
+        b=LKPEwIRAXcgo0WUatz2FJwXHuzJR84+959Q2PsTzhRDesNq0l5VC2crRTDpgK8TyPb
+         ojev3/+4mMr4mdMsq34AasGyEx/tYa8rGO0D2J8Lhw450Qct6Srr8qfdWrXcG5aSF9ue
+         4YtCupyd2LdQFXIjRSs6NU3qvWaUuLtqFR7g66G77bWNT3H7zJF6Q3qz8ViVhdp9Akf/
+         NuP/ojSTWmPTAvaC+to17m7Sdld7gkIiDeHiWeqdmCzyeMM28dqqTor3kPi0bQMKXPOZ
+         gl4qY4uJMdnMSgjWm8N/7AMJia5LritAQxUH0yHxl8g3CIK0gt2rOn9N4cG9qCCbW+D+
+         z/uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762436079; x=1763040879;
+        d=1e100.net; s=20230601; t=1762437462; x=1763042262;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OAPFc6E2cuOBznS+PFsa8uaGEFuFxns4wE3SuTksKDk=;
-        b=LrhUZFbrpB37G9V8wDbu4gWV1ZMQQBtNlxLZqXLkiDYCERr7qpEWwvtUwTE5KhzuaU
-         LVMbzaiSK9MYIBGolfl1iGF3iYT74u3N/H9RPAQySWZ/fXhhgRROh3+ir6eNLO3ZatQK
-         FbW2KCpecPZ0mAXGeiwlA7PwJc8Icq4F+Cico7hQAJHI433/T57zfvts9XEYu7Lr45uN
-         vq8lsE0nyit3t/Eo1SY5q+w4yAg1k7+fYFg3qWIHvdHQE1TMcNx/TWskGr4/gcH4gVHN
-         VBlDbYFNvMHoav7qSaf22jIEA0U4EFoF/qgn+60pud6EBTG5M+nHelDwjvQ1EBgNgpDX
-         hcRw==
-X-Gm-Message-State: AOJu0YxKPoPmLca/LqGfITlJJNXRIFYMHiI4hZsC3X9cKHjs3v2BlZMz
-	jmVAwIQSF66Y4nkcWlU2Pavzila2AZB18MlDo+HgOlBdJu0H36GavZVsVv6Pi17D7ZbbncSEuNV
-	/RkQyxBU92PGJq1rY93h38WvXO1hNrgg=
-X-Gm-Gg: ASbGncvrKviiZMAf+l+MBP8bbWxKryx51r2BK9/tdoYL32PDFkgCQXZAiZ+oi0UP9We
-	lBzz1+lkk5EIIEOp8fyLWZjsVeaOA7AjtTm6fzQaCQl6aZnz/M5SRGL/S2hmbN8lutRdCKTzjJb
-	MQ4tGjhyH/jw4oNprp34K4i+HhK7Uzqr3FbmU0vfzqSfFZX2h+H1gIV7Nuq7WnRh4uyzEIQefMX
-	N1dLQWFrlGi+0Vx50O5ugsdyB5jkTCEXAsqBOfdeUwEnwWXJX4WQ9XY0E9vDD/UA/xQVtauTp69
-	vjlNS6x1oqo74ScUcW58FxvSPMIUafAtl4HgUFaXALFzOVRuNOTEgOC7Nh0PHzfm0Q7Wb/rIA6z
-	vrcA=
-X-Google-Smtp-Source: AGHT+IFgsu64H5AxVDYQ4VC1AtIntPLrClhNs2DhzecuOxKsWfCafPqovP7OzWqL14ZLgcHX93hNFscreoxfb/7qqJM=
-X-Received: by 2002:a17:902:d2c5:b0:290:ad79:c617 with SMTP id
- d9443c01a7336-2962adb0131mr50508655ad.1.1762436078666; Thu, 06 Nov 2025
- 05:34:38 -0800 (PST)
+        bh=bUL9CATlSKCEFp9SchPtm2+vj/Y9WiYH7wXBHCxt2fE=;
+        b=Frj+wAeQb27gD27XN4TrtH6om0O+S6d/z+F+r3kHnIyMcOapiYwSsKBulvIxTGr9vf
+         /ypEb0XiZKqbxKjsVvcY5X9xofNe0sVQ46cXqJCUPWOLIV8s9BDHn6qklvTx3/elLPpE
+         ziLJ5+6EJiGkk5C0OqEsbKoZEfa4yJxLQx/V1tEHloXMibYC4QO9y8hXZXg73Huioiyv
+         aNydLrqWSHaGH/aa/r67NTTbPQJUBJ4406N+VfBoYgfLyRW3vQkspXe98RR0P7/hJUA9
+         QGm06fJMB4hznjgcJ9/B4+a4F0fVV4g+n0b+09aldYSWk2F6fXka2YJGxXZI0BRHWehr
+         tgVg==
+X-Gm-Message-State: AOJu0YxXfNHcuvt59D9YkMSDYmi1Ve3XehbUEvEmiyUpo3b+G5etJKzi
+	qo1+KwUMJlbdFqwGmeSHcoEj1H5l/nMNX7YU6yrFNXwMs9hRpkRRp+Rly60qjyyPu/cxxm4OScx
+	A/q8+d+d1quMWz/xOuV3sh4UlkjQu1eY=
+X-Gm-Gg: ASbGncsnl1jsBHaOxgJrp0UG1V0fdho12m+4om8IDHKT8HYETrjSXkaFdYRYX4oHgzX
+	V4z32wCMl2pEUx9DgQiQpXbaVXVdRxZbvUS9iQ1LMrI6ltMAeDU3KDz/7FqahCVoHQNytAwFnC9
+	s98mpHTBW9vwbo1xuxPtt/vf+GtRBueovnsTnRCjzzW5sRA3TmRUDUlk5MotJFnLHE18zViujNs
+	//HuE0y1xu/j+Rk44rzpLuibGKhuU4Slsbi44V4UmFq3FYL81cPlQpYCLGfqeTbZg9ARyAKTW20
+	0z2h61Zb9NaxBhaUTGAjpgxBiQr08BC/BQcy8LN2XYDr0TAzSA+/VcZxGbIyp76ObEpvWKx3r+K
+	o+s6RoSXgMV396w==
+X-Google-Smtp-Source: AGHT+IEfIacu7s6ycCoXlIjtrZumJqQD9mwD7KRNq1JmFtRpawOaWyWJr8khm/TbVRECay6vyiuPhyfPEI4cfE8PXsY=
+X-Received: by 2002:a05:6a20:3c8e:b0:341:fcbf:90b9 with SMTP id
+ adf61e73a8af0-350f650d87dmr2226863637.4.1762437462015; Thu, 06 Nov 2025
+ 05:57:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251106102753.2976-1-zhiw@nvidia.com> <20251106102753.2976-3-zhiw@nvidia.com>
-In-Reply-To: <20251106102753.2976-3-zhiw@nvidia.com>
+References: <b8c1c73d-bf8b-4bf2-beb1-84ffdcd60547@163.com>
+In-Reply-To: <b8c1c73d-bf8b-4bf2-beb1-84ffdcd60547@163.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 6 Nov 2025 14:34:25 +0100
-X-Gm-Features: AWmQ_bkZlBPvsV_cw8dYZQNsheLfRuBL-Y7e_Ty1STSrCFE-bOnmtmTHqEfXIAE
-Message-ID: <CANiq72kE9QFdAP2cTjBaxwsQ_H=BmMyabY9vSWUdfj0Ai0QZCA@mail.gmail.com>
-Subject: Re: [PATCH v5 2/7] rust: devres: style for imports
-To: Zhi Wang <zhiw@nvidia.com>
-Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dakr@kernel.org, aliceryhl@google.com, 
-	bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, markus.probst@posteo.de, helgaas@kernel.org, 
-	cjia@nvidia.com, smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
-	kwankhede@nvidia.com, targupta@nvidia.com, acourbot@nvidia.com, 
-	joelagnelf@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org
+Date: Thu, 6 Nov 2025 14:57:29 +0100
+X-Gm-Features: AWmQ_blZbO9Jzsw7nDP57RH9_Ct2efcf_gJ3fIi9rJydGF2_Lre72Afjk4gaiDU
+Message-ID: <CANiq72kX4Yep3pNVq8Ge=txQbPnMO=zKsci5cPgz5LDS=D6NoQ@mail.gmail.com>
+Subject: Re: Only rust/bindings.o build fail on rust-1.91.0
+To: Haiyue Wang <haiyuewa@163.com>, Sami Tolvanen <samitolvanen@google.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	linux-modules@vger.kernel.org, 
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 6, 2025 at 11:28=E2=80=AFAM Zhi Wang <zhiw@nvidia.com> wrote:
+On Thu, Nov 6, 2025 at 2:08=E2=80=AFPM Haiyue Wang <haiyuewa@163.com> wrote=
+:
 >
-> +///     device::{Bound, Device},
+> Strange thing is that ONLY 'rust/bindings.o'failed. And if I add
+> '$(obj)/bindings.o: private skip_gendwarfksyms =3D 1', rust build
+> will be successful.
 
-Is this one converted?
+Thanks for the report!
 
-> +    /// # use kernel::{
-> +    ///     device::Core,
+Would you mind copy-pasting/attaching the your kernel config file
+instead? i.e. the `.config` file (the `rustc` flags aren't the best to
+reproduce the issue).
 
-This hides only the first line, which will look quite confusing when
-rendered -- please double-check with the `rustdoc` target.
-
-Thanks!
+Cc'ing Sami as well.
 
 Cheers,
 Miguel
