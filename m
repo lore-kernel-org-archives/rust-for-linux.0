@@ -1,99 +1,63 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EFD1F461A
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Nov 2025 20:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E4E23507E;
+	Fri,  7 Nov 2025 21:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762548278; cv=none; b=ruNvhQacSMXgNDOWBqjYvc8vGkPmBl3OwDSfrsT5ihhUrCgwNImChnYgNSAp5cUMVAWu4LBPIFZnWmpHfvUIIjkbOyDnvx9CufoEDJniFub4ybW0Cn3Z43mnKaKH2TCGAE01hQKKhyI5Y9DrQoOq1sG5NF7+D70XFoIIAIPgj+E=
+	t=1762552766; cv=none; b=Wrbuy9DV73HjW3BjKeF1mB3ETjDhhgXi4T9XPHQ8kV6LGEpwsXZMRpigGRTK7VB92cHKGyXEZMWxnFlxp0IK35ea2qit8OwsAspc0PVaiULJvI6GZdF4+/qz58uLePbwmUjJbm35bDZ6v8MyMT64htFpavOh9JvSpy4cOYAwhT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762548278; c=relaxed/simple;
-	bh=FJwadjvE+x6S4hONQHvG75rq4vKRo6ZUAojElg8WjXQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k+td5dj/jZV3au5XT1fXA+VY2aedX/CEYv1eFHQR/+QVU60TH8aE4F7yy1EFYRtNKRYKAVqqrXoqgx5ciIvvQvXxEl2bXuFLwlfx7yveaZgyZGhctYyxifUbvqONtMTAiZAh9ttbuJz/rkOlbi0t1d0tu1OUG9XGvdSH9eQzl98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JO9ufdb1; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762552766; c=relaxed/simple;
+	bh=dOZeiGdFdu6aBHSajmK3uZUVzYuU1sCAeoyGnDzNcAw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=YSMJ/0fs7VIkQ0d/rhSBejyoQ6cN/KIq5r+XNd5ME2KC6Viz5C3qZvFWgaTbOXhfAAR6aJ1zfZ9P0slwVzHp4GR0wPxVovFv9Ydgi8OQ+WmKhdiHjJN/WfWbKRXxWHdnFWNARlxJnsso7TASMoJgeh3QWbcBoWC5Q1V4GHAPpLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKBU1jFE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JO9ufdb1"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7ae8a6b637cso125024b3a.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Nov 2025 12:44:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762548276; x=1763153076; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FJwadjvE+x6S4hONQHvG75rq4vKRo6ZUAojElg8WjXQ=;
-        b=JO9ufdb1GvRJA3GSLxSPlMU6ZBq7/y3qtMm4GwQ8TmFJnv6d68sEdPqi/qzJ+P8v2x
-         QYt7xRa5iXPGnwfXAn9/jtPr8BHvECl0g04S0zuHGZzvao/z3iDK2JlYILLrOMmA3IWt
-         EN/JiTWerEwxSn+APwtzzGiNSXQkKF++wZ4DQ62UmfgRguNN+lBMPWy9c2vStBDlPRUA
-         3ObG1QXg7VYgggV7RiX2WnjxTMCyt8KTCzQ8fbERbyzbaLmTnhc88q3NgAnVdNP5sJh1
-         qLTfFDSDxWt2Te+bgunBwQuZ5Qa6fF7Wwtu4s+LDDNB1oeJ3QXihfbrx/Spad/Lls9E8
-         0nsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762548276; x=1763153076;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FJwadjvE+x6S4hONQHvG75rq4vKRo6ZUAojElg8WjXQ=;
-        b=HYVkmGsYNkf0oMRbhV8ODNFASVrEUcVpg8A+1US3iLd555BYH4QCNkXWhQwfwIJcwI
-         sr+I8QQB4VJvpc+KbobmOAlAvBUINwstzX00zI/GGjzOtM0PvFJs4MQGVvFkFHdwehga
-         m1jIxSwFBSMDiid385xXwKCrhzcwbqf6VuGqrXv3FzKs24927t1D9pPcITuR4QEnNJIq
-         oW9+hyfMhCaH0O9D+W++dkTl83jGnSBKIztnKHFa1JEtDVWX4jPVku9rgVhrXVjl5YQQ
-         MHRpc6OG31iHkUfQqjbb5SsAx3fQvR20XZegvMiBb0vDWxikGnHQOejzrbG134D0t51Z
-         VzRg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCqWOGcjE6/CBAZi9uJVjuOc3ZGTF+05RmXLAVZou19n+kv0VspEyypU6b98FN8C0eruVGaIKufIHXwqiG+Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyvl1pkbN1haz9Tnsk8IzlG45pxK9n1Woc5S406GDCLmeZqCdBh
-	t+4T4p/sZ+xEgrh4ACEeg3SpWMm/D9U1H7SlP+ymwLV5m5ScP5x2bqzckh7U30MAT9K7+3L/HKa
-	L8wSUfCVWUgGXuGOQesTK+YrJF1JlWdU=
-X-Gm-Gg: ASbGncssVGtXquB3bHhzwJRRQRVtNFjYm3ptWxDE4KI1KMyDJ94kotqe+nEBRAJ459s
-	stwayWuu+blOedCGAO307pq0WpqvB/3B24WuaymqfDvBET7NBei5aU2K71sEzYsihM7Bo/idNE9
-	oUw11+3Olyy+ODsWjLDZMCfEFccxr9wnpNlC2Q3GCdDnbo1XGAymhaD09Wo35M1I1COAqLTGQcK
-	MjuQIhhItlNA/XprfkCBKrHByT2l8+fgyv87QGvDH54N2YCK6nKzifJ2ZgeABkxjEWHL3NiMOpr
-	tguUPoRziAWg27z3mxZet5YTQSmDwnzWvBEmuH3rQrjReGp/RjLBpv2Ru9AjmbrQaK1wjkeX5LG
-	ylrM=
-X-Google-Smtp-Source: AGHT+IG4kfdE9ns+hw2rpt0h0Ke6GeX0YiddNE3DhFtSBXMZ3HIxQ2OtW0G9wd0osT7WC1CnPcwhL4cL4czBFQyIQaM=
-X-Received: by 2002:a17:902:eccc:b0:272:2bf1:6a1f with SMTP id
- d9443c01a7336-297e5657e71mr2838795ad.4.1762548276152; Fri, 07 Nov 2025
- 12:44:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKBU1jFE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE42EC113D0;
+	Fri,  7 Nov 2025 21:59:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762552765;
+	bh=dOZeiGdFdu6aBHSajmK3uZUVzYuU1sCAeoyGnDzNcAw=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=UKBU1jFEA9xiFIh9W7aLUXAlrMThrRyKjeNf88YS6uoowlVphgND7gf3s3ErXNFo2
+	 2Tx+b7MkCDqTGSb63ulCTE2HxfYm/QM8qiFrfd3vNZgVxxlAAcZyVW3I+cSdnBTnLZ
+	 0QX+C45azd1dIbJn1TO284l9UcBv0Nj+kuIMH6YvqyQFKlSOjGgd4yzM1RbhbobBiH
+	 P5mQbA5h2mtmFPpdedJ93m1We+qtgvR9D5Vqo71TibNEfaQOMj7/kL16pVi4+pH0L+
+	 7uE30ZcmxQubiirhA/AkaLfdkSfsP76DiXWK9vgikANYX3rGfGnalvnq/vcivVstax
+	 5LR+LMo2D3SzA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251107202603.465932-1-lyude@redhat.com>
-In-Reply-To: <20251107202603.465932-1-lyude@redhat.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 7 Nov 2025 21:44:22 +0100
-X-Gm-Features: AWmQ_bkvvWpH3oiH0ZMom1_CPsAEk9l2Cr9yEraf7Pp4-uYDzYPAwG5chWQGO1w
-Message-ID: <CANiq72=c_0+H+ZysBL6a=zVd18sGPex1=e9N3_nDMxFFt9yqjg@mail.gmail.com>
-Subject: Re: [PATCH] rust/drm/gem: Fix missing header in `Object` rustdoc
-To: Lyude Paul <lyude@redhat.com>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Shankari Anand <shankari.ak0208@gmail.com>, Asahi Lina <lina+kernel@asahilina.net>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 07 Nov 2025 22:59:18 +0100
+Message-Id: <DE2ST39SK8NS.3EPFHATBG0X7K@kernel.org>
+Subject: Re: [PATCH] rust: debugfs: Implement BinaryReader for Mutex<T> only
+ when T is Unpin
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Stephen Rothwell"
+ <sfr@canb.auug.org.au>
+To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251107091612.2557480-1-dakr@kernel.org>
+In-Reply-To: <20251107091612.2557480-1-dakr@kernel.org>
 
-On Fri, Nov 7, 2025 at 9:26=E2=80=AFPM Lyude Paul <lyude@redhat.com> wrote:
+On Fri Nov 7, 2025 at 10:16 AM CET, Danilo Krummrich wrote:
+> Commit da123f0ee40f ("rust: lock: guard: Add T: Unpin bound to
+> DerefMut") from tip/master adds an Unpin bound to T for Mutex<T>, hence
+> also restrict the implementation of BinaryReader for Mutex<T>
+> accordingly.
 >
-> Invariants should be prefixed with a # to turn it into a header.
->
-> There are no functional changes in this patch.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Closes: https://lore.kernel.org/all/20251107134144.117905bd@canb.auug.org=
+.au/
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Thanks for taking care of the docs, very much appreciated :)
-
-Cc: stable@vger.kernel.org
-Fixes: c284d3e42338 ("rust: drm: gem: Add GEM object abstraction")
-
-Cheers,
-Miguel
+Applied to driver-core-next, thanks!
