@@ -1,144 +1,83 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E8F2F5A05
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Nov 2025 09:27:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79042FD691
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Nov 2025 09:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762507654; cv=none; b=N/9/ZUc/I2uwQETjzabrxDmyI6rVGQxRxI6U7bYkVf7SGPMnskvoks/V6aUwns9b7R9PbzPdlsaPOLc5wrrO4fUX46FNxKlNJGtpA3HGqpGgMwo/v60hJcZIX+uiPyiLBe/KbDiAwwWQrJuyuJiU8S6DIr7Ck/zSHjgUIhf7X50=
+	t=1762508263; cv=none; b=MyaqVmASEwILtEoBIZqc5YippIBSTqkBRwIMB/0JVRPMqiFTY+2GYy1MnuGgTVDWDiA+oZ99ZXZgMV/wGM/HTlX0Qki7+s3tLjzxSFeT7DrFdrxYkSdm3zExXZdhIyffxmECxxeQZ1Y6UOOjvJzp9pSYwCDK7qJYVytY4mzG1j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762507654; c=relaxed/simple;
-	bh=zql2idMxKn9IZQQNYisWu3dktGhNGu+7zZEYNX+6VNk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WeHx18V3pJY4hlhsdzAu+A5MNgospc/lLJ9v+i/G4JSdKg9yTqCLUydMDiIZs9PyyVPcQgn9qNTAvyYXaqggMit/0qnXYQg8B1xtVi0PZhQdAid45vu7nuDWOzG2W0fcE9YnnIApDVKdA6v/nUyAesaz/z/yd8tUJ31bJT10IiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2RM+Ujcj; arc=none smtp.client-ip=209.85.221.41
+	s=arc-20240116; t=1762508263; c=relaxed/simple;
+	bh=d+fykfbo0yVSu5PSzD1il/dNIIo186gGMyzSZ6FzhPI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jJ0UBkCxEsiTDE6/xBCu6e1rU7Qxsu8KL0qtF2CfejVSKuIRJo8+8dzM3REtWjlutVf6YHDJn5Pgwqx1XjN0StctUADpVmdUMRYuMt/LNYghf/A/QYidT7ZIINvcylrGcrLbbYxIOYFXDU5fsHPKR+GRe1BwwH28YZcfj/HjSA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pDgsktyb; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2RM+Ujcj"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3ee130237a8so312752f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Nov 2025 01:27:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pDgsktyb"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4775d8428e8so3995815e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Nov 2025 01:37:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762507651; x=1763112451; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oJkdEVxT25O3GXjohNk3p6mQ6FsJrtPAoSVYfYSIvHw=;
-        b=2RM+UjcjaqTLAVafLXzNXwiKtbPjfqz9ynfem20WPAOHycMxyVnEijfrZDrfEYR1AL
-         uJ66LX6xQDX5R1UJd/lCY0YeaqPoZJM8JUBtxjlr43xPsbBR71Qy5w3E25aepGT5SI+6
-         AMQVWmr2ygA4MNQGlfWOeUVxVjFqP9t65Uo/DXCQxtlxB7AVBQerL+9XO4PBVKeg250Q
-         VMR+tD5Td0ou829j16Ma9EOmou3MG7xUA/pbW6Jo7XucieQOMqqVkqz58m6Q2lnE5Hfh
-         bKrKbLk6+S1EdgOeB9L9xbR/zbfk/ekM+UYyeHMBiLw0DpcwM5HZfAkPHHimkBd/92bR
-         6wDA==
+        d=google.com; s=20230601; t=1762508260; x=1763113060; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+AnBAo1ieXfvVE9W+nwSIevZrdDCppUWTkwbf9O15Qo=;
+        b=pDgsktybRkhaxwGIrbn0QDqQ+hrQsLdJtQ4vwwhuLBBrtcaJB0eUVMAQ2Syt9Bcj2b
+         G1NBqER7+ogZabRnbvehZkXLygKAMpy96vsDVOrT/i3xeZMlWV9eMHzn2fzYs2P/2KVC
+         wPVnugSxBAi8CDIYucI7xVGF0Yl1KOVF44FtCjRWwyWMW3SnfDLBmiHF0dEn0q5UQWZ7
+         +9qn/NOmC82JVMU50ywqFTDKYBhUsx3LWNvwyJXCi1skutpsHBtAPVjWqcVaUMsnYu2G
+         EJrK6tlrLxJ/NqoGfmcexbjFfpPH2Eu8NC3Z1vt2cw+mTGXnSUUZ0G56MyG5snyz6K79
+         NQeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762507651; x=1763112451;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oJkdEVxT25O3GXjohNk3p6mQ6FsJrtPAoSVYfYSIvHw=;
-        b=RS4VvLlAAUbPlXolITWdC6c2iU3j7giE9PDbplP3EDN24DQanJmqVzpQheD6LLJD5g
-         Cq3u4xZR2gzjlNFs3rU2d6GYPHIo37GAqvhAGa/E0tNzGqbA37qaTHNwh+qQh4oNM/KJ
-         C1p9yNpazBa0QTdxvno4wSeC2Wy80LynViW7Y1pFlhqMMh6R4rFESngolYjshS07hH1O
-         Qsmmn5Y2F5ZxjNI3JXTGAIgR9JLyIpP+P3PfFQeYBRPHLj7AlAjfdJ9BDym7+CGtrzHs
-         h4aKOV7SwQKxib6LnYhGDPIY+dKJ3WpFfnImd9lO1qpnJVjxOXBLSlDcL7VXHTmgzTNk
-         mh0w==
-X-Forwarded-Encrypted: i=1; AJvYcCUlB2DjaXjZimKdY9n2u7esslcYWA9VtbuWk1SjsjE2CLg3NDYK29WW27euYcJNK2TaREiHD6PExV9Ccc/CmA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRPXs5wl2aQ3IDP+o9iEXN6T/6d6Vdb9qaoaHZV6jre02t6/ja
-	n+ciFWd5rM3K/I6bHquvINBN2nJs40YVHYDwwuE2AzkV6map/hmmkRqZfbsIJpBXvWexb0CNAsA
-	oSsYniwB7TqePDzafKd1RgYxSMUwZeOwUq96LRA90
-X-Gm-Gg: ASbGnctJ8wrBoYTsPcv9lJ/xiUZZq4AJ1n1+WpxYZ3RwvDpfJm/hvZOVz0dtA0YNprG
-	g1fl55ldlRArt71w+04ZoXQ0XuY02zeKchSS90xZ7ZxboUBK+in8eIDVljNGMiolj3fxHNwSOK+
-	CIfdRAE03hho6ROuTlWmoKK7Q4L0WyE4Uky65F/V4jItC5qsh8vPJ1d4OvLIuhIbzWcIkWmbKU0
-	cqpdesTq7p8lRXtKUd5J3nanhFb9MBLMmw5dpxoVSZWCrSolfHPUrK6IpCx/DPChKExh8ZAwbO+
-	rWCd5hmOLjD2vg==
-X-Google-Smtp-Source: AGHT+IFle/w4e+aky9dDN00u9w5qMqMYp4+iwTBMRCAFPTApgJKqffnTXa0XQ44LPOLkMtHMiEidtNEEmO7onsmHZ4k=
-X-Received: by 2002:a05:600c:474a:b0:477:55c9:c3ea with SMTP id
- 5b1f17b1804b1-4776bcdb495mr21615615e9.35.1762507651253; Fri, 07 Nov 2025
- 01:27:31 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762508260; x=1763113060;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+AnBAo1ieXfvVE9W+nwSIevZrdDCppUWTkwbf9O15Qo=;
+        b=quWnbjkqlnj6vVR+e2+fy9Pl4i1GQEkbjS9EhQshazo870nt8V+B/uLFm+tS24lj+m
+         Zb4hOGhrOjnNKlDSp/PvlJVTwR6MbGZWhZNOrwipc38OQEYAKoKiXWBYG3G/fW3h8YNU
+         jcFhP2ZcUd13hjYCUe+4Bv+MMPgzqdE3R04KhUVWjytXykGBO2MYuDX93MOtg7VEECLw
+         NGaW+zhHZTbZsCqrstSsMoUTtrGvr8VYGn0Az+nqXGlOMZSEBM6vj7wcEdc3CqkyeQhz
+         DPzvFaNfdp9tPIOfgawyTR/PAfhbIThARtt7OaE8jrCk+C8r5EOcxx5lERahi3FPDwbU
+         Hl2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWoDl1NoupkKDGyzz6qOVLNHDjmboNI2/uEiGgtzWMc/fKaehzABdkbeoo08LAwPiE26A85EDIYAs5jufLKUA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSJ7iHDrAxQgTOE6YZrokptk3ffkY5vcXyMyQ4QO3vu1vecI9A
+	sLB8c6kNIKlfU1aqpayvSDnflMhcvCZYiB566t9RyKXVteQn8zhlhlVSUB+0NvMsRw9VB55iGYa
+	+Iw7Qjp3oX8PppZPcCw==
+X-Google-Smtp-Source: AGHT+IFx6JnB83u2hch19RaQnggflMp9yQa+OdndiPmwepxjVcH0thfA6gW27ocmbkG1cgsMwvesbWOHXfMAUhU=
+X-Received: from wmlf4.prod.google.com ([2002:a7b:c8c4:0:b0:477:5506:8a6d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:35c2:b0:46e:3550:9390 with SMTP id 5b1f17b1804b1-4776bcbbb54mr23797035e9.20.1762508260292;
+ Fri, 07 Nov 2025 01:37:40 -0800 (PST)
+Date: Fri, 7 Nov 2025 09:37:38 +0000
+In-Reply-To: <20251107091612.2557480-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251107050700.1086059-1-m18080292938@163.com>
-In-Reply-To: <20251107050700.1086059-1-m18080292938@163.com>
+Mime-Version: 1.0
+References: <20251107091612.2557480-1-dakr@kernel.org>
+Message-ID: <aQ294kwmW_-vu_1f@google.com>
+Subject: Re: [PATCH] rust: debugfs: Implement BinaryReader for Mutex<T> only
+ when T is Unpin
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 7 Nov 2025 10:27:16 +0100
-X-Gm-Features: AWmQ_bn0_YpyoyCmwHnyMVeVnDhIAwFUr0Y5LT4OlVSRZWa7nbsVmxfJKIuTnIQ
-Message-ID: <CAH5fLgirP4=RrDcuF0n74KvN05K4FkAm9uZUfwX0WYfM+pKP8g@mail.gmail.com>
-Subject: Re: [PATCH] rust: rbtree: fix cursor method lifetimes to match tree lifetime
-To: Hang Shu <m18080292938@163.com>
-Cc: ojeda@kernel.org, Hang Shu <hangshu847@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Charalampos Mitrodimas <charmitro@posteo.net>, Borys Tyran <borys.tyran@protonmail.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Daniel Sedlak <daniel@sedlak.dev>, Tamir Duberstein <tamird@gmail.com>, 
-	Matt Gilbride <mattgilbride@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Nov 7, 2025 at 6:07=E2=80=AFAM Hang Shu <m18080292938@163.com> wrot=
-e:
->
-> From: Hang Shu <hangshu847@gmail.com>
->
-> The returned keys and values of cursor methods should be bound by
-> the lifetime of the rbtree itself ('a), not the lifetime of the cursor.
->
-> Without this adjustment, examples like the following fail to compile:
->
-> fn test_rbtree_cursor(rbtree: &mut RBTree<i32, i32>) -> &i32 {
->     rbtree.try_create_and_insert(1, 1, GFP_KERNEL).unwrap();
->     let mut cursor =3D rbtree.cursor_front().unwrap();
->     // compile error
->     // cannot return value referencing local variable `cursor`
->     cursor.peek_next().unwrap().1
-> }
->
-> This modification ensures that references to tree elements remain valid
-> independently of the cursor's scope,
-> aligning with the actual lifetime dependencies in the data structure.
->
-> The changes will be applied to multiple similar methods
-> throughout the Cursor implementation to maintain consistency.
->
-> Fixes: 98c14e40e07a ("rust: rbtree: add cursor")
-> Signed-off-by: Hang Shu <hangshu847@gmail.com>
-> ---
->  rust/kernel/rbtree.rs | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-> index 9e178dacddf1..702a1b6ef7a9 100644
-> --- a/rust/kernel/rbtree.rs
-> +++ b/rust/kernel/rbtree.rs
-> @@ -742,7 +742,7 @@ unsafe impl<'a, K: Sync, V: Sync> Sync for Cursor<'a,=
- K, V> {}
->
->  impl<'a, K, V> Cursor<'a, K, V> {
->      /// The current node
-> -    pub fn current(&self) -> (&K, &V) {
-> +    pub fn current(&self) -> (&'a K, &'a V) {
->          // SAFETY:
->          // - `self.current` is a valid node by the type invariants.
->          // - We have an immutable reference by the function signature.
-> @@ -750,7 +750,7 @@ pub fn current(&self) -> (&K, &V) {
->      }
->
->      /// The current node, with a mutable value
-> -    pub fn current_mut(&mut self) -> (&K, &mut V) {
-> +    pub fn current_mut(&mut self) -> (&'a K, &'a mut V) {
+On Fri, Nov 07, 2025 at 10:16:07AM +0100, Danilo Krummrich wrote:
+> Commit da123f0ee40f ("rust: lock: guard: Add T: Unpin bound to
+> DerefMut") from tip/master adds an Unpin bound to T for Mutex<T>, hence
+> also restrict the implementation of BinaryReader for Mutex<T>
+> accordingly.
+> 
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Closes: https://lore.kernel.org/all/20251107134144.117905bd@canb.auug.org.au/
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-This would allow me to call current_mut() twice on the same cursor to
-get two mutable references to the same value. That is not okay.
-
-If you want to have methods that return a reference with the tree's
-lifetime instead of the cursor's, then you need to add new methods
-(probably called into_*) rather than modify the existing ones.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
