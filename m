@@ -1,67 +1,100 @@
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DB230DD25
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Nov 2025 20:13:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FE218E1F
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Nov 2025 20:26:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762546427; cv=none; b=Kyr1m5yDwIXgJNLXNCsqhFlrmBMGpdpngUeh1IuEBT5g1+sUjwhymB0PN15DLmj72ptkBeat7e2xUhpnA+RyJF+4GYNlDGn7S2zOmMiGNrOyCbMHwmmPjZxWkui0TSXy50YOM5J+jo6eHlR5nHTUuxoROEgCJjj44TBaTI46ir8=
+	t=1762547215; cv=none; b=bL6s8e+rT2w3N5dLOvopW3i0jzlscTHVKJ8QnYVDYZw0wTX2Rhf4B+EiIw0pyw+xAVAdXF2ORTo0HYzNxnDhqZgiWrprPiYaxx9LXaMMTFlWFAEoa4ilo73HavSAxokX7LGeh1LaXSV3hG8kAZMWFo8JlNsmhGaMKOPKwJQ1ZZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762546427; c=relaxed/simple;
-	bh=09eUTTlY2G0jdVjelC0cqh/VHK7FqJOXK65qTcB6Hvc=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=vGlksm28kOgsGQ5kDlPJKE6E/2ljAXg14JRuNokFBUrmMwVo8SC8ZI45NX6JhAv430e9CttW/iootlLbkIgAcwwK9siu4kwfmgydHe0cG4LpBFn/EQw2FLCajr9/TZmjE0pIiP+0qv3j5oRMpwZgUEsOGMhhUyShNr5liZxF8yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; arc=none smtp.client-ip=209.85.166.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-4330e912c51so4672405ab.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Nov 2025 12:13:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762546424; x=1763151224;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0gS1PgCh01Jm1QkTVUHmieEXJsyrh4GhNpZPiTdUvss=;
-        b=YMR/XKDnbuZUsFhE/gCsuDKokWT4LGUJEvHsAPZErE98YLJpN8KotVVbdYsuOh5t+8
-         Idt3n9eJulI2rCkZiHgykFzVQGQQKceWGCWO4IA88EPZmUY64FZRb14S65Nox5a6ItC0
-         FRtgDOkBHFENxTL5+r2kd25EyNuaZD6/Nbgmpp0HjLYqFYICq6j0ETYFAJvcOfuCHwzB
-         K73ASiaVCvF47HUdAy9MSLUJjIZWcaApModsuYag2bJQDLxonlvC+3htVOGzTj+Yo27a
-         SAz4IQSM44Jr9mx6/jZ7V3eCdkEl/WTiPAacZxFul1xiHdLHv3Jkjmh9Pjksl3Au+hNh
-         xeZQ==
-X-Gm-Message-State: AOJu0YzdEODqNy1cThDN1JdhDWvBbXdJiRS86iod/+MQ1BL36hE+EGLs
-	QnT0SQy8d6puRzMQKWCU2KFRfebvZs7cnIzZzfQTXjewgXLJNRuKRVleXQIqovCknRrWJhSWMSl
-	M2jV4aVZ2uGWumB+FRq2sPs5g1u9AiWmDE5CYX5v6sFg4FIlBnTX8raq2
-X-Gm-Gg: ASbGncszH0o16FYBQnrApp4PVukS9u6kC54rbzLTV+SKNvs6du/DIshKcFDwho8MRNy
-	zjKhGcoKmv4DdAji+Nz9v9IHAo8arLgFEHvXjfAfeJ/LOhsKZiefh+JoYLZOQoDN7T/d1brJiCQ
-	ZAPeosYJZLf0d3PoDmrPBSxYfaqg0h10Kq8nwENZCNvLXW7trkS1K7WA2mDyzJwQOM7RiUWKTzs
-	7cDEzSwGdNvrjqaPgdA1d5Nt7Lo8bdDIVVhmRgig1YEA5YbscYokE0hee8Pyqg=
-X-Google-Smtp-Source: AGHT+IHAK/qPwgSmSCJLGfBjqQM2vcUyaaK0ElRhJneu5Nk0cEvEXK8xDHWJ+dBfVz1IUtf47kFhuUgyIobaaTUvn30=
-X-Received: by 2002:a05:6e02:3710:b0:433:27b5:1faa with SMTP id
- e9e14a558f8ab-43367dca877mr12429685ab.1.1762546421338; Fri, 07 Nov 2025
- 12:13:41 -0800 (PST)
+	s=arc-20240116; t=1762547215; c=relaxed/simple;
+	bh=ZKaUUYdPx3BMbOo/LEvyBO/FJ3OZMyPaglyZDKlfN1s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EQ4YkORdoak4N796ljxSswnof4l3AXK7URQlih4yhBfDepR8u1HvdJgjf7kOWHP9UgFYSdUtqtzS9N+XBPi+rsDXaf68BJhYez6nmSFhUY8DQwNoMCpRK/AWLS41EerPJ4bn3GMKZ2RgGUVEh7likNWc4IOQfjv9n3kSAjmOxK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZpA26PBt; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZpA26PBt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762547211;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=uwpys1qbVqIQiEcWuPi5tSAuqTvExDHlhAreYZVUYmI=;
+	b=ZpA26PBtLGEsjaf28YcmNqV4BLHqTjDMewmBjrM4ZXhehxpq4BlyB4vUGBdyb6/yxFoS2N
+	2BJJJxCVN9XpOwmni9SsbB07tuHVUesUJvt9IuNihyITSnYfCULutlOFQEmvewM89dG/kG
+	np6ojEchenic78z+tazPmpd1OUpob+c=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-502-2c9BFE75Nh-WEcNxIjv4Xw-1; Fri,
+ 07 Nov 2025 15:26:46 -0500
+X-MC-Unique: 2c9BFE75Nh-WEcNxIjv4Xw-1
+X-Mimecast-MFC-AGG-ID: 2c9BFE75Nh-WEcNxIjv4Xw_1762547204
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 98ABB180048E;
+	Fri,  7 Nov 2025 20:26:43 +0000 (UTC)
+Received: from chopper.lan (unknown [10.22.81.9])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 799D118002AC;
+	Fri,  7 Nov 2025 20:26:39 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	Asahi Lina <lina+kernel@asahilina.net>
+Subject: [PATCH] rust/drm/gem: Fix missing header in `Object` rustdoc
+Date: Fri,  7 Nov 2025 15:25:56 -0500
+Message-ID: <20251107202603.465932-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Justin Forbes <jforbes@fedoraproject.org>
-Date: Fri, 7 Nov 2025 13:13:30 -0700
-X-Gm-Features: AWmQ_bnxn5ZTxbSrTPWI-CI3rLMS0B7sroSBMNjVbv-EBLTdopH_YiIu0paJ5Co
-Message-ID: <CAFxkdArGv91enmUpsuuARGLGZXNJjGZE3Cjsk3NfZS5nCRsgYA@mail.gmail.com>
-Subject: Build failure with rust 1.91 and CONFIG_EXTENDED_MODVERSIONS
-To: rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-It seems that building withe CONFIG_EXTENDED_MODVERSIONS  and rust
-1.91 gets us to the following error:
+Invariants should be prefixed with a # to turn it into a header.
 
-error: gendwarfksyms: process_module: dwarf_get_units failed: no
-debugging information?
-make[2]: *** [rust/Makefile:552: rust/bindings.o] Error 1
-make[2]: *** Deleting file 'rust/bindings.o'
+There are no functional changes in this patch.
 
-Turning off CONFIG_EXTENDED_MODVERSIONS gives us a successful build, even with:
-CONFIG_BASIC_MODVERSIONS=y
-# CONFIG_EXTENDED_MODVERSIONS is not set
-CONFIG_MODVERSIONS=y
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+---
+ rust/kernel/drm/gem/mod.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Justin
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index eb5f3feac8907..a7f682e95c018 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -164,7 +164,7 @@ impl<T: IntoGEMObject> BaseObject for T {}
+ 
+ /// A base GEM object.
+ ///
+-/// Invariants
++/// # Invariants
+ ///
+ /// - `self.obj` is a valid instance of a `struct drm_gem_object`.
+ #[repr(C)]
+
+base-commit: ade19c5060dfa39b84a9475a4a6b05e2a8a2b3ac
+-- 
+2.51.1
+
