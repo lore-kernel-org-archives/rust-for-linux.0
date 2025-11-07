@@ -1,91 +1,316 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E15302155;
-	Fri,  7 Nov 2025 09:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAEE319604;
+	Fri,  7 Nov 2025 09:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762508470; cv=none; b=b28wA/5NGyG5pwQFCuwWh89Jk5cyvyxy/WEJOZCLBo7UCj1uVMAEq5k7WTqrSUwUBp91jbRgEwbRe2qrXqTe70ydMf4vA5OPfh5GNrD66j+x3vAIWNEAc1AGNZ3NHHyGrlSyAM40zcboOr/AHhDuXc0TuYRYQcGk0MW6qQZiu70=
+	t=1762508575; cv=none; b=pWcoxT1q+9sO7VE6A8lUex7HApYNbkVFHiWDVdip9Qn+fcbB2UXQNPhjQXmy5nVc8HS9RATEorVBAo3W0Q7qHjpz+jRW8NbBJqJDsHQN/Pc+MokL9uD7yNvK5K5dB8hpdQpoZzG2PnaakSk4vP4bg2VMO6f//DipMdVLMmXo1mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762508470; c=relaxed/simple;
-	bh=HU9e2vnNjxWlIhwA3QVCisFinU2zTQ4zAQwQ/T99kHg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PS0ZKllOwLr/93zTSAijVxZWFhw03S2LTIn1AG/++Mjowg/tjHHWM2wY9w85rBmDs8WwZY27PC+747NJ3tKAKu67dulTTIX3C79Lau1jabN38NMgQ2GXrpPmlWLqrBY+uhFQNwNeEFb/6RNqIJxfXnjeXk3B3As5ytoBlzHAjT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=O0dNUkZi; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1762508575; c=relaxed/simple;
+	bh=9ZMD++yk3gyPxg7lu0dYQuNvvC4ocprc4MAaAT8RRdI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=O22GnX/Huh4nEwZoPEq6LmauHp4LTr1fmYnNitY+nFs4fLik5pggzNJLY9v6AbMkGcfYKmPvI+ZF6uAr2/Nls9uMZw2NGJbB84tXOaDtZssF3boBmBvervHlYbgXQ5A7XWLcmvqsVwaJUKjhWQmnO8kTYGdCU0LFzKbr5Un4oRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KZN7wrus; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="O0dNUkZi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Z9
-	Z2z6lYD454SSTMg93od2aYjbd6mTtEGW7aRBQLsbU=; b=O0dNUkZiLMXp+YwniD
-	J2pSzdqcH0nXlcy7RZUj7aqdrwHBCrqVSJStr7JL/VbFn5k0Duvx/XV0LkTLjWr+
-	VtQtayTfQ9H6oKgi4ROzK3QYT4uRXg1o1Fo3gY49WHGerqtb3EsM3mF75mXltwPY
-	hNogOsZH2+/gbkZhsdHw5oVok=
-Received: from ubuntu.. (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3l5JQvg1pZnE4CQ--.925S2;
-	Fri, 07 Nov 2025 17:39:30 +0800 (CST)
-From: Hang Shu <m18080292938@163.com>
-To: ojeda@kernel.org
-Cc: Hang Shu <m18080292938@163.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Borys Tyran <borys.tyran@protonmail.com>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Daniel Sedlak <daniel@sedlak.dev>,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Matt Gilbride <mattgilbride@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rust: correct documentation comment for rbtree cursor peek_next method
-Date: Fri,  7 Nov 2025 09:39:17 +0000
-Message-ID: <20251107093921.3379954-1-m18080292938@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KZN7wrus"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965BDC2BCB3;
+	Fri,  7 Nov 2025 09:42:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762508574;
+	bh=9ZMD++yk3gyPxg7lu0dYQuNvvC4ocprc4MAaAT8RRdI=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=KZN7wrusq4dGgvNuEuNLZd49NQG5vWE9VIQqZvDmsHIytcXYjf6+MY5LpgQCsRI6h
+	 1zJIMJzu8m+TX+Fhfs4wnCbr6+j0cEbGBIIq3W7mshJaKDYePwJXjUdAfQ2SFKP2I+
+	 vjU+qPMy/yS7A15UxRmtNuBqu8ar4Zxaxg1xVyn9c9KrN6AYa98a/Uigyktc1/mppU
+	 gNZ66Ts25R1YVd4cyF+leXMdQG87Q6vDj7YxvPLyJr41FMlfhioXgbBgu01fxQe13t
+	 RETXwUI1KNiXfqM/3ZJTlWc0YQ6nHVE34250CZ68xpOJg5Elk9EbFZZOew4e+10L74
+	 8YUl48XYe0vJw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3l5JQvg1pZnE4CQ--.925S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Xr18GryfKFy8tFWrXr1rXrb_yoWfZFg_Ga
-	90qr1fAay09FWjvasxJws3ZFyfKw1xGF4Fkw17KrW7Ka45CF45JrnYgr98Z3sxG39Fvr9r
-	ZFnaqa9rKw129jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRtmiiUUUUUU==
-X-CM-SenderInfo: bpryimqqszjmity6il2tof0z/1tbizRH+kWkNvEskdQAAsx
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 07 Nov 2025 10:42:48 +0100
+Message-Id: <DE2D56N69NP8.2X1SGEBDM92DG@kernel.org>
+Subject: Re: [PATCH] gpu: nova-core: apply the one "use" item per line
+ policy
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251107021006.434109-1-jhubbard@nvidia.com>
+In-Reply-To: <20251107021006.434109-1-jhubbard@nvidia.com>
 
-The peek_next method's doc comment incorrectly stated it accesses the
-"previous" node when it actually accesses the next node. This commit
-fixes the documentation to accurately reflect the method's behavior.
+On Fri Nov 7, 2025 at 3:10 AM CET, John Hubbard wrote:
+> As per [1], we need one "use" item per line, in order to reduce merge
+> conflicts. Furthermore, we need a trailing ", //" in order to tell
+> rustfmt(1) to leave it alone.
+>
+> This does that for the entire nova-core driver.
+>
+> [1] https://docs.kernel.org/rust/coding-guidelines.html#imports
+>
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
 
-Fixes: 98c14e40e07a ("rust: rbtree: add cursor")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Hang Shu <m18080292938@163.com>
----
- rust/kernel/rbtree.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for doing this!
 
-diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-index b8fe6be6fcc4..9e178dacddf1 100644
---- a/rust/kernel/rbtree.rs
-+++ b/rust/kernel/rbtree.rs
-@@ -835,7 +835,7 @@ pub fn peek_prev(&self) -> Option<(&K, &V)> {
-         self.peek(Direction::Prev)
-     }
- 
--    /// Access the previous node without moving the cursor.
-+    /// Access the next node without moving the cursor.
-     pub fn peek_next(&self) -> Option<(&K, &V)> {
-         self.peek(Direction::Next)
-     }
--- 
-2.43.0
+Few nits below, I assume Alex will fix them up on apply, so no need to rese=
+nd.
 
+With those fixed,
+
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+
+> diff --git a/drivers/gpu/nova-core/fb.rs b/drivers/gpu/nova-core/fb.rs
+> index 27d9edab8347..53e718510568 100644
+> --- a/drivers/gpu/nova-core/fb.rs
+> +++ b/drivers/gpu/nova-core/fb.rs
+> @@ -2,16 +2,24 @@
+> =20
+>  use core::ops::Range;
+> =20
+> -use kernel::prelude::*;
+> -use kernel::ptr::{Alignable, Alignment};
+> -use kernel::sizes::*;
+> -use kernel::sync::aref::ARef;
+> -use kernel::{dev_warn, device};
+> -
+> -use crate::dma::DmaObject;
+> -use crate::driver::Bar0;
+> -use crate::gpu::Chipset;
+> -use crate::regs;
+> +use kernel::{
+> +    dev_warn,
+
+Should be in prelude and hence can be dropped.
+
+> +    device,
+> +    prelude::*,
+> +    ptr::{
+> +        Alignable,
+> +        Alignment, //
+> +    },
+> +    sizes::*,
+> +    sync::aref::ARef, //
+> +};
+> +
+> +use crate::{
+> +    dma::DmaObject,
+> +    driver::Bar0,
+> +    gpu::Chipset,
+> +    regs, //
+> +};
+
+<snip>
+
+> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/fi=
+rmware.rs
+> index 4179a74a2342..895309132ae0 100644
+> --- a/drivers/gpu/nova-core/firmware.rs
+> +++ b/drivers/gpu/nova-core/firmware.rs
+> @@ -3,18 +3,24 @@
+>  //! Contains structures and functions dedicated to the parsing, building=
+ and patching of firmwares
+>  //! to be loaded into a given execution unit.
+> =20
+> -use core::marker::PhantomData;
+> -use core::mem::size_of;
+> -
+> -use kernel::device;
+> -use kernel::firmware;
+> -use kernel::prelude::*;
+> -use kernel::str::CString;
+> -use kernel::transmute::FromBytes;
+> -
+> -use crate::dma::DmaObject;
+> -use crate::falcon::FalconFirmware;
+> -use crate::gpu;
+> +use core::{
+> +    marker::PhantomData,
+> +    mem::size_of, //
+
+Should be in prelude.
+
+> +};
+> +
+> +use kernel::{
+> +    device,
+> +    firmware,
+> +    prelude::*,
+> +    str::CString,
+> +    transmute::FromBytes, //
+> +};
+> +
+> +use crate::{
+> +    dma::DmaObject,
+> +    falcon::FalconFirmware,
+> +    gpu, //
+> +};
+> =20
+>  pub(crate) mod booter;
+>  pub(crate) mod fwsec;
+> diff --git a/drivers/gpu/nova-core/firmware/booter.rs b/drivers/gpu/nova-=
+core/firmware/booter.rs
+> index b4ff1b17e4a0..4d2a6502a879 100644
+> --- a/drivers/gpu/nova-core/firmware/booter.rs
+> +++ b/drivers/gpu/nova-core/firmware/booter.rs
+> @@ -4,20 +4,38 @@
+>  //! running on [`Sec2`], that is used on Turing/Ampere to load the GSP f=
+irmware into the GSP falcon
+>  //! (and optionally unload it through a separate firmware image).
+> =20
+> -use core::marker::PhantomData;
+> -use core::mem::size_of;
+> -use core::ops::Deref;
+> -
+> -use kernel::device;
+> -use kernel::prelude::*;
+> -use kernel::transmute::FromBytes;
+> -
+> -use crate::dma::DmaObject;
+> -use crate::driver::Bar0;
+> -use crate::falcon::sec2::Sec2;
+> -use crate::falcon::{Falcon, FalconBromParams, FalconFirmware, FalconLoad=
+Params, FalconLoadTarget};
+> -use crate::firmware::{BinFirmware, FirmwareDmaObject, FirmwareSignature,=
+ Signed, Unsigned};
+> -use crate::gpu::Chipset;
+> +use core::{
+> +    marker::PhantomData,
+> +    mem::size_of,
+
+Same here...
+
+> +    ops::Deref, //
+> +};
+> +
+> +use kernel::{
+> +    device,
+> +    prelude::*,
+> +    transmute::FromBytes, //
+> +};
+> +
+> +use crate::{
+> +    dma::DmaObject,
+> +    driver::Bar0,
+> +    falcon::{
+> +        sec2::Sec2,
+> +        Falcon,
+> +        FalconBromParams,
+> +        FalconFirmware,
+> +        FalconLoadParams,
+> +        FalconLoadTarget, //
+> +    },
+> +    firmware::{
+> +        BinFirmware,
+> +        FirmwareDmaObject,
+> +        FirmwareSignature,
+> +        Signed,
+> +        Unsigned, //
+> +    },
+> +    gpu::Chipset, //
+> +};
+
+<snip>
+
+> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+> index 9d182bffe8b4..de87efaf09f1 100644
+> --- a/drivers/gpu/nova-core/gpu.rs
+> +++ b/drivers/gpu/nova-core/gpu.rs
+> @@ -1,13 +1,27 @@
+>  // SPDX-License-Identifier: GPL-2.0
+> =20
+> -use kernel::{device, devres::Devres, error::code::*, fmt, pci, prelude::=
+*, sync::Arc};
+> -
+> -use crate::driver::Bar0;
+> -use crate::falcon::{gsp::Gsp as GspFalcon, sec2::Sec2 as Sec2Falcon, Fal=
+con};
+> -use crate::fb::SysmemFlush;
+> -use crate::gfw;
+> -use crate::gsp::Gsp;
+> -use crate::regs;
+> +use kernel::{
+> +    device,
+> +    devres::Devres,
+> +    error::code::*,
+
+That's also in prelude.
+
+> +    fmt,
+> +    pci,
+> +    prelude::*,
+> +    sync::Arc, //
+> +};
+> +
+> +use crate::{
+> +    driver::Bar0,
+> +    falcon::{
+> +        gsp::Gsp as GspFalcon,
+> +        sec2::Sec2 as Sec2Falcon,
+> +        Falcon, //
+> +    },
+> +    fb::SysmemFlush,
+> +    gfw,
+> +    gsp::Gsp,
+> +    regs, //
+> +};
+
+<snip>
+
+> diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios=
+.rs
+> index aec9166ffb45..b4711126038b 100644
+> --- a/drivers/gpu/nova-core/vbios.rs
+> +++ b/drivers/gpu/nova-core/vbios.rs
+> @@ -2,16 +2,27 @@
+> =20
+>  //! VBIOS extraction and parsing.
+> =20
+> -use crate::driver::Bar0;
+> -use crate::firmware::fwsec::Bcrt30Rsa3kSignature;
+> -use crate::firmware::FalconUCodeDescV3;
+>  use core::convert::TryFrom;
+> -use kernel::device;
+> -use kernel::error::Result;
+> -use kernel::prelude::*;
+> -use kernel::ptr::{Alignable, Alignment};
+> -use kernel::transmute::FromBytes;
+> -use kernel::types::ARef;
+> +
+> +use kernel::{
+> +    device,
+> +    error::Result,
+
+prelude
+
+> +    prelude::*,
+> +    ptr::{
+> +        Alignable,
+> +        Alignment, //
+> +    },
+> +    transmute::FromBytes,
+> +    types::ARef, //
+> +};
+> +
+> +use crate::{
+> +    driver::Bar0,
+> +    firmware::{
+> +        fwsec::Bcrt30Rsa3kSignature,
+> +        FalconUCodeDescV3, //
+> +    }, //
+> +};
