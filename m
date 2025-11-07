@@ -1,65 +1,65 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BF331197C
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Nov 2025 22:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216413126D1
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Nov 2025 22:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762552873; cv=none; b=rZ/VYMnwJSxUQZhdzM4hptuw85fmtI7+l1XycfIS2pvUge8JzSG0UwUOUaAPaZxKob/7Rf2vxs+eWtv5vU7ghPyTn6iBr1gGXAAMJxcxKYcBolp15GilNCLE8h4MB0FvN2d7p17bzifZXxoVJfbU+jELxAMMjH7ob24CSaxFlyI=
+	t=1762552938; cv=none; b=MvfRGL3t7gaNe6Ygf+1di8EgM5tQanoqmVffxX9Hw652MTW87BXA6xl0NieHkDW4NBlWeddZx3wteqwbbm8K9yFN7vfSy3QWhIR1IS5JWwC+fdqYeYvDIbN29At2IsErv/SOLiHc7OdOeTP53sDawUqJF3OL1ReV6lajxmzVMXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762552873; c=relaxed/simple;
-	bh=NqCuPJtIpK/hHf4UiY9mtn9CsFUO+7oKJtTquFAaGEQ=;
+	s=arc-20240116; t=1762552938; c=relaxed/simple;
+	bh=78h7gZjK2DnylzgjwC5RvW7XGitrHkh4zHw5oUqrXtQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VnRWil4viAHz3pK9wzmUuubiDnoVBDITCW8dlyKlYsgW4xA7dd22dirGbTH2tIhrD+cGigfB6rR6xdSz9J8MCJFfcqw0Brktr+74nFpy3X9yC8ews2dJQjcgVf7qAWFKEbIlptBlxaEZ0HM0SpUzf+w/ixNAE/vG+J90wAlAnE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B44agV4L; arc=none smtp.client-ip=209.85.214.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=VkDMhFCsdzZES7PKD6Qq0V+UzrZQUvAWPP9s5FZ2rraHyaFeBfhmDLHLq5D1jiZLPyw7HCsSbv6CCHgJ/zzdPF88rTKEYwWHCzXuPGipBoavB5JOriVlpu3uCbLzOLqiQP2SvHk3Xa+ufQEyAiuz9nDLTKSAuG38TiQ+BMpeo/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OyjGf8ud; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B44agV4L"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-297e13bf404so46925ad.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Nov 2025 14:01:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OyjGf8ud"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-295c64cb951so55955ad.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Nov 2025 14:02:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762552871; x=1763157671; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762552936; x=1763157736; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lO62eF2nnq9lumozTZgKwjImCeW30ulMzrcNDCSM+l0=;
-        b=B44agV4LXKaA7i2ZZS0O4YQKbDMddd11lham9xTMCLFJRN/MXqEx7OPKna6Hayma58
-         OACLn+Dj17Mdb1Ll/Lr9Jl8uLSh2J6wgN0+Q4srLECuEdX46s6HoWd92z/navgZF8jk2
-         KEcxRb0rXI6U201tFCFSzlHU/JlrSEeeb9127jyHWd4XbpNcjwx5A+IqKD36e+Zy5Sqd
-         JQt8+4XzXAfa+SmL+c+0e4AGoQbqt2+dqSnXGZ3n6hvMHA9Uk/emVljHdvxqtLawNej8
-         sgcaGgfnUTL6ivIpAK9CgR+szi/hy/ZWJVToqdfhHHzH1FF56ElPKHKuBkPHfefw1J5d
-         XDGw==
+        bh=Fk1g3IY/I26lAkkLzgmm3oJ8Y/bG9K9A/adrQZcZLLg=;
+        b=OyjGf8uddzkjzKAUocFBRhMedIO4dx2j2LZmt9blNjf3mOEqnNctoGjHtdToDG1ZAO
+         kRLFkF2tyjAS01SCMLA/8G7MLtNmIFzs/pM2PgNPYotEJUlpFV6YNOTrdggXBN5l4ZN9
+         1b6n9oco17op/ewACcNtQYbfrwHBU5URq8PpSENpsWOu53qPsOBNxVc3ux4QAj/ewwOF
+         P/x/A/C3LuNf/d1bgNC3332wdrWVn7ujo5hMXKL95uobkRvvcvpS/WnMlWn/pdpi/Kr1
+         aqgRExgYCGQSnNgy44ZV180cfSMVmZMNVsd1YGuleWXKnqxKGukwE+RGyTUMxD1b7eI2
+         g+Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762552871; x=1763157671;
+        d=1e100.net; s=20230601; t=1762552936; x=1763157736;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lO62eF2nnq9lumozTZgKwjImCeW30ulMzrcNDCSM+l0=;
-        b=jPhJrCWyvwTOoFUwJ7TyLBtly1S+1nZ6b9QbafiaBI6Fom9A03bK9iLKfD6ROfEFLX
-         cvMY7MG/euDBL3omRxl5e6APK4XmzkhXdZ0dp1iQFj+7znnPQ0EOtFLKtMDFi7bNLhQ7
-         TNpAjMYZVAG5hiC6eQbxhubc11PRbuMvB8RuYKxxpLJ4LGB+9ol35soAHmt1RvB/eda+
-         KVqDOl2jWuOHurCqwx9WRQ52yOPMaAJDGV+Hr/H29y6JtowMOzNoQaN6GRXO9k53k448
-         4jao4CtK0aFi7BtrtG98ZjuXNpOO0XTMWMuOaKsMRA0dwOzwkb0PYfQRaiyrZaP9SS1y
-         Qggg==
-X-Forwarded-Encrypted: i=1; AJvYcCVslFdDmHEkALSrfT16OgrSZcpMiCFpLRbfvDs3U5ARAksgIUq3g+csesS+jHFbJ8Q/xh7X8pML2O1dth5j7g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+Q8My6ljbTVBv18GZUppFpvtvY/jO5/alFNwZJtJsvNzxoneh
-	FlMUVocjr3Tv561erGoAPNjw0pWsNSsmEB1FeulDSDmqvLy7mfnuK94U1eNQ0Hy/sg==
-X-Gm-Gg: ASbGnctpyZz4CNGSvpx1I+KsQeRmab06oQJFWhaCSxIa/a2ttk675r/AM86l2Ybb5dm
-	zm8hbZe3qKniN5G5Ch7gViXqyHD+8HA7ybAm5QdFD4vq11W1eRsQSupmvZSrItbUhQ7GKpagq7C
-	ph+DFH25/7Sy/v2rJ3eF3C2oxSgRRwM2u2mryp0CnwLDtkszUr+23oMz2QhYexdiPXhxEyPHTlY
-	aUkFQ0VX4a96knKdIXCU+AO2b0pmlWbMX5G3a6RViVzXCYsfb8b7/Tf/VeTaocchfnOYO5QKYUP
-	DsHGEGH4+9h47nSwR1sVcN68sLTVxYaJGwGWEfUOJ7Er7hiVyL80RqwLDgsyKJSfTp+Yv+G3A5p
-	ryDgrwyTV2SP/F1mO7Ayff6iyhtuzU0IzRtWBu8bHRG8srEhQ1sXHjtAoS2HAAx3iaDEyrLJVba
-	a/k8L+JuSsVEKNB+DPdiveoPOn+TfaiWnCC9iSC4Z9mHktHJw8xV18OE0HXOXDLZ+BNb0MbYZCk
-	J5jzUfXw3/LfVp61Skk7ezZjQ2sTj3ygFW+
-X-Google-Smtp-Source: AGHT+IEGlO5C4EI+b+m9m+aIDpLZfikk77tRfPm4g2La1C5BkEIgfoA2g0ZMFA/yrbv7f4GjcaMfvA==
-X-Received: by 2002:a17:903:2f8f:b0:293:2a8:3f9b with SMTP id d9443c01a7336-297e7e3d68dmr264545ad.15.1762552871000;
-        Fri, 07 Nov 2025 14:01:11 -0800 (PST)
+        bh=Fk1g3IY/I26lAkkLzgmm3oJ8Y/bG9K9A/adrQZcZLLg=;
+        b=oQKbSVoSg0/FsAaeuWRAqq1j8ICvJwd9IcxsTtSSURNGKsWl41herHc1owA83loMN4
+         GQFvhi66u+4LiBR9Rn6wjDg6WSkpWhZtI7LDJGGyswkDI4bJBBJdM4EsVzdCNztC/yHx
+         zi/1E3XbexbGPmI4zNNAU3YMjy+9hWhLCOHy9rYG5qvUVr/fFfTDpfaXu2xiVjYUiJYK
+         n3rUwN8WqU3kGThOTKjc9XsgZRHi0EgKex26jM63f6s9UUdi+DhuH3wqcmmfCAwRpMu8
+         fGjxbi8csjYsUyScsR23b24exSiuC4q6IUTC4vtM2SR2gdkF4iamVupZ/n6VO5MxiaIQ
+         K+qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUz/GxRTDcJIQETSo0WAy6C9+d6GqB3g9bIl9VSvbMMUEjku+ZF9txaEexoTCGrduolb13Vr7N+Vv82pqeNiQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGG3CDKF6puoBqP0+JJqangCB7PsSf0qiznoQpbZHqhbHPRyNC
+	T7R/AzAMri0ZoW4PHHkA3fMX2R2y6oBlhxm9Lt/qghxr78ZnzHGj/gbG8FJSi7FvTQ==
+X-Gm-Gg: ASbGncv9oaeFFAlEA5dBPy4ppK1BXRkp9ScWI4472tHX2UwlT+gTf2cA22+a5SfFrXY
+	D8nf2T/f2MRtkHqWJ2zSTfddKsiZ4/WRUWVHI9sJTzvw5lYqwEpwN6dW43pXub/WKLAEw4yyj46
+	7Ftct/bfkCQOzUauRBiJfn7kdCMSMEtXk7ZWW9W4CUwxiCufkLdWY6BzTqnsnoYKVULXuYF7v2y
+	FaDOxWrVTSBdW9oYeXw73L8kZoxTitjHzI2jto1ASY0qR9Vro2sBo591v/9EEFQ911uQoch49xy
+	L2xYgsyw2VvOP/NFv536fD6pOwBnx+H7hFPtODOZ+YYUjPXLrxAH3UpU/JU9e4KPlBWWyMyNjBF
+	tPN01TQfNYCk/mfPR/2yez2o7k3hkVpSEsEPfYeW08FJ+5ELl4ZbvqnvYxYtZHHLe5KeP7/GOEC
+	EX6r41Lq95M5xg0w2GQ58MI5lru565sQeylV6Drznn37CeVWsZlMGWcwMMoKvGXKfsNKFNr+RE4
+	I3pJ/FZ5VGPEnzz2LY1NXkmKg==
+X-Google-Smtp-Source: AGHT+IE7LM/ftcbdlEIftAMc3LNqaSP97ukQV1UpBEOmW69D8muqPSdkZcVrRCXHkPez2e+AUj0Wfw==
+X-Received: by 2002:a17:903:190:b0:26a:8171:daf8 with SMTP id d9443c01a7336-297e567e77amr1470925ad.8.1762552935873;
+        Fri, 07 Nov 2025 14:02:15 -0800 (PST)
 Received: from google.com (116.241.118.34.bc.googleusercontent.com. [34.118.241.116])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b0ca1e718asm3886512b3a.30.2025.11.07.14.01.08
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-297dacd1e93sm11822995ad.2.2025.11.07.14.02.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 14:01:09 -0800 (PST)
-Date: Fri, 7 Nov 2025 22:01:04 +0000
+        Fri, 07 Nov 2025 14:02:14 -0800 (PST)
+Date: Fri, 7 Nov 2025 22:02:09 +0000
 From: Carlos Llamas <cmllamas@google.com>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -69,9 +69,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Christian Brauner <brauner@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] rust_binder: use compat_ptr_ioctl
-Message-ID: <aQ5sIOHQ58CX3aQJ@google.com>
-References: <20251031-binder-compatptrioctl-v2-1-3d05b5cc058e@google.com>
+Subject: Re: [PATCH] rust_binder: move BC_FREE_BUFFER drop inside if statement
+Message-ID: <aQ5sYW7B9riNRNHI@google.com>
+References: <20251029-binder-bcfreebuf-option-v1-1-4d282be0439f@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,12 +80,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251031-binder-compatptrioctl-v2-1-3d05b5cc058e@google.com>
+In-Reply-To: <20251029-binder-bcfreebuf-option-v1-1-4d282be0439f@google.com>
 
-On Fri, Oct 31, 2025 at 08:48:18AM +0000, Alice Ryhl wrote:
-> Binder always treats the ioctl argument as a pointer. In this scenario,
-> the idiomatic way to implement compat_ioctl is to use compat_ptr_ioctl.
-> Thus update Rust Binder to do that.
+On Wed, Oct 29, 2025 at 11:50:58AM +0000, Alice Ryhl wrote:
+> When looking at flamegraphs, there is a pretty large entry for the
+> function call drop_in_place::<Option<Allocation>> which in turn calls
+> drop_in_place::<Allocation>. Combined with the looper_need_return
+> condition, this means that the generated code looks like this:
+> 
+> 	if let Some(buffer) = buffer {
+> 	    if buffer.looper_need_return_on_free() {
+> 	        self.inner.lock().looper_need_return = true;
+> 	    }
+> 	}
+> 	drop_in_place::<Option<Allocation>>() { // not inlined
+> 	    if let Some(buffer) = buffer {
+> 	    	drop_in_place::<Allocation>(buffer);
+> 	    }
+> 	}
+> 
+> This kind of situation where you check X and then check X again is
+> normally optimized into a single condition, but in this case due to the
+> non-inlined function call to drop_in_place::<Option<Allocation>>, that
+> optimization does not happen.
+> 
+> Furthermore, the drop_in_place::<Allocation> call is only two-thirds of
+> the drop_in_place::<Option<Allocation>> call in the flamegraph. This
+> indicates that this double condition is not performing well. Also, last
+> time I looked at Binder perf, I remember finding that the destructor of
+> Allocation was involved with many branch mispredictions.
+> 
+> Thus, change this code to look like this:
+> 
+> 	if let Some(buffer) = buffer {
+> 	    if buffer.looper_need_return_on_free() {
+> 	        self.inner.lock().looper_need_return = true;
+> 	    }
+> 	    drop_in_place::<Allocation>(buffer);
+> 	}
+> 
+> by dropping the Allocation directly. Flamegraphs confirm that the
+> drop_in_place::<Option<Allocation>> call disappears from this change.
 > 
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
