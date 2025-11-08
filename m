@@ -1,202 +1,109 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E74820B212
-	for <rust-for-linux@vger.kernel.org>; Sat,  8 Nov 2025 00:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7C9289824
+	for <rust-for-linux@vger.kernel.org>; Sat,  8 Nov 2025 01:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762561648; cv=none; b=HAyqJNIxwkHGlYgr1ng8HfE5sF5fWOkR3lBGr1Tlj8gdj+XQvYQ97me3NNlHDmqKJ8BrBOuHbE/Y6WVv8rbRW1BRhTdoiKRnSx0iv8SlwIV+BpYU+LAYuQJpgCCwg/dkdnLev4x46PR+s5Cc/935+bW1QFlGkW4xAncg3b8uFIw=
+	t=1762566132; cv=none; b=sBqM/kctGqK/yxBFB3VPxznXsaFs3yW9hkjQm6CQ4AeKPonkuCTe56F/OY/M6BNr3DXgxz5n6nT7eSjUchxxonWVK3IOukSZFBq3oGAXsXzmYez/2yLlVA93dgMjsEneoGgFPh0QqVV2CHW7bos5g9OgXPH14tUJ7WojP4eKDlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762561648; c=relaxed/simple;
-	bh=7kj/nTh8c5FimDk+/Kx8m+ZVMa2y1+ZHOJWDbwOrbyQ=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R+Botz+nxTCtbu8tFN4uzfMTEBBjFWycxvwEA4qUnkSpMfMR/dMAHJ5IKkEeaT4K0iTHo0sOkJMp/ghJiYDfRiX/LHBi1OHgKCflr1JkGpPcDrGuKgn2Qqz4vULj4Oqxejfm5pzIjwnZ3p8ft6qg41UfLBSQ5BNaHoCUgF3+hyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2DXupsK; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1762566132; c=relaxed/simple;
+	bh=3WeD8Dmnp9s0W77pKxc8e9Dgz2UhqJOcVyjDFyEoOoI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eea05qMQldebMCdKle8ZJbVYYMPsyJc82U47+tn0UCzXCaSHEQSJo5idBiZ2WK3H150VMXBmSTvd5w5WfG+D8HoSJlGPvpHf5uD3oghaDrn6A1HK6aDYnNypmYKlV636vpZl63or1BbULNEJ9vmW4TArfchRJ0ksswDF6QE4eeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K3A+kAG8; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2DXupsK"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-29470bc80ceso13991025ad.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Nov 2025 16:27:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K3A+kAG8"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-297e2736308so281975ad.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Nov 2025 17:42:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762561646; x=1763166446; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=oITIVQgMr73mFnSfBGd/HefCrTD9E8UlLjNjhfP/oZE=;
-        b=I2DXupsKEkWM/EAfCuP2z/x8aDcWMonPKyBaNz1U6jzPtF1d8Vuk57xiLclLT2/hxd
-         QRXQ+vRbbwNHa0z48DtueZBEwpg9qSaHZ+pHT5u2oSjNJ9C6BHcjyhdDB1BKKP3k3Sgt
-         Rdcv7+5oteN3eQ3COuYV3Reu54Hm0qRycrYHC1OmAVfTYTT5ZWFKPvr4EY0bNatXUVW+
-         qNrmUeY75V+oAmqpoC/mEz9dsOO2sqsdLKmcgHv08FlHUSZOJ66n9PBff3bjD6EjTDwY
-         2Ye9QQl0U1UmGYNOmgPGpHUgrdoUgG60xCNVTT+5kJWBZ4t8VaLybYSMGhKBlfV3M69J
-         evPw==
+        d=gmail.com; s=20230601; t=1762566131; x=1763170931; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CQh/QKgqiWY0F/kYR0/DGTjHf4GdskWgqiVXYEvWpmA=;
+        b=K3A+kAG8+6llaTZn9u6Gjtdnse6Z523u0yR53Dk5f5J52Qes7XoDSciq35qZ/NAJuH
+         teDQVKxC8qz6ai4K/uji9IfR8JQCqU9SKU1ihXuKl6R/ezLusVLHN2CSowcuFpCrcFRM
+         SVtSOqvE3yZCQNYqruewxSLVoTHbY0mapTKNS21Nbd6aR8hhhnfUesnHoR2t/cpGz2pd
+         H6rlAbasZhuCs/QMHhQDoad3PPB+zV9MtBhVSo/pfvW0cU+TsY6koXBKb94clfHtnLBW
+         AlXU6VLSQt3tfXHIvfKlil1Ml72RyadxNo+D0WFnnUv01IKxj53MX4YpeLbZYKzNpstH
+         DhUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762561646; x=1763166446;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oITIVQgMr73mFnSfBGd/HefCrTD9E8UlLjNjhfP/oZE=;
-        b=gaxsErcJgAFoPTACQFAy5uNydtSMmYocYvWYdJlJrpcK/UDMg1wsAcjXhcKpSSoLzI
-         LhOm2Hqp7aFFenIfyrbHupAVd91m6XNiME2P1Jvuz5CyjK5FN1ICaR0DlYUdAVlgynJs
-         NFZePv1UsZ2XaJeVaTD30v+nDmewNhkWhx7ITpKMtVOMWTXRGkQy3su9d8jWGl01gOZA
-         jk0NuyIvX2e0wP2CCUwLjfLkP3KmuunCP2vl85n1uHM4B/Q/+Kg0EwvfJWtf2CrwxSf4
-         ZuWdtsayjG5Oj4AgjbzkfB5EIjuH4zFPBYAoznmRu93TpHDGR9NAzpk6oTVhtXk9Ok7U
-         OT1g==
-X-Forwarded-Encrypted: i=1; AJvYcCV9KDQEuEBbcmYwnJyaiDOpPBbRfQhihVmdSEtZ8MR6rEASr69FFvZI8N3mbX6GdqEHVbIPJMiKGII9IwZQ+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV9btgNXo6iLE95PemaoEapClln63DOFhQyPfyXMckO9oWlPCc
-	cOF+PrCwW5Q6LgQWqEhJsFvsguvBH2ydq7ZIfraWKtPKF9jUv/AOjdIU
-X-Gm-Gg: ASbGncs6dVSBeNx1hC+9GDh/WoC01U/YJPAEZtEQxybyms+pvgvwcx147JKnbxXuDeM
-	7vyH0ZZyYzumxvQc9ERV8jGRrERGeU03XlDB0l7KZ5wcUldT1nIlXUCEeMtyxr4hoNPdkOSc4a4
-	LOLZ+VMiAwFIct/CHHLONITM1rJK7oTPqp6IgrK+FqGEtcT1iJGPY8OQANK19i80HLTubuYjmMN
-	nXb3K0q25vsG6gGXO8A9hiYbbqO6c3hPfVWBlJB8391NY49oj9D82mO7dwZJMg55zqQrlYy3otT
-	pSrXTyPkdwLScyNcOsoU2zU7JqeAX9pxzB1KXZs89kXFChsvhuTaHClt7Oye/S85YT2ijVhpsOd
-	qItgt0W8TDHTAuMFa1RBgCGmO4NROMm2kt83Zf0ESO1vchkeVHYRhX0u7WvzaYNPkkCh9k0tAcq
-	PQ5pUwzPq8K7WfeJw=
-X-Google-Smtp-Source: AGHT+IGBkvZLAhvDKdrvXHQG3c3w7IqpLjYOFlvAQCWtRpkM1DWxhdW7r8G7DO/y1DZ2Fmaan/pCUg==
-X-Received: by 2002:a17:902:cf0b:b0:290:ad7a:bb50 with SMTP id d9443c01a7336-297c96a5cd5mr39554295ad.27.1762561645531;
-        Fri, 07 Nov 2025 16:27:25 -0800 (PST)
-Received: from Cyndaquil. ([174.127.224.194])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bad33c80393sm2734157a12.4.2025.11.07.16.27.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 16:27:25 -0800 (PST)
-Message-ID: <690e8e6d.050a0220.b06fd.d2ec@mx.google.com>
-X-Google-Original-Message-ID: <aQ6Oay2rcmaQLDup@Cyndaquil.>
-Date: Fri, 7 Nov 2025 16:27:23 -0800
-From: Mitchell Levy <levymitchell0@gmail.com>
-To: Yury Norov <yury.norov@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Tyler Hicks <code@tyhicks.com>,
-	Allen Pais <apais@linux.microsoft.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 2/9] rust: cpumask: Add getters for globally defined
- cpumasks
-References: <20251105-rust-percpu-v4-0-984b1470adcb@gmail.com>
- <20251105-rust-percpu-v4-2-984b1470adcb@gmail.com>
- <aQ1DAn7Djc19CgGF@yury>
+        d=1e100.net; s=20230601; t=1762566131; x=1763170931;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CQh/QKgqiWY0F/kYR0/DGTjHf4GdskWgqiVXYEvWpmA=;
+        b=QvZmdyYsw6sa6tYprYlY29mJytlryoEoFBgHTKjsxfn6XH3F+gXioMMK5Uy3AXsUBi
+         ZR6TlE8wWV8cAQ00ADCuV9tYAyeDz1mOt9InAf2U/rxIAQaNoUiX9Pa6sNmmxGb7K/mV
+         W5R3BX7LPPKJz7oIZzdhp9bDa9JY4t2bC1JVmzeI/cdIrK09wHLMqYESZ1OVUBRix00i
+         Khu8XkYJyKhAdLqs4GvSD31vALHBVBDquvd0DFOUTQfK37klNr969J+QUOh6B/OpcChA
+         7VvKZspo39w8tQGttrmBtSRFbl0w2Vph3AVKozEXyjaG4OOUglHD9uId/rG7tDsNLVy/
+         XaXw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJru2FY4JrIJV6l6eEuYQIuPW8KHdzVXhL6pgFGDJ3lyyQ4K/pAnqrtqYwGISa6zPDT+Cr2ouJvaQ54tubxw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7xiAfYzCWwN2MWG+ISyineIOCYG4VFFFVwGIHusxF50H4ZWG3
+	f0i3yj53EIZE99cN6REGDYHufIjsu8OPFhCIZm9eFXu58GQ4w61QHIgf3mw75mHCSvlCwxm5Z9Y
+	GzDZuS2eEiYllu7CHpil4mfIBaz0al48=
+X-Gm-Gg: ASbGncuy5sbca65ShO7O4VnUtOoMlYdfTSOloaekSRg8ItP4stOGP28uZ4ZklaZpymO
+	28oU9iQYndSWUIVU584/hq3r38pZvSo4Oa2xm+EPuShLEKWX0FGJGuwJwN2RRiHi+3o6e/NcoF+
+	+aif1xnaf3J5uroBPUo6Z4tOU1HAcGHt3+yxSa+T1bkhpJmmJTqIgm+AyFidJoWsJ9mfNlTT/0w
+	9F+4trSg/4fjN7wRJFv9objCT2yD+ZYPKZIvdg73W9FN3BhZ3Zdqkj/nYFe6UJbZ2LdyhvtJKuL
+	eBBUBeb/L0Feq1oBAtE9ta/wYxqdB1V+5xZWbsEqPuFqU8TqqG33SdvO3rLGenweHJFbaeIqWqU
+	xZpNa8BGpkZW4SA==
+X-Google-Smtp-Source: AGHT+IEAGSzfMOpxmrbolmpong1BxR+uMm9NBIL1bBLX54yYMJG3qLRQsxBO1D2dsj3UIE4/5YdndA6SaL+W6coRSBY=
+X-Received: by 2002:a17:902:f683:b0:297:d825:bf22 with SMTP id
+ d9443c01a7336-297e56831acmr7380815ad.5.1762566130592; Fri, 07 Nov 2025
+ 17:42:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQ1DAn7Djc19CgGF@yury>
+References: <b8c1c73d-bf8b-4bf2-beb1-84ffdcd60547@163.com> <CANiq72kX4Yep3pNVq8Ge=txQbPnMO=zKsci5cPgz5LDS=D6NoQ@mail.gmail.com>
+ <CABCJKud0G+Xh+Wbtg4SDGvk4Yh5nmt5YgHEPj-H0y8GO5R3Amw@mail.gmail.com> <CANiq72mw66ADx7LoUuqY6h9KCU=uFzcNQXZ21kMP7jBjCyyaHQ@mail.gmail.com>
+In-Reply-To: <CANiq72mw66ADx7LoUuqY6h9KCU=uFzcNQXZ21kMP7jBjCyyaHQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 8 Nov 2025 02:41:57 +0100
+X-Gm-Features: AWmQ_blv45UTCFAAWu12yAL46MeLrGuBV1cf6wcE3BtvuHynhWIUHkMp_cqIowM
+Message-ID: <CANiq72=OFO8fBpJ6xvGunYrx5hXfcjQJ=YDqFxtMPWDzfzwpKw@mail.gmail.com>
+Subject: Re: Only rust/bindings.o build fail on rust-1.91.0
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Haiyue Wang <haiyuewa@163.com>, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, linux-modules@vger.kernel.org, 
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 06, 2025 at 07:53:22PM -0500, Yury Norov wrote:
-> On Wed, Nov 05, 2025 at 03:01:14PM -0800, Mitchell Levy wrote:
-> > Add getters for the global cpumasks documented in
-> > `include/linux/cpumask.h`, specifically:
-> > - cpu_possible_mask
-> > - cpu_online_mask
-> > - cpu_enabled_mask
-> > - cpu_present_mask
-> > - cpu_active_mask
-> > 
-> > Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> > Suggested-by: Yury Norov <yury.norov@gmail.com>
-> > Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> > ---
-> >  rust/kernel/cpumask.rs | 46 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 46 insertions(+)
-> > 
-> > diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
-> > index b7401848f59e..a6a130092fcb 100644
-> > --- a/rust/kernel/cpumask.rs
-> > +++ b/rust/kernel/cpumask.rs
-> > @@ -77,6 +77,52 @@ pub unsafe fn as_ref<'a>(ptr: *const bindings::cpumask) -> &'a Self {
-> >          unsafe { &*ptr.cast() }
-> >      }
-> >  
-> > +    /// Get a CPU mask representing possible CPUs; has bit `cpu` set iff cpu is populatable
-> > +    #[inline]
-> > +    pub fn possible_cpus() -> &'static Self {
-> > +        // SAFETY: `__cpu_possible_mask` is a valid global provided by the kernel that lives
-> > +        // forever.
-> > +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_possible_mask) }
-> > +    }
-> 
-> Not sure about this '&raw const' syntax, but I want to make sure that
-> all this getters provide non-modifiable references. To modify any of
-> those masks, one has to call a dedicated helper like set_cpu_possible().
+On Thu, Nov 6, 2025 at 6:54=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> Bisecting nightlies, it seemed to happen between:
+>
+>     rustc 1.91.0-nightly (12eb345e5 2025-09-07)
+>     rustc 1.91.0-nightly (9c27f27ea 2025-09-08)
 
-For `id: T`, the syntax `&raw const id` produces a `*const T` pointing
-at `id` (the analogous syntax `&raw mut id` produces a `*mut T`).
+Ok, for reference, it was upstream's ab91a63d403b ("Ignore intrinsic
+calls in cross-crate-inlining cost model"): the object file stops
+containing DWARF debug information because the `Default`
+implementations contained `write_bytes()` calls which are now ignored
+in that cost model and so everything is essentially as if `#[inline]`.
 
-All getters here provide const references (`&'static Self` as opposed to
-`&'static mut Self`) which will cause the compiler to prevent usage of
-any `Cpumask` methods with a `&mut self` reciever (i.e., methods that
-change the `Cpumask`).
+If one generates the bindings without the `Debug` impls, indeed the
+file stops containing DWARF even in Rust 1.90.0.
 
-> Can you maybe explicitly mention it in the comments?
+For the moment, we can just skip `gendwarfksyms` starting with Rust
+1.91.0 (sending a quick patch for that), but it may be a bit brittle
+in that new versions could again re-introduce some symbols that get
+exported from that one etc.
 
-The compiler will prevent using these values to change the underlying
-`__cpu_possible_mask` etc, so mentioning that these return values can't
-be used for that purpose seems redundant to me.
+Sami, would it make sense to "auto-skip" in `gendwarfksyms` itself if
+an object file does not have anything interesting and then remove that
+from the `Makefile`?
 
-It is possible someone could get the pointer out via `Cpumask::as_raw`,
-and then do something bad with that pointer, but this isn't any
-different than someone doing something bad with
-`bindings::__cpu_possible_mask`.
+Thanks!
 
-Thanks,
-Mitchell
-
-> With that,
-> 
-> Acked-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
-> 
-> > +    /// Get a CPU mask representing online CPUs; has bit `cpu` set iff cpu available to the
-> > +    /// scheduler
-> > +    #[inline]
-> > +    pub fn online_cpus() -> &'static Self {
-> > +        // SAFETY: `__cpu_online_mask` is a valid global provided by the kernel that lives forever.
-> > +        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_online_mask`
-> > +        // may change its value.
-> > +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_online_mask) }
-> > +    }
-> > +
-> > +    /// Get a CPU mask representing enabled CPUs; has bit `cpu` set iff cpu can be brought online
-> > +    #[inline]
-> > +    pub fn enabled_cpus() -> &'static Self {
-> > +        // SAFETY: `__cpu_enabled_mask` is a valid global provided by the kernel that lives forever.
-> > +        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_enabled_mask`
-> > +        // may change its value.
-> > +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_enabled_mask) }
-> > +    }
-> > +
-> > +    /// Get a CPU mask representing present CPUs; has bit `cpu` set iff cpu is populated
-> > +    #[inline]
-> > +    pub fn present_cpus() -> &'static Self {
-> > +        // SAFETY: `__cpu_present_mask` is a valid global provided by the kernel that lives
-> > +        // forever. Since we wrap the returned pointer in an `Opaque`, it's ok that
-> > +        // `__cpu_present_mask` may change its value.
-> > +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_present_mask) }
-> > +    }
-> > +
-> > +    /// Get a CPU mask representing active CPUs; has bit `cpu` set iff cpu is available to
-> > +    /// migration.
-> > +    #[inline]
-> > +    pub fn active_cpus() -> &'static Self {
-> > +        // SAFETY: `__cpu_active_mask` is a valid global provided by the kernel that lives forever.
-> > +        // Since we wrap the returned pointer in an `Opaque`, it's ok that `__cpu_active_mask`
-> > +        // may change its value.
-> > +        unsafe { Cpumask::as_ref(&raw const bindings::__cpu_active_mask) }
-> > +    }
-> > +
-> >      /// Obtain the raw `struct cpumask` pointer.
-> >      pub fn as_raw(&self) -> *mut bindings::cpumask {
-> >          let this: *const Self = self;
-> > 
-> > -- 
-> > 2.34.1
+Cheers,
+Miguel
