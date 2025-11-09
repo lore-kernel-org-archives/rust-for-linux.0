@@ -1,131 +1,89 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F2530216C;
-	Sun,  9 Nov 2025 16:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762707514; cv=pass; b=UkcD3ITw+/cl2VC2WlXU5jeXUDTReiRTmYRP5Mqulv9ZwfyTjwckubpV1lw04US4VbNpNj9tCUj2uXBXbMet9FdaMFjdDxO2Uf/ayaOP+5mwkIzPgHlVFwOX/iEK0I0ltvOK+bDxJPaFlj9bA5ObYN7iarfSQMI2X/MKBnmi2ek=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762707514; c=relaxed/simple;
-	bh=wyMTuUjI1reFQ+mad2ftXT0L4h7WPE0hx7QG7FkctIw=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ncO3cAy9YxS832ZB5wnVGj9Pj6ICd5J2E9IYH8G0ujKr+dLCt6LqfOD886+rrvP7qhTiEXpYtabwr177EHqdFQwHeiY60g3dBBpJGHp/WtWfLMlJ9uNibiuS1Za8Vj2dgmb1FX+IkpTTXNN0MKOhWO85QHGap7vjS5c5XLfmBz0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=eW1UA9p3; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375831E51D
+	for <rust-for-linux@vger.kernel.org>; Sun,  9 Nov 2025 17:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762709490; cv=none; b=XQ3moOsmxujNiJ5z4gocqCFKMII48R2SYXWKOpkOO79mmIQLg4cIyztSpIg9oyoImDjJHCJqExmZWwWZ4PvVTYAnFaRt/SMxSOxxCS5LmqLN6t+OAE6oex9JOstH3grtW5I7J4ui0iJGFuDENeQH732dpxQH8uIEiVHayzWl010=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762709490; c=relaxed/simple;
+	bh=6p2OCxuKe6yiZZgZiMiVCRGcOTGgN9VNYYsa7kbeu10=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YsNuNMj1uEGBlGnfOUlvnUY54xC4eDE8WcGe5SKz3qNwmZZzD1eDBF2U9xS3inCr0M82e1WITrh+AaLAuWnP4LjvOZeIsOu103Y/qrlHYZ7Juv/Jb08dDu9bnlkpTHhKuBQu9lPu97o+rjcdw9nDzo/Ni58tbf2kN1dfMMZ46Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LLnH1VR8; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="eW1UA9p3"
-ARC-Seal: i=1; a=rsa-sha256; t=1762707484; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=iaJ22Y8ELSVGGGdBeuDYatFa6C/NG8tZxxNHkLezTIteWZH5+C2hT5J6qBhWoaMOL8G3YOufBQxLv1sftaKb3xKjhs1T89o+3upBDzbj3rGeVD0OadA4Zg8ZBAPlHaydhd4tXKG7TMQsF7CdU2eFRV85sdN8MgmomCa6/8Cc9ig=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1762707484; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=wyMTuUjI1reFQ+mad2ftXT0L4h7WPE0hx7QG7FkctIw=; 
-	b=hE8MpNTIRYZM/dh3x/mMRz9r53hVTYRDM3vGknABg7Q/IVB0l5mlWvPNBppBZCUe+prCBt/Bjf/E0Jx1MXBxZ5zRD3epi3wHuRdTcR9Lt14J6tp30zab8DlocSmOo6anuzuZAg9klJkrf9M3ZFq+VJZkifeY9nzKTAAf63zXFKs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1762707484;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=wyMTuUjI1reFQ+mad2ftXT0L4h7WPE0hx7QG7FkctIw=;
-	b=eW1UA9p334Xm3sYAuaDy/mMg3F+yzETskp+U0jyQ5+JnxXzkOEU2KrmmaTXh7Jgp
-	EO6Q3xUOPJjvv8oYeOQlKCeqmLH5T8T9IbT159O0vakXXTMEYRQRLNER6K2flVLHcu5
-	Wkpzx1vG/jwlB6qLJ/Y8NNIAzMMqbdLEk/im50Jg=
-Received: by mx.zohomail.com with SMTPS id 176270748174653.74830281785046;
-	Sun, 9 Nov 2025 08:58:01 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LLnH1VR8"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-297e2736308so575265ad.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 09 Nov 2025 09:31:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762709488; x=1763314288; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6p2OCxuKe6yiZZgZiMiVCRGcOTGgN9VNYYsa7kbeu10=;
+        b=LLnH1VR8eibg/eGyrKKXLfFuaT5zheF+NJ94HAIJFu2PoUZTcBoghffy/s+Devul/u
+         Ovy1M0iy+CMt+fQHlkHS2vQFLj6YwtWyh21Mg8JF7hCIm5OnouKj2PINw+70Krw6c4pe
+         N84ZAQxbZz4K9SbbDX7WrBgBWlrRCHiL81QCpA7l3tASx/ox0OiKKtMGT9oNQaDtv8pi
+         lMegKJsnSCM7NCikVTPEv+YGex+V/4mi+6SzVfeF/+jygngLRc8nF07XMvr/Q+HH4lww
+         BSvxrleeP+TZ5uKGG7gX4I/huRk2ddNNpt15ajV3G4n1o6edfiW8BUrZOi4sI7x4X84z
+         BQoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762709488; x=1763314288;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6p2OCxuKe6yiZZgZiMiVCRGcOTGgN9VNYYsa7kbeu10=;
+        b=jXucIK7qEFlmFqBVSsickG/qlHj2j52KRqfun6/3Z6h2hz8+61QwhKsNlA+PdWJl0F
+         6ps12oGfgRqsanlRs/wg6NJGLeVeyv68OSemRcdaDMIFA47+6OW9VGGZmknJJETrNFEf
+         e5/G5q7xa2QoYPdI0SkhsNDs62ErX47moZjL8YJ8ywhOW0s4srfnufAkwCrDtgVnCciF
+         feOcdRkph5RRsk57Hu6RHpRe7G7IpRkIgzogMgnlBY/K9xdRFPaU5E6HrRe/ZYH9kaj6
+         LVrEOCnfH04u7AQbaig+03DSEBwBwRrRqaKFAiUlXloGvxe0yYnDCPlsrP8HP8zMHFGx
+         9Z8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVEDqeGnK5qTjb63qHyyp41iI0SftrkO+NzY0IQcmQeT2DuasH0OmW3yGiBeuHXLnAFbdrFpAFYh4plfkthXg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBcOVqmN8FBJ7sN0lmjMpEPdBbV0dGsGVxAjamswCMvqjJFqqt
+	xtI9p1phq8k5nNJb6nErQhIOzar0i3iqkVgUcLDxi8kyW2Etyd8urj0LPFphRCI9A02R2cC5eBS
+	XJigwTWybeXp4uDDHedXz752VaWvkNVQ=
+X-Gm-Gg: ASbGncuiNDeW+3C6uIOQHh7rRGk6FkvHxjTx8LtsoRG6GJocdnRSuiaUTkKbd0I5vCY
+	IpFesvdBwCzkz2J43+2jG6VgaPJ1yWnYRhxEzZCZM6WOe4CBZS3B4xu2dhQecdnMy69OnOUWaw9
+	sxVHbp9Suv1HskMRA+7sw5u1zqvFgc3k68eTXM+3693dInOiJ6hp4uNZkNOWiEWvpFx7mFUbm28
+	yQLvGJ0EL1YIYl/aYMGxvY0ybQoykYrDBeRcXmaDcSS9eP54a7K+1Jy/b6fjT5ulbqNuPp9u/n8
+	DHCs8emry/7VpHz2TvspGUTNlCDAM6lpF5leoJIvBN5hCJtiHPbQo9MYV++DxpUG22ep0+fpyi7
+	/DJs=
+X-Google-Smtp-Source: AGHT+IH5S5DR7+jnjkKyBo1RbgQXhaiyp5OSJ4YE1+F7QotfjXYvXmFS4NpKxLGQdUSETl2bBlbBfXz1QNw8SjtFjcw=
+X-Received: by 2002:a17:902:c408:b0:295:586a:764f with SMTP id
+ d9443c01a7336-297e5743fd5mr39547975ad.11.1762709488411; Sun, 09 Nov 2025
+ 09:31:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v5] rust: add new macro for common bitmap operations
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251109-feat-add-bitmask-macro-v5-1-9d911b207ef4@gmail.com>
-Date: Sun, 9 Nov 2025 13:57:45 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org,
- felipe_life@live.com,
- linux-kernel@vger.kernel.org,
- Lyude Paul <lyude@redhat.com>
+MIME-Version: 1.0
+References: <2025110452-diligence-share-98d3@gregkh> <20a1d4f3-1fa3-4789-aa7d-385d33ea9324@de.bosch.com>
+ <2025110402-banister-speech-7228@gregkh> <CANiq72mENsw=uVUbMFzOor8ZmoeurX+0hiN49fhzBgqMWMM-KQ@mail.gmail.com>
+ <2025110413-universe-aerosol-2e83@gregkh> <CANiq72nXfq8EJ+-ib044+zGbr2N4hJ_Ygte-4a_dmx4A3S+dng@mail.gmail.com>
+ <2025110856-down-hypnotic-8490@gregkh>
+In-Reply-To: <2025110856-down-hypnotic-8490@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 9 Nov 2025 18:31:16 +0100
+X-Gm-Features: AWmQ_bmH86d0_SD34UFJPIhPkUXuca4FJLm2RY-IzHZ2DGrpKNYjcDIuITk50lw
+Message-ID: <CANiq72nhfDSXBbJ4Etxnn=tjQ8eFOWk8PMDa5iJidAvMibgE4g@mail.gmail.com>
+Subject: Re: ABI mismatch build error for 6.17.y and rustc 1.91.0
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <BB94045A-37FE-4575-90A6-C97E08F2D117@collabora.com>
-References: <20251109-feat-add-bitmask-macro-v5-1-9d911b207ef4@gmail.com>
-To: Filipe Xavier <felipeaggger@gmail.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
-Hi Filipe,
+On Sat, Nov 8, 2025 at 6:28=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> This is now fixed up with the patches tagged for stable, thanks, and
+> sorry for the noise, I didn't know it was already queued up.
 
-> On 9 Nov 2025, at 10:31, Filipe Xavier <felipeaggger@gmail.com> wrote:
->=20
-> We have seen a proliferation of mod_whatever::foo::Flags
-> being defined with essentially the same implementation
-> for BitAnd, BitOr, contains and etc.
->=20
-> This macro aims to bring a solution for this,
-> allowing to generate these methods for user-defined structs.
-> With some use cases in KMS and upcoming GPU drivers.
->=20
-> Link: =
-https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/=
-We.20really.20need.20a.20common.20.60Flags.60.20type
-> Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
-> Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Suggested-by: Lyude Paul <lyude@redhat.com>
-> ---
-> Changes in v5:
-> - Docs: improve macro documentation.
-> - Link to v4: =
-https://lore.kernel.org/r/20251026-feat-add-bitmask-macro-v4-1-e1b59b4762b=
-c@gmail.com
->=20
-> Changes in v4:
-> - Use enum: changed flag type from struct to enum.
-> - Minor fix: airect casting (flag as $ty) instead of field access =
-(.0).
-> - Link to v3: =
-https://lore.kernel.org/r/20250411-feat-add-bitmask-macro-v3-1-187bd3e4a03=
-e@gmail.com
->=20
-> Changes in v3:
-> - New Feat: added support to declare flags inside macro use.
-> - Minor fixes: used absolute paths to refer to items, fix rustdoc and =
-fix example cases.
-> - Link to v2: =
-https://lore.kernel.org/r/20250325-feat-add-bitmask-macro-v2-1-d3beabdad90=
-f@gmail.com
->=20
-> Changes in v2:
-> - rename: change macro and file name to impl_flags.
-> - negation sign: change char for negation to `!`.=20
-> - transpose docs: add support to transpose user provided docs.
-> - visibility: add support to use user defined visibility.
-> - operations: add new operations for flag,=20
-> to support use between bit and bitmap, eg: flag & flags.
-> - code style: small fixes to remove warnings.
-> - Link to v1: =
-https://lore.kernel.org/r/20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476=
-b@gmail.com
-> ---
->=20
+Nice, thanks for confirming!
 
-I don=E2=80=99t see anything wrong with this patch. Please give me a few =
-days to test this on Tyr as well.
-
-=E2=80=94 Daniel
-
+Cheers,
+Miguel
