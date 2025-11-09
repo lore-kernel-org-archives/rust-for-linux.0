@@ -1,115 +1,399 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890F62D595F
-	for <rust-for-linux@vger.kernel.org>; Sun,  9 Nov 2025 10:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13DA27280C
+	for <rust-for-linux@vger.kernel.org>; Sun,  9 Nov 2025 13:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762683917; cv=none; b=ukty8g+ugz2+DIYAkkFssBV2uOjIxE5j9PYUQFxzEK3tkiHINpc2aOaJCAwlnfMAJ4RdUMYeOywAs5Yv6mPRMLRMYbN4qX8jpltblapcvPJrvML0dnkp0PCkdgp9EDpE/kT6E7T08/40Krm8AY6UXs7H3j2/pLW1p6uJAMboXUs=
+	t=1762695131; cv=none; b=TSlv8d5mLfXWiDY2TaZ1NYJ6KMUu9F4lS8lRVno3zj/U8DAqsEcmGiIiZ5n1lE4gdy7eq2h07xjv69UL1S/mKRyaGtID1G6UGZOTdtNktbylCVvOnp1n9LzD/rW2LEsTyRVhTwR1lsGMoGmCCzW9jPu4dvH3UlyTFw9BYRjfGgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762683917; c=relaxed/simple;
-	bh=aTj+xi1dNvcUs59gPpu5k/cwPtbqdjHMItUzYc4T4H8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R4xmjOYZmljaWW+tx8JZEA4Y4IEem3qxqsaBA1wUrKakNp3WUteV7lRcfIGZ/bpMPnzYW86uCArgwuXq3+CwXpU0vraDGov+jJtHMQqqSb+VB3PZBIPIC0YAWu2aLZCCOEhqZ0oZY54qqmzUZmhdtkEeY5yJesNRsBgbpvLSEhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PTAzi+ON; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1762695131; c=relaxed/simple;
+	bh=aqIN+QVMKY4kIgR52WiwPj/sLpKUNXsLeXvstiFVGJ0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mr9Lg8KtgZMGWYKLuoBYeag6yQcwM//RsYVlMFIQeympwhIxoxI3T2pC9It5T7kbkV58qnS1KHO6EceoFUhgTiBj0GoP/fApH8qtWmKkskc6sx8AgexUwW8GTDi8b5wkomw8M7Y9ISZ+IXHz06aHd456bFhmKdq1/Kui5mbaWF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jFYyE0G+; arc=none smtp.client-ip=209.85.222.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PTAzi+ON"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-343610f3990so336525a91.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 09 Nov 2025 02:25:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jFYyE0G+"
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-937268fe284so572866241.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 09 Nov 2025 05:32:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762683916; x=1763288716; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TY4/B0HvJE+qTQFqM/P/T84yDE9f54fdQMk2u26RaLo=;
-        b=PTAzi+ONCWCLiiSb+RXZBrDtoEeA4zpt+ZloHAn2PXMpf/iDBkNbEi9vhSCs1l2Uwh
-         27f2qwohI9FGUwSZdzuGepkmAwljd5qGp3SKmXyXdG4/kv2F0kXy6u/M/RlAFHi7Ol/I
-         JNXa0nRQHPawfdoyLvnR+3dn/gm993WiyTgCDHFz1TDTRHc0BBmWZiA4xOoJwz8VKV5f
-         h3kmAD5L67Bmp8GTyezcTW4Dr9sSK7Grok65NwpC6fAfTODNBvewFWFwC8yXu26nergb
-         MabqGxOlAuykwGZ+wwxA88JBsPNuuTEWp7D1hMCaXgVCDDW4tBfof7U9oSve5x7ocMDb
-         UcYA==
+        d=gmail.com; s=20230601; t=1762695127; x=1763299927; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eJLQQdNPsU+g+F24sPVT+Pr0SaADBoxPUw3GePaExOE=;
+        b=jFYyE0G+jWrvA2L+g6Z6VwUhiJs6YXjR4Rdj+WpryQBPWewylAciaHUAZMr3LDldX8
+         hynIh0hlIow36xeAve+tzgQOH5itjP6GMCZUfrmd3MnhAbjn6roWw5wFjI1xGiKibGkr
+         Tu7weIgVyQ6VxlwmnI1KaNLcGYPwIAe1KCXmz9Y2Ii2ipIapLBxoXs4mwllzgCmKK7dS
+         2b3l94Q4HyYZ5NIIHKabkqkFWtoxe6AlVHZNRIc+kSy36ZVjc8+dHtKXKYll51ZBEWr4
+         P8wiFf0MrfPZtgXR+e+UzyhEcyMJKCH8pJj/aSI6qN8vIgHJZmlmLNliHubl1KIizJ6e
+         t9zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762683916; x=1763288716;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=TY4/B0HvJE+qTQFqM/P/T84yDE9f54fdQMk2u26RaLo=;
-        b=AC1vYzfYLZbPhMa0H4BoalxQmfW3kZlkoCeesFIHQG9wpSGghmtg/V0yrGu8dW2B/A
-         nw9Rvwb7eDoUf1BuKE9gaN6d/Kr+StAXAy1SCAQDwSCcnO8A3zuNZw+7dxrJD0q5Re+a
-         QOV8DWq+x9KZ7ffckygO+3XJ912wjCTW8ELvB1sSisgqVoGz8UsmvLQSJAMtafGSyqfa
-         7iJ1vNTbkFXd/Re8qxNDBvSRRW5agfAeTIKu+VWGBCVS4j0CLEV5VauOf9UO+aI5hsc0
-         6wNkD5xlU0CFBnwddyU9UgvDJ8y9aQz91XGW7msz7Yt+Lilc5a23J7528U8EBtMzvR0D
-         /Hzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWmfJVEEPgy9NeLlBtACAIwKWszTzgty9Nw+eDxCFN4cdVry0iCocZdD/4M2OIzVq+XqLMBFTE3+geNjCzh8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPQ+2wfvHZOy+xYm+bFtNqC8Tu0XbNqRvqvNHhX1OH1PXv9dz7
-	3pq0u/e3Jz1+3ajRUGIaTDJkxNWsnhOfBS0QxXDGiUNzci0VKPCADvZTofwlqsS6JiSpjJoPGcP
-	gavTicxp7v6M0eqozScRx19JUrKVynu0=
-X-Gm-Gg: ASbGnctkMEi9oa+EO+i3wq/M49UdAj5CPAfGSAd7Q8189UptM63lVY89d04kaNNTGW1
-	WW+Nmkq/hzR8WkK67Oii1ZMkdDfpuiXtFZEV5je/w/mMT/IqnoqfbKFXJ4HvhlexvjtzM36JuhW
-	PYd48uX0aAcUv92SJomaBqFfMz3dirpt8dVr9B61xFFjjVLY8Dd6+dz/pd64oSfEVUO+oa+jyPT
-	5rIsx4R7JrHVaO4w3j4xBc5g4xJOEWluiQZ2kR5ynxZPFR2eiHsn7YgoTkI1MnW3OaR8MGniOuk
-	kaIKXkj3wNJLTYYTpH/tY+xlB2l1TbHBfH8PewgIv+4CvvhLGGVIDe8abctpXGlLH2p79QoW4VE
-	Htl3L6qrlB5b3uQ==
-X-Google-Smtp-Source: AGHT+IGQaikK6vNNCjPVJeuplJDKBJe3N+BOuc4E9oBGcfkuiKRHIvOyik2Rqu1v9UYf81SQNtrIpb/0+IN8q6el/3k=
-X-Received: by 2002:a17:902:d4c8:b0:297:fe30:3b94 with SMTP id
- d9443c01a7336-297fe304a7fmr17893915ad.9.1762683915716; Sun, 09 Nov 2025
- 02:25:15 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762695127; x=1763299927;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eJLQQdNPsU+g+F24sPVT+Pr0SaADBoxPUw3GePaExOE=;
+        b=uum0TU9gYruWKg5A2wVXWNL54DT3y7VEEOTLjAW93UAFYYBZVlM3rdkhrxZGfsxQnZ
+         OctsgZ9fAv5VMCTd4z+gD6X0g8N7r4tKxFtyCabMGKoLVodlf74TRY44s1zRID6AoMtd
+         nHz02gS4UpTsreQHBhG24NzhL1txh6DZ5vI2hQdoZYVcxvFbhotUgt/JjZPNdwroH1Ta
+         qYxWs9mNQUfjrpHXXHDJUMtCKZNLGREuOJ1HxdRuDl10+m48WGB/ipUbRpmwo2dYhqrd
+         B3OGvFF3YYAcj1C+B5koaNbFNkkv4GQPKDPDvgjXLtMl9Tk5Wd1T9SRj8lM6EVej7WYO
+         y/tA==
+X-Forwarded-Encrypted: i=1; AJvYcCWgHJtsSMJR2KAUHATqX17n2TNBitxn1eR14GAAevblJeURrtPs+8JdRAIXM3YaHDoDsvTBWzzS70+UG9Bq0w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyk+5kDW+g/I1/RJsIN4Nw32twkhKHa35umfMK/tjJpzKs+8daM
+	BLQZvO79NQbF3/ty9Dp1xs2sBPw80o6SxRxcMLw2bRHzjW74hVK9zZtl
+X-Gm-Gg: ASbGncuuMOQSgOQqXxXQnZBbMain8RiRycKisYruAl3I3QiqG3sQnSFqth2+fNm+/kc
+	ppyW64EoFj+9llUf49no9xZThUp4pry9FRhkT94zY+SuwOm+Kd1U+QTLrZ1AMqxSvlwSmZ5m6ud
+	p358dUGriRcATCkDoIfZknBAKlXRx7RZbwqwYiLdE/ebMUad1+wkDqEeS7+JN2Ub/ov2RVpDCQV
+	uMiHCnHX98uUIb0o136Nhnme4DeWKmqBqVrK+E5BgZOCAcsYuz79K28CMC65XBZyiWbfvD58mur
+	iKjexilKpfRDQJCPmmld0xHrGRwa38Qw2bmu8XCqQNgPonbD0VT6sSeSUIrU6GwfNpBcxfoeJTU
+	9nmvBviZpRVosyECQrQAGxW2t6XKQgSkkclp+GZ4vI8RfV2ZOrkwaaWXzIgAXYPFHbbVdWwKRPu
+	ezhu9pGpAQORL/Pdyvzg==
+X-Google-Smtp-Source: AGHT+IEGdXQokDSSKebUf4lhu1yxr1tCaNhrSjddI7zqj0wqNvjFyLx/rfGteERnW1cF1KocSllPWw==
+X-Received: by 2002:a05:6102:358d:b0:5dc:7fe3:1d0 with SMTP id ada2fe7eead31-5ddc46ddcecmr1789460137.19.1762695127443;
+        Sun, 09 Nov 2025 05:32:07 -0800 (PST)
+Received: from fedora.local ([2804:d57:4e50:a700:f33d:65d1:e22e:109b])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9372a613bd3sm1366632241.1.2025.11.09.05.32.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Nov 2025 05:32:06 -0800 (PST)
+From: Filipe Xavier <felipeaggger@gmail.com>
+Date: Sun, 09 Nov 2025 10:31:41 -0300
+Subject: [PATCH v5] rust: add new macro for common bitmap operations
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251027200547.1038967-1-markus.probst@posteo.de>
- <DDVLMBC40199.2BVFYHDGQP4Q4@kernel.org> <cf50c6db2106a900f2b9b3e11e477617d8cbb04a.camel@posteo.de>
- <CANiq72nhhji-cz2T2Cg9y5AwUwcc9q1Hd=-6J=6TafaxcHZHeA@mail.gmail.com> <d0f1effa5352959191ea8525963e84a832026dee.camel@posteo.de>
-In-Reply-To: <d0f1effa5352959191ea8525963e84a832026dee.camel@posteo.de>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 9 Nov 2025 11:25:03 +0100
-X-Gm-Features: AWmQ_blh3zXPBDBa2xOppsa0rLUtvjo_85ItJVX54L8bAP5DoouwDP0v002pXaE
-Message-ID: <CANiq72mmb7oH_3bj8_EwMA8RGg6M9TjWj+ebbaEQV-RxLx1iBw@mail.gmail.com>
-Subject: Re: [PATCH v7 0/2] rust: leds: add led classdev abstractions
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251109-feat-add-bitmask-macro-v5-1-9d911b207ef4@gmail.com>
+X-B4-Tracking: v=1; b=H4sIALyXEGkC/4XPwQrCMAwG4FeRnq20abepJ99DPCRtpkW3STuGI
+ nt3Ow8qwpCc/kC+JA+ROAZOYrt4iMhDSKFrcyiWC+FO2B5ZBp+zAAWFMsrKmrGX6L2k0DeYzrJ
+ BFztZWrCkndEVg8jD18h1uL3g/SHnU0h9F++vPYOeun/JQctcDjyQI1uVtDs2GC4r1zViIgf4Y
+ qCYZSAz3hAjefQbVf8y5sNYrWcZM12zrsgbtqgM/zL2zWgF5SxjM8Oais30Uv7smxnH8Qk00NI
+ HkQEAAA==
+X-Change-ID: 20250304-feat-add-bitmask-macro-6424b1c317e2
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org, 
+ felipe_life@live.com, linux-kernel@vger.kernel.org, 
+ Filipe Xavier <felipeaggger@gmail.com>, Lyude Paul <lyude@redhat.com>
+X-Mailer: b4 0.14.2
 
-On Sat, Nov 8, 2025 at 3:49=E2=80=AFPM Markus Probst <markus.probst@posteo.=
-de> wrote:
->
-> Could you please clarify if there would be other responsibilities to it
-> than code reviews and adapting the code to breaking changes from the
-> LED Subsystem (I assume I will be notified in that event).
+We have seen a proliferation of mod_whatever::foo::Flags
+being defined with essentially the same implementation
+for BitAnd, BitOr, contains and etc.
 
-It depends on the case, e.g. if the LED maintainers prefer that you
-manage your own tree and send PRs to them.
+This macro aims to bring a solution for this,
+allowing to generate these methods for user-defined structs.
+With some use cases in KMS and upcoming GPU drivers.
 
-But, generally speaking, a kernel maintainer takes care of a few more
-things, e.g. triaging bugs, fixing issues, tracking patches, deciding
-which releases a patch should go into (backporting), etc. Some details
-at:
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/We.20really.20need.20a.20common.20.60Flags.60.20type
+Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
+Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
+Suggested-by: Lyude Paul <lyude@redhat.com>
+---
+Changes in v5:
+- Docs: improve macro documentation.
+- Link to v4: https://lore.kernel.org/r/20251026-feat-add-bitmask-macro-v4-1-e1b59b4762bc@gmail.com
 
-    https://docs.kernel.org/maintainer/feature-and-driver-maintainers.html#=
-responsibilities
+Changes in v4:
+- Use enum: changed flag type from struct to enum.
+- Minor fix: airect casting (flag as $ty) instead of field access (.0).
+- Link to v3: https://lore.kernel.org/r/20250411-feat-add-bitmask-macro-v3-1-187bd3e4a03e@gmail.com
 
-This is not meant to discourage you, of course -- being a kernel
-maintainer is a fairly unique experience. Now, how much it is wildly
-varies depending on what code it is, e.g. how many changes go through
-the C side, how many users/callers you have etc.
+Changes in v3:
+- New Feat: added support to declare flags inside macro use.
+- Minor fixes: used absolute paths to refer to items, fix rustdoc and fix example cases.
+- Link to v2: https://lore.kernel.org/r/20250325-feat-add-bitmask-macro-v2-1-d3beabdad90f@gmail.com
 
-I hope that helps!
+Changes in v2:
+- rename: change macro and file name to impl_flags.
+- negation sign: change char for negation to `!`. 
+- transpose docs: add support to transpose user provided docs.
+- visibility: add support to use user defined visibility.
+- operations: add new operations for flag, 
+to support use between bit and bitmap, eg: flag & flags.
+- code style: small fixes to remove warnings.
+- Link to v1: https://lore.kernel.org/r/20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com
+---
+ rust/kernel/impl_flags.rs | 229 ++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs        |   2 +
+ rust/kernel/prelude.rs    |   1 +
+ 3 files changed, 232 insertions(+)
 
-Cheers,
-Miguel
+diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..c1086677678408f46c4832e2110c761fab017055
+--- /dev/null
++++ b/rust/kernel/impl_flags.rs
+@@ -0,0 +1,229 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/// Common helper for declaring bitflag and bitmask types.
++///
++/// This macro handles:
++/// - A struct representing a bitmask, and an enumerator representing bitflags which
++/// may be used in the aforementioned bitmask.
++/// - Implementations of common bitmap op. ([`::core::ops::BitOr`], [`::core::ops::BitAnd`], etc.).
++/// - Utility methods such as `.contains()` to check flags.
++///
++/// # Examples
++///
++/// Defining and using impl_flags:
++///
++/// ```
++/// use kernel::impl_flags;
++///
++/// impl_flags!(
++///     /// Represents multiple permissions.
++///     #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
++///     pub struct Permissions(u32);
++///     /// Represents a single permission.
++///     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
++///     pub enum Permission {
++///         Read    = 1 << 0,
++///         Write   = 1 << 1,
++///         Execute = 1 << 2,
++///     }
++/// );
++///
++/// // Combine multiple permissions using operation OR (`|`).
++/// let read_write: Permissions = Permission::Read | Permission::Write;
++///
++/// assert!(read_write.contains(Permission::Read));
++/// assert!(read_write.contains(Permission::Write));
++/// assert!(!read_write.contains(Permission::Execute));
++///
++/// // Removing a permission with operation AND (`&`).
++/// let read_only: Permissions = read_write & Permission::Read;
++/// assert!(read_only.contains(Permission::Read));
++/// assert!(!read_only.contains(Permission::Write));
++///
++/// // Toggling permissions with XOR (`^`).
++/// let toggled: Permissions = read_only ^ Permission::Read;
++/// assert!(!toggled.contains(Permission::Read));
++///
++/// // Inverting permissions with negation (`!`).
++/// let negated = !read_only;
++/// assert!(negated.contains(Permission::Write));
++/// ```
++#[macro_export]
++macro_rules! impl_flags {
++    (
++        $(#[$outer_flags:meta])*
++        $vis_flags:vis struct $flags:ident($ty:ty);
++
++        $(#[$outer_flag:meta])*
++        $vis_flag:vis enum $flag:ident {
++            $(
++                $(#[$inner_flag:meta])*
++                $name:ident = $value:expr
++            ),+ $( , )?
++        }
++    ) => {
++        $(#[$outer_flags])*
++        #[repr(transparent)]
++        $vis_flags struct $flags($ty);
++
++        $(#[$outer_flag])*
++        #[repr($ty)]
++        $vis_flag enum $flag {
++            $(
++                $(#[$inner_flag])*
++                $name = $value
++            ),+
++        }
++
++        impl ::core::convert::From<$flag> for $flags {
++            #[inline]
++            fn from(value: $flag) -> Self {
++                Self(value as $ty)
++            }
++        }
++
++        impl ::core::convert::From<$flags> for $ty {
++            #[inline]
++            fn from(value: $flags) -> Self {
++                value.0
++            }
++        }
++
++        impl ::core::ops::BitOr for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitor(self, rhs: Self) -> Self::Output {
++                Self(self.0 | rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitOrAssign for $flags {
++            #[inline]
++            fn bitor_assign(&mut self, rhs: Self) {
++                *self = *self | rhs;
++            }
++        }
++
++        impl ::core::ops::BitAnd for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitand(self, rhs: Self) -> Self::Output {
++                Self(self.0 & rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitAndAssign for $flags {
++            #[inline]
++            fn bitand_assign(&mut self, rhs: Self) {
++                *self = *self & rhs;
++            }
++        }
++
++        impl ::core::ops::BitOr<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitor(self, rhs: $flag) -> Self::Output {
++                self | Self::from(rhs)
++            }
++        }
++
++        impl ::core::ops::BitOrAssign<$flag> for $flags {
++            #[inline]
++            fn bitor_assign(&mut self, rhs: $flag) {
++                *self = *self | rhs;
++            }
++        }
++
++        impl ::core::ops::BitAnd<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitand(self, rhs: $flag) -> Self::Output {
++                self & Self::from(rhs)
++            }
++        }
++
++        impl ::core::ops::BitAndAssign<$flag> for $flags {
++            #[inline]
++            fn bitand_assign(&mut self, rhs: $flag) {
++                *self = *self & rhs;
++            }
++        }
++
++        impl ::core::ops::BitXor for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitxor(self, rhs: Self) -> Self::Output {
++                Self(self.0 ^ rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitXorAssign for $flags {
++            #[inline]
++            fn bitxor_assign(&mut self, rhs: Self) {
++                *self = *self ^ rhs;
++            }
++        }
++
++        impl ::core::ops::Not for $flags {
++            type Output = Self;
++            #[inline]
++            fn not(self) -> Self::Output {
++                Self(!self.0)
++            }
++        }
++
++        impl ::core::ops::BitOr for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitor(self, rhs: Self) -> Self::Output {
++                $flags(self as $ty | rhs as $ty)
++            }
++        }
++
++        impl ::core::ops::BitAnd for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitand(self, rhs: Self) -> Self::Output {
++                $flags(self as $ty & rhs as $ty)
++            }
++        }
++
++        impl ::core::ops::BitXor for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitxor(self, rhs: Self) -> Self::Output {
++                $flags(self as $ty ^ rhs as $ty)
++            }
++        }
++
++        impl ::core::ops::Not for $flag {
++            type Output = $flags;
++            #[inline]
++            fn not(self) -> Self::Output {
++                $flags(!(self as $ty))
++            }
++        }
++
++        impl ::core::ops::BitXor<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitxor(self, rhs: $flag) -> Self::Output {
++                self ^ Self::from(rhs)
++            }
++        }
++
++        impl $flags {
++            /// Returns an empty instance of `type` where no flags are set.
++            #[inline]
++            pub const fn empty() -> Self {
++                Self(0)
++            }
++
++            /// Checks if a specific flag is set.
++            #[inline]
++            pub fn contains(self, flag: $flag) -> bool {
++                (self.0 & flag as $ty) == flag as $ty
++            }
++        }
++    };
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 28007be98fbad0e875d7e5345e164e2af2c5da32..57b789315deda3d2fa8961af79cad4462fff7fa8 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -67,6 +67,8 @@
+ #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+ pub mod firmware;
+ pub mod fs;
++#[doc(hidden)]
++pub mod impl_flags;
+ pub mod init;
+ pub mod io;
+ pub mod ioctl;
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index baa774a351ceeb995a2a647f78a27b408d9f3834..085f23502544c80c2202eacd18ba190186a74f30 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -27,6 +27,7 @@
+ #[doc(no_inline)]
+ pub use super::dbg;
+ pub use super::fmt;
++pub use super::impl_flags;
+ pub use super::{dev_alert, dev_crit, dev_dbg, dev_emerg, dev_err, dev_info, dev_notice, dev_warn};
+ pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
+ 
+
+---
+base-commit: edc5e6e019c99b529b3d1f2801d5cce9924ae79b
+change-id: 20250304-feat-add-bitmask-macro-6424b1c317e2
+
+Best regards,
+-- 
+Filipe Xavier <felipeaggger@gmail.com>
+
