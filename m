@@ -1,116 +1,96 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC1232D0C4;
-	Mon, 10 Nov 2025 21:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512D72FFF94
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 23:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762810608; cv=none; b=fy9p1oawr44vxupxfF9HXP0bLB+OJPUbkrWap0UvMMmpI2DE1FsttjRA/OESgjeEcUlzgybRsdz2L9dj+q+VA3PlAWcXysnsleHGbMu2lG+Vx6f1otCQ2gMbBAye+qaCKeS6JZqZs1xDXOA2PVLpQX+0hSSNNkcJte7baLAXvhc=
+	t=1762817097; cv=none; b=YE9q0WZVyx/9N7D5YDo7ztxljN0N5WXN85m0h2w8sHQW4haTdMlygaKyY1cTETIa9+N3Ilmny5MxcEyDgKkcdH1TMwZdBLQTmbQ3hMT6ZIJE6YAkRKfbbDQukYuIpVvL4tSgDiVHy7PhwOA8CdYGfMf/7O7/5CmIebNly/aHcQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762810608; c=relaxed/simple;
-	bh=CTJVkjrbUSqe+A8bpFZm82gYv0MPWLBXaF3q0pTBnqk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FEGFbnoMHEroK0vvdtZri66uD+ldD3o2dshI0RyFU0lddUtxOb8N6uVn+AFocykctNGY2yQaOznG/uMBYTpjE/9Ch2kfq2cJNBVtt2kaPlIL/tMYWEikNQTVgzxc3VX/6JVYKNDoKaiGf8IJcNtGRzqSAZXn1GVfVVtjwIvIDgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b5oFjC3b; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1762817097; c=relaxed/simple;
+	bh=LfgMc321C2gmcbEJ383Vf+rgHpae4BVbOamwU+8oUxk=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=YRCtZUapsdEoJtFijJ2OPzDDMTvSCOmNBYxP18Iil23vupnRJOpDmMRyzR3r2iAg4+MPZ87IFdmCfrj3A9HDZAwQF+jYruaICQg82lGy5WaiZzh1C8AMeVmMNTWn+Y1645uAvAaz4ottvvmBBpf2Abq6k56V7Crr2EDOjnHGJf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NUMhSl/y; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b5oFjC3b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762810606; x=1794346606;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CTJVkjrbUSqe+A8bpFZm82gYv0MPWLBXaF3q0pTBnqk=;
-  b=b5oFjC3bpyevWYXAAO5cWNKPGmWJf6HCbD78MimDXW4zkxIOxx5Q2I49
-   j+uVNawi+elyBSXmvVmO1uiqp7cwQLONABoNdWkvuYq9H2LRrOlOYT+/0
-   eFyqwtWESsVWe4nckXLirvVrZPHQgLKv/cszDKPmTwy8X2Jm0VsLQJDQe
-   g2XwFi2j7VrdTyMJLtdrJDk3U520sUIpsNutmKk+eURYgeGb9ePMbAF6V
-   PJDxO1kzOwtx2j2UoPgPJ4bfYKmNE+y4SQLzPQSDwyGPrwdmAOwo9QBXn
-   ND8CjE6TOiML78HxUYkOm4wRzNj8EzLf85THQ0zF8I+lBnkLeFoEcNB6x
-   Q==;
-X-CSE-ConnectionGUID: dwMsLpOLTiOYNuBeRKf7zQ==
-X-CSE-MsgGUID: k10d200rRPmZRQexztG1IQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11609"; a="82264721"
-X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
-   d="scan'208";a="82264721"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2025 13:36:46 -0800
-X-CSE-ConnectionGUID: k7Cn/WjMRjOTV1b0bZTqYA==
-X-CSE-MsgGUID: HHkLK9uSSd+EfkQeZrcUFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,294,1754982000"; 
-   d="scan'208";a="193780548"
-Received: from lkp-server01.sh.intel.com (HELO 7b01c990427b) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 10 Nov 2025 13:36:41 -0800
-Received: from kbuild by 7b01c990427b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vIZZ1-000139-25;
-	Mon, 10 Nov 2025 21:36:39 +0000
-Date: Tue, 11 Nov 2025 05:36:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH 4/4] rust: io: add typedef for phys_addr_t
-Message-ID: <202511110532.BF1f9LTs-lkp@intel.com>
-References: <20251106-resource-phys-typedefs-v1-4-0c0edc7301ce@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NUMhSl/y"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-297dc3e299bso25871235ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 15:24:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762817094; x=1763421894; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rB+sgp3H4KhlCjjfdfflHKnV1BKdMwtwK7bRa+WX+h8=;
+        b=NUMhSl/yWrmfhdHJdX8fih355M0vD3HaxKpbVlgg92iS8OdPmXRoQTxj3Chn08DduF
+         fLeJ2Z0hRlSivSJHFLxZq/9jYEf7acz+qIrek/3pBCkBggns2OypGaXQJIOV6zKF2DFD
+         3/VyInLtLJbynuXA5BT2nHR03dOhxGIH+u/w23IhcGUlqlnNdww9AGb4AOoQK5Qcf18E
+         T9L5mSVa49EdF7y2xTpOujSgjpGyDRPSGzp/6NwwUfGv73tYoSHfeU/afKlvUN3w+c1r
+         CbX0vx7U94T+a3o5d2CvwjknEZHNoxAxB8xDwM07ZpWYdPgmpEb+MMYIxStTPNhaYuz0
+         OcuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762817094; x=1763421894;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rB+sgp3H4KhlCjjfdfflHKnV1BKdMwtwK7bRa+WX+h8=;
+        b=saEm6TetuOIbbYNKg7vfVEtJtlIYLibXe6wa9wQEM86RL9chpZik6mVxRA3CFypt2a
+         jRwclHfNtFcnK8UoaFN5pAv6F3czKave0LnRLhaTa/2zcGLYhoowF78+JQqNFS5ISbmb
+         R3bK4dNro17RmPwuRvpavv/b3CpBsG+5yNn1D/2xit1OcRwIs3/h14Alcl2Bn+/403sI
+         J2846418hH0DElBn+NrdvoLgqISVgwMgx8fiSX+Hmj1iHQXFAzfDzQD3QMAkvmBAz3jn
+         Zc1z5MuKj41SjsdGytrktHma+wIRs2oEl18z4uF1IcAfg1A9a6godA5Jlk8JADma2mvd
+         mpkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXhadT/teEAm+7JJZKKnJSOmLR09k8FzZnI1a9cwgsuUI6A7FWCezdFO7t/KDQsDpIiwqxEIikWZg27zeDf8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2WFhchr2KnzwcR4iLefWZeNidq0CaKp92clNqBxwj6J4W55et
+	1olmoCOsLmvGlQcb3WX6JdlsOvBfr9mlsAmBPzXUltWu5Qf4piM0dZ2a
+X-Gm-Gg: ASbGnctRwMW+4WpPBV9ZdtvXFHYLaL4+6Mbs+JVml+pr2xsRBgWTskeJ/GJYzfI4lHt
+	ajlFc1glsdDDQ1xLrEwDJDfuevWjBiXY5Y6ANLHa++Y0wWUNyQQcJugQtC9NYpPnIYvXlcRCn7Y
+	rD/+vbP2toaRLIsypPCxmRXAM7i19CecaXwxxyGVNBRWZsXP3y+2ENxtFqO6h8KkeiE7pRdpbxx
+	jNqSwBIyyMdWhduPM8CTMnXGMoOQjiKsMa9Fai0cHFPH7ddWQ1PTzDqumnJcQAg6IdRd1n5ZlOD
+	izEjwRJZYkrO0nM6dAo5E0ttDC5xLUnJIVTvbuQi1QecNTKJm29NOUh5sEQteM7dvWIZFFsPGAx
+	7D8GBHuZ/viRlLKU8G+OAUzwy0ttqS7gLJu0SrndXi+nNo7useGF/nEDbS5d0pnwvFUE+53baQM
+	ALD4gldaiatf9Mwhtx94VEhw6342mb2ftDS69mB5+6ut0L61VtbN7M68po6iNc7wed
+X-Google-Smtp-Source: AGHT+IGPaBk6e9Khb1yqRKfYMFmfSNYwn1VnFyXe0wXMOkJC9R7tqlKr6n2Ksy2ki1vCKQog9xKolg==
+X-Received: by 2002:a17:902:ef02:b0:295:a1a5:bb0f with SMTP id d9443c01a7336-297e565d7aemr118857735ad.18.1762817093570;
+        Mon, 10 Nov 2025 15:24:53 -0800 (PST)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3434c30b96dsm12092310a91.5.2025.11.10.15.24.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 15:24:53 -0800 (PST)
+Date: Tue, 11 Nov 2025 08:24:38 +0900 (JST)
+Message-Id: <20251111.082438.1117005832484432168.fujita.tomonori@gmail.com>
+To: ojeda@kernel.org
+Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com, tmgross@umich.edu,
+ netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ dakr@kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 1/3] rust: net: phy: fix example's references to
+ `C{22,45}`
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20251110122223.1677654-1-ojeda@kernel.org>
+References: <20251110122223.1677654-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251106-resource-phys-typedefs-v1-4-0c0edc7301ce@google.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hi Alice,
+On Mon, 10 Nov 2025 13:22:21 +0100
+Miguel Ojeda <ojeda@kernel.org> wrote:
 
-kernel test robot noticed the following build errors:
+> The example refers to `phy::C{22,45}`, but there are no such items --
+> they are within `reg`.
+> 
+> Thus fix it.
+> 
+> Fixes: 5114e05a3cfa ("rust: net::phy unified genphy_read_status function for C22 and C45 registers")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-[auto build test ERROR on 211ddde0823f1442e4ad052a2f30f050145ccada]
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/rust-io-define-ResourceSize-as-resource_size_t/20251106-201954
-base:   211ddde0823f1442e4ad052a2f30f050145ccada
-patch link:    https://lore.kernel.org/r/20251106-resource-phys-typedefs-v1-4-0c0edc7301ce%40google.com
-patch subject: [PATCH 4/4] rust: io: add typedef for phys_addr_t
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20251111/202511110532.BF1f9LTs-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251111/202511110532.BF1f9LTs-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511110532.BF1f9LTs-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from kernel/sched/rq-offsets.c:5:
-   kernel/sched/sched.h:3743:18: warning: variable 'cpumask' set but not used [-Wunused-but-set-variable]
-   3743 |         struct cpumask *cpumask;
-   |                         ^
-   1 warning generated.
->> error: unknown start of token:   --> rust/kernel/io/resource.rs:17:19
-   |
-   17 |     ResourceSize, \
-   |                   ^^
-   |
-   = note: character appears once more
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
