@@ -1,65 +1,65 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CED73081A5
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 11:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8B630BB9A
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 11:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762775235; cv=none; b=Cn13vhOtDjUaFKVhkAqlJTvb+g6Ex2Zc+WgI0wTfUjd+pMh6U5XklfFUArZG0dil/L4fON1hsyySIfqAXz+Sz8V7LJj1Tr9tTufzspR8SANRTfMHj0apKO61O6TQv7jKS8CFu0t5rwSUXjJexLCFXYwl+bKRlrOlFB2me3Eb22M=
+	t=1762775250; cv=none; b=Om6j5eUQG/Qusi7yN4OITOA668ivnS0x36Fpv8FY651ThS3GIZiBMhsFuGtKUoQ7qopbDDiIUQNdqDAEWa8QhlXk5wn7oNVOeotHgT3ey4lj3ssuwOnjDoMxUBmmkciJMXAlAj6wDT78zpjSTjSIxdXX2H1cLAnHQNAjqBpyS5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762775235; c=relaxed/simple;
-	bh=UHsZ8mNOG8p7kZWeRQbdvDX87iavcoicnA0ph7mCQpM=;
+	s=arc-20240116; t=1762775250; c=relaxed/simple;
+	bh=Certre8NKMBWjJMOdCkjiT37S95gzPpjFWT1M8r9T2M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=U1sChejIWzk5MgqQrZxt7xMKF4aKYuoDvrW8wmVFkl0XoB1MaTbvkeoHmTboX+vE+iTqO7/s8lfsroay7AqnMUiFKJ6SVV3H2zj6R9IRyn7aYkCdRLT0rKlrXda4LsCu2oGgl63R1LuK8sRVgg04DrY/W7Gt4grtCDCXdBNq/ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DddieZtr; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=DmY+6bjNb30mytMUnolv0EcTg/zpgpZDc2GwW2SzwcA88YQo0wuDbawZB+2sdjfUANEci15yAT/QxWjQ8rCasLiGRfpEUtB5NW6LuiVXzcIA8sAKDLcV1x/8JuMJluD4jktcsASeOn3cGlWJps+6w9H33btDY5DhPaskMOg2saw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=INJlm9ib; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DddieZtr"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64091bef2ecso2878940a12.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 03:47:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="INJlm9ib"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42b33d2a818so460756f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 03:47:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762775232; x=1763380032; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762775247; x=1763380047; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wUCZuS6iBZ+Cb2EbxYt/LbW22Q1kNekqfCyN5WYEYrk=;
-        b=DddieZtr+YcRU6AGymXQ6+qbjn4EqfaO1LTBmOwgNdwd2GljS7zyb1RqN14kryvqia
-         N4CCnwoDamx2Y13a+sxDntiCwG14T10uI1J2PP2gs/++M8u8KmFDWeVPTkhGVJkd7MnX
-         /oPPoPxWLKuq2A52BHO8bifmzBZtHc3liXMbi/+mGONJAWn7rZvdMPNGtvI33lz2xU6u
-         ysPgqzNiiCIF6TMslrx6yVp6I+MC/7t7lzsZtPs0OPXVU7TcmmQeLvkTdztdQx04qOp3
-         vFq+6Tapi87i1kL1hJdKBMxmoC7UO9aI5evD46DVTYrG6830K8SRDB/frUImVwp3+4NW
-         P3dA==
+        bh=yAt7Z27w/lXRkHSeX0o2zGMIVMbZvME2esCv61DwS7Q=;
+        b=INJlm9ibIvrZ+wYgtzhvboaENtDAIrI6dy3Bk/JMDydCdFnSUiXqjD7wvKqFVdnP/b
+         Zh66kWpa0/fIZyN7bKajxWBttrBPzrFesfyZb7/+vqav8nAErFrtiDBfKXVjRmICqPhD
+         bm1CeInN4XTcIa7xCGC/5IAgqKqX2FuS+icLLEH7TRG4EthIvJlFcjS2i/0CGvwqywFG
+         W1PyssSUcVUs8JlGMWDN6dG9gOjobpL1Qw97yxu8UhS+9wEfgLgrq9lrNzjNh2F128gz
+         9JEFv+qHyca98L5DbJQCAn/4xuWLRSIziK+vBtrcuEHQxGaACM0Fmot3486cflJvJkPN
+         PJNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762775232; x=1763380032;
+        d=1e100.net; s=20230601; t=1762775247; x=1763380047;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wUCZuS6iBZ+Cb2EbxYt/LbW22Q1kNekqfCyN5WYEYrk=;
-        b=NuL5kOUBSJpo/aCEuOGZvkdUOnAv7r77XqutVcPKkss3khlp10JhH/ANCRf8df3mlS
-         J6c9BTlKWsf6C14VWKWWT2gWRLRxl5mNXaifkX3+aXYvBuuDGQANpG0wbGCpQPGsm5s+
-         P+Se6PvQQEHv/G9kgx/cZJA2BraAoKdxdn4B/E7Ui6CCBtwFYcL/SzZfDTW7n7/TiyLX
-         d5FSHpslIra6F8vqHJkWXa1HSxc3/FDydmHp4GxFrMkEZfMvx6nWJdiOlAsexLVVdjy8
-         KX/IvwC5nhxPWF3/s8cfT5o44MG2DcdkhJ+tWi8Kh+LgfI6//SGrJo4+9r5/zquwkQFE
-         63ow==
-X-Forwarded-Encrypted: i=1; AJvYcCWU/6X+lCtrVVzoucUoJ2Baxr2L2jtihs3qV7FY5F0ftMAzj9LM88aSTeikPdu43F+LhY3BfuKYD2U0617p1g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/oZ3oI6WQSvvn0hhn1q12EzOUmw9Pcb23fxENSB03PnfURtBW
-	HLfCjNf8M09n3CcKT5aNd/ukHY+tgDcs3yyXmVQGUEz4znCTJXn+4U0uUUgHMDnBV6bg4vjr4ZA
-	9xY0QDIoHy1M8ySpspA==
-X-Google-Smtp-Source: AGHT+IHn/ARWRXnaz/QbEvpiXa66T27fjTbhbGtpITormFJQJJtBcOuO5FmSZ0Htawn8t+iKKDuDiXxfGYOF77I=
-X-Received: from edbin4.prod.google.com ([2002:a05:6402:2084:b0:641:8e3a:1196])
+        bh=yAt7Z27w/lXRkHSeX0o2zGMIVMbZvME2esCv61DwS7Q=;
+        b=wyHTW7OGQIUur1Df17NqA1YJfv+Gw6vhlCt3nQkNG+4wM4CviHHGu8zbMtuCUnRibn
+         RltIu0Ri1xurbN5iK+JaSG/NWFxX6fz79mwCxlBovZWC4W9GEhcVb1a+9H5hHRpWLo4P
+         TOQYb32Y9/FCkiq45Xe8c3Cj9lB7pxqZCcS8CvSmxv812UL/Z2WKUoLaogC70GQFgTUu
+         vzF/pxBgcniV6Q9n8DfIzTywcwYcIB8LXpFtV5FemG51KxLWYz9Ci0Tm0fvTtejr0ylf
+         LOEhojnOqYYJhiUe9YRxHB24ee0O6SVCLqKM8NM/PP6CED/4WzAsTAuNarCWbpRf19Wp
+         8B3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVx+rizuydrm96tAabbI2/4CV+ZNgpIAlXonDPJadZqHgWT8ZhfekpZyimZQjv+QjA/8tWMj+p9h/RYDe7smg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7dJlqpJ1rAABrqba0TJRrKomHXSugcrjzYJ22fF8UHAhY4eTd
+	19byG7D4DXMD4IhSQhHFhAVq/AacwCFGHkJxjo/4phw6H/HrrU+PyNmg9d4Wvb+bGBuYkCyC1GA
+	speDj/76SNZwk2P3IOg==
+X-Google-Smtp-Source: AGHT+IHCLy2mdnxpnK0+nxJnKpheaCzAh9ChVq3lvYBA5uZFfrDQycfDIP5ZYdgDCadZ+3ZCgwyWUNwt33mUhMs=
+X-Received: from wrbfp24.prod.google.com ([2002:a05:6000:2798:b0:429:ef2d:571d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:2106:b0:640:ef03:82c9 with SMTP id 4fb4d7f45d1cf-6415dc11781mr6885792a12.11.1762775232291;
- Mon, 10 Nov 2025 03:47:12 -0800 (PST)
-Date: Mon, 10 Nov 2025 11:47:11 +0000
-In-Reply-To: <20251110095025.1475896-17-ojeda@kernel.org>
+ 2002:a5d:5f96:0:b0:429:d004:bb2c with SMTP id ffacd0b85a97d-42b2dc6c8a9mr5644715f8f.57.1762775247005;
+ Mon, 10 Nov 2025 03:47:27 -0800 (PST)
+Date: Mon, 10 Nov 2025 11:47:26 +0000
+In-Reply-To: <20251110095025.1475896-18-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251110095025.1475896-1-ojeda@kernel.org> <20251110095025.1475896-17-ojeda@kernel.org>
-Message-ID: <aRHQv14husHrYpl_@google.com>
-Subject: Re: [PATCH 16/18] rust: syn: remove `unicode-ident` dependency
+References: <20251110095025.1475896-1-ojeda@kernel.org> <20251110095025.1475896-18-ojeda@kernel.org>
+Message-ID: <aRHQztaAl6Hi67FM@google.com>
+Subject: Re: [PATCH 17/18] rust: syn: add `README.md`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
@@ -71,14 +71,41 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
 	patches@lists.linux.dev
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Nov 10, 2025 at 10:50:21AM +0100, Miguel Ojeda wrote:
-> The `syn` crate depends on the `unicode-ident` crate to determine whether
-> characters have the XID_Start or XID_Continue properties according to
-> Unicode Standard Annex #31.
+On Mon, Nov 10, 2025 at 10:50:22AM +0100, Miguel Ojeda wrote:
+> Originally, when the Rust upstream `alloc` standard library crate was
+> vendored in commit 057b8d257107 ("rust: adapt `alloc` crate to the
+> kernel"), a `README.md` file was added to explain the provenance and
+> licensing of the source files.
 > 
-> However, we only need ASCII identifiers in the kernel, thus we can
-> simplify the check and remove completely that dependency.
+> Thus do the same for the `syn` crate.
 > 
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  rust/syn/README.md | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>  create mode 100644 rust/syn/README.md
+> 
+> diff --git a/rust/syn/README.md b/rust/syn/README.md
+> new file mode 100644
+> index 000000000000..d3e3981da2fe
+> --- /dev/null
+> +++ b/rust/syn/README.md
+> @@ -0,0 +1,13 @@
+> +# `syn`
+> +
+> +These source files come from the Rust `syn` crate, version 2.0.106
+> +(released 2025-08-16), hosted in the <https://github.com/dtolnay/syn>
+> +repository, licensed under "Apache-2.0 OR MIT" and only modified to add
+> +the SPDX license identifiers and to remove the `unicode-ident`
+> +dependency.
+> +
+> +For copyright details, please see:
+> +
+> +    https://github.com/dtolnay/syn/blob/2.0.106/README.md#license
+> +    https://github.com/dtolnay/syn/blob/2.0.106/LICENSE-APACHE
+> +    https://github.com/dtolnay/syn/blob/2.0.106/LICENSE-MIT
+> -- 
+> 2.51.2
+> 
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
