@@ -1,65 +1,65 @@
 Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB6A2E8B7D
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 10:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7BF225762
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 10:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762770461; cv=none; b=QOrrdqq2AX+nu2fa4Xb1jeGMeBJbU8suPelG13ue/cDZ5+Dxb5SZnxs8GaPQUfLX3Uc4hL8f/UqQJzIrQHvAROXmqWGjOs0glF12E+R7KH8tOnPREoqASkTA560IYBVETFUl8jfzRepvBfOJY7Osa4bWGXzNjPQ1+S0xe9S30D0=
+	t=1762770820; cv=none; b=Fg/tE9TwD5EWEdbRcgkWcFZ1P4ucdgMZnvVhhcL1uMAzBj6DSCc9wUqLki4r7rPbxq/+Fohua+sIplMwtdANQicWqe3oOpX1LNcPW+zDxnpwAB5YRrIkxxuZtalvCQwR7/S3L+e1qEktnT0ryHE+xOlQp6+nVLjdWxhUdLG3rlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762770461; c=relaxed/simple;
-	bh=qOc2Yc90dsMYkDqxDQPjAtDHWYmR39nkh+FTIYhuNTo=;
+	s=arc-20240116; t=1762770820; c=relaxed/simple;
+	bh=GoL3gN4h5eYU7litgF4qiXRimx4qE9CB8i92qSY1F7w=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Xo0BcPRLJ702pi6X69XYj9H2vL2mEaZ0nf7cXy9ZR9F1vycT/ZX1nRwK8nEQMscaUgPalpUBKQaxvw2mIkzbAS7JOzxmC7ntjd3byLc1MHK8Y6v/4S5UMwDjah8aLpJAtMMMM0IJosqJ4MGvrbSK2WdSywFKMoejQwQb9uSDX+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=14uCg/K0; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=i1P10yhxZoJOmEYKR8BTV5SS25vMyEl+nhMnxSuOQu8rWjQMR+AsXdGP3JK74Hi21zxCTyTGxcYd5kY53s8RpsTOwbXBwJdjbEQRZ6fBOdaK8c+sz7YgtVX2p1TGtKi0h1H2/OhXME+nmY7m76YSK1YrPP2Gg3dAw0/WhKQf104=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nlYQiiz3; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="14uCg/K0"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-640cc916e65so3886845a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 02:27:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nlYQiiz3"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6407bd092b6so4420562a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 02:33:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762770458; x=1763375258; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1762770817; x=1763375617; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Egm6bH8haTO66pWlj9ItuOdMEFY5snjzdOZKIxF5pdA=;
-        b=14uCg/K05sXC7gfX4vga9G2yabPKBdqsO4KoHzBNH60iLvtW6bzLwitFjNBTVJlXoX
-         3MC/R8xNtWBssqSDJEKj995QqFgQznCHfSOPd17WK90k7amx8MT1mUHZNUnLdpr33tmv
-         tLB154QCX93MF9M5pq39XEh4/RQONltfx7HYlu3rSFWJdYD+19pjpp07deqgsVydT57x
-         +nl6dj+A2ggIdFLBL0wUpBdMwW0OfUfo03ecFmhgb7Pb1e+BQVZ5Qv5nTXuAECufCOLM
-         ugoSntFqvY/AKRVKHIi3YV7h950/zTeduP+4IQU5VMhKKeXage53x/QPWJuTixDKC81X
-         Ikhw==
+        bh=CCzpwObG7lLSpKChT0Fx+ByLzoerKxd9DaM7EmJ24AM=;
+        b=nlYQiiz3BD+lyjdyVnTBmWTZ2IG/XAysTS2skjDE1SjQDsJ+ZkQUFOR74gvf9/CCGo
+         JMoafsnCZBBH6TZlXy9Xpx98yBEnozv7kiIaMZwAZ4BLES2BrXtWrTPRG+92T7R4sb+i
+         y9e+vzAXhhZgOebdiutYHp8mIVqjzdLldc/KFiTrPIMfFVkmdjR/TaT7/Em8OktiDMdW
+         /Ru75aupcw9+lPOT7I6tUuwDeM14GXQ/EskgBiT4j3bWELt4Tw3jAFcGMyuHnTU1E9cx
+         n6eD77h1IF5kWQ2I4W5ze1H8XfsGl6K+pxtyv9vymECVrLJ0B5EK4mWXElhI9TVLkwcf
+         vZ8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762770458; x=1763375258;
+        d=1e100.net; s=20230601; t=1762770817; x=1763375617;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Egm6bH8haTO66pWlj9ItuOdMEFY5snjzdOZKIxF5pdA=;
-        b=sqV3q26D/obDHavZkVyMthb9gpdL1vqB/62uZU/hyMxhQw3W0hMvOZjlFjih6EFPj4
-         sbmXaroocYKuMryH7yNbCADiJzgxn5f3fJ3W9uzWPPrToSbXim4V1SyzMfJjrl1i0yJj
-         yS+w812zEEEKB5gjLNa2dv3/pCAKLm31b/jo6ukZPbXWSuEfOH00zIWW5aPCYVwy8YKp
-         /gAlbuvIIeL3N9Uop2cdwsLzCnXb4Rg/RvqT0LeolWpBmfKFq+mM0Y5jKxogIOODxx21
-         Srea5Hh7x0peyHrnLbOsu6QhfPg5x+Yar7YJVU2VVyWf0MTrYkodlVKmyZYRi7LN7K2r
-         PiCg==
-X-Forwarded-Encrypted: i=1; AJvYcCV15wI51k0e2b7k37Qv5jkD/GwMAIiWCkFqlniY8YlegWUmiM9yks+tAmZWzZk//8ZPRke+/sdj1sO0ukwg0g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLBixgeZHOV9VDB2k/Eve6+JdsjujY+8O00m8T5xX6oEy3aPg2
-	JCCt7b8rEISNUsWeM0JDlD/+zQK5ofGjhu/FWKL+Li2D5YbXQzbZiWkManwcJHsV8uQ2/RF2Wj4
-	Blyhu8D3y7P2vQkXhVA==
-X-Google-Smtp-Source: AGHT+IGusiuHZLT3Jzp+Pn6pR0ClVUPAC/bjvfmAH1j2yaYh3CBjTcnQebjmD6hy9yf32AJb1ySOZAn3SaTPK0g=
-X-Received: from edhr13.prod.google.com ([2002:a50:8d8d:0:b0:634:4a04:b8ff])
+        bh=CCzpwObG7lLSpKChT0Fx+ByLzoerKxd9DaM7EmJ24AM=;
+        b=B0CP2/T0JGnwYfDQ6UX9JH0srlh/NZyZQFnSaGcAZqP52T0TBYCfKhJYV5mfS8l5Ed
+         H6AxxyFjB9ZzRZnEBJ5gYuS1mxjsvmuMwBw4cZqU7pGKw0LRwqBSpooBzoujDtWbN9Cc
+         gPdqruyCl2RbZlVaSSCLOaiy1ek5ntGH4wCTNSQiWOAZxNm5Da5Farbr9teG6CzlxTfC
+         f7GvJ2mb6IautkydrKy3om9pYxvkEpzFQrvDbr268K1/0VSxJvaq/+6Nqdtva+iG0/En
+         WryvlAISuPewnu8w8eNXszcz1RBjv83jizwN1unNmSsWJ3luxLPIGhxsrzuv/93srL7q
+         Wc0A==
+X-Forwarded-Encrypted: i=1; AJvYcCVYn69iRb1RjORziyb+KL0v/gjnu1xoj0NPsNffAOa6nZQdLL6/iYflhfuufj/C/e0MAPBF/EUAAqP6QuETuw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3turWlWyGRwoXkQs53Dipo6YDhevaCPP7TqJniLsZjduoF+1V
+	o+VNiS7PeAnKtnGzYFRfvDHW/SL2I+7zsWB0k274plwK4c+d5+a/fZ1/vJ9NiXCqi7zapKU8+9U
+	5MpRuZ4sVm0Iw329JkQ==
+X-Google-Smtp-Source: AGHT+IGrQByfI9wokfMWFe7K1Ttk8ewEB37twW8Y2YwoEzQNcIfJcFh4xKKTJ6P4DH7/NHxDz4jf6iOvc30RilE=
+X-Received: from ede25.prod.google.com ([2002:a05:6402:20d9:b0:641:3d6a:4b38])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:84f:b0:640:c95c:be17 with SMTP id 4fb4d7f45d1cf-6415e6e759emr6717600a12.16.1762770458616;
- Mon, 10 Nov 2025 02:27:38 -0800 (PST)
-Date: Mon, 10 Nov 2025 10:27:37 +0000
-In-Reply-To: <20251110095025.1475896-3-ojeda@kernel.org>
+ 2002:a05:6402:27d4:b0:640:9eb3:3673 with SMTP id 4fb4d7f45d1cf-6415dbfbd56mr5809440a12.4.1762770816828;
+ Mon, 10 Nov 2025 02:33:36 -0800 (PST)
+Date: Mon, 10 Nov 2025 10:33:36 +0000
+In-Reply-To: <20251110095025.1475896-4-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251110095025.1475896-1-ojeda@kernel.org> <20251110095025.1475896-3-ojeda@kernel.org>
-Message-ID: <aRG-GU_I3MjT46dQ@google.com>
-Subject: Re: [PATCH 02/18] rust: kbuild: introduce `core-flags` and `core-skip_flags`
+References: <20251110095025.1475896-1-ojeda@kernel.org> <20251110095025.1475896-4-ojeda@kernel.org>
+Message-ID: <aRG_gJu_yZeJWPuo@google.com>
+Subject: Re: [PATCH 03/18] rust: kbuild: simplify `--cfg` handling
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
@@ -71,17 +71,25 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
 	patches@lists.linux.dev
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Nov 10, 2025 at 10:50:07AM +0100, Miguel Ojeda wrote:
-> In the next commits we are introducing `*-{cfgs,skip_flags,flags}`
-> variables for other crates.
+On Mon, Nov 10, 2025 at 10:50:08AM +0100, Miguel Ojeda wrote:
+> We need to handle `cfg`s in both `rustc` and `rust-analyzer`, and in
+> future commits some of those contain double quotes, which complicates
+> things further.
 > 
-> Thus do so here for `core`, which simplifies a bit the `Makefile`
-> (including the next commit) and makes it more consistent.
-> 
-> This means we stop passing `-Wrustdoc::unescaped_backticks` to `rustc`
-> and `-Wunreachable_pub` to `rustdoc`, i.e. we skip more, which is fine
-> since it shouldn't have an effect.
+> Thus, instead of removing the `--cfg ` part in the rust-analyzer
+> generation script, have the `*-cfgs` variables contain just the actual
+> `cfg`, and use that to generate the actual flags in `*-flags`.
 > 
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+For anyone else reviewing this, here is the relevant part of the
+makefile that calls generate_rust_analyzer:
+
+rust-analyzer:
+	$(Q)MAKEFLAGS= $(srctree)/scripts/generate_rust_analyzer.py \
+		--cfgs='core=$(core-cfgs)' $(core-edition) \
+		$(realpath $(srctree)) $(realpath $(objtree)) \
+		$(rustc_sysroot) $(RUST_LIB_SRC) $(if $(KBUILD_EXTMOD),$(srcroot)) \
+		> rust-project.json
