@@ -1,64 +1,64 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E9C3093D8
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 11:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE51430AD1F
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 11:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762774252; cv=none; b=bQBxI+0jehdTQB3gM+yU2+lifzU0NSq5hl2pkxF6IgSrfwc6UmQ2D4TDIX4edCEqNR6/PhtlQhw/HndvsKtcSM9JfaF0T8CW7wjQ+wX/XBSi9p171wkGE8GSBKJkpKCv4xcDINtbwhKGbRH59LNPjcdL9F+TtHhUDH3TyJeWpbY=
+	t=1762774282; cv=none; b=cv8kJjJwLMN6rjjE9fVFr0u3Ngfr6AGa+3o1q8Afu80yTElEg4NO0MAIoISBam+UCCcNS/Ok4vWJHleBI7M10I0Hv37Ea7kb2sxb5w7Lv7E0T3fwpz/KOQyNfRDRAAff9B373nlYeCbqMErzdbOCswFM8OzARv6zfT5JJre2kYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762774252; c=relaxed/simple;
-	bh=OfKe33PZ4jVxK62r9E/y9a4Z1s6PmBdGD9WWYgb8n88=;
+	s=arc-20240116; t=1762774282; c=relaxed/simple;
+	bh=QDgyZn87hGLt4zqNVLGdGA9KZtHVZaERp/iNSIowMsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B2bzESIn24WQ8bS3BsjpHEyLuybw76Opogv3IxDYwJf7sxIf3jIuh0UDEV/7HTMWulUBQhOqDKT2iAMmYiUwkoIXGMAie+0vzCbhRK/drofI9Sg7vh66JZZm09IS5eNUwk0fLvgxMODg5757GKSilB/uROgHVjFTO4ilZWbQQqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dpxwtW56; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version; b=s6l0Ytpc518tMu0xJ1SgN05whNu2vzO+Prj3QL//pXmP1dFNNOv2AhP3O4E0gove9t6nPcuT2ZGvZCSskjySCgW0Yl+ezdGo8y9+ExJ2KJfokdacjEI+qa5HgptzYA4EJEi0px6jNJ39mt4vzzK2WPdSZtNciZ2CRlfzK6Hwwaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=msWDt2hS; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dpxwtW56"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47721743fd0so13841675e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 03:30:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="msWDt2hS"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-429c4c65485so2055954f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 03:31:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762774247; x=1763379047; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762774279; x=1763379079; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=i2/M4+EN5YNR0EtZX8jaOygcLVo9aZ5Ma5/OhttBbPw=;
-        b=dpxwtW56UE64vw1RTZQHG0uxdRCqjkPEkZck7v1cFBf/bJDS6IZSTD5JXotlHamwMN
-         FEQnaJX8KkTXKm/dOcHKDn+vNSeRB5/n9z0ap04O+LgZIiefHFKsgZ38cztQZdUhSwnD
-         ZQW+TzsVn7uJIILuK40sPu8n92jpdiKz5gpEZ2hDIgFzNPSkqABvjiJY8ov8XZ8KCDpf
-         wdht2IwA1G4L5SGtiUH3s/zU6HMyiD+GfqYZWb7ZJ9uPCGXELgmNz2G5SEsOhwS/IVhT
-         cbCduXrT21yG4z7MQZmjeQqjwF04mIoHc2w6/IXK56BJ1HqD6blqguh7YvPT8NUbcmOL
-         ewaw==
+        bh=+B5LEwdFrUWa2nsD2z+5oWtZAFge/Sr1BBSlvPtJNts=;
+        b=msWDt2hSRTzVdXLtqk4AurIvHeiEYrhsxft0i3HOokAE7sMP9QxgaPAx9WeEEYmc7V
+         rr6j6cWdUvGBNl2JKtqSRhjFAOq7ZkltG27+FRUIMDtN9LshbBNztbM27JMK5y08EGeT
+         WbfmuAPhxvp0blPm2BT60VWGEVNBtUpjYct4Qz2K+pZDxWnGiRN2Ht4TbgOqI3c3g9Rm
+         biC7I94Ie8JaqMciODVnPHsVUJdqu6bJAy5epsARgNeg7q9rBkzPhIGPZbPTZEKSNYdk
+         5aXa0zM49ibAP02E+8jTb+ve1W+zyEx3ilcgIvJ9hn4pbAGORUFTPAIaBwz/+eW0HdUa
+         g6Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762774247; x=1763379047;
+        d=1e100.net; s=20230601; t=1762774279; x=1763379079;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=i2/M4+EN5YNR0EtZX8jaOygcLVo9aZ5Ma5/OhttBbPw=;
-        b=KK43uSkntJnV5B5KyjC0bkqT2xCQimpStviDhnRFUgYBiXfj4NABlsTpfqUGNYvGh0
-         iXe3p2AeiIsw6i6vk7BD7mXH5SoJAtPAHEl4GzIvqruxkIySJiqQxCQwWMaBBcxIrcm2
-         Ag3mI4zO8eDqir+h419ZdHwGOPCCoyR8y7A4R5/jvAxND6u/ohhEwWJ6/l0OmiaBFBV5
-         lOcpopP1qh4Bwq2YgGfh7HIrEIwErypUpm4c24ByAgvsGPRjoWNKlixbUBmrCixlC4og
-         hR0MCQUOPOZ4bfMuU0FDiOZc1ETpwynGjV7K8mg26h48YxlJGTY7i2a5DNBKVaextw5B
-         Sy+w==
-X-Forwarded-Encrypted: i=1; AJvYcCXv8s5UXfRcDjBvxRxr3r0xRC6QyB5lZ9nZa8AswGWc9V4lG6vdpQZNhpYYshNFGt1ghIok+d/ldag0SFf6wQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKk7NKrTbX6xuz3ebdmX82YoF4OhuuZal1FGAj+zIyR6QUGf5w
-	W5wkrNF/CCZVmrbPHGg/0SW8v8qWovt85vV24VNjryg9dL6t6myYAICO
-X-Gm-Gg: ASbGncsYINl7G2fb1DLIGlvU0Ejlp1Evwr1abNRdnhGY9E/2LA4MtF7kkYJpjX1gnbI
-	wflmYH3dn29bSdCIsFquruo6HmFyzEbbdiblgDs0vRtSy4BKXtirgtVbfN7S+8LheJqm11OoYTx
-	HujYWWJWUzMjnS39FlISg3wZeW5uSjWR5nnPLtprv3YATTDOUQr3eDOBRNb5Lj8ksi06ecELzP4
-	KI1aEn1x+mf/G1+vaBCCm1BeIx0C0jzXrygHJD9L5y7ELERxQWWBjvOhWd1vaZU4sLbmIjTzrZj
-	wx3XmZUBUqO+DbEQKJulP8MPc40ZxBQR7AI5gLehOHaBYh72sFYLpCEy5q3TQ7TOiiE6Pzl1hcM
-	ApNagXlHcbhifQECYkXVr6I1fDEwtRt9+lZ0RN6jkONsmsNTtMKeuDAKIRaOURttItrTAWMsuFH
-	uOtFfuo3JfLj/OJho=
-X-Google-Smtp-Source: AGHT+IHRTXVv57D6jz8gQMeHv+k0QEmP8flDzLp6FHloYGxGe+7JI5a6HSXL1amJus57tdaqEBvfYw==
-X-Received: by 2002:a05:600c:1c8e:b0:477:54cd:202f with SMTP id 5b1f17b1804b1-47773230ae6mr58929785e9.3.1762774246438;
-        Mon, 10 Nov 2025 03:30:46 -0800 (PST)
+        bh=+B5LEwdFrUWa2nsD2z+5oWtZAFge/Sr1BBSlvPtJNts=;
+        b=j5nOZ0OmpsC0MMzLb4QwqblDSX//ITGiw9rk3p0uZcnGTc2X90v1gSxbXDHrk6aY2p
+         spKZJbqqjHXkbmeB3YfiQ3qIm2hC36JbsRJ9LEPUX0Ze+zmccbb6G0IaVK00mE9sJ6ou
+         1AQvhYQg88H5TFxXu70RNpLcTJ6S+SXXN1uboWsioiCbiJO72NKqDyvjnLPP3Wr3YzQa
+         vvPJkt+XTPw+ICkpY5BbMEWNXNRyowdX/TJd6UbVwtLRVVb0odh8AqE1KuCG8yr8fqQY
+         jXZVQtgYxX4RCp9vG7pC0wBxaWiJsapawMZSAxSYkwt3yIsrD6fp+00Bot+GDOh7g7A1
+         bzuA==
+X-Forwarded-Encrypted: i=1; AJvYcCVeX6KoDMK5Fqq1KBOrK4GsPDEzrXbx1eo41uHYW75DD34WDaE+i9nKS274Prb0wXzMqPFKtNUG5FGmhM02Xg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYZwlwlfd0hHTbY6zCR33TerSrxuJGUEMSf7j/F6pFZFjr4FYo
+	hCni1lHTFISqdspbA30ohhhZC0wS7RB3d+xp439lI1U/q8+eQ1tHsgD6
+X-Gm-Gg: ASbGnctONJ9dMv75bJyfXPemGr+t19AOkARiL33HeXSAm//+xY9EdllyyZHUph06+wh
+	4C8rRBs3BvkLxT0qsjzkpHCiJQBkIBC8h61qlWEfZuV9D/MK9QB0ERfGYl5L61AUH+sdiQ4gr6r
+	+/2QSMEJJN8m13jXi5XYSo6+npH0fpf1itm6mgv8pgjgsCBT2TSYBHXMCtfNLw1Knn88D3qeZtO
+	4w60HIb3xoR3DcwzJr147+jHE96ANiqL53JFpC2Mb2X0G6JsBGbYUGxF0kyzFKG1JXMi9e+OJIQ
+	YGY5lnlQOwALsowmhnFXgXaYrlehqPwRbl+9r3XSULrj9fAoqWAchLDwxEKnxkBr2lHRABhddEp
+	tTFPn/0qoEWkek5EMw8vItaI67sRdHzapnm8EdLm8YtK7//S+4X/xoshQa9AxXoDdUQibDqCiv/
+	kUpLamWzvj2w+pkU8wxggDpSZj3A==
+X-Google-Smtp-Source: AGHT+IEhi5skpO8ovjV3Z3ijxfBPFuObtlXjH9GjayH0SxEofIgcBu601R+yhpFJGs3AHgakPJ96qw==
+X-Received: by 2002:a05:6000:25c4:b0:42b:41a6:a670 with SMTP id ffacd0b85a97d-42b41a6a685mr74859f8f.54.1762774278734;
+        Mon, 10 Nov 2025 03:31:18 -0800 (PST)
 Received: from Vasilio.Home ([176.26.203.25])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4776bcfcfc7sm235216915e9.12.2025.11.10.03.30.45
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac679d544sm22516706f8f.46.2025.11.10.03.31.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 03:30:46 -0800 (PST)
+        Mon, 10 Nov 2025 03:31:18 -0800 (PST)
 From: Igor Korotin <igor.korotin.linux@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -81,9 +81,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	linux-i2c@vger.kernel.org
-Subject: [PATCH v7 1/4] rust: i2c: add basic I2C device and driver abstractions
-Date: Mon, 10 Nov 2025 11:30:43 +0000
-Message-ID: <20251110113043.51628-1-igor.korotin.linux@gmail.com>
+Subject: [PATCH v7 3/4] samples: rust: add Rust I2C sample driver
+Date: Mon, 10 Nov 2025 11:31:16 +0000
+Message-ID: <20251110113116.51743-1-igor.korotin.linux@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251110112437.50405-1-igor.korotin.linux@gmail.com>
 References: <20251110112437.50405-1-igor.korotin.linux@gmail.com>
@@ -93,504 +93,141 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Implement the core abstractions needed for I2C drivers, including:
-
-* `i2c::Driver` — the trait drivers must implement, including `probe`
-
-* `i2c::I2cClient` — a safe wrapper around `struct i2c_client`
-
-* `i2c::Adapter` — implements `driver::RegistrationOps` to hook into the
-  generic `driver::Registration` machinery
-
-* `i2c::DeviceId` — a `RawDeviceIdIndex` implementation for I2C device IDs
+Add a new `rust_driver_i2c` sample, showing how to create a new
+i2c driver using ACPI/OF/Legacy ID tables.
 
 Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
 ---
- MAINTAINERS                     |   8 +
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/i2c.rs              | 425 ++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs              |   2 +
- 4 files changed, 436 insertions(+)
- create mode 100644 rust/kernel/i2c.rs
+ MAINTAINERS                     |  1 +
+ samples/rust/Kconfig            | 11 ++++++
+ samples/rust/Makefile           |  1 +
+ samples/rust/rust_driver_i2c.rs | 69 +++++++++++++++++++++++++++++++++
+ 4 files changed, 82 insertions(+)
+ create mode 100644 samples/rust/rust_driver_i2c.rs
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 46126ce2f968..828f6d8b1c32 100644
+index 828f6d8b1c32..641757beb56b 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -11737,6 +11737,14 @@ F:	include/linux/i2c.h
- F:	include/uapi/linux/i2c-*.h
- F:	include/uapi/linux/i2c.h
+@@ -11744,6 +11744,7 @@ R:	Daniel Almeida <daniel.almeida@collabora.com>
+ L:	rust-for-linux@vger.kernel.org
+ S:	Maintained
+ F:	rust/kernel/i2c.rs
++F:	samples/rust/rust_driver_i2c.rs
  
-+I2C SUBSYSTEM [RUST]
-+M:	Igor Korotin <igor.korotin.linux@gmail.com>
-+R:	Danilo Krummrich <dakr@kernel.org>
-+R:	Daniel Almeida <daniel.almeida@collabora.com>
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	rust/kernel/i2c.rs
-+
  I2C SUBSYSTEM HOST DRIVERS
  M:	Andi Shyti <andi.shyti@kernel.org>
- L:	linux-i2c@vger.kernel.org
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 2e43c66635a2..a24f9dffed3a 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -58,6 +58,7 @@
- #include <linux/firmware.h>
- #include <linux/interrupt.h>
- #include <linux/fs.h>
-+#include <linux/i2c.h>
- #include <linux/ioport.h>
- #include <linux/jiffies.h>
- #include <linux/jump_label.h>
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index c376eb899b7a..181466319588 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -84,6 +84,17 @@ config SAMPLE_RUST_DEBUGFS_SCOPED
+ 
+ 	  If unsure, say N.
+ 
++config SAMPLE_RUST_DRIVER_I2C
++	tristate "I2C Driver"
++	depends on I2C=y
++	help
++	  This option builds the Rust I2C driver sample.
++
++	  To compile this as a module, choose M here:
++	  the module will be called rust_driver_i2c.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_DRIVER_PCI
+ 	tristate "PCI Driver"
+ 	depends on PCI
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index cf8422f8f219..aec865e2adef 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -7,6 +7,7 @@ obj-$(CONFIG_SAMPLE_RUST_PRINT)			+= rust_print.o
+ obj-$(CONFIG_SAMPLE_RUST_DEBUGFS)		+= rust_debugfs.o
+ obj-$(CONFIG_SAMPLE_RUST_DEBUGFS_SCOPED)	+= rust_debugfs_scoped.o
+ obj-$(CONFIG_SAMPLE_RUST_DMA)			+= rust_dma.o
++obj-$(CONFIG_SAMPLE_RUST_DRIVER_I2C)		+= rust_driver_i2c.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_USB)		+= rust_driver_usb.o
+diff --git a/samples/rust/rust_driver_i2c.rs b/samples/rust/rust_driver_i2c.rs
 new file mode 100644
-index 000000000000..41ef7c65c555
+index 000000000000..79d0055793d7
 --- /dev/null
-+++ b/rust/kernel/i2c.rs
-@@ -0,0 +1,425 @@
++++ b/samples/rust/rust_driver_i2c.rs
+@@ -0,0 +1,69 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! I2C Driver subsystem
++//! Rust I2C driver sample.
 +
-+// I2C Driver abstractions.
-+use crate::{
-+    acpi, container_of, device,
-+    device_id::{RawDeviceId, RawDeviceIdIndex},
-+    driver,
-+    error::*,
-+    of,
-+    prelude::*,
-+    types::{AlwaysRefCounted, Opaque},
-+};
++use kernel::{acpi, c_str, device::Core, i2c, of, prelude::*, types::ARef};
 +
-+use core::{marker::PhantomData, ptr::NonNull};
-+
-+/// An I2C device id table.
-+#[repr(transparent)]
-+#[derive(Clone, Copy)]
-+pub struct DeviceId(bindings::i2c_device_id);
-+
-+impl DeviceId {
-+    const I2C_NAME_SIZE: usize = 20;
-+
-+    /// Create a new device id from an I2C 'id' string.
-+    #[inline(always)]
-+    pub const fn new(id: &'static CStr) -> Self {
-+        build_assert!(
-+            id.len_with_nul() <= Self::I2C_NAME_SIZE,
-+            "ID exceeds 20 bytes"
-+        );
-+        let src = id.as_bytes_with_nul();
-+        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
-+        // SAFETY: FFI type is valid to be zero-initialized.
-+        let mut i2c: bindings::i2c_device_id = unsafe { core::mem::zeroed() };
-+        let mut i = 0;
-+        while i < src.len() {
-+            i2c.name[i] = src[i];
-+            i += 1;
-+        }
-+
-+        Self(i2c)
-+    }
++struct SampleDriver {
++    _idev: ARef<i2c::I2cClient>,
 +}
 +
-+// SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `i2c_device_id` and does not add
-+// additional invariants, so it's safe to transmute to `RawType`.
-+unsafe impl RawDeviceId for DeviceId {
-+    type RawType = bindings::i2c_device_id;
++kernel::acpi_device_table! {
++    ACPI_TABLE,
++    MODULE_ACPI_TABLE,
++    <SampleDriver as i2c::Driver>::IdInfo,
++    [(acpi::DeviceId::new(c_str!("LNUXBEEF")), 0)]
 +}
 +
-+// SAFETY: `DRIVER_DATA_OFFSET` is the offset to the `driver_data` field.
-+unsafe impl RawDeviceIdIndex for DeviceId {
-+    const DRIVER_DATA_OFFSET: usize = core::mem::offset_of!(bindings::i2c_device_id, driver_data);
-+
-+    fn index(&self) -> usize {
-+        self.0.driver_data
-+    }
++kernel::i2c_device_table! {
++    I2C_TABLE,
++    MODULE_I2C_TABLE,
++    <SampleDriver as i2c::Driver>::IdInfo,
++    [(i2c::DeviceId::new(c_str!("rust_driver_i2c")), 0)]
 +}
 +
-+/// IdTable type for I2C
-+pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<DeviceId, T>;
-+
-+/// Create a I2C `IdTable` with its alias for modpost.
-+#[macro_export]
-+macro_rules! i2c_device_table {
-+    ($table_name:ident, $module_table_name:ident, $id_info_type: ty, $table_data: expr) => {
-+        const $table_name: $crate::device_id::IdArray<
-+            $crate::i2c::DeviceId,
-+            $id_info_type,
-+            { $table_data.len() },
-+        > = $crate::device_id::IdArray::new($table_data);
-+
-+        $crate::module_device_table!("i2c", $module_table_name, $table_name);
-+    };
++kernel::of_device_table! {
++    OF_TABLE,
++    MODULE_OF_TABLE,
++    <SampleDriver as i2c::Driver>::IdInfo,
++    [(of::DeviceId::new(c_str!("test,rust_driver_i2c")), 0)]
 +}
 +
-+/// An adapter for the registration of I2C drivers.
-+pub struct Adapter<T: Driver>(T);
++impl i2c::Driver for SampleDriver {
++    type IdInfo = u32;
 +
-+// SAFETY: A call to `unregister` for a given instance of `RegType` is guaranteed to be valid if
-+// a preceding call to `register` has been successful.
-+unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
-+    type RegType = bindings::i2c_driver;
++    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
++    const I2C_ID_TABLE: Option<i2c::IdTable<Self::IdInfo>> = Some(&I2C_TABLE);
++    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
 +
-+    unsafe fn register(
-+        idrv: &Opaque<Self::RegType>,
-+        name: &'static CStr,
-+        module: &'static ThisModule,
-+    ) -> Result {
-+        build_assert!(
-+            T::ACPI_ID_TABLE.is_some() || T::OF_ID_TABLE.is_some() || T::I2C_ID_TABLE.is_some(),
-+            "At least one of ACPI/OF/Legacy tables must be present when registering an i2c driver"
-+        );
-+
-+        let i2c_table = match T::I2C_ID_TABLE {
-+            Some(table) => table.as_ptr(),
-+            None => core::ptr::null(),
-+        };
-+
-+        let of_table = match T::OF_ID_TABLE {
-+            Some(table) => table.as_ptr(),
-+            None => core::ptr::null(),
-+        };
-+
-+        let acpi_table = match T::ACPI_ID_TABLE {
-+            Some(table) => table.as_ptr(),
-+            None => core::ptr::null(),
-+        };
-+
-+        // SAFETY: It's safe to set the fields of `struct i2c_client` on initialization.
-+        unsafe {
-+            (*idrv.get()).driver.name = name.as_char_ptr();
-+            (*idrv.get()).probe = Some(Self::probe_callback);
-+            (*idrv.get()).remove = Some(Self::remove_callback);
-+            (*idrv.get()).shutdown = Some(Self::shutdown_callback);
-+            (*idrv.get()).id_table = i2c_table;
-+            (*idrv.get()).driver.of_match_table = of_table;
-+            (*idrv.get()).driver.acpi_match_table = acpi_table;
-+        }
-+
-+        // SAFETY: `idrv` is guaranteed to be a valid `RegType`.
-+        to_result(unsafe { bindings::i2c_register_driver(module.0, idrv.get()) })
-+    }
-+
-+    unsafe fn unregister(idrv: &Opaque<Self::RegType>) {
-+        // SAFETY: `idrv` is guaranteed to be a valid `RegType`.
-+        unsafe { bindings::i2c_del_driver(idrv.get()) }
-+    }
-+}
-+
-+impl<T: Driver + 'static> Adapter<T> {
-+    extern "C" fn probe_callback(idev: *mut bindings::i2c_client) -> kernel::ffi::c_int {
-+        // SAFETY: The I2C bus only ever calls the probe callback with a valid pointer to a
-+        // `struct i2c_client`.
-+        //
-+        // INVARIANT: `idev` is valid for the duration of `probe_callback()`.
-+        let idev = unsafe { &*idev.cast::<I2cClient<device::CoreInternal>>() };
-+
-+        let info =
-+            Self::i2c_id_info(idev).or_else(|| <Self as driver::Adapter>::id_info(idev.as_ref()));
-+
-+        from_result(|| {
-+            let data = T::probe(idev, info);
-+
-+            idev.as_ref().set_drvdata(data)?;
-+            Ok(0)
-+        })
-+    }
-+
-+    extern "C" fn remove_callback(idev: *mut bindings::i2c_client) {
-+        // SAFETY: `idev` is a valid pointer to a `struct i2c_client`.
-+        let idev = unsafe { &*idev.cast::<I2cClient<device::CoreInternal>>() };
-+
-+        // SAFETY: `remove_callback` is only ever called after a successful call to
-+        // `probe_callback`, hence it's guaranteed that `I2cClient::set_drvdata()` has been called
-+        // and stored a `Pin<KBox<T>>`.
-+        let data = unsafe { idev.as_ref().drvdata_obtain::<Pin<KBox<T>>>() };
-+
-+        T::unbind(idev, data.as_ref());
-+    }
-+
-+    extern "C" fn shutdown_callback(idev: *mut bindings::i2c_client) {
-+        // SAFETY: `shutdown_callback` is only ever called for a valid `idev`
-+        let idev = unsafe { &*idev.cast::<I2cClient<device::CoreInternal>>() };
-+
-+        // SAFETY: `shutdown_callback` is only ever called after a successful call to
-+        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
-+        // and stored a `Pin<KBox<T>>`.
-+        let data = unsafe { idev.as_ref().drvdata_obtain::<Pin<KBox<T>>>() };
-+
-+        T::shutdown(idev, data.as_ref());
-+    }
-+
-+    /// The [`i2c::IdTable`] of the corresponding driver.
-+    fn i2c_id_table() -> Option<IdTable<<Self as driver::Adapter>::IdInfo>> {
-+        T::I2C_ID_TABLE
-+    }
-+
-+    /// Returns the driver's private data from the matching entry in the [`i2c::IdTable`], if any.
-+    ///
-+    /// If this returns `None`, it means there is no match with an entry in the [`i2c::IdTable`].
-+    fn i2c_id_info(dev: &I2cClient) -> Option<&'static <Self as driver::Adapter>::IdInfo> {
-+        let table = Self::i2c_id_table()?;
-+
-+        // SAFETY:
-+        // - `table` has static lifetime, hence it's valid for reads
-+        // - `dev` is guaranteed to be valid while it's alive, and so is `dev.as_raw()`.
-+        let raw_id = unsafe { bindings::i2c_match_id(table.as_ptr(), dev.as_raw()) };
-+
-+        if raw_id.is_null() {
-+            return None;
-+        }
-+
-+        // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct i2c_device_id` and
-+        // does not add additional invariants, so it's safe to transmute.
-+        let id = unsafe { &*raw_id.cast::<DeviceId>() };
-+
-+        Some(table.info(<DeviceId as RawDeviceIdIndex>::index(id)))
-+    }
-+}
-+
-+impl<T: Driver + 'static> driver::Adapter for Adapter<T> {
-+    type IdInfo = T::IdInfo;
-+
-+    fn of_id_table() -> Option<of::IdTable<Self::IdInfo>> {
-+        T::OF_ID_TABLE
-+    }
-+
-+    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
-+        T::ACPI_ID_TABLE
-+    }
-+}
-+
-+/// Declares a kernel module that exposes a single i2c driver.
-+///
-+/// # Examples
-+///
-+/// ```ignore
-+/// kernel::module_i2c_driver! {
-+///     type: MyDriver,
-+///     name: "Module name",
-+///     authors: ["Author name"],
-+///     description: "Description",
-+///     license: "GPL v2",
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! module_i2c_driver {
-+    ($($f:tt)*) => {
-+        $crate::module_driver!(<T>, $crate::i2c::Adapter<T>, { $($f)* });
-+    };
-+}
-+
-+/// The i2c driver trait.
-+///
-+/// Drivers must implement this trait in order to get a i2c driver registered.
-+///
-+/// # Example
-+///
-+///```
-+/// # use kernel::{acpi, bindings, c_str, device::Core, i2c, of};
-+///
-+/// struct MyDriver;
-+///
-+/// kernel::acpi_device_table!(
-+///     ACPI_TABLE,
-+///     MODULE_ACPI_TABLE,
-+///     <MyDriver as i2c::Driver>::IdInfo,
-+///     [
-+///         (acpi::DeviceId::new(c_str!("LNUXBEEF")), ())
-+///     ]
-+/// );
-+///
-+/// kernel::i2c_device_table!(
-+///     I2C_TABLE,
-+///     MODULE_I2C_TABLE,
-+///     <MyDriver as i2c::Driver>::IdInfo,
-+///     [
-+///          (i2c::DeviceId::new(c_str!("rust_driver_i2c")), ())
-+///     ]
-+/// );
-+///
-+/// kernel::of_device_table!(
-+///     OF_TABLE,
-+///     MODULE_OF_TABLE,
-+///     <MyDriver as i2c::Driver>::IdInfo,
-+///     [
-+///         (of::DeviceId::new(c_str!("test,device")), ())
-+///     ]
-+/// );
-+///
-+/// impl i2c::Driver for MyDriver {
-+///     type IdInfo = ();
-+///     const I2C_ID_TABLE: Option<i2c::IdTable<Self::IdInfo>> = Some(&I2C_TABLE);
-+///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+///     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
-+///
-+///     fn probe(
-+///         _idev: &i2c::I2cClient<Core>,
-+///         _id_info: Option<&Self::IdInfo>,
-+///     ) -> impl PinInit<Self, Error> {
-+///         Err(ENODEV)
-+///     }
-+///
-+///     fn shutdown(_idev: &i2c::I2cClient<Core>, this: Pin<&Self>) {
-+///     }
-+/// }
-+///```
-+pub trait Driver: Send {
-+    /// The type holding information about each device id supported by the driver.
-+    // TODO: Use `associated_type_defaults` once stabilized:
-+    //
-+    // ```
-+    // type IdInfo: 'static = ();
-+    // ```
-+    type IdInfo: 'static;
-+
-+    /// The table of device ids supported by the driver.
-+    const I2C_ID_TABLE: Option<IdTable<Self::IdInfo>> = None;
-+
-+    /// The table of OF device ids supported by the driver.
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-+
-+    /// The table of ACPI device ids supported by the driver.
-+    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-+
-+    /// I2C driver probe.
-+    ///
-+    /// Called when a new i2c client is added or discovered.
-+    /// Implementers should attempt to initialize the client here.
 +    fn probe(
-+        dev: &I2cClient<device::Core>,
-+        id_info: Option<&Self::IdInfo>,
-+    ) -> impl PinInit<Self, Error>;
++        idev: &i2c::I2cClient<Core>,
++        info: Option<&Self::IdInfo>,
++    ) -> impl PinInit<Self, Error> {
++        let dev = idev.as_ref();
 +
-+    /// I2C driver shutdown.
-+    ///
-+    /// Called by the kernel during system reboot or power-off to allow the [`Driver`] to bring the
-+    /// [`Device`] into a safe state. Implementing this callback is optional.
-+    ///
-+    /// Typical actions include stopping transfers, disabling interrupts, or resetting the hardware
-+    /// to prevent undesired behavior during shutdown.
-+    ///
-+    /// This callback is distinct from final resource cleanup, as the driver instance remains valid
-+    /// after it returns. Any deallocation or teardown of driver-owned resources should instead be
-+    /// handled in `Self::drop`.
-+    fn shutdown(dev: &I2cClient<device::Core>, this: Pin<&Self>) {
-+        let _ = (dev, this);
-+    }
++        dev_info!(dev, "Probe Rust I2C driver sample.\n");
 +
-+    /// I2C driver unbind.
-+    ///
-+    /// Called when a [`Device`] is unbound from its bound [`Driver`]. Implementing this callback
-+    /// is optional.
-+    ///
-+    /// This callback serves as a place for drivers to perform teardown operations that require a
-+    /// `&Device<Core>` or `&Device<Bound>` reference. For instance, drivers may try to perform I/O
-+    /// operations to gracefully tear down the device.
-+    ///
-+    /// Otherwise, release operations for driver resources should be performed in `Self::drop`.
-+    fn unbind(dev: &I2cClient<device::Core>, this: Pin<&Self>) {
-+        let _ = (dev, this);
-+    }
-+}
-+
-+/// The i2c client representation.
-+///
-+/// This structure represents the Rust abstraction for a C `struct i2c_client`. The
-+/// implementation abstracts the usage of an existing C `struct i2c_client` that
-+/// gets passed from the C side
-+///
-+/// # Invariants
-+///
-+/// A [`I2cClient`] instance represents a valid `struct i2c_client` created by the C portion of
-+/// the kernel.
-+#[repr(transparent)]
-+pub struct I2cClient<Ctx: device::DeviceContext = device::Normal>(
-+    Opaque<bindings::i2c_client>,
-+    PhantomData<Ctx>,
-+);
-+
-+impl<Ctx: device::DeviceContext> I2cClient<Ctx> {
-+    fn as_raw(&self) -> *mut bindings::i2c_client {
-+        self.0.get()
-+    }
-+}
-+
-+// SAFETY: `I2cClient` is a transparent wrapper of a type that doesn't depend on `I2cClient`'s generic
-+// argument.
-+kernel::impl_device_context_deref!(unsafe { I2cClient });
-+kernel::impl_device_context_into_aref!(I2cClient);
-+
-+// SAFETY: Instances of `I2cClient` are always reference-counted.
-+unsafe impl AlwaysRefCounted for I2cClient {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-+        unsafe { bindings::get_device(self.as_ref().as_raw()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-+        unsafe { bindings::put_device(&raw mut (*obj.as_ref().as_raw()).dev) }
-+    }
-+}
-+
-+impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for I2cClient<Ctx> {
-+    fn as_ref(&self) -> &device::Device<Ctx> {
-+        let raw = self.as_raw();
-+        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
-+        // `struct i2c_client`.
-+        let dev = unsafe { &raw mut (*raw).dev };
-+
-+        // SAFETY: `dev` points to a valid `struct device`.
-+        unsafe { device::Device::from_raw(dev) }
-+    }
-+}
-+
-+impl<Ctx: device::DeviceContext> TryFrom<&device::Device<Ctx>> for &I2cClient<Ctx> {
-+    type Error = kernel::error::Error;
-+
-+    fn try_from(dev: &device::Device<Ctx>) -> Result<Self, Self::Error> {
-+        // SAFETY: By the type invariant of `Device`, `dev.as_raw()` is a valid pointer to a
-+        // `struct device`.
-+        if unsafe { bindings::i2c_verify_client(dev.as_raw()).is_null() } {
-+            return Err(EINVAL);
++        if let Some(info) = info {
++            dev_info!(dev, "Probed with info: '{}'.\n", info);
 +        }
 +
-+        // SAFETY: We've just verified that the type of `dev` equals to
-+        // `bindings::i2c_client_type`, hence `dev` must be embedded in a valid
-+        // `struct i2c_client` as guaranteed by the corresponding C code.
-+        let idev = unsafe { container_of!(dev.as_raw(), bindings::i2c_client, dev) };
++        Ok(Self { _idev: idev.into() })
++    }
 +
-+        // SAFETY: `idev` is a valid pointer to a `struct i2c_client`.
-+        Ok(unsafe { &*idev.cast() })
++    fn shutdown(idev: &i2c::I2cClient<Core>, _this: Pin<&Self>) {
++        dev_info!(idev.as_ref(), "Shutdown Rust I2C driver sample.\n");
++    }
++
++    fn unbind(idev: &i2c::I2cClient<Core>, _this: Pin<&Self>) {
++        dev_info!(idev.as_ref(), "Unbind Rust I2C driver sample.\n");
 +    }
 +}
 +
-+// SAFETY: A `I2cClient` is always reference-counted and can be released from any thread.
-+unsafe impl Send for I2cClient {}
-+
-+// SAFETY: `I2cClient` can be shared among threads because all methods of `I2cClient`
-+// (i.e. `I2cClient<Normal>) are thread safe.
-+unsafe impl Sync for I2cClient {}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 3dd7bebe7888..8c0070a8029e 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -94,6 +94,8 @@
- pub mod firmware;
- pub mod fmt;
- pub mod fs;
-+#[cfg(CONFIG_I2C = "y")]
-+pub mod i2c;
- pub mod id_pool;
- pub mod init;
- pub mod io;
++kernel::module_i2c_driver! {
++    type: SampleDriver,
++    name: "rust_driver_i2c",
++    authors: ["Igor Korotin"],
++    description: "Rust I2C driver",
++    license: "GPL v2",
++}
 -- 
 2.43.0
 
