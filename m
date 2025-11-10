@@ -1,89 +1,123 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375831E51D
-	for <rust-for-linux@vger.kernel.org>; Sun,  9 Nov 2025 17:31:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6B525A2CF;
+	Mon, 10 Nov 2025 05:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762709490; cv=none; b=XQ3moOsmxujNiJ5z4gocqCFKMII48R2SYXWKOpkOO79mmIQLg4cIyztSpIg9oyoImDjJHCJqExmZWwWZ4PvVTYAnFaRt/SMxSOxxCS5LmqLN6t+OAE6oex9JOstH3grtW5I7J4ui0iJGFuDENeQH732dpxQH8uIEiVHayzWl010=
+	t=1762753144; cv=none; b=ACJ8xa5po6NDsRLzzqv914d7xjN3rGtSw2qagGX1PY/aDN8qCVylWi62G0fIFEa9PcC4k75np70RkMgFPLEGmtenm1S62ze092wSq33HetDxc09F2YMF5e+oD0Ubcw+TPwyhfboRDoJniN0DVRB0EG1WD9LxaJAjyOqLS8eZo64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762709490; c=relaxed/simple;
-	bh=6p2OCxuKe6yiZZgZiMiVCRGcOTGgN9VNYYsa7kbeu10=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YsNuNMj1uEGBlGnfOUlvnUY54xC4eDE8WcGe5SKz3qNwmZZzD1eDBF2U9xS3inCr0M82e1WITrh+AaLAuWnP4LjvOZeIsOu103Y/qrlHYZ7Juv/Jb08dDu9bnlkpTHhKuBQu9lPu97o+rjcdw9nDzo/Ni58tbf2kN1dfMMZ46Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LLnH1VR8; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762753144; c=relaxed/simple;
+	bh=E+Pm7pdDMh90+fF29fw6R0gB3tfpSocyxbkdzPQ9xP8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KavaGBAqQfV4yXm4xD76uW4GhAefLkXLv3mXxPKREibVoltIodRcrG6sXavMjFi9zRyNndYqetC1kj2IJKxroGfk7eUu2+7hp0OtfoD4nl4Mvjc7jtg9oEFcfmgcrUfj2Nc4mxfiz5XDDunw9CoV+7nHwAVB2NbxzMTk0MHyzVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=IzwP2xyK; arc=none smtp.client-ip=178.154.239.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LLnH1VR8"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-297e2736308so575265ad.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 09 Nov 2025 09:31:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762709488; x=1763314288; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6p2OCxuKe6yiZZgZiMiVCRGcOTGgN9VNYYsa7kbeu10=;
-        b=LLnH1VR8eibg/eGyrKKXLfFuaT5zheF+NJ94HAIJFu2PoUZTcBoghffy/s+Devul/u
-         Ovy1M0iy+CMt+fQHlkHS2vQFLj6YwtWyh21Mg8JF7hCIm5OnouKj2PINw+70Krw6c4pe
-         N84ZAQxbZz4K9SbbDX7WrBgBWlrRCHiL81QCpA7l3tASx/ox0OiKKtMGT9oNQaDtv8pi
-         lMegKJsnSCM7NCikVTPEv+YGex+V/4mi+6SzVfeF/+jygngLRc8nF07XMvr/Q+HH4lww
-         BSvxrleeP+TZ5uKGG7gX4I/huRk2ddNNpt15ajV3G4n1o6edfiW8BUrZOi4sI7x4X84z
-         BQoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762709488; x=1763314288;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6p2OCxuKe6yiZZgZiMiVCRGcOTGgN9VNYYsa7kbeu10=;
-        b=jXucIK7qEFlmFqBVSsickG/qlHj2j52KRqfun6/3Z6h2hz8+61QwhKsNlA+PdWJl0F
-         6ps12oGfgRqsanlRs/wg6NJGLeVeyv68OSemRcdaDMIFA47+6OW9VGGZmknJJETrNFEf
-         e5/G5q7xa2QoYPdI0SkhsNDs62ErX47moZjL8YJ8ywhOW0s4srfnufAkwCrDtgVnCciF
-         feOcdRkph5RRsk57Hu6RHpRe7G7IpRkIgzogMgnlBY/K9xdRFPaU5E6HrRe/ZYH9kaj6
-         LVrEOCnfH04u7AQbaig+03DSEBwBwRrRqaKFAiUlXloGvxe0yYnDCPlsrP8HP8zMHFGx
-         9Z8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVEDqeGnK5qTjb63qHyyp41iI0SftrkO+NzY0IQcmQeT2DuasH0OmW3yGiBeuHXLnAFbdrFpAFYh4plfkthXg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBcOVqmN8FBJ7sN0lmjMpEPdBbV0dGsGVxAjamswCMvqjJFqqt
-	xtI9p1phq8k5nNJb6nErQhIOzar0i3iqkVgUcLDxi8kyW2Etyd8urj0LPFphRCI9A02R2cC5eBS
-	XJigwTWybeXp4uDDHedXz752VaWvkNVQ=
-X-Gm-Gg: ASbGncuiNDeW+3C6uIOQHh7rRGk6FkvHxjTx8LtsoRG6GJocdnRSuiaUTkKbd0I5vCY
-	IpFesvdBwCzkz2J43+2jG6VgaPJ1yWnYRhxEzZCZM6WOe4CBZS3B4xu2dhQecdnMy69OnOUWaw9
-	sxVHbp9Suv1HskMRA+7sw5u1zqvFgc3k68eTXM+3693dInOiJ6hp4uNZkNOWiEWvpFx7mFUbm28
-	yQLvGJ0EL1YIYl/aYMGxvY0ybQoykYrDBeRcXmaDcSS9eP54a7K+1Jy/b6fjT5ulbqNuPp9u/n8
-	DHCs8emry/7VpHz2TvspGUTNlCDAM6lpF5leoJIvBN5hCJtiHPbQo9MYV++DxpUG22ep0+fpyi7
-	/DJs=
-X-Google-Smtp-Source: AGHT+IH5S5DR7+jnjkKyBo1RbgQXhaiyp5OSJ4YE1+F7QotfjXYvXmFS4NpKxLGQdUSETl2bBlbBfXz1QNw8SjtFjcw=
-X-Received: by 2002:a17:902:c408:b0:295:586a:764f with SMTP id
- d9443c01a7336-297e5743fd5mr39547975ad.11.1762709488411; Sun, 09 Nov 2025
- 09:31:28 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="IzwP2xyK"
+Received: from mail-nwsmtp-smtp-production-main-97.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-97.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:2804:0:640:a3ea:0])
+	by forward500a.mail.yandex.net (Yandex) with ESMTPS id 3A840C8C09;
+	Mon, 10 Nov 2025 08:28:24 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-97.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id HSFYr2nLPuQ0-UdKGMpmU;
+	Mon, 10 Nov 2025 08:28:23 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1762752503;
+	bh=biS8KNKz+z3Vv1nm/H1IA1VrosznGIxigi0eXn5deAo=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=IzwP2xyKy5gssoJPwzMCN5TWdI+xyp3AgAJJ5dKlu3IBwScHbIQNq+teoddVmpTX1
+	 /u/6m9ikiV1HtfnDuBReBZYfrQL+E8YSAy3rbKKqGYA7FwPrb64sXt64uOBlsJJr95
+	 jYWSH52/RMDU1laj69gII91nB2UF1UWh39opi2+0=
+Authentication-Results: mail-nwsmtp-smtp-production-main-97.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Mon, 10 Nov 2025 08:28:14 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: lossin@kernel.org, lyude@redhat.com, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+ longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
+ bjorn3_gh@protonmail.com, daniel.almeida@collabora.com,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 0/6] rust: add `ww_mutex` support
+Message-ID: <20251110082814.428ead91@nimda.home>
+In-Reply-To: <20251101161056.22408-1-work@onurozkan.dev>
+References: <20251101161056.22408-1-work@onurozkan.dev>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025110452-diligence-share-98d3@gregkh> <20a1d4f3-1fa3-4789-aa7d-385d33ea9324@de.bosch.com>
- <2025110402-banister-speech-7228@gregkh> <CANiq72mENsw=uVUbMFzOor8ZmoeurX+0hiN49fhzBgqMWMM-KQ@mail.gmail.com>
- <2025110413-universe-aerosol-2e83@gregkh> <CANiq72nXfq8EJ+-ib044+zGbr2N4hJ_Ygte-4a_dmx4A3S+dng@mail.gmail.com>
- <2025110856-down-hypnotic-8490@gregkh>
-In-Reply-To: <2025110856-down-hypnotic-8490@gregkh>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 9 Nov 2025 18:31:16 +0100
-X-Gm-Features: AWmQ_bmH86d0_SD34UFJPIhPkUXuca4FJLm2RY-IzHZ2DGrpKNYjcDIuITk50lw
-Message-ID: <CANiq72nhfDSXBbJ4Etxnn=tjQ8eFOWk8PMDa5iJidAvMibgE4g@mail.gmail.com>
-Subject: Re: ABI mismatch build error for 6.17.y and rustc 1.91.0
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 8, 2025 at 6:28=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
- wrote:
->
-> This is now fixed up with the patches tagged for stable, thanks, and
-> sorry for the noise, I didn't know it was already queued up.
+On Sat,  1 Nov 2025 19:10:50 +0300
+Onur =C3=96zkan <work@onurozkan.dev> wrote:
 
-Nice, thanks for confirming!
+> Changes in v7:
+>   - Split Class and AcquireCtx into separate modules.
+>   - Removed "Ww" prefixes from type names.
+>   - Renamed exec.rs -> lock_set.rs and ExecContext -> LockSet.
+>   - Removed transmute logic from LockSet (formerly ExecContext).
+>   - Improved various doc-comments.
+>   - Marked certain AcquireCtx functions as unsafe.
+>   - Added from_raw constructors for Mutex, MutexGuard, AcquireCtx
+>     and Class.
+>   - LockSet::cleanup_on_deadlock no longer triggers reallocations when
+>     reinitializing AcquireCtx.
+>   - Incorporated various minor improvements suggested on the v6
+> series.
+>=20
+> Changes in v6:
+>   - Added `unpinned_new` constructor for `WwClass` and updated
+>     global macros.
+>   - Changed all tests (and docs) to use Arc/KBox instead of
+>     `stack_pin_init` for `WwMutex` and `WwAcquireCtx`.
+>   - Added `LockKind` and `lock_common` helper to unify locking logic.
+>   - Added context-based and context-free locking functions for
+> `WwMutex`.
+>   - Added `ww_mutex/exec` module, a high-level API with auto `EDEADLK`
+>     handling mechanism.
+>=20
+> Changes in v5:
+>   - Addressed documentation review notes.
+>   - Removed `unwrap()`s in examples and KUnit tests.
+>=20
+> Onur =C3=96zkan (6):
+>   rust: add C wrappers for ww_mutex inline functions
+>   rust: implement `Class` for ww_class support
+>   rust: error: add EDEADLK
+>   rust: ww_mutex: add Mutex, AcquireCtx and MutexGuard
+>   rust: ww_mutex: implement LockSet
+>   rust: add test coverage for ww_mutex implementation
+>=20
+>  MAINTAINERS                                   |   1 +
+>  rust/helpers/helpers.c                        |   1 +
+>  rust/helpers/ww_mutex.c                       |  39 ++
+>  rust/kernel/error.rs                          |   1 +
+>  rust/kernel/sync/lock.rs                      |   1 +
+>  rust/kernel/sync/lock/ww_mutex.rs             | 440
+> ++++++++++++++++++ rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs |
+> 211 +++++++++ rust/kernel/sync/lock/ww_mutex/class.rs       | 156
+> +++++++ rust/kernel/sync/lock/ww_mutex/lock_set.rs    | 410
+> ++++++++++++++++ 9 files changed, 1260 insertions(+)
+>  create mode 100644 rust/helpers/ww_mutex.c
+>  create mode 100644 rust/kernel/sync/lock/ww_mutex.rs
+>  create mode 100644 rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs
+>  create mode 100644 rust/kernel/sync/lock/ww_mutex/class.rs
+>  create mode 100644 rust/kernel/sync/lock/ww_mutex/lock_set.rs
+>=20
 
-Cheers,
-Miguel
+I forgot to include the Zulip discussion link [1], which I believe
+would be quite useful. I am adding this as a self-review note to make
+sure I include it in the next version.
+
+[1]:
+https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/547854930
+
+
+Regards,
+Onur
