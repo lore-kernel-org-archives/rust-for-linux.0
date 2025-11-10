@@ -1,304 +1,102 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012056.outbound.protection.outlook.com [40.107.209.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B726031352A;
-	Mon, 10 Nov 2025 13:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762781696; cv=fail; b=Bqh2drrfim+6taxImxXBd7wkX1x95IhWUBOXfR0NwqO4pdxEsWjZWcznr8siJc1+jNuclzKwCMEzDzXSxULk09/XtWa/UvXkAQL3jwB6jpJYIQl02kwMY2BlD+i51+1X88PKS+l3pBla63nWldZZWEVaXlH5e95UpY3P5cB8094=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762781696; c=relaxed/simple;
-	bh=vUEr4HZZLFlOKBTfFTMnXArAgHbiUf9UBBN/tL7zAv4=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=BuiGAuqclRoE8Ysfq2yU8/PY5lunP7eu+RKViDM8OovFRE81/as/ku/33BWqvi9iPGk58o/Ox19zj5iJ0FFQGSg5gM+q1V6fv5aKI2d0yxciac4T1AHxZmwH7KMk4IwH1XIv4x+3UMxyw+HqrMH7pjpvmYw8t31m6NROmavXJnY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EKTc8PHV; arc=fail smtp.client-ip=40.107.209.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A2E313532
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 13:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762781697; cv=none; b=bwKlTYlnStsKk8easK8T/83IMfY2kuVDmSZApa/buauKZEfYvcac8Sc9tPsU0OU6rTsZoIdMsUa9eiDd9YT/ZdYH6cG2CHWSW1xWu8G8+OwIF4POoD+RjNsxyXJ/vU3/kJ3YhgrINgIpck+KdA6eLQvnX4NRRDIS2PLtEw2YPtI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762781697; c=relaxed/simple;
+	bh=hOoHELQJUct+/jjBWDM/iGci2iRQNFOKXIkYMSUGeuo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hjdVR2ykpWrXj1yGXw79fZ+CQKpa87we2Ltd2VkD8qgevDb2JUdVoIcY9F7hhsGO+28xK66K6/6VX/MsUIuIMSElwH1evUN2BDVQFhk0M1zx4bQg8ibW0ODkaYGJBYqavbqjSL1emy8pb9wS0XYmkMYYS93YV9QVqZZRBuJuYAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WlgablEf; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EKTc8PHV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZvF4EpBzS4Muw15ViyALIzUuEZsfJ/b+Z9ffYErRnQYACmLBMsnns37zpwo39gDm9KJ+kNAFfMxtdgB/XEmID4T1kQniwsXUpaeh+8+Jr27juT8bqDeob8gGGPEpaCCK28uv+3bniJRycoFSl3Ov9Hx98GSM4+mU9mUs0MNiwFkkEIv0hDTCJeCawdVeGIqZ9aDSDrxip8QmS1q889O51KAKNYwiyVJ/H7hxr46bXC+pgDdtezLzVPxlem9TmhmiGd/VTVUXwBElvz/dN4O2/bpCYyCNqXvsth5AFIgw5K3odN4ztr0IQJzChWJM4TKCdgbKXgdnM/l8YmLdfbqd3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5WenVN1/nbTI/ARz+nvwgYjpOH+aLAUncDQsLZRU6TY=;
- b=t/7N0C3iXwvvBbd2zEqFFOqHFpV4ZQCpHn0nZSIweGvZRDXxmd6T2XI2Fnwn02Hx9QChWv0fYK7dSFT8P8ec+1RDxMSmxQHPt4lZ2649wjWjKsO+0fXy7VI7KCHL9ByfWmz8kHsebm0lSbNauTKSHCdYfDuWm3ToxZQImLzWjO3xnNglV7wu/vRX4wbjcBx2bgKBbtQ0Vxe/36bWkpb2ILVJ5ifb35sWoXNPLfYQbHjOaRLxSe7KmHedLi7sa92x5CupLFxWYEjnc/mAC40TWLDJ0lP7LghnLk3ZIwwkDOU5JlyHQ9kDRoAmXQWJGoTdptf4ExCmMCw0gVkJUQE66g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5WenVN1/nbTI/ARz+nvwgYjpOH+aLAUncDQsLZRU6TY=;
- b=EKTc8PHVaYdl+IrXc/jORA0q2BPJWiwFayr1iJx8+Rq44wxEkbVsNQuW7hQ15XqrddeFBQp3Qdk6dJxw5wQ1Sj7GAD91nwkzKL+LS2PcP7scaopxBFBGxA1LMZuf6yCvy0UbaxDf6Na+OvuZOc8bRnfkq5iAy/bRqKKmDRwcG3+WzARFd2/FqJenbQ755EjRwP0vMB6uk1aGZdL9MmMhGMZtC8R164dqY2T1JFepzCIXbqLBoeiUKFwoiAuYHkn2D9XfyPK/J0fiINUjoyLT3i01GcJHROR6JBA/e93YgNonsbUYq9s/8KXd+AQ16+wJOVGm6avUaTQoVhzl18u67w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CH2PR12MB4055.namprd12.prod.outlook.com (2603:10b6:610:78::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
- 2025 13:34:50 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9298.015; Mon, 10 Nov 2025
- 13:34:50 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Mon, 10 Nov 2025 22:34:16 +0900
-Subject: [PATCH v9 08/15] rust: enable slice_flatten feature and provide it
- through an extension trait
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251110-gsp_boot-v9-8-8ae4058e3c0e@nvidia.com>
-References: <20251110-gsp_boot-v9-0-8ae4058e3c0e@nvidia.com>
-In-Reply-To: <20251110-gsp_boot-v9-0-8ae4058e3c0e@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>
-Cc: John Hubbard <jhubbard@nvidia.com>, 
- Alistair Popple <apopple@nvidia.com>, 
- Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
- Edwin Peer <epeer@nvidia.com>, nouveau@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.14.3
-X-ClientProxiedBy: TY4PR01CA0069.jpnprd01.prod.outlook.com
- (2603:1096:405:370::12) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WlgablEf"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4775e00b16fso23386295e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 05:34:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762781693; x=1763386493; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hOoHELQJUct+/jjBWDM/iGci2iRQNFOKXIkYMSUGeuo=;
+        b=WlgablEf2ZxZFD/npMLOVEj4uxhJYiLDKZGJG/iBj83rnJ4g16cib1qrr2NHi7KIpD
+         kL8Qw7IZemZ/suNsJsqBhO8n7AIVB19rQ7AwpLB9mTZ3R69ToB76lYFKnM50fyxBbyno
+         RbsEI/Nqc66EBkpukv87OndMroafuYMybqhjRuSNtbf2uhcoLu44EX1ZU8GNXu7Aj5dW
+         JGnbf3OPqPGH9PicuHDLBL81x/BQLV/g803szp0ZZaqgGxe9Bl/kn7sILwf57pDEbJwT
+         TXi+Pg/JYqAAqOGEwHo9+4KBBW3L9G3OspQLjQ9INlqvEB5762GlcPXlFdQDdUU46LJf
+         EPGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762781693; x=1763386493;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=hOoHELQJUct+/jjBWDM/iGci2iRQNFOKXIkYMSUGeuo=;
+        b=PNI+EkEaMIxopZDnyHO8XO4UAY+K+Yj2deqvDfFjFxvEaW/N5UMpjjBWWbet+M2/cN
+         cWebwV0eh/sQv2BnmPR5Hg7VZ6jvWHa0lSe9fueysSzYRIM+lX5BPyMC86GlUKpnttIV
+         BhK1QhVXlzERJs6s5c5Kg5QEAeAEpvTJwgc9lWzJM5WRp5sTdTRNzU0c6rIRpjjjBlkO
+         Na5AZVCBQkYIxI0+7CQiEHJdtN94mb8XWJzHRAcV8ax/8JfKoiUr3GlCvMB5JYT5Uuad
+         NhbjqJCFKxCOc4m6RZQkF9NvChTcrEnBmpYQVOBgfnE5KnH5rZHJCj43GOpDUvv7jLuQ
+         +fHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX7gsjtsJ/2BLo72/DZRXsqCB+Hb8MmMN89ftD8s3BB71wBezIeDpBIPhQ44tmxJYEWExGy8+bKNLWbVCEGkg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpE8jEESCfXv8sWI8FLYh8FWM+W96TA7Kvo0omlK2ESlUHQjg+
+	O7piQg9HlVDQO+Q59KQazUAp7ajZtTuN9qUWN+V5PLQK2Tz37XHSt5xn1EmhX686xNS9ufLM5FW
+	cLTWw/AFgQ5Rw+M4YAQ==
+X-Google-Smtp-Source: AGHT+IEhcd7v1I50vLKbfj11e6ZHlmUaM3O4D8Dzo9IdUzmf1+ToowaPgG4/VPB3oFSYHqCUiGhbSA+XEU/bilA=
+X-Received: from wmoo8-n1.prod.google.com ([2002:a05:600d:108:10b0:477:55e7:9973])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1ca0:b0:477:7a63:611f with SMTP id 5b1f17b1804b1-4777a6362e2mr49082565e9.36.1762781693427;
+ Mon, 10 Nov 2025 05:34:53 -0800 (PST)
+Date: Mon, 10 Nov 2025 13:34:52 +0000
+In-Reply-To: <CANiq72mGYKYZmQ8g5AbXCsRS+WPxbeaSyngR69jsEpY8akouog@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH2PR12MB4055:EE_
-X-MS-Office365-Filtering-Correlation-Id: b455d8e7-821b-4ed0-3c6d-08de205dec6e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|7416014|376014|366016|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?enM2aDJWbnFiblZtK1dId3ZtMGtOZHFyOEp4QkJyZzRwajZtNEcxWlVJUUhN?=
- =?utf-8?B?a0IxNzloVnI5ZUlEUDJXOWowQW55aFJUZHVwMzY2UEFtdjd3V0tBWXFFT1dT?=
- =?utf-8?B?WDVERkZEUHFJY2ljUG5WeG9Ed0hxbGNDL3B6Z1FlYlNoY1Z0MmxjNXdQRjMw?=
- =?utf-8?B?RGJUOUczS0duRkhjUUlOazRUT0thQ21aUGh3dllhczlCTFdRSnRpWFR0OU5h?=
- =?utf-8?B?MVhFSmhPMUd6cUlJVGsveWtQMjloMUxmdXRSUTdXMTFoLzhVN1dLOHd2NURZ?=
- =?utf-8?B?SEUrWlhBKzFRU0c4UUFIcWM2NXVFUUNYWG1HWWhCdFZoSUtzREE5VDZzRjlT?=
- =?utf-8?B?bVNxYkJidWRhMld0blZkSkxNNVNYdHZBWGRRSW5tbWl6dVVWNXNRTjJ4UlVC?=
- =?utf-8?B?V0o0VE1EYUYreFFXemhZTXlnOHViblNKMFh1cmlVeURPYklGeUxlZFRGTTNi?=
- =?utf-8?B?MXZPR3BiSW05YXowTDdRSHFvMkh6YjZzSm5GWEltMkpDcEZoOXY4dXRGQkJl?=
- =?utf-8?B?dUp3dzh0MjhBRDdOTG5xZU4rUmVMVlhNNlVTVmIrV0p4NkJPWWVvOGhCYmVn?=
- =?utf-8?B?YnZTcW54MUlydGhIV3c3RWkyNG56Rk5PSEZ1VHJMc1dJTUVPVi9WZm83UGZW?=
- =?utf-8?B?VTVPTis5eHhsODdnMmcrcG1nZldZM01UMUowK2VZRllzZmZtakdqT1lZc1d4?=
- =?utf-8?B?SzNaaXltMUJoeGlPWFIzZEp4ZWtybmdzcVRWa3AvNVNKaVNVSlV0enRBNWJZ?=
- =?utf-8?B?S2xxNm90T24weFd3N29mK3VMVG4yYVcvWXpMZEUyQ2MwWmFBWHE5RTMyV1hQ?=
- =?utf-8?B?anFLbEQvQjczSEVDWDZYazNoamJmTnNkaTN0bjNBZnRFL3p5QitxTmswNGhi?=
- =?utf-8?B?NWxFTnJrNzRvOFA0Mkd5MFptd2I0NTlpMGh2N1ZtVWlVZGNpVGxRQzRiRlVp?=
- =?utf-8?B?bWVmVVdrZGs0SEFVbUhieUFISW1odDdWM09Odzd6N1Z4dkdneXR5WE9jSFpB?=
- =?utf-8?B?S1FQOWtEaW9oZWtpZ0FkMmFTVE0xQnZFTUFRYnE0YjFlODl3ckUyWnUwNDVI?=
- =?utf-8?B?N1BseDMrZEJCR1owZnBpQlJnRE9iVkE0TVVGZ2RhZlB6SFRVN0RVYktFekNz?=
- =?utf-8?B?dWc5SEJBNXdNbXZkbXMyTGo5TTRuSFZMQWo1MUk2Mkg2SlYxVW4rMGRFM2hT?=
- =?utf-8?B?aVZjTzc0WFhBNFBIdHRGRXluL21MOWo2cXV0MDJlVVYxeEMydFlPb1FHR0NH?=
- =?utf-8?B?SkNnM1YrNVNpeW1SZ0lkdWpQNWY0ak1TMWkzSlM4R3RyNjRRdlpkTUtGbzhN?=
- =?utf-8?B?K2NuOXVNc2dIWnYyU1VTZUtHWWdTV0E1QmRxWmJjN3U3RmkrdVM0TGNCTFJB?=
- =?utf-8?B?QUFQUy9EQkNTVldQejVieWE5blRkVzVtYjVuTWcvVVNCQk10Mkc4emExc1Rh?=
- =?utf-8?B?djdJQlZUT1dlU24xVWxzNGRKY3FQMHdCMEY0RHJoOHFrb0RtTHdPaXY4MXNC?=
- =?utf-8?B?eVBiZ1FCM0RSRG1tUldHSysvNHpVY2IrMFZ1NjdaNUEwYmhiRm9QWjFoM2xT?=
- =?utf-8?B?OTNuUVBXa0RNOXpJaWhQa1pJME9LdnhuZUltTEVzb2d5KzhuMDRNVTRnejlj?=
- =?utf-8?B?NDg0MFYwakt5aUFOQlNublM2TEJpT01OK2lPaUM0ZmlDRGhseVY3MGJJU2V4?=
- =?utf-8?B?Ry9ZTElpWUh4NGxnTlNuM01xczlubVl0WnlIbDFadlMranhjaXo0MzZGQVlh?=
- =?utf-8?B?cWVjN1UyWlQzdUFGdGZ3RzlQNk5DSmhkTEc0MVVRR0ZYZ3ZoTjV3SWNIVXlM?=
- =?utf-8?B?QWt4YklnaE9Selh2WWZudHVnSmZISUNZc2RGNnZJcUg0RjNUd09uRjE5L1hz?=
- =?utf-8?Q?V5uP1nlik48fn?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(7416014)(376014)(366016)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZjVGeTVRRWxVd1E3YllEN2Fwd25iYjFxODhKRFBYUVhPaXI0NmtwTG1UUXpu?=
- =?utf-8?B?RzlMWHkvSnZpV3lUdnVIanlrSWUyMmIrYVF2bm9ranpYTGsvYXVpZmJHazV4?=
- =?utf-8?B?STBVMGg1UDI1ZkpEeUg4ME43OXlUT2RkcXFidklpc1FVZEpuMThMNVVaRDgz?=
- =?utf-8?B?YUpjTWlhVG5kVytDT01JeUIvTU9NUTNsTDBrVTFHQllFeFZ1TDdYUXd1RkJk?=
- =?utf-8?B?SWVIWlVHT3cwWDR0TGNLUTZOK3NoMm9IRm9abEZPcjZzMm9ITm1YcHpVUHBp?=
- =?utf-8?B?M3YrU2MvOFp6MTU4VWpUM0NwL2cvdFVkcXh4SzJQWmhvWmpyZExPeGQ5VkxB?=
- =?utf-8?B?VmtQWEtDc1dpcGxmQW5oN0F3QWpjdnBFVnU5TFRnWW9USkREQ1crSkRBSmFF?=
- =?utf-8?B?TEoxdG50R3FYK1NQNDhBL0RZcHZJdE01aWxMOWdiYXlyeU1uUUFVSkNhSmZE?=
- =?utf-8?B?cXFWL3lIeVRDQXdsZm1CTVpCaXJVNjI0bnNFQ0ZQT1ZXRlRpZ21uelpVazdn?=
- =?utf-8?B?VlR6R3R6eGNBQ2FaYkNSVDVBV25ualVYNE5JZWpYdGI0ZTMxczJxeStOUjN0?=
- =?utf-8?B?QTZoQm1WVGU3bko4ZXlDU2RSYmc5OTJOMEdkaDNvc0YrV3BkVnRYUmpDRXU1?=
- =?utf-8?B?ckR6QzhKbWJtSmg5aFBYWkVFVzdkUUY4QTRjbVRnbGZoL3d1YWhWcFd2WmVW?=
- =?utf-8?B?STJwNE5LOVZNbFc3djVZRWJaZlpiRXg5anllSkdjNFJoa0s2U2dNa0JQbTBp?=
- =?utf-8?B?V0VMQnI2NWxmempCblY2STdkd0tLbmZORGRrNzB5Qld6K3NuakpXMG5Za3gw?=
- =?utf-8?B?SWJsUkNaQ0ZsczVWRjJneHZnNFhjT21jblM4SmhqLzJockExOHp1SGZVRlh6?=
- =?utf-8?B?Rmx5amYzbFBUQUJNb1B4Rk1BZjFJbWp3Yks3V2t0YkZjUG91dGlRZEltYmFq?=
- =?utf-8?B?QWI5V3dyOHBzdHk0bFBhbWNXRUhQampibnZwYk1LbEZ4dXlDdDhEZ0NBQ1Bh?=
- =?utf-8?B?Mk5NcnM2ay9EbXorTDRMNXIwZWRNQmhEdTVjbGVvak9XTjJZY2krVHJEVnFC?=
- =?utf-8?B?NjRuc0s2UWF3VEZDSVRvbStSbGNWay9Yd3o1WFZSRy9SMUxQUHF6MkFEdEhW?=
- =?utf-8?B?KzJ5eHVna1pmTm1uV2UxT0Nib1NXaW5xVnlCMFBvelVaRDZ5THNSMnpPU3JV?=
- =?utf-8?B?MGpRRU5PNElJdFZIS1ZtZEt5Q2xId0JvbE0wOFdGVUE4a0JKQ3JNbWwwbmlq?=
- =?utf-8?B?WnY4RVhIZ1FjTTdxaHdFOUZBUnBJSTdWNmcxR2RQUlgrMGs5N0JXTmxqY1Yz?=
- =?utf-8?B?eXRJbDlYTHpSa2hoQkhQUjd5Z2RHd1VObFJMYk9qWXhXekpXM0s3NHVZalFm?=
- =?utf-8?B?bWprZW1xZ1hZQnd6V0pNcnlMUW5GdTFyeU9DMURiams5eVZSNGxWY0pCMmYy?=
- =?utf-8?B?azAzc1RRTnNsQk5nVHlmd0JSSEFaT2lYU0E3ald2QnZZNDdnUFNuSWxLNkVZ?=
- =?utf-8?B?bHZuUGdNNUI3VmtvSk5DbHdGSGFDSHo2SC9zc21lRFRVeDkyUUlCZldpb1ZX?=
- =?utf-8?B?QVhGOXlDaXJOaEtkYUZiQzkyN2pRdDZqT0ZVN0RUNERNWW43bE91N3hNbEhi?=
- =?utf-8?B?MlFuOS9VZ2E0d2hZaEkyVERwTHpBQi9oZjhua1FndHdiczdVTkdmaXBWdkJu?=
- =?utf-8?B?QmgzSWlySHhjaWtJNSt4TjlFS0tveEVlTUpFQXovdXVlYmp4eXVyaWI1amdY?=
- =?utf-8?B?WDZ0S0I0UngyWlEyT1ZjcDN5SGdQOGovUGhUd25aTGV0WmVpNmFNMXVFQm02?=
- =?utf-8?B?Qk1uSENycXEzaXhTU0ZVc3pJbGVXc2E1TU11ZmFXMXVZbjFKNXhmSVZjajFI?=
- =?utf-8?B?ZmJuVjlRYmoxVWdpYWlNOVRDUUx4VHcrbDVLUHlJV2pmRWIzVmJkQkUyK2Ev?=
- =?utf-8?B?SUNQd1BmL1p2SUhjbW5WdHY1TVBHRTZjY1pPZ3ZQU1ZtMXJibGFIaGlSaUhE?=
- =?utf-8?B?emoydWZIN3VhYlBicHVWb3pvZmRhbi9wR0ZJVDdWSWVFS3M2WWhMdWFQR0k0?=
- =?utf-8?B?MmxFWFk5QTJYWmdzaG1WL1JoZUIxV0xRdkFTR3BsTzQ1cFEzSmk1Y3VxZ21V?=
- =?utf-8?B?K0pyeGdQek5LeXNXSFBUVVE1UC9hbDkvakxCZVlVY2NoUHltQlc4cjhUdU1F?=
- =?utf-8?Q?ZofU6M4EN3tz//sUvbjGC/Ud5pmQzCCSN1RmOCuEr7t+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b455d8e7-821b-4ed0-3c6d-08de205dec6e
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 13:34:50.5952
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /Hx3iyWua0ElhHKWJtAWjFwUw97nzpbUOetXw4pfljpsvpQhTJWDD5DbbYGlG83fkGPeKN5/tl+J5C4BNfcUxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4055
+Mime-Version: 1.0
+References: <20251110095025.1475896-1-ojeda@kernel.org> <20251110095025.1475896-10-ojeda@kernel.org>
+ <aRHOnGyLx-bEVqcY@google.com> <20251110131049.18e2f5c9@eugeo> <CANiq72mGYKYZmQ8g5AbXCsRS+WPxbeaSyngR69jsEpY8akouog@mail.gmail.com>
+Message-ID: <aRHp_MadSjnYwHdy@google.com>
+Subject: Re: [PATCH 09/18] rust: proc-macro2: enable support in kbuild
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-In Rust 1.80, the previously unstable `slice::flatten` family of methods
-have been stabilized and renamed to `slice::as_flattened`.
+On Mon, Nov 10, 2025 at 02:28:06PM +0100, Miguel Ojeda wrote:
+> On Mon, Nov 10, 2025 at 2:10=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
+:
+> >
+> > So I think the implementation here is sensible. I believe Miguel's
+> > patch is also pretty much replicating the logic in proc-macro2's
+> > build.rs.
+>=20
+> Exactly, I was essentially following what upstream does for stable compil=
+ers.
+>=20
+> (More generally, even if a feature may work, if upstream doesn't
+> usually test "older nightlies", then I wonder if we should enable such
+> combinations/setups anyway, unless we need them for a particular
+> reason).
 
-This creates an issue as we want to use `as_flattened`, but need to
-support the MSRV (which at the moment is Rust 1.78) where it is named
-`flatten`.
+If these features change the public API exposed by proc-macro2, then it
+seems better to always disable it to prevent situations where you
+accidentally wrote code that does not work on our minimum rustc version.
 
-Solve this by enabling the `slice_flatten` feature, and providing an
-`as_flattened` implementation through an extension trait for compiler
-versions where it is not available.
+(Of course, this is a polyfill and no API is changed, then that's a
+different situation and then this LGTM.)
 
-The trait is then exported from the prelude, making the `as_flattened`
-family of methods transparently available for all supported compiler
-versions.
-
-This extension trait can be removed once the MSRV passes 1.80.
-
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/all/CANiq72kK4pG=O35NwxPNoTO17oRcg1yfGcvr3==Fi4edr+sfmw@mail.gmail.com/
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
- init/Kconfig           |  3 +++
- rust/kernel/lib.rs     |  4 ++++
- rust/kernel/prelude.rs |  3 +++
- rust/kernel/slice.rs   | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 59 insertions(+)
-
-diff --git a/init/Kconfig b/init/Kconfig
-index cab3ad28ca49..7da93c9cccc3 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -147,6 +147,9 @@ config LD_CAN_USE_KEEP_IN_OVERLAY
- 	# https://github.com/llvm/llvm-project/pull/130661
- 	def_bool LD_IS_BFD || LLD_VERSION >= 210000
- 
-+config RUSTC_HAS_SLICE_AS_FLATTENED
-+	def_bool RUSTC_VERSION >= 108000
-+
- config RUSTC_HAS_COERCE_POINTEE
- 	def_bool RUSTC_VERSION >= 108400
- 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 3dd7bebe7888..2581a356d114 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -21,6 +21,9 @@
- #![feature(inline_const)]
- #![feature(pointer_is_aligned)]
- //
-+// Stable since Rust 1.80.0.
-+#![feature(slice_flatten)]
-+//
- // Stable since Rust 1.81.0.
- #![feature(lint_reasons)]
- //
-@@ -128,6 +131,7 @@
- pub mod security;
- pub mod seq_file;
- pub mod sizes;
-+pub mod slice;
- mod static_assert;
- #[doc(hidden)]
- pub mod std_vendor;
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index 198d09a31449..9ee8acc563de 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -51,3 +51,6 @@
- pub use super::current;
- 
- pub use super::uaccess::UserPtr;
-+
-+#[cfg(not(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED))]
-+pub use super::slice::AsFlattened;
-diff --git a/rust/kernel/slice.rs b/rust/kernel/slice.rs
-new file mode 100644
-index 000000000000..6ca91a4fd1f2
---- /dev/null
-+++ b/rust/kernel/slice.rs
-@@ -0,0 +1,49 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Additional (and temporary) slice helpers.
-+
-+/// Extension trait providing a portable version of [`as_flattened`] and
-+/// [`as_flattened_mut`].
-+///
-+/// In Rust 1.80, the previously unstable `slice::flatten` family of methods
-+/// have been stabilized and renamed from `flatten` to `as_flattened`.
-+///
-+/// This creates an issue for as long as the MSRV is < 1.80, as the same functionality is provided
-+/// by different methods depending on the compiler version.
-+///
-+/// This extension trait solves this by abstracting `as_flatten` and calling the correct method
-+/// depending on the Rust version.
-+///
-+/// This trait can be removed once the MSRV passes 1.80.
-+///
-+/// [`as_flattened`]: slice::as_flattened
-+/// [`as_flattened_mut`]: slice::as_flattened_mut
-+#[cfg(not(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED))]
-+pub trait AsFlattened<T> {
-+    /// Takes a `&[[T; N]]` and flattens it to a `&[T]`.
-+    ///
-+    /// This is an portable layer on top of [`as_flattened`]; see its documentation for details.
-+    ///
-+    /// [`as_flattened`]: slice::as_flattened
-+    fn as_flattened(&self) -> &[T];
-+
-+    /// Takes a `&mut [[T; N]]` and flattens it to a `&mut [T]`.
-+    ///
-+    /// This is an portable layer on top of [`as_flattened_mut`]; see its documentation for details.
-+    ///
-+    /// [`as_flattened_mut`]: slice::as_flattened_mut
-+    fn as_flattened_mut(&mut self) -> &mut [T];
-+}
-+
-+#[cfg(not(CONFIG_RUSTC_HAS_SLICE_AS_FLATTENED))]
-+impl<T, const N: usize> AsFlattened<T> for [[T; N]] {
-+    #[allow(clippy::incompatible_msrv)]
-+    fn as_flattened(&self) -> &[T] {
-+        self.flatten()
-+    }
-+
-+    #[allow(clippy::incompatible_msrv)]
-+    fn as_flattened_mut(&mut self) -> &mut [T] {
-+        self.flatten_mut()
-+    }
-+}
-
--- 
-2.51.2
-
+Alice
