@@ -1,79 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3701B6CE9;
-	Mon, 10 Nov 2025 14:39:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F6613A86C
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 14:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762785549; cv=none; b=bBdighcRGE4h5mFpnasZ8tZlOs9z7LErn22iJ1yp5C3MftNwkAUjHdYnc5ouSbNRIfF30yyk5HNsDORHy07Ti7ADR2eXL5gZszkJM0WzF/VUSDrrd8SFMaRwsbna8mmcUd8kqgqPDrIi6xTYT/aYl4y9hwCvexbdZqDT+A3q74Q=
+	t=1762786642; cv=none; b=s9TT9CVGRcw41IpqZx9a3gRLS8WNsCHeClZO1nFaFJLE4+5w9vlD98aKgiTA5/+jaasSO5hR4kjzS/UxYMMPzmynd9crqG9f7333qPTCG3qhCOli1CGZ9a1/rfAZCzoFSSGo9WTGiTmZA5qmaA9WInVjWzCQRXJdt/8dnp+CWXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762785549; c=relaxed/simple;
-	bh=UfZIIURxKG02GFYs3TglXy1N8g+Xmh2JJT+tt4nBTVs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=qoZMNIS/UhhnlTlXIqQ8SDHsWnTn7JLwKjtkaSZtAJfNpwQtGoM1qa0EGCr2/yAqVHqrMtf/CUY6bqTR5YMM/81wj1DwGQ/vNx7MFvwvGr6kv4Zma+nCjkNdKKgJjf9Jj4GhO/KFW5B5sPQWMoWrJ47PrTQ39Bl3mXso4QMpaXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mQhzOK8s; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762786642; c=relaxed/simple;
+	bh=XrYjurcXwMFuI1n6vQ4mS/+j3z0zFW9n2Q2HRAorD/k=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iOEYbUmr99y6zXODRxOq1oUWkv0wAI4e/LE6ZBIS1eVGSNDLyM8Ir3oE8Up7E/g32bfSKTGJG9CN3ZY8FLN2yciuvXyJyawkuOD4bgPHwkWAUHrsDobn1SxWYHBNVwkhUBwEfGeHj++2u3fHgJVOWUahR4Zmc/3eaOJNGncQyas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z2APgdQ6; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mQhzOK8s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A28C4CEF5;
-	Mon, 10 Nov 2025 14:39:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762785547;
-	bh=UfZIIURxKG02GFYs3TglXy1N8g+Xmh2JJT+tt4nBTVs=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=mQhzOK8s/s49v5TaSnR5d5ICY8q9ff+8mRzFyNvkAlhRdiDH3F6AhQtQexwshSaKi
-	 ReveQogDQr7jLYtb388kxmjmGA+OlYUKecb/hNFXMF0lByKsKBf7bUo0Qw0ZE3mtLo
-	 yesMpZIv/zK8xC17OxIG3C6Oz7xT8GPHz6TkYTZMXVaTVjaRxBZxLShfp8uPsA47+s
-	 21LnIwZ/VY0/aOCk1scjaQ6wYMC1jXsEZYCelzurBdu7+T7D5ZTHyBwXu2V6SWQjpD
-	 JtASMzUDzdxzdIF73xvM9RbMfNvP0K8IsjXWGuKwGkt4HAAVYCLKUdGIzdRt3iGWUu
-	 xSqpJk0iMHqSg==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z2APgdQ6"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b72a11466c2so339738866b.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 06:57:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762786639; x=1763391439; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XrYjurcXwMFuI1n6vQ4mS/+j3z0zFW9n2Q2HRAorD/k=;
+        b=z2APgdQ68ppohMezTmMnZUfXJwArZ+yKG2bGNYUSiLZUZi9tdGyAt8NDkBH3P/eXwE
+         LSceGSJUCNJHwSQlVLYkNWD+AQSmJoGCl5ksxV/2Fd64cm3YDojMcOirkQLf087pRVaQ
+         WfmdSbxqgGycjfK4OOlWtjVIpALEF5q9Po+mMSLqT/WGCy8xkhb9T41e50ssu3Ru8Uci
+         BgOv9WtcD8YYVx/F7KjtpacxOnm5g/bb9z3CPOzPlq3wBGa7iU+KXrO0j04GfZRSyNLI
+         6cXRItaSLfwQqE8FZOtSIm4b3cCxkEiiYvnWc3gCWj9BLkenWXT8/FVQqoHtmAzZTz+1
+         R2wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762786639; x=1763391439;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XrYjurcXwMFuI1n6vQ4mS/+j3z0zFW9n2Q2HRAorD/k=;
+        b=fTymBhhV09APFtSFqm4byNfykpYqzvBMqiDTaD2p8NyZFWjeUKtBxim1+3EBzSaq+Q
+         ieySdmbBN8wKQYEbz6sSRKYB7yu+kw5dC92358qdmUbGAKy6V4k0eJgg/hETvI5HU+UC
+         TuUNHoHIrA+lJntwMTdkZp/KkX4HSNsivPECIS0R2gPXbIylQIdY07qXs8SAlBiggI6X
+         pD5mpe1FgBDkB0R6bb9Y2h5l1wUE7YuXPjxuQd1azwwiHzCBLx5JEBHLM689azl0hVHD
+         rohJY5G4f0Glj9AMOfFTXdL5DfJP35QgFTTQ1WZHHh6GhezDWXDG4UjmUSO5oeKdQSUC
+         XQRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxAk5upVEVlo+t3loWwoxa9tKbm0qaHqM/lOC1yKnswoY8xeC5TiofCwsxXfg/7rhabQ4Cc7vU0pZxgI8ngg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2HvI1OP/6luhQU4wcFX4Gpk0lFr1A7U8KVQ3fkI7Tr1Dwo2w7
+	D9FDlhrjtDy0Z9hCsmBY1a11GA4GFibmQj7kfPiITvAUAw/DsLTiYvKdMyrOXW7U3nkwoJT0S6K
+	8RjD1hE/RU6yJDSyYuQ==
+X-Google-Smtp-Source: AGHT+IGOnlG8lE2H2BKECccs5w83Ie0qMvDDSxYqNCeNyk/4OUCiSM9N6qmdcMFCMYYfeMybQOzcZG1uqwa4NcY=
+X-Received: from ejcvb9.prod.google.com ([2002:a17:907:d049:b0:b72:b433:246a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:1c85:b0:b3b:4e6:46e6 with SMTP id a640c23a62f3a-b72e02ca1d9mr839517866b.1.1762786639240;
+ Mon, 10 Nov 2025 06:57:19 -0800 (PST)
+Date: Mon, 10 Nov 2025 14:57:18 +0000
+In-Reply-To: <20251110131913.1789896-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 10 Nov 2025 15:39:01 +0100
-Message-Id: <DE53BMEA2TXG.115SFKG1ZHPB@kernel.org>
-Cc: "Rae Moar" <raemoar63@gmail.com>, <linux-kselftest@vger.kernel.org>,
- <kunit-dev@googlegroups.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <patches@lists.linux.dev>
-Subject: Re: [PATCH 1/2] rust: allow `unreachable_pub` for doctests
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Danilo Krummrich" <dakr@kernel.org>, "Brendan Higgins"
- <brendan.higgins@linux.dev>, "David Gow" <davidgow@google.com>, "Alex
- Gaynor" <alex.gaynor@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20251110113528.1658238-1-ojeda@kernel.org>
-In-Reply-To: <20251110113528.1658238-1-ojeda@kernel.org>
+References: <20251110131913.1789896-1-ojeda@kernel.org>
+Message-ID: <aRH9Tjf0tszyQhKX@google.com>
+Subject: Re: [PATCH v2] gendwarfksyms: Skip files with no exports
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
+	Haiyue Wang <haiyuewa@163.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon Nov 10, 2025 at 12:35 PM CET, Miguel Ojeda wrote:
-> Examples (i.e. doctests) may want to show public items such as structs,
-> thus the `unreachable_pub` warning is not very helpful.
->
-> Thus allow it for all doctests.
->
-> In addition, remove it from the existing `expect`s we have in a couple
-> doctests.
->
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://lore.kernel.org/rust-for-linux/aRG9VjsaCjsvAwUn@google.com/
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Mon, Nov 10, 2025 at 02:19:13PM +0100, Miguel Ojeda wrote:
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
 
-Acked-by: Benno Lossin <lossin@kernel.org>
+Is gendwarfksyms actually present in 6.12 upstream? I know we have it in
+Android's 6.12 branch, but I thought we backported for Android only.
 
-Cheers,
-Benno
-
-> ---
->  rust/kernel/init.rs         | 2 +-
->  rust/kernel/types.rs        | 2 +-
->  scripts/rustdoc_test_gen.rs | 1 +
->  3 files changed, 3 insertions(+), 2 deletions(-)
+Alice
