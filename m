@@ -1,96 +1,104 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D49316CD33
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 12:04:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF76F19DF4F
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 12:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762776262; cv=none; b=VDOoJ5ZeTPW1oAkcEgJbn+A1IGgoTbGmRs9Qmd1HM8NtOmyGQTyM3rVa7D4NlE3XCApD+taWT+9zEm2NX1QFs2dtaEHJaBbjftoeBXmLDWvD4/bKx/KA9jSS7piomnip1BHwrqA8pF2LCVh86Zu9KGJwQSC1HTH5s6/iANSJQ+I=
+	t=1762777015; cv=none; b=WKx/EQ8HhOpKbcLHsAENofvwmSBI3s1QUujqbtWvmwjvVVS0QTZRCGBGeI3oBmsjosGg3GeZuIke/g/qSip+SqdZA/yIa9C08scYPh3q+lwYdpvyx/dJuyIKz2b7aqJCo5WmAD3Enrecv5slIIky54vv3xYyDs0PX63fFa+xucY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762776262; c=relaxed/simple;
-	bh=eEgXHGzlAYOJl5c6fOfboUSe/VxaQBrlFhhrVppwDjc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hAb7kyJKCrcc0rLi00jg8YinAlrphSFmgS75esq7rhoD8KTfedximjc4hNvmR2JT1ZdhCe5E2vJirxWe7X42Z0c7cyIoW8pAAhN7UHkJOElGfC8ieoQzDh7PT6umcZtdxriDKKNUUlyNK84ErT5pnYxMpjgb5y+rDBpZrlB9q2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fRo1jBDN; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762777015; c=relaxed/simple;
+	bh=1u/zmczNQy0Vh9khFfKWBkWJhyU/W2V8MjR4f0/cpHk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RzDG/OKe+gxsKDwAzOVZPL0Ms9iQHBYD6z1KOcZGvIDuYj83Ab/sWZ1B/d+Vt8mCtxufw+BMrr3I0vkNVVbwHjjyhhxtBFMBlAPZuKRX5KO2mj3obaBddh7SAVNaosuNJoiRQTG4/xvU3H8lTbUYGKysebfHMrPFk/62cNkHcW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UlHAoEwb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fRo1jBDN"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2952d120da1so2094765ad.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 04:04:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762776261; x=1763381061; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eEgXHGzlAYOJl5c6fOfboUSe/VxaQBrlFhhrVppwDjc=;
-        b=fRo1jBDNOiODeONp2SpTugjWLgOK/efWMsHQLlQHcC39kP7+sh9HhPLPj8/JizonyG
-         7b+QCsSt3zqOWPgd+pwpn+79kM+Tr8XpShLgFpvK9sMrxUKcafSB+bvJWIr0APKJPJg7
-         FfGmp6mGdLDLVVDc/3CMatGQRzDhuP14hfaMDLh5eXTBTTKJpB2tfGfVMO8UGhsboMd8
-         0wN66lqOn9Lx8RL+khOb2Xs2xWJs92R3N/wyljDcWri9FjTgglb3XYeu1hzEG0LGrpMO
-         WNintcuhk3OKBHp6Bk8NmnCMaSr7/2x9d0tZpj+cQfVkCU+sDg1w2CE8Gmq4SmTzGKUa
-         fZlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762776261; x=1763381061;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eEgXHGzlAYOJl5c6fOfboUSe/VxaQBrlFhhrVppwDjc=;
-        b=Y1RzRnv0md1dUnwAU4rDkFyvP+ME1mz/xIFOe1qMYSBQCb64bI9WsH+bAEXi188ujQ
-         CnIHtflCIRujzTsNmqHDMZB/FotdeW9Hml7rcbCi/igEP7VpvP7LelI/TPjN4whoGvDa
-         DvbtSEDRvr8mc/GkKiebzHuY2sLjxdCPCt8lFtopCmPYF06dAEynMg9Fafjudmu2DQUw
-         0go0Ta4rK2m5X99/yvFWW5A8Q5pqV+L3hmoNQxAL46/STBhHV2Ese0e/8klUaYlqRdmf
-         K5jB+/RoWKD5OrYssEcTWTVpfD9GCDgut9DSZpVwVvv5qmznQNJCNSiJ4HLH+QWLmAEw
-         l3VQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXMunSR8EwpkaviWm41Enj32TpK8mcwSBd2UqIbtWrlZXda5nYTomv9Dyu1rhDO8omGIjcjzW2snWA9j86vbQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywqj5tbclt54qUyPAw4ZB12EOx+MRRje4oqy4ksmdLsJOl6+GJQ
-	bfVuA4JAKgj/Sww/7pTGmvZM2LzCS/DmS8cr085mUaDZsdIpM65qcvk4lvbEsNZFn1HL0v6QMR3
-	4uTB1N5eR1mjsjtpjOoY1ioPLZpt0ZMs=
-X-Gm-Gg: ASbGnct7kKBpKpXzm7JYq6kyh7VGFzT/jGtdMLRbwvisMOnLrYpJs12Fpj911R95Mh9
-	MP1RohoV7J9f3YQZtbDLIqu0FlJGyQR4eTZj7pqCSMJWjNnHiFtqAzAx+9qlArVY8p14cOxNN+g
-	dMgaaCgEwiqZM/IJ6646HsOw5tcz4ShTJOgwvc/Dz23j3VlUZjCBywGvmxVwHxDtidCbQcFFSTI
-	cybvzyhBiEAH1Jf8WnrbmOJDhJQyEhtANMShOKELDw+hZgMX/Y5EcMFzM/zR8RssqXi9UnqvE+D
-	Kfwwt+Zr+Mri52L/J9RyqDFO2KEcXYPtoAVOYwP5g4tsM+Nbe/bgLBrNm04i63AJ38gZK54zGR6
-	CX83UYYEgmOZP6Q==
-X-Google-Smtp-Source: AGHT+IExnxjKRMhBvCvd9Nw1Vzpg0dilgRX0ilaQeygPAtmrJ/VO92XIw2N3ZJ7sb6hS/zOwLVLxlgfmv0VAGSAIzy8=
-X-Received: by 2002:a17:903:230f:b0:295:70b1:edd6 with SMTP id
- d9443c01a7336-297e5643e76mr52737955ad.3.1762776260815; Mon, 10 Nov 2025
- 04:04:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UlHAoEwb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62A1C4CEF5;
+	Mon, 10 Nov 2025 12:16:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762777015;
+	bh=1u/zmczNQy0Vh9khFfKWBkWJhyU/W2V8MjR4f0/cpHk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=UlHAoEwb3XuKAZ1k9bnWNMewSPUm6EiRDXC2yzaXIIQbWkW/TdDd7ezri9zxJ09OF
+	 Zzl5GtpQ7k76/jiwFvgFChQl/5fN+qJArKIa0O4/4rQ8GDcPnFHTGqAOmFVibSk+jx
+	 6PmZXq/B5aVtIf/SgkoH9A+0jbN9UF3II7ynAST8zHppsnKoE4lmOhYeN7Mp1ScVtv
+	 0RJNRR+gB0EvA57T46jZ5lq22dbws08OjcXn3P92fnnskPHLZLkX1yxnvhq7UqJdt3
+	 ISRci4iqMqmuUDQDqGOcyVtVIrPNhHG1vzvSegELbpIDoAqamkIMmT9P85qBLoaS+k
+	 rriGaMkTD4H5g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>
+Cc: ojeda@kernel.org, aliceryhl@google.com, bjorn3_gh@protonmail.com,
+ dakr@kernel.org, gary@garyguo.net, lossin@kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH v1 0/2] Add support for print exactly once
+In-Reply-To: <aQyxW_cskrK0Zyxr@tardis.local>
+References: <nsSZZk6z9Ia7Gl5JS9LVNDRjc-9eFvtSWyLI4SSjsHNouDkDV-GmXnixMYlIpGHryPfhLr8Z2W_CkWd6D2frYQ==@protonmail.internalid>
+ <20251105054731.3194118-1-fujita.tomonori@gmail.com>
+ <87pl9w6vs5.fsf@t14s.mail-host-address-is-not-set>
+ <20251106.081231.149919562701074305.fujita.tomonori@gmail.com>
+ <aQyxW_cskrK0Zyxr@tardis.local>
+Date: Mon, 10 Nov 2025 13:16:44 +0100
+Message-ID: <87ms4u6q1f.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251110113528.1658238-1-ojeda@kernel.org> <aRHSLChi5HYXW4-9@google.com>
-In-Reply-To: <aRHSLChi5HYXW4-9@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 10 Nov 2025 13:04:08 +0100
-X-Gm-Features: AWmQ_bklNKkIpzDaIt0BmvJnv6iHBReLEFoejSD6lCAMShx-lppQSbZzdpW8AeA
-Message-ID: <CANiq72n29SUnmm3Dos_NvWbxW-vuX2Y2j7AAYROpa6ruQWguSw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: allow `unreachable_pub` for doctests
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Rae Moar <raemoar63@gmail.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Nov 10, 2025 at 12:53=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+Boqun Feng <boqun.feng@gmail.com> writes:
+
+> On Thu, Nov 06, 2025 at 08:12:31AM +0900, FUJITA Tomonori wrote:
+>> On Wed, 05 Nov 2025 21:59:06 +0100
+>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>> 
+>> > "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+>> > 
+>> >> This adds the Rust equivalent of the kernel's DO_ONCE_LITE and
+>> >> pr_*_once macros.
+>> >>
+>> >> A proposal for this feature was made in the past [1], but it didn't
+>> >> reach consensus on the implementation and wasn't merged. After reading
+>> >> the previous discussions, I implemented it using a different approach.
+>> >>
+>> >> In the previous proposal, a structure equivalent to std::sync::Once
+>> >> was implemented to realize the DO_ONCE_LITE macro. The approach tried
+>> >> to provide Once-like semantics by using two atomic values. As pointed
+>> >> out in the previous review comments, I think this approach tries to
+>> >> provide more functionality than needed, making it unnecessarily
+>> >> complex. Also, because data structures in the .data..once section can
+>> >> be cleared at any time (via debugfs clear_warn_once), an
+>> >> implementation using two atomics wouldn't work correctly.
+>> >>
+>> >> Therefore, I decided to drop the idea of emulating Once and took a
+>> >> minimal approach to implement DO_ONCE_LITE with only one atomic
+>> >> variable. While it would be possible to implement the feature entirely
+>> >> as a Rust macro, the functionality that can be implemented as regular
+>> >> functions has been extracted and implemented as the OnceLite struct
+>> >> for better code readability.
+>> >>
+>> >> Of course, unlike the previous proposal, this uses LKMM atomics.
+>> > 
+>> > Please consider if it makes sense to base this on `SetOnce`. It is in
+>> > linux-next now, but was on list here [1].
+>> 
+>> Data placed in the .data..once section can be zero-cleared when a user
+>> writes to debugfs clear_warn_once. In that case, would such data still
+>> be considered a valid SetOnce value?
+>> 
 >
-> Maybe we should also allow disallowed_names in doc tests?
+> It's still a valid value I believe. In term of data races, Rust and C
+> have no difference, so if writing to debugfs could cause issues in Rust,
+> it would cause issues in C as well.
 
-Not sure -- I thought it may point people to try to come up with
-better names in examples. On the other hand, for abstract facilities,
-it is true that there may not be good names anyway.
+@Tomo you are right, `SetOnce` would not work with someone (debugfs)
+asynchronously modifying the state atomic variable. It requires
+exclusive access while writing the contained value.
 
-Cheers,
-Miguel
+Best regards,
+Andreas Hindborg
+
+
