@@ -1,79 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DDE274659;
-	Mon, 10 Nov 2025 17:04:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC8B28CF66;
+	Mon, 10 Nov 2025 17:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762794295; cv=none; b=VKDvCqr5qCddFhr7kcbioqlHttvQPeo1X70tcsYEonDQw2StE0gTLfgSe7Kz6TutJlS5kQM7A+Nd1JJfh+PXa3uXi0S2efH89FHqiHK2Pj1X2D1x3O8ErLnoSRKr8XIbYUyY8Qoxk998mG5ocT0D6936p3wQoRjAWwl5/9+oVII=
+	t=1762794534; cv=none; b=kVN2CetqQips5RdojYnRYw6rMQuDqVDBIBfZ2atUcITgfB8fKmOdfQbt1/Ly6DA3oxzAQIJkBeIZXB76iJ0ZnIYVXYsneooGiC3vsnrqxBTx/f1gmj1lQWM/z/42ShrlAgw3xEFg3YIGOBdvPBGarGQLTUikuW6i9QvkJBAAYzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762794295; c=relaxed/simple;
-	bh=vDbEes5fnXSUpfBVBMEFezccxAYID8VwKrFPQtJa5Ps=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=uAvu3v/IIkr630GJLIGDBQUdNO/2MV9jdNZo+vKIZGf2XdoTJFO5BRFsmVS4GWbfCXaEbwwipRDdUgAibm2x5Nf0X2F4277/eSCmxEYWAeWd67eff+m2q76x+zG8aFTeVBCx2sW0UtUQvEzwEWhMODSZ+rWzQmEmBL/ZsK5rhU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=othVWEOM; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="othVWEOM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15521C16AAE;
-	Mon, 10 Nov 2025 17:04:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762794294;
-	bh=vDbEes5fnXSUpfBVBMEFezccxAYID8VwKrFPQtJa5Ps=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=othVWEOMeElHMVGqML27gIxzOsNysNlEkntnu4yuonoPzOBzDE+LLsmOhaYxha/kf
-	 k2t0Pmzuwmar1hY8fcSaK3+ywpp/Pyzu9d7oa7Fpsvsbn/4EWXtpMQ9fhwOgU/S7dW
-	 GDcBhuWSseg36wnTtZ5mR6aEKMxWEhN6p3wK+efNRNTo0X+t/G7djTYATv3115MwjS
-	 HUeVbs6k1vvSLm2w952UQfcwhYS+D+UehC4/GIpeYOpXdZAYK6FzdzBeiB+LYFxwGn
-	 F6+/HeWlhII44tEqNQdcI0vlmtVmZJReH231Oj/urLr8CJYu4IVtbLEE96bZXCMPcj
-	 DHmY8LvjLo7Fg==
+	s=arc-20240116; t=1762794534; c=relaxed/simple;
+	bh=sPyIuEy8M2xGyscr0ZqxVwNQTghpKPhthp/45Asx9tk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XikPigamfV9Xp759jyn+sZqGmwJ/IL+pMAEOSTsD5mJe3JWwTHC+oUPmjEuCaSFKBP3MNLRSex5I61WXYicSZhheh3Yxk/YUCncdPUSIpCZwG01xofCJ55wVT3UsaKcZNRV6/Uxv75gBlJYeIXsCD3sa+vBN/1DcLBWUwI0Pb+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 220901DE3A8;
+	Mon, 10 Nov 2025 16:59:02 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id 150E433;
+	Mon, 10 Nov 2025 16:58:56 +0000 (UTC)
+Date: Mon, 10 Nov 2025 11:59:05 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: Timur Tabi <ttabi@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
+ "dakr@kernel.org" <dakr@kernel.org>, "lossin@kernel.org"
+ <lossin@kernel.org>, "ojeda@kernel.org" <ojeda@kernel.org>,
+ "boqun.feng@gmail.com" <boqun.feng@gmail.com>, "a.hindborg@kernel.org"
+ <a.hindborg@kernel.org>, "simona@ffwll.ch" <simona@ffwll.ch>,
+ "tmgross@umich.edu" <tmgross@umich.edu>, "alex.gaynor@gmail.com"
+ <alex.gaynor@gmail.com>, "mripard@kernel.org" <mripard@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+ "gary@garyguo.net" <gary@garyguo.net>, "bjorn3_gh@protonmail.com"
+ <bjorn3_gh@protonmail.com>, "tzimmermann@suse.de" <tzimmermann@suse.de>,
+ "airlied@gmail.com" <airlied@gmail.com>, "aliceryhl@google.com"
+ <aliceryhl@google.com>, Alexandre Courbot <acourbot@nvidia.com>,
+ "joel@joelfernandes.org" <joel@joelfernandes.org>, Alistair Popple
+ <apopple@nvidia.com>
+Subject: Re: [PATCH v2 08/12] nova-core: sequencer: Add register opcodes
+Message-ID: <20251110115905.68bd2826@gandalf.local.home>
+In-Reply-To: <b07b21e8-5dd4-4d40-bcad-dd8dc4fbaef4@nvidia.com>
+References: <20251102235920.3784592-1-joelagnelf@nvidia.com>
+	<20251102235920.3784592-9-joelagnelf@nvidia.com>
+	<d6c9c7f2-098e-4b55-b754-4287b698fc1c@nvidia.com>
+	<0FF9536C-8740-42C3-8EF1-5C8CD5520E49@nvidia.com>
+	<93c758298250d2be9262256a698c243343b64ebc.camel@nvidia.com>
+	<3c625930-348a-4c96-a63a-6a3e98e59734@nvidia.com>
+	<acc56fbb56c3f40119e5a6abf9f13093d7f4c7e7.camel@nvidia.com>
+	<ac85d8be-3cbd-4a51-a627-3a1a9926d801@nvidia.com>
+	<b07b21e8-5dd4-4d40-bcad-dd8dc4fbaef4@nvidia.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 10 Nov 2025 18:04:48 +0100
-Message-Id: <DE56F8M2XC29.2U6TIDNJ0U6DZ@kernel.org>
-Subject: Re: [PATCH 00/18] `syn` support
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Jonathan Corbet"
- <corbet@lwn.net>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Nathan Chancellor" <nathan@kernel.org>, "Nicolas
- Schier" <nicolas@fjasle.eu>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <patches@lists.linux.dev>
-X-Mailer: aerc 0.21.0
-References: <20251110095025.1475896-1-ojeda@kernel.org>
- <874ir1zxng.fsf@trenco.lwn.net>
- <CANiq72==SimzoQARA5uprXs0-iKnBNS+EiKCz1L9V3K6LO1ftw@mail.gmail.com>
-In-Reply-To: <CANiq72==SimzoQARA5uprXs0-iKnBNS+EiKCz1L9V3K6LO1ftw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: bo8n554brdybxe8tzkoe4zkojd6htetn
+X-Rspamd-Server: rspamout01
+X-Rspamd-Queue-Id: 150E433
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+H1piAeME0Nak4QTI1kjlWaClalfQMSFM=
+X-HE-Tag: 1762793936-15452
+X-HE-Meta: U2FsdGVkX18TeH8c44PwmQl/1Qx235QkyrGTE7kzUCFZNeIues/vHHR9gVsLOKSe70MgRYhlbKVtXukGhUco+yVUjRsy9xPF+C8Y6/xUVN5JPLrB93Fwkk+2uuXkJjtAhswbXwYHgrCXgdQD1BfUR5/5QQyUoDoJHnFAhiQDpwM4PX63cOWwTdQKoO+XwzmFExHfqne3daMVosLc3oQ91W7DlejwGHdcbYTjjLoD/wmQl5oDz8Sq3jfGi7KsTCxslWalMmXuHYU/O0p3AaaTW/IHAEv2no9GbmaY7vN9KIk+Ae3tCkrmiWoPoe1qBt0iabYI3JpUK9WBEmdsWBaqrBOTGQFbwqXz
 
-On Mon Nov 10, 2025 at 5:27 PM CET, Miguel Ojeda wrote:
-> On Mon, Nov 10, 2025 at 4:59=E2=80=AFPM Jonathan Corbet <corbet@lwn.net> =
-wrote:
->>
->> Just in case I'm not the only ignorant person who didn't immediately
->> know what "syn" is and why we might want 57,000 lines of it in the
->> kernel... :)
->
-> Thanks -- I will add something like that.
->
-> It has been such a long and recurrent topic in our discussions that I
-> guess I was writing from inside the Rust for Linux's bubble.
->
-> Just to give a bit more context, it is the most downloaded Rust crate
-> (according to crates.io). It (or something like it) is essentially a
-> necessity for writing complex macros without too much pain.
+On Mon, 10 Nov 2025 10:16:45 -0500
+Joel Fernandes <joelagnelf@nvidia.com> wrote:
 
-It also is used by the Rust compiler itself for some proc-macros of
-their own.
+> > IMO, the best way to do this is the tracing subsystem. It is the lowest overhead
+> > runtime kernel logging system that I know off, lockless, independent of the
+> > serial console etc, next to no runtime overhead when off, etc.
+> > 
+> > I recommend we use the tracing subsystem for "trace" and even "spam" level
+> > logging levels for Nova. The brave souls can always ask the tracing subsystem to
+> > also spam to kernel logs if they so wish.
+> > 
+> > ++ Tracing Czar Steven Rostedt as well. Steve, Nova is a new modern Nvidia GPU
+> > driver.
 
-Cheers,
-Benno
+Not sure if there was a question here, but you can enable tracing via the
+kernel command line and it will record into the ring buffer, and read it
+out via /sys/kernel/tracing/trace. You could also create instances by the
+kernel command line that will place events in different ring buffer
+instances (/sys/kernel/tracing/instances/<instance>/trace). You could even
+filter the events based on the trace event fields, process ID, CPU, etc.
+
+There's also a tp_printk kernel command line option that will turn every
+trace event into a printk() statement. You need to be careful of what
+events you enable when doing this, as some events (like locking events) can
+live lock the system if they are piped to printk().
+
+After boot up, you can turn off the tp_printk with:
+
+  echo 0 > /proc/sys/kernel/tracepoint_printk
+
+-- Steve
+
+> > 
+> > I guess we have to decide how to do this - what kind of tracepoints do we need
+> > for Nova. One use case that just came up is RPC message buffer dumps for
+> > debugging communication with the firmware.
