@@ -1,105 +1,291 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA5B1E47C5
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 09:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661BC288C20;
+	Mon, 10 Nov 2025 09:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762766526; cv=none; b=U5pHRZDLxFZqNmltMeRstfAl9nkRLTVPaCr5+Rfeq1qZDFZ7X9a/lyJOhoDEB1UavG1SX2HhxWvrkkbH9xprYadpHKZSi/YInc1Z8QSeObCB6NoPtljwFcDYLA+CC9nkGs9eRKXaA91+g0mIYkU9loB78hBDB3qWejBn/6kt5NA=
+	t=1762768259; cv=none; b=WxDFrTgZIdQtGT3hQu7/duS857sruRQdtnnET3Nbk3XB1v77cMUAPojtzmIjPR62BFp13gM8vNU2YYP+5G1vy+k4eEf64EZiXEIYsyFNLvbXuGUbnfmEW4iRqgqk8dmhVOf7MEdItja5LoyynjSWAFsXpN+vMnJSJDTS6j/XPmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762766526; c=relaxed/simple;
-	bh=CQM0BMMrK3H4GUwbM3ik3X8qQz2Y6rSQlQwSYgJMMO0=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Iwt8kOvCXIVVTTb1uyJrx//D1jTJpiLPnEWBGrdkK3Ru1BK69KsbrK98sDkpkMXnCg+FkcxQwVVI5SVpK68/RxMjnCqLNNcGoExTDz36MybBRsF6AmWGoFxMGRQvxR2YRaCX6Z3Qxpw4gzAHVYCbrd8ilnf8RiRqP8+mNJlfbPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V1hI1/Wd; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762768259; c=relaxed/simple;
+	bh=efQ7LZqDJFFcduDkUvygdRd9C94TMeRBtIbGMBhfHGY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r0U31qJCenV1F4HVnTLRPCAEc3ivY3B/6Q1DN+HvAD6FONOfnfchjmuear8o1h3b1EqAlBpffiOjKrUAoDAzPiILOohLSNuYOyA6GWGbHMpwJSjALcsqDgCNTtER8uYeXbs0hGcrufE4jY8GTyttvRCgJ6K/hDxII/kkxiuaGvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jLy0zkLt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V1hI1/Wd"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2953ad5517dso26415825ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Nov 2025 01:22:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762766524; x=1763371324; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=URqCpwoIgMhuE2NL38otxov0v8bxV0wkIHekKuiYCog=;
-        b=V1hI1/Wd3Jb4lkRnKbsoDFkX7ST/GN0INYxu0uGnnsjo0ewqGnrAmwFjtmRmnG1K7I
-         1tL6iac7Z9Z7+zL6948dVS82yjOATeCMLZ57B9jDKQ2bvXNlTrV4jp91GHB2/2Js9T64
-         f9wPj6vxaNzgZuwaH2ADPutHTNYmA5sWH8aRwv1BYLQQkO0KS1hqy+lUmTv9UThPu+yI
-         k2l6CdWZ3Okt+JyM2JEcDQm2NxBg+zymz7dDcfNeMyNWvMEV9l3b8OSqnzQsE6KwuuB7
-         TyOO75mYqTa+wgGumsZQt0wca7zfLjP1k9Ba4kQ/gQIQmaW6/CqBO55tTsuNP2bhIjg4
-         hxYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762766524; x=1763371324;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=URqCpwoIgMhuE2NL38otxov0v8bxV0wkIHekKuiYCog=;
-        b=nF6ukqTFQdQfjFohw4U1Iitq4DRiAdlbowpLXzJl0YmbKnd1YWY4qLDoNpcHh0GIPP
-         U0n9Q4sRZiaeWqSy+yA1oMeP+F6cNCpOLEvR/gn6nThprfwnWhd+ytgAByDFwOP4ahUU
-         AkeZvT33mDvwbTSy5NR9PirJNjkFV664aWRw3Za6bbbN/zC0UZIMz0/nKi+yVNqYIiJV
-         IRWkHCClSp+xgliVxJ+U+wUWgz2s/fgDptyYskbWZP5yZ4frxVISyFhM2VsZO9cwLJ5O
-         Z7vBQKkzxPBm5A4C1bxjJdEHzB8QCvUocQDacJfUiX4Y7xEze5ITX3Jeqg0VSOMODdUs
-         e0jA==
-X-Forwarded-Encrypted: i=1; AJvYcCU5KZ+7mJLcMyIisA2DyyHGpBp/p6AZjioZTTLlBP55Sl/BwtDmPfMYwrDpftFtfY/0UHdlpfXbCxg8gscUlg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMK7wA8iGw/3NPiZerIyGjTNF903QYvmBI3Q1md5fRM0l2/tsS
-	qfdtsg8VTjLPN6eF0iM1PuEtvad4JhSASlWHvihv1Vjn+DfPa/kEcxoW
-X-Gm-Gg: ASbGncuftImx0ep2mjTnys4Hrl6vkk1o6q7ElqnQQVkEsB7Uw5wfDbRcYEH7YDBgbmH
-	S2oitRxCdsq3pmv3LGe5ZP/O9m5G4pchsQa5430LkHtoSjTn45g3uuN0xJsB0f6e///zyk8ftz7
-	WHRRNzv0lS6k7xtrmC/kVx+skfFZY2rhiwM32iWZtsRzNNAEY2sldzkQFrlMFClXJVS71Yb9h+Q
-	OSdVr3a/WxEJY/uQp0aEaHuJvpnNMFewHv0zVw0hTDX69w6HwQv1mk2R+NAvpNyd3dBSS8asdqF
-	slsN7XxGYrPNlMlTNQhVwufiggqV6XbjWfQqKoNuhUErSw1lxe8wMOee0cw7Ki6XMnW/fHa+DVY
-	J9wcrzCzxToaovf5UbGIsBsm8yFzx7ao5ulp9F1QRy5vxcI0q1VocuJuRlcuh3OuK905+rIoH0G
-	PmoN9+NnyjKa31EIwcPnhY87jiuAKQg5W1Vx+L/bRgumBpTRA1/MtP8A==
-X-Google-Smtp-Source: AGHT+IGsuYiYBj69wyJc4ZAcFe88ItcMQ+69TwQ3km3mzlP0BX7xcDEhXkkNy6/JByP9xuBXPkhFkw==
-X-Received: by 2002:a17:903:19e3:b0:295:ed6:4625 with SMTP id d9443c01a7336-297e56caed5mr104585375ad.47.1762766524502;
-        Mon, 10 Nov 2025 01:22:04 -0800 (PST)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29650c5eb35sm138792615ad.38.2025.11.10.01.22.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Nov 2025 01:22:03 -0800 (PST)
-Date: Mon, 10 Nov 2025 18:21:50 +0900 (JST)
-Message-Id: <20251110.182150.1392834304602894143.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com, boqun.feng@gmail.com, a.hindborg@kernel.org
-Cc: ojeda@kernel.org, bjorn3_gh@protonmail.com, dakr@kernel.org,
- gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
- tmgross@umich.edu
-Subject: Re: [PATCH v1 1/2] rust: Add support for calling a function
- exactly once
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <aQ21xajAygTbi582@google.com>
-References: <20251106.091026.1308953895982406095.fujita.tomonori@gmail.com>
-	<aQy0zxs53EAnntwR@tardis.local>
-	<aQ21xajAygTbi582@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jLy0zkLt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AEEC4CEF5;
+	Mon, 10 Nov 2025 09:50:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762768259;
+	bh=efQ7LZqDJFFcduDkUvygdRd9C94TMeRBtIbGMBhfHGY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jLy0zkLtbZOfZmDmVlHm92QO2uvnOEHtqRGMDEnsAbypg0OQW6wM64uTMmnvt+Wvp
+	 2hkfBpvI4tSR5GGhaccLnmXh3nmVX18J7riHUGYupYDZ0TV/bpnsx7X7IHlcJWMs/6
+	 sri+db88cvrmoW+JYe+IQi4pJUmWrFCZlt944KQdDwIR5CBSwkNRoQREdzTk7zd9Ne
+	 ZX/5pdvWlU7IpqOLPjNI8dySwZT0GNY9Eab4rv//zJnGhdDmYyZy9tsyMsQxP1qYQI
+	 dkpbHURlZ4e/W5pjjFAgdhh9LyI0KSU7YUn7X/Jj8vWKHW1RV9G7bhb6xjD2Yn0r+E
+	 +jDHNtcy3E0Zw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH 00/18] `syn` support
+Date: Mon, 10 Nov 2025 10:50:05 +0100
+Message-ID: <20251110095025.1475896-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 7 Nov 2025 09:03:01 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+This patch series introduces support for `syn` (and its dependencies).
+Having such support allows to greatly simplify writing complex macros
+such as `pin-init`.
 
->> That's my point (and probably also Andreas' point), we already has the
->> type `SetOnce` to do this, no need for a `OnceLite` type if not
->> necessary, and the fact that it can be zero'd by debugfs doesn't change
->> it as I explained above.
-> 
-> The SetOnce type doesn't do the same thing as OnceLite. SetOnce has
-> three different states, but OnceLite only needs two. I don't think we
-> should be reusing SetOnce here.
+Benno has already prepared the `pin-init` version based on this, and on
+top of that, we will be able to simplify the `macros` crate too.
 
-Yes, SetOnce provides three different states and the feature to set a
-value, which are not necessary for this case.
+The series starts with a few preparation commits (two fixes were already
+merged in mainline that were discovered by this series), then each crate
+is added.
 
-So there are two design options: 1) to add a new minimal
-implementation that provides only the features required for this case,
-or 2) to use the exisiting, more complex implementation with richer
-functionality.
+This has been a long time coming -- the first iterations of this, from
+2022 and 2023 (with `serde` too), are at:
 
-Could we make a decision so that we can move forward?
+    https://github.com/Rust-for-Linux/linux/pull/910
+    https://github.com/Rust-for-Linux/linux/pull/1007
 
+After those, we considered picking these from the distributions where
+possible. However, after discussing it, it is not really worth the
+complexity: vendoring makes things less complex and is less fragile.
+
+In particular, we avoid having to support and test several versions,
+we avoid having to introduce Cargo just to properly fetch the right
+versions from the registry, we can easily customize the crates if needed
+(e.g. dropping the `unicode_idents` dependency like it is done in this
+series) and we simplify the configuration of the build for users for
+which the "default" paths/registries would not have worked.
+
+Moreover, nowadays, the ~57k lines introduced are not that much compared
+to years ago (it dwarfed the actual Rust kernel code). Moreover, back
+then it wasn't clear the Rust experiment would be a success, so it would
+have been a bit pointless/risky to add many lines for nothing. Our macro
+needs were also smaller in the early days.
+
+So, finally, in Kangrejos 2025 we discussed going with the original,
+simpler approach. Thus here it is the result.
+
+There should not be many updates needed for these, and even if there
+are, they should not be too big, e.g. +7k -3k lines across the 3 crates
+in the last year.
+
+Note that `syn` does not have all the features enabled, since we do not
+need them so far, but they can easily be enabled just adding them to the
+list.
+
+I will be updating the webpage as well with the result of this:
+
+    https://rust-for-linux.com/third-party-crates
+
+Please give it a test -- thanks!
+
+Miguel Ojeda (18):
+  rust: condvar: avoid `pub` in example
+  rust: kbuild: introduce `core-flags` and `core-skip_flags`
+  rust: kbuild: simplify `--cfg` handling
+  rust: kbuild: add host library support
+  rust: proc-macro2: import crate
+  rust: proc-macro2: add SPDX License Identifiers
+  rust: proc-macro2: remove `unicode_ident` dependency
+  rust: proc-macro2: add `README.md`
+  rust: proc-macro2: enable support in kbuild
+  rust: quote: import crate
+  rust: quote: add SPDX License Identifiers
+  rust: quote: add `README.md`
+  rust: quote: enable support in kbuild
+  rust: syn: import crate
+  rust: syn: add SPDX License Identifiers
+  rust: syn: remove `unicode-ident` dependency
+  rust: syn: add `README.md`
+  rust: syn: enable support in kbuild
+
+ .gitignore                                    |    1 +
+ Makefile                                      |    5 +
+ rust/Makefile                                 |  134 +-
+ rust/kernel/sync/condvar.rs                   |    2 +-
+ rust/proc-macro2/README.md                    |   13 +
+ rust/proc-macro2/detection.rs                 |   77 +
+ rust/proc-macro2/extra.rs                     |  153 +
+ rust/proc-macro2/fallback.rs                  | 1258 +++++
+ rust/proc-macro2/lib.rs                       | 1351 ++++++
+ rust/proc-macro2/location.rs                  |   31 +
+ rust/proc-macro2/marker.rs                    |   19 +
+ rust/proc-macro2/parse.rs                     |  997 ++++
+ rust/proc-macro2/probe.rs                     |   12 +
+ rust/proc-macro2/probe/proc_macro_span.rs     |   53 +
+ .../proc-macro2/probe/proc_macro_span_file.rs |   16 +
+ .../probe/proc_macro_span_location.rs         |   23 +
+ rust/proc-macro2/rcvec.rs                     |  148 +
+ rust/proc-macro2/wrapper.rs                   |  986 ++++
+ rust/quote/README.md                          |   12 +
+ rust/quote/ext.rs                             |  112 +
+ rust/quote/format.rs                          |  170 +
+ rust/quote/ident_fragment.rs                  |   90 +
+ rust/quote/lib.rs                             | 1456 ++++++
+ rust/quote/runtime.rs                         |  494 ++
+ rust/quote/spanned.rs                         |   52 +
+ rust/quote/to_tokens.rs                       |  273 ++
+ rust/syn/README.md                            |   13 +
+ rust/syn/attr.rs                              |  838 ++++
+ rust/syn/bigint.rs                            |   68 +
+ rust/syn/buffer.rs                            |  436 ++
+ rust/syn/classify.rs                          |  313 ++
+ rust/syn/custom_keyword.rs                    |  262 ++
+ rust/syn/custom_punctuation.rs                |  306 ++
+ rust/syn/data.rs                              |  426 ++
+ rust/syn/derive.rs                            |  261 ++
+ rust/syn/discouraged.rs                       |  227 +
+ rust/syn/drops.rs                             |   60 +
+ rust/syn/error.rs                             |  469 ++
+ rust/syn/export.rs                            |   75 +
+ rust/syn/expr.rs                              | 4175 +++++++++++++++++
+ rust/syn/ext.rs                               |  138 +
+ rust/syn/file.rs                              |  127 +
+ rust/syn/fixup.rs                             |  775 +++
+ rust/syn/gen/clone.rs                         | 2269 +++++++++
+ rust/syn/gen/debug.rs                         | 3240 +++++++++++++
+ rust/syn/gen/eq.rs                            | 2308 +++++++++
+ rust/syn/gen/fold.rs                          | 3904 +++++++++++++++
+ rust/syn/gen/hash.rs                          | 2878 ++++++++++++
+ rust/syn/gen/visit.rs                         | 3943 ++++++++++++++++
+ rust/syn/gen/visit_mut.rs                     | 3761 +++++++++++++++
+ rust/syn/generics.rs                          | 1479 ++++++
+ rust/syn/group.rs                             |  293 ++
+ rust/syn/ident.rs                             |  110 +
+ rust/syn/item.rs                              | 3492 ++++++++++++++
+ rust/syn/lib.rs                               | 1013 ++++
+ rust/syn/lifetime.rs                          |  158 +
+ rust/syn/lit.rs                               | 1862 ++++++++
+ rust/syn/lookahead.rs                         |  334 ++
+ rust/syn/mac.rs                               |  227 +
+ rust/syn/macros.rs                            |  184 +
+ rust/syn/meta.rs                              |  429 ++
+ rust/syn/op.rs                                |  221 +
+ rust/syn/parse.rs                             | 1421 ++++++
+ rust/syn/parse_macro_input.rs                 |  130 +
+ rust/syn/parse_quote.rs                       |  242 +
+ rust/syn/pat.rs                               |  957 ++++
+ rust/syn/path.rs                              |  968 ++++
+ rust/syn/precedence.rs                        |  212 +
+ rust/syn/print.rs                             |   18 +
+ rust/syn/punctuated.rs                        | 1157 +++++
+ rust/syn/restriction.rs                       |  180 +
+ rust/syn/scan_expr.rs                         |  267 ++
+ rust/syn/sealed.rs                            |    6 +
+ rust/syn/span.rs                              |   65 +
+ rust/syn/spanned.rs                           |  120 +
+ rust/syn/stmt.rs                              |  486 ++
+ rust/syn/thread.rs                            |   62 +
+ rust/syn/token.rs                             | 1098 +++++
+ rust/syn/tt.rs                                |  109 +
+ rust/syn/ty.rs                                | 1273 +++++
+ rust/syn/verbatim.rs                          |   35 +
+ rust/syn/whitespace.rs                        |   67 +
+ scripts/generate_rust_analyzer.py             |   23 +-
+ 83 files changed, 57895 insertions(+), 13 deletions(-)
+ create mode 100644 rust/proc-macro2/README.md
+ create mode 100644 rust/proc-macro2/detection.rs
+ create mode 100644 rust/proc-macro2/extra.rs
+ create mode 100644 rust/proc-macro2/fallback.rs
+ create mode 100644 rust/proc-macro2/lib.rs
+ create mode 100644 rust/proc-macro2/location.rs
+ create mode 100644 rust/proc-macro2/marker.rs
+ create mode 100644 rust/proc-macro2/parse.rs
+ create mode 100644 rust/proc-macro2/probe.rs
+ create mode 100644 rust/proc-macro2/probe/proc_macro_span.rs
+ create mode 100644 rust/proc-macro2/probe/proc_macro_span_file.rs
+ create mode 100644 rust/proc-macro2/probe/proc_macro_span_location.rs
+ create mode 100644 rust/proc-macro2/rcvec.rs
+ create mode 100644 rust/proc-macro2/wrapper.rs
+ create mode 100644 rust/quote/README.md
+ create mode 100644 rust/quote/ext.rs
+ create mode 100644 rust/quote/format.rs
+ create mode 100644 rust/quote/ident_fragment.rs
+ create mode 100644 rust/quote/lib.rs
+ create mode 100644 rust/quote/runtime.rs
+ create mode 100644 rust/quote/spanned.rs
+ create mode 100644 rust/quote/to_tokens.rs
+ create mode 100644 rust/syn/README.md
+ create mode 100644 rust/syn/attr.rs
+ create mode 100644 rust/syn/bigint.rs
+ create mode 100644 rust/syn/buffer.rs
+ create mode 100644 rust/syn/classify.rs
+ create mode 100644 rust/syn/custom_keyword.rs
+ create mode 100644 rust/syn/custom_punctuation.rs
+ create mode 100644 rust/syn/data.rs
+ create mode 100644 rust/syn/derive.rs
+ create mode 100644 rust/syn/discouraged.rs
+ create mode 100644 rust/syn/drops.rs
+ create mode 100644 rust/syn/error.rs
+ create mode 100644 rust/syn/export.rs
+ create mode 100644 rust/syn/expr.rs
+ create mode 100644 rust/syn/ext.rs
+ create mode 100644 rust/syn/file.rs
+ create mode 100644 rust/syn/fixup.rs
+ create mode 100644 rust/syn/gen/clone.rs
+ create mode 100644 rust/syn/gen/debug.rs
+ create mode 100644 rust/syn/gen/eq.rs
+ create mode 100644 rust/syn/gen/fold.rs
+ create mode 100644 rust/syn/gen/hash.rs
+ create mode 100644 rust/syn/gen/visit.rs
+ create mode 100644 rust/syn/gen/visit_mut.rs
+ create mode 100644 rust/syn/generics.rs
+ create mode 100644 rust/syn/group.rs
+ create mode 100644 rust/syn/ident.rs
+ create mode 100644 rust/syn/item.rs
+ create mode 100644 rust/syn/lib.rs
+ create mode 100644 rust/syn/lifetime.rs
+ create mode 100644 rust/syn/lit.rs
+ create mode 100644 rust/syn/lookahead.rs
+ create mode 100644 rust/syn/mac.rs
+ create mode 100644 rust/syn/macros.rs
+ create mode 100644 rust/syn/meta.rs
+ create mode 100644 rust/syn/op.rs
+ create mode 100644 rust/syn/parse.rs
+ create mode 100644 rust/syn/parse_macro_input.rs
+ create mode 100644 rust/syn/parse_quote.rs
+ create mode 100644 rust/syn/pat.rs
+ create mode 100644 rust/syn/path.rs
+ create mode 100644 rust/syn/precedence.rs
+ create mode 100644 rust/syn/print.rs
+ create mode 100644 rust/syn/punctuated.rs
+ create mode 100644 rust/syn/restriction.rs
+ create mode 100644 rust/syn/scan_expr.rs
+ create mode 100644 rust/syn/sealed.rs
+ create mode 100644 rust/syn/span.rs
+ create mode 100644 rust/syn/spanned.rs
+ create mode 100644 rust/syn/stmt.rs
+ create mode 100644 rust/syn/thread.rs
+ create mode 100644 rust/syn/token.rs
+ create mode 100644 rust/syn/tt.rs
+ create mode 100644 rust/syn/ty.rs
+ create mode 100644 rust/syn/verbatim.rs
+ create mode 100644 rust/syn/whitespace.rs
+
+--
+2.51.2
