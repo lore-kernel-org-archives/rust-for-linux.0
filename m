@@ -1,116 +1,101 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFD225783C
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 20:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA572D23B8
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 20:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762893142; cv=none; b=qgFItL1pqH2lb/PMB4X0itJi0qZ7IaOFFWd41zM2kCB9Sg6XuSTCJvm7IGiZjQ8OQaAFPaLIwW5HC+baH8UXokHhsr7PtWcrkDn9a/yYqgATYiYmk8L4FRuNgexCxpatYhrdUsxLP+u5Rjgzs/M7XyQfVXtBIFPu3AVFqRMwAyU=
+	t=1762894014; cv=none; b=PlQNGgB1prop6cnrxK2OAC+VgdG8+ubQiJJNft6bOpt+NQXNMNmYZXBRVEiIGF+EUmjrOqwmo5wMJNsyq7qaTcOeylzSn3+zFrOBEMkboGBpDLOkKi9u64Mv2wprVJEJFm9iT/h0TXvgkJqJ6SPgEUGepU5dU7m+KDLg4AHMD8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762893142; c=relaxed/simple;
-	bh=K0ITm4kaj7zgUCCm0JCFhPjRTKRmOjBpzfNcGnDqMnE=;
+	s=arc-20240116; t=1762894014; c=relaxed/simple;
+	bh=UnmrJNFh5uwNsZAyJRqYSz9Eybog28Whpwhvzqd3qCQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ozZBG4GXcALg3QLRYEY4qhyw2FYOTaSo42AxRlcAtdxfr3lbuYZHy/lEmu9UkiD8yg9geg+wHpanf8pr6j8z9IogadA9uCT58eLJ1HQC4SpnNUl3oGyYPa/KZRWt9KjGYjuMit6KQGeMQ/qszz4Ed0TRTyLYdcBo4IGNV7pfZa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q/uUU1Fg; arc=none smtp.client-ip=209.85.215.174
+	 To:Cc:Content-Type; b=Upb5cJ1ajzg+A9Kf/iXXn8okd26zcrKIJz9wtpPw2p2DpYI4+CisfcWts1+c6CDPO1mK8niMFQIwYN8/Cgk14BY3k1Bj+ySIYM8BEZaSX1iCJNV20bp71crM8I3ahxyBw85jcJxz3eFkdGc1oDtukCvfK29OrRWyZTk+AGVQPpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fnZrN9oF; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q/uUU1Fg"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-bbdeecb280dso16092a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 12:32:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fnZrN9oF"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-297e2736308so117855ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 12:46:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762893139; x=1763497939; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762894011; x=1763498811; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=K0ITm4kaj7zgUCCm0JCFhPjRTKRmOjBpzfNcGnDqMnE=;
-        b=Q/uUU1Fg6VYY/Ds7mNy9ZFqgTICmbt6LmKf/7bUzSowKmOXsLcumLAvddmX4RgBQIs
-         gLpYoHCRpho4HHz6XnKJgRIUDiCoNiU3SYaohiWkq6ggNhpxU0D9dL4p2yRjObmvEzx5
-         vd9czcVrUAJU4sJoFQ4eIwt6ZhhMjpIVJyF5fIxYM3yI6vg9TDAsR3IEnXS6Dnqk3aR9
-         Ct7ENM42B5e3cQbqFe3hQAjBTZ2AWR+xTxqDb0QSOxAXz/fxBg3uhcStaccgLLsV7jL2
-         EB62ATKlvtn4aeFWdN/8/y/lLJFuAiXDuQnaxtgLy+e1S36g+wiOPC00t6zRLVOe1Qjt
-         kt7A==
+        bh=UnmrJNFh5uwNsZAyJRqYSz9Eybog28Whpwhvzqd3qCQ=;
+        b=fnZrN9oFQtmJMlwzZYrO8tKGRyObtSxHJ4RoGdwBMwdfMi064QPG0RIzo/BoInbZfT
+         qFn4DIcBsUT4Ln3+jpmZbZGVfR+UvoNyVSGek4tkPdQOcPhSEKMhxi9obC++q+9Pkuo3
+         RX13NXgIgY6WUY5h1TwzMYbCbKaek+PPtCJand1CcEVK+BOngZybpa82GGJL5MGbuYeP
+         O7KzruND1elIJs3KJroFKnyxEn5bZHVZLWXFKnE3GlHqRyAf5fPGIwFFcrKaZKjZj0nA
+         cCvFzNsXZo3WJGd5C1Ysgdobmu9s0vKQmZRkX2xVKbNeYK1kh6kjdxQld5MsKfWKrBOX
+         gBUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762893139; x=1763497939;
+        d=1e100.net; s=20230601; t=1762894011; x=1763498811;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=K0ITm4kaj7zgUCCm0JCFhPjRTKRmOjBpzfNcGnDqMnE=;
-        b=rtzII+IxtJc9dVjmF+9rGP7dY8xpcvG6Fm9GJWUYofOM78eo44oxSFo2QRLnv3HjtH
-         wjwvGj4OwngFJjMcakDwkjBJzuH5nrTkxGZLBPsa+LmHR3ac6xACayAiZcyeuM3+0RXP
-         43EPcZmVQwQbiav6GHXXOaRckBuuqU8EW70ihcv514cLFBXCaCJR09Fign782vA83UOD
-         c4Onv+nTZU1LiC225ZTxsvf7w5mwV7va6ex6muArh1SNQ9Sat3RmvkmFwL/bdhijYWmk
-         Skc4pMqFJk3bQtBUf3DdpvZ2DLD1FTM8u/8esQeFCsbz3ZcE+iFggMl1A8Z082z/kSs9
-         6oSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVvggPgW8imHbNepD7Qe9HUkDbks8PmRFySw05Mps/pWh6hg7aY3bJcsQ8AdPM/DeqlSAtwBRlo8Il0Xcnb6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfMVTKHvGHJWM8yl0WHvSnLeHlfblxzrgx8DeQScCKWdfFLeyf
-	rHCdftVbu4zZYOnz50+OAXnyW8cvudOk8XhgfF5IEwg4X8oMhjS0KxXx0sR10SRzFCpXe8Xj45+
-	totfcppYKDF1EPMd2zy440Ihxs43x/EE=
-X-Gm-Gg: ASbGnctLJURH10YazL/7vB8MmD9z05LuleD38eQR9si5dq1fpUDtSFmL0hRCz/cZRol
-	eENZMLsPFSffQyJmDikzBKvzR8p1k5HJ1zmbwD2cAbb0uQG5w1b7s9jnnGUeDCOJHaOsIIURbRh
-	uho3rgfh0+rFlVXeia0JlShFn3IUsSlmszfCoZgMG3cA9Svl3gorDDq3vPUrQUE9KbFQuvCyMkG
-	+OyV+t7/bV5FXAcWvk3dPtajoKJOcdxs3QbiC+JOph8MAI4NySIoF32Kzb5lXMJ+dTM1F7gZA16
-	nSzots1Scoi0XxOWyFpWoqVdGlozJpGbfS6Iu7zKQd6Byfr67aQWucyCTRutwPNsZ+pyMj8cC5/
-	q4ZCC/5dH9qFGHA==
-X-Google-Smtp-Source: AGHT+IHkhivjJqX5b/37P8r79971KGp5/CtKc/qZSlE2EIFXEGP5n3HbQm7JyHmom9185URkqKimQum3m1tK5n6XgK8=
-X-Received: by 2002:a17:902:d2cb:b0:298:f0c:6d36 with SMTP id
- d9443c01a7336-2984ed87089mr4321895ad.5.1762893138722; Tue, 11 Nov 2025
- 12:32:18 -0800 (PST)
+        bh=UnmrJNFh5uwNsZAyJRqYSz9Eybog28Whpwhvzqd3qCQ=;
+        b=TYZ0FR6YoMW2LEeWgXa11ZkvX1pNPFTS2F0tjF3rNAtYqvIaGMRQf3BL5lZWiT9KJ/
+         3jU2dUsnRA4RZn/M1filf/eerq9CfHYkHiVjGLzjTqwPyQjdaWScOYvTBCdfuuj4qBV3
+         h7vNp3DB/uFmSXDQ5sPppqdENI9PfeU1EIIjaojY7xpVAvdR8FdZcSE7qws2mAv/RosL
+         X58MhCsTvMa0HBbAxOBw2I/6iqGe6E3UTqA/3WxIQohTOuCfuPxT9GUMiKOmUgjWane+
+         MJbOZhV9e/iwTy/jp5hXw0p3ALgv9l2REovumd0nZXeRpudgudb31Oe/noiNciulMu2O
+         zqXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXhomQ0z7BV/mtA6sOurbyFKNZ9FFjP+gwmpklNJqcjhF2zPg2ya3voVu+moYa5QAWigC/DuCSetsxcRlRMUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlOSM/lDRH6zvJvtDttYr+6jdeiRKl4XhJSrhBMIOHho4mX+Ar
+	jiiMRBUu0mgvUcmY24NtnUzTlNL+2Jkzq//gvCDiiWVMPWtXHUOQV78p+0sMNItCnPI8TlloBqH
+	qvntPuwvc5KUqp4KaMvFSVOxQ39VDtYE=
+X-Gm-Gg: ASbGncu/3YgjuP9cBrXFpvIJas6u2GpE5Olp970sm1+wJfq+xqbgiEEiKZMOZok2JZY
+	2GuYwV/odX69fg890fkBCnnP3634k7iZO5KPpHP/n1FNFy7E+ukc08msUYtas27A0qBamGnHhj2
+	r93kCerLe8zF4y7Ec4Z1jNE7QBfgsWJrrHegjRERn091coXuTmLEpU9+y4sO0Z1VtcV6s6VZe8u
+	74PyJqcJYvOr3c5nC88Unh4b22EEeY8GR97vWJ7vqym82pIex8RaGIAdTNSN2auNOzRAreb/0Eu
+	nvmrcuQcJ8zVPJIbDUuWYhL0FbKDb1J+g/l2EJ1Lq87a4lKSIGMR7u2wMP4uCoFkxTTKspmY0Tn
+	Q7UXeAgT5xTbQWA==
+X-Google-Smtp-Source: AGHT+IHN94JtmIxHN9rzLf3rPXm6Pv6p3OVtQxAw7lqD/kLIt+UFSlitVjA3+blOuHUQSodn0SFbjWMtxcUyzXogkrc=
+X-Received: by 2002:a17:902:ea10:b0:258:a3a1:9aa5 with SMTP id
+ d9443c01a7336-2984ec953e3mr4844665ad.0.1762894011055; Tue, 11 Nov 2025
+ 12:46:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251030190613.1224287-1-joelagnelf@nvidia.com>
- <20251030190613.1224287-2-joelagnelf@nvidia.com> <DDX1WYWQNTAB.BBEICMO8NM30@nvidia.com>
- <20251104005812.GA2101511@joelbox2> <DDZYCRCPYMOL.RMTIF0R404Q4@nvidia.com>
- <CANiq72=Cj_gJ27+EAiytxYGYk1dMwu7M3xQpLGByD4QstgDsHw@mail.gmail.com>
- <CAAOQCfQ_d_C7oZ9uq2siJHn1+m+j059qYUMBvTWOnQ5Etk91ug@mail.gmail.com>
- <CANiq72nLzuCXh0r5W0HMM36f9yTSQfP9yCxXbzH+wS7VxFM2Eg@mail.gmail.com>
- <CANiq72kYYu9C94aY72HK1ELSmvktF3nq+G4+smdAW_Xaxw1kqw@mail.gmail.com> <CAAOQCfSRVqFZAJN_m-kGLe6fnqKYyhLUf_WOKdHHMW-C6NShkA@mail.gmail.com>
-In-Reply-To: <CAAOQCfSRVqFZAJN_m-kGLe6fnqKYyhLUf_WOKdHHMW-C6NShkA@mail.gmail.com>
+References: <20251108-bounded_ints-v4-0-c9342ac7ebd1@nvidia.com> <DE5PQ3927GMS.31N4JGGZK3M1N@nvidia.com>
+In-Reply-To: <DE5PQ3927GMS.31N4JGGZK3M1N@nvidia.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 11 Nov 2025 21:32:05 +0100
-X-Gm-Features: AWmQ_bkuC058fj8a17da0j-IGoO37yszAwGTtwPbytKgwIYY0ZLqmecqu3judng
-Message-ID: <CANiq72nU7LOSEv=RsewAwiEbeO4=pTqg_pm+WJGfum90BC43kQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 1/4] rust: clist: Add abstraction for iterating over C
- linked lists
-To: Guillaume Gomez <guillaume1.gomez@gmail.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, dakr@kernel.org, 
-	David Airlie <airlied@gmail.com>, Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
+Date: Tue, 11 Nov 2025 21:46:39 +0100
+X-Gm-Features: AWmQ_bnepqni23BVP3fPyeHHA_HCKx7foH7uXjpDqrNPb0vXM57eeTTzvo-sJS0
+Message-ID: <CANiq72nYgvsTLvaXkGDN6ZReHipZVSgg1BzCgjC05h+dmsFe3g@mail.gmail.com>
+Subject: Re: [PATCH v4 0/4] rust: add Bounded integer type
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Yury Norov <yury.norov@gmail.com>, Jesung Yang <y.j3ms.n@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, joel@joelfernandes.org, 
-	Elle Rhumsaa <elle@weathered-steel.dev>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Andrea Righi <arighi@nvidia.com>, Philipp Stanner <phasta@kernel.org>, nouveau@lists.freedesktop.org, 
-	Nouveau <nouveau-bounces@lists.freedesktop.org>
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 5, 2025 at 11:54=E2=80=AFAM Guillaume Gomez
-<guillaume1.gomez@gmail.com> wrote:
+On Tue, Nov 11, 2025 at 9:12=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
 >
-> You can add your own tags in the doctests, and with our patch waiting
-> to use the new rustdoc doctests extraction, it should be pretty easy
-> to plug such a feature into it. We can check it together if you want
-> when the patch is merged to see if we already have everything needed
-> or if I need to add more things on rustdoc side.
+> Hi Rust core team,
+>
+> With -rc6 approaching, may I enquire on the appetite to merge this for
+> 6.19? This is the last hard dependency for moving the bitfield/register
+> macros out of Nova, so we need it if we want to tackle this for the next
+> cycle.
+>
+> Please let me know if there is more I can do to bring this to shape! :)
 
-If you mean the `unknown` field (in the JSON) that I mentioned in my
-message, then yeah, I think that is good enough (though we should
-probably still prevent collisions with future `rustdoc` ones).
+Let's get some testing in linux-next :)
 
-If you mean something else that I may be missing, please let me know, of co=
-urse!
-
-And yeah, we can take a look together (likely after LPC).
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
 Thanks!
 
