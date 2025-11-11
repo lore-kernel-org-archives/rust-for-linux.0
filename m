@@ -1,106 +1,97 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F655354AF6
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 19:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C7D3730E6
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 19:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762890320; cv=none; b=fh6yGKXPSBIJBIOvRuRtlhNKMIIZZrZTwQsQWDSJPJLqyh2WjS62pCa/+fXJ3YTWciBZjRkMRBL+givvvRSIgpd+fizZg4Urxz1BxnNehrDJfEF2mBolWnmerLLrlJ3wS26ikRJfIZq1z+wfTHbVCShOZxdehDMmV8gKkh3gD5k=
+	t=1762890872; cv=none; b=gtOsdzuXURqoG7pGdIUUswEsR52nE6f99p8NvUx34JP+Nvf7rTHGF8Ql8VOeQBbEd8NFdqaD1yrXzhhMeD5XkZFNI5OSdIHW6QbagN80knoRWua/0zfvy2TbnY2azNQDu9J7UIkLDWAwcVDeB+A7iCgb9hRAh5JtESx17zk7Rls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762890320; c=relaxed/simple;
-	bh=Sg7FhLFPHYhYHz0dhqTZ1MP6Nbu0jdxwfOGdyNc5gt0=;
+	s=arc-20240116; t=1762890872; c=relaxed/simple;
+	bh=s9+a/eFiDoDkgzy9Ul2SUezw6cD2/LMwGt4BI4jMuWE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qFWQhuU1NoYUZH4NgWCxI2PVm17rtaqVgjF/u7zTIGodHMTLOet9jvcaMcsRYuyRn8gtQa4i0dDBovo2T0EUCJJbkLy8wcmX30RJzyYKni9HkpxW6eS3K+CiEq98X9vpxz7aKp7jMTjlalCdzcj4uWLdsDbOV91oOw/dnwDGpb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eOWsf+Wy; arc=none smtp.client-ip=209.85.214.170
+	 To:Cc:Content-Type; b=axDwPQ7dS9S2p/YVSPx+nQxUWwuqkOwUKBY1T6i3tRMevq4bljWPtpffuRxfiU0Nt2Rg0CKqL4oZrwhWbcyTlg6gd8HPkJgZoEF6FgwssgSHYLjcWEnaWc8nTsPexOtS9BzRH8auToF2dLhz+xreLXtrAaOrkrQvHPkPTBNkfWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U6wvzAoS; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eOWsf+Wy"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2952d120da1so113665ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 11:45:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U6wvzAoS"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29800ac4ef3so147305ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 11:54:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762890318; x=1763495118; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762890870; x=1763495670; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Sg7FhLFPHYhYHz0dhqTZ1MP6Nbu0jdxwfOGdyNc5gt0=;
-        b=eOWsf+WyXEw/eSF9CmjV7HIDweZC0asEzb85mqYKzz9wg9h3Fdpm+mS73vV/5Ri0q4
-         t8upNUavqVuqv1KuNaDwbNcMTtBmEav4/wRRVAiTOGmNkbKa7JYB8Sr3/GutmNH1zy2b
-         sifoMj72Cs8fBjjrfh0B1yIsNwfW1QhayBnLG5uGcBynT17eVAjrj9w8qJgEMGmXwmvS
-         KNqDLm1LQdTW45V+nMxQyCR6IuZZ5AEvh72qA2Km/jLtdUtLXA8HsON+YTh7klrydLoW
-         gbXlNtwgbm0lWwyAwSzuYEffId7REO1vPMVZZsuaHTmVcPh642HqHwn1o3As6AL1BJIl
-         cDog==
+        bh=s9+a/eFiDoDkgzy9Ul2SUezw6cD2/LMwGt4BI4jMuWE=;
+        b=U6wvzAoSkY2k15T22W4yOdF48wWhxYUep8p7av8A+5FJXJeWTUfLdLpLZYKS3DLqSR
+         iSVHdagTiJyGuZXe+WARAcFHhC+0fR56yDkUJGJb5AK2UD4pNQJQbBuhH2zZe5gjO7NB
+         gqET0z+VnG1o+FsVCIebqUAQ87rxaPs9jgTU/5Uq0DG6JaYxUbLlHHNYfv/M3IfeiAnb
+         1t81oYQP/XTjyjHCeP6xYbBFGD3ECIHDagyZ0xG7wiOmSF21DnbIkB/txTDO2M9Anoqb
+         0fxlNU5lf8EAXr6okY4e8iky2RpUwSa87yX7Y/tATPtUyBsy+9bZc8NF5hGPdxHa+l5S
+         K5Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762890318; x=1763495118;
+        d=1e100.net; s=20230601; t=1762890870; x=1763495670;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Sg7FhLFPHYhYHz0dhqTZ1MP6Nbu0jdxwfOGdyNc5gt0=;
-        b=Y6TtLwyLDzC6gULZsjOP10w/79HarF1bQTpD2WUKiid7Yw9dG2oN+TxstgGTdQNHYK
-         YX8C3/viLWoRaC2deWnKlp1W9xz+gNLFk/5mPtkStdsJeMXdawhWnHo0m1U3O0c/jru3
-         ihZX7YjST9HaudN01iaMMZrHi5tQ4wszQhgex0WUJ75JfFqRkC1cUiszILeyw01Ui9V2
-         CXPBid0v25aqjQnOMC5UlxN2mfWTPT5LOBU2CaU5MVgwZaW/q9iBh3MzHSGhgAsMScuP
-         N5qd+2CCFQC5QCExJEceCCFPjg1/qSvKLup4LW9KJmBa8PZxc1YhvRJX0Th+Net2lTzp
-         CnDA==
-X-Forwarded-Encrypted: i=1; AJvYcCXwPsfheFcuJGnk229HcgqLb2pLiRKoXcQpr9gDcj3pQYxF6z7ews/988Aidfgu7UsqpCdDBiv4o1XyybpC4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq9lpcV6jaaMbjSniD71S+UsOMVNuH/sgPIHrVzYFXDmh+SnA+
-	WQf+7pbd6pvnaFdlkzRiPQReq1QVItZf2a2k3sEQWaFZG5Fh7EZlxiY2Eox/epYwH4s9c2ykV/v
-	tRWksSZ6QKedXhc9n3HBSfGj3ksniG7Y=
-X-Gm-Gg: ASbGnctBtvKQhG/9GrG9pXg4JfwPuf4y6w8Zw6ZLVrj+l9c2gDwPXjPRzxo8yE2VIHQ
-	9YWlREP3sBQ2yrEnQo0wT7wzi1OBBSjKqU0Uyqj3nLpJADRN8r0qyJpRNFi6jTRxi1hyNtcF+jQ
-	f/PMOiqfiI0N0l0eqQbfPUeG95TXFTpMmLhafbSh18SvJnYRQslpkB8veOfB2hIXBHWredp+map
-	5Oov4g/vr6gtOzl9IDK/hJRjHI5cQKnQCFNOfrRee5O5ukEtDANcxeB0t0ZQl0OMCvUzsk2ZKvr
-	p1ioDh02jODwhI7/yD1l2EdejQdRXcgqMx+zmgDluHpeDugkCmtsbKRyeR+ixwp4CIph5M4NAWZ
-	GEuM=
-X-Google-Smtp-Source: AGHT+IE5zjw8D+my40d60Ix41uKXNSt7HOnLAKKhJi0H3LCnV5CTo+qFPBfkXgqbqQK8w6cViFfsGq4E6L6246te+k0=
-X-Received: by 2002:a17:902:db0a:b0:295:70b1:edd6 with SMTP id
- d9443c01a7336-2984ed884e3mr3098505ad.3.1762890318029; Tue, 11 Nov 2025
- 11:45:18 -0800 (PST)
+        bh=s9+a/eFiDoDkgzy9Ul2SUezw6cD2/LMwGt4BI4jMuWE=;
+        b=YPhI92daAvwPPa/t6bwlgi+y2Q+gOHgIexh1ZJWRylXhsbOaHNTFcSJAvfQfVM75hU
+         KjshR0P8hTe4bG777cYoO71CMxsmEgjKdhakjvRB0dKCQM724v7x/1MwL/zpzSS4SrLR
+         TrUwfh8BuHrs6VRUCwWjhr2NQrQ82azRTCxVDdWwdMS3MUoB+7gSFYN2dbKHb2wrYxSV
+         UNk3ARpn6jy374Wh16AVJZO+/+vBV/osAjWEi20cno3ckh/0vYVPgv4J6z/7AE4h5WI2
+         811xba3wAGCiSzFnpZvC8Rq8K6K5VrVGaCxqv7FpSlb18517iTpB7kg8CZKQVXljakYO
+         TOxA==
+X-Forwarded-Encrypted: i=1; AJvYcCX6HBWZfkJEroqMdmzp3ynFH7MUEW0o+4yZHQUkTPhVXUUO33KN/uSbubWWaptZt4OCpzJYtGIfkNR/us7adw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgSMMxuk1+8ItTQsm8xxLreLR3PbXC859xcDOUcHFbDDkDIb64
+	DvB1cqc0TEl3umCrg6So0h1dJ/6gtuG+f0t6Pm7pSVKyowSAMUfiJxIYsvK0fEYzzenPM2O8AWm
+	2DKApuSEIjUPPkCXR/EhV2FL56X5tz34=
+X-Gm-Gg: ASbGncvXdyFD0E4e1JXRHJDy96CggAyX6aePbVcPGRYwT48pfdcI1EgI3sESjLTMk5W
+	USE6zrxwhhh48RIIGhExHUuwC5FaZUrE24XygS1w8mwcWW9M/XuuHXZkaMkZ2AB/VXZ52hLFBsu
+	4Gy/s1sweIcpcDLCMxSxcm5suUYAEWJ8kVR2IoyfCVhsuHkFvrGZw9cKbW64BrVaFa21e9VECaV
+	cDZT5K3Ndmgn8LnHwc0d7MX527+pEDIg/PqUpjM1gsYhy7lFnwrPM7CQA16Kk07FtwHLOGVa/TJ
+	16yOGe12tMd/kBeMCMWHyxbHh5t/F5PJGZk4l0pXdpJdev5Gm43wHcksuLJ/iffoKQ5/gQKlbtc
+	m8Lw=
+X-Google-Smtp-Source: AGHT+IFGIw0sPldyd+rtRft0su885bkTxqqUTUuhpd3lcLBUxXPnk/ZZeeLUF53/y6iwwN8RrfJVa1Wt8ImxuyYODE8=
+X-Received: by 2002:a17:902:d50f:b0:298:371:94f1 with SMTP id
+ d9443c01a7336-2984ed2b38amr3798265ad.1.1762890870059; Tue, 11 Nov 2025
+ 11:54:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251110131913.1789896-1-ojeda@kernel.org> <CANiq72mjFobjfQEtNvk9aA+757RkLpcfmCCEJAH69ZYsr67GdA@mail.gmail.com>
- <CA+icZUVcHfLru9SRfhNGToiRmyOY+fLw-ASEvQakZYfU1Kxq4g@mail.gmail.com>
-In-Reply-To: <CA+icZUVcHfLru9SRfhNGToiRmyOY+fLw-ASEvQakZYfU1Kxq4g@mail.gmail.com>
+References: <20251111171315.2196103-1-joelagnelf@nvidia.com> <20251111171315.2196103-4-joelagnelf@nvidia.com>
+In-Reply-To: <20251111171315.2196103-4-joelagnelf@nvidia.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 11 Nov 2025 20:45:06 +0100
-X-Gm-Features: AWmQ_bkZOKXuOXoFqnluk99fIIrWIqE98EcoUgehQR7XEFroNIarOWjMBHltciY
-Message-ID: <CANiq72mS2SFfMsMgVvmR7dgBpYq6O23Gx9fQmDWuaqrz5sVNYw@mail.gmail.com>
-Subject: Re: [PATCH v2] gendwarfksyms: Skip files with no exports
-To: sedat.dilek@gmail.com
-Cc: Miguel Ojeda <ojeda@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, linux-modules@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
-	Haiyue Wang <haiyuewa@163.com>
+Date: Tue, 11 Nov 2025 20:54:17 +0100
+X-Gm-Features: AWmQ_bl0L-0Cea_Wx26TMHEqrDOWgYHY0NBpoDZ7Qy4Vo4Y76uHd2eVw2Y9spcU
+Message-ID: <CANiq72nuHUFGMsEYr-KhCB4oMjX72YskG0s7uCB8dcVtTGW-jQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] rust: Introduce support for C linked list interfacing
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, dakr@kernel.org, airlied@gmail.com, 
+	acourbot@nvidia.com, apopple@nvidia.com, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, simona@ffwll.ch, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
+	jhubbard@nvidia.com, ttabi@nvidia.com, joel@joelfernandes.org, 
+	elle@weathered-steel.dev, daniel.almeida@collabora.com, arighi@nvidia.com, 
+	phasta@kernel.org, nouveau@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 11, 2025 at 4:25=E2=80=AFPM Sedat Dilek <sedat.dilek@gmail.com>=
- wrote:
+On Tue, Nov 11, 2025 at 6:13=E2=80=AFPM Joel Fernandes <joelagnelf@nvidia.c=
+om> wrote:
 >
-> I switched over to gendwarfksyms in the very early testing days.
-> Faster builds. DWARFv5 fan.
->
-> And was using v5 of Sami's patchset against Linux v6.12 as it cleanly app=
-lied.
->
-> Last week, I jumped over to Linux v6.17.6 and the next testing will be
-> Linux v6.18-rc5+ (upcoming next LTS kernel-version).
->
-> I will try this patch - might be you will get a Tested-by.
+> there. I rebased the patches on linux-next. I can also add MAINTAINER ent=
+ries
+> in a future version, if folks agree this should have its own MAINTAINER
+> record.
 
-Sound good -- I have applied it to start getting testing, but if you
-have a tag in the next day or so, I can add it.
-
-Thanks!
+Yes, it sounds good to me to add one. Please do -- thanks!
 
 Cheers,
 Miguel
