@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639ABA944;
-	Tue, 11 Nov 2025 08:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5DC2F3C3F;
+	Tue, 11 Nov 2025 08:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762849263; cv=none; b=lILtGyTxahSV/s+3Q47jIi6z3gL7jMUIliL2KAeQmE7UoArFgpZjw/Pl3k4K4WKGAQmM0Yi+Iz7sAF9X7QzM0mPBuTiP4l/iP4J/V02zr1NDd1DHWCmzKL52pIhjhd7UyUB9NEWWVLto2WCehfpP/zsEStEq7HOZgnzUU8WXyQg=
+	t=1762849614; cv=none; b=SEOwX6fJVtlM3UoX7aXL9rJxiwI0tIM/cUeHlxIIDjftVB7acBYHiGEub9W5f96QiWWJh9w6dy1M7Rq8wPrTarib0a9Jr6Rv10nV5qYO3PT+fVANymXshMALJeDcEAvHskkMSdmW34vUyTyJyq4kIzfqpn4qZSk+eTax1G4C4Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762849263; c=relaxed/simple;
-	bh=Weu3f3v6jreQW7azhbCbvwSDVTC98LwzGnEO0u3QKdU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=PfU8dTR5waHMu1elaEcnm9Ika4mG9V/c6hqB2gmFutu/AZMy5gPT/NUra/x7ss84fDKjisyR8knnCyTB31EmhN58DJg7uBrBOCXsgl4jg9RkavZ02KBwHMV8/fyEFPyuKgWKP4DrbgMi1qxSx2dxG8Juc880Fk/oiCGEKp+2Js4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jlQQ1i6z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762849614; c=relaxed/simple;
+	bh=96FM0MY01nX4wL/hTTKuey+IyAjZgiStHLdV7xlzeuA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=I4Zs0u0Qy80n+8BaElzLn7CZfxtmNRDPJbJ+wT3fBhX4bHzlpsk9h61M1WYId7rEZIZcfWgTk0xtFoJxsyMTKZbkxF9iNdUE2pew0vyYJduiolQ5MYmyhfMPv8BzH2+UT8kiNfWhMKfxhb5096/GgzrI4jv3Pc/NDHxH1KcOR04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2v6Wg8v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jlQQ1i6z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E875C4CEF7;
-	Tue, 11 Nov 2025 08:20:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2v6Wg8v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDD0C4CEFB;
+	Tue, 11 Nov 2025 08:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762849263;
-	bh=Weu3f3v6jreQW7azhbCbvwSDVTC98LwzGnEO0u3QKdU=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=jlQQ1i6zfiGDI5W/1u3tIfzGr3DodBbuR9ldkMwuJzo0aeQ6mxAU/kPoXtMstZkrN
-	 IvvKtef/y0OTntMdHrdEqXdAnfe8MPfZ+rIdNK/I0V31GcV7pA7KZHfArNo3e7ev6D
-	 vREGaDy/g/8jbSBDXU9smsjbH14ON49f9fBhDeBoqakpFKBS51nntGFpvK5gjCke4N
-	 8zlDG4+lHEW9sboUazg3GfMBt67fa+yIc3QZ1d+MQaml1mbQDIoF6zEaIzNkqETs7G
-	 HRYDe+xkgQHwpgO+MShfnhRznkSFImomWwJZQuVyo5Nur95ptntbeL4Te6zjLRCxBs
-	 ERx6l+wxEBjLw==
+	s=k20201202; t=1762849614;
+	bh=96FM0MY01nX4wL/hTTKuey+IyAjZgiStHLdV7xlzeuA=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=f2v6Wg8vBqxPTA2MkjJ9Gf051kS6sRBZVpTJ/7hgE8CGegU3SvCYU3DSF7cWuYWjD
+	 pOoDkwO6GD46bNUHL+TCkZqLYTy3ZG0XoGuFW00cKT1u1Aq1YD+GVIjBIYjtLqcKIj
+	 CO/+m/3YBe78BBQrCnP+uB9UJVHCjY7T/TIP7l3KcKQVHiWVCSzwUz63vIF0hIdP3E
+	 MmfLxME31u/vq/JlhSOlrzZeC/KtCobBDE/d8BMdvXsI7uTDmpC4GualxJ86kX6hTI
+	 80Wkh1Paezkq8Tufsr9czK1JyYkKiFJiaRdYtwpU/yxkofBie/jDv6IyFnBNxYNFNE
+	 2Coaynkj6ERIw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,74 +34,48 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 11 Nov 2025 19:20:48 +1100
-Message-Id: <DE5PWKX730XK.Q5WZS3DLYXE7@kernel.org>
-To: "Igor Korotin" <igor.korotin.linux@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v7 4/4] samples: rust: add Rust I2C client registration
- sample
+Date: Tue, 11 Nov 2025 19:26:42 +1100
+Message-Id: <DE5Q13AXWVZC.1NRFHPA8CSO0T@kernel.org>
+Subject: Re: [RFC PATCH v1 0/2] rust: pci: Introduce PCIe error handler
+ support and sample usage
 Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Wolfram Sang" <wsa+renesas@sang-engineering.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Viresh Kumar"
- <viresh.kumar@linaro.org>, "Asahi Lina" <lina+kernel@asahilina.net>,
- "Wedson Almeida Filho" <wedsonaf@gmail.com>, "Alex Hung"
- <alex.hung@amd.com>, "Tamir Duberstein" <tamird@gmail.com>, "Xiangfei Ding"
- <dingxiangfei2009@gmail.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-i2c@vger.kernel.org>
-References: <20251110112437.50405-1-igor.korotin.linux@gmail.com>
- <20251110113125.51785-1-igor.korotin.linux@gmail.com>
-In-Reply-To: <20251110113125.51785-1-igor.korotin.linux@gmail.com>
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>
+To: "Guangbo Cui" <jckeep.cuiguangbo@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251108165511.98546-1-jckeep.cuiguangbo@gmail.com>
+In-Reply-To: <20251108165511.98546-1-jckeep.cuiguangbo@gmail.com>
 
-On Mon Nov 10, 2025 at 10:31 PM AEDT, Igor Korotin wrote:
-> +impl platform::Driver for SampleDriver {
-> +    type IdInfo =3D ();
-> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D Some(&OF_TA=
-BLE);
-> +    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> =3D Some(&A=
-CPI_TABLE);
-> +
-> +    fn probe(
-> +        pdev: &platform::Device<device::Core>,
-> +        _info: Option<&Self::IdInfo>,
-> +    ) -> impl PinInit<Self, Error> {
-> +        pin_init::pin_init_scope(move || {
+On Sun Nov 9, 2025 at 3:55 AM AEDT, Guangbo Cui wrote:
+> Hi all,
+>
+> This RFC patchset introduces basic PCIe Advanced Error Reporting (AER)
+> support for Rust PCI drivers and provides a simple example to demonstrate
+> it's usage.
+>
+> The first patch adds the necessary infrastructure in the Rust PCI layer t=
+o
+> support device-specific PCI error handlers, mirroring the existing C
+> `struct pci_error_handlers` callbacks.
+>
+> The second patch updates the Rust PCI sample driver to implement a set of
+> dummy error handlers. These callbacks simply print messages and return
+> predefined results, serving as a guide for future Rust PCI driver authors
+> who want to handle PCIe AER events safely.
+>
+> This series is an RFC for discussion and not intended for merging yet.
 
-We probably don't need pin_init_scope() here.
+Thanks for the series, I will have a detailed look in a few weeks.
 
-> +            dev_info!(
-> +                pdev.as_ref(),
-> +                "Probe Rust I2C Client registration sample.\n"
-> +            );
-> +
-> +            Ok(kernel::try_pin_init!( Self {
-> +                parent_dev: pdev.into(),
-> +
-> +                idev <- {
-> +                    let adapter =3D i2c::I2cAdapter::get(SAMPLE_I2C_ADAP=
-TER_INDEX)?;
-> +
-> +                    i2c::Registration::new(&adapter, &BOARD_INFO, pdev.a=
-s_ref())
-> +                }
-> +            }))
-> +        })
-> +    }
-> +}
-> +
-> +#[pinned_drop]
-> +impl PinnedDrop for SampleDriver {
-> +    fn drop(self: Pin<&mut Self>) {
-> +        dev_info!(
-> +            self.parent_dev.as_ref(),
-> +            "Remove Rust Platform driver for I2C Client registration sam=
-ple.\n"
-> +        );
-> +    }
+I think this will be useful in the nova-core driver for instance. However, =
+I
+wonder if you have another use-case you wrote this code for?
 
-Let's use unbind() here as well.
-
-(Yes, the existing samples need to be updated. :)
+Thanks,
+Danilo
