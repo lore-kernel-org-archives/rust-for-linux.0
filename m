@@ -1,62 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E891DE8A4;
-	Tue, 11 Nov 2025 08:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08B6322523
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 09:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762851223; cv=none; b=pn3CypPlDhYmza57up/cE/Wa7p80bO3u0gPYc/Zh6mjZaWTE2W2AFDUK9IzjqwPtgfLxVWP+hxm91JYwptqqLp/sq+sPuYbqb3py5d5O5TXcl5HmyUlOJRNXbgtqKGZ8io0oZo6YntghbuO87z5goynogUy9cs4X4yqm1SV4SvE=
+	t=1762851784; cv=none; b=Cr3OXTVbehaO5Je08vN9Py+4kCSWWx83uxtMK2wQLvpcv6w5IRN4Kq8RBbtNG8D3afyNZd+6t+mzMFqaQ9R5Bx8i+yCznVzvPZbkjjimwAUfQmX2QwkaeqaXg2P4Sdvx78Yfmk+flhFY3Td+Y22Nld58vH+fqwoEclsVaF7Fel4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762851223; c=relaxed/simple;
-	bh=JSd9pmiZ1GeEYbJE0KeNE6uRYdp7JRsb7q0z2AEKPGg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=BiXmcH+W7JfxAzfF04YVpGjS152Jv63dYPkFKxWHEdRdX546yY5qrCvI63Tjv83XuS+Oa+qiWiPQ+eVC+5JUl1dRtTuNjGxPDC1kH95wUmIHgtjW1AL4rneWHmjVgqBbc0BL/lWFIKU6PhMU+HWsy2M/lR1CQjcBAnSCanBmW/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZ/ujWk5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762851784; c=relaxed/simple;
+	bh=s7YYKCGrzDJmMcEnE5uhOoPHRBjXuRBU60RPdyPRN2o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HD08vDm9yJFxYIT5pT02Fa9ag06QeGX2vqTXFw+Gt2KBcFqAudLTz9EQu/rZyc7pMPYGEzch+zozI1jHHzRUMqwkTHBhTu/lTNI+SBFQZ54Wx50MnVlL+mZRHTBt26X6ChOdCdKoCIABiRJ3dpTdMtx4CZeEefDsT9MGkG1JsWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rBwNOe9m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZ/ujWk5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B8BC116D0;
-	Tue, 11 Nov 2025 08:53:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rBwNOe9m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF6FC4CEFB;
+	Tue, 11 Nov 2025 09:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762851222;
-	bh=JSd9pmiZ1GeEYbJE0KeNE6uRYdp7JRsb7q0z2AEKPGg=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=PZ/ujWk5Ry5qidHyAIv3xk46J6cRe+cqgeA5TcSQecDHSPwdGstFmrbDZNJ10SRxW
-	 ybyzJOJsyRlhycD4rL/pKOP1HmIm5sift2oz7+sVeQTZsXDoW93G1YNyYjxwwogVSZ
-	 w5z6DyodEUUjNoKl5ZNd5/nAaxrI1XCKP7P15STGcu8Pr1qt7EVegbxTd4dpOyeeOR
-	 oP0KRUpeWiztDMk3+0nAJ1iG97y7oNsKbEd57iw9+oVK6CCoFvq/jEF6dxmqEkJzpV
-	 7XtCEoTN55M77t6HIdIHhT9p9eeylQFYj/KNzchhULv6XPOLcEZi2Q2MyhpvQbixPf
-	 tp4L4P/EUyqQQ==
+	s=k20201202; t=1762851783;
+	bh=s7YYKCGrzDJmMcEnE5uhOoPHRBjXuRBU60RPdyPRN2o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=rBwNOe9mCMsJjWXVVSLv/7sW2m48IPkuB228/q4tzo2ibE1MQL8PCAL4tJ6gOzSYR
+	 YLpdJFUhNXFK5sBJBSGBpHMqVBhm/4podEhdoouzmFVRicrasKcV2ND0ZEq7/p0ZPC
+	 yPn6KgdAromoNUe9wthVUwuJOeKQbj96m/nl0IRSsqS2A23tLvpZ9O7kLg1nw+volo
+	 0lNanPprDx2gfeM7e/dl7kz/dM5pmGAqJ4QXzVpVO5+PKUqvwyVOtXJArm3HDIn5YC
+	 nAHXYa3kVfsTrqXH5fqWJvihKYbXHBkMEAptaZsXz1qwtY8Mlrs6rVtFfgM9OsGwJk
+	 0QPRBtcuZEYiA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, ojeda@kernel.org,
+ aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
+ tmgross@umich.edu
+Subject: Re: [PATCH v1 0/2] Add support for print exactly once
+In-Reply-To: <aRIN4U8L4-wQjyHj@tardis.local>
+References: <nsSZZk6z9Ia7Gl5JS9LVNDRjc-9eFvtSWyLI4SSjsHNouDkDV-GmXnixMYlIpGHryPfhLr8Z2W_CkWd6D2frYQ==@protonmail.internalid>
+ <20251105054731.3194118-1-fujita.tomonori@gmail.com>
+ <87pl9w6vs5.fsf@t14s.mail-host-address-is-not-set>
+ <20251106.081231.149919562701074305.fujita.tomonori@gmail.com>
+ <aQyxW_cskrK0Zyxr@tardis.local>
+ <87ms4u6q1f.fsf@t14s.mail-host-address-is-not-set>
+ <aRIN4U8L4-wQjyHj@tardis.local>
+Date: Tue, 11 Nov 2025 10:02:46 +0100
+Message-ID: <87jyzx6ix5.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 11 Nov 2025 19:53:31 +1100
-Message-Id: <DE5QLMGR3OJK.1FDRF7ZJJ8WGZ@kernel.org>
-Subject: Re: [PATCH] rust: pci: use "kernel vertical" style for imports
-Cc: <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Danilo Krummrich" <dakr@kernel.org>
-To: <bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251105120352.77603-1-dakr@kernel.org>
-In-Reply-To: <20251105120352.77603-1-dakr@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Wed Nov 5, 2025 at 11:03 PM AEDT, Danilo Krummrich wrote:
-> Convert all imports in the PCI Rust module to use "kernel vertical"
-> style.
->
-> With this subsequent patches neither introduce unrelated changes nor
-> leave an inconsistent import pattern.
->
-> While at it, drop unnecessary imports covered by prelude::*.
->
-> Link: https://docs.kernel.org/rust/coding-guidelines.html#imports
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Boqun Feng <boqun.feng@gmail.com> writes:
 
-Applied to driver-core-testing, thanks!
+> On Mon, Nov 10, 2025 at 01:16:44PM +0100, Andreas Hindborg wrote:
+>> Boqun Feng <boqun.feng@gmail.com> writes:
+>> 
+>> > On Thu, Nov 06, 2025 at 08:12:31AM +0900, FUJITA Tomonori wrote:
+>> >> On Wed, 05 Nov 2025 21:59:06 +0100
+>> >> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>> >> 
+>> >> > "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+>> >> > 
+>> >> >> This adds the Rust equivalent of the kernel's DO_ONCE_LITE and
+>> >> >> pr_*_once macros.
+>> >> >>
+>> >> >> A proposal for this feature was made in the past [1], but it didn't
+>> >> >> reach consensus on the implementation and wasn't merged. After reading
+>> >> >> the previous discussions, I implemented it using a different approach.
+>> >> >>
+>> >> >> In the previous proposal, a structure equivalent to std::sync::Once
+>> >> >> was implemented to realize the DO_ONCE_LITE macro. The approach tried
+>> >> >> to provide Once-like semantics by using two atomic values. As pointed
+>> >> >> out in the previous review comments, I think this approach tries to
+>> >> >> provide more functionality than needed, making it unnecessarily
+>> >> >> complex. Also, because data structures in the .data..once section can
+>> >> >> be cleared at any time (via debugfs clear_warn_once), an
+>> >> >> implementation using two atomics wouldn't work correctly.
+>> >> >>
+>> >> >> Therefore, I decided to drop the idea of emulating Once and took a
+>> >> >> minimal approach to implement DO_ONCE_LITE with only one atomic
+>> >> >> variable. While it would be possible to implement the feature entirely
+>> >> >> as a Rust macro, the functionality that can be implemented as regular
+>> >> >> functions has been extracted and implemented as the OnceLite struct
+>> >> >> for better code readability.
+>> >> >>
+>> >> >> Of course, unlike the previous proposal, this uses LKMM atomics.
+>> >> > 
+>> >> > Please consider if it makes sense to base this on `SetOnce`. It is in
+>> >> > linux-next now, but was on list here [1].
+>> >> 
+>> >> Data placed in the .data..once section can be zero-cleared when a user
+>> >> writes to debugfs clear_warn_once. In that case, would such data still
+>> >> be considered a valid SetOnce value?
+>> >> 
+>> >
+>> > It's still a valid value I believe. In term of data races, Rust and C
+>> > have no difference, so if writing to debugfs could cause issues in Rust,
+>> > it would cause issues in C as well.
+>> 
+>> @Tomo you are right, `SetOnce` would not work with someone (debugfs)
+>> asynchronously modifying the state atomic variable. It requires
+>> exclusive access while writing the contained value.
+>> 
+>
+> I mean if we were to use `SetOnce` in pr_*_once(), we should just use
+> `SetOnce<()>`, and the problem you mentioned doesn't exist in this case.
+
+At the very least it would break the type invariants and assumptions of
+the `SetOnce` type. There a race condition between `SetOnce::as_ref` and
+`SetOnce::populate`. I don't think we are allowed to race like this,
+even if the type is `()`?
+
+At any rate if we do this, we should update the safety invariant of
+`SetOnce` to state that it is valid to revert the type back to the
+initial state for zero sized types that do not have a `Drop`
+implementation.
+
+
+Best regards,
+Andreas Hindborg
+
+
+
