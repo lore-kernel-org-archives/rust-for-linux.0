@@ -1,73 +1,73 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED70359F88
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 13:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC9733ADB3
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 13:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762869292; cv=none; b=DVw0JXQbGnNB6+Z/QSi8MJuHHNbkKwSPkScXE8mmWr6KksA5fOaeS60hsjH1KpIcpyaWsfGTD6F7ubIqSbqAZkKZo6GHNa095pA+LzmvRl+oH0XTTlfxbfK1obXS6W4xgLPeK3+n8puDvbbcksxn8W/oykUJ6Cr7OAx/Xa77+iQ=
+	t=1762869541; cv=none; b=m/bNzJ2GvmlSaHwZJwipRr3quHtrWbRQRdB4SBANPK+GW2lSC1JBUmj/X65TrMRRr7gawMtj+6ANKOap38zw03FezcRmwyi5kIiOCR7AzN9anqG6tNqSpRcvATQVPZK7lqi+/RvFxozclNItSEvMgW6x1F3nrQZmxVSfc0NQ46M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762869292; c=relaxed/simple;
-	bh=A2TkjakrfDdkYRGuTxjcRqTay/V7iT1zDDZWS1m5mUQ=;
+	s=arc-20240116; t=1762869541; c=relaxed/simple;
+	bh=hRUmzVbCzzL89fOTZQBAaUfGAwTMnx1MK/93dcHh+is=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L8xfg8F4TMuskuz6wJfH1VnqbMdfxsNJjf4Ind7ikV5MvrkevjG0qhBTAodGddR/PQNpFcJZZKAdHX5+SKYcrruZNttLqxa6gXQ1gzn3XUl39kNifaGUUZ4dQUD0/VIWOY06VG84wUM8BXsYoigBy51TIN5r58G9U9dAlZmpOmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VM6fBr1Y; arc=none smtp.client-ip=209.85.214.170
+	 To:Cc:Content-Type; b=e9rSO7lyymeQMTofSZrJdNJA5QC8MHUTKir5o5Kt5h0Hcqnpt0Qxu4sGtyHlrt+253vZTT6gPQA1XIiRuxNHSpr+zqBuHZkInO+cVhBqFRg20BwZ7rlE/7tPRqQ4SipbpAb/DUhOk9E11VyyC00/tiRX9h5gTw/UKj7DBaRJQmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YZsUgUUo; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VM6fBr1Y"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-297dfb8a52dso3122195ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 05:54:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YZsUgUUo"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-297cf964774so4855765ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 05:59:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762869289; x=1763474089; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762869540; x=1763474340; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DZoLj4f0GVdI3DGKFlEJ4QWVzpBGFdDaaHgYw2dfwqU=;
-        b=VM6fBr1YGmxYu0TgqLDBmuYZthtRhP2l1NGNo+6VXxP63RHkYR6cUAEkj/dIxOGUDY
-         oNeBF75BrIsmhCH442DLOVHmuDmCsnEl07eWREbkDA9cPqBd3p2KFNJhMdz5pcwbE521
-         Uv1XYgqMlp06hHuWENh50Z2/aORP8v+Uc6ccSwTdklMewwZ5TgE7Zz6CH0K+qfQ9ZAkF
-         nqzieJYyDxQ6ixKS9ex2CgxZLk0cZrYMJrvIq+lWi6e4d5+nzro2LqyuaPGMjGdh1/Gs
-         6HaKBVvNAu7EXRjl3GQZRcdOkpSHq16Nhy5lEsaoRcfzicfeYvXeY+bOkLsY+uQVSBXN
-         t74Q==
+        bh=hRUmzVbCzzL89fOTZQBAaUfGAwTMnx1MK/93dcHh+is=;
+        b=YZsUgUUoLezCFU0P/y4ACxySgN2oXPKkH5rAUf5K/Knu+yjMKYIEAtI7YWLE1CRREH
+         G4CuuxoaTEockrL6hXAlWf0lY4nQRzzL80T1q7fmEJSsVau+53U9PGuFNWSL/5ALXvZ9
+         gY4Gy8aWTsH+WCrDPGfy3++IOkelaCvSmWKF5ReNu5O7A3o5fX0ZZx4+cq0XO63GN9qd
+         bYV9JSbp9+UvllV9KKNUO+tyGt51I3QqMtssFeRcwbmHn5h+RNSgJkV/O2Rnzmtfj4zK
+         CVY9Huk2VfkwFwl9kJtqYxHo8j5N51q9r4sCHWCJUmcuSGkPkMEVb2wS/9+OgyV+2kBx
+         vg9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762869289; x=1763474089;
+        d=1e100.net; s=20230601; t=1762869540; x=1763474340;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=DZoLj4f0GVdI3DGKFlEJ4QWVzpBGFdDaaHgYw2dfwqU=;
-        b=sAhAh/oleE8xnXURrysiuGuiDMQXZRAkpqlUxeQVUC4Bf1sYNar6BBO7vhT/NfjIEg
-         4+BBVbjn6xE7OZEuQ8Xq2eep9zCo/hQTsRa+KuS3I75PNcqKaFOBtYYRANXC7iEBWwF4
-         zvpG5p+dUu/LfveHTvN6TS8j5IcVajfRRzxKDeaqj+47X6vtiX/hya3orNXRSB8PLppI
-         2eyJTZJ3rKUtre6dY6Qn/NLZLmcFmu6xqeZQ2fhrQzEorbwVwtBpOrSLC31zu7YI0JMw
-         V2huk39zoPrgSbJ8julQPVTEECZIcm0TL9jz3Gg4QIpa6FF/6LEnegTrgaOwz6hv8Ui3
-         +46Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWogkyT+3JB4DHAlQsg9QFtGq71gNKvJAF2eUh2U7c+kONtazGMTNghK79rTyTCOQvecbG17m52r0pQWyzb4g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyU+NfK2jDcAJ9XU3vSKKtljr4/JZakxaS+wjg/y+aD8fJjSnx2
-	vSPGXnyOvwV241Dkm98tFMfAswBdxHjdYIX+6eCh6RXf+rs8pYkS/PH0Hposdv580j+7akjj49E
-	yoT6/ISzDCJskDXuE45IpQ1hGzGtkNSc=
-X-Gm-Gg: ASbGncvJ2n1HiH/U4lcYdvrnkpcalRPcU2S8VrCfXEy7ZC3ceGGl68dDttjdrRAxs+S
-	zGD2cuYZm8CMBvwbKGbCQmEYG1rtrqDetxi/3KIAwJgsDHQp/k1Cbe1+hhktlzRFkvWdEiOFMu7
-	CExjPZfwk6vhWN+TwyQLozieQVEs4q9sl2xicZnJs2bnVfJvev3fYdul7RuwVMjkKKRH/uHUyYA
-	iLxlBX3cK0YdFPO2genLVj5GVHg5xc3+mybxTx+mPqO12szm/FM7kb2fYPc6CRh7ptRUnvxLFeg
-	P/v+V6LUhK3drg7S2iReeT8RXRMY65miwl2FdHzS7Qhf42i6hJVADfY8maWY01y8V/KdcOv7qng
-	/k/f2p1GLXcBbpw==
-X-Google-Smtp-Source: AGHT+IF0Z68cGNnWIYfhE+GmNXty3zSKglcsJIW8DTGnNaR5oz+N94f18Ae9bgXwDGF1o3kKuYh1bmeQkQ96c2H5z8Y=
-X-Received: by 2002:a17:902:ea09:b0:295:511d:534 with SMTP id
- d9443c01a7336-297e5731561mr84933915ad.10.1762869289453; Tue, 11 Nov 2025
- 05:54:49 -0800 (PST)
+        bh=hRUmzVbCzzL89fOTZQBAaUfGAwTMnx1MK/93dcHh+is=;
+        b=jq5vu8iNEKRSmsR62aGb44C0h34PjwK3vxHQqkCXw2wCvwKv3rfv9X76PzuTpZhsE1
+         GuqiOehyaNMRfhH2Er3Ig9ig072YMUIK8qRxO/suLc5gEM5nPVGQ7wA7SkUJH4fy9VCq
+         fZx7lmpyDnP944WW3PaXff2erml9JOjKhyhU8aCsAFLboS7qaKVdwGTx2smOdtZayhng
+         PJ1J8Zdg55M38zF22MbHvjBQPICQPVFhyfuuVzWi7fhAabwlrqcdamxhry2RjF80rpNj
+         XYQgxvRpbjJHi9gxv/qJo5wWijuTEkaCvCJj02a8l6rdhQsCeSA6q3sgRYU4J0s31zOT
+         in8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVNpPDujK1IJYH0B0U3aWg/Oi5k1JWNT8D6YvvzhvB99pjgwhxXUffP7HOAw6cZY4tOLOCX+1o/qQE+rqQowQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywa20YFTuZFK+b/RZPYdfGbjfhbHKuoMCRJhesvCCdmejyHdfFv
+	E95oeXZRntJDTu8mHvYZa6cUb/ntVwrPgJgwKXsTMwyYXgOfooBE17B3IYKUlgei4KybXQC/4Cq
+	WivsvMb/eELhpgONet9/IqtJPgdMQKK4=
+X-Gm-Gg: ASbGncvmdpOSUtb/9hnwzmP99NRTWMVR9UIq1X70sRKmMVXHzEWk/IAp7aH9OyCostb
+	tjMExSm4xcDOVcNUrpFhyJ2f9g7xlZhls0FWcwqol0IrtVcu4zZQvqbav9vnzYsPLUyvZIzrp6K
+	1vceMv4h6gJR1FXYcstLm5vdxEXmS1yHoYYgDOnOk7Vk7LH7FRWbvjNNhnttQLE222yCERB2AZw
+	ALfVHoC2rt5eVvbNUQhYFgUOMidQp8gWt53qzxcSI49TBVnI3RPPvNwdynBii6DcYi1sQPNcCoA
+	I1EcIZ5tqIj5QMppWdRFfwhVMmnq72mAxII0gEh3xxucxl99Uj2rML8M7mjQLVwkWGxlRSbvTnW
+	XTlf7f1ijuGOcVA==
+X-Google-Smtp-Source: AGHT+IHYXxM/I5GaOybb6g1yecFYohV3zCOa1VEm8f2yGvBo9rJ8osfE6aj7FDf3tvSiEZ9Z9+sidUs9ZqMaIBw6rqE=
+X-Received: by 2002:a17:902:d48f:b0:295:54cd:d2e2 with SMTP id
+ d9443c01a7336-297e4d096a4mr91553105ad.0.1762869539841; Tue, 11 Nov 2025
+ 05:58:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251110131913.1789896-1-ojeda@kernel.org>
-In-Reply-To: <20251110131913.1789896-1-ojeda@kernel.org>
+References: <20251110131913.1789896-1-ojeda@kernel.org> <CANiq72mjFobjfQEtNvk9aA+757RkLpcfmCCEJAH69ZYsr67GdA@mail.gmail.com>
+In-Reply-To: <CANiq72mjFobjfQEtNvk9aA+757RkLpcfmCCEJAH69ZYsr67GdA@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 11 Nov 2025 14:54:36 +0100
-X-Gm-Features: AWmQ_blj1Y6aEDrIDY1SHsBj9ipAJhqLELG9lX2PJ-XtkIigMIPK_72YnkrkjN8
-Message-ID: <CANiq72mjFobjfQEtNvk9aA+757RkLpcfmCCEJAH69ZYsr67GdA@mail.gmail.com>
+Date: Tue, 11 Nov 2025 14:58:47 +0100
+X-Gm-Features: AWmQ_bmjChoTwnLfQhUmk8zTDZP6XuF3N7zYh0KKb3TDMGl3YRN3n87n4dAkPXU
+Message-ID: <CANiq72kaoYYMq+ghFsa+YrRbTE13M2TrtOMwAK1eV1Sk9tEQzg@mail.gmail.com>
 Subject: Re: [PATCH v2] gendwarfksyms: Skip files with no exports
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Sami Tolvanen <samitolvanen@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -82,58 +82,14 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, Alex Gaynor <alex.gaynor@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 10, 2025 at 2:19=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Tue, Nov 11, 2025 at 2:54=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> From: Sami Tolvanen <samitolvanen@google.com>
->
-> Starting with Rust 1.91.0 (released 2025-10-30), in upstream commit
-> ab91a63d403b ("Ignore intrinsic calls in cross-crate-inlining cost model"=
-)
-> [1][2], `bindings.o` stops containing DWARF debug information because the
-> `Default` implementations contained `write_bytes()` calls which are now
-> ignored in that cost model (note that `CLIPPY=3D1` does not reproduce it)=
-.
->
-> This means `gendwarfksyms` complains:
->
->       RUSTC L rust/bindings.o
->     error: gendwarfksyms: process_module: dwarf_get_units failed: no debu=
-gging information?
->
-> There are several alternatives that would work here: conditionally
-> skipping in the cases needed (but that is subtle and brittle), forcing
-> DWARF generation with e.g. a dummy `static` (ugly and we may need to
-> do it in several crates), skipping the call to the tool in the Kbuild
-> command when there are no exports (fine) or teaching the tool to do so
-> itself (simple and clean).
->
-> Thus do the last one: don't attempt to process files if we have no symbol
-> versions to calculate.
->
->   [ I used the commit log of my patch linked below since it explained the
->     root issue and expanded it a bit more to summarize the alternatives.
->
->       - Miguel ]
->
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
-n older LTSs).
-> Reported-by: Haiyue Wang <haiyuewa@163.com>
-> Closes: https://lore.kernel.org/rust-for-linux/b8c1c73d-bf8b-4bf2-beb1-84=
-ffdcd60547@163.com/
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72nKC5r24VHAp9oUPR1HVPq=
-T+=3D0ab9N0w6GqTF-kJOeiSw@mail.gmail.com/
-> Link: https://github.com/rust-lang/rust/commit/ab91a63d403b0105cacd72809c=
-d292a72984ed99 [1]
-> Link: https://github.com/rust-lang/rust/pull/145910 [2]
-> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> I will send a couple other fixes to Linus this week, so if nobody
+> shouts, I will be picking this one.
 
-I will send a couple other fixes to Linus this week, so if nobody
-shouts, I will be picking this one.
-
-Thanks!
+Of course, if someone else (thanks Haiyue!) wants to give tag or two,
+I can still pick those up, and that would be very welcome.
 
 Cheers,
 Miguel
