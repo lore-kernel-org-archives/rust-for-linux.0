@@ -1,237 +1,190 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21130338F26
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 12:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA9631326C
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 12:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762951659; cv=none; b=GQdLO8k4XGZR7zD9O2ZTS+kY02GIFoNpV3B5pKMpNll+1l/kxiFYgNMRTMOGCXvKd0PCJaxzYMY/qyex0k/Z970LbF9PrKIrm300+noeiyqSFYJ7LeJCdXEE6GxEBTYHSI3SZIYs2mYSi0AEnEYeK8w9pVn6mKadRXcVJ5k7xOQ=
+	t=1762951790; cv=none; b=NDFdvbpEkc/7j+k1WU0T689dlIy5Id3DOsi0KyU7d138vhL6TBOUx7FFLsbsCEsBr0gsQRwGK+D3eQhiNAscUkAIHhKJCVej9R9SNaVfUYqIZpr3hXbWDrHV1CGMxE2iAGOENRahjiviPHLFtTl66jHUPBCYFqh8ZGOCuFBBL+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762951659; c=relaxed/simple;
-	bh=7993m8OvBem5aU3JmUxqvYCw1dEJgILWjzrL2R/Lw9k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HNnUFbYSltIyEl/NzTAdJ+8ZBJtoBeRKAAbLE/YhabVZiHPtUGO+iIWYW/PAlCJOxESPf4v9n1X37M6nijxH9PB1dA1YrBiS05yyoQXxwbpFV0TMOJZ8YOmDwrUa/N2gNqmxGr44MHjUAEhWtYsQl5/eUBBTDgoUoMEXSY0ep7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EiYc/p/B; arc=none smtp.client-ip=209.85.208.73
+	s=arc-20240116; t=1762951790; c=relaxed/simple;
+	bh=U2nCPDVgub9kzMy0prsUD9BkRtn7QIEjv/VMM9n70Ok=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hWNUJUKB5e5R/xhMtepY+O6symHRemcP5c6yzOMj2CBKdS5sfJX7zrNyWgd5+yazy47H0hxWqy1hUH/VihaCaAHfj0kSh6d9f3rSfVfTQotfCj3sx0Q0NktQfn7nf+mIvXBanMh7UqtG70rk6o0DiMmZXdRWOK34Q1NBBWT5X5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mlwtMY7v; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EiYc/p/B"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64165abd7ffso966140a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 04:47:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mlwtMY7v"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-42b3b29153fso420822f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 04:49:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762951655; x=1763556455; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tSGXuP7AugTGZlYmteSMimkU/xIm9yUQuBQEE4/o9H4=;
-        b=EiYc/p/Bebh2mGSss8X+0tmIkj9sofnkpCThpDG+Bb1+wi0EwnDR9Pd7Ri8y1cl5mN
-         RzA6EoiHLIKKKc3DdFh/Gf7iYspThRkiTCV6Zq5VJsnEaJpF03OWTtBm5KovX64TF0uq
-         CVEkuZ0IZJplsgkvoyzYaH+ZMzz7fKW3lDDEq/1q7tOMUCct58B8GRmQFfoT3WhkNrnU
-         9ASvzS321Sq0jCqsH2Ggql2dJDmB+KwOP3OqzqLZPS7nvOBz7QZDGwTiZNkFlhYtCo7W
-         O2TxqRrtX+gW3Xyl+PcNMXjR1+TIB3aTka+F8ELVl3oSMhNj8YzQbXYc6QN9msdxtA5D
-         lasw==
+        d=google.com; s=20230601; t=1762951787; x=1763556587; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JluyTZuEy1ost+3VmBmjhG1H0YDL31io4EOh18G1QBo=;
+        b=mlwtMY7vn9O4XgLtQLAuOFV8EGEJdV9e4Q5dwmAzHllzCy7IEjd2nCmU0z5ipcTqpq
+         6Z34oRGsevDPrha1reaKbCyNiU44dUMwsJVT7MIg97AKLBjM5JlCuCGLUEM06xOWdU87
+         9pxUyzC5ntRPl8QRieDTCYWAaX7J3dxYVg307B+reSA3h8yDTNPmHRLwedwdQpZQxQNI
+         mbReYFBnJ8GFWNoQiSJbKXKx28ob13i4GRCJakau7TEfs1Y0UhYValP5yFHFrRmPxOfG
+         NB09PvS6U8R0t9RAqCTVdlbO0DPJ6aHo3phZLeB+ri/deE2yurRZaojhhY8X+NCKFna4
+         AQAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762951655; x=1763556455;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tSGXuP7AugTGZlYmteSMimkU/xIm9yUQuBQEE4/o9H4=;
-        b=MiUFYCsF27hvHerS+tUGayH/wuyx40Xck1Qc7y1h6cpbBUvh3a8slxU05Anf4x4+Tf
-         zfRbGaITGgacny6xoZRhTPVJtq1LFVXFlmff+UFLLjfQ7BD6StJ6mIkBmJ+5UNmkGCjY
-         cSCMAprRMGi796PU+pv4FbDcv+gLmb8/Sq9w8d7ofJhqqBMpjjFSRIXl6SQQH1IJcZ3H
-         LXpbwFdwderIzkgUyFPcvB7BlyfsPZ5vE8ldz38+FpFT3fl7o0OU6ZwSjhCGK8q2Q2QW
-         +fFu+gxNaBNvDdKQkESogr7yedOpEsA1jaqNRxdDd+v2kY/vl/ZRxy+W/yxCKqNmLovd
-         kQPw==
-X-Forwarded-Encrypted: i=1; AJvYcCXvVnaAT1Z8vUIxdK76mUcpqvMBBnhc/hIgN7hydpyQqd7pQwKsxbY1W530zvfP8Qk5w+EDE6gO4TPw9t9Hhg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6RJXieZjJD8mpbxlUUfRqPYNENo0uqSRXzHUc0W1SYhJ3pcx3
-	aBN8sd9MDp28figNI9L0IkKErNRAWzlpmre4wl76B/P6UGJEcmHKqVY3zcfmfdTs7VCc8b4Oj5R
-	lFH5iYsFIuc5wftEkLw==
-X-Google-Smtp-Source: AGHT+IEy759MKaPGI2654Ynt2AeYqR1Q+U51y6PIqyWtN/FW0QjSbKYn/cnewpGhFjEZmbceiGWFu/CxCbtY/Z0=
-X-Received: from edaa13.prod.google.com ([2002:a05:6402:24cd:b0:641:4e96:ca96])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:2111:b0:640:976f:13b0 with SMTP id 4fb4d7f45d1cf-6431a4b3b46mr2630907a12.12.1762951655524;
- Wed, 12 Nov 2025 04:47:35 -0800 (PST)
-Date: Wed, 12 Nov 2025 12:47:24 +0000
-In-Reply-To: <20251112-binder-bitmap-v5-0-8b9d7c7eca82@google.com>
+        d=1e100.net; s=20230601; t=1762951787; x=1763556587;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JluyTZuEy1ost+3VmBmjhG1H0YDL31io4EOh18G1QBo=;
+        b=AfSXbxiQwPVe3GBjBQ+fkoNd++383kUOdxYCzYMTPDCkGPRhg84eQFCV1AQF2rgJnV
+         r3sngmssT5numfkJzZ1UzFTLZrl2rGCpibPgdwqbPPB49E8ic3awI7oSrazXg0VQXx7F
+         nL3IlVdttPy0Prug/lLveENlj6NjZ+07F/X8+hyH8KqMl9FRLuI2sx/WJwWIY6oi+/Ym
+         hB/7pJXXv7AvVPnSdhW4h3+wsn8m6URx5Aylx8wVvSJSZ9Q4TPeV6smYkub735DTL5BW
+         8z3qEh0e48xG2ytR4O2H2ChkEB7xLCtkaQVIayWim/4nfSQ8IknMg7DzB7WLK45TqfAL
+         8tTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWiURnXEganShWPL27wUCGlogGdnL1x2f6/9E869JFSKUIEhPJ41g2Vl8rD5k1AFigyFU7Jq5ud85n57qj1yQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdCOm/fez692v0UhXO0cP96Z1/vT7iV87OoSLCeT7mFJV2i2fp
+	Na29+W0zD4XeX5/w39L1MMy0saBnSmxMgXhQEJoOXjGcvuuAt+fnAcQhqLops48N4GNYQ+Dxgmb
+	xlGPS1CU+m18bE4nZDCcC72//LXZlbuUGrQHzm+tu
+X-Gm-Gg: ASbGncs1Eluaaz2k2+92QWWkSg0jd6pN1hWSqYQ5bj8C/PkbEaZhQ1/IeO1+MM1pFcN
+	s7VfkTXhY7DpyKJgDR2uSt3dq+HzTPb6exvqEI1c5B5UVDTH4oywyE/HINsXBq2J+Vn0MmnSWqw
+	ZTPDQqh5SwYOsQTMveYGOUXU0MAak3TwxW8RzEYtqpZHzs3zjgnek5ywvafD8GdHwI1tLRG/ZQs
+	tWFrE5kY6M4c71yznETF6Q6JCrY8MR5qUBrWVc7GPD3Bg2B8x5hYP4tS/rli6wDel5VBfSRCWD9
+	P/Y8nmC0Bvpfr9HL4PdOsCeu55oYYf4xYhouTS12wLDwTm0=
+X-Google-Smtp-Source: AGHT+IEX6hcBCVCZ/in8kvl8FDzHHsXIOXcK9NpB3+wH4Z36BJiEYLMz3bRVH9PF6csB3JhXsNc3R4eeabioVZCYlC4=
+X-Received: by 2002:a05:6000:2888:b0:42b:3da6:6d32 with SMTP id
+ ffacd0b85a97d-42b4bb94f09mr2305903f8f.23.1762951786364; Wed, 12 Nov 2025
+ 04:49:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251112-binder-bitmap-v5-0-8b9d7c7eca82@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6263; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=7993m8OvBem5aU3JmUxqvYCw1dEJgILWjzrL2R/Lw9k=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpFIHfP1ioXJwPrlND7Tla2uYLkuZFJQ0Av10lr
- s39fKs/uZSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaRSB3wAKCRAEWL7uWMY5
- RjlMD/wLULd/jxmYFkhyWU/z7yy/xQKcsW9l0KKM+P1I5MAogFkXt80QhZx3cUaUmfFoWoqUYRR
- wmLZxfRhnB6XtwDDmajbQkjWLA+557FhkRakTyMVpK2YDhzamoLBGnFWbPqDUCvvD5onHSWA08w
- YTkGjQa810BzXKe5A0dfzqrSfKuQOVD44/8TTVyNF7Fny8yyD/A5UvbNzV6eDcNBEpfCMgku8Qj
- E1dpRX3EVpL3sL2b5YkrDcWw2T9mXeVp7WKJtPaTaEYoHGOZz0h8LkD+Er/bCNgWU9JOaukr8xG
- WH7s/sn12VDXJylHnYEKCL4gQtBgnOzI4KOA3KUR/Z/G9zFSY/rgj1WJZab2UdSeTO/q6yQh3gG
- nukVS3TX5S5RR/6mi0xRP9PQpB7sdYcORbBpK980w6BIaQJTOsfXXwGf3jJrf6ppaiChcUm2vau
- cLC/P9Ivp1Cl8OSWNp0loDKyLQrPkIDE7mhjfu3g1vWyoCv6gj38KvZOcsynvUdKiymdgvoUyFY
- Cam6JL5BQ2H3E/TLa7F0fecSQJ2YwaqKbovEB3B5FnkGstmq2Org7sOnGVQI3J6ZyTM+J8UXotQ
- NK9jBWL/ikgKPCscAoSwdkjtYOSa6FdNrQZcniTD7BUgEVe1PoQNBjz7BFD/XbAS2mhnvtJxD+W 5omNTnn984rat7Q==
-X-Mailer: b4 0.14.2
-Message-ID: <20251112-binder-bitmap-v5-6-8b9d7c7eca82@google.com>
-Subject: [PATCH v5 6/6] rust_binder: use bitmap for allocation of handles
+MIME-Version: 1.0
+References: <20251110-binder-bitmap-v4-0-5ed8a7fab1b9@google.com>
+ <20251110-binder-bitmap-v4-1-5ed8a7fab1b9@google.com> <CAJ-ks9kvMQ9tUMZyM07jRr8O+pJ6RRvCZodenB==tzDChhHT=A@mail.gmail.com>
+ <aRH0oRU5JXKpAKpB@google.com> <aRH-ScufjvGYPx5W@yury> <aRIAp3LHs0NsEKvL@google.com>
+ <aRIHPX4d_CF-wfhY@yury>
+In-Reply-To: <aRIHPX4d_CF-wfhY@yury>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>
-Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Martijn Coenen <maco@android.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Burak Emir <bqe@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Date: Wed, 12 Nov 2025 13:49:34 +0100
+X-Gm-Features: AWmQ_bliX846jcbhOZ77cU5skl4FOpn5FxaWHK8FBJFEbU9xH4B1NEKznGFOltE
+Message-ID: <CAH5fLgiiUafMoXhN14m3xHfL=0=YB9S7+U-QPvpOi0YZ19TDhA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/6] rust: bitmap: add MAX_LEN and NO_ALLOC_MAX_LEN constants
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Burak Emir <bqe@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-To find an unused Binder handle, Rust Binder currently iterates the
-red/black tree from the beginning until it finds a gap in the keys. This
-is extremely slow.
+On Mon, Nov 10, 2025 at 4:39=E2=80=AFPM Yury Norov <yury.norov@gmail.com> w=
+rote:
+>
+> On Mon, Nov 10, 2025 at 03:11:35PM +0000, Alice Ryhl wrote:
+> > On Mon, Nov 10, 2025 at 10:01:29AM -0500, Yury Norov wrote:
+> > > On Mon, Nov 10, 2025 at 02:20:17PM +0000, Alice Ryhl wrote:
+> > > > On Mon, Nov 10, 2025 at 08:59:36AM -0500, Tamir Duberstein wrote:
+> > > > > On Mon, Nov 10, 2025 at 8:06=E2=80=AFAM Alice Ryhl <aliceryhl@goo=
+gle.com> wrote:
+> > > > > >
+> > > > > > To avoid hard-coding these values in drivers, define constants =
+for them
+> > > > > > that drivers can reference.
+> > > > > >
+> > > > > > Acked-by: Danilo Krummrich <dakr@kernel.org>
+> > > > > > Reviewed-by: Burak Emir <bqe@google.com>
+> > > > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > > > > > ---
+> > > > > >  rust/kernel/bitmap.rs | 16 +++++++++++-----
+> > > > > >  1 file changed, 11 insertions(+), 5 deletions(-)
+> > > > > >
+> > > > > > diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+> > > > > > index aa8fc7bf06fc99865ae755d8694e4bec3dc8e7f0..15fa23b45054b92=
+72415fcc000e3e3b52c74d7c1 100644
+> > > > > > --- a/rust/kernel/bitmap.rs
+> > > > > > +++ b/rust/kernel/bitmap.rs
+> > > > > > @@ -149,14 +149,14 @@ macro_rules! bitmap_assert_return {
+> > > > > >  ///
+> > > > > >  /// # Invariants
+> > > > > >  ///
+> > > > > > -/// * `nbits` is `<=3D i32::MAX` and never changes.
+> > > > > > +/// * `nbits` is `<=3D MAX_LEN`.
+> > > > > >  /// * if `nbits <=3D bindings::BITS_PER_LONG`, then `repr` is =
+a `usize`.
+> > > > >
+> > > > > Should this and other references to bindings::BITS_PER_LONG be
+> > > > > `NO_ALLOC_MAX_LEN` instead?
+> > > >
+> > > > Ah yeah it probably makes sense to update this in a bunch of places=
+.
+> > >
+> > > Yes, please.
+> > >
+> > > NO_ALLOC sounds a bit weird in exported API. Maybe NBITS_INPLACE
+> > > or similar?
+> >
+> > Ah, good point. We started using the "inplace" wording in other places,
+> > so lets also do so here.
+> >
+> > > Also, at this point we're really close to:
+> > >
+> > >    pub const NBITS_INPLACE: usize =3D CONFIG_NBITS_INPLACE;
+> > >
+> > >    union BitmapRepr {
+> > >        bitmap: [usize, BITS_TO_LONGS(NBITS_INPLACE)]
+> > >        ptr: NonNull<usize>,
+> > >    }
+> > >
+> > > That would be a very useful addition for some particular scenarios,
+> > > I believe. Even if you don't want to make it configurable, let's
+> > > keep this option in mind?
+> >
+> > Actually, one option here is to define BitmapVec like this:
+> >
+> > pub struct BitmapVec<const INPLACE_LEN: usize =3D 1> {
+> >     repr: BitmapRepr<INPLACE_LEN>,
+> >     nbits: usize,
+> > }
+> >
+> > union BitmapRepr<const INPLACE_LEN: usize> {
+> >     bitmap: [usize; INPLACE_LEN],
+> >     ptr: NonNull<usize>,
+> > }
+> >
+> > This way, the driver can specify this by saying: BitmapVec<4> for a
+> > BitmapVec where the inline capacity is 4 longs.
+> >
+> > And if Binder wanted to make that configurable, Binder could define a
+> > constant based on a Binder specific CONFIG_* that controls what value
+> > Binder passes.
+> >
+> > Since I wrote `=3D 1` in the struct, you may also write BitmapVec witho=
+ut
+> > specifying any number and get the default.
+> >
+> > It may be possible to specify the number in bits rather than longs too,
+> > but then we have to decide what to do if it's not divisible by
+> > BITS_PER_LONG.
+> >
+> > (But in the case of Rust Binder, the value we want is one long worth of
+> > bits.)
+>
+> It's better to define the actual number of bits. One reason is 32 vs
+> 64 bit portability. Another one is readability - when dealing with
+> bit structures, it's better to think of it as a set of bits.
+>
+> Those providing unaligned defaults... - you can drop a comment for
+> them. :)
 
-To improve the performance, add a bitmap that keeps track of which
-indices are actually in use. This allows us to quickly find an unused
-key in the red/black tree.
+Makes sense. I'm not going to do it in this series, but it seems like
+a reasonable idea.
 
-This logic matches the approach used by C Binder. It was chosen
-partially because it's the most memory efficient solution.
-
-Reviewed-by: Burak Emir <bqe@google.com>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/process.rs | 63 ++++++++++++++++++++++++++++-----------
- 1 file changed, 46 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index f13a747e784c84a0fb09cbf47442712106eba07c..933b0f737b38ffac536b19c9330dfc63ffc72f2b 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -19,6 +19,7 @@
-     cred::Credential,
-     error::Error,
-     fs::file::{self, File},
-+    id_pool::IdPool,
-     list::{List, ListArc, ListArcField, ListLinks},
-     mm,
-     prelude::*,
-@@ -367,6 +368,8 @@ impl ListItem<{Self::LIST_NODE}> for NodeRefInfo {
- struct ProcessNodeRefs {
-     /// Used to look up nodes using the 32-bit id that this process knows it by.
-     by_handle: RBTree<u32, ListArc<NodeRefInfo, { NodeRefInfo::LIST_PROC }>>,
-+    /// Used to quickly find unused ids in `by_handle`.
-+    handle_is_present: IdPool,
-     /// Used to look up nodes without knowing their local 32-bit id. The usize is the address of
-     /// the underlying `Node` struct as returned by `Node::global_id`.
-     by_node: RBTree<usize, u32>,
-@@ -381,6 +384,7 @@ impl ProcessNodeRefs {
-     fn new() -> Self {
-         Self {
-             by_handle: RBTree::new(),
-+            handle_is_present: IdPool::new(),
-             by_node: RBTree::new(),
-             freeze_listeners: RBTree::new(),
-         }
-@@ -775,7 +779,7 @@ pub(crate) fn get_node(
-     pub(crate) fn insert_or_update_handle(
-         self: ArcBorrow<'_, Process>,
-         node_ref: NodeRef,
--        is_mananger: bool,
-+        is_manager: bool,
-     ) -> Result<u32> {
-         {
-             let mut refs = self.node_refs.lock();
-@@ -794,7 +798,32 @@ pub(crate) fn insert_or_update_handle(
-         let reserve2 = RBTreeNodeReservation::new(GFP_KERNEL)?;
-         let info = UniqueArc::new_uninit(GFP_KERNEL)?;
- 
--        let mut refs = self.node_refs.lock();
-+        let mut refs_lock = self.node_refs.lock();
-+        let mut refs = &mut *refs_lock;
-+
-+        let (unused_id, by_handle_slot) = loop {
-+            // ID 0 may only be used by the manager.
-+            let start = if is_manager { 0 } else { 1 };
-+
-+            if let Some(res) = refs.handle_is_present.find_unused_id(start) {
-+                match refs.by_handle.entry(res.as_u32()) {
-+                    rbtree::Entry::Vacant(entry) => break (res, entry),
-+                    rbtree::Entry::Occupied(_) => {
-+                        pr_err!("Detected mismatch between handle_is_present and by_handle");
-+                        res.acquire();
-+                        continue;
-+                    }
-+                }
-+            }
-+
-+            let grow_request = refs.handle_is_present.grow_request().ok_or(ENOMEM)?;
-+            drop(refs_lock);
-+            let resizer = grow_request.realloc(GFP_KERNEL)?;
-+            refs_lock = self.node_refs.lock();
-+            refs = &mut *refs_lock;
-+            refs.handle_is_present.grow(resizer);
-+        };
-+        let handle = unused_id.as_u32();
- 
-         // Do a lookup again as node may have been inserted before the lock was reacquired.
-         if let Some(handle_ref) = refs.by_node.get(&node_ref.node.global_id()) {
-@@ -804,20 +833,9 @@ pub(crate) fn insert_or_update_handle(
-             return Ok(handle);
-         }
- 
--        // Find id.
--        let mut target: u32 = if is_mananger { 0 } else { 1 };
--        for handle in refs.by_handle.keys() {
--            if *handle > target {
--                break;
--            }
--            if *handle == target {
--                target = target.checked_add(1).ok_or(ENOMEM)?;
--            }
--        }
--
-         let gid = node_ref.node.global_id();
-         let (info_proc, info_node) = {
--            let info_init = NodeRefInfo::new(node_ref, target, self.into());
-+            let info_init = NodeRefInfo::new(node_ref, handle, self.into());
-             match info.pin_init_with(info_init) {
-                 Ok(info) => ListArc::pair_from_pin_unique(info),
-                 // error is infallible
-@@ -838,9 +856,10 @@ pub(crate) fn insert_or_update_handle(
-         // `info_node` into the right node's `refs` list.
-         unsafe { info_proc.node_ref2().node.insert_node_info(info_node) };
- 
--        refs.by_node.insert(reserve1.into_node(gid, target));
--        refs.by_handle.insert(reserve2.into_node(target, info_proc));
--        Ok(target)
-+        refs.by_node.insert(reserve1.into_node(gid, handle));
-+        by_handle_slot.insert(info_proc, reserve2);
-+        unused_id.acquire();
-+        Ok(handle)
-     }
- 
-     pub(crate) fn get_transaction_node(&self, handle: u32) -> BinderResult<NodeRef> {
-@@ -905,6 +924,16 @@ pub(crate) fn update_ref(
-                 let id = info.node_ref().node.global_id();
-                 refs.by_handle.remove(&handle);
-                 refs.by_node.remove(&id);
-+                refs.handle_is_present.release_id(handle as usize);
-+
-+                if let Some(shrink) = refs.handle_is_present.shrink_request() {
-+                    drop(refs);
-+                    // This intentionally ignores allocation failures.
-+                    if let Ok(new_bitmap) = shrink.realloc(GFP_KERNEL) {
-+                        refs = self.node_refs.lock();
-+                        refs.handle_is_present.shrink(new_bitmap);
-+                    }
-+                }
-             }
-         } else {
-             // All refs are cleared in process exit, so this warning is expected in that case.
-
--- 
-2.51.2.1041.gc1ab5b90ca-goog
-
+Alice
