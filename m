@@ -1,101 +1,127 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABB82F8BEE
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:22:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5242C2E03E4
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762942960; cv=none; b=WwHxGr62j4ESq71dD9d7xbLL/0diXwtZgxT516FZKguI08uPqmrWcpHif7oKyRdLuLjoUHghu3NqsRgSpH1NGuU7dMl4Cf6Lr1OecDI7IHsM2PHTNjVTdhmkku1orJvFhAtVsUnWY318b0NTFL/I9ouy5rCFY35t9pFmU6Q3L4M=
+	t=1762943056; cv=none; b=Vws+iBu4C155vR6XDdDnIqt0BDvBF88/nrlj0Pz73pIoYJWIR3jTBQ3aSpwip0hrR8AWJdWvWa7lgnWdn9PMyyll46giv2amk138I5fkS9AnNleTdC3TXHp8bXriKLEOjqgksb1KreboV1PkhguK7jxXUoynRQN0pX5+BXgIbtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762942960; c=relaxed/simple;
-	bh=YPNEHX5E1EAY+3JT9FxU7dtFxSUrM3ua4vlSvyYLYVI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lyzTVB9q0NsLFE7y8j72PEC0uZjPdVG7gZF/XgXWTC43jhUlCHQgw13KzW3wU5ssjZiznEaQ+vTTF0zObMWPzoR8DL/y9DNz/eCGN9Eiy1Q1L5MTn92apxrn4Xe3yjWxMRG7uzVYleuSjnwRXJEMumHYhN0kdbgrKaT2Q4SkKrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=irVTe6IW; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762943056; c=relaxed/simple;
+	bh=M8uAG9ixHRcCTpHYvaaWAx/R8QVND+K/8ZZYTlL2/zQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jt/FxRZar9jCqNO/l5Omk5Fva4GxHpdmhKA7e11Y3OTIx85gzZPfcFA9AM0aV/H/+3tv5oWMhLsE/2ygu72x9tcaxMuyMo1OXVPYAUqTaVBMMr/BIVrLbzRB2ScYNq3M/vL/utpArK5Z/sFB0PvFOr8wDfQODmUi4k4lJXiyjy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info; spf=pass smtp.mailfrom=markoturk.info; dkim=pass (2048-bit key) header.d=markoturk-info.20230601.gappssmtp.com header.i=@markoturk-info.20230601.gappssmtp.com header.b=XuGjaS7J; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=markoturk.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="irVTe6IW"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b8f70154354so90747a12.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:22:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=markoturk-info.20230601.gappssmtp.com header.i=@markoturk-info.20230601.gappssmtp.com header.b="XuGjaS7J"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-640d0ec9651so1049155a12.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:24:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762942958; x=1763547758; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E0B276sCmGuKPqViJUBQ4DCZOBYFMswfLTqrPr8TLG8=;
-        b=irVTe6IWHxqBKPgIas1Zkm+IxkM3V/6e/25RcdG8xk9VoJc4nf0Xy9xsP7/ZxKJNRD
-         304wflt3AHsL4xGOLr4SoLkUCCTvIgygy8ma7fh7mWqo4yx0lNaSbNZWlqobsR3rQ9AO
-         4Cp9ImIBrmxFXUvuQTLCLeOCRNzNRT+j+bwWdDGiXdw6FqqW7UgGy/ie92pMDjHaMp1H
-         6BPLqf+ZeOnOH+dB/ldEMD2TUM8qicoFIFzdwOYyFD3+opy7M59K49FDzZAUqKeDQ734
-         0H3SOEljD4Il629Ssk07dxbKi6Wp2fAsA03cjYys0T++Wj+l/YTeEUQAcyxFUBVsbhIi
-         7iiQ==
+        d=markoturk-info.20230601.gappssmtp.com; s=20230601; t=1762943053; x=1763547853; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Ic0qfm/57y45gyiMD5PGLbyXiZfTfxHN/0+4CG80SRs=;
+        b=XuGjaS7JPzAvvrtvXqK3iSIV8DqEHvlz3PLT2cu8UNWY+9UJvuma+jFogeHsOs5VBY
+         KRI3khejk3UVSD79hCdJzmTWUDEbmbGXV9OAr1knPaccvcnQJsDGUFanIiopLSd24q2l
+         EsCITOTz6YE50V23BwLt2SQTMV8XsqnPHZTpfP0JHLFfn0HhQ5MGmVtzQzkryEvesju+
+         JG9CrOlv/qdIBM0dAi/EZOlQV/oBgPnnoObuPhNt9072WUCic0SIoOLp2f2AlMW8CKzT
+         Zi6lmO7loWEef0NFqT1cZFSCIcAvMXIstHAV7LynxQ91kgp+x3Jb8vcR7TVW9aOAQqmr
+         wMpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762942958; x=1763547758;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=E0B276sCmGuKPqViJUBQ4DCZOBYFMswfLTqrPr8TLG8=;
-        b=R61Glcz/PD4hWT0i1FVt0NVEgjmjbUAwSJZmRuzx0vQO+7WBzTeTlmZsPV9lIawaok
-         QhSeTvyAcnWzakTGbPG6tU0s1HOzMaxzO+6a2rDW/3fEDFnYI7yaw73X/f0x42acVol9
-         xgfgDddCKGR6tl9y6NvlL5jrrXuzNdCP4H1lRdKf6KHaqCIa3AD1z9dvuH568ENAmJaQ
-         tz2LXV79arMcMXTQ6U+n3bB7UvdhVHK+CltO4qWmpWtv9ln5RkDIvR8zQw7bjMo86LaL
-         u+x6U1cVY+HXfTG9KVFNRDdGA7wDnXkzpUVnqH745Ildw9agSbcbdw4f17a4NKvWTEUx
-         n7EA==
-X-Forwarded-Encrypted: i=1; AJvYcCWk2MH+YTcE7kMLz/G5YY0Hp6MNg/3C7xFoW29qF3UT+hmXoudTkBlaGC8FOFhZfhiSxST5LmNFMlWZfh6vBA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfsWJlRednYipYRkN/CFguAMFOkM/zvkf4CzJGb62l8qAS9DqO
-	db0tdKJ8y4N6T7/Jdo+Xs5dUyy73xs79gExLX+MovogZ2UOMmOlyjrx3wGiRlTqAiJgDjIZA0d5
-	hO5h3ep7AACgYfZWulqr9kn9/j4w08dw=
-X-Gm-Gg: ASbGnctzz1ksq7MkFAqBICpw6+fXvDEa6F9wSktO9X6GsyIrL04mVsnnC4KBpRm10GK
-	6qeHN6D2AbU/yRfgZ26Ph4+FqJ1zapna30Xb+CB4Xf4Q12VWteddvezHBAjiQZFQ+NnGLDnV57z
-	Un0kB57dXLzeIy7me1pbW/uslSz2PDSkX+Bng/sZ6h+fKvWqLQMHngrfBF8l4dYV6NdC0Uxwat3
-	0N9PPZ6m/tO+lSHRQHS7YLUK2ZhWwRhZNd+lA7fA+OSNmc4D0g38SdRNudSs66NWomCsrrCZwjG
-	xR8y9bEHkNZ7rL/UltMRi5WjeyRHWftZfaewCtNPHe0Uq2pyGVroO8TJaAI9+5uY+RmCZhVLX2H
-	0U3t8D3iB5pPGNg==
-X-Google-Smtp-Source: AGHT+IEZoSqjm0t6zN10oagsZyaGUA55TrpgWglstnMOybFlUdjZoMdhp86GzVPanaCUu6r0dqbnhK9HIk5xK9dXxsA=
-X-Received: by 2002:a17:903:18e:b0:297:fe4e:d368 with SMTP id
- d9443c01a7336-2984ee3ba7dmr18188305ad.11.1762942957656; Wed, 12 Nov 2025
- 02:22:37 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762943053; x=1763547853;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ic0qfm/57y45gyiMD5PGLbyXiZfTfxHN/0+4CG80SRs=;
+        b=UwDNGdQGnLHjOtjPOjnhpm6WY7B4PlT0eMr+2pd2bhxi379XBIBd4RuihXEeAwWbFH
+         RlVkzMw69nUgxmfboYEa/31XBV877xXXHB4qS5Pb9RlF9dUXOltFLLpTTASVPXSDmkNU
+         8xObQR9PgVWNRXlUFTYnQS3gr/oypk29+CCD7JGXmql6XLWl7nc3vHcJ3FPhykjFxgsS
+         HF4wjHMrWqjjOWNgCbz1NNfuI8WyhxJcZ9R2Lfn4GGpO0TzvZLF7XDGXrCDxvXkUtUk3
+         MHz301j18NfOaKVjDIgtuwtp+gNqUTM6+Y/z2ygTQRfcaWqegw1aK6cMU/McoW5Ou/F7
+         Ma4w==
+X-Forwarded-Encrypted: i=1; AJvYcCXzZrWUP49niMMKd0uq+Jv5y/OctzGcp+QHC6FWbqXaQSf22alUG1I96lXWsGURE+ToNZt/MLTLSh9muzXNJQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyq0Tej3n8ZxC2XqX/aBvMu2WYfe0Ze1HLYjWB+ifpGAlpXh7Mi
+	vWv4sG2v0CssGOnQpBTveQ509qChFuHuA79s7PSqqiuS95crTzRoCwehZNAq5SNWLIk=
+X-Gm-Gg: ASbGncuOGSNtAGuL6tpf4KMaIASRhSCCTQIma0x68l2ItmVn7+jYrNTwGAmshxXkiFF
+	diBUMfwnqUAz7sHGT7fbtC6IXHsV8uRzGB7LBemRPTjebhpv28+lA0izdwvW2Hr+m04vhpJqfJW
+	u2TURSCjqFm17DQpejYqOv9eEiMyNewoH3vswlBkEFHNjbVB4CQ415iqt4M3jRA7FrWsrIJnzoo
+	SaZJxi5LkTiX+In5FL3TXNHTArhg4A2gsr6B9gNp4Bnj7KaYoFNvrW8tGpGSYX915GGG4K2Abxg
+	5zuK/U8jOQ90vePY3xgCpxMjT+NwG78yIgA0H4zpo/64FW26t/e9KVPMvbkWJYY7SNGSf7UD1EA
+	FExxviHmNESn5MHpI9ILAhUbLgcDPA7l3vMn1ShqJCPtysKGt8c7gzZ0uYLDAzkcwYuDWSLjTpR
+	q51/j6LwcqhAYZ5kw=
+X-Google-Smtp-Source: AGHT+IGPX2jqgfNlBcn8vUVVz5PZOrSa5PVRsmMn0VDGyjnwgM2lcTvxiPhRZ4VUOy1lTWfuw/2Gpg==
+X-Received: by 2002:a17:907:9688:b0:b6d:5fc8:4a93 with SMTP id a640c23a62f3a-b7331a6f98emr226168466b.36.1762943052568;
+        Wed, 12 Nov 2025 02:24:12 -0800 (PST)
+Received: from vps.markoturk.info ([109.60.6.168])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf9be009sm1541886566b.60.2025.11.12.02.24.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 02:24:11 -0800 (PST)
+Date: Wed, 12 Nov 2025 11:24:10 +0100
+From: Marko Turk <marko@markoturk.info>
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, dakr@kernel.org,
+	bhelgaas@google.com, kwilczynski@kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] samples: rust: fix endianness issue in rust_driver_pci
+Message-ID: <aRRgSsOFGlt76E7o@vps.markoturk.info>
+References: <20251101214629.10718-1-mt@markoturk.info>
+ <aRRJPZVkCv2i7kt2@vps.markoturk.info>
+ <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
+ <7f3bb267-7cff-45e1-84a7-15245cffd99f@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251111-binder-fix-list-remove-v1-0-8ed14a0da63d@google.com>
-In-Reply-To: <20251111-binder-fix-list-remove-v1-0-8ed14a0da63d@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 12 Nov 2025 11:22:25 +0100
-X-Gm-Features: AWmQ_blKg4cu-v3P781ZJkYF9Gq3eqlBz7dX5cAIvvyUp8LMI-DCXNtY1gWIHsU
-Message-ID: <CANiq72kCxh=Zen_fRrU8dVffGpNtsfNwMO1agC+muHd8ixMTpA@mail.gmail.com>
-Subject: Re: [PATCH 0/3] rust_binder: fix unsoundness due to combining
- List::remove with mem:take
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <7f3bb267-7cff-45e1-84a7-15245cffd99f@de.bosch.com>
 
-On Tue, Nov 11, 2025 at 3:23=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
->       rust_binder: fix race condition on death_list
->       rust_binder: avoid mem::take on delivered_deaths
->       rust: list: add warning to List::remove docs about mem::take
+On Wed, Nov 12, 2025 at 11:16:40AM +0100, Dirk Behme wrote:
+> On 12/11/2025 10:37, Miguel Ojeda wrote:
+> > On Wed, Nov 12, 2025 at 9:47=E2=80=AFAM Marko Turk <mt@markoturk.info> =
+wrote:
+> > >=20
+> > > On Sat, Nov 01, 2025 at 10:46:54PM +0100, Marko Turk wrote:
+> > > > QEMU PCI test device specifies all registers as little endian. OFFS=
+ET
+> > > > register is converted properly, but the COUNT register is not.
+> > > >=20
+> > > > Apply the same conversion to the COUNT register also.
+> > > >=20
+> > > > Signed-off-by: Marko Turk <mt@markoturk.info>
+> > > > Fixes: 685376d18e9a ("samples: rust: add Rust PCI sample driver")
+> > >=20
+> > > Can someone take a look?
+> >=20
+> > Your message was in my spam folder -- that may be affecting who saw it.
+> >=20
+> > > From https://www.qemu.org/docs/master/specs/pci-testdev.html:
+> >=20
+> >      "All registers are little endian."
+> >=20
+> > So this seems right. A couple tags:
+> >=20
+> > Cc: stable@vger.kernel.org
+> > Link: https://www.qemu.org/docs/master/specs/pci-testdev.html
+> >=20
+> > Cc'ing Dirk, since he tested the sample originally.
+>=20
+>=20
+> Hmm, I can't find the initial patch in my Inbox. Even
+>=20
+> https://lore.kernel.org/rust-for-linux/aRRJPZVkCv2i7kt2@vps.markoturk.inf=
+o/
+>=20
+> doesn't seem to have it?
 
-Greg et al.: please let me know if you are not taking the last one
-together with the fixes (so that I pick it up). Otherwise, if you do:
+Initially I didn't send to rust-for-linux mailing list. It's here on lkml:
+https://lore.kernel.org/lkml/20251101214629.10718-1-mt@markoturk.info/
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
-
-Cheers,
-Miguel
+Marko
