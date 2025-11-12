@@ -1,503 +1,131 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D84A309F03;
-	Wed, 12 Nov 2025 12:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762952305; cv=pass; b=Q+FKYPIlo9nyohZ9jSCXbcN+irLGCtBbIgkUqCLNfn3sZmsa4d/4viW0MPe+0Xr2c9O440Ip7IXHnUrLhtCej3+uFXvAuJTaZr8ubCiXCvhgZ7RIr5cjjP2ZtctKEWU7WFMxzDVKkBOOVy8qC3BRZ0obZl7iSkPdm0WmD8uqKyw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762952305; c=relaxed/simple;
-	bh=CK7ywSC2eDQARxdoxDFhbt8fd8seOQIHPp65BpGGpHU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=KnczcntK9xtMfRIjzcrQWNxf4L4ffoebzCnUzaOQ7jznUGiZm+S1jClQwPQql3sVwvaluSna9j4K0ISfpSXFBrKFaGa9UC3x2bjUXAFFQjR+24VAv0LYnsSQd8nsaAPcLuK6ah+lmu3RwblwzOy++U1Y7nMSSCzoEQlGY9axblI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Ci94QM90; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD440337B80
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 13:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762953399; cv=none; b=J+UwIwdJ+gf8hJXrVdE2TARZSi+FcaHP4Up7UYqqcAmBCxL15FkkUi0T8UnDntYoUg+pLSGVPdFbPeWPZajhaA/dn3NqzdPbf5d/tXAQwyVr8DmPa0owQWXezbcQqvfpPOYY8YVyazXTCgTVyhVMzYvTU6ITjcV84o1/9/PMuNs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762953399; c=relaxed/simple;
+	bh=AdkWczVvVv8ju7J2b1sy0l2IToURdDQN1MtYU3m0vYA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VLdHgj7d0eIZNIpx1wPpQQx4v559E7GFeypl/dZk6zWl5ggALcbyPDxkXuSyI/3Y43XE2z0vn4osjsVNdfopgBZAGzHxPH2J259dl3LH29+vpWKa9EiGupFbfCuuOZdHh/q+7C8xLGEtCpcP+qErT5yzjSp7QIroTl5acAMigks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z3F2Z6/K; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Ci94QM90"
-ARC-Seal: i=1; a=rsa-sha256; t=1762952251; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=HNxVywEwIxfryAuD5zzBYhvkZC8198SP2RK6ZvKxet5z0bGYTqWkIxOxIQibJ+Ukz1YFM12TUMOjcTcAla3bzEfQJpAfOPRZaD5bG9FkwhvqxsnlGNItSD3lQa28gLV78pwMO0t8Lae2BvqCxgGQMr7dcwvJzwsMfGI8d6EBG7A=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1762952251; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=lasbNH8TFs9tBmW5oYJnfXJbOCbLUtFN2LPxxb7aoxY=; 
-	b=RqvRMYn00Dpqc00LRjIeYBstNocwYYrxaD7eB5TsLmb0rm6MUKzpyb69SMl1yy4J6wNZp0+ztpM27BijDkmBv5/cMy1JU6ahbv2y87PEp4R7d41U04kRtVN/FBOnCmOFdSLsiewKfN6Be3jbi6EHzwOZcV8elByutEn0JHWYm94=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1762952251;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=lasbNH8TFs9tBmW5oYJnfXJbOCbLUtFN2LPxxb7aoxY=;
-	b=Ci94QM905kNJ+PitS0LYcmnnz4ycpBfxUXsZkHrpvQLVC8WkX9ft/6VbCL0AuQmZ
-	mFfWyhITrj3SV2yZ4Us49BCDBxG2KjaO3Wu0mI+67fxGo55Fwa0sithHJ7E5q2986Yj
-	8bdlxynaZGtK2IPJD3Pxuae909V1tjQ9lixMFork=
-Received: by mx.zohomail.com with SMTPS id 1762952249485202.59169507502338;
-	Wed, 12 Nov 2025 04:57:29 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z3F2Z6/K"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bc09b3d3b17so414542a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 05:16:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762953397; x=1763558197; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MgHeXCs1yExV6oK6GfCPcyjDL4yLWKFr1PuaEI6I+/A=;
+        b=Z3F2Z6/KeK22354c7cxpqDB4lUaUVigL0xUypSc5XEGzZ7PwdHmVhmrMG5E/R0u6eK
+         lJ151nlOJoa5CuS2lo9kDt/lbcMVUeeAM8icrpcwNc4D8+52qOGTd5z+j/+bR0N0vGfd
+         vrz5w3ImJrZ4wn/KF8tq82G2YRhIUCRp7/FVVDC+HFmXbrirJT1b+9hVedFEv4sHbcv7
+         tKzGERy/WlHpMfgfQoMTg+HqpizPaNIMGZQlZQI4aMukMdMmThaBTPCUjWDhzsklRKXr
+         oFQUCin0h31wGIuo+j3pCD0nF00UL0OaBRnKsbFachfsc5LcNHLYHc7YPPT7t6Jviljy
+         ca3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762953397; x=1763558197;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MgHeXCs1yExV6oK6GfCPcyjDL4yLWKFr1PuaEI6I+/A=;
+        b=ThTAR5D0W6vRF3xEwlpMaShD2Kk9ZRjR7VR6TDkL2V+QLOolVNkjx7FoD1IqGlazXU
+         T+eU2OsBWrYgQK1VTPZCtuQwWW3F3Qc3L2/CSR6eTxByk40003U+JOepp+BzR1YfHE4b
+         pNGOppgOribsRgLQ0oO/UxoXokcaWzzaq3m0piOWUl2v2LDJWQZVep5FvbWx4YcO36+r
+         I5QzEaTtlw2jyR593k7DTqt7fTc/Q9SXhYOEi2Qp6SHqMM0J491JXJPSZst5FTQMv3AX
+         FODw1WjAE6plKW3I9ZDl2zhZtkRf6ADljAY3tNGZCt8yAQC2lgSODbRrWOog7mCBHOUy
+         R3FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXL8GRHHtUIC27+xpXNA0m4HCFSk5uAhADlmhzDIlpXlaikXBTEkD2tIHn9H88+v263SP27K0PiqVS9xUgtEQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0fkyBysTVg4DS5yZ4ek3Z1k22AbhATlTVNa/K1ijluFHdVEAx
+	+EQWp9LmPdps5E91Z0YM6wsNvmmaoflRjD8iMfxV3CZMZGFGE09llYi1
+X-Gm-Gg: ASbGncv0ilRXpGigPq0cPn4FgRMD1uh3yNhGrpnFGL6IEB/Y9mwRA+5/9wNJR27db3H
+	cD28/oFbglvfnOEIj6xdKFvxggZ25V4u9HN4zj8EOhYcnVT8qdlcezBPUUJixwGNfAZ3Rt8yVO/
+	0HdILE8k456cL+zXnFopr1hOE2lyn0qp5K0hB2jhgh586GS4KfLMat2acdbCKsrOd7S3g9PyAjD
+	rBEUxnr5/+WlGJ5RsxjOn0fyxiskolYbfABUw8WGYsSurWFBHBj3cVJdiUjwuRPXrKWpLhjLHLQ
+	pZ2BhlMcJv9q736yVX+j1DxKvAifjrFmHRNAEYMXDFM5tJ/fHdcEuX4B//VlwpvjmK+olSwO45v
+	/ZjcBPgyU9sM8nUMzxiaBG9DnND+wKgPjIwOjQSgZ3EMymyPLouyO03FbrgWfBS9zUwHLpflwpa
+	u0mpDFNbMRIWH2rPGkMHY1aJ8bUg10LfAg2zGBzTBG4mbKpN92
+X-Google-Smtp-Source: AGHT+IEJe73vHLkvoa/K5V6D1Xt390k2N3eiaJwSFccUHwThA2gzOPOLnClx1PZst77Xnw2qUSzslA==
+X-Received: by 2002:a17:903:2b03:b0:297:f7fb:7b66 with SMTP id d9443c01a7336-2984edf3d08mr40735945ad.57.1762953396972;
+        Wed, 12 Nov 2025 05:16:36 -0800 (PST)
+Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dbd93c0sm31732485ad.6.2025.11.12.05.16.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 05:16:36 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: alex.gaynor@gmail.com,
+	ojeda@kernel.org
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: [PATCH v2 0/2] Add support for print exactly once
+Date: Wed, 12 Nov 2025 22:16:17 +0900
+Message-ID: <20251112131619.3585510-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3] io: add io_pgtable abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
-Date: Wed, 12 Nov 2025 09:57:09 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Will Deacon <will@kernel.org>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Joerg Roedel <joro@8bytes.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Asahi Lina <lina+kernel@asahilina.net>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- iommu@lists.linux.dev,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8A5C6836-992B-477A-A77C-EE0736166552@collabora.com>
-References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Alice,
+This adds the Rust equivalent of the kernel's DO_ONCE_LITE and
+pr_*_once macros.
 
-> On 12 Nov 2025, at 07:15, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> From: Asahi Lina <lina+kernel@asahilina.net>
->=20
-> This will be used by the Tyr driver to create and modify the page =
-table
-> of each address space on the GPU. Each time a mapping gets created or
-> removed by userspace, Tyr will call into GPUVM, which will figure out
-> which calls to map_pages and unmap_pages are required to map the data =
-in
-> question in the page table so that the GPU may access those pages when
-> using that address space.
->=20
-> The Rust type wraps the struct using a raw pointer rather than the =
-usual
-> Opaque+ARef approach because Opaque+ARef requires the target type to =
-be
-> refcounted.
->=20
-> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> Co-Developed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> This patch is based on [1] but I have rewritten and simplified large
-> parts of it. The Asahi driver no longer uses the io-pgtable =
-abstraction,
-> and Nova never planned to (since NVIDIA has its own separate memory).
-> Therefore, I have simplified these abstractions to fit the needs of =
-the
-> Tyr GPU driver.
->=20
-> This series depends on the PhysAddr typedef [2].
->=20
-> [1]: =
-https://lore.kernel.org/all/20250623-io_pgtable-v2-1-fd72daac75f1@collabor=
-a.com/
-> [2]: =
-https://lore.kernel.org/all/20251112-resource-phys-typedefs-v2-0-538307384=
-f82@google.com/
-> ---
-> rust/bindings/bindings_helper.h |   3 +-
-> rust/kernel/io.rs               |   1 +
-> rust/kernel/io/pgtable.rs       | 254 =
-++++++++++++++++++++++++++++++++++++++++
-> 3 files changed, 257 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/bindings/bindings_helper.h =
-b/rust/bindings/bindings_helper.h
-> index =
-2e43c66635a2c9f31bd99b9817bd2d6ab89fbcf2..faab6bc9463321c092a8bbcb6281175e=
-490caccd 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -56,8 +56,9 @@
-> #include <linux/fdtable.h>
-> #include <linux/file.h>
-> #include <linux/firmware.h>
-> -#include <linux/interrupt.h>
-> #include <linux/fs.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io-pgtable.h>
-> #include <linux/ioport.h>
-> #include <linux/jiffies.h>
-> #include <linux/jump_label.h>
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index =
-56a435eb14e3a1ce72dd58b88cbf296041f1703e..5913e240d5a9814ceed52c6dc1a798e6=
-4158d567 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -8,6 +8,7 @@
-> use crate::{bindings, build_assert, ffi::c_void};
->=20
-> pub mod mem;
-> +pub mod pgtable;
-> pub mod poll;
-> pub mod resource;
->=20
-> diff --git a/rust/kernel/io/pgtable.rs b/rust/kernel/io/pgtable.rs
-> new file mode 100644
-> index =
-0000000000000000000000000000000000000000..fe05bc1673f9a7741a887a3c9bbad866=
-dd17a2b5
-> --- /dev/null
-> +++ b/rust/kernel/io/pgtable.rs
-> @@ -0,0 +1,254 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! IOMMU page table management.
-> +//!
-> +//! C header: [`include/io-pgtable.h`](srctree/include/io-pgtable.h)
-> +
-> +use core::{
-> +    marker::PhantomData,
-> +    ptr::NonNull, //
-> +};
-> +
-> +use crate::{
-> +    alloc,
-> +    bindings,
-> +    device::{Bound, Device},
-> +    devres::Devres,
-> +    error::to_result,
-> +    io::PhysAddr,
-> +    prelude::*, //
-> +};
-> +
-> +use bindings::io_pgtable_fmt;
-> +
-> +/// Protection flags used with IOMMU mappings.
-> +pub mod prot {
-> +    /// Read access.
-> +    pub const READ: u32 =3D bindings::IOMMU_READ;
-> +    /// Write access.
-> +    pub const WRITE: u32 =3D bindings::IOMMU_WRITE;
-> +    /// Request cache coherency.
-> +    pub const CACHE: u32 =3D bindings::IOMMU_CACHE;
-> +    /// Request no-execute permission.
-> +    pub const NOEXEC: u32 =3D bindings::IOMMU_NOEXEC;
-> +    /// MMIO peripheral mapping.
-> +    pub const MMIO: u32 =3D bindings::IOMMU_MMIO;
-> +    /// Privileged mapping.
-> +    pub const PRIV: u32 =3D bindings::IOMMU_PRIV;
-> +}
-> +
-> +/// Represents a requested `io_pgtable` configuration.
-> +pub struct Config {
-> +    /// Quirk bitmask (type-specific).
-> +    pub quirks: usize,
-> +    /// Valid page sizes, as a bitmask of powers of two.
-> +    pub pgsize_bitmap: usize,
-> +    /// Input address space size in bits.
-> +    pub ias: u32,
-> +    /// Output address space size in bits.
-> +    pub oas: u32,
-> +    /// IOMMU uses coherent accesses for page table walks.
-> +    pub coherent_walk: bool,
-> +}
-> +
-> +/// An io page table using a specific format.
-> +///
-> +/// # Invariants
-> +///
-> +/// The pointer references a valid io page table.
-> +pub struct IoPageTable<F> {
-> +    ptr: NonNull<bindings::io_pgtable_ops>,
-> +    _marker: PhantomData<F>,
-> +}
-> +
-> +// SAFETY: `struct io_pgtable_ops` is not restricted to a single =
-thread.
-> +unsafe impl<F> Send for IoPageTable<F> {}
-> +// SAFETY: `struct io_pgtable_ops` may be accessed concurrently.
-> +unsafe impl<F> Sync for IoPageTable<F> {}
-> +
-> +/// The format used by this page table.
-> +pub trait IoPageTableFmt: 'static {
-> +    /// The value representing this format.
-> +    const FORMAT: io_pgtable_fmt;
-> +}
-> +
-> +impl<F: IoPageTableFmt> IoPageTable<F> {
-> +    /// Create a new `IoPageTable` as a device resource.
-> +    #[inline]
-> +    pub fn new(
-> +        dev: &Device<Bound>,
-> +        config: Config,
-> +    ) -> impl PinInit<Devres<IoPageTable<F>>, Error> + '_ {
-> +        // SAFETY: Devres ensures that the value is dropped during =
-device unbind.
-> +        Devres::new(dev, unsafe { Self::new_raw(dev, config) })
-> +    }
-> +
-> +    /// Create a new `IoPageTable`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// If successful, then the returned value must be dropped before =
-the device is unbound.
-> +    #[inline]
-> +    pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> =
-Result<IoPageTable<F>> {
-> +        let mut raw_cfg =3D bindings::io_pgtable_cfg {
-> +            quirks: config.quirks,
-> +            pgsize_bitmap: config.pgsize_bitmap,
-> +            ias: config.ias,
-> +            oas: config.oas,
-> +            coherent_walk: config.coherent_walk,
-> +            tlb: &raw const NOOP_FLUSH_OPS,
-> +            iommu_dev: dev.as_raw(),
-> +            // SAFETY: All zeroes is a valid value for `struct =
-io_pgtable_cfg`.
-> +            ..unsafe { core::mem::zeroed() }
-> +        };
-> +
-> +        // SAFETY:
-> +        // * The raw_cfg pointer is valid for the duration of this =
-call.
-> +        // * The provided `FLUSH_OPS` contains valid function =
-pointers that accept a null pointer
-> +        //   as cookie.
-> +        // * The caller ensures that the io pgtable does not outlive =
-the device.
-> +        let ops =3D unsafe {
-> +            bindings::alloc_io_pgtable_ops(F::FORMAT, &mut raw_cfg, =
-core::ptr::null_mut())
-> +        };
-> +        // INVARIANT: We successfully created a valid page table.
-> +        Ok(IoPageTable {
-> +            ptr: NonNull::new(ops).ok_or(ENOMEM)?,
-> +            _marker: PhantomData,
-> +        })
-> +    }
-> +
-> +    /// Obtain a raw pointer to the underlying `struct =
-io_pgtable_ops`.
-> +    #[inline]
-> +    pub fn raw_ops(&self) -> *mut bindings::io_pgtable_ops {
-> +        self.ptr.as_ptr()
-> +    }
-> +
-> +    /// Obtain a raw pointer to the underlying `struct io_pgtable`.
-> +    #[inline]
-> +    pub fn raw_pgtable(&self) -> *mut bindings::io_pgtable {
-> +        // SAFETY: The io_pgtable_ops of an io-pgtable is always the =
-ops field of a io_pgtable.
-> +        unsafe { kernel::container_of!(self.raw_ops(), =
-bindings::io_pgtable, ops) }
-> +    }
-> +
-> +    /// Obtain a raw pointer to the underlying `struct =
-io_pgtable_cfg`.
-> +    #[inline]
-> +    pub fn raw_cfg(&self) -> *mut bindings::io_pgtable_cfg {
-> +        // SAFETY: The `raw_pgtable()` method returns a valid =
-pointer.
-> +        unsafe { &raw mut (*self.raw_pgtable()).cfg }
-> +    }
-> +
+A proposal for this feature was made in the past [1], but it didn't
+reach consensus on the implementation and wasn't merged. After reading
+the previous discussions, I implemented it using a different approach.
 
-I don=E2=80=99t think that drivers need these three accessors above to =
-be pub.
+In the previous proposal, a structure equivalent to std::sync::Once
+was implemented to realize the DO_ONCE_LITE macro. The approach tried
+to provide Once-like semantics by using two atomic values. As pointed
+out in the previous review comments, I think this approach tries to
+provide more functionality than needed, making it unnecessarily
+complex. Also, because data structures in the .data..once section can
+be cleared at any time (via debugfs clear_warn_once), an
+implementation using two atomics wouldn't work correctly.
 
-> +    /// Map a physically contiguous range of pages of the same size.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * This page table must not contain any mapping that overlaps =
-with the mapping created by
-> +    ///   this call.
+Therefore, I decided to drop the idea of emulating Once and took a
+minimal approach to implement DO_ONCE_LITE with only one atomic
+variable. While it would be possible to implement the feature entirely
+as a Rust macro, the functionality that can be implemented as regular
+functions has been extracted and implemented as the OnceLite struct
+for better code readability.
 
-I don't think there is a restriction that forbids you from mapping a =
-region that has already been mapped.
+[1] https://lore.kernel.org/rust-for-linux/20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io/
 
-If A->B->C are adjacent regions, and you try to map A -> C when B->C is =
-already mapped, I think this
-call will simply return length(A->B).
+v2:
+- improve do_once_lite micro syntax
+- move once_lite.rs to kernel/sync/
+- add comments (including ORDERING)
+- fix rustdoc errors
+- use vertical layout for imports
+v1: https://lore.kernel.org/rust-for-linux/20251105054731.3194118-1-fujita.tomonori@gmail.com/
 
-> +    /// * If this page table is live, then the caller must ensure =
-that it's okay to access the
-> +    ///   physical address being mapped for the duration in which it =
-is mapped.
-> +    #[inline]
-> +    pub unsafe fn map_pages(
-> +        &self,
-> +        iova: usize,
-> +        paddr: PhysAddr,
-> +        pgsize: usize,
-> +        pgcount: usize,
-> +        prot: u32,
-> +        flags: alloc::Flags,
-> +    ) -> Result<usize> {
-> +        let mut mapped: usize =3D 0;
-> +
-> +        // SAFETY: The `map_pages` function in `io_pgtable_ops` is =
-never null.
-> +        let map_pages =3D unsafe { =
-(*self.raw_ops()).map_pages.unwrap_unchecked() };
-> +
-> +        // SAFETY: The safety requirements of this method are =
-sufficient to call `map_pages`.
-> +        to_result(unsafe {
-> +            (map_pages)(
-> +                self.raw_ops(),
-> +                iova,
-> +                paddr,
-> +                pgsize,
-> +                pgcount,
-> +                prot as i32,
-> +                flags.as_raw(),
-> +                &mut mapped,
-> +            )
-> +        })?;
-> +
-> +        Ok(mapped)
-> +    }
-> +
-> +    /// Unmap a range of virtually contiguous pages of the same size.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// This page table must contain a mapping at `iova` that =
-consists of exactly `pgcount` pages
-> +    /// of size `pgsize`.
+FUJITA Tomonori (2):
+  rust: Add support for calling a function exactly once
+  rust: Add pr_*_once macros
 
-Same here. I don=E2=80=99t think the above is necessarily a requirement.
+ rust/kernel/print.rs          | 70 +++++++++++++++++++++++++++++
+ rust/kernel/sync.rs           |  1 +
+ rust/kernel/sync/once_lite.rs | 83 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 154 insertions(+)
+ create mode 100644 rust/kernel/sync/once_lite.rs
 
-> +    #[inline]
-> +    pub unsafe fn unmap_pages(&self, iova: usize, pgsize: usize, =
-pgcount: usize) -> usize {
-> +        // SAFETY: The `unmap_pages` function in `io_pgtable_ops` is =
-never null.
-> +        let unmap_pages =3D unsafe { =
-(*self.raw_ops()).unmap_pages.unwrap_unchecked() };
-> +
-> +        // SAFETY: The safety requirements of this method are =
-sufficient to call `unmap_pages`.
-> +        unsafe { (unmap_pages)(self.raw_ops(), iova, pgsize, pgcount, =
-core::ptr::null_mut()) }
-> +    }
-> +}
-> +
-> +// These bindings are currently designed for use by GPU drivers, =
-which use this page table together
-> +// with GPUVM. When using GPUVM, a single mapping operation may be =
-translated into many operations
-> +// on the page table, and in that case you generally want to flush =
-the TLB only once per GPUVM
-> +// operation. Thus, do not use these callbacks as they would flush =
-more often than needed.
-> +static NOOP_FLUSH_OPS: bindings::iommu_flush_ops =3D =
-bindings::iommu_flush_ops {
-> +    tlb_flush_all: Some(rust_tlb_flush_all_noop),
-> +    tlb_flush_walk: Some(rust_tlb_flush_walk_noop),
-> +    tlb_add_page: None,
-> +};
-> +
-> +#[no_mangle]
-> +extern "C" fn rust_tlb_flush_all_noop(_cookie: *mut =
-core::ffi::c_void) {}
-> +
-> +#[no_mangle]
-> +extern "C" fn rust_tlb_flush_walk_noop(
-> +    _iova: usize,
-> +    _size: usize,
-> +    _granule: usize,
-> +    _cookie: *mut core::ffi::c_void,
-> +) {
-> +}
-> +
-> +impl<F> Drop for IoPageTable<F> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: The caller of `ttbr` promised that the page table =
-is not live when this
-> +        // destructor runs.
-> +        unsafe { bindings::free_io_pgtable_ops(self.0.ops) };
-> +    }
-> +}
-> +
-> +/// The `ARM_64_LPAE_S1` page table format.
-> +pub enum ARM64LPAES1 {}
-> +
-> +impl IoPageTableFmt for ARM64LPAES1 {
-> +    const FORMAT: io_pgtable_fmt =3D =
-bindings::io_pgtable_fmt_ARM_64_LPAE_S1 as io_pgtable_fmt;
-> +}
-> +
-> +impl IoPageTable<ARM64LPAES1> {
-> +    /// Access the `ttbr` field of the configuration.
-> +    ///
-> +    /// This is the physical address of the page table, which may be =
-passed to the device that
-> +    /// needs to use it.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that the device stops using the page =
-table before dropping it.
-> +    #[inline]
-> +    pub unsafe fn ttbr(&self) -> u64 {
-> +        // SAFETY: `arm_lpae_s1_cfg` is the right cfg type for =
-`ARM64LPAES1`.
-> +        unsafe { =
-(*self.raw_cfg()).__bindgen_anon_1.arm_lpae_s1_cfg.ttbr }
-> +    }
-> +
-> +    /// Access the `mair` field of the configuration.
-> +    #[inline]
-> +    pub fn mair(&self) -> u64 {
-> +        // SAFETY: `arm_lpae_s1_cfg` is the right cfg type for =
-`ARM64LPAES1`.
-> +        unsafe { =
-(*self.raw_cfg()).__bindgen_anon_1.arm_lpae_s1_cfg.mair }
-> +    }
 
-The two above will indeed be used by drivers, so it makes sense for them =
-to be pub.
+base-commit: 3b83f5d5e78ac5cddd811a5e431af73959864390
+-- 
+2.43.0
 
-> +}
->=20
-> ---
-> base-commit: ffee675aceb9f44b0502a8bec912abb0c4f4af62
-> change-id: 20251111-io-pgtable-fe0822b4ebdd
-> prerequisite-change-id: =
-20251106-resource-phys-typedefs-6db37927d159:v2
-> prerequisite-patch-id: 350421d8dbaf3db51b1243d82077c5eb88f54db5
-> prerequisite-patch-id: ac0166fb3cd235de76841789173051191a4d2434
-> prerequisite-patch-id: f4bca02c77c40093690b66cdf477f928784bdbf4
-> prerequisite-patch-id: 083d1c22b1a7eb0dcae37052b926362543c68e8a
->=20
-> Best regards,
-> --=20
-> Alice Ryhl <aliceryhl@google.com>
->=20
->=20
-
-This overall looks ok to me, and I quite like how much cleaner it is =
-now.
-
-However, I think a discussion will naturally emerge from making
-map/unmap_pages unsafe functions, and it seems like the safety =
-requirements
-do not apply.
-
-=E2=80=94 Daniel=
