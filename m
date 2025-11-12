@@ -1,53 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CE6215F42;
-	Fri, 14 Nov 2025 14:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6814D325498
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 14:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763131715; cv=none; b=RUc5SqHWNUSZ62jIYQu+ifnRpBUXplJjoJ+6YpQmtcVkxF8eG5OXiYq0IeKFPEjl3KIQtKzO2xRYbuLnCc0OVbunrI5nVO2jo+N+PL6/+cBrvInVtMsFXb2GMgmrqCcuqsHnrtjpO1Ye40nvpHtS7IkBweyA4RtxA/GbhiqPyUA=
+	t=1763131719; cv=none; b=ng4ht0i4fbqDhdM1GoTejqpN4r4OLnQUTWv+VyTqDxS4foi161q878Yd3/NdIGeUa/UVoc71DDkkz9L3B/hMVeFA/qTgOp/L10mBiE81L/6iHZTB4WsM73WRXH4ASaL6N0P/652FNz1gz0QCPUsLZ8QnMeKYokyUJf4XPjaqu+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763131715; c=relaxed/simple;
-	bh=xWikcpGmf0wHK8yffg5D29GO53o5QMoIYZYCMXioG+s=;
+	s=arc-20240116; t=1763131719; c=relaxed/simple;
+	bh=q2P8dJKgCvUEVCk7wNRTKyFO7jkc+S4yKh8bhu/y4Tc=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Eeb9KF13qSK0sGU+f6APVs/LBOgbIdKpKn19GFTCmumKIe2rnuJyUj8zoTUzTs/y0TTb/xVww1/vmLwHyTvXKqZxOuh4CcVQbCMA5L5XNDeYSAAdh7qZ06NeGAlM8OdRvr4ZnpAV5izUWy3+A6YbQiGesuBG4owgPCh2/LgXsWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J+e2gG9P; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=QMo9E88wmfaanOItpn8utVjwZDGzWoASrRhpZNq1MzDWZCA/41XJ4T7+STgtOsFy9tCFQnLGBGPk/LyX/FiJwtau9xdzxnlCOdW8v3wrMSBsnUVAuvWl/OrxXMU1aAxxHU3P8udQKW6M6j2jGck+s7VPBAoIpRoVEnBic9YTVOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5Ao/VJK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J+e2gG9P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32328C4CEF8;
-	Fri, 14 Nov 2025 14:48:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5Ao/VJK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CCEC4AF09;
+	Fri, 14 Nov 2025 14:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763131714;
-	bh=xWikcpGmf0wHK8yffg5D29GO53o5QMoIYZYCMXioG+s=;
+	s=k20201202; t=1763131718;
+	bh=q2P8dJKgCvUEVCk7wNRTKyFO7jkc+S4yKh8bhu/y4Tc=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=J+e2gG9PoTt8mz/HpWhw2WDLYzf0kgc3hIOjqvveYJScGr1q9ipcdK3TC10KuemQ4
-	 IxrHunzT8MZeZlmsFFuryAwCautm0lpWXhqb/6ekOGxkg6FeccVdhXhHCj+27SE+ZH
-	 9bhEQXOuGz3aUfAF2bZ5BBkS2s6Yj+KjzoWshNBYB1tEfUDOLffotGA/lUbEXL6XxB
-	 NrE05Bi8Dl1+Tf3COS25ciOFyH/llzPkL2UflN9wM7OMj2tKPavSrkgml9+qb8MdCC
-	 oLWA5sjY15Jxor7EhQbEbrYH75sSjn5LoP+4saCRf2ozwm/dtMPgvDInorpAkh8BpG
-	 eqmHiqHbqpvYQ==
+	b=n5Ao/VJKFtjYMQGHmnW6A1j5V9D8hNyiphrTI2VY1ZwLXHWy+hXEKseI/xc1Ctiz7
+	 a1BTmIyuFhv1TIrDxvEz81tzaCeDVhN3JeofPglXzJib7g3MK5D3PyAuS2TXeykq3g
+	 p0fyI2iDGQSMsKjfCzcpQGeXWN353YK8vBL4kfDcEszJMrALqp+E1HapdnJOjEtARa
+	 gefSaCqSGyccJ9UTWTXwaPdAkWO2q5/9ws3GEzU/ZeYU0sX4PVcuFJg3PUdN0+u3Eg
+	 6lm2bBpIy4RAoaGQeZH382HPQaflGQwpoPaTd/1dH/Z/op1NfeYuiAjNx8Bfz3l1wv
+	 WyWK0RwtNY4+Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Mitchell Levy <levymitchell0@gmail.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Andrew Morton <akpm@linux-foundation.org>,
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph
- Lameter <cl@linux.com>, Danilo Krummrich <dakr@kernel.org>, Benno Lossin
- <lossin@kernel.org>, Yury Norov <yury.norov@gmail.com>, Viresh Kumar
- <viresh.kumar@linaro.org>
-Cc: Tyler Hicks <code@tyhicks.com>, Allen Pais <apais@linux.microsoft.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-mm@kvack.org, Mitchell Levy <levymitchell0@gmail.com>
-Subject: Re: [PATCH v4 4/9] rust: percpu: introduce a rust API for static
- per-CPU variables
-In-Reply-To: <20251105-rust-percpu-v4-4-984b1470adcb@gmail.com>
-References: <20251105-rust-percpu-v4-0-984b1470adcb@gmail.com>
- <qnTNWVjAt09EBrHCcZZF0dT5c1s-R5ZYEgxKh7CZq2g9AmrNPsE3I3AtGhovYr8iASOQid3fKrmCgwyEb-2_lA==@protonmail.internalid>
- <20251105-rust-percpu-v4-4-984b1470adcb@gmail.com>
-Date: Fri, 14 Nov 2025 15:48:05 +0100
-Message-ID: <87pl9k3c2i.fsf@t14s.mail-host-address-is-not-set>
+To: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>
+Cc: aliceryhl@google.com, ojeda@kernel.org, bjorn3_gh@protonmail.com,
+ dakr@kernel.org, gary@garyguo.net, lossin@kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH v1 1/2] rust: Add support for calling a function exactly
+ once
+In-Reply-To: <aRPjNS9jIsyHGAPl@tardis.local>
+References: <aRIPgOPvi4uhGQcM@tardis.local>
+ <20251111.120949.1793896304189618185.fujita.tomonori@gmail.com>
+ <aRLG1Ofr5QpJGFaB@tardis.local>
+ <20251112.064349.598094996228184902.fujita.tomonori@gmail.com>
+ <aRPjNS9jIsyHGAPl@tardis.local>
+Date: Wed, 12 Nov 2025 10:10:14 +0100
+Message-ID: <87bjl77h1l.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,50 +50,64 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Hi Mitchell,
+Boqun Feng <boqun.feng@gmail.com> writes:
 
-"Mitchell Levy" <levymitchell0@gmail.com> writes:
-
-> Per-CPU variables are an important tool for reducing lock contention,
-> especially in systems with many processors. They also provide a
-> convenient way to handle data that are logically associated with a
-> particular CPU (e.g., the currently running task).
+> On Wed, Nov 12, 2025 at 06:43:49AM +0900, FUJITA Tomonori wrote:
+>> On Mon, 10 Nov 2025 21:17:08 -0800
+>> Boqun Feng <boqun.feng@gmail.com> wrote:
+>> 
+>> > On Tue, Nov 11, 2025 at 12:09:49PM +0900, FUJITA Tomonori wrote:
+>> >> On Mon, 10 Nov 2025 08:14:56 -0800
+>> >> Boqun Feng <boqun.feng@gmail.com> wrote:
+>> >> 
+>> >> > On Mon, Nov 10, 2025 at 06:21:50PM +0900, FUJITA Tomonori wrote:
+>> >> >> On Fri, 7 Nov 2025 09:03:01 +0000
+>> >> >> Alice Ryhl <aliceryhl@google.com> wrote:
+>> >> >> 
+>> >> >> >> That's my point (and probably also Andreas' point), we already has the
+>> >> >> >> type `SetOnce` to do this, no need for a `OnceLite` type if not
+>> >> >> >> necessary, and the fact that it can be zero'd by debugfs doesn't change
+>> >> >> >> it as I explained above.
+>> >> >> > 
+>> >> >> > The SetOnce type doesn't do the same thing as OnceLite. SetOnce has
+>> >> >> > three different states, but OnceLite only needs two. I don't think we
+>> >> >> > should be reusing SetOnce here.
+>> >> > 
+>> >> > I mean 3 states should cover 2 states, right? In this case we only need
+>> >> > to support SetOnce<()>, so I think it's fine, see below:
+>> >> 
+>> >> Yeah, that would remove access to the value member, but I think that
+>> >> init member could still be accessed in an unintended way.
+>> >> 
+>> > 
+>> > What an unintended way you mean? Do you have an example?
+>> 
+>> From my understanding, the init member of SetOnce is designed to be
+>> accessed by using atomic operations, only through its methods. If we
+>> use SetOnce for OnceLite, however, the init member would be written
+>> using non-atomic operations, which is what I referred to as the
+>> "unintended way" since I don't believe Andreas intended it to be
+>> modified in that manner; i.e., not through its methods or by
+>> non-atomic operations.
+>> 
 >
-> Therefore, add a Rust API to make use of statically-allocated per-CPU
-> variables. Add a RAII `CpuGuard` type for disabling CPU preemption.
-> Introduce unifying abstractions that can be reused for a Rust API for
-> dynamically-allocated per-CPU variables.
+> Ok, the "non-atomic operations" seems to be a distraction for me to see
+> the real problem ;-) Let's clear things out a bit.
 >
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+> First of all, data races are not allowed in kernel, but kernel has
+> special rules about data races, namely, a few operation should be
+> treated as "per-byte atomics" so that they will have defined behaviors.
+> This is kinda a gray area, but it's what it is.
 
-I had to do the following change to make the doctests build when
-applying to v6.18-rc5:
+In general, I would assume that a 32 bit rust atomic read racing with
+"per-byte atomic" writes to the field is not great. We would risk
+observing torn writes?
 
-commit 47fc7e30ab0fbcc7262b846286b4bae5124d858e
-Author: Andreas Hindborg <a.hindborg@kernel.org>
-Date:   Fri Nov 14 15:43:47 2025 +0100
-
-    fixup! LIST: [PATCH v4 4/9] rust: percpu: introduce a rust API for static per-CPU variables
-
-diff --git a/rust/kernel/percpu/static_.rs b/rust/kernel/percpu/static_.rs
-index 418fc2fa06f20..bf053e260f0c5 100644
---- a/rust/kernel/percpu/static_.rs
-+++ b/rust/kernel/percpu/static_.rs
-@@ -162,7 +162,7 @@ pub unsafe trait PerCpuSyncMarkerType {
- /// # Example
- /// ```
- /// use kernel::define_per_cpu;
--/// use kernel::percpu::StaticPerCpuSymbol;
-+/// use kernel::percpu::{PerCpuSyncMarkerType, StaticPerCpuSymbol};
- ///
- /// define_per_cpu!(pub MY_PERCPU: u64 = 0);
- /// ```
-
+We could use a u8 atomic in this case?
 
 
 Best regards,
 Andreas Hindborg
+
 
 
