@@ -1,228 +1,168 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010004.outbound.protection.outlook.com [52.101.193.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AC914A4F9;
-	Wed, 12 Nov 2025 01:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762909932; cv=fail; b=L7nMyv58BpVtOYzfz7CfEufPoezSwDE+uf1VRtn0Yb49eq7Jxy4Xna4A2b+dAVC9WaWwOXba46wYmPLSNNJK0OJonP0Yg1cmQsu8rLIrLz8Lox6tJDBtwDeOWnybOFvp1AOVv4G0Ul+fz3G3o6hje6l3pJKzA4M9QeB2R5sdWXQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762909932; c=relaxed/simple;
-	bh=CmUydfr1veKJk5m04YecglKInJNzFGgNET9FM875B8M=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=fUaj+p6qXCM7VEDlp06t7WDfh4Qska9iaB0wLJl0tlw5DCbxoFfiHXrz/OW3bgYBMb9uGWI27eC/3gssNZApHjgJtfjOzsX0sNh3cG23wSV45qTChe0Y0aUuyBwQeHNfN53+UNJcL4o/fucsB3w/m8BDT1OhRzlS55sNdga7nLg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HugM2BO3; arc=fail smtp.client-ip=52.101.193.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CBA146A66
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 01:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762910339; cv=none; b=K/lMJiGuY76yHkt+usH78Tc0jcvFCbFAiXhgUEVhpH1GWrFxN4xPuqStq/2xwhfapO4oGfQVL0mCcy5GMY1DrhWW5E2Vrt80AGRTo94otORAI3wjLqIi3sBEsX01ejHLCkALP8g3nt2hh+MAUUVtm8dpB88sezOIz7atfT49gfY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762910339; c=relaxed/simple;
+	bh=U1772FxmfKtfi8ZqQg2o+fPsIvselX/DTiCfSdK9rhM=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=kUo7+MktchlHew/ju8uLi9hoDu3poAboC6PFeVrbZ7gbHpKCnh9I+B2htzVeP1YhTvd8+y7YmLuc8iZhAy8jsbBNjhn7NyWY1PttGgRMgsuggFlKrMQJ0B/LHLMzWE2k788gZe8GZbnK7mRbPzCWVMffESyQGnXniTquNQNAvGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lPzLfVIu; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HugM2BO3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dauWes4IsoloSKqnBCBWE9u7nEJi7jLfPdIIFfWg4kRIZ+rtbtiN6LbVCCfaICNOmcQD/WcMz8SLzZf1ieyClRV4qbiD0H4R4NYQp28ekdh8QU2mwMdAkoAXUKoQp8Oi2tdM3BkU9cwzs3DfFsJGpqA75tW2RMwjIf3MjkspA4GlKjbWH1gZi1zKJPGTgKc6GiBNlNDuHyqS37RIOqTSBRlKA+nmrpS6HQ9Ms+BLbgk5nD0ChObhW0tIpnaThxs6cZEoi7ylxzbtX8ZJfMQ97fewX15mlPNR5+phJrdpU7b/Zl8A/Y2lBQ+TqqryOW9WX2x/+bKLgwp+CrjOnNejog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8WAO5ocjf6ZsGGQLcGA77Am6Ez/BaQha0ddwMLsMmXM=;
- b=bSqrgr3dSpYWORqCGxMWwjbgO3U9W5PQu64ExocyCCAKGxCTVDfoxnSB3gVecYl0tzowhNSctSUIkbTx4yrfVR3O/Yao5mhR/ZIHlkDvfHx6pMVx5+/iNYOhaUrKRCcqkywG6SkxsBq2QrzV3H+oaQEeAq0eJzPQucT7rCdz6i0rOvqhJyHu92+lVmituVwsWhpenmQCpolfRAc1uVu7/rDoC1qUH8akqBUQKzquisaCKwE8UwK2jQPB3DC6pH3mBBR9r0QtmXFUnUgqjR08852AUjM2GZheTEZObxpKQPd7AGDuU8jblID5qDomG/1nlT1BapzMzzdUHK7VDI1F+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8WAO5ocjf6ZsGGQLcGA77Am6Ez/BaQha0ddwMLsMmXM=;
- b=HugM2BO3tfPRlMwA2ZwJG3GqAEPfFD7TFClEvehYORejX9GpaAiBUWg/dGgl8BbDh/BPM3J7FFkAHEGBu2/QWjMsEM09cGypT4flDcKqkyz+bvXucSKzr5BaEbCGEuQQMStdhWSybPKoa5vcocYE5TPViA2z6i7uAkkgEFgOOPX4eUYm+MTqFxioqE8zN4QouQuC74VGoM5U5ZlbSzt8Ypg7o7ZyusN9+NnPAFbNEvJreHcOSfutD6WSLW8b9DL3/CqMMutjqk7X/t/Kr9F41owaeNf2BtdvsdZQ+xcPuLJQJkK3elZXqWF2MLP2qRh70wMlKS3G4cTFXpPNqdr/3g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MW4PR12MB7309.namprd12.prod.outlook.com (2603:10b6:303:22f::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Wed, 12 Nov
- 2025 01:12:03 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9298.015; Wed, 12 Nov 2025
- 01:12:03 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 12 Nov 2025 10:12:00 +0900
-Message-Id: <DE6BESY0QHEZ.2DX2FQ6HF8BY6@nvidia.com>
-Subject: Re: [PATCH v2 06/12] nova-core: Add bindings required by GSP
- sequencer
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Joel Fernandes" <joelagnelf@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <dakr@kernel.org>
-Cc: "Alistair Popple" <apopple@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "John Hubbard"
- <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <joel@joelfernandes.org>, <nouveau@lists.freedesktop.org>, "Nouveau"
- <nouveau-bounces@lists.freedesktop.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251102235920.3784592-1-joelagnelf@nvidia.com>
- <20251102235920.3784592-7-joelagnelf@nvidia.com>
- <DE521OFQRH29.ZNUPX2POGN1V@nvidia.com>
- <f7608a86-3842-439b-9d5c-b7039cd15d1f@nvidia.com>
-In-Reply-To: <f7608a86-3842-439b-9d5c-b7039cd15d1f@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0039.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:29d::13) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lPzLfVIu"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-297f35be2ffso3169655ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 17:18:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762910337; x=1763515137; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E8GZM40tCNlvxK86P6UmcRlYcg37WH6CSmgvpcE4YOU=;
+        b=lPzLfVIuS4IYZde60QWeqv3QRO5AY2ah1RHF8kEP/xOsaAKDeLOoYuCAfRTxEM/eop
+         jm9N0ZJbeMIpYPWuMKJNWJ+U92eA+W2Y7k2lHRWE30qZcpvdk/ijS1U5PRr9s5NS7zCQ
+         VEhmqw2uGme2xoY6WoFFVtTGl/rCvF+m2zb9rQDNPNDrYnnfYvvCKrD4gWprT2mweg7p
+         H0i5UK4dkimbVH2VCYkrzxVpAsAxyZTlvOoI3p+irsRe0Hy7aOVt044nCCS/vnpsIaA5
+         jkZ6IXVvtpGFl4Fe7zj6vKdNOIkZAXGZUcIreRK7TDa/VLA4RALKj9Z1TqlXJ3MrSnad
+         er9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762910337; x=1763515137;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E8GZM40tCNlvxK86P6UmcRlYcg37WH6CSmgvpcE4YOU=;
+        b=LurHt2WsO3Ww/HBlD/JLmHTirWkDvZ6bbEKxDYrH1/XcuW6HmkrquuR3aghPLsQIDU
+         cdO59qLpTpeg3DTaxfOa8a9hzdF+Z9JG8SZy6aG+RKyY0XJIhEZq2wlitxuKY2hCcRbU
+         LjXCVUKtvmV9uR2D39a2zxZt8qKVwBv/U4ZEIbGn49dXo5AgueVxRFDwEXxIypoTmaWK
+         iYZBZ9Je2hvvORePHOe8xF/kISbBnboR+zDOH3+z8HGSe8N0j8qHCs0+a11f/aq18hm7
+         REYCzLRfGyyRhVIlkjs0Z3uOLy5SyY13a2v/YXxplpv78huskGOfe9oqxLppNqn+eFRw
+         gQLw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrkznTFgmczU0Jj4tqP2sQDfcyuiblIdIOJmQ0F+G6fqLPlASVoV05qbUpzKCRlOqRWv+tRqTScSAzXzSMZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yywnay/4lGGe0DRmu0oxP+9FJlQXOo23GBSAkUv2pz8/QwlRa1x
+	TkKr/QmGTA6/PoSDW/ua2hDAC4hCDlybRtsa8oVPtVIdcdo95hFnydmc
+X-Gm-Gg: ASbGnctA7h0576PEJoN2duW9cNl0fxKcGPkoQREfN0CNFAUbJ0wB4YlLa1ougpqlSEf
+	xLYhNSutwWvl8Cy3vvYkWPFtf65xXVbZpmXhfLP/w3L4yhiA+HlOZGaeOEzd1bhcmua4QOck6Q5
+	ho/iQ0+DnU0Yf5c2nCHxwDlINRG0q/7zc65kTvJz8e7goKomi9I9R9GfZ+VCQWmF8vLjV3zYOEO
+	mDeOwLd8jLa6S5S44m67HWz1YEEQ8TDqkwFhuDU5dNvSnwuB3X4iaLgj55Mx6dFzsL8Kux7si4Q
+	gpx9DQyr1h0fv5ZlSDZe8ql0oc1VsLqWCFIXBiHMb17/vahIH0IR1I+5FJh6L//BDv+hy7Mtagw
+	JHyJE6a91YfGtF9kGH+ZlDZ3KDMTX8pSbmxuXRzCInjbxsTo6AguyrLh6G28aMCpsV+Sqwk9boU
+	QCi6t81Ch8x2rLHyv6UxwK69+cgwu1Pg143/YAgjYSytgjOA7nXHJd1A==
+X-Google-Smtp-Source: AGHT+IGipYF4mZDov8GT071nlORrkJZTprlrf5t82OgbpYKAr7dhD2v2X/DdsLeHYnlBP2jjCg32qA==
+X-Received: by 2002:a17:903:244a:b0:290:c0ed:de42 with SMTP id d9443c01a7336-2984edc95d0mr16844625ad.36.1762910337057;
+        Tue, 11 Nov 2025 17:18:57 -0800 (PST)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dca024dsm10539015ad.72.2025.11.11.17.18.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Nov 2025 17:18:56 -0800 (PST)
+Date: Wed, 12 Nov 2025 10:18:53 +0900 (JST)
+Message-Id: <20251112.101853.1558870636834355421.fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, a.hindborg@kernel.org, ojeda@kernel.org,
+ aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
+ tmgross@umich.edu
+Subject: Re: [PATCH v1 0/2] Add support for print exactly once
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <aRPdGg01VDJucAfS@tardis.local>
+References: <87jyzx6ix5.fsf@t14s.mail-host-address-is-not-set>
+	<20251112.094508.554651669948369724.fujita.tomonori@gmail.com>
+	<aRPdGg01VDJucAfS@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW4PR12MB7309:EE_
-X-MS-Office365-Filtering-Correlation-Id: 50ca624b-87dc-4628-f9b8-08de21887d1e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YUQ0cVVTZVMyaDNFd1k1RGdPMUdLZHVCZ1l5UXFPMUY0Ump0Vk15MnFyMHla?=
- =?utf-8?B?MzVhUWhzeE8wV2hRNjl0YkYwZWFoTHZLRlRwWURpbHN2R1hMcjhUYW5IeWNx?=
- =?utf-8?B?emxJUko4N3RodkltTDM3eFl5MTlBakZNanhiZ1JRR1dRSXI0WDBmUDJhMEFZ?=
- =?utf-8?B?dmVtL3h2amp2R3FhUUhmUmdWaXpFV3NsMnFzSElTcDkyOFIwc1hGRnJoNXQ3?=
- =?utf-8?B?N3BiK09LQ0g1TU1aR0xHaGJnV2VBbDZDcHZaemZ6RDhiU1lPUGlCamlFS3pU?=
- =?utf-8?B?dXBCdUx1eWY2RkMvaXpWT1FIWXFsL1YrTnNsSUFJQ1dqSHVwMStNOFJEREho?=
- =?utf-8?B?U2N0TEk3bzEwaVpTMFJWNWprMVJRQ2xKZ1JPUDhVUEtFMTVIL3pwU3FmQlNt?=
- =?utf-8?B?aTU2b0sxK2ZTV2JYUHFKelpxZCsxNTkwVEhzTitLbDhmR1Fxc21FZjVPQW5u?=
- =?utf-8?B?NTh3c3NwNlNNTndkTFJKOUI4YXRrNWZaTVRXUlJCWnRVaE04UndSVlB0amJH?=
- =?utf-8?B?dXlxWUhNV25pQ2pGL0lkczYzeHhWYzNwcTZ2VFIwaXhrd0tXRnVXeXVJQlZK?=
- =?utf-8?B?RWVxR1gvOUhsa3N4eUJxNWwwemxIZmxmWmpoWXpmWXZhL0kwbkQzVC9uOEZB?=
- =?utf-8?B?ZE4wWm43UmJKM0J2L2dtV2pYc2luQ3hISGpVaXVqVXp3U3VLK2FFbjYzL0Vs?=
- =?utf-8?B?Visyc0ErR0N3OEEzNUc2YWxSbE5KWVJlQmZwRlRJbndPNTNsM2M3cUl5em83?=
- =?utf-8?B?enpBZUNYMTdSQmo3MklKajRZK0dBUENRaEJBMnlUNGFjbnhhcFZTR0dkVjJF?=
- =?utf-8?B?WStXOWdqQkFJeXdmeHk3dk41MDlFQ3JITGVYdG1tZ3pwM1NRL0tHdGowUzE4?=
- =?utf-8?B?bXNaRTFzMkRxcWdrdHh3RUp6Y0FSNW1oeWlYeHIzNmNEWVFsRitFbnVBb05T?=
- =?utf-8?B?YS83b3doaGhwQmFoWTBMc2NvTWRnTy9NaU9xU3pIQTJEQjJHY0xrQlFRYzF2?=
- =?utf-8?B?Q0tWMVB0NGsrR2xhQnVBNmtCZER2UXJYaytXc2R4UWdmUzNNaFk3d2puU3RR?=
- =?utf-8?B?Z3doZ2hDeDRHRXhtWTRCK3Q5UFVtWE1XMnp2empwT0NtVnV3L3Mwczk1aUdp?=
- =?utf-8?B?YUNkRUVDeGhOb0ExM09taGthYmhCemMzYW13cng0bWlGd3ZVWkZiUzNrTVVL?=
- =?utf-8?B?N25FdVd4M0RqRXUzSTJoZWoyS1JtMkkrRC9JOUNwamI3UVQ1K2pLK2d4R1Fn?=
- =?utf-8?B?Z0lKem9HOUI1TnRYcW51YmFLQ1IzY25ic0grNy9qdHNTRDFRY1VrUEovMHNY?=
- =?utf-8?B?WUNEd3dpdjAzZVg3YktScEorTDZZT3R5VC9DQmtDU0ZVaDhLMzNtU2FwdXJ0?=
- =?utf-8?B?dGJpWUZueVhJZEJqMjBnd3l6MURqNy9vbThRbUlNNnpxR21mZ21zb0Q4UHB6?=
- =?utf-8?B?MENKWjJjd2RqcVk0RXh5eHVaQXZPdlBIYkRhMktWMGwxWkx5S0RaWFNjMDA0?=
- =?utf-8?B?Q2ZTc2UvcTVmOFBuM1p5b1o1WVhaZEkwRy9pWk05M2xaaGpvQzFGSkJjSHZk?=
- =?utf-8?B?NW9Pa1RCNVcxRjQyZlAzWmVheHl1UFB5ck9pYTlVN2lidVFnVFlLbFBnRFpa?=
- =?utf-8?B?YUdnbkNxbkw0S2RSb3pWWFRNU24wSUo3azl3WTVJazRQWWgwcmwyNzJmRnBl?=
- =?utf-8?B?WmJ0c09tVnNpSER2YVJCK2FFNi82MVlqT0hGMmhYU0tvYm0vTVEzdk1GN0lB?=
- =?utf-8?B?c085QU55aTRVdkxyMG9VWWpCZmlERjl5aG5nUzFpRlNwREx0ZnMxU2ZIMld0?=
- =?utf-8?B?K3RCbVFzMjVvdWN0ZGRMN3JQdFZvcStXaUNoTmpXU3NnT2VaSDhCMGMwdWRt?=
- =?utf-8?B?c2RxelhWQmIrN2czbUNOWVk3d2NvQjVySXBSSkxaUnpFQy9ldUJjMFN2QkVF?=
- =?utf-8?Q?9D9XHvZYUdKT1pX+CNz+95VtWGMCqV94?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZTNxc0RxTWRKZ0dLZWgyRlhOL3JLbUZ1N1JPT2ZudEZueGpDdkpCTWdZOFBs?=
- =?utf-8?B?ZjVyWFlNU3JwZkNMdzIweGxMRit4U1lWVDhMSU1yOVNkZVVMRm5nYWgvV2wr?=
- =?utf-8?B?RFo5TFAxL09jSWNaVnF0Lzd6ODNsUk9kK3NZR1JUcmZqYmFTUTNwN3crNG5u?=
- =?utf-8?B?Q2RnZlhJK0p4bXhqVldFNXVaRS9jYjZGeEJRMzQ0M0lyaHNsN1Bsb25nZEpR?=
- =?utf-8?B?QWJmRFRzbEZ4M0Fyeno4eU5sMHBmTjY3Zk5iVmZpdWFsem9tUVpJYkhrVlRD?=
- =?utf-8?B?cWJ4RmlqMWdmQTZIMmUrZGh6WDBEOW9GVUJVaDVuME05cnNkU1p6L0FNdEY4?=
- =?utf-8?B?Z3E5RFpwcXpSMlhaK2RFeCtyQ3Nvb0dSMWgzeDRLK2VOL2o2Z3p3RDFURWt5?=
- =?utf-8?B?U0FFa1RCbzZBamFyNWRxY0hZZno4cFdteWg1SXhpci9DU3JQcFRQY1h0eERW?=
- =?utf-8?B?bDV5RHNGSHJUK0NZM2J1VXFNbGdmNVBMaTNZcG1jYlFDaVdLcmtGMjJUcm5h?=
- =?utf-8?B?QldtR1E2MzRGYmFLdUVOMjd6NEttK01lSkdSN1hRR1ZialRja1lySTliQ0dZ?=
- =?utf-8?B?dHo0TXErNGsrMmJsdFJyTUV0RUx5M2hWTlppZ3hiN2hGcEJxTFliZTVNaVBO?=
- =?utf-8?B?OTFXZjZrMlFjYld2NXlQSENuRVBZUkFlQTVXdWNWMmFMOGZJMXRqWnRyK1pG?=
- =?utf-8?B?UGY1cWpjTXZHVC9UeVFIbDVyUHlZR1BrUVNiRFIrWE1KNFJPWllENzlISmFk?=
- =?utf-8?B?YWo5Q0lBVUFtZ3g4bnE3RUtaeFpJenB4eWxaajl1RXpXUVBndUhTWHI4cEJ3?=
- =?utf-8?B?ZFc2Y3Ezc3NnMGtNeFZndjdnSWN0YTlRcjZjTUMxaGpLVzdpWTlzNmdhRGkv?=
- =?utf-8?B?emRDWlVpcmllKzBPcW9MZVJYRTNUKzk3N1k5RnJBOW1tVlU0cWhMejJOTkFr?=
- =?utf-8?B?eC9pY2s3MnRsQ1NQZnRLZFczazQ3MzI2S0kzaXB5MWN6RWljQ2VmaGNsV2lr?=
- =?utf-8?B?bGdSSWY2S2hWQkdyanVZQ05xUEFtOEJrTVBOcVMwZDRIcG0xRCtxWjdBU2JO?=
- =?utf-8?B?YmpxSDE3WDBRK0FXZSs3ZjYyem1xUW5TOU95WnQ0R2xOb0lDMlBoWXEyMm5q?=
- =?utf-8?B?TFNYdk9adEdkQnBjSHRHZ2JVZytxbFpZcUQ0YVVuOVpqY05QZ3ROeXFXOXhG?=
- =?utf-8?B?WFcrNjc4ZklwZDRCazN6aXRibjB2TmJ2Rm4rSno5VEpYUGtIUzI1clZOMWh6?=
- =?utf-8?B?MFZXWisxSW5TaU96dC9jZWg5bzV3NDZwaW9LWWpseVZGcy9tRURvL2xRdlFm?=
- =?utf-8?B?UklGOWNCMmdPVWxtMGVMbXpBYTFvdmJseWJzMlh0R2xwY0VnOVYrbXlSM01n?=
- =?utf-8?B?ZTFuNWtQVGJDa083Y3MzOUg2bGN2cDAxZllqdm4yT3ZSYitkNmh6QWtKN3VO?=
- =?utf-8?B?WHdvVWdhTVIzNkFZVVIwWGozQmE1WFF6T2xsSjZkTnRhOGdpN0tEY2c0K2sw?=
- =?utf-8?B?ODBJRktEak8xUUh1cjBkNEpNbFMyd0dVOTJXZDh2eVpwSVFRU1BIdXBrL1BH?=
- =?utf-8?B?WFh2dnFkWTZhR3hwdHljbTNoRWJabFRlQ0RQc0JFbnBlQnNPZkxtMGt6bncw?=
- =?utf-8?B?UVEwblFZZjlvcFhTSEd5aU5RZlZtRnk2NUk3KzZGa0xpeHUvZ2lEc1lmWnF2?=
- =?utf-8?B?bkpYbHhDWVlFK3RlK01FbGVLS2IwUVZ5U2pGcWI4TWtxYlJXVmsxQW5XY2I3?=
- =?utf-8?B?aklpeVdBVGV3NmY3TklEMndxWlNNK284MHMvb09Ra3FFc1FRc0VPWUVHRHk1?=
- =?utf-8?B?MHFaRU5wVW9OV3NvcnVNQUV4bWRvVU1MUkQrZmpHb2pLb2cvZGNCaUZhZDJi?=
- =?utf-8?B?NmRNaFZ1cmZVeDlla2ZXQUZNcjJxczcrSVB4d29Ia2R0bkJ1dkx5VlNFYU12?=
- =?utf-8?B?bXl2SHY4K0VicEIzaWpzYW84ZXl6TVR0ODR3ajRTTC9mSXVRNHQxemtXYUgz?=
- =?utf-8?B?Mk1RTG1wSmsyZ0NGUmRwNHFlT2ZCRjFRMC84dHo5ZTN6aDlRaWtXQWd6Y21Y?=
- =?utf-8?B?eWt4WEROaFRXek85WGdZblBTVDhTODFRS1hZL0lCbGdoa2dQcWt5SEM3dzFV?=
- =?utf-8?B?bEhoVVZpV2x2L3ROK2gvZk41RThpcnhLTmpZUjZiREhqQi9ZaVhsaU1Mb2NN?=
- =?utf-8?Q?N0LJkgVfjSn40x6esVXjeYULGWwxKRcjqcZVAWoNYANA?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50ca624b-87dc-4628-f9b8-08de21887d1e
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 01:12:03.3346
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +xc8l9oqyRVrHK3kuKakBMl9l0vZdmLjCzUk5S0FGQtn88FKPzTSQxfbalAa0tCMMOTeDhH+6dr6c1cKAlQA9A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7309
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed Nov 12, 2025 at 7:06 AM JST, Joel Fernandes wrote:
->
->
-> On 11/10/2025 8:39 AM, Alexandre Courbot wrote:
->>> +    // GSP sequencer delay payload structure.
->>> +    GSP_SEQ_BUF_PAYLOAD_DELAY_US,
->>> +
->>> +    // GSP sequencer register payload structures.
->>> +    GSP_SEQ_BUF_PAYLOAD_REG_MODIFY,
->>> +    GSP_SEQ_BUF_PAYLOAD_REG_POLL,
->>> +    GSP_SEQ_BUF_PAYLOAD_REG_STORE,
->>> +    GSP_SEQ_BUF_PAYLOAD_REG_WRITE, //
->>> These ones are a bit trickier to abstract. Since they ever only use
->> `bar` from the sequencer, I guess we can have their semantics in the
->> `fw` module, exposed through a method that receives the `bar`? That way
->> the sequencer won't have to access their members which are private to
->> it.
->
-> The sequencer does need access to the private fields, because the logic o=
-f what
-> to write to the bar should be in the sequencer, and that logic depends on=
- the
-> fields.
->
-> Example:
->
-> impl GspSeqCmdRunner for fw::GSP_SEQ_BUF_PAYLOAD_REG_MODIFY {
->     fn run(&self, sequencer: &GspSequencer<'_>) -> Result {
->         let addr =3D self.addr as usize;
->         if let Ok(temp) =3D sequencer.bar.try_read32(addr) {
->             let _ =3D sequencer
->                 .bar
->                 .try_write32((temp & !self.mask) | self.val, addr);
->         }
->         Ok(())
->     }
-> }
->
-> Here, the sequencer needs access to `.addr`, `.mask` and `.val` to craft =
-the
-> address and the value to write.
->
-> I could expose access to those fields as functions, but I think we should=
- not
-> move sequencer logic to fw.rs, that should live in the sequencer.
+On Tue, 11 Nov 2025 17:04:26 -0800
+Boqun Feng <boqun.feng@gmail.com> wrote:
 
-Yeah although I floated the idea I have to admit I am not a big fan of
-that either. So I guess we could have accessor functions for the fields,
-so the `GspSeqCmdRunner` implementation stays in the sequencer?
+> On Wed, Nov 12, 2025 at 09:45:08AM +0900, FUJITA Tomonori wrote:
+>> On Tue, 11 Nov 2025 10:02:46 +0100
+>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>> 
+>> > Boqun Feng <boqun.feng@gmail.com> writes:
+>> > 
+>> >> On Mon, Nov 10, 2025 at 01:16:44PM +0100, Andreas Hindborg wrote:
+>> >>> Boqun Feng <boqun.feng@gmail.com> writes:
+>> >>> 
+>> >>> > On Thu, Nov 06, 2025 at 08:12:31AM +0900, FUJITA Tomonori wrote:
+>> >>> >> On Wed, 05 Nov 2025 21:59:06 +0100
+>> >>> >> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>> >>> >> 
+>> >>> >> > "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+>> >>> >> > 
+>> >>> >> >> This adds the Rust equivalent of the kernel's DO_ONCE_LITE and
+>> >>> >> >> pr_*_once macros.
+>> >>> >> >>
+>> >>> >> >> A proposal for this feature was made in the past [1], but it didn't
+>> >>> >> >> reach consensus on the implementation and wasn't merged. After reading
+>> >>> >> >> the previous discussions, I implemented it using a different approach.
+>> >>> >> >>
+>> >>> >> >> In the previous proposal, a structure equivalent to std::sync::Once
+>> >>> >> >> was implemented to realize the DO_ONCE_LITE macro. The approach tried
+>> >>> >> >> to provide Once-like semantics by using two atomic values. As pointed
+>> >>> >> >> out in the previous review comments, I think this approach tries to
+>> >>> >> >> provide more functionality than needed, making it unnecessarily
+>> >>> >> >> complex. Also, because data structures in the .data..once section can
+>> >>> >> >> be cleared at any time (via debugfs clear_warn_once), an
+>> >>> >> >> implementation using two atomics wouldn't work correctly.
+>> >>> >> >>
+>> >>> >> >> Therefore, I decided to drop the idea of emulating Once and took a
+>> >>> >> >> minimal approach to implement DO_ONCE_LITE with only one atomic
+>> >>> >> >> variable. While it would be possible to implement the feature entirely
+>> >>> >> >> as a Rust macro, the functionality that can be implemented as regular
+>> >>> >> >> functions has been extracted and implemented as the OnceLite struct
+>> >>> >> >> for better code readability.
+>> >>> >> >>
+>> >>> >> >> Of course, unlike the previous proposal, this uses LKMM atomics.
+>> >>> >> > 
+>> >>> >> > Please consider if it makes sense to base this on `SetOnce`. It is in
+>> >>> >> > linux-next now, but was on list here [1].
+>> >>> >> 
+>> >>> >> Data placed in the .data..once section can be zero-cleared when a user
+>> >>> >> writes to debugfs clear_warn_once. In that case, would such data still
+>> >>> >> be considered a valid SetOnce value?
+>> >>> >> 
+>> >>> >
+>> >>> > It's still a valid value I believe. In term of data races, Rust and C
+>> >>> > have no difference, so if writing to debugfs could cause issues in Rust,
+>> >>> > it would cause issues in C as well.
+>> >>> 
+>> >>> @Tomo you are right, `SetOnce` would not work with someone (debugfs)
+>> >>> asynchronously modifying the state atomic variable. It requires
+>> >>> exclusive access while writing the contained value.
+>> >>> 
+>> >>
+>> >> I mean if we were to use `SetOnce` in pr_*_once(), we should just use
+>> >> `SetOnce<()>`, and the problem you mentioned doesn't exist in this case.
+>> > 
+>> > At the very least it would break the type invariants and assumptions of
+>> > the `SetOnce` type. There a race condition between `SetOnce::as_ref` and
+>> > `SetOnce::populate`. I don't think we are allowed to race like this,
+>> > even if the type is `()`?
+>> > 
+>> > At any rate if we do this, we should update the safety invariant of
+>> > `SetOnce` to state that it is valid to revert the type back to the
+>> > initial state for zero sized types that do not have a `Drop`
+>> > implementation.
+>> 
+>> I agree. I think that even if the type is (), a race condition would
+>> still occur if the init member were reset to zero using non-atomic
+>> operations. For instance, the as_ref() method effectively checks
+> 
+> I already explained this, the debugfs writes have to be treated as
+> per-byte atomic, otherwise it's data race, using "non-atomic" to
+> reference that won't be accurate.
 
-It will at least provide the level of abstraction we require against the
-firmware types' internal structure.
+Suppose the init member of SetOnce is set to 2 and then reset to 0 via
+debugfs. In that case, if two threads execute the as_ref() method at
+the same time, is it guaranteed that they will both see the same
+value?
