@@ -1,221 +1,94 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CEE2FDC5C
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 09:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58E12C0F6C
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 09:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762940950; cv=none; b=pXYqN33ymgQXca4OHLjsbdjEbkm7UA/Mdm9447MtDRj+77snhtQYDD84svpwYsaJfFnoFKlwcHpgWmKsqhdIJLJdARvKkzeIE1qDHs6Qtpf3wKgO+o/QXR7ZHW3FKK/X2iF437e/rcM1ndE5XtLZMI2KE/a3jvDvmwOZ3Jx/8js=
+	t=1762941428; cv=none; b=A9iRkgOcOVA0ZsAoaSIqilIgc1oTGN5/sb7LLoO6zkVjIyDA9H98se4BelMgrgHiY26j14AMGJvr1ZngA1hgdI/PHcPwqwBgKJXa6N0VqL/r3NT+fFNajgJpDDVTj93/OTd/Dr4bTbNddOiGJxwrOJal8Js8BbAOBu9bE0OQBxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762940950; c=relaxed/simple;
-	bh=JnroIx5Mod0LvWzfxsHi8lC2HMAygcMfxnURZ1dW9Z0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hUpECMKd5TdLE1SoFu7gq6/dqycyCNounuYTTmut+6Ikg/vLD6UFKV9pgFZqWaHRwLwKgiKI+oTfZX1QJA+KDrYO1DamKZ5rVJbUuYhPMV1wHWmU4euzPubTNYWUMqhrxVsXr5uF+bnqce9Vwv91I7iMcodhY9519ZGFZvwbIeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vVpr7Ih1; arc=none smtp.client-ip=209.85.208.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1762941428; c=relaxed/simple;
+	bh=CIbkZoEcvxMuArEM88rMsYIiHa3ILLozzeTvmZfTtT0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=asI9PAaDCaBk5AKmFXZ7pRUuUW85mC4Dc8bhDT6gVDzn+zs/B9ucyD9xPfWaSzyZ+bpl9OBKrijegiJC2TsER05ZlAt8aJX1/VeSbX18tEpIy/uV3+16YdTBHEY9jANQLEHJ+a6KDjD/UiiQb9ICo1yI7h0zO1Z/mj0DfJsN/Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MytEszeF; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vVpr7Ih1"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6411fc67650so691729a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 01:49:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MytEszeF"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7a9fb70f7a9so44816b3a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 01:57:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762940946; x=1763545746; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=XgfDsUZ638nSlM9QsO/BjlaImnMhRtBDf+7UnlFjNC8=;
-        b=vVpr7Ih1G7xxs1FHFMg7hvv0X/u7djAzPcXsNyEeLACQW3st1YpMcLSfjEp1l1OonA
-         HTS3ScdqNMZ6+jzHEP8lMpcp3bRBP6xsgLMhGDAIcax5p8nXL9+jKXTyqWnFc96aHB2K
-         A5QE0HrNWTulQkcCXWO0xcUaAes3DqKtOS6aTwkeUrDRg75fBPahC3YzBSG0GmgFK1eJ
-         uz1i7YOMf4tORRZFbXr2DiZeCRoZdITml6ZlvhdAgeQXS2VQQuxqICAxQyVEF7krnFWh
-         O/UYZ8xsX85dHBsmQaZlIZx81C7wnz0wPuzXmgNlwE20Ru0gF5q37ZXuAAtXzjt9rbl2
-         KiOA==
+        d=gmail.com; s=20230601; t=1762941426; x=1763546226; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CIbkZoEcvxMuArEM88rMsYIiHa3ILLozzeTvmZfTtT0=;
+        b=MytEszeFd0wvJ/wuqK6NxlN1QefOYVAO9HXEowT45u60+HCefw/nIrfoaXUhufX2nU
+         OkHgE1D4A9iOBTlIofrniMgpiqFrKF75GddJ3Oo+JCfYBQg72HHTIBCx3dE+fGZnTvTu
+         1gwrZNUsThvakhEB+6FDzD4zWq8ue6oIWN3IHfKzurWTANuMSONyGxpEec4xQbQTS2rD
+         4vSFASjxFFOsB6ledt3cJT0SLeildTq4VcMUJj8cseWdQYRqiIQGqT1qIN7qyGw/SQSX
+         aM9EjLnf8wl8CvXnBxun86n+eKCkZ3Ix7JJfd0GlX73XpVzpFplnvKeZ9swM5HYITGtg
+         3csA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762940946; x=1763545746;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XgfDsUZ638nSlM9QsO/BjlaImnMhRtBDf+7UnlFjNC8=;
-        b=MRPL4AbwahoHl6jwyWObp7SwkvMji0KasII2Ud5+t1FbzOkwn97+W9VHHpQTIQ7KqV
-         KDbbozluLGqv7Jky+s9X2qeHbMXNx2nx6Llj3ricQg+y/aotIEHRO0eX1HRNS9au1TY+
-         D51dUVcfZnYSDhaA6oazVjZMZNIGjMw2p93W9sIayG3l9bEcaQfuVKJJlP2f65U366UN
-         /IltZshMv0v2O0WHIvYrcxezS8y/5lao6ltuJVF8uAC9reaiYvIDUWmztrNkg6+YoVzs
-         Rv5uF7RtyllvBepXUd8EsDkuSj4onik8Zteq+fO5cab0V6kztSK7/UID69uybT1YizI0
-         friw==
-X-Forwarded-Encrypted: i=1; AJvYcCXvBOaCKz9oJMWUNxS/h6b2rBZV+h6AHcxDBhdPp2HEXNwJDk+jjVXdsYF9l88Dv6/Fhqz7skTCKsY+A1AVeg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCcxAGjRaUi7wu86I13dtsy3d5s/oMq3QMXYTJRRkJFPANsSGP
-	uGINQa7ZvzvKItCbeCirQVqR8mEwMuOwn3PsBjoucMcJLf3GU3l7t9E7iHDYL0fuCbDk9XmXtYe
-	hnQcI45UtjTjGal1GiA==
-X-Google-Smtp-Source: AGHT+IE+cjLYnTFZuo5v6gTqC7tY+9gCgCj3XFCBabgexAOsp/gnMC81dLElIaB5dX/oUzHAaCm70diaCOcjx8M=
-X-Received: from edhs12.prod.google.com ([2002:a50:8dcc:0:b0:643:12a9:41aa])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:518d:b0:640:af04:d71d with SMTP id 4fb4d7f45d1cf-6431a530103mr2083350a12.22.1762940945677;
- Wed, 12 Nov 2025 01:49:05 -0800 (PST)
-Date: Wed, 12 Nov 2025 09:48:35 +0000
-In-Reply-To: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
+        d=1e100.net; s=20230601; t=1762941426; x=1763546226;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CIbkZoEcvxMuArEM88rMsYIiHa3ILLozzeTvmZfTtT0=;
+        b=kZJEJsm/ZTTJLUZlblrNt8KbpB//Wi93CqNTg0kFwYjq1UQy0Tlwz5VFX+bFY5Mpjd
+         ix5K7vTUx1Ugc4MZBsMT0mL1BgqPEQeJfzUT5Y3/ufiiTVEPXxwh7tG8ImZwKYbTrZ25
+         1rs2Pd6LZpk7//krUNTKgGfA+xGWc4XToIgicGD1/qmmBWxxnw0kF9CQaxVAPKjbQEDT
+         JSi05AqWkk/PwtwvwARD7sCzfyPp2Inv6ODeV9UwAwYqs/4VTfVRG1yfpWk2zNMmhZ5Y
+         9INLa3c++talfeumR3SzzQdBOEVBbbfinf43KkdfjinIW2pGDfGdAfmdoZINeHzGCOi+
+         Xb2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXBX45ZdfGbJAm5cYt8o4dTBAA6LTcG1R0DFfaHrDQcLPQuEMpJ/4Ie2EQFkuDakU7igt2F0i/DXqwWbQG1hA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjZPLSprjMAhIASminy0/PVkO4F9PM3b59xyhp2VDet3iGAE3J
+	oyuwDhUR/bXDiTHyj92mTBZ9kL/7zfncq/Mr3A5TysuLUovNCaXt1dYNIkPv3fiyeIQUxxHepf3
+	C6iI4YJOykNX+dB27/mA2bBpdK4Sso6E=
+X-Gm-Gg: ASbGncsQvaLFVrVvuNyNSyRrOZvzQLJVgjKFDETArAFp/w4MYqnxMNqcWTDGuqPtt/1
+	MN/RspvxcAnaee7N0bIZiguK41jBfr7kfXHAigrLdVp1O/dHp6euIMrkthKu9/uJTuwTc7Ea5BD
+	XDB2zrEeh4g6hsDxIdl2T7yO9fGi9MWWwXzZbGqyzsQ3djuSepggRWM8BccZuj2gU9vxeMtSTjy
+	ZCcafIsRNeCpb47vqaKc4vwbmhzru4EAItnioatPEx5D1fdiguhvY5ybKk9ZF/QyvDkDdGLWGB7
+	acwIpsF3I7xOqOSV0nqLkjxTKYhvgeWZXn5Vh6vGZcVyrDtpRyCYhZdVgHfiJ8cT2KZQHsGgtSR
+	NTjZY98YKODiPGg==
+X-Google-Smtp-Source: AGHT+IEhemJfSLH/p4Bhjk03hiHG8nPZMckQ4o1gzMhDR33YwdnDKqTg/WdwFRNF3u+gDynCToXBRDMfK6PTspqbdUQ=
+X-Received: by 2002:a17:902:d4cf:b0:297:fe30:3b94 with SMTP id
+ d9443c01a7336-2984ee0ca79mr17858365ad.9.1762941425924; Wed, 12 Nov 2025
+ 01:57:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4678; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=JnroIx5Mod0LvWzfxsHi8lC2HMAygcMfxnURZ1dW9Z0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpFFgMvhta5ZE+nVzvbAWjQ6Bmf4qj5MzJLHNql
- Vvajde1Zy6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaRRYDAAKCRAEWL7uWMY5
- RoltD/4gZDgFyfkmyIQ8jz86Sq14oRcj4YA9tYmTwoVN1CNa0xK19cl2/YssVaGvVJxNcrFmImO
- X80ej0I0zG+N35qE9MRyjp7qUtarjOuVT2FKZtQi9EEtO4dipnF5LukHnEm4qrU1e9Eu3ML6x/0
- mnqNVazTZYVsrshwe8rYpA5mYMCmapfaF/43rzAJarZD/cqEAlRD8Lg+JWsUsDj9KCFO4dras+e
- 7C6t/f1dRVt2fs0+hYv+sjqlA6AXvL0HY0/CYmF3nD1UKg8FftxzaJGvhwFDR7thPD7G5xlYEVi
- YXOOW0Mo9FLTi4UwCz9gY+7uT8SC8ZaWLsTv8slejFqpgFp6ITYWlxAFwi0Xw2u5+Y7Or1wquv3
- j8hACH5nreHi4yUGKkzaVcYYZTEn4jMJqBS+GQGIZsxAQ1bG93z7+EVkE3iVH64PpADt3AeiOzr
- c7fVEe4qsBqRbFK0lHt847m0x/GNejvgS2PUnuKcKPlqf0guND8h120c+eQ3f0fV+8NvG57WSBH
- fjjjrIqrBEVvU8ySKVS/O3/EgtSzTBkKB80YAojHF8Y8Rdst/ZdpOfvpqRKoJ8z/szWMzUu/x+I
- RCaXvjlYMJupB0eimvFU2Q19Nkx5LKWWVxaozUnvB6gKZHgIkMAu1AbhH2cASzPLHr87k1Ceg8t BjyyHxyV1Vo33Hw==
-X-Mailer: b4 0.14.2
-Message-ID: <20251112-resource-phys-typedefs-v2-4-538307384f82@google.com>
-Subject: [PATCH v2 4/4] rust: io: add typedef for phys_addr_t
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20251101214629.10718-1-mt@markoturk.info> <aRRJPZVkCv2i7kt2@vps.markoturk.info>
+ <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
+In-Reply-To: <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 12 Nov 2025 10:56:53 +0100
+X-Gm-Features: AWmQ_bmwDCOcARGiEKIpjIRnRae5yfDKTRIUwc3OloyDgPkRmaMpijy0lYQ_hkA
+Message-ID: <CANiq72=yQ1tn0MmxNHPO4qOiGm7xZzHJAdXFsBBwmFdsC37=ZA@mail.gmail.com>
+Subject: Re: [PATCH] samples: rust: fix endianness issue in rust_driver_pci
+To: Marko Turk <mt@markoturk.info>, Dirk Behme <dirk.behme@de.bosch.com>
+Cc: dakr@kernel.org, bhelgaas@google.com, kwilczynski@kernel.org, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The C typedef phys_addr_t is missing an analogue in Rust, meaning that
-we end up using bindings::phys_addr_t or ResourceSize as a replacement
-in various places throughout the kernel. Fix that by introducing a new
-typedef on the Rust side. Place it next to the existing ResourceSize
-typedef since they're quite related to each other.
+On Wed, Nov 12, 2025 at 10:37=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> Cc'ing Dirk, since he tested the sample originally.
 
-Cc: stable@vger.kernel.org # for v6.18
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/devres.rs      | 18 +++++++++++++++---
- rust/kernel/io.rs          | 20 +++++++++++++++++---
- rust/kernel/io/resource.rs |  9 ++++++---
- 3 files changed, 38 insertions(+), 9 deletions(-)
+i.e. a new Tested-by is appreciated if you have the time since you
+tested with QEMU originally, even if this is a no-op in x86 (where I
+think you tested).
 
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index 10a6a17898541d4a0f01af41f68e3ab3d6bb0aca..e01e0d36702d38e9530a2fa4be884c935c6b5d0c 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -52,8 +52,20 @@ struct Inner<T: Send> {
- /// # Examples
- ///
- /// ```no_run
--/// # use kernel::{bindings, device::{Bound, Device}, devres::Devres, io::{Io, IoRaw}};
--/// # use core::ops::Deref;
-+/// use kernel::{
-+///     bindings,
-+///     device::{
-+///         Bound,
-+///         Device,
-+///     },
-+///     devres::Devres,
-+///     io::{
-+///         Io,
-+///         IoRaw,
-+///         PhysAddr,
-+///     },
-+/// };
-+/// use core::ops::Deref;
- ///
- /// // See also [`pci::Bar`] for a real example.
- /// struct IoMem<const SIZE: usize>(IoRaw<SIZE>);
-@@ -66,7 +78,7 @@ struct Inner<T: Send> {
- ///     unsafe fn new(paddr: usize) -> Result<Self>{
- ///         // SAFETY: By the safety requirements of this function [`paddr`, `paddr` + `SIZE`) is
- ///         // valid for `ioremap`.
--///         let addr = unsafe { bindings::ioremap(paddr as bindings::phys_addr_t, SIZE) };
-+///         let addr = unsafe { bindings::ioremap(paddr as PhysAddr, SIZE) };
- ///         if addr.is_null() {
- ///             return Err(ENOMEM);
- ///         }
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 6465ea94e85d689aef1f9031a4a5cc9505b9af6e..56a435eb14e3a1ce72dd58b88cbf296041f1703e 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -13,6 +13,12 @@
- 
- pub use resource::Resource;
- 
-+/// Physical address type.
-+///
-+/// This is a type alias to either `u32` or `u64` depending on the config option
-+/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit architectures.
-+pub type PhysAddr = bindings::phys_addr_t;
-+
- /// Resource Size type.
- ///
- /// This is a type alias to either `u32` or `u64` depending on the config option
-@@ -68,8 +74,16 @@ pub fn maxsize(&self) -> usize {
- /// # Examples
- ///
- /// ```no_run
--/// # use kernel::{bindings, ffi::c_void, io::{Io, IoRaw}};
--/// # use core::ops::Deref;
-+/// use kernel::{
-+///     bindings,
-+///     ffi::c_void,
-+///     io::{
-+///         Io,
-+///         IoRaw,
-+///         PhysAddr,
-+///     },
-+/// };
-+/// use core::ops::Deref;
- ///
- /// // See also [`pci::Bar`] for a real example.
- /// struct IoMem<const SIZE: usize>(IoRaw<SIZE>);
-@@ -82,7 +96,7 @@ pub fn maxsize(&self) -> usize {
- ///     unsafe fn new(paddr: usize) -> Result<Self>{
- ///         // SAFETY: By the safety requirements of this function [`paddr`, `paddr` + `SIZE`) is
- ///         // valid for `ioremap`.
--///         let addr = unsafe { bindings::ioremap(paddr as bindings::phys_addr_t, SIZE) };
-+///         let addr = unsafe { bindings::ioremap(paddr as PhysAddr, SIZE) };
- ///         if addr.is_null() {
- ///             return Err(ENOMEM);
- ///         }
-diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-index 7fed41fc20307fa7ce230da4b7841743631c965e..0e86ee9c98d840b44b8f8953f83d31612fdaea46 100644
---- a/rust/kernel/io/resource.rs
-+++ b/rust/kernel/io/resource.rs
-@@ -12,7 +12,10 @@
- use crate::str::{CStr, CString};
- use crate::types::Opaque;
- 
--pub use super::ResourceSize;
-+pub use super::{
-+    PhysAddr,
-+    ResourceSize, //
-+};
- 
- /// A region allocated from a parent [`Resource`].
- ///
-@@ -93,7 +96,7 @@ impl Resource {
-     /// the region, or a part of it, is already in use.
-     pub fn request_region(
-         &self,
--        start: ResourceSize,
-+        start: PhysAddr,
-         size: ResourceSize,
-         name: CString,
-         flags: Flags,
-@@ -127,7 +130,7 @@ pub fn size(&self) -> ResourceSize {
-     }
- 
-     /// Returns the start address of the resource.
--    pub fn start(&self) -> ResourceSize {
-+    pub fn start(&self) -> PhysAddr {
-         let inner = self.0.get();
-         // SAFETY: Safe as per the invariants of `Resource`.
-         unsafe { (*inner).start }
+I guess we could potentially consider something like returning a
+wrapper to force us to explicitly pick either LE or BE to prevent
+things like this.
 
--- 
-2.51.2.1041.gc1ab5b90ca-goog
-
+Cheers,
+Miguel
