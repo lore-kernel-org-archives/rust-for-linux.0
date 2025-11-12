@@ -1,168 +1,194 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CBA146A66
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 01:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656F526F46E
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 01:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762910339; cv=none; b=K/lMJiGuY76yHkt+usH78Tc0jcvFCbFAiXhgUEVhpH1GWrFxN4xPuqStq/2xwhfapO4oGfQVL0mCcy5GMY1DrhWW5E2Vrt80AGRTo94otORAI3wjLqIi3sBEsX01ejHLCkALP8g3nt2hh+MAUUVtm8dpB88sezOIz7atfT49gfY=
+	t=1762911035; cv=none; b=MjIi/HEEq9zSh5EEsKnuM/dPUNGGaY10LktaUOlnIsSTlVodCobTX+vsN78DnUKfd097rnCZFN0pzLouL+Fdu+8xhEIEmQZ30RjWbtP8JPB//hQKCIoOZHa1qeqBz5hp6OT63RRQgHgqcW4+qRxdnrLHljT8bDZ9+A9B8MLtYuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762910339; c=relaxed/simple;
-	bh=U1772FxmfKtfi8ZqQg2o+fPsIvselX/DTiCfSdK9rhM=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=kUo7+MktchlHew/ju8uLi9hoDu3poAboC6PFeVrbZ7gbHpKCnh9I+B2htzVeP1YhTvd8+y7YmLuc8iZhAy8jsbBNjhn7NyWY1PttGgRMgsuggFlKrMQJ0B/LHLMzWE2k788gZe8GZbnK7mRbPzCWVMffESyQGnXniTquNQNAvGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lPzLfVIu; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1762911035; c=relaxed/simple;
+	bh=kyD2wP832MV1bQnoh3LJA26134TS8bDYwQ6SneT3LCQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kT1A+g8PvLwETm5jF+puUrIqFM7Cv5dLRj71cW60t744lk+LdzUjZkCtFqRmdG8VORrGOvIcGRbMPzamzD7d/K9XR6EH/mvKIOQPrQO/K1VbSlg0CgrZ1ktCN1inGVC+t1qyj8fk9Cdb8E8R/7mkXAFEoEdqkrslHMaRTF0HlMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PLbz2Sux; arc=none smtp.client-ip=209.85.160.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lPzLfVIu"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-297f35be2ffso3169655ad.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 17:18:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PLbz2Sux"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4edb6e678ddso4133381cf.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 17:30:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762910337; x=1763515137; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E8GZM40tCNlvxK86P6UmcRlYcg37WH6CSmgvpcE4YOU=;
-        b=lPzLfVIuS4IYZde60QWeqv3QRO5AY2ah1RHF8kEP/xOsaAKDeLOoYuCAfRTxEM/eop
-         jm9N0ZJbeMIpYPWuMKJNWJ+U92eA+W2Y7k2lHRWE30qZcpvdk/ijS1U5PRr9s5NS7zCQ
-         VEhmqw2uGme2xoY6WoFFVtTGl/rCvF+m2zb9rQDNPNDrYnnfYvvCKrD4gWprT2mweg7p
-         H0i5UK4dkimbVH2VCYkrzxVpAsAxyZTlvOoI3p+irsRe0Hy7aOVt044nCCS/vnpsIaA5
-         jkZ6IXVvtpGFl4Fe7zj6vKdNOIkZAXGZUcIreRK7TDa/VLA4RALKj9Z1TqlXJ3MrSnad
-         er9g==
+        d=gmail.com; s=20230601; t=1762911032; x=1763515832; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bTzkeBzW34W3UqkE4DbsF2FzXlWOjU/t4tHSEm0wJfo=;
+        b=PLbz2Suxu3Uisn++a8xH6zF8KjkU/lptEu5XjM8YtqJrL2hG3kjRpEdV/I/Om6Y7sF
+         atXR//36GipLOBREPgts7JMHQxF+9/Cvj1ASBAnMt+JNCQU3W6Mr1Ky7i1JAFaEBUBUE
+         AsT/daQNYMD4s/lA2DfO48XiFZw37k64Uk36vzqv+TJRufzi09UJCeYrcLsD5QkIQ1Jn
+         GN63iCcEJ/rE+0qV9mYe/BexpmzvSJ0vWAEcuKgqAc2g6uEkE+NBu2B+zmqsZGCA0F/h
+         Ke/EMBJ0k4kYCt4Dcd6iZoPN2laKENj484kH80l1ndQ0IQgfWBPRtiiTfoQcdgwQyvuA
+         okbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762910337; x=1763515137;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E8GZM40tCNlvxK86P6UmcRlYcg37WH6CSmgvpcE4YOU=;
-        b=LurHt2WsO3Ww/HBlD/JLmHTirWkDvZ6bbEKxDYrH1/XcuW6HmkrquuR3aghPLsQIDU
-         cdO59qLpTpeg3DTaxfOa8a9hzdF+Z9JG8SZy6aG+RKyY0XJIhEZq2wlitxuKY2hCcRbU
-         LjXCVUKtvmV9uR2D39a2zxZt8qKVwBv/U4ZEIbGn49dXo5AgueVxRFDwEXxIypoTmaWK
-         iYZBZ9Je2hvvORePHOe8xF/kISbBnboR+zDOH3+z8HGSe8N0j8qHCs0+a11f/aq18hm7
-         REYCzLRfGyyRhVIlkjs0Z3uOLy5SyY13a2v/YXxplpv78huskGOfe9oqxLppNqn+eFRw
-         gQLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrkznTFgmczU0Jj4tqP2sQDfcyuiblIdIOJmQ0F+G6fqLPlASVoV05qbUpzKCRlOqRWv+tRqTScSAzXzSMZA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yywnay/4lGGe0DRmu0oxP+9FJlQXOo23GBSAkUv2pz8/QwlRa1x
-	TkKr/QmGTA6/PoSDW/ua2hDAC4hCDlybRtsa8oVPtVIdcdo95hFnydmc
-X-Gm-Gg: ASbGnctA7h0576PEJoN2duW9cNl0fxKcGPkoQREfN0CNFAUbJ0wB4YlLa1ougpqlSEf
-	xLYhNSutwWvl8Cy3vvYkWPFtf65xXVbZpmXhfLP/w3L4yhiA+HlOZGaeOEzd1bhcmua4QOck6Q5
-	ho/iQ0+DnU0Yf5c2nCHxwDlINRG0q/7zc65kTvJz8e7goKomi9I9R9GfZ+VCQWmF8vLjV3zYOEO
-	mDeOwLd8jLa6S5S44m67HWz1YEEQ8TDqkwFhuDU5dNvSnwuB3X4iaLgj55Mx6dFzsL8Kux7si4Q
-	gpx9DQyr1h0fv5ZlSDZe8ql0oc1VsLqWCFIXBiHMb17/vahIH0IR1I+5FJh6L//BDv+hy7Mtagw
-	JHyJE6a91YfGtF9kGH+ZlDZ3KDMTX8pSbmxuXRzCInjbxsTo6AguyrLh6G28aMCpsV+Sqwk9boU
-	QCi6t81Ch8x2rLHyv6UxwK69+cgwu1Pg143/YAgjYSytgjOA7nXHJd1A==
-X-Google-Smtp-Source: AGHT+IGipYF4mZDov8GT071nlORrkJZTprlrf5t82OgbpYKAr7dhD2v2X/DdsLeHYnlBP2jjCg32qA==
-X-Received: by 2002:a17:903:244a:b0:290:c0ed:de42 with SMTP id d9443c01a7336-2984edc95d0mr16844625ad.36.1762910337057;
-        Tue, 11 Nov 2025 17:18:57 -0800 (PST)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2984dca024dsm10539015ad.72.2025.11.11.17.18.54
+        d=1e100.net; s=20230601; t=1762911032; x=1763515832;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bTzkeBzW34W3UqkE4DbsF2FzXlWOjU/t4tHSEm0wJfo=;
+        b=IoPtr83i1nye0i8r+8VFb7mmxveHVuwttwi0qx8xgTeSEe5By8JqgbziDFh+nAoWlP
+         oGd/k8lgwO1Sdi17/k9BYIMDeb6ec4MOmnHcwEMqIJgNUMWTJlO+liQ2i2lsctVI8MOp
+         jcvEpWN6rjpDnAKegvkTC+KxZPJzVbiG63MHqr9ZdPm5vM2pb9YiYjtFWlGLacyL+VAc
+         0+fDg1B1o/pNYUdzK3iH5ioDS4y8m0gbM22fumQ7+NTpcZlLtlpysA+x5SCm4DMdlpGx
+         dUAdlyzSj+jnE1/Qp25aP3JgWQcBNStmZr0c8dtvWGrwve07vSOE9AeDoNd/ZOWfL64P
+         /RTw==
+X-Forwarded-Encrypted: i=1; AJvYcCX4yMtn+G5iq5/9PE74gibe39Kv8rJKd6iP7nrU3xJqS9812cSYoTLV1Unn2ZAMx5hSqVocoPRfSgbEmieNKg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR+dn600HBGDGk7Pc8iri5KSS5Lzd5mW06+pHfqyZbamuXpzgw
+	4dzgF2NFn4o34QaDp8a8LKGV7mOXK18Zo5dMQ1XD3iUfdolXGxDJAa/q
+X-Gm-Gg: ASbGnctijgogwTfrlcuQ8C49hAALbSKHZRG10Pg2Pz8SjRBJJV0eH4mP0CAIVPxAsZX
+	vErk7Bcdhvm4qn1lME9rlGozos72wW5U3lOM0sgDn02TWhuc5DZ5R5UmV8D7PfTbwNhRbboOf2Q
+	DgiIRvvF+LDC67YsviNfx9JbPSxZRVARvTTbE40pUzwCD2ilNOUZY43ZR1gA22knCKGoiJkt3bq
+	EPT3Xu2nVuOqSoVQtBCBrXoUIo7GqIEoNo2pkXrHyydOWkFOSYyT7bX0uknzK7ppjLw+tMTndB7
+	e8hyb9fI0xZvQZad9kdRsSzeo2LbNSsjwibEXsMyhvvDDA209t6+uXEhh3lkVamqW7KEKiIrzmq
+	LIlJ5ke5tVo594ECVJlNwI+YUiT7ok0A6dIjhraE9o1ofHUovp+KqV7c/TeVxZV165JvS4CZ2ec
+	sPvbqCpWrUi1/gkmHRZDsjFyhnbT9g2Jeec7U6vmz3Zuw/z6Y+lQJtUDuYmM2Jtd1kaXDSjpO6I
+	RM/
+X-Google-Smtp-Source: AGHT+IHAMvhmGpkoy+dwFH7SGtll5KNb0toeiELlAPqV3FygN1kqtqZqnreEqfCCrA98wjZkNomIMQ==
+X-Received: by 2002:ac8:5889:0:b0:4ed:d7ec:854f with SMTP id d75a77b69052e-4eddbd761bamr18759041cf.48.1762911032137;
+        Tue, 11 Nov 2025 17:30:32 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b29a84b0d1sm94173885a.9.2025.11.11.17.30.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 17:18:56 -0800 (PST)
-Date: Wed, 12 Nov 2025 10:18:53 +0900 (JST)
-Message-Id: <20251112.101853.1558870636834355421.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, a.hindborg@kernel.org, ojeda@kernel.org,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
- gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
- tmgross@umich.edu
-Subject: Re: [PATCH v1 0/2] Add support for print exactly once
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <aRPdGg01VDJucAfS@tardis.local>
-References: <87jyzx6ix5.fsf@t14s.mail-host-address-is-not-set>
-	<20251112.094508.554651669948369724.fujita.tomonori@gmail.com>
-	<aRPdGg01VDJucAfS@tardis.local>
+        Tue, 11 Nov 2025 17:30:31 -0800 (PST)
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 158A0F4006A;
+	Tue, 11 Nov 2025 20:30:31 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Tue, 11 Nov 2025 20:30:31 -0500
+X-ME-Sender: <xms:NuMTaS9UGZlrZ_mGP2XTY7MybX76LK55epQlN_oqy49-zhBdJbwfWw>
+    <xme:NuMTaa4iMRHfsJTO9jxS8-D2vYR-JWZdBSnpbv-vWPvRfa_sGN7kuP6P9x6Ii3-GZ
+    RbLBwdq4D3vXMB2c2mGKsIk2Q14iJgnU2K5mnMt519UE6ol9w_0Ajg>
+X-ME-Received: <xmr:NuMTaTna9twfZBkvHCaObWd-e2bsgfHT47ui9xdwFVL570T2DmVS-VzPkqlPkq3oMLby9vOnoGHOxqbTN7uu54rHtKKiYi97>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtddvjeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhlrdgtohhmpdhrtghpth
+    htoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhi
+    tggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdr
+    tghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgh
+    grrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvg
+    hrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:NuMTaVGmLtoK3G71bO1uKydB3PmmoH2hvDAHBPIlu23H-NI_cbRZ1g>
+    <xmx:NuMTaS_aQ1flAgKtbBdR05IhpXdo6Qw79DwxJQcE88HXMz5op0yptw>
+    <xmx:NuMTaenyIvrugD_Tnu9kuu1-U8mE60hdk82nbh7AQOmAITI-08nU-w>
+    <xmx:NuMTaVDetbNeKweHNEIISfz6iRMAhHajHSAwe_z2YEndgHsaCqbfyA>
+    <xmx:N-MTafXyHPm16q3P5OzzJJ9Ohjfw4gRqeazPz5MCs1aBKuBv64KQhX7w>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 11 Nov 2025 20:30:30 -0500 (EST)
+Date: Tue, 11 Nov 2025 17:30:29 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: a.hindborg@kernel.org, aliceryhl@google.com, ojeda@kernel.org,
+	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
+	lossin@kernel.org, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: Re: [PATCH v1 1/2] rust: Add support for calling a function exactly
+ once
+Message-ID: <aRPjNS9jIsyHGAPl@tardis.local>
+References: <aRIPgOPvi4uhGQcM@tardis.local>
+ <20251111.120949.1793896304189618185.fujita.tomonori@gmail.com>
+ <aRLG1Ofr5QpJGFaB@tardis.local>
+ <20251112.064349.598094996228184902.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251112.064349.598094996228184902.fujita.tomonori@gmail.com>
 
-On Tue, 11 Nov 2025 17:04:26 -0800
-Boqun Feng <boqun.feng@gmail.com> wrote:
-
-> On Wed, Nov 12, 2025 at 09:45:08AM +0900, FUJITA Tomonori wrote:
->> On Tue, 11 Nov 2025 10:02:46 +0100
->> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->> 
->> > Boqun Feng <boqun.feng@gmail.com> writes:
->> > 
->> >> On Mon, Nov 10, 2025 at 01:16:44PM +0100, Andreas Hindborg wrote:
->> >>> Boqun Feng <boqun.feng@gmail.com> writes:
->> >>> 
->> >>> > On Thu, Nov 06, 2025 at 08:12:31AM +0900, FUJITA Tomonori wrote:
->> >>> >> On Wed, 05 Nov 2025 21:59:06 +0100
->> >>> >> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->> >>> >> 
->> >>> >> > "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
->> >>> >> > 
->> >>> >> >> This adds the Rust equivalent of the kernel's DO_ONCE_LITE and
->> >>> >> >> pr_*_once macros.
->> >>> >> >>
->> >>> >> >> A proposal for this feature was made in the past [1], but it didn't
->> >>> >> >> reach consensus on the implementation and wasn't merged. After reading
->> >>> >> >> the previous discussions, I implemented it using a different approach.
->> >>> >> >>
->> >>> >> >> In the previous proposal, a structure equivalent to std::sync::Once
->> >>> >> >> was implemented to realize the DO_ONCE_LITE macro. The approach tried
->> >>> >> >> to provide Once-like semantics by using two atomic values. As pointed
->> >>> >> >> out in the previous review comments, I think this approach tries to
->> >>> >> >> provide more functionality than needed, making it unnecessarily
->> >>> >> >> complex. Also, because data structures in the .data..once section can
->> >>> >> >> be cleared at any time (via debugfs clear_warn_once), an
->> >>> >> >> implementation using two atomics wouldn't work correctly.
->> >>> >> >>
->> >>> >> >> Therefore, I decided to drop the idea of emulating Once and took a
->> >>> >> >> minimal approach to implement DO_ONCE_LITE with only one atomic
->> >>> >> >> variable. While it would be possible to implement the feature entirely
->> >>> >> >> as a Rust macro, the functionality that can be implemented as regular
->> >>> >> >> functions has been extracted and implemented as the OnceLite struct
->> >>> >> >> for better code readability.
->> >>> >> >>
->> >>> >> >> Of course, unlike the previous proposal, this uses LKMM atomics.
->> >>> >> > 
->> >>> >> > Please consider if it makes sense to base this on `SetOnce`. It is in
->> >>> >> > linux-next now, but was on list here [1].
->> >>> >> 
->> >>> >> Data placed in the .data..once section can be zero-cleared when a user
->> >>> >> writes to debugfs clear_warn_once. In that case, would such data still
->> >>> >> be considered a valid SetOnce value?
->> >>> >> 
->> >>> >
->> >>> > It's still a valid value I believe. In term of data races, Rust and C
->> >>> > have no difference, so if writing to debugfs could cause issues in Rust,
->> >>> > it would cause issues in C as well.
->> >>> 
->> >>> @Tomo you are right, `SetOnce` would not work with someone (debugfs)
->> >>> asynchronously modifying the state atomic variable. It requires
->> >>> exclusive access while writing the contained value.
->> >>> 
->> >>
->> >> I mean if we were to use `SetOnce` in pr_*_once(), we should just use
->> >> `SetOnce<()>`, and the problem you mentioned doesn't exist in this case.
->> > 
->> > At the very least it would break the type invariants and assumptions of
->> > the `SetOnce` type. There a race condition between `SetOnce::as_ref` and
->> > `SetOnce::populate`. I don't think we are allowed to race like this,
->> > even if the type is `()`?
->> > 
->> > At any rate if we do this, we should update the safety invariant of
->> > `SetOnce` to state that it is valid to revert the type back to the
->> > initial state for zero sized types that do not have a `Drop`
->> > implementation.
->> 
->> I agree. I think that even if the type is (), a race condition would
->> still occur if the init member were reset to zero using non-atomic
->> operations. For instance, the as_ref() method effectively checks
+On Wed, Nov 12, 2025 at 06:43:49AM +0900, FUJITA Tomonori wrote:
+> On Mon, 10 Nov 2025 21:17:08 -0800
+> Boqun Feng <boqun.feng@gmail.com> wrote:
 > 
-> I already explained this, the debugfs writes have to be treated as
-> per-byte atomic, otherwise it's data race, using "non-atomic" to
-> reference that won't be accurate.
+> > On Tue, Nov 11, 2025 at 12:09:49PM +0900, FUJITA Tomonori wrote:
+> >> On Mon, 10 Nov 2025 08:14:56 -0800
+> >> Boqun Feng <boqun.feng@gmail.com> wrote:
+> >> 
+> >> > On Mon, Nov 10, 2025 at 06:21:50PM +0900, FUJITA Tomonori wrote:
+> >> >> On Fri, 7 Nov 2025 09:03:01 +0000
+> >> >> Alice Ryhl <aliceryhl@google.com> wrote:
+> >> >> 
+> >> >> >> That's my point (and probably also Andreas' point), we already has the
+> >> >> >> type `SetOnce` to do this, no need for a `OnceLite` type if not
+> >> >> >> necessary, and the fact that it can be zero'd by debugfs doesn't change
+> >> >> >> it as I explained above.
+> >> >> > 
+> >> >> > The SetOnce type doesn't do the same thing as OnceLite. SetOnce has
+> >> >> > three different states, but OnceLite only needs two. I don't think we
+> >> >> > should be reusing SetOnce here.
+> >> > 
+> >> > I mean 3 states should cover 2 states, right? In this case we only need
+> >> > to support SetOnce<()>, so I think it's fine, see below:
+> >> 
+> >> Yeah, that would remove access to the value member, but I think that
+> >> init member could still be accessed in an unintended way.
+> >> 
+> > 
+> > What an unintended way you mean? Do you have an example?
+> 
+> From my understanding, the init member of SetOnce is designed to be
+> accessed by using atomic operations, only through its methods. If we
+> use SetOnce for OnceLite, however, the init member would be written
+> using non-atomic operations, which is what I referred to as the
+> "unintended way" since I don't believe Andreas intended it to be
+> modified in that manner; i.e., not through its methods or by
+> non-atomic operations.
+> 
 
-Suppose the init member of SetOnce is set to 2 and then reset to 0 via
-debugfs. In that case, if two threads execute the as_ref() method at
-the same time, is it guaranteed that they will both see the same
-value?
+Ok, the "non-atomic operations" seems to be a distraction for me to see
+the real problem ;-) Let's clear things out a bit.
+
+First of all, data races are not allowed in kernel, but kernel has
+special rules about data races, namely, a few operation should be
+treated as "per-byte atomics" so that they will have defined behaviors.
+This is kinda a gray area, but it's what it is.
+
+Now for Rust, we shouldn't do what C code did previously that so atomics
+have to be used in OnceLite, but when interacting with C, we can still
+use the special rule of data races in kernel for reasoning, so the
+"non-atomic operations" part in your argument shouldn't affect the
+validity of OnceLite or SetOnce.
+
+What I was missing, and I think you were pointing it correctly is that
+SetOnce's internal logic doesn't handle a concurrent write to zero, even
+if no "non-atomic operations" issue, this still breaks the
+synchronization of SetOnce. It's like adding a invalidate() function for
+SetOnce, that could invalidate the SetOnce at any time.
+
+So yes, SetOnce may not be a good fit for OnceLite, but still OnceLite
+should be in kernel::sync.
+
+Hope I make it clear. Thanks!
+
+Regards,
+Boqun
+
+> As I wrote before, in this particular case, I think that it would
+> still work even if both atomic and non-atomic operations access the
+> same variable though.
+> 
+> 
+[..]
