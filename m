@@ -1,94 +1,114 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58E12C0F6C
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 09:57:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B074822068D
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762941428; cv=none; b=A9iRkgOcOVA0ZsAoaSIqilIgc1oTGN5/sb7LLoO6zkVjIyDA9H98se4BelMgrgHiY26j14AMGJvr1ZngA1hgdI/PHcPwqwBgKJXa6N0VqL/r3NT+fFNajgJpDDVTj93/OTd/Dr4bTbNddOiGJxwrOJal8Js8BbAOBu9bE0OQBxQ=
+	t=1762942368; cv=none; b=jPtJp8JVIeRsUn+Xt2XClwYHO0CGjTWTUHsQRi7B71v7McgD2nNJ52MAC29+vigxPtH+R9+SKK+8/0Ui0ILFO1i4r9ZraoJ6K2v8baUZLUGPOD1965LwwfwpRZyKKZujS/I+Bja5dDfXDPpxvn9p4TQtomybK8+LCw/hQmltvW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762941428; c=relaxed/simple;
-	bh=CIbkZoEcvxMuArEM88rMsYIiHa3ILLozzeTvmZfTtT0=;
+	s=arc-20240116; t=1762942368; c=relaxed/simple;
+	bh=MHWwjzyDdlPVG7Ep2giUSyYeqBp+LJwuCtg4rAq369E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=asI9PAaDCaBk5AKmFXZ7pRUuUW85mC4Dc8bhDT6gVDzn+zs/B9ucyD9xPfWaSzyZ+bpl9OBKrijegiJC2TsER05ZlAt8aJX1/VeSbX18tEpIy/uV3+16YdTBHEY9jANQLEHJ+a6KDjD/UiiQb9ICo1yI7h0zO1Z/mj0DfJsN/Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MytEszeF; arc=none smtp.client-ip=209.85.210.170
+	 To:Cc:Content-Type; b=Z2f00hf1IXIFnm3Q9IsL/+NUPGsLP0I+3AI6qQInHkdrgJ8XFuTL6YFQOnlTeY8gAJ8rlqchbx5jYd1ikGOQHdTDv4bM1zVnd+HRhIAHnXYZM9O3Mu7AyJ74m8hTykNUpt8Yg8+G33U8300bgP1sblGb5hMxkYf39A71KDvTLvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MifdhvqJ; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MytEszeF"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7a9fb70f7a9so44816b3a.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 01:57:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MifdhvqJ"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-297ea936b39so972435ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:12:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762941426; x=1763546226; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762942366; x=1763547166; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CIbkZoEcvxMuArEM88rMsYIiHa3ILLozzeTvmZfTtT0=;
-        b=MytEszeFd0wvJ/wuqK6NxlN1QefOYVAO9HXEowT45u60+HCefw/nIrfoaXUhufX2nU
-         OkHgE1D4A9iOBTlIofrniMgpiqFrKF75GddJ3Oo+JCfYBQg72HHTIBCx3dE+fGZnTvTu
-         1gwrZNUsThvakhEB+6FDzD4zWq8ue6oIWN3IHfKzurWTANuMSONyGxpEec4xQbQTS2rD
-         4vSFASjxFFOsB6ledt3cJT0SLeildTq4VcMUJj8cseWdQYRqiIQGqT1qIN7qyGw/SQSX
-         aM9EjLnf8wl8CvXnBxun86n+eKCkZ3Ix7JJfd0GlX73XpVzpFplnvKeZ9swM5HYITGtg
-         3csA==
+        bh=MHWwjzyDdlPVG7Ep2giUSyYeqBp+LJwuCtg4rAq369E=;
+        b=MifdhvqJ+tTPb55l+09TG6kR/bkYSEOysHx75WWgnuHLm0nKpxlmKNZYN9Oq3HqHof
+         Idi9LIjy5A9ZujCthgUEbopWG/mIh1Bg8ur8A6Wij+heyR9UfjrRwugBBV2QOtelo0E5
+         GlhmWycrrB1e8aLcGEBEPG7CbBGy6uILwpr/WhATx0ju1FnOYeWOGSo9wJcXNWz9vHcb
+         mjpn7xh2OWnL6FEwNBIKNC8W6aeS+UlE9z0Fx0ugkb3NP8V+1pQrU8psLiXmBMaBZSka
+         cNlu4WiJ4Z6gOxQCpSkVQE9a/NCjZoasTw5SLrICRNrdvU0MmU748ygdwxycCsaQKWuj
+         +I9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762941426; x=1763546226;
+        d=1e100.net; s=20230601; t=1762942366; x=1763547166;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=CIbkZoEcvxMuArEM88rMsYIiHa3ILLozzeTvmZfTtT0=;
-        b=kZJEJsm/ZTTJLUZlblrNt8KbpB//Wi93CqNTg0kFwYjq1UQy0Tlwz5VFX+bFY5Mpjd
-         ix5K7vTUx1Ugc4MZBsMT0mL1BgqPEQeJfzUT5Y3/ufiiTVEPXxwh7tG8ImZwKYbTrZ25
-         1rs2Pd6LZpk7//krUNTKgGfA+xGWc4XToIgicGD1/qmmBWxxnw0kF9CQaxVAPKjbQEDT
-         JSi05AqWkk/PwtwvwARD7sCzfyPp2Inv6ODeV9UwAwYqs/4VTfVRG1yfpWk2zNMmhZ5Y
-         9INLa3c++talfeumR3SzzQdBOEVBbbfinf43KkdfjinIW2pGDfGdAfmdoZINeHzGCOi+
-         Xb2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXBX45ZdfGbJAm5cYt8o4dTBAA6LTcG1R0DFfaHrDQcLPQuEMpJ/4Ie2EQFkuDakU7igt2F0i/DXqwWbQG1hA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjZPLSprjMAhIASminy0/PVkO4F9PM3b59xyhp2VDet3iGAE3J
-	oyuwDhUR/bXDiTHyj92mTBZ9kL/7zfncq/Mr3A5TysuLUovNCaXt1dYNIkPv3fiyeIQUxxHepf3
-	C6iI4YJOykNX+dB27/mA2bBpdK4Sso6E=
-X-Gm-Gg: ASbGncsQvaLFVrVvuNyNSyRrOZvzQLJVgjKFDETArAFp/w4MYqnxMNqcWTDGuqPtt/1
-	MN/RspvxcAnaee7N0bIZiguK41jBfr7kfXHAigrLdVp1O/dHp6euIMrkthKu9/uJTuwTc7Ea5BD
-	XDB2zrEeh4g6hsDxIdl2T7yO9fGi9MWWwXzZbGqyzsQ3djuSepggRWM8BccZuj2gU9vxeMtSTjy
-	ZCcafIsRNeCpb47vqaKc4vwbmhzru4EAItnioatPEx5D1fdiguhvY5ybKk9ZF/QyvDkDdGLWGB7
-	acwIpsF3I7xOqOSV0nqLkjxTKYhvgeWZXn5Vh6vGZcVyrDtpRyCYhZdVgHfiJ8cT2KZQHsGgtSR
-	NTjZY98YKODiPGg==
-X-Google-Smtp-Source: AGHT+IEhemJfSLH/p4Bhjk03hiHG8nPZMckQ4o1gzMhDR33YwdnDKqTg/WdwFRNF3u+gDynCToXBRDMfK6PTspqbdUQ=
-X-Received: by 2002:a17:902:d4cf:b0:297:fe30:3b94 with SMTP id
- d9443c01a7336-2984ee0ca79mr17858365ad.9.1762941425924; Wed, 12 Nov 2025
- 01:57:05 -0800 (PST)
+        bh=MHWwjzyDdlPVG7Ep2giUSyYeqBp+LJwuCtg4rAq369E=;
+        b=ssZuEGunIf4Scifh9VWk1a1lLgBXCGLufZ9IirJ6RPr0Rkcc12bnJuyMQHYew7ty3t
+         yCq3MaNB+bNx16DcMKueuNZ7meN8e5c8D/7FTC1C6KqU1A9VGYqHZQabFjHJXdK/+/7e
+         TxzTbNlhxbUF42JYhlTj1ynjJhCHUQuj4wyLL5dtUfUdgI08Bset3BP7l+swJIwEic6J
+         9uCULNNbfK5QZmyhh8GeimM1v0LKI3D+FlvoLIoSXY/qrGDyCpDgv6nCuEHLAbBe55Bm
+         Yxii3zTf0Malt/2g35dn5kDUm0oFdyG54s15AFFWHoqTQ7zfAjofPfYZbeyUSyvzwqea
+         pBAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUakecpKVbhrgNFHKGH+MyBFGVAa3JjhGT756wsiDl4NP1ddZR6doZYPWewaZsoez4MWkPNasqbDIcBWXaQzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCCizQndjNple2VSiuR+we9OnxOBkmotOXJmGT/lVhgxBuOLA4
+	YKWXAm2dtCPhvsJdyR5XcVjoZpW+Rw/Fqa1D2pW04XDFt6LjPkS2yD/XxBAzUHaui7b1zAZZqwz
+	EaSp/yG4vN2kHLTMD3hGqsxWikp0TZSo=
+X-Gm-Gg: ASbGncvahV1y29fADB805v6s26G0bUaPGMocl1zVH6lcvJpMs4cDUkeDmRMiJtX6hOE
+	PDvCp+hYjUtIgRD9Oyo901MAkd+mmzWH+9mrqnMpq39Y14brs3KElS0hlQKoVCgD9OVViTIU/gU
+	3YDtpPaQdOYK9JB/kNth0bqtcTsc2gqLofpqKM1EDAjzjmRJ1B20zjb+b3Rz1uaKXPIrZvdWU6B
+	JwNbtawTbr83MTcYtgr734r1ynMEIfeXgA988Ipbeb1op051L74Ooz/Is/5CjJYSgsAyJ8qCcVl
+	QW4pYjd/8/YeSWy8Ez6IJeiNX8z4D6ZCkoQX3w+BzYWxL2nlGkgy8zZBxjIxbS2qpKFRzn2LwBZ
+	mM1k=
+X-Google-Smtp-Source: AGHT+IETQ3SzNJP38qICCbEJ6T16t3JXamoGxAtaT33VsTBIiPh7Ibrz13eIJsuaIOpzM+bZ1DzCCfzs16H1v/5wS4c=
+X-Received: by 2002:a17:902:d507:b0:295:3f35:a31b with SMTP id
+ d9443c01a7336-2984ec8c0d5mr19845645ad.0.1762942366026; Wed, 12 Nov 2025
+ 02:12:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251101214629.10718-1-mt@markoturk.info> <aRRJPZVkCv2i7kt2@vps.markoturk.info>
- <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
-In-Reply-To: <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
+References: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
+In-Reply-To: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 12 Nov 2025 10:56:53 +0100
-X-Gm-Features: AWmQ_bmwDCOcARGiEKIpjIRnRae5yfDKTRIUwc3OloyDgPkRmaMpijy0lYQ_hkA
-Message-ID: <CANiq72=yQ1tn0MmxNHPO4qOiGm7xZzHJAdXFsBBwmFdsC37=ZA@mail.gmail.com>
-Subject: Re: [PATCH] samples: rust: fix endianness issue in rust_driver_pci
-To: Marko Turk <mt@markoturk.info>, Dirk Behme <dirk.behme@de.bosch.com>
-Cc: dakr@kernel.org, bhelgaas@google.com, kwilczynski@kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+Date: Wed, 12 Nov 2025 11:12:32 +0100
+X-Gm-Features: AWmQ_bnuNlJCsmBmrjk8c_BTNLULhTvw28twSuVwPkKbxpTmlUU6XbLfIppmVjY
+Message-ID: <CANiq72maV_j1uV=2nPGbTgRabnk8cpc7TNN_FQ+ou52OpZ=k6Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] Rust: Fix typedefs for resource_size_t and phys_addr_t
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 12, 2025 at 10:37=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Wed, Nov 12, 2025 at 10:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
 >
-> Cc'ing Dirk, since he tested the sample originally.
+> This changes ResourceSize to use the resource_size_t typedef (currently
+> ResourceSize is defined as phys_addr_t), and moves ResourceSize to
+> kernel::io and defines PhysAddr next to it. Any usage of ResourceSize or
+> bindings::phys_addr_t that references a physical address is updated to
+> use the new PhysAddr typedef.
 
-i.e. a new Tested-by is appreciated if you have the time since you
-tested with QEMU originally, even if this is a no-op in x86 (where I
-think you tested).
+Should we have these as actual types instead of aliases? i.e. same
+discussion as for `Offset`.
 
-I guess we could potentially consider something like returning a
-wrapper to force us to explicitly pick either LE or BE to prevent
-things like this.
+If there is a change of these getting mixed up, then I think we should
+just pay that price (not necessarily now, of course).
+
+> I included some cc stable annotations because I think it is useful to
+> backport this to v6.18. This is to make backporting drivers to the 6.18
+> LTS easier as we will not have to worry about changing imports when
+> backporting.
+
+For context, will those drivers be backported upstream too?
+
+i.e. we have sometimes backported bits to simplify further backporting
+elsewhere, which is fine and up to the stable team of course, but I am
+not sure if using Option 1 (i.e. the Cc tag) may be a bit confusing in
+the log, i.e. Option 2 or 3 offer a better chance to give a reason.
+
+Thanks!
 
 Cheers,
 Miguel
