@@ -1,74 +1,75 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CA0302747
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABB82F8BEE
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762942915; cv=none; b=XxbBfAfUhCi9EIwtG4SlFj20Vrlw5h1ZKjE9SBQSlgYt/GYQ0u2+u0Gcyihdc5WaeQczdv97nUCaT14Qv3DrgRfoCdfCdqDsECnCiHxz6xj5vZDFA3vQC3r9kjFES6cuTWpV8LM7q9SfGVZeO0WdXcJ4+zngujJEysiG/I6enG8=
+	t=1762942960; cv=none; b=WwHxGr62j4ESq71dD9d7xbLL/0diXwtZgxT516FZKguI08uPqmrWcpHif7oKyRdLuLjoUHghu3NqsRgSpH1NGuU7dMl4Cf6Lr1OecDI7IHsM2PHTNjVTdhmkku1orJvFhAtVsUnWY318b0NTFL/I9ouy5rCFY35t9pFmU6Q3L4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762942915; c=relaxed/simple;
-	bh=a1LbZXoKqASbEUpN7+CIMVVnKdzk5okC7gkeCo+wSp4=;
+	s=arc-20240116; t=1762942960; c=relaxed/simple;
+	bh=YPNEHX5E1EAY+3JT9FxU7dtFxSUrM3ua4vlSvyYLYVI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BfAYLdZB5w6rX/odoGYgM1nctPg4e/RgJzCH2bP7gj0RXKyH+qYwkqo+OhSc8ftYBccMEqtpofpKi5itNeaLJ+e8aZEx1A1KSsdFBcAYdXn2vrhaOqQpOg88Zah1+wgynekMzgAGw4+s1IZ5/k6w1UCmthaRer7x7mgRPeNK68Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F6E7gJKa; arc=none smtp.client-ip=209.85.214.177
+	 To:Cc:Content-Type; b=lyzTVB9q0NsLFE7y8j72PEC0uZjPdVG7gZF/XgXWTC43jhUlCHQgw13KzW3wU5ssjZiznEaQ+vTTF0zObMWPzoR8DL/y9DNz/eCGN9Eiy1Q1L5MTn92apxrn4Xe3yjWxMRG7uzVYleuSjnwRXJEMumHYhN0kdbgrKaT2Q4SkKrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=irVTe6IW; arc=none smtp.client-ip=209.85.215.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F6E7gJKa"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2960771ec71so830085ad.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:21:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="irVTe6IW"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b8f70154354so90747a12.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:22:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762942913; x=1763547713; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762942958; x=1763547758; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=D2Q8979WUafsHbF02hsz6ih8XON9WMXfl3cHVtdnFpw=;
-        b=F6E7gJKaKWo8qWNzwWiazf17nyl7mlepSv9EzH41Fcj2QRl+eNAQUHgbiY/jReHdi7
-         mv1ngTSDwAfoRRP0oUzyQkSwVPjo9MisANNMazYn86c7C/WWAsd22gfsBoupuBuesk4t
-         SspKbkaxGD1aX2GG2CB/bV9m5KYjPcXZcrms9Bzle9fpqpzhO8JqpUdklyk+GAwr30dJ
-         IRgkedogZ52v9Yy4TmDS7uXl/aTxbzeCAAKOioZTlvDmWqFoWQyrA7JO7GU9b5S9tie4
-         jstxqQUy+O1a0rZfcJDdKO4mNuZvvU+tOVv3wwpZ6Mo+wsN7dWkJT7XK7kTW5KZAgln4
-         Tx0g==
+        bh=E0B276sCmGuKPqViJUBQ4DCZOBYFMswfLTqrPr8TLG8=;
+        b=irVTe6IWHxqBKPgIas1Zkm+IxkM3V/6e/25RcdG8xk9VoJc4nf0Xy9xsP7/ZxKJNRD
+         304wflt3AHsL4xGOLr4SoLkUCCTvIgygy8ma7fh7mWqo4yx0lNaSbNZWlqobsR3rQ9AO
+         4Cp9ImIBrmxFXUvuQTLCLeOCRNzNRT+j+bwWdDGiXdw6FqqW7UgGy/ie92pMDjHaMp1H
+         6BPLqf+ZeOnOH+dB/ldEMD2TUM8qicoFIFzdwOYyFD3+opy7M59K49FDzZAUqKeDQ734
+         0H3SOEljD4Il629Ssk07dxbKi6Wp2fAsA03cjYys0T++Wj+l/YTeEUQAcyxFUBVsbhIi
+         7iiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762942913; x=1763547713;
+        d=1e100.net; s=20230601; t=1762942958; x=1763547758;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=D2Q8979WUafsHbF02hsz6ih8XON9WMXfl3cHVtdnFpw=;
-        b=QP0L2ABWyQXkh+VVzGi5Sc3erqCAOeBu3FuKZWG6/20ueER4NN9+Lh14dDTPAgCQd3
-         GY5sDbovE5fk6G5MuTV3c3zE+vfGdu9OuFZ6sUvtuHuvZMZX6AyUXEMkBRRNkBafvMxw
-         H/PoQOHHJi7MoJZPbTqsAg2hlhggtKxWj5plz++1d/xm14kEQWeslQMMC4YWkOROnNt7
-         vd/1fZIJ0Yzx9V5HReTtaMQPe3Xagz8d18xIENFOSYgHY6x5gpYxu6pIJYUtIXr1jJ4l
-         7wRsd6uy32qsI4D66yvb3SEpmNp6ePj9YsA4phP21+lTWog7w2y/CihWegMttBy3yYYE
-         n7dQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUEVgQCXKZjBnHRP2u3o8vcCacVIAS0vbIRpYuOtKxdhjxf0S5/6NAy1+2BRm2OuSaj3MCbMSMcWd/ogmaiqA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzxn/L7haIHw/qEi3mudzIccydkvhTwdvBtyMrtBud4nhksS2dl
-	2DvZ4Q98DD7aUSlPEOkJOT1Zsygbq3PK/sSAP0z/kZl4Ro9NvSpwzLjEsH9YE0R1ZoPtg/t27CG
-	0LgP01yaan88jOEVHvdy/VtnctW86jPc=
-X-Gm-Gg: ASbGncugU34PYH5kOfAA9ptvJCMRtzoBnLHSUmVHIgrNIiSfAT37xMqX9akmhyMAAR/
-	Ih3NDEmX064EOJxY6bOvHQWfJMCSczj3BRqdPobOYpOfKxF7BIxGawYeGiXacll0yKBoXMOwbLW
-	B/IW01H1EyIELecwaLwBc5B9BB0X03G1rikskvWSBocUn9Y2BvtEuv0lTw2hejb66w/zNU218kt
-	aSrDT0eQiF6brRCb/GA8fNCTcdQilMLcvfNWpDcpgQlpG/y+0RuTY9MkD7VfO+d+qexloDvvUJs
-	+Sjd59kvulBerKFfQjEVG7aKdVnSK/Cg7mISyyL6UEzR3ZS/viUCYeOVW+Pla1rzLodAvJ8COhh
-	X9qCFAX1d/HTL5g==
-X-Google-Smtp-Source: AGHT+IGmicDENKU7JiFKpvKuaoETjK/7j3jCXmA+p5saOFKLhmhJuX63oTyY/v5MtBwRvWCmwk5r79w7uF8r3OmPhsU=
-X-Received: by 2002:a17:902:d50f:b0:298:371:94f1 with SMTP id
- d9443c01a7336-2984ed2b38amr19650835ad.1.1762942913408; Wed, 12 Nov 2025
- 02:21:53 -0800 (PST)
+        bh=E0B276sCmGuKPqViJUBQ4DCZOBYFMswfLTqrPr8TLG8=;
+        b=R61Glcz/PD4hWT0i1FVt0NVEgjmjbUAwSJZmRuzx0vQO+7WBzTeTlmZsPV9lIawaok
+         QhSeTvyAcnWzakTGbPG6tU0s1HOzMaxzO+6a2rDW/3fEDFnYI7yaw73X/f0x42acVol9
+         xgfgDddCKGR6tl9y6NvlL5jrrXuzNdCP4H1lRdKf6KHaqCIa3AD1z9dvuH568ENAmJaQ
+         tz2LXV79arMcMXTQ6U+n3bB7UvdhVHK+CltO4qWmpWtv9ln5RkDIvR8zQw7bjMo86LaL
+         u+x6U1cVY+HXfTG9KVFNRDdGA7wDnXkzpUVnqH745Ildw9agSbcbdw4f17a4NKvWTEUx
+         n7EA==
+X-Forwarded-Encrypted: i=1; AJvYcCWk2MH+YTcE7kMLz/G5YY0Hp6MNg/3C7xFoW29qF3UT+hmXoudTkBlaGC8FOFhZfhiSxST5LmNFMlWZfh6vBA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfsWJlRednYipYRkN/CFguAMFOkM/zvkf4CzJGb62l8qAS9DqO
+	db0tdKJ8y4N6T7/Jdo+Xs5dUyy73xs79gExLX+MovogZ2UOMmOlyjrx3wGiRlTqAiJgDjIZA0d5
+	hO5h3ep7AACgYfZWulqr9kn9/j4w08dw=
+X-Gm-Gg: ASbGnctzz1ksq7MkFAqBICpw6+fXvDEa6F9wSktO9X6GsyIrL04mVsnnC4KBpRm10GK
+	6qeHN6D2AbU/yRfgZ26Ph4+FqJ1zapna30Xb+CB4Xf4Q12VWteddvezHBAjiQZFQ+NnGLDnV57z
+	Un0kB57dXLzeIy7me1pbW/uslSz2PDSkX+Bng/sZ6h+fKvWqLQMHngrfBF8l4dYV6NdC0Uxwat3
+	0N9PPZ6m/tO+lSHRQHS7YLUK2ZhWwRhZNd+lA7fA+OSNmc4D0g38SdRNudSs66NWomCsrrCZwjG
+	xR8y9bEHkNZ7rL/UltMRi5WjeyRHWftZfaewCtNPHe0Uq2pyGVroO8TJaAI9+5uY+RmCZhVLX2H
+	0U3t8D3iB5pPGNg==
+X-Google-Smtp-Source: AGHT+IEZoSqjm0t6zN10oagsZyaGUA55TrpgWglstnMOybFlUdjZoMdhp86GzVPanaCUu6r0dqbnhK9HIk5xK9dXxsA=
+X-Received: by 2002:a17:903:18e:b0:297:fe4e:d368 with SMTP id
+ d9443c01a7336-2984ee3ba7dmr18188305ad.11.1762942957656; Wed, 12 Nov 2025
+ 02:22:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251111-binder-fix-list-remove-v1-0-8ed14a0da63d@google.com> <20251111-binder-fix-list-remove-v1-3-8ed14a0da63d@google.com>
-In-Reply-To: <20251111-binder-fix-list-remove-v1-3-8ed14a0da63d@google.com>
+References: <20251111-binder-fix-list-remove-v1-0-8ed14a0da63d@google.com>
+In-Reply-To: <20251111-binder-fix-list-remove-v1-0-8ed14a0da63d@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 12 Nov 2025 11:21:41 +0100
-X-Gm-Features: AWmQ_bnHq9qt4ZLqIUwDgKVWFlRiETETpEIpC5CnP6lKPeTrcA2YHnmb1wWl4Lk
-Message-ID: <CANiq72kR6hsr26gxOJp+Ok85ru50QqW-jXjC=cKDssUUchrCQQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: list: add warning to List::remove docs about mem::take
+Date: Wed, 12 Nov 2025 11:22:25 +0100
+X-Gm-Features: AWmQ_blKg4cu-v3P781ZJkYF9Gq3eqlBz7dX5cAIvvyUp8LMI-DCXNtY1gWIHsU
+Message-ID: <CANiq72kCxh=Zen_fRrU8dVffGpNtsfNwMO1agC+muHd8ixMTpA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] rust_binder: fix unsoundness due to combining
+ List::remove with mem:take
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
@@ -78,22 +79,23 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@goo
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, Nov 11, 2025 at 3:23=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
 rote:
 >
-> +    /// When using this method, be careful with using `mem::take` on the=
- same list as that may
-> +    /// result in violating the safety requirements of this method.
+>       rust_binder: fix race condition on death_list
+>       rust_binder: avoid mem::take on delivered_deaths
+>       rust: list: add warning to List::remove docs about mem::take
 
-I suggested adding an example or similar to hopefully help prevent
-this in the future, and this note is "to the point", so that is great.
-Thanks for adding it!
+Greg et al.: please let me know if you are not taking the last one
+together with the fixes (so that I pick it up). Otherwise, if you do:
 
-Nit: intra-doc link [`core::mem::take`]
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+
+Thanks!
 
 Cheers,
 Miguel
