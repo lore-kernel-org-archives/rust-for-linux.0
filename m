@@ -1,216 +1,245 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8153594A
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D42635CBA1
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762913980; cv=none; b=l8oVv3InwK0tErFOf3wmjM5UsryVTjVD13X1ww7FkQOIPK1YUCZfkhXgI2rv+yFo401U/sbwtat7bECklH90bFtzXfIpSSulpjAh9om8coDbHJtTHjVFGL+inev7j6NBZ7eQCmgekYTSuu3bj22/p5OkXH7Cu02qy+BM/vq9z4M=
+	t=1762914196; cv=none; b=RJF6UnzxJaMhEx5PBvpfVObZTtSENyHgMf25ELLSOxuGUGifEum6guMTKk0EZ7BZdGzmQlIlYW53Bq1l+DR6nBoisPoSVTkGnnEgOmQ/bVFU2okDLuYSXUel/VnTcdv55VFIkHcDCOGLbxoCwR3zEEWIrELbmYJRfJ+1hgh7Tt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762913980; c=relaxed/simple;
-	bh=x2aGuz+zJKZnZZkXzCTVvYZ2ScR1g8KD1+E5T+TcHbg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RVQDchFqy+jmVqEbCPpuB+eNQ7RjLOC8dSQSmX1esAEZ4IHHpuEydaRhD8wNZTRlgDUe8P06s8QoxOSiTG8YqCQKjir/6xjdeS5+Sh0W1fu9UjirIt2tYVjeCjdqpKVo3MNCVp8T/SNCFO2FbLJoPuZwyx1g8dADMYtqvEuvBKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=gk2VSwhX; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+	s=arc-20240116; t=1762914196; c=relaxed/simple;
+	bh=+1OowVNjO+Sfr7ssnvcjinR8ZIQ2PosBgIvJNtZlEW0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R1TJrJkyjutUr0WbkDS9LvdtVNq+dSEsJ4hicn+PrHbnY3NyJ0/WQpg0vyPfmeDYey/QsANFhxYulseopumIFTB5eFpqejTvKn5pQrEinWQjY3gDNTcfIdYwKWUkdVQn/Wq9q54IRMlMpztMLYhtU4wN3jLBOvGHnMyRmzLO55M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F57C8L42; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="gk2VSwhX"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b72cbc24637so79610566b.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 18:19:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F57C8L42"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8b22624bcdaso48228885a.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 18:23:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1762913976; x=1763518776; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1762914192; x=1763518992; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ugAQKBkBrsHecB9x8Cs9RwnH0DI2WGTlcIm1Ae1jyr0=;
-        b=gk2VSwhXpuPtX/Fqzr3AwXz1gHhLb2kLLml9g1FsMGgyXn031gl4T+NmBIirL00dD2
-         Kn5SVvCG4YbujGvs0sw0/Ek0BLiKDcxnbKnN3cZnvW2NcSnpT9L7MSbY1LwKTnhA3Pek
-         8uRkUEuzFAz4MUVdwJCKZFJTianz3jU7wwVhB3CmB5SddXuo+Rvyb/M8bkCia5+DCzDz
-         /jkYGUraJHhlC7RXmQ/BuF2Ef/CUfgTuYn6dMW9UlYw0kEw/KyOnpyd81swGrQPScQKM
-         GBysQAUuvVA1EpDUhYpI2mVYSlBC1BvGL3yZ5VDHxAu+T2VmAp/3aG3ixPQNjs/JSpAz
-         /thg==
+        bh=ArfzsUXqTUAD1WFQyUE1FBoAIq9waTPdSEHAoPn1Zm4=;
+        b=F57C8L42aTVVQgWNDspsI/xE+OGyTLfy1HVOPvhxPx1s+3IFsx0PEblyIaaMVv6vlO
+         qgoOv2ESeay19WML2/0LI/j1tMy23naoKagfBumFpGIHj9i3JvmGVEzE3mtTqixWuGDc
+         FGpg+JH0PYUIU0NlCj8s2d6YgNUBJL9ykEbfYIoWGU/xUq5zX+0UnDwHd2+ZDzW1N6E5
+         cytXM0i1fxVZt1SZpzGcfKTk7RJAqATrJK3913jtoQ4JVWCh8FM8n+y5QLhnhyepqtLM
+         ANVvShfpYKTLIEjZ51u/Yp1yaUMhjketz+tMwnf4p207w1z7yxamNGNQ2LaBORPlFQF9
+         hM1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762913976; x=1763518776;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1762914192; x=1763518992;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ugAQKBkBrsHecB9x8Cs9RwnH0DI2WGTlcIm1Ae1jyr0=;
-        b=sjNE+XnK26u7+kyELoP6bSbC/36e3xZ0RN42JOK/WbHN7vNPbwI2iAwUz6HMIwx/YI
-         Wrxev3PZcvvM1M6Dw88/WwMpaUoEjhgaP2YKmVBhEHxCt3FWk5lLc5VA2sMbtGcrLgDY
-         VpYJBYOzCVcIVabcJMGsEOg7abL9IXilLGFIMHuqMVxXQim6QpKJ+F5QpRGNMQFnpmQB
-         s9fLwt09mBv2LK2gmSsamycvMssRRnBG4I1ZZIiFKc6aA+/aEkCEbCA0OBfywASC2CS3
-         EnEr5MZ8540Am57SV6zn/3pSjoWyY9HDPgGAjPoXLPXCuBPqSsqHfOL1D8SnEkg4hHw+
-         nImA==
-X-Forwarded-Encrypted: i=1; AJvYcCWL6AlkVjZ2rh2oiMeR4v5sAO44N+KoIWLtvpVHqpCcCw89Gst4nxS+Q09vOYy63I5vUaub8J3ZWUBg9CaXMw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTjLtvOT/1TfjS8F3irdm+0IhO3hVE+VqO9QtMGnWt2yNpbYyF
-	bawKOC2caINrVbaHXNO1wXodZRsHoz/qEe7jRgoYgQFPynumlZz2f6GAo4tY9IUrIwvPdyp3DgU
-	Vc0oaeRpF6S5sSigibai/dscf0w9R7BkTQXQ2mekiAg==
-X-Gm-Gg: ASbGncvwaqEnNYOYIxbwDHuPDrUUP0odERMwjQIFVwRHvnxFDk+4DvckkVrlGHw+OUq
-	NHD+dH04gyIuBJDQTRo1gWYD40gg/W47pYonDPcB824O7XyhFUhP+eov71hqd2cD2gdrSSoRDgJ
-	XvOGBuDCsf7pESNlYi1ETxtvfCU6Bz6BBQLuJl1g/gDSwJFnbubL4OZMwe8mE0FxmkxGvvE2XVj
-	Nt0KozxNPScYQITJLykADM3KRIKyRfEqwgvBTf0lr0gmH/rv/PBRMwS5qzmS5k=
-X-Google-Smtp-Source: AGHT+IE+yEBTlwHkenGiGwu5UyXnAf6gT3RkSyNE+10D+a3qX/UN5XaT1J5EAZetmYd9Vh7p3GgyT6IZWxgqCbtm2x0=
-X-Received: by 2002:a17:907:3daa:b0:b72:52c2:b8ca with SMTP id
- a640c23a62f3a-b7331aec193mr102047266b.59.1762913975653; Tue, 11 Nov 2025
- 18:19:35 -0800 (PST)
+        bh=ArfzsUXqTUAD1WFQyUE1FBoAIq9waTPdSEHAoPn1Zm4=;
+        b=uPlR0Mpb2h0OhHU8diFqrNZu4ri947pIJZQ4Nu6bAGb+EE/n9ijGH/7cNjOHRDqZQk
+         plIUhInTz/lzqGARqJTOYA8LJALh0TcBDTIZDXhMnrpctYHT1cFHS0yAsS8uW9A1O/dA
+         ETdmfG9lY76ImgMaGnuadyxYW/LXGHaFchRIhsJSh21IitWspyE29ZLzZy7plQTvWVQd
+         NebHZleUfcsbSiuxwszhXnAKCbfh67H67FiIoKicKMhs7D/AcQBts0LqREwAHFSg80Df
+         wuMdvl3wx9002TxHpZfdhWqO6ZtzIIatoDGZ3W3jtckYzSsaSAniL6hq3IkSpb3G9MH2
+         GxdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUX43i0Na7WggenPJtYUrjrMza9PCS0M8hZ07Rv6m4+SqkQgMheSqmAJYKgSZRembB0qpE8jHWZufb3uKKq8w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywc03SI9C0IF2B3JlWROSGFH7LDiV0rASzk4ZEOKv9esG6zixO0
+	dmup4ZsQH56Q/K6liW+Z29/7jYQFEeGIj6txDtaRwmVf2JJxuwvB6vOx
+X-Gm-Gg: ASbGncuXKgJ0l+9PCzgcujHN0vv4Sj6RtLC0+c2+NfbOMwADn6w2TVtbCC+mhmNpVdZ
+	oJkv393dIrYkeJqCaygn3e8BHXkZnWsLpFsB911Hi06l+qPC13YglyEY417AHObfwQhDXXGCMNQ
+	qyTvl9EGnMnIK8vnRGmiAML/3l6T1e7JWdy2rMdeayhIeLDPEJLNIWd4sv4rwvpYOdC8EGprlJU
+	645gGrkcrb9fk/G7MZuCNOWKz7fVQgJ9mvbVEx2jZGi9J2ecoDygewvvXi5NbXkSaAVK69268DE
+	cufCHcXnDa2jcclub6/JZM2yCMUz66myATJKf8EbVuUx4yx3QoIYkGIlALDYwdwsqLf1KzmQjxI
+	C7AQEzKvbKFiOT7AeSTJ0xwTjQkaEGAYvE/d9GIRMfWXP5+JKSgNkrb5A6uTlXQA36ZFq6tJqSd
+	e7dJVfjo7eeZ0Zp/Baad1Sdqo7wRoImzj0afxS0bVmxJ4ioCxRXYvnOkRyBdDNZWhWGdx5t4pY5
+	3iO
+X-Google-Smtp-Source: AGHT+IFebt2vK/J+piLgJTAPcjRA5bX4FnhHdJamZJbn76KvBNGeJ/drT9Ao8uVS00IMQRLPspYjWw==
+X-Received: by 2002:a05:620a:c4a:b0:8b1:c886:1c19 with SMTP id af79cd13be357-8b29b77870bmr209321485a.23.1762914192186;
+        Tue, 11 Nov 2025 18:23:12 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b29a9fe55csm99293985a.43.2025.11.11.18.23.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Nov 2025 18:23:11 -0800 (PST)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 52015F40068;
+	Tue, 11 Nov 2025 21:23:11 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 11 Nov 2025 21:23:11 -0500
+X-ME-Sender: <xms:j-8TaUi9FAnPpKx1nADpjU7n6HsasgZyx2xui_96IzE_42dnmTDGJg>
+    <xme:j-8TaVNYtTC7zfaD7n4k4Vxu6n_XX-JCDmAYXV_q1AdTkOeV7LRMICtxQ5RixSZMl
+    UPqFoLW4Jc8Xt6qqLNtufLrO7BwJ6SdsSfpaHQ8igiDuZqdaO7liA>
+X-ME-Received: <xmr:j-8TaXrvj5oYkuy0BJa4_BSU9jtLOxNR_qrKxI80n8lz-RfukNLf2wnpOSaNlPGZXdPyHOsYj7Y8GFIH-nbrKbHr6jNXvNNE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtddvkeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeeitdefvefhteeklefgtefhgeelkeefffelvdevhfehueektdevhfettddvteev
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhlrdgtohhmpdhrtghpth
+    htoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhi
+    tggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdr
+    tghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgh
+    grrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvg
+    hrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:j-8Taf4YYRNY4Ut3ENWrMYf00BYZmHjYBGSsVFfR9ErmMrfgz3ud9A>
+    <xmx:j-8TadgbQsJrLRQH3PcQRH82eQzkjfXW6FnBeRs4GvfMZfjoUtyCuA>
+    <xmx:j-8Tad69Lg1unL8CBoqeYa4Onkp8qPf1IdE4zNorGdWTrSrI-hj1ww>
+    <xmx:j-8TaaFm7_cAvHe62IIujPROZu4OZJ3vFtPiXWnLQybf4Er6tT8-rQ>
+    <xmx:j-8TaXLDwJ4Hp9PygAJu7pweei-E4KLzmQ3cf9NZnhQyH34l5stm6r98>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 11 Nov 2025 21:23:10 -0500 (EST)
+Date: Tue, 11 Nov 2025 18:23:09 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: a.hindborg@kernel.org, aliceryhl@google.com, ojeda@kernel.org,
+	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
+	lossin@kernel.org, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: Re: [PATCH v1 1/2] rust: Add support for calling a function exactly
+ once
+Message-ID: <aRPvjQJLdzvxLUpr@tardis.local>
+References: <aRIPgOPvi4uhGQcM@tardis.local>
+ <20251111.120949.1793896304189618185.fujita.tomonori@gmail.com>
+ <aRLG1Ofr5QpJGFaB@tardis.local>
+ <20251112.064349.598094996228184902.fujita.tomonori@gmail.com>
+ <aRPjNS9jIsyHGAPl@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
- <20251023-v5_user_cfi_series-v22-25-1935270f7636@rivosinc.com>
- <CANXhq0oEpCow0G+KsJ6ZPuwsxmAFVqoKGEzygiwSmxFsmntiWg@mail.gmail.com> <aRN-0Z9MNeJ9IZf2@debug.ba.rivosinc.com>
-In-Reply-To: <aRN-0Z9MNeJ9IZf2@debug.ba.rivosinc.com>
-From: Zong Li <zong.li@sifive.com>
-Date: Wed, 12 Nov 2025 10:19:23 +0800
-X-Gm-Features: AWmQ_bmKovRTmE80-MSruF1BPvDQmZ8Z-ahD6_kAC3IOhiFoglBht7EGrzIY3bI
-Message-ID: <CANXhq0ryrNUoBvACX9hh-=FVOe+L6_6beXrZQn2e1P6eWgcUiA@mail.gmail.com>
-Subject: Re: [PATCH v22 25/28] riscv: create a config for shadow stack and
- landing pad instr support
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRPjNS9jIsyHGAPl@tardis.local>
 
-On Wed, Nov 12, 2025 at 2:22=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> w=
-rote:
->
-> On Tue, Nov 11, 2025 at 01:58:37PM +0800, Zong Li wrote:
-> >On Fri, Oct 24, 2025 at 12:51=E2=80=AFAM Deepak Gupta via B4 Relay
-> ><devnull+debug.rivosinc.com@kernel.org> wrote:
-> >>
-> >> From: Deepak Gupta <debug@rivosinc.com>
-> >>
-> >> This patch creates a config for shadow stack support and landing pad i=
-nstr
-> >> support. Shadow stack support and landing instr support can be enabled=
- by
-> >> selecting `CONFIG_RISCV_USER_CFI`. Selecting `CONFIG_RISCV_USER_CFI` w=
-ires
-> >> up path to enumerate CPU support and if cpu support exists, kernel wil=
-l
-> >> support cpu assisted user mode cfi.
-> >>
-> >> If CONFIG_RISCV_USER_CFI is selected, select `ARCH_USES_HIGH_VMA_FLAGS=
-`,
-> >> `ARCH_HAS_USER_SHADOW_STACK` and DYNAMIC_SIGFRAME for riscv.
-> >>
-> >> Reviewed-by: Zong Li <zong.li@sifive.com>
-> >> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> >> ---
-> >>  arch/riscv/Kconfig                  | 22 ++++++++++++++++++++++
-> >>  arch/riscv/configs/hardening.config |  4 ++++
-> >>  2 files changed, 26 insertions(+)
-> >>
-> >> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> >> index 0c6038dc5dfd..4f9f9358e6e3 100644
-> >> --- a/arch/riscv/Kconfig
-> >> +++ b/arch/riscv/Kconfig
-> >> @@ -1146,6 +1146,28 @@ config RANDOMIZE_BASE
-> >>
-> >>            If unsure, say N.
-> >>
-> >> +config RISCV_USER_CFI
-> >> +       def_bool y
-> >> +       bool "riscv userspace control flow integrity"
-> >> +       depends on 64BIT && $(cc-option,-mabi=3Dlp64 -march=3Drv64ima_=
-zicfiss) && \
-> >> +                           $(cc-option,-fcf-protection=3Dfull)
-> >
-> >Hi Deepak,
-> >I noticed that you added a $(cc-option,-fcf-protection=3Dfull) check in
-> >this version. I think this check will fail by a cc1 warning when using
-> >a newer toolchain, because -fcf-protection cannot be used alone, it
-> >must be specified together with the appropriate -march option.
-> >For example:
-> >  1. -fcf-protection=3Dbranch requires -march=3D..._zicfilp
-> >  2. -fcf-protection=3Dreturn requires -march=3D..._zicfiss
-> >  3. -fcf-protection=3Dfull requires -march=3D..._zicfilp_zicfiss
->
-> toolchain that I have from June doesn't require -march=3D..._zicfilp_zicf=
-iss
-> for -fcf-protection=3Dfull. If that has changed, I think this will need a
-> revision.
+On Tue, Nov 11, 2025 at 05:30:29PM -0800, Boqun Feng wrote:
+> On Wed, Nov 12, 2025 at 06:43:49AM +0900, FUJITA Tomonori wrote:
+> > On Mon, 10 Nov 2025 21:17:08 -0800
+> > Boqun Feng <boqun.feng@gmail.com> wrote:
+> > 
+> > > On Tue, Nov 11, 2025 at 12:09:49PM +0900, FUJITA Tomonori wrote:
+> > >> On Mon, 10 Nov 2025 08:14:56 -0800
+> > >> Boqun Feng <boqun.feng@gmail.com> wrote:
+> > >> 
+> > >> > On Mon, Nov 10, 2025 at 06:21:50PM +0900, FUJITA Tomonori wrote:
+> > >> >> On Fri, 7 Nov 2025 09:03:01 +0000
+> > >> >> Alice Ryhl <aliceryhl@google.com> wrote:
+> > >> >> 
+> > >> >> >> That's my point (and probably also Andreas' point), we already has the
+> > >> >> >> type `SetOnce` to do this, no need for a `OnceLite` type if not
+> > >> >> >> necessary, and the fact that it can be zero'd by debugfs doesn't change
+> > >> >> >> it as I explained above.
+> > >> >> > 
+> > >> >> > The SetOnce type doesn't do the same thing as OnceLite. SetOnce has
+> > >> >> > three different states, but OnceLite only needs two. I don't think we
+> > >> >> > should be reusing SetOnce here.
+> > >> > 
+> > >> > I mean 3 states should cover 2 states, right? In this case we only need
+> > >> > to support SetOnce<()>, so I think it's fine, see below:
+> > >> 
+> > >> Yeah, that would remove access to the value member, but I think that
+> > >> init member could still be accessed in an unintended way.
+> > >> 
+> > > 
+> > > What an unintended way you mean? Do you have an example?
+> > 
+> > From my understanding, the init member of SetOnce is designed to be
+> > accessed by using atomic operations, only through its methods. If we
+> > use SetOnce for OnceLite, however, the init member would be written
+> > using non-atomic operations, which is what I referred to as the
+> > "unintended way" since I don't believe Andreas intended it to be
+> > modified in that manner; i.e., not through its methods or by
+> > non-atomic operations.
+> > 
+> 
+> Ok, the "non-atomic operations" seems to be a distraction for me to see
+> the real problem ;-) Let's clear things out a bit.
+> 
+> First of all, data races are not allowed in kernel, but kernel has
+> special rules about data races, namely, a few operation should be
+> treated as "per-byte atomics" so that they will have defined behaviors.
+> This is kinda a gray area, but it's what it is.
+> 
+> Now for Rust, we shouldn't do what C code did previously that so atomics
+> have to be used in OnceLite, but when interacting with C, we can still
+> use the special rule of data races in kernel for reasoning, so the
+> "non-atomic operations" part in your argument shouldn't affect the
+> validity of OnceLite or SetOnce.
+> 
 
-Yes, that=E2=80=99s what I=E2=80=99ve learned from the toolchain guys so fa=
-r, perhaps
-we can double check with them. If it is right, I guess we might merge
-them into one check as follows:
-$(cc-option,-mabi=3Dlp64 -march=3Drv64ima_zicfilp_zicfiss -fcf-protection=
-=3Dfull)
-or
-$(cc-option,-mabi=3Dlp64 -march=3Drv64ima_zicfiss -fcf-protection=3Dreturn)
+Btw, the "non-atomic operations" can be simply "fixed" by the following
+diff (only compile tested and I haven't done the "move to kernel::sync"
+part).
 
->
-> >
-> >
-> >> +       depends on RISCV_ALTERNATIVE
-> >> +       select RISCV_SBI
-> >> +       select ARCH_HAS_USER_SHADOW_STACK
-> >> +       select ARCH_USES_HIGH_VMA_FLAGS
-> >> +       select DYNAMIC_SIGFRAME
-> >> +       help
-> >> +         Provides CPU assisted control flow integrity to userspace ta=
-sks.
-> >> +         Control flow integrity is provided by implementing shadow st=
-ack for
-> >> +         backward edge and indirect branch tracking for forward edge =
-in program.
-> >> +         Shadow stack protection is a hardware feature that detects f=
-unction
-> >> +         return address corruption. This helps mitigate ROP attacks.
-> >> +         Indirect branch tracking enforces that all indirect branches=
- must land
-> >> +         on a landing pad instruction else CPU will fault. This mitig=
-ates against
-> >> +         JOP / COP attacks. Applications must be enabled to use it, a=
-nd old user-
-> >> +         space does not get protection "for free".
-> >> +         default y.
-> >> +
-> >>  endmenu # "Kernel features"
-> >>
-> >>  menu "Boot options"
-> >> diff --git a/arch/riscv/configs/hardening.config b/arch/riscv/configs/=
-hardening.config
-> >> new file mode 100644
-> >> index 000000000000..089f4cee82f4
-> >> --- /dev/null
-> >> +++ b/arch/riscv/configs/hardening.config
-> >> @@ -0,0 +1,4 @@
-> >> +# RISCV specific kernel hardening options
-> >> +
-> >> +# Enable control flow integrity support for usermode.
-> >> +CONFIG_RISCV_USER_CFI=3Dy
-> >>
-> >> --
-> >> 2.43.0
-> >>
-> >>
+Regards,
+Boqun
+
+--------------------->8
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 8a9a2e732a65..61dc35e49a63 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -361,6 +361,9 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+ 	__start_once = .;						\
+ 	*(.data..once)							\
+ 	__end_once = .;							\
++	__rstart_once = .;						\
++	*(.data..ronce)							\
++	__rend_once = .;							\
+ 	*(.data..do_once)						\
+ 	STRUCT_ALIGN();							\
+ 	*(__tracepoints)						\
+diff --git a/rust/kernel/once_lite.rs b/rust/kernel/once_lite.rs
+index 44ad5dbdc67e..b94834d2fd29 100644
+--- a/rust/kernel/once_lite.rs
++++ b/rust/kernel/once_lite.rs
+@@ -48,8 +48,32 @@ pub fn call_once<F>(&self, f: F) -> bool
+         f();
+         true
+     }
++
++    /// Reset so that `call_once()` can call the function again.
++    pub fn reset(&self) {
++        self.0.store(State::Incomplete, Relaxed);
++    }
+ }
+ 
++/// # Safety
++///
++/// This can be only called with the current `start` and `end` range for `pr_*_once!()`.
++#[no_mangle]
++pub unsafe extern "C" fn reset_rust_call_once(start: *mut ffi::c_void, end: *mut ffi::c_void)
++{
++    let start = start.cast::<OnceLite>();
++    let end = end.cast::<OnceLite>();
++    // SAFETY: Function safety requirement
++    let offset = unsafe { end.offset_from_unsigned(start) };
++
++    if offset != 0 {
++    // SAFETY: Function safety requirement
++        let onces = unsafe { core::slice::from_raw_parts(start, offset) };
++        for once in onces {
++            once.reset();
++        }
++    }
++}
+ /// Run the given function exactly once.
+ ///
+ /// This is equivalent to the kernel's `DO_ONCE_LITE` macro.
+@@ -64,7 +88,7 @@ pub fn call_once<F>(&self, f: F) -> bool
+ #[macro_export]
+ macro_rules! do_once_lite {
+     ($e:expr) => {{
+-        #[link_section = ".data..once"]
++        #[link_section = ".data..ronce"]
+         static ONCE: $crate::once_lite::OnceLite = $crate::once_lite::OnceLite::new();
+         ONCE.call_once($e)
+     }};
