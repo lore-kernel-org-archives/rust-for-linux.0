@@ -1,76 +1,74 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A2B303CB0
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9C2303CB0
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762944909; cv=none; b=WcnQh+gBubdD2/v/0MHjIdHELOf05onfwo4xoyurSXbVW4V+kzbyURAaL6wynCtaOxqOY1EQ9lNPPJG9nalg4BemogsEcEizzWV7xIfcAnGDZZUozc7af4/JiHfK5P8FndNJvVCN1vu1r4s0gUX0QAGMtxK+YJL+sH5lyUyCQ1Q=
+	t=1762945014; cv=none; b=LfvsZ5YSaN6FuQnidkOPsqd9O+H3LJEiRildXHlAZQ+/JNITsdDSp8TXgMaiddQGwn3uZETUwXbEoY4oZKCSDhfJp6fF/JwaoIkbh/S/MOwgLSWbJxScd9/Y54YlwiVNisIanJw0LMt3y/GcYPk+8EM7FP+dpg21nXi9roaF/Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762944909; c=relaxed/simple;
-	bh=82sfAS4BKz1KNiaLNqx18bHdwdUYK8X02FBvH6vmN1k=;
+	s=arc-20240116; t=1762945014; c=relaxed/simple;
+	bh=TNohQaMM8ZiJd5FBk7HxCy8RYGSgToj4TZLYuUXuyKQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VGyIVVOo/eU075kl4h1WUGn1IxYRsxK+PRjCSKvZeMIx38MmkYU4D8bQrYN8ZAvblfyOSLSz6sh6FgXkqVrcZaincVkcyHnrwCthmjja/Eq3HM7Bci/9NIGtpGa0LPbW31TDQ4AVOmf7MgKz3hVbjcccdcJvaeo+O9MuR+u2194=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ED27z4KD; arc=none smtp.client-ip=209.85.215.175
+	 To:Cc:Content-Type; b=kgmoLj0EJ4plFjvUv9tjF38opwF6EHPhhFij5zXd/MaRcTmZrNLa6MnEkPjYHlZyMITlb8NCj6R7VP7MdTr163PkCJmG+B/rJUqEGGh4tAsabYVx14N3QlADVg2zmhldkZe0KNU0DZAoe7Atfq7aDuiHE4sgWZdJtYp+KxIx1X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nASKfrlj; arc=none smtp.client-ip=209.85.215.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ED27z4KD"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b87171370b5so93302a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:55:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nASKfrlj"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b67cd5d88ddso97025a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:56:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762944907; x=1763549707; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762945012; x=1763549812; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kQJWtPZk17V4l48RMFU2vUfDUBcuLAHxhxXOZo4IqCg=;
-        b=ED27z4KDla66atEkRYysJmuTML+lQHJxLuAp3jhRIY1+XlSwW+hrhyNhdm0TrxwI41
-         iBlsA13sWRigSXpGnp9wOKsIhOi79fY+8GWGAg/2xPPHITEM4I6Ao+gB/jOUHJUFTVVj
-         TQkwS0vY2dv8SKDri2fAeJe9ThGageatQMLTcaIm9jKEdqvsQDKdC+OQqWvXN8ctirmd
-         GQH0gOU5QuNuhBkqkdeYagovW+jnqwiJEQ4adTMDi9LqLpJ23QSrIfb6Pu1pkK5N18RB
-         5IRMoTMy1qE45ThKmUaMd/5hReGtC2MaBdD6k7Eci97Cb79IDn8lQZiN/kHZ6r1geQ/x
-         lQIA==
+        bh=TNohQaMM8ZiJd5FBk7HxCy8RYGSgToj4TZLYuUXuyKQ=;
+        b=nASKfrljVQyPcrhptgG/ufKjQQZy97uXwADgI47jB0uvv/4gjicXfG7FL3t13FEcws
+         8HXpupXpZtatRYxzzC1h589b0ljO9YvhPAAPH5FZAWKds8wXu0YHxmtd8IcBKJshZ3FC
+         OXvbH92IeL+VehYBk/BniPPo+973GXZLFh5igAb7nn88IJzVpT1ZAR0ye0v9nvbjnK4v
+         bYSfSL/Mhq3ArFrWLVHtGBSm2XPff0JUQ4ztdW2qdlnAqO4EM1PkglLaCGY641bV2eQq
+         RnWeOvdyGI0m/mgifLf2oeVZ2HjBNounhLQAYlQNGAZUvR87TtF8tx4RMt7orr1LDSAF
+         yhnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762944907; x=1763549707;
+        d=1e100.net; s=20230601; t=1762945012; x=1763549812;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kQJWtPZk17V4l48RMFU2vUfDUBcuLAHxhxXOZo4IqCg=;
-        b=njnB88xeFnbZwI0uU5FBN/GC/X54oHFOZBeq4D8g82knVqDBj5uq6Z14jWjBEUGi5B
-         8nw4rGvtgnim5o3iAbKxRUZma/vi61qB7JB/863XLpSdIub5/XmT6Wi1QxMboDUNo09q
-         IiXoIcWJbxSKMa/4UtcpVQgqZ1Dgog9NWOs8SPy37sJyJdTHOUlsryOHZno4LuQLdVN7
-         yp5MO1GE5U8zZslB7LfpfQvAcFxY3O6YQpofrQxQb+hYrUQbrri6RJ+YjN+5EOqBpAbn
-         bbdYQwz4UbDiSQSBe9TZW4ZccKp8FuGBvo28HljB1RLqwyONoqdhaeUkCxlVlVzkQ1U/
-         TObA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbs+Z9iqihWmEXXOMGgZjuljaQBmhK2QQT5V+qCNXEPN0wmcQJq5gYrYTTHzBRnSD/6iNZnZKCO4U8uSddCw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxi0Dathrlj1GFJesFEC/aD/+E6Heuh+LPfML18JesJMlsExB/e
-	rsyBLEEZDgBcMmfWd9jK5wZvyvpAH9Jmh/nPWa5yJNhJPZJME94d6QLs1LzobT48EyB1z6gq6Ui
-	odrqG/3/sKfHzgr+eAGxkjFWrntH45ro=
-X-Gm-Gg: ASbGncv2EEN4aNMr0qhsuZooLWwyV1F3TqMFwySSdRMQYB8rZyjs3xk/7jMFqkDRAMT
-	twjRyB1Z7x/tPvi0h+Y2x4YER67DsIG1rk7sg+Q/hPR3SeD2ooyza8RtGKOhnPsG47ELL9ninAx
-	+/RbFkHRBo9nKytBLd+eTmFU5JZJabVXOSRaRcOq0oS6QgvGaG8AP1my/owIPyUB1yd/b/e9mwR
-	X6VVJsUJ+6VcNMPlQ9OKqZ/Q16gfZAtzmUYPFZfCZXIn77vcUZapc+ALKZegdXN5Fdwy1Oeij99
-	Z6P8IwVHT0mTqumCOjBpbl0hvsu7V7R3Amd4jJhL4aGbyOAqJehBSZRLmmhcZzVZQ4bkeUh7uhz
-	+HNg=
-X-Google-Smtp-Source: AGHT+IFsTy6OYScG+CerWDpgPGJvvrpZZa2slmzCw2p2FhMd++qGQwfMjY8XkE5BZNsi8aZK27qX30hA8hzulfn8Qac=
-X-Received: by 2002:a17:903:2282:b0:297:df7c:ed32 with SMTP id
- d9443c01a7336-2984ec8fb37mr19636225ad.0.1762944907518; Wed, 12 Nov 2025
- 02:55:07 -0800 (PST)
+        bh=TNohQaMM8ZiJd5FBk7HxCy8RYGSgToj4TZLYuUXuyKQ=;
+        b=Yn7rUnsPltwTqMRp3VuLXRJRPEv6stZpvcWA1V89GmZWntLKyfKYRnAoBV98FcS5e2
+         8l4hxPUhhpbwRdXH0nKsqgIKaT4fp0idNte1vQwwKgFymQC4Q34/SIhXmzl6U/TTtX7r
+         UoF9vO82BLEbQxrZCA3UZTh8JumopnWaaEBgvrVBCCmj3vnai2WJA61GyOYHE3aHmpgk
+         uDQ8+9xNBWJJrGEL/86AFlBMUBCRp+XRPXMpwFvQkNaCN5oposrQIY5efNCadWv6gaDM
+         mo2fI5ZzAlgpUBOITMAq+KRjqI4PI3bn/yp4CzE3iT5l+bB3LCCzQDi9oBhpAHpWnbM2
+         b8Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCWcVOuF1x3VswsdB4PbZyH4mW/MzzqXAw+/uLcIjPCO99p9sEuBXWswvV8O+gMgkl+kFy0ReY7RZYD1TUotMw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJhuAdt7ccrYd1TOj4NUbC3ek4mgNbB8zXjVZsnzAb/yWd5v3m
+	sMY+BaufKDi99M8vc/bgcqYZUlK7zentguvyOicl33f+B0oQdTfA6N4/EUsi3mVFhjWJMC5Y/zG
+	Pjk3a+7CYz2/WHwpfuYXUN1l5GfXBJxU=
+X-Gm-Gg: ASbGncsYIghOOJHWLxzQmm5Uvc/f5Pc5y06yQp4PMXc1lH3tnCfAWSMm94soCXsuccD
+	YsVf7a3FtZPBs41/MlkfFRY8y5nmdBKcT2iRrYZ+3Y6pJB1RXSKFrtvG/+Sx6ioNFQksT17TzjU
+	agi6N5qr+AKaxxycybBoOAJxmyemzQ0AhOzvjoEi79u3FmzYr5NjwKbPt8yE+RkxqO5tBIoUpPl
+	TDD9yOXdVOxZXp9p5GgWCVvXZ6PWQCaACqd88oUBbRFNHxV1uzAZMgvlbH26qSoPijGFENV80iU
+	xkoaqkumZnC1jEVBDNbl+jOcHdDAgp1DED1WGs2TGmi88xHdcJNkqlzs0k/A1ovyTHrk6g0wgCs
+	qzPg=
+X-Google-Smtp-Source: AGHT+IHrQNXhY9YMT1oddk0XUMNLWOjlpzyfDcWUjLwcM7Kn3IniWXjD6lX8+8ZvTPxv0gajGvSov9xtpg+vUe5CnfA=
+X-Received: by 2002:a17:902:dad1:b0:298:9a1:88e8 with SMTP id
+ d9443c01a7336-2984ed82b3fmr20553455ad.5.1762945012322; Wed, 12 Nov 2025
+ 02:56:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
- <CANiq72maV_j1uV=2nPGbTgRabnk8cpc7TNN_FQ+ou52OpZ=k6Q@mail.gmail.com>
- <aRRgbZ67cuW4ZoBN@google.com> <aRRkzrUw1iYNt8KJ@google.com>
-In-Reply-To: <aRRkzrUw1iYNt8KJ@google.com>
+References: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com> <20251112-resource-phys-typedefs-v2-1-538307384f82@google.com>
+In-Reply-To: <20251112-resource-phys-typedefs-v2-1-538307384f82@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 12 Nov 2025 11:54:55 +0100
-X-Gm-Features: AWmQ_blEy9lDgXUuRaA9PFmJsOL5mkEF1Q6ty6i4iYdlOSuG0l-50NngYkbjG7o
-Message-ID: <CANiq72kEYWbQ_yqJKHoa=ffereCun4A6rMudrcU+qBK_Npks8g@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] Rust: Fix typedefs for resource_size_t and phys_addr_t
+Date: Wed, 12 Nov 2025 11:56:39 +0100
+X-Gm-Features: AWmQ_bmO92eCjDN6AY2pabBMv1OBSxVkwHvhLYHKrQoHuNDmC44_4_AWypybmTk
+Message-ID: <CANiq72mL24KA59E2HDgME4-nhxw7PCvRAF_2XA02SDnre85kUA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] rust: io: define ResourceSize as resource_size_t
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -83,18 +81,21 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 12, 2025 at 11:43=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+On Wed, Nov 12, 2025 at 10:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
 wrote:
 >
-> On the other hand, I think that the first patch qualifies as an actual
-> fix.
+> These typedefs are always equivalent so this should not change anything,
+> but the code makes a lot more sense like this.
+>
+> Cc: stable@vger.kernel.org # for v6.18
 
-Yes -- for that one we should add a Fixes instead:
+From the cover letter thread, if we treat this as a fix, then this should b=
+e:
 
-    Fixes: 493fc33ec252 ("rust: io: add resource abstraction")
+Cc: stable@vger.kernel.org
+Fixes: 493fc33ec252 ("rust: io: add resource abstraction")
 
-Which means it may go to 6.17 as well and the "# for 6.18" part is not
-needed in the other tag.
+(Replying here as well in case it helps automated tooling to pick it up)
 
 Cheers,
 Miguel
