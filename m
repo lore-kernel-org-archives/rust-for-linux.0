@@ -1,181 +1,99 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013052.outbound.protection.outlook.com [52.101.83.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF98E2FFF9B;
-	Wed, 12 Nov 2025 10:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762942654; cv=fail; b=n/1MzR0ZyZ7IcUOV9NYkiZwCMdsAooDkKKHQT5y5CMwbVsWEl57y054UBBNsb+S0EhJowYwBi3TgMuDlSM+7p0cFpzDNaKJsY1umw0ok5cemMoJE0RxFsWiulEH/fX0bGqfVstC8/yx/evf7EhE2xJJ4WZmtdzxqNM1YyZXqZG8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762942654; c=relaxed/simple;
-	bh=GPrGAwr4nUmcIroIDeaqhigTTdz78P3h5RYyTEFOQYo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=npzNy9v1P5+rLOeeSVFi7Bh34IbzDiVegRfM7t/yaQ2FZnEnQEKrjQQFKyaX5DKsJ5WnWXlQNbywVDuFP5z2qCiRa4waMLHRAG+lEDCHQy/SY9jKTMSifgv8mQeHb5IvOWGq943Y3H4/BnCjL+KrUxSxjtL6PwMF3KJGTE6S97g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=lUwCgKTv; arc=fail smtp.client-ip=52.101.83.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CA0302747
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:21:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762942915; cv=none; b=XxbBfAfUhCi9EIwtG4SlFj20Vrlw5h1ZKjE9SBQSlgYt/GYQ0u2+u0Gcyihdc5WaeQczdv97nUCaT14Qv3DrgRfoCdfCdqDsECnCiHxz6xj5vZDFA3vQC3r9kjFES6cuTWpV8LM7q9SfGVZeO0WdXcJ4+zngujJEysiG/I6enG8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762942915; c=relaxed/simple;
+	bh=a1LbZXoKqASbEUpN7+CIMVVnKdzk5okC7gkeCo+wSp4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BfAYLdZB5w6rX/odoGYgM1nctPg4e/RgJzCH2bP7gj0RXKyH+qYwkqo+OhSc8ftYBccMEqtpofpKi5itNeaLJ+e8aZEx1A1KSsdFBcAYdXn2vrhaOqQpOg88Zah1+wgynekMzgAGw4+s1IZ5/k6w1UCmthaRer7x7mgRPeNK68Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F6E7gJKa; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="lUwCgKTv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h9QJQUIx0GD6viMuAL8ifCCITw+kS4WPxxY2Q/0mGUMDo7hfFiqag50bD2bxL20JSF6CD65Ojy9ZlhnsS7TuLzQTo+pwycPoVPfGJQtHhgX+ImsTZPiqYBKm7ns4BPjZHd4BkBdazq4BMxWIZwbBjAYDCQXiOvgXUWZhRXBKL3M6CgUUIrkPh+//26Aow7k6Jomn267w3viuAtSEGj1XwMU657fsKapi7xz7CLfXEAopvWCyv1Q/aFopF8RCiMDZktEaoaG14lECvGxL2B5e8RpQPXIG8EFfQ+nomPoeiQ1rn1RlV119Me01BOG9O4zqVha8F5BwFpK1BD4YhTDZEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Xq4y6eFHSdgMq6ZCAy4NcIPKreRt+m7Azjuv9LKrxWk=;
- b=lACkUFT5FFW8/TLtC45dHaVYns2uqzYyHZs3BtozPoxdGPbOVLwCEPc5DGD4j/PS2dgYf2+lV3WlKuAP6hkQNvRE9eRrS9CzD+Jd09mupr29aHBJAI9NkUeg5KwHBMbeKWIG7gMTBuTLYhRTz3nMUjWWY1dq02p8uWW89oZup85X8ItciN/85JGv1+1Oijw4YA4onmjFEZ4azqkZ2vNaj5hK00t6eJO71GDlq0axU5WTz0+9BAqOvfCS/D/X3DkoA0L/LjQ29G5oauCEe/d9kStmEb5ru/CUNVL3PuIoKCCoNI6SrP+tmcliJil3E3F8FADzjzSxLzg6l4++1tgdxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Xq4y6eFHSdgMq6ZCAy4NcIPKreRt+m7Azjuv9LKrxWk=;
- b=lUwCgKTvOxJ8WmwH+AGkT84PCuc5TmqB+icX0xx+8AsxNiwQM1/GOUWhpSTL79tBQQJtgqgqBxVVu4IE880SqGXGB8ssL9XhQWUJm3ewEHEGBEfypBMHCxPCmWjeoZvQEWMaLkTekhVC8j704nJRTRMTAZ1zMzt9joaNM4DdG2HWTRUmDODDmNi+R6JJSCLl5kZFrved0EJ8k5kQE3BS4orFtBM1jkNCmTvzy1B+tAlHNVf7+xiVfmrb2Xec51Krpp5l7KkDkOwDJBXubpHloQWaQ39z4TqDCknxz2P/bJInTQeFpqkbJQI1+4Nyg0A/4+nDdKw3dcbfgRmF/twMeQ==
-Received: from AS4P189CA0018.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:5db::19)
- by DU0PR10MB5726.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:313::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 12 Nov
- 2025 10:17:13 +0000
-Received: from AMS1EPF00000049.eurprd04.prod.outlook.com
- (2603:10a6:20b:5db:cafe::62) by AS4P189CA0018.outlook.office365.com
- (2603:10a6:20b:5db::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.16 via Frontend Transport; Wed,
- 12 Nov 2025 10:17:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- AMS1EPF00000049.mail.protection.outlook.com (10.167.16.133) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Wed, 12 Nov 2025 10:17:13 +0000
-Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Wed, 12 Nov
- 2025 11:16:48 +0100
-Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
- (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Wed, 12 Nov
- 2025 11:16:47 +0100
-Message-ID: <7f3bb267-7cff-45e1-84a7-15245cffd99f@de.bosch.com>
-Date: Wed, 12 Nov 2025 11:16:40 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F6E7gJKa"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2960771ec71so830085ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:21:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762942913; x=1763547713; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D2Q8979WUafsHbF02hsz6ih8XON9WMXfl3cHVtdnFpw=;
+        b=F6E7gJKaKWo8qWNzwWiazf17nyl7mlepSv9EzH41Fcj2QRl+eNAQUHgbiY/jReHdi7
+         mv1ngTSDwAfoRRP0oUzyQkSwVPjo9MisANNMazYn86c7C/WWAsd22gfsBoupuBuesk4t
+         SspKbkaxGD1aX2GG2CB/bV9m5KYjPcXZcrms9Bzle9fpqpzhO8JqpUdklyk+GAwr30dJ
+         IRgkedogZ52v9Yy4TmDS7uXl/aTxbzeCAAKOioZTlvDmWqFoWQyrA7JO7GU9b5S9tie4
+         jstxqQUy+O1a0rZfcJDdKO4mNuZvvU+tOVv3wwpZ6Mo+wsN7dWkJT7XK7kTW5KZAgln4
+         Tx0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762942913; x=1763547713;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=D2Q8979WUafsHbF02hsz6ih8XON9WMXfl3cHVtdnFpw=;
+        b=QP0L2ABWyQXkh+VVzGi5Sc3erqCAOeBu3FuKZWG6/20ueER4NN9+Lh14dDTPAgCQd3
+         GY5sDbovE5fk6G5MuTV3c3zE+vfGdu9OuFZ6sUvtuHuvZMZX6AyUXEMkBRRNkBafvMxw
+         H/PoQOHHJi7MoJZPbTqsAg2hlhggtKxWj5plz++1d/xm14kEQWeslQMMC4YWkOROnNt7
+         vd/1fZIJ0Yzx9V5HReTtaMQPe3Xagz8d18xIENFOSYgHY6x5gpYxu6pIJYUtIXr1jJ4l
+         7wRsd6uy32qsI4D66yvb3SEpmNp6ePj9YsA4phP21+lTWog7w2y/CihWegMttBy3yYYE
+         n7dQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUEVgQCXKZjBnHRP2u3o8vcCacVIAS0vbIRpYuOtKxdhjxf0S5/6NAy1+2BRm2OuSaj3MCbMSMcWd/ogmaiqA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzxn/L7haIHw/qEi3mudzIccydkvhTwdvBtyMrtBud4nhksS2dl
+	2DvZ4Q98DD7aUSlPEOkJOT1Zsygbq3PK/sSAP0z/kZl4Ro9NvSpwzLjEsH9YE0R1ZoPtg/t27CG
+	0LgP01yaan88jOEVHvdy/VtnctW86jPc=
+X-Gm-Gg: ASbGncugU34PYH5kOfAA9ptvJCMRtzoBnLHSUmVHIgrNIiSfAT37xMqX9akmhyMAAR/
+	Ih3NDEmX064EOJxY6bOvHQWfJMCSczj3BRqdPobOYpOfKxF7BIxGawYeGiXacll0yKBoXMOwbLW
+	B/IW01H1EyIELecwaLwBc5B9BB0X03G1rikskvWSBocUn9Y2BvtEuv0lTw2hejb66w/zNU218kt
+	aSrDT0eQiF6brRCb/GA8fNCTcdQilMLcvfNWpDcpgQlpG/y+0RuTY9MkD7VfO+d+qexloDvvUJs
+	+Sjd59kvulBerKFfQjEVG7aKdVnSK/Cg7mISyyL6UEzR3ZS/viUCYeOVW+Pla1rzLodAvJ8COhh
+	X9qCFAX1d/HTL5g==
+X-Google-Smtp-Source: AGHT+IGmicDENKU7JiFKpvKuaoETjK/7j3jCXmA+p5saOFKLhmhJuX63oTyY/v5MtBwRvWCmwk5r79w7uF8r3OmPhsU=
+X-Received: by 2002:a17:902:d50f:b0:298:371:94f1 with SMTP id
+ d9443c01a7336-2984ed2b38amr19650835ad.1.1762942913408; Wed, 12 Nov 2025
+ 02:21:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH] samples: rust: fix endianness issue in rust_driver_pci
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Marko Turk
-	<mt@markoturk.info>
-CC: <dakr@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
-	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<rust-for-linux@vger.kernel.org>
-References: <20251101214629.10718-1-mt@markoturk.info>
- <aRRJPZVkCv2i7kt2@vps.markoturk.info>
- <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
-Content-Language: en-GB
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS1EPF00000049:EE_|DU0PR10MB5726:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17410a56-1be2-448a-bde5-08de21d4a5fe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024|13003099007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NHpTKy80bUQxb2UzUC9yUElHMCs1WWwvUi8yWXVPN1d5cWNkNzJabEFJTnV2?=
- =?utf-8?B?U05ncWcwdkNpUVdxWmc0K1VBTCtQVkJ3WG5TZmFLUEtRVGRFNHZWek1FVDlJ?=
- =?utf-8?B?THF0MjdGUDNDME4yZTdwUDR6TTc0MWllNkpDcG54YUcwTUNiWGx2bWdCanlk?=
- =?utf-8?B?MHRSR3hiamlOc3JqNjVEUjZhMUlSUkVLMzAwRWkzZm9TcXEvcEl1TXNleG5k?=
- =?utf-8?B?VzlnL3BmaTRQNmpWQVdJWkMvQWNjNmtSemFaUDhialZuS3N1eWdZdk5wcVlC?=
- =?utf-8?B?MEJHaTR4OUEzczB0YmtQQkpsRWNRTzc1NDBLZXNlWjZhcDdnU1ZuczU1R0Vs?=
- =?utf-8?B?OFZaOHRmYVhJaUpyS3hQQk9SVk5tNjdHaWdxaEp6RS80dERyZnJzVHZPU3Zq?=
- =?utf-8?B?bDVYU09Halpwa1MxSk9uWlBJc0wwbkVIRkJSbmJ0M3JLbHE5SW44QUt0TjNQ?=
- =?utf-8?B?RjZqSWpTTHlZWlJFZDR2YVpnL1V2ODRFM3V5OFVMTURqWmUycGFUYk4vR1J6?=
- =?utf-8?B?OWplVXlOVi8rV1hYMDJlcFVLTWkzbExZd0xVWGY4bWc1eEJ6R0NFWU1BYmVW?=
- =?utf-8?B?ZWJMWUkrV0FFMkRiaG01U2VNYXIxb0hJOEU3MW5GV2FGZzZwb0sxU0J1UkZu?=
- =?utf-8?B?U2lLSUNreTA1OStzekNKNGltcmlVSVlUcnRHVnpCanBmZjJsUy9SVzdDL01S?=
- =?utf-8?B?NGh3aGRhTHdDYWZ3K05pZ1lCWllUN3gxVVNhQzhCMnkzd1hzTHZZRWc2ZGdQ?=
- =?utf-8?B?dnd0SjNBN09zbmV6TEtsYlNnMTRaNTNTYmpkaURKVGg5ekMwbVlMUWpvWVY0?=
- =?utf-8?B?T2V5SjlTT3FROWc3ci9uWmVlSTUwMDRCbmdGQVZMZE90OEZSdGhZTzlHRmN1?=
- =?utf-8?B?bjh5UldXWnVQTlEvazExSlJnT2p5NGdaamVSemZXcTU0QzJ6WTRuLzJPVXp4?=
- =?utf-8?B?ZU04eW5jRTlXZi8wc3JFNGs5T3h2U0xHbk5Wb2dmRGtSQ2RldzdGeGF2Um1v?=
- =?utf-8?B?QlcwRUI4VnJkd3R5Y0Z0VzI5YURLQ3FkeXMyVkVWMG5HME9PaDlDOXN4M1hr?=
- =?utf-8?B?bkFJYmZnQkNwWnpmTUtIdm1GbitENDRMbWUvbnJqeUlSSmJtRFZIeHhxeEZB?=
- =?utf-8?B?akd3MHV0cjFiVHd6ZTNVdHRqdkRRMjZBeVNvZzN5MTZmODRhcVUwWXJoZXRO?=
- =?utf-8?B?cmdJdjBHZEZZKzRobEYwNzBRYWcrNW9OcTRkSFEvcGZVN2M0NGlPeVRyemNk?=
- =?utf-8?B?UXpiY0pqaE9WVTVpSU10UHU3d1Q5eWlkNWlLQklwZGRJRlJpRi8vRU0zMnFV?=
- =?utf-8?B?bkp0Z1pYOHpiL3h5Vlc0SGxCUjJpNytNUWRGeFJjVk5tWWdVUzd1d242THVQ?=
- =?utf-8?B?Zng2aXdpeXBhUkhOd2J1NnNzZEQ4MFNLOGloaTVWTzZ1U2lETDlZSDdHS3dW?=
- =?utf-8?B?OXhhT3oxdUgveUdsbEF6YTkrNGlzNW5Dd3Jyblp4eDVkb0IrbUhidnpBM21T?=
- =?utf-8?B?WVRWMWNHcWhWeXBIRlFxcmIzWE0zVUtJVEFQQlZyMm1zZmxoNjRtdDJjV0xN?=
- =?utf-8?B?SzlwKy9RdGZQUVZNaDZRZXVkWDRmT0VlZTVZWHRYZHNjTzFaYXg4RWN2UjZI?=
- =?utf-8?B?R1p1Z0VvWExKTXlFWWZBenhYWEFDc0JoZTFpdnIrK0RXU04yNnlndlNiaDE3?=
- =?utf-8?B?eWI4WXlQaGU0U0ZCUXdzdlJraTZ1d1pqelJ4SGdiVGtyR1RsblhhNFFiRnM0?=
- =?utf-8?B?cGRMS2F4YmYwbEYxYUxLalFnMkFMTGpxMGpwMFhFQlYzSHBTd1FKNU85VmpM?=
- =?utf-8?B?b3FwWFZSVFZJQ2VJM0d0dml2LzVVUGwzS01qVkVQOHFBRFdjVk85WjYxYW9B?=
- =?utf-8?B?QVFDUVltVS94NlE4N1J6ZnV5ajkwajFoT0txa2Qra0l6eENRK3p4ak5oVFZ3?=
- =?utf-8?B?Z0xQcXVmd1loZ2d3WjV6UGlZRzVBM0s2dHp2NXY2ckprNnlBeXBEMXlmYVNS?=
- =?utf-8?B?OGg0UjlNcjdxNzdLNVUweVVJMjZzWm9BTUxFT2ZIUXhqNFd2ZVFKQnN5Nk9a?=
- =?utf-8?B?S1pwZmVEZFNuRFNTeGFCaFkwUGRxb2xDMzVoZDU1WVErcGhWMVdNMnhXY3Vq?=
- =?utf-8?Q?+zt8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 10:17:13.4215
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17410a56-1be2-448a-bde5-08de21d4a5fe
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF00000049.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB5726
+References: <20251111-binder-fix-list-remove-v1-0-8ed14a0da63d@google.com> <20251111-binder-fix-list-remove-v1-3-8ed14a0da63d@google.com>
+In-Reply-To: <20251111-binder-fix-list-remove-v1-3-8ed14a0da63d@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 12 Nov 2025 11:21:41 +0100
+X-Gm-Features: AWmQ_bnHq9qt4ZLqIUwDgKVWFlRiETETpEIpC5CnP6lKPeTrcA2YHnmb1wWl4Lk
+Message-ID: <CANiq72kR6hsr26gxOJp+Ok85ru50QqW-jXjC=cKDssUUchrCQQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] rust: list: add warning to List::remove docs about mem::take
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/11/2025 10:37, Miguel Ojeda wrote:
-> On Wed, Nov 12, 2025 at 9:47 AM Marko Turk <mt@markoturk.info> wrote:
->>
->> On Sat, Nov 01, 2025 at 10:46:54PM +0100, Marko Turk wrote:
->>> QEMU PCI test device specifies all registers as little endian. OFFSET
->>> register is converted properly, but the COUNT register is not.
->>>
->>> Apply the same conversion to the COUNT register also.
->>>
->>> Signed-off-by: Marko Turk <mt@markoturk.info>
->>> Fixes: 685376d18e9a ("samples: rust: add Rust PCI sample driver")
->>
->> Can someone take a look?
-> 
-> Your message was in my spam folder -- that may be affecting who saw it.
-> 
->>From https://www.qemu.org/docs/master/specs/pci-testdev.html:
-> 
->      "All registers are little endian."
-> 
-> So this seems right. A couple tags:
-> 
-> Cc: stable@vger.kernel.org
-> Link: https://www.qemu.org/docs/master/specs/pci-testdev.html
-> 
-> Cc'ing Dirk, since he tested the sample originally.
+On Tue, Nov 11, 2025 at 3:23=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> +    /// When using this method, be careful with using `mem::take` on the=
+ same list as that may
+> +    /// result in violating the safety requirements of this method.
 
+I suggested adding an example or similar to hopefully help prevent
+this in the future, and this note is "to the point", so that is great.
+Thanks for adding it!
 
-Hmm, I can't find the initial patch in my Inbox. Even
+Nit: intra-doc link [`core::mem::take`]
 
-https://lore.kernel.org/rust-for-linux/aRRJPZVkCv2i7kt2@vps.markoturk.info/
-
-doesn't seem to have it?
-
-Thanks
-
-Dirk
+Cheers,
+Miguel
