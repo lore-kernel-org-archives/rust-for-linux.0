@@ -1,114 +1,426 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B074822068D
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6D7301011
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762942368; cv=none; b=jPtJp8JVIeRsUn+Xt2XClwYHO0CGjTWTUHsQRi7B71v7McgD2nNJ52MAC29+vigxPtH+R9+SKK+8/0Ui0ILFO1i4r9ZraoJ6K2v8baUZLUGPOD1965LwwfwpRZyKKZujS/I+Bja5dDfXDPpxvn9p4TQtomybK8+LCw/hQmltvW0=
+	t=1762942512; cv=none; b=EP4np2zZrmN2SWTRsJc8twICM0zlXC8uRvirS6VqUo5gkrAN9x6XZpHcuCgT8viTKOoRdqIUw6MjA7DaE87wAifQeePD2VVDpuNMT1UvQEn4kRKwrur6LOyqDTXqg6DT9QDl6sG7p39FCridvMPQjN6TtGtIpxGHfppizuDs6uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762942368; c=relaxed/simple;
-	bh=MHWwjzyDdlPVG7Ep2giUSyYeqBp+LJwuCtg4rAq369E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z2f00hf1IXIFnm3Q9IsL/+NUPGsLP0I+3AI6qQInHkdrgJ8XFuTL6YFQOnlTeY8gAJ8rlqchbx5jYd1ikGOQHdTDv4bM1zVnd+HRhIAHnXYZM9O3Mu7AyJ74m8hTykNUpt8Yg8+G33U8300bgP1sblGb5hMxkYf39A71KDvTLvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MifdhvqJ; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762942512; c=relaxed/simple;
+	bh=o9+xpW4uPh8uhRYnWukE8UfaplpoEAJ9o211/Bb8GT8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ir6ryXcC5/kMaaxn1nvLVXJbufTMWMeLQ4WviqsmqjSijfrTicAzKyn/DqkIkk8l1bipLWsgtDErtLCWr4id3DFQOgo61Nvft+4ynxOPYQnxg5r1W2+yUCeUNkNKtAaI/O7yl/JG+T5GHuuA2AnVMmAOSDmz6uAKsTjnk5WTyPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tWODgprB; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MifdhvqJ"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-297ea936b39so972435ad.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:12:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tWODgprB"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6430efef759so770585a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:15:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762942366; x=1763547166; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MHWwjzyDdlPVG7Ep2giUSyYeqBp+LJwuCtg4rAq369E=;
-        b=MifdhvqJ+tTPb55l+09TG6kR/bkYSEOysHx75WWgnuHLm0nKpxlmKNZYN9Oq3HqHof
-         Idi9LIjy5A9ZujCthgUEbopWG/mIh1Bg8ur8A6Wij+heyR9UfjrRwugBBV2QOtelo0E5
-         GlhmWycrrB1e8aLcGEBEPG7CbBGy6uILwpr/WhATx0ju1FnOYeWOGSo9wJcXNWz9vHcb
-         mjpn7xh2OWnL6FEwNBIKNC8W6aeS+UlE9z0Fx0ugkb3NP8V+1pQrU8psLiXmBMaBZSka
-         cNlu4WiJ4Z6gOxQCpSkVQE9a/NCjZoasTw5SLrICRNrdvU0MmU748ygdwxycCsaQKWuj
-         +I9Q==
+        d=google.com; s=20230601; t=1762942509; x=1763547309; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=73I2FUGpROBWvvc1rEHs+Shl3zJLhmBgQPZT0bfkTyg=;
+        b=tWODgprBhjFU294CNcY1IX7G2ROhJEo1yMmT4mKB6Ne2wonbAcA+iXPIQGEuPmOnc1
+         P+IGU/WOyRM0OnV9GrXfitQdqEP1/HkfYk9g2MIxlQ7sY9/6QgjPQRM5LmPlxvftlXur
+         Erzh7ipTNE/m168aRaWC3PmTAz9zINzreMBhvrf0OnIgLcQCK6wWg6hY8mc7qsFheV3O
+         L7usuiuI4HSFF/J5InXqqhpMNcvCYR/8DZLdBmC1KC+enCE3gNYxWXPJyJoPcB2KyRpE
+         abHDTrl1CxUctGzAZgv+x9Y5Lxc9K1ZnraZPoICuT0Vb9tRrhJtggsWGT3BuZi+26xsv
+         4fIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762942366; x=1763547166;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MHWwjzyDdlPVG7Ep2giUSyYeqBp+LJwuCtg4rAq369E=;
-        b=ssZuEGunIf4Scifh9VWk1a1lLgBXCGLufZ9IirJ6RPr0Rkcc12bnJuyMQHYew7ty3t
-         yCq3MaNB+bNx16DcMKueuNZ7meN8e5c8D/7FTC1C6KqU1A9VGYqHZQabFjHJXdK/+/7e
-         TxzTbNlhxbUF42JYhlTj1ynjJhCHUQuj4wyLL5dtUfUdgI08Bset3BP7l+swJIwEic6J
-         9uCULNNbfK5QZmyhh8GeimM1v0LKI3D+FlvoLIoSXY/qrGDyCpDgv6nCuEHLAbBe55Bm
-         Yxii3zTf0Malt/2g35dn5kDUm0oFdyG54s15AFFWHoqTQ7zfAjofPfYZbeyUSyvzwqea
-         pBAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUakecpKVbhrgNFHKGH+MyBFGVAa3JjhGT756wsiDl4NP1ddZR6doZYPWewaZsoez4MWkPNasqbDIcBWXaQzQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCCizQndjNple2VSiuR+we9OnxOBkmotOXJmGT/lVhgxBuOLA4
-	YKWXAm2dtCPhvsJdyR5XcVjoZpW+Rw/Fqa1D2pW04XDFt6LjPkS2yD/XxBAzUHaui7b1zAZZqwz
-	EaSp/yG4vN2kHLTMD3hGqsxWikp0TZSo=
-X-Gm-Gg: ASbGncvahV1y29fADB805v6s26G0bUaPGMocl1zVH6lcvJpMs4cDUkeDmRMiJtX6hOE
-	PDvCp+hYjUtIgRD9Oyo901MAkd+mmzWH+9mrqnMpq39Y14brs3KElS0hlQKoVCgD9OVViTIU/gU
-	3YDtpPaQdOYK9JB/kNth0bqtcTsc2gqLofpqKM1EDAjzjmRJ1B20zjb+b3Rz1uaKXPIrZvdWU6B
-	JwNbtawTbr83MTcYtgr734r1ynMEIfeXgA988Ipbeb1op051L74Ooz/Is/5CjJYSgsAyJ8qCcVl
-	QW4pYjd/8/YeSWy8Ez6IJeiNX8z4D6ZCkoQX3w+BzYWxL2nlGkgy8zZBxjIxbS2qpKFRzn2LwBZ
-	mM1k=
-X-Google-Smtp-Source: AGHT+IETQ3SzNJP38qICCbEJ6T16t3JXamoGxAtaT33VsTBIiPh7Ibrz13eIJsuaIOpzM+bZ1DzCCfzs16H1v/5wS4c=
-X-Received: by 2002:a17:902:d507:b0:295:3f35:a31b with SMTP id
- d9443c01a7336-2984ec8c0d5mr19845645ad.0.1762942366026; Wed, 12 Nov 2025
- 02:12:46 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762942509; x=1763547309;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=73I2FUGpROBWvvc1rEHs+Shl3zJLhmBgQPZT0bfkTyg=;
+        b=X8aSVNz7i3bmu0psG8gbTa4gbRJ+j7qwgMdNGRcH7b+gVNHR7Jo+t7knCaobaEHNfr
+         I3TMlwQgQH0otuElU1ETru4XoAxYOG1nA8DLDUf08DWtb3rMVVsXqhK+DG0Gyj9GeHbM
+         a35zQM85cFBk5WKGKTGofhvs6jsR6PIIt6P7cEh0LJQQyQvzr8t1nRPtvoX7qqRmGyGF
+         VRCTzUA1IdI81xhYal4PEJnlBA0NSVwY7Z5czekFnw27ojbvkmOYWXPpxV53KAtAOgjl
+         TGzvMBSD2RRapMZwGCAUmHZ2j610f9aqJK7z0kYFZhjiGNf/YjSRfKYRzWhLEQv174pr
+         yZ8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW4N3mraR1Aeo1xsb3XrijSVAl+I0GbijknYoIWPIHKPlr6Bsp750d+K8jIR9Q/yH3z9Xjk8/cWk/YtPWbeCQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxiw2SLISPKmKHu2vZNF+2K4tWB26ZnOvXLEJVEWZUYHpmX/gLo
+	klKpTTF4a8e3FZJVFIG1Mtt5SIKOw7wVhf27r8jsPldnPNtLEf3SDzLEuDqZbl8TlNajl9hyW1U
+	wO1Gh0smqUT8gnQaSPw==
+X-Google-Smtp-Source: AGHT+IFqKjM6hhCMFPCGk+2Jpbz5Hm1iHGXFKauxgdFMLZ34a2nCz7aZdsSy/MowpmbykFK42/F+adtGbWZpHz8=
+X-Received: from edg25.prod.google.com ([2002:a05:6402:23d9:b0:641:85b3:f437])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:26d1:b0:640:fa38:7e4a with SMTP id 4fb4d7f45d1cf-6431a49a8cemr2140719a12.8.1762942508817;
+ Wed, 12 Nov 2025 02:15:08 -0800 (PST)
+Date: Wed, 12 Nov 2025 10:15:00 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
-In-Reply-To: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 12 Nov 2025 11:12:32 +0100
-X-Gm-Features: AWmQ_bnuNlJCsmBmrjk8c_BTNLULhTvw28twSuVwPkKbxpTmlUU6XbLfIppmVjY
-Message-ID: <CANiq72maV_j1uV=2nPGbTgRabnk8cpc7TNN_FQ+ou52OpZ=k6Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] Rust: Fix typedefs for resource_size_t and phys_addr_t
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIACNeFGkC/0XMTQ6DIBCG4asQ1p1Gx/pTrtK4EBiVpAoFNDXGu
+ 5fWRWf3TvI9Ow/kDQUu2M49rSYYO6coLoyrsZsHAqNTc8ywzNOBseCG2MknQU9ZgyhvJLXmaeA
+ 89eb9wx7t2Z5eSzLj+fyTgp1gVoGnYBevCNy4BYibI019gErLor5jrfPyLlb8+rILBMpOk4mCr dU1b8Ar5O1xfACweRVgxwAAAA==
+X-Change-Id: 20251111-io-pgtable-fe0822b4ebdd
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12178; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=ZXrOBFdyf9TG39sXS6oqK5q38LX8QtvFEFyq+TKtdgQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpFF4nbVQ48kgpUcJKNVdzu9LCeXj0vRdE2I+Qv
+ qo/Vy3hpOCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaRReJwAKCRAEWL7uWMY5
+ Ri6kEACJ1ErD1ff8rRfLJ/E1cEo3ogYuuSXdi9FVJi7KwZMw0ryDRadjy26jInquoxCCfu2qrS9
+ P6iY4wBtKDX+vOHETQMKq8nOmDOhDOB0nEEEPsnPD6dMTE+fzf6AOgO9xbpgbH9ZyYZIxbJPOtu
+ nNlG1p3mvjEbL56gmynSEyunQkDjE3oOPUC9w2nozhVlLQEG/8deuKcR0dk2tF1PNG+2GRRGTB9
+ YgpwbCf8mWn/eIS7R1bUMzLHnLX10EbWTQVeG2MdPgMe/HzrUzmhnbFNSaRpmeiuUdYpqMwYdlN
+ mXWPIVOB+qhqCR8rKwfOEBraN2N/xFGFqLpWUecNUPO5/8TgAM27a2fVJQchwqxdqVEQsIiiLrZ
+ qYQ9WjW94fhJvg6SIPUmJGlA0YFZbGVFOnQhBb0x7+i2Q9HFjHisL5XcPBoTCia5oUkQLEUhTB/
+ Y0BXqipcIUL79CmELu152HEAl3LqSN9Oc9brq7CYPgNs4HjA/HZO/qj1MLk3iEEBy2f8y7ZMGMR
+ IshBN7Kox/QxntpwacoOYZZCcJ6ScKG8qMcsA8OQAjOhO0idBw8egPuWPKFcy7U+uOe1w5E/Nhp
+ fA6Ca+tiJaUZQK8oyZerF33kS9pOps9AEY4gFHLdmGSvP32fRejNa/56LKZ7DbPtAyzqgvszjIr OFZWcZQaNThXsdQ==
+X-Mailer: b4 0.14.2
+Message-ID: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
+Subject: [PATCH v3] io: add io_pgtable abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Nov 12, 2025 at 10:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> This changes ResourceSize to use the resource_size_t typedef (currently
-> ResourceSize is defined as phys_addr_t), and moves ResourceSize to
-> kernel::io and defines PhysAddr next to it. Any usage of ResourceSize or
-> bindings::phys_addr_t that references a physical address is updated to
-> use the new PhysAddr typedef.
+From: Asahi Lina <lina+kernel@asahilina.net>
 
-Should we have these as actual types instead of aliases? i.e. same
-discussion as for `Offset`.
+This will be used by the Tyr driver to create and modify the page table
+of each address space on the GPU. Each time a mapping gets created or
+removed by userspace, Tyr will call into GPUVM, which will figure out
+which calls to map_pages and unmap_pages are required to map the data in
+question in the page table so that the GPU may access those pages when
+using that address space.
 
-If there is a change of these getting mixed up, then I think we should
-just pay that price (not necessarily now, of course).
+The Rust type wraps the struct using a raw pointer rather than the usual
+Opaque+ARef approach because Opaque+ARef requires the target type to be
+refcounted.
 
-> I included some cc stable annotations because I think it is useful to
-> backport this to v6.18. This is to make backporting drivers to the 6.18
-> LTS easier as we will not have to worry about changing imports when
-> backporting.
+Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+Co-Developed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+This patch is based on [1] but I have rewritten and simplified large
+parts of it. The Asahi driver no longer uses the io-pgtable abstraction,
+and Nova never planned to (since NVIDIA has its own separate memory).
+Therefore, I have simplified these abstractions to fit the needs of the
+Tyr GPU driver.
 
-For context, will those drivers be backported upstream too?
+This series depends on the PhysAddr typedef [2].
 
-i.e. we have sometimes backported bits to simplify further backporting
-elsewhere, which is fine and up to the stable team of course, but I am
-not sure if using Option 1 (i.e. the Cc tag) may be a bit confusing in
-the log, i.e. Option 2 or 3 offer a better chance to give a reason.
+[1]: https://lore.kernel.org/all/20250623-io_pgtable-v2-1-fd72daac75f1@collabora.com/
+[2]: https://lore.kernel.org/all/20251112-resource-phys-typedefs-v2-0-538307384f82@google.com/
+---
+ rust/bindings/bindings_helper.h |   3 +-
+ rust/kernel/io.rs               |   1 +
+ rust/kernel/io/pgtable.rs       | 254 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 257 insertions(+), 1 deletion(-)
 
-Thanks!
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 2e43c66635a2c9f31bd99b9817bd2d6ab89fbcf2..faab6bc9463321c092a8bbcb6281175e490caccd 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -56,8 +56,9 @@
+ #include <linux/fdtable.h>
+ #include <linux/file.h>
+ #include <linux/firmware.h>
+-#include <linux/interrupt.h>
+ #include <linux/fs.h>
++#include <linux/interrupt.h>
++#include <linux/io-pgtable.h>
+ #include <linux/ioport.h>
+ #include <linux/jiffies.h>
+ #include <linux/jump_label.h>
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index 56a435eb14e3a1ce72dd58b88cbf296041f1703e..5913e240d5a9814ceed52c6dc1a798e64158d567 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -8,6 +8,7 @@
+ use crate::{bindings, build_assert, ffi::c_void};
+ 
+ pub mod mem;
++pub mod pgtable;
+ pub mod poll;
+ pub mod resource;
+ 
+diff --git a/rust/kernel/io/pgtable.rs b/rust/kernel/io/pgtable.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..fe05bc1673f9a7741a887a3c9bbad866dd17a2b5
+--- /dev/null
++++ b/rust/kernel/io/pgtable.rs
+@@ -0,0 +1,254 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! IOMMU page table management.
++//!
++//! C header: [`include/io-pgtable.h`](srctree/include/io-pgtable.h)
++
++use core::{
++    marker::PhantomData,
++    ptr::NonNull, //
++};
++
++use crate::{
++    alloc,
++    bindings,
++    device::{Bound, Device},
++    devres::Devres,
++    error::to_result,
++    io::PhysAddr,
++    prelude::*, //
++};
++
++use bindings::io_pgtable_fmt;
++
++/// Protection flags used with IOMMU mappings.
++pub mod prot {
++    /// Read access.
++    pub const READ: u32 = bindings::IOMMU_READ;
++    /// Write access.
++    pub const WRITE: u32 = bindings::IOMMU_WRITE;
++    /// Request cache coherency.
++    pub const CACHE: u32 = bindings::IOMMU_CACHE;
++    /// Request no-execute permission.
++    pub const NOEXEC: u32 = bindings::IOMMU_NOEXEC;
++    /// MMIO peripheral mapping.
++    pub const MMIO: u32 = bindings::IOMMU_MMIO;
++    /// Privileged mapping.
++    pub const PRIV: u32 = bindings::IOMMU_PRIV;
++}
++
++/// Represents a requested `io_pgtable` configuration.
++pub struct Config {
++    /// Quirk bitmask (type-specific).
++    pub quirks: usize,
++    /// Valid page sizes, as a bitmask of powers of two.
++    pub pgsize_bitmap: usize,
++    /// Input address space size in bits.
++    pub ias: u32,
++    /// Output address space size in bits.
++    pub oas: u32,
++    /// IOMMU uses coherent accesses for page table walks.
++    pub coherent_walk: bool,
++}
++
++/// An io page table using a specific format.
++///
++/// # Invariants
++///
++/// The pointer references a valid io page table.
++pub struct IoPageTable<F> {
++    ptr: NonNull<bindings::io_pgtable_ops>,
++    _marker: PhantomData<F>,
++}
++
++// SAFETY: `struct io_pgtable_ops` is not restricted to a single thread.
++unsafe impl<F> Send for IoPageTable<F> {}
++// SAFETY: `struct io_pgtable_ops` may be accessed concurrently.
++unsafe impl<F> Sync for IoPageTable<F> {}
++
++/// The format used by this page table.
++pub trait IoPageTableFmt: 'static {
++    /// The value representing this format.
++    const FORMAT: io_pgtable_fmt;
++}
++
++impl<F: IoPageTableFmt> IoPageTable<F> {
++    /// Create a new `IoPageTable` as a device resource.
++    #[inline]
++    pub fn new(
++        dev: &Device<Bound>,
++        config: Config,
++    ) -> impl PinInit<Devres<IoPageTable<F>>, Error> + '_ {
++        // SAFETY: Devres ensures that the value is dropped during device unbind.
++        Devres::new(dev, unsafe { Self::new_raw(dev, config) })
++    }
++
++    /// Create a new `IoPageTable`.
++    ///
++    /// # Safety
++    ///
++    /// If successful, then the returned value must be dropped before the device is unbound.
++    #[inline]
++    pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> Result<IoPageTable<F>> {
++        let mut raw_cfg = bindings::io_pgtable_cfg {
++            quirks: config.quirks,
++            pgsize_bitmap: config.pgsize_bitmap,
++            ias: config.ias,
++            oas: config.oas,
++            coherent_walk: config.coherent_walk,
++            tlb: &raw const NOOP_FLUSH_OPS,
++            iommu_dev: dev.as_raw(),
++            // SAFETY: All zeroes is a valid value for `struct io_pgtable_cfg`.
++            ..unsafe { core::mem::zeroed() }
++        };
++
++        // SAFETY:
++        // * The raw_cfg pointer is valid for the duration of this call.
++        // * The provided `FLUSH_OPS` contains valid function pointers that accept a null pointer
++        //   as cookie.
++        // * The caller ensures that the io pgtable does not outlive the device.
++        let ops = unsafe {
++            bindings::alloc_io_pgtable_ops(F::FORMAT, &mut raw_cfg, core::ptr::null_mut())
++        };
++        // INVARIANT: We successfully created a valid page table.
++        Ok(IoPageTable {
++            ptr: NonNull::new(ops).ok_or(ENOMEM)?,
++            _marker: PhantomData,
++        })
++    }
++
++    /// Obtain a raw pointer to the underlying `struct io_pgtable_ops`.
++    #[inline]
++    pub fn raw_ops(&self) -> *mut bindings::io_pgtable_ops {
++        self.ptr.as_ptr()
++    }
++
++    /// Obtain a raw pointer to the underlying `struct io_pgtable`.
++    #[inline]
++    pub fn raw_pgtable(&self) -> *mut bindings::io_pgtable {
++        // SAFETY: The io_pgtable_ops of an io-pgtable is always the ops field of a io_pgtable.
++        unsafe { kernel::container_of!(self.raw_ops(), bindings::io_pgtable, ops) }
++    }
++
++    /// Obtain a raw pointer to the underlying `struct io_pgtable_cfg`.
++    #[inline]
++    pub fn raw_cfg(&self) -> *mut bindings::io_pgtable_cfg {
++        // SAFETY: The `raw_pgtable()` method returns a valid pointer.
++        unsafe { &raw mut (*self.raw_pgtable()).cfg }
++    }
++
++    /// Map a physically contiguous range of pages of the same size.
++    ///
++    /// # Safety
++    ///
++    /// * This page table must not contain any mapping that overlaps with the mapping created by
++    ///   this call.
++    /// * If this page table is live, then the caller must ensure that it's okay to access the
++    ///   physical address being mapped for the duration in which it is mapped.
++    #[inline]
++    pub unsafe fn map_pages(
++        &self,
++        iova: usize,
++        paddr: PhysAddr,
++        pgsize: usize,
++        pgcount: usize,
++        prot: u32,
++        flags: alloc::Flags,
++    ) -> Result<usize> {
++        let mut mapped: usize = 0;
++
++        // SAFETY: The `map_pages` function in `io_pgtable_ops` is never null.
++        let map_pages = unsafe { (*self.raw_ops()).map_pages.unwrap_unchecked() };
++
++        // SAFETY: The safety requirements of this method are sufficient to call `map_pages`.
++        to_result(unsafe {
++            (map_pages)(
++                self.raw_ops(),
++                iova,
++                paddr,
++                pgsize,
++                pgcount,
++                prot as i32,
++                flags.as_raw(),
++                &mut mapped,
++            )
++        })?;
++
++        Ok(mapped)
++    }
++
++    /// Unmap a range of virtually contiguous pages of the same size.
++    ///
++    /// # Safety
++    ///
++    /// This page table must contain a mapping at `iova` that consists of exactly `pgcount` pages
++    /// of size `pgsize`.
++    #[inline]
++    pub unsafe fn unmap_pages(&self, iova: usize, pgsize: usize, pgcount: usize) -> usize {
++        // SAFETY: The `unmap_pages` function in `io_pgtable_ops` is never null.
++        let unmap_pages = unsafe { (*self.raw_ops()).unmap_pages.unwrap_unchecked() };
++
++        // SAFETY: The safety requirements of this method are sufficient to call `unmap_pages`.
++        unsafe { (unmap_pages)(self.raw_ops(), iova, pgsize, pgcount, core::ptr::null_mut()) }
++    }
++}
++
++// These bindings are currently designed for use by GPU drivers, which use this page table together
++// with GPUVM. When using GPUVM, a single mapping operation may be translated into many operations
++// on the page table, and in that case you generally want to flush the TLB only once per GPUVM
++// operation. Thus, do not use these callbacks as they would flush more often than needed.
++static NOOP_FLUSH_OPS: bindings::iommu_flush_ops = bindings::iommu_flush_ops {
++    tlb_flush_all: Some(rust_tlb_flush_all_noop),
++    tlb_flush_walk: Some(rust_tlb_flush_walk_noop),
++    tlb_add_page: None,
++};
++
++#[no_mangle]
++extern "C" fn rust_tlb_flush_all_noop(_cookie: *mut core::ffi::c_void) {}
++
++#[no_mangle]
++extern "C" fn rust_tlb_flush_walk_noop(
++    _iova: usize,
++    _size: usize,
++    _granule: usize,
++    _cookie: *mut core::ffi::c_void,
++) {
++}
++
++impl<F> Drop for IoPageTable<F> {
++    fn drop(&mut self) {
++        // SAFETY: The caller of `ttbr` promised that the page table is not live when this
++        // destructor runs.
++        unsafe { bindings::free_io_pgtable_ops(self.0.ops) };
++    }
++}
++
++/// The `ARM_64_LPAE_S1` page table format.
++pub enum ARM64LPAES1 {}
++
++impl IoPageTableFmt for ARM64LPAES1 {
++    const FORMAT: io_pgtable_fmt = bindings::io_pgtable_fmt_ARM_64_LPAE_S1 as io_pgtable_fmt;
++}
++
++impl IoPageTable<ARM64LPAES1> {
++    /// Access the `ttbr` field of the configuration.
++    ///
++    /// This is the physical address of the page table, which may be passed to the device that
++    /// needs to use it.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that the device stops using the page table before dropping it.
++    #[inline]
++    pub unsafe fn ttbr(&self) -> u64 {
++        // SAFETY: `arm_lpae_s1_cfg` is the right cfg type for `ARM64LPAES1`.
++        unsafe { (*self.raw_cfg()).__bindgen_anon_1.arm_lpae_s1_cfg.ttbr }
++    }
++
++    /// Access the `mair` field of the configuration.
++    #[inline]
++    pub fn mair(&self) -> u64 {
++        // SAFETY: `arm_lpae_s1_cfg` is the right cfg type for `ARM64LPAES1`.
++        unsafe { (*self.raw_cfg()).__bindgen_anon_1.arm_lpae_s1_cfg.mair }
++    }
++}
 
-Cheers,
-Miguel
+---
+base-commit: ffee675aceb9f44b0502a8bec912abb0c4f4af62
+change-id: 20251111-io-pgtable-fe0822b4ebdd
+prerequisite-change-id: 20251106-resource-phys-typedefs-6db37927d159:v2
+prerequisite-patch-id: 350421d8dbaf3db51b1243d82077c5eb88f54db5
+prerequisite-patch-id: ac0166fb3cd235de76841789173051191a4d2434
+prerequisite-patch-id: f4bca02c77c40093690b66cdf477f928784bdbf4
+prerequisite-patch-id: 083d1c22b1a7eb0dcae37052b926362543c68e8a
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
