@@ -1,145 +1,216 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BF91A08BC
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 01:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8153594A
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762911308; cv=none; b=luXu71yjO8HMQPJr+RDhNnBcDoGuq8437pYL04howhBi5W5MfWGp+kyk37t7z0FLVAotUVGGBvTNMFU4DCgB9wklh7wYb/y5A4PiO0WGuUUwizAIZA4G/aHV2Ax0bQqmSe+OrqrdVchfJjN0y7dDF5TNl332DP0K0IrYAdtQXuk=
+	t=1762913980; cv=none; b=l8oVv3InwK0tErFOf3wmjM5UsryVTjVD13X1ww7FkQOIPK1YUCZfkhXgI2rv+yFo401U/sbwtat7bECklH90bFtzXfIpSSulpjAh9om8coDbHJtTHjVFGL+inev7j6NBZ7eQCmgekYTSuu3bj22/p5OkXH7Cu02qy+BM/vq9z4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762911308; c=relaxed/simple;
-	bh=g3adwZNj2VT7/71xWZVogcPF7iFtfynjdTGU6iT14sw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n8UQ0uq8H7cE3GoJium3ZGkklalfA9blBZ60onAzvGQJAN8FcEjQl/F5iLUtGkHQkH7MdkkD/KJdhHno/sSE689xGbwPzDlBNtR13HREqxty5CLdJDZNIoP0pEN5bfH67Hc9imZDFG/8CDpOuZmIlzviGYD6IX45fhn7kmgxbhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hMFwo6Np; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762913980; c=relaxed/simple;
+	bh=x2aGuz+zJKZnZZkXzCTVvYZ2ScR1g8KD1+E5T+TcHbg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RVQDchFqy+jmVqEbCPpuB+eNQ7RjLOC8dSQSmX1esAEZ4IHHpuEydaRhD8wNZTRlgDUe8P06s8QoxOSiTG8YqCQKjir/6xjdeS5+Sh0W1fu9UjirIt2tYVjeCjdqpKVo3MNCVp8T/SNCFO2FbLJoPuZwyx1g8dADMYtqvEuvBKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=gk2VSwhX; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hMFwo6Np"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4eda26a04bfso3430151cf.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 17:35:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="gk2VSwhX"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b72cbc24637so79610566b.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Nov 2025 18:19:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762911306; x=1763516106; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=sifive.com; s=google; t=1762913976; x=1763518776; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=74Ig6uTx8zmeeT9eLJ6vNWswEBWiCqJJ9yrw7PqhxKU=;
-        b=hMFwo6Npm1JX8rKm+ly8yL87hI5FvUU5BHnMKHHYrlS9ku5050V9v0QSV/qiqhqCVw
-         b8pycLonc8vzDCjjZKcVy4bRKSjO/Ffe4F2xaI23XTwOLFLo+tlZ74zKClertRt2n1Uw
-         R2PyuR8LRmTPTfiCdZxVedsNRYBsEna9UrxrLnrjVA7cxiRyETsqnbEWxFQuGlXnN2mW
-         ECEtFHbhfQ7m5/eGipLKsBi7/l5E4h8vUEzU5fvTNgusbKhXAz1iiissv2wxbrFcgs9Y
-         P/SRRbY4V1NcKKlY2+MVcwk0iYRrstLHroZ+mQeeC4hDbqMioqNTP8TeqOrGKj6lHu0c
-         iyCw==
+        bh=ugAQKBkBrsHecB9x8Cs9RwnH0DI2WGTlcIm1Ae1jyr0=;
+        b=gk2VSwhXpuPtX/Fqzr3AwXz1gHhLb2kLLml9g1FsMGgyXn031gl4T+NmBIirL00dD2
+         Kn5SVvCG4YbujGvs0sw0/Ek0BLiKDcxnbKnN3cZnvW2NcSnpT9L7MSbY1LwKTnhA3Pek
+         8uRkUEuzFAz4MUVdwJCKZFJTianz3jU7wwVhB3CmB5SddXuo+Rvyb/M8bkCia5+DCzDz
+         /jkYGUraJHhlC7RXmQ/BuF2Ef/CUfgTuYn6dMW9UlYw0kEw/KyOnpyd81swGrQPScQKM
+         GBysQAUuvVA1EpDUhYpI2mVYSlBC1BvGL3yZ5VDHxAu+T2VmAp/3aG3ixPQNjs/JSpAz
+         /thg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762911306; x=1763516106;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1762913976; x=1763518776;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=74Ig6uTx8zmeeT9eLJ6vNWswEBWiCqJJ9yrw7PqhxKU=;
-        b=ilT2UwmpxYe3+iYS4gpcXSydkg9vWH2d8aQuCNr5El9i6xJI/9Eek68QQyTFr2xxs6
-         pAElU3QeKfYWJMO8xAPUO2HqTFu9kKMFTJTVdPUygtQLopjz5XsYuUDNBolkDH0bXGlP
-         7tknnxVkTIFmUgeSIx21bKcNFk2F+FiCyHYdYx2BF9NV3OOGw8uDvCPl+Wzt65n90hzk
-         j+/Uq472vvAV5ULyHr0LTkK3u3U5fwZfFM36VM6RCoiRXF1obX71bdSVBI5+9fLd3Dr7
-         9b/p6PW+m6Gjw1w9ezrjg3Iup0pQ/VunU6fDcL+CEx4B+3O+iQ//jn1f0XOtKDk0TU4e
-         qN7w==
-X-Forwarded-Encrypted: i=1; AJvYcCVk3hqGau8WG1tBNTokxwNs5Obq/E9lI+kwUhvZhNTzZ8riejf1SygrHz5ZrDgGuM/02ve5J3JXQjLXiyTCAw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWFUDl+dDumWg5Vrg0i20rUtlfAkUBdMY/BBljKdk+/+1zPTPA
-	c5Ez8tUVuyO7+kSIR0IJkCcsLaos9A9Um0uaxOd1AND+ihRq+Q9ieQkp
-X-Gm-Gg: ASbGncuetAIhChardztv5bcy384QnVNRp/Y1SiOUfAC1wLYx9pUDvXghDZrHeJnNxsR
-	2hXCjReb5kIecoIDMjTUIfjlsakfpy8/QjG/SJIdBL36vJH2pI0AYhn9/0E0oqVvUJ8RSjNcuKT
-	MrLLrmELFrga1Ul4hKtfTGT6aJaJjx5CXgXmlDYgxn3dDrQnAFjUYwBzALOqgz1Ed+SpX0D4PnX
-	TsFqQQfpjI25rELl5GloVq0B6vEdWJYSWS74mKp6N/oQeJ0PksepZjXBODGEnwoR4XkkZh1X48Z
-	uszYCgX1XWn8eWSHziE4R8rJRXISJJDyivAdVtkiSjSYzFXy7zD2IKrMM/Qp/PxH810AZtOpkx3
-	AXgLSd3LViwRK8T0wliZmNf+N1LXsjZolEX8W9ixOM7nLyKkv6IcuVCBp4zhpbCLB1BU9tjNO6K
-	IiSpxFnbVje+2Uz6cBNUMuwD5GxETd6SWpj0scBwP6kDksmzpxUsZnQal+gC5q6+iboODDbOEzJ
-	nmc
-X-Google-Smtp-Source: AGHT+IGw21AG+e0LCM312xs7EBq9H23Rn9g4eaXIrnlM8wwvnRMpycT9GNJPA1aGnWlXrkx2i4IYlA==
-X-Received: by 2002:ac8:5a96:0:b0:4e8:b478:66 with SMTP id d75a77b69052e-4eddbe2146dmr16996861cf.82.1762911306298;
-        Tue, 11 Nov 2025 17:35:06 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88238b75896sm81830636d6.49.2025.11.11.17.35.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 17:35:05 -0800 (PST)
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9429DF4006B;
-	Tue, 11 Nov 2025 20:35:05 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 11 Nov 2025 20:35:05 -0500
-X-ME-Sender: <xms:SeQTacESTNZouH3boqo8r9iiBE58SpiGo4lFgDtzObgFqiz-4oISRQ>
-    <xme:SeQTadhymwFqRetORVuzF9faDdGYcXzbc67TAGVDLTyptqYrY-vD2UUiRh6at2Ib4
-    tN8KGZ-HQdtcpP-t5yV_0SPzmQjuPTGhYo56ZJ2FEojUAzEdQI6IA>
-X-ME-Received: <xmr:SeQTaRu4-BDNIJbSXZZ2OtyzYdz0sIB-Lv6jxJJurdMwVNPLQbR8V_YLxK0OtzjIxgjbxoeAgLXcd1YMr4WdZet7DqoGm0WN>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtddvjeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
-    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhlrdgtohhmpdhrtghpth
-    htoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgv
-    uggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhogh
-    hlvgdrtghomhdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdr
-    tghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgh
-    grrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:SeQTaYsrqzQ_ihHUFCvhub2vEtr9pL14prncqe37sUx3NBe_mv67OA>
-    <xmx:SeQTaeGvctssS0WSB68KT3PGjMJtyOLQBMaKu15yZ9RT2JLcrCsbhA>
-    <xmx:SeQTabPbKbIHausxUjUUiT6QHx78MHi5ANmtClBpms8BPVbc_tupYQ>
-    <xmx:SeQTaVJ4BAq_pReZe0C5pFJIXmyUY6oUVZ5D_pdWsAzgtH0_5clgAg>
-    <xmx:SeQTac9RygwTfuTcF7W4I5nWr6ErRHkRzj98Eil5UZG1ymH-qOcPrXMq>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 11 Nov 2025 20:35:05 -0500 (EST)
-Date: Tue, 11 Nov 2025 17:35:04 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: a.hindborg@kernel.org, ojeda@kernel.org, aliceryhl@google.com,
-	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
-	lossin@kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu
-Subject: Re: [PATCH v1 0/2] Add support for print exactly once
-Message-ID: <aRPkSKCQKSQU8hlm@tardis.local>
-References: <87jyzx6ix5.fsf@t14s.mail-host-address-is-not-set>
- <20251112.094508.554651669948369724.fujita.tomonori@gmail.com>
- <aRPdGg01VDJucAfS@tardis.local>
- <20251112.101853.1558870636834355421.fujita.tomonori@gmail.com>
+        bh=ugAQKBkBrsHecB9x8Cs9RwnH0DI2WGTlcIm1Ae1jyr0=;
+        b=sjNE+XnK26u7+kyELoP6bSbC/36e3xZ0RN42JOK/WbHN7vNPbwI2iAwUz6HMIwx/YI
+         Wrxev3PZcvvM1M6Dw88/WwMpaUoEjhgaP2YKmVBhEHxCt3FWk5lLc5VA2sMbtGcrLgDY
+         VpYJBYOzCVcIVabcJMGsEOg7abL9IXilLGFIMHuqMVxXQim6QpKJ+F5QpRGNMQFnpmQB
+         s9fLwt09mBv2LK2gmSsamycvMssRRnBG4I1ZZIiFKc6aA+/aEkCEbCA0OBfywASC2CS3
+         EnEr5MZ8540Am57SV6zn/3pSjoWyY9HDPgGAjPoXLPXCuBPqSsqHfOL1D8SnEkg4hHw+
+         nImA==
+X-Forwarded-Encrypted: i=1; AJvYcCWL6AlkVjZ2rh2oiMeR4v5sAO44N+KoIWLtvpVHqpCcCw89Gst4nxS+Q09vOYy63I5vUaub8J3ZWUBg9CaXMw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTjLtvOT/1TfjS8F3irdm+0IhO3hVE+VqO9QtMGnWt2yNpbYyF
+	bawKOC2caINrVbaHXNO1wXodZRsHoz/qEe7jRgoYgQFPynumlZz2f6GAo4tY9IUrIwvPdyp3DgU
+	Vc0oaeRpF6S5sSigibai/dscf0w9R7BkTQXQ2mekiAg==
+X-Gm-Gg: ASbGncvwaqEnNYOYIxbwDHuPDrUUP0odERMwjQIFVwRHvnxFDk+4DvckkVrlGHw+OUq
+	NHD+dH04gyIuBJDQTRo1gWYD40gg/W47pYonDPcB824O7XyhFUhP+eov71hqd2cD2gdrSSoRDgJ
+	XvOGBuDCsf7pESNlYi1ETxtvfCU6Bz6BBQLuJl1g/gDSwJFnbubL4OZMwe8mE0FxmkxGvvE2XVj
+	Nt0KozxNPScYQITJLykADM3KRIKyRfEqwgvBTf0lr0gmH/rv/PBRMwS5qzmS5k=
+X-Google-Smtp-Source: AGHT+IE+yEBTlwHkenGiGwu5UyXnAf6gT3RkSyNE+10D+a3qX/UN5XaT1J5EAZetmYd9Vh7p3GgyT6IZWxgqCbtm2x0=
+X-Received: by 2002:a17:907:3daa:b0:b72:52c2:b8ca with SMTP id
+ a640c23a62f3a-b7331aec193mr102047266b.59.1762913975653; Tue, 11 Nov 2025
+ 18:19:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251112.101853.1558870636834355421.fujita.tomonori@gmail.com>
+References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
+ <20251023-v5_user_cfi_series-v22-25-1935270f7636@rivosinc.com>
+ <CANXhq0oEpCow0G+KsJ6ZPuwsxmAFVqoKGEzygiwSmxFsmntiWg@mail.gmail.com> <aRN-0Z9MNeJ9IZf2@debug.ba.rivosinc.com>
+In-Reply-To: <aRN-0Z9MNeJ9IZf2@debug.ba.rivosinc.com>
+From: Zong Li <zong.li@sifive.com>
+Date: Wed, 12 Nov 2025 10:19:23 +0800
+X-Gm-Features: AWmQ_bmKovRTmE80-MSruF1BPvDQmZ8Z-ahD6_kAC3IOhiFoglBht7EGrzIY3bI
+Message-ID: <CANXhq0ryrNUoBvACX9hh-=FVOe+L6_6beXrZQn2e1P6eWgcUiA@mail.gmail.com>
+Subject: Re: [PATCH v22 25/28] riscv: create a config for shadow stack and
+ landing pad instr support
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
+	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
+	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
+	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 12, 2025 at 10:18:53AM +0900, FUJITA Tomonori wrote:
-[..]
-> >> 
-> >> I agree. I think that even if the type is (), a race condition would
-> >> still occur if the init member were reset to zero using non-atomic
-> >> operations. For instance, the as_ref() method effectively checks
-> > 
-> > I already explained this, the debugfs writes have to be treated as
-> > per-byte atomic, otherwise it's data race, using "non-atomic" to
-> > reference that won't be accurate.
-> 
-> Suppose the init member of SetOnce is set to 2 and then reset to 0 via
-> debugfs. In that case, if two threads execute the as_ref() method at
-> the same time, is it guaranteed that they will both see the same
-> value?
+On Wed, Nov 12, 2025 at 2:22=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> w=
+rote:
+>
+> On Tue, Nov 11, 2025 at 01:58:37PM +0800, Zong Li wrote:
+> >On Fri, Oct 24, 2025 at 12:51=E2=80=AFAM Deepak Gupta via B4 Relay
+> ><devnull+debug.rivosinc.com@kernel.org> wrote:
+> >>
+> >> From: Deepak Gupta <debug@rivosinc.com>
+> >>
+> >> This patch creates a config for shadow stack support and landing pad i=
+nstr
+> >> support. Shadow stack support and landing instr support can be enabled=
+ by
+> >> selecting `CONFIG_RISCV_USER_CFI`. Selecting `CONFIG_RISCV_USER_CFI` w=
+ires
+> >> up path to enumerate CPU support and if cpu support exists, kernel wil=
+l
+> >> support cpu assisted user mode cfi.
+> >>
+> >> If CONFIG_RISCV_USER_CFI is selected, select `ARCH_USES_HIGH_VMA_FLAGS=
+`,
+> >> `ARCH_HAS_USER_SHADOW_STACK` and DYNAMIC_SIGFRAME for riscv.
+> >>
+> >> Reviewed-by: Zong Li <zong.li@sifive.com>
+> >> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+> >> ---
+> >>  arch/riscv/Kconfig                  | 22 ++++++++++++++++++++++
+> >>  arch/riscv/configs/hardening.config |  4 ++++
+> >>  2 files changed, 26 insertions(+)
+> >>
+> >> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> >> index 0c6038dc5dfd..4f9f9358e6e3 100644
+> >> --- a/arch/riscv/Kconfig
+> >> +++ b/arch/riscv/Kconfig
+> >> @@ -1146,6 +1146,28 @@ config RANDOMIZE_BASE
+> >>
+> >>            If unsure, say N.
+> >>
+> >> +config RISCV_USER_CFI
+> >> +       def_bool y
+> >> +       bool "riscv userspace control flow integrity"
+> >> +       depends on 64BIT && $(cc-option,-mabi=3Dlp64 -march=3Drv64ima_=
+zicfiss) && \
+> >> +                           $(cc-option,-fcf-protection=3Dfull)
+> >
+> >Hi Deepak,
+> >I noticed that you added a $(cc-option,-fcf-protection=3Dfull) check in
+> >this version. I think this check will fail by a cc1 warning when using
+> >a newer toolchain, because -fcf-protection cannot be used alone, it
+> >must be specified together with the appropriate -march option.
+> >For example:
+> >  1. -fcf-protection=3Dbranch requires -march=3D..._zicfilp
+> >  2. -fcf-protection=3Dreturn requires -march=3D..._zicfiss
+> >  3. -fcf-protection=3Dfull requires -march=3D..._zicfilp_zicfiss
+>
+> toolchain that I have from June doesn't require -march=3D..._zicfilp_zicf=
+iss
+> for -fcf-protection=3Dfull. If that has changed, I think this will need a
+> revision.
 
-No, but it's not because it's non-atomic, but because there is no
-synchronization in this case. It'll still be problem even if the reset
-is atomic.
+Yes, that=E2=80=99s what I=E2=80=99ve learned from the toolchain guys so fa=
+r, perhaps
+we can double check with them. If it is right, I guess we might merge
+them into one check as follows:
+$(cc-option,-mabi=3Dlp64 -march=3Drv64ima_zicfilp_zicfiss -fcf-protection=
+=3Dfull)
+or
+$(cc-option,-mabi=3Dlp64 -march=3Drv64ima_zicfiss -fcf-protection=3Dreturn)
 
-(I was distracted by the mentioning of "non-atomic" and didn't see the
-real idea here...)
-
-Regards,
-Boqun
+>
+> >
+> >
+> >> +       depends on RISCV_ALTERNATIVE
+> >> +       select RISCV_SBI
+> >> +       select ARCH_HAS_USER_SHADOW_STACK
+> >> +       select ARCH_USES_HIGH_VMA_FLAGS
+> >> +       select DYNAMIC_SIGFRAME
+> >> +       help
+> >> +         Provides CPU assisted control flow integrity to userspace ta=
+sks.
+> >> +         Control flow integrity is provided by implementing shadow st=
+ack for
+> >> +         backward edge and indirect branch tracking for forward edge =
+in program.
+> >> +         Shadow stack protection is a hardware feature that detects f=
+unction
+> >> +         return address corruption. This helps mitigate ROP attacks.
+> >> +         Indirect branch tracking enforces that all indirect branches=
+ must land
+> >> +         on a landing pad instruction else CPU will fault. This mitig=
+ates against
+> >> +         JOP / COP attacks. Applications must be enabled to use it, a=
+nd old user-
+> >> +         space does not get protection "for free".
+> >> +         default y.
+> >> +
+> >>  endmenu # "Kernel features"
+> >>
+> >>  menu "Boot options"
+> >> diff --git a/arch/riscv/configs/hardening.config b/arch/riscv/configs/=
+hardening.config
+> >> new file mode 100644
+> >> index 000000000000..089f4cee82f4
+> >> --- /dev/null
+> >> +++ b/arch/riscv/configs/hardening.config
+> >> @@ -0,0 +1,4 @@
+> >> +# RISCV specific kernel hardening options
+> >> +
+> >> +# Enable control flow integrity support for usermode.
+> >> +CONFIG_RISCV_USER_CFI=3Dy
+> >>
+> >> --
+> >> 2.43.0
+> >>
+> >>
