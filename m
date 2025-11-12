@@ -1,259 +1,223 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012018.outbound.protection.outlook.com [52.101.53.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667AC2BEC21;
-	Wed, 12 Nov 2025 20:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762979725; cv=fail; b=AIESxKVIzGpzg5WMrMV3TWgIrTklyjPuOUQmTzrfrOkoruaEOFd5Qr1p+b302ZwRLvfxCAFPbTjByBoEOHKsrjOMpfDZfdXB8BfT9era89JrXYDBtkdU7brB1CaaaMI19l1ERgiTP/I0j2GSj976NJMACqb1XnG0yRjvcZu2Psc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762979725; c=relaxed/simple;
-	bh=FOAsKKj2u0yInurDXQhVWTtoMCTUJalFFAVYBA8C+3w=;
-	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OwV30PMg1ZEgbsMkbXW6y1dvseHNqnlqpppeag8kStGKq9WISphUw8ZJF4fR+X0HapE512k42/SamsJW5ktm2GAa70giDrnyaXbYrvmchhxIpZjMgq6NkdL5o2lKRmB5LZl76sWjIjPwLmy4IHXpWHzG6kJVu2OzdpzJd+HizF8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pRkh/wJ6; arc=fail smtp.client-ip=52.101.53.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7840D35CBC1
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 23:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762990512; cv=none; b=n/1PJ3YvzTy0sM2GTuIUpf9MyY6SmOAX9OP09VYaCSXwk409Nx9MtZRBNqI9w7zSeRShKsmALTWY91vIZ3cbnBoeBW8wrmePHWgSuQzT8gk+LuTJNH9MzvcssxOI3b4uSuchPMOPayVMlCIGZTuh3D9ommjnC/0pYfz1Y8HWQfo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762990512; c=relaxed/simple;
+	bh=4mflXfgXVT24C6CZ4udA49a2AIthJmldwzXgt3XntjI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=AJ6Eb2JoY+mThNQqCXcy8e2e1XQ2Xopo2skZh4zj8CWaKt1Tk5TxzbEwmzayQwOUloOfXyUEkZk7+SVVvsaNobSUE09Eu82H2FoJlEbJ3Y1kUVvN2MzLjNRoDqhZQsbZ5ZDjoyt6KUBkQ8GMAQMlSFQY2YfDTUrWJmMzc2TX7lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aLJ44Mbi; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pRkh/wJ6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Eco607NMGgTkw05UFnYqTSKtW9XHAOq7gUBH1YK8cJtR//xRNZ1tT33CZYYM15x8DUAKcSsEBROJSIs+rpdJD9Xoa3gholFWPXs4o2GvLYuwQOzRC9omYbkEohjBfTkFqoyQzBamwgSFJJsN3xAmP4CFlV5AApG2uKpl+AXk9WQW5CEtaJEVGzXQHO8G95c1uFoLf/7jdxv+ueRHOgAeJGwEOz2qQlgcMASkDsWfwoyuiAm+JFiZtb908/hMwLBN0VycM7Zs6ngO3VjfslbhSAuKS3G3rJXzv3gV8j6oYjHHT/Us5arHFhBeJePIDEJmvfb7iT2RJYq3xoOk5/8gXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7nVM5Zn5jxm6M4t8dPE8rgbH0wl1VTOhLWMEm3gyPT4=;
- b=SOKXwMmRpCRLxmhwXy1VSkcIC3OVpNtkNoIFsPrxmy1u/ilcsg05mliTr5v1mTxukHn0u55FcgxrmrgqU2iYliCx0fm4eQrEVKioxCsLv2dLprihm+b4w356Jsbolkc/E9p15snDzwy0FYbLDkZiObdUA9kh9UjT6jRCdt5wBWlK4SsgaES3EC4B3MHXlSNsZ/WXLgUY7Sw0dmbTt961fI6ZffRS+BsXL+UWd+/eSodjIIF/cz1lt4KoBaX5U81JMNj1YDRciwos3b40FoVqO3nYc3TaaIxwe6zNrXg+bIJ7TiyQVSZMGScMY6j5lOGhI3S4JRYOgGd2WOsnnhJBiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7nVM5Zn5jxm6M4t8dPE8rgbH0wl1VTOhLWMEm3gyPT4=;
- b=pRkh/wJ6+gGo+VOOj0zmd0Su3YvJYQagwW6gQNZggLarpgYlSgOc2GoCJj2woAbnLg9nS251jUDySitWul5Wp2zEhbkRVp54RVuch7ljfu9jxasKuMqc+tdQ7j8mkIbT9mbjw7DFv8wv9HGeJrP9k1aqFl0X42Dhb+k8P381pnP57qD/lFH+Kns/nmSaQ3B/ZE3cxW6KldGFwd86Ho55BmV5RmmJsxIf1Sd/mFpr1L3h0AiHrpSIDLeBmQuUvLwA55RuUURqv2tLRxgCmOnAP0WJFf15Nh3bAMeXLoWvawUB+trNSJDW8V6OSZhfrErBfFHWgU1oj8g2fW4F9TQJyg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH7PR12MB8056.namprd12.prod.outlook.com (2603:10b6:510:269::21)
- by DS7PR12MB6261.namprd12.prod.outlook.com (2603:10b6:8:97::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Wed, 12 Nov
- 2025 20:35:18 +0000
-Received: from PH7PR12MB8056.namprd12.prod.outlook.com
- ([fe80::5682:7bec:7be0:cbd6]) by PH7PR12MB8056.namprd12.prod.outlook.com
- ([fe80::5682:7bec:7be0:cbd6%4]) with mapi id 15.20.9320.013; Wed, 12 Nov 2025
- 20:35:17 +0000
-Message-ID: <fab924f0-dbbc-453f-bd8e-0abe8d0bbc3e@nvidia.com>
-Date: Wed, 12 Nov 2025 15:35:14 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/14] gpu: nova-core: gsp: Retrieve GSP static info to
- gather GPU information
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Lyude Paul <lyude@redhat.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- dakr@kernel.org, acourbot@nvidia.com
-Cc: Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- joel@joelfernandes.org, Daniel Almeida <daniel.almeida@collabora.com>,
- nouveau@lists.freedesktop.org
-References: <3b0d776e50fc81797dec2e5d81c86390af78f848.camel@nvidia.com>
- <20251106231153.2925637-1-joelagnelf@nvidia.com>
- <20251106231153.2925637-15-joelagnelf@nvidia.com>
- <970fd472a5284fd5b8416bed6a24e722f9a96a74.camel@redhat.com>
- <f36dc492-507b-489c-8609-6a760526a371@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <f36dc492-507b-489c-8609-6a760526a371@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BLAPR05CA0006.namprd05.prod.outlook.com
- (2603:10b6:208:36e::9) To PH7PR12MB8056.namprd12.prod.outlook.com
- (2603:10b6:510:269::21)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aLJ44Mbi"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-429ca3e7245so93393f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 15:35:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762990508; x=1763595308; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yHGIBzZPwCgBjyzoAu2uZEsfUL+sP5QWpRjxugQAeqE=;
+        b=aLJ44MbijMXx9+vDrozQXP4mmnY8heEmWPJ12aj4tvdbKhI6zpI0QBPtAp9BmPqzDK
+         BfoIR5anbDRl5Nevs9lAuiP7cJthAK2AA61WgNZA63RF2jo28/lkYMFYDAHkwCMCfPVV
+         TNf7mcachZTGA4xdNY0D/pNt00UfDIaN6CKvmboMhMW9FC232szqvfgEe1U+fyywfWpw
+         nLjrrxhE+rhTpgqiLdflj7bQV4MbEmQHMQvWX+0yMdwgoYrxumjjKXpbVu7vF8g0OiqR
+         8+vSWXZ82C6n5x9W65gAiegwiMYmWsD3vrV9Ld9OfD2F0yTsW44Iw5/ZMYDpYZbr4MTk
+         KWaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762990508; x=1763595308;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yHGIBzZPwCgBjyzoAu2uZEsfUL+sP5QWpRjxugQAeqE=;
+        b=cduob+moEBtkskG7UUx684xXv0GPFwPlWw79E+zRW1i/bOA3b5Ea8gXKpFWXrGGMam
+         zlkhRFhR/oqIl+CYSXANgPnv8io0g9FHdn0iImu9th5BcnoxozFBbsrP7wRh4uXm7yyB
+         jwNS3lWUsYq7hkKZOKb2z92l7NWic8I4X9qnqsyx+xslPSEMwkn8ihD5zG0QNzNU8CUU
+         /saEffBlyEXVjs/IBHs+wO1alIH2zSclgeYpW6c4lAKsTqYYzIh2pAr9/2h9G9OjGRue
+         eMU5hmiTSFlgYZNE7FkkcPpSM4hjSJAwQNZEm/++E+X/c/FQTA4RETigPXZrmuZltFs8
+         ktZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWDuMvfFdP5/1MOKf2szA66ZL4bJXrLkL0KMxoX9gGqZIpg4g6B39r1RDA6pWhLc65iigXwhvISA6sd3ilyTQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPQA7qQAGLaxPjdTZSDwaVn0i5IB6Kyg46GGL0ElcF/afPdaqo
+	RJBKFP/Ac+C6nKI8yuRlDptHUgYP+QwUOdWtcTwoe5M2za9mze70wx7gr+eTm1QQe7NWJFFo8aC
+	9zMM1kXg1dpBldPNiKQ==
+X-Google-Smtp-Source: AGHT+IEId1v5duu3TRKOpet7fbCZD1zVCY8IAgfk+57gsEvGnUh+PLJNGxA0odr0Hgnj4bvYOByusBh9faYt/tA=
+X-Received: from wrnm1.prod.google.com ([2002:adf:e941:0:b0:42b:3021:cd6a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:440e:b0:42b:530c:d8b6 with SMTP id ffacd0b85a97d-42b530cdae6mr283844f8f.61.1762990507739;
+ Wed, 12 Nov 2025 15:35:07 -0800 (PST)
+Date: Wed, 12 Nov 2025 23:35:07 +0000
+In-Reply-To: <aRTbX6RPsFf0NW48@yury>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB8056:EE_|DS7PR12MB6261:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ffc9ed3-774c-44b2-6635-08de222afdac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WGVoYUNtRklkSlJ1cjVVV1hRL3U2OW91b0RvTnVzcUJiZmhmcFJkSzFmQ29T?=
- =?utf-8?B?TXp0YndHb3daWEZxc3hkU2pGb0ZpTGxzR0xuWXlKNFdvcHRRVWpMeGZKMDlZ?=
- =?utf-8?B?M1B1YktNMVNNcXI4b3dadThHQmtFTkJmcFM1YWlML29mVGU1UUljMHRtMEtT?=
- =?utf-8?B?UEM4TzZoTmpjU3NvYmJHSTNXbnM3WnB2b0pwK0JPdTVlMGlwbXZEUVFEQ2pK?=
- =?utf-8?B?cDR2eWFFVHNLVGZORDIrbmF2STU0NVdVdE4vdUwzZEJrYjVCNTUzSXZqZFd0?=
- =?utf-8?B?dUFXTWRXcVlzVXFtOGo3eHYyN1ZTWXRhQTBiTzg4My95aDRWQTBKeE1aUVR3?=
- =?utf-8?B?WGV4OVh6ZEo1MGdETG9JUDRIYTkxdjZZVVkxdVp3bTJ0LzdPZkxwSkxsNVl1?=
- =?utf-8?B?U1BtVlhjWjRyTS9abVMya0hrMGszOWFGbVNFc2ZsaHBiVUg2WkVmSVJrLzJZ?=
- =?utf-8?B?WitLU3Rlb2tZVXBZM2lzRDdEMFFSRXIyS1YxVWoxMm9YNHNLSDBrcGZtdVUz?=
- =?utf-8?B?RDBkY1VhV1M5WjVOb0JhaFNMZGwvRzhnSDE1S3JmaDJTK25mTVo2QmtHYm83?=
- =?utf-8?B?R0gwaTljNVY2VFlybmRmMUgveTNtNEFpYVAxT0FCUnZ1SHljMlJBSFEwODNL?=
- =?utf-8?B?NFBrQ1l5Q09TcitJVHRmbEE0ZGRMRVVTYVlvS3AyTGRjRTg4Y2RZUjl1MlBo?=
- =?utf-8?B?NFh6bmVZLzZFQ2M4N3hxbm9VK1FkYXp1Qi92RXpDWXJRSjFiandlb1poYWY3?=
- =?utf-8?B?VE1WOFBKbEg1dXNuSnpkVUFpbWNaV09SSEo0bnVneGFlS1ptVDgxUThYQUtP?=
- =?utf-8?B?bG9iWUdVNWhKUERYNUcxVlBPd3c0VjV6aHQ2Tk9VK2Z1bGJVb2V4UEpBT3pu?=
- =?utf-8?B?WENXN0VhbGVva1FBRXRmQ3Nqck9MRTdjSElsN2VkbE1QRzRhQTVqcGNUQ1pO?=
- =?utf-8?B?bEV5NHFqZkVGRjZSZm9LQ0dTamJkbmhxSU15MnhBV1I1eDFZUlYxMktocnpG?=
- =?utf-8?B?a09kaEJuRkNNRmZSRzlvUjUzblRad3hONHpPNVljbml5clcvejE1Y09DNTJ2?=
- =?utf-8?B?TDFlL0FnVlZWSE9kVTU3QTA2Ykl2WXoxZW5JUGtTRitUOVRaWVBpeFA0VHJJ?=
- =?utf-8?B?a1ZsT0I1K3k4dUsrSlZJOGlab1loZXZVcXoveUFveW9ZRDl0dEtldmx5eUtJ?=
- =?utf-8?B?ZWxQeVJVM3dFaFl5VzZQbGp2elZEVmFNNUpyZ3VudVVUdWtJc2ljQ3pLYlg0?=
- =?utf-8?B?U0loa1F2UHBRaHNUa21GUENMM0RPcXczYk84MndIZ2g1TzFIdkNuNFBvMjE4?=
- =?utf-8?B?MTlPc2ZSZThtbXdKdVBkRjFVRXVodmFxY2VJNm1WNzduZHQzZndtdEtZc21J?=
- =?utf-8?B?b0dVNm51Q0ZLOU8wN3p1UmtTS3l6b1FSOE0rZEpEZFE0OUJvTW15RzZ1Nlls?=
- =?utf-8?B?d0twd1ZqVXNKS1pEUXYxUGJ1clFoclBrOGtGYzFNcHIwVjFjVkF4N2lzb1M1?=
- =?utf-8?B?S21IUndqeGFpbzc2b09CUk9peVEvZTFGa2JUdDlkMUZ0d05xcFkzVE9LdjRW?=
- =?utf-8?B?MUJ6amZ1Z1hkOE42NmtZcURRT09wQWRpZ1o4bEs1YXFUcjRzNDd2N1FDRHMv?=
- =?utf-8?B?SWZOYzJUQTcyam1hc3UwWWVvNy9BNWRaY051K2gvVDJKOE11YnUxNEtGeEI4?=
- =?utf-8?B?TEgzSHBVOEVIV2hVVExWNWc3eDRDR0FPNll5UzZoYkZueUhvdWowNm9Jb3Aw?=
- =?utf-8?B?TUlTaGVYQTdzZ0NubDVudFJZaUpnZjh0cnBpalJ3WW1uZXZUM3ZYdk9rNG1T?=
- =?utf-8?B?aTgwVDJRQXNXZE5FRk5QeUgzSFlENG5oSDNzcDV6WlFwc3FCMnhzc1h6Mmpv?=
- =?utf-8?B?a2lFZnNXT3FycmFWWk1PRDMxTEhLNjgvUDRTQk9NcEJCQ3Uwek5zT2tPaHdv?=
- =?utf-8?Q?unWP+Y7Ttg1Sjtmv+R5xD3aeA/Qg2jRX?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB8056.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RGZSNnZrMmMrVmcyQ3NCOXFQTnRvNE1wMkdmd09kNUpzSFVxa1lvYU5xNGZL?=
- =?utf-8?B?b1F4VWZ0dU1xSHpBK3JXVlREVjFadTNYMXNsbjRqdGM3UnNQR2g4VUIvWURZ?=
- =?utf-8?B?Z0c2QTBGa3NodC9hamhGSW9TQUNGNnRYRFZLdXBlY1FXUitlRHo2aEp2UEhE?=
- =?utf-8?B?WDNHTGJoZXBpbzV2QzZRODlEMTJDNTdJWmJ6SnpBVHFPZFZIQmEwTGo1bHZZ?=
- =?utf-8?B?cDQrS0I0ZTJ6MG9QcU50N2laV0k1YWhWeklISzkvTTdteVdWT05tcHE0eVNn?=
- =?utf-8?B?ZFhUN0Q2Y0w1Z1E2S2xwQU5ZQ3dudWFaNFBkM0tWOHRrSEtlNEZ1dkVHdlY5?=
- =?utf-8?B?bDhsd25JMHRuendXbmFJMnphSTNXbVVoZ2VSUDRoQnArVDYvVjlPSU9GTk4w?=
- =?utf-8?B?TUtjVHBKUi9VWkY3VEVaeXBXNERnRDZwZUxiOGJwbU9ZdkgzVDFCQkFzN013?=
- =?utf-8?B?dzhVTmMvbGJYY2dTcjNuNTZzeHdBNmY5QWVEdVhTcmhIanpGd1NrcjRNUU1a?=
- =?utf-8?B?REdYU0lPQ1NybllkZndEZ0ltaTFRT3hHN2VMbnJSY3IyTE5rMmpJem5sTUpD?=
- =?utf-8?B?Q3lGVVJhVWo1clNHNmJoSzZDMGsyRGg1UkkyRTI0eGlJeWJWTTc5MXp3K1Ns?=
- =?utf-8?B?RmZJRlVFaHZhbVA0UE1jZWlYZGg0M256UXpmTCs0a1JxMTg3NlhYQzdDcDla?=
- =?utf-8?B?WXFWUXNUc3hYa3NkdlVNOXlTMi85R1lmY3U1T1ZGTGxYTXg5eFMyM29JSDcv?=
- =?utf-8?B?ejdhc0ZhS25TRWN3ZmlMM1NmZHAvb3VLVTl6T2xZSDM5aEFWcTBqZkdzWXFx?=
- =?utf-8?B?bHZ6K0E3V1crc0FYREc4blZ3WUwxVTNGZFlJNVdNQjQzeEE5Q2RNbmVFOE9J?=
- =?utf-8?B?SmFERWdtUTdReklTRmxJeUl4eEhQaUcwTm84aVI0cW8vdmc4RnE2THY1emlX?=
- =?utf-8?B?S3BDN2VwRmh2ZWdNODc5ckRkNzFBMERoREYxbEVRaXZ4MER3a3FkZDZad2JG?=
- =?utf-8?B?SzFnY2xqR29jSk1PdG9FR2FzZmhBNTZGZ1FWdzkrM2RaWVl0MklpUk9pZXZK?=
- =?utf-8?B?VC9vdE9ia1pQN0V0YUJNQTJ1TkdJV1VUeEN1ZW5QQUZkTU5Fekx5ZW0vWXpN?=
- =?utf-8?B?V2hsTThEenJ2V0grWUowbmdKMHVpR2xIdFF6Rzl2QUdpVzJ2Z0YzOWY4aEZs?=
- =?utf-8?B?QmVuSk5HUWlqZDRLaWEyZnlENzlXaERyUWczWkdtdlRGb0xoK2VNVmJ4NnVU?=
- =?utf-8?B?M1ZVdnRvdDFGYmo4TGRYWGZIQXloWnNFbnIxbTFjZXNWaExMbE43WVFYYUg2?=
- =?utf-8?B?QVNnZlZhSVZVbUhlRFIrRUp5OHl3Y2ZhbEYvS3VCKzJDR3dTRU1LekUvdFBY?=
- =?utf-8?B?VGg2RXhZMVFWRmhraVFMVVhZYk41akF4ZG1XQTRxWFp1dEZxdndLeWJxRU5B?=
- =?utf-8?B?YktZbkdhaFoyRDNVaUk1ZE5Ub0FiMEZ5WDZVU1ZjdDlWdGFrOGRvYnlOeDhi?=
- =?utf-8?B?SVdkcUlCNHY5N1pEWVE2UE9RaWJnSGtyZEl0dnZlcjIrRXRCMngyVFAxN2kx?=
- =?utf-8?B?VXovMUptM3k0NitHK0h6Vk9tRGFpTE9SbE0vaGtNSnpia0RqYzR1UmxzajN1?=
- =?utf-8?B?b205eFJaWjliYVRqUjMrMVpvQmUrRG82NmZLQlBSQzk4ck85V2MwczdmUHJt?=
- =?utf-8?B?Lyt4Um9UVzREOG1IWU01TE1oRVl2QkhsWHVqdGlhYk1tRXJqZDZBK2g2Y2g2?=
- =?utf-8?B?eDE5VmJLMjdBN3NmK0U3NW9LME9rMldHMEdHS2cxNklsaXFOTTZkdUUyamIw?=
- =?utf-8?B?d1U5ZlBkdHl6R0JSMHVoWE96ZjdRb0dsRUFKTXdGTzRaVHVVSkpqdFFZRThO?=
- =?utf-8?B?NHExeDVxSURTb2JmNXNMZitmUEVwMWVzZERIRzI3bUpkaG1tM0VMUmw3RjN1?=
- =?utf-8?B?YkIrYVRKeDZNY0RYQ2xpeUNBYnZaRlFOUy95Tk5tdE5uS3V6QnNBU0ZGVzhi?=
- =?utf-8?B?cGlHRGRRNU84Z2VvVkoxL05vY2VkOGpNTjkzZllyRlU3RHhKcnVSdlJ3UEhP?=
- =?utf-8?B?YlRBTUl3Z3UybFFEZHVNUm9iQU1RQSttaFRmcXduZHhaT01TWVpaN0hReGtW?=
- =?utf-8?B?VUphR2Fpc2RGemdML0Q5eUFJd1pXYnJEQmtjMTRkR1JpNDAwYTEwcWdwdHEr?=
- =?utf-8?B?dWc9PQ==?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ffc9ed3-774c-44b2-6635-08de222afdac
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB8056.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 20:35:17.5636
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9gE+KFGWgQ1BtD2ZDARwlMX8rq3GS/QXJ4unLGxrneSdW+Cpo8oefGN5CyM05djylrqL75996UHwe8rPw0zUgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6261
+Mime-Version: 1.0
+References: <20251112-binder-bitmap-v5-0-8b9d7c7eca82@google.com>
+ <20251112-binder-bitmap-v5-6-8b9d7c7eca82@google.com> <aRTbX6RPsFf0NW48@yury>
+Message-ID: <aRUZq0Fo6T1f3lOD@google.com>
+Subject: Re: [PATCH v5 6/6] rust_binder: use bitmap for allocation of handles
+From: Alice Ryhl <aliceryhl@google.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Burak Emir <bqe@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-
-
-On 11/12/2025 3:22 PM, Joel Fernandes wrote:
-> On 11/11/2025 5:02 PM, Lyude Paul wrote:
-> [...]
+On Wed, Nov 12, 2025 at 02:09:19PM -0500, Yury Norov wrote:
+> On Wed, Nov 12, 2025 at 12:47:24PM +0000, Alice Ryhl wrote:
+> > To find an unused Binder handle, Rust Binder currently iterates the
+> > red/black tree from the beginning until it finds a gap in the keys. This
+> > is extremely slow.
 > 
->>> +#[repr(C)]
->>> +#[derive(Debug, Copy, Clone)]
->>> +pub struct GspStaticConfigInfo_t {
->>> +    pub grCapsBits: [u8_; 23usize],
->>> +    pub gidInfo: NV2080_CTRL_GPU_GET_GID_INFO_PARAMS,
->>> +    pub SKUInfo: NV2080_CTRL_BIOS_GET_SKU_INFO_PARAMS,
->>> +    pub fbRegionInfoParams: NV2080_CTRL_CMD_FB_GET_FB_REGION_INFO_PARAMS,
->>> +    pub sriovCaps: NV0080_CTRL_GPU_GET_SRIOV_CAPS_PARAMS,
->>> +    pub sriovMaxGfid: u32_,
->>> +    pub engineCaps: [u32_; 3usize],
->>> +    pub poisonFuseEnabled: u8_,
->>> +    pub fb_length: u64_,
->>> +    pub fbio_mask: u64_,
->>> +    pub fb_bus_width: u32_,
->>> +    pub fb_ram_type: u32_,
->>> +    pub fbp_mask: u64_,
->>> +    pub l2_cache_size: u32_,
->>> +    pub gpuNameString: [u8_; 64usize],
->>> +    pub gpuShortNameString: [u8_; 64usize],
+> Can you share performance numbers? 
+
+I have not benchmarked it in the Rust driver, but it replaces
+potentially thousands of calls to rb_next() with a single call to
+find_unused_id(), so I'm feeling good about the performance. And the
+equivalent change in the C driver was done because this particular piece
+of code was causing contention issues by holding the spinlock for a long
+time.
+
+The characteristics of this collection is that there is one per process
+using the driver. Most processes have only a few entries in this bitmap,
+so the inline representation will apply in most cases. However, there
+are a few processes that have a large number of entries in the 4 to
+maybe 5 figures range. Those processes are what caused the contention
+issue mentioned above.
+
+> > To improve the performance, add a bitmap that keeps track of which
+> > indices are actually in use. This allows us to quickly find an unused
+> > key in the red/black tree.
+> > 
+> > This logic matches the approach used by C Binder. It was chosen
+> > partially because it's the most memory efficient solution.
 > 
-> [...]
+> That inaccurate. You are adding a new data structure (bitmap), advocating
+> it with an improvement on search side, and that makes sense.
 > 
->>> +mod util;
->>>  mod vbios;
->>>  
->>>  pub(crate) const MODULE_NAME: &kernel::str::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
->>> diff --git a/drivers/gpu/nova-core/util.rs b/drivers/gpu/nova-core/util.rs
->>> new file mode 100644
->>> index 000000000000..f1a4dea44c10
->>> --- /dev/null
->>> +++ b/drivers/gpu/nova-core/util.rs
->>> @@ -0,0 +1,16 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +
->>> +/// Converts a null-terminated byte array to a string slice.
->>> +///
->>> +/// Returns "invalid" if the bytes are not valid UTF-8 or not null-terminated.
->>> +pub(crate) fn str_from_null_terminated(bytes: &[u8]) -> &str {
->>> +    use kernel::str::CStr;
->>> +
->>> +    // Find the first null byte, then create a slice that includes it.
->>> +    bytes
->>> +        .iter()
->>> +        .position(|&b| b == 0)
->>> +        .and_then(|null_pos| CStr::from_bytes_with_nul(&bytes[..=null_pos]).ok())
->>> +        .and_then(|cstr| cstr.to_str().ok())
->>> +        .unwrap_or("invalid")
->>
->> I feel like I'm missing something obvious here so excuse me if I am. But if
->> CStr::from_bytes_with_nul is already scanning the string for a NULL byte, why
->> do we need to do iter().position(|&b| b == 0)?
+> But now you're saying it's also a more memory efficient approach, which
+> doesn't sound trivial because the most memory efficient solution is to
+> bring no new data structures at all.
 > 
-> It is because the .get() above could potentially return an entire buffer with
-> no-null termintaor, as unlikely as that might be. In this case the
-> `.unwrap_or(msg.gpuNameString.len() - 1),` bit will execute returning 63 as the
-> length of the buffer space is 64 bytes. `CStr::from_bytes_with_nul()` will then
-> separately look for the NULL and fail into returning "invalid" as the string.
+> I guess you meant that bitmap is the most efficient data structure to
+> index used/unused nodes. If so, can you please rephrase the sentence?
+
+Yes I can rephrase.
+
+Adding more data is of course always less memory efficient. What I meant
+is that this is more memory efficient than the competing solution of
+using an augmented rbtree that Carlos mentioned here:
+
+https://lore.kernel.org/p/aC1PQ7tmcqMSmbHc@google.com
+
+> > +            if let Some(res) = refs.handle_is_present.find_unused_id(start) {
+> > +                match refs.by_handle.entry(res.as_u32()) {
+> > +                    rbtree::Entry::Vacant(entry) => break (res, entry),
+> > +                    rbtree::Entry::Occupied(_) => {
+> > +                        pr_err!("Detected mismatch between handle_is_present and by_handle");
+> > +                        res.acquire();
+> > +                        continue;
 > 
-> So mainly, the redundant `.position()` call is it is to handle the failure case.
+> At this point you've detected mismatch between two linked data
+> structures. It means that one of them or both are corrupted. To
+> me it looks fatal, and your pr_err() confirms it. How could you
+> continue then?
 
-Sorry clarifying my answer as I was referring to the other snippet. The real
-reason is from_bytes_with_nul(bytes: &[u8]) requires the slice to be exactly the
-length of the string plus one byte for NULL. You can't pass it a long slice and
-have interior NULLs.
+Although we should never hit this codepath in real code, I don't think
+we need to kill the kernel. We can treat the r/b tree as source of truth
+and adjust the bitmap when mismathces are detected.
 
-This is also mentioned here:
+I could add a kernel warning, though. That shouldn't kill an Android
+device.
 
-    /// The provided slice must be `NUL`-terminated, does not contain any
-    /// interior `NUL` bytes.
-    pub const fn from_bytes_with_nul(bytes: &[u8]) -> Result<&Self..
+> > +                    }
+> > +                }
+> > +            }
+> > +
+> > +            let grow_request = refs.handle_is_present.grow_request().ok_or(ENOMEM)?;
+> > +            drop(refs_lock);
+> > +            let resizer = grow_request.realloc(GFP_KERNEL)?;
+> > +            refs_lock = self.node_refs.lock();
+> > +            refs = &mut *refs_lock;
+> > +            refs.handle_is_present.grow(resizer);
+> 
+> Is it possible to turn this block into a less wordy statement? Maybe a
+> wrapper function for it? Ideally, the grow request should be handled
+> transparently in .find_unused_id().
 
-It is possible that callers pass buffers with interior NULLs, these come from
-the firmware. So str_from_null_terminated has to find the NULL position first.
+I can extract this block into a separate function, but I think it would
+be tricky to move the entire logic inside .find_unused_id() because of
+the mutex lock/unlock situation.
 
-Does that answer your question?
+> > @@ -905,6 +924,16 @@ pub(crate) fn update_ref(
+> >                  let id = info.node_ref().node.global_id();
+> >                  refs.by_handle.remove(&handle);
+> >                  refs.by_node.remove(&id);
+> > +                refs.handle_is_present.release_id(handle as usize);
+> > +
+> > +                if let Some(shrink) = refs.handle_is_present.shrink_request() {
+> 
+> This is questionable. Shrinking is usually the very slow path, and we
+> don't shrink unless we're really close or even inside the OOM condition.
+> 
+> In this case, shrink_request() on average returns false, but it's
+> O(N), which makes _every_ release_id() O(N), while it should be O(1).
 
-Thanks.
+The current implementation of shrink_request() will refuse to shrink the
+pool unless the largest bit is less than 1/4 of the capacity, so it
+should not perform the expensive operation very often.
 
+That said, it does call find_last_bit() each time, which I guess is
+O(N). But my assumption was that find_last_bit() is cheap enough that it
+wouldn't be a problem.
+
+> Consider a very realistic case: you're destroying every object, and thus
+> removing every ID in the associate ID pool, doing it in LIFO order. That
+> way you will need to call shrink_request() about O(log(N)) times, making
+> the whole complexity ~O(N*log(N)); and you'll have to make log(N)
+> realloc()s for nothing. If you release IDs in FIFO order, you don't
+> call realloc(), but your shrink_request() total complexity will be O(N^2). 
+
+Even if we end up making log(N) reallocs, the total complexity of the
+reallocs is O(N) because the amount of data being reallocd halves each
+time. So the total number of bytes copied by reallocs ends up being:
+
+    1 + 2 + 4 + 8 + ... + 2^log(N) <= 2^(1+log(N)) = 2*N
+
+which is O(N).
+
+Of course, deleting the corresponding entry from the red/black tree is
+O(log N), so it's still O(N*log(N)) for the N deletions from the rb
+tree.
+
+> Can you compare performance numbers with and without shrinking under a
+> typical payload? Is there any mechanism to inspect the ID pools at runtime,
+> like expose via procfs?
+
+We expose the contents of the red/black tree via the binder_logs
+mechanism, but that doesn't show the *capacity* of the bitmap. Only the
+index of the largest set bit.
+
+> Can you make your shrinking logic conditional on some reasonable OOM
+> heuristics, maybe OOM event driven?
+> 
+> And even without OOM, you can safely skip shrinking if the number of IDs in
+> use is greater than 1/4 of the capacity, or there's any used ID with
+> the index greater than the 1/2 capacity.
+
+I guess we could register a shrinker, but I don't think it's worth it.
+
+Thanks for the review!
+
+Alice
