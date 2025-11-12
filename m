@@ -1,109 +1,127 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43FF2FFF8B
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 09:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04D62FFDFF
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 09:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762940257; cv=none; b=Hv6vwFfBlal66E2cpXjO8NTabjF9rFBa7vr0KaoGUs8FY3PljZbUi/ZvHJloKHR2KqheaNRrAOhb5oKAUwjUIEwndFh71dZo6BHd3utmt1NvM9ph3M1UoQA16lU4mSP5qNnS8T+Kgqpjs6egqFodUo+zy/ZnGI7rfufNHQYk3To=
+	t=1762940944; cv=none; b=IHdSWrYoBStatYdD0tdmLb1KzOBsv87nN5GHlf4X2yyYSdtoZZY091kZcfIuv8dcCfddKx+NU9j7BHFwPwitqFVQbbvu/iT63LjX0USTay08v5hxOmplGaswRlAWlypyX25VHsoR255V2luRJQ6KUdpEPswBx8Mv/XtkjwIdcjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762940257; c=relaxed/simple;
-	bh=hCDeVTqFeb8OCPymlEUvRNJIVTTjvVc1/ClAQBXXnOc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LZFMQjVtWbRx7y30CPo1dRLcO0WGAsy9VtAhmJdPhVoTKTxYVXu3ZLP8lLpVMcsKOS40I7lO/lRy0kEOKtrXPa3VnW2iId9C7jMGS3HRpAg/smx4+TNXyC+EbquTlGlJizJTGIhkWm0KCWegNZn3vvR30Qx973GrYbJ4glKhb10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WsF0FxMS; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762940944; c=relaxed/simple;
+	bh=QmvyXDXDVrsdfDM+yKnByFuQLV8gY2auM7CbdPaIBok=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=aRbRfNzsbuAiC+gHww/Mwmq5KR9O2dZp1YkifcpTjUwxDta2PVg4dLwU8r3qsSP4OB3VfgWZ6jIATTdFQNnqFoZYbZsnVKYrBEdkYw66gSNUSFFWOYy19tSHgSGRLQQAgvWwsLqbWIP4J0gVETtRAGjwyr/8NvOWoJjRoiTDg8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4XPkNhvG; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WsF0FxMS"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-297dfb8a52dso542335ad.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 01:37:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4XPkNhvG"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42b3086a055so475311f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 01:49:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762940255; x=1763545055; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VfWmqteduDoVLqj6JdhBgBiH8a4Ayud5Tb7Bt0CJ/gA=;
-        b=WsF0FxMS8mzXEeyWRR7r4qLWRZO3QGbSO39+9raslSbMBDM7uF3e3vgkocLsjZ278a
-         BYAU8rBorVNKWsZHM3+I44i1OurmXTuWZ0LwgLNUXYW883h2R69L3GXXqe8g1lOiCJxB
-         kyjv0K7P0ra9GSOpHWaJGGTHToKrOraFxDKibnMZm7LDj+0scKTDB/M0GKb292nJ3oYR
-         meLuSl/C+Gt+QB7Xz2gharKc/e99nCXIyNXzO6K/lpA7dUMO66xjnCREecQTSquqa7pM
-         xBfLuDoHfiwltF6xrNz8k5/hfD19IXO5+KB6pyMaq4ncy45n64VZipbXSl/YS0/UEbxQ
-         qQwg==
+        d=google.com; s=20230601; t=1762940941; x=1763545741; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/Gv6xr0GGt0t3EpcKK4KiIfCoZCaOutnve9evDPKR/k=;
+        b=4XPkNhvGOpG96My7uORsPKd6lDMEKmbAVliBbNzOXhdByoICFUvoIml8/a9ajP18fV
+         UBwo7aluHz/8/VQaWXARcLFfvXXW/w1laGni3akMfc66j8ZzlLExyDbYut9nl09pozOq
+         XM5GyZVuNPh3yMj9h6yP+ZWou/MaeZI11k2jYND4N/puNfsHhJx78yRDci8/HKnMO2NA
+         hmsgH5afIDJPPrzwfbUCtBP0Hi5GWLRsyPNLy+KRKfnSmyj7CwtryBxqEbsw+sYg4nCv
+         iK+n70BrPILFqxEgTvFbnaKBwPIq3g6BGTrnr098/CZTarFNCHrOJ+SGZhteTZh9qwGm
+         SLkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762940255; x=1763545055;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VfWmqteduDoVLqj6JdhBgBiH8a4Ayud5Tb7Bt0CJ/gA=;
-        b=sYsdTVpQpCcGwJ3qV3EQpJ2P4u0Q1VG4GGB6BkK0nn9pYCkPW2uhIheE8+nF53rlHJ
-         AQvniJ7864qO4cgcUkMfwR/WimMZ50Awcq/0i3clDfeIhgh8Haz0aA9R74LEX4BAd6Ff
-         o16EWQeFpyiHFRw1L7UeTu13h/wiEiFYEot3GXJcTa0/NdRFNrB3Tg4exJHfVfZEliXd
-         eV2E6qwHSiWFCZ+LeEOtcR/T4K6J1tsJr3dc1ScNe5SwwdEFtI73y9dbQx+JS9dK0afz
-         ELuunFeAljUTh+EqKkv4yYOtYH3+07sB0Ey/Q6jf6qFwbaVQga02xgOQ2KwI81hSL+7y
-         s9Zw==
-X-Forwarded-Encrypted: i=1; AJvYcCVEpGuNlkDgmjFanYAQ27siYvO2cM38ybUB56kBj5Wk6sXv0dziefYaT9tyiXw5pIxGX+Y3+7XcQ8lze4Q/Nw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPWdRRE211KFV63jY3dRmOiIp82lFiyjDzg3D3bruDrIZ30VxJ
-	Js2O4SpDeMCHXB5fWge2F32thKUeSLt6/PD1+mq+fIVMpZKCQ+PAUum00civyIHrEX8536PXvW3
-	7FrpktcJ9da1/3qRAGwrQ9tj1XbI4ElU=
-X-Gm-Gg: ASbGncvt4LBWZvEzuPPcLCBDimj6LwvSycpn96iBWo4bhfIZ3cSF3OqMmN/wKwfdVWi
-	m2KkSTjXSb+BtXu2E5xjJi2ooY6zwpG5uaec88LDf8UfZ0ScSWilHkyJ3/G4lmZpJaCcoPIPa6R
-	E3aMJqTsm3DtXdaRkpMOjCrrZBnMH5k/vJfgGEr7ShpDz25VBPLCjCYPANNgDmqgLLpbadgkcLq
-	uVl4G3vjh4CTnY+ZQJNpKPZFIj19w+x155SsMHeeuw8i23h4NygsqQu7rPCV/2nVOnQbyrcJsIs
-	wJxErsG4j6syIosoZtnJ55yrRU+//Gu3UngCRGnZNGJd/D7IP78cFpjKe9wVlpUHEHfXYVgPkNi
-	5Ez4=
-X-Google-Smtp-Source: AGHT+IF7dXQUMFsuDu6yVFEy1qQhkvdBAqpDcIJQlWtpA21Ok2PTF3w0o0PHF/4blQHATl8xPBVAytdXYF1ksZ+cx+0=
-X-Received: by 2002:a17:902:d507:b0:295:3f35:a31b with SMTP id
- d9443c01a7336-2984ec8c0d5mr19207665ad.0.1762940255046; Wed, 12 Nov 2025
- 01:37:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762940941; x=1763545741;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/Gv6xr0GGt0t3EpcKK4KiIfCoZCaOutnve9evDPKR/k=;
+        b=fR3QDwrOxTKm3cAz6Z5hESWuwA4+p6+Lbxy+Xfw9+Lk4PRgnkiDuokhAnn1NNPD8PX
+         Qd6Dz76NZpZCBLXz6iW0c4f1wrCWqL7RUWzcPo+QsjDEblyaEDZLJvWgWvYEuMmQUF2h
+         0uk4eu1BEmb0ePq63oIdn1IiiqapGtpDdMhKpL8WNcdXFfzDUOmGFIqQNx7tqhD124rv
+         d8a7hup6l9aprsdwDhFaTdZL7GJ0v18NOWUOc7p7SugKb6K36keFpjVJC2hoLI2AEaVz
+         BWntZIsw3KlXgkUXVqqm2KWkUACPgNSA7DTielBLLGBQ7duDHlaQ+fAKZmqm/8u/qGSb
+         6LrA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ6kI6Y5r7y2/5PZtOi/k9sV6+1tiv9AtdIdmyntMv7WLhzIAjrtMn42UYVMQiXxl0wpK6hABZUEWGokLbBQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnEdqmSCxdQ+InIsMiG1/CO8bCI6YziB1RUyevPa+RPqQPrQ00
+	HGvJqvTWnCUTsJ6H5P3HPfr0AR289j9LNSZrjmXk105by5ee26lE/4kkOFYpiGDcVSStoSpi4LQ
+	q50NjKUbQxzDq/usYCQ==
+X-Google-Smtp-Source: AGHT+IH2dS2PfgK5jUWA9Ng2M4W2Yq6xdnOBF1mJ4GATChiOA37Dbco0oRuZd8Strxz0EtvePc8l6EG3deFkh48=
+X-Received: from wmsm13.prod.google.com ([2002:a05:600c:3b0d:b0:475:de6a:c2eb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3511:b0:477:54cd:2021 with SMTP id 5b1f17b1804b1-47787041346mr22179505e9.8.1762940941091;
+ Wed, 12 Nov 2025 01:49:01 -0800 (PST)
+Date: Wed, 12 Nov 2025 09:48:31 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251101214629.10718-1-mt@markoturk.info> <aRRJPZVkCv2i7kt2@vps.markoturk.info>
-In-Reply-To: <aRRJPZVkCv2i7kt2@vps.markoturk.info>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 12 Nov 2025 10:37:22 +0100
-X-Gm-Features: AWmQ_bmCvbaIgHZdY2OvUnghnEILgb9lSGGzpn6r-4k_0J9xQP5iYx7rCXgAVnM
-Message-ID: <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
-Subject: Re: [PATCH] samples: rust: fix endianness issue in rust_driver_pci
-To: Marko Turk <mt@markoturk.info>, Dirk Behme <dirk.behme@de.bosch.com>
-Cc: dakr@kernel.org, bhelgaas@google.com, kwilczynski@kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAO9XFGkC/4WNQQ6CMBBFr0Jm7ZhOCRBceQ/DQtsBmihtOkhsS
+ O9u5QIu30v++zsIR8cCl2qHyJsT55cC+lSBme/LxOhsYdBKN0Sqxcji39EwhjkJrimw5VGwtY+
+ 663VnqemhjEPk0X2O8G0oPDtZfUzHz0Y/+ze5ESpURrE1Xa3I8HXyfnry2fgXDDnnLxY5KjK9A AAA
+X-Change-Id: 20251106-resource-phys-typedefs-6db37927d159
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1447; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=QmvyXDXDVrsdfDM+yKnByFuQLV8gY2auM7CbdPaIBok=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpFFgHx3cwOybF0VqfBGf60UP+BMu97heCo8Oad
+ L+QNsSjXvGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaRRYBwAKCRAEWL7uWMY5
+ RlFcD/9zmqypMTbBEK4TFlukuZM28Zj2oKT+e+aZvfgWd0Inzg+K7c9n+IHif0zR+qlN2t4X2o0
+ aHfY7UxibEFHdEvKFsgMtbhtwQ/z+JK0kttJ72s2n+PDcO9lzihrGeBAD85TE82P/kaeDopUtkh
+ omNICZrSODCry5Mv/7iLPl4VjVoqLkelYvSy0OlisW/fDXqN0rS/8R951e/g8uzWb+AYbMmJjgc
+ 1/ygIl/IA4c3AJW41oOTWM27yHz5y2x2ztGwB+RqmLBpT99ga8mU/njL1uGCm4FQr0OQAkcZ3rI
+ XRhy+yY8ylTMusX9ocpcFqBewH0KwchGINQiCHlBW1TpKZjWMOM/3G+c6JV3S5Nf+JhIOh3KXZO
+ 8YPrjhZb4j3nnjW2RSaLgQDozX2xgpXV+AQruHkd6DZrLMRbAomPLlBSus8qxigtzZfGXcuQjOd
+ a9Rut9qAv2L+a89KrCuQdvv3sn1F8HSVWkqShw+EstS7r7c1nByQq4xzWNfHpG80PekfLNfauzd
+ IWJTMK7h3aelFpZ0k/Ela+2vgsmDe8snkwwThtVXAskqkCBRIEeFkRQ2hzxlBOXkqr5MNioaEET
+ xvZpwYS8XLVlW0UULAxbX1kwwMdTP0wpenV3UdsZfFX0EAJ8Vty7Mvd+UM+lZY7peXdZtl5q5+j NdJXJz77uqOh3IA==
+X-Mailer: b4 0.14.2
+Message-ID: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
+Subject: [PATCH v2 0/4] Rust: Fix typedefs for resource_size_t and phys_addr_t
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Nov 12, 2025 at 9:47=E2=80=AFAM Marko Turk <mt@markoturk.info> wrot=
-e:
->
-> On Sat, Nov 01, 2025 at 10:46:54PM +0100, Marko Turk wrote:
-> > QEMU PCI test device specifies all registers as little endian. OFFSET
-> > register is converted properly, but the COUNT register is not.
-> >
-> > Apply the same conversion to the COUNT register also.
-> >
-> > Signed-off-by: Marko Turk <mt@markoturk.info>
-> > Fixes: 685376d18e9a ("samples: rust: add Rust PCI sample driver")
->
-> Can someone take a look?
+This changes ResourceSize to use the resource_size_t typedef (currently
+ResourceSize is defined as phys_addr_t), and moves ResourceSize to
+kernel::io and defines PhysAddr next to it. Any usage of ResourceSize or
+bindings::phys_addr_t that references a physical address is updated to
+use the new PhysAddr typedef.
 
-Your message was in my spam folder -- that may be affecting who saw it.
+I included some cc stable annotations because I think it is useful to
+backport this to v6.18. This is to make backporting drivers to the 6.18
+LTS easier as we will not have to worry about changing imports when
+backporting.
 
-From https://www.qemu.org/docs/master/specs/pci-testdev.html:
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Fix build error in last patch.
+- Add cc stable.
+- Link to v1: https://lore.kernel.org/r/20251106-resource-phys-typedefs-v1-0-0c0edc7301ce@google.com
 
-    "All registers are little endian."
+---
+Alice Ryhl (4):
+      rust: io: define ResourceSize as resource_size_t
+      rust: io: move ResourceSize to top-level io module
+      rust: scatterlist: import ResourceSize from kernel::io
+      rust: io: add typedef for phys_addr_t
 
-So this seems right. A couple tags:
+ rust/kernel/devres.rs      | 18 +++++++++++++++---
+ rust/kernel/io.rs          | 26 +++++++++++++++++++++++---
+ rust/kernel/io/resource.rs | 13 ++++++-------
+ rust/kernel/scatterlist.rs |  2 +-
+ 4 files changed, 45 insertions(+), 14 deletions(-)
+---
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+change-id: 20251106-resource-phys-typedefs-6db37927d159
 
-Cc: stable@vger.kernel.org
-Link: https://www.qemu.org/docs/master/specs/pci-testdev.html
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-Cc'ing Dirk, since he tested the sample originally.
-
-Thanks!
-
-Cheers,
-Miguel
