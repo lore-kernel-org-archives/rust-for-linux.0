@@ -1,426 +1,181 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013052.outbound.protection.outlook.com [52.101.83.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6D7301011
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 10:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762942512; cv=none; b=EP4np2zZrmN2SWTRsJc8twICM0zlXC8uRvirS6VqUo5gkrAN9x6XZpHcuCgT8viTKOoRdqIUw6MjA7DaE87wAifQeePD2VVDpuNMT1UvQEn4kRKwrur6LOyqDTXqg6DT9QDl6sG7p39FCridvMPQjN6TtGtIpxGHfppizuDs6uE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762942512; c=relaxed/simple;
-	bh=o9+xpW4uPh8uhRYnWukE8UfaplpoEAJ9o211/Bb8GT8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ir6ryXcC5/kMaaxn1nvLVXJbufTMWMeLQ4WviqsmqjSijfrTicAzKyn/DqkIkk8l1bipLWsgtDErtLCWr4id3DFQOgo61Nvft+4ynxOPYQnxg5r1W2+yUCeUNkNKtAaI/O7yl/JG+T5GHuuA2AnVMmAOSDmz6uAKsTjnk5WTyPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tWODgprB; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF98E2FFF9B;
+	Wed, 12 Nov 2025 10:17:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762942654; cv=fail; b=n/1MzR0ZyZ7IcUOV9NYkiZwCMdsAooDkKKHQT5y5CMwbVsWEl57y054UBBNsb+S0EhJowYwBi3TgMuDlSM+7p0cFpzDNaKJsY1umw0ok5cemMoJE0RxFsWiulEH/fX0bGqfVstC8/yx/evf7EhE2xJJ4WZmtdzxqNM1YyZXqZG8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762942654; c=relaxed/simple;
+	bh=GPrGAwr4nUmcIroIDeaqhigTTdz78P3h5RYyTEFOQYo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=npzNy9v1P5+rLOeeSVFi7Bh34IbzDiVegRfM7t/yaQ2FZnEnQEKrjQQFKyaX5DKsJ5WnWXlQNbywVDuFP5z2qCiRa4waMLHRAG+lEDCHQy/SY9jKTMSifgv8mQeHb5IvOWGq943Y3H4/BnCjL+KrUxSxjtL6PwMF3KJGTE6S97g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=lUwCgKTv; arc=fail smtp.client-ip=52.101.83.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tWODgprB"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6430efef759so770585a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 02:15:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762942509; x=1763547309; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=73I2FUGpROBWvvc1rEHs+Shl3zJLhmBgQPZT0bfkTyg=;
-        b=tWODgprBhjFU294CNcY1IX7G2ROhJEo1yMmT4mKB6Ne2wonbAcA+iXPIQGEuPmOnc1
-         P+IGU/WOyRM0OnV9GrXfitQdqEP1/HkfYk9g2MIxlQ7sY9/6QgjPQRM5LmPlxvftlXur
-         Erzh7ipTNE/m168aRaWC3PmTAz9zINzreMBhvrf0OnIgLcQCK6wWg6hY8mc7qsFheV3O
-         L7usuiuI4HSFF/J5InXqqhpMNcvCYR/8DZLdBmC1KC+enCE3gNYxWXPJyJoPcB2KyRpE
-         abHDTrl1CxUctGzAZgv+x9Y5Lxc9K1ZnraZPoICuT0Vb9tRrhJtggsWGT3BuZi+26xsv
-         4fIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762942509; x=1763547309;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=73I2FUGpROBWvvc1rEHs+Shl3zJLhmBgQPZT0bfkTyg=;
-        b=X8aSVNz7i3bmu0psG8gbTa4gbRJ+j7qwgMdNGRcH7b+gVNHR7Jo+t7knCaobaEHNfr
-         I3TMlwQgQH0otuElU1ETru4XoAxYOG1nA8DLDUf08DWtb3rMVVsXqhK+DG0Gyj9GeHbM
-         a35zQM85cFBk5WKGKTGofhvs6jsR6PIIt6P7cEh0LJQQyQvzr8t1nRPtvoX7qqRmGyGF
-         VRCTzUA1IdI81xhYal4PEJnlBA0NSVwY7Z5czekFnw27ojbvkmOYWXPpxV53KAtAOgjl
-         TGzvMBSD2RRapMZwGCAUmHZ2j610f9aqJK7z0kYFZhjiGNf/YjSRfKYRzWhLEQv174pr
-         yZ8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW4N3mraR1Aeo1xsb3XrijSVAl+I0GbijknYoIWPIHKPlr6Bsp750d+K8jIR9Q/yH3z9Xjk8/cWk/YtPWbeCQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxiw2SLISPKmKHu2vZNF+2K4tWB26ZnOvXLEJVEWZUYHpmX/gLo
-	klKpTTF4a8e3FZJVFIG1Mtt5SIKOw7wVhf27r8jsPldnPNtLEf3SDzLEuDqZbl8TlNajl9hyW1U
-	wO1Gh0smqUT8gnQaSPw==
-X-Google-Smtp-Source: AGHT+IFqKjM6hhCMFPCGk+2Jpbz5Hm1iHGXFKauxgdFMLZ34a2nCz7aZdsSy/MowpmbykFK42/F+adtGbWZpHz8=
-X-Received: from edg25.prod.google.com ([2002:a05:6402:23d9:b0:641:85b3:f437])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:26d1:b0:640:fa38:7e4a with SMTP id 4fb4d7f45d1cf-6431a49a8cemr2140719a12.8.1762942508817;
- Wed, 12 Nov 2025 02:15:08 -0800 (PST)
-Date: Wed, 12 Nov 2025 10:15:00 +0000
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="lUwCgKTv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h9QJQUIx0GD6viMuAL8ifCCITw+kS4WPxxY2Q/0mGUMDo7hfFiqag50bD2bxL20JSF6CD65Ojy9ZlhnsS7TuLzQTo+pwycPoVPfGJQtHhgX+ImsTZPiqYBKm7ns4BPjZHd4BkBdazq4BMxWIZwbBjAYDCQXiOvgXUWZhRXBKL3M6CgUUIrkPh+//26Aow7k6Jomn267w3viuAtSEGj1XwMU657fsKapi7xz7CLfXEAopvWCyv1Q/aFopF8RCiMDZktEaoaG14lECvGxL2B5e8RpQPXIG8EFfQ+nomPoeiQ1rn1RlV119Me01BOG9O4zqVha8F5BwFpK1BD4YhTDZEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Xq4y6eFHSdgMq6ZCAy4NcIPKreRt+m7Azjuv9LKrxWk=;
+ b=lACkUFT5FFW8/TLtC45dHaVYns2uqzYyHZs3BtozPoxdGPbOVLwCEPc5DGD4j/PS2dgYf2+lV3WlKuAP6hkQNvRE9eRrS9CzD+Jd09mupr29aHBJAI9NkUeg5KwHBMbeKWIG7gMTBuTLYhRTz3nMUjWWY1dq02p8uWW89oZup85X8ItciN/85JGv1+1Oijw4YA4onmjFEZ4azqkZ2vNaj5hK00t6eJO71GDlq0axU5WTz0+9BAqOvfCS/D/X3DkoA0L/LjQ29G5oauCEe/d9kStmEb5ru/CUNVL3PuIoKCCoNI6SrP+tmcliJil3E3F8FADzjzSxLzg6l4++1tgdxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Xq4y6eFHSdgMq6ZCAy4NcIPKreRt+m7Azjuv9LKrxWk=;
+ b=lUwCgKTvOxJ8WmwH+AGkT84PCuc5TmqB+icX0xx+8AsxNiwQM1/GOUWhpSTL79tBQQJtgqgqBxVVu4IE880SqGXGB8ssL9XhQWUJm3ewEHEGBEfypBMHCxPCmWjeoZvQEWMaLkTekhVC8j704nJRTRMTAZ1zMzt9joaNM4DdG2HWTRUmDODDmNi+R6JJSCLl5kZFrved0EJ8k5kQE3BS4orFtBM1jkNCmTvzy1B+tAlHNVf7+xiVfmrb2Xec51Krpp5l7KkDkOwDJBXubpHloQWaQ39z4TqDCknxz2P/bJInTQeFpqkbJQI1+4Nyg0A/4+nDdKw3dcbfgRmF/twMeQ==
+Received: from AS4P189CA0018.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:5db::19)
+ by DU0PR10MB5726.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:313::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 12 Nov
+ 2025 10:17:13 +0000
+Received: from AMS1EPF00000049.eurprd04.prod.outlook.com
+ (2603:10a6:20b:5db:cafe::62) by AS4P189CA0018.outlook.office365.com
+ (2603:10a6:20b:5db::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.16 via Frontend Transport; Wed,
+ 12 Nov 2025 10:17:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ AMS1EPF00000049.mail.protection.outlook.com (10.167.16.133) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.13 via Frontend Transport; Wed, 12 Nov 2025 10:17:13 +0000
+Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Wed, 12 Nov
+ 2025 11:16:48 +0100
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Wed, 12 Nov
+ 2025 11:16:47 +0100
+Message-ID: <7f3bb267-7cff-45e1-84a7-15245cffd99f@de.bosch.com>
+Date: Wed, 12 Nov 2025 11:16:40 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIACNeFGkC/0XMTQ6DIBCG4asQ1p1Gx/pTrtK4EBiVpAoFNDXGu
- 5fWRWf3TvI9Ow/kDQUu2M49rSYYO6coLoyrsZsHAqNTc8ywzNOBseCG2MknQU9ZgyhvJLXmaeA
- 89eb9wx7t2Z5eSzLj+fyTgp1gVoGnYBevCNy4BYibI019gErLor5jrfPyLlb8+rILBMpOk4mCr dU1b8Ar5O1xfACweRVgxwAAAA==
-X-Change-Id: 20251111-io-pgtable-fe0822b4ebdd
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12178; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=ZXrOBFdyf9TG39sXS6oqK5q38LX8QtvFEFyq+TKtdgQ=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpFF4nbVQ48kgpUcJKNVdzu9LCeXj0vRdE2I+Qv
- qo/Vy3hpOCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaRReJwAKCRAEWL7uWMY5
- Ri6kEACJ1ErD1ff8rRfLJ/E1cEo3ogYuuSXdi9FVJi7KwZMw0ryDRadjy26jInquoxCCfu2qrS9
- P6iY4wBtKDX+vOHETQMKq8nOmDOhDOB0nEEEPsnPD6dMTE+fzf6AOgO9xbpgbH9ZyYZIxbJPOtu
- nNlG1p3mvjEbL56gmynSEyunQkDjE3oOPUC9w2nozhVlLQEG/8deuKcR0dk2tF1PNG+2GRRGTB9
- YgpwbCf8mWn/eIS7R1bUMzLHnLX10EbWTQVeG2MdPgMe/HzrUzmhnbFNSaRpmeiuUdYpqMwYdlN
- mXWPIVOB+qhqCR8rKwfOEBraN2N/xFGFqLpWUecNUPO5/8TgAM27a2fVJQchwqxdqVEQsIiiLrZ
- qYQ9WjW94fhJvg6SIPUmJGlA0YFZbGVFOnQhBb0x7+i2Q9HFjHisL5XcPBoTCia5oUkQLEUhTB/
- Y0BXqipcIUL79CmELu152HEAl3LqSN9Oc9brq7CYPgNs4HjA/HZO/qj1MLk3iEEBy2f8y7ZMGMR
- IshBN7Kox/QxntpwacoOYZZCcJ6ScKG8qMcsA8OQAjOhO0idBw8egPuWPKFcy7U+uOe1w5E/Nhp
- fA6Ca+tiJaUZQK8oyZerF33kS9pOps9AEY4gFHLdmGSvP32fRejNa/56LKZ7DbPtAyzqgvszjIr OFZWcZQaNThXsdQ==
-X-Mailer: b4 0.14.2
-Message-ID: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
-Subject: [PATCH v3] io: add io_pgtable abstraction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] samples: rust: fix endianness issue in rust_driver_pci
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Marko Turk
+	<mt@markoturk.info>
+CC: <dakr@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<rust-for-linux@vger.kernel.org>
+References: <20251101214629.10718-1-mt@markoturk.info>
+ <aRRJPZVkCv2i7kt2@vps.markoturk.info>
+ <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS1EPF00000049:EE_|DU0PR10MB5726:EE_
+X-MS-Office365-Filtering-Correlation-Id: 17410a56-1be2-448a-bde5-08de21d4a5fe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NHpTKy80bUQxb2UzUC9yUElHMCs1WWwvUi8yWXVPN1d5cWNkNzJabEFJTnV2?=
+ =?utf-8?B?U05ncWcwdkNpUVdxWmc0K1VBTCtQVkJ3WG5TZmFLUEtRVGRFNHZWek1FVDlJ?=
+ =?utf-8?B?THF0MjdGUDNDME4yZTdwUDR6TTc0MWllNkpDcG54YUcwTUNiWGx2bWdCanlk?=
+ =?utf-8?B?MHRSR3hiamlOc3JqNjVEUjZhMUlSUkVLMzAwRWkzZm9TcXEvcEl1TXNleG5k?=
+ =?utf-8?B?VzlnL3BmaTRQNmpWQVdJWkMvQWNjNmtSemFaUDhialZuS3N1eWdZdk5wcVlC?=
+ =?utf-8?B?MEJHaTR4OUEzczB0YmtQQkpsRWNRTzc1NDBLZXNlWjZhcDdnU1ZuczU1R0Vs?=
+ =?utf-8?B?OFZaOHRmYVhJaUpyS3hQQk9SVk5tNjdHaWdxaEp6RS80dERyZnJzVHZPU3Zq?=
+ =?utf-8?B?bDVYU09Halpwa1MxSk9uWlBJc0wwbkVIRkJSbmJ0M3JLbHE5SW44QUt0TjNQ?=
+ =?utf-8?B?RjZqSWpTTHlZWlJFZDR2YVpnL1V2ODRFM3V5OFVMTURqWmUycGFUYk4vR1J6?=
+ =?utf-8?B?OWplVXlOVi8rV1hYMDJlcFVLTWkzbExZd0xVWGY4bWc1eEJ6R0NFWU1BYmVW?=
+ =?utf-8?B?ZWJMWUkrV0FFMkRiaG01U2VNYXIxb0hJOEU3MW5GV2FGZzZwb0sxU0J1UkZu?=
+ =?utf-8?B?U2lLSUNreTA1OStzekNKNGltcmlVSVlUcnRHVnpCanBmZjJsUy9SVzdDL01S?=
+ =?utf-8?B?NGh3aGRhTHdDYWZ3K05pZ1lCWllUN3gxVVNhQzhCMnkzd1hzTHZZRWc2ZGdQ?=
+ =?utf-8?B?dnd0SjNBN09zbmV6TEtsYlNnMTRaNTNTYmpkaURKVGg5ekMwbVlMUWpvWVY0?=
+ =?utf-8?B?T2V5SjlTT3FROWc3ci9uWmVlSTUwMDRCbmdGQVZMZE90OEZSdGhZTzlHRmN1?=
+ =?utf-8?B?bjh5UldXWnVQTlEvazExSlJnT2p5NGdaamVSemZXcTU0QzJ6WTRuLzJPVXp4?=
+ =?utf-8?B?ZU04eW5jRTlXZi8wc3JFNGs5T3h2U0xHbk5Wb2dmRGtSQ2RldzdGeGF2Um1v?=
+ =?utf-8?B?QlcwRUI4VnJkd3R5Y0Z0VzI5YURLQ3FkeXMyVkVWMG5HME9PaDlDOXN4M1hr?=
+ =?utf-8?B?bkFJYmZnQkNwWnpmTUtIdm1GbitENDRMbWUvbnJqeUlSSmJtRFZIeHhxeEZB?=
+ =?utf-8?B?akd3MHV0cjFiVHd6ZTNVdHRqdkRRMjZBeVNvZzN5MTZmODRhcVUwWXJoZXRO?=
+ =?utf-8?B?cmdJdjBHZEZZKzRobEYwNzBRYWcrNW9OcTRkSFEvcGZVN2M0NGlPeVRyemNk?=
+ =?utf-8?B?UXpiY0pqaE9WVTVpSU10UHU3d1Q5eWlkNWlLQklwZGRJRlJpRi8vRU0zMnFV?=
+ =?utf-8?B?bkp0Z1pYOHpiL3h5Vlc0SGxCUjJpNytNUWRGeFJjVk5tWWdVUzd1d242THVQ?=
+ =?utf-8?B?Zng2aXdpeXBhUkhOd2J1NnNzZEQ4MFNLOGloaTVWTzZ1U2lETDlZSDdHS3dW?=
+ =?utf-8?B?OXhhT3oxdUgveUdsbEF6YTkrNGlzNW5Dd3Jyblp4eDVkb0IrbUhidnpBM21T?=
+ =?utf-8?B?WVRWMWNHcWhWeXBIRlFxcmIzWE0zVUtJVEFQQlZyMm1zZmxoNjRtdDJjV0xN?=
+ =?utf-8?B?SzlwKy9RdGZQUVZNaDZRZXVkWDRmT0VlZTVZWHRYZHNjTzFaYXg4RWN2UjZI?=
+ =?utf-8?B?R1p1Z0VvWExKTXlFWWZBenhYWEFDc0JoZTFpdnIrK0RXU04yNnlndlNiaDE3?=
+ =?utf-8?B?eWI4WXlQaGU0U0ZCUXdzdlJraTZ1d1pqelJ4SGdiVGtyR1RsblhhNFFiRnM0?=
+ =?utf-8?B?cGRMS2F4YmYwbEYxYUxLalFnMkFMTGpxMGpwMFhFQlYzSHBTd1FKNU85VmpM?=
+ =?utf-8?B?b3FwWFZSVFZJQ2VJM0d0dml2LzVVUGwzS01qVkVQOHFBRFdjVk85WjYxYW9B?=
+ =?utf-8?B?QVFDUVltVS94NlE4N1J6ZnV5ajkwajFoT0txa2Qra0l6eENRK3p4ak5oVFZ3?=
+ =?utf-8?B?Z0xQcXVmd1loZ2d3WjV6UGlZRzVBM0s2dHp2NXY2ckprNnlBeXBEMXlmYVNS?=
+ =?utf-8?B?OGg0UjlNcjdxNzdLNVUweVVJMjZzWm9BTUxFT2ZIUXhqNFd2ZVFKQnN5Nk9a?=
+ =?utf-8?B?S1pwZmVEZFNuRFNTeGFCaFkwUGRxb2xDMzVoZDU1WVErcGhWMVdNMnhXY3Vq?=
+ =?utf-8?Q?+zt8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 10:17:13.4215
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17410a56-1be2-448a-bde5-08de21d4a5fe
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS1EPF00000049.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB5726
 
-From: Asahi Lina <lina+kernel@asahilina.net>
+On 12/11/2025 10:37, Miguel Ojeda wrote:
+> On Wed, Nov 12, 2025 at 9:47 AM Marko Turk <mt@markoturk.info> wrote:
+>>
+>> On Sat, Nov 01, 2025 at 10:46:54PM +0100, Marko Turk wrote:
+>>> QEMU PCI test device specifies all registers as little endian. OFFSET
+>>> register is converted properly, but the COUNT register is not.
+>>>
+>>> Apply the same conversion to the COUNT register also.
+>>>
+>>> Signed-off-by: Marko Turk <mt@markoturk.info>
+>>> Fixes: 685376d18e9a ("samples: rust: add Rust PCI sample driver")
+>>
+>> Can someone take a look?
+> 
+> Your message was in my spam folder -- that may be affecting who saw it.
+> 
+>>From https://www.qemu.org/docs/master/specs/pci-testdev.html:
+> 
+>      "All registers are little endian."
+> 
+> So this seems right. A couple tags:
+> 
+> Cc: stable@vger.kernel.org
+> Link: https://www.qemu.org/docs/master/specs/pci-testdev.html
+> 
+> Cc'ing Dirk, since he tested the sample originally.
 
-This will be used by the Tyr driver to create and modify the page table
-of each address space on the GPU. Each time a mapping gets created or
-removed by userspace, Tyr will call into GPUVM, which will figure out
-which calls to map_pages and unmap_pages are required to map the data in
-question in the page table so that the GPU may access those pages when
-using that address space.
 
-The Rust type wraps the struct using a raw pointer rather than the usual
-Opaque+ARef approach because Opaque+ARef requires the target type to be
-refcounted.
+Hmm, I can't find the initial patch in my Inbox. Even
 
-Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-Co-Developed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-This patch is based on [1] but I have rewritten and simplified large
-parts of it. The Asahi driver no longer uses the io-pgtable abstraction,
-and Nova never planned to (since NVIDIA has its own separate memory).
-Therefore, I have simplified these abstractions to fit the needs of the
-Tyr GPU driver.
+https://lore.kernel.org/rust-for-linux/aRRJPZVkCv2i7kt2@vps.markoturk.info/
 
-This series depends on the PhysAddr typedef [2].
+doesn't seem to have it?
 
-[1]: https://lore.kernel.org/all/20250623-io_pgtable-v2-1-fd72daac75f1@collabora.com/
-[2]: https://lore.kernel.org/all/20251112-resource-phys-typedefs-v2-0-538307384f82@google.com/
----
- rust/bindings/bindings_helper.h |   3 +-
- rust/kernel/io.rs               |   1 +
- rust/kernel/io/pgtable.rs       | 254 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 257 insertions(+), 1 deletion(-)
+Thanks
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 2e43c66635a2c9f31bd99b9817bd2d6ab89fbcf2..faab6bc9463321c092a8bbcb6281175e490caccd 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -56,8 +56,9 @@
- #include <linux/fdtable.h>
- #include <linux/file.h>
- #include <linux/firmware.h>
--#include <linux/interrupt.h>
- #include <linux/fs.h>
-+#include <linux/interrupt.h>
-+#include <linux/io-pgtable.h>
- #include <linux/ioport.h>
- #include <linux/jiffies.h>
- #include <linux/jump_label.h>
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 56a435eb14e3a1ce72dd58b88cbf296041f1703e..5913e240d5a9814ceed52c6dc1a798e64158d567 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -8,6 +8,7 @@
- use crate::{bindings, build_assert, ffi::c_void};
- 
- pub mod mem;
-+pub mod pgtable;
- pub mod poll;
- pub mod resource;
- 
-diff --git a/rust/kernel/io/pgtable.rs b/rust/kernel/io/pgtable.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..fe05bc1673f9a7741a887a3c9bbad866dd17a2b5
---- /dev/null
-+++ b/rust/kernel/io/pgtable.rs
-@@ -0,0 +1,254 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! IOMMU page table management.
-+//!
-+//! C header: [`include/io-pgtable.h`](srctree/include/io-pgtable.h)
-+
-+use core::{
-+    marker::PhantomData,
-+    ptr::NonNull, //
-+};
-+
-+use crate::{
-+    alloc,
-+    bindings,
-+    device::{Bound, Device},
-+    devres::Devres,
-+    error::to_result,
-+    io::PhysAddr,
-+    prelude::*, //
-+};
-+
-+use bindings::io_pgtable_fmt;
-+
-+/// Protection flags used with IOMMU mappings.
-+pub mod prot {
-+    /// Read access.
-+    pub const READ: u32 = bindings::IOMMU_READ;
-+    /// Write access.
-+    pub const WRITE: u32 = bindings::IOMMU_WRITE;
-+    /// Request cache coherency.
-+    pub const CACHE: u32 = bindings::IOMMU_CACHE;
-+    /// Request no-execute permission.
-+    pub const NOEXEC: u32 = bindings::IOMMU_NOEXEC;
-+    /// MMIO peripheral mapping.
-+    pub const MMIO: u32 = bindings::IOMMU_MMIO;
-+    /// Privileged mapping.
-+    pub const PRIV: u32 = bindings::IOMMU_PRIV;
-+}
-+
-+/// Represents a requested `io_pgtable` configuration.
-+pub struct Config {
-+    /// Quirk bitmask (type-specific).
-+    pub quirks: usize,
-+    /// Valid page sizes, as a bitmask of powers of two.
-+    pub pgsize_bitmap: usize,
-+    /// Input address space size in bits.
-+    pub ias: u32,
-+    /// Output address space size in bits.
-+    pub oas: u32,
-+    /// IOMMU uses coherent accesses for page table walks.
-+    pub coherent_walk: bool,
-+}
-+
-+/// An io page table using a specific format.
-+///
-+/// # Invariants
-+///
-+/// The pointer references a valid io page table.
-+pub struct IoPageTable<F> {
-+    ptr: NonNull<bindings::io_pgtable_ops>,
-+    _marker: PhantomData<F>,
-+}
-+
-+// SAFETY: `struct io_pgtable_ops` is not restricted to a single thread.
-+unsafe impl<F> Send for IoPageTable<F> {}
-+// SAFETY: `struct io_pgtable_ops` may be accessed concurrently.
-+unsafe impl<F> Sync for IoPageTable<F> {}
-+
-+/// The format used by this page table.
-+pub trait IoPageTableFmt: 'static {
-+    /// The value representing this format.
-+    const FORMAT: io_pgtable_fmt;
-+}
-+
-+impl<F: IoPageTableFmt> IoPageTable<F> {
-+    /// Create a new `IoPageTable` as a device resource.
-+    #[inline]
-+    pub fn new(
-+        dev: &Device<Bound>,
-+        config: Config,
-+    ) -> impl PinInit<Devres<IoPageTable<F>>, Error> + '_ {
-+        // SAFETY: Devres ensures that the value is dropped during device unbind.
-+        Devres::new(dev, unsafe { Self::new_raw(dev, config) })
-+    }
-+
-+    /// Create a new `IoPageTable`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// If successful, then the returned value must be dropped before the device is unbound.
-+    #[inline]
-+    pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> Result<IoPageTable<F>> {
-+        let mut raw_cfg = bindings::io_pgtable_cfg {
-+            quirks: config.quirks,
-+            pgsize_bitmap: config.pgsize_bitmap,
-+            ias: config.ias,
-+            oas: config.oas,
-+            coherent_walk: config.coherent_walk,
-+            tlb: &raw const NOOP_FLUSH_OPS,
-+            iommu_dev: dev.as_raw(),
-+            // SAFETY: All zeroes is a valid value for `struct io_pgtable_cfg`.
-+            ..unsafe { core::mem::zeroed() }
-+        };
-+
-+        // SAFETY:
-+        // * The raw_cfg pointer is valid for the duration of this call.
-+        // * The provided `FLUSH_OPS` contains valid function pointers that accept a null pointer
-+        //   as cookie.
-+        // * The caller ensures that the io pgtable does not outlive the device.
-+        let ops = unsafe {
-+            bindings::alloc_io_pgtable_ops(F::FORMAT, &mut raw_cfg, core::ptr::null_mut())
-+        };
-+        // INVARIANT: We successfully created a valid page table.
-+        Ok(IoPageTable {
-+            ptr: NonNull::new(ops).ok_or(ENOMEM)?,
-+            _marker: PhantomData,
-+        })
-+    }
-+
-+    /// Obtain a raw pointer to the underlying `struct io_pgtable_ops`.
-+    #[inline]
-+    pub fn raw_ops(&self) -> *mut bindings::io_pgtable_ops {
-+        self.ptr.as_ptr()
-+    }
-+
-+    /// Obtain a raw pointer to the underlying `struct io_pgtable`.
-+    #[inline]
-+    pub fn raw_pgtable(&self) -> *mut bindings::io_pgtable {
-+        // SAFETY: The io_pgtable_ops of an io-pgtable is always the ops field of a io_pgtable.
-+        unsafe { kernel::container_of!(self.raw_ops(), bindings::io_pgtable, ops) }
-+    }
-+
-+    /// Obtain a raw pointer to the underlying `struct io_pgtable_cfg`.
-+    #[inline]
-+    pub fn raw_cfg(&self) -> *mut bindings::io_pgtable_cfg {
-+        // SAFETY: The `raw_pgtable()` method returns a valid pointer.
-+        unsafe { &raw mut (*self.raw_pgtable()).cfg }
-+    }
-+
-+    /// Map a physically contiguous range of pages of the same size.
-+    ///
-+    /// # Safety
-+    ///
-+    /// * This page table must not contain any mapping that overlaps with the mapping created by
-+    ///   this call.
-+    /// * If this page table is live, then the caller must ensure that it's okay to access the
-+    ///   physical address being mapped for the duration in which it is mapped.
-+    #[inline]
-+    pub unsafe fn map_pages(
-+        &self,
-+        iova: usize,
-+        paddr: PhysAddr,
-+        pgsize: usize,
-+        pgcount: usize,
-+        prot: u32,
-+        flags: alloc::Flags,
-+    ) -> Result<usize> {
-+        let mut mapped: usize = 0;
-+
-+        // SAFETY: The `map_pages` function in `io_pgtable_ops` is never null.
-+        let map_pages = unsafe { (*self.raw_ops()).map_pages.unwrap_unchecked() };
-+
-+        // SAFETY: The safety requirements of this method are sufficient to call `map_pages`.
-+        to_result(unsafe {
-+            (map_pages)(
-+                self.raw_ops(),
-+                iova,
-+                paddr,
-+                pgsize,
-+                pgcount,
-+                prot as i32,
-+                flags.as_raw(),
-+                &mut mapped,
-+            )
-+        })?;
-+
-+        Ok(mapped)
-+    }
-+
-+    /// Unmap a range of virtually contiguous pages of the same size.
-+    ///
-+    /// # Safety
-+    ///
-+    /// This page table must contain a mapping at `iova` that consists of exactly `pgcount` pages
-+    /// of size `pgsize`.
-+    #[inline]
-+    pub unsafe fn unmap_pages(&self, iova: usize, pgsize: usize, pgcount: usize) -> usize {
-+        // SAFETY: The `unmap_pages` function in `io_pgtable_ops` is never null.
-+        let unmap_pages = unsafe { (*self.raw_ops()).unmap_pages.unwrap_unchecked() };
-+
-+        // SAFETY: The safety requirements of this method are sufficient to call `unmap_pages`.
-+        unsafe { (unmap_pages)(self.raw_ops(), iova, pgsize, pgcount, core::ptr::null_mut()) }
-+    }
-+}
-+
-+// These bindings are currently designed for use by GPU drivers, which use this page table together
-+// with GPUVM. When using GPUVM, a single mapping operation may be translated into many operations
-+// on the page table, and in that case you generally want to flush the TLB only once per GPUVM
-+// operation. Thus, do not use these callbacks as they would flush more often than needed.
-+static NOOP_FLUSH_OPS: bindings::iommu_flush_ops = bindings::iommu_flush_ops {
-+    tlb_flush_all: Some(rust_tlb_flush_all_noop),
-+    tlb_flush_walk: Some(rust_tlb_flush_walk_noop),
-+    tlb_add_page: None,
-+};
-+
-+#[no_mangle]
-+extern "C" fn rust_tlb_flush_all_noop(_cookie: *mut core::ffi::c_void) {}
-+
-+#[no_mangle]
-+extern "C" fn rust_tlb_flush_walk_noop(
-+    _iova: usize,
-+    _size: usize,
-+    _granule: usize,
-+    _cookie: *mut core::ffi::c_void,
-+) {
-+}
-+
-+impl<F> Drop for IoPageTable<F> {
-+    fn drop(&mut self) {
-+        // SAFETY: The caller of `ttbr` promised that the page table is not live when this
-+        // destructor runs.
-+        unsafe { bindings::free_io_pgtable_ops(self.0.ops) };
-+    }
-+}
-+
-+/// The `ARM_64_LPAE_S1` page table format.
-+pub enum ARM64LPAES1 {}
-+
-+impl IoPageTableFmt for ARM64LPAES1 {
-+    const FORMAT: io_pgtable_fmt = bindings::io_pgtable_fmt_ARM_64_LPAE_S1 as io_pgtable_fmt;
-+}
-+
-+impl IoPageTable<ARM64LPAES1> {
-+    /// Access the `ttbr` field of the configuration.
-+    ///
-+    /// This is the physical address of the page table, which may be passed to the device that
-+    /// needs to use it.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that the device stops using the page table before dropping it.
-+    #[inline]
-+    pub unsafe fn ttbr(&self) -> u64 {
-+        // SAFETY: `arm_lpae_s1_cfg` is the right cfg type for `ARM64LPAES1`.
-+        unsafe { (*self.raw_cfg()).__bindgen_anon_1.arm_lpae_s1_cfg.ttbr }
-+    }
-+
-+    /// Access the `mair` field of the configuration.
-+    #[inline]
-+    pub fn mair(&self) -> u64 {
-+        // SAFETY: `arm_lpae_s1_cfg` is the right cfg type for `ARM64LPAES1`.
-+        unsafe { (*self.raw_cfg()).__bindgen_anon_1.arm_lpae_s1_cfg.mair }
-+    }
-+}
-
----
-base-commit: ffee675aceb9f44b0502a8bec912abb0c4f4af62
-change-id: 20251111-io-pgtable-fe0822b4ebdd
-prerequisite-change-id: 20251106-resource-phys-typedefs-6db37927d159:v2
-prerequisite-patch-id: 350421d8dbaf3db51b1243d82077c5eb88f54db5
-prerequisite-patch-id: ac0166fb3cd235de76841789173051191a4d2434
-prerequisite-patch-id: f4bca02c77c40093690b66cdf477f928784bdbf4
-prerequisite-patch-id: 083d1c22b1a7eb0dcae37052b926362543c68e8a
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Dirk
