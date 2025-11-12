@@ -1,96 +1,143 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D284A313547
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 11:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB0531196C
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 12:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762948258; cv=none; b=bekQBV1hzNZfhPX8UeIHVFkGo26RdAM32tHDFtcBd1PIvRQ0br5JEa/1Lu5obUuWPdhKt217jB58Z/b+HWI5QwjjNKujz849+amV3vIKbgAnsmEB+3/KyJzTwagEjaClr2/ExFf2KIv+vHhCRpxWImR5ku+1glIGpeA2+3tNfIE=
+	t=1762951651; cv=none; b=euawG1u3FGbh788vdgCvzEIuwG41qjN2Eaz8tTNEXGigceYAia0kASZqEXEYj3ai5V3VuBcRtUZGKslUx7IMwNOyQI9h55w/WaAJrGFiQmSE1Vp96TMR8eyXGyXpAs1s4JVsYeL+JQDf7/YQLi1yartu4VONo0wBIlb380RpNJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762948258; c=relaxed/simple;
-	bh=xvlwHWf1SMuF3y/TP+P5AIWO7Uq0VOvUIReTHrd7u0o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k3z682YP8qFTH6Cm29nUTorsf+aW2Q1fgCtQDB4wXe7VrQpFskDuVMLzuG2NR4DId9dHpaQS4HYAqVw0vf4qRFrRbAhFrt+2X7caoivHVn0UuOKOy9w0xx9TPyUnIHiakkO0V9jblU9oVx5rTeDe7Bk6YUzrKFWGpUXS4jOZn+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QGuhsPBd; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762951651; c=relaxed/simple;
+	bh=2n8HdSv5SayIX1EfgXK6Du5r/vgt9PeVrpIrNSlopSY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nOD6GFNsVWUW+Rz80xJ61dbZJ3SlID1Z/SyuAhytl5JgWk8S3cnu4Ikdpm+B7h0Lbj6nEf6RISUV6so0LbJjdwVHujLK7aun0ymG8D9rfjYdHBV7KJXjOpfDj7We7B0U5WhTLlcfS2o4JGfw+DDM15r6w2knvM4PeOe7IBvhY5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WC2gDkQv; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QGuhsPBd"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-297e2736308so730615ad.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 03:50:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WC2gDkQv"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47113538d8cso4264425e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Nov 2025 04:47:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762948256; x=1763553056; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L6GdXqVWriU7YAQ5HMP7u4HkP5SDJbJWdJuWZZSvfNM=;
-        b=QGuhsPBdZE9cQED307f+SafeY914FbvXj8POsaolQcBzXmMK/4NtLBVc6Vp91LpGfY
-         RBhqDkPBpyLtL7ktt9cJ1xtBlckGcfG8mv0lCXDyAaIleu54IiHZoyqGHQO+YK35csyJ
-         rd+A9YiCqRl55BCEnPwn9gJXsdKA9WO9gwxDjd5V+o1xUItzW3QOFBPKYMVbf5X8RzXs
-         TvGw7bqxIot0UennmR28YRVARIO65YDTZ2OwVfjv/+stGyHyQOexvEiwM6XdjkWzC08D
-         LJWFTwwamr9qZNpVdmv3RhvFYzWP3b6WyGUHBJNg6FwlQfaSqM9TtBhy5je+SvAuNL8R
-         SCQg==
+        d=google.com; s=20230601; t=1762951648; x=1763556448; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2UrJz/ya7w/jX+dqGnuzup5Ax8rXpHpLUNlpWz2VFM4=;
+        b=WC2gDkQvFozJEqZJ20XZ/q+l0C/30x+UBqr8G7XrPqZx95VcFMSuCu0ytlhiZGn17e
+         Mrhp+mD8m7ZzrSZ9VOTaWGEd/QIXGmofLKBbT0VwF0/dK+IzMTyroYobNEFjav7T8zux
+         UCtBU0SdxL79oBRj7ihvxM+1o2dV/oO6etlxtW8ki+VcqVRnKqLnTAbRv7FjFnfeoUuh
+         WKlTFPhxol3uTb4I6FBYz4LRYOSZeCNU8mcjqbUv11f69RZ13yvxqXH/yPNHo3EhOiJC
+         z/LP02DbJ9ZmHDHEQgs9qxbmHcZsubmgC7O2BsFjTJNRB80sa66kIov5g/8QRSuUiNzC
+         TNow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762948256; x=1763553056;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=L6GdXqVWriU7YAQ5HMP7u4HkP5SDJbJWdJuWZZSvfNM=;
-        b=h5ISLXInvAvRDu4Yh6UcYrfz8AYAlbEc5AxRrdd+4NhLkqx6xWQsOa48YSl6A+/9ML
-         lKcLVtFPV3+9YFPCFRgXSWa7fjA+KPLmepJZWNMw92EpV3LjArBZAabx67UrOFiKNtwg
-         m5H2+cix0ztYmod5XNGmH+vP076ZHnHMCsq1BG6KYz7O1aPiCviPVrtff9H6d8PYbDyE
-         A3aEWhaaioRiYXrZaQACLQy/lbrjVG+GXG3Esh/TBvXyzE5N0Ojof3yZQQ8YXcXLRnRP
-         6S1haJ+RBugRyVK69BqljGhlWI8qx3AYsRn1Tu3WeQc8nlICQgeN7TUEYiQl3VAjXJ+6
-         pQ/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVZIwxvzuDVVdDKg80GqYTSEDkqvU2e1/A6y1v48zjIhGQFfrM8l+q+3llPem7qbFvA+pJe59IomTVn+KG8yw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm3cYyuOLyXtfYsjO0SvliQtF6p6PskK6WlxkWKxxWUAzoxljH
-	b5HmKsdkDik1dwXDMnXz+o5Dtwf01puAW4vnov8KkeseMh4JRDi0UWdXiUhcmstV4/n6vRl0Cfw
-	jfP4duR3PJwuCRYjlsLSfXZHYwqiVhMs=
-X-Gm-Gg: ASbGncvei7ZfL/IX6VQ3JHFb/yhbudGB+B7EriKgcpdHUFf2qOvoO9ZHfbXvckiXKbW
-	9EHNEM1YffWZdYNwm4Sa6OrJ6lAuquZQ/wf7tYSZuL+K8qy8/RCok838a6ANkf1Xeni4DC860T1
-	iMlrzK9daIeX4jyDBRpk40VBmQS6bYOzY+IdHgNdEAlfIVwx886ItblgsTU6si1fOtTY4oeScG1
-	WiaqwWwPCgj3HwCrO5Sr6pHFrsKQeeD93jDQX4AYd8e+MBAiEmWXinA/ms9gOnh+YGRgjCoDdHr
-	WYwcyunIZ8ivgjphlcYJMJrvRAisw89gffSbCHd7k5Nt8c5hxX5BH7Qej78Uok5m9TpkNnEOmjg
-	s09Q=
-X-Google-Smtp-Source: AGHT+IHJac4HVCmu5Dh9YFRTfhcVyqy3R7ppk8nIqv7Fjiu3amcoiL+MboK7bGpoZlkJ6T+p2bAicskCFHV20oVawIM=
-X-Received: by 2002:a17:903:2343:b0:297:e67f:cd5 with SMTP id
- d9443c01a7336-2984edefd70mr18586945ad.7.1762948256198; Wed, 12 Nov 2025
- 03:50:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762951648; x=1763556448;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2UrJz/ya7w/jX+dqGnuzup5Ax8rXpHpLUNlpWz2VFM4=;
+        b=UH05GaJlhX0AllySaogCGI5LdUAMbK1PaWdRfZqalG58ZL48YEaHKZ3NKulNEwSMsa
+         4+N4dAmnWtjWazATtznT+JOtFX/Zrj3TUaeRATtpmIhOAmmWQeNqfNpnxLnGIwsIdSb4
+         wU921zp9DjmnWEF5odDx2j79Mv+yS4UEY4NMqS/ZjPCIN3S+ZFrrTq2s8+Fx8eqVJmN7
+         yPxVBWNQ2xo7pSUy3WKoZyP6CDLDVNnu4J3UJMEUYTNUhyArP07S4jurrUDyC6pCscbM
+         LaAH1RlV31ieo3MyHQhNXDJ8ZPDczoW9EyqXNhEJybLpwtm8YXcDPtMcYNFyNIkS7Mmd
+         ndhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW4wYlofMKspQlAC/InTC8aY+6nTz2kUtJ9EMZFMmSuTVLZTSLvo9kxxXYywug/n4Qtdn+dBWo9EGiBcokEOQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHL/8ryA+TMqMap55Qacj1q42lqcbKlIcja5BncCc8/JUotkhE
+	wmyipboEe9SLL1GCCIEZofwy2ouUB3Db5XEpeT4VmAF/O4kfS76QN94m+qwL6hflNBMzjRngHyI
+	zKIEeOjA3AO91sjOVqA==
+X-Google-Smtp-Source: AGHT+IFItrUMlFfVZrMNt1klGSo5x8E4e4b+SZ9Q4jVPSGMjAvvibJwOikgd0fhs6UZKXMa8Rb7tEIDFbO3yyXU=
+X-Received: from wmmj3.prod.google.com ([2002:a05:600c:4043:b0:476:4b14:2edf])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1f88:b0:477:be4:7a52 with SMTP id 5b1f17b1804b1-477870b62d3mr23223145e9.39.1762951648167;
+ Wed, 12 Nov 2025 04:47:28 -0800 (PST)
+Date: Wed, 12 Nov 2025 12:47:18 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251112-resource-phys-typedefs-v2-0-538307384f82@google.com>
- <CANiq72maV_j1uV=2nPGbTgRabnk8cpc7TNN_FQ+ou52OpZ=k6Q@mail.gmail.com> <aRRgbZ67cuW4ZoBN@google.com>
-In-Reply-To: <aRRgbZ67cuW4ZoBN@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 12 Nov 2025 12:50:42 +0100
-X-Gm-Features: AWmQ_bnHL2zcHUg9QHxtpIL6OkJJHQbSfHaurUXNslUBcWWv6xMSKUqjoGHiz_g
-Message-ID: <CANiq72=5WDFCufEhLSnoSzUrTZ+dBwEeyGWO+OkGmdB5AyXqog@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] Rust: Fix typedefs for resource_size_t and phys_addr_t
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIANaBFGkC/2XO3wqCMBTH8VeJXbfYOTqnXfUe0cX+HHWQTqZIE
+ b57K4JKr8bvwOfLHmyk6Glkx92DRZr96EOfhtzvmG113xD3Lm2GAiUIobjxvaOYnqnTA5daC1c
+ VRW2gZskMkWp/e/fOl7RbP04h3t/5GV7XTwnFqjQDF7xUlSFbWecsnJoQmisdbOjYKzXjL4c1x
+ 8SpkOhAoS3QbHj2y8s1zxLPsER0uclQqA3Pvxxg8/k8cUmu1KrWBkz1x5dleQKt7MoqaAEAAA= =
+X-Change-Id: 20251007-binder-bitmap-5aa0d966fb1f
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1978; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=2n8HdSv5SayIX1EfgXK6Du5r/vgt9PeVrpIrNSlopSY=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpFIHapYyNWfqDYTrDWcEnT8bOu1Kd15weYsrx2
+ O9cKkNMABmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaRSB2gAKCRAEWL7uWMY5
+ RsNfD/4hL71j7QUu7yCG2Fe2Pxz+R0xsnwMr2wejV0AdM6+FtPPa3g5Lf72qwMbLmGuHWaP/rJX
+ mA1vCTBj04OSXl+ZyWLIj2PHGHLjzUmMnG2fCl2BKFVbdECmn5e6fvP98KIcrWaOdi/3gSKSKIX
+ 54Rb8lamOsWkBqtERHuXYaQrSYoUv3pLZkEjZFILk9fzMyiitRMpG0UtHROxVaQvMh+f0XajjCL
+ EzJ9Yi3wEz5DzQStuBsCmclzMKd6mL47Q6rGzcY/0NW/8G5M8J6IaXVqPGzwgGA21oeWjk0rsAF
+ WvJMG+ToO+Cz5PavZRx19sfu1lTqjs4CGAUzT9plupT0Y6viHXdBYEDyjJ5GtjgnTGT1xO5lB8y
+ 0iCb7Q7V6CTxoEpiN+GDRvBwWoR+4yfD2mz1067HqqBdu+JbN3I/dO8wW1NBVQw0UoJeSYSJmWh
+ /YAbydDHU2N7hYQ8cKABT/IqbDc6ch70XdqBblFbkhyWw7oPjWN8LeE+l8nhggRKc08/yhgbXMj
+ YyUjZF+hreEEySOgq2DV9rijm+mSc2WXXaAUfQU/ZMwnR9Dh8IYD/CNnMNg0WEDcTmqt5SaLg6I
+ zrfYznH2DJx253EYyLxx8/RHPv0b63FmcfDGgzxU3n7iSvmRNKPgX35mDVxHBd2GSS7XJUN1Xir FyYBJUqq33Yu2eQ==
+X-Mailer: b4 0.14.2
+Message-ID: <20251112-binder-bitmap-v5-0-8b9d7c7eca82@google.com>
+Subject: [PATCH v5 0/6] Use Rust Bitmap from Rust Binder driver
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>
+Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Martijn Coenen <maco@android.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Burak Emir <bqe@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Nov 12, 2025 at 11:24=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> Maybe later. Right now I think it's more trouble than it's worth.
+See commit message for rust binder commit for details.
 
-In case it may inspire a newcomer, I filled:
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v5:
+- Rename NO_ALLOC_MAX_LEN to MAX_INLINE_LEN.
+- Update all uses of MAX_LEN/MAX_INLINE_LEN to reference the new
+  constants.
+- Link to v4: https://lore.kernel.org/r/20251110-binder-bitmap-v4-0-5ed8a7fab1b9@google.com
 
-    https://github.com/Rust-for-Linux/linux/issues/1203
-    https://github.com/Rust-for-Linux/linux/issues/1204
+Changes in v4:
+- Keep existing IdPool constructor (renamed to with_capacity).
+- Undo docs changes that were due to the removal of the existing IdPool
+  constructor.
+- List id < pool.map.len() as invariant for UnusedId and mention it in
+  as_u32() comment.
+- Fix [`acquire`] docs links.
+- Link to v3: https://lore.kernel.org/r/20251028-binder-bitmap-v3-0-32822d4b3207@google.com
 
-Cheers,
-Miguel
+Changes in v3:
+- Also update documentation to fix compile errors.
+- Use new_inline() instead of new_small().
+- Reword commit message of "rust: id_pool: do not supply starting capacity"
+- Change UnusedId::acquire() to return usize.
+- Link to v2: https://lore.kernel.org/r/20251021-binder-bitmap-v2-0-e652d172c62b@google.com
+
+Changes in v2:
+- Use id_pool.
+- Link to v1: https://lore.kernel.org/r/20251020-binder-bitmap-v1-0-879bec9cddc1@google.com
+
+---
+Alice Ryhl (6):
+      rust: bitmap: add MAX_LEN and MAX_INLINE_LEN constants
+      rust: bitmap: add BitmapVec::new_inline()
+      rust: bitmap: rename IdPool::new() to with_capacity()
+      rust: id_pool: do not supply starting capacity
+      rust: id_pool: do not immediately acquire new ids
+      rust_binder: use bitmap for allocation of handles
+
+ drivers/android/binder/process.rs |  63 ++++++++++++++-----
+ rust/kernel/bitmap.rs             |  43 ++++++++-----
+ rust/kernel/id_pool.rs            | 129 ++++++++++++++++++++++++++++----------
+ 3 files changed, 171 insertions(+), 64 deletions(-)
+---
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+change-id: 20251007-binder-bitmap-5aa0d966fb1f
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
