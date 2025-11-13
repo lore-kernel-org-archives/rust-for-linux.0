@@ -1,149 +1,195 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590F3338F54
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 12:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F56B246BD2
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 14:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763035581; cv=none; b=M/s60HOCUFhDjEvxfqMiw99ZisrGkhu8zmR8GeUHBJoeCwpmski7q2RmgbvDIaSuvKY9PN7ybWPoW39rumMJIsghDKJfFDAzmBbexby0rzf7PE7RZihAtz+jVUk24f1CNnBLz1bx7Bh0n9fmbgTAUsHx63VU00YWkl6YGwbeBYU=
+	t=1763043633; cv=none; b=f4AyUN005AguI9snPB4YAyEeMbLH6G9tNTIrYG8Aawr6q77A9nRTJZ5K0WHDTqBKfUwdzNnko/AJvzumri9itGPukOZJWw+Fcn1TP+yThOvAQa8BupVE1fOT5e7EJ4cxWWUGd/52dDgwVPFl5LTZ80jvkgnc6GeEfeF4TjQZtaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763035581; c=relaxed/simple;
-	bh=IAtW62gURyREpUalfFbzcKDfW6kSFiTM/Y9A/jTHcbc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NFNBcoVcBBH9pr0mXsiWIlqHVmkwEroksY9rxvjPZmyUPpxjnNdkC6DREhDOeilRqsdAKg1FHT5cUvwKzDPFMAtJuASctHMw2t7syAszidWSH6tXrZZQ8/+x4f6Io7xH5ZYvJVujiDgNTBgSojGrHCHIses6GCXJuIsfxLsw5ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=trFWe0fb; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1763043633; c=relaxed/simple;
+	bh=pEtsXEYDUVwFnZGZDZwf6LQ8RdbFl0B6scfu0LRUXU4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LiFxLIwKkPoiM/GBzN8tly5Zi8FkTPcFzV4yF5G7HskNejwF3+tUgy1h8FhI0MUliv8qeLtQ7DbYTlhPf/ItefVlVqW/Xh8mIpbJB81qktsskIyEw5rauaW2fD6WY8Yo5mJbmqebRkbapR7HmwnpOvYGApTjunSRM6LfWFNda1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=hxiaim13; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="trFWe0fb"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b7270cab7eeso56033066b.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 04:06:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763035579; x=1763640379; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DrSwWUUS8EG5A5vNOucgA9G+KYKAzfFTIdyoG9AXKcg=;
-        b=trFWe0fb+66yvL9Kh73vm/mO42gnr95UJVmBAPEx6qXFqeYiGDZ8qA/sA96iHniBxd
-         85HyTq4G9K/soZsmSrf90AZq2L65Wc7dAKeMLsGDTmIPbd5NVRALTzGaLBnPP1CDD+ns
-         rRJlHwSjhMau3tYHyaCnSIX/uQB+6ZBNhXl1h4quIKSEDK7pHNfEGqs63tdI6LSGXLJd
-         kXTKT2zO/l4ASjo0z3OKS5Mf7gJJucOcuBtSUKGQNxQON9liuQhS1/HePQaPaVXx3Rpd
-         1gVnXWoly3QVSeHopt56OZkml0y48tVorf858UfGBAxIEejd0ggYBIoqL784wMM/R4aU
-         QfgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763035579; x=1763640379;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DrSwWUUS8EG5A5vNOucgA9G+KYKAzfFTIdyoG9AXKcg=;
-        b=mmqoaGf9mpwlwaqGGceSFO9LZF10VUe15+iHrNWC/DjZSHPrbEQbtLHbap1fqdE2Qr
-         O/y00WnabGeaUlA3xAP/Y2ZWwL7EXivNJgRt36GjEeQFyZnAGIYTYSG8pbe5WZn8mxg/
-         QHkvWGvK+yNt+yffCcT7G+pIdMXtaUJAm/LtB1kb0FCVIaWSAnCH62z0uQ5eq51dM18D
-         2CmeUe94r1cLe9Zx330+7n3GOnxtj9aebZxQkPwr7NzmXX9RaWuNGTPTuYTiaSBqj+lb
-         q+mjzYMisyH3yAy4VAAifyQHh0LSrtpHFQZI2L81XTxB6IpdBIElXwZOOGdHiu219W64
-         6Snw==
-X-Forwarded-Encrypted: i=1; AJvYcCW22Q1x5E4dk3m1Ipe3y7GMSIhIKgMKr4Ysw34oSESELYoH2zYPEFGuIMOOlKMHI5TVMNjMh3/tGNr9vhthWQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAW8c4ttceftVNSiCLbX2lZBEHnSOyTc1YAfcFQ2WNb5f2hrXU
-	7VGYDev882gY3oQ9ydElQP4U1AiDTCDK28tSZpqS+4wy8Vl+PTg9kgiIxRMM8X738DXBvrFTmNH
-	WakylmGE142gE2U9aAQ==
-X-Google-Smtp-Source: AGHT+IFXA9m26lKjNXbTDcwVd9JRQW7Vnnx7mR18bLU1GHC5NE9UdfrDL6zH6RUJHJvTFNNDgWvcG+VmGPQ4Fow=
-X-Received: from ejctk9.prod.google.com ([2002:a17:907:c289:b0:b6d:3f2b:2d59])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:7f14:b0:b4e:d6e3:1670 with SMTP id a640c23a62f3a-b733195fdcamr649615466b.11.1763035578799;
- Thu, 13 Nov 2025 04:06:18 -0800 (PST)
-Date: Thu, 13 Nov 2025 12:06:17 +0000
-In-Reply-To: <20251113.201844.1009485179863259148.fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="hxiaim13"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 94059240109
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 15:20:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1763043629; bh=adBBVnRsn7HOZmzACpymK40j8Veheszabl7lrdMc79A=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:OpenPGP:From;
+	b=hxiaim13XwzrRzvQbESQJXjOvYQ/Dic4Lb1HI7/lgpMEOXn023bOb+Rgq1pbsnvky
+	 FDKMKtmBETr8DQEnih94rJ6G6BJ21BF8wLCW8LF8A3mwv5USD/j2wI8mQvV7sxM2bj
+	 KHPQLVOiMEGCH2nUROZLiWZ1qDOoJlEnrCOSeRjuq5hbnXkME4PNSc/NoinnFWHrSF
+	 Iirv/PglOPT4ykloyPcd5Ow+FGj2S6SbKqCEXu4xewPzmwal/ZHjC8ZjRHwk7PwZ1O
+	 Fl2phDovweFVepue48y9ypQhwCwvtBUj/YQB1wmCULEkLbn5Ad/3sRKa8DOWzN2IMU
+	 iZhv9aHXeHlWQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4d6j961Yhdz9rxN;
+	Thu, 13 Nov 2025 15:20:26 +0100 (CET)
+Message-ID: <bf4192fd466571f798023b70c3e83e19448d8149.camel@posteo.de>
+Subject: Re: [PATCH v7 0/2] rust: leds: add led classdev abstractions
+From: Markus Probst <markus.probst@posteo.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda
+	 <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Danilo Krummrich
+	 <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones
+	 <lee@kernel.org>, Pavel Machek <pavel@kernel.org>
+Cc: Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+  Leon Romanovsky	 <leon@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, 	bjorn3_gh@protonmail.com, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Bjorn Helgaas
+ <bhelgaas@google.com>, Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=	
+ <kwilczynski@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-leds@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Thu, 13 Nov 2025 14:20:28 +0000
+In-Reply-To: <20251027200547.1038967-1-markus.probst@posteo.de>
+References: <20251027200547.1038967-1-markus.probst@posteo.de>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ R3rOFHA==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251105054731.3194118-1-fujita.tomonori@gmail.com>
- <aRWt6Ah8KuBXff8V@google.com> <20251113.201844.1009485179863259148.fujita.tomonori@gmail.com>
-Message-ID: <aRXJuUTR1fnWiBQF@google.com>
-Subject: Re: [PATCH v1 0/2] Add support for print exactly once
-From: Alice Ryhl <aliceryhl@google.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: ojeda@kernel.org, a.hindborg@kernel.org, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, gary@garyguo.net, lossin@kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	jens.korinth.tuta.io@kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Thu, Nov 13, 2025 at 08:18:44PM +0900, FUJITA Tomonori wrote:
-> On Thu, 13 Nov 2025 10:07:36 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
-> 
-> > On Wed, Nov 05, 2025 at 02:47:29PM +0900, FUJITA Tomonori wrote:
-> >> This adds the Rust equivalent of the kernel's DO_ONCE_LITE and
-> >> pr_*_once macros.
-> >> 
-> >> A proposal for this feature was made in the past [1], but it didn't
-> >> reach consensus on the implementation and wasn't merged. After reading
-> >> the previous discussions, I implemented it using a different approach.
-> >> 
-> >> In the previous proposal, a structure equivalent to std::sync::Once
-> >> was implemented to realize the DO_ONCE_LITE macro. The approach tried
-> >> to provide Once-like semantics by using two atomic values. As pointed
-> >> out in the previous review comments, I think this approach tries to
-> >> provide more functionality than needed, making it unnecessarily
-> >> complex. Also, because data structures in the .data..once section can
-> >> be cleared at any time (via debugfs clear_warn_once), an
-> >> implementation using two atomics wouldn't work correctly.
-> >> 
-> >> Therefore, I decided to drop the idea of emulating Once and took a
-> >> minimal approach to implement DO_ONCE_LITE with only one atomic
-> >> variable. While it would be possible to implement the feature entirely
-> >> as a Rust macro, the functionality that can be implemented as regular
-> >> functions has been extracted and implemented as the OnceLite struct
-> >> for better code readability.
-> >> 
-> >> Of course, unlike the previous proposal, this uses LKMM atomics.
-> >> 
-> >> [1] https://lore.kernel.org/rust-for-linux/20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io/
-> > 
-> > There has been a fair bit of discussion below. Here is my take on the
-> > way forward:
-> > 
-> > 1. OnceLite should be it's own special type, and it should be in a
-> >    printing-related module, not kernel::sync. The reason for this is
-> >    that do_once_lite! is hooked up to a special section that allows you
-> >    to reset the once status, and if someone used it for anything not
-> >    related to printing, they would end up with being incorrectly reset
-> >    when someone resets pr_warn_once calls.
-> 
-> Do you mean that only the do_once_lite! macro, which places the data
-> in .data..once section, should live in a printing-related module? Or
-> should everything including OnceLite struct itself, also be moved
-> there?
+On Mon, 2025-10-27 at 20:06 +0000, Markus Probst wrote:
+> This patch series has previously been contained in
+> https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.pro=
+bst@posteo.de/T/#t
+> which added a rust written led driver for a microcontroller via i2c.
+>=20
+> As the reading and writing to the i2c client via the register!
+> macro has not been implemented yet [1], the patch series will only
+> contain the additional abstractions required.
+>=20
+> [1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@ker=
+nel.org/
+>=20
+> The following changes were made:
+> * add abstraction to convert a device reference to a bus device
+>   reference for use in class device callbacks
+>=20
+> * add basic led classdev abstractions to register and unregister leds
+>=20
+> Changes since v6:
+> * fixed typos
+> * improved documentation
+>=20
+> Changes since v5:
+> * rename `IntoBusDevice` trait into `AsBusDevice`
+> * fix documentation about `LedOps::BLOCKING`
+> * removed dependency on i2c bindings
+> * added `AsBusDevice` implementation for `platform::Device`
+> * removed `device::Device` fallback implementation
+> * document that `AsBusDevice` must not be used by drivers and is
+>   intended for bus and class device abstractions only.
+>=20
+> Changes since v4:
+> * add abstraction to convert a device reference to a bus device
+>   reference
+> * require the bus device as parent device and provide it in class device
+>   callbacks
+> * remove Pin<Vec<_>> abstraction (as not relevant for the led
+>   abstractions)
+> * fixed formatting in `led::Device::new`
+> * fixed `LedOps::BLOCKING` did the inverse effect
+>=20
+> Changes since v3:
+> * fixed kunit tests failing because of example in documentation
+>=20
+> Changes since v2:
+> * return `Devres` on `led::Device` creation
+> * replace KBox<T> with T in struct definition
+> * increment and decrement reference-count of fwnode
+> * make a device parent mandatory for led classdev creation
+> * rename `led::Handler` to `led::LedOps`
+> * add optional `brightness_get` function to `led::LedOps`
+> * use `#[vtable]` instead of `const BLINK: bool`
+> * use `Opaque::cast_from` instead of casting a pointer
+> * improve documentation
+> * improve support for older rust versions
+> * use `&Device<Bound>` for parent
+>=20
+> Changes since v1:
+> * fixed typos noticed by Onur =C3=96zkan
+>=20
+> Markus Probst (2):
+>   rust: Add trait to convert a device reference to a bus device
+>     reference
+>   rust: leds: add basic led classdev abstractions
+>=20
+> Markus Probst (2):
+>   rust: Add trait to convert a device reference to a bus device
+>     reference
+>   rust: leds: add basic led classdev abstractions
 
-I think both should live in the same place, and not in kernel::sync.
-Whether you call the module once_lite or print is not a big deal to me.
+Hi,
 
-> > 2. I would suggest just using a relaxed load followed by store instead
-> >    of xchg. This is what the C-side does, and I think there is no strong
-> >    reason to deviate. It allows for a single byte of data instead of i32.
-> 
-> You meant best-effort try-once logic like C?
-> 
-> pub fn call_once<F>(&self, f: F) -> bool
-> where
->     F: FnOnce(),
-> {
->     if self.0.load(Relaxed) == State::Incomplete {
->         self.0.store(State::Complete, Relaxed);
->         f();
->         return true;
->     }
->     false
-> }
+So you know in advance, I will add a 3. patch for multicolor led
+classdev abstractions (drivers/leds/led-class-multicolor.c,
+include/linux/led-class-multicolor.h) to this patch series.
 
-Yes that is what I meant.
+In the atmega1608 led driver (the user of these abstractions) there are
+leds with different colors that share the same slot.
+Technically "drivers/leds/rgb/leds-group-multicolor.c" could be used in
+combination with single color leds instead, but then hardware
+accelerated blinking wouldn't be supported. I think it would make more
+sense to directly implement it in the driver.
 
-> Using u8 as atomic type instead of i32 would require a fair amount of
-> work, since at the moment only i32 and i64 are supported as atomic
-> types, right?
+The existing 2 patches shouldn't change, so feel free to review them.
 
-Supporting u8 atomics in general is tricky, but I think *specifically*
-load/store should not be a problem.
+Thanks
+- Markus Probst
 
-Alice
+>=20
+>  rust/kernel/auxiliary.rs |   7 +
+>  rust/kernel/device.rs    |  33 ++++
+>  rust/kernel/led.rs       | 375 +++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs       |   1 +
+>  rust/kernel/pci.rs       |   7 +
+>  rust/kernel/platform.rs  |   7 +
+>  rust/kernel/usb.rs       |   6 +
+>  7 files changed, 436 insertions(+)
+>  create mode 100644 rust/kernel/led.rs
