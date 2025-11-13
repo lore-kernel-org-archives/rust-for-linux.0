@@ -1,498 +1,196 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013067.outbound.protection.outlook.com [52.101.83.67])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011066.outbound.protection.outlook.com [40.107.208.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC71DDD2;
-	Thu, 13 Nov 2025 06:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9BE32ED47;
+	Thu, 13 Nov 2025 07:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763015228; cv=fail; b=J1z/a09MlFB1zsO88eV9d+GXkCKwb1xiJD3aty9QftnFlAiDP107feX9ngfg4ATe2I5SfMVkLNbVuv384Q1W882UhK8bR3Sltfoj/WeRMXLMfsSmOGili6bHIvdsAcKcNfbyLD1XEiynkVea6HmMwW/Nd+Ri9Oj9NRWrBrdDj7E=
+	t=1763019414; cv=fail; b=pDmK1fYhlYVz6A5lKg9DkbcPyFv7EN18DWjXu8ygvr7X91I8WQhJjs5UdsgRGsGbgTcCptm4TXQoLX69SbA2vpJwWWtIW9lR3SH5xRydXIO84VtJayZVB6pGqu0Ha319wF65mydKiWyAtUu4ealGQbUy5X8Dhm44lxzj+b/RCUE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763015228; c=relaxed/simple;
-	bh=ECqk/ZLwHKLWssptPsm35+1JeVFZatCTDtHCGmi+lh0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ta//oHBdySugmqrAYMkbnolKm3NaGuwHxSDlzLnXMEq0Z1q5kWA2bf+32vyn1cNKhyIkDG+KqWEq36oqZloAvPi8hKiV/1thuhoLzwFJo3pnR2Nq7Tbcqb1NGWGViKGDiBL1g3cPM1HXnkC+91PIzyFmGNMRfGNhzQyqWORWp58=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=gs/KFika; arc=fail smtp.client-ip=52.101.83.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	s=arc-20240116; t=1763019414; c=relaxed/simple;
+	bh=GnNi0EcR1j/cNW8EwokuqkLppeTfAlV3dBW0aumIoHo=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=aH2xymEK6hcYXWs6ATrjESdzRcy9u06iAWwIR5vAzkcFuXNQNUKntZWhQHFBn5fmDms5Z1MC8xPvcvnpFz0dob10av0qDtJFjDLZTkFglaegtf9gCyvRnHpf0hTL2frMDGmpdx6UKbSRouO2fZJDsvwGdIWjb9jlIAfyEhiwS0g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=m3SR8fSy; arc=fail smtp.client-ip=40.107.208.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="gs/KFika"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="m3SR8fSy"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KOr3je8k0+3ETvtZCnGLI2sUS3js18rScISJqJ2Us8wyldxKVCvHDbXzIEkIaTz3Z8GXxABeyUdzHC1OFMENajIWvxwEpeb7JHqmWK+FKjgkSDuC+uegcIxv5YP+wGq8Aoukwj69Hij2hYuV4JiSm3rcm7dNzpmcJL2J1LFlzU2ttAW2s3DgCYI5J9FoMRbbB98vbAfp7DrBmFhvF3nB5H4wHMo95N6R1G7kcBqJ2ZOHNx+6eqR1x36sHRnoZgLN5KJBaxJ2MU7HvzqRZ4Nm9xbalfl5TmAEUdmv4LjC4TRrcbg3KaYZyNAZjAeT1I+rlLZMq0iClN0Og+PTkuFF/A==
+ b=TzfltSuZ6+nBHIqktdMyirE6P/eCfYkOvmlAUhWFY8k53e501/BC8Qpv7YztTwD/mpMwC0KOq5rG/XEMp2iBM+BkBMQQNJBGT4A/hZsrHbZuS1WBlZug//1WU3rIc9GaNzmi45ftoLKYH+hPtw4Xht4G9KNXOVy7iOCTnZbrTb2rxvrG7RtvsvZoejDMTrn9Z5V/HZTk1HYtIHFvHJgWNhhVK+fbZU3zDai+ZKCskmGQ8lZsY/sqr7KIUjOY6gy4f2uYdFR6jr/eJUPBS8HQYw/6elRrHu/QJqqVT6s5zlkwVUZhcUtRiHiLFv+4cDyfAVRvik+hTUIp9OQJC+n4CA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BE3U077CYXQt2mJNlPLMnKGFuXD+PuiVE5JovFJ7ZdY=;
- b=lnZg3z8IfY1FiSI/ns3c9h3ipY+qlEqfNgoSkHCHiV8o8qf5VgGkR5Xrf5yNZ+A6Z7wB0SI3SsgtZoTjHJoels1C3lLzTw9Fy5LpFur3CwaxmIBJPYDi5ARTWeH+HGLVvC9fqMnGQEfZHm00PVtL01CdTLQMBFSMCJwVKsXWoWiiWrQdqx87sN+PdMVazexLipvpgTNFcE8fet+lT9zoHm1tWBf9V9oAk9evSYDCVTg9WxcoifwSqe8zdkVyH7KhgdcNcjqdBEaVWyvZdSZBObP40ELMBeQgmZJbX/YmflOaHTJ/4Un1ntQD/51HiDDi5lN4pr3C8/8KkSqPwLDAPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=nvidia.com smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ bh=GnNi0EcR1j/cNW8EwokuqkLppeTfAlV3dBW0aumIoHo=;
+ b=t59k9V+C1znmhHpVVLZCsOiLdDItgLJmvsg6Mr9vgsRPFlgJ0gfY6QQv7lmySVEfrVtzTkE+Nm0ZAopAZyNXVhT+/GaxH90sc44mlKruhe/TqWNHHr+8d2NG0rBTfLiBdnmdfrq6enr+QJO3wcwWdqnMwcPg6pXJ7Gz1gCGQsyhzSSUtKCvLuhGXMyd7FLnDeGLPR+7LSRI5XjYzpNDdmjSKhM+ICHGLZSKAp6Xc1MvkiycWRqXNMSt6rrah0z5ObXnALdgT7CxXG5KNM06q4EmOgwCd1blKLgB1FlV5/RLcHHCvq8VYHu8V6WsYwPC8qeSo+5PcQSjPJcWVcIHgOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BE3U077CYXQt2mJNlPLMnKGFuXD+PuiVE5JovFJ7ZdY=;
- b=gs/KFika4rNRYVcFBgrcv0hFhOUcNKwKfMKek57VbEktgC9eYFxnqStzwgj6e5GMyN8vfiPnr1aQBtPM3yg4KpeHGIldtP3ylQ1ikHaGuDayIQ6pKktO2Dh3ACqY8q6RpNBSqwTucEKsLq4DeosK5NwB7aOlm1fWetUSTzOw3Mwj7OzBuhLLTogKbHPZ6ZhipGeniWE5KK0bhmbpd63ugLVnGn7y8bcekTK+AKxkb5jzmxq9NYrJfbXantc3hebXIIrU8mhhwblzmS1fZ7GMuN5exY36Pk3ruLbUWo9PCkh8gzzaGvOJgFmm50oKJBpT+5O5MrotZhQHdJ6G8sETNA==
-Received: from DU7P191CA0016.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:54e::26)
- by GVXPR10MB8057.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:115::14) with
+ bh=GnNi0EcR1j/cNW8EwokuqkLppeTfAlV3dBW0aumIoHo=;
+ b=m3SR8fSyz7YhiZzWtDoblHM9Ry72SWaMUFnwvV7hhfEEQcLLj5jN/eAKFkn20dfriHSoNlY1VJ5V+bqyW5D7m1or3XR1kqRxxjkDvY0xkLMTsSMZTIGM1Z7BiIZwgqpWJfveAtlEbHLgMpRgNx4eVSHlNSMYFyOizBDD3EEBQOJsK1yytZEsJk8kAbzT11ycLRQvnX7MC4PJL4j0rfFZPhxkaew93o9/jiGtQ7T38J4fMGfCGMVb4U2+F8WxCMsYgSYRy4E32Vj8EzYYcEAAQj2/CrXjzx4G5SWZYu2HXrS1ZMbo6ZaNPK1o/N/W6wNIRe5s2VYzR6XGWlbQNRoWhw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MN0PR12MB6197.namprd12.prod.outlook.com (2603:10b6:208:3c6::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Thu, 13 Nov
- 2025 06:26:56 +0000
-Received: from DU6PEPF0000A7DE.eurprd02.prod.outlook.com
- (2603:10a6:10:54e:cafe::c3) by DU7P191CA0016.outlook.office365.com
- (2603:10a6:10:54e::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.17 via Frontend Transport; Thu,
- 13 Nov 2025 06:26:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- DU6PEPF0000A7DE.mail.protection.outlook.com (10.167.8.38) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9320.13 via Frontend Transport; Thu, 13 Nov 2025 06:26:56 +0000
-Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Thu, 13 Nov
- 2025 07:26:55 +0100
-Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
- (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Thu, 13 Nov
- 2025 07:26:54 +0100
-Message-ID: <1da3adab-f52c-461d-bd68-8623d6d7e223@de.bosch.com>
-Date: Thu, 13 Nov 2025 07:26:46 +0100
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Thu, 13 Nov
+ 2025 07:36:44 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9320.013; Thu, 13 Nov 2025
+ 07:36:44 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 13 Nov 2025 16:36:40 +0900
+Message-Id: <DE7E7VHVUUAK.3L556B20VZTJH@nvidia.com>
+Subject: Re: [PATCH v6 RESEND 4/7] rust: io: factor common I/O helpers into
+ Io trait
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Cc: <dakr@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <markus.probst@posteo.de>, <helgaas@kernel.org>, <cjia@nvidia.com>,
+ <smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>, <acourbot@nvidia.com>,
+ <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251110204119.18351-1-zhiw@nvidia.com>
+ <20251110204119.18351-5-zhiw@nvidia.com>
+In-Reply-To: <20251110204119.18351-5-zhiw@nvidia.com>
+X-ClientProxiedBy: TYCPR01CA0173.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b2::11) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v6 4/5] rust: Move register and bitfield macros out of
- Nova
-To: Alexandre Courbot <acourbot@nvidia.com>, Dirk Behme
-	<dirk.behme@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Joel Fernandes
-	<joelagnelf@nvidia.com>
-CC: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
-	<dri-devel@lists.freedesktop.org>, Alistair Popple <apopple@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, David Airlie <airlied@gmail.com>, Simona Vetter
-	<simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
-	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	<joel@joelfernandes.org>, Elle Rhumsaa <elle@weathered-steel.dev>, Yury Norov
-	<yury.norov@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>,
-	"Andrea Righi" <arighi@nvidia.com>, <nouveau@lists.freedesktop.org>,
-	dri-devel <dri-devel-bounces@lists.freedesktop.org>
-References: <20251003154748.1687160-1-joelagnelf@nvidia.com>
- <20251003154748.1687160-5-joelagnelf@nvidia.com>
- <5a5bd549-f5b7-41ec-b493-bda427d1218f@de.bosch.com>
- <DDDQZ8LM2OGP.VSEG03ZE0K04@kernel.org>
- <DDDR8DIW6K4L.21F81P26KM64W@nvidia.com>
- <7dd6c190-2598-4a68-8431-e03e41b276ea@gmail.com>
- <DDXVGH53P7OW.1UWNG3SM9S0A1@nvidia.com>
-Content-Language: en-GB
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <DDXVGH53P7OW.1UWNG3SM9S0A1@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU6PEPF0000A7DE:EE_|GVXPR10MB8057:EE_
-X-MS-Office365-Filtering-Correlation-Id: e189f81e-a2df-449e-482f-08de227da49f
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN0PR12MB6197:EE_
+X-MS-Office365-Filtering-Correlation-Id: 745bbdea-6b51-466f-28b5-08de228764c4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|36860700013|376014|82310400026;
+	BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MXJ3OGk3cTdHZXMzdHhJcStCcHo3WmZ2bStqYUFmVE9xZEg3dEtkNyt3aSto?=
- =?utf-8?B?YVVnQjRMWForNUZmdzVmRDQ1UnhySmVaWGxuMzR2LzBzWnFIVTRsZzFubjh3?=
- =?utf-8?B?eVZ2eUhOcjZ6UWJzL2ttaE5uSnJsRWpqbVFKMVRweDNhcXpnUmhsOVJlYllu?=
- =?utf-8?B?NlRUSmttM1lHUENtMEpYeWVULzIraU9ZL2RVRk5OamJKQjY4QmczZEpiYzRh?=
- =?utf-8?B?SHg2aVpWMHZ5MjFtTGhDNS9nenQyZWdGYm5GY2t3bG8zYmdJODhHUWJLVWhK?=
- =?utf-8?B?ekczQXpJYzNISkowNEJiVFJFK3k4RUl3Uk9SelhUUk1XMDJoczhlaXBoOWIv?=
- =?utf-8?B?Ulhtd1BYNVEyb2h5RWV3YnAzdnN3UnNtLzlGV3FldVZ4bDJRKzRNekZtZVNH?=
- =?utf-8?B?Uzh4QzgvakdiVisrb2N1VjhDSWdKVVhpaUNGN1VOa0FFZXdKQi8za1RVU3NP?=
- =?utf-8?B?REVib0YzekRrQUx1WlVMY0NTTkNmZUF0NTBuMUZtdlFLeUYxR0JzbXRMaUsw?=
- =?utf-8?B?dVYrZ2RIS3oxZllVRForTXhTOHlWRzQwSm1WOHdEdFFYMmJYaFJUeUpINUlt?=
- =?utf-8?B?MG5uUUYramMveVpXTmpSZTlYcjZCb3hCY3E0eDJHeS9mdTFWU0hxYTRLQ2lj?=
- =?utf-8?B?cldzNmNQY1hWQ0t0SnpuU2RTWERhV2RjczFmY1Q3V3Zlc1h3K2JUS3c4RE1G?=
- =?utf-8?B?VzRzai9QUW5ETXFKelNtMGRMTFVZOThidVlHZk84bm92c0NOZmV5QSt6K002?=
- =?utf-8?B?ZkUrSVo4UzlicGlNejU2R1BRaU1ETXA3T05mb1UyWkpmeU84ZFl1eGlGcFk4?=
- =?utf-8?B?UGNyNmVrSVZVcnlmVktuYmlSdFNDZGQzc01EZm5TZU5OeTIrVGNUOWFFUjBX?=
- =?utf-8?B?WTJzNnFua0srakJRS0RTOWI3YTd0VlZLMzM3dnJNS2tQWmJqWFlXZzF5TDlX?=
- =?utf-8?B?QjdTYm5XSWZCcDQ3SGU3NmltNUZ0ajZ3bHQ5ZG5LN3EzbG5lOVNhN0JYZ01U?=
- =?utf-8?B?RlBta1JxOW1wUzVBZW9UdDhEc2REUnNzam94UjVCQWoyeUtZT2ZnT1Y1WHpl?=
- =?utf-8?B?L1pDbUpURERpOEtZUUhYV1krQjVFRkMvdkJBeVFZdTNWWk91bTd2ZmY5V0lr?=
- =?utf-8?B?ZUwwSVZCM3k4ZjBJbFBlZGY3U0JXTTg4Nmt3MFowWXpWQ2dlRHFLdmFGRTBF?=
- =?utf-8?B?MVBGdUdNUHVDTHN3ME9aY3pER2lBMDM3MWthS3crVkRQRk1tdUFsUzdhRTZo?=
- =?utf-8?B?bDFsOGVYNWJwS0NuUmdmeWhkWHA0Ni9FeDArWGdOOFQvOTF5NVIweVJTY2ZP?=
- =?utf-8?B?WGtlenJLcml6b3EvaW9mSk5MdGZaWjlBSk8vbGtJbzJTOVBQTWI2c0x0eUIr?=
- =?utf-8?B?WHhDQXJSTW5XRDlEYUlxdGVJd3k0RG45VWUyTDNWaGNBVkY1dG16QmJSbGZJ?=
- =?utf-8?B?VFlxamZKN0lnVklGZTlBcVBFM0RqblRWMmQyRFVRbERKQ0RMcHdWREVMbHIr?=
- =?utf-8?B?SHd0UE1tZHJxOVYwSjJlQnNRZnlnTG1xcHNyRmk5U00vTldBWC9OT0k3bzBJ?=
- =?utf-8?B?cmVlZU9ERjVZenZ1RUVuejB0QU9DNHByNkFiQmtlSWxNZE9JR3hsWlR4bGZ3?=
- =?utf-8?B?TXRtUDJvd2lmRzRJWDR0RWhuMW1PZHRnK1NpalNOQStTd1loL05pWlVEa3lN?=
- =?utf-8?B?VUFCZ3dBemxnRXgyak5aeHF1KzJFWkRQTmhLMzNrU1NwZnNOUDlpTExGRm9Q?=
- =?utf-8?B?ckZwVWNJMXpNNHEvSk5qL0w2VVZQb3doeC9VTlI5Vi9JQUx2TzQrSXNLZklt?=
- =?utf-8?B?Y3Z6ZWtMWkg0eUZFdmQ1WE9SNWlhQng5WjN6ZlRmWFdxMTIxOUFVR2RTd2pm?=
- =?utf-8?B?ajczTnJJNytZV2tjRk5CM25XN0V3M3lHSGtJM0o2bG1rQklFcUxLV05ueWww?=
- =?utf-8?B?SFlvYW1hNUdkUjJQQnI2dmpmeWx1YnY4ZGx4U3dsaFNSSFRoQ3NnemFiTk9w?=
- =?utf-8?B?OHZqNXlOSDFmWUlPVVlVb2theUtnT2FKRjZsOXhYdzNscTZ3ajhkeFM2dzNE?=
- =?utf-8?B?ZXpGdmF0N1FrRi9idGhQeXBVWHMxbURDeTNDd0ZyNWpNWjRML3g0aU1RMGRj?=
- =?utf-8?Q?HZMs=3D?=
+	=?utf-8?B?SDZGdDZuemt1cHR0TUVCTjIycE1CYjNiZHdmNGFySXhzYlZxbTRiV3R1MDdT?=
+ =?utf-8?B?ZEZwaU9CY0RVR1F6eXdOOHprMUhGbE9WajhCT1ZzaWZ2bWZCMTB2Vm1MWCtz?=
+ =?utf-8?B?VXI2UEIwdGtWQU11TGdndVJTSWl6a3dQOVZQVmdEYUZ0QjhVU1lPME03Zlp0?=
+ =?utf-8?B?ZUt0SDdBUGYyQk96M2xVTUlzWnF6RlJZRXJ4dUNNZ2VEc0xTYXh5UTYyYWRI?=
+ =?utf-8?B?ZEVEWUZSbWE5TjJkdGxjMmpZbVNoR2xaYUZqT084UFpBZkcrRjVHa09aYkFL?=
+ =?utf-8?B?anp4dm0yL3BHZXhUMzFUandhUlBRYmtWZ3hsdWtuck4wZzFrOG9SMkY3NjZz?=
+ =?utf-8?B?SStzb2JlS0E4cTZOSHhZWnc2Zk9LeTIvVm54YjBhWjB0RnlNdlo2a0hzcHlW?=
+ =?utf-8?B?dW5pVU9FenlTTjZQUmdpdHJGQ1ZFZjMvUEpNU0RUK3Q3bjJqa3pIQXcycGQv?=
+ =?utf-8?B?UHRyTFZoMjlzMGZjNGFIdEdFblVDZm9kZTZCUFljNnVhbFBWQXhESnFWazNK?=
+ =?utf-8?B?QkVuWHF2aUFZUXplYXlUMWYrY3ViazRHcHhRWkk2SysvMTYzMlVDSm9Wbkwx?=
+ =?utf-8?B?eDd1eENtZW5PVkhwNGFWdTJkbnkvQU9VeFk5RW11UXMwWEdndVFyNGZBVFN5?=
+ =?utf-8?B?WGZDcVZtNGNPWmFUb3YzWmdja0lQYjhmZFNvallMTDZiUmx0ODZVQzVBcUJl?=
+ =?utf-8?B?RitZSkQ4VUx1UDdnbGlvWVVWb3EweHZwVlZpcHZrb0dzYk1IUXJlOWFDbm5j?=
+ =?utf-8?B?Yy9NeW95TWF1aGhWcEszT2pyeEVlV0RYclpLZThIS29DSnpCZEVSQjdIV0Uv?=
+ =?utf-8?B?MCtZT1VHVVBkbGNCZWY2Z0M1UDNQUU83eEczcElVb3V1aEQxak02ditBOTVN?=
+ =?utf-8?B?MUZLRXhEZ1lCQ0tuZEZCNHphQkhCc0pTbjJtcjU1TEh1aC9MN1NBdW1XOVdW?=
+ =?utf-8?B?TW9rbTlVNUhpcHpXNkdib1A5T2VQc0FDQ09NS3lkM1UyWEluQ3Vhb1F1dTBk?=
+ =?utf-8?B?SFJlQTlobmVWRmJyRzA1SG83WlE2SmU0a244SjdsRjR6TE04ZTNDUkdENXRC?=
+ =?utf-8?B?clVyalpIazNnU0VnSXorcld6Vk1sdFl4WU81V0YzdlFCZGUzeEdrVXFRMytN?=
+ =?utf-8?B?TGtOSDlzd1BIdkhFamlySlFRSE9jaWZPTFY1cDQzZGxnMTNmeDhQUC9qNGtx?=
+ =?utf-8?B?SEpkcjlCeXF3bzB5eUs0TzVDNzFmYU52V2tjei9kdE5nUjZCK25oVHdxMVNo?=
+ =?utf-8?B?am1GOWtHK3ZDeVJXRlZMSVlxcTlYcVVwYVAvcnZTNmxvUWVrQ3NMWWJPejE1?=
+ =?utf-8?B?K1d2UU00TldTazBvVWtxUGg1eXlDMlhwQUNwVW5hR24rOGlxZml2ejZDVVh1?=
+ =?utf-8?B?NjZoc3FuOWoyYzVtaUJIQVpLMldvRTNLVFNEMzV0Y0F4cVo3TG5xS3JRTXN0?=
+ =?utf-8?B?azNwRGJHbFZOWDdWQWk3aTVwYWZJQWlhandkQk1TbFlUam1sUWZBWDhnRHE3?=
+ =?utf-8?B?VmZ3UnBIejdKQkhzMTRxS1FYNU9zSzBxV0wvd25wZUxjNVRoZU5TYllET1Zt?=
+ =?utf-8?B?OHZSRmF2ZGRFK3hxcGM0MTZZbVM3MWozQVlmejFKVzBVSCtWUVRYWXYwZlhv?=
+ =?utf-8?B?cWdpb215K0lEV3B6aThzbFBsVE5zMmoveExoczRzdFFYaFl4bUU3VjVGcDE2?=
+ =?utf-8?B?TDNkVUNFODNIdm9xdzlpWVJ1NkFOdTJjL3pXYWFuN29DRkdMRkZlWWdMSkJ4?=
+ =?utf-8?B?cllVcGJoVkxMMlZCRFRmK20zRm1tbE5qcThZOGp1QU9rTE41ZEZUQmdrbUI0?=
+ =?utf-8?B?QUtrcUo0VnliSDU3OGVFbjJuak42cFVLcGJrcTZ2bHZITkNYM0Z3TWpqUCtZ?=
+ =?utf-8?B?b3hZNzhYcUxsUzhWdGROU083ekVwQndrL2NnTVk4clhOTUZ2Ty82bUdoVE9Y?=
+ =?utf-8?Q?PuHiBBpR4GWKOTWkqZxTrBRu6i4htL96?=
 X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 06:26:56.0620
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZC93RCtNT0t1VlcxUEZ0VjN0bFRKUUFzZWlrTGNTNmQwNThTbTgyUDJUeG9h?=
+ =?utf-8?B?RkN1azgvTXdWcExwV2pPckRXTHJYZnhHT3h5dkVtMlQ5djk0ZEc0dmp6N1Zh?=
+ =?utf-8?B?WjF4TllRT2xNc0F3T1YrdXZlMDFDYWZWb1VGaHN6Ykx2eE5obENKa0VEaG51?=
+ =?utf-8?B?TkliN0I2MExNOEZNakltdFRMR0h0SzBET1VjVWoxN2lyQ0VVRXQxcW9lL3pM?=
+ =?utf-8?B?WDl0MHBMRWQyeWxDcjNaTzNYWFAxL3dVLzlOSnhnOU52ZnRqa1hqMllNVHN1?=
+ =?utf-8?B?QXNOaUhBb1Bab2pUc2dNVEpPRjN6REEwTW5NUUIzR0lSQnZBeHl2MnltcDV0?=
+ =?utf-8?B?OG14ejJSdkZRK2REcGZNeWpvR2JGVVVJV3g1enV0WG5rVlozSklXSXAyK2tR?=
+ =?utf-8?B?T1pkMlBFUkhDMlU5RmdoMDJpeGFuN1hmS043aFJlcEJtbXlpU1BUL05XV0Zk?=
+ =?utf-8?B?c1pISSs1bnJYSWxNTFNkK0FwbUZYd3FoMjJKWGhMcUIrYXZEczM3R0dDb2I3?=
+ =?utf-8?B?SkZQRFl1YlNRQnMzTzZVM1doeUx6elJaTzZPMWpHbjhBbHNUSm1rQjNJZUdK?=
+ =?utf-8?B?RWErNWJWTWRKUVpLSUVzTjJkZmhBVlBXT1hVZ1ZjWTFTekthT3NRY1VuU1dh?=
+ =?utf-8?B?SUdrcExOUTQ3MUJaYzNNOHpRWnpoMGpuYndxeCtVTVpqZmhwOWE3b1RMNVNT?=
+ =?utf-8?B?VzkxUGJWQkNJNmREV1VTMVBMMEMxbnNheFRlUDhJQ2VzMTRFYkRITTdCNENm?=
+ =?utf-8?B?SkRHanhvb0FXLzdFS2NyVTdYa3kyNWphREFvZjAyMTNQTENRemJHS2xQTDJX?=
+ =?utf-8?B?UXlVSGZreFlUbzBGWGpNZlBwTWlYd3F3WmY4LzJXK25LR0NMclh2bmJ1TWlR?=
+ =?utf-8?B?SjVISzN5MkdtTnY0SWVQUXhoa0FKWVhpck9DMGV3TEVNb0JRVFZOK0k4b3NS?=
+ =?utf-8?B?MUJFY1RyZ2c5dnVpQlZCOXBUN01VeVIwOS9nRFBnaldac09QVHNUOCtWRU9O?=
+ =?utf-8?B?ZmdPb2g5aURaSm8zNTVINTR1Q2k3ejUrVWl0MjFMbzFGSjlvQ0Rmbkh4TmJi?=
+ =?utf-8?B?dFprZTU0aldka2FRdDd5REY4RnQ0N002bllpVitiaThvTUNYSEpOL0hoR3o0?=
+ =?utf-8?B?ZUVVeXZMN3M0QjRFNFlkeUJhTHA5QkpESEZBazdJOTFscEduN21VQTZsdmY3?=
+ =?utf-8?B?amcxcVNZRzNLSjhvTnN3aDFOeXJLTU4vZ08yQmV2cjMyd2lUQ3J6TVdSOTFN?=
+ =?utf-8?B?SG5uNDhLVENSWUlEYVUrZm04elRGcFpsSzFnTmw2Rlg1dUdNL1hENlpSZmZM?=
+ =?utf-8?B?a04wMHVaSldCRURCeE9DaXk2bmZpV0Q3Q29jSG4zZmxUMi9nOFBRWE9rcUhG?=
+ =?utf-8?B?aThUQ1JoaFYwdXY2S1I1RkVvVEtsYkRDN3AzcTh3S3lCY2IrRkRlNzZEN3Bj?=
+ =?utf-8?B?bTBNSnFobWtHTk95RXl5Z0xSKy9oWSt5NGM3MTYvUWlFZnZYU1FiVFNXMWZy?=
+ =?utf-8?B?c3hZNDgxVXpVRWhuSWphUnYwUFcrRm9hb3lEc1M4Mi9TLzRVbWZRVFJhaTBU?=
+ =?utf-8?B?bFUxbVlmVEhaUjFaNnNmSGRERHlNTktXWlpDa1ZSMTVFakZ1Zjg5S3ROdjgx?=
+ =?utf-8?B?QzZqeUFoeTZJeWFZVnRBQTJ4ZUpKejBUeXBwZ1hXWXRFYzRUOGRrYk1NSEdK?=
+ =?utf-8?B?TFhXUEFOWEtkZ1NwVFBLUjdDemNrQldVY1ZVcFluZ1JuOHZFYUE5TzR1R2dh?=
+ =?utf-8?B?QjlVZ3FuMitveU4rOHZYL0xVQTU1NTU4SVRTQjdzc0Y2MnlLaXlUVjJDeVhV?=
+ =?utf-8?B?emtyMzQybmsrTmk3TEdBT3JReENwQ0dxQzNXYVljOFJVL2o5V1dRb0pLa1hR?=
+ =?utf-8?B?VnNHNTRIMytqVTBJdVlwcVNuSUhuQnQ3MWtiSE5mS003RWxEM2Fuby9OeGpi?=
+ =?utf-8?B?VHRla21YUEdCVlB1UlBWcEYrTk9EcTR4MHhQVEl2N2RGcWNMZ0Q5ODNXNzZ2?=
+ =?utf-8?B?NXFCSWR4QjFUcjc4VTNqQjc2UzcxNzVpL1B6akJMS09wRXpLb0pYNXFDd3NC?=
+ =?utf-8?B?ckZxU0ptYytRK0RXbnZMRHlBWFJPdm5jdDNoTGhNTUgvSHRFZ0NBL3VWZVQ2?=
+ =?utf-8?B?MVN1RXd4ejV5b2laVFI2RWVVNUpYQzg5Q0NKMjFxOENqRis0LzlBWkNKK2dJ?=
+ =?utf-8?Q?MWqY0mt1pdrP6R8XQFQYJkZg9gXR5UDMAC0bMV9cJwbs?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 745bbdea-6b51-466f-28b5-08de228764c4
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 07:36:44.3786
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e189f81e-a2df-449e-482f-08de227da49f
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU6PEPF0000A7DE.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR10MB8057
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 56t9Gh8hF9Qr+AaTFYVwiiGPnAoiO7sLrOhqPb9EAA0qbqjway0cHYhj31qO5K7fLOGwcn3FsFr6iGAgeDMxQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6197
 
-On 02/11/2025 04:00, Alexandre Courbot wrote:
-> On Sun Nov 2, 2025 at 3:51 AM JST, Dirk Behme wrote:
->> On 09.10.25 13:28, Alexandre Courbot wrote:
->>> On Thu Oct 9, 2025 at 8:16 PM JST, Danilo Krummrich wrote:
->>>> On Thu Oct 9, 2025 at 8:59 AM CEST, Dirk Behme wrote:
->>>>> Assuming that register.rs is supposed to become the "generic" way to
->>>>> access hardware registers I started to have a look to it. Some weeks
->>>>> back testing interrupts I used some quite simple timer with 4 registers
->>>>> [1]. Now, thinking about converting it to register!() I have three
->>>>> understanding / usage questions:
->>>>>
->>>>> * At the moment register!() is for 32-bit registers, only? So it can't
->>>>> be used for my example having 8-bit and 16-bit registers as well?
->>>>
->>>> Yes, currently the register!() macro always generates a 32-bit register type
->>>> (mainly because nova-core did not need anything else). However, this will of
->>>> course be generalized (which should be pretty straight forward).
->>>>
->>>> Having a brief look at the TMU datasheet it looks like you should be able to
->>>> treat TSTR and TCR as 32-bit registers without any issues for testing the
->>>> register!() macro today. I.e. you can just define it as:
->>>>
->>>> 	register!(TSTR @ 0x04, "Timer Start Register" {
->>>> 	    2:2    str2 as bool, "Specifies whether TCNT2 is operated or stopped.";
->>>> 	    1:1    str1 as bool, "Specifies whether TCNT1 is operated or stopped.";
->>>> 	    0:0    str0 as bool, "Specifies whether TCNT0 is operated or stopped.";
->>>> 	});
->>>>
->>>> Same for TCR.
->>>
->>> Patch 2 of this series actually adds support for 16 and 8 bit register
->>> storage.
->>
->> Hmm, how to use that with the register!() macro? I mean patch 2 adds
->> support for different storage widths for *bitfields*. But looking at
->> patch 4 [2] it looks like *register!()* still uses $name(u32)? With
->> that it looks like that the register!() macro still just supports 32
->> bit registers? Or what have I missed?
->>
->> What I'm looking for is a way to specify if a register is 8, 16 or 32
->> bit. Using the example from above something like
->>
->> register!(TSTR<u8> @ ....
-> 
-> Errr indeed, you are correct. The `register` macro's syntax has not been
-> updated to take advantage of `bitfield`'s storage types, and `u32` is
-> still hardcoded as of this series.
-> 
-> This looks like an oversight - a register is basically a bitfield with
-> some I/O, so making it support storage types should be trivial. I guess
-> this hasn't been done yet because Nova is the only user so far, and we
-> don't need/want to explicitly specify a type for each register since
-> they are invariably `u32`.
-> 
-> But it wouldn't look good to change the syntax of `register` after
-> moving it out, so I agree this should take place before the move. The
-> same applies to the visiblity feature.
-> 
-> One way to avoid a update all the declarations so far would be to give
-> Nova its own `register` macro that invokes the one in `kernel` with
-> the relevant parameters hardcoded.
+Hi Zhi,
 
+On Tue Nov 11, 2025 at 5:41 AM JST, Zhi Wang wrote:
+> The previous Io<SIZE> type combined both the generic I/O access helpers
+> and MMIO implementation details in a single struct.
+>
+> To establish a cleaner layering between the I/O interface and its concret=
+e
+> backends, paving the way for supporting additional I/O mechanisms in the
+> future, Io<SIZE> need to be factored.
+>
+> Factor the common helpers into a new Io trait, and move the MMIO-specific
+> logic into a dedicated Mmio<SIZE> type implementing that trait. Rename th=
+e
+> IoRaw to MmioRaw and update the bus MMIO implementations to use MmioRaw.
+>
+> No functional change intended.
+>
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Bjorn Helgaas <helgaas@kernel.org>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 
-Just fyi, hacking something like [1] below does work for my (very 
-limited) use case. And it defaults `register!` without type to <u32>.
+This is looking quite good to me! I tried really hard to find stuff to
+comment about, but couldn't. :)
 
-Thanks!
-
-Dirk
-
-[1]
-
---- a/rust/kernel/io/register.rs
-+++ b/rust/kernel/io/register.rs
-@@ -276,33 +276,38 @@ pub trait RegisterBase<T> {
-  /// ```
-  #[macro_export]
-  macro_rules! register {
--    // Creates a register at a fixed offset of the MMIO space.
-+    // Creates a register at a fixed offset of the MMIO space, defaults 
-to u32 if no type is specified.
-      ($name:ident @ $offset:literal $(, $comment:literal)? { 
-$($fields:tt)* } ) => {
--        ::kernel::bitfield!(pub(crate) struct $name(u32) $(, $comment)? 
-{ $($fields)* } );
--        register!(@io_fixed $name @ $offset);
-+        register!($name<u32> @ $offset $(, $comment)? { $($fields)* });
-+    };
-+
-+    // Creates a register at a fixed offset of the MMIO space, explicit 
-type required.
-+    ($name:ident<$ty:ty> @ $offset:literal $(, $comment:literal)? { 
-$($fields:tt)* } ) => {
-+        ::kernel::bitfield!(pub(crate) struct $name($ty) $(, $comment)? 
-{ $($fields)* } );
-+        register!(@io_fixed<$ty> $name @ $offset);
-      };
-
-      // Creates an alias register of fixed offset register `alias` with 
-its own fields.
--    ($name:ident => $alias:ident $(, $comment:literal)? { 
-$($fields:tt)* } ) => {
--        ::kernel::bitfield!(pub(crate) struct $name(u32) $(, $comment)? 
-{ $($fields)* } );
--        register!(@io_fixed $name @ $alias::OFFSET);
-+    ($name:ident<$ty:ty> => $alias:ident $(, $comment:literal)? { 
-$($fields:tt)* } ) => {
-+        ::kernel::bitfield!(pub(crate) struct $name($ty) $(, $comment)? 
-{ $($fields)* } );
-+        register!(@io_fixed<$ty> $name @ $alias::OFFSET);
-      };
-
-      // Creates a register at a relative offset from a base address 
-provider.
--    ($name:ident @ $base:ty [ $offset:literal ] $(, $comment:literal)? 
-{ $($fields:tt)* } ) => {
--        ::kernel::bitfield!(pub(crate) struct $name(u32) $(, $comment)? 
-{ $($fields)* } );
--        register!(@io_relative $name @ $base [ $offset ]);
-+    ($name:ident<$ty:ty> @ $base:ty [ $offset:literal ] $(, 
-$comment:literal)? { $($fields:tt)* } ) => {
-+        ::kernel::bitfield!(pub(crate) struct $name($ty) $(, $comment)? 
-{ $($fields)* } );
-+        register!(@io_relative<$ty> $name @ $base [ $offset ]);
-      };
-
-      // Creates an alias register of relative offset register `alias` 
-with its own fields.
--    ($name:ident => $base:ty [ $alias:ident ] $(, $comment:literal)? { 
-$($fields:tt)* }) => {
--        ::kernel::bitfield!(pub(crate) struct $name(u32) $(, $comment)? 
-{ $($fields)* } );
--        register!(@io_relative $name @ $base [ $alias::OFFSET ]);
-+    ($name:ident<$ty:ty> => $base:ty [ $alias:ident ] $(, 
-$comment:literal)? { $($fields:tt)* }) => {
-+        ::kernel::bitfield!(pub(crate) struct $name($ty) $(, $comment)? 
-{ $($fields)* } );
-+        register!(@io_relative<$ty> $name @ $base [ $alias::OFFSET ]);
-      };
-
--    // Creates an array of registers at a fixed offset of the MMIO space.
-+    // Creates an array of registers at a fixed offset of the MMIO 
-space. (u32 only for now)
-      (
--        $name:ident @ $offset:literal [ $size:expr ; $stride:expr ] $(, 
-$comment:literal)? {
-+        $name:ident<u32> @ $offset:literal [ $size:expr ; $stride:expr 
-] $(, $comment:literal)? {
-              $($fields:tt)*
-          }
-      ) => {
-@@ -311,20 +316,20 @@ macro_rules! register {
-          register!(@io_array $name @ $offset [ $size ; $stride ]);
-      };
-
--    // Shortcut for contiguous array of registers (stride == size of 
-element).
-+    // Shortcut for contiguous array of registers (stride == size of 
-element). (u32 only for now)
-      (
--        $name:ident @ $offset:literal [ $size:expr ] $(, 
-$comment:literal)? {
-+        $name:ident<u32> @ $offset:literal [ $size:expr ] $(, 
-$comment:literal)? {
-              $($fields:tt)*
-          }
-      ) => {
--        register!($name @ $offset [ $size ; 
-::core::mem::size_of::<u32>() ] $(, $comment)? {
-+        register!($name<u32> @ $offset [ $size ; 
-::core::mem::size_of::<u32>() ] $(, $comment)? {
-              $($fields)*
-          } );
-      };
-
--    // Creates an array of registers at a relative offset from a base 
-address provider.
-+    // Creates an array of registers at a relative offset from a base 
-address provider. (u32 only for now)
-      (
--        $name:ident @ $base:ty [ $offset:literal [ $size:expr ; 
-$stride:expr ] ]
-+        $name:ident<u32> @ $base:ty [ $offset:literal [ $size:expr ; 
-$stride:expr ] ]
-              $(, $comment:literal)? { $($fields:tt)* }
-      ) => {
-          static_assert!(::core::mem::size_of::<u32>() <= $stride);
-@@ -332,20 +337,19 @@ macro_rules! register {
-          register!(@io_relative_array $name @ $base [ $offset [ $size ; 
-$stride ] ]);
-      };
-
--    // Shortcut for contiguous array of relative registers (stride == 
-size of element).
-+    // Shortcut for contiguous array of relative registers (stride == 
-size of element). (u32 only for now)
-      (
--        $name:ident @ $base:ty [ $offset:literal [ $size:expr ] ] $(, 
-$comment:literal)? {
-+        $name:ident<u32> @ $base:ty [ $offset:literal [ $size:expr ] ] 
-$(, $comment:literal)? {
-              $($fields:tt)*
-          }
-      ) => {
--        register!($name @ $base [ $offset [ $size ; 
-::core::mem::size_of::<u32>() ] ]
-+        register!($name<u32> @ $base:ty [ $offset:literal [ $size:expr 
-; ::core::mem::size_of::<u32>() ] ]
-              $(, $comment)? { $($fields)* } );
-      };
-
--    // Creates an alias of register `idx` of relative array of 
-registers `alias` with its own
--    // fields.
-+    // Creates an alias of register `idx` of relative array of 
-registers `alias` with its own fields. (u32 only for now)
-      (
--        $name:ident => $base:ty [ $alias:ident [ $idx:expr ] ] $(, 
-$comment:literal)? {
-+        $name:ident<u32> => $base:ty [ $alias:ident [ $idx:expr ] ] $(, 
-$comment:literal)? {
-              $($fields:tt)*
-          }
-      ) => {
-@@ -354,17 +358,15 @@ macro_rules! register {
-          register!(@io_relative $name @ $base [ $alias::OFFSET + $idx * 
-$alias::STRIDE ] );
-      };
-
--    // Creates an alias of register `idx` of array of registers `alias` 
-with its own fields.
--    // This rule belongs to the (non-relative) register arrays set, but 
-needs to be put last
--    // to avoid it being interpreted in place of the relative register 
-array alias rule.
--    ($name:ident => $alias:ident [ $idx:expr ] $(, $comment:literal)? { 
-$($fields:tt)* }) => {
-+    // Creates an alias of register `idx` of array of registers `alias` 
-with its own fields. (u32 only for now)
-+    ($name:ident<u32> => $alias:ident [ $idx:expr ] $(, 
-$comment:literal)? { $($fields:tt)* }) => {
-          static_assert!($idx < $alias::SIZE);
-          ::kernel::bitfield!(pub(crate) struct $name(u32) $(, 
-$comment)? { $($fields)* } );
-          register!(@io_fixed $name @ $alias::OFFSET + $idx * 
-$alias::STRIDE );
-      };
-
--    // Generates the IO accessors for a fixed offset register.
--    (@io_fixed $name:ident @ $offset:expr) => {
-+    // Generates the IO accessors for a fixed offset register, using 
-the type parameter.
-+    (@io_fixed<$ty:ty> $name:ident @ $offset:expr) => {
-          #[allow(dead_code)]
-          impl $name {
-              pub(crate) const OFFSET: usize = $offset;
-@@ -374,7 +376,15 @@ impl $name {
-              pub(crate) fn read<const SIZE: usize, T>(io: &T) -> Self where
-                  T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
-              {
--                Self(io.read32($offset))
-+                Self(
-+                    if core::any::TypeId::of::<$ty>() == 
-core::any::TypeId::of::<u8>() {
-+                        io.read8($offset) as $ty
-+                    } else if core::any::TypeId::of::<$ty>() == 
-core::any::TypeId::of::<u16>() {
-+                        io.read16($offset) as $ty
-+                    } else {
-+                        io.read32($offset) as $ty
-+                    }
-+                )
-              }
-
-              /// Write the value contained in `self` to the register 
-address in `io`.
-@@ -382,7 +392,13 @@ pub(crate) fn read<const SIZE: usize, T>(io: &T) -> 
-Self where
-              pub(crate) fn write<const SIZE: usize, T>(self, io: &T) where
-                  T: ::core::ops::Deref<Target = ::kernel::io::Io<SIZE>>,
-              {
--                io.write32(self.0, $offset)
-+                if core::any::TypeId::of::<$ty>() == 
-core::any::TypeId::of::<u8>() {
-+                    io.write8(self.0 as u8, $offset)
-+                } else if core::any::TypeId::of::<$ty>() == 
-core::any::TypeId::of::<u16>() {
-+                    io.write16(self.0 as u16, $offset)
-+                } else {
-+                    io.write32(self.0 as u32, $offset)
-+                }
-              }
-
-              /// Read the register from its address in `io` and run `f` 
-on its value to obtain a new
-@@ -401,8 +417,8 @@ pub(crate) fn alter<const SIZE: usize, T, F>(
-          }
-      };
-
--    // Generates the IO accessors for a relative offset register.
--    (@io_relative $name:ident @ $base:ty [ $offset:expr ]) => {
-+    // Generates the IO accessors for a relative offset register, using 
-the type parameter.
-+    (@io_relative<$ty:ty> $name:ident @ $base:ty [ $offset:expr ]) => {
-          #[allow(dead_code)]
-          impl $name {
-              pub(crate) const OFFSET: usize = $offset;
-@@ -420,9 +436,7 @@ pub(crate) fn read<const SIZE: usize, T, B>(
-              {
-                  const OFFSET: usize = $name::OFFSET;
-
--                let value = io.read32(
--                    <B as 
-::kernel::io::register::RegisterBase<$base>>::BASE + OFFSET
--                );
-+                let value = io.read::<$ty>(<B as 
-::kernel::io::register::RegisterBase<$base>>::BASE + OFFSET);
-
-                  Self(value)
-              }
-@@ -441,10 +455,7 @@ pub(crate) fn write<const SIZE: usize, T, B>(
-              {
-                  const OFFSET: usize = $name::OFFSET;
-
--                io.write32(
--                    self.0,
--                    <B as 
-::kernel::io::register::RegisterBase<$base>>::BASE + OFFSET
--                );
-+                io.write::<$ty>(self.0, <B as 
-::kernel::io::register::RegisterBase<$base>>::BASE + OFFSET);
-              }
-
-              /// Read the register from `io`, using the base address 
-provided by `base` and adding
--- 
-2.48.0
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
