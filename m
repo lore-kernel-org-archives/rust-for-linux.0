@@ -1,117 +1,101 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6676F2D7384
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 10:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D40F2E1726
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 10:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763028461; cv=none; b=qdCE4pneoDlkcuXlD1bcq1XU6BRkdRWUoLAn25FtzHr7e/P7JbTw3lzGQF13Z2zETMtJPdQGvueQn79B5Eo/seoiAS5GppFpfLw04vTdi67zPlvfAfHQCpEjd/QYIzje2aaRvb/n8UNWpKuFf2kpkT041X1GSu1mo/XWhio82Jc=
+	t=1763028534; cv=none; b=GVeMRwrRtI9hc4MgcfG9OTNYoaXOotrNJZRXWKdEaytjSuq/0BI+X6T895PsBoPTOVfouEmWaWcr0kqNAZLKrd7LXP1xNWlr2Vtw3G4YjRVyPv0pvzR+XPa5N06MhLcBgAWxCf7F3hU7b7HhkLrt34lZumtb76vyScGPYKrEWIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763028461; c=relaxed/simple;
-	bh=m9TkgqMhYirtNzwimIUZHjj7o0XNs9YPAR6daUulpug=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gwv+3lYlHnhyE+s5vOqYgZEMbLA9z36QaDhdH8jETABaDV4iJq2/C+cT23NRfvwwYRx6i1i3kXPGX/t9Ueq0bBBK/hz+YhuOC/2rfo37kXYwSkh7Zg57xh6Gc2VAo69TGaK1rLMfw6kzqrzAPMYJf9q9DHCnGWFD/KfatP1Ujms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ewz8YZ59; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1763028534; c=relaxed/simple;
+	bh=kvt780SIWGzlUvGPwKmsBrmD00+cQaoxOlZ0WaCZarE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c4VL8LbOoAKcYYyy8DM7kj7NMiTJYMWNblZAYT9VLvvXjWHKRBUAI4PRqFq4siaGGjcYB8bSbQAB5bXBDjhIe+Quqxhy6WvRf4k7epr/cEPhmpn8dkWwxfv7JzuirpLQJVDxan4Hhyea3/CBO/7IIan2R9GU2uDbg2d0F4JfIf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2JsmxVOb; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ewz8YZ59"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-471201dc0e9so4664695e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 02:07:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2JsmxVOb"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42b47f662a0so817521f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 02:08:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763028458; x=1763633258; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DFlD3hB1nMDfsj+QE9x0vFkAXs0VDTm9i1zO27pNwno=;
-        b=ewz8YZ5925n269e0sCT4rXM1c/cE3Rdw1oXnXF9sGkrKgMRk8wa53u6B4r1KJJ0DHq
-         bcNL4icSKS4SVotzGRJnriqmS6YAFYJ4jUxo1jTbNMWCbAFXkGPL3dDKWFma0xhWAihu
-         yALdApxNbLwJW+WUZEK5ai7f8JY+R0i1OGUGCMOOxrBn4y1/G44fFNyR/1lYwpCUJmcP
-         eUA16z7+wTHMDBcagHnpawNQUCoBdOkwBJFO9M+S5mKlkpuY75E1Y3yTW8ha1kSZ0Kl2
-         ubew5e9GK/iNawUpMJ095m4WXzzqxR1Vp3IqCN2j2JT2iWUDOwgN++A+HDUFhVqVNCct
-         k2eg==
+        d=google.com; s=20230601; t=1763028531; x=1763633331; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kvt780SIWGzlUvGPwKmsBrmD00+cQaoxOlZ0WaCZarE=;
+        b=2JsmxVOboMyheYfOkI2F9uUyPcfHspHuk4AOuOjOuyfxEv5Xv+sAe14kkPEh/R/MHq
+         w2yLMRUS3C1yOeomTYCzpDfeyV+8CcWzMdKBS2uzvzBOGq3jc61UWi3ntfCyVkd5LnyF
+         hwM+H37eUABCH4mWdT3k4DUKWlwJ3Yyn7JNVMp6so5o8yjBuBBMQmJ4qXOOIrmW4lyz/
+         ZoXIcxrZL47y1b11E4+bMpuituV4g1qQ8l64tzN+YdEY94QeFXpNxBheA+7cTPoISNUr
+         PI/b1Sc5Iv9DkzESKOnPY860sN328bPSoT/21MsVTS+Y3hKT3N+816+rLYpxohNLnGTt
+         3IIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763028458; x=1763633258;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DFlD3hB1nMDfsj+QE9x0vFkAXs0VDTm9i1zO27pNwno=;
-        b=tF+E1QH1iKZxOEhN2JArDCNOV2RqOVowsm+zP1Ur4uJh95RdnycWDIHw2GxnfwBsB3
-         yKFN73b/COB2fwt7+9BH23Kw5ZFN+/OpDtXJsSnTV9WAMOGx2HYVT3IBkZR79TuHJs/V
-         25SJwShYPILorq7fPc4QSRA6xcA1EBIXVT9+uLYYJZdMkquAq7IOvqAaENwUL2uAnk2g
-         bdnduI7VyTdbJ/3lRc5VfeJ0zWdEpFENu8y7jI5e2Oa7ivIVHgeKc/F1fBxZxOzt5GuH
-         xhHUmhfaYXBrj1PsVe0L7erTUKCg9vBnE0nKsI6cECQpbk9zZiZbdN3BC+uQ9kJuSFW7
-         n7dQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXm5EnZR+sPlSDIKvsPwR9R9O/xgXo5IyOwH3yI1oywV6wih0DFMYKsDfqR4RZ3o/Z79yf+aPa3oM0fR0Oyjg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzz710DfbJCvZ8Ylf+J/WmAYbLKkyWfuA7WF7tX9kyRRr8WkOcb
-	6Br+21a4uLXF5NGS4giVEBlzwtCTPse18zHT8F5s76UrumBBvTZPYGig+4j9g/nNGK50soe/qVg
-	txSBMSHYgO3FyOPrz6w==
-X-Google-Smtp-Source: AGHT+IGJRvcyoeeX6Ohsm6vlherRPmEE2hcgrpiYRm5lhIQG/zzJiqoFytt21cvAgBuaDC8VP1A6M0hfJYcM8tc=
-X-Received: from wmdn5.prod.google.com ([2002:a05:600c:2945:b0:477:554c:6842])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4706:b0:477:3e07:217a with SMTP id 5b1f17b1804b1-477870be036mr54779775e9.36.1763028457685;
- Thu, 13 Nov 2025 02:07:37 -0800 (PST)
-Date: Thu, 13 Nov 2025 10:07:36 +0000
-In-Reply-To: <20251105054731.3194118-1-fujita.tomonori@gmail.com>
+        d=1e100.net; s=20230601; t=1763028531; x=1763633331;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=kvt780SIWGzlUvGPwKmsBrmD00+cQaoxOlZ0WaCZarE=;
+        b=MZZt7BmcQ76sIOsn6RmfmrS81jaiNS7WqbrA67sJivmSUnQDd7LsyoEfM/g/Darq0O
+         DbcRniPjVCSC3TF98/DciOm1CIH4pKRmuD58aopu36zgTY8s+hB8CEjJRFL6J8K/26yi
+         /sMY8dkBCs5sCUUmqQiy0SUCZbVlER0D4dTrZ2+RFibQjoP3tCUCGpL+9nxp59VcDzQ3
+         FOtOy37V6QNPRBdtPQkplZCm2JKSsdzxpGbyIs4nw/aNr1g4RNdZDROS3ZtVmM5Lzvu0
+         7T2PZrMb2u1ZnQ60i0qQIn9Z3Qc6aGWsHxMnFNsT6XyqODWxNAYBfDr6sfowY66eKkT5
+         7ssg==
+X-Forwarded-Encrypted: i=1; AJvYcCUWXX4/NJxf6Eh2ocuyXx2dGIA6rfbKwmcviStxyl089riRWVEg+i/HRsVQKOu/ZxNQmBkJzASHR0VC5UulnQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZWXF6fxTOv1JOMsAyFCqiPdru8f60/TPWPOr+IbOlqFEgE8IL
+	4Q2a8JE479V23GbuEydtinWIQsdlxXVdPT4/V6GQanTUYkbHdUEfodNhTb7o/iSot9Y4gw+VVsX
+	l09m5KirCU4uCy1misvA4k8quOAJ+FH3u/aG/GUWF
+X-Gm-Gg: ASbGncuY17ngr47sjWLSm8PVH5KpFlS2KhORP/Tpme13mWdA4GfED6NYLyAvD8lp+ma
+	TUbX9W8f1JDb7SrhgTq1Mhuqd5Nxj5f93migrmBsbXppGgGxszBf5ADA0JV9bPHf341YSv8aANC
+	VpxvnLUef4ySFiWv+a4f/2StUwbEeEyIP6ni72uTDdyI+SdjWjXVGUq++xaF+oanzi52pD/X32S
+	zY0Q+nCNskjrzpXaxc36MUnoLZU7b5U5QyfrtvnPxHLj8ZBdMyDQHtGGw9HWr+HhhX/0Lp6OSi5
+	vIVHdugMpPB6Qx/hcy/diVHVTjVj/xGeTItF
+X-Google-Smtp-Source: AGHT+IFhystVj7WTIc2ei7HJTVARjXWLmCYX2E/mWYFTfcgBnm/4nU5LAALUN76YZBGbykrZiWnLxFCjh5F76aExM6I=
+X-Received: by 2002:a5d:584a:0:b0:42b:2a41:f2b with SMTP id
+ ffacd0b85a97d-42b527bdb33mr2434896f8f.7.1763028531125; Thu, 13 Nov 2025
+ 02:08:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251105054731.3194118-1-fujita.tomonori@gmail.com>
-Message-ID: <aRWt6Ah8KuBXff8V@google.com>
-Subject: Re: [PATCH v1 0/2] Add support for print exactly once
+MIME-Version: 1.0
+References: <20251113-create-workqueue-v2-0-8b45277119bc@google.com>
+ <20251113-create-workqueue-v2-1-8b45277119bc@google.com> <CANiq72k1VqR7P7tY2V_siBQZrNXf_ck5aBkapo6M_6X=1P+nDA@mail.gmail.com>
+In-Reply-To: <CANiq72k1VqR7P7tY2V_siBQZrNXf_ck5aBkapo6M_6X=1P+nDA@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: ojeda@kernel.org, a.hindborg@kernel.org, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, gary@garyguo.net, lossin@kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	jens.korinth.tuta.io@kernel.org
-Content-Type: text/plain; charset="utf-8"
+Date: Thu, 13 Nov 2025 11:08:38 +0100
+X-Gm-Features: AWmQ_bkNUOmoUuzC22bTOPSTk97TejvJdNA8Vnk7Dt7jP3D-vmq7dUJSIwMgwfc
+Message-ID: <CAH5fLgixPsBwqFdY-ku3AtGQHY+qa9m5oqMUshqdob7nzGQpag@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] rust: workqueue: restrict delayed work to global wqs
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>, 
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Benno Lossin <lossin@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 05, 2025 at 02:47:29PM +0900, FUJITA Tomonori wrote:
-> This adds the Rust equivalent of the kernel's DO_ONCE_LITE and
-> pr_*_once macros.
-> 
-> A proposal for this feature was made in the past [1], but it didn't
-> reach consensus on the implementation and wasn't merged. After reading
-> the previous discussions, I implemented it using a different approach.
-> 
-> In the previous proposal, a structure equivalent to std::sync::Once
-> was implemented to realize the DO_ONCE_LITE macro. The approach tried
-> to provide Once-like semantics by using two atomic values. As pointed
-> out in the previous review comments, I think this approach tries to
-> provide more functionality than needed, making it unnecessarily
-> complex. Also, because data structures in the .data..once section can
-> be cleared at any time (via debugfs clear_warn_once), an
-> implementation using two atomics wouldn't work correctly.
-> 
-> Therefore, I decided to drop the idea of emulating Once and took a
-> minimal approach to implement DO_ONCE_LITE with only one atomic
-> variable. While it would be possible to implement the feature entirely
-> as a Rust macro, the functionality that can be implemented as regular
-> functions has been extracted and implemented as the OnceLite struct
-> for better code readability.
-> 
-> Of course, unlike the previous proposal, this uses LKMM atomics.
-> 
-> [1] https://lore.kernel.org/rust-for-linux/20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io/
+On Thu, Nov 13, 2025 at 11:06=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Thu, Nov 13, 2025 at 11:01=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> >
+> > When a workqueue is shut down, delayed work that is pending but not
+> > scheduled does not get properly cleaned up, so it's not safe to use
+> > `enqueue_delayed` on a workqueue that might be destroyed. To fix this,
+> > restricted `enqueue_delayed` to static queues.
+>
+> Should this have a Fixes and Cc: stable?
 
-There has been a fair bit of discussion below. Here is my take on the
-way forward:
-
-1. OnceLite should be it's own special type, and it should be in a
-   printing-related module, not kernel::sync. The reason for this is
-   that do_once_lite! is hooked up to a special section that allows you
-   to reset the once status, and if someone used it for anything not
-   related to printing, they would end up with being incorrectly reset
-   when someone resets pr_warn_once calls.
-
-2. I would suggest just using a relaxed load followed by store instead
-   of xchg. This is what the C-side does, and I think there is no strong
-   reason to deviate. It allows for a single byte of data instead of i32.
-
-3. If we *do* decide to use xchg, then the xchg needs to be guarded by a
-   load so that we avoid a write operation when it's already cleared.
-   Many read ops are much cheaper than many read/write ops.
+I could go either way. Without the next patch, there's no way to use a
+non-global workqueue. But probably is useful to backport anyway and
+there's certainly no harm.
 
 Alice
