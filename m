@@ -1,247 +1,174 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012032.outbound.protection.outlook.com [40.93.195.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD981922FB;
-	Thu, 13 Nov 2025 00:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762994960; cv=fail; b=uHciTkOODFOIGg93W1MM7CPUa++ZH5PsC16NgIq2D5CZD5lSshQLq5Q2o857xkzqHeY4y9PGJgoZNx9fVfyomJMGtCD2vuT5YvRDimNZaUIH2FrztofGhbqWDRfQEf523vVMi4TYysRUdM/7qutElWniP8hqm11AV38fIjxQbX0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762994960; c=relaxed/simple;
-	bh=h/Lw/hYHQ3NHqb92fAK+IZb4O4Rudn45MBdX4MqxXA4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tIBzpBJv9IV6jITYZRx0KGNnmPE3bNueYmOOWHfNrWLRl5p6lMfC8khYOFTehjMfRJ8QAFV651SlgHnK6AyLV2kRGB4GnRKHdfXlYuQyHJUtaoDLkBblvXWVQovAhqQ0e06F7/+SgG9NY7k1GANaes+V4vKQ2A+L/sGAQBbdp30=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fH1EuR1i; arc=fail smtp.client-ip=40.93.195.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fH1EuR1i"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=naUm1/1EMIYxo/bWrv7FZAZNazVaq3bB8j37GT6De5eZxDqVd3VIbj/wX0U/JzhEGTzE0/KSjNUXr4Hdy24P/eyX6DZuH9h63QzQKZ5T9n4VG97Oo9RNKkCwuKzbdtJaF+3ySEDcmaSZcpgFi7317EHooomaMTr8lHKi8ntb/YB+q7kEOhpI6schpeloWkjtxm6FABtnVKTLl9FoYlDRDp0KvDR05Eu2QA/9n5vpf+udr1J5E9AN3BnV+f49UDSkIOLzCZWfRU8hCEjzrB9RcBkYjxsTpqhIZ5JzaPLdN/HU9SAqEh1yR/F49qwJRVHzrEnZw6lAnC/VBu0DN5C5Yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zbIK7QYhH5NTzRze6DVSCNxsuh1ls0p8hcss8D2+lGg=;
- b=F+XI1OC9G1KTy0VYomD/G+qy8vxdMMH34e89sT3m3QNaa4rh3Wv+KTWBUnSeoN90OA5iHqGN6X5MYV9VM9Z6wZQT7sJ7xFO4Eu5PJKQNBcflExbnmb+VWm7yolYYTkY/++z96pVKIJYpfLiH501NHHWeam2LRL/zpqo+2CutP5Gw5nROhAquLmXgtZZ2oxcqQRQeAyaMm1Tt6E98s4xXpMwXtGbV6oIxrNG8KuC/wqCC++NFS9E75MZI6/QRoAPH9qmN6HnBgcSncaqgaQpFwlVH691CYm0dyGRu23ginnSrfVk8bq6tVjUQaZwHiKmBP3NSrAWhnWYUPMLZ/qgoPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zbIK7QYhH5NTzRze6DVSCNxsuh1ls0p8hcss8D2+lGg=;
- b=fH1EuR1iaI+Ce83Ug3EkBtFDma+D5ny/zvjwUS4ECsac1tinyUD24MxbVkdHU5ykv6OZtH0zRcBsUxN68o2sthxuMqQFUo99yLhfMr5SbkI5nyqxR75RGN3BbZKNSkH/oJyl/3YhSE21nPeXi1dxJL5XcNlutaZXh+XV9cprIUAOZNPpstdXqB0n2RjuxyPW4HT1MgrMkthWr+6JSXlw5ViGDm3GDpOu97n6cz7byMXRIHRy77oRUlTpnuB0IotamYXyEjKtgwmxEstG0Tanam3LOI2KDLfB8f2jILw7rGwymbD+UL/x5Uk88QMzGrCqAoCuqPk6U3YFqv4/kqKp9w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by DS0PR12MB8218.namprd12.prod.outlook.com (2603:10b6:8:f2::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Thu, 13 Nov
- 2025 00:49:13 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9298.015; Thu, 13 Nov 2025
- 00:49:13 +0000
-Message-ID: <e909920d-904d-4527-bb7a-af1075b91bbf@nvidia.com>
-Date: Wed, 12 Nov 2025 19:49:10 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/14] gpu: nova-core: sequencer: Implement basic core
- operations
-To: Lyude Paul <lyude@redhat.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- dakr@kernel.org, acourbot@nvidia.com
-Cc: Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- joel@joelfernandes.org, Daniel Almeida <daniel.almeida@collabora.com>,
- nouveau@lists.freedesktop.org
-References: <3b0d776e50fc81797dec2e5d81c86390af78f848.camel@nvidia.com>
- <20251106231153.2925637-1-joelagnelf@nvidia.com>
- <20251106231153.2925637-11-joelagnelf@nvidia.com>
- <0dc481db44675ebf7801f424d7e4c2cb44f25723.camel@redhat.com>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <0dc481db44675ebf7801f424d7e4c2cb44f25723.camel@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BLAPR03CA0146.namprd03.prod.outlook.com
- (2603:10b6:208:32e::31) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C93A2C181;
+	Thu, 13 Nov 2025 01:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762996851; cv=none; b=kstSc7LOcahBYy8fimI5U2uWmAm2MiRxqZGivD4Ahz9ecj8IM1/oobRV41J9NL+GQGHvuuN5Lp1J/cdP9NaytEsl5U3aB3kYSVWFctXik8XFSOIcXT4ZWKNxFBBy6h8QVwGCJFQgpM/XdGy4twYeDlRWKRJ2Jx6OqDIzkjXmym4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762996851; c=relaxed/simple;
+	bh=CfHc9g8v7cVdIiqBVRU089faCyR9C5VRO28i5AdPIl4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qLfmxJj7aMlVua50ORNT7k8bfgZ+RjPxMZyHC4VAKDDtAGwGLefGuUjjZpqfWBRycdYwfwmfSvd84A/Pn1gFS2JlpEpwPSKksxOeT/N30I9cpOlkVfeS3u2VeXVIgGEjiK542240c+v9vTlR/DROtgNM+QY8XUv0HPP/PUjHMGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-66-6915326a5ba4
+Date: Thu, 13 Nov 2025 10:20:36 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Guangbo Cui <2407018371@qq.com>, Liam.Howlett@oracle.com,
+	amir73il@gmail.com, andi.shyti@kernel.org, andrii@kernel.org,
+	bsegall@google.com, gregkh@linuxfoundation.org,
+	linaro-mm-sig@lists.linaro.org, link@vivo.com,
+	linux-kernel@vger.kernel.org, mark.rutland@arm.com,
+	masahiroy@kernel.org, mathieu.desnoyers@efficios.com,
+	matthew.brost@intel.com, max.byungchul.park@gmail.com,
+	mcgrof@kernel.org, melissa.srw@gmail.com, mgorman@suse.de,
+	mhocko@kernel.org, minchan@kernel.org, oleg@redhat.com,
+	paulmck@kernel.org, penberg@kernel.org, peterz@infradead.org,
+	petr.pavlu@suse.com, torvalds@linux-foundation.org,
+	vincent.guittot@linaro.org, will@kernel.org, yeoreum.yun@arm.com,
+	ysk@kzalloc.com, rust-for-linux@vger.kernel.org, ojeda@kernel.org,
+	gary@garyguo.net, lossin@kernel.org, a.hindborg@kernel.org,
+	aliceryhl@google.com, dakr@kernel.org, alex.gaynor@gmail.com,
+	bjorn3_gh@protonmail.com, kernel_team@skhynix.com
+Subject: Re: [PATCH] rust: bindings: add `rust_helper_wait_for_completion`
+ helper function
+Message-ID: <20251113012036.GA75428@system.software.com>
+References: <20251002081247.51255-37-byungchul@sk.com>
+ <tencent_13F1EDE0D6B7A44697F31AE274C8E664E908@qq.com>
+ <aN62F8t493R7UmCT@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DS0PR12MB8218:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5dd25825-06da-40e3-db23-08de224e7723
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TUlvaW5lOHp1d3pYbHkxMk1UcnhIdXM1bjdMN3c0NDA3RFFqUk1TdC81RnVS?=
- =?utf-8?B?cnNwVW5VVXRlT2V5dTJUSlRiemFBNk1oam93Yi9QTDRoaXBHeE1PbkZFUEM5?=
- =?utf-8?B?NU5jV3Y2cUo4K2RkWnBXTWpXVTRoNHl1ajNESkhYT01XM3NSL0J0M2lBMGlW?=
- =?utf-8?B?UlBUYnNhQnFYS2pRTFJ5YllUalNVRVFsNlBsb1BsMUJaeG9HeVgxeDVSRjEx?=
- =?utf-8?B?cXQyS0F4U3ZjMXdBUmFVMFFlcFdNbWtrMXd0UHQzT21OUW1FKzBZanJXWXNt?=
- =?utf-8?B?QTdVMUVKaGVHS0YzU3dzT0lEdVVlRW00bGlaYU9sTW82Mi9pSnNZWmQ1V0li?=
- =?utf-8?B?ZHFrQkZEMlFJa0pSVjRScnZFY0lYYitnbEN2TGxTaTBJUXNISy9DWmdpYkxt?=
- =?utf-8?B?SHNoMkdkRHBzVFp4QlJ4WWhESUcvQ0l2QzZJemM1Ly82T1duazVDNHMzam9E?=
- =?utf-8?B?eU5ZNXRqMVBBa3prZ01sTmx2dGgxVkp4bzhZalo2cUp3OFlVa2o5MHFBRThH?=
- =?utf-8?B?cGI3T2VMd2p4NC9UNWcxMnJPN1BRZWZhQVROd3VkclVWdjg0V0tDNXNUL2h5?=
- =?utf-8?B?ZUJVNDRocWZ4WkNkd2JwMXJDeGhqU2syZ29NS0dRcVhtY0VIWittNU1idC8z?=
- =?utf-8?B?akFscVNtL2RKMkpCd0k5RjMrVmNjTm5tdk4zUkEvczBmNVlXRmFFYWZJTXZo?=
- =?utf-8?B?Y2tPRW1wdExwcGVYV0ptalJyV0plaXE0WVVYdERHT0wxWnEybnkxbmdocUNi?=
- =?utf-8?B?WGJoWENNVjJSV2pxVTlZV3cxdjdWVlY3NDJjdmlqcmhPd1VOTjZ3MHJEdVdv?=
- =?utf-8?B?WGUvMnFaZHVNc3oveXJ3dlpxdFJzQzZOWm9PaXUyN2J2UVNReVE0M2NiaGQr?=
- =?utf-8?B?Y21pMDJpdXpJbFNFNGc0WEN1aDBYWXFlOUgzSHYxazBodWNPRHEyV1BmWFZI?=
- =?utf-8?B?cm1HRm9RQVhROHM0alE2M0JGL0tqUE1zMllGZnZnamF1RGp0S1BsQUkwRy9N?=
- =?utf-8?B?b3R1YitmYStyQ242Sk9zb3lHWUc3REIxS1cvM1R2Q0s1cW9PcVFQdGVRaS9X?=
- =?utf-8?B?V3Y5dUpxTzBSaFpIaGw5a2xXanVGN1J0a2JMZk1iYnVTSGU2OXhFVFpmWUo1?=
- =?utf-8?B?N3ZKVlRlRnZRVHNVQ2MxZkF0a0ZURThYU3UxS0VncGVrSzBmamhvOE5aN2Ft?=
- =?utf-8?B?Q1RnZStrNUpDTm1WdzhBbHFPRnF0NGVqcHkvSWJFaGdFU2pVTmczM2FWNkdi?=
- =?utf-8?B?VXJmcDFwN1Exekx5YmtCaTMzMDY5enlyYVBwNUJMM2huT1pNejlJNmxmcTA3?=
- =?utf-8?B?K05hc0hhWHE2SnljMkE4bkJqRWloZjlxTHV3TWg0ZlJINUJ1M1Vpc21wRG1v?=
- =?utf-8?B?b1pVM2Z2cUh4MzlxaFZZNGRwa3cvVEdmcGViMnZFRXVjeFp5QjhLSVBjcks4?=
- =?utf-8?B?QU8yVks1bTlLMEhEM3pkdXVOWFliUGV0VFFacmxvbk1tT0hjdDV6NXIybW5j?=
- =?utf-8?B?eWJLZzBjNFVLdkpTSUxyOVg3RDFwdHFjOGo1dkVhbzNZNjZxNG9qenZhazVO?=
- =?utf-8?B?UURRNXJRVkxQbkJ2SFNQM1VwbWNERzU0eS9LcjVKMCszbVlnbHc1bmhQTHJx?=
- =?utf-8?B?YXE2NUpiZlNCcXA3a1NoaXNMK01keXZydytRQnNBbDNRbFRXSWg2aVU5OEFY?=
- =?utf-8?B?SEEzNWxES01uTWo0WDFIT1Z3VmppT29FaStQaHJjN2xSa2dxemI0K3lGRURN?=
- =?utf-8?B?SVJ0MHVKOUxnMDBxT0JpcU53cjJOQ0tVejlFUlMzanlsZzJ3NXJMbEpJenJj?=
- =?utf-8?B?bTVoTC9XMUdBZTNCQndjWDliZlRZV3c2S0xaaDJOMXhvM0tCcmt4bUluRmZB?=
- =?utf-8?B?ek5HV1ltU0tBZFlTMTg3USswNXU2OVVMQXZacjJsKzNPV2NreXR2NHRVWS9N?=
- =?utf-8?Q?kMhFjB/MYQNUklBxBPtfBty2YhWLQiS6?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OHhDSno1dFZNUnpjVmd0SUZIUnZWWjUyMDVpbXI1VjV3TWxHZzNOTzdXMXB3?=
- =?utf-8?B?SEFjeUd5Q0RMY21rT1RSOCtMWW5udXpyVVFTcHFXdnNwcHd0Nkhsb0ZQK3Z1?=
- =?utf-8?B?eldHbTduUUdGcW05Mm1GTHFLSTdMeFFqeUNFc1Yva0c4a3NVK1dNOGFEUytY?=
- =?utf-8?B?RHY1UnMzWGhsclc4WlhsVkIzM1ZkdDB3eXV6ZDl1dUh0Qzl4TURNSDV2UXZM?=
- =?utf-8?B?Slo0MmNaYTExeVNrckhkRUVFNXlETTNsbFp2c0VkWlVieVo2YVRoajFtaWVW?=
- =?utf-8?B?YVl0amhTd0pySGVmUmIrY3BPR3RNazJxdGxNUzZyaG1pSksxMytTZWMzaU1O?=
- =?utf-8?B?dWh5bWtCaUpNSXpQbXZMYzQzM2lIR0ovV21SZU9QQ0R2NXFzaEtUS3RWUytx?=
- =?utf-8?B?WG1QL1ZEa0hwVzJVYkRpVnhxWE5DM2ZrbVkwMXdzemJydVFuRmZ6b0RaSm5i?=
- =?utf-8?B?OEVUV3NCYml1MHZObnhBWHF1eFBxUVlwRVNpN1NpemVxL0YrdDZrT255QWpC?=
- =?utf-8?B?OFdTWTVkcDFjM1NmV0xBUEtXMDB1cUNYR2pvdHNiaW9SdzM4NnVFUENOQTFo?=
- =?utf-8?B?MnkzQXh3UWtzMHlBcnV4dHl4dUF3ZWxZRFVvVC8zZjJSNEh5WEkzc0tjbmJT?=
- =?utf-8?B?STlaZ2o3enZiNjhaMHpvekFGc2l4RzNjenZjS3pCbU5BOWpGUUN2L09US1VY?=
- =?utf-8?B?dHhsbmM5ZFl4bmlFUzI2M01VWGRXdmN0TEI1K1ZqekU5dlhCZnlTYXhoYXpj?=
- =?utf-8?B?VFFNcXVJeHNoa1dqZTduN3lMVVo3QVRpVWVSc2tTeldubTQrTHVNN1ZUSGdP?=
- =?utf-8?B?ODBOVlRSeVdVQWYrUzd1UmxmakdNNHVIRDhPWXZpY3FKU1o0cVNIdDVaejhM?=
- =?utf-8?B?bldMazVwMlllTjdhanMvc25GYXVROERmdDZJT2lLTXhTQ3JsbE1XcHF0aTlI?=
- =?utf-8?B?U3prelFYYnFHN2R1bHpzakVhS1AwTWkrSU5xc041WHpMWlBUai9TT2MybE1n?=
- =?utf-8?B?MjdNWStONTJ4ZmsvaU9iTWRnSktVNHVmcVhqajB0V2pNSTFPRHdKcGZoeGlB?=
- =?utf-8?B?R1p4WkRVK0lEWk5KVTd2TTArdHBwNDkxYlc4WDJOaFdtNHV3UUVRbGltWHZi?=
- =?utf-8?B?emJWU0F3OFZnU1FzOXkxTUNTekNQOFFqa1BZSXVZbkl3c0FnUWFIT1d2bWQ3?=
- =?utf-8?B?MHRpZzl4alUzUGVXb1ltVjJlcEEzZC9USzM3RUFUaTlYRmJyWFp5emN0bkZP?=
- =?utf-8?B?T2NUczRLNzVCQUcyakF3aWF2QnpHM2g3WXZ4aGV0WDdkdjBZdy9sajFvM1hH?=
- =?utf-8?B?dW02UFVFT1Zka0FNSXRPOTBBV3c2cnljYW84dFpYRXNpOVVhcmRhNFFYMVNL?=
- =?utf-8?B?Q205dDJWYzdtakVNc3pJa2ViWnFYUWVqeW5UTlF0cUhSeVFoakZGdlVJTGh5?=
- =?utf-8?B?VnE1UkpkSjhUb01RdWJrTXB0TmVQTnFvN1hHQ2RIQW9KZWY2R1FZVVZ4bmh1?=
- =?utf-8?B?SGt5V1I1MWhFM012OG9lT3pZTlEwUCtRK1RGK2djazRXdENSNFI3UWZSeGc4?=
- =?utf-8?B?dzBycE5Pd052ZE5jWTlnZGF0dVFERVVxaUQyMjBVSURJYzBtT1NZT1hKUUhN?=
- =?utf-8?B?ZVVZVjI5WjZlNGEyalFrMyt0bFlOK3JoRkZnSW05Z3NJMHkzc05VSXlRRWRD?=
- =?utf-8?B?NnZNalJqSzdJbnp3RkM3TmU5SHd6WHpVcUxuUEZQUnR2dCtleE1kN3I1QWhx?=
- =?utf-8?B?OEFVQWpNSzVuUXpQWlorVGtlWWVMUGpMRytxTWxMYWtZTUNtWlJqVzZwTDd4?=
- =?utf-8?B?V21zUGNNNEhvZUZqTUxTaGR5V0Yxd2xMZk1xK3VJTkVyR2praWNwbDZyK0Js?=
- =?utf-8?B?eEhTWW5OVFFNczRQNldXalUxREFDVEhiYmV2WTNVZTNZbGgycjFwTlhUc3Mw?=
- =?utf-8?B?TkdicUFCMktyYnZDWVE0NFBKdTRtZklnQStBZmJWcWE4VkhUOHk0VEVmc2dz?=
- =?utf-8?B?WnN0dXRMZFZiRHBZVzhLZjdZQjNqVXFMODVFaFUrYUN4dkVrWkxqQStjNTZP?=
- =?utf-8?B?WDJsY3AwZHEyc05tRG1ncnI2NFlSUmdkWTlEMUtjVnQyR0VnNEpqbUNkY0o0?=
- =?utf-8?Q?weKPwHu+X1ss/UkkqiApXbt9X?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5dd25825-06da-40e3-db23-08de224e7723
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 00:49:13.6505
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vupC+OWrEKdslL8kRmP3c/2mdPDN4b0Bhwhf67lPfH8zrDKOJ4ZXkUMeEn4cBgvIHfyLXlE0n/qRqiSOshRP3w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8218
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aN62F8t493R7UmCT@tardis.local>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SV0yTYRSG/f7vX63W/FaQT4g3VaMhOCCOk2jUy+9GJRq3iTbyB6qslKE4
+	wRUoQwyJSAVFNqXYBEWGRqQiI0JEBa2IAQeNiFRkFBVtpCrRuyfvec+Tc3FErC7nvEVdeLSs
+	D9eGanglqxyckbfkYICnbnlnzzxIPHcKunvec/DzSpUAzS9Os9B+owxBz1gigvGJKxhs7XUY
+	zLcSGMjsT2Bh4NIQD09aBxCcybfwUBXfK8BoxxsGzCl2DM9qs3l41XZBgMIXTxh402vj4GZb
+	KwZnmg+0X0zlwJbeh6DckcdDhsOOYMBZhKFo7LMApdeKEVTWnUMwXOBk4fyIi4Om1PsMFI46
+	MFjsDzC8TRsUILHBieFs90rIGfWH0TITv2ExNV81I1r46BNPC5K+M7TG+FqguRUx9GaJL82/
+	28/QClMST69PfMC0+/ldnjZfnmBpXY5ZoK9c7zD90tfF0pTzFQztspdzgZ67lWuD5FBdrKxf
+	tm6/MiTp40Mc+VZzJLm4jotHmd4GpBCJtILcSWjkp/hnqQm5mZUWksqJbtbNvLSI2GzfsAGJ
+	osdkXmDaaUBKEUsWgdw2JHLuzmxpL7lYk/J7VyUBGXRUIXdJLaUj0jDy9e9gFmnJev9biiVf
+	YnP1M24plnxIsUt0o0LyIx2Gfe6GpzSf3L/dxLg1ROoQSXbeU+HPnXNJfYmNTUeS8T+r8T+r
+	8Z81F2ETUuvCY8O0utAVS0PiwnVHlh6ICKtAk09UdOLHnmo03L7ViiQRaWaoPmR56NScNjYq
+	LsyKiIg1HqrKHZORKkgbd1TWR+zTx4TKUVbkI7IaL1WA83CQWgrWRsuHZDlS1k9NGVHhHY9C
+	jpWx2Y1xyS8dGZuMQ67MktqaEwcWJBy/Y7m3eqbQcmtMjCmpBovf2Mb6j0dHUgcV/tvzneZA
+	r/FZmb3ln7oeVA/0NQ7POcV26tW7GppXP1Y8nW89uY2Mrwn225F8YdrnBVtG2qw5dk3GkGl2
+	xrb6zYG29VkbV+VOR80bjsnUy65ho0K0/r5YH6X9BeGhytRAAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG/Z//OWfH1eC0LE9KVJOIpItGwgtZWAT+kbSgD1ZYbulBV9Nk
+	S8nAsouia94wsualm5dcK8GalzAMu6ioqRU5zPBSSmbOLnNdliMnRX57eJ7n9/B+eDksz2N8
+	OHXicVGbqNIoWCktjdhybv2RTUvUASPdEsjKOA0Dg+8ZmCmul0Bb31kaeu7eRjA4nYXgu7MY
+	g7WnGYP5/hkKisbP0DBx6TMLvZ0TCM7drGHhcWk7A/XpQxKwvxqmwGwYw/DyQQkLb7ryJFDR
+	10vB8JCVgXtdnRgcub7QU5DDgDV/FMEd2w0WCm1jCCYclRgqp6ckUH21CoGlOQPB13IHDZnf
+	XAy05jyioMJuw1Az9hjDSO7k7NlPHBjODwRBqT0Q7LdNbMhaYi4zI1LR8Ykl5dm/KNJofCsh
+	12qTyb1b/uRm0zhFak3ZLLnu/IDJwOsmlrRddtKkudQsIW9c7zD5MtpPE0NmLUX6x+4we5Ye
+	kAbHihp1iqjduE0pjc/++BQnjShOXKhqZtJRkY8eeXICv1mYqTYht6b51YLFOUC7NcuvEazW
+	n1iPOM5r1i837dMjKYf5GolQp89i3J3FfJRQ0GiYY2U8CJO2euQuyfl8JDz59uNvsEhov/J+
+	bhTz/oLVNU65RzHvK1S5OLf05NcJr/TR7sYS3k94VNdK5SOZcR5snAcb/8PXEDYhL3ViSoJK
+	rQnaoDsan5qoPrEh5lhCLZp9k8q03wUNyP4ytAXxHFIslBGbl1rOqFJ0qQktSOCwwktmiZy1
+	ZLGq1JOi9li0Nlkj6lqQL0crvGVhkaJSzsepjotHRTFJ1P5LKc7TJx0F+xWVNdjP6jM9wnca
+	WqcOyo1xJUERAQ0rdj891BUX8rBDVhjupx/0bo3qoF16Piw6bHuVR/frfdXLlasMab0LxJKD
+	+3UvpiP9lqVTe7c+j7Ks7A3rqk8ZZbRXY8Y1ba4hZZPq1y7FqZBDeV/bT1uqo3aEJit3HS5x
+	hq+86Oh7VqGgdfGqQH+s1an+AKTs6FwiAwAA
+X-CFilter-Loop: Reflected
 
-
-
-On 11/11/2025 4:12 PM, Lyude Paul wrote:
-> On Thu, 2025-11-06 at 18:11 -0500, Joel Fernandes wrote:
->> These opcodes implement various falcon-related boot operations: reset,
->> start, wait-for-halt.
->>
->> Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
->> ---
->>  drivers/gpu/nova-core/gsp/sequencer.rs | 27 ++++++++++++++++++++++++++
->>  1 file changed, 27 insertions(+)
->>
->> diff --git a/drivers/gpu/nova-core/gsp/sequencer.rs b/drivers/gpu/nova-core/gsp/sequencer.rs
->> index 17118967a8d4..0192ac61df4c 100644
->> --- a/drivers/gpu/nova-core/gsp/sequencer.rs
->> +++ b/drivers/gpu/nova-core/gsp/sequencer.rs
->> @@ -49,6 +49,9 @@ pub(crate) enum GspSeqCmd {
->>      RegPoll(fw::GSP_SEQ_BUF_PAYLOAD_REG_POLL),
->>      DelayUs(fw::GSP_SEQ_BUF_PAYLOAD_DELAY_US),
->>      RegStore(fw::GSP_SEQ_BUF_PAYLOAD_REG_STORE),
->> +    CoreReset,
->> +    CoreStart,
->> +    CoreWaitForHalt,
->>  }
->>  
->>  impl GspSeqCmd {
->> @@ -75,6 +78,11 @@ pub(crate) fn from_fw_cmd(cmd: &fw::GSP_SEQUENCER_BUFFER_CMD) -> Result<Self> {
->>                  // SAFETY: We're using the union field that corresponds to the opCode.
->>                  Ok(GspSeqCmd::RegStore(unsafe { cmd.payload.regStore }))
->>              }
->> +            fw::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_RESET => Ok(GspSeqCmd::CoreReset),
->> +            fw::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_START => Ok(GspSeqCmd::CoreStart),
->> +            fw::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_WAIT_FOR_HALT => {
->> +                Ok(GspSeqCmd::CoreWaitForHalt)
->> +            }
->>              _ => Err(EINVAL),
->>          }
->>      }
->> @@ -96,6 +104,9 @@ pub(crate) fn new(data: &[u8], dev: &device::Device<device::Bound>) -> Result<Se
->>      pub(crate) fn size_bytes(&self) -> usize {
->>          let opcode_size = size_of::<fw::GSP_SEQ_BUF_OPCODE>();
->>          match self {
->> +            // Each simple command type just adds 4 bytes (opcode_size) for the header.
->> +            GspSeqCmd::CoreReset | GspSeqCmd::CoreStart | GspSeqCmd::CoreWaitForHalt => opcode_size,
->> +
->>              // For commands with payloads, add the payload size in bytes.
->>              GspSeqCmd::RegWrite(_) => opcode_size + size_of::<fw::GSP_SEQ_BUF_PAYLOAD_REG_WRITE>(),
->>              GspSeqCmd::RegModify(_) => {
->> @@ -200,6 +211,22 @@ fn run(&self, seq: &GspSequencer<'_>) -> Result {
->>              GspSeqCmd::RegPoll(cmd) => cmd.run(seq),
->>              GspSeqCmd::DelayUs(cmd) => cmd.run(seq),
->>              GspSeqCmd::RegStore(cmd) => cmd.run(seq),
->> +            GspSeqCmd::CoreReset => {
->> +                dev_dbg!(seq.dev, "CoreReset\n");
->> +                seq.gsp_falcon.reset(seq.bar)?;
->> +                seq.gsp_falcon.dma_reset(seq.bar);
->> +                Ok(())
->> +            }
->> +            GspSeqCmd::CoreStart => {
->> +                dev_dbg!(seq.dev, "CoreStart\n");
->> +                seq.gsp_falcon.start(seq.bar)?;
->> +                Ok(())
->> +            }
->> +            GspSeqCmd::CoreWaitForHalt => {
->> +                dev_dbg!(seq.dev, "CoreWaitForHalt\n");
->> +                seq.gsp_falcon.wait_till_halted(seq.bar)?;
->> +                Ok(())
+On Thu, Oct 02, 2025 at 10:27:51AM -0700, Boqun Feng wrote:
+> On Thu, Oct 02, 2025 at 10:06:17AM +0000, Guangbo Cui wrote:
+> > > -extern void wait_for_completion(struct completion *);
+> > > -extern void wait_for_completion_io(struct completion *);
+> > > -extern int wait_for_completion_interruptible(struct completion *x);
+> > > -extern int wait_for_completion_killable(struct completion *x);
+> > > -extern int wait_for_completion_state(struct completion *x, unsigned int state);
+> > > -extern unsigned long wait_for_completion_timeout(struct completion *x,
+> > > +extern void __wait_for_completion(struct completion *);
+> > > +extern void __wait_for_completion_io(struct completion *);
+> > > +extern int __wait_for_completion_interruptible(struct completion *x);
+> > > +extern int __wait_for_completion_killable(struct completion *x);
+> > > +extern int __wait_for_completion_state(struct completion *x, unsigned int state);
+> > > +extern unsigned long __wait_for_completion_timeout(struct completion *x,
+> > >                                                unsigned long timeout);
+> > > -extern unsigned long wait_for_completion_io_timeout(struct completion *x,
+> > > +extern unsigned long __wait_for_completion_io_timeout(struct completion *x,
+> > >                                                 unsigned long timeout);
+> > > -extern long wait_for_completion_interruptible_timeout(
+> > > +extern long __wait_for_completion_interruptible_timeout(
+> > >     struct completion *x, unsigned long timeout);
+> > > -extern long wait_for_completion_killable_timeout(
+> > > +extern long __wait_for_completion_killable_timeout(
+> > >     struct completion *x, unsigned long timeout);
+> > >  extern bool try_wait_for_completion(struct completion *x);
+> > >  extern bool completion_done(struct completion *x);
+> > > @@ -139,4 +134,79 @@ extern void complete(struct completion *);
+> > >  extern void complete_on_current_cpu(struct completion *x);
+> > >  extern void complete_all(struct completion *);
+> > >
+> > > +#define wait_for_completion(x)                                             \
+> > > +({                                                                 \
+> > > +   sdt_might_sleep_start_timeout(NULL, -1L);                       \
+> > > +   __wait_for_completion(x);                                       \
+> > > +   sdt_might_sleep_end();                                          \
+> > > +})
+> >
+> > The DEPT patch series changed `wait_for_completion` into a macro.
+> > Because bindgen cannot handle function-like macros, this caused
+> > Rust build errors. Add a helper function to fix it.
+> >
+> > ```
+> > error[E0425]: cannot find function `wait_for_completion` in crate `bindings`
+> >      --> rust/kernel/sync/completion.rs:110:28
+> >       |
+> >   110 |         unsafe { bindings::wait_for_completion(self.as_raw()) };
+> >       |                            ^^^^^^^^^^^^^^^^^^^ help: a function with a similar name exists: `__wait_for_completion`
+> >       |
+> >      ::: /root/linux/rust/bindings/bindings_generated.rs:33440:5
+> >       |
+> > 33440 |     pub fn __wait_for_completion(arg1: *mut completion);
+> >       |     ---------------------------------------------------- similarly named function `__wait_for_completion` defined here
+> >
+> > error: aborting due to 1 previous error
+> >
+> > For more information about this error, try `rustc --explain E0425`.
+> > ```
+> >
 > 
-> Are we still planning on getting rid of these dev_dbg! calls?
+> I think Danilo already made it clear, please fold this the existing
+> patch. Moreover, since this patchset doesn't adjust init_completion()
+> from the Rust side, the result is Rust code will also use the same dept
+> key for completion, which has to be fixed if dept wants to be in-tree.
+
+Thank you for informing that.  I will take a look on it.
+
+	Byungchul
 > 
-Yes, already done for v4 and posting soon.
-
-Thanks.
-
+> Regards,
+> Boqun
+> 
+> > Signed-off-by: Guangbo Cui <2407018371@qq.com>
+> > ---
+> >  rust/helpers/completion.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/rust/helpers/completion.c b/rust/helpers/completion.c
+> > index b2443262a2ae..5bae5e749def 100644
+> > --- a/rust/helpers/completion.c
+> > +++ b/rust/helpers/completion.c
+> > @@ -6,3 +6,8 @@ void rust_helper_init_completion(struct completion *x)
+> >  {
+> >       init_completion(x);
+> >  }
+> > +
+> > +void rust_helper_wait_for_completion(struct completion *x)
+> > +{
+> > +     wait_for_completion(x);
+> > +}
+> > --
+> > 2.43.0
+> >
