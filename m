@@ -1,340 +1,95 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B082DE6F8
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 10:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF922E1747
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 10:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763028081; cv=none; b=kIgTTWXFwRrkeazGgG/vqK0ZkfhajolAGLv79/yPHVDXMvsZzQkb5ACeWSlU0yrkcAvgPkf7FE9xI+t8U7NFcDtbiZxYy6uP/i4kdGopqb+q8jF1iPTdOvG3/OnLfw96BmdfobKPGCzR2e3oMdG+CQHy+c0r3igg+btXG1wYs6o=
+	t=1763028384; cv=none; b=a00FWO6rbZjdoYA6tx5E+R/ktgY5CEOFbeju38sl9wK61e0pt9XxPp9RvSYmICuvVzzzMnD5gFP7niMsAViTlpiXh/MYkNpPpEXI2X8/WW6ZUNpPOeYjHRpJz5ZTQAoeKL0Kx7Ju4UHnCRCVMOB8HXyDXyQs0hb1bYRf+Y0F+dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763028081; c=relaxed/simple;
-	bh=l1/lGRU6QWtE1ji0evLZ6kXzVT69Z9Ki+win41xjeig=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kYpdT950l5KWWIJU46jry+dpYbRBNrQy3YPFQhtmT5OsOXHyzC7k/dhi+VY9Gk1I0UAj/99qkipFDdeOtoi5/MWVwx1ZHePZrhv2rwqkskcyjaOYhiSn2EZPMEOiJgLnpdCcKS+Rt3VruGKlaIZRuQeJPoY2eHsBWtPxW4Knszc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D3wRZ1g1; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1763028384; c=relaxed/simple;
+	bh=SakcwQpPdAYlIowM8bt4fPJVk64+hwM+gbniVbgurbM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jVDWxx/+16nSrIGArsga3n8dHBSLmg3Zv8sZhpeT68r0vq4FhNYjHUt6YKQMRHddvFudIc9d5l1vET0r5qeuzPO5VZrKVWiEUi+4mvh0YogUtGOZ1GJIVWgS9fkfAFnB4dt8lAQbWt5/OH44ykSheKhAvcB66/gWEWBbpWAxEJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fqFEINZ8; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D3wRZ1g1"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-640789adcd2so543394a12.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 02:01:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fqFEINZ8"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-297f5278e5cso1063635ad.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 02:06:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763028078; x=1763632878; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=03pL0zzIHyKK2WTeQxTsKv3aVniqrabjazbbF5k53yA=;
-        b=D3wRZ1g1KPcDBuXutuDgFdg+MDFdHzL8sCEa8wBeQfIDh22YteCGaZBKwhkkf4XcDu
-         +viXzp9CtjshmB0QofqJk58J2XmgrrE4K5Jsbd/4lbyOUi/z5Iqfam06VUc6XOVMIa29
-         sqXdX6W4BQhye6a6t8mRJzW2ZOa7Z9YuFHxHephPJi4TcrzwGBFfdE7LnOKSoBQ54myV
-         bhk72gZKIS7dVeNK2xmUppABOMxR1n9qWTKr3rdaSmJg2yaYPTQZBKagzMGxQz0lhbYO
-         LSpEN8sKp7DPge9IxhHpGNaCz0AtidaASzUYGLm4WFeWWnVwuZxNZsEmOCj+rwJfr2Ob
-         jlgQ==
+        d=gmail.com; s=20230601; t=1763028382; x=1763633182; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SakcwQpPdAYlIowM8bt4fPJVk64+hwM+gbniVbgurbM=;
+        b=fqFEINZ8pxCM/l/qaTIk/W4h9lCrRvtY05eTlARe9n8YeXF76ZDxONsdzB5WUrvvyb
+         er7MFDzLtH48ZvjeG7cb0tFVd7lsMQEQ0vlEAUAax7Wxw+r1eazChOw3/MU107fZon1p
+         TlaLuGm5JFk5nhrm5BsB/Do2n5jNUsc6UhvybU54Mwuj0HfbAwGvUZnu/V4xVeqH381R
+         CKAqbwt5Covb6MrGFOQCTF1klSnLY0n+4V7M8BL/H7lVMmwz99yt88sVSsV4gJSyjsbi
+         cX8iaL282gitK83aiZM7aBajCNo4AWMyUk5FuEaMONZ09N/qrk9o2rNfn4s2QK/idJHS
+         qfmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763028078; x=1763632878;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=03pL0zzIHyKK2WTeQxTsKv3aVniqrabjazbbF5k53yA=;
-        b=QgFEjuNrlJBoZ/7qFnGyq25nDy9VQ3899r865p8YjENsZ3gP8EIcoZbmRCcoY5J0WB
-         wk1dcsZMEb5zVgXX9ltRNOYpDdszRsqh6ViISvGT8ev1iwxVg3pnG5PndfzD+yo03PXe
-         dscQk7mD/Ez1QV5zbWw8Cko6Kez6eJGPJnJ+zF6mjsktcWplZB3nBpmtS9qliEPIVBsP
-         aGguY3sPNl9JDXDXrC4uVcST4YZXUlWl5wFZgRY95fg5izFP64+7ImcVjCJ5Fm5qXsCl
-         MLHyvb6nJCyB9f03wGmUfUV/X13agIeM65T2ny0l28DHz1/2K69t/J7dcT2J7s279Ads
-         YXTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUW/iVp6fOvSjcMQF3bo1UVUWGvEVFCR68ArgYDd1D/nWG5cjkZKAHI/23z+rYS0j3T4zdE7/qdUAjAMCKPFg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCbb+j0UOwGTuk+0e7+vBTbabt4f+MtzhfHX+p4uWPEo9YmR78
-	EmJsnFf2yDFwIlksI4KZJ1yzcNwx/W7esS7Py00fDFWGrT2HtzNS+ATx+bK8hWKBBeHUy7rNhl6
-	mo64N8lv/0/UCC6FMqg==
-X-Google-Smtp-Source: AGHT+IFqw21bQymwrmtUD7X8lwWdZKRJR6b/npb91JTc8YHVlQ2yJB0q9zmoMBjX+k6quYlAWM1QZioP9Ur5O54=
-X-Received: from ejcrg8.prod.google.com ([2002:a17:907:6b88:b0:b73:4279:3a04])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:1c01:b0:b73:54d8:7bc8 with SMTP id a640c23a62f3a-b7354d89206mr105452766b.59.1763028077954;
- Thu, 13 Nov 2025 02:01:17 -0800 (PST)
-Date: Thu, 13 Nov 2025 10:01:07 +0000
-In-Reply-To: <20251113-create-workqueue-v2-0-8b45277119bc@google.com>
+        d=1e100.net; s=20230601; t=1763028382; x=1763633182;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SakcwQpPdAYlIowM8bt4fPJVk64+hwM+gbniVbgurbM=;
+        b=ftv/vMVGPonzvgyYv2AYksY98o+/SCPM3OjjnVtgX8x26ioQRRPXMXAyFlJl+X9/VX
+         sargk4o8vxeWt35/ds0vmr/ayIYReNPM4uGT5lsv05q7OlD3PugcxZ4Nl0eBnlQj3Mst
+         WwgMmI0owr4cG2eH2bWdXz+fBi2eCidKbIfGpy0NgKHflm7upHnHwEKtEqICs5rSeKKw
+         W+AxbQdiFbCK1JDIvDWIIwT/s7It4vbaO9cOnCtL8j/YxuLnAEhaMVkuZZugq0ZPWQxo
+         HevnIp7+5PrlDZ+rIR6GewX2b9HYef5+U8M0VOz7QkWWlTtTkHVcyJ2MP8zTuJFxqPq6
+         bu0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU+lVotmH7SI+HUAY39yMlX49XskMJzUXgm9Tm+AGYmZtWpCimr56QY6QoWd51nKEeqzluGKhr+bM88m2ZSiw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHo4Qcc9tWaxBDAjx41NGFrIOnoqThTy/PCeS26bDJer8WwL1R
+	RF+dFAYKhPzVyaPooxS/Cy4d8m/u/+I1ExzoxB2zwUbDBsc0h/LYmBQsuJ5VdeUIwlts0Uj8JMX
+	FGSNvHiDiH24K6DlqXwQ3l0GjJTkZ/2s=
+X-Gm-Gg: ASbGncuzt7Y0aTdUTPaYxt6hdnnOrAwWBuBNhcgU+brrKv3AEOjkp6GHUePcmxzTWFB
+	blDjKVmWwfAk7E+o0Lvnd5G/WsF+IylL4DfdcLc8ksuRczW93dQxdHmSxKcF3KndDQyvBnMD9PG
+	af8248YLj6apajNqFLhxoSvHQX+XdERgWIW0tfraK9A9dCU7d+FsEdldl4NSESdLx9iq0CD/gvH
+	+gkaobWa8YdgaEQBI4BqJqwVJCIDRxuitTepTF3gZg+gh+SdvYqlFEAwjZ1eWJY9idkCARCLe0r
+	9T+M/4rxQ2iveflhfOsRnYAtntaP+le4kmk3phUYhiBJsBcDVvT84u86nHWes8tfsUa5nFYkCvp
+	Vk5c=
+X-Google-Smtp-Source: AGHT+IEzNxzznt3OW2Dpm9++FAbosIG2V3ygxc5yhp8W2cG7jBB8uRt3p8Uomy8GlIKZfP3CuP+vGZ5FoH34INnliD4=
+X-Received: by 2002:a17:902:da4b:b0:298:529b:85d7 with SMTP id
+ d9443c01a7336-298529b87d3mr30505505ad.5.1763028382379; Thu, 13 Nov 2025
+ 02:06:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251113-create-workqueue-v2-0-8b45277119bc@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8091; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=l1/lGRU6QWtE1ji0evLZ6kXzVT69Z9Ki+win41xjeig=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpFaxqBR8EwdfIjIWZa2JfxNyOkKEqVmBqxLk6K
- 3NFH5Gtn6KJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaRWsagAKCRAEWL7uWMY5
- RkWGD/9VeIBYcYedkXNFdbhZl1oHN81NP0QYcx59r1347zIBodkI7HkrCllfRaHE1tHE0FpgmU2
- SuXy0K4EPhpXSTC4T4rXn2kymXbj0Kn8J+tk5kdpGVCo9FXTEgNebQFc5YNns2o5dY3N9//VsP+
- kcR5fC64BTAUJdI+yHCjU/zs/G18JxQJ/QYqxMFUhe7bqbxb2LdoGGj9Zn4DeWQh835IYSnH3G2
- /7bW7awUrfAR7fNj4TDRY0j9Y6C/t0qVPP40/5u+fVHkVUIFH+WNFQH1f4OCTlmxFCn8DNbjcmh
- 5b+ls9OHmfmKvs3gJIiBXGEhvhjmw2vJr35fq5z6wTAbwtweS90Yg20wKQamfCGv3LFURjVuwOI
- N0fPvLBWnjnF6+UzVF03yK62ODNk2WMD4R5E4NGcMAniANUbgedbUhtJpga5UIdGoJvYJtvrzLV
- sk67v76XeURUlhNxu2OuEQFZpoOK25hY7hsqwZuU0KTWHxwXFuVhYlDtJ3vInMCo6UEFj/VGdy9
- fuM2EDU4eSi1dHa2IukFf7Qkj7ntKhwY51TTrYjCFOWatoA8SY52Mm5mcm9syVKk7BlkYwXTdc9
- 7IOple/E2Gvn8RByiTu7qaGA+5ueJw7nRiqAsxddIaFhtVUtCYhuI3BGNLPxjC2F7gaXL+gdVAu 8NVHD0xCvEj3c6g==
-X-Mailer: b4 0.14.2
-Message-ID: <20251113-create-workqueue-v2-2-8b45277119bc@google.com>
-Subject: [PATCH v2 2/2] rust: workqueue: add creation of workqueues
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Philipp Stanner <phasta@kernel.org>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Benno Lossin <lossin@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20251113-create-workqueue-v2-0-8b45277119bc@google.com> <20251113-create-workqueue-v2-1-8b45277119bc@google.com>
+In-Reply-To: <20251113-create-workqueue-v2-1-8b45277119bc@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 13 Nov 2025 11:06:09 +0100
+X-Gm-Features: AWmQ_blzoOEHZpUg5855vlqByLe32dk2MkjaHUrqoFKrZBK7qYe0tPspHqrfSKk
+Message-ID: <CANiq72k1VqR7P7tY2V_siBQZrNXf_ck5aBkapo6M_6X=1P+nDA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] rust: workqueue: restrict delayed work to global wqs
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Philipp Stanner <phasta@kernel.org>, 
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Benno Lossin <lossin@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Creating workqueues is needed by various GPU drivers. Not only does it
-give you better control over execution, it also allows devices to ensure
-that all tasks have exited before the device is unbound (or similar) by
-running the workqueue destructor.
+On Thu, Nov 13, 2025 at 11:01=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> When a workqueue is shut down, delayed work that is pending but not
+> scheduled does not get properly cleaned up, so it's not safe to use
+> `enqueue_delayed` on a workqueue that might be destroyed. To fix this,
+> restricted `enqueue_delayed` to static queues.
 
-A wrapper type Flags is provided for workqueue flags. It allows you to
-build any valid flag combination, while using a type-level marker for
-whether WQ_BH is used to prevent invalid flag combinations. The Flags wrapper
-also forces you to explicitly pick one of percpu, unbound, or bh.
+Should this have a Fixes and Cc: stable?
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/helpers/workqueue.c |   6 ++
- rust/kernel/workqueue.rs | 185 ++++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 188 insertions(+), 3 deletions(-)
-
-diff --git a/rust/helpers/workqueue.c b/rust/helpers/workqueue.c
-index b2b82753509bf5dbd0f4ddebb96a95a51e5976b1..a67ed284b062b29937f09303cb516e6322cc961a 100644
---- a/rust/helpers/workqueue.c
-+++ b/rust/helpers/workqueue.c
-@@ -12,3 +12,9 @@ void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
- 	INIT_LIST_HEAD(&work->entry);
- 	work->func = func;
- }
-+
-+struct workqueue_struct *rust_helper_alloc_workqueue(const char *fmt, unsigned int flags,
-+						      int max_active, const void *data)
-+{
-+	return alloc_workqueue(fmt, flags, max_active, data);
-+}
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 901102a8bca54c9fb58655d80fc9624b4dfe1dc1..313d897fe93ceb84844ce9b253edec837e60ba6d 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -186,7 +186,7 @@
- //! C header: [`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
- 
- use crate::{
--    alloc::{AllocError, Flags},
-+    alloc::{self, AllocError},
-     container_of,
-     prelude::*,
-     sync::Arc,
-@@ -194,7 +194,11 @@
-     time::Jiffies,
-     types::Opaque,
- };
--use core::marker::PhantomData;
-+use core::{
-+    marker::PhantomData,
-+    ops::Deref,
-+    ptr::NonNull, //
-+};
- 
- /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
- #[macro_export]
-@@ -333,7 +337,7 @@ pub fn enqueue_delayed<W, const ID: u64>(&'static self, w: W, delay: Jiffies) ->
-     /// This method can fail because it allocates memory to store the work item.
-     pub fn try_spawn<T: 'static + Send + FnOnce()>(
-         &self,
--        flags: Flags,
-+        flags: alloc::Flags,
-         func: T,
-     ) -> Result<(), AllocError> {
-         let init = pin_init!(ClosureWork {
-@@ -346,6 +350,181 @@ pub fn try_spawn<T: 'static + Send + FnOnce()>(
-     }
- }
- 
-+/// Workqueue flags.
-+///
-+/// A valid combination of workqueue flags contains one of the base flags (`WQ_UNBOUND`, `WQ_BH`,
-+/// or `WQ_PERCPU`) and a combination of modifier flags that are compatible with the selected base
-+/// flag.
-+///
-+/// For details, please refer to `Documentation/core-api/workqueue.rst`.
-+#[repr(transparent)]
-+#[derive(Copy, Clone)]
-+pub struct Flags<const BH: bool>(bindings::wq_flags);
-+
-+// BH only methods
-+impl Flags<true> {
-+    /// Execute in bottom half (softirq) context.
-+    #[inline]
-+    pub const fn bh() -> Flags<true> {
-+        Flags(bindings::wq_flags_WQ_BH)
-+    }
-+}
-+
-+// Non-BH only methods
-+impl Flags<false> {
-+    /// Not bound to any cpu.
-+    #[inline]
-+    pub const fn unbound() -> Flags<false> {
-+        Flags(bindings::wq_flags_WQ_UNBOUND)
-+    }
-+
-+    /// Bound to a specific cpu.
-+    #[inline]
-+    pub const fn percpu() -> Flags<false> {
-+        Flags(bindings::wq_flags_WQ_PERCPU)
-+    }
-+
-+    /// Allow this workqueue to be frozen during suspend.
-+    #[inline]
-+    pub const fn freezable(self) -> Self {
-+        Flags(self.0 | bindings::wq_flags_WQ_FREEZABLE)
-+    }
-+
-+    /// This workqueue may be used during memory reclaim.
-+    #[inline]
-+    pub const fn mem_reclaim(self) -> Self {
-+        Flags(self.0 | bindings::wq_flags_WQ_MEM_RECLAIM)
-+    }
-+
-+    /// Mark this workqueue as cpu intensive.
-+    #[inline]
-+    pub const fn cpu_intensive(self) -> Self {
-+        Flags(self.0 | bindings::wq_flags_WQ_CPU_INTENSIVE)
-+    }
-+
-+    /// Make this workqueue visible in sysfs.
-+    #[inline]
-+    pub const fn sysfs(self) -> Self {
-+        Flags(self.0 | bindings::wq_flags_WQ_SYSFS)
-+    }
-+}
-+
-+// Methods for BH and non-BH.
-+impl<const BH: bool> Flags<BH> {
-+    /// High priority workqueue.
-+    #[inline]
-+    pub const fn highpri(self) -> Self {
-+        Flags(self.0 | bindings::wq_flags_WQ_HIGHPRI)
-+    }
-+}
-+
-+/// An owned kernel work queue.
-+///
-+/// Dropping a workqueue blocks on all pending work.
-+///
-+/// # Invariants
-+///
-+/// `queue` points at a valid workqueue that is owned by this `OwnedQueue`.
-+pub struct OwnedQueue {
-+    queue: NonNull<Queue>,
-+}
-+
-+#[expect(clippy::manual_c_str_literals)]
-+impl OwnedQueue {
-+    /// Allocates a new workqueue.
-+    ///
-+    /// The provided name is used verbatim as the workqueue name.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::c_str;
-+    /// use kernel::workqueue::{OwnedQueue, Flags};
-+    ///
-+    /// let wq = OwnedQueue::new(c_str!("my-wq"), Flags::unbound().sysfs(), 0)?;
-+    /// wq.try_spawn(
-+    ///     GFP_KERNEL,
-+    ///     || pr_warn!("Printing from my-wq"),
-+    /// )?;
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    #[inline]
-+    pub fn new<const BH: bool>(
-+        name: &CStr,
-+        flags: Flags<BH>,
-+        max_active: usize,
-+    ) -> Result<OwnedQueue, AllocError> {
-+        // SAFETY:
-+        // * "%s\0" is compatible with passing the name as a c-string.
-+        // * the flags argument does not include internal flags.
-+        let ptr = unsafe {
-+            bindings::alloc_workqueue(
-+                b"%s\0".as_ptr(),
-+                flags.0,
-+                i32::try_from(max_active).unwrap_or(i32::MAX),
-+                name.as_char_ptr().cast::<c_void>(),
-+            )
-+        };
-+
-+        Ok(OwnedQueue {
-+            queue: NonNull::new(ptr).ok_or(AllocError)?.cast(),
-+        })
-+    }
-+
-+    /// Allocates a new workqueue.
-+    ///
-+    /// # Examples
-+    ///
-+    /// This example shows how to pass a Rust string formatter to the workqueue name, creating
-+    /// workqueues with names such as `my-wq-1` and `my-wq-2`.
-+    ///
-+    /// ```
-+    /// use kernel::alloc::AllocError;
-+    /// use kernel::workqueue::{OwnedQueue, Flags};
-+    ///
-+    /// fn my_wq(num: u32) -> Result<OwnedQueue, AllocError> {
-+    ///     OwnedQueue::new_fmt(format_args!("my-wq-{num}"), Flags::percpu(), 0)
-+    /// }
-+    /// ```
-+    #[inline]
-+    pub fn new_fmt<const BH: bool>(
-+        name: core::fmt::Arguments<'_>,
-+        flags: Flags<BH>,
-+        max_active: usize,
-+    ) -> Result<OwnedQueue, AllocError> {
-+        // SAFETY:
-+        // * "%pA\0" is compatible with passing an `Arguments` pointer.
-+        // * the flags argument does not include internal flags.
-+        let ptr = unsafe {
-+            bindings::alloc_workqueue(
-+                b"%pA\0".as_ptr(),
-+                flags.0,
-+                i32::try_from(max_active).unwrap_or(i32::MAX),
-+                core::ptr::from_ref(&name).cast::<c_void>(),
-+            )
-+        };
-+
-+        Ok(OwnedQueue {
-+            queue: NonNull::new(ptr).ok_or(AllocError)?.cast(),
-+        })
-+    }
-+}
-+
-+impl Deref for OwnedQueue {
-+    type Target = Queue;
-+    fn deref(&self) -> &Queue {
-+        // SAFETY: By the type invariants, this pointer references a valid queue.
-+        unsafe { &*self.queue.as_ptr() }
-+    }
-+}
-+
-+impl Drop for OwnedQueue {
-+    fn drop(&mut self) {
-+        // SAFETY: The `OwnedQueue` is being destroyed, so we can destroy the workqueue it owns.
-+        unsafe { bindings::destroy_workqueue(self.queue.as_ptr().cast()) }
-+    }
-+}
-+
- /// A helper type used in [`try_spawn`].
- ///
- /// [`try_spawn`]: Queue::try_spawn
-
--- 
-2.51.2.1041.gc1ab5b90ca-goog
-
+Cheers,
+Miguel
