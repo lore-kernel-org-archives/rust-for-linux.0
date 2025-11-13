@@ -1,157 +1,283 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA9C27E1D7
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 11:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A873A33EB1D
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 11:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763032741; cv=none; b=GDLd3Dags5BGR9q0VAsczKG7ASMlHATxpsA3yZfKzwgOf34SdweU0DUOB62nBk6wIGubXPLA2J+Ih8oLAwTFZhDBl3dIznPEHXTT+ytTXaCRoPn5YaN+OONjYfvS1qIY9AWGAJqlChb+xkTCJYcTn+2WEuMH5u/KTnQu7lhOtLY=
+	t=1763034321; cv=none; b=Bckgps+z0UYUaYVABZ68Kz772CQ17NudN0pOjsdYxnZ848uf9pQYnPZqODzIsfWC65ET/XNSLhYglarCcYCSdrnDUkYBRcavG0wSRfg3tXxJ9uQGudQROMuVhuqGs3GJGLSM3Fk2wM/JGwFDqRyv6nApnnXYKAlPZOAb18UeFa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763032741; c=relaxed/simple;
-	bh=px5mJqwS3eN+Q6fkLrFQJ5T0ZHfSFMeAoSEEp8MOTrI=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=fitiKQr0eL/SLqMeMbTh/FwOu9A3mgvPeO+Ji0W8wmHbeO/5ovFOw1knBB9UpbMN00jK2+ykkqgSTVnSr91TRI0LKy/aiQqtFC5v3jA1IQQSmT0vO0vc313RndSX1TYrEXngRQ1zDhHf6W0OTdQhtwt+NAEJrchoeDSw9oI/ymM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DkNeIiAX; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763034321; c=relaxed/simple;
+	bh=o97LNDCE8sRKWgvFmbhQgiJX2C/f0cT5IjvvMFvpiPw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=LsyiMAxnASebtfDtO1ATGLFSB5M3XojJNqp+eSqqTUIfTVObs3oN3UIJb+jCF9QauOAvytz/dpmDWXblGWzpigEaI2oQeTbAY7AcP4uX0w4YA4uTHiPnpBVHXYDBKkdSSCMMd5Kv7miXSosvU8E4zyq+dlQaaF4hjgCno1KF2+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vNGVUJfn; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DkNeIiAX"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7aab061e7cbso705839b3a.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 03:18:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vNGVUJfn"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-46e47d14dceso4075335e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 03:45:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763032739; x=1763637539; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H0YNIzIu22uiiz0mxGtMBpFIWjPETro/ppwvr0tw+Pc=;
-        b=DkNeIiAXQEhOgpPOVNYwzGxhcTDEVRB7jetO+TmbM8ML5p9tpWgsJV0q1mMhZ3t//v
-         BidSPHmEq8Q6+z3RXNZiFbzLZF3pnauWtJ/LGGmq/ile7IJ64wEcnpawfhYvnzgZvW2B
-         GlqlRwJ6FE0moOyUjdEztCdaXIglWlKAasez9JfUnBw5VkDDH9camjBRmNqv19tra5BW
-         V/WaVChmwPIlxF692n92mKByLNZ2HaU9BXSu866ItjH3kapyYejcumSt05so0cqxj+wB
-         E3NrpHrCC0pk8pRs8DBLZQnqpH20GLkES+C1uNh/UFA+LBfA8ZPuGHIJI5njoYoc6XId
-         mdAw==
+        d=google.com; s=20230601; t=1763034318; x=1763639118; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lWqAqMJ+7iUYGNXIT9R0NKkBc66Uxkdz+Gl6CTrmWCY=;
+        b=vNGVUJfnDo65CpcuBGgJMQKDjEPsA3YqR2qFBUAy+XXW2XfcxbJ2QYKklc3pSmCDvG
+         i7j+5Ndvgg68tA/v7Rt0mf0PRN9XY5ntsi7pGe+sIv4ZRsewQkOUrvL4U9ZltbvgxRTP
+         JEjvPBLY7p6rzkigIHdC6GktNLsnYk0+E1qv2CrWpVNCUK2ENAanW9bb2eZujveDg9UN
+         9c/t9HLLz6ZnjX7RetX10hbEbJ5Q585oEaPXb7RtVIaNRSMmcOC3zQu+T/FB+R826e8W
+         1gGg4I4KGCxvH5T7G89trTC9eblG894SukysvBz7pSVfUJFHYVk1soZknF7Hl+6br3Xf
+         S2Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763032739; x=1763637539;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H0YNIzIu22uiiz0mxGtMBpFIWjPETro/ppwvr0tw+Pc=;
-        b=TbGU9iBEhev150sW01MCXw1STfBnZbaa7u40U0A9aSvkQWlpIOvf0weeg1PwtBX5Y+
-         iyngPhzDJ9s89VTicma5m+DpCOb+vFr+twbGjfBo32zQsw0/us2DkdPcQfIy6sibCHHh
-         CX2+OGLnpNym0I8no1LpvWOR7RcyL2pmYTWCHv6WBfJqjGoLdpo5Jzf0giCSl1cnk1kR
-         3kwX26yTbn1LNjYE/feCylCq/rOFLwkaKkFa2Uu+ialOG1RKLRJGTAfhE+nl4/GQPxQO
-         WFLvAj6jkYDdmQ9iUMhO8yVG5a+fS1BfDDUVsKzHXhyhtm98/F1a5JIbGtL2bPTgfDJN
-         /itQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV59rDhlhy4o7B1fvIIMFOZskPUClKyNc9RDeSuFFCtLV+r+vcdHn0X6sZW42Ij2qSJFNFiwMXXYazC0gcchQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzksD5o9Hnix8q3/WRfSe9JyzKxY/OIQ8j8zOlVCbO3H3Y+KCk/
-	/5OPoyokh5pS9JO0ayBW7aTBx2eFSpa1Pm+M+k1nDLyJLl0ybAovIZUb
-X-Gm-Gg: ASbGncuW2K8cXVN5XQ8pViO1iRtGTuBt7q1eG63N/TqEXkeuQ3GzGjyAh+ZbXzUk67e
-	eybwxtYVFQE79/huQ10HzSC8EhK5jIeUKS0nPtjGXEs812RzSiDcYcv2nlR0jpLRt178YHscR6C
-	tR4EsYOUnNiW+nVZG7eZCQQ6ii/KElMnyisCiKzfZu/gPkLEpJ3tAjWLU94cI49vIPxpToKFIFD
-	qZ0XZ66EaB3mR+F9FJ5DOX9h1c1JI6pIiOF8o5Id5Zm3D+0n0RjzDzouuZfsysXS/EXloNz2kTG
-	D3/XT36Ok1KESlcs9N1GYiPAZ6pm8pQV2OBhcnnNL+oA1J4l03K8ZIjcxl6EJ1KsrmpGDFJeqtu
-	nExPzMGBdb86iQI3pzhTupPehs9NcBWNxxRnhzrT3hpC2e8rPKtdmP+mvcO5uBjmib2XZSn3sAt
-	/9A0ZZdzGJ2fEWt5LSoJRGla6H9L1xW8ifo3tyf8SSDQ9tcEZyLOZZXA==
-X-Google-Smtp-Source: AGHT+IFMQwz4IO52o2f0gprc7FuYEtmCSHF4UuwHPZvpQ047cmK3l9k1adYs62mCV0kQYm1qF1mPYg==
-X-Received: by 2002:a17:903:11c4:b0:298:90f:5b01 with SMTP id d9443c01a7336-2984ee21128mr72795845ad.52.1763032739021;
-        Thu, 13 Nov 2025 03:18:59 -0800 (PST)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2bebd6sm22452935ad.79.2025.11.13.03.18.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 03:18:58 -0800 (PST)
-Date: Thu, 13 Nov 2025 20:18:44 +0900 (JST)
-Message-Id: <20251113.201844.1009485179863259148.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, a.hindborg@kernel.org,
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
- gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
- tmgross@umich.edu, jens.korinth.tuta.io@kernel.org
-Subject: Re: [PATCH v1 0/2] Add support for print exactly once
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <aRWt6Ah8KuBXff8V@google.com>
-References: <20251105054731.3194118-1-fujita.tomonori@gmail.com>
-	<aRWt6Ah8KuBXff8V@google.com>
+        d=1e100.net; s=20230601; t=1763034318; x=1763639118;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lWqAqMJ+7iUYGNXIT9R0NKkBc66Uxkdz+Gl6CTrmWCY=;
+        b=VfPYPh006OrzooxkDca+aGTMJooUKfgBY6fvC7A3+PawsgcfbidiFjGqvvkP5aS0zh
+         mfdE8MNTC1OyGT0IlkvLD+5cCe7km5RHWmNkgRfA7mYdKYLGgDO/sctclAAUmyxcDG+t
+         tiapXiUSkfpjsP6z7Z5KY+wBwrN7VCp3dK/IfSV1qOhQeu3s0zrkN47CzBpe5nW0Lwi0
+         5dBsjUwdQIgr3CyV2gzNLT/NYjC+dXDzVIJzYBhBnh6rtAeUIzIl1FM0xWo7PqZK6ulp
+         LSP350BVT0gwHgAGVEVEenwTTeRZsjAts2frWXTzhkC5sNScTaOANmLEJZMNlE37mVr4
+         rmvg==
+X-Forwarded-Encrypted: i=1; AJvYcCVf9lVWrNFxB0PiRKb3+8++tDr1JhrJlEF6iVQA3+MXLVU0g9wcRt3bK9qknXOcUP93UoxkjeVJQlmANnCjxQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJuGir3Nix9Fv5U5JQR82MNBpdQPv81SLNpZlNC66oxKlv4dRO
+	kzCyRBhsa+EIReaUtM0cxvjHXa7UAgGvxb2pYOcfvgAMJJbrMTQsVMxuTTdqs6FH+iMOUmro/9i
+	K9rL+ojqjz131o2h6Nw==
+X-Google-Smtp-Source: AGHT+IGbY7eShC9/mUBzLML+9sBZdsrYqV7V7ymCzDINnPzuUZqVoguiehJENSBtb2LboX8MjAgwi4Ke94Rt6xQ=
+X-Received: from wmcq1.prod.google.com ([2002:a05:600c:c101:b0:477:40c1:3e61])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a012:b0:46e:206a:78cc with SMTP id 5b1f17b1804b1-4778b9ceb3dmr30607885e9.28.1763034318040;
+ Thu, 13 Nov 2025 03:45:18 -0800 (PST)
+Date: Thu, 13 Nov 2025 11:45:07 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMLEFWkC/x2MQQqAIBAAvxJ7TmiNjPpKdLDcaim2UIpA/HvSa
+ ZjDTIRAnilAX0Tw9HDgU7JgWcC8WVlJscsOutINItaK5WAhdZzzrm75MWGrjam17ToHObw8Lfz +02FM6QNcOoYWZAAAAA==
+X-Change-Id: 20251113-inline-lock-unlock-b1726632a99d
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8449; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=o97LNDCE8sRKWgvFmbhQgiJX2C/f0cT5IjvvMFvpiPw=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpFcTIR5U/E8Yxm0UreO6s8nFEFqd0ICg2F8/IV
+ c1lGR32HsKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaRXEyAAKCRAEWL7uWMY5
+ RldCD/oCYwzweaIKBwrXf9O2qHpEH7ZEat8rcJRqlP7pjzTxfU0FabakSS6402bX7XttMObd2VE
+ rgY3FYAJXAJzdzSU6WZDjl+kzBp/54S2Ko3eu57Tqk7AHN68bYjwYTmKMPB0CgZ9YowiCcIIvIC
+ qhQulI+WHUOsrrVicWnWkF93hzBfbKvEVUI1cCRe7HNKL2IfwRBAFFKUwyFwWBKmRwAxc+6svfW
+ zO3iNCYfEu7iut0Fb9lOrk/41oSkn3vaKOBvOc1e+/3HMKCrgtL7uHR8CpnhgXzPyokMS/gwQBf
+ 6B6AXcTjx1WGidIkekoM2b4CzpEgvQhOVBS8FgYzBWqQLAsGmieBJoTTYcIXC1K1LNW5fakAKaC
+ Phg9/WeQlQCaM2KurP7T6hsR3PNPJx/3hLuqBcocSEoFHMnauUGLRanuaUlsjWezGHMSzhqec9T
+ sme9TjT8JqdfM0FldUTNPdRyPpwqVVjMOT7kWog3M5AmL4cI8s3oEuoKaLrO6oBzTAv7HP3Nesr
+ heBQK1Wo9jBdy/VPwT5RrAVs3GJvAtSFr/43PlPsvZKlbdAbvb7c82nIyq+Jwl9gAZEcpbabMUZ
+ fgxonx1hcPhnM0w14xbo8c2dY1Wplkfn6MlX9iojS3OpWjwAWuz3f1gR+FyDxl5eaVJWEtlLjq2 8E1kNoyPu3zdzUA==
+X-Mailer: b4 0.14.2
+Message-ID: <20251113-inline-lock-unlock-v1-1-1b6e8c323bcf@google.com>
+Subject: [PATCH] rust: sync: inline various lock related methods
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, 13 Nov 2025 10:07:36 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+While debugging a different issue [1], I inspected a rust_binder.ko file
+and noticed the following relocation:
 
-> On Wed, Nov 05, 2025 at 02:47:29PM +0900, FUJITA Tomonori wrote:
->> This adds the Rust equivalent of the kernel's DO_ONCE_LITE and
->> pr_*_once macros.
->> 
->> A proposal for this feature was made in the past [1], but it didn't
->> reach consensus on the implementation and wasn't merged. After reading
->> the previous discussions, I implemented it using a different approach.
->> 
->> In the previous proposal, a structure equivalent to std::sync::Once
->> was implemented to realize the DO_ONCE_LITE macro. The approach tried
->> to provide Once-like semantics by using two atomic values. As pointed
->> out in the previous review comments, I think this approach tries to
->> provide more functionality than needed, making it unnecessarily
->> complex. Also, because data structures in the .data..once section can
->> be cleared at any time (via debugfs clear_warn_once), an
->> implementation using two atomics wouldn't work correctly.
->> 
->> Therefore, I decided to drop the idea of emulating Once and took a
->> minimal approach to implement DO_ONCE_LITE with only one atomic
->> variable. While it would be possible to implement the feature entirely
->> as a Rust macro, the functionality that can be implemented as regular
->> functions has been extracted and implemented as the OnceLite struct
->> for better code readability.
->> 
->> Of course, unlike the previous proposal, this uses LKMM atomics.
->> 
->> [1] https://lore.kernel.org/rust-for-linux/20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io/
-> 
-> There has been a fair bit of discussion below. Here is my take on the
-> way forward:
-> 
-> 1. OnceLite should be it's own special type, and it should be in a
->    printing-related module, not kernel::sync. The reason for this is
->    that do_once_lite! is hooked up to a special section that allows you
->    to reset the once status, and if someone used it for anything not
->    related to printing, they would end up with being incorrectly reset
->    when someone resets pr_warn_once calls.
+	R_AARCH64_CALL26	_RNvXNtNtNtCsdfZWD8DztAw_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend6unlock
 
-Do you mean that only the do_once_lite! macro, which places the data
-in .data..once section, should live in a printing-related module? Or
-should everything including OnceLite struct itself, also be moved
-there?
+This relocation (and a similar one for lock) occurred many times
+throughout the module. That is not really useful because all this
+function does is call spin_unlock(), so what we actually want here is
+that a call to spin_unlock() dirctly is generated in favor of this
+wrapper method.
 
-> 2. I would suggest just using a relaxed load followed by store instead
->    of xchg. This is what the C-side does, and I think there is no strong
->    reason to deviate. It allows for a single byte of data instead of i32.
+Thus, mark these methods inline.
 
-You meant best-effort try-once logic like C?
+Link: https://lore.kernel.org/p/20251111-binder-fix-list-remove-v1-0-8ed14a0da63d@google.com
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/sync/lock.rs          | 7 +++++++
+ rust/kernel/sync/lock/global.rs   | 2 ++
+ rust/kernel/sync/lock/mutex.rs    | 5 +++++
+ rust/kernel/sync/lock/spinlock.rs | 5 +++++
+ 4 files changed, 19 insertions(+)
 
-pub fn call_once<F>(&self, f: F) -> bool
-where
-    F: FnOnce(),
-{
-    if self.0.load(Relaxed) == State::Incomplete {
-        self.0.store(State::Complete, Relaxed);
-        f();
-        return true;
-    }
-    false
-}
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 27202beef90c88dda13c58bbea9e8d4ce8d314de..1544347c89d24e2b892686d84fb07a79c18e1307 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -151,6 +151,7 @@ impl<B: Backend> Lock<(), B> {
+     /// the whole lifetime of `'a`.
+     ///
+     /// [`State`]: Backend::State
++    #[inline]
+     pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a Self {
+         // SAFETY:
+         // - By the safety contract `ptr` must point to a valid initialised instance of `B::State`
+@@ -164,6 +165,7 @@ pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a Self {
+ 
+ impl<T: ?Sized, B: Backend> Lock<T, B> {
+     /// Acquires the lock and gives the caller access to the data protected by it.
++    #[inline]
+     pub fn lock(&self) -> Guard<'_, T, B> {
+         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
+         // that `init` was called.
+@@ -177,6 +179,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+     /// Returns a guard that can be used to access the data protected by the lock if successful.
+     // `Option<T>` is not `#[must_use]` even if `T` is, thus the attribute is needed here.
+     #[must_use = "if unused, the lock will be immediately unlocked"]
++    #[inline]
+     pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
+         // that `init` was called.
+@@ -245,6 +248,7 @@ pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+ impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
+     type Target = T;
+ 
++    #[inline]
+     fn deref(&self) -> &Self::Target {
+         // SAFETY: The caller owns the lock, so it is safe to deref the protected data.
+         unsafe { &*self.lock.data.get() }
+@@ -252,6 +256,7 @@ fn deref(&self) -> &Self::Target {
+ }
+ 
+ impl<T: ?Sized, B: Backend> core::ops::DerefMut for Guard<'_, T, B> {
++    #[inline]
+     fn deref_mut(&mut self) -> &mut Self::Target {
+         // SAFETY: The caller owns the lock, so it is safe to deref the protected data.
+         unsafe { &mut *self.lock.data.get() }
+@@ -259,6 +264,7 @@ fn deref_mut(&mut self) -> &mut Self::Target {
+ }
+ 
+ impl<T: ?Sized, B: Backend> Drop for Guard<'_, T, B> {
++    #[inline]
+     fn drop(&mut self) {
+         // SAFETY: The caller owns the lock, so it is safe to unlock it.
+         unsafe { B::unlock(self.lock.state.get(), &self.state) };
+@@ -271,6 +277,7 @@ impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
+     /// # Safety
+     ///
+     /// The caller must ensure that it owns the lock.
++    #[inline]
+     pub unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
+         // SAFETY: The caller can only hold the lock if `Backend::init` has already been called.
+         unsafe { B::assert_is_held(lock.state.get()) };
+diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+index d65f94b5caf2668586088417323496629492932f..f0d086be5a69610cba315c2f375a0a7814f686d6 100644
+--- a/rust/kernel/sync/lock/global.rs
++++ b/rust/kernel/sync/lock/global.rs
+@@ -77,6 +77,7 @@ pub unsafe fn init(&'static self) {
+     }
+ 
+     /// Lock this global lock.
++    #[inline]
+     pub fn lock(&'static self) -> GlobalGuard<B> {
+         GlobalGuard {
+             inner: self.inner.lock(),
+@@ -84,6 +85,7 @@ pub fn lock(&'static self) -> GlobalGuard<B> {
+     }
+ 
+     /// Try to lock this global lock.
++    #[inline]
+     pub fn try_lock(&'static self) -> Option<GlobalGuard<B>> {
+         Some(GlobalGuard {
+             inner: self.inner.try_lock()?,
+diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
+index 581cee7ab842ad62ec144e67138676c000a3f5e4..cda0203efefb9fcb32c7eab28721e8678ccec575 100644
+--- a/rust/kernel/sync/lock/mutex.rs
++++ b/rust/kernel/sync/lock/mutex.rs
+@@ -102,6 +102,7 @@ unsafe impl super::Backend for MutexBackend {
+     type State = bindings::mutex;
+     type GuardState = ();
+ 
++    #[inline]
+     unsafe fn init(
+         ptr: *mut Self::State,
+         name: *const crate::ffi::c_char,
+@@ -112,18 +113,21 @@ unsafe fn init(
+         unsafe { bindings::__mutex_init(ptr, name, key) }
+     }
+ 
++    #[inline]
+     unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
+         // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
+         // memory, and that it has been initialised before.
+         unsafe { bindings::mutex_lock(ptr) };
+     }
+ 
++    #[inline]
+     unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+         // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
+         // caller is the owner of the mutex.
+         unsafe { bindings::mutex_unlock(ptr) };
+     }
+ 
++    #[inline]
+     unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+         let result = unsafe { bindings::mutex_trylock(ptr) };
+@@ -135,6 +139,7 @@ unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+         }
+     }
+ 
++    #[inline]
+     unsafe fn assert_is_held(ptr: *mut Self::State) {
+         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+         unsafe { bindings::mutex_assert_is_held(ptr) }
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+index d7be38ccbdc7dc4d70caaed0e7088f59f65fc6d1..ef76fa07ca3a2b5e32e956e828be5b295da0bc28 100644
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -101,6 +101,7 @@ unsafe impl super::Backend for SpinLockBackend {
+     type State = bindings::spinlock_t;
+     type GuardState = ();
+ 
++    #[inline]
+     unsafe fn init(
+         ptr: *mut Self::State,
+         name: *const crate::ffi::c_char,
+@@ -111,18 +112,21 @@ unsafe fn init(
+         unsafe { bindings::__spin_lock_init(ptr, name, key) }
+     }
+ 
++    #[inline]
+     unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
+         // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
+         // memory, and that it has been initialised before.
+         unsafe { bindings::spin_lock(ptr) }
+     }
+ 
++    #[inline]
+     unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+         // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
+         // caller is the owner of the spinlock.
+         unsafe { bindings::spin_unlock(ptr) }
+     }
+ 
++    #[inline]
+     unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+         let result = unsafe { bindings::spin_trylock(ptr) };
+@@ -134,6 +138,7 @@ unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+         }
+     }
+ 
++    #[inline]
+     unsafe fn assert_is_held(ptr: *mut Self::State) {
+         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+         unsafe { bindings::spin_assert_is_held(ptr) }
 
-Using u8 as atomic type instead of i32 would require a fair amount of
-work, since at the moment only i32 and i64 are supported as atomic
-types, right?
+---
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+change-id: 20251113-inline-lock-unlock-b1726632a99d
 
-
-> 3. If we *do* decide to use xchg, then the xchg needs to be guarded by a
->    load so that we avoid a write operation when it's already cleared.
->    Many read ops are much cheaper than many read/write ops.
-
-Make sense.
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
