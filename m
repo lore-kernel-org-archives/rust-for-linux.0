@@ -1,75 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758D92BE632;
-	Thu, 13 Nov 2025 21:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44601316194;
+	Thu, 13 Nov 2025 22:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763070918; cv=none; b=LV+ooycp0c2F1ya9IINmIYahsN0jtuo1sFuVrkUPPtfpIfjU8ukKMjiwJ4f/3acbjdifpleY1iJmPpdUvvK0g2Ozc52+m+y3d9z2lLlxPEyUx5lQo52lf2NcDhyYbz+/ErvaS8svNsxhMtL7lE7FWNTNpk2oujegz8drAaYzruc=
+	t=1763074716; cv=none; b=MlfyO8uiqNVUdMsv6LRPG83sIoOnfYWReqCfQ23T52ANTKn9g3m6JWDbifECzJrxcodcgGtoIWA5ID+aweWxK2e0CgjHB6GlIc0nxN6uisAQ8dC7llD/l4gLQBkYa03YzpXM/8z87j127OqIgmyd3LQxfe+687PlsP03N8XjhOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763070918; c=relaxed/simple;
-	bh=dDYWv5SYqWgnUYfpzg0MJ7Kc0K1gt2Qkv/Z7vA/nq7o=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=fDr9gffi1AsjqLSIkzGVud/UOWbCQdV//yKiN9X4RqNK5UZP0XYzr8TT0p6tcq2gvmsNuL33wiT+33Yao878Oqx9+PTH7KFLFsE/eA/yyliXcDrpeihGM+g9xtwUG7yqXKA/R3YzSUnfqig57EcXcHv5w2Er+332It0TPylbLTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7ru2yH1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763074716; c=relaxed/simple;
+	bh=+gotfND6+EK22qcnNgJ80M57aS5MBYstylF5+8IyY1M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=vAIJafWCwSGAuMRyzq17LPl2PygLeNOUiP7X6d5aPvJ4H53mS/S7JvXr5KeVOpc0L8dDhXaZqwMULh3OGHXnlhBj0dMXdEHGvDwabo7zum4O4uD8Rn6h/rqXp4wREBd+TqKQERQOoE9slYJ9fI/aHRAwx2+hSdzQSbS9CfBl6To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NuuGeHPn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7ru2yH1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756A2C4AF09;
-	Thu, 13 Nov 2025 21:55:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NuuGeHPn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10800C2BC86;
+	Thu, 13 Nov 2025 22:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763070917;
-	bh=dDYWv5SYqWgnUYfpzg0MJ7Kc0K1gt2Qkv/Z7vA/nq7o=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=O7ru2yH1mTgTWU1ARcRcSXk6/Li+sXuhdbxoK46IOeJEDsTzPwWl/qk/Jcnti4Q2S
-	 GtheCXIeWs37xh8ayIDpO8QzoWcfypXFxOBytPKBUQtSUAKD5YNtN4WxAG+TXkYAxG
-	 PkC38VkVNhm6o2jQae8YAcm85MCl3g6DXDqxlHB14f4j89mGCJ/Zczw0o+GK729IV4
-	 FKd5QHqNzq46JMSbZaYt00BkEEt/LRZ9Oat+z4MJ7oR+2tIX4h6Oy1O0gnbOt/I4JC
-	 0CbGUN2KAzQHSoGVg/iy4mJLbcr2gEAdYHOxnKgkub7p3YrrMyrIgHKc1I6Z66UwNK
-	 UO9FjjVnLUZ6w==
+	s=k20201202; t=1763074715;
+	bh=+gotfND6+EK22qcnNgJ80M57aS5MBYstylF5+8IyY1M=;
+	h=From:Subject:Date:To:Cc:From;
+	b=NuuGeHPn7pffuN7s3QZBfqfwKRSbwPwbodjJc7BFHpfFi+rs2Hoo2NZYmsaJPfCTs
+	 6UaeYuikXCN2vOGXI4Xu1DVKFet/OoeIKDca6XJ+1e3qrb4/9gBUyodvHrbcE/BTkg
+	 zBD58iZ2FOjbDpv6H7xVeS+a+ya07w7tpYOkwnC4CIAdwKfGwwJx28yUYn1Xu7tWY/
+	 ybWezWDycCZRgrXwv3Vx2D/lW4RZSDgEZ+Dg7KsMQstpZ6edbU8kewkpPFEVENddDC
+	 dtiJmETWV4YBCqpBn1ikZlwa2EjJHsI3QsfkTcndXe/a8MMsHwW1DjOde2YVPlaC3A
+	 Ca/BHJKjuSOMQ==
+From: Tamir Duberstein <tamird@kernel.org>
+Subject: [PATCH v3 0/6] rust: replace `kernel::c_str!` with C-Strings
+Date: Thu, 13 Nov 2025 17:58:23 -0500
+Message-Id: <20251113-core-cstr-cstrings-v3-0-411b34002774@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Nov 2025 08:55:07 +1100
-Message-Id: <DE7WH5KQP268.1GXMZM78VIESE@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 2/2] rust: workqueue: add creation of workqueues
-Cc: "Tejun Heo" <tj@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Lai
- Jiangshan" <jiangshanlai@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "John Hubbard" <jhubbard@nvidia.com>,
- "Philipp Stanner" <phasta@kernel.org>, "Tamir Duberstein"
- <tamird@gmail.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Benno Lossin" <lossin@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-References: <20251113-create-workqueue-v2-0-8b45277119bc@google.com>
- <20251113-create-workqueue-v2-2-8b45277119bc@google.com>
-In-Reply-To: <20251113-create-workqueue-v2-2-8b45277119bc@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI9iFmkC/33OwQ6CMAwG4FchOzvTFXHiyfcwHpbRQRMB3XDRE
+ N7dgQc8GC9N/j/p144ikGcK4piNwlPkwH2XQr7JhG1MV5PkKmWBgAVoBdL2nqQNg18Gd3WQyhl
+ j9jk6cJVIizdPjp8Ler58sqf7I9nDWjYcht6/lsNRze3fG1FJkIB6h0BGlyWd6tbwdWv7Vsxcx
+ JUosfhJYCL0gSB9a0nZ6puYpukNpaCVrQwBAAA=
+X-Change-ID: 20250710-core-cstr-cstrings-1faaa632f0fd
+To: Luis Chamberlain <mcgrof@kernel.org>, 
+ Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ netdev@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1763074712; l=1648;
+ i=tamird@gmail.com; h=from:subject:message-id;
+ bh=+gotfND6+EK22qcnNgJ80M57aS5MBYstylF5+8IyY1M=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QKcnIqYCqQbJKlNf25amvRNVxxGzdanoDKCzAF92OuNDlYPLo0mUQPW6ctSEX67hp2CllG0H3/z
+ kilYWTZypxQk=
+X-Developer-Key: i=tamird@gmail.com; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-On Thu Nov 13, 2025 at 9:01 PM AEDT, Alice Ryhl wrote:
-> Creating workqueues is needed by various GPU drivers.
+This intentionally includes only those changes that can be taken through
+the Rust tree. I will send separate patches after rc1 for the remaining
+changes.
 
-Indeed, and of course lots of other drivers need this as well. :)
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+Changes in v3:
+- Include all patches that can be taken through the rust tree.
+- Split "sync" patch into "sync" and "workqueue". Kept the tags on both.
+- Link to v2: https://lore.kernel.org/r/20250925-core-cstr-cstrings-v2-0-78e0aaace1cd@gmail.com
 
-> Not only does it give you better control over execution, it also allows
-> devices to ensure that all tasks have exited before the device is unbound=
- (or
-> similar) by running the workqueue destructor.
+Changes in v2:
+- Rebase.
+- Add two patches to address new code.
+- Drop incorrectly applied Acked-by tags from Danilo.
+- Link to v1: https://lore.kernel.org/r/20250710-core-cstr-cstrings-v1-0-027420ea799e@gmail.com
 
-Exactly, but for this case we should fence the workqueue with devres, such =
-that
-we can guarantee a scope for a &Device<Bound> for all work items scheduled =
-on
-such a workqueue, i.e. provide a &Device<Bound> in run().
+---
+Tamir Duberstein (6):
+      rust: firmware: replace `kernel::c_str!` with C-Strings
+      rust: net: replace `kernel::c_str!` with C-Strings
+      rust: str: replace `kernel::c_str!` with C-Strings
+      rust: sync: replace `kernel::c_str!` with C-Strings
+      rust: workqueue: replace `kernel::c_str!` with C-Strings
+      rust: macros: replace `kernel::c_str!` with C-Strings
 
-Otherwise drivers have to either access device resources with try_access() =
-or
-get themselves a &Device<Bound> with the unsafe Device::as_bound() method f=
-rom
-within the run() callback.
+ rust/kernel/firmware.rs        |  6 ++---
+ rust/kernel/net/phy.rs         |  6 ++---
+ rust/kernel/str.rs             | 57 +++++++++++++++++++++---------------------
+ rust/kernel/sync.rs            |  5 ++--
+ rust/kernel/sync/completion.rs |  2 +-
+ rust/kernel/workqueue.rs       |  8 +++---
+ rust/macros/module.rs          |  2 +-
+ 7 files changed, 41 insertions(+), 45 deletions(-)
+---
+base-commit: 5935461b458463ee51aac8d95c25d7a5e1de8c4d
+change-id: 20250710-core-cstr-cstrings-1faaa632f0fd
+
+Best regards,
+--  
+Tamir Duberstein <tamird@gmail.com>
+
