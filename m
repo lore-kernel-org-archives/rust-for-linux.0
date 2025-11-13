@@ -1,280 +1,205 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010058.outbound.protection.outlook.com [40.93.198.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262C0352944
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 17:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763056242; cv=none; b=dNXuxeM7d/bS/4J4xkyZIEl6hmJc0YtbCx1ZnQr/D41MW74O3SIHRTzTirJztj4FQQ31jgvBamKwdTsPSIMtlyLb4+p/7sZghzx5b6Mvpb0Y8q6cd930ongsUOD+EebhwQvwHY7FDz0LjPqFHdmB75zZQntq1RzHOmRzO5Kd3nk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763056242; c=relaxed/simple;
-	bh=G+pURF9WwdcBeWSWrxIp6gPYxG9iJRMNrP5VmKdPu7Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PqA9UryD7T8WN1A9G6INop0UwqHqqs7lUksbkRgOYle88GUOb6uGOJbUl2VMxxklpy6Ykf6ZQALH9p28Sd52lp9/uU7sJCJKAx7GW7KuFjw2tU0PrskNgoaYGzAOOHbYcOlSTmxjvjloJFctYINMPe+Ew6SVWbWeo73dPCX2Aac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BXn3UgDE; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BDA30C612;
+	Thu, 13 Nov 2025 18:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763059131; cv=fail; b=ULkMknVBKM5a832KE19YdekgWyIHalznSCL9dmzvDTKxDrxQeIzA/a38TBWw1ufuifVVA3MskeuhG2uY4ASgBWqK47sP6zJ+/3WDLxVCxPv9wxiRLuSahUIGU5Ci5EOdxfbvUCXgEUXdFeb5NV9zbvShkfQMgtBKOXfgBMUeqHc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763059131; c=relaxed/simple;
+	bh=h46Oht/aby7bdy0EVeHef79kwjW5tBfE0SCDVI0SzF8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kqUmc7h/51l3snU9xSEeDFkUpJ15BUxPf3I3ZcKHtHxU+351V2XH+tEPOgqpPjpanhq3Yozcp8hvCrWl7Ejj/CEeTA/O/R1XIPl1cdE60cD240AQVIAE6588fQlMwuERkzLfV8VFAnDmuoMRhkGt4livExahyBNBxkvKWgC0SeI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FDs4qiN8; arc=fail smtp.client-ip=40.93.198.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BXn3UgDE"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-78802ac2296so12440297b3.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 09:50:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763056239; x=1763661039; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HCiL4Jx127OKQeBjNWQG9vQfRbIsSIlUdnID04I7YSQ=;
-        b=BXn3UgDEjM5uMMyeHdh10U/cdSJkHACBVPogON4QGV/TC1WaeYSsWRmLzBtMA5zwg7
-         k5QIKDlhQu6piRD4vuKIJjU1ccxgl8/TMbnEyg2yB5eoRn80fyksWesA52fnUHajHO+m
-         GWF1VbooPbJPhXo/J8ay43fkskC3w+bhZLwH3ERKsAmg1MfnIjti7dXHqQ9tmBz6LQn3
-         s7TIClicClW9yZ8uI1z+u1pL+gsaob0U3AeruaYcBB1ug+LibG/MQpv+De+5/r2qAm03
-         t1r98M9OcJhlaB1WaMj/u7GNvyz4TBhZIMixxS91XpobsTrVUjj77ro+yP+Zx8hUckEf
-         B9+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763056239; x=1763661039;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HCiL4Jx127OKQeBjNWQG9vQfRbIsSIlUdnID04I7YSQ=;
-        b=uzhrHWZ/vEP9qgqLCEbZIKrVzQ0Dkl62NYDXwSMEygBAzuXApdtB5wNK85r4HmbxCK
-         pIhybx6oCqMLvO18vSK6io+WS/KxVNLFelEIi+lh2Isf8zftI87VJQfT9XnIpw7mhemE
-         mX/M6uMmDw6bOFMiUimJ4nEUOheJ73na1xB9fKE6aRIEPm2rQ9spelhPDaEizNrs3MEi
-         RFd85BhENk+SqDBSUbFhtbirbr52OptYanpQzeSzeGuUnN0CCJORZ9gKsGFbjl3Alkvk
-         j7gf37KFy22joM74x1Ldvk/WrQ5jBPdBIkwwVnj3fiZze0otfJo+coZv7I+KdCTlApG2
-         4L7w==
-X-Forwarded-Encrypted: i=1; AJvYcCUL7GiAKPGHNn3VhYq5HNabYEl7NuOXU781HaHyWBDndbg+SJK5Niloq/HmVHnjtrvLoV3+Fnw0T6ZIFcT8ow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRTq5CRgWc7TjxLjuCxtwQX6ajkIGLDCtDndroWvGGtGCbLRNi
-	kh9o1+obzWP2eJRwzznhw0mJeVF3f0bH8ymvOlgNG0PMtpk7eJqt4PtT
-X-Gm-Gg: ASbGnctXEfccLiABRa5CYGN9ipsWNsy2aE2BSsMf8kFkHjuEKxy0Or7Y5OX+3sa0XHB
-	bJkI50iYrY4dW0y6xKRPOzlEV50pHxbjYrcBgbCuTU9GKGGY0PvBMMJvtjLJ6dop8Psm6TXsuvf
-	LMTs4f4IvB+Yw96pSMx3p8jDBoku78o03YCRQjzXYl+4wpfi4a+gJxZ9R5ulYcRJ9/C8wE2y7/4
-	1I9JqlYbA47ykM1U0luPbUbBYJBCz7O4Efw1XwtxKMRIk7JrfCjWK6y6HLwd3n7BC21eGozuwlN
-	8xxrGDk1ANQ/b6zIXSb+DtST4l3IPY3BTLLJU/iOoHJSGVBmVg4gFLVsodMVJ+I2D/bh8T59gSH
-	IBsg2x0hZENu1K4i8vIHTiPuXVEUUp9tKkn2HgqmbrIWZ69TIddOiBcpihujFXYmfX2Jn6X9tXL
-	Egi3TTTHcfg7L3bDsQzfjmvv73YPF+fnET6CEg87jkEnA=
-X-Google-Smtp-Source: AGHT+IEPm4B/iq/qqXgrDVPIU5K84/ZfKDTF5zZRj1sXxMH/8gptFRhKDCDHGV8CL/sGz7P5y5DCYQ==
-X-Received: by 2002:a05:690c:6585:b0:785:d330:e39a with SMTP id 00721157ae682-78929ee4186mr1632867b3.40.1763056239017;
-        Thu, 13 Nov 2025 09:50:39 -0800 (PST)
-Received: from localhost (c-73-105-0-253.hsd1.fl.comcast.net. [73.105.0.253])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78821ddb632sm8544437b3.11.2025.11.13.09.50.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 09:50:38 -0800 (PST)
-Date: Thu, 13 Nov 2025 12:50:37 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>, Burak Emir <bqe@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 6/6] rust_binder: use bitmap for allocation of handles
-Message-ID: <aRYaYlX1vQG_GUAy@yury>
-References: <20251112-binder-bitmap-v5-0-8b9d7c7eca82@google.com>
- <20251112-binder-bitmap-v5-6-8b9d7c7eca82@google.com>
- <aRTbX6RPsFf0NW48@yury>
- <aRUZq0Fo6T1f3lOD@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FDs4qiN8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TbqYzS02ZcJVEsyMWaQ14BwJBYw6MLs0B0F7ia3VvV0wI1wghlWUR33ggdEJdHJRxzooJI1uHUVCNIOoST/YPPiRIyGrpWxJ+wrIHfxsE1FYtG7qHYvSjO4q6TyrS3X498kuWWKa8Hc8OfHA53Xdh8PMAOf/T0/9jZ3IPHTmjo4rfRNqPGlSeRpytWGVxZDMugAhHhEVNaNtqUqjxyx2OyLEUjPIYOk8jM4gF3ca8KnHmG+Jqg3ia3qgQ8rxMjGG9JnQ75rJwe5uIGvigJH60qu7ntrgPaJOpcgdIpl7OsdjPx/j1hHk1SwKirhJhHOE44JryfqjeF3mvsWCAmO6tQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FBkTHdcQA0vZtg0/FMHVxuWUcgJ6msNNv1pGvU+l7fI=;
+ b=AH6oouJ/RNJm3nr97BD67I5AH8YbFvwqvKuRiivKGKYK90FdSrHTZ1ulUBJxqP1CadiC0fB0PAf+NBaDSLs2XaARDIHY7pvchKxVnac4Ed7yoEt/bhwlLC5V6qu3olJkzdXm/fmY58f+4YTo2uhjjCXE+r9g59CbNAx5MDkMpciypliDJJBm+ehVA2A1RzyKNjnqHHct+PatbG0ZJpWHqzadiRw/pQH/EkOYZVOFf7GO5L006S87QtghjzQbpajnRkftkgAuAt8rKGr9LNR5xNuVaOSaRmQ5agKT2wL8MCg+BtJuOHz0tF5KBvS31eZPYW2svFo76afNr2xVjEydxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FBkTHdcQA0vZtg0/FMHVxuWUcgJ6msNNv1pGvU+l7fI=;
+ b=FDs4qiN8s9iI2pJoqpHJdGhxlSve4WU+8eCeN4b97R0YjJKt4NyPMBxoCMi2pHSQeTnOXWWSHjNPNstkBJZxlxrWng2N0fqLYtn7PdR0tHkgPNQjKklogJxbPCF+tQnpTQt49ssSORCKXMywKPKma2mRxswKR5D8rAuhVVYRuPT9TRJhkLaKjB6C1VVaj7aBKqkIs2PnyY8AKUt//bZ6Wny3XbCSVF/4lKCvGnLLVAMIUxgOZPLQH8/0KrmSUaQDK/6SizQZIrkZpQdGLJmC/lZgtgiJd+V5qeUSqXNL9SkD4l6qAH6Ee/KdFRP/yrvDLIqyKm0Yuokswh1pYHGBMQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ DS0PR12MB7899.namprd12.prod.outlook.com (2603:10b6:8:149::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.15; Thu, 13 Nov 2025 18:38:46 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::d622:b3e9:bfe1:26bb]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::d622:b3e9:bfe1:26bb%7]) with mapi id 15.20.9320.013; Thu, 13 Nov 2025
+ 18:38:46 +0000
+Message-ID: <ab0ef5a8-d18d-43e0-a3f7-68d10ecd1761@nvidia.com>
+Date: Thu, 13 Nov 2025 10:38:43 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 4/4] gpu: nova-core: add boot42 support for next-gen
+ GPUs
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Danilo Krummrich <dakr@kernel.org>
+Cc: Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ Nouveau <nouveau-bounces@lists.freedesktop.org>
+References: <20251112043000.83071-1-jhubbard@nvidia.com>
+ <20251112043000.83071-5-jhubbard@nvidia.com>
+ <DE7ESLFYKP2I.MD5ABO05Q2O7@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DE7ESLFYKP2I.MD5ABO05Q2O7@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR03CA0025.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::30) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRUZq0Fo6T1f3lOD@google.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DS0PR12MB7899:EE_
+X-MS-Office365-Filtering-Correlation-Id: f2350921-adbd-4386-4982-08de22e3e0da
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dXhzYitIMUxwcVpLT0Myd2JvaWs4NmNRei80YUx2ZVVvQ3VZNE52YTNMQlZO?=
+ =?utf-8?B?U1JxVlRRNVhJQlREMW1OQ2VvazRlb2JJakx2Y0tIQXpCQUtjTEZtQzlOMi9h?=
+ =?utf-8?B?OHJJSzB4MXVGTjBHVmU3dG5pVWJYMy9tY3JlbC8vZ0M3ZXFnNHpRcXhpd3pq?=
+ =?utf-8?B?N28wRmkyL1ArL0ZzbDNPZDBXaFZGTE1EUC94K0tHVVBoQk9lQW5oQWhlcWo0?=
+ =?utf-8?B?VDVxL3RadG4vRVE0ak56d2s2a3pSdi91Rk5EdTJ6S0FLbXB0NTVhc1ZDZE50?=
+ =?utf-8?B?WWp2dnVra2FhNWtwYThsYkhSZDZSRXYxUXpOT0Jhd1c4bmw4eUZaWGNnVkVY?=
+ =?utf-8?B?UXAzdkxNSkpkM2dFTUhUdnFycGdLNkxCakpIM0o5cVJhZXpFVFJTaFhWU3NM?=
+ =?utf-8?B?czh2SWY5T2k4WWMyWmJjRTIzbzBJaEtKY0hkRHBZSk5IT2UxWGF1M3diWVk4?=
+ =?utf-8?B?MU5kbFFXcmhkdnhsTGhHNk1GdklNMzVGNEJnODR3djZIamxSdEQ2Z29jZUJ1?=
+ =?utf-8?B?WDkxVzVHRWpwZ0l5dGVrMFp0YWdhcXhLcFNYSmc5SXlROVM0cDk4cFA2Mi9t?=
+ =?utf-8?B?a2dReTBHRGVtcExhWUxBY2xnNDFFT0tXTm1pVVFlSlhGMUh3WXZSdmhXeU9j?=
+ =?utf-8?B?TFNLdi9FVWNDeG10QXVVTm55UW5Yd1hRUnowUXZtMkRrRkNNbHdBZGVsUVdm?=
+ =?utf-8?B?SmMrNEE0VCtxTU9rQkxyVEhudzBHTzNKS0I2NWdIRnBTYXBveENsUklCTGl1?=
+ =?utf-8?B?emxxeEpPWVpYdWRMOHFka2FISTF6NzNCRWRqRVNZd2tIbHNvOVUva2l5T1Vi?=
+ =?utf-8?B?VzlZRlRTSmM1U0x2ZC80Vmp0VXlqNElYV2t1dm9tOUplK0w0VnZiQWlFbVIx?=
+ =?utf-8?B?M1ltSS9QbjlSR25WRFZQN1pxWENiWjZ3VDFtRloxN3pRNTUvYnlqZm53Mmlv?=
+ =?utf-8?B?S1pRREFDd3VPQjFxVFQyRVpXbE9OSnJxajZ3RUUxakZwdlMxUmlocGd3VVRW?=
+ =?utf-8?B?Nkk0S0M4U0NWdlpJNVg2TENtYnJtZDRyWllEYURNcWFjejUzcGdJT0Rvency?=
+ =?utf-8?B?RTFhT0NWdG9rRWE5NHBGK0doZE9QUmpGZGR2WGxWUnIzRGsvZW43OVpjVUp3?=
+ =?utf-8?B?OFJNWGlQNnNFNnloTkxIMkdSWEVXV0I1cDMyRVJPL0dMOG1DM3k1Qmh6UHZn?=
+ =?utf-8?B?cGJ6Z0QyZTRtTkR5dDZTejNmTzY0YjY1dmVBdzV0RDN4VU02dWRNUFJheGd2?=
+ =?utf-8?B?OGlYQWZ2eEVNM3N6MVJRaTdtQ0VFRTFVd3dPK2Y5OHd0L2pvVTFkMmdYQlhn?=
+ =?utf-8?B?NEtJbm9mZzFwZzloRmxhbHNKbmg3RzFKMEtpUndQMWthSDdYY2taRnpzK0Nr?=
+ =?utf-8?B?cjR6dDV0TVpaajZJbXJrN08xR3EzOFFQQjRzR1dkaEhDQXNZcnZFM25IU2hS?=
+ =?utf-8?B?VTFxa0tMSTgySWYyenVxbWRCZ0NYaU5YODk4M21YMC83eHBqU0NnMjl3Tnpw?=
+ =?utf-8?B?K3VBQU9takI1YmtwWW9pbHVsMGxaRnlVc25razN5Z01GREx3RjR3MXQvNzFG?=
+ =?utf-8?B?dTNpWDViTTE4b2l3ZVdFSDlUTGVhNVlSUFJCTUJmZDQvWEhqdEpqSkhUQXRY?=
+ =?utf-8?B?TERLWVFhVndYUUxVK2hvVmpPUU9IRDNOdTNlQmhock5tVmhOQ3dxQ0VvcWVr?=
+ =?utf-8?B?d3VHaUhqc1NTRWJEV0VkMkt4cEswais0LzNFVE5OTlZEenk3TUN1MncyMlBZ?=
+ =?utf-8?B?NzFXZ0RjNDlWZXY0ZTNpc0I0WU5rQnlLanEwcFVFb2t0bC9SZ0dqSWN1dFV5?=
+ =?utf-8?B?Q1V5QUJxZnBkZVByQ2JldHpJYjk5WWZXRS90VStPR3ltUjhnQ2d3RmNtYm1z?=
+ =?utf-8?B?ZlBRb3RjZlVIZ24vcDFhNkQveHI4VlAzOFA5NHBCbmpTRkJRdklzTFZ3bDhD?=
+ =?utf-8?B?WGkxQWhiSUJOQlcwTllwM0ZQdzJZOEZyMHcyVHA2Q3BKREtYelg3MXRoWkUy?=
+ =?utf-8?B?Zkw3WWZocDRBPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VTlNVVFHdTZkRVVVL2RPK2MwdU9lMm1aY0ovcER6N0V0QkFoYUJXbUE4QWxq?=
+ =?utf-8?B?aUtBRlZyUmRieVNsdUVmS2lwS3cxb0tWV3dMUkNKd3c1T2dBZkxVdFY2WUZU?=
+ =?utf-8?B?cXJub1ZCUy93eERtM1dZb09GZnF5dCtrMEk4VnA5QjJ2ZE9CYnJLS3VqRzI2?=
+ =?utf-8?B?WXRvK2NodXM3ZWJSWVBKSmZKZ3BVSUwyOE9DTVJnYzdiOENtWFN6amhSN3VF?=
+ =?utf-8?B?Y2U0YjU4cXo0aEo5WWFCaHpleHdFNHU2YThrN3NGaXJsVHRJRENMVnZyQ29Y?=
+ =?utf-8?B?WStndU9SSFVXaEM1YzBJb0k1RnRxbWNZN2Frc3Jjb3VyWXlQZVQxczU5Nm1Y?=
+ =?utf-8?B?K1dIL2JvKzl3Q2F5bVE3OEc5MkpIdkxuQU5vcFFGYVRIVGk0UmtOZjR3RXdB?=
+ =?utf-8?B?MU8zQkg3Q0h2TVB6Ky92ZjhyWkRMOGdRZzZHYkwzeGxBQXF4blBnSWVvb0lU?=
+ =?utf-8?B?bDhHVTZuVXMzWm9RbDJYVEFTWjdWWnk5OUJ2OWt5dXJqc2NIMitPdkJPZFVj?=
+ =?utf-8?B?dnFrZXV5NWwxNnFoN3R6WllkajQ2UmhKTm5iWGk4a3V6L1dnYXJ0aHR3R1NV?=
+ =?utf-8?B?OTZha1U0S1MyVFlhY20vR0xnakwvQmRtbHpmSDg5K1YweFJOZ3hFb3hqTkRw?=
+ =?utf-8?B?NEdiU0FEaVVrdC9jSXFOYkEyYW4zckovRDZkSGFIWEdzUjlab0dsQ05lbWEr?=
+ =?utf-8?B?WDRPY2F5MnVnK01CMWtwU0daWm54akx3Mmljc0lWdXdyUStyeWx6QUJTb0Rq?=
+ =?utf-8?B?dXFIdWlIakVZQTJaVTVBRGFPRnNOcXAzMW9rQXl6d3JNN25mVjZrZW9LUHBj?=
+ =?utf-8?B?QTZIWXhtZ0hCNDhqc013OXhMMXhRdHdVRFg2bjh6TmRWZlZDME5US2FXNjZz?=
+ =?utf-8?B?bytaeEhCNVhTNWFCbU4rRW9JTU9zQVdEa1JKWHdBVWlzVXJCb09SZWFuMjZm?=
+ =?utf-8?B?eDJDamcyeTZwOGlKd0RteGIvb2VDWEphSys0MUo4YVc4OThxbG5jN2x1QUgr?=
+ =?utf-8?B?MnByQ2ladnRtWjJqdjBBWUM1UzVYYnpSNEhMVGhmZmpYUUNYRUZFdkU5bXQ4?=
+ =?utf-8?B?SVRLeDkybFgzOEdjaFhIQVhJOWlSZ2pYaXRQdzhuNE1jK2N4QUVRQi9IdzE5?=
+ =?utf-8?B?Um82bWRaNk9zaXNYYmViRyt4SHRlUGVXTnZTY1JoQjZHbmxvZU1xUm1Zd3lE?=
+ =?utf-8?B?LzdMNStKdG15N3ZlWkpxMWcrSXY1YnhaVVNtZTdmSWhONlVNMFVPazdjUklo?=
+ =?utf-8?B?eWZzZ1BJMHlGWVArL3YwOFpGa3JXTTQ4KzZ4cW4zeEJoWFM1REhadVlqbFNG?=
+ =?utf-8?B?TlU0bkc4SDNkcUl5d1dFTldad1lBZEFUS0V4N1AyazFBNkZOa0V6QUxPOVVY?=
+ =?utf-8?B?Y2U5UHVBblV2d2J6RmNLdlFWemNVTTNxdjJUanhXa09QQzRXbXROdTdBcEJo?=
+ =?utf-8?B?cE90Nmt2b3o0ZVE1cENuaUJUWDNkd0NWWkMxejNIclVFcUYzUStVbExjVUNW?=
+ =?utf-8?B?cDM0ZFIvZ3FVZEFUSFd5SldkOFdhWHE0MDl0cWJBWG5paWhVWHNmR1Jpbmkx?=
+ =?utf-8?B?c2VQcWsvRlFkN05QNzBTVlcxeFo1UnJWK1RiOEFYNVpVNTJZeXdZOGRyRitR?=
+ =?utf-8?B?bDRwVnpJUVZHWlBOSDRNNWpSWnB4ODFJR296Vng2RjNXWHhYN0NnenE1dGla?=
+ =?utf-8?B?SVpTNWxnWnBqSTRNWmcxSldjaXJaaGdWNW9ubWR6QjFidFdZQUtGQ2NWRDhV?=
+ =?utf-8?B?b2FqM2NCdTBQUURNKzZqZ1hLUE9HUk1TM3R1L1BoZHVxakF4dE9jd0RpTWVB?=
+ =?utf-8?B?QUFpS1U3QnVOSDRsS2R2NTQwZE9MLzVCNDZxWWFZa1l3VmlTeXZjM2RWc2FL?=
+ =?utf-8?B?dUJDZTF0RVpKZG9nWUp2UXYvUTd1a3RrYUlxQWJ3U2JNaDExWDBXa21hZ2hN?=
+ =?utf-8?B?cFpOVGFocjhvK2hkSWFqako1T2ZsYktYeGdqQ0UxM1h4REVEVGhOcThRWU1W?=
+ =?utf-8?B?OERyTWV3M2ZNeFp1TW9ZYWdlN3ZjOU50UEdIZVh1NFVpMTlqNFhkcTYvKzFv?=
+ =?utf-8?B?ZFpvamt4SkhMdUNmY00rRVdWQnNqVU5TQk1yNHA3anlkUitPUUtmOTdPUUFR?=
+ =?utf-8?Q?dVmFV/BodRJ9skg6ow85LYAkw?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2350921-adbd-4386-4982-08de22e3e0da
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 18:38:46.0097
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uospR4Tsah0bN/G1fpMtNgt5xILIWkikyfW0ORVG8iqq5Drmxn7wMr/MwPKXdK1we5vjhwqyApjy18wVIZ9i9A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7899
 
-On Wed, Nov 12, 2025 at 11:35:07PM +0000, Alice Ryhl wrote:
-> On Wed, Nov 12, 2025 at 02:09:19PM -0500, Yury Norov wrote:
-> > On Wed, Nov 12, 2025 at 12:47:24PM +0000, Alice Ryhl wrote:
-> > > To find an unused Binder handle, Rust Binder currently iterates the
-> > > red/black tree from the beginning until it finds a gap in the keys. This
-> > > is extremely slow.
-> > 
-> > Can you share performance numbers? 
+On 11/13/25 12:03 AM, Alexandre Courbot wrote:
+> On Wed Nov 12, 2025 at 1:30 PM JST, John Hubbard wrote:
+...
+>>   impl NV_PMC_BOOT_0 {
+>> -    /// Combines `architecture_0` and `architecture_1` to obtain the architecture of the chip.
+>> -    pub(crate) fn architecture(self) -> Result<Architecture> {
+>> -        Architecture::try_from(
+>> -            self.architecture_0() | (self.architecture_1() << Self::ARCHITECTURE_0_RANGE.len()),
+>> -        )
+>> +    pub(crate) fn is_older_than_fermi(self) -> bool {
+>> +        // From https://github.com/NVIDIA/open-gpu-doc/tree/master/manuals :
+>> +        const NV_PMC_BOOT_0_ARCHITECTURE_GF100: u8 = 0xc;
+>> +
+>> +        // Older chips left arch1 zeroed out. That, combined with an arch0 value that is less than
+>> +        // GF100, means "older than Fermi".
+>> +        self.architecture_1() == 0 && self.architecture_0() < NV_PMC_BOOT_0_ARCHITECTURE_GF100
 > 
-> I have not benchmarked it in the Rust driver, but it replaces
-> potentially thousands of calls to rb_next() with a single call to
-> find_unused_id(), so I'm feeling good about the performance. And the
+> We could also keep `architecture` (making it private) and just test for
+> `self.architecture < NV_PMC_BOOT_0_ARCHITECTURE_GF100`. John, I can do
+> that when applying the series if you think that makes sense.
 
-Feelings are good, but numbers are better. In the original dbitmap
-patch, Carlos shared the experiment details and rough numbers, and
-it's enough for me. Can you just reproduce his steps?
+Yes, I think that's a good change to make, sounds good to me.
 
-> equivalent change in the C driver was done because this particular piece
-> of code was causing contention issues by holding the spinlock for a long
-> time.
 > 
-> The characteristics of this collection is that there is one per process
-> using the driver. Most processes have only a few entries in this bitmap,
-> so the inline representation will apply in most cases. However, there
-> are a few processes that have a large number of entries in the 4 to
-> maybe 5 figures range. Those processes are what caused the contention
-> issue mentioned above.
-> 
-> > > To improve the performance, add a bitmap that keeps track of which
-> > > indices are actually in use. This allows us to quickly find an unused
-> > > key in the red/black tree.
-> > > 
-> > > This logic matches the approach used by C Binder. It was chosen
-> > > partially because it's the most memory efficient solution.
-> > 
-> > That inaccurate. You are adding a new data structure (bitmap), advocating
-> > it with an improvement on search side, and that makes sense.
-> > 
-> > But now you're saying it's also a more memory efficient approach, which
-> > doesn't sound trivial because the most memory efficient solution is to
-> > bring no new data structures at all.
-> > 
-> > I guess you meant that bitmap is the most efficient data structure to
-> > index used/unused nodes. If so, can you please rephrase the sentence?
-> 
-> Yes I can rephrase.
-> 
-> Adding more data is of course always less memory efficient. What I meant
-> is that this is more memory efficient than the competing solution of
-> using an augmented rbtree that Carlos mentioned here:
-> 
-> https://lore.kernel.org/p/aC1PQ7tmcqMSmbHc@google.com
-> 
-> > > +            if let Some(res) = refs.handle_is_present.find_unused_id(start) {
-> > > +                match refs.by_handle.entry(res.as_u32()) {
-> > > +                    rbtree::Entry::Vacant(entry) => break (res, entry),
-> > > +                    rbtree::Entry::Occupied(_) => {
-> > > +                        pr_err!("Detected mismatch between handle_is_present and by_handle");
-> > > +                        res.acquire();
-> > > +                        continue;
-> > 
-> > At this point you've detected mismatch between two linked data
-> > structures. It means that one of them or both are corrupted. To
-> > me it looks fatal, and your pr_err() confirms it. How could you
-> > continue then?
-> 
-> Although we should never hit this codepath in real code, I don't think
-> we need to kill the kernel. We can treat the r/b tree as source of truth
-> and adjust the bitmap when mismathces are detected.
+> Considering that the series has been extensively reviewed during the
+> previous iterations, I think we can safely apply it for 6.19, so will
+> proceed once I have an answer.
 
-There's no such thing like a 'source of truth', and rb-tree is not even
-close to that.
+Great!
 
-You add bitmap for performance reasons, but with that you also bring
-some redundancy. Now, you cross-check two data structures and see
-discrepancy. At this point you can only say that either one of them
-or both are corrupted.
-
-Relying on rb-tree over bitmap is simply wrong. Statistically
-speaking, there's more chances to corrupt rb-tree - just because it
-is scattered and takes more memory.
-
-> I could add a kernel warning, though. That shouldn't kill an Android
-> device.
-
-Assuming, you're talking about WARN(), I agree. But it looks like my
-reasoning differs.
- 
-You never hit this path during a normal operation, as you said. So if
-you're there, it means that something is already going wrong. If you
-issue WARN(), you let those focused on system integrity to leverage
-panic_on_warn and shut the system down to minimize any possible damage. 
-
-With that precaution, you're free to do whatever you find practical to
-'recover', or even do nothing. But please avoid referring rb-tree as a
-source of truth - it's a misleading and dangerous misconception.
-
-> > > +                    }
-> > > +                }
-> > > +            }
-> > > +
-> > > +            let grow_request = refs.handle_is_present.grow_request().ok_or(ENOMEM)?;
-> > > +            drop(refs_lock);
-> > > +            let resizer = grow_request.realloc(GFP_KERNEL)?;
-> > > +            refs_lock = self.node_refs.lock();
-> > > +            refs = &mut *refs_lock;
-> > > +            refs.handle_is_present.grow(resizer);
-> > 
-> > Is it possible to turn this block into a less wordy statement? Maybe a
-> > wrapper function for it? Ideally, the grow request should be handled
-> > transparently in .find_unused_id().
-> 
-> I can extract this block into a separate function, but I think it would
-> be tricky to move the entire logic inside .find_unused_id() because of
-> the mutex lock/unlock situation.
-> 
-> > > @@ -905,6 +924,16 @@ pub(crate) fn update_ref(
-> > >                  let id = info.node_ref().node.global_id();
-> > >                  refs.by_handle.remove(&handle);
-> > >                  refs.by_node.remove(&id);
-> > > +                refs.handle_is_present.release_id(handle as usize);
-> > > +
-> > > +                if let Some(shrink) = refs.handle_is_present.shrink_request() {
-> > 
-> > This is questionable. Shrinking is usually the very slow path, and we
-> > don't shrink unless we're really close or even inside the OOM condition.
-> > 
-> > In this case, shrink_request() on average returns false, but it's
-> > O(N), which makes _every_ release_id() O(N), while it should be O(1).
-> 
-> The current implementation of shrink_request() will refuse to shrink the
-> pool unless the largest bit is less than 1/4 of the capacity, so it
-> should not perform the expensive operation very often.
-> 
-> That said, it does call find_last_bit() each time, which I guess is
-> O(N). But my assumption was that find_last_bit() is cheap enough that it
-> wouldn't be a problem.
-
-It's O(N), while the expectation for release_id() is to be O(1). But if
-you think it's OK for you - I'm OK as well. Can you explicitly mention
-it in function description?
-
-> > Consider a very realistic case: you're destroying every object, and thus
-> > removing every ID in the associate ID pool, doing it in LIFO order. That
-> > way you will need to call shrink_request() about O(log(N)) times, making
-> > the whole complexity ~O(N*log(N)); and you'll have to make log(N)
-> > realloc()s for nothing. If you release IDs in FIFO order, you don't
-> > call realloc(), but your shrink_request() total complexity will be O(N^2). 
-> 
-> Even if we end up making log(N) reallocs, the total complexity of the
-> reallocs is O(N) because the amount of data being reallocd halves each
-> time. So the total number of bytes copied by reallocs ends up being:
-> 
->     1 + 2 + 4 + 8 + ... + 2^log(N) <= 2^(1+log(N)) = 2*N
-> 
-> which is O(N).
-
-OK, I trust your math better than mine. :)
-
-> Of course, deleting the corresponding entry from the red/black tree is
-> O(log N), so it's still O(N*log(N)) for the N deletions from the rb
-> tree.
-> 
-> > Can you compare performance numbers with and without shrinking under a
-> > typical payload? Is there any mechanism to inspect the ID pools at runtime,
-> > like expose via procfs?
-> 
-> We expose the contents of the red/black tree via the binder_logs
-> mechanism, but that doesn't show the *capacity* of the bitmap. Only the
-> index of the largest set bit.
-> 
-> > Can you make your shrinking logic conditional on some reasonable OOM
-> > heuristics, maybe OOM event driven?
-> > 
-> > And even without OOM, you can safely skip shrinking if the number of IDs in
-> > use is greater than 1/4 of the capacity, or there's any used ID with
-> > the index greater than the 1/2 capacity.
-> 
-> I guess we could register a shrinker, but I don't think it's worth it.
-
-OK, if you're fine with O(N) for release_id() - I'm fine as well. Can
-you mention OOM-driven shrinking as a possible alternative for the
-following improvements?
-
-Thanks,
-Yury
+thanks,
+-- 
+John Hubbard
