@@ -1,183 +1,182 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952512248AF;
-	Thu, 13 Nov 2025 02:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762999372; cv=none; b=vGF7XRrQTxLBiPlEh3JNiC0jiR3cpqpmH+QzxF7vW2ldkPXg26ONsjA3tVchfMyHX4i19awCdecpEgLZ1w34jERYBzDS2GvuRRa4YPcods7IeN45fQ7b/yW6/dnfWeCXgROrP7Q9L9gUTfjKLmkQqCuhQcuWLkLpy9yj7wWcklI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762999372; c=relaxed/simple;
-	bh=wrwfEm1eJN5ZFOVUUEYyAYWIhV0+rrQk0L93dYDf9xo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bwwSmBhX3p27C9FeQIBI8Q7ciiMITx7XK95fOnqRyx5mQ7Vv01eCkVoDOS1ivnkva8qx1wqSmj9akK2sS0h3uD+TynrwPbmnfWCmoteFPztIvlLMghr53QXXze3RSCYwpMi+CilPnzexQjVRSm7oDD9WQuVKNIzCjBMDwgdUPb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-df-69153c41d44c
-Date: Thu, 13 Nov 2025 11:02:36 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Guangbo Cui <2407018371@qq.com>, Liam.Howlett@oracle.com,
-	amir73il@gmail.com, andi.shyti@kernel.org, andrii@kernel.org,
-	bsegall@google.com, gregkh@linuxfoundation.org,
-	linaro-mm-sig@lists.linaro.org, link@vivo.com,
-	linux-kernel@vger.kernel.org, mark.rutland@arm.com,
-	masahiroy@kernel.org, mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com, max.byungchul.park@gmail.com,
-	mcgrof@kernel.org, melissa.srw@gmail.com, mgorman@suse.de,
-	mhocko@kernel.org, minchan@kernel.org, oleg@redhat.com,
-	paulmck@kernel.org, penberg@kernel.org, peterz@infradead.org,
-	petr.pavlu@suse.com, torvalds@linux-foundation.org,
-	vincent.guittot@linaro.org, will@kernel.org, yeoreum.yun@arm.com,
-	ysk@kzalloc.com, rust-for-linux@vger.kernel.org, ojeda@kernel.org,
-	gary@garyguo.net, lossin@kernel.org, a.hindborg@kernel.org,
-	aliceryhl@google.com, dakr@kernel.org, alex.gaynor@gmail.com,
-	bjorn3_gh@protonmail.com, kernel_team@skhynix.com
-Subject: Re: [PATCH] rust: bindings: add `rust_helper_wait_for_completion`
- helper function
-Message-ID: <20251113020236.GA36724@system.software.com>
-References: <20251002081247.51255-37-byungchul@sk.com>
- <tencent_13F1EDE0D6B7A44697F31AE274C8E664E908@qq.com>
- <aN62F8t493R7UmCT@tardis.local>
- <20251113012036.GA75428@system.software.com>
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011028.outbound.protection.outlook.com [52.101.65.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B716D35CBC9;
+	Thu, 13 Nov 2025 05:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763012943; cv=fail; b=r3z+qrkcyLAUgLT/q/W0slqr3ZquoEhSVJcxfDwLoCz4Vw6dltqeyOCcEnbiHKipQ618H1GMhtgcOveijMu6FmRDBegycn397KtA/TD04Rp5tlRZmiLILMle6LtZ5cyTE5Qh64wXuXE03xBANMU84K7fa4NMpFPZdE18CBMdwq4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763012943; c=relaxed/simple;
+	bh=/N9TG8SmZqMzI0Ya+vyB3NpHq/2E9zhrzZtOQTL2zEY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=DwzT4Fzu6wGn/p/RPnHtFyL/dSQ9Kg4duatCbudjlQCSD4IOyexSaBs7HiUcuBaQIFCvmn5LnLuUZaJNQ6VHumEJRsxSQssj4kF+TjzfowQR9kxw2rya3UIg6zCOM3bmAKZ0zm006u0ifJn7US7wrQNNK4XCtr+xJXZb0vzKCJU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=MUaLWdtZ; arc=fail smtp.client-ip=52.101.65.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="MUaLWdtZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=D6QuYJHelQLRvdSy/E/5qK5qJL+6GP8jv8FbNb3Ntya2mrovwDUVAr5/4V7UESCjoey7qVdapV7MBT5k+MYzBai+yYSJz39sUXc9RBbaHAUPVarr0Earo4wzAGeT2vON7NMtLTyWvKjkliNYiMxanSYAMTsqsNuoDRXQrDqltF+CNsKPGF5VgMmKkNv5LUGZA/QNQHlXfUpUGGWVk7t1vx4afmTARPtSaf8AnWI0frJZSE24pq/fWCrZnJl0eZ/V7eCMhv9rh8t9fiwFC5hxAkn5B4b0vjqfascPiv3KyPc+HrzQphwKxetld+oKFIz1Vzdg5IaHCfWGCcGdsusz4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s3oZypIm5BZZtNp9WP9unlYFUNtyHLU2sm+ucDQ5/nw=;
+ b=HmvQXtxbVXJHwFiZTHRcow4eZ7FRHG7m4F5k7G/k3vfCL1IDd0lnlF/RRhl7FZOwU4Y45p3vWcZeDTcFdPUJj3KOM8ywZu6PRFxW6lq3QlTGUqDLyIPYQV09rezVICwGxD3Oj04I0K7vVyAo0guyosRsbbuE4ADgRHiKs5V9XEe8Daqd0PMs+dWLH6xoMPDQeARzDPsuMTGay5FZ3wFJsuId8OFTxhs+1zEZJeG4Ik1pP3QF5eAmUrzjGo2+1fsWdZLjp1jY2k8At6YtQ7KxOySVS5WGJAnYXuy/Ui6pvoqny24LOR5vZutiq/eEIKy2a5zS3Q49hta7aFoT3L8m2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s3oZypIm5BZZtNp9WP9unlYFUNtyHLU2sm+ucDQ5/nw=;
+ b=MUaLWdtZGh0bjHDTLA1VFIXLHTrC+qjgLlr1HNwwpeXT2eN8n3BuRsmL7CVzbT61gXfmpO2zr2lRQIh1fk+HXyqw9aarLlBZ0758bd7Vc+HVWB6EzbzmdMdP1HSGg0L0PyYuYKmDfiEkvQ+q2FQ5LfcXWUnDqAMqAgRstzjaw3CCGB/hh5cEF83cxRYw3u4aaDPEByF+eLkj7KCt8EBgQIWeAGIHwJx6iNXySArUm44qNu4wWC3WSfL8z2BZokbp0DqEyamJWuyWL3U3RA6GNqosv08MdCserS3kQVYu2Ue6Lwcjux9eJHhylzJdNIb+hHjfs+51WU3H+p9+/taPqA==
+Received: from DB9PR06CA0008.eurprd06.prod.outlook.com (2603:10a6:10:1db::13)
+ by AM7PR10MB3574.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:131::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Thu, 13 Nov
+ 2025 05:48:54 +0000
+Received: from DB1PEPF00039231.eurprd03.prod.outlook.com
+ (2603:10a6:10:1db:cafe::2b) by DB9PR06CA0008.outlook.office365.com
+ (2603:10a6:10:1db::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.15 via Frontend Transport; Thu,
+ 13 Nov 2025 05:48:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ DB1PEPF00039231.mail.protection.outlook.com (10.167.8.104) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.13 via Frontend Transport; Thu, 13 Nov 2025 05:48:54 +0000
+Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Thu, 13 Nov
+ 2025 06:48:46 +0100
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Thu, 13 Nov
+ 2025 06:48:45 +0100
+Message-ID: <be8d69f9-c21b-4b9e-b7b5-92dfdc668857@de.bosch.com>
+Date: Thu, 13 Nov 2025 06:48:38 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251113012036.GA75428@system.software.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUzMcRzHfX/f31O3bvt1ar6Kf85zm/IQ+9hixvBlNjZrDKObfnPHdeWu
-	ojCl4kqhtZEiPUvORTmVxVEmj9v1MN3Is46WQnKt4qZjxn+vvT/vvT6fPz4iVlm5QFFniJON
-	Bo1ezStYRZ9vyexl4QG6OXfdDJjTD0HXq/cc/CyoE+B+52EWHNZLCF59NyMYGi3A4HTYMViu
-	pTBwuieFhd5TX3hofdyLILW0moe65NcCDHa8YcCS5cLQfuMsD8+fnBCgvLOVgTevnRzUPnmM
-	wX08CBw52Rw4T3YjuNxfwkNuvwtBr7sCQ8X3zwJcPH8Bgc2ejmCgzM3CkW8eDlqybzNQPtiP
-	odrVjOHt8T4BzHfdGNK6FsC5wbkweKmKXzqTWgotiJY/+sTTsowRhjbkvxBoUU08ra0MpqWN
-	PQytqcrgafHoR0y7njby9H7eKEvt5ywCfe55h+nX7mcszTpSw9Bnrsvc+oDNivAoWa9LkI2h
-	SyIV2ptDQ1ysffq+Yx+a+WTknJSJfEQihZGH7xrRX/5UPcB6mZWmEde9ZsbLvDSDOJ3DOBOJ
-	ov9YXla1KRMpRCxVC+R6ppnzdsZLW0lOQ9Zvj1ICUtR9i/eWVJIdkWNZHfjPwI88OPP+9wIs
-	BROnp4fxSrEURC54RG/sIy0idemdgpcDpCnk9vUWxushkkMktjQP++fQieROpZM9iaT8/7T5
-	/2nz/2mLEK5CKp0hIVqj04eFaBMNun0hO2Kia9DYF1Uc/LGlHg04NjQhSURqX+XHM/46FadJ
-	MCVGNyEiYrW/0rZxLFJGaRKTZGPMdmO8XjY1oSCRVU9QznPvjVJJOzVx8m5ZjpWNf6eM6BOY
-	jE5En/4mXFt5aGR4zYpthWJOTlvuou2h9avmvzTcu/qhLD41Iqy7TWUzR061Lh7tc/itXr15
-	V4DUkjIrY2H79Eptboyv1nTFz3p2JCS1dDitYX+x/uidtbby7PVRL4bW5uWNW1cXFxbebF63
-	dXmaz568vvlJ9EtPScSBppiCyY9WtFqfqlmTVjM3GBtNml/B1euAQQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sf0yMcRzH932+z69ujkeiZ/LXGdJCTc0HzdDMNxszs7EYHT1zt+q0u7Qy
-	piSSkxrz4xLRdeW6unapZLh0iYj1a3qQCXW0lF9XjWg6Zvz32vvH5/PPm8e+ucxMXqtLkvQ6
-	dbyKVdCKDcszFqyKmK4NKa0MhKzMQ9D9qpeBn/m1HDzoOkxDa0UZglfDWQhGx/IxyK1ODLbr
-	6RSc60+nYeDsJxbaWgYQZBTZWXAVNDNQm9bDgafzNQU2oxtDx82LLLx4fIqD4q42Cl73yAxU
-	PW7BMJITAK15JxmQc/sQlA9dZeH0kBvBwIgFg2X4IwfXLpcgqHZmIvhiHqHh6NdxBu6frKeg
-	2DOEwe52YXiTM8hBVuMIhiPd4VDgCQVPmZVdOZ/YLtkQKX70gSXm498pUmd6yZFCxz5SVRpE
-	im71U8RhPc6SK2PvMel+eoslD86P0cRZYOPIi/G3mHzue04T41EHRZ67y5mNM6IVEbFSvDZZ
-	0i9aEaPQ3B4dZRKdc1NOvHOxaUielY18eFEIEz/Yv9BepoU5orvJRXmZFeaJsvwNZyOe95vQ
-	zdat2UjBY8HOiTXZWYw3M03YLubVGZGXlQKIhX13WG/IV3Ai8YSxE/8xporNF3p/P8BCkCiP
-	91Peo1gIEEvGea/sIywVazO7OC9PF2aL9TX3qVykNP3XNv3XNv1rFyJsRX5aXXKCWhsfvtAQ
-	p0nVaVMW7t6b4EATO7Ec/JF3A3k61jYggUeqSUoy5Kf1ZdTJhtSEBiTyWOWnrN4yISlj1an7
-	Jf3enfp98ZKhAQXwtMpfuW6LFOMr7FEnSXGSlCjp/7oU7zMzDQVD08OHl9p72lDDodLIlO6i
-	HXXUmuqUe1FRG69pLIH2xU9uGP03D95lVjvbt5ljijP0UTlV6/zzl1Tusqx3RU+W0+OWaEqC
-	5oT0zo20yoPPdKbA2IiOZV3Rb3/0HSsLO5i8aUrFmUaX+XzNqfay2cOK/Y5numb90sjgA+ub
-	Lhfc+aSiDRp1aBDWG9S/ADBeOIojAwAA
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] samples: rust: fix endianness issue in rust_driver_pci
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC: Marko Turk <mt@markoturk.info>, <dakr@kernel.org>, <bhelgaas@google.com>,
+	<kwilczynski@kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+References: <20251101214629.10718-1-mt@markoturk.info>
+ <aRRJPZVkCv2i7kt2@vps.markoturk.info>
+ <CANiq72kfy3RvCwxp7Y++fKTMrviP5CqC_Zts_NjtEtNCnpU3Mg@mail.gmail.com>
+ <7f3bb267-7cff-45e1-84a7-15245cffd99f@de.bosch.com>
+ <CANiq72=xZ08i3MFqXyxFG63gq29EUggoyb57SJWPNW-Y_VFqqg@mail.gmail.com>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <CANiq72=xZ08i3MFqXyxFG63gq29EUggoyb57SJWPNW-Y_VFqqg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB1PEPF00039231:EE_|AM7PR10MB3574:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cd3159c-6984-4f38-959b-08de227854ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|376014|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?R3RxcDZObmczTllKcDlUVm1CUXB2MDZ5L3JNem9Td2FGRWkyY2hTWG5nM3B3?=
+ =?utf-8?B?eVNGbFVPalNxTDV2OHF4REhGLzk4S21DM2pmcGNtQlAranVNK0IremtjVURF?=
+ =?utf-8?B?NjRON3RJTEdraWpYcEd6T0l4MWlBVFZaUUtndXJ4bkowalVrOWpuOHMvaTF5?=
+ =?utf-8?B?dkZteUw1VXlXNmZMbXMrenZRYmVxaUtQdVVNU1BDNjBoalNBd0hodEx2d3ZX?=
+ =?utf-8?B?YmMvN2xLN1NjejBDVUt4dS9mbW5mdEJkZDdHUCtpbVZzTml2ZVFCQ1RrWVM0?=
+ =?utf-8?B?M1pYcUE5bjR5eklxUkRmZzhEMTkyQkowVHdRWVZtUG5ITlZGajlNVGVOcDZU?=
+ =?utf-8?B?UjRhWlFacEZSSERqK0h1cHBoaTI2emNxaHNpVTlTb0EzSlBEUThma1Q3VDF6?=
+ =?utf-8?B?NTdXcU9TeHkxbkYxbmlIWnljSEpFcWxVeEgwWC90RW90Nm5NSFFjVmtXSFZF?=
+ =?utf-8?B?ZjV2R3ZzN21pcGJHQXFobHF4N2t5QmNTR21YLzVVSDdrR2ppUE9US1JJV2Fw?=
+ =?utf-8?B?cXJrZklVbWxUR3hpK3VCTStENXBGNFZFdU1OZ0V2S0l6d3dQall5bzRxUU9T?=
+ =?utf-8?B?d2Z0UTVlSkdZWldYTUZRZnVTL2xwZlpPOFY2UWxVa1BaZzlkVVJZSnF5bEhB?=
+ =?utf-8?B?TUlXRHVBclRwckw3RzdPNk5vc0ttSlZjaXVCaHlXb0ludkJVdXVOU0xlYnlk?=
+ =?utf-8?B?WlJLaVNPL3FqdWtRa3NONGdpeXhKUXdnVEVQZDlKZVl5bEMvd2REN1NiQjRD?=
+ =?utf-8?B?UGVKQXdocCtuaXpnZWkxZEJnQnJjdTI0SGRyZXRoSWdNaHFudUV5Q0xVOEFZ?=
+ =?utf-8?B?RDdwSnlLLzY3Lzl3RHhUcVFtZVBsV01xVC9SdjlnU0kxZE9uUUdlWWRpQk1z?=
+ =?utf-8?B?R3VUazVtYXVZTFlCbTB3SW1BZXpVL2ZySEtmM3FDVXRHQ09rRzJwZE1OZ0V2?=
+ =?utf-8?B?M2U4bW5WUGl5Qkx6REFoYnhscU1nc1dmbFhkYjkrYXJMbnRUTWR2eGhmc01F?=
+ =?utf-8?B?SEs4MGV0SFFEc2w0RTBBWHI2QVlBM2ZDSjJaZ0tjNCtpZk8vVGVkQjNISzhv?=
+ =?utf-8?B?L3dPcFVGVThEaEtrbnRqQXh3dU52VXBDTkVtYWI1M2x5aERNa2NYaktDOE0y?=
+ =?utf-8?B?dGl1Q0ZjL2p5TVhWLzdjVHdvcjl5WFZ3OUJudmxOMHF5SlVtdVZod1pIK0M0?=
+ =?utf-8?B?MFR4eHVDeVp3ZERZU01Nc0RTd0pQNjEvVWRZcGRXZlNvSmpZWEYya3ZzSTVO?=
+ =?utf-8?B?dzNJempHNGZva2Y1OVREM1RPcnk4ZUVUVVc2WXBuVldrQWE1aUFvR243NGVQ?=
+ =?utf-8?B?Sy8razdCY0haK2d5MVBCWG0zVis0U3J5VmhXRHZHQUdCSDRkRjVtSGRnSmI2?=
+ =?utf-8?B?WFJHQ0xMWjNJMUhZZlNHY2Znd1lCSkxOUmxoUzhIOTVqSzc0R3pzdUhWbys4?=
+ =?utf-8?B?WEI4U2RDUkxtczFNUWovSFAzUGdWTkQvRDZ0VUIwYVZIQ2dxMVYrYkIyejU1?=
+ =?utf-8?B?T3pFZGRzbHJReEEyVGdGMDVhQ2JZTXQzTGJMS0lLd3FadDBtVTVpSlBzSzRi?=
+ =?utf-8?B?Vng3dGg2V0hLaStEcDliMTZFWmZVV21WZHZFcnJ0cmVJOVlCaVFiVUxjU3RC?=
+ =?utf-8?B?Qy9jSFV4RkpFTFc2a2FmYzZEdlFKNDcrZ0ZqVFRrS0VIaGlSd2hkQkR2QW1y?=
+ =?utf-8?B?YzJhRFNJMjRRWjNVUWM3cHZXZ0N3Nm85WVJIK3lFN0JGQmxHcG1ZQ3FPRk5m?=
+ =?utf-8?B?U1BzbkdQWi80U3ByamptMHRWRDRPRWlBVmFrQm9Yckx6NC9HZ2NlQ1ZSZi9F?=
+ =?utf-8?B?NUZBb3R4VTlYL0F2SjFWYnQzcTk5cDV3NjNWcksydllNSERnUGJzM05JNTAr?=
+ =?utf-8?B?Y3pWbFUwREtGL0pIQ2k3bEYrN0VXWjNGdjdHdEYyUVFMOEtERUZ4U3c4L0tt?=
+ =?utf-8?B?Q0dkZWZ5SFMwUEdkRndJTkZ0QlkwT3BaWFhQakEzQkxpeVhiRS92cDBweUp6?=
+ =?utf-8?B?Tjloc3hFV2lMdll5SjU1ekowTTk0TURsTXp6QmNTVHYzTE52VlVQdlhjZkl4?=
+ =?utf-8?B?L0M4V3VuVEFpUzFDNE83SzRMWDFhbzZXajZsMS9rUkhSV3BsaDRUaDJVUzBp?=
+ =?utf-8?Q?+99E=3D?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 05:48:54.6166
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cd3159c-6984-4f38-959b-08de227854ca
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF00039231.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR10MB3574
 
-On Thu, Nov 13, 2025 at 10:20:36AM +0900, Byungchul Park wrote:
-> On Thu, Oct 02, 2025 at 10:27:51AM -0700, Boqun Feng wrote:
-> > On Thu, Oct 02, 2025 at 10:06:17AM +0000, Guangbo Cui wrote:
-> > > > -extern void wait_for_completion(struct completion *);
-> > > > -extern void wait_for_completion_io(struct completion *);
-> > > > -extern int wait_for_completion_interruptible(struct completion *x);
-> > > > -extern int wait_for_completion_killable(struct completion *x);
-> > > > -extern int wait_for_completion_state(struct completion *x, unsigned int state);
-> > > > -extern unsigned long wait_for_completion_timeout(struct completion *x,
-> > > > +extern void __wait_for_completion(struct completion *);
-> > > > +extern void __wait_for_completion_io(struct completion *);
-> > > > +extern int __wait_for_completion_interruptible(struct completion *x);
-> > > > +extern int __wait_for_completion_killable(struct completion *x);
-> > > > +extern int __wait_for_completion_state(struct completion *x, unsigned int state);
-> > > > +extern unsigned long __wait_for_completion_timeout(struct completion *x,
-> > > >                                                unsigned long timeout);
-> > > > -extern unsigned long wait_for_completion_io_timeout(struct completion *x,
-> > > > +extern unsigned long __wait_for_completion_io_timeout(struct completion *x,
-> > > >                                                 unsigned long timeout);
-> > > > -extern long wait_for_completion_interruptible_timeout(
-> > > > +extern long __wait_for_completion_interruptible_timeout(
-> > > >     struct completion *x, unsigned long timeout);
-> > > > -extern long wait_for_completion_killable_timeout(
-> > > > +extern long __wait_for_completion_killable_timeout(
-> > > >     struct completion *x, unsigned long timeout);
-> > > >  extern bool try_wait_for_completion(struct completion *x);
-> > > >  extern bool completion_done(struct completion *x);
-> > > > @@ -139,4 +134,79 @@ extern void complete(struct completion *);
-> > > >  extern void complete_on_current_cpu(struct completion *x);
-> > > >  extern void complete_all(struct completion *);
-> > > >
-> > > > +#define wait_for_completion(x)                                             \
-> > > > +({                                                                 \
-> > > > +   sdt_might_sleep_start_timeout(NULL, -1L);                       \
-> > > > +   __wait_for_completion(x);                                       \
-> > > > +   sdt_might_sleep_end();                                          \
-> > > > +})
-> > >
-> > > The DEPT patch series changed `wait_for_completion` into a macro.
-> > > Because bindgen cannot handle function-like macros, this caused
-> > > Rust build errors. Add a helper function to fix it.
-> > >
-> > > ```
-> > > error[E0425]: cannot find function `wait_for_completion` in crate `bindings`
-> > >      --> rust/kernel/sync/completion.rs:110:28
-> > >       |
-> > >   110 |         unsafe { bindings::wait_for_completion(self.as_raw()) };
-> > >       |                            ^^^^^^^^^^^^^^^^^^^ help: a function with a similar name exists: `__wait_for_completion`
-> > >       |
-> > >      ::: /root/linux/rust/bindings/bindings_generated.rs:33440:5
-> > >       |
-> > > 33440 |     pub fn __wait_for_completion(arg1: *mut completion);
-> > >       |     ---------------------------------------------------- similarly named function `__wait_for_completion` defined here
-> > >
-> > > error: aborting due to 1 previous error
-> > >
-> > > For more information about this error, try `rustc --explain E0425`.
-> > > ```
-> > >
-> > 
-> > I think Danilo already made it clear, please fold this the existing
-> > patch. Moreover, since this patchset doesn't adjust init_completion()
-> > from the Rust side, the result is Rust code will also use the same dept
-> > key for completion, which has to be fixed if dept wants to be in-tree.
+On 12/11/2025 11:24, Miguel Ojeda wrote:
+> On Wed, Nov 12, 2025 at 11:17 AM Dirk Behme <dirk.behme@de.bosch.com> wrote:
+>>
+>> Hmm, I can't find the initial patch in my Inbox. Even
+>>
+>> https://lore.kernel.org/rust-for-linux/aRRJPZVkCv2i7kt2@vps.markoturk.info/
+>>
+>> doesn't seem to have it?
 > 
-> Thank you for informing that.  I will take a look on it.
-
-It looks not easy unless Rust side uses explicit maps for that purpose.
-I think there are the same issues in 'lockdep + typical lock' too.  How
-does lockdep deal with the issue?  Use explicit keys for that?
-
-	Byungchul
-
+> It was only sent to the linux-pci list -- for situations like this,
+> you can click in the "[not found]" message at the bottom, and then on
 > 
-> 	Byungchul
-> > 
-> > Regards,
-> > Boqun
-> > 
-> > > Signed-off-by: Guangbo Cui <2407018371@qq.com>
-> > > ---
-> > >  rust/helpers/completion.c | 5 +++++
-> > >  1 file changed, 5 insertions(+)
-> > >
-> > > diff --git a/rust/helpers/completion.c b/rust/helpers/completion.c
-> > > index b2443262a2ae..5bae5e749def 100644
-> > > --- a/rust/helpers/completion.c
-> > > +++ b/rust/helpers/completion.c
-> > > @@ -6,3 +6,8 @@ void rust_helper_init_completion(struct completion *x)
-> > >  {
-> > >       init_completion(x);
-> > >  }
-> > > +
-> > > +void rust_helper_wait_for_completion(struct completion *x)
-> > > +{
-> > > +     wait_for_completion(x);
-> > > +}
-> > > --
-> > > 2.43.0
-> > >
+>      Message-ID: <20251101214629.10718-1-mt@markoturk.info>
+>      found in another inbox:
+> 
+>      ../../linux-pci/20251101214629.10718-1-mt@markoturk.info/
+> 
+> where that last line is a link to the other list that you can click to find it.
+> 
+> I hope that helps!
+
+
+Yes, thanks, that helps a lot!
+
+And yes, the change itself looks good. I gave this a try with x86 QEMU 
+and as expected (as mentioned it is a no-op on x86) I get with and 
+without this patch
+
+rust_driver_pci 0000:00:04.0: pci-testdev data-match count: 1
+
+With this:
+
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+
+Thanks,
+
+Dirk
