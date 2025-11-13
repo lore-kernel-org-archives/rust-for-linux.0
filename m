@@ -1,205 +1,149 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from forward205b.mail.yandex.net (forward205b.mail.yandex.net [178.154.239.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C3F2D0C76
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 14:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30A61EE7DC;
+	Thu, 13 Nov 2025 14:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763044988; cv=none; b=qguLVZ+DVzOXIkGUPI+hAjVAo74+7KF8sGdiemfHbd66NvzfC2dtRmV2sL/NcH8tpSVIZ779V5tmB27awXBfUX4N/zfQ6nujEk3PjHVVLIFz7JbAVK7AvPWoZ/wz9a8LIy4gvGD5vH8ETDVKeBXS2OvatIQLrmUFGUD1t7C9Ek8=
+	t=1763045642; cv=none; b=dIJFM6WBC49lxwGx1XHxGI7kkcpVJDScLgSNpuesQ9UJ9xxtuOaBhpdFPkcFxnjiUVbvR4SBbHnp1ZfWeGLxnUtvY/8EaP8q79ksWlvqgu8lnv2frrCr3V9yTWk/HeymurFoT8t9VJv37JdyKk5q66TIzoSSfvx1a0Xiymj86Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763044988; c=relaxed/simple;
-	bh=pzyv7vLjjU9lDazIwtsSgVGiP+Et3EtHRfN13T3NXVk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ULski0qL4UUqQbaFqs0NYfkuWsCLEIw7qheGt5ab9JXM32v9vhS3yB+Y9XHOD9SSYlZO6T8pRkXoguEeUOavk6nXI4X/BwhWWn4Sl24jUJ1Hu6O4EvIZ/NzBRM0vHEggMW2J4RjLR+2rv656pK/ohxpThyzUj1cv6inCIn8YCxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=pUaRuL6o; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1763045642; c=relaxed/simple;
+	bh=Oq9zBjtc9LiLqXOLAhgqm2wsPTFMjlFzMqtbE1osZTk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OdgY/gNVZLDb4kB3oUwVrqTR9rRf4o7nVE+T/aGlSBqEkdAe3VYHbVnnieX9oxUvQDr83sGgEqBChC1MKiVzJRFbZs2i9WY6yN0FLEGOBiynsx+sQZ9fvcVVRwJfwkuKXEipM0N3jh65J2kgTe2myNeYHyVajKPA/4m5tci4nGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=mbRnPLWx; arc=none smtp.client-ip=178.154.239.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="pUaRuL6o"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id C5B2D24002A
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 15:43:04 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1763044984; bh=q7uv+pZE/Rt1SjFLQLc3Ebfv1mmsna4IvbAjN0LEdXM=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:OpenPGP:From;
-	b=pUaRuL6ooOsKt9kULEak6RFgNePZcJxGrNSSQ7HmWr/dfmzKIsOrCBryqNsQYWUhB
-	 IQZ2CNFRbT7dG9CxYUfldhM0cuLnRiXfCy6z9Bbl0cTflPIT2q3eZsVfilEgtB7U/9
-	 gI6QfxEUpsSnEgH7GfMmDStI8oJ0TIW/wRG7Swv4jGXinMJEbqnUhJpOJVF4N1HYkk
-	 U5YjRiwZhUXDnrlzzqxtruu+RsctzXtOy9Q3sipmADCzeHgXUOvNuUbkLUMdT7hKT/
-	 Dy0x/xDSVeyt4C2HC2SO0UiPuRRkL8p4bPdOa/ZREjnPg7MxhFEtzj1Rx40rWreG4b
-	 Sr4Nv/vkibNew==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4d6jg92v54z6trs;
-	Thu, 13 Nov 2025 15:43:01 +0100 (CET)
-Message-ID: <8e1d09db23439a361e12b93bbaa2f80959799775.camel@posteo.de>
-Subject: Re: [PATCH v7 0/2] rust: leds: add led classdev abstractions
-From: Markus Probst <markus.probst@posteo.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda
-	 <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Danilo Krummrich
-	 <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Lee Jones
-	 <lee@kernel.org>, Pavel Machek <pavel@kernel.org>
-Cc: Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-  Leon Romanovsky	 <leon@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, 	bjorn3_gh@protonmail.com, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Bjorn Helgaas
- <bhelgaas@google.com>, Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=	
- <kwilczynski@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-leds@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Thu, 13 Nov 2025 14:43:03 +0000
-In-Reply-To: <bf4192fd466571f798023b70c3e83e19448d8149.camel@posteo.de>
-References: <20251027200547.1038967-1-markus.probst@posteo.de>
-	 <bf4192fd466571f798023b70c3e83e19448d8149.camel@posteo.de>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- R3rOFHA==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="mbRnPLWx"
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d103])
+	by forward205b.mail.yandex.net (Yandex) with ESMTPS id 3B5CD87380;
+	Thu, 13 Nov 2025 17:46:30 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-73.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-73.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:1507:0:640:8803:0])
+	by forward103b.mail.yandex.net (Yandex) with ESMTPS id 69C63C0091;
+	Thu, 13 Nov 2025 17:46:21 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-73.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id AkRsKD1L04Y0-dkH2KxvI;
+	Thu, 13 Nov 2025 17:46:20 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1763045180;
+	bh=pqMtmNSs14Nm8CD/WmsJeS7HwoDN7nCveH+O5OEE+Kw=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=mbRnPLWxdzq6bVFYhl9opLBoQneIIqlK269Tl0k8R6MjrDJrCUpsSjpv1Wi+BmB8n
+	 EPX9Aes2gIhwyGOsKjghkOFB4F/apwoC9bgoF2WOSs96SelzAQMCQ1xJJHTUJDu5Bg
+	 UgbcuusY8jcsg5qVOK7nqDnHCmLch6TNBLSGCEHg=
+Authentication-Results: mail-nwsmtp-smtp-production-main-73.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	yutaro.ono.418@gmail.com,
+	charmitro@posteo.net,
+	borys.tyran@protonmail.com,
+	daniel@sedlak.dev,
+	tamird@gmail.com,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v1] rbtree: reduce unsafe blocks on pointer derefs
+Date: Thu, 13 Nov 2025 17:45:47 +0300
+Message-ID: <20251113144547.502-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2025-11-13 at 15:20 +0100, Markus Probst wrote:
-> On Mon, 2025-10-27 at 20:06 +0000, Markus Probst wrote:
-> > This patch series has previously been contained in
-> > https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.p=
-robst@posteo.de/T/#t
-> > which added a rust written led driver for a microcontroller via i2c.
-> >=20
-> > As the reading and writing to the i2c client via the register!
-> > macro has not been implemented yet [1], the patch series will only
-> > contain the additional abstractions required.
-> >=20
-> > [1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@k=
-ernel.org/
-> >=20
-> > The following changes were made:
-> > * add abstraction to convert a device reference to a bus device
-> >   reference for use in class device callbacks
-> >=20
-> > * add basic led classdev abstractions to register and unregister leds
-> >=20
-> > Changes since v6:
-> > * fixed typos
-> > * improved documentation
-> >=20
-> > Changes since v5:
-> > * rename `IntoBusDevice` trait into `AsBusDevice`
-> > * fix documentation about `LedOps::BLOCKING`
-> > * removed dependency on i2c bindings
-> > * added `AsBusDevice` implementation for `platform::Device`
-> > * removed `device::Device` fallback implementation
-> > * document that `AsBusDevice` must not be used by drivers and is
-> >   intended for bus and class device abstractions only.
-> >=20
-> > Changes since v4:
-> > * add abstraction to convert a device reference to a bus device
-> >   reference
-> > * require the bus device as parent device and provide it in class devic=
-e
-> >   callbacks
-> > * remove Pin<Vec<_>> abstraction (as not relevant for the led
-> >   abstractions)
-> > * fixed formatting in `led::Device::new`
-> > * fixed `LedOps::BLOCKING` did the inverse effect
-> >=20
-> > Changes since v3:
-> > * fixed kunit tests failing because of example in documentation
-> >=20
-> > Changes since v2:
-> > * return `Devres` on `led::Device` creation
-> > * replace KBox<T> with T in struct definition
-> > * increment and decrement reference-count of fwnode
-> > * make a device parent mandatory for led classdev creation
-> > * rename `led::Handler` to `led::LedOps`
-> > * add optional `brightness_get` function to `led::LedOps`
-> > * use `#[vtable]` instead of `const BLINK: bool`
-> > * use `Opaque::cast_from` instead of casting a pointer
-> > * improve documentation
-> > * improve support for older rust versions
-> > * use `&Device<Bound>` for parent
-> >=20
-> > Changes since v1:
-> > * fixed typos noticed by Onur =C3=96zkan
-> >=20
-> > Markus Probst (2):
-> >   rust: Add trait to convert a device reference to a bus device
-> >     reference
-> >   rust: leds: add basic led classdev abstractions
-> >=20
-> > Markus Probst (2):
-> >   rust: Add trait to convert a device reference to a bus device
-> >     reference
-> >   rust: leds: add basic led classdev abstractions
->=20
-> Hi,
->=20
-> So you know in advance, I will add a 3. patch for multicolor led
-> classdev abstractions (drivers/leds/led-class-multicolor.c,
-> include/linux/led-class-multicolor.h) to this patch series.
->=20
-> In the atmega1608 led driver (the user of these abstractions) there are
-> leds with different colors that share the same slot.
-> Technically "drivers/leds/rgb/leds-group-multicolor.c" could be used in
-> combination with single color leds instead, but then hardware
-> accelerated blinking wouldn't be supported. I think it would make more
-> sense to directly implement it in the driver.
->=20
-> The existing 2 patches shouldn't change, so feel free to review them.
->=20
-> Thanks
-> - Markus Probst
+Refactors parts of the get() and cursor_lower_bound()
+traversal logic to minimize the scope of unsafe blocks
+and avoid duplicating same safety comments.
 
-ignore the duplicate email. Sending the email gave an error, retrying
-resulted in the email being sent twice.
+One of the removed comments was also misleading:
 
-Thanks
-- Markus Probst
+    // SAFETY: `node` is a non-null node...
+    Ordering::Equal => return Some(unsafe { &(*this).value }),
 
->=20
-> >=20
-> >  rust/kernel/auxiliary.rs |   7 +
-> >  rust/kernel/device.rs    |  33 ++++
-> >  rust/kernel/led.rs       | 375 +++++++++++++++++++++++++++++++++++++++
-> >  rust/kernel/lib.rs       |   1 +
-> >  rust/kernel/pci.rs       |   7 +
-> >  rust/kernel/platform.rs  |   7 +
-> >  rust/kernel/usb.rs       |   6 +
-> >  7 files changed, 436 insertions(+)
-> >  create mode 100644 rust/kernel/led.rs
+as `node` should have been `this`.
+
+No functional changes intended; this is purely a safety
+improvement that reduces the amount of unsafe blocks
+while keeping all invariants intact.
+
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ rust/kernel/rbtree.rs | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
+
+diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+index b8fe6be6fcc4..d44f305e5161 100644
+--- a/rust/kernel/rbtree.rs
++++ b/rust/kernel/rbtree.rs
+@@ -384,14 +384,17 @@ pub fn get(&self, key: &K) -> Option<&V> {
+             // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
+             // point to the links field of `Node<K, V>` objects.
+             let this = unsafe { container_of!(node, Node<K, V>, links) };
++
+             // SAFETY: `this` is a non-null node so it is valid by the type invariants.
+-            node = match key.cmp(unsafe { &(*this).key }) {
+-                // SAFETY: `node` is a non-null node so it is valid by the type invariants.
+-                Ordering::Less => unsafe { (*node).rb_left },
+-                // SAFETY: `node` is a non-null node so it is valid by the type invariants.
+-                Ordering::Greater => unsafe { (*node).rb_right },
+-                // SAFETY: `node` is a non-null node so it is valid by the type invariants.
+-                Ordering::Equal => return Some(unsafe { &(*this).value }),
++            let this_ref = unsafe { &*this };
++
++            // SAFETY: `node` is a non-null node so it is valid by the type invariants.
++            let node_ref = unsafe { &*node };
++
++            node = match key.cmp(&this_ref.key) {
++                Ordering::Less => node_ref.rb_left,
++                Ordering::Greater => node_ref.rb_right,
++                Ordering::Equal => return Some(&this_ref.value),
+             }
+         }
+         None
+@@ -433,17 +436,17 @@ pub fn cursor_lower_bound(&mut self, key: &K) -> Option<Cursor<'_, K, V>>
+             let this = unsafe { container_of!(node, Node<K, V>, links) };
+             // SAFETY: `this` is a non-null node so it is valid by the type invariants.
+             let this_key = unsafe { &(*this).key };
++
+             // SAFETY: `node` is a non-null node so it is valid by the type invariants.
+-            let left_child = unsafe { (*node).rb_left };
+-            // SAFETY: `node` is a non-null node so it is valid by the type invariants.
+-            let right_child = unsafe { (*node).rb_right };
++            let node_ref = unsafe { &*node };
++
+             match key.cmp(this_key) {
+                 Ordering::Equal => {
+                     best_match = NonNull::new(this);
+                     break;
+                 }
+                 Ordering::Greater => {
+-                    node = right_child;
++                    node = node_ref.rb_right;
+                 }
+                 Ordering::Less => {
+                     let is_better_match = match best_match {
+@@ -457,7 +460,7 @@ pub fn cursor_lower_bound(&mut self, key: &K) -> Option<Cursor<'_, K, V>>
+                     if is_better_match {
+                         best_match = NonNull::new(this);
+                     }
+-                    node = left_child;
++                    node = node_ref.rb_left;
+                 }
+             };
+         }
+-- 
+2.51.2
+
