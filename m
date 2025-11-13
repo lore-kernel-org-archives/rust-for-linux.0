@@ -1,96 +1,75 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322F62C0287
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 21:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758D92BE632;
+	Thu, 13 Nov 2025 21:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763067976; cv=none; b=mLtvTijM1Df9xGME+KfChXLsHuh42C4lPXGc+F6mRbqswxNOIHiexi5jFkYusCjicYdEav7GLfUJv/oWXRaNd1gO2Zvqv2QvXszpYaradCEGmfsN0HZFaj/ClY3gD97CXUrYFZG6hRsoSMDbgYXcV6PiKY+v2Wn30nSnwUhR/xk=
+	t=1763070918; cv=none; b=LV+ooycp0c2F1ya9IINmIYahsN0jtuo1sFuVrkUPPtfpIfjU8ukKMjiwJ4f/3acbjdifpleY1iJmPpdUvvK0g2Ozc52+m+y3d9z2lLlxPEyUx5lQo52lf2NcDhyYbz+/ErvaS8svNsxhMtL7lE7FWNTNpk2oujegz8drAaYzruc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763067976; c=relaxed/simple;
-	bh=IkvuSu9rWWa7QPd3bxTRb/cXO+DLM1AUSxOr9k0uIQM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H43goGfLlIrjzFV7L6KNhIBvWZfLaUPQqt9+fz9NWt5d5xnLwclzfgE/1cmArGjND+yj3M9lacgANZjycfdEwY0V+RLQjitXFbr4ti1oTk1oHfD8iBFaRIg9OMq3R/QBGQEVTU2kfBLjbOGSu6mw0RtfB2M/3or7m+WtfC2jehc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l1N7DwSo; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763070918; c=relaxed/simple;
+	bh=dDYWv5SYqWgnUYfpzg0MJ7Kc0K1gt2Qkv/Z7vA/nq7o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=fDr9gffi1AsjqLSIkzGVud/UOWbCQdV//yKiN9X4RqNK5UZP0XYzr8TT0p6tcq2gvmsNuL33wiT+33Yao878Oqx9+PTH7KFLFsE/eA/yyliXcDrpeihGM+g9xtwUG7yqXKA/R3YzSUnfqig57EcXcHv5w2Er+332It0TPylbLTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7ru2yH1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l1N7DwSo"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-297e2736308so1290885ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 13:06:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763067974; x=1763672774; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IkvuSu9rWWa7QPd3bxTRb/cXO+DLM1AUSxOr9k0uIQM=;
-        b=l1N7DwSo5MFTyt3d9Jjs8zGxv+V/BwL1R1IYUdX37Qc0qNqdhAN8oh8su9iiu2mkOq
-         e086jdVCOuiWOn0XE7QZGF/CA+6MAy+WacWUIhtJ8oZx/OyBCNfSOgGeBvZam61dlCMA
-         izK0NWglxwm/TP9YJ7a+wnBzBau3w/g8egwM0a4GZQZRRaQHJrnMPH8NHnHWnkb0yod/
-         DP8nwSc+GWn+g6q+vRNuIT1GP/4/KvEV/6CVwJPEfzAPFvFzaqYJ1CrWlG1NNSUOMs6y
-         oZ8wBlMzm7cIVjTnI2i3gPdOHwPwoBX4kWPa5wI6kBw4cYCl/LKjePIVg1G3MTHrQdkT
-         n3fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763067974; x=1763672774;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IkvuSu9rWWa7QPd3bxTRb/cXO+DLM1AUSxOr9k0uIQM=;
-        b=spWSPb7memZPUd0gFGuoHnJo+QmjdLRWCbCjAJvg/75ejXyijPcRtYqo8aZ7YjBkEG
-         bv3FbIXQT4FnKppdAw/MVezAk6zQ6UqNrqccnbE/Qs8/P9TCbZ/2X8UqtSBnOXpD6VXY
-         pB036YKOT1R+jYn1g4Rpuj4ieSKQ0cEqrcS9OzuDhRsAOFlVggXbu8oXjgcMM0svpZQZ
-         M22lGSaN6TGGeqSuxlmBUBhBsi1HOYW4JtGUbS3dMRdqvRSlqQyiO+V46xm9ZwKnysiQ
-         cjTEXbyjmBtoNdba2INnws5ykUjMDiD/4pySmiScfJX4mXT/+vJHpn60CmnJLll9Ag9+
-         Iqsg==
-X-Forwarded-Encrypted: i=1; AJvYcCUyOPqR53Y06wLFVNDzLBITXwP5UcS1X022bQiA+LPnKQMAxUFFcS7d2XbfCxVYP9LWkZCMBgHgxyzSenGbjQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6NdM8ATLEtGUANCe40JftFPsRzXAtqq2P46VChiBA7zbybfE8
-	wTIqgosNN868+OqblNDX3CWV4VwRWhAcRmuOzmHurplrkhD8am9uF40gSlhXmCtwHT1HsHbtnQP
-	36odFXx/9uIpVtMgxNlomTHeKlLMNA/A=
-X-Gm-Gg: ASbGnctZSHsJguVgEgbFfHpLTJwkqcARhCPu7Af7kvbRSUXlV4W4Ah+6TkiOjIfn3z5
-	Tyk84j6TsZLxrLOA2b4/C91Z38L1qsqV4HfsTtkjXzh+/189I65ohjh8gaHk7mGMsP38fbwB6XB
-	H250qdOxsUhgplaifO/ooXq8NKeBW7cHamE6QNCkLHUtP3fKkoHvS3i0OLe9GfXVBIeyxRhA1Sg
-	+c6OsmBa2cWKk13qNB8t2/TcXhxG8vmbsNAnxq8hYR7ZCk7QzIsknqJ53co3rQywGUU0YFYllmx
-	KshWzEwlJ9TS5I1E1xvV/A8mpjdCGNllcXwixU+XaVT5cz6ZzWUvQNDgopB33pSXDcNpYjMceid
-	uES4=
-X-Google-Smtp-Source: AGHT+IGc/swO51qpOb+K5sX/d8iAc2AY5U9sMoJdlRH2NdNoAFevSN5DGusca5m2Xzj6E8DzsnpMTwI1c9otLyuf+G8=
-X-Received: by 2002:a05:7300:fb05:b0:2a4:3593:5fc8 with SMTP id
- 5a478bee46e88-2a4abb56fe7mr187971eec.2.1763067974468; Thu, 13 Nov 2025
- 13:06:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7ru2yH1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756A2C4AF09;
+	Thu, 13 Nov 2025 21:55:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763070917;
+	bh=dDYWv5SYqWgnUYfpzg0MJ7Kc0K1gt2Qkv/Z7vA/nq7o=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=O7ru2yH1mTgTWU1ARcRcSXk6/Li+sXuhdbxoK46IOeJEDsTzPwWl/qk/Jcnti4Q2S
+	 GtheCXIeWs37xh8ayIDpO8QzoWcfypXFxOBytPKBUQtSUAKD5YNtN4WxAG+TXkYAxG
+	 PkC38VkVNhm6o2jQae8YAcm85MCl3g6DXDqxlHB14f4j89mGCJ/Zczw0o+GK729IV4
+	 FKd5QHqNzq46JMSbZaYt00BkEEt/LRZ9Oat+z4MJ7oR+2tIX4h6Oy1O0gnbOt/I4JC
+	 0CbGUN2KAzQHSoGVg/iy4mJLbcr2gEAdYHOxnKgkub7p3YrrMyrIgHKc1I6Z66UwNK
+	 UO9FjjVnLUZ6w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251113-create-workqueue-v2-0-8b45277119bc@google.com>
- <20251113-create-workqueue-v2-1-8b45277119bc@google.com> <0bf00b4c-3227-4214-b8ba-929cf044d9fa@nvidia.com>
-In-Reply-To: <0bf00b4c-3227-4214-b8ba-929cf044d9fa@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 13 Nov 2025 22:06:02 +0100
-X-Gm-Features: AWmQ_bljjt8wJE8V3Muakwu6v84zrNPQh_MLPY3HxW5m4BXITa2gtN7riQVtHDY
-Message-ID: <CANiq72mCHYg0Oo9+MVdbfLO_jKUf9Y-d_7KqQy7CkF+HsDJ46g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: workqueue: restrict delayed work to global wqs
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Philipp Stanner <phasta@kernel.org>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Benno Lossin <lossin@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 14 Nov 2025 08:55:07 +1100
+Message-Id: <DE7WH5KQP268.1GXMZM78VIESE@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 2/2] rust: workqueue: add creation of workqueues
+Cc: "Tejun Heo" <tj@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Lai
+ Jiangshan" <jiangshanlai@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "John Hubbard" <jhubbard@nvidia.com>,
+ "Philipp Stanner" <phasta@kernel.org>, "Tamir Duberstein"
+ <tamird@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+References: <20251113-create-workqueue-v2-0-8b45277119bc@google.com>
+ <20251113-create-workqueue-v2-2-8b45277119bc@google.com>
+In-Reply-To: <20251113-create-workqueue-v2-2-8b45277119bc@google.com>
 
-On Thu, Nov 13, 2025 at 9:40=E2=80=AFPM John Hubbard <jhubbard@nvidia.com> =
-wrote:
->
-> Also, rustfmt (1.8.0-stable) split the changed line for me, upon
-> saving the file, I'm not sure if it will do that for everyone. Just
-> a heads up.
+On Thu Nov 13, 2025 at 9:01 PM AEDT, Alice Ryhl wrote:
+> Creating workqueues is needed by various GPU drivers.
 
-If `rustfmt` happens to behave differently for different people (in
-the Rust versions we support), then that is a (quite painful) bug for
-us, so please let me know!
+Indeed, and of course lots of other drivers need this as well. :)
 
-Cheers,
-Miguel
+> Not only does it give you better control over execution, it also allows
+> devices to ensure that all tasks have exited before the device is unbound=
+ (or
+> similar) by running the workqueue destructor.
+
+Exactly, but for this case we should fence the workqueue with devres, such =
+that
+we can guarantee a scope for a &Device<Bound> for all work items scheduled =
+on
+such a workqueue, i.e. provide a &Device<Bound> in run().
+
+Otherwise drivers have to either access device resources with try_access() =
+or
+get themselves a &Device<Bound> with the unsafe Device::as_bound() method f=
+rom
+within the run() callback.
