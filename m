@@ -1,153 +1,112 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1105218ADD
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 00:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EF2248F68
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 01:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763081845; cv=none; b=Pl+xi4U8vDBfSUP21oa+PXoqQOA05K+KieRGcx624M6POQTOa+mKP6wME0Snn+3Fc0hNvE9NJ0inzfQLflHKjgaO1kwMEqVmPhVW2LfGsuxrfjofyt9l71yQJX5BIXgTowxpSKKyPpa6J5Ez5JOjrqWkLRdwtKmIMncKbVkP2Uc=
+	t=1763082746; cv=none; b=hyzXeuzgmmeUR/e2SVA/pFV8lDUOCkEX0jCOTMPDQBA53ioQoj0Q51FAn3pvl3U2XCbWIqHek3ybstwjhfDop9z2jdT/ZyH2vl1JtCqMezjNLIYguKIl0Xfmy5SdIzo8Qq/PditAIdhDh0fNBp+q25p2WWZ3KdzwVdH73A0ab1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763081845; c=relaxed/simple;
-	bh=wivaJtD5Izn/tZhYGh/IrBhMUdwvsKBqINevFGZ9sig=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cPZ4OTL15n5j6E6nCOk6/dr1zXlVm2Zpa1560mzp1ePS3AeVCO2fhTYeMzHi6Y0zzOZThBAgaycUukX/gOJgUFPpV4n0hJbCjR22IXP/jEuKbOZLBNn29i/rMbp2cGN6AMbPUwivB7bjTGHtUPL6OvU9fG+EhWYhLbM7PNdof6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/tKsQJE; arc=none smtp.client-ip=209.85.222.173
+	s=arc-20240116; t=1763082746; c=relaxed/simple;
+	bh=im/91tSFBLB8sz4UUZ0FmZPT/a2q0q4kltzQQRHw+J4=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=qx/bE8LD9bZzop+/ltNGo1B9XXBkKWxqu+YE81tHXk4vnPeTOLk8HA0DhvmP74OxtKz203JRUlU5x77jC5541fcH+qESz1H8/AKSzluJNhs5oaclB9Z81JrI4lM1CrKJKy3Uf1tL+2JpLgbZC7ysi7sWr4jA+tc/PMgshADMYkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IZZCPDJq; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/tKsQJE"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8b21fc25ae1so145391085a.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 16:57:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IZZCPDJq"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-297ef378069so13814095ad.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 17:12:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763081841; x=1763686641; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l5nk4lgRajZgQej6albp/Z/6D8Qv1UUxU8ne17GnikY=;
-        b=J/tKsQJEB1PUs6IoADj26/vqY+05nyTvHs+HQyZD+hF5+XXpepc/QaV1QYRXfxcSEE
-         +EhjQKvHUbLlpE3PULXkMQs3KedZBgeRXrLaa3pGnY0BmZqC5MavTzkHGqpb1JQkRGDv
-         SwOTMQsV+vcrPLv6m5dIoV7Vhv4jSJucvLliqvSLGkTDOOxAxGIpfoPo9sTkuEnD9Toe
-         xfdShHnL29H0Yf12a4WL3fiI9M7bPPPGgzJfR7U1wAlhcVVqhO/RF9bGuTTPHim9cWFD
-         xTP5wgfRsSeZ6yjRQuxKjk/uzfPNzOq0/JoPXHn2+uaKk7W//zTRUu1NI+PHO+A7bBzw
-         p9uw==
+        d=gmail.com; s=20230601; t=1763082743; x=1763687543; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=j9u4/eqVtGdZYGImQ5uUqVjv1ASSav/pGLn3dxaThOM=;
+        b=IZZCPDJqUllgGC1y6YBxSmZQx8N8lj8HyI0cxUJjkugvxvhFDpEb3UDX1P7Bnoofc9
+         wgr2ZAW9F34dJGIqUD9cf6FP1uVeZT30wMUZybVCR2eSk+OMk97K8M6i5hBl+Ns0gr15
+         nLXoqBkjgv3CCJZKsvWmOfPxCeWlB7ZygFzaP3Mit0lGVW9B16JxmkUoXDIYbj83p9m9
+         cDWh/CLsEZwziJrv0Iu9Hb/AGpkBdM/Fy6N0YfP2Yjvpi2FHkMzqHXHzWiVj8pXgwF7O
+         gBG832U6uiptzuPnXlIwPaQlNhN5qTkSqks1Dr/zCMkpzMYVXcaL9f/f4UAYBLJN3IC3
+         rmVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763081841; x=1763686641;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=l5nk4lgRajZgQej6albp/Z/6D8Qv1UUxU8ne17GnikY=;
-        b=QYzMEaq8ceqiwssZSeWA+ka4DZ1xNrerpL/Zb+jjLNGXlJunzMJqK+uWNVS/jFXP27
-         Nq70flTZNjtJekntElhxvAPFnFN4ldqaOYxpT7VBuBbgyeUo+pgbDvmi/7nFyhNjJv32
-         FKWvxfI1yOIEiy8kZghKYkXXRnMrF7Xr3PfdJoIUQLbzrQPc0ZZzGHJR2vEtKpTE4U8A
-         S8RrJrfLxzqB1L4ypPDpyQEX5nu67uL+Y0El7/kYTgjEHscfwQ7OXc4am/qeez/rEq5m
-         6rXppW3iIPLdgrzpa61cJBZ5zkgSuKtxoq3fljC7PNj4xqu44mx/tAR9FRqiXR7t9CZ1
-         EvDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWklGVkE+zK/p6vmLTLAmOxRN4w/6JdTylItFCR7U0NZZXt5zdE8A6Nj4yU6JKNr3zzMxMVadPQqsbhTy1hZg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy05t/oXk2Tt6uz+PZ2jIciAAnf8XVqLygBlehKsrATyu/Vy1nl
-	vqx73490LiKNNj7uvIwbepcUjQrqRtklSeT4agZmPSylWBpfJZKqQg4/5DXXTA==
-X-Gm-Gg: ASbGncv5H4fpf4ThrCRANZgP19/6iAK7TnueOSLcN5QCxYkFtDIW8UXC8koUFdgvu0N
-	xV5MNSBRhnv3qkYL9pUpOekhhYwRPliBfKwEPx9ZP9hMFRmDSGxDObqVY6/vreNuaTlccagzs8f
-	cTNK0aPffDwMrt4Q4UPIhkBmekQWxEWXmJZtb61Urv7Z0uDeOWB/vTGEcITMuc6dPUkaQW56sS8
-	YNF2QgtlaA8hiuoBJNU4R+qTbchQPy3dbO+cKjtvQ12ktD8ONCqLyiUxd/yyxHaC/eRAVjaRt0q
-	IlDbj30tfByMhehLNv64ZC8K71W/6vCjvfzOvmB2hNOH6a6JJjVvnvc27zJ8DYdT0RA9GTZpHMy
-	PiahYAH1ZKdONg97uadBZcdzEahXFZj/QS4MVv/1ofQlR6AIE4OLyrNG8rCTX9cWHtWLyGnuXNz
-	hHpushHK2PRT1XVjUHdTm4vZnp9WhepB38p/VBdGbQDyGWx17M25ZFR3IrBb3I+w9YWsd2Ftj68
-	5EeBowz6A3EbBo=
-X-Google-Smtp-Source: AGHT+IF1Z7uC7/U+SQGvJK8yd2o9pvyIS7Oi8xDmtb/JHhSyhuQCICLAHAT4ukBzRRa4lkGJrliNBw==
-X-Received: by 2002:a05:620a:3184:b0:8a0:2690:a1af with SMTP id af79cd13be357-8b2c314796amr188527885a.13.1763081841380;
-        Thu, 13 Nov 2025 16:57:21 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2af062fd9sm236393185a.51.2025.11.13.16.57.20
+        d=1e100.net; s=20230601; t=1763082743; x=1763687543;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j9u4/eqVtGdZYGImQ5uUqVjv1ASSav/pGLn3dxaThOM=;
+        b=bntGC9SiWf52S2yiQ9nMJcE+6GHELp3QSDyzV4cvlcpi1ensylVHtggTVBy2lw9/Mj
+         uj8PBtd78IZ8atWp6OryjVN9I1rxbZkjgdqAKe/aYBfc/QROoziPty4+Drugb7WzufP0
+         g4sAFkUpf5v62hYMBSug2catdn6vZkeT+/7WOJzoPHyionBYyUILX/iB8DsuGScS+LfE
+         nNNtovkNqBP3BWlHLo0R+G4e7vkGE8RRoTcPF3aD9docQ1Wm9L9uH1z2iCnQpYeDAjo3
+         wBUzsmbyxX/mx4Sap7T2ItGrSZ/kAZLogLLYV0yLisFJuFKYcTIn3M33U7m1sQlRhC0O
+         l6sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ8KwcapRXiCc3RlveUT9Cb0OYwgKtHmHS4Bl1p9/Vw2UHG9RI9bkfn5MCQ9AGf9RyhVjPsuTQ+ZtUTWsOGw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRCRK9H01KY3iX4cEs+4fMnKTsF1J8XjpeLfSrH/Uq2Pon5hXW
+	twTCQNcJ68KQT22VVt7UI0HC01HcAro1MRFOA+XMYu/YKOZHj7o7Txb6
+X-Gm-Gg: ASbGncsXIGJgzoU7lmN8J9dJGB0Ll8mcLaGobCjCwxijyYjivDuISoLmd8B/3MRcNLZ
+	4T0+5h9jYl17z+CABvOwGyHzLgMNmfy5QCuBY9dw56QJDE0NyJTEpA3m2RoGySbtXfOCq2PiwzQ
+	8nrWbBtX/CGun1nYoxpl+bcVbeXSCDUNRiDZrziiZjGrIjgJotgRqMpkhDUylLgxjaRmKR1qwdW
+	BVKcPEbafIGZc5pX78Ce5ye6AO4arExnuwvnYh0wpStli0XXwpgkqWgX4SdMvYc/3XCRDMKiMWX
+	LlnSQCYtt7jdo2QGbrJyjpjFAGp8nnpYkgJWwXRDl+eKtXdDxhzeg2IPUgQfsh7/0k8OaLRPJbo
+	ISyd6+6Uadb+kfMxFUrv9em4puEc+4l1arVO0N2SHySAdZ9J4m4r9v7m5KR4+4X8ScsA8xnSwLn
+	LYsqRtHobZev53paNV2hUxzL7rAi3l2CxQafl3HTDGP7Ru7m98AkL+By4XoxGUCRfC9qTHNPOLX
+	kU=
+X-Google-Smtp-Source: AGHT+IEBcWUrwYsnuOWwFGJ6ryzI6eDQME0Hs3ZjCK8BB8QH7SNqUpb7s1X1KrbHEEonpJ6T5D/oNQ==
+X-Received: by 2002:a17:902:e543:b0:28d:18fb:bb93 with SMTP id d9443c01a7336-2986a6b8261mr11360425ad.7.1763082742924;
+        Thu, 13 Nov 2025 17:12:22 -0800 (PST)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2bf1ddsm37240325ad.92.2025.11.13.17.12.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 16:57:21 -0800 (PST)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 85658F40068;
-	Thu, 13 Nov 2025 19:57:20 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 13 Nov 2025 19:57:20 -0500
-X-ME-Sender: <xms:cH4Wadw38HgunPcxTgChmrnnUh7M0ClJQxB79f2aihtFxtlb__eRBQ>
-    <xme:cH4WaRqqmF99ho0mAPoYwGaOknUxsNz4EpmU9W2JjhhGaCWPpJ2aFj8N2txMb7dJJ
-    vqCVyO9Z0sp19h5sKkAZHSlGBBbXX7WmWVkU6u4d-qMv7DXNYGAdw>
-X-ME-Received: <xmr:cH4WaVMGemsMq7zXBwoGhiGS3gr5bkpRwhBYxqe2x_w2cu03fxuO0g3_gHuE9OvbtLJnUMDIQctpZflyjLRef2Thsc7tMBgJ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdekgeegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
-    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmhgrihhlrdgtohhmpdhrtghpth
-    htoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhjvggu
-    rgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdr
-    tghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepgh
-    grrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:cH4WadfZsXnxiujN4ahP4UaSN0rhOweYxXwxrSLlz5VS61f4PqLSLg>
-    <xmx:cH4WaTW8ownj-ZikosILJLvoXiUD9f81hM3E43uPiRSJjvm_zPa-8g>
-    <xmx:cH4WaWDOQ3aSaq5o04FTJXLCD4_P8VR8CneLRZOytxvQkply44Pm3g>
-    <xmx:cH4WaW6dMxlKNVDu0q9nXMcnXkS6ZhCcJjnzPIU641KAw6Z_iGDpNQ>
-    <xmx:cH4WaV39whw213vX1_ur40w1HhnGL_onpCjxwcD9jCdCvdO2GCpQ5WTH>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Nov 2025 19:57:19 -0500 (EST)
-Date: Thu, 13 Nov 2025 16:57:18 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, ojeda@kernel.org, a.hindborg@kernel.org,
-	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
-	lossin@kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, jens.korinth.tuta.io@kernel.org
+        Thu, 13 Nov 2025 17:12:22 -0800 (PST)
+Date: Fri, 14 Nov 2025 10:12:08 +0900 (JST)
+Message-Id: <20251114.101208.202243876104759244.fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com, ojeda@kernel.org,
+ a.hindborg@kernel.org, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
+ tmgross@umich.edu, jens.korinth.tuta.io@kernel.org
 Subject: Re: [PATCH v1 0/2] Add support for print exactly once
-Message-ID: <aRZ-bsCDsoLZgglV@tardis.local>
-References: <aRWt6Ah8KuBXff8V@google.com>
- <20251113.201844.1009485179863259148.fujita.tomonori@gmail.com>
- <aRXJuUTR1fnWiBQF@google.com>
- <20251114.094730.791355531242483716.fujita.tomonori@gmail.com>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <aRZ-bsCDsoLZgglV@tardis.local>
+References: <aRXJuUTR1fnWiBQF@google.com>
+	<20251114.094730.791355531242483716.fujita.tomonori@gmail.com>
+	<aRZ-bsCDsoLZgglV@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251114.094730.791355531242483716.fujita.tomonori@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 14, 2025 at 09:47:30AM +0900, FUJITA Tomonori wrote:
-[...]
-> >> Using u8 as atomic type instead of i32 would require a fair amount of
-> >> work, since at the moment only i32 and i64 are supported as atomic
-> >> types, right?
-> > 
-> > Supporting u8 atomics in general is tricky, but I think *specifically*
-> > load/store should not be a problem.
-> 
-> You meant using read_volatile/write_volatile? Since we only need
-> "Relaxed" order so something like the following?
-> 
-> #[repr(transparent)]
-> struct AtomicU8(UnsafeCell<u8>);
-> 
+On Thu, 13 Nov 2025 16:57:18 -0800
+Boqun Feng <boqun.feng@gmail.com> wrote:
 
-Please don't. Please make it work with Atomic<T>, also store release and
-load acquire should be introduced as well.
-
-Regards,
-Boqun
-
-> impl AtomicU8 {
->     #[inline(always)]
->     fn load(&self) -> u8 {
->         unsafe { core::ptr::read_volatile(self.0.get()) }
->     }
+> On Fri, Nov 14, 2025 at 09:47:30AM +0900, FUJITA Tomonori wrote:
+> [...]
+>> >> Using u8 as atomic type instead of i32 would require a fair amount of
+>> >> work, since at the moment only i32 and i64 are supported as atomic
+>> >> types, right?
+>> > 
+>> > Supporting u8 atomics in general is tricky, but I think *specifically*
+>> > load/store should not be a problem.
+>> 
+>> You meant using read_volatile/write_volatile? Since we only need
+>> "Relaxed" order so something like the following?
+>> 
+>> #[repr(transparent)]
+>> struct AtomicU8(UnsafeCell<u8>);
+>> 
 > 
->     #[inline(always)]
->     fn store(&self, v: u8) {
->         unsafe { core::ptr::write_volatile(self.0.get(), v) }
->     }
-> }
+> Please don't. Please make it work with Atomic<T>, also store release and
+> load acquire should be introduced as well.
+
+I wanted to confirm what kind of u8 load/store implementation Alice
+has in mind, and whether it would be used only for OnceLite.
+
+Of course. If we add something like that to kernel/sync, I agree that
+it should be implemented in that way. If not, I'm not sure.
+
