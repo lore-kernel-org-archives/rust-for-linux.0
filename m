@@ -1,70 +1,72 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010037.outbound.protection.outlook.com [52.101.56.37])
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012070.outbound.protection.outlook.com [40.93.195.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0401A2392;
-	Fri, 14 Nov 2025 00:20:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13DE215F42;
+	Fri, 14 Nov 2025 00:26:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763079614; cv=fail; b=TTWOxay1t4BEU0/H+W2mCCaS1h6xsBG12yCpi+2ilUFk3eIkliPHQEtAFXFjGdQ5f1ZAEOGBj8kPLebJ3Rjv7lT5FWyFCuLV8NGxG041ezlUpkh3p5Ex+M+9md3UD/A6naL7bR9waoLvIA0CftNaXcXTr6afpj1ccR1QKR4r3J4=
+	t=1763079996; cv=fail; b=XvJaFByccKHDQOsWPXig9+1AifjDj95gtBULUx2jcKquLfo34rSJQRFQuqtmqxf719oC/f9bD1SBX+5WRgODYACTa2I956HwlJkriFkxWuHWLQ8ysNbq+cJZu+adXyBi7qlM0KW8k+qRb8vm3pOZAgqxq3R0H9QmMuKBEbZYUO0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763079614; c=relaxed/simple;
-	bh=pavSEeMpOcxcpM3O4NEFnKMV4EITg03anxSwjpY5SLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=L5h8aHgR8sW1xMb7KQO0tz35Zee/gqD9NL5+VOPL9AwAJAbYpLaxq/wPuFA+QCyLRUEco7+0n26Hj18Ku+IpbR+C+SmRJtk+m0vIY2nMfjwa+UjP51Sebf8LX5GDVx2EbfwXUqANiym+po0Savw8o7uSSEcPRZlukgbr7/OLpeo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kKDtuTcW; arc=fail smtp.client-ip=52.101.56.37
+	s=arc-20240116; t=1763079996; c=relaxed/simple;
+	bh=rl3505OAQsWcEk46VgUiN5VvFCMc61J/kFQYeg6bT40=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Pe77b1NA6PnLWxcoJz048dNStDDijR+KLPwCrF7THYUL3lFUm7iqBL4z/HWxi5hAy7V4NyAn+uFzQXs28ES2Lj0MNzoXcBUJTbixBf8DKS2JsQiL0wsXyHZ4+Drg38ASjZvv9Ha7A8Xvv+AhVtFc3cR0bNv/gM2dEX6smCfdZf4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dd3uhkmJ; arc=fail smtp.client-ip=40.93.195.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kKDtuTcW"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dd3uhkmJ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pYKLzS1aZXioUAyI2dRpRXyw4qZNCSHtwVdxZiUGQzd+X4gH6f9XhCNwdMtb4JYFBIS/WB7woNe1uBW4WdGz8dHShCsqBT+hezON7fHdzkmAgb6bYLQL16NYONq3Gna29V1MhrtiAIDQYM6/t/lsxy6YshPSwIUmym7CQ0+sRGq4AYnK3hEQHro3k+7CkcM5DHcgXPP5yIgedwpb9Ux3LWpdabTj9XjRpO0HelLwHkeIsAv5eRugFYQd7Bc7iACZ61Q6JUvDveuF95F8n/k5047lMGeU16o3/ky9U8Vnpv8RDjfo9dvJFAK+enfoC6SSjkcM5KbruPwCOohuzmt6jw==
+ b=NNNlJtxNro8WMSuBuDjBG8C5X9oW/xbXgYRv6Vn6dsfU6OUan5mukrXTHxHcQgvikkU2IZ2cfm2h9Do4dTjor2ULTzlAsxBk1yGz/OOiLwS7MvAkg5qPLueIRxzhLPf72/Qgiydu8Ir2ICAkd1Qllt6upjazoP2en3Uwl2RuHown1bIjwwJhU1uxWidAKGaYGhUdno4/HxB0/cwf0VpZatVwLGJmGpfme6Tn3FTlwe/wbDi6Ao20PriYnc0bOmq3tKW801ANP0hnTuBsP9TjJvFSgFMJFeEt/Ycs/sN0FJSBGKVVZeptYct3PBTe3V7Myybmmxg4s+L3IzuvrJ4cwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cvRpmKvh0p8/gZpRZOzSfg5h1JwVdhuYmXtoy1mVMe4=;
- b=HDHFbFeqIcrThRQpVAgJ25G3UCsiUbHJaQw7GT3yvmQqZ5vvLiGJQSMtOu/u6lkQ+whrqc1TNBjBkSERkUYiUa7jgh7eYmVX6SNTuX7XyndGLvM6E9ppCYXh4yNuA/pxgaPOrMLKfNV577g+9IP4EYS3HD4fzQjAWbUZgkQwoafvStfIIuIkfxqDB2eDhDs/ltPYUvUGoEbKXN2MMMjdRCR9Ou8utfdzYwz/BFSw2Q1oqTkn2EQ8QeByvT+E0W0w+dHklyTibShqah0Y+06NBsp5aSnMy3bS8Dms6Lj+2XXoqoEIf31iypu0XM7s4TK6TCE5URlWVk1ppPExDntqbw==
+ bh=PNumKXWvcEeKuGPsurSfTkOncAS+0Lv6IK+4tXb91M8=;
+ b=S95AMBM7HddypN9SRipscK8JPuoB53mWZim7Kb1jJXLcoS3Yq7TRRIIOBtxVXidHY0FFEcYQT23CkSdK2cdzetFHqUlL7L636nNjVYEnfXAkZmZl9/Canpsh3n43/S4oCwmcWMHqDpnpVSiZ5sjd17AgM4ozyhaqdvpMJWh4syPyCGuWJdagkRkopM7a4NGwLVrJ05vQAPFn+pbl3dbCLqAGiGMbNf73F++SO7QgeOZlwKHdAcBfVptZc+2FCEwFZMm4p+cXEJSt5DQyVnVc+n4k87oC2M2/sKFRTTyQwgs0y9tLkWfFCeA8pguVb24x51Y5kp5wAyKAkGSwxN34hQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cvRpmKvh0p8/gZpRZOzSfg5h1JwVdhuYmXtoy1mVMe4=;
- b=kKDtuTcWETItuSl/THGkaQfC5TW8TcbzzURbPCcGa9+PxYxk1EyvzepyHXisN5sNOM6iZDL5FNQdCmInC5g+ZklEaaQPszTeKOzIz2hRzR786QCCV14t3mb0K6VHluV3jsPJBGls9qD5DV3D4/FU0JZ0Pr7Xjp1OLOD9ypSjS8Uhb1mkezxWiXAuSINPXZZgrhhmtm0dyxoYZoBE/laBkCYsr95EWyP+PIh6ZZpB/qho3VbMP7bpv+8HcfOvqJWao1y6DAvmivh3m96TBUJ4ICoM6IyclHHsIcaopfF9miTCyMan53Nva3VyQL7LxFvOjxem7Y33I3Z1dfkhmD3ZAA==
+ bh=PNumKXWvcEeKuGPsurSfTkOncAS+0Lv6IK+4tXb91M8=;
+ b=dd3uhkmJGEAueaeqhg1uaavoX1uSHQdoIS0i/+NGcMugffaFbjza4WtGm9/vUickFLk2pF4WXbkQYhQ8LuBgtN+F2NoDjU8ARfwmQv5TWH2yvsr7zNOEuJIXKX+Iywk797pkrMjFxC4GUyTa7G9ZcENxVNapQfea0p0IuCwt3ByfuspT727Nin6V3HuyUaIheXan5YripptYSHOnhqaS+9qDMr9Tz2aaypIFxEGV6GZyEXAsL+078Ky5T/oZX4WvldojN5uiwCOG9tMMg4PKHNFf9DLGXF1dVIRLmtafpDLJWssa/eI1HxPqI0JADth2qjmLbH23e270a2G2JrOMRQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by DS0PR12MB9059.namprd12.prod.outlook.com (2603:10b6:8:c5::18) with
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ DS5PPF18A985A10.namprd12.prod.outlook.com (2603:10b6:f:fc00::645) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Fri, 14 Nov
- 2025 00:20:07 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
- 00:20:06 +0000
-Date: Thu, 13 Nov 2025 19:20:05 -0500
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Zhi Wang <zhiw@nvidia.com>
-Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dakr@kernel.org, aliceryhl@google.com,
-	bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	tmgross@umich.edu, markus.probst@posteo.de, helgaas@kernel.org,
-	cjia@nvidia.com, smitra@nvidia.com, ankita@nvidia.com,
-	aniketa@nvidia.com, kwankhede@nvidia.com, targupta@nvidia.com,
-	acourbot@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org
-Subject: Re: [PATCH v6 RESEND 6/7] rust: pci: add config space read/write
- support
-Message-ID: <20251114002005.GA2384907@joelbox2>
-References: <20251110204119.18351-1-zhiw@nvidia.com>
- <20251110204119.18351-7-zhiw@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251110204119.18351-7-zhiw@nvidia.com>
-X-ClientProxiedBy: BL1PR13CA0142.namprd13.prod.outlook.com
- (2603:10b6:208:2bb::27) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
+ 2025 00:26:29 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::d622:b3e9:bfe1:26bb]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::d622:b3e9:bfe1:26bb%7]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
+ 00:26:25 +0000
+Message-ID: <8d5b3dcf-c233-4040-96a9-8ee7b000aa2e@nvidia.com>
+Date: Thu, 13 Nov 2025 16:26:18 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] rust: workqueue: add creation of workqueues
+To: Alice Ryhl <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Philipp Stanner <phasta@kernel.org>, Tamir Duberstein <tamird@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Benno Lossin <lossin@kernel.org>
+References: <20251113-create-workqueue-v2-0-8b45277119bc@google.com>
+ <20251113-create-workqueue-v2-2-8b45277119bc@google.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20251113-create-workqueue-v2-2-8b45277119bc@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0137.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::22) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -72,164 +74,394 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DS0PR12MB9059:EE_
-X-MS-Office365-Filtering-Correlation-Id: 941f21bf-f9be-4359-b845-08de2313905b
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DS5PPF18A985A10:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3a692019-0259-496a-caea-08de231471d3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ACHWjziVK2cxYyWnYhM2Wqh0WiFAzQuriXUy4e1DujPaneOo+S3ItwxUQ2FI?=
- =?us-ascii?Q?9yRgO8D7VVq0t8xp913hbL0E93o4bpCXSbIrA9+D0QScZPKgabeezxyAuEyP?=
- =?us-ascii?Q?8HS2BQtQv+qlh/ZejoEOpChS38fxl1GbE8mOdVzx/jpdFBylw4hVl0pMGpZC?=
- =?us-ascii?Q?UtWLYpuqevPdbPaIhjX1pPP3w6VdS6doemjbE9ObzLCN4pkVxL6HEXffA01f?=
- =?us-ascii?Q?gRQfpiwCjOhgR/qOJCbgcEQf020bH/CxuKIuApTSVBcoQ28vHYao4tssAf/p?=
- =?us-ascii?Q?jEpSfhC2l/aUupmqIQccypWJ2I1MPb2e0AOdhU5rNNr3iDwagx95/wv6ff5e?=
- =?us-ascii?Q?bKIBWD6xgraQfS1LQlna1DufRZ4ExkGMmdPTf6pyAmvg7N0DTOIsFD7GJwsQ?=
- =?us-ascii?Q?Iz+ckl84WhxoH33VGo/4YjQo+ft23PX8lcWsXBtVzieI/m91WTfUQUOrSm/Z?=
- =?us-ascii?Q?5KVjttG6rZrHrs8oOA3mtr++ZV70ocKyPNk/Md0XLdEi9lPa19JaBiYIqsTo?=
- =?us-ascii?Q?Q9elqxUiCVuirHlU2GeSgZCSnpzDphGblzvVm5j/uYhXqI9m0rumdrAQHwmI?=
- =?us-ascii?Q?PDpUH+8OxkHnP82FukeCtnR2Pli0jH7eRa8amdpd68vy5qBR0lBPXCFswLNW?=
- =?us-ascii?Q?matWfteVX//nFclFGgJgBvpsmdX/+XCZJehEelQn2UiwO5dF5ILuxtcVJ1vC?=
- =?us-ascii?Q?q9Jr+U6DQarJio/rSu3wGBKnaibAHLz1/iz7z4p37hJAD7TGc6rejLT0SY58?=
- =?us-ascii?Q?HPXVSX3iiHGbXip7JfR+U7SZJPFanqtwudzeK8vNy9LTqx3eA6vGjUiR1C4w?=
- =?us-ascii?Q?MlJjl/Hv+C61OKxOLyOIGvytk1Nf18gr53n/SkXnM2tTHm/wSQTLR0XlS/Dj?=
- =?us-ascii?Q?f5xE8n1CeCSV3FJACxUlImv+wJ068aO7VWl6hELpTXNYRYByM7d3Gmv4oKcF?=
- =?us-ascii?Q?qwWc2QVjtwcJyKsZ+yQTrit+qduyf9QIlzixGuQV4Y/r81DfRryL6+UKxKfP?=
- =?us-ascii?Q?F/vfHIHT3c/LfpkPulMw/28S5oNTAjGIxvrdEvWEj7uXLZrKt9PhZIetwyvK?=
- =?us-ascii?Q?7gFdQn3NEZQ+lEBAA/XIYrUhv3kdNcrjh+olxHtPtmJh4gaoNtuQn3ueTuKE?=
- =?us-ascii?Q?qXPJES2fduJm6FZhMibqHiuW3CAzCWBvlkpBU926YKZg6pEWvY9UdkxMI0qE?=
- =?us-ascii?Q?6XapvmUPtEXqYi1u5htizBAtCDSL2F4xCFnjN5AOE/SPW7eEBmJQmfSnOFWC?=
- =?us-ascii?Q?NQgFxqNWG6FsJ7Gj8v+WHRpi9wqMkhWrUts5ml0FzvGqmJ7Tvw3hAydx72iX?=
- =?us-ascii?Q?ztWtfFK3N2c26uaK+UMMY0OXI9JG6/fbVzOyra0tHjdnXtU1XKvJe0xcIVCo?=
- =?us-ascii?Q?izRSWcrKxPyVjFOuepz/QFZV0ifcCpxONoBipROSOabDoq+763TFyzTR0l8q?=
- =?us-ascii?Q?Te6TPUm2DtBR7Iew68QINXr72UTT3yTm?=
+	=?utf-8?B?c0ZPWmFTTlJkSEY3Uy8za0d5RFgxV2ZwNENnYlpKbWR0ejlwZXQ2a3d6TU1s?=
+ =?utf-8?B?N1crejhuNFFaTVRVYjhLZ0toQlNBVmJiSDByc0RsUEZlbC9VdmNpZ1h2azYv?=
+ =?utf-8?B?OGtiRkIzS1YydzlxUmdYRTByOWdydUdyRnFWUW01Ymt0YnpLS0o3Nlc5b0lx?=
+ =?utf-8?B?ckxSTW0xQ3FTeUdSZldFS1R1MVFGMm1IMERydTk4SVY3Y2Q1MlA2VnlVZTRx?=
+ =?utf-8?B?VlY5dzdwV0hRWTJHb0VEeVF3aXlyVTViL252Q0lRUmRLOElSdlRTLzF0UEFT?=
+ =?utf-8?B?dDZ2NWtKcUQvZ2NGMVd4R1drWThXckRlK2p5LzBkbHhrRWEwaWtyV01PTUt3?=
+ =?utf-8?B?OWVWb3M4Z1NvSlppR0lGOGNTL0Y0c2FBdzVZRHBkT0p4bmpFdXpIZkFpdW5j?=
+ =?utf-8?B?UGJkakRvVGhOQXVTV1BiWlZhZG84SkhWVmJFZDFhSlpvS3hTSG9GM0hZQ200?=
+ =?utf-8?B?ZW42NG02ei9PVjhOVmZ1T3dkMjZuK2JsS1E2dkpBM0IyN3Y5SjlpZVJMcngw?=
+ =?utf-8?B?bGpyUW1uSS9wbk03M1V2TmZ5OWJHWjgvSUxBSk5MV1ZYMTdCanV5cW12Vm05?=
+ =?utf-8?B?NVVqYjFYRnpieVl2OXl4MmI4WiswSXVPS2drako3YzFLSHdoZGt5VFBnWGtt?=
+ =?utf-8?B?M1NhcEFMRlczOWVTUDhyMW9lb2pFWUpzSEhINDJmaUFhaU5uUWpENjNROURI?=
+ =?utf-8?B?R3I0Uk1XRUdqanptUUNrWEp6MGRiekp0bEd5LzRXWVBVNjhDRVREbUV5NURD?=
+ =?utf-8?B?OTRCaUxEVXlaSW44K2hGKzBtZHVrRm0vc0NuSGJ6VjFwSzZ5Ukk5YTkyOXhG?=
+ =?utf-8?B?elJNaSt1bUhDZmV5OHh4bmNjb2hGV1VKV01ZSGt5aGE5UGdKRGlQQ2pqTmpK?=
+ =?utf-8?B?aTNDSjRMQ3dTWmEzS1RZTkoxZzhrTkc4VCtjcGlPOE1nZHZQSlFnaktNRHRx?=
+ =?utf-8?B?b1phVGxKQnBpd3NxL3NheUdFNlR5UDBVOUFzajB1YlArTm1EVDI4SGJSdHBE?=
+ =?utf-8?B?cDNQSjYzRUJvY2pEbGlBZld1dmNEK2o4NU4zSmt2UDFqYjNZbkNIL3hBRnRC?=
+ =?utf-8?B?bDZlYVlmR0hOelJJWlp3djYrNmI0UXhWcW5JdXoxK3pSOFRoNnBaSzBSWC8y?=
+ =?utf-8?B?ZTBNMlFxOHp1NGRIaGU4SW4zU1FYR2Z1MUhtZUVLQ2xUYStoZERjN3NqSE40?=
+ =?utf-8?B?S3VxRXFNWkhUaTN4WWVuc05vVCt4b202dzdYWmdpaVViSGtFeW41VUtCWi9K?=
+ =?utf-8?B?c3JpUElkekRrUHlRdmMrVWhBVTJzQnRuZGQ4bFpZUGdHWEl1Y1Azakw1Uit3?=
+ =?utf-8?B?ZzZCRG1rT1M3UDJ5ZC9iZTZPZUdXK1AvSnByTUFkdnF5MlUwNEdoSDk3UEdP?=
+ =?utf-8?B?dGMybGtYWCtZODY2ZXBVQzk3TmNSYVZ6N2hQNng2UTFJdUFXTXlPMWJxbWxO?=
+ =?utf-8?B?VC9wZVZsNU9hSTVWeWZ6QVMyeUhIVTNIKzN1bkZ0di9sR0VLTHpRdXFreHVo?=
+ =?utf-8?B?MnAxUHptOVRvSlVMSmU2a1pQakM1LzFXVk9vbTQ3VWsvMXJCZTVPRVJkYzEv?=
+ =?utf-8?B?Q2NIWWNvZGxteUc3dXZxZHJHR2IxM3N1T3JSWWVUdXN3Sm5JVWtCM1UxY083?=
+ =?utf-8?B?bTZsQkl5bzQzL2JJMXBDTzIySEtTa09SYlU0Y1EySFIvSXVuUVNnTUxQRm56?=
+ =?utf-8?B?SkYzNzdTYTFXMnEweFhKbGk3RFZpTW5yUXBmQ2ZFQ3hGRnNUZmUzdmxCQ0t1?=
+ =?utf-8?B?ejRkWlpISzFib1lkMHBsQU5TM3d3VXM3TUN0TWdOT3FWLzV2Ums0WFFGQjcw?=
+ =?utf-8?B?UUt6YkhUam8wRmF0QU5FanhpUXo1MjdVVlJaRWlKZzFkb0tFckJpakRFSVNq?=
+ =?utf-8?B?RVRKdEhoWEI1Z0o3TVV1cWdTQ1B1dDNrN0FoMndXd1Z0YXJmckQwOHp5dnBT?=
+ =?utf-8?Q?VbC8Gye5wqs0EVxPIWLVeFIt1JssJF2S?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hSxGPD0bnQx9/0oDD7zIbtNZnGKcErpHx0zGtpcMePJEkEIOT0goyT/Nm9wO?=
- =?us-ascii?Q?9VlIXoVA90nSTd9jzaZwSHuA1l0uPEDh1PHqhDnFgJw3qodnfrEm/p7V35hD?=
- =?us-ascii?Q?uZTKn4lYOpHjrmZ7QUJHAqj9MwAnZqcWgu9GmpYWOqqHN36f64+OCXxiI8Vt?=
- =?us-ascii?Q?ilNEjP75GVMrTlDCyVcJLhoRLpsb3F4q2zaczYuj8wzsppIfT1Hi+3plyLFb?=
- =?us-ascii?Q?+hqlQblQ0rLTh7e74ZDQIvJM2kCEus0tge9ngEqsd+Q5tEgI8bJtvx+qpNZ9?=
- =?us-ascii?Q?jY+VOzEfsDFKcMLu1MzwTGYbKs2IK5+8jGzFXD99v/6POhOx4v0gLCJWDJyx?=
- =?us-ascii?Q?e7qBLcpeuiONz6DuhK5fiXbhRIU68apMMmY2iYhdQAyf+mxfHsy313ooJ6TQ?=
- =?us-ascii?Q?GC89NpvAuutUOsmAw+28gAsCPKoehVWwFzSfVJdRriMMS6pCKcWK2TGQa/IZ?=
- =?us-ascii?Q?9eiVlbkHvoTqN9OGISlOva0PFWd4wE4WjGKE4auvzrK3S1NCHLRZlTOV3hvk?=
- =?us-ascii?Q?D7x+v3DucSnjHdxi4R9MwMk9ZErb32vvH5ZMBCwWOrSoxpxQ18/YVSGj3hCl?=
- =?us-ascii?Q?wVnmjIv2Z+Z5ppOJ+5+fakkg18D5iDr8XewuqXS7NGDO6Qep5L0gBlEvPyF9?=
- =?us-ascii?Q?tmEsT4+/UZyXrCP1JmH93PLSSiy1BtMiE/LclQBCckamUIq3oZWUst67pQlW?=
- =?us-ascii?Q?xtQ9AA5egyu+z4jk9U9IbaKrx7JJyYrKu1Ok452PB8osRK5yGaXJ5t1/pqwZ?=
- =?us-ascii?Q?aeGpqu4HDjfWox3bO2eE2PSIxCAjrl/pZUOME6PQSR7TSWWNJBhnSOrIQqXt?=
- =?us-ascii?Q?3zuoex9N4mDMmdv/GtfhjU/RbF6QJi0J8XPUWf+X/w4Qzw/gD3qTy15Ei2Aj?=
- =?us-ascii?Q?mmogRmTdtYnulkyMn9RSvR6ILa+Bqzk6/dKcM9doX7oNT2mEqOWhRsu4gKY5?=
- =?us-ascii?Q?XMN4i3xxbX2KTIBUev4t3lCJGzqC6ua8ahZQtuRlAFOf8PEKeYyNHcn/QKFu?=
- =?us-ascii?Q?nj4CtkxlRBVTM7udQzvh/I5JnviOLBCdX/sqHNCwIxiCQ9Rwytsw35Tz20KH?=
- =?us-ascii?Q?Fwp3SY8N0uaXrvVWQcwpAMcRsDbilDAZOYThpmqLK6tvoVsCTxEgAxyXfIb/?=
- =?us-ascii?Q?ps9l9BCUGw9kXse1bEtYg+8gS4luyoON5O9Z+UM/nR0zE0c2v9dBuVQrIS5T?=
- =?us-ascii?Q?kv6FbpejVETuVO2bdfF3qjtYQ+0rbn4ZF5YMXUEzED+/mzpFRlmiBzyDNBQ6?=
- =?us-ascii?Q?Z9paHk516jGHlNoBFHC8xAcHKGJtV/fg0WjKKT2roJVhJOLmTVfmGERPc2zt?=
- =?us-ascii?Q?DQhxGBv0Ee1WjOGR/R3hOvCCZJ0T/6c8m3QFGaaJYwBH4KXe54oXSdQVAYGh?=
- =?us-ascii?Q?I+8IzNbEpd0isTVW4V4krQK+iVhHrbVq6nt+9MKKOewaajIaiSxbHDb9airt?=
- =?us-ascii?Q?kSuARC0gUbw6Rai5MxcTBmgl6JVw34MGiLNHIHmztDH4L2R9Ww75Uv2s8n9e?=
- =?us-ascii?Q?GdQ3d4Nw1p0cyZBHWhu1ESUcc+LHENdHFKVwGmx7X0ivK1qhzS3DwQPW72Tx?=
- =?us-ascii?Q?6OefcNMZbpft0+Wh4U/Lp+3bEJB5F4W3xA7kpvdx?=
+	=?utf-8?B?SUhpazI2eU5LQi9DeWozV3lQQmFHYlZLV0VRbVpDRktkV21OejlPdUkya2l1?=
+ =?utf-8?B?dWdLY1Y5WlYyNjR2NFQwbXQvNEt0cUtpTHdXNHZPWkpTWVZ0YkJlenQzT09u?=
+ =?utf-8?B?UEE2SzZDaGdiMUUvWXZnMjN4RFM3elhSU3lPRVZxOUI5QzB2c0Y4cTNZYlU1?=
+ =?utf-8?B?ckt0MmRYaERJemJzSWlQTlNPVzd4SWEyQTZUZVdwVjdwUlk5MjZZdlg1V0s2?=
+ =?utf-8?B?WTdqN0FaeW9KUUFJWWRSSkZVd25LVWNoYUQxbTZEUHUySGRYam9wSXo3aTVt?=
+ =?utf-8?B?ZEhSbE9vNWY2Y0h5bWc3anFtbkdxUHdiditLNHVnUSs1VHdERE1yU25xN0lL?=
+ =?utf-8?B?UTA0K1llVWw0TCtZSExQS3pyWUpnQTdtaXFrMGl2VGl2RkpSM2FhYzZJOVUw?=
+ =?utf-8?B?TVNhaTArK2t5R2dNYUlUcnJtMk9mN2ZFN1A0MzF6UWhTa2E4L1cxbkxldUhO?=
+ =?utf-8?B?NFlIQVIzcUg2UHpKdHlvRlA4a2RIZVZVVWl4aVpjTDdyM243cVF1eGtiRkUw?=
+ =?utf-8?B?RUFuUk1oT1VzNkEwamk2VGFjWnNsYlEwUG12UTNIQWhGcmhMek1OdktYNm54?=
+ =?utf-8?B?YWM1ZEtKQmd0aHJkRElReHdIRkowRXAyeHpRM3ZmQkNJMy9Jb2NCOVRCNEpp?=
+ =?utf-8?B?SEV2aUxVT0ZUT2daU2xkTXI0ZGpCbnlVN3FNcndCS0pjdGoyR001elA5d25o?=
+ =?utf-8?B?SVhITm91Y0tNT2k4Yjg4Y2k3THhwMElqRDdmcjBpY0t1Mnc3MzM4bjUxNTI4?=
+ =?utf-8?B?QVlYcFBZb3pvQlc5b2pmNHpZVHAwRnhmNGJsZlB0ejI4c2ZEOXNFYVJNNUla?=
+ =?utf-8?B?dWpHWXk2bUVBWFJNZVluR0lqZlpjVVBtV0swUk4wdXg3RG9rNFk5dGlJemdx?=
+ =?utf-8?B?ZHhDMFBsODd1T25Pc3NSTUVVRTF0MjhLemlZUzNBM0ZHQ3Qzc3UwK3U1aUk3?=
+ =?utf-8?B?Qnc0VGNPZ0FJaVUrSnczd3pFaCtNeDJDeHI5QXpSRVU5Z0VJd25wVkh5ZldR?=
+ =?utf-8?B?Q2E4eVd6TTltdkdTdnFjN3ZMUHl6Q0FUeVBaYUlGS2ppRHRWK0UwYzN5dktX?=
+ =?utf-8?B?QmVhZm1POGU4WVhkZGhUblBuczZLckNteHRPRUdqSTM1TkhmckduMVRGaXpZ?=
+ =?utf-8?B?RStON05TcVZhcHVYODNWTHlWZ3FKK0kwK3IxN20zM3QzM2g1cXc2T0tKNGNJ?=
+ =?utf-8?B?Vndka3BKR00rcHozRjhsWEVUSHhzcG9sUllrZzNJMVpzelM5WHhkWHJ5aG9a?=
+ =?utf-8?B?MHNOQ3VweGtuU3pnL1B0bG1paFgrYThUMSt5N3FFTkYybVE4dTFLMmp4SFlB?=
+ =?utf-8?B?a2hybWpLZFlrOW9GL3d4VVJvNWFaZ1VlcUNNUVNRUkFPRmRTZ2pyc1lzMXYz?=
+ =?utf-8?B?UFZUWU9YS0pOVjFMN3ZwQWlkNmNqVnRhOXIzbW9nWXgzMjFaWHJPU28zeWZP?=
+ =?utf-8?B?UEVNYlJDOW45TmZKbVBiUWlhRG01bWovL3NHK0NmY0t2Z0grMkJKSEUzaXdi?=
+ =?utf-8?B?UDQvY0gybnpzL2N3YzJCUC95d3NIdVAyejE5YmVIM091Um0zaWlvMEROeEVK?=
+ =?utf-8?B?bnFCdUZpWllOV25LM1RJWVc3aTFuOFAwZ1ZzQ2hWczF1ejZqNFQzS25EYjBL?=
+ =?utf-8?B?WnNSTFRESXNUeHJoU2diQkNoTjBmSXN3SndSV29EUE8wOWVDdmk3U1A0Nkhw?=
+ =?utf-8?B?Mm1WcVJqMkIwTEV1YXh4L212U1grU3JOOTF3ZUVkVi80eDM1bjBiZnBtaFEv?=
+ =?utf-8?B?bWx4S0VpZUJ3VWVuM1RxeERCUktTOTcxWDQ5c1htc2ZiNEh0NnFxSGo3YXBL?=
+ =?utf-8?B?aE5UdXpxY2gwOTVGdXBEZVpFMUwyYU5rOTZXMW1XTmVKcXNZZmVLZ01SOS94?=
+ =?utf-8?B?YkNaZTJDc3R2S2JxQzBQaU96aTErZlBhcCtrVzRUWGx1ODdhYmw4WkVHOUtp?=
+ =?utf-8?B?aFNXSWY5K2ZxS1Zqb3QwaHk5cjljR0ZiRFAxR0Q4cW1hdmVjcFErdzNCZU9D?=
+ =?utf-8?B?UWZOUGtQSmZwYnVHZllEQzlZb3pLTnZXbGpTeXlOcmNoU1IzdW11dVZySkJV?=
+ =?utf-8?B?b0RZdFdaQ0RpN1JtUTU5MytQREp4c1ZFblJFOGN4SVgwQWRvOUk0R2tEbWpH?=
+ =?utf-8?Q?G65c8x8Px+srcbulXl6FnQTwT?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 941f21bf-f9be-4359-b845-08de2313905b
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3a692019-0259-496a-caea-08de231471d3
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 00:20:06.8596
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 00:26:25.0877
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xQGZRptcKuQAYpquhp3zCPyF4KFvg/cQ4UkOGJM+hmaZ2I6rRJ0cUtxmSIccQHIvkRZKy42xZzY2PNP3jexW9A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9059
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ad3dTCUdeaIsIGgUq2GykNU3hCHxHWT790c+QOH+UKweEHkf5AHbFN0OrLslufAJPAioTlQknJb4+vLmJ0l/pg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF18A985A10
 
-Hi Zhi,
+On 11/13/25 2:01 AM, Alice Ryhl wrote:
+> Creating workqueues is needed by various GPU drivers. Not only does it
+> give you better control over execution, it also allows devices to ensure
+> that all tasks have exited before the device is unbound (or similar) by
+> running the workqueue destructor.
 
-On Mon, Nov 10, 2025 at 10:41:18PM +0200, Zhi Wang wrote:
-[..]  
->  impl Device<device::Core> {
-> diff --git a/rust/kernel/pci/io.rs b/rust/kernel/pci/io.rs
-> index 2bbb3261198d..bb78a83fe92c 100644
-> --- a/rust/kernel/pci/io.rs
-> +++ b/rust/kernel/pci/io.rs
-> @@ -2,12 +2,19 @@
+Hi Alice,
+
+Thanks for doing this! I am not seeing any large issues, other
+than the Device<Bound> point that Danilo requested. 
+
+> 
+> A wrapper type Flags is provided for workqueue flags. It allows you to
+> build any valid flag combination, while using a type-level marker for
+> whether WQ_BH is used to prevent invalid flag combinations. The Flags wrapper
+> also forces you to explicitly pick one of percpu, unbound, or bh.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/helpers/workqueue.c |   6 ++
+>  rust/kernel/workqueue.rs | 185 ++++++++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 188 insertions(+), 3 deletions(-)
+> 
+> diff --git a/rust/helpers/workqueue.c b/rust/helpers/workqueue.c
+> index b2b82753509bf5dbd0f4ddebb96a95a51e5976b1..a67ed284b062b29937f09303cb516e6322cc961a 100644
+> --- a/rust/helpers/workqueue.c
+> +++ b/rust/helpers/workqueue.c
+> @@ -12,3 +12,9 @@ void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
+>  	INIT_LIST_HEAD(&work->entry);
+>  	work->func = func;
+>  }
+> +
+> +struct workqueue_struct *rust_helper_alloc_workqueue(const char *fmt, unsigned int flags,
+> +						      int max_active, const void *data)
+> +{
+> +	return alloc_workqueue(fmt, flags, max_active, data);
+> +}
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 901102a8bca54c9fb58655d80fc9624b4dfe1dc1..313d897fe93ceb84844ce9b253edec837e60ba6d 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -186,7 +186,7 @@
+>  //! C header: [`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
 >  
->  //! PCI memory-mapped I/O infrastructure.
->  
-> -use super::Device;
-> +use super::{
-> +    ConfigSpaceSize,
-> +    Device, //
-> +};
 >  use crate::{
->      bindings,
->      device,
->      devres::Devres,
->      io::{
-> +        define_read,
-> +        define_write,
-> +        Io,
-> +        IoInfallible,
->          Mmio,
->          MmioRaw, //
->      },
-> @@ -16,6 +23,58 @@
+> -    alloc::{AllocError, Flags},
+> +    alloc::{self, AllocError},
+
+Nit: that should be:
+
+    alloc::{
+        self,
+        AllocError, //
+    },
+
+>      container_of,
+>      prelude::*,
+>      sync::Arc,
+> @@ -194,7 +194,11 @@
+>      time::Jiffies,
+>      types::Opaque,
 >  };
->  use core::ops::Deref;
+> -use core::marker::PhantomData;
+> +use core::{
+> +    marker::PhantomData,
+> +    ops::Deref,
+> +    ptr::NonNull, //
+> +};
 >  
-> +/// The PCI configuration space of a device.
+>  /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
+>  #[macro_export]
+> @@ -333,7 +337,7 @@ pub fn enqueue_delayed<W, const ID: u64>(&'static self, w: W, delay: Jiffies) ->
+>      /// This method can fail because it allocates memory to store the work item.
+>      pub fn try_spawn<T: 'static + Send + FnOnce()>(
+>          &self,
+> -        flags: Flags,
+> +        flags: alloc::Flags,
+>          func: T,
+>      ) -> Result<(), AllocError> {
+>          let init = pin_init!(ClosureWork {
+> @@ -346,6 +350,181 @@ pub fn try_spawn<T: 'static + Send + FnOnce()>(
+>      }
+>  }
+>  
+> +/// Workqueue flags.
 > +///
-> +/// Provides typed read and write accessors for configuration registers
-> +/// using the standard `pci_read_config_*` and `pci_write_config_*` helpers.
+> +/// A valid combination of workqueue flags contains one of the base flags (`WQ_UNBOUND`, `WQ_BH`,
+
+Another tiny tweak: "contains exactly one", just to be extra clear.
+
+> +/// or `WQ_PERCPU`) and a combination of modifier flags that are compatible with the selected base
+> +/// flag.
 > +///
-> +/// The generic const parameter `SIZE` can be used to indicate the
-> +/// maximum size of the configuration space (e.g. 256 bytes for legacy,
-> +/// 4096 bytes for extended config space).
-> +pub struct ConfigSpace<'a, const SIZE: usize = { ConfigSpaceSize::Extended as usize }> {
-> +    pub(crate) pdev: &'a Device<device::Bound>,
+> +/// For details, please refer to `Documentation/core-api/workqueue.rst`.
+> +#[repr(transparent)]
+> +#[derive(Copy, Clone)]
+> +pub struct Flags<const BH: bool>(bindings::wq_flags);
+> +
+> +// BH only methods
+> +impl Flags<true> {
+
+
+> +    /// Execute in bottom half (softirq) context.
+> +    #[inline]
+> +    pub const fn bh() -> Flags<true> {
+> +        Flags(bindings::wq_flags_WQ_BH)
+> +    }
 > +}
 > +
-> +macro_rules! call_config_read {
-> +    (infallible, $c_fn:ident, $self:ident, $ty:ty, $addr:expr) => {{
-> +        let mut val: $ty = 0;
-> +        let _ret = unsafe { bindings::$c_fn($self.pdev.as_raw(), $addr as i32, &mut val) };
-> +        val
-> +    }};
+> +// Non-BH only methods
+> +impl Flags<false> {
+> +    /// Not bound to any cpu.
+> +    #[inline]
+> +    pub const fn unbound() -> Flags<false> {
+> +        Flags(bindings::wq_flags_WQ_UNBOUND)
+> +    }
+> +
+> +    /// Bound to a specific cpu.
+> +    #[inline]
+> +    pub const fn percpu() -> Flags<false> {
+> +        Flags(bindings::wq_flags_WQ_PERCPU)
+> +    }
+> +
+
+It seems like the one public-facing item that's missing is
+WQ_POWER_EFFICIENT. Should we add it? It provides some nice
+flexibility for things like laptops.
+
+Although I see that it has not made its way into
+Documentation/core-api/workqueue.rst (!).
+
+Also, I think WQ_CPU_INTENSIVE might also be a desirable
+addition.
+
+> +    /// Allow this workqueue to be frozen during suspend.
+> +    #[inline]
+> +    pub const fn freezable(self) -> Self {
+> +        Flags(self.0 | bindings::wq_flags_WQ_FREEZABLE)
+> +    }
+> +
+> +    /// This workqueue may be used during memory reclaim.
+> +    #[inline]
+> +    pub const fn mem_reclaim(self) -> Self {
+> +        Flags(self.0 | bindings::wq_flags_WQ_MEM_RECLAIM)
+> +    }
+> +
+> +    /// Mark this workqueue as cpu intensive.
+> +    #[inline]
+> +    pub const fn cpu_intensive(self) -> Self {
+> +        Flags(self.0 | bindings::wq_flags_WQ_CPU_INTENSIVE)
+> +    }
+> +
+> +    /// Make this workqueue visible in sysfs.
+> +    #[inline]
+> +    pub const fn sysfs(self) -> Self {
+> +        Flags(self.0 | bindings::wq_flags_WQ_SYSFS)
+> +    }
 > +}
 > +
-> +macro_rules! call_config_write {
-> +    (infallible, $c_fn:ident, $self:ident, $ty:ty, $addr:expr, $value:expr) => {
-> +        let _ret = unsafe { bindings::$c_fn($self.pdev.as_raw(), $addr as i32, $value) };
-
-unsafe block needs safety comments, also I understand 'as' to convert is
-generally forbidden without a CAST: comment or using ::from() for conversion
-because it can by a lossy conversion.
-
-Also we should have a comment on why its safe for _ret to be ignored.
-Basically what guarantees that the call is really infallible? Anything we can
-do to ensure errors are not silently ignored? Let me know if I missed
-something.
-
-[..]
-
+> +// Methods for BH and non-BH.
+> +impl<const BH: bool> Flags<BH> {
+> +    /// High priority workqueue.
+> +    #[inline]
+> +    pub const fn highpri(self) -> Self {
+> +        Flags(self.0 | bindings::wq_flags_WQ_HIGHPRI)
+> +    }
+> +}
 > +
-> +    /// Return an initialized config space object.
-> +    pub fn config_space_exteneded<'a>(
+> +/// An owned kernel work queue.
+> +///
+> +/// Dropping a workqueue blocks on all pending work.
+> +///
+> +/// # Invariants
+> +///
+> +/// `queue` points at a valid workqueue that is owned by this `OwnedQueue`.
+> +pub struct OwnedQueue {
+> +    queue: NonNull<Queue>,
+> +}
+> +
+> +#[expect(clippy::manual_c_str_literals)]
 
-typo in func name.
+Any reason not to move to c"" strings now? I suspect this is an
+older patch that you've revived, and since then the new approach
+showed up.
+
+> +impl OwnedQueue {
+> +    /// Allocates a new workqueue.
+> +    ///
+> +    /// The provided name is used verbatim as the workqueue name.
+
+"The provided name is used, verbatim, as the workqueue name."
+
+Or simply:
+
+"The provided name is used as the workqueue name."
+
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::c_str;
+> +    /// use kernel::workqueue::{OwnedQueue, Flags};
+> +    ///
+> +    /// let wq = OwnedQueue::new(c_str!("my-wq"), Flags::unbound().sysfs(), 0)?;
+> +    /// wq.try_spawn(
+> +    ///     GFP_KERNEL,
+> +    ///     || pr_warn!("Printing from my-wq"),
+> +    /// )?;
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn new<const BH: bool>(
+> +        name: &CStr,
+> +        flags: Flags<BH>,
+> +        max_active: usize,
+> +    ) -> Result<OwnedQueue, AllocError> {
+> +        // SAFETY:
+> +        // * "%s\0" is compatible with passing the name as a c-string.
+> +        // * the flags argument does not include internal flags.
+> +        let ptr = unsafe {
+> +            bindings::alloc_workqueue(
+> +                b"%s\0".as_ptr(),
+> +                flags.0,
+> +                i32::try_from(max_active).unwrap_or(i32::MAX),
+
+Or just make max_active an i32.
+
+> +                name.as_char_ptr().cast::<c_void>(),
+> +            )
+> +        };
+> +
+> +        Ok(OwnedQueue {
+> +            queue: NonNull::new(ptr).ok_or(AllocError)?.cast(),
+> +        })
+> +    }
+> +
+> +    /// Allocates a new workqueue.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// This example shows how to pass a Rust string formatter to the workqueue name, creating
+> +    /// workqueues with names such as `my-wq-1` and `my-wq-2`.
+> +    ///
+> +    /// ```
+> +    /// use kernel::alloc::AllocError;
+> +    /// use kernel::workqueue::{OwnedQueue, Flags};
+> +    ///
+> +    /// fn my_wq(num: u32) -> Result<OwnedQueue, AllocError> {
+> +    ///     OwnedQueue::new_fmt(format_args!("my-wq-{num}"), Flags::percpu(), 0)
+> +    /// }
+> +    /// ```
+> +    #[inline]
+> +    pub fn new_fmt<const BH: bool>(
+> +        name: core::fmt::Arguments<'_>,
+> +        flags: Flags<BH>,
+> +        max_active: usize,
+> +    ) -> Result<OwnedQueue, AllocError> {
+> +        // SAFETY:
+> +        // * "%pA\0" is compatible with passing an `Arguments` pointer.
+> +        // * the flags argument does not include internal flags.
+> +        let ptr = unsafe {
+> +            bindings::alloc_workqueue(
+> +                b"%pA\0".as_ptr(),
+> +                flags.0,
+> +                i32::try_from(max_active).unwrap_or(i32::MAX),
+> +                core::ptr::from_ref(&name).cast::<c_void>(),
+> +            )
+> +        };
+> +
+> +        Ok(OwnedQueue {
+> +            queue: NonNull::new(ptr).ok_or(AllocError)?.cast(),
+> +        })
+> +    }
+> +}
+> +
+> +impl Deref for OwnedQueue {
+> +    type Target = Queue;
+> +    fn deref(&self) -> &Queue {
+> +        // SAFETY: By the type invariants, this pointer references a valid queue.
+> +        unsafe { &*self.queue.as_ptr() }
+> +    }
+> +}
+> +
+> +impl Drop for OwnedQueue {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The `OwnedQueue` is being destroyed, so we can destroy the workqueue it owns.
+> +        unsafe { bindings::destroy_workqueue(self.queue.as_ptr().cast()) }
+> +    }
+> +}
+> +
+>  /// A helper type used in [`try_spawn`].
+>  ///
+>  /// [`try_spawn`]: Queue::try_spawn
+> 
 
 thanks,
+-- 
+John Hubbard
 
- - Joel
-
-> +        &'a self,
-> +    ) -> Result<ConfigSpace<'a, { ConfigSpaceSize::Extended.as_raw() }>> {
-> +        Ok(ConfigSpace { pdev: self })
-> +    }
->  }
-> -- 
-> 2.51.0
-> 
