@@ -1,139 +1,130 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6C0235358
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 09:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5301524336D
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 12:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763113731; cv=none; b=fCKgaOheNl7FPqUgKAuwGF/JD3331indaNJCucKweBYXMhaygC/BErGy8NCufefPUdNo6XIY3P0pMw6AgjTmcJeWT7ei8ULvYhiv645Fc7kfshvIAI3h3V9svu4dqh4zmTDB+Ru86ERj7M7bGU02VN6db/M6NOLwLzAvmUHw6Jw=
+	t=1763125116; cv=none; b=kSwvT1O8sE3MN9VgRNKqWshrU9PbVt9obHBN742/VfeKi3amiZLTwy+ZCxEeI5pmDnCEzqqino40UiZ9CFw00GqyCoPIYL7OPimDjVUhoqR9qGW1M9eTMxHFmA+bkboMUhXQTIK2jQnqJ+Di+4Deu6BXFUnEN8iegeesWM1OHgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763113731; c=relaxed/simple;
-	bh=ThwhLGPnoQ5/e523Bc2w12fFBtg8JG25q+fpnigCt8E=;
+	s=arc-20240116; t=1763125116; c=relaxed/simple;
+	bh=iA0B3gs+fKlBWg5jSYfzc7MH5kde6ly60DrjWZEi2hg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qBAVQQvSCU9fX21Wbtr9fKdeBKNxBK2F50DGGS8LQt2f2PC2ZZdlBQZLTY94DrlfAvPxo/ykwmQGR/vhiUNJlb6CH3yplt/n9eYZ07ixCK4TUT0QkRzFkAHZtIBNcadwX+4CC6TD6Oiwsa6n50C4IyKZ0a/TZuuCiDuhA7POPVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j0ZxLZ3l; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=BqGu/A5yHW5Pc/8j0/erPYhuvaXyx7O6g80v/9eU7t45+t0/2aras7CWvo/tkFv27EHbzk/+2suvJkG6AdfhYKiuHT5nr/VAo5q/KpC+7m6CDZOfdVhQkZP1QDU1tobFmaA0EA1Z5JWHeSnjr9wDwoTC3cTzkDtG12oqvbTSkto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SJi1BqVk; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j0ZxLZ3l"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477632ef599so14458235e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 01:48:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SJi1BqVk"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4775e00b16fso13393005e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 04:58:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763113727; x=1763718527; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1763125113; x=1763729913; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yYuugPZATqidJIxSjOI/bn0PzLcRgfB0TOo+4cGCGxk=;
-        b=j0ZxLZ3lKdrMvysbF5C7WvndhcvTPWHBGm7nS+dO0VFmdTi39uLde2U1WxIMgw/VB7
-         dBNm1/kqIw6iCkAmUiwzOJ/TYx1PKqrDbyN33/i+KnzhnvXJusOhN6D7P8xag6V3mr1X
-         FLl+UbyV0POFvOpNs1MuVUks4vY2VGxKKegJwokrB4/oU/54DsIgCXGCxK18TN7KQptr
-         Y7XnRx12WOqB2tbk+i8ZGWC5ysCGAJiO1m5SK9m9s4kqWcmMX9kNSju94J+BkhASnhHU
-         fNYYcxHimZ+DsrirplQfsxqB4NMFVmCnaZIMnaovbfdDxOZuByCWAlA46MqMtMq8aHRj
-         88bA==
+        bh=fonN4XORu9kB4zZFGQ4ycucG5mwQsDuI6SHsKqHgqKc=;
+        b=SJi1BqVk0WgK2qEzUmLRHZ575lQOoJUwQPMvfZwEv6tEP4t531qNhTmSOV3p78sbke
+         wOEE0O/fOXLpAuH3okl9TikC6B/YGOA3D6Y3uZh8rFF7Gj2UFaUV1VDl5QAI8DYClVD+
+         mbfyKtlsr2YreOguRdPF0Vja8Zp3MctEUOM6iP8vehpOlcng/oaGV1FaemQcvQi0fv5s
+         SWaBxOewZP5mqpmAhoDL0lzeu+j5YnxJ3d/BULLzw54y2IARztLKLorq6n4IrcWCPLE8
+         /dXvaReV01WK5wpFfMyTfm5lsoVQD1JLUSBX8cR4pgnRDH57lsv3sVogoYCiVww3Ov9v
+         b5Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763113727; x=1763718527;
+        d=1e100.net; s=20230601; t=1763125113; x=1763729913;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yYuugPZATqidJIxSjOI/bn0PzLcRgfB0TOo+4cGCGxk=;
-        b=TCOLsYdZcb7m1BaRU1IVgIHFgaOgqFBJ0M0TTp8MuZtl4ei3vNTlMm6BDUS4Faj1z7
-         meVT2gs3wfkx2RLRgvymq5TFT0cPl2AdC+m/ICUBm8vhhchtuQ5DHimdS3ygvZSlPqDJ
-         Bcd7VNVZXQPa8fnGGaiBHTnSgPAgC9eNcgT0vtkpafDDlzu2IlsjLexnO7h1KM4CEnBr
-         OWfIBs2IExTlaee8zBdBd07s0We1N9x3cJ+SVHZ4FwEyCgvueaNQXNnmzLhVzTZbNKMz
-         eRjzGHkPBD059Jim595WpJqJbed2tqxVdGKiIUI85zM0mNGuvLmurwyDDEsZiHMK5E11
-         TmRw==
-X-Forwarded-Encrypted: i=1; AJvYcCWET0CxGBSxy+YOtrciVUg3n2Qixr3UCe6/M5t+GwntC7aPawKHfodcaeypYbI75tuIQmT/hPbc5CEJuhzKKw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCg7TDlvGrl+kRoM6XiINNyLxScoEr97tUbDwaAdTkdM99l4qU
-	df8CL8NmYhZ9ympUGi7poCf/oj87ibMkVFM52j764L5mCGStICnBrwNwHJd+z7/AC3nYNxxHOfl
-	VfV4DvblN92bMigpHsA==
-X-Google-Smtp-Source: AGHT+IEzJdTEDmhQFTZAdEOdDjne6kQ+QVfcofJeQl1tc4iTFOArXmY5jbKo0kdFzOXFiN0GwPdPeWKHZdRr//Y=
-X-Received: from wmlu9.prod.google.com ([2002:a05:600c:2109:b0:477:3fdf:4c24])
+        bh=fonN4XORu9kB4zZFGQ4ycucG5mwQsDuI6SHsKqHgqKc=;
+        b=mwlSnrd/gtCvwYyxMK93uQmql8t8Sj+9I0p12l709jkA0fLueJqZzEq7izD/LxcMeu
+         LyUFneVSpU3XiPnjNay3qY27qkaJoz2loItkKT5hnOCP8ia2N5M+xON8gHNJfQe/jMMt
+         aj+dErhtoROTpQmdbvToE8Gga33bjNCLbNvd7lE3sg65tn8o5yUH01YZ80pEJBKYGxZh
+         q77vocfVF67w7Re7LA0Hi/XRJrQg+blxGpzNplFDBLoFnPVNtdk1lo4W6O5L2FWrL+K2
+         B1bPATPCoWxumChEc7JNxVYsL2qM5q0lMty6oQoDGUl8nJZs7MJOZr6Evhf9HPkcFqO/
+         AlBA==
+X-Gm-Message-State: AOJu0Yw1zVdBVkYzZbaZUy/10qrKcTpUhbtxMK0lq1JsRSoXtqPV6JHP
+	o0PBctSR4g5b7vpUh11JbN8br9BChl4uZzaRMBXSQRCpkTOAmcVgh1AwhA837An6DxGAOhYd4VP
+	dWzCW8O1tQT5BEWITIQ==
+X-Google-Smtp-Source: AGHT+IG2ECgXQJKqQsmQtOoG3o4r3rbEaGdM9qNWVQ/7abksmLYaocSL2QKZivyXJfCJ2v6fZgvJM/aIE1P9m6Y=
+X-Received: from wmco18.prod.google.com ([2002:a05:600c:a312:b0:477:d21:4a92])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a4c:b0:46e:2815:8568 with SMTP id 5b1f17b1804b1-4778fdb36acmr22188615e9.10.1763113727312;
- Fri, 14 Nov 2025 01:48:47 -0800 (PST)
-Date: Fri, 14 Nov 2025 09:48:46 +0000
-In-Reply-To: <aRaDjpYMPJtOfxPM@tardis.local>
+ 2002:a05:600c:8b5b:b0:46e:53cb:9e7f with SMTP id 5b1f17b1804b1-4778fe7cdccmr21897295e9.18.1763125112769;
+ Fri, 14 Nov 2025 04:58:32 -0800 (PST)
+Date: Fri, 14 Nov 2025 12:58:31 +0000
+In-Reply-To: <20251110204119.18351-5-zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <aRXJuUTR1fnWiBQF@google.com> <20251114.094730.791355531242483716.fujita.tomonori@gmail.com>
- <aRZ-bsCDsoLZgglV@tardis.local> <20251114.101208.202243876104759244.fujita.tomonori@gmail.com>
- <aRaDjpYMPJtOfxPM@tardis.local>
-Message-ID: <aRb6_v9BSpC6pVT_@google.com>
-Subject: Re: [PATCH v1 0/2] Add support for print exactly once
+References: <20251110204119.18351-1-zhiw@nvidia.com> <20251110204119.18351-5-zhiw@nvidia.com>
+Message-ID: <aRcnd_nSflxnALQ9@google.com>
+Subject: Re: [PATCH v6 RESEND 4/7] rust: io: factor common I/O helpers into Io trait
 From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, ojeda@kernel.org, a.hindborg@kernel.org, 
-	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net, 
-	lossin@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	jens.korinth.tuta.io@kernel.org
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dakr@kernel.org, bhelgaas@google.com, 
+	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	markus.probst@posteo.de, helgaas@kernel.org, cjia@nvidia.com, 
+	smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
+	kwankhede@nvidia.com, targupta@nvidia.com, acourbot@nvidia.com, 
+	joelagnelf@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, Nov 13, 2025 at 05:19:10PM -0800, Boqun Feng wrote:
-> On Fri, Nov 14, 2025 at 10:12:08AM +0900, FUJITA Tomonori wrote:
-> > On Thu, 13 Nov 2025 16:57:18 -0800
-> > Boqun Feng <boqun.feng@gmail.com> wrote:
-> > 
-> > > On Fri, Nov 14, 2025 at 09:47:30AM +0900, FUJITA Tomonori wrote:
-> > > [...]
-> > >> >> Using u8 as atomic type instead of i32 would require a fair amount of
-> > >> >> work, since at the moment only i32 and i64 are supported as atomic
-> > >> >> types, right?
-> > >> > 
-> > >> > Supporting u8 atomics in general is tricky, but I think *specifically*
-> > >> > load/store should not be a problem.
-> > >> 
-> > >> You meant using read_volatile/write_volatile? Since we only need
-> > >> "Relaxed" order so something like the following?
-> > >> 
-> > >> #[repr(transparent)]
-> > >> struct AtomicU8(UnsafeCell<u8>);
-> > >> 
-> > > 
-> > > Please don't. Please make it work with Atomic<T>, also store release and
-> > > load acquire should be introduced as well.
-> > 
-> > I wanted to confirm what kind of u8 load/store implementation Alice
-> > has in mind, and whether it would be used only for OnceLite.
-> > 
-> > Of course. If we add something like that to kernel/sync, I agree that
-> > it should be implemented in that way. If not, I'm not sure.
-> > 
+On Mon, Nov 10, 2025 at 10:41:16PM +0200, Zhi Wang wrote:
+> The previous Io<SIZE> type combined both the generic I/O access helpers
+> and MMIO implementation details in a single struct.
 > 
-> Yeah, I'm afraid that you want to implement something only for OneLite,
-> and that'll introduce fragments for maintaining.
+> To establish a cleaner layering between the I/O interface and its concrete
+> backends, paving the way for supporting additional I/O mechanisms in the
+> future, Io<SIZE> need to be factored.
 > 
-> For Atomic<T>, supporting load/store/xchg/cmpxchg is definitely the
-> plan, so appreciate if you could help while working on this pr_*_once().
+> Factor the common helpers into a new Io trait, and move the MMIO-specific
+> logic into a dedicated Mmio<SIZE> type implementing that trait. Rename the
+> IoRaw to MmioRaw and update the bus MMIO implementations to use MmioRaw.
 > 
-> Alternatively, we can start with i32, and improve that later.
+> No functional change intended.
+> 
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Bjorn Helgaas <helgaas@kernel.org>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 
-I read over this discussion. Perhaps it's best that we go with i32 with
-xchg after all to avoid adding new atomic types for this feature.
+This defines three traits:
 
-Still needs a load, though.
+* Io
+* IoInfallible: Io
+* IoFallible: Io
 
-	/// Calls the provided function exactly once.
-	pub fn call_once<F>(&self, f: F) -> bool
-	where
-	    F: FnOnce(),
-	{
-	    let old = self.0.load(Relaxed);
-	    if old == State::Complete {
-	        return false;
-	    }
+This particular split says that there are going to be cases where we
+implement IoInfallible only, cases where we implement IoFallible only,
+and maybe cases where we implement both.
 
-	    let old = self.0.xchg(State::Complete, Relaxed);
-	    if old == State::Complete {
-	        return false;
-	    }
-	
-	    f();
-	    true
-	}
+And the distiction between them is whether the bounds check is runtime
+or compile-time.
 
-This ensures that we do not perform a write operation when we don't need
-to.
+But this doesn't make much sense to me. Surely any Io resource that can
+provide compile-time checked io can also provide runtime-checked io, so
+maybe IoFallible should extend IoInfallible?
+
+And why are these separate traits at all? Why not support both
+compile-time and runtime-checked IO always?
+
+I noticed also that the trait does not have methods for 64-bit writes,
+and that these are left as inherent methods on Mmio.
+
+The traits that would make sense to me are these:
+
+* Io
+* Io64: Io
+
+where Io provides everything the three traits you have now provides, and
+Io64 provides the 64-bit operations. That way, everything needs to
+support operations of various sizes with both compile-time and
+runtime-checked bounds, but types may opt-in to providing 64-bit ops.
+
+Thoughts?
 
 Alice
