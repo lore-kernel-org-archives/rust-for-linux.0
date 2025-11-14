@@ -1,150 +1,156 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07F431B817
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 13:50:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11AB2116F4
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 13:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763128251; cv=none; b=C0B9fKwmGsEn6U0ExTLfOQUKGfi4JRxxh2/ziV9ZfYPkeU3ViZH7yuBBf5Wp0cUKWTk/QdiN+JYOPbQHeR+0wQIml92FzNMMR7DcO4cgnlF3ns/p/AnzdFkSP0cHRTXJxFUuGoy7AK7hpv7EFopuivhscYWCDW2CZoDj2Qhluak=
+	t=1763128536; cv=none; b=WyahMHcWoFjLtCAOomE7WKGtHrFXUVG/o2EtQNn/AUGVoFCHsbYmynzqPsMuSZVxxcm5DIHltzLr4r02ekzWClIeT7PwOVW+LQdApB7DBKw78mNrhuhSJ32b+xsz6EucTAhw/X9RsuM9IZyx7MNJBG04kVTllJE8PIzQe8CgWqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763128251; c=relaxed/simple;
-	bh=CsIEbKP1oj7XlTEG+3Uocz8o2caJW9JzXXh9HJQrUiQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cRt0ihAQAD1EZi6D04yCccMwbKwEbmhEsamZrnAsECEx6/Ln9dUI/WLAGifPIzRvy4+bllt1rPGTx0o8NgarHzo9JoVj3/DD/9xJ8wsqogTggSlh3urs75Jk4bKR2uquXNhjnYr4bu2vSg4tDi5ADPtxzNxKuz+uoZNEn3CwaZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D0t10MRZ; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1763128536; c=relaxed/simple;
+	bh=GnbklHzgC9G6Wdk7eX4zKAFmiJcA952Xm/nVPxRz9YQ=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=dln538wLAJmH/86xGVQuYOE08s/Dpl8VuP0yeU8dN/d6y74mS4GSzpu944/YKzTUA5gutthjSZGTsdB7179NKbkYD3KD3TsJMzpFO6SDZrqv8D1l2Oe+rKAN6oQ5IGlwf0yf7bSvUFesWdvD3QAr4sVfvFMD2dIZpAFkMZ3wLHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MRpES9nU; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D0t10MRZ"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42b478551a6so1118370f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 05:50:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MRpES9nU"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2984dfae043so17935605ad.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 05:55:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763128248; x=1763733048; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aRrI+zvBboCdfdse/X2BfoaixhuDzfAQTP9joVyOmZM=;
-        b=D0t10MRZsMzAagfAcY0YldrrYNcStrIq8CuCwLgFCwF8CgnIdPtjNc2x5+DS3Gj9UU
-         7NGGkHRLG2TSprcCC40G6UZwTFOVvjKWfc27KPHafSDSM8p5nZHgmXuIGpP6G/x70yBt
-         inGFdVn+AGo9cf9IB/3k6iwllkNPchP77IRglZBq+DZJCNe6U7aXZJzYyf9WK/Xlwd0A
-         oJFzbSytCx5UobDRXYADa1iQ6zzE6KFMrzUNM4ZgEmGizRRmuJHfwJys1RN8BlxDen1Q
-         mwgjWYawACQiSjBUMVGMVkG1yFpVstxmWMPYjLRLOR5e+x76hSq/a25zSK3Vg/gn8ZyN
-         Euew==
+        d=gmail.com; s=20230601; t=1763128534; x=1763733334; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7N8NHp50nfyBG05sw1yUU0M0g5CQybINUgn8lngu64o=;
+        b=MRpES9nUnnkGuKB+8VxdueWvXiCG6+6n47oym98LEw73B7wHIi3DKp9NRZwZv9GHK3
+         7m/0PtKe9GUvCT5G7/doZ7kbCv0P90UaIhUfDm30jZVVnnc60eLz9jNfSEEj0tSlhkFE
+         AUlZ0/oimwqII3iKQVku8uI8/OrB0xTR4teGiflfa4rKvpKcnBXJoPOccdALIwAs1ZFQ
+         yUDDxC6A6PUn+nN9BPy2aePMQPXBPpNDhWMBLCkYE4rBiN5qcopQgdrcN5rkGyDgYHeE
+         6hYWU93bQIyv/5o1ULtCqYKs7qga8fcaxEb2tcCxCAkHLwe6xhWOKJcN+w0lo41rjMkI
+         R0+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763128248; x=1763733048;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aRrI+zvBboCdfdse/X2BfoaixhuDzfAQTP9joVyOmZM=;
-        b=aMng4hfmBfVlbNkez9TmXP+wmsiUAnTGOROm77PmOGIpBCLq10K+w9IGXPr8eXKEBN
-         fTI1BG/R9lLF3H+s12RtaMXSBupmlYjvhTSe/IPpNjUVvbgOPJBMBgYycWjt2GEJaoDY
-         6p+ttMI4XYLmsduIvDhHsS2sp+6WwK+KDFRuWWhhYl7W7HEyF5BrV3HnT3g8u5aI4BEp
-         SbNOJSMZbyxVn8gPkqSAUE0MisNAZ0pPyeM9RIjhanz0St+DvZIHfYCkLCY8tTltr6Td
-         YS28IRas7Hr0osUVPvk9EA1UcGDYHAj0flkMfWNMkp22Llq7tsst8BflMCwRWsKxY9fZ
-         22bg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3XsIDpl6GdshDuJOLwM76DcEUgANgGVuSyURTwyxDuJPLrlkkJwlQaAQRuxdQFLr2xSRz+5Z2/HTAFLfsaA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMX/jeTP9TP0eeZQhJddTP320Wxht7SjKxRWUruhf5kzJ0jC26
-	xcS10FQ8s1wPARRqhA0LHET3RiG/P+0cClONg9oRqcP8VgsPzqin5OaEILk4ptldnjYBtuXwC3l
-	96VklPxOE6c0aWoPdSA==
-X-Google-Smtp-Source: AGHT+IEy1IzfqWatibDXEefRnIBkZupbkLV4W34pV9YXz3HKgkrUUbyPksPnt2imV3NkIkiiyQrvQWIxaug0o/A=
-X-Received: from wrrn3.prod.google.com ([2002:adf:fe03:0:b0:42b:585e:3ca8])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:144c:b0:42b:39ee:2889 with SMTP id ffacd0b85a97d-42b59374c26mr2988918f8f.48.1763128247691;
- Fri, 14 Nov 2025 05:50:47 -0800 (PST)
-Date: Fri, 14 Nov 2025 13:50:45 +0000
-In-Reply-To: <6289d60b6731ea7a111c87c87fb8486881151c25.1763126447.git.lorenzo.stoakes@oracle.com>
+        d=1e100.net; s=20230601; t=1763128534; x=1763733334;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7N8NHp50nfyBG05sw1yUU0M0g5CQybINUgn8lngu64o=;
+        b=it5Gwu1KWCPf84jRm2EL2/ZUjxdtqG5shmuxHwNLdsTR4LZzmMuq/BzbfSxuAaWY5d
+         9bhDGaSzXpcLfim9t7dbT+hyB/V5QzxhblTp++e2r7o0edITqlV6DAdFQ9QrGeYppY78
+         MgpJG1GAE0W41Wvf1xorR98a3193InfAflUDtgIhVlyNp5yPnjbR6U6tpeY/o1YHJFrN
+         lz9txdiQfu9VZID3DDTSblrava3A9NnTzyYr+mTSLSAMbblDHYh28CXoarrOfvleZMWT
+         SzofO9Et6dow8LASqCP+RdQ9YH4O/Q7NEQODyskpJc8LauUTTU5lHAzVVPGiYBL6rtzh
+         dBTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWSBe/gVJgzO+cttmV9UQ1KEAU1EJaD4Z06Y14TWWRjJDbH8BV2YE+731InE8Fhl8JZTHLRwgOryydF7KwcFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzi+FJ5tQEpaKvrqj1WpWc8R7h4DBUMPNs2kNFVw9vyL/eB1TwA
+	RjK1a8ae9BlSO+Tnk0p4r/YoJNb/N4uxjeoYT0P4Uq9WOzisTJxSTsLU
+X-Gm-Gg: ASbGnctaX3lB+nhz/i9OCNfLC4wvhDExDuG83kvDMQ6+fj9NOe+6i7WN61nrWuBJ4yd
+	OSxzTAOLmmpLShiKjqmmGrh3j3VvsueqNBbMpjvDNwL8rirPE9GbdPnxUYvRL1hRi1oEOW2TJhs
+	aGyTwQxkhFsyzhqn+A4umrt8t6ZYjQCY3btcEBnH6k38ENc4N9XXl6y8sqLE19kYjqz0T8HPdMX
+	Bkxc0AIHwy0BgAAuYo1Xk4CqCOY5Vqcyo8LDVwcPQzZF8vJoz6oZ+5LVEr5boZPgsYrstFBQ8/G
+	8Uxc2XvN0soUx2YkPZ60z/nqLV6M/KVH0sKZq4JWBDXIFLRGI2022U09Mo/eJOlaXazZYP5ovWn
+	4pvc8/tWX7Dac4krpNvJFWbNJq2NRT7fP3V+B1YoU1piGSoYUgCZdrxmIwiK9tmoUvJ/Vkj00uZ
+	Bd8q5dXJrtR0M12UAY/nAjVV9dQZhqmvEmBx67r5e7AOjHQbxCey+1dc1R31ZTH54C
+X-Google-Smtp-Source: AGHT+IH4Zm3SzNLPW9Nhvey/nuYETJzhZnRFBCHDTS7sN47KGUgWQKyjVxqI8q7aHJ62TqjPV2EqoA==
+X-Received: by 2002:a17:902:f60e:b0:295:9db1:ff3a with SMTP id d9443c01a7336-2986a73b3c1mr40437555ad.28.1763128534148;
+        Fri, 14 Nov 2025 05:55:34 -0800 (PST)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2b0710sm55932825ad.66.2025.11.14.05.55.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Nov 2025 05:55:33 -0800 (PST)
+Date: Fri, 14 Nov 2025 22:55:19 +0900 (JST)
+Message-Id: <20251114.225519.83812886745946153.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com
+Cc: boqun.feng@gmail.com, fujita.tomonori@gmail.com, ojeda@kernel.org,
+ a.hindborg@kernel.org, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
+ tmgross@umich.edu, jens.korinth.tuta.io@kernel.org
+Subject: Re: [PATCH v1 0/2] Add support for print exactly once
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <aRb6_v9BSpC6pVT_@google.com>
+References: <20251114.101208.202243876104759244.fujita.tomonori@gmail.com>
+	<aRaDjpYMPJtOfxPM@tardis.local>
+	<aRb6_v9BSpC6pVT_@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1763126447.git.lorenzo.stoakes@oracle.com> <6289d60b6731ea7a111c87c87fb8486881151c25.1763126447.git.lorenzo.stoakes@oracle.com>
-Message-ID: <aRcztRaDVyiDO7aH@google.com>
-Subject: Re: [PATCH v2 1/4] mm: declare VMA flags by bit
-From: Alice Ryhl <aliceryhl@google.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Kees Cook <kees@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Fri, Nov 14, 2025 at 01:26:08PM +0000, Lorenzo Stoakes wrote:
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 2e43c66635a2..4c327db01ca0 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -108,7 +108,32 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
->  
->  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
->  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
-> +
->  const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
-> +const vm_flags_t RUST_CONST_HELPER_VM_READ = VM_READ;
-> +const vm_flags_t RUST_CONST_HELPER_VM_WRITE = VM_WRITE;
-> +const vm_flags_t RUST_CONST_HELPER_VM_EXEC = VM_EXEC;
-> +const vm_flags_t RUST_CONST_HELPER_VM_SHARED = VM_SHARED;
-> +const vm_flags_t RUST_CONST_HELPER_VM_MAYREAD = VM_MAYREAD;
-> +const vm_flags_t RUST_CONST_HELPER_VM_MAYWRITE = VM_MAYWRITE;
-> +const vm_flags_t RUST_CONST_HELPER_VM_MAYEXEC = VM_MAYEXEC;
-> +const vm_flags_t RUST_CONST_HELPER_VM_MAYSHARE = VM_MAYEXEC;
-> +const vm_flags_t RUST_CONST_HELPER_VM_PFNMAP = VM_PFNMAP;
-> +const vm_flags_t RUST_CONST_HELPER_VM_IO = VM_IO;
-> +const vm_flags_t RUST_CONST_HELPER_VM_DONTCOPY = VM_DONTCOPY;
-> +const vm_flags_t RUST_CONST_HELPER_VM_DONTEXPAND = VM_DONTEXPAND;
-> +const vm_flags_t RUST_CONST_HELPER_VM_LOCKONFAULT = VM_LOCKONFAULT;
-> +const vm_flags_t RUST_CONST_HELPER_VM_ACCOUNT = VM_ACCOUNT;
-> +const vm_flags_t RUST_CONST_HELPER_VM_NORESERVE = VM_NORESERVE;
-> +const vm_flags_t RUST_CONST_HELPER_VM_HUGETLB = VM_HUGETLB;
-> +const vm_flags_t RUST_CONST_HELPER_VM_SYNC = VM_SYNC;
-> +const vm_flags_t RUST_CONST_HELPER_VM_ARCH_1 = VM_ARCH_1;
-> +const vm_flags_t RUST_CONST_HELPER_VM_WIPEONFORK = VM_WIPEONFORK;
-> +const vm_flags_t RUST_CONST_HELPER_VM_DONTDUMP = VM_DONTDUMP;
-> +const vm_flags_t RUST_CONST_HELPER_VM_SOFTDIRTY = VM_SOFTDIRTY;
-> +const vm_flags_t RUST_CONST_HELPER_VM_MIXEDMAP = VM_MIXEDMAP;
-> +const vm_flags_t RUST_CONST_HELPER_VM_HUGEPAGE = VM_HUGEPAGE;
-> +const vm_flags_t RUST_CONST_HELPER_VM_NOHUGEPAGE = VM_NOHUGEPAGE;
+On Fri, 14 Nov 2025 09:48:46 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-I got this error:
+> On Thu, Nov 13, 2025 at 05:19:10PM -0800, Boqun Feng wrote:
+>> On Fri, Nov 14, 2025 at 10:12:08AM +0900, FUJITA Tomonori wrote:
+>> > On Thu, 13 Nov 2025 16:57:18 -0800
+>> > Boqun Feng <boqun.feng@gmail.com> wrote:
+>> > 
+>> > > On Fri, Nov 14, 2025 at 09:47:30AM +0900, FUJITA Tomonori wrote:
+>> > > [...]
+>> > >> >> Using u8 as atomic type instead of i32 would require a fair amount of
+>> > >> >> work, since at the moment only i32 and i64 are supported as atomic
+>> > >> >> types, right?
+>> > >> > 
+>> > >> > Supporting u8 atomics in general is tricky, but I think *specifically*
+>> > >> > load/store should not be a problem.
+>> > >> 
+>> > >> You meant using read_volatile/write_volatile? Since we only need
+>> > >> "Relaxed" order so something like the following?
+>> > >> 
+>> > >> #[repr(transparent)]
+>> > >> struct AtomicU8(UnsafeCell<u8>);
+>> > >> 
+>> > > 
+>> > > Please don't. Please make it work with Atomic<T>, also store release and
+>> > > load acquire should be introduced as well.
+>> > 
+>> > I wanted to confirm what kind of u8 load/store implementation Alice
+>> > has in mind, and whether it would be used only for OnceLite.
+>> > 
+>> > Of course. If we add something like that to kernel/sync, I agree that
+>> > it should be implemented in that way. If not, I'm not sure.
+>> > 
+>> 
+>> Yeah, I'm afraid that you want to implement something only for OneLite,
+>> and that'll introduce fragments for maintaining.
+>> 
+>> For Atomic<T>, supporting load/store/xchg/cmpxchg is definitely the
+>> plan, so appreciate if you could help while working on this pr_*_once().
+>> 
+>> Alternatively, we can start with i32, and improve that later.
+> 
+> I read over this discussion. Perhaps it's best that we go with i32 with
+> xchg after all to avoid adding new atomic types for this feature.
+> 
+> Still needs a load, though.
+> 
+> 	/// Calls the provided function exactly once.
+> 	pub fn call_once<F>(&self, f: F) -> bool
+> 	where
+> 	    F: FnOnce(),
+> 	{
+> 	    let old = self.0.load(Relaxed);
+> 	    if old == State::Complete {
+> 	        return false;
+> 	    }
+> 
+> 	    let old = self.0.xchg(State::Complete, Relaxed);
+> 	    if old == State::Complete {
+> 	        return false;
+> 	    }
+> 	
+> 	    f();
+> 	    true
+> 	}
+> 
+> This ensures that we do not perform a write operation when we don't need
+> to.
 
-error[E0428]: the name `VM_SOFTDIRTY` is defined multiple times
-      --> rust/bindings/bindings_generated.rs:115967:1
-       |
-13440  | pub const VM_SOFTDIRTY: u32 = 0;
-       | -------------------------------- previous definition of the value `VM_SOFTDIRTY` here
-...
-115967 | pub const VM_SOFTDIRTY: vm_flags_t = 0;
-       | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `VM_SOFTDIRTY` redefined here
-       |
-       = note: `VM_SOFTDIRTY` must be defined only once in the value namespace of this module
+Yes, that makes sense. Let's proceed with this for now. Once support
+for Atomic<u8> load/store is available, we can revisit it.
 
-Please add the constants in rust/bindgen_parameters next to
-ARCH_KMALLOC_MINALIGN to avoid this error. This ensures that only the
-version from bindings_helper.h is generated.
 
-Alice
