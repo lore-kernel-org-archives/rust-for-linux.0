@@ -1,47 +1,47 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010046.outbound.protection.outlook.com [40.93.198.46])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012052.outbound.protection.outlook.com [40.107.209.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E7234EEF3;
-	Fri, 14 Nov 2025 19:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FF334D938;
+	Fri, 14 Nov 2025 19:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763150186; cv=fail; b=LFTN8lwhv5EWyQYj7L+b4XE0TegDFTNae804NXE0fXD6ZSnoKg5r8gN6CAjgFGsvKLKFtwBqykjJmyoiFahGG+wKH46norU4uyPpAHYj9lVKOdg8u8QLLV33aj+jn79eKP73TIOzy16X57cC4STVT4zG3Nead6AHpWkrbjlq8KE=
+	t=1763150186; cv=fail; b=NZXHlQmh1J1ggyff3WLZX+ehm82v/BZw/o+LbhAtj831ToUy9Ku/umXBvWkjMLPSKvcr6KNPPN0i2WV83jq3wI/MIl9SUXEOwMokX4NO4hTe2cGIHD6KX8Kn3hMhXaZFjLDiU6TYxB96obXhtAyMrBurer/qDk1sQ7KUynGbhnM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1763150186; c=relaxed/simple;
-	bh=7Sx9Vscdg56IpKWJWGsDhhM+aJCUGFuTp7y2YxwJlJs=;
+	bh=RVqO1iqXvwTjK7fsz2rhqQWs8RV2PDTCJ+A9jbvv8oA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AFsjPfaFxvJ+CibRYp9UfNxkFOPs8yf0YraxhxXtajswYLBeTzbVrlkbUDLpum2dyOdVLZSVHTaFY/Aua9gPapPlMayjckU4ka6ZVIqNKi/rMrGXcsdgYNQZMG1GRBQheeex6UmM1fQSIG1bkw4yyCBb2LVf1czXEqAteq+8JFI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rWuZu6rY; arc=fail smtp.client-ip=40.93.198.46
+	 Content-Type:MIME-Version; b=nk+ezbsKXI34vsVqMeHsx6lVhjFNF+ShCqEviNFe8wm6+++/yIxxVZFDh4Zhjq2+Yf/Ho9/DkH7T9Yi6wj40uSdXifcX47wlJLxf29lFOM/3/3nLb+DLYzKxJHUqgPJYWQmnBPcvLNiOGErwzoyxbzDNsI8Ei+NVXCweBws5eUE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Yt5OvwJq; arc=fail smtp.client-ip=40.107.209.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rWuZu6rY"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Yt5OvwJq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IulFgBdjvNwKhunnspf4yeQ8K5owWzlLlvKBQww6R0a1ziR4jNjGHkTR/H5i+ZkZSDZhlDqSF1DHTjwA7Nx8BkaGHURmrAg1pbgcAzCy8UR8jl9AtnGeIRtYoOGU3pnfLGKWyC43RbHsRGCxeffFbXYBY6RerNv2rZWFNnLaDxwbxiILrfm07m7XjCNVplqsFUujQ4pIPEJE/acT13lhcqaQ6/MZNoeOdYWZsBVyowfQOg+7UuLgwPHgbdBaH5zkX5ojFAMuUPTbltTMLeqTeurXEsYSW06WVrsT4f3WL8FwzGpqnhRjvIAQUJN745ilpXV4yueWmkotXHfCRPzzGQ==
+ b=I5eDVya61dRQO4A0Pq2bsvTIWJ265A/8STAa4rju2vAr2cAWZgqU1KpD4wS7jCwHhytCHZ+NhW2OG3UOf8+6ehvRwPAQInGmSTWpCXPEXUxXpgsLVGV03H1dnTQwhtVl0dNTNdhTfRXin5WnLioncUEUyrXBW0vd6DfYowUeB6b/SN6nnrOol6gZmSNmksuK3+oHeob8Jf9yPD0kFg94pPKT8qi2CqfciAHrzhmDQYBqU4sqTt3C2AtjTtXdYt8WQ6qhOVqPLdcTgdCu13eauCti9FF858yXc5/a+dZnuhpm8ZSY47BfUp8I9NRy3g+JCPAQ7yeDbC3JNp5szRzz3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HoZ89fUGIlc4kCxRIZxSNEO/Wy3PRrTO7DMuE03srFM=;
- b=XjIGhp1ENO8xkWunJlVw4QG9r7Wq6tYInK8TiNvBsUbrvXQBRFtanEKZGQS33Nz8Ozgzb8R14S7tc1+ta1LPPPl82/MwZwXQgnAiS72b2nRMP1Zja45Ic6YvTseAn3W7DQ2soFCaCxflVZkZ3VOzQbnPAGPmYh1DDzqrEeoUQ0jFmCYyADaoEoEwNaXPia+CD9R6uTWDpH+j/1iN/imwQlA7m6nrODScligyzw0TE+P222vaUZau1JkXxqNfiU9eP2qKHjWgywDPHgrbtDSrPBdzTwEBB0W2mKjBsDs/q+WpuqYuuJO17fwER/FKWlEgPtMZmMjc20ftlDs0aWd88w==
+ bh=kJj/22m6SZZaimATpJkYQCSaUO+ObtgwIOAtbYUqcPU=;
+ b=XVSF7ejtCaFpb2/XWIsmbDMzPWq8kNnOMES+IwIicCSll7+nWWTlLbeeYCpfCH9BrzNVgMxA9fX9O7fGTvXD4oLxxehk9rOxrInDybnI546HtUdvrrOYiq/TiT5+8JhWkdwsVBzAGzZ1ke6P2CAXqzEj203LA6z5i3VICdboYLfvVndvXU7I3nBjr+9/02AzoQRp+S1DgEOxD+zrwPQLVredF0Z+rNofOP07uUMo4aZP127oXMXPD5jtxDKA+49AdVIV5wM8ms1Rw1HSlcAVJ0SylNlhZv4jHR+A6aaVmpru9PGhjw4UHkNL3c/Bdhzma06q7dBkUTqd0QmQ6DL7fg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HoZ89fUGIlc4kCxRIZxSNEO/Wy3PRrTO7DMuE03srFM=;
- b=rWuZu6rYMIacZhDZvwUzcRRSCaAtn4eEqDuKTO2raU5HXoaD7FTDHNLdEyBMTO7lQlwzDCwpyqVbCDyeLInqi4FP90UmkRJn6Zrm/TTyLggu+Uz0DqelO+RSZtKOl5V++cmY5TBYuGlfyGk9Vo6fUAT2JS/WT2/g5m2jZ2Bt+3AJl+9/O18dZSDqwq4sG4YNY+V7hLLDIDa7aN1s1vN2NKaJ6cWDmtHQ50xSvj8/W+wGJkEnVF8ZMywBUl2Y59uBjyKNGC7cTolxFxelVPcmrkWadXIL2dGLjED5UYJ0QmKHYDDvoU1MQxBO9dEFahGr/jjBxvOrtR2mWvQDjH4FKg==
+ bh=kJj/22m6SZZaimATpJkYQCSaUO+ObtgwIOAtbYUqcPU=;
+ b=Yt5OvwJqS5L+NsX5j4BkcmIeJnx03UPt2/gTfuLSX6yZfwGpknBjSFAkNpK8p5CNhdFVl62IJmZhcstwOGPYMY+/33hEQJ1vMs64JszgZMwWKkuLSNEY+epAHHaBVSgY7hMPH1GHotyQesibwWNDN/NHbj6rqrmDgmw/KdBt8dy1ngOsqzcxwhTCI54wBGNytqkj0VlaY1JUOdkACgACV9xEk9emiYT9YZIJTNVCDM04hlEChd0CLOmrog1uqOnnBYKYsAuh0OZo+nOf8VXA8Qa9yDM1gX1AOkmyGCP2HOun6dSXwKyki72yJeDjDzxd/JUYj4Uiw03ogiiIQ5RTNA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by CY8PR12MB8340.namprd12.prod.outlook.com (2603:10b6:930:7a::5) with
+ by DS7PR12MB5765.namprd12.prod.outlook.com (2603:10b6:8:74::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.18; Fri, 14 Nov
- 2025 19:56:14 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 14 Nov
+ 2025 19:56:17 +0000
 Received: from SN7PR12MB8059.namprd12.prod.outlook.com
  ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
  ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
- 19:56:14 +0000
+ 19:56:17 +0000
 From: Joel Fernandes <joelagnelf@nvidia.com>
 To: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
@@ -69,16 +69,16 @@ Cc: Alistair Popple <apopple@nvidia.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	nouveau@lists.freedesktop.org,
 	Joel Fernandes <joelagnelf@nvidia.com>
-Subject: [PATCH v5 11/13] gpu: nova-core: sequencer: Implement core resume operation
-Date: Fri, 14 Nov 2025 14:55:50 -0500
-Message-Id: <20251114195552.739371-12-joelagnelf@nvidia.com>
+Subject: [PATCH v5 13/13] gpu: nova-core: gsp: Retrieve GSP static info to gather GPU information
+Date: Fri, 14 Nov 2025 14:55:52 -0500
+Message-Id: <20251114195552.739371-14-joelagnelf@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251114195552.739371-1-joelagnelf@nvidia.com>
 References: <20251114195552.739371-1-joelagnelf@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BL1PR13CA0441.namprd13.prod.outlook.com
- (2603:10b6:208:2c3::26) To SN7PR12MB8059.namprd12.prod.outlook.com
+X-ClientProxiedBy: BL1PR13CA0313.namprd13.prod.outlook.com
+ (2603:10b6:208:2c1::18) To SN7PR12MB8059.namprd12.prod.outlook.com
  (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -87,178 +87,459 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|CY8PR12MB8340:EE_
-X-MS-Office365-Filtering-Correlation-Id: 395117dc-cb96-4ccc-2971-08de23b7ddb7
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DS7PR12MB5765:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6bc5f5ba-bff2-4860-ad35-08de23b7dfa2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Ca40MjQUit21p+wHQYEyzR18jFCh2qsRMHKTsWRPQX3BRiyW4/1Dd0g7eYNz?=
- =?us-ascii?Q?S3/3N+cu7/nUaJ3VN8PrACrDf68BBsvkZDMRSu/X9gslxCZlkBNi8VoPv29e?=
- =?us-ascii?Q?sqo7saaaSsfD5ubIz7mjJknPfhNioGCcr178UKwIIZ7J5SqKkQHqzp3WmBmG?=
- =?us-ascii?Q?FoEnOhYgJk02S166tsiwzM+uw224iGIYej6Ss3MeSbjV7EtI9kV85/CSeEqJ?=
- =?us-ascii?Q?Q0dHFObUGVjqVkBjzMPnpCdUZFgg2XoimjE+A3TpkzqruUigeMgFCz4TWXyg?=
- =?us-ascii?Q?fj9Apgyiajf8SnhtH3ThQiqzHR7Xt+dCwTsM1mcVQmyehQyW1mrHk6UOOqSe?=
- =?us-ascii?Q?Oc2qk22mUWYleUlXMHmCtGLWXR09ekHzSZGSqRK4pPyr/KQuFCjqyvf2ENZt?=
- =?us-ascii?Q?IKolR2VVGC/qSGeRqjGFgL+Vt+8sf+hcLRK9eOKcjJLABNwxzOE+kFS5i3rN?=
- =?us-ascii?Q?Ysud/gopBrmJlU6s1N2p/gYM2csmPCNCKnUYV9L2Shn7XCo1pfKidcnrrIJ1?=
- =?us-ascii?Q?IP6drMf2Ra8o5DsVGOl3F9xMh0gvQXZjslzw1YCLTXsei0WEaTjLVMMks67v?=
- =?us-ascii?Q?/5gJUVAyZBgPjJcosXLOC76AAb6XA6JLAoXNK0epUs2sejHPvZUlu8IYQls4?=
- =?us-ascii?Q?hLA8xA6MQPXTCmaVTkjZfeLGldZwgxPhoeapBJd8p9Fql3o/5B1pRibyyskk?=
- =?us-ascii?Q?HUk1EdMENIYdsw56ei7Iwh7ITOPjuLVlnWYQK3MJ+QmVIGwHnkjCbkmbkdX7?=
- =?us-ascii?Q?ZWFCTaF3U65denEzV29wOTmVyUlSTx7pBtTat1iAA+Gr9trweXIWKl1Lns6l?=
- =?us-ascii?Q?Lq++tmAV5cUEm1xC3PSY+mhUXV5gLs9mzDU5tj+atM3BTlN2dkZ+vCWI/sxz?=
- =?us-ascii?Q?A15kpP+uJBBurFpOUjLfr16OpIkenSfrydOeLqqu8fID4pX584pFwxiJZffm?=
- =?us-ascii?Q?wCky31bunX5jC/0XDuRSOrxtsIYGCjwICOpx8cRj3w20UpvyJe9STtmENzLn?=
- =?us-ascii?Q?05ziQFBabh1gtThODxpyFunizLZJCWDO1910Yo0xDEfCDLpMK2IZqDKJBlLr?=
- =?us-ascii?Q?DC8WloYXcuLAclVqVKK83Ri1iUmQxYPTWrkWH9nIV/h0ApXgstPqEbVJm2Op?=
- =?us-ascii?Q?m02QkEkMjThKBqTsCJzAzIYZdPNUUFGl3Rw7ziFei24klLf6OOx5K3HEsygZ?=
- =?us-ascii?Q?s6s7L9L/j5zgJw1EEiOP5YUuy74c0yAybT/VPCSRtjkFjmPAdcwAz+lUu48I?=
- =?us-ascii?Q?A3nv+D5OGYJuN+3zu+EuOvOJMZdBqpFet90vk63v37jygIfFHwbwErXa9X1W?=
- =?us-ascii?Q?tHLSU+8oNK8l5pbp25fXgLJgg+bGnrMysDLIL4qjK64ebOnuXOx1IhTNjPCM?=
- =?us-ascii?Q?yvHskqy8A/DR2mTsycdqDbVY0Bt10o+wwRVO4RFcEgFPUniaTlYOoperHKJe?=
- =?us-ascii?Q?7LEUtvMrWpFO1T1iZNCrzuKjLZcDWmGh?=
+	=?us-ascii?Q?2vkiANiKJ79PRKF33Fe3/e7gsz9IqG2KsjGYaVvohO9N37IjqSDAmWs/s9kn?=
+ =?us-ascii?Q?MTK2xMB+IYJaSroBKlPqPBoHHdi40JPOSukaiBkDn+rAab8GwQkV271Yglhs?=
+ =?us-ascii?Q?kFh+R3YlGCFdq5IHABq8B9BN2rJVpFKH6KqxObmcV6EGTQPq0Yl1y1H5ibm1?=
+ =?us-ascii?Q?LLPBNu6knj3HgL7hnAYbuPZdY532S46gwq94mMHxzJHcIeML+EPpnBAAe1If?=
+ =?us-ascii?Q?9uTvA7PZ+ux8SftUj0udImSQi1hbIXdZb/4pcWSUnkZ7iFQjhcgQCaoy+U/9?=
+ =?us-ascii?Q?4XHZ+L8Oyfg/sOc7NhWNjJXTswoVDMbTQ0Bd4vMKuPEe8za4JAHcrghdEDeZ?=
+ =?us-ascii?Q?KJwmQ6JRZUgSSKyh5400mCL1TN7zR5y+bLmMfjU5soG139otmM79krYT66sb?=
+ =?us-ascii?Q?0vYVGPj4M5K0tvWsR+dBpKDvtOPNqlELpJv2O1767JngQL+f0o+dq5ZjexCW?=
+ =?us-ascii?Q?o79c/2SXTUc63b1HPS9gKSV5E7KL89TfETfVVwnmmPw45xe6Igpwcf8ag9p9?=
+ =?us-ascii?Q?Y7yjPXOmOK/u7c1RraCiiexMqTVtiMSQ2sRKtaEckZC+zwrCQm8CDKrFg9Va?=
+ =?us-ascii?Q?28ngxHtsgoRayEg4aJEZ4wPDqoqb3pAzE7Xhr8BYHeQibgAd3bDi3j18CCgR?=
+ =?us-ascii?Q?TUc5LdryA0MHvInue27Pxa9JvzfaX7UyAag/zEpshRtg03rYcZF4Q1gONOFB?=
+ =?us-ascii?Q?6Z1KvsqRoX5VYDeJIZpxSNWeABmORcVAipS5/LqTc5LFZz0pWn36tN/edC1Z?=
+ =?us-ascii?Q?Iw5EOcha9sUG372783RnRyk82NF9yfRhWX1l9l4M2iSJ+NNHsTnMn1hfUnIV?=
+ =?us-ascii?Q?kXQU37RIAlWfNQhiuEViAaHn8lcde0Y458bwVqMOL/Vzvtbv/k++ZHX7Thlf?=
+ =?us-ascii?Q?3cMBe9kt1xUZzrdG663oQPlKHwtJXen4Om8u+IFKp4WlM6Oav7Dx/FpuwD81?=
+ =?us-ascii?Q?ys17ykjSx7XDLwWcRuKaDFFc75NUZl2vLBQcEYorhG64QNtzAEUTOENJEpJd?=
+ =?us-ascii?Q?KOJaYwaFUPj1j7ylNGWtO3EA6R5Rg9nuoBXRiXKLM2Kn1Y64doPQp1s98GSc?=
+ =?us-ascii?Q?B0fLFKBSdJyKRGb7yJnQolPeiUbfj4y3EDCMTV/ff8mgNuyBKN7AsI+Z/itn?=
+ =?us-ascii?Q?skvjmRzduRqz4RxbloH9OKHUwkRYdLnReT/OW8kuy9Ok3VqB06tQOMlJ4SH6?=
+ =?us-ascii?Q?T7fgRLs1qnyG2EpCzVa/vzt27NNlw+8QKiq+sO7bTL2ScL1xQHwZzmC1hRij?=
+ =?us-ascii?Q?JYeQ4mrKcSDdqMpEF1Xqqprs9qd8LdehO3B60ZSZ6EfitnOQE5BwdF52zLBd?=
+ =?us-ascii?Q?gutYFqEQsyqnmy9bDJa81bSODXlX15GEqwZLmfk+PEndzqBQOUK0Asp8Ji5Z?=
+ =?us-ascii?Q?ZTNOB1jH03AN+KtlrCNowhgr8GXQCqh42JJ5xEbFTmaWe84KZ+EKBcA74eyv?=
+ =?us-ascii?Q?n+QypRT+SUu1kGKwKLR41GF8zPAOBPy/?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2Dxmn+Yvl6J5pA4ZVzTHaVn4GR5NCEYS07nEz2xcKLW53XLmIttWPt1kaZ9E?=
- =?us-ascii?Q?TLnmeYn+LdrwckytTuinHHdDjFB49Ncvb9+nyJoVyajZZRE++NCi4QTLR3DR?=
- =?us-ascii?Q?6qcgCf99pkD/PhJulA1wBoIe/LmHp4h54000ze2vzFUAgVqvXP/KIzrX7enk?=
- =?us-ascii?Q?BiNXFk0v6IXZRFMOupM+ykYQugK2kG286intGLzlMHo2iR5CHXknduGFFpdK?=
- =?us-ascii?Q?Bz2S8h8T3jiLwyMrGrTzuvs4EC3FIaKYW/nVLa62Nr0SllO0OT+gpbribQR3?=
- =?us-ascii?Q?VPKL8jO3raTpPF+Elr1q6AhVUnd23I/G3kFgjL/Lqj2dO6nHAXynWCUPzlXK?=
- =?us-ascii?Q?F4hT3BhaRwR+czAYuLCqsFA2D/dPP7FQPoqyYwbjD8Kh16jps1FvKiO7G8no?=
- =?us-ascii?Q?i/2j19KDnec+e+8MwNniz+K7qNy2ANpixNQ51/y+Hflml9F4gvj4G4EOkQU4?=
- =?us-ascii?Q?F6uACib1xHmyMjVyKvev5bIry2LCwVy7AJSgQ5ZEc/MOotdJeSSAZT0CWu7E?=
- =?us-ascii?Q?DJO+7THLFigMnZ8joxNySqvjUINK0j99Tk5j6fIO92iPh4rsQYopByq6NjK9?=
- =?us-ascii?Q?i0igzG+P66pWZEjzR5ACQLe5VUvqFJeoRec+/73D9QdVDtJYp62C9fD7ide/?=
- =?us-ascii?Q?skmGXuMMl976dRVfm2iCB5It2gmuBXSPWxv8Lny3fWkeSpSt0tluYt1OT0Q8?=
- =?us-ascii?Q?RTwO5b19CTgnAJfgxe9iLJtaBqPPRHVGV8jEP4gK2eludRuxTM+wiy87Sf+t?=
- =?us-ascii?Q?m/u9xGatyWX6hz64kW3QmYg5sr3jOV9prW+U+YTvAUtllT0GH5uXRcr9mqj+?=
- =?us-ascii?Q?14RPU0RSu5mcNAuRlWC/sV5Quz9NpaQwGn28+hx3IRG0K8PcaBxiXitFnztA?=
- =?us-ascii?Q?oOzp58wHd9TtsVlXjjZMMLM62sy8kNS7uq9KSSHf4ywvA3P4LiGHKuCwH/NA?=
- =?us-ascii?Q?FyVzQW8G4XEAWaEQpMcATNuREh2uZbnOBSC1xxhBnNs3ACLmlw3hWKyFcjyX?=
- =?us-ascii?Q?KyB5t83RIVYjll/uyUSFRe6cDF6/d3cnKxQw4oSgruOCwYn00Ch/qZVlwtZ8?=
- =?us-ascii?Q?sv9oMZBT7PXzYElIiWY7WUjRQBzIYikp6klCHsvgFW3klHdPs/9yh12MIbzv?=
- =?us-ascii?Q?RdY0sQgRr92jOlDcv+FmQS+w58eZ6d/HLlzAKkB1ZmZsgddZbV5/PbjKuy7J?=
- =?us-ascii?Q?EvUQ1yg1U7Qzso9IGlJ2zi6oPVImelb3AQaR0fTwfpXliLHdSDF0FJY2qh19?=
- =?us-ascii?Q?VjeQk3iyoId9zAFs8ij5i3+MK4hY3WR7nDV9iUL2+H574CGjJhij0LA4Ww/Y?=
- =?us-ascii?Q?dMHB4VeVdXBLYHP9Hl/2Gz2ciAADgSua8A1KpkwlsA6Osms1PE7iWAgNlyAU?=
- =?us-ascii?Q?KhiCBqm5qK9ZxSC2d+wKsbX7tQCgRuqTYcgOeVUboqmO7MKJbRls24EgCRGw?=
- =?us-ascii?Q?zItmDk9a4miDZL4FHsWKj8t6QQvOvDSR554sMn85FkVqJ01OBeNeovwRYHsB?=
- =?us-ascii?Q?g9YyuO6zZAnaWPNe+fmmY7PkUNvbKZiPu055dppD9tZ8Rxi7eidxfzU0MVu6?=
- =?us-ascii?Q?tiOIayMVW+Bo4QU8TrWR+cpjiKli3D1IQW3ITA6G?=
+	=?us-ascii?Q?0ftKvfmw6gDXDchEkCJsKMhi4HvDVaZh29laKoXcqLCvD3JFeRbLAWasPwig?=
+ =?us-ascii?Q?hXbiJKuYEKzHOPO/lpSPyhZm95gpaQFxzkoPm9pJsP09UnHp8jKarTXjFD1B?=
+ =?us-ascii?Q?tpgxfKA52occSnd1Ah+tFy9byone+VxYafl7LFLUv3YxwC6s/z+PMpxBGiMV?=
+ =?us-ascii?Q?Ilu2njCrOrFmTZWzzB5vxJ9nIBcE0pfCTtABqoq5mcX9G1MEButluATHVVZq?=
+ =?us-ascii?Q?/ga0OhOO4Jf3h7fr1ZM+sGEOTyHbnjP2dVuGc7MfsBH2MG7AuU3yqAD6FgHl?=
+ =?us-ascii?Q?LNkH1mqHQV+FJee1GyX2Mzd6oVqifwYApftNwMoaWCYxRCKHDWTjo9aAQKuo?=
+ =?us-ascii?Q?y1l+yhD7UTqJXpxjdVHJU0hQR9wJhlMuwnsVXcCHta66GXCAe5X7kIJMRGSV?=
+ =?us-ascii?Q?RSn1FXsBq438+CmYugK+wG2zxHJrx1gh6ckPCHZ6LMNXAvJb3uP8/NZm3UUM?=
+ =?us-ascii?Q?fLOZNFJjXb+iKyVcF1VyztZU6E39/a5oIlsa/S3fyRSCDz1aL1QP1yfAdQ8s?=
+ =?us-ascii?Q?X0TUxZW2nzQoSjGINsh6xRZjIlYUXLqb5IrUd/RUXxlQMUjjpw08Mk6jqv+Z?=
+ =?us-ascii?Q?SvLtFjxFP6HjYse2eI1NNxoUteBuGOci0iE3Vj20miC6CwKtrl1Dlq1n9kPe?=
+ =?us-ascii?Q?fS907QupVESUnLtNIJrrT9trandY+fLobTRITN3/VqLsqy5HTpP4T41dSp5U?=
+ =?us-ascii?Q?cs9o+Oo5o3hiaEYdf1rHJ2H6veU1ZagP1ThN1yjkLgeXGYbDylPSjtAk/tad?=
+ =?us-ascii?Q?8hkx5PgEqw+w25+O2mxmUa4Qb5BQ6uSXWWbw4cw/FK2ZLvyS5hXfOj+RkXDl?=
+ =?us-ascii?Q?jk5MTfbCJ2JtNDcS9MZWkJaxufltJsG5rrWOTKzyjJ0VeqMysnMfCXzwMRXg?=
+ =?us-ascii?Q?1eQy+6pbtnWxh+gesVnYLIZph4nlcJjHjpZQY2u8TOSdGCMDl2h/QP+KBqhW?=
+ =?us-ascii?Q?WnkjWRHSmwvHaNl0zEDEnuTjD8zX7lkqYsCL+h8HLuHk3KPO0tvxLOYZa6vc?=
+ =?us-ascii?Q?CyZUlfv2V7loyTRzhBAPNfvqw1r5CtjEW66qRlryIps25BJfcvCjH1pRgpqK?=
+ =?us-ascii?Q?nXHUkKXIFv0E9DlXpT+1FJV0KT5u2aUg5dN2y2kqFDJ+yOEm5qTYMw8GvM5B?=
+ =?us-ascii?Q?js/5WUykPBmpGLXJRPcqERc1wYeOdAPuBVTd55Mivt9DyVmC3+JzTE2uYdt/?=
+ =?us-ascii?Q?saX38ksYdn1T4lBMlQ9AqPFzMoYTcJzFWOhgmz0nYGBSQv1nhsdb15BSMG3x?=
+ =?us-ascii?Q?XoBsy5gB4lGJBXxUZG0zbf7mxXHdtztj/Tx58eh1NOpm8o5RAMCFJz8f2/7S?=
+ =?us-ascii?Q?Pc++NANKoH87tSCvKU6vj2miocm+60znRe3WdF81mrqXeRAM4DpZnMNFziXM?=
+ =?us-ascii?Q?Fw6K8YbtTRjEe7/1z5qjp59yf8lpku3hoXx3GipFKMDKcAC5+tiKbl3mrRLm?=
+ =?us-ascii?Q?fP69PVa4dKVYFJcLM6hx3N5qH/Pxffrl74+9PrtIcB0ojwNeQHDuajh/bj9O?=
+ =?us-ascii?Q?Th3jGnJmOmMTkoHlyBIce9N7b6Q8bWm7VWpSxxR+p+1/5e9bIk6p0sI2bwr0?=
+ =?us-ascii?Q?w6azOXXLho9XsqZlZQF3hOVyS3FVnErbxK6qfah8?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 395117dc-cb96-4ccc-2971-08de23b7ddb7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6bc5f5ba-bff2-4860-ad35-08de23b7dfa2
 X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 19:56:13.9733
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 19:56:17.2144
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O/WZT7ApMJtCqlyjmudryHyvPtaZ6uZMcKyWji244w8j0eG00Ijn5sphNaxElhM+/mGkYDtFov8lihy9F1afYw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8340
+X-MS-Exchange-CrossTenant-UserPrincipalName: mepCLNo+/EiuDSg/Bs9KYuXbq7/wYDvFb//89cs0SM/RVpMTbB/5GRZrYIDbhm0Pc09/wh+CAPHYlt2eXSoDJA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5765
 
-Implement core resume operation. This is the last step of the sequencer
-resulting in resume of the GSP and proceeding to INIT_DONE stage of GSP
-boot.
+From: Alistair Popple <apopple@nvidia.com>
 
+After GSP initialization is complete, retrieve the static configuration
+information from GSP-RM. This information includes GPU name, capabilities,
+memory configuration, and other properties. On some GPU variants, it is
+also required to do this for initialization to complete.
+
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Co-developed-by: Joel Fernandes <joelagnelf@nvidia.com>
 Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
 ---
- drivers/gpu/nova-core/falcon/gsp.rs    |  1 -
- drivers/gpu/nova-core/gsp/sequencer.rs | 44 ++++++++++++++++++++++++--
- 2 files changed, 42 insertions(+), 3 deletions(-)
+ drivers/gpu/nova-core/gsp/boot.rs             |   7 +
+ drivers/gpu/nova-core/gsp/commands.rs         |  65 +++++++
+ drivers/gpu/nova-core/gsp/fw.rs               |   5 +
+ .../gpu/nova-core/gsp/fw/r570_144/bindings.rs | 163 ++++++++++++++++++
+ drivers/gpu/nova-core/nova_core.rs            |   1 +
+ drivers/gpu/nova-core/util.rs                 |  16 ++
+ 6 files changed, 257 insertions(+)
+ create mode 100644 drivers/gpu/nova-core/util.rs
 
-diff --git a/drivers/gpu/nova-core/falcon/gsp.rs b/drivers/gpu/nova-core/falcon/gsp.rs
-index 9ef1fbae141f..67edef3636c1 100644
---- a/drivers/gpu/nova-core/falcon/gsp.rs
-+++ b/drivers/gpu/nova-core/falcon/gsp.rs
-@@ -45,7 +45,6 @@ pub(crate) fn clear_swgen0_intr(&self, bar: &Bar0) {
+diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
+index c0afafbf35f6..42a3abb9243d 100644
+--- a/drivers/gpu/nova-core/gsp/boot.rs
++++ b/drivers/gpu/nova-core/gsp/boot.rs
+@@ -40,6 +40,7 @@
+         GspFwWprMeta, //
+     },
+     regs,
++    util, //
+     vbios::Vbios,
+ };
+ 
+@@ -237,6 +238,12 @@ pub(crate) fn boot(
+         GspSequencer::run(&mut self.cmdq, seq_params, Delta::from_secs(10))?;
+ 
+         commands::gsp_init_done(&mut self.cmdq, Delta::from_secs(10))?;
++        let info = commands::get_gsp_info(&mut self.cmdq, bar)?;
++        dev_info!(
++            pdev.as_ref(),
++            "GPU name: {}\n",
++            util::str_from_null_terminated(&info.gpu_name)
++        );
+ 
+         Ok(())
      }
+diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-core/gsp/commands.rs
+index 07abfb54f9d7..6cb32e7d3436 100644
+--- a/drivers/gpu/nova-core/gsp/commands.rs
++++ b/drivers/gpu/nova-core/gsp/commands.rs
+@@ -17,6 +17,7 @@
+ };
  
-     /// Checks if GSP reload/resume has completed during the boot process.
--    #[expect(dead_code)]
-     pub(crate) fn check_reload_completed(&self, bar: &Bar0, timeout: Delta) -> Result<bool> {
-         read_poll_timeout(
-             || Ok(regs::NV_PGC6_BSI_SECURE_SCRATCH_14::read(bar)),
-diff --git a/drivers/gpu/nova-core/gsp/sequencer.rs b/drivers/gpu/nova-core/gsp/sequencer.rs
-index 8d996e5e71c3..c414561576f8 100644
---- a/drivers/gpu/nova-core/gsp/sequencer.rs
-+++ b/drivers/gpu/nova-core/gsp/sequencer.rs
-@@ -71,6 +71,7 @@ pub(crate) enum GspSeqCmd {
-     CoreReset,
-     CoreStart,
-     CoreWaitForHalt,
-+    CoreResume,
- }
+ use crate::{
++    driver::Bar0,
+     gsp::{
+         cmdq::{
+             Cmdq,
+@@ -25,12 +26,25 @@
+         },
+         fw::{
+             commands::*,
++            GspStaticConfigInfo_t,
+             MsgFunction, //
+         },
+     },
+     sbuffer::SBufferIter,
++    util,
+ };
  
- impl GspSeqCmd {
-@@ -108,7 +109,7 @@ pub(crate) fn new(data: &[u8], dev: &device::Device) -> Result<(Self, usize)> {
-             fw::SeqBufOpcode::CoreReset => (GspSeqCmd::CoreReset, opcode_size),
-             fw::SeqBufOpcode::CoreStart => (GspSeqCmd::CoreStart, opcode_size),
-             fw::SeqBufOpcode::CoreWaitForHalt => (GspSeqCmd::CoreWaitForHalt, opcode_size),
--            _ => return Err(EINVAL),
-+            fw::SeqBufOpcode::CoreResume => (GspSeqCmd::CoreResume, opcode_size),
-         };
++// SAFETY: Padding is explicit and will not contain uninitialized data.
++unsafe impl AsBytes for GspStaticConfigInfo_t {}
++
++// SAFETY: This struct only contains integer types for which all bit patterns
++// are valid.
++unsafe impl FromBytes for GspStaticConfigInfo_t {}
++
++pub(crate) struct GspStaticConfigInfo {
++    pub gpu_name: [u8; 40],
++}
++
+ /// Message type for GSP initialization done notification.
+ struct GspInitDone {}
  
-         if data.len() < size {
-@@ -121,7 +122,6 @@ pub(crate) fn new(data: &[u8], dev: &device::Device) -> Result<(Self, usize)> {
- }
- 
- /// GSP Sequencer for executing firmware commands during boot.
--#[expect(dead_code)]
- pub(crate) struct GspSequencer<'a> {
-     /// Sequencer information with command data.
-     seq_info: GspSequencerInfo,
-@@ -229,6 +229,46 @@ fn run(&self, seq: &GspSequencer<'_>) -> Result {
-                 seq.gsp_falcon.wait_till_halted(seq.bar)?;
-                 Ok(())
-             }
-+            GspSeqCmd::CoreResume => {
-+                // At this point, 'SEC2-RTOS' has been loaded into SEC2 by the sequencer
-+                // but neither SEC2-RTOS nor GSP-RM is running yet. This part of the
-+                // sequencer will start both.
-+
-+                // Reset the GSP to prepare it for resuming.
-+                seq.gsp_falcon.reset(seq.bar)?;
-+
-+                // Write the libOS DMA handle to GSP mailboxes.
-+                seq.gsp_falcon.write_mailboxes(
-+                    seq.bar,
-+                    Some(seq.libos_dma_handle as u32),
-+                    Some((seq.libos_dma_handle >> 32) as u32),
-+                )?;
-+
-+                // Start the SEC2 falcon which will trigger GSP-RM to resume on the GSP.
-+                seq.sec2_falcon.start(seq.bar)?;
-+
-+                // Poll until GSP-RM reload/resume has completed (up to 2 seconds).
-+                seq.gsp_falcon
-+                    .check_reload_completed(seq.bar, Delta::from_secs(2))?;
-+
-+                // Verify SEC2 completed successfully by checking its mailbox for errors.
-+                let mbox0 = seq.sec2_falcon.read_mailbox0(seq.bar)?;
-+                if mbox0 != 0 {
-+                    dev_err!(seq.dev, "Sequencer: sec2 errors: {:?}\n", mbox0);
-+                    return Err(EIO);
-+                }
-+
-+                // Configure GSP with the bootloader version.
-+                seq.gsp_falcon
-+                    .write_os_version(seq.bar, seq.bootloader_app_version);
-+
-+                // Verify the GSP's RISC-V core is active indicating successful GSP boot.
-+                if !seq.gsp_falcon.is_riscv_active(seq.bar) {
-+                    dev_err!(seq.dev, "Sequencer: RISC-V core is not active\n");
-+                    return Err(EIO);
-+                }
-+                Ok(())
-+            }
-         }
+@@ -62,6 +76,57 @@ pub(crate) fn gsp_init_done(cmdq: &mut Cmdq, timeout: Delta) -> Result {
      }
  }
+ 
++impl MessageFromGsp for GspStaticConfigInfo {
++    const FUNCTION: MsgFunction = MsgFunction::GetGspStaticInfo;
++    type InitError = Infallible;
++    type Message = GspStaticConfigInfo_t;
++
++    fn read(
++        msg: &Self::Message,
++        _sbuffer: &mut SBufferIter<array::IntoIter<&[u8], 2>>,
++    ) -> Result<Self, Self::InitError> {
++        let gpu_name_str = util::str_from_null_terminated(&msg.gpuNameString);
++
++        let mut gpu_name = [0u8; 40];
++        let bytes = gpu_name_str.as_bytes();
++        let copy_len = core::cmp::min(bytes.len(), gpu_name.len());
++        gpu_name[..copy_len].copy_from_slice(&bytes[..copy_len]);
++        gpu_name[copy_len] = b'\0';
++
++        Ok(GspStaticConfigInfo { gpu_name })
++    }
++}
++
++// SAFETY: This struct only contains integer types and fixed-size arrays for which
++// all bit patterns are valid.
++unsafe impl Zeroable for GspStaticConfigInfo_t {}
++
++struct GetGspInfo;
++
++impl CommandToGsp for GetGspInfo {
++    const FUNCTION: MsgFunction = MsgFunction::GetGspStaticInfo;
++    type Command = GspStaticConfigInfo_t;
++    type InitError = Infallible;
++
++    fn init(&self) -> impl Init<Self::Command, Self::InitError> {
++        init!(GspStaticConfigInfo_t {
++            ..Zeroable::init_zeroed()
++        })
++    }
++}
++
++pub(crate) fn get_gsp_info(cmdq: &mut Cmdq, bar: &Bar0) -> Result<GspStaticConfigInfo> {
++    cmdq.send_command(bar, GetGspInfo)?;
++
++    loop {
++        match cmdq.receive_msg::<GspStaticConfigInfo>(Delta::from_secs(5)) {
++            Ok(info) => return Ok(info),
++            Err(ERANGE) => continue,
++            Err(e) => return Err(e),
++        }
++    }
++}
++
+ /// The `GspSetSystemInfo` command.
+ pub(crate) struct SetSystemInfo<'a> {
+     pdev: &'a pci::Device<device::Bound>,
+diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/fw.rs
+index 0cce54310c35..5b6a906ff5dc 100644
+--- a/drivers/gpu/nova-core/gsp/fw.rs
++++ b/drivers/gpu/nova-core/gsp/fw.rs
+@@ -882,6 +882,11 @@ pub(crate) fn element_count(&self) -> u32 {
+     }
+ }
+ 
++pub(crate) use r570_144::{
++    // GSP static configuration information.
++    GspStaticConfigInfo_t, //
++};
++
+ // SAFETY: Padding is explicit and will not contain uninitialized data.
+ unsafe impl AsBytes for GspMsgElement {}
+ 
+diff --git a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs b/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
+index c5c589c1e2ac..f081ac1708e6 100644
+--- a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
++++ b/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
+@@ -320,6 +320,77 @@ fn fmt(&self, fmt: &mut ::core::fmt::Formatter<'_>) -> ::core::fmt::Result {
+ pub const NV_VGPU_MSG_EVENT_NUM_EVENTS: _bindgen_ty_3 = 4131;
+ pub type _bindgen_ty_3 = ffi::c_uint;
+ #[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct NV0080_CTRL_GPU_GET_SRIOV_CAPS_PARAMS {
++    pub totalVFs: u32_,
++    pub firstVfOffset: u32_,
++    pub vfFeatureMask: u32_,
++    pub FirstVFBar0Address: u64_,
++    pub FirstVFBar1Address: u64_,
++    pub FirstVFBar2Address: u64_,
++    pub bar0Size: u64_,
++    pub bar1Size: u64_,
++    pub bar2Size: u64_,
++    pub b64bitBar0: u8_,
++    pub b64bitBar1: u8_,
++    pub b64bitBar2: u8_,
++    pub bSriovEnabled: u8_,
++    pub bSriovHeavyEnabled: u8_,
++    pub bEmulateVFBar0TlbInvalidationRegister: u8_,
++    pub bClientRmAllocatedCtxBuffer: u8_,
++    pub bNonPowerOf2ChannelCountSupported: u8_,
++    pub bVfResizableBAR1Supported: u8_,
++}
++#[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct NV2080_CTRL_BIOS_GET_SKU_INFO_PARAMS {
++    pub BoardID: u32_,
++    pub chipSKU: [ffi::c_char; 9usize],
++    pub chipSKUMod: [ffi::c_char; 5usize],
++    pub skuConfigVersion: u32_,
++    pub project: [ffi::c_char; 5usize],
++    pub projectSKU: [ffi::c_char; 5usize],
++    pub CDP: [ffi::c_char; 6usize],
++    pub projectSKUMod: [ffi::c_char; 2usize],
++    pub businessCycle: u32_,
++}
++pub type NV2080_CTRL_CMD_FB_GET_FB_REGION_SURFACE_MEM_TYPE_FLAG = [u8_; 17usize];
++#[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct NV2080_CTRL_CMD_FB_GET_FB_REGION_FB_REGION_INFO {
++    pub base: u64_,
++    pub limit: u64_,
++    pub reserved: u64_,
++    pub performance: u32_,
++    pub supportCompressed: u8_,
++    pub supportISO: u8_,
++    pub bProtected: u8_,
++    pub blackList: NV2080_CTRL_CMD_FB_GET_FB_REGION_SURFACE_MEM_TYPE_FLAG,
++}
++#[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct NV2080_CTRL_CMD_FB_GET_FB_REGION_INFO_PARAMS {
++    pub numFBRegions: u32_,
++    pub fbRegion: [NV2080_CTRL_CMD_FB_GET_FB_REGION_FB_REGION_INFO; 16usize],
++}
++#[repr(C)]
++#[derive(Debug, Copy, Clone)]
++pub struct NV2080_CTRL_GPU_GET_GID_INFO_PARAMS {
++    pub index: u32_,
++    pub flags: u32_,
++    pub length: u32_,
++    pub data: [u8_; 256usize],
++}
++impl Default for NV2080_CTRL_GPU_GET_GID_INFO_PARAMS {
++    fn default() -> Self {
++        let mut s = ::core::mem::MaybeUninit::<Self>::uninit();
++        unsafe {
++            ::core::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
++            s.assume_init()
++        }
++    }
++}
++#[repr(C)]
+ #[derive(Debug, Default, Copy, Clone, Zeroable)]
+ pub struct DOD_METHOD_DATA {
+     pub status: u32_,
+@@ -367,6 +438,19 @@ pub struct ACPI_METHOD_DATA {
+     pub capsMethodData: CAPS_METHOD_DATA,
+ }
+ #[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct VIRTUAL_DISPLAY_GET_MAX_RESOLUTION_PARAMS {
++    pub headIndex: u32_,
++    pub maxHResolution: u32_,
++    pub maxVResolution: u32_,
++}
++#[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct VIRTUAL_DISPLAY_GET_NUM_HEADS_PARAMS {
++    pub numHeads: u32_,
++    pub maxNumHeads: u32_,
++}
++#[repr(C)]
+ #[derive(Debug, Default, Copy, Clone, Zeroable)]
+ pub struct BUSINFO {
+     pub deviceID: u16_,
+@@ -395,6 +479,85 @@ pub struct GSP_PCIE_CONFIG_REG {
+     pub linkCap: u32_,
+ }
+ #[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct EcidManufacturingInfo {
++    pub ecidLow: u32_,
++    pub ecidHigh: u32_,
++    pub ecidExtended: u32_,
++}
++#[repr(C)]
++#[derive(Debug, Default, Copy, Clone)]
++pub struct FW_WPR_LAYOUT_OFFSET {
++    pub nonWprHeapOffset: u64_,
++    pub frtsOffset: u64_,
++}
++#[repr(C)]
++#[derive(Debug, Copy, Clone)]
++pub struct GspStaticConfigInfo_t {
++    pub grCapsBits: [u8_; 23usize],
++    pub gidInfo: NV2080_CTRL_GPU_GET_GID_INFO_PARAMS,
++    pub SKUInfo: NV2080_CTRL_BIOS_GET_SKU_INFO_PARAMS,
++    pub fbRegionInfoParams: NV2080_CTRL_CMD_FB_GET_FB_REGION_INFO_PARAMS,
++    pub sriovCaps: NV0080_CTRL_GPU_GET_SRIOV_CAPS_PARAMS,
++    pub sriovMaxGfid: u32_,
++    pub engineCaps: [u32_; 3usize],
++    pub poisonFuseEnabled: u8_,
++    pub fb_length: u64_,
++    pub fbio_mask: u64_,
++    pub fb_bus_width: u32_,
++    pub fb_ram_type: u32_,
++    pub fbp_mask: u64_,
++    pub l2_cache_size: u32_,
++    pub gpuNameString: [u8_; 64usize],
++    pub gpuShortNameString: [u8_; 64usize],
++    pub gpuNameString_Unicode: [u16_; 64usize],
++    pub bGpuInternalSku: u8_,
++    pub bIsQuadroGeneric: u8_,
++    pub bIsQuadroAd: u8_,
++    pub bIsNvidiaNvs: u8_,
++    pub bIsVgx: u8_,
++    pub bGeforceSmb: u8_,
++    pub bIsTitan: u8_,
++    pub bIsTesla: u8_,
++    pub bIsMobile: u8_,
++    pub bIsGc6Rtd3Allowed: u8_,
++    pub bIsGc8Rtd3Allowed: u8_,
++    pub bIsGcOffRtd3Allowed: u8_,
++    pub bIsGcoffLegacyAllowed: u8_,
++    pub bIsMigSupported: u8_,
++    pub RTD3GC6TotalBoardPower: u16_,
++    pub RTD3GC6PerstDelay: u16_,
++    pub bar1PdeBase: u64_,
++    pub bar2PdeBase: u64_,
++    pub bVbiosValid: u8_,
++    pub vbiosSubVendor: u32_,
++    pub vbiosSubDevice: u32_,
++    pub bPageRetirementSupported: u8_,
++    pub bSplitVasBetweenServerClientRm: u8_,
++    pub bClRootportNeedsNosnoopWAR: u8_,
++    pub displaylessMaxHeads: VIRTUAL_DISPLAY_GET_NUM_HEADS_PARAMS,
++    pub displaylessMaxResolution: VIRTUAL_DISPLAY_GET_MAX_RESOLUTION_PARAMS,
++    pub displaylessMaxPixels: u64_,
++    pub hInternalClient: u32_,
++    pub hInternalDevice: u32_,
++    pub hInternalSubdevice: u32_,
++    pub bSelfHostedMode: u8_,
++    pub bAtsSupported: u8_,
++    pub bIsGpuUefi: u8_,
++    pub bIsEfiInit: u8_,
++    pub ecidInfo: [EcidManufacturingInfo; 2usize],
++    pub fwWprLayoutOffset: FW_WPR_LAYOUT_OFFSET,
++}
++impl Default for GspStaticConfigInfo_t {
++    fn default() -> Self {
++        let mut s = ::core::mem::MaybeUninit::<Self>::uninit();
++        unsafe {
++            ::core::ptr::write_bytes(s.as_mut_ptr(), 0, 1);
++            s.assume_init()
++        }
++    }
++}
++#[repr(C)]
+ #[derive(Debug, Default, Copy, Clone, Zeroable)]
+ pub struct GspSystemInfo {
+     pub gpuPhysAddr: u64_,
+diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+index c1121e7c64c5..b98a1c03f13d 100644
+--- a/drivers/gpu/nova-core/nova_core.rs
++++ b/drivers/gpu/nova-core/nova_core.rs
+@@ -16,6 +16,7 @@
+ mod num;
+ mod regs;
+ mod sbuffer;
++mod util;
+ mod vbios;
+ 
+ pub(crate) const MODULE_NAME: &kernel::str::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
+diff --git a/drivers/gpu/nova-core/util.rs b/drivers/gpu/nova-core/util.rs
+new file mode 100644
+index 000000000000..f1a4dea44c10
+--- /dev/null
++++ b/drivers/gpu/nova-core/util.rs
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/// Converts a null-terminated byte array to a string slice.
++///
++/// Returns "invalid" if the bytes are not valid UTF-8 or not null-terminated.
++pub(crate) fn str_from_null_terminated(bytes: &[u8]) -> &str {
++    use kernel::str::CStr;
++
++    // Find the first null byte, then create a slice that includes it.
++    bytes
++        .iter()
++        .position(|&b| b == 0)
++        .and_then(|null_pos| CStr::from_bytes_with_nul(&bytes[..=null_pos]).ok())
++        .and_then(|cstr| cstr.to_str().ok())
++        .unwrap_or("invalid")
++}
 -- 
 2.34.1
 
