@@ -1,128 +1,219 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011010.outbound.protection.outlook.com [52.101.62.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198A2274FFD;
-	Fri, 14 Nov 2025 14:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763128854; cv=none; b=q0FaA8FxUWw3aMr6Go7LC4T9XAsKsQjaOmmpNvmYErGeAmfAH95nFliZlRHZtgyKs7+TKVoAE9dkAkirgk8XJYnBEFZ06ThYwkjYObGzMvROWK73nETljf4hsVdUH5dC+PUqCtlMf9LHAUXnMZE51kYDHfPvivO1sjW0FfCVzWI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763128854; c=relaxed/simple;
-	bh=2aHywPuZecof9weD6RQMjMpfuZcXQx7L3grfJDoeLGM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WZN+kIe7I8b/vgXs7Sc1bQae7dZzNwLYD2TWB2CBCWmSWsM3PjpY2fgNqo8rl3i7u3a+1WRNqt5DC/Ygjf3z8dQNsfFq6xGJJmgU0p+Rcct/bUTLzKYakwu6xCz0Kymqh5q9b4ZHo3FICrIWg9PvupfcMVCzTYkYXg7i1w5YGVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDem07Il; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D8C31A7FE;
+	Fri, 14 Nov 2025 14:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763128912; cv=fail; b=hnkoQDNQxCKeRUb4rGaP7AC/XAG+et1nxc8tpbtzSv5pHqakehsB0YQ9txAWQhobBGM7T90nWmY/TSp27lz31pB7wWANg6ILNaKlDqr1WBopq87WscNMVNtHE+KybuZ+sNnJIJLV+iz1bCVx6rbmvSGOZ+Lz562NYpPfHxdA5Ng=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763128912; c=relaxed/simple;
+	bh=isxImL0dCb30FsjY7iQsUzV3/UP6RwrVpTk3NZoRq2Y=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=CFLxLLnx8k5yzYXeu/t+hl8FBK1ZRJecfDCShZmbblVYcMNnWVCzNwkKumEzgAIY88HHv1g1gNZtMZep2ojsA/KgQNJzv7Ao3AEms+vSKvCk4dq3klsWzFhQ6t+ylKpKUlPTYPsNIx0xAaYvFBc2aEQ0T/UmMDOX8Au7+6ctBCs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PgajXeYq; arc=fail smtp.client-ip=52.101.62.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDem07Il"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A45C4CEF5;
-	Fri, 14 Nov 2025 14:00:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763128853;
-	bh=2aHywPuZecof9weD6RQMjMpfuZcXQx7L3grfJDoeLGM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SDem07Ild13Nv0+csO/cnSwgEudPooDD6PYEF/cw4hYhle3GXkjIbno1dWRjfjDAg
-	 UyGbP09TLbDCbu2wDvl5V3rw+vChj1c0FwG8BP1YxBSbrBs9RpH8EF1q/XINJxep43
-	 GHePAtNd/s5kKjSAeHeN3n2qcu4TdXY5ioHYKOaZDpjYrUhxg3bih4vhLKFhd6MNmQ
-	 1kqAd8EOlzsztHWL/oIkFBohyg7Hu9+bngqE/YFFP9AcnLEBioCP276i7Fdwbz7QPX
-	 W4yBR24I1WU9c0Ovbq72Wbej6z9k6maIlN4ezMw2sZR/pISiSm4mzrMtYh480S24sY
-	 44PwHCmleRdpQ==
-From: Philipp Stanner <phasta@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Tamir Duberstein <tamird@gmail.com>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH] rust: lib: Add necessary unsafes for container_of
-Date: Fri, 14 Nov 2025 15:00:21 +0100
-Message-ID: <20251114140020.327075-2-phasta@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PgajXeYq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mcGnKudG9cUGOpa31M9EH9tmaa3ifBsspqR3E8Qor7UmYL2yXsJWuoj2mbPDo5OiW8P8o0A5iUKps0S/wlK1ZIK3+jPS0Aeo6gGVsqaQEwq76XIXyB8fQiaZqAEfc3Q/53oLnwh+EmhdnA05LLktEGNA259s9GIENYF9peWqAx2gEgXmF448ebvVmkxy5ypE7apL0enfgG02PzX+pjYL1/9xRRvUexmxqNyV2pny9upH58C2boVvoAr53liqmUBrBZFAaDZITfqjo/u/Z51psSkV+m6XhDDrf1bYfaRtJYYwkhnEXjccgIDhffeoUbEiiKLe6n7O/UefFMf9U6nJqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RZ+R6LOZEzB7SvEC/Qccx2uHWQ09Wqlg5hc9zm7iBDA=;
+ b=p1dlpJfeaT2EScZqIHLeV2YPmN35FXRMBpDwbr/dILrzfd2/jEs/c4wMPh90tjy9nHEFRNX5YLsi6Eiwhc6eLW9rTue0GgzNclwzSA1L+7tz7Qb5PY69QKPJSpVEkNRHfBu/6TDpMEDLfSzdgAqn9jhw4GfG8H3b82EvrgcZlsry8QCv/l6qsyZoHvtXjRSvnZwjaiCB5RX8b5geoihEzplBr5BTFHMGjf2G6TfjypON18bDIYfPJHZ3hNtTcnhwtt7dJNqwwemR5H6iqJqwfE8c/v9fQUsGU1y9z4/eGe3uMT1LhrkHHjM14cTiblc+zJhQsCMyR55/yOmfa5rpnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RZ+R6LOZEzB7SvEC/Qccx2uHWQ09Wqlg5hc9zm7iBDA=;
+ b=PgajXeYquIDPIMPydqyoJQ9ONEE4Hc0jeo1RsriQyFH9ww1rbzqHyXocys5WYLXGxv1fPnfP9BWQ+nVGjw6k84rI2GyOsnkkGKU47oy/++waFu3TsYbS57OMNmFHrKjS2eQ/RkcZU/RBaQDOpb2AIWnfedy7xTVNCuLG61B/iFkfW06UAKXoxKXdrR1w89FkS3FYj/1oomPnAh+KWLC5HV+6APbd/9k6XUZVNBVBQRsADTQphoeaUGi+q9kHggrfJfad5aZdtZBFjqS2swNGJY5V8bJMbZQHfs+SgYN13sbqTiG1KBsEl3rCnOk5yIZnPWWUWm+XfauATxtOxrMezA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by LV2PR12MB6014.namprd12.prod.outlook.com (2603:10b6:408:170::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.15; Fri, 14 Nov
+ 2025 14:01:44 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
+ 14:01:44 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 14 Nov 2025 23:01:41 +0900
+Message-Id: <DE8H17HDS2CL.2PKRL4FNPAXDJ@nvidia.com>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>, "Nouveau"
+ <nouveau-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v8 5/6] gpu: nova-core: add boot42 support for next-gen
+ GPUs
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251114024109.465136-1-jhubbard@nvidia.com>
+ <20251114024109.465136-6-jhubbard@nvidia.com>
+In-Reply-To: <20251114024109.465136-6-jhubbard@nvidia.com>
+X-ClientProxiedBy: TY4PR01CA0033.jpnprd01.prod.outlook.com
+ (2603:1096:405:2bd::14) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|LV2PR12MB6014:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2e355936-907e-4efe-99a3-08de238657f3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|7416014|10070799003|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RGNZWmo1SkVhSExsNnR1WUVsODVxN3pIL1BpT2NRNVA2c0U1Y2F2NnJ3c3F1?=
+ =?utf-8?B?UUJlWlBjV2ZueWRXTHQyTFlDaG1HMDk0S3lRNlUrbm5ON2pib1c4eWNKTDFP?=
+ =?utf-8?B?c2kxazAvSTR3N0JuUHAvZGhoWUJ3dXZ0KzlpdE5kME9UVXk3N0NhU3ZySWU2?=
+ =?utf-8?B?VjRIR2lEMVQwa2xEMHZNdGMyT28vTFFBR1Vvcm1jVm5JejBhSEJpa2hrejI1?=
+ =?utf-8?B?cld6M3ZIWmNobjJrV3pFbVFHVXJFT1ZSMDRaQUZmdEsxTjVXY3hxalFKYVZw?=
+ =?utf-8?B?WGlrajJUamhRRzJmYTMvRERYUVlHZElyRk9OWU5NYVFWdU9jM2pZRGVyWGE2?=
+ =?utf-8?B?dkdQT05aTE83LzRpS0JWZkxrQ3dUOVBGVDFFVFgxUjFFQUtkOHV0NGV0bnpZ?=
+ =?utf-8?B?TDVZem9BWnh4all1OUhTcElkMlpURWppSytocWpxenprQTNKcHk2VEROY3FF?=
+ =?utf-8?B?NzNNVzM1eURmK0VPbC9Hc0hBL0hUZXcxaTlselFlOGMrblpBanYyQ0hMSmNa?=
+ =?utf-8?B?aXN4VXVzVFdTMnRkaWVoWEs1ZFNLdkQrK3dmZmFZc1V3L1h1a0JiSllhVDcx?=
+ =?utf-8?B?eVhFZTI1RldTV3BUT284b0lCVnp5UFJUUGdCOVVoRm5YSnVSaXBDd1lHY0Fi?=
+ =?utf-8?B?T1A4Vk5YL1RTZWZkQllvOG9hVytCSXRVQVBIZlAzTy9RWHluR1RNUkFFOEVJ?=
+ =?utf-8?B?WDEzL0hZNUR0N2h2MllQdXFOaEg3OVptb0E2R1Q4NHlhSUxMQ3BmaVdJNjhU?=
+ =?utf-8?B?MWplcGVTZTIvRE9VYzU1SzBIUW5QK0J0WlBrMkpNMDdVUlF5TlFkRUF6aHEx?=
+ =?utf-8?B?bTR6OTlwQ2x5TStZbFh1Y2pKc3NhdGZiaUlCTWN1NkQ2VStLSUFKV1lhMWRO?=
+ =?utf-8?B?aXkrY1NqdmFzcnZoeVd4NWFEZWdLVExCNnZpTDVDTmF0UGJQTy9Nd1RuYTdl?=
+ =?utf-8?B?QkRRTDN0d2U5K1p0TUxrdm93S0lvOU1MVVRnd3NaNm1HcnlQNWYrTEdWZmMr?=
+ =?utf-8?B?dFNLYi9pb0grTllUb2hlbGxmZjgvblp1TkJkNDlyN0xQVE9IU01QWjQyRmdv?=
+ =?utf-8?B?eDN4N3RSWTBhTjV6M3ZDaC95Y1haNFl3TW8wdUNxYTBFTUNiWkwvUnNhUWlq?=
+ =?utf-8?B?L2JPVStzZ3pEcksvckxYdDhMTGRaYVl5RWRiMGY2bGU3a2FwaGdrOHkydlk2?=
+ =?utf-8?B?dS9QTXBuVHlYdXgxQTNVNUhLaklXSVB2eWJGL2xOeldGdFJiS0tBWUM1d2hJ?=
+ =?utf-8?B?aTdHWnlkWFRyTEtEcW5WU0pSU3JQTXphRDhCc1NBTlFJamVxaFZmVytpK1RR?=
+ =?utf-8?B?OXEzNTlta1lzUjdoWldZeXBka2xWV2RmcUhyb1hMT3JxRWtRTkl6czhibVlF?=
+ =?utf-8?B?clpuM1Q2NG9qR25pMFBoek5WWHA4d2N2bnJaa2pKby81MTJLR2lFMk9DNWNa?=
+ =?utf-8?B?dWRpdzNJWVB1L1Fhd21QM3hKTGxIMDNQZUJiVDFFdjc1czUrUDRlamVWOHNz?=
+ =?utf-8?B?MytBR0JYMXR0alRzQk5FbC84dkNaSTBkSEs2TmhSKzZSU2N2N0FQZTlOQVNm?=
+ =?utf-8?B?Um83czgxbmw3N2R1OHhJM25kU2NvL2dSRUpJUDJwb2g1ejRTNm5xZDBvOVBq?=
+ =?utf-8?B?UDNDaFM4N3pVckFUa29ENkh5azl0eFRLWDNkRzJ0MG9SUW9jQTR4ODRCRCtt?=
+ =?utf-8?B?SXlhc1QrV05lVXRkZnZML1Njd3R3U0drU2c0SVl4TnkrNEdTVHdUMnJrakVh?=
+ =?utf-8?B?WktCM0xNS0VVR09nYXNxRkdHTEE4a2dvSEt0MFllZlYxOEpVcXRFYmt0aXE3?=
+ =?utf-8?B?VVJTM3hNR01nOXFFellNL3pzTW9LRHBmdW9BcjZ6cWcxK2VPMXRlaUxvazFi?=
+ =?utf-8?B?bWtZWEJXZ1J6N1YvaFhaUWJaL250aC80em9WeUlCSWNXaDA1eXExTU8rMHFu?=
+ =?utf-8?B?cVdQUjlYQjdjTFdDZXRHRlhqMzB2a0xRV1Iwa3k3aXJrcENkQTMrVVlPcjlX?=
+ =?utf-8?B?RnRzS25NWmlnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(10070799003)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SVJIVzRvWjVYc2RxWVlwd2RIb0VZNTVSanBLTlpOeXN1ZEZ2MS9uRUlwZVly?=
+ =?utf-8?B?UlRrTHZrZTk4MWtuR0ljWVNuUjRvd3VHRjJlMm1SMXh4d3dXUXZQM015SmxS?=
+ =?utf-8?B?ZlhQRTFTUFE3N2VSYUVpbGJGaGs2Y2V1Q2l3WlJ3U3dXRGw3WmhhRVEvNW9T?=
+ =?utf-8?B?NWV3MDNUdzUzYWxrRk1KZkRnUHVjSERZWWxiS2RYTFNDQzM1YWZJb3ZYRWdz?=
+ =?utf-8?B?Skl5UjQrR3hPOW1RN3A3Y2xWakpzUVRCeEtLYUxPelBIYjlGRzNoTlpWQ1J2?=
+ =?utf-8?B?TE1NWHFURHJGc1hKT2ZtOUcvcThVREt1eWR6L0xGOHBwcDFka25GUEhVSzla?=
+ =?utf-8?B?VGZxTjdxb2VIMDdETjdNY0wxQTljcWxvZHdGZ21CamdxaUFsNEpkTkFPVjQ4?=
+ =?utf-8?B?cXJUbnRIR2xDbEd1S0pBT05XY1dDMG81Mk9PNGw0Mzh6SmZ0aVM1N3F5YXFw?=
+ =?utf-8?B?NE13OXlTQm1HVTlFTFExTWNyd0FsenRPVVU0b3R4TWJ6Ymk5VFZOdVphbGw2?=
+ =?utf-8?B?UHVXWkxIT3pCTnFMeUZ2ODc5Z1V5eExVeGx2dHZUT0w5SEtEUDhuRWg5SHd0?=
+ =?utf-8?B?WGdBdmxjUHFIbDZnS1dNM3dTeFh2Q2RqVy84dWN3YzB0L1ZlUkswcWhZajhx?=
+ =?utf-8?B?MFRDSzRpOWQ4aFJhRGdLMldHaFJUL1VoUDJzUUNTeXhZcis3UXpUdDJXK0pF?=
+ =?utf-8?B?dStNaWlnU3Bsb3JTS21vYmdFM1Nkc0Y5aHltbjNYRHBDMXY1Y3FDVlhtZ2Jy?=
+ =?utf-8?B?WEtqQnhaSXNGaHNpRmxxa2EwQUtvWWtKQkp6d0lsaytKZWN2dnF4VmQwcUNN?=
+ =?utf-8?B?Qzg2ejNXQWZRZVVLRjU0ZTczQWRsMEtuWDZXY01ZWkFxZHFZVFNjU3M3TmZ5?=
+ =?utf-8?B?Uk9UeGtsYnFyaHVRSHFVU0h4R2VVR2ZUYWpCTjYxVjkwdkZpcEl1bUNFeGtr?=
+ =?utf-8?B?M0ZqQ0ovcjBremlUR3NFd2ErU0pIUlhhTS9xenVkYTFrMW5oRXF4enhDYzlx?=
+ =?utf-8?B?UDNWaFFjN05vV3pmQ0dIemZWdTlQN3JWZHA3WWF6ZVIyTTZKc2h6aWNNYnlm?=
+ =?utf-8?B?U2s3KzFVNHZjTVY4VDFoZ1dob0tMd0pYeXdrcWdpS0lYT05Za0doNk5mU0JQ?=
+ =?utf-8?B?OVNaVVhYcVFoRkdwN2JsQ25oM1BPdnhraktmSmFmZmkra20rN2lIUDZkTjB0?=
+ =?utf-8?B?eUY2b21VMDBuM1dwd1ZZR3JzeTgvT0F3UTVWVGY4WHMyVGd1Y2NjT3l2OFpV?=
+ =?utf-8?B?VWZSMFNId1Yyb0pxU0J4MEh3TWxQTDhFazRUTy90QksvVmFjY2JXcmI1dzdM?=
+ =?utf-8?B?Zmp5bGFiMmsyMkVSSEttRk1tRDR4TDRXUnVHeHZyNWpJeWU4MXJNZjY0dGhT?=
+ =?utf-8?B?Wmx0TjFKdkxCUVRydERjRWh6RUp3OFBRT3FvQVJuaU1sYXdLTmlKdSt4eFpZ?=
+ =?utf-8?B?U0JmY3c4RVkzSTIvS0N0K2VWVmdmS0JUdFJMeHllN2N1Q0ZZblRsUVVqMi9j?=
+ =?utf-8?B?RzErRlNoUERFM1Z4ejY3UnhIUHYzamJ6OWdxa2N6L2JwWXNjL2dpY3BlQTA2?=
+ =?utf-8?B?ZUxKQ0o4QlNwd1pyN29uSk42QlVRZ2pjMTRHcDNTT1c4ZTRUQitXY24vRDlJ?=
+ =?utf-8?B?elBkSEtWN1p3dkZtcmgzNVk0MkxlQ2I1Ty9qVjhYOFJkUTlSajBxL1FxUXo5?=
+ =?utf-8?B?R21RMWVnVm91ZWcvVGhIQWJMbW1zL0Y5OXJlRnJmL2RTK2ZRZ2Jhd01ueGdM?=
+ =?utf-8?B?SW5NeFZYSlFQYkd5Y3ZRMER6L01jOS9rRm9yd281K1g1ckVZUkg2UnYwSG82?=
+ =?utf-8?B?K0pRNzc1QzFud0RiT1hwQVdiUnBwRy80WWU5blZOUXBpU21ReFVTZkVRTFRQ?=
+ =?utf-8?B?TXlsMjEvaU1kOWJHbTNjSjdJTE9oUDhyTjMzUFFwUkxON3hwaFZUakx3UVVT?=
+ =?utf-8?B?WE9JYXZkeGxLRUI3N2hCeXNHRjRpY1piWTNCYXpLWVJVeW4zbzV6NkFuU3pn?=
+ =?utf-8?B?M1p6ZnJZQldZTnlYYmkzUnd3VzRzaVZ3bmZOT3RJYitzNjAxdWNiV0ZNbjM1?=
+ =?utf-8?B?c3hMMU1HRTJRY2Y2MmRYclNKQlB0VXA3UjhvdjJXU2Vqb3dsaGtkeFI4R2hL?=
+ =?utf-8?B?aHdiOFpnQng1TktQNUtLS3lnWndnUVp4RkkvRzNMajVBQjFGeWwzejdtQVdx?=
+ =?utf-8?Q?dOvGorA3UdMoF0VV9PFbY3x0qwweIYUtWlFHx8K+Os4Q?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e355936-907e-4efe-99a3-08de238657f3
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 14:01:44.3161
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Axy+kaKh4UNoovvHmz3+LLsHzgTbgAtDV+zEQQIVbJ05/v6aaMb+ZfakaCBNWDAzKR8p+HkMLxDshUIbATRhWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB6014
 
-When trying to use LinkedList in the kernel crate, build fails with an
-error message demanding unsafe blocks in the container_of macro:
+On Fri Nov 14, 2025 at 11:41 AM JST, John Hubbard wrote:
+<snip>
+> diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.r=
+s
+> index 8c9af3c59708..81097e83c276 100644
+> --- a/drivers/gpu/nova-core/regs.rs
+> +++ b/drivers/gpu/nova-core/regs.rs
+> @@ -41,14 +41,24 @@
+>  });
+> =20
+>  impl NV_PMC_BOOT_0 {
+> -    /// Combines `architecture_0` and `architecture_1` to obtain the arc=
+hitecture of the chip.
+> -    pub(crate) fn architecture(self) -> Result<Architecture> {
+> -        Architecture::try_from(
+> -            self.architecture_0() | (self.architecture_1() << Self::ARCH=
+ITECTURE_0_RANGE.len()),
+> -        )
+> +    pub(crate) fn is_older_than_fermi(self) -> bool {
+> +        // From https://github.com/NVIDIA/open-gpu-doc/tree/master/manua=
+ls :
+> +        const NV_PMC_BOOT_0_ARCHITECTURE_GF100: u8 =3D 0xc;
+> +
+> +        // Older chips left arch1 zeroed out. That, combined with an arc=
+h0 value that is less than
+> +        // GF100, means "older than Fermi".
+> +        self.architecture_1() =3D=3D 0 && self.architecture_0() < NV_PMC=
+_BOOT_0_ARCHITECTURE_GF100
+>      }
+> +}
+> +
+> +register!(NV_PMC_BOOT_42 @ 0x00000a00, "Extended architecture informatio=
+n" {
+> +    15:12   minor_revision as u8, "Minor revision of the chip";
+> +    19:16   major_revision as u8, "Major revision of the chip";
+> +    23:20   implementation as u8, "Implementation version of the archite=
+cture";
+> +    29:24   architecture as u8 ?=3D> Architecture, "Architecture value";
+> +});
+> =20
+> -    /// Combines `architecture` and `implementation` to obtain a code un=
+ique to the chipset.
 
-error[E0133]: call to unsafe function `core::ptr::mut_ptr::<impl *mut T>::byte_sub`
-is unsafe and requires unsafe block
-   --> rust/kernel/lib.rs:252:29
-    |
-252 |           let container_ptr = field_ptr.byte_sub(offset).cast::<$Container>();
-    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
-    |
-   ::: rust/kernel/drm/jq.rs:98:1
-    |
-98  | / impl_list_item! {
-99  | |     impl ListItem<0> for BasicItem { using ListLinks { self.links }; }
-100 | | }
-    | |_- in this macro invocation
-    |
-note: an unsafe function restricts its caller, but its body is safe by default
-   --> rust/kernel/list/impl_list_item_mod.rs:216:13
-    |
-216 |               unsafe fn view_value(me: *mut $crate::list::ListLinks<$num>) -> *const Self {
-    |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |
-   ::: rust/kernel/drm/jq.rs:98:1
-    |
-98  | / impl_list_item! {
-99  | |     impl ListItem<0> for BasicItem { using ListLinks { self.links }; }
-100 | | }
-    | |_- in this macro invocation
-    = note: requested on the command line with `-D unsafe-op-in-unsafe-fn`
-    = note: this error originates in the macro `$crate::container_of` which comes
-    from the expansion of the macro `impl_list_item`
-
-Add unsafe blocks to container_of to fix the issue.
-
-Fixes: b20fbbc08a36 ("rust: check type of `$ptr` in `container_of!`")
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
----
-I'm currently writing DrmJobqueue, a new piece of infrastructure. It
-uses LinkedList and resides in the kernel crate. When using LinkedList
-from within there, for reasons I don't fully understand the error above
-shows up.
-The other testing infrastructure doesn't seem to run into the error,
-though.
-
-P.
----
- rust/kernel/lib.rs | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index fef97f2a5098..a26b87015e7d 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -249,8 +249,11 @@ macro_rules! container_of {
-     ($field_ptr:expr, $Container:ty, $($fields:tt)*) => {{
-         let offset: usize = ::core::mem::offset_of!($Container, $($fields)*);
-         let field_ptr = $field_ptr;
--        let container_ptr = field_ptr.byte_sub(offset).cast::<$Container>();
--        $crate::assert_same_type(field_ptr, (&raw const (*container_ptr).$($fields)*).cast_mut());
-+        // SAFETY: Offsetting the pointer to the container is correct because the offset was
-+        // calculated validly above.
-+        let container_ptr = unsafe { field_ptr.byte_sub(offset).cast::<$Container>() };
-+        // SAFETY: Safe because the container_ptr was validly created above.
-+        $crate::assert_same_type(field_ptr, unsafe { (&raw const (*container_ptr).$($fields)*) }.cast_mut());
-         container_ptr
-     }}
- }
--- 
-2.49.0
-
+This comment for the `chipset` method got deleted. Is there a reason? If no=
+t I'll restore it when applying.
