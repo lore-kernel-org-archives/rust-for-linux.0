@@ -1,93 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011045.outbound.protection.outlook.com [52.101.52.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085AD2D190C;
-	Fri, 14 Nov 2025 22:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763157995; cv=none; b=tbhQaODv5sTtvbbczjcUDEwHdFsaGGxcFa8J0tvIeb9goeNrzB9nODhxo+Lk5ow42oBej1ne8qGZZnVdT9gw6HSb10fsBjSWwW22e97VBLYeCqjwJxxKWGv6iU3meQD3vKJCTql7FgvDQPIRqTwWNLKFkULW/5r0Bt8JJFotOuE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763157995; c=relaxed/simple;
-	bh=tdWE3PfiItoZ0byjeyGpawmZ8YiU4Uy2fv+ZMIRH5do=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uTjJfsY7mu15Wlbhy8o4N3yfowQZu+ZelqtqSSx9DioDd1Q03fVUz2eKNAjzPnLF8cgOMOE6vvF3nWa37/4NdMvpwsci5108hAEUXkglvvzISSXEagnAcwbjt+uI4Er6ledJcNiZw0GAcTunjk9tMXLpoDJ303jtniY5nTlGw5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXa5my+f; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807A21C01
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 23:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763163075; cv=fail; b=JfniTJl7NnBs2+MbdXAZgquDyh1RNL6LFhKiUBVNhQ2gMYMaSIgHnO2EQlqyRQVsrG7Sg/BHTljzlARSnYPVGviG41bpihrjwQo3TnE2JI7wsSKSKs0fcDl2arbaiTuvArjItGI3TvOO4ZFjLM+6PgQQwY0GQx5DlrQRGoT9SaY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763163075; c=relaxed/simple;
+	bh=bgH32jcWL79mv2iK/odlH0sMiRwt+RI7D9OUQu/t4HY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aMbd0TvVE/W/ZKC/iGY7xxKYRVJwDeVhPZEAxJYph3EpjlyRXYlM+OP4BtfdkiEFkRcEVp9SPZB2qLJflB7np5iJHS4Rvv15GK2Z5zYYaSd2jbnm0kCFDy3cbB6++mD/oHeaK3i2EROLMYV+jKWE2+/PVJxhZcUt9SEke6CfMNQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uSBu8W2C; arc=fail smtp.client-ip=52.101.52.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXa5my+f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2271C19424;
-	Fri, 14 Nov 2025 22:06:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763157994;
-	bh=tdWE3PfiItoZ0byjeyGpawmZ8YiU4Uy2fv+ZMIRH5do=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SXa5my+fRVbAvGwHnp09sgmue9Lfx3FLmIytbO2DoJZUkH4HHNld/Hcf3jr+Z1LnS
-	 zwSoemb+Oo1wgnghHVh0E+UWIe7gf9E9VD93GyjHP/Qq3N6sfJz+DmEYX0tcsCGsUV
-	 FnVzczLwKwS2sMaUWw7FycWd5Cz4jul+5vV4IgQXV3EbNJRzHnIWlSh5B4Fnt2B0UL
-	 hru1l+YDaZv5SAaCNXUV4TQvOrRgp4QgJX6kf0GK8vW10CVLdQfuTji3IpxalqEEeZ
-	 zlIQkc2Hqf61kkHDwL7Y9AsQqgz8GRXZaa9qr0tNdeulCNvQyV/4BPFFCcb8vbXA9g
-	 jp0xpLc42j6Hg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 6.18 (2nd)
-Date: Fri, 14 Nov 2025 23:05:55 +0100
-Message-ID: <20251114220555.402620-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uSBu8W2C"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vkyuUh4iNWE3noqJ7rzAC2maw7b9Nyu0hjxE5cYgcP6X8xS/skKksMK6MphfGQuQFgFUqT2cZJpKkL9MFbVSrS05LQvFbJGDO3kPN8IhrT5m6wNefr6J4IGi4aqtIANVHEg0OaLyggHmySCr0RaMD8QVzPQYRwZVHtnY4yp3FVyj5KixRWeo1rGEMA1qMs9GsUS5sdtipr/BCkzUBs9yrfr5XLwdceEgw/OPk2Yw7tyfYY1J64pew6+gEuKsqyE10JHnJ/oMK8sNwcIXAMBneVVQVpwG0mOyJ9Kcs7qlnZhV09+qJ3p6Ug3SdNR8X4HSxyHDRpSVkOSUTQsGx/R+dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=laLvh7Ascd+NZka4AlnKb7hDedLKTKn22ekLwvhtCLM=;
+ b=ERxHYlGK1xsTUkTpz0GujwbdnWgvXHmhKkZCr+gRdG9WSxQFoXX1FGn/76BQxrUhizG1ZssLvmv9jDBcMMq4eRPUGFl4r/mkQg+M4TejpTRJvWcJ5p06YLJmoIp6S7i8wYxDaGEsmTT8XQQiW/SGHbOpzYc1b/U/ZJpu5xIoxrSkFcxZ/xfCiguGB+00ZMTPiAsHXQG6zqhqf3dSNOJ7zWclfFQ/oczdDrrqPGc1t7vHTSxrasyI00I7+AdrAKVF7inWCc+TF0b2GehM4gRyAIUhUnx0XTt7wmDkWUnKE7VXWRWtvJrK1l3QpyuSFjFTiDChMvahkmogOrgk0r7PvQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=laLvh7Ascd+NZka4AlnKb7hDedLKTKn22ekLwvhtCLM=;
+ b=uSBu8W2CmJjl9hfUC0lFrAZvWLcRxG0kvngPoK9BRiaE75mUdvjmZKhzNuidA3hEdf9WSQoZCPRo7XgjxZXWgnKD3ZSKpqHx8F3wK7eNjl1mZZPh1yUCmfRUoYr8jN939LqJyozWLdClu/LLe9xBKkpnD5MHKBeDPch5nR+nAkY5o5LSoVIzm8vMrunzIJupNDkn8NJ5RXAIDBXb78YXuwxItiSkWs5tMjCHOJS/MRFFHggRYo0JnNMMD8yu8sTfYOfgqGIaK2jLZDoG/BpzU4BQTERLdihLjTB/A7BhZfhNTILbvwO1M7s3fwmVKAA1ihpWJRNIgHcz8Bi6w02+ew==
+Received: from DS7PR03CA0156.namprd03.prod.outlook.com (2603:10b6:5:3b2::11)
+ by PH7PR12MB7140.namprd12.prod.outlook.com (2603:10b6:510:200::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
+ 2025 23:31:07 +0000
+Received: from DS3PEPF000099D6.namprd04.prod.outlook.com
+ (2603:10b6:5:3b2:cafe::e5) by DS7PR03CA0156.outlook.office365.com
+ (2603:10b6:5:3b2::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.15 via Frontend Transport; Fri,
+ 14 Nov 2025 23:31:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS3PEPF000099D6.mail.protection.outlook.com (10.167.17.7) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.13 via Frontend Transport; Fri, 14 Nov 2025 23:31:07 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 14 Nov
+ 2025 15:30:53 -0800
+Received: from ttabi.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 14 Nov
+ 2025 15:30:52 -0800
+From: Timur Tabi <ttabi@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Alexandre Courbot <acourbot@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
+	<nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>
+Subject: [PATCH 00/11] gpu: nova-core: add Turing support
+Date: Fri, 14 Nov 2025 17:30:33 -0600
+Message-ID: <20251114233045.2512853-1-ttabi@nvidia.com>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099D6:EE_|PH7PR12MB7140:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3fbfa222-187b-4833-36f0-08de23d5e2c9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?OPJEozUQ0cP3nIPSv/Ig47HOXxvdyYOMRszw0NbZOVKzw4Ue0Al2bpYFvBM4?=
+ =?us-ascii?Q?H6tDvzldelNkrlws3WKgYYusaBTcXHROv0wi5lozYJYQWr94Q0SRiicYVSJg?=
+ =?us-ascii?Q?3jqvhJ5OmlBTGonc/4DyIy1lV/tSvpf64ZVBbUPw42eUbACarK6IRWBYKeBv?=
+ =?us-ascii?Q?z1zmt7kK7s89T8nuhtCvMnI0RwIR9x1+MW34FmlACwROh200fTNSqoSl+V6m?=
+ =?us-ascii?Q?TsaS6FBhF01N0l9kVvxzr8du9nTNAlmfTAzuTSfIDNhowME2zKuQOK4Ji84G?=
+ =?us-ascii?Q?aguuA4jMiG4yg0zOrUxFHJnowIsvIREAEG0A3jcj/lcBCDHPs1Y8XTEB3i35?=
+ =?us-ascii?Q?ay954ozEHKYXLSfhD+VyBP0pgtGBZrpVFvT+N1iJQqGwenerwADRtQNXpsWB?=
+ =?us-ascii?Q?q2T2kJM8oGY99+pl/b/wQev02n/qfPTI8XwNMwmRZoPH0eMYpjRkV6v9VqwP?=
+ =?us-ascii?Q?sJPK2kWrwcLjrS+w/AdDliVXDtX2V9FHpyQz4wuHawVwnZeFT6IYi5Cankee?=
+ =?us-ascii?Q?6QBLUyiNay+aBuXRHBzqk5B02PzNG0hfElKZFWvSJHu06mZZALa/t86zmA2y?=
+ =?us-ascii?Q?g/zSeD/E4V9KqKil9D1AtaetUIWICRthA1e6qjTzCR/9KiiLEod8i+r1f5yY?=
+ =?us-ascii?Q?1fTrRjc/HpA1c9S4qgn4UDbNgplYWT1jxWTJhMl7kNOUeCGU+75EQHC61QXT?=
+ =?us-ascii?Q?nMCNeiTBEAR+2WMDhvatqU9d6Bv06h/1r4RePh5tUeUgcN/fSIOfZ1EBiRlu?=
+ =?us-ascii?Q?gPjhVqngkN0U0uMjcv+gTd3dKOKyT0Rr/YzecAq7oGd/tZMh+oVihuL38RmI?=
+ =?us-ascii?Q?PP3EphqeSW2xYb94TjhoDGIv+DjtRq3kc69T8wN4Q609l1nslAa01aYGSwqO?=
+ =?us-ascii?Q?1iSJA4D0cI6BZqrsVreRIPkykv4V72qF7WC6KH/krYCXCPNk4b3Oh27T1O0k?=
+ =?us-ascii?Q?aUafB+sZ0ljkc1wI42B9dSolbLh9a4eHRHgP7FQSfYDFp4/CYs2ap6a4knI/?=
+ =?us-ascii?Q?7ELNC4Jk2wMEFKrJ98mQ3Gx9oOJxWhHT6+XfmxaXDOZ4fUYcG5cbgxmOTpAl?=
+ =?us-ascii?Q?0NznhIKnf3fy8m5zpXIGXlf6f2hwLmK+kRJUDiejMS7rYNaBEwinba+p3PJe?=
+ =?us-ascii?Q?nQ/2ZtChB0/bBqpKK032x5Ev7NxtV6SPuKHGF6a9dORoZjWAwRw24FCJAy6i?=
+ =?us-ascii?Q?e6TjDGxZjszDtXf2KZqoNHAXByha+YY6W8/BfI1XQEGZnsKUHZX18jBjq4AR?=
+ =?us-ascii?Q?k25aHvgp6Hw30C/CNNtLJATx+7yC6cjJlMBr6TbTtSMet/BmoI2RQt5Gtylq?=
+ =?us-ascii?Q?L5l36uLRT/lwHZzlEyiePEJxd1IIGv7mnS4/uawbQZfkfxS3FJ4UO56he1b7?=
+ =?us-ascii?Q?Xm2LT2KBVfu1RJ9BEk6rh2FecJGIwjtb+YNXSLMdAeAxAqJz6BTgDYlYFVEz?=
+ =?us-ascii?Q?zFyBrMKrIbAP17wQtsGP3reJ6zt1UMl0mZOR9MyUWvHO7MkQ5eZQG6zToxB/?=
+ =?us-ascii?Q?iWVWsw2+/4Q1RPNLHdaRWy0HA+Cby8D5XD2xnMJgW2uFgipcXR/iBtMYHVhU?=
+ =?us-ascii?Q?iq39isVyTPZIOssXNK0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 23:31:07.1549
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3fbfa222-187b-4833-36f0-08de23d5e2c9
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF000099D6.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7140
 
-Hi Linus,
+This patch set adds basic support for pre-booting GSP-RM
+on Turing.
 
-Please pull this fix for Rust.
+There is also partial support for GA100, but it's currently not
+fully implemented.  GA100 is considered experimental in Nouveau,
+and so it hasn't been tested with NovaCore either.
 
-It has been three rounds in linux-next.
+That latest linux-firmware.git is required because it contains the
+Generic Bootloader image that has not yet been propogated to
+distros.
 
-No conflicts expected.
+Summary of changes:
 
-Thanks!
+1. Introduce non-secure IMEM support.  For GA102 and later, only secure IMEM
+is used.
+2. Because of non-secure IMEM, Turing booter firmware images need some of
+the headers parsed differently for stuff like the load target address.
+3. Add support the tu10x firmware signature section in the ELF image.
+4. Add several new registers used only on Turing.
+5. Some functions that were considered generic Falcon operations are
+actually different on Turing vs GA102+, so they are moved to the HAL.
+6. The FRTS FWSEC firmware in VBIOS uses a different version of the
+descriptor header.
+7. I don't know why this isn't necessary on GA102+, but GSP-RM
+LIBOS args struct needs to have its 'size' field aligned to 4KB.
+8. Turing Falcons do not support DMA, so PIO is used to copy images
+into IMEM/DMEM.
 
-Cheers,
-Miguel
+Timur Tabi (11):
+  gpu: nova-core: rename Imem to ImemSec
+  gpu: nova-core: add ImemNs section infrastructure
+  gpu: nova-core: support header parsing on Turing/GA100
+  gpu: nova-core: add support for Turing/GA100 fwsignature
+  gpu: nova-core: add NV_PFALCON_FALCON_DMATRFCMD::with_falcon_mem()
+  gpu: nova-core: add Turing boot registers
+  gpu: nova-core: move some functions into the HAL
+  gpu: nova-core: Add basic Turing HAL
+  gpu: nova-core: add FalconUCodeDescV2 support
+  gpu: nova-core: LibosMemoryRegionInitArgument size must be page
+    aligned
+  gpu: nova-core: add PIO support for loading firmware images
 
-The following changes since commit e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c:
+ drivers/gpu/nova-core/falcon.rs           | 246 ++++++++++++++++++----
+ drivers/gpu/nova-core/falcon/hal.rs       |  16 +-
+ drivers/gpu/nova-core/falcon/hal/ga102.rs |  43 ++++
+ drivers/gpu/nova-core/falcon/hal/tu102.rs |  73 +++++++
+ drivers/gpu/nova-core/firmware.rs         | 112 +++++++++-
+ drivers/gpu/nova-core/firmware/booter.rs  |  53 ++++-
+ drivers/gpu/nova-core/firmware/fwsec.rs   | 187 +++++++++++++---
+ drivers/gpu/nova-core/firmware/gsp.rs     |   9 +-
+ drivers/gpu/nova-core/gsp/boot.rs         |  10 +-
+ drivers/gpu/nova-core/gsp/fw.rs           |   2 +-
+ drivers/gpu/nova-core/regs.rs             |  61 ++++++
+ drivers/gpu/nova-core/vbios.rs            |  74 ++++---
+ 12 files changed, 768 insertions(+), 118 deletions(-)
+ create mode 100644 drivers/gpu/nova-core/falcon/hal/tu102.rs
 
-  Linux 6.18-rc5 (2025-11-09 15:10:19 -0800)
 
-are available in the Git repository at:
+base-commit: 38b7cc448a5b6772cad2b853a011f507ad95306a
+-- 
+2.51.2
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.18-2
-
-for you to fetch changes up to fdf302e6bea1822a9144a0cc2e8e17527e746162:
-
-  gendwarfksyms: Skip files with no exports (2025-11-11 20:37:11 +0100)
-
-----------------------------------------------------------------
-Rust fixes for v6.18 (2nd)
-
-Toolchain and infrastructure:
-
-  - Fix a Rust 1.91.0 build issue due to 'bindings.o' not containing
-    DWARF debug information anymore by teaching gendwarfksyms to skip
-    object files without exports.
-
-----------------------------------------------------------------
-Sami Tolvanen (1):
-      gendwarfksyms: Skip files with no exports
-
- scripts/gendwarfksyms/gendwarfksyms.c | 3 ++-
- scripts/gendwarfksyms/gendwarfksyms.h | 2 +-
- scripts/gendwarfksyms/symbols.c       | 4 +++-
- 3 files changed, 6 insertions(+), 3 deletions(-)
