@@ -1,199 +1,184 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70E725B1FC
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 03:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179122DAFDA
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 06:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763090108; cv=none; b=bC6dVFQ5wpDTrIL4UWlxsREp0hoqjwvE5YwVnpjlD5JW7kAGIXzlroer1vHxu/2LNIYpm3fbdOa2KNX/VsK+pw40oOApEwci+Nz9nBaDYuil1NXIkhF5zpA/Moh/MgRS35WF6OBpw2yLjotuLb5UwRKS2dsm8L1irb/uC31wdRc=
+	t=1763100128; cv=none; b=GMItMEgXc2CVnw36bDQyzaZmeIdup3EzsW5QG3zfbGSh+dCMQRInVnuEMGv8gheXayq1NOq9I3Y2I3mckb1Oxr6ZnQ/uUO8t+NYd3Yntz1XVYLSspCCkSv9bT429l423T5wLHZfRjLqKbNKBEkH/1Bpy6gs3xT6rgWTlB9sTVxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763090108; c=relaxed/simple;
-	bh=ZYfvwsV5j3cPSUecGxarCbRPj730OL96pgeG0u6LXsQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dH0yx3P/T7kRvvyQKE4DONe59dRlh9y81Xh7h1FuHHNhMf0Dn9xr7OM5wYUikVSqJ3/EMHszhMjIOl7jtD0AfiBVqZnuM1EdW0UmjiU3lUUwjd+VejvSBMc8ZANpeMBzIyBGlHolkNJskmK4p8ikGXYvac1nhNDIRPYnoBdS0C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fMqA3LNS; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1763100128; c=relaxed/simple;
+	bh=bjXyiDlUf6zekKeC+kQAdhy67MIRUnepXQTZF8UhcrU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hXZ2itIZekX/jcXyNHsSBhgE3xEoIdA5OoAdIhxtKxMhPHigZao/byn5F3M7d02sCefCtLxNdnUNBGAp+uw0KtL4dd3UZNf4Zn/2MWxyPCQ4DEdSag/jLGVHIPlCDcctfkQgyrc4JpTJdsJMKs+9xx47rdmUJjWz5v3iPOsn0GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ie68ciO7; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fMqA3LNS"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-88051279e87so15521836d6.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 19:15:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ie68ciO7"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8b29b6f3178so172209185a.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 22:02:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763090105; x=1763694905; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZYfvwsV5j3cPSUecGxarCbRPj730OL96pgeG0u6LXsQ=;
-        b=fMqA3LNSeW0k55J5S/ZEL0L58/QYKWLPFBBGj7hMbBS6cwoL4jbIAw/ZZqys+bYxly
-         oAT0gKzDcJThAz7nQLPecpBG2MgxKch+IOhn+BFePZKQT0CGZDcEuq22I6ELzuxMNtkh
-         yqy/9KfZISQWAlQ2klYcubrdK+tV07JAeEFKQkwoywZn4VWfarLZ0j22kpnLxwNNUJKA
-         9DFkScFkzYNkIKnwgRvuu5lhs+57EReCz63WnxJF1/e5DAPmwW4+zgzuOwmgHgVnBO8n
-         YTkPPm1V/vIwpF+ARCXDGnIBP2XdTQQlrI77e5ThD7eDMZ2xpKL2pMzPoOCYhToGWdqW
-         vwCA==
+        d=gmail.com; s=20230601; t=1763100125; x=1763704925; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=3ugr2qflEGTxl9hRyGLf7eoNJgqFUQQ7VB6zXVsgKPc=;
+        b=ie68ciO7QrhzY9oALikwZ2RhYqBOKOezijYjCl1sd6uGPZv6ybHSaZKCrsCTVSHEE4
+         khsxYDkEW3HpWfry0eSOrV3zqv0gJD330OVK7PeO9ec+zBlYMacIm1gxN9gFgz63EJEc
+         1smx/a56J/0ZDuPnl1ceCfJKp1ArwESDZIMLq7TDUQFnxnt1zkGSQtW+MdSHEJEwrQLp
+         M+lHJ6WjbVfzYf2HdJhzHPNPtfUPL/jgW4/GcLW7ziNV5Qk4Nd6cme18TBWHvUaayaCa
+         31votxhWBWAIg++Avy++LoKHdtgEeGyl8m9ZKS2I7thMZmLAdr+E+wxj3Ot8hQDfi1I1
+         rXyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763090105; x=1763694905;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZYfvwsV5j3cPSUecGxarCbRPj730OL96pgeG0u6LXsQ=;
-        b=e5c79ejgR602Yy7UC918SLwbaCw/zow9ixiS/OHsuSYU0x5FzSW03zixedD577gHD+
-         dyIG5ttSiweurDgz0cGTQ0GjNgAMOKx2XoqDzJY74CO/gPCk541sB5CcdXveUgzXnnmb
-         +RsIqhip4xEayw8TC73vWk327pWSGcI9Be8oZ0IhcrtJohkrc7z+iJihJKKFrq66Wn09
-         92KqHUSaSw5cQ9cQ5vOJ6RMlZoxb81uqnCGcqXuNku50QmcHkHNtbHWhnJEr47wQyY/O
-         P//XzT14rANM+QdN6jYfrbtwNItSFecI6vGq1Rt4rUaZGB5ChSasrrSPcyFM/LI9uLPA
-         rLdg==
-X-Forwarded-Encrypted: i=1; AJvYcCUjqoZnkN2MZWMnKRAcg7Rxbd8y7/SLFwscAnjQlDZ4jSU8HOXXp9BNKeVFzTtYVVW00ms3njJH8hrfcyUiRg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZx0Oaf9AHMOXoJm9DHmA/u6snaXX1GrNEMJKvZQzBow/Ptd1s
-	YYysmsZ1GgUsVabXJkjpRtamSWwJFZ7LFkoRyJa2P3uGkJSd7PbgHEQV6AWuxkIgo7qtPF3GPql
-	JkMy0jzTvpxpt8pEKqbA9s5cdePbYzKF1NSvRYS3I
-X-Gm-Gg: ASbGncsGOJSYD7dW4LCP2iXB19pUPcGbnGXsWPniVrM4iEZ7QrHsWduoPgUsy6nuAhP
-	zUfAA2BWuZoGxA+5piBNxawzbZaidfGizDWbXPwhWP5586+niZjE63dkfpUzKwhQMPR5DaMk060
-	mho4s2cDuFwDUkujZfGH5RNc+Ybwzl/UvRDM6Di2ODCNxwL9gTKu+cKqyjNUROkW5dw6/OZF8zd
-	7rhocnQMkimeqITmt9zuma0b3+B/VxgGYDyVlXoAlG2p5qYShN5HNt5KsfXA3oVNCgsvQ==
-X-Google-Smtp-Source: AGHT+IGMpVB9w2WmV3dfZ4tdVatSvVfzLfAiH+XO8mkw82EVwP8pgplHxo0Y03nRUkH60WYEb36vMt0yQppxk5EeWHE=
-X-Received: by 2002:a05:6214:21e5:b0:882:6d84:ec11 with SMTP id
- 6a1803df08f44-8829269e431mr23825486d6.33.1763090104480; Thu, 13 Nov 2025
- 19:15:04 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763100125; x=1763704925;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3ugr2qflEGTxl9hRyGLf7eoNJgqFUQQ7VB6zXVsgKPc=;
+        b=DJI/XfkWhOQbgYkatJxuUNZtJeOFrQKfOm9K1f+jJKiYI52fQ3NBIlKyt03DqjW1Mt
+         KQwXK3F8jcANxlzM/2Sz5eftfi0+tMEP2pAca5otb96DCIeVS6ggXEmiWpNN+lDupsN+
+         ZT0OzW1sUjW+P6xORRKUP099FHv5n4Kxkm8Y977Uoo2q6ETz4gJWFPXpUMvC4y1pzWJL
+         MiQ9VcbvDExpDof6rRsAkO42gdec7tgmxnpVN8gvjMSgnCaypiRsPUfpKTn2Ztep7Ypo
+         TBcKRKsfIzdlmbAtSq0kDrZNX4LBi2/iyz2r6XvdUHdPeBPA6KTrMIhB8mFo7xPAgvSV
+         GtcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV6WDBcw+lLGJAQ2QwcVWavV/54ZCs3zHk2miRxL1GJEmp6QRDmjGPDwjzlUo8KJIhmLarGWu82Vm4tRFpqPQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQLAgF1Kp+neNC42aJbtbbDBSCzj9e2F/hWicT7MACjoQw5cnt
+	NzSf20y7CZrlb3BCM29GK5Bs6B337BBsYf7fA3/RgRihsjqf8Nfd6oop
+X-Gm-Gg: ASbGncvNkl3SPhRrFFFKl57+i2nq8D45R4HtfLGPYnpi+5llV+7kIwkywUTfgs0mjO8
+	NEAEkPv/QfXUWSYYEGSb9l+vyiz+doUDs7M/D5yeBwdXOVXRHlMu90UhjEOosCrMVGTZNXK1wwb
+	IrkDeA05imAvp7kJDEkWstQlSEj4K4IiCSpnQNsZ/7eIh/xR7roN4HILByWI5X9fN/MRS3KnQu5
+	5UE+lCRvB1Hmdj2ivLOnI6wFCYOc/RXtEggKNSEd4AM15+VwzJi0m2WeAqbWiWDQ86tf19sMIL5
+	PgOB43uUUf2u3K6eXhTw438OfCWd20coalg/ve5ikdcXvEGw067bm897KUCN4/kiOdQXSc3RHlN
+	BNlS+L7Sk3OTJqco3fVstlgVhBfwmEseHQ9rdtusnjok7L4FbymYUj45+/XW75pw/A/jrS3Z3fS
+	P1gLvg0cque3FpXPwh3HHE4fqjHbPqnqGTaaixCv5Qj9qjw7NdHuq7zgj8at8W8jdZenWaA+ann
+	k+hSnGEbrdnKL8=
+X-Google-Smtp-Source: AGHT+IFRGEKibvajggrBhRdJliHpb17pjCAyifoNlpMskBv8KNy2pL35ZzOR+T8ks3uf/Iuc0ugD/Q==
+X-Received: by 2002:a05:620a:2981:b0:8a3:6c1f:31cb with SMTP id af79cd13be357-8b2c046e3fdmr323113385a.26.1763100124667;
+        Thu, 13 Nov 2025 22:02:04 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2aeeb541esm273809785a.18.2025.11.13.22.02.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Nov 2025 22:02:03 -0800 (PST)
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 21A72F4007E;
+	Fri, 14 Nov 2025 01:02:03 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 14 Nov 2025 01:02:03 -0500
+X-ME-Sender: <xms:2sUWaXYpVR59Ilqsf4HLOdj1ys1J8nOrVlpmnIu_q-oly9Hv2hqpAQ>
+    <xme:2sUWaXxCZVwx2EZK7E8sn4I6tXqL_FBCMiI-Ic9JjWq6BqgE7mxj7ZxRykcnlUHD4
+    1VRHyZ5qakWW34yQc_tjIr6UAivp5WaKUulVn-oFCO_PhPZtAEe>
+X-ME-Received: <xmr:2sUWaTN2377OGJX6_sDq_Jwy6e-0DQX5RujdzB8wM6rsmChyBBCc7I_bsmfl1PPNyfxClidjcTJoC2yAWlNWK7PQe0qQfR1f>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdeltdehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcuhfgv
+    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
+    hnpeeggeeukeeghfevudektdevjeehhfekffevueefudeivdelteeltdekheejgfeiveen
+    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
+    ohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnh
+    hgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedu
+    ledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhhinhhgoheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghp
+    thhtohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrghnse
+    hrvgguhhgrthdrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgu
+    rghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggr
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrih
+    hlrdgtohhm
+X-ME-Proxy: <xmx:28UWaV7cUT7GWF0dusHtQynLNMOZGIKX8QLH8-EvX5J-HcfTv-EEOw>
+    <xmx:28UWaZdRJdWLs9hTyyaQMHAvjUyW3baUZF-LCNZn69zvg-iAMv8WqA>
+    <xmx:28UWaeLESIb7nAmlgjgFcHSY1mSKJge87KA6BmlXCjbzWcCpiQJ6LA>
+    <xmx:28UWaXkyJrxyQTi94ovtrnasE70czN7w_rEvyApVH8nELKP-87gL6g>
+    <xmx:28UWaaFr3gf6lVUB0QT7OFc6TzvegBG4UvNVeA1v4pSbp4VANQ-2_lyR>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 14 Nov 2025 01:02:02 -0500 (EST)
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Cc: "Will Deacon" <will@kernel.org>,
+	"Waiman Long" <longman@redhat.com>,
+	reg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Mark Rutland <mark.rutland@arm.com>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: [GIT PULL] [PATCH 1/4] Rust atomics & locking changes for v6.19
+Date: Thu, 13 Nov 2025 22:01:56 -0800
+Message-ID: <20251114060200.12982-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251110113528.1658238-1-ojeda@kernel.org> <20251110113528.1658238-2-ojeda@kernel.org>
-In-Reply-To: <20251110113528.1658238-2-ojeda@kernel.org>
-From: David Gow <davidgow@google.com>
-Date: Fri, 14 Nov 2025 11:14:52 +0800
-X-Gm-Features: AWmQ_blEZP0-T1RyhnpRFnFK4YhuhbMYTPikeTYw3lx2rtw_A7yy1iUS09njInY
-Message-ID: <CABVgOSmv75=k7wNs+YfpXfoPqTMVq+U+Q+TmAK65_yF0poFnGg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: device: make example buildable
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Rae Moar <raemoar63@gmail.com>, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000006b1c080643856770"
+Content-Transfer-Encoding: 8bit
 
---0000000000006b1c080643856770
-Content-Type: text/plain; charset="UTF-8"
+Hi Peter & Ingo,
 
-On Mon, 10 Nov 2025 at 19:35, Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> This example can easily be made buildable, thus do so.
->
-> It would have triggered an `unreachable_pub` warning without the previous
-> commit.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
+Please pull this Rust atomics + locking changes for v6.19, it's fairly
+simple and small for this cycle ;-)
 
-Reviewed-by: David Gow <davidgow@google.com>
+The following changes since commit b94d45b6bbb42571ec225d3be0e7457c8765a5b4:
 
-Cheers,
--- David
+  seqlock: Allow KASAN to fail optimizing (2025-10-28 09:58:57 +0100)
 
---0000000000006b1c080643856770
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+are available in the Git repository at:
 
-MIIUnQYJKoZIhvcNAQcCoIIUjjCCFIoCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
-IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
-4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
-mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
-KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
-VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
-ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
-vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
-BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
-OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
-1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
-ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
-BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
-18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
-bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
-AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
-BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
-A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
-MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
-jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
-0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
-jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
-jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
-C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
-NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
-zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
-A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
-hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
-NjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UEAxMKR2xvYmFsU2lnbjAeFw0xNDEyMTAwMDAw
-MDBaFw0zNDEyMTAwMDAwMDBaMEwxIDAeBgNVBAsTF0dsb2JhbFNpZ24gUm9vdCBDQSAtIFI2MRMw
-EQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpHbG9iYWxTaWduMIICIjANBgkqhkiG9w0BAQEF
-AAOCAg8AMIICCgKCAgEAlQfoc8pm+ewUyns89w0I8bRFCyyCtEjG61s8roO4QZIzFKRvf+kqzMaw
-iGvFtonRxrL/FM5RFCHsSt0bWsbWh+5NOhUG7WRmC5KAykTec5RO86eJf094YwjIElBtQmYvTbl5
-KE1SGooagLcZgQ5+xIq8ZEwhHENo1z08isWyZtWQmrcxBsW+4m0yBqYe+bnrqqO4v76CY1DQ8BiJ
-3+QPefXqoh8q0nAue+e8k7ttU+JIfIwQBzj/ZrJ3YX7g6ow8qrSk9vOVShIHbf2MsonP0KBhd8hY
-dLDUIzr3XTrKotudCd5dRC2Q8YHNV5L6frxQBGM032uTGL5rNrI55KwkNrfw77YcE1eTtt6y+OKF
-t3OiuDWqRfLgnTahb1SK8XJWbi6IxVFCRBWU7qPFOJabTk5aC0fzBjZJdzC8cTflpuwhCHX85mEW
-P3fV2ZGXhAps1AJNdMAU7f05+4PyXhShBLAL6f7uj+FuC7IIs2FmCWqxBjplllnA8DX9ydoojRoR
-h3CBCqiadR2eOoYFAJ7bgNYl+dwFnidZTHY5W+r5paHYgw/R/98wEfmFzzNI9cptZBQselhP00sI
-ScWVZBpjDnk99bOMylitnEJFeW4OhxlcVLFltr+Mm9wT6Q1vuC7cZ27JixG1hBSKABlwg3mRl5HU
-Gie/Nx4yB9gUYzwoTK8CAwEAAaNjMGEwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8w
-HQYDVR0OBBYEFK5sBaOTE+Ki5+LXHNbH8H/IZ1OgMB8GA1UdIwQYMBaAFK5sBaOTE+Ki5+LXHNbH
-8H/IZ1OgMA0GCSqGSIb3DQEBDAUAA4ICAQCDJe3o0f2VUs2ewASgkWnmXNCE3tytok/oR3jWZZip
-W6g8h3wCitFutxZz5l/AVJjVdL7BzeIRka0jGD3d4XJElrSVXsB7jpl4FkMTVlezorM7tXfcQHKs
-o+ubNT6xCCGh58RDN3kyvrXnnCxMvEMpmY4w06wh4OMd+tgHM3ZUACIquU0gLnBo2uVT/INc053y
-/0QMRGby0uO9RgAabQK6JV2NoTFR3VRGHE3bmZbvGhwEXKYV73jgef5d2z6qTFX9mhWpb+Gm+99w
-MOnD7kJG7cKTBYn6fWN7P9BxgXwA6JiuDng0wyX7rwqfIGvdOxOPEoziQRpIenOgd2nHtlx/gsge
-/lgbKCuobK1ebcAF0nu364D+JTf+AptorEJdw+71zNzwUHXSNmmc5nsE324GabbeCglIWYfrexRg
-emSqaUPvkcdM7BjdbO9TLYyZ4V7ycj7PVMi9Z+ykD0xF/9O5MCMHTI8Qv4aW2ZlatJlXHKTMuxWJ
-U7osBQ/kxJ4ZsRg01Uyduu33H68klQR4qAO77oHl2l98i0qhkHQlp7M+S8gsVr3HyO844lyS8Hn3
-nIS6dC1hASB+ftHyTwdZX4stQ1LrRgyU4fVmR3l31VRbH60kN8tFWk6gREjI2LCZxRWECfbWSUnA
-ZbjmGnFuoKjxguhFPmzWAtcKZ4MFWsmkEDCCBeQwggPMoAMCAQICEAGEC3/wSMy6MPZFqg/DMj8w
-DQYJKoZIhvcNAQELBQAwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2Ex
-KjAoBgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMzAeFw0yNTEwMTMyMzQ3
-NDlaFw0yNjA0MTEyMzQ3NDlaMCQxIjAgBgkqhkiG9w0BCQEWE2RhdmlkZ293QGdvb2dsZS5jb20w
-ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC7T8v6fZyfEDlp38NMe4GOXuodILGOFXh6
-iVuecsKchx1gCg5Qebyxm+ndfb6ePkd2zzsBOkBJmYrx4G009e+oyTnynr5KXvucs+wLlgm53QU7
-6pYikvqTM2hezoWz48Ve/6Jq/6I/eAzKGhn4E/3zG15ETIeMpPFy/E7/lGqq+HFRCb6s0tl/QWhC
-BiR+n2UvmXbVWPSR51aRAifsKqiuraeU5g9bGCcbuvdbiYQf1AzNDilkvA6FfUaOPTzVj3rgMyZb
-mnZpzWOV1bfib3tYXd2x4IvUS3xlvrap0g9EiDxJKUhCskOf7dPTjaS/kku768Y6U/sDVH5ptgvP
-Dxz3AgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
-/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFHZtY3XkWtC2
-e2Idfk+0JyK7BLzzMFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
-BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
-MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
-LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
-bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
-FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
-c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQBo
-hqjbVaHxZoT6HHUuwQcTlbgXpuVi59bQPrSwb/6Pn1t3h3SLeuUCvOYpoQjxlWy/FexsPW+nWS0I
-PUmWpt6sxbIRTKPfb7cPk32XezfnA0jexucybiXzkZKTrbI7zoMOzDIWpTKYZAonB9Zzi7Dso4An
-ZOtz/E3yhdR/q1MK30d5fiCS0vorEd0Oy8Jzcc7TJ2HGMzEEXiFFvVrJYJHvfYOeXE4ywAG6YWO0
-x78+bXeB9vkeWHhOYKyYXuAXrnHASddEICg1QlJCHDAISMC1Wn/tjqTMTt3sDAe+dhi9V1FEGTbG
-g9PxPVP4huJEMIBu/MWNMzHfiW4E7eCHVPrmtX7CFDlMik7qsgQBbO5h6EcxBamhIflfMgoISsRJ
-Vyll2E5BNVwkNstMgU3WMg5yIaQcuGFgFnMTrQcaLEEFPV3cCP9pgXovYDirnB7FKNdCZNHfeBY1
-HEXJ2jIPDP6nWSbYoRry0TvPgxh5ZeM5+sc1L7kY75C8U4FV3t4qdC+p7rgqfAggdvDPa5BJbTRg
-KAzwyf3z7XUrYp38pXybmDnsEcRNBIOEqBXoiBxZXaKQqaY921nWAroMM/6I6CVpTnu6JEeQkoi4
-IgGIEaTFPcgAjvpDQ8waLJL84EP6rbLW6dop+97BXbeO9L/fFf40kBhve6IggpJSeU9RdCQ5czGC
-Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
-BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAYQLf/BIzLow9kWqD8My
-PzANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgfmMhxa/mN0p5xIcpzhFMBEEIq/mf
-vZpgVRe7RMiVRNIwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUx
-MTE0MDMxNTA1WjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
-YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
-AQEBBQAEggEAVW8XdlD4PivR+uxUuJkJraGsQMQJmxmZb2zDdDHUhl0DYjA8Wvj2/gtOZ9+CvlCK
-cbouc/ItuGfJs/rzc0pnktbrIv9uqXIiiNDjqLKvjWu8qERWCpoziLpYMCcn428Vy6M/A5AGn/2R
-S6DEaaKiV3NCXtT2qOmbndU46cJVmJkTqFOacyA+phKq+YcTJDRfKBpqsGt12tUMq28iLzCK+VP6
-MYmtn0F6R6baWR9MTuBDpYRsjGpPXG2AjO9OrbE3da1/v2eKkXsH4amBVjfuF6Uvo+nonJaIAn4N
-JZvzoHgN3M8HSh480CYfKn+iMcqmbwOVULwy5bxkl78O7QChxA==
---0000000000006b1c080643856770--
+  git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git tags/rust-locking.2025.11.13
+
+for you to fetch changes up to 3572e2edc7b611d0b564c487bafda04b5dbb5134:
+
+  locking/mutex: Redo __mutex_init() (2025-11-12 08:56:42 -0800)
+
+Regards,
+Boqun
+
+----------------------------------------------------------------
+Rust atomic changes for v6.19:
+
+- Replace Rust native atomics with LKMM atomics in debugfs
+
+Locking changes for v6.19:
+
+- Redo __mutex_init() to allow compiler removing unused parameters
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEj5IosQTPz8XU1wRHSXnow7UH+rgFAmkWw9wACgkQSXnow7UH
++rjD+gf9Eri5Au1hyYD/UPmBBZWMgWRx32RMbJ261he1YEa1gTbHqitlHu0++vmf
+8+B1VGU7ts6c9vyAR/7yAAuIjfnnunxcF7NnjsguGSywWG3uQpd75o2C+TiELwfz
+aJvkNTNUcX6IA7I2j4tdGh3likG+4viSb2LxQBRUkJ557LySRv+/XcBrpjWW6lit
+pIohp3UUVGApTjwP/UiBETUqZz9bnwYHhQvPaCwCUt93GiNrAQC8rmQIMFQj8RhN
+g28RsLXxN06ozGLsjfNFHVRTDRc8KsLgWsuQwWPwMY6CUE9AiyqX4B6IZ9ymtGNt
+ENbskYAiXLDqmShB7ASmjL4CST8LNQ==
+=8JA2
+-----END PGP SIGNATURE-----
+
+----------------------------------------------------------------
+Boqun Feng (3):
+      rust: sync: atomic: Make Atomic*Ops pub(crate)
+      rust: sync: atomic: Implement Debug for Atomic<Debug>
+      rust: debugfs: Replace the usage of Rust native atomics
+
+Sebastian Andrzej Siewior (1):
+      locking/mutex: Redo __mutex_init()
+
+ include/linux/mutex.h               | 45 ++++++++++++++++++++++++-------
+ kernel/locking/mutex.c              | 22 ++++++++++-----
+ kernel/locking/rtmutex_api.c        | 19 ++++++++++---
+ rust/kernel/debugfs/traits.rs       | 53 ++++++++++++-------------------------
+ rust/kernel/sync/atomic.rs          | 12 ++++++++-
+ samples/rust/rust_debugfs.rs        | 12 ++++-----
+ samples/rust/rust_debugfs_scoped.rs |  6 ++---
+ 7 files changed, 102 insertions(+), 67 deletions(-)
