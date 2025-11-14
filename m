@@ -1,253 +1,140 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010018.outbound.protection.outlook.com [40.93.198.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4D02E9722;
-	Fri, 14 Nov 2025 07:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763104256; cv=fail; b=pH2m0fNNJfkDuCu+8uVeaX3RVGzZfeJNRdsCm3qMZfYyv6YC2ZInpEwxiMWGJTyqLsNvGybtRMfTv7u+EadzsOCrPHM4d/VblUvaYG337lbzP1XvfFgdv9heO8z3DAOXXii7R1pjP/zcs2Gmcb8diiv9i4sKEqKAiwlW+KFRFI8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763104256; c=relaxed/simple;
-	bh=L0W5j5V5cxo+Eh6eimS5YGI21bvQ0fXEQppVSSrii5o=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=PhlkVf1aTqOJvL0w/wxRpQc4089i3Px5wWU1aF4xrCQSb3facaQIi3WcTxN0+FktnWJB1YltKfB6txle2toOMCOMgRnfPLwmzP4X7R1egXT/5ZoozncHb7XGlPTluKY16bSHRui0SZklzOEOtn0T+IVP8cQwnZN/JYUcM81m9KU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ong+0Arw; arc=fail smtp.client-ip=40.93.198.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C02306B2D
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 09:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763113503; cv=none; b=TQC7yxdVee9DeDrFPmUV7viQRnlAACvYp9jUWkU2wxbLMM/wzpt09F+Yz3oV+zyjSzR2Fc8/5g9E9WaReN2IG+suxs6c3ni7S3G2SziZLyxY4HUPTIwngvWOjJMSjN1VL6XH33ZYlDdIbPgZcPEbcPFmLn/yibXP2HfcK4j0ioU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763113503; c=relaxed/simple;
+	bh=MhYK7Fuz8aLrEJJ0z/jtlvxFHm7ZZ8CTilRTglRw6P8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=udsvVP5g3rCfwrfmFUjdxBCkCRpyJCqeSqJZsEHUEzIrNpgWy5m+ywejy0K5LyB+PXPCMA3e+kSf5GYtUnKGmYOrrAq4ZMZFpRVTL5CQPQSBSSvEf5DNVdppKzhuQle4VzgOO8H8gPUmcUMR1s10mUWDqpLar3O3oyCJ5nrWfYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N9k/K66o; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ong+0Arw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XyJqdLHTLNdvlK2KMTV+BXAcLKGklr+spnW995I8KnO61nzv9b52d0JhLoIbsE5cfILgtP/tdSmZr7QYjeVmDh8eViY7VaohlAT5tR20oHNTuoKFpypxh1zjj+Nr8ev/T5dBE2G052Qmqo8ZJ8a4dLgpWBnF5bInNs/Hi6oMwjVmFQj4QrRrwCGJ3oGuOZvVPmrMeJwh/DdF7BdVUzz5m9FxsBd8q7tBcJS+5JrSUzzyoAtVLrIlD1l7CSe3O/t/C1nUImc45uYIGspTkG0HoJhJRThW33x/0RdGoee6t0y+T6tHehOgfhflWbZU/KsKpYcZUn2ts6Ffv+gEfXHXOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iXXGblDNPpkJwnOfotTZLJH+bVL34xS1liL6RdloPE8=;
- b=xmDe/z/0gwLuaTB5vC/LtddiaGnvBLLMQCvPiZ3abylPd3z3jqF1kO5WDnNAZIroPU9bAnm9Lf9ydkJPCKog0fMSXUCrdlP5FXUJVTAZ7ii220FAJh70GiCeu8biFum86vEXe00Z+AHlxOnjfEswl3yXyVB6SSAHFdf2iwXz+1JJQoKpg6UStjaKP1z6KL3tt89Nk/eBddJOARBXSt8sL2qetwJhkrzFJfq5Bm7DkNHNHL7Nqd4SHpGXgrGCpSWx4BT4iAsE1jhFcAmYXklrzYn3ib/TSca/+TfvhW7CqYr78bSvuS422pKdrHE9WW1LZ5ovITPZz/xsgWK+SdHeMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iXXGblDNPpkJwnOfotTZLJH+bVL34xS1liL6RdloPE8=;
- b=ong+0Arwq/LZB8Bm+UDlNGXSy/ptjazIDuro/+MbnUYWXbYf41OCscrF2RFzme3Tb+am+uXgbLEkREnLU66MjvexWd0lC4xYfjKVHqgddJQbqfz+YELYcjquGfxLtD3srmncbe9L27uSBKw5xhyBRxwaHNS8x9r4HlIBKK6TJwxs8gN917CR6xWKY1/Dbirhk1CO7/XS4uQGL02pbVdNJ3oeLqfDTle23miGMGdRaNpyu3/Be4QDVH5m327+3sH2hNKbN0ZzW5mZVzyviUtb+xPHObruoJpHeOc91BBx++x+AHsOQjkdJqKrTIW6lAC3dLbbBzCBk+/QlS0Q1yYyCQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA3PR12MB8811.namprd12.prod.outlook.com (2603:10b6:806:312::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Fri, 14 Nov
- 2025 07:10:51 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
- 07:10:50 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Nov 2025 16:10:46 +0900
-Message-Id: <DE88ALG15C8T.4ASPEWD120P3@nvidia.com>
-Subject: Re: [PATCH v9 03/15] gpu: nova-core: num: add functions to safely
- convert a const value to a smaller type
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Mikko Perttunen" <mperttunen@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Benno Lossin"
- <lossin@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Alexandre Courbot" <acourbot@nvidia.com>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Nouveau"
- <nouveau-bounces@lists.freedesktop.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251110-gsp_boot-v9-0-8ae4058e3c0e@nvidia.com>
- <20251110-gsp_boot-v9-3-8ae4058e3c0e@nvidia.com>
- <13485409.nUPlyArG6x@senjougahara>
-In-Reply-To: <13485409.nUPlyArG6x@senjougahara>
-X-ClientProxiedBy: TYCP286CA0253.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:456::11) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N9k/K66o"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b70b974b818so173255666b.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 01:45:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763113499; x=1763718299; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pRD00tHeY5cdf7KxqF2jFSxDwoUN5Uum1eEhmcMbeuQ=;
+        b=N9k/K66o9ZcyUiNw00ole+6xoSPKqaV8OIWAna4qT2kZvSiywR3MVDUR91TklagDfb
+         X1pxRhLQ4lPhXv7Lc8uiRKGNgTkHOfVNpCCJdCJvdv5jp6BtAMxWiFH13pk7iL456PUX
+         SGlZ8vAs2NFLUuHg/pVn7KplTcsHm54wTevjWi2GB5gHCJi1DH6NjnAdBl8uRLH0lT6o
+         W2tRBmfc/mSH52F19vcWNsJzKN2iKr8qBiyZZVL5ONb/zh8W8LpmrCEE/PZKTx/T4xW2
+         V8W+XfRqaJzZkP8kqCiNgiGxj8x0BZFpGtEWUShKa42ZjzG2XF61KvZiuXDyJsjdU9ZP
+         dMCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763113499; x=1763718299;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pRD00tHeY5cdf7KxqF2jFSxDwoUN5Uum1eEhmcMbeuQ=;
+        b=VMM9CbicjGp9MkA1UzkeB9WA1nD4Mx/WUhdSpPoY45xa2f/ECWpzi0Fzv9x/LE51R5
+         Wu2sTfn1f0FtJoEe4noLkCnS4X13HKPU9F7GCz+0ChhglArxxhVoux6oMxoOQZOpY0qp
+         lLQB4w/k8XzCGsRij8pFFnf3y+mOIgFNsqkdUfFEzk9B+dHbbBWr/V3DEakf9cxwqdZ4
+         AbsWmMN/h2061pSP2V10MiMhAt4BIIN6wcjC/0gnAJMhaQTZMGgO1N1fWMzDaDz4WaTN
+         ancXLZKaCGbgFrlmJH7jYoRRGdWKVLyJb6h/59/fCtOH+pSte19VIuBOo1ZKy9UXdwOd
+         TwkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXsxRMB12EfUtA8gyVpBo78Yw5q6rfER8b136t1xI/dsgskq50EuEjfetsGf01r5we9+SMEVBtBHd+W18UdGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfAD5oHB4dIQQQUMPFFb7ZCZ+JM2iK3RS7K7psucMGLxL13HIx
+	lKEerrhnSGxXBfVG6EC3PYG65SXm4tiZEg9Fvb5wUzK2wt+7XfMRty4h6XUfA9R3IBo6jvwrj6X
+	pl2TjYw0kNptfHYQKqA==
+X-Google-Smtp-Source: AGHT+IEm8jwzq/nQACHWX8CpZkS7ky+thx5qIyqMsvn0Ki/rLJllXcmU6Vivtx+WwowP4czjWd+5pLWgDIUZ7Ts=
+X-Received: from ejcwe12.prod.google.com ([2002:a17:907:d64c:b0:b73:3b0d:754d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:3e24:b0:b6d:5840:4b43 with SMTP id a640c23a62f3a-b73678969aamr250627866b.22.1763113497809;
+ Fri, 14 Nov 2025 01:44:57 -0800 (PST)
+Date: Fri, 14 Nov 2025 09:44:56 +0000
+In-Reply-To: <aRY28VITGL53zenZ@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA3PR12MB8811:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51c636c9-7f12-4e43-9ab7-08de234cf0ea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eGFKQXprcGkrbmhsbHI4akJUMXdNMmxoRVgrNEJUS0V5VkZnblJub0g2NG1u?=
- =?utf-8?B?dktWQ0RoZjJObXhMV2ZaeTVLSU1UVEc1Y3l1VjFkY1N3WXNtNzcvYnN6TWUv?=
- =?utf-8?B?UnNkSTR2bmpwRHhQampOaDduSjI3OVhVbFpUT2p4OFNObHBhV2Z4OVFVN29B?=
- =?utf-8?B?bjM5VDZWbXBLendDWDRrWDJUWHVPaWM2TzVKWGkvTU9BWVNBZWJzMFZhVlZM?=
- =?utf-8?B?Y25XL21pa1RnS2EzSHNMS1VjZmhJbzI2Nmx1WmRvN00wTmlMQk1VdUxnSmZj?=
- =?utf-8?B?VzlEdENiWHBSRTJyNlhOUGMwR2greVVJS2o0bXhIVHgxNVNLOEVudlJ0Y1hw?=
- =?utf-8?B?S0lLejZ2UTdPS3F5ZFZsUy8rQkttblRHai9Yb2VTSWpSMlRnVHZyMWRMRjZs?=
- =?utf-8?B?RzVwWmtRb1FETy9RUUFYN2hBYXRib2YxVTlNQ1ZWZDRtcXJUUzl6enVjR3d1?=
- =?utf-8?B?ZU0vS1N2NTl1SElob0lNS3UyYVUyMit3M1F4ZTh2STU5akQwMnh2dGNGK1Iy?=
- =?utf-8?B?bXc2WUtuK3VjQzd6ekZ6a3V6eWtkaGFPMDRzZGV3NUQ4Mm5KeTJnTmplOUpG?=
- =?utf-8?B?emRacEhGSEwxOUE1UWlRM1lBaHBoM0V4U213eTNTKytELzI1a2pXNjFLamNZ?=
- =?utf-8?B?UDdUTzEzV2RVeEo1c0VHd1lIUWN2d1lob3R2blhSVWFCb2RuR1liclR5UkFt?=
- =?utf-8?B?b0lZUlFucWlzKzhVaFQxVDdRNVRjZTVGbHBrWU1VWXU0T2QwNjJ4N0F5TTdQ?=
- =?utf-8?B?UXYvb0JIbmxndzVtZVpkNU1ZajRWcHU5cW50UUdYTWQ4WjJ1UXpHUmJ6bVFV?=
- =?utf-8?B?L21zVnl0cjRBVDFSM3lRN3BPWklCODE5NENBSGpKTVNnREkyaXVUQ0ZhZ3pQ?=
- =?utf-8?B?bzJYSzFlMDVXY3NpNmpiTHQxZzJ4RWp1a1BmbFRmTWcvTHhRUVJla0NlQ3RH?=
- =?utf-8?B?ZWU1cWdHMUJRL3ZvYXJKSnpzUHVkY0R6MXd1NGVaWjBjMFdMdHhsUjFTTDF0?=
- =?utf-8?B?VjhvNkpTVWtyU0N5RXVoK0NYZXByZ1FweEV2bzZWOUh5U0VxUHBzNjM4eU9Z?=
- =?utf-8?B?TjBqVmJleThXWXJ0amlWd0Rpem5kYjZmQnlXUVB3SmlHMGFFUDdVVnc3Vkxj?=
- =?utf-8?B?N1hodEVqV0FWSVpla21jOUtwYW9LNVpQcXNVNzdJSWlwcUNLdE54VlJ6eDVu?=
- =?utf-8?B?N2JxdGxhenRQOWthSi94Y2p6YkkxVUwvaXVqN3l4eWdoVWZBZ2YzVmJST0Ev?=
- =?utf-8?B?THk5cXBRd0NnZndRTTJuN09rT1VHM3pXQ2huR1dUK2p2bzR1ZnlNUjkzSmpl?=
- =?utf-8?B?VS93T1Q5aDNJakd3WXZIQ1B6czl0Rm5JV2JCMytNeEVlZTVqSDYvVDdsdDBT?=
- =?utf-8?B?SEh0UGdXcEZ0bkMzR1ZWRFZNVitZOE85dzNWdlRWbXBNd1RRY3hIUW5WOUl4?=
- =?utf-8?B?cGZnczAwQnhSRnVmdGYvNFZlRFRJSmRWOHVzYUROblpSOTNWSm1TNzN4RTJu?=
- =?utf-8?B?dUVuUlY3dDFyWkM0RnVtMzRtTnQ5NkNYaWFQNHBrREplVG40NnhRMS9mcmkz?=
- =?utf-8?B?NXE0K1JGMzVsZmw4VHZxeFJkZ2JPTDFZQko5RXhMMkh0czdCZ09tOHdRN01F?=
- =?utf-8?B?aEJPZlpnN1FoYkYvRldyQ2dBK2wwaW8vR2F4T3FiTlNDaTIySUVQaEd6RzIx?=
- =?utf-8?B?NGU3SHkyaWkyVXhQNS93YmRJVHpuVDVOZ2pDK21hSVU0WEdOMVYzQ0tJZnJE?=
- =?utf-8?B?blVaclNFcXBWcjZFaytTRk9zMEJFR2R6YzZGYnpGZmxqM3NiTVBGNGpkYk9u?=
- =?utf-8?B?OGFTOTBnR1BCaDF2OGdOaHVpcWo1M2phTHNJeXB6VU91NDhuRHEreXV4aFIw?=
- =?utf-8?B?OFc5MmFwWi81cjR1dStyUWN4cy9NMWVuckM0dE9zSWYxZjF0RHpQd1BvZkxH?=
- =?utf-8?B?aFRjaG0xa3gwRWx6Zk02RnJZVWhZREVRNDZsenM2K1YvSXlwMHlOOS9tSmQy?=
- =?utf-8?B?ZDBZcDBFaERReGZrN3V6SFJsdkVUc2hFaUVoUno1MmFlY04wcFkyWk5Lbi8w?=
- =?utf-8?Q?4DYTwf?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VG9TbmZVZy9DNnVaVEQvR2NmeEEvUlpYN3ZuTEo5YWptVkNXUERpSXdIZkVy?=
- =?utf-8?B?TEdpME1ZSkY0dHZCZThNNENOalZDUW8wb2R4cmhBQTZUNzkweGpKaUx4M2JC?=
- =?utf-8?B?bGZBc01SbkExa0c0MzZUNU12OGdaRmwwYVBONHd4SnhwTTRHTS9nOFhSdDgy?=
- =?utf-8?B?VEtrZDhMZjRzRnhoZnpjc2F6V3dFdHU3L2FVekdXcmdKRTg3T29SSmcrRkkw?=
- =?utf-8?B?TmkzTUo4UWRGVldOZWZqbXZNR3ZWS0dRa0psaGpLUVZHS3FQaTR2V05CUDIx?=
- =?utf-8?B?Q1V2MlZrMURORUNjMGI3YU5EL3h2N1o4Rk1GZ3M0R0F3WFR0VEdONE5QcmQx?=
- =?utf-8?B?eis3dkVPQlY0N3dreGNtNGJxQjZRNG1IRmU2M1VBTHFSMks0azhmeTZZRkMr?=
- =?utf-8?B?dGN2ekdLTHpWUDJpdzF5RDdZSHdOY0h6SFNIeEI3Nm5tc09zUkZheVU5eVZ5?=
- =?utf-8?B?bWRNaVdobkZQV1dYVkRHYjE2Z01rcUlYT1hGV0R3RmZNQmhwaUxSMFU1dm43?=
- =?utf-8?B?bjBRRHNJU3ZscU54YndNb3YzRTNVc1Ewa1ZodXZabDh6MzVlVkI5U2ZEN3hD?=
- =?utf-8?B?MmNaeFJmYy9ZQ3R6VFcwZGt1NjY2UjBWYjFNcnhPZjVTMkUzTVdlZFBrbW5O?=
- =?utf-8?B?ZDkvazdDQ3o1bjFacWZyRkJJQ0ZxUWIrS3lmaGtiYkt1ZWc4VXFqSGJLS1lB?=
- =?utf-8?B?K3lWeGFzU1pOelFkZ2RxZlpzcW50NkhVU0E5bWZ5WjJjZzFNSDlHL0dabW0y?=
- =?utf-8?B?M2htd1JuR2QzL0o2ZkJkVFdZTWhxMUlJV1U3eUdsb3RnR0RnaU5QdU5tVlFp?=
- =?utf-8?B?WkZkd1p2c2IyRGF5bW5uUFZPU3J2SU5hN2pLcHA2RWF1SXVwbWhNNUZxbnly?=
- =?utf-8?B?cU9RT0tIaEppeXVkeVQzaE05R1ZsbTk5ODA5R3gvOGw0d0dCbVRkdTJBR1pk?=
- =?utf-8?B?VE5BMnhpVFdiZWJ0dXRlSk1OdUU3VEcxVkx6eis2b0RKUnQ0STF5NFUvb1dN?=
- =?utf-8?B?L0pXQldnV1kwek9ScDdsTUx6azlTYVpLc1RoMGVDOXRnVXFTc01JdS9ReFVr?=
- =?utf-8?B?RThrZ0M2WkpYS3FreWFiNm96dVhXdlRoejgvc2lOY3UwYU1VZFl1enJqaklY?=
- =?utf-8?B?ZmhROFRFMEhUUGNtamxwRTluTUxCMkZjTzdCdU8xaEYxdVpwVnE0WWpsR3E0?=
- =?utf-8?B?YUtLZFJ5MDRjT05YQ2kwQ2dQRVNjMGxWNFNQM28zbmR0ZGx6dlB4VE5laU14?=
- =?utf-8?B?OGxEUERkTzF3WURhUGRxRlFWTjM4amttQjFGNURyWlFUWUhnK2FOdUVBWUwx?=
- =?utf-8?B?Tm9qMzZjbEVtNFh4bkdTOS9jbDNvSDdoVSswRC9rL3RwVExoK2kwbjFNbUk5?=
- =?utf-8?B?bFU0NUh0ckl2NVF4QjNPVEY5R0RWWU96d3ZPNFljNytJS1RKNTJGa0ptejRE?=
- =?utf-8?B?U2ZqTFlKMjVpZGlFSEZJSGZGMFFGTzdiTm1BRFlMRndQdkZVb2RsT0NoaHdL?=
- =?utf-8?B?eEFrMENsam9kcURmL0I3STMrMUtmemR6VExwSENNRzczenRyWHpJdjZqZjBC?=
- =?utf-8?B?RnhFSGx3MWVUV28zdWJ4T2pZU2J5Y0Z5QVNvc0F0QzFDQk9KUzJONCtSa2p2?=
- =?utf-8?B?c2tWaGdiQWJReTZKcnpQVlJkcFhYcUU3UFpyNjRkZUZzSkF2U2FDUUc0U2c1?=
- =?utf-8?B?ZXJiQ1NoTk9LaFI4YWw0bVNQY29FQW11RG0wTm5LYmpRQjcrTHhQVkFKVXFQ?=
- =?utf-8?B?YkMrU1NTdkxlRit4anIrOE5RdUJ4Wmcrem16T3dmbGVwdzlmNTgzUUdTcG5Q?=
- =?utf-8?B?azhrcGh5Slp4MStEM3h0N3NzbExDb25UQ21NaWVRbXkvdGVpdHFtNXRsUENH?=
- =?utf-8?B?ZHFldmpvb09PanlrY1R2eEFGTFdtRm9RMlYxc3QrN3VnampYNnFJV1BTTzUr?=
- =?utf-8?B?Z2VPNVR4NjVpTkpSMDlpbXpkQ041ZTlMM0RlK0RQL214YU5KTEh6clhpR2xm?=
- =?utf-8?B?ZEdxUUwySG0yNy82dXZKWDFBMjlvTlIwNy84YTZrMTF6dEhHN1lLdnByUncy?=
- =?utf-8?B?UFRVaWVYSFNacGZKNmpVeklzNEVYanVMVlB5bE9PRUV5NWRCMjhEajhWUnAv?=
- =?utf-8?B?cFAzT1VzWXUyTFpJK3g5YTd2bkdqQ0pxUk5nUVJ0WDVNR21jZWFwc1MvNjNp?=
- =?utf-8?Q?R36zGYsBzRoQIcEw8XsL3j/Lne0YLTDSipOltoN2NQht?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51c636c9-7f12-4e43-9ab7-08de234cf0ea
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 07:10:50.2076
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fGlFoed03GUcSxjlikfxT8nfUwsnbwZoxTzPWRs6PVlO4SudFPW3xNJaHlbbDS742CvdD/VeEHEfVsm2j7/a8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8811
+Mime-Version: 1.0
+References: <20251113-create-workqueue-v2-0-8b45277119bc@google.com>
+ <20251113-create-workqueue-v2-2-8b45277119bc@google.com> <aRY28VITGL53zenZ@tardis.local>
+Message-ID: <aRb6GPDZo3kaoeKm@google.com>
+Subject: Re: [PATCH v2 2/2] rust: workqueue: add creation of workqueues
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Philipp Stanner <phasta@kernel.org>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Benno Lossin <lossin@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri Nov 14, 2025 at 3:49 PM JST, Mikko Perttunen wrote:
-> On Monday, November 10, 2025 10:34=E2=80=AFPM Alexandre Courbot wrote:
->> There are times where we need to store a constant value defined as a
->> larger type (e.g. through a binding) into a smaller type, knowing
->> that the value will fit. Rust, unfortunately, only provides us with the
->> `as` operator for that purpose, the use of which is discouraged as it
->> silently strips data.
->>=20
->> Extend the `num` module with functions allowing to perform the
->> conversion infallibly, at compile time.
->>=20
->> Example:
->>=20
->>     const FOO_VALUE: u32 =3D 1;
->>=20
->>     // `FOO_VALUE` fits into a `u8`, so the conversion is valid.
->>     let foo =3D num::u32_to_u8::<{ FOO_VALUE }>();
->>=20
->> We are going to use this feature extensively in Nova.
->>=20
->> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->> ---
->>  drivers/gpu/nova-core/num.rs | 51 +++++++++++++++++++++++++++++++++++++=
-+++++++
->>  1 file changed, 51 insertions(+)
->>=20
->> diff --git a/drivers/gpu/nova-core/num.rs b/drivers/gpu/nova-core/num.rs
->> index 92a91b9e30de..f3740ab6cb9d 100644
->> --- a/drivers/gpu/nova-core/num.rs
->> +++ b/drivers/gpu/nova-core/num.rs
->> @@ -163,3 +163,54 @@ fn into_safe_cast(self) -> T {
->>          T::from_safe_cast(self)
->>      }
->>  }
->> +
->> +macro_rules! impl_const_into {
->> +    ($from:ty =3D> { $($into:ty),* }) =3D> {
->> +        $(
->> +        paste! {
->> +            #[doc =3D ::core::concat!(
->> +                "Performs a build-time safe conversion of a [`",
->> +                ::core::stringify!($from),
->> +                "`] constant value into a [`",
->> +                ::core::stringify!($into),
->> +                "`].")]
->> +            ///
->> +            /// This checks at compile-time that the conversion is loss=
-less, and triggers a build
->> +            /// error if it isn't.
->> +            ///
->> +            /// # Examples
->> +            ///
->> +            /// ```
->> +            /// use kernel::num;
->> +            ///
->> +            /// // Succeeds because the value of the source fits into t=
-he destination's type.
->> +            #[doc =3D ::core::concat!(
->> +                "assert_eq!(num::",
->> +                ::core::stringify!($from),
->> +                "_into_",
->> +                ::core::stringify!($into),
->> +                "(1",
->> +                ::core::stringify!($from),
->> +                "), 1",
->> +                ::core::stringify!($into),
->> +                ");")]
->
-> This expands to e.g. assert_eq!(num::u32_to_u8(1u32), 1u8), i.e. not with=
- a generic parameter.
+On Thu, Nov 13, 2025 at 11:52:17AM -0800, Boqun Feng wrote:
+> On Thu, Nov 13, 2025 at 10:01:07AM +0000, Alice Ryhl wrote:
+> > Creating workqueues is needed by various GPU drivers. Not only does it
+> > give you better control over execution, it also allows devices to ensure
+> > that all tasks have exited before the device is unbound (or similar) by
+> > running the workqueue destructor.
+> > 
+> > A wrapper type Flags is provided for workqueue flags. It allows you to
+> > build any valid flag combination, while using a type-level marker for
+> > whether WQ_BH is used to prevent invalid flag combinations. The Flags wrapper
+> > also forces you to explicitly pick one of percpu, unbound, or bh.
+> > 
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> [...]
+> > +/// An owned kernel work queue.
+> > +///
+> > +/// Dropping a workqueue blocks on all pending work.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// `queue` points at a valid workqueue that is owned by this `OwnedQueue`.
+> > +pub struct OwnedQueue {
+> > +    queue: NonNull<Queue>,
+> 
+> I hope Owned/Ownable can make it just a Owned<Queue> here ;-) And
+> that'll make Owned<Queue> automatically Send + Sync. I think it's not a
+> rare ask for `OwnedQueue` to be Send + Sync.
 
-Ah, nice catch, thanks! I missed that because the doccomments are not
-built yet for code outside of `kernel`.
+Oh yeah it should be Send/Sync.
 
-Fixing it by taking the example from the non-Nova RFC [1] of this patch.
+And hopefully we get Owned eventually.
 
-[1] https://lore.kernel.org/all/20251104-as_casts-v1-1-0a0e95bd2a9f@nvidia.=
-com/
+> > +}
+> > +
+> > +#[expect(clippy::manual_c_str_literals)]
+> > +impl OwnedQueue {
+> > +    /// Allocates a new workqueue.
+> > +    ///
+> > +    /// The provided name is used verbatim as the workqueue name.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// use kernel::c_str;
+> > +    /// use kernel::workqueue::{OwnedQueue, Flags};
+> > +    ///
+> > +    /// let wq = OwnedQueue::new(c_str!("my-wq"), Flags::unbound().sysfs(), 0)?;
+> > +    /// wq.try_spawn(
+> > +    ///     GFP_KERNEL,
+> > +    ///     || pr_warn!("Printing from my-wq"),
+> > +    /// )?;
+> > +    /// # Ok::<(), Error>(())
+> > +    /// ```
+> > +    #[inline]
+> > +    pub fn new<const BH: bool>(
+> > +        name: &CStr,
+> > +        flags: Flags<BH>,
+> > +        max_active: usize,
+> 
+> Do we need to support `max_active` as `usize` when the underlying C
+> code only support i32?
+
+Negative values don't really make sense. But maybe it's a good idea,
+yeah.
+
+Alice
