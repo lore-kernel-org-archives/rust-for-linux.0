@@ -1,345 +1,276 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011020.outbound.protection.outlook.com [52.101.62.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6252DC34E
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Nov 2025 06:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763100135; cv=none; b=kN/aF5cquKzNuWamsB3wQsNOaufll7o7EQqTRRkmUcXZRxh/pfQUQL02+/Zi+SDUHTVGACTZ8QtjvEE785lSXLUrc1Vn6CbLNx0qE6j5AeUyHMu+tKm4K5eYMvvW0o+7NQhLzXtawy4upYlutN+R/2U286MskgNcgQp0OfY7RjA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763100135; c=relaxed/simple;
-	bh=lvv1bTtYoBEe3pfLt016s8g00xygDEGVSL/llzbKK3c=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7A52F28FF;
+	Fri, 14 Nov 2025 06:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763102977; cv=fail; b=u7dVEbavXXOuNvgHd22feT2wmlscgbYcDd9EzkLdgge3r2bt8fioQBpOAFD8pCAc/GSiAal39HsbjqECDItBxnIQJaUrn1zvO2KyJ1aZYRz4dqfIdU8iKAnbijO4w5pi9C2wP7GmIP9p5sWTW1Krt60+oDhJEsgszf33zqT0yQA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763102977; c=relaxed/simple;
+	bh=4oE1FTP4PfYHF39iFTayx/S5BnR/kIZW/qcHXyVdMkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NwM1440zgxm8QONaCEYQfTiG2mQHS4v5aGXoXOcw3rlFwdDoflwlDGof/NvrUNzP8uq9h/JFhYnl1RqwLKtfFj2nhcRFoA7Ng6k9Rs96TaziFyvykAvH9hbSG5zIpN9/iC995hdchcBODz34PVuoFfCyuuF1VRTUdD8fpAIsImI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FrcqqIrj; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:MIME-Version; b=dIU1pLT7k8ZLWLWv9AoG6g/+belJcBhPc11gtMllJ0127MuIe+FrsdH0ltdFeqLNJMOE4hYkOY8iOUN99IAOkCXZprJ4JjuMzk7yHrNcohzfKrgpM2m2W6S+A0ZS2BtTjtzQhTEjktdLGw6gixWpxeh0DkNGoGygZXkvQJjmYbk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iQuJfBE9; arc=fail smtp.client-ip=52.101.62.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FrcqqIrj"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8a3eac7ca30so106558485a.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Nov 2025 22:02:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763100131; x=1763704931; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=n3AWjtCxQvzHDlbqNiWsS7jbJ8xKna7L0HUdBzVx2Fg=;
-        b=FrcqqIrjoCX4PFGcdXqZaHoJSSoNJY51WK72MK8j4TWfz49isSG+ph9/7lsdYH6zAg
-         D0Q71ty18gsDUP2G0Vd5kx8xkdTJEe9srMjOUWg7ys6Tdnl5xvUry7RrJD/+r+lHFVYk
-         Wtl6rIf3eg56z4cS0mGju9yOb4mLMOAcZFda9UIuHHZi1aGvWhzyGzvNmiqX1rOBLz4e
-         7AwE5opN/sXF3j4OFhdknR6l4/Pn8u2NujnrghXri8RSYga3HysvI4u0jn33FoqNi8Jw
-         NJYkDZhCupXp8NMIDEblAwZZTpgxjGoNyVyHwz8NYWzf6xsQkTxpjEF/3EuJRcuyFM4Q
-         9LmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763100131; x=1763704931;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n3AWjtCxQvzHDlbqNiWsS7jbJ8xKna7L0HUdBzVx2Fg=;
-        b=hDdJFKlLw9k0TllAp0HYltxqCp0f2aPSFDRvW9xgZZmHZR/xPE1LGsYtTyJfUW+qpa
-         cKPWAl9mOKeAiJfML6Fyd6KwyBGO6L7lhgucGlaJgq6L/GuOuY6racY5JFFoBkJtDt2j
-         Mf0UUs/yMv8c18pBcoHwV3XOfJJBUHjE37enDHwvN/Tmq1l3+8HrjweorPbCaVn3sTYc
-         R6pEedWXDNP9MMKJwXGYaFMl5KLD+O22ae1yaJwjOnnY+qPBq+qFg8gdp20gNisGeoZz
-         UjMfeIaHpzrZsv0REDPj9IRBVy5P5XW6YdBikixocWgFmRwbW+Mn384c9MmjsZ8AkiDZ
-         gSJw==
-X-Forwarded-Encrypted: i=1; AJvYcCWlnABQbiQMn1YdVWXuJrqb0RKazab+EeQxChwUJ+QFlYVBtxOK88Wsc+ENaytlp1C6d7QRe56NNJ+AoGN6Yw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF99aTBbpWBXtT3+XeEWGAEv9cYG1yFfaTJovSaaKqun+vydBz
-	hbz9A3HyF3Pyr2griuF6tJFIV/OdAL7ZupmK0Wv3cJYRhJQwSLm1/hqz
-X-Gm-Gg: ASbGncsoEhxd4okBAUAIWj0RMGCI/KYE9+DDUpdSvV5a/WNMH6c2d8UBYpQbLQw/Sqn
-	VzRzpqWOy9EQF0/Qjpadqjb97gQgqz3aBmnan1pvmAT7XjipB5hr2pbaxyfKpOJdqk0RRXmatiP
-	rKZgsAFb8dtIhbjNvZHlsdHd4YN0RrAgBIop2zmaUnCmFUYvDmPOUd4J5GBLHvLW7QznUGyDf7P
-	+ZCgVJLR81+d016tezR7zFQaCayUle41L2R6NNZSOd8IcDuhvMgNbSAuTwFCj0eUuKOEeVyb2H5
-	kcGuCoz9GGHjdbyacV6xKolK5oRrp+B8T9PwhOgvbRUO9/2yAkppwEuYYlf2xqbM4U37YE36ZaN
-	W/ZnOwYCx2WCqUSwu31U9/2k2fJcphhiNxRT2AjkfDrTm1usU9v2TETlsMckB+5+u/VPzeNBdwb
-	Tm4OIT8bLgevXltemRPG+fRT/vB+/VkYCy3vNlkxTfdNQLAaVy7a276LnA1D91xjV0RaFdDqBBF
-	Eld9yfQ+yIQ1YQ=
-X-Google-Smtp-Source: AGHT+IHKq0DOsKLq3CHeU4c/K8+jRGXnhsevQbrZ2GhAUEKBX/DBD8ZSsY/DK1OavAhKvof7FqlVOA==
-X-Received: by 2002:a05:620a:288d:b0:8a2:ef8:348f with SMTP id af79cd13be357-8b2c31a1111mr248747385a.55.1763100131161;
-        Thu, 13 Nov 2025 22:02:11 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2af05d29asm274125985a.50.2025.11.13.22.02.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Nov 2025 22:02:10 -0800 (PST)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4141CF4007E;
-	Fri, 14 Nov 2025 01:02:10 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Fri, 14 Nov 2025 01:02:10 -0500
-X-ME-Sender: <xms:4sUWaa7Al_tGa1yHmU1LHxvQAaBFDMkGaTwOGSuqFzTCI_hUZROdrA>
-    <xme:4sUWaTKW1x_J7K5IGj6vEunFJgelFFTsQi-g73947L3cPu5k10zJR8GV86nXjXSMR
-    Q07E51B_8QjoYGLQ2uk49vmw372gLPa3Sk4dj0l6MAu1Sz_q5Lr6Q>
-X-ME-Received: <xmr:4sUWacTTMizjNuBP5fw3oF9aS48TONtWBNj3bPOKSZ842fFnXY4eX5ImUHYJtkkUD-f18p6lfLFVqA2KDIVb5rSZcpG9ZTGT>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvtdeltdehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpedvveekvddtffelffelfedvudefffeuheejgeeivedufffgledvgeduveffueeh
-    leenucffohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
-    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
-    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
-    pedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhhinhhgoheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhr
-    tghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrg
-    hnsehrvgguhhgrthdrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhu
-    nhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgv
-    uggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmh
-    grihhlrdgtohhm
-X-ME-Proxy: <xmx:4sUWaeoZaCm1nfcJ6Osr55hnG8t09jv01N-LCdkwc3c8mzjiPMTUkw>
-    <xmx:4sUWaSaNnyu4dV1tC5GwQ5ujgLkr_c8jfSdKKrkkacMw9s3LO7DDXA>
-    <xmx:4sUWaRSMytoX9rONB8FmZjx1QECj2I7XjPmplfW_j1gZf8gscwR2LA>
-    <xmx:4sUWaYeDm6XEU0makx0dA-adwwaoEaWYiJhYl21RDEXZpDQ8mODpqg>
-    <xmx:4sUWaYk0SeGWx1ltUzuNlp9ywswgzEGtjOwM1Zqd1BVhIKU8B8ZNxVSa>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 14 Nov 2025 01:02:09 -0500 (EST)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: "Will Deacon" <will@kernel.org>,
-	"Waiman Long" <longman@redhat.com>,
-	reg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 4/4] locking/mutex: Redo __mutex_init()
-Date: Thu, 13 Nov 2025 22:02:00 -0800
-Message-ID: <20251114060200.12982-5-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251114060200.12982-1-boqun.feng@gmail.com>
-References: <20251114060200.12982-1-boqun.feng@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iQuJfBE9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZRD6zILbxsp4RZygmIVn9KltOlv7fTA+Kyafa+82jc/GFa7sZIG4SBOosUgueOhq7lGqK8Gm3caAcqTKso1Fomv7DT9OGVBiyFWLZYF6tpM97VNMPUdDQROMjevSLr3Wiyarp9Gc0SFD4mLq3zlMPJ/7uQgdtPLF7KtTZo2gkCykUwqYXliQoPCRVx43gndFBK1Bwin6L2a6wa/7qsfPqP6bNMimS/+WhVXQIvz4EWpicJP4GZ/VVWtEVxIL00+QgWJbmnnITmmLRWmMo9nhtpsTwj2ncKJfKeZNP7mXg4piuInKnLJtg77Z09okgWmPEgpEpKneWFNxUK1jp5yXmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x/ywiizOg4Q2tgClW3CzI/aTIa5RmrD54Yc2RPpuEJY=;
+ b=TyxLaJGS1JttBosfD35nGmK72H72wkZYYtRkkuzVruBSlI8Jzcx1gJOPA5Dt4+ZWWPnQSHhO/xQhjfN8E8ef8QIs0nCbODvli9DiY753u5Yg4Xe8OU1aqjEXeX314YUL6F5I6cotBrTccRy2M86cKD+/LBhTij+8ioxjVwqsNyndE6pGYU7J66eB7N4P19ft0ccCBZPjj6b0HIeSqGH6TGiEbYi5fpt2NdW3ul6okkSvpqj83GOByD64At+pVQ++opmIUyFfh6iszgM/tR4Gl7DHiRAWPbk6TuWuF70yJG81qJ/DOMxr06Q7GduHyxvd8ZLHrweRT1azHHv4kxOQTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x/ywiizOg4Q2tgClW3CzI/aTIa5RmrD54Yc2RPpuEJY=;
+ b=iQuJfBE9bswx+/3EC775QCSZMdAPYhxDBAsvyReguhOIvy+4HnZjz6sxVsZkP+Y/KMYfi2+bbFxmmote/QzlTXkY9Df95uwf/qiiPBHEemXwD776c2ZuLBYauBGC4BnwdlaEs8UDBG4m1/mE9GlxwuvAEoHeKz0M/1s6QtBmYFZtf+7V+Mtw9ax4u+MW0cD+XwS8/T1T3HMhIzL8r+cQ7uLtLs3edbF5A2Bx8G4yDI2RzelLIf04SIDVHialVHBvD8RuNQ4xz60CZrjtoesi/CiFBjlqvclygswXIyYLajW0tA61s/mGyK2RWC+aEupO+c1JeuurgYQpRdYq6/N4HQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM4PR12MB6494.namprd12.prod.outlook.com (2603:10b6:8:ba::19) by
+ CY8PR12MB8411.namprd12.prod.outlook.com (2603:10b6:930:6e::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9320.17; Fri, 14 Nov 2025 06:49:31 +0000
+Received: from DM4PR12MB6494.namprd12.prod.outlook.com
+ ([fe80::346b:2daf:d648:2e11]) by DM4PR12MB6494.namprd12.prod.outlook.com
+ ([fe80::346b:2daf:d648:2e11%6]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
+ 06:49:30 +0000
+From: Mikko Perttunen <mperttunen@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Alexandre Courbot <acourbot@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Edwin Peer <epeer@nvidia.com>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
+Subject:
+ Re: [PATCH v9 03/15] gpu: nova-core: num: add functions to safely convert a
+ const value to a smaller type
+Date: Fri, 14 Nov 2025 15:49:21 +0900
+Message-ID: <13485409.nUPlyArG6x@senjougahara>
+In-Reply-To: <20251110-gsp_boot-v9-3-8ae4058e3c0e@nvidia.com>
+References:
+ <20251110-gsp_boot-v9-0-8ae4058e3c0e@nvidia.com>
+ <20251110-gsp_boot-v9-3-8ae4058e3c0e@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-ClientProxiedBy: TYCP286CA0270.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:455::16) To DM4PR12MB6494.namprd12.prod.outlook.com
+ (2603:10b6:8:ba::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6494:EE_|CY8PR12MB8411:EE_
+X-MS-Office365-Filtering-Correlation-Id: 79e898cd-a861-4144-4f8f-08de2349f633
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|7416014|376014|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?K01aUUhxanVSWHVOTVBNODVSeTlPSVp4V1ZuNktETVdlc3hlU21LTEtLQW1L?=
+ =?utf-8?B?SWF3dlhNaGJCbXFQRWl3bTRNK0lacmtjTlNhS3U3TWxoOU9tWjl1eG5RVVZT?=
+ =?utf-8?B?OGNXTDg4NThTMUhVODJUcDNyTkJzeE9uczhTTUtSbjJPOGtXWklRUEwrOThM?=
+ =?utf-8?B?L0RiRHpzRzZFeW44UE4yL3lVR1hsMDhuV29LeTNTU05KSy8zemFnRjhxUWtn?=
+ =?utf-8?B?NVFuV20rUGlJQTl1blcxVGV2bVB5TDYwYkJrZS81Q1c3NVgvVGZJWS9YMzBp?=
+ =?utf-8?B?Nm1EYXh4VjNkLzBpaFBjVExjdXV5UFB6czVyOERDUUpmWWZYUDJTNG9QTXhw?=
+ =?utf-8?B?Uk11YkxxZWNVY1VLai9Ncko3d255blFJSjlCQlYvVjJUd1Q3YUxZbmZVQlZM?=
+ =?utf-8?B?YnQ1OE1ydVd4UFdDc2lCQ1A3OVlsTzltSjBhQnVLTXpOS3Z5ZTUzMW9VWU1E?=
+ =?utf-8?B?N1dYWUpUZkNxR3lvdnFsWjlxWlFwNnE5V3lDNE9vQnVVV1pyakFTZTlCaCtp?=
+ =?utf-8?B?cU0zNnJPTXBWUkZENW5RLzU2KzAyNUxFQ1RNaTFBeUlMODNIV3RlN0ZYdisx?=
+ =?utf-8?B?YUNUZzVJQ1RTZ0cxajcwZUxNdy8zVHdhRXhPZU1vK3l6cStHMUw3QVVudG1U?=
+ =?utf-8?B?OVBkSnc0cDBURnZKZ2h0S0JDUWZsUkl4aGhsczBJaUdCMVlCQ0tDM3BydEwv?=
+ =?utf-8?B?RUI5blhLUmhwK2xlcHgwSi8yUjlyN3lReWZpVTJmRHljaHhzQ3NiUGNCcndi?=
+ =?utf-8?B?NDFaUjB2ZmJRRVRkdjFKRG56Wk12YndtaWVhNEUrMTRqZlprU2FML2pUelJF?=
+ =?utf-8?B?NWw2ckNlaGk1T1crUWsrazNLK0JnZFVqSlUybWdqUXJzVGdzUUNja21tV3Nt?=
+ =?utf-8?B?RDQ3UnFTMTh2eEhxTWY1UGJFcFUxMmJaQmFMUXhvUEN5V0tHZTEzVFUvTW9z?=
+ =?utf-8?B?SVZXelY0MG4vd2hqZEJzSmZFbGNCdG5iNllTWFU5VDBzb2pXd1J4QS8vcHpo?=
+ =?utf-8?B?OVlZQ1FtUy9HUi9PYWFOdk5qSmdxdm9lVnVOa3o5dG5zZlFJOGZpWWxJY1BG?=
+ =?utf-8?B?MmtxUmlJN1kvOGlseU9HOWtQY1Q3ZnJrYWpyWTFZN1RPVnF6NEk4V1VGRDdD?=
+ =?utf-8?B?YmhIOC9GbTZvbjllVWQyMVZpVUdSUno3TXluV1dVRmpLbk1BV05RR0dEN255?=
+ =?utf-8?B?QURiV3A1Mys5L2ZkMEh5WkQvZ3dOSkw2Q0FpUDByVVlaM042WXAxMmpDeHVt?=
+ =?utf-8?B?Z1ZSK1ZXVWF3aUxXdjVVU3lDKzRpWjJSMGFqdzZ6OU9BdE5Tb25DaG9KMlVl?=
+ =?utf-8?B?RDRxT2NwR0N2cFk2NFQ3U1JwMXFZWGVSN2FhM0l0aC9RUVlaWVhaT0NyZjVX?=
+ =?utf-8?B?a0FkWkFLYnc5WXd2eCtXNDdXOWk3UXBObDVFb1VWbVpGckxLaVM4ZitUeGN0?=
+ =?utf-8?B?d1lZOXUwdHhWUmlEZ3NVVjJzNjQzM3N2bHFreGVxM3ZYaXAxMmh1ejZXcUZJ?=
+ =?utf-8?B?czBiOEp5REFtQTRiTDBrczVWdmRDVW5vaUNjS0VnS1MrVmJTL0VjQ3hqeTBZ?=
+ =?utf-8?B?QlY0NEtLeGFSTWF5NFA0SjF1YTYwY20xb2V5emtpRHR5OGdKWk5NcGNVbVZP?=
+ =?utf-8?B?YkdObEpTT0VTTXZDNk13UVFxUHFTeVJSZ0ZIS282Wm9POEVpUllaYkVGYlk0?=
+ =?utf-8?B?dUlFMVplZmcxTzlyK2JnWjdEYzM1T2JJTVZUUVBoeGZVSmRpZUU4SThiK0dZ?=
+ =?utf-8?B?dWNNK2VGV3IzaDk5dnduUnBDSWx3TlYwSTVqQ2IzblRrU3pmcVZNeHlCUXZr?=
+ =?utf-8?B?dUtmRkd4cEp5WlVoOEhOUkVIdWI3cGdEOUV4MEtVbGZCL1BXbFVVR1d1K0hY?=
+ =?utf-8?B?UWJSTlNmS1pldTkrWDAwekNBQzJWdVkxRlNwdFZGVXc2R1RSN3V1cVB2WkEw?=
+ =?utf-8?B?NkZDM2N5VXpManVsZStsYVFMRzIzTk1sSFU0UDdudTlMMFNsZWE0VjduRURi?=
+ =?utf-8?Q?OT0k9SyO6RpFXucRc8268kVHH2GZ5w=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6494.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(7416014)(376014)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V0ZGWWkway9KTythNzUxSEtYbnprYWxHUlZFdm5qVHQ5RDk5ajhnOXh1VkZU?=
+ =?utf-8?B?Y3lXQ3VmUE1FdFllSzhsYW9UYVV1NjViZGx2Q090S3VrakxrSnd4bkNpOVV4?=
+ =?utf-8?B?RVlFa3IxeWFMUUFROWwvQ1d0ZmpnSksyU09Nb2hYWTJyMTBBdGUzK0puczVY?=
+ =?utf-8?B?U0NIbnpnTitHejQ3VHk5UC9CRnFDKzV0Vis5ekwvTGlxNDIxYlB2c0xZelVF?=
+ =?utf-8?B?MnN6UGJmdUNNUGltTmo5RGhBb3h2QncvNHdZcS9raWN6cHJTNEp6ZHQvYlE4?=
+ =?utf-8?B?aDIzWE1PTEZaV1gwckRudXRndWFTS0JHUTA3Q3RGZnJLbjdsalpFVHRWenZN?=
+ =?utf-8?B?M2IraFNZSlJHNW9hWnhFenpOTEkyeTltYi9xb1ZSVWI3UXB4L3VyK2pNODZS?=
+ =?utf-8?B?TzZObTk0cXl1Q29UVTNBS0lVR3o1L3RmSzhOeDN1QWJVaEdQQWp4RzhrT3hO?=
+ =?utf-8?B?MDVyVnVsQXAwcDVUUkRYc2YraXBzaTBaQklmQXJzZHV3ZXRXbWUrNFFydjJI?=
+ =?utf-8?B?ZjF0d29jTDJpNFRkZEhPY1pkbkMrWnVBWkZzbzlnOExoOXhLNXk1SmZ0Mzc2?=
+ =?utf-8?B?d3dReGJ6aFFjMlpkTGtRa1lwelp6eEd0U0JwR0czdnVtOEIrMkxZcmxUYmtq?=
+ =?utf-8?B?dGw3NHp5ZVZhczNSa0lDRVQwZTNYSFJjbGR1MjFvV3J0TDNaZms5THViZEkx?=
+ =?utf-8?B?K0JBckpiUU41ME1lU3pRMVpjM3g4cmFZOG5mQ0dXSStEQ3p0SmsrYkl1R3BM?=
+ =?utf-8?B?aGRvako2TUZCWWpVY2NYNDBHYSs4bStReWJEejFvNXRLMGtLblVmTGNtOVJJ?=
+ =?utf-8?B?aGtzcUxhMndMcDNobmVaUDJNbGZMS2JnU3BuY04zVkJuUDNEdUhDWVNKN2Vz?=
+ =?utf-8?B?blZkcHRUc1l6eHVZZ2Vpb0FRbHlkSGF1N0I4SmJyVzZYRmVEQUNIWDBPMXhT?=
+ =?utf-8?B?MUhSbERRbDVXeWJZbGlvVkNObXNEN1MyS2NPdWo5d1NDdEJTdDh2QzQ3TFJL?=
+ =?utf-8?B?MGVPcXZkanBBKzVmdUNTK2lVWjlMWGk1WEU3blpQR2xtcmh4VXhiQTh6NmU2?=
+ =?utf-8?B?bThON1crUzYrRktXLzVUa1VHTWE3TWtYaFgvSC9YeHQ2L3FzaFVZbVpIOXc2?=
+ =?utf-8?B?d1gzUm5ndEwrMVNnTFJiM012QXplWmNnbmpRRi9PY3dUQnlUbzRNRFYycVJx?=
+ =?utf-8?B?WG1KMnRwK0tiZEdaZEVLMVpwZWQ0dmpaRERCOHF5RExnRnNTdkYxTUdSdXl6?=
+ =?utf-8?B?Zk91R2h3Nkw1V2M4V1kva0tNSzlwLythUGREbHEwYkF5SW5QMVJNUVNJS002?=
+ =?utf-8?B?SUp4VzhlTVFiV3laamVvLytNcDhFcnhYb3ZMWmpZN1psVXRzWjd1REM0WENI?=
+ =?utf-8?B?NDdWSWdYMEZ1K01QYlJXS3diZVZSSXJwMGVpeFNTY0JqSkFWNEZTSE1NS1RB?=
+ =?utf-8?B?THNsWmQzbkJMR0k0dFVDK2MxcXFQN3FsMUxvMUlUU0F4ODBSR0VSaElLQmcy?=
+ =?utf-8?B?MVpsQnF6V3BLaTNLTDdRMVJHZXFsYzlDMmZicVVMTjhkTkFxdEx6MG9qRTcw?=
+ =?utf-8?B?c1JLUzI3dTVMSXF1L256dzBocDBwanphKytyUzRjSTY1cWI3WVV6RXY3Mnpz?=
+ =?utf-8?B?YVlWVURHZzdBUXhRQjIwTTNzODFUR1VRc0lWNjgxYnl4bE5zZEZPdm5KQlZZ?=
+ =?utf-8?B?VUpkTW0yTDAvZGhLd1RTUk5PaThvaG9sUGMwbVNPLzVCQjNrbTdRai92MU1O?=
+ =?utf-8?B?VDhyaGFocnlIQnVmZ1MvbzRFOXdTUnh5djJEKy8xWkJpTEh2SEd6aW40MnNS?=
+ =?utf-8?B?d0p6ODRTY25TejJmZnM1eXdUOXoxMGdYOHBVOENHeERqc3c5SmtWVm52T01N?=
+ =?utf-8?B?TzZLZUJ2YWRmTkxXSGN4VnhVSE5VUElQMEhFNnlwb0lVVytWTm5NODdCMWVi?=
+ =?utf-8?B?Tlk4VlF1UUsxK3dHNXZpUzh4akJYRkMxQUJxU1FJTlVUT05uZ0ZWK0hGRGZp?=
+ =?utf-8?B?TXEreHdzelVUTDg5aWRRUVMwWHU0OU5FTDFsdzhUVmNiOFBSQnA0WGkwWUdp?=
+ =?utf-8?B?STV0NVJBVFdzcTcvdmFpbEFyZzBEb2YzcytZTmhUOEMvQzhva3ZhWC9JZk15?=
+ =?utf-8?B?UjZFREUxakFGQ3VMNHdodU1SRUlGWXJ4U2xic1VZclRuNWpySkdXelZlSjBF?=
+ =?utf-8?B?NWVvZlQybllWR0w5VnQ1RjhOMzlVMnZwSWFmUGtmVGZMUTM3K2pJeTN2bWts?=
+ =?utf-8?B?TlFpNVpkWG80SVUreURLQU5TVzNRPT0=?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79e898cd-a861-4144-4f8f-08de2349f633
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6494.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 06:49:30.6825
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0VZXHuhYB1NMfP5TmBfgWdk9bWtcj06zMuHrlMMNPHP9lRRQXX0TM3dtVEKsGiEGef3S77jiNmLP+CdzstXrsw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8411
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+On Monday, November 10, 2025 10:34=E2=80=AFPM Alexandre Courbot wrote:
+> There are times where we need to store a constant value defined as a
+> larger type (e.g. through a binding) into a smaller type, knowing
+> that the value will fit. Rust, unfortunately, only provides us with the
+> `as` operator for that purpose, the use of which is discouraged as it
+> silently strips data.
+>=20
+> Extend the `num` module with functions allowing to perform the
+> conversion infallibly, at compile time.
+>=20
+> Example:
+>=20
+>     const FOO_VALUE: u32 =3D 1;
+>=20
+>     // `FOO_VALUE` fits into a `u8`, so the conversion is valid.
+>     let foo =3D num::u32_to_u8::<{ FOO_VALUE }>();
+>=20
+> We are going to use this feature extensively in Nova.
+>=20
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/num.rs | 51 ++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 51 insertions(+)
+>=20
+> diff --git a/drivers/gpu/nova-core/num.rs b/drivers/gpu/nova-core/num.rs
+> index 92a91b9e30de..f3740ab6cb9d 100644
+> --- a/drivers/gpu/nova-core/num.rs
+> +++ b/drivers/gpu/nova-core/num.rs
+> @@ -163,3 +163,54 @@ fn into_safe_cast(self) -> T {
+>          T::from_safe_cast(self)
+>      }
+>  }
+> +
+> +macro_rules! impl_const_into {
+> +    ($from:ty =3D> { $($into:ty),* }) =3D> {
+> +        $(
+> +        paste! {
+> +            #[doc =3D ::core::concat!(
+> +                "Performs a build-time safe conversion of a [`",
+> +                ::core::stringify!($from),
+> +                "`] constant value into a [`",
+> +                ::core::stringify!($into),
+> +                "`].")]
+> +            ///
+> +            /// This checks at compile-time that the conversion is lossl=
+ess, and triggers a build
+> +            /// error if it isn't.
+> +            ///
+> +            /// # Examples
+> +            ///
+> +            /// ```
+> +            /// use kernel::num;
+> +            ///
+> +            /// // Succeeds because the value of the source fits into th=
+e destination's type.
+> +            #[doc =3D ::core::concat!(
+> +                "assert_eq!(num::",
+> +                ::core::stringify!($from),
+> +                "_into_",
+> +                ::core::stringify!($into),
+> +                "(1",
+> +                ::core::stringify!($from),
+> +                "), 1",
+> +                ::core::stringify!($into),
+> +                ");")]
 
-mutex_init() invokes __mutex_init() providing the name of the lock and
-a pointer to a the lock class. With LOCKDEP enabled this information is
-useful but without LOCKDEP it not used at all. Passing the pointer
-information of the lock class might be considered negligible but the
-name of the lock is passed as well and the string is stored. This
-information is wasting storage.
+This expands to e.g. assert_eq!(num::u32_to_u8(1u32), 1u8), i.e. not with a=
+ generic parameter.
 
-Split __mutex_init() into a _genereic() variant doing the initialisation
-of the lock and a _lockdep() version which does _genereic() plus the
-lockdep bits. Restrict the lockdep version to lockdep enabled builds
-allowing the compiler to remove the unused parameter.
+With that fixed,
 
-This results in the following size reduction:
+Reviewed-by: Mikko Perttunen <mperttunen@nvidia.com>
 
-      text     data       bss        dec  filename
-| 30237599  8161430   1176624   39575653  vmlinux.defconfig
-| 30233269  8149142   1176560   39558971  vmlinux.defconfig.patched
-   -4.2KiB   -12KiB
+> +            /// ```
+> +            #[allow(unused)]
+> +            pub(crate) const fn [<$from _into_ $into>]<const N: $from>()=
+ -> $into {
+> +                // Make sure that the target type is smaller than the so=
+urce one.
+> +                static_assert!($from::BITS >=3D $into::BITS);
+> +                // CAST: we statically enforced above that `$from` is la=
+rger than `$into`, so the
+> +                // `as` conversion will be lossless.
+> +                build_assert!(N >=3D $into::MIN as $from && N <=3D $into=
+::MAX as $from);
+> +
+> +                N as $into
+> +            }
+> +        }
+> +        )*
+> +    };
+> +}
+> +
+> +impl_const_into!(usize =3D> { u8, u16, u32 });
+> +impl_const_into!(u64 =3D> { u8, u16, u32 });
+> +impl_const_into!(u32 =3D> { u8, u16 });
+> +impl_const_into!(u16 =3D> { u8 });
+>=20
+>=20
 
-| 32455099  8471098  12934684   53860881  vmlinux.defconfig.lockdep
-| 32455100  8471098  12934684   53860882  vmlinux.defconfig.patched.lockdep
 
-| 27152407  7191822   2068040   36412269  vmlinux.defconfig.preempt_rt
-| 27145937  7183630   2067976   36397543  vmlinux.defconfig.patched.preempt_rt
-   -6.3KiB    -8KiB
 
-| 29382020  7505742  13784608   50672370  vmlinux.defconfig.preempt_rt.lockdep
-| 29376229  7505742  13784544   50666515  vmlinux.defconfig.patched.preempt_rt.lockdep
-   -5.6KiB
-
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20251105142350.Tfeevs2N@linutronix.de
----
- include/linux/mutex.h        | 45 ++++++++++++++++++++++++++++--------
- kernel/locking/mutex.c       | 22 +++++++++++++-----
- kernel/locking/rtmutex_api.c | 19 +++++++++++----
- 3 files changed, 66 insertions(+), 20 deletions(-)
-
-diff --git a/include/linux/mutex.h b/include/linux/mutex.h
-index 847b81ca6436..bf535f0118bb 100644
---- a/include/linux/mutex.h
-+++ b/include/linux/mutex.h
-@@ -86,8 +86,23 @@ do {									\
- #define DEFINE_MUTEX(mutexname) \
- 	struct mutex mutexname = __MUTEX_INITIALIZER(mutexname)
- 
--extern void __mutex_init(struct mutex *lock, const char *name,
--			 struct lock_class_key *key);
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+void mutex_init_lockep(struct mutex *lock, const char *name, struct lock_class_key *key);
-+
-+static inline void __mutex_init(struct mutex *lock, const char *name,
-+				struct lock_class_key *key)
-+{
-+	mutex_init_lockep(lock, name, key);
-+}
-+#else
-+extern void mutex_init_generic(struct mutex *lock);
-+
-+static inline void __mutex_init(struct mutex *lock, const char *name,
-+				struct lock_class_key *key)
-+{
-+	mutex_init_generic(lock);
-+}
-+#endif /* !CONFIG_DEBUG_LOCK_ALLOC */
- 
- /**
-  * mutex_is_locked - is the mutex locked
-@@ -111,17 +126,27 @@ extern bool mutex_is_locked(struct mutex *lock);
- #define DEFINE_MUTEX(mutexname)						\
- 	struct mutex mutexname = __MUTEX_INITIALIZER(mutexname)
- 
--extern void __mutex_rt_init(struct mutex *lock, const char *name,
--			    struct lock_class_key *key);
--
- #define mutex_is_locked(l)	rt_mutex_base_is_locked(&(l)->rtmutex)
- 
--#define __mutex_init(mutex, name, key)			\
--do {							\
--	rt_mutex_base_init(&(mutex)->rtmutex);		\
--	__mutex_rt_init((mutex), name, key);		\
--} while (0)
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+extern void mutex_rt_init_lockdep(struct mutex *mutex, const char *name,
-+			     struct lock_class_key *key);
-+
-+static inline void __mutex_init(struct mutex *lock, const char *name,
-+				struct lock_class_key *key)
-+{
-+	mutex_rt_init_lockdep(lock, name, key);
-+}
- 
-+#else
-+extern void mutex_rt_init_generic(struct mutex *mutex);
-+
-+static inline void __mutex_init(struct mutex *lock, const char *name,
-+				struct lock_class_key *key)
-+{
-+	mutex_rt_init_generic(lock);
-+}
-+#endif /* !CONFIG_LOCKDEP */
- #endif /* CONFIG_PREEMPT_RT */
- 
- #ifdef CONFIG_DEBUG_MUTEXES
-diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
-index de7d6702cd96..f3bb352a368d 100644
---- a/kernel/locking/mutex.c
-+++ b/kernel/locking/mutex.c
-@@ -43,8 +43,7 @@
- # define MUTEX_WARN_ON(cond)
- #endif
- 
--void
--__mutex_init(struct mutex *lock, const char *name, struct lock_class_key *key)
-+static void __mutex_init_generic(struct mutex *lock)
- {
- 	atomic_long_set(&lock->owner, 0);
- 	raw_spin_lock_init(&lock->wait_lock);
-@@ -52,10 +51,7 @@ __mutex_init(struct mutex *lock, const char *name, struct lock_class_key *key)
- #ifdef CONFIG_MUTEX_SPIN_ON_OWNER
- 	osq_lock_init(&lock->osq);
- #endif
--
--	debug_mutex_init(lock, name, key);
- }
--EXPORT_SYMBOL(__mutex_init);
- 
- static inline struct task_struct *__owner_task(unsigned long owner)
- {
-@@ -142,6 +138,11 @@ static inline bool __mutex_trylock(struct mutex *lock)
-  * There is nothing that would stop spreading the lockdep annotations outwards
-  * except more code.
-  */
-+void mutex_init_generic(struct mutex *lock)
-+{
-+	__mutex_init_generic(lock);
-+}
-+EXPORT_SYMBOL(mutex_init_generic);
- 
- /*
-  * Optimistic trylock that only works in the uncontended case. Make sure to
-@@ -166,7 +167,16 @@ static __always_inline bool __mutex_unlock_fast(struct mutex *lock)
- 
- 	return atomic_long_try_cmpxchg_release(&lock->owner, &curr, 0UL);
- }
--#endif
-+
-+#else /* !CONFIG_DEBUG_LOCK_ALLOC */
-+
-+void mutex_init_lockep(struct mutex *lock, const char *name, struct lock_class_key *key)
-+{
-+	__mutex_init_generic(lock);
-+	debug_mutex_init(lock, name, key);
-+}
-+EXPORT_SYMBOL(mutex_init_lockep);
-+#endif /* !CONFIG_DEBUG_LOCK_ALLOC */
- 
- static inline void __mutex_set_flag(struct mutex *lock, unsigned long flag)
- {
-diff --git a/kernel/locking/rtmutex_api.c b/kernel/locking/rtmutex_api.c
-index bafd5af98eae..59dbd29cb219 100644
---- a/kernel/locking/rtmutex_api.c
-+++ b/kernel/locking/rtmutex_api.c
-@@ -515,13 +515,11 @@ void rt_mutex_debug_task_free(struct task_struct *task)
- 
- #ifdef CONFIG_PREEMPT_RT
- /* Mutexes */
--void __mutex_rt_init(struct mutex *mutex, const char *name,
--		     struct lock_class_key *key)
-+static void __mutex_rt_init_generic(struct mutex *mutex)
- {
-+	rt_mutex_base_init(&mutex->rtmutex);
- 	debug_check_no_locks_freed((void *)mutex, sizeof(*mutex));
--	lockdep_init_map_wait(&mutex->dep_map, name, key, 0, LD_WAIT_SLEEP);
- }
--EXPORT_SYMBOL(__mutex_rt_init);
- 
- static __always_inline int __mutex_lock_common(struct mutex *lock,
- 					       unsigned int state,
-@@ -542,6 +540,13 @@ static __always_inline int __mutex_lock_common(struct mutex *lock,
- }
- 
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
-+void mutex_rt_init_lockdep(struct mutex *mutex, const char *name, struct lock_class_key *key)
-+{
-+	__mutex_rt_init_generic(mutex);
-+	lockdep_init_map_wait(&mutex->dep_map, name, key, 0, LD_WAIT_SLEEP);
-+}
-+EXPORT_SYMBOL(mutex_rt_init_lockdep);
-+
- void __sched mutex_lock_nested(struct mutex *lock, unsigned int subclass)
- {
- 	__mutex_lock_common(lock, TASK_UNINTERRUPTIBLE, subclass, NULL, _RET_IP_);
-@@ -598,6 +603,12 @@ int __sched _mutex_trylock_nest_lock(struct mutex *lock,
- EXPORT_SYMBOL_GPL(_mutex_trylock_nest_lock);
- #else /* CONFIG_DEBUG_LOCK_ALLOC */
- 
-+void mutex_rt_init_generic(struct mutex *mutex)
-+{
-+	__mutex_rt_init_generic(mutex);
-+}
-+EXPORT_SYMBOL(mutex_rt_init_generic);
-+
- void __sched mutex_lock(struct mutex *lock)
- {
- 	__mutex_lock_common(lock, TASK_UNINTERRUPTIBLE, 0, NULL, _RET_IP_);
--- 
-2.50.1 (Apple Git-155)
 
