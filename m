@@ -1,187 +1,221 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012028.outbound.protection.outlook.com [40.107.200.28])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADD8288C96;
-	Sat, 15 Nov 2025 14:25:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763216758; cv=fail; b=CDkg+itiQF4ZpHlTjCrq6ogLaaon0DydzLKY76PU+GaFA+IUca3KRCnYtJ42/qbGdp1LvAOmlR/hRlpm6wvE1fanAVeTUrW7V/di0JhC5Fj4QIEo9ftR00rAQgVcRNJJimvLJiFiJez+IQL0qDCUCk1qDSOuuXwxdgJWLCksLa8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763216758; c=relaxed/simple;
-	bh=Yr3po2gbwLysYMBBsY+gDoN5S7I+xoO4JqAoaS7bBpg=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Dp34GRsc+9ThzIPDCscCcy/KSyB8mOT9p7jIy1ekG/kskK5OwGgf6/6G3dKaF9623ER2aQENJOoQnsobqrMPuNwvOb+irwbTBBtJL2QrEqwHzjfyb4qjz6+Yy3OgQVIinYqUhoxBEgr3t4EzMlBwxW5WoIgXhamiUvVqSKoMKl0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=c/2P+uaN; arc=fail smtp.client-ip=40.107.200.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627F73043A1
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Nov 2025 17:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763227567; cv=none; b=bBlEEcBR/s5AzDFH+IXJTHeqLdWSq5k95osHWOUQjZNz+F3F6vUsLy3W3LaMIi8hkxSZYU0HOMHx9e6YUn3x7/mEdP9V8E9LPlWQsTNGxBn5a81/XqrABGT3izhrD+rxz4sruboBDq3Rp9wS2pXgtCMJeG+BFeIBd0B/bCRQ7D8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763227567; c=relaxed/simple;
+	bh=nskkVvrYPX3SCzchqjya6PP7ug9RwJkXulyxozAZqco=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SxDyTe7CTlErPU3u5roll9tUL5BmV6obUuY6gKGi16YSx9tNHjkP79HulIfsXchULUL8HhT571taT0LZBKbNxzmVYxQT4GmgvoA0UBCy73ey6qUcBsZ6lPUTF5vQe4mZT/VO7sefs3KOyFwNJIABFkhNBNwM3pzrcdrlwhqB3CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=mrYjgiTf; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="c/2P+uaN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hn7DIgxEyQ40aMuzODPZJv1i2EV/zK1XtoNkUXTNdAPddAClLwFCyIwFTCSv4/vj0V9/Ar7jzbXB/dMUua+1/Zh3QwZvWzlgAlYguvCCxWz8xafz9tzc1ai2YR6K+adMhC4fKQIPrcpVJEIR1zNWT40TMaHElWFyFdPuPzkCPyynGQq5pe5xiTpDnmqRnzr4Zb7ostBxuoNAtWNMxp7+8cGjqQe1/Lfb2Z1H2YMJXGfVNwXKddE3af5wUldJp+P9ZlmdjSVvyRQ495LoPiP0cRht3CWf1DxjOhyv93Ze/pUDLIHH3RhLCxTmPmYjgKBgfiDO7ZEWtPZM+eZ0z6iwSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s6/kF29agR2G65GgxatOeFt+A2nIeonKZ8S2SckJrkg=;
- b=sOuurLCKj3R4rWCkfsV2aEhA2gDCtq1+Nw2+x1LdhbzGDZxihoeFgqUtpeS5pXwk6GOCPVVD4OfKePQEVGXBpBX4xxwLjoBmajItYpnkp4Hij8Ht+fAIOlFRUqRkduy4PLzGGRnz3QJ+uAHK23aepujG+UM1Z5X274UjjvfrvjyXEnP87YhNU1I05AmT2Z5Klj4aQ8Iw9LBKIv/QQysLcc86Psjp6EVkctALWvw3SIxswNWca7XfIH7OI8ZmMiNm0x07UrKZ8yLi5oZ3K1jpLpn6u3K5BS8ZdrYO0XNsFJY8XnNSu+jhiyi+sa9d9BDjdNcMUemsOSOGrUoKfM8hsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=s6/kF29agR2G65GgxatOeFt+A2nIeonKZ8S2SckJrkg=;
- b=c/2P+uaNZrAWJeNxsv2rvqIxykEUL2su+cqWmGD4vk+VPDoIl2FDUh0HezTYHpLktYuqzWQbQ6O37cLmQw/D6t+2b78R7rkVf/ga1zyE4v1JGVpUxpIMekcbkgoCi0WVmQSlWvOSDNqE4REf8CwMMQkldnhR9DQVrrJ8Zmgv0GihlOIB20PmUv0bhi7q0LV0vl7892wf2p9Ju8l4vTPOxouxuC/OUMDIg76qNZ+tWRnj2qWDvRbyTSWO+MOcQK0N9QCIGCavNBi/CkHqDm4+ES8p3rXCgJufS8OrjNFoFojzmXu9RNRormQMzitw3T3caEycrUfnVv52ntAZ0KnWIA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CY5PR12MB6155.namprd12.prod.outlook.com (2603:10b6:930:25::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Sat, 15 Nov
- 2025 14:25:53 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9320.018; Sat, 15 Nov 2025
- 14:25:53 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 15 Nov 2025 23:25:49 +0900
-Message-Id: <DE9C68FD0SEX.ZTWY4J4V0VGP@nvidia.com>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
- <linux-kernel@vger.kernel.org>, "Nouveau"
- <nouveau-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH v9 0/4] gpu: nova: add boot42 support for next-gen GPUs
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251115010923.1192144-1-jhubbard@nvidia.com>
-In-Reply-To: <20251115010923.1192144-1-jhubbard@nvidia.com>
-X-ClientProxiedBy: TY4PR01CA0044.jpnprd01.prod.outlook.com
- (2603:1096:405:372::17) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="mrYjgiTf"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 75FAF24002E
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Nov 2025 18:25:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1763227558; bh=/8Lp9zEwFrnJ6sBlZpzjCxAODF9Es4MN2IMhj4DKS3M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=mrYjgiTfGIfheGI7wEMyvjMcuLFxKcGA4vJo9z8L6OG+HeuVm1CSsabzBATlmtdSj
+	 0nGQhXRHMo9H1NV9hZOdg+3iRooaJm5xoq0epu4XfpiqGianTeUVZd6qcQ+9ZkIYKj
+	 m8nL90NStshe83Zbd4ZsWx3/wvVHpeOC83JQAL55Tmq5L8Lhi6Kxe1kgqSinJcdW/n
+	 1Pee6VxLlOU/VffIUklL1xwQDe2XHme2nZzn0j7HaBVoSg/3/Qz3jAnYzo/8UqFHjE
+	 Ypy3UIlLG0BzhBOCCxUGMeZn8VV/cH5fsrscfABXzKREO3jmianF+WwuBxWhlTHIJe
+	 SO5rij3Lh1XVA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4d81BC00dWz9rxD;
+	Sat, 15 Nov 2025 18:25:54 +0100 (CET)
+From: Markus Probst <markus.probst@posteo.de>
+Subject: [PATCH v8 0/4] rust: leds: add led classdev abstractions
+Date: Sat, 15 Nov 2025 17:25:57 +0000
+Message-Id: <20251115-rust_leds-v8-0-d9a41f355538@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CY5PR12MB6155:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5980eef6-6f57-44f1-c645-08de2452e1b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|7416014|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RWt2RjlpbFZSSzNHa09VK09US1BGdThocUdZUlJlbVJFVkozZ0VESlJwK3Fh?=
- =?utf-8?B?L0FQRnVmbnR2b25nbVZNSG5HWFE1Y1d5dlFtSUdkUXlVeDR4YnJkWnlsaWk0?=
- =?utf-8?B?VXBLc0QvVEc4TUtCSVcrb3dJdEV6OTNSYnI4WE5DSDg3cVdxOGJhSXVGUzh3?=
- =?utf-8?B?MjNGUGUvU0JYWFFCb3YwVElOMnprMzZqWHpOUEhOYjVJRjlDSE5YL2NCT2pu?=
- =?utf-8?B?cUhpakJON1hrUHk0aXVsQ2w3dlQyUE44TnlZeDNSNTZsYVlKTzE1Q0NRMEdF?=
- =?utf-8?B?cjJKL2hxVVVoakdkQ1o2Zi82YW9aK3N2OExLcnFCRy8xejBaMkZzL09JR3o3?=
- =?utf-8?B?THNWaThpa1B5dDZOc3dwVFFqVHJ6ZnlFVkV3djE3ZGFQV0ttclYyZHJHWWFs?=
- =?utf-8?B?SkZmV0R0NkpOeCtlK3VHeEtqdjlyVTlBeTR5Rjh3WUhLaU92ZVNqS05vcFcy?=
- =?utf-8?B?dkZuSlRMWHNDNlJxeGFhR0xocGlKVmdkYWlDQ2l0TnVxeENCclBHSVNuSW5q?=
- =?utf-8?B?djNtRldXSjB0WGkyNFhSTTRYL0ZEK1VTS01TNTR1TVVRY0VXZEVBMmdPZklO?=
- =?utf-8?B?OGNLR2E0dVNYbjg5RHhhSExEZzV3S0kyaWlibVBxYjlOVURXK0dTYk4yYkVj?=
- =?utf-8?B?ZmdKWXJEOWlJV01yblBWRURDbC9SQ0NsR2lsM2FRc2VzRlJJc1o5TXNYZ2Uz?=
- =?utf-8?B?YnRBQkZJdG91MWwzZkI1eGNkaWhWWUhFSTZUUGF6ZE9CcytLd3hCWjdwUkJh?=
- =?utf-8?B?QStlQ2txM25IeDZDQVBVWG9yOGY1TmNnOHpUNUpUYldJTkdMaEg0M0J3K1gz?=
- =?utf-8?B?QnVHclA3TzRySGdlU2lRZ0czQUpkMGlMYTZMSFcyQkI5T0N2Z3NHVitkVUZN?=
- =?utf-8?B?MUpMZ0NYMmFMb0NWcU1xUFlGRnAxMm9XUHZmOWh2YUlMVWFGNTh0aDljeWpr?=
- =?utf-8?B?ejFIeEhlNCt3RjVVdVNVY2gydS9jM3diRDNWRW1DTWJQd0lXNjRZR2s4Snkx?=
- =?utf-8?B?aG5qWGlnK3BrNGMrZnhxS08wR1dXbEovZW1jU25GaEczamk2aGNkLzNkUVla?=
- =?utf-8?B?bXYyNFJldy9ZODhoMDhUNU5NMVBiWWJpM3VoTHRQY3o0dmZ4bWRQSU1KcTR3?=
- =?utf-8?B?MFNqRlFyVkN2Q1FKWG9IYWd3SGlLeEpQa1J4a3lXVzNRdTdMWHZMbVNCc015?=
- =?utf-8?B?czl5YUxBLzBtb25zSlRBR0dmL0l2SWpIWkpiTk01STRMNmdUWTRsOXRVTzh6?=
- =?utf-8?B?eUxwMlhwQWY1SHpyWXBpbi9HZHZNTkxxY2tkZWJtWGo1TmlnZVZmVm9FMWhJ?=
- =?utf-8?B?UHp1Yzk2bnJVZ1VEOWdkMkxyUTUxbHJ0U0FFbEJNR2YwTDFQdmdnNHZUTFRR?=
- =?utf-8?B?dlpyWWVNTzhvcFpsUXBhZlB1OU9UajF5T0o4VVZtbU1NRDJzMVJBbllCUXpL?=
- =?utf-8?B?cjl1NXA3TzJGc1c4QTZuV2RNaGJULy9wTSs1ZDV5aC9jb2hrMVFLVGxFL3Fl?=
- =?utf-8?B?amc0M2JMOGtmaVlUdGI4UFhnUmxxdmQwaFVoMzRvVkxLT2ZCWVZDeG9uVmVk?=
- =?utf-8?B?N0pZWmx6bHoxeGwrVEdBcGtVdy9UVXVtWXAvOGVTV2FROWhwa2pReUNOYytY?=
- =?utf-8?B?K1lrajdwK3cvKzFOT2tQVzNaK3c4TnJIZXNSY21mRWh1eTFYQ1hQUkhySS8y?=
- =?utf-8?B?LzRzTHFRSlhjbFU0MEVBZGRmV0ZnZkhCUkwyVlRWRGpDTWxUQ3k1Mm5FZy9F?=
- =?utf-8?B?SmsyLzFUV1U2TURpdDk1ZHZGS1EzWVI5RU52UU5nVUxkOWZhdUplTzhBUkpk?=
- =?utf-8?B?eU9pNnc4M01wL2NvcUJqMmxlbXhSNGxwczkvZXZabzRTVGZxSkR1TXFVWENl?=
- =?utf-8?B?TGQyZ3VjdzFRVG0vZFVWNkoyeGx2Z2p0cjRNVzlDSTNWVEU2aFRic2JUQWNI?=
- =?utf-8?Q?TFpqdQUbbjIZzHTnMy+DXRsTfpFL+TFa?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(7416014)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z0lnN1ozS0dZc2c5MW13ZnE4SU9uU0RCVUNHTlhZV1Y4b1VFT04yNUdYRjhO?=
- =?utf-8?B?MG9sZHJ4b2I3T3BXN243UnFSSWdaQVRYWWYrbnlkWElEUTM2YUE1aXhwL2d4?=
- =?utf-8?B?T0FnZnFaSS9iZitsOXJ2UEpXQ0s2dHhaQnhPMHNza3V5bDBWbEJ2OVZsUVIw?=
- =?utf-8?B?dVo3d3BLUzNjUFZUaUdheE5vZUx2cWRIWmI5aG9yeFFmVlNmSm9yaXkvWUtC?=
- =?utf-8?B?WXF3cEdNRTNmMWJIZXJhZ0Z0RmZ2QjE4cEdWc3dOMnh0TjJhSWd0WjBwSjNj?=
- =?utf-8?B?aFRBZExldXJxcksvcE45YVAvOHFhYlhEVHJQRTg0TjkrT1VnTnFhY2VwVXlP?=
- =?utf-8?B?T0ErZDRCMmxMaDdRRzVzcUhSc3NJYUNmRFF4UjVpblh4eXNPQ1d0eTdZdGFJ?=
- =?utf-8?B?dHpSMzVaUFFpOXFqTW10TXlYSWpLNVNySTdQTjhXdUNqbzBLOXhiVVladUxC?=
- =?utf-8?B?eld4RDZrbnFaR3JpWUxIZjdGaUl4RTJhTWVUZ2ZzSmpOTE9oVGpNdTlra3Bx?=
- =?utf-8?B?M01WZE5OeTR2dHJqVVRtNGFsdWZmS2hiOUlwd2R6d0JFdHNDUkdLUnNVY09z?=
- =?utf-8?B?alVsU29RK1lrN3dQT2xWR2ZTNkhiUTBsT2J4UGgxdU1CMGhraDhzZ3FmdExI?=
- =?utf-8?B?cEdGVWlJRVZoNnlmQ3BRRUFZb1VrZ1IzQXJXKy9LVTBsaDFnYUpCd0xJSTVn?=
- =?utf-8?B?RTZzb1RIMExZbW9PcjhOWU9LbEV3MlNLbzcyQ2M3cHVwZytud0dFY1pUT3Vi?=
- =?utf-8?B?dzNZejg5Qi9qZ0gwVXBiV0tYdVhCOGNpZDhOOExIQ2ZkU20zdE4yQk80TXhR?=
- =?utf-8?B?QStocVNoNS9ZZ055T1QveGhlWWZhZnU0UHNVQ1JKM2FZbEpiVlE1SFVYQThw?=
- =?utf-8?B?OFNCbDdvWGZWM0k3M1hqOUJjY0NmSGduazBnY1pvTkJuNDhpdksvTS9pNTJI?=
- =?utf-8?B?N3dMdlFuaDhneFBWYVNSTVNyT29oTlE0cWhycXBybWFzQ2NXNXJadnFVUGc5?=
- =?utf-8?B?Z0ZpeDZoRFFHd2djMFBKTU9FMCtyTG1ZWnZNWU5XSlhHVERHeGR2UUZ4K09l?=
- =?utf-8?B?V0x2ZHZPSy9rZ0c5QlBEaU94NHR4OWN0UFdITGYzT1liN2dZUnhFaVZsNjVq?=
- =?utf-8?B?cGtqczBLcGZYb2s1MWhkbzdJd0FGekkraUhvUzhCNFY5MUVlNmNxZGtTY3Za?=
- =?utf-8?B?T3lNZ0I3V0IvV2FZdlVxVkhCOGgyeXFUdFhITHNIOEM3NjZOeVBKRmxZM3FZ?=
- =?utf-8?B?cm01OGJCMGNoaGkrQXJ3Vy9uZmRYREpURTZXYklxeWdaY3FtUUp5L3U3anpH?=
- =?utf-8?B?Ukl6OWZidWg1UUdlVFBmN1JrcmNCV0JraVBaN082RVQ3RjhHYUUwZmJYdk1u?=
- =?utf-8?B?Z2ZDYytiTllMSERhM2pHVHdhU3V3NDFkWXBWT2JqWXZESWFMWlJ3WFhzdlhF?=
- =?utf-8?B?UFhBek93d1p1bzFacnY0VG4wTVJVUy9vak43ZTcxOUl5Q0tmc1NhRWxFcFVM?=
- =?utf-8?B?U3djczZxN2hWMm1FdldRUmJyN2ZuQzJIY05SOEw3UFdObExUeUpPWjhmQjdB?=
- =?utf-8?B?Sk9zL2ErVFQ5YmlucktmYkxRYjN3UEtSbUZqUmdQeCttb1hSbjRTWU9Tajdj?=
- =?utf-8?B?bkFDMHhjb295VWNxUWtnMFNjQ2xDOFE0OVMyZ3NmTGwxc3ZpVlpUQlIvQWgv?=
- =?utf-8?B?dE1OM0hRQUVpUEQzbTNHMXRla2JCMmxJbDRyeUpZUXpZZkFHSllQNEpVZjN2?=
- =?utf-8?B?UmxTakRFUnJSOTkwS2RnMTY0UlVjZGhzQVZQbVYyTWdaS2g0RXZKV2dEOUd0?=
- =?utf-8?B?eHVYcWtFWEgzcFppc3NRbk0vbkFOVUhpL3VJTDJuNDV0a3Boc2dxK1BKSlBR?=
- =?utf-8?B?NC9MWVRCTzFGejBYMG53S2s0U0grVDFOYXR0Y28wb3FHeFcvajdvR2lWckN6?=
- =?utf-8?B?R1BCZVI3TGVoME44OU02NkorbC9ZRmkxNEZ1T1pLdXpJY1l5aGwwUFlzZUJI?=
- =?utf-8?B?SHNoL3BQUHMwYkZPMm8wditRU2lpUGxIZEpJTlFOUEhqTEFkamZacDY0NXlH?=
- =?utf-8?B?RlVvbG5yRjZRWHJ6RUpER3BIZXNGOXNLQkxKeDhJTEhtT3p6VE14SmFKVTQw?=
- =?utf-8?B?eUQvdGZwTUJyMmtOTXF5NnplUDBuWm1xQzVVaWJhdVlsS1hRQ0lqUkQyZFRl?=
- =?utf-8?Q?74fslxnzeLqctIkIYXhNU53wqghBBdRDMEynwcXJVt2Y?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5980eef6-6f57-44f1-c645-08de2452e1b9
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2025 14:25:53.1634
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2s8xlAz7oVQYxctIm4v56mIXIr8xzIwJYrMVdLnsOIlO2moJk8k8tRPJmeSsyJGENFpMooRrTe5kLPoyey6KdQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6155
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAI63GGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyLHQUlJIzE
+ vPSU3UzU4B8JSMDI1NDQ0MT3aLS4pL4nNSUYt1ES1PLNPNkozTzNEsloPqCotS0zAqwWdGxtbU
+ AXKsg3FsAAAA=
+X-Change-ID: 20251114-rust_leds-a959f7c2f7f9
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3698;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=nskkVvrYPX3SCzchqjya6PP7ug9RwJkXulyxozAZqco=;
+ b=owEBbQKS/ZANAwAIATR2H/jnrUPSAcsmYgBpGLeipJdIL+rDzErnja0kiVtCQ3nf/pGExCb21
+ JCbhm1b5MyJAjMEAAEIAB0WIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaRi3ogAKCRA0dh/4561D
+ 0rG0D/4gg11Br9pc+XvXcHp9AH34ruGqJiBvEXkNsD3syKBNbCFUxrzsee0RpWHNGwIisPFu8YI
+ OkOAbWk3pUTdaMOO99qIgeQk1AKSWMV3cyblWanG8aP/9zK4coqxQLW9QkKNxrt2hphbPRm26Y9
+ PghUCELjxblUKItdQa7iMAUvHGsXtpn1IJEtfo/DxwH1wPUT+FTTQXS+g3JXehkjHZvYYA5R273
+ KSksoN8duQ0p2qf8jqUjqwrwb6HK9ofFoShK6Y8I5u19Uz0a1k3gfLEZn8T6Mew6ow9Pb3j2o4d
+ xYRDKh2KEEls1zRZS/43xNnW27aJN+4TaAb6BzHn2zeJIiwHxs/4L2Fwg6LUXhvRrDq26onbsHC
+ 8LNMfxBL+MVzJ0Nr1fGlnMAA0U1rjecPbZtwL5WeA7bNMy8ptfi4KB5eTjSjDHB+jnYXwfgOcmN
+ Iw+506OT02okCswm7xzmDGH+2bZUXgT8MecYR0248PYbRPSmU9AXCpv+VOvwTWW1a7CCGjjcrDH
+ d2qz9eanFmfPmiQFCednWoQeqBdwcFBzKugySbUTV70fDqa3XzQkAongd803Evi6nhtPpwSxsd+
+ cPsnk9U//G5jdwnGQ+7pxTIAsgXXQHUveXorz2Fgzze+luLbUG0safoY3Kh1ynNrfsGklIJeD+h
+ 9hRAyn97gG4z28w==
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Sat Nov 15, 2025 at 10:09 AM JST, John Hubbard wrote:
-> Changes in v9:
->
-> 1) Simplified the Revision updates, so that Revision's member fields can
->    remain private (thanks to Alex Courbot).
->
-> 2) Restore a missing documentation comment line for chipset().
->
-> 3) Removed the patch that changed from ENODEV to ENOTSUPP, and used
->    ENODEV to mean "GPU is not supported", because the driver core
->    expects that specific error code.
->
-> 4) Rebased onto drm-rust-next, which already has patch 1/1 from v8, so
->    that one no longer appears in v9.
+This patch series has previously been contained in
+https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.probst@posteo.de/T/#t
+which added a rust written led driver for a microcontroller via i2c.
 
-Pushed to drm-rust-next, thank you!
+As the reading and writing to the i2c client via the register!
+macro has not been implemented yet [1], the patch series will only
+contain the additional abstractions required.
+
+[1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@kernel.org/
+
+The following changes were made:
+* add abstraction to convert a device reference to a bus device
+  reference for use in class device callbacks
+
+* add basic led classdev abstractions to register and unregister leds
+
+* add basic led classdev abstractions to register and unregister
+  multicolor leds
+
+Changes since v7:
+* adjusted import style
+* added classdev parameter to callback functions in `LedOps`
+* implement `led::Color`
+* extend `led::InitData` with
+  - initial_brightness
+  - default_trigger
+  - default_color
+* split generic and normal led classdev abstractions up (see patch 3/4)
+* add multicolor led class device abstractions (see patch 4/4)
+* added MAINTAINERS entry
+
+Changes since v6:
+* fixed typos
+* improved documentation
+
+Changes since v5:
+* rename `IntoBusDevice` trait into `AsBusDevice`
+* fix documentation about `LedOps::BLOCKING`
+* removed dependency on i2c bindings
+* added `AsBusDevice` implementation for `platform::Device`
+* removed `device::Device` fallback implementation
+* document that `AsBusDevice` must not be used by drivers and is
+  intended for bus and class device abstractions only.
+
+Changes since v4:
+* add abstraction to convert a device reference to a bus device
+  reference
+* require the bus device as parent device and provide it in class device
+  callbacks
+* remove Pin<Vec<_>> abstraction (as not relevant for the led
+  abstractions)
+* fixed formatting in `led::Device::new`
+* fixed `LedOps::BLOCKING` did the inverse effect
+
+Changes since v3:
+* fixed kunit tests failing because of example in documentation
+
+Changes since v2:
+* return `Devres` on `led::Device` creation
+* replace KBox<T> with T in struct definition
+* increment and decrement reference-count of fwnode
+* make a device parent mandatory for led classdev creation
+* rename `led::Handler` to `led::LedOps`
+* add optional `brightness_get` function to `led::LedOps`
+* use `#[vtable]` instead of `const BLINK: bool`
+* use `Opaque::cast_from` instead of casting a pointer
+* improve documentation
+* improve support for older rust versions
+* use `&Device<Bound>` for parent
+
+Changes since v1:
+* fixed typos noticed by Onur Özkan
+
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+Markus Probst (4):
+      rust: Add trait to convert a device reference to a bus device reference
+      rust: leds: add basic led classdev abstractions
+      rust: leds: split generic and normal led classdev abstractions up
+      rust: leds: add multicolor classdev abstractions
+
+ MAINTAINERS                     |   8 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/auxiliary.rs        |   7 +
+ rust/kernel/device.rs           |  35 ++-
+ rust/kernel/led.rs              | 550 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/led/multicolor.rs   | 195 ++++++++++++++
+ rust/kernel/led/normal.rs       |  39 +++
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/pci.rs              |   7 +
+ rust/kernel/platform.rs         |   7 +
+ rust/kernel/usb.rs              |   6 +
+ 11 files changed, 855 insertions(+), 1 deletion(-)
+---
+base-commit: e9a6fb0bcdd7609be6969112f3fbfcce3b1d4a7c
+change-id: 20251114-rust_leds-a959f7c2f7f9
+
