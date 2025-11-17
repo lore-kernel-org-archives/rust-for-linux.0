@@ -1,64 +1,64 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBCC1367
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 00:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1221367
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 00:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763338274; cv=none; b=albMWKjsa6ayYrO72V/w2VUNzx6aR6TTU6XXw/BGWG1/AuTAujVBwAgQsw/DEFRhmidJFcTBgEO/iOoj6UbNJxkTCJOhbCCJ5rl/MDTKQtZ7apU8r2SmFaTAhixU7Tycn1tdW5t532l88qiD1mOGoOrXpgJr/TaZ+vNU4a/WwgE=
+	t=1763338278; cv=none; b=CctPSHqAv4mwcVVikf75lukq47I7aY078/tQ3aKrx6U94351GvWB8AEPqCuMjvsAWK/zEDxZfs0VenKtrftIV00krntLQNnPZrkXVdGz1ZrLJurSnpNnwYS51L2TYHHSVlrXdEhlsDD/SKW1kgLf43TJwAzc2F7Rb5VeGZdrBDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763338274; c=relaxed/simple;
-	bh=nYdNHQcvSPrgTjuenMnowxbvcPJhJpSE/evE4hVypIw=;
+	s=arc-20240116; t=1763338278; c=relaxed/simple;
+	bh=tJQTSoLeSIbYvZESmNiIw5sMsSIJ6dPqa5+S+lc/QCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1u2KLkFiz+H2bYhj0cnf6ZVae0NLNZh5qbLAYVuJPzxvxbbccjL6DmZo6TrQIEjxMBOonYIuiHpQamwtMOBq7ER7e74TUDAwFkyEkcwc6FGLQ2r+AqJ3n9hTbOEXLfj/ksHWjntV1uqeziEa4070WR63Lwsqffck5XdYCdWxFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V7YZzNWn; arc=none smtp.client-ip=209.85.214.170
+	 MIME-Version; b=Q2fcegRkHo4kovVrvbshvgeKIfIfLXrReRTnLYpHGglB75R9tBjqZIv/iNwFrUxa16XvY6TXoWqKawK20VllL/og+dd+EyRg+uFFaeVZYIZJH+OqYVqcsTnK1uToTQknkZsLjF2qXyxplwOGsAo1+tKpOEdyRnATxhu7bcpvEs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0SLc5Bl; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V7YZzNWn"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2957850c63bso38303305ad.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 16 Nov 2025 16:11:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0SLc5Bl"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-29844c68068so35388545ad.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 16 Nov 2025 16:11:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763338272; x=1763943072; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1763338276; x=1763943076; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=V0sO96BNN76x3/RgDvYu8ryX2ZAnoCQGtIVSgEyiJCI=;
-        b=V7YZzNWnDn7cOYFthWGokcouBurnMpWhAcVvt5fydESP2u4+YIvvdSZOrmqcN1ELwj
-         CLqHkHmj9EAx6B/Bpq5nxIWzDR3JTxsN2+29xbUUJ0KzsL982BxBR9V4l2Zc5+EnLDVO
-         PDxqyxjdH5LkytdW+Ru/Av5muMG45H436rSnVwVHQkHWy1Mk+amLRsdKUeOs9Ezh9PSR
-         vpgJwGch0dFTj4WETnkIhJPsaSipsOmiJTEja9pNd7NoTJ25t3oqHSN+yCZQj+VF07Of
-         O3zHlsF3ymHOws2q8FyygLLHlNmtlgWJQIhJUvi/79Py/CHQ9CNA/R8VsHNS9N/TdjHE
-         oAnw==
+        bh=ko3R4AfTQ14Evgu81z5D9Bb0HoJRGp65fDPRp405zc0=;
+        b=g0SLc5BlPyPjXrPGJMgHacl49RuzWmx4d4Mxz8GUmNs+3C1mpUURZP09EBIB8wY1iq
+         C1jBLIKmski3k/uD2tlXDnAcQU39XlUbt/D9KkpczQmbvsVeu/bweqZP3g5REn71JElj
+         LH1FbDIRBtbIuGgDskl7cJ1Rqxb5jWiS02Rr+Pio+3RvvYPHjSSZDURtHX7ROECzEHot
+         fWn7jlwbkRLHkDhv2uswE70Txh6eerSxWxkH1/2foNTV7JjSMADI1Ck2vnZ+QD5tBiZM
+         jqX/4ppVOha/DTTl8izo2n1NIcu+eXrR5S06ri8F86Zz/Lq/dPsrvrSNLUmx8dQzUWqt
+         7e4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763338272; x=1763943072;
+        d=1e100.net; s=20230601; t=1763338276; x=1763943076;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=V0sO96BNN76x3/RgDvYu8ryX2ZAnoCQGtIVSgEyiJCI=;
-        b=GJxOuyS7AypIEa/JDGj6o6pOtJ2EhrxHuNf1q/4MrBMND+Iob7hbf3NzK6tXRyKkVq
-         f+XheSkGmddE9o7LSeZMdIOQca1CHh3E35UfqQ2ggGcBfBphbUOwYtj3bzlQOUVJHFkU
-         XMUi+Q2RzehSwnLbBVCAM/S891b/OUP/gb5a2lb5ppJ3Gvxv1sxtKb/iSSN7nG/acWN3
-         JzNBAnVvxDefvAS+/j9KQCHqVMiRXyC7bke2z2UuSoS8AIOotaqptJ9L/oeZRb/g+6iS
-         ylfhmBQKbqdTT29vF8UPtnoYy3XOF4ipMPa2QyhTvJCDKsGvyc4G6oWwyR1MlgcsmSOS
-         cSog==
-X-Forwarded-Encrypted: i=1; AJvYcCXOyowG3+N51BjyT+BZxe6bhnaVzKvpUPJmCXrNcGQXF5fJ+f3RQlpC3wr6/e/mbh2mE1zw2m9hce0FCA2aFg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM8Ni6tL7FocTsaPO0gcwj5kZYtadnKLRijhUxFEpl1sj8tBN8
-	p5WiyzQJNoIZdnqfy/1/upwK/X6Jhy6CiZy+2Y00aILdrn1U7kvbr5ku
-X-Gm-Gg: ASbGncuqrIi080WfuFb/ZMOrUEZxDkgy8vymxRLITyNBR89M40jConeR84d2lGDrqkc
-	qRdiFZnPCcK8Zu26tXeOlNAXPVH2ghIICPsQ+CG8w4QocM7X3DIf5bvVB0JchnGx9SeTr62ZI+9
-	/zu9tDIwrG8jtFlUW2bXO7lgCr6z0UC6700I/w5xD2dI5cJA19TKQNMITUOsvko8zt1x0SlmLIW
-	3o0CPPkxZ7iDCc9IEBZT+4jbmqhhPz/GZ8F6trdpFEI0e2CeOI1yzvPC3DYsDpMfPerpwesY69c
-	ljcEJUhJyd9tsaucsZ0Jmyni4p7auH8N2S0BKS2qB9pWa+cAEmA9B1ra6WS4QH8+lSj0BOQAZpF
-	/YOfeIEIwrZ8YY4xXGsPpeojzW/nYuMqUPRT9IZRtlGguwtfdkY1G2EpGg6oNUBUzhYoboAyH1Y
-	Q3ztFptErEPaN6uDO2vq/Hnc2X7KFw4gFRvvFgPyYLnrTgPbPvplHCdECikWc=
-X-Google-Smtp-Source: AGHT+IFpwLxp0XoU8N4AJHzF5CCtibH8sI+jS5u2Th+A/+Jo/JCbEbPIoWMPrBr3KBoUyR4hb3tBFA==
-X-Received: by 2002:a17:902:cccc:b0:298:639b:a64f with SMTP id d9443c01a7336-29867ec961dmr128186415ad.6.1763338272104;
-        Sun, 16 Nov 2025 16:11:12 -0800 (PST)
+        bh=ko3R4AfTQ14Evgu81z5D9Bb0HoJRGp65fDPRp405zc0=;
+        b=QOL/Z5wDL++0BMG8gi/6jle2Z9WGjqsSzJRKw+jvWzBltscy8aTnj/g+7T4NuI4bbO
+         Ti+PtOJAP1UIuA0wuXNzUooPf1/0LTx/seRZA5d62QxGb/ZQaeDg/njvX70bAWg3V3YP
+         7R2CL56bxBEc62b7NtDDHMGMHm2t+LgMVH4r24d2Njej0Pf53PoeVb+VTjIw59RxqBzL
+         0PTgOm/R32OmvCKeahzF7EyyYZRAByw/dPtDnZbBmCgoij7ldDN+IJ7JjyEX8wRkTqFJ
+         IlR5jEp5GnxVgroxK0M90NKCTQ0XVLC8GETBYKp/JJ2+c4FezHvwclP1POW1J1tkGk1F
+         l38w==
+X-Forwarded-Encrypted: i=1; AJvYcCXIwG+GolMDayp5Y/+LPYe8agqrPjdMRbueosyWb13bBavfXbV1Psnf/QtMisbZgTAme/iQfeo3vS2IurF2zA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YztJ/em/8uFR0KeZ2LkN7zqQtwKNdDIp4ubqSmYJYRchlM4Pn1q
+	isZbfoc0S3lPRJEDjLEI+3zu2Z41wpUE/DArSeEG911IlB2kBSkdDSUX
+X-Gm-Gg: ASbGnctdFUsoAg4MtH8dOLgRpX7abMaYIoC4BAmFijNKQ7WctoW54KO0A2yPSaZ/Al8
+	h+uBLIjPciQNJ3PkjTq/Tw7rACNfpvYZ6Xr/kkbKG6claWS5se0D654V+uwASbHLWc8IXarFnw7
+	Wh7Dlw7Sn52PZVAlUeeyeYqsEiWgwNBCAOFBYedjJNs9H+d5oIrVD9Is4lrCfnTDWaiLZIPvYYr
+	eielkgq1CPZ7HlCvbgTdegy//roIDl1txp6kFsBchW6vvJdMK1N7Aa+7VUmGZ35k042o1Z5lybl
+	sbFa7a0wkTi1OZ0WKFItfQtgEo46jBHy2vyWyzX0zqfMff1sRX+/kFj+Cv1LLTbrUE7HzTIlOT1
+	h6MGvhToNp+JoUb4+o7AL0g0tSNuniKA/2UzJaRIlGhXPEt8mhxqQ6Eb4SvncwPFMYLDuUM2X90
+	vzOh2uJV/007jFbIwZlec7xRpy4GTzutF4zGk9cT2YQmtKnCh+LIgkrFqoAhf3GM9+o5MLpw==
+X-Google-Smtp-Source: AGHT+IH5cFvEAKAFTBjLmZnAI2VyML29CvTKnvJDvk7ERd94KvbsPR2gdh7H1qfbacTk+eA+ytPLEw==
+X-Received: by 2002:a17:903:2303:b0:295:7b8c:661c with SMTP id d9443c01a7336-2986a6f2613mr125897345ad.26.1763338275985;
+        Sun, 16 Nov 2025 16:11:15 -0800 (PST)
 Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2bf0f8sm118374365ad.89.2025.11.16.16.11.08
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2bf0f8sm118374365ad.89.2025.11.16.16.11.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Nov 2025 16:11:11 -0800 (PST)
+        Sun, 16 Nov 2025 16:11:15 -0800 (PST)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: alex.gaynor@gmail.com,
 	boqun.feng@gmail.com,
@@ -74,9 +74,9 @@ Cc: a.hindborg@kernel.org,
 	mark.rutland@arm.com,
 	rust-for-linux@vger.kernel.org,
 	tmgross@umich.edu
-Subject: [PATCH v2 2/4] rust: helpers: Add i8/i16 relaxed atomic helpers
-Date: Mon, 17 Nov 2025 09:10:33 +0900
-Message-ID: <20251117001035.4068507-3-fujita.tomonori@gmail.com>
+Subject: [PATCH v2 3/4] rust: sync: atomic: Add i8/i16 load and store support
+Date: Mon, 17 Nov 2025 09:10:34 +0900
+Message-ID: <20251117001035.4068507-4-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251117001035.4068507-1-fujita.tomonori@gmail.com>
 References: <20251117001035.4068507-1-fujita.tomonori@gmail.com>
@@ -88,67 +88,103 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add READ_ONCE/WRITE_ONCE based helpers for i8 and i16 types to support
-relaxed atomic operations in Rust.
-
-While relaxed operations could be implemented purely in Rust using
-read_volatile() and write_volatile(), using C's READ_ONCE() and
-WRITE_ONCE() macros ensures complete consistency with the kernel
-memory model.
+Add atomic operation support for i8 and i16 types using volatile
+read/write and smp_load_acquire/smp_store_release helpers.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/helpers/atomic_ext.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ rust/kernel/sync/atomic/internal.rs  | 48 ++++++++++++++++++++++++++++
+ rust/kernel/sync/atomic/predefine.rs | 14 +++++++-
+ 2 files changed, 61 insertions(+), 1 deletion(-)
 
-diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
-index d05f6f7ba10c..ca22f57f37a4 100644
---- a/rust/helpers/atomic_ext.c
-+++ b/rust/helpers/atomic_ext.c
-@@ -1,22 +1,43 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <asm/barrier.h>
-+#include <asm/rwonce.h>
+diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
+index 6fdd8e59f45b..4c9f4f76dbdf 100644
+--- a/rust/kernel/sync/atomic/internal.rs
++++ b/rust/kernel/sync/atomic/internal.rs
+@@ -263,3 +263,51 @@ fn fetch_add[acquire, release, relaxed](a: &AtomicRepr<Self>, v: Self::Delta) ->
+         }
+     }
+ );
 +
-+s8 rust_helper_atomic_i8_load(s8 *ptr)
-+{
-+	return READ_ONCE(*ptr);
-+}
- 
- s8 rust_helper_atomic_i8_load_acquire(s8 *ptr)
- {
- 	return smp_load_acquire(ptr);
- }
- 
-+s16 rust_helper_atomic_i16_load(s16 *ptr)
-+{
-+	return READ_ONCE(*ptr);
++impl private::Sealed for i8 {}
++impl private::Sealed for i16 {}
++
++impl AtomicImpl for i8 {
++    type Delta = Self;
 +}
 +
- s16 rust_helper_atomic_i16_load_acquire(s16 *ptr)
- {
- 	return smp_load_acquire(ptr);
- }
- 
-+void rust_helper_atomic_i8_store(s8 *ptr, s8 val)
-+{
-+	WRITE_ONCE(*ptr, val);
++impl AtomicImpl for i16 {
++    type Delta = Self;
 +}
 +
- void rust_helper_atomic_i8_store_release(s8 *ptr, s8 val)
- {
- 	smp_store_release(ptr, val);
- }
- 
-+void rust_helper_atomic_i16_store(s16 *ptr, s16 val)
-+{
-+	WRITE_ONCE(*ptr, val);
++macro_rules! impl_atomic_only_load_and_store_ops {
++    ($($ty:ty),* $(,)?) => {
++        $(
++            impl AtomicBasicOps for $ty {
++                paste! {
++                    #[inline(always)]
++                    fn atomic_read(a: &AtomicRepr<Self>) -> Self {
++                        // SAFETY: `a.as_ptr()` is valid and properly aligned.
++                        unsafe { bindings::[< atomic_ $ty _load >](a.as_ptr().cast()) }
++                    }
++
++                    #[inline(always)]
++                    fn atomic_read_acquire(a: &AtomicRepr<Self>) -> Self {
++                        // SAFETY: `a.as_ptr()` is valid and properly aligned.
++                        unsafe { bindings::[< atomic_ $ty _load_acquire >](a.as_ptr().cast()) }
++                    }
++
++                    // Generate atomic_set and atomic_set_release
++                    #[inline(always)]
++                    fn atomic_set(a: &AtomicRepr<Self>, v: Self) {
++                        // SAFETY: `a.as_ptr()` is valid and properly aligned.
++                        unsafe { bindings::[< atomic_ $ty _store >](a.as_ptr().cast(), v) }
++                    }
++
++                    #[inline(always)]
++                    fn atomic_set_release(a: &AtomicRepr<Self>, v: Self) {
++                        // SAFETY: `a.as_ptr()` is valid and properly aligned.
++                        unsafe { bindings::[< atomic_ $ty _store_release >](a.as_ptr().cast(), v) }
++                    }
++                }
++            }
++        )*
++    };
 +}
 +
- void rust_helper_atomic_i16_store_release(s16 *ptr, s16 val)
- {
- 	smp_store_release(ptr, val);
++impl_atomic_only_load_and_store_ops!(i8, i16);
+diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+index 45a17985cda4..09b357be59b8 100644
+--- a/rust/kernel/sync/atomic/predefine.rs
++++ b/rust/kernel/sync/atomic/predefine.rs
+@@ -5,6 +5,18 @@
+ use crate::static_assert;
+ use core::mem::{align_of, size_of};
+ 
++// SAFETY: `i8` has the same size and alignment with itself, and is round-trip transmutable to
++// itself.
++unsafe impl super::AtomicType for i8 {
++    type Repr = i8;
++}
++
++// SAFETY: `i16` has the same size and alignment with itself, and is round-trip transmutable to
++// itself.
++unsafe impl super::AtomicType for i16 {
++    type Repr = i16;
++}
++
+ // SAFETY: `i32` has the same size and alignment with itself, and is round-trip transmutable to
+ // itself.
+ unsafe impl super::AtomicType for i32 {
+@@ -118,7 +130,7 @@ macro_rules! for_each_type {
+ 
+     #[test]
+     fn atomic_basic_tests() {
+-        for_each_type!(42 in [i32, i64, u32, u64, isize, usize] |v| {
++        for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
+             let x = Atomic::new(v);
+ 
+             assert_eq!(v, x.load(Relaxed));
 -- 
 2.43.0
 
