@@ -1,135 +1,111 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C4D2C2343
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 16:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763398751; cv=pass; b=bhRh9bxPOGXlh8LkPj9TY0PEEB/BdnQH3NVn2XQ+sIUh3We5zXLoFZxP1ku5ylivXuZTMUQTz2qiOeQ/hxRwAgbi/yB9ReUsvOg054bHRCrksrMhYS99Lj/Gaqm4HYKI5w4ltZso/KQqfbJ5lsRMJA1rF42dbXeAlKZ+SE+OIyk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763398751; c=relaxed/simple;
-	bh=cD+RXTJ+vEOnTEJ5K7glwO7upu9usH0BFUzz1AfM6cU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=fGAVaQmLYGxkk/XL4xJ7RvVk/0bsFiPkPDDTFA927tRYgatr6pz0cOUVQD/M7OyHqbQPG5pVt/jRHgmGlQqUI7axuxvqdcjQzhRsxKL2JriMlZlnlTofzMUyJ0hQ4davT3z1AoyUaoGxBKY47sFy+qu/CJabMUsDIPFdlexXg9w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=AqPKKNMa; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6491309F0A
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 17:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763399532; cv=none; b=nfOLEbamGsr5t02HjoGHzJtcmnqRIP3Vpnw7mvgHr+jHYljxnN4zAEVrQsb/7aifpcoLpKjUO3AsovEl0eyp5iuKKr5CfVWdyxM6Rbp5xs8ECnHLd76GmdxffHtlDXkdlhy874G7lsWKeeubK+hB3MslTJ3ey6u9uw0p1Wc0qjM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763399532; c=relaxed/simple;
+	bh=zlUc4wrkb7uexfNnlaJ0X3CQbC6SS+1/TLUIDSJM034=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QT77ItMx6zDrh2XtdEDtclLNTH7Rh14sUi4vGEkhJp73dpanBu7lsg3Uqkj7CyTlRsah8B68urOAohTv6m7m1zm5IsCZqk54RNUiVs3dOlmwNL4S+4MjLSgPfkWq2IH+jKor9nvDrhOHYexAAApCHXEMt3b/knMKDGXJ+tXrgqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rj+T6bvq; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="AqPKKNMa"
-ARC-Seal: i=1; a=rsa-sha256; t=1763398730; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=C0N2dbjXyBooKgJ6SPOwvZo8iJWYgar/Hk5fOZHnveY4yXCJScVqgl4hgC3OLZsOtSnoJGIgQgU2N2bwzf8nMeFwWDdYdaoAeAcL3gdMkxOwezGdGntVuf+BPsRYkU6l/8C+qJX2yOYlbkRZjKgu8r9EbYxn2FIQQ//c5dn89uU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1763398730; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=zJPDnbgwWGEYQ/onoTPHrZcVFfdWA1uQthIX4SQdmwU=; 
-	b=GgGq3bqCOayTnCNDr2kgYpwZQj2ocTE3O5RMSCQ1Ak29Gkxs8bzE33EuWNF9PFExQvFNhqSIGm0Xn6+91NSXGgHgRuMh2zVmw2yz7RmxCYaZXOcA3i2DOcEXljvN9YULxjYvgowOa50R70hXSe7C3PIbU6G/j1UrjiTE2BXGURg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763398730;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=zJPDnbgwWGEYQ/onoTPHrZcVFfdWA1uQthIX4SQdmwU=;
-	b=AqPKKNMawM91y5m9leT4IN9KsIwPVqrN1+geTKVzz4ezNOcbpyV/SeqDjmORMra6
-	WWDybZsbvIfWC/TCNptKex19IqfMC0/XC7V7jj7DEQ41dBR6dN3R7cpfyl2m0MPgVrC
-	B8h2k5ke4tXHAp9GcsIzFWN0p1zVYzEdSM4Lw6h4=
-Received: by mx.zohomail.com with SMTPS id 176339872811130.97997063854109;
-	Mon, 17 Nov 2025 08:58:48 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rj+T6bvq"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37b9d8122fdso34963761fa.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 09:12:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763399529; x=1764004329; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RFsQ1+FNuisUabhvP8EGuIN9Ox5iFHJYhKLw4CzRep4=;
+        b=Rj+T6bvqG6OHsjc41HGGOhKju5nGYsRg1YeE8BKybh1xcZHP0IfB9q0MOnwnfDUF5u
+         LJWLGUJkJpOba/mIVvp//tz+npf/rqtu1P2DcphTWYnRsQOzjZzEIuWmytzq8ftUcdVV
+         64wg53EHYAsFmunUnFU3CijJNaDWRcZvWXBpFCTTE1H6Agjx0WCy+JTE/u5mDcsnZyBh
+         ikgDi03ytdChF+6V/a07p90f226NinYg62MWRludjco9gjWzAs+LAtAZk6tVGIGvsL0K
+         xIKOODHOHgdE5FAbrSNWsFcy/5NkYZADe8T0Z31BffZbRs7D6LiEnIOU+k457y8zSeGw
+         F9lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763399529; x=1764004329;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RFsQ1+FNuisUabhvP8EGuIN9Ox5iFHJYhKLw4CzRep4=;
+        b=nlmcRKOhUrhP2aXGuWQ+OJv6yb/owXt6Qalf6kpsc7SkOH2FiHbSfNInMTVmFSM/OA
+         s/gYhqhsamT2fPNy8p//SpQra28hQmIFxKChWJCrdzCmAUOmooXaSY3WorRc1vG5xeqs
+         dUXr5Kugk3K1KVUy4Lx9Sb8h/WC77WMJySJJkiC1g8fPYj2bNb4pBeWaNJAQM4vBL2FU
+         aMZNUA2DvS1/hcuOow65rxfmtceou46/nIGzo9OBW2ebNPpH5C/BcI/sDfDeoEniU/iX
+         vPWgbWkOLPz9FaKciuQUYUnDOqlfFxwSFrekXOJ1AcQScHJJ449hbq+D+oZad4WWXJ3W
+         qQ2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVIxpQrDjmPLRyCFt4DIEZeVw0HoZInPLkXPFmVoJmiaECnfiNuuskvG4JTcujRA53pIFoOEn0iTLKyqnrkEQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOdHUzvTKYsugEaJ97Po415AITn39cG/B1dQZk/mFwDm/k/M/W
+	n7Z3xRkxPGyZLpcYNwMzMaZfPxbFbwQyaJJ8EJpYhXyRKKRZlaPMnzaOXf8n1o5Jm/0VODGTzHc
+	pA3YaQjAyu9uDhZczaGV190M8vvBDPV4=
+X-Gm-Gg: ASbGncvycOzdKQlq2/rapuAR8Hh3LL/t/Goe89P0DpM93rhJsOvwsCAfq1X/mhHwjuS
+	CzvKJxPwt1gM0tu36IsuNP8QuXRSaM6eECVeVvXnEoxHqN/LYsSlYMvX+gXlVR1Td80l4u5D89X
+	Jo90YhO2hw0tKcdDQXRsFyZUunpS+x77wWNY1djxoJd13dKN8oMC6wecyQDZnp5enpkpCzC8IIL
+	linpbgGWiLIDaIbD818MVsm1yw/n//1peIpFHs0i6Jobb6ZjVaWHm5OejCT2KMox8L5UbJoU0q0
+	pMu7/ei5zkY6u4tinlDZ8i6nfWOfOHyOfkcZhQ54QMfexIAkddxQzKDIaQ24hmMLmq3rFs0k18e
+	CrH+O2Q==
+X-Google-Smtp-Source: AGHT+IFszS39w4gyBp/ehwuAxtCUH8C08PjzRvdcYZ7F1mfYB9spnDw3ySKrBPh6xcHzbycXp1H7Lxw5DqNHFEAdHik=
+X-Received: by 2002:a2e:8a9c:0:b0:37b:b8c0:b5ec with SMTP id
+ 38308e7fff4ca-37bb8c0b6e2mr15580541fa.24.1763399528680; Mon, 17 Nov 2025
+ 09:12:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] rust: add a function that returns a reference to the IO
- Ports Resource
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251117163112.22515-1-alexandru.radovici@wyliodrin.com>
-Date: Mon, 17 Nov 2025 13:58:32 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org,
- Fiona Behrens <me@kloenk.dev>
+MIME-Version: 1.0
+References: <20251113-core-cstr-cstrings-v3-0-411b34002774@gmail.com>
+ <20251113-core-cstr-cstrings-v3-4-411b34002774@gmail.com> <CANiq72mBfKwXEbyaw=pBAw37d7gCLVJqHcLcd6H7vNKey1UXfA@mail.gmail.com>
+ <CANiq72nQhR2iToP8ZauwAjM2p1OWEK1G5cjsEXqs=91s7jOxMQ@mail.gmail.com> <aRs1-KshwnBjIIuQ@google.com>
+In-Reply-To: <aRs1-KshwnBjIIuQ@google.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Mon, 17 Nov 2025 12:11:32 -0500
+X-Gm-Features: AWmQ_bmRFAqmfhrzkLnE8yUQroFLwLVQEZRKlJSh6ngKy6V9tYibsuHi6Nvh8Js
+Message-ID: <CAJ-ks9=whG4K2s0vhBetGAaCHtFBXcHETWqQjVh2DWciYK4Xdw@mail.gmail.com>
+Subject: Re: [PATCH v3 4/6] rust: sync: replace `kernel::c_str!` with C-Strings
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	netdev@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <9DC413F9-40A8-44D0-9A77-D392D25F1E82@collabora.com>
-References: <20251117163112.22515-1-alexandru.radovici@wyliodrin.com>
-To: Alexandru Radovici <alexandru.radovici@wyliodrin.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
-Hi Alexandru,
+On Mon, Nov 17, 2025 at 9:49=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> On Mon, Nov 17, 2025 at 12:52:22AM +0100, Miguel Ojeda wrote:
+> > On Mon, Nov 17, 2025 at 12:09=E2=80=AFAM Miguel Ojeda
+> > <miguel.ojeda.sandonis@gmail.com> wrote:
+> > >
+> > > This requires the next commit plus it needs callers of `new_spinlock!=
+`
+> > > in Binder to be fixed at the same time.
+> >
+> > Actually, do we even want callers to have to specify `c`?
+> >
+> > For instance, in the `module!` macro we originally had `b`, and
+> > removed it for simplicity of callers:
+> >
+> >     b13c9880f909 ("rust: macros: take string literals in `module!`")
+>
+> Yeah I think ideally the new_spinlock! macro invokes c_str! on the
+> provided string literal to avoid users of the macro from needing the
+> c prefix.
+>
+> Alice
 
-> On 17 Nov 2025, at 13:31, Alexandru Radovici =
-<alexandru.radovici@wyliodrin.com> wrote:
->=20
-> This patch adds a function to `kernel::io::resource` that returns a =
-static reference
-> to a `Resource` that represents the IO Ports.
->=20
-> Without this patch, there does not seem to be any way of getting a
-> reference to a `Resource` of the IO Ports. This prevents anyone =
-writing
-> a safe driver in Rust that requires registering IO Ports.
->=20
-> Examples are drivers for PS/2 keyboard and mouse or any of the
-> QEMU x86 debug console (debugcon) and exit devices (isa-debug-exit).
->=20
-> The QEMU debug devices are one of the simplest drivers that one can
-> write and are good examples of the Rust Driver API.
->=20
-> This patch has been inspired by the work at of Daniel Almeida and =
-Fiona
-> Behrens on the Asahi Linux branch.
->=20
-> Co-developed-by: Fiona Behrens <me@kloenk.dev>
-> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Co-developed-by: Alexandru Radovici <alexandru.radovici@wyliodrin.com>
-> Signed-off-by: Alexandru Radovici <alexandru.radovici@wyliodrin.com>
-> ---
-> rust/kernel/io/resource.rs | 9 +++++++++
-> 1 file changed, 9 insertions(+)
->=20
-> diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-> index bea3ee0ed87b..293b330c3d6d 100644
-> --- a/rust/kernel/io/resource.rs
-> +++ b/rust/kernel/io/resource.rs
-> @@ -18,6 +18,15 @@
-> /// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit =
-architectures.
-> pub type ResourceSize =3D bindings::phys_addr_t;
->=20
-> +#[cfg(CONFIG_HAS_IOPORT)]
-> +/// Returns a reference to the global `ioport_resource` variable.
-> +///
-> +/// This function is available only if `CONFIG_HAS_IOPORT` is =
-enabled.
-> +pub fn ioport_resource() -> &'static Resource {
-> +    // SAFETY: `bindings::ioport_resoure` has global lifetime and is =
-of type `Resource`.
-> +    unsafe { Resource::from_raw(&raw mut bindings::ioport_resource) }
-> +}
-> +
-> /// A region allocated from a parent [`Resource`].
-> ///
-> /// # Invariants
-> --=20
-> 2.51.0
->=20
-
-I don=E2=80=99t recall any issues with this. We removed it at the time =
-because there were no users.
-
-It seems like this is still the case?
-
-=E2=80=94 Daniel=
+Makes sense and done in v4 (which contains only a small portion of
+this patch and no others).
