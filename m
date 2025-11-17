@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6522820D1;
-	Mon, 17 Nov 2025 21:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC1031E10B;
+	Mon, 17 Nov 2025 22:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763415669; cv=none; b=pY0upfg/gtG+/UoTG5rLw1hqjfwX/SbFNKzO2OChPhMs76NBod5wPnUmjXvwsumQrAWpbHacGAZfBkFYgrNL36zdL1SJVH3Lu1cGTchRqfjauF318n/42N1QoWFkblQR913oe4Bohrhi8HzLlYTSQXa5Cd6GvwIC37v6vHLchXU=
+	t=1763417106; cv=none; b=ZPU+Kt3kfG666Nxm67OlQ02ANC6hSgLIKQL19H696TMLwgPFYaHxLqRgMLmANMTrS5GM3T8Bi5YsW5Geo8zN8rfq3qOYS6rN8tsbRaKKmkNdUfXeYLgWnIrYGCHlhxmvx2AfSZ6Q332gJQW8yM1yZB40CwsSCQZDE68EmPV/9nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763415669; c=relaxed/simple;
-	bh=SyiBEWLIFr+AFw0nEn4fZcOaqc9VCpYMWxzhG7VHAhE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=KxR7IO/QxTCAg7OGJi60L+G0Gd2TjD3ylyjsC6amEwjFeGA7nuSoIqNP6d2bpdoy8RFMwY0hTgBPebkQomDs+pSJ+8MlbMc6SeBxGcYIzZ/ag5hv42aT9SeYx+gV+fdLC7aOcoJ3MRF6y90+X7eAN7inxq+sHscrOvU9HmKGnKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ODHmDjS4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763417106; c=relaxed/simple;
+	bh=5/G8GIkoO7z2N8ciB1v5Rc2n9Ta4Nf0bZTaX7MC2Olw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=f3Z8PfN5AbPlpolijiindKgkQPmwu4OfIQCzHJJ2YCdbwIZD+0l42cwBRgAbct6ASfGwx0oaqPMNfWlTwaiDu2oMLPwWK9k6qHyGWIcNQzQrOLPngqR5DGYesn/KqBbhqBqXKl/USHeSjbkKR865USBpt/dzZmoKcODTWYzRBLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQAqFEYq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ODHmDjS4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F1CC4AF09;
-	Mon, 17 Nov 2025 21:41:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQAqFEYq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F33EAC2BCB6;
+	Mon, 17 Nov 2025 22:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763415668;
-	bh=SyiBEWLIFr+AFw0nEn4fZcOaqc9VCpYMWxzhG7VHAhE=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=ODHmDjS4q/WHicWAUaJbB/15v/aREYN6AkeMERXBppZbfud8W+/oYNaqPjqiHqOjF
-	 wt1yS01hE5UukFBaLJ4mrTdymAQI4C5z2o4/S2L4W3N972abmaBpIpBYv5tSfqKXjW
-	 lEegG4nAaS8PKFb8BZVgUoCOo3Zs66ja/ovinopZGLPSHhafyzgVEMLv1QlEUgo8Jb
-	 58mUJXBsjA/codJaq+W6pKsAAdSFAa0bG7t2ig74TD4FNC+fR4r5PKCHUgFfQ4l6eT
-	 Q5Y23VUiYLZbneaRB5BxeKuW8hp2QFTOMP0ozU6m/J6HjeoCiG6o2bAOIYtqre+neK
-	 fABZZiCSeboQw==
+	s=k20201202; t=1763417103;
+	bh=5/G8GIkoO7z2N8ciB1v5Rc2n9Ta4Nf0bZTaX7MC2Olw=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=tQAqFEYqeC+cHKxLKAxS4qQCq5OcyG2fl4sxNMXCdvs0/SbfDVAbi27opRi7+v0T9
+	 CiHX5Yzvy+uIe14n/2VQv63FAajjXIBP1j2NjbWezUXXryVVM3w8HdS2HdEkJK0gdX
+	 Oe8yOpK8r66UArcxA7Ji54TP/w3gYyANv6BQHGEpFWvVZsZHtswu6DcDKSJOdNtLCK
+	 X5vcJK0kq3lnH0Q3OGaVVgiRYMFOnzNGSmnDGUXCYToVwEGfnTqutbkkP1gTM4/2uf
+	 VyWHgNC3Jm/mdQQjdgLshNUczH6YEjiSVk2N1sA5G2q33EY8TZX04yzfko6mcqDLl3
+	 Ammys52N69phw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,50 +34,52 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 18 Nov 2025 08:40:58 +1100
-Message-Id: <DEBAOI46JIOO.B0TGI5HFLVJ2@kernel.org>
-To: "Igor Korotin" <igor.korotin.linux@gmail.com>
+Date: Tue, 18 Nov 2025 11:04:53 +1300
+Message-Id: <DEBB6T5ZEYQW.19GFZ39AF1SVO@kernel.org>
+Subject: Re: [PATCH v7 1/2] rust: Add trait to convert a device reference to
+ a bus device reference
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Lee Jones" <lee@kernel.org>, "Pavel Machek"
+ <pavel@kernel.org>, "Dave Ertman" <david.m.ertman@intel.com>, "Ira Weiny"
+ <ira.weiny@intel.com>, "Leon Romanovsky" <leon@kernel.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-leds@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Markus Probst" <markus.probst@posteo.de>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v8 0/4] rust: i2c: Add basic I2C driver abstractions
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Wolfram Sang" <wsa+renesas@sang-engineering.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Viresh Kumar"
- <viresh.kumar@linaro.org>, "Asahi Lina" <lina+kernel@asahilina.net>,
- "Wedson Almeida Filho" <wedsonaf@gmail.com>, "Alex Hung"
- <alex.hung@amd.com>, "Tamir Duberstein" <tamird@gmail.com>, "Xiangfei Ding"
- <dingxiangfei2009@gmail.com>, "Markus Probst" <markus.probst@posteo.de>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-i2c@vger.kernel.org>
-References: <20251116162104.171420-1-igor.korotin.linux@gmail.com>
-In-Reply-To: <20251116162104.171420-1-igor.korotin.linux@gmail.com>
+References: <20251027200547.1038967-1-markus.probst@posteo.de>
+ <20251027200547.1038967-2-markus.probst@posteo.de>
+In-Reply-To: <20251027200547.1038967-2-markus.probst@posteo.de>
 
-(Cc: Markus)
-
-On Mon Nov 17, 2025 at 3:21 AM AEDT, Igor Korotin wrote:
+On Tue Oct 28, 2025 at 9:06 AM NZDT, Markus Probst wrote:
+> Implement the `AsBusDevice` trait for converting a `Device` reference to =
+a
+> bus device reference for all bus devices.
+>
+> The `AsBusDevice` trait allows abstractions to provide the bus device in
+> class device callbacks. It must not be used by drivers and is intended fo=
+r
+> bus and class device abstractions only.
+>
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
 
 Applied to driver-core-testing, thanks!
 
-> Igor Korotin (4):
->   rust: i2c: add basic I2C device and driver abstractions
-
-    [ Remove unnecessary safety comment; fix rustdoc `Device` -> `I2cClient=
-`.
+    [ * Remove unused import.
+      * Change visibility of AsBusDevice to public.
+      * Fix build for USB.
+      * Add impl for I2cClient.
       - Danilo ]
 
->   rust: i2c: add manual I2C device creation abstractions
+--
 
-    [ Remove unnecessary safety comment. - Danilo ]
+Given that it's already quite late in the cycle, I expect the LED stuff to =
+land
+in the next cycle, hence I picked this one up in the driver-core tree.
 
->   samples: rust: add Rust I2C sample driver
->   samples: rust: add Rust I2C client registration sample
-
-    [ * Remove dependency to I2C_CHARDEV, depend on I2C=3Dy.
-      * Remove unnecessary impl Drop for SampleDriver.
-      * Rename i2c::Registration, import Devres.
-      * Fixup module description.
-      * Add new source file to MAINTAINERS.
-      - Danilo ]
+- Danilo
