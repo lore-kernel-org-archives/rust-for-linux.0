@@ -1,100 +1,153 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CAE23E346
-	for <rust-for-linux@vger.kernel.org>; Sun, 16 Nov 2025 23:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA591367
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 00:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763337157; cv=none; b=NlQkfkKgslQAnOpWJw2n9P3FtdkYsaI9H5oLyEHCqgfOtKBKJGgDVDCY1ToKYlrnxqd7YRmzAm2/VU1HHuoPA3dv8LZt1KbEwJJH8sfovrmg9lHEAoSv9XB9XNJgdyDoDkMHFBLeE+fBuYqu4A/itmfAt6TR0RQq7IHYy66y0G8=
+	t=1763338271; cv=none; b=UMAUYuHctRCmSUBi2arIL+hvrBtCGdTgiXRoaD/EM0UAhdK3QNwg799tEOqki0KXMDiBJgSb8V87N+jJgxeL/xTfiao/enXuKlNjGv0997HrYdVWWJVGZ1MA2w3xYAHCW1+LRTJ/5My2WzUJ7ERVeO0t66ko7uQ1u+GML39lAcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763337157; c=relaxed/simple;
-	bh=FpQG44YCiDoDEKjDbtFB1mxhp/Sh4UsuhIkn68oXA4U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bckKcA4uYH97+gdi3eZ7peJu6OqEi1tqbzs9WUV3gyvPDQCTc11zW2gdR7bjuM715gfpiFztn2q6VbyeRNIq8PKYzJvKDvzsbiQFfxIEK6cOZIqxI71uZBzjGJ3xvSWOE9jc3GH2pghRVB3txOpZfNKBMHKNp/FLiqhbxKyF+ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JdweU4ij; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1763338271; c=relaxed/simple;
+	bh=ixegunF99YxcLZrHPgAGDGsGqxBx00q+mi/Q4+peVBs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TBd2D6ZVv6km/msy3qqxA3WNbQoBhUssJSUY7IKK61kOCfXpbithmtKpT7q0ud+ngBvv4yOEgpTxzJDYWc12BXTnIzAMQezpRBB6PX6z0KrF4TG3rhW5dilVun37blgeBnghhvqtEx3XSvE/v6T7fUTGCRAuKKEsXcpXvSTdmQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JvCrQZit; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JdweU4ij"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-297cf964774so6421735ad.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 16 Nov 2025 15:52:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JvCrQZit"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-297e264528aso36603775ad.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 16 Nov 2025 16:11:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763337155; x=1763941955; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1763338268; x=1763943068; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=knEPjdoRUKiLfnKO7GGFzIEEDEiEdL0akD0BsikWeWM=;
-        b=JdweU4ijx6R29LhGY+MBds5EZIif60Z1mfdcvCDIycoE8XTNSk+r/IbLinBrXby8dz
-         ZwkdkYZJmFNd+LUcxzH/HpU/bHx22/ax2Oibb+SnkdY0LZji+Yz0xFexlM2GF6lKagH6
-         ih+GbDtbtb/3XdOif0bH1mY8QVZvUgz9CaZVpMbEkyUSnn0Jvejkpl6RXZ/7ZH4Pf6u6
-         5uH2PHpcYrE5wMCKi7WKY5dT9qswWMjbPcf+cbE26+9eNeq2a5IUnWg8HCqDyIoXut28
-         9zODW0+rXnigLFOyjybL01PXGMF25A8HA+wPfTQchSgU+UyKDh+//nSoL7Tpbav9NsZe
-         ZZHQ==
+        bh=645GVh1KvEQzLzVaYNXkwV6FeQ0jFg39TZs9/qVLDpw=;
+        b=JvCrQZit9bQQ/OSg+A+fxkx32lDtkS/5Yy9dmiPN70WmnkXN8E7Z8deoDt4pphXpry
+         FLDjX6OYLdm98piYW57GfVzIF5gGRSsonjq4BlAERVYMgI31Sq4w/ubbeVgWTzmkYqZ1
+         S7o51MgDcTtgGwZ25WOOwFG2U4bvXFeqqdUuNAl808i0Q8NrVpVbWKiAHk6MF9YYTuw1
+         /2M+tePxs/b52pa+wPWweDLYwnGEnmIL46QxLduiR7qB1hHb7IUzkyNu2UbSnnyyLeEO
+         tIoD3oJQfmAmYBauvGUzwEAYHER+AXyoIWUp8xVdcyqc31RSqFIW2YdXkim6J2DUgQZU
+         7XUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763337155; x=1763941955;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1763338268; x=1763943068;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=knEPjdoRUKiLfnKO7GGFzIEEDEiEdL0akD0BsikWeWM=;
-        b=JR8QGSBaABq3JFNw4QNoOpU9BdrTN6onwOyyT1dcv9RS68UcRiEWXmxuRphw4dpy6U
-         0tC6WqCIKTpEDNcGwCJTJ9jMBCAJqM/jAX8eHfpbUMHGNhxctcZeDY7AHexrOxtIoV9H
-         T7nfTJrJoHeALJM042afNymQ4uvHjA5W20s+yDHp81uNTKaett4ybTzOIiyO9miJSC4/
-         jfBdi7M4+1Jw8SWlO4iPkEFVChh+u5ZSOQv7gL9qcojk4b/+xIiCIaTd/8kvW3jouTyD
-         Zu36IHjUxZoY31297NS01F33U+J2j1pS9zv4LpIAO13rvWyUMa7lmSVxD4JNqhLqz4JK
-         ilDA==
-X-Forwarded-Encrypted: i=1; AJvYcCWkHHbn3gFkY6R07D/4UJi1nS7lwSRZV4AfHiUgTQ8gVHlyh/Z1U1i0n4App8IpUrVzCLxCB7CZMS31+5E2Sw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEpKyFPbpxcB5cz08+evtIvAACytinrQ6ueSqffd+DffLXUpI/
-	DTJ4Xy8IzBjcY+P1+SASpK46xTgwAkVrEWNF16LgyKpvhszo9Rkd5cUlph4TH25L5c8gWnBC0vl
-	n43x8fnGaW5TOeRuX8/PRgsgGa6tuEsE=
-X-Gm-Gg: ASbGnctruNIGISO05aDOVXoBDe15E5JwGedkXUntmlTGfpF8qggVhbMc57VQ3/xa4bK
-	TMLrLmQoLAceL4IXHx3CbfrVfiJKvA4BXNXdRR/sLNe1/350RcmCePGFFBlayWw+QfHNec/iHLm
-	LEiRnj0u0/UVSfrsiWxlhYk9v/qS+0x0Nr1SABuwe8DySHpDXvIgvxASlz8NZJcoE6QgStCmXcA
-	hh4h41qW764YZgbd6+CrgCtWW8RhI57lPO94OGhbg7b2/nxee0pkwQEcxqD1k42NeP3Eiq82dmw
-	JHNKnJfnI7spnviGzdS6lestMFpucrKvs/y7Hqka68WsGrxFBWpRHrNssRaiUhAHdUOc+6G2V5u
-	gNic=
-X-Google-Smtp-Source: AGHT+IEPP5GQJGpkQvAHm/n2E8E4oeg3mkqFHU5A9snFx2FAUhtXE2SCjstCrw+QoGTLtYsyGouZt0iiD1TQn51UTAY=
-X-Received: by 2002:a05:7022:248e:b0:119:e56b:46ba with SMTP id
- a92af1059eb24-11b493eca20mr3590028c88.4.1763337155289; Sun, 16 Nov 2025
- 15:52:35 -0800 (PST)
+        bh=645GVh1KvEQzLzVaYNXkwV6FeQ0jFg39TZs9/qVLDpw=;
+        b=SLhELhaJ8hJ/H1Es9OgP1oYeBw4ugmaZSSrjvFPiDVFDe4tYcq8kY6l4IeQ1VndA40
+         TGXRr3Z8YU9tNgYTVN+8tUOLvlTJhI7/1lnq38zfmnzH/GLWwqyG7U70tdOZ2g8NvibH
+         uDK3dwG63gJXYz0J2nil6hAM6T0c/L2ZyP/abnYq3Ys5d0zcuB31np8KSWqZiua/dm/G
+         JXVfO0zbN0CPHGILIFwPuKWNyGBWt9ZZ1dR0XhMgOh3TNJcLc/yd7SY5zlEiQ32BqwPl
+         3NJqsKHTdgC380etpkcq2yHQugIzvY/y8+dDzLFa1bmfpUmvzxfHTGdSoHakxkutbYqE
+         Vyww==
+X-Forwarded-Encrypted: i=1; AJvYcCWxEVOB8jEhk2SmsP/2MeBu5HdOMWViAUiS0dnvS38wrWHO34NwuLPGiQkZqSsdRZr4605R7WaqVHqzQmO5rg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+mUpa83jNT8/XTcFOTdibMWQwbkt900OSXaE4lcjitILft/gE
+	bGAmKzeGCnLdqbLeEAXS+Ncsag8+mxwQg+/HjaNl8dYltfvHc0wP+5CD
+X-Gm-Gg: ASbGnctGFlNS5VXqQ3f05qO+zYKj/nRpDsibs3gvuRsyquNsEWp1gEOtVoKg8IKMpEy
+	Phn4KVcIjrPSnYqblXlh787JO+U5fhpLDhNA1AcvSTVjAVpJAXnQ7oel1X76u4N0Y6WLZbpSVFl
+	05K7vm2FkKls9VyPkg6u5Bkoe5NEf2h0SxFj4uL8StghoCntoO+HvyJv4QThRLjgfTIq6lfFAQ+
+	n8m5JtMIolsP2FvJXRer5nU18vwQbCbQKfOPRW9jEwK4Pvjar73nIeqqiaGZlq4sbe2jNvPOuZE
+	thf6TQXYjENxUWBw1exUuwS+18ddTU5nAUz+L/BZ0cacwvweZIHBFZiKgP22tI2mrtJZcukTwDk
+	OGV2s26s2BnFEFhVi1SQWJqPPmMmNbQROlex6h4JHvf3ia1tD1OKNYDnKJDi/wICmeNn0dn4+yX
+	95/j4Ac5tTY3E9/VMJdT27JDKVhl6XE9d0qbAJMMp93hJdGI1m+jbG7HhiUo0=
+X-Google-Smtp-Source: AGHT+IGym2eoUsKx8p3WUBhPNEs8TEyUEgg7fF/M+uNUt7Kedzz6UjZtEcoqXaO5ZBKo+TWzsVApjw==
+X-Received: by 2002:a17:902:f792:b0:299:e041:ecf6 with SMTP id d9443c01a7336-299e041f532mr33141375ad.40.1763338268513;
+        Sun, 16 Nov 2025 16:11:08 -0800 (PST)
+Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2985c2bf0f8sm118374365ad.89.2025.11.16.16.11.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Nov 2025 16:11:07 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	ojeda@kernel.org,
+	peterz@infradead.org,
+	will@kernel.org
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	mark.rutland@arm.com,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: [PATCH v2 1/4] rust: sync: Add i8/i16 atomic_load_acquire/atomic_store_release helpers
+Date: Mon, 17 Nov 2025 09:10:32 +0900
+Message-ID: <20251117001035.4068507-2-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251117001035.4068507-1-fujita.tomonori@gmail.com>
+References: <20251117001035.4068507-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251113-core-cstr-cstrings-v3-0-411b34002774@gmail.com>
- <20251113-core-cstr-cstrings-v3-4-411b34002774@gmail.com> <CANiq72mBfKwXEbyaw=pBAw37d7gCLVJqHcLcd6H7vNKey1UXfA@mail.gmail.com>
-In-Reply-To: <CANiq72mBfKwXEbyaw=pBAw37d7gCLVJqHcLcd6H7vNKey1UXfA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 17 Nov 2025 00:52:22 +0100
-X-Gm-Features: AWmQ_bl-gNkTicpVObYCtSZ3F4-M6vnWSG4nKwGWGeOhtqUYQwGBsAi9iRsUdj4
-Message-ID: <CANiq72nQhR2iToP8ZauwAjM2p1OWEK1G5cjsEXqs=91s7jOxMQ@mail.gmail.com>
-Subject: Re: [PATCH v3 4/6] rust: sync: replace `kernel::c_str!` with C-Strings
-To: Tamir Duberstein <tamird@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
-	Tamir Duberstein <tamird@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 17, 2025 at 12:09=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> This requires the next commit plus it needs callers of `new_spinlock!`
-> in Binder to be fixed at the same time.
+Add helper functions to expose smp_load_acquire() and
+smp_store_release() for i8 and i16 types.
 
-Actually, do we even want callers to have to specify `c`?
+The smp_load_acquire() and smp_store_release() macros require type
+information (sizeof) to generate appropriate architecture-specific
+memory ordering instructions. Therefore, separate helper functions are
+needed for each type size.
 
-For instance, in the `module!` macro we originally had `b`, and
-removed it for simplicity of callers:
+These helpers will be used by the upcoming Atomic<i8> and Atomic<i16>
+implementation to provide proper Acquire/Release semantics across all
+architectures.
 
-    b13c9880f909 ("rust: macros: take string literals in `module!`")
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/helpers/atomic_ext.c | 23 +++++++++++++++++++++++
+ rust/helpers/helpers.c    |  1 +
+ 2 files changed, 24 insertions(+)
+ create mode 100644 rust/helpers/atomic_ext.c
 
-Cheers,
-Miguel
+diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
+new file mode 100644
+index 000000000000..d05f6f7ba10c
+--- /dev/null
++++ b/rust/helpers/atomic_ext.c
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <asm/barrier.h>
++
++s8 rust_helper_atomic_i8_load_acquire(s8 *ptr)
++{
++	return smp_load_acquire(ptr);
++}
++
++s16 rust_helper_atomic_i16_load_acquire(s16 *ptr)
++{
++	return smp_load_acquire(ptr);
++}
++
++void rust_helper_atomic_i8_store_release(s8 *ptr, s8 val)
++{
++	smp_store_release(ptr, val);
++}
++
++void rust_helper_atomic_i16_store_release(s16 *ptr, s16 val)
++{
++	smp_store_release(ptr, val);
++}
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 551da6c9b506..6f1c4e2faed4 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include "atomic.c"
++#include "atomic_ext.c"
+ #include "auxiliary.c"
+ #include "barrier.c"
+ #include "binder.c"
+-- 
+2.43.0
+
