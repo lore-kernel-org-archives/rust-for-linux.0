@@ -1,202 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799032D7DC7;
-	Mon, 17 Nov 2025 09:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB45326924
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 09:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763370792; cv=none; b=Mz6zvsrADgACDLbsr5bzEXSaTnCS1NeyvOT9Mjq2um7OKexrDN2evJZxWGNR2CkLXpQEGSFtpCi1bsoPtz2UHE4ny4EbxcoEgagvJOX9vZVt+ZeUBpaflBigXAukPxZ8R019wDPF3I9XZ+S6VLM2OBgBT7w7C12molFo9mcnerg=
+	t=1763371260; cv=none; b=IO7M0qMiqfyT4d/RiPVIGETPfIq93CAmzzelOt7V7vPttHkb8yLlGOXtMQnp0zVQj5k64KpupEH38jY+7bW6Zf6WBasTa/WHiPPYLEtNU0mm3j/6Inz+ribqa4F5D1An0F57OYLPDC9yA2Z3bLgsg4WTCQSlezfNbrsV5xW8f3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763370792; c=relaxed/simple;
-	bh=5jZoEh4YzmKyE3iOabhCY2SYx6Jd8m5uSIHLCJuzqGs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6bTgvdJSQ9cshfHKZ4EIsJ8zdESMfMIa9watb3sUzxBbiUsRin9hmwF4/mo6xfXR37DJaLQRhZ888curkoICrhnYLtddG43x4wpCz4WLf6tG3JUHR6qjTAUzg0/By26RhV/PYk41LSbz3AqpPSdWF/vQj3KkiVhTBP8KVIcCWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RU98JPs1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763371260; c=relaxed/simple;
+	bh=9WleBwX2QRmI4M/SGs0iFUGLuTeERCsCRIqc2x/WgCQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J3If+dJYq9+I9gglDDll6SAaja/ATp5Ibdv9tDZYOS3kMT6Cd0kkYAjNVEOcCX4WeVtOuWepd8T9cQSigUfJsAV8gSUvnejbbQVf2RL/YLQNW7NUJuQP3KnmMeXsFVadCJyV64H7+lKgiaQe6tdji+unQD5VXQ6QEymaMrl57cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jQdGI2pD; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RU98JPs1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12618C116B1;
-	Mon, 17 Nov 2025 09:13:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763370792;
-	bh=5jZoEh4YzmKyE3iOabhCY2SYx6Jd8m5uSIHLCJuzqGs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RU98JPs1ZWlJKETFMW8NGs7XndawhlCBZyrcJpq0Eka8GRCMIkwRXbhdNDZLu8XAr
-	 Xzt+LtCGP4F5aQPlVPtKmNLCuVOP1aUvOSQ/tzclPOAihEq4jEWEOkrN77QNPQ6PT7
-	 ONogx61lNQwRLAiwSN2NF9eEYvvtAwaCp299tEoreaiooZSidnJY1jTvXZ3HSyxPst
-	 qjOypZ4/vJrB4FwpSAQeOFU4kqUCWpLBnhGMxcq69zgDCxHPe8FHj/O7V6sZJpry9D
-	 onGz7SKQ6hT91mMXXQ2GGHLDTTxPADtMIPX1gXQRV5ACD7jBWJnlugCe/duxCPTivI
-	 z+lKqBga5qRcw==
-Received: from mchehab by mail.kernel.org with local (Exim 4.99)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vKvIL-0000000GgtA-2uJt;
-	Mon, 17 Nov 2025 10:13:09 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	"Jonathan Corbet" <corbet@lwn.net>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Alex Gaynor" <alex.gaynor@gmail.com>,
-	"Alice Ryhl" <aliceryhl@google.com>,
-	"Andreas Hindborg" <a.hindborg@kernel.org>,
-	"Benno Lossin" <lossin@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	"Boqun Feng" <boqun.feng@gmail.com>,
-	"Danilo Krummrich" <dakr@kernel.org>,
-	"Gary Guo" <gary@garyguo.net>,
-	"Mauro Carvalho Chehab" <mchehab@kernel.org>,
-	"Miguel Ojeda" <ojeda@kernel.org>,
-	"Trevor Gross" <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH 1/1] docs: makefile: move rustdoc check to the build wrapper
-Date: Mon, 17 Nov 2025 10:12:51 +0100
-Message-ID: <a9b172c926a4b30360530c34adc44f3789ec2b27.1763370163.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <cover.1763370163.git.mchehab+huawei@kernel.org>
-References: <cover.1763370163.git.mchehab+huawei@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jQdGI2pD"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b8b33cdf470so112991a12.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 01:20:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763371258; x=1763976058; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9WleBwX2QRmI4M/SGs0iFUGLuTeERCsCRIqc2x/WgCQ=;
+        b=jQdGI2pDCgV8tHEzZEkTs4HipKX0J1nuW9c0W3UyXagQ0jRTluHRPbl/5YK4v+nwAH
+         kz3H5Zmb3mpe33XZRYyuyJI4mnyLa8GQ/QiuBJ0jUHnX7WixubzWLA8udcVfdYdu/nUo
+         RQTf1F4FrO3EwQONZr2HEx6II2T8r36NTOeKGR1Dn6wZTEl1zGJpwAVuOKEhuhcf3Qyp
+         Eo80eqPYGUu/rHhZmw7M3bEnw+Q0xayxoME3bZP9uXTj8LKDH53RWzg7TK+wABgbTOmL
+         FbkBqfZ1AgsgGOUVNMz/ifl1b3jpSH4fN04/2kZTvPeUSk3aK27q0lI4+IY6m8g2V1kj
+         lFZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763371258; x=1763976058;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9WleBwX2QRmI4M/SGs0iFUGLuTeERCsCRIqc2x/WgCQ=;
+        b=WsupFS0awk55+uPfomn5bwC7wIPtzO3RCDZGVGpyuoOg7S2cUCOphlEQZ4dSUuunoD
+         WmDqxjmdcuLHdEySZVIjYssoEKDrl1HZN4iQphvAYr4hdL2PR/PqUulQCrzSEhVkrH9u
+         fU+NOl78/OGSscYw0/2LtaqsNTwJ4nqa8RL7n7YdEiMUKlFGrHgfhIyoz/EWPI+/b5dG
+         LLHiIqeuHx2CXcjL6Ua1HyddWBlojuP02iRlRze15tggidcpYtWfj78T4Fts4fXksUm5
+         tx/J0UDypShCQ12ouo4nsmsVDqwEbZcFhVZa9tfQJ+MwhU+2aj/8ga9eqQFolDfXd2IH
+         n4KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTTSXKuIpPF7AQdNDZGW9wzOwObORHd4Qceig9Z35mbRqCxtLFi5/Dn/hkIHqgr62daanv7bGX2b/A7lCA3w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw63gjjMGR3TKFamOxUED9ZiF17kBIOLLNfyNUNbl5Jmx5jQomp
+	4dPJYgVxy2vgcU+yF5W7rcwg5ErGcXd50eAPsl6mBI8gmRIM/Uq3h4QC5G8Yaj0lJWzC4QqrMx7
+	E7O2qcHijcM8FUWxiFxrJ9NtBN5+EW3Y=
+X-Gm-Gg: ASbGncul2yfR7aIY8ec+kFtae27zdRpZi2VEHHoOHupIdNHmpfVOm4ADnuN7C9gI2Th
+	CmURetdyIUQ/PVsOMFghc9IV56z4q7ak0sRuqu8+NIQWvQmH0+FT7hVGMszEeVQCg8dsuXuEry8
+	0iG3ef0hU2IIP8gY+a0+T/rsNrMCtTIhcs00B8QmrpLcbg0S92GpsqrmmmUN/NqBzctcIFHO7S0
+	F0gLMoZlWlV9lX5IkAcZlRmrKCAxN8vzhwP+6jT8mboGMUq8PilmJONKfUoXmcPXEPGZzNtkBkq
+	A4tWskdGmw7uaVugL5F7XSh6abV8IIQ5rfmKRs3o8zC1h7b9v9eeO9YnKPpW3WKdn7BkLp3PWpK
+	FltU=
+X-Google-Smtp-Source: AGHT+IGfFrgm622FOc29wvAAHNzvVoGxN2/E4IwtlUsCpeegW0zJbzdx8cPGIxEiroiCX7oWF2z7Z5G/nH4AC44Bv+U=
+X-Received: by 2002:a05:693c:6319:b0:2a4:5129:fe99 with SMTP id
+ 5a478bee46e88-2a4add16638mr4250072eec.2.1763371258172; Mon, 17 Nov 2025
+ 01:20:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+References: <cover.1763370163.git.mchehab+huawei@kernel.org> <a9b172c926a4b30360530c34adc44f3789ec2b27.1763370163.git.mchehab+huawei@kernel.org>
+In-Reply-To: <a9b172c926a4b30360530c34adc44f3789ec2b27.1763370163.git.mchehab+huawei@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 17 Nov 2025 10:20:46 +0100
+X-Gm-Features: AWmQ_bkMBtoGpBgvSAmXP8HMTS4lIYkuaUXdKJO_5GS6BNFKAoBNWrknMzILw2Q
+Message-ID: <CANiq72=bYzj6iU7PCm+VMBTeBbgUcL8nwrvUut9p4ph+3+itaQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] docs: makefile: move rustdoc check to the build wrapper
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The makefile logic to detect if rust is enabled is not working
-the way it was expected. Move it to be inside the wrapper
-script.
+On Mon, Nov 17, 2025 at 10:13=E2=80=AFAM Mauro Carvalho Chehab
+<mchehab+huawei@kernel.org> wrote:
+>
+> The makefile logic to detect if rust is enabled is not working
+> the way it was expected. Move it to be inside the wrapper
+> script.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/Makefile          |  6 -----
- tools/docs/sphinx-build-wrapper | 41 +++++++++++++++++++++++++--------
- 2 files changed, 32 insertions(+), 15 deletions(-)
+Hmm... Could the commit explain a bit why this didn't work and why now it d=
+oes?
 
-diff --git a/Documentation/Makefile b/Documentation/Makefile
-index d514ab6761dc..d4c42aa89439 100644
---- a/Documentation/Makefile
-+++ b/Documentation/Makefile
-@@ -42,12 +42,6 @@ FONTS_CONF_DENY_VF ?= $(HOME)/deny-vf
- # User-friendly check for sphinx-build
- HAVE_SPHINX := $(shell if which $(SPHINXBUILD) >/dev/null 2>&1; then echo 1; else echo 0; fi)
- 
--ifneq ($(wildcard $(srctree)/.config),)
--ifeq ($(CONFIG_RUST),y)
--	RUSTDOC=--rustdoc
--endif
--endif
--
- ifeq ($(HAVE_SPHINX),0)
- 
- .DEFAULT:
-diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
-index 1efaca3d16aa..a554176b5a06 100755
---- a/tools/docs/sphinx-build-wrapper
-+++ b/tools/docs/sphinx-build-wrapper
-@@ -119,6 +119,29 @@ class SphinxBuilder:
- 
-         return path
- 
-+    def check_rust(self):
-+        """
-+        Checks if Rust is enabled
-+        """
-+        self.rustdoc = False
-+
-+        config = os.path.join(self.srctree, ".config")
-+
-+        if not os.path.isfile(config):
-+            return
-+
-+        re_rust = re.compile(r"CONFIG_RUST=(m|y)")
-+
-+        try:
-+            with open(config, "r", encoding="utf-8") as fp:
-+                for line in fp:
-+                    if re_rust.match(line):
-+                        self.rustdoc = True
-+                        return
-+
-+        except OSError as e:
-+            print(f"Failed to open {config}", file=sys.stderr)
-+
-     def get_sphinx_extra_opts(self, n_jobs):
-         """
-         Get the number of jobs to be used for docs build passed via command
-@@ -236,6 +259,8 @@ class SphinxBuilder:
- 
-         self.get_sphinx_extra_opts(n_jobs)
- 
-+        self.check_rust()
-+
-         #
-         # If venv command line argument is specified, run Sphinx from venv
-         #
-@@ -306,7 +331,7 @@ class SphinxBuilder:
- 
-             return subprocess.call(cmd, *args, **pwargs)
- 
--    def handle_html(self, css, output_dir, rustdoc):
-+    def handle_html(self, css, output_dir):
-         """
-         Extra steps for HTML and epub output.
- 
-@@ -327,7 +352,8 @@ class SphinxBuilder:
-             except (OSError, IOError) as e:
-                 print(f"Warning: Failed to copy CSS: {e}", file=sys.stderr)
- 
--        if rustdoc:
-+        if self.rustdoc:
-+            print("Building rust docs")
-             if "MAKE" in self.env:
-                 cmd = [self.env["MAKE"]]
-             else:
-@@ -622,7 +648,7 @@ class SphinxBuilder:
-         shutil.rmtree(self.builddir, ignore_errors=True)
- 
-     def build(self, target, sphinxdirs=None,
--              theme=None, css=None, paper=None, deny_vf=None, rustdoc=False,
-+              theme=None, css=None, paper=None, deny_vf=None,
-               skip_sphinx=False):
-         """
-         Build documentation using Sphinx. This is the core function of this
-@@ -671,7 +697,7 @@ class SphinxBuilder:
- 
-             args.extend(["-D", f"latex_elements.papersize={paper}paper"])
- 
--        if rustdoc:
-+        if self.rustdoc:
-             args.extend(["-t", "rustdoc"])
- 
-         if not sphinxdirs:
-@@ -749,7 +775,7 @@ class SphinxBuilder:
-             # Ensure that each html/epub output will have needed static files
-             #
-             if target in ["htmldocs", "epubdocs"]:
--                self.handle_html(css, output_dir, rustdoc)
-+                self.handle_html(css, output_dir)
- 
-         #
-         # Step 2: Some targets (PDF and info) require an extra step once
-@@ -804,9 +830,6 @@ def main():
-     parser.add_argument('--deny-vf',
-                         help="Configuration to deny variable fonts on pdf builds")
- 
--    parser.add_argument('--rustdoc', action="store_true",
--                        help="Enable rustdoc build. Requires CONFIG_RUST")
--
-     parser.add_argument("-v", "--verbose", action='store_true',
-                         help="place build in verbose mode")
- 
-@@ -834,7 +857,7 @@ def main():
- 
-     builder.build(args.target, sphinxdirs=args.sphinxdirs,
-                   theme=args.theme, css=args.css, paper=args.paper,
--                  rustdoc=args.rustdoc, deny_vf=args.deny_vf,
-+                  deny_vf=args.deny_vf,
-                   skip_sphinx=args.skip_sphinx_build)
- 
- if __name__ == "__main__":
--- 
-2.51.1
+Thanks!
 
+Cheers,
+Miguel
