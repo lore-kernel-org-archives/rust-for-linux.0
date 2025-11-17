@@ -1,99 +1,84 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDAD27C842
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 14:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC6330CDAA
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 14:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763390973; cv=none; b=V73TYcZ8/H2oxdUzRLJLTLZp4zJgs57AvZRzoa1myWhomZmE2asWzV4PT96LIxxh3ZeKPpONwkgQzzgLal8xHOBYD4VJi9RTNLBtQSK6ThaOpsM4QMjntequKW0PZUxFde37htxikd7+ZMB5Uh3g2ZnRirPb+h56Eapl8nOnPZM=
+	t=1763391165; cv=none; b=AHsgwyg8reHXvOLotnkHVwzRPThfoIX7TKkOPKD7sT7OMtKp1ulokx8hdywdL7Tud/MMg7F457UbZmqj+hzNBsmFmXNphj1LvlkBMVGrag4NoDcIwpZQL+IAedo5rRNxdoDvyU3b6vTOxL1Ft1V7Yx1h8o+XqDaHn3t18DHGwk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763390973; c=relaxed/simple;
-	bh=WW4x1JtHJo1lgO8ectKyoMM+RyxVl9yZ6KIMMuM1jpk=;
+	s=arc-20240116; t=1763391165; c=relaxed/simple;
+	bh=fA2FEMUweRcPz/IS7g/9GVFRSo98iSibXJoywA0c2AI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XdVbwIkgP2XHRIObp03sZVuFmUD3+z58SLvryYf/HFeCHCBHTFc6+253tJGNa/TaWZ3pf1OsiLiIKFu0ottUX0gHiLaXoaizQRo0hTl7bMxWKyqLVkc6SLCogshP4t/GFprf2E3TWicKHte1nDe8D67q5VqbfE/IiaH6Yb3QJg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2JU3Zkuj; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=o9fsFTjHfSYWlaBoDgYv/rNoAneNMa7H10wrQAN1C63Ygvyzdh91vX022tJJVhf/OWMItTHd0wKQtvA2C2r9Vad9Io/MvwuVE0jsdBX7zXJP9lPSuetSkZK1CZqg0sFJBCdNNQPAjnajqVluQyIqmiGBJf5aha0+mR73MPElAvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1qv/5itU; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2JU3Zkuj"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42b3155274eso1766182f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 06:49:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1qv/5itU"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-429c93a28ebso3436253f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Nov 2025 06:52:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763390970; x=1763995770; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HJT6gufnoNQkAg8VpeeSoHr9N3KPlTAXTRkK2kDfIcg=;
-        b=2JU3ZkujQtp7VM1B6xeQrWXBO5TB3YN5mQiKDnHmRuvQFpZ+cgTmuI4EwDxjaL6PHn
-         A0Ay1UkDMcREl64r2/lIy0wN+TfuSfXUv+KeBv1uJAVO3MjmyjXVd3YbFfqZDdCqLdRN
-         JZ7hz3gCoqcDB85D5UAwRn0OL1PjvA6Bujq4h2KZejkljSAZluZnXbCgXw4a1+ruZ3GA
-         voyhNuGu2CZFJmip2fS7Pue+ZwldAHpevdSYELxin/vHCinjS3AKwE5ziWEWYpxKC4bq
-         8juVRnO+x4vMmxU/apLXQ4OTBWz26xVqBSNyNgCx2qobXfdxTW4edjRE94RbsO1vRqzN
-         SUjg==
+        d=google.com; s=20230601; t=1763391162; x=1763995962; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DEmDel8YP6SryUyQdLqbBEwquCJ086XrGsRpVZIAPJE=;
+        b=1qv/5itUBhdSMOpvX6C78eP/NmFGav1G4/+ax19/jWXgG3szfEtwMgpJuRdVWfBsFN
+         iaRzSoA83KDShmMX9Bn0pEpq+06ZVfX+5WmR52YLc+CXQt0nL4MIg6OHld5kXmQhzGqp
+         RewL3zXD6dbmQLM00tgb0XKODpxyfBlBcR7hBBgyIzw7AuW9m725jaodss81pSL/uPqB
+         AXM+S0ZCnhCTXB5ceOaSF3HYhliSdsBHof/MpqtYdlVopjczc2zfeZO9Gs0I5LRnM5SI
+         RyjHoVClR9VuP5cieWhbz6zSEyRAYYEEnzKbks7TFzvTIhkRmCTYUSMTQenEs/oVpHkC
+         5qNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763390970; x=1763995770;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HJT6gufnoNQkAg8VpeeSoHr9N3KPlTAXTRkK2kDfIcg=;
-        b=C0q01nrwAnpr7pfw79WtRSpZ+a+xm51ThCpA4/1MiHM7p9d4C8J9qVBnFmfSZJASmK
-         amvm1oA+bD/Tu1bHlGrQr0TtR/PM1s0UmdE5k8RRS+mxT7Jupd5MyaQ+4g37HRjCFqP7
-         diCHLyeqyffZXTrRh7gOmOC0ga3Vt3Bba+tPe73OCu0kDK5+FshZiQspHcPhw1JUP/uM
-         qwYdisy+kFQSmfWjzkx4X9NXHH47ZoZaSBG4QC6fiBUbGynSZ4HSF8uJUhUxyNcYcVOC
-         Y48Jlex6IzHlGbjr1L0yfTS7joDWeoVDKAdVJtO+pCpkOfgQKAt1dypBUlJorgxlvy2R
-         P5ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVsqw333S+xEYlfBNaFnhMLAYKcpXWiPp52ecQ2OIipMiQVjQj3w6NlUaRlD5dIWA92ZvvYfq4xZxSyBo+WZg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDIoY0nNLL/jLQMdx5Hy5A65he+0mJkFcHkM3/ERIuWN5ny85h
-	M+g2g9TaGdQ0mwnagj046HBTYWVx/MpmdvY8+mIk87xQMEFSXzlp85zo4GJZa+ZR7IrLQCCS0H9
-	J8D1eXcfvPAHnNe3VhA==
-X-Google-Smtp-Source: AGHT+IHMENTXXYlxXLfwcYy8RcVFiUBg7t9OZFby+7TKyA3x8awUKOzv1yWPmfR5rSilH8vJnzWv/VNZTQODmKU=
-X-Received: from wraj7.prod.google.com ([2002:a5d:4527:0:b0:42b:2aa2:e459])
+        d=1e100.net; s=20230601; t=1763391162; x=1763995962;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DEmDel8YP6SryUyQdLqbBEwquCJ086XrGsRpVZIAPJE=;
+        b=FcPJ/klc8wZWifnpkR10cinlNPict1zLl5nh0qj+0TJ9yrKtQ38xt12h0rLBOwwKzc
+         zMbQJS0pO7kaz2AEs+2Fhkc72x8JyhgXuEfJKIryx4uh7KgdPDDSZZ7CdH/xQQSPyobo
+         B9xrKhRYynDN1GfqOD+IU8zZKkhnkS/pbUYX6+793qmGNmytbBAL8V8gZudXx9l18EB1
+         qRjXuEdJ3pHglKgy/b4ilyrNc3Hg+9GY9td2niflF71nqDk6hKD7uPtdAvGjqfQUL6TJ
+         VwXa7C6XLZIIdtRKhS8xekLE6n9lFCFO1hTKyqB4f/1zpqcTUlWGGdScf9WjCvPA8jcl
+         kZkg==
+X-Forwarded-Encrypted: i=1; AJvYcCU1PUFL5z+LaO7r6c5Eq9O6wSGTJenoDbBrq6XgirngolBKCOCCrCLnApvpsrRUC8kfM9xWKEipUQOg5tP+RA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7HJghV9Y7OE8qyK4pfgRLX8h00NZG5m6Pt0V6nyzEDVp8ApSZ
+	8/vCeo8hfU5aa4c8wxnXwvfqulLhcUHtmytAAifWORaUgPK9EflXaD/9miESUz4HL55SfJa7pzT
+	oA6xrv4PzTCf4VmB0SQ==
+X-Google-Smtp-Source: AGHT+IEbGuGz0lgPXN/Q0+yKdln87Gc43i0ZEfM77W4barCcu736JcYss1j5wxMyvW59kDu9IU8AnICCu1X5VAI=
+X-Received: from wrrm11.prod.google.com ([2002:adf:fa0b:0:b0:429:c2f9:8017])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:178c:b0:42b:3b8a:3090 with SMTP id ffacd0b85a97d-42b59367af2mr11730970f8f.23.1763390969752;
- Mon, 17 Nov 2025 06:49:29 -0800 (PST)
-Date: Mon, 17 Nov 2025 14:49:28 +0000
-In-Reply-To: <CANiq72nQhR2iToP8ZauwAjM2p1OWEK1G5cjsEXqs=91s7jOxMQ@mail.gmail.com>
+ 2002:a05:6000:2585:b0:426:ee08:8ea9 with SMTP id ffacd0b85a97d-42b593901d2mr12477971f8f.44.1763391162404;
+ Mon, 17 Nov 2025 06:52:42 -0800 (PST)
+Date: Mon, 17 Nov 2025 14:52:41 +0000
+In-Reply-To: <20251117-nova-fmt-rust-v1-1-651ca28cd98f@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251113-core-cstr-cstrings-v3-0-411b34002774@gmail.com>
- <20251113-core-cstr-cstrings-v3-4-411b34002774@gmail.com> <CANiq72mBfKwXEbyaw=pBAw37d7gCLVJqHcLcd6H7vNKey1UXfA@mail.gmail.com>
- <CANiq72nQhR2iToP8ZauwAjM2p1OWEK1G5cjsEXqs=91s7jOxMQ@mail.gmail.com>
-Message-ID: <aRs1-KshwnBjIIuQ@google.com>
-Subject: Re: [PATCH v3 4/6] rust: sync: replace `kernel::c_str!` with C-Strings
+References: <20251117-nova-fmt-rust-v1-1-651ca28cd98f@google.com>
+Message-ID: <aRs2uTHwnTm9fdKs@google.com>
+Subject: Re: [PATCH] gpu: nova-core: make formatting compatible with rust tree
 From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Tamir Duberstein <tamird@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
+To: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
-	Tamir Duberstein <tamird@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, nouveau@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 17, 2025 at 12:52:22AM +0100, Miguel Ojeda wrote:
-> On Mon, Nov 17, 2025 at 12:09=E2=80=AFAM Miguel Ojeda
-> <miguel.ojeda.sandonis@gmail.com> wrote:
-> >
-> > This requires the next commit plus it needs callers of `new_spinlock!`
-> > in Binder to be fixed at the same time.
->=20
-> Actually, do we even want callers to have to specify `c`?
->=20
-> For instance, in the `module!` macro we originally had `b`, and
-> removed it for simplicity of callers:
->=20
->     b13c9880f909 ("rust: macros: take string literals in `module!`")
+On Mon, Nov 17, 2025 at 11:30:07AM +0000, Alice Ryhl wrote:
+> Commit 38b7cc448a5b ("gpu: nova-core: implement Display for Spec") in
+> drm-rust-next introduced some usage of the Display trait, but the
+> Display trait is being modified in the rust tree this cycle. Thus, to
+> avoid conflicts with the Rust tree, tweak how the formatting machinery
+> is used in a way where it works both with and without the changes in the
+> Rust tree.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Yeah I think ideally the new_spinlock! macro invokes c_str! on the
-provided string literal to avoid users of the macro from needing the
-c prefix.
-
-Alice
+Applied to drm-rust-next.
