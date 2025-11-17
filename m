@@ -1,103 +1,102 @@
-Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248EF258CD0;
-	Mon, 17 Nov 2025 10:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16FD30FC20;
+	Mon, 17 Nov 2025 11:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763375578; cv=none; b=p6jwLdMyvrmk3BWUxMxr2wrPLzYa/iHhRg2pJO+8gBP8XA+4kURnmEnGPgLC+6t/TjNcjRLlJ756mbti+y3a2IxB2fV+aCUGW20bxC1X+LmFAUkRZ3mMpsRzOXtjiaum5o/rr3eFCwchre4Q/nqFzEq2d78DhPnGqOB3ztx3Hok=
+	t=1763377499; cv=none; b=nF3R0QKT4k3WufLNd6j4TC8o9ErLYbhpgGnlx9alG9PAzR9KBBK4+ymGW6ZoxwYG1Mm6laXj+T0qKTDgB9fzf6fXF8FTLMPkSA0Zy0IkfjjWd7SjasWB8VBBiTNlkhV806iKxJ0OfNcKtkAtvvw9Cn9/BgIvQEWWO+xpAeAd0Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763375578; c=relaxed/simple;
-	bh=aF6Nr+Vcdl599MsM/JCZgonmxBvML9jaegR4b4F3ue8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lPzM2Bzmyaq7ideAs+6SMwDPs4sISoaYb/2TlA41Q9hGZ4KQUAlchLunzny0zdMbHw9G0y24nOuQv1xnMQyfHJcd7nM73pZSxGAFstP8Fj9R6RKt1r/tr6OTRB7hsncsxSGoe/TeGpXz15h8YZUORUXJXSh/BWizIUdQ2ZDehq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=ONDk+p82; arc=none smtp.client-ip=178.154.239.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1763377499; c=relaxed/simple;
+	bh=QewPk4zco+6xv+zW7ousvKXwZ8/tVkAJu1PKD6W3ibk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xj1b6YhEmOAO53KJKgosINhZ43eQRsVkk5ch2+4x+5iC2XYksQYI9qK+llqgEnJzwImn6Sq1ntUwxXLaiTVcpFeVWWSuACe6YiH0gImtZqlupIgm2bkPmvrMkS+KPXfCni1LH5mhK35FPFotHbegDLmgqZet+mzIeMJmUd9f+s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LU5wIfZx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="ONDk+p82"
-Received: from mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:4f41:0:640:844:0])
-	by forward502d.mail.yandex.net (Yandex) with ESMTPS id C95A9C0A66;
-	Mon, 17 Nov 2025 13:21:54 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id nLRZT5rL3W20-Ehc5E1cz;
-	Mon, 17 Nov 2025 13:21:53 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1763374913;
-	bh=Ig6NGs8607itnXq2NoXGIXNi0i/2atJv5AtsqE9To2U=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=ONDk+p82tj99ybWxImohHnQY4u+47LXDXxMeIgmAIutAjhF6n4cLGflarpYPAQ9Qb
-	 jQs2PViaEFqS7GsOOZ/rTr3zp4sVZIQ50wrTALffY3q7ZX9d92tLilYX3opwba3KQe
-	 6bLFGLgsQj03byaCW/TpAUm7+H3TGQdf9ZKEAxSM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Mon, 17 Nov 2025 13:21:47 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LU5wIfZx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A87C4CEF1;
+	Mon, 17 Nov 2025 11:04:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763377499;
+	bh=QewPk4zco+6xv+zW7ousvKXwZ8/tVkAJu1PKD6W3ibk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LU5wIfZxDeF8aMVN3PLI8PDvrux5/5oZoK/Ae+s6/yEGUdBx0E1CZu0Pp8PivhgYF
+	 srst9LJ8SQIjW4JOH+e4rtZjewXLEDthG28BPMvKgy6+IyTSFbVY4W31MKXj0XBN6P
+	 aZ9s5lePasR7ASNPVWhU/TQiHWz8TfZib9rN1FsY1LMWlLXqgBhZBED8+xNJtK8FfL
+	 amFedI1epT9BJhMLOqxhsRyiJqC3nIJdU0VPOi98FoTbrkMoSnz2EiO+ImQn6QHzK2
+	 bi71mKimxMBlUA79hZKK3ssiUMK7M36q/En90Gl7Z54gpw7Q5Blitk1nYe0v74qKib
+	 2SGaKuGzxcefA==
+Received: from mchehab by mail.kernel.org with local (Exim 4.99)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1vKx2X-0000000Gn6G-0NKr;
+	Mon, 17 Nov 2025 12:04:57 +0100
+Date: Mon, 17 Nov 2025 12:04:57 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, Stephen Boyd
- <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH] rust/time: Add Delta::from_nanos()
-Message-ID: <20251117132147.07424ca6@nimda.home>
-In-Reply-To: <CANiq72nueMj-4nmf=s44=AskbRFzHDQgmqfd12Jo89CMyySOnQ@mail.gmail.com>
-References: <20251114184207.459335-1-lyude@redhat.com>
-	<20251116093805.7918b83d@nimda.home>
-	<CANiq72nueMj-4nmf=s44=AskbRFzHDQgmqfd12Jo89CMyySOnQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/1] docs: makefile: move rustdoc check to the build
+ wrapper
+Message-ID: <kjpquyekvw7fwrndoomtge7fnxtfefihqlikj6xcqtazrr6l77@424ufup7v45o>
+References: <cover.1763370163.git.mchehab+huawei@kernel.org>
+ <a9b172c926a4b30360530c34adc44f3789ec2b27.1763370163.git.mchehab+huawei@kernel.org>
+ <CANiq72=bYzj6iU7PCm+VMBTeBbgUcL8nwrvUut9p4ph+3+itaQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72=bYzj6iU7PCm+VMBTeBbgUcL8nwrvUut9p4ph+3+itaQ@mail.gmail.com>
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On Sun, 16 Nov 2025 12:06:41 +0100
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
-
-> On Sun, Nov 16, 2025 at 7:38=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.d=
-ev> wrote:
+On Mon, Nov 17, 2025 at 10:20:46AM +0100, Miguel Ojeda wrote:
+> On Mon, Nov 17, 2025 at 10:13 AM Mauro Carvalho Chehab
+> <mchehab+huawei@kernel.org> wrote:
 > >
-> > I wonder if it makes sense to remove all the `from_*` functions from
-> > `Delta` and replace them all with something like this:
-> >
-> >     pub const fn from_duration(duration: Duration) -> Self {
-> >         Self {
-> >             nanos: duration.as_nanos(),
-> >         }
-> >     }
-> >
-> > What do you think?
->=20
-> `Delta`s can be negative and only store the nanos -- i.e. there are
-> many `Duration`s that do not fit in a `Delta` (`as_nanos()` above
-> returns `u128`).
->=20
+> > The makefile logic to detect if rust is enabled is not working
+> > the way it was expected. Move it to be inside the wrapper
+> > script.
+> 
+> Hmm... Could the commit explain a bit why this didn't work and why now it does?
 
-I didn't know, thanks :)
+I don't know exactly why this was not working.
 
-> `Delta`s are similar to `Duration` in the sense that they both store a
-> span of time. It seems reasonable to support similar constructors,
-> since they perform similar roles and we may not use `Duration`s.
->=20
-> Now, I agree that other types should not start getting things like
-> nano parameters or `from_nanos` constructors -- they should take
-> `Delta`s instead.
->=20
+I guess one of the issues is that the "rustdoc" target becomes
+undefined if RUST is not enabled, e.g. rust/Makefile is lacking something
+like:
 
-Yes, that seems like a good and simple improvement.
+    ifdef CONFIG_RUST
+    ...
+    else
+    rustdoc rustdoc-core rustdoc-macros rustdoc-compiler_builtins:
+            $(warning Rust is not enabled. Can't build $<)    
+    endif
 
-Regards,
-Onur
+But this is not enough to explain the issues I'm getting.
 
-> Cheers,
-> Miguel
+Maybe the other issues are cache related.
 
+In any case, here, with Fedora 43, on some cases, when I run:
+
+    make htmldocs  # or make SPHINXDIRS=xxx htmldocs
+
+it sometimes, after building the docs, it tries to run:
+
+    make LLVM=1 rustdoc
+
+as this is not a defined target when CONFIG_RUST is not
+present, this causes it to build the entire code.
+
+-- 
+Thanks,
+Mauro
