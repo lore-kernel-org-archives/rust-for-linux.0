@@ -1,120 +1,96 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85EC3A5E88
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 17:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C593A1CE8;
+	Tue, 18 Nov 2025 17:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763485822; cv=none; b=gVJxtLhBZXGiZFHhx3eWPF2tlTJ++B5B75bM0CwONatEgGAEs6Pc8tXtSamU+2jhyRVWl4tCIIi/vmj5T0mkO40z4o7ypu9pPJDG7ii+RbJ89ZgBD5gj9SORX/MFM/KVFs0EPX4+289x/K7sJ4oTZ4nYOlmvBWGfPsBN+Lxg4Rg=
+	t=1763486302; cv=none; b=i1tPvG782gHB+UWeg+nun3NLemRJaqN7/+jVp+5X0NTOaYN6m/tDB/5WIgCrFk75apG2yYntPnNWbED/SXo4j9rnsilMFKe6V8Irs3VnpcLxVfF0EeZbw2QUlhhpta2FMevqckigKU8aTUh3Hm4L6RrrwfklbEeds9KmD+/AjoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763485822; c=relaxed/simple;
-	bh=fslPMipxSHFdlEZigkiX4J0tsOkkEBsME1Uhhnj/iks=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BJAccoyGW0hyjNdgGzwYHuIgn9bQpmA9INSuMYyI1tvWEPB7pAOMXibKJ33EpEpKOsNWR5fGFzFLPB4snhwrdn4wA9FJW3NpBsiBYUSiuS4BBNeQ9lxajEJlhsxsiH4FnOLL/xXXdmPckbs1UV/nmxIAEo9XPVyXmSWwrEzfNvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iAXPsQbV; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763486302; c=relaxed/simple;
+	bh=c3q4X4lmWXyrvygyDjA4xqwcPmmXFlsxrhY9liop38U=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=qaur3iiM8Oj9hnb/QuUA7KDSteeVKn74wMI0VM72ltUKmAmNuHGb53heOQBk1wKv++mYmwGAvA5a8TRFrWsd8R5Hin7DXi2f+DxDXW8/lkpwfWzGNKPbCUUqYGf4QPVW8xqJrenQf+t69fVnPTc6uQQ/HR6dswYoF43YrcN3pAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=haBZHcyt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iAXPsQbV"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29806bd4776so7227025ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 09:10:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763485820; x=1764090620; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fslPMipxSHFdlEZigkiX4J0tsOkkEBsME1Uhhnj/iks=;
-        b=iAXPsQbV89zo7GjVESB4hHnnND/3he9CRsiyf/P6WPpoM0ltonatndiIzN08Y/ovUt
-         2zFERXxtvP7iP+Fridbxm2M7wiK2wdaw1jMnvl0juI6ix5MoLGoQF+oFZkdeQmcoqQbX
-         u9axRbmLxcJSwLd4rBIPe/d2i8FrGh24KbqvKNDX/PtN7XdtijQG8zYYtnLFtru6agPm
-         +VD8X5hamXj6ip6zyIwg9wHVGieQsVc54rU0RQTT53dpH1jRVeuQymEB/9Rfn6LO3dOg
-         DHHbNZrVKKNjRwSzhIttcGlXpCEqPGRWJ42j6KdLsARPnfX4ZsqTnUr3C+P/6dKda8JR
-         JywA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763485820; x=1764090620;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fslPMipxSHFdlEZigkiX4J0tsOkkEBsME1Uhhnj/iks=;
-        b=KlwvfNZ/gXg4J6yhh3hwF278Xc+EzX4bBDuDoX30rRTObYBrtzRCuuyqrmtVJs+5Vu
-         4dRq9IBkID0+Xnd5sUFtp5JLWT3yji8PeN7G4uwWqiu6EWAAMlXCso0HmVjhLv80/HS6
-         WUTRVp0khI03EXij2dHmyAoupINZQFB64MLqUSFl4wzGi9mBcq8ojQiZdyWjbp8isBmv
-         +f8T7ansg3jdmy4NCbok26u78qQdl54iS1z+K4tA5zcjwmWrK7ZyAxVBnY1XZihQM8wp
-         a6eTRIj/fYHDOAGlpTJlCO6Rb0fgEqDeZZ3cLDKfqv1ymEM8wxZE9vSq8cGLcsEhwArx
-         IW9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUr3TyfYy97nhewBDFIBCY3ipS3l3UKdHOtZVAhrULlUHgN+fBhXEASPWvzaqPq0uHiY/htvbODGiVb1eij3w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxO2F03cIiz3sO6ClaGlqCR0p6dzfxgjhqs8NjhLUqzgIWVXgSe
-	JJNxKEz9LCqHXsdy6GVisct48lDYwdO4XHbfcb7GPA/SdhLWcJSMcZFiDHW1FZX00NGM6EByKpW
-	r3IQniqyhER5BYHyejVukrkd0VNByi0Q=
-X-Gm-Gg: ASbGncslvcoZeEdXzKc7/Rifa/0kwuX6CYB162kefxNstmcSbZdPixGQO/CX7u3gsdb
-	Xuu5MJPV0gxeTRcLWOJQBGsUqODZmkKvOtLGSV9yuHeBNGAGnPfHIxcXTz1/gh8WgC4fNU/cyRa
-	QWZUjG2/gz2ci6gqKm7ly/Xoulbbt4HjsNGtBqJM5EjPEUUbWMeGGwrHJCPBwx+9DxuYwu9WsHU
-	OM/uymoMUJkEoJJYriBY1+2/mexImDzTajg40FnObXZVGhhIkdVhaasNWEYHFZxee892hqh6ofT
-	/KKzX4nBJnTVz3QiAgzZRRD4Bg+Pn0JYDk0uSF/upatOtqwZ60vlKjgKxWH5La5aokF1ryBPAd2
-	zlW/aIEfhnjbSdQ==
-X-Google-Smtp-Source: AGHT+IG87WbBUsF3x/zF+o1Qu2UZcBiWl5amIiz3Lh5gRGa1HIv/hRj0ixT3na47lf+qzvGD/5GVRs4gchDNGH2A+EY=
-X-Received: by 2002:a05:693c:6017:b0:2a4:4862:c97a with SMTP id
- 5a478bee46e88-2a6c9899146mr825330eec.0.1763485819789; Tue, 18 Nov 2025
- 09:10:19 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="haBZHcyt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA80C4AF0D;
+	Tue, 18 Nov 2025 17:18:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1763486301;
+	bh=c3q4X4lmWXyrvygyDjA4xqwcPmmXFlsxrhY9liop38U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=haBZHcytIs4NXmxVnGy6uFkTM7Y++YyAIRj8ZWXcYLbY9GirPyjSYquqvirPU0Om/
+	 1W75zFFEReILqzJUYm/eAljg+KsLQ5Tdm6LSVKbtADStZUyvHisl/V0cBcJ298TMte
+	 6k42RhdyR7iB1qrVxOUN8UlJpGqMBOlRnUk9kSIA=
+Date: Tue, 18 Nov 2025 09:18:18 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Danilo Krummrich
+ <dakr@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, John Hubbard
+ <jhubbard@nvidia.com>, =?ISO-8859-1?Q?"Bj=F6rn_Roy_Baron"?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2] uaccess: decouple INLINE_COPY_FROM_USER and
+ CONFIG_RUST
+Message-Id: <20251118091818.152ba4fc0c8a6f3092a36fbc@linux-foundation.org>
+In-Reply-To: <aRxM_NHhekMl9joH@google.com>
+References: <20251024154754.99768-1-yury.norov@gmail.com>
+	<aRxM_NHhekMl9joH@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251118072833.196876-3-phasta@kernel.org> <CANiq72md+0Lerj+kqr6QiU6ySR3XjRzmuBiLjkpWWieM72wyeQ@mail.gmail.com>
- <4db9dae5f659512146bd441cf2edf5a4aca16b93.camel@mailbox.org>
- <CANiq72k_ez+M_xEJaDCKS9uSbzHd35osnuXjGqZf1jq=sM_uxA@mail.gmail.com> <d31b24c850957c9026c9ff12ce7d0c9bbf26477a.camel@mailbox.org>
-In-Reply-To: <d31b24c850957c9026c9ff12ce7d0c9bbf26477a.camel@mailbox.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 18 Nov 2025 18:10:07 +0100
-X-Gm-Features: AWmQ_bmPc7Pdxa4HTqMeTreIcWd1c3f64ytsv1JIBsPJlKm0HOVfUtoJNp9n-KU
-Message-ID: <CANiq72mKH2oxcWHGef++Vw6Y8q9Q141KSu5AvA30a4j2W96-Og@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: list: Add unsafe for container_of
-To: phasta@kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
-	Christian Schrefl <chrisi.schrefl@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 18, 2025 at 10:33=E2=80=AFAM Philipp Stanner <phasta@mailbox.or=
-g> wrote:
->
-> It *is* absolutely common, or at least frequent, and you are the first
-> guy in the entire project I ever heard complaining about it. Maybe it
-> is often used wrongly or unnecessarily, though.
->
-> But no worries, be assured that I will take this detail into account
-> when working with you.
+On Tue, 18 Nov 2025 10:39:56 +0000 Alice Ryhl <aliceryhl@google.com> wrote:
 
-It is not, and since you seem to be keen on making an issue out of
-this, I took a quick look.
+> On Fri, Oct 24, 2025 at 11:47:53AM -0400, Yury Norov (NVIDIA) wrote:
+> > Commit 1f9a8286bc0c ("uaccess: always export _copy_[from|to]_user with
+> > CONFIG_RUST") exports _copy_{from,to}_user() unconditionally, if RUST
+> > is enabled. This pollutes exported symbols namespace, and spreads RUST
+> > ifdefery in core files.
+> > 
+> > It's better to declare a corresponding helper under the rust/helpers,
+> > similarly to how non-underscored copy_{from,to}_user() is handled.
+> > 
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Tested-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
+> 
+> It looks like this is not quite correct. The header file still has this
+> declaration unconditionally:
+> 
+> extern __must_check unsigned long
+> _copy_from_user(void *, const void __user *, unsigned long);
+> 
+> extern __must_check unsigned long
+> _copy_to_user(void __user *, const void *, unsigned long);
+> 
+> this causes:
+> 
+> ERROR: modpost: "_copy_from_user" [samples/rust/rust_misc_device.ko] undefined!
+> ERROR: modpost: "_copy_to_user" [samples/rust/rust_misc_device.ko] undefined!
 
-What is actually common is using Cc: stable *without* constraints:
-~84% of the cases in 2025.
+I wonder why this wasn't caught in linux-next testing.
 
-And that is *before* removing the cases where the constraint is actually ne=
-eded.
+Please check the rust Kconfig defaults, see if there's something we can
+do to get more compilation test coverage?
 
-> So why then do you even suggest running rustfmt? How should I make it
-> check the formatting?
+> This is because when Rust sees both a helper and a non-helper of the
+> same function, it prefers to call the non-helper version. In this case,
+> it saw a declaration of the function in the header file, and so it tried
+> to call that instead of the helper.
+> 
+> To fix this, we need to wrap the above declarations in:
+> 
+> 	#ifndef INLINE_COPY_FROM_USER
 
-I didn't suggest running `rustfmt`. I asked to please double-check if
-that is the formatting that `rustfmt` *would* use, i.e. how those
-blocks are normally formatted elsewhere, precisely because the tool
-does not format it here.
-
-Now, it isn't nice to try to frame things as if the issue is with the
-other person (with remarks such as "first guy in the entire project"
-and "when working with you").
-
-So I will help you no further.
-
-Cheers,
-Miguel
+It's in mainline now - do you have time to send along a patch?
