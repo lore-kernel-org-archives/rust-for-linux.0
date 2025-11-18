@@ -1,88 +1,243 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011005.outbound.protection.outlook.com [52.101.52.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7962DF134;
-	Tue, 18 Nov 2025 19:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763493122; cv=none; b=R6HYW0gU9edgylt92jdE6VRpRiAyZyTrb2Ng83ElGtlT0f5xDmF6xw/3oEcpqUKS/CRZQYq8YYhyDGRxi9WUsIicryK0KwHh6XifRq4x292Ic9RNoeca4fyj2kRYRHW/XAxNM8QX2wAQ41NB4gZidVsAZfjaSsTi9r+OPFkWMCs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763493122; c=relaxed/simple;
-	bh=l2fYwGFWlIEufuEKRvAwBbF9fZw07CYrmG34lJeRu5Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BnqGktwMLIxpX3+y9fquTBhnrVn223ZL4KwL0HdiKve8TvlMljTOmHyd7iQipD2KSyIBjwM4l/C34AesYacQpT3vxoYrZuEtS4wOMSHcOTtHZERT7t1DZsMhYSzD0Fq1/HUBcgaestkJ1yMELD8IMMisfMvb9GI/aSsFPEq5AZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=edKUdFXW; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF822E764E
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 19:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763494942; cv=fail; b=Uos+PUUTec9AtYMq7znA6IHS+1TrDSLqVnvliM4Knzn+2Yy23CJXEuc8fRUam985jrC8PxyozGl4AZZWrC5CGIZ2uIMlgZrY7JQoBQQX1/nB5Xvnu6E0pZ7EK2CGb5TS2BE7jPo19qMmxQvyl+Yb5JFdTiLJO4xGIb/y2vLehKM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763494942; c=relaxed/simple;
+	bh=AvPcPOGpLppyzR9c5NHxWXMUIORQJKFKZ6e85NMJpQw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kWJA9B9njp6F8bP7Auvn1aDcz1UExXUX/vxpsFx99VYAbOd7sp6p6oWRXrpbTVZiEjD1I8n8VVFfrxhV00tcmc0/TZeq4ucxWGVkARDL96+haUySOfRwv29IzG1c/q8x3mLcAdM5dUPs0/CojOTUWa5luaROjdq/RxrjZUQfDEQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oWd4MEHT; arc=fail smtp.client-ip=52.101.52.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="edKUdFXW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37364C2BC87;
-	Tue, 18 Nov 2025 19:11:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763493121;
-	bh=l2fYwGFWlIEufuEKRvAwBbF9fZw07CYrmG34lJeRu5Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=edKUdFXWswXk8KgGZ2FEUOaVUeIMBROcqQIEBDoxyq+0pk4vYaVEH8snwmywGYczG
-	 JESsGtYs5pas6wSK9rfghGcfwq822QPRG4r+Uz/8oe1hGFI02CmRG8baQppmP5xmhd
-	 wFN8JPX8Jqt6rNDOi93P7oHAyioypMxx0biw6CyXJ1qr2AZ84Oq5HgW+ZdCFvlZ0dr
-	 skOQ2rmt4vYwjTmPWdRlPbZ5UBDYAEOYqb01jGdlWM/sTNhyfpUHi96oKuu/OSu8/P
-	 rLnvd/PYFTsSmaqWj0napFkbRw7fSC7sm3cn5FHLp5An4KnOjUnaF3WADz6E0hytGF
-	 BZENH+lnEmZ4w==
-Date: Tue, 18 Nov 2025 20:11:52 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Linux Doc Mailing List
- <linux-doc@vger.kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Alice
- Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>,
- Benno Lossin <lossin@kernel.org>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Boqun Feng <boqun.feng@gmail.com>, Danilo
- Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, Mauro Carvalho
- Chehab <mchehab@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/1] docs: makefile: move rustdoc check to the build
- wrapper
-Message-ID: <20251118201152.038e2749@foz.lan>
-In-Reply-To: <87seeb47pk.fsf@trenco.lwn.net>
-References: <cover.1763370163.git.mchehab+huawei@kernel.org>
-	<a9b172c926a4b30360530c34adc44f3789ec2b27.1763370163.git.mchehab+huawei@kernel.org>
-	<CANiq72=bYzj6iU7PCm+VMBTeBbgUcL8nwrvUut9p4ph+3+itaQ@mail.gmail.com>
-	<kjpquyekvw7fwrndoomtge7fnxtfefihqlikj6xcqtazrr6l77@424ufup7v45o>
-	<87seeb47pk.fsf@trenco.lwn.net>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oWd4MEHT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EPJ7n8pUGSBmlJOviAOzVueCjzRapvBXrPPdffzeo1adxGl17XFAJtB9b3kBqGSzVVmqGo2NqK6d8DpuOcQAYk7e67fVAEha0gLt6YSTuCT/UXe+AJTFn9nfnH9AqsAZGjjcfo+LPLGofdn5eUhj28ySdOid2vhQW8zYtm6pFgu8Tx7bRjcxnM+KSf5kNAaLAI9IWCGVZDHhTdgzLCK21zjf9QzX5AGuV5s+f7+K8XlHFlQn3MZhNrQyW54bq5LI/fnlVrlFsncL7cNhdTRXAQ0DIWc1yrmnxEtcWT02VA8ODxoRIPsySvcyVeXcTJKZ4UrZMXEjWKxwohuilxh6tA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V1QJu0fx2AzvnVF7kvkP8+Xo9eSZo+O6P45S3HdYlu8=;
+ b=K2aWXI/0wPu2hVK9adaecngCt3lbAj0LBdtWR8rr2azD1ftiZtdDL48VComWLWEuX+E/6o+OPY5T572ANuneBzhvLDtMyuBpRIskNwC1FM01aOKymJ9TmPj7zxMqU7YXjRGhEGmXdux+C0z7MIZIiHvBTS4dNUPRWdcvPTs6x8zvl4ngNaq1nq+ikvBSXmTHrATzOICId9XV8phmVv9JbMRmbBG4xrxl9sUCRb8Yb7EihImNV1hB0Y1qxQLVfX9Y9fq+GvSmv2vWwWYdzIYP7pJSqAxWL6uXTCDjnlmpFqCV/0NS+jctChnvXo0Q7uJTFwYhy2ogLI1WYfkA6LK6cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V1QJu0fx2AzvnVF7kvkP8+Xo9eSZo+O6P45S3HdYlu8=;
+ b=oWd4MEHTdwqNRzEZt/262Hv72TCzI8YtjMeM4FYCj6l85h2L0wKTSQ9eKCD7bfpd+vfCI2kPnJNbjMo0ML6tO73Xd2wGVxRFmj5t3IjsxajPNL/TD8mdc/wfHB33nHCGMk44XBsAmaTi9MFMJX/CEaYokrpKihny8QWK66smz2cBKphjmrxlpffTqTX3+iZ1lJs0zZgBH3/XT9mGhkUPfu3YPng1xK8eWMqvBSatSK0hDlRJ8ZQn9u5B9K79d4ZkIPldUlKpK9yhluM8hmGgP14oda1BhTSihY0YqAkenQUC/bjavuobIe7zllm0wNkcqKiRLg0gnPJWngJ8+n3yiQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by DS7PR12MB5864.namprd12.prod.outlook.com (2603:10b6:8:7b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Tue, 18 Nov
+ 2025 19:42:15 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9343.009; Tue, 18 Nov 2025
+ 19:42:15 +0000
+Message-ID: <1d1b163d-1964-472e-8eec-aadf6d0f0e69@nvidia.com>
+Date: Tue, 18 Nov 2025 14:42:13 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/11] gpu: nova-core: support header parsing on
+ Turing/GA100
+To: John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>
+Cc: "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, "dakr@kernel.org"
+ <dakr@kernel.org>, "lyude@redhat.com" <lyude@redhat.com>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+References: <20251114233045.2512853-1-ttabi@nvidia.com>
+ <20251114233045.2512853-4-ttabi@nvidia.com>
+ <20251117223324.GA1094429@joelbox2>
+ <57b542d736e22d1bce7143b789e0760c9380aaa3.camel@nvidia.com>
+ <20251118010424.GA1131446@joelbox2>
+ <5ff4c334-6f36-4aaf-8f6b-45650b8f7a32@nvidia.com>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <5ff4c334-6f36-4aaf-8f6b-45650b8f7a32@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MN2PR13CA0007.namprd13.prod.outlook.com
+ (2603:10b6:208:160::20) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DS7PR12MB5864:EE_
+X-MS-Office365-Filtering-Correlation-Id: b5c05db8-3a31-4c65-fc9d-08de26da9353
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N2Y3eWFLUjJDNUVLZ01nb1k3M0ZQYkFGemdlR3JHcStPR28zcFRVTE5BcDhx?=
+ =?utf-8?B?bmMvRm1SMG9wNVMwcDY1aEhRaTRKQ3ZnQW5XcHVHcFJJUitiT3NuYm52Ulhp?=
+ =?utf-8?B?YVhxY0FqVUg5bmp2T044dlJ0WjR6eUlLcVBXbk9mcTB0SnN1VU5mT1pvMHFs?=
+ =?utf-8?B?UkFtTDRuQ09jeGN3NjFKbVZadXFNNEo3eUMrMDRaaS9VbnhsTEFxRTZmazE3?=
+ =?utf-8?B?aWpydG9tWU1WdWp6ZHd0empTRERQMU1nbDVyQi9ENHN6clpLT0VYNkZwdnkx?=
+ =?utf-8?B?RWRnYUtSdVo4Ukc3Wm83V05MSThETlpJSVQ5UU96ZFJMc0U3bnpsbnNmN2Yw?=
+ =?utf-8?B?Mjd3OEhqbEFPVElycERwTXQ5S3dDY0hyZ1MyRjFFVm9mK0dIWXZSYXZwTUNs?=
+ =?utf-8?B?NFJGV3BTK2MxRTJxOThySmRjVVBMeUdzMU5teUt3Nk5vd2NYUk9YQTRQcGdQ?=
+ =?utf-8?B?czNUUUhWRFpJNDk1UE5PMEkvUlA0VEIycUtuV2xxbzRXWnAvVW1LWStHWEUx?=
+ =?utf-8?B?Y3Brb2FjNUN2RmJENnZoUlRpOHlWUHdWU2Q1NzlQQnlDZ2xCazRCU1NqSy9T?=
+ =?utf-8?B?NlFjbTN5QjFBYkNNam1hTGtvTUp0cTVaOVYrdFltWHNkV0pmaHdxL0htanl6?=
+ =?utf-8?B?MjhDTmF3STlSbmdDWlRpVjdpT2p4NjJPSWdWZnJsNWhCYTl0R1RDVU1HZUQ5?=
+ =?utf-8?B?NDBHZUlMbFE5cExxMTRrZm5pTmU0d202Z3A0T2R0b05BNUZtSkcxLzErQWdR?=
+ =?utf-8?B?NG1KYjd2bmp0TzNiSjJRMm9HNEtuOFloRk5OcW56VHFzK09WL24wT0xrRjRD?=
+ =?utf-8?B?bk9EdDAvUDh2TWtTSTN0Rko4R2RRL1dpTE9HMVlrSFlla3ZRMUlKL3RLbWlQ?=
+ =?utf-8?B?dFNwbGNhRHFIWnQrSGhuNDh3eXhCMjZNN0VEay9BRWhKZVRsNHB5RUMvcTVM?=
+ =?utf-8?B?NVBpZVYvTk4vV3dxMm1tdjZIYjlZTXdoNXFhMHRsbHRTNVNsUWJHbk95RHI2?=
+ =?utf-8?B?S0N6bDFwelRyYVU0L3VOcjBvWmJSVmpxYm9zbloxWWN4aFhJak9LaEdVcVVy?=
+ =?utf-8?B?NjhNNFlxUWU4WVlQNTNHY2czZlg5azd5ZFBTSDlaWWlrc3hNMHplYXEwYjNE?=
+ =?utf-8?B?NEhsVEJram4zRGdGREl3ZFcrUFhzYng5Z1NNbVIydXBOUUNEc0pLN3hwbUho?=
+ =?utf-8?B?Tml6VHBsYjh0YldZcXZQcVZ4TytDdTRWWjhwbGdzOUpWSVAxaWxsUkxGREZF?=
+ =?utf-8?B?UWNmajZnOGdjOFpnNDRBd2pXOVVYQ2lFMEVQdnhnMXozKzBrWW54S2NzTGpW?=
+ =?utf-8?B?UEl0aXJIZ0hZc1lLc1lsbm9uMVN0U0puVEVmT0d5ZkFGcG9sc1dScyt0UzVy?=
+ =?utf-8?B?K1k5Z1MxcFlhREtpcFVuRUt6bjZ2ZldVTkZRWjZNZ0dSU3ppc1pwYytqcWw0?=
+ =?utf-8?B?M3NuYXZub3hlZklyQzNSMTRmVFQ3c1ZQUVpNcmMrZEJKb2poRUxpeXF3WnY3?=
+ =?utf-8?B?TGphc3RJd3dvV2QwbFhmcnQxT0d2aklPc0tYaGRBWWlaL3kwS09tWHdiRnl3?=
+ =?utf-8?B?K3pxS1NzYWpYMFdETThKbXdkTGU4dnFRL1AwdHlTU3JlS0tQeUlGaVM3b0RY?=
+ =?utf-8?B?ZWdxejNxR1YxYk45Y2ZZSEdzbW9ERUdmeE5ZNnNsWDhhZ056cFN6OGk1U0lB?=
+ =?utf-8?B?ZklBdWxmcUN4VUNTcU1SL2VjcnNBTUh2SmpXUXoyNUFzZkRGNzhpMkkyYVd4?=
+ =?utf-8?B?U2ZUdHpabW4vS3VFUCtxdDIxemhjQUhvZ0E2Zi9VWW1UQjhmb0RqRWRjRXFz?=
+ =?utf-8?B?cmxMMXlFV25ucFdNREhITGR3aVBTTlp1WU53bWF1MTZhSlExYTc4dHpGSHIv?=
+ =?utf-8?B?c0gvNkJ4cTAwcnJDU2dTWXZSZ2dMN0FtQTZmYzBWNlRRcjVjR2l3YWdOWmJC?=
+ =?utf-8?Q?Tw4KtoT+rveD014G+Tz86Pjtw3/bBTXE?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?d2pwWEFmN3BKWjF0R2FPK0FXWEVDRFl4bEZRMXM1WmRkL0p3K0ZmQjhCQ0tx?=
+ =?utf-8?B?eHRJMGRuMGFKT2loRWFNbDZVRFlad1ZLaVc4MyswbklHWXFuZUxjUHhJQVZL?=
+ =?utf-8?B?ZTNIWWlITzNtMjF0eWNxNFpjRFdpam9vTE5saDZmRlNIa2grekc2cjZtaW42?=
+ =?utf-8?B?TlpWTkx1UUZHam5vVGNxSndDMnVpNWl0My9mbzJnQk1ZU3hlWkJGNVZTV2Jm?=
+ =?utf-8?B?MXY5TkV5TFgwUDZ1N0tVUGQzbFNoRGJReUh6clVKakcvNzBjT2RiTWQxaUJ3?=
+ =?utf-8?B?WkI3SXR4NTk0SVNyemNZeUFEUE93cEhzRkNXQUFoUG5CRC9wWkNkUlpFVXNr?=
+ =?utf-8?B?U0pUMXJwa1U1WEJFajJ1eU5mZWlxN2pMZEtPaGQxS01INWFoN2crYlZnQmNF?=
+ =?utf-8?B?ZE1PZStkOUlEZFdadW1ONkJpaXFzcEdVOERLa0pybmE2SXJKTGNZaEF2MTc2?=
+ =?utf-8?B?YTRXNHU0Zit2VnZZdVY5cUdaSVRVbVJXUytkTWRwUDA1ZHVkeUlZTzJ1bDRh?=
+ =?utf-8?B?QnQxRkpxNlFnckM4UFVLSnlBY2xpQkNldUs3WnlNQm9xSkhWcVdCYk5xUDdq?=
+ =?utf-8?B?SEJzbSsrZElVUVhJOS9Ddm92UlNEZlc2bFlnM2lTTTdjby9rZlZTWlNWR3Vu?=
+ =?utf-8?B?Tkw2U09Wc0p6cUJFT3lubXJXd01FR1RnbERETW9mVkZMZTlQRE8vNkJXZkhP?=
+ =?utf-8?B?eENOaDMwcmw2TUY4SFVQQWNwQ3FpNGFOanE5ZHlEN1ZuMXZ5YU1NbWQrbmRF?=
+ =?utf-8?B?bmlpQUY0THllc3p2SzlUanlmbDV3eElSdzA3bjE2WFFaYk9DTHJtRG55d21D?=
+ =?utf-8?B?YmlXOHdsWTB1Tno4aDQ4TnlDTnJkSlZPR2ZGc0U5akJuVXdSZnNnQStCeCsz?=
+ =?utf-8?B?OHo2MEc1SVRybTZ4NWNrYUFsTEF4RlZyNWRkWGNlR0RCL2RvRGNoQ0JmUnMv?=
+ =?utf-8?B?c2s0TnkxWFNHSEtYUzVqL3pZWmdJZnp4YTZtTzJvQnNxNXFKOTdSK2N4NklG?=
+ =?utf-8?B?dkNZeHhsZUJyRllqSVNMLzlJUFdhYzBNUkk2N2VmR0F6S0NQY0hDK2krcGFB?=
+ =?utf-8?B?ZTcwRXdpVFFDKzEwTlNldW1Bbi92U0tLU1NXYkw1Nm45VGpvOWZSWnYzZjVy?=
+ =?utf-8?B?Tjd1Tnd4R2JrN0NIQjFaVkNsYkovY01VN1NuS0xrelF6SjVtR1l0N2NiM2ts?=
+ =?utf-8?B?UURKZHBxNFNFcUo1VzFXN2NMOEpMYkM1bVB6QWZWVk9UaWIzWkgrVG5sYTFK?=
+ =?utf-8?B?dURrWlBQZ29WdTZ6ZjUwZDhJcmd5bXJvejBFZSs5UVlFN1p3RU5pSlpPWlFo?=
+ =?utf-8?B?TlBZS2NsaThBb3hQK3BmNHZxcFUzZGFKMU9XMGkzWllVam1yY0ZrbUxkcUl2?=
+ =?utf-8?B?bnhxOE9rV21XZ3hVVk9vbmEraWpiWnJOS1R0cHJtQ2VsWmhEMUlrQ2hpVnpM?=
+ =?utf-8?B?WDRxell3eFFaNDRsYkFGcE5rckE2QkhTOXRKS3BxUkQ4SVVUZGtvT200alRT?=
+ =?utf-8?B?cWNWbWZDcTlNdEN0MDV1L09XejJycVZiT1kyZ0RmaVVIMk1hdXVRa2VzV2E3?=
+ =?utf-8?B?Y3FPOWw5Vld4NE1mVGwzMFVma0VVTndZa3MvQ2FDQ2Fmb0RxVmk3aHFtQTRE?=
+ =?utf-8?B?RlRKMzJYTE1Nd2c5ck1jSWE2OCtuN05nTm0rVHdsaUdwZ0h4RkdPbW53Vm9w?=
+ =?utf-8?B?UGc3QWlOUXBoVnF6VXQzTzhkSkNGQUdCQldtUXYzdzBadXhEWE5XZGdHSlho?=
+ =?utf-8?B?NGZ5WTkweW93STNucUtaTWY0c1NoWGFGcG90c0xXT1FvSWhralhEMi9WV1A0?=
+ =?utf-8?B?OUxlT0JTbG9BbFc5WXh0SU80M2RNZ1FqdDVmeHNjZmR5T1VoQnpwUUtrdXFi?=
+ =?utf-8?B?ZUpPWVZNNTQwRFBBOWJLMzRFS3Ixd3RuZmM0azRwcTBIREtVcU8xL0hZUEll?=
+ =?utf-8?B?bGQ5dnBPM3NqSGlFMDFNc2k1YjYzbm13R0lLbTdhTUVJVXFESzYyaEpzeEph?=
+ =?utf-8?B?b2F6eThmOTR1UTdlemtkNkhpcW4wMDhqdzVjcnNWNjQzQzZrNndpN2l5NEs0?=
+ =?utf-8?B?bk5zM3F6RFNmd0ZIVm4rSklxODE0eW5Qc2o0NGhWZ0VVcit3K1BLY3B3Qmkz?=
+ =?utf-8?Q?zvZHQUuLFqOBvlX+ziqoTJECJ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5c05db8-3a31-4c65-fc9d-08de26da9353
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 19:42:15.0907
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 90URRIHk+ZBNVkm7g0IvVYSqDYkFzWJOJGM/Z1GYE6mbcuUhpil2AyRT16l4ze8L1p6iP78zbR+JoE3ueHeCag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5864
 
-Em Tue, 18 Nov 2025 09:38:15 -0700
-Jonathan Corbet <corbet@lwn.net> escreveu:
 
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
->=20
-> > On Mon, Nov 17, 2025 at 10:20:46AM +0100, Miguel Ojeda wrote: =20
-> >> On Mon, Nov 17, 2025 at 10:13=E2=80=AFAM Mauro Carvalho Chehab
-> >> <mchehab+huawei@kernel.org> wrote: =20
-> >> >
-> >> > The makefile logic to detect if rust is enabled is not working
-> >> > the way it was expected. Move it to be inside the wrapper
-> >> > script. =20
-> >>=20
-> >> Hmm... Could the commit explain a bit why this didn't work and why now=
- it does? =20
-> >
-> > I don't know exactly why this was not working. =20
->=20
-> I would feel a lot better if we knew what the real problem is before
-> applying fixes for it.  Otherwise something seems certain to come and
-> bite us at some point.
 
-Me too, but the bug is very annoying ;-)
+On 11/17/2025 8:12 PM, John Hubbard wrote:
+> On 11/17/25 5:04 PM, Joel Fernandes wrote:
+>> On Tue, Nov 18, 2025 at 12:52:47AM +0000, Timur Tabi wrote:
+>> [...] 
+>>>>> +
+>>>>>          Ok(Self {
+>>>>> -            imem_sec_load_target: FalconLoadTarget {
+>>>>> -                src_start: app0.offset,
+>>>>> -                dst_start: 0,
+>>>>> -                len: app0.len,
+>>>>> +            imem_sec_load_target: if chipset > Chipset::GA100 {
+>>>>> +                FalconLoadTarget {
+>>>>> +                    src_start: app0.offset,
+>>>>> +                    dst_start: 0,
+>>>>> +                    len: app0.len,
+>>>>> +                }
+>>>>> +            } else {
+>>>>> +                FalconLoadTarget {
+>>>>> +                    src_start: load_hdr.os_code_size,
+>>>>> +                    dst_start: app0.offset,
+>>>>> +                    len: app0.len,
+>>>>> +                }
+>>>>
+>>>> Can write more succinctly:
+>>>>
+>>>>   imem_sec_load_target: FalconLoadTarget {
+>>>>       src_start: match chipset > Chipset::GA100  {
+>>>>           true => app0.offset,
+>>>>           false => load_hdr.os_code_size,
+>>>>       },
+>>>>       dst_start: match chipset > Chipset::GA100 {
+>>>>           true => 0,
+>>>>           false => app0.offset,
+>>>>       
+>>>>       len: app0.len,                                                                            
+>>>>   },
+>>>
+>>> Do we really want to use "match" instead of "if", just because we don't need "else"?
+>>
+>> I don't care about the if/else as much as I care about the opportunity to
+>> just specify FalconLoadTarget once instead twice. I think the match here is cleaner for this
+>> snippet, but I am Ok with the if/else as well.
+>>
+>> Something like:
+>>    imem_sec_load_target: FalconLoadTarget {
+>>        src_start: if chipset > Chipset::GA100  {
+>>           app0.offset
+>>       } else {
+>>            load_hdr.os_code_size
+>>       },
+>>
+>> That would be one more line of code, but pretty much the same.
+>>
+> 
+> You know, this latest snippet looks a little better. The pattern of 
+> 
+>     match a > b {
+> 	true => foo,
+>         false => bar,
+>     }
+> 
+> is actually not as nice as an if-else, because, well, anytime you
+> explicitly compare against true and false, you are likely doing 
+> something that the language (any language) has a construct for.
+> 
+> And in this case, it appears to be "if/else". :)
 
-I'll try to seek for some time to better understand it, maybe
-next week.
+Yeah, true. As I mentioned I was more referring to the `FalconLoadTarget`
+definition. :) I prefer if it is constructed once and then fields conditionally
+constructed, if possible.
 
-Thanks,
-Mauro
+thanks,
+
+ - Joel
+
