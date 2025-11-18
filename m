@@ -1,122 +1,115 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB07A2FD673
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 08:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8BA1F5437
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 09:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763454997; cv=none; b=MZ0e2/2lB1zlqFHPFSSQ6rkqujQJdqApIcMfMCCAqNhgxS/Vugn7FMAnFwALjlxLm/Sxp1FMUpf+tWQsAgR00DI3gmMG5xyfBn4nHzl3YuuGFbS+GSH4M2DDvZi7RMWA5niowiawP7X0CCmuFPNoDaszwEm95Lvr4jxs0qagniQ=
+	t=1763456437; cv=none; b=Aa8sIH2XiFTGpYyYbMVsHZfGG3X0EnfVecfFrvB6LXSJVVUfEhcQJHHxKZBMBiHqZjt2cuFMmOVpw23N0s+ySDnZeU8uFYis8gOaLTd9RrBPVu21plk1x96aR0zBfRhoS6kHgUjogPioXOPZB32dnzt1FI3FB6GGRdalVfalEs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763454997; c=relaxed/simple;
-	bh=X9rgs9fzUkfFZByBzqYXIEArBtWMwWuyoZ72DlvHfC8=;
+	s=arc-20240116; t=1763456437; c=relaxed/simple;
+	bh=bfBS4B1cFVXph0/HoluC7HZmxTuxmaD6b1yYGsefgw4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZnDfrz4laR7F4bTKScFk6Ec6R+IgpVeyp4+qDa/StHOFmySHfnV03t2x1VczQPCnfCL1m2qHQ6wyiMHa5vokIBrxDJKjkH3vfLbbTlQz+d6rBA27kkzVCwDYOKmi3sSHJWtXLGre0X2c/y3n93/v16oP8vSbEUN6H8R715ApBkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XKFrrqCw; arc=none smtp.client-ip=209.85.210.173
+	 To:Cc:Content-Type; b=qPiKHF0jYxGPJ1Z6bk11aYE23D8DA8CMz3IzSnEwyxhx7b6yRDBdh8DahEafg9rUOGl+d7iJnmZO/lug9JHELt8Utzl/Rxx96hBaj9/G8lFv1DO21Clxz1G1vEqM7HPQql6zpPqtwOPp1oJ7dYn1bSkmaXY0KUg3Ms//KUhRR/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eaWfxnPb; arc=none smtp.client-ip=209.85.215.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XKFrrqCw"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7b90db89b09so431351b3a.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 00:36:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eaWfxnPb"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b9da0ae5763so411473a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 01:00:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763454995; x=1764059795; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1763456435; x=1764061235; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zLB8Q4cQ1Nq31DZUXPWs8y0VZzkAm2JvSOvnpf5jOaw=;
-        b=XKFrrqCw6q7UG9WawZcZAGQGJHpKVgCNVskIsmXs2+rVb4foDssQMkK+uA0thUBfU1
-         dRA+ui5N1ntBWOmwey8LqzHahVxVfpz0nSkiK4vFTkxoeeUHJBRYd2C2x19EK0enrOUe
-         mZtZjKZBFzM/syn6np1u5ycKBVFDj1Nx1Twu//vN/yMktytOtIcf/JbOTAKgsmgNP0oF
-         x6o/mPFkjotSQaaYA17g46ejloSau56gsLZpkuxAwGFljnIzZ9o7XHYG+FaJ7rlhT6eR
-         f0kcPBfQMyKaXIiIi6LfJMiKWHrB44uxmvgkV6MHwZ+qp1kpWYg6iwt41Tgr1GBIEccD
-         O/wg==
+        bh=bfBS4B1cFVXph0/HoluC7HZmxTuxmaD6b1yYGsefgw4=;
+        b=eaWfxnPbSzvWiei2c17AEcj9CylNSm+VccpByLZmiIapDiIPHNTtu37nwRt8UzIdsE
+         xnyggUNc+zqEHAe4pzBJiPW6rmZ8f9+tetREyVmQC8eNmxx0lTbhLLv9O7NGlYQ9BALH
+         mVBZXJrOuVTuFJvm9NltuPuutynESbKfnIM0605jV4XKVzkX0UMXw+vzAL0Y5UIlzr8F
+         b5wXucGsTwcOHzamODBiSPJie4NthLMWFAFBBcFL0ZfIZ71N2RSRlcbaW1HAZYyyEYIC
+         1MXBqxWnuvn5oe7BdN59SSLX3M+vCVdmheNe3FIHspF5BHpjdDPo2C6iCYEyqSrryPTl
+         uykg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763454995; x=1764059795;
+        d=1e100.net; s=20230601; t=1763456435; x=1764061235;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=zLB8Q4cQ1Nq31DZUXPWs8y0VZzkAm2JvSOvnpf5jOaw=;
-        b=MJ/qxdWAob18pkAj2H/pUN0WMfQPvswRWIx0E1ptzlq3gyZpj6JL3lgnOpNCDcOkMV
-         JMGruq8vBBLrXk2tp2b5nyY5m48uQiVP73taqftTOe5XNsVz/2fgLaAu4D72f8XMvvk+
-         r6KMV4RB5m8jQwVm8efnwd3hOvulh9M+Q5l4EdgC7YECCHCRPco69zcazSfsa7+5DlRp
-         csz65zJcU1Ek5XG+u2SPdczJpjUiMgwjouSMJ19ZAm93CaTwnO3RoTig2zfsOv6H58DS
-         2u4uWB/42vMZP2LGYR+shjXVvPp61bRTl2D/5tpvmSUX7xtwyxVSrJJcMFucgrj51RhP
-         R2sw==
-X-Forwarded-Encrypted: i=1; AJvYcCX7yhx7X4NF0HqQV0gg1BF63J+DvuGSr1LPFanqbzk/aq6bUex17rSUNrZSjZ/MThDoEo9fyiT1hD5TDW+D6w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YymYTLoVa5qirHFu4vkFvLCjf812u++JjfQMnG5pt2FDreAYnfA
-	4cGyPL4DM3V9uKYrAOxzWPi9F+xDMXkcIOrgJnLilgLOIBCGptZ8h8k3bS7Nx9Bycg2tggEB4On
-	wSUSit2jDcmX6vQIV38zgbor1GVeDL/k=
-X-Gm-Gg: ASbGncsWPFj5mx7OgE2qtomG0MXjWOGowJ23K3v7rXYmvPQJ/+AwGC2KpKE/8Bjfasv
-	XjE/5YGBJToD7YRIvMZHVnDCYZyVvrqovA79cEw0mff/B71x1cLCB9BI0yigKiwf52nBGGzKckk
-	P9Nwqj/yqhYPUls6oB+UnfaZJj5RkfgZ3dQN79mGETay71GQXygOiAbSGDeT51gjyIVPtfgaV6y
-	tthJ5SsnJ4pOS/0sy/jI/nGSgmDKdRuIMzBWJnFjZiYjbJ1OqiUQlcYAiSkGpZQ+iKsLVkzI+I0
-	jJy0KwUnFLVjkAbHjqR3uDVKGSgUUY/HE9X1TuHm6px4bP0TlxCahCf1F6UDVbxnp8dnGmSN4Cl
-	iUiajLfDl4bYVWw==
-X-Google-Smtp-Source: AGHT+IHQTv5fqzxNjDsjeD+gMFTtUrCgZrGHbaJGppEm/81pv+tovux+exP3E0AdLf8cAEbTyPfRuYgm9zt2qYGFpGI=
-X-Received: by 2002:a05:7022:63a2:b0:119:e56b:46b7 with SMTP id
- a92af1059eb24-11c790f92acmr725609c88.1.1763454994950; Tue, 18 Nov 2025
- 00:36:34 -0800 (PST)
+        bh=bfBS4B1cFVXph0/HoluC7HZmxTuxmaD6b1yYGsefgw4=;
+        b=iUWxmyAxDVEjuwCh6LD0i/U6IOuqjnzPyy88qkbJyEKrZMR3PXGNTI9T873bwY2wCu
+         fuq/vBQfKiKZ77ClcBg0+cJ9WwjHFviM3mlw22W7AicNbG1N+XEXlhbvsq5BcQ0vfh4i
+         XhqNJMhObMDKpm5SQEXYe+LvEYBRmfCUpCDz5dqXDw9X6HDK47/kxzO8KeYTN+XEr9Aq
+         LGFHudRaaY+7FVyniMyOgSy5+fpryuJx0QKEjlEnyAxPofahl937i5nJ9QFkfzX5M8vO
+         ORmAn4ZClH3jacjvgBjt2o5OtDafqTLmZiJWgDUR9jXqsQgCt1LxnqLrJJlgO48ue2cO
+         +dSA==
+X-Forwarded-Encrypted: i=1; AJvYcCXj2TdJHaAt9r4kvmLXB8k1Zxb4e37zh6amHQp3h9cOizihI/PQNkYBpmDCm96Z90J45Sll7nFstM1h+Gx0KA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmXK+oqPvEuOQY2AH+2eQVJYPOg7W5wEzGHKZ/SEloMJBF6jbq
+	OUeyLPpSFIGzdNN7p9GOzJW+EOjRSfcIRSdGyFgKsJcY02sr8RAB0VzbTUG+JdBCWG+InrZSFDU
+	+G1qy6P5iPZ+vrj5ZM4OfUsS1hMJfxhQ=
+X-Gm-Gg: ASbGnctYmXG49IEzGa9NPt6EPGfq4JF+tHYNBFSoOvEo9+hUImIzflNn+N8DqTAQ9EN
+	EWDlKCCbZchzu5b4oQuCUuCvLKdA64h1pD5QUYrw9IgdNjmCV5bnSE7ROS2v2DDjm62mQzMBJp/
+	U3BY3bNO+T8GvI1fC/TNlhnPgQ+rYBfEIrFkPU6OJMgDDyjifjXHSeQf6z4kNemDTKCLqs0OprS
+	AyL5Xpj03zcm6Xviplivoe7qpINerkJC80YCL79s01RwOGvIo9b0F72xdbJlm7VWPrAfRdCIsNf
+	p1aNj+w9exe1AlI7E9tiJVzraWyUnj+6vAAVUTB6FDGClfHUCfbEyd/XG1ZgKrzOmYeu9oRKffo
+	YXcvTaMJQPqvwjg==
+X-Google-Smtp-Source: AGHT+IF+XxSaqQN0TKooaKualkKFdHU+4N4g+aXk9v5r4izolXbnH7pTq1RHmcFFhIlh2QE4yrmkB4O7KyrtosqcBxw=
+X-Received: by 2002:a05:7022:6885:b0:11a:344f:7a74 with SMTP id
+ a92af1059eb24-11b4120a7cemr5943075c88.3.1763456435186; Tue, 18 Nov 2025
+ 01:00:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251117163112.22515-1-alexandru.radovici@wyliodrin.com>
- <9DC413F9-40A8-44D0-9A77-D392D25F1E82@collabora.com> <D9CBB978-017A-4EE3-84B0-1B93AC4548E9@wyliodrin.com>
-In-Reply-To: <D9CBB978-017A-4EE3-84B0-1B93AC4548E9@wyliodrin.com>
+References: <20251118072833.196876-3-phasta@kernel.org> <CANiq72md+0Lerj+kqr6QiU6ySR3XjRzmuBiLjkpWWieM72wyeQ@mail.gmail.com>
+ <4db9dae5f659512146bd441cf2edf5a4aca16b93.camel@mailbox.org>
+In-Reply-To: <4db9dae5f659512146bd441cf2edf5a4aca16b93.camel@mailbox.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 18 Nov 2025 09:36:22 +0100
-X-Gm-Features: AWmQ_bmkJEyfTtR_xi22-Re1pScmegHvbseSpc0kf1mL-eOKtJ7Y99-MA9cqPCI
-Message-ID: <CANiq72nr0cZ8HrqdsEMBcsLnYN4i35b1aU6i_vZeF_eK6_xOvw@mail.gmail.com>
-Subject: Re: [PATCH] rust: add a function that returns a reference to the IO
- Ports Resource
-To: Alexandru Radovici <alexandru.radovici@wyliodrin.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, 
+Date: Tue, 18 Nov 2025 10:00:23 +0100
+X-Gm-Features: AWmQ_bmoKYvqTof5S0Dhcc0_0ej1sv2c2-FmRF0gCVNccMMPRwgcbsgBfjDeqrs
+Message-ID: <CANiq72k_ez+M_xEJaDCKS9uSbzHd35osnuXjGqZf1jq=sM_uxA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: list: Add unsafe for container_of
+To: phasta@kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Fiona Behrens <me@kloenk.dev>
+	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 18, 2025 at 8:10=E2=80=AFAM Alexandru Radovici
-<alexandru.radovici@wyliodrin.com> wrote:
+On Tue, Nov 18, 2025 at 9:30=E2=80=AFAM Philipp Stanner <phasta@mailbox.org=
+> wrote:
 >
-> Thank you for the quick reply. I am trying to teach Rust for the Linux ke=
-rnel at the university and this seems to me like a chicken and egg problem,=
- but I might be
-> wrong. My understanding is that if there is no real drivers usage, this c=
-annot be into the kernel. My concern is that if there is no API for this, d=
-evelopers will
-> just ignore the port reservation or use the unsafe (and possible forget t=
-o release the prorts).
->
-> From the didactical point of view, for someone just starting with this, w=
-riting these simple QEMU drivers (debugcon and isa-debug-exit) is a very go=
-od exercise.
-> What I wanted to avoid is them patching the kernel before they can write =
-these drivers.
->
-> If we cannot merge this due to the lack of users, could you point me to a=
- driver that we could rewrite so that we actually have a user? Or, is it ok=
- to add sample
-> drivers that use it?
+> It's absolutely common to provide it. If you feel better without it, I
+> can omit it, I guess.
 
-This has come up a few times, yeah, and you are right that the kernel
-rule about no unused code has some downsides, but it is nevertheless a
-positive rule overall.
+No, it is not "absolutely common" to provide it in a case like this,
+and it is not about "feeling better" either.
 
-Samples are usually not good enough, but you may be able to take
-advantage of this:
+As I already explained, it is confusing and takes more time to review.
+For instance, it made me double-check why you wanted to skip some
+versions or why the constraint was there. Please understand that
+maintainers will need to check what you wrote there and whether it is
+correct.
 
-    https://rust-for-linux.com/rust-reference-drivers
+It is also riskier for yourself, since one can also easily get it wrong.
 
-It is something I proposed it to try to help break the deadlock in
-some cases (one still needs a maintainer willing to take such a
-reference driver).
+Those constraints, as the stable kernel rules explain, are about
+sending additional instructions. It also explicitly says such tagging
+is unnecessary when the Fixes tag is enough.
+
+So, no, please do not add redundant constraints when they are not needed.
+
+> I ran rustfmt.
+
+Yes, but this is a macro -- `rustfmt` is likely not formatting that
+code. In formatted code, there are no multiline `unsafe` blocks that
+contain code after the opening brace, so it looks off.
 
 Cheers,
 Miguel
