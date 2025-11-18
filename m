@@ -1,96 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C593A1CE8;
-	Tue, 18 Nov 2025 17:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBC6349AE4
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 17:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763486302; cv=none; b=i1tPvG782gHB+UWeg+nun3NLemRJaqN7/+jVp+5X0NTOaYN6m/tDB/5WIgCrFk75apG2yYntPnNWbED/SXo4j9rnsilMFKe6V8Irs3VnpcLxVfF0EeZbw2QUlhhpta2FMevqckigKU8aTUh3Hm4L6RrrwfklbEeds9KmD+/AjoU=
+	t=1763487185; cv=none; b=gJMfQ+EDWv5KXyjIyHzGdyoyGHkXgW4fyEcGx/ib1NWRnZdeutxSVHtT/IVhxvUfsxsikadTW5PWhL0nTLLbZKzgqZHDY+K+765Dhp/kI2ecIKB4XG9EXkQv1ON7IHxrsIXUlflSNldm50pMrFIJDH3j4TZQ2eYl6/6eqqVDKQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763486302; c=relaxed/simple;
-	bh=c3q4X4lmWXyrvygyDjA4xqwcPmmXFlsxrhY9liop38U=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=qaur3iiM8Oj9hnb/QuUA7KDSteeVKn74wMI0VM72ltUKmAmNuHGb53heOQBk1wKv++mYmwGAvA5a8TRFrWsd8R5Hin7DXi2f+DxDXW8/lkpwfWzGNKPbCUUqYGf4QPVW8xqJrenQf+t69fVnPTc6uQQ/HR6dswYoF43YrcN3pAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=haBZHcyt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763487185; c=relaxed/simple;
+	bh=IjRHuTpiT+8nga3Dj0KUMGTFzzK26PsKL0LSeANYtnA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=cXdpqYRExQpgUU5noqRELGhJyKY0g0oH62FmAWexboqy1EKcJzmk8MTYd7Ygn4OgCGsYqFzoP6m3vPV9iKFNtwNgl4noipsIeB2S5UCni6BMEZL+g0bONQWUKHosrJf2afA/gQ/qbr5ERx7SFc2W/6U5vF60j8qqMIItlesw5x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kOqM9kir; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="haBZHcyt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA80C4AF0D;
-	Tue, 18 Nov 2025 17:18:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1763486301;
-	bh=c3q4X4lmWXyrvygyDjA4xqwcPmmXFlsxrhY9liop38U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=haBZHcytIs4NXmxVnGy6uFkTM7Y++YyAIRj8ZWXcYLbY9GirPyjSYquqvirPU0Om/
-	 1W75zFFEReILqzJUYm/eAljg+KsLQ5Tdm6LSVKbtADStZUyvHisl/V0cBcJ298TMte
-	 6k42RhdyR7iB1qrVxOUN8UlJpGqMBOlRnUk9kSIA=
-Date: Tue, 18 Nov 2025 09:18:18 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Danilo Krummrich
- <dakr@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Alex Gaynor
- <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, John Hubbard
- <jhubbard@nvidia.com>, =?ISO-8859-1?Q?"Bj=F6rn_Roy_Baron"?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] uaccess: decouple INLINE_COPY_FROM_USER and
- CONFIG_RUST
-Message-Id: <20251118091818.152ba4fc0c8a6f3092a36fbc@linux-foundation.org>
-In-Reply-To: <aRxM_NHhekMl9joH@google.com>
-References: <20251024154754.99768-1-yury.norov@gmail.com>
-	<aRxM_NHhekMl9joH@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kOqM9kir"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47788165c97so8433425e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 09:33:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763487182; x=1764091982; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qsr9EDrvrfrbSm42ypQifJGK4ENijv4mJY/VbEl1cDE=;
+        b=kOqM9kirJKrc2FJcUr0v/TB/DhFC/0cDQDUgpGco4mGRAaX2gLyOQDUN+m4DOFWexv
+         NTnqlAkB/ctlMi09nD618A4hk6lKUFVaHcO8e5xU9l2NrCBWXOchSALHNjQNlV2C+fee
+         7QrBXn6j12P2esntGQdh9I0DBXdnuGd+vldWucM4q3wgdjp2HbJ1sj7kYtXygKlH9DqU
+         p8P9LzkzT1P89l29ixyx5KSMESavq996W3C8jRvPvxZtBRdKDYqvONgkJ3TTbZSmTEhB
+         bGOIsMKrDiIqfwK8wGL+Ou+8j31caHM/1dPxIaYECOhIJMMfuLNy9P2TwHUK2MCfDCp8
+         Qg3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763487182; x=1764091982;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qsr9EDrvrfrbSm42ypQifJGK4ENijv4mJY/VbEl1cDE=;
+        b=kvqUl30OtPECCToSj99LuPJ3WDBPePvSaUcls/yyv/IRpxPBFHgetHch7zANFCQkOR
+         bXRFm0Rpfzg3x3WiwjLi6FuapgKeeZzWdZP+e+21j5YLQcig14yYNE+sl3c6NUhornNq
+         lR7WOSrQyD/wT0ps8e3AE0uZ7EenNUQrt5q7NaRMN1Ue1JpYrP1DRSTe4pnydf5IcYgg
+         ahEKtGSzVa4H3Gcf1EP7S650DQrhdY73B8D8a7DugzuaN+zw2PSm6nVEh5dQ4E4F2jqx
+         qHFI3qi+wO836nDaLL+cQUTVtDGZNy6uSbD6Co8KPaQfXh68z/L25g+0OiH741XaXeVB
+         69Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCUwwqIU7ZFiImhxVPRmMZzvL/xtBKnCOyQgNpZkI20TSTQufdJSl8oTPm2k9k1iXn+6lmyddQp3e4s3+NDFKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYRx0eMnOSevcjgAOEp0E2icUjg6orMs9HTTBt4Zvs1w1KEqy/
+	h/TntIpl0v3x6L5To7KSN1bGPQM7ua+SYvxCDv3rTdFKNZt8lsiitRCqYghEfSAXfzERqp0t2hY
+	EIl+RWpbcvNAzaAVy7w==
+X-Google-Smtp-Source: AGHT+IEWFp0N/FvjE6HaLxq+0cg60TExxafyHzvgZAsxKQ0Kol5/N0lY228CBeVZ9oeUXHQG3sSj1Zsvoou+DSQ=
+X-Received: from wmqo14.prod.google.com ([2002:a05:600c:4fce:b0:477:5546:738])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:45d4:b0:477:df7:b020 with SMTP id 5b1f17b1804b1-4778fe7f6d4mr166862475e9.18.1763487181759;
+ Tue, 18 Nov 2025 09:33:01 -0800 (PST)
+Date: Tue, 18 Nov 2025 17:32:50 +0000
+In-Reply-To: <20251118091818.152ba4fc0c8a6f3092a36fbc@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20251118091818.152ba4fc0c8a6f3092a36fbc@linux-foundation.org>
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1768; i=aliceryhl@google.com;
+ h=from:subject; bh=IjRHuTpiT+8nga3Dj0KUMGTFzzK26PsKL0LSeANYtnA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpHK22fgFLazZswN/Av6zPD00NJiNyspFGVq5VV
+ kMJ/I4o7paJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaRyttgAKCRAEWL7uWMY5
+ RhgZD/9YbGVt3yHk6ny6TZz3K5pzzmJaz2lRAqBFOwz33/mzuLEPl3NEjrXAjcY1HQqdASFwcc3
+ XedyRmYTTTL10s32/a17oKf6ZI0UxAoHA0jt82JFESi9NYItVvk8d8S1gWQf89fqCP2AtsdB5bZ
+ QjuNU1UnVmOlUtgqrwNVKhQ9LVPrZcE2H2YFnuSspU3Oux7zv6EtznBG3aRFyYy6yTrxhYACk3s
+ pMlSIRyFT9Tgl98AS/c9dAklZutW2foHPIf7K1coRPz/n2df0GDMsStOn5Cp4/1Hi2FceiBkKZ9
+ lU8EFQGgeJwtvofv1srh1U7yiZ8m4geJ2kXlCjKbxzF78FXTsgZzRGv0iSqtKR1sgKS4qKHZhWK
+ VI+JGsQhTA7KKNWq3n+i+rw//R5vqBo1GobyKo5Y2uLW+BCrc5ooNsUh5aKIk9wdCMbKfXph69B
+ U0n46rOELMEbrzezqS2I/qJHGx/IA8GYQknEAR4QKyOdx6DrvDc8AHbKeao+7ImP3qMswtIkMeT
+ x7GkBQXhEoiIPy1kBqYQoLX4x+4Hj0cw1/aRRSCwYYsZIgZNbi1zKqpWo/Z1Mz7A6ux6PqFxfX1
+ YOl5swF48pr/TyY6kNzl2i+mVm4KmzqiSbuyksTJCpI69oET9euaCFpBnhxxRjbXwdHC3hDIrKx MqQ3zaVexpm16WQ==
+X-Mailer: git-send-email 2.52.0.rc1.455.g30608eb744-goog
+Message-ID: <20251118173250.2821388-1-aliceryhl@google.com>
+Subject: [PATCH] uaccess: gate _copy_[to|from]_user on !INLINE_COPY_FROM_USER
+From: Alice Ryhl <aliceryhl@google.com>
+To: akpm@linux-foundation.org
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	arnd@arndb.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	dakr@kernel.org, gary@garyguo.net, jhubbard@nvidia.com, 
+	linux-kernel@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, yury.norov@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 18 Nov 2025 10:39:56 +0000 Alice Ryhl <aliceryhl@google.com> wrote:
+These methods only exist when INLINE_COPY_FROM_USER is disabled, so
+update the header file to reflect that.
 
-> On Fri, Oct 24, 2025 at 11:47:53AM -0400, Yury Norov (NVIDIA) wrote:
-> > Commit 1f9a8286bc0c ("uaccess: always export _copy_[from|to]_user with
-> > CONFIG_RUST") exports _copy_{from,to}_user() unconditionally, if RUST
-> > is enabled. This pollutes exported symbols namespace, and spreads RUST
-> > ifdefery in core files.
-> > 
-> > It's better to declare a corresponding helper under the rust/helpers,
-> > similarly to how non-underscored copy_{from,to}_user() is handled.
-> > 
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Tested-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
-> 
-> It looks like this is not quite correct. The header file still has this
-> declaration unconditionally:
-> 
-> extern __must_check unsigned long
-> _copy_from_user(void *, const void __user *, unsigned long);
-> 
-> extern __must_check unsigned long
-> _copy_to_user(void __user *, const void *, unsigned long);
-> 
-> this causes:
-> 
-> ERROR: modpost: "_copy_from_user" [samples/rust/rust_misc_device.ko] undefined!
-> ERROR: modpost: "_copy_to_user" [samples/rust/rust_misc_device.ko] undefined!
+This fixes the following error on builds that enable both RUST and
+INLINE_COPY_FROM_USER.
 
-I wonder why this wasn't caught in linux-next testing.
+ERROR: modpost: "_copy_from_user" [samples/rust/rust_misc_device.ko] undefined!
+ERROR: modpost: "_copy_to_user" [samples/rust/rust_misc_device.ko] undefined!
 
-Please check the rust Kconfig defaults, see if there's something we can
-do to get more compilation test coverage?
+This error is triggered because when a method is available both as a
+rust_helper_* and normal method, Rust will call the normal method.
 
-> This is because when Rust sees both a helper and a non-helper of the
-> same function, it prefers to call the non-helper version. In this case,
-> it saw a declaration of the function in the header file, and so it tried
-> to call that instead of the helper.
-> 
-> To fix this, we need to wrap the above declarations in:
-> 
-> 	#ifndef INLINE_COPY_FROM_USER
+Fixes: d99dc586ca7c ("uaccess: decouple INLINE_COPY_FROM_USER and CONFIG_RUST")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ include/linux/uaccess.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-It's in mainline now - do you have time to send along a patch?
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 01cbd7dd0ba3..205e1e65f481 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -181,8 +181,10 @@ _inline_copy_from_user(void *to, const void __user *from, unsigned long n)
+ 	memset(to + (n - res), 0, res);
+ 	return res;
+ }
++#ifndef INLINE_COPY_FROM_USER
+ extern __must_check unsigned long
+ _copy_from_user(void *, const void __user *, unsigned long);
++#endif
+ 
+ static inline __must_check unsigned long
+ _inline_copy_to_user(void __user *to, const void *from, unsigned long n)
+@@ -196,8 +198,10 @@ _inline_copy_to_user(void __user *to, const void *from, unsigned long n)
+ 	}
+ 	return n;
+ }
++#ifndef INLINE_COPY_FROM_USER
+ extern __must_check unsigned long
+ _copy_to_user(void __user *, const void *, unsigned long);
++#endif
+ 
+ static __always_inline unsigned long __must_check
+ copy_from_user(void *to, const void __user *from, unsigned long n)
+
+base-commit: 3e4b89e970365db7fe2c4171be06c0e88e3bcbe6
+-- 
+2.52.0.rc1.455.g30608eb744-goog
+
