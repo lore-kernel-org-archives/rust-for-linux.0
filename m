@@ -1,126 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75EE29AB07;
-	Tue, 18 Nov 2025 21:18:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3484306D5F
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 21:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763500717; cv=none; b=NvU1RKhv+BdyuTHAFMfECKcjg2Z9eQQyo2XhzKvVYONZKvSqIbJeIGZpTxuVutGOyh+UEShp0+lYC0l5BHNr2utHosTthUna/AVbDQkOewBOtw52P8QdmzeYc5FP/G6GM1G/70saOFXMc58jXuQo6Y1JHSayFL9NgHaljfubzqE=
+	t=1763501680; cv=none; b=fRZbrkPMDffBekzBFJEQyVsNR94nialztwf4dLaOm+v5NesTxa7ru9dKrpbmcUpOLErS7TJBZUxR/ktHUQIQLIhRyen+qwvKH43FXxAR00Q0bgk3G/6kmv61IM6/Zei6HRFcAHBEJqkW2vFyyMccEefVUSc3DzJ1eb31jx19+2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763500717; c=relaxed/simple;
-	bh=6wWz4dUIUu3bV4VCg0t2TGcelVK03+4YgkyNMH+Jmxc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=WLtrJQzfHU5u0xZwzkvn0zpq3wXKaVmRLiv0KLsY5hV/zpYzx2fsz1KFJXZWUvmmDbtH/fiMPBokolCUeuRp7FHruo0ctiO/7ymxzHdd5AMFfkNg1kuT2EzE3JJBAzp1+fDl1Q1+8+fy81GtvJ/FXXx3dId5Xy55c0/ZU8972PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fa8LOAlL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763501680; c=relaxed/simple;
+	bh=ayhkjtnG5oYSTvJU9zGgngy6Vk4K8yB8TSicqsdscXk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nLlepHTsDutfZg3lq8V6aflcwi499mIy6l0AF+Fei+U+lozDDcRv/h2IikPsVXPx0vIgopA2cETfTQtsHLefQ5LKJ/857H0a5LKeowWZ67moiUa2q5y82Xz7+ehJDvRQ3mCfwznsGg7qWz2U4FGQeimi9Ma4207fCEmyv+/UzDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W9uaJGz+; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fa8LOAlL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E68C19423;
-	Tue, 18 Nov 2025 21:18:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763500716;
-	bh=6wWz4dUIUu3bV4VCg0t2TGcelVK03+4YgkyNMH+Jmxc=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=fa8LOAlLVKpqMnCIh6GzxMVW24Hxdi0MwqaSyH4Q9Iyv5QgmEESNRrgvXjwiCJ6gO
-	 x4Nm+TtwelnCrB1qQmpeHvZM547BK8+XmovHrJI7paqBBZ51Vqf9HAle8x0bjsY5Oe
-	 kwLUsHvVkCMvMFkL0XNb9IngOEoiKKktgpZjK07RQf7GkzrC/RsBEE1Wl6uWXmZMgi
-	 2+5CCRRPCEgBE7eX2PTbRNf2Jiq4+jg0YMhV2xQeBwoyBsrnoiX4HeC2B2mpYQTYdx
-	 iHQ56BCuJ8AUWwUtUU7CEI+BrPwiCfwg211fDxRkjjJ0iR/r+Wk9FhgI4Bj72KfQoM
-	 5cI6fiJ/iDp+g==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W9uaJGz+"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-295351ad2f5so6199455ad.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Nov 2025 13:34:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763501678; x=1764106478; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ayhkjtnG5oYSTvJU9zGgngy6Vk4K8yB8TSicqsdscXk=;
+        b=W9uaJGz+p74rKUsqI94CYziohwg4v5ZwzQ4bzu5ynceDGsEQ4Faz2W+2G/D4oQrAPo
+         lYyjnf2sLssVbmsBBDt618MNULgkKqa0+4RGw3tcE9EGVNEi+U69u1fonrg+kCPUgUOd
+         xWaasW9vhX11UAHzuGIfHyrxw6nIthET7zAC0rLb7N0/QE7lMrU63aF9N5xQShsQd308
+         aoTyw7ctJG6TsgMe5VMY375w03DTIuVGMGVSkt+B7OKSNdZNZoGAreGYoLHfsqgUu912
+         ImIVzQ6weO3DarJO6mOiXNSU0NdI9wGnPoAxmlpP175OeZt2cD32aTB91DBCr/z1xl35
+         mbYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763501678; x=1764106478;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ayhkjtnG5oYSTvJU9zGgngy6Vk4K8yB8TSicqsdscXk=;
+        b=kiiFrt9SZlleHqqoeXj5BRHfKxGcnJRx0S+nYnIw8+Zj3xd0mqPHa+zeYpNibyb8Qi
+         e16RLG9775LX82eERwbltEvjB9PUv9ELG5OBGFTD4LlkZINnB0KeNeClQe1GP/mYXdSt
+         KpjO3cilhQVVBNR6gfwrJDOnZhR1ozrXj0UhOnqArEiGNs/R8eCI7lLGjJOODgFRGoR8
+         HoR73wY9rCdfJuyGDwWUoDF9YUEnItpWDgUpvcCMEsOhUseMcBgMnSo3151zVELr/DJM
+         AqOTvvKQ1mqJwa050Vt0kosrwLpW+CcqtORv/3lMP6Gh2LxGmUWXG7UpGSp6lI13m7cc
+         HXuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX1nwxCGLymksAbtI4zcZhG8MAHPzG6/f37A+WedLb3xMScUtxLO3gyHkWB8LzdbfaWkGMxCmZ7+NmCGLgubA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz23qYmQIfEw+TOSOI0IBpjrTKxfNA/+OvE8DtR9I1Fi/KWoW/Q
+	vn8gOjzWFOEjrl6EnOs+HWwp39OM+qvIjV2ETY+pjpl5m1PXR9ljC2CrNA014pbxmKpOQKxsNEF
+	335WwjesNyUTOLWX+1MRJnYNCasLmfhk=
+X-Gm-Gg: ASbGncv2VJEIqWciP9CGdrCxaGMquUmpvp4dvmval0pisWKeLkXKZcu4Hg3l9+Kq62K
+	PPDpVrqs/zPVvkztMzjIAnbTDT4WaZ4fdgYpZd5HvX6kPZoVxdbwzllB/40MyjpEHGnAzUi0w7K
+	0owgbk/+YxPN9OgsADxnyit2+bJs795dVIq/i9d7RL0tmrkQcrrDk9duzVAsIzQJ1R7XOKMlk2F
+	4R6V101p959KhlaGuUYVD+fuXwtnQzs1TAjDHYJ/iEjjQlg6XFz1FKwI5Y1bAeAs1E2kesqRmNa
+	DK+LiMTxmgt9qP764KbajktENC4X4dqrI30ss44NR4L1+9h7tpMu/cMd+UdSxsO0EW0hztQa3ye
+	ZmCdzrnS9tHhwXQ==
+X-Google-Smtp-Source: AGHT+IGX8h4A6zcGUTs7X+eFMDyXhW51vmSf1uAf38sUPQjSauuE8ZKK+X2wdAA3Xa+2TFJLQgCs7ZBrD2+fbuc8h68=
+X-Received: by 2002:a05:7022:2217:b0:11b:acd7:4e48 with SMTP id
+ a92af1059eb24-11c79421cb9mr1445567c88.2.1763501677839; Tue, 18 Nov 2025
+ 13:34:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <cover.1763370163.git.mchehab+huawei@kernel.org>
+ <a9b172c926a4b30360530c34adc44f3789ec2b27.1763370163.git.mchehab+huawei@kernel.org>
+ <CANiq72=bYzj6iU7PCm+VMBTeBbgUcL8nwrvUut9p4ph+3+itaQ@mail.gmail.com>
+ <kjpquyekvw7fwrndoomtge7fnxtfefihqlikj6xcqtazrr6l77@424ufup7v45o>
+ <87seeb47pk.fsf@trenco.lwn.net> <20251118201152.038e2749@foz.lan> <20251118213210.0e8b173e@foz.lan>
+In-Reply-To: <20251118213210.0e8b173e@foz.lan>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 18 Nov 2025 22:34:25 +0100
+X-Gm-Features: AWmQ_bny5AGEF8tykWZe5kPsPO31JUToEx5VVlr6EVeQl93Nod6ZibZYR-vFH6U
+Message-ID: <CANiq72kYaFsY4jyFvXLK9KaDnZ8493A_7eiO3pE9UdWqGzgm+w@mail.gmail.com>
+Subject: Re: [PATCH 1/1] docs: makefile: move rustdoc check to the build wrapper
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Linux Doc Mailing List <linux-doc@vger.kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 19 Nov 2025 10:18:27 +1300
-Message-Id: <DEC4TSQBTESW.28F17X9GHCIU7@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v6 RESEND 4/7] rust: io: factor common I/O helpers into
- Io trait
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <markus.probst@posteo.de>, <helgaas@kernel.org>, <cjia@nvidia.com>,
- <smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
- <kwankhede@nvidia.com>, <targupta@nvidia.com>, <acourbot@nvidia.com>,
- <joelagnelf@nvidia.com>, <zhiwang@kernel.org>
-To: "John Hubbard" <jhubbard@nvidia.com>
-References: <20251110204119.18351-1-zhiw@nvidia.com>
- <20251110204119.18351-5-zhiw@nvidia.com> <aRcnd_nSflxnALQ9@google.com>
- <7b30a8a5-ec0b-4cc6-9e9a-2ff2b42ca3cf@nvidia.com>
-In-Reply-To: <7b30a8a5-ec0b-4cc6-9e9a-2ff2b42ca3cf@nvidia.com>
 
-On Tue Nov 18, 2025 at 11:44 AM NZDT, John Hubbard wrote:
-> IO is generally something that can fail, so this whole idea of infallible
-> IO is making me uneasy.
+On Tue, Nov 18, 2025 at 9:32=E2=80=AFPM Mauro Carvalho Chehab
+<mchehab+huawei@kernel.org> wrote:
 >
-> I understand that we're trying to wrap it up into a bound device, but
-> bound devices are all about whether or not the driver lifetime is OK,
-> not so much about IO.
-
-That is correct, device context states are about driver lifetime. However, =
-it is
-at least related, see below.
-
-> For PCIe, it is still possible for the device to fall off of the bus, and=
-=20
-> in that case you'll usually see 0xFFFF_FFFF returned from PCIe reads. The
-> Open RM driver has sprinkled around checks for this value (not fun, I
-> know), and Danilo hinted elsewhere that bound-ness requires not getting
-> these, so maybe that suffices. But it means that Rust will be "interestin=
-g"
-> here, because falling off the bus means that there will be a time window =
-in
-> which the IO is, in fact, fallible.
-
-The PCI configuration space accessors indeed check a flag that is set when =
-the
-device falls off the bus. However, it is not sufficient, since you still ha=
-ve a
-period of time when the device fell off the bus where the flag isn't set ye=
-t and
-the I/O accessor may still be used concurrently.
-
-(If you look at C drivers you will note that almost none of the drivers act=
-ually
-check the return value of the configuration space accessors; needless to sa=
-y
-MMIO ones don't even have the flag.)
-
-Because of that, there is not a point in making all the I/O accessors falli=
-ble,
-because you'd have to deal with false negatives anyways, i.e. check the rea=
-d
-value for plausibility, because the device could already be gone, while the=
- flag
-is not set yet.
-
-Additionally, when the device fell off the bus the driver core will unbind =
-the
-driver, so the period where fallability would serve at least some purpose w=
-ould
-be very short anyways.
-
-Instead, drivers have to be designed to be robust enough to deal with broke=
-n
-data read from the bus.
-
-> Other IO subsystems can also get IO errors, too.
+> Btw, at least here (Fedora 43, upgraded from 42), rustdoc doesn't build
+> for docs-next.
 >
-> I wonder if we should just provide IoFallible? (It could check for the
-> 0xFFFF_FFFF case, for example, which is helpful to simplify the caller.)
+> Perhaps the issue could be due to some weird things with Fedora 43.
+>
+> That's what happens after sphinx-build-wrapper finishes handling
+> htmldocs (after this patch), when it runs "make LLVM=3D1 rustdoc":
 
-For some registers this could be an expected value, plus a device can fall =
-off
-the bus during a read was well, leaving you with broken data.
+That one is fixed with commit 16c43a56b79e ("rust: kbuild: treat
+`build_error` and `rustdoc` as kernel objects") which is in -rc5.
 
-I don't think trying to make all I/O operations fallible is the way to go, =
-it's
-just unreliable to detect in the generic layer. Instead, drivers should per=
-form
-a plausibility check on the read values (which they have to do anyways).
+Cheers,
+Miguel
