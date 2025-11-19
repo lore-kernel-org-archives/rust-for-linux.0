@@ -1,341 +1,219 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012060.outbound.protection.outlook.com [52.101.43.60])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFE82D6612
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Nov 2025 13:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763560193; cv=fail; b=lf3OrY3JL8Dd61J4/SFl642B1qqsG6o6pKQg7Q1M3kZa+JRrJqXni+eopkZB2kSx2ZELBHXXPh9lv8SRAkmc5JwmDnaqzSaE+NT5tABa0bY91zunNzGxeOsuLx4lhpFUmUZ+X1WZkz1MlH/v07HlKcj63QmHMwIhKSTO0Pg9+OE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763560193; c=relaxed/simple;
-	bh=iYP3J/VOKerRwdWweIdbGK0MxrfY8jn6aRh0TyBtg84=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Zm9Z2Xe+jJGNobeaCVuuzmAK0DtT93Aa8wGvqRsHqMTaM31cLcplx+XY2gwYVGHvZOWVgwjuW7vHV42qDnAnMTOmcOTLvtXEJXsu0WkLdm9qIhHwXprzaxbx6jgARN8rFaX3ylbVR7UZo5A23hDR3R7bktDpYhopJqN6XuXdnI4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=aTjDhlzb; arc=fail smtp.client-ip=52.101.43.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E63F3596F3
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Nov 2025 14:11:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763561492; cv=none; b=VGx+0GG9HtqJNity4VfTx02w8UavqqhlXa7Vnaiv0Abqg/RSB+22wju46IoYSv5N1ScQbhAUQF8GnrTp/5Zwkch77OUJBhDAAWks7PZZ3/cCakfB/JDszrL5BiVuFy2X37U72h3XNN2lI3nDtqyo+Fltnra7lqe97Pn2rZzLEbA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763561492; c=relaxed/simple;
+	bh=X8Hwzghf1B7tzwaWKSa37QYc7JPpdsNrrs4G08GwRdo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GwlJGHbJ9KlLrAMrPzYARne/fPoeS/oEOzHuYx+hKYzep2x0zlQL20nwnw6F3iLC2zAVhVidYd/kiDxIYrPzfvqSIR7VkNWj/EK3wtSjk9soKyp4OsXjkIzNNeDV+dFGEsfG1yg1DTVw6LhQeHaGOWg1xfAvsDirf7CdRrH/Q/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=OmBeaIbA; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="aTjDhlzb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JHW3t1os3Dd7Z4goVvc4KOR5o8Tx8iq9bv3ogbPqT5XvXPHVWty64m7gOj5CwsRfX4fdZGAkx5CyNswDL+jWXEdMv0g0AmgrjtpJ7SggMWSqRpejfvtdz1WWFHCN4ETI/Xc2JF/VqkXnbq/J58Ni1ynbBngE25qhPI00UO1J06P4h9Mu/nc2dyftONepi6wzO+k9auKDZSrjc6ubJiDq+4tQrQtDss067mX7xKdhDNfMsk4+ft3vOP51c3LGdQ1yBOl9Q589+LGxgq/AW1OkQAJV/2/MyFXOmBkw+FVw0Cwe7GldNrCdPv7oBpUCPrkBnqLevBFRB9okBkaFsm9j/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IqtyLfwnb0SFch6+wmawV/pv9c2QvQnCRnjmbo3O5Hg=;
- b=pzvmfitGv8UDku8oNLX/USA4+AwBruRTU+f54xUPnKf3EHeSOYaVfaGpXSM82h2WQChoqCZoLRgO3sRu2ziHoBeCOT8H2zvsBI1dHrJi7RqsMKhERG/1iQZmuewJt11BhWAYbZ/GiP6TgLP+YuoFXtViqJTQoEzwWhUU43jvHBolWyVXf88dT6HAc2lleg7Dg1FoTY8xC1xWo9MKD1Shrx/V1FNb8f54aBgJqYegFh4B8NzTNqNvuNdZSpipndCSvenKEkv4JNdGBI8EjJafhJ09+Os1ZrOn9P9Xl5bZDRpc7S4UraUd02Kdx8EKwlE9+qNigjNemeduuOklxSn+8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IqtyLfwnb0SFch6+wmawV/pv9c2QvQnCRnjmbo3O5Hg=;
- b=aTjDhlzbLqvkbXLl9VrUXtSVaL8g7IlidbC/FA4UglCpka1RNBcfcf6bfA3acdH1OLvXxdXzounlJYoegQvqEWd9EPMfk6DFPzxSBC8OW9W73SnzW6wXOa0J9JNsxVs/UaIQLuN5gmkO3Ewc3/UKwE9veUUEHz4rujNj20on6rruvcHG6o6WFnb1KU54CJKlaxJ6ZmI7GP8jWh84Vr3Fl51Kx+xUaX2mkHd4eAtN0i89+8wFeuyRGWra8FwZlq2XE0TsRbhgm85nDuYbsQPIKbzpK/XC0k076ghl5NcNrkAT2Xhkm0L+fYx5sJdBPchp3Xw7E56wDJzFvdw0SJ9xvQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DM4PR12MB8571.namprd12.prod.outlook.com (2603:10b6:8:187::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Wed, 19 Nov
- 2025 13:49:46 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9343.009; Wed, 19 Nov 2025
- 13:49:46 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 19 Nov 2025 22:49:36 +0900
-Message-Id: <DECPWOSM7LLB.22QTX32SYUQD2@nvidia.com>
-Cc: "Nouveau" <nouveau-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH 11/11] gpu: nova-core: add PIO support for loading
- firmware images
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Timur Tabi"
- <ttabi@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>, "Lyude Paul"
- <lyude@redhat.com>, "John Hubbard" <jhubbard@nvidia.com>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "Joel
- Fernandes" <joelagnelf@nvidia.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251114233045.2512853-1-ttabi@nvidia.com>
- <20251114233045.2512853-12-ttabi@nvidia.com>
- <DECDZ26UD1EM.1FAMFTZCAVBAF@nvidia.com>
-In-Reply-To: <DECDZ26UD1EM.1FAMFTZCAVBAF@nvidia.com>
-X-ClientProxiedBy: TYCP301CA0066.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:7d::7) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="OmBeaIbA"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id A9F7E240104
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Nov 2025 15:11:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1763561480; bh=e86qQ+MKm1TAfsmbwnZgsyBQhq79pXz2excRK8B6BZg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=OmBeaIbAVw4XHFb2SP0ZR3H7L9EPJTa0kU3BVABYm9YltnRfL/0L26oN/KvZFlHbt
+	 sskQSSwVLJ46+jmBKjeTYxrjhp48HnU+z5Fjad2mlH/ctFQxc/L/lRO1H5aSTQwIhj
+	 uip0gs7ljTSoSINCXamTizZx3IVYN/aSKGBGD+TJW+FQ+P0uoPUbfvJjgBLqCsqBs1
+	 6oMQH5bwPufiwSohmr5XSLqXt2nvZqosUcnbAS8qXenDV+I+8zyHIcyDVEmkZoSSch
+	 teFt44WskeFm9z3P7cTIpJ2qCfcJVyz+qaDcpHkMi/FoRGx7qrRl/mABe7asoVjCw2
+	 6uOwzS/frnxxw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4dBNgm67Qkz6v18;
+	Wed, 19 Nov 2025 15:11:16 +0100 (CET)
+From: Markus Probst <markus.probst@posteo.de>
+Subject: [PATCH v9 0/3] rust: leds: add led classdev abstractions
+Date: Wed, 19 Nov 2025 14:11:19 +0000
+Message-Id: <20251119-rust_leds-v9-0-86c15da19063@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM4PR12MB8571:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87be57f5-457b-487d-ae9b-08de27727c71
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|10070799003|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bWVscFdPTExRQ2s5Q0lWRFJJbTkwdFhtVmtmRFZOaXlvQkdhRE1xOU9FVFVM?=
- =?utf-8?B?ck9xMUtmS1V5WFFBZEJLcmNxSURPRlZ2WndQR1B4ZDFvRUlJVEpZc01ZNGtS?=
- =?utf-8?B?aWJlWERONmk4czFWakNTUGRiTlZITzhpMDMvTnpXZ0puWE5yRy9abEVZd2Y4?=
- =?utf-8?B?T2Jla3RTZHRoK0gzZk9BSUtlYmw3TnRMSUtOVkxJMWFwb0FkQ1NqWERnSHlT?=
- =?utf-8?B?SlZsNU53d2lnaXVkTjAvNXBmOEFDTTY2NG92TnJvRWNXT0ZSQmNyT1hzMHk2?=
- =?utf-8?B?V3lwUjlYa1J5VE5DZEl2dDZpcU5hRFBrM3cvZnpZbTIrM2ZvVzhLdUUyVDda?=
- =?utf-8?B?SEhqN0FicHcxQmg0OW80TVZ6d05mOFcyRzVFdFM4bnBEdHdHSjU0UnBBbStI?=
- =?utf-8?B?b2VKUUY3K0RkcUtxM29zeVNlRlRFUlRucXd6N0h5QldkaXIwMFU5enR6bEll?=
- =?utf-8?B?Um4renhDVTdSK3cyUGc2eHFmblVLVDd2RWR2UEhEM2UreUljYUY5SjIxdGcv?=
- =?utf-8?B?NXlLWW1pTWJjVGFsQjFkTzRuOTRabFd1dkFlQ2V3T1B0c0l3YkVIcGF1bXpo?=
- =?utf-8?B?ZjA0V0Eyd05UbWMvUXk0VEZsaW9LV3R3WVU5YU1ab1RRN3hhdS8rKytpY3VR?=
- =?utf-8?B?d3lDcy9YVDhLNmQ5aENzVXh4VFBxYVhicWlqVEQwOTV1UG5RK1JEQmQzK2xO?=
- =?utf-8?B?UWo4dDMvUzQ0aENLdzF3dWc1b2VRZUdkQ1B6WmF0Yi9rMXBpVXZCYlAxRlJh?=
- =?utf-8?B?c0RRRzVXZ3ZoZUh5VXo0MHJubkJQK3BKMmpBVXU0UmJwaFNpWUdLMTBVMmVV?=
- =?utf-8?B?MVRpMDNtL2dSVk1DUnVxTHdndHVlTFdrbm1Ub25aT0FGMWF3ZEVPOVVpODNz?=
- =?utf-8?B?b3daMUIzcnM4amtQVHhMR1YySkVMcjlkNjhoQzNOLzc5K3NQMjBKZkZjMWZV?=
- =?utf-8?B?dG01RHNsTUhOd2wrYjNwNnFPdEpwakRjazMvMzhvVnI0alNrbGYxNE9ud2Zz?=
- =?utf-8?B?bVBicEhuYXJKUDg3M0FyR21BVHVWRVBMbGVaRHVRR3JSSkJwNzF6VUhmbTJU?=
- =?utf-8?B?UnJlV3VNUFV2RkJ0enlkYVNocUxhVHVzMS9LM1p6L0dGUlZybXljVVJFSXUx?=
- =?utf-8?B?OEIzeDZnaHl3ZDAxSWJtRWRIbEVnQk51bW5GaGZ5TlFTRENyOXdFNExJOVVC?=
- =?utf-8?B?bm9mdER3Q0JMUTRBb0pSTzBmRVNIdXl0M05OaEJldDQyNzB6UUE5ZGZuYWta?=
- =?utf-8?B?K1ZsZDM2VWtQbEovdUQ2Y1hiSHpOMjc0bHVWOUszNEZSTjQxc0NIUFRwUWtF?=
- =?utf-8?B?V2NVV1NEWENQR0xtSWRlWk8xMzFyQmFNYzJuZTdzOTdwc0dEeFlIczBpNy9E?=
- =?utf-8?B?T0Z0bUc2TXhDbko1clc0ekYrdzdMQXlDU0hpUEczVkpiOFM5cDhZTWZ4SmZV?=
- =?utf-8?B?M1F0QmVYNllRcmxZb09PbEp2Z0grUmhkVW5iOW9RZk9weUE3L21oOEhuSTUr?=
- =?utf-8?B?cFF1dDFmTHUwY28vd2JwalI4UERldUt3TFFWWG5EU0pBa0t1Wkk2ZS9JdnpI?=
- =?utf-8?B?eU0rTXBkRnNORXoyUmNiOVVPTVhiYjFEQi9KeWNNNnRCMjJpUWNsTzRQQXBv?=
- =?utf-8?B?cyt3VTFVQk1OdDlVdGh6c0cwWVBCQ25lRFdwSGFXWFBTTDJ2eWZSbFkyRTZL?=
- =?utf-8?B?bTJlUmE2d0VmbmFrYmE2Kzh6Y0ZPL1VuT0RLMFNSbDZrTnhWaWJEbmdDT09W?=
- =?utf-8?B?ZXJtalV2aEdtRTIyREMwTU1VRUE5Uk9VbXdLaTlqeWR4THRmc2l6Q2xHQWxG?=
- =?utf-8?B?cVFkeW5WcVZ4cDVaOUVtVnpkTzlyR3FTTStiaEh5NjZTa2QrOGZVUllKVDdl?=
- =?utf-8?B?dXBITzlSM1ViUEg2NUlDUHpJVmlQdkZmVnE3YWRHem4zdWRIVlpPQk1FN0xO?=
- =?utf-8?Q?yVRoNkBGD8dju4vj9gMtXXU4P6tIku82?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZzAxWXJrR0Y4RjRPTWZtZVUyb01DL0hOeEdTdDkwSHN4QVUyUVFIM0dqZitU?=
- =?utf-8?B?MGxma01aNXZmZS80N25IeGtXUnJTNmNCU3o5anNRb2h0bXNNUVh4M2ZrME5I?=
- =?utf-8?B?bHZ4OGgvZWlHdEtGTXo4Zk9sQTlic3NrazFiY25xK0cralRGYk5QSDA0cE9s?=
- =?utf-8?B?OGxDMXVLNEQ0MmRoWHMrT1VhaTN3d3dDVmJLaXRhUEFyejBWM0lGUGlmN3Bk?=
- =?utf-8?B?Rm9ISXozMnFWOVIwRktlR3JoMis5bVFLclIxM1dNV2krR0FSTlVvK2I2WnQz?=
- =?utf-8?B?ajBxLzY4WWJnWmtPc1pQcEQ4bmRDdkt6Y0VSSW4zRWFKZTdSRUdLd21YMitx?=
- =?utf-8?B?bDVsSGR6MWlRWW5MQk8vaEt0Vm5uaVNMRk9iVXczMkpSNDlDY2h0ckVzK0U1?=
- =?utf-8?B?R1NnbU1EZk1OM280akFKZW02RzlyWUczSmgybzBqYUxCSS8xd2owTFgyTkNm?=
- =?utf-8?B?UlZKZXlsL3kxdmhWRUlUUjZ0YkJqSGIzMG9xODZ2ZVJPYmJ5NEpPaUZhL0Y5?=
- =?utf-8?B?Z3ZVZEVCcGt2NlRUeFNsWXdQNVEvanNQYk9MZUZSeG9OL0FkUDA1UzJiWUpq?=
- =?utf-8?B?WE1nYVBTdEZGZnJPdXFoZlo1YWRINnMvU2RQanNhTEhNNFpjWmhQNzI3MGNs?=
- =?utf-8?B?YWRMa2JVSXk3aExMdDBwbkEyczIwUktreTBubXZ4blJoQ3ZpRFJkK0FLbXYv?=
- =?utf-8?B?Q2t2bnNWTG5HTzhtS1B6MnFMZHpKa2NYMUVBNEZNeElpeFlQSjNpSm1MaURD?=
- =?utf-8?B?cG5tYWMvRjA2K1VXQ0VXc0pkWUI1S1ZHTjBVd3ZkM0YreENCMmdZd2czTDBs?=
- =?utf-8?B?NzhVWjQvZ1UyeWV0cWtDZDV4RmhEdnFJVDEzNTlXdnE1MXMwa053TUtwMFFp?=
- =?utf-8?B?NjVLTDg3MkUweG4zMUZJU3dPOFJJTWJOUTlTNnlJRTBEOTVHejBZM2pzdGh1?=
- =?utf-8?B?NGtmQkRNQTkzTElRK0tZa281a0NnM2RVa3JDbTI2NDNxOXUwZFdUd00ydFAy?=
- =?utf-8?B?WmxsTERxdHRpN2VpMlZCUHJRdk0rcmk4QzdQMzBzWGJHclFoVWtWUUR6Z0tJ?=
- =?utf-8?B?T3ZGOXVMK3JocTVFWmtQMGNCSGZOU2dtbHJOaGIxNlhxWGZTcVVNSFRDdnht?=
- =?utf-8?B?SFNzUWIyaXM1VElWZGpTR2V4UWpTNzFuNG5Ldi9ZSERrRnFFMnM0R2FBSjJr?=
- =?utf-8?B?Ym5sZ0RpQjErbjlRVm11UGNDZDQydDJwdXF0Q2ttR0pPODVUK1FpSmNkMUxR?=
- =?utf-8?B?cFRhM0t2b21CekI4ck1yNGs5bDZmbjhQTWNWMGFDbnFZa1Vhd21ZbUtlc2dS?=
- =?utf-8?B?aG02ZVNqRENuZ0ZDeEwvVjdua0ZiL1pTaWxGVk5FQnlKaWc3ZDZhMUhjUkZY?=
- =?utf-8?B?US9rL3prMzZ4SDcvSEN4OEgrTUdJdTNwQ3k5ditIL2ZablJKbTE5cW9NdTZI?=
- =?utf-8?B?eFduWmFSWFRDN1RzRVU2OVFTb0xHNlY5WDZNbGpqRldManRWTFVtbE4yNG5I?=
- =?utf-8?B?YUlEN2gzV1JST2JET3NnTFByYVVQbXhEb0tiRmQrZXE5QVIwUmRIVW0yaXZV?=
- =?utf-8?B?aWw4NFlmdXV4NW13N09meEtnOVVwMWRhVmx3ci8vcEpjODZXK294WU1LT3hk?=
- =?utf-8?B?MHpFdnJtU1Q2U1ZMelA2Y0RQR1o0LzNjQjRhWjQyZGZ4NmYzb2w2N1FDck9S?=
- =?utf-8?B?MDlzdUQyeU9PWnRJSjk0NGIxaDZsak5pV1ZKVFNVU05VcU5sdVBHK3pxMlVl?=
- =?utf-8?B?MWFzQ1ovc2lxWEpPWG5lK01xQ0dRbUpubkRPdEFqTmhKaDZiS24rdCtmSC8x?=
- =?utf-8?B?b3dNbU1ZcVNCRFZ3L2xmUldKMUlZQXVpeHNsQm5NL2hWWFJJK1htRU1kVFY2?=
- =?utf-8?B?Zm9DazFpOUtRZk9JWDhTcFZMdC9icnJOdGZTQUhOS1VNQW12WDhwSzEyaEk3?=
- =?utf-8?B?T1VBWlp4WThJM3pTdDQ2UThBV1VTVCtQWmtETFZ5T20yTTI2VDdITG91OWVz?=
- =?utf-8?B?dGtqNWhhNUE3bHdoTlowMkwzS1Z6VTBUVFQ2bVJaVmFITk4waWJJeDdCQ2lC?=
- =?utf-8?B?NTBvZHRtK2kwbE1LdlA1aVFlak1NMUZ6Y1gwczEwMWlyMmYwZS8rOUpsTXhm?=
- =?utf-8?B?TEhtSEZTQXBPWmNzSzZxcUV4UndEcUhhMVVDSlF0RWw5VFhQUjlPSU9xcHp4?=
- =?utf-8?Q?fJqVZqIa6OYFR5+Vppa1FkRw6N6I1KVdVMtv5t1isB9A?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87be57f5-457b-487d-ae9b-08de27727c71
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 13:49:45.9146
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FFC4QrTjPLCGgXfFJHvgQax48NG+jzWHqqkIGqam6OhWuzZnejSOmtYhrgoGEB5VwErfC40rjIvRQrEjnt40lg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8571
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANvPHWkC/03M0QrCIBTG8VcZ5zpjusm0q71HjJB5bELM4TEph
+ u+eDYIu/x8fvx0Io0eCS7NDxOzJh7WGPjUwL2a9I/O2NohWSM55z+KT0u2BlpjRUrthFm5wGup
+ /i+j867CuU+3FUwrxfdBZfdefIv+UrFjLrDY9d52UslPjFihhOFuEqZTyAYS9DfaiAAAA
+X-Change-ID: 20251114-rust_leds-a959f7c2f7f9
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3599;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=X8Hwzghf1B7tzwaWKSa37QYc7JPpdsNrrs4G08GwRdo=;
+ b=owEBbQKS/ZANAwAIATR2H/jnrUPSAcsmYgBpHdAEPOFiKMQcY3O1MqtrKXfa5XgPp+Flf5enw
+ bMhXn4xEvKJAjMEAAEIAB0WIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaR3QBAAKCRA0dh/4561D
+ 0kyiEACMll/ZSwavVx3HJCku9gnPNpxK0jUsBmzTUCqxNP31O1WHDSXM+VTPBy6wFIaHLnMLul+
+ ydVAJF/keYZpNi7+vZ5K0SLRQ03J+fjqw9IzFm3DhEa11SugCnUq/KrsZsF/zj1m+ks13xVgWgH
+ vQZ2EtPn7V3+bcV3KP9/4nC5pkHnTGEDfbHcP+BG2022Im2QOyr5Pjh0pMPYI+WRXFvOzquuQLx
+ zswHB//BvBiwUXfbA0Fwrqk8+85KAWmhnlF7NKu1B01XPLFO+5vxpGwE007gfmsse27AE0nruFR
+ AeE6hALfY7AKFFEZKZllIdRd1/wM44dwV6QjK7JQf1TqgavuiE76di2LcVS54W5d+MDfjTpeBz8
+ G7oGOtVzfTMu+zXQCftdO2KxcEBc9j79lDg86Q5hdXXpL1mAb76YgBshRnf7NeSRvIt2mWdo5Uv
+ e0zAobG4Jst++3EPseEGPgqVASvfzCOWZAoil0N3kFKlV8Ij8E8XscexAmj7Ha3h57grQpGwuT1
+ Vw8heBy4DYpx4UOLtCEXRjcxc3qX64/upf9NIRb3QyWcDT25xIJSSnYq1Ilj/+r5X40Jdd07ovc
+ genFnNlPLtCFz0mcBGDeses8fAofz7wPYdTV9ysN76xkfZ8kUyVQqtXXTlJ1qy3T5H/Q+9Z4Gyj
+ 4b8c3ZLdt3rDnYg==
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Wed Nov 19, 2025 at 1:28 PM JST, Alexandre Courbot wrote:
-> On Sat Nov 15, 2025 at 8:30 AM JST, Timur Tabi wrote:
->> Turing and GA100 use programmed I/O (PIO) instead of DMA to upload
->> firmware images into Falcon memory.
->>
->> A new firmware called the Generic Bootloader (as opposed to the
->> GSP Bootloader) is used to upload FWSEC.
->>
->> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
->> ---
->>  drivers/gpu/nova-core/falcon.rs         | 181 ++++++++++++++++++++++++
->>  drivers/gpu/nova-core/firmware.rs       |   4 +-
->>  drivers/gpu/nova-core/firmware/fwsec.rs | 112 ++++++++++++++-
->>  drivers/gpu/nova-core/gsp/boot.rs       |  10 +-
->>  4 files changed, 299 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/fal=
-con.rs
->> index 7af32f65ba5f..f9a4a35b7569 100644
->> --- a/drivers/gpu/nova-core/falcon.rs
->> +++ b/drivers/gpu/nova-core/falcon.rs
->> @@ -20,6 +20,10 @@
->>  use crate::{
->>      dma::DmaObject,
->>      driver::Bar0,
->> +    firmware::fwsec::{
->> +        BootloaderDmemDescV2,
->> +        GenericBootloader, //
->> +    },
->>      gpu::Chipset,
->>      num::{
->>          FromSafeCast,
->> @@ -400,6 +404,183 @@ pub(crate) fn reset(&self, bar: &Bar0) -> Result {
->>          Ok(())
->>      }
->> =20
->> +
->> +    /// See nvkm_falcon_pio_wr - takes a byte array instead of a Falcon=
-Firmware
->> +    fn pio_wr_bytes(
->> +        &self,
->> +        bar: &Bar0,
->> +        source: *const u8,
->> +        mem_base: u16,
->> +        length: usize,
->
-> We will definitely want to combine `source` and `length` into a
-> convenient `&[u8]`. Now I understand why you used a pointer here,
-> because we need to write an instance of `BootloaderDmemDescV2`, and also
-> because we use data from a `CoherentAllocation`.
->
-> The first one is easy to fix: `BootloaderDmemDescV2` is just a bunch of
-> integers, so you can implement `AsBytes` on it and get a nice slice of
-> bytes exactly as we want.
->
->> +        target_mem: FalconMem,
->> +        port: u8,
->> +        tag: u16
->> +    ) -> Result {
->> +        // To avoid unnecessary complication in the write loop, make su=
-re the buffer
->> +        // length is aligned.  It always is, which is why an assertion =
-is okay.
->> +        assert!((length % 4) =3D=3D 0);
->
-> Let's return an error instead of panicking here.
->
->> +
->> +        // From now on, we treat the data as an array of u32
->> +
->> +        let length =3D length / 4;
->> +        let mut remaining_len: usize =3D length;
->> +        let mut img_offset: usize =3D 0;
->> +        let mut tag =3D tag;
->> +
->> +        // Get data as a slice of u32s
->> +        let img =3D unsafe {
->> +            core::slice::from_raw_parts(source as *const u32, length)
->> +        };
->> +
->> +        match target_mem {
->> +            FalconMem::ImemSec | FalconMem::ImemNs =3D> {
->> +                regs::NV_PFALCON_FALCON_IMEMC::default()
->> +                    .set_secure(target_mem =3D=3D FalconMem::ImemSec)
->> +                    .set_aincw(true)
->> +                    .set_offs(mem_base)
->> +                    .write(bar, &E::ID, port as usize);
->> +            },
->> +            FalconMem::Dmem =3D> {
->> +                // gm200_flcn_pio_dmem_wr_init
->
-> Probably a stray development-time comment.
->
->> +                regs::NV_PFALCON_FALCON_DMEMC::default()
->> +                    .set_aincw(true)
->> +                    .set_offs(mem_base)
->> +                    .write(bar, &E::ID, port as usize);
->> +            },
->> +        }
->> +
->> +        while remaining_len > 0 {
->> +            let xfer_len =3D core::cmp::min(remaining_len, 256 / 4); //=
- pio->max =3D 256
->> +
->> +            // Perform the PIO write for the next 256 bytes.  Each tag =
-represents
->> +            // a 256-byte block in IMEM/DMEM.
->> +            let mut len =3D xfer_len;
->> +
->> +            match target_mem {
->> +                FalconMem::ImemSec | FalconMem::ImemNs =3D> {
->> +                    regs::NV_PFALCON_FALCON_IMEMT::default()
->> +                        .set_tag(tag)
->> +                        .write(bar, &E::ID, port as usize);
->> +
->> +                    while len > 0 {
->> +                        regs::NV_PFALCON_FALCON_IMEMD::default()
->> +                            .set_data(img[img_offset])
->> +                            .write(bar, &E::ID, port as usize);
->> +                        img_offset +=3D 1;
->> +                        len -=3D 1;
->> +                    };
->> +
->> +                    tag +=3D 1;
->> +                },
->> +                FalconMem::Dmem =3D> {
->> +                    // tag is ignored for DMEM
->> +                    while len > 0 {
->> +                        regs::NV_PFALCON_FALCON_DMEMD::default()
->> +                            .set_data(img[img_offset])
->> +                            .write(bar, &E::ID, port as usize);
->> +                        img_offset +=3D 1;
->> +                        len -=3D 1;
->> +                    };
->> +                },
->> +            }
->> +
->> +            remaining_len -=3D xfer_len;
->> +        }
->
-> Let's turn this C-style loop into something more Rustey.
->
-> We want to divide the input twice: once in 256 bytes block to write the
-> Imem tag if needed, and then again in blocks of `u32`. Nova being
-> little-endian, we can assume that ordering. This lets us leverage
-> `chunks` and `from_bytes`.
->
-> I got the following (untested) code, which assumes `source` is the
-> `&[u8]` we want to write:
->
->     // Length of an IMEM tag in bytes.
->     const IMEM_TAG_LEN: usize =3D 256;
->
->     for chunk in source.chunks(IMEM_TAG_LEN) {
->         // Convert our chunk of bytes into an array of u32s.
->         //
->         // This can never fail as the sizes match, but propagate the erro=
-r
->         // to avoid an `unsafe` statement.
->         let chunk =3D <[u32; IMEM_TAG_LEN / size_of::<u32>()]>::from_byte=
-s(chunk)?;
+This patch series has previously been contained in
+https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.probst@posteo.de/T/#t
+which added a rust written led driver for a microcontroller via i2c.
 
-Wait, that will fail on the last chunk unless the input size is a
-multiple of 256. But you can replace that last line with
+As the reading and writing to the i2c client via the register!
+macro has not been implemented yet [1], the patch series will only
+contain the additional abstractions required.
 
-    let chunk =3D chunk.chunks_exact(size_of::<u32>()).map(|word| {
-        // This `unwrap` cannot fail because `chunks_exact` guarantees that=
- `word` is the
-        // size of a `u32`.
-        let word: [u8; 4] =3D word.try_into().unwrap();
-        u32::from_le_bytes(word)
-    });
+[1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@kernel.org/
 
-and it should be good.
+The following changes were made:
+* add basic led classdev abstractions to register and unregister leds
 
-You'll also need to change `for &data in chunk` into `for data in chunk`
-in the code that follows.
+* add basic led classdev abstractions to register and unregister
+  multicolor leds
+
+Changes since v8:
+* accept `Option<ARef<Fwnode>>` in `led::InitData::fwnode()`
+* make functions in `MultiColorSubLed` const
+* drop the "rust: Add trait to convert a device reference to a bus
+  device reference" patch, as it has been picked into driver-core
+
+Changes since v7:
+* adjusted import style
+* added classdev parameter to callback functions in `LedOps`
+* implement `led::Color`
+* extend `led::InitData` with
+  - initial_brightness
+  - default_trigger
+  - default_color
+* split generic and normal led classdev abstractions up (see patch 3/4)
+* add multicolor led class device abstractions (see patch 4/4)
+* added MAINTAINERS entry
+
+Changes since v6:
+* fixed typos
+* improved documentation
+
+Changes since v5:
+* rename `IntoBusDevice` trait into `AsBusDevice`
+* fix documentation about `LedOps::BLOCKING`
+* removed dependency on i2c bindings
+* added `AsBusDevice` implementation for `platform::Device`
+* removed `device::Device` fallback implementation
+* document that `AsBusDevice` must not be used by drivers and is
+  intended for bus and class device abstractions only.
+
+Changes since v4:
+* add abstraction to convert a device reference to a bus device
+  reference
+* require the bus device as parent device and provide it in class device
+  callbacks
+* remove Pin<Vec<_>> abstraction (as not relevant for the led
+  abstractions)
+* fixed formatting in `led::Device::new`
+* fixed `LedOps::BLOCKING` did the inverse effect
+
+Changes since v3:
+* fixed kunit tests failing because of example in documentation
+
+Changes since v2:
+* return `Devres` on `led::Device` creation
+* replace KBox<T> with T in struct definition
+* increment and decrement reference-count of fwnode
+* make a device parent mandatory for led classdev creation
+* rename `led::Handler` to `led::LedOps`
+* add optional `brightness_get` function to `led::LedOps`
+* use `#[vtable]` instead of `const BLINK: bool`
+* use `Opaque::cast_from` instead of casting a pointer
+* improve documentation
+* improve support for older rust versions
+* use `&Device<Bound>` for parent
+
+Changes since v1:
+* fixed typos noticed by Onur Özkan
+
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+Markus Probst (3):
+      rust: leds: add basic led classdev abstractions
+      rust: leds: split generic and normal led classdev abstractions up
+      rust: leds: add multicolor classdev abstractions
+
+ MAINTAINERS                     |   8 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/device.rs           |   2 +-
+ rust/kernel/led.rs              | 551 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/led/multicolor.rs   | 195 ++++++++++++++
+ rust/kernel/led/normal.rs       |  39 +++
+ rust/kernel/lib.rs              |   1 +
+ 7 files changed, 796 insertions(+), 1 deletion(-)
+---
+base-commit: e4addc7cc2dfcc19f1c8c8e47f3834b22cb21559
+change-id: 20251114-rust_leds-a959f7c2f7f9
+
