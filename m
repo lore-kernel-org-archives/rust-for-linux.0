@@ -1,467 +1,363 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2D0364E91
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Nov 2025 14:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E789327C0C;
+	Wed, 19 Nov 2025 16:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763561496; cv=none; b=XSIm3YxIxfjn+VPYADBkhtpY6StpluZSEXZnkS/9iiuFWWUuBGUx725tWB6XVT/zADXBSYGo+G7eJddpgiR2dct9dPoG4SwWLM91tDtZ6PBHfzHCp6n2xEY6bY/0ZawuX3tXsPYR2054I9J+ZkHICba7OhYHY+2weZyv6SoxpK0=
+	t=1763569480; cv=none; b=jb3wHl2tMDVXZHWVL9nwkRsBay/I73PCNuShR4M2O0ycOv2PJi59FcceFKfI1Ubf0YkIovjs6exN6HcVbApFwW0smZgXg+9lsmgSHjp/7ceoU1NbS0DlRloz8EYoezmcdyCvTqiGWm47WhG/kZHLAPWiAZbSlBMWjk7fquV0SNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763561496; c=relaxed/simple;
-	bh=QYt2D6TCLcoCb8hD9WrVGYk0tnqyKZI+KpUzwfLWJPs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Rkq6cwGUbC+4bc2jTOAiblo0J1NHukR2uIIrWhybFVSh7z6NNdRdoRnXi3R5xNAv4nKgMfoL+w9EDU3FZo0I3qUiKnwuMV9vb6vxX7fxRymppHafSavvhDkOAxS7f2/2MuF3bRSUeTaR+Yx+U7f0i+A8daPetn3drThpEMoFBjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=qnZpNv3x; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1763569480; c=relaxed/simple;
+	bh=k3LKx2x4kEPnJQVwGRf0BS2K3uQDuHJQ6+W82NgmB4U=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=r5+7VDvJRg+pLfZkDB7zh9UX59d5ouxjO1EZX3imfSA3O8kf3MDy3098gOFim2WUPw2HJ3uw5gLbD2nrJcNi2aTalNwseinuN8r0RCOtoPWcE87joo1N/6+eihQ1kuH6Nq7n8FnVcVHKX9LrI3957hwgote9KlI8jw8wnbeyXNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q91IXr/F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="qnZpNv3x"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 102CC24002E
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Nov 2025 15:11:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1763561486; bh=YQmlGTqcdgyCjAinwbQZx4Jor61kriIjWS/BuOoDFfI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=qnZpNv3xvNO/9oIyfO5PyttFly6B9r8exj0zvgc7fF9Pb8xPR+1yF28aZQ/xBxt2J
-	 T1GPDdIV+m2h5vD7T2vaDq39f6PtWhvtjP2EorxhUDX+X9OmABa45ooEbZJ32xF9G7
-	 Ns7OfIxtbXAw/niNBEM3QSAWXGtSRRgWPGzRaqwX3oUcxu/IkIU8iFaW/YwyIaDPSF
-	 8su0PmYVhoHIxMfELqDsWK+crhiPKMM6AYpfdXWqscTu23dckCxFmNPDhAlGoRtz96
-	 GHVrJmQm7x8F+cum0OQ915rzumwQY1H/sEX3bNkejnqf7hFfodF3/ZdBUOV/YRRJvc
-	 XdlpZLqoYJDjw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4dBNgt0Njzz6twB;
-	Wed, 19 Nov 2025 15:11:22 +0100 (CET)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Wed, 19 Nov 2025 14:11:24 +0000
-Subject: [PATCH v9 2/3] rust: leds: split generic and normal led classdev
- abstractions up
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q91IXr/F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11197C4CEF5;
+	Wed, 19 Nov 2025 16:24:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763569479;
+	bh=k3LKx2x4kEPnJQVwGRf0BS2K3uQDuHJQ6+W82NgmB4U=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=q91IXr/FpjdsiUfmpoyz/2nEsOf60mmtnyRCeNB86rSzln+6XviST7nII7FsP/XcK
+	 wLlmNZgEqFAJ7ypIFNyzrd2D4eNzeW9BoAm7mLjh8+Zg3nsJMb97OoUcXVWs+XvKg9
+	 yDYmczcFZeERuo0q3WC9xt46q9vQCW8sI3TwG/oI/8DZB6uusSZJ8YIqiE+TL7lvB+
+	 ts1ws3T4/eZlTPMEAYX//AniaoBqPGuiRu1Gf//Hy1IF/oyfJvjCPYrG6E2+QKrLu4
+	 I93h1QyDa+3rw9uSNLp6wKIDlQywPu3emfYacThDvf5mOL6dU0T6oghzj+IZ0gdjLu
+	 HtnKa42PoijKg==
+Date: Wed, 19 Nov 2025 09:24:35 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: Deepak Gupta <debug@rivosinc.com>
+cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+    x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Vlastimil Babka <vbabka@suse.cz>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    Paul Walmsley <paul.walmsley@sifive.com>, 
+    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Andreas Hindborg <a.hindborg@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+    richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
+    kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
+    evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
+    samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
+    rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v23 21/28] riscv: kernel command line option to opt out
+ of user cfi
+In-Reply-To: <20251112-v5_user_cfi_series-v23-21-b55691eacf4f@rivosinc.com>
+Message-ID: <fe83a3cc-e8fb-e15b-4673-8caaf1ab39b8@kernel.org>
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com> <20251112-v5_user_cfi_series-v23-21-b55691eacf4f@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251119-rust_leds-v9-2-86c15da19063@posteo.de>
-References: <20251119-rust_leds-v9-0-86c15da19063@posteo.de>
-In-Reply-To: <20251119-rust_leds-v9-0-86c15da19063@posteo.de>
-To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
- Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15003;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=QYt2D6TCLcoCb8hD9WrVGYk0tnqyKZI+KpUzwfLWJPs=;
- b=owEBbQKS/ZANAwAIATR2H/jnrUPSAcsmYgBpHdAEqjxE44vl1Oxk5vEcmkorJrBf3vWdodM+1
- /uhB/XfBy2JAjMEAAEIAB0WIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaR3QBAAKCRA0dh/4561D
- 0kWzD/9mUnNbEfJ3OT5wPxilJZdHyPYMydLAyDUfFylv4QxeWpyf0fbnt8RMmE1UGfDpeY3QcSN
- KX6b0s7fQvxg7isKxTD9bAZ3kjKfRIZLFYr1n0LhkkuhsXxjOEBCF+zNRddzhQypH5N6OFFaLZ4
- DVp4zwHt7GLilTXlbYIpGLowco9ESvmTRHbTZOdzVJCoTeMw2up85hhohUgxpnYmjALSK44zs1P
- jcmSpUJWZ9hxqDxQKZRY1Z/PTYA5orto5IYyhfHC3q4V4CWmTR14lL6rD8/GDIB+NNz2tisyX5K
- nMxxP5Ih73eeUCk6g21tjlvMOiFUrdD/Y3fQ9+bMbeaX/SGUq9+mrveqqF57rCGqTmz8zb9PBT4
- fieOFlKIHXmkFvYSSdcicy77NlF0nJF2cK82OYhLgklo7Luuw1ngkXTIzzc4jAYg4e45kVc1gfd
- igu2qxuSnk2K42WosDeo1d8PU8c3dqOq4J32pIw+cSC4KvaQGCWKqpk1w9SHNmYxXkx7hLGLqVb
- ib2OsYvasMI7WSXFjdoksOByAYNiIyGWBZ1Ivcu9EOMuOr0RnvPbfNQlziOZ9FreNq70aVnN4Z1
- O3mWioYnZ1O36BeVf1++p04k8tHy0f5HkNjK38ht17GSfEq/S2SZTEJuYHfKjpzPqD5+cheSJBg
- ySuyaGgKe6pm+Ug==
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Type: text/plain; charset=US-ASCII
 
-Move code specific to normal led class devices into a separate file and
-introduce the `led::Mode` trait to allow for other types of led class
-devices.
+On Wed, 12 Nov 2025, Deepak Gupta via B4 Relay wrote:
 
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> From: Deepak Gupta <debug@rivosinc.com>
+> 
+> This commit adds a kernel command line option using which user cfi can be
+> disabled. User backward cfi and forward cfi can be enabled independently.
+> Kernel command line parameter "riscv_nousercfi" can take below values:
+>  - "all" : Disable forward and backward cfi both.
+>  - "bcfi" : Disable backward cfi.
+>  - "fcfi" : Disable forward cfi
+> 
+> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+
+I fixed the checkpatch warnings on this patch and cleaned up the patch 
+description slightly; see below.
+
+
+- Paul
+
+From: Deepak Gupta <debug@rivosinc.com>
+Date: Wed, 12 Nov 2025 16:43:19 -0800
+Subject: [PATCH v23 21/28] riscv: add kernel command line option to opt out of user cfi
+
+This commit adds a kernel command line option to disable part or all of
+user cfi.  User backward cfi and forward cfi can be controlled independently.
+Kernel command line parameter "riscv_nousercfi" can take the following values:
+ - "all" : Disable forward and backward cfi both
+ - "bcfi" : Disable backward cfi
+ - "fcfi" : Disable forward cfi
+
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+Link: https://patch.msgid.link/20251112-v5_user_cfi_series-v23-21-b55691eacf4f@rivosinc.com
+[pjw@kernel.org: fixed warnings from checkpatch; cleaned up patch description]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 ---
- MAINTAINERS               |   1 +
- rust/kernel/device.rs     |   2 +-
- rust/kernel/led.rs        | 128 +++++++++++++++++++++++++++++++++++-----------
- rust/kernel/led/normal.rs |  39 ++++++++++++++
- 4 files changed, 139 insertions(+), 31 deletions(-)
+ .../admin-guide/kernel-parameters.txt         |  8 +++
+ arch/riscv/include/asm/usercfi.h              |  9 +++
+ arch/riscv/kernel/cpufeature.c                |  9 ++-
+ arch/riscv/kernel/usercfi.c                   | 58 +++++++++++++++----
+ 4 files changed, 71 insertions(+), 13 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 80cb030911b7..ca11b9064e3f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14118,6 +14118,7 @@ L:	linux-leds@vger.kernel.org
- L:	rust-for-linux@vger.kernel.org
- S:	Maintained
- F:	rust/kernel/led.rs
-+F:	rust/kernel/led/
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 6c42061ca20e..453127ef8746 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6453,6 +6453,14 @@
+ 			replacement properties are not found. See the Kconfig
+ 			entry for RISCV_ISA_FALLBACK.
  
- LEGO MINDSTORMS EV3
- R:	David Lechner <david@lechnology.com>
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 660cb2b48c07..d330248ff2aa 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -333,7 +333,7 @@ pub(crate) fn as_raw(&self) -> *mut bindings::device {
-     }
- 
-     /// Returns a reference to the parent device, if any.
--    #[cfg_attr(not(CONFIG_AUXILIARY_BUS), expect(dead_code))]
-+    #[cfg_attr(not(any(CONFIG_AUXILIARY_BUS, CONFIG_LEDS_CLASS)), expect(dead_code))]
-     pub(crate) fn parent(&self) -> Option<&Device> {
-         // SAFETY:
-         // - By the type invariant `self.as_raw()` is always valid.
-diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
-index fca55f02be8d..d51735322093 100644
---- a/rust/kernel/led.rs
-+++ b/rust/kernel/led.rs
-@@ -44,14 +44,18 @@
-     }, //
- };
- 
-+mod normal;
++	riscv_nousercfi=
++		all	Disable user cfi ABI to userspace even if cpu extension
++			are available.
++		bcfi	Disable user backward cfi ABI to userspace even if
++			shadow stack extension is available.
++		fcfi	Disable user forward cfi ABI to userspace even if landing
++			pad extension is available.
 +
-+pub use normal::Normal;
+ 	ro		[KNL] Mount root device read-only on boot
+ 
+ 	rodata=		[KNL,EARLY]
+diff --git a/arch/riscv/include/asm/usercfi.h b/arch/riscv/include/asm/usercfi.h
+index ec4b8a53eb74..7495baae1e3c 100644
+--- a/arch/riscv/include/asm/usercfi.h
++++ b/arch/riscv/include/asm/usercfi.h
+@@ -5,6 +5,10 @@
+ #ifndef _ASM_RISCV_USERCFI_H
+ #define _ASM_RISCV_USERCFI_H
+ 
++#define CMDLINE_DISABLE_RISCV_USERCFI_FCFI	1
++#define CMDLINE_DISABLE_RISCV_USERCFI_BCFI	2
++#define CMDLINE_DISABLE_RISCV_USERCFI		3
 +
- /// The led class device representation.
- ///
--/// This structure represents the Rust abstraction for a C `struct led_classdev`.
-+/// This structure represents the Rust abstraction for a led class device.
- #[pin_data(PinnedDrop)]
- pub struct Device<T: LedOps> {
-     ops: T,
-     #[pin]
--    classdev: Opaque<bindings::led_classdev>,
-+    classdev: Opaque<<T::Mode as private::Mode>::Type>,
+ #ifndef __ASSEMBLER__
+ #include <linux/types.h>
+ #include <linux/prctl.h>
+@@ -13,6 +17,8 @@
+ struct task_struct;
+ struct kernel_clone_args;
+ 
++extern unsigned long riscv_nousercfi;
++
+ #ifdef CONFIG_RISCV_USER_CFI
+ struct cfi_state {
+ 	unsigned long ubcfi_en : 1; /* Enable for backward cfi. */
+@@ -83,6 +89,9 @@ void set_indir_lp_lock(struct task_struct *task);
+ 
+ #endif /* CONFIG_RISCV_USER_CFI */
+ 
++bool is_user_shstk_enabled(void);
++bool is_user_lpad_enabled(void);
++
+ #endif /* __ASSEMBLER__ */
+ 
+ #endif /* _ASM_RISCV_USERCFI_H */
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 106f6bcde5c8..b220fec9a239 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -28,6 +28,7 @@
+ #include <asm/vector.h>
+ #include <asm/vendor_extensions.h>
+ #include <asm/vendor_extensions/thead.h>
++#include <asm/usercfi.h>
+ 
+ #define NUM_ALPHA_EXTS ('z' - 'a' + 1)
+ 
+@@ -45,6 +46,8 @@ struct riscv_isainfo hart_isa[NR_CPUS];
+ 
+ u32 thead_vlenb_of;
+ 
++unsigned long riscv_nousercfi;
++
+ /**
+  * riscv_isa_extension_base() - Get base extension word
+  *
+@@ -277,7 +280,8 @@ static int riscv_ext_svadu_validate(const struct riscv_isa_ext_data *data,
+ static int riscv_cfilp_validate(const struct riscv_isa_ext_data *data,
+ 				const unsigned long *isa_bitmap)
+ {
+-	if (!IS_ENABLED(CONFIG_RISCV_USER_CFI))
++	if (!IS_ENABLED(CONFIG_RISCV_USER_CFI) ||
++	    (riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_FCFI))
+ 		return -EINVAL;
+ 
+ 	return 0;
+@@ -286,7 +290,8 @@ static int riscv_cfilp_validate(const struct riscv_isa_ext_data *data,
+ static int riscv_cfiss_validate(const struct riscv_isa_ext_data *data,
+ 				const unsigned long *isa_bitmap)
+ {
+-	if (!IS_ENABLED(CONFIG_RISCV_USER_CFI))
++	if (!IS_ENABLED(CONFIG_RISCV_USER_CFI) ||
++	    (riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_BCFI))
+ 		return -EINVAL;
+ 
+ 	return 0;
+diff --git a/arch/riscv/kernel/usercfi.c b/arch/riscv/kernel/usercfi.c
+index 33c955d56eb3..d7a973c58943 100644
+--- a/arch/riscv/kernel/usercfi.c
++++ b/arch/riscv/kernel/usercfi.c
+@@ -17,6 +17,8 @@
+ #include <asm/csr.h>
+ #include <asm/usercfi.h>
+ 
++unsigned long riscv_nousercfi;
++
+ #define SHSTK_ENTRY_SIZE sizeof(void *)
+ 
+ bool is_shstk_enabled(struct task_struct *task)
+@@ -59,7 +61,7 @@ unsigned long get_active_shstk(struct task_struct *task)
+ 
+ void set_shstk_status(struct task_struct *task, bool enable)
+ {
+-	if (!cpu_supports_shadow_stack())
++	if (!is_user_shstk_enabled())
+ 		return;
+ 
+ 	task->thread_info.user_cfi_state.ubcfi_en = enable ? 1 : 0;
+@@ -89,7 +91,7 @@ bool is_indir_lp_locked(struct task_struct *task)
+ 
+ void set_indir_lp_status(struct task_struct *task, bool enable)
+ {
+-	if (!cpu_supports_indirect_br_lp_instr())
++	if (!is_user_lpad_enabled())
+ 		return;
+ 
+ 	task->thread_info.user_cfi_state.ufcfi_en = enable ? 1 : 0;
+@@ -259,7 +261,7 @@ SYSCALL_DEFINE3(map_shadow_stack, unsigned long, addr, unsigned long, size, unsi
+ 	bool set_tok = flags & SHADOW_STACK_SET_TOKEN;
+ 	unsigned long aligned_size = 0;
+ 
+-	if (!cpu_supports_shadow_stack())
++	if (!is_user_shstk_enabled())
+ 		return -EOPNOTSUPP;
+ 
+ 	/* Anything other than set token should result in invalid param */
+@@ -306,7 +308,7 @@ unsigned long shstk_alloc_thread_stack(struct task_struct *tsk,
+ 	unsigned long addr, size;
+ 
+ 	/* If shadow stack is not supported, return 0 */
+-	if (!cpu_supports_shadow_stack())
++	if (!is_user_shstk_enabled())
+ 		return 0;
+ 
+ 	/*
+@@ -352,7 +354,7 @@ void shstk_release(struct task_struct *tsk)
+ {
+ 	unsigned long base = 0, size = 0;
+ 	/* If shadow stack is not supported or not enabled, nothing to release */
+-	if (!cpu_supports_shadow_stack() || !is_shstk_enabled(tsk))
++	if (!is_user_shstk_enabled() || !is_shstk_enabled(tsk))
+ 		return;
+ 
+ 	/*
+@@ -381,7 +383,7 @@ int arch_get_shadow_stack_status(struct task_struct *t, unsigned long __user *st
+ {
+ 	unsigned long bcfi_status = 0;
+ 
+-	if (!cpu_supports_shadow_stack())
++	if (!is_user_shstk_enabled())
+ 		return -EINVAL;
+ 
+ 	/* this means shadow stack is enabled on the task */
+@@ -395,7 +397,7 @@ int arch_set_shadow_stack_status(struct task_struct *t, unsigned long status)
+ 	unsigned long size = 0, addr = 0;
+ 	bool enable_shstk = false;
+ 
+-	if (!cpu_supports_shadow_stack())
++	if (!is_user_shstk_enabled())
+ 		return -EINVAL;
+ 
+ 	/* Reject unknown flags */
+@@ -448,7 +450,7 @@ int arch_lock_shadow_stack_status(struct task_struct *task,
+ 				  unsigned long arg)
+ {
+ 	/* If shtstk not supported or not enabled on task, nothing to lock here */
+-	if (!cpu_supports_shadow_stack() ||
++	if (!is_user_shstk_enabled() ||
+ 	    !is_shstk_enabled(task) || arg != 0)
+ 		return -EINVAL;
+ 
+@@ -461,7 +463,7 @@ int arch_get_indir_br_lp_status(struct task_struct *t, unsigned long __user *sta
+ {
+ 	unsigned long fcfi_status = 0;
+ 
+-	if (!cpu_supports_indirect_br_lp_instr())
++	if (!is_user_lpad_enabled())
+ 		return -EINVAL;
+ 
+ 	/* indirect branch tracking is enabled on the task or not */
+@@ -474,7 +476,7 @@ int arch_set_indir_br_lp_status(struct task_struct *t, unsigned long status)
+ {
+ 	bool enable_indir_lp = false;
+ 
+-	if (!cpu_supports_indirect_br_lp_instr())
++	if (!is_user_lpad_enabled())
+ 		return -EINVAL;
+ 
+ 	/* indirect branch tracking is locked and further can't be modified by user */
+@@ -498,7 +500,7 @@ int arch_lock_indir_br_lp_status(struct task_struct *task,
+ 	 * If indirect branch tracking is not supported or not enabled on task,
+ 	 * nothing to lock here
+ 	 */
+-	if (!cpu_supports_indirect_br_lp_instr() ||
++	if (!is_user_lpad_enabled() ||
+ 	    !is_indir_lp_enabled(task) || arg != 0)
+ 		return -EINVAL;
+ 
+@@ -506,3 +508,37 @@ int arch_lock_indir_br_lp_status(struct task_struct *task,
+ 
+ 	return 0;
  }
- 
- /// The led init data representation.
-@@ -153,6 +157,7 @@ pub fn color(self, color: Color) -> Self {
- /// #[vtable]
- /// impl led::LedOps for MyLedOps {
- ///     type Bus = platform::Device<device::Bound>;
-+///     type Mode = led::Normal;
- ///     const BLOCKING: bool = false;
- ///     const MAX_BRIGHTNESS: u32 = 255;
- ///
-@@ -184,6 +189,12 @@ pub trait LedOps: Send + 'static + Sized {
-     /// The bus device required by the implementation.
-     #[allow(private_bounds)]
-     type Bus: AsBusDevice<Bound>;
 +
-+    /// The led mode to use.
-+    ///
-+    /// See [`Mode`].
-+    type Mode: Mode;
-+
-     /// If set true, [`LedOps::brightness_set`] and [`LedOps::blink_set`] must perform the
-     /// operation immediately. If set false, they must not sleep.
-     const BLOCKING: bool;
-@@ -270,6 +281,42 @@ fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
-     }
- }
- 
-+/// The led mode.
-+///
-+/// Each led mode has its own led class device type with different capabilities.
-+///
-+/// See [`Normal`].
-+pub trait Mode: private::Mode {}
-+
-+impl<T: private::Mode> Mode for T {}
-+
-+type RegisterFunc<T> =
-+    unsafe extern "C" fn(*mut bindings::device, *mut T, *mut bindings::led_init_data) -> i32;
-+
-+type UnregisterFunc<T> = unsafe extern "C" fn(*mut T);
-+
-+mod private {
-+    pub trait Mode {
-+        type Type;
-+        const REGISTER: super::RegisterFunc<Self::Type>;
-+        const UNREGISTER: super::UnregisterFunc<Self::Type>;
-+
-+        /// # Safety
-+        /// `raw` must be a valid pointer to [`Self::Type`].
-+        unsafe fn device<'a>(raw: *mut Self::Type) -> &'a crate::device::Device;
-+
-+        /// # Safety
-+        /// `led_cdev` must be a valid pointer to `led_classdev` embedded within [`Self::Type`].
-+        unsafe fn from_classdev(led_cdev: *mut bindings::led_classdev) -> *mut Self::Type;
-+
-+        /// # Safety
-+        /// `raw` must be a valid pointer to [`Self::Type`].
-+        unsafe fn pre_brightness_set(_raw: *mut Self::Type, _brightness: u32) {}
-+
-+        fn release(_led_cdev: &mut Self::Type) {}
-+    }
++bool is_user_shstk_enabled(void)
++{
++	return (cpu_supports_shadow_stack() &&
++		!(riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_BCFI));
 +}
 +
- // SAFETY: A `led::Device` can be unregistered from any thread.
- unsafe impl<T: LedOps + Send> Send for Device<T> {}
- 
-@@ -278,24 +325,22 @@ unsafe impl<T: LedOps + Send> Send for Device<T> {}
- unsafe impl<T: LedOps + Sync> Sync for Device<T> {}
- 
- impl<T: LedOps> Device<T> {
--    /// Registers a new led classdev.
--    ///
--    /// The [`Device`] will be unregistered on drop.
--    pub fn new<'a>(
-+    fn __new<'a>(
-         parent: &'a T::Bus,
-         init_data: InitData<'a>,
-         ops: T,
-+        func: impl FnOnce(bindings::led_classdev) -> Result<<T::Mode as private::Mode>::Type> + 'a,
-     ) -> impl PinInit<Devres<Self>, Error> + 'a {
-         Devres::new(
-             parent.as_ref(),
-             try_pin_init!(Self {
-                 ops,
--                classdev <- Opaque::try_ffi_init(|ptr: *mut bindings::led_classdev| {
-+                classdev <- Opaque::try_ffi_init(|ptr: *mut <T::Mode as private::Mode>::Type| {
-                     // SAFETY: `try_ffi_init` guarantees that `ptr` is valid for write.
--                    // `led_classdev` gets fully initialized in-place by
--                    // `led_classdev_register_ext` including `mutex` and `list_head`.
-+                    // `T::Mode::Type` (and the embedded led_classdev) gets fully initialized
-+                    // in-place by `T::Mode::REGISTER` including `mutex` and `list_head`.
-                     unsafe {
--                        ptr.write(bindings::led_classdev {
-+                        ptr.write((func)(bindings::led_classdev {
-                             brightness_set: (!T::BLOCKING)
-                                 .then_some(Adapter::<T>::brightness_set_callback),
-                             brightness_set_blocking: T::BLOCKING
-@@ -309,7 +354,7 @@ pub fn new<'a>(
-                                 .map_or(core::ptr::null(), CStr::as_char_ptr),
-                             color: init_data.color as u32,
-                             ..bindings::led_classdev::default()
--                        })
-+                        })?)
-                     };
- 
-                     let mut init_data_raw = bindings::led_init_data {
-@@ -326,11 +371,11 @@ pub fn new<'a>(
-                     };
- 
-                     // SAFETY:
--                    // - `parent.as_raw()` is guaranteed to be a pointer to a valid `device`
--                    //    or a null pointer.
--                    // - `ptr` is guaranteed to be a pointer to an initialized `led_classdev`.
-+                    // - `parent.as_ref().as_raw()` is guaranteed to be a pointer to a valid
-+                    //    `device`.
-+                    // - `ptr` is guaranteed to be a pointer to an initialized `T::Mode::Type`.
-                     to_result(unsafe {
--                        bindings::led_classdev_register_ext(
-+                        (<T::Mode as private::Mode>::REGISTER)(
-                             parent.as_ref().as_raw(),
-                             ptr,
-                             &mut init_data_raw,
-@@ -350,15 +395,22 @@ pub fn new<'a>(
-     /// `led::Device`.
-     unsafe fn from_raw<'a>(led_cdev: *mut bindings::led_classdev) -> &'a Self {
-         // SAFETY: The function's contract guarantees that `led_cdev` points to a `led_classdev`
--        // field embedded within a valid `led::Device`. `container_of!` can therefore
--        // safely calculate the address of the containing struct.
--        unsafe { &*container_of!(Opaque::cast_from(led_cdev), Self, classdev) }
-+        // embedded within a `led::Device` and thus is embedded within `T::Mode::Type`.
-+        let raw = unsafe { <T::Mode as private::Mode>::from_classdev(led_cdev) };
-+
-+        // SAFETY: The function's contract guarantees that `raw` points to a `led_classdev` field
-+        // embedded within a valid `led::Device`. `container_of!` can therefore safely calculate
-+        // the address of the containing struct.
-+        unsafe { &*container_of!(Opaque::cast_from(raw), Self, classdev) }
-     }
- 
-     fn parent(&self) -> &device::Device<Bound> {
--        // SAFETY:
--        // - `self.classdev.get()` is guaranteed to be a valid pointer to `led_classdev`.
--        unsafe { device::Device::from_raw((*(*self.classdev.get()).dev).parent) }
-+        // SAFETY: `self.classdev.get()` is guaranteed to be a valid pointer to `T::Mode::Type`.
-+        let device = unsafe { <T::Mode as private::Mode>::device(self.classdev.get()) };
-+        // SAFETY: `led::Device::__new` doesn't allow to register a class device without an parent.
-+        let parent = unsafe { device.parent().unwrap_unchecked() };
-+        // SAFETY: the existence of `self` guarantees that `parent` is bound to a driver.
-+        unsafe { parent.as_bound() }
-     }
- }
- 
-@@ -376,11 +428,17 @@ impl<T: LedOps> Adapter<T> {
-         brightness: u32,
-     ) {
-         // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
--        // `led_classdev` embedded within a `led::Device`.
-+        // `T::Mode::Type` embedded within a `led::Device`.
-         let classdev = unsafe { Device::<T>::from_raw(led_cdev) };
-         // SAFETY: `classdev.parent()` is guaranteed to be contained in `T::Bus`.
-         let parent = unsafe { T::Bus::from_device(classdev.parent()) };
- 
-+        // SAFETY: `classdev.classdev.get()` is guaranteed to be a valid pointer to a
-+        // `T::Mode::Type`.
-+        unsafe {
-+            <T::Mode as private::Mode>::pre_brightness_set(classdev.classdev.get(), brightness);
-+        }
-+
-         let _ = classdev.ops.brightness_set(parent, classdev, brightness);
-     }
- 
-@@ -394,11 +452,17 @@ impl<T: LedOps> Adapter<T> {
-     ) -> i32 {
-         from_result(|| {
-             // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
--            // `led_classdev` embedded within a `led::Device`.
-+            // `T::Mode::Type` embedded within a `led::Device`.
-             let classdev = unsafe { Device::<T>::from_raw(led_cdev) };
-             // SAFETY: `classdev.parent()` is guaranteed to be contained in `T::Bus`.
-             let parent = unsafe { T::Bus::from_device(classdev.parent()) };
- 
-+            // SAFETY: `classdev.classdev.get()` is guaranteed to be a valid pointer to a
-+            // `T::Mode::Type`.
-+            unsafe {
-+                <T::Mode as private::Mode>::pre_brightness_set(classdev.classdev.get(), brightness);
-+            }
-+
-             classdev.ops.brightness_set(parent, classdev, brightness)?;
-             Ok(0)
-         })
-@@ -410,7 +474,7 @@ impl<T: LedOps> Adapter<T> {
-     /// This function is called on getting the brightness of a led.
-     unsafe extern "C" fn brightness_get_callback(led_cdev: *mut bindings::led_classdev) -> u32 {
-         // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
--        // `led_classdev` embedded within a `led::Device`.
-+        // `T::Mode::Type` embedded within a `led::Device`.
-         let classdev = unsafe { Device::<T>::from_raw(led_cdev) };
-         // SAFETY: `classdev.parent()` is guaranteed to be contained in `T::Bus`.
-         let parent = unsafe { T::Bus::from_device(classdev.parent()) };
-@@ -431,7 +495,7 @@ impl<T: LedOps> Adapter<T> {
-     ) -> i32 {
-         from_result(|| {
-             // SAFETY: The function's contract guarantees that `led_cdev` is a valid pointer to a
--            // `led_classdev` embedded within a `led::Device`.
-+            // `T::Mode::Type` embedded within a `led::Device`.
-             let classdev = unsafe { Device::<T>::from_raw(led_cdev) };
-             // SAFETY: `classdev.parent()` is guaranteed to be contained in `T::Bus`.
-             let parent = unsafe { T::Bus::from_device(classdev.parent()) };
-@@ -456,17 +520,21 @@ impl<T: LedOps> PinnedDrop for Device<T> {
-     fn drop(self: Pin<&mut Self>) {
-         let raw = self.classdev.get();
-         // SAFETY: The existence of `self` guarantees that `self.classdev.get()` is a pointer to a
--        // valid `struct led_classdev`.
--        let dev: &device::Device = unsafe { device::Device::from_raw((*raw).dev) };
-+        // valid `T::Mode::Type`.
-+        let dev: &device::Device = unsafe { <T::Mode as private::Mode>::device(raw) };
- 
-         let _fwnode = dev
-             .fwnode()
-             // SAFETY: the reference count of `fwnode` has previously been
--            // incremented in `led::Device::new`.
-+            // incremented in `led::Device::__new`.
-             .map(|fwnode| unsafe { ARef::from_raw(NonNull::from(fwnode)) });
- 
-         // SAFETY: The existence of `self` guarantees that `self.classdev` has previously been
--        // successfully registered with `led_classdev_register_ext`.
--        unsafe { bindings::led_classdev_unregister(self.classdev.get()) };
-+        // successfully registered with `T::Mode::REGISTER`.
-+        unsafe { (<T::Mode as private::Mode>::UNREGISTER)(raw) };
-+
-+        // SAFETY: The existence of `self` guarantees that `self.classdev.get()` is a pointer to a
-+        // valid `T::Mode::Type`.
-+        <T::Mode as private::Mode>::release(unsafe { &mut *raw });
-     }
- }
-diff --git a/rust/kernel/led/normal.rs b/rust/kernel/led/normal.rs
-new file mode 100644
-index 000000000000..13feeb3256f3
---- /dev/null
-+++ b/rust/kernel/led/normal.rs
-@@ -0,0 +1,39 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Led mode for the `struct led_classdev`.
-+//!
-+//! C header: [`include/linux/leds.h`](srctree/include/linux/leds.h)
-+
-+use super::*;
-+
-+/// The led mode for the `struct led_classdev`. Leds with this mode can only have a fixed color.
-+pub enum Normal {}
-+
-+impl private::Mode for Normal {
-+    type Type = bindings::led_classdev;
-+    const REGISTER: RegisterFunc<Self::Type> = bindings::led_classdev_register_ext;
-+    const UNREGISTER: UnregisterFunc<Self::Type> = bindings::led_classdev_unregister;
-+
-+    unsafe fn device<'a>(raw: *mut Self::Type) -> &'a device::Device {
-+        // SAFETY:
-+        // - The function's contract guarantees that `raw` is a valid pointer to `led_classdev`.
-+        unsafe { device::Device::from_raw((*raw).dev) }
-+    }
-+
-+    unsafe fn from_classdev(led_cdev: *mut bindings::led_classdev) -> *mut Self::Type {
-+        led_cdev
-+    }
++bool is_user_lpad_enabled(void)
++{
++	return (cpu_supports_indirect_br_lp_instr() &&
++		!(riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_FCFI));
 +}
 +
-+impl<T: LedOps<Mode = Normal>> Device<T> {
-+    /// Registers a new led classdev.
-+    ///
-+    /// The [`Device`] will be unregistered on drop.
-+    pub fn new<'a>(
-+        parent: &'a T::Bus,
-+        init_data: InitData<'a>,
-+        ops: T,
-+    ) -> impl PinInit<Devres<Self>, Error> + 'a {
-+        Self::__new(parent, init_data, ops, Ok)
-+    }
++static int __init setup_global_riscv_enable(char *str)
++{
++	if (strcmp(str, "all") == 0)
++		riscv_nousercfi = CMDLINE_DISABLE_RISCV_USERCFI;
++
++	if (strcmp(str, "fcfi") == 0)
++		riscv_nousercfi |= CMDLINE_DISABLE_RISCV_USERCFI_FCFI;
++
++	if (strcmp(str, "bcfi") == 0)
++		riscv_nousercfi |= CMDLINE_DISABLE_RISCV_USERCFI_BCFI;
++
++	if (riscv_nousercfi)
++		pr_info("riscv user cfi disabled via cmdline - shadow stack status : %s, landing pad status : %s\n",
++			(riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_BCFI) ? "disabled" :
++			"enabled", (riscv_nousercfi & CMDLINE_DISABLE_RISCV_USERCFI_FCFI) ?
++			"disabled" : "enabled");
++
++	return 1;
 +}
-
++
++__setup("riscv_nousercfi=", setup_global_riscv_enable);
 -- 
-2.51.0
+2.48.1
 
