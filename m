@@ -1,125 +1,100 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8A6307AEB
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Nov 2025 21:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C6C372AA5
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Nov 2025 21:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763589371; cv=none; b=Vesx8e0Z7FXzFHl7NxXpH3wJGMoqbVplKUyMf+IPIXgbI+thugWqPo+myzrg6k5NIbHV+S7hvDUPRTXFLVlGC3Zuqf+J4f5HAQnyAm/UP5nu5sNT5b2633RzXRX3dOPYS3R0m7IdKPbQ3QVr5Hz7LZW4v8RZVVD1ZasOFyZESf0=
+	t=1763589441; cv=none; b=a0dAKgNdJGduATgvpm5aDADahPf0qPbnb3zdbahgV6WOPPxx09adyEqZ9PNbdLynEgZB8hOpgkKsvOPuNwedLILp3KAY0hx+udN7+ipYcFA4zo1YRG7QHcTnBaRWmKtewrM75LuGtvBy8zh5WGGEoDzXy2iBhT6AvjMG+JFf2/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763589371; c=relaxed/simple;
-	bh=onNpC3tENL3hyNWtGgbWx/uUMITr77K7Hvk2v5PMIzE=;
+	s=arc-20240116; t=1763589441; c=relaxed/simple;
+	bh=/qAGvFjpsJQFwFjRXXKYt2fLlWs6HPaYZrh05Mf+aoI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XCBEXpwHCd8gOBXKAI/o9vK3FkT4glYWPmC21n6LkxNacuzDQS3qTGYy2g01ipgmhnH7DLjVEHt/e39yW3mPmHaOiOJ7A80eRqk9b4aKrFguc0F7IMyPaxEPAdCTCninbmDlFddsrt0mUpCRi4Vb0jt+dEhh8m2UxKh4MblnULA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KytTNj4W; arc=none smtp.client-ip=209.85.210.170
+	 To:Cc:Content-Type; b=sq3cOIM2c+1uGGmOpR/XqYhfHMTt1nE1gAmIBBf3uOTP9f4frovg7+WqLy8qwalkbR4BcMp3WfRtbNAEUrwCaQe8BPk+KtmOS1Al3HnGIE26zVL9+KTxyiWSCQALJWyrDcxnucfqW9AAPYyYIPe2byJM+fz6lCUilJRLSa1oFdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YuV6z6I7; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KytTNj4W"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7ab689d3fa0so28334b3a.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Nov 2025 13:56:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YuV6z6I7"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b9a5f4435adso12875a12.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Nov 2025 13:57:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763589369; x=1764194169; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1763589439; x=1764194239; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d0R591e8nlfjSijopWGB6gPehsri2lKNUdCvCOVwet0=;
-        b=KytTNj4WH/OfMLlw2ajjK2wYzLq2eXoeOCoTD8J9dmU5N9gv+tfAd4gnGYaLGfNhU4
-         +2Ovudu5C/W69xZlQvjYkiiBNGax2ngxT2ozfSLsU76rfzjv7aWJuzRTaL5FcivPLaxP
-         XaPLyw80TPBRZn2Qlvl2WkgTXrIMeuOmxF0GMQykiWpzhF2csyoV2Y9moGMHgYOQr2Tr
-         yK4y50i44+g0uCq39dgX/nrFaXpMsBywe1xqNVhrhrJyI3lVYhvmoCr+5PkvITjTNwda
-         E3jLl5Rbaty8bzwbP4HrFVfW5W5qmYbREQV01wrKHg/O9aqk9Lxusti/tKSYusQsXRTR
-         emow==
+        bh=/qAGvFjpsJQFwFjRXXKYt2fLlWs6HPaYZrh05Mf+aoI=;
+        b=YuV6z6I7cUIDgSPEteGy2yJtbYB+WSv2ukx6e9G3fsN24+isv/ptP3U+yED39M8Ivn
+         bOv+lmdrR/GuYDXI9HP9SFAWSuKjp2u2RyrKlRxeO5XTaVPSa/3cbR8uqRkXeoTYiz2Q
+         Q16i0chc6kfLj24l0LKx6MVl0Mt6aZafc4R4dR6AHimZZrX9TZj+NPU5Pp3tU7A1nnN8
+         E8oWUWXPWDY5RTiP4DE/PxgXu2su55hJ77g5sLI/P8umWXMazvAIj0ALMDurgFZ9iEk+
+         rXnFa32PKQ6LDi2m2h5PIHyPIq878SrAGk46mO8IX/Zm6BNQKVip3IXGjNPSo1yS6qE4
+         fWYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763589369; x=1764194169;
+        d=1e100.net; s=20230601; t=1763589439; x=1764194239;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=d0R591e8nlfjSijopWGB6gPehsri2lKNUdCvCOVwet0=;
-        b=An6kptxH3Yoyi52Yx4XtAZgJZnDKwGEMoNvdt+CnypnTH5Xju+HqtAlrquFB3w67Wa
-         EG1ChzHfQDPse57gcspA25hUR22xK23uycBsk5el7I9N1Q+d3I0Obix/dJhD460tuLW0
-         7IDZnftzhNXiyLZs4aUKCra+lxILR7WvmzU2a9C9BJJBXBoss5pfSEfVCcX6uRvvrHsQ
-         8VuUzH4GccmVerdiGXFQOsL+VlLI7B6eO1aiQ96xVP76E8+KTn+dJry/xnOFno0wOS+/
-         /jFfXwmph+qkgvXpLJgDXtdrlCxAk4WFVyFHZCgDx57g6gg1xZY8Rlr3iJnozM2m+tk7
-         j64A==
-X-Forwarded-Encrypted: i=1; AJvYcCW9hS8Y5Cb5SHTAREDbl1oCilZmpc/+TpjTINptB+hkZEOY2xa3hnFZh9SR8MdusNxcADiXh2EfuUhJMpHoiw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhrPkiQ5AaPozg3HKS2kyNx5qs/cDZOBAJasSmHI8K8N6wrsCB
-	qXnrscRdRRKmlnAWc6NPGjdv+/bB2WJ0UjHvmaR0dKo8Azh2Q67iCatEUTmI2WmUOjjfkEKmEZL
-	XgPIUu95qPP8yk2vVdWOX6umKtATM2cE=
-X-Gm-Gg: ASbGncvz0H8Lxx1PwPKVPlt2+brI2b78D/bP4aAYv156sr/+h/eWHnEVpXR+s55zuwW
-	VNWBpsRaoGKrMccgmT1J6CvUyjZbYzc4Rp0viFQ1J6Rkq198I+1k+6GKqVuaUmHwzkpu9UDj8iN
-	fJmkX05qxV/ZvIvINn00MbAsIxUig38zMSCI/FJuR3snj7JcrXcJvzafAYMCCZ/6nehcWym6d0L
-	WJwil8QuGeCLdzfdAss8djcH6WoPZcj3B2PiSHN9MXsQen8wf7+IYLwgzOVtL0miJkNYub/Duuk
-	oY0/UgFFCL8JFCNEIpkv4+KeKbB8vlnlvO1l81UCephgVPj8VoluL9f2eJtsloRgEIGf2xHpSk5
-	s5PcVcM62chNudA==
-X-Google-Smtp-Source: AGHT+IFSkVQ+g/JGkZrc47c4PbD//KnrTsh/AHbzrEv2q5rfh3ujH4UBMytQNu5mgxG10fzHTQQrYNo0WRSPw69ELEI=
-X-Received: by 2002:a05:7022:2492:b0:11b:862d:8031 with SMTP id
- a92af1059eb24-11c9373dbc4mr278360c88.0.1763589368833; Wed, 19 Nov 2025
- 13:56:08 -0800 (PST)
+        bh=/qAGvFjpsJQFwFjRXXKYt2fLlWs6HPaYZrh05Mf+aoI=;
+        b=F7YO2fMy1kAPMey/Dy+/YJW1n2HXViro0evwCNbnDoFq9weDqqvD9IeSLjXgSFcOzn
+         wzvUt5hw4s7TYj3WD09KwmO3JCuiAGxsoBzH5AjPimQp1dG76YjsqOJll7SiCk9LsAGJ
+         frLDwpFTN8DsZPChz1ezN1hO/62KClkEMkWrzVPYsdCswNaE1kGiM1gt+mfH2qZ0B3bn
+         EmnfHdVG8iFcmhe1cVmPTuYE76vzhW9liQTUoZQ+xKm3knttkmuXGguRaNirAHsPgpxF
+         6J8qJBW0HvTUKUjIG5YnnhxM0E2enuw8K25GZGiKYYsmwQam09tBvZ4oYatQ9+vba/LM
+         jN4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVQGD1BIqdvyl/fIlLRooDdnIZ99Uz0pR2hYFHieHWsyuzBwvPSX1ir8XBcdvoPIRY8WTpXnm7s9R3agcUSIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/ct8vnvXxbMWU5HQ9tnG0pKsmYIwzyj7qGiS8qcBHwrGc3pt8
+	47kQ1J1pdkotmtTuUrF3vIsFS49/CnD5MKZfDONTIsBarw02nWiI7UpqlvFjPHMQEWHc9FCaG6P
+	YEHGqC17xJOQr2sMVAByWsR7PNjvISDg=
+X-Gm-Gg: ASbGncv7UYBfCkr62RmXF1I2sIqIfYTwwsW6Biq7Yt3im5xkKQd/ayoGusVAQY2P+P3
+	DTT9n5fyf02RQmPO9DPbX+lPJdKcwtwqhEH6Gxr2Eek7qePLaHVro3w7S5W+v95+pew49FgYuRT
+	vaNltRdp2rqPHzpU0MWD5HHgZ4DubDBVTP2dhBV2051OFWiJmwBToOKLCACnh/fcD8ZTB8A7eid
+	lR97KH3zsUDnJ3u0D+nufPtKdKVtI+JYMzFqpBc6qqpBILkNeD0aCjckZ6fqt5txci4RMhqyZ45
+	sx+gURD1Nz6bVxo06hi2/4ofFd/cVspy8Y1oSsGpiMNZwurpyfH0i0t/R/dsQWaTqJIxpb8OwWs
+	XuNGU3orxTbYcnls0yYFiTQow
+X-Google-Smtp-Source: AGHT+IFV/wjvohYHRvo/GIAdaoEM5kvvdPTdZXNyVvPshAQiPBh72hRRFJrv3HmAzQ5OHWiRDYE/f2HHJn7f1ebRWkA=
+X-Received: by 2002:a05:7301:28aa:b0:2a6:9dbf:bbe1 with SMTP id
+ 5a478bee46e88-2a6fd12db29mr218402eec.3.1763589438967; Wed, 19 Nov 2025
+ 13:57:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251016211740.653599-1-lossin@kernel.org>
-In-Reply-To: <20251016211740.653599-1-lossin@kernel.org>
+References: <20251117-core-cstr-cstrings-v4-1-924886ad9f75@gmail.com>
+In-Reply-To: <20251117-core-cstr-cstrings-v4-1-924886ad9f75@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 19 Nov 2025 22:55:55 +0100
-X-Gm-Features: AWmQ_blKMhARRoAmC99agQvThctHPsh6wPA_N_rNWlCmV6VeGl72X5wQdil-Wyk
-Message-ID: <CANiq72mpbRV9kuqjTpur67Eq3ofMQjSvq=Q64BuyAtvg9RcCCg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: pin-init: fix broken rust doc link
-To: Benno Lossin <lossin@kernel.org>, Guillaume Gomez <guillaume1.gomez@gmail.com>, 
-	=?UTF-8?Q?Le=C3=B3n_Orell_Valerian_Liehr?= <me@fmease.dev>
+Date: Wed, 19 Nov 2025 22:57:05 +0100
+X-Gm-Features: AWmQ_blnFqEy-R4TQJCUIqTEF4ZETcxskiCZns6bnP4oheq86u-5oQnscadf94w
+Message-ID: <CANiq72kk5555AC4qdQeYBdcLC=Z4MwboVJ2MDc_h5h4sTd0=Pw@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: sync: replace `kernel::c_str!` with C-Strings
+To: Tamir Duberstein <tamird@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
-	Alban Kurti <kurti@invicto.ai>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 16, 2025 at 11:17=E2=80=AFPM Benno Lossin <lossin@kernel.org> w=
-rote:
+On Mon, Nov 17, 2025 at 5:38=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
+> wrote:
 >
-> Rust 1.92.0 warns when building the documentation that [`PinnedDrop`] is
-> an invalid reference. This is correct and it's weird that it didn't warn
-> before, so fix the link.
+> From: Tamir Duberstein <tamird@gmail.com>
 >
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
-
-Benno asked me to pick these patches up for him this cycle.
+> C-String literals were added in Rust 1.77. Replace instances of
+> `kernel::c_str!` with C-String literals where possible.
+>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
 Applied to `rust-next` -- thanks everyone!
-
-    [ The reason is that it is hidden -- I had asked about that in the
-      upstream PR that changed the behavior because I wasn't sure it was
-      intentional (and thus whether we needed to fix this and other cases):
-
-          https://github.com/rust-lang/rust/pull/147153#issuecomment-339548=
-4636
-
-      It turns out it was not, and it has been fixed for 1.92.0's upcoming
-      release thanks to Guillaume and Le=C3=B3n. So we do not strictly need
-      this patch and the other changes anymore:
-
-          https://github.com/rust-lang/rust/pull/147809
-
-      However, checking hidden/private items or, even better, a runtime
-      toggle to be able to see those on the fly, is something that I think
-      would be quite nice so I have had it in our usual lists for a while.
-      Guillaume is open to the idea and perhaps experimenting with an
-      implementation on our side first -- he asked me to open issues
-      upstream:
-
-          https://github.com/rust-lang/rust/issues/149105
-          https://github.com/rust-lang/rust/issues/149106
-
-        - Miguel ]
-
-Cc'd Le=C3=B3n as well, who I should have probably Cc'd originally too.
 
 Cheers,
 Miguel
