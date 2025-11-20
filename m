@@ -1,66 +1,65 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAED32E12C
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 10:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6EC2D4B40
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 11:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763636094; cv=none; b=OMMxqialQqt5EpSsL//IA3gk6ZToIhQpDV4kFubdCyUmtZBwwZjT9EkxzpebTxm+dnCbVmtGbyijRNGWX35JdGkNMIio7W67yWg31Jnjq94MYcxtbDWhIGxdG9/Wu5t5xjKoB6s/em/Ex55YSaFdWpSXqigUp9dHrzibCmROdy4=
+	t=1763638480; cv=none; b=JgxL2ttT9MJBO6mPYsjDph90T5kRjHiDnqR3eZ46AeWPmhhRero/bEm0bhG6e0ZVYlkD/OWM0T9f+8qoxmkinNgpZmItPPw1jRFIydYnghtc+74Cm9D0ccTClTEMZ5fyubENprLZ/bE/+VuAj9w/rR/aim+l5jJZPZbcVdkvFrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763636094; c=relaxed/simple;
-	bh=VcZczHRii7P42Dh7vHYaf03fIor4sYyqBSnONy8XpHM=;
+	s=arc-20240116; t=1763638480; c=relaxed/simple;
+	bh=KP9M7UM3DOMv7x2JJX8u2Wkqx8XiQYNRNIYo7FJg4jA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pGzO2W7cVmfodkrfvP7rTUK40jlD5dFIyNqEUVN6nleAw0E2Ajbe9I/OwWwjb0BDWQQsxzw1P5WsxnWDud/Wi2I3ZeVhak42XeJT3cmbx0ThrxUqC92xfdoNLW6pHs8TTWBIN10uHLGtFoHllNY+1KEg6SXcJqWBIR7GMMxOTww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xWOcoqYw; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=lFJRQSdTDwqlp58cUg6gaRKrTs4eWB+wN3dquIsLlv9GcFXEmIjD4S6HlCo+ydSRZTDdEBWxxiPM3e8b4+mOug63FF/5B+onjJ1Auu5Vadnevg47AxvlTL/Ceqo14ZVJTHowyjhrB26klr0jI108wDtUfzOfiZrcLU4q8BJD/Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Uo1J8/rz; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xWOcoqYw"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64160e4d78eso777486a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 02:54:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Uo1J8/rz"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42b3b5ed793so552897f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 03:34:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763636090; x=1764240890; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1763638476; x=1764243276; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UWC2vUhoiQKT9HWF9RvAPRGaUzQ0E39nhqwqb4Wbiss=;
-        b=xWOcoqYws2KpNUotW8smS4DOvtQpIQ/d4LQ0vv639lwVqOoX/GxII1pzyHfSFgk4BQ
-         auo/vuO3WNN4esnT9aRUjJGM1VhGCdXNx3XOmQYhpu9vOGu+ZbBgjGrwaFQfvoRVfrZx
-         cUbaLzzC7dPi8/Ii6RrLVOlwn8oZjRK6G3sUzNPt/9uX+0vNKI8vJpNRn5PMPrAvg+Rp
-         GD1X6fgIWpjl3rHkf7nDp26bK3c+G+sh14RPYySgeg/DjiRFsXgLudQBUaR6/3PRng7V
-         G+/z1viCJOCPIJ/1KjNuUnmHBzAdcwhRegqJXD0Rd4ZqZAl4Ps1g6tSKvK3e47g52K1M
-         aitQ==
+        bh=irYXhJk+YQeGcC0lwAQH2NJi0CRJgcwHwSYlTrUVyWo=;
+        b=Uo1J8/rzzOmAykhT8QeEoNjiD6ByR+ITbQqY/pEojvQzQt0YqxBWm211NH+un7gAjA
+         AOEzFu+0m4+xlWyylQc2fe8O7yq8JvSlpyw9LBPsI5gbSkNpSfHeSOY+I6lhxQo5mpwL
+         tyOiRIRenq0YE3T7tkaog3kqSc8kMWgHh7ux4UI/ikxLZkgrzqG+Hek5Q0QC+is/tiRG
+         qNjMwS2YFKBFZHLRuLnEj0ubMUY02ymLwmOmfrXaiXyb+cK70LwrksfxEQvt8mqZXbtl
+         iMd4+UHqtdLR1L0HmMq5meWoqzzINeRCjEKl/M7O//rY/qpA5v85tIXSaG1nV/aHr1QQ
+         2ucw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763636090; x=1764240890;
+        d=1e100.net; s=20230601; t=1763638476; x=1764243276;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UWC2vUhoiQKT9HWF9RvAPRGaUzQ0E39nhqwqb4Wbiss=;
-        b=Dtnh9g5rxFri5d7YKhXCb0OD/b3naa4Pbj7FXC9BFKVcFSS2nEuYbX2TmJIhbL2huk
-         7dyamXfDQ73NHtwaycSRJp7ScnEhJQwuU+r5ZQU1vQvRazF0uO5DYH/aYMNlnvWUwd4e
-         +NbNC5K5JzO20/8aAzWtGWGSQDGSEmpWqS4yHKzJbeSsAiYSlGx5K34HmlHNHc/Z6+co
-         WRLy5vjmmyhIGZD/NDrrllJ7lr/IJJ+IqI90rbYYGrC4ICha6oicXme/GHWXISfSLSzr
-         +SK5qZMeubzZe0ieQgmqmZiWmSXkWIWXbLXGTYun54TN7Pv4BJ37/GanbeWvT3Gzyt94
-         T/8w==
-X-Forwarded-Encrypted: i=1; AJvYcCUiuDQ/bXbvkjNF3ZqtFWOubP67gvIrNcvgrNTw0p46Zkz4vvocvJxc3POqpcSIF2sLZiNoQWSDMk+5PMtMVA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywx+WHU38D/rOlqsOdJybJe9lpEcTUYHNro2cWl4o47ib7XcNWO
-	IIKAozyZrPdcTcssQb5/yzK1MvToxElLDM0t4HA9kyvIhwkf2eFWSk1Y/HwmH/DtsCGO762RoTe
-	p7pB0AraI7n/XIOAc9w==
-X-Google-Smtp-Source: AGHT+IGliQxOKFQqN9h5kfToOYWOfJDypiYEqvzX7eAWx84z4F4174qDJV6PGp2krjM4J8oh1xrGD724VU7L7cI=
-X-Received: from edp1.prod.google.com ([2002:a05:6402:4381:b0:641:661a:2bff])
+        bh=irYXhJk+YQeGcC0lwAQH2NJi0CRJgcwHwSYlTrUVyWo=;
+        b=BBPOfO47ZhoD6zJXfUlr1c26iLhtsePpPhpVGD7yHl2jIRokUPSlZh4UjwrOgkPR1w
+         9VMmw6zy3TfXN4e8ooTf6QpsfEW4KL9X2harCJlkyJ/r4g/Pjm6ZdPsCzyjq9SQYIMOj
+         eNTFp45ziTbJdm/K9rvAZJrQyT3CnR4WDINCFBr2AHGw6YssXt0CeBbrFCSjNeWXFaTc
+         GWJXtqhHdGaxaqgiutyH8On+kvB+fXOFlTuMPE99vLR3axnrxpt/IFAmb9MaNIXFriAx
+         f/bV+qt5YR7iG3tRl+B9ErXUys6MMJ9OYW5D4LTbGjp58ClEhbSmBQzTB5kjuXqE8g+H
+         GIWg==
+X-Forwarded-Encrypted: i=1; AJvYcCW6dXGbU/gT5vO9b6YJwsjeW52JEJhdu/+cHIZUW38XqBeYS/4fQCxHi3Sg5inQfmi32PMb3x6rqrRIOhDjyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvO7zABxu/QnhXyjm1jc9Zp0yUm0QNjGs5RYZRsfxLIlRKoVon
+	kmNpPPPqD5y7FsIZNYlM9/YkQAAn7wilzvaa9AC2VqGKykBFDengilgQkqm7bzHTOSZ6+tCdzix
+	62O6eMvNi75qCGjrHeA==
+X-Google-Smtp-Source: AGHT+IGD6vFBG/qnJRTeI0Egc5o0fCaTq+k3AZilSs3nMUa4+yW7KKG3PYKjSiBTF3vYiJw3LYHTcpA/ftuQTWQ=
+X-Received: from wrbfq12.prod.google.com ([2002:a05:6000:2a0c:b0:42b:33e5:eba0])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:3909:b0:640:b3c4:c22 with SMTP id 4fb4d7f45d1cf-6453645a4e4mr2260374a12.18.1763636090330;
- Thu, 20 Nov 2025 02:54:50 -0800 (PST)
-Date: Thu, 20 Nov 2025 10:54:49 +0000
-In-Reply-To: <20251119-rust_leds-v9-2-86c15da19063@posteo.de>
+ 2002:a05:6000:2210:b0:42b:3dbe:3a43 with SMTP id ffacd0b85a97d-42cb9a65043mr2524994f8f.50.1763638476264;
+ Thu, 20 Nov 2025 03:34:36 -0800 (PST)
+Date: Thu, 20 Nov 2025 11:34:35 +0000
+In-Reply-To: <20251119-rust_leds-v9-1-86c15da19063@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251119-rust_leds-v9-0-86c15da19063@posteo.de> <20251119-rust_leds-v9-2-86c15da19063@posteo.de>
-Message-ID: <aR7zeX-akq2Zyf8B@google.com>
-Subject: Re: [PATCH v9 2/3] rust: leds: split generic and normal led classdev
- abstractions up
+References: <20251119-rust_leds-v9-0-86c15da19063@posteo.de> <20251119-rust_leds-v9-1-86c15da19063@posteo.de>
+Message-ID: <aR78ywVnpWaOEeJ-@google.com>
+Subject: Re: [PATCH v9 1/3] rust: leds: add basic led classdev abstractions
 From: Alice Ryhl <aliceryhl@google.com>
 To: Markus Probst <markus.probst@posteo.de>
 Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
@@ -76,24 +75,157 @@ Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>,
 	linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Nov 19, 2025 at 02:11:24PM +0000, Markus Probst wrote:
-> Move code specific to normal led class devices into a separate file and
-> introduce the `led::Mode` trait to allow for other types of led class
-> devices.
+On Wed, Nov 19, 2025 at 02:11:21PM +0000, Markus Probst wrote:
+> Implement the core abstractions needed for led class devices, including:
+> 
+> * `led::LedOps` - the trait for handling leds, including
+>   `brightness_set`, `brightness_get` and `blink_set`
+> 
+> * `led::InitData` - data set for the led class device
+> 
+> * `led::Device` - a safe wrapper around `led_classdev`
 > 
 > Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> ---
+>  MAINTAINERS        |   7 +
+>  rust/kernel/led.rs | 472 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs |   1 +
+>  3 files changed, 480 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b71ea515240a..80cb030911b7 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -14112,6 +14112,13 @@ F:	drivers/leds/
+>  F:	include/dt-bindings/leds/
+>  F:	include/linux/leds.h
+>  
+> +LED SUBSYSTEM [RUST]
+> +M:	Markus Probst <markus.probst@posteo.de>
+> +L:	linux-leds@vger.kernel.org
+> +L:	rust-for-linux@vger.kernel.org
+> +S:	Maintained
+> +F:	rust/kernel/led.rs
+> +
+>  LEGO MINDSTORMS EV3
+>  R:	David Lechner <david@lechnology.com>
+>  S:	Maintained
+> diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
+> new file mode 100644
+> index 000000000000..fca55f02be8d
+> --- /dev/null
+> +++ b/rust/kernel/led.rs
+> @@ -0,0 +1,472 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Abstractions for the leds driver model.
+> +//!
+> +//! C header: [`include/linux/leds.h`](srctree/include/linux/leds.h)
+> +
+> +use core::{
+> +    marker::PhantomData,
+> +    mem::transmute,
+> +    pin::Pin,
+> +    ptr::NonNull, //
+> +};
+> +
+> +use pin_init::{
+> +    pin_data,
+> +    pinned_drop,
+> +    PinInit, //
+> +};
+> +
+> +use crate::{
+> +    build_error,
+> +    container_of,
+> +    device::{
+> +        self,
+> +        property::FwNode,
+> +        AsBusDevice,
+> +        Bound, //
+> +    },
+> +    devres::Devres,
+> +    error::{
+> +        code::EINVAL,
+> +        from_result,
+> +        to_result,
+> +        Error,
+> +        Result,
+> +        VTABLE_DEFAULT_ERROR, //
+> +    },
+> +    macros::vtable,
+> +    str::CStr,
+> +    try_pin_init,
+> +    types::{
+> +        ARef,
+> +        Opaque, //
+> +    }, //
+> +};
 
-So it seems like the goal of this trait is to support both normal led
-and multicolor led under the same code. However, it seems the traits
-involved with this are pretty complex.
+Please import kernel::prelude::* and remove all the imports that are
+available from the prelude.
 
-My primary feedback here is: please consider if we can avoid these
-complex traits. How much duplication would it really take to just have
-two Device structs and two LedOps traits? I think a few pieces of
-duplication would be far better than what this patch does.
+> +impl<'a> InitData<'a> {
+> +    /// Sets the firmware node
+> +    pub fn fwnode(self, fwnode: Option<ARef<FwNode>>) -> Self {
 
-In fact, I'm not sure you even need two LedOps traits if you did that;
-it seems like you could even get away with reusing the trait for both
-cases.
+I'm thinking that perhaps this should just be a `&'a FwNode` instead?
+That way, you can increment the refcount in Device::new() if
+registration is successful.
+
+> +        Self { fwnode, ..self }
+> +    }
+> +
+> +    /// Sets a default label
+
+There are many missing periods in doc-comments.
+
+> +/// Trait defining the operations for a LED driver.
+> +///
+> +/// # Examples
+> +///
+> +///```
+> +/// # use kernel::{
+> +/// #     c_str, device, devres::Devres,
+> +/// #     error::Result, led,
+> +/// #     macros::vtable, platform, prelude::*,
+> +/// # };
+> +/// # use core::pin::Pin;
+> +///
+> +/// struct MyLedOps;
+
+When using # in examples, please do not have an empty line before
+beginning the example. It shows up as a weird extra empty line in the
+rendered docs.
+
+You could consider just making the imports displayed here also.
+
+Also the ``` both above and below the example usually has a space:
+
+/// ```
+
+rather than
+
+///```
+
+> +                    // SAFETY:
+> +                    // - `parent.as_raw()` is guaranteed to be a pointer to a valid `device`
+> +                    //    or a null pointer.
+> +                    // - `ptr` is guaranteed to be a pointer to an initialized `led_classdev`.
+> +                    to_result(unsafe {
+> +                        bindings::led_classdev_register_ext(
+> +                            parent.as_ref().as_raw(),
+> +                            ptr,
+> +                            &mut init_data_raw,
+> +                        )
+> +                    })?;
+> +
+> +                    core::mem::forget(init_data.fwnode); // keep the reference count incremented
+
+This led abstraction implicitly takes a refcount on the fwnode and then
+drops it when the device is unbound.
+
+Lee, can you confirm that taking a refcount on the fwnode is the right
+way to use the LED subsytem?
 
 Alice
