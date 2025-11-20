@@ -1,111 +1,99 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9D7302152
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 09:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAED32E12C
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 10:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763632773; cv=none; b=IN75zubLfFUwDNI2MkS3LSvB5+b41IE3WTQXallSU8Rsv8gu+Gncp9yNmcMziUTNezws9rPRAbvqf57cn+mKIuGpWO/ShQ7Iwp3CXBMBppMC65EP+SP/ypJFvgs0uFLywa0bHycWVykAlBXMmXghIDO3eFKdKZH6YHpd2mXJFtY=
+	t=1763636094; cv=none; b=OMMxqialQqt5EpSsL//IA3gk6ZToIhQpDV4kFubdCyUmtZBwwZjT9EkxzpebTxm+dnCbVmtGbyijRNGWX35JdGkNMIio7W67yWg31Jnjq94MYcxtbDWhIGxdG9/Wu5t5xjKoB6s/em/Ex55YSaFdWpSXqigUp9dHrzibCmROdy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763632773; c=relaxed/simple;
-	bh=ebkAz8idP/5kWsCMCA9Et9EJ9cCNttzJgavkMh49SLI=;
+	s=arc-20240116; t=1763636094; c=relaxed/simple;
+	bh=VcZczHRii7P42Dh7vHYaf03fIor4sYyqBSnONy8XpHM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JfREUxRRGJi+SwxC2dOto7DaC2jTOQBslb+h6V54dKmEVZBH3uUbmw7R9Ct6ElAJZT/02Iu5TGOA/NK/3U75KCuZ15DffX8SNH1gRmkPEW4kaTG0pR4OldW3EyJI2j8Mgikb+lOzJGwQe9a/ALsXs2g51nXdlsSyvdLPH+IlWdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gcEmZ0e7; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=pGzO2W7cVmfodkrfvP7rTUK40jlD5dFIyNqEUVN6nleAw0E2Ajbe9I/OwWwjb0BDWQQsxzw1P5WsxnWDud/Wi2I3ZeVhak42XeJT3cmbx0ThrxUqC92xfdoNLW6pHs8TTWBIN10uHLGtFoHllNY+1KEg6SXcJqWBIR7GMMxOTww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xWOcoqYw; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gcEmZ0e7"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42b478551a6so317329f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 01:59:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xWOcoqYw"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64160e4d78eso777486a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 02:54:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763632770; x=1764237570; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1763636090; x=1764240890; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rKhkvz9RkKrz0nh0wD2ZjaTl6jF91MXKlXmQggVVFBw=;
-        b=gcEmZ0e7586dxVugwr6itgoelevmEidgzLqb0ljCZkKeElu8KtcqXw3/gn3pVm4bb3
-         gG/bB+DECwkdIvYS4OHS5CJW0Z2nn3Yfmqoo+RsQ7sgk+pUmT9bR8RzpHcaeq3/4JMQM
-         UFK3yeJiXQLScs7x7OAw3E1zNN4q+LmjNseT+IznFvWOz+GMKEagvWtNQpfOiGAHv/gJ
-         aLwUsbdV87xv8mqZczzx0QLQ8coJb03tV6TWjkzWxXEyb04TRmld5NraYYFet3jb3rsW
-         QgY/XK1uXY8aU6SnsRRd0c1XBwyze4+JWkv0Uuw+MTAi7MC5HJuRRWn8Og3t14l+NzkG
-         57VQ==
+        bh=UWC2vUhoiQKT9HWF9RvAPRGaUzQ0E39nhqwqb4Wbiss=;
+        b=xWOcoqYws2KpNUotW8smS4DOvtQpIQ/d4LQ0vv639lwVqOoX/GxII1pzyHfSFgk4BQ
+         auo/vuO3WNN4esnT9aRUjJGM1VhGCdXNx3XOmQYhpu9vOGu+ZbBgjGrwaFQfvoRVfrZx
+         cUbaLzzC7dPi8/Ii6RrLVOlwn8oZjRK6G3sUzNPt/9uX+0vNKI8vJpNRn5PMPrAvg+Rp
+         GD1X6fgIWpjl3rHkf7nDp26bK3c+G+sh14RPYySgeg/DjiRFsXgLudQBUaR6/3PRng7V
+         G+/z1viCJOCPIJ/1KjNuUnmHBzAdcwhRegqJXD0Rd4ZqZAl4Ps1g6tSKvK3e47g52K1M
+         aitQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763632770; x=1764237570;
+        d=1e100.net; s=20230601; t=1763636090; x=1764240890;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rKhkvz9RkKrz0nh0wD2ZjaTl6jF91MXKlXmQggVVFBw=;
-        b=DWB1cmcMtiN82lM6SmZgoxm0XqagOHglUGST/kGvBKB6YS+mGe/wKpiEbtUimocyL9
-         Rs96eA0yaPfxjeJFZDNbtDZShMUprrpDciwZPn5CiCgP6dtodrMJXqCUt1H5hqq5abwg
-         Lj/uHQ18VFQEdCcpNGXKkfpH3ZrVt3EDi0LhTlzIGDlWMUgjQYws9hOGeQxyqDnScQrH
-         IsHrMioeUSGDIEDVE68VIq/nF/iqLr+ZfEjm8vWbgDJPdwZvUup0sIIQtmJAFjaVEMB7
-         eMQlrohNLsZM3L6T2NhmpQkPX9Y2V64aFyrN4UcH1wSYtkZpqgaRAPepe2qdXLKGupLp
-         bJSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXrFExxQcF2Qnlmq4K7b7sbN0pMGci+lIibtyNhdEKYp3nL2IaYob0pXMhgmj6iMDhtEZBrx9iKtwrMIqUUyw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzsk2jrYrtpMRhUeI9qA9DBmz+jcnUJvrj41u8f13vO5TLED+AW
-	aGsayE5rrAs7hYEfkWl2GVeWNKLpbzqWakbQTGuF0pR+V9Z7wGjyln2SbqTussFWl+r62gEZj2t
-	zdJX7TYnq2uoUZqdMlQ==
-X-Google-Smtp-Source: AGHT+IEKKD/BmbPlgMBpPggaAQdc02UN5hstoI3MhFvEktRwsM27SKW5fgN95go6FNLuZRUl6xabBr5bc6/w7Gw=
-X-Received: from wmfr22.prod.google.com ([2002:a05:600c:1596:b0:477:632b:1238])
+        bh=UWC2vUhoiQKT9HWF9RvAPRGaUzQ0E39nhqwqb4Wbiss=;
+        b=Dtnh9g5rxFri5d7YKhXCb0OD/b3naa4Pbj7FXC9BFKVcFSS2nEuYbX2TmJIhbL2huk
+         7dyamXfDQ73NHtwaycSRJp7ScnEhJQwuU+r5ZQU1vQvRazF0uO5DYH/aYMNlnvWUwd4e
+         +NbNC5K5JzO20/8aAzWtGWGSQDGSEmpWqS4yHKzJbeSsAiYSlGx5K34HmlHNHc/Z6+co
+         WRLy5vjmmyhIGZD/NDrrllJ7lr/IJJ+IqI90rbYYGrC4ICha6oicXme/GHWXISfSLSzr
+         +SK5qZMeubzZe0ieQgmqmZiWmSXkWIWXbLXGTYun54TN7Pv4BJ37/GanbeWvT3Gzyt94
+         T/8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUiuDQ/bXbvkjNF3ZqtFWOubP67gvIrNcvgrNTw0p46Zkz4vvocvJxc3POqpcSIF2sLZiNoQWSDMk+5PMtMVA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx+WHU38D/rOlqsOdJybJe9lpEcTUYHNro2cWl4o47ib7XcNWO
+	IIKAozyZrPdcTcssQb5/yzK1MvToxElLDM0t4HA9kyvIhwkf2eFWSk1Y/HwmH/DtsCGO762RoTe
+	p7pB0AraI7n/XIOAc9w==
+X-Google-Smtp-Source: AGHT+IGliQxOKFQqN9h5kfToOYWOfJDypiYEqvzX7eAWx84z4F4174qDJV6PGp2krjM4J8oh1xrGD724VU7L7cI=
+X-Received: from edp1.prod.google.com ([2002:a05:6402:4381:b0:641:661a:2bff])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4fc5:b0:477:97ca:b727 with SMTP id 5b1f17b1804b1-477bac0d06amr14368825e9.19.1763632770470;
- Thu, 20 Nov 2025 01:59:30 -0800 (PST)
-Date: Thu, 20 Nov 2025 09:59:29 +0000
-In-Reply-To: <DED5D81TXPCO.3FK81IGE9KR0O@nvidia.com>
+ 2002:a05:6402:3909:b0:640:b3c4:c22 with SMTP id 4fb4d7f45d1cf-6453645a4e4mr2260374a12.18.1763636090330;
+ Thu, 20 Nov 2025 02:54:50 -0800 (PST)
+Date: Thu, 20 Nov 2025 10:54:49 +0000
+In-Reply-To: <20251119-rust_leds-v9-2-86c15da19063@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251119185125.1411151-1-ojeda@kernel.org> <DED5D81TXPCO.3FK81IGE9KR0O@nvidia.com>
-Message-ID: <aR7mgRgG8fKhgD__@google.com>
-Subject: Re: [PATCH] rust: slice: fix broken intra-doc links
+References: <20251119-rust_leds-v9-0-86c15da19063@posteo.de> <20251119-rust_leds-v9-2-86c15da19063@posteo.de>
+Message-ID: <aR7zeX-akq2Zyf8B@google.com>
+Subject: Re: [PATCH v9 2/3] rust: leds: split generic and normal led classdev
+ abstractions up
 From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+To: Markus Probst <markus.probst@posteo.de>
+Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
+	Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, Nov 20, 2025 at 10:56:29AM +0900, Alexandre Courbot wrote:
-> On Thu Nov 20, 2025 at 3:51 AM JST, Miguel Ojeda wrote:
-> > In older versions of Rust, the compiler doesn't know about the newer
-> > `as_flattened*` methods, thus `rustdoc` complains about the intra-doc
-> > links, e.g.
-> >
-> >      error: unresolved link to `slice::as_flattened`
-> >       --> rust/kernel/slice.rs:19:23
-> >        |
-> >     19 | /// [`as_flattened`]: slice::as_flattened
-> >        |                       ^^^^^^^^^^^^^^^^^^^ the primitive type `slice` has no associated item named `as_flattened`
-> >        |
-> >        = note: `-D rustdoc::broken-intra-doc-links` implied by `-D warnings`
-> >        = help: to override `-D warnings` add `#[allow(rustdoc::broken_intra_doc_links)]`
-> >
-> > Thus fix them by using an URL instead.
-> >
-> > Fixes: 88622323dde3 ("rust: enable slice_flatten feature and provide it through an extension trait")
-> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> > ---
-> > I have seen this in -next -- please feel free to take it or rebase if
-> > preferred etc., of course. Thanks!
+On Wed, Nov 19, 2025 at 02:11:24PM +0000, Markus Probst wrote:
+> Move code specific to normal led class devices into a separate file and
+> introduce the `led::Mode` trait to allow for other types of led class
+> devices.
 > 
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> 
-> Alice, I guess we will want to take this into drm-rust-next or
-> drm-rust-fixes since that's where the patch introducing this originates
-> from?
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
 
-Yes, it goes in drm-rust-next:
+So it seems like the goal of this trait is to support both normal led
+and multicolor led under the same code. However, it seems the traits
+involved with this are pretty complex.
 
-	After -rc6, the branch is open for fixing bugs introduced by
-	patches queued up in drm-rust-next for the upcoming merge window
-	only.
+My primary feedback here is: please consider if we can avoid these
+complex traits. How much duplication would it really take to just have
+two Device structs and two LedOps traits? I think a few pieces of
+duplication would be far better than what this patch does.
 
-I will take the patch.
+In fact, I'm not sure you even need two LedOps traits if you did that;
+it seems like you could even get away with reusing the trait for both
+cases.
 
 Alice
