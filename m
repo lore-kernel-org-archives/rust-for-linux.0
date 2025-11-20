@@ -1,328 +1,346 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010068.outbound.protection.outlook.com [52.101.85.68])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57BC221271;
-	Thu, 20 Nov 2025 21:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763673431; cv=fail; b=SFy61pyEIxj5mFWX2oLSh6obRWarVxMQwWhnMDaOIqWmR7sXPt8UIWSzB44NrneVW3yuYIKiVFhgo6Lzm8gE2S4b/a24T2PgtMVt0VWvkAMoKjtXgUHcSIgAk6MHkOsQmNHFKQ77YoTDL2aZFIpDRc1mPc6snTIN3jBi+jhSc1U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763673431; c=relaxed/simple;
-	bh=5Vzfz1TYiLv2A5D3aMYepOMP4N3OP/4Fu6ikn0W5y6w=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IauuDTuOTmBfT5eCVB7uRhYLzB6elibgwv5a+EPcm5yOZpqGG+y6H8v7rbJJciQXCI2TETGKyyNEuAHUsHfXP61+uepmQL7g9coOu656JLiRirZe06Z3a9OpiFezQLzXziXS/xS9CEo/fL13SstM2PsFDE7SNP0ZL2n8iASWOJ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FYxA2GBO; arc=fail smtp.client-ip=52.101.85.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3C836D519
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 21:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763675234; cv=none; b=fukKeiO+NkMdw8gS74WuWqaXYyc3xkd/wTYJgvfa+PcWnQfNeTPW86DbnYvLEhAsu2ucdLjXJvflD83J6Cnw+M3JQLepSMZR4KZt7in9yZATArW8RMapVPkZz5PxLGqrykvaHNgIx4f08EfK2Hgj0A1LPjftKQTE4NbqBh04RlY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763675234; c=relaxed/simple;
+	bh=6G49fIqf/kTTaptL5nfnunhtXZOrEnQSnnPmaOkk/X4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JRZcn/7sSL1yR93r/c6YM1lUEoCZhVR7fWo0G8+EZG2zKFVmnQD4dDEfWYuU5J58JCl/cibwpFmiukrotN0RGBv858Fl1fxgZ1aTB7TBm7Axw/FyyxdsK+8kTek3l/vB6yT5+NVovM1cRR9DuPAJ4NpLsP6EspFwcem726hCvu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QTLRgDGA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FYxA2GBO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jmtmAkJPatNM49adMoSs6gT9s5froiBrhp4Sv65KczgbiCnONaRH4V45fKeYZK7+ZCgWKirOqgzSefYOmc73AHjGsjjHqK5qbxkd4O7U7WCtU+/es1T0We29dfCUMgNKB8XVfiWZr1doC2SB+2NwbaGncX+xcAbIZs0ZgH1+Yq3zb1hgMNLQIGk4zsACHAuYhaeJFJa0QjLTMQzg8ccelHbkJKUDRf+tZLQfDvZeCxpUiV9eMqY4R4p+59Td60wLdWVYdWpz9903Ld66xAVcn7aSwsa5INKVoN2oPwTUxRYD/UzykCBTnFUdR1oWHNyjC7dfCt2aqfrV8YH4zhvkpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ofg/Fr6pnMDnkbzhaPlKs8aBUHD1tcK0XogaWI6F0IA=;
- b=aqFg/JgnWyCYNoYUJR8jclh3Ju1eZhdwQgacjl6MAVIMAOPRydiiSi9lOl/bTxHw/SWH122HeXoRqRCQV2/Rd3YgAfMdMZlXdx19UAtUk0vOLVuhz8hvcx6ZZqqUpazRnlNECttH2kT1uGe9IDt/TVU/rlCjqIx3oXX6nmgQY+Pl1r867ROl/8Pwx1ohbY09dFpBcFDk4BDTczQzD5Wc9AgPGQ4bWpO8+XVtlEiU2sJJNsBpMaI1R5EWIovUIogXp2cycZihNq7P0e+QFoor3NYZdb8s1JyqQQzrRbhTw2ZGaDBAO/vC6iXr1PnewK6qAUGW1gkJarm5vPkxDBKOJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ofg/Fr6pnMDnkbzhaPlKs8aBUHD1tcK0XogaWI6F0IA=;
- b=FYxA2GBODryH7vmzezJwKw1zmj+2WuTKXyYfMZ+QXePzbCw3J6K9KX0X/w4B6timY6pU7thOyEXtT4jKYruPiSSM4FIfZKdi0SBWnQ4p0zBmDGo89cz9w4azlBidh6hG5AQso7yrpoI5H80FUUWNY9VRA120zcYhMDqO2nZKl0PVagl7rtBq85iBWhG48gFI9sxGCLrqArbw8W8RBzkV9wmu6qXRK32tjq7Q0NathLehUEBTLbVLaMfcC1hE8CMIrCKNcsR1qlQpciF0Fl+10woxK05cwQRAs648/+v9kV8oYf0/8ufeRbT1eyj1qFuCofvmZ8tBhGimYuoCyGQy1w==
-Received: from PH7PR02CA0024.namprd02.prod.outlook.com (2603:10b6:510:33d::10)
- by DM6PR12MB4201.namprd12.prod.outlook.com (2603:10b6:5:216::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.11; Thu, 20 Nov
- 2025 21:17:05 +0000
-Received: from CO1PEPF000044F7.namprd21.prod.outlook.com
- (2603:10b6:510:33d:cafe::c4) by PH7PR02CA0024.outlook.office365.com
- (2603:10b6:510:33d::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.11 via Frontend Transport; Thu,
- 20 Nov 2025 21:17:02 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CO1PEPF000044F7.mail.protection.outlook.com (10.167.241.197) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9366.1 via Frontend Transport; Thu, 20 Nov 2025 21:17:04 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 20 Nov
- 2025 13:16:34 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 20 Nov
- 2025 13:16:34 -0800
-Received: from inno-thin-client (10.127.8.13) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 20
- Nov 2025 13:16:25 -0800
-Date: Thu, 20 Nov 2025 23:16:24 +0200
-From: Zhi Wang <zhiw@nvidia.com>
-To: Peter Colberg <pcolberg@redhat.com>
-CC: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?=
- Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>, Abdiel Janulgue
-	<abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, "Ira
- Weiny" <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
-	<linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH 0/8] rust: pci: add abstractions for SR-IOV capability
-Message-ID: <20251120231624.5cac712b.zhiw@nvidia.com>
-In-Reply-To: <20251120203444.321378c2.zhiw@nvidia.com>
-References: <20251119-rust-pci-sriov-v1-0-883a94599a97@redhat.com>
-	<20251120083213.6c5c01a5.zhiw@nvidia.com>
-	<aR8t0XdZVyN-0mak@earendel>
-	<20251120203444.321378c2.zhiw@nvidia.com>
-Organization: NVIDIA
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QTLRgDGA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763675231;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CBUjnQnMX04EHn3LJ/j3RuEsmsVxSSb/9639FBaV9SE=;
+	b=QTLRgDGAX5b8xqR16uCjgJJ+0mtUQSHpPETCrDMEN33+b3mQnlCmGkDISsJT8K+vkTtUU5
+	VejEFXPMoqdw4V8CwbUdKPpir3g57gXehYydRf3S44s5NLX3Otw+dDbUjut3gKtInrYqOW
+	IUs7mEhWG4bxmjZaoOFqQfUoGqtvxOs=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-1842FRbrMriC--lgPeus2Q-1; Thu,
+ 20 Nov 2025 16:47:09 -0500
+X-MC-Unique: 1842FRbrMriC--lgPeus2Q-1
+X-Mimecast-MFC-AGG-ID: 1842FRbrMriC--lgPeus2Q_1763675226
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 656AF1956094;
+	Thu, 20 Nov 2025 21:47:05 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.88.52])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9CE7B1940E8F;
+	Thu, 20 Nov 2025 21:47:00 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH v14 00/16] Refcounted interrupts, SpinLockIrq for rust
+Date: Thu, 20 Nov 2025 16:45:52 -0500
+Message-ID: <20251120214616.14386-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044F7:EE_|DM6PR12MB4201:EE_
-X-MS-Office365-Filtering-Correlation-Id: 98d968e1-41f9-44ea-317b-08de287a2754
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YW8n3aHRxwCsTu2jlI2AkMSU9n8nurkm8h6c8I4EUeIusjFAEBHPs7nVix1N?=
- =?us-ascii?Q?p9Cl2tvLqa1/CYgOH3xPK2HhbouQ+BF+2zUUStVapxQGS3114b60dCuzeH1C?=
- =?us-ascii?Q?TBVASwMNgCHFuKlrGtMku/o8AHz1s8eRIygEaQM56Fsit1fbHK3gesW8p7RK?=
- =?us-ascii?Q?F5OnoClAdaP1zC7RBfXVB0T9TmQIHBHLRy+K0UVD3L18d/1ck1MiPPVuHa19?=
- =?us-ascii?Q?qa+fQCqw2+mbfrLzETRT9RbILgY1CuegU+i3md3zxyVoIqOgoImSfquEPfGf?=
- =?us-ascii?Q?MwY4/2BGdkLwYt4xQRGuvHOJzzDEjbG6ESu2BxpfK0PxHDKIqdXHDUZi7Piy?=
- =?us-ascii?Q?2e/JdFFcPjTQ5HZ0NXT33VQIsqeuSygxP24QikoZC9A6R9U95o7aH2s8l5Jh?=
- =?us-ascii?Q?9acpYL7HQqyJ/LnjMnmjXkkOpkuJZ1FUi1ErSHJ+BnkzbHZH39fgwoTnP/UU?=
- =?us-ascii?Q?PKRYuWQC5NElDifmNyu3380xt7PpfEHBr41OdA54NgidUawYmCAjzYOiMK5T?=
- =?us-ascii?Q?deSASU5cOJzlGaS/F0ZRhLkNNlwAmboJNFnmM0k4C4bsqjePqSwMzhXzzoVU?=
- =?us-ascii?Q?R19341rrj/ndwnzkuT1cUU8eJVikphzDswLisHj73nzpCxkLEvCZcOrcoEV6?=
- =?us-ascii?Q?dcskFk+YvTlwiwa9BLhh2C057nChyDjVAR1dNjB1Syx0K4hpYIda041bn088?=
- =?us-ascii?Q?P0e0LZjzlLFYBU/XlTvFUGJsaWQ8JXimhEB0A/etomBRy6zD4bDcwE0IDmeP?=
- =?us-ascii?Q?Rp/J4xbbwh1SoTX5ZEnJNUa5Gh5LYGRGiQXucLBdkZnlCqln5nkwLYsAT+XD?=
- =?us-ascii?Q?OSmLw0otcebPZX9wmFQOoG6/izHRIH0vMqGRghRpgg94/hP93KuHiWdUNOjU?=
- =?us-ascii?Q?qvla6KctQs3Mi+UIAEz9PwCJWPT8QDa83ynHsvW88V+RccyRv4ghZRhTpDo+?=
- =?us-ascii?Q?Z9Fvridn+FliLEiCJCMQrgNY6IExS3TOmjoYaFRGLdqx68Eqk0B43zMEpe7u?=
- =?us-ascii?Q?hLSiKI1l91hcXHdUSsF7ezLgLEaqnpWj4YLGltcvASzclNf8Ja6X6KdlWZ+D?=
- =?us-ascii?Q?SENQpgTweK/2g5tTc8ZKWW5YKHpwpgRVok4VnOmITviY6tjZuplDJI9syyfj?=
- =?us-ascii?Q?M6nfnqcpK1r1hH2+JY+PiPxd70DKEi2eXZS3gkRSYF/2yxyBZX4Ad70A1FfK?=
- =?us-ascii?Q?N0wxf3wH/2tvW0SfZ45lJcdXhPTA3kuXaQh2WzNvcevQSKfcT3BEiW4YT1gb?=
- =?us-ascii?Q?lC9dDHdS1ftrES+L5j7Nk/ocQBAhH2xvK187pNMT0CBhM9R5RQsBcXZ6CK1q?=
- =?us-ascii?Q?a6iGTbTHEzejecEODyTLDhYfhOMI+QRJKivvKQbWDKydAAvEwqbNRrTGw/0r?=
- =?us-ascii?Q?cNS2SA3Vde40lyKksEKlaUyqo3zQ2nSYra9tu7N/VsjZdoqVk5zZ0vwVlqe2?=
- =?us-ascii?Q?IcGgvrUXdBqzyw3DrHizg6/ogLC7YsINJuU/hAShFZkWH7myGlTHcPM89lku?=
- =?us-ascii?Q?SqRJoh685aFJvVjpYnEY+1axodGqs5hg77vW0/VkXFvrMl6wzadL+atY4Rx1?=
- =?us-ascii?Q?5LNpqKSDUgvLHXghT/d7u6e2rgJ8b1/29nw8usNi?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 21:17:04.2600
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 98d968e1-41f9-44ea-317b-08de287a2754
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000044F7.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4201
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Thu, 20 Nov 2025 20:34:44 +0200
-Zhi Wang <zhiw@nvidia.com> wrote:
+This is the latest patch series for adding rust bindings for controlling
+local processor interrupts, adding support for spinlocks in rust that
+are acquired with local processor interrupts disabled, and implementing
+local interrupt controls through refcounting in the kernel.
 
-I tested the patches on a L4, they are working perfectly. :) Though we
-can't bootstrap a vGPU and actually poke the VF so far, but VF
-enabling/disabling works without problem.
+The previous version of this patch series can be found here:
 
-[   97.447502] NovaCore 0000:b6:00.0: Enable SR-IOV (PCI ID: NVIDIA, 0x27b8).
-[   97.549467] pci 0000:b6:00.4: [10de:27b8] type 00 class 0x030200 PCIe Endpoint
-[   97.549499] pci 0000:b6:00.4: enabling Extended Tags
-[   97.549570] pci 0000:b6:00.4: Enabling HDA controller
-[   97.549894] pci 0000:b6:00.4: Adding to iommu group 88
-[   97.550649] NovaCore 0000:b6:00.4: enabling device (0000 -> 0002)
-[   97.550745] NovaCore 0000:b6:00.4: probe with driver NovaCore failed with error -22
-[  117.248723] NovaCore 0000:b6:00.0: Disable SR-IOV (PCI ID: NVIDIA, 0x27b8).
+https://lkml.org/lkml/2025/10/13/1155
 
-The repo I am using can be found here:
+This patch series applies on top of the rust-next branch.
 
-https://github.com/zhiwang-nvidia/nova-core/tree/rust-for-linux/test-sriov-on-nova-core
+There's a few big changes from the last time. Mainly that we've
+addressed all(?) of the open questions on this patch series:
 
-Will test them again on the next spin. :)
+* Thanks to Joel Fernandes, we now have a seperate per-CPU counter for
+  tracking NMI nesting - which ensures that we don't have to sacrifice
+  NMI nest level bits in order to store a counter for refcounted IRQs.
+  These patches have been included at the start of the series.
+* We've been able to prove that being able to convert the kernel over to
+  this new interface is indeed possible, more on this below.
+* Also thank to Joel, we also now have actual benchmarks for how this
+  affects performance:
+  https://lore.kernel.org/rust-for-linux/20250619175335.2905836-1-joelagnelf@nvidia.com/
+* Also some small changes to the kunit test I added, mainly just making
+  sure I don't forget to include a MODULE_DESCRIPTION or MODULE_LICENSE.
 
-Z.
+Regarding the conversion plan: we've had some success at getting kernels
+to boot after attempting to convert the entire kernel from the
+non-refcounted API to the new refcounted API. It will definitely take
+quite a lot of work to get this right though, at least in the kernel
+core side of things. To give readers an idea of what I mean, here's a
+few of the issues that we ended up running into:
 
-> On Thu, 20 Nov 2025 10:03:45 -0500
-> Peter Colberg <pcolberg@redhat.com> wrote:
-> 
-> Hi Peter:
-> 
-> I met some errors when compiling on driver-core-next branch, you can
-> fix those in the next spin.
-> 
-> Fixes:
-> 
-> diff --git a/drivers/gpu/nova-core/driver.rs
-> b/drivers/gpu/nova-core/driver.rs index ca0d5f8ad54b..730e745cad63
-> 100644 --- a/drivers/gpu/nova-core/driver.rs
-> +++ b/drivers/gpu/nova-core/driver.rs
-> @@ -49,6 +49,7 @@ pub(crate) struct NovaCore {
->      ]
->  );
->  
-> +#[vtable]
->  impl pci::Driver for NovaCore {
->      type IdInfo = ();
->      const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
-> 
-> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> index d6cc5d7e7cd7..2d68db076f92 100644
-> --- a/rust/kernel/pci.rs
-> +++ b/rust/kernel/pci.rs
-> @@ -292,6 +292,7 @@ macro_rules! pci_device_table {
->  ///     ]
->  /// );
->  ///
-> +/// #[vtable]
->  /// impl pci::Driver for MyDriver {
->  ///     type IdInfo = ();
->  ///     const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
-> 
-> The code in the examples should be able to compile.
-> 
-> You can enable doctest by:
-> 
-> CONFIG_RUST_KERNEL_DOCTESTS=y
-> 
-> Then:
-> 
-> impl Device<device::Bound> {
->     /// Returns the Physical Function (PF) device for a Virtual
-> Function (VF) device. ///
->     /// # Examples
->     ///
-> 
-> snip
-> 
->     /// ```
->     /// let pf_pdev = vf_pdev.physfn()?;
->     /// let pf_drvdata = pf_pdev.as_ref().drvdata::<MyDriver>()?;
-> 
-> I saw this part is not able to be compiled.^
-> 
-> Z.
-> 
-> > On Thu, Nov 20, 2025 at 08:32:13AM +0200, Zhi Wang wrote:
-> > > On Wed, 19 Nov 2025 17:19:04 -0500
-> > > Peter Colberg <pcolberg@redhat.com> wrote:
-> > > 
-> > > Hi Peter:
-> > > 
-> > > Thanks for the patches. :) I will test them with nova-core and
-> > > come back with Tested-bys.
-> > 
-> > Perfect, thanks Zhi.
-> > 
-> > > Nit: Let's use "kernel vertical" styles on imports. [1]
-> > > 
-> > > [1]
-> > > https://lore.kernel.org/all/20251105120352.77603-1-dakr@kernel.org/
-> > 
-> > Thanks, done for patch "samples: rust: add SR-IOV driver sample".
-> > 
-> > Peter
-> > 
-> > > 
-> > > > Add Rust abstractions for the Single Root I/O Virtualization
-> > > > (SR-IOV) capability of a PCI device. Provide a minimal set of
-> > > > wrappers for the SR-IOV C API to enable and disable SR-IOV for a
-> > > > device, and query if a PCI device is a Physical Function (PF) or
-> > > > Virtual Function (VF).
-> > > > 
-> > > > Using the #[vtable] attribute, extend the pci::Driver trait with
-> > > > an optional bus callback sriov_configure() that is invoked when
-> > > > a user-space application writes the number of VFs to the sysfs
-> > > > file `sriov_numvfs` to enable SR-IOV, or zero to disable SR-IOV
-> > > > [1].
-> > > > 
-> > > > Add a method physfn() to return the Physical Function (PF)
-> > > > device for a Virtual Function (VF) device in the bound device
-> > > > context. Unlike for a PCI driver written in C, guarantee that
-> > > > when a VF device is bound to a driver, the underlying PF device
-> > > > is bound to a driver, too.
-> > > > 
-> > > > When a device with enabled VFs is unbound from a driver, invoke
-> > > > the sriov_configure() callback to disable SR-IOV before the
-> > > > unbind() callback. To ensure the guarantee is upheld, call
-> > > > disable_sriov() to remove all VF devices if the driver has not
-> > > > done so already.
-> > > > 
-> > > > This series is based on Danilo Krummrich's series
-> > > > "Device::drvdata() and driver/driver interaction (auxiliary)"
-> > > > applied to driver-core-next, which similarly guarantees that
-> > > > when an auxiliary bus device is bound to a driver, the
-> > > > underlying parent device is bound to a driver, too [2].
-> > > > 
-> > > > Add an SR-IOV driver sample that exercises the SR-IOV capability
-> > > > using QEMU's 82576 (igb) emulation and was used to test the
-> > > > abstractions [3].
-> > > > 
-> > > > [1] https://docs.kernel.org/PCI/pci-iov-howto.html
-> > > > [2]
-> > > > https://lore.kernel.org/rust-for-linux/20251020223516.241050-1-dakr@kernel.org/
-> > > > [3] https://www.qemu.org/docs/master/system/devices/igb.html
-> > > > 
-> > > > Signed-off-by: Peter Colberg <pcolberg@redhat.com>
-> > > > ---
-> > > > John Hubbard (1):
-> > > >       rust: pci: add is_virtfn(), to check for VFs
-> > > > 
-> > > > Peter Colberg (7):
-> > > >       rust: pci: add is_physfn(), to check for PFs
-> > > >       rust: pci: add {enable,disable}_sriov(), to control SR-IOV
-> > > > capability rust: pci: add num_vf(), to return number of VFs
-> > > >       rust: pci: add vtable attribute to pci::Driver trait
-> > > >       rust: pci: add bus callback sriov_configure(), to control
-> > > > SR-IOV from sysfs rust: pci: add physfn(), to return PF device
-> > > > for VF device samples: rust: add SR-IOV driver sample
-> > > > 
-> > > >  MAINTAINERS                           |   1 +
-> > > >  rust/kernel/pci.rs                    | 148
-> > > > ++++++++++++++++++++++++++++++++++ samples/rust/Kconfig
-> > > >    |  11 +++ samples/rust/Makefile                 |   1 +
-> > > >  samples/rust/rust_dma.rs              |   1 +
-> > > >  samples/rust/rust_driver_auxiliary.rs |   1 +
-> > > >  samples/rust/rust_driver_pci.rs       |   1 +
-> > > >  samples/rust/rust_driver_sriov.rs     | 107
-> > > > ++++++++++++++++++++++++ 8 files changed, 271 insertions(+)
-> > > > ---
-> > > > base-commit: e4addc7cc2dfcc19f1c8c8e47f3834b22cb21559
-> > > > change-id: 20251026-rust-pci-sriov-ca8f501b2ae3
-> > > > 
-> > > > Best regards,
-> > > 
-> > 
-> > 
-> 
+On my end, I tried running a number of coccinelle conversions for this.
+At first I did actually try simply rewiring
+local_irq_disable()/local_irq_enable() to
+local_interrupt_enable()/local_interrupt_disable(). This wasn't really
+workable though, as it causes the kernel to crash very early on in a
+number of ways that I haven't fully untangled. Doing this with
+coccinelle on the other hand allowed me to convert individual files at a
+time, along with specific usage patterns of the old API, and as a result
+this ended up giving me a pretty good idea of where our issues are
+coming from. This coccinelle script, while still leaving most of the
+kernel unconverted, was at least able to be run on almost all of kernel/
+while still allowing us to boot on x86_64
+
+@depends on patch && !report@
+@@
+- local_irq_disable();
++ local_interrupt_disable();
+...
+- local_irq_enable();
++ local_interrupt_enable();
+
+There were two files in kernel/ that were exceptions to this:
+
+* kernel/softirq.c
+* kernel/main.c (I figured out at least one fix to an issue here)
+
+The reason this worked is because it seems like the vast majority of the
+issues we're seeing come from "unbalanced"/"misordered" usages of the
+old irq API. And there seems to be a few reasons for this:
+
+* The first simple reason: occasionally the enable/disable was split
+  across a function, which this script didn't handle.
+* The second more complicated reason: some portions of the kernel core
+  end up calling processor instructions that modify the processor's
+  local interrupt flags independently of the kernel. In x86_64's case, I
+  believe we came to the conclusion the iret instruction (interrupt
+  return) was modifying the interrupt flag state. There's possibly a few
+  more instances like this elsewhere.
+
+Boqun also took a stab at this on aarch64, and ended up having similar
+findings. In their case, they discovered one of the culprits being
+raw_spin_rq_unlock_irq(). Here the reason is that on aarch64
+preempt_count is per-thread and not just per-cpu, and when context
+switching you generally disable interrupts from one task and restore it
+in the other task. So in order to fix it, we'll need to make some
+modifications to the aarch64 context-switching code.
+
+So - with this being said, we decided that the best way of converting it
+is likely to just leave us with 3 APIs for the time being - and have new
+drivers and code use the new API while we go through and convert the
+rest of the kernel.
+
+Full changelog below
+
+Boqun Feng (6):
+  preempt: Introduce HARDIRQ_DISABLE_BITS
+  preempt: Introduce __preempt_count_{sub, add}_return()
+  irq & spin_lock: Add counted interrupt disabling/enabling
+  rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+  rust: sync: lock: Add `Backend::BackendInContext`
+  locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+
+Joel Fernandes (1):
+  preempt: Track NMI nesting to separate per-CPU counter
+
+Lyude Paul (9):
+  irq: Add KUnit test for refcounted interrupt enable/disable
+  rust: Introduce interrupt module
+  rust: sync: Add SpinLockIrq
+  rust: sync: Introduce lock::Backend::Context
+  rust: sync: lock/global: Rename B to G in trait bounds
+  rust: sync: Add a lifetime parameter to lock::global::GlobalGuard
+  rust: sync: Expose lock::Backend
+  rust: sync: lock/global: Add Backend parameter to GlobalGuard
+  rust: sync: lock/global: Add BackendInContext support to GlobalLock
+
+                               --- Changelog ---
+
+* preempt: Introduce HARDIRQ_DISABLE_BITS
+  V14:
+    * Fix HARDIRQ_DISABLE_MASK definition
+
+* preempt: Track NMI nesting to separate per-CPU counter
+* preempt: Introduce __preempt_count_{sub, add}_return()
+  V10:
+    * Add commit message I forgot
+    * Rebase against latest pcpu_hot changes
+  V11:
+    * Remove CONFIG_PROFILE_ALL_BRANCHES workaround from
+      __preempt_count_add_return()
+
+* irq & spin_lock: Add counted interrupt disabling/enabling
+  V10:
+    * Add missing __raw_spin_lock_irq_disable() definition in spinlock.c
+  V11:
+    * Move definition of spin_trylock_irq_disable() into this commit
+    * Get rid of leftover space
+    * Remove unneeded preempt_disable()/preempt_enable()
+  V12:
+    * Move local_interrupt_enable()/local_interrupt_disable() out of
+      include/linux/spinlock.h, into include/linux/irqflags.h
+  V14:
+    * Move local_interrupt_enable()/disable() again, this time into its own
+      header, interrupt_rc.h, in order to fix a hexagon-specific build issue
+      caught by the CKI bot.
+      The reason this is needed is because on most architectures, irqflags.h
+      ends up including <arch/smp.h>. This provides a definition for the
+      raw_smp_processor_id() function which we depend on like so:
+
+                                 <linux/percpu-defs.h>    <arch/smp.h>
+        local_interrupt_disable() → raw_cpu_write() → raw_smp_processor_id()
+
+      Unfortunately, hexagon appears to be one such architecture which does
+      not pull in <arch/smp.h> by default here - causing kernel builds to
+      fail and claim that raw_smp_processor_id() is undefined:
+
+         In file included from kernel/sched/rq-offsets.c:5:
+         In file included from kernel/sched/sched.h:8:
+         In file included from include/linux/sched/affinity.h:1:
+         In file included from include/linux/sched.h:37:
+         In file included from include/linux/spinlock.h:59:
+      >> include/linux/irqflags.h:277:3: error: call to undeclared function
+         'raw_smp_processor_id'; ISO C99 and later do not support implicit
+         function declarations [-Wimplicit-function-declaration]
+           277 |   raw_cpu_write(local_interrupt_disable_state.flags, flags);
+               |   ^
+         include/linux/percpu-defs.h:413:34: note: expanded from macro
+         'raw_cpu_write'
+
+      While including <arch/smp.h> in <linux/irqflags.h> does fix the build
+      on hexagon, it ends up breaking the build on x86_64:
+
+        In file included from kernel/sched/rq-offsets.c:5:
+        In file included from kernel/sched/sched.h:8:
+        In file included from ./include/linux/sched/affinity.h:1:
+        In file included from ./include/linux/sched.h:13:
+        In file included from ./arch/x86/include/asm/processor.h:25:
+        In file included from ./arch/x86/include/asm/special_insns.h:10:
+        In file included from ./include/linux/irqflags.h:22:
+        In file included from ./arch/x86/include/asm/smp.h:6:
+        In file included from ./include/linux/thread_info.h:60:
+        In file included from ./arch/x86/include/asm/thread_info.h:59:
+        ./arch/x86/include/asm/cpufeature.h:110:40: error: use of undeclared
+        identifier 'boot_cpu_data'
+
+          [cap_byte] "i" (&((const char *)boot_cpu_data.x86_capability)[bit >> 3])
+                                          ^
+      While boot_cpu_data is defined in <asm/processor.h>, it's not possible
+      for us to include that header in irqflags.h because we're already
+      inside of <asm/processor.h>.
+
+      As a result, I just concluded there's no reasonable way of having these
+      functions in <linux/irqflags.h> because of how many low level ASM
+      headers depend on it. So, we go with the solution of simply giving
+      ourselves our own header file.
+
+* rust: Introduce interrupt module
+  V10:
+    * Fix documentation typos
+  V11:
+    * Get rid of unneeded `use bindings;`
+    * Move ASSUME_DISABLED into assume_disabled()
+    * Confirm using lockdep_assert_irqs_disabled() that local interrupts are in
+      fact disabled when LocalInterruptDisabled::assume_disabled() is called.
+
+* rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+* rust: sync: Add SpinLockIrq
+  V10:
+    * Also add support to GlobalLock
+    * Documentation fixes from Dirk
+  V11:
+    * Add unit test requested by Daniel Almeida
+  V14:
+    * Improve rustdoc for SpinLockIrqBackend
+
+* rust: sync: Introduce lock::Backend::Context
+  V10:
+    * Fix typos - Dirk
+
+* rust: sync: lock: Add `Backend::BackendInContext`
+  V10:
+    * Fix typos - Dirk/Lyude
+    * Since we're adding support for context locks to GlobalLock as well, let's
+      also make sure to cover try_lock while we're at it and add try_lock_with
+    * Add a private function as_lock_in_context() for handling casting from a
+      Lock<T, B> to Lock<T, B::BackendInContext> so we don't have to duplicate
+      safety comments
+  V11:
+    * Fix clippy::ref_as_ptr error in Lock::as_lock_in_context()
+  V14:
+    * Add benchmark results, rewrite commit message
+
+* rust: sync: lock/global: Rename B to G in trait bounds
+* rust: sync: Add a lifetime parameter to lock::global::GlobalGuard
+* rust: sync: Expose lock::Backend
+* rust: sync: lock/global: Add Backend parameter to GlobalGuard
+* rust: sync: lock/global: Add BackendInContext support to GlobalLock
+* locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+  V10:
+    * Add PREEMPT_RT build fix from Guangbo Cui
+
+ arch/arm64/include/asm/preempt.h     |  18 ++
+ arch/s390/include/asm/preempt.h      |  10 +
+ arch/x86/include/asm/preempt.h       |  10 +
+ include/asm-generic/preempt.h        |  14 ++
+ include/linux/hardirq.h              |  16 +-
+ include/linux/interrupt_rc.h         |  61 ++++++
+ include/linux/preempt.h              |  23 ++-
+ include/linux/spinlock.h             |  51 +++--
+ include/linux/spinlock_api_smp.h     |  27 +++
+ include/linux/spinlock_api_up.h      |   8 +
+ include/linux/spinlock_rt.h          |  15 ++
+ kernel/irq/Makefile                  |   1 +
+ kernel/irq/refcount_interrupt_test.c | 109 +++++++++++
+ kernel/locking/spinlock.c            |  29 +++
+ kernel/softirq.c                     |   5 +
+ rust/helpers/helpers.c               |   1 +
+ rust/helpers/interrupt.c             |  18 ++
+ rust/helpers/spinlock.c              |  15 ++
+ rust/helpers/sync.c                  |   5 +
+ rust/kernel/interrupt.rs             |  86 +++++++++
+ rust/kernel/lib.rs                   |   1 +
+ rust/kernel/sync.rs                  |   5 +-
+ rust/kernel/sync/lock.rs             |  69 ++++++-
+ rust/kernel/sync/lock/global.rs      |  91 ++++++---
+ rust/kernel/sync/lock/mutex.rs       |   2 +
+ rust/kernel/sync/lock/spinlock.rs    | 272 +++++++++++++++++++++++++++
+ 26 files changed, 908 insertions(+), 54 deletions(-)
+ create mode 100644 include/linux/interrupt_rc.h
+ create mode 100644 kernel/irq/refcount_interrupt_test.c
+ create mode 100644 rust/helpers/interrupt.c
+ create mode 100644 rust/kernel/interrupt.rs
+
+
+base-commit: e5d330e13f67d574f683c052c9a342814fd8fa39
+-- 
+2.51.1
 
