@@ -1,92 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F7D2C0303;
-	Thu, 20 Nov 2025 20:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4920C26ED55
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 21:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763669608; cv=none; b=NY/HJujsjHH4EZkA/0k82NyVUM+0dBXvWfzoqNynW8qnOvpctN6IrdZWDohzb9flL/pawf8avuZfBP7kx9bzqmhPOOwSrD9+ehKlrw9zSsIAWnKCM7EYyMVKEKYocCenkRrFMuD3HgozfliJ1NmfFx6n5I9GpSHvUAKuCPYgwXw=
+	t=1763672624; cv=none; b=md94SbOj+p3ThdU6o4qE2ypGqrJ/peOE7Ym0sxLDlkr/ZxIe7Uf0gNKPRTaxacU5aGvAWneurHXPQfOTtA3y5Sli5PEMdw5628CDKnmxwWrKhSthRbekx86f50LxoA17I1l3c9RxI52q6UQD4p8xTOwhpL/htjMjCyEvSFgoNHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763669608; c=relaxed/simple;
-	bh=TLYtF66C70QdPZ/KfmOEyDuqsiinD6JCJ0p0S28xtCw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DIp7iUkJg06OPTqJN6kBBzie3F+/Mgs13mgO4eh3Ocpv1VFoWwJjWI+Wv5FSupZSQh7i3VkYxZ4n5mQYiW3+G0p7XXxqifOSQOcWjlHk0g2eEkgMUPHUkw6dRQ9p0VqnECZTu37dPFHEn/zvXxljhOB4eed5YDd+KZcvXd6a/nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TlTjQ7Pl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763672624; c=relaxed/simple;
+	bh=U3kijjNUS1umqRYrNGhcTVAVnkpIauQRe4DSyA82U3Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=An2G2F1LGlLcN7hS3CaSe+G0a2ER5fRsEKluPCMObCq0QTcL6ErFcsU2fu5N20IBBYTer94EJdOLsekp6wG0NWsXS6+Dhzs3lzKPQT3LTeMYnuxREAAonUq0F6rtJnf/oJAuzjC8zjVlG7IjrW3MMPBrWaHZpCP0CpnC1DxxkJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Up/ujpBh; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TlTjQ7Pl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53266C4CEF1;
-	Thu, 20 Nov 2025 20:13:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763669607;
-	bh=TLYtF66C70QdPZ/KfmOEyDuqsiinD6JCJ0p0S28xtCw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TlTjQ7Pl3HTVg5aiGez/VQtVBiwyPs7qIvsDICYEKV4ttdZWs5fBjFkzDaXK3SLOa
-	 A6ux0rxCW8lZTcsfikTpLTF2indAiQE3KpsztDmcLe5Vs0rONL3Lz/HHCoWSZcnvYZ
-	 zY6BDxIbuEOyNDn8S0BtN6N2bgmr1l/i9ahlGfG50CLy9KRxQlQ5HkodhVQBMPFvL+
-	 BiAqPNg5W++ker0BYPRiAcmJxDYRTHV41MtrZhLgdWirfGqMVt/VnoNsFPqC1bC80w
-	 exDnUHWhE5WkfWxe4tDC4H0CsE6OGRPma/BbjEhNvSNygO9Ep9QEWY2z4J7CPHHc56
-	 hhwrLXaCZ+aew==
-Date: Thu, 20 Nov 2025 21:13:21 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Carlos Bilbao <carlos.bilbao@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, Linux Doc Mailing List <linux-doc@vger.kernel.org>, Alex
- Gaynor <alex.gaynor@gmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas
- Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Danilo Krummrich <dakr@kernel.org>, Gary Guo
- <gary@garyguo.net>, Mauro Carvalho Chehab <mchehab@kernel.org>, Miguel
- Ojeda <ojeda@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/1] docs: makefile: move rustdoc check to the build
- wrapper
-Message-ID: <20251120211321.4e64a3d0@foz.lan>
-In-Reply-To: <CANiq72nC9HH4tZT6dTgiEpkBUktY5i3tVtnNtKjZhKAvAVrdBQ@mail.gmail.com>
-References: <cover.1763370163.git.mchehab+huawei@kernel.org>
-	<a9b172c926a4b30360530c34adc44f3789ec2b27.1763370163.git.mchehab+huawei@kernel.org>
-	<CANiq72=bYzj6iU7PCm+VMBTeBbgUcL8nwrvUut9p4ph+3+itaQ@mail.gmail.com>
-	<kjpquyekvw7fwrndoomtge7fnxtfefihqlikj6xcqtazrr6l77@424ufup7v45o>
-	<87seeb47pk.fsf@trenco.lwn.net>
-	<20251118201152.038e2749@foz.lan>
-	<CANiq72nC9HH4tZT6dTgiEpkBUktY5i3tVtnNtKjZhKAvAVrdBQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Up/ujpBh"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b63e5da0fdeso114633a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Nov 2025 13:03:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763672622; x=1764277422; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U3kijjNUS1umqRYrNGhcTVAVnkpIauQRe4DSyA82U3Y=;
+        b=Up/ujpBhqMcIa7DDyHYv+iEuwoqYXxMUYb2G+PXKC4VOG6fJJxV6VelLHHxEreX01q
+         vYajW6ogqsaszNFgweAgMFG+vdAuKgVfdkKL1Caxp7kWN1Zhzey3rB76Siunt1GJJQl8
+         DGPImyuMit1JqLRwNjgf9MuJrUN3aSxHD0+RSE+4krR/P1CiVea3wY4ZyebTYTmbVn/6
+         ksvtsSIv3FlJgrNjZYKq70sb1ezg1a9Cr/RrXKo41MlEaEe8fUkSvNzY5uyhQKNWiiF6
+         aQuMykKMMTxlyKkS8m/ONZZAwesnUv7UGzSpVrVOyiiSPVsul775z6vmCzluw78DqH87
+         6fHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763672622; x=1764277422;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=U3kijjNUS1umqRYrNGhcTVAVnkpIauQRe4DSyA82U3Y=;
+        b=UQPndC2gdPy5U4ja0yvj+WHpyBpAZDWgXy0+whbGjqrxmcnmV+FXl3NwQsuS3q+Pja
+         Nr1qCPgj3LP/b70Fzemm4TuCH6kDhd9MFp55W5A27PPpPsOkAWB0GRjjHb1KpgdOz8EJ
+         aEh0R6Wd3YqKJSHLv7vu8v7/ka7HkVq26w8d2qoRqXunrIoF4CQD+9i0tJNK8pc7KHc6
+         LqS+7e/50rfzh6N66qGUvHstbLGSafmxxkNCbQ/YUCA6M5A+LK1o6ySa4oORpEDdnveB
+         ubYWJFcQmzrd9x3Zfio4gN7yZ2GhQOR4pW451O4IIRzjc5vLwYZF9CJFLaMDVKZJcw+F
+         fnVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/aJ5e28v2NpmXi/f8KVJVLuBvzS0yxgEbDZstVy6ABbGf/9wMO9aa8nt1Yo9FoI38oDelnwH6iwb82Om70Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6F4d8jdsA5c+7nyZpOwlRT+SknHeXYBJBcvhNfEylfPJtIwJ3
+	Zp78JPsXo7LDM0BOrPG6kZavfk/e8Ak0oLepA0C5LMfZWdKzJHHL66m69psf3uJDy5TuUKU6Kny
+	rHyhXqrKABwzfflj5sNC7lYUrsbHqx3c=
+X-Gm-Gg: ASbGncvbWbHACKeuQv7eI3ZuE9+/Z/Bdga9+SwSTu9eXS/jTwXVoHXSmTt2BgVMOQb4
+	v/+Bhw6hcP7DiZVWtWRwOe5u/7osL5htjc+c6pFYSR/rJgiB4u9YnDwVuxhcddmbwHBvvyGCN1b
+	v0tSxCR7eXi94RO6cBf/Wtfp3yDx0xFE6fsEgJ2c1zZ8yev2yDITx2s98TuawdtSkM3C8g9RYBQ
+	GMqMjRgn9YF8ER3EInrO6DwDnASuNfAIOPb6luEqBNLAQ6hQKOzsYHrP7LB1uK2XMshooImNxhC
+	lJHrVpTt2t0Wifrj0wwk9fAgSzgF5GkDTn7rnyKcDF2tYVKyHoP/IPiQZGptgTW0QRHSCwV3+ow
+	F7zFwhii7208HCg==
+X-Google-Smtp-Source: AGHT+IH4jFzqgh5YTMzDGx3sTXFqWpbwXT6TC8lC3bciydgtCReaoR1SR6ggEKHwzJbr5nND5uiHINnsBCR+ec2/98Y=
+X-Received: by 2002:a05:7022:ea46:10b0:11b:65e:f33 with SMTP id
+ a92af1059eb24-11c938041f7mr1387160c88.1.1763672622478; Thu, 20 Nov 2025
+ 13:03:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20251120-rust-driver-pci-fix-module-name-v1-1-430cee310dc0@redhat.com>
+In-Reply-To: <20251120-rust-driver-pci-fix-module-name-v1-1-430cee310dc0@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 20 Nov 2025 22:03:30 +0100
+X-Gm-Features: AWmQ_bmZr70MqtYq_fIW7qx9b2D2eCrb0YuvAUuVBTaj2lyR_fdcoVhfrJ3s7kI
+Message-ID: <CANiq72nDa9NU7VH7ObLy_swvj1bWzm8oKy0oAerq=PykQQhtoA@mail.gmail.com>
+Subject: Re: [PATCH] samples: rust: fix module name for Rust PCI driver sample
+To: Peter Colberg <pcolberg@redhat.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg KH <gregkh@linuxfoundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Em Tue, 18 Nov 2025 22:40:09 +0100
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> escreveu:
+On Thu, Nov 20, 2025 at 5:06=E2=80=AFPM Peter Colberg <pcolberg@redhat.com>=
+ wrote:
+>
+> Replace driver_pci -> rust_driver_pci in config SAMPLE_RUST_DRIVER_PCI.
+>
+> Signed-off-by: Peter Colberg <pcolberg@redhat.com>
 
-> On Tue, Nov 18, 2025 at 8:12=E2=80=AFPM Mauro Carvalho Chehab
-> <mchehab+huawei@kernel.org> wrote:
-> >
-> > Me too, but the bug is very annoying ;-)
-> >
-> > I'll try to seek for some time to better understand it, maybe
-> > next week. =20
->=20
-> I will try to find a moment to take a look too... This happens with
-> only the new wrapper, right? Or is it something that happened even
-> before? If the latter, I remember testing the logic that Carlos added
-> a long time ago, but maybe something changed in the meantime.
+Looks good to me.
 
-I'm testing here against docs/docs-next, so it is based on -rc1,
-so, yeah this is after the cleanups. The problem could be introduced
-by the Makefile cleanup, but I didn't find anything obvious
-but I haven't time to revisit after sending the patch, as I got
-sidetracked with unrelated issues (*).
+In case the stable team wants to eventually select it:
 
-I'll try testing it tomorrow against linux-next.
+Fixes: 685376d18e9a ("samples: rust: add Rust PCI sample driver")
 
-Thanks,
-Mauro
+Thanks!
 
----
+Danilo, Greg et al.: if you want me to pick it up, please let me know.
 
-(*) I was preparing a new rasdaemon release, which was launched
-    today.
+Cheers,
+Miguel
