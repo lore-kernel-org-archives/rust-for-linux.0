@@ -1,338 +1,290 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013068.outbound.protection.outlook.com [40.107.201.68])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CCE34B402;
-	Fri, 21 Nov 2025 15:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763737245; cv=fail; b=gNfACS4QTGEgCLEK0oyOKLJ+fYyIKRRuqE8e/IrZzSbei/ocBAKDrrhY4cjtWGG9snGqcoeX7aFbYmxwtZDEZyHlFxMtRltFQgk7Y6CAwJE6QE1FDXfMHxOz0vbpaZVskK1lVJiI6dpouZot8iiV7BARwTpiPgh+11TOvlGM8R4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763737245; c=relaxed/simple;
-	bh=fhVn8M13l2Kb6/zSAoWphRV1+A3P0RgI6H5DZZjKKp0=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=OWUftlGCyADt+Cs8iy8bSmF3yE70hKdPeUzRRidxPB4Hz/vZH4CbHROmkqw9uBx9C/dMtFMZG32hE7VswxbfjAaDiE12zdChzsUC7IThc3OtyAyWReA3ZstYyiYJRtEmy+Wbne5rcOctcsAgieA+zqj9xZu8MN6ayzqCYYJ9I0c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=P5I6REGC; arc=fail smtp.client-ip=40.107.201.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D50A2F12B5
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Nov 2025 17:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763744723; cv=none; b=MqG6SIsqs0Ed7999GfMEiETVgk0xAoAihY83/v2tG92coXbhX5sSDo4mr7lbeBbKnQUDv9P4blHn/TeULQWRHkA78OJEnDoFLDQ4K/+t+17iUr6d7tTJ/Xol/LTicZLrrtTq7MpXD+neYE8fZsZ3vsw4bPbnuOiO8V8gk76WZZ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763744723; c=relaxed/simple;
+	bh=tmekbxR8wc1I7t6Q6VZZ1XIp/NWvYZvJ1hM4SKb77K0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=CIxCh0ntTbuoCfR/u0pkLUP9LYoueLoxxCzItvl8WbAYswvyPEftiLe782Iwkc5oImNDD3bIAFNd/kM9+bbt/mHKpdwcpAmY09Kfpa+IZV0piUuBLgWuf+J4fA0W3XBOWu1OW4Urc1Zjid6kgbDc/GkY5i1s3SyBMV6RRMq95Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dRPb/C2Z; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="P5I6REGC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mvj/S4IIzll5IIDUAYYZj+jN+Z9vAwEmZ3oFfNgtrtFVpP7r9RiLt/NDSz8nRu+4FB1vWnNszW2n8EIT4xbH3xNUQ8SQlUW6sFFgR4QY40afhqac/9ENaCHwmY2pHVZYYC9R51mwGljxZD/kZ8Wfxj80f4sivxQpkqM4jvaJxcLAeuggpaV3woHYkFC24nd4PbZfkbv/P22jGvXXehw5QyOiU/6lq2xMKxtlTjHYbROLCW/WRYvUd0OQL6DSuTArzckcQtXAi7p7TW4as1uACIMmgP/C3BdC+3nMZl9uQRbrpEsgMi2lh+NGP+awqC3WKOYATqRnHzPZEHUsqZ82Zg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jqkWOUeFhIfhzyQR0Cg7HaGS9Sgvj//nw1QpQZiTE4s=;
- b=Y9VJO2HC3oWx990vMdiQNv37Dn/jdVcfX7M0shTnppOjdh2qlcxLPOjnmeJxqz2g56YOiZ7WkgTPTFYBj4ITWV7nauCwIqK/QV/kDLNn0SaK7SzCO16HQTVIIgw7hW5pAUA79xqA53RuHWt93GCEvH4qYJcuPaaEQkJmD56ekd4kUKvdiJEZhAMrw+v1/o2qilqifc67Rx1DJQ1WeEqJvMKkuFvbem1IJiELwvoTpYHXw+JomkFbgjmqFDq/L2fjK/kjG8Qx8AaOoPGjQbwQv+RFz06vtG9eZosKRfH1xOoGLJvC11mhDbWPN10lxGZAmtsOQ28EgBNEifhb1rOHDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jqkWOUeFhIfhzyQR0Cg7HaGS9Sgvj//nw1QpQZiTE4s=;
- b=P5I6REGC81y2LtoPrH/lBS9V0RVwTfHq8e6lIExXkLgMYAJL+ZoAiQEL99kk0UsW7TwdkPadc7qq7qoF8mEP4xfe75tHgipupbSqqd+byb+95Y4Lz2tRUOjQxUv+XimN4TnJ4V6aj1EA7tiv/pQTrgFF6bTmoRxP5WY616/G3TWaRMa+gMWnsiSKZXeG4UiHjQEb1Xhufs/De54gh8gI3ML8JgfnkFBS0XLTz1QD5WQpA0krd4nMz8+pbpzBZ/GHncYVeueCp8zlheKXWFGKCoOuNyDh4yiQOJ1JhJO4EutMdlrBtmxZp1AKMpbFzlO36DkRg5d+7vbEx6MvgJupzw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by LV8PR12MB9229.namprd12.prod.outlook.com (2603:10b6:408:191::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Fri, 21 Nov
- 2025 15:00:35 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9343.009; Fri, 21 Nov 2025
- 15:00:35 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Sat, 22 Nov 2025 00:00:15 +0900
-Subject: [PATCH 4/4] gpu: nova-core: gsp: Replace firmware version with
- "bindings" alias
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251122-nova-fixes-v1-4-a91eafeed7b5@nvidia.com>
-References: <20251122-nova-fixes-v1-0-a91eafeed7b5@nvidia.com>
-In-Reply-To: <20251122-nova-fixes-v1-0-a91eafeed7b5@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, John Hubbard <jhubbard@nvidia.com>, 
- Alistair Popple <apopple@nvidia.com>, 
- Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
- Edwin Peer <epeer@nvidia.com>
-Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.14.3
-X-ClientProxiedBy: OS7P286CA0010.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:26c::19) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dRPb/C2Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763744717;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pcee4/A8vRRbWn/DfexDhknhgtkMbBICYwtyayyfJMY=;
+	b=dRPb/C2Z7MFbX5V+b9PL3D2TTSiUXPkFHAdTdAU59y7hjsUGhCYoicyMIqV9MlEN/Vsi3B
+	FklHUXuy9b3diqhZTuzWuEku1IPaTcL/CY46cg+9glj8eX180KrUVnsmWn2SEm6ttDsoLi
+	X0Pbi//6clfy8JFGVSmsyheyeMNV+FA=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-649-CX2NM8h7ONiCEReyx6IMmQ-1; Fri, 21 Nov 2025 12:05:13 -0500
+X-MC-Unique: CX2NM8h7ONiCEReyx6IMmQ-1
+X-Mimecast-MFC-AGG-ID: CX2NM8h7ONiCEReyx6IMmQ_1763744713
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8804b991976so58176126d6.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Nov 2025 09:05:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763744713; x=1764349513;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pcee4/A8vRRbWn/DfexDhknhgtkMbBICYwtyayyfJMY=;
+        b=pmlCbADIGVinoltL2VORyHIxDe7sFQCW6IsuYfX2soiEFz2Cnr1C89wAyXXuOC4HaO
+         zq4af03qCEaGEgVLZfYB5epvP+CAn6HAoEOepq/v1v8wp6bfbrsavgBdDqbFrqCum7gQ
+         F/0JfYdY/SYGos0avVWSpqBZoVklZCUNJYsdZNasYJlPVIU5lfvss3gU0F4fuOIzCTQH
+         EcAtOJjLTlg+I+5NdsUpM28c+yxcoWgks++DF4bbfVSGt8yJOyO/eXzNbjq4pJ5RZLtp
+         3uyH4cM2txQPRTzmdWDgMJAPdSQNp0Ns4xyvczJLOp3YQgqGF2R66kzrqDHjaBK3mFxT
+         sYJw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9r1+vjIM8u5D2wVC5KuPuuVn0kBl0jcRY/KTqLeHVXKv6Fv9A9jPd6aZfV1uRdIhK/Vv7+8tC/e2FYpKozQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqSJxBq2G9i2QzHAwblH2vzhVdLKL/RvQHTSNNgp7zXOuQBWBt
+	JwK6IObxWVGlVWGmuFS9GDW/5wYh4jQVfXsu/4MCXMYi957ISdG9AsISzeak+OOLMSuliUuy55Z
+	npmSxErbwSAXWsAaToveV7fhsPPbUsC3OP6Sxn2D6X81jVd//WzHv6R0DirxXJANiJud0
+X-Gm-Gg: ASbGnctGUAlQG3irFuQzLxV7ejR9CpP1+uaIWET6oRmOdtb5OkCJf8M7BUnir+nOM9R
+	xFHEQkZ5m/2YCkXuQfRJB1Ibb7To3041IB0gpND7ELDLyqNwey+54n7wra9FY4PpcTH5PTUYgwX
+	Cua9TKRB38YpoZQm09Z3ijgJmCSTdQXcL0w9JPVH3QXmt8iGb+rF3hzCClF5/ogtUhCcX8wBbBF
+	BEGGZ01TbAZg7dXXwljDEkrSpV/CPKP2PNuMJjhd48op5cLMXMWcRO+DAaX6TZ1usr0NwLUozEP
+	F9lrnLhCjfpSYKoJcxxaePLciz4t+UPfhRihjDv/Rge/ccQCa8JKWkGI+3f4cvuvP8RN85U5OC+
+	Yo/XdTPm9yg==
+X-Received: by 2002:ad4:5aae:0:b0:882:6cd3:7f64 with SMTP id 6a1803df08f44-8847c525dbemr42276056d6.44.1763744712757;
+        Fri, 21 Nov 2025 09:05:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGLRcV7K0Bhq8TE5Bm7cm2cdZ/VYsJmCfeBsteGuVKLE0o2xsrM2bCCmTKOW8kK51KJ84vQ/g==
+X-Received: by 2002:ad4:5aae:0:b0:882:6cd3:7f64 with SMTP id 6a1803df08f44-8847c525dbemr42275096d6.44.1763744712063;
+        Fri, 21 Nov 2025 09:05:12 -0800 (PST)
+Received: from localhost ([2607:f2c0:b141:ac00:2fb1:d1df:b122:3b2c])
+        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-8846e446a06sm43506306d6.2.2025.11.21.09.05.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Nov 2025 09:05:11 -0800 (PST)
+Date: Fri, 21 Nov 2025 12:05:10 -0500
+From: Peter Colberg <pcolberg@redhat.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH 0/8] rust: pci: add abstractions for SR-IOV capability
+Message-ID: <aSCbxjbNJPPy2NVd@earendel>
+Mail-Followup-To: Zhi Wang <zhiw@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
+References: <20251119-rust-pci-sriov-v1-0-883a94599a97@redhat.com>
+ <20251120083213.6c5c01a5.zhiw@nvidia.com>
+ <aR8t0XdZVyN-0mak@earendel>
+ <20251120203444.321378c2.zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|LV8PR12MB9229:EE_
-X-MS-Office365-Filtering-Correlation-Id: 15dd282d-8109-45c8-dc1b-08de290eb9a5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|10070799003|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?R1ZvRnJFeEhXTXFFZ1RjOWt5UHpyeWpLTWU1T0JHU3FJMmdaUThQNXNZeUJm?=
- =?utf-8?B?bzI2OGZuamdjeS9FQkhyNXd4OGxacFZYMEdKdVRFL3NoVFcvdkprSTd2VllP?=
- =?utf-8?B?emFoT3cvVHBBMVFZN0xrVy8yNzFMZXhteGpjUTU5SEN4Vm5zVHNxRUJ1dVhx?=
- =?utf-8?B?MWxiZm9IS3YyQ2xrWG1VRmJtNTlGNUIzSWVMak52Tm1kR0xEeHFucFRwNTBQ?=
- =?utf-8?B?WUxhVW1HU0daV1Y1M2lENWoxNi9Zc09jb0U1UFExd2ErbytwTUkxc01uR1dy?=
- =?utf-8?B?LzV6RS9yc1F6YzB1ejBsak9kTTlwQlJtQ3RBamRVRDRwbW9adFUvR2hkQ0xE?=
- =?utf-8?B?Q09UMklqeDlYQWpNNCtoMGRsSUpxQXk3QjA4WUI3cTNIVDJnVElsb2FXdzJt?=
- =?utf-8?B?UzNBbjZ1eEQ2a2NDQzJrR0RreGV2dTRxekFQOXZ2N04zYnJ0Q09DK0tOMlRF?=
- =?utf-8?B?Unk3dmVDT08yaFpVZlcvRGVOYXJhbUNoNUJOZkRwUTVpVThHTkZhY055L0dj?=
- =?utf-8?B?aFdYQzkwMU9sd2VpNllRa2U5WUU0dDhyWjlzTVlYejhjVklydUtZZXFjQy9i?=
- =?utf-8?B?M2ErMnpDUlpFcVlFRjhtN2ZkT1luR2JibUJBNWJwMEdyWUV1azlka1ZpL25x?=
- =?utf-8?B?ZHcxaDFhOUxxaklONDZ3a3Rka2ZNYXVicXR0bFlHcjNwS2tPRCtvQTVnRjFS?=
- =?utf-8?B?Y3J2VXpKR00wTG0zVjBMdkxkVWFudnV5d0NFODl4VmcxY2kwUW5RTjVKWDR5?=
- =?utf-8?B?cFAwQnJBb1habS9Tbmp1dS80bFNxRGx3djFtdzdkbmJ0MWd2NGFiQmc3dElY?=
- =?utf-8?B?NklMQ0xpRUxrS2NTR0F0MllnMnVkOCtKNEJSbDRtazBvbkZxNUh3OE0yM3Bu?=
- =?utf-8?B?MHVjbmJ6YlZaMjhSVGVCY1JMYWc5SUFVMisreEVrUW45OXNNMTBRWXJXNnk0?=
- =?utf-8?B?YTFJM2ppR3Fjc01CVUVSb2M5ODJGZVhIWjZVUDAvRWkzd0pKalNmY0s3elor?=
- =?utf-8?B?cnRwUlpZcUpnMWdKRnpIRnBiTHpUbmRmQ2NvaFZYQ2NNTW40S3NQZHpWNTVk?=
- =?utf-8?B?VEFiRlJmWlFXNDc0S1dKcm5CUUxzNzR4K0dRMjZCUmU5aVNvbUZTZ2xoMUF4?=
- =?utf-8?B?V1VWcGNzZDV5MS9PWm8ydS9HcDMvTms2UUhYekV4eTNtajV6alhBcXh3bnlQ?=
- =?utf-8?B?Rk1GS0wwVEFCL01GZGQxRE8rN1VXSU1XZjk3OHluQm5xUkNNeCt1S2ZZM3gr?=
- =?utf-8?B?eWcrcWk0L2VGSGtHM1ZyMzhwYkJxbWVEN0x0OS95VkF0SWsrV0FrZ1RJTjc4?=
- =?utf-8?B?eWNTRXNwVTBwMmloYWszK0w5ZGdtMHQ1c1dHUk45OU95ZTRzdXdWeDUzanBa?=
- =?utf-8?B?ZXp1K21rTzBGbFZpaXRHYkpZQ2VQalVqWnJoZlM3Q1pvYnVQS3dvRFB2WmdV?=
- =?utf-8?B?RW1uRnBvQ0wwaFJVZ0xDalZ3d0xOU2lDUFNjSXhuVndMeHBrMm1NNTJlRlg0?=
- =?utf-8?B?cU1KU0w4bXdVQ1RZT3lSaktDaXZFNlBiNU5neWJBSEh4QmxDTFJFd0pYdERM?=
- =?utf-8?B?OXpKeDZYTmIxT2ZSdDlqVFJMelVGM0RYd0FPa01FWitpSlNqaHhTanA3VVNB?=
- =?utf-8?B?Q1YyamFLWmN2Ymora00yeGRwL0xVNExTLy82ci8yTS9KWUhiOXFSeGdhQWNo?=
- =?utf-8?B?VjFaN0M5dVlGbkFVZCtXUndsVGJQYjdJQkFYN3pXR1dSUjNiQS9USktRL3Zu?=
- =?utf-8?B?OUZGa2w0VWZyUkJ5dU9pSUg4eFB4UzVrdU9DUTlJS2l1alN6YjJCL29QRTY3?=
- =?utf-8?B?M2FGb2xQWjBWSS9KSCs0bCtaRHdPTThGbGZIMnpmeG1DanhNbkJ0R2pxeEV3?=
- =?utf-8?B?cEM2ckN5Vm9zSjRZOHIvMWp5eVpHUUtRcUxMVGM3ckJtUW85Z3cxcE1SUEtj?=
- =?utf-8?B?UHJDb1pZWmRyZGxPRHJKRFVrL3NCbzhsZDZMeFFuVmpqRWZTcXJIajlnUktD?=
- =?utf-8?B?cnJhNWpFNktrM1pDTGk5dmExRGdkU0dUcy9xbXkwVno0UGdBUFArSlJ2UmtZ?=
- =?utf-8?Q?EXqH9R?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(10070799003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UzBDdDFVaStoc2lwZ2NmQkg3ZWJ3c0pram9PYTZuQzhMaDBFc2NseGhMeVNk?=
- =?utf-8?B?c0lZVzdTMnBMNHdhV1BObVVGVHhrdTJZRzdHNkFwbW9KdHBtYm90Z3IvdjZV?=
- =?utf-8?B?dVBvaFVGWnllSUhBMERDTS9RcldzSElrS2hoRzdtVnhhQURJaXp5RnVMVE45?=
- =?utf-8?B?cUdFTG9pZEVKalA0YjI3Y2xBdkFPUHh0aFBDOVdsZWRRYStpZVMrRHl1U0ty?=
- =?utf-8?B?aHgrQm9JMlZzaC83cWlZa25BRHNjS3JjZ1dQbldHU2NOVUlHcWpYQ09ZMUFH?=
- =?utf-8?B?Mk9yM2k3T1dFMjdGcW1uQjRuZ09mckQ5Y1RUSzM4QVhnYytWbm4xazBkUldu?=
- =?utf-8?B?aUQvTUJCTDVGVi9yYUdoU0c3Sk51dlFwc09seVFTMlZuZ3V6UDRiM0FTZFhh?=
- =?utf-8?B?cDBqSzQ5S093QUNScHcrQ1Y2MUJodFpZWThIWVBnc0hkTGpwSUVxMU43TDNJ?=
- =?utf-8?B?SS8zQVQ3eFV1WEdCOG9oQnd6bThTdE85VW8xbG5OenJVdTNJeVhaRHNKTWVX?=
- =?utf-8?B?ZUYwRFFNYWRZeXBMeGsrbTh2dU5USHc0UjhhQ0JiMWFxdVA0Ny9qdmRYNHlo?=
- =?utf-8?B?ZWRRN2R1cWl6dDZUTHpycDY3UHVQNW1qdnJxT0RCNGF2d1RGRlpsWTJTNFlo?=
- =?utf-8?B?eDFXTlZqdEo4UXM3OGRvaFhQbmQ5NTNHM2hzcVVIR3hnZjJmVUdJd2FSS0E2?=
- =?utf-8?B?dE12UTBLb3FGTm5YMThnVUF4UTVOdXp0NTQ5bFVmNjJXci96blNYdUZhcXNH?=
- =?utf-8?B?bHYvd2pTZFlDdnMrKzRwNFBJSFNpWFBEbmVJQTh0QnJEYTRFZE84dk40ZWRU?=
- =?utf-8?B?S2pjWVEwQSt4S3ZqRTJLdnNQZDBFMmdiM1huOXZ3eWdhK1pyb0FydFZmR1hV?=
- =?utf-8?B?OHBlZ1FKcThWZ0xFaFhmT3N0ZFFETkM3RUh0bGNtT01oQktjZFNqQ3FCNkl6?=
- =?utf-8?B?bFBKNlRwSkRrUjVUYmhJWVVvaXBCV2p2MEVqa3VzRDNBaTBSdFpaN0JEQWdV?=
- =?utf-8?B?UWpTZTdRdHB3b2hkcmc3OGZYUmxicUdqN09qc3g4VFhMdVJlTHhjNUV2clhD?=
- =?utf-8?B?VEYyQU5JYXVYakxXSXQ4WTNSdDArUytTVVhJYTh5c0JVRVJDM3NxWnNML1RV?=
- =?utf-8?B?S09LUGdFbU1IeHFKYzFuQnViK0JISWdsWCtLMmZLWkVxejdLNTI5bEdDQTNQ?=
- =?utf-8?B?VVBmTW5TR3RmQ25TZUlzNWFlSGRVV2UxRkFKN2xlc1oxdEtHYU9xdkZ0UXBz?=
- =?utf-8?B?NFp5VStOdjFOSjVhMUdoOTI4UGtxcXB4dFU5bUxRVjNyLytOVUQvQ2VIOUNt?=
- =?utf-8?B?aHljamc2QXlTZ1h1dzJ6dm5PaytSc3lQbXlOSlBmbTl4MkRRb1V1VXY3aHM5?=
- =?utf-8?B?OFMyeXAyT3ZBcExmZ3g5eVdBL0dYNUROZ2tpUXF0VldSZXhhdVJlNTF6dE4z?=
- =?utf-8?B?V2pWWFhPS1hSZ3pFZUVNS0RUTlA3UTRLR3NZc09mM3RhYWU4ckhnQU5TWDlF?=
- =?utf-8?B?bUZ2NzJUTFVLUVpjcmlVS2J2Nlh5MytkT05QV1VCM1lYTW1wZ1hQcEp6VWth?=
- =?utf-8?B?ZlpBcm1ndEdUZ3pPVWFFNksvcGpvTGpHcVRKdkFqZ2hRSmZiL2ZiaFBJRUJv?=
- =?utf-8?B?d0lwMzRUS2ZlVFB5TVhWSjBSVS9oNXdYNTZLL28zOG9rYlJpbkc2ZTNrYThk?=
- =?utf-8?B?WUhER1lhNk9MM2FpYmduUU15VEV4R3djRmg5bFNMbzNEWkJrYUZOWVJYVjFo?=
- =?utf-8?B?dDRXZUNlazZiL1pJakRoTGQ3TlVTYUo3U2crMGlJaHJmL2JVZ1ZjSFMxVzdz?=
- =?utf-8?B?bEVjTlFiRFJ2aFZ3OGZSSExSSkpYR2psNC8zMmV2U0t6S2pFa3JTUzhwVHk4?=
- =?utf-8?B?TW9iU1RzS0RCLzVrTTg5c29MMlBsR2tUWlFZTG00NTZldWJtcGRPa2RPdWRh?=
- =?utf-8?B?MEV1cDVWaDdRN3ZsU3AzaERCTjA4Rm9oSVRKd0tucEJmbit1RkhGeVVFV0VX?=
- =?utf-8?B?aitpQnB5R1pFdWg4cGM4a2dtenRPT1pDM1NIZGh5bDl4WGwreGh1OHF6WGdJ?=
- =?utf-8?B?eXU5RFovUXdUZ0YvdGJoVlpITzBlUUREOEIyb1JrMEp1ZlV4YlZTUFhoK1R6?=
- =?utf-8?B?V3lFSEdGU2ZIWWFpek5aWTRUMGMrR1ZRWCtCTnhKUytZTXkwZmJDRGowKy9a?=
- =?utf-8?Q?om62YQcKH70epJsAg9saAq6osgVNqXe0Lpdm5ZoZmPEH?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15dd282d-8109-45c8-dc1b-08de290eb9a5
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 15:00:35.5890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B7NGv3Qm33rwdaqggt3PMjbKvsogsaSilH9tP+28gPU77mkotVsAQYRZQiRY3HAbpqZ6wh1plaESTNb6lm77aw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9229
+In-Reply-To: <20251120203444.321378c2.zhiw@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: jpEFKUcT8NWJwBjjKoOYBSOJzxm4v-2QXK5qhtoPZuw_1763744713
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-We have an "bindings" alias to avoid having to mention the firmware
-version again and again, and limit the diff when upgrading the firmware.
-Use it where we neglected to.
+On Thu, Nov 20, 2025 at 08:34:44PM +0200, Zhi Wang wrote:
+> On Thu, 20 Nov 2025 10:03:45 -0500
+> Peter Colberg <pcolberg@redhat.com> wrote:
+> 
+> Hi Peter:
+> 
+> I met some errors when compiling on driver-core-next branch, you can
+> fix those in the next spin.
+> 
+> Fixes:
+> 
+> diff --git a/drivers/gpu/nova-core/driver.rs
+> b/drivers/gpu/nova-core/driver.rs index ca0d5f8ad54b..730e745cad63
+> 100644 --- a/drivers/gpu/nova-core/driver.rs
+> +++ b/drivers/gpu/nova-core/driver.rs
+> @@ -49,6 +49,7 @@ pub(crate) struct NovaCore {
+>      ]
+>  );
+>  
+> +#[vtable]
+>  impl pci::Driver for NovaCore {
+>      type IdInfo = ();
+>      const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+> 
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index d6cc5d7e7cd7..2d68db076f92 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -292,6 +292,7 @@ macro_rules! pci_device_table {
+>  ///     ]
+>  /// );
+>  ///
+> +/// #[vtable]
+>  /// impl pci::Driver for MyDriver {
+>  ///     type IdInfo = ();
+>  ///     const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
+> 
+> The code in the examples should be able to compile.
+> 
+> You can enable doctest by:
+> 
+> CONFIG_RUST_KERNEL_DOCTESTS=y
+> 
+> Then:
+> 
+> impl Device<device::Bound> {
+>     /// Returns the Physical Function (PF) device for a Virtual
+> Function (VF) device. ///
+>     /// # Examples
+>     ///
+> 
+> snip
+> 
+>     /// ```
+>     /// let pf_pdev = vf_pdev.physfn()?;
+>     /// let pf_drvdata = pf_pdev.as_ref().drvdata::<MyDriver>()?;
+> 
+> I saw this part is not able to be compiled.^
 
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
- drivers/gpu/nova-core/gsp/fw.rs | 58 ++++++++++++++++++++---------------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+Thanks Zhi, I applied all fixes.
 
-diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/fw.rs
-index 252755dbb73c..3baa5455cc32 100644
---- a/drivers/gpu/nova-core/gsp/fw.rs
-+++ b/drivers/gpu/nova-core/gsp/fw.rs
-@@ -141,8 +141,8 @@ unsafe impl AsBytes for GspFwWprMeta {}
- // are valid.
- unsafe impl FromBytes for GspFwWprMeta {}
- 
--type GspFwWprMetaBootResumeInfo = r570_144::GspFwWprMeta__bindgen_ty_1;
--type GspFwWprMetaBootInfo = r570_144::GspFwWprMeta__bindgen_ty_1__bindgen_ty_1;
-+type GspFwWprMetaBootResumeInfo = bindings::GspFwWprMeta__bindgen_ty_1;
-+type GspFwWprMetaBootInfo = bindings::GspFwWprMeta__bindgen_ty_1__bindgen_ty_1;
- 
- impl GspFwWprMeta {
-     /// Fill in and return a `GspFwWprMeta` suitable for booting `gsp_firmware` using the
-@@ -150,8 +150,8 @@ impl GspFwWprMeta {
-     pub(crate) fn new(gsp_firmware: &GspFirmware, fb_layout: &FbLayout) -> Self {
-         Self(bindings::GspFwWprMeta {
-             // CAST: we want to store the bits of `GSP_FW_WPR_META_MAGIC` unmodified.
--            magic: r570_144::GSP_FW_WPR_META_MAGIC as u64,
--            revision: u64::from(r570_144::GSP_FW_WPR_META_REVISION),
-+            magic: bindings::GSP_FW_WPR_META_MAGIC as u64,
-+            revision: u64::from(bindings::GSP_FW_WPR_META_REVISION),
-             sysmemAddrOfRadix3Elf: gsp_firmware.radix3_dma_handle(),
-             sizeOfRadix3Elf: u64::from_safe_cast(gsp_firmware.size),
-             sysmemAddrOfBootloader: gsp_firmware.bootloader.ucode.dma_handle(),
-@@ -315,19 +315,19 @@ fn from(value: MsgFunction) -> Self {
- #[repr(u32)]
- pub(crate) enum SeqBufOpcode {
-     // Core operation opcodes
--    CoreReset = r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_RESET,
--    CoreResume = r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_RESUME,
--    CoreStart = r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_START,
--    CoreWaitForHalt = r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_WAIT_FOR_HALT,
-+    CoreReset = bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_RESET,
-+    CoreResume = bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_RESUME,
-+    CoreStart = bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_START,
-+    CoreWaitForHalt = bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_WAIT_FOR_HALT,
- 
-     // Delay opcode
--    DelayUs = r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_DELAY_US,
-+    DelayUs = bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_DELAY_US,
- 
-     // Register operation opcodes
--    RegModify = r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_MODIFY,
--    RegPoll = r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_POLL,
--    RegStore = r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_STORE,
--    RegWrite = r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_WRITE,
-+    RegModify = bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_MODIFY,
-+    RegPoll = bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_POLL,
-+    RegStore = bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_STORE,
-+    RegWrite = bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_WRITE,
- }
- 
- impl fmt::Display for SeqBufOpcode {
-@@ -351,25 +351,25 @@ impl TryFrom<u32> for SeqBufOpcode {
- 
-     fn try_from(value: u32) -> Result<SeqBufOpcode> {
-         match value {
--            r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_RESET => {
-+            bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_RESET => {
-                 Ok(SeqBufOpcode::CoreReset)
-             }
--            r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_RESUME => {
-+            bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_RESUME => {
-                 Ok(SeqBufOpcode::CoreResume)
-             }
--            r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_START => {
-+            bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_START => {
-                 Ok(SeqBufOpcode::CoreStart)
-             }
--            r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_WAIT_FOR_HALT => {
-+            bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_CORE_WAIT_FOR_HALT => {
-                 Ok(SeqBufOpcode::CoreWaitForHalt)
-             }
--            r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_DELAY_US => Ok(SeqBufOpcode::DelayUs),
--            r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_MODIFY => {
-+            bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_DELAY_US => Ok(SeqBufOpcode::DelayUs),
-+            bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_MODIFY => {
-                 Ok(SeqBufOpcode::RegModify)
-             }
--            r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_POLL => Ok(SeqBufOpcode::RegPoll),
--            r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_STORE => Ok(SeqBufOpcode::RegStore),
--            r570_144::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_WRITE => Ok(SeqBufOpcode::RegWrite),
-+            bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_POLL => Ok(SeqBufOpcode::RegPoll),
-+            bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_STORE => Ok(SeqBufOpcode::RegStore),
-+            bindings::GSP_SEQ_BUF_OPCODE_GSP_SEQ_BUF_OPCODE_REG_WRITE => Ok(SeqBufOpcode::RegWrite),
-             _ => Err(EINVAL),
-         }
-     }
-@@ -385,7 +385,7 @@ fn from(value: SeqBufOpcode) -> Self {
- /// Wrapper for GSP sequencer register write payload.
- #[repr(transparent)]
- #[derive(Copy, Clone)]
--pub(crate) struct RegWritePayload(r570_144::GSP_SEQ_BUF_PAYLOAD_REG_WRITE);
-+pub(crate) struct RegWritePayload(bindings::GSP_SEQ_BUF_PAYLOAD_REG_WRITE);
- 
- impl RegWritePayload {
-     /// Returns the register address.
-@@ -408,7 +408,7 @@ unsafe impl AsBytes for RegWritePayload {}
- /// Wrapper for GSP sequencer register modify payload.
- #[repr(transparent)]
- #[derive(Copy, Clone)]
--pub(crate) struct RegModifyPayload(r570_144::GSP_SEQ_BUF_PAYLOAD_REG_MODIFY);
-+pub(crate) struct RegModifyPayload(bindings::GSP_SEQ_BUF_PAYLOAD_REG_MODIFY);
- 
- impl RegModifyPayload {
-     /// Returns the register address.
-@@ -436,7 +436,7 @@ unsafe impl AsBytes for RegModifyPayload {}
- /// Wrapper for GSP sequencer register poll payload.
- #[repr(transparent)]
- #[derive(Copy, Clone)]
--pub(crate) struct RegPollPayload(r570_144::GSP_SEQ_BUF_PAYLOAD_REG_POLL);
-+pub(crate) struct RegPollPayload(bindings::GSP_SEQ_BUF_PAYLOAD_REG_POLL);
- 
- impl RegPollPayload {
-     /// Returns the register address.
-@@ -469,7 +469,7 @@ unsafe impl AsBytes for RegPollPayload {}
- /// Wrapper for GSP sequencer delay payload.
- #[repr(transparent)]
- #[derive(Copy, Clone)]
--pub(crate) struct DelayUsPayload(r570_144::GSP_SEQ_BUF_PAYLOAD_DELAY_US);
-+pub(crate) struct DelayUsPayload(bindings::GSP_SEQ_BUF_PAYLOAD_DELAY_US);
- 
- impl DelayUsPayload {
-     /// Returns the delay value in microseconds.
-@@ -487,7 +487,7 @@ unsafe impl AsBytes for DelayUsPayload {}
- /// Wrapper for GSP sequencer register store payload.
- #[repr(transparent)]
- #[derive(Copy, Clone)]
--pub(crate) struct RegStorePayload(r570_144::GSP_SEQ_BUF_PAYLOAD_REG_STORE);
-+pub(crate) struct RegStorePayload(bindings::GSP_SEQ_BUF_PAYLOAD_REG_STORE);
- 
- impl RegStorePayload {
-     /// Returns the register address.
-@@ -510,7 +510,7 @@ unsafe impl AsBytes for RegStorePayload {}
- 
- /// Wrapper for GSP sequencer buffer command.
- #[repr(transparent)]
--pub(crate) struct SequencerBufferCmd(r570_144::GSP_SEQUENCER_BUFFER_CMD);
-+pub(crate) struct SequencerBufferCmd(bindings::GSP_SEQUENCER_BUFFER_CMD);
- 
- impl SequencerBufferCmd {
-     /// Returns the opcode as a `SeqBufOpcode` enum, or error if invalid.
-@@ -612,7 +612,7 @@ unsafe impl AsBytes for SequencerBufferCmd {}
- 
- /// Wrapper for GSP run CPU sequencer RPC.
- #[repr(transparent)]
--pub(crate) struct RunCpuSequencer(r570_144::rpc_run_cpu_sequencer_v17_00);
-+pub(crate) struct RunCpuSequencer(bindings::rpc_run_cpu_sequencer_v17_00);
- 
- impl RunCpuSequencer {
-     /// Returns the command index.
+Peter
 
--- 
-2.51.2
+> 
+> Z.
+> 
+> > On Thu, Nov 20, 2025 at 08:32:13AM +0200, Zhi Wang wrote:
+> > > On Wed, 19 Nov 2025 17:19:04 -0500
+> > > Peter Colberg <pcolberg@redhat.com> wrote:
+> > > 
+> > > Hi Peter:
+> > > 
+> > > Thanks for the patches. :) I will test them with nova-core and come
+> > > back with Tested-bys.
+> > 
+> > Perfect, thanks Zhi.
+> > 
+> > > Nit: Let's use "kernel vertical" styles on imports. [1]
+> > > 
+> > > [1]
+> > > https://lore.kernel.org/all/20251105120352.77603-1-dakr@kernel.org/
+> > 
+> > Thanks, done for patch "samples: rust: add SR-IOV driver sample".
+> > 
+> > Peter
+> > 
+> > > 
+> > > > Add Rust abstractions for the Single Root I/O Virtualization
+> > > > (SR-IOV) capability of a PCI device. Provide a minimal set of
+> > > > wrappers for the SR-IOV C API to enable and disable SR-IOV for a
+> > > > device, and query if a PCI device is a Physical Function (PF) or
+> > > > Virtual Function (VF).
+> > > > 
+> > > > Using the #[vtable] attribute, extend the pci::Driver trait with
+> > > > an optional bus callback sriov_configure() that is invoked when a
+> > > > user-space application writes the number of VFs to the sysfs file
+> > > > `sriov_numvfs` to enable SR-IOV, or zero to disable SR-IOV [1].
+> > > > 
+> > > > Add a method physfn() to return the Physical Function (PF) device
+> > > > for a Virtual Function (VF) device in the bound device context.
+> > > > Unlike for a PCI driver written in C, guarantee that when a VF
+> > > > device is bound to a driver, the underlying PF device is bound to
+> > > > a driver, too.
+> > > > 
+> > > > When a device with enabled VFs is unbound from a driver, invoke
+> > > > the sriov_configure() callback to disable SR-IOV before the
+> > > > unbind() callback. To ensure the guarantee is upheld, call
+> > > > disable_sriov() to remove all VF devices if the driver has not
+> > > > done so already.
+> > > > 
+> > > > This series is based on Danilo Krummrich's series
+> > > > "Device::drvdata() and driver/driver interaction (auxiliary)"
+> > > > applied to driver-core-next, which similarly guarantees that when
+> > > > an auxiliary bus device is bound to a driver, the underlying
+> > > > parent device is bound to a driver, too [2].
+> > > > 
+> > > > Add an SR-IOV driver sample that exercises the SR-IOV capability
+> > > > using QEMU's 82576 (igb) emulation and was used to test the
+> > > > abstractions [3].
+> > > > 
+> > > > [1] https://docs.kernel.org/PCI/pci-iov-howto.html
+> > > > [2]
+> > > > https://lore.kernel.org/rust-for-linux/20251020223516.241050-1-dakr@kernel.org/
+> > > > [3] https://www.qemu.org/docs/master/system/devices/igb.html
+> > > > 
+> > > > Signed-off-by: Peter Colberg <pcolberg@redhat.com>
+> > > > ---
+> > > > John Hubbard (1):
+> > > >       rust: pci: add is_virtfn(), to check for VFs
+> > > > 
+> > > > Peter Colberg (7):
+> > > >       rust: pci: add is_physfn(), to check for PFs
+> > > >       rust: pci: add {enable,disable}_sriov(), to control SR-IOV
+> > > > capability rust: pci: add num_vf(), to return number of VFs
+> > > >       rust: pci: add vtable attribute to pci::Driver trait
+> > > >       rust: pci: add bus callback sriov_configure(), to control
+> > > > SR-IOV from sysfs rust: pci: add physfn(), to return PF device
+> > > > for VF device samples: rust: add SR-IOV driver sample
+> > > > 
+> > > >  MAINTAINERS                           |   1 +
+> > > >  rust/kernel/pci.rs                    | 148
+> > > > ++++++++++++++++++++++++++++++++++ samples/rust/Kconfig
+> > > >    |  11 +++ samples/rust/Makefile                 |   1 +
+> > > >  samples/rust/rust_dma.rs              |   1 +
+> > > >  samples/rust/rust_driver_auxiliary.rs |   1 +
+> > > >  samples/rust/rust_driver_pci.rs       |   1 +
+> > > >  samples/rust/rust_driver_sriov.rs     | 107
+> > > > ++++++++++++++++++++++++ 8 files changed, 271 insertions(+)
+> > > > ---
+> > > > base-commit: e4addc7cc2dfcc19f1c8c8e47f3834b22cb21559
+> > > > change-id: 20251026-rust-pci-sriov-ca8f501b2ae3
+> > > > 
+> > > > Best regards,
+> > > 
+> > 
+> > 
+> 
 
