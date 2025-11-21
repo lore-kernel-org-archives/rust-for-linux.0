@@ -1,177 +1,176 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DED02C158E
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Nov 2025 17:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC8E2727ED
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Nov 2025 18:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763747275; cv=none; b=KAiLVxdZ9mXxy1UKXjy0sT1k/Tz0AwrVs0FF1zFutDP3CdHvsn0A8QxTOvvhFS6dzwvQ9+tNBVRBeYXSXqb/2xf8hhcVxmg/Owth6XfbGZgOcNCQGCepcbhstTp5RTmn2Jn73M4Wtniq8nHOXZ/oJPBJuGIh3dKIVGSes7cZvW4=
+	t=1763749684; cv=none; b=gg5zbK89jF0i2nRxLv043aLHl0F2O55MW8GfdVL6aGgw2YPw4WgFHa1MLbPw9C4h05jDsUg3wzlyhje1lzIN4nhO8ix7vuhoDiCyfO5Z9DffYepmaVwB9IiC3OcHyjCit5ZMpcqDXEOMuVHrWziANLTSkUoOZ2k1XW1Yq8fKcaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763747275; c=relaxed/simple;
-	bh=6e/UwWDrkYY4rcwFriN7U3gZO7rE2iKERAumY8yNN0o=;
+	s=arc-20240116; t=1763749684; c=relaxed/simple;
+	bh=eiNvpKMX+RHgtZkQ1+h3XWmFyZEgmHdrngHRg+aKUCk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TNtdfoNL354vg/5lUQ5h7O85i/kU1R+qKEcPaYsnaO8uH0MXwE/AqFvQ2D8yIZuqz5Cq5V6K80GjU1PaSGXloSB4lCH5prmiNGhzxH+fI0RXPmbSbjEMP6XfiK+pHMI1/eliXq31hth9mbMGYBxa/pQI8U8fNKbDvVH65jebxto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yyhvz04u; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type:Content-Disposition; b=SnPBAm+npn621pLG2yr0ZUnKtAqLtlH7F1gLcwKFkjGxTIpem8GrN9NSLP/11crrmQKhZB6V9xhuEQS2ZOKWT3ICfndjRbTk4X25+KtNjWqCj9BKrb5G6vjC/31v4UP0mhFCNl7Dw8YQ1JVo+yYp4UyUUV3Cagk66oMuZSas7N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WPc4+UbP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yyhvz04u"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8823e39c581so33233016d6.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Nov 2025 09:47:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763747273; x=1764352073; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qfpp2UWop0AGuC9XzBRWqbFMhIKY/BIXGgpLtosV1TE=;
-        b=Yyhvz04u6Qe0h/+oL1aVuEmASiZejFJLyQjRCAwcnpUQjdoY9YQy4iJTlWd/MKwwZQ
-         4sg7iJF6iqTs07OM1SKAlXNMCny+rkV8F0CbwbiNwlA/Olo22LwmQ8cmHXLtav8qngy6
-         DQTqAY0drFSr+xduQoCiA5UYXmRQa1rRJJfxoRCgHWfKbs6MS2u/h++h+tHQtWM1YgBO
-         SIVYya73jDRY7rk1FqGmbIQVWF5EPjn+UQT7fMmRcEf/H3Q5zfyQ340FzavWdOrxjgcv
-         i62TdoxJM0kS6MRC//2h7JU7YpnlahsOO3iMBT0w5wbUiEMuHuWxqpBiH1aQVrPM2ge2
-         0UWA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WPc4+UbP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763749681;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9F1gVEfkmOU4VbBNqbz6au89HcS75XiMRWvgttvUABM=;
+	b=WPc4+UbPP73I2EwUEh1FZ/j/Cg606m8OVShbJ15eHQrmUtzH3PEYSxEAJWEAboFBzk8eoj
+	GCj5KPIzem70+f/IUqTqroD149NqX6CWhrUP+W1sFI7pmM8uPL1AGQ/4KZUhAVMEk/KrKE
+	O5m02Q4CrXCUw0CXH5Q9Ig3m9rEPjeg=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-693-BJyGqY-pOx-skJZ-2OKh9A-1; Fri, 21 Nov 2025 13:27:58 -0500
+X-MC-Unique: BJyGqY-pOx-skJZ-2OKh9A-1
+X-Mimecast-MFC-AGG-ID: BJyGqY-pOx-skJZ-2OKh9A_1763749678
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4edaf9e48ecso64532861cf.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Nov 2025 10:27:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763747273; x=1764352073;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Qfpp2UWop0AGuC9XzBRWqbFMhIKY/BIXGgpLtosV1TE=;
-        b=SGIcJDgsKbLFXWkVN/MgJ7qlmN98Znad6xS7jmmxs38729hXD+wC0wyPybvVWLtlOm
-         G6J0xGX3NynGX0SzaUZovlx6wnJw4j3yUXVc21EF7YJ9CgZw365q9My2BCiiDthGv1gY
-         +zb69TsdWn9uPPf2o1P0pJDgkaNW+oAXmzpNiOjwAMAGhHdnHtoXyu7p/AMdRPeOEyjY
-         4LXpfE35A5No0njSXQxXbADCiZvfkavBVzeGH21RtolsW6dziHRld77YQQtY4bI6ZiRR
-         MgoR3dGldXYCWQAROVebKc8nu5FYiPCQ1MS1TBssCGygOpRZBdAlDbZ4CUhQ/hKHTkop
-         iQLg==
-X-Forwarded-Encrypted: i=1; AJvYcCWdKk1Yzf8sItXbNHWmop0SqUkJ1dgFb9by4bCnMHQNdwJEa2okhR6UTHib911Pcf4DOp2Xc5MibBAzjAZxEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEi719WrNk1gddOaoOXRGIG9VnU8ik+lv5Gl1JvI/lh9PHRt7t
-	34DSOg0aZdWwAhtW7fxXz7LmVi8SOBbXf11F/rS1/AilEuL+XLVErxFC
-X-Gm-Gg: ASbGncv0Zyu7v8Q5lvb/5qvjAJIXcfNmDh2uGTtTk7z1tEwGSxExwJCr4ruJzEGe9hk
-	CXI8BIfiP5Pf4NdeYklII0Z+BbHYQVKh6uJZzwOjI8B0oDRumMBLh2C2mMIq6vYZwQDZJuFiNku
-	B18rUsmrydNQh0nLasG/nllEIoeGL6pli2eh91VEJDUXqhMHFZbQmJ4O6H54Wh2pYaJMXf33FgG
-	FjEX6Qvky2C903eFXYEXwdBChW33BCE0IXEza5yQXIsrzv4Q3X89qNBgpiK5f/BRIBjWi/N8n0T
-	BbkMm1Lwi/BEDS8nA6wkxrRMJTUKTHSuxmHKMDuWRAkovHJnVYPJtC26YuaWiqiTHeA6+TkwixW
-	lsNyuOcs8patquy7WWd+5osq8XB7Z7Bc7mmKUwiZgK12LBd2Qo+LI1W6Mgx2dApG5Tek/4SFpyI
-	cKtrUX9tn+PbC/X2Uei4Bf2PI9P1P7UiZ/SHkz3xMG309Hh1cYWVPUucCrd/87Bzm8S+Tc/N2m6
-	RibxmCUxsyxzhc=
-X-Google-Smtp-Source: AGHT+IGTGzyylYtE/+GD3lyq/A7F5Zl2dQaZnS82McCJDJvMOCd+WqcaRUtSyVWJnj2ALgFUeXxU9A==
-X-Received: by 2002:a05:6214:3f93:b0:880:46b6:fe3b with SMTP id 6a1803df08f44-8847c536770mr48750776d6.53.1763747273005;
-        Fri, 21 Nov 2025 09:47:53 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8846e446458sm42502526d6.12.2025.11.21.09.47.51
+        d=1e100.net; s=20230601; t=1763749678; x=1764354478;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9F1gVEfkmOU4VbBNqbz6au89HcS75XiMRWvgttvUABM=;
+        b=PzQhKUrEB3Nkc7ooBQglT7r009/uvjcnN3awz5yQtV6ZWUDHoA3e8+SdqKCPmlmxcK
+         vwNp3cj6lcc83kDCorIPfNzOxlo0axEtKxPso6HOxgFE2AEi6HVbcEhNCKhs0b1oFoVk
+         VHhhH80zdTVTUzM9Q5XaaWHBDIZmisuPmxmMB8vldvILhvwc5YbDsoXNDnZnozuF0uF8
+         XhQQxYk+/qSDR96vat6MMBekxYNsWJTGISW28BnoMhzy/rBod9SFjZdCXwJCJEqJHc9F
+         sz//wsB7WhRkhGakjkoUwO64oyREYjf9hVSSI3Y2Tm/vIdcF4UnU+Llv+ibpI1yBOFGL
+         JBhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXXTwQ3KdgaY2t5Lug7Gp74ybfJU9VvX9gEkB8mhNKqNqeLqb6MygZdOfXFRnBfATsIeoQCS6LHzeJiDqaTnQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwS0N6FnvkCKHElLydezy02alq1cxa4H33bo6JTpzAm4Ja4Ios4
+	rZ3hqOtxAD02zbEB5wRGUKcafGWme6ujOWxPr4+mPVTVbOnMBmPwMXfudEPN6QBM1/grcM4XO6z
+	5EzYwg8MaEUBnpEsogKqoKKVn2pdZzqT5bT5PL/dlkeeXpVaVm8hPYRe5moTwLWPbTSHI
+X-Gm-Gg: ASbGncuRixmY42lrNk61P+/XvP9+Kf2GwRoDQgI7BZzA0TYJtMAHlvXeeYKhV3nPjkA
+	C8GNfJS7uWm/yDOdPjZLUPrYm/o1khtTEB8niD/oicWOnBQUWMFBXPDmAAVZA6QIhoo2TvkAQkp
+	8A8BBS9WNGHv7oTFWrL7zwMc3d775Peey5QVINIduCw6vjw78mvLGWKGfOrW12Hlai3d7c3X6Ff
+	BdKtI12/ocg+xDgMt6XVGOiUXgF/FzqgsEYZGbN16+KWsCsaUFhqFLJIT5xLhAsgJnaccAPfDg3
+	Y75kwKp49R8ErT+tEzL9xBs4MfBNUmQ+QGAGT7Ey6z5pCw21LJs5ELTl90cYrymxle5F1Sgm0fm
+	PK8CbDRnkZw==
+X-Received: by 2002:a05:622a:155:b0:4ed:da56:7a96 with SMTP id d75a77b69052e-4ee58af100cmr45387451cf.60.1763749677485;
+        Fri, 21 Nov 2025 10:27:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFkOzQWoZuQdAiXMy2SX7/W3kkLRTcNrhy9ckhF61k6Ze2u2Lmzw86pdU9Kf7yewixDrfgpEg==
+X-Received: by 2002:a05:622a:155:b0:4ed:da56:7a96 with SMTP id d75a77b69052e-4ee58af100cmr45387001cf.60.1763749676867;
+        Fri, 21 Nov 2025 10:27:56 -0800 (PST)
+Received: from localhost ([2607:f2c0:b141:ac00:2fb1:d1df:b122:3b2c])
+        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4ee48d571d0sm41831021cf.12.2025.11.21.10.27.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 09:47:52 -0800 (PST)
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9C8B5F40084;
-	Fri, 21 Nov 2025 12:47:51 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 21 Nov 2025 12:47:51 -0500
-X-ME-Sender: <xms:x6UgaYNYLVH8C7WwQ_A2I5USCZcbVsM1SsHUr5xcAF-7YraNS9XQVw>
-    <xme:x6UgadVLC9QuPxHaZZSYFGAUpePkoTbsVYeJ9H68lBpJ1fHVHLpl44tpNp-JQKA2k
-    ZvjDyzxllhGOy1pqRXVvvdiPKXyl6UIE0TMNjx_gV9VuWjw1wtjGA8>
-X-ME-Received: <xmr:x6UgabRguIi1mDsO4tAOauZrrVX5RbXv3PSZE0O-WAfffxRhi2MCM2-xljEgW1rnAI67_17aQYBnRzWDI3U0N0-ex6eoV1Lp>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvfedtiedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedvvdeh
-    tdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
-    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
-    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
-    pedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepjhhhuhgssggrrhgusehnvh
-    hiughirgdrtghomhdprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgt
-    phhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhope
-    gurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthho
-    pehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnoh
-    hrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
-X-ME-Proxy: <xmx:x6UgaT17rtuuKOZPaJmxUbKhXCrP_vNGG18Hk5GlaUQZzeozBWT7ZQ>
-    <xmx:x6UgaYhoCdgmH2054Sp-bSTBl3cD4gPTFH0tQngyfNLZSZPWsBTkFQ>
-    <xmx:x6UgaRZmWofblwniF2QkuK705hUhB5yET07B8qbE2hwYnQng9-fWPg>
-    <xmx:x6UgaRNJN4jlzNp2LsPXS8LJxPMWxEH8vI_xkZpBlsAXNQR2FwrbEA>
-    <xmx:x6UgaVTghiA1afqKriofoMzECearjeT8Hjtahwk2cEjG-_Dc1pqzlTHQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Nov 2025 12:47:50 -0500 (EST)
-Date: Fri, 21 Nov 2025 09:47:49 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
+        Fri, 21 Nov 2025 10:27:56 -0800 (PST)
+Date: Fri, 21 Nov 2025 13:27:55 -0500
+From: Peter Colberg <pcolberg@redhat.com>
+To: kernel test robot <lkp@intel.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
+	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH 1/8] rust: pci: add is_virtfn(), to check for VFs
+Message-ID: <aSCvKy64s-LBrM85@earendel>
+Mail-Followup-To: kernel test robot <lkp@intel.com>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH v14 00/16] Refcounted interrupts, SpinLockIrq for rust
-Message-ID: <aSClxW6jnspFRHMH@tardis.local>
-References: <20251120214616.14386-1-lyude@redhat.com>
- <4b6ae41e-5cda-41ab-ba4e-628bdf23f917@nvidia.com>
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
+	llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>
+References: <20251119-rust-pci-sriov-v1-1-883a94599a97@redhat.com>
+ <202511211008.jgLuTcrQ-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <202511211008.jgLuTcrQ-lkp@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: l3jjQqijaWRs9RATS3_yeqAkIToiRJaIbHVFdQQsasY_1763749678
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4b6ae41e-5cda-41ab-ba4e-628bdf23f917@nvidia.com>
 
-On Thu, Nov 20, 2025 at 03:16:04PM -0800, John Hubbard wrote:
-> On 11/20/25 1:45 PM, Lyude Paul wrote:
-> ...
-> >   this new interface is indeed possible, more on this below.
-> > * Also thank to Joel, we also now have actual benchmarks for how this
-> >   affects performance:
-> >   https://lore.kernel.org/rust-for-linux/20250619175335.2905836-1-joelagnelf@nvidia.com/
-> > * Also some small changes to the kunit test I added, mainly just making
-> >   sure I don't forget to include a MODULE_DESCRIPTION or MODULE_LICENSE.
+On Fri, Nov 21, 2025 at 11:00:32AM +0800, kernel test robot wrote:
+> Hi Peter,
 > 
-> Hi,
+> kernel test robot noticed the following build errors:
+
+This appears to be a generic issue with UML, unrelated to this series.
+
+https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/CONFIG_UML.20maybe.20broken.3F/with/558611169
+
+Thanks,
+Peter
+
 > 
-> The above link says that local_interrupt takes 3.6x as as as local_irq.
+> [auto build test ERROR on e4addc7cc2dfcc19f1c8c8e47f3834b22cb21559]
 > 
-> This is alarming, but is it the final word? In other words, is the Rust
-> side of this doomed to slower performance forever, or is there some
-> hope of reaching performance parity with the C part of the kernel?
+> url:    https://github.com/intel-lab-lkp/linux/commits/Peter-Colberg/rust-pci-add-is_virtfn-to-check-for-VFs/20251120-062302
+> base:   e4addc7cc2dfcc19f1c8c8e47f3834b22cb21559
+> patch link:    https://lore.kernel.org/r/20251119-rust-pci-sriov-v1-1-883a94599a97%40redhat.com
+> patch subject: [PATCH 1/8] rust: pci: add is_virtfn(), to check for VFs
+> config: um-randconfig-001-20251121 (https://download.01.org/0day-ci/archive/20251121/202511211008.jgLuTcrQ-lkp@intel.com/config)
+> compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9e9fe08b16ea2c4d9867fb4974edf2a3776d6ece)
+> rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251121/202511211008.jgLuTcrQ-lkp@intel.com/reproduce)
 > 
-
-Note that local_interrupt API is for safe Rust code, you can always
-use unsafe local_irq if the interrupt disabling is the performance
-bottleneck for you. So language-wise there is no difference between Rust
-and C.
-
-> Do we have to start telling the Rust for Linux story this way: "our
-> new Rust-based drivers are slower, but memory-safer"?
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202511211008.jgLuTcrQ-lkp@intel.com/
 > 
-
-I would not jump into that conclusion at the moment, because 1) as I
-mentioned you can always go into unsafe if something begins the
-bottleneck, and 2) there is always a gap between micro benchmark results
-and the whole system performance, being slow on one operation doesn't
-means the whole system will perform observably worse.
-
-Think about a similar thing in C, we recommend people to use existing
-locks instead of customized synchronization vi atomics in most cases,
-and technically, locks can be slower compared to a special
-synchronization based on atomics, but it's more difficult to mess up.
-
-Regards,
-Boqun
-
-> I'm not able to deduce the answer from a quick scan through the patches
-> and the cover letter.
+> All errors (new ones prefixed by >>):
 > 
-> thanks,
+> >> error[E0599]: no method named `is_virtfn` found for struct `bindings::pci_dev` in the current scope
+>    --> rust/kernel/pci.rs:415:35
+>    |
+>    415 |         unsafe { (*self.as_raw()).is_virtfn() != 0 }
+>    |                                   ^^^^^^^^^ method not found in `pci_dev`
+> 
 > -- 
-> John Hubbard
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 > 
+
