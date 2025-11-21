@@ -1,214 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD3E2E0939;
-	Fri, 21 Nov 2025 11:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B492345740
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Nov 2025 14:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763723141; cv=none; b=sGtgW7GFaQ3HNV4O3UiGbL7a8RimKghTlfOvggwCWV1KghdA0yf5mluKK17H2z7BgXuNugTzrnffMaP4kb/tDPIuUe1MLbRVNSde9/8T6hnUclXOs1E/D1JJIELmLIfeCtR+v8jPY/utj8DQB0WBUjiCR11CgoiweFxUYCV2Hlc=
+	t=1763734818; cv=none; b=shsttjGOo/e6rmxm5Wd3ia2B6fDdaZZIN7W3v6P6qIW66jS+w7aBSXLw3x6Pbuha2sGtExV7upVw0p0TYf3QLZblAiBsvTIVdSnQGWz9+XLYLWd3a1KbwE7XFMUZo7IjbQFPqN0IpO0BDxoVQlGISw46sGRWD8aiGOWSlxmAtfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763723141; c=relaxed/simple;
-	bh=kYzm6MdlwdysFX/9qMn2LBpF6+iBC9qhmJYsnGwDRvE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CvB+JrS6/RjfZ1rrJxuy6ub1BdzS6xbwP7BuRuLUxGBJpJxvyFAyd0su5Vw4+AqWgcVuZrTCOg9TY9xS90NbEsiVDoHFTaHOj5F/g1i2y3GxJIHhN3cOweRFVkfLLOPFrGKk3kLiCu4YXGbmlzvDQ3d6Lefk6Letz8P2QwpNvnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NY1zYgqE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763734818; c=relaxed/simple;
+	bh=S44K+7M87mUDWzitlSfBz3IfX5X78T+NM19oZFlPoqU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TjAbOCPxmSrUHJU9TT9SMTAJcJEg5f5tZj5WvPUbWFJOuBjSjjVX/ITD9ZvLshpCy66dZuBYwLqXb5prMCLyNkQr2BCM3gcJ/IxRbQge3uyuN9Jwy7Ch5GDpP7yyRRACj9Mf6AFkCETIJxtHE8WTBrNUBE4nFryaEij24zv93QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uxkENGpF; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NY1zYgqE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A74EC116C6;
-	Fri, 21 Nov 2025 11:05:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763723141;
-	bh=kYzm6MdlwdysFX/9qMn2LBpF6+iBC9qhmJYsnGwDRvE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NY1zYgqESVnOcjqxIHvBv8wI8mk27exmnCqfqeLG5u36KgD3OW+Cc+zzRVpop5U0Z
-	 9w2xoiGaP0jNIZMdwliaCGhWOdtw8VY+NaOr+eSY+hWr4+8LaLtjD1LfCU/HGx8HpA
-	 k11bLxU4jrnUoQ1PL01WfBpPRMydlfLp75bHPw5TUxbI1wh77YIjlq+nznrOpsW9eH
-	 Coqbkx4o+VQGxkAKH/wqTMp/K9kpaBLIiXPprxQg7PRexzaD/YRQBvwJADfnTspXxv
-	 7UL4PLSug3CFxrpBbmvx3u1vxlJb4oawIUvpZok0n2XzHSO7bD7T21rymJoPuFe6Mz
-	 AUzb4zq+98iKg==
-Received: from mchehab by mail.kernel.org with local (Exim 4.99)
-	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vMOxP-0000000EyXg-17NQ;
-	Fri, 21 Nov 2025 12:05:39 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	"Alex Gaynor" <alex.gaynor@gmail.com>,
-	"Alice Ryhl" <aliceryhl@google.com>,
-	"Andreas Hindborg" <a.hindborg@kernel.org>,
-	"Benno Lossin" <lossin@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	"Boqun Feng" <boqun.feng@gmail.com>,
-	"Carlos Bilbao" <carlos.bilbao@kernel.org>,
-	"Danilo Krummrich" <dakr@kernel.org>,
-	"Gary Guo" <gary@garyguo.net>,
-	"Mauro Carvalho Chehab" <mchehab@kernel.org>,
-	"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
-	"Miguel Ojeda" <ojeda@kernel.org>,
-	"Trevor Gross" <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 1/1] docs: makefile: move rustdoc check to the build wrapper
-Date: Fri, 21 Nov 2025 12:05:28 +0100
-Message-ID: <c06b1834ef02099735c13ee1109fa2a2b9e47795.1763722971.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <cover.1763722971.git.mchehab+huawei@kernel.org>
-References: <cover.1763722971.git.mchehab+huawei@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uxkENGpF"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42b3c965ce5so1677842f8f.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Nov 2025 06:20:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1763734815; x=1764339615; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bF0yy4kYcfJc00YYadClwGA4hfPDk8gPIn3KVtCTX2w=;
+        b=uxkENGpF8ZQjmeaXr+DKREpMM+ezNZkAI6STgEy1X4iHLpJPBPY0DH7T+VX77oQQ1Q
+         eBYwbBr7GMrLkJzKQMVxsoHfUWrgLsJ3+9Xi/mFM0kgVUeqOLbel2aAKCDVQs3YJFV3+
+         puyExb23baqWC8H+Rgyz1wdvKy48QSa2IbDzzHFzXPIPZ/UWcScmFNb4KSJZ1xWaoavL
+         aOE3lDzIa16Z17p2UepKsAPOzfHYbsMtVXb0HBr0fHrm/2CVcz5+NEhL02HF6a65jfvp
+         cTCpDpIUtgFlDazdnPPNq/OWJGSVimv/c0be8CngImX635MsbmmEc6FJc/32o4nk9b1c
+         yPuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763734815; x=1764339615;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bF0yy4kYcfJc00YYadClwGA4hfPDk8gPIn3KVtCTX2w=;
+        b=b95g1tSSUa0pIEVx9Bm+Ca7zJQXnAh6AjPI+XedYwQpcU3JIiB2rDYXr/A/QLwMVkU
+         OOycTLcT7L3AkNtBYiVoRN7H4RNed/PqBk9OXN3RKuuVYH+Xm0Cn8f77SPhvpA0fOvQ4
+         rUjFols0+jR+58/L+qqO28Fg7lY9gCrGYIqp3QI0YcqHv9XuDTsLtw9VYx/vtlxTqjoo
+         mywKp79B5YHNx0UXPC3ofZTn24rb7n7LJMnHgPXLdAf1qqTI8Qp6E2YJmLvsmM0772sv
+         YdrKVKv/YHWFZkXEYQhSPuMcMHE0Go8EN7emV1Lm+BQSKzSemGu0edtj3RqAYQ5M+Jdg
+         IYbQ==
+X-Gm-Message-State: AOJu0Yzu1/XULFhbhBmk807z9y1w8dpmglfr0+l/BWIGu80PL6i7kpJJ
+	yCdQaYO3rR1JAp1cDN7QlkSZ7XPyvVqd6Is01qgw4MB4DT5ggKr3r4l7qhkiFkw2VXlUTbVGRmH
+	tH7NZzDAUBKNCG6TC8w==
+X-Google-Smtp-Source: AGHT+IHOOD4afO0MnsA4eFPhPWH6RGRFOOAgl0BEECmhcT6Gsttx5iYqEIkR92guCVGiooSMWjvF6Y8EbIyZtwQ=
+X-Received: from wmbes8.prod.google.com ([2002:a05:600c:8108:b0:477:165e:7e2a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1c15:b0:471:13dd:bae7 with SMTP id 5b1f17b1804b1-477c01f5487mr36508565e9.30.1763734814799;
+ Fri, 21 Nov 2025 06:20:14 -0800 (PST)
+Date: Fri, 21 Nov 2025 14:20:13 +0000
+In-Reply-To: <20251119112117.116979-4-zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Mime-Version: 1.0
+References: <20251119112117.116979-1-zhiw@nvidia.com> <20251119112117.116979-4-zhiw@nvidia.com>
+Message-ID: <aSB1Hcqr6W7EEjjK@google.com>
+Subject: Re: [PATCH v7 3/6] rust: io: factor common I/O helpers into Io trait
+From: Alice Ryhl <aliceryhl@google.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dakr@kernel.org, bhelgaas@google.com, 
+	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	markus.probst@posteo.de, helgaas@kernel.org, cjia@nvidia.com, 
+	smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
+	kwankhede@nvidia.com, targupta@nvidia.com, acourbot@nvidia.com, 
+	joelagnelf@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-The makefile logic to detect if rust is enabled is not working
-the way it was expected: instead of using the current setup
-for CONFIG_RUST, it uses a cached version from a previous build.
+On Wed, Nov 19, 2025 at 01:21:13PM +0200, Zhi Wang wrote:
+> The previous Io<SIZE> type combined both the generic I/O access helpers
+> and MMIO implementation details in a single struct.
+> 
+> To establish a cleaner layering between the I/O interface and its concrete
+> backends, paving the way for supporting additional I/O mechanisms in the
+> future, Io<SIZE> need to be factored.
+> 
+> Factor the common helpers into new {Io, Io64} traits, and move the
+> MMIO-specific logic into a dedicated Mmio<SIZE> type implementing that
+> trait. Rename the IoRaw to MmioRaw and update the bus MMIO implementations
+> to use MmioRaw.
+> 
+> No functional change intended.
+> 
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: Bjorn Helgaas <helgaas@kernel.org>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 
-The root cause is that the current logic inside docs/Makefile
-uses a cached version of CONFIG_RUST, from the last time a non
-documentation target was executed. That's perfectly fine for
-Sphinx build, as it doesn't need to read or depend on any
-CONFIG_*.
+I said this on a previous version, but I still don't buy the split
+into IoFallible and IoInfallible.
 
-So, instead of relying at the cache, move the logic to the
-wrapper script and let it check the current content of .config,
-to verify if CONFIG_RUST was selected.
+For one, we're never going to have a method that can accept any Io - we
+will always want to accept either IoInfallible or IoFallible, so the
+base Io trait serves no purpose.
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/Makefile          |  6 -----
- tools/docs/sphinx-build-wrapper | 41 +++++++++++++++++++++++++--------
- 2 files changed, 32 insertions(+), 15 deletions(-)
+For another, the docs explain that the distinction between them is
+whether the bounds check is done at compile-time or runtime. That is not
+the kind of capability one normally uses different traits to distinguish
+between. It makes sense to have additional traits to distinguish
+between e.g.:
 
-diff --git a/Documentation/Makefile b/Documentation/Makefile
-index fda2bef8d9d8..e96ac6dcac4f 100644
---- a/Documentation/Makefile
-+++ b/Documentation/Makefile
-@@ -42,12 +42,6 @@ FONTS_CONF_DENY_VF ?= $(HOME)/deny-vf
- # User-friendly check for sphinx-build
- HAVE_SPHINX := $(shell if which $(SPHINXBUILD) >/dev/null 2>&1; then echo 1; else echo 0; fi)
- 
--ifneq ($(wildcard $(srctree)/.config),)
--ifeq ($(CONFIG_RUST),y)
--	RUSTDOC=--rustdoc
--endif
--endif
--
- ifeq ($(HAVE_SPHINX),0)
- 
- .DEFAULT:
-diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
-index d4943d952e2a..7a5fcef25429 100755
---- a/tools/docs/sphinx-build-wrapper
-+++ b/tools/docs/sphinx-build-wrapper
-@@ -119,6 +119,29 @@ class SphinxBuilder:
- 
-         return path
- 
-+    def check_rust(self):
-+        """
-+        Checks if Rust is enabled
-+        """
-+        self.rustdoc = False
-+
-+        config = os.path.join(self.srctree, ".config")
-+
-+        if not os.path.isfile(config):
-+            return
-+
-+        re_rust = re.compile(r"CONFIG_RUST=(m|y)")
-+
-+        try:
-+            with open(config, "r", encoding="utf-8") as fp:
-+                for line in fp:
-+                    if re_rust.match(line):
-+                        self.rustdoc = True
-+                        return
-+
-+        except OSError as e:
-+            print(f"Failed to open {config}", file=sys.stderr)
-+
-     def get_sphinx_extra_opts(self, n_jobs):
-         """
-         Get the number of jobs to be used for docs build passed via command
-@@ -236,6 +259,8 @@ class SphinxBuilder:
- 
-         self.get_sphinx_extra_opts(n_jobs)
- 
-+        self.check_rust()
-+
-         #
-         # If venv command line argument is specified, run Sphinx from venv
-         #
-@@ -306,7 +331,7 @@ class SphinxBuilder:
- 
-             return subprocess.call(cmd, *args, **pwargs)
- 
--    def handle_html(self, css, output_dir, rustdoc):
-+    def handle_html(self, css, output_dir):
-         """
-         Extra steps for HTML and epub output.
- 
-@@ -327,7 +352,8 @@ class SphinxBuilder:
-             except (OSError, IOError) as e:
-                 print(f"Warning: Failed to copy CSS: {e}", file=sys.stderr)
- 
--        if rustdoc:
-+        if self.rustdoc:
-+            print("Building rust docs")
-             if "MAKE" in self.env:
-                 cmd = [self.env["MAKE"]]
-             else:
-@@ -622,7 +648,7 @@ class SphinxBuilder:
-         shutil.rmtree(self.builddir, ignore_errors=True)
- 
-     def build(self, target, sphinxdirs=None,
--              theme=None, css=None, paper=None, deny_vf=None, rustdoc=False,
-+              theme=None, css=None, paper=None, deny_vf=None,
-               skip_sphinx=False):
-         """
-         Build documentation using Sphinx. This is the core function of this
-@@ -671,7 +697,7 @@ class SphinxBuilder:
- 
-             args.extend(["-D", f"latex_elements.papersize={paper}paper"])
- 
--        if rustdoc:
-+        if self.rustdoc:
-             args.extend(["-t", "rustdoc"])
- 
-         if not sphinxdirs:
-@@ -749,7 +775,7 @@ class SphinxBuilder:
-             # Ensure that each html/epub output will have needed static files
-             #
-             if target in ["htmldocs", "epubdocs"]:
--                self.handle_html(css, output_dir, rustdoc)
-+                self.handle_html(css, output_dir)
- 
-         #
-         # Step 2: Some targets (PDF and info) require an extra step once
-@@ -804,9 +830,6 @@ def main():
-     parser.add_argument('--deny-vf',
-                         help="Configuration to deny variable fonts on pdf builds")
- 
--    parser.add_argument('--rustdoc', action="store_true",
--                        help="Enable rustdoc build. Requires CONFIG_RUST")
--
-     parser.add_argument("-v", "--verbose", action='store_true',
-                         help="place build in verbose mode")
- 
-@@ -834,7 +857,7 @@ def main():
- 
-     builder.build(args.target, sphinxdirs=args.sphinxdirs,
-                   theme=args.theme, css=args.css, paper=args.paper,
--                  rustdoc=args.rustdoc, deny_vf=args.deny_vf,
-+                  deny_vf=args.deny_vf,
-                   skip_sphinx=args.skip_sphinx_build)
- 
- if __name__ == "__main__":
--- 
-2.51.1
+* Whether IO ops can fail for reasons *other* than bounds checks.
+* Whether 64-bit IO ops are possible.
 
+Well ... I guess one could distinguish between whether it's possible to
+check bounds at compile-time at all. But if you can check them at
+compile-time, it should always be possible to check at runtime too, so
+one should be a sub-trait of the other if you want to distinguish
+them. (And then a trait name of KnownSizeIo would be more idiomatic.)
+
+And I'm not really convinced that the current compile-time checked
+traits are a good idea at all. See:
+https://lore.kernel.org/all/DEEEZRYSYSS0.28PPK371D100F@nvidia.com/
+
+If we want to have a compile-time checked trait, then the idiomatic way
+to do that in Rust would be to have a new integer type that's guaranteed
+to only contain integers <= the size. For example, the Bounded integer
+being added elsewhere.
+
+Alice
