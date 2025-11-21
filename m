@@ -1,117 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEAA1C5D59;
-	Fri, 21 Nov 2025 05:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFA92586CE;
+	Fri, 21 Nov 2025 06:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763703412; cv=none; b=US7112I/FFGXVDXVlB7cI9OvUs9uNwC/kdC8nBumNE3iiqN3CmMp6yAcIDxjnA9Cxcdkwzrxxk/E0lDKcZFLkEDNREb+WoQ7fASuR6zP7OjooqQHEtCX/t30mWM7+y4f1F3wb51OtEZZM53NC4J1o5hPrmuf+X/0REAjHcqMC1E=
+	t=1763704885; cv=none; b=iOiOZfqKLQfxQs4MVxukwF1AaeKsJdUwRVxzdnwxnm91GxeotFkHqNqKJAv+8DKlAyYUQDu1T2Qq8En3u+z6cvJulSLRNgp5KJyjhtNf/qn6cYHlbGPJbBnCsawM2TakCK03cU3naoV0VPMuleNhbIgzn57X1Op+jNUR6mfmvjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763703412; c=relaxed/simple;
-	bh=2VrQ38FIFiWwiH1vGJJMobf1X4chDQ5tZJgj+nFSGbQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SgcvdbsZj+t+dUH8Yx8GNwgVTNvV5hECdanqiGrCCrh/I2tCBiTvl6OBqxr74AgDh11w3iyumYAxJiEksgVVte9Ft4pncgqsQ3XZeS4PwD6JLJf/2vRsCitg885OXbaa2tYkDAcZYUaJaTh3Le/Bitzf8+P2WAiZ2ghOXWJvkHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQc4wtAs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763704885; c=relaxed/simple;
+	bh=VxJUVnrel4GrYcjD7+FVaUwXq4Hddg0oQdzEZbbT1x4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=In1vu256MwmdcU2k0jLyoYnNYm/xJtpNyZUAJ39pHF7wNSTyxKuGtH5MTU0V5yAF1DddO0dixH68fQnAU8Lup59t9T8jwt18DR6avXjUHeOb6f43yOamJ/Wv8vcLY+eDf/oZQfq2wJuB3PzTJdefiAooqQ2YmDYkX9DK1FyrJcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cA0fhmCf; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQc4wtAs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03665C4CEF1;
-	Fri, 21 Nov 2025 05:36:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763703411;
-	bh=2VrQ38FIFiWwiH1vGJJMobf1X4chDQ5tZJgj+nFSGbQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQc4wtAsuIpBtcwWZgBOwB4qL0RwjV4q084aoXi/NEl8mSpkum2EsivBgIr0w6ttj
-	 KKRp5gSTpHUQYHrEPYpsq1ZRHUwrfuNDngjdavrcvNBRkE0UL9WM5s5O0sik7ObCMF
-	 ea0kTuqqumFobMEHud62Pd6xdXppRYhB0brZ+dSIckRYNJWWPCPPKhfhwTcBxwZbiN
-	 AVabAWWVl6wFw3rZTw/ADUAcbE+Spv5VtdsJZi40lczK+dHn41GfPeolKDuSPQlGNt
-	 /diSv0K/68TCTYA68ODMitehUX4vVy+OSlmDgJX/cOBM2YyOVqyYdb+v5jVh3nEbdA
-	 /lX1FgLN8tOcg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: y.j3ms.n@gmail.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	linux-kbuild@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cA0fhmCf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763704884; x=1795240884;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VxJUVnrel4GrYcjD7+FVaUwXq4Hddg0oQdzEZbbT1x4=;
+  b=cA0fhmCfA92P13y349Hdud2Cvr1RcoWkbikJy/uIg+mUuDsFbihru8b9
+   PxH1I0fMKsRhrZmpmi2NHzWjsX0F8GDQLTzta1VRZd5YeBERhqkm5hKhU
+   vqph9pCGZlRm3HZY8uFOG6A/MB8bj3hKKVO6FLaD565Bl9hwi5HkwO7b9
+   I0KE4TdUqe/bKzbb/iIfLCBJ5QV5pZ1RE1PxLitg6WIsEpry34HKxXX5x
+   W0YQUiuISXHRUpZgWxnga/REM33uO69uGTKmY5rzsttYXHxpSrimqsCA3
+   mVnxliH+MRoauU88VRnbesV7J4XvCQN2RmInsYSJKprM2wuwodPWtW30y
+   w==;
+X-CSE-ConnectionGUID: w04q/ukPQ9CdJNgo+uqt1w==
+X-CSE-MsgGUID: Ji3+ZLvfRWSDLj6zcaT4Cg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11619"; a="88442594"
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
+   d="scan'208";a="88442594"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2025 22:01:23 -0800
+X-CSE-ConnectionGUID: mg0w5TNUSa+iEJ1jHHJkmw==
+X-CSE-MsgGUID: lYGsrtOCT9iCOVAefWA4oQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,215,1758610800"; 
+   d="scan'208";a="196738488"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 20 Nov 2025 22:01:17 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vMKCo-00051X-1Q;
+	Fri, 21 Nov 2025 06:01:14 +0000
+Date: Fri, 21 Nov 2025 14:00:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Peter Colberg <pcolberg@redhat.com>, Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	nathan@kernel.org,
-	nicolas@fjasle.eu,
-	ojeda@kernel.org,
-	patches@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu
-Subject: Re: [PATCH 00/18] `syn` support
-Date: Fri, 21 Nov 2025 06:36:33 +0100
-Message-ID: <20251121053633.1594703-1-ojeda@kernel.org>
-In-Reply-To: <20251121043750.298843-1-y.j3ms.n@gmail.com>
-References: <20251121043750.298843-1-y.j3ms.n@gmail.com>
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	Peter Colberg <pcolberg@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH 6/8] rust: pci: add bus callback sriov_configure(), to
+ control SR-IOV from sysfs
+Message-ID: <202511211317.FkJsCIc0-lkp@intel.com>
+References: <20251119-rust-pci-sriov-v1-6-883a94599a97@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251119-rust-pci-sriov-v1-6-883a94599a97@redhat.com>
 
-On Fri, 21 Nov 2025 04:37:47 +0000 Jesung Yang <y.j3ms.n@gmail.com> wrote:
->
-> I'd appreciate any guidance on steps I might be missing. Thanks in
-> advance!
+Hi Peter,
 
-For using (all of) them from `macros`, you would need [1].
+kernel test robot noticed the following build errors:
 
-Maybe I should just put it on top of this series for convenience.
+[auto build test ERROR on e4addc7cc2dfcc19f1c8c8e47f3834b22cb21559]
 
-Cheers,
-Miguel
+url:    https://github.com/intel-lab-lkp/linux/commits/Peter-Colberg/rust-pci-add-is_virtfn-to-check-for-VFs/20251120-062302
+base:   e4addc7cc2dfcc19f1c8c8e47f3834b22cb21559
+patch link:    https://lore.kernel.org/r/20251119-rust-pci-sriov-v1-6-883a94599a97%40redhat.com
+patch subject: [PATCH 6/8] rust: pci: add bus callback sriov_configure(), to control SR-IOV from sysfs
+config: um-randconfig-001-20251121 (https://download.01.org/0day-ci/archive/20251121/202511211317.FkJsCIc0-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9e9fe08b16ea2c4d9867fb4974edf2a3776d6ece)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251121/202511211317.FkJsCIc0-lkp@intel.com/reproduce)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 984aec608c27..640e51129be0 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -187,7 +187,7 @@ rustdoc-syn: $(src)/syn/lib.rs rustdoc-clean rustdoc-quote FORCE
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511211317.FkJsCIc0-lkp@intel.com/
 
- rustdoc-macros: private rustdoc_host = yes
- rustdoc-macros: private rustc_target_flags = --crate-type proc-macro \
--    --extern proc_macro
-+    --extern proc_macro --extern proc_macro2 --extern quote --extern syn
- rustdoc-macros: $(src)/macros/lib.rs rustdoc-clean rustdoc-proc_macro2 \
-     rustdoc-quote rustdoc-syn FORCE
-        +$(call if_changed,rustdoc)
-@@ -265,9 +265,11 @@ rusttestlib-syn: private rustc_target_flags = $(syn-flags)
- rusttestlib-syn: $(src)/syn/lib.rs rusttestlib-quote FORCE
-        +$(call if_changed,rustc_test_library)
+All errors (new ones prefixed by >>):
 
--rusttestlib-macros: private rustc_target_flags = --extern proc_macro
-+rusttestlib-macros: private rustc_target_flags = --extern proc_macro \
-+    --extern proc_macro2 --extern quote --extern syn
- rusttestlib-macros: private rustc_test_library_proc = yes
--rusttestlib-macros: $(src)/macros/lib.rs FORCE
-+rusttestlib-macros: $(src)/macros/lib.rs \
-+    rusttestlib-proc_macro2 rusttestlib-quote rusttestlib-syn FORCE
-        +$(call if_changed,rustc_test_library)
+>> error[E0609]: no field `sriov_configure` on type `pci_driver`
+   --> rust/kernel/pci.rs:71:31
+   |
+   71 |                 (*pdrv.get()).sriov_configure = Some(Self::sriov_configure_callback);
+   |                               ^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available field is: `_address`
 
- rusttestlib-pin_init_internal: private rustc_target_flags = --cfg kernel \
-@@ -348,7 +350,8 @@ quiet_cmd_rustc_test = $(RUSTC_OR_CLIPPY_QUIET) T  $<
- rusttest: rusttest-macros
-
- rusttest-macros: private rustc_target_flags = --extern proc_macro \
--       --extern macros --extern kernel --extern pin_init
-+       --extern macros --extern kernel --extern pin_init \
-+       --extern proc_macro2 --extern quote --extern syn
- rusttest-macros: private rustdoc_test_target_flags = --crate-type proc-macro
- rusttest-macros: $(src)/macros/lib.rs \
-     rusttestlib-macros rusttestlib-kernel rusttestlib-pin_init FORCE
-@@ -538,6 +541,8 @@ quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
-                @$(objtree)/include/generated/rustc_cfg $<
-
- # Procedural macros can only be used with the `rustc` that compiled it.
-+$(obj)/$(libmacros_name): private rustc_target_flags = \
-+    --extern proc_macro2 --extern quote --extern syn
- $(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rlib \
-     $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
-        +$(call if_changed_dep,rustc_procmacro)
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
