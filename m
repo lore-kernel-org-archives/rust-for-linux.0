@@ -1,112 +1,158 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA65E2AD35
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Nov 2025 14:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08546165F1A
+	for <rust-for-linux@vger.kernel.org>; Sat, 22 Nov 2025 16:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763820046; cv=none; b=IcYSr8McWL/UDhuoWDN0736MhgcOjsukwwYFLBnGfrA3Ye3Q6EpuZUiJ1SFrVE0R+t2WjkxLRxsgBFDvhBNb60wgVhwHOd0pRtmyLz/+vskjjqMLdGwMtVoqi4lo1Z2sjIhDsx1+ztsXn7UPwXgRZU/DYut71SmDl78IQbeoBhM=
+	t=1763828179; cv=none; b=cf+9HuWbPwNYHeN5poVYI2aWdDiuvgeiVMiczQFs0ea5h9Uiy3lVyp5icYuIGBzWonjDcZMeqKncI4vZ4K74hExLizRPrVMUJ8pjDgOXCjrEBOXMr3b/YSqtEDuIBnR6qf37n0AIoPJ7R/FTYi7h77y4TmFaXZrMHObTUF0Z/8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763820046; c=relaxed/simple;
-	bh=quy70Ek/g6qrhcqWBI6EKf77vs+SuiqG7tLVTxxmDl0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dTOTIu+GmS2NmHDistWbq4TqiAyamqbYjFoqmW63AoXua1kZzyoByRfr9e2R3QbHVr2/VW8REPgajsWUWEy2IznodNdIomvyLwFp0vpgo20DDVTLARLiDXWHkpfQaorIq2Ev16RMPKXAVDkEsGMWTC49yrCAyK/dF7Fmn/sWI64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FDFCY4pI; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763828179; c=relaxed/simple;
+	bh=pX1YA89IFaBfU73d2M7GD+pvLG2iw0jG0aNV0L0Rb1M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZlnMXYjYZFiv05Xg/IhD1hcgigFmso59GVStKbEsvjErLExffk3D4xwyBvySe0pCpgpwUvT+Dv7fQOyZG2km47yoqpQlXVjUXMu/i7TXnvqoEsp8oT1Ay+/2oZwLEMcAsFwLwaeHJo2xoDX9sMBWZQQevYgvd0McW3ABq6t+JNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=VAO9RDsc; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FDFCY4pI"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-47796a837c7so18750955e9.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 22 Nov 2025 06:00:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="VAO9RDsc"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8b25ed53fcbso432370085a.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 22 Nov 2025 08:16:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763820043; x=1764424843; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bfwrkbhLrbte3ifsqNDH76QA6U3FeJoA58L19HPvYEo=;
-        b=FDFCY4pIZsO1DFTetcZ/L+iNMWBXtxKVGUWJzcfguUVlqLKXUo7L+J/977cfNysgD+
-         IPssJevSWzwg/7gVqtgtyn6rCjlTSfDfxamIBnBa2CGY5yGJ0QPos35RBAmahiJbMsa4
-         TbmcV5JFCTxNpgy5ETNMuAZDZviiorJPcIxCDiW865IvX/nM2sdKWSRvFI9vWftN4p0Q
-         pgfTFizgiml+HXMnd2LivcDhQNEmofJjjqii7itHUzuiznvOl0VWHfkN5a3x+lJ26/T7
-         QWbY1t0yBQcFBZ32+4KeIsCC0MT+QfzMzTzu6IiK83yuESOtkitcJQ9WoMpPn2rHH9K8
-         Ndiw==
+        d=ziepe.ca; s=google; t=1763828177; x=1764432977; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sliu87rcQ4v9m7OKQVz8oJsdxUbx8a1OkxUrYzQlGV8=;
+        b=VAO9RDsc8+WmkHc8uVX7Jv/DckBEBB6EAN+lJDwkitwFRCe4zShHFcHgYQve88qLoG
+         2jO3ZvYqXRAj+NwtiPfpi9lPFagb/Io13NiRofn2G/Hn7AYz8Sxs/Q/K3jRsb/L/HqUa
+         UkaiS71usW/WwFCkQaywnv4EluNYK9g/xwtVYfw4aa1kswWj72vISRhWjOi6ieUUqAUi
+         B7tSIVQqeeN50W0YhniCf7R1eM8dRJ0XB84rCTCCvyjFfwBTgZ7jiYyO/t6kccYpw0kb
+         FScZpVRGo1FwyqOVcbDCEkGMLb0BeW14AXZoQ34UEp2KNojcPuUqGUaQS6IosnOtZ019
+         aIpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763820043; x=1764424843;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bfwrkbhLrbte3ifsqNDH76QA6U3FeJoA58L19HPvYEo=;
-        b=bpLFICJtcIKp6tpyzr4RO8YbpknpmJnEw7Y8ErVPzTkYiMLPB92pLi1I0gZI+loyxh
-         buAITjOqbpqusIfzIXIy/llj5kqjYAFeIlmkz2Qlux/L0WfH1A2dkCKl/yFuix7wlf9m
-         6Q7m/NM65uadt2QEkDptnv6T6OXR7hyaG8mPCC+YuvSKlo9I4047DWZs9ELnSp5yhzbl
-         l2AwE5n2OD2qzzklV1cbU5MAxymBdsDgYrY+luxUxzTpXnMDC4NT0BW3pdmjwjARImez
-         giQWYQtwCBLGnvG+Mhk8dqhh+O/iE62F90xz5j+IiUNY1CW8Wbbu82UFuHsVb4TPRdIT
-         gx0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUrG56HTkzBPOUaMcrU7DQHW4fBS850lGkj48RLA3H/CXuzqt0TFWwKq1IjED6Q7juuAE6JtWU0fZftqE87oQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0k5S0kVD59cjlgkLHKEVdZM1yEeeXrr+mV4FmowqifkMYP2iY
-	Id8N406N3gXAzQTCmhDwedEw4uSd/RDd3cMWI/sIrqQ5vhHJf2IuXo6v
-X-Gm-Gg: ASbGncu8VoKaaOaE5oPHZykYJGFQshQB+hTH6FViycCFnDvO+25jJeCgVZzPpUYawdt
-	mPHD6iyIFvQVKUzRXmzhMSFT9nl5Vvg6l5TLsByhuViUBzdT3Crm2tF64DyuoFslpS9mWm7eYrq
-	FmAEXpVNTx0g8qytT6est1hYJYxJ6A4f6RjaZH/wziRW8s2J721GZ1JzTvCYGUcJz9UUECTL/zI
-	0ETlQGypsuoCtinVgKoRGCKroJPUQVgWeBHCX+Iydydc9AMNW4IKfeTMKb+eE00LPrte3jub+fl
-	KSjJBUeyR2fQJU341Ivu7A7tbo1WZ5pIsvk/GJEJCaL1Orw6mNe6eNvkgSHBbmHMxOt8I0cuLNC
-	PJdsmOrIkloxs1N4lGc0md0gZMT5QnjBjvao89e57v0z2xkREc31VC8fm0tRq6Lr48feRREHDFB
-	WC71dhEYMVRTks3+KjHyZojx7d1cGj3rIixrXYTCNbMwbS2JI8yiHQJwGZXr6fF9sHBVUAef1td
-	rVllA==
-X-Google-Smtp-Source: AGHT+IGCTRKOT74K0saRhZjnA8SssUcOet/loygSO0mcvZW4qeg4K5sLv0R2XFKB1yMWmNn38c4hpg==
-X-Received: by 2002:a05:6000:22c9:b0:42b:2eb3:c910 with SMTP id ffacd0b85a97d-42cc1cd9466mr5763465f8f.3.1763820042951;
-        Sat, 22 Nov 2025 06:00:42 -0800 (PST)
-Received: from ?IPV6:2a06:5906:2618:cb00:9815:cfad:3c92:4b87? ([2a06:5906:2618:cb00:9815:cfad:3c92:4b87])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fba201sm16995503f8f.32.2025.11.22.06.00.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Nov 2025 06:00:42 -0800 (PST)
-Message-ID: <2adb1d9e-9891-4318-bbd2-c6537af538c2@gmail.com>
-Date: Sat, 22 Nov 2025 14:00:41 +0000
+        d=1e100.net; s=20230601; t=1763828177; x=1764432977;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Sliu87rcQ4v9m7OKQVz8oJsdxUbx8a1OkxUrYzQlGV8=;
+        b=fJou5m3+zEI/V+gly5tLmE716fIEOB+Z4SQutZ6UmQR2BHMjn+6JhvrVGqwi6DZT7m
+         z1cy1BoJ+NykfPebYv8xuqhtSpu1UcPt/3qPqlu/c+20h1/SXsoKSLBMjsfhPT1Cc3tC
+         DvK3KJWtaRhejqbOETcoEUt9sO5+CqihcGQDykgIU7+jh1wbR4edInHDjqWvB5yBDSIe
+         vcowL5o+zahL5jxSdGns4bg48anu1HFt6df57Q+lpOugEVIi+vTT3lQQu3yDvKVd8nTZ
+         kHVy7ZLBFjqV+xdklMIsl18wIbQ6XfSzK8HaZbPaUiOXa+QZb/HJB5DTrX6pxHEfgcSa
+         vDcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5rZsv0ZcFVydul8ieIulPEN+k8ffVS1YBdDLQLzYPkTD4epD41Sqajl5QdhQJYBHyyz25Ka2RUoyawlGsEA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaKX38jbWfyYqryRvDB4NRojgqrnkQQ5eXexTd8M85gOqABcps
+	fMwdH4p7eHueEYU1ApvvSpYJx+FOy6o26ZDT5nBxDp+SFjJEOIf+3QdQWWhQQYzNE7Y=
+X-Gm-Gg: ASbGncuA9XEPwHtqEPImv3Rih3SsqQ9f3M5xjU1N/KKxLmOfbQrOj1WWNf+Z9RycS2m
+	C60lGyNVhKFIH4kMtxhU/oskcGqpUmnpZKkOpD6iFd9PF0tMlWIUJnoqWfnGPFLoT6zTsMnG5b5
+	uXYUfkg3qIWTsXB1EiteXQ8UL2JnBWfK9dhA138t79MHsLhw2rv+6MistnZWt8fx5QFOYZuWSfX
+	BticDfFL3WQxwayHK2gDvuzPTIv5oL5qerIt1/GLAEDr1VCX9cAbfOeX43Lj6kB1Q8rq7N5kqf/
+	91xwV9s+dtCdnql3+RJ9j17h8ilrXr7A/6Q6QBsefE9Pr/x/D5H5pdOQgA/n9s4ykrGh1Lw6OnF
+	O6XxRdhMO3YK8dhBhLLPcMODXCUNso60gcgMqjX/2QsUeJbBCQkyccKQmIUZvBoyoimGsULx4Z1
+	xsl7KMmyjIW2qfKjW8F5EOjjpbDIbuE706Er75/KZIZXcVwayteg3oGZeJ
+X-Google-Smtp-Source: AGHT+IF1xQ2aXOZRSJ1Y/AkYKw1MLVQYnPBGBGfU9G3n2kPz5F4Qyqm9lRjPssHmLTF/RCQSZSeLVA==
+X-Received: by 2002:a05:620a:1905:b0:89f:66a7:3385 with SMTP id af79cd13be357-8b33d203a9emr723597885a.7.1763828176658;
+        Sat, 22 Nov 2025 08:16:16 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b3295db8b1sm586245985a.40.2025.11.22.08.16.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Nov 2025 08:16:15 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vMqHX-00000001hDw-0FJm;
+	Sat, 22 Nov 2025 12:16:15 -0400
+Date: Sat, 22 Nov 2025 12:16:15 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Peter Colberg <pcolberg@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
+Subject: Re: [PATCH 7/8] rust: pci: add physfn(), to return PF device for VF
+ device
+Message-ID: <20251122161615.GN233636@ziepe.ca>
+References: <20251119-rust-pci-sriov-v1-0-883a94599a97@redhat.com>
+ <20251119-rust-pci-sriov-v1-7-883a94599a97@redhat.com>
+ <20251121232642.GG233636@ziepe.ca>
+ <DEF5EC79OOT4.2MT1ET4IKXS5Y@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/4] rust: i2c: Add basic I2C driver abstractions
-To: Markus Probst <markus.probst@posteo.de>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Hung <alex.hung@amd.com>,
- Tamir Duberstein <tamird@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-i2c@vger.kernel.org
-References: <20251116162104.171420-1-igor.korotin.linux@gmail.com>
- <25c70010f67e9f0760840e35cc722d3bb89fd703.camel@posteo.de>
-Content-Language: en-US
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-In-Reply-To: <25c70010f67e9f0760840e35cc722d3bb89fd703.camel@posteo.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DEF5EC79OOT4.2MT1ET4IKXS5Y@kernel.org>
 
-Hello Markus
+On Sat, Nov 22, 2025 at 11:23:16PM +1300, Danilo Krummrich wrote:
+> So far I haven't heard a convincing reason for not providing this guarantee. The
+> only reason not to guarantee this I have heard is that some PF drivers only
+> enable SR-IOV and hence could be unloaded afterwards. However, I think there is
+> no strong reason to do so.
 
-On 11/17/2025 4:15 PM, Markus Probst wrote:
-> add me to cc please.
+I know some people have work flows around this. I think they are
+wrong. When we "fixed" mlx5 a while back there was some pushback and
+some weird things did stop working.
+
+So while I support this goal, I don't know if enough people will
+agree..
+
+> With this, the above code will be correct and a driver can use the generic
+> infrastructure to:
 > 
-> My led driver currently relies on the i2c bindings.
+>   1) Call pci::Device<Bound>::physfn() returning a Result<pci::Device<Bound>>
+>   2) Grab the driver's device private data from the returned Device<Bound>
 > 
-> Thanks
-> - Markus Probst
+> Note that 2) (i.e. accessing the driver's device private data with
+> Device::drvdata() [1]) ensures that the device is actually bound (drvdata() is
+> only implemented for Device<Bound>) and that the returned type actually matches
+> the type of the object that has been stored.
 
-Sure, no problem
+This is what the core helper does, with the twist that it "validates"
+the PF driver is working right by checking its driver binding..
 
-Thanks
-Igor
+> I suggest to have a look at [2] for an example with how this turns out with the
+> auxiliary bus [2][3], since in the end it's the same problem, i.e. an auxiliary
+> driver calling into its parent, except that the auxiliary bus already guarantees
+> that the parent is bound when the child is bound.
 
+Aux bus is a little different because it should be used in a way where
+there are stronger guarantees about what the parent is. Ie the aux bus
+names should be unique and limited to the type of parent.
 
+> So, if we'd provide a Rust accessor for the PF's device driver data, we'd
+> implement it like above, because Device::drvdata() is already safe. If we want
+> pci::Device::pf_drvdata() to be safe, we'd otherwise need to do all the checks
+> Device::drvdata() already does again before we call into
+> pci_iov_get_pf_drvdata().
+
+I think to make progress along this line you need to still somehow
+validate that the PF driver is working right, either by checking that
+the driver is bound to a rust driver somehow or using the same
+approach as the core helper.
+
+I'm not sure the idea to force all drivers to do disable sriov is
+going to be easy, and I'd rather see rust bindings progress without
+opening such a topic..
+
+Jason
