@@ -1,124 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D682032D;
-	Sat, 22 Nov 2025 18:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A135A2BE02C
+	for <rust-for-linux@vger.kernel.org>; Sat, 22 Nov 2025 19:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763837827; cv=none; b=ONrymS2bDX4+q97kky8cvxmOubF+ag5yN+N7T48gG7nNam69XLl9sPvh5qSZ0HER76K/XaqPkctjV5NbL9+sf/sqgjg2UlinhdY+GEAKx+ZD4GJca0s+0ocAS5Qk13OKCwnyvfKHcKDhSCh9MQ5V1Z24RFNcdvwTkMuAayy7kyE=
+	t=1763838580; cv=none; b=YbnfkpbVpUspGoZlq9Qd8LePrdJZ2SuMdB6Ee5SVz1jlc9/5y0zWL7VCIg4CASfwCD4UyTl7D3vSRj5F51/K6uwaXGgeCvbmsUZFFW5h7zQ3kRHhZApSb1TZIiS0Ft7fc66kHeSnRmqX12Ga1c0YW6AuvZa6Hvymqt07IJy+Mog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763837827; c=relaxed/simple;
-	bh=oqdywxH2PSpQSz8SHOTzeR0PBfHZRenaahkNY4qCkc8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GWD/ayAMxI1gQvHx8RAXuvj4d7br9YU3FgmOWUq+wqaFKbdW+JATUZJEItTEaBNFIkPoQr9a8P4vFNUVP1JdezwgvGUqS9XjECzlRhoDLub321xxUnDi6w0UbZrD8RHWC49n6fDHyXa6aA4QKbkZd65q6ebq8HnrmKr8MJR9lxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJdDlmWt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763838580; c=relaxed/simple;
+	bh=yRGZbGFFObyQytZZ8kBaavN/fLsYv/swpAmgISoziYw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tAfwNbZk/JTwuf/yNNkGkWEJXqZLa8u+4oYSLnsCho5c/LoMDwM2R7I6JpOHf7jXfUGBIKUwQbQ2fGOfCqrb6JyHAkowcZ0DmtVo/eGysqJk/AKO7zBDqT9zh4IElnZ86lvKuE2PWw05EJESkBvihLr/IENeWTkK/lha+miQZ9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JWNLhDap; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJdDlmWt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56DDC4CEF5;
-	Sat, 22 Nov 2025 18:57:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763837825;
-	bh=oqdywxH2PSpQSz8SHOTzeR0PBfHZRenaahkNY4qCkc8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SJdDlmWtIh/jMdxGjaoUm0N5IoZOPTIy/AuwWibX3sxUiSo//gYHrSNkQQVy9RqPG
-	 fAvmLqi6/YbqeOLWapIJPVVjt0in1gxN7VchCcRDEa7qfIijgSF3id597hP54ewqjl
-	 ifP2muwXCYq3I/D2dBFWPmXP6zcYMtU3p5w7mGFW9tQ8zdTYzRKdV57ZRTjGs6HXk7
-	 4DhuBC6SFrIqTqzSW+a9O553rw4tHw0iPgh1E4g7Vto5A/Ie2+KpFvgplmEHJWsWrw
-	 gBndbIudpA3ywEezUFttQYZvRfjddwmVrwhw5G8aqMZ3PSERvQnFlf2goU0i7kT1No
-	 LzkajstZJYDJg==
-Date: Sat, 22 Nov 2025 20:57:01 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Danilo Krummrich <dakr@kernel.org>
-Cc: Peter Colberg <pcolberg@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
-Subject: Re: [PATCH 7/8] rust: pci: add physfn(), to return PF device for VF
- device
-Message-ID: <20251122185701.GZ18335@unreal>
-References: <20251119-rust-pci-sriov-v1-0-883a94599a97@redhat.com>
- <20251119-rust-pci-sriov-v1-7-883a94599a97@redhat.com>
- <20251121232642.GG233636@ziepe.ca>
- <DEF5EC79OOT4.2MT1ET4IKXS5Y@kernel.org>
- <20251122161615.GN233636@ziepe.ca>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JWNLhDap"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-343ee44d89aso4700514a91.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 22 Nov 2025 11:09:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763838578; x=1764443378; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VJfooVxZuxbfyt+kzW3sDvpv3faeacPXZajG9C7PKHc=;
+        b=JWNLhDapNg3iTjURVIi2bUQeTD601g7zTpzcbwmysE3gWKnSgngJ+i6I+VRo/frIr5
+         ueGF1PtwdeOpmSSUFRBiOwZYIXXG0DnP1kOxl8p27sSnHvOUIA8qLNd+EZE1k9/JNVjn
+         LCs40SC1wICFv6VotiiJU8a50Ah+yuFBPs5ZxfxHNwPPddqY+5Yi06b/BmsNiv3mNFul
+         5AgQip+YVYUoPMMYoD7Gcx13ZLLqMSd43JvTqCM605rSNOD9D4h6Ci+XsBUh+VZD6SPu
+         lgyYjPwvp2X6FbD9UaFsAlCUPkH/wj5i/w0DAHFyuRG89XG3qC5HTaWUhR0PoLE3FqV5
+         uxiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763838578; x=1764443378;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VJfooVxZuxbfyt+kzW3sDvpv3faeacPXZajG9C7PKHc=;
+        b=UnOULjyT+KwJ9FKxgrQ/JejroDEWx7p2Sot8sPwd36WT7PltVdK0w5QsCvoehharo9
+         Qodv5yEiqCWfPRtDId/632AUp7s7lboB6ifHS1uVYR04Xe4p2joYF9796oV+Czp4R5hk
+         oSGMZjHfBAuVIvkIt1Pg1xLEH2Khckn/HUc+/IHl6/hgla0RKkIblnSUVkLmjst8qS4Z
+         tQ+FofIzvnR79UkBvYV7ZPcTgoz2dZ6w6IT3zkUMz1RUEkDuqPeu2HBIMalyDdIrG/So
+         jofLzS5Ir3AJVVWoTf2aYaRGMMoAH+YY6CTWdGUxG6u+o3x/E7P8LBaMiFMW12qmXQ2G
+         kIzA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmqIbEFXEYalDmuB9N2OueI6YjBVRJvv6y2ok84MThCccP7znrKlB6RmKSAbp8Hu3V8mDaM5SJwUn1MfmOFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yws9c0wrwy+wGKSe6F9WJ9U5sBtfomxzSF7NM8dB4y8ZXussA2p
+	+HjNW2/Cd18GDd5yrEEGNcQocmk4pXb92MNqlG4YJFZlB9XteApQnRuX
+X-Gm-Gg: ASbGncvscBc8RuWqvKdIxYddedCssVH0Aojki7NDP2WfqjJtQev8bhBdvLqw29WT3SC
+	ZXASPHja5NEN3qDuWKYrrY4z3ocUZ9+2+k20TtPnP2fEIefvIJxqHW3kZybwT+J8vo/7zW6lChH
+	/qGzJdzIfz6oEGdw9KtftHXG6L8pv+n64e+b9JgNVPnX/tUSo5Z1efEjgshCxC62XwW5yBHxroi
+	ZXRO4T6C9sormnwtPJp6OHMPgHoNiji1Fk1V0TmdbS3hr3i1wSr8LVWjkhQvuOvVhMX31k4ZDcc
+	acdGgLJPGNdDyndV6mJ74W7VAX7xIdTWA3COOkMmRLBhgOXpq9tFGLOWnUXPTYoSSOafyfculft
+	i2unfIi8N6AAU04qcjUw14pPRkac8/v40Fi4SGTeB+KT6XEfLTPJqg8gGBFhkfkBBO0Wm3AFHai
+	duFfYthIRPo6+TRO2Np2aOZ5JN2Qqw5xbh29+Fd76oMiNhoCJCJHumVKfOzjRzZ5E1oXlf8yO2+
+	LkABQX5EyW4taNWPWNieI6NrjHyKA==
+X-Google-Smtp-Source: AGHT+IFcy0EocP4d6arurWa2zyL2SDDg6YoRfGwykuA/obeqNyK7UhD6z5oLKJcTe4Q5zzP8itsnSg==
+X-Received: by 2002:a17:90b:3d0f:b0:340:d578:f299 with SMTP id 98e67ed59e1d1-34733e45883mr6607593a91.3.1763838577788;
+        Sat, 22 Nov 2025 11:09:37 -0800 (PST)
+Received: from CyberKunju.localdomain ([103.92.100.179])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3472693c1e9sm8869211a91.15.2025.11.22.11.09.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Nov 2025 11:09:36 -0800 (PST)
+From: Navaneeth K <knavaneeth786@gmail.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com
+Cc: wedsonaf@gmail.com,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Navaneeth K <knavaneeth786@gmail.com>
+Subject: [PATCH 0/2] rust: kernel: add missing safety documentation
+Date: Sat, 22 Nov 2025 19:09:06 +0000
+Message-ID: <20251122190908.259929-1-knavaneeth786@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251122161615.GN233636@ziepe.ca>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Nov 22, 2025 at 12:16:15PM -0400, Jason Gunthorpe wrote:
-> On Sat, Nov 22, 2025 at 11:23:16PM +1300, Danilo Krummrich wrote:
-> > So far I haven't heard a convincing reason for not providing this guarantee. The
-> > only reason not to guarantee this I have heard is that some PF drivers only
-> > enable SR-IOV and hence could be unloaded afterwards. However, I think there is
-> > no strong reason to do so.
-> 
-> I know some people have work flows around this. I think they are
-> wrong. When we "fixed" mlx5 a while back there was some pushback and
-> some weird things did stop working.
+This series adds missing // SAFETY: comments to unsafe blocks in
+the Rust kernel abstractions, replacing existing TODOs.
 
-I don't think that this is correct. The main use case for keeping VFs,
-while unloading PF driver is to allow reuse this PF for VFIO too. It is
-very natural and common flow for "real" SR-IOV devices which present all
-PF/VFs as truly separate devices.
+This aligns the code with the project's requirement that all
+unsafe blocks must be documented with a safety rationale.
 
-The pushback for mlx5 was related to change in eswitch mode and not to
-driver unload. In very corner case, mlx5 kept VFs to protect change in
-netdevs.
+Navaneeth K (2):
+  rust: kernel: document safety for rust_fmt_argument
+  rust: kernel: document safety for as_str_unchecked
 
-> 
-> So while I support this goal, I don't know if enough people will
-> agree..
+ rust/kernel/print.rs | 2 +-
+ rust/kernel/str.rs   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-I don't see that Bjorn is CCed here, so it is unclear to whom Danilo
-talked to get rationale for this new behaviour.
+-- 
+2.43.0
 
-> 
-> > With this, the above code will be correct and a driver can use the generic
-> > infrastructure to:
-> > 
-> >   1) Call pci::Device<Bound>::physfn() returning a Result<pci::Device<Bound>>
-> >   2) Grab the driver's device private data from the returned Device<Bound>
-> > 
-> > Note that 2) (i.e. accessing the driver's device private data with
-> > Device::drvdata() [1]) ensures that the device is actually bound (drvdata() is
-> > only implemented for Device<Bound>) and that the returned type actually matches
-> > the type of the object that has been stored.
-> 
-> This is what the core helper does, with the twist that it "validates"
-> the PF driver is working right by checking its driver binding..
-> 
-> > I suggest to have a look at [2] for an example with how this turns out with the
-> > auxiliary bus [2][3], since in the end it's the same problem, i.e. an auxiliary
-> > driver calling into its parent, except that the auxiliary bus already guarantees
-> > that the parent is bound when the child is bound.
-> 
-> Aux bus is a little different because it should be used in a way where
-> there are stronger guarantees about what the parent is. Ie the aux bus
-> names should be unique and limited to the type of parent.
-
-Right, aux bus is completely unrelated to real physical PCI bus.
-
-Thanks
