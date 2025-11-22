@@ -1,127 +1,190 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA36256D
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Nov 2025 08:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BCB2EA172;
+	Sat, 22 Nov 2025 10:23:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763800339; cv=none; b=nhM1707tXEncQtzG0r81rVJeNvrA0fE4Gxhq2tOyWMDrtIMdq+xakBBS9wpyKMCaZ8CSuW0g2kXQ1KwzySvHtJKcymTS7nGS9Gm44A0+kIvACZNj5kLCrBuZUAWDC4Ucrw+OkxUDTx9yVI+O+1eiJBVlew2xX1w6Kpr/zsD7cNI=
+	t=1763807007; cv=none; b=u2kPVh107z8vQ0VT+jD3nfrbo8eUxi4DXI1rfHi0Y4mOFJ6iWHjIkZNsTvsQ5TPw5T4NebBbAqfG9bSXHClFxr2URX5UaU05vmlzoQHo0QzPg1vogDGIzrKMSZDHzRVqr6IyrVIXj1JOfDEgyTrJTceF7HmPaewZohUSlplvFAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763800339; c=relaxed/simple;
-	bh=NI0a2+NxTLNaAncfw03WaxjaXYWkR+/6uAcLVAt3dvc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=oQUVq5K5lPXBCAiRRQ69NDGsJYPqzg4jJ5q+7pyokp9lvx0H7vg+BwNEE0h8/d1HFVTDWl5bb7tYJhPadpFhPAkRYihJzGTQXq5OI1YuRtRrjOfjeQBnICLxJE0lXTUmOd5QGPh746gUqQoueX932D4cRJoL1Lxn2iOcgGyJyOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hYQwQz5S; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
+	s=arc-20240116; t=1763807007; c=relaxed/simple;
+	bh=8u7bqapio1JsmO1mK0MJ2m2eVnwuOTbL1W4K/3Yktbc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=aKSoNcsvnKCb0VaDTI36z6yBNah0HfrIy/ZmksDgKoOfJ/AQuCinC6g19KkQsfphTFYr+7ZxspVMgkUvBa6dZcCXdtNi5ucKgstyTt82lkbhsazSgIEHlZtI6C77J9EQOQQXs+Y42CNInim5vF8Xz1tEarDIFBMFi9Lc60OrzBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQFtcYB/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hYQwQz5S"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3438744f11bso7554819a91.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 22 Nov 2025 00:32:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763800337; x=1764405137; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tjw8aI/2+6BpvAtWs9pCDpeY2rVZkm/V2EMdU6q1xQI=;
-        b=hYQwQz5SczpzUWRCH9a8jBCceHwqc6HyA0nf/ClM89wZ2L/eNmuFFduEgpdSDAbhop
-         CrJTGHj3zbed6l2E2L2UqvNszd80zJgdlweOTtuyZqg7b2f7FmRMO5bmmJItiX9R34Oh
-         Idl5Ls70VPFgKntCsDNomkWaYuEkVPJlTJT/XPD1kDfrbPwSmogEM6amVo7/oPZ1GBXX
-         UyCrTodtrjPH2w1s+jVEF69cYEIj81XuON9HTauGesZf1RcJC5d8BE5VIfTsG9SYtHXO
-         H36vVmIO/1eb+NcIucGDCdsKCkq9yTyPO6k1Sc45YVuCVwBKL70kOlba28VF7EawQh7e
-         LIhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763800337; x=1764405137;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tjw8aI/2+6BpvAtWs9pCDpeY2rVZkm/V2EMdU6q1xQI=;
-        b=Z0nBxzLdNb5TGJlCJAUwkRP5klHwTo+CVvx2xqJ8RBKTwQBGHuZ9Xa7Sb5NsUXTUEp
-         nGLHJiyMTp0zqaOsp9owFvXQ/btKKtUOCiZNNSMYJMHtOwtdANYbgDQ3SbVVbKE+red6
-         XHyVMyeop7K8XRVa/krzoLWDVXNv23M59+x6U6zDe94zol/RHs85sLwFPvjwYD939hj6
-         RjmRFpku5WmHD+15e1rN70eW1zoouwjuwhTdYx75G4Yvaqaa/WR260Aim3O6tS186g2F
-         C67JyuenWJj7MivlQqiYboL9E3sVf8FziYCkN0BOuSst2masRX2VQcy2CCnr5rxkMvmn
-         lp9g==
-X-Forwarded-Encrypted: i=1; AJvYcCVte9H+fuXyaXVGeaBqL5RSb+w7i7pKpHfpJYmBdqKDEG/xHVFwJRN8PlldNZxZvJizxYDHW9sqQkOdHXnq2Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaxOwtihXZ4Nj84Ii1R43tbdpbjqpwKHqw1y8paRnfuUrNpIkG
-	KRv6J8cL/Jfk4B7ljwwhEMxrnEznnJfMhDPoyhnO9+xhvUucalvEwGNdCATfV8dkNYmM/ipfs6+
-	M4poNmvQWEN+yDg==
-X-Google-Smtp-Source: AGHT+IFpm4WPPdyNkn7T9C5i+DiRgpU+Gw7XnL1ezBCClEJfss/czSHMfxCJTpkY6PfTfg1L3XhRDYgd2jfgZg==
-X-Received: from pjbpw1.prod.google.com ([2002:a17:90b:2781:b0:33b:c211:1fa9])
- (user=davidgow job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2c86:b0:340:54a1:d6fe with SMTP id 98e67ed59e1d1-34733e60868mr5397018a91.15.1763800336865;
- Sat, 22 Nov 2025 00:32:16 -0800 (PST)
-Date: Sat, 22 Nov 2025 16:32:12 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQFtcYB/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4750C116C6;
+	Sat, 22 Nov 2025 10:23:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763807006;
+	bh=8u7bqapio1JsmO1mK0MJ2m2eVnwuOTbL1W4K/3Yktbc=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=tQFtcYB/+E2pIlLoeAI9xukS6zJRuZsQN8vTEZfZ8ZP6GG9rWp1lohqj5vop+GCgI
+	 ZZ7eYKQrRGq2bGmRYYDhWUCrHIPQuw7gW6mSrOFk/TfbK6Y5LXTQwBoi5AYeYQf6Ff
+	 0yDqja13uvU1VClOfdoweo+evAJYp5bo1k78DQKIUrqnNsWgBHAzTkpaPi185ZmPjw
+	 00Lg+Dh+rK2p7Q9Tmaah3Et/LKmswGK7URYIL7RJolaSUO6Q8IWYgDeAgPKM4K1Yo/
+	 9Xjnnx7PYJUE7lYBLQ5s4WkVYouriBWkM2QlT4+56nLgSuK6unUwjmIALxO0iFP8uy
+	 hY1lYdqbnntBw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.rc2.455.g230fcf2819-goog
-Message-ID: <20251122083213.3996586-1-davidgow@google.com>
-Subject: [PATCH] arch: um: Don't rename vmap to kernel_vmap
-From: David Gow <davidgow@google.com>
-To: Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	"Paolo 'Blaisorblade' Giarrusso" <blaisorblade@yahoo.it>
-Cc: David Gow <davidgow@google.com>, Alice Ryhl <aliceryhl@google.com>, 
-	linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 22 Nov 2025 23:23:16 +1300
+Message-Id: <DEF5EC79OOT4.2MT1ET4IKXS5Y@kernel.org>
+Subject: Re: [PATCH 7/8] rust: pci: add physfn(), to return PF device for VF
+ device
+Cc: "Peter Colberg" <pcolberg@redhat.com>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Abdiel Janulgue"
+ <abdiel.janulgue@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, <linux-pci@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>
+To: "Jason Gunthorpe" <jgg@ziepe.ca>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251119-rust-pci-sriov-v1-0-883a94599a97@redhat.com>
+ <20251119-rust-pci-sriov-v1-7-883a94599a97@redhat.com>
+ <20251121232642.GG233636@ziepe.ca>
+In-Reply-To: <20251121232642.GG233636@ziepe.ca>
 
-In order to work around the existence of a vmap symbol in libpcap, the
-UML makefile unconditionally redefines vmap to kernel_vmap. However,
-this not only affects the actual vmap symbol, but also anything else
-named vmap, including a number of struct members in DRM.
+On Sat Nov 22, 2025 at 12:26 PM NZDT, Jason Gunthorpe wrote:
+> On Wed, Nov 19, 2025 at 05:19:11PM -0500, Peter Colberg wrote:
+>> Add a method to return the Physical Function (PF) device for a Virtual
+>> Function (VF) device in the bound device context.
+>>=20
+>> Unlike for a PCI driver written in C, guarantee that when a VF device is
+>> bound to a driver, the underlying PF device is bound to a driver, too.
+>
+> You can't do this as an absolutely statement from rust code alone,
+> this statement is confused.
 
-This would not be too much of a problem, since all uses are also
-updated, except we now have Rust DRM bindings, which expect the
-corresponding Rust structs to have 'vmap' names. Since the redefinition
-applies in bindgen, but not to Rust code, we end up with errors such as:
+Indeed! However, I'd like to see that we actually provide this guarantee fr=
+om
+the C PCI code.
 
-error[E0560]: struct `drm_gem_object_funcs` has no fields named `vmap`
-  --> rust/kernel/drm/gem/mod.rs:210:9
+So far I haven't heard a convincing reason for not providing this guarantee=
+. The
+only reason not to guarantee this I have heard is that some PF drivers only
+enable SR-IOV and hence could be unloaded afterwards. However, I think ther=
+e is
+no strong reason to do so.
 
-Since, as far as I can tell, we no longer actually link to libpcap, it
-should be safe to just remove this define unconditionally.
+What I would like to see is that we unbind VF drivers when the PF driver is
+unbound in general, analogous to what we are guaranteed by the auxiliary bu=
+s.
 
-(If it's not, we can possibly either disable DRM Rust bindings under
-UML, or move the redefinition of vmap behind some config option.)
+>> +    #[cfg(CONFIG_PCI_IOV)]
+>> +    pub fn physfn(&self) -> Result<&Device<device::Bound>> {
+>> +        if !self.is_virtfn() {
+>> +            return Err(EINVAL);
+>> +        }
+>> +        // SAFETY:
+>> +        // `self.as_raw` returns a valid pointer to a `struct pci_dev`.
+>> +        //
+>> +        // `physfn` is a valid pointer to a `struct pci_dev` since self=
+.is_virtfn() is `true`.
+>> +        //
+>> +        // `physfn` may be cast to a `Device<device::Bound>` since `pci=
+::Driver::remove()` calls
+>> +        // `disable_sriov()` to remove all VF devices, which guarantees=
+ that the underlying
+>> +        // PF device is always bound to a driver when the VF device is =
+bound to a driver.
+>
+> Wrong safety statement. There are drivers that don't call
+> disable_sriov(). You need to also check that the driver attached to
+> the PF is actually working properly.
 
-We also take this opportunity to update the comment.
+Indeed, with this patch, only Rust drivers provide this guarantee of the VF
+being bound when the PF is bound.
 
-Signed-off-by: David Gow <davidgow@google.com>
----
- arch/um/Makefile | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+> I do not like to see this attempt to open code the tricky login of
+> pci_iov_get_pf_drvdata() in rust without understanding the issues :(
 
-diff --git a/arch/um/Makefile b/arch/um/Makefile
-index 7be0143b5ba3..721b652ffb65 100644
---- a/arch/um/Makefile
-+++ b/arch/um/Makefile
-@@ -46,19 +46,17 @@ ARCH_INCLUDE	:= -I$(srctree)/$(SHARED_HEADERS)
- ARCH_INCLUDE	+= -I$(srctree)/$(HOST_DIR)/um/shared
- KBUILD_CPPFLAGS += -I$(srctree)/$(HOST_DIR)/um
- 
--# -Dvmap=kernel_vmap prevents anything from referencing the libpcap.o symbol so
--# named - it's a common symbol in libpcap, so we get a binary which crashes.
--#
--# Same things for in6addr_loopback and mktime - found in libc. For these two we
--# only get link-time error, luckily.
-+# -Dstrrchr=kernel_strrchr (as well as the various in6addr symbols) prevents
-+#  anything from referencing
-+# libc symbols with the same name, which can cause a linker error.
- #
- # -Dlongjmp=kernel_longjmp prevents anything from referencing the libpthread.a
- # embedded copy of longjmp, same thing for setjmp.
- #
--# These apply to USER_CFLAGS to.
-+# These apply to USER_CFLAGS too.
- 
- KBUILD_CFLAGS += $(CFLAGS) $(CFLAGS-y) -D__arch_um__ \
--	$(ARCH_INCLUDE) $(MODE_INCLUDE) -Dvmap=kernel_vmap	\
-+	$(ARCH_INCLUDE) $(MODE_INCLUDE)	\
- 	-Dlongjmp=kernel_longjmp -Dsetjmp=kernel_setjmp \
- 	-Din6addr_loopback=kernel_in6addr_loopback \
- 	-Din6addr_any=kernel_in6addr_any -Dstrrchr=kernel_strrchr \
--- 
-2.52.0.rc2.455.g230fcf2819-goog
+I discussed this with Peter in advance (thanks Peter for your work on this
+topic!), and as mentioned above I'd like to see this series to propose that=
+ we
+always guarantee that a VF is bound when the corresponding PF is bound.
 
+With this, the above code will be correct and a driver can use the generic
+infrastructure to:
+
+  1) Call pci::Device<Bound>::physfn() returning a Result<pci::Device<Bound=
+>>
+  2) Grab the driver's device private data from the returned Device<Bound>
+
+Note that 2) (i.e. accessing the driver's device private data with
+Device::drvdata() [1]) ensures that the device is actually bound (drvdata()=
+ is
+only implemented for Device<Bound>) and that the returned type actually mat=
+ches
+the type of the object that has been stored.
+
+Since we always need those two checks when accessing a driver's device priv=
+ate
+data, it is already done in the generic drvdata() accessor.
+
+Therefore the only additional guarantee we have to give is that VF bound im=
+plies
+PF bound. Otherwise physfn() would need to be unsafe and the driver would n=
+eed
+to promise that this is the case. From there on drvdata() already does the =
+other
+checks as mentioned.
+
+I suggest to have a look at [2] for an example with how this turns out with=
+ the
+auxiliary bus [2][3], since in the end it's the same problem, i.e. an auxil=
+iary
+driver calling into its parent, except that the auxiliary bus already guara=
+ntees
+that the parent is bound when the child is bound.
+
+Given that, there is no value in using pci_iov_get_pf_drvdata(), in Rust yo=
+u'd
+just call
+
+	// `vfdev` must be a `pci::Device<Bound>` for `physfn()` to be
+	// available; `pfdev` will therefore be a `pci::Device<Bound>` too
+	// (assuming we provide the guarantee for this, otherwise this would
+	// need to be unsafe).
+	let pfdev =3D vfdev.phyfn();
+
+	// `FooData` is the type of the PF drvier's device private data. The
+	// call to `drvdata()` will fail with an error of the asserted type is
+	// wrong.
+	let drvdata =3D pfdev.drvdata::<FooData>()?;
+
+So, if we'd provide a Rust accessor for the PF's device driver data, we'd
+implement it like above, because Device::drvdata() is already safe. If we w=
+ant
+pci::Device::pf_drvdata() to be safe, we'd otherwise need to do all the che=
+cks
+Device::drvdata() already does again before we call into
+pci_iov_get_pf_drvdata().
+
+(Note that I'm currently travelling, hence I might not be as responsive as
+usual. I'm travelling until after LPC; I plan to take a detailed look at th=
+is
+series in the week of the conference).
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core=
+.git/tree/rust/kernel/device.rs?h=3Ddriver-core-next#n313
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core=
+.git/tree/samples/rust/rust_driver_auxiliary.rs?h=3Ddriver-core-next#n81
+[3] https://lore.kernel.org/all/20251020223516.241050-1-dakr@kernel.org/
