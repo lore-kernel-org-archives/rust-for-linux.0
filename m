@@ -1,207 +1,221 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013006.outbound.protection.outlook.com [40.93.196.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0D523D7FC
-	for <rust-for-linux@vger.kernel.org>; Sat, 22 Nov 2025 03:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763782549; cv=none; b=RZh6FdIi7aVF7BgxQPetprzP4tKXu+iFjafbMEEafNEsJrVDJRgxMzQTJ/5nfXFjAog6ZzoW6Sh7otZnR12L/s5rOjgxbT/7zChInH3d+BoCozEMpsOkcxUB1+LxgHadZTTNSBFqFxJytPgzVq2dACMuvb3paE8StZoo1/o+mL0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763782549; c=relaxed/simple;
-	bh=B5kQ91yQvSF3kgcWoMjPARGk6eFcPbswpLwglx0rhK8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mwQe3Lu7uNchftzS8Lxk9wQ4QpxOJZPb3dDQ9Isrr1XGR4RFgY39ZDhgYJ2Z4wOb2IfyDFGJli8B7f6PYJmCSVlWOFVoKKSkA+rge8A/ktI2jmWFXdLEoauDyQVFXEir4rLCGv3UhChjMvs0dODM/8KTNR1VIYHIM6L1KJr3Jo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GlPhuC4K; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C0F282EB;
+	Sat, 22 Nov 2025 04:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763784105; cv=fail; b=JJCC07SD3o0UBMeLUvzUnLsE6by14EHKgbDSZr+xUX3tNtOl+Vo97uVqvaGNaGaxIM6afVAYJPFJvrAFVc/nxlNUnu6J5ViGmKbqvk9iSE0JsbCADavI2tv9aVyVwWbI41gPEBmxipc1KzYepgYeFAOIveadIv4rEGYsNnj6yII=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763784105; c=relaxed/simple;
+	bh=wwppFNo0MLCL+JUxyhfEzhBqf3/fJcvaX8bfHjuNNwU=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=pnn45jd1fHJz9aNoj8J8FVyWTNhXTnJS/i9CUxl+0Zo+hqToy1h8GMYWNtbpoBH1ENAQF3yzbMrsXPHtmO6heiku4d7nqm1L4HtAv7aR/IGmTij8u4OnxpeR32ghpioLcwTRvAUXaP57Aa7pFZiDBqPnasaQfCv9zFcMYn+gpdo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=goAk6wut; arc=fail smtp.client-ip=40.93.196.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GlPhuC4K"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8b2d7c38352so379257385a.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Nov 2025 19:35:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763782547; x=1764387347; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jKcteihLZKJWkTLMA27RQMtx7kBlICGP8oyxfNV16xA=;
-        b=GlPhuC4KAFJaQbxHQqlndJRwomfZWC17rkrytuurl4VyRhTjuKaIXnMq42/GXk/BY7
-         7rxTGFeTTlb7g0ZAtIjemULuXKCifeeo6kMfQLnYAWTTh0jPCvAlE72rLydzmAB51f0C
-         lfyWxxULTA5J/6CRdlqWTO+iLnmtCofEPhYlFS9jCXMxCW9HP8wS3yWQEkq16Mq+JJiV
-         EDkf01Xsm/WhWBhP04+5XVOb1KbhZWb9ytVFHuSL6O1EUvCdNyZpVASCqr+xDIjsTYle
-         4QxVydlj61Pm/+vrG6KqhPXP1S0dauZ2SaJjK7Q+TqwjnyDC0FlI9nhYgFgh4bhLsFAx
-         GBRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763782547; x=1764387347;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jKcteihLZKJWkTLMA27RQMtx7kBlICGP8oyxfNV16xA=;
-        b=e+A6VlgVRZUNhX5c19fLz/YTF5CbZFWUNleEuvUgvOGd0YhIxCS028K4/gq52yw/cF
-         1wrMpe3e5kXa9dWcMUt0pvKTq5infE5QG1KGi6AMj7aUcMi9sIyehsJOTX4lxu8K5Qvr
-         maGBPsLmY/4D/C/5E9pwLCZ/S9slN3xZRSuX2w+iuL094zD+/JQ0dyCPsWbmjc0wDshZ
-         h4Af+ATMzmMaM/C7Au7aPNmN7Q8Toera2WfJ7y7Y/imLuuRgDV/03W7yiiELGUASqipg
-         1N8vY4BioitdWZSga9/d4adRyEKqBd9MDJza7QK8X9spgdxV1vntiNFpjTm6QmbLcbFk
-         rZEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW79UQRqWsv1D2jnuJodj0CnynLo82VkHS49lt+/l2Pr+ZateoDZPpr9DLH0N2TDaPmFbValjsXcYhtvb8VFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqKc7JD4/3bvt9tjEq1jYEe9Bw6ayosgmQsJzVFQpZgaJkcEkD
-	tVWbPZGZMKlCzuVCZD5nbRVKrQ/slqo0h/b7M7qhCSwsq6/UyaO6Uex6
-X-Gm-Gg: ASbGncv/fEeqjUG8jnSEs6bUJPEgtKUu3yriCpXHk1R4HAN9+CjaCRu67x64IsDKep4
-	MNQSHJQPdUchz8JK2Ubg6DVKEBOv3DILmvFV6bpzAB/nsLDOuqsVmZVS0cXb1FNXtuwXmx95txG
-	WS6iE3w1Fj5Stx3aMRpviGw2xTKh5GrwHuUU9f5XQ9RolZI1lVH3Ns7FlRck3+YBD0JmBLIbsSq
-	9vkv23ofglerjgPEkH1pPnfM4BhB7gxLZAqY5lknV1znrCu4pwUqoG0YQILOw1BmqN9+gBdKyim
-	jMQoPDIeEWdFGB058hmXjD8tmitxOHtQyLavjDcnz4YYKg8Zxlx39Jq3mDQZ6rNmK8ZoYpg7QLR
-	alrP4ZyPlNOYOcDjFytQGTydGUJJCTfQr8SMTUlBo/yusXAPNncPgz8TrrnLDywJBaWvvQH601e
-	GMG50ht5F4Mgg83dG+eYfvVlEREbsd+6WHe+bAM/8EF/jJCdLWnP7xMeJ6jdF+ZoiGY17bCDBx7
-	rUg7DjseDnbgmI=
-X-Google-Smtp-Source: AGHT+IFBIpfjoyt0q1w8Vqzk831RHkJ/1JMTzIuFlxWmEdwt79pYpHGGnqIJ/yW6L7eD8uEFixb5ew==
-X-Received: by 2002:a05:620a:318b:b0:8a9:eb31:1033 with SMTP id af79cd13be357-8b33bde837cmr780815585a.30.1763782546617;
-        Fri, 21 Nov 2025 19:35:46 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b3295d94b6sm480106285a.36.2025.11.21.19.35.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 19:35:46 -0800 (PST)
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5E0D3F40079;
-	Fri, 21 Nov 2025 22:35:45 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 21 Nov 2025 22:35:45 -0500
-X-ME-Sender: <xms:kS8haZi5HOA4TYV9XI9BsYX9Xy_Nmk99RmJIbavmOB054hnXh4Q8xw>
-    <xme:kS8hacZ_jHZ-nSwo7gsYgGXNmfRHBXAVwdFrePVzQAQZexLNEEXaaUOjeoYaQ3mNV
-    kk1NFZZBU1Yb060vVFirW52Y29ZVl5od0uFKR3zL4Aom60iw--ETw>
-X-ME-Received: <xmr:kS8haVEEkq5inJzXCcMejm2OVoIWpH6ILR2yXocJUi2RJWYz-2-3XOfs71MM0OYUOqT3O5lHODGgCsITii1Ms3_vLwDH7Ear>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvfedujeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedvvdeh
-    tdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
-    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
-    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
-    pedvuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepjhhhuhgssggrrhgusehnvh
-    hiughirgdrtghomhdprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgt
-    phhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhope
-    gurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthho
-    pehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnoh
-    hrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
-X-ME-Proxy: <xmx:kS8haRYzFH1mNuxpqT4TUi_ZZY04dHzL_HmIL79lbb4QZLsZugVgJg>
-    <xmx:kS8hae2lkZ3umLy8SXCyR7fvVcCA_yQpbgoPcg63kYZLyUYqNyDucg>
-    <xmx:kS8haRdIoTizdvMQaQPGBa52nKYTn9nKx3ENeONxOTtsNKFO2spcsg>
-    <xmx:kS8haYBpXuncJ6adW-jwmVq9xZW8v8cYz2nt27M3LN98UulawaA5yw>
-    <xmx:kS8hab2czQ82zSvwEog0azlPMz4c-pF-QQAblR21C1ZLkm3cTOtWZrXQ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 21 Nov 2025 22:35:44 -0500 (EST)
-Date: Fri, 21 Nov 2025 19:35:43 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH v14 00/16] Refcounted interrupts, SpinLockIrq for rust
-Message-ID: <aSEvj7tDNLF-8TIy@tardis.local>
-References: <20251120214616.14386-1-lyude@redhat.com>
- <4b6ae41e-5cda-41ab-ba4e-628bdf23f917@nvidia.com>
- <aSClxW6jnspFRHMH@tardis.local>
- <49d7b2c0-9794-4997-8bba-78891f27abf0@nvidia.com>
- <aSEiHgI0PIprnIC-@tardis.local>
- <e11bd713-2404-449b-ab63-7d6c0dc47b4b@nvidia.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="goAk6wut"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kGUU6ZE1HHiKVzVK1fC/i7ectt5ILPfD1ufWow9Dvyhnh20oR6Co3fIKXD+vVCRRXoqMzVW/+uKX6kXaNmgPKIsFewE2th1BzjRtCOa/303A4uFCcleeFqC6Ucx6HiN3D59Ba5IX4OCVmQDGss9bjkSQLTSsbWlKwVBD0i+Lu5VffZPRoPobKo2XARgghxam7EkJrhtGHE4nxHp701ts9MUchdS8HtAPXXD1jbeAzfBhE21Ne1DeBXM5G8hVuwAli9eDvnK0o+CluNfQhxsohnWNFU3HC4fHLX30hDCJ5X991MrpPFPd/kAwWOWBDO+EQU7peijcDDISA0I1x/jzNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=B5WfGw4gl+WSNkxmpj3lc36rKVnqVbIhkiq7GrgVMBY=;
+ b=At1cPORMzsKcYG+vysm2UVuMW30OgsSLq4wuoVQrezGSvxvdrXQg8eW/9ETkfMYC2QxlBJ+6lSXSlj7wQDHZrjPVjHGijuxE45RPKCODC2xMzqQ+x5cqPdtPF+Sa5dgwCeZaxbSc1jreO8RsvqVq8wylTxXIURLLUE/eSBJNWvosdh8/4Vnm3eKBNkZz/EyCOJjKQdCfVEdDyC+b8HNH0KueS9x+4XFx4XYUkBOuzvkCxy1/PTr0Q9fErErRGbyFrI6pcLD7p0JoRoSIMblr+ChcCiTDOnEYK+JigZGX1djpYroSuTo8G5lOJ8MSLAs4BlyhsPNBdSvyshls/mY83A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=B5WfGw4gl+WSNkxmpj3lc36rKVnqVbIhkiq7GrgVMBY=;
+ b=goAk6wut9T2g2SPx8M05lehLXPOHB//N08cwtoCrEMebdBvemL5ogdKMbR+no4Iqpvgq6ahksDTqIoQAeFxHY84EFQXPHkWDoX1aRchYIgL4cK+QCR+Spcf/WSkUWFGjVEt1pOqcHm4NFvCJD1d88tUMjLdR/+OR+Amam1az+N/VnqfilNhjfaqisZUyo6Y402Ex5vOIOCym7tTu9LeJ4od64xDeEcE/FAMd4uPno+GGo/M/h3smkEztva21XSDQr5Wh1lEtE82T7gN09f3dJc2wuzR6PlVRKYAie/Mo/KZ3uyZggmaXktxc8Tr3/49/XjY+hrwQU9AovYuXzwJeHg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SA1PR12MB9004.namprd12.prod.outlook.com (2603:10b6:806:388::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Sat, 22 Nov
+ 2025 04:01:40 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9343.009; Sat, 22 Nov 2025
+ 04:01:40 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Date: Sat, 22 Nov 2025 13:00:49 +0900
+Subject: [PATCH] rust: num: bounded: Always inline fits_within and
+ from_expr
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251122-bounded_ints_fix-v1-1-1e07589d4955@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAHE1IWkC/x2M0QpAQBQFf0X32Za9tav8iiTswX1Z2kVK/t3N4
+ 0zNPJSRBJma4qGES7JsUcGWBU3rEBcYCcrEFTtrmc24nTEg9BKP3M9yGwbXfsYEPzrSbE9Q/S/
+ b7n0/VS8UU2IAAAA=
+X-Change-ID: 20251122-bounded_ints_fix-2e276fece6b5
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel test robot <lkp@intel.com>, Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: b4 0.14.3
+X-ClientProxiedBy: TY4PR01CA0078.jpnprd01.prod.outlook.com
+ (2603:1096:405:36c::16) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e11bd713-2404-449b-ab63-7d6c0dc47b4b@nvidia.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB9004:EE_
+X-MS-Office365-Filtering-Correlation-Id: 18e21330-f380-41be-bb78-08de297bd703
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|376014|7416014|1800799024|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WlJHcU1UaWI2dGV0M055M2RydjdOSng4SGh2VWpzcEFvUEo5RTVNZnJGRmlO?=
+ =?utf-8?B?S0pHZXVIMTg3V3VubklhU1lOSm9qK2RmYXN1VU1meEVpY0V1YXFBSitzdVZ0?=
+ =?utf-8?B?ODhieVh4TnhGYjlpL3Y0c2lCdEpEVzBGS1QrZ0NhemdjZXJFcml0ODhEdWk4?=
+ =?utf-8?B?TXFOSXFWZmFUVEs5SlpIcTZwd01kZnRsZjM0SGVKbUhFQWJtSURGOHdmc2tu?=
+ =?utf-8?B?ekpOSlkwQXJiUGVjOU52a0ZpVU5GTmkzV1BYTy8wbHlzWjVJYXlKSUE2TWta?=
+ =?utf-8?B?dDFhNDNCSlNEVEZUbDY1dllibkd1cWI4NzRWMWtVd2U2M3o5K3VlaTEyOUwr?=
+ =?utf-8?B?UTVQVmhpdWgycXRkY0FjNldzYmM3VlczN0JiY3RmcHZOeEQ1TjVGVVZOWFlB?=
+ =?utf-8?B?dCtGemF6WmRubW5WUkpjblFBdEFwVDBzZmlDd2V3RTBVakw3dStQNU5vZzlC?=
+ =?utf-8?B?cm9oWG4yMWMvV05HanlyTU5xQjFYSTBlZVlsalFCNG5XK3Rra0U1YzBwWDFt?=
+ =?utf-8?B?VE5ibVErdVhheDg3c0w3WldXUE5hNWtjOWlSMTZVTG1DNGdTa0xhTVhSREFS?=
+ =?utf-8?B?ZDMzSHd2eDdKa1JOQUU0SDU2Yk5WN2RxQXdxRkNWb2N0eVE1SDBraDBVS3hx?=
+ =?utf-8?B?SGRreHlEdVRKVTVSdHpqd25McVZOTC83YUFUc0hOUnB2NTYxWEZhWm8zZ0c3?=
+ =?utf-8?B?WCtUVzlkdUhHYm1IL0QvdW9LMzV3TjM5Z1RvWXpneVdiMzZHL0IwSWhmRTNT?=
+ =?utf-8?B?UytaN242bmJCYXQvWjZwalc4RUlvQUxmakc0ZTNnVHgrMUtPYll6ZkRzRk5p?=
+ =?utf-8?B?N1FHeWRHTWkyNmcyMy9YOHp1N21LMHZnVVFUbVNKU2ZrSUE2MlNiaVFERThM?=
+ =?utf-8?B?dk8zNWthcksvUVJEYWZmU1ppUUwzMmdVeDRmQVk1WE9TVWVzSWtBc2pUSHZF?=
+ =?utf-8?B?TS9Ta05XWHplMjYzYlVib0ErY3V0MEZYSVFITlNpYlVYZDE3TzQzYTJsNXBC?=
+ =?utf-8?B?WGIzbXFkNVJ5RVFmM0pOZ1doZDNRQlgzdWd4WjhPWTBMT3lheE04V3QySUdC?=
+ =?utf-8?B?aXlmYWJoa2gwTldZckRTajZsODFiTlVuMEt1SFVYSVVCSWJ3TlIxWWVGNWhK?=
+ =?utf-8?B?T1M5TUJvd2RGRzBpWXNUd2h1UVZDRkxBaEdhOXl4Z1JhZ1pzdzdRYXNEVU1L?=
+ =?utf-8?B?Sk9LUmRHdjV3UFEvS0FxTHloNlVZV2NadXVBb0tEZmpRTm9uMG4vZkVTTUNT?=
+ =?utf-8?B?NGl1V3lYY2RDN04yVjYrejdWRDR3RUhWQlF4disyejNZZ1ZBb1I5bGg5NkRD?=
+ =?utf-8?B?Q1lheWcxaWZlZzNWQ2lIc09USDZYM2NQRkx2cHZUQkdOSXNsOWxNbC9EOG5W?=
+ =?utf-8?B?UWQ2QWdRZGE0WDdVa0hJazBKd1BoT0o1OW50c3FvekxuZVU4aGdrQWxOSDVy?=
+ =?utf-8?B?MnhzM0VQcXR0c0Z2L1FvUUJmYkd2WVlwemM0Q0FUeTNFcHYwaWZ1SE1xcjZx?=
+ =?utf-8?B?RXI3VzJoYy9pUEtuWXZEenhmTVBTeEN0NEY0VGdyUXEvZGdHRDZCWVZRTEl2?=
+ =?utf-8?B?c0RGK1lxb2dTTFlCeDFkblhRU0ZIRkdrS3U3dWtYalViMVZSQ3hGOVh2aEZh?=
+ =?utf-8?B?WXlWQ2oyNHJtREI2SVNrZWZkdEJIS1VBYkpoSWY5WlZRNExzd3NzdncxVDFT?=
+ =?utf-8?B?dlpVTkkybDJyTDQ3dnRxcDM5bWNVcXlvdDlXRmQ4RlJSSEoyVG5tTGhDcEha?=
+ =?utf-8?B?cU52V3BFZ1NVczJMdGhnbE1haWN3anc5YzBrMDQrSG16TnhKZ3Ixa1AwRWVN?=
+ =?utf-8?B?aHpPd3NYNlA0K2N2VngvNjQyQmYzeDdzZnplWmtEQkgrNTZrOSt6UXkvNXUr?=
+ =?utf-8?B?TlI3Z0JRMDZHellNOHN5MWdCRklNNGZpdm9QcE43bWE4RzRIVWg3S0hUNHdQ?=
+ =?utf-8?B?a0RuU1J1L2t0ZmlydGF5WUd4dlhuWnA0MVlIWjhMR0pIMEhseGU3WXFmN0R6?=
+ =?utf-8?B?UWxZOWNNU0NNQU03Tm1PMDdGL2hTV2dia1o5UmhVU3F0WTI3RGpTRC9nM3dP?=
+ =?utf-8?Q?H1A6Qk?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(7416014)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q0lmZ0gwYzBGVVZ0TGdpcW9Pbmt5eWFUUmE0cWNZYmxmVThYTkZjQ25OWmd5?=
+ =?utf-8?B?OHFyc1R3b2FOanN1dVgxaW1uZFNqNDlPeE5XS2tkUk9jNWpybS9tckhPNXhI?=
+ =?utf-8?B?RVBSTGk3TjB4UEphZzNDMXRGNGRUdlRocUNDbDIxUjZhYkpDai94b2lUMUF4?=
+ =?utf-8?B?eDJxUDU1K3JBZ09yTHNLVHRZZURzTDRUdTJkYjVnaElBSk9uYVcrczRFRGNG?=
+ =?utf-8?B?cSsyNllIVHAybzVwaGJZZlhzanNZL01lUEZ2b3BtQ01UN3RIVGpPbzFlYWxX?=
+ =?utf-8?B?T3Z5QzhFb1A4a0w0b1dqMUJkaEx0U0FMTEJVTzJic2ZVUU1WYWFJSm00cnBE?=
+ =?utf-8?B?dzBSSW9LUUV2YjZOV25aeURwSzFnOUdQUzlIbVBCMzBMZ2VyV2krbklycVNa?=
+ =?utf-8?B?aDcyQUF1dENDb3BYalVoaGFoNDZ3QUVQaDlNNVJaOWhYOFlBRGg1YWttL3FI?=
+ =?utf-8?B?dEtiS0dQcmw0ZXp6SHZLMmxPeHpYeDFTQnNtTEhIbS9BUDNYYmM5UHg2WklJ?=
+ =?utf-8?B?MVpRUlJNLzFicnd3WEtxbVFNUDBxU0hEYW1uKy82dEZ6Z3pNTlNDcjhBMkNS?=
+ =?utf-8?B?ektsUmZobGswSjdMdW1MRnpQQ29xMm8xU1AycTlUZldRRlZXaThiR2g2bE9K?=
+ =?utf-8?B?SzErSXQ1SGUxd0RMNXNkV3FtOGd5bm5qMTNJek16U2RvN0h1dWcvVlN4MzJk?=
+ =?utf-8?B?UEJoZzFsbjNiWlVrb3JPY1k4eERNRnhJZ05qU1UrTmk4OHBmSk1qWDduVW5F?=
+ =?utf-8?B?Mnk2eWErYndEeHJGMFp6aHhML2puSVloY3pVRHFyOXg5WTN2a1lidmFCOGRE?=
+ =?utf-8?B?WExqQk50V2VSdjhoS3VhWElNSTFONXNzb0pVTjdHRmFOK2tDeVUwa09ncExU?=
+ =?utf-8?B?bVFub3RYZjZlajdrVVJhd0d6dVVvUks1YnR4Sks1Ymxrb1BVcVZZdDVldXpK?=
+ =?utf-8?B?SU5MOG5kQ3NQV09BQmxOeEVxTEUwczlwVlk3UzlGeGpNbjhwbG1rYSt2WG1n?=
+ =?utf-8?B?Y203RXBUVCs5VkhJaEkrL0pkazBYZ0Z2VGtjR3FOdTJFclpFbWsxajRldENB?=
+ =?utf-8?B?RkREZU8wdEhDc2dja1N3alE5NWRQNzJiUzlkd2JTWjJkNm5PVisvUjlOOUt4?=
+ =?utf-8?B?eEY4T1FWUTlLZEllMGt3WitqblhnT2ZOTFU1bXE4NVYwMWM4anEwcDJDaWJu?=
+ =?utf-8?B?SG5DazFya1ZSbFVaT0JDYmpnVmJyN3JISXFqWEJhQlZLNUNFbUFoeUlwTmdJ?=
+ =?utf-8?B?UVFVaUxGaDRlRW44NW8vaVM2OEY2YUNuYUVtRGxNNldBdXJ1WDhjM08rR1ht?=
+ =?utf-8?B?QUJPcjUrN0N1VEFhV1NaUC95MTZYT0R2TEVBdmRld1RQYUxVWVZsYTRpK015?=
+ =?utf-8?B?SmptVEN5TnZTYktmZ2lrTVIrRUQ2TkE3VWx2dzBSODFPWFFGaXVtSXIxRGxH?=
+ =?utf-8?B?cFFLYWJkbGpaRFRCRTAzSGRpZlNpYnFXSkhNT0RYcVNxSVJWTUxyOG9qbGJo?=
+ =?utf-8?B?blBwY2hOYjYwUGRzSE9HVkswOXM2NTUralRncWJ1bkIvSnJhY1RpczNYZGc5?=
+ =?utf-8?B?Z0piOGFpWWdwVHB6Mkcva3ZUTDlEM1kxb2g4dUNyMkFzQm5DVzJNQTNKYUVt?=
+ =?utf-8?B?QVc5dHdPNmZ6VFRic0llUDBQajd0QTZrak5EcmV5UmZBamFkSnl5cFZxYXdY?=
+ =?utf-8?B?KzRWdlJJRUNRaWEwM0hZclpaaDd5bDhDeE5CRnlRS2dwWVNQRE4wRCttMDJu?=
+ =?utf-8?B?V0hSQ0txUzZRVmVlTjRocHlseWN3REJGcFZBQjhDaUpyb0U5amlsNktGTHVQ?=
+ =?utf-8?B?RUdNa3ZOb0tFU20wTDloZDZRQk1QOTc1NnJHUUFsZTlwSktoYUoyQk1PUDJl?=
+ =?utf-8?B?dSt3S2RIV0l2WGdibVRLN3ViWDFGejBCMVpRNkkxSU9HT0VVQ2tnMGk0Q1Vu?=
+ =?utf-8?B?Nmk5bWJJTXNXbCtpYTMvc0ZoWEhhbUgzSmhSUDNtbyt2UGNpSnFNQ0JlUXZp?=
+ =?utf-8?B?bWh1a1BxdjlvcGwzMGFwaFV5YUI1NXUwMkx4Y3FVSkJmVGFwYndGaXFpSzNu?=
+ =?utf-8?B?dGh4T3B0S3ljd20va09sTllJdHBFZVMwTGVWVWFPcWN3aEJDOXFPd0F0Um4x?=
+ =?utf-8?B?Nis4b2prOXhQZkY4U2Z2L1RUS0kyL1Z1T3BMWU9ZNThtOXN6SGhuandnbjhW?=
+ =?utf-8?Q?k5kubwHU4S0WvLgVhjATNKAOTw8YQywo96KmXt5ZeYxR?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18e21330-f380-41be-bb78-08de297bd703
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Nov 2025 04:01:40.1368
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZhJFGBzhRWwIvNbI6AqT2qvSCBH7vnee098vSw4w40rMU0aKAEFLoCYODHXt+dElss2rfjU1VDKLsIzrM5Hgqg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB9004
 
-On Fri, Nov 21, 2025 at 06:56:28PM -0800, John Hubbard wrote:
-> On 11/21/25 6:38 PM, Boqun Feng wrote:
-[...]
-> > 
-> > Last but not least, safe Rust is preferred, but it doesn't mean unsafe
-> > code should be avoided completely, if we establish some data that shows
-> 
-> Perhaps we need to be slightly more precise. I'm not sure if you are
-> referring to the usual practice of creating an unsafe block, wrapped
-> within a safe Rust function, or something else?
-> 
+`from_expr` relies on `build_assert` to infer that the passed expression
+fits the type's boundaries at build time. That inference can only be
+successful its code (and that of `fits_within`, which performs the
+check) is inlined, as a dedicated function would need to work with a
+variable and cannot verify that property.
 
-I was referring to providing an unsafe API for core kernel
-functionality, for example local_irq_disable(), and then teaching how to
-use it correctly.
+While inlining happens as expected in most cases, it is not guaranteed.
+In particular, kernel options that optimize for size like
+`CONFIG_CC_OPTIMIZE_FOR_SIZE` can result in `from_expr` not being
+inlined.
 
-> > some unsafe code provides better performance and we have clear guideline
-> > for the particular scenarios, then it's definitely OK. Hence I don't
-> > fully agree your saying "Safe Rust is the whole point of this project",
-> > to me understanding how we can utilize the type system and other tools
-> > is more of a realistic goal.
-> > 
-> >> Is 3.6x longer really something we are stuck with? Or is there some other
-> >> way forward that could potentially provide higher performance, for Safe
-> >> Rust?
-> >>
-> > 
-> > Well by 3.6x longer, you mean ~1.3ns vs ~4.5ns, right? And in real world
-> > code, the code in the interrupt disabling critical section would be more
-> > than couples of nano seconds, hence the delta will probably be
-> > noise-out. But again, yes if 3ns turns out to be a bottleneck in the
-> > driver, we are happy to look into, but you need to show the data.
-> > 
-> 
-> So this is what I'm asking about: given that we *already know* that we 
-> have a performance drop in the micro-benchmark, is there any reasonable
-> approach that avoids this? Or has a less noticeable impact?
-> 
+Add `#[inline(always)]` attributes to both `fits_within` and `from_expr`
+to make the compiler inline these functions more aggressively, as it
+does not make sense to use them non-inlined anyway.
 
-Lyude had tried another approach [1], which uses an unsafe public API,
-and doesn't work (easily) with CondVar or PREEMPT_RT And that eventually
-triggered more discussion about a better API design, and as Thomas
-pointed out [2]: "Stop worrying about mostly irrelevant low level
-details which are not relevant to the primary audience of rust adoption.
-We can worry about them when we replace the scheduler and the low level
-interrupt handling code ten years down the road." And I agreed. The
-current implementation is actually quite efficient and should even
-out-perform the existing API in some cases as I pointed out. More
-importantly, it utilizes Rust type system and make it easy to use (or
-hard to mis-use).
+Fixes: 01e345e82ec3 ("rust: num: add Bounded integer wrapping type")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202511210055.RUsFNku1-lkp@intel.com/
+Suggested-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+ rust/kernel/num/bounded.rs | 2 ++
+ 1 file changed, 2 insertions(+)
 
-That being said, if anyone has a better idea, feel free to bring it up.
+diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+index 18e45bf6f84b..92c41b2eb760 100644
+--- a/rust/kernel/num/bounded.rs
++++ b/rust/kernel/num/bounded.rs
+@@ -35,6 +35,7 @@ macro_rules! fits_within {
+ }
+ 
+ /// Returns `true` if `value` can be represented with at most `N` bits in a `T`.
++#[inline(always)]
+ fn fits_within<T: Integer>(value: T, num_bits: u32) -> bool {
+     fits_within!(value, T, num_bits)
+ }
+@@ -362,6 +363,7 @@ pub fn try_new(value: T) -> Option<Self> {
+     /// assert_eq!(Bounded::<u8, 1>::from_expr(1).get(), 1);
+     /// assert_eq!(Bounded::<u16, 8>::from_expr(0xff).get(), 0xff);
+     /// ```
++    #[inline(always)]
+     pub fn from_expr(expr: T) -> Self {
+         crate::build_assert!(
+             fits_within(expr, N),
 
-> I'm asking early (see above: I agree that this is "premature"), because
-> we have early data.
-> 
-> It would be nice to explore now, rather than later, after someone shows
-> up with detailed perf data about their use case.
-> 
-> 
+---
+base-commit: 494de8f67b1e586b0190eb7f835e97c97f6b81b1
+change-id: 20251122-bounded_ints_fix-2e276fece6b5
 
-Not sure I fully agree with this, given it's to my knowledge the best
-solution at the moment, I feel it's hard to justify the cost of
-exploring a better solution without a real usage. But then again, if
-anyone has any better idea feel free to bring it up.
+Best regards,
+-- 
+Alexandre Courbot <acourbot@nvidia.com>
 
-[1]: https://lore.kernel.org/rust-for-linux/20240916213025.477225-2-lyude@redhat.com/
-[2]: https://lore.kernel.org/rust-for-linux/87iktrahld.ffs@tglx/
-
-Regards,
-Boqun
-
-> thanks,
-> -- 
-> John Hubbard
