@@ -1,99 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FC248CFC;
-	Sun, 23 Nov 2025 20:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8B1262FD7
+	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 21:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763929551; cv=none; b=lnIs833Kyvz9y5RWlKf0Z4Uh9fwqK8DodyeU1MZ0IQmqxHRytPYl3vRf1Nb7NO8AnAlPTOcuey0gK313eQ7q4hB4JL1ndi4c7sG1ylZ5oHs1tx7McHIAfHNs5rCdbQnCVfMUKraJPPimFhbjK85H4WICmjaY37JOrp1mlUy1V3I=
+	t=1763934714; cv=none; b=NwHQXkrLTvyzqit1wwMR6hIocxr5sabwGVkNNI+a1VoldUxtj0wBjSJGf3tnPudozeYHJzlu9iujTw8EDZmmn+2+S2EAh5BZRTwQbvfAEMyuhKYoC0SFSsuYrIbCTQYxr+R6s1jrxBrXHyBUWYtIA/nLFyXnqRK3qSBt7xlhLpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763929551; c=relaxed/simple;
-	bh=wh7RccjyDJD2jcJ3VNpQfrJiY0kJ2+Aa8jfu5mYV9VA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=q8p5QNG0BOARZx/n+eAOZM8vTlr8ponKmyn7aMsHdVu2OSVM3p2EGf4nvcG2lOhmDnU0thLzQYF7I/a+lXMeXknDT5vb580MScVghXcIwUX8+nDAeIcZE2qzaCIOX+JdwGAI3a47OiJN64i5Q0+GVScyzadQ5P71jMXgAfmRKNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udnKUXq0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763934714; c=relaxed/simple;
+	bh=KnO7pb4RKVQ0Wf09fszQAMwierpBb4a3L/+VDN/PmZQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nA2p+wX4K1MknsEQumX8fGLAispcHEQLDNLWab4YATpJimksFiKWd97FSynkwNJA6t0pKYMw7KtQnWqd3kT1UZMqLnfxUuNYYg5RqjKN2Z3+yMObCy69xCuleG+cSLG5Ob6BsZL2VjaDosqE8Z/L3Cj2jmvOsK5yQpL7s8BBcs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TIRO19RZ; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udnKUXq0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B40C113D0;
-	Sun, 23 Nov 2025 20:25:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763929550;
-	bh=wh7RccjyDJD2jcJ3VNpQfrJiY0kJ2+Aa8jfu5mYV9VA=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=udnKUXq0WePQWzhx7q+9X0rirHnMX6lOqazwicffyz95Aojey/w6ZOe9Nj3j40s22
-	 wsIWJHxTnd+K9KpkdhpWnIhDRmcKp6RV++iZkc9wkcm50pVuyoYhpT1IMi/n8nWaBM
-	 wmW6IgKzncebeXgUZ50D8CmncAmtI35xnURzr18pvSaSWu4HGiiadrv8T0quSsmcov
-	 tQ2qzgNMPhzjpxOohoHvgTh1pea/W9f13sPuiRZ9QzhpnTHDnFo30kaAe3f7kn6SUn
-	 EvNzIRw8Q5lG1dDZUKIU8XvxA5WfieqLXqG/gZqQOGr1IMzFiE1Obd7zWkxdxu4rMi
-	 Cg5E0H2fBLDoA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TIRO19RZ"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b9da0ae5763so398037a12.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 13:51:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763934713; x=1764539513; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EDpJZkhL4RD7DFsNylrEccAx4j0omH1HPTKnYRPThMo=;
+        b=TIRO19RZwzS5ewT1b+e+A/EhQwyK9aQe4KZvCLEHyfzwn1Tbrt/WweX3NZ++Ua34HI
+         zSd0pBxGPfntlfLMJufvhyoFRT/R09cS/kK0gF3IjR3fknz+VQ45h7Usv8zRdPpezZHh
+         wiBYFAgsFdI8gg18oiJsP4W8izRNSH7EBFyOLr4k0KVWY9j0b03EXfxAQd1maNx6dtAm
+         KqREGL9hhMkP2kgjOdLiE0/pjsqkor7XLMqi8iBcBCLI4Ur/Pp3cBO1DozfSMOreZQOQ
+         Rq0eMFVMexArjHsZa+BvmNPiuGT2dmsjHF4lN1NoQFoC3tYTYtwG18qe0yQUTA66x/5L
+         c/4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763934713; x=1764539513;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EDpJZkhL4RD7DFsNylrEccAx4j0omH1HPTKnYRPThMo=;
+        b=mXJy7EHLzD3M4agYurBr6+ExQGvKof+BpOVKvrdpzHr3Ii5aC6SlTkA0apUu4lLqsL
+         xeIlzS5KZ0T5T07rZygZNIOojeepT9CgVODce+jUBUpQuZju6sXWyYej7/ZAe/b7SFxF
+         L/nh9TiHL5kfE3MKoV5czTk7KR5YllmHMEznD120zucH5SH+eAYhhv/N0DnEipsbf+wh
+         YETxgcZnxQQRaxOoNdo6w2tyV48K7OYE97ZKvNAUtu97t8Yv1MhBwGJ3UcyMnD9lMqi3
+         XXnmwct7rLPop/Jn9CByEhfeV33oI7wlvr09hepjYbwxLZeJ3uI/A0+fro5vi9wU3v0N
+         FLKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWve+11MdMC+7XjzcN9s5Mdb5RaJh1eAHcYUEjQepYG+ngF6FCUpe/5TD9nfyPGuMtf3f69/pd2LzigN4Np7w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVMAEJkNRK+wdVpVFSEDcLvB9ouu1zQmzygvojuk1FsSC0SXVw
+	WCLAlv/PsN1DDpBmXOzfvL7Ytdfd8Id7cWAiPdB3lsMCgrXs5IAUn6rzHwtPXQsP5WhsTeVSGPu
+	Ap4OZKO+GFSDvCAR0BYxb6Wp3WsvK4ho=
+X-Gm-Gg: ASbGnct4T4SYeiOEtsTq1UoNDaeGNYQWv2iTAnmrjsLqjr5Ro0owMAlnL+fR3sRaXZk
+	YzfrNk4XAPtcKdPpS7NwepyPVk18G9Nni5iEsn1eVuVZNE/oekVNCv+idKXIZAQYWqQMVax4p24
+	2FW3Xb2EJNWXQgDhdFvS/A+QvDWcpyqx1Wamkr8ISjlRc18NXOJCkSZq169PA0js6V7dgGa79g7
+	bhHWOHC6ai3KSAYtNUmkOT59SmyE7UmChtMaw7wT8h8P0S5bDnAbCo6VwadkpIhM0EeADmjJbIx
+	GFHytoTpDHRGJjyFmQTHgrDR3/140D+kpljHaj95Jvr6YR3jKm+N6r21hRZB+6YEv2AFvX58htn
+	L7Kbgk8dKjLBlFw==
+X-Google-Smtp-Source: AGHT+IEMQHmdyakOeIIw3iAuL1W7GGk/NFW1yNE2weFpvdkukwJdMkGgLprkTw1ukYoLyuSd2K1g3cQNsP+Qg9KmnmY=
+X-Received: by 2002:a05:693c:2a0c:b0:2a4:3593:5fc8 with SMTP id
+ 5a478bee46e88-2a719277278mr3806619eec.2.1763934712562; Sun, 23 Nov 2025
+ 13:51:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251122-bounded_ints_fix-v1-1-1e07589d4955@nvidia.com>
+In-Reply-To: <20251122-bounded_ints_fix-v1-1-1e07589d4955@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 23 Nov 2025 22:51:38 +0100
+X-Gm-Features: AWmQ_bkP6JS2fs2ekvtebgyJyWDx0pvA9y8x5GoMhQYrKrQtjLPinN_gCZPJbgQ
+Message-ID: <CANiq72kfe=k+vuJ13yvwzfNg-or3Np-4+XiZ0nX-YFoDTY=n4Q@mail.gmail.com>
+Subject: Re: [PATCH] rust: num: bounded: Always inline fits_within and from_expr
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 24 Nov 2025 09:25:44 +1300
-Message-Id: <DEGCU5OZP560.SWESWJ4G920F@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: i2c: prepare for `core::ffi::CStr`
-Cc: "Igor Korotin" <igor.korotin.linux@gmail.com>, "Stephen Rothwell"
- <sfr@canb.auug.org.au>, "Greg KH" <greg@kroah.com>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- <rust-for-linux@vger.kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
- <patches@lists.linux.dev>
-To: "Miguel Ojeda" <ojeda@kernel.org>
-References: <20251123163536.1771801-1-ojeda@kernel.org>
-In-Reply-To: <20251123163536.1771801-1-ojeda@kernel.org>
 
-On Mon Nov 24, 2025 at 5:35 AM NZDT, Miguel Ojeda wrote:
-> The rust-next tree contains commit:
+On Sat, Nov 22, 2025 at 5:01=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
 >
->     3b83f5d5e78a ("rust: replace `CStr` with `core::ffi::CStr`")
+> `from_expr` relies on `build_assert` to infer that the passed expression
+> fits the type's boundaries at build time. That inference can only be
+> successful its code (and that of `fits_within`, which performs the
+> check) is inlined, as a dedicated function would need to work with a
+> variable and cannot verify that property.
 >
-> which, when merged together with commits:
+> While inlining happens as expected in most cases, it is not guaranteed.
+> In particular, kernel options that optimize for size like
+> `CONFIG_CC_OPTIMIZE_FOR_SIZE` can result in `from_expr` not being
+> inlined.
 >
->     57c5bd9aee94 ("rust: i2c: add basic I2C device and driver abstraction=
-s")
->     f3cc26a417b7 ("rust: i2c: add manual I2C device creation abstractions=
-")
+> Add `#[inline(always)]` attributes to both `fits_within` and `from_expr`
+> to make the compiler inline these functions more aggressively, as it
+> does not make sense to use them non-inlined anyway.
 >
-> from this tree (driver-core), produces errors like the following:
->
->     error[E0599]: no method named `len_with_nul` found for reference `&'s=
-tatic ffi::CStr` in the current scope
->       --> rust/kernel/i2c.rs:48:16
->        |
->     48 |             id.len_with_nul() <=3D Self::I2C_NAME_SIZE,
->        |                ^^^^^^^^^^^^ method not found in `&CStr`
->
->     error[E0599]: no method named `as_bytes_with_nul` found for reference=
- `&'static ffi::CStr` in the current scope
->       --> rust/kernel/i2c.rs:51:22
->        |
->     51 |         let src =3D id.as_bytes_with_nul();
->        |                      ^^^^^^^^^^^^^^^^^
->        |
->     help: there is a method `to_bytes_with_nul` with a similar name
->        |
->     51 |         let src =3D id.to_bytes_with_nul();
->        |                      ~~~~~~~~~~~~~~~~~
->
-> which were detected in linux-next by Stephen [1].
->
-> The `i2c` code can be independently prepared to be ready for the change,
-> thus do so.
->
-> The change is similar to the one done by Tamir in commit 657403637f7d
-> ("rust: acpi: use `core::ffi::CStr` method names").
->
-> Link: https://lore.kernel.org/all/20251120181111.65ce75a0@canb.auug.org.a=
-u/ [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Fixes: 01e345e82ec3 ("rust: num: add Bounded integer wrapping type")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202511210055.RUsFNku1-lkp@i=
+ntel.com/
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-Applied to driver-core-next, thanks!
+Applied to `rust-next` -- thanks!
+
+    [ For reference, the errors look like:
+
+        ld.lld: error: undefined symbol: rust_build_error
+        >>> referenced by build_assert.rs:83 (rust/kernel/build_assert.rs:8=
+3)
+        >>>
+rust/doctests_kernel_generated.o:(<kernel::num::bounded::Bounded<u8,
+1>>::from_expr) in archive vmlinux.a
+
+          - Miguel ]
+
+I could have rebased, but since you sent this nice patch with a good
+commit message and kernel test robot reported it, let's add it :)
+
+Cheers,
+Miguel
