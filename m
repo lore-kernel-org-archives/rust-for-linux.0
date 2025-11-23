@@ -1,206 +1,99 @@
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A996B1FC0ED;
-	Sun, 23 Nov 2025 20:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FC248CFC;
+	Sun, 23 Nov 2025 20:25:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763928014; cv=none; b=htxtIuh80qIgo0cWwNizmVU5XgvaAQBV5iFG198RXmB4F6FAAicyyLGheHxC/r2pcz96s66ivKgLj7yjD4H0RYSNkLgJaRK3c4UKKw4ZiqMtvzkp3XshS8Ha9oBaquQ4gSQZM9AB2o5uR1cUcf9zjCbEWLvBlnsnH/h7aCxlDnc=
+	t=1763929551; cv=none; b=lnIs833Kyvz9y5RWlKf0Z4Uh9fwqK8DodyeU1MZ0IQmqxHRytPYl3vRf1Nb7NO8AnAlPTOcuey0gK313eQ7q4hB4JL1ndi4c7sG1ylZ5oHs1tx7McHIAfHNs5rCdbQnCVfMUKraJPPimFhbjK85H4WICmjaY37JOrp1mlUy1V3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763928014; c=relaxed/simple;
-	bh=Ac4w/2qaMlSK29KALn0ymvJ0GzJtTUmkJP9FYF0O0TY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g/3BiIv+co6kvPnMMCf12eNVK2rxjA3eLEE9RiO+X30jAUxortA4avBaCh7rcdt6VYg000lHKP8n9oaa2hEQ/C57ZZQ+owFkRqsDHPKsBoeY0M/aQrY8Z5Bry2tugUkf8c4w4aSaSuE3h/lkmgSM4MXgqy6zB0XfQx8I0Xzs3PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=SMZOVaEy; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+	s=arc-20240116; t=1763929551; c=relaxed/simple;
+	bh=wh7RccjyDJD2jcJ3VNpQfrJiY0kJ2+Aa8jfu5mYV9VA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=q8p5QNG0BOARZx/n+eAOZM8vTlr8ponKmyn7aMsHdVu2OSVM3p2EGf4nvcG2lOhmDnU0thLzQYF7I/a+lXMeXknDT5vb580MScVghXcIwUX8+nDAeIcZE2qzaCIOX+JdwGAI3a47OiJN64i5Q0+GVScyzadQ5P71jMXgAfmRKNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udnKUXq0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="SMZOVaEy"
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 43FE51C00AB; Sun, 23 Nov 2025 21:00:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1763928008;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HnoTdBVfy5g1p+j501uJwrZMnSQol/c8v+FIFCf5wKU=;
-	b=SMZOVaEy/qvCksbSjeSrvQ0o6pOSPPF5ZDP9Jqt9N4oj7o1d0W07if1qLpMnl+rcc5zgnQ
-	Z5R6tGTXsJdvwD2KMhKI4wjVXk2AMHq8C/xwX6lObClOEgbNAAe7EmcBv5ZYRCFipZDOmB
-	Q9MFFr1F+ZkfT+EzH2+hNHeQJBdpxug=
-Date: Sun, 23 Nov 2025 21:00:07 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Lee Jones <lee@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	linux-leds@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] leds: add driver for synology atmega1608 controlled
- LEDs
-Message-ID: <aSNnx6LNA/zMO4Gw@duo.ucw.cz>
-References: <20251008181027.662616-1-markus.probst@posteo.de>
- <20251008181027.662616-2-markus.probst@posteo.de>
- <20251008181027.662616-3-markus.probst@posteo.de>
- <20251008181027.662616-4-markus.probst@posteo.de>
- <20251008181027.662616-5-markus.probst@posteo.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udnKUXq0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B40C113D0;
+	Sun, 23 Nov 2025 20:25:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763929550;
+	bh=wh7RccjyDJD2jcJ3VNpQfrJiY0kJ2+Aa8jfu5mYV9VA=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=udnKUXq0WePQWzhx7q+9X0rirHnMX6lOqazwicffyz95Aojey/w6ZOe9Nj3j40s22
+	 wsIWJHxTnd+K9KpkdhpWnIhDRmcKp6RV++iZkc9wkcm50pVuyoYhpT1IMi/n8nWaBM
+	 wmW6IgKzncebeXgUZ50D8CmncAmtI35xnURzr18pvSaSWu4HGiiadrv8T0quSsmcov
+	 tQ2qzgNMPhzjpxOohoHvgTh1pea/W9f13sPuiRZ9QzhpnTHDnFo30kaAe3f7kn6SUn
+	 EvNzIRw8Q5lG1dDZUKIU8XvxA5WfieqLXqG/gZqQOGr1IMzFiE1Obd7zWkxdxu4rMi
+	 Cg5E0H2fBLDoA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="C/8vHck61TzN1G0S"
-Content-Disposition: inline
-In-Reply-To: <20251008181027.662616-5-markus.probst@posteo.de>
-
-
---C/8vHck61TzN1G0S
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 24 Nov 2025 09:25:44 +1300
+Message-Id: <DEGCU5OZP560.SWESWJ4G920F@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] rust: i2c: prepare for `core::ffi::CStr`
+Cc: "Igor Korotin" <igor.korotin.linux@gmail.com>, "Stephen Rothwell"
+ <sfr@canb.auug.org.au>, "Greg KH" <greg@kroah.com>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <rust-for-linux@vger.kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
+ <patches@lists.linux.dev>
+To: "Miguel Ojeda" <ojeda@kernel.org>
+References: <20251123163536.1771801-1-ojeda@kernel.org>
+In-Reply-To: <20251123163536.1771801-1-ojeda@kernel.org>
 
-Hi!
+On Mon Nov 24, 2025 at 5:35 AM NZDT, Miguel Ojeda wrote:
+> The rust-next tree contains commit:
+>
+>     3b83f5d5e78a ("rust: replace `CStr` with `core::ffi::CStr`")
+>
+> which, when merged together with commits:
+>
+>     57c5bd9aee94 ("rust: i2c: add basic I2C device and driver abstraction=
+s")
+>     f3cc26a417b7 ("rust: i2c: add manual I2C device creation abstractions=
+")
+>
+> from this tree (driver-core), produces errors like the following:
+>
+>     error[E0599]: no method named `len_with_nul` found for reference `&'s=
+tatic ffi::CStr` in the current scope
+>       --> rust/kernel/i2c.rs:48:16
+>        |
+>     48 |             id.len_with_nul() <=3D Self::I2C_NAME_SIZE,
+>        |                ^^^^^^^^^^^^ method not found in `&CStr`
+>
+>     error[E0599]: no method named `as_bytes_with_nul` found for reference=
+ `&'static ffi::CStr` in the current scope
+>       --> rust/kernel/i2c.rs:51:22
+>        |
+>     51 |         let src =3D id.as_bytes_with_nul();
+>        |                      ^^^^^^^^^^^^^^^^^
+>        |
+>     help: there is a method `to_bytes_with_nul` with a similar name
+>        |
+>     51 |         let src =3D id.to_bytes_with_nul();
+>        |                      ~~~~~~~~~~~~~~~~~
+>
+> which were detected in linux-next by Stephen [1].
+>
+> The `i2c` code can be independently prepared to be ready for the change,
+> thus do so.
+>
+> The change is similar to the one done by Tamir in commit 657403637f7d
+> ("rust: acpi: use `core::ffi::CStr` method names").
+>
+> Link: https://lore.kernel.org/all/20251120181111.65ce75a0@canb.auug.org.a=
+u/ [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-> The Atmega1608 is a microcontroller used by synology devices to control
-> leds via the i2c bus. It can handle up to 24 leds.
-
-Ok, but driver is not really for atmega1608, but for whatever code is
-running there, right?
-
-I would not mind that code being opensource.
-
-I would not mind if we had standard interface to these so the next
-person can reuse the protocol.
-
-
-> +++ b/drivers/leds/Kconfig
-> @@ -323,6 +323,15 @@ config LEDS_WRAP
->  	help
->  	  This option enables support for the PCEngines WRAP programmable LEDs.
-> =20
-> +config LEDS_ATMEGA1608
-> +	tristate "LED Support for Atmega1608 used in Synology devices"
-
-There's nothing Atmega specific, right?
-
-"LED Support for Synology devices"?
-
-> +	depends on LEDS_CLASS
-> +	depends on I2C
-> +	depends on RUST
-> +	help
-> +	  This option enables support for the Atmega1608 microcontroller used
-> +	  as led controller in synology devices.
-
-led->LED
-synology->Synology
-
-> +++ b/drivers/leds/leds_atmega1608.rs
-> @@ -0,0 +1,377 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Led Driver for Synology devices using Atmega1608 as Led Controller.
-
-Led->LED
-
-> +//! Atmega1608 is a microcontroller from Microchip Technology, it is used
-> +//! as a led controller in synology nas devices.
-
-led->LED
-
-(Please fix globally).
-
-> +//! # Limitations
-> +//!
-> +//! DIM0 (and DIM1) are shared across all leds, meaning if DIM0 is used =
-by
-> +//! multiple leds, these multiple leds cannot have different brightness
-> +//! levels. The same does apply for the hardware accelerated blinking.
-> +//!
-> +//! In other words, for all 24 leds there can either only be one brightn=
-ess other
-> +//! than 0 and 255, or one hardware accelerated blinking delay.
-> +//!
-> +//! Furthermore the off and on delay in hardware accelerated blinking ca=
-nnot
-> +//! have different values and have to be equal. We solve this by calcula=
-ting
-> +//! the average of those numbers and use it as delay for both. The delay
-> +//! cannot be larger than 765 ms (255*3).
-> +//!
-> +//! While hardware accelerated blinking is on, the led cycles between
-> +//! the current brightness for the mode and full brightness. Because of =
-this
-> +//! behaviour, we hardcode the brightness value of 128 if hardware accel=
-erated
-> +//! blinking is used.
-
-Maybe we should just pretend that hw acceleration does not exist? Or
-pretend it can only do single blinking rate.
-
-> +
-> +kernel::module_i2c_driver! {
-> +    type: Atmega1608LedDriver,
-> +    name: "atmega1608",
-> +    authors: ["Markus Probst <markus.probst@posteo.de>"],
-> +    description: "Led Driver for Synology devices using Atmega1608 as Le=
-d Controller",
-> +    license: "GPL v2",
-> +}
-
-This should be called synologyLedDriver or something. We have driver
-for Thinkpad LEDs. We don't care what kind of hardware it runs on.
-
-
-> +impl LedHandler for Atmega1608Led {
-> +    const BLOCKING: bool =3D true;
-> +    const BLINK: bool =3D true;
-> +    const MAX_BRIGHTNESS: u32 =3D 255;
-> +
-> +    fn brightness_set(&self, brightness: u32) -> Result<()> {
-> +        let brightness =3D u8::try_from(brightness).unwrap_or(255);
-> +
-> +        let mode =3D self.update_mode(match brightness {
-> +            0 =3D> Atmega1608LedMode::Off,
-> +            255 | 254 =3D> Atmega1608LedMode::On,
-> +            _ =3D> Atmega1608LedMode::Dim0,
-> +        })?;
-
-Umm... so the hardware can only do on / off and dim. And dim is
-strange.
-
-Certainly MAX_BRIGHTNESS should not be 255, but 1 (or 2 if you want to
-support dim mode).
-
-One idea: Use hardware diming to have three levels. So MAX_BRIGHTNESS
-=3D 2. Then ignore hardware accelerated blinking. And you should have
-working and simpler driver.
-
-Thanks and best regards,
-								Pavel
---=20
-I don't work for Nazis and criminals, and neither should you.
-Boycott Putin, Trump, Netanyahu and Musk!
-
---C/8vHck61TzN1G0S
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaSNnxwAKCRAw5/Bqldv6
-8tlyAJ9nXKek8rSN/EpHtcz2x6HDubBkRwCeKWOtDvDkmKAqZ4psb7nxhNZQOjU=
-=NPGx
------END PGP SIGNATURE-----
-
---C/8vHck61TzN1G0S--
+Applied to driver-core-next, thanks!
