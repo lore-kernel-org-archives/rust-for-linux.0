@@ -1,138 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B1C224AFB;
-	Sun, 23 Nov 2025 16:35:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C98814F125
+	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 17:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763915756; cv=none; b=SzbAbt3VvfaiwaMi5vHf7pvR509O5n/8/rgpBZST5nHuPhUaexk7+U7wlGfhm3hQJtjlX8ZIxwDpjyRlZKQT75NRTy3FUwe47k28aNVsPyDWIx2zs57b8nvpa5Y/sB8d9qQwT12uFJIniCSQjIPhPVANefTr+u3LQQ5jNOqO4Zo=
+	t=1763917688; cv=none; b=inR3vzXcD0RSme7MW4HY+KUe0k1VUQoHtZALTomkobXeW1xK876NuvpptfwAAXJtiPGY9daub9HRbXxygUfXUhm9vX7Ciy9Ln0O61CAVEISkX1Rut5HJpr6z4953KItvwid8xLUJMJ3Nu2cQc8B7C6Qp3+HB9qtqnGjhjv4t1a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763915756; c=relaxed/simple;
-	bh=UEreune45OmiV31iDxW7oYvMz6N/UExuwtngP1+yOl8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sItUp+vDR9Wz4i8NA2rADtOx1cOsvoVlqxIROJXhNccyE3t31PwK8zejno+cOARfah3ezic+wM0pDcNG0jXBGa4DSmemcvrJHkC5Fqbz1JMilJd0UQ/tzvukn4OZ7m9BhiwuUWglKMcoohFbrzn0mPkdn1AJ6Fq7Rf2PnUty0qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VH39JF8R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763917688; c=relaxed/simple;
+	bh=z2qomZJrFAx00Yj7OHy0NxKolD7NBMwWvO7k/89BywE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nc4THKchdg5vxKR1Rr+jlWyVxMrvcvgcSx758edxm84p97IXwvdR9g1ieQKAUx9Zl3eil/9NyscH/wV/nrdZMVN/SJWFFuowyn66sQ4uz5O0yy7A9fOeIN0aGkix7XNtV+/RpA2GhCjbcqKFJFTuNVLK3YVOVbeq3pv7CGO6U+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ajYGeV8U; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VH39JF8R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFD0C113D0;
-	Sun, 23 Nov 2025 16:35:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763915756;
-	bh=UEreune45OmiV31iDxW7oYvMz6N/UExuwtngP1+yOl8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VH39JF8RBV1mJrXpGI9px7CB/LOi73deWq1WXQmwQg5ANCHVZBWiv0MVMALYUq/U3
-	 0gh3VNkyhiNtc0drt8EFaK5+AYDmoqUQz4EMni7ZfQynSFodD3/wC49IStPB9veN4Q
-	 9cde19J3YkKluR5zFVtUByHmlaWM0AVVV3o66W4eCGz+sX4O+5yN3MuKhsABRBvUwf
-	 oKt4Qj3wx7ZztzfMW9Uw81u809CurBMioLUKPPW+tHQZ4WixvwRm7JMAiom3viEIQy
-	 JDGEsqv1E6N3Ge/GYQ0UTZ12q//KAdocuqpK8uH1ZkRSpL1FpMsL5pwN2xeug0443o
-	 uDrT4vPRhsVrA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Greg KH <greg@kroah.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	rust-for-linux@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH] rust: i2c: prepare for `core::ffi::CStr`
-Date: Sun, 23 Nov 2025 17:35:36 +0100
-Message-ID: <20251123163536.1771801-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ajYGeV8U"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-340c2dfc1daso317936a91.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 09:08:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763917686; x=1764522486; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/jzRdwgrlBGM4Ka3Mqp23QOr2mWfwNczhjfRCOlufvc=;
+        b=ajYGeV8UG9vUKmY8HU/OX3lB1URQZwOrcNFolhKA5U04bmA4yWEHSHMAGZXA6SSITb
+         mc236+HaaxmilT1/VRW22XXQkAKfmD/2BJaUHRJs3u0dV1Wrm7PBk2C4KetAokzioMAV
+         rAWtG9yjzMEVHtX0bgvDcpQBwnFn1E9aPE3CcMZv79eGDB42qNe1e2u8ONU+RDQRBffG
+         XTXH1Hxa93lDVJzP2L12PWn92Q5jm/AEjsnq5gFeQdV0R81DjTKS2a1KIEOGqvM9s+8W
+         ggexvdzXHrW19Dmbnsb4bCnSt/SstWPW9VtrqzstDPFWtpNb6SxUI5cfZYZ0bQSNwH61
+         YLcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763917686; x=1764522486;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/jzRdwgrlBGM4Ka3Mqp23QOr2mWfwNczhjfRCOlufvc=;
+        b=S1g1ZTNFKw5H2bi4UXe/kvLbvVYyP+/D65/LkQ6uG20qu5valNqJ01od8fsz72a4zn
+         nQ6BsLFOXFfkukl6oV9nOGNoDBAA3vlL4YNdxh0W8ftkpvDMBpsLmqtpY4P75JofkOwk
+         T+UR6Pu2cXN7iz9GNzLeqICX/IpjMlFtfP3qsrcs5lme3qFOtWHLdBvd6/CLNsgUF/0C
+         45GE0WdgRxuy+7mr6kip2ZHHeq7sbF9gwlOMvF8ZCg8uVIasvOBEBo9g3XMo63FQskPc
+         wrygnsgvXcZibqGIWIZEAluUQmAUKrJtjg2o9OXENL1rbRkHbRKqka2+C3eX8ejPx0GI
+         qc0g==
+X-Forwarded-Encrypted: i=1; AJvYcCXRLsmVMBnFrJUAR2XK6ejP5F/EkYGBw5KEcMWWsrCN8nsgEamx6ak9dBdHdj813PsvTvWucIWkFY9BWFH2Ew==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAGJ5Ave/ShWv5Uf47eIK/c8aQR7SUNNlMWws9wSE5XCSEJfQ+
+	ddtFvuUS8zAn38ECaSTcrItP34ukFJ+HsGEydEcidbV+FtsBLliblkyCq7TnqIJ68S0OKTrVhZH
+	LCTmn0mBHsABRSVZaCW6j3gQHyhUt3Y0=
+X-Gm-Gg: ASbGncvkTXhH/z6LR3kbF/fh1TucUk9H+e7C14XBeyKKtP7tdSzBGJQyE+RT3OFIaS+
+	/qh4ejtmuBzaXv++SNfsa+cREGf16z/BM06vVPeupbAjzSAc6Ojk02VlTqELIP5n4hOfl7tYFmb
+	L43zwcH0zH9dZbT/jDT/cpZDQOWX7M0Oqy0ebLM7dyHbqv7tOnZzKrLuTlqRvOByA8vuDEXh23d
+	Fc7a/yESMn5G3zHGraKffhMVHHjkSNhvBJP44p3cQ/pWvyCp/XarOx4MiBaCL2z16E6B66id15W
+	ICNNInqAJ7b5IC/P171ClZRmtXxJlNd/70gdcOMe/tsP0Vdwuwpm+mkVAxW6YL3Aqhegev77/j6
+	QvugCCGVmIneraQ==
+X-Google-Smtp-Source: AGHT+IGZHjtJcEGBPZNIEzBBEH/GIwzRmK0XuA/cxDdYSVB2Kf4jYlzMZYG0qa248vJt64LoIMnSUJcQtEvU8UopE1Y=
+X-Received: by 2002:a05:7301:e24:b0:2a4:3593:2c07 with SMTP id
+ 5a478bee46e88-2a7243ec7b9mr4703615eec.0.1763917686200; Sun, 23 Nov 2025
+ 09:08:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251122083213.3996586-1-davidgow@google.com>
+In-Reply-To: <20251122083213.3996586-1-davidgow@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 23 Nov 2025 18:07:54 +0100
+X-Gm-Features: AWmQ_bn4_ZVLWf7sDF8GSmpgYnQ7TxDVaCgMHNgG3l299wML01MntHwi2jSGnm8
+Message-ID: <CANiq72=MXHZ2XswxkfzLqUEPwriNy=_sxAQpOYoYW8iNgyuJ8Q@mail.gmail.com>
+Subject: Re: [PATCH] arch: um: Don't rename vmap to kernel_vmap
+To: David Gow <davidgow@google.com>
+Cc: Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	"Paolo 'Blaisorblade' Giarrusso" <blaisorblade@yahoo.it>, Alice Ryhl <aliceryhl@google.com>, 
+	linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The rust-next tree contains commit:
+On Sat, Nov 22, 2025 at 9:32=E2=80=AFAM David Gow <davidgow@google.com> wro=
+te:
+>
+> In order to work around the existence of a vmap symbol in libpcap, the
+> UML makefile unconditionally redefines vmap to kernel_vmap. However,
+> this not only affects the actual vmap symbol, but also anything else
+> named vmap, including a number of struct members in DRM.
+>
+> This would not be too much of a problem, since all uses are also
+> updated, except we now have Rust DRM bindings, which expect the
+> corresponding Rust structs to have 'vmap' names. Since the redefinition
+> applies in bindgen, but not to Rust code, we end up with errors such as:
+>
+> error[E0560]: struct `drm_gem_object_funcs` has no fields named `vmap`
+>   --> rust/kernel/drm/gem/mod.rs:210:9
+>
+> Since, as far as I can tell, we no longer actually link to libpcap, it
+> should be safe to just remove this define unconditionally.
+>
+> (If it's not, we can possibly either disable DRM Rust bindings under
+> UML, or move the redefinition of vmap behind some config option.)
+>
+> We also take this opportunity to update the comment.
+>
+> Signed-off-by: David Gow <davidgow@google.com>
 
-    3b83f5d5e78a ("rust: replace `CStr` with `core::ffi::CStr`")
+Nice, thanks for this!
 
-which, when merged together with commits:
+Yeah, I guess we would otherwise need to do the same kind of "wild"
+macro replacement in Rust code to support this or conditional
+compilation, and neither sounds good.
 
-    57c5bd9aee94 ("rust: i2c: add basic I2C device and driver abstractions")
-    f3cc26a417b7 ("rust: i2c: add manual I2C device creation abstractions")
+If it is not actually needed, then this sounds like a win-win.
 
-from this tree (driver-core), produces errors like the following:
+It seems it was indeed gone in commit:
 
-    error[E0599]: no method named `len_with_nul` found for reference `&'static ffi::CStr` in the current scope
-      --> rust/kernel/i2c.rs:48:16
-       |
-    48 |             id.len_with_nul() <= Self::I2C_NAME_SIZE,
-       |                ^^^^^^^^^^^^ method not found in `&CStr`
+    12b8e7e69aa7 ("um: Remove obsolete pcap driver")
 
-    error[E0599]: no method named `as_bytes_with_nul` found for reference `&'static ffi::CStr` in the current scope
-      --> rust/kernel/i2c.rs:51:22
-       |
-    51 |         let src = id.as_bytes_with_nul();
-       |                      ^^^^^^^^^^^^^^^^^
-       |
-    help: there is a method `to_bytes_with_nul` with a similar name
-       |
-    51 |         let src = id.to_bytes_with_nul();
-       |                      ~~~~~~~~~~~~~~~~~
+So it sounds reasonable to me assuming I am not missing anything,
+which I may be... FWIW:
 
-which were detected in linux-next by Stephen [1].
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-The `i2c` code can be independently prepared to be ready for the change,
-thus do so.
-
-The change is similar to the one done by Tamir in commit 657403637f7d
-("rust: acpi: use `core::ffi::CStr` method names").
-
-Link: https://lore.kernel.org/all/20251120181111.65ce75a0@canb.auug.org.au/ [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-I see that Stephen added this in his Friday's resolution. However, the
-`CStrExt` import does not seem needed as it also comes from the prelude,
-so that may be removed.
-
- rust/kernel/i2c.rs | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
-
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index 95b056cc1a71..491e6cc25cf4 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -44,11 +44,8 @@ impl DeviceId {
-     /// Create a new device id from an I2C 'id' string.
-     #[inline(always)]
-     pub const fn new(id: &'static CStr) -> Self {
--        build_assert!(
--            id.len_with_nul() <= Self::I2C_NAME_SIZE,
--            "ID exceeds 20 bytes"
--        );
--        let src = id.as_bytes_with_nul();
-+        let src = id.to_bytes_with_nul();
-+        build_assert!(src.len() <= Self::I2C_NAME_SIZE, "ID exceeds 20 bytes");
-         let mut i2c: bindings::i2c_device_id = pin_init::zeroed();
-         let mut i = 0;
-         while i < src.len() {
-@@ -434,11 +431,8 @@ impl I2cBoardInfo {
-     /// Create a new [`I2cBoardInfo`] for a kernel driver.
-     #[inline(always)]
-     pub const fn new(type_: &'static CStr, addr: u16) -> Self {
--        build_assert!(
--            type_.len_with_nul() <= Self::I2C_TYPE_SIZE,
--            "Type exceeds 20 bytes"
--        );
--        let src = type_.as_bytes_with_nul();
-+        let src = type_.to_bytes_with_nul();
-+        build_assert!(src.len() <= Self::I2C_TYPE_SIZE, "Type exceeds 20 bytes");
-         let mut i2c_board_info: bindings::i2c_board_info = pin_init::zeroed();
-         let mut i: usize = 0;
-         while i < src.len() {
-
-base-commit: 4635406417bb842862d6322c461743c9b128c444
---
-2.52.0
+Cheers,
+Miguel
