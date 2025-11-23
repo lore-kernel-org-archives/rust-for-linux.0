@@ -1,144 +1,256 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E819273D81
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 09:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBB22D7BF;
+	Sun, 23 Nov 2025 10:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763890068; cv=none; b=inofuL3uRC/qo6G+hN3vo39Kj2a3yZ/p3FlEkaIxYDRoqJ/b1i+0z6BpfaFSjbBZAydiy4A5QTNjuPcQELI/+H8Ujq5f11jLEOx4SXLRI6zqN3VxvoKtyCZ3d085vmVoKcRqLzTwH6v5Cwein/lkgXpqADzJJM7Nh7NX/0AOffk=
+	t=1763892479; cv=none; b=DznuAs0DNVdfJY4JU7VjoFuoVkhKaf4uzq6JKo0CkAA5NB64Dqd15gCBfReBhL16DdJT6Yofhiux17vqJrtTeVAJEV/tJIF7id/MP+Bs8WenELMcS7m9nRxzXS7Ql/ghbeBZbf6RKgxgiTLvO28zuo2MlPdk95PerRQ/BVlxOj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763890068; c=relaxed/simple;
-	bh=EtbIa6WcARTT+W4TNMAMANC6i+cL8dmR+u7Z213Dj/Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bwMUHddfipilRPB634WeNB+Vezx3fzkZZ0H1VQemaaYI7KYSPYFJ/gAw1NDVMZfkY4icSX4Vgon37CwMgjINuoCzYNq7wHYyHSKhenRTt7g2CARNZNCGzhg+EfwnH/hkctGXEnn6A+SMicKTF0AgDIREmddtEvz7iaCptF2lDSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nP14G4Ei; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763892479; c=relaxed/simple;
+	bh=sKysgcg1ksXOu8+RiFuMB0K5EQ5NPOkU5B2TIfaJ7Hk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Kbg6/f6R9DGms8zyvNpGK9AGFGtNpF5wt+slZY6vV6dBcgJN2gVQy77vq46VjguH2BmG/tc6e4lAU6wRPggsIkxfpNn+5OKwAg6PROHlkBok+uPWk/yTHLcFOciVphX3ukuIJ3Z8doZmuKQ6c5qcPWpDACx5SqNscBpOxJKduk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WzHh0TIt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nP14G4Ei"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2980d9b7df5so42006515ad.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 01:27:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763890066; x=1764494866; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YfyBoPWUbKIvicMj0KWg+NHqLc+OcZyzD61cN8gqS4k=;
-        b=nP14G4EiAIxsFMqXc5VQa9Sod/12GminXv9/Ql5T3ogm+HUDRKYf0HODr1VmGsflJw
-         Q9bhdstzJ8131cHjBGerQW96hC8NZEMD2gz2GKq8l8Xy3l2bv4BSnqCcGQJXX6jtIae9
-         Z4rAwGEkcj1dSa2vJTYoec0PrliO+Uet4Sh7hTXZOszvjv2guy9TCEBWTSlKd66lFK+p
-         6qf/KpF+wRdn4UghuFeMpseXYXtDP7dxWctTdr+Wpv2lNIj3qss5ilcShlWZZASX1u/J
-         r0R8VIQfpGB54XDrLsZyvpooJNUDG/Ha//01SKtpQ3PjUfiwgnV43uucvaOX+pPuuHZP
-         JnKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763890066; x=1764494866;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YfyBoPWUbKIvicMj0KWg+NHqLc+OcZyzD61cN8gqS4k=;
-        b=bGuYcvKhrtKf6opYjimtxK49yDUwTuFUnpwbEh9fqM3r4/Youqij2j3d3bSUa+fMPf
-         LG+KeprMGOg2YzGpXo88IL4QZwp8CR2zV0BBPESpZxHOiDWML/fsKcRJVPuppWFMJ648
-         wVqrlc9tei1QDmEaP/4PsNoYRoXDYqcokrGXGZeTO0LaQatcd5a+MJfcfRfklPvDJfaM
-         fAKjQgc0NdQ0YKh4/rMkfapMRoF2xHFK4LAMJbIfSLGhE3qC+0uBIUg6AEV+T1mIxdjd
-         BwH9lpygxBbpa2AYteOSZms2SFA7JKjHnO5gf86J0BwNvx7Pb9NYnud1m6Z/rfaQZ+Fb
-         0IIg==
-X-Forwarded-Encrypted: i=1; AJvYcCU4vRKnn9saaGUKKedRzvfodZ6SBKToByEis+IfvbuhV2DHrWSTf34aQ/CX4OUOmmD7MudEwoHuySNAoVi9ug==@vger.kernel.org
-X-Gm-Message-State: AOJu0YypbYNomamfaRbxOUmrnEi3fiSTCDmjqDZ5bQMbZD3PsJqPwY6A
-	c9XhUmC9OfVa/TEZPBFDIHlXtebPG1jX99faOX+YprbmzwansA+L++eR
-X-Gm-Gg: ASbGncvBxqCfZaWy1rvTgUO8dXDuB40tbtd7edCbs5zgp2N+bTFUkoElqZCHfxFlVlv
-	u5ZbHJtqj7B1e5xpR+1tCei1/aDqxdoLpuC6eXzbaLSupkZQfEE3rMgu2Bd2jqE3I2cq/dg7ZVK
-	S/tif+d2r/4Cd+8PdX2viWRB/MBrh6Fo9lJh1tqdOxvZyXRbnhVTGJgzgIpTh8ydkgd4/y1Zivg
-	rEYg/PUn2eGqxSJ/aMq31SpAqNvezxw5Au3yTz4TEDA+uJLG9Th5eUtaxvLrySIT81fQTLCTpR9
-	CKZG7vl8euMDuAQaA+7AULTgzD7TPmtmzn86RqJPL54GUfxb6XE7xZumEEf6U/RuET7xeI/8Mn6
-	1llabQbHcf7mTHflP3Az3+W0jwrLXFlQXh+4FHhlCsVuNKrs4dzhgzL5KxCNgiW3MaGV3oPbWOq
-	7mqG/hXnGjWeHenYqjzxvIMqVZxA==
-X-Google-Smtp-Source: AGHT+IExQFsNPtBs1Xj5miLvxmintvWHhiICyxn8q5+dbslUtcud5J24RqOaI8yRZ14HHbP/D4VKng==
-X-Received: by 2002:a17:902:db0b:b0:295:28a4:f0aa with SMTP id d9443c01a7336-29b6bf5f036mr89773335ad.43.1763890065882;
-        Sun, 23 Nov 2025 01:27:45 -0800 (PST)
-Received: from shankari-IdeaPad.. ([103.24.60.188])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b138c08sm100811105ad.25.2025.11.23.01.27.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Nov 2025 01:27:45 -0800 (PST)
-From: Shankari Anand <shankari.ak0208@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	linux-pwm@vger.kernel.org,
-	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: [PATCH 10/10] rust: kernel: remove temporary re-exports of ARef and AlwaysRefCounted
-Date: Sun, 23 Nov 2025 14:54:38 +0530
-Message-Id: <20251123092438.182251-11-shankari.ak0208@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251123092438.182251-1-shankari.ak0208@gmail.com>
-References: <20251123092438.182251-1-shankari.ak0208@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WzHh0TIt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D818C113D0;
+	Sun, 23 Nov 2025 10:07:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763892478;
+	bh=sKysgcg1ksXOu8+RiFuMB0K5EQ5NPOkU5B2TIfaJ7Hk=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=WzHh0TItYnKR4YtbKN+4A+a57+06/kSS5LGbkSD1yGxPY8HAh7G27ONoO/QTFL3af
+	 6p5C0uJeE2mGtmBPh06sh+DTVR2WdnbJD+v850LeJbFyhJkvDM0ydOEXJN/fP2BmgA
+	 1L+mDeX3N709wDREj9ILjDdqo/+itzFsgYgHaLuKI9OvamSy5WZcZvaqEY7ETA15Qr
+	 F0LqyL3Y95P80DaWTJ7epaNC4i0STZCqjPQP+0UKcsX1fyCdSpLDodisfPAbVQz8Wz
+	 KN1XGxyqrOPXfh9OWrPC0/k0t7sg3bBajeofl74N0s6n7EaodrwG6AJ0626NknwAww
+	 wLdZvAUubJLrA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 23 Nov 2025 23:07:47 +1300
+Message-Id: <DEFZP148A2NK.29G6N1V1SXT8T@kernel.org>
+Subject: Re: [PATCH 7/8] rust: pci: add physfn(), to return PF device for VF
+ device
+Cc: "Jason Gunthorpe" <jgg@ziepe.ca>, "Peter Colberg" <pcolberg@redhat.com>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Abdiel
+ Janulgue" <abdiel.janulgue@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>,
+ <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>
+To: "Leon Romanovsky" <leon@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251119-rust-pci-sriov-v1-0-883a94599a97@redhat.com>
+ <20251119-rust-pci-sriov-v1-7-883a94599a97@redhat.com>
+ <20251121232642.GG233636@ziepe.ca> <DEF5EC79OOT4.2MT1ET4IKXS5Y@kernel.org>
+ <20251122161615.GN233636@ziepe.ca> <20251122185701.GZ18335@unreal>
+ <DEFKSDBXEQS0.3C79SP3HEG1OY@kernel.org> <20251123063456.GA18335@unreal>
+In-Reply-To: <20251123063456.GA18335@unreal>
 
-Remove the temporary re-exports of `ARef` and `AlwaysRefCounted`
-from `types.rs` now that all in-tree users have been updated to
-import them directly from `sync::aref`.
+On Sun Nov 23, 2025 at 7:34 PM NZDT, Leon Romanovsky wrote:
+> On Sun, Nov 23, 2025 at 11:26:52AM +1300, Danilo Krummrich wrote:
+>> On Sun Nov 23, 2025 at 7:57 AM NZDT, Leon Romanovsky wrote:
+>> > On Sat, Nov 22, 2025 at 12:16:15PM -0400, Jason Gunthorpe wrote:
+>> >> On Sat, Nov 22, 2025 at 11:23:16PM +1300, Danilo Krummrich wrote:
+>> >> > So far I haven't heard a convincing reason for not providing this g=
+uarantee. The
+>> >> > only reason not to guarantee this I have heard is that some PF driv=
+ers only
+>> >> > enable SR-IOV and hence could be unloaded afterwards. However, I th=
+ink there is
+>> >> > no strong reason to do so.
+>> >>=20
+>> >> I know some people have work flows around this. I think they are
+>> >> wrong. When we "fixed" mlx5 a while back there was some pushback and
+>> >> some weird things did stop working.
+>> >
+>> > I don't think that this is correct. The main use case for keeping VFs,
+>> > while unloading PF driver is to allow reuse this PF for VFIO too. It i=
+s
+>> > very natural and common flow for "real" SR-IOV devices which present a=
+ll
+>> > PF/VFs as truly separate devices.
+>>=20
+>> That sounds a bit odd to me, what exactly do you mean with "reuse the PF=
+ for
+>> VFIO"? What do you do with the PF after driver unload instead? Load anot=
+her
+>> driver? If so, why separate ones?
+>
+> One of the main use cases for SR-IOV is to provide to VM users/customers
+> devices with performance and security promises as physical ones. In this
+> case, the VMs are created through PF and not bound to any driver. Once
+> customer/user requests VM, that VF is bound to vfio-pci driver and
+> attached to that VM.
+>
+> In many cases, PF is unbound too from its original driver and attached
+> to some other VM. It allows for these VM providers to maximize
+> utilization of their SR-IOV devices.
+>
+> At least in PCI spec 6.0.1, it stays clearly that PF can be attached to S=
+I (VM in spec language).
+> "Physical Function (PF) - A PF is a PCIe Function that supports the SR-IO=
+V Extended Capability
+> and is accessible to an SR-PCIM, a VI, or an SI."
 
-These re-exports were originally added to avoid breaking the
-kernel build during the transition period while call sites were
-incrementally migrated. With all users updated, they are no
-longer needed.
+Hm, that's possible, but do we have cases of this in practice where we bind=
+ and
+unbind the same PF multiple times, pass it to different VMs, etc.?
 
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1173
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
----
- rust/kernel/types.rs | 2 --
- 1 file changed, 2 deletions(-)
+In any case, what we can always do is what I propose in [1], i.e. add a boo=
+l to
+struct pci_driver that indicates whether the VFs should be unbound when the=
+ PF
+is unbound, such that we can uphold the guarantee of VF bound implies PF bo=
+und
+at least conditionally.
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 9c5e7dbf1632..4329d3c2c2e5 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -11,8 +11,6 @@
- };
- use pin_init::{PinInit, Wrapper, Zeroable};
- 
--pub use crate::sync::aref::{ARef, AlwaysRefCounted};
--
- /// Used to transfer ownership to and from foreign (non-Rust) languages.
- ///
- /// Ownership is transferred from Rust to a foreign language by calling [`Self::into_foreign`] and
--- 
-2.34.1
+[1] https://lore.kernel.org/all/DEFL4TG0WX1C.2GLH4417EPU3V@kernel.org/
 
+>> >> So while I support this goal, I don't know if enough people will
+>> >> agree..
+>> >
+>> > I don't see that Bjorn is CCed here, so it is unclear to whom Danilo
+>> > talked to get rationale for this new behaviour.
+>>=20
+>> Not sure what you mean, Bjorn is CC'd on the whole series and hence also=
+ this
+>> conversation.
+>>=20
+>> Otherwise, my proposal to guarantee that the PF is bound as long as the =
+VF(s)
+>> are bound stems from the corresponding beneficial lifecycle implications=
+ for the
+>> driver model (some more on this below).
+>>=20
+>> >> > With this, the above code will be correct and a driver can use the =
+generic
+>> >> > infrastructure to:
+>> >> >=20
+>> >> >   1) Call pci::Device<Bound>::physfn() returning a Result<pci::Devi=
+ce<Bound>>
+>> >> >   2) Grab the driver's device private data from the returned Device=
+<Bound>
+>> >> >=20
+>> >> > Note that 2) (i.e. accessing the driver's device private data with
+>> >> > Device::drvdata() [1]) ensures that the device is actually bound (d=
+rvdata() is
+>> >> > only implemented for Device<Bound>) and that the returned type actu=
+ally matches
+>> >> > the type of the object that has been stored.
+>> >>=20
+>> >> This is what the core helper does, with the twist that it "validates"
+>> >> the PF driver is working right by checking its driver binding..
+>> >>=20
+>> >> > I suggest to have a look at [2] for an example with how this turns =
+out with the
+>> >> > auxiliary bus [2][3], since in the end it's the same problem, i.e. =
+an auxiliary
+>> >> > driver calling into its parent, except that the auxiliary bus alrea=
+dy guarantees
+>> >> > that the parent is bound when the child is bound.
+>> >>=20
+>> >> Aux bus is a little different because it should be used in a way wher=
+e
+>> >> there are stronger guarantees about what the parent is. Ie the aux bu=
+s
+>> >> names should be unique and limited to the type of parent.
+>> >
+>> > Right, aux bus is completely unrelated to real physical PCI bus.
+>>=20
+>> Of course the auxiliary and the PCI bus are fundamentally different buss=
+es,
+>> *but* they also have commonalities: the driver lifecycle requirements dr=
+ivers
+>> have to deal with are the same.
+>>=20
+>> For instance, if you call from an auxiliary driver into the parent drive=
+r to let
+>> the parent driver do some work on behalf, the auxiliary driver has to gu=
+arantee
+>> that the parent device is guranteed to remain bound for the duration of =
+the
+>> call, otherwise the parent driver can't call dev_get_drvdata() without r=
+isking a
+>> UAF, since a concurrent unbind might free the parent driver's device pri=
+vate
+>> data.
+>>=20
+>> The same is true for PCI when a VF driver calls into the PF driver to do=
+ some
+>> work on behalf. The VF driver has to make sure that the PF driver remain=
+s bound
+>> for the whole duration of the call for the exact same reasons.
+>
+> And this section is not entirely correct. It is one of the possible
+> usages of PF. In many devices, PF and its VFs are independent and don't
+> communicate through kernel at all. There is no need for VF to have PF be
+> bounded to its original driver.
+
+Of course -- similarly there might be cases where an auxiliary driver might=
+ not
+cummunicate with its parent, but that's not the case I'm referring to above=
+.
+
+>
+>>=20
+>> I.e. it is a common driver lifecycle pattern for interactions between dr=
+ivers in
+>> general.
+>
+> And it is not true as well. In case you need to interact between
+> devices/drivers, it is up to the caller to ensure that this driver isn't
+> unloaded.
+
+You're mixing two things here. The driver model lifecycle requires that if
+driver A calls into driver B - where B accesses its device private data - t=
+hat B
+is bound for the full duration of the call.
+
+This is true for any such interaction, the question of who is responsible t=
+o
+uphold this guarantee, e.g. the bus layer or the driver itself is orthogona=
+l.
+
+Whenever possible, it's best to let the bus layer uphold the guarantee thou=
+gh,
+since it's one pitfall less a driver can fall into.
+
+>>=20
+>> As for Rust specifically, we can actually model such driver lifecycle pa=
+tterns
+>> with the type system and with that do a lot of the driver lifecycle chec=
+ks (that
+>> drivers love to ignore :) even at compile time, such that your code does=
+n't even
+>> compile when you violate the driver lifecycle rules.
+>>=20
+>> For the auxiliary bus that's already the case and I'd love to get to thi=
+s point
+>> with PF <-> VF interactions (in Rust) as well.
+>
+> It is absolutely correct thing to do for auxbus. It is very questionable =
+for SR-IOV.
+
+At least conditionally (as proposed above), it's an improvement for cases w=
+here
+there is PF <-> VF interactions, i.e. why let drivers take care if the bus =
+can
+already do it for them.
