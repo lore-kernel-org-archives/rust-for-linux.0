@@ -1,279 +1,94 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AD172617
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 22:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D92B20468E
+	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 22:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763937933; cv=none; b=bsv4qH0mPE5+M8fwVXwg8TyWkwp7F8RAHS8RJd6pozP9i8Lz4W3TS5CEVy4l8NrUUI1lh8nYjQMo/1QMSAkVLki59XLV//qo/9Y2MVl+JcQPNya68s8RNNxMC70Z1El9Cer8Z7w9Zh5egPK/aV7Te46HFLlur27hKmOtevcH9Pk=
+	t=1763938019; cv=none; b=riw/NrsxN/s4mgtcuOQ0zaVGH3PMLRwFZUoRhyntWyYYgy2HAusS4fZ2zB4zH9qIFaRI2H2IATu9dr/HDMSDIZHZFGzpElGpoiixYPsFbwKlyujnzEY3jVMSPiDqYCncCimh1fpc9bB12rsdHCmjy9tboqvorCM/endNrLeytnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763937933; c=relaxed/simple;
-	bh=BCi6jaxkclqDs49CwnzQOubDJwK1yph6sdyd7/VAZJs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Jx5Ub4btksNnjm6qo/kDn71WIfPAV5JEYxaHRTR7wNaNO4CIfTltzSdZG50JbCJ2HatWEI9H4X4yV3+6/qaBx6de9ORF9E8YPyaHM12tBgzW6f/9603yix7zcIAFteTbj9sXWRk0mra2OarFhf9CIfce7NujqwmlS5NDowtXNQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=XqtwLtvi; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1763938019; c=relaxed/simple;
+	bh=e0hceDboA05xFP5/VRqZHg1h4iO4L8U3n4dUraP6p84=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hICT24ja6YEA9fGbwrcGofW6JXmbNFV/2Xmz9kriz9RCBMu/pVz/R+UOTmOXzAtBYkNL4QjerV6zMWLRIdAYuvScjW3ZIKNQ+lrzD3Iy2WHm48+VgRFBLkLhpVhPuwWFwEg8yHcGGvCBVn1bZto0AZXYBmPNrjZArVQkNx/3It0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=muqonko/; arc=none smtp.client-ip=209.85.166.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="XqtwLtvi"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 4715C24002B
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 23:45:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1763937923; bh=/gypvWaw8d0Wy7Id7wcJoHvcCujoTbBkSQA+2Tf0vkc=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:OpenPGP:From;
-	b=XqtwLtviO2AgcTsyCbFyCLxF7s1k0rGzRuLtMz0f7tBYjcDjd9e2TJIJgOT6IPt/L
-	 23j0KJkDXV22K6FJt5GZi+1zLNC9IzGP4NlVncpnI4Ql+b/TCLl8hmTQqZoiFdnMzq
-	 2xGet3md9H9T6rW2YtZoc3iTkd2dUJaPnFCWJLF5u1h6ZnUUccFw3sKPONNFag5/fy
-	 fOP4Dkv7MMm5apiN9k0aytEVYNaYDoErAo2LL0W59BMKLuJbGPPLYF1mb698xhWp6q
-	 TGK2ZlJpwmoJKzumwvTkGNRLa4FyZgTMXKqaPdfAzpiwSjjNSt26FBjF3C+H8xkC2V
-	 OzUV8xMU+VE6w==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4dF3v41kRfz6tsb;
-	Sun, 23 Nov 2025 23:45:20 +0100 (CET)
-Message-ID: <9056176d97168a8a9506ccb46540721b1c30942a.camel@posteo.de>
-Subject: Re: [PATCH 4/4] leds: add driver for synology atmega1608 controlled
- LEDs
-From: Markus Probst <markus.probst@posteo.de>
-To: Pavel Machek <pavel@ucw.cz>
-Cc: Lee Jones <lee@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel
- Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Igor Korotin
-	 <igor.korotin.linux@gmail.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>,  Vlastimil Babka	 <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki	 <urezki@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Daniel Almeida
- <daniel.almeida@collabora.com>, 	linux-leds@vger.kernel.org,
- rust-for-linux@vger.kernel.org, 	linux-kernel@vger.kernel.org
-Date: Sun, 23 Nov 2025 22:45:22 +0000
-In-Reply-To: <aSNnx6LNA/zMO4Gw@duo.ucw.cz>
-References: <20251008181027.662616-1-markus.probst@posteo.de>
-	 <20251008181027.662616-2-markus.probst@posteo.de>
-	 <20251008181027.662616-3-markus.probst@posteo.de>
-	 <20251008181027.662616-4-markus.probst@posteo.de>
-	 <20251008181027.662616-5-markus.probst@posteo.de>
-	 <aSNnx6LNA/zMO4Gw@duo.ucw.cz>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- R3rOFHA==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="muqonko/"
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-43479d86958so18269785ab.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 14:46:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763938016; x=1764542816; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e0hceDboA05xFP5/VRqZHg1h4iO4L8U3n4dUraP6p84=;
+        b=muqonko/UEIQMeLnO3fS5C41/T75yCG89dJ/Uvhmlocl+b/yvUAOX+2rYOEpWQic7/
+         SyS6oN9zsvDVyJxB2FSpZoa7XzHZ46w0QKvrz/3WDfLFESjOoYge7Q/zb5KzovtTx7TR
+         ow+i8crP6q8mJkKmre7JLDUHeOvrwx7Zd4GIhNwpX05XRaRgwCUoyju+S+TNKFY8GvKD
+         Smwr7H0P5V0J+uUjMaIUGdk2KRc85AU2kJqyCY3X3WZb1cYqTQm3jKJInl+xtShTe7+8
+         k2FpY86ZY9JHYZpupYfuLgRJOhZv/akruY2iwTZ1CIDY7YjlX3ssstgnQlslVG2hkt8c
+         v1mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763938016; x=1764542816;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=e0hceDboA05xFP5/VRqZHg1h4iO4L8U3n4dUraP6p84=;
+        b=izsLVQwF2fBX7xLqVCCFQ05Gjk+f4MF5H8GN+aiQ/ca4xCRgfSh0SDahDEPYXuN+tR
+         7QM7uFlamz8XdBAKmHE+dXocrWXy7uzEF+O4ZhZRXXVWUpfS+4tsMXLjv/u2abb7IinV
+         zDNuqS26ORvUs2zZS76JAyfuA7nX4nQMiqrMaNgD4+sUI1JEh7pl8v7xl6Z4unn7eeno
+         XvfHZmzxh91ZZ/McGl7lQnPirAbk8Pq8jdwXBxi/vRlos6urfIM/uBgx9CDzrjmFJhQQ
+         HWSlM4syHg/oCEq7lS4MHk4Cqx6/0cKdYZj/RHzQ9yOtPymRipjKXiiywYBadhI99TVa
+         HhUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUKa41UVtax18JrSQHIs341/gX2VmoDOHDB546wBMBdliVBwjlECbS+9hOMsPuN3W1xlED2dQ+SMIbELUDCBw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyN2K+8/pUpGuwe9oFx5e+Fxraxr7MtaoYfO1kE8w2FtVTvOaJv
+	alPk1JyvTn+kq8eBZPnOzHeq+k7pc50S0j/QFf9NmYrTA9G6zi6hQwgA42Za+K+zmvTrnJQTmwi
+	MGjcwLhGI8xbD6Apd8m7R+nrGW/W7E7c=
+X-Gm-Gg: ASbGncs7DtyUENfVoD5ixglW9L0wzM9iksWJQ8PvICBie34ng0oBJOOJWusv5NKnOOV
+	P3sced4bDz0mdj0sKmBZwHgK8d2z+I1m9FU1DXd8r4p90h4WoATK87aF7lybU67uWyH+GkSFT3V
+	go8hFSo7MRIBF102Jy1cjIkkNVEUrsVILsFhdgiocaYNL944/G07VSTY19C0XRh3kzE5oRzcdTK
+	d53gRMV+z5AHwgF0DV0oC+arRsUViJWYuzFBUShyiH24SQpQuioZhmqBEcRszhg5H9JRxYCQdOI
+	iOBaNhBKLrHV
+X-Google-Smtp-Source: AGHT+IEL6wOTWEIzN+6uRLqQQTohjNaYVb+umwdBrXzCY3X3aIAhRgkHGXdTXdnHIwE08xwvTjQQuTm0WFDj2WHSS0M=
+X-Received: by 2002:a05:6e02:2190:b0:433:5b75:64cf with SMTP id
+ e9e14a558f8ab-435b8e5cbb2mr79300195ab.21.1763938016377; Sun, 23 Nov 2025
+ 14:46:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+References: <20251121043750.298843-1-y.j3ms.n@gmail.com> <20251121053633.1594703-1-ojeda@kernel.org>
+ <CA+tqQ4LX2ihwY11VJk3LNNE-STsONJWF0rdDa0Pq09oA7YRXEw@mail.gmail.com> <CANiq72=Yo6-yLzQ6f047vXk1e-mm8=EH5t3dZRpLaZN1iuRNMg@mail.gmail.com>
+In-Reply-To: <CANiq72=Yo6-yLzQ6f047vXk1e-mm8=EH5t3dZRpLaZN1iuRNMg@mail.gmail.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Mon, 24 Nov 2025 07:46:45 +0900
+X-Gm-Features: AWmQ_bmOB06MctdBZgf6VDX6e1eE8DqG-67ueFQMRQg_sxxFTTkFLalse0DNJMQ
+Message-ID: <CA+tqQ4Leg_VZWe92zXkygrp-gwRNPwyysYMWLwupX2bTt2R-+Q@mail.gmail.com>
+Subject: Re: [PATCH 00/18] `syn` support
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
+	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	dakr@kernel.org, gary@garyguo.net, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lossin@kernel.org, nathan@kernel.org, 
+	nicolas@fjasle.eu, patches@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 2025-11-23 at 21:00 +0100, Pavel Machek wrote:
-> Hi!
->=20
-> > The Atmega1608 is a microcontroller used by synology devices to control
-> > leds via the i2c bus. It can handle up to 24 leds.
->=20
-> Ok, but driver is not really for atmega1608, but for whatever code is
-> running there, right?
->=20
-> I would not mind that code being opensource.
->=20
-> I would not mind if we had standard interface to these so the next
-> person can reuse the protocol.
-Me neither. But Synology is a company which seems to like proprietary
-software. They have there own Linux-based (4.4.x kernel) operating
-system, which is proprietary. Those devices are not intended for
-installing other operating systems and doing so will certainly void the
-warranty, but that doesn't stop me from doing it anyway.
->=20
->=20
-> > +++ b/drivers/leds/Kconfig
-> > @@ -323,6 +323,15 @@ config LEDS_WRAP
-> >  	help
-> >  	  This option enables support for the PCEngines WRAP programmable LED=
-s.
-> > =20
-> > +config LEDS_ATMEGA1608
-> > +	tristate "LED Support for Atmega1608 used in Synology devices"
->=20
-> There's nothing Atmega specific, right?
-Not that I am aware of. The driver interacts with code running on the
-Atmega1608.
+On Sun, Nov 23, 2025 at 9:51=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> Great and thanks for testing! Do you mind if I add a:
+>
+> Tested-by: Jesung Yang <y.j3ms.n@gmail.com>
+>
+> ?
 
->=20
-> "LED Support for Synology devices"?
-I don't think thats the only driver they use for controlling disk leds
-(although it seems the only synology specific they have added to their
-kernel. They also seem to use LP3943 for some of their models,
-according to their kernel config, which is already in the upstream
-kernel), so it could mislead users into thinking this driver will be
-useful on every synology device.
+I'd be happy for you to! Thanks for asking.
 
-But I agree the config naming could be better.
-
->=20
-> > +	depends on LEDS_CLASS
-> > +	depends on I2C
-> > +	depends on RUST
-> > +	help
-> > +	  This option enables support for the Atmega1608 microcontroller used
-> > +	  as led controller in synology devices.
->=20
-> led->LED
-> synology->Synology
->=20
-> > +++ b/drivers/leds/leds_atmega1608.rs
-> > @@ -0,0 +1,377 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Led Driver for Synology devices using Atmega1608 as Led Controller=
-.
->=20
-> Led->LED
->=20
-> > +//! Atmega1608 is a microcontroller from Microchip Technology, it is u=
-sed
-> > +//! as a led controller in synology nas devices.
->=20
-> led->LED
->=20
-> (Please fix globally).
->=20
-> > +//! # Limitations
-> > +//!
-> > +//! DIM0 (and DIM1) are shared across all leds, meaning if DIM0 is use=
-d by
-> > +//! multiple leds, these multiple leds cannot have different brightnes=
-s
-> > +//! levels. The same does apply for the hardware accelerated blinking.
-> > +//!
-> > +//! In other words, for all 24 leds there can either only be one brigh=
-tness other
-> > +//! than 0 and 255, or one hardware accelerated blinking delay.
-> > +//!
-> > +//! Furthermore the off and on delay in hardware accelerated blinking =
-cannot
-> > +//! have different values and have to be equal. We solve this by calcu=
-lating
-> > +//! the average of those numbers and use it as delay for both. The del=
-ay
-> > +//! cannot be larger than 765 ms (255*3).
-> > +//!
-> > +//! While hardware accelerated blinking is on, the led cycles between
-> > +//! the current brightness for the mode and full brightness. Because o=
-f this
-> > +//! behaviour, we hardcode the brightness value of 128 if hardware acc=
-elerated
-> > +//! blinking is used.
->=20
-> Maybe we should just pretend that hw acceleration does not exist? Or
-> pretend it can only do single blinking rate.
->=20
-> > +
-> > +kernel::module_i2c_driver! {
-> > +    type: Atmega1608LedDriver,
-> > +    name: "atmega1608",
-> > +    authors: ["Markus Probst <markus.probst@posteo.de>"],
-> > +    description: "Led Driver for Synology devices using Atmega1608 as =
-Led Controller",
-> > +    license: "GPL v2",
-> > +}
->=20
-> This should be called synologyLedDriver or something. We have driver
-> for Thinkpad LEDs. We don't care what kind of hardware it runs on.
->=20
->=20
-> > +impl LedHandler for Atmega1608Led {
-> > +    const BLOCKING: bool =3D true;
-> > +    const BLINK: bool =3D true;
-> > +    const MAX_BRIGHTNESS: u32 =3D 255;
-> > +
-> > +    fn brightness_set(&self, brightness: u32) -> Result<()> {
-> > +        let brightness =3D u8::try_from(brightness).unwrap_or(255);
-> > +
-> > +        let mode =3D self.update_mode(match brightness {
-> > +            0 =3D> Atmega1608LedMode::Off,
-> > +            255 | 254 =3D> Atmega1608LedMode::On,
-> > +            _ =3D> Atmega1608LedMode::Dim0,
-> > +        })?;
->=20
-> Umm... so the hardware can only do on / off and dim. And dim is
-> strange.
->=20
-> Certainly MAX_BRIGHTNESS should not be 255, but 1 (or 2 if you want to
-> support dim mode).
->=20
-> One idea: Use hardware diming to have three levels. So MAX_BRIGHTNESS
-> =3D 2. Then ignore hardware accelerated blinking. And you should have
-> working and simpler driver.
-Those LEDs are labeled "Disk 1", "Disk 2", "Disk 3", "Disk 4" ..., I
-think blinking is more important here than brightness. The main purpose
-of those leds is to show disk activity (blink) and issues (different
-color). Pretending it can only do a single blinking rate seems to be
-the way to go.
-
-Another reason why brightness is less important here:
-
-There are other leds: Status, Power, USB, Alert which are handled by a
-different driver (communication through uart). I am also currently
-working on supporting these (the driver would be in the drivers/mfd
-tree as it takes care of other things too. I have a working prototyp,
-but its far from being ready for the kernel).
-
-Synology devices have a global brightness setting, having an impact on
-all the leds mentioned above (not just via the atmega1608).
-On my Synology NAS device (DS923+), its controlled via the '0x2e' i2c
-data address (outside of the atmega1608 range) on the same i2c bus, but
-that will propably differ per device (they have an xml config on each
-device, for how to control the brightness). I think this should be
-handled by userspace via i2c-dev (default is MAX brightness) and not by
-the kernel.
-
-
-
-Also I noticed, that there isn't a "per-disk led trigger", which did
-actually suprise me. Just need to search "NAS" on the web and I find
-enough devices (not just from Synology) having a per-disk led, which
-proabably run Linux. There is "disk-activity", but thats for all the
-disks. Is there another way for linking the disk activity of one
-specific disk to a specific led that I missed? Otherwise I would write
-(in C) a led trigger for this purpose.
-
-Thanks
-- Markus Probst
-
->=20
-> Thanks and best regards,
-> 								Pavel
+Best Regards,
+Jesung
