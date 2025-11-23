@@ -1,125 +1,100 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C98814F125
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 17:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E4D1FF1C7;
+	Sun, 23 Nov 2025 19:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763917688; cv=none; b=inR3vzXcD0RSme7MW4HY+KUe0k1VUQoHtZALTomkobXeW1xK876NuvpptfwAAXJtiPGY9daub9HRbXxygUfXUhm9vX7Ciy9Ln0O61CAVEISkX1Rut5HJpr6z4953KItvwid8xLUJMJ3Nu2cQc8B7C6Qp3+HB9qtqnGjhjv4t1a0=
+	t=1763927059; cv=none; b=VifiyHHtDuy4kcA4xlRpkBOYUOKD+h70UE9IRRm+8DPsci8/AuKiXKdRT8RUsjPUnt99W3Pqnha7cetNWv3H2uXKJSLwV7F1PLE7xcHzP9mcwfEUTJsjpT9NjDJDAP8wYPcPJyEintoblvnh0aVRZ1kRbF+x2uAsowFvlUtrBlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763917688; c=relaxed/simple;
-	bh=z2qomZJrFAx00Yj7OHy0NxKolD7NBMwWvO7k/89BywE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nc4THKchdg5vxKR1Rr+jlWyVxMrvcvgcSx758edxm84p97IXwvdR9g1ieQKAUx9Zl3eil/9NyscH/wV/nrdZMVN/SJWFFuowyn66sQ4uz5O0yy7A9fOeIN0aGkix7XNtV+/RpA2GhCjbcqKFJFTuNVLK3YVOVbeq3pv7CGO6U+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ajYGeV8U; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1763927059; c=relaxed/simple;
+	bh=ryp91Z72CHt8hiTBvHcq8LsLXKSXtHCvM/Ajrgzff+U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dp6d6PopKD8Jnt9uLdnDbpanFfw/S/gJd1eEmKqw1xq5mMeddXt6fJpXG9+/j5IwzSksIqUy+piXMhCMAkk24jyKDO8MY5XsCHpqYcdduzz+JqrTCp4AAU6Eoqsoxlnb1BLQo5Bs2ZB3YAWzkGjtNyk+BnBhCq4j8CTBAPqE9fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=sUk0To1a; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ajYGeV8U"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-340c2dfc1daso317936a91.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 09:08:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763917686; x=1764522486; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/jzRdwgrlBGM4Ka3Mqp23QOr2mWfwNczhjfRCOlufvc=;
-        b=ajYGeV8UG9vUKmY8HU/OX3lB1URQZwOrcNFolhKA5U04bmA4yWEHSHMAGZXA6SSITb
-         mc236+HaaxmilT1/VRW22XXQkAKfmD/2BJaUHRJs3u0dV1Wrm7PBk2C4KetAokzioMAV
-         rAWtG9yjzMEVHtX0bgvDcpQBwnFn1E9aPE3CcMZv79eGDB42qNe1e2u8ONU+RDQRBffG
-         XTXH1Hxa93lDVJzP2L12PWn92Q5jm/AEjsnq5gFeQdV0R81DjTKS2a1KIEOGqvM9s+8W
-         ggexvdzXHrW19Dmbnsb4bCnSt/SstWPW9VtrqzstDPFWtpNb6SxUI5cfZYZ0bQSNwH61
-         YLcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763917686; x=1764522486;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/jzRdwgrlBGM4Ka3Mqp23QOr2mWfwNczhjfRCOlufvc=;
-        b=S1g1ZTNFKw5H2bi4UXe/kvLbvVYyP+/D65/LkQ6uG20qu5valNqJ01od8fsz72a4zn
-         nQ6BsLFOXFfkukl6oV9nOGNoDBAA3vlL4YNdxh0W8ftkpvDMBpsLmqtpY4P75JofkOwk
-         T+UR6Pu2cXN7iz9GNzLeqICX/IpjMlFtfP3qsrcs5lme3qFOtWHLdBvd6/CLNsgUF/0C
-         45GE0WdgRxuy+7mr6kip2ZHHeq7sbF9gwlOMvF8ZCg8uVIasvOBEBo9g3XMo63FQskPc
-         wrygnsgvXcZibqGIWIZEAluUQmAUKrJtjg2o9OXENL1rbRkHbRKqka2+C3eX8ejPx0GI
-         qc0g==
-X-Forwarded-Encrypted: i=1; AJvYcCXRLsmVMBnFrJUAR2XK6ejP5F/EkYGBw5KEcMWWsrCN8nsgEamx6ak9dBdHdj813PsvTvWucIWkFY9BWFH2Ew==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAGJ5Ave/ShWv5Uf47eIK/c8aQR7SUNNlMWws9wSE5XCSEJfQ+
-	ddtFvuUS8zAn38ECaSTcrItP34ukFJ+HsGEydEcidbV+FtsBLliblkyCq7TnqIJ68S0OKTrVhZH
-	LCTmn0mBHsABRSVZaCW6j3gQHyhUt3Y0=
-X-Gm-Gg: ASbGncvkTXhH/z6LR3kbF/fh1TucUk9H+e7C14XBeyKKtP7tdSzBGJQyE+RT3OFIaS+
-	/qh4ejtmuBzaXv++SNfsa+cREGf16z/BM06vVPeupbAjzSAc6Ojk02VlTqELIP5n4hOfl7tYFmb
-	L43zwcH0zH9dZbT/jDT/cpZDQOWX7M0Oqy0ebLM7dyHbqv7tOnZzKrLuTlqRvOByA8vuDEXh23d
-	Fc7a/yESMn5G3zHGraKffhMVHHjkSNhvBJP44p3cQ/pWvyCp/XarOx4MiBaCL2z16E6B66id15W
-	ICNNInqAJ7b5IC/P171ClZRmtXxJlNd/70gdcOMe/tsP0Vdwuwpm+mkVAxW6YL3Aqhegev77/j6
-	QvugCCGVmIneraQ==
-X-Google-Smtp-Source: AGHT+IGZHjtJcEGBPZNIEzBBEH/GIwzRmK0XuA/cxDdYSVB2Kf4jYlzMZYG0qa248vJt64LoIMnSUJcQtEvU8UopE1Y=
-X-Received: by 2002:a05:7301:e24:b0:2a4:3593:2c07 with SMTP id
- 5a478bee46e88-2a7243ec7b9mr4703615eec.0.1763917686200; Sun, 23 Nov 2025
- 09:08:06 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="sUk0To1a"
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 5B7E71C00AB; Sun, 23 Nov 2025 20:44:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1763927048;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ryp91Z72CHt8hiTBvHcq8LsLXKSXtHCvM/Ajrgzff+U=;
+	b=sUk0To1afsPWYs5t25hE/yEnBZbC7vh0g3sz3mM6O7XVcCizfS11bRLbytyP83yyzGC2lr
+	cynbNw6vdJ8RIpawEsRQjMHNwCAklEJGgbD5mgOcXPA+bCnCcGCtw6+TtO1H/XJ9gqJp4X
+	mp5I054rbcUVu8gXy+v+LLznWjs0mpc=
+Date: Sun, 23 Nov 2025 20:44:07 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Markus Probst <markus.probst@posteo.de>
+Cc: Lee Jones <lee@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Igor Korotin <igor.korotin.linux@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	linux-leds@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] rust: i2c: add read and write byte data abstractions
+Message-ID: <aSNkB02mGaquh+g0@duo.ucw.cz>
+References: <20251008181027.662616-1-markus.probst@posteo.de>
+ <20251008181027.662616-2-markus.probst@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251122083213.3996586-1-davidgow@google.com>
-In-Reply-To: <20251122083213.3996586-1-davidgow@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 23 Nov 2025 18:07:54 +0100
-X-Gm-Features: AWmQ_bn4_ZVLWf7sDF8GSmpgYnQ7TxDVaCgMHNgG3l299wML01MntHwi2jSGnm8
-Message-ID: <CANiq72=MXHZ2XswxkfzLqUEPwriNy=_sxAQpOYoYW8iNgyuJ8Q@mail.gmail.com>
-Subject: Re: [PATCH] arch: um: Don't rename vmap to kernel_vmap
-To: David Gow <davidgow@google.com>
-Cc: Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	"Paolo 'Blaisorblade' Giarrusso" <blaisorblade@yahoo.it>, Alice Ryhl <aliceryhl@google.com>, 
-	linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="LsSWzOXRnzv/dDlS"
+Content-Disposition: inline
+In-Reply-To: <20251008181027.662616-2-markus.probst@posteo.de>
+
+
+--LsSWzOXRnzv/dDlS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 22, 2025 at 9:32=E2=80=AFAM David Gow <davidgow@google.com> wro=
-te:
->
-> In order to work around the existence of a vmap symbol in libpcap, the
-> UML makefile unconditionally redefines vmap to kernel_vmap. However,
-> this not only affects the actual vmap symbol, but also anything else
-> named vmap, including a number of struct members in DRM.
->
-> This would not be too much of a problem, since all uses are also
-> updated, except we now have Rust DRM bindings, which expect the
-> corresponding Rust structs to have 'vmap' names. Since the redefinition
-> applies in bindgen, but not to Rust code, we end up with errors such as:
->
-> error[E0560]: struct `drm_gem_object_funcs` has no fields named `vmap`
->   --> rust/kernel/drm/gem/mod.rs:210:9
->
-> Since, as far as I can tell, we no longer actually link to libpcap, it
-> should be safe to just remove this define unconditionally.
->
-> (If it's not, we can possibly either disable DRM Rust bindings under
-> UML, or move the redefinition of vmap behind some config option.)
->
-> We also take this opportunity to update the comment.
->
-> Signed-off-by: David Gow <davidgow@google.com>
+Hi!
 
-Nice, thanks for this!
+> In addition to the core abstractions, implement
+>=20
+> * `i2c::I2cClient::read_byte` - read a byte from the i2c client
+> * `i2c::I2cClient::write_byte` - write a byte to the i2c client
+>=20
+> * `i2c::I2cClient::read_byte_data` - read byte data from the i2c client
+> * `i2c::I2cClient::write_byte_data` - write byte data to the i2c client
+>=20
+> * `i2c::I2cClient::read_word_data` - read word data from the i2c client
+> * `i2c::I2cClient::write_word_data` - write word data to the i2c client
+>=20
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
 
-Yeah, I guess we would otherwise need to do the same kind of "wild"
-macro replacement in Rust code to support this or conditional
-compilation, and neither sounds good.
+Acked-by: Pavel Machek <pavel@ucw.cz>
 
-If it is not actually needed, then this sounds like a win-win.
+--=20
+I don't work for Nazis and criminals, and neither should you.
+Boycott Putin, Trump, Netanyahu and Musk!
 
-It seems it was indeed gone in commit:
+--LsSWzOXRnzv/dDlS
+Content-Type: application/pgp-signature; name="signature.asc"
 
-    12b8e7e69aa7 ("um: Remove obsolete pcap driver")
+-----BEGIN PGP SIGNATURE-----
 
-So it sounds reasonable to me assuming I am not missing anything,
-which I may be... FWIW:
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaSNkBwAKCRAw5/Bqldv6
+8nivAJ94WlepgyYcfiXPs0puJCU5vAUspQCgofhVgTF/0OnZjX6vG4Gl53LgVgE=
+=7Jc7
+-----END PGP SIGNATURE-----
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-Cheers,
-Miguel
+--LsSWzOXRnzv/dDlS--
