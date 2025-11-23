@@ -1,64 +1,64 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96740176ADE
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 09:27:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD8D25BEE7
+	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 09:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763890029; cv=none; b=BY50GGL7xDqogXcoYtTzJKMK2eAgUqOmm1baA7qRXfY7jvQo5XATcjtvw0SI1UIIZzxcIs6wsJLOlNMWM4EPHV0S4ZmMQg7zTZ7d9dZXAPDMhVXA1XxMQsTDU6t9wFBxM7ymiSSODfcUu8xrTQGA1O/zel1gE4ckxlN3mg8nqPM=
+	t=1763890043; cv=none; b=Fd7KxKeymoaLMMikc0CoANuWK9BVU8pS5NTbB3fhhqO/0IFHpk9fDQ7nFybvH8Es2RlO6ZckTK6ZJGx7mxTtGlYVWtC09qmsJsoHkZ14H2UYkGro/6gIjlGSWzAXCjAX0MLsJQVTPsQYOC1MsOJBoOvksjOMWMqCBPLxS5z7Xo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763890029; c=relaxed/simple;
-	bh=hswRjYzI10zhUsDjz+wkVowHp0MANy7svfXMu6AA6rA=;
+	s=arc-20240116; t=1763890043; c=relaxed/simple;
+	bh=0T0m+vzVHWTBjikXdKLHTliy+liCTCohp1BbecNTmzY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gSzbNbKiZIvMFIZL0Co2d8F4ociYp/YFxp+z3HfspmIyAJrmgZPrl2K1vXhKYULP/brziRZJxc0SGV2DpYoefvo6qYP0nqe3LN+qHgDI5C4lwhzbPNqpgGECFDyT9lXhBQXTmubDxdZC/bzsFJDXClAEXoAtJJYcP7v6/OiPlsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MHUaIegI; arc=none smtp.client-ip=209.85.214.171
+	 MIME-Version; b=VgE4nQP47QLtXrGwoHRfzNsZWgPuNg/7qAoj817c8TBVFzwsEKk8Rmw//XhsgOCOlcErb1zyoUVqXHlF3vZGHLHEtCAJ+u3Vvvr41ugbnMWnC9kMTxxLL/TTD/cu/0yNqzCygKvffXt5nbiNM/HcoasN8rG02wu2/v6JZXZ+VGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BK6HxJu8; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MHUaIegI"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-298144fb9bcso36694975ad.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 01:27:06 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BK6HxJu8"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2953e415b27so41070935ad.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 01:27:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763890026; x=1764494826; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1763890040; x=1764494840; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SxofK3PIJmJGptGWmPl6GxImW1KehJK8Ra0bi1cA/KY=;
-        b=MHUaIegIDQOCo43fmEKY3VfYaRjaHxMRCjEJdRctUgEoSGnjge2xscSRhxisxU8SLl
-         NJOeH6ADpX8QYPEvx01Jwf16k1rSrrqsN4O0MpZ20Zdv+4CSNKUTyvoIW56eoxd8Dpmp
-         pYUoTjjP37fFEf70a3UvPetXiuceifTyDKvPplAmaqND2Tb4DY0t2PjixqOMwoODTu6n
-         Sfh2RkxmKFUMoSkEh2cvc5S6paa6Tu5jIws+SKUMNGGdFdKR6VVSMvI17kni9GyERYCZ
-         wsL4lT313URpHaa10qovYCCJauAnzm3FzwCqZjnTAPi2qR8mQeZUUFlKP2B1HTh460TS
-         VMMA==
+        bh=cuE/I+mSjy5RFqX89Pi5DjFF+u40p6VYH+8i+leWPLg=;
+        b=BK6HxJu8klsBazdbsG2lf0ie3JYLn/L698A1rKw5A/Vq5mhZ06S0sWiXKKUDLQ9cbc
+         EaPdiKjt0CHqRx1KPhUsmjr9jUABQTE8qP6DFMuR+o18KmEl3nVeig7aFrdnARYS2Q+h
+         F41cf/ghn+cEukAlsxvEt/so/q9tm2nfpguCfTf0+erBS+qjzniFGgcMwKROsDTEwc2g
+         e8Q6vmv9Ulx55qKrk5Fb3qS3YyRz0PAK5D1MGO86l0r8JmE/eMVLPp2xMed1IKqGIFdv
+         7080TVJwaycuxrAyxFj7Y6uitFgPRg5OEEO0SfvsqT7OldinGtLHFwkSEqOa3jD5j9uQ
+         V++Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763890026; x=1764494826;
+        d=1e100.net; s=20230601; t=1763890040; x=1764494840;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SxofK3PIJmJGptGWmPl6GxImW1KehJK8Ra0bi1cA/KY=;
-        b=PzuARR2I9I3/zHCVBYWhXGUtxRhJ0twDIe610Bo1EK7bp1/1sztyLrCIYsS6Nu6U7m
-         93xcq8IjaNLVn9pbsOBvENoYZC0WavZGmC+ejZwPK4d0pQHcYhVk0gOuaFHoGotEV8cb
-         u5E2g2oKbSlCVHh2mnQL7S8ocMMamLKF+uvPgUw1LtbrOq7u1OIkYp9Awp4b79NuZigf
-         jHuivkbgnAOSIBNwqcSRgPT4KNXVnTkT21zNhUmgc3h5zHUs17d1+XZGTse7pMnXJQqG
-         Z67XplGy3AV9xoUSHlbsGGgI44XXQJwza3z+052U8qagLjT5s6h7zihmXBr6FHxU+Ipz
-         kJBA==
-X-Forwarded-Encrypted: i=1; AJvYcCWB8AF8wlHNWp6aB0gikJOA4FO5Ne85r5aNkgBXL7gGUNsE6s7zYtVWQCNHSdgmQrrPEjyQfcm1mhLoiO7C2g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzjp2BxXmgcxrS5+o78gnNsgCfzQqQbj5aNjgAOUyXJitbzWtzX
-	8lxWsjYltHxXNxxbq28ewymrriTvLEkfMFpebulSYx0D+ekU7pKoXw2s
-X-Gm-Gg: ASbGncspRLKJoFTuO8cnS8F6bT4GJXgAIVl/Sa4chttMUwnm/ZbOFFRXQnZQ6NXaucI
-	1eRkzhvWgmz6AYXBuIyFA4laxHHEOB5X52NLLlJlWJ3in2LD57WQx2UL4kCF+wKSyf1pAc4N6H0
-	zCtukurYndmq+DHDiPIJrS2l2YxAOMwbjcC/RwUXbdkDtpU6PvReziAYSuLhK0GrT8pSP0dlqVf
-	WFpYpAvth1K73L8+k5n3MN4hqCL8e3RXl+i2UKlK8cUuT4SNOviPP4+Jsn8HX1z59Qi6RZ40YGX
-	ANbsXUImeuPdzB7KBYZO4P19hK/HGLZqtP/LdknZiesHLx/iRroDF8UyIWhlWJxCmVsYo7IFfcP
-	W5H9/eu2aOE7Hgg4VxbhQW2+qD8qI3iqPUuKZs+7PYcxTLcUzViooSQ2ORJzmdCMiPEI82f2IHp
-	JkT2ycr40ochqPYo3h7UnAZAc76g==
-X-Google-Smtp-Source: AGHT+IH1U8t8hCw2WDyvXF/0DPfy18rrujnj6Em/QND/b9i4osv8+SLy39cyAfSRsaedSvrbycJTtA==
-X-Received: by 2002:a17:903:290:b0:297:c048:fb60 with SMTP id d9443c01a7336-29b6bedf343mr95210775ad.25.1763890025910;
-        Sun, 23 Nov 2025 01:27:05 -0800 (PST)
+        bh=cuE/I+mSjy5RFqX89Pi5DjFF+u40p6VYH+8i+leWPLg=;
+        b=F9B4YkTZa9qNvyFkGDm3SHKGkwrsuLSNoGnur27OOmZt3mCc5HR1PEF3TehkaZWjp5
+         9z262ck3C7gFFbo0SoiL0rNYYPTEa7pci/XfF0cpHleC1vwRRSbhc04dseB0/C8CSU4d
+         3cM8Jk2OJ8O+minWeOdTUt9SQ/Op4hqapE1DbpA9Nb2GTNeYz9CBi3Jclv+WP/IqJf2j
+         idaQ22SEOUUEPriT+uFawwF7ih//JCVXDq7xwXAl3G1DHNKKXupnKHDYECg76tGZQhH6
+         0RsDgATLCeCIbMk/cM+A0nbz+w602eqmDShEim31l0y+XsgYi8QQxoQn+FzKdTKJewa9
+         HZzg==
+X-Forwarded-Encrypted: i=1; AJvYcCVYHZfLnhGA4P5dntvAOxz2oinUQNh5Zkj3iHCLFmwu9U6otdGgs+7yaAKXRJRcUaAITsPIUiKrI2h+O+owpQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxmza4rVweWE5wQ7fC3Fo4IONpjDACcpmSmGI67NF7LO8SXLTRm
+	DhUGcGbCEps5P4kMxQts1lTed8wkipVz6Jq3+yvt2iZ9ut4xUz/xCEtf
+X-Gm-Gg: ASbGncs4W4DeA1oWKrJW11uvM5hKBwRjYwwla3Vm1YKq9IbXFTIYn8HBS8o2bnPelaM
+	vYdNlgpLrbfsCwE1h3XmnawzACioKfPAr5q7OsXIE5EtfkR5Mep5UOrcjUhAp40MfCGa7CRMBWi
+	9/ORpYBmHhSYdhrRdcOdBRX9unBPtMUL8EyuTz76Y64amlyWhCpWbdJOwrZsvBHyIQo9m6CdW3O
+	P0EuKWkBgIhBE8hATmuihb7GsX2jrXmwbDcFugz+bVYWIPvgPjP455PrnXAOaEQnt108S/AaM9h
+	+WDKz0IbzkchcPGW9SLLIX1itZpCSepRcYSR5TlU0tru2O4S+q5naEgFd0J1g36JwmPsOe3tajh
+	cajl0lXOrdXXldZsUupjTdKx4dxLDAJOT81bC3+edmLTC5F4y3qlKh5wETTXZfhD9ZOyExVZkmb
+	KK5D+yCPScQ168bkcwswn9mWY0Vw==
+X-Google-Smtp-Source: AGHT+IFMN2aUokRTTtS+sIFfNu4kcDd93MwuGAJrh+xf6L/Jjr+U1cR7WS31QoNboosVEzIBjpWEvQ==
+X-Received: by 2002:a17:903:2c06:b0:297:fc22:3a9f with SMTP id d9443c01a7336-29b6bf19f1dmr93932225ad.38.1763890039910;
+        Sun, 23 Nov 2025 01:27:19 -0800 (PST)
 Received: from shankari-IdeaPad.. ([103.24.60.188])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b138c08sm100811105ad.25.2025.11.23.01.26.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b138c08sm100811105ad.25.2025.11.23.01.27.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Nov 2025 01:27:05 -0800 (PST)
+        Sun, 23 Nov 2025 01:27:19 -0800 (PST)
 From: Shankari Anand <shankari.ak0208@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
@@ -96,9 +96,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-pwm@vger.kernel.org,
 	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: [PATCH 07/10] rust: kernel: Update ARef imports to use sync::aref
-Date: Sun, 23 Nov 2025 14:54:35 +0530
-Message-Id: <20251123092438.182251-8-shankari.ak0208@gmail.com>
+Subject: [PATCH 08/10] rust: kernel: Update AlwaysRefCounted imports to use sync::aref
+Date: Sun, 23 Nov 2025 14:54:36 +0530
+Message-Id: <20251123092438.182251-9-shankari.ak0208@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251123092438.182251-1-shankari.ak0208@gmail.com>
 References: <20251123092438.182251-1-shankari.ak0208@gmail.com>
@@ -110,7 +110,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update call sites in `scatterlist.rs` to import `ARef`
+Update call sites in `usb.rs` to import `AlwaysRefCounted`
 from `sync::aref` instead of `types`.
 
 This aligns with the ongoing effort to move `ARef` and
@@ -120,23 +120,23 @@ Suggested-by: Benno Lossin <lossin@kernel.org>
 Link: https://github.com/Rust-for-Linux/linux/issues/1173
 Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
 ---
- rust/kernel/scatterlist.rs | 3 ++-
+ rust/kernel/usb.rs | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
-index 196fdb9a75e7..b83c468b5c63 100644
---- a/rust/kernel/scatterlist.rs
-+++ b/rust/kernel/scatterlist.rs
-@@ -38,7 +38,8 @@
-     io::ResourceSize,
-     page,
+diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
+index d10b65e9fb6a..79ff2f881572 100644
+--- a/rust/kernel/usb.rs
++++ b/rust/kernel/usb.rs
+@@ -12,7 +12,8 @@
+     error::{from_result, to_result, Result},
      prelude::*,
--    types::{ARef, Opaque},
-+    sync::aref::ARef,
+     str::CStr,
+-    types::{AlwaysRefCounted, Opaque},
++    sync::aref::AlwaysRefCounted,
 +    types::Opaque,
+     ThisModule,
  };
- use core::{ops::Deref, ptr::NonNull};
- 
+ use core::{
 -- 
 2.34.1
 
