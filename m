@@ -1,64 +1,64 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C07E273D81
-	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 09:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F064C2206B1
+	for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 09:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763890002; cv=none; b=JFyDX7yX7D7QBpF35ncdCh76oqMLwC3ye2yxc53wUERzT2M0vwRj2M+qd9CF9a0KXeeRo2flEFE6uwOhw2C6SdfeKRQqmrmGyji9kZ9kANm93a+WVIywnzJyIO+cBM2UZam9r7/xyKMImDELIi/PlJzGAW6znhlw/L8cEymlmBc=
+	t=1763890015; cv=none; b=AleT8Z83jdNEmIOUsMjHPynVzcQPRnnkUsZ5Wa6YTtuR4XEa/byauv+Sk51rqGYQIrGgmN6lf45zDJFp2uq58bIwTC7/1IJpziAVfzflKZ6IYJMy49dkdYlM6ivSHe5LxWRdRQNKJZD7nvVhrfHgcwxj2VXKWC8BBF6eych1v+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763890002; c=relaxed/simple;
-	bh=vKoO79hHEPcCQYl/tNMLa4IXudiHam4RZkBRwZbei0g=;
+	s=arc-20240116; t=1763890015; c=relaxed/simple;
+	bh=kZYfkI2nCmz7qEGxmYNzPwIxYr9EHSD53GvUwikKHWw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CAVf9xq1cbPIa933EcAQ08rE8AGj68Oqy7etjU3Ux7BXR9PKFhIDw1aHYOufBoqf5gm9ap12Ln8UNctnohwyWsRunb4ecNJimMB77tv5q5DYD9UWqGXr1cv9rirSo55PGvG577yAetin7cBgPC5iQ8OmhdvSjWg5VTD5+lH/ZNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l1syOFK/; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=itj1Ls/QC+4L0hPA8KQ5c9TYQ0MutUNFwluaNgl3gUG17neGJzKn3AFvRsU1w7aa/JK5E5zU+uKWPZnGUHbluA4zQ+PhPOyAQWrtNAZsRqjKlYhrMTNquuKDfsIkj5DlwRSFvtDJvcTSBqKEx9wbETew3oAJZoHzLwVYq67ltFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wg8gL3rt; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l1syOFK/"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-29568d93e87so30482145ad.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 01:26:40 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wg8gL3rt"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2957850c63bso23976495ad.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 01:26:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763890000; x=1764494800; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1763890013; x=1764494813; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HepyoJQ30V+nS3WwhUyswnLGOzdzEO2vo/wcuCFozBE=;
-        b=l1syOFK/G37q9PN7BrZKA9mj4Be5qzWE5IlcmClTr8OeaMahODUx21koQqvABB6wCX
-         8ClhO7CfqhHbFVZjh0pJT+jBL88ySAgO64dYzaPbJHiMFelNsX4PfV/qde5i6TjfTyVT
-         k0DLwAiciToHUtYEYYj7TqTUHtYbiLMyguYVVbnt2M5et6ewgrZVDL2mQETplvbm43+W
-         BUCFARN9c+mRQj2At0Pq8OX15gmydPNXTzK56E38OEBL+JwB9a3Fd6kBNW83saevUhoM
-         VE+HTbAmP8PbY1x/9cEH+ZhpKxUemc0oFlwNc0bCpvTUn6oOFJ3G0vBboNZDiZqqWSp1
-         3/kg==
+        bh=jcsZ1pYdc/lZZufwkk7hmx3zrC9Zk2tE9eYLDhtARFw=;
+        b=Wg8gL3rtvfAG7OKuY3TqC9T58J5r3F7nruwCS3wUeqJ/0UtxF/rVy+ifrUj1zGAmZg
+         Km/JjB4uUibg9z1sYgfXsWv6VWAfH9OefS0q2mo8FM4uL8K6tlV1LyKBbIw2SlAqMhPz
+         jwqLjCoYdCpGbnmWYASyzsq6QvyeNM5vVit55rCNupdXmEyrlYnAWXO5zLWojFgrW7CV
+         tB2Td85/zWw3O8FGgMG2ApxUpR5A0xF3l1mpJu8nNM2xJMVMGFTHBr+HnwDdVjntq0FC
+         9jPevqObnm8M+xrMlW4qtK3HqOtSMS9cC1FGGPBhPB+4IlG2vG2Sxlx4qU6mp9ePe7uB
+         pELw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763890000; x=1764494800;
+        d=1e100.net; s=20230601; t=1763890013; x=1764494813;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=HepyoJQ30V+nS3WwhUyswnLGOzdzEO2vo/wcuCFozBE=;
-        b=kxCJ7rH62+0afjDScksgmtgeHLY2y0szKD72ccEyYpAG2JEzYxYOV4/B4lwjqZj5F8
-         siAV7qSq1O4KoLlsjiRwNG24hzVQmCqJH0174/kaV9HBKClnQT2sXHW2I/EX+cXLFfqZ
-         LJOMsFZVHAuAI9RumaYMq0PXnitPe2fTpsgr/R2JUDu8xqW/OkggGlZPPd6Eo8r+meSo
-         vILl/oBUsfPQDj1+19Ws5pLKCTDgVEdvixAYP/2WpK27fS+PTrlBBD5M9ukIPHS2MJOo
-         0WZFZjZJyp4NXtmGf8P55SboVog+fzbK8zrSqqF18OS/FzyMiVRiRF/XHdMYBMb/zyfJ
-         CPvA==
-X-Forwarded-Encrypted: i=1; AJvYcCU32mlGQXBoGoNwOR0gV7TlegzC0UmA1IlENyO4eE6kLp/f/5n4zJ8OFwY/VqdFduOdWjo3oQMfhItdE4msrA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1KbGlYXJ8wGz9kt/j0mS16z10eBfRztzEbzSdD7NQP7Nrgm2Z
-	GPVt8AX6kO2+3fCviq8gGe33m9pDDNQCDS+KMpsPf7u5KXKDxkBL3nOv
-X-Gm-Gg: ASbGnct9e3FTG7j3sNH0zzPFbrA+TtlMUpHHihFXBbDjRoadAwmUA9NAsSVvW/oJXA6
-	j5nwyEPJG9AwTTwc6VCMrSPaHxVpaP2JBuhU0Dz8JEpRzSyT2YILW1Dy/PZgYR3fBLvcjbXXKXV
-	ymMsfpaq5qvqbB+F7SG69kXVmhbvLMYPLsi8GHmBhJVoSUBcqtnD0S9lreaCiDw8Fe5uu4k7plz
-	cA9Z0KfqrYFdN1E06KppGQOo6kWQjB1HJypFqecLOSUAKWeXUf2jSwRjG5ceg9jbedTciZp+SC8
-	2dOo7wySGy4xtXjdT8n7Cr2B463UYRlQNVNqSf0dL+Mn6rhtrMXIlysWIWR2K+GqOfz/s29Zvj3
-	eYJBD0pciZt9ZosCbP+wMhOmakaHl4B2snNUSxdlDaoO7GP9U54CUFKS8qQ8yFfXrTnE6+3hZtd
-	923oRHSaR5t/XH0BBHHexvOIrK5w==
-X-Google-Smtp-Source: AGHT+IHnc+TnFjT4Ewq3NCmcVSOlFxFcCR7lWrTNRkJuldxiSn0BMR95iGNmXPyBh157L0RjhglO7g==
-X-Received: by 2002:a17:903:2c06:b0:295:6427:87d4 with SMTP id d9443c01a7336-29b6bf77fedmr93037125ad.50.1763890000307;
-        Sun, 23 Nov 2025 01:26:40 -0800 (PST)
+        bh=jcsZ1pYdc/lZZufwkk7hmx3zrC9Zk2tE9eYLDhtARFw=;
+        b=Embw1OGP6m+JNtuzFl+3tWQoUlRps4QNwdQP4nWQt+uHSqyK2Yw1Uy9ik/++btgJCL
+         8jqJZKjGN61iZaDT3saAOTMIP9IdpBmRRPxOydzeJgrHxhS0Q5I6Nx5TzBZ2b35rKUgu
+         o64qv4lvDXCMJH7yOXVrCV6cdsTb71pz6xUnhFyKsej4yX25Ckn+AZf1beqqk+dVwFz5
+         +wYXfVS4j6eIPw8eubXVDmaq8/n4v70eJcIS6IVaV6ZVllUx/u/DXQ9PscEVGlm/Sumc
+         RSVvXT0KCFydepdRbrBELk3lQ2D+yMfaW7pYTEQ7DFEp3W4n87931HaOLhNNawpqHICb
+         p3MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXB/C9QSBoWN6Cuv9o8v8O+9xeB72on7eAQy5whs8ixByat/VhO8uwjCVq2oIqlTsgIUNl1SqE58hlpNcQ+/A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgnWnt69uTEsgO+C4A5gWImoiRu9sH5dtuSjvDGYL/+IJkk40m
+	LnsHh6j+G+cDrMrqLnQtr4hd6zzxkUfaQp6DWI7IBCFqmFAUJnPfPyLe
+X-Gm-Gg: ASbGnctxKGTBBangqMlLfUVs6BPFw3dmoDmNcyZcON05f8WgZSZzKxnKQsQl5k+yZpL
+	gB24gfIGOFiZTvN88oVo7/eUINuxVNemFNFQGzly7HqEaHvbTE0LPJ0DENiW4dFgm1Y4p18Ph/H
+	918grZf6exsWjBJV8u/rw01dngHMWnXaCBeecHRAFeLu0s7ONE6HnGOTYgqwSlQcnxHi+gs0YHr
+	bz0WEd2witZYr2z530g4Ie4Kb64ozxeE7gnhgpGRkHugLMxr4TyIBaSPh/iK93Bcmnhm/AVg2SJ
+	omq6ym0GZL84438Ugy1m9Q1mPd2otDmKn5eekdOG9A1cQVmgE/Od1IZD6VcriBuwmrSlfO9etbP
+	J4ZbWz6ZzZxIJgM88pmj8Uc1K/9Pt+2ingcpJT13KFR6IdNPkV87uQispsujkCjLLPunkE6PNUi
+	+CDlWfyPTace5PtaFotfnntyq0Ng==
+X-Google-Smtp-Source: AGHT+IEPaSiAglOPtRohHhMD3F7poU82nQz/JA+b9mPjFhoImXk6hT3H7zPq8hH/JIUpP2uJO5DptA==
+X-Received: by 2002:a17:902:ef4f:b0:295:82d0:9baa with SMTP id d9443c01a7336-29b6bfa8cd3mr100768505ad.17.1763890013033;
+        Sun, 23 Nov 2025 01:26:53 -0800 (PST)
 Received: from shankari-IdeaPad.. ([103.24.60.188])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b138c08sm100811105ad.25.2025.11.23.01.26.28
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b138c08sm100811105ad.25.2025.11.23.01.26.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Nov 2025 01:26:39 -0800 (PST)
+        Sun, 23 Nov 2025 01:26:52 -0800 (PST)
 From: Shankari Anand <shankari.ak0208@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
@@ -96,9 +96,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-pwm@vger.kernel.org,
 	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: [PATCH 05/10] rust: kernel: Update ARef and AlwaysRefCounted imports to use sync::aref
-Date: Sun, 23 Nov 2025 14:54:33 +0530
-Message-Id: <20251123092438.182251-6-shankari.ak0208@gmail.com>
+Subject: [PATCH 06/10] rust: kernel: Update ARef and AlwaysRefCounted imports to use sync::aref
+Date: Sun, 23 Nov 2025 14:54:34 +0530
+Message-Id: <20251123092438.182251-7-shankari.ak0208@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251123092438.182251-1-shankari.ak0208@gmail.com>
 References: <20251123092438.182251-1-shankari.ak0208@gmail.com>
@@ -110,8 +110,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update call sites in `i2c.rs` to import `ARef` and
-`AlwaysRefCounted` from `sync::aref` instead of `types`.
+Update call sites in `pwm.rs` to import `ARef`
+and `AlwaysRefCounted` from `sync::aref`
+instead of `types`.
 
 This aligns with the ongoing effort to move `ARef` and
 `AlwaysRefCounted` to sync.
@@ -120,44 +121,23 @@ Suggested-by: Benno Lossin <lossin@kernel.org>
 Link: https://github.com/Rust-for-Linux/linux/issues/1173
 Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
 ---
- rust/kernel/i2c.rs | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ rust/kernel/pwm.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index 1aee46f59460..c50ca464d87c 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -17,10 +17,8 @@
-     of,
+diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+index cb00f8a8765c..1605d13d5d64 100644
+--- a/rust/kernel/pwm.rs
++++ b/rust/kernel/pwm.rs
+@@ -13,7 +13,8 @@
+     devres,
+     error::{self, to_result},
      prelude::*,
-     str::CStrExt as _,
--    types::{
--        AlwaysRefCounted,
--        Opaque, //
--    }, //
-+    sync::aref::AlwaysRefCounted,
+-    types::{ARef, AlwaysRefCounted, Opaque}, //
++    sync::aref::{ARef, AlwaysRefCounted},
 +    types::Opaque, //
  };
+ use core::{marker::PhantomData, ptr::NonNull};
  
- use core::{
-@@ -32,7 +30,7 @@
-     }, //
- };
- 
--use kernel::types::ARef;
-+use kernel::sync::aref::ARef;
- 
- /// An I2C device id table.
- #[repr(transparent)]
-@@ -408,7 +406,7 @@ pub fn get(index: i32) -> Result<ARef<Self>> {
- kernel::impl_device_context_into_aref!(I2cAdapter);
- 
- // SAFETY: Instances of `I2cAdapter` are always reference-counted.
--unsafe impl crate::types::AlwaysRefCounted for I2cAdapter {
-+unsafe impl crate::sync::aref::AlwaysRefCounted for I2cAdapter {
-     fn inc_ref(&self) {
-         // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-         unsafe { bindings::i2c_get_adapter(self.index()) };
 -- 
 2.34.1
 
