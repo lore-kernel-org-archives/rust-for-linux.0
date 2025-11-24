@@ -1,125 +1,115 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28439280331
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 02:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D57259C80
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 03:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763952136; cv=none; b=Cj/SP4hOFfO08P/MGmR/j73Sc/ZVKfJhYj2kTiQt31sNJsZknIwpaO2RTMyIL6/CbqM9JM5kaigc6lU1M0Sq9zGIQUggit184+i1/acGiNhrP5+A3Ars2YiQaZoJVzg7W5pphrzH125FjdY+oB5z9/MADANYlVMXKwO144cj2ms=
+	t=1763953730; cv=none; b=MNO10TMs/PE5nUpf0Nu3pHwFvhY3GJDggGdnvjPCYta8XYPFQ2//5UIfAytXuJE68gFr/3cR0C6PvCJOldjIQsxPcNe3WZrCDIXO8l8U6IxvSHBgx/k5xCVhgSNqWuhMWVDMuoJ1VyvL0lER12VUcN7vl/8ifFgqrOYjLPQOfIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763952136; c=relaxed/simple;
-	bh=2oubYlvBWNBRgKO7pXURZQwzgGqjYFhnanOmPBQoWHk=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=JS3exqTp4FbcglXcRObjid0tqM9dErkdg+MMjtJG8RmDKtdt6b4GkcoMOAWqrgAK0bjVgkgmefNYWMOfysFy5+w8aACf/3+gkiAD2Bt/nlcBFu2o9om1pvO3B4yBLcQXAdmtEZFlqfv9sEVGf5hReNpoSO3bF+Innk4gBtVg0dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YQWi2for; arc=none smtp.client-ip=209.85.215.182
+	s=arc-20240116; t=1763953730; c=relaxed/simple;
+	bh=5UfLdLz36N6jy+cgiPZv0EbkiK293E7zjZZj2yGuukA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jyet+aqwRft/j1ffdYP9lXAWAM/7gyVydu15a5fH9IjVc5VDsJHzxi0Mboqkls8rFBWGOVlOrVlRTx6Fx7WEEwgKRTCteA+T23Ezq/4lOZS5G2d22Rt1OhXksQ/dsVt+4dCBafz8r8p1cz/bkPaGEEm7uf4DJT8c2MRqv+DNr1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l/dUzJ7w; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YQWi2for"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-ba2450aba80so2169443a12.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 18:42:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l/dUzJ7w"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-29806bd4776so5462435ad.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 23 Nov 2025 19:08:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763952134; x=1764556934; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DvmpkL2pKIFur0kWWa5PPAZWhiSzKqhwPQTIwYGauJ4=;
-        b=YQWi2forbBqyO0pBJUMDQ5BiPQFH+WFMP6wB3ieyauAv1DkKmx3CART3dAT3mhSLhD
-         mxHSkxtvtTeVv3iScROovCQztiuSVlZUTIWBoIwq+gty0n0HyvLFj82X/xXRLM8Xl+Le
-         te6Oq6eEYj9UWGRk93gudUMr1Ols+RQahKAmfgG6jhFqyCajK1DGNcH5VlJIB4gl0kgC
-         SGT2bMG9C7pQA+LdSR3nlQLTvzMf8fafOK9yX5YJgiGLafvgjOE9LQighOddP5spp702
-         VOtNh4mHBebSMZ+kHaO05ASwT9ublC9E5/xEZBu1HCvi9rJNKyKepC3VC9lfXTPASVbJ
-         3WRQ==
+        d=gmail.com; s=20230601; t=1763953728; x=1764558528; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5UfLdLz36N6jy+cgiPZv0EbkiK293E7zjZZj2yGuukA=;
+        b=l/dUzJ7whk16BrsKC63vFgN7UijHG/ASwANGpyCQLYjcqRfPerP/OA654U0EyVYiam
+         pGCMVUqPUGCkNdCFdpPd6SHSsoBqJZp9PWjRGBYBLHofY4mVs7nZRD4d1BQ0ezC6ZWmg
+         ZrXBQVN9VWYQO+XdIoFt03VlovUOPkDOaOVlJhC7AoeflGI4K0SOWL80v3+nIKNDMVKt
+         RDOlUqUGIdekrls3EwVHs/bcaRxmMBVHpA7/yAgYaHmdfWRgejL7Y/AxRpvSxbovpGNI
+         vtw2uKZwxIONWUY+1ld0TbUEC7R/NxEwTXUcWkxGe4SvOTxBDwm+QoJN99DdVASxcuKD
+         iT/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763952134; x=1764556934;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DvmpkL2pKIFur0kWWa5PPAZWhiSzKqhwPQTIwYGauJ4=;
-        b=q8BTwtpXLVarflF7s9lc9AwpTuJ5niKOuVevditqYH4tlb7WvaQJGKLtqV05aSSwgg
-         zdBUuubyInezHmuCl4a3qZwtXi6dbS/SlCcPYZ5iFdVKlyb3uMAIu9Hs1sGLySSXK6gg
-         zCkqzUuP2W2ZnMp1WcRRg6UDVKpg0wItSb1ulb9jEH8f9Un9/054Q1UU1V1MRJYcGP9u
-         kvdN+xL4VJAMlfOmHbbiUXHKJFg/VurmS6H3K0eBpulEBov+E26i2+TKIcxmLRwk88L5
-         a1xXveADwJyDMYArQ114xaXOpvrC0IqSshlHCezwnLVsAGjGzN6dbtsHFwEF8f9YIGZV
-         SX+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU8SGDBJzrvPWtj92ZO9DdVnT2aaizj5reO47gJJ9JDm1qHwzQnpP1pPYS9GeMSQemOMmT/+8OY0lp9u+7Xgw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOp6lBGy6dKx9wQY0v65cMB+XURjMSD7SO98Hkhom2tEvZfeJv
-	Py9FggBjQnj6+J0FumnceTbHfyrH9UYz7ohyeCvmULURY5/mD8EfsaPn
-X-Gm-Gg: ASbGncs+eOXtXvRXoxMzwyAbCthmxxHF+UWhKy7x/SvQ6uysyzR4isWjaZMalU7LV/e
-	BUlQSlWymNMunX6GScOUs8+t9ZOxNUS3UIqfgQH8VA3928aZpkSFYZa3mdkTJcUWEb864YnRCJg
-	pBk5wzUNKGyize/EaH+x+QA1tOBeohApUo/1U3dOBnC7pWHsvIL2G7EFiT1LM+ew7zTuUoFXrmX
-	h8/yQ3NKtqKGzroJj0bWNk3ciHl4yJhOEibQpHXH3Si1eTnmPQd9r3qv2YRE+wrWINp8+wARdsJ
-	vk2NzAesNxXnvGLo0M5NmJlc0WFADXFyRxLq+nuB8L0DGLGzApOUtaIqKG7fF+/Hrqn5wFrkihG
-	lFSZW5xj9ctL5m1/HLb2moHrKKwTGL6MMIjz7753J3uiDVDDx8rgB52EfQXPZjtrB32OFk7jiut
-	bC7JzGhgwLcA7yuftJGH0JNg==
-X-Google-Smtp-Source: AGHT+IG1OvJ94QxB/0B5dUPh/eDPLHHoAzRcr/MIUUe+KPUWPK22zAbeB/idFdwPhcR+hgsYZWBgug==
-X-Received: by 2002:a05:7022:f50e:b0:11b:38c:5370 with SMTP id a92af1059eb24-11c9d712e3dmr5385199c88.20.1763952133924;
-        Sun, 23 Nov 2025 18:42:13 -0800 (PST)
-Received: from [192.168.1.209] ([65.87.8.213])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11c93e55af3sm67907613c88.7.2025.11.23.18.42.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 23 Nov 2025 18:42:13 -0800 (PST)
-From: Asuna Yang <spriteovo@gmail.com>
-X-Google-Original-From: Asuna Yang <SpriteOvO@gmail.com>
-Message-ID: <ef617970-5539-400a-8717-dd96e82bf271@gmail.com>
-Date: Mon, 24 Nov 2025 10:42:04 +0800
+        d=1e100.net; s=20230601; t=1763953728; x=1764558528;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5UfLdLz36N6jy+cgiPZv0EbkiK293E7zjZZj2yGuukA=;
+        b=Ilfj182ZrtP3xc+IgEUP5IiUFxZI9WUNa/3XQd8eJsitdve0OM2Y5gzlMlVaYHJS3a
+         pBHpNuWa8eLf77pvw61WkxOOTRbrjVC7iGkyYes4LhmbwJSjWL+JDAD4s1UZ0sw92iXZ
+         isos4ZIFy0hgdzo+SRAQka7G0VVK/K+UKpcLVrEQ0YZz0Xw67iUCcnsIV5uYIMrW2L5f
+         ex786ASOCPOT/E+cpFCw7E8HlORY850/lIgqiR1dM4PEAa0Wtmg7G+hZ0HdoGa97T3Db
+         a96KdskkSgyPTTwZ2Lxt0A2qE5BFAn11gmnX2q/qASkkiVzvipb0P8jhPBrurpomQiTi
+         vgdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWc6VzGQYjGuklrybO3rHu5ITkYaTgnBqQf1fJh2ayniqD74RX/BGJCCMvgse4OrXN6hUS/xj6HQyywlUvBUg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJAyjeuVyw5R4bef5qOx69y1ilkxrH7QFAx/XowxuYq7bRj0Fm
+	R7OLeSBrFCYPiDBTKQckuHOPQO/2PxUciKcpBJUsE6GKER/lXgZdwUfxugNawIsYjkqc1zAmgMj
+	fQlvzy+RJh9Csag1G1UUc1bmWz+eMP5E=
+X-Gm-Gg: ASbGncvT525yxZX8llKUG4CGNrSUicEHAbdC3ok97bx7ibXohVjDLfGTbkAGtcaPJdb
+	d8BLjdJ7aZRS2IKmMIQ73gkyvCSNrGeWWIgzg7hgzBBiy3CvyJeibznpS5dReGYfl5LQCGWXPHj
+	k8l20k4r0Az+cnTbpQVCa76KjtLXpJVID8KfMIdP2sQdtEFBup62J2Lm2L3oB0wRG2+dPFwuFMh
+	58AbN3wkY77uJJoCCgl9bi20T8zSdLK+s/uHCK4nYYbUFTeLqBHdh7j1yF9r5Hgh+4LU/4pp50U
+	fZBFB+VdgexY3CsbKHkPNGkl6EFjs0ZmL37fsI5j38tPGtLkYnEmgwr3rIVKXV7/9hR1crQVuXX
+	Ia6LFBcZcQLX8GQ==
+X-Google-Smtp-Source: AGHT+IHODcnccPs9iRgVIOwlcuA2DDRG3ls89WHmZSy8djjz85e63ugOsI0kgj+n0Sr7cHyi8QYJvH0K9Tj0s1pUI8E=
+X-Received: by 2002:a05:7300:dc93:b0:2a6:9dbf:bbe1 with SMTP id
+ 5a478bee46e88-2a719324a83mr5922485eec.3.1763953728292; Sun, 23 Nov 2025
+ 19:08:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20251124-gcc-rust-v4-v4-0-4e06e07421ae@gmail.com>
+ <20251124-gcc-rust-v4-v4-3-4e06e07421ae@gmail.com> <CANiq72k=XXRR6pw0Uhk89dmRHFYan6WzJhnDTC0T5oMYAaNnZw@mail.gmail.com>
+ <ef617970-5539-400a-8717-dd96e82bf271@gmail.com>
+In-Reply-To: <ef617970-5539-400a-8717-dd96e82bf271@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 24 Nov 2025 04:08:36 +0100
+X-Gm-Features: AWmQ_blIu7x6QT0VZIH89GBJq9q0tlaW_UfH33KPy6C0uRHf1k8ZydlwBKRhGvI
+Message-ID: <CANiq72nDpBodFh5Zqy2p9jwWyfAiY6KcEEyugHeMDEmOR6Rogw@mail.gmail.com>
 Subject: Re: [PATCH v4 3/4] rust: add a Kconfig function to test for support
  of bindgen options
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nicolas.schier@linux.dev>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Nicolas Schier <nsc@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Vivian Wang <wangruikang@iscas.ac.cn>, Han Gao <rabenda.cn@gmail.com>,
- Jason Montleon <jmontleo@redhat.com>, Conor Dooley <conor@kernel.org>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <20251124-gcc-rust-v4-v4-0-4e06e07421ae@gmail.com>
- <20251124-gcc-rust-v4-v4-3-4e06e07421ae@gmail.com>
- <CANiq72k=XXRR6pw0Uhk89dmRHFYan6WzJhnDTC0T5oMYAaNnZw@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CANiq72k=XXRR6pw0Uhk89dmRHFYan6WzJhnDTC0T5oMYAaNnZw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Asuna Yang <spriteovo@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Nicolas Schier <nsc@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Vivian Wang <wangruikang@iscas.ac.cn>, Han Gao <rabenda.cn@gmail.com>, 
+	Jason Montleon <jmontleo@redhat.com>, Conor Dooley <conor@kernel.org>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/24/25 9:48 AM, Miguel Ojeda wrote:
-> More importantly, should we just have a separate function for backend
-> flags? That would be easier and would avoid having to use the
-> environment variable, if I understand the commit message here
-> correctly. And, anyway, it is actually the only function we need so
-> far.
+On Mon, Nov 24, 2025 at 3:42=E2=80=AFAM Asuna Yang <spriteovo@gmail.com> wr=
+ote:
+>
+> I will separate them into two functions in the next revision,
+> `bindgen-option` and `bindgen-backend-option` (or `bindgen-cc-option`?
+> Which one do you prefer?).
 
-You are right, separated might be better.
+If we don't need `bindgen-option` (the normal one I mean) so far,
+perhaps we should skip it. On the other hand, `rustc-option-yn` is
+there and is not used either (it was added for consistency). Up to the
+Kbuild team, I guess.
 
-Another reason is, in `scripts/Makefile.compiler`, there is a set of 
-functions with the same name provided for use by Makefile. Since we 
-currently do not need to check for bindgen options in Makefile, I didn't 
-add function for bindgen there. If we add it in the future, the 
-`bindgen-option` function in `Kconfig.include` will correspond to the 
-`bindgen-option-yn` function in `Makefile.compiler`, and 
-`bindgen-option` function in `Makefile.compiler` will return the 
-selected option instead of yn.
+As for the name, no strong preference. `bindgen-backend-option` sounds
+good, but `bindgen-cc-option` is more consistent with `cc-option` and
+probably easier to understand for people new to `bindgen`, and anyway
+the flags we pass there wouldn't make sense if the backend is not a C
+compiler.
 
-If we don't separate them now, for consistency, in `Makefile.compiler`, 
-`$(call bindgen-option,-- --some-flag-a,-- --some-flag-b)` will return 
-an option prefixed with --, which makes it difficult to use.
+Thanks!
 
-I will separate them into two functions in the next revision, 
-`bindgen-option` and `bindgen-backend-option` (or `bindgen-cc-option`? 
-Which one do you prefer?).
+Cheers,
+Miguel
