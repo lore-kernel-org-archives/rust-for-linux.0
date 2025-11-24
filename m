@@ -1,719 +1,273 @@
-Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013000.outbound.protection.outlook.com [40.93.196.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27577274B26;
-	Mon, 24 Nov 2025 12:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BD1B652;
+	Mon, 24 Nov 2025 13:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.0
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763988595; cv=pass; b=hj9MRB4/kocuk3CvWfpKyzGc9oyqPIjrpZXjZsBdqQFpqmc2/WO+nKVLOfJVnDYymOemRCWBn75+FZ2TrZGPthEu2fIWDUDfYTc5ETpx3u1l0yBMiWhi/biXf5q2t3eGO4T5FN4fm87AzNKiXWqC5iBQD4q1u5/9xVH+va4zSdk=
+	t=1763991173; cv=fail; b=HXgXqe++hNASAoBJIXcMyJ93oohxaAIPJHPrVezQmt1s7KseMJWtnU9araHpksMXQpdy1EZ4Y0jtuVJEd/kvsW1uoi+5rc/f9kDqwOSRShsKWd4zXs+1E1vRihNTrutuz3U65it/6tBwLRkjRfsp3qRgWZ5CMpfSWOJUD2/lMBU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763988595; c=relaxed/simple;
-	bh=n8GO9DZfkw7lglC/KTzubWRJve+LnFvHMEQaS2YrYMs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=OcLCDoMNj6sScCjAIeV8F8tPFY4qVPkaHaQ2g9C8Xv9YKFqlCIh+u073RVsci+jMfAIQ93snWOIiBpZjYzteZ/NgQV6UgAmRsgK6RxuufXXuV7ypTE+TzQO1ssUMlnrfF7EZGU+YGtcA7YqQ0gEU0B9Njk4TwSNt+hoBRon7ccw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=cihm5/so; arc=pass smtp.client-ip=136.143.184.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1763991173; c=relaxed/simple;
+	bh=tvpwMonYietbT33sgo787LLTV8kPN6ov6wqWLAo+56M=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f4Bs0yKGBQu+cDD+nh3q1dhC/FwXSlptGWRs4QpZjoCfjaRfSoQSCEPy2S/yzjuzr7VTZVD5h6AeQVzSo6K58wF2b0nY4fy9QspKxMXrdHOkZC7I6gDhK1iymRsN9o0azMGbwZigREbzTjXwpgAbjr2VkvHN+2YTv6wtsmjTp98=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=elcZuPjZ; arc=fail smtp.client-ip=40.93.196.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="cihm5/so"
-ARC-Seal: i=1; a=rsa-sha256; t=1763988579; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=j7NZb2hBFMV1DoeYa7TdfR1rzRbfR1+6Nci9/OS6vYPJX4gJj+0OeY76AySba/Z+5oVyIu/JYrcR9sO7m8uH/CFHAGF3mR429QRacgiPr/y+A/ZWDaywElRQzGbBiu3I9DrBrDDu/dvd+vo0SgRolNN94Iy5s0ARdJGQPPLj7eQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1763988579; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=vnxaEfroGLmCSdRk3ugowfR+g6bJzOxDD6mWYWZmT48=; 
-	b=WJgw1OURieN3MOL3ZS06lDTyZ4uJPVEHYW3IGzjrFNzPi/nPMxV6LwMMA/9cOWuT774xzuRkg2WR5v1oHbyDxeGleCgFsMGA+ILVerP/BJ8Py0kNDg+YkNRRfTIQOh0FkiU1xFoWJYkiz8aEIh35OWsqf6ay1+4w6lt3W/U3MUM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763988578;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=vnxaEfroGLmCSdRk3ugowfR+g6bJzOxDD6mWYWZmT48=;
-	b=cihm5/soZ8lUtXbpenxYC0psCUpGJ77M9tyS6hHjL5pg1d/flmbwjB56lGgWaN6a
-	ski8eZ9mwFpJKUPuTZIbAiCTBGRb/rw7xU4Oz/TxuRjzOjMA2vG7prLLefnyZB2brA5
-	ZyrWnMlG3wJWHMXk+P/r0ArOSU9vbpLv01U9idpg=
-Received: by mx.zohomail.com with SMTPS id 1763988575785230.13677515174982;
-	Mon, 24 Nov 2025 04:49:35 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="elcZuPjZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Dbm2DXygH4q2GdJBu2LXZVQMYX/4gvuEmbUWV/KbPiHA8jb3mrf0i5eVOPOoZvJ4fRn5cr5/jHLThB9ha80kIBFEKid8Gox9n0HEj7xZ/rgFuwXw5RsPyALyvqPvjoII6q06q0dp6wm7+XMXiU3auiYjgxJXd6C/5v5bbteodyLBEYdU5dz5uyJXQ+1O/EY3fQayCSDS+qs4rnSaeuoneUnUtpTcy1q42qXRJXLTXzgrbquj07BnRz35EtYJRmIi4erA6iHHgy0kQfAt4o9IHmT4VMljTiakA+GAvsQUGfAim+500k9dsHAU5DvhnWMLZvUeIhdWLu2eRSU7Ux03+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qfrs+xYKSBIm0aUuIWZdBvO+O/psjuW9ZReKSmq6oJU=;
+ b=N63DJ9unmZIUqBT6CpPhTv2zgT6U2z5lBcHcMb3Eg44Pb5S4FmiwuNOqJvYUtpxYSB0S8PPDVfOk9SDJIreGIzFvzVlwL0kyJ1/hoPCcHnDnjHCUhcY/SlTvJOKUG+UITaPIMf+dpIrsnpv63pXyqqrZ9QwDlkEOCsGIwiRTp5fMjShQ9TX3K+DOJ3I5x7LqZp9BeFjbx4RMT7sClhmI15m5dJgmE2fL18e0q2pIHJpdb9oJ0udrA+3gzlE3K9k533mhTuu5NKfpp/Jxd1XBk6FHvcU3pa9yjPGMbWy61GR6UjVBP8Iag9n+kic24xf3Oqz4oQcxKoc0RULXldQDhQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qfrs+xYKSBIm0aUuIWZdBvO+O/psjuW9ZReKSmq6oJU=;
+ b=elcZuPjZryJYWUlH+kQhIcWzFpYgShZo7o8dmuLGi4utr9Z0E084mXfAIHCXe3YsbtfMUG4i9fMZYH49DtL9sHxC9JQQBJIU3bC1Dlc6oyN6YzxMxLeO44qvFpAMquCH810+V+QwxnoM7Xs0o0OR/wf22E6jTOr00mDKB9rOS/ahl4Z34q23OXI5XLYlFRWb994mKihS0Ht7qKFmKVwBzxfJD5dQiw7rvbwEymNEKH4wh8O2NpXQ1h/vD9Uw5mrC3Xat3GhsU0ZCnAWQx5uwZhn8/wWoYQgx0h2sclHzCG1WFcSDD22vq5NuCxQzQ+e03dEdN2IBXP2kX4sKwievqw==
+Received: from SJ0PR03CA0174.namprd03.prod.outlook.com (2603:10b6:a03:338::29)
+ by BL1PR12MB5732.namprd12.prod.outlook.com (2603:10b6:208:387::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Mon, 24 Nov
+ 2025 13:32:45 +0000
+Received: from CO1PEPF000044F9.namprd21.prod.outlook.com
+ (2603:10b6:a03:338:cafe::95) by SJ0PR03CA0174.outlook.office365.com
+ (2603:10b6:a03:338::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.17 via Frontend Transport; Mon,
+ 24 Nov 2025 13:32:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CO1PEPF000044F9.mail.protection.outlook.com (10.167.241.199) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9388.0 via Frontend Transport; Mon, 24 Nov 2025 13:32:44 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 24 Nov
+ 2025 05:32:26 -0800
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Mon, 24 Nov 2025 05:32:26 -0800
+Received: from inno-thin-client (10.127.8.13) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Mon, 24 Nov 2025 05:32:19 -0800
+Date: Mon, 24 Nov 2025 15:32:18 +0200
+From: Zhi Wang <zhiw@nvidia.com>
+To: Alice Ryhl <aliceryhl@google.com>
+CC: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <bhelgaas@google.com>,
+	<kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+	<lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+	<markus.probst@posteo.de>, <helgaas@kernel.org>, <cjia@nvidia.com>,
+	<smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+	<kwankhede@nvidia.com>, <targupta@nvidia.com>, <acourbot@nvidia.com>,
+	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>
+Subject: Re: [PATCH v7 3/6] rust: io: factor common I/O helpers into Io
+ trait
+Message-ID: <20251124153218.7694b78a.zhiw@nvidia.com>
+In-Reply-To: <aSQxeSX0q4Z_jaAu@google.com>
+References: <20251119112117.116979-1-zhiw@nvidia.com>
+	<20251119112117.116979-4-zhiw@nvidia.com>
+	<aSB1Hcqr6W7EEjjK@google.com>
+	<20251124120846.267078e5.zhiw@nvidia.com>
+	<aSQxeSX0q4Z_jaAu@google.com>
+Organization: NVIDIA
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [RFC WIP 2/3] rust: sync: Add dma_fence abstractions
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251118132520.266179-4-phasta@kernel.org>
-Date: Mon, 24 Nov 2025 09:49:20 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Danilo Krummrich <dakr@kernel.org>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,
- Alexandre Courbot <acourbot@nvidia.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Dave Airlie <airlied@redhat.com>,
- Lyude Paul <lyude@redhat.com>,
- Peter Colberg <pcolberg@redhat.com>,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E55D72FC-AEF6-4D2D-973F-123306E4EB4C@collabora.com>
-References: <20251118132520.266179-2-phasta@kernel.org>
- <20251118132520.266179-4-phasta@kernel.org>
-To: Philipp Stanner <phasta@kernel.org>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F9:EE_|BL1PR12MB5732:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4710a83f-7271-46eb-ce7c-08de2b5df35c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|7416014|82310400026|1800799024|13003099007|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3QpPkMagsxxjrXfnZcn+f7NSwMV3bsya6frTU0iIUdJ6AExdJ/LmKkbwcpbT?=
+ =?us-ascii?Q?lfSTRBt7jl/LDdS9NTCFiJu+6vMWYQpGOJu8HUShCT8RcVYMfN8kJ4kcwhx/?=
+ =?us-ascii?Q?2PSwLUhDhcSbFhUtYmHsi68VBMVLyJdrdkA2Ya6fQPWmUu3EvwQ6JCUIxSWX?=
+ =?us-ascii?Q?jMpUOx9Y419WkEXLPUXXVKACuaLyy2YjKzXrCF6bJXERW7y0Dr7cRDOUWPQM?=
+ =?us-ascii?Q?qoZXt3yHlHivzNwiYQJWnWtg0tAlM0mZjZpYCiCLH9T7aGTJjiyRvSfNO0/+?=
+ =?us-ascii?Q?2xyRtFsmr/LEaXXUbX31v71MJxjRiHptZarmf90skH8v6KOHU0ih8l58wv01?=
+ =?us-ascii?Q?pJMuDv1lAso624tTqO9u/3mAmupwQqab1JiVbYV1U0rwm8okLAmzXO8E12PC?=
+ =?us-ascii?Q?yjx+HWgOZOrqTMMeUXeBhBpJEeues6igwmNyiGNJR1Tdin1zxuwWTpkerQfS?=
+ =?us-ascii?Q?OHvR03hvbKucYrrL+fv6JPzVbv6I5d5pM8IKaFeS6HeqkOeuyxPm5TB1Jeqh?=
+ =?us-ascii?Q?R6ZZcta8saUJtThx13Krx8Ztt15VmUUJhHjPN9zh4icAueC8zK7iE3dOFrJv?=
+ =?us-ascii?Q?eqvY+aUp8foJRxMxL8rOmlK4Xc5sfGVc7aUQBW/4d58A+11cpSFqbB6BpIq1?=
+ =?us-ascii?Q?SpTLYkHAobNQZWg2lTMjOibjjR4c0TRXndfQka3KGzely88JpPaYeEO7quk8?=
+ =?us-ascii?Q?hFFj3qYoYJL9NT01iP4JM+XL/VYS6YfkRSV5I3kW0vULpg9jqWDhssY+0oRB?=
+ =?us-ascii?Q?6j56Ci4GaXf4eO8D3KbhIZ8RbMbiATdaaGKwqLe7FJ2dh/WmdqtQoj1j2X9A?=
+ =?us-ascii?Q?2LODAuNUWIEAXTm+nL1xaSY7YvmBhHWA2Yb5ii3EXq/rHMG3GT5KbukC4i+M?=
+ =?us-ascii?Q?H9WzajEI/EkGKSYl4vtBmHhcFHMZpTXPeZW3ohgpbry0XhIUGzVPLshcDqDn?=
+ =?us-ascii?Q?3PLs8iKy3zVsTbpgV4KdfMmbsp3AxikLjFHAaNpEKAI/6k9edWs5Z9SEwJti?=
+ =?us-ascii?Q?y/fVHM4HpCekX04+qtvss57nTYGiVUmLilzPI/wRbTJdGG1yLQMmy7yFeH0R?=
+ =?us-ascii?Q?dKwQxyr/aAa2TTCCzuw4aywSW7hnUafg9b87UQOdleRIlheNFeYwfxHI/Xmt?=
+ =?us-ascii?Q?MW/nS83izFs4nvgG7Zagcd1nWraGzIVwW3nhDFoKOJTEOapBiqSfA0UnPpjf?=
+ =?us-ascii?Q?HtZnTu9zYdP9bo2bnnrWN4rVGmA5Wqcyo9x8h4dNF4UWONMvnmKrJKJIKfmS?=
+ =?us-ascii?Q?CfTBuw0KUMkTgAfJSu5z4rcCRQiAFCIlXP9dAdNehUOvtEp3/rk+B539aebK?=
+ =?us-ascii?Q?vYM48aZnXj28C1pWfxOOru/3CAM1vDqt33uG6BBj9BdkCL2yTD5WxmFurX/9?=
+ =?us-ascii?Q?9zLZQlv8l0PF8nrka++Sqq/3zu785XpyDw2/EbT5tek0DsEDiZX7E2UC99Tb?=
+ =?us-ascii?Q?+hlanTB6UlI6o9/dCqiqov9dsVwBO9vxeH7ZOvysR2jRx0lsxyBrOsAUmyJv?=
+ =?us-ascii?Q?NipIhUoKmZzQM/9ZKxKhY+1rQtYeyqJHhAn0PZitiw/0IndShZQ2tmVsZJ13?=
+ =?us-ascii?Q?XDqqKQVo3ab0WMl8f4Y=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(82310400026)(1800799024)(13003099007)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 13:32:44.7097
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4710a83f-7271-46eb-ce7c-08de2b5df35c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000044F9.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5732
 
-Hi Phillipp,
+On Mon, 24 Nov 2025 10:20:41 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-> On 18 Nov 2025, at 10:25, Philipp Stanner <phasta@kernel.org> wrote:
->=20
-> dma_fence is a synchronization mechanism which is needed by virtually
-> all GPU drivers.
->=20
-> A dma_fence offers many features, among which the most important ones
-> are registering callbacks (for example to kick off a work item) which
-> get executed once a fence gets signalled.
->=20
-> dma_fence has a number of callbacks. Only the two most basic ones
-> (get_driver_name(), get_timeline_name() are abstracted since they are
-> enough to enable the basic functionality.
->=20
-> Callbacks in Rust are registered by passing driver data which =
-implements
-> the Rust callback trait, whose function will be called by the C =
-backend.
->=20
-> dma_fence's are always refcounted, so implement AlwaysRefcounted for
-> them. Once a reference drops to zero, the C backend calls a release
-> function, where we implement drop_in_place() to conveniently marry =
-that
-> C-cleanup mechanism with Rust's ownership concepts.
->=20
-> This patch provides basic functionality, but is still missing:
->  - An implementation of PinInit<T, Error> for all driver data.
->  - A clever implementation for working dma_fence_begin_signalling()
->    guards. See the corresponding TODO in the code.
->  - Additional useful helper functions such as dma_fence_is_signaled().
->    These _should_ be relatively trivial to implement, though.
->=20
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> ---
-> rust/bindings/bindings_helper.h |   1 +
-> rust/helpers/dma_fence.c        |  23 ++
-> rust/helpers/helpers.c          |   1 +
-> rust/helpers/spinlock.c         |   5 +
-> rust/kernel/sync.rs             |   2 +
-> rust/kernel/sync/dma_fence.rs   | 380 ++++++++++++++++++++++++++++++++
-> 6 files changed, 412 insertions(+)
-> create mode 100644 rust/helpers/dma_fence.c
-> create mode 100644 rust/kernel/sync/dma_fence.rs
->=20
-> diff --git a/rust/bindings/bindings_helper.h =
-b/rust/bindings/bindings_helper.h
-> index 84d60635e8a9..107cb6b6f4a4 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -48,6 +48,7 @@
-> #include <linux/cred.h>
-> #include <linux/device/faux.h>
-> #include <linux/dma-mapping.h>
-> +#include <linux/dma-fence.h>
-> #include <linux/errname.h>
-> #include <linux/ethtool.h>
-> #include <linux/file.h>
-> diff --git a/rust/helpers/dma_fence.c b/rust/helpers/dma_fence.c
-> new file mode 100644
-> index 000000000000..a9fc4829bbae
-> --- /dev/null
-> +++ b/rust/helpers/dma_fence.c
-> @@ -0,0 +1,23 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/dma-fence.h>
-> +
-> +void rust_helper_dma_fence_get(struct dma_fence *f)
-> +{
-> + dma_fence_get(f);
-> +}
-> +
-> +void rust_helper_dma_fence_put(struct dma_fence *f)
-> +{
-> + dma_fence_put(f);
-> +}
-> +
-> +bool rust_helper_dma_fence_begin_signalling(void)
-> +{
-> + return dma_fence_begin_signalling();
-> +}
-> +
-> +void rust_helper_dma_fence_end_signalling(bool cookie)
-> +{
-> + dma_fence_end_signalling(cookie);
-> +}
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 7cf7fe95e41d..99a7f7834c03 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -20,6 +20,7 @@
-> #include "cred.c"
-> #include "device.c"
-> #include "dma.c"
-> +#include "dma_fence.c"
-> #include "drm.c"
-> #include "err.c"
-> #include "fs.c"
-> diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
-> index 42c4bf01a23e..017ac447ebbd 100644
-> --- a/rust/helpers/spinlock.c
-> +++ b/rust/helpers/spinlock.c
-> @@ -16,6 +16,11 @@ void rust_helper___spin_lock_init(spinlock_t *lock, =
-const char *name,
-> #endif /* CONFIG_DEBUG_SPINLOCK */
-> }
->=20
-> +void rust_helper_spin_lock_init(spinlock_t *lock)
-> +{
-> + spin_lock_init(lock);
-> +}
-> +
-> void rust_helper_spin_lock(spinlock_t *lock)
-> {
-> spin_lock(lock);
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 00f9b558a3ad..84c406b6b9e1 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -12,6 +12,7 @@
-> mod arc;
-> pub mod aref;
-> pub mod completion;
-> +pub mod dma_fence;
-> mod condvar;
-> pub mod lock;
-> mod locked_by;
-> @@ -20,6 +21,7 @@
->=20
-> pub use arc::{Arc, ArcBorrow, UniqueArc};
-> pub use completion::Completion;
-> +pub use dma_fence::{DmaFence, DmaFenceCtx, DmaFenceCb, =
-DmaFenceCbFunc};
-> pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
-> pub use lock::global::{global_lock, GlobalGuard, GlobalLock, =
-GlobalLockBackend, GlobalLockedBy};
-> pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
-> diff --git a/rust/kernel/sync/dma_fence.rs =
-b/rust/kernel/sync/dma_fence.rs
-> new file mode 100644
-> index 000000000000..d9a59dde0210
-> --- /dev/null
-> +++ b/rust/kernel/sync/dma_fence.rs
-> @@ -0,0 +1,380 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! DmaFence support.
-> +//!
-> +//! Reference: =
-<https://docs.kernel.org/driver-api/dma-buf.html#c.dma_fence>
-> +//!
-> +//! C header: =
-[`include/linux/dma-fence.h`](srctree/include/linux/dma-fence.h)
-> +
-> +use crate::{
-> +    bindings,
-> +    prelude::*,
-> +    types::ForeignOwnable,
-> +    types::{ARef, AlwaysRefCounted, Opaque},
-> +};
-> +
-> +use core::{
-> +    ptr::{drop_in_place, NonNull},
-> +    sync::atomic::{AtomicU64, Ordering},
-> +};
-> +
-> +use kernel::sync::{Arc, ArcBorrow};
-> +use kernel::c_str;
-> +
-> +/// Defines the callback function the dma-fence backend will call =
-once the fence gets signalled.
-> +pub trait DmaFenceCbFunc {
-> +    /// The callback function. `cb` is a container of the data which =
-the driver passed in
-> +    /// [`DmaFence::register_callback`].
-> +    fn callback(cb: Pin<KBox<DmaFenceCb<Self>>>)
-> +    where
-> +        Self: Sized;
-> +}
-> +
-> +/// Container for driver data which the driver gets back in its =
-callback once the fence gets
-> +/// signalled.
-> +#[pin_data]
-> +pub struct DmaFenceCb<T: DmaFenceCbFunc> {
-> +    /// C struct needed for the backend.
-> +    #[pin]
-> +    inner: Opaque<bindings::dma_fence_cb>,
-> +    /// Driver data.
-> +    #[pin]
-> +    pub data: T,
+> On Mon, Nov 24, 2025 at 12:08:46PM +0200, Zhi Wang wrote:
+> > On Fri, 21 Nov 2025 14:20:13 +0000
+> > Alice Ryhl <aliceryhl@google.com> wrote:
+> > 
+> > > On Wed, Nov 19, 2025 at 01:21:13PM +0200, Zhi Wang wrote:
+> > > > The previous Io<SIZE> type combined both the generic I/O access
+> > > > helpers and MMIO implementation details in a single struct.
+> > > > 
+> > > > To establish a cleaner layering between the I/O interface and
+> > > > its concrete backends, paving the way for supporting additional
+> > > > I/O mechanisms in the future, Io<SIZE> need to be factored.
+> > > > 
+> > > > Factor the common helpers into new {Io, Io64} traits, and move
+> > > > the MMIO-specific logic into a dedicated Mmio<SIZE> type
+> > > > implementing that trait. Rename the IoRaw to MmioRaw and update
+> > > > the bus MMIO implementations to use MmioRaw.
+> > > > 
+> > > > No functional change intended.
+> > > > 
+> > > > Cc: Alexandre Courbot <acourbot@nvidia.com>
+> > > > Cc: Alice Ryhl <aliceryhl@google.com>
+> > > > Cc: Bjorn Helgaas <helgaas@kernel.org>
+> > > > Cc: Danilo Krummrich <dakr@kernel.org>
+> > > > Cc: John Hubbard <jhubbard@nvidia.com>
+> > > > Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> > > 
+> > > I said this on a previous version, but I still don't buy the split
+> > > into IoFallible and IoInfallible.
+> > > 
+> > > For one, we're never going to have a method that can accept any
+> > > Io - we will always want to accept either IoInfallible or
+> > > IoFallible, so the base Io trait serves no purpose.
+> > > 
+> > > For another, the docs explain that the distinction between them is
+> > > whether the bounds check is done at compile-time or runtime. That
+> > > is not the kind of capability one normally uses different traits
+> > > to distinguish between. It makes sense to have additional traits
+> > > to distinguish between e.g.:
+> > > 
+> > > * Whether IO ops can fail for reasons *other* than bounds checks.
+> > > * Whether 64-bit IO ops are possible.
+> > > 
+> > > Well ... I guess one could distinguish between whether it's
+> > > possible to check bounds at compile-time at all. But if you can
+> > > check them at compile-time, it should always be possible to check
+> > > at runtime too, so one should be a sub-trait of the other if you
+> > > want to distinguish them. (And then a trait name of KnownSizeIo
+> > > would be more idiomatic.)
+> > > 
+> > 
+> > Thanks a lot for the detailed feedback. Agree with the points. Let's
+> > keep the IoFallible and IoInfallible traits but not just tie them
+> > to the bound checks in the docs.
+> 
+> What do you plan to write in the docs instead?
+> 
 
-We should probably deref to this type.
+What I understad according to the discussion:
 
-> +}
-> +
-> +impl<T: DmaFenceCbFunc + 'static> DmaFenceCb<T> {
-> +    fn new(data: impl PinInit<T>) -> Result<Pin<KBox<Self>>> {
-> +        let cb =3D try_pin_init!(Self {
-> +            inner: Opaque::zeroed(), // This gets initialized by the =
-C backend.
-> +            data <- data,
-> +        });
-> +
-> +        KBox::pin_init(cb, GFP_KERNEL)
-> +    }
-> +
-> +    /// Callback for the C dma_fence backend.
-> +    ///
-> +    /// # Safety
-> +    /// All data used and cast in this function was validly created =
-by
-> +    /// [`DmaFence::register_callback`] and isn't modified by the C =
-backend until this callback
-> +    /// here has run.
-> +    unsafe extern "C" fn callback(
-> +        _fence_ptr: *mut bindings::dma_fence,
-> +        cb_ptr: *mut bindings::dma_fence_cb,
-> +    ) {
-> +        let cb_ptr =3D Opaque::cast_from(cb_ptr);
-> +
-> +        // SAFETY: The constructor guarantees that `cb_ptr` is always =
-`inner` of a DmaFenceCb.
-> +        let cb_ptr =3D unsafe { crate::container_of!(cb_ptr, Self, =
-inner) }.cast_mut() as *mut c_void;
-> +        // SAFETY: `cp_ptr` is the heap memory of a Pin<Kbox<Self>> =
-because it was created by
-> +        // invoking ForeignOwnable::into_foreign() on such an =
-instance.
-> +        let cb =3D unsafe { <Pin<KBox<Self>> as =
-ForeignOwnable>::from_foreign(cb_ptr) };
-> +
-> +        // Pass ownership back over to the driver.
-> +        T::callback(cb);
-> +    }
-> +}
-> +
-> +/// A dma-fence context. A fence context takes care of associating =
-related fences with each other,
-> +/// providing each with raising sequence numbers and a common =
-identifier.
-> +#[pin_data]
-> +pub struct DmaFenceCtx {
-> +    /// An opaque spinlock. Only ever passed to the C backend, never =
-used by Rust.
-> +    #[pin]
-> +    lock: Opaque<bindings::spinlock_t>,
-> +    /// The fence context number.
-> +    nr: u64,
-> +    /// The sequence number for the next fence created.
-> +    seqno: AtomicU64,
-> +}
-> +
-> +impl DmaFenceCtx {
-> +    /// Create a new `DmaFenceCtx`.
-> +    pub fn new() -> Result<Arc<Self>> {
-> +        let ctx =3D pin_init!(Self {
-> +            // Feed in a non-Rust spinlock for now, since the Rust =
-side never needs the lock.
-> +            lock <- Opaque::ffi_init(|slot: *mut bindings::spinlock| =
-{
-> +                // SAFETY: `slot` is a valid pointer to an =
-uninitialized `struct spinlock_t`.
-> +                unsafe { bindings::spin_lock_init(slot) };
-> +            }),
-> +            // SAFETY: `dma_fence_context_alloc()` merely works on a =
-global atomic. Parameter `1`
-> +            // is the number of contexts we want to allocate.
-> +            nr: unsafe { bindings::dma_fence_context_alloc(1) },
-> +            seqno: AtomicU64::new(0),
-> +        });
-> +
-> +        Arc::pin_init(ctx, GFP_KERNEL)
-> +    }
-> +
-> +    fn get_new_fence_seqno(&self) -> u64 {
-> +        self.seqno.fetch_add(1, Ordering::Relaxed)
-> +    }
-> +}
-> +
-> +impl ArcBorrow<'_, DmaFenceCtx> {
-> +    /// Create a new fence, consuming `data`.
-> +    ///
-> +    /// The fence will increment the refcount of the fence context =
-associated with this
-> +    /// [`DmaFenceCtx`].
-> +    pub fn new_fence<T>(
-> +        &mut self,
-> +        data: impl PinInit<T>,
-> +    ) -> Result<ARef<DmaFence<T>>> {
-> +        let fctx: Arc<DmaFenceCtx> =3D (*self).into();
-> +        let seqno: u64 =3D fctx.get_new_fence_seqno();
-> +
-> +        // TODO: Should we reset seqno in case of failure?
+1. Infallible vs Fallible:
 
-I think we should go back to the old value, yeah.
+- Infallible indicates the I/O operation can will not return error from
+  the API level, and doesn't guarentee the hardware status from device
+  level.
 
-> +        // Pass `fctx` by value so that the fence will hold a =
-reference to the DmaFenceCtx as long
-> +        // as it lives.
-> +        DmaFence::new(fctx, data, &self.lock, self.nr, seqno)
-> +    }
-> +}
-> +
-> +/// A synchronization primitive mainly for GPU drivers.
-> +///
-> +/// DmaFences are always reference counted. The typical use case is =
-that one side registers
-> +/// callbacks on the fence which will perform a certain action (such =
-as queueing work) once the
-> +/// other side signals the fence.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::sync::{Arc, ArcBorrow, DmaFence, DmaFenceCtx, =
-DmaFenceCb, DmaFenceCbFunc};
-> +/// use core::sync::atomic::{self, AtomicBool};
-> +///
-> +/// static mut CHECKER: AtomicBool =3D AtomicBool::new(false);
-> +///
-> +/// struct CallbackData {
-> +///     i: u32,
-> +/// }
-> +///
-> +/// impl CallbackData {
-> +///     fn new() -> Self {
-> +///         Self { i: 9 }
-> +///     }
-> +/// }
-> +///
-> +/// impl DmaFenceCbFunc for CallbackData {
-> +///     fn callback(cb: Pin<KBox<DmaFenceCb<Self>>>) where Self: =
-Sized {
-> +///         assert_eq!(cb.data.i, 9);
-> +///         // SAFETY: Just to have an easy way for testing. This =
-cannot race with the checker
-> +///         // because the fence signalling callbacks are executed =
-synchronously.
-> +///         unsafe { CHECKER.store(true, atomic::Ordering::Relaxed); =
-}
-> +///     }
-> +/// }
-> +///
-> +/// struct DriverData {
-> +///     i: u32,
-> +/// }
-> +///
-> +/// impl DriverData {
-> +///     fn new() -> Self {
-> +///         Self { i: 5 }
-> +///     }
-> +/// }
-> +///
-> +/// let data =3D DriverData::new();
-> +/// let fctx =3D DmaFenceCtx::new()?;
-> +///
-> +/// let mut fence =3D fctx.as_arc_borrow().new_fence(data)?;
-> +///
-> +/// let cb_data =3D CallbackData::new();
-> +/// fence.register_callback(cb_data);
-> +/// // fence.begin_signalling();
-> +/// fence.signal()?;
-> +/// // Now check wehether the callback was actually executed.
-> +/// // SAFETY: `fence.signal()` above works sequentially. We just =
-check here whether the signalling
-> +/// // actually did set the boolean correctly.
-> +/// unsafe { assert_eq!(CHECKER.load(atomic::Ordering::Relaxed), =
-true); }
-> +///
-> +/// Ok::<(), Error>(())
-> +/// ```
-> +#[pin_data]
-> +pub struct DmaFence<T> {
-> +    /// The actual dma_fence passed to C.
-> +    #[pin]
-> +    inner: Opaque<bindings::dma_fence>,
-> +    /// User data.
-> +    #[pin]
-> +    data: T,
+- Fallible indicates the I/O operation can return error from the
+  API level.
 
-Same here: we should probably deref to this type.
+2. compiling-time check vs run-time check:
 
-> +    /// Marks whether the fence is currently in the signalling =
-critical section.
-> +    signalling: bool,
-> +    /// A boolean needed for the C backend's lockdep guard.
-> +    signalling_cookie: bool,
-> +    /// A reference to the associated [`DmaFenceCtx`] so that it =
-cannot be dropped while there are
-> +    /// still fences around.
-> +    fctx: Arc<DmaFenceCtx>,
-> +}
-> +
-> +// SAFETY: `DmaFence` is safe to be sent to any task.
-> +unsafe impl<T> Send for DmaFence<T> {}
-> +
-> +// SAFETY: `DmaFence` is safe to be accessed concurrently.
-> +unsafe impl<T> Sync for DmaFence<T> {}
-> +
-> +// SAFETY: These implement the C backends refcounting methods which =
-are proven to work correctly.
-> +unsafe impl<T> AlwaysRefCounted for DmaFence<T> {
-> +    fn inc_ref(&self) {
-> +        // SAFETY: `self.as_raw()` is a pointer to a valid `struct =
-dma_fence`.
-> +        unsafe { bindings::dma_fence_get(self.as_raw()) }
-> +    }
-> +
-> +    /// # Safety
-> +    ///
-> +    /// `ptr`must be a valid pointer to a [`DmaFence`].
-> +    unsafe fn dec_ref(ptr: NonNull<Self>) {
-> +        // SAFETY: `ptr` is never a NULL pointer; and when =
-`dec_ref()` is called
-> +        // the fence is by definition still valid.
-> +        let fence =3D unsafe { (*ptr.as_ptr()).inner.get() };
-> +
-> +        // SAFETY: Valid because `fence` was created validly above.
-> +        unsafe { bindings::dma_fence_put(fence) }
-> +    }
-> +}
-> +
-> +impl<T> DmaFence<T> {
-> +    // TODO: There could be a subtle potential problem here? The LLVM =
-compiler backend can create
-> +    // several versions of this constant. Their content would be =
-identical, but their addresses
-> +    // different.
-> +    const OPS: bindings::dma_fence_ops =3D Self::ops_create();
-> +
-> +    /// Create an initializer for a new [`DmaFence`].
-> +    fn new(
-> +        fctx: Arc<DmaFenceCtx>,
-> +        data: impl PinInit<T>, // TODO: The driver data should =
-implement PinInit<T, Error>
-> +        lock: &Opaque<bindings::spinlock_t>,
+- driver specifies a known-valid-size I/O region, we go compiling-time
+  check (saves the cost of run-time check).
 
-I wonder if we should take a Rust lock directly?
+- driver is not able to specifiy a known-valid-size I/O region, we
+  should go run-time check.
 
-> +        context: u64,
-> +        seqno: u64,
-> +    ) -> Result<ARef<Self>> {
-> +        let fence =3D pin_init!(Self {
-> +            inner <- Opaque::ffi_init(|slot: *mut =
-bindings::dma_fence| {
-> +                let lock_ptr =3D &raw const (*lock);
-> +                // SAFETY: `slot` is a valid pointer to an =
-uninitialized `struct dma_fence`.
-> +                // `lock_ptr` is a pointer to the spinlock of the =
-fence context, which is shared
+For IoInfallible, I would write the doc as:
 
-Then we should perhaps extract that lock from the fence context itself, =
-instead
-of passing it as an argument? This relationship is not enforced in the =
-current
-code.
+A trait for I/O accessors that are guaranteed to succeed at the API
+level.
 
-> +                // among all the fences. This can't become a UAF =
-because each fence takes a
-> +                // reference of the fence context.
-> +                unsafe { bindings::dma_fence_init(slot, &Self::OPS, =
-Opaque::cast_into(lock_ptr), context, seqno) };
-> +            }),
-> +            data <- data,
-> +            signalling: false,
-> +            signalling_cookie: false,
-> +            fctx: fctx,
-> +        });
-> +
-> +        let b =3D KBox::pin_init(fence, GFP_KERNEL)?;
-> +
-> +        // SAFETY: We don't move the contents of `b` anywhere here. =
-After unwrapping it, ARef will
-> +        // take care of preventing memory moves.
-> +        let rawptr =3D KBox::into_raw(unsafe { =
-Pin::into_inner_unchecked(b) });
-> +
-> +        // SAFETY: `rawptr` was created validly above.
-> +        let aref =3D unsafe { =
-ARef::from_raw(NonNull::new_unchecked(rawptr)) };
-> +
-> +        Ok(aref)
-> +    }
-> +
-> +    /// Mark the beginning of a DmaFence signalling critical section. =
-Should be called once a fence
-> +    /// gets published.
-> +    ///
-> +    /// The signalling critical section is marked as finished =
-automatically once the fence signals.
-> +    pub fn begin_signalling(&mut self) {
-> +        // FIXME: this needs to be mutable, obviously, but we can't =
-borrow mutably. *sigh*
+Implementations of this trait provide I/O operations that do
+not return errors to the caller. From the perspective of the I/O
+API, the I/O operation is always considered successful.
 
-Is AtomicBool going away? Otherwise can you expand?
+Note that this does *not* mean that the underlying device is guaranteed
+to be in a healthy state. Hardware-specific exceptional states must be
+detected and handled by the driver or subsystem managing the device.
 
-> +        self.signalling =3D true;
-> +        // TODO: Should we warn if a user tries to do this several =
-times for the same
-> +        // fence? And should we ignore the request if the fence is =
-already signalled?
-> +
-> +        // SAFETY: `dma_fence_begin_signalling()` works on global =
-lockdep data and calling it is
-> +        // always safe.
-> +        self.signalling_cookie =3D unsafe { =
-bindings::dma_fence_begin_signalling() };
-> +    }
-> +
-> +    const fn ops_create() -> bindings::dma_fence_ops {
-> +        // SAFETY: Zeroing out memory on the stack is always safe.
-> +        let mut ops: bindings::dma_fence_ops =3D unsafe { =
-core::mem::zeroed() };
-> +
-> +        ops.get_driver_name =3D Some(Self::get_driver_name);
-> +        ops.get_timeline_name =3D Some(Self::get_timeline_name);
-> +        ops.release =3D Some(Self::release);
-> +
-> +        ops
-> +    }
-> +
-> +    // The C backend demands the following two callbacks. They are =
-intended for
-> +    // cross-driver communication, i.e., for another driver to figure =
-out to
-> +    // whom a fence belongs. As we don't support that currently in =
-the Rust
-> +    // implementation, let's go for dummy data. By the way it has =
-already been
-> +    // proposed to remove those callbacks from C, since there are =
-barely any
-> +    // users.
-> +    //
-> +    // And implementing them properly in Rust would require a =
-mandatory interface
-> +    // and potentially open questions about UAF bugs when the module =
-gets unloaded.
-> +    extern "C" fn get_driver_name(_ptr: *mut bindings::dma_fence) -> =
-*const c_char {
-> +        c_str!("DRIVER_NAME_UNUSED").as_char_ptr()
-> +    }
-> +
-> +    extern "C" fn get_timeline_name(_ptr: *mut bindings::dma_fence) =
--> *const c_char {
-> +        c_str!("TIMELINE_NAME_UNUSED").as_char_ptr()
-> +    }
-> +
-> +    /// The release function called by the C backend once the =
-refcount drops to 0. We use this to
-> +    /// drop the Rust dma-fence, too. Since [`DmaFence`] implements =
-[`AlwaysRefCounted`], this is
-> +    /// perfectly safe and a convenient way to concile the two =
-release mechanisms of C and Rust.
-> +    unsafe extern "C" fn release(ptr: *mut bindings::dma_fence) {
-> +        let ptr =3D Opaque::cast_from(ptr);
-> +
-> +        // SAFETY: The constructor guarantees that `ptr` is always =
-the inner fence of a DmaFence.
-> +        let fence =3D unsafe { crate::container_of!(ptr, Self, inner) =
-}.cast_mut();
-> +
-> +        // SAFETY: See above. Also, the release callback will only be =
-called once, when the
-> +        // refcount drops to 0, and when that happens the fence is by =
-definition still valid.
-> +        unsafe { drop_in_place(fence) };
-> +    }
-> +
-> +    /// Signal the fence. This will invoke all registered callbacks.
-> +    pub fn signal(&self) -> Result {
-> +        // SAFETY: `self` is refcounted.
-> +        let ret =3D unsafe { =
-bindings::dma_fence_signal(self.as_raw()) };
-> +        if ret !=3D 0 {
-> +            return Err(Error::from_errno(ret));
-> +        }
+For Iofallible, 
 
-Do you think it=E2=80=99s worth it to have a separate error type for =
-when fences
-are already signaled? I am asking, but I am not convinced either, FYI.
+A trait for I/O accessors that may return an error.
 
-> +
-> +        if self.signalling {
-> +            // SAFETY: `dma_fence_end_signalling()` works on global =
-lockdep data. The only
-> +            // parameter is a boolean passed by value.
-> +            unsafe { =
-bindings::dma_fence_end_signalling(self.signalling_cookie) };
-> +        }
-> +
-> +        Ok(())
-> +    }
-> +
-> +    /// Register a callback on a [`DmaFence`]. The callback will be =
-invoked in the fence's
-> +    /// signalling path, i.e., critical section.
-> +    ///
-> +    /// Consumes `data`. `data` is passed back to the implemented =
-callback function when the fence
-> +    /// gets signalled.
-> +    pub fn register_callback<U: DmaFenceCbFunc + 'static>(&self, =
-data: impl PinInit<U>) -> Result {
-> +        let cb =3D DmaFenceCb::new(data)?;
-> +        let ptr =3D cb.into_foreign() as *mut DmaFenceCb<U>;
-> +        // SAFETY: `ptr` was created validly directly above.
-> +        let inner_cb =3D unsafe { (*ptr).inner.get() };
-> +
-> +        // SAFETY: `self.as_raw()` is valid because `self` is =
-refcounted, `inner_cb` was created
-> +        // validly above and was turned into a ForeignOwnable, so it =
-won't be dropped. `callback`
-> +        // has static life time.
-> +        let ret =3D unsafe {
-> +            bindings::dma_fence_add_callback(
-> +                self.as_raw(),
-> +                inner_cb,
-> +                Some(DmaFenceCb::<U>::callback),
-> +            )
-> +        };
-> +        if ret !=3D 0 {
-> +            return Err(Error::from_errno(ret));
+This trait represents I/O operations where the API can intentionally
+return an error. The error typically reflects issues detected by the
+subsystem.
 
-Related to the question above: not being able to place a callback seems =
-to be
-common in the DRM scheduler (i.e.: the fence has signaled already). =
-Hence my
-question about a separate error type, as we would have to single out
-Err(EINVAL) often otherwise.
+> > > And I'm not really convinced that the current compile-time checked
+> > > traits are a good idea at all. See:
+> > > https://lore.kernel.org/all/DEEEZRYSYSS0.28PPK371D100F@nvidia.com/
 
-> +        }
-> +        Ok(())
-> +    }
-> +
-> +    fn as_raw(&self) -> *mut bindings::dma_fence {
-> +        self.inner.get()
-> +    }
-> +}
-> --=20
-> 2.49.0
->=20
+snip
 
-Can we please support fence chains as well? We need that in Tyr (and =
-possibly
-in all other GPU drivers). It=E2=80=99s better to start the discussion =
-early.
+> The last -rc of this cycle is already out, so I don't think you need
+> to worry about branch issues - you won't land it in time for that.
+> 
 
-=E2=80=94 Daniel=
+I am mostly refering to the dependances if I have to implement this on
+top of bounded integer on driver-core-testing.
+
+> 
+> But there is another problem: Bounded only supports the case where the
+> bound is a power of two, so I don't think it's usable here. You can
+> have Io regions whose size is not a power of two.
+
+Any suggestion on this? :) Should I implement something like
+BoundedOffset? Also would like to hear some inputs from Danilo as well.
+
+Z.
+
+> 
+> Alice
+
