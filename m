@@ -1,133 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A69531A570;
-	Mon, 24 Nov 2025 15:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763997625; cv=none; b=jFRB90KmODQuBrD+eMDLjQndavXyQufuGmAtQS9NODK/AtQK86K79vrD3bajLbK2EkfbKmIFuBbSP2kl8cl65X1lgaUiDKSrjS6ARsIBDZw8gg8ZHo9K8fOjs4qYBG0y84ItCL6yzvp1tXGcrWQ4hA52EG9hfn/221O2uUpQhdc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763997625; c=relaxed/simple;
-	bh=fvRz5CMHImEce37FTzr6xUC2/FPATI5K1NWVCsbVhiQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a73ykhUs1+pB8+k6xe+ntYVSmJn51WsMKudQa8g7Eh7aUiOgyvR1mmj73+KNA10ChZ61q6rFzII4oCEAo8jVNNakuCBf6puBLp5pwBYq9dn0I6UQQghLY2uKWoU/iXf7gcB7oGPTkx4fMCZLWC+BYPcw6quM3MhSoPWn2Dwy6Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JGkzC+EU; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8662313E19;
+	Mon, 24 Nov 2025 15:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763997871; cv=pass; b=rPGpkj3gWVwa9/orsZiViO3bq3i/aTGsncyxFDR6PHA/PRmxh1UDy/1Eedaiii7FlEUBFZK5EPmQIxH6i8pXb3W8O47K4M12iPp9Epw/usUHZTRGiA6Lyu31jKI5DZP54icpkR1N5mReSQ4nhq2sVoKNSOsJ3LIC7wuU7m+xRt4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763997871; c=relaxed/simple;
+	bh=Ji6fYfYutm8QXFWFnkeNbapma5AzhqoL58q6EQn7p4g=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ZUtnkX9qIV91GmWT+mw5klu0BEk4T2C4Hgk/OC/6SS8lSqFesSplpS36VhbTWxk2ECZrvB3Yssd3L9j169qRZnL6ViftcjnzHDAb0gh1tNR3imWVUc3M8O7THtVfPse7QtIPD52xxtEZWsVtGjLbRm5lYUz1I+iOqaRmo/dzAhw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=baC3qx5R; arc=pass smtp.client-ip=136.143.184.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JGkzC+EU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEC4C4CEF1;
-	Mon, 24 Nov 2025 15:20:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763997624;
-	bh=fvRz5CMHImEce37FTzr6xUC2/FPATI5K1NWVCsbVhiQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGkzC+EU5FRH4M9wK7roYJGwXmwgXRIQOCB2K6qSjm6jUyhsutiix3A7h2kNe3E0z
-	 Xo4pvbcLFk4kx0oOa6l4BmkpEWQYLEUqkIHlWoHUmZE0Rs5rHd6AmOumYjfzCBklGm
-	 Rw/XOOMxSeN5tx5O+Iuwn/sKQi4FyS8dbMOlt7cjK4eEGR4DDfus8dPgSaLlkpvIRC
-	 vAMK//Ac1qTDqR0XQy1scKGRaSYIbOuuxU6A3TtFnNQYQBJLkUhCLnOEoFAqbeUWUM
-	 eRjrcW8ELNAHlX66EFe+rzxv0oSAqr4v2RCwHAgqCAAsrMda+J/5nPI5YjxyTCJN6X
-	 iCLjRSLyPRsiA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Jesung Yang <y.j3ms.n@gmail.com>
-Subject: [PATCH v2 20/20] rust: macros: support `proc-macro2`, `quote` and `syn`
-Date: Mon, 24 Nov 2025 16:18:32 +0100
-Message-ID: <20251124151837.2184382-21-ojeda@kernel.org>
-In-Reply-To: <20251124151837.2184382-1-ojeda@kernel.org>
-References: <20251124151837.2184382-1-ojeda@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="baC3qx5R"
+ARC-Seal: i=1; a=rsa-sha256; t=1763997849; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=fKcG7yqSD60UQf6/NxIdqIodGmP/daHMrMjr8g3DCD9LzXxB6DInn3/MI9X77b36Jmb4XqrPRTQNOzV19Yr66je0BmbnEnPlaa0ir8/TbeX/P4e6yPlmZiwITTB7Due2nYCwqXiNzAbfMJz2OR71DqjbKwjwYCMw/8w1D24bAtE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1763997849; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=6iEf7VMHNEASOG8Vh3StuVEOElqIX2Ewj+ACldc5thQ=; 
+	b=cq9BL3EjPHETFSq+l8REYUjl9EN1h4h8ZXkmI9RSGIkvOFSoZwbLNWKh6YmRoDrdia/BbgqfLJmBE2xlo+J7+sWVvcVFPflzc/j0Aqml3a4OPOkmir/nI+4FNXtxaFqeJlFb52IyCz9atW9Yk69Y2lgryalb9CvfxMnf2DnZWK8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763997849;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=6iEf7VMHNEASOG8Vh3StuVEOElqIX2Ewj+ACldc5thQ=;
+	b=baC3qx5RKVZ7xlE/2VKu4YesxTU8qcmS6WgRm6Ye8PFHYJPgvTs0LAbP0Qd62PB4
+	rq7pjaRUVRT2GlTVi5xPP/JDP0/2qqXQL3d3ppnoyKZZYh1QGu6fXKpWA21YtLwt7qe
+	rKAYpDPqiaFwCV277gCXnz88QvM1Kd0hmK5fCEsU=
+Received: by mx.zohomail.com with SMTPS id 1763997846696691.7351681305079;
+	Mon, 24 Nov 2025 07:24:06 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v5 1/8] rust/drm: Add gem::impl_aref_for_gem_obj!
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20251023212540.1141999-2-lyude@redhat.com>
+Date: Mon, 24 Nov 2025 12:23:51 -0300
+Cc: dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Asahi Lina <lina+kernel@asahilina.net>,
+ Shankari Anand <shankari.ak0208@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1E5BE820-90BA-4135-82A8-05777B738BD5@collabora.com>
+References: <20251023212540.1141999-1-lyude@redhat.com>
+ <20251023212540.1141999-2-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-One of the two main uses cases for adding `proc-macro2`, `quote` and
-`syn` is the `macros` crates (and the other `pin-init`).
+Hi Lyude,
 
-Thus add the support for the crates in `macros` already.
+> On 23 Oct 2025, at 18:22, Lyude Paul <lyude@redhat.com> wrote:
+>=20
+> In the future we're going to be introducing more GEM object types in =
+rust
+> then just gem::Object<T>. Since all types of GEM objects have =
+refcounting,
+> let's introduce a macro that we can use in the gem crate in order to =
+copy
+> this boilerplate implementation for each type: =
+impl_aref_for_gem_obj!().
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>=20
+> ---
+> V5:
+> * Move .as_raw() call to `let obj` in dec_ref, to ensure that the =
+reference
+>  to object is not live by the time that we call drm_gem_object_put().
+> * Add missing #[macro_export] annotation
+>=20
+> rust/kernel/drm/gem/mod.rs | 54 +++++++++++++++++++++++++++-----------
+> 1 file changed, 39 insertions(+), 15 deletions(-)
+>=20
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> index 20c2769a8c9d6..32bff2e8463f4 100644
+> --- a/rust/kernel/drm/gem/mod.rs
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -15,6 +15,44 @@
+> };
+> use core::{ops::Deref, ptr::NonNull};
+>=20
+> +/// A macro for implementing [`AlwaysRefCounted`] for any GEM object =
+type.
+> +///
+> +/// Since all GEM objects use the same refcounting scheme.
+> +#[macro_export]
+> +macro_rules! impl_aref_for_gem_obj {
+> +    (
+> +        impl $( <$( $tparam_id:ident ),+> )? for $type:ty
+> +        $(
+> +            where
+> +                $( $bind_param:path : $bind_trait:path ),+
 
-Tested-by: Jesung Yang <y.j3ms.n@gmail.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/Makefile                     | 13 +++++++++----
- scripts/generate_rust_analyzer.py |  2 +-
- 2 files changed, 10 insertions(+), 5 deletions(-)
+Don=E2=80=99t we have to match on some type here?
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 8988ecf32531..d7d19c21b671 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -184,7 +184,7 @@ rustdoc-syn: $(src)/syn/lib.rs rustdoc-clean rustdoc-quote FORCE
- 
- rustdoc-macros: private rustdoc_host = yes
- rustdoc-macros: private rustc_target_flags = --crate-type proc-macro \
--    --extern proc_macro
-+    --extern proc_macro --extern proc_macro2 --extern quote --extern syn
- rustdoc-macros: $(src)/macros/lib.rs rustdoc-clean rustdoc-proc_macro2 \
-     rustdoc-quote rustdoc-syn FORCE
- 	+$(call if_changed,rustdoc)
-@@ -256,9 +256,11 @@ rusttestlib-syn: private rustc_target_flags = $(syn-flags)
- rusttestlib-syn: $(src)/syn/lib.rs rusttestlib-quote FORCE
- 	+$(call if_changed,rustc_test_library)
- 
--rusttestlib-macros: private rustc_target_flags = --extern proc_macro
-+rusttestlib-macros: private rustc_target_flags = --extern proc_macro \
-+    --extern proc_macro2 --extern quote --extern syn
- rusttestlib-macros: private rustc_test_library_proc = yes
--rusttestlib-macros: $(src)/macros/lib.rs FORCE
-+rusttestlib-macros: $(src)/macros/lib.rs \
-+    rusttestlib-proc_macro2 rusttestlib-quote rusttestlib-syn FORCE
- 	+$(call if_changed,rustc_test_library)
- 
- rusttestlib-pin_init_internal: private rustc_target_flags = --cfg kernel \
-@@ -339,7 +341,8 @@ quiet_cmd_rustc_test = $(RUSTC_OR_CLIPPY_QUIET) T  $<
- rusttest: rusttest-macros
- 
- rusttest-macros: private rustc_target_flags = --extern proc_macro \
--	--extern macros --extern kernel --extern pin_init
-+    --extern macros --extern kernel --extern pin_init \
-+    --extern proc_macro2 --extern quote --extern syn
- rusttest-macros: private rustdoc_test_target_flags = --crate-type proc-macro
- rusttest-macros: $(src)/macros/lib.rs \
-     rusttestlib-macros rusttestlib-kernel rusttestlib-pin_init FORCE
-@@ -529,6 +532,8 @@ quiet_cmd_rustc_procmacro = $(RUSTC_OR_CLIPPY_QUIET) P $@
- 		@$(objtree)/include/generated/rustc_cfg $<
- 
- # Procedural macros can only be used with the `rustc` that compiled it.
-+$(obj)/$(libmacros_name): private rustc_target_flags = \
-+    --extern proc_macro2 --extern quote --extern syn
- $(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rlib \
-     $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
- 	+$(call if_changed_dep,rustc_procmacro)
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 5b6f7b8d6918..147d0cc94068 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -110,7 +110,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-     append_crate(
-         "macros",
-         srctree / "rust" / "macros" / "lib.rs",
--        ["std", "proc_macro"],
-+        ["std", "proc_macro", "proc_macro2", "quote", "syn"],
-         is_proc_macro=True,
-     )
- 
--- 
-2.52.0
+e.g.:
+
+            where
+                Self: IntoGemObject + // or whatever the right trait is
+                $( $bind_param:path : $bind_trait:path ),+
+
+> +        )?
+> +    ) =3D> {
+> +        // SAFETY: All gem objects are refcounted
+> +        unsafe impl $( <$( $tparam_id ),+> )? =
+$crate::types::AlwaysRefCounted for $type
+> +        $(
+> +            where
+> +                $( $bind_param : $bind_trait ),+
+> +        )?
+> +        {
+> +            fn inc_ref(&self) {
+> +                // SAFETY: The existence of a shared reference =
+guarantees that the refcount is
+> +                // non-zero.
+> +                unsafe { bindings::drm_gem_object_get(self.as_raw()) =
+};
+
+=E2=80=A6so that we=E2=80=99re sure that things like self.as_raw() =
+exist?
+
+> +            }
+> +
+> +            unsafe fn dec_ref(obj: core::ptr::NonNull<Self>) {
+> +                // SAFETY: `obj` is a valid pointer to an =
+`Object<T>`.
+> +                let obj =3D unsafe { obj.as_ref() }.as_raw();
+> +
+> +                // SAFETY: The safety requirements guarantee that the =
+refcount is non-zero.
+> +                unsafe { bindings::drm_gem_object_put(obj) };
+> +            }
+> +        }
+> +    };
+> +}
+> +
+> +pub(crate) use impl_aref_for_gem_obj;
+> +
+> /// A type alias for retrieving a [`Driver`]s [`DriverFile`] =
+implementation from its
+> /// [`DriverObject`] implementation.
+> ///
+> @@ -253,21 +291,7 @@ extern "C" fn free_callback(obj: *mut =
+bindings::drm_gem_object) {
+>     }
+> }
+>=20
+> -// SAFETY: Instances of `Object<T>` are always reference-counted.
+> -unsafe impl<T: DriverObject> crate::types::AlwaysRefCounted for =
+Object<T> {
+> -    fn inc_ref(&self) {
+> -        // SAFETY: The existence of a shared reference guarantees =
+that the refcount is non-zero.
+> -        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
+> -    }
+> -
+> -    unsafe fn dec_ref(obj: NonNull<Self>) {
+> -        // SAFETY: `obj` is a valid pointer to an `Object<T>`.
+> -        let obj =3D unsafe { obj.as_ref() };
+> -
+> -        // SAFETY: The safety requirements guarantee that the =
+refcount is non-zero.
+> -        unsafe { bindings::drm_gem_object_put(obj.as_raw()) }
+> -    }
+> -}
+> +impl_aref_for_gem_obj!(impl<T> for Object<T> where T: DriverObject);
+>=20
+> impl<T: DriverObject> super::private::Sealed for Object<T> {}
+>=20
+> --=20
+> 2.51.0
+>=20
+>=20
+
+Perhaps worth it to look at the comment above, but as we only expect two
+invocations of this macro, I=E2=80=99d say this is also fine as is.
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
