@@ -1,77 +1,41 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B61C30CDA0
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 14:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904CF26F2AD;
+	Mon, 24 Nov 2025 14:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763992804; cv=none; b=KKczp0HD1VItpweoOpeGtl+PQrdtOAy1nefxm8OOkna5Q9oIbs9buVyuM/jssPUx8sS4AKC/Cn7o2npXLJ+LZnL06KNGUKLdhXa4S1I4p6vcucNj0uaZHTKrjuGY+OD88cGvABwRTRMGFvAXYxVSxQNdmVinchMPQyAwm8d/Gis=
+	t=1763996017; cv=none; b=jl0G6o+3uuWVk/e8Hybf9AMxykyBrR2GUB2k0yXZVH6tIX1+1oURRp6qnKU6vOjjhg+p5FdDKiFKC7dcAIEk4YnTnDX8t553q9BYiutnBe+1uPfR7WjtzbEx0rdPDDVki1LBljd2cOTAJ6Fo9+mubw+vUgi9s5SJXz49ddjsehA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763992804; c=relaxed/simple;
-	bh=fcMTHl1mrz6IyNafxhKxo/CWeJdMQM5MNO1ZxV94RM8=;
+	s=arc-20240116; t=1763996017; c=relaxed/simple;
+	bh=pK4TK3CYWN/Va1V17DjtC5PaSJmrqG1df8MwwngsuRE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QTY9eJlrztYxvediaSG8MsFXy284XDqQKzioQaY6nWqJmenHXz0S+yC9wE5FmHAH+NPLfcbemsGjsQAuSDkJ2DLrHbNPbBWvEedual6uVbvWxHNNtKDN4PQZrrHppM9/4XBU0Y1PzkznvLmdFKmIbo10w0u7PXKsyxGJ43eiAaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=MHY1K4Rj; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=gekIjv0Qt3EklGFGw/OfBIY0Q4HRhfQFeaxIRFZaKTwrrIEbQavG8To452bNk5RBDa1vHyYtxJDUpzFNOVhb3aBqqXxto0+zCee6clcekvpBnDf/o2Cff73O1XT02/5ET/cpsRn43q3kC8CRSwknL7c2Ijw3UcI3a73VZwlmy7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qKkocqa6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="MHY1K4Rj"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-88054872394so61388676d6.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 06:00:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1763992801; x=1764597601; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hmMAzBOpNN1o3idEKTqN7AV/9KSVRTF4wYZAXj4Hq+A=;
-        b=MHY1K4Rjz499jYD5O0qWVpDxHvgJS9pHiaoig1KicjUMzJSWfNecHT08nFEmxlXnYU
-         Xxhm9zLVmEE0TCwb8mi6tBeYUCqyrg/nIittWGULlbOLto6c+b89VPv4iT8h4w2HgTG6
-         M877JMHqiSgyqKB4rFAiZF5SzcAqPrF+LYErerZ6Eeda2Ka3lOwHVqJwUSjHgsjRktfQ
-         AswsT8ZVNfqyV8TPlBFmtel6wPOa9grRSWJ8j8FX8LJU1minkMKJ9DY4DxSJZDg1/5Ak
-         4n2ExOwwlBkEnuFbbhnzg0Y3OYdFITo8y5uylj07WoMRGTlbSu49n8hrm5Mz6F2M1lq2
-         zZZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763992801; x=1764597601;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hmMAzBOpNN1o3idEKTqN7AV/9KSVRTF4wYZAXj4Hq+A=;
-        b=PgRzOZvUQlpNV1nnVBYH9HiMGa5oi1pNZ8gHq/2giGFuziBmJYxRDhGT5Uq2LjOjkk
-         wdPhLwjxPexxOdIh74DAoIZfA6lWLxFwLwMvvirdFm9LYys+336Up6e969+XjDcrORZQ
-         8WWeeeQX/I/UZrL1KLoq+UaOX3Fk6ES9jFqDSzvpLHAI6ckfs6XshaVbYJH2n9NP4C4t
-         rxySr7gXj36FIiPdqlnkmQ7TCrD6cYqRl3TrZPR4Jd5XUOZhWXXIFCHq6KtZQXifA2+V
-         KDIlKsMHui342dlYNzKWaqYvM/XaC71U4xE3wNhX8RLWXVn2LEkuJjGbRbY+TFQOJ1r+
-         Kapg==
-X-Forwarded-Encrypted: i=1; AJvYcCVp4a26bSK6bEbMIjo8jxi5WNUaIzMR60ey9cRIsuqleXZA6SIMzy+nlOQnos7V3np/4F/D1SUA4Zi4gzb3qw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn0S3yprTqYC/uRJ5eACsorPuXbviXtFbgwEm7NJ3neAB9+IwW
-	VPwH4pcM8wCzF0zW/t9hyoiVa+PK3oFr19VCfJO36dXGRUZh/dIXzdbCCiIrrffsEIw=
-X-Gm-Gg: ASbGnct7nbqu5d9bN5SsH+d2xfRipCuUvJeZGjKN2Oj/0UNZRgTNArFAerocGmmEEME
-	IUAtC5lCLJ+nHOgWODxUt7x+uI18ZGZ637L8CIbssSUWtJPzXmvK9RnJIap/hz2fp2MVi4xyNHc
-	SB1dAs7x6tKXsu/BVufM5+V5q2Tj4plgNjxkwesR9FDwCGua4G46e8AOaiKSS0u3JqWi30qwR4B
-	+SSy8jljBlqMaI0upLljD3QRWVgSCkwDkyhDW9yq3GYDGEJ7aoOnJt4hDnRjVm2N6wjNXGm65Xg
-	bB9DoamqJvtCiOOtA5ql3Gydpq1GyyZF02d9YoIOgBa9Rt77DvDK6Sz3C9039vLZCFKC2Mwd/zN
-	K9NYi5or+X36/+AHjT4dPUwhFa8yFKmANdQCqFjnKl0mVNHfV5nIBShMUpCdVkqDfV6AHzCTdo+
-	y5JIS+/xYjvyLzsgNBXMvozuqSsQwyDi8Fb2Mdd1CfieIpF1LEBwFDLIfK
-X-Google-Smtp-Source: AGHT+IGuSC371UbaFuuZi784x1t57RvcTn9R9Ct0e0xNogGjAo+hdKSQh/bz3HardhmkpnbaVEdoTw==
-X-Received: by 2002:a05:6214:1bc5:b0:87d:f666:3bc8 with SMTP id 6a1803df08f44-8847c49c6e7mr166820156d6.10.1763992801080;
-        Mon, 24 Nov 2025 06:00:01 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8846e3000a1sm100155626d6.0.2025.11.24.06.00.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 06:00:00 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vNX6l-00000001uZe-43Fj;
-	Mon, 24 Nov 2025 09:59:59 -0400
-Date: Mon, 24 Nov 2025 09:59:59 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Peter Colberg <pcolberg@redhat.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qKkocqa6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FE8C4CEF1;
+	Mon, 24 Nov 2025 14:53:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763996017;
+	bh=pK4TK3CYWN/Va1V17DjtC5PaSJmrqG1df8MwwngsuRE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qKkocqa6L3yPR17eTtsx9oA7GmLPJ/kzE2daivARZMUeuk8WpagJJBk5ohQNqGBSt
+	 R8XDUXcXmecbtURdyw5ZhbIsKPBmGlCINinHtrcFQ9LZ6XMbxy013iMkr/C/DmXXra
+	 CYQQ8uvF3CiW3YxSRJ3xCxQq7V+aZP80qLuutWCrllRYsOFXTDAgZv6fUvV9uD7okW
+	 MP/m91UFE8V8vLktGOcg3lKLpBEgbIOnMPUVfnYPnthAdd5glJh4G727jNtYA9w8xu
+	 bLCNpwYLCfB+xN81sHccBd0Z7yb8BMuF7Jqi8GSK6d1Q6tMYsTuU83MKUxrZ+FPo1N
+	 QGkaUpnJneUrg==
+Date: Mon, 24 Nov 2025 16:53:32 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Danilo Krummrich <dakr@kernel.org>, Peter Colberg <pcolberg@redhat.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
@@ -80,22 +44,25 @@ Cc: Peter Colberg <pcolberg@redhat.com>,
 	Robin Murphy <robin.murphy@arm.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	Ira Weiny <ira.weiny@intel.com>, linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Alexandre Courbot <acourbot@nvidia.com>,
 	Alistair Popple <apopple@nvidia.com>,
 	Joel Fernandes <joelagnelf@nvidia.com>,
 	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
 Subject: Re: [PATCH 7/8] rust: pci: add physfn(), to return PF device for VF
  device
-Message-ID: <20251124135959.GP233636@ziepe.ca>
-References: <20251119-rust-pci-sriov-v1-0-883a94599a97@redhat.com>
- <20251119-rust-pci-sriov-v1-7-883a94599a97@redhat.com>
+Message-ID: <20251124145332.GB12483@unreal>
+References: <20251119-rust-pci-sriov-v1-7-883a94599a97@redhat.com>
  <20251121232642.GG233636@ziepe.ca>
  <DEF5EC79OOT4.2MT1ET4IKXS5Y@kernel.org>
  <20251122161615.GN233636@ziepe.ca>
- <DEFL4TG0WX1C.2GLH4417EPU3V@kernel.org>
+ <20251122185701.GZ18335@unreal>
+ <DEFKSDBXEQS0.3C79SP3HEG1OY@kernel.org>
+ <20251123063456.GA18335@unreal>
+ <DEFZP148A2NK.29G6N1V1SXT8T@kernel.org>
+ <20251123111823.GD16619@unreal>
+ <20251124135725.GO233636@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -104,50 +71,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DEFL4TG0WX1C.2GLH4417EPU3V@kernel.org>
+In-Reply-To: <20251124135725.GO233636@ziepe.ca>
 
-On Sun, Nov 23, 2025 at 11:43:08AM +1300, Danilo Krummrich wrote:
-> On Sun Nov 23, 2025 at 5:16 AM NZDT, Jason Gunthorpe wrote:
-> > I think to make progress along this line you need to still somehow
-> > validate that the PF driver is working right, either by checking that
-> > the driver is bound to a rust driver somehow or using the same
-> > approach as the core helper.
+On Mon, Nov 24, 2025 at 09:57:25AM -0400, Jason Gunthorpe wrote:
+> On Sun, Nov 23, 2025 at 01:18:23PM +0200, Leon Romanovsky wrote:
+> > > >> That sounds a bit odd to me, what exactly do you mean with "reuse the PF for
+> > > >> VFIO"? What do you do with the PF after driver unload instead? Load another
+> > > >> driver? If so, why separate ones?
+> > > >
+> > > > One of the main use cases for SR-IOV is to provide to VM users/customers
+> > > > devices with performance and security promises as physical ones. In this
+> > > > case, the VMs are created through PF and not bound to any driver. Once
+> > > > customer/user requests VM, that VF is bound to vfio-pci driver and
+> > > > attached to that VM.
+> > > >
+> > > > In many cases, PF is unbound too from its original driver and attached
+> > > > to some other VM. It allows for these VM providers to maximize
+> > > > utilization of their SR-IOV devices.
+> > > >
+> > > > At least in PCI spec 6.0.1, it stays clearly that PF can be attached to SI (VM in spec language).
+> > > > "Physical Function (PF) - A PF is a PCIe Function that supports the SR-IOV Extended Capability
+> > > > and is accessible to an SR-PCIM, a VI, or an SI."
+> > > 
+> > > Hm, that's possible, but do we have cases of this in practice where we bind and
+> > > unbind the same PF multiple times, pass it to different VMs, etc.?
+> > 
+> > It is very common case, when the goal is to maximize hardware utilization.
 > 
-> Do you refer to the
-> 
-> 	if (pf_dev->driver != pf_driver)
-> 
-> check? If so, that's (in a slightly different form) already part of the generic
-> Device::drvdata() accessor.
+> It is a sort of common configuration, but VFIO should be driving the
+> PF directly using its native SRIOV support. There is no need to rebind
+> a driver while SRIOV is still enabled.
 
-Yeah, but by that point it has already returned a bound device pointer
-without proving it is safe to do so..
+It depends on how you created these VFs. If you created them through
+native driver, you will need to unbind and bind it to VFIO.
 
-If you check the flag you are proposing below then it would be OK:
-
-> > I'm not sure the idea to force all drivers to do disable sriov is
-> > going to be easy, and I'd rather see rust bindings progress without
-> > opening such a topic..
-> 
-> I'm sorry, I should have mentioned what I actually propose:
-> 
-> My idea would be to provide a bool in struct pci_driver, which, if set,
-> guarantees that all VFs are unbound when the PF is unbound.
-> 
-> With this bool being set, the PCI bus can provide the guarantee that VF bound
-> implies PF bound; the Rust accessor can then leverage this guarantee.
-> 
-> This can also be leveraged by the C code, where we could have a separate
-> accessor that checks the bool rather than askes the driver to promise that the
-> PF is bound, which pci_iov_get_pf_drvdata() does.
-> 
-> (Although I have to admit that without the additional type system capabilities
-> we have in Rust, it is not that big of an improvement.)
-
-This seems like it has a decent chance of succeeding..
-
-Though as I said in my other email, you'd probably want a version
-where there is WARN_ON if that common code is actually triggered as it
-would be a driver bug to misorder its destruction.
-
-Jason
+Thanks
