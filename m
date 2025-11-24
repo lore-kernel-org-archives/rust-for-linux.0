@@ -1,53 +1,53 @@
 Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8662313E19;
-	Mon, 24 Nov 2025 15:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B9A3164A6;
+	Mon, 24 Nov 2025 15:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763997871; cv=pass; b=rPGpkj3gWVwa9/orsZiViO3bq3i/aTGsncyxFDR6PHA/PRmxh1UDy/1Eedaiii7FlEUBFZK5EPmQIxH6i8pXb3W8O47K4M12iPp9Epw/usUHZTRGiA6Lyu31jKI5DZP54icpkR1N5mReSQ4nhq2sVoKNSOsJ3LIC7wuU7m+xRt4=
+	t=1763997957; cv=pass; b=AgkZT3ELQSWlKFG2hi2g+i3hrdDcHoqFU86IdmPxjmQ3SB7mn5M+Hgr2z25Ae1e0dMRm52qS7vqI9Ql0AKKiTy0BoMwfaYrNrDocqKjxwswHKZ+XRksn3P/pfxyOyeh7t1xzANkmW+PmNquooZbbIG7FUCEjPiqp1Sv2zq0yvBY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763997871; c=relaxed/simple;
-	bh=Ji6fYfYutm8QXFWFnkeNbapma5AzhqoL58q6EQn7p4g=;
+	s=arc-20240116; t=1763997957; c=relaxed/simple;
+	bh=xkNDproYaK80tjx8HPwuSyMiamVxnC9H4y5bQ+7aft8=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=ZUtnkX9qIV91GmWT+mw5klu0BEk4T2C4Hgk/OC/6SS8lSqFesSplpS36VhbTWxk2ECZrvB3Yssd3L9j169qRZnL6ViftcjnzHDAb0gh1tNR3imWVUc3M8O7THtVfPse7QtIPD52xxtEZWsVtGjLbRm5lYUz1I+iOqaRmo/dzAhw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=baC3qx5R; arc=pass smtp.client-ip=136.143.184.112
+	 Message-Id:References:To; b=OeBVqvciGNmkh5RrJbFgdgSIGz4C+2VaMZg1t8VgZNGu+ZsT4Bj4QZVYTj72PlVcU6uXWz+CgjXxj0eckdaiN2k+bfYl7R9qkQ/oW7eFc3hrRAaYCSnN7/PLYbEAO3PD1sYayidnWV+aMhUFCyx5HR0x7GXTtHf54tQkVBAfojQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Cu2ATwBE; arc=pass smtp.client-ip=136.143.184.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="baC3qx5R"
-ARC-Seal: i=1; a=rsa-sha256; t=1763997849; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Cu2ATwBE"
+ARC-Seal: i=1; a=rsa-sha256; t=1763997941; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=fKcG7yqSD60UQf6/NxIdqIodGmP/daHMrMjr8g3DCD9LzXxB6DInn3/MI9X77b36Jmb4XqrPRTQNOzV19Yr66je0BmbnEnPlaa0ir8/TbeX/P4e6yPlmZiwITTB7Due2nYCwqXiNzAbfMJz2OR71DqjbKwjwYCMw/8w1D24bAtE=
+	b=UI1hfli3Q69C3/K6yBopCQ7ESXI2e2Nd7mDdMIRqXoDT5+UJdqOt1EljS9gT6wGIcGNsSUN6j5YpJRlRPw4Cbcccvs7aEfZjRpy8hUxTNGS6rv8tCoiwZ0P5uKsZhgd2kcOJsTK4XCJ5Pm2mpWJkSiwWeDisG2LweuEpRukD5Ts=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1763997849; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=6iEf7VMHNEASOG8Vh3StuVEOElqIX2Ewj+ACldc5thQ=; 
-	b=cq9BL3EjPHETFSq+l8REYUjl9EN1h4h8ZXkmI9RSGIkvOFSoZwbLNWKh6YmRoDrdia/BbgqfLJmBE2xlo+J7+sWVvcVFPflzc/j0Aqml3a4OPOkmir/nI+4FNXtxaFqeJlFb52IyCz9atW9Yk69Y2lgryalb9CvfxMnf2DnZWK8=
+	t=1763997941; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=zvAP0rCzyafXkjCBmJbox5x2Ji8oWWUm5n8q37B7Clk=; 
+	b=TvehLIeBHZVDTbd+PHqKKfR3oxPO18QbGPVBH8AgQPgAH5HA4z/DGFFH1+9AyRax7ZkSUhHeVZAwM4JDChUzox/GMpv04VjKelzV7LV5hyip3MQuFoOJgB0akjV7n/iLhqY3VEJgJAA18waXkOloUCToFeT+rEu9nWngQ/a0tXk=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763997849;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763997941;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=6iEf7VMHNEASOG8Vh3StuVEOElqIX2Ewj+ACldc5thQ=;
-	b=baC3qx5RKVZ7xlE/2VKu4YesxTU8qcmS6WgRm6Ye8PFHYJPgvTs0LAbP0Qd62PB4
-	rq7pjaRUVRT2GlTVi5xPP/JDP0/2qqXQL3d3ppnoyKZZYh1QGu6fXKpWA21YtLwt7qe
-	rKAYpDPqiaFwCV277gCXnz88QvM1Kd0hmK5fCEsU=
-Received: by mx.zohomail.com with SMTPS id 1763997846696691.7351681305079;
-	Mon, 24 Nov 2025 07:24:06 -0800 (PST)
+	bh=zvAP0rCzyafXkjCBmJbox5x2Ji8oWWUm5n8q37B7Clk=;
+	b=Cu2ATwBEL/ND0jjLi5JELDGDQ54hE8CdVQxodV1a8MfUsXE/Fo2e7g0YEtNrZF/A
+	gbf1+zwdZHCQDh3xULF1XutbbaHKbcYeeRt92x5J0tY1syNIP3K3jHmiwr3HYltBW7k
+	W2PCzjV9gfLEYSywB+cU8D2UlNN/X7owyxmXD+bA=
+Received: by mx.zohomail.com with SMTPS id 1763997939655515.524856708236;
+	Mon, 24 Nov 2025 07:25:39 -0800 (PST)
 Content-Type: text/plain;
-	charset=utf-8
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v5 1/8] rust/drm: Add gem::impl_aref_for_gem_obj!
+Subject: Re: [PATCH v5 4/8] rust: gem: Introduce DriverObject::Args
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251023212540.1141999-2-lyude@redhat.com>
-Date: Mon, 24 Nov 2025 12:23:51 -0300
+In-Reply-To: <20251023212540.1141999-5-lyude@redhat.com>
+Date: Mon, 24 Nov 2025 12:25:23 -0300
 Cc: dri-devel@lists.freedesktop.org,
  rust-for-linux@vger.kernel.org,
  Alice Ryhl <aliceryhl@google.com>,
@@ -64,143 +64,114 @@ Cc: dri-devel@lists.freedesktop.org,
  Andreas Hindborg <a.hindborg@kernel.org>,
  Trevor Gross <tmgross@umich.edu>,
  Asahi Lina <lina+kernel@asahilina.net>,
- Shankari Anand <shankari.ak0208@gmail.com>
+ Shankari Anand <shankari.ak0208@gmail.com>,
+ "open list:DRM DRIVER FOR NVIDIA GPUS [RUST]" <nouveau@lists.freedesktop.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <1E5BE820-90BA-4135-82A8-05777B738BD5@collabora.com>
+Message-Id: <799528A2-B13E-4F32-9EDE-504CE5D97E63@collabora.com>
 References: <20251023212540.1141999-1-lyude@redhat.com>
- <20251023212540.1141999-2-lyude@redhat.com>
+ <20251023212540.1141999-5-lyude@redhat.com>
 To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
-Hi Lyude,
+
 
 > On 23 Oct 2025, at 18:22, Lyude Paul <lyude@redhat.com> wrote:
 >=20
-> In the future we're going to be introducing more GEM object types in =
-rust
-> then just gem::Object<T>. Since all types of GEM objects have =
-refcounting,
-> let's introduce a macro that we can use in the gem crate in order to =
-copy
-> this boilerplate implementation for each type: =
-impl_aref_for_gem_obj!().
+> This is an associated type that may be used in order to specify a =
+data-type
+> to pass to gem objects when construction them, allowing for drivers to =
+more
+> easily initialize their private-data for gem objects.
 >=20
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 >=20
 > ---
-> V5:
-> * Move .as_raw() call to `let obj` in dec_ref, to ensure that the =
-reference
->  to object is not live by the time that we call drm_gem_object_put().
-> * Add missing #[macro_export] annotation
+> V3:
+> * s/BaseDriverObject/DriverObject/
+> V4:
+> * Fix leftover reference to BaseObjectDriver in rustdoc for
+>  DriverObject::Args
 >=20
-> rust/kernel/drm/gem/mod.rs | 54 +++++++++++++++++++++++++++-----------
-> 1 file changed, 39 insertions(+), 15 deletions(-)
+> drivers/gpu/drm/nova/gem.rs |  5 +++--
+> rust/kernel/drm/gem/mod.rs  | 13 ++++++++++---
+> 2 files changed, 13 insertions(+), 5 deletions(-)
 >=20
-> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index 20c2769a8c9d6..32bff2e8463f4 100644
-> --- a/rust/kernel/drm/gem/mod.rs
-> +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -15,6 +15,44 @@
-> };
-> use core::{ops::Deref, ptr::NonNull};
+> diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
+> index 2760ba4f3450b..173077eeb2def 100644
+> --- a/drivers/gpu/drm/nova/gem.rs
+> +++ b/drivers/gpu/drm/nova/gem.rs
+> @@ -18,8 +18,9 @@ pub(crate) struct NovaObject {}
 >=20
-> +/// A macro for implementing [`AlwaysRefCounted`] for any GEM object =
-type.
-> +///
-> +/// Since all GEM objects use the same refcounting scheme.
-> +#[macro_export]
-> +macro_rules! impl_aref_for_gem_obj {
-> +    (
-> +        impl $( <$( $tparam_id:ident ),+> )? for $type:ty
-> +        $(
-> +            where
-> +                $( $bind_param:path : $bind_trait:path ),+
-
-Don=E2=80=99t we have to match on some type here?
-
-e.g.:
-
-            where
-                Self: IntoGemObject + // or whatever the right trait is
-                $( $bind_param:path : $bind_trait:path ),+
-
-> +        )?
-> +    ) =3D> {
-> +        // SAFETY: All gem objects are refcounted
-> +        unsafe impl $( <$( $tparam_id ),+> )? =
-$crate::types::AlwaysRefCounted for $type
-> +        $(
-> +            where
-> +                $( $bind_param : $bind_trait ),+
-> +        )?
-> +        {
-> +            fn inc_ref(&self) {
-> +                // SAFETY: The existence of a shared reference =
-guarantees that the refcount is
-> +                // non-zero.
-> +                unsafe { bindings::drm_gem_object_get(self.as_raw()) =
-};
-
-=E2=80=A6so that we=E2=80=99re sure that things like self.as_raw() =
-exist?
-
-> +            }
-> +
-> +            unsafe fn dec_ref(obj: core::ptr::NonNull<Self>) {
-> +                // SAFETY: `obj` is a valid pointer to an =
-`Object<T>`.
-> +                let obj =3D unsafe { obj.as_ref() }.as_raw();
-> +
-> +                // SAFETY: The safety requirements guarantee that the =
-refcount is non-zero.
-> +                unsafe { bindings::drm_gem_object_put(obj) };
-> +            }
-> +        }
-> +    };
-> +}
-> +
-> +pub(crate) use impl_aref_for_gem_obj;
-> +
-> /// A type alias for retrieving a [`Driver`]s [`DriverFile`] =
-implementation from its
-> /// [`DriverObject`] implementation.
-> ///
-> @@ -253,21 +291,7 @@ extern "C" fn free_callback(obj: *mut =
-bindings::drm_gem_object) {
+> impl gem::DriverObject for NovaObject {
+>     type Driver =3D NovaDriver;
+> +    type Args =3D ();
+>=20
+> -    fn new(_dev: &NovaDevice, _size: usize) -> impl PinInit<Self, =
+Error> {
+> +    fn new(_dev: &NovaDevice, _size: usize, _args: Self::Args) -> =
+impl PinInit<Self, Error> {
+>         try_pin_init!(NovaObject {})
 >     }
 > }
+> @@ -33,7 +34,7 @@ pub(crate) fn new(dev: &NovaDevice, size: usize) -> =
+Result<ARef<gem::Object<Self
+>             return Err(EINVAL);
+>         }
 >=20
-> -// SAFETY: Instances of `Object<T>` are always reference-counted.
-> -unsafe impl<T: DriverObject> crate::types::AlwaysRefCounted for =
-Object<T> {
-> -    fn inc_ref(&self) {
-> -        // SAFETY: The existence of a shared reference guarantees =
-that the refcount is non-zero.
-> -        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
-> -    }
-> -
-> -    unsafe fn dec_ref(obj: NonNull<Self>) {
-> -        // SAFETY: `obj` is a valid pointer to an `Object<T>`.
-> -        let obj =3D unsafe { obj.as_ref() };
-> -
-> -        // SAFETY: The safety requirements guarantee that the =
-refcount is non-zero.
-> -        unsafe { bindings::drm_gem_object_put(obj.as_raw()) }
-> -    }
-> -}
-> +impl_aref_for_gem_obj!(impl<T> for Object<T> where T: DriverObject);
+> -        gem::Object::new(dev, aligned_size)
+> +        gem::Object::new(dev, aligned_size, ())
+>     }
 >=20
-> impl<T: DriverObject> super::private::Sealed for Object<T> {}
+>     /// Look up a GEM object handle for a `File` and return an =
+`ObjectRef` for it.
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> index 67813cfb0db42..d448c65fe5e13 100644
+> --- a/rust/kernel/drm/gem/mod.rs
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -65,8 +65,15 @@ pub trait DriverObject: Sync + Send + Sized {
+>     /// Parent `Driver` for this object.
+>     type Driver: drm::Driver;
 >=20
+> +    /// The data type to use for passing arguments to =
+[`DriverObject::new`].
+> +    type Args;
+> +
+>     /// Create a new driver data object for a GEM object of a given =
+size.
+> -    fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl =
+PinInit<Self, Error>;
+> +    fn new(
+> +        dev: &drm::Device<Self::Driver>,
+> +        size: usize,
+> +        args: Self::Args,
+> +    ) -> impl PinInit<Self, Error>;
+>=20
+>     /// Open a new handle to an existing object, associated with a =
+File.
+>     fn open(_obj: &<Self::Driver as drm::Driver>::Object, _file: =
+&DriverFile<Self>) -> Result {
+> @@ -247,11 +254,11 @@ impl<T: DriverObject> Object<T> {
+>     };
+>=20
+>     /// Create a new GEM object.
+> -    pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> =
+Result<ARef<Self>> {
+> +    pub fn new(dev: &drm::Device<T::Driver>, size: usize, args: =
+T::Args) -> Result<ARef<Self>> {
+>         let obj: Pin<KBox<Self>> =3D KBox::pin_init(
+>             try_pin_init!(Self {
+>                 obj: Opaque::new(bindings::drm_gem_object::default()),
+> -                data <- T::new(dev, size),
+> +                data <- T::new(dev, size, args),
+>                 // INVARIANT: The drm subsystem guarantees that the =
+`struct drm_device` will live
+>                 // as long as the GEM object lives.
+>                 dev: dev.into(),
 > --=20
 > 2.51.0
 >=20
 >=20
 
-Perhaps worth it to look at the comment above, but as we only expect two
-invocations of this macro, I=E2=80=99d say this is also fine as is.
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
