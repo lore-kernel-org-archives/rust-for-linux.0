@@ -1,94 +1,225 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013053.outbound.protection.outlook.com [40.93.201.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE5B2E7F1D
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 09:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763976863; cv=none; b=SEaK7YgoMboxfG9+H7k5UNVmpzYxgHBEXW2XGv6UQp8pAX/ysrAoc0GXWfy5MMBa35OPCKYlmUUClKot3AbRTjgbCyOpRDAbXYLWpmJVSZqyTmQpLBhoQCCjjIWLKUPDSt3m8aF3e0tys86/Kubm7VXOq42S++FPLjJFg2wwumQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763976863; c=relaxed/simple;
-	bh=LDlTAi3LSr6VtjSJ2uDZPnNYms1HA69Mh0eqqO6nCr4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eZfV3tE1fzc7gEb23vkfoc9t97tUj0R5v0tHTcTT88tWaMhJb2nzYroiGQ5q4CKNPfk55sxHblyWgHh6Q8kYGmR5JWzE1S8JMBvbBrr906hJwJzl84ZqHsG4niqgOr9MHD6NBGO8aVglEUdDE5VKVuvzr27k98XjFbGYAklxRUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IfJlFcD3; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F302F7462;
+	Mon, 24 Nov 2025 10:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763978959; cv=fail; b=SHveq5dezf6SMNqdDo5lZg7htK590F6YHFlLDNL4ngIL2e/n+EB+2CbVF9D4s6xNF0gyJstpIWOaMo67GyZ/7e65nAvcOtgTf2Yp31LDQDNYeB7qx+jCkDn6DQtev6Vi/xXZZjAHHQnFgEChifefZBSLK8O3l/033oiivYnXCDQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763978959; c=relaxed/simple;
+	bh=Z+g3MOgcEq/FAhhfZVzwTkMZCn6Zi8aRYaCl2VWZ8Z8=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ewJErG2sCGGDLh3faBzdocYEFc+mJ/WeX6xc73hycco+Z3l/pMI+SBfwF3fVrh4mtZbtTySV2/D5LgPsII1vXCOfndkw3fx38bqNVf4OcjpmIQzUEQLgvqgWaAzjExjYf8ucDor8PHmOZmv34utcmoedY6Yp2iYyTI8R44Q3ItU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GYGUapyp; arc=fail smtp.client-ip=40.93.201.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IfJlFcD3"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477a1e2b372so34289115e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 01:34:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1763976860; x=1764581660; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yiEWKVTpV26Kp0m9NO7UTLohVhVRfRIj8DxXW9L3Qkc=;
-        b=IfJlFcD3u6zdajG3W9E7q0v2CxQu52ZQldxzfYYrhrPODm3upUfFiSRso1l2MKfGHE
-         IQRcYy7W3+Lf6ghC2s7nBnaHbkHwjNOveZCIz0/qX3uXCNnJZYwW3hUl7GWKo1sFHIWV
-         SXqF654x1s/lupF+otBd4JpbvfowTa7fT1U4HUphmbkQU68ekiNr7K/x2Q57WKbeisb3
-         wK/rEKJ9hpt4+tqRwK+0zuAAdVuAoCSwWL99trKTC40W0cHcKSRGntaRzKglmTIXptMC
-         KiRalTlw4v4PywcVarcTVvJOWpkUe51S2Cr3sxZSzfOTW4a/wnbtw0SmzhrNn+X7a1+g
-         XgCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763976860; x=1764581660;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yiEWKVTpV26Kp0m9NO7UTLohVhVRfRIj8DxXW9L3Qkc=;
-        b=ne2Z3xmR429XhOjapKP41fCH1deOjg9BaXIGJuHO3OZTd4P5zz/IfBzCjf3I9RJRIu
-         hB8E0DYx2rW8jS1aJixL85OoAnP8m5pODukushMOgwRsk70Yy2k4symozV1cK87U5lcv
-         rlMnNst/fZEHgMJS1oUclUHI7rNGVqUf63Hk43MOYUZ7v2wZ+vu8xxA25LZrXiqDnlGb
-         mM4usWgbWoMyM0Sby5KlsnJIx01N/peCvr7vzmal53r5S2id7qO+P0f/y3DHfc4OuCTi
-         QjLZabNQtv6gx6sij/12Sx/mYJpYyw0GjweLKFtoU0K2wn/aY3unTkbpVec5aSJTMs+g
-         PyIw==
-X-Forwarded-Encrypted: i=1; AJvYcCWmTFcKLzxelErqMs7JDDwcPz2evtslloAA+RPFuCFps1dbzlpAhqpvZcGGDtI1mKuv+5Wq5dhaKdhqQwmQBw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzX3dQVrzsh2cOXgIyw+hw6jpxZmFtUWAxkghKqjANoDdxYap5v
-	adugYZ413SA1kQwbOF/UK5oGcZikhu2vJaaDEhoMWrxMPdGfaCW56Z2Ng/ohYGAYfWedLst1L4S
-	6ZPwl04QqfCiQoQzzDw==
-X-Google-Smtp-Source: AGHT+IES0oSYdajY95Fl6ic08kLA52v8NitYxFu3XFh9EK/Qqq5G86kCYtHHtgZ6x/AImmcWR8n1I8eukpGbHdo=
-X-Received: from wmfu22.prod.google.com ([2002:a05:600c:1396:b0:477:5546:738])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3553:b0:477:63b5:7148 with SMTP id 5b1f17b1804b1-477c0174840mr103449195e9.6.1763976860502;
- Mon, 24 Nov 2025 01:34:20 -0800 (PST)
-Date: Mon, 24 Nov 2025 09:34:19 +0000
-In-Reply-To: <20251122190908.259929-3-knavaneeth786@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GYGUapyp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G8HQuzT+BC+Io4pohlmTwYsVt3yKHrMPxykdIf3qTqTZ2O/HrjMpZVDlu0QeiRUe0rk9VC5yPOxGJ9AfPrZxycJu8+iMhjJDjKnjg07RqmxYBvuOI23BrQZRxYs8dLfPMqirnaN5vdWKlLviLeQxDvdye6CQqQhrfBBQsBPr/dLF1ycBXqs+F5FJp128FBwzkAvc44M7Iu+YWiV9+MPM50Ol2DHM+FlMXXIRVe55xqHpAwr2hqOZR7gKiVylapyM+F0NEHAV/7/oKYLR/qS9j/P9ULfhYLT9kRs/odD8OiUUWw6H2Hm7Fks5shPw10Lfau68jWyg/xEDclJZUPwfYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HayH3pEFaJVC+lWDqcxHaNHXPpR0IDsy5zKuxUfjMiw=;
+ b=dwM6AhoOe5L0rZiLO/06wV2MrQLnaK4eYqdy18uKR/NPTpFw5LdFmrlAKrTISb6CKgdnWy0SJEXs2qnF+YYphz2EhqsGRbSQ6Hiq7vYxNe+uKur05grDCkRHje9tImFa3qKjVNEBXN7+LqWZbPAG+BIZ9DaVbTaqvvx/eyErpBlRlLCnw4fX02+Mt6KTmEbLTshVOzcSSQrptBbA1AX29umKCIMQ+6b/gqB7DqX3LFrR9YwckffTmgQIaldYrYFHCZ8tlfICMzEiEZqCf4GqN9ww+i68dfDb8BmsJH+w9jq9HiXi1PB9+fI/zTQXQu94ceg/BCfj9bR0CUB7ZqGfLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HayH3pEFaJVC+lWDqcxHaNHXPpR0IDsy5zKuxUfjMiw=;
+ b=GYGUapyprF3aNq1OBzk7tscxXv1/NKtA9aPsc6JC7NLubzqUxCrkadUEQFQnpOUOUWX85IitQX99mo+YSorF0nw+5zs1rUIIsss2l4GgAHHNEyn7nvc4T2h8MSVuvmHJGFwm6XrOU66SqJzurN8p+EvFQVxeXJAth9aoYCxYtXcyO8IqxSAJxWRpigCUuPEWlDvtw9t+kMy1jZVDHHwAfa9RJHft9UxQ9OxfpeJ+9MUV0NJpwSKitrEctZ+IfbHgl1hnYkD63y2xEXggT7BfpAL0Z2pf6rr8qfyu97by97v+O5rSTLJ8quRXwY14bE/l0dLYdlNdmUhAV9qlNZUtsg==
+Received: from BN9PR03CA0600.namprd03.prod.outlook.com (2603:10b6:408:10d::35)
+ by CY8PR12MB7170.namprd12.prod.outlook.com (2603:10b6:930:5a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Mon, 24 Nov
+ 2025 10:09:12 +0000
+Received: from BN1PEPF00004681.namprd03.prod.outlook.com
+ (2603:10b6:408:10d:cafe::a7) by BN9PR03CA0600.outlook.office365.com
+ (2603:10b6:408:10d::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.17 via Frontend Transport; Mon,
+ 24 Nov 2025 10:08:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN1PEPF00004681.mail.protection.outlook.com (10.167.243.87) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9366.7 via Frontend Transport; Mon, 24 Nov 2025 10:09:12 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 24 Nov
+ 2025 02:08:59 -0800
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 24 Nov
+ 2025 02:08:56 -0800
+Received: from inno-thin-client (10.127.8.13) by mail.nvidia.com (10.129.68.9)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 24
+ Nov 2025 02:08:47 -0800
+Date: Mon, 24 Nov 2025 12:08:46 +0200
+From: Zhi Wang <zhiw@nvidia.com>
+To: Alice Ryhl <aliceryhl@google.com>
+CC: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <bhelgaas@google.com>,
+	<kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+	<lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+	<markus.probst@posteo.de>, <helgaas@kernel.org>, <cjia@nvidia.com>,
+	<smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+	<kwankhede@nvidia.com>, <targupta@nvidia.com>, <acourbot@nvidia.com>,
+	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>
+Subject: Re: [PATCH v7 3/6] rust: io: factor common I/O helpers into Io
+ trait
+Message-ID: <20251124120846.267078e5.zhiw@nvidia.com>
+In-Reply-To: <aSB1Hcqr6W7EEjjK@google.com>
+References: <20251119112117.116979-1-zhiw@nvidia.com>
+	<20251119112117.116979-4-zhiw@nvidia.com>
+	<aSB1Hcqr6W7EEjjK@google.com>
+Organization: NVIDIA
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251122190908.259929-1-knavaneeth786@gmail.com> <20251122190908.259929-3-knavaneeth786@gmail.com>
-Message-ID: <aSQmmxRzFR0Bqj1v@google.com>
-Subject: Re: [PATCH 2/2] rust: kernel: document safety for as_str_unchecked
-From: Alice Ryhl <aliceryhl@google.com>
-To: Navaneeth K <knavaneeth786@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004681:EE_|CY8PR12MB7170:EE_
+X-MS-Office365-Filtering-Correlation-Id: cce79c1d-22ad-4704-b5f7-08de2b418444
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|36860700013|1800799024|376014|82310400026|7053199007|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?aK4pYzUFSQiziCUeI98R+aiHNzabLMOzcuK+ymnxTdl1YwvJBVy40NGGjFKE?=
+ =?us-ascii?Q?XE6FqRScLfIbk4GDlvpTxOJLgxwy4FDSwUOfvfpXsaScY0T2CqN206Igp+mL?=
+ =?us-ascii?Q?jMkm/uhHhl6ET0yd1EG47bkLCE9n1i0pyNbBcKy51SqWv2abPP/7uS6jAcOs?=
+ =?us-ascii?Q?gogr5SA6XVLpKdZJX+uxNXty0rLlQZLovnHQUEGUUi3qJnJY0/YNd6DrW48v?=
+ =?us-ascii?Q?23QeB6aBTuiUilnknPKGIOvo8vhKLLR8jqMEwFgQQ+dIgxWx8z+7UoLDAYDO?=
+ =?us-ascii?Q?nsUlKC6nblP1HAX0AiMQK++LzIaD7M40MzBeOBycLlSaRuCnZjvkK+sgqMyE?=
+ =?us-ascii?Q?7QWx58wS93VgwWlBsG02WZj6ljOvKHAcfWZE7lrvyEKYgVO4Sk4llyQHxzSS?=
+ =?us-ascii?Q?N1rsDERDCqtifhzxBI8myUaA5BGBeQN/UXrUny/6bPK1aYx6jOcqYd4Y/Ayo?=
+ =?us-ascii?Q?o+GefvROjYbi3JXik/IZP6DlT2XPB2vjxyio0AIUsFwOJVfwS2Ng+K1+Mu08?=
+ =?us-ascii?Q?IMThzboB7l0EsUeMeJ1KNTUbQ4yL7mFMFQio43GczlznRcWAhSP1gAmLlUFl?=
+ =?us-ascii?Q?0sJkxnRRrcx9Hoz8POowG8qTR50kLv0BXrJ+quu8j0crlAQlhziJl+hzkRI9?=
+ =?us-ascii?Q?QnCts6Gp1iMlI+ZR3iwEA23H/5VV5R7RRpH/6SXfANDMQh2zwPmzbB0LULHq?=
+ =?us-ascii?Q?un/FT0DTgkOAVUhlaPxEOyqQch9IFU9yvWrnmzlESsuFJfak6LAb4COdXX08?=
+ =?us-ascii?Q?ZaKkjRiMEOnF5LVJoN0RJavk4GHRCXLHEJ6sK2OFBjWc9Tlh601HuysRXmET?=
+ =?us-ascii?Q?MdXf9gRB44ZUL29WfA7nUOdJjWWVLiqqeCA9McvGi/RU/mw/rviPlbI8Tk4O?=
+ =?us-ascii?Q?98zlArjqv3ireHhR1XDi1VxyCXNTlS01QZAIMNdhhf+4SD5i31ufpnUT9hSz?=
+ =?us-ascii?Q?VCsZj34da7z0AxbmqlMP/b0Q8q9mt4xI/Hr7j2+x/kSOwze/tvw/ivVZ77X4?=
+ =?us-ascii?Q?MiGd3xcDnlh+jqKBDUPE3vNPiyRE48daZnKdCK+mBknfj9oE7VBk+ifArmkV?=
+ =?us-ascii?Q?hbVMPBNrn2bzNktW6So+sbiPG6WOl5FDVNOBKDGuEDMKPV4Dj8rICk95V08d?=
+ =?us-ascii?Q?HW6eLYqC72WYWsMb0J4vOxdJkKrHxK6C6JLrhhSMsGFUQ086mluI7Xl3SUks?=
+ =?us-ascii?Q?s5sAvXuvjbTPIt8w2EyJJnwKPAUTsoZaqHUHCtqyFYJ+fHySrlilG1eB2BQL?=
+ =?us-ascii?Q?YjYm+T/gGpIDjLU2bWm1YEQBapxQaAru0A499cU40CGS+2Nxzin3jHgPxjMF?=
+ =?us-ascii?Q?ysEH7ryb600MdSySwlV/4fymMO/rECYOxu/LzA7NRMRQO5oHMI1vfcC+c+a5?=
+ =?us-ascii?Q?EqEOKZGyh3JfiwTt8SMK9CHcmTK4Ezld/bGrj8u5VGrYJiLXTFRroP37msTt?=
+ =?us-ascii?Q?9bsCej5dqeQyAfocxrStfv7ZxA5aLdp0z3kD0OXYlhFWjUgQ4g43BIcyOuTI?=
+ =?us-ascii?Q?BKgo2vHuVeUoe0TKPxGG3pTAmSyX7OCtCV/Rz0H8UVqpDXIrLOEg0u2SHPql?=
+ =?us-ascii?Q?y7ltBSjIsj9OEMdu/xF+T4t8VcYC3d2HVZSRtWYT?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(36860700013)(1800799024)(376014)(82310400026)(7053199007)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 10:09:12.3204
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cce79c1d-22ad-4704-b5f7-08de2b418444
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00004681.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7170
 
-On Sat, Nov 22, 2025 at 07:09:08PM +0000, Navaneeth K wrote:
-> Replace the TODO safety comment with a proper explanation.
-> The safety of from_utf8_unchecked relies on the caller guaranteeing
-> that the input bytes are valid UTF-8.
+On Fri, 21 Nov 2025 14:20:13 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
+
+> On Wed, Nov 19, 2025 at 01:21:13PM +0200, Zhi Wang wrote:
+> > The previous Io<SIZE> type combined both the generic I/O access
+> > helpers and MMIO implementation details in a single struct.
+> > 
+> > To establish a cleaner layering between the I/O interface and its
+> > concrete backends, paving the way for supporting additional I/O
+> > mechanisms in the future, Io<SIZE> need to be factored.
+> > 
+> > Factor the common helpers into new {Io, Io64} traits, and move the
+> > MMIO-specific logic into a dedicated Mmio<SIZE> type implementing
+> > that trait. Rename the IoRaw to MmioRaw and update the bus MMIO
+> > implementations to use MmioRaw.
+> > 
+> > No functional change intended.
+> > 
+> > Cc: Alexandre Courbot <acourbot@nvidia.com>
+> > Cc: Alice Ryhl <aliceryhl@google.com>
+> > Cc: Bjorn Helgaas <helgaas@kernel.org>
+> > Cc: Danilo Krummrich <dakr@kernel.org>
+> > Cc: John Hubbard <jhubbard@nvidia.com>
+> > Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 > 
-> Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
-> ---
->  rust/kernel/str.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> I said this on a previous version, but I still don't buy the split
+> into IoFallible and IoInfallible.
 > 
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index 5c74e5f77601..2801388c6bd1 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -385,7 +385,7 @@ pub fn to_str(&self) -> Result<&str, core::str::Utf8Error> {
->      /// ```
->      #[inline]
->      pub unsafe fn as_str_unchecked(&self) -> &str {
-> -        // SAFETY: TODO.
-> +        // SAFETY: The caller guarantees that the contents are valid UTF-8.
->          unsafe { core::str::from_utf8_unchecked(self.as_bytes()) }
+> For one, we're never going to have a method that can accept any Io -
+> we will always want to accept either IoInfallible or IoFallible, so
+> the base Io trait serves no purpose.
+> 
+> For another, the docs explain that the distinction between them is
+> whether the bounds check is done at compile-time or runtime. That is
+> not the kind of capability one normally uses different traits to
+> distinguish between. It makes sense to have additional traits to
+> distinguish between e.g.:
+> 
+> * Whether IO ops can fail for reasons *other* than bounds checks.
+> * Whether 64-bit IO ops are possible.
+> 
+> Well ... I guess one could distinguish between whether it's possible
+> to check bounds at compile-time at all. But if you can check them at
+> compile-time, it should always be possible to check at runtime too, so
+> one should be a sub-trait of the other if you want to distinguish
+> them. (And then a trait name of KnownSizeIo would be more idiomatic.)
+> 
 
-As far as I know another patch is deleting this method, so I don't think
-there is anything to fix anymore.
+Thanks a lot for the detailed feedback. Agree with the points. Let's
+keep the IoFallible and IoInfallible traits but not just tie them to the
+bound checks in the docs.
 
-Alice
+> And I'm not really convinced that the current compile-time checked
+> traits are a good idea at all. See:
+> https://lore.kernel.org/all/DEEEZRYSYSS0.28PPK371D100F@nvidia.com/
+> 
+> If we want to have a compile-time checked trait, then the idiomatic
+> way to do that in Rust would be to have a new integer type that's
+> guaranteed to only contain integers <= the size. For example, the
+> Bounded integer being added elsewhere.
+> 
+
+Oops, this is a interesting bug. :) I think we can apply the bound
+integer to IoFallible and IoInfallible to avoid possible problems
+mentioned above. E.g. constructing a Bounded interger when constructing
+Mmio and ConfigSpace objects and use them in the boundary checks in the
+trait methods.
+
+I saw Alex had already had an implementation of Bounded integer [1] in
+rust-next. While my patchset is against driver-core-testing
+branch. Would it be OK that we move on without it and switch to Bounded
+integer when it is landed to driver-core-testing? I am open to
+suggestions. :)
+
+Z.
+
+[1]
+https://lore.kernel.org/all/CANiq72nV1zwoCCcHuizdfqWF=e8hvd6RO1CBXTEt73eqe4ayaA@mail.gmail.com/
+> Alice
+
