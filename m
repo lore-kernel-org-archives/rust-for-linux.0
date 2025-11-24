@@ -1,101 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF418F49;
-	Mon, 24 Nov 2025 18:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A652BEC57;
+	Mon, 24 Nov 2025 18:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764007479; cv=none; b=VPucNO6af9Jx2FCnNW1P8KX4g9PGvwzX6DDhmirngyvNmhFrwFOMRRckM7kegQaerf7+wxsoOUZYIP3MMDOIrCkXilCU+HXtN9ylmS6JH97ZEU2GDcIF2DQgMp1VJZ6PnQqLw6/Cq/0gLiK2pVGZ1vQTsQK+ZI0ujL2LcJ8HAjs=
+	t=1764009404; cv=none; b=RWaFZDVtCKZEZDXFKFyV5qmXZjm85pgt9S3AF9N6A2GaRx2+pn/SeKu5WDCUQF0pPXOlRDHP68/bC0EmOO3DzGJBw5t0jSlYZ3RCJRvAHDtLudThYYojxtiET40Gd7VjprJDnqD6UfvJIEQ6KOsT1ad8WJOQLJ6uosSDVOmMCfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764007479; c=relaxed/simple;
-	bh=Buz89wV/XVRY7PHLg2aVA1DAoOfcPJ65WQO4XoSmrzI=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=RnPcAyB3CvMqKLSjBkm0Od644FXQtIu7fWmdm9mqWOuj5dLZYGTZJdKd0BtxgjFEzN9Fq6aI8NaWG5Hs1FA1L4ujjRpij71JZknFKC7ZWQLFlYjSbxUkyN68x25EudlzMA5AE0HyMjPnPCGjNCcMAPwhaRjvdpM4zbsQxvsilRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xyI9E9od; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764009404; c=relaxed/simple;
+	bh=jMxics1T7D2zTTTxC0vYNoJLPcTUUbdGJ0mccHHyjHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ue3BNbmShXrEJYOpM8so6cepCwNWTe4pAgYSPhsE22DLwqMfVW2GNry3NK98EsQu5A1lS9vTxrdCeoYmdexoqNI1mBqnpWWB3VW+HcFH+cywSLNMFjj7oLlpEVrsc2zZLFQDAWf3S4GfXWbstERmLDH5P7IBKFPBCFxz57aVT0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1fSJT7H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xyI9E9od"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97B0C4CEF1;
-	Mon, 24 Nov 2025 18:04:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1764007478;
-	bh=Buz89wV/XVRY7PHLg2aVA1DAoOfcPJ65WQO4XoSmrzI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=xyI9E9od5lVrE4kHG4x9twVnaDACV/2qZqaLgwff9DcB6X+ci1UtO8BJ8idl78jZh
-	 JPm1bnkVQz7FOKFpBIk2GcAnwN60r8E82ewlguVLQJGRtJAmIndk4UnSinKDANlozZ
-	 Fodw67tClV9Br70Br21nFRSztMX9zsmGyHM6DfBk=
-Date: Mon, 24 Nov 2025 10:04:36 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@redhat.com>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
- <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Peter Xu
- <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra
- <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel
- Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Kees
- Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jason
- Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Xu Xin
- <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn
- <jannh@google.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
- <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
- <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, Pedro
- Falcato <pfalcato@suse.de>, Shakeel Butt <shakeel.butt@linux.dev>, David
- Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
- <harry.yoo@oracle.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song
- <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
- <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Johannes Weiner
- <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] tools/testing/vma: eliminate dependency on
- vma->__vm_flags
-Message-Id: <20251124100436.cad9c3ecd7fc592e8ff23e3a@linux-foundation.org>
-In-Reply-To: <09c2d927-6d34-4e72-a593-4a3f2b739a60@lucifer.local>
-References: <cover.1763126447.git.lorenzo.stoakes@oracle.com>
-	<fb709773edcaf13d7a2c4cede046e454b4e88b1e.1763126447.git.lorenzo.stoakes@oracle.com>
-	<4aff8bf7-d367-4ba3-90ad-13eef7a063fa@lucifer.local>
-	<09c2d927-6d34-4e72-a593-4a3f2b739a60@lucifer.local>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1fSJT7H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A174C4CEF1;
+	Mon, 24 Nov 2025 18:36:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764009403;
+	bh=jMxics1T7D2zTTTxC0vYNoJLPcTUUbdGJ0mccHHyjHI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y1fSJT7HmKhn2wr95Fzte+w0fDStdZ19Koc4ocZ9w9Lv1ZKt3nVWLGlA26AZcYIBd
+	 XKfwmqWPffprf14DmbfY6Hm5j/1/ejPGlDlwNuFIRw1N0GPXXidPvbRI1kZRjDkUst
+	 lxlN7EigtVgqc+fIfhuxCNIlYXK4ef8i04srNtF1wifrLNEVNM+NR7SpOAcbdGrg7v
+	 hihOY/jKZ7DoINdso0BUTLv4L5A9BvRRkePHheh15RSGNoF7D2cJfXEluSf/P5lGfT
+	 f4QtlDZ7HjBA/60fv0OV4KvirM84SvnkcqHiqUqHjnG8bEuDjFwXa/TWHaZHPowV6h
+	 Vynb3itZkcYog==
+Date: Mon, 24 Nov 2025 11:36:34 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Asuna Yang <spriteovo@gmail.com>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nicolas Schier <nsc@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Han Gao <rabenda.cn@gmail.com>,
+	Jason Montleon <jmontleo@redhat.com>,
+	Conor Dooley <conor@kernel.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v4 3/4] rust: add a Kconfig function to test for support
+ of bindgen options
+Message-ID: <20251124183634.GA1084995@ax162>
+References: <20251124-gcc-rust-v4-v4-0-4e06e07421ae@gmail.com>
+ <20251124-gcc-rust-v4-v4-3-4e06e07421ae@gmail.com>
+ <CANiq72k=XXRR6pw0Uhk89dmRHFYan6WzJhnDTC0T5oMYAaNnZw@mail.gmail.com>
+ <ef617970-5539-400a-8717-dd96e82bf271@gmail.com>
+ <CANiq72nDpBodFh5Zqy2p9jwWyfAiY6KcEEyugHeMDEmOR6Rogw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nDpBodFh5Zqy2p9jwWyfAiY6KcEEyugHeMDEmOR6Rogw@mail.gmail.com>
 
-On Mon, 24 Nov 2025 12:43:18 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Mon, Nov 24, 2025 at 04:08:36AM +0100, Miguel Ojeda wrote:
+> On Mon, Nov 24, 2025 at 3:42 AM Asuna Yang <spriteovo@gmail.com> wrote:
+> >
+> > I will separate them into two functions in the next revision,
+> > `bindgen-option` and `bindgen-backend-option` (or `bindgen-cc-option`?
+> > Which one do you prefer?).
+> 
+> If we don't need `bindgen-option` (the normal one I mean) so far,
+> perhaps we should skip it. On the other hand, `rustc-option-yn` is
+> there and is not used either (it was added for consistency). Up to the
+> Kbuild team, I guess.
 
-> It seems that the ordering of things has messed us up a bit here!
-> 
-> So this patch (3/4) currently introduces an issue where vm_flags_reset() is
-> missing from the VMA userland tests.
-> 
-> Then 4/4, now with the vma_internal.h fixes in place, puts vm_flags_reset()
-> back in place (this was my mistake in the series originally!).
-> 
-> But then this fix-patch, now applied as the latest patch from me in mm-new,
-> breaks the tests again by duplicating this function :)
-> 
-> So, I'm not sure if too late for rebases - if not, then just squash this
-> into 3/4.
-> 
-> If it is - then just drop this patch altogether and we'll live with this
-> being broken for a single commit!
+I do not have a strong preference one way or the other. These macros
+tend to be low maintenance and do not take up much space regardless so
+preemptively adding it so that it is ready for use in the future is no
+big deal in my opinion.
 
-All confused.  I dropped the whole series - please resend?
+> As for the name, no strong preference. `bindgen-backend-option` sounds
+> good, but `bindgen-cc-option` is more consistent with `cc-option` and
+> probably easier to understand for people new to `bindgen`, and anyway
+> the flags we pass there wouldn't make sense if the backend is not a C
+> compiler.
+
+Yeah, I think either one sort of requires knowledge of bindgen to know
+the difference between a flag to bindgen and a flag to the C compiler
+behind bindgen so no strong preference from my side (Nicolas may feel
+differently).
+
+Cheers,
+Nathan
