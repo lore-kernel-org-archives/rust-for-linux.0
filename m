@@ -1,542 +1,165 @@
-Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A00314B76;
-	Mon, 24 Nov 2025 16:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5676314D1B
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 16:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764000233; cv=none; b=G6ogzj4DR0TWNBG3z9vTCBcmzj3WFR6NToZpKvksCOk65dGRHFKFYSk17fE5Sx1oPV3jFws2drS4m3jZ+sLq590rkB4spBwcF16WxZ0YCKIojrcFzqQLmxHDeKk9zyr05zqyHwMmWqx8US0RysxunzGSeUOJztJtTXa5Aqm6lWg=
+	t=1764000655; cv=none; b=uso3Az1EjvAKiyHKRVvfdBfl2/xyKTGJaNVxewC+d9XuNdwoWX7rDY/oAvwrB8G3ceAA+6WmaTU+0vMz3vNRQP/1QX2t9McmwpATve3irqydz0O5zRJjTQhllRqwpuGlx2RHN/U+2LDpR+n8YR7VD/HU7y5ksKLCdVLYi/0sgeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764000233; c=relaxed/simple;
-	bh=38091BdA717cPW6KIDBj/+kEE4cEO868PNQuG1HpX0Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fbh8+pYzvmJg1/WtrshCxo3ejFsqDS0ysiaBFu7dc4hiJQKAEs6VkOfkZFS9d8eDXc1P6JlmxZxzI5K3/XYrhGkjX1qdfTCXJE56CjTKH+FT4lQW5T0HGGyo245soMEGQRbI0NRWgiawkkw3vJsbbNgE8JXBP8lJWPgxW6fsh9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=pzBb8j6g; arc=none smtp.client-ip=178.154.239.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1764000655; c=relaxed/simple;
+	bh=57eglluhUM2nZlJclDwE0caSnfRd7PY6EbxwsIKzZW4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RtAbVA/gg6cI4j+OgfGfIJ17LYXi8giXe/JUuof0i++uttTyvmsUjtNvgLWs5D8XA2Y4eNFZXRYngVC0f0sfp02ATLDLhfrCSgImai0oX2LbVIaRTwfik13+IYtAMtIRxzDKJCJMnl/RQ5RYlQNcwgPbpSWnK2N128sp4BumafE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tnWmWrRQ; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="pzBb8j6g"
-Received: from mail-nwsmtp-smtp-production-main-58.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-58.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:330a:0:640:a968:0])
-	by forward502d.mail.yandex.net (Yandex) with ESMTPS id D4DF4C1351;
-	Mon, 24 Nov 2025 18:49:37 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-58.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id VndG6JbLLOs0-8YibfLmi;
-	Mon, 24 Nov 2025 18:49:36 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1763999376;
-	bh=GWzUIT+IHrjyEro/Np/ibvEaUczPak9ycopTbl4eVIE=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=pzBb8j6gqLGKJvzC+HUA0k0oh14nGC5ibX3Hhm1UnqfVup8JbA14TiDNCfyVbrkJ3
-	 BRfjnVxSS61ShriFbMrnp7HRhbhKJYdstfG2ZtniTda6wX0qsgLWdUdWaLUCfbSV0l
-	 e3O/5moXI8yOhBv1AiOql9Zo1syU/2FdvDrprvVg=
-Authentication-Results: mail-nwsmtp-smtp-production-main-58.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Mon, 24 Nov 2025 18:49:28 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- bjorn3_gh@protonmail.com, daniel.almeida@collabora.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 5/6] rust: ww_mutex: implement LockSet
-Message-ID: <20251124184928.30b8bbaf@nimda>
-In-Reply-To: <92563347110cc9fd6195ae5cb9d304fc6d480571.camel@redhat.com>
-References: <20251101161056.22408-1-work@onurozkan.dev>
-	<20251101161056.22408-6-work@onurozkan.dev>
-	<92563347110cc9fd6195ae5cb9d304fc6d480571.camel@redhat.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tnWmWrRQ"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b713c7096f9so690676566b.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 08:10:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1764000652; x=1764605452; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PNJKw8p/bVC9DDihKlO6wvtRyoc2CqJVoOEDDkEFruo=;
+        b=tnWmWrRQNWeVC//eu2/fIIaE+0OE36czXlPaZPKymZj8MN9ZvhrssnK5+n7nYGAqDD
+         ztQD8EYGkmKX/cot5R5oC+BgoqknKsDkNrZhcglYj/aX2XK32dBjAQa5Mr4yNrS/qE4J
+         sUq53wFdwnnYQFgsuty2tlnnWckUK+XyAk76ZAg3K4MX5LAri2pa+2nVSy+UJWU8uclJ
+         tAGnwiKdAThtyopLc4GZMtCHNLD7JyoGUBpQ6hUU+SqIRuI7+y+IiaQcL1iPTHngor8G
+         iJGtWwj1Ya+Rd3uLs3K6yP/cKpag+i8292ScySxacQC8C6ZEWdDPN+TrymaMtjmKXQHl
+         dfLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764000652; x=1764605452;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PNJKw8p/bVC9DDihKlO6wvtRyoc2CqJVoOEDDkEFruo=;
+        b=H69YR98WBm3gcfNQXpIQ/7soXaT1zUyabMMuxyyAcNobv1lint7Fh4uhhpdIXyI0q+
+         HNhCIw2XUgXMkpdACIll2THGAa7ADzDy5BR+0BjCzIE1RNmOApvrxUJVb2x8Sx3tXBDq
+         P6YXQ92tTY5W6ybCLErmIa3foVkBzhPtXMLkhqJ3dem13LB1VjlzOv5I2dtDpgOxN5Qc
+         i2HQAnyckl0KuGJzp1AM3lF5kpOO4540XUS4ONlJUBFbmFdAU7c1F4LyBvHkMim9tm9U
+         mXUaeNduom/jgOYfgzrOgeRgMUMIqogYKKnW7ml10JxYT+n/OH8KWM/UdzxVdvrSak8d
+         eHXA==
+X-Forwarded-Encrypted: i=1; AJvYcCXYhZyOhRwQ5jZDuEB/v4D+gQd1Pplt7qEM3wsLCwmfavUz0DyEpwsrXWngkTrt6rYT+sx+3TwRGBMAuWlHYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0RRgSqNDpTfEOuAbE9IpoI+ysYkzUFn/46+Gorw1EmYunmut3
+	RDs/F/3OIo4bwO1wNWhHe9Vba/rJDbbEY5k9iUC+7LZ798Qv3WRH0yVgUuuTOxJrGVQ=
+X-Gm-Gg: ASbGncsnBJMNoNLUFve3Nj6ZgYXNXMUMKm/4iRlpyERK5QRHzLSgTL3gp8MezhVAmRw
+	9JOv19Lbn5qzUuFi0/O63IcyNSjyWMHtq5v0yXpY/4c0NsoeLUjF/28nrnCvrV/CSV+zsFw+Jvs
+	GrL0yby+HCLyRcsUfF1IsB9Kt0bzBV1Z71+DfAgzXDUIhi4vAlDRbgpYZEBYJlEGCvFAwL+Huha
+	lCUbzYc31dfsXcYjDG3zZ/RTisg7YYbcTdAE9hrdJU8a5q+MRkEHdOTjTAtI7wk4DbpQF0gjgrq
+	ONHx9dMS6DCXYdZXLsizd7r30cA733UcOELHrGUKXXSRy2S8J5BGvYI8WL/+mgLNL10aqFYPd4V
+	C/mV6sNlyCMlLnVk47xAvDWuyfgOkae4LCRFcoLq061bR5krrchxUU41MU1zy8JcLdpt0ToZyOB
+	o2Do7JWM9jcdDbPn9Q7I8YnQ6dVjWBVVqzpEmsf/Q/7aLuNTXTtQHk2B2VitGkpcwQah1CaDcnB
+	cCVBajb8gt+
+X-Google-Smtp-Source: AGHT+IGXZ9dwCsIFtfklKslD3fowlXA1qqiWl8NPh9/JTYvgg+1dn1ZwzOk8abK9I8dlvbUb861r3Q==
+X-Received: by 2002:a17:906:b52:b0:b76:b76e:112a with SMTP id a640c23a62f3a-b76b76e11d8mr159583366b.11.1764000651916;
+        Mon, 24 Nov 2025 08:10:51 -0800 (PST)
+Received: from localhost (p200300f65f0267087d3c06a64089a115.dip0.t-ipconnect.de. [2003:f6:5f02:6708:7d3c:6a6:4089:a115])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b766d386665sm1040566666b.53.2025.11.24.08.10.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Nov 2025 08:10:51 -0800 (PST)
+Date: Mon, 24 Nov 2025 17:10:50 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Shankari Anand <shankari.ak0208@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Alexandre Courbot <acourbot@nvidia.com>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Igor Korotin <igor.korotin.linux@gmail.com>, 
+	Michal Wilczynski <m.wilczynski@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH 06/10] rust: kernel: Update ARef and AlwaysRefCounted
+ imports to use sync::aref
+Message-ID: <44gv3fhqppn4fyg5fnxkhhanlbbxr2slqq7k3kr3owx7frpnxw@idgwxlcv4otn>
+References: <20251123092438.182251-1-shankari.ak0208@gmail.com>
+ <20251123092438.182251-7-shankari.ak0208@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="neqw6trvue47vu5n"
+Content-Disposition: inline
+In-Reply-To: <20251123092438.182251-7-shankari.ak0208@gmail.com>
+
+
+--neqw6trvue47vu5n
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 06/10] rust: kernel: Update ARef and AlwaysRefCounted
+ imports to use sync::aref
+MIME-Version: 1.0
 
-On Fri, 21 Nov 2025 17:34:15 -0500
-Lyude Paul <lyude@redhat.com> wrote:
+Hello,
 
-> On Sat, 2025-11-01 at 19:10 +0300, Onur =C3=96zkan wrote:
-> > `LockSet` is a high-level and safe API built on top of
-> > ww_mutex, provides a simple API while keeping the ww_mutex
-> > semantics.
-> >=20
-> > When `EDEADLK` is hit, it drops all held locks, resets
-> > the acquire context and retries the given (by the user)
-> > locking algorithm until it succeeds.
-> >=20
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > ---
-> >  rust/kernel/sync/lock/ww_mutex.rs          |   6 +
-> >  rust/kernel/sync/lock/ww_mutex/lock_set.rs | 245
-> > +++++++++++++++++++++ 2 files changed, 251 insertions(+)
-> >  create mode 100644 rust/kernel/sync/lock/ww_mutex/lock_set.rs
-> >=20
-> > diff --git a/rust/kernel/sync/lock/ww_mutex.rs
-> > b/rust/kernel/sync/lock/ww_mutex.rs index
-> > 2a9c1c20281b..d4c3b272912d 100644 ---
-> > a/rust/kernel/sync/lock/ww_mutex.rs +++
-> > b/rust/kernel/sync/lock/ww_mutex.rs @@ -5,6 +5,10 @@
-> >  //! It is designed to avoid deadlocks when locking multiple
-> > [`Mutex`]es //! that belong to the same [`Class`]. Each lock
-> > acquisition uses an //! [`AcquireCtx`] to track ordering and ensure
-> > forward progress. +//!
-> > +//! It is recommended to use [`LockSet`] as it provides safe
-> > high-level +//! interface that automatically handles deadlocks,
-> > retries and context +//! management.
-> > =20
-> >  use crate::error::to_result;
-> >  use crate::prelude::*;
-> > @@ -16,9 +20,11 @@
-> > =20
-> >  pub use acquire_ctx::AcquireCtx;
-> >  pub use class::Class;
-> > +pub use lock_set::LockSet;
-> > =20
-> >  mod acquire_ctx;
-> >  mod class;
-> > +mod lock_set;
-> > =20
-> >  /// A wound-wait (ww) mutex that is powered with deadlock avoidance
-> >  /// when acquiring multiple locks of the same [`Class`].
-> > diff --git a/rust/kernel/sync/lock/ww_mutex/lock_set.rs
-> > b/rust/kernel/sync/lock/ww_mutex/lock_set.rs new file mode 100644
-> > index 000000000000..ae234fd1e0be
-> > --- /dev/null
-> > +++ b/rust/kernel/sync/lock/ww_mutex/lock_set.rs
-> > @@ -0,0 +1,245 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Provides [`LockSet`] which automatically detects [`EDEADLK`],
-> > +//! releases all locks, resets the state and retries the user
-> > +//! supplied locking algorithm until success.
-> > +
-> > +use super::{AcquireCtx, Class, Mutex};
-> > +use crate::bindings;
-> > +use crate::prelude::*;
-> > +use crate::types::NotThreadSafe;
-> > +use core::ptr::NonNull;
-> > +
-> > +/// A tracked set of [`Mutex`] locks acquired under the same
-> > [`Class`]. +///
-> > +/// It ensures proper cleanup and retry mechanism on deadlocks and
-> > provides +/// safe access to locked data via
-> > [`LockSet::with_locked`]. +///
-> > +/// Typical usage is through [`LockSet::lock_all`], which retries a
-> > +/// user supplied locking algorithm until it succeeds without
-> > deadlock. +pub struct LockSet<'a> {
-> > +    acquire_ctx: Pin<KBox<AcquireCtx<'a>>>,
-> > +    taken: KVec<RawGuard>,
-> > +    class: &'a Class,
-> > +}
-> > +
-> > +/// Used by `LockSet` to track acquired locks.
-> > +///
-> > +/// This type is strictly crate-private and must never be exposed
-> > +/// outside this crate.
-> > +struct RawGuard {
-> > +    mutex_ptr: NonNull<bindings::ww_mutex>,
-> > +    _not_send: NotThreadSafe,
-> > +}
-> > +
-> > +impl Drop for RawGuard {
-> > +    fn drop(&mut self) {
-> > +        // SAFETY: `mutex_ptr` originates from a locked `Mutex`
-> > and remains
-> > +        // valid for the lifetime of this guard, so unlocking here
-> > is sound.
-> > +        unsafe {
-> > bindings::ww_mutex_unlock(self.mutex_ptr.as_ptr()) };
-> > +    }
-> > +}
-> > +
-> > +impl<'a> Drop for LockSet<'a> {
-> > +    fn drop(&mut self) {
-> > +        self.release_all_locks();
-> > +    }
-> > +}
-> > +
-> > +impl<'a> LockSet<'a> {
-> > +    /// Creates a new [`LockSet`] with the given class.
-> > +    ///
-> > +    /// All locks taken through this [`LockSet`] must belong to the
-> > +    /// same class.
-> > +    pub fn new(class: &'a Class) -> Result<Self> {
-> > +        Ok(Self {
-> > +            acquire_ctx: KBox::pin_init(AcquireCtx::new(class),
-> > GFP_KERNEL)?,
-> > +            taken: KVec::new(),
-> > +            class,
-> > +        })
-> > +    }
-> > +
-> > +    /// Creates a new [`LockSet`] using an existing [`AcquireCtx`]
-> > and
-> > +    /// [`Class`].
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// The caller must ensure that `acquire_ctx` is properly
-> > initialized,
-> > +    /// holds no mutexes and that the provided `class` matches the
-> > one used
-> > +    /// to initialize the given `acquire_ctx`.
-> > +    pub unsafe fn new_with_acquire_ctx(
-> > +        acquire_ctx: Pin<KBox<AcquireCtx<'a>>>,
-> > +        class: &'a Class,
-> > +    ) -> Self {
-> > +        Self {
-> > +            acquire_ctx,
-> > +            taken: KVec::new(),
-> > +            class,
-> > +        }
-> > +    }
-> > +
-> > +    /// Attempts to lock a [`Mutex`] and records the guard.
-> > +    ///
-> > +    /// Returns [`EDEADLK`] if lock ordering would cause a
-> > deadlock.
-> > +    ///
-> > +    /// Returns [`EBUSY`] if `mutex` was locked outside of this
-> > [`LockSet`].
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// The given `mutex` must be created with the [`Class`] that
-> > was used
-> > +    /// to initialize this [`LockSet`].
-> > +    pub unsafe fn lock<T>(&mut self, mutex: &'a Mutex<'a, T>) ->
-> > Result {
-> > +        if mutex.is_locked()
-> > +            && !self
-> > +                .taken
-> > +                .iter()
-> > +                .any(|guard| guard.mutex_ptr.as_ptr() =3D=3D
-> > mutex.inner.get())
-> > +        {
-> > +            return Err(EBUSY);
-> > +        }
->=20
-> I don't think that we need or want to keep track of this - even for
-> checking if we've acquired a lock already. The kernel already does
-> this (from __ww_rt_mutex_lock()):
->=20
+I suggest $Subject ~=3D s/kernel/pwm/.
 
-The code is here self-documenting. It checks whether the mutex was
-locked outside this context (which should never happen). This makes the
-implementation easier to understand IMO.
+On Sun, Nov 23, 2025 at 02:54:34PM +0530, Shankari Anand wrote:
+> Update call sites in `pwm.rs` to import `ARef`
+> and `AlwaysRefCounted` from `sync::aref`
+> instead of `types`.
+>=20
+> This aligns with the ongoing effort to move `ARef` and
+> `AlwaysRefCounted` to sync.
+>=20
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+> ---
+>  rust/kernel/pwm.rs | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+> index cb00f8a8765c..1605d13d5d64 100644
+> --- a/rust/kernel/pwm.rs
+> +++ b/rust/kernel/pwm.rs
+> @@ -13,7 +13,8 @@
+>      devres,
+>      error::{self, to_result},
+>      prelude::*,
+> -    types::{ARef, AlwaysRefCounted, Opaque}, //
+> +    sync::aref::{ARef, AlwaysRefCounted},
+> +    types::Opaque, //
+>  };
+>  use core::{marker::PhantomData, ptr::NonNull};
 
-> if (ww_ctx) {
-> if (unlikely(ww_ctx =3D=3D READ_ONCE(lock->ctx)))
-> return -EALREADY;
->=20
-> /*
-> * Reset the wounded flag after a kill. No other process can
-> * race and wound us here, since they can't have a valid owner
-> * pointer if we don't have any locks held.
-> */
-> if (ww_ctx->acquired =3D=3D 0)
-> ww_ctx->wounded =3D 0;
->=20
-> #ifdef CONFIG_DEBUG_LOCK_ALLOC
-> nest_lock =3D &ww_ctx->dep_map;
-> #endif
-> }
-> > +
-> > +        // SAFETY: By the safety contract, `mutex` belongs to the
-> > same `Class`
-> > +        // as `self.acquire_ctx` does.
-> > +        let guard =3D unsafe { self.acquire_ctx.lock(mutex)? };
-> > +
-> > +        self.taken.push(
-> > +            RawGuard {
-> > +                // SAFETY: We just locked it above so it's a valid
-> > pointer.
-> > +                mutex_ptr: unsafe {
-> > NonNull::new_unchecked(guard.mutex.inner.get()) },
-> > +                _not_send: NotThreadSafe,
-> > +            },
-> > +            GFP_KERNEL,
-> > +        )?;
-> > +
-> > +        // Avoid unlocking here; `release_all_locks` (also run by
-> > `Drop`)
-> > +        // performs the unlock for `LockSet`.
-> > +        core::mem::forget(guard);
-> > +
-> > +        Ok(())
-> > +    }
-> > +
-> > +    /// Runs `locking_algorithm` until success with retrying on
-> > deadlock.
-> > +    ///
-> > +    /// `locking_algorithm` should attempt to acquire all needed
-> > locks.
-> > +    /// If [`EDEADLK`] is detected, this function will roll back,
-> > reset
-> > +    /// the context and retry automatically.
-> > +    ///
-> > +    /// Once all locks are acquired successfully,
-> > `on_all_locks_taken` is
-> > +    /// invoked for exclusive access to the locked values.
-> > Afterwards, all
-> > +    /// locks are released.
-> > +    ///
-> > +    /// # Example
-> > +    ///
-> > +    /// ```
-> > +    /// use kernel::alloc::KBox;
-> > +    /// use kernel::c_str;
-> > +    /// use kernel::prelude::*;
-> > +    /// use kernel::sync::Arc;
-> > +    /// use kernel::sync::lock::ww_mutex::{Class, LockSet, Mutex};
-> > +    /// use pin_init::stack_pin_init;
-> > +    ///
-> > +    /// stack_pin_init!(let class =3D
-> > Class::new_wound_wait(c_str!("test")));
-> > +    ///
-> > +    /// let mutex1 =3D Arc::pin_init(Mutex::new(0, &class),
-> > GFP_KERNEL)?;
-> > +    /// let mutex2 =3D Arc::pin_init(Mutex::new(0, &class),
-> > GFP_KERNEL)?;
-> > +    /// let mut lock_set =3D KBox::pin_init(LockSet::new(&class)?,
-> > GFP_KERNEL)?;
-> > +    ///
-> > +    /// lock_set.lock_all(
-> > +    ///     // `locking_algorithm` closure
-> > +    ///     |lock_set| {
-> > +    ///         // SAFETY: Both `lock_set` and `mutex1` uses the
-> > same class.
-> > +    ///         unsafe { lock_set.lock(&mutex1)? };
-> > +    ///
-> > +    ///         // SAFETY: Both `lock_set` and `mutex2` uses the
-> > same class.
-> > +    ///         unsafe { lock_set.lock(&mutex2)? };
->=20
-> I wonder if there's some way we can get rid of the safety contract
-> here and verify this at compile time, it would be a shame if every
-> single lock invocation needed to be unsafe.
->=20
+having no clue about Rust:
 
-Yeah :(. We could get rid of them easily by keeping the class that was
-passed to the constructor functions but that becomes a problem for the
-from_raw implementations.
+Can this patch be applied independent of the others via the pwm tree? If
+I understand correctly it's only patch #10 that depends on the previous
+patches, right?
 
-I think the best solution would be to expose ww_class type from
-ww_acquire_ctx and ww_mutex unconditionally (right now it depends on
-DEBUG_WW_MUTEXES). That way we can just access the class and verify
-that the mutex and acquire_ctx classes match.
+Is there already a merge plan for this series?
 
-What do you think? I can submit a patch for the C-side implementation.
-It should be straightforward and shouldn't have any runtime impact.
+Best regards
+Uwe
 
-> > +    ///
-> > +    ///         Ok(())
-> > +    ///     },
-> > +    ///     // `on_all_locks_taken` closure
-> > +    ///     |lock_set| {
-> > +    ///         // Safely mutate both values while holding the
-> > locks.
-> > +    ///         lock_set.with_locked(&mutex1, |v| *v +=3D 1)?;
-> > +    ///         lock_set.with_locked(&mutex2, |v| *v +=3D 1)?;
-> > +    ///
-> > +    ///         Ok(())
-> > +    ///     },
->=20
-> I'm still pretty confident we don't need or want both closures and
-> can combine them into a single closure. And I am still pretty sure
-> the only thing that needs to be tracked here is which lock we failed
-> to acquire in the event of a deadlock.
->=20
-> Let me see if I can do a better job of explaining why. Or, if I'm
-> actually wrong about this - maybe this will help you correct me and
-> see where I've misunderstood something :).
->=20
-> First, let's pretend we've made a couple of changes here:
->=20
->  * We remove `taken: KVec<RawGuard>` and replace it with `failed: *mut
->    Mutex<=E2=80=A6>`
->  * lock_set.lock():
->     - Now returns a `Guard` that executes `ww_mutex_unlock` in its
-> destructor
->     - If `ww_mutex_lock` fails due to -EDEADLK, this function stores
-> a pointer to the respective mutex in `lock_set.failed`.
->     - Before acquiring a lock, we now check:
->        + if lock_set.failed =3D=3D lock
->           * Return a Guard for lock without calling ww_mutex_lock()
->           * lock_set.failed =3D null_mut();
->  * We remove `on_all_locks_taken()`, and rename `locking_algorithm` to
->    `ww_cb`.
->  * If `ww_cb()` returns Err(EDEADLK):
->     - if !lock_set.failed.is_null()
->        + ww_mutex_lock(lock_set.failed) // Don't store a guard
->  * If `ww_cb()` returns Ok(=E2=80=A6):
->     - if !lock_set.failed.is_null()
->       // This could only happen if we hit -EDEADLK but then `ww_cb`
-> did not // re-acquire `lock_set.failed` on the next attempt
->        + ww_mutex_unlock(lock_set.failed)
->=20
-> With all of those changes, we can rewrite `ww_cb` to look like this:
->=20
-> |lock_set| {
-> // SAFETY: Both `lock_set` and `mutex1` uses the same class.
-> let g1 =3D unsafe { lock_set.lock(&mutex1)? };
->=20
-> // SAFETY: Both `lock_set` and `mutex2` uses the same class.
-> let g2 =3D unsafe { lock_set.lock(&mutex2)? };
->=20
-> *g1 +=3D 1;
-> *g2 +=3D 2;
->=20
-> Ok(())
-> }
->=20
-> If we hit -EDEADLK when trying to acquire g2, this is more or less
-> what would happen:
->=20
->  * let res =3D ww_cb():
->     - let g1 =3D =E2=80=A6; // (we acquire g1 successfully)
->     - let g2 =3D =E2=80=A6; // (enter .lock())
->        + res =3D ww_mutex_lock(mutex2);
->        + if (res) =3D=3D EDEADLK
->           * lock_set.failed =3D mutex2;
->        + return Err(EDEADLK);
->     - return Err(-EDEADLK);
->       // Exiting ww_cb(), so rust will drop all variables in this
-> scope:
->        + ww_mutex_unlock(mutex1) // g1's Drop
->=20
->  * // (res =3D=3D Err(EDEADLK))
->    // All locks have been released at this point
->=20
->  * if !lock_set.failed.is_null()
->     - ww_mutex_lock(lock_set.failed) // Don't create a guard
->    // We've now re-acquired the lock we dead-locked on
->=20
->  * let res =3D ww_cb():
->     - let g1 =3D =E2=80=A6; // (we acquire g1 successfully)
->     - let g2 =3D =E2=80=A6; // (enter .lock())
->        + if lock_set.failed =3D=3D lock
->           * lock_set.failed =3D null_mut();
->           * return Guard(=E2=80=A6); // but don't call ww_mutex_lock(), i=
-t's
-> already locked
->     - // We acquired g2 successfully!
->     - *g1 +=3D 1;
->     - *g2 +=3D 2;
->=20
->  * etc=E2=80=A6
->=20
-> The only challenge with this is that users need to write their ww_cb()
-> implementations to be idempotent (so that calling it multiple times
-> isn't unexpected). But that's already what we do on the C side, and
-> is kind of what I expected we would want to do in rust anyhow.
->=20
-> Does this make sense, or was there something I made a mistake with
-> here?
+--neqw6trvue47vu5n
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks a lot for analyzing and providing an alternative on this!
+-----BEGIN PGP SIGNATURE-----
 
-However, collapsing everything into a single callback would require the
-caller to self-police various disciplines like "don't touch gN until
-gN+1 succeeded", which is exactly the foot-gun we are trying avoid with
-2 closures.
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmkkg4gACgkQj4D7WH0S
+/k4ZxggAnWhK6xpYiLeXmCfK1Sb7HgBa2AsbKye0MnHsSah6DHwnqx7klhUaZs6e
+21hOZ4ecYKPAdKbbwZUE4xMwMLKlAEMhJbkWsmUow5Q9+c+jvw0hfGAhiscylqP/
+yKADT4IOvjkjPQ0ty4go/b0bd0qvcWDcxJXhvKi5Z+AQokSHyF4QDqRLz3Jq+mE8
+T20JB7XDuIOEG7dN8qebw7XS5c4FCeCpSrCm7jeCHdfPuJj2iXz+L1IOedk3+a32
+6PdlPCZxmch7aH4fUMWHtsO81LM5JVhulRuGu1ItMrklyXvDV18T7HpvvOaWJaQY
+KYI/KdOn48adECwq4ltKA6NkZMhc4Q==
+=9ZGw
+-----END PGP SIGNATURE-----
 
-Separating acquire and use logics not just simpler API to implement (and
-provide), but also more effective compare to your example here. With
-single closure we basically move API responsibility to the users (e.g.,
-do not run this part of the code in the loop, do not access to any data
-behind any guard if all the locks aren't taken yet, etc.), which is not
-a good thing to do, especially from the high-level API.
-
->=20
-> > +    /// )?;
-> > +    ///
-> > +    /// # Ok::<(), Error>(())
-> > +    /// ```
-> > +    pub fn lock_all<T, Y, Z>(
-> > +        &mut self,
-> > +        mut locking_algorithm: T,
-> > +        mut on_all_locks_taken: Y,
-> > +    ) -> Result<Z>
-> > +    where
-> > +        T: FnMut(&mut LockSet<'a>) -> Result,
-> > +        Y: FnMut(&mut LockSet<'a>) -> Result<Z>,
-> > +    {
-> > +        loop {
-> > +            match locking_algorithm(self) {
-> > +                Ok(()) =3D> {
-> > +                    // All locks in `locking_algorithm` succeeded.
-> > +                    // The user can now safely use them in
-> > `on_all_locks_taken`.
-> > +                    let res =3D on_all_locks_taken(self);
-> > +                    self.release_all_locks();
-> > +
-> > +                    return res;
-> > +                }
-> > +                Err(e) if e =3D=3D EDEADLK =3D> {
-> > +                    // Deadlock detected, retry from scratch.
-> > +                    self.cleanup_on_deadlock();
-> > +                    continue;
-> > +                }
-> > +                Err(e) =3D> {
-> > +                    self.release_all_locks();
-> > +                    return Err(e);
-> > +                }
-> > +            }
-> > +        }
-> > +    }
-> > +
-> > +    /// Executes `access` with a mutable reference to the data
-> > behind `mutex`.
-> > +    ///
-> > +    /// Fails with [`EINVAL`] if the mutex was not locked in this
-> > [`LockSet`].
-> > +    pub fn with_locked<T: Unpin, Y>(
-> > +        &mut self,
-> > +        mutex: &'a Mutex<'a, T>,
-> > +        access: impl for<'b> FnOnce(&'b mut T) -> Y,
-> > +    ) -> Result<Y> {
-> > +        let mutex_ptr =3D mutex.inner.get();
-> > +
-> > +        if self
-> > +            .taken
-> > +            .iter()
-> > +            .any(|guard| guard.mutex_ptr.as_ptr() =3D=3D mutex_ptr)
-> > +        {
-> > +            // SAFETY: We hold the lock corresponding to `mutex`,
-> > so we have
-> > +            // exclusive access to its protected data.
-> > +            let value =3D unsafe { &mut *mutex.data.get() };
-> > +            Ok(access(value))
-> > +        } else {
-> > +            // `mutex` isn't locked in this `LockSet`.
-> > +            Err(EINVAL)
-> > +        }
-> > +    }
-> > +
-> > +    /// Releases all currently held locks in this [`LockSet`].
-> > +    fn release_all_locks(&mut self) {
-> > +        // `Drop` implementation of the `RawGuard` takes care of
-> > the unlocking.
-> > +        self.taken.clear();
-> > +    }
-> > +
-> > +    /// Resets this [`LockSet`] after a deadlock detection.
-> > +    ///
-> > +    /// Drops all held locks and reinitializes the [`AcquireCtx`].
-> > +    ///
-> > +    /// It is intended to be used for internal implementation only.
-> > +    fn cleanup_on_deadlock(&mut self) {
-> > +        self.release_all_locks();
-> > +
-> > +        // SAFETY: We are passing the same `class` that was used
-> > +        // to initialize `self.acquire_ctx`.
-> > +        unsafe { self.acquire_ctx.as_mut().reinit(self.class) };
-> > +    }
-> > +}
->=20
-
+--neqw6trvue47vu5n--
