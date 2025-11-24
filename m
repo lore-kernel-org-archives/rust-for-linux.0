@@ -1,98 +1,103 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5952631329E
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 16:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B773148BB
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 16:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764000878; cv=none; b=rplkTWDhrQ/1cSp8KsKhbvPzsllHTrzZSNeH+d5custY27rzXletslagW9wlT2SDo1y0kzmVBHxw7KY2YXWr9jpfMptW+yqVkLCfWU+i/4tG5CvDh9CNWkKJdRntGHVrXshtY3vOS80c1OY2XqmFCVDlbF//Zn721FqYpO2sSJA=
+	t=1764001410; cv=none; b=lGzYy+09KH5GocIbyAVjpbUvRf3KzQRIOIHqv3tUIIGRaKE2bXRZQFiv1C9IF1CUBfFUFoXp3jVZMBeg5GjNYj8Xdr7q5Jxn+k6ofCwfX8wuGxoBwJqGwIphb+CFlcDmvv8GuKXIhzjJwIkHRCX5m4HpoQgRmayTv9USoRKeTfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764000878; c=relaxed/simple;
-	bh=qRMXYm9M64Wb7j7RksUANlGBVHaplgAym2nanyHuIdY=;
+	s=arc-20240116; t=1764001410; c=relaxed/simple;
+	bh=NzPDQKUXesN2tFTrxAWwSFcXk8odbWGEX8DQwzKHvdA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lETiVwI2FDLqpCphlHf4klrch165Ae/UeOsBfgHxW1qKDPZDkUwk2TbB0t32eGy7wPwYW/Y44nS6IDHFfORL6w2waH3tIfF0xRbAkaFNWopAdNdZHBdF46lP8lQo8Uo50XPqlWc11F5Ia2DC1ZDA59lvCStEjb/nrCxMJgZBo8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dU0xeKAD; arc=none smtp.client-ip=209.85.214.169
+	 To:Cc:Content-Type; b=io6L0z38mYZQl8nIZH5d/CZUeeMQg3W4P0Pw30f8c9YlDs9mTrfSkHVflgcm8M+Yb4MflyX4+85tNan3Az/s9EXAZWVZmM5cDe6MhRbx0B9VvO2R/rvuj4azeZgHoEvE7nXZRljZZLYTzzukLila/4P0UC1pTvYdZPzYcFdfPJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CyWR6CqE; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dU0xeKAD"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-29800ac4ef3so9591035ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 08:14:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CyWR6CqE"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b9a5f4435adso397479a12.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 24 Nov 2025 08:23:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764000877; x=1764605677; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764001408; x=1764606208; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qRMXYm9M64Wb7j7RksUANlGBVHaplgAym2nanyHuIdY=;
-        b=dU0xeKAD8N1odKam96Xj4B6bvbjBvcG+HVUmcxfPxRxcZfFzb3PIZNmX0wELF+XIrb
-         5XKiKDnLPGiBMene8vNDr3i9eFk3hiGL6Boxq6Sv7fxnEDNE5l3vnQi9gHAUk1bfbyfQ
-         CsJwsVG0sJZQWHPZ74PXwxKfQTvQnsU9le5/RzpH4kcEFPoSE1AEbPIkIkvE9csEGlex
-         qoqYgAn8v3jeCiLTE60nfciLIMvoeehF4fJi/3t9tdhZUiv9fTtb77MoboGA9kskfHPt
-         vdt4VzlUa91t2FLSgoGztyp5Q//jgmE6GPJtNaAi75mIU5eaAlb2AyzMpkdf1G+ssg6n
-         hD3g==
+        bh=M2J0sne9dK3n8ebmX/80sgM1htWpoO6vvwfgujnWbIg=;
+        b=CyWR6CqEUBCtkiYYfaIyTWlg4VgvRVPKV/L+mK0Ilt6HFuFLMBsB0J4SuWZaCY2QBo
+         SjfatR2pYwPX1g1BXvcH9e06shSsH9uVKqbpKj5UzgSpQAcrhsMr26O7D0j5gNHxvqB4
+         agll/++b0KxxT70g1nfte+QeKWYceo0+wb4Okn6SR7VIuQfL6mlwpuXaKHbTDXqXxcXD
+         cOUDGuonaHPHMkbjt2UBTnnFRXk58Aiy07k75QjJunIWLIUIonwxnJ3mCP/DjXO4Wf6D
+         z4GgB3SuP/muF5AVkpFr+HZc//XslNqKk7dJIhtPcCl4mlLuCs4iJ5T7KNd6CmVPmfa4
+         86+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764000877; x=1764605677;
+        d=1e100.net; s=20230601; t=1764001408; x=1764606208;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qRMXYm9M64Wb7j7RksUANlGBVHaplgAym2nanyHuIdY=;
-        b=oEak6lViS3+0BBLfcHdeNgfrH3zOXJklj+y0F9UINUigBYPHqHPWLKfJw4US9YYuBF
-         gtynWmhs8mDdg5/jaoaj6pTxGVEsIJW467LUNRPe4W06pd+73I93v9cnx1uKvnK2shP3
-         U3NzhiCANWlW6BJ+JVzoMoBburfOXCp2VFjHLMM7nKfZv2Dpq+n4DcJ79DcPBl1KsM5t
-         Ao4/Kd9B7xApmcKvQsw1tABQj0nljwPJOchC/Zx2OlAAApYh8tLcu3drbuVwK+9klU8f
-         +fMA24r4xA/nqUlECUYFO48iHRpCHFtO1WLfHXikXnTy2y+Yk5NAdW36tumPqQTL6G4I
-         zciQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWv1bbaK/YjddyDk08tyCc5i7qvOfo0CtxM6OsKsgMSo6UtyHwtvSkr4A5Jg21ayPpKGOmRTryfBTnESE0YzQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhRMu0zWJoiegDUynsDBffOIB1F+BefTATIBYHsMi0EnlO5Ofa
-	HdH6MUUzElb3xjwTcJUS0QM7VJEf4H+QBbDWFCgFHNVgirhwjeTk1faux+kk0GCQLLcqoQMMu8y
-	K611fOaSvx3TehUDHfRi2scKEpgEkGv0=
-X-Gm-Gg: ASbGncsoDg38xICxv21RjXM3etzTkJBloq95WkHWA5V7XDL8FVwMUPcf13px8WMtLL3
-	5tVtEECvWwr/zMEd7hQ9mybGqnD2ZVbd++s5ZNCnE/xe0Zinya4vg8zwlDcMTyh3KYr5K1tNbax
-	UsV42kV1MDnIZudUV0x6muHm2yWo5FJI6h3SUn+FSh0lQScjQlQp0EkHSfFHty3iChjq8qL0SlM
-	1K4J7mJiKIWmito0KybVlcuQRb1esAJUUfnhWVNrvyLDhVHz39OQS4tvZAaivlMCLoFzTmXqi1I
-	kGXG7qiwl8WNl/oGaleRluvjP5GVVOdcHxxQv4dJZigXUbpRGPyFeD0ZHvVV+r8oQml4oAKmZxU
-	JtLNL/yjIHh+xqA==
-X-Google-Smtp-Source: AGHT+IF78tL2MFoiUd/enSwcYfUfbOqvAGZkGtMu9D5e0NWjF4oGtatQ+T4V7Wr8jpHSgDYKQioYcXdCeTXV4WcHlok=
-X-Received: by 2002:a05:7300:ac82:b0:2a4:3593:2c0a with SMTP id
- 5a478bee46e88-2a724c02369mr7188481eec.3.1764000876454; Mon, 24 Nov 2025
- 08:14:36 -0800 (PST)
+        bh=M2J0sne9dK3n8ebmX/80sgM1htWpoO6vvwfgujnWbIg=;
+        b=QYqp9UW81AFRUVOmdz5WizEKDJXnh/QZACl5TSLJQFtHJnmgevwBXAdpog/7kapDca
+         riqRMuRPUoXdb0WEkFPl5BUE/BXr17gwtsmkjTpnQu7NPA8HqlWlza53kgqitprL12Mh
+         W6q7khvAuCOKoxG/NFSC/52RSTiyrRsO6JUZhU5X0Odxk+Y3gdwGY8TQGLrJTTxWZNXV
+         SA+U4Q3WvwE6zhmEtjdL5OhDTlW2rtH40qCwQA3LX9wWMum0C+L1iHSV76UYTWmGEK4b
+         zTN43xccskIqYZ3iS5LJ0u3W4UvtHXuXYGFcM81ZNfpgi/gbvoiHH+6s1+HT07M0xQXZ
+         g+gg==
+X-Forwarded-Encrypted: i=1; AJvYcCWoOpPZ3Y8DXtY2I6ZHHWQIf0rBmg/oLjEazJtfFKiHJAarbjpohnwzDCuyY9j5tRM433wW8z7zogq7bhKltg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMWkkVve5i+n7BHSPlsntWUiKFFMcqBZ+eY0QKG4+fSwhtSz6P
+	NZHnXaKzrE6HzI4FqrQ74rb2nQRt1vbdwuiY2IDggLEn5kwp2SRVKkOWgtBpdAXaTO78MC6rwfe
+	Wcdl2zD81lLbS2fHPI/cIMMz6kYFC1Wg=
+X-Gm-Gg: ASbGncvrhehBaKL1adXTBoP9aZSyui9hsEGP4eL459knhs32tsTLqM+EtOYVEnBv1dr
+	CIex/PptjHkDaoqOQBTUlJr3iBWN/leaKoBkf8BVLZaMEFdXOGfOL7BCT9mkc3LjkB6Y9DYh4J5
+	6rkUU2wRnYhNusDG+JOAUAhTGQToWMRaqWGHe6RQPNk3zGmUNA6TVkOdBCGgs4VCU3OD6q/iWlM
+	NuPgQeadp2Cks3zuXUmYW7BTsy6QCysuLgeIG4PBP2KED7+StndNfXTBEL+9iVEG4vYpXUSPYJG
+	g4yDa0L/LxWyYnfBYkBzGdWcHGjyZahS5tWDKjiT5mf7dhdpEK7NZG8tEToPELS5aalI8HLcGQM
+	XrYXTNPvV6oysLg==
+X-Google-Smtp-Source: AGHT+IGwXl0ZV6sCuJIMY3nmCYvEqmx2yNHsP6C5DZXOUJriOekXZR8ClIwnhdXq7nRGAKTyK7rmfByoSAzp7B5Pcj0=
+X-Received: by 2002:a05:7300:dc93:b0:2a6:9dbf:bbe1 with SMTP id
+ 5a478bee46e88-2a719324a83mr7221018eec.3.1764001408335; Mon, 24 Nov 2025
+ 08:23:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251124-bounded_fix-v1-1-d8e34e1c727f@nvidia.com>
-In-Reply-To: <20251124-bounded_fix-v1-1-d8e34e1c727f@nvidia.com>
+References: <20251124151837.2184382-1-ojeda@kernel.org>
+In-Reply-To: <20251124151837.2184382-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 24 Nov 2025 17:14:24 +0100
-X-Gm-Features: AWmQ_bn0B43lJLMGBlmCU-pfXyeb4_FiBPsseEeQcYLG8q895kTwjl-DAkJwnvM
-Message-ID: <CANiq72kdrPx5uUVqnHpF88b8y0-gOTKVSfTDq2ZZVJ6B6WxzSg@mail.gmail.com>
-Subject: Re: [PATCH] rust: num: bounded: rename `try_into_bitint` to `try_into_bounded`
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Mon, 24 Nov 2025 17:23:14 +0100
+X-Gm-Features: AWmQ_bmjzzjuGyZbSwxV4iB0sa35jisCYH7BCVB9fd0FJ3BHVjVHicd2rDqz0Ns
+Message-ID: <CANiq72mLMHF35UaML0RqiTOkVORr25W3Ug06uttYL_H4XCW=4w@mail.gmail.com>
+Subject: Re: [PATCH v2 00/20] `syn` support
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 24, 2025 at 2:50=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
+On Mon, Nov 24, 2025 at 4:19=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> This is a remnant from when `Bounded` was called `BitInt` which I didn't
-> rename. Fix this.
+> This patch series introduces support for `syn` (and its dependencies):
 >
-> Fixes: 01e345e82ec3 ("rust: num: add Bounded integer wrapping type")
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>     Syn is a parsing library for parsing a stream of Rust tokens into a
+>     syntax tree of Rust source code.
+>
+>     Currently this library is geared toward use in Rust procedural
+>     macros, but contains some APIs that may be useful more generally.
 
-Applied to `rust-next` -- thanks!
+Applied to `rust-next` -- thanks everyone!
 
-Hmm... This is the sort of thing where I am not sure if it should
-count as a fix, since while it is unexpected, there is nothing
-actually broken. I kept the tag since you provided it anyway.
+I mostly sent this to show how it will look like and because I will
+use the expanded cover letter as a merge commit to keep it around,
+since it has now even more context, and it is a nice approach for a
+long series like this.
 
 Cheers,
 Miguel
