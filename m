@@ -1,73 +1,73 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39A22629D
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 20:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867D31D61A3
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 20:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764104072; cv=none; b=nZ2mGGLz1ZYXzyGIcJSLxW5438fvkIeXRBwsAuV1dfBfxXl7rIoZq1pgO3EkF2wnhkQM1ketAokoJjymSVSMWy5Tk+5laJmP+BMUAWCvzd6bubqzDbBvCQfqif9anIf2JWU1xLWe+D31f4gPzh2JRTY7WXR5S8ALYMPRqs0kgkQ=
+	t=1764104144; cv=none; b=TXC2PNzWdM9cztIqFudnrYNlkr+LW7hF7hV8uI9ak766rCQwr8zVM38mPN/T6ytKXVMaZrTJcWAFMKl4BzFVbx5ZveVb4EAISCxdF3DPlwTd0XBbz5rLMmoVHK/muE/JncpmEqNoLkLTZb2cvah+CRwEPPuUVZSZIHHo/jd64fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764104072; c=relaxed/simple;
-	bh=sxQ2hN+zxeunlEIUnQr6Sd0/fbrQ+3D+PJBXMmc9I6Y=;
+	s=arc-20240116; t=1764104144; c=relaxed/simple;
+	bh=FWSoKDD7ED0R4JzH44liYW8+E6mzvFEg7R2GUvjRDGw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sg01HD198Ns9Zs16MH2lMJvHkVfYTmhSZQI6f9iYz9Yl8plHKYNkbcONOg3AgCDz9gwNiqKHL13gn9MYMy4pMeQ01B8pY1MqjScxlZz+4pWeQP6fxfYbLzjLsqdNRxxEj2xzvLGlnbL4PQXYKsbJDjXggO1suPg+4Gt799jGvoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EfJXRKWc; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=sjXXB37TfsEy4aosgniNRivZ/9zGxmURF1rHHErOVoSVmWkNpMJOC9/y0FAGvv6McnUi1o0PtMRP/sxq/cA+sL9thwrVPDCiAhuzNtFj7oBRkbTQDXC1np9AUtchue+giLq4LidICcKjAo5lzfkH7KIrgAe4+xrgHrji2K/l77I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bFaL6kZB; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EfJXRKWc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bFaL6kZB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764104069;
+	s=mimecast20190719; t=1764104140;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q8/m021DqLvMgXzsDyw6jfnfhwhb497FqYwihv47VNc=;
-	b=EfJXRKWcmurl8TqRREHrp/utbMSpIbIqcbRpTYpalb+89FrDYp+uY66rFAHAnLtjj6xHj1
-	0puAjfBvwwAv8Goik7gn4SXbvuzfs0909bhnJQWI+bf/hDRmjOjfF52nj+MQsVHbWsGqo+
-	T4ybgus706H/4fUv2z9GVXwzLg49Uug=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=iwekFr7T40E2soRazYMiKdAjTK4340RwR6ef/dwtLlM=;
+	b=bFaL6kZBbyPMLs4CAyGuhKAQ+0Tpx69KQDQIJnSMMCdIXiR9prXsNgPmcaruJbhwJ7BVj4
+	9o7y5JbcwAQyDTqZ9k4XW51MNgFh/ee5T0Xs9KreLJT+5kVygWDYEZJ6UlnaEaQr+KGCq2
+	EUzfTEGU0kZx9XT/NEjehTrQtTBTyyc=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-41-UHola61-NBO39LvrgE2qrw-1; Tue, 25 Nov 2025 15:54:28 -0500
-X-MC-Unique: UHola61-NBO39LvrgE2qrw-1
-X-Mimecast-MFC-AGG-ID: UHola61-NBO39LvrgE2qrw_1764104068
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4ee3dfe072dso167474121cf.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 12:54:28 -0800 (PST)
+ us-mta-684-xrcd8vahOga6WPFV3Af2OQ-1; Tue, 25 Nov 2025 15:55:39 -0500
+X-MC-Unique: xrcd8vahOga6WPFV3Af2OQ-1
+X-Mimecast-MFC-AGG-ID: xrcd8vahOga6WPFV3Af2OQ_1764104139
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8b2e9b2608dso392420485a.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 12:55:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764104068; x=1764708868;
+        d=1e100.net; s=20230601; t=1764104139; x=1764708939;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q8/m021DqLvMgXzsDyw6jfnfhwhb497FqYwihv47VNc=;
-        b=acUtrBp7CK526izOmnNMPcZaesig2iQn224y84RppS9kqCgPRmVEXcovGfcU5yaOyx
-         Ki3wa7F8S6fyQaqJ4qyEXCwr7izzM5xg43sxOmhWp2isXpMPJU2WgzIqOjfTo3s+ooKA
-         wIq52l5U1z1IQ6IGBn1VPfV+5heQteRODlv/dr8vC+m3eUJhviVch4zvswPdRQO7H9Ps
-         b5zvzYZavEGtfitV76dQ+3ZT9vOqsanlEo3jty2VahvMDAN+FgGyYryq/sIWreD+YgmA
-         /aY29f9X+y1aqO61atmHgyanrFW5KH0ay29AR05bC8/rZ668vcUDX9wajIsGi1VR+jmL
-         3FyA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+LBvU0+OhCj1xdw2Ob+PEOBhYNUKM1OVdpNbosqMwa7A/sRuR6PeAbP9Dd/TaBm7V+OhC1o7Sj2delnjsWw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3a7ipcm0LZ99+G73SrsBvZawg417uxTm20vm5n7LvNWjOeB9l
-	PJcJhwn/YpW46QlILBK2sIeBk5Z2NKkfd00GvkTpMPaFHu67sTAiZiR4Htkmd9Y7UIki+Pgbw/9
-	z55zFJyGO6OZvBVfdi5MZGBLrsye6kXEZhnHveOjGWRZINS8l+Y78SI3PaYcaFHUMtgcE
-X-Gm-Gg: ASbGnctWuDMNz2sm4gETX5KBwJOqrOLOHB0H4C3BDOlAFWbtGDdJQBSDny0ZNHLHpMc
-	3ea3mxZFhX77erQAhVv+Ig5AuKt/gK9D/d45kakD7JDKSp6wzBYRQkBXUkYSDqU0TyUvolFJWHr
-	5duUCpcuz/emXpljtnf5mv2xPkYESd4hSvieIgSXkdAJI7Wd6pva3PtGLrPra8sQX/OXiZi4KXC
-	OudYac0T4gBHJqBvDtYgTo6lQY+1iMMLpBDKvKgQ3UgV1T9xCTvzkHrUi3K7C9uc8vna5ETAAsZ
-	mrGvQnsjX6/cClwrJsgVib8/ueLjY4uL/PpV8S5WorY1VBktjaJhOTXNgu8ju9rKWL7NJtX3Lq3
-	3nrHRJl9M/IbNAHw5nukEXCvnOUyChXADjKbHP6pk/tXajR89WZrQFkc=
-X-Received: by 2002:ac8:5793:0:b0:4ed:aeca:dcc8 with SMTP id d75a77b69052e-4ee588556ffmr280125051cf.22.1764104067832;
-        Tue, 25 Nov 2025 12:54:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHnBP3mQRJKAbrPZxfnkCd4zpcA2Dl7EQpcK+RPL7pjU63CJiA0JZVBDt/KeaMxTQoBeaSoIw==
-X-Received: by 2002:ac8:5793:0:b0:4ed:aeca:dcc8 with SMTP id d75a77b69052e-4ee588556ffmr280124601cf.22.1764104067377;
-        Tue, 25 Nov 2025 12:54:27 -0800 (PST)
+        bh=iwekFr7T40E2soRazYMiKdAjTK4340RwR6ef/dwtLlM=;
+        b=kVXhip00jAj7P3J72JnnPtmITHb76/jE33eXLbFxvg7kwi1SrkZnoxCa28lTxfehrD
+         UEH9v3BSvs1nE1tgxvZzlIaH3nNhMlHtioorhug4ZxvGit9h9kG10FOXMnEkpqlBr1kF
+         kz6Lfa6WAfG5UdHe1HjDDi5QKhtn0vVGpjPuCfujubp5cMbsdn9kvmtnQXgjs5TCKjh0
+         XRP2tSTr8uXOehrUtiLkCZfEbrQJKz4UqX6BdWRS29pnzFcX4LWOSQp/KswH+bH2ky9l
+         t3gDnYOeQ8hJ1vrcqGktqsv7Kmae4OYKX+lCYeNlfxp4SEO9vhKx/3xvGVNEBnFjYX7W
+         JXVA==
+X-Forwarded-Encrypted: i=1; AJvYcCV0x1lLieX9/53beJlm5PxEZ4TJluqRPdDxr2CBMF9ZVV2OZpiL66nnjGWHt/2Z4fMJAQkjLZM+B+AG6AkR9A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdhVmsC3wNhoBcb3Z9Lbhxjghh1dm4tO1UwpuFDDc5tgkcI4Cm
+	FkXsLy9QktmZQmPY4v+Qg0vLQ7ZsHKvNZgS582ezT6o3xickdvrqW1y4D9jnkRmcVFebyH1Z0JI
+	8p6OwMqcyyk5Ng8Ml7tiiUq+fkRT31R22rGZBOA87Nh8Lj7HriU6gHCWfwiqCsQ1kvbvY
+X-Gm-Gg: ASbGncs0twrn9Up+en9mMcgyHbyYZbxaCuH5FGF1XQhXMggE2TH+aizc5ZeUATqp/9m
+	NapiArpZaokEPOlOrPY81YS0B0nZ0RZaVBqelkKQrm8uw/JfREFoysC8BJZ5tzKwpQmqa63vXlc
+	hww9lewbCoBHevQLKlfl9Gw5A3pPk0xn1PgA6gTmEOHHPhblWKJn2BfY0AZyDrpy9C2i4272PzR
+	Jo8Ns97mQIl4o2QEzWSIUr6wV254SFWTypXO8WvIyZ73FSDYxAMTL+Y0FV1IDaCgS+ZSRHr9jbu
+	J0nFfsZE/qJEDVMX8XFRfBHryV0bEdtIz3CGDE0rYGu/3Yj5w1kLzfvZWD0ZSncJdVhAPsFL6/u
+	LVm0XwDbtrYwm49P84dERuHK3JdM9jZOo/hmaGyUn1WuoqG++TLcggG4=
+X-Received: by 2002:a05:620a:3f85:b0:82e:ce61:f840 with SMTP id af79cd13be357-8b4ebdcc44emr640880185a.84.1764104138950;
+        Tue, 25 Nov 2025 12:55:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFQFEWR5YGp9Q3qliG9yNZUJVbts86UUwMMPS5QBYPhL6cPMXeD7lgcL5N2O2Y/1XWeCrJYnA==
+X-Received: by 2002:a05:620a:3f85:b0:82e:ce61:f840 with SMTP id af79cd13be357-8b4ebdcc44emr640873785a.84.1764104138177;
+        Tue, 25 Nov 2025 12:55:38 -0800 (PST)
 Received: from [192.168.8.208] (pool-100-0-77-142.bstnma.fios.verizon.net. [100.0.77.142])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ef28c6e7c3sm27531991cf.11.2025.11.25.12.54.26
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b32932a652sm1266942385a.9.2025.11.25.12.55.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 12:54:26 -0800 (PST)
-Message-ID: <d428795c51caaba194685e8da40fa532b72e8088.camel@redhat.com>
-Subject: Re: [PATCH v2 1/4] gpu: nova-core: bindings: Add missing explicit
- padding
+        Tue, 25 Nov 2025 12:55:37 -0800 (PST)
+Message-ID: <d337a9cbae1a5ac4e1ef5c74f9dec9cdcc4cb5a4.camel@redhat.com>
+Subject: Re: [PATCH v2 2/4] gpu: nova-core: gsp: Fix length of received
+ messages
 From: Lyude Paul <lyude@redhat.com>
 To: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich
  <dakr@kernel.org>,  Alice Ryhl <aliceryhl@google.com>, David Airlie
@@ -82,10 +82,10 @@ To: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich
  <epeer@nvidia.com>
 Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Date: Tue, 25 Nov 2025 15:54:25 -0500
-In-Reply-To: <20251123-nova-fixes-v2-1-33d86092cf6a@nvidia.com>
+Date: Tue, 25 Nov 2025 15:55:36 -0500
+In-Reply-To: <20251123-nova-fixes-v2-2-33d86092cf6a@nvidia.com>
 References: <20251123-nova-fixes-v2-0-33d86092cf6a@nvidia.com>
-	 <20251123-nova-fixes-v2-1-33d86092cf6a@nvidia.com>
+	 <20251123-nova-fixes-v2-2-33d86092cf6a@nvidia.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.58.1 (3.58.1-1.fc43)
 Precedence: bulk
@@ -95,7 +95,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: fvjVSAnTeqFpCs02Ytfytd7fWS3hlulEEXlA7MR8kv4_1764104068
+X-Mimecast-MFC-PROC-ID: ZwwdjUEMzpNc5rZAiqKvbD3b9ovnBxnt6sALwlx_AaE_1764104139
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -103,103 +103,75 @@ Content-Transfer-Encoding: quoted-printable
 Reviewed-by: Lyude Paul <lyude@redhat.com>
 
 On Sun, 2025-11-23 at 14:12 +0900, Alexandre Courbot wrote:
-> Explicit padding is needed in order to avoid uninitialized bytes and
-> safely implement `AsBytes`. The `--explicit-padding` of bindgen was
-> omitted by mistake when these bindings were generated.
+> The size of messages' payload is miscalculated, leading to extra data
+> passed to the message handler. While this is not a problem with our
+> current set of commands, others with a variable-length payload may
+> misbehave. Fix this.
 >=20
-> Fixes: 13f85988d4fa ("gpu: nova-core: gsp: Retrieve GSP static info to ga=
-ther GPU information")
+> Fixes: 75f6b1de8133 ("gpu: nova-core: gsp: Add GSP command queue bindings=
+ and handling")
 > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 > ---
->  drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  drivers/gpu/nova-core/gsp/cmdq.rs | 11 +++++++----
+>  drivers/gpu/nova-core/gsp/fw.rs   |  2 +-
+>  2 files changed, 8 insertions(+), 5 deletions(-)
 >=20
-> diff --git a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs b/drivers/=
-gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> index 5bcfbcd1ad22..5f0569dcc4a0 100644
-> --- a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> +++ b/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
-> @@ -325,6 +325,7 @@ pub struct NV0080_CTRL_GPU_GET_SRIOV_CAPS_PARAMS {
->      pub totalVFs: u32_,
->      pub firstVfOffset: u32_,
->      pub vfFeatureMask: u32_,
-> +    pub __bindgen_padding_0: [u8; 4usize],
->      pub FirstVFBar0Address: u64_,
->      pub FirstVFBar1Address: u64_,
->      pub FirstVFBar2Address: u64_,
-> @@ -340,6 +341,7 @@ pub struct NV0080_CTRL_GPU_GET_SRIOV_CAPS_PARAMS {
->      pub bClientRmAllocatedCtxBuffer: u8_,
->      pub bNonPowerOf2ChannelCountSupported: u8_,
->      pub bVfResizableBAR1Supported: u8_,
-> +    pub __bindgen_padding_1: [u8; 7usize],
->  }
->  #[repr(C)]
->  #[derive(Debug, Default, Copy, Clone)]
-> @@ -347,11 +349,13 @@ pub struct NV2080_CTRL_BIOS_GET_SKU_INFO_PARAMS {
->      pub BoardID: u32_,
->      pub chipSKU: [ffi::c_char; 9usize],
->      pub chipSKUMod: [ffi::c_char; 5usize],
-> +    pub __bindgen_padding_0: [u8; 2usize],
->      pub skuConfigVersion: u32_,
->      pub project: [ffi::c_char; 5usize],
->      pub projectSKU: [ffi::c_char; 5usize],
->      pub CDP: [ffi::c_char; 6usize],
->      pub projectSKUMod: [ffi::c_char; 2usize],
-> +    pub __bindgen_padding_1: [u8; 2usize],
->      pub businessCycle: u32_,
->  }
->  pub type NV2080_CTRL_CMD_FB_GET_FB_REGION_SURFACE_MEM_TYPE_FLAG =3D [u8_=
-; 17usize];
-> @@ -371,6 +375,7 @@ pub struct NV2080_CTRL_CMD_FB_GET_FB_REGION_FB_REGION=
-_INFO {
->  #[derive(Debug, Default, Copy, Clone)]
->  pub struct NV2080_CTRL_CMD_FB_GET_FB_REGION_INFO_PARAMS {
->      pub numFBRegions: u32_,
-> +    pub __bindgen_padding_0: [u8; 4usize],
->      pub fbRegion: [NV2080_CTRL_CMD_FB_GET_FB_REGION_FB_REGION_INFO; 16us=
-ize],
->  }
->  #[repr(C)]
-> @@ -495,13 +500,16 @@ pub struct FW_WPR_LAYOUT_OFFSET {
->  #[derive(Debug, Copy, Clone)]
->  pub struct GspStaticConfigInfo_t {
->      pub grCapsBits: [u8_; 23usize],
-> +    pub __bindgen_padding_0: u8,
->      pub gidInfo: NV2080_CTRL_GPU_GET_GID_INFO_PARAMS,
->      pub SKUInfo: NV2080_CTRL_BIOS_GET_SKU_INFO_PARAMS,
-> +    pub __bindgen_padding_1: [u8; 4usize],
->      pub fbRegionInfoParams: NV2080_CTRL_CMD_FB_GET_FB_REGION_INFO_PARAMS=
-,
->      pub sriovCaps: NV0080_CTRL_GPU_GET_SRIOV_CAPS_PARAMS,
->      pub sriovMaxGfid: u32_,
->      pub engineCaps: [u32_; 3usize],
->      pub poisonFuseEnabled: u8_,
-> +    pub __bindgen_padding_2: [u8; 7usize],
->      pub fb_length: u64_,
->      pub fbio_mask: u64_,
->      pub fb_bus_width: u32_,
-> @@ -527,16 +535,20 @@ pub struct GspStaticConfigInfo_t {
->      pub bIsMigSupported: u8_,
->      pub RTD3GC6TotalBoardPower: u16_,
->      pub RTD3GC6PerstDelay: u16_,
-> +    pub __bindgen_padding_3: [u8; 2usize],
->      pub bar1PdeBase: u64_,
->      pub bar2PdeBase: u64_,
->      pub bVbiosValid: u8_,
-> +    pub __bindgen_padding_4: [u8; 3usize],
->      pub vbiosSubVendor: u32_,
->      pub vbiosSubDevice: u32_,
->      pub bPageRetirementSupported: u8_,
->      pub bSplitVasBetweenServerClientRm: u8_,
->      pub bClRootportNeedsNosnoopWAR: u8_,
-> +    pub __bindgen_padding_5: u8,
->      pub displaylessMaxHeads: VIRTUAL_DISPLAY_GET_NUM_HEADS_PARAMS,
->      pub displaylessMaxResolution: VIRTUAL_DISPLAY_GET_MAX_RESOLUTION_PAR=
-AMS,
-> +    pub __bindgen_padding_6: [u8; 4usize],
->      pub displaylessMaxPixels: u64_,
->      pub hInternalClient: u32_,
->      pub hInternalDevice: u32_,
+> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
+p/cmdq.rs
+> index 6f946d14868a..dab73377c526 100644
+> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+> @@ -588,21 +588,24 @@ fn wait_for_msg(&self, timeout: Delta) -> Result<Gs=
+pMessage<'_>> {
+>              header.length(),
+>          );
+> =20
+> +        // The length of the message that follows the header.
+> +        let msg_length =3D header.length() - size_of::<GspMsgElement>();
+> +
+>          // Check that the driver read area is large enough for the messa=
+ge.
+> -        if slice_1.len() + slice_2.len() < header.length() {
+> +        if slice_1.len() + slice_2.len() < msg_length {
+>              return Err(EIO);
+>          }
+> =20
+>          // Cut the message slices down to the actual length of the messa=
+ge.
+> -        let (slice_1, slice_2) =3D if slice_1.len() > header.length() {
+> +        let (slice_1, slice_2) =3D if slice_1.len() > msg_length {
+>              // PANIC: we checked above that `slice_1` is at least as lon=
+g as `msg_header.length()`.
+> -            (slice_1.split_at(header.length()).0, &slice_2[0..0])
+> +            (slice_1.split_at(msg_length).0, &slice_2[0..0])
+>          } else {
+>              (
+>                  slice_1,
+>                  // PANIC: we checked above that `slice_1.len() + slice_2=
+.len()` is at least as
+>                  // large as `msg_header.length()`.
+> -                slice_2.split_at(header.length() - slice_1.len()).0,
+> +                slice_2.split_at(msg_length - slice_1.len()).0,
+>              )
+>          };
+> =20
+> diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/=
+fw.rs
+> index abffd6beec65..7fcba5afb0a3 100644
+> --- a/drivers/gpu/nova-core/gsp/fw.rs
+> +++ b/drivers/gpu/nova-core/gsp/fw.rs
+> @@ -853,7 +853,7 @@ pub(crate) fn set_checksum(&mut self, checksum: u32) =
+{
+>          self.inner.checkSum =3D checksum;
+>      }
+> =20
+> -    /// Returns the total length of the message.
+> +    /// Returns the total length of the message, message and RPC headers=
+ included.
+>      pub(crate) fn length(&self) -> usize {
+>          // `rpc.length` includes the length of the GspRpcHeader but not =
+the message header.
+>          size_of::<Self>() - size_of::<bindings::rpc_message_header_v>()
 
 --=20
 Cheers,
