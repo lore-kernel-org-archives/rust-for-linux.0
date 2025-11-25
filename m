@@ -1,206 +1,148 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834C21F12E0;
-	Tue, 25 Nov 2025 13:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D819C320CBA
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 13:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764078651; cv=none; b=Rqp52I3dvw13Z+QCekfIPpNSHOh2aSsVYWYZNHly505TQpQY/9Hs59HOgYQz26vw6SjCr8wqZkIX5zuo4TU/I+HhG+GbUQvkHnSFfq1DHaxoASCkH8D3DNbJH+wrHZKlXPS23a74dokAnP5k9trQMbrP6jtF+dWZyUaOTfwDikE=
+	t=1764079197; cv=none; b=bvR/ks832HdT7SL1uAOv+7HrFNwJgN/zxFqW11dGclxavRS0H+goeo79HvzdPJRI1USzC6OS2WeiQUQQPqsvMvjmZm9qjBdfja7BlOvybmaBkFOQysqJYmSEbT5Cz/+1WDc7gfth3drQB1bYXz48psz+UjALdA4FN75qrJrlQQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764078651; c=relaxed/simple;
-	bh=ZVZoBL5PnZxHR2oNWFu2Nx+Kvgx0aO5702hIJ36xBiY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iIY6uRY9liiAYjNYm5VDY1y6oJdLiM5J1t0YqQeTqPDL9a1TDi1qctTtJfAtY3WkRD0rKwpfHn8ZE3vy2zuin7qspWXrUCgmWvrn8kbqg90WY1KuoH9ht4/zKR12w62XVLlecBiUgjsybrYXwuTAf+H5CKdDRp290AEsZL45rS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ackB2UHY; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1764079197; c=relaxed/simple;
+	bh=bRsPLP38cHQDSFaJmoylK3g4RDF0XCdRwPw1uZId5KU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=csZGgmpEknDBGf4mAwQFFtVZo15dIl9nFl267ltA/Tb+zbLqQVrVo03V+MQUrK2cNgJYMSE8/4RBfG1dZEPDqnLTnhxwpQJ9hK7EK31r7yMYegpJ6QFrlNPezi9noBYyTTgzkifBK9C63U6+Rn7o+wpv/7L3HojROpoCv+uHfCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pERlE+L1; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ackB2UHY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764078646;
-	bh=ZVZoBL5PnZxHR2oNWFu2Nx+Kvgx0aO5702hIJ36xBiY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ackB2UHYZMx2MIHmMBZ9SViDQcFg0oVqYUTtZ80rPFkFAdsJu0siB0S75n0E5/9AZ
-	 MP6a42PT+KqKNwLc3AfdkNDJKztnBPWVIXeLCShG+f+Y/vLcCvbnaRuNxPfzh1+sJr
-	 zEQghgkL5GitLE8lZyLCaBkJ96Wh7XNruM13F5i0pjcrDNOvbTBjA/xYewsoeZZbJg
-	 QMtynjNef9nuO1WBY7E3/UQpuEQyCoZUKjNNVXFq65Zt08+N9QmoSMhgi2AMWbc97U
-	 msXIrfIXxToHhDByOSX8DRw0Af/ovBTTDcBu9xty1Ns+hH+PEay7VmzNbDjmnbXCp7
-	 O52dQwe72A7+Q==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id CD88B17E12D2;
-	Tue, 25 Nov 2025 14:50:45 +0100 (CET)
-Date: Tue, 25 Nov 2025 14:50:40 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Philipp Stanner <phasta@mailbox.org>
-Cc: phasta@kernel.org, Daniel Almeida <daniel.almeida@collabora.com>, Alice
- Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, Christian
- =?UTF-8?B?S8O2bmln?= <ckoenig.leichtzumerken@gmail.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Alexandre Courbot <acourbot@nvidia.com>, Dave
- Airlie <airlied@redhat.com>, Lyude Paul <lyude@redhat.com>, Peter Colberg
- <pcolberg@redhat.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC WIP 2/3] rust: sync: Add dma_fence abstractions
-Message-ID: <20251125145040.350e54a9@fedora>
-In-Reply-To: <682a788c21c6513e30c5eb1020191f31f7aec612.camel@mailbox.org>
-References: <20251118132520.266179-2-phasta@kernel.org>
-	<20251118132520.266179-4-phasta@kernel.org>
-	<E55D72FC-AEF6-4D2D-973F-123306E4EB4C@collabora.com>
-	<bc4f01ec5172d29abd64429e3017cc53c0522e01.camel@mailbox.org>
-	<20251125115829.24e6caf7@fedora>
-	<682a788c21c6513e30c5eb1020191f31f7aec612.camel@mailbox.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pERlE+L1"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b7369635423so731689866b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 05:59:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764079194; x=1764683994; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=q1Umc5xakz0p47odRNCKRo/Cs7UN6/Vvp4GOsMfqkPY=;
+        b=pERlE+L1hMhdnrY6zrtsPikRLuZo310KBWewhgDuhiRDVAVFm1+VlLVSqwPUSqyiIF
+         PEPZxcp+t5Jt4kKuh8YCVIEXedISsjXWUV+yxjq1WVVH3VUZtLsF8gtREyoA87ow2dSs
+         JK+1sopenEM7FcQ2AgslbLmRFFGVZy/+geM16ZlhnXllcHzweaoAQWCWHRXQTSYN97pe
+         M+nP06gEaW8n3Q5UGNtbIpzgonKidWI39wa/SeSeVTul/O3IkDQq/8f7wuXNWtgBArwb
+         9TZ3xs6HCTLhi5g35rpq1Z7F3tDfaH67yb33o+BQjIL/j8YLiqoKOGoWEK3GkOyEF9ph
+         SNIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764079194; x=1764683994;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q1Umc5xakz0p47odRNCKRo/Cs7UN6/Vvp4GOsMfqkPY=;
+        b=k8bJQooi8vBfF+kUw+fGcUx9qhomtkuo/muBkO0p19uEV/keXAs2s05EBvbCEcz+/J
+         GK8s+GD3gligtjCEFD+jenC7YSX8Uds/JGip2q8iLz5HCrXsSJrjZq26DDwu3wqFWAJ4
+         1vrwrzUBFccIKBY0Gp5FaAtJPXhr9SRIWX6ncpWyr7UW1r+kyqbU/4n0Z+dnGW23a4yk
+         Z2g320YZokhR7KRHLyxCiJDox+TeQaYBvxeTlQpsVIjCyrphSFbMEP9jPcid8OTCU20L
+         3+FkhqN563KV9iYi0GDpH4MzsLLDtsgu4lHhZowofcZyZJqmkTrphNwfhpdnRgVneU5o
+         jxVA==
+X-Forwarded-Encrypted: i=1; AJvYcCVeUhz6QJo/qCdNcw4QFpBkV4umDV27QlChX6Z0UkYaiTkgbTlsZxAE50fQifE2gG3durMYQHkMWnhQRh0faw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPAzbLRLh1/vVClK3dfUREKWGnh39FKkyo9cggT8YZzjdT5IC5
+	8dDF8TvDrCumqg7Z4rRqwpdkBDg/2dGlSot6gAc91v0/6xAPjyCtEMpJHYRy+VFwftG07ttsIeP
+	gYfCzXVijhG1o9WHOqA==
+X-Google-Smtp-Source: AGHT+IHRr0F3OZH/lXnIU0dw9lR+d4//8yqIdIG4fFEyZfF9jodYQp47unQezT7bSlyXN/0BKdvQTMzWIKhDOMI=
+X-Received: from ejcst1.prod.google.com ([2002:a17:907:c081:b0:b73:7068:f975])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:6e8b:b0:b73:467e:47f6 with SMTP id a640c23a62f3a-b76c54b870fmr323173766b.15.1764079194249;
+ Tue, 25 Nov 2025 05:59:54 -0800 (PST)
+Date: Tue, 25 Nov 2025 13:59:36 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAEi2JWkC/2XPy2rDMBCF4VcJWkdFM7ZuWeU9Qhe6jB1BYgU5m
+ Jbgd68cCnXtlTiC70d6sZFKopGdDi9WaEpjykMd6nhg4eqGnniKdTMUKEEIzX0aIpV6PO/uwaV
+ zIlqlOg8dq+ZRqEtf797ls+5rGp+5fL/zEyy3vyUUm9IEXHCjradgQ4wBzn3O/Y0+Qr6zJTXhm
+ sOWY+WkJEbQGBT6HW/W3Gx5U3mDBjG2vkGhd7z94wC7x7eVS4rG6c558HbH5Zrjlsvl795GHTQ FZ/Afn+f5B7wtlOGnAQAA
+X-Change-Id: 20251007-binder-bitmap-5aa0d966fb1f
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2150; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=bRsPLP38cHQDSFaJmoylK3g4RDF0XCdRwPw1uZId5KU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpJbZTqhEdfXXjETT2d2p2UxGZIrlBoV8F1nN1s
+ xlL9uZoeiKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaSW2UwAKCRAEWL7uWMY5
+ RhLCD/98rrOnXlaRajCbmSL+muGP211gqpDhc7Qtg+Fqkj4OGNpxjbHxAfuOOZWTOhJnmqBmcUu
+ L1tpuxmT3aZ+P8HQomtyAo3vu83ShnLdZ2niFgKirVkZ7FouHci/971JwQJPYamosUhLW5OG+Lx
+ l1WsngXFjiI0IVdFMlwlB3ExcHSXjGrBUfwTLLH+dVN6S/vvWNEmADi5+1Kl3jt/tM7ohyUzHLF
+ pqrz2s5bUssDOIhM2KVA7XUr3nIwN6NtoNxYo7uUlWb2eLae/gI3W4G0c8lBbIBaCmSXYzG1BHO
+ aP46VYUEP/8sv/5ilsIHnDzWEKtyuohbi/IOsMGsIOeXcsYR2o5gq0/iXvmJ2+DpeiO/0PRNT/x
+ QSf85XUZHtf3efts1ZhdLOwqZpy3vdJZ72tIlOiaxjOnF3fJipXac/EEzGle7aEKUDqnOffy8HP
+ dWIN3SipC/u4KE93zlyqrwupCKJVN46VSND4qWVorINdNlRG+B5T7LhtRt0QJx85LwUU7i18i3l
+ hkmU5gUBb5j3wTz56Rxe31jfZ26hnedML0Q7O6quZ6X6/fIl2ETTKgNjfjnO0YI81parj4/BeKZ
+ A03P4vZlc5XB6EpGmLidc2fP09yy7NmS87kv24yvI+LYnPsbRJ+h3UtRUMPDh4Gt1UQEdKRmyAE Bxt3Z/nVvxL5UDw==
+X-Mailer: b4 0.14.2
+Message-ID: <20251125-binder-bitmap-v6-0-dedaf1d05a98@google.com>
+Subject: [PATCH v6 0/6] Use Rust Bitmap from Rust Binder driver
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>
+Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Martijn Coenen <maco@android.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Burak Emir <bqe@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, 25 Nov 2025 13:20:03 +0100
-Philipp Stanner <phasta@mailbox.org> wrote:
+See commit message for rust binder commit for details.
 
-> On Tue, 2025-11-25 at 11:58 +0100, Boris Brezillon wrote:
-> > On Tue, 25 Nov 2025 10:48:12 +0100
-> > Philipp Stanner <phasta@mailbox.org> wrote:
-> >  =20
-> > > > > +impl ArcBorrow<'_, DmaFenceCtx> {
-> > > > > +=C2=A0=C2=A0=C2=A0 /// Create a new fence, consuming `data`.
-> > > > > +=C2=A0=C2=A0=C2=A0 ///
-> > > > > +=C2=A0=C2=A0=C2=A0 /// The fence will increment the refcount of =
-the fence context associated with this
-> > > > > +=C2=A0=C2=A0=C2=A0 /// [`DmaFenceCtx`].
-> > > > > +=C2=A0=C2=A0=C2=A0 pub fn new_fence<T>(
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &mut self,
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data: impl PinInit<T>,
-> > > > > +=C2=A0=C2=A0=C2=A0 ) -> Result<ARef<DmaFence<T>>> {
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let fctx: Arc<DmaFenc=
-eCtx> =3D (*self).into();
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let seqno: u64 =3D fc=
-tx.get_new_fence_seqno();
-> > > > > +
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // TODO: Should we re=
-set seqno in case of failure?=C2=A0  =20
-> > > >=20
-> > > > I think we should go back to the old value, yeah.=C2=A0  =20
-> > >=20
-> > > It would be trivial to implement that (just atomic.decrement()).
-> > >=20
-> > > The thing why the TODO even exists is that I'm a bit unsure about
-> > > races. It seems we have to choose between either a gap in the seqnos =
-or
-> > > the possiblity of seqnos being out of order.
-> > >=20
-> > > If the user / driver creates fences with >1 thread on a fence context,
-> > > I mean.
-> > >=20
-> > > We're pretty free in our choices, however. The shared fence-fctx
-> > > spinlock will be removed anyways, so one could later easily replace t=
-he
-> > > fctx atomic with a lock if that's desirable.
-> > >=20
-> > > I can implement a seqno-decrement for now. =20
-> >=20
-> > I don't think we need to return unused seqnos in case of failure. I
-> > mean, we could have something like the following pseudo-code:
-> >=20
-> > 	atomic_cmpxchg(ctx.seqno, fence.seqno + 1, fence.seqno) =20
->=20
-> The code above is the code that creates fence.seqno in the first place,
-> obtaining the next seqno from the fctx (timeline).
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v6:
+- Fix rebase mixups.
+- Include benchmark in commit message.
+- Link to v5: https://lore.kernel.org/r/20251112-binder-bitmap-v5-0-8b9d7c7eca82@google.com
 
-Not sure I follow, but the pseudo-code I pasted is actually meant to
-be the reciprocal of the seqno allocation (decrement if the current ctx
-seqno is exactly returned_seqno + 1).
+Changes in v5:
+- Rename NO_ALLOC_MAX_LEN to MAX_INLINE_LEN.
+- Update all uses of MAX_LEN/MAX_INLINE_LEN to reference the new
+  constants.
+- Link to v4: https://lore.kernel.org/r/20251110-binder-bitmap-v4-0-5ed8a7fab1b9@google.com
 
->=20
-> >=20
-> > but it wouldn't cover the case where fences are not returned in the
-> > order they were assigned, and seqnos are pretty cheap anyway (if a u64
-> > is enough to count things in nanoseconds for hundreds of years, they are
-> > more than enough for a fence timeline on which fences are emitted at a
-> > way lower rate, even in case of recurring failures). The guarantee we
-> > really care about is seqnos not going backward, because that would mess
-> > up with the assumption that fences on a given timeline/ctx are signalled
-> > in order (this assumption is used to coalesce fences in a
-> > fence_array/resv IIRC). =20
->=20
-> Agreed, everything should signal according to the seqno.
->=20
-> The question we are facing with Rust (or rather, my design here) is
-> rather to what degree the infrastructure shall enforce this. As you
-> know, in C there isn't even a real "fence context", it's just an
-> abstract concept, represented by an integer maintained by the driver.
->=20
-> In Rust we can model it more exactly. For instance, we could enforce
-> ordered signaling by creating a function as the only way to signal
-> fences:
->=20
-> fctx.signal_all_fences_up_to_seqno(9042);
->=20
-> which then iterates over the fences, signaling all in order.
+Changes in v4:
+- Keep existing IdPool constructor (renamed to with_capacity).
+- Undo docs changes that were due to the removal of the existing IdPool
+  constructor.
+- List id < pool.map.len() as invariant for UnusedId and mention it in
+  as_u32() comment.
+- Fix [`acquire`] docs links.
+- Link to v3: https://lore.kernel.org/r/20251028-binder-bitmap-v3-0-32822d4b3207@google.com
 
-Up to you, but then it implies keeping a list of currently active
-fences attached to the context, plus some locks to protect this list.
-Another option would be to track the last signalled seqno at the
-context level, and complain if a fence with a lower seqno is signalled.
+Changes in v3:
+- Also update documentation to fix compile errors.
+- Use new_inline() instead of new_small().
+- Reword commit message of "rust: id_pool: do not supply starting capacity"
+- Change UnusedId::acquire() to return usize.
+- Link to v2: https://lore.kernel.org/r/20251021-binder-bitmap-v2-0-e652d172c62b@google.com
 
->=20
->=20
-> With some other APIs, such as jobqueue.submit_job(), which creates a
-> fence with the code above, it's trivial as long as the driver only
-> calls submit_job() with 1 thread.
+Changes in v2:
+- Use id_pool.
+- Link to v1: https://lore.kernel.org/r/20251020-binder-bitmap-v1-0-879bec9cddc1@google.com
 
-As I was explaining to Daniel yesterday, you need some sort of
-serialization when you submit to the same context anyway. In Tyr,
-things will be serialized through the GPUVM resv, which guarantees that
-no more than one thread can allocate seqnos on a given context inside
-this critical section.
+---
+Alice Ryhl (6):
+      rust: bitmap: add MAX_LEN and MAX_INLINE_LEN constants
+      rust: bitmap: add BitmapVec::new_inline()
+      rust: id_pool: rename IdPool::new() to with_capacity()
+      rust: id_pool: do not supply starting capacity
+      rust: id_pool: do not immediately acquire new ids
+      rust_binder: use bitmap for allocation of handles
 
->=20
-> If the driver came up with the idea of using >=3D2 threads firing on
-> submit_job(), then you by design have ordering issues, independently
-> from the fence context using this or that atomic operation or even full
-> locking.
+ drivers/android/binder/process.rs |  64 +++++++++++++-----
+ rust/kernel/bitmap.rs             |  43 ++++++++----
+ rust/kernel/id_pool.rs            | 139 ++++++++++++++++++++++++++++----------
+ 3 files changed, 180 insertions(+), 66 deletions(-)
+---
+base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
+change-id: 20251007-binder-bitmap-5aa0d966fb1f
 
-In practice you don't, because submission to a given context are
-serialized one way or another (see above). Maybe what we should assume
-is that only one thread gets a mutable ref to this FenceCtx/JobQueue,
-and seqno allocation is something requiring mutability. The locking is
-something that's provided by the layer giving a mutable ref to this
-fence context.
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
->=20
-> If the driver scrambles calls to submit_job() or new_fence(), then it
-> can certainly happen that done_fences are signaled by JQ out of order =E2=
-=80=93
-> though I'm not sure how horrible that would actually be, considering
-> that this does not imply that anything gets executed before all
-> dependencies are fullfiled. AFAICS it's more "nice to have / would be
-> the cleanest possible design".
-
-A fence context should really be bound to a GPU queue, and jobs on a
-GPU queue are expected to be executed in order. So long as the jobs are
-queued in order, they should be executed and signalled in order. Of
-course, this implies some locking when you prepare/queue jobs because
-preparation and queuing are two distinct steps, and if you let 2
-threads do that concurrently, the queuing won't be ordered. That's
-already stuff drivers have to deal with today, so I'm not sure we
-should make a difference for rust drivers, other than making this
-explicit by requiring mutable JobQueue/FenceCtx references in
-situations where we expect some higher-level locking to be in place.
-
->=20
-> I think I have a TODO in jobqueue where we could solve that by only
-> signaling pending done_fence's once all preceding fences have been
-> signaled.
-
-I believe this is something we want to enforce, not fix. If signalling
-is done out of order, that's probably a driver bug, and it should be
-reported as such IMHO.
