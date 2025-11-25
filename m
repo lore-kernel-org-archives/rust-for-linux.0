@@ -1,222 +1,697 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012046.outbound.protection.outlook.com [40.107.200.46])
+Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2439E29993E;
-	Tue, 25 Nov 2025 18:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0400F32FA13;
+	Tue, 25 Nov 2025 18:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764094595; cv=fail; b=eoDqx9okyUzncFZnANbXBrpSWaNPNsyQEpjzd3LaUca2sElBpeR3raRL5H9Qzt4lR3qj83RJMFWOWscFgJAf6IrZJlSQATdD//9jk5nfOwYKzlnKU+HRusuJ6x8Ka39LpcwtSKOKjMJ+NCojy43oIcAOz50Ye+10u8dHQb9/Ync=
+	t=1764095584; cv=pass; b=gVZet9w/+OJPOanrPsjzqT3T0cfLeqEEd8v0Usg0hQFYWoNdWNlrnA2nvV/7892M6qWZ9KOB6S2Int9h4r1Olb67Y+Vh1eISbvPVqpcaB6a4f11RkyDzh2n3Zmi8Vra2WgKfUQBgG1stgbyqSIBa4D3Ck+Fu+ZwrhgT44ddgJEQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764094595; c=relaxed/simple;
-	bh=OFnBOp22YWawNgKHBks0BS0gJ2+V4XWmm1shhP/HLLg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=g+qK6x/5UqhuJUJDbS1Q8OXpq8u1BIZtVzp2vsTe+vttuYT58U8IgICix6fQgGVLjEGaXIJbYIyvF2zzWNzsLeDVf+PuNxJTXDBdLxq7h4Nik/zQW0S1wS+t/Zm5w9zBQpLmTBSKw1ZF9U0WylN6Sitx8yfFf2xljHSxvoCf0uU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hDgdFG84; arc=fail smtp.client-ip=40.107.200.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1764095584; c=relaxed/simple;
+	bh=IBNsQsLp8n+PqJOkLKlr0xlzov+LMPAIPEkLXKD9sNY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=X1iCBLcO6YZFlrvnZIHlU2ivqde/511G/LWmvMUjVpBvy+akqvDj2vwTyoJRBZqc+gqHPeY3VHGH5a7MmWfEOQ98CaNX38WXVm61cyFVXr0lvK6Ri6GFxNPPHjCfoRJuJGOPEcox/5Z093FsDTyQ5m2z6ih9MVw/13GOR58XUYw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=W+RwynH4; arc=pass smtp.client-ip=136.143.184.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hDgdFG84"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IXQtY3K14uMUrU+LtUXg2/9kfY+iFaeSvKsb0oYtymYKrQS1fJ5bBAg2rhSJg1coaDIIp2/Phy1A00sRdWo/LbiOor6IZcFWZxbtXd1+A8QzdwP2otiiquLT6TPKCe0fGe62e6dyJT40lowfsop3GEtv6qmT/GNoQ+Evfxl1dW7o0u0E0xCZIxuMHEwMSSvyi/+Rj4C+ArSijSPuTZ+hobgspnwXK3BnLOh7Fsr3O2jVu8xSOFdEf8LyB03tikCnoORh3cfjUogZszS/eyz2utK+PMB68CLXMPhy2ZFfa2KD/YlMDTGTIQz81qlPP95XEUR/VeQmfPheM5Z+bZtpBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OFnBOp22YWawNgKHBks0BS0gJ2+V4XWmm1shhP/HLLg=;
- b=Wc+4joM3Hmb8A35kZHi3L85d87Hk/y7viuaVhzme2yfh/FnsGgef9aO7AJRYUW29kabeMtdp4WWThNWKxTXQ2/QO1Ld5dCPVChVNslw2X3ePvOeqYmONib8V0ydGi9eGrxMc8wp70uVm0xsymGC5ZB/NDD8j5bwU34anj/8Ld7ToBpCyT7WUdIVoInYvh3Y0aRdMUma6LZqHqis5scwgpucGSh0piBLYyJSQ55YaMtiytdHuIZrFiOa4WgHGZB0KIsY6eYakfM5RBMqOtmvVCTsLAw/dkCLOzcEe1/v5jSUtM+iby7HHCoGXPyPUZqlApPl0Adpxv/SCkB+sH1u+EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OFnBOp22YWawNgKHBks0BS0gJ2+V4XWmm1shhP/HLLg=;
- b=hDgdFG84GsdCuj9opj0J2iz9ZwnVr59AlAGrjtA+G28g6tC5PjyBgOsD6utFqDlXKDi/adMVuUhZA1wZFg2AtuRg3Nb3IC2cdH+nOnaKqbxxX6EeKz1y7XNeWZvidPqNfSsexrw4PgrVrxM/dUZJ9GBSakHnmn9z+bQeLaWIFESKxPHXbToFlNPeLQ9PoDMbLTE601iYJmZqX67zmmuhQZHZf81OLNpGq4IIzlNY8i43aUcAcLobxA+6bDZIa0LPDjGbPzNqRXDpnKHLYob/uQukUe3vxsE5+WiH/TTw5t+SsStrSUqWemXwRQmQgYfaboL7X9uP7YWQsC5b7HJcbw==
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by CY8PR12MB8338.namprd12.prod.outlook.com (2603:10b6:930:7b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Tue, 25 Nov
- 2025 18:16:30 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
- 18:16:30 +0000
-From: Joel Fernandes <joelagnelf@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"dakr@kernel.org" <dakr@kernel.org>, "airlied@gmail.com" <airlied@gmail.com>,
-	Alistair Popple <apopple@nvidia.com>, "ojeda@kernel.org" <ojeda@kernel.org>,
-	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "boqun.feng@gmail.com"
-	<boqun.feng@gmail.com>, "gary@garyguo.net" <gary@garyguo.net>,
-	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "lossin@kernel.org"
-	<lossin@kernel.org>, "a.hindborg@kernel.org" <a.hindborg@kernel.org>,
-	"aliceryhl@google.com" <aliceryhl@google.com>, "tmgross@umich.edu"
-	<tmgross@umich.edu>, "simona@ffwll.ch" <simona@ffwll.ch>,
-	"maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
-	"mripard@kernel.org" <mripard@kernel.org>, "tzimmermann@suse.de"
-	<tzimmermann@suse.de>, John Hubbard <jhubbard@nvidia.com>, Timur Tabi
-	<ttabi@nvidia.com>, "joel@joelfernandes.org" <joel@joelfernandes.org>,
-	"elle@weathered-steel.dev" <elle@weathered-steel.dev>,
-	"daniel.almeida@collabora.com" <daniel.almeida@collabora.com>, Andrea Righi
-	<arighi@nvidia.com>, "phasta@kernel.org" <phasta@kernel.org>,
-	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>, Nouveau
-	<nouveau-bounces@lists.freedesktop.org>, Alexandre Courbot
-	<acourbot@nvidia.com>
-Subject: Re: [PATCH v2 1/3] rust: helpers: Add list helpers for C linked list
- operations
-Thread-Topic: [PATCH v2 1/3] rust: helpers: Add list helpers for C linked list
- operations
-Thread-Index: AQHcUy58YAKhaa3SYEu72qT54gYYALUDj+0AgAA481c=
-Date: Tue, 25 Nov 2025 18:16:29 +0000
-Message-ID: <095D38BD-A8AA-4BC3-8C24-9454964EB8F8@nvidia.com>
-References: <20251111171315.2196103-1-joelagnelf@nvidia.com>
- <DEHV08MPF9CH.1GZAWEGC4AVF3@nvidia.com>
-In-Reply-To: <DEHV08MPF9CH.1GZAWEGC4AVF3@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR12MB8059:EE_|CY8PR12MB8338:EE_
-x-ms-office365-filtering-correlation-id: 43444a0d-7a60-456d-e6b5-08de2c4ec18a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?WjlFcFp5WHoyZkRoWm1VdklQQzF3NHJNeHRneDJDM1pqVmJDK3BDdkdKSUVl?=
- =?utf-8?B?VlNjdEMwcjRYcU5yTVJ2UFdSS0VTZVJvS0NBelZVYmppTkZaN2FPaDg1dXpB?=
- =?utf-8?B?N3NocmI4QXdaWXlMQmZYUjc3Yk9TMWxPV3pIME9IbTltQXFZcTRFdlhRNnNt?=
- =?utf-8?B?NGp3YmdGN011Y1pmRG9mTW5nV3c2bTRzNlVyRjRVbmNyZStnaTFOVUcyaFpw?=
- =?utf-8?B?Nm5SM3E5K0pQeWQ2M0ZGY0tmLzVKbXV1aHpycnhhN1Fxa01nY1V5a2w1S1dG?=
- =?utf-8?B?akR4UXFRMitCVlNvR05zVTJRd2Vpb2pGRU1xcFc0MzNYZ3k3Skl1VFFnSVpQ?=
- =?utf-8?B?SDVNV01BYm9VZUJxR0ZmUWFoaXNyRVUyNDVTUGs1S2hZY1FpRUMxNE9sNEhq?=
- =?utf-8?B?R3phZWtwMEZPa2FLTCtIWEc4RWptQzcwMElrOTVxUmZVZFBaYUw4YlFYM2sv?=
- =?utf-8?B?b1p3dmxUd0VmTG9hT1BvK3dwU2NkOUw3MUJ3eDFxNXRQWXd0azdheE14TXJD?=
- =?utf-8?B?RGFPb1VBajNTcGYxS0ZkenA1VnZiL0pFR3hQaXNpZzU4ckhxT1Q3NHZxMHlz?=
- =?utf-8?B?RENGa2crdjBWcVRCM3hrTld5b3AzdGg0aU8yVWdheUFPc3hQUmxxdnBLaGhQ?=
- =?utf-8?B?OWxpdXg2TFhIQndoTU12bWdMZ3doMUF2ZEJoZDZRTGhpRmsxNytXOEN1ZTZ0?=
- =?utf-8?B?NmJaa3drMklUaC9naStWVzI2eGgxY2oydzdTVFZRN0dRNlBDL3hSTVFWUHlG?=
- =?utf-8?B?Um81c2p6UlVmNWk4cTlqL1JBalV2ZGxrV1NPd3FDUWN3T2haTTJ4djBYQTl0?=
- =?utf-8?B?TjRQRnVaekN6Sis5Zit4V1Eyck1pVHcyZy9lak9jSlphN2tqQWM3a2VFM0Uv?=
- =?utf-8?B?QjZPREsxOHZvb20yQ3ZrTjFDeHQxTERQVjIvUDZZWkFBNDN1VEFnSlVhOGxB?=
- =?utf-8?B?WENnTEswUDh3SW5ML2hUS2daM0llZzBWMUJZaDBVUDN3MkFyd2VSWEtxdzk5?=
- =?utf-8?B?VHRCK243aHdDK0k5VDZGMURQL2lQZ1pIZTV3QlhmeEFaMGx2QXIxSTFZR0c0?=
- =?utf-8?B?SWoxSzdZUEZUZk9LbkhNWkpCMCtNNVc4aWpiWDFtaWVCMTFrUEtTYXJka0xu?=
- =?utf-8?B?dHJwMHFQK1plVVgxRnRSZUc1a2dGbEdReC9pMUpKQkx3NDFhTzBrRlVIa3Zo?=
- =?utf-8?B?YUVGWk5BVEJKUHZIeEtLU3ZEajU0alNIbGRMMURnQ3R4VnZIMGRlSHorWW1F?=
- =?utf-8?B?V3FVeWV6ZGVZSkpVRTI5MHByeXgyRC9IblJ0YllCOFV0bzFzWGNKcHhWMDli?=
- =?utf-8?B?OHRLOXhIamlWV016TG9QcmowWUJQRGRrSEF6UnNNQnc0Q3p6T3JBZlhwZWNr?=
- =?utf-8?B?UE1UNlNUMjc5OTVLSHdTOGxabzdvM2NGY3Mxd2ZIMXRidGx5bmladnkrcmdx?=
- =?utf-8?B?SEk4cGJZVUQ5YVdXQWkxU3g2eGpJdUZEN09WZ2c1b3pLREpYdHFUaEEwMVJ6?=
- =?utf-8?B?Q2NlY0E0QUw0cWFoYXVLVS9CT0d4dXFYUFBtMlV0aStyV2IxeFNLdmZsVW1a?=
- =?utf-8?B?Q056YjRSRTk5YUZlK1U4UktwWW81U2lQK0RTU2RmSk53TVVpVmxSZTBRaktP?=
- =?utf-8?B?TktxbCtDRWtBQmMyQ1p3WTBOdzlDdTlqeWlJWW9taG92ZlIzdktUVzQ4L1dl?=
- =?utf-8?B?UnF5b2JUdWNLZ0E3NXZNNWpyNnNyd2xWWFluL3k1bW5pYjVRWU4vZTYrQkQ5?=
- =?utf-8?B?Y2lhNHNqdmUrUStnUDBXaDN3MnZ6YTA1Uk42UEFlbFVhQmNWU0c4eW93S01K?=
- =?utf-8?B?MGszWkNZSHduWVNlMjZ1bnB3WjVFT3RwK081Z1N6NlZWVElFWWsyV2Zmc01j?=
- =?utf-8?B?aVNNUmNSTG1SM244aXFQSTVraiszVkVKM1pJaU9Ia2R1Sm1leU9MZTdZZCtm?=
- =?utf-8?B?ZUthazk1M2g5WFNIV3loTkZ3WHY1Y1RTMzUwT05CKzJUMTZWcWtWWGVMWjUr?=
- =?utf-8?B?RHpFb21heDdXSnlEMkt4NGhVcGZSRWUzNnRzbVB6VkZ6OE9BZ3NjeGlsN2Qr?=
- =?utf-8?Q?a/P3bj?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?b0ZQS1pNaml5Z1FSTjNxaWFyRmFZWC85bWJ6R21manhQa3o2c21KczJ4SzBI?=
- =?utf-8?B?MUthTitCNUJLTmc0a0gwRk1wVS81UHJDZEdqYldNL1hPUTl3RGNmbnoxRlY2?=
- =?utf-8?B?a1g2bnBzMnBMTjZKenAwZjBQWnJGMUgzdldqUDMvVGQ3NE1HTHlIenZVZXRY?=
- =?utf-8?B?M0JMSkRTN0M0WEpaSlo5Ynk0ZVZhNkVyaUxnTitMWGwxMmduTFI4SkgrV3FB?=
- =?utf-8?B?aktGTWwxSTArdE5MRWN6TTFyYXBvNU5UdjREMjVUejZzSXl4bXFwUVZtc29l?=
- =?utf-8?B?TnoycEI2ZDc3eWV3dmtlQjhFcEM5dEtFK0FaUCtFbG5qaUE5ZUVBRGdtbWp5?=
- =?utf-8?B?eVJGbWVFUklJRXNLUzg4VDNSbmF6YU5WMDNPc1lEUHNhT1NZSkVma2grODUz?=
- =?utf-8?B?T2kwL0RoTjRnSThVR3YwVGpCWWl6RDQyQy9lUFJIWnFNRS92V1YvS2dxcjhq?=
- =?utf-8?B?QUprTWpKSDVtUjNUQklTRk00V3NRTGlwUXpzNXFENjZrYnoyUXk1TnVGSlYw?=
- =?utf-8?B?L0FPZ3F5WC8rZUpDZ1dUMEdQZ2tIZEhLMFVrTHpsdkoxS0twWlNaUDRtUjRh?=
- =?utf-8?B?MEtJNEJpb2VWV2orSjZzKzlIL2FuWUVEQmRrYzZJeUlJVFRrTThiUjFDWko5?=
- =?utf-8?B?aVY5NGRDK2hIMXZHZ0ErSkhVZEMzaHNRMVFuT05jWnRoWU9YaTdVdVI2YlpC?=
- =?utf-8?B?ckxFS0JDc0xsczQ4OWFhRkkvTG9LemNQUG5hWG82eVFUT2FXLy8ybzVsbGlR?=
- =?utf-8?B?b0lqVmRXdGlKZ1cyeFBQa3lCaGxGUG5KNFFwM0g0QlBhei94ekF2SVVnSTVN?=
- =?utf-8?B?WUVMYk5yaHVwUzJ4SlJ6Tkowd3JUUTRKa0U2a0ZmQUFWckpDRGN1eG1CNlFV?=
- =?utf-8?B?eWN1ejRCMDR0RlF1VEluenhLUXZIejdjNGpUZ1NpeUJmT2pWeFNiSDkrYmk1?=
- =?utf-8?B?K0V1UWlQS3RITGZ4dFVtamU2ZWhrMURUenZkT3orRUVmUHBIeExwdFJYRTA1?=
- =?utf-8?B?VmdVVDZCTUJ3enpsaFZUM2wvRTlLRXFZS1VOUXVnU2F4MWl1ZjM3d2g4QjQ2?=
- =?utf-8?B?ZEIvaGhJMzNFRjJURHo2Y2c5b1RpQ3JTTzNhNDJUblNIV3UreTdaM0l4d1Fr?=
- =?utf-8?B?VUJUMWJaYUlHWW1uaWRuNjN5d2V2a0tjUFJobTY3QktPdUhEV2RRZ3JmMWxS?=
- =?utf-8?B?NWhZWVhhN1gzTXhyZzd4V2tmNHpVYTd3ejVNQTZOZTBQVjlDRmZiTVFZRjhK?=
- =?utf-8?B?OC9RMDZDYmo2OWZycklxeDFCbDVweHEwbGNXNGY0WWhvU2lSMkF5T01oL2pQ?=
- =?utf-8?B?dnE2Zlo0ZVZCRUVIRHhOdFM3ODNiNFkvUmNaY1BWdXpRL0pWbVZpaWlvUmpl?=
- =?utf-8?B?MkJKdUtEQlUvdDlsMzNmaEtqSFJ4Z1ZRWXZXMExOb1U4YVQwL2VkTGk3Zzdm?=
- =?utf-8?B?VDgwbmdaeXZ5c0lBNGxyMFlhcUxlZTZ3WE93YTJ4M3FIS0FKQ0tnb1RCQW1V?=
- =?utf-8?B?bWc5WVFrU0FpN01yRFUzNE9WTDZVQ0l5OVNLaklCMzhmMXZBaTNJaWtlck9P?=
- =?utf-8?B?ZHY2VlpwUVdaZS90UFd6enFvRFNTcm5yVEllNXM0UVU0SGNBTDI5bURubGJr?=
- =?utf-8?B?T2ZZc1VaYkZRWC9VTmRSQW42RktlNmJQcGl4NUhVNlBXZGhRa3NtSTQ0dUNW?=
- =?utf-8?B?d2ZzcDFITEtaV3FSVy9heHI1NnJSaDg5WHRLTGpWd20zbVdJdEw5NlVTRVhV?=
- =?utf-8?B?M3VxckN6cWJYemVwY2RERUVoak4wMFF4MDRuZ0lvdzdmb3hhbWRHSmVsdGln?=
- =?utf-8?B?a3M4RHJoUmlIaFdMUEQxaHBlYU5nM0RlbFpkTEFqWENpd0J2aVQ0a0tGVmVo?=
- =?utf-8?B?dVZvTjRkanJBWmVhZWg4ZmY1b1AzYVdiV1pNcTFhbGI1Q3dWZ1A3S3ZVdjFM?=
- =?utf-8?B?VnJhcVBJbHNwNDBhUytCY0dRcVdMRit4WGM0Y3dwdWN3VkpJSEh5OExpcmlK?=
- =?utf-8?B?ajdzZkMvaE5LRlhIOS9RRUg3c1QyODA5YlByeVFMZEY2djl3MXlmVWI0UTlV?=
- =?utf-8?B?eUkvWkVBNDVVelM0R0RMd3F0SVhocjFOSmxxYmFHWFJuRENPUjJveDdmLzVt?=
- =?utf-8?Q?bQRz3xs2I/cmzl9EWISMbdOtD?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="W+RwynH4"
+ARC-Seal: i=1; a=rsa-sha256; t=1764095548; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MfF0D74m12JIoDtGV7xcz9MCNntMnLRJv7V2Y1jlwX/BshE6/RSkXIOgKM1FZnlY+VUyzLZs1uizyOTdkCQ2AQik6sxukMfvhbyevNxixS9xXDXeskB8Hg+I3ol8rA4aiBXIwwWRYXRPGr/vREwtW9EexsCN4cdicmC/zenpXo4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1764095548; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ssDWf796IXcQW1Yfcyfxu6lPR8cUrhUcPMmBHHb+Ruo=; 
+	b=ehY/kuCb9/0AbB4qBXK4KobaAXYx8t/qD+N55R71qrYe66ODXy4JI71O59ZeafvwpOwu1BMbkYtywgcT38AsRGp0miYMLFxDB0QkIZNQwI8Pw+Z0AIgN/E0FI3eMPw1GhDcFkZELSBzIq3iyhAWNDapg6ds0oHDn4gL12yQAYEA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764095548;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=ssDWf796IXcQW1Yfcyfxu6lPR8cUrhUcPMmBHHb+Ruo=;
+	b=W+RwynH4HtEyU/2UTfHRWV/szzykFn6x2gZv5k3szW+8C6D8Y3HSLAAPtH23eBY5
+	XGWnL5+Tm2BNmFJbpZJNfk42uKhFXu9q0h1tPKzpoKcaOHQNeKu7B2inGgvdjTJFZTm
+	Je6BZbFlUiA2Z3rOqc4tWbTNn3zhQs8HVfyqYVMs=
+Received: by mx.zohomail.com with SMTPS id 1764095544857733.6565010032966;
+	Tue, 25 Nov 2025 10:32:24 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43444a0d-7a60-456d-e6b5-08de2c4ec18a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Nov 2025 18:16:29.6590
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gK/6lm3CVWYv08gmrD9oij43sC2414AM1xTMHls+0T4QOCBlG3lXjvubMGBDIjOGkPopOFY944tadHGRqr3tbQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8338
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v7 4/6] rust: ww_mutex: add Mutex, AcquireCtx and
+ MutexGuard
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20251101161056.22408-5-work@onurozkan.dev>
+Date: Tue, 25 Nov 2025 15:32:08 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ lossin@kernel.org,
+ lyude@redhat.com,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ a.hindborg@kernel.org,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ peterz@infradead.org,
+ mingo@redhat.com,
+ will@kernel.org,
+ longman@redhat.com,
+ felipe_life@live.com,
+ daniel@sedlak.dev,
+ bjorn3_gh@protonmail.com,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A3A21F48-4F9A-46CD-9CC8-80A55B32CDE2@collabora.com>
+References: <20251101161056.22408-1-work@onurozkan.dev>
+ <20251101161056.22408-5-work@onurozkan.dev>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-DQoNCj4gT24gTm92IDI1LCAyMDI1LCBhdCA5OjUy4oCvQU0sIEFsZXhhbmRyZSBDb3VyYm90IDxh
-Y291cmJvdEBudmlkaWEuY29tPiB3cm90ZToNCj4gDQo+IO+7v09uIFdlZCBOb3YgMTIsIDIwMjUg
-YXQgMjoxMyBBTSBKU1QsIEpvZWwgRmVybmFuZGVzIHdyb3RlOg0KPj4gQWRkIFJ1c3QgaGVscGVy
-IGZ1bmN0aW9ucyBmb3IgY29tbW9uIEMgbGlua2VkIGxpc3Qgb3BlcmF0aW9ucw0KPj4gdGhhdCBh
-cmUgaW1wbGVtZW50ZWQgYXMgbWFjcm9zIG9yIGlubGluZSBmdW5jdGlvbnMgYW5kIHRodXMgbm90
-DQo+PiBkaXJlY3RseSBhY2Nlc3NpYmxlIGZyb20gUnVzdC4NCj4+IA0KPj4gU2lnbmVkLW9mZi1i
-eTogSm9lbCBGZXJuYW5kZXMgPGpvZWxhZ25lbGZAbnZpZGlhLmNvbT4NCj4+IC0tLQ0KPj4gcnVz
-dC9oZWxwZXJzL2hlbHBlcnMuYyB8ICAxICsNCj4+IHJ1c3QvaGVscGVycy9saXN0LmMgICAgfCAz
-MiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPj4gMiBmaWxlcyBjaGFuZ2VkLCAz
-MyBpbnNlcnRpb25zKCspDQo+PiBjcmVhdGUgbW9kZSAxMDA2NDQgcnVzdC9oZWxwZXJzL2xpc3Qu
-Yw0KPj4gDQo+PiBkaWZmIC0tZ2l0IGEvcnVzdC9oZWxwZXJzL2hlbHBlcnMuYyBiL3J1c3QvaGVs
-cGVycy9oZWxwZXJzLmMNCj4+IGluZGV4IDc5YzcyNzYyYWQ5Yy4uNjM0ZmEyMzg2YmJiIDEwMDY0
-NA0KPj4gLS0tIGEvcnVzdC9oZWxwZXJzL2hlbHBlcnMuYw0KPj4gKysrIGIvcnVzdC9oZWxwZXJz
-L2hlbHBlcnMuYw0KPj4gQEAgLTMyLDYgKzMyLDcgQEANCj4+ICNpbmNsdWRlICJpby5jIg0KPj4g
-I2luY2x1ZGUgImp1bXBfbGFiZWwuYyINCj4+ICNpbmNsdWRlICJrdW5pdC5jIg0KPj4gKyNpbmNs
-dWRlICJsaXN0LmMiDQo+PiAjaW5jbHVkZSAibWFwbGVfdHJlZS5jIg0KPj4gI2luY2x1ZGUgIm1t
-LmMiDQo+PiAjaW5jbHVkZSAibXV0ZXguYyINCj4+IGRpZmYgLS1naXQgYS9ydXN0L2hlbHBlcnMv
-bGlzdC5jIGIvcnVzdC9oZWxwZXJzL2xpc3QuYw0KPj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4+
-IGluZGV4IDAwMDAwMDAwMDAwMC4uZmVhMmExODYyMWRhDQo+PiAtLS0gL2Rldi9udWxsDQo+PiAr
-KysgYi9ydXN0L2hlbHBlcnMvbGlzdC5jDQo+PiBAQCAtMCwwICsxLDMyIEBADQo+PiArLy8gU1BE
-WC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjANCj4+ICsNCj4+ICsvKg0KPj4gKyAqIEhlbHBl
-cnMgZm9yIEMgQ2lyY3VsYXIgZG91Ymx5IGxpbmtlZCBsaXN0IGltcGxlbWVudGF0aW9uLg0KPj4g
-KyAqLw0KPj4gKw0KPj4gKyNpbmNsdWRlIDxsaW51eC9saXN0Lmg+DQo+PiArDQo+PiArYm9vbCBy
-dXN0X2hlbHBlcl9saXN0X2VtcHR5KGNvbnN0IHN0cnVjdCBsaXN0X2hlYWQgKmhlYWQpDQo+PiAr
-ew0KPj4gKyAgICByZXR1cm4gbGlzdF9lbXB0eShoZWFkKTsNCj4+ICt9DQo+PiArDQo+PiArdm9p
-ZCBydXN0X2hlbHBlcl9saXN0X2RlbChzdHJ1Y3QgbGlzdF9oZWFkICplbnRyeSkNCj4+ICt7DQo+
-PiArICAgIGxpc3RfZGVsKGVudHJ5KTsNCj4+ICt9DQo+PiArDQo+PiArdm9pZCBydXN0X2hlbHBl
-cl9JTklUX0xJU1RfSEVBRChzdHJ1Y3QgbGlzdF9oZWFkICpsaXN0KQ0KPj4gK3sNCj4+ICsgICAg
-SU5JVF9MSVNUX0hFQUQobGlzdCk7DQo+PiArfQ0KPj4gKw0KPj4gK3ZvaWQgcnVzdF9oZWxwZXJf
-bGlzdF9hZGQoc3RydWN0IGxpc3RfaGVhZCAqbmV3LCBzdHJ1Y3QgbGlzdF9oZWFkICpoZWFkKQ0K
-Pj4gK3sNCj4+ICsgICAgbGlzdF9hZGQobmV3LCBoZWFkKTsNCj4+ICt9DQo+PiArDQo+PiArdm9p
-ZCBydXN0X2hlbHBlcl9saXN0X2FkZF90YWlsKHN0cnVjdCBsaXN0X2hlYWQgKm5ldywgc3RydWN0
-IGxpc3RfaGVhZCAqaGVhZCkNCj4+ICt7DQo+PiArICAgIGxpc3RfYWRkX3RhaWwobmV3LCBoZWFk
-KTsNCj4+ICt9DQo+IA0KPiBKdXN0IG5vdGljZWQsIGJ1dCBvZiB0aGVzZSBoZWxwZXJzIG9ubHkg
-YElOSVRfTElTVF9IRUFEYCBhbmQNCj4gYGxpc3RfYWRkX3RhaWxgIHNlZW0gdG8gYmUgdXNlZCAo
-aW4gZG9jY29tbWVudHMpLg0KDQpDb3JyZWN0LCBidXQgaXQgbWFrZXMgc2Vuc2UgdG8gYWRkIHRo
-ZSBtb3N0IG9idmlvdXMvY29tbW9uIG9uZXMgKGFsc28gdG8gbWFrZSBpdCBjbGVhciB0aGF0IHVz
-aW5nIHRoZXNlIGFyZSBzdXBwb3J0ZWQpLg0KDQpUaGFua3MuIA0KDQo=
+
+
+> On 1 Nov 2025, at 13:10, Onur =C3=96zkan <work@onurozkan.dev> wrote:
+>=20
+> Implements full locking API (lock, try_lock, slow path,
+> interruptible variants) and integration with kernel bindings.
+>=20
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> ---
+> rust/kernel/sync/lock/ww_mutex.rs             | 276 ++++++++++++++++++
+> rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs | 211 +++++++++++++
+> 2 files changed, 487 insertions(+)
+> create mode 100644 rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs
+>=20
+> diff --git a/rust/kernel/sync/lock/ww_mutex.rs =
+b/rust/kernel/sync/lock/ww_mutex.rs
+> index 727c51cc73af..2a9c1c20281b 100644
+> --- a/rust/kernel/sync/lock/ww_mutex.rs
+> +++ b/rust/kernel/sync/lock/ww_mutex.rs
+> @@ -1,7 +1,283 @@
+> // SPDX-License-Identifier: GPL-2.0
+>=20
+> //! Rust abstractions for the kernel's wound-wait locking primitives.
+> +//!
+> +//! It is designed to avoid deadlocks when locking multiple =
+[`Mutex`]es
+> +//! that belong to the same [`Class`]. Each lock acquisition uses an
+> +//! [`AcquireCtx`] to track ordering and ensure forward progress.
+>=20
+> +use crate::error::to_result;
+> +use crate::prelude::*;
+> +use crate::types::{NotThreadSafe, Opaque};
+> +use crate::{bindings, container_of};
+> +
+> +use core::cell::UnsafeCell;
+> +use core::marker::PhantomData;
+> +
+> +pub use acquire_ctx::AcquireCtx;
+> pub use class::Class;
+>=20
+> +mod acquire_ctx;
+> mod class;
+> +
+> +/// A wound-wait (ww) mutex that is powered with deadlock avoidance
+> +/// when acquiring multiple locks of the same [`Class`].
+> +///
+> +/// Each mutex belongs to a [`Class`], which the wound-wait algorithm
+> +/// uses to figure out the order of acquisition and prevent =
+deadlocks.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::c_str;
+> +/// use kernel::sync::Arc;
+> +/// use kernel::sync::lock::ww_mutex::{AcquireCtx, Class, Mutex};
+> +/// use pin_init::stack_pin_init;
+> +///
+> +/// stack_pin_init!(let class =3D =
+Class::new_wound_wait(c_str!("some_class")));
+> +/// let mutex =3D Arc::pin_init(Mutex::new(42, &class), GFP_KERNEL)?;
+> +///
+> +/// let ctx =3D KBox::pin_init(AcquireCtx::new(&class), GFP_KERNEL)?;
+> +///
+> +/// // SAFETY: Both `ctx` and `mutex` uses the same class.
+> +/// let guard =3D unsafe { ctx.lock(&mutex)? };
+> +/// assert_eq!(*guard, 42);
+> +///
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +#[pin_data]
+> +pub struct Mutex<'a, T: ?Sized> {
+> +    #[pin]
+> +    inner: Opaque<bindings::ww_mutex>,
+> +    _p: PhantomData<&'a Class>,
+> +    data: UnsafeCell<T>,
+> +}
+> +
+> +// SAFETY: `Mutex` can be sent to another thread if the protected
+> +// data `T` can be.
+> +unsafe impl<T: ?Sized + Send> Send for Mutex<'_, T> {}
+> +
+> +// SAFETY: `Mutex` can be shared across threads if the protected
+> +// data `T` can be.
+> +unsafe impl<T: ?Sized + Send + Sync> Sync for Mutex<'_, T> {}
+> +
+> +impl<'class, T> Mutex<'class, T> {
+> +    /// Initializes [`Mutex`] with the given `data` and [`Class`].
+> +    pub fn new(data: T, class: &'class Class) -> impl PinInit<Self> {
+> +        let class_ptr =3D class.inner.get();
+> +        pin_init!(Mutex {
+> +            inner <- Opaque::ffi_init(|slot: *mut bindings::ww_mutex| =
+{
+> +                // SAFETY: `class` is valid for the lifetime `'class` =
+captured by `Self`.
+> +                unsafe { bindings::ww_mutex_init(slot, class_ptr) }
+> +            }),
+> +            data: UnsafeCell::new(data),
+> +            _p: PhantomData
+> +        })
+> +    }
+> +}
+> +
+> +impl<'class> Mutex<'class, ()> {
+> +    /// Creates a [`Mutex`] from a raw pointer.
+> +    ///
+> +    /// This function is intended for interoperability with C code.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `ptr` is a valid pointer to a =
+`ww_mutex`
+> +    /// and that it remains valid for the lifetime `'a`.
+> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::ww_mutex) -> &'a =
+Self {
+> +        // SAFETY: By the safety contract, the caller guarantees that =
+`ptr`
+> +        // points to a valid `ww_mutex` which is the `inner` field of =
+`Mutex`
+> +        // and remains valid for the lifetime `'a`.
+> +        unsafe { &*container_of!(Opaque::cast_from(ptr), Self, inner) =
+}
+> +    }
+> +}
+> +
+> +impl<'class, T: ?Sized> Mutex<'class, T> {
+> +    /// Checks if the mutex is currently locked.
+> +    pub fn is_locked(&self) -> bool {
+> +        // SAFETY: The mutex is pinned and valid.
+> +        unsafe { bindings::ww_mutex_is_locked(self.inner.get()) }
+> +    }
+> +
+> +    /// Locks the given mutex without acquire context =
+([`AcquireCtx`]).
+> +    pub fn lock<'a>(&'a self) -> Result<MutexGuard<'a, T>> {
+> +        // SAFETY: `ctx` is `None`, so no class matching is required.
+> +        unsafe { lock_common(self, None, LockKind::Regular) }
+> +    }
+> +
+> +    /// Similar to `lock`, but can be interrupted by signals.
+> +    pub fn lock_interruptible<'a>(&'a self) -> Result<MutexGuard<'a, =
+T>> {
+> +        // SAFETY: `ctx` is `None`, so no class matching is required.
+> +        unsafe { lock_common(self, None, LockKind::Interruptible) }
+> +    }
+> +
+> +    /// Locks the given mutex without acquire context =
+([`AcquireCtx`]) using the slow path.
+> +    ///
+> +    /// This function should be used when `lock` fails (typically due =
+to a potential deadlock).
+> +    pub fn lock_slow<'a>(&'a self) -> Result<MutexGuard<'a, T>> {
+> +        // SAFETY: `ctx` is `None`, so no class matching is required.
+> +        unsafe { lock_common(self, None, LockKind::Slow) }
+> +    }
+> +
+> +    /// Similar to `lock_slow`, but can be interrupted by signals.
+> +    pub fn lock_slow_interruptible<'a>(&'a self) -> =
+Result<MutexGuard<'a, T>> {
+> +        // SAFETY: `ctx` is `None`, so no class matching is required.
+> +        unsafe { lock_common(self, None, LockKind::SlowInterruptible) =
+}
+> +    }
+> +
+> +    /// Tries to lock the mutex with no [`AcquireCtx`] and without =
+blocking.
+> +    ///
+> +    /// Unlike `lock`, no deadlock handling is performed.
+> +    pub fn try_lock<'a>(&'a self) -> Result<MutexGuard<'a, T>> {
+> +        // SAFETY: `ctx` is `None`, so no class matching is required.
+> +        unsafe { lock_common(self, None, LockKind::Try) }
+> +    }
+> +}
+> +
+> +/// A guard that provides exclusive access to the data protected
+> +/// by a [`Mutex`].
+> +///
+> +/// # Invariants
+> +///
+> +/// The guard holds an exclusive lock on the associated [`Mutex`]. =
+The lock is held
+> +/// for the entire lifetime of this guard and is automatically =
+released when the
+> +/// guard is dropped.
+> +#[must_use =3D "the lock unlocks immediately when the guard is =
+unused"]
+> +pub struct MutexGuard<'a, T: ?Sized> {
+> +    mutex: &'a Mutex<'a, T>,
+> +    _not_send: NotThreadSafe,
+> +}
+> +
+> +// SAFETY: [`MutexGuard`] can be shared between threads if the data =
+can.
+> +unsafe impl<T: ?Sized + Sync> Sync for MutexGuard<'_, T> {}
+> +
+> +impl<'a, T: ?Sized> MutexGuard<'a, T> {
+> +    /// Creates a new guard for a locked mutex.
+> +    fn new(mutex: &'a Mutex<'a, T>) -> Self {
+> +        Self {
+> +            mutex,
+> +            _not_send: NotThreadSafe,
+> +        }
+> +    }
+> +}
+> +
+> +impl<'a> MutexGuard<'a, ()> {
+> +    /// Creates a [`MutexGuard`] from a raw pointer.
+> +    ///
+> +    /// This function is intended for interoperability with C code.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `ptr` is a valid pointer to a =
+`ww_mutex`
+> +    /// and that it remains valid for the lifetime `'a`.
+> +    pub unsafe fn from_raw<'b>(ptr: *mut bindings::ww_mutex) -> =
+MutexGuard<'b, ()> {
+> +        // SAFETY: By the safety contract, the caller guarantees that =
+`ptr`
+> +        // points to a valid `ww_mutex` which is the `mutex` field of =
+`Mutex`
+> +        // and remains valid for the lifetime `'a`.
+> +        let mutex =3D unsafe { Mutex::from_raw(ptr) };
+> +
+> +        MutexGuard::new(mutex)
+> +    }
+> +}
+> +
+> +impl<T: ?Sized> core::ops::Deref for MutexGuard<'_, T> {
+> +    type Target =3D T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: We hold the lock, so we have exclusive access.
+> +        unsafe { &*self.mutex.data.get() }
+> +    }
+> +}
+> +
+> +impl<T: ?Sized + Unpin> core::ops::DerefMut for MutexGuard<'_, T> {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        // SAFETY: We hold the lock, so we have exclusive access.
+> +        unsafe { &mut *self.mutex.data.get() }
+> +    }
+> +}
+> +
+> +impl<T: ?Sized> Drop for MutexGuard<'_, T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: We hold the lock and are about to release it.
+> +        unsafe { bindings::ww_mutex_unlock(self.mutex.inner.get()) };
+> +    }
+> +}
+> +
+> +/// Locking kinds used by [`lock_common`] to unify the internal
+> +/// locking logic.
+> +///
+> +/// It's best not to expose this type (and [`lock_common`]) to the
+> +/// kernel, as it allows internal API changes without worrying
+> +/// about breaking external compatibility.
+> +#[derive(Copy, Clone, Debug)]
+> +enum LockKind {
+> +    /// Blocks until lock is acquired.
+> +    Regular,
+> +    /// Blocks but can be interrupted by signals.
+> +    Interruptible,
+> +    /// Used in slow path after deadlock detection.
+> +    Slow,
+> +    /// Slow path but interruptible.
+> +    SlowInterruptible,
+> +    /// Does not block, returns immediately if busy.
+> +    Try,
+> +}
+> +
+> +/// Internal helper that unifies the different locking kinds.
+> +///
+> +/// # Safety
+> +///
+> +/// If `ctx` is `Some`, the given `mutex` must be created with the =
+[`Class`] that
+> +/// was used to initialize `ctx`.
+> +unsafe fn lock_common<'a, T: ?Sized>(
+> +    mutex: &'a Mutex<'a, T>,
+> +    ctx: Option<&AcquireCtx<'_>>,
+> +    kind: LockKind,
+> +) -> Result<MutexGuard<'a, T>> {
+> +    let ctx_ptr =3D ctx.map_or(core::ptr::null_mut(), |c| =
+c.inner.get());
+> +
+> +    let mutex_ptr =3D mutex.inner.get();
+> +
+> +    match kind {
+> +        LockKind::Regular =3D> {
+> +            // SAFETY: `Mutex` is always pinned. If `AcquireCtx` is =
+`Some`, it is pinned,
+> +            // if `None`, it is set to `core::ptr::null_mut()`. Both =
+cases are safe.
+> +            let ret =3D unsafe { bindings::ww_mutex_lock(mutex_ptr, =
+ctx_ptr) };
+> +
+> +            to_result(ret)?;
+> +        }
+> +        LockKind::Interruptible =3D> {
+> +            // SAFETY: `Mutex` is always pinned. If `AcquireCtx` is =
+`Some`, it is pinned,
+> +            // if `None`, it is set to `core::ptr::null_mut()`. Both =
+cases are safe.
+> +            let ret =3D unsafe { =
+bindings::ww_mutex_lock_interruptible(mutex_ptr, ctx_ptr) };
+> +
+> +            to_result(ret)?;
+> +        }
+> +        LockKind::Slow =3D> {
+> +            // SAFETY: `Mutex` is always pinned. If `AcquireCtx` is =
+`Some`, it is pinned,
+> +            // if `None`, it is set to `core::ptr::null_mut()`. Both =
+cases are safe.
+> +            unsafe { bindings::ww_mutex_lock_slow(mutex_ptr, ctx_ptr) =
+};
+> +        }
+> +        LockKind::SlowInterruptible =3D> {
+> +            // SAFETY: `Mutex` is always pinned. If `AcquireCtx` is =
+`Some`, it is pinned,
+> +            // if `None`, it is set to `core::ptr::null_mut()`. Both =
+cases are safe.
+> +            let ret =3D unsafe { =
+bindings::ww_mutex_lock_slow_interruptible(mutex_ptr, ctx_ptr) };
+> +
+> +            to_result(ret)?;
+> +        }
+> +        LockKind::Try =3D> {
+> +            // SAFETY: `Mutex` is always pinned. If `AcquireCtx` is =
+`Some`, it is pinned,
+> +            // if `None`, it is set to `core::ptr::null_mut()`. Both =
+cases are safe.
+> +            let ret =3D unsafe { =
+bindings::ww_mutex_trylock(mutex_ptr, ctx_ptr) };
+> +
+> +            if ret =3D=3D 0 {
+> +                return Err(EBUSY);
+> +            } else {
+> +                to_result(ret)?;
+> +            }
+> +        }
+> +    };
+> +
+> +    Ok(MutexGuard::new(mutex))
+> +}
+> diff --git a/rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs =
+b/rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs
+> new file mode 100644
+> index 000000000000..65a955b5809d
+> --- /dev/null
+> +++ b/rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs
+> @@ -0,0 +1,211 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Provides [`AcquireCtx`] for managing multiple wound/wait
+> +//! mutexes from the same [`Class`].
+> +
+> +use crate::bindings;
+> +use crate::prelude::*;
+> +use crate::types::Opaque;
+> +
+> +use core::marker::PhantomData;
+> +
+> +use super::{lock_common, Class, LockKind, Mutex, MutexGuard};
+> +
+> +/// Groups multiple [`Mutex`]es for deadlock avoidance when acquired
+> +/// with the same [`Class`].
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::sync::lock::ww_mutex::{Class, AcquireCtx, Mutex};
+> +/// use kernel::c_str;
+> +/// use kernel::sync::Arc;
+> +/// use pin_init::stack_pin_init;
+> +///
+> +/// stack_pin_init!(let class =3D =
+Class::new_wound_wait(c_str!("demo")));
+> +///
+> +/// // Create mutexes.
+> +/// let mutex1 =3D Arc::pin_init(Mutex::new(1, &class), GFP_KERNEL)?;
+> +/// let mutex2 =3D Arc::pin_init(Mutex::new(2, &class), GFP_KERNEL)?;
+> +///
+> +/// // Create acquire context for deadlock avoidance.
+> +/// let ctx =3D KBox::pin_init(AcquireCtx::new(&class), GFP_KERNEL)?;
+> +///
+> +/// let guard1 =3D unsafe { ctx.lock(&mutex1)? };
+> +/// let guard2 =3D unsafe { ctx.lock(&mutex2)? };
+> +///
+> +/// // Mark acquisition phase as complete.
+> +/// // SAFETY: It's called exactly once here and nowhere else.
+> +/// unsafe { ctx.done() };
+> +///
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +#[pin_data(PinnedDrop)]
+> +#[repr(transparent)]
+> +pub struct AcquireCtx<'a> {
+> +    #[pin]
+> +    pub(super) inner: Opaque<bindings::ww_acquire_ctx>,
+> +    _p: PhantomData<&'a Class>,
+> +}
+> +
+> +impl<'class> AcquireCtx<'class> {
+> +    /// Initializes a new [`AcquireCtx`] with the given `class`.
+> +    pub fn new(class: &'class Class) -> impl PinInit<Self> {
+> +        let class_ptr =3D class.inner.get();
+> +        pin_init!(AcquireCtx {
+> +            inner <- Opaque::ffi_init(|slot: *mut =
+bindings::ww_acquire_ctx| {
+> +                // SAFETY: `class` is valid for the lifetime `'class` =
+captured
+> +                // by `AcquireCtx`.
+> +                unsafe { bindings::ww_acquire_init(slot, class_ptr) }
+> +            }),
+> +            _p: PhantomData
+> +        })
+> +    }
+> +
+> +    /// Creates a [`AcquireCtx`] from a raw pointer.
+> +    ///
+> +    /// This function is intended for interoperability with C code.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `ptr` is a valid pointer to the =
+`inner` field
+> +    /// of [`AcquireCtx`] and that it remains valid for the lifetime =
+`'a`.
+> +    pub unsafe fn from_raw<'a>(ptr: *mut bindings::ww_acquire_ctx) -> =
+&'a Self {
+> +        // SAFETY: By the safety contract, `ptr` is valid to =
+construct `AcquireCtx`.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    /// Marks the end of the acquire phase.
+> +    ///
+> +    /// Calling this function is optional. It is just useful to =
+document
+> +    /// the code and clearly designated the acquire phase from =
+actually
+> +    /// using the locked data structures.
+> +    ///
+> +    /// After calling this function, no more mutexes can be acquired =
+with
+> +    /// this context.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that this function is called only =
+once.
+> +    pub unsafe fn done(&self) {
+> +        // SAFETY: By the safety contract, the caller guarantees that =
+this
+> +        // function is called only once.
+> +        unsafe { bindings::ww_acquire_done(self.inner.get()) };
+> +    }
+> +
+> +    /// Re-initializes the [`AcquireCtx`].
+> +    ///
+> +    /// Must be called after releasing all locks when [`EDEADLK`] =
+occurs.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The given class must be equal to the class that was used to
+> +    /// initialize this [`AcquireCtx`].
+> +    pub unsafe fn reinit(self: Pin<&mut Self>, class: &'class Class) =
+{
+> +        let ctx =3D self.inner.get();
+> +
+> +        // SAFETY:
+> +        //  - Lifetime of any guard (which hold an immutable borrow =
+of `self`) cannot overlap
+> +        //    with the execution of this function. This enforces that =
+all locks acquired via
+> +        //    this context have been released.
+> +        //
+> +        //  - `ctx` is valid pointer to a `ww_acquire_ctx`.
+> +        //
+> +        //  - `ctx` is guaranteed to be initialized because =
+`ww_acquire_fini`
+> +        //    can only be called from the `Drop` implementation.
+> +        //
+> +        //  - `ww_acquire_fini` is safe to call on an initialized =
+context.
+> +        unsafe { bindings::ww_acquire_fini(ctx) };
+> +
+> +        // SAFETY:
+> +        //  - `ctx` is valid pointer to a `ww_acquire_ctx`.
+> +        //
+> +        //  - `class` is a valid pointer to a `ww_class`.
+> +        //
+> +        //  - `ww_acquire_init` is safe to call with valid pointers
+> +        //     to initialize an uninitialized context.
+> +        //
+> +        //   - By the safety contract, the caller guarantees that the =
+given
+> +        //     `class` is the same as the one used to initialize this =
+`AcquireCtx`.
+> +        unsafe { bindings::ww_acquire_init(ctx, class.inner.get()) };
+> +    }
+> +
+> +    /// Locks the given mutex on this [`AcquireCtx`].
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The given `mutex` must be created with the [`Class`] that was =
+used
+> +    /// to initialize this [`AcquireCtx`].
+> +    pub unsafe fn lock<'a, T>(&'a self, mutex: &'a Mutex<'a, T>) -> =
+Result<MutexGuard<'a, T>> {
+> +        // SAFETY: By the safety contract, `mutex` belongs to the =
+same `Class`
+> +        // as `self` does.
+> +        unsafe { lock_common(mutex, Some(self), LockKind::Regular) }
+> +    }
+> +
+> +    /// Similar to `lock`, but can be interrupted by signals.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The given `mutex` must be created with the [`Class`] that was =
+used
+> +    /// to initialize this [`AcquireCtx`].
+> +    pub unsafe fn lock_interruptible<'a, T>(
+> +        &'a self,
+> +        mutex: &'a Mutex<'a, T>,
+> +    ) -> Result<MutexGuard<'a, T>> {
+> +        // SAFETY: By the safety contract, `mutex` belongs to the =
+same `Class`
+> +        // as `self` does.
+> +        unsafe { lock_common(mutex, Some(self), =
+LockKind::Interruptible) }
+> +    }
+> +
+> +    /// Locks the given mutex on this [`AcquireCtx`] using the slow =
+path.
+> +    ///
+> +    /// This function should be used when `lock` fails (typically due =
+to a potential deadlock).
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The given `mutex` must be created with the [`Class`] that was =
+used
+> +    /// to initialize this [`AcquireCtx`].
+
+I=E2=80=99m assuming we either can=E2=80=99t or otherwise don=E2=80=99t =
+want to store this in the Mutex itself?
+
+IOW: the class is =E2=80=99static IIUC, so it=E2=80=99s always safe to =
+store a reference anyways, at the
+cost of providing the storage.
+
+> +    pub unsafe fn lock_slow<'a, T>(&'a self, mutex: &'a Mutex<'a, T>) =
+-> Result<MutexGuard<'a, T>> {
+> +        // SAFETY: By the safety contract, `mutex` belongs to the =
+same `Class`
+> +        // as `self` does.
+> +        unsafe { lock_common(mutex, Some(self), LockKind::Slow) }
+> +    }
+> +
+> +    /// Similar to `lock_slow`, but can be interrupted by signals.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The given `mutex` must be created with the [`Class`] that was =
+used
+> +    /// to initialize this [`AcquireCtx`].
+> +    pub unsafe fn lock_slow_interruptible<'a, T>(
+> +        &'a self,
+> +        mutex: &'a Mutex<'a, T>,
+> +    ) -> Result<MutexGuard<'a, T>> {
+> +        // SAFETY: By the safety contract, `mutex` belongs to the =
+same `Class`
+> +        // as `self` does.
+> +        unsafe { lock_common(mutex, Some(self), =
+LockKind::SlowInterruptible) }
+> +    }
+> +
+> +    /// Tries to lock the mutex on this [`AcquireCtx`] without =
+blocking.
+> +    ///
+> +    /// Unlike `lock`, no deadlock handling is performed.
+
+You can use [`lock`] here for better docs.
+
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The given `mutex` must be created with the [`Class`] that was =
+used
+> +    /// to initialize this [`AcquireCtx`].
+> +    pub unsafe fn try_lock<'a, T>(&'a self, mutex: &'a Mutex<'a, T>) =
+-> Result<MutexGuard<'a, T>> {
+> +        // SAFETY: By the safety contract, `mutex` belongs to the =
+same `Class`
+> +        // as `self` does.
+> +        unsafe { lock_common(mutex, Some(self), LockKind::Try) }
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl PinnedDrop for AcquireCtx<'_> {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // SAFETY: Given the lifetime bounds we know no locks are =
+held,
+> +        // so calling `ww_acquire_fini` is safe.
+> +        unsafe { bindings::ww_acquire_fini(self.inner.get()) };
+> +    }
+> +}
+> --=20
+> 2.51.2
+>=20
+>=20
+
+=E2=80=94 Daniel=
