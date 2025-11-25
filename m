@@ -1,72 +1,69 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010014.outbound.protection.outlook.com [52.101.85.14])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010016.outbound.protection.outlook.com [52.101.85.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0B4A95E;
-	Tue, 25 Nov 2025 14:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B45032572B;
+	Tue, 25 Nov 2025 14:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764080101; cv=fail; b=Id3dJ1KURlGAiwJpcXq1ImUEQSXFpSIIRprD0g9R8GKh1WCrot3rUstSXaj1av/jP9COBpHEzn1wbKjPmkdphJb9sxBIGnO8grpWl0t00Q20Cm6aFZFoorrFJIFTHPk549QV9CFzG3kB4od51Ze6pTfRt3mObb++K9GHKs/SRUk=
+	t=1764080446; cv=fail; b=h+81fQhijUKPVnaTBhk/FlU+fTnqd4cEg8M6jQW4tDThYyJnlWNlccC9vvKF9umM9mqCu69UJ/5ldJhgS9FUOUQ5Uxpz3InGHTJZu9ypFWp5BgpXCHyKMuJjEZMiz5oEvNxgfgIxl6/y4gpThPlVKRADnhX/P6pj2S72S8ZS3TE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764080101; c=relaxed/simple;
-	bh=DrzVjqM0dmZGe2F0Yr4Eb4GLdp6KkGjwYEPIw/g36cs=;
+	s=arc-20240116; t=1764080446; c=relaxed/simple;
+	bh=LGkmQnWp1LBbJVjXZZXyJrdMZXa7mIVQNMPNyM1j18A=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Uv2B62XIpkyyrVoihq/BrjWeaxCzTdNKjFcve9cQquUtAq2V/x5eIPHuVkDy+Kv4FQim7MINvO1LEzy8/yNE/bj0GnL7zkA7eyewrR4+zohJEkRG7BWXd75OGFVKYtDjyIJypH5WxEo0BUxih09i9eRmYghUjplMcEOOZh4aU+s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=sm8PdR+a; arc=fail smtp.client-ip=52.101.85.14
+	 In-Reply-To:MIME-Version; b=t1DzgJIfdHzvJiHbDT4nJRPAAqOwUt+huzmqzHjOF6ljUUXHkMlYNC9EpXVKcDmye+5ZKck5OCgiuGjQK5sdMZxv/5RcsJXKAyGrwzJcH4G527ly7gLVCA7YqjYs3RUByGdc61/PNwgj/K+hTTUG3/1ZCz8h5Ray+J1TPV6666c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PMCDYoth; arc=fail smtp.client-ip=52.101.85.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="sm8PdR+a"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PMCDYoth"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GrSTRUghgYI/HbmW6ONnyl2ovpDik0t2Jbd6pAGka8fcJy9qI6ys72I+5WyQUqiosd6HWPuamiQ3QscESs38kWiQVZsfkWHiJT2we4lxPZy/dI4BqXyipxoHdGVWVIdS3w9FWunfn+8I5g1j4QDI58Qv8FVHhRzad3c7xCjXtj6yIW3MDxCX65Xv4Ddmzin3LZZWxXeKHTrqc5JBe4VUfl4GXXyS7UWkZ1CbZzX1WwkMdtXScVGr5FaVx9wJzQX4uZSgpxVR4BKrATSr0uiS0BJlD65hk8nzrDUDNcVbd8hGmmty96XpLB1t7CxIk3jXzXQd7uJcEYk+D0OuEkDioA==
+ b=p0iRnmaTA9ZiNegFHTrIptp3tFMUHEjvHf1+7ztAd/vBd+RwGKe+hji1nD0ravEUNjRNKz8SAw8Bv18yxa7i+E8PUaxZeztLS5yAtqZB+mz56A56VIr0PECMPdWuaCxOFq/7sq0UHASL5ucP1mt0uFCcIKcx7Sb2iWicVXPpQ1PXSYGuPZMHy5IlR7s0oiIwU8sK4FVhMIZsI9zGEgypaLaYoCdEf3b7IKVGbgu1U+xbAXxagBmo0BPeTZpHzXSg1icvrqmt4Yq5T7RLBkNX94R97AB8GgYGMzkb1LQGBweDCiI3TGXzekk80s35mvCsdg065HUoNamqowKTG8dPbw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HmUYRt2TnruIBdoL8TgD6/0rFotf7PKFg27bNNkrS44=;
- b=IrdaR+OiHTN1devKbDNAQYMDOwAcUwMjIEzv1Zc3qr8b1h3TEl5krkmqkpOnF/3niOalltLzw5rfQqfogUfPuqzuzO9b40EuL24G9i7WMhDmdq5uXMh2PBuvvqPsDZJZ2I2oMl4QF1qNYp4H5Rg97J6PvDLP+8I45SqlWA6q4Lpyr/4yQK0cT91wqS5zqXPDL0yI478BbYkrY6fQa5K98AMYGR8s3J5WJN124A0YrVtfvsxR8GIwaU4Y9Xm0/t3PV3KndXe4cM1SsCCwONLjtqOby1lVJCZAYWVtQz+gqk5AAbxV2xtw0oKn43zo5JSjtHll11jAl5YmKvYqHshzcQ==
+ bh=7XoavscFNzA+sjqlNYf/Kv4w2xNIdUh3uz4ilzo5lQQ=;
+ b=vFo0YE5LATmWBw6Tu65iRPDOSxYE6UFEJN8LDLtkKL53q2ZDmI1TYFLc/uR2Xi202IgGR6YYa/7GYlvIVtye3nC2UkpWKA3nBAMMiDzv0kyQ20aS9QifGzfq8S7dFzgb9LMhNgOq7TqJbpT3e6K82m84v7e5oTqPXwaxo4O55n+r+ojnIBCLuLovZy23urX0CC2+q7IHcjlbIakQew9GHeuxLlMpa5mgYSR/rzbxCjzWfN2wk4cJ+koAjaoEqQv1Jc6lwFmuI+ql9JiPVrN70mDFpFJEIfjuL699EPL7hEW3XnnnOLJG81RToJDGCHneFs6ramIoDrG3MSRYFHKP/A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HmUYRt2TnruIBdoL8TgD6/0rFotf7PKFg27bNNkrS44=;
- b=sm8PdR+aCg1Uyu5orkdED1robaVNJSrFsmRPN0kTb3L2XUuMdBNWvxOoJlPZiDM0iMjIIKubjhUGiCOoMRWgBfAhJK7CStOYtJWZsDS1a72srXB46ermo6VvkALyW9jm43oJaPI0r94HuvGJLNXnhPmutRGRSUNTs/7ZRc03ZU0uHhagU7igGTZfr17c7jMWexQFgPRoB/cJgzo+bReu0gMvgXfVvUxUq53ityDF9BKRpoOFAwXYH9f7hYblghbHLju4bPTVi1DR80ZM+ezuUCVEODR6ZwwsyggPRIhgixHZcOqwXh9+71LC0T2Fp9TL/aEOL9dXHAZzYDaC5hOA+g==
+ bh=7XoavscFNzA+sjqlNYf/Kv4w2xNIdUh3uz4ilzo5lQQ=;
+ b=PMCDYothuRDJfuqsR4XWfpGGvEDbV9Xvbsd87mPXsObRwrIR9J4f+wQKZ9jqcoHL9pF/pqckpjy3qiaf03Ndbn+KSCceEdwebuR9PWgwAUzgee7AvHYGTuEdj3JMIieDVN5iINAD3Am4demBueqzTrgk0mZHsxt843TkXsuWD71t0KWSKrAt+inziaur4q0c03uOpVOqZ4PTuxoTx1jC4XeJaOOmNJQhp22+/RmKPt7ZvlCqlRM3XMssaf40TmJG/odromx54kLDcOccul/oH+YoUg9Pjd9R+WcW/d7YQUd+YtixFF0YjfOt9BtGjoXs3/HNRFqYCSdYPdkopsSYMQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
  by DM4PR12MB6009.namprd12.prod.outlook.com (2603:10b6:8:69::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.11; Tue, 25 Nov
- 2025 14:14:56 +0000
+ 2025 14:20:37 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
- 14:14:56 +0000
-Content-Transfer-Encoding: quoted-printable
+ 14:20:37 +0000
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 25 Nov 2025 23:14:51 +0900
-Message-Id: <DEHU7A4DWOSX.PZ4CCKLAH9QV@nvidia.com>
+Date: Tue, 25 Nov 2025 23:20:33 +0900
+Message-Id: <DEHUBNKNSNXH.14A4OGQKY5KZR@nvidia.com>
 Cc: <dakr@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
  <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
  <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
  <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
  <markus.probst@posteo.de>, <helgaas@kernel.org>, <cjia@nvidia.com>,
  <smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
- <kwankhede@nvidia.com>, <targupta@nvidia.com>, <joelagnelf@nvidia.com>,
- <jhubbard@nvidia.com>, <zhiwang@kernel.org>
-Subject: Re: [PATCH v7 3/6] rust: io: factor common I/O helpers into Io
- trait
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>, <acourbot@nvidia.com>,
+ <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>
+Subject: Re: [PATCH v7 5/6] rust: pci: add config space read/write support
 From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
+To: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Content-Transfer-Encoding: quoted-printable
 X-Mailer: aerc 0.21.0-0-g5549850facc2
 References: <20251119112117.116979-1-zhiw@nvidia.com>
- <20251119112117.116979-4-zhiw@nvidia.com>
- <DEHU2XNZ50HW.281CCT1CZ79CF@nvidia.com>
-In-Reply-To: <DEHU2XNZ50HW.281CCT1CZ79CF@nvidia.com>
-X-ClientProxiedBy: OS0PR01CA0186.jpnprd01.prod.outlook.com
- (2603:1096:604:1c5::6) To CH2PR12MB3990.namprd12.prod.outlook.com
+ <20251119112117.116979-6-zhiw@nvidia.com>
+In-Reply-To: <20251119112117.116979-6-zhiw@nvidia.com>
+X-ClientProxiedBy: TYCP301CA0003.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:386::9) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -76,197 +73,221 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM4PR12MB6009:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b7f6f01-3171-4a1b-facd-08de2c2d0202
+X-MS-Office365-Filtering-Correlation-Id: 9251d62f-5020-4730-4293-08de2c2dcdb7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|10070799003|376014|7416014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Vlp3YjJ3RC85U1Bpc0hBdHRRaUZlbUtPYmpiaGxVeHVDZVQvdXk5dWhvZFBE?=
- =?utf-8?B?QXozSU9DbytKWTdOMHNoZ0MzcGxjWFJHeG9yVmYxZytza3VEQ09GbHV4RWcr?=
- =?utf-8?B?QWFiSXlVcE9LYkd6T3JBNStOZmp2RmxwTnZNUGRiVXhsU3VocWF6a1hmL0xh?=
- =?utf-8?B?Vm5uVzQ3WGI3MnlSS2xmSW5jSVRXV1JSQWtNOTExbWRPK3dtWnoyZXVidHBq?=
- =?utf-8?B?R2dkbXZhNWlDUithMUx3MFI3b21GaVlzTnQwTmk3VUlBc2o1NHlUWlNyYXZm?=
- =?utf-8?B?ak1jWlZCblltb1VWNDRjSXZzODVNaWtadTJRQk5LbzROT3NNVFVhaE11Z0xw?=
- =?utf-8?B?SGRWSS9EdWlzd21KWWtrUFY0blYwd2VuV3FyZjBPL1hUUWpCSkp1NmdKWGNT?=
- =?utf-8?B?a0o2WlVFSHJSSUFPM0xXTGQyWlBUY2JKa05OQWdpcVNKZG0zbEc1S1ZKWkZM?=
- =?utf-8?B?UWtCNVBERUJSV0xycHRkRmMrclJFY1JmeDJyRG81RUJJS2FuMmxnM2QvOXBu?=
- =?utf-8?B?N0VyeDJnMzViK2NOeW5yV2pIZFQ0UDc0bXkyWTdVZjdVWE4xTHpDQVUzQzlF?=
- =?utf-8?B?eEZ4Z3NteHFadmtOWGUxLy9DK2xhTmxScnFqYWFFV3EycTQ0YUVtVmZnNHIw?=
- =?utf-8?B?bmc3amNZdU8rSHZGM2JFZXNMTC95YmlyR1ExUnkyZnFUTkE1Mlg4TVBkU3RG?=
- =?utf-8?B?ZlVtZURRaVFGUUhaclFUZElPVXUzejRkb3B6Y2ppWFRnb09MTDdPeXBXNzA0?=
- =?utf-8?B?eHJ6bi9Obk1NZUFqYXZVTFlwc1lJYTZTdEx6YW9NWUtSU0FNY253VjkwR0NX?=
- =?utf-8?B?VHJ0ZWdxU3A2Tnp3YWwxUW9ZbzY4SFJNV2p4c1lSSi9Hell3ODVrOFljc0cx?=
- =?utf-8?B?cjhmNjg5N0hZZ2E3eG5lWVc4SW9RWlF3U01FekVsNFpYUHJZMzlSbTlKc3dE?=
- =?utf-8?B?R0JHeHBxUHlUTUxHSXltcHlQTGNEN3FtK1hXVjg0c3Q3MEM4M2dYeUN3cHds?=
- =?utf-8?B?aWpqaGpnWG1xeDcvK1ZZSWI5d2RJMTNNZ3Z1QUhYTm5DR09YTUk3MFYvYjd0?=
- =?utf-8?B?a1oxZjFEb0pQYlUvM203dFBGeTBVbEduSUhwdmFXalJBSm9DWEcrTUFuOUt2?=
- =?utf-8?B?YVR5TnBNZE5jbUQyYU5KbGxLNDVyUkdkdUprOEovdGN5NVo4QWpCWG5kckdF?=
- =?utf-8?B?YnBka0txaTdtTVhHSlpvdUMyc2laQWNQWHNoeWJqQ3BqakttdmUwb1JDdmRY?=
- =?utf-8?B?OEZDY3hJOENISXY2ZTluVVFUeENaUmpvb1NKL0ZLUEw5T2RWTFFjMlFWeU5m?=
- =?utf-8?B?TngzNlhQektmTFcyYzJSZEhsRDhUSmxYV2Nrc3RWU3BqRDl5UXhaWVNuQURn?=
- =?utf-8?B?c1JCalJabHdEcS85VHovQzhkeFBrRVZvelIza28zZmZ1WVdsdm9pQllqVHor?=
- =?utf-8?B?bFpieUpqUyttTXBtOTNmWDdwMXhBMDlCdUJCMUFVN0RSSWJ2U3NkeEtZV1Q5?=
- =?utf-8?B?VFdwRGRzaEZ2N2hDWG9vYlErc0ozTmt0UWR0WWcrMWNoc2dIZXVJdExxaUlC?=
- =?utf-8?B?VG9XejdzTjBWcldLdDZ4cXdCUnZHaktxL2VzL1Arc3VvS2QxMUJMejFIUGh0?=
- =?utf-8?B?a2xwOXAzNlZyOEgrejQwcmNVVzA0NEI4alpEdmRicm1nZ3dRQStESC9nWXZz?=
- =?utf-8?B?WkNoWmwzUnYrRjg3bi85djFxN2tEVkJ2S05GQlk4VzNHbGZmSy94VUNjb3dE?=
- =?utf-8?B?YnQ0SWZGaWgzSXpRdFF5OUd5OFgvRjE3cXNVN2dRQmpYeUQ1T1diS2xXSmpN?=
- =?utf-8?B?WEcwVy9PdDBLZ1FTaEJGSTBneGtDMEtSRnU2RitiV3RtSXlEQnlDbnJ4aXd5?=
- =?utf-8?B?clJ1RDVlenJxU0NWRlBkOERNeGxNTUtiY2hkUnphUHc0WHl4SUJSTlJkbWtH?=
- =?utf-8?Q?JFMyGYeVVIct8fyEOki7fI0O8dOl7BpD?=
+	=?utf-8?B?WEt6SDBZUWE5ZG4rczZuTjFWNW1NWFBHbEtOem5DU0Y2QnoxK3BGNVlpeWtr?=
+ =?utf-8?B?QWJrTjJVbEdmUmo1T004WjNtYzJVd0ZGSnR0Y0tsU0lnazRrRnNvZkhVV0NS?=
+ =?utf-8?B?Tmc1NWx3QnZKSEo3NmFJN003Q0NYTU0xb3c3Y3R4WDZUd3R6WUxubjNPaHV5?=
+ =?utf-8?B?WlpSWVgrOXRFOTlJYkM2cjUwTTBacGQwZ1BiK25iUVlQUjB0dlBUS0d4VHFi?=
+ =?utf-8?B?YVF2RXlQUXdpb2pYZUZRaGx0a245Ynk4OFJXREM4dVNSS1I4WVphNFdJaVI2?=
+ =?utf-8?B?NytKZlBwaldKSG1GSy9iSWloT01kY3pEcnhmbUgrYWFueERWSkNJZElqbzJ5?=
+ =?utf-8?B?T2NlM1paVFgwNDMrOGRwa3o4WnpLTCtRWHRPQm15RnprdUZvU1B3N0h1ZUl2?=
+ =?utf-8?B?QVRNUHJjYVdnb3NpRWUyUlUySjdCKzhBeGREencyUDFsbS9sZjBYVHZNRnJK?=
+ =?utf-8?B?WDV6TTh6OXIvd25hZDg2WlRSQVYyYVZnUzZjWW9xU0F5UCtmSXk2T3lwc0VQ?=
+ =?utf-8?B?dWhlRHd3SitNQ3BjeTVMbmt5OUpFMkxEVVZoRU5za2NyWmpTUkhWSXY3MzVh?=
+ =?utf-8?B?NHo3emtDK21Fa1NTMUNST1ZDUXJLQ0haWitla0tEZytZWUhYQ2tIVHFkaVNr?=
+ =?utf-8?B?dFhiakRGbFNVR2h6NzFuQkpqWUVqN015eU1obTFJZUpnODlpZjZJdmx3cHRO?=
+ =?utf-8?B?Q2Q0S1FBQjc5dVNUNzZzNDgrTjcvWFJDSWRJZlpGbGNuWHJBdWU1Y3RyRUtX?=
+ =?utf-8?B?STREdndDRVprcVNncXR2T3c4NVJNdXkvTmRRZ01DaWVOeHprdE5wcGU3L1Q4?=
+ =?utf-8?B?eWdaMURCLzJwZDFUZzErMXhjS0ZETyt0eUNtSU50Mm1ySlR4QTBpdjR6alkv?=
+ =?utf-8?B?K1k5Vk5qTmdnQzY5ZGwyVUhWVFd2c1VaU3ZJeG40LzMvVTQrSlpjS0JDekkx?=
+ =?utf-8?B?NTBvZFFEakZLY0tIZy9TZ1Mwamc0ZGRORDNySHJqWlNGbTdkOVRpanVXS1ZD?=
+ =?utf-8?B?UWhkSVRuR2xoMms2d0J0eXNFVlFjcDBjajVINHc5U05rMVhtWFlTWUtzTi9J?=
+ =?utf-8?B?M2lvWW1vZGRuTUZqeHVKeFhsem42bjl4SmE5Q0Roc1NydFVqVDdZazg4UlVP?=
+ =?utf-8?B?QlQzL3JlVTNVS0kxV3NxaEQ3ZFFJUEp0bTcxN3pzdC91cnZ5YWM3aUFMM0JK?=
+ =?utf-8?B?aEMwYk9pVmE2YmtBbEZ0akw4NDFJRVJCR0l3T3NuRCs4em1pb25DbEtYTzJD?=
+ =?utf-8?B?ZkEwcUpMb1p0UjhmdUpLcXh5UjZZdnkwbXFSQ0NUMEV3ZmNGSU9IL2tlYk83?=
+ =?utf-8?B?QzhHUlVGRFN5bXQrem16a3I2VGxoSFBtajZvS3FYU2hkQ2o1ZExWYVQrMTFZ?=
+ =?utf-8?B?NjBORVJUZlkwS0FrTlNrY3hGa1JOVXV5Ukhoa1pnRTN6ZzhLaXBJMG1ya2p6?=
+ =?utf-8?B?L1pGV2dBM2c2L1p3VVQ3TDA0ZHlRQk5oOWc5dFU4eHpnN0c4UTh5RXF1Rnkr?=
+ =?utf-8?B?aS81T0RVbGJNTnovMW0zWVRTSkxPT053U0l5RzVNbXNnV25oRkxJQVkvV1U2?=
+ =?utf-8?B?cExyeWVFYjZzc3Bnc0Q2aEVhVkRRbkhjd2Z1Smp0WXhzYUVJQ3c4YTBsbUlF?=
+ =?utf-8?B?WS9SN0p2SVhLTmdDQnlmRGZxc2E1dEFWejFFeHA0aUlYNFJ5YSt2aUpTbElz?=
+ =?utf-8?B?WElETlZqWjRNWG5zVWpPRW01ZWF6dXdkVXJobGNuMHMxWTlhbURQazMwLy9i?=
+ =?utf-8?B?MmIycGtoa25OQVNiUTV2R3I5bU5xRzZSTW45L25aSVQzYjhFVnM1ZWlXZjJz?=
+ =?utf-8?B?RDh5anZRYU9wK0hxYXd1Tk8xbmJZWkRZTXhCbnpHYWpRanppTURQOVkyZXhZ?=
+ =?utf-8?B?QzZIT2lCcUdmRm5STXlSQWt5VnAzd2FNRDF3aThsKzY0TlRtMVNra1I5V3p2?=
+ =?utf-8?Q?VyetOufbbQkzKETA87yDjtHe25u5nxix?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YTBJaFYyKzNlcnRhcGRrT0I0elRyQ00xS2k1VHBEelZrWnJhSzRSZ1h2d1Z6?=
- =?utf-8?B?T3k5NWFFc0FtTm1IdWF4QmlNUHI5UEdQWHRaNnB0VXVmUmpjU1ZEOVZZUjla?=
- =?utf-8?B?aUY5Q052TFlaTmQ5V1BibVlDMS9oUkRlZW1uZDhMaHFDajR5MEFMV3BhOVY3?=
- =?utf-8?B?Z1N5SXJpQ0JmRWVleGxoY25kTDkvT0lROERFRzRVSGVjcnhTZDk5Y3Uybmdm?=
- =?utf-8?B?OWpwbjdVdDJOQnIyckZNVHNhL2dYdDJqTEpmd2NURU1DNjV4V2pDYnAyaDl2?=
- =?utf-8?B?Zlp6R3Y3U2ZjNWx3VkxzNjEvUXgxVEtISDFTUFd5cjZvTlRJZGlQVzlrZ2hZ?=
- =?utf-8?B?M25GNGZ2OXhiU1ZBR1kyQzJGclM2U0IySkhmeUFWYTlqdStXVFFlRHJpTzVi?=
- =?utf-8?B?WnBLR3VSOFFrb1ZCczRPOWh0S2ltZHJGMVZvaXZsWFhTK3Y4ZTJoZWsvL0Jv?=
- =?utf-8?B?R2MrR3RSZkN0KzlJRGdCT1lFeHNKVGJVeXVMSGRsUXczSjZnWGJ2akdkSFJa?=
- =?utf-8?B?K0t1NzlsdmxVeGVSK2Z4c1d6UTRmUEJXUGUyZ1NFSmh3S2tvbmU3ZzlvUFpF?=
- =?utf-8?B?VkdwR2g3WlVyaXpxUlFQdXRVV2RDUUZpSXBaQXAzcXYzMVFTWTdpQ3puWlRJ?=
- =?utf-8?B?ZDlvOVZsdFNoZk9GRHNkQ2dFdGNwZThHWnFvTDZTV3V0T2lYUmJoTWpTb1Jv?=
- =?utf-8?B?ZlFWQ2hpTHZsbnRROFZldUxqTVpjdmxSV1NpMnpEcm9qNVJTMTU1YzRBT0g5?=
- =?utf-8?B?V2pTcHB2SjVLMU41bUM3alBTZDNUbmlXb3ZMelplTldlZDVSN2YvQ3VGV0NF?=
- =?utf-8?B?OENJVTNRdjU5N0c5SUVVTzRQS1RNd1I4OHE5YWRvMkQ1OFZnczg5T1pXS0E0?=
- =?utf-8?B?dGtZMjRUTnZwS3RzaUxKMXBaMkQ2WVpqdVRjUEJscklpWHdvRmo4WnFXemR0?=
- =?utf-8?B?dkNnU1g5WFliWVh6OStSYmNJaFl5L2RXOTRYSXJ4b0xYRU9kcER5TGNoZ1Ri?=
- =?utf-8?B?a0ZVUGNETGx3V0hqeWhwbEp2a1V3V2s0bmJhSzhVVVVJdFQydEtDL2VMeHBl?=
- =?utf-8?B?RFpZdFVtNURFVlgvU0Ixb1V4a1RRSGV5L0Q4RDR2RTlPMnduMjM4clJYaXhV?=
- =?utf-8?B?NEhhdTdiTUJ1Q1RaYlJ6citSYXRLcTJHS0xWdWdYM21ONnFJNks5T1JlU05D?=
- =?utf-8?B?SkErQ1dLUm1uK2NDK2dQeWtuZXJvQUNxYysvM2o2Mi9RU2NWOUpobUltTGdH?=
- =?utf-8?B?Z1lWeFc5YXl3bCtsdkJUNnRBckZlVjViNXA3aDZUcit1N0Z3aWFDdGpyOUVN?=
- =?utf-8?B?R3BSY2xyYzdseVVzSnJKUW5ZYytGUkcyQTRXU0ZwRU9UeUJwT2dJMzI5bWkv?=
- =?utf-8?B?dkE4Q1ZDWmhnSUdIY1p0WU1xZHU2dXlWcDgzVTBTQlNQM01tQWEvWjdMNk9S?=
- =?utf-8?B?b1dUNW1iRGZUVElXcEFSL3c3S01yRHpZdTJGcnVSQmw3dzlhMWRyWUpweVdS?=
- =?utf-8?B?Ymc5a2hGU1lySkcrUEpEbzVNT09sWG5EY2MxQmFIUVAyWlowMnRmT1c1OHRC?=
- =?utf-8?B?ZzVwTG9aTGFMc1dJcE9yWGdzWVdkTmthS1RKL01kdy9yNm9WaU1zdDNIKzNZ?=
- =?utf-8?B?RHFpamRhYzUzSEhzNTluUXQ5VUM3aTBQd1lkTW9ReFhWNE9PYVN6MGtuRGlt?=
- =?utf-8?B?SWJacTBzVFU4VXRKSTdzK0dMSzZaZStsdU0zUDI5ODhpVFFFVEpTeEZwN1RC?=
- =?utf-8?B?K0tkcGpyRk5mRDZjODgrQ3ZlTWJMQ2xBQ2pTMkFFSzBVVm9DUVVBWlBKdVBV?=
- =?utf-8?B?a20zcTFSaHMzR2oyOTJPWmd2ckZvcURZOVNkbWM1ak43MitFOGxEV2JnSldV?=
- =?utf-8?B?OVp1MFdYV0p2QlFUQS9oQmJ0YzhJUGJCZEVJQ3RQQ1FBRXp0bSszVzdESER4?=
- =?utf-8?B?dUlUVTR0dE9PUkZ5SFNXam55S0NIVGlZNUtvUHpOaEFIeTFKWDk2cXlqR3pk?=
- =?utf-8?B?KzF0N0NRaFFaU3RmenhvUVV6eFNLaGppcE51c25zdnZEdDJpTzBWTWMvWHJ5?=
- =?utf-8?B?TDJEZE1vTzFBTXBvUVJadkNCMll1UXpsQklVOWRVTW1jY01zZGpUQ1NYVjdG?=
- =?utf-8?B?TGFmM1hMOVllTUxVZEthVzRNMWtRQ3ZPMlZMaGRXbHdza2NQaGdqYTh3VS9Z?=
- =?utf-8?Q?jg+rvlIjCUKOaf7T2y3oBG2od1e3l3rEMc4lunqT69NG?=
+	=?utf-8?B?TVdWSEhuTWFQckRqU2xZc3k0TnRCcjZ4TUsvb3VrSnZCWmFjMldtaEJZSnhH?=
+ =?utf-8?B?bC9DUzd5R0IyUDdkZUhscmZ2M1BMaTFKZFhlYWpYWEJTb2lYa3dSdmltV1Q4?=
+ =?utf-8?B?NjVvN0VPbmU2cTJzV3hHYmgvVW02Z21mOG8yR1JQRmRVMmtZR2hUWnBYcTlS?=
+ =?utf-8?B?eWFnek56SGFqaWxuNEd3WFlTOW5rcjFFR24xQTV2b1ZheDRwbUFqMWxkS1Mv?=
+ =?utf-8?B?K1puNndXb29UY0xGc3RKdUVLb1lMRC96REt4NE01ZjZGZW1mVWdlS2JYaXAz?=
+ =?utf-8?B?QzY2SDlmZ1lsQmdHTHFGSEpCV1p6RDA3d1lnajl3d0pyK1NqbW9tQ0gzWFRT?=
+ =?utf-8?B?RkFPWnVRcmdHK1lVb3M4SUp3UjkrRS8xdXJVa2U0bERjcWMwUEt5SWVPczd5?=
+ =?utf-8?B?a2s3TVkzeVBSd2xObENWVHFJRHJPOS9FNlJIL2ZNK1J0NFk4alJJdEtTa3M4?=
+ =?utf-8?B?UlVpbUJOVVhMSDRlSmxsZDc3U2t3Rk5kV0tTbmRwVkxOaVhUR0FWUzB3OXlB?=
+ =?utf-8?B?dnRoVFluZ1NNOTVTUEhQeVQzVWtvS0lnZnJVVkxYLzdNMXN4WjBtUy9aWU1F?=
+ =?utf-8?B?OGJBODg0NCtlaTFBMURsUXRLRFNkZFBBbEVDVkFGaUFDNzByUHh0YnF3cCsw?=
+ =?utf-8?B?Y2Z5ekhtNlJJWitjVVJOSGx1OVZGbXlOeFdMQTljQUdkaHR2TlBGNkFwSDJZ?=
+ =?utf-8?B?OU5OS29TSUZGaGtVano4VVJadmtDUFZxRitsMXJTeU1QUmxNUHcwVjRpZ3Rz?=
+ =?utf-8?B?SzN5dGhrTzd3OXJQd2s3a0JXeDdaMSsxc0FDdEYwaGhpOTRUMWF2WFlyMXo1?=
+ =?utf-8?B?NTFNczRSUUZmelJCS0ZsU0taOUk3R3NRT0hMc2txZWJwY29oQ3I4MStxSlhK?=
+ =?utf-8?B?L3VPUGVTYmNmS2EwWm5IZkNiSWQzMFBXS2ZVTDdSc1JJSktoV2JLZEFBSkpS?=
+ =?utf-8?B?a001cmE2WStNb3J1MXRUZi9pNUkwUkErajFHWlVrTUVrZzFVdTRlZ0dvZnpw?=
+ =?utf-8?B?aFgrQ0VoUXdiNTVGL0xsNE1hNExSbDFUTk1kVXBwZ3NnWjBrMjE3aStDTUZ3?=
+ =?utf-8?B?SVV3b3pKZ2dMUnJUN3lHQ1JQTjFQRSs1RHQwUU9OUHJ1MzRuM3FrZ1pObyt4?=
+ =?utf-8?B?RzBGZnFUTGk0V2hlT3lPV1BMcjlwaTFYNmg2a2ROb0laTEdKc1g4N1FNV2JC?=
+ =?utf-8?B?ZStJK2xqcHlWbGZNQ011M01GQTBMUkY4TnExQ1pwVC9YWm00OU9vcnlhL1pQ?=
+ =?utf-8?B?eVBpZTJLcldpUkZMTkh6MjFxTnAwTHE3QnlmOTBVV3ZTZExkTmY0SnB6V1RV?=
+ =?utf-8?B?UUkvUWhVR2tGTlpRaFZucHZmSDFBdFRlcm4wSnhJVTlyMlNxdmxXZTc4OEVk?=
+ =?utf-8?B?TjlDV2Q5VGl4QU1MV0Jldk40WGV1T1BEOVJoK2U2RVpzN2FDM01jd004bUhF?=
+ =?utf-8?B?VUVSazRjZ3RVUU9BaDVYQXdMZXBEeXlGTUFMNDVXNnJHcytpY1dIL0dOVlp4?=
+ =?utf-8?B?WWc4bEpkZDFKYlBQSXBrR1VDeHhPZ2ZkcG5kSFlJVmNYZTdzQWFWRnIyM1U4?=
+ =?utf-8?B?Q2F2eFQ1bW53SWtxUUEzZzlxUnh0dEJySS9WVlppd05aaXBDNUo5b2tvcDEv?=
+ =?utf-8?B?SkhyQnNpWHRQRzlrYSs5OG83UnhrcFBlMVc0aXBiNHNiTDVmL3Q3M1doOVkw?=
+ =?utf-8?B?blhOOHBnZE9aRXh3R2FWd2dLd01TUGRWMlVqQ0NVcGp6a3l3L3lwbk9tdDRQ?=
+ =?utf-8?B?ZDRobEU2dVFFckYwdWtzOWtvY3VlTjRDK1EwY2NuUStIOUd3Z3FOL0FLQnpw?=
+ =?utf-8?B?dFhFMzA4NEtPRmRvMjRNZHFQcm90bmMxNTB5YkRDT2s5azNuZWxNNVRuQlZ4?=
+ =?utf-8?B?SFBXQUZWZDZCM0szcjY2M1Y0Mlp4RjQxaEp2UXhtbVAvYitFWVp2bGtldEdI?=
+ =?utf-8?B?ZFZtM25oS1JsTm1LSmR0ZXMvQ3ZOcVFsWVUybGt1WnZzTGsveE9pVlZkRFdp?=
+ =?utf-8?B?dzFGaFYxcURLY1hYaU9TeGp6YmhkQUxVblE5RUNXYmczaGN4WkR4OWVvK09Y?=
+ =?utf-8?B?TnRkdWFIU0g0blI1ajFxR01IVEV4cGRaZUdZV25OYUE2VGVVTVN3bTZJelp6?=
+ =?utf-8?B?a08zTDM5Umt0M2dhSnNkUHAyRWhiZmpBb1FCNGU2bzhXUmtvZnRGeC9ndjNK?=
+ =?utf-8?Q?8JLwVqmqHEfPIOzyojrjN9FcXo5+SID1PSzd8E4Rd6Pt?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b7f6f01-3171-4a1b-facd-08de2c2d0202
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9251d62f-5020-4730-4293-08de2c2dcdb7
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 14:14:56.5150
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 14:20:37.4344
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yPlGibbxorrEtgAIUdGcl3l3QYpzzxJMYC7F82SK8q+OITrZIDHnORtdLXy/PAROkS8CIh6H/pSPNpCryjoKlQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: XG1iKx7f16xCBikQWYP0SA5MeRWpE0wZ43sO4dnREiKkOvcnsk3OtXpuvQxnXvBy4pXPQ0FWAQJw7WpcSFZ1ww==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6009
 
-On Tue Nov 25, 2025 at 11:09 PM JST, Alexandre Courbot wrote:
-> On Wed Nov 19, 2025 at 8:21 PM JST, Zhi Wang wrote:
-> <snip>
->> -impl<const SIZE: usize> Io<SIZE> {
->> -    /// Converts an `IoRaw` into an `Io` instance, providing the access=
-ors to the MMIO mapping.
->> -    ///
->> -    /// # Safety
->> -    ///
->> -    /// Callers must ensure that `addr` is the start of a valid I/O map=
-ped memory region of size
->> -    /// `maxsize`.
->> -    pub unsafe fn from_raw(raw: &IoRaw<SIZE>) -> &Self {
->> -        // SAFETY: `Io` is a transparent wrapper around `IoRaw`.
->> -        unsafe { &*core::ptr::from_ref(raw).cast() }
->> +/// Checks whether an access of type `U` at the given `offset`
->> +/// is valid within this region.
->> +#[inline]
->> +const fn offset_valid<U>(offset: usize, size: usize) -> bool {
->> +    let type_size =3D core::mem::size_of::<U>();
->> +    if let Some(end) =3D offset.checked_add(type_size) {
->> +        end <=3D size && offset % type_size =3D=3D 0
->> +    } else {
->> +        false
->>      }
->> +}
->> +
->> +/// Represents a region of I/O space of a fixed size.
->> +///
->> +/// Provides common helpers for offset validation and address
->> +/// calculation on top of a base address and maximum size.
->> +///
->> +pub trait Io {
->> +    /// Minimum usable size of this region.
->> +    const MIN_SIZE: usize;
+On Wed Nov 19, 2025 at 8:21 PM JST, Zhi Wang wrote:
+> Drivers might need to access PCI config space for querying capability
+> structures and access the registers inside the structures.
 >
-> This associated constant should probably be part of `IoInfallible` -
-> otherwise what value should it take if some type only implement
-> `IoFallible`?
+> For Rust drivers need to access PCI config space, the Rust PCI abstractio=
+n
+> needs to support it in a way that upholds Rust's safety principles.
 >
->> =20
->>      /// Returns the base address of this mapping.
->> -    #[inline]
->> -    pub fn addr(&self) -> usize {
->> -        self.0.addr()
->> -    }
->> +    fn addr(&self) -> usize;
->> =20
->>      /// Returns the maximum size of this mapping.
->> -    #[inline]
->> -    pub fn maxsize(&self) -> usize {
->> -        self.0.maxsize()
->> -    }
->> -
->> -    #[inline]
->> -    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
->> -        let type_size =3D core::mem::size_of::<U>();
->> -        if let Some(end) =3D offset.checked_add(type_size) {
->> -            end <=3D size && offset % type_size =3D=3D 0
->> -        } else {
->> -            false
->> -        }
->> -    }
->> +    fn maxsize(&self) -> usize;
->> =20
->> +    /// Returns the absolute I/O address for a given `offset`,
->> +    /// performing runtime bound checks.
->>      #[inline]
->>      fn io_addr<U>(&self, offset: usize) -> Result<usize> {
->> -        if !Self::offset_valid::<U>(offset, self.maxsize()) {
->> +        if !offset_valid::<U>(offset, self.maxsize()) {
->>              return Err(EINVAL);
->>          }
+> Introduce a `ConfigSpace` wrapper in Rust PCI abstraction to provide safe
+> accessors for PCI config space. The new type implements the `Io` trait to
+> share offset validation and bound-checking logic with others.
 >
-> Similarly I cannot find any context where `maxsize` and `io_addr` are
-> used outside of `IoFallible`, hinting that these should be part of this
-> trait.
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: Joel Fernandes <joelagnelf@nvidia.com>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> ---
+>  rust/kernel/pci.rs    |  43 ++++++++++++++-
+>  rust/kernel/pci/io.rs | 118 +++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 159 insertions(+), 2 deletions(-)
 >
->> =20
->> @@ -239,50 +240,190 @@ fn io_addr<U>(&self, offset: usize) -> Result<usi=
-ze> {
->>          self.addr().checked_add(offset).ok_or(EINVAL)
->>      }
->> =20
->> +    /// Returns the absolute I/O address for a given `offset`,
->> +    /// performing compile-time bound checks.
->>      #[inline]
->>      fn io_addr_assert<U>(&self, offset: usize) -> usize {
->> -        build_assert!(Self::offset_valid::<U>(offset, SIZE));
->> +        build_assert!(offset_valid::<U>(offset, Self::MIN_SIZE));
->> =20
->>          self.addr() + offset
->>      }
->
-> ... and `io_addr_assert` is only used from `IoFallible`.
->
-> So if my gut feeling is correct, we can disband `Io` entirely and only
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 82e128431f08..f373413e8a84 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -40,7 +40,10 @@
+>      ClassMask,
+>      Vendor, //
+>  };
+> -pub use self::io::Bar;
+> +pub use self::io::{
+> +    Bar,
+> +    ConfigSpace, //
+> +};
+>  pub use self::irq::{
+>      IrqType,
+>      IrqTypes,
+> @@ -331,6 +334,30 @@ fn as_raw(&self) -> *mut bindings::pci_dev {
+>      }
+>  }
+> =20
+> +/// Represents the size of a PCI configuration space.
+> +///
+> +/// PCI devices can have either a *normal* (legacy) configuration space =
+of 256 bytes,
+> +/// or an *extended* configuration space of 4096 bytes as defined in the=
+ PCI Express
+> +/// specification.
+> +#[repr(usize)]
+> +pub enum ConfigSpaceSize {
+> +    /// 256-byte legacy PCI configuration space.
+> +    Normal =3D 256,
+> +
+> +    /// 4096-byte PCIe extended configuration space.
+> +    Extended =3D 4096,
+> +}
+> +
+> +impl ConfigSpaceSize {
+> +    /// Get the raw value of this enum.
+> +    #[inline(always)]
+> +    pub const fn as_raw(self) -> usize {
+> +        // CAST: PCI configuration space size is at most 4096 bytes, so =
+the value always fits
+> +        // within `usize` without truncation or sign change.
+> +        self as usize
 
-... except that we can't due to `addr`, unless we find a better way to
-provide this base. But even if we need to keep `Io`, the compile-time
-and runtime members should be moved to their respective traits.
+While correct, an even more solid guarantee is the fact that `self` is
+itself represented by a `usize`.
 
+> +    }
+> +}
+> +
+>  impl Device {
+>      /// Returns the PCI vendor ID as [`Vendor`].
+>      ///
+> @@ -427,6 +454,20 @@ pub fn pci_class(&self) -> Class {
+>          // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev=
+`.
+>          Class::from_raw(unsafe { (*self.as_raw()).class })
+>      }
+> +
+> +    /// Returns the size of configuration space.
+> +    fn cfg_size(&self) -> Result<ConfigSpaceSize> {
+> +        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev=
+`.
+> +        let size =3D unsafe { (*self.as_raw()).cfg_size };
+> +        match size {
+> +            256 =3D> Ok(ConfigSpaceSize::Normal),
+> +            4096 =3D> Ok(ConfigSpaceSize::Extended),
+> +            _ =3D> {
+> +                debug_assert!(false);
+> +                Err(EINVAL)
+> +            }
+
+Should we implement `TryFrom` for `ConfigSpaceSize` and use it here?
+
+(can't wait for the `TryFrom` derive macro to come and remove the need
+for this kind of boilerplate!)
+
+<snip>
+> @@ -141,4 +243,18 @@ pub fn iomap_region<'a>(
+>      ) -> impl PinInit<Devres<Bar>, Error> + 'a {
+>          self.iomap_region_sized::<0>(bar, name)
+>      }
+> +
+> +    /// Return an initialized config space object.
+> +    pub fn config_space<'a>(
+> +        &'a self,
+> +    ) -> Result<ConfigSpace<'a, { ConfigSpaceSize::Normal.as_raw() }>> {
+> +        Ok(ConfigSpace { pdev: self })
+> +    }
+> +
+> +    /// Return an initialized config space object.
+> +    pub fn config_space_extended<'a>(
+> +        &'a self,
+> +    ) -> Result<ConfigSpace<'a, { ConfigSpaceSize::Extended.as_raw() }>>=
+ {
+> +        Ok(ConfigSpace { pdev: self })
+> +    }
+>  }
+
+This still has the problem that one can create an extended config space
+object even if the device's `cfg_size` is `256`. Both
+`config_space` and `config_space_extended` should fail if `cfg_size`
+returns an invalid value, and `config_space_extended` should also fail
+if the returned size less than `ConfigSpaceSize::Extended`.
