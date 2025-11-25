@@ -1,301 +1,299 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012026.outbound.protection.outlook.com [40.107.200.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082BF326952
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 14:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764079206; cv=none; b=W3uLg6BbgZkfEpIb1YZID7anhZGyfqerPGglQm2AeJgODBWfzeyPtczcQVj5rzHFGp78hrSAVl/oZdbTcRz9TW327NIjtdRGvir7lUheVNlSbzHMhO6V4PWWaPWF8qKJNoADgSp9mkDii5pGkqvrjlihIVS5jKFvjQTPaalit3c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764079206; c=relaxed/simple;
-	bh=o2N3QTu1+TpHMRp7/UKL4YXJK7hQjrcHGLKV8tDPliE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=h7SbENyItgxjESknzUlctZxZdhf1zgh9PY5t57fGTmflWnGvLy5tB8HBDTq9YIrGlQeNsxD259o2FtMnokdl22rSPxAJMhvF6iUFyVWi4AsbsybvyhER/PD4Zi8IZBCK6etBQYIpy6/rnuUvjgX0QXywMDdeqrWAhg/X1zAhlL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MlOQMypY; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3C7A95E;
+	Tue, 25 Nov 2025 14:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764079764; cv=fail; b=bbXI0J8tukCVox8Z4AQ6ND05eKh1Q5C4NJW9dg48TTctbskzK8VdszG+jQU27gVlortFZVyClaGT3LKmbnk7sMTzygfJnPA7SyzKnd6Vm78rZ8/QTRU4l4v8B89IlM3ROrCXp6SUi3hSaTkKOKv/lNlHkEVMnZEdviUKFhX84A4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764079764; c=relaxed/simple;
+	bh=dFgtwzEl4XgVGkfCXScyC54TXjc9VNAReiSYpErerrU=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=okCQEAu0xoTFtgTME4MoVi3JjtdywK1azwX4V+RX2oAoG9Oo9WrHudBjAGUc7XmrBQnF2ViiBaPkBI7su+rGB6B0J2c6IQDBhWekPcqUHvVIpoOwwIMtUEQloo4yAtTSDgtHnvmOi/7Y3HOlVAvNvfY6kNOtYQj0gfmG/af/0hk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZBah/NJV; arc=fail smtp.client-ip=40.107.200.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MlOQMypY"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42b2c8fb84fso2960904f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 06:00:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764079202; x=1764684002; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oGRza4M1pvLiwn7tj6C+02QbTQCMU0dR2sE428029ts=;
-        b=MlOQMypYBcFLiTgd/RuU0vn053tPNrFTqt0DMvdenkMmT2yV9B131MwWVMr9AbFCsx
-         SFqwTteV3IdrIcdGv/zEcdYI2UIDGX50OmmVe1/nxSZL3wTrBQFjIs9V1DJdTLp0A3E4
-         klat2HLCev3PEXOfVgi1XHnBosixvnBldPBC4xT8Fn+WVD9p7dRy0AUi12/VM+gnEZwG
-         p15DN0PojYz23l5NhyVr6W4/d9kHYvfLMgmWTWSxdRo2DAZDfmNHtBPdm7j1PeyXnkos
-         Vz6rorIHw1CU4KH2iuAr2j31kbyPwRLAzCxtMuRr9gPcCcPC9Ic0BFfRmvqHr3ufJDH8
-         KZDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764079202; x=1764684002;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oGRza4M1pvLiwn7tj6C+02QbTQCMU0dR2sE428029ts=;
-        b=GQ4WZD0DIUL1avC8S/lZ5Wc1q9Hvcgw/z9lvoeLsw6HpJMhAk+LI9gAPto2nMW4Oyb
-         SwY+n68y1Ru55phZHUyYh2h3vLc0kbZ6oyDuaVvL3TUv0jEvg3lCiBd4YtnbU1jTiuGo
-         WB7s+xSJVdyoC3mGkZl/lZ5IIvMbE519VG9aHn9yDxbjHvhMkPBe4u9VCQX9pubay/x6
-         1lXoFgsFHeeIIATdB2Gi/Qx0T/ASq+YQK5g8vQFFPfHnx7Wveio3IGdPIjyoXIFWhm6S
-         jZPrtG4rfy8u6GmHzoZN94PwMf8kQhC4ZDGG2pLV2kkpS/dF1Ez201TiwQ/fl5Y+E7Ix
-         lfkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVU6o/J8f+rPo7SEwwMr5xSUgvdOnmjPUk7cTe+oAax1bt4xK7xtVvqitf6rKPxSKcAsZPXTIYk4BzDsQ/eQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGHXwK+izJECUqU9TEufxC9cjBpePv+aONvxsT0cIbfrWGN33j
-	q7RCEF32OGUM0vhGNgF9QrxGhrwwrLJjaBPggOJU53J3dWVAfZs+3aqsbQhGokPKuoFT6VWqQWk
-	FSmbwrXLjqHE80bQ6Qg==
-X-Google-Smtp-Source: AGHT+IFqMq1h9VtUtjJ5kcjKhLjZ5lZrXHgiJw5nTw1vx/wOcwekxQ4A5Ui2hRyg2ND1oa2t6HYRjpic9BVbecQ=
-X-Received: from wrwl12.prod.google.com ([2002:a5d:674c:0:b0:42c:c2d6:29c])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:615:b0:429:8b01:c093 with SMTP id ffacd0b85a97d-42e0f213973mr2990207f8f.15.1764079202514;
- Tue, 25 Nov 2025 06:00:02 -0800 (PST)
-Date: Tue, 25 Nov 2025 13:59:42 +0000
-In-Reply-To: <20251125-binder-bitmap-v6-0-dedaf1d05a98@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZBah/NJV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j1QdMD6xxe7WCxcrAEf4q1ind6oyN2Rik+MC1i0JOw8aFvb0wM4pyyCrBupiiNhn0Hx9qLQwqMXm2YfRWUlv22wSRpXturUNfuHiaJU7XtLuDeZvg0+P+oRkl1K9LSwIgb4LShJycaHmOYJo2b9bwvNpugrQDgdR/zqALbfaLjXf3hNb9zhyu6uI2Jezj+t6l2iKEohobTsIXzP/3fLVshxZrngqIayHBjRKrdHKLknqGioO/xKoAxpkYV3Vhb4wd6pTFR/toFJv9aM/8KjVPzvGD9oTrRDycJd1e+cPbV506YeZXVf5edxQe6fb0J5J8civgY0w1yrc1qouwmS0Eg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qTU5tb+TChVEcN+NjIny6Vhcryr2vuvvAuQIFvzcjEs=;
+ b=JYwMFDsno5m61SZLqY5GnSsSb+R74+oO8ORMCIwneojab0AuZAAy78dbhHbHcJVaUPjRmq9mAXj7e6JkemaNFpPLVq2mmRxAwkl+IYi7C3o/Lo1n8UpuD1VK1ZLalx8McEx7+k3bDOe7BCAH3nAyCi9DNaKme0y8FTTUT85vSrY3LznUVHtw+ooCJ6yEyxWa/lMcAqMTFYthdvg+FfL4hAwaE3o/eoiqivQzSxvBI4akVoyIXVcprUuL0bR6Y6CUfxbIKfHKw38VuP5MGDwWmSccq924EFZ6paoL+/Em9DCu3ed/y9e/IXu9zc9WmiNBvRy27quOSvE4weLO/MvtWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qTU5tb+TChVEcN+NjIny6Vhcryr2vuvvAuQIFvzcjEs=;
+ b=ZBah/NJVKkGhkFjfodk75OThjIk5amHv1okAs9S0d559KO94cZLr3171J8mndo7+L+hLHR6BH3iQt9Mkml/sGDUBvPATOtKWOO0qlrhtF68IEAqEE6RKxFWZqXTFIew0kFZeNEuwUiDXOiG0ZPOs9rrIWwyzGJ23OCFTz3G87pDjxpCT6jBtC/JKqmdiLlGzk+p064YWX7RejSexybdFKck1CVn893DK9AZYsfFIOmk3NbYNL/qqYXd8vzGsiWjAv4aMJEbYd65GyR6x3tPfiAKoKXUATDzfbMiQalW08dd2jeeWAcVwm/7ILkD67gG7X6K+qNaJcDcTwEBWnegvYw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by IA0PR12MB7529.namprd12.prod.outlook.com (2603:10b6:208:431::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Tue, 25 Nov
+ 2025 14:09:16 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
+ 14:09:15 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 25 Nov 2025 23:09:10 +0900
+Message-Id: <DEHU2XNZ50HW.281CCT1CZ79CF@nvidia.com>
+Cc: <dakr@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <markus.probst@posteo.de>, <helgaas@kernel.org>, <cjia@nvidia.com>,
+ <smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>, <acourbot@nvidia.com>,
+ <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>
+Subject: Re: [PATCH v7 3/6] rust: io: factor common I/O helpers into Io
+ trait
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251119112117.116979-1-zhiw@nvidia.com>
+ <20251119112117.116979-4-zhiw@nvidia.com>
+In-Reply-To: <20251119112117.116979-4-zhiw@nvidia.com>
+X-ClientProxiedBy: OS0P286CA0137.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:604:16b::19) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251125-binder-bitmap-v6-0-dedaf1d05a98@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8245; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Ic10crWh9Vr+03Eo7YRbZ+ys+i8McD15VGekocwJfcs=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpJbZYXXyMpUsJ9dQHttG2KSTBIdKZ/TQC57u+o
- o81t0za4A+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaSW2WAAKCRAEWL7uWMY5
- RoOLD/9IVkKK/a1jvavrP5MKXLO1AOJOfnXR+oYb2JaJw8G2KD1zEJ7hUsoAoR7qe/oeXW8r2T5
- N2gqvyYrxyIKyD3U6hQ2EICjO9hhzoRZDZfvqSSEPlrslGpA+5zxAjY2wnKhiO1LodANN7yZ6g2
- WbawLbV/Y92v8rGoPLIEioy4V1xo+5qxctHhLbBUvFbmoxHS2hCt+3dzXaQw8rmlD0PUnIeejDw
- G1m6nDtndA9B8RVxuKcHuD1Zo4+yXqY+Wp/Z1dc2ELFCZGPyPYdmpfZpQu9ZShzMiCg8x6mYnZe
- neHQQP5hszYD/bkKGTX2tipFy9UtFrMIJgzi8v2iveXCrG13TOh6is49Jj9/GFRu8blclRxfjLl
- 5zBk4Kq9VC4cBAmyf2tHbHVD14m4xKiiWvDvpUELSmJvcemxX3KBVjmir2VElLBkWjkkCfPDOu3
- h2r0xNb0xWUaqdd3ovDHzq2xqH3y13IctjiRKHGSDq1PbPYV9BUXJw/iaTKATbHLFp4/KxPYxba
- Z0dMNpHAcMJnGGKukNKfUC78CbgU11fYfTh5Hd+6PqUoxJ3AxY5dKIvanKfW4HUQtJKyNDAKUu/
- SqJVVPQhf4ijCidcfyrn4cnzM8hFUMMYjO5DlDt1Y+MWftoPsMuZsZZCVbv+m+LbJ4UQG4P+KyD TByLYIlFF21o4Jg==
-X-Mailer: b4 0.14.2
-Message-ID: <20251125-binder-bitmap-v6-6-dedaf1d05a98@google.com>
-Subject: [PATCH v6 6/6] rust_binder: use bitmap for allocation of handles
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>
-Cc: "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Martijn Coenen <maco@android.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Burak Emir <bqe@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA0PR12MB7529:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2d87d6c9-001e-48e3-3207-08de2c2c3763
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|10070799003|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aVAxajdJWTRwUU51MVZ1dElKd1dUWmIyVU9xVGlUZHMyeHB4Q0pOYjRkL0dU?=
+ =?utf-8?B?R0FyaTdLd29keFRJN1pubmxKVTlQRTVsTGFvM3ErQldsTFZyNXovbWw4K2Jx?=
+ =?utf-8?B?T0cwNWVUUEdodlNzWlB5ZDZic3o4S0IwZllaci9wcXZwYXZCd2hwbnIxWWJz?=
+ =?utf-8?B?VldRaTBybTZTQis3VmNyTlpEcCt6a0lleVJLYVNCY210N1owQjBXM3BNU3Zw?=
+ =?utf-8?B?ZklTZ0NzcHRlZFE3dXVsRDZLU1lXUHlvc0xlQnlDRko3ZWx1MTlUbGVVRUNY?=
+ =?utf-8?B?YXg5VUVYYVJHMWQvb0VOSmdoaXcrOTJEY2dUTkkzUndVcTFLM21PT1RwZmdK?=
+ =?utf-8?B?S09BNFRmQXNVTkJRSjRBUVJxYSt2ZnJZTTFIdlA3bjV5d1NBTVk0RTFSOXoz?=
+ =?utf-8?B?eEh6QzJkWDRpQ0ZWWTg5WkdWUFJOMXVJN2g1TzVPT1J3QWZwUHFzK0QxZnFj?=
+ =?utf-8?B?U24zV2FLTTU5cXEvY3Q2VG1YZ2tVUnkvL0t6MWJqMDdZemxGb2o3RGt5c1RE?=
+ =?utf-8?B?WElEc3ZPcDN1UWI0SzNCN21IdVlwdjhtZU9YRXZFUzIydm9rWDVOV1NYblhO?=
+ =?utf-8?B?THJldnRNZjFHM05tcXU2elpwMHVIM0EwWFRSOElveVR6S1UyZFAzeDFncGZj?=
+ =?utf-8?B?SWxmZE1lN3MxOW14bGdPYndOb1dPS1EzTCtrZVpmZngxWk9uQUtuUDY5RkFL?=
+ =?utf-8?B?Y2YwVVZ6SGYvODlObFpLNWFvQ2R1NDQwbHJjRVNtOCtrbVpaejloMFBxSzFC?=
+ =?utf-8?B?RkMydmNjZEVmT2hQeFBnZWgxenRobVRISUtsZjlkdCtwZG1nbzR4YkkvTVJ2?=
+ =?utf-8?B?MnM5NFlodUg2VU1ENkpwdEFDYWNYVGhwVVBJNlQ0S1doQzJWbGlUMm5RSU5x?=
+ =?utf-8?B?OFNZODQ4OS84NGZoWXVzbkc1cnJNRlVxU1UxaXlGb3l6S3ZSeTdpejkwdDJl?=
+ =?utf-8?B?Um5JUHF0eDRWMGZYNlZrVElGTm9ZWGFYR3pkUEc1Q1lMYnA3TTVjNkIva3dn?=
+ =?utf-8?B?SmY3eDdUY0pBOGdUMzBMVm1tSlNPeFN1NUJQdGZUNXY1L1BxVXcwWDdBcmtH?=
+ =?utf-8?B?SGJiV3FITjhXS3dzM280ZDl0M1FCaEIxMDRTdnNPWGpGUnRYSUxlRkgweHZR?=
+ =?utf-8?B?Tjd6VzYwTjFreGNwRGFWbzdXcEJUU3VnQ1pqVjlKZnVCUTkrN0xJOGs5c1RP?=
+ =?utf-8?B?ckExMTdmMXZ4TGdFaWhEQ0Q4RzA3OUlYR1dYR1haOVFVcS9JeU1zWUNabWEx?=
+ =?utf-8?B?Q1l3RE82emE2UXBRWkpKTzhEZEl0REVJRnlDTkxBNXFqdjRSVGw2Nk8vbllw?=
+ =?utf-8?B?cEVBa09jK2txc1NqU3QydHNWSEFjUXRWSG0wODhBUHFCR2dmZUJ4aGhVZzVq?=
+ =?utf-8?B?Nm04Z21KdXQ0dDE1bTh6MW96dEd5bmp2UXZKL0NUYnJkVkoxSVFOOGR2ZVov?=
+ =?utf-8?B?VTRmUlJnSWNsakp3WjNZbXh6eU8renU5aWQ5d1VOak9xT0xiSUMrTVZ0ZzEv?=
+ =?utf-8?B?MlRLR3k0L29yQjdqcU5LNVcwT1ROZUZsWW9VUFQyQmVuVVdtMEtaaXhjQVpx?=
+ =?utf-8?B?TEhLQ29tcktqZ1RBUEhaQWNEVjBMUnZ0cUtZclR5S2h1U2ZjYVE5bEpINGFh?=
+ =?utf-8?B?WWIwWXltYkFjcGE0WWt2RVZEWFBHWVlTcWZtV1VkZU9DalM1NytBTHdod1hT?=
+ =?utf-8?B?ZTAvMW0ySW1NdHIwM0QyVWhMaVlXTU9ycHpueTFzaTNvYXVtaS9KcldvM1dV?=
+ =?utf-8?B?OWxOcTVseEp4Y25hZkRmK29HRHhsWm9ITm5pbjV2eWpBWE41aDN1TGZCRWp2?=
+ =?utf-8?B?QUh4RVFwQ3NDRkZCOGxiUWdBY20xQlgwZFdrWW9QRzAxREM3VHJuU3BQV1hP?=
+ =?utf-8?B?VzZLU01uaC9zRUEwaXJ1NzBKVVl6TG1ldGlkaDZmM1BYeVBXMW42bTJCRVFS?=
+ =?utf-8?Q?+7a7A684iLay6TZocFJmr10dq75N/ePi?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(10070799003)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?LzJqcXlGa3hwSFowUEpvS1o4OVozbHZJdVpDMU5LQzMrSE5DTnlJbVp6cmVs?=
+ =?utf-8?B?T21rOWVpK2lrWDlqaTFiKzVnOXhjZCt4ZXI4MkczSEIrZ2MreSt3YXozTGxw?=
+ =?utf-8?B?S21ReDVtU094M2tnUitvSVRTazlqamoweG1kbm5hR1hRdzRCdTVWa2xpczZK?=
+ =?utf-8?B?ZEhQRE5Sa3BJTCt2L1BzR1BOTjdoSnVrK29RWlM3ekJKUDhEVVd0dERsOTFi?=
+ =?utf-8?B?MkxUZERJQ1pHcnhSMHE4TUJ0bFViWElTZlU3aDluc2hqV01oMURvSnRqQnlB?=
+ =?utf-8?B?WjFRalR6V3FUa1JiK0hJWFVLcXlEMUgyUGlsS3BpK2ZjZ2c0K3NqNzNheDFm?=
+ =?utf-8?B?NlFOM2J3amNCQytTZ0MxSVBnQzcwQ0FSVGxZSFdpWnBkeWhoR1dkOVhWSXAx?=
+ =?utf-8?B?bUJIbDFYanVpRDJ1UThRQ25Hdk5BOFkrVFFLSVM2Q1FFRFFQNzd1c3E0SHZP?=
+ =?utf-8?B?SnlqYkxEa3p5Yy9aYzhhNDVocEJ0am1GT0xNUDQ1NDlvS1N5TmJEZjJ3UVNa?=
+ =?utf-8?B?ZnF6b3BuWEUyTnJOTi9KbW84ZGpKa1BzbmYxUDUvSmNqS09aRnBlLzJwd002?=
+ =?utf-8?B?S1V3WUtsTW1odXZqRmFyNUlpU2VaejE1WEpwM2JVZXpRZVhVRktpRlVITU1w?=
+ =?utf-8?B?VW9zT0VtSFhmRmdCeGJnRDFMWnVWL2QvN0V4dmNnNmVCOXF0UEJaSmtkMDEw?=
+ =?utf-8?B?SXBmMVlHK0hjSlo2aGxXbEZDR1RlS3laRjdJSWJOK2RLVHJ1OGV5bjR4OFhi?=
+ =?utf-8?B?WDdUY3BsVGVuTm5NOG9lUlBycVFWT1psNjhQcEczWnI3VG1MRDBFZTYvKzhl?=
+ =?utf-8?B?bDVMdGNLWFFFWEZmV1MyY1RYTCtqZ05XeUN6bm1VTFF0UTcrSGtXbStKOUZu?=
+ =?utf-8?B?ZC9mNnZ4OEVaaGZ2ZC82Lzg4VjZxZWhEWHZ0WFVWaTJnV0JDdGdUdUNNaGkz?=
+ =?utf-8?B?c04vc3dGMUprT2k5ZnR5UHp0MGpYbm5SdlhxOVlQbGdUVG1MbzRieDRJUVdQ?=
+ =?utf-8?B?Ky9VUS9JMTJCWVhSTkwveENqSUpja3RQRlJkeXd3eXhCNHl2L3hZUlFZSyty?=
+ =?utf-8?B?REh0MkNOaEZZY21QeTV6am01N3l4WkdXTzhtdjZRWXVxU0xDVjZ0MzRrcGxD?=
+ =?utf-8?B?TktucEozUDFQdGlFczZ2Wklac2hGUVl1U0hORGx5MCtmRXc5M1l3ZVNoWWt1?=
+ =?utf-8?B?R1BsSzdJN3JscEhCS1FnK0lHeHMxQlROeFZHeVBIZHQ1YkJXOHVnQndmQk9K?=
+ =?utf-8?B?cTFTckE4Rk0rNjBFVHRtSC8wVmhWcFVCWWxEYW95NlVsb2MzNGFHSDJvZk1F?=
+ =?utf-8?B?cHlrUC8xbittdkNYdWw4Qm9SWG5LZDEwVFVPMHMvUzE3Z1BXSVFWcWhrQWFY?=
+ =?utf-8?B?NkN3cEo2VVhsdi84T292SmVsY1ZPMEdEcUxoeUZFYVI2WGlCQzJnSC9yYStv?=
+ =?utf-8?B?Q3M4M2tUc25YNHNSM1REZVpFOGhIREs1ckxGYTlTTG84WEhTUVdockdSd0hH?=
+ =?utf-8?B?K1FMUTBoUkRrMzgrRmw4QnBnNEVhZXJDaGtVZ3V1TWY4V2R3cnJWWjVGQnU0?=
+ =?utf-8?B?c3c4cDJqMTVCclFNTDJaYkVKQmNBaUJiVDBPLzR4UEtIUGdGaDhjbWNjTUhW?=
+ =?utf-8?B?T3htKytUbEllR25wNkh3WjhLSVhaTkFLbUNYMmJsRHJ1YnIyRVp3aThGS3lG?=
+ =?utf-8?B?eTVranFnUmRTUUpaYStyMUJsanh1UUVNMXMyUlRNYS8wRWQrU1E5eWFidGFj?=
+ =?utf-8?B?NG1OdGFXT2pKY08xUmliVFpsSTZHRVNibUl2Sjh5OEdTcVJ3N25MZ0g3Sjgy?=
+ =?utf-8?B?T2tiNVUzTXZ6WG8zQzVkelNheVBpSHNBYytCK0ZwOGtxbjBRTC83WVQrclRT?=
+ =?utf-8?B?U1hvUkVGQ1NvdnFDWHJGdVJnVm9zNDQ5WEpQd0ZFa2hnR0JzYkZla0V5UUlT?=
+ =?utf-8?B?R0h0R0w4UFRUN1FBM1M1Q1ZJdjZDUStpOGlhUUFQcUV2c25OUXhuTXVOeWg1?=
+ =?utf-8?B?b2RtWkt1bWdvQWZ5dWx2Y25OQXRQSTE0NWNyRmt1MTNSUUIzTmt3T3RhMUEx?=
+ =?utf-8?B?L01GMGtmZEQ4dTNBYkNMU0tPMUdjZWhoQU0xS2hkSExqYTdyMHFOai91VTBk?=
+ =?utf-8?B?Tm9JRlE3M3Y3b1IraDFFc2JiaHVpTzNBK05PMHRnK211Z2I4aXB2QkpOZjBJ?=
+ =?utf-8?Q?7PxXzq2fvexCWdStQFDONcMSMCthCP3ioKZFLOg9mIP2?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2d87d6c9-001e-48e3-3207-08de2c2c3763
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 14:09:15.5122
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BDLwuBRARBjqkuBcZTeONZTEygjcrK7SVDJxCT9gY+YMfiGn4cxuRimLpz2eEuJZrUqjUpIuSVy0SZhTNjk4+A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7529
 
-To find an unused Binder handle, Rust Binder currently iterates the
-red/black tree from the beginning until it finds a gap in the keys. This
-is extremely slow.
+On Wed Nov 19, 2025 at 8:21 PM JST, Zhi Wang wrote:
+<snip>
+> -impl<const SIZE: usize> Io<SIZE> {
+> -    /// Converts an `IoRaw` into an `Io` instance, providing the accesso=
+rs to the MMIO mapping.
+> -    ///
+> -    /// # Safety
+> -    ///
+> -    /// Callers must ensure that `addr` is the start of a valid I/O mapp=
+ed memory region of size
+> -    /// `maxsize`.
+> -    pub unsafe fn from_raw(raw: &IoRaw<SIZE>) -> &Self {
+> -        // SAFETY: `Io` is a transparent wrapper around `IoRaw`.
+> -        unsafe { &*core::ptr::from_ref(raw).cast() }
+> +/// Checks whether an access of type `U` at the given `offset`
+> +/// is valid within this region.
+> +#[inline]
+> +const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+> +    let type_size =3D core::mem::size_of::<U>();
+> +    if let Some(end) =3D offset.checked_add(type_size) {
+> +        end <=3D size && offset % type_size =3D=3D 0
+> +    } else {
+> +        false
+>      }
+> +}
+> +
+> +/// Represents a region of I/O space of a fixed size.
+> +///
+> +/// Provides common helpers for offset validation and address
+> +/// calculation on top of a base address and maximum size.
+> +///
+> +pub trait Io {
+> +    /// Minimum usable size of this region.
+> +    const MIN_SIZE: usize;
 
-To improve the performance, add a bitmap that keeps track of which
-indices are actually in use. This allows us to quickly find an unused
-key in the red/black tree.
+This associated constant should probably be part of `IoInfallible` -
+otherwise what value should it take if some type only implement
+`IoFallible`?
 
-For a benchmark, please see the below numbers that were obtained from
-modifying binderThroughputTest to send a node with each transaction and
-stashing it in the server. This results in the number of nodes
-increasing by one for every transaction sent. I got the following table
-of roundtrip latencies (in =C2=B5s):
+> =20
+>      /// Returns the base address of this mapping.
+> -    #[inline]
+> -    pub fn addr(&self) -> usize {
+> -        self.0.addr()
+> -    }
+> +    fn addr(&self) -> usize;
+> =20
+>      /// Returns the maximum size of this mapping.
+> -    #[inline]
+> -    pub fn maxsize(&self) -> usize {
+> -        self.0.maxsize()
+> -    }
+> -
+> -    #[inline]
+> -    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+> -        let type_size =3D core::mem::size_of::<U>();
+> -        if let Some(end) =3D offset.checked_add(type_size) {
+> -            end <=3D size && offset % type_size =3D=3D 0
+> -        } else {
+> -            false
+> -        }
+> -    }
+> +    fn maxsize(&self) -> usize;
+> =20
+> +    /// Returns the absolute I/O address for a given `offset`,
+> +    /// performing runtime bound checks.
+>      #[inline]
+>      fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+> -        if !Self::offset_valid::<U>(offset, self.maxsize()) {
+> +        if !offset_valid::<U>(offset, self.maxsize()) {
+>              return Err(EINVAL);
+>          }
 
-Transaction Range =E2=94=82 Baseline (Rust) =E2=94=82 Bitmap (Rust) =E2=94=
-=82 Comparison (C)
-0 - 10,000        =E2=94=82          176.88 =E2=94=82         92.93 =E2=94=
-=82          99.41
-10,000 - 20,000   =E2=94=82          437.37 =E2=94=82         87.74 =E2=94=
-=82          98.55
-20,000 - 30,000   =E2=94=82          677.49 =E2=94=82         76.24 =E2=94=
-=82          96.37
-30,000 - 40,000   =E2=94=82          901.76 =E2=94=82         83.39 =E2=94=
-=82          96.73
-40,000 - 50,000   =E2=94=82         1126.62 =E2=94=82        100.44 =E2=94=
-=82          94.57
-50,000 - 60,000   =E2=94=82         1288.98 =E2=94=82         94.38 =E2=94=
-=82          96.64
-60,000 - 70,000   =E2=94=82         1588.74 =E2=94=82         88.27 =E2=94=
-=82          96.36
-70,000 - 80,000   =E2=94=82         1812.97 =E2=94=82         93.97 =E2=94=
-=82          91.24
-80,000 - 90,000   =E2=94=82         2062.95 =E2=94=82         92.22 =E2=94=
-=82         102.01
-90,000 - 100,000  =E2=94=82         2330.03 =E2=94=82         97.18 =E2=94=
-=82         100.31
+Similarly I cannot find any context where `maxsize` and `io_addr` are
+used outside of `IoFallible`, hinting that these should be part of this
+trait.
 
-It should be clear that the current Rust code becomes linearly slower
-per insertion as the number of calls to rb_next() per transaction
-increases. After this change, the time to find an ID number appears
-constant. (Technically it is not constant-time as both insertion and
-removal scan the entire bitmap. However, quick napkin math shows that
-scanning the entire bitmap with N=3D100k takes ~1.5=C2=B5s, which is neglib=
-le
-in a benchmark where the rountrip latency is 100=C2=B5s.)
+> =20
+> @@ -239,50 +240,190 @@ fn io_addr<U>(&self, offset: usize) -> Result<usiz=
+e> {
+>          self.addr().checked_add(offset).ok_or(EINVAL)
+>      }
+> =20
+> +    /// Returns the absolute I/O address for a given `offset`,
+> +    /// performing compile-time bound checks.
+>      #[inline]
+>      fn io_addr_assert<U>(&self, offset: usize) -> usize {
+> -        build_assert!(Self::offset_valid::<U>(offset, SIZE));
+> +        build_assert!(offset_valid::<U>(offset, Self::MIN_SIZE));
+> =20
+>          self.addr() + offset
+>      }
 
-I've included a comparison to the C driver, which uses the same bitmap
-algorithm as this patch since commit 15d9da3f818c ("binder: use bitmap
-for faster descriptor lookup").
+... and `io_addr_assert` is only used from `IoFallible`.
 
-This currently checks if the bitmap should be shrunk after every
-removal. One potential future change is introducing a shrinker to make
-this operation O(1), but based on the benchmark above this does not seem
-required at this time.
+So if my gut feeling is correct, we can disband `Io` entirely and only
+rely on `IoFallible` and `IoInfallible`, which is exactly what Alice
+said in her review. It makes sense to me as well because as she
+mentioned, users need to specify one or the other already if they want
+to call I/O methods - so why keep part of their non-shared functionality
+in another trait.
 
-Reviewed-by: Burak Emir <bqe@google.com>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/process.rs | 64 ++++++++++++++++++++++++++++-------=
-----
- 1 file changed, 47 insertions(+), 17 deletions(-)
+This design would also reflect the fact that they perform the same
+checks, except one does them at compile-time and the other at runtime.
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/pro=
-cess.rs
-index f13a747e784c84a0fb09cbf47442712106eba07c..9264961fd92b33c07fcd5353740=
-cc0b1ec978afd 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -19,6 +19,7 @@
-     cred::Credential,
-     error::Error,
-     fs::file::{self, File},
-+    id_pool::IdPool,
-     list::{List, ListArc, ListArcField, ListLinks},
-     mm,
-     prelude::*,
-@@ -367,6 +368,8 @@ impl ListItem<{Self::LIST_NODE}> for NodeRefInfo {
- struct ProcessNodeRefs {
-     /// Used to look up nodes using the 32-bit id that this process knows =
-it by.
-     by_handle: RBTree<u32, ListArc<NodeRefInfo, { NodeRefInfo::LIST_PROC }=
->>,
-+    /// Used to quickly find unused ids in `by_handle`.
-+    handle_is_present: IdPool,
-     /// Used to look up nodes without knowing their local 32-bit id. The u=
-size is the address of
-     /// the underlying `Node` struct as returned by `Node::global_id`.
-     by_node: RBTree<usize, u32>,
-@@ -381,6 +384,7 @@ impl ProcessNodeRefs {
-     fn new() -> Self {
-         Self {
-             by_handle: RBTree::new(),
-+            handle_is_present: IdPool::new(),
-             by_node: RBTree::new(),
-             freeze_listeners: RBTree::new(),
-         }
-@@ -775,7 +779,7 @@ pub(crate) fn get_node(
-     pub(crate) fn insert_or_update_handle(
-         self: ArcBorrow<'_, Process>,
-         node_ref: NodeRef,
--        is_mananger: bool,
-+        is_manager: bool,
-     ) -> Result<u32> {
-         {
-             let mut refs =3D self.node_refs.lock();
-@@ -794,7 +798,33 @@ pub(crate) fn insert_or_update_handle(
-         let reserve2 =3D RBTreeNodeReservation::new(GFP_KERNEL)?;
-         let info =3D UniqueArc::new_uninit(GFP_KERNEL)?;
-=20
--        let mut refs =3D self.node_refs.lock();
-+        let mut refs_lock =3D self.node_refs.lock();
-+        let mut refs =3D &mut *refs_lock;
-+
-+        let (unused_id, by_handle_slot) =3D loop {
-+            // ID 0 may only be used by the manager.
-+            let start =3D if is_manager { 0 } else { 1 };
-+
-+            if let Some(res) =3D refs.handle_is_present.find_unused_id(sta=
-rt) {
-+                match refs.by_handle.entry(res.as_u32()) {
-+                    rbtree::Entry::Vacant(entry) =3D> break (res, entry),
-+                    rbtree::Entry::Occupied(_) =3D> {
-+                        pr_err!("Detected mismatch between handle_is_prese=
-nt and by_handle");
-+                        res.acquire();
-+                        kernel::warn_on!(true);
-+                        return Err(EINVAL);
-+                    }
-+                }
-+            }
-+
-+            let grow_request =3D refs.handle_is_present.grow_request().ok_=
-or(ENOMEM)?;
-+            drop(refs_lock);
-+            let resizer =3D grow_request.realloc(GFP_KERNEL)?;
-+            refs_lock =3D self.node_refs.lock();
-+            refs =3D &mut *refs_lock;
-+            refs.handle_is_present.grow(resizer);
-+        };
-+        let handle =3D unused_id.as_u32();
-=20
-         // Do a lookup again as node may have been inserted before the loc=
-k was reacquired.
-         if let Some(handle_ref) =3D refs.by_node.get(&node_ref.node.global=
-_id()) {
-@@ -804,20 +834,9 @@ pub(crate) fn insert_or_update_handle(
-             return Ok(handle);
-         }
-=20
--        // Find id.
--        let mut target: u32 =3D if is_mananger { 0 } else { 1 };
--        for handle in refs.by_handle.keys() {
--            if *handle > target {
--                break;
--            }
--            if *handle =3D=3D target {
--                target =3D target.checked_add(1).ok_or(ENOMEM)?;
--            }
--        }
--
-         let gid =3D node_ref.node.global_id();
-         let (info_proc, info_node) =3D {
--            let info_init =3D NodeRefInfo::new(node_ref, target, self.into=
-());
-+            let info_init =3D NodeRefInfo::new(node_ref, handle, self.into=
-());
-             match info.pin_init_with(info_init) {
-                 Ok(info) =3D> ListArc::pair_from_pin_unique(info),
-                 // error is infallible
-@@ -838,9 +857,10 @@ pub(crate) fn insert_or_update_handle(
-         // `info_node` into the right node's `refs` list.
-         unsafe { info_proc.node_ref2().node.insert_node_info(info_node) };
-=20
--        refs.by_node.insert(reserve1.into_node(gid, target));
--        refs.by_handle.insert(reserve2.into_node(target, info_proc));
--        Ok(target)
-+        refs.by_node.insert(reserve1.into_node(gid, handle));
-+        by_handle_slot.insert(info_proc, reserve2);
-+        unused_id.acquire();
-+        Ok(handle)
-     }
-=20
-     pub(crate) fn get_transaction_node(&self, handle: u32) -> BinderResult=
-<NodeRef> {
-@@ -905,6 +925,16 @@ pub(crate) fn update_ref(
-                 let id =3D info.node_ref().node.global_id();
-                 refs.by_handle.remove(&handle);
-                 refs.by_node.remove(&id);
-+                refs.handle_is_present.release_id(handle as usize);
-+
-+                if let Some(shrink) =3D refs.handle_is_present.shrink_requ=
-est() {
-+                    drop(refs);
-+                    // This intentionally ignores allocation failures.
-+                    if let Ok(new_bitmap) =3D shrink.realloc(GFP_KERNEL) {
-+                        refs =3D self.node_refs.lock();
-+                        refs.handle_is_present.shrink(new_bitmap);
-+                    }
-+                }
-             }
-         } else {
-             // All refs are cleared in process exit, so this warning is ex=
-pected in that case.
+Another point that Alice mentioned is that if you can do the check at
+compile-time, you should be able to do it at runtime as well, and some
+(most) non-bus specific APIs will probably only expect an `IoFallible`.
+For these cases, rather than imposing a hierarchy on the traits, I'd
+suggest a e.g. `IoFallibleAdapter` that wraps a reference to a
+`IoInfallible` and exposes the fallible API.
 
---=20
-2.52.0.460.gd25c4c69ec-goog
+<snip>
+> +impl<const SIZE: usize> Io for Mmio<SIZE> {
+> +    const MIN_SIZE: usize =3D SIZE;
+> +
+> +    /// Returns the base address of this mapping.
+> +    #[inline]
+> +    fn addr(&self) -> usize {
+> +        self.0.addr()
+> +    }
+> +
+> +    /// Returns the maximum size of this mapping.
+> +    #[inline]
+> +    fn maxsize(&self) -> usize {
+> +        self.0.maxsize()
+> +    }
+
+Nit: when implementing a trait, you don't need to repeat the doccomment
+of its methods - LSP will pick them from the source.
 
