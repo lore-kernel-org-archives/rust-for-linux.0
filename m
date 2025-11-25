@@ -1,163 +1,173 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F70327C1E
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 14:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764082787; cv=none; b=YlG1WwXBTtM3P1cIJyimNeW804OjJrQ1bq0yYXUFQmt2TASTy3CIMOMGPHiT32eKnQqsoqH0icadOeb9QJiCLka3bSafy1xt6U6kHSSSL/9WlXevy8XOU2zgt4N6x3yBL8pYwfCkPOiPogaJeJNBAOZkWkfxyjOG62z/7hmk8Vk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764082787; c=relaxed/simple;
-	bh=3nCp6GWILozKSAO/o7iqDk9S31b/aO50grT0opR1frE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TVpP4XhbcMuG3YatDtYghJAIfrWiF7yAzdlLSgIGCcfcVYuEBf4jHqR3FcurduzfRHMHG4IIxNDE80UgtIjxF8ZAS/SeDYwT9ySwIZGXhP2a/nGye1uwHNnbAsKXkEDz70FiFrbcc2Zn6Azmd1THAtbf41uQzjk9bl9vS66EDtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tliqIBsT; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28F733EC;
+	Tue, 25 Nov 2025 15:54:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764086066; cv=pass; b=CByLuVwFSOW6giPFcIZmpRSKxtNLnxDo6yBvmVbbwt+0fpr9k6mG4K2487k49YNVYoeiCDG5HSYmWeUkyA20V0xmnjuYLDWNEHcx7wT3C5jSjlhnqqzHiNjdZ297T2wdxSOz6iIP1Jd9mkZP1xDxm+fWfkR9f4Y/z/ccQmYH03g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764086066; c=relaxed/simple;
+	bh=zGF9PH0y8pFgayaxubOLiakou6QM3bDButGG924cQ1A=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ZXC1O739VoAwsjyBhrCWhraHosJZ06T7pTF5Fhx0NCzaVngsb+LQlmVcyubZOeIcUNBJid/xTyWidqXI9G1vP4STNaiBEnYCnnkcR6b5excF5TLL6MFC/DuxnHT/ZfBtif9VMM3YwxKYPNmud7No40akHL8rWeAYfnYU8+daCVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Vy0u2IjW; arc=pass smtp.client-ip=136.143.184.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tliqIBsT"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-477b5e0323bso35036865e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 06:59:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764082784; x=1764687584; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wVagC+UMR5yq8ETeNg34KLN87w696g4GRpmIO4FmPyQ=;
-        b=tliqIBsTqBkJCOKTvuLqvUyJYjMa6K68oqiautMOkV4RRFByEtpi1q+icGS+G+ZhKY
-         CpYT7iVePRFM32uybFOfP3Lh1ElKx74/td3DWtgu7iiLTc3P1iL/4qGobkKMqx0mqS/u
-         Y81OTUcQY3kuG1C5z9PDKFEV+EBL4NKh2auZffzocI9lPjPZ7A8Rm0I69I0jnRDpXq8G
-         0mS3fV/jvX9FO4lu2BVY1a6lF4UdfqfkKvgUtuksm9Gym9/Yoz0FFH1Ibngiac4+Beh3
-         fjIy7yL6MgOL7CMfILVdpIB6arjaeI2xdeax2Cd5h9DfDBMCyopBHCGbJnyT2lxTSyP6
-         cVQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764082784; x=1764687584;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wVagC+UMR5yq8ETeNg34KLN87w696g4GRpmIO4FmPyQ=;
-        b=XoKlMFLyjUuhtJsmzZHtvyHC8eQOQ7uxfujID8OaCIU89ZoY3paQ2DdCTGZRbqxyCj
-         JgcHQcanatDtduot4mpKrA2ydJ9ivEfZHmRtwtFme2PFwioKWmpZwBR/0mlQYLhwGkef
-         ubddUUN2sax5NFM8cJ2oKkL3UK1M23meFkL0G4MOO/PezXOcAaHC3DE3iwet+mGciwM2
-         Deo1dedeaJ7qZer5Br+d2FNvKqc0/PVXuUEpgPoQnXn1WDVat/W/DNp6THe7c5eAg5l+
-         CVG3HTeXQBEhTRt62kiFKIEIry+8VWcR8nGCsHNtq4eDPcdCzW0vo5ruCzNZlYzH7lYR
-         Wcgg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZpj14IyPmFeVq2kF+3VWqTKJcQokRdx+AdQImrtI4Yjq+IrYOWAX5Qajrjvp6arYHHNZstOGLEvX3vafcxg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzql5MGQkmaLbLnnlSeoHRrc7c5Lz+hD2k376BYNievDwvF/B3i
-	2XOMwi0pOiqTI86naVHYxnuoshigSjuw9WZhCRJ1OXorcgH2nPCkfoG3fHA4tw4c8XCpFPf47HZ
-	iR2+WVmov5jYVB9rAXzTb2uZ1IZhZxtdjfbjSyFHB
-X-Gm-Gg: ASbGncsfSUvYKFZMHzAQoYXY3/RFr36wyW1iZi5b4+n2En7BmtsJHC3SDVdgLYiSI35
-	EgR4xEUiKWE2vnzPNkUlKaiy8q5sm4kGBoktEoVOP9mcVLZDe8nBZnHsk1+3yw6w/FAArSNipaz
-	5Ih+wSFKJ6VSbVYDbj+kBlFo5cVhVwSHlSlej49olI29GI3SMNoLgNQ24JZzdJHdj2u0+up3XPH
-	SZngOCzYFlBZ28O2ywZ99UXwLxc6kmSlJFNLNNQ5Fdm2T2eUF7+8p7SE9KVdh7DuXJpHSkalPFM
-	C3qGC+p/X3wYJ8IHYZSbzw==
-X-Google-Smtp-Source: AGHT+IGkJd1H6nFr3Y+NpL3Q4jL39vazsIi/C69U9vhgk38tOat9OMAKfcLlUtxyzxsSslltth5ttiPh5ErFrT8805Y=
-X-Received: by 2002:a05:600c:4746:b0:477:a289:d854 with SMTP id
- 5b1f17b1804b1-477c04cfa31mr163605255e9.5.1764082784106; Tue, 25 Nov 2025
- 06:59:44 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Vy0u2IjW"
+ARC-Seal: i=1; a=rsa-sha256; t=1764086029; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=iOqMXqIE6Ft69NaUObhruCnYA0FP47y4mmda+VrNoqvbBHUeNLTCX8bhgyN5sKF65ymwzlEaD5iTTkbIu80JL6xFxpCixL3wZX1YywuieHcAWsTRTTldjRJ6d2gNF0FcXlJdr2s1A4PQVUVKRPpbDidcvf9r7ryGRU4F7p2tsVk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1764086029; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=GorzMSNVjrbqczcNmakffaTU56fCE/ERi5cBmo7oFr0=; 
+	b=bVcqDR4LLxJx/cAvCYmw4pt6HXbsSqV9Czoh+zmNxO/x6+senhVRU9Ar/iRvnz41xNTOgsR4CjgTm5qrfIyMCU0YHWSY6SKKcrr48DmL6/u74Hg3EuLR7SLxdC5K7BOVwgp8oqWZWsBvScG66lb1JgWljJhqH8PasWQU0MDhAII=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764086029;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=GorzMSNVjrbqczcNmakffaTU56fCE/ERi5cBmo7oFr0=;
+	b=Vy0u2IjW7a6kmFU6JaNOON/Nd6j4O7xE1AFbC6rmo0k0GQKSIOZ21h5Goga/a7Lm
+	Vjl9i9PCuqpbMi6y4QiJPujQWifAT0jDfZeHsXdqe8Oz/ZKyRdyYyDU2LVUS2FxHYig
+	F99eJmnR3BoWQ7zOgRzuefzV82bIGt7P4Kl1uAWA=
+Received: by mx.zohomail.com with SMTPS id 1764086026194683.2695191154689;
+	Tue, 25 Nov 2025 07:53:46 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <98227EBD-92F7-40FC-A5A4-3FF3780FB2CB@bne-home.net>
- <DEHUHPU6WQ1E.J19KGDPIHN09@nvidia.com> <CAH5fLgipNtk7=ad1dFYMDEdKL5b4LxnewU1w+WgAU0QLa-3C6w@mail.gmail.com>
- <DEHV24KY55H3.16CA6ALYGJ68A@nvidia.com>
-In-Reply-To: <DEHV24KY55H3.16CA6ALYGJ68A@nvidia.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 25 Nov 2025 15:59:32 +0100
-X-Gm-Features: AWmQ_bndHTe5QCQ088hdVQsq2DsGQ4RRnTSFaROGBSL304Eztip9Q7IRWvmenF0
-Message-ID: <CAH5fLgjUzryZubjfUPfNc_beE80iiptebAcTyFi25OzZkTKR8g@mail.gmail.com>
-Subject: Re: [PATCH 1/1] drm: nova: Align GEM memory allocation to system page size
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: bshephar@bne-home.net, dakr@kernel.org, joelagnelf@nvidia.com, 
-	jhubbard@nvidia.com, airlied@gmail.com, rust-for-linux@vger.kernel.org, 
-	nouveau@lists.freedesktop.org, brendan.shephard@gmail.com, 
-	Nouveau <nouveau-bounces@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v7 1/6] rust: add C wrappers for ww_mutex inline functions
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20251101161056.22408-2-work@onurozkan.dev>
+Date: Tue, 25 Nov 2025 12:53:29 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ lossin@kernel.org,
+ lyude@redhat.com,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ a.hindborg@kernel.org,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ peterz@infradead.org,
+ mingo@redhat.com,
+ will@kernel.org,
+ longman@redhat.com,
+ felipe_life@live.com,
+ daniel@sedlak.dev,
+ bjorn3_gh@protonmail.com,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <34A2E775-A47E-4D4E-A292-E12489F07987@collabora.com>
+References: <20251101161056.22408-1-work@onurozkan.dev>
+ <20251101161056.22408-2-work@onurozkan.dev>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, Nov 25, 2025 at 3:55=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
->
-> On Tue Nov 25, 2025 at 11:41 PM JST, Alice Ryhl wrote:
-> > On Tue, Nov 25, 2025 at 3:29=E2=80=AFPM Alexandre Courbot <acourbot@nvi=
-dia.com> wrote:
-> >>
-> >> On Fri Nov 21, 2025 at 1:04 PM JST, bshephar wrote:
-> >> > Use page::page_align for GEM object memory allocation to ensure the
-> >> > allocation is page aligned. This ensures that the allocation is page
-> >> > aligned with the system in cases where 4096 is not the default.
-> >> > For example on 16k or 64k aarch64 systems this allocation should be
-> >> > aligned accordingly.
-> >> >
-> >> > Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
-> >> > ---
-> >> >  drivers/gpu/drm/nova/gem.rs | 11 ++++++++---
-> >> >  1 file changed, 8 insertions(+), 3 deletions(-)
-> >> >
-> >> > diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.=
-rs
-> >> > index 2760ba4f3450..a07e922e25ef 100644
-> >> > --- a/drivers/gpu/drm/nova/gem.rs
-> >> > +++ b/drivers/gpu/drm/nova/gem.rs
-> >> > @@ -3,6 +3,10 @@
-> >> >  use kernel::{
-> >> >      drm,
-> >> >      drm::{gem, gem::BaseObject},
-> >> > +    page::{
-> >> > +        page_align,
-> >> > +        PAGE_SIZE, //
-> >> > +    },
-> >> >      prelude::*,
-> >> >      sync::aref::ARef,
-> >> >  };
-> >> > @@ -27,12 +31,13 @@ fn new(_dev: &NovaDevice, _size: usize) -> impl =
-PinInit<Self, Error> {
-> >> >  impl NovaObject {
-> >> >      /// Create a new DRM GEM object.
-> >> >      pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef=
-<gem::Object<Self>>> {
-> >> > -        let aligned_size =3D size.next_multiple_of(1 << 12);
-> >> > -
-> >> > -        if size =3D=3D 0 || size > aligned_size {
-> >> > +        // Check for 0 size or potential usize overflow before call=
-ing page_align
-> >> > +        if size =3D=3D 0 || size > usize::MAX - PAGE_SIZE + 1 {
-> >>
-> >> `PAGE_SIZE` here is no more correct than the hardcoded `1 << 12` - wel=
-l,
-> >> I'll admit it looks better as a placeholder. :) But the actual alignme=
-nt
-> >> will eventually be provided elsewhere.
-> >
-> > What about kernels with 16k pages?
->
-> The actual alignment should IIUC be a mix of the GPU and kernel's
-> requirements (GPU can also use a different page size). So no matter what
-> we pick right now, it won't be great but you are right that PAGE_SIZE
-> will at least accomodate the kernel.
 
-In that case, is PAGE_SIZE not the wrong constant? What's the actually
-correct constant here?
 
-> >> >              return Err(EINVAL);
-> >> >          }
-> >> >
-> >> > +        let aligned_size =3D page_align(size);
-> >>
-> >> `page_align` won't panic on overflow, but it will still return an
-> >> invalid size. This is a job for `kernel::ptr::Alignment`, which let's
-> >> you return an error when an overflow occurs.
-> >
-> > The Rust implementation of page_align() is implemented as (addr +
-> > (PAGE_SIZE - 1)) & PAGE_MASK, which definitely will panic on overflow
-> > if the appropriate config options are enabled.
->
-> That's right, I skimmed its code too fast. ^_^; All the more reason to
-> use `Alignment`.
+> On 1 Nov 2025, at 13:10, Onur =C3=96zkan <work@onurozkan.dev> wrote:
+>=20
+> Some of the kernel's `ww_mutex` functions are implemented as
+> `static inline`, so they are inaccessible from Rust as bindgen
+> can't generate code on them. This patch provides C function wrappers
+> around these inline implementations, so bindgen can see them and =
+generate
+> the corresponding Rust code.
+>=20
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> ---
+> MAINTAINERS             |  1 +
+> rust/helpers/helpers.c  |  1 +
+> rust/helpers/ww_mutex.c | 39 +++++++++++++++++++++++++++++++++++++++
+> 3 files changed, 41 insertions(+)
+> create mode 100644 rust/helpers/ww_mutex.c
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 545a4776795e..03dca09d189a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -14527,6 +14527,7 @@ F: kernel/locking/
+> F: lib/locking*.[ch]
+> F: rust/helpers/mutex.c
+> F: rust/helpers/spinlock.c
+> +F: rust/helpers/ww_mutex.c
+> F: rust/kernel/sync/lock.rs
+> F: rust/kernel/sync/lock/
+> F: rust/kernel/sync/locked_by.rs
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 551da6c9b506..58cf14d74516 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -59,4 +59,5 @@
+> #include "vmalloc.c"
+> #include "wait.c"
+> #include "workqueue.c"
+> +#include "ww_mutex.c"
+> #include "xarray.c"
+> diff --git a/rust/helpers/ww_mutex.c b/rust/helpers/ww_mutex.c
+> new file mode 100644
+> index 000000000000..61a487653394
+> --- /dev/null
+> +++ b/rust/helpers/ww_mutex.c
+> @@ -0,0 +1,39 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/ww_mutex.h>
+> +
+> +void rust_helper_ww_mutex_init(struct ww_mutex *lock, struct ww_class =
+*ww_class)
+> +{
+> + ww_mutex_init(lock, ww_class);
+> +}
+> +
+> +void rust_helper_ww_acquire_init(struct ww_acquire_ctx *ctx, struct =
+ww_class *ww_class)
+> +{
+> + ww_acquire_init(ctx, ww_class);
+> +}
+> +
+> +void rust_helper_ww_acquire_done(struct ww_acquire_ctx *ctx)
+> +{
+> + ww_acquire_done(ctx);
+> +}
+> +
+> +void rust_helper_ww_acquire_fini(struct ww_acquire_ctx *ctx)
+> +{
+> + ww_acquire_fini(ctx);
+> +}
+> +
+> +void rust_helper_ww_mutex_lock_slow(struct ww_mutex *lock, struct =
+ww_acquire_ctx *ctx)
+> +{
+> + ww_mutex_lock_slow(lock, ctx);
+> +}
+> +
+> +int rust_helper_ww_mutex_lock_slow_interruptible(struct ww_mutex =
+*lock, struct ww_acquire_ctx *ctx)
+> +{
+> + return ww_mutex_lock_slow_interruptible(lock, ctx);
+> +}
+> +
+> +bool rust_helper_ww_mutex_is_locked(struct ww_mutex *lock)
+> +{
+> + return ww_mutex_is_locked(lock);
+> +}
+> +
+> --=20
+> 2.51.2
+>=20
+>=20
 
-Alignment stores values that are powers of two, not multiples of PAGE_SIZE.
-
-Alice
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
