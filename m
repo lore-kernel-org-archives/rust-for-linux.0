@@ -1,163 +1,98 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E038531A7E7;
-	Tue, 25 Nov 2025 12:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37617283124
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 12:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764073221; cv=none; b=uEO2Zwug88gKgsCtmOP3MN0+3xWzCwSYee3z4qFD8EaQT0tNDyozfh9tDRiEB/7PD/WUI6gHl9kodHxC4N/54NP2ovHVnyZ3NP+n/jMPcgCNYLxmggDnPXVXjVEDncw4+UOr8pOBDNAzaQ4WGlYCLBVpUCXtAIbyUAbOSYxKsgw=
+	t=1764073485; cv=none; b=rE/GGez9OhrxsSkyPGHEqe7vipMr3Am7hNiYBAGjZ5U+eeXKGB9US5PW401eZu+p5+2QTlrwrEcyxeMWZdU/OlV6jxGLTvvZicfXgpE4r+mWLTJnkPdiwFtmienA8zeXljm7V7AudLxphxsBUzjz9jYwYwNevbWhTq8sYok7B6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764073221; c=relaxed/simple;
-	bh=hus1vcWHo2aKAa6LOfburropdNqWcVETtLb51VX/BLo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=E/ADnQG+9W9uoumsdxxdpbC9sJ7XTX0ExyM/Zg7rNCcHuFaC8+Go/dl1F0IgrSl5Q/K4aDKovW4cgUw+AQQh5CFPfXEzxKkse272+PNe9m6ZpW0g1dNSMUu8nxDBwOVHc74MXyA8ZYzy4wcFTpCxU9liLkbrXpqz0khfgUqnDT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=k2fdrdh8; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1764073485; c=relaxed/simple;
+	bh=AipkYeLxqOofPJKfE6kYPtZb1dNoROJ4hDU3QSocins=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=JW31JjnMPYIm9FQVxInzqOWCOgsSMbhNxXi6cSP9bKvsby88EFJ/lQpL2CdryqzVAmiEMFIWFHzIIRe9wPx8E8Y/bex/tlGuBbQUItbgPmjebobfRR4J38710tjd0rePvsOagEJoCj5u4vh+H8Y/XbVJMB1Kv006g+zLlg2phxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jQV3mhJX; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="k2fdrdh8"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dG1wv6NwJz9tjW;
-	Tue, 25 Nov 2025 13:20:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1764073215; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hLDFyfT9EndJf8AcTn74PgSt5lki+wkE1OitiOol2XM=;
-	b=k2fdrdh8Rt70JoeGm5ThW5lpNrdHDeS3XeA6UVPe00SqtN7mpRO77jCQ9pEdQC4Zvh5WPS
-	V0pOAikY9eg5LNDbgGD+wgCedIe1YJMRuHwGPUxJGlNVcTBeeiOs7yqcln7Tafq9lGdHNt
-	Yfaik6oG+vMcq5XRKkIe8WBeBv7pmsQFOQ8STV0r8FVeMzFr90O0rJnNNdT99qfbEsGrVm
-	La7vlEjh3T15etQ+j8fKpukGvQtk7+OvYEXutZZAznxKWXuWJWITaGVe5S9b2xPsAwMEAC
-	WGXGZE7eHX5v8GGV0vJu9VrHH7Uj4WwH3dCJkYMDA7MqD9kEc31ccTt7IcTtKA==
-Message-ID: <682a788c21c6513e30c5eb1020191f31f7aec612.camel@mailbox.org>
-Subject: Re: [RFC WIP 2/3] rust: sync: Add dma_fence abstractions
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: phasta@kernel.org, Daniel Almeida <daniel.almeida@collabora.com>, Alice
- Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, Christian
- =?ISO-8859-1?Q?K=F6nig?= <ckoenig.leichtzumerken@gmail.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Alexandre Courbot <acourbot@nvidia.com>, Dave
- Airlie <airlied@redhat.com>, Lyude Paul <lyude@redhat.com>, Peter Colberg
- <pcolberg@redhat.com>,  dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,  rust-for-linux@vger.kernel.org
-Date: Tue, 25 Nov 2025 13:20:03 +0100
-In-Reply-To: <20251125115829.24e6caf7@fedora>
-References: <20251118132520.266179-2-phasta@kernel.org>
-	 <20251118132520.266179-4-phasta@kernel.org>
-	 <E55D72FC-AEF6-4D2D-973F-123306E4EB4C@collabora.com>
-	 <bc4f01ec5172d29abd64429e3017cc53c0522e01.camel@mailbox.org>
-	 <20251125115829.24e6caf7@fedora>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jQV3mhJX"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-429ca3e7245so2645322f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 04:24:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764073483; x=1764678283; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UWqCGf4yniNYnv+0gGu8q0Azun9cQVkGzauYt4WzdGE=;
+        b=jQV3mhJXyfAjYDOmiKQ55x6ZFDyIyfmOnbVl8sXL0+Vi2feyCHfSOdRBIjic7KPXC2
+         1FpnpM2/B3zrpU+eDDtzCO6zoJ7vfBXa9sPF0b4nz5CF3KoDyeik86hBXbJb6p8dveJG
+         Fqifxy/IwTSfo7gOYbmTiaBedBqX2U6gzrxYGsi9smSH9YuVMbHnHlvHGOIm9NuZRfhU
+         dhQhNq3s6man2JdnRCSAbEeq7ae94B4fTPA/1OxUADt1isitEFQz19ZXsYl/qG7Jqr4O
+         6WYHOUC92YrezAv0sHYv/jqZZv/zCJaYDIIDjFpQ0BSqCPI+sxGMkehWNLOtVEAQyVFC
+         78mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764073483; x=1764678283;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UWqCGf4yniNYnv+0gGu8q0Azun9cQVkGzauYt4WzdGE=;
+        b=Fp34ypva7dZkDtmbdU6Dumr+OqWgWwOQ97qwReLVEBKTw9z76GKWVKd6eSp9449ONu
+         coZ7piBsOvCAfE9/MfscP0DsVIJGt2P3d3aTSW5wqeu55u0fLY0IhPyE/onhDowr59gV
+         iajEo9Gr7OXWsmwMGk/g5Xw2oWsuTDnSaLhuGT2K3a519N7+EL+exSdn+7DXXuEjAaMI
+         pj4LlrvCZ9DjEeyyxPbrRQeVFLuzcizHe81KOYAKkFIXlWjeDvRbRxmdqt2RZBwtPdO7
+         hxgT+N1ezILuURW6YRDv2fBLGLE6LCWnn6XyxBf57OMR4KXjkut7Xu8u7k/4awv2MafM
+         zuCg==
+X-Forwarded-Encrypted: i=1; AJvYcCWvGgq/lpGc3Zgbe5MLdPo6Fpy8Bx1P58ZMFvfosvC9w8kYEFwv5tqtTQ29y3+yPxIjvg6yFPMu8W4K0o0RVQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSsVEXdLyPT8DDRo059oZL2cx3L7DT44WAyvJR/fbZXfWS3gBm
+	45MnZJ9sWPgVlHtl2VIJQzo70x0IdNSSuDchR5oqByzFLdaOiJiC5jjZxxQzpDR1yYhnRMGErfJ
+	0y4YhdqIwqz6NjBt+Dg==
+X-Google-Smtp-Source: AGHT+IG2G97KKRtl5QTLxOePIordMgMh99WR16j540538wZ8wcvVCkUBTwb1GuKCnER5wu5hmB/vT2jtUiJeEds=
+X-Received: from wrrt17.prod.google.com ([2002:a5d:42d1:0:b0:42b:29df:cc2c])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:5d02:0:b0:42b:3339:c7ff with SMTP id ffacd0b85a97d-42cc1d19a16mr16939785f8f.43.1764073482439;
+ Tue, 25 Nov 2025 04:24:42 -0800 (PST)
+Date: Tue, 25 Nov 2025 12:24:41 +0000
+In-Reply-To: <20251123092438.182251-2-shankari.ak0208@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MBO-RS-META: erwifug3wftbwfeeisezhppdzb6oqbux
-X-MBO-RS-ID: 8dd4f54f3d9fb97adb0
+Mime-Version: 1.0
+References: <20251123092438.182251-1-shankari.ak0208@gmail.com> <20251123092438.182251-2-shankari.ak0208@gmail.com>
+Message-ID: <aSWgCT0beyqaD4jE@google.com>
+Subject: Re: [PATCH 01/10] drivers: android: binder: Update ARef imports from sync::aref
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Shankari Anand <shankari.ak0208@gmail.com>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "Rafael J . Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Igor Korotin <igor.korotin.linux@gmail.com>, 
+	Michal Wilczynski <m.wilczynski@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, linux-pwm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, 2025-11-25 at 11:58 +0100, Boris Brezillon wrote:
-> On Tue, 25 Nov 2025 10:48:12 +0100
-> Philipp Stanner <phasta@mailbox.org> wrote:
->=20
-> > > > +impl ArcBorrow<'_, DmaFenceCtx> {
-> > > > +=C2=A0=C2=A0=C2=A0 /// Create a new fence, consuming `data`.
-> > > > +=C2=A0=C2=A0=C2=A0 ///
-> > > > +=C2=A0=C2=A0=C2=A0 /// The fence will increment the refcount of th=
-e fence context associated with this
-> > > > +=C2=A0=C2=A0=C2=A0 /// [`DmaFenceCtx`].
-> > > > +=C2=A0=C2=A0=C2=A0 pub fn new_fence<T>(
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &mut self,
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data: impl PinInit<T>,
-> > > > +=C2=A0=C2=A0=C2=A0 ) -> Result<ARef<DmaFence<T>>> {
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let fctx: Arc<DmaFenceC=
-tx> =3D (*self).into();
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let seqno: u64 =3D fctx=
-.get_new_fence_seqno();
-> > > > +
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // TODO: Should we rese=
-t seqno in case of failure?=C2=A0=20
-> > >=20
-> > > I think we should go back to the old value, yeah.=C2=A0=20
-> >=20
-> > It would be trivial to implement that (just atomic.decrement()).
-> >=20
-> > The thing why the TODO even exists is that I'm a bit unsure about
-> > races. It seems we have to choose between either a gap in the seqnos or
-> > the possiblity of seqnos being out of order.
-> >=20
-> > If the user / driver creates fences with >1 thread on a fence context,
-> > I mean.
-> >=20
-> > We're pretty free in our choices, however. The shared fence-fctx
-> > spinlock will be removed anyways, so one could later easily replace the
-> > fctx atomic with a lock if that's desirable.
-> >=20
-> > I can implement a seqno-decrement for now.
->=20
-> I don't think we need to return unused seqnos in case of failure. I
-> mean, we could have something like the following pseudo-code:
->=20
-> 	atomic_cmpxchg(ctx.seqno, fence.seqno + 1, fence.seqno)
+On Sun, Nov 23, 2025 at 02:54:29PM +0530, Shankari Anand wrote:
+> Update call sites in binder files to import `ARef`
+> from `sync::aref` instead of `types`.
+> 
+> This aligns with the ongoing effort to move `ARef` and
+> `AlwaysRefCounted` to sync.
+> 
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
 
-The code above is the code that creates fence.seqno in the first place,
-obtaining the next seqno from the fctx (timeline).
+Greg, please go ahead and pick up this one, thanks!
 
->=20
-> but it wouldn't cover the case where fences are not returned in the
-> order they were assigned, and seqnos are pretty cheap anyway (if a u64
-> is enough to count things in nanoseconds for hundreds of years, they are
-> more than enough for a fence timeline on which fences are emitted at a
-> way lower rate, even in case of recurring failures). The guarantee we
-> really care about is seqnos not going backward, because that would mess
-> up with the assumption that fences on a given timeline/ctx are signalled
-> in order (this assumption is used to coalesce fences in a
-> fence_array/resv IIRC).
+Acked-by: Alice Ryhl <aliceryhl@google.com>
 
-Agreed, everything should signal according to the seqno.
-
-The question we are facing with Rust (or rather, my design here) is
-rather to what degree the infrastructure shall enforce this. As you
-know, in C there isn't even a real "fence context", it's just an
-abstract concept, represented by an integer maintained by the driver.
-
-In Rust we can model it more exactly. For instance, we could enforce
-ordered signaling by creating a function as the only way to signal
-fences:
-
-fctx.signal_all_fences_up_to_seqno(9042);
-
-which then iterates over the fences, signaling all in order.
-
-
-With some other APIs, such as jobqueue.submit_job(), which creates a
-fence with the code above, it's trivial as long as the driver only
-calls submit_job() with 1 thread.
-
-If the driver came up with the idea of using >=3D2 threads firing on
-submit_job(), then you by design have ordering issues, independently
-from the fence context using this or that atomic operation or even full
-locking.
-
-If the driver scrambles calls to submit_job() or new_fence(), then it
-can certainly happen that done_fences are signaled by JQ out of order =E2=
-=80=93
-though I'm not sure how horrible that would actually be, considering
-that this does not imply that anything gets executed before all
-dependencies are fullfiled. AFAICS it's more "nice to have / would be
-the cleanest possible design".
-
-I think I have a TODO in jobqueue where we could solve that by only
-signaling pending done_fence's once all preceding fences have been
-signaled.
-
-
-P.
