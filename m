@@ -1,407 +1,315 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A384018EFD1;
-	Tue, 25 Nov 2025 09:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764064111; cv=none; b=rE7GjL+lov1rB80F3vX+9zhK9hq2X8wyUtdlqaj5UFKpwHaZg/w/cNCyFTdogaRLxWPux2DDUZspjtoigq3gZNbGf5+cEWwxLHgJPLjK9tC7EI1Esh+T9qhDOZyHKbx9EhCHgY7JxQo2CXPNbHuNvX3mcvRSXiPGLxaUPJGryJ0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764064111; c=relaxed/simple;
-	bh=WphHttedwhbcC6KACljdlXQ9DFRsHWon2RO4cPCiXVw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tK9UsC3oE1hp039NYRJ7gWpl6qtfEbyLTD6yV43/bhkRmleTU3xO+8Qnzoe3/N0J99O+ZaUTewHP2c0WGxgPOQsGcqfE8yS4hQoLButM+EIXsiuMNi+dXqKzfHfjeeG0dgVE3WuLKSUN4Yww5wGD8fi+wLIQ5Y6cPZQNCfyc3CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=dmZkZdPg; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC47CA4E
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 10:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764064913; cv=fail; b=QGE9c9L93WGBZX6lWn2KjcCihcylKdCGP/WaxM0337JrmS/PznkpqnPEbfLnm+ihbK6L/OMjH8Hx/FgM8paWyto4ksXKsF6TLeP49GKB5qHiVKy8cgTmCXYwtcSOyahHLknBnw+Y1c2rjaswxzn1I067Rfun6uqfnS5FOHAWlNA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764064913; c=relaxed/simple;
+	bh=oLpzqtxw7ElCwDjvWDElh7F/S8pWaPWAZ8CPo4OpHrQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Zz77ZX25pSs0ZqTf61XmBJBiHvZQjX1Nb0+vNTzFkDErprYapyagXya7vnMpPdjHnPnAFpOmajZGHXDLdtnmEOh/d2oO0+BH2LB/NgOm2QS99WuJaB/JUJDUlccwd47Cwi5s9QOnv/+Yrlk4SU0bIF+ZFSQ4GlN7FaBu7dvRBvE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=YPYwIOTL; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=HdaEJBcT; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="dmZkZdPg"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4dFyYb3brpz9tG0;
-	Tue, 25 Nov 2025 10:48:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1764064099; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WphHttedwhbcC6KACljdlXQ9DFRsHWon2RO4cPCiXVw=;
-	b=dmZkZdPgaE38Zu7M3UemFAm4b0zT4dbswiJQDLr/2IofehFSmKjGbCQgsxFKDnJzRdMe0G
-	+Mm20p7/QoBrOh8FHlP0BHGNPPoP77k/5gXONhH2oRk+3GsLJgdigink7q27fMfzZHLeIc
-	bQ5tQjRXIMKS3bAFm1QwNHFdbdT5Qxi5MZTKCCQhiQBBm4uH5aA/RHfM4QMVJ1Cpwcu64H
-	Q632uSuvaqzo9Bi44FW7XTzGLVgVYv6ZLj7+OJzd72FKnmtYvlFwNu/8uVYRj9z8jd/jWH
-	8gevtfTFfxy9Zg7p577y5tVDP/enbWN31/6IhgDKzhrRK5zIXg+W/J2PG+9KMA==
-Message-ID: <bc4f01ec5172d29abd64429e3017cc53c0522e01.camel@mailbox.org>
-Subject: Re: [RFC WIP 2/3] rust: sync: Add dma_fence abstractions
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Daniel Almeida <daniel.almeida@collabora.com>, Philipp Stanner
-	 <phasta@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- Christian =?ISO-8859-1?Q?K=F6nig?= <ckoenig.leichtzumerken@gmail.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,  Alexandre Courbot
- <acourbot@nvidia.com>, Boris Brezillon <boris.brezillon@collabora.com>,
- Dave Airlie <airlied@redhat.com>, Lyude Paul <lyude@redhat.com>, Peter
- Colberg <pcolberg@redhat.com>, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Date: Tue, 25 Nov 2025 10:48:12 +0100
-In-Reply-To: <E55D72FC-AEF6-4D2D-973F-123306E4EB4C@collabora.com>
-References: <20251118132520.266179-2-phasta@kernel.org>
-	 <20251118132520.266179-4-phasta@kernel.org>
-	 <E55D72FC-AEF6-4D2D-973F-123306E4EB4C@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="YPYwIOTL";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="HdaEJBcT"
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AP9o1av2388588;
+	Tue, 25 Nov 2025 10:01:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2025-04-25; bh=CUeMbYvqm//w+UZq
+	gXSUftUXZQrMr8NfRNjaY9olmys=; b=YPYwIOTL+lwujrLKEEnYN1WNzSWL4jiw
+	JZSYShXaFftIW1JYxVOroHgC431uts7dP/+2hQPr7sGX/YPgXT5dONsmhd9fXHbW
+	OqJdmkbzkkkgALKWhfz+4LC+GOKqT3oA6hgTQRamSgFz9sI5VUep2XEmF/kvrfa3
+	bDYcaMS7XoR3nY1L9+BGuQPN6yoJwENFo7NFaGwYp4Zz8bKSZJBPcV9eh01bpNVs
+	0vWml8FRjbrpisXq8HI+pc9fJV2HdADuiax5AxthOBg7k4Wu6Vh8Wb5BvfEXUG2W
+	+Fk053dI1ss9lkqH8kAlC+TSLS43DESIRhMI693xQ2Ce51SkU2KgFw==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak7yhm7um-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Nov 2025 10:01:12 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AP9rL5V032814;
+	Tue, 25 Nov 2025 10:01:12 GMT
+Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011029.outbound.protection.outlook.com [40.107.208.29])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ak3m98bf3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Nov 2025 10:01:12 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hce2790uYlkOyMf+t/ptj+A56i/BBPCWydeiUzDLmGAsr0qI90AaQfGBkaWf6dfdlLpPHz3OZn9Dkc71UFAhBiklHx/lyNbOc1+XrjbqARWkuobPKagkj2+F9tU3x4do7TWkET3bX4aCiodBs9aA112tJ54RGv5uDr8VYCWoYyazmtRjaiaTOTuBpEIHwoRPgB1z/VvmKHy1UigBV63xMG3cZ4uysiLtTi0Cod78V24XfUnA01wtWifapz02kXBG/3+lWgEumxtZzTUcH4swPmA4i9Lu0pUn5gBY90o38YI4xNtNsqFhbQEPAY2TsYU4emBhLc0MxlAt03AGmwtDWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CUeMbYvqm//w+UZqgXSUftUXZQrMr8NfRNjaY9olmys=;
+ b=ba5SHwXqef3JNmzevXq3aOKb1RKr4O4dBv1v9jxP2AsCIrG16HdtqMp2H+XG05WDlA9vlcqWTAGGdZf3DT6OuM1UV3i4iYUOzNeQl1KAdzwZUwqiGVXVlgnIYXmC4slidcswfjFFmnvkulev8cV3iq8DXnd2Rn/GbBMYBhQzj3kmNQvyViqJA8sxZFVvR/I/JlP70nPgyDfa2R0e8JJ0UGgqVONzSiN56g9nyR8zM322stE8I/alBFivzIgipZEZXg5VpsHJU82klKcl3ZS8w9JYBbO6UuUNvwHiaN6wrlFkBVmhOKN5KgPfjgq6+z1NuGNsVuByZ0YNtKKiVslQCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CUeMbYvqm//w+UZqgXSUftUXZQrMr8NfRNjaY9olmys=;
+ b=HdaEJBcTGIDRHcx6WuGzl4ArWrCmVzN9XZ60T/ZoiyEeB9I+J4dM0BYH2/dQQjhZt73B115Z+3R6OQClavMyMqZiKbSfLV/f1xrsEEVrIz4UrHLB/5DoGHDuUW8GaxILJzRoWCKX+WsVulQDvgr5G7qaNPSOns2ejoIvCy8A+kI=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by LV8PR10MB7798.namprd10.prod.outlook.com (2603:10b6:408:1f7::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.11; Tue, 25 Nov
+ 2025 10:01:07 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
+ 10:01:07 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+        David Hildenbrand <david@redhat.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+        Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+        Kees Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Lance Yang <lance.yang@linux.dev>, Xu Xin <xu.xin16@zte.com.cn>,
+        Chengming Zhou <chengming.zhou@linux.dev>,
+        Jann Horn <jannh@google.com>, Matthew Brost <matthew.brost@intel.com>,
+        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+        Ying Huang <ying.huang@linux.alibaba.com>,
+        Alistair Popple <apopple@nvidia.com>, Pedro Falcato <pfalcato@suse.de>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        David Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>,
+        Harry Yoo <harry.yoo@oracle.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>,
+        Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+        Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <lossin@kernel.org>,
+        Andreas Hindborg <a.hindborg@kernel.org>,
+        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+        Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Subject: [PATCH v3 0/4] initial work on making VMA flags a bitmap
+Date: Tue, 25 Nov 2025 10:00:58 +0000
+Message-ID: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
+X-Mailer: git-send-email 2.51.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO6P123CA0018.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:313::11) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: 8a68871e12d96e4a55c
-X-MBO-RS-META: 9ikcbr3oinihsejoq4ajmed9p65wxnjf
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|LV8PR10MB7798:EE_
+X-MS-Office365-Filtering-Correlation-Id: 50039618-dfd2-40b2-361a-08de2c098dac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?k8/yEofihDpfYsV6Ul1Cp4J6g7FGwVDm0y4LEcxkNwNBLHbqgqC23Qa0Fgld?=
+ =?us-ascii?Q?xYmqeFDFVEsUd3SRi47yDNLJKuEoMtI5cs6yIxwCqXxFYgI2Tr99IibRz2Wd?=
+ =?us-ascii?Q?1KcKREwPeH8hD5q2S2cVM9K6xqagS23qdsneAbEnnhLQAwWgGsYKFyGiHVkE?=
+ =?us-ascii?Q?XIlEm32HIHmAhmp70AsstRQRAgOS2+/Mg6gYcC27rt4cBmXGvSe6YIBcGsj4?=
+ =?us-ascii?Q?CLBJ536p0i+krno12/BNJFDgo3ctIxQLBBOQDoyJdVfB4y3cLAJSzzXFyjTP?=
+ =?us-ascii?Q?dIwLcmv/b/Q0vZzbkcQ/DHMyNYA0sMvPTOXnEdZNAWECnSvlnEztUpD6YIhr?=
+ =?us-ascii?Q?pwSgzI/f255ExNLpVKyuk2p5oQcCjfqoWsrWTdeCRNVxF43XF7QtSQZ378Zp?=
+ =?us-ascii?Q?r5HyHCdXKiTM8uh8knkGSZRlXpSJu9/TKzqw2wwlw0VpW9HRveC3VeH9Mx98?=
+ =?us-ascii?Q?USPdRpi0osezeRL/NfLU823lUZezdF6EQQ+P4mb7key27drehp+oZhSWcLDt?=
+ =?us-ascii?Q?shueEdVnDaRi1mOlbxKCOvMBEgg/sEg57iNQhtM4qpRdrtttEYzPCcRwDpLn?=
+ =?us-ascii?Q?4G/GGO5cnO9DhBYKEAkf76ZDq8uiZ/1el3j7LWySWik3VPBDjTLmDgn2cYPd?=
+ =?us-ascii?Q?kZayUryU8/4ZLRIi+P9cWQQRA1xRiwOVmenuoFnv0OjlpiBJLw6wPC6veX2S?=
+ =?us-ascii?Q?WIA50oh70NDqhFMRTSVpenFVKhO5I4lNKOlCky7hSmTnnBzq9x2xyyqqBbf0?=
+ =?us-ascii?Q?2cgtLCoflKllMuUXqARBAS+5yS9o+K0VD6KoAnAp+3kKVMTgyQhlTT2egor0?=
+ =?us-ascii?Q?y1gUC0fGLoHqlLF2LiVpeKuPVfpTYAAg2BtdEeMu4HNxLidSgyBo9WHzw90j?=
+ =?us-ascii?Q?p0C1v5oOiXUmU8ZPMC3Qat145gXDjuXXbgY/hdfuM3NKU5WXVPYq9QrCA2l2?=
+ =?us-ascii?Q?KGQyi27pmY3cLbPbprmFvS/GL5+Ed0MGARE/GWDC04Df+O1Dn1Xtyeq2NQvS?=
+ =?us-ascii?Q?GoJYVrfcCakXsOUR05MDTXpegth1PNEJCQb9o+3L4wuBn+s4Qw97ruSrtZQL?=
+ =?us-ascii?Q?f3ngTbELuk7UQ3ZExlc+LLFsAZSSHIn+fFaAuR/a91df4dtH1VM/tCPT3s9g?=
+ =?us-ascii?Q?dkQ+p+xhygZkALiYCHh77vFjgF99URxvVv+DFt14cwZ/7Tz0z/VKsa0UiAK3?=
+ =?us-ascii?Q?5Me84sVwIgScJUAWZVPCGsN/nUyXP0xCawqoJy58a5foYfJdRutun5CCxmfu?=
+ =?us-ascii?Q?XqbjF1cmOth9CcPds7LpBniHfunZptiBWfe4Ti5X7olPotZkF93odWnn7Dta?=
+ =?us-ascii?Q?UTEv9IXWx9NU2HaTCwtnS3kMmXQwcxe1swQ2/k+rJUzgCb3lcRU/z8nBIlQQ?=
+ =?us-ascii?Q?OF8FUfXDIgACIpPp0bNBkFAdwZxF7agZUzo8DAZ9OCi9eH7iwPP+C50uWmK0?=
+ =?us-ascii?Q?zwkCDlhp6H2AAngW6DCdg+TJemttvuu6GCA6ps+LMKLM3ZXIuPfuwg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+0vfvaS7gRTvBhHmreBY6TYZWpNDed3KaBSTxn2JlP2ycexTU4d19WiHQr4V?=
+ =?us-ascii?Q?JbUocAoiYrJPeM++cGKvy6be57ECAXBLbVSPSjHAiStL+iJmTKAb8M6rNSPm?=
+ =?us-ascii?Q?MPZuTmnrzwMGjJWyy+XW8uPq5A5Bmz5blX1KGfiHGefUjnipMVoiX7rRZb1f?=
+ =?us-ascii?Q?+rEkQyw5POaUsiZAC7iCvACMzKfZRSScrinN4X/ifQSTslD8BkdC2QqmKXCr?=
+ =?us-ascii?Q?HbAaSyutWOu6Kfq03gET+eGhcHpthmyW/Nxay8zLwsstGs6CsxbMDoGjXCqb?=
+ =?us-ascii?Q?nAGv0JgrFEYG65q30vJ9yB4HwbWO7q9I5NkfqK7BiJaihLYvjEojnMQLoElg?=
+ =?us-ascii?Q?vRQph6hWdRVYXK0ESq/RWH/MVNxiSo3kqHkXmZd4n6Lv6C09Riil+9+MwPnJ?=
+ =?us-ascii?Q?TIW8ODfXpUw1/DVb6ulfvlb4cvSQDbH7KLf1fgY84SD+QA0Fv6fpX+C+rxHU?=
+ =?us-ascii?Q?92VUHy5CS5qgk+WapR4IuYtnaueqdcBaog03E+lsxna0OlLNAzqnOiUae1vi?=
+ =?us-ascii?Q?E1gcmzQF7lStbDx4PSjn74WQwHxMfkpNldpuT+G4VkNIMXWk02q/IyYx1O3p?=
+ =?us-ascii?Q?bUSwen6oaN25UPPlf3Bd6cfCu2aoCv8gMUMiUyNjlUuHcHRivtQztE37dVS8?=
+ =?us-ascii?Q?11kePrefZFwrs6BIKFSEhNcTrVTapQsGQLZaKbhLKZCCy9YegduOIW9yYjdY?=
+ =?us-ascii?Q?HcfJ/Uby6aJj6IXUKzXbGPacffajAZfUNOkpkakIM4mVS2mO4kQhToZJQETY?=
+ =?us-ascii?Q?xvTiQZhFDgweIMzOPaVcMeycQR4Rln0t97x2YrcviKJZDDTW5WeY7VXg93Ci?=
+ =?us-ascii?Q?2PEgtpr/LEpf3tkieIlcT9GStKjGESb+SCBMG8b93oZzPlsX8QCE9stQV8YM?=
+ =?us-ascii?Q?sAeTnMrPgc59jwBfu25bvJTDBS553GdEhTnjsQMjOcafkcxUNKbc5fs49jMC?=
+ =?us-ascii?Q?6veZazVAQz/Rt+ZqrpOrVNhz895kZEpmipdcsh959C2Yy5zXqY8LHEXzzFo/?=
+ =?us-ascii?Q?aQE2XWWy/Fo3hhTIw83WfneGal4Iii7bqi6TAewuwAREReoVJQFZroKvDN3H?=
+ =?us-ascii?Q?TVXVURYG/N1244vF0i9P32FD/3U4m30sRD2aZ4psj4wrIIZygWpu/ump9pNZ?=
+ =?us-ascii?Q?Zbnnd2+rF7Db8AvCohNoMHxn84Elyh2QIY8LHZ4MW8tw3A9uq35srCitk08U?=
+ =?us-ascii?Q?cavEWH0WxwnsCoN5oCrbtdssXjc0Ys7DWrZiqfabZ8DBtoDBMXNhQXZfwdS1?=
+ =?us-ascii?Q?Wmu+zsJeNxC/pdm4kwjTzKfjdDYIm1iZujZzKdE+NGA96BXXyFyLlZyjCYhT?=
+ =?us-ascii?Q?DDjYirIPYul3lBME5B1v3Bl6kUlzDQNnbWnQu1VLQvfgk01a6krSiz33x03f?=
+ =?us-ascii?Q?Usq5Zm8vJnFddvKeEqXbvvEU3eLDxlSLZFuOiywIRBqOr/byrsH9uTtBRDBb?=
+ =?us-ascii?Q?OfFNJrBM6wg1TJ+QEG2Oh9tIyBfMjckr2lBtRvQPoavWdP327pv4UUkk07gH?=
+ =?us-ascii?Q?pCCSAnmljx0yVZW6CyFQPij1c+glk1G2gZ6kOLzYNwmfKpE77rocvjJ0OVkA?=
+ =?us-ascii?Q?JfVk2V0DgyqCyhlWAPPdYtwQJmxl/+2lU/YRmk4LgQvljk1Gc8UsfId3XwKZ?=
+ =?us-ascii?Q?yA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	n7s3d6UmQjikJR6JvRQWCO/YlXvMpdw2fYX5vcnzgWqJ796y4tn4e+KZG6Cwz7eBY8Sah8SqPInNSRAcxxxyDBFIf7MlCO5EQJPz/8CYEv48RV99XD1RNWAwOB9MPTqe1xmkckreVDlhnnpZU9XqehLPjB8axPdRGEaUBcn9ac8GnTEnszgE4/wSd1eTr66BuedouduC0kqybNioDMte+Dmg5O+eROx1Q5wyNBdJRfagNHF9hUEVxY3IWvmTfAuBU6UjZf+GL0qT0YBk6muhN0jpzCKQ2nKdeOzQDPAghkKvNmzVgweBws/gafsJdVGdB4Elkxe/9O1c0hvxKw+2Xiw4xO32N4y2YhbJyFKho+yjH3Am3WYGCCIrpJz0hklOP8Gekr3X08ONreZSVB3rXQtvMB5lxKNf1CFCENsWqz/jyOed1F+IJFE1iBO+YbzirPYEmi5mNRXvMikPmtiRkLcmnoOLePeIYvwiSGp2UhtaUYUKbm+XeWFW8bMACoQ96sk+4e5qc7FVzDjVvOd1xGcxPCunGcyQayS38No/XNct8yW53CxqffHRfIXmgMwDMyLx2anzQreMgbpFc5TiynGUaIYh4QonKdohm1J2/BU=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 50039618-dfd2-40b2-361a-08de2c098dac
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 10:01:07.8163
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GPyjTn+Q9whJKyZMDR3gvKwCtX27lU/0CJiLW60TX5l4Wnan1RCO4XLaSvqX8Nn3cOEW9fFo2juJr9iCiajbe2J8QM01xpUCCXF+EtcJDrw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR10MB7798
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=890
+ malwarescore=0 bulkscore=0 phishscore=0 mlxscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2510240000 definitions=main-2511250081
+X-Authority-Analysis: v=2.4 cv=L6AQguT8 c=1 sm=1 tr=0 ts=69257e69 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=6UeiqGixMTsA:10
+ a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=nbsiaTxyJr5HvUk3ITQA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI1MDA4MSBTYWx0ZWRfXz0EZkmU4GhDj
+ 9Xpj5DvAW+GfGFG4DcVi4iCLI2tGi3KUCLsFE/5+D7YAcZFHweo5aih4kSm7lCIMHkfIE1QmSV4
+ NFkbvJJyzEqA6cIlOUCLBYFMGo4LY1ju/Wr20l9SddZwiuh4w/wdcgSQ8mz+6fwYhqTXIIdoWHz
+ sRqhCC/L/oIIju7hwMCS6k/oWAyM6YNx538mhKwO7lMoQzBELrJF4fySAzZW5rn4HG6npY+c+vx
+ ixpxbukBrZw3+AHD8YlJyzrZP9pFSEMU5uDUWomejZ9np/MPzPXdTmBjSPIC9SeIOeUNiQNJuQK
+ IXv8PPqJt5UQLAr0xiLDA7/X1CSK+MfmRRkLZ4viWJLM1+SkqzTM22SXZfi/eHu/oDUrxDS5WWW
+ 9oxoepUsgc2kGkZC90oyzpyxaOJGng==
+X-Proofpoint-ORIG-GUID: 24wWnXuATqKtLvKwgqkeFGmzw2JNj-V9
+X-Proofpoint-GUID: 24wWnXuATqKtLvKwgqkeFGmzw2JNj-V9
 
-On Mon, 2025-11-24 at 09:49 -0300, Daniel Almeida wrote:
-> Hi Phillipp,
->=20
-> >=20
+We are in the rather silly situation that we are running out of VMA flags
+as they are currently limited to a system word in size.
 
-[=E2=80=A6]
+This leads to absurd situations where we limit features to 64-bit
+architectures only because we simply do not have the ability to add a flag
+for 32-bit ones.
 
-> > +use kernel::sync::{Arc, ArcBorrow};
-> > +use kernel::c_str;
-> > +
-> > +/// Defines the callback function the dma-fence backend will call once=
- the fence gets signalled.
-> > +pub trait DmaFenceCbFunc {
-> > +=C2=A0=C2=A0=C2=A0 /// The callback function. `cb` is a container of t=
-he data which the driver passed in
-> > +=C2=A0=C2=A0=C2=A0 /// [`DmaFence::register_callback`].
-> > +=C2=A0=C2=A0=C2=A0 fn callback(cb: Pin<KBox<DmaFenceCb<Self>>>)
-> > +=C2=A0=C2=A0=C2=A0 where
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Self: Sized;
-> > +}
-> > +
-> > +/// Container for driver data which the driver gets back in its callba=
-ck once the fence gets
-> > +/// signalled.
-> > +#[pin_data]
-> > +pub struct DmaFenceCb<T: DmaFenceCbFunc> {
-> > +=C2=A0=C2=A0=C2=A0 /// C struct needed for the backend.
-> > +=C2=A0=C2=A0=C2=A0 #[pin]
-> > +=C2=A0=C2=A0=C2=A0 inner: Opaque<bindings::dma_fence_cb>,
-> > +=C2=A0=C2=A0=C2=A0 /// Driver data.
-> > +=C2=A0=C2=A0=C2=A0 #[pin]
-> > +=C2=A0=C2=A0=C2=A0 pub data: T,
->=20
-> We should probably deref to this type.
+This is very constraining and leads to hacks or, in the worst case, simply
+an inability to implement features we want for entirely arbitrary reasons.
 
-As a transparent container you mean. I can put it on the todo-list.
+This also of course gives us something of a Y2K type situation in mm where
+we might eventually exhaust all of the VMA flags even on 64-bit systems.
 
->=20
-> > +}
-> > +
-> > +impl<T: DmaFenceCbFunc + 'static> DmaFenceCb<T> {
-> >=20
+This series lays the groundwork for getting away from this limitation by
+establishing VMA flags as a bitmap whose size we can increase in future
+beyond 64 bits if required.
 
-[=E2=80=A6]
+This is necessarily a highly iterative process given the extensive use of
+VMA flags throughout the kernel, so we start by performing basic steps.
 
-> > +impl ArcBorrow<'_, DmaFenceCtx> {
-> > +=C2=A0=C2=A0=C2=A0 /// Create a new fence, consuming `data`.
-> > +=C2=A0=C2=A0=C2=A0 ///
-> > +=C2=A0=C2=A0=C2=A0 /// The fence will increment the refcount of the fe=
-nce context associated with this
-> > +=C2=A0=C2=A0=C2=A0 /// [`DmaFenceCtx`].
-> > +=C2=A0=C2=A0=C2=A0 pub fn new_fence<T>(
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &mut self,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data: impl PinInit<T>,
-> > +=C2=A0=C2=A0=C2=A0 ) -> Result<ARef<DmaFence<T>>> {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let fctx: Arc<DmaFenceCtx> =
-=3D (*self).into();
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let seqno: u64 =3D fctx.get=
-_new_fence_seqno();
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // TODO: Should we reset se=
-qno in case of failure?
->=20
-> I think we should go back to the old value, yeah.
+Firstly, we declare VMA flags by bit number rather than by value, retaining
+the VM_xxx fields but in terms of these newly introduced VMA_xxx_BIT
+fields.
 
-It would be trivial to implement that (just atomic.decrement()).
+While we are here, we use sparse annotations to ensure that, when dealing
+with VMA bit number parameters, we cannot be passed values which are not
+declared as such - providing some useful type safety.
 
-The thing why the TODO even exists is that I'm a bit unsure about
-races. It seems we have to choose between either a gap in the seqnos or
-the possiblity of seqnos being out of order.
+We then introduce an opaque VMA flag type, much like the opaque mm_struct
+flag type introduced in commit bb6525f2f8c4 ("mm: add bitmap mm->flags
+field"), which we establish in union with vma->vm_flags (but still set at
+system word size meaning there is no functional or data type size change).
 
-If the user / driver creates fences with >1 thread on a fence context,
-I mean.
+We update the vm_flags_xxx() helpers to use this new bitmap, introducing
+sensible helpers to do so.
 
-We're pretty free in our choices, however. The shared fence-fctx
-spinlock will be removed anyways, so one could later easily replace the
-fctx atomic with a lock if that's desirable.
+This series lays the foundation for further work to expand the use of
+bitmap VMA flags and eventually eliminate these arbitrary restrictions.
 
-I can implement a seqno-decrement for now.
+v3:
+* Rebased against mm-new.
+* Squashed fixups in to series.
+* Propagated tags (thanks Vlasta!).
+* After off-list discussion with Pedro Falcato, added defensive code in
+  vm_flags_reset_once() to only clear bits higher than the first sytem word,
+  retaining write-once semantics for the first system word, which is what
+  callers are relying upon.
 
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // Pass `fctx` by value so =
-that the fence will hold a reference to the DmaFenceCtx as long
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // as it lives.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DmaFence::new(fctx, data, &=
-self.lock, self.nr, seqno)
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +}
-> > +
-> >=20
+v2:
+* Corrected kdoc for vma_flag_t.
+* Introduced DECLARE_VMA_BIT() as per Jason. We can't also declare the VMA
+  flags in the enum as this breaks assumptions in the kernel, resulting in
+  errors like 'enum constant in boolean context
+  [-Werror=int-in-bool-context]'.
+* Dropped the conversion patch - To make life simpler this cycle, let's just
+  fixup the flag declarations and introduce the new field type and introduce
+  vm_flags_*() changes. We can do more later.
+* Split out VMA testing vma->__vm_flags change.
+* Fixed vma_flag_*_atomic() helper functions for sparse purposes to work
+  with vma_flag_t.
+* Fixed rust breakages as reported by Nico and help provided by Alice. For
+  now we are doing a minimal fix, we can do a more substantial one once the
+  VMA flag helper functions are introduced in an upcoming series.
+https://lore.kernel.org/all/cover.1763126447.git.lorenzo.stoakes@oracle.com>/
 
-[=E2=80=A6]
+v1:
+https://lore.kernel.org/all/cover.1761757731.git.lorenzo.stoakes@oracle.com/
 
-> > +
-> > +impl<T> DmaFence<T> {
-> > +=C2=A0=C2=A0=C2=A0 // TODO: There could be a subtle potential problem =
-here? The LLVM compiler backend can create
-> > +=C2=A0=C2=A0=C2=A0 // several versions of this constant. Their content=
- would be identical, but their addresses
-> > +=C2=A0=C2=A0=C2=A0 // different.
-> > +=C2=A0=C2=A0=C2=A0 const OPS: bindings::dma_fence_ops =3D Self::ops_cr=
-eate();
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Create an initializer for a new [`DmaFence`].
-> > +=C2=A0=C2=A0=C2=A0 fn new(
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fctx: Arc<DmaFenceCtx>,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data: impl PinInit<T>, // T=
-ODO: The driver data should implement PinInit<T, Error>
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 lock: &Opaque<bindings::spi=
-nlock_t>,
->=20
-> I wonder if we should take a Rust lock directly?
+Lorenzo Stoakes (4):
+  mm: declare VMA flags by bit
+  mm: simplify and rename mm flags function for clarity
+  tools/testing/vma: eliminate dependency on vma->__vm_flags
+  mm: introduce VMA flags bitmap type
 
-Yes, good idea; Boqun has suggested that in the first dma_fence RFC,
-too. It will be as simple as SpinLock<()>.
+ fs/proc/task_mmu.c               |   4 +-
+ include/linux/mm.h               | 401 +++++++++++++++------------
+ include/linux/mm_types.h         |  78 +++++-
+ kernel/fork.c                    |   4 +-
+ mm/khugepaged.c                  |   2 +-
+ mm/madvise.c                     |   2 +-
+ rust/bindgen_parameters          |  25 ++
+ rust/bindings/bindings_helper.h  |  25 ++
+ rust/kernel/mm/virt.rs           |   2 +-
+ tools/testing/vma/vma.c          |  20 +-
+ tools/testing/vma/vma_internal.h | 454 ++++++++++++++++++++++++++-----
+ 11 files changed, 742 insertions(+), 275 deletions(-)
 
-Will do in dma_fence RFC v2 and rebase the Jobqueue on it.
-
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 context: u64,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 seqno: u64,
-> > +=C2=A0=C2=A0=C2=A0 ) -> Result<ARef<Self>> {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let fence =3D pin_init!(Sel=
-f {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 inn=
-er <- Opaque::ffi_init(|slot: *mut bindings::dma_fence| {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 let lock_ptr =3D &raw const (*lock);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `slot` is a valid pointer to an uninitiali=
-zed `struct dma_fence`.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 // `lock_ptr` is a pointer to the spinlock of the fen=
-ce context, which is shared
->=20
-> Then we should perhaps extract that lock from the fence context itself, i=
-nstead
-> of passing it as an argument? This relationship is not enforced in the cu=
-rrent
-> code.
-
-See the series linked in the cover letter. Soon fences will all have
-their own lock, and the fctx will either just be the atomic seqno or
-have a separate lock.
-
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 // among all the fences. This can't become a UAF beca=
-use each fence takes a
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 // reference of the fence context.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 unsafe { bindings::dma_fence_init(slot, &Self::OPS, O=
-paque::cast_into(lock_ptr), context, seqno) };
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }),
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dat=
-a <- data,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sig=
-nalling: false,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sig=
-nalling_cookie: false,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fct=
-x: fctx,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 });
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let b =3D KBox::pin_init(fe=
-nce, GFP_KERNEL)?;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: We don't move th=
-e contents of `b` anywhere here. After unwrapping it, ARef will
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // take care of preventing =
-memory moves.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let rawptr =3D KBox::into_r=
-aw(unsafe { Pin::into_inner_unchecked(b) });
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `rawptr` was cre=
-ated validly above.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let aref =3D unsafe { ARef:=
-:from_raw(NonNull::new_unchecked(rawptr)) };
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ok(aref)
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Mark the beginning of a DmaFence signalling cri=
-tical section. Should be called once a fence
-> > +=C2=A0=C2=A0=C2=A0 /// gets published.
-> > +=C2=A0=C2=A0=C2=A0 ///
-> > +=C2=A0=C2=A0=C2=A0 /// The signalling critical section is marked as fi=
-nished automatically once the fence signals.
-> > +=C2=A0=C2=A0=C2=A0 pub fn begin_signalling(&mut self) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // FIXME: this needs to be =
-mutable, obviously, but we can't borrow mutably. *sigh*
->=20
-> Is AtomicBool going away? Otherwise can you expand?
-
-The AtomicBool is just used in the example demo code.
-
-The issue here is that begin_signalling() should set a "this fence is
-currently in the signalling section"-flag. So the fence needs to be
-mutable. Then, however, Rust complains because self.signalling is not
-protected by any lock.
-
-So one needs some sort of synchronization. Stuffing a DmaFence into a
-SpinLock would be overkill, however, considering that the C code
-already takes care of properly taking all locks.
-
-I've asked about that problem on Zulip once:
-https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/.=
-E2.9C.94.20ARef.20without.20locking/near/539747635
-
-Haven't looked deeper into solving it since, because those lockdep
-guards are kind of nice-to-have at the moment.
-
-I think the solution will be to make self.signalling an AtomicBool (I
-think you meant that above?)
-
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.signalling =3D true;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // TODO: Should we warn if =
-a user tries to do this several times for the same
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // fence? And should we ign=
-ore the request if the fence is already signalled?
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `dma_fence_begin=
-_signalling()` works on global lockdep data and calling it is
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // always safe.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.signalling_cookie =3D =
-unsafe { bindings::dma_fence_begin_signalling() };
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> >=20
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Signal the fence. This will invoke all register=
-ed callbacks.
-> > +=C2=A0=C2=A0=C2=A0 pub fn signal(&self) -> Result {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `self` is refcou=
-nted.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let ret =3D unsafe { bindin=
-gs::dma_fence_signal(self.as_raw()) };
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ret !=3D 0 {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
-urn Err(Error::from_errno(ret));
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->=20
-> Do you think it=E2=80=99s worth it to have a separate error type for when=
- fences
-> are already signaled? I am asking, but I am not convinced either, FYI.
-
-My tendency so far was to mostly ignore it. All users in C don't care
-whether the fence already was signaled. dma_fence just returns -EINVAL
-in that case (not a good choice anyways IMO).
-
-AFAIR I was close to not having Rust's signal() return an error at all,
-because it's kind of useless?
-
-But, correct me if I'm wrong, I think the policy with Rust abstractions
-is to map the C API as closely as possible?
-
-Anyways, I'd expect Rust drivers to ignore that error, too.
-
->=20
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if self.signalling {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // =
-SAFETY: `dma_fence_end_signalling()` works on global lockdep data. The only
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // =
-parameter is a boolean passed by value.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uns=
-afe { bindings::dma_fence_end_signalling(self.signalling_cookie) };
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ok(())
-> > +=C2=A0=C2=A0=C2=A0 }
-> > +
-> > +=C2=A0=C2=A0=C2=A0 /// Register a callback on a [`DmaFence`]. The call=
-back will be invoked in the fence's
-> > +=C2=A0=C2=A0=C2=A0 /// signalling path, i.e., critical section.
-> > +=C2=A0=C2=A0=C2=A0 ///
-> > +=C2=A0=C2=A0=C2=A0 /// Consumes `data`. `data` is passed back to the i=
-mplemented callback function when the fence
-> > +=C2=A0=C2=A0=C2=A0 /// gets signalled.
-> > +=C2=A0=C2=A0=C2=A0 pub fn register_callback<U: DmaFenceCbFunc + 'stati=
-c>(&self, data: impl PinInit<U>) -> Result {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let cb =3D DmaFenceCb::new(=
-data)?;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let ptr =3D cb.into_foreign=
-() as *mut DmaFenceCb<U>;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `ptr` was create=
-d validly directly above.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let inner_cb =3D unsafe { (=
-*ptr).inner.get() };
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `self.as_raw()` =
-is valid because `self` is refcounted, `inner_cb` was created
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // validly above and was tu=
-rned into a ForeignOwnable, so it won't be dropped. `callback`
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // has static life time.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let ret =3D unsafe {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bin=
-dings::dma_fence_add_callback(
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 self.as_raw(),
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 inner_cb,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 Some(DmaFenceCb::<U>::callback),
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 )
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ret !=3D 0 {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
-urn Err(Error::from_errno(ret));
->=20
-> Related to the question above: not being able to place a callback seems t=
-o be
-> common in the DRM scheduler (i.e.: the fence has signaled already). Hence=
- my
-> question about a separate error type, as we would have to single out
-> Err(EINVAL) often otherwise.
-
-Interesting, dma_fence_add_callback() actually returns a different
-error code, ENOENT, if the fence was signalled already, whereas
-dma_fence_signal() gives EINVAL.
-
-That's kind of not optimal. I'll consider fixing that on the C side.
-
-Regardless, what's relevant for us here is that not being able to
-register a callback is a serious failure that needs to be checked,
-whereas trying to signal an already signaled fence is valid behavior
-and no big deal.
-
-If you try to register a callback on an already signaled fence, that
-effectively means that you as the registering party need to take care
-of the callback's code being executed, since dma_fence won't do that
-anymore. The jobqueue design is catching that problem through the API
-design; you were asking about the cb-registering API in the other mail,
-I'll answer there.
-
-
-
-Thx for the review!
-
-P.
+--
+2.51.2
