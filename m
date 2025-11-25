@@ -1,62 +1,64 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3415A2D9EC9
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 09:38:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E68D2EBB9A
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 09:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764063508; cv=none; b=IZt/MlS1m1N1ZeMjbiXymQMMEtucDLKOMgWSgEFKoJ1BxdRU3gsJDFBN4fzYvuPfDiJY1LVaM9U4jTZ0+99vV38bbMShANuxjrGtTgARaH5MpGRGyPGy+0DEPDKyqSzPfA78CzQbv/oYl+hyxGy+ibuwua0kFiweVMKVGjLjx+Q=
+	t=1764063513; cv=none; b=FX33WqDCvE4RFA2foQT23yPTRilDBDsN6mv7mRglmDKNYUG0A4Ejy2GNCt/xtteWb9s9oy0K+GAiLros6UsRJ6Q6ZbmNljUXAAlMebvyHQSQLyxrSdyYDm/6nzF+44hNEFg3QFxgQk6+LcOCjb3774K0dm04zxPyjrqQB4f6g1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764063508; c=relaxed/simple;
-	bh=yCXjAp11zJU5vSMXw5sgaQ7w2NF1uM5CXUSz9VEcdeo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LcSfriGC0sQ6DrSMI7MfEgypZsPhpDvtlDM3RpZfiyRH4C3ZL8OvHfQLGVukG39CWYbrH6wFbs9YYCAD3KcdU+eyEHWC5vZXD0hjBkGKPFmQ8HywJj12FjtfG+peggd5CzPchQAC3F7q3jkfGJaqeWgnL+igDtFT9DP8oqEaI9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TKoiyEWr; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1764063513; c=relaxed/simple;
+	bh=PzyJCo0NMDC3zrGjoc3Af43gFBEssNp6mXzXvVML1Ng=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lALFo/UQ/520vHWcPb94w6DfUOPjSmbxjpjhycPO3y4C0X+yZaFfQAMDvXRFdL/atPrL8BoaI4nQZ03HCvpSe5j0xBj4xnYpdQZc3yFE/nJC0+4xcagixgY3rJx+0WQDeoXZBqG87IvTrKZ8NVEl8a5Q3U10xfsdh7BCoxAX2eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fk03Eece; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TKoiyEWr"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2980d9b7df5so65602945ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 01:38:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fk03Eece"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29586626fbeso65896405ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 01:38:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764063506; x=1764668306; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BalTlnK8CSDhMtJJ+7z2yztrhiNmZUAZ4AGy5ZJmXak=;
-        b=TKoiyEWr+UnzYmgETOc78/lBjBsc4iWzYebS4/0mOX+BEMAoDWeENbQgJR/wFqVIpP
-         HNiil0cCjVNevClccQXR2mo6TtETPQJ3XscgKYoxdbCGSaya/cjOFwWLHeiUIY9nuvID
-         5yZiLn96AMt68Bz+PSy38pJvFGwV6pklVs2BRpq+wRL9zP8wmmxmZSyMTXnqnygHE0rG
-         bZ9dghiCnzPfzP1n7CQZbPGRruQtDLGyJdjK48sL1OnhUrZUM88UfzhJzv52RgD46UHf
-         5+6MfS1Tz+TGEoP11TjWItAwHlHtghB6XsVCxAs8scHGSvOLe+J9yjm3KE48Au3W4n6T
-         B1bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764063506; x=1764668306;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1764063511; x=1764668311; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BalTlnK8CSDhMtJJ+7z2yztrhiNmZUAZ4AGy5ZJmXak=;
-        b=Qq15Re7m50YCpQfSNQ9pg1aajAGAKRIFQKlSMPI1uc1Rzzoqt3fe8aZsLItbgyNSrm
-         GZ/lsszWvi/IAj1+28B1jViNR1GwXL5Q/2fuNN0ilJtttX8MwZ36++6HmVkD1xd0hvaU
-         V4CcfYWT1F6eEpHnCEHP2uiugkv/aYx//JpynD9X5j8ydrwgAyyzbbozqb2Jd5uBtTTs
-         2mPyqOlcL1V0DsRIz8HnWiUbq33NlDj8U9C9+Zq8q/OQ4ZLnu0Mt0HSHM29RQP3bNjBk
-         3AunW8E3vJhtD2heEOHNEY19EaT94ccvjNBod36ap43gkxzKhERpqdGY6vGWRIiIsWuC
-         9pjA==
-X-Forwarded-Encrypted: i=1; AJvYcCV79Oi+MOFForu5hFclgJUUZ+p6oWcqvjp84B2YCTpM2/AG497KKMFF9btOHTOuxS2C5v+t+i460qvyySxBAw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUbZD1nz6+Opitk1KUsoS/hA3bRmFeipg0bPX001ALmPerqq25
-	uJotwwkjOPcru6u/NcSW5Hm4lUpylBpW3GA+ctBLbl1fyPii9Z6d94ow
-X-Gm-Gg: ASbGncvhiTO9fps3yv4dB5cr0o008UHezLD7SeMZcUVqQ3/2WReLGnMBmMGuF19O6NB
-	88Ziu3ARe0ujM5nMmgigkNekha1cUirPbO19EF3lADRxnFME3UI9Op/+zAgjB4RoNiz9jjLVQiq
-	D4iwclDgDM9xGotSFLI1ZKm8R4J5j5lw2R//I0RaFytLke9yF9FQv8zbyMeoKNOHDB4vbsvZIm7
-	hiXMu513LF6KtWpf4EqED35uE9SJ3xxXHOSCy7WcEPmhCjBi+9TpRD0vADf4qF8/aH5pWfENjjs
-	CebYO4fnpB526Cwdto95ZdcMLUrjrJFlLMzrFQNdrSm1bMdnGwqnLpWYO6QK/mC4cmWWsLFC8wm
-	oi+tzKg+CwNwcQ/hTtdeKUBfvTEe4Q3Q0fZzL5KGr6DmwnTBmPW61/SOeH5Ev9JK7tSvsIQPNbL
-	DGUzhuzkC3lIRkLZSmOCpF1g==
-X-Google-Smtp-Source: AGHT+IGPbN5gpEZW9nkpGciWOJBJST/YMdXV88LF/Up1YoeCG8ActmI+QPpP+pNGAQuq8TjRoZ42hw==
-X-Received: by 2002:a17:903:2f87:b0:295:269d:87d1 with SMTP id d9443c01a7336-29b6bf84213mr160826725ad.52.1764063506364;
-        Tue, 25 Nov 2025 01:38:26 -0800 (PST)
+        bh=3kvg2CC0/0PmPD+bUYi5OSZ99SQYfWFsx9xU/p31vcY=;
+        b=fk03EeceQru1mFcjw70hm5x2Mgh1gzMFAddDOqJZGZSgEx7SD7K39AroX5EGRM4HHb
+         VbXv8tpQt4724W5aXg0Hu2Qd/GEGC5YxUOPrgc+CFRa7JMLPQiYBKy8E5MPdz4Ov+yCp
+         IwEaMO85Aqtz7Lb0s9hRxsiRg02xi5jWeamDA6wm02yeHCHhGyYJZM8zKpMOKKK8RS+G
+         obhWhYMEKSSiMF3t0TAcn59H46bBWV1QVOzL1kzNMJamK1EeXYvsufB+T2l02vzRAidH
+         Sr0aQCS1JjNgeKwiv1ENh9/ICQ1iV38pydS9Szu0DoyeEf16r2cIU42+crZNebgTn8Kr
+         EKyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764063511; x=1764668311;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3kvg2CC0/0PmPD+bUYi5OSZ99SQYfWFsx9xU/p31vcY=;
+        b=j6EXzJqrapNuiZ6mphqn55i8d8/GmJyjXS5Fk4QA4Cjavg+3Wpy9CAKmvxnelhA29x
+         HV2MSY5zJKlR+2iXWlCC5ywtFRRVcLrs9LPckW/KOZMQtsGHaclza7YgfZEJnzW6ewgr
+         Shp59cgLVcmty/UrJnj+Q47MpMcfbHauzY4Xb8Yo+QcfhyyRqXX4FzW+m1woSwJHiC1C
+         Vibx7ze8U7ARzKcZHgxzfxwOXrQQpcvbSxEsK6yj/caxAseF2BD0RgZsuTLUkIp3W7Ho
+         0wcuSsJy7f52zoXy8/cYPU0trxZ6qR9s9agzdcxcavDupXoXGffHcF+C3PAVb8j1yD/9
+         KQQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXIzaE0ZogSd/INrpdfoDuP7SiD0+NMlpkU00P4G8/8yVYRBskXUBg+3ygKI0BGYszSG3sPw/jG7ZvMCg7kg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuyLQ2ixqLY2rOCVmeyvmXe1Ff/UulbCxwwy10dleVnMIyOh5I
+	ENy0BcRoHH2rNvxS7Qg5YY4L16m3NV27dgQrSvEdM1vlVw8265EJFDMF
+X-Gm-Gg: ASbGncuGFH/XNZpnmcjeQf2bD0zUdRm0iRK/sD3RNR3kheUASnL5CokEhHkgW9KhUfY
+	fmCaodrypd63D5VI6wnVZoBonZSjgUrJkQL3DmAu7EVxzrlFBNwZ7rp1X2lV6p1TlZ0BNHqYxn4
+	NJJODndvQupi9lFfiGyx4Vt8XMdffJTxToJgeXhclrmf7blYsSBMXM4lYGX2C5LndnGHaa/xBgu
+	9svCszCDyku525c6TPfo7xImGqCyMR2Tnz/07N+U6O7PKvswvAk+bQ/eJ3O92IRwNiZ8JBI1Orz
+	aBRZYXOH2vJba1zSa0wtJZ7/oqx8QaepYmjgSQCYIL0enhORxLin+/An6rQJRszcBN5mHsKTX52
+	EQWP5cvcZJfwe9CHeFur07wkH6/EW7kccyvr3Pw4GW9oktm4zUuBPrephyBNhJ5ctufTlJQz3ZE
+	3EWFsSkPRzLUtwHh/Tfz+k4QAv5ULu0F5z
+X-Google-Smtp-Source: AGHT+IGDZyxuVTVY/bzA2yeS86Pm1DIgZCtnxsJ+F9ZKGd59POWb9qoDVQdCxfHQiEF4RzOy29ipqQ==
+X-Received: by 2002:a17:903:440c:b0:297:d697:41e with SMTP id d9443c01a7336-29b6bf3b588mr174847565ad.37.1764063510703;
+        Tue, 25 Nov 2025 01:38:30 -0800 (PST)
 Received: from localhost.localdomain ([104.28.217.218])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b13de62sm162581935ad.36.2025.11.25.01.38.22
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b13de62sm162581935ad.36.2025.11.25.01.38.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 01:38:25 -0800 (PST)
+        Tue, 25 Nov 2025 01:38:30 -0800 (PST)
 From: Jesung Yang <y.j3ms.n@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>,
@@ -70,10 +72,12 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Jesung Yang <y.j3ms.n@gmail.com>
-Subject: [PATCH 1/2] rust: syn: make rust-analyzer treat `std` as a dependency
-Date: Tue, 25 Nov 2025 09:32:59 +0000
-Message-ID: <6dbdf6e1c1639ae381ca9ab7041f84728ffa2267.1764062688.git.y.j3ms.n@gmail.com>
+Subject: [PATCH 2/2] rust: quote: make rust-analyzer treat `core` and `std` as dependencies
+Date: Tue, 25 Nov 2025 09:33:00 +0000
+Message-ID: <cef76fc1105481d219953c8552eb5eb07dac707a.1764062688.git.y.j3ms.n@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <6dbdf6e1c1639ae381ca9ab7041f84728ffa2267.1764062688.git.y.j3ms.n@gmail.com>
+References: <6dbdf6e1c1639ae381ca9ab7041f84728ffa2267.1764062688.git.y.j3ms.n@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,42 +87,44 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Fix the `generate_rust_analyzer.py` script to ensure that the
-`rust-project.json` it produces includes `std` in the `deps` field for
-the `syn` crate.
+`rust-project.json` it produces includes `core` and `std` in the `deps`
+field for the `quote` crate.
 
-`syn` directly references items from `std`, so rust-analyzer should
-treat it as a dependency to provide correct IDE support.
+`quote` directly references items from both `core` and `std`, so
+rust-analyzer should treat them as dependencies to provide correct IDE
+support.
 
-For example, `syn::Punctuated` contains fields of type `Vec<..>` and
-`Option<..>`, both of which come from the standard library prelude.
-With `std` listed in the `deps` field, rust-analyzer can infer the types
-of these fields instead of showing `{unknown}`.
+For example, the `::quote::ToTokens` trait is implemented for
+`std::ffi::CString`. With `std` listed in the `deps` field,
+rust-analyzer can show the expected autocomplete for the
+`::quote::ToTokens` methods on `std::ffi::CString`.
 
-Verified the explicit uses of `std` using:
+Verified the explicit uses of `core` and `std` using:
 
-    grep -rn 'std::' rust/syn/
+    grep -rnE 'core::|std::' rust/quote/
 
-Fixes: 737401751ace ("rust: syn: enable support in kbuild")
+Fixes: 88de91cc1ce7 ("rust: quote: enable support in kbuild")
 Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
+---
+Unlike [PATCH 1/2], this change doesn't seem to offer a noticeable
+benefit at the moment, but I've included it for completeness.
 ---
  scripts/generate_rust_analyzer.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 147d0cc94068..3b169904ee41 100755
+index 3b169904ee41..b8080febc4bd 100755
 --- a/scripts/generate_rust_analyzer.py
 +++ b/scripts/generate_rust_analyzer.py
-@@ -103,7 +103,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+@@ -96,7 +96,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
      append_crate(
-         "syn",
-         srctree / "rust" / "syn" / "lib.rs",
--        ["proc_macro", "proc_macro2", "quote"],
-+        ["std", "proc_macro", "proc_macro2", "quote"],
-         cfg=crates_cfgs["syn"],
+         "quote",
+         srctree / "rust" / "quote" / "lib.rs",
+-        ["alloc", "proc_macro", "proc_macro2"],
++        ["core", "alloc", "std", "proc_macro", "proc_macro2"],
+         cfg=crates_cfgs["quote"],
      )
- 
 
-base-commit: 54e3eae855629702c566bd2e130d9f40e7f35bde
--- 
+--
 2.47.3
 
