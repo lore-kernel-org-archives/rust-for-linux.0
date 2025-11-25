@@ -1,115 +1,226 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A72330F7F3;
-	Tue, 25 Nov 2025 10:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B01315D2E
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 11:35:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764068318; cv=none; b=f82doZat+rP/NR6/1QRzxUs8rZwRrqnCV52CSJRbZ5F+j4YJmX3nouV72uU213PsP8hKX2LVtzh1slNtuIKHRbr5K7L3hHf15bH14Y8R94qAzRUlvuC7ldY/30E9LXTMH0VGshHwGH8t/jSFxK724L5vJgy3ontjpxKnKlYj/5A=
+	t=1764070533; cv=none; b=LFv8mIlErO+K5bE3MOfUpBCqM3pItCygPrTtyjoGZyN5avlQE4vnwnif7R+GGG+7evZOiCYY5aWL0tohgqcMb4i9SHOGue+1B6yenn8fLFJqA5Oj0suyIt4RJw7mLv2Mg3Eocn1oLKnQZ1Hh+x/XSxG+PGnEYyeONU1bnEiBDKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764068318; c=relaxed/simple;
-	bh=8X/qwjuwikxSf/pIi2QQ28vbvxJoO9Gtn/+n3x/9S9w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zb3jtWXrzq/4CMK1nNR9KsYQg8+XvvpzmPEh3oPqC1s1Num09jzHYVjlssSKKhU/z0FwnXddHj6kdBwfEkpx0zRsnSqY57KGm8BcQUHkqX+0uAgj2tc40yf2FtlG12t0DyEWr3vYLb8nAaOuePA+Ybl2HfiOnAdLw24lBR8TZFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=I0oFNr9c; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1764070533; c=relaxed/simple;
+	bh=oBeYUnejM45J9ek2I/sFszKCay4UVQEEKIuh9k3c15E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D3L9bebtGrhOiSorE+5maJV2dmdCRIFTXySlBCVYW3hv5iZscXP7v2WMMEW48xk+K+STYOW0Ql+mJ6tMWb987P59huNOhUL3Q9mJjV9APQTED8DDmxP921033gnyXDhlEou3xNlaWGpkX0wONJWph0vKA5bYn0jyj/kPcGO0pjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LfO26gNv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=F/i8315q; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=KZLlVqOD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7k2SPKNs; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="I0oFNr9c"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764068314;
-	bh=8X/qwjuwikxSf/pIi2QQ28vbvxJoO9Gtn/+n3x/9S9w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I0oFNr9cBrN0DjOqWXN3qSW9snKBefQxZ2mweWg0aoXfeE+yTpem633EkeaAr9by3
-	 +91+rwOQLrnzn1SM8PhKg2+tfvkQK3nGUhhO5GdcYJmUhfGTPHNd1E4d8zxplM9ief
-	 E7Lg6rO2xEibAFuNN9m0wmO5HKRgcxN7hxHZKKYhHdquwmxwusxhyN8OndzRemLf7W
-	 iyyrYnAJK8RroKoUP3SePmVRLkqqCRmLZzOWgSHJLAoNgvbFmxUzAiOC2WuWkelTtg
-	 f3jhDv1+eys5WrM6d0lcE/wbwHrlqqvJl3VcTXVqU4DkmAXB+SFRPvk0ZUPwmqp5tK
-	 rLsOiXaGCt8EQ==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LfO26gNv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="F/i8315q";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="KZLlVqOD";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7k2SPKNs"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id B42AF17E0610;
-	Tue, 25 Nov 2025 11:58:33 +0100 (CET)
-Date: Tue, 25 Nov 2025 11:58:29 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Philipp Stanner <phasta@mailbox.org>
-Cc: phasta@kernel.org, Daniel Almeida <daniel.almeida@collabora.com>, Alice
- Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, Christian
- =?UTF-8?B?S8O2bmln?= <ckoenig.leichtzumerken@gmail.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Alexandre Courbot <acourbot@nvidia.com>, Dave
- Airlie <airlied@redhat.com>, Lyude Paul <lyude@redhat.com>, Peter Colberg
- <pcolberg@redhat.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC WIP 2/3] rust: sync: Add dma_fence abstractions
-Message-ID: <20251125115829.24e6caf7@fedora>
-In-Reply-To: <bc4f01ec5172d29abd64429e3017cc53c0522e01.camel@mailbox.org>
-References: <20251118132520.266179-2-phasta@kernel.org>
-	<20251118132520.266179-4-phasta@kernel.org>
-	<E55D72FC-AEF6-4D2D-973F-123306E4EB4C@collabora.com>
-	<bc4f01ec5172d29abd64429e3017cc53c0522e01.camel@mailbox.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E17002280A;
+	Tue, 25 Nov 2025 11:35:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764070529; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+p6QrTPqrcjFGMk+Yo9ek0ZjatJ2Isxpx46M53PclhY=;
+	b=LfO26gNvL6i3mOBxxltDOa7Mm8VYGeVURJ/3KZq8KDwKBrG2ZfN+rQH/RaI2Xq6LVHf7AB
+	W+lultHVLM9DVlNhWfH57ujd9eGjL9RA1vK8QnAqLaWNi1eN1pCXLobZHm7wc9uRiRBzYf
+	gHviVPB3Xl4NSeomC/8dAFiG13X59wg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764070529;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+p6QrTPqrcjFGMk+Yo9ek0ZjatJ2Isxpx46M53PclhY=;
+	b=F/i8315q3n2XsXBKkr5MMX6YasmzsZ3i5KG+4+YC9UpV4zAoZar/3IFE8WIvIb791nmF6k
+	JYqZc95yasQHUGDQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KZLlVqOD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7k2SPKNs
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1764070528; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+p6QrTPqrcjFGMk+Yo9ek0ZjatJ2Isxpx46M53PclhY=;
+	b=KZLlVqODwAsFVuNlLAzLgXP+M5fclnuwVfNHpzlK2jerDk0ZIINfp/sEZRsrFAYJ+if39h
+	Uu3QS1WmbFQ8EYNLs+Vk9ZdEvujDOib/WdPuIoZNAf+zCjAmigdofRkFltvGqW25Rp/8mS
+	lIm39GnDc7lDOQm7F/DtoqxKcdTRqbQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1764070528;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+p6QrTPqrcjFGMk+Yo9ek0ZjatJ2Isxpx46M53PclhY=;
+	b=7k2SPKNseROSvP+kBu7RQTgUWctv/U+y1dfvjtbO+X9wX4AcP8UFci2JYR7NWpAo0zviP0
+	y3vgbbznHHpwxgDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D70063EA63;
+	Tue, 25 Nov 2025 11:35:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id yWcWMXyUJWldOwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 25 Nov 2025 11:35:24 +0000
+Date: Tue, 25 Nov 2025 11:35:23 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 4/4] mm: introduce VMA flags bitmap type
+Message-ID: <brej2b4dxfyuxojzgu2ge7ybk65t234bjstfzfo63izf2woagm@dd5vwcr3d3dg>
+References: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
+ <bab179d7b153ac12f221b7d65caac2759282cfe9.1764064557.git.lorenzo.stoakes@oracle.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bab179d7b153ac12f221b7d65caac2759282cfe9.1764064557.git.lorenzo.stoakes@oracle.com>
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: E17002280A
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,linux.dev,suse.de,redhat.com,oracle.com,suse.cz,kernel.org,google.com,suse.com,infradead.org,linaro.org,arm.com,goodmis.org,ziepe.ca,nvidia.com,linux.alibaba.com,zte.com.cn,intel.com,gmail.com,sk.com,gourry.net,surriel.com,huaweicloud.com,tencent.com,cmpxchg.org,bytedance.com,vger.kernel.org,kvack.org,garyguo.net,protonmail.com,umich.edu];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_GT_50(0.00)[70];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email]
+X-Spam-Score: -2.51
 
-On Tue, 25 Nov 2025 10:48:12 +0100
-Philipp Stanner <phasta@mailbox.org> wrote:
+On Tue, Nov 25, 2025 at 10:01:02AM +0000, Lorenzo Stoakes wrote:
+> It is useful to transition to using a bitmap for VMA flags so we can avoid
+> running out of flags, especially for 32-bit kernels which are constrained
+> to 32 flags, necessitating some features to be limited to 64-bit kernels
+> only.
+> 
+> By doing so, we remove any constraint on the number of VMA flags moving
+> forwards no matter the platform and can decide in future to extend beyond
+> 64 if required.
+> 
+> We start by declaring an opaque types, vma_flags_t (which resembles
+> mm_struct flags of type mm_flags_t), setting it to precisely the same size
+> as vm_flags_t, and place it in union with vm_flags in the VMA declaration.
+> 
+> We additionally update struct vm_area_desc equivalently placing the new
+> opaque type in union with vm_flags.
+> 
+> This change therefore does not impact the size of struct vm_area_struct or
+> struct vm_area_desc.
+> 
+> In order for the change to be iterative and to avoid impacting performance,
+> we designate VM_xxx declared bitmap flag values as those which must exist
+> in the first system word of the VMA flags bitmap.
+> 
+> We therefore declare vma_flags_clear_all(), vma_flags_overwrite_word(),
+> vma_flags_overwrite_word(), vma_flags_overwrite_word_once(),
+> vma_flags_set_word() and vma_flags_clear_word() in order to allow us to
+> update the existing vm_flags_*() functions to utilise these helpers.
+> 
+> This is a stepping stone towards converting users to the VMA flags bitmap
+> and behaves precisely as before.
+> 
+> By doing this, we can eliminate the existing private vma->__vm_flags field
+> in the vma->vm_flags union and replace it with the newly introduced opaque
+> type vma_flags, which we call flags so we refer to the new bitmap field as
+> vma->flags.
+> 
+> We update vma_flag_[test, set]_atomic() to account for the change also.
+> 
+> We adapt vm_flags_reset_once() to only clear those bits above the first
+> system word providing write-once semantics to the first system word (which
+> it is presumed the caller requires - and in all current use cases this is
+> so).
+> 
+> As we currently only specify that the VMA flags bitmap size is equal to
+> BITS_PER_LONG number of bits, this is a noop, but is defensive in
+> preparation for a future change that increases this.
+> 
+> We additionally update the VMA userland test declarations to implement the
+> same changes there.
+> 
+> Finally, we update the rust code to reference vma->vm_flags on update
+> rather than vma->__vm_flags which has been removed. This is safe for now,
+> albeit it is implicitly performing a const cast.
+> 
+> Once we introduce flag helpers we can improve this more.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-> > > +impl ArcBorrow<'_, DmaFenceCtx> {
-> > > +=C2=A0=C2=A0=C2=A0 /// Create a new fence, consuming `data`.
-> > > +=C2=A0=C2=A0=C2=A0 ///
-> > > +=C2=A0=C2=A0=C2=A0 /// The fence will increment the refcount of the =
-fence context associated with this
-> > > +=C2=A0=C2=A0=C2=A0 /// [`DmaFenceCtx`].
-> > > +=C2=A0=C2=A0=C2=A0 pub fn new_fence<T>(
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &mut self,
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data: impl PinInit<T>,
-> > > +=C2=A0=C2=A0=C2=A0 ) -> Result<ARef<DmaFence<T>>> {
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let fctx: Arc<DmaFenceCtx=
-> =3D (*self).into();
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let seqno: u64 =3D fctx.g=
-et_new_fence_seqno();
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // TODO: Should we reset =
-seqno in case of failure? =20
-> >=20
-> > I think we should go back to the old value, yeah. =20
->=20
-> It would be trivial to implement that (just atomic.decrement()).
->=20
-> The thing why the TODO even exists is that I'm a bit unsure about
-> races. It seems we have to choose between either a gap in the seqnos or
-> the possiblity of seqnos being out of order.
->=20
-> If the user / driver creates fences with >1 thread on a fence context,
-> I mean.
->=20
-> We're pretty free in our choices, however. The shared fence-fctx
-> spinlock will be removed anyways, so one could later easily replace the
-> fctx atomic with a lock if that's desirable.
->=20
-> I can implement a seqno-decrement for now.
+FWIW, I'm not a huge fan of this vma_flags vs vm_flags and hope we can
+get rid of this ASAP. But it's a necessary evil for now, anyway.
 
-I don't think we need to return unused seqnos in case of failure. I
-mean, we could have something like the following pseudo-code:
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-	atomic_cmpxchg(ctx.seqno, fence.seqno + 1, fence.seqno)
-
-but it wouldn't cover the case where fences are not returned in the
-order they were assigned, and seqnos are pretty cheap anyway (if a u64
-is enough to count things in nanoseconds for hundreds of years, they are
-more than enough for a fence timeline on which fences are emitted at a
-way lower rate, even in case of recurring failures). The guarantee we
-really care about is seqnos not going backward, because that would mess
-up with the assumption that fences on a given timeline/ctx are signalled
-in order (this assumption is used to coalesce fences in a
-fence_array/resv IIRC).
+-- 
+Pedro
