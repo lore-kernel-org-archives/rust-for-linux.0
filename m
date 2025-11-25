@@ -1,596 +1,194 @@
-Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010042.outbound.protection.outlook.com [52.101.61.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7821532D452;
-	Tue, 25 Nov 2025 19:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841D6285CA2;
+	Tue, 25 Nov 2025 19:19:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764097325; cv=pass; b=dQmNZRC+4INMaXRjrxwVVeIb4HEANGHjIFF4v23ISAyE3wqMrRQrj/F58htSoTPP5CGAMHl16hXdSBqJbEygXwHhdU7b63vs+1xAwTFv7CKiH+lwx9c9nZ4nAv1OCNHZEnM1b/MB6CT2LFA8Q+6HRFDjIQsOsvx0wzNvHtMzcRI=
+	t=1764098385; cv=fail; b=R7YrQkDFq0QBgD8Nsr9UJ5fQ1QUlLeUN6DF2sbmczm1IDYTnySyOcIaQ2DjhdUrCcJaqY1VDZBe25tfVUGRnfTmWYQx1372llypVujwe9gRMDTcsbZY26+3O37BGk2YfdVbnpLDRgZ+t9lhL8cCLtkmEfRlVQ4ljXqE4fdIn3g4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764097325; c=relaxed/simple;
-	bh=fiAgXkDFDcKwNL9kSFv2i+7f0EcFrSN1OCHHEmleX+s=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Hd4EO1mnD+gR7lPW3WYkd0hw2P1hhAvK5UUp/LAWcWz7dlkn+PeUDTjcordV63FniYeU+/jTPDzAmjH5VDRktpeZ4LWCO63L9dXBFMfAYlraRFQVvpLPs9ymHeiB+ek1LZrq3MW751zIWsbtDNuNBV+t7nbKJuWqLd+j6WhaMpw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=MelDfBI1; arc=pass smtp.client-ip=136.143.184.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1764098385; c=relaxed/simple;
+	bh=KXBPknPZPI9d3iEODWRQLDHIZ3T8vqpGqK1pyg1qOd0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dGGyOz1GZuYRYz+9cadj50qljTDdHPsmwhvjL23FYI/d0zTis9gcCzbuT5lv3mkBpCiK6vGykVRjq5SixMbNb9rU0xz2Ir2DcunxjHN3XGMJ5ce8Km14lSlDGRcioQJvA7+xblToXjlhsGqO+OQDAB7kwngNu+n2Qrolj+cN034=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EWFH5OyO; arc=fail smtp.client-ip=52.101.61.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="MelDfBI1"
-ARC-Seal: i=1; a=rsa-sha256; t=1764097286; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=iKKbGS5fQgsKo+2DqzgMbfVJ2HdUHUiLvalDtIWKTuc/kRCZMv1nf8jng8v40OwOllQEZQcx5DNOoMOt/Q/fGEFvj4TRF69HwlYzZ1SvubzEp3NElUEW4WW1qny5Dt/mw7x56laLoqv+Vf45oIIqGwiZMemYf5hnnvSXN2RVzQk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764097286; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=btEIZIXlFf8/ysKFiCXfN8o6eleF+x6XjhJNFyKEIwo=; 
-	b=TsG669TUJ+Al5XaNtI0A5Gl2amOSiDPR3Jo3D9oV/N5T6QD+1Ti4mTxLW825TRtrc9x1Yo+7hD5ENc0bcT5SXmToHfD84Y43r71Prulccpe8+fq2m67OGfbRoQEppnrDd0dYr1Vh6iBzMAyUfr2IzgS7+JICQocmyIthxk7C/Yg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764097286;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=btEIZIXlFf8/ysKFiCXfN8o6eleF+x6XjhJNFyKEIwo=;
-	b=MelDfBI1Bwnnv7+bgrzjZZxMaIQ/YzyTh/Awfm2iEslxSNGa9g+/JmPp8BDOLttD
-	u6zY61JaFf5bVV09nArCD/gthONpV/Q8oXZ0z3aatpnc9ruy1xNSgqOzMORGacMLVEq
-	YJ2yX1l1zw2APAxoI8xo+IYk/yrz45Jt6uCaXaQo=
-Received: by mx.zohomail.com with SMTPS id 1764097284205345.8687140377507;
-	Tue, 25 Nov 2025 11:01:24 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EWFH5OyO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gJWoWOg7CKC9xZP5cZEFeXgOf3GMlDiKW8gjchJPiQ8yxm9tEGgUXFTqsgu2aKnOGng5wpnyK4q+l5tiAYT3zHefFdVJrGMdzC5PPcjkGv11IGN7TYt4j/lumgd23wCMoEsNkpGd5HckTaCx+IUQ/gDwJJSJSB8iwqUqzo45B4pH7ag/wVG0TO59urEuR8t4V5ScAw8nE+hrUMHk7cIyyZIx5pGh7y4HbBTQKK1zAZc7EE4ki0Of5Ci7DhAwZcGJ1JbRTZAu30GCCvns3duT+nLl15Lse6mnWGlAW4NvetVWQJUZOHjE7nYqj28nkdhN2ppJlnS902jH2VIJW5qrbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VG8BPHCD9rb2gV2Ikj6GDzgi/3F0eBuHhtaPP5VyoLc=;
+ b=gteV2crusbm5BZL0m+A/vfvST9NA8MuzKP2rzeAGn+fdnSurfnQqmgJAF36e9P8hhsmB0SX7ipJQQbAMeajOF0xHX+gb3EphZPYC6hhfOqXej6W61qb2yjoPiW7K2l8YnD9M3BGbWZu7lSJHer3INI8U2PzHfewD8U0nwpBs0vdH7LSob98EpL1r/6lP/Uqfqm4kdj34LycqLHc4fI1xCrHKCoKiF1WhFkEvDbuLMwzZRUcAzRGJ3IvT5QUGR/DrQOuVvKoOlBuHr74vy3S0qYhnMCxTHBQSxlXxZ6rMAEnC/++eG+7cMcDiZzKPbYzjW+4gFQNUr1OE1kXMF0RQBw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VG8BPHCD9rb2gV2Ikj6GDzgi/3F0eBuHhtaPP5VyoLc=;
+ b=EWFH5OyOMWGlT8UhS4/qw4glV0AESNRdm8DqHIKqYsxN+qyo4eMMWs+6/yvjLaa79TzaS3y4vExv6mO0/9ixI+939hCHUVMcdHPYw07Cc1IAywVu7BHDurhz9qxryoC2Ew8qhzoQT4QFDQkOOQ10MPYJRqCRzPWb3PST23+mkGo7hUuB1G59GW/RDoUcpAWFfID7n9jJs+2NiBX/YOCGAq3DLM4NdepWRPxHeLlcQedfb6UZXUbkpH8tmjLvIAtkKwqOx/anQFcnMyvL5B9NCDghw+L7/iHavA+Lt+hwfFOwYQPWTiqgYkXXdvOg8CjjL5Ma+cFdjEARl6lQ6YjQcA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ IA1PR12MB6332.namprd12.prod.outlook.com (2603:10b6:208:3e2::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Tue, 25 Nov
+ 2025 19:19:36 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
+ 19:19:35 +0000
+Message-ID: <b0715438-af4f-441a-84c0-8e4abc621df6@nvidia.com>
+Date: Tue, 25 Nov 2025 11:19:25 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 3/6] rust: io: factor common I/O helpers into Io trait
+To: Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, dakr@kernel.org,
+ bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ tmgross@umich.edu, markus.probst@posteo.de, helgaas@kernel.org,
+ cjia@nvidia.com, smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com,
+ kwankhede@nvidia.com, targupta@nvidia.com, joelagnelf@nvidia.com,
+ zhiwang@kernel.org
+References: <20251119112117.116979-1-zhiw@nvidia.com>
+ <20251119112117.116979-4-zhiw@nvidia.com>
+ <DEHU2XNZ50HW.281CCT1CZ79CF@nvidia.com>
+ <DEHU7A4DWOSX.PZ4CCKLAH9QV@nvidia.com>
+ <CAH5fLgiCgMse0-L9Fb_r=3umucTqNosfO4R+1YVzOqavo07zMg@mail.gmail.com>
+ <DEHUVC6D60HX.CBJ6ZKGUMA8K@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DEHUVC6D60HX.CBJ6ZKGUMA8K@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR13CA0205.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::30) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v7 5/6] rust: ww_mutex: implement LockSet
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251124184928.30b8bbaf@nimda>
-Date: Tue, 25 Nov 2025 16:01:08 -0300
-Cc: Lyude Paul <lyude@redhat.com>,
- rust-for-linux@vger.kernel.org,
- lossin@kernel.org,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- peterz@infradead.org,
- mingo@redhat.com,
- will@kernel.org,
- longman@redhat.com,
- felipe_life@live.com,
- daniel@sedlak.dev,
- bjorn3_gh@protonmail.com,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FDF7EB09-BFCB-4E90-8D9F-8AA6E14B3D5B@collabora.com>
-References: <20251101161056.22408-1-work@onurozkan.dev>
- <20251101161056.22408-6-work@onurozkan.dev>
- <92563347110cc9fd6195ae5cb9d304fc6d480571.camel@redhat.com>
- <20251124184928.30b8bbaf@nimda>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|IA1PR12MB6332:EE_
+X-MS-Office365-Filtering-Correlation-Id: e31fb6e3-9c90-46f9-c803-08de2c5791f3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?U2hqMEFGTXp2dXIrT0RKMUl3czRsMFNsZ1gyeE1Da2dWMFVzb09zQ0NZVEJl?=
+ =?utf-8?B?MU9rZHpaQUp1UXYyM2cya2RZTXE2QnpZMWlia3VNWDFYWmRSclY0aXpsem56?=
+ =?utf-8?B?alN5aGZwZE9CTnl1dkxlNWN3Vk1vVGVtSXg3NWMwa3BQWCtnMTJ4VGM3TFM3?=
+ =?utf-8?B?VVozMzZmQ0ZQTmZJNWh4WVA1aWVhcG92UUNINTRKU1RiRTkyclByN0xhRnVm?=
+ =?utf-8?B?UVMvVW56WHJkbjFuUUtnZ3lNRWtlL3VVVVVrL2R2em1FaStjTENSZkU0b2Vu?=
+ =?utf-8?B?UmViUXNmbzdnWFJVdWpZQ29LemdYeCsrcnhTVHJuWXVSUDluTGNlVGFlMUtw?=
+ =?utf-8?B?R2FPN1YrZlVLVURrSUsvV2s4UUczY25yOUVpTE92aHBLTHhYeDcvRnJJQ2Qv?=
+ =?utf-8?B?b2cwelpKeEF0MEVkRzVSMHVzVGozYXoza0VEMUN2YXE2NkxGdUdPcktyYlZN?=
+ =?utf-8?B?elFMUVM4bnphbWlROEZ3M1psb0JqTkQvMFV5SUlpbkh2aFc1emNYWFdqUmFK?=
+ =?utf-8?B?TUxvSzBtc1lJUzdDWjBXaXBCNWd0YjEwRHhaQVR3Ym9OaTVCZWZGQVZlM0ZC?=
+ =?utf-8?B?ZzRnb1VZelJJZllpL0VkejBNdEZwWGxRZVBuanU2TzRXeWE5eHVnWlluaGc2?=
+ =?utf-8?B?UXJGWTRjbktrdEJBZ3lyQXBvajJHMFZxRWh6YkREK0toZjFOQ05PUS8xWjJa?=
+ =?utf-8?B?MUNDMlV2YXNjM3FOa2c4OXFjNXQ5RzdZdXh5Nm1qQnR2c3U4RUY5MG40Mkw2?=
+ =?utf-8?B?RXYrcDZQVkN0UWI2YmMxOGxGcjhnVzBMdVN0bmVhV0ZKYVFhWUtCaTZJbWhI?=
+ =?utf-8?B?bnlQaWptdmlKMDRvek1EZkUvWmVjZ3NTZzR2eml3bVNhM1U1WHpCMnBFZXpm?=
+ =?utf-8?B?VlJwSE1sZWlFUWk5WlFUdGI0dFVlNHpTdzh0b0ttbmVmVWRHKzJIQzFLRk51?=
+ =?utf-8?B?VnJ3WjJ6d0VmVlFnQmw5eDY5NXpZYm1ZWjRGZXhYMzM2azlGWUFycFUyRFVy?=
+ =?utf-8?B?cHd6clRxSm53WGhiZTk2bXp5Q0NjQy9MRUU5RGNvcE9kZ0gzT0FoWHpaT0l4?=
+ =?utf-8?B?SmhRajJNZVltMEZrNTI5QURtSTIwZTFneHNFY3d4WkUwSkJlNk8zUjBtejZ2?=
+ =?utf-8?B?ZGFVWnF6cmpjMDVjcWo1Y2FFZTlQQXJobE5KK09jMFlTVHdpNFBqRGZaZHdz?=
+ =?utf-8?B?Y3IwRGV3c2pFK0tjTklJU2F3UVpCd3lrWVJUT0JWN0ttd3F2blROdVM4c3I0?=
+ =?utf-8?B?Sm9zdzJFOEZ6Z2poOGhEMFYrM3pMdldsMEsyZ1lpREovTzQ5R0JJaXc2VHN6?=
+ =?utf-8?B?cHNhVkxDSnNqa1AxakRLU1EyV3NoYkZMV3NVaTYwVUNaWlM5VENIekp4MHcx?=
+ =?utf-8?B?NFZuLzVIZGpXeTZrMllJZWdGc1IvRGVyTWRIWExFcDUxVFcrT1hQMFRqZndQ?=
+ =?utf-8?B?R0ozTTBZRHJPOVFwbEhjcHRUaXlSOU5JakJ2QVhxYk5uVE9JUUhOZTkxZzF6?=
+ =?utf-8?B?YmFSNEs3Sm1oOFNGekJ5ZGxHaG1nZ3l6YW1pL2hwTThyOHJ0R2cyMHhhTXdk?=
+ =?utf-8?B?ZSthcElySlREakVLQlk1cEtFNVlQYzFxbVBJaWZ4YVd1MVgyZHBwelhiU2hJ?=
+ =?utf-8?B?TTBvRm5PZ0szemdOMWJFbzhkWjdlOFBrd0ErZVVJdWdZTWJuVVhrbEtWWHh1?=
+ =?utf-8?B?TFlWZlpYOXV1RFk0RlllZ0oybVFaR3M4VU5welR1bldSWmJZdUxZOWsyR0R6?=
+ =?utf-8?B?bjd1N3h2QXRuSHhmQi9BKy9FYkUreUdYcUdLRHFkS1lGTDc2bE1EQVFWOWtL?=
+ =?utf-8?B?VElxRkZQNVFqUDB4N1ZsRUk4cjR6OUJKMkpyaVRKMlhYL2o1OWUrYXF6N0x6?=
+ =?utf-8?B?d2UrZGtVOUlSMkYzc3BtOEdaRUtaYlVnVjRnN3djZXQ3MTRnWmQxZUlURk5j?=
+ =?utf-8?Q?jRC1UpfWoIoG3uy0qODzmCRIkTj74xYv?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZFk4V1MrV0NXYmQ0M3Z5eXRmQ0RjampSMUZjY0k3VnNMWXhxRmMybnFpZWZ2?=
+ =?utf-8?B?Sit5VzVVUEE1WjVyVGdrSjhTN3pJTU95UWpsRzl6RllRK0kxOEhtQXZUQkg0?=
+ =?utf-8?B?U0ZoMjN4YWY4RTI4a3hCQUpLZjRnMm1nN1I3ai90Y1ltVFFtVG5QZ09KYkJw?=
+ =?utf-8?B?SUNWTVlycEl1b3l3Mjl3ZTltSDlvbjhDNGNReldBTldvcXc5OVh2OHpzRFVo?=
+ =?utf-8?B?bnRRWnlsQzl6RmhvK1NwVUljOWsyRng4Z2pCN3pTQk4wY2ZTcy9jNGFUQVQ4?=
+ =?utf-8?B?emlsRG1XQmVQc1M3Rktub0pDZVdBSk4rSmNHQ1p4bGU4RFZiSXJlWlllZjZO?=
+ =?utf-8?B?dmNnNHZGQTRWQ0dUa0J2RnB0eTd4cTg5QjR2cnllcEwxYTd4MDUrcElla2VS?=
+ =?utf-8?B?OTlqNGN1M1EvcE5qZitBQ1hTZ3phQkhKQ1NVVlU5eVJieW1hZ0VWdmF1b3Bk?=
+ =?utf-8?B?NzBUMnVyQ2YzQmNiVStEa3czb2RNd3lpZ1BsR0ZBZGhpNFdSRVc4ampzc0pv?=
+ =?utf-8?B?OUFZZHNYeWdPalhtV3lOV1BLUkFLdnlUSXVWYWc3bFFKZnc5TWpxNlo0Mnd1?=
+ =?utf-8?B?MVNvYVBxeXhyWVd0NHJjMGtHWVZsbk5qRk5GU3ZMTHJkYUlSNkdSWWRsN1pW?=
+ =?utf-8?B?cFhJRzFibFg1N04wcm9acm40bGxsR0F3cUJENU04ZFhCRS9xanV2L3BlN0lq?=
+ =?utf-8?B?bVlMTWZKRUdHTHEwY2hLV2dqeU9FSm1zODlWZmVCRVNZcmNXZEJ1ekRCb3Ux?=
+ =?utf-8?B?WFB1cUpxckFjLzlQV3lBNDZKeTlId0NrRWVGRkRXcTllRFpkR0R4N1V6Nk1r?=
+ =?utf-8?B?TnJIaDhUVmNBSmJFVFg3emNoWWxncE8wZlYvNWdrT2d3c3FiVENUcDhyaXln?=
+ =?utf-8?B?VkpWUituZ0RHbmVpWlZkMzErTXJHWkduWHowOUdXQklUTGIvVVp0NUtUQkUr?=
+ =?utf-8?B?MEZienFxWXZkeVBPVm9WbzBBcmw4dUQzUHk3dDhScTR1RnUyTEJHZSt1MjZK?=
+ =?utf-8?B?KzFLdlF5c081L2s5V2NxUzJVZ29hamNyVHpJKzdZa1hDSHVwZWh3VWx1bkVY?=
+ =?utf-8?B?Nm5PaTNiVzBFdnlDMXRzdXZ5eUVoVUZlakp6YjJYRGFiTk9xWlZoTXp5ckpL?=
+ =?utf-8?B?ZHBsYkJmOVNEVTRJTjBuWkgvMEkxd0E5MmpQVzdnY3pFMmYxem1MNWp5NkRE?=
+ =?utf-8?B?V2ZaZjRhSFJ4NEVNa3BFeXpEK21ORWREQzBOTFNibVIvaTVDc0ljL01MRk9L?=
+ =?utf-8?B?dkw3ZVRRdlBvSjM5c0tTbndra0hnc1NJcXlVdkg2ekwyUytVS3loNXVmRHZZ?=
+ =?utf-8?B?TlFrblVSekJxTE5Zczg3YktNVW42SVAxall5Zi84MEJPWGIrQUU1ZmdLcDMv?=
+ =?utf-8?B?eTBTak5VcWNiUXJjSGdvcVBhQ25yUWxhTSttVTBiU2VhVnJaWHB4RHhoeWdV?=
+ =?utf-8?B?SURId3ZHKzRMaXpEOGpqU1dEMDNDdEFHdkN6dUE5cG1CcEMxSnQrSlZrV1lM?=
+ =?utf-8?B?SnY3V2hYT0FqMGlSS2w3NHFyWHlGdlhrblhXc0puYXIzT2s4TElna0JNT2JV?=
+ =?utf-8?B?WmwwYzY3aDJoNm5rWlRmY0d3ckxtbDJXTktkbEVpUGVYMkpzQks2Q2dCcHZo?=
+ =?utf-8?B?RU9zTTduWTNFSVdmTkFxbFBDWWJCYVZDU3FvaTlqaS9sV084MVpIZlBBTWNE?=
+ =?utf-8?B?S2EwdVBYanNDVXZiQklieU4wejhRL2ZXb3owenZNK0o1Nmk1VWV2M204cXg5?=
+ =?utf-8?B?Slo4S3hxN1pMT0I0OXc4NGxxejduRUVOMUlRY2ExQUJ2dDU5KzBTbDBNbkRp?=
+ =?utf-8?B?Z3FCcnZOQkdOdUQ0NWtNcVhSaEQwa1cxMk1uQXU2aU03WW9JSGNUVG9CWjdW?=
+ =?utf-8?B?YlZBYkx3dzMwbVp2RytUUkZ5Qmx0TTRKbzhubjZ2UEk4YWlwRm9SWHYzRURK?=
+ =?utf-8?B?K1ZVTWM3ZHZiUWxpQ1NEa1lhZldPVXN1bzB0c3l6NE91WnY0TUtzcFlxZTgy?=
+ =?utf-8?B?WmFRdzRBbUZHRnF4MUk2VURjaEhvNVNFcytZNjFoQ2hZSjZHNEwyRVMvNkoy?=
+ =?utf-8?B?SWw3K25oKytuNWZNZGJhY1YwZmlTcmphYWZuNWdBTUJFVjVWR1laYWUwanVM?=
+ =?utf-8?Q?KfKVBXZeySiy7CstCupEmzZPe?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e31fb6e3-9c90-46f9-c803-08de2c5791f3
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 19:19:35.7793
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: g0WfY8Ll8zEhiphWkqYnp8cOYiDT25Uo9ZNPnbirU61CYdOxiIHli6zQ9PrUKKUIR6g/BVTOggk0vWmeNjq8JQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6332
 
+On 11/25/25 6:46 AM, Alexandre Courbot wrote:
+> On Tue Nov 25, 2025 at 11:22 PM JST, Alice Ryhl wrote:
+>> On Tue, Nov 25, 2025 at 3:15 PM Alexandre Courbot <acourbot@nvidia.com> wrote:
+...
+>> If you have IoInfallible depend on IoFallible, then you can place
+>> `addr` on IoFallible.
+> 
+> Indeed. Maybe we could even make `IoInfallible` automatically
+> implemented, since it just needs to `unwrap_unchecked` the fallible
+> implementation if the range is valid.
+> 
+>> (And I still think you should rename IoFallible to Io and IoInfallible
+>> to IoKnownSize.)
+> 
+> Agreed, there are other reasons for I/O to fail than a bad index so this
+> should not be part of the name of these traits.
 
+Great! That neatly fixes the naming problem that was bothering me about
+Io*, too.
 
-> On 24 Nov 2025, at 12:49, Onur =C3=96zkan <work@onurozkan.dev> wrote:
->=20
-> On Fri, 21 Nov 2025 17:34:15 -0500
-> Lyude Paul <lyude@redhat.com> wrote:
->=20
->> On Sat, 2025-11-01 at 19:10 +0300, Onur =C3=96zkan wrote:
->>> `LockSet` is a high-level and safe API built on top of
->>> ww_mutex, provides a simple API while keeping the ww_mutex
->>> semantics.
->>>=20
->>> When `EDEADLK` is hit, it drops all held locks, resets
->>> the acquire context and retries the given (by the user)
->>> locking algorithm until it succeeds.
->>>=20
->>> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
->>> ---
->>> rust/kernel/sync/lock/ww_mutex.rs          |   6 +
->>> rust/kernel/sync/lock/ww_mutex/lock_set.rs | 245
->>> +++++++++++++++++++++ 2 files changed, 251 insertions(+)
->>> create mode 100644 rust/kernel/sync/lock/ww_mutex/lock_set.rs
->>>=20
->>> diff --git a/rust/kernel/sync/lock/ww_mutex.rs
->>> b/rust/kernel/sync/lock/ww_mutex.rs index
->>> 2a9c1c20281b..d4c3b272912d 100644 ---
->>> a/rust/kernel/sync/lock/ww_mutex.rs +++
->>> b/rust/kernel/sync/lock/ww_mutex.rs @@ -5,6 +5,10 @@
->>> //! It is designed to avoid deadlocks when locking multiple
->>> [`Mutex`]es //! that belong to the same [`Class`]. Each lock
->>> acquisition uses an //! [`AcquireCtx`] to track ordering and ensure
->>> forward progress. +//!
->>> +//! It is recommended to use [`LockSet`] as it provides safe
->>> high-level +//! interface that automatically handles deadlocks,
->>> retries and context +//! management.
->>>=20
->>> use crate::error::to_result;
->>> use crate::prelude::*;
->>> @@ -16,9 +20,11 @@
->>>=20
->>> pub use acquire_ctx::AcquireCtx;
->>> pub use class::Class;
->>> +pub use lock_set::LockSet;
->>>=20
->>> mod acquire_ctx;
->>> mod class;
->>> +mod lock_set;
->>>=20
->>> /// A wound-wait (ww) mutex that is powered with deadlock avoidance
->>> /// when acquiring multiple locks of the same [`Class`].
->>> diff --git a/rust/kernel/sync/lock/ww_mutex/lock_set.rs
->>> b/rust/kernel/sync/lock/ww_mutex/lock_set.rs new file mode 100644
->>> index 000000000000..ae234fd1e0be
->>> --- /dev/null
->>> +++ b/rust/kernel/sync/lock/ww_mutex/lock_set.rs
->>> @@ -0,0 +1,245 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +
->>> +//! Provides [`LockSet`] which automatically detects [`EDEADLK`],
->>> +//! releases all locks, resets the state and retries the user
->>> +//! supplied locking algorithm until success.
->>> +
->>> +use super::{AcquireCtx, Class, Mutex};
->>> +use crate::bindings;
->>> +use crate::prelude::*;
->>> +use crate::types::NotThreadSafe;
->>> +use core::ptr::NonNull;
->>> +
->>> +/// A tracked set of [`Mutex`] locks acquired under the same
->>> [`Class`]. +///
->>> +/// It ensures proper cleanup and retry mechanism on deadlocks and
->>> provides +/// safe access to locked data via
->>> [`LockSet::with_locked`]. +///
->>> +/// Typical usage is through [`LockSet::lock_all`], which retries a
->>> +/// user supplied locking algorithm until it succeeds without
->>> deadlock. +pub struct LockSet<'a> {
->>> +    acquire_ctx: Pin<KBox<AcquireCtx<'a>>>,
->>> +    taken: KVec<RawGuard>,
->>> +    class: &'a Class,
->>> +}
->>> +
->>> +/// Used by `LockSet` to track acquired locks.
->>> +///
->>> +/// This type is strictly crate-private and must never be exposed
->>> +/// outside this crate.
->>> +struct RawGuard {
->>> +    mutex_ptr: NonNull<bindings::ww_mutex>,
->>> +    _not_send: NotThreadSafe,
->>> +}
->>> +
->>> +impl Drop for RawGuard {
->>> +    fn drop(&mut self) {
->>> +        // SAFETY: `mutex_ptr` originates from a locked `Mutex`
->>> and remains
->>> +        // valid for the lifetime of this guard, so unlocking here
->>> is sound.
->>> +        unsafe {
->>> bindings::ww_mutex_unlock(self.mutex_ptr.as_ptr()) };
->>> +    }
->>> +}
->>> +
->>> +impl<'a> Drop for LockSet<'a> {
->>> +    fn drop(&mut self) {
->>> +        self.release_all_locks();
->>> +    }
->>> +}
->>> +
->>> +impl<'a> LockSet<'a> {
->>> +    /// Creates a new [`LockSet`] with the given class.
->>> +    ///
->>> +    /// All locks taken through this [`LockSet`] must belong to the
->>> +    /// same class.
->>> +    pub fn new(class: &'a Class) -> Result<Self> {
->>> +        Ok(Self {
->>> +            acquire_ctx: KBox::pin_init(AcquireCtx::new(class),
->>> GFP_KERNEL)?,
->>> +            taken: KVec::new(),
->>> +            class,
->>> +        })
->>> +    }
->>> +
->>> +    /// Creates a new [`LockSet`] using an existing [`AcquireCtx`]
->>> and
->>> +    /// [`Class`].
->>> +    ///
->>> +    /// # Safety
->>> +    ///
->>> +    /// The caller must ensure that `acquire_ctx` is properly
->>> initialized,
->>> +    /// holds no mutexes and that the provided `class` matches the
->>> one used
->>> +    /// to initialize the given `acquire_ctx`.
->>> +    pub unsafe fn new_with_acquire_ctx(
->>> +        acquire_ctx: Pin<KBox<AcquireCtx<'a>>>,
->>> +        class: &'a Class,
->>> +    ) -> Self {
->>> +        Self {
->>> +            acquire_ctx,
->>> +            taken: KVec::new(),
->>> +            class,
->>> +        }
->>> +    }
->>> +
->>> +    /// Attempts to lock a [`Mutex`] and records the guard.
->>> +    ///
->>> +    /// Returns [`EDEADLK`] if lock ordering would cause a
->>> deadlock.
->>> +    ///
->>> +    /// Returns [`EBUSY`] if `mutex` was locked outside of this
->>> [`LockSet`].
->>> +    ///
->>> +    /// # Safety
->>> +    ///
->>> +    /// The given `mutex` must be created with the [`Class`] that
->>> was used
->>> +    /// to initialize this [`LockSet`].
->>> +    pub unsafe fn lock<T>(&mut self, mutex: &'a Mutex<'a, T>) ->
->>> Result {
->>> +        if mutex.is_locked()
->>> +            && !self
->>> +                .taken
->>> +                .iter()
->>> +                .any(|guard| guard.mutex_ptr.as_ptr() =3D=3D
->>> mutex.inner.get())
->>> +        {
->>> +            return Err(EBUSY);
->>> +        }
->>=20
->> I don't think that we need or want to keep track of this - even for
->> checking if we've acquired a lock already. The kernel already does
->> this (from __ww_rt_mutex_lock()):
->>=20
->=20
-> The code is here self-documenting. It checks whether the mutex was
-> locked outside this context (which should never happen). This makes =
-the
-> implementation easier to understand IMO.
->=20
->> if (ww_ctx) {
->> if (unlikely(ww_ctx =3D=3D READ_ONCE(lock->ctx)))
->> return -EALREADY;
->>=20
->> /*
->> * Reset the wounded flag after a kill. No other process can
->> * race and wound us here, since they can't have a valid owner
->> * pointer if we don't have any locks held.
->> */
->> if (ww_ctx->acquired =3D=3D 0)
->> ww_ctx->wounded =3D 0;
->>=20
->> #ifdef CONFIG_DEBUG_LOCK_ALLOC
->> nest_lock =3D &ww_ctx->dep_map;
->> #endif
->> }
->>> +
->>> +        // SAFETY: By the safety contract, `mutex` belongs to the
->>> same `Class`
->>> +        // as `self.acquire_ctx` does.
->>> +        let guard =3D unsafe { self.acquire_ctx.lock(mutex)? };
->>> +
->>> +        self.taken.push(
->>> +            RawGuard {
->>> +                // SAFETY: We just locked it above so it's a valid
->>> pointer.
->>> +                mutex_ptr: unsafe {
->>> NonNull::new_unchecked(guard.mutex.inner.get()) },
->>> +                _not_send: NotThreadSafe,
->>> +            },
->>> +            GFP_KERNEL,
->>> +        )?;
->>> +
->>> +        // Avoid unlocking here; `release_all_locks` (also run by
->>> `Drop`)
->>> +        // performs the unlock for `LockSet`.
->>> +        core::mem::forget(guard);
->>> +
->>> +        Ok(())
->>> +    }
->>> +
->>> +    /// Runs `locking_algorithm` until success with retrying on
->>> deadlock.
->>> +    ///
->>> +    /// `locking_algorithm` should attempt to acquire all needed
->>> locks.
->>> +    /// If [`EDEADLK`] is detected, this function will roll back,
->>> reset
->>> +    /// the context and retry automatically.
->>> +    ///
->>> +    /// Once all locks are acquired successfully,
->>> `on_all_locks_taken` is
->>> +    /// invoked for exclusive access to the locked values.
->>> Afterwards, all
->>> +    /// locks are released.
->>> +    ///
->>> +    /// # Example
->>> +    ///
->>> +    /// ```
->>> +    /// use kernel::alloc::KBox;
->>> +    /// use kernel::c_str;
->>> +    /// use kernel::prelude::*;
->>> +    /// use kernel::sync::Arc;
->>> +    /// use kernel::sync::lock::ww_mutex::{Class, LockSet, Mutex};
->>> +    /// use pin_init::stack_pin_init;
->>> +    ///
->>> +    /// stack_pin_init!(let class =3D
->>> Class::new_wound_wait(c_str!("test")));
->>> +    ///
->>> +    /// let mutex1 =3D Arc::pin_init(Mutex::new(0, &class),
->>> GFP_KERNEL)?;
->>> +    /// let mutex2 =3D Arc::pin_init(Mutex::new(0, &class),
->>> GFP_KERNEL)?;
->>> +    /// let mut lock_set =3D KBox::pin_init(LockSet::new(&class)?,
->>> GFP_KERNEL)?;
->>> +    ///
->>> +    /// lock_set.lock_all(
->>> +    ///     // `locking_algorithm` closure
->>> +    ///     |lock_set| {
->>> +    ///         // SAFETY: Both `lock_set` and `mutex1` uses the
->>> same class.
->>> +    ///         unsafe { lock_set.lock(&mutex1)? };
->>> +    ///
->>> +    ///         // SAFETY: Both `lock_set` and `mutex2` uses the
->>> same class.
->>> +    ///         unsafe { lock_set.lock(&mutex2)? };
->>=20
->> I wonder if there's some way we can get rid of the safety contract
->> here and verify this at compile time, it would be a shame if every
->> single lock invocation needed to be unsafe.
->>=20
->=20
-> Yeah :(. We could get rid of them easily by keeping the class that was
-> passed to the constructor functions but that becomes a problem for the
-> from_raw implementations.
-
-Then let=E2=80=99s make from_raw actually unsafe and have the user pass =
-the class
-as an argument there. Would that work?
-
-That was the first thing that I noticed about this patch as well: it=E2=80=
-=99s unfortunate
-that locking is unsafe.
-
->=20
-> I think the best solution would be to expose ww_class type from
-> ww_acquire_ctx and ww_mutex unconditionally (right now it depends on
-> DEBUG_WW_MUTEXES). That way we can just access the class and verify
-> that the mutex and acquire_ctx classes match.
->=20
-> What do you think? I can submit a patch for the C-side implementation.
-> It should be straightforward and shouldn't have any runtime impact.
->=20
->>> +    ///
->>> +    ///         Ok(())
->>> +    ///     },
->>> +    ///     // `on_all_locks_taken` closure
->>> +    ///     |lock_set| {
->>> +    ///         // Safely mutate both values while holding the
->>> locks.
->>> +    ///         lock_set.with_locked(&mutex1, |v| *v +=3D 1)?;
->>> +    ///         lock_set.with_locked(&mutex2, |v| *v +=3D 1)?;
->>> +    ///
->>> +    ///         Ok(())
->>> +    ///     },
->>=20
->> I'm still pretty confident we don't need or want both closures and
->> can combine them into a single closure. And I am still pretty sure
->> the only thing that needs to be tracked here is which lock we failed
->> to acquire in the event of a deadlock.
->>=20
->> Let me see if I can do a better job of explaining why. Or, if I'm
->> actually wrong about this - maybe this will help you correct me and
->> see where I've misunderstood something :).
->>=20
->> First, let's pretend we've made a couple of changes here:
->>=20
->> * We remove `taken: KVec<RawGuard>` and replace it with `failed: *mut
->>   Mutex<=E2=80=A6>`
->> * lock_set.lock():
->>    - Now returns a `Guard` that executes `ww_mutex_unlock` in its
->> destructor
->>    - If `ww_mutex_lock` fails due to -EDEADLK, this function stores
->> a pointer to the respective mutex in `lock_set.failed`.
->>    - Before acquiring a lock, we now check:
->>       + if lock_set.failed =3D=3D lock
->>          * Return a Guard for lock without calling ww_mutex_lock()
->>          * lock_set.failed =3D null_mut();
->> * We remove `on_all_locks_taken()`, and rename `locking_algorithm` to
->>   `ww_cb`.
->> * If `ww_cb()` returns Err(EDEADLK):
->>    - if !lock_set.failed.is_null()
->>       + ww_mutex_lock(lock_set.failed) // Don't store a guard
->> * If `ww_cb()` returns Ok(=E2=80=A6):
->>    - if !lock_set.failed.is_null()
->>      // This could only happen if we hit -EDEADLK but then `ww_cb`
->> did not // re-acquire `lock_set.failed` on the next attempt
->>       + ww_mutex_unlock(lock_set.failed)
->>=20
->> With all of those changes, we can rewrite `ww_cb` to look like this:
->>=20
->> |lock_set| {
->> // SAFETY: Both `lock_set` and `mutex1` uses the same class.
->> let g1 =3D unsafe { lock_set.lock(&mutex1)? };
->>=20
->> // SAFETY: Both `lock_set` and `mutex2` uses the same class.
->> let g2 =3D unsafe { lock_set.lock(&mutex2)? };
->>=20
->> *g1 +=3D 1;
->> *g2 +=3D 2;
->>=20
->> Ok(())
->> }
->>=20
->> If we hit -EDEADLK when trying to acquire g2, this is more or less
->> what would happen:
->>=20
->> * let res =3D ww_cb():
->>    - let g1 =3D =E2=80=A6; // (we acquire g1 successfully)
->>    - let g2 =3D =E2=80=A6; // (enter .lock())
->>       + res =3D ww_mutex_lock(mutex2);
->>       + if (res) =3D=3D EDEADLK
->>          * lock_set.failed =3D mutex2;
->>       + return Err(EDEADLK);
->>    - return Err(-EDEADLK);
->>      // Exiting ww_cb(), so rust will drop all variables in this
->> scope:
->>       + ww_mutex_unlock(mutex1) // g1's Drop
->>=20
->> * // (res =3D=3D Err(EDEADLK))
->>   // All locks have been released at this point
->>=20
->> * if !lock_set.failed.is_null()
->>    - ww_mutex_lock(lock_set.failed) // Don't create a guard
->>   // We've now re-acquired the lock we dead-locked on
->>=20
->> * let res =3D ww_cb():
->>    - let g1 =3D =E2=80=A6; // (we acquire g1 successfully)
->>    - let g2 =3D =E2=80=A6; // (enter .lock())
->>       + if lock_set.failed =3D=3D lock
->>          * lock_set.failed =3D null_mut();
->>          * return Guard(=E2=80=A6); // but don't call =
-ww_mutex_lock(), it's
->> already locked
->>    - // We acquired g2 successfully!
->>    - *g1 +=3D 1;
->>    - *g2 +=3D 2;
->>=20
->> * etc=E2=80=A6
->>=20
->> The only challenge with this is that users need to write their =
-ww_cb()
->> implementations to be idempotent (so that calling it multiple times
->> isn't unexpected). But that's already what we do on the C side, and
->> is kind of what I expected we would want to do in rust anyhow.
->>=20
->> Does this make sense, or was there something I made a mistake with
->> here?
->=20
-> Thanks a lot for analyzing and providing an alternative on this!
->=20
-> However, collapsing everything into a single callback would require =
-the
-> caller to self-police various disciplines like "don't touch gN until
-> gN+1 succeeded", which is exactly the foot-gun we are trying avoid =
-with
-> 2 closures.
->=20
-> Separating acquire and use logics not just simpler API to implement =
-(and
-> provide), but also more effective compare to your example here. With
-> single closure we basically move API responsibility to the users =
-(e.g.,
-> do not run this part of the code in the loop, do not access to any =
-data
-> behind any guard if all the locks aren't taken yet, etc.), which is =
-not
-> a good thing to do, especially from the high-level API.
-
-+1
-
-IMHO, we went from an API that=E2=80=99s simple to understand, to =
-something
-much more elaborate. I=E2=80=99m not sure I see the benefit. I =
-specifically think
-that having a separate function (i.e.: closure) that says =E2=80=9Cok, =
-all locks
-are taken now=E2=80=9D is actually helpful for users.
-
-
->=20
->>=20
->>> +    /// )?;
->>> +    ///
->>> +    /// # Ok::<(), Error>(())
->>> +    /// ```
->>> +    pub fn lock_all<T, Y, Z>(
->>> +        &mut self,
->>> +        mut locking_algorithm: T,
->>> +        mut on_all_locks_taken: Y,
->>> +    ) -> Result<Z>
->>> +    where
->>> +        T: FnMut(&mut LockSet<'a>) -> Result,
->>> +        Y: FnMut(&mut LockSet<'a>) -> Result<Z>,
->>> +    {
->>> +        loop {
->>> +            match locking_algorithm(self) {
->>> +                Ok(()) =3D> {
->>> +                    // All locks in `locking_algorithm` succeeded.
->>> +                    // The user can now safely use them in
->>> `on_all_locks_taken`.
->>> +                    let res =3D on_all_locks_taken(self);
->>> +                    self.release_all_locks();
->>> +
->>> +                    return res;
->>> +                }
->>> +                Err(e) if e =3D=3D EDEADLK =3D> {
->>> +                    // Deadlock detected, retry from scratch.
->>> +                    self.cleanup_on_deadlock();
->>> +                    continue;
->>> +                }
->>> +                Err(e) =3D> {
->>> +                    self.release_all_locks();
->>> +                    return Err(e);
->>> +                }
->>> +            }
->>> +        }
->>> +    }
->>> +
->>> +    /// Executes `access` with a mutable reference to the data
->>> behind `mutex`.
->>> +    ///
->>> +    /// Fails with [`EINVAL`] if the mutex was not locked in this
->>> [`LockSet`].
->>> +    pub fn with_locked<T: Unpin, Y>(
->>> +        &mut self,
->>> +        mutex: &'a Mutex<'a, T>,
->>> +        access: impl for<'b> FnOnce(&'b mut T) -> Y,
->>> +    ) -> Result<Y> {
->>> +        let mutex_ptr =3D mutex.inner.get();
->>> +
->>> +        if self
->>> +            .taken
->>> +            .iter()
->>> +            .any(|guard| guard.mutex_ptr.as_ptr() =3D=3D mutex_ptr)
->>> +        {
->>> +            // SAFETY: We hold the lock corresponding to `mutex`,
->>> so we have
->>> +            // exclusive access to its protected data.
->>> +            let value =3D unsafe { &mut *mutex.data.get() };
->>> +            Ok(access(value))
->>> +        } else {
->>> +            // `mutex` isn't locked in this `LockSet`.
->>> +            Err(EINVAL)
->>> +        }
->>> +    }
->>> +
->>> +    /// Releases all currently held locks in this [`LockSet`].
->>> +    fn release_all_locks(&mut self) {
->>> +        // `Drop` implementation of the `RawGuard` takes care of
->>> the unlocking.
->>> +        self.taken.clear();
->>> +    }
->>> +
->>> +    /// Resets this [`LockSet`] after a deadlock detection.
->>> +    ///
->>> +    /// Drops all held locks and reinitializes the [`AcquireCtx`].
->>> +    ///
->>> +    /// It is intended to be used for internal implementation only.
->>> +    fn cleanup_on_deadlock(&mut self) {
->>> +        self.release_all_locks();
->>> +
->>> +        // SAFETY: We are passing the same `class` that was used
->>> +        // to initialize `self.acquire_ctx`.
->>> +        unsafe { self.acquire_ctx.as_mut().reinit(self.class) };
->>> +    }
->>> +}
-
+thanks,
+-- 
+John Hubbard
 
