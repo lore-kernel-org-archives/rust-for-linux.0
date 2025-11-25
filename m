@@ -1,107 +1,97 @@
-Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A4D25785E;
-	Tue, 25 Nov 2025 16:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764087291; cv=pass; b=gvFJJ0cds8UwDc+cMdLZ9LQeLarogYLwQt5XmvGN27zcIaxQQvAutXpIinhz0skK0sJuEASDNCsFRboAkZjPHRo2JnVFrhVXKZANI6oJwQPYe0ApsEFibFpiq50Ax0U5ecc67FfHQT7njbeZj4hYWKIoulIN8XxmcCCLkUOcrCM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764087291; c=relaxed/simple;
-	bh=gRln37n3/AagnqGZXq/2X6yIPYG3Lnf4BhcgCAy6Fi8=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Oo1Tck6y7U2dPD0GA3pMPi2G5my6z2g7DvoIC0nj067UMhB3x6+8ZBAbRLF843qZP6ZNAkcxerlADgBDDy6/pfYPEJO2fIHGZIBYNHh+2CwEXBXNXJtc+LG4BvUTsJ8ysper3JENqInLJMaQ9zFJlECnPsacP+yLVOkNNIZlkIY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Y4PKfTim; arc=pass smtp.client-ip=136.143.184.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7862621E0AF;
+	Tue, 25 Nov 2025 17:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764091288; cv=none; b=NbpuXN0h7dGGuPu6Cv+hyg3O5s5t3tIzwRwVQTRy/Bs9b5kklIBSYa1HoPt6A/yiUI9BuFROFvAaGRJuOTAaxIJYfj8UllUDmRzpSDu52csxsiEpcVR/sugA639Ssh1kfOyMoMgjBvTH3/aF/3baGi09ChLog52xvs2jWTWXVzc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764091288; c=relaxed/simple;
+	bh=5V9QV7SiBzMU5nx3Mn2uqFLHCyID9A3N1YOoa6yxqY4=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=O4d5Qyn4DibshRfrK3pvDt0ciTQHiT+wbKg9Ugt6PWw/u34R9z/mBOfVVKXNhTlRD/v2Itp+2iBQ6hsct+XNxdgdJZjt1rmSaLH8CSc+TnXqTxHMfNB8PST37hkLNp4MBt7mdakvKLJwKtWfGlNGkziVdxkwn+nUzeO4vZUhCOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=f0+AP+ps; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Y4PKfTim"
-ARC-Seal: i=1; a=rsa-sha256; t=1764087258; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=YpjRY0heTUkqPbjwsSz8z2nDiZv35fXJYnWnA3/gHNWKetxwYrjwr20wqukDv4pipWheDIVmPQ3VjwwX7nXyRqFi332oaJCleloKBJQtBFtcq3ZhQNJxsT3Hh3geEDVv0THH2upTnoDTeZZMw3qK0QMM7RCDyJbsWXIepVc8Nms=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764087258; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=xg0TNHF1us/4uAXQFbh+hnYRBICTOUNYFUqxRCTZo/0=; 
-	b=gzHvLZ2H8HYqeYE0ie6I9CO0QDiWAkvWgRugW8z7iFBcv+BfYr2x4erPl3GlfvCpOiTVSavvt1lsK2LpPGDq1zRO40IFgbyzX7dF8jHKJJ7AAIfHymCyraAzelLBNtOqYDpgWj1pIpMZdZ0S1kzCcwNes7VMLeH0yui2A907OLw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764087258;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=xg0TNHF1us/4uAXQFbh+hnYRBICTOUNYFUqxRCTZo/0=;
-	b=Y4PKfTimhfsOS3KtSoZiO8MNQrh+YdVWRxPLGYJiak6ujTJ072B6QuxSlVdFnlNW
-	rkNP1MduGe7bISISWpPLbLzFZzGxKRdnxrnCzDpLjs019RFaVPUpCUOZ26jflFZTsap
-	+0Url4wiNbkRoAoZ70mrxAz10wdjAsd9UUikVJHo=
-Received: by mx.zohomail.com with SMTPS id 1764087253867906.1545255052264;
-	Tue, 25 Nov 2025 08:14:13 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="f0+AP+ps"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F6FC4CEF1;
+	Tue, 25 Nov 2025 17:21:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1764091288;
+	bh=5V9QV7SiBzMU5nx3Mn2uqFLHCyID9A3N1YOoa6yxqY4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=f0+AP+psoLoGzXaq00ep6BDykJP5aOdtZfoQZ4KAyuamvgXUZO/UGmEJZu88bAQIq
+	 Ph+B0PjesF0Ac7gLWJ9KCv+Omr0a+hSLWs0rbzhWkIUTz4dhCv1QM8hBT4VZXdt0Tw
+	 qAckYaIks0SEUeBlWRsbMccDVtm+g6LfRTNVGc0U=
+Date: Tue, 25 Nov 2025 09:21:25 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@redhat.com>, "Liam R . Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
+ <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Peter Xu
+ <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra
+ <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
+ <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel
+ Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Kees
+ Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jason
+ Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Leon
+ Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn
+ <jannh@google.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+ <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, Pedro
+ Falcato <pfalcato@suse.de>, Shakeel Butt <shakeel.butt@linux.dev>, David
+ Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
+ <harry.yoo@oracle.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song
+ <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He
+ <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] initial work on making VMA flags a bitmap
+Message-Id: <20251125092125.3e425e05382642ddff2db496@linux-foundation.org>
+In-Reply-To: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
+References: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v7 3/6] rust: error: add EDEADLK
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251101161056.22408-4-work@onurozkan.dev>
-Date: Tue, 25 Nov 2025 13:13:58 -0300
-Cc: rust-for-linux@vger.kernel.org,
- lossin@kernel.org,
- lyude@redhat.com,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- peterz@infradead.org,
- mingo@redhat.com,
- will@kernel.org,
- longman@redhat.com,
- felipe_life@live.com,
- daniel@sedlak.dev,
- bjorn3_gh@protonmail.com,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A7DC9B39-9BA2-4EBA-B6A3-6153C2942E83@collabora.com>
-References: <20251101161056.22408-1-work@onurozkan.dev>
- <20251101161056.22408-4-work@onurozkan.dev>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Tue, 25 Nov 2025 10:00:58 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
+> We are in the rather silly situation that we are running out of VMA flags
+> as they are currently limited to a system word in size.
+> 
+> This leads to absurd situations where we limit features to 64-bit
+> architectures only because we simply do not have the ability to add a flag
+> for 32-bit ones.
+> 
+> This is very constraining and leads to hacks or, in the worst case, simply
+> an inability to implement features we want for entirely arbitrary reasons.
+> 
+> This also of course gives us something of a Y2K type situation in mm where
+> we might eventually exhaust all of the VMA flags even on 64-bit systems.
+> 
+> This series lays the groundwork for getting away from this limitation by
+> establishing VMA flags as a bitmap whose size we can increase in future
+> beyond 64 bits if required.
 
-> On 1 Nov 2025, at 13:10, Onur =C3=96zkan <work@onurozkan.dev> wrote:
->=20
-> This is needed for the ww_mutex implementation so
-> we can handle EDEADLK on lock attempts.
->=20
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> ---
-> rust/kernel/error.rs | 1 +
-> 1 file changed, 1 insertion(+)
->=20
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 1c0e0e241daa..9bf1072cfe19 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -66,6 +66,7 @@ macro_rules! declare_err {
->     declare_err!(EPIPE, "Broken pipe.");
->     declare_err!(EDOM, "Math argument out of domain of func.");
->     declare_err!(ERANGE, "Math result not representable.");
-> +    declare_err!(EDEADLK, "Resource deadlock avoided.");
->     declare_err!(EOVERFLOW, "Value too large for defined data type.");
->     declare_err!(ETIMEDOUT, "Connection timed out.");
->     declare_err!(ERESTARTSYS, "Restart the system call.");
-> --=20
-> 2.51.2
->=20
->=20
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+All added to mm-unstable, thanks.
