@@ -1,70 +1,70 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C42821E097
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 10:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5CC21E097
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 10:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764064915; cv=fail; b=owWwIBnq+kaXVjFISPxRUFajfyLxS/61BnO1lvUlMPoEQBvVXftVgJPz4Qh+24QMwI/KNqueGBo464efHszjAHASqz05iSBepz1qZDxXLhBuEDjdLFeWmhq6Mu4SYtBwcRVQnoYDREq3U8/Jdfzg5WG+1sRjUY6fqYzXXUeLAUY=
+	t=1764064920; cv=fail; b=E4KuKXJ5qcNA2sidkknVIpwwdJXSD1fdqWnx4HJ+3QS9heZIjbjRkrseFNp1/efu06EPew1JkG+4NYRNN3ASD6N4jYIM2FGEwjrBYgTREK6W3PeJxzl3ZPYJ5BK1dBt5CYa9wZmVnNN/nITNm4eEoTfhLBDTryrWCdKqyWKbprI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764064915; c=relaxed/simple;
-	bh=2My3DPGF5fM1Q7iXDCAIQpCSMlZRnfpyqUYfRer6a0g=;
+	s=arc-20240116; t=1764064920; c=relaxed/simple;
+	bh=T0x6WU5C6Yr+ylhhUE60oncaT8QNPpJj7wNFQvqjFjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=E2GIJH/KIXF2GH44NXljeFps11+KeL2Q1Ugz0INxM78cbkwJ6N9OVJ9myg3Y7N7grpGeHtJz/ycHSpccvy3QUBEPZkZ56+ms/3jBl+G9xMCjfpNwWGTs238RzfFkjmYZ1orfTjy4czojHVccuXG8EPkSHS1dPcQDteyGckUqxmw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=GPfSCNpl; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=nY5QtksC; arc=fail smtp.client-ip=205.220.165.32
+	 Content-Type:MIME-Version; b=IvkYBbYVbZakxmfzVZBd3pcegkPeoB+L7dFk/M/TH/hUm7Qk0JlRa22Meej3KQIqJlfTg3gzEPCdIZIg7agR+Uj0fnQd8BOBRKuNroyhtzh7eMYbam/ZXC2rYC3UVVtl4vQ1n1YoqXxNbxSlVVn6KdIkKShTu4pc582UbtvvUMc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=MrXy7pWY; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=i/eObct0; arc=fail smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="GPfSCNpl";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="nY5QtksC"
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AP9nQrK2342888;
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="MrXy7pWY";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="i/eObct0"
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AP9cdCL2394716;
 	Tue, 25 Nov 2025 10:01:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=3JojMj4eIg03eZAp6uYTLGfxl/uRgndDZDvdJ76yikM=; b=
-	GPfSCNplJYQHyolsP4IOiiKVMHhSbUa4Z+wIC2/1WAedujc55e9NNYRA0OBDm4WY
-	xkt/xv//WjRPseqY4x8OljR7GGqevHAVrofftgLJgz3fUdkG/ghkjUt9MG4jYPaJ
-	rAu94WBIoC1t3BX60Mw51/Hivghg6PK2CZNCQlrZoNKOMHUR6qyLKHP/NmPF/sXI
-	9v/FtwDAjdFfrOsqarS/s98ZM+J9OccDpskKnZrtO2wYw4uh6oFqokGnnKHyC8Z5
-	tb9h0ikY6shVEA+rnMaf0cPllwojBTX/rPy3dOyJy8plM6d4YR+ukbJvSnRkcibI
-	47l0GwVBo/bK6RqOrrWsaA==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak8fkc82p-1
+	corp-2025-04-25; bh=Kja+VgMl2IPCyDwu6pMD/RT4rlEsjtqZ+0wAo/kG/Mw=; b=
+	MrXy7pWYMV9S9v/Wj14IXOncq4V1Th2o9h1Akncz6F20y7SPpX2CV3ic34xTyMKB
+	yLZSPpjLRd1L0rpL33qzsJjYsWzXlKIWGiXhVqEBeU3fjDTyd6fHzeZysR9qgWy4
+	UTYFXQee/AeAmQt6KJcpcUPBTGOykooXCWM7uxnVW1WdFIt/P2b94Gmatx5Sgrvb
+	pR+e/CKdKcXYa9XxA0rnAxl5dVmmlumFpWSce4yCkwoXoDAQYXaPkr12b2GIXCa8
+	/eN3nEZmwRbNO+5/FvSsmPBCEgLE/s7folhtE014y72i1HSeNL7mMRbXMHlqFSy3
+	NKJ3/JzVtyU28bv08q3lng==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4ak811maj0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Nov 2025 10:01:21 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AP9rL5X032814;
-	Tue, 25 Nov 2025 10:01:14 GMT
-Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011029.outbound.protection.outlook.com [40.107.208.29])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4ak3m98bf3-2
+	Tue, 25 Nov 2025 10:01:22 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AP9tKNP022443;
+	Tue, 25 Nov 2025 10:01:21 GMT
+Received: from ph0pr06cu001.outbound.protection.outlook.com (mail-westus3azon11011021.outbound.protection.outlook.com [40.107.208.21])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ak3mk9r4r-3
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Nov 2025 10:01:13 +0000
+	Tue, 25 Nov 2025 10:01:21 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IYNClRZkI2Vrk3fp4byYm0IaV7Is58UdcI8hNlhmSoJDB8TVMLLCJXqoXexm+uk0HrSu+X0Ozdv2UwkUCi8PSWG6T4YG2IXKlZkDOk20drTxygcTRN8po22Ueo28OX9xkcD9f78zJvVXMCIYb9xYBc8KvIPEnAwZ7iO94+2eTqRQdDQT0zp12jwW0djS34z/lmd1bP+sK/VGrFvLQflDRYoHtXQfDKCRx2MlrkBV4VSSFljTFUcegNBLXXdzFIen5vG0oKSOk4QGNLHzHbpDA1V0L1IdkCh40JWKbPemsQYdUj26z6LNlMPhMnWlIUukFEpzDFmu6DPspnKMiJ3irQ==
+ b=zQSzjMOYOcAeLZSv9Dvm3lNzQ+oUsiuoGfOd9UNjBeHZyCg1D5wRfiPu/7rSYWBK5S468eEyFXNNHtio1jSLUZ9de17NG+H3kFw6rmKD9oBUF1rUIsb3khGYVe2CTfS64xkSVdqpyY3ed5efV+IK6oWpwI2dH3zDU8zFOC+bd0+XhXyqYw5VCH/lFPk3HSnVdHtQnAFW/R7ni/y65wChnXXGPRVITlkyt29OSuhiaffWFTpfWzOPJddGhnOCy88Z5ODS62z/fb09o5j9mE9caWso72ypSghT7c9BiVT0bhIUrIbnrZ0p6CUqH4ShUiCkDmmpDn47OCoi/8glabxU2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3JojMj4eIg03eZAp6uYTLGfxl/uRgndDZDvdJ76yikM=;
- b=laXJJOa095EHLrp/49KnM78W5tNNtw/3f+X5xddeGqkHBwkDKRQo7JEqz9NUcirS+uazhCvShws1XT21UTBVXzKaQBKk8NSBlXiwXBsO+O1gbIpSc1qtJQtiQb+bsvLPZPOgfZHCCx+EIaVKzMjyUlgn4FNlUjYc2u7NG9fqm0zMuOnx/3+vQKSL7iwIQkC0cm9rpBMB6wiUULtD7QljldvjE77t0iu+ntI6HxcW4jwMnQyFpJu8sPI91mmPDJnAlOjOT+SKfHRoUVUQNKTcuGWDchzA1Umh8h4a2r1JSPTi3ZpFlYFoq0pQrnUcehU6Gz7gJYYW/ZMnVsH/E0JwKw==
+ bh=Kja+VgMl2IPCyDwu6pMD/RT4rlEsjtqZ+0wAo/kG/Mw=;
+ b=HkWe5QgakS4O+qul3KpaCPrNS9RJxSV35zc+YZh/JhTAFa7Ajv2Wc+mtHR6Y4RyekkA/fBBVBFFQAoYDxPwqtbqnWD5Ot3VbRrvs1UChKTldHk7o77y20L3URKXFyNWfaV7hkHH8C9SUqCsQ4ufxV/UgCmIDqczuaSQBBzCkTe29UKbzgCJm7NJt7T0jJkPKpZHbe3gDzqqRcmCAbpJd7WrxY+nyN7R+hEOme1VXkt1IKsU811hXf6vCj20BOngkV/VuOun/dKJtVc794pr/dRI/MgaxqQ6EHAylUcsJit/s0oIMQnYsBbNMbxk7lUWXQtj9VF/e9QZSNrGio2WniQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3JojMj4eIg03eZAp6uYTLGfxl/uRgndDZDvdJ76yikM=;
- b=nY5QtksC3iC/MUlEoWPh+CfOv1MTTgNY4qC88exXRoNF1JHhmiPQ+r0kQ0NNrs/DhAGj8DBo19Bzx4UKqCjr9mJ8vqWk6huHYeqnxV3RjiVdJZko0aQV4lhbQmv8h18vWoUeVdXqvizadRQv0+5kH0JKaCYarsYvhqpzwgUhENQ=
+ bh=Kja+VgMl2IPCyDwu6pMD/RT4rlEsjtqZ+0wAo/kG/Mw=;
+ b=i/eObct0RbjRtNbcM3HHY6rPAM2RSEP8kHPhU4zKjtlSyr+rQFuWvdP3KM7d6RHR+MB5d+sOY5ITBuL6Q/84IyEBLpYTb7lm3vCZb2isz51HoMo2+/F+PT+7pk34UmG/o7gIBAC6/0SFBKxaa0l3mRxHnbjQeIRi4wDR1wTSJ3k=
 Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
  by LV8PR10MB7798.namprd10.prod.outlook.com (2603:10b6:408:1f7::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.11; Tue, 25 Nov
- 2025 10:01:10 +0000
+ 2025 10:01:16 +0000
 Received: from DM4PR10MB8218.namprd10.prod.outlook.com
  ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
  ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
- 10:01:10 +0000
+ 10:01:16 +0000
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
@@ -110,16 +110,16 @@ Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
         Andreas Hindborg <a.hindborg@kernel.org>,
         Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
         Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 1/4] mm: declare VMA flags by bit
-Date: Tue, 25 Nov 2025 10:00:59 +0000
-Message-ID: <3a35e5a0bcfa00e84af24cbafc0653e74deda64a.1764064556.git.lorenzo.stoakes@oracle.com>
+Subject: [PATCH v3 4/4] mm: introduce VMA flags bitmap type
+Date: Tue, 25 Nov 2025 10:01:02 +0000
+Message-ID: <bab179d7b153ac12f221b7d65caac2759282cfe9.1764064557.git.lorenzo.stoakes@oracle.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
 References: <cover.1764064556.git.lorenzo.stoakes@oracle.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: LO6P265CA0026.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ff::16) To DM4PR10MB8218.namprd10.prod.outlook.com
+X-ClientProxiedBy: LO4P123CA0395.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18f::22) To DM4PR10MB8218.namprd10.prod.outlook.com
  (2603:10b6:8:1cc::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -129,1095 +129,551 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|LV8PR10MB7798:EE_
-X-MS-Office365-Filtering-Correlation-Id: 933c3026-41b8-4808-4950-08de2c098f0b
+X-MS-Office365-Filtering-Correlation-Id: b8ee6cfc-9558-4542-673b-08de2c0992ef
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KMCu/6pQoErVHeD6Y4l8xge/yBKetc88oWAwGDPosS4PxtLKbAf6mOkzbQC9?=
- =?us-ascii?Q?za9jAHwMoSxjAcBAidIbjrkMQ0saFjbar3/1B8m6Ne3yrOyH79mhgRk8hUt1?=
- =?us-ascii?Q?cAWNNEq9/H0LBD4+8C/dyKHWg3sUzrh8OhC3vDX9Ibbszm4nKHzfzL7KyXUm?=
- =?us-ascii?Q?5nGgRssTTTg3whN7WECGtKFW418s4+HQBxihRRRbXwqy8ZRPtp1QCHh8gE+/?=
- =?us-ascii?Q?i1hTfRCFNjtbX35FvpzLeFAlI3DJ7uON80SFWMXyOgUQPGH9ehQQ1ww37XYp?=
- =?us-ascii?Q?hblUbhB4CibZ1DS500eK1KEYuMlPjUq9/FSRy7RUqetZJPD0uqx/5IxrqbRm?=
- =?us-ascii?Q?OTNZNepdp1upxZclYJI0nvQhLT1/2lAizoGJiFU1gJm/Haya+Hmm+NCrNUGL?=
- =?us-ascii?Q?QBoQHsT6UmXHjXLGKzmVao+FE94gqeqx6f+Bc1uWIDNEgZN/iww/hyf2H0pM?=
- =?us-ascii?Q?vfLH/7XuggXa7HdzyWcDAn2V1FbYOyBDHb4Kc/I4dVJcNG24vX7bhDYXCy8o?=
- =?us-ascii?Q?XUgvuJXlBjCzCoJZ2y9ya3eluXlfF0bwybgF10FO3jVlUr9keuBe4fTIPYB6?=
- =?us-ascii?Q?TR2QMoyEToGeTtssSjZOQpy9wSxUEFUUll4ohKNmbtn0tb9RY3n9MZS1XMMI?=
- =?us-ascii?Q?kqW5PBbNKBtbRHlc4uXTJFw916RqSCKA/IFJsmFEjSZSTS3UQdIvA5UG37/b?=
- =?us-ascii?Q?iE7ks+lRuraNcbJOJbQqNBilOQKAr2NdVOg7VYeSK0muZTJ+xquyucY9aSnZ?=
- =?us-ascii?Q?KyyXbE5+BAayCPSrCtvXuKn6ybBxHraLl/ugo3aOcVl4gRA6a6m9fT9inTn9?=
- =?us-ascii?Q?T3WsbR/7JCER5+vqkAJtqIuWEem1xSlBq34bsa+HflFBnIkuhPRN18NDFnMA?=
- =?us-ascii?Q?HnsQDINQuNem7yeDGagDZdjsCf3pp2EW1FmOdQR8n0kfxxEUXoyiG4uXzuBf?=
- =?us-ascii?Q?7vqbMwLyAlU9xMuGF85cTmUmeHPpa21DBikpEHzpt/5nedneDvDKMtR6itjJ?=
- =?us-ascii?Q?Gx/S9vsyZjh5Y8VyxyczkKQevZmtE0F5+HLYDWcYjYW+S79VCIFxkseEfdau?=
- =?us-ascii?Q?PtTC1rMZd5BkIU6legWd4TeQbWa9Ri5sLwR6CIFP2H9z/hryEVvWa39MBSLq?=
- =?us-ascii?Q?lCCzSF1PsBgFReptNYBmgA/yZtzrfk7mgfIt349w/aotiLaMoCZBPJExr5fL?=
- =?us-ascii?Q?vKmnGsliLrxMtZt7a5xX7FRMnq6pbhIMgtZ7CMN2BA6ujO0rMaa2bFw+Te67?=
- =?us-ascii?Q?LsG7LdMGvFBfP/LokV+L39oeZ0FCRSKZQrQ3oJ/+cgGOSLl2SuNMZf32pP1X?=
- =?us-ascii?Q?ZTkJZ6sUeym5SbNWOe0lgix5X0uW+HWPprRPwrG15hozGc+9EwKyoEuZJ8Vo?=
- =?us-ascii?Q?/0w3DY//0BTQeabD3xlc1OQ6x7FNMe+Xk/BOTz8ILjesqLJ7y2rdAlolFGjo?=
- =?us-ascii?Q?PM/N6bE6cvZtlDYl6tNL1pKi2dDLjaI8?=
+	=?us-ascii?Q?8GVwFRWprOgRfz4PCXC6xq1YXSsK21mt1Kd2JMmmSa0wkk9myl+PZnb0nXmj?=
+ =?us-ascii?Q?uwZ+9TTsfi4EEOpd7legTD9InkarQ4qhaptNrCkKDYY/1F4t7aHp+YeRilye?=
+ =?us-ascii?Q?ks+Jl+zXIJIqe3REbCNwr2LZ6AJcG3p8h8xYWywHsQHiJuO2pdUIUD05L1bc?=
+ =?us-ascii?Q?fjDitJXCaJkY+/iwn3AM0b8WbFuwh3Z0LVR2heONUHvrpXNAJep/EgJzZas/?=
+ =?us-ascii?Q?e7eLkcrKYkRBY1lfF/W17hXUFubl0G4RwHqdeDNXCUoz4SjqnRhEtO5tCQ7c?=
+ =?us-ascii?Q?iH48GmheaHF7wqhGsT85AKGvWbo8BhjjtEz0cUjyy67VPpVH9NXFZT4rnXJa?=
+ =?us-ascii?Q?gj7/KHqdWFzkLzRcLCq/A6StCwZyS9vkLAROIpaA9G4cKCyk768rUo3hL3sh?=
+ =?us-ascii?Q?93iPMYlC770kUJn9ZD9y0FnNyOX92t3tTNkiSBH6kvH95rB3SsSKAHxFqQ+J?=
+ =?us-ascii?Q?i+WtVnV43vKZnU4hejHSPuoG31+4qb22WXZOm5n0XiT28YAjILny6xzRV9FY?=
+ =?us-ascii?Q?NF64uRkOgbsrrbgIQvq0z/5OvvfMNUAHBNrBf8IgpZAaISwL74/q6jSsB6Xo?=
+ =?us-ascii?Q?BFSpeHndI+fjtnq8RhV+GahwOp8g5KthoMwJ/vdCi+35Q/TpCYMJmTBhmtw7?=
+ =?us-ascii?Q?1Q5RDVZ6x37Njy2Oc/zUnkre9gGuVof92iGvWyrpqnZ1WXRWkCbcJD9sNTXE?=
+ =?us-ascii?Q?rWJDZYvqkrGQKGgQLCEdCyceqvN7xUhdA5PQ+6SZVDWJVLBwLNjHMn7jsnbs?=
+ =?us-ascii?Q?cC8vAyQL3UH7BtgA4U9ITHJbtFWD+sRJHxgteG9BREbic2IlmHmyUwv85nwk?=
+ =?us-ascii?Q?So5PT+Y0R4FX+DMP57QyaFH8iGBJE+aro8cvv9LxbUBFORXNN8j3N6ZrXj59?=
+ =?us-ascii?Q?kSGNFnvSPdxKMIfLN4L4E/hw0YflBTm7KBqHztqQmofu82WA65PBjotSyaaI?=
+ =?us-ascii?Q?sTeieKG+cGK52qbkFRG32FAG7DzQFWQK/H8uDU+kzjlcOK1dtWcNAB3O81e0?=
+ =?us-ascii?Q?pyQCk9EprvXxibDuT80zuyL/+NgaSsVXYMjIldJXkbYihEeK+XFdAQEJXbtt?=
+ =?us-ascii?Q?9QRW67IRVPWEeDGeQYKkiRuUgGkCJPir7LXm+Lr5XybHZbplV4kNDEifrs2I?=
+ =?us-ascii?Q?lAmRllWGAmcPzalwjK6mdww7eL6m/2GR6Q/w8Ec6CZ02bT77/u2D+zUmezHX?=
+ =?us-ascii?Q?H7yxS4Hw2sBcTxVf6+1bHvFnQZpwq3FfHX7zY2r/Jqo5WXjuzhc0WaFgsBJg?=
+ =?us-ascii?Q?de3PUyE61mSSOgh7oArpyfa9YAkrd5iQ8Z8Yr8Dk1JfUns5sVfsxt8xSGIfD?=
+ =?us-ascii?Q?hp/fmxDx9X4dHjXv15Z2ZYWlFIkh3bh+M2t2q+a0OQMqb7jGSbWcjfAOTEZ2?=
+ =?us-ascii?Q?oqpAKywnoUbdT1BuSqAsyGG6uZgbjRc0ikSHOBFC6PfxB7FXnOmwYp7jiZwn?=
+ =?us-ascii?Q?FvGk7ipcTNIvMmSoy5uxXKS29Ao8N74T?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KZHEfnWq53NbU9x9LaQ5s3svSM4a6LovcXeM64cZ9UUhIHeCGczLJTZdsMAV?=
- =?us-ascii?Q?HDnk5Wu5gKJ0Rd7bGvKnQG7khcmWiEA4kdbZK1NXFZp6Ej7ivwYCL/htrUfN?=
- =?us-ascii?Q?Bpk6wwnVDy5JExJejptfcRm0KkqfrzZ7Vhb6kqaVtB5aqflWO6Daj5C2OgDp?=
- =?us-ascii?Q?aft5EjPxr/6d5iblZqgLULZxOlnM/JXDhMkPN+/MpmxzxhLKfQ+qGFaoocFy?=
- =?us-ascii?Q?i33xmKD2JWMnmdeJi6CBf31slT7IVDKNbaHqa3OZVRpfHvwUTdl/Gs72WfiE?=
- =?us-ascii?Q?9y9QZL6euS2Ny9awicJvUMfWYf+ubVhjfqcZsaUvOqIQH8rhmY5K+Atu5Umw?=
- =?us-ascii?Q?+291eDtV0bPxgyTYv4Obiz8aegTROEpW/WwH9WtnakMX14KNE7o9MWGDffh1?=
- =?us-ascii?Q?zOD7AQIPC5ed7FpZrl+9QQYICFW7BdtUlIXlzElGAZuzkLbnJNbqKD1wNR5k?=
- =?us-ascii?Q?bpAZuWyvhMPcX5hyFLLxD3q9ZIP0lFTlipqvgdg7wKYExqzwb/X72LmEH/9D?=
- =?us-ascii?Q?IlpG0p4mKIiKwZ/DD4x9B2SOTJPo1oGHSSUheGxtLxqKLPo+KygiTS4cj0Ud?=
- =?us-ascii?Q?keyRvdXfNn4rPR27l/jJMtMYMtkDo1QnZjTgWOVBn/g80M4Plt3/HGVUuGwi?=
- =?us-ascii?Q?jeuztmrR3Rsz0YmzQq21gHC7bkHNhzopTUpchUAY9NzBQ9Iz66aZFVxlUmV+?=
- =?us-ascii?Q?hR59PDPBXrvjOne3m+TbOg2k1N0a5w7jU1xplSTd0fzO7gYZIyYWl5/e3nJb?=
- =?us-ascii?Q?SReUYwKRlQAPyOaon5fypLP8juGDrDzTSqDERbuloHKUWYd7zom3l4+fhtbJ?=
- =?us-ascii?Q?e7aYxc78GY89nSgbO5Gn6pG/ON7SlQ0uJfwX1Q1ZHt1kyb6ek29sFemyTL2V?=
- =?us-ascii?Q?jZx1t9dlZKazLQgdcWrCl2FcPa48DfuE/JheAsoAh4rQxFrPxHDYG20xSNlu?=
- =?us-ascii?Q?+uQH6nn+Jf7eb/5bvK7r9O9Hme4lGNDMKQU4QIdHZRvQWnsjSrYg4ZBduN0P?=
- =?us-ascii?Q?Hq6fZkvkv1VLKOI5ZhGf3IM+cfs5b53vnbGJT6WXsHUKefIOnCqaIW1EI9/d?=
- =?us-ascii?Q?YjiAG0/UfGq072kESsiaIXV757L3RmbObFamAy+faJN2+8LQVIetCiWGBCPf?=
- =?us-ascii?Q?HReeyi44P9t9I2Xg4qco8dUH7HHGdI/Ueq63aLFbG8RJpHwOpmudeKzK+bcD?=
- =?us-ascii?Q?pjXQ35jhjVd+NXh0bUHfoyQ4Av8hNoXqNOnOaKq4b/RMe9ATe7z399UiN3/d?=
- =?us-ascii?Q?RT0LbPGGs/Yp8FH6NzfzYSEYKvHh5eQp6IMBkdeD4IQezKTgpw9zTS7SsmNE?=
- =?us-ascii?Q?zkMmm5iCZ7sMSQEQvjMhpNIZRGtEK14lrKhtNtITvy1rAC+ixejgPeVdNdr6?=
- =?us-ascii?Q?Rlc+B4F38zqJyH4GZ1dthxZqDoAQqRKXPyG82570s9l5e1EE5Mo0PEjdFpjk?=
- =?us-ascii?Q?N/RWN6cKfYc8bWEDLyO63mCbxYdJTOAXvABpWR4+fsUEs8A1KdAMsHTIq6lC?=
- =?us-ascii?Q?nN7AqKFI1OyoynRsxmUP4vCY3pazXbUP+rPEE2srhlQrxo4esB0F9vQ6esRi?=
- =?us-ascii?Q?ZL6dz/98MFks945amJHhrWhXkrBx1RqQFEHzYU8iozJ68T4eZEvFMk2T/GcY?=
- =?us-ascii?Q?Hg=3D=3D?=
+	=?us-ascii?Q?SCiNDNCSONqccxPTSYRwrkeavePofv7AlL8VtNQ3PuIFBSYwOzLuZCgYOfr7?=
+ =?us-ascii?Q?BrYFmk/q5nV5u32ikbsNDTahAQESFfgjuK3cBxegg5+LSo02eDirE6LhPXyX?=
+ =?us-ascii?Q?OB5hUwRYsgCz7sXCGqmnGobiqNEGL/o7mpLU7NWflRDBo6gqvxFjDNdxyGuH?=
+ =?us-ascii?Q?1CjJZ5e9M56Te626/2/rWQ3MdxGNQmkUJoDCo/3lHLhqdMCfiHalZ4FGrzHq?=
+ =?us-ascii?Q?rowPIhI5DwQMLYWhMbAx5tDoWOWrvCm2mzm9JzEPIxONUnma39piRpxrDvSd?=
+ =?us-ascii?Q?mmx/I6VSopmUFokZiMeOA7XBsur8h44gxVHAunv48jEnoKKrxtdg80J+a5c8?=
+ =?us-ascii?Q?8Vi93ji6VkHt/3M6hLNaOEKymkqRXOmfDj8H3jK5pfyIdKTeVezUDwbJfwLt?=
+ =?us-ascii?Q?41tkeHn8J/5GH4n7CKkZO0czs/eFECa6Ts+yyTAd7iYlIFhmy/0e8PiPmMM1?=
+ =?us-ascii?Q?ThMFIPHhzJrgXiqLaDQ6e7Pf3qrYT3+l10AwGTcKn26+dp0EIbPnQ6W2dVk2?=
+ =?us-ascii?Q?51ITRkmVpdRPToFEt15Y/iAZLFsEPNzINIYfkvvcl/b+G4o4MOJGzif6dGQ3?=
+ =?us-ascii?Q?5Xn4d9+sMGkiOifl67HkzblV5xXZ+OWa7Ortc08AQ2EH4aQn2DL1SfoXY0MF?=
+ =?us-ascii?Q?+HdnQfcBfKggA0woYK9aYsvRTZQ25C5HYY77Q+l0ao3TiBrsIdWqq3nvtpv+?=
+ =?us-ascii?Q?+5PeXfZ5HFjhvyXnYxGZG19rQsqs/SErTlIONAjesDVqGAgeRBXCUY4LLrgg?=
+ =?us-ascii?Q?yuJRDX+leiwylsp82EspuwffKaqcNPnYE+OYSnTcfZpchW+Fo06Ttf5Xapnp?=
+ =?us-ascii?Q?qFf16GrTTwhgZGlSxjw/zRQjAky/dWMjGjjBZZX3Ds42S+9Bbz7xtJoZlLUF?=
+ =?us-ascii?Q?3Pw7tE0ysqhcCMJDT9rYmexBZBacQgDWKbyzCKh2Oh5A2cep2SKCGsf6REwj?=
+ =?us-ascii?Q?sf31sCFMvKfyg64Ju3l1WEKSFFBpVL8ofRE2weEBhIIju5qimPsEXVXCZrRx?=
+ =?us-ascii?Q?mV0aaXOYbXEgUPT+PkBjA7G/S4br93EpG8AwFd4mmjygH0kuMMx6jha/fygR?=
+ =?us-ascii?Q?WGCW9RG8q8T+/wnGMr6yub2QOqNV3vEvlo8fi2ejnhE/WjaKg5XdkXmMV/U/?=
+ =?us-ascii?Q?Q9xwCsHMlfu76NnrxMZbCM2I/VHIt6RsNW2QIVK8K36gLDx4TNx7DSspZnoC?=
+ =?us-ascii?Q?JqOnBFTmk/9JkiSy998VeWfBDSwBf4wufUu2giTuNSw8cKPhGf0ueloGCCcn?=
+ =?us-ascii?Q?Iwn0sYzemjQDc5cSnkhj0uCqxAbpmQl4W2zj2JojFF5n5rWzWjgVE7vpq/Gl?=
+ =?us-ascii?Q?9XUgNzfwZKJDBOOFINOM/fxb0EZXvDVXTk+HsiWe1Cbl3EYb13Bx/WPxAHNB?=
+ =?us-ascii?Q?K6p4g7Bs6JD1TR4Y7InZW5Yjut962VN1N5C6ctrXhzDp6iZNLCWeVI43mhE/?=
+ =?us-ascii?Q?/zqAm+iOebuKXUbJhEgL1orTPcKKlB9ejUBM1odcQJ0B7n4s7DLO5Yzcs0BT?=
+ =?us-ascii?Q?+fkcTsAbbxW2gIsGtbNlwDC1d8Z3uCsuJ8EIco6mYcOjyJdgT7sdMauk7snQ?=
+ =?us-ascii?Q?/me3Hs3YAkt5s3r3zqVPh7OSVheZYXeYgHAI2HJD9DbYjtr1Diw4PTB7iv1C?=
+ =?us-ascii?Q?wA=3D=3D?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Uq5NxqYkdm8IiSwEE1EizamIF6kkOemplK8NDBiqW4IDpKyyWZoYSagqjxBbWG8R75TEvLImvY9dDNq7gIBoaEIeOyvt3MgdJryGNebJ1h7FFzDYxRIBjo91OmCU3YuNhNiLSaNk08mw5SDRrMl/1QyGya7BRUeNrTOVBBupOekv+FuGexLm02xkfSduz/5l+ZQiON+/azkxkx6VFhb5bn+i09DNYhv1jJwKjINdP+K5PlkffbeRCcz+gEC8Mv5bhLSuyfD9mt9aBmCZfvqXv5/ULMYH6vA0e+0DMuTbzqsxZh47rAgnehmWP91i4uzcx9wkUAeJS92mV3y1WJvK1FOLAr1mEQbP+HdeUfMJl/9qob07/MTCAfzByzZabSJbh2IXfl/DNxxRQCdhyN9OCw7XO/H7UC+6fqs88gJMpNZSFrHE0OpHclb3gH1LEwD/rua3nFxo91PpEwnTjL2GRh2CC5opayZ4FZnzmEFQlccPQUtdLw5Tb73XxmW9uHIwWy3lyN4ibVUFNBbNCjs5puvHi/z09sdZr+OIAnap/m5mhSA6HSkVXKtO1SjHpvn4TI9xl9bQumxfuItm+5zqLIBSjAhwWsaleHFD5nNZ+hY=
+	IQYkSoONDz6B0pgBQvRfrH0WxIQuhmN6BHxSrIihwvizxpbs0C4ealUcUi3kxR3EC588zuVv0pUVnOQ/jgKUjriMFAhQS4Nz1qydylRUIy7sDPKFpf1A93L+M2LVxSSNzx8Wm2nvSsn2lrt0EYK4HJ/7RBC1Sfo0y7nxZp/P6KDQDjCeYsnpD6x61iPJHglR1ioF5XB+ND7/+tQnL2paru/IZqSjH1Z82ag3XLq+9bjVTaCI+Qx8FhFvA55L1ACbZ6k7fJ/TX8AF90ADfD9sLRhu/IEbde1FAlmjg8AydztaVsoEccrWiVC99XGwH9xvAr4R3FlXCOit23QntEIWqRtIWdHUuzH7HitfLjJM5kmNfAtSp532Y1NlV8F7g6pHuBtfkXtN36FeVqH7MIcyPhZQwrHxxyp9gzZM+SsF9YYpoKQHb+DwvbFFNyMMA9GyJHaxQc894aFH69QNTKjmnu9oU6obCRP7mGLeI0x4nR8ahtA7WTS6yliXNqJ5DVPszrxgCH/4CAuMClynrDAI/o8LC40fEFP7i44zdDtaV/fK/vSG6s4ZxUZgqzt1gN/hBq4oUoHMMRrJVR826b6sNNM6g20AC3NhYoOzWlnEQNM=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 933c3026-41b8-4808-4950-08de2c098f0b
+X-MS-Exchange-CrossTenant-Network-Message-Id: b8ee6cfc-9558-4542-673b-08de2c0992ef
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 10:01:10.1327
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 10:01:16.6293
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HoMl0QWOWV69ErMBR/jypMy/XnGdwI5398fD+GTyVrLzInpQ7e+54xP5v/BtapSvCgCLDxwTxSwaV6hz7b9chKMUdiNTyNdgrZtmoXJ+huU=
+X-MS-Exchange-CrossTenant-UserPrincipalName: QVnRFkvTSaQRiNHMAPhC07q4aLlJKfPkXTIlb7qCj2OpR+JZOqBDNkfag9rWJ396J/12dP1s0fYgO5wGkHNtWuu8zVdeHP2el0YQnLYOyCw=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR10MB7798
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-11-25_02,2025-11-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- malwarescore=0 bulkscore=0 phishscore=0 mlxscore=0 spamscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
+ mlxlogscore=999 suspectscore=0 malwarescore=0 phishscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2510240000 definitions=main-2511250081
-X-Authority-Analysis: v=2.4 cv=f4RFxeyM c=1 sm=1 tr=0 ts=69257e71 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI1MDA4MSBTYWx0ZWRfXzn3wbyc2jkSa
+ puWCVWbJpkKYqG2Y+jE4pGQGOhnMi81FR+V3eXuxk7stKwe0wSHRkqdSADGGqFR76q4oUNkmWpf
+ Kcjh+7QaoM91OzYN6SsMsnyPsEm+AAH8ON/ph8sguysg9ZWXX8gsNdsMD2cX4zChcwZAfzmSox0
+ ZBg2k2YaYwHn1YV5QnkkEmLHreApqTD4rJwNi2idAgb0eR1X5wt8xzH2yo2IKZC258h/4BgPzRI
+ 5qQLOeF/HWDl1SM0r5AZBTrrW+6SKMtuM0jfeZOLdc63Gj5cF5z03enly5qcA82U24m3hKtTmwJ
+ SHp/jPsar3rvXZawPSss/tjHWljEHS7a0qpxKTgERkIxqgXxaB2BV1Qh34ZoCp3MikktRc73kwL
+ taA3716sRANyVI2oIA214uWvPhLGREl/DJ4KUxbPo3h2fCsSpLI=
+X-Proofpoint-GUID: VNHc1JZT0N5KUMvzrp6oB3jbSs5OGISj
+X-Proofpoint-ORIG-GUID: VNHc1JZT0N5KUMvzrp6oB3jbSs5OGISj
+X-Authority-Analysis: v=2.4 cv=KKpXzVFo c=1 sm=1 tr=0 ts=69257e72 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=6UeiqGixMTsA:10
  a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
- a=4x76MdnMezQf_DqOWowA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI1MDA4MSBTYWx0ZWRfXw8Mf/NltR4JZ
- Hiy0YDBAlGYALjMmkZTajfu7N+c3QJnvV2MhCgBsELPk9dqyupdCmaOBYCxy0HY03tSDCR3FANb
- 4IaMwgAJY6M8QeYR9/P9sCHHk7ym7cxDRtZZDoSii5NHsB9GYJ5gS8aS5+oLAI3rfQ9OeE5jTXN
- A26NW7jZg8wuwdeYd0FFkiMb6k7nmSXFlHsQ7q4COf5C2pW7Tpx12NPrYW03bQTH+NQATidL58O
- eYcAnJuAAmjSHXXHoph4loyWYgaR0VMmyCT1wpy/7SrtwaLa+zyQpl8Vh0zPiFJNMe25F3sjQ2t
- Qagksd+2KuJ5PuOGmtBU9PTRl9V/n5Gh5WA9LqAUb51ZWf1yglU8457tpSxAOYem13+EpOsFvU6
- OTNpYx675kASCsOKpPqQMkyY+LZxlg==
-X-Proofpoint-ORIG-GUID: 18UwO7jRJoCAtyE8IbijAecGCGX6u4ZO
-X-Proofpoint-GUID: 18UwO7jRJoCAtyE8IbijAecGCGX6u4ZO
+ a=6kSyhpO20BfhePVeaXYA:9 cc=ntf awl=host:13642
 
-In order to lay the groundwork for VMA flags being a bitmap rather than a
-system word in size, we need to be able to consistently refer to VMA flags
-by bit number rather than value.
+It is useful to transition to using a bitmap for VMA flags so we can avoid
+running out of flags, especially for 32-bit kernels which are constrained
+to 32 flags, necessitating some features to be limited to 64-bit kernels
+only.
 
-Take this opportunity to do so in an enum which we which is additionally
-useful for tooling to extract metadata from.
+By doing so, we remove any constraint on the number of VMA flags moving
+forwards no matter the platform and can decide in future to extend beyond
+64 if required.
 
-This additionally makes it very clear which bits are being used for what at
-a glance.
+We start by declaring an opaque types, vma_flags_t (which resembles
+mm_struct flags of type mm_flags_t), setting it to precisely the same size
+as vm_flags_t, and place it in union with vm_flags in the VMA declaration.
 
-We use the VMA_ prefix for the bit values as it is logical to do so since
-these reference VMAs. We consistently suffix with _BIT to make it clear
-what the values refer to.
+We additionally update struct vm_area_desc equivalently placing the new
+opaque type in union with vm_flags.
 
-We declare bit values even when the flags that use them would not be
-enabled by config options as this is simply clearer and clearly defines
-what bit numbers are used for what, at no additional cost.
+This change therefore does not impact the size of struct vm_area_struct or
+struct vm_area_desc.
 
-We declare a sparse-bitwise type vma_flag_t which ensures that users can't
-pass around invalid VMA flags by accident and prepares for future work
-towards VMA flags being a bitmap where we want to ensure bit values are
-type safe.
+In order for the change to be iterative and to avoid impacting performance,
+we designate VM_xxx declared bitmap flag values as those which must exist
+in the first system word of the VMA flags bitmap.
 
-To make life easier, we declare some macro helpers - DECLARE_VMA_BIT()
-allows us to avoid duplication in the enum bit number declarations (and
-maintaining the sparse __bitwise attribute), and INIT_VM_FLAG() is used to
-assist with declaration of flags.
+We therefore declare vma_flags_clear_all(), vma_flags_overwrite_word(),
+vma_flags_overwrite_word(), vma_flags_overwrite_word_once(),
+vma_flags_set_word() and vma_flags_clear_word() in order to allow us to
+update the existing vm_flags_*() functions to utilise these helpers.
 
-Unfortunately we can't declare both in the enum, as we run into issue with
-logic in the kernel requiring that flags are preprocessor definitions, and
-additionally we cannot have a macro which declares another macro so we must
-define each flag macro directly.
+This is a stepping stone towards converting users to the VMA flags bitmap
+and behaves precisely as before.
 
-Additionally, update the VMA userland testing vma_internal.h header to
-include these changes.
+By doing this, we can eliminate the existing private vma->__vm_flags field
+in the vma->vm_flags union and replace it with the newly introduced opaque
+type vma_flags, which we call flags so we refer to the new bitmap field as
+vma->flags.
 
-We also have to fix the parameters to the vma_flag_*_atomic() functions
-since VMA_MAYBE_GUARD_BIT is now of type vma_flag_t and sparse will
-complain otherwise.
+We update vma_flag_[test, set]_atomic() to account for the change also.
 
-We have to update some rather silly if-deffery found in mm/task_mmu.c which
-would otherwise break.
+We adapt vm_flags_reset_once() to only clear those bits above the first
+system word providing write-once semantics to the first system word (which
+it is presumed the caller requires - and in all current use cases this is
+so).
 
-Finally, we update the rust binding helper as now it cannot auto-detect the
-flags at all.
+As we currently only specify that the VMA flags bitmap size is equal to
+BITS_PER_LONG number of bits, this is a noop, but is defensive in
+preparation for a future change that increases this.
+
+We additionally update the VMA userland test declarations to implement the
+same changes there.
+
+Finally, we update the rust code to reference vma->vm_flags on update
+rather than vma->__vm_flags which has been removed. This is safe for now,
+albeit it is implicitly performing a const cast.
+
+Once we introduce flag helpers we can improve this more.
+
+No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Acked-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- fs/proc/task_mmu.c               |   4 +-
- include/linux/mm.h               | 379 +++++++++++++++++--------------
- mm/khugepaged.c                  |   2 +-
- mm/madvise.c                     |   2 +-
- rust/bindgen_parameters          |  25 ++
- rust/bindings/bindings_helper.h  |  25 ++
- tools/testing/vma/vma_internal.h | 304 +++++++++++++++++++++----
- 7 files changed, 524 insertions(+), 217 deletions(-)
+ include/linux/mm.h               |  24 +++--
+ include/linux/mm_types.h         |  64 ++++++++++++-
+ rust/kernel/mm/virt.rs           |   2 +-
+ tools/testing/vma/vma_internal.h | 150 ++++++++++++++++++++++++-------
+ 4 files changed, 202 insertions(+), 38 deletions(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 2b4ab5718ab5..d00ac179d973 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1183,10 +1183,10 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
- 		[ilog2(VM_PKEY_BIT0)]	= "",
- 		[ilog2(VM_PKEY_BIT1)]	= "",
- 		[ilog2(VM_PKEY_BIT2)]	= "",
--#if VM_PKEY_BIT3
-+#if CONFIG_ARCH_PKEY_BITS > 3
- 		[ilog2(VM_PKEY_BIT3)]	= "",
- #endif
--#if VM_PKEY_BIT4
-+#if CONFIG_ARCH_PKEY_BITS > 4
- 		[ilog2(VM_PKEY_BIT4)]	= "",
- #endif
- #endif /* CONFIG_ARCH_HAS_PKEYS */
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 75f894c3f521..a2f38fb68840 100644
+index a2f38fb68840..2887d3b34d3e 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -271,185 +271,239 @@ extern struct rw_semaphore nommu_region_sem;
- extern unsigned int kobjsize(const void *objp);
- #endif
- 
--#define VM_MAYBE_GUARD_BIT 11
--
- /*
-  * vm_flags in vm_area_struct, see mm_types.h.
-  * When changing, update also include/trace/events/mmflags.h
-  */
--#define VM_NONE		0x00000000
- 
--#define VM_READ		0x00000001	/* currently active flags */
--#define VM_WRITE	0x00000002
--#define VM_EXEC		0x00000004
--#define VM_SHARED	0x00000008
-+#define VM_NONE		0x00000000
- 
--/* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
--#define VM_MAYREAD	0x00000010	/* limits for mprotect() etc */
--#define VM_MAYWRITE	0x00000020
--#define VM_MAYEXEC	0x00000040
--#define VM_MAYSHARE	0x00000080
-+/**
-+ * typedef vma_flag_t - specifies an individual VMA flag by bit number.
-+ *
-+ * This value is made type safe by sparse to avoid passing invalid flag values
-+ * around.
-+ */
-+typedef int __bitwise vma_flag_t;
- 
--#define VM_GROWSDOWN	0x00000100	/* general info on the segment */
-+#define DECLARE_VMA_BIT(name, bitnum) \
-+	VMA_ ## name ## _BIT = ((__force vma_flag_t)bitnum)
-+#define DECLARE_VMA_BIT_ALIAS(name, aliased) \
-+	VMA_ ## name ## _BIT = (VMA_ ## aliased ## _BIT)
-+enum {
-+	DECLARE_VMA_BIT(READ, 0),
-+	DECLARE_VMA_BIT(WRITE, 1),
-+	DECLARE_VMA_BIT(EXEC, 2),
-+	DECLARE_VMA_BIT(SHARED, 3),
-+	/* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
-+	DECLARE_VMA_BIT(MAYREAD, 4),	/* limits for mprotect() etc. */
-+	DECLARE_VMA_BIT(MAYWRITE, 5),
-+	DECLARE_VMA_BIT(MAYEXEC, 6),
-+	DECLARE_VMA_BIT(MAYSHARE, 7),
-+	DECLARE_VMA_BIT(GROWSDOWN, 8),	/* general info on the segment */
- #ifdef CONFIG_MMU
--#define VM_UFFD_MISSING	0x00000200	/* missing pages tracking */
--#else /* CONFIG_MMU */
--#define VM_MAYOVERLAY	0x00000200	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
--#define VM_UFFD_MISSING	0
-+	DECLARE_VMA_BIT(UFFD_MISSING, 9),/* missing pages tracking */
-+#else
-+	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
-+	DECLARE_VMA_BIT(MAYOVERLAY, 9),
- #endif /* CONFIG_MMU */
--#define VM_PFNMAP	0x00000400	/* Page-ranges managed without "struct page", just pure PFN */
--#define VM_MAYBE_GUARD	BIT(VM_MAYBE_GUARD_BIT)	/* The VMA maybe contains guard regions. */
--#define VM_UFFD_WP	0x00001000	/* wrprotect pages tracking */
--
--#define VM_LOCKED	0x00002000
--#define VM_IO           0x00004000	/* Memory mapped I/O or similar */
--
--					/* Used by sys_madvise() */
--#define VM_SEQ_READ	0x00008000	/* App will access data sequentially */
--#define VM_RAND_READ	0x00010000	/* App will not benefit from clustered reads */
--
--#define VM_DONTCOPY	0x00020000      /* Do not copy this vma on fork */
--#define VM_DONTEXPAND	0x00040000	/* Cannot expand with mremap() */
--#define VM_LOCKONFAULT	0x00080000	/* Lock the pages covered when they are faulted in */
--#define VM_ACCOUNT	0x00100000	/* Is a VM accounted object */
--#define VM_NORESERVE	0x00200000	/* should the VM suppress accounting */
--#define VM_HUGETLB	0x00400000	/* Huge TLB Page VM */
--#define VM_SYNC		0x00800000	/* Synchronous page faults */
--#define VM_ARCH_1	0x01000000	/* Architecture-specific flag */
--#define VM_WIPEONFORK	0x02000000	/* Wipe VMA contents in child. */
--#define VM_DONTDUMP	0x04000000	/* Do not include in the core dump */
--
-+	/* Page-ranges managed without "struct page", just pure PFN */
-+	DECLARE_VMA_BIT(PFNMAP, 10),
-+	DECLARE_VMA_BIT(MAYBE_GUARD, 11),
-+	DECLARE_VMA_BIT(UFFD_WP, 12),	/* wrprotect pages tracking */
-+	DECLARE_VMA_BIT(LOCKED, 13),
-+	DECLARE_VMA_BIT(IO, 14),	/* Memory mapped I/O or similar */
-+	DECLARE_VMA_BIT(SEQ_READ, 15),	/* App will access data sequentially */
-+	DECLARE_VMA_BIT(RAND_READ, 16),	/* App will not benefit from clustered reads */
-+	DECLARE_VMA_BIT(DONTCOPY, 17),	/* Do not copy this vma on fork */
-+	DECLARE_VMA_BIT(DONTEXPAND, 18),/* Cannot expand with mremap() */
-+	DECLARE_VMA_BIT(LOCKONFAULT, 19),/* Lock pages covered when faulted in */
-+	DECLARE_VMA_BIT(ACCOUNT, 20),	/* Is a VM accounted object */
-+	DECLARE_VMA_BIT(NORESERVE, 21),	/* should the VM suppress accounting */
-+	DECLARE_VMA_BIT(HUGETLB, 22),	/* Huge TLB Page VM */
-+	DECLARE_VMA_BIT(SYNC, 23),	/* Synchronous page faults */
-+	DECLARE_VMA_BIT(ARCH_1, 24),	/* Architecture-specific flag */
-+	DECLARE_VMA_BIT(WIPEONFORK, 25),/* Wipe VMA contents in child. */
-+	DECLARE_VMA_BIT(DONTDUMP, 26),	/* Do not include in the core dump */
-+	DECLARE_VMA_BIT(SOFTDIRTY, 27),	/* NOT soft dirty clean area */
-+	DECLARE_VMA_BIT(MIXEDMAP, 28),	/* Can contain struct page and pure PFN pages */
-+	DECLARE_VMA_BIT(HUGEPAGE, 29),	/* MADV_HUGEPAGE marked this vma */
-+	DECLARE_VMA_BIT(NOHUGEPAGE, 30),/* MADV_NOHUGEPAGE marked this vma */
-+	DECLARE_VMA_BIT(MERGEABLE, 31),	/* KSM may merge identical pages */
-+	/* These bits are reused, we define specific uses below. */
-+	DECLARE_VMA_BIT(HIGH_ARCH_0, 32),
-+	DECLARE_VMA_BIT(HIGH_ARCH_1, 33),
-+	DECLARE_VMA_BIT(HIGH_ARCH_2, 34),
-+	DECLARE_VMA_BIT(HIGH_ARCH_3, 35),
-+	DECLARE_VMA_BIT(HIGH_ARCH_4, 36),
-+	DECLARE_VMA_BIT(HIGH_ARCH_5, 37),
-+	DECLARE_VMA_BIT(HIGH_ARCH_6, 38),
-+	/*
-+	 * This flag is used to connect VFIO to arch specific KVM code. It
-+	 * indicates that the memory under this VMA is safe for use with any
-+	 * non-cachable memory type inside KVM. Some VFIO devices, on some
-+	 * platforms, are thought to be unsafe and can cause machine crashes
-+	 * if KVM does not lock down the memory type.
-+	 */
-+	DECLARE_VMA_BIT(ALLOW_ANY_UNCACHED, 39),
-+#ifdef CONFIG_PPC32
-+	DECLARE_VMA_BIT_ALIAS(DROPPABLE, ARCH_1),
-+#else
-+	DECLARE_VMA_BIT(DROPPABLE, 40),
-+#endif
-+	DECLARE_VMA_BIT(UFFD_MINOR, 41),
-+	DECLARE_VMA_BIT(SEALED, 42),
-+	/* Flags that reuse flags above. */
-+	DECLARE_VMA_BIT_ALIAS(PKEY_BIT0, HIGH_ARCH_0),
-+	DECLARE_VMA_BIT_ALIAS(PKEY_BIT1, HIGH_ARCH_1),
-+	DECLARE_VMA_BIT_ALIAS(PKEY_BIT2, HIGH_ARCH_2),
-+	DECLARE_VMA_BIT_ALIAS(PKEY_BIT3, HIGH_ARCH_3),
-+	DECLARE_VMA_BIT_ALIAS(PKEY_BIT4, HIGH_ARCH_4),
-+#if defined(CONFIG_X86_USER_SHADOW_STACK)
-+	/*
-+	 * VM_SHADOW_STACK should not be set with VM_SHARED because of lack of
-+	 * support core mm.
-+	 *
-+	 * These VMAs will get a single end guard page. This helps userspace
-+	 * protect itself from attacks. A single page is enough for current
-+	 * shadow stack archs (x86). See the comments near alloc_shstk() in
-+	 * arch/x86/kernel/shstk.c for more details on the guard size.
-+	 */
-+	DECLARE_VMA_BIT_ALIAS(SHADOW_STACK, HIGH_ARCH_5),
-+#elif defined(CONFIG_ARM64_GCS)
-+	/*
-+	 * arm64's Guarded Control Stack implements similar functionality and
-+	 * has similar constraints to shadow stacks.
-+	 */
-+	DECLARE_VMA_BIT_ALIAS(SHADOW_STACK, HIGH_ARCH_6),
-+#endif
-+	DECLARE_VMA_BIT_ALIAS(SAO, ARCH_1),		/* Strong Access Ordering (powerpc) */
-+	DECLARE_VMA_BIT_ALIAS(GROWSUP, ARCH_1),		/* parisc */
-+	DECLARE_VMA_BIT_ALIAS(SPARC_ADI, ARCH_1),	/* sparc64 */
-+	DECLARE_VMA_BIT_ALIAS(ARM64_BTI, ARCH_1),	/* arm64 */
-+	DECLARE_VMA_BIT_ALIAS(ARCH_CLEAR, ARCH_1),	/* sparc64, arm64 */
-+	DECLARE_VMA_BIT_ALIAS(MAPPED_COPY, ARCH_1),	/* !CONFIG_MMU */
-+	DECLARE_VMA_BIT_ALIAS(MTE, HIGH_ARCH_4),	/* arm64 */
-+	DECLARE_VMA_BIT_ALIAS(MTE_ALLOWED, HIGH_ARCH_5),/* arm64 */
-+#ifdef CONFIG_STACK_GROWSUP
-+	DECLARE_VMA_BIT_ALIAS(STACK, GROWSUP),
-+	DECLARE_VMA_BIT_ALIAS(STACK_EARLY, GROWSDOWN),
-+#else
-+	DECLARE_VMA_BIT_ALIAS(STACK, GROWSDOWN),
-+#endif
-+};
-+#undef DECLARE_VMA_BIT
-+#undef DECLARE_VMA_BIT_ALIAS
-+
-+#define INIT_VM_FLAG(name) BIT((__force int) VMA_ ## name ## _BIT)
-+#define VM_READ		INIT_VM_FLAG(READ)
-+#define VM_WRITE	INIT_VM_FLAG(WRITE)
-+#define VM_EXEC		INIT_VM_FLAG(EXEC)
-+#define VM_SHARED	INIT_VM_FLAG(SHARED)
-+#define VM_MAYREAD	INIT_VM_FLAG(MAYREAD)
-+#define VM_MAYWRITE	INIT_VM_FLAG(MAYWRITE)
-+#define VM_MAYEXEC	INIT_VM_FLAG(MAYEXEC)
-+#define VM_MAYSHARE	INIT_VM_FLAG(MAYSHARE)
-+#define VM_GROWSDOWN	INIT_VM_FLAG(GROWSDOWN)
-+#ifdef CONFIG_MMU
-+#define VM_UFFD_MISSING	INIT_VM_FLAG(UFFD_MISSING)
-+#else
-+#define VM_UFFD_MISSING	VM_NONE
-+#define VM_MAYOVERLAY	INIT_VM_FLAG(MAYOVERLAY)
-+#endif
-+#define VM_PFNMAP	INIT_VM_FLAG(PFNMAP)
-+#define VM_MAYBE_GUARD	INIT_VM_FLAG(MAYBE_GUARD)
-+#define VM_UFFD_WP	INIT_VM_FLAG(UFFD_WP)
-+#define VM_LOCKED	INIT_VM_FLAG(LOCKED)
-+#define VM_IO		INIT_VM_FLAG(IO)
-+#define VM_SEQ_READ	INIT_VM_FLAG(SEQ_READ)
-+#define VM_RAND_READ	INIT_VM_FLAG(RAND_READ)
-+#define VM_DONTCOPY	INIT_VM_FLAG(DONTCOPY)
-+#define VM_DONTEXPAND	INIT_VM_FLAG(DONTEXPAND)
-+#define VM_LOCKONFAULT	INIT_VM_FLAG(LOCKONFAULT)
-+#define VM_ACCOUNT	INIT_VM_FLAG(ACCOUNT)
-+#define VM_NORESERVE	INIT_VM_FLAG(NORESERVE)
-+#define VM_HUGETLB	INIT_VM_FLAG(HUGETLB)
-+#define VM_SYNC		INIT_VM_FLAG(SYNC)
-+#define VM_ARCH_1	INIT_VM_FLAG(ARCH_1)
-+#define VM_WIPEONFORK	INIT_VM_FLAG(WIPEONFORK)
-+#define VM_DONTDUMP	INIT_VM_FLAG(DONTDUMP)
- #ifdef CONFIG_MEM_SOFT_DIRTY
--# define VM_SOFTDIRTY	0x08000000	/* Not soft dirty clean area */
-+#define VM_SOFTDIRTY	INIT_VM_FLAG(SOFTDIRTY)
- #else
--# define VM_SOFTDIRTY	0
-+#define VM_SOFTDIRTY	VM_NONE
-+#endif
-+#define VM_MIXEDMAP	INIT_VM_FLAG(MIXEDMAP)
-+#define VM_HUGEPAGE	INIT_VM_FLAG(HUGEPAGE)
-+#define VM_NOHUGEPAGE	INIT_VM_FLAG(NOHUGEPAGE)
-+#define VM_MERGEABLE	INIT_VM_FLAG(MERGEABLE)
-+#define VM_STACK	INIT_VM_FLAG(STACK)
-+#ifdef CONFIG_STACK_GROWS_UP
-+#define VM_STACK_EARLY	INIT_VM_FLAG(STACK_EARLY)
-+#else
-+#define VM_STACK_EARLY	VM_NONE
- #endif
--
--#define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
--#define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
--#define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
--#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
--
--#ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
--#define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
--#define VM_HIGH_ARCH_BIT_1	33	/* bit only usable on 64-bit architectures */
--#define VM_HIGH_ARCH_BIT_2	34	/* bit only usable on 64-bit architectures */
--#define VM_HIGH_ARCH_BIT_3	35	/* bit only usable on 64-bit architectures */
--#define VM_HIGH_ARCH_BIT_4	36	/* bit only usable on 64-bit architectures */
--#define VM_HIGH_ARCH_BIT_5	37	/* bit only usable on 64-bit architectures */
--#define VM_HIGH_ARCH_BIT_6	38	/* bit only usable on 64-bit architectures */
--#define VM_HIGH_ARCH_0	BIT(VM_HIGH_ARCH_BIT_0)
--#define VM_HIGH_ARCH_1	BIT(VM_HIGH_ARCH_BIT_1)
--#define VM_HIGH_ARCH_2	BIT(VM_HIGH_ARCH_BIT_2)
--#define VM_HIGH_ARCH_3	BIT(VM_HIGH_ARCH_BIT_3)
--#define VM_HIGH_ARCH_4	BIT(VM_HIGH_ARCH_BIT_4)
--#define VM_HIGH_ARCH_5	BIT(VM_HIGH_ARCH_BIT_5)
--#define VM_HIGH_ARCH_6	BIT(VM_HIGH_ARCH_BIT_6)
--#endif /* CONFIG_ARCH_USES_HIGH_VMA_FLAGS */
--
- #ifdef CONFIG_ARCH_HAS_PKEYS
--# define VM_PKEY_SHIFT VM_HIGH_ARCH_BIT_0
--# define VM_PKEY_BIT0  VM_HIGH_ARCH_0
--# define VM_PKEY_BIT1  VM_HIGH_ARCH_1
--# define VM_PKEY_BIT2  VM_HIGH_ARCH_2
-+#define VM_PKEY_SHIFT ((__force int)VMA_HIGH_ARCH_0_BIT)
-+/* Despite the naming, these are FLAGS not bits. */
-+#define VM_PKEY_BIT0 INIT_VM_FLAG(PKEY_BIT0)
-+#define VM_PKEY_BIT1 INIT_VM_FLAG(PKEY_BIT1)
-+#define VM_PKEY_BIT2 INIT_VM_FLAG(PKEY_BIT2)
- #if CONFIG_ARCH_PKEY_BITS > 3
--# define VM_PKEY_BIT3  VM_HIGH_ARCH_3
-+#define VM_PKEY_BIT3 INIT_VM_FLAG(PKEY_BIT3)
- #else
--# define VM_PKEY_BIT3  0
--#endif
-+#define VM_PKEY_BIT3  VM_NONE
-+#endif /* CONFIG_ARCH_PKEY_BITS > 3 */
- #if CONFIG_ARCH_PKEY_BITS > 4
--# define VM_PKEY_BIT4  VM_HIGH_ARCH_4
-+#define VM_PKEY_BIT4 INIT_VM_FLAG(PKEY_BIT4)
- #else
--# define VM_PKEY_BIT4  0
--#endif
-+#define VM_PKEY_BIT4  VM_NONE
-+#endif /* CONFIG_ARCH_PKEY_BITS > 4 */
- #endif /* CONFIG_ARCH_HAS_PKEYS */
--
--#ifdef CONFIG_X86_USER_SHADOW_STACK
--/*
-- * VM_SHADOW_STACK should not be set with VM_SHARED because of lack of
-- * support core mm.
-- *
-- * These VMAs will get a single end guard page. This helps userspace protect
-- * itself from attacks. A single page is enough for current shadow stack archs
-- * (x86). See the comments near alloc_shstk() in arch/x86/kernel/shstk.c
-- * for more details on the guard size.
-- */
--# define VM_SHADOW_STACK	VM_HIGH_ARCH_5
--#endif
--
--#if defined(CONFIG_ARM64_GCS)
--/*
-- * arm64's Guarded Control Stack implements similar functionality and
-- * has similar constraints to shadow stacks.
-- */
--# define VM_SHADOW_STACK	VM_HIGH_ARCH_6
--#endif
--
--#ifndef VM_SHADOW_STACK
--# define VM_SHADOW_STACK	VM_NONE
-+#if defined(CONFIG_X86_USER_SHADOW_STACK) || defined(CONFIG_ARM64_GCS)
-+#define VM_SHADOW_STACK	INIT_VM_FLAG(SHADOW_STACK)
-+#else
-+#define VM_SHADOW_STACK	VM_NONE
- #endif
--
- #if defined(CONFIG_PPC64)
--# define VM_SAO		VM_ARCH_1	/* Strong Access Ordering (powerpc) */
-+#define VM_SAO		INIT_VM_FLAG(SAO)
- #elif defined(CONFIG_PARISC)
--# define VM_GROWSUP	VM_ARCH_1
-+#define VM_GROWSUP	INIT_VM_FLAG(GROWSUP)
- #elif defined(CONFIG_SPARC64)
--# define VM_SPARC_ADI	VM_ARCH_1	/* Uses ADI tag for access control */
--# define VM_ARCH_CLEAR	VM_SPARC_ADI
-+#define VM_SPARC_ADI	INIT_VM_FLAG(SPARC_ADI)
-+#define VM_ARCH_CLEAR	INIT_VM_FLAG(ARCH_CLEAR)
- #elif defined(CONFIG_ARM64)
--# define VM_ARM64_BTI	VM_ARCH_1	/* BTI guarded page, a.k.a. GP bit */
--# define VM_ARCH_CLEAR	VM_ARM64_BTI
-+#define VM_ARM64_BTI	INIT_VM_FLAG(ARM64_BTI)
-+#define VM_ARCH_CLEAR	INIT_VM_FLAG(ARCH_CLEAR)
- #elif !defined(CONFIG_MMU)
--# define VM_MAPPED_COPY	VM_ARCH_1	/* T if mapped copy of data (nommu mmap) */
--#endif
--
--#if defined(CONFIG_ARM64_MTE)
--# define VM_MTE		VM_HIGH_ARCH_4	/* Use Tagged memory for access control */
--# define VM_MTE_ALLOWED	VM_HIGH_ARCH_5	/* Tagged memory permitted */
--#else
--# define VM_MTE		VM_NONE
--# define VM_MTE_ALLOWED	VM_NONE
-+#define VM_MAPPED_COPY	INIT_VM_FLAG(MAPPED_COPY)
- #endif
--
- #ifndef VM_GROWSUP
--# define VM_GROWSUP	VM_NONE
-+#define VM_GROWSUP	VM_NONE
-+#endif
-+#ifdef CONFIG_ARM64_MTE
-+#define VM_MTE		INIT_VM_FLAG(MTE)
-+#define VM_MTE_ALLOWED	INIT_VM_FLAG(MTE_ALLOWED)
-+#else
-+#define VM_MTE		VM_NONE
-+#define VM_MTE_ALLOWED	VM_NONE
- #endif
--
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
--# define VM_UFFD_MINOR_BIT	41
--# define VM_UFFD_MINOR		BIT(VM_UFFD_MINOR_BIT)	/* UFFD minor faults */
--#else /* !CONFIG_HAVE_ARCH_USERFAULTFD_MINOR */
--# define VM_UFFD_MINOR		VM_NONE
--#endif /* CONFIG_HAVE_ARCH_USERFAULTFD_MINOR */
--
--/*
-- * This flag is used to connect VFIO to arch specific KVM code. It
-- * indicates that the memory under this VMA is safe for use with any
-- * non-cachable memory type inside KVM. Some VFIO devices, on some
-- * platforms, are thought to be unsafe and can cause machine crashes
-- * if KVM does not lock down the memory type.
-- */
--#ifdef CONFIG_64BIT
--#define VM_ALLOW_ANY_UNCACHED_BIT	39
--#define VM_ALLOW_ANY_UNCACHED		BIT(VM_ALLOW_ANY_UNCACHED_BIT)
-+#define VM_UFFD_MINOR	INIT_VM_FLAG(UFFD_MINOR)
- #else
--#define VM_ALLOW_ANY_UNCACHED		VM_NONE
-+#define VM_UFFD_MINOR	VM_NONE
- #endif
--
- #ifdef CONFIG_64BIT
--#define VM_DROPPABLE_BIT	40
--#define VM_DROPPABLE		BIT(VM_DROPPABLE_BIT)
--#elif defined(CONFIG_PPC32)
--#define VM_DROPPABLE		VM_ARCH_1
-+#define VM_ALLOW_ANY_UNCACHED	INIT_VM_FLAG(ALLOW_ANY_UNCACHED)
-+#define VM_SEALED		INIT_VM_FLAG(SEALED)
- #else
--#define VM_DROPPABLE		VM_NONE
-+#define VM_ALLOW_ANY_UNCACHED	VM_NONE
-+#define VM_SEALED		VM_NONE
- #endif
--
--#ifdef CONFIG_64BIT
--#define VM_SEALED_BIT	42
--#define VM_SEALED	BIT(VM_SEALED_BIT)
-+#if defined(CONFIG_64BIT) || defined(CONFIG_PPC32)
-+#define VM_DROPPABLE		INIT_VM_FLAG(DROPPABLE)
- #else
--#define VM_SEALED	VM_NONE
-+#define VM_DROPPABLE		VM_NONE
- #endif
- 
- /* Bits set in the VMA until the stack is in its final location */
-@@ -475,12 +529,10 @@ extern unsigned int kobjsize(const void *objp);
- 
- #define VM_STARTGAP_FLAGS (VM_GROWSDOWN | VM_SHADOW_STACK)
- 
--#ifdef CONFIG_STACK_GROWSUP
--#define VM_STACK	VM_GROWSUP
--#define VM_STACK_EARLY	VM_GROWSDOWN
-+#ifdef CONFIG_MSEAL_SYSTEM_MAPPINGS
-+#define VM_SEALED_SYSMAP	VM_SEALED
- #else
--#define VM_STACK	VM_GROWSDOWN
--#define VM_STACK_EARLY	0
-+#define VM_SEALED_SYSMAP	VM_NONE
- #endif
- 
- #define VM_STACK_FLAGS	(VM_STACK | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
-@@ -488,7 +540,6 @@ extern unsigned int kobjsize(const void *objp);
- /* VMA basic access permission flags */
- #define VM_ACCESS_FLAGS (VM_READ | VM_WRITE | VM_EXEC)
- 
--
- /*
-  * Special vmas that are non-mergable, non-mlock()able.
-  */
-@@ -523,7 +574,7 @@ extern unsigned int kobjsize(const void *objp);
- 
- /* Arch-specific flags to clear when updating VM flags on protection change */
- #ifndef VM_ARCH_CLEAR
--# define VM_ARCH_CLEAR	VM_NONE
-+#define VM_ARCH_CLEAR	VM_NONE
- #endif
- #define VM_FLAGS_CLEAR	(ARCH_VM_PKEY_FLAGS | VM_ARCH_CLEAR)
- 
-@@ -920,9 +971,9 @@ static inline void vm_flags_mod(struct vm_area_struct *vma,
+@@ -911,7 +911,8 @@ static inline void vm_flags_init(struct vm_area_struct *vma,
+ 				 vm_flags_t flags)
+ {
+ 	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
+-	ACCESS_PRIVATE(vma, __vm_flags) = flags;
++	vma_flags_clear_all(&vma->flags);
++	vma_flags_overwrite_word(&vma->flags, flags);
  }
  
- static inline bool __vma_flag_atomic_valid(struct vm_area_struct *vma,
--				       int bit)
-+					   vma_flag_t bit)
+ /*
+@@ -931,14 +932,25 @@ static inline void vm_flags_reset_once(struct vm_area_struct *vma,
+ 				       vm_flags_t flags)
  {
--	const vm_flags_t mask = BIT(bit);
-+	const vm_flags_t mask = BIT((__force int)bit);
+ 	vma_assert_write_locked(vma);
+-	WRITE_ONCE(ACCESS_PRIVATE(vma, __vm_flags), flags);
++	/*
++	 * If VMA flags exist beyond the first system word, also clear these. It
++	 * is assumed the write once behaviour is required only for the first
++	 * system word.
++	 */
++	if (NUM_VMA_FLAG_BITS > BITS_PER_LONG) {
++		unsigned long *bitmap = ACCESS_PRIVATE(&vma->flags, __vma_flags);
++
++		bitmap_zero(&bitmap[1], NUM_VMA_FLAG_BITS - BITS_PER_LONG);
++	}
++
++	vma_flags_overwrite_word_once(&vma->flags, flags);
+ }
  
- 	/* Only specific flags are permitted */
- 	if (WARN_ON_ONCE(!(mask & VM_ATOMIC_SET_ALLOWED)))
-@@ -935,14 +986,15 @@ static inline bool __vma_flag_atomic_valid(struct vm_area_struct *vma,
-  * Set VMA flag atomically. Requires only VMA/mmap read lock. Only specific
-  * valid flags are allowed to do this.
-  */
--static inline void vma_flag_set_atomic(struct vm_area_struct *vma, int bit)
-+static inline void vma_flag_set_atomic(struct vm_area_struct *vma,
-+				       vma_flag_t bit)
+ static inline void vm_flags_set(struct vm_area_struct *vma,
+ 				vm_flags_t flags)
  {
+ 	vma_start_write(vma);
+-	ACCESS_PRIVATE(vma, __vm_flags) |= flags;
++	vma_flags_set_word(&vma->flags, flags);
+ }
+ 
+ static inline void vm_flags_clear(struct vm_area_struct *vma,
+@@ -946,7 +958,7 @@ static inline void vm_flags_clear(struct vm_area_struct *vma,
+ {
+ 	VM_WARN_ON_ONCE(!pgtable_supports_soft_dirty() && (flags & VM_SOFTDIRTY));
+ 	vma_start_write(vma);
+-	ACCESS_PRIVATE(vma, __vm_flags) &= ~flags;
++	vma_flags_clear_word(&vma->flags, flags);
+ }
+ 
+ /*
+@@ -989,12 +1001,14 @@ static inline bool __vma_flag_atomic_valid(struct vm_area_struct *vma,
+ static inline void vma_flag_set_atomic(struct vm_area_struct *vma,
+ 				       vma_flag_t bit)
+ {
++	unsigned long *bitmap = ACCESS_PRIVATE(&vma->flags, __vma_flags);
++
  	/* mmap read lock/VMA read lock must be held. */
  	if (!rwsem_is_locked(&vma->vm_mm->mmap_lock))
  		vma_assert_locked(vma);
  
  	if (__vma_flag_atomic_valid(vma, bit))
--		set_bit(bit, &ACCESS_PRIVATE(vma, __vm_flags));
-+		set_bit((__force int)bit, &ACCESS_PRIVATE(vma, __vm_flags));
+-		set_bit((__force int)bit, &ACCESS_PRIVATE(vma, __vm_flags));
++		set_bit((__force int)bit, bitmap);
  }
  
  /*
-@@ -952,10 +1004,11 @@ static inline void vma_flag_set_atomic(struct vm_area_struct *vma, int bit)
-  * This is necessarily racey, so callers must ensure that serialisation is
-  * achieved through some other means, or that races are permissible.
-  */
--static inline bool vma_flag_test_atomic(struct vm_area_struct *vma, int bit)
-+static inline bool vma_flag_test_atomic(struct vm_area_struct *vma,
-+					vma_flag_t bit)
- {
- 	if (__vma_flag_atomic_valid(vma, bit))
--		return test_bit(bit, &vma->vm_flags);
-+		return test_bit((__force int)bit, &vma->vm_flags);
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 3550672e0f9e..b71625378ce3 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -848,6 +848,15 @@ struct mmap_action {
+ 	bool hide_from_rmap_until_complete :1;
+ };
  
- 	return false;
- }
-@@ -4517,16 +4570,6 @@ int arch_get_shadow_stack_status(struct task_struct *t, unsigned long __user *st
- int arch_set_shadow_stack_status(struct task_struct *t, unsigned long status);
- int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
- 
--
--/*
-- * mseal of userspace process's system mappings.
-- */
--#ifdef CONFIG_MSEAL_SYSTEM_MAPPINGS
--#define VM_SEALED_SYSMAP	VM_SEALED
--#else
--#define VM_SEALED_SYSMAP	VM_NONE
--#endif
--
- /*
-  * DMA mapping IDs for page_pool
-  *
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 89c33ef7aac3..97d1b2824386 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1740,7 +1740,7 @@ static bool file_backed_vma_is_retractable(struct vm_area_struct *vma)
- 	 * obtained on guard region installation after the flag is set, so this
- 	 * check being performed under this lock excludes races.
- 	 */
--	if (vma_flag_test_atomic(vma, VM_MAYBE_GUARD_BIT))
-+	if (vma_flag_test_atomic(vma, VMA_MAYBE_GUARD_BIT))
- 		return false;
- 
- 	return true;
-diff --git a/mm/madvise.c b/mm/madvise.c
-index d8bc51e1bea7..b617b1be0f53 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -1142,7 +1142,7 @@ static long madvise_guard_install(struct madvise_behavior *madv_behavior)
- 	 * acquire an mmap/VMA write lock to read it. All remaining readers may
- 	 * or may not see the flag set, but we don't care.
- 	 */
--	vma_flag_set_atomic(vma, VM_MAYBE_GUARD_BIT);
-+	vma_flag_set_atomic(vma, VMA_MAYBE_GUARD_BIT);
- 
- 	/*
- 	 * If anonymous and we are establishing page tables the VMA ought to
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index e13c6f9dd17b..fd2fd1c3cb9a 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -35,6 +35,31 @@
- # recognized, block generation of the non-helper constants.
- --blocklist-item ARCH_SLAB_MINALIGN
- --blocklist-item ARCH_KMALLOC_MINALIGN
-+--blocklist-item VM_MERGEABLE
-+--blocklist-item VM_READ
-+--blocklist-item VM_WRITE
-+--blocklist-item VM_EXEC
-+--blocklist-item VM_SHARED
-+--blocklist-item VM_MAYREAD
-+--blocklist-item VM_MAYWRITE
-+--blocklist-item VM_MAYEXEC
-+--blocklist-item VM_MAYEXEC
-+--blocklist-item VM_PFNMAP
-+--blocklist-item VM_IO
-+--blocklist-item VM_DONTCOPY
-+--blocklist-item VM_DONTEXPAND
-+--blocklist-item VM_LOCKONFAULT
-+--blocklist-item VM_ACCOUNT
-+--blocklist-item VM_NORESERVE
-+--blocklist-item VM_HUGETLB
-+--blocklist-item VM_SYNC
-+--blocklist-item VM_ARCH_1
-+--blocklist-item VM_WIPEONFORK
-+--blocklist-item VM_DONTDUMP
-+--blocklist-item VM_SOFTDIRTY
-+--blocklist-item VM_MIXEDMAP
-+--blocklist-item VM_HUGEPAGE
-+--blocklist-item VM_NOHUGEPAGE
- 
- # Structs should implement `Zeroable` when all of their fields do.
- --with-derive-custom-struct .*=MaybeZeroable
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 2e43c66635a2..4c327db01ca0 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -108,7 +108,32 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
- 
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
++/*
++ * Opaque type representing current VMA (vm_area_struct) flag state. Must be
++ * accessed via vma_flags_xxx() helper functions.
++ */
++#define NUM_VMA_FLAG_BITS BITS_PER_LONG
++typedef struct {
++	DECLARE_BITMAP(__vma_flags, NUM_VMA_FLAG_BITS);
++} __private vma_flags_t;
 +
- const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
-+const vm_flags_t RUST_CONST_HELPER_VM_READ = VM_READ;
-+const vm_flags_t RUST_CONST_HELPER_VM_WRITE = VM_WRITE;
-+const vm_flags_t RUST_CONST_HELPER_VM_EXEC = VM_EXEC;
-+const vm_flags_t RUST_CONST_HELPER_VM_SHARED = VM_SHARED;
-+const vm_flags_t RUST_CONST_HELPER_VM_MAYREAD = VM_MAYREAD;
-+const vm_flags_t RUST_CONST_HELPER_VM_MAYWRITE = VM_MAYWRITE;
-+const vm_flags_t RUST_CONST_HELPER_VM_MAYEXEC = VM_MAYEXEC;
-+const vm_flags_t RUST_CONST_HELPER_VM_MAYSHARE = VM_MAYEXEC;
-+const vm_flags_t RUST_CONST_HELPER_VM_PFNMAP = VM_PFNMAP;
-+const vm_flags_t RUST_CONST_HELPER_VM_IO = VM_IO;
-+const vm_flags_t RUST_CONST_HELPER_VM_DONTCOPY = VM_DONTCOPY;
-+const vm_flags_t RUST_CONST_HELPER_VM_DONTEXPAND = VM_DONTEXPAND;
-+const vm_flags_t RUST_CONST_HELPER_VM_LOCKONFAULT = VM_LOCKONFAULT;
-+const vm_flags_t RUST_CONST_HELPER_VM_ACCOUNT = VM_ACCOUNT;
-+const vm_flags_t RUST_CONST_HELPER_VM_NORESERVE = VM_NORESERVE;
-+const vm_flags_t RUST_CONST_HELPER_VM_HUGETLB = VM_HUGETLB;
-+const vm_flags_t RUST_CONST_HELPER_VM_SYNC = VM_SYNC;
-+const vm_flags_t RUST_CONST_HELPER_VM_ARCH_1 = VM_ARCH_1;
-+const vm_flags_t RUST_CONST_HELPER_VM_WIPEONFORK = VM_WIPEONFORK;
-+const vm_flags_t RUST_CONST_HELPER_VM_DONTDUMP = VM_DONTDUMP;
-+const vm_flags_t RUST_CONST_HELPER_VM_SOFTDIRTY = VM_SOFTDIRTY;
-+const vm_flags_t RUST_CONST_HELPER_VM_MIXEDMAP = VM_MIXEDMAP;
-+const vm_flags_t RUST_CONST_HELPER_VM_HUGEPAGE = VM_HUGEPAGE;
-+const vm_flags_t RUST_CONST_HELPER_VM_NOHUGEPAGE = VM_NOHUGEPAGE;
+ /*
+  * Describes a VMA that is about to be mmap()'ed. Drivers may choose to
+  * manipulate mutable fields which will cause those fields to be updated in the
+@@ -865,7 +874,10 @@ struct vm_area_desc {
+ 	/* Mutable fields. Populated with initial state. */
+ 	pgoff_t pgoff;
+ 	struct file *vm_file;
+-	vm_flags_t vm_flags;
++	union {
++		vm_flags_t vm_flags;
++		vma_flags_t vma_flags;
++	};
+ 	pgprot_t page_prot;
  
- #if IS_ENABLED(CONFIG_ANDROID_BINDER_IPC_RUST)
- #include "../../drivers/android/binder/rust_binder.h"
+ 	/* Write-only fields. */
+@@ -910,10 +922,12 @@ struct vm_area_struct {
+ 	/*
+ 	 * Flags, see mm.h.
+ 	 * To modify use vm_flags_{init|reset|set|clear|mod} functions.
++	 * Preferably, use vma_flags_xxx() functions.
+ 	 */
+ 	union {
++		/* Temporary while VMA flags are being converted. */
+ 		const vm_flags_t vm_flags;
+-		vm_flags_t __private __vm_flags;
++		vma_flags_t flags;
+ 	};
+ 
+ #ifdef CONFIG_PER_VMA_LOCK
+@@ -994,6 +1008,52 @@ struct vm_area_struct {
+ #endif
+ } __randomize_layout;
+ 
++/* Clears all bits in the VMA flags bitmap, non-atomically. */
++static inline void vma_flags_clear_all(vma_flags_t *flags)
++{
++	bitmap_zero(ACCESS_PRIVATE(flags, __vma_flags), NUM_VMA_FLAG_BITS);
++}
++
++/*
++ * Copy value to the first system word of VMA flags, non-atomically.
++ *
++ * IMPORTANT: This does not overwrite bytes past the first system word. The
++ * caller must account for this.
++ */
++static inline void vma_flags_overwrite_word(vma_flags_t *flags, unsigned long value)
++{
++	*ACCESS_PRIVATE(flags, __vma_flags) = value;
++}
++
++/*
++ * Copy value to the first system word of VMA flags ONCE, non-atomically.
++ *
++ * IMPORTANT: This does not overwrite bytes past the first system word. The
++ * caller must account for this.
++ */
++static inline void vma_flags_overwrite_word_once(vma_flags_t *flags, unsigned long value)
++{
++	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
++
++	WRITE_ONCE(*bitmap, value);
++}
++
++/* Update the first system word of VMA flags setting bits, non-atomically. */
++static inline void vma_flags_set_word(vma_flags_t *flags, unsigned long value)
++{
++	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
++
++	*bitmap |= value;
++}
++
++/* Update the first system word of VMA flags clearing bits, non-atomically. */
++static inline void vma_flags_clear_word(vma_flags_t *flags, unsigned long value)
++{
++	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
++
++	*bitmap &= ~value;
++}
++
+ #ifdef CONFIG_NUMA
+ #define vma_policy(vma) ((vma)->vm_policy)
+ #else
+diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+index a1bfa4e19293..da21d65ccd20 100644
+--- a/rust/kernel/mm/virt.rs
++++ b/rust/kernel/mm/virt.rs
+@@ -250,7 +250,7 @@ unsafe fn update_flags(&self, set: vm_flags_t, unset: vm_flags_t) {
+         // SAFETY: This is not a data race: the vma is undergoing initial setup, so it's not yet
+         // shared. Additionally, `VmaNew` is `!Sync`, so it cannot be used to write in parallel.
+         // The caller promises that this does not set the flags to an invalid value.
+-        unsafe { (*self.as_ptr()).__bindgen_anon_2.__vm_flags = flags };
++        unsafe { (*self.as_ptr()).__bindgen_anon_2.vm_flags = flags };
+     }
+ 
+     /// Set the `VM_MIXEDMAP` flag on this vma.
 diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index 8c2ac301a00e..b7e8fc9ccdf4 100644
+index b7e8fc9ccdf4..9f0a9f5ed0fe 100644
 --- a/tools/testing/vma/vma_internal.h
 +++ b/tools/testing/vma/vma_internal.h
-@@ -46,42 +46,271 @@ extern unsigned long dac_mmap_min_addr;
- 
- #define MMF_HAS_MDWE	28
+@@ -524,6 +524,15 @@ typedef struct {
+ 	__private DECLARE_BITMAP(__mm_flags, NUM_MM_FLAG_BITS);
+ } mm_flags_t;
  
 +/*
-+ * vm_flags in vm_area_struct, see mm_types.h.
-+ * When changing, update also include/trace/events/mmflags.h
++ * Opaque type representing current VMA (vm_area_struct) flag state. Must be
++ * accessed via vma_flags_xxx() helper functions.
 + */
++#define NUM_VMA_FLAG_BITS BITS_PER_LONG
++typedef struct {
++	DECLARE_BITMAP(__vma_flags, NUM_VMA_FLAG_BITS);
++} __private vma_flags_t;
 +
- #define VM_NONE		0x00000000
--#define VM_READ		0x00000001
--#define VM_WRITE	0x00000002
--#define VM_EXEC		0x00000004
--#define VM_SHARED	0x00000008
--#define VM_MAYREAD	0x00000010
--#define VM_MAYWRITE	0x00000020
--#define VM_MAYEXEC	0x00000040
--#define VM_GROWSDOWN	0x00000100
--#define VM_PFNMAP	0x00000400
--#define VM_MAYBE_GUARD	0x00000800
--#define VM_LOCKED	0x00002000
--#define VM_IO           0x00004000
--#define VM_SEQ_READ	0x00008000	/* App will access data sequentially */
--#define VM_RAND_READ	0x00010000	/* App will not benefit from clustered reads */
--#define VM_DONTEXPAND	0x00040000
--#define VM_LOCKONFAULT	0x00080000
--#define VM_ACCOUNT	0x00100000
--#define VM_NORESERVE	0x00200000
--#define VM_MIXEDMAP	0x10000000
--#define VM_STACK	VM_GROWSDOWN
--#define VM_SHADOW_STACK	VM_NONE
--#define VM_SOFTDIRTY	0
--#define VM_ARCH_1	0x01000000	/* Architecture-specific flag */
--#define VM_GROWSUP	VM_NONE
+ struct mm_struct {
+ 	struct maple_tree mm_mt;
+ 	int map_count;			/* number of VMAs */
+@@ -608,7 +617,10 @@ struct vm_area_desc {
+ 	/* Mutable fields. Populated with initial state. */
+ 	pgoff_t pgoff;
+ 	struct file *vm_file;
+-	vm_flags_t vm_flags;
++	union {
++		vm_flags_t vm_flags;
++		vma_flags_t vma_flags;
++	};
+ 	pgprot_t page_prot;
  
--#define VM_ACCESS_FLAGS (VM_READ | VM_WRITE | VM_EXEC)
--#define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
-+/**
-+ * typedef vma_flag_t - specifies an individual VMA flag by bit number.
+ 	/* Write-only fields. */
+@@ -654,7 +666,7 @@ struct vm_area_struct {
+ 	 */
+ 	union {
+ 		const vm_flags_t vm_flags;
+-		vm_flags_t __private __vm_flags;
++		vma_flags_t flags;
+ 	};
+ 
+ #ifdef CONFIG_PER_VMA_LOCK
+@@ -1368,26 +1380,6 @@ static inline bool may_expand_vm(struct mm_struct *mm, vm_flags_t flags,
+ 	return true;
+ }
+ 
+-static inline void vm_flags_init(struct vm_area_struct *vma,
+-				 vm_flags_t flags)
+-{
+-	vma->__vm_flags = flags;
+-}
+-
+-static inline void vm_flags_set(struct vm_area_struct *vma,
+-				vm_flags_t flags)
+-{
+-	vma_start_write(vma);
+-	vma->__vm_flags |= flags;
+-}
+-
+-static inline void vm_flags_clear(struct vm_area_struct *vma,
+-				  vm_flags_t flags)
+-{
+-	vma_start_write(vma);
+-	vma->__vm_flags &= ~flags;
+-}
+-
+ static inline int shmem_zero_setup(struct vm_area_struct *vma)
+ {
+ 	return 0;
+@@ -1544,13 +1536,118 @@ static inline void userfaultfd_unmap_complete(struct mm_struct *mm,
+ {
+ }
+ 
+-# define ACCESS_PRIVATE(p, member) ((p)->member)
++#define ACCESS_PRIVATE(p, member) ((p)->member)
++
++#define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
++
++static __always_inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
++{
++	unsigned int len = bitmap_size(nbits);
++
++	if (small_const_nbits(nbits))
++		*dst = 0;
++	else
++		memset(dst, 0, len);
++}
+ 
+ static inline bool mm_flags_test(int flag, const struct mm_struct *mm)
+ {
+ 	return test_bit(flag, ACCESS_PRIVATE(&mm->flags, __mm_flags));
+ }
+ 
++/* Clears all bits in the VMA flags bitmap, non-atomically. */
++static inline void vma_flags_clear_all(vma_flags_t *flags)
++{
++	bitmap_zero(ACCESS_PRIVATE(flags, __vma_flags), NUM_VMA_FLAG_BITS);
++}
++
++/*
++ * Copy value to the first system word of VMA flags, non-atomically.
 + *
-+ * This value is made type safe by sparse to avoid passing invalid flag values
-+ * around.
++ * IMPORTANT: This does not overwrite bytes past the first system word. The
++ * caller must account for this.
 + */
-+typedef int __bitwise vma_flag_t;
- 
-+#define DECLARE_VMA_BIT(name, bitnum) \
-+	VMA_ ## name ## _BIT = ((__force vma_flag_t)bitnum)
-+#define DECLARE_VMA_BIT_ALIAS(name, aliased) \
-+	VMA_ ## name ## _BIT = VMA_ ## aliased ## _BIT
-+enum {
-+	DECLARE_VMA_BIT(READ, 0),
-+	DECLARE_VMA_BIT(WRITE, 1),
-+	DECLARE_VMA_BIT(EXEC, 2),
-+	DECLARE_VMA_BIT(SHARED, 3),
-+	/* mprotect() hardcodes VM_MAYREAD >> 4 == VM_READ, and so for r/w/x bits. */
-+	DECLARE_VMA_BIT(MAYREAD, 4),	/* limits for mprotect() etc. */
-+	DECLARE_VMA_BIT(MAYWRITE, 5),
-+	DECLARE_VMA_BIT(MAYEXEC, 6),
-+	DECLARE_VMA_BIT(MAYSHARE, 7),
-+	DECLARE_VMA_BIT(GROWSDOWN, 8),	/* general info on the segment */
-+#ifdef CONFIG_MMU
-+	DECLARE_VMA_BIT(UFFD_MISSING, 9),/* missing pages tracking */
-+#else
-+	/* nommu: R/O MAP_PRIVATE mapping that might overlay a file mapping */
-+	DECLARE_VMA_BIT(MAYOVERLAY, 9),
-+#endif /* CONFIG_MMU */
-+	/* Page-ranges managed without "struct page", just pure PFN */
-+	DECLARE_VMA_BIT(PFNMAP, 10),
-+	DECLARE_VMA_BIT(MAYBE_GUARD, 11),
-+	DECLARE_VMA_BIT(UFFD_WP, 12),	/* wrprotect pages tracking */
-+	DECLARE_VMA_BIT(LOCKED, 13),
-+	DECLARE_VMA_BIT(IO, 14),	/* Memory mapped I/O or similar */
-+	DECLARE_VMA_BIT(SEQ_READ, 15),	/* App will access data sequentially */
-+	DECLARE_VMA_BIT(RAND_READ, 16),	/* App will not benefit from clustered reads */
-+	DECLARE_VMA_BIT(DONTCOPY, 17),	/* Do not copy this vma on fork */
-+	DECLARE_VMA_BIT(DONTEXPAND, 18),/* Cannot expand with mremap() */
-+	DECLARE_VMA_BIT(LOCKONFAULT, 19),/* Lock pages covered when faulted in */
-+	DECLARE_VMA_BIT(ACCOUNT, 20),	/* Is a VM accounted object */
-+	DECLARE_VMA_BIT(NORESERVE, 21),	/* should the VM suppress accounting */
-+	DECLARE_VMA_BIT(HUGETLB, 22),	/* Huge TLB Page VM */
-+	DECLARE_VMA_BIT(SYNC, 23),	/* Synchronous page faults */
-+	DECLARE_VMA_BIT(ARCH_1, 24),	/* Architecture-specific flag */
-+	DECLARE_VMA_BIT(WIPEONFORK, 25),/* Wipe VMA contents in child. */
-+	DECLARE_VMA_BIT(DONTDUMP, 26),	/* Do not include in the core dump */
-+	DECLARE_VMA_BIT(SOFTDIRTY, 27),	/* NOT soft dirty clean area */
-+	DECLARE_VMA_BIT(MIXEDMAP, 28),	/* Can contain struct page and pure PFN pages */
-+	DECLARE_VMA_BIT(HUGEPAGE, 29),	/* MADV_HUGEPAGE marked this vma */
-+	DECLARE_VMA_BIT(NOHUGEPAGE, 30),/* MADV_NOHUGEPAGE marked this vma */
-+	DECLARE_VMA_BIT(MERGEABLE, 31),	/* KSM may merge identical pages */
-+	/* These bits are reused, we define specific uses below. */
-+	DECLARE_VMA_BIT(HIGH_ARCH_0, 32),
-+	DECLARE_VMA_BIT(HIGH_ARCH_1, 33),
-+	DECLARE_VMA_BIT(HIGH_ARCH_2, 34),
-+	DECLARE_VMA_BIT(HIGH_ARCH_3, 35),
-+	DECLARE_VMA_BIT(HIGH_ARCH_4, 36),
-+	DECLARE_VMA_BIT(HIGH_ARCH_5, 37),
-+	DECLARE_VMA_BIT(HIGH_ARCH_6, 38),
-+	/*
-+	 * This flag is used to connect VFIO to arch specific KVM code. It
-+	 * indicates that the memory under this VMA is safe for use with any
-+	 * non-cachable memory type inside KVM. Some VFIO devices, on some
-+	 * platforms, are thought to be unsafe and can cause machine crashes
-+	 * if KVM does not lock down the memory type.
-+	 */
-+	DECLARE_VMA_BIT(ALLOW_ANY_UNCACHED, 39),
-+#ifdef CONFIG_PPC32
-+	DECLARE_VMA_BIT_ALIAS(DROPPABLE, ARCH_1),
-+#else
-+	DECLARE_VMA_BIT(DROPPABLE, 40),
-+#endif
-+	DECLARE_VMA_BIT(UFFD_MINOR, 41),
-+	DECLARE_VMA_BIT(SEALED, 42),
-+	/* Flags that reuse flags above. */
-+	DECLARE_VMA_BIT_ALIAS(PKEY_BIT0, HIGH_ARCH_0),
-+	DECLARE_VMA_BIT_ALIAS(PKEY_BIT1, HIGH_ARCH_1),
-+	DECLARE_VMA_BIT_ALIAS(PKEY_BIT2, HIGH_ARCH_2),
-+	DECLARE_VMA_BIT_ALIAS(PKEY_BIT3, HIGH_ARCH_3),
-+	DECLARE_VMA_BIT_ALIAS(PKEY_BIT4, HIGH_ARCH_4),
-+#if defined(CONFIG_X86_USER_SHADOW_STACK)
-+	/*
-+	 * VM_SHADOW_STACK should not be set with VM_SHARED because of lack of
-+	 * support core mm.
-+	 *
-+	 * These VMAs will get a single end guard page. This helps userspace
-+	 * protect itself from attacks. A single page is enough for current
-+	 * shadow stack archs (x86). See the comments near alloc_shstk() in
-+	 * arch/x86/kernel/shstk.c for more details on the guard size.
-+	 */
-+	DECLARE_VMA_BIT_ALIAS(SHADOW_STACK, HIGH_ARCH_5),
-+#elif defined(CONFIG_ARM64_GCS)
-+	/*
-+	 * arm64's Guarded Control Stack implements similar functionality and
-+	 * has similar constraints to shadow stacks.
-+	 */
-+	DECLARE_VMA_BIT_ALIAS(SHADOW_STACK, HIGH_ARCH_6),
-+#endif
-+	DECLARE_VMA_BIT_ALIAS(SAO, ARCH_1),		/* Strong Access Ordering (powerpc) */
-+	DECLARE_VMA_BIT_ALIAS(GROWSUP, ARCH_1),		/* parisc */
-+	DECLARE_VMA_BIT_ALIAS(SPARC_ADI, ARCH_1),	/* sparc64 */
-+	DECLARE_VMA_BIT_ALIAS(ARM64_BTI, ARCH_1),	/* arm64 */
-+	DECLARE_VMA_BIT_ALIAS(ARCH_CLEAR, ARCH_1),	/* sparc64, arm64 */
-+	DECLARE_VMA_BIT_ALIAS(MAPPED_COPY, ARCH_1),	/* !CONFIG_MMU */
-+	DECLARE_VMA_BIT_ALIAS(MTE, HIGH_ARCH_4),	/* arm64 */
-+	DECLARE_VMA_BIT_ALIAS(MTE_ALLOWED, HIGH_ARCH_5),/* arm64 */
- #ifdef CONFIG_STACK_GROWSUP
--#define VM_STACK	VM_GROWSUP
--#define VM_STACK_EARLY	VM_GROWSDOWN
-+	DECLARE_VMA_BIT_ALIAS(STACK, GROWSUP),
-+	DECLARE_VMA_BIT_ALIAS(STACK_EARLY, GROWSDOWN),
- #else
--#define VM_STACK	VM_GROWSDOWN
--#define VM_STACK_EARLY	0
-+	DECLARE_VMA_BIT_ALIAS(STACK, GROWSDOWN),
- #endif
-+};
-+
-+#define INIT_VM_FLAG(name) BIT((__force int) VMA_ ## name ## _BIT)
-+#define VM_READ		INIT_VM_FLAG(READ)
-+#define VM_WRITE	INIT_VM_FLAG(WRITE)
-+#define VM_EXEC		INIT_VM_FLAG(EXEC)
-+#define VM_SHARED	INIT_VM_FLAG(SHARED)
-+#define VM_MAYREAD	INIT_VM_FLAG(MAYREAD)
-+#define VM_MAYWRITE	INIT_VM_FLAG(MAYWRITE)
-+#define VM_MAYEXEC	INIT_VM_FLAG(MAYEXEC)
-+#define VM_MAYSHARE	INIT_VM_FLAG(MAYSHARE)
-+#define VM_GROWSDOWN	INIT_VM_FLAG(GROWSDOWN)
-+#ifdef CONFIG_MMU
-+#define VM_UFFD_MISSING	INIT_VM_FLAG(UFFD_MISSING)
-+#else
-+#define VM_UFFD_MISSING	VM_NONE
-+#define VM_MAYOVERLAY	INIT_VM_FLAG(MAYOVERLAY)
-+#endif
-+#define VM_PFNMAP	INIT_VM_FLAG(PFNMAP)
-+#define VM_MAYBE_GUARD	INIT_VM_FLAG(MAYBE_GUARD)
-+#define VM_UFFD_WP	INIT_VM_FLAG(UFFD_WP)
-+#define VM_LOCKED	INIT_VM_FLAG(LOCKED)
-+#define VM_IO		INIT_VM_FLAG(IO)
-+#define VM_SEQ_READ	INIT_VM_FLAG(SEQ_READ)
-+#define VM_RAND_READ	INIT_VM_FLAG(RAND_READ)
-+#define VM_DONTCOPY	INIT_VM_FLAG(DONTCOPY)
-+#define VM_DONTEXPAND	INIT_VM_FLAG(DONTEXPAND)
-+#define VM_LOCKONFAULT	INIT_VM_FLAG(LOCKONFAULT)
-+#define VM_ACCOUNT	INIT_VM_FLAG(ACCOUNT)
-+#define VM_NORESERVE	INIT_VM_FLAG(NORESERVE)
-+#define VM_HUGETLB	INIT_VM_FLAG(HUGETLB)
-+#define VM_SYNC		INIT_VM_FLAG(SYNC)
-+#define VM_ARCH_1	INIT_VM_FLAG(ARCH_1)
-+#define VM_WIPEONFORK	INIT_VM_FLAG(WIPEONFORK)
-+#define VM_DONTDUMP	INIT_VM_FLAG(DONTDUMP)
-+#ifdef CONFIG_MEM_SOFT_DIRTY
-+#define VM_SOFTDIRTY	INIT_VM_FLAG(SOFTDIRTY)
-+#else
-+#define VM_SOFTDIRTY	VM_NONE
-+#endif
-+#define VM_MIXEDMAP	INIT_VM_FLAG(MIXEDMAP)
-+#define VM_HUGEPAGE	INIT_VM_FLAG(HUGEPAGE)
-+#define VM_NOHUGEPAGE	INIT_VM_FLAG(NOHUGEPAGE)
-+#define VM_MERGEABLE	INIT_VM_FLAG(MERGEABLE)
-+#define VM_STACK	INIT_VM_FLAG(STACK)
-+#ifdef CONFIG_STACK_GROWS_UP
-+#define VM_STACK_EARLY	INIT_VM_FLAG(STACK_EARLY)
-+#else
-+#define VM_STACK_EARLY	VM_NONE
-+#endif
-+#ifdef CONFIG_ARCH_HAS_PKEYS
-+#define VM_PKEY_SHIFT ((__force int)VMA_HIGH_ARCH_0_BIT)
-+/* Despite the naming, these are FLAGS not bits. */
-+#define VM_PKEY_BIT0 INIT_VM_FLAG(PKEY_BIT0)
-+#define VM_PKEY_BIT1 INIT_VM_FLAG(PKEY_BIT1)
-+#define VM_PKEY_BIT2 INIT_VM_FLAG(PKEY_BIT2)
-+#if CONFIG_ARCH_PKEY_BITS > 3
-+#define VM_PKEY_BIT3 INIT_VM_FLAG(PKEY_BIT3)
-+#else
-+#define VM_PKEY_BIT3  VM_NONE
-+#endif /* CONFIG_ARCH_PKEY_BITS > 3 */
-+#if CONFIG_ARCH_PKEY_BITS > 4
-+#define VM_PKEY_BIT4 INIT_VM_FLAG(PKEY_BIT4)
-+#else
-+#define VM_PKEY_BIT4  VM_NONE
-+#endif /* CONFIG_ARCH_PKEY_BITS > 4 */
-+#endif /* CONFIG_ARCH_HAS_PKEYS */
-+#if defined(CONFIG_X86_USER_SHADOW_STACK) || defined(CONFIG_ARM64_GCS)
-+#define VM_SHADOW_STACK	INIT_VM_FLAG(SHADOW_STACK)
-+#else
-+#define VM_SHADOW_STACK	VM_NONE
-+#endif
-+#if defined(CONFIG_PPC64)
-+#define VM_SAO		INIT_VM_FLAG(SAO)
-+#elif defined(CONFIG_PARISC)
-+#define VM_GROWSUP	INIT_VM_FLAG(GROWSUP)
-+#elif defined(CONFIG_SPARC64)
-+#define VM_SPARC_ADI	INIT_VM_FLAG(SPARC_ADI)
-+#define VM_ARCH_CLEAR	INIT_VM_FLAG(ARCH_CLEAR)
-+#elif defined(CONFIG_ARM64)
-+#define VM_ARM64_BTI	INIT_VM_FLAG(ARM64_BTI)
-+#define VM_ARCH_CLEAR	INIT_VM_FLAG(ARCH_CLEAR)
-+#elif !defined(CONFIG_MMU)
-+#define VM_MAPPED_COPY	INIT_VM_FLAG(MAPPED_COPY)
-+#endif
-+#ifndef VM_GROWSUP
-+#define VM_GROWSUP	VM_NONE
-+#endif
-+#ifdef CONFIG_ARM64_MTE
-+#define VM_MTE		INIT_VM_FLAG(MTE)
-+#define VM_MTE_ALLOWED	INIT_VM_FLAG(MTE_ALLOWED)
-+#else
-+#define VM_MTE		VM_NONE
-+#define VM_MTE_ALLOWED	VM_NONE
-+#endif
-+#ifdef CONFIG_HAVE_ARCH_USERFAULTFD_MINOR
-+#define VM_UFFD_MINOR	INIT_VM_FLAG(UFFD_MINOR)
-+#else
-+#define VM_UFFD_MINOR	VM_NONE
-+#endif
-+#ifdef CONFIG_64BIT
-+#define VM_ALLOW_ANY_UNCACHED	INIT_VM_FLAG(ALLOW_ANY_UNCACHED)
-+#define VM_SEALED		INIT_VM_FLAG(SEALED)
-+#else
-+#define VM_ALLOW_ANY_UNCACHED	VM_NONE
-+#define VM_SEALED		VM_NONE
-+#endif
-+#if defined(CONFIG_64BIT) || defined(CONFIG_PPC32)
-+#define VM_DROPPABLE		INIT_VM_FLAG(DROPPABLE)
-+#else
-+#define VM_DROPPABLE		VM_NONE
-+#endif
-+
-+/* Bits set in the VMA until the stack is in its final location */
-+#define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_STACK_EARLY)
-+
-+#define TASK_EXEC ((current->personality & READ_IMPLIES_EXEC) ? VM_EXEC : 0)
-+
-+/* Common data flag combinations */
-+#define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
-+				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_FLAGS_NON_EXEC	(VM_READ | VM_WRITE | VM_MAYREAD | \
-+				 VM_MAYWRITE | VM_MAYEXEC)
-+#define VM_DATA_FLAGS_EXEC	(VM_READ | VM_WRITE | VM_EXEC | \
-+				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-+
-+#ifndef VM_DATA_DEFAULT_FLAGS		/* arch can override this */
-+#define VM_DATA_DEFAULT_FLAGS  VM_DATA_FLAGS_EXEC
-+#endif
-+
-+#ifndef VM_STACK_DEFAULT_FLAGS		/* arch can override this */
-+#define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
-+#endif
-+
-+#define VM_STARTGAP_FLAGS (VM_GROWSDOWN | VM_SHADOW_STACK)
-+
-+#define VM_STACK_FLAGS	(VM_STACK | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
-+
-+/* VMA basic access permission flags */
-+#define VM_ACCESS_FLAGS (VM_READ | VM_WRITE | VM_EXEC)
++static inline void vma_flags_overwrite_word(vma_flags_t *flags, unsigned long value)
++{
++	*ACCESS_PRIVATE(flags, __vma_flags) = value;
++}
 +
 +/*
-+ * Special vmas that are non-mergable, non-mlock()able.
++ * Copy value to the first system word of VMA flags ONCE, non-atomically.
++ *
++ * IMPORTANT: This does not overwrite bytes past the first system word. The
++ * caller must account for this.
 + */
-+#define VM_SPECIAL (VM_IO | VM_DONTEXPAND | VM_PFNMAP | VM_MIXEDMAP)
- 
- #define DEFAULT_MAP_WINDOW	((1UL << 47) - PAGE_SIZE)
- #define TASK_SIZE_LOW		DEFAULT_MAP_WINDOW
-@@ -97,26 +326,11 @@ extern unsigned long dac_mmap_min_addr;
- #define VM_DATA_FLAGS_TSK_EXEC	(VM_READ | VM_WRITE | TASK_EXEC | \
- 				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
- 
--#define VM_DATA_DEFAULT_FLAGS	VM_DATA_FLAGS_TSK_EXEC
--
--#define VM_STARTGAP_FLAGS (VM_GROWSDOWN | VM_SHADOW_STACK)
--
--#define VM_STACK_DEFAULT_FLAGS VM_DATA_DEFAULT_FLAGS
--#define VM_STACK_FLAGS	(VM_STACK | VM_STACK_DEFAULT_FLAGS | VM_ACCOUNT)
--#define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_STACK_EARLY)
--
- #define RLIMIT_STACK		3	/* max stack size */
- #define RLIMIT_MEMLOCK		8	/* max locked-in-memory address space */
- 
- #define CAP_IPC_LOCK         14
- 
--#ifdef CONFIG_64BIT
--#define VM_SEALED_BIT	42
--#define VM_SEALED	BIT(VM_SEALED_BIT)
--#else
--#define VM_SEALED	VM_NONE
--#endif
--
++static inline void vma_flags_overwrite_word_once(vma_flags_t *flags, unsigned long value)
++{
++	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
++
++	WRITE_ONCE(*bitmap, value);
++}
++
++/* Update the first system word of VMA flags setting bits, non-atomically. */
++static inline void vma_flags_set_word(vma_flags_t *flags, unsigned long value)
++{
++	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
++
++	*bitmap |= value;
++}
++
++/* Update the first system word of VMA flags clearing bits, non-atomically. */
++static inline void vma_flags_clear_word(vma_flags_t *flags, unsigned long value)
++{
++	unsigned long *bitmap = ACCESS_PRIVATE(flags, __vma_flags);
++
++	*bitmap &= ~value;
++}
++
++
++/* Use when VMA is not part of the VMA tree and needs no locking */
++static inline void vm_flags_init(struct vm_area_struct *vma,
++				 vm_flags_t flags)
++{
++	vma_flags_clear_all(&vma->flags);
++	vma_flags_overwrite_word(&vma->flags, flags);
++}
++
++/*
++ * Use when VMA is part of the VMA tree and modifications need coordination
++ * Note: vm_flags_reset and vm_flags_reset_once do not lock the vma and
++ * it should be locked explicitly beforehand.
++ */
++static inline void vm_flags_reset(struct vm_area_struct *vma,
++				  vm_flags_t flags)
++{
++	vma_assert_write_locked(vma);
++	vm_flags_init(vma, flags);
++}
++
++static inline void vm_flags_reset_once(struct vm_area_struct *vma,
++				       vm_flags_t flags)
++{
++	vma_assert_write_locked(vma);
++	/*
++	 * The user should only be interested in avoiding reordering of
++	 * assignment to the first word.
++	 */
++	vma_flags_clear_all(&vma->flags);
++	vma_flags_overwrite_word_once(&vma->flags, flags);
++}
++
++static inline void vm_flags_set(struct vm_area_struct *vma,
++				vm_flags_t flags)
++{
++	vma_start_write(vma);
++	vma_flags_set_word(&vma->flags, flags);
++}
++
++static inline void vm_flags_clear(struct vm_area_struct *vma,
++				  vm_flags_t flags)
++{
++	vma_start_write(vma);
++	vma_flags_clear_word(&vma->flags, flags);
++}
++
  /*
-  * Flags which should be 'sticky' on merge - that is, flags which, when one VMA
-  * possesses it but the other does not, the merged VMA should nonetheless have
+  * Denies creating a writable executable mapping or gaining executable permissions.
+  *
+@@ -1763,11 +1860,4 @@ static inline int do_munmap(struct mm_struct *, unsigned long, size_t,
+ 	return 0;
+ }
+ 
+-static inline void vm_flags_reset(struct vm_area_struct *vma, vm_flags_t flags)
+-{
+-	vm_flags_t *dst = (vm_flags_t *)(&vma->vm_flags);
+-
+-	*dst = flags;
+-}
+-
+ #endif	/* __MM_VMA_INTERNAL_H */
 -- 
 2.51.2
 
