@@ -1,120 +1,200 @@
-Received: from outbound.ms.icloud.com (p-west3-cluster2-host5-snip4-10.eps.apple.com [57.103.74.53])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012066.outbound.protection.outlook.com [52.101.48.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65FB1448D5
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Nov 2025 06:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.74.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764137158; cv=none; b=SVp9DsbrY4CcC+O05XuUyE0VmvOYfZZYxCeMD4PCPpD9BHE+Axt3sTmOrsHtK2nLaqv+I2kf3jPLseVcJCiogOQz9ktPnPyQzZ9dq7gVMHMNvMxxexLqQkHrcx+pbfjrooxUXtRw5ZE05rqfWECSnxKERvWAxexXD0AVhsy+U9k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764137158; c=relaxed/simple;
-	bh=/3cVhi5NYyaQ9s0jgTlCPnAJYynkA1sDbrjU3gPEmsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fj+7uFIniGXo7RwR5Vrb9IZag/KJxHGWp3I0Iy5lvsQtHKAHBcsBKIPur0i7cwk2DjR9+bQthtk5CDgi3RqaeEiQWzjT3Jq3a4CKpsx7SqN6PphgcJyAc04XtEda/Mk0LJZrrofSXYH1z25qtuWfJpP4EPHmpMDjnuGKnJGBOUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=c8Enl3O5; arc=none smtp.client-ip=57.103.74.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17B736D4FF;
+	Wed, 26 Nov 2025 07:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764143082; cv=fail; b=QAlKPQPH7uJXOW+FtOsE7eff5TtzVYK4WgRzBXmtdYODkPQtL7aN9VNvAa56c/BknTQUDrFhPeB/QnZssn1dWumftre7jqRkeTgfH4FCnffNs0hzzVk6gx/nNUsc8ZToV0d5yrY/Kks0lvZKo2k0RVcVaTzYlqGNvDPaUkUllCA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764143082; c=relaxed/simple;
+	bh=nXq6bhZ0Xid/rCnSLbRAL7kcagIT3OeYWWdNIk3An9Y=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TEbANd+uJBl0WerHgJv+GhldslMfAGlGcSK1G8mntiWIlBEjSZKTPFUAeB9irebUmyvgZGYWbMi3OBjvi2AjCw5jjKlCjOrjpu+6YpEHZhfz9FfMerIMWqw1E79t/j/o7TWKpgtWyM/TA3T3TjJmeSJZuCstv9fjKW78kYuOaU0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BMbV1+tG; arc=fail smtp.client-ip=52.101.48.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="c8Enl3O5"
-Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-3a-100-percent-10 (Postfix) with ESMTPS id 196471800128;
-	Wed, 26 Nov 2025 06:05:53 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=HWCp2c5E1H7O+Q96GAi6bNWZtazqgioAnhAoRAOXLvo=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=c8Enl3O57eRKcDJZkbfGcdsr7PiFY7kXWbeNrtQEqSDKsvrs3tK8fxMD6FNzzYgg4beux7oI339hh59ys01X2+JYr2dfKw1ec0mZyMw91QCRMHmiH17HgdNR1vBUTWkiqCWGYhyxTMpshOE+M80l3p1SDw4tZv5VBqMj2fcx0RonwWRMmqdM48gwJQ+SuhJJI6dIa+h99h917X+4+jiy8TzqTiShKGgsLYAYKMZDMoU0mm/C12DWHd+MA4Ru3jo7UFfF1dvSfV4R+aMzzEs0XDeF+ReaXnZ2gHBlXisPCxhSXKhFBSCsUTbICNft5p9lLtPgP4vjcHfxGWkGkuW8nw==
-mail-alias-created-date: 1746336505199
-Received: from fedora (unknown [17.57.154.37])
-	by p00-icloudmta-asmtp-us-west-3a-100-percent-10 (Postfix) with ESMTPSA id 6B6F2180010B;
-	Wed, 26 Nov 2025 06:05:51 +0000 (UTC)
-Date: Wed, 26 Nov 2025 16:05:47 +1000
-From: Brendan Shephard <bshephar@bne-home.net>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, dakr@kernel.org,
-	joelagnelf@nvidia.com, jhubbard@nvidia.com, airlied@gmail.com,
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org,
-	brendan.shephard@gmail.com,
-	Nouveau <nouveau-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH 1/1] drm: nova: Align GEM memory allocation to system
- page size
-Message-ID: <aSaYu8GCrU4XRRNF@fedora>
-References: <98227EBD-92F7-40FC-A5A4-3FF3780FB2CB@bne-home.net>
- <DEHUHPU6WQ1E.J19KGDPIHN09@nvidia.com>
- <CAH5fLgipNtk7=ad1dFYMDEdKL5b4LxnewU1w+WgAU0QLa-3C6w@mail.gmail.com>
- <DEHV24KY55H3.16CA6ALYGJ68A@nvidia.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BMbV1+tG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ypm7G48Cl4QsHoQN+SLlEYvpWgEc+VjPyUzk1t6rs53BUFiJRYgeqKN8jAsuG+zqkG2+m8jGIYHh/HlmnjLle8um1EKKwIqbaXsv7q+D1S7gUuOCmry8Fah17R4WdHWpf6X6kyZybuPsAvgj9//z5TD1DYBVQozrxebLKCJGx9ALeGVmdHQPfnetFH1+wGoYWQKj0LeO3YhGi8lRUorNr9vtUgeCjirZy4P7hahPA+7A93UeQA1EAhXFjGOlXvZcQ8DF3plgna2P0rM0DxIW3/Ehd4B4xCqRkMvzVkuh9ft4o4EiVYoofRkBLCvAyWLqZCzzxEg3r5/PvzukN1cVBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nXq6bhZ0Xid/rCnSLbRAL7kcagIT3OeYWWdNIk3An9Y=;
+ b=koKDMQgsMZ/Zx7YZmF/S0KIt5+e8qZLfPKgkzgTJDnredeIucPnVt74W4dGzfX28C4Oxr9x1lSyZ/k5N6xVsEkiQelE2S+HPka8DFhecIN2V1UWE1OwAYwDFc6DPztHSKtfc0AIaPC6pui0WSm+Mp/rfB3fybFCw8eTbsSuihYqEVEGZDjCAg+/pZtoTV90O3yj5CfziqnMUfkJRUpKIw0CX8BCSoWXhQrARDapITNIP9OWCN+HkvSMMfrZ7b2S00IEdXp7qNo7W7h9eDtIdAEZnNwLtdz+43di+tywBOuA0tYqDTs/OKbFiF/26pMWE1+lyyy2oDAoR4REcACtPVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nXq6bhZ0Xid/rCnSLbRAL7kcagIT3OeYWWdNIk3An9Y=;
+ b=BMbV1+tGWVgXis9uVWlTwu0JCiqpVx0D1LgzFFR1mdCrToi7iFc6+ekHbIND9SIMDtV3l3SJx/OBOesG/RHEWNM3w40l9Si5UTUB1wbF/6Nu2liiTHunPmdN84WWgfvZMaITEbhnIzKhyXM5WwQpuXLIfQxvkE7YPbePgqIvkffNDoYRO+dl/MEk9WiVT0hAnszc4/laXMEvIr96l2vEB0uNiF/vFAOHj18TEB92d4w/LFvi5OcYl9+0Ov5JDdXdbDNFSICZOIB6S1n1xskNRACDCoublSYnl52TIQYGU/SHTBaPEKhJLOG23D3lQ5VDzwxjaobniyIPzX5iPsPQmA==
+Received: from DS7PR06CA0003.namprd06.prod.outlook.com (2603:10b6:8:2a::27) by
+ DS5PPF7B9F1F8E0.namprd12.prod.outlook.com (2603:10b6:f:fc00::656) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Wed, 26 Nov
+ 2025 07:44:35 +0000
+Received: from CY4PEPF0000E9CF.namprd03.prod.outlook.com
+ (2603:10b6:8:2a:cafe::ea) by DS7PR06CA0003.outlook.office365.com
+ (2603:10b6:8:2a::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.12 via Frontend Transport; Wed,
+ 26 Nov 2025 07:44:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CY4PEPF0000E9CF.mail.protection.outlook.com (10.167.241.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9366.7 via Frontend Transport; Wed, 26 Nov 2025 07:44:35 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 25 Nov
+ 2025 23:44:23 -0800
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Tue, 25 Nov 2025 23:44:23 -0800
+Received: from inno-thin-client (10.127.8.10) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Tue, 25 Nov 2025 23:44:13 -0800
+Date: Wed, 26 Nov 2025 09:44:12 +0200
+From: Zhi Wang <zhiw@nvidia.com>
+To: Dave Airlie <airlied@gmail.com>
+CC: Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, John Hubbard
+	<jhubbard@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>,
+	<linux-kernel@vger.kernel.org>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, Simona Vetter <simona@ffwll.ch>,
+	Jonathan Corbet <corbet@lwn.net>, Alex Deucher <alexander.deucher@amd.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen
+	<joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
+	"Matthew Auld" <matthew.auld@intel.com>, Matthew Brost
+	<matthew.brost@intel.com>, "Lucas De Marchi" <lucas.demarchi@intel.com>,
+	Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?= <thomas.hellstrom@linux.intel.com>, Helge
+ Deller <deller@gmx.de>, "Danilo Krummrich" <dakr@kernel.org>, Alice Ryhl
+	<aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, Alex Gaynor
+	<alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+	<gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
+	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	"Alistair Popple" <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, Edwin
+ Peer <epeer@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>,
+	<nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+	<rust-for-linux@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<amd-gfx@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
+	<intel-xe@lists.freedesktop.org>, <linux-fbdev@vger.kernel.org>
+Subject: Re: [PATCH] gpu: Move DRM buddy allocator one level up
+Message-ID: <20251126094412.23373c13.zhiw@nvidia.com>
+In-Reply-To: <CAPM=9tx5neQ=TbmK+2eAO=O-XW_67VhOGO-791kqyVDJEpTA+w@mail.gmail.com>
+References: <20251124234432.1988476-1-joelagnelf@nvidia.com>
+	<f73e4536-ec89-4625-96d4-6fa42018e4e4@amd.com>
+	<CAPM=9twe3xcVBgrNCT+1_pGECPL-ry_aA2dxBwbKVeai4+S7AQ@mail.gmail.com>
+	<24d4f02b-8ecd-4512-a1f0-ba41684ede1d@amd.com>
+	<dfc50417-66ce-44ce-b607-917d678c5631@nvidia.com>
+	<9f433dee-7ad9-4d0f-8ac1-e67deb409b70@amd.com>
+	<CAPM=9tyN_A3oEyQZCOWaLO1orO6oKX0ZukJHR7cFy12Go+7d=A@mail.gmail.com>
+	<cc0db376-6cff-45d7-b3a3-d13be664700f@amd.com>
+	<CAPM=9tx5neQ=TbmK+2eAO=O-XW_67VhOGO-791kqyVDJEpTA+w@mail.gmail.com>
+Organization: NVIDIA
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DEHV24KY55H3.16CA6ALYGJ68A@nvidia.com>
-X-Proofpoint-ORIG-GUID: wFF0Gtp_ydERzspMKNjCfa6rmj6Z3igg
-X-Proofpoint-GUID: wFF0Gtp_ydERzspMKNjCfa6rmj6Z3igg
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDA0OCBTYWx0ZWRfXymsQqCHtrXA7
- 9JocAXq9+tY/wBKofAzoSc93KKbaHQkS5IAFr1oWHAu8ucdlfCROZZPY5NxPYsKekPiguklj+hX
- JG/oeWh/b7aHXyP1/3KZOQ4xL1rA8Ry4S2bQY3sPg0heRapWfnWPDlLcPnOrVdu6LMVuRLzCSGS
- EPZeaUvGLbne0uHsnUXaLnJxUW6SXIQ6wrtyWeIEPmet+cnomrMfCVfx0OYzMICRHG849XW1jqe
- qoRjJ/6MoIThKT6UHS5ihbYpVRcktHxtOWgG75Uk3shC53spk6/Dih0DJ5WWFzlUy9RI5blgsmM
- C+WVa8DEbh/cP2wSuGT
-X-Authority-Info: v=2.4 cv=c6qmgB9l c=1 sm=1 tr=0 ts=692698c2 cx=c_apl:c_pps
- a=qkKslKyYc0ctBTeLUVfTFg==:117 a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=jbRqzA-MdUj_exYDcw4A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_02,2025-11-25_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- malwarescore=0 adultscore=0 mlxscore=0 suspectscore=0 spamscore=0
- phishscore=0 bulkscore=0 clxscore=1030 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511260048
-X-JNJ: AAAAAAAByUjj4nuVGAWwEtta1AjBqAz2OWIzp4o5zXtJ9337k0jxRdecd4vexnKRY0FXg5E2AAYgmxqqCq/8fpSAtOeU1rfp+QMaLG8taQy/a0xkkf3hv10sVF2eAIDajARjSK1chsy2FhgX12zEktMEWFyI6Lxbjn81CXCOCMxUCRQbo5pahYzR76xsmmNQsX4Ocpw1BMI7AFqwjbLSD/bcjg72ezlqqX/ACoWvd61J7/6I9OeA5gr3KD2l0OmEMrpzE7oOIecE7th1gP2NwUmJ6gYEUTr4wuWvIKt2Y/uo7VgX6loUjICD2AafDRtVuWkNIdYL1NAR60n9zSPl+13iWMqoWoUIoP7ExL51JorTx0+ffLTOBi8rof5tK67F6DRHIpvOP8JRAuG7gZcNKRz9n1yteVWoJBMxciCwYUgoSeQqc1Ejw9Qhbpj/PfE/EKzFqurriS6TrhaQoSWQyZw91wb20hKGmo4+baoc7SuTNZEo80Rm6k24mFvawi4enFc7SHWYhCkIbwB3xWYNYJ+Vsiqz8tMEnKRSa1s3Yg7hDa0YUTDRVe9H49KAS1h7NiV3p1vDollo8gVZF9ya5S5TbgBPA6HhgzjFwV2wWZ90FnvgehY8Okzc5mlzxoWlQx1JotTIsqKD3/KgJdrhus2OIQiayeVvicqEKCAOIps5qPqG3zLqZ4qMU9w2Bz/ZIhpCkbKDpx6AQ5VRrBX6IIJw9Crjgg==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9CF:EE_|DS5PPF7B9F1F8E0:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c6c02fc-8e2f-41b2-4121-08de2cbfa528
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|36860700013|82310400026|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OXh5STFveDNFUHR5YktkaktwRU1RRndTV2ZSQmZCbW1mTk13V2xDMW5rV241?=
+ =?utf-8?B?dzdnbEV6MXc3ekROQ2Uva2wwbEJnZ2xnemtPeFdHamdHOFQ0S3RzU2VvUncv?=
+ =?utf-8?B?RmtZb0dybE11VWR0TFQxQkhIcmxWZytUT2FiZHV5Y3BieVVwME9reTM2YVI1?=
+ =?utf-8?B?bTFLS3Ezd1FBYXNKOTU0enNieVkxS0p1VHZid29mZm9WaUs5MXlnRDNodDhF?=
+ =?utf-8?B?RDR6Z0ljZmY5eUNuc2dvQUg5M0c1N2w3blJ0cXFjb1BhcGFDM0V0V1h0TjRE?=
+ =?utf-8?B?SkNjT3VKbWhkeW9tL3hicm1jQysyUU1xQkFRRzhKckFtMUw4Q0hmU21hbkNw?=
+ =?utf-8?B?cEV5aHBPWTJmS0RJdEpicnVBM054T3dnNFlpM2JEYytKM1F0aE1qczNpQUxC?=
+ =?utf-8?B?eVlOdkkyM0J3Y2lmdVdtSUJRd1FjQmFFdzJtSDhqK0NYeklCYzhMR0pNQVJL?=
+ =?utf-8?B?cUZ5VWVoVXBDZHNVSVRoVU5HTHhmVFhpQlF0dVJ6bU5yQkVVeDcxdVNxbEpy?=
+ =?utf-8?B?ckJoaFdQMmJZV0hkWnBjbGE1VWduUk9KUXc0ZFY3LzVrcEtsa0hMOEVrZCtC?=
+ =?utf-8?B?UDR3TXlTTjQyNW5ZNnV6VXNnT0VnWHpUemYrNWNwVGZVNHcwUzlGbkhGak11?=
+ =?utf-8?B?bnM0TXpZdlA0cm1UMVB4Qjd1NWhQQW01MmlpRkNFdG9tUFNUQ0I5S0FjRkFE?=
+ =?utf-8?B?SGtVQWViZlVBQlhQVUM3WisyM3Y2WVNzNHlqS05nbks4RU9Ya1RNMnFOU1RD?=
+ =?utf-8?B?NGpnMFpoN1gybWVSUG0yMXZBVlcxdE9DSWZrZGJDWU5pck5sUlZnRDlZeWl5?=
+ =?utf-8?B?QzFyY2hiUUhSc3BsdFYvdSsweW04eW1leWt5L2Nod0Y4c2luR293YlFLdWpx?=
+ =?utf-8?B?MGF2dHNUU3dWQkxKM1BaT1UzZ1dvOXpBRUVPc3p5ZWlWZ3ZOK0dOalR2S1ZO?=
+ =?utf-8?B?V21WMmJVanNiTkFaNW9EVmNUYks0QnBISTZkSjN5V1VVamVkOHA3WUR0Q3NZ?=
+ =?utf-8?B?ODVrNUJyTzE3d0V1R1MzYVE1eFpZUWhJNFl6S0M1Ri9ubWZsZDVuZDNUaGFv?=
+ =?utf-8?B?TmZCN2lUQjNVa0tBNjN6Zk8wNGJIWDA4K25yMjRZV2VuMDRWdC9QRk5SZ2U2?=
+ =?utf-8?B?dENtRWNhSFNOUGQ0RzhHSE1wOG5udUVTbHA3YmZBNzBFMitOZEsvbW9JNnFw?=
+ =?utf-8?B?VzNjM1VTSDBBajJsZW9lWUlyN1lMaDBzRTFaVlhYelQwdGRPY1p3VjZvS0U4?=
+ =?utf-8?B?N2lUTk90bW51Wm9YeUFJaEtrak1ycmZWQ01XNU9LVGo2amFWZll0bDJMODhp?=
+ =?utf-8?B?bEorYmNxcFczRjhVd1REd204eXA0eWd4VFZzcHc5bm4xMVpOUUUzQlZPYTVk?=
+ =?utf-8?B?MmNKR0xKSDNScXVHWXVFdTZsbzhHRFZOVDE3QjFBdFpHeVpRODNJZUFXM0g2?=
+ =?utf-8?B?R0FReU9MQndUNGF0TllUWFFtMmdiazJwWCtTNHcvNWN5cm5SZDlGWkRwRHE0?=
+ =?utf-8?B?eGZmU3VISWJBc1YyNmtGd2dJYW5TUXdld3JsR1JkSEk4d3BkUWU1Y0lFRHlE?=
+ =?utf-8?B?QWpxU0dzeUtpWmlGcmd3WW9lbGtaTE1aL3lPU0Ivdmp6WGJ1MllIYlhxWmlm?=
+ =?utf-8?B?MExNQS9SdHNyQ0FYVXVFblZ1YWpzOXZaM3hVRDMrbWJxRDB6eUt3cS9kTmI4?=
+ =?utf-8?B?cjd6MldheFIxMW92VllRbGxZVUtQS2x1ZDAyN0FMcm1tNk9TUWdwTk4rT1dy?=
+ =?utf-8?B?cXBnbEpsSk1HY1psN3I0VEtmbzl2NGRlUmdUSHdPZEJYUHRYUFZrNzFpeFFH?=
+ =?utf-8?B?eWswVE04V2dZTTUvOHFKNjdhcXN6dmFweWRROUtYVEZNNFI1ZHpQNThxL3cr?=
+ =?utf-8?B?TkNJNVhKbXVYY1BIYlV2cThTenBmTjU4SURnYjZKbHdQTFViakRPNlJ5NW9B?=
+ =?utf-8?B?MmZUUlpYT2U1MHl1cXVxaktxbDFLMlN4OUZIanRHU0pkS0s5ejVmNFNqZTUv?=
+ =?utf-8?B?OE4veEc5NzlYcUZ3QWxOQWJiVnBUSGYvU0tqV1VrUVNEd2pCQXRQa1ZMTmNX?=
+ =?utf-8?B?b1Vvb0FWRzVQTS85anMxNVNWY1FJdlUzWmcvenBzTlZadEJ6Tk9pTTJyZnBq?=
+ =?utf-8?Q?19Jk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(36860700013)(82310400026)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2025 07:44:35.3778
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c6c02fc-8e2f-41b2-4121-08de2cbfa528
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000E9CF.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF7B9F1F8E0
 
-On Tue, Nov 25, 2025 at 11:55:08PM +0900, Alexandre Courbot wrote:
-> On Tue Nov 25, 2025 at 11:41 PM JST, Alice Ryhl wrote:
-> >> > @@ -27,12 +31,13 @@ fn new(_dev: &NovaDevice, _size: usize) -> impl PinInit<Self, Error> {
-> >> >  impl NovaObject {
-> >> >      /// Create a new DRM GEM object.
-> >> >      pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef<gem::Object<Self>>> {
-> >> > -        let aligned_size = size.next_multiple_of(1 << 12);
-> >> > -
-> >> > -        if size == 0 || size > aligned_size {
-> >> > +        // Check for 0 size or potential usize overflow before calling page_align
-> >> > +        if size == 0 || size > usize::MAX - PAGE_SIZE + 1 {
-> >>
-> >> `PAGE_SIZE` here is no more correct than the hardcoded `1 << 12` - well,
-> >> I'll admit it looks better as a placeholder. :) But the actual alignment
-> >> will eventually be provided elsewhere.
+On Wed, 26 Nov 2025 06:17:25 +1000
+Dave Airlie <airlied@gmail.com> wrote:
+
+> On Tue, 25 Nov 2025 at 19:15, Christian K=C3=B6nig <christian.koenig@amd.=
+com>
+> wrote:
 > >
-> > What about kernels with 16k pages?
-> 
-> The actual alignment should IIUC be a mix of the GPU and kernel's
-> requirements (GPU can also use a different page size). So no matter what
-> we pick right now, it won't be great but you are right that PAGE_SIZE
-> will at least accomodate the kernel.
-> 
+> > On 11/25/25 10:08, Dave Airlie wrote:
 
-So, maybe what we realistically should be doing is aligning to the
-larger page size when comparing system and GPU page sizes?
+snip
 
-> >
-> >> >              return Err(EINVAL);
-> >> >          }
-> >> >
-> >> > +        let aligned_size = page_align(size);
-> >>
-> >> `page_align` won't panic on overflow, but it will still return an
-> >> invalid size. This is a job for `kernel::ptr::Alignment`, which let's
-> >> you return an error when an overflow occurs.
-> >
-> > The Rust implementation of page_align() is implemented as (addr +
-> > (PAGE_SIZE - 1)) & PAGE_MASK, which definitely will panic on overflow
-> > if the appropriate config options are enabled.
-> 
-> That's right, I skimmed its code too fast. ^_^; All the more reason to
-> use `Alignment`.
+> So far I haven't heard anything about needing dma-buf interactions at
+> that level, and maybe Zhi has more insight into the future there.
+>=20
 
-We would still need to ensure the value is a multiple of PAGE_SIZE
-though right? Like if the user requests a size that is _not_ a multiple
-of 2, then we would want to align the value to a PAGE_SIZE. Which is
-what the existing logic does, it's just always rounding to the next
-multiple of 4096. Maybe I'm missing something about Alignment and I need
-to spend some more time looking at it as an alternative here.
+For VFIO parts, the vendor VFIO driver relies on the core driver's support
+to export the VM's framebuffer to the userspace either as type a)
+VFIO_GFX_PLANE_TYPE_REGION, framebuffer as a region or b)
+VFIO_GFX_PLANE_TYPE_DMABUF, framebuffer as a dmabuf, which is usually
+backed by a GEM object.
+
+NVIDIA vGPU uses VFIO_GFX_PLANE_TYPE_REGION, so dma-buf interactions
+are not required.
+
+> Dave.
+
