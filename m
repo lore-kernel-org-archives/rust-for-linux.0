@@ -1,72 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AC42F3611;
-	Wed, 26 Nov 2025 13:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22ABE299ABF
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Nov 2025 13:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764163809; cv=none; b=g63DkkyA6EmZErXvRssx2xQiI9yT2C/YRYs77WFj/moujlv2lAzLWmkDnyBsNRtMtQ5G/CDtrmpQ0VekHIu0sSnVDgH16TQSDgZV9NPrp8A5Egh8ggpk96CnYBZmKwoyTC6rdlGMik5vvpwda9aImcmOwSAS+lbQ5DkiPGcy/FQ=
+	t=1764164176; cv=none; b=bkBjhB88b7kOgKBGSfZHkR9i//o+Jb1XQuYaWG9tOZMcJbZ0An8ICcVOvi24NnsJhQhrPn6HS2U7+jx2ZF7cZUmzrtB/ic7xFa7KUI98aFKwUnd5dM9a8hYYttI3I3P+91MHxtYEiC0Lcj42gUNkpYTL+IxcxSSRjk3J6BFJRa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764163809; c=relaxed/simple;
-	bh=6IxsIFeDY4CiJNhb1slgtxRoogMZu8Iz/+F2yiygSMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=twvf3VhbwOGztwCNfVTbF+D/dQ6snOZMrKh+EuxBD+nFScScqQBRmUQtvvCV7tMMlNNs6b3CDtj0yPWm69MM0qqxSAZYlQYvej4So57Te+3w8UIgiFCUZogdxTOaT0KIwQbmRHk+uvLi80RGXdCh2NdPeNSYM2bSXOyGfXgzw+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEwomvb1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764164176; c=relaxed/simple;
+	bh=Q6jMTc5YxTG5bt+aP6gHm/pR13wIgVuPqr1uOjrePl0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Wb9RPgFgoKTpDFiiHBO1rbUW6judoC6JZjZweSlH9q9q/xudBfrp5Sp4popwI4hLCQh7pkBUJXcjngEHP1UaLXD3F2ptJyUe6Q7Zb7+5hisOUDT9y5XgAB7HdhxXiyZc9UH1emSLGOWEuR+lCAah2Sm3osMSBFs1YHIrpXdqyKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u5gjN1Ls; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEwomvb1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83ECFC116B1;
-	Wed, 26 Nov 2025 13:30:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1764163809;
-	bh=6IxsIFeDY4CiJNhb1slgtxRoogMZu8Iz/+F2yiygSMo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FEwomvb1NbUsJcuNaBg0CXkRyaCO4WbZN1V2ugakHnVMTx68lPVtVha1f/ULlHvNN
-	 ZFMyf/MhqwD090+yva/3DLE7WO/soIipo23Xtk14MEv/AWsRfds0nUwwXYHohBnHJb
-	 wS6TB0Pz4Sc35Txiss86b8hN6sv0evWzTB/0i6Wc=
-Date: Wed, 26 Nov 2025 14:30:06 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Rae Moar <raemoar63@gmail.com>,
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 2/2] rust: device: make example buildable
-Message-ID: <2025112600-vaguely-residual-54c4@gregkh>
-References: <20251110113528.1658238-1-ojeda@kernel.org>
- <20251110113528.1658238-2-ojeda@kernel.org>
- <CANiq72nFxpNP3JH-ENKRM72phHXYSMfp_7X89-q4UuGH-OyT-A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u5gjN1Ls"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477a0ddd1d4so61145145e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Nov 2025 05:36:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764164171; x=1764768971; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q8o5oQFKTnZYDsBsx/PuxZXI29/RuyX5KMdnVdIm3yc=;
+        b=u5gjN1LsBrZ2rOCJoB0OEDs4JtwNN5RMspaoEGSvhxe33svMcXm2eSMBaNBKnIdJqS
+         9IvozIcvCnrAeSqpMn8iUEaHJUQoAjTwEiXAAX5A7kS4LDyBINjom12x4RKqCDKiDzN5
+         jVNqFG7DmbSQDR+yx9WtLC+ZzQGeN44MAvqUSR3VE1bWFbTZMLTRmQk6yyEGgt5yglH+
+         Gzs0fym0X9S5R4m4eVwb0pn/ui1PDBARI1VwZ2e4iLVW8Wyz3zyUtCGXF64PRxuThz0+
+         pXjjXh6+uzX6TYf+1VdASiffQj9bS02aewYfn+O+ID/JcSubW1FzoK4+plVWvLZOfI5k
+         V8MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764164171; x=1764768971;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Q8o5oQFKTnZYDsBsx/PuxZXI29/RuyX5KMdnVdIm3yc=;
+        b=ZH5swnkwjqgw6hnD9UGWU93wGTV5T4GKw+LGekaMSAiYnfpGWj6DvWh8E+kuYWvk3m
+         SasVdErxs65heQkGZG9HOt3ZqvtiWEeryQMIHj6CBq3PJ2IlfsfrCrHv+5aoc5Mygz/C
+         zkzjXsdqmGsZpL6kNJEubal4FCz2j/TOEieFdmOOJv8lo7dA3qp2ZMxZYAlzo9fHbP3x
+         BXwtW0VNC6u6lFurIls6W2X3Mrj2f+2V0uUpcrPGM6PxJljmCu84sOIB2E8XnEbsoOCq
+         5cdaiuXIBziyJnv/XbiXjxkYsbpyyIcOy7xqW/ICA2SoN5TBQ//VskSBJnJHgE8ETeAa
+         7+WA==
+X-Forwarded-Encrypted: i=1; AJvYcCV8Kp0jB0d78J6Ir2L9oQWXxfhEZoCqEFea5GuJggvbKzKWuHeUYJ6+DVTgMX4k0kMejTNYFtHEgSYCiv8o9A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGxF7xASVnHpwhkuCQIHqMRdTu4CgA9W/VXWScGPIcxk8gkVJg
+	BmBpkML1e1GgJ+Jw+DKl+zg3wm5TffRqrbvEZs0WxJPX128DvBTvY8YjKMHbugnN3qidLtRq+R9
+	mk6hp71Y+6QlT8XQz2Q==
+X-Google-Smtp-Source: AGHT+IHen7o1Czj6RjgQRXRqkTbhtMnJFEarMgnQPY2qznUW0hQvxakckzeXCkXRtdO8m2SgjikqhLj8GFnp7XM=
+X-Received: from wmqh18.prod.google.com ([2002:a05:600c:3512:b0:475:dfb5:f4be])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:350e:b0:477:ae31:1311 with SMTP id 5b1f17b1804b1-477c10e2a64mr169973505e9.13.1764164171266;
+ Wed, 26 Nov 2025 05:36:11 -0800 (PST)
+Date: Wed, 26 Nov 2025 13:36:10 +0000
+In-Reply-To: <DEINPJHY45GS.2K2COMBPAT7B3@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nFxpNP3JH-ENKRM72phHXYSMfp_7X89-q4UuGH-OyT-A@mail.gmail.com>
+Mime-Version: 1.0
+References: <98227EBD-92F7-40FC-A5A4-3FF3780FB2CB@bne-home.net>
+ <DEHUHPU6WQ1E.J19KGDPIHN09@nvidia.com> <CAH5fLgipNtk7=ad1dFYMDEdKL5b4LxnewU1w+WgAU0QLa-3C6w@mail.gmail.com>
+ <DEHV24KY55H3.16CA6ALYGJ68A@nvidia.com> <CAH5fLgjUzryZubjfUPfNc_beE80iiptebAcTyFi25OzZkTKR8g@mail.gmail.com>
+ <DEI7BMSG3JTC.1Q0OZIUHCK4ZM@nvidia.com> <aSbOWhKIpCBm0NKL@google.com> <DEINPJHY45GS.2K2COMBPAT7B3@nvidia.com>
+Message-ID: <aScCSnRIsRjLrccU@google.com>
+Subject: Re: [PATCH 1/1] drm: nova: Align GEM memory allocation to system page size
+From: Alice Ryhl <aliceryhl@google.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: bshephar@bne-home.net, dakr@kernel.org, joelagnelf@nvidia.com, 
+	jhubbard@nvidia.com, airlied@gmail.com, rust-for-linux@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, brendan.shephard@gmail.com, 
+	Nouveau <nouveau-bounces@lists.freedesktop.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 17, 2025 at 08:46:39AM +0100, Miguel Ojeda wrote:
-> On Mon, Nov 10, 2025 at 12:35 PM Miguel Ojeda <ojeda@kernel.org> wrote:
+On Wed, Nov 26, 2025 at 10:22:14PM +0900, Alexandre Courbot wrote:
+> On Wed Nov 26, 2025 at 6:54 PM JST, Alice Ryhl wrote:
+> > On Wed, Nov 26, 2025 at 09:31:46AM +0900, Alexandre Courbot wrote:
+> >> On Tue Nov 25, 2025 at 11:59 PM JST, Alice Ryhl wrote:
+> >> > On Tue, Nov 25, 2025 at 3:55=E2=80=AFPM Alexandre Courbot <acourbot@=
+nvidia.com> wrote:
+> >> >>
+> >> >> On Tue Nov 25, 2025 at 11:41 PM JST, Alice Ryhl wrote:
+> >> >> > On Tue, Nov 25, 2025 at 3:29=E2=80=AFPM Alexandre Courbot <acourb=
+ot@nvidia.com> wrote:
+> >> >> >>
+> >> >> >> On Fri Nov 21, 2025 at 1:04 PM JST, bshephar wrote:
+> >> >> >> >              return Err(EINVAL);
+> >> >> >> >          }
+> >> >> >> >
+> >> >> >> > +        let aligned_size =3D page_align(size);
+> >> >> >>
+> >> >> >> `page_align` won't panic on overflow, but it will still return a=
+n
+> >> >> >> invalid size. This is a job for `kernel::ptr::Alignment`, which =
+let's
+> >> >> >> you return an error when an overflow occurs.
+> >> >> >
+> >> >> > The Rust implementation of page_align() is implemented as (addr +
+> >> >> > (PAGE_SIZE - 1)) & PAGE_MASK, which definitely will panic on over=
+flow
+> >> >> > if the appropriate config options are enabled.
+> >> >>
+> >> >> That's right, I skimmed its code too fast. ^_^; All the more reason=
+ to
+> >> >> use `Alignment`.
+> >> >
+> >> > Alignment stores values that are powers of two, not multiples of PAG=
+E_SIZE.
+> >>=20
+> >> Isn't PAGE_SIZE always a power of two though?
 > >
-> > This example can easily be made buildable, thus do so.
-> >
-> > It would have triggered an `unreachable_pub` warning without the previous
-> > commit.
-> >
-> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> 
-> Greg et al.: a quick Acked-by would be appreciated.
-> 
-> I can also pick the first patch without this one if preferred.
+> > Yes it is. Maybe you can elaborate on how you wanted to use Alignment?
+> > It sounds like you have something different in mind than what I thought=
+.
+>=20
+> I thought we could just do something like this:
+>=20
+>     use kernel::ptr::{Alignable, Alignment};
+>=20
+>     let aligned_size =3D size
+>         .align_up(Alignment::new::<PAGE_SIZE>())
+>         .ok_or(EOVERFLOW)?;
+>=20
+> (maybe we could also have that `Alignment<PAGE_SIZE>` stored as a const
+> in `page.rs` for convenience, as it might be used often)
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If you're trying to round up a number to the next multiple of PAGE_SIZE,
+then you should use page_align() because that's exactly what the
+function does.
+
+If you think there is something wrong with the design of page_align(),
+change it instead of reimplemtning it.
+
+Alice
