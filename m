@@ -1,208 +1,214 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010020.outbound.protection.outlook.com [52.101.56.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471E11EA7CC;
-	Wed, 26 Nov 2025 14:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764168952; cv=none; b=Z0Xxh2mbXI7Vc3GYbyE3s6oZ+IN0lLFJ74vaBA+/oeMJqGf48+9YuNi6S6xOlIuv9nmEHGj9K4TcoFvpyPpECqkWcOJs/ld/RJvxJkawP3xy2KfPnVkX68iU6xfdmqOC6ZXGT40fBPTOwDHouI+5QgHfj/TwTN093MGOWGZywps=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764168952; c=relaxed/simple;
-	bh=99IVQAcNF+4B4oNlozyWqaTGpgQ7xJIzQh7KOwQHl6k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HSys5q3Tl74zlmZa/2L4/vQsqSNLN2rYIfxbH8Ftg+PIlWcBa0dz2L8ijkjY719VBLnY5btyTX2rxV6M2qLUjUkYY3Xcmw23cO5QUNf2GhuSPxnC6hMX+xMWZDtU1/CWI8nO5MxrHN2tsxxX6wgzpuThmbuFT3Cw6CbZcKesCAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=o/GMneE4; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C59302CA3;
+	Wed, 26 Nov 2025 15:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764170274; cv=fail; b=SmpPUbPLM5LPd9aFV0x0sQidbE/sUpLaW5gHehuGhhfhpCNBK9eoVqWaoJx4cDYbDPegu3ULp9BcjTcNh8OMn0Kf9MoL9h7Q+RhkL/DB1UP5fkA+UjAK1Esch6p4UtmctvTXOhALRo8pE3My4UIkqROG8UM2xrVjGszX6rO1ATo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764170274; c=relaxed/simple;
+	bh=GK2mwY1X6Mi2M1CBlmZcEUqLdmzCmjESrB10gQaSgnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dFfxaRjTLIw1QtCvTEbg/6SEHF6yguWzgi/Wz2RocZyM7YE4Ih1mwfdK0UBm908XtP/rKOZ89FeYBdfPrtHpUVYXAc3QwWJgkIZsjOtDHoWTYDOCAJcay+bKxtzSU7sxsGps0KQgR29n3YHlkbiPZoJdwZUUNiTeakm1Va2GGYs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SpfUEvde reason="signature verification failed"; arc=fail smtp.client-ip=52.101.56.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="o/GMneE4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1764168948;
-	bh=99IVQAcNF+4B4oNlozyWqaTGpgQ7xJIzQh7KOwQHl6k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=o/GMneE4E+m9jJXZ79lpryu+LEedRFiNg1Iz5ToosBGk4RUBz1Uh2v8dTJMPHnRAe
-	 th4Se5Jb1FXzcSS1DYixRnxRD4Cty9yu1MJCKXv7oClUh3dF3RUHD07JVkZG1dH6NR
-	 hU08jFKHN91pYkTBLeQEcXm9Gy1Gi5YZ3nPlcvAYNGKQVEhEdXwMVEQyo58c53Abwf
-	 YilHk+w1yUq4VPieQC8xp8kHPhlAUMGyWwXexlV7tGMlqjaVWocevCOQCqcI95I/gR
-	 B88GXOvRtzYgpzZIy/F27ANN3udH4jL5OFbNKWnlorxe8LXx6mwu1cgizkPc2HSznN
-	 WD7nJf6kkGE5g==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id C366D17E00B0;
-	Wed, 26 Nov 2025 15:55:47 +0100 (CET)
-Date: Wed, 26 Nov 2025 15:55:44 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Philipp Stanner <phasta@mailbox.org>
-Cc: phasta@kernel.org, Daniel Almeida <daniel.almeida@collabora.com>, Alice
- Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, Christian
- =?UTF-8?B?S8O2bmln?= <ckoenig.leichtzumerken@gmail.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Alexandre Courbot <acourbot@nvidia.com>, Dave
- Airlie <airlied@redhat.com>, Lyude Paul <lyude@redhat.com>, Peter Colberg
- <pcolberg@redhat.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC WIP 2/3] rust: sync: Add dma_fence abstractions
-Message-ID: <20251126155544.3bf3b784@fedora>
-In-Reply-To: <6e0ea7fa210be3b7592197a276d99a9986834f6e.camel@mailbox.org>
-References: <20251118132520.266179-2-phasta@kernel.org>
-	<20251118132520.266179-4-phasta@kernel.org>
-	<E55D72FC-AEF6-4D2D-973F-123306E4EB4C@collabora.com>
-	<bc4f01ec5172d29abd64429e3017cc53c0522e01.camel@mailbox.org>
-	<20251125115829.24e6caf7@fedora>
-	<682a788c21c6513e30c5eb1020191f31f7aec612.camel@mailbox.org>
-	<20251125145040.350e54a9@fedora>
-	<6e0ea7fa210be3b7592197a276d99a9986834f6e.camel@mailbox.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SpfUEvde"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uvljQI9Ln1HCd38TN6kc9JJweH4/AsA7GpumlrJ2UT98hnRTwEMZXpjJGK7JvCwUQpSZ+pHAbYqH9Fme3UnlE8LfPhU82dKqvUePQl7X/6yBRLy+Qjn69az4+3WZsEnGXPdulnYRYqXMZC0UVpr4bE/BG7c32O4UfNffkwY+Zy9X4XXncbT5mt7lAY9yI+milZmoQ3etzGGQjMUruUgoPRpRydCW8R9sH0Q++Y8DHACcL02kIx0LSjBOm1KiJj/Sr0On9XWozBULRz9zfFnvOE7eGhzabwzWrqDAFANUgAKsbRKMjNIyT+St44icbnHf2+1zGebE0S7dYgiABxRJaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QiwUTwZ02EzofwNI3a+x732i6LgGSwvHLgDyOmYTH5U=;
+ b=YONB+dcNh37q3BpEZteArAdLbYIaIC2SBCbTDlemDPNU2jTKj1YnzgUqNwCWhTws75/GkVQwneYoFmryLTOv8RiST0YFx1LqY9S5VGYQ1xKKscDg43DCLWtG+3DdbTpjpZ1KDpVAQ5lswKDz28+muRXBXU2hZJ8Y96b8QZz+ox3hf0BwYSRbl93TAYvHtnfaBIba4cUrb/90366Q/dllk5EImEknfjNP7fTYIlP6+D0wxRgjresE8ItOmgsqf1YdXb5TY40c/qsBNkEv8vl8tvk62f6ofu9z/WvWEJ6gdxrVHiTyn1ASM8LDaUj+36YGm9ysOWL2/Hih0zUkrgYmwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QiwUTwZ02EzofwNI3a+x732i6LgGSwvHLgDyOmYTH5U=;
+ b=SpfUEvde3oZ1t6NWIe5/YeDahIYWgYaihRZZ0k+FrwgCQY/gHfE3UB7S38hI1N3umz6k80D8rlj4jDMetUNTkDDyepVYYx0JeBubv3ih3naUsLXZLMlNIMhIHytJCUYKW1V8toNlCRH4oe1w8olMUpzAZ4bIp4Yq9rXggjX3I6gulb8cwGXcdLSCz+uUFCWXctHA0cB2w9+6sd5RIATVjwK2YU7KfIgwk0C6wOEUDLplv5igK9GLJS3KZBtvDqYeGHaKZrTH7lMpaK/+JOroBUhHCkSXzd93ZrOGbSBYjZIXr9C9rZn56Q+iHDJNDY7cHu4PKM/CdrIXwctJYdi6Cg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by IA1PR12MB6481.namprd12.prod.outlook.com (2603:10b6:208:3aa::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.11; Wed, 26 Nov
+ 2025 15:17:43 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9366.009; Wed, 26 Nov 2025
+ 15:17:43 +0000
+Date: Wed, 26 Nov 2025 10:17:42 -0500
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: Dave Airlie <airlied@gmail.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Helge Deller <deller@gmx.de>, Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	Edwin Peer <epeer@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH] gpu: Move DRM buddy allocator one level up
+Message-ID: <20251126151742.GA3028@joelbox2>
+References: <20251124234432.1988476-1-joelagnelf@nvidia.com>
+ <f73e4536-ec89-4625-96d4-6fa42018e4e4@amd.com>
+ <CAPM=9twe3xcVBgrNCT+1_pGECPL-ry_aA2dxBwbKVeai4+S7AQ@mail.gmail.com>
+ <24d4f02b-8ecd-4512-a1f0-ba41684ede1d@amd.com>
+ <dfc50417-66ce-44ce-b607-917d678c5631@nvidia.com>
+ <9f433dee-7ad9-4d0f-8ac1-e67deb409b70@amd.com>
+ <CAPM=9tyN_A3oEyQZCOWaLO1orO6oKX0ZukJHR7cFy12Go+7d=A@mail.gmail.com>
+ <cc0db376-6cff-45d7-b3a3-d13be664700f@amd.com>
+ <CAPM=9tx5neQ=TbmK+2eAO=O-XW_67VhOGO-791kqyVDJEpTA+w@mail.gmail.com>
+ <20251126094412.23373c13.zhiw@nvidia.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251126094412.23373c13.zhiw@nvidia.com>
+X-ClientProxiedBy: BL1P221CA0031.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:5b5::10) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|IA1PR12MB6481:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6ab3c41-a2ed-43e1-8d08-08de2cfef273
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?nkruX8d5D3pqeFhUwISfYqtXKYq0/bpC0pQSu1R/RM1WgiaoIuO2Y20cxE?=
+ =?iso-8859-1?Q?N7fV7Kn8knuBOY7dQEArLoUmmG1TwLycoBRakfSfLzOroIJgtTLfC4eLrV?=
+ =?iso-8859-1?Q?Ys1SUZ78uuRmjB4Pd9h6XxIguZjwrSV5f72FAJE4FRJTINu4ciE5Qlsr4p?=
+ =?iso-8859-1?Q?4ttyqjubHDT96c98NhTuYIroP2QWiNKl2qlTxx3kZpR+6kGpdImQnGTAfY?=
+ =?iso-8859-1?Q?mrH5uq91qbRjhuEMYOc+bkTYBcLulfN36G+Agce1o8oLLdpBAsGNwCXrFf?=
+ =?iso-8859-1?Q?Ll3MNbwYud98fGpCU383C2bSiGXrrE+Uaf7kpqvEmSPgfABGf0buc06TWM?=
+ =?iso-8859-1?Q?ItOTPWSlY8pPpiwWzre4eQO01rJdyz+yLRw1tBEHWz+Xm8JydOQcR2DbYs?=
+ =?iso-8859-1?Q?HWFdbIr08q5cTVMO43i9B6i37oLs7byU2djHk96hBoWX+E3nyGrMcv9zXi?=
+ =?iso-8859-1?Q?2uKe0ccGcAjlZSudnE58DCrD7kOsSi2ZSvWt5mY0k0qbie9mAhKiRwFhsF?=
+ =?iso-8859-1?Q?6o7YwQD1nJSnN3rW60G9lIMQ2yElwRwNPV7z2ghKA163iK/R6xi8EhsM7W?=
+ =?iso-8859-1?Q?MvPvdKvghhEkTpGl0RAD6uztKx0oFVeMZ4ZZKvPBHQJBBIbTWGr12xpGYf?=
+ =?iso-8859-1?Q?PRibVPwJXVwgdB7Dls3l0TAswA5jOauK9N1CNyJvFNEJ1nLApF6hq+UYMI?=
+ =?iso-8859-1?Q?OqNQe9PFQA8GKz6PqbOVZUqa0Fu22/gxeo6/ZyPrxCBkc7FImTVkNAIvz2?=
+ =?iso-8859-1?Q?HMa1vhSVjAHL9bVjIUEq73HpyWAG2W0ru6R5q0jB9jLHFxcyWWGSKTwCvT?=
+ =?iso-8859-1?Q?AIbFT0TM3/2TFjVeYmdFJnV2Ba/JEP+xWZyNasbd/emaPygtgAy0K1SsBm?=
+ =?iso-8859-1?Q?32bo3MKRLxYmN2Bi7bIHbRu3zH/ZutSNXH7Bq4gbagZ5HmQZXR1Ev+bTC9?=
+ =?iso-8859-1?Q?2JzTT7TiIHpk7YnBlVx9vLq0C/aznSTCOwdouRnNmtjYqfykPmmIZPLnuv?=
+ =?iso-8859-1?Q?sp58BXQjVSyu4ZUc774FMQRldNM0D0OyX0VW4I8913bOG3qAzlvHgZ1ZTj?=
+ =?iso-8859-1?Q?sHX2g77Zbt+4V97vufl9pBdrfhV9M+3DuPVv5FdBQ/xjZyhEaRrpGqi2k7?=
+ =?iso-8859-1?Q?GzWyPme/Tyic34jAWMxIW1OF8xyZ7nhhwchig14bD+cJaZWtjIFQZ80VnJ?=
+ =?iso-8859-1?Q?Q5mQxXbjv/qr0NtIx8+R+RxuVz9YA2NSy6aec7AzVsDefRuHP4tZteC0aW?=
+ =?iso-8859-1?Q?03gRnJTZs6tnJMzAexpDyJd87RK7QbC1TLthry68zFn2i5ZWHjq/85O0ia?=
+ =?iso-8859-1?Q?c7/b7SePsL4L3LPwVzG7+BSCuDDiTOIKpJPq1zXV++Ml6XrqiTbsMYY7OU?=
+ =?iso-8859-1?Q?VQRGZ0aKb7OWgWAPCR7Db/xe5syv44KmcJAil0Co5hkCH99nfWkzv1OG2G?=
+ =?iso-8859-1?Q?IA02vm+A1P8tna+YCgQoOmT+D4V7Cc2iim9ABEQGMtV2yras2l/d6IEfqS?=
+ =?iso-8859-1?Q?bn9+BOxqmSTsAwB5PcSKC7?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?tdzFpLTNuGSX9LdKH2oXzkMMv3I4SdwShh7FMp7cq4JwBYBODFQU70cSdX?=
+ =?iso-8859-1?Q?NA/AINiPmtKZH6S9Ha/qXLrcLAlP8xZ/2SpwnGeWuC5rC8AWPZiC0Z56ny?=
+ =?iso-8859-1?Q?ZufihrgQ3KJiiBvlMLP6I58BIpJyQTPSn/VRVCJNrW8AVSD1dwDX1I6Qao?=
+ =?iso-8859-1?Q?aq5Dutjy3Ns2D/WE84fJecDmQbPdRv3MNVJcC32lO5E8wjytUbce5LH4Ud?=
+ =?iso-8859-1?Q?4L67mHz/hFoDl9VaTIxk5f/9nG+T1KAqRTSLrBYl2oDycts0Hm7s3XJ0nC?=
+ =?iso-8859-1?Q?m44dqEcXRj4GMvLSHlKLoxrl+tx6SZ3v9FSr+nHlPJizxcycywz0OzTDov?=
+ =?iso-8859-1?Q?VdwgzJaje3DeVcIzDGFbpIjk7isAlFfEcaYn8NBj/wmHVQatZbtQ/NZwPh?=
+ =?iso-8859-1?Q?+nYVhVLGGAeWxhcfnveJlqhvSAEepxBdsmtejamRfOk67tVzzIWOyw1igM?=
+ =?iso-8859-1?Q?7DckaqkeHdh6n/OEr2QcGrpHHtpSGvjTP/pgxuEtGgQoOzwj1voq6t/3YL?=
+ =?iso-8859-1?Q?yQu93RpjdcDfm+E0KtGOY9BnQXwBAHdheD/wp7tw+aCxlmxkjllN8AwQer?=
+ =?iso-8859-1?Q?s2Oldi057K/UEuRd+cTGVBe63pQ1UgRTyvMohGcrLH9df4MyVkUcnkWsnv?=
+ =?iso-8859-1?Q?WuDRaOuKfJtwk80AWaYIEDqjBkQJx4iKiO664uIdQAwCVqFtZhOjAl8NLj?=
+ =?iso-8859-1?Q?9sbaEFoEuA8mWobhW6eFUP54b1meom318awcdQXwpNsvwSPXeMBB7jyHgy?=
+ =?iso-8859-1?Q?SwkGoT+Bz8eSM+vcZjeJvozhQSFSRrKSOQUkwr2+hrT7mBhpsEacsncdyV?=
+ =?iso-8859-1?Q?OtjojXScotfcOQFIpVojLeYQ9OylmLrZOQi0jLMkBGlFRr054TrPtv4Mew?=
+ =?iso-8859-1?Q?+vPIirXy3K9yh6UiNYtj72OxXmREPHzHQ9zVq+qy8F9bKBEA+3sFJ9fR0x?=
+ =?iso-8859-1?Q?68UDVM5eviCNKS91BMs/NQOd8XsRPXBE+MHGF2WDJpSJrouyExPezlRk5l?=
+ =?iso-8859-1?Q?OohW2cX9rOqXGW2IpgVZT2PlGvz5CXPY70Imx6OmSGbjyLIx1v4paQ2VYM?=
+ =?iso-8859-1?Q?rCSGKrlrkhyjFX1Px6NxxYRhS/hLsHWcdycdE2ccfQtAbgZuqffu3UZBMe?=
+ =?iso-8859-1?Q?84Xa/xBHW4NoX+NTbaMqd8UdbUPuuzzYWexqFCzutIrM1tdx/6ZAdSUpjB?=
+ =?iso-8859-1?Q?RfzouuSZLQVyVur8JY6IEctCwYQbevVHJ0mRcxSwlewQy6QvnEpjt0KgV6?=
+ =?iso-8859-1?Q?wakGRkhzFc5k3A7+nShEYyG9D5nUoVr+C2e98k7NX5q4Jj8VMbyr5FR52G?=
+ =?iso-8859-1?Q?0aY4ZyEof4LHEZj3uIKEqdg9uaEFfJq3DTE1clx5JFDnsNQjYYcq//NUG/?=
+ =?iso-8859-1?Q?pFjUkeIhFyi0iAKr5kobqfSbQ45r82mnw5sXJ4QGgYLn6w3RC96EUqwnCw?=
+ =?iso-8859-1?Q?eycsuTJaxHANNZ1IZXRF63ZlrVag5V9DcCeNItaQA2sIsHVRiJfjkNoAEm?=
+ =?iso-8859-1?Q?jUX6vb8+lCIpg4XEA53v61TMexOTdgYcijHYLmWIz4UquUO83uOuYbpinJ?=
+ =?iso-8859-1?Q?lX61S4OptRDlTXlaESQ0b7ZBt2Tbg6Pw3ycvAvAKzTmOtktTrj+gZfy3ib?=
+ =?iso-8859-1?Q?ZnPynUgrEmt3w0HlmZNmhBWOBmmBFbjN6E?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6ab3c41-a2ed-43e1-8d08-08de2cfef273
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2025 15:17:43.5724
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FhIKFgoCzSHJXM0Okdr3oDVxh/NhNk2qO9++hjARWoTe7qerNHVWLuwMDz3p3pMoMR/CdsGOjfRvfPWTp6qzhQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6481
 
-On Wed, 26 Nov 2025 14:42:16 +0100
-Philipp Stanner <phasta@mailbox.org> wrote:
+On Wed, Nov 26, 2025 at 09:44:12AM +0200, Zhi Wang wrote:
+> On Wed, 26 Nov 2025 06:17:25 +1000
+> Dave Airlie <airlied@gmail.com> wrote:
+> 
+> > On Tue, 25 Nov 2025 at 19:15, Christian König <christian.koenig@amd.com>
+> > wrote:
+> > >
+> > > On 11/25/25 10:08, Dave Airlie wrote:
+> 
+> snip
+> 
+> > So far I haven't heard anything about needing dma-buf interactions at
+> > that level, and maybe Zhi has more insight into the future there.
+> > 
+> 
+> For VFIO parts, the vendor VFIO driver relies on the core driver's support
+> to export the VM's framebuffer to the userspace either as type a)
+> VFIO_GFX_PLANE_TYPE_REGION, framebuffer as a region or b)
+> VFIO_GFX_PLANE_TYPE_DMABUF, framebuffer as a dmabuf, which is usually
+> backed by a GEM object.
+> 
+> NVIDIA vGPU uses VFIO_GFX_PLANE_TYPE_REGION, so dma-buf interactions
+> are not required.
 
-> On Tue, 2025-11-25 at 14:50 +0100, Boris Brezillon wrote:
-> > On Tue, 25 Nov 2025 13:20:03 +0100
-> > Philipp Stanner <phasta@mailbox.org> wrote:
-> >  =20
->=20
-> [=E2=80=A6]
->=20
-> >  =20
-> > >=20
-> > > Agreed, everything should signal according to the seqno.
-> > >=20
-> > > The question we are facing with Rust (or rather, my design here) is
-> > > rather to what degree the infrastructure shall enforce this. As you
-> > > know, in C there isn't even a real "fence context", it's just an
-> > > abstract concept, represented by an integer maintained by the driver.
-> > >=20
-> > > In Rust we can model it more exactly. For instance, we could enforce
-> > > ordered signaling by creating a function as the only way to signal
-> > > fences:
-> > >=20
-> > > fctx.signal_all_fences_up_to_seqno(9042);
-> > >=20
-> > > which then iterates over the fences, signaling all in order. =20
-> >=20
-> > Up to you, but then it implies keeping a list of currently active
-> > fences attached to the context, plus some locks to protect this list.
-> > Another option would be to track the last signalled seqno at the
-> > context level, and complain if a fence with a lower seqno is signalled.=
- =20
->=20
-> Well, JQ (or, maybe: the fence context) needs a list of fences to be
-> able to signal them.
->=20
-> At second glance, considering a more robust signalling API for DmaFence
-> as drafted out above, it might be the cleaner solution to have those
-> lists in the fctx and lock the lists there.
->=20
-> I'll investigate that.
->=20
-> >  =20
-> > >=20
-> > >=20
-> > > With some other APIs, such as jobqueue.submit_job(), which creates a
-> > > fence with the code above, it's trivial as long as the driver only
-> > > calls submit_job() with 1 thread. =20
-> >=20
-> > As I was explaining to Daniel yesterday, you need some sort of
-> > serialization when you submit to the same context anyway. In Tyr,
-> > things will be serialized through the GPUVM resv, which guarantees that
-> > no more than one thread can allocate seqnos on a given context inside
-> > this critical section.
-> >  =20
-> > >=20
-> > > If the driver came up with the idea of using >=3D2 threads firing on
-> > > submit_job(), then you by design have ordering issues, independently
-> > > from the fence context using this or that atomic operation or even fu=
-ll
-> > > locking. =20
-> >=20
-> > In practice you don't, because submission to a given context are
-> > serialized one way or another (see above). Maybe what we should assume
-> > is that only one thread gets a mutable ref to this FenceCtx/JobQueue,
-> > and seqno allocation is something requiring mutability. The locking is
-> > something that's provided by the layer giving a mutable ref to this
-> > fence context. =20
->=20
-> I think that would then be achieved the Rust-way by having submit_job()
-> take a &mut self.
->=20
-> Anyways, enforcing that sounds like a great idea to me; that solves the
-> seqno issue.
->=20
-> >  =20
-> > >=20
-> > > If the driver scrambles calls to submit_job() or new_fence(), then it
-> > > can certainly happen that done_fences are signaled by JQ out of order=
- =E2=80=93
-> > > though I'm not sure how horrible that would actually be, considering
-> > > that this does not imply that anything gets executed before all
-> > > dependencies are fullfiled. AFAICS it's more "nice to have / would be
-> > > the cleanest possible design". =20
-> >=20
-> > A fence context should really be bound to a GPU queue, and jobs on a
-> > GPU queue are expected to be executed in order. So long as the jobs are
-> > queued in order, they should be executed and signalled in order.
-> >  =20
->=20
-> Jobs will ALWAYS be run in order, and their corresponding fences be
-> signalled in order. Just the seqno might be out-of-order, if there were
-> no solution as drafted above by you and me.
->=20
-> But no argument here, we should enforce that as much as possible.
->=20
-> >  Of
-> > course, this implies some locking when you prepare/queue jobs because
-> > preparation and queuing are two distinct steps, and if you let 2
-> > threads do that concurrently, the queuing won't be ordered.=C2=A0
-> > That's
-> > already stuff drivers have to deal with today, so I'm not sure we
-> > should make a difference for rust drivers, other than making this
-> > explicit by requiring mutable JobQueue/FenceCtx references in
-> > situations where we expect some higher-level locking to be in place. =20
->=20
-> Yes, the problem already exists. I brought to point up to answer the
-> question: to what degree do we want to enforce absolute correctness.
->=20
-> >  =20
-> > >=20
-> > > I think I have a TODO in jobqueue where we could solve that by only
-> > > signaling pending done_fence's once all preceding fences have been
-> > > signaled. =20
-> >=20
-> > I believe this is something we want to enforce, not fix. If signalling
-> > is done out of order, that's probably a driver bug, and it should be
-> > reported as such IMHO. =20
->=20
-> We can only enforcing that by designing DmaFence the way I said above:
->=20
-> the only way to signal a fence is via the fctx:
->=20
-> fctx.signal_all_up_to_seqno(9001);
+Good to know. Also looking at Nouveau, the "core" part of that driver (nvkm)
+does not use dmabuf, it is only the DRM parts. It is unlikely nova-core will
+have to deal with dmabufs or gem objects AFAICS. That's a DRM thing.
 
-If the in-flight jobs/fences are managed by the JobQueue/FenceCtx, it
-might make sense to have something like that, indeed. I was more
-thinking of the case where drivers manage the list, and FenceCtx only
-signals one specific seqno. What we need to enforce if we do that, is
-that pending fences are ordered by ascending seqnos (which can be done
-at queue time).
+thanks,
 
->=20
->=20
-> If we're sure that there's really never a use case where someone
-> definitely needs a raw dma_fence_signal() equivalent where you can just
-> randomly signal whatever you want, I think that's the right thing to
-> do.
+ - Joel
 
-Agreed (that's basically what we need for Tyr, so we'd be more than
-happy if FenceCtx automates that for us).
