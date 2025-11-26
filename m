@@ -1,249 +1,304 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012003.outbound.protection.outlook.com [52.101.53.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD04308F12;
-	Wed, 26 Nov 2025 01:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764121224; cv=fail; b=E8PU1wLPoTPpICjWoGmrigEVP4rRzelICrOaQ+pko2BYqJzg51uiuOd0LDiCFlceQXeV7JJnCP1NCTaEgt+bqBUK9cUF8FwH9Xc4HtQr0BWJXlCekzI+rpgk9RqxbF4sxI24S/PPFyX1r5m980pCB7iIBACqsiZnxxnfg80d91A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764121224; c=relaxed/simple;
-	bh=l1fOdRvCTPzu5prfc/sRcJPXZDP0bAmt1ShKl+F7+EM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Facp6iDQR9bNb49PdnBjO5YspWCzuQzkoLl0uzBA8j3+mZOLHXqlC0dZEHqP/aTiw3f2iZ/iYq0XsYzlYckvA1pzmg++IkKTSdDBqc1JRIZFAcOalLrwbKGfsuETgGA1pGCIWY480S7GTLpiPoa5FKrd0dVb1Ozca8Eo2n/Og7E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=O0bozW+z; arc=fail smtp.client-ip=52.101.53.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6E32F3635
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Nov 2025 02:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764124147; cv=none; b=nKFZN6if36JbpgVYknxFSUWTiOcgBgJMk1O+O8bNAmhYyOUerhZrm6K6qWIN3adHpwOUNjitV7yeQRI7uQUdnTNGBwx99gl3L6mgekQc6oJDPBkL7sMgMpn75vyil81zHw/ksRqW1Zw36zp0dNKmmzzsyhMqCaDou8k9D9YmK+A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764124147; c=relaxed/simple;
+	bh=lfq0aE/uOKKE82YpgbwQm2nw8rZn5PS4lQVayxnjHmY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NOM4nYUPKjczLfze6ettbe93nssp8ZVspyguWQwQz07048NI/ptwjktAqxtfvQWLuoG2xVHOlmDI8fegVYtisR2jCDRyIn7wkhgUcOtSxbipkS28fD+aD5RFBdoth3rB9W8T3HK2TzmYRkvfqlTw5TYmvrkznkhyNN6FCGRTcak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VrjpxRwn; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="O0bozW+z"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mp++SwHkrvy09mFRzuI1RZ42Xad232tljXv51fzKR/mnWj5kiBD409tm/7GliOHFtdN0kPIIhz1PKWXrrniDc7DIep/droRjXZKM5cQ+nzdyDtnFTOdfZt1N9A66AvmCNEAAUWvHAO7eL3ozanCO7sA9TrQqFq4rGVp7HfYc2BMmT+T8Yqt7jkGbriucaBv3gCUxjxVP9yzn7xuzKn/E/facX6FC92AZ34bKLHwZCud+6qBTcCbtNswIjCJyRSt1jlssamVFBdLVzwW82MZatfXGicWl4F6QuXxiBJ9Y2qnfNAVhss7BK4ubmFR5Ox3gqVGktmlUmPbb1cKPYxLKYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MuLegbD+0RStRUzvguz5VZ3qj9GDYL+kDElAvI4lThw=;
- b=HVZ+5fuczbdnJjqyZ30oXflj4Vxs6aerwSq7DdVAEUWOgsQYSm+PRkXW3ZKNVALCFhsHJ3E+9/Qj6Fgd4dwrJMz6oo+ZbTLtA4BEcREO7dnWNlFLrUWUcX279VXtp+kswFTDHKT6yg8XumJkofmdvcSb1HTYSzTgr3AhDwf9gkMVucIIVljArjEbehr1urWuiHhn5aTzsJMywdDSswQ6FEQqleW3zZnmln5aQh2oQSzDizQVG72GRzlFpPj8STouK/MNhSz9R/n8K4Yd5TuNfmrLn9Yyv+WNkF5986uzCVu8otAiTJjx3LEMqGLpeE7s/0nPPzOnRcV93DiJI8aWoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MuLegbD+0RStRUzvguz5VZ3qj9GDYL+kDElAvI4lThw=;
- b=O0bozW+z7KFbUax2KD9G4iwrNHClNXUc+6sk8G2dvyMdnwC3yFwt9gjj2PP9hxn4o6vtDivOIQqznKtGYhssuqeCgbh4bFNdfh+ECZLMqC4DXuCo+C4L1xK6yIEiN4UuLeL/eGO5CQU1O3ycsBYNAN4l21xWDmVDD3XY9qhOMU8PBdZbNo7Vj6r4C/hlNI2zImJG8Jugt0euTIx9pCXORO2efo0kpr5NiHwf2zhIR9JCqqHkwRMezYgSMhtvXWmHRSNc6QD4UGFzTUtyZPSOrIZqX01sjj7IKLeD+r/97tAl+60L9EsgqIbe+kqyqdnxeQLZ0IER+FiHt0UnPguLxA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- SA3PR12MB8022.namprd12.prod.outlook.com (2603:10b6:806:307::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.17; Wed, 26 Nov 2025 01:39:45 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9343.016; Wed, 26 Nov 2025
- 01:39:45 +0000
-From: John Hubbard <jhubbard@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VrjpxRwn"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ed7a7ddc27so51585821cf.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 18:29:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764124144; x=1764728944; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Ii9s7RApHj9sHrWInlezgTQVkHCx4EY/ZCHwMXD/Hgk=;
+        b=VrjpxRwnVmWZb5igZs9CoAN/bwaPwT+kRYMD8cPU1H8Mm6QIueNQHuKo5qBgrcqvlU
+         Muk0tShqcZM5nZ0OKUgk26Edq6d6mdqJp91O9X2loU2P1M/TeC82uYQxO2exAoCF1Dyn
+         UI31AiuALlTelOdZn7cSEbdYR5icjzdU/Qk6881UGAf5EYs1RjCU8x3g372bSl6TWagT
+         zg9hfK7L1FrJyBgj7+4VeDq5Sbc/ktTWwTwIc7vz9k58z1dj5UInVlvjiONeNRS29/1v
+         hoAD1cUBytM7UYqYjWFzbPuiK3Po4GZIdXsJkrsirgGaXSaZlbJPTsgMTFCGoN4KeXWg
+         kNVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764124144; x=1764728944;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ii9s7RApHj9sHrWInlezgTQVkHCx4EY/ZCHwMXD/Hgk=;
+        b=DRjXPG92E5fj6shuGzT6kdKLENI9h0IL8eyGYXuqJ+wKooCQ73JvblLLWcX7pmTp8p
+         L5vHGX/NMHUMfWt7EZtLtXGTVUnIkTRKh43+bx3QWwEuFsaSw4vQ1KXlfU1rifvt1Y+Y
+         owj9FUSJWc4vfkwZlvLPSLiGX/cJXIfODlhu6zPWud0jugb1zzB0OJUPXK7QnnJgnRz4
+         KLRN9ooFIgwOYG8ps1kYYI4xQj7W65b6pMChPrjdEkcuI5Ooa7TrWmbtLqofH1vI0Ndi
+         uBaSWg3j+LjlqpSNkZLb7z5EMqkkjYtzMyfiErEOsA42CTzF3OMxEngZ2Jd3T239J0tk
+         ZjMg==
+X-Forwarded-Encrypted: i=1; AJvYcCWith9kjF21BoT+/z1zz6ycPuSqBFGP6+t/3qgeElgO+FujUAAqyCsOhzsZOMp3A0VwKZcxlTy9P644sm7krw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1dxdeZqLOuIKtG1Q5fajoLXCiFC6hmGeHXaMWWtWXtYFvCOJL
+	dZ4lfFMH/5zUNh2iA6bIxyc+8YPacvzEleEjeivJeFuVyXtR37ZXuzPI
+X-Gm-Gg: ASbGncvdrJI7E3MnQLRxSHjPMWRPHijw832enOO6S4TAdv+pDZ3nF3MX+8WuWv7mlTo
+	JIs1ZBzxkrXI/6p5doaF7prQxqUHOow3pstVxlYwnNJ0Alf+fe81h4QR0qQB3x03qmkvXQHcTHG
+	rpf9GX2biYgS/BRM1hZh1d51C966S2QoyPvD7boFN6x3OkuMgWbHDNn77seubfG1m3TNNYTpAE6
+	luHS6EnH8UaHRUsBsFg0maVAnQ33EI4xNdfDU865UxX4tHQJ683Z3UEJVegz2Pe699zGsmxpyrM
+	F4HVMp4+IVgq4kvSccIhg9o9uR6ZDFGSAPapwv2hd6d7/ozyCWC/bZiOS03req3WChy4CYEm0ni
+	8sNbbO12BBp42t9yXdTp+Ini+ClKjaNaFYJJSGZ1iVklpWjRAHgzyJ01kryQTTFhs/G6fgNuHeM
+	Oh49NXAbU=
+X-Google-Smtp-Source: AGHT+IErgj9k47iHzT+YmGC0LfLZHIoat3MoqHvusUt+7FYyCzEWDFBX/lxjtzSHOoyVtJRSWdKzHg==
+X-Received: by 2002:a05:622a:14cb:b0:4ed:b6aa:ee26 with SMTP id d75a77b69052e-4efbdaef286mr71667571cf.55.1764124144144;
+        Tue, 25 Nov 2025 18:29:04 -0800 (PST)
+Received: from localhost ([12.22.141.131])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8846e46a0a9sm138397946d6.17.2025.11.25.18.29.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 18:29:03 -0800 (PST)
+Date: Tue, 25 Nov 2025 21:26:46 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
 	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Edwin Peer <epeer@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>, Burak Emir <bqe@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	nouveau@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v2 5/5] gpu: nova-core: use GPU Architecture to simplify HAL selections
-Date: Tue, 25 Nov 2025 17:39:36 -0800
-Message-ID: <20251126013936.650678-6-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251126013936.650678-1-jhubbard@nvidia.com>
-References: <20251126013936.650678-1-jhubbard@nvidia.com>
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR20CA0011.namprd20.prod.outlook.com
- (2603:10b6:a03:1f4::24) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 6/6] rust_binder: use bitmap for allocation of handles
+Message-ID: <aSZlZu0SNycNvk4q@yury>
+References: <20251125-binder-bitmap-v6-0-dedaf1d05a98@google.com>
+ <20251125-binder-bitmap-v6-6-dedaf1d05a98@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|SA3PR12MB8022:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6dd10504-214a-42c1-f489-08de2c8cad78
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iEfTMAa26mjF97KfPE87exq0QN51msMd9ZJ15qwvLHmz8hfesgtJOjqH3DMF?=
- =?us-ascii?Q?holOKPKiyAkEZrJr8OwraWKASZS4sjjpcqHcKb1oVTcSRGquKi9BM3LYz3KG?=
- =?us-ascii?Q?W5l1Rzw+aExD1PXT+wsSFuGdoXb+yzRVjqGYdNU6eFWcbzwc9Zj/58iQhFEO?=
- =?us-ascii?Q?R5/sTEzb7SWCC0IF7/PcfzxsesHcNvh5PMbWGmADJIry/KLOORjLnsLFV8u8?=
- =?us-ascii?Q?MsW+/Zrr8y7esjN2l4J0HnMGYM6fJaKhhd2Ny4Xrteb5jTpEFeWWjw9lrfq1?=
- =?us-ascii?Q?7ZwX03uifKNUHfU30bW/Z9ede23O12VHWAJrwV24JrgEpUoCur8WFAYM/pt7?=
- =?us-ascii?Q?3dwsDja66TiVaiiFu2lwwDuTqdq1Ip6RQIaoHVhrcIecx/LVppvfmHXG5FEY?=
- =?us-ascii?Q?AReR2y8ElRVWKsPIXX7jjYhusdVf7M6+n5qSWCT/YRP22aUUY85YPEpTg+Qe?=
- =?us-ascii?Q?lC6G0wYPE3vyeB31LaRFPdCgk7PFGbN/Uo6oF+QW+Wsf51nUAwxcR2GbQYxz?=
- =?us-ascii?Q?Y88jGQpd+rEspOXO9m2hkTyL8vsZfx3J6v8vnNkEJRGysVFdtWNMcfRpCE77?=
- =?us-ascii?Q?7fH9znCnHbf6DuJ/AFSKDQkTC+G8b0fzfFbS30wOOOhVw9LSeHKqfyideezD?=
- =?us-ascii?Q?jLoe2HGE1iOMkoNIiijS/wZg34onfkZfz53WUQxoW+mAlYdHOFxgEVg4UnWg?=
- =?us-ascii?Q?ahisKVXC1JJRbSRBkR0px3Aokd6tQoxUe/BZkir0Mp9d2Hjs4UzSMwnrVG7v?=
- =?us-ascii?Q?DTtIalr/vW0ZvlSz6+LdljNAnyoo1aSYcN6rsiKjMrp9i7mI07yigHoZcj2w?=
- =?us-ascii?Q?iy+5Cgk0xSXOJKCRIUR5kTeSZqaiKw4vKWuz6LqQ96vTFtuHm8yp1hNsTLyO?=
- =?us-ascii?Q?ke6DcKt3jrRcXKLsaLCdffb2mvvjOWuJ6qJkZgdo5y3WQvr2ieasc5mVfGl4?=
- =?us-ascii?Q?6Sz7fSa4zZQk79KGQzHTgmo8njISDNaz52xaqvxu+UR54GIG0j5uqNvVTkdk?=
- =?us-ascii?Q?SRKNvjdT1kCTAJy0xi6BGvi6O8ycE75JHVWvvyyFM5tz0oHs+VlfCk7S+GgJ?=
- =?us-ascii?Q?15K9js395vkk86aME9myQZPgQKBJihDz+RPJaPZDT9r0oczf+qz9aKzXpYHQ?=
- =?us-ascii?Q?LSNMNexvhfW2Ge1xzG/e1HFAWhXw7CQNk+WPYQgjngYQBR6XX+xM86TqAPRo?=
- =?us-ascii?Q?lUCOVhQr3oZF3BiHsDQzuFraDhnzj/8GkC1ow94y8Wh0ijuNEuy3HPBSBts/?=
- =?us-ascii?Q?AqTptno3KDBLkH07o7BaPMWZCA/dITvQHsjRpkXijsZP0q6P5eb4XKHH/eD6?=
- =?us-ascii?Q?SGxYVGpbr7tOjM+M8aucNSgkM3JAkpdUpE2cK5asg0qQTei83ahdM0jJstu1?=
- =?us-ascii?Q?Ox4lD3als6SIqUom1Den3VqeJWX8kIO2gi9qs0Tw6ytgdHEEbFdL/f+3OTjU?=
- =?us-ascii?Q?oRSIQVBvV7xdntYppc3J9GfYdKDDwuyb?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hZwgWkff4ok0quGDNhIlIA++EshoeFHP/CAfAAeX/sMyPr6lfwMIDpzUqcH3?=
- =?us-ascii?Q?Oa44C412UopfyP/a0HKoE7ORyx4+2N+BHwId23vSJwLYE+jFin0Z2h/8wHzF?=
- =?us-ascii?Q?fSCJAwZGkJJkBt++vUn+AmZMeXSiAnfPzs7IvaHWRvk3gdYwI5UN01ZXYAzx?=
- =?us-ascii?Q?xpCNzP6wpzkrfAdwS4b/95g9cgOknEse/Z1ZHAL8RFDDCfsyd9Xpm3CmKo+E?=
- =?us-ascii?Q?01h9flsShKMBVNi0mP7XZc4noYOk2FHy7AFKCTlkYVndSBgUiXn+yP1X3W4b?=
- =?us-ascii?Q?46p2r/OTBUgFmFbWlDvm5mHAjZkH0nWeLtlQFh4c0NEXtMRqxqhTq3n9xzdB?=
- =?us-ascii?Q?pUNG/1LEcV0VwzpApleRigrWhcBPnR/mcbXHeAvTC8m0b81ZvnmwwFjLM9DX?=
- =?us-ascii?Q?AsGUakxBXWVSu1O7wcnaiEyx++ntLtJAXg9C3ee9kR91l8pQGX7snpBRAV8P?=
- =?us-ascii?Q?vuihepoSTmgrBAuUWSPZ6jI681y3S+TKVzR5iFjY7Eb5xnt6B00Yvl+nTkhh?=
- =?us-ascii?Q?g0sUD3IVmBiMuHWST+UU2L4EfMfLigr85N98IeTwf5t8KMpHQivsAtbf8hZB?=
- =?us-ascii?Q?OwgLkYkOP6oyqkTDvdMsw4XT3JHsWqF9ybfSAXW2yYWr9dSjw013SPrcbVEo?=
- =?us-ascii?Q?Kmnz8k8o5UJkgqakqqIh5kZiLgYo/bKuiXglbYv9EqzxvFbZexSEL8luvnxQ?=
- =?us-ascii?Q?diAxTocohcEKjwIWIOqyX8/pwove+uvtyVx4+bjum1sXxirVy7ejlGFsfuvp?=
- =?us-ascii?Q?NuL7hdyyoIvoCsrTTPQEdk0G74w6LHx+FQyAB9jg+stY2AWWVUpV7qWlnyEo?=
- =?us-ascii?Q?UGvEb0hVYKfGEjUPWuDOiXpyg6pIQfNNB8w9Ztmvbr3RflplTseMHFFtTo4d?=
- =?us-ascii?Q?KUG36KOv3HALIeyQL+8SIDuPzB+TOIemXKQun/qfNmsJ5sBny3expw6Ye1wd?=
- =?us-ascii?Q?x/nX7LGW4N/dxsh9j2k7a7do6aHJsWqgKUsciCuFsYxs/XBfHaeO3TmKiqtX?=
- =?us-ascii?Q?YD7FLb0ezcwG5oR6BOaJ44ikgQmbFVZhCsfmq3BmtNkKzV77eBBgw4SrjnNL?=
- =?us-ascii?Q?yLdDH0N3t9OJgH27WyK3u3uW3SHMw9VqEF25w7WWVwhYjQynxRzmmxg9swJC?=
- =?us-ascii?Q?VAgXtydZpErkKjQ/O3Jnllu+xH5Fcl7toiCgl1FR0Agcgml4azN/jOJFqyNH?=
- =?us-ascii?Q?NRzOuLB+CC3kWeCwQDa06Z/rJx38wh+tJShYqWJb5d/rRWytm1uJcHRJ6fRZ?=
- =?us-ascii?Q?T842dwAD2VCac6kCb5fOMtenJ0GwWNQ01s82mhKLSP42zH3XhN3qUiKiDLP/?=
- =?us-ascii?Q?JF7+VYRD/LmmGKYyGeaMO5QDNsWHUMC09lQjijRuntSm7Ua7mT/oGj8yA4oN?=
- =?us-ascii?Q?U6RipOCX+iwGLpt812AeChb6Sn+AnZuzgHVfqeesbmyh2OO42hGq4n81JMPZ?=
- =?us-ascii?Q?9dBuS1+E1+1yAX+E7HfG+4AoUaWAMsDBJ2VpwsQhVFeymE8vlaHG2tGhfXbk?=
- =?us-ascii?Q?ugTtq9crxAnAR9ByfZyJhUH3cWhWo+xFk5zBhloEa33JKdrX5mDi8kJKZPju?=
- =?us-ascii?Q?MwNPiAYWo3QeMapobE2HPf9edMTa+oe5OZiIdejV?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6dd10504-214a-42c1-f489-08de2c8cad78
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2025 01:39:45.1937
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KufWMkYatZO1JwbXeTPWYd81dx82/+siK5pWHxK9yMszxTRBtBdLIhuexAN8O1coZfKskD8eW30otQLbCKow1w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8022
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251125-binder-bitmap-v6-6-dedaf1d05a98@google.com>
 
-Instead of long, exhaustive lists of GPUs ("Chipsets"), use entire
-GPU Architectures, such as "Blackwell" or "Turing", to make HAL choices.
+On Tue, Nov 25, 2025 at 01:59:42PM +0000, Alice Ryhl wrote:
+> To find an unused Binder handle, Rust Binder currently iterates the
+> red/black tree from the beginning until it finds a gap in the keys. This
+> is extremely slow.
+> 
+> To improve the performance, add a bitmap that keeps track of which
+> indices are actually in use. This allows us to quickly find an unused
+> key in the red/black tree.
+> 
+> For a benchmark, please see the below numbers that were obtained from
+> modifying binderThroughputTest to send a node with each transaction and
+> stashing it in the server. This results in the number of nodes
+> increasing by one for every transaction sent. I got the following table
+> of roundtrip latencies (in µs):
+> 
+> Transaction Range │ Baseline (Rust) │ Bitmap (Rust) │ Comparison (C)
+> 0 - 10,000        │          176.88 │         92.93 │          99.41
+> 10,000 - 20,000   │          437.37 │         87.74 │          98.55
+> 20,000 - 30,000   │          677.49 │         76.24 │          96.37
+> 30,000 - 40,000   │          901.76 │         83.39 │          96.73
+> 40,000 - 50,000   │         1126.62 │        100.44 │          94.57
+> 50,000 - 60,000   │         1288.98 │         94.38 │          96.64
+> 60,000 - 70,000   │         1588.74 │         88.27 │          96.36
+> 70,000 - 80,000   │         1812.97 │         93.97 │          91.24
+> 80,000 - 90,000   │         2062.95 │         92.22 │         102.01
+> 90,000 - 100,000  │         2330.03 │         97.18 │         100.31
+> 
+> It should be clear that the current Rust code becomes linearly slower
+> per insertion as the number of calls to rb_next() per transaction
+> increases. After this change, the time to find an ID number appears
+> constant. (Technically it is not constant-time as both insertion and
+> removal scan the entire bitmap. However, quick napkin math shows that
+> scanning the entire bitmap with N=100k takes ~1.5µs, which is neglible
+> in a benchmark where the rountrip latency is 100µs.)
+> 
+> I've included a comparison to the C driver, which uses the same bitmap
+> algorithm as this patch since commit 15d9da3f818c ("binder: use bitmap
+> for faster descriptor lookup").
 
-A tiny side effect: moved a "use" statement out of function scope, in
-each file, up to the top of the file, as per Rust for Linux conventions.
+Thanks for the solid numbers!
 
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- drivers/gpu/nova-core/falcon/hal.rs | 20 +++++++++++++-------
- drivers/gpu/nova-core/fb/hal.rs     | 17 +++++++++--------
- 2 files changed, 22 insertions(+), 15 deletions(-)
+> This currently checks if the bitmap should be shrunk after every
+> removal. One potential future change is introducing a shrinker to make
+> this operation O(1), but based on the benchmark above this does not seem
+> required at this time.
+> 
+> Reviewed-by: Burak Emir <bqe@google.com>
+> Acked-by: Carlos Llamas <cmllamas@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  drivers/android/binder/process.rs | 64 ++++++++++++++++++++++++++++-----------
+>  1 file changed, 47 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+> index f13a747e784c84a0fb09cbf47442712106eba07c..9264961fd92b33c07fcd5353740cc0b1ec978afd 100644
+> --- a/drivers/android/binder/process.rs
+> +++ b/drivers/android/binder/process.rs
+> @@ -19,6 +19,7 @@
+>      cred::Credential,
+>      error::Error,
+>      fs::file::{self, File},
+> +    id_pool::IdPool,
+>      list::{List, ListArc, ListArcField, ListLinks},
+>      mm,
+>      prelude::*,
+> @@ -367,6 +368,8 @@ impl ListItem<{Self::LIST_NODE}> for NodeRefInfo {
+>  struct ProcessNodeRefs {
+>      /// Used to look up nodes using the 32-bit id that this process knows it by.
+>      by_handle: RBTree<u32, ListArc<NodeRefInfo, { NodeRefInfo::LIST_PROC }>>,
+> +    /// Used to quickly find unused ids in `by_handle`.
+> +    handle_is_present: IdPool,
+>      /// Used to look up nodes without knowing their local 32-bit id. The usize is the address of
+>      /// the underlying `Node` struct as returned by `Node::global_id`.
+>      by_node: RBTree<usize, u32>,
+> @@ -381,6 +384,7 @@ impl ProcessNodeRefs {
+>      fn new() -> Self {
+>          Self {
+>              by_handle: RBTree::new(),
+> +            handle_is_present: IdPool::new(),
+>              by_node: RBTree::new(),
+>              freeze_listeners: RBTree::new(),
+>          }
+> @@ -775,7 +779,7 @@ pub(crate) fn get_node(
+>      pub(crate) fn insert_or_update_handle(
+>          self: ArcBorrow<'_, Process>,
+>          node_ref: NodeRef,
+> -        is_mananger: bool,
+> +        is_manager: bool,
+>      ) -> Result<u32> {
+>          {
+>              let mut refs = self.node_refs.lock();
+> @@ -794,7 +798,33 @@ pub(crate) fn insert_or_update_handle(
+>          let reserve2 = RBTreeNodeReservation::new(GFP_KERNEL)?;
+>          let info = UniqueArc::new_uninit(GFP_KERNEL)?;
+>  
+> -        let mut refs = self.node_refs.lock();
+> +        let mut refs_lock = self.node_refs.lock();
+> +        let mut refs = &mut *refs_lock;
+> +
+> +        let (unused_id, by_handle_slot) = loop {
+> +            // ID 0 may only be used by the manager.
+> +            let start = if is_manager { 0 } else { 1 };
+> +
+> +            if let Some(res) = refs.handle_is_present.find_unused_id(start) {
+> +                match refs.by_handle.entry(res.as_u32()) {
+> +                    rbtree::Entry::Vacant(entry) => break (res, entry),
+> +                    rbtree::Entry::Occupied(_) => {
+> +                        pr_err!("Detected mismatch between handle_is_present and by_handle");
+> +                        res.acquire();
+> +                        kernel::warn_on!(true);
+> +                        return Err(EINVAL);
 
-diff --git a/drivers/gpu/nova-core/falcon/hal.rs b/drivers/gpu/nova-core/falcon/hal.rs
-index 82558af1b927..5c504577b97c 100644
---- a/drivers/gpu/nova-core/falcon/hal.rs
-+++ b/drivers/gpu/nova-core/falcon/hal.rs
-@@ -9,7 +9,10 @@
-         FalconBromParams,
-         FalconEngine, //
-     },
--    gpu::Chipset,
-+    gpu::{
-+        Architecture,
-+        Chipset, //
-+    },
- };
- 
- mod ga102;
-@@ -47,14 +50,17 @@ fn signature_reg_fuse_version(
- pub(super) fn falcon_hal<E: FalconEngine + 'static>(
-     chipset: Chipset,
- ) -> Result<KBox<dyn FalconHal<E>>> {
--    use Chipset::*;
--
--    let hal = match chipset {
--        GA102 | GA103 | GA104 | GA106 | GA107 | GH100 | AD102 | AD103 | AD104 | AD106 | AD107
--        | GB100 | GB102 | GB202 | GB203 | GB205 | GB206 | GB207 => {
-+    let hal = match chipset.arch() {
-+        Architecture::Ampere
-+        | Architecture::Hopper
-+        | Architecture::Ada
-+        | Architecture::Blackwell => {
-             KBox::new(ga102::Ga102::<E>::new(), GFP_KERNEL)? as KBox<dyn FalconHal<E>>
-         }
--        _ => return Err(ENOTSUPP),
-+        Architecture::Turing => {
-+            // TODO: Add Turing falcon HAL support
-+            return Err(ENOTSUPP);
-+        }
-     };
- 
-     Ok(hal)
-diff --git a/drivers/gpu/nova-core/fb/hal.rs b/drivers/gpu/nova-core/fb/hal.rs
-index 71fa92d1b709..d795ef7ee65d 100644
---- a/drivers/gpu/nova-core/fb/hal.rs
-+++ b/drivers/gpu/nova-core/fb/hal.rs
-@@ -4,7 +4,10 @@
- 
- use crate::{
-     driver::Bar0,
--    gpu::Chipset, //
-+    gpu::{
-+        Architecture,
-+        Chipset, //
-+    },
- };
- 
- mod ga100;
-@@ -29,12 +32,10 @@ pub(crate) trait FbHal {
- 
- /// Returns the HAL corresponding to `chipset`.
- pub(super) fn fb_hal(chipset: Chipset) -> &'static dyn FbHal {
--    use Chipset::*;
--
--    match chipset {
--        TU102 | TU104 | TU106 | TU117 | TU116 => tu102::TU102_HAL,
--        GA100 => ga100::GA100_HAL,
--        GA102 | GA103 | GA104 | GA106 | GA107 | GH100 | AD102 | AD103 | AD104 | AD106 | AD107
--        | GB100 | GB102 | GB202 | GB203 | GB205 | GB206 | GB207 => ga102::GA102_HAL,
-+    match chipset.arch() {
-+        Architecture::Turing => tu102::TU102_HAL,
-+        Architecture::Ampere if chipset == Chipset::GA100 => ga100::GA100_HAL,
-+        Architecture::Ampere => ga102::GA102_HAL,
-+        Architecture::Hopper | Architecture::Ada | Architecture::Blackwell => ga102::GA102_HAL,
-     }
- }
--- 
-2.52.0
+EINVAL means that user provides a wrong parameter. Here's a data
+corruption. Maybe EFAULT?
 
+> +                    }
+> +                }
+> +            }
+> +
+> +            let grow_request = refs.handle_is_present.grow_request().ok_or(ENOMEM)?;
+> +            drop(refs_lock);
+> +            let resizer = grow_request.realloc(GFP_KERNEL)?;
+> +            refs_lock = self.node_refs.lock();
+> +            refs = &mut *refs_lock;
+> +            refs.handle_is_present.grow(resizer);
+
+This continues puzzling me. Refs_lock protects refs, and the spec
+says:
+
+    a reference’s scope starts from where it is introduced and
+    continues through the last time that reference is used.
+
+https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html
+
+The last usage of refs is at .grow_request() line, because later it's
+reused with the new value. 
+
+If my reading of the spec is correct, after dropping the refs_lock,
+you may get rescheduled, and another thread may follow the same path.
+Because refs_lock is dropped explicitly and refs - implicitly, the
+concurrent thread can grab both and follow with resizing the id map.
+
+When your first thread will get back, you'll end up resizing the
+already resized map.
+
+I asked your AI, and it says that this race is indeed possible for
+exactly that reason. But it doesn't break memory safety, so the
+compiler is happy about it...
+
+> +        };
+> +        let handle = unused_id.as_u32();
+>  
+>          // Do a lookup again as node may have been inserted before the lock was reacquired.
+>          if let Some(handle_ref) = refs.by_node.get(&node_ref.node.global_id()) {
+> @@ -804,20 +834,9 @@ pub(crate) fn insert_or_update_handle(
+>              return Ok(handle);
+>          }
+>  
+> -        // Find id.
+> -        let mut target: u32 = if is_mananger { 0 } else { 1 };
+> -        for handle in refs.by_handle.keys() {
+> -            if *handle > target {
+> -                break;
+> -            }
+> -            if *handle == target {
+> -                target = target.checked_add(1).ok_or(ENOMEM)?;
+> -            }
+> -        }
+> -
+>          let gid = node_ref.node.global_id();
+>          let (info_proc, info_node) = {
+> -            let info_init = NodeRefInfo::new(node_ref, target, self.into());
+> +            let info_init = NodeRefInfo::new(node_ref, handle, self.into());
+>              match info.pin_init_with(info_init) {
+>                  Ok(info) => ListArc::pair_from_pin_unique(info),
+>                  // error is infallible
+> @@ -838,9 +857,10 @@ pub(crate) fn insert_or_update_handle(
+>          // `info_node` into the right node's `refs` list.
+>          unsafe { info_proc.node_ref2().node.insert_node_info(info_node) };
+>  
+> -        refs.by_node.insert(reserve1.into_node(gid, target));
+> -        refs.by_handle.insert(reserve2.into_node(target, info_proc));
+> -        Ok(target)
+> +        refs.by_node.insert(reserve1.into_node(gid, handle));
+> +        by_handle_slot.insert(info_proc, reserve2);
+> +        unused_id.acquire();
+> +        Ok(handle)
+>      }
+>  
+>      pub(crate) fn get_transaction_node(&self, handle: u32) -> BinderResult<NodeRef> {
+> @@ -905,6 +925,16 @@ pub(crate) fn update_ref(
+>                  let id = info.node_ref().node.global_id();
+>                  refs.by_handle.remove(&handle);
+>                  refs.by_node.remove(&id);
+> +                refs.handle_is_present.release_id(handle as usize);
+> +
+> +                if let Some(shrink) = refs.handle_is_present.shrink_request() {
+> +                    drop(refs);
+> +                    // This intentionally ignores allocation failures.
+> +                    if let Ok(new_bitmap) = shrink.realloc(GFP_KERNEL) {
+> +                        refs = self.node_refs.lock();
+> +                        refs.handle_is_present.shrink(new_bitmap);
+> +                    }
+> +                }
+>              }
+>          } else {
+>              // All refs are cleared in process exit, so this warning is expected in that case.
+> 
+> -- 
+> 2.52.0.460.gd25c4c69ec-goog
