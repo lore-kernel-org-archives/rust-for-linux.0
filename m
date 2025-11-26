@@ -1,122 +1,96 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07875248F7C;
-	Wed, 26 Nov 2025 11:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3097127B4FB;
+	Wed, 26 Nov 2025 13:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764156870; cv=none; b=DRYLzoZaCd1xgJ4n5G8qI8IG/DvQb7jgRr+KvKKUh1XLL5fVhQ76P4D4NbReFrer5cLfsfiDAfLFd6JvpGbsCa1LVhnWu60Hddt71k31ibzrxcBpxWVEdOGI5M4uL1ptICcy9mAY0X7aPcyQXnayPg5RZ0ZOSI0YnPVCm+tQsks=
+	t=1764163203; cv=none; b=Uvy6rdrxzLH9oMWp+rBXDtMayyVWda2MnSz+ya9DvIEx4AZr7g4QJffwNL8z7PHaHPkZfdreJaze8FxOaogb3XHwXQ3aMzmmQavHF3gY5lIZCyr4ST5dA6b8hUU6KwWgXL8cElMah9fY5YCBqULcRBDWUJv5LG8XTuP9nkIZ9aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764156870; c=relaxed/simple;
-	bh=QWOeG+hAnYZqWr5qwOOpn60eMY9exWyqB4FUqstj6Ec=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=bqT1+EK30q+8bw/akbnia2SFJFFJ6aGKLhaXrbwbivEEGppnbTol45D6gXgNKSHGR2lsYVie5HcL9xQ8WVy6sKU3d7gU40qVAV00k7p/hQDUB9zTZkGfEW9ecrSQLWguxi9ZS0e6WkYbwIF0LKMAhXnJa60xWFRpjwbjbqIRDD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=tiRnR90C; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1764163203; c=relaxed/simple;
+	bh=Sxi/6Q4jvM2wf7pGd7IQAsQCeNxuHVhX9VsDta4LQiA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dpOlLs4d7ZooQBzrqhEWYCgIWetdjqsWxHbrgyEVzLlIP6cEIw9G6KV6bg0xbXR3sqHQD5ArV4ccczVN9W5bZKdF7WZty2CYtjMtDXPqjvHQVlI7yl4B2PzyirDP4FHIPPhU5J8lO/IgIDci33/6s6pnLs8xRb4N+tbZJYmflQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YloxW97u; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="tiRnR90C"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20251126113425euoutp0207410ed3fde7d7fb681922cd80c86f37~7i1KQG6Df3162131621euoutp02_;
-	Wed, 26 Nov 2025 11:34:25 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20251126113425euoutp0207410ed3fde7d7fb681922cd80c86f37~7i1KQG6Df3162131621euoutp02_
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1764156865;
-	bh=Mlk/8cVuM1r8cgr34kGmewo0VCLvDAclx64Kzq7IU10=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=tiRnR90C/z2zgZPKygxThBoTiu4KqlPU0OaQwH6dp6i76ubEfSiAM9znavX/GF7Rb
-	 RAFCNSTuOurGjRXsJvkb8/G0My+M92lJmm6hMlawYDQO2TxN8UKncGYm6UuLhBWRpA
-	 P0cee2QTEJo4ppVsAjcc2gTALBB+yYyV4JExx53Y=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20251126113425eucas1p20472c28098c08344e4348a1ee22407ae~7i1J8Jf2K2271922719eucas1p2R;
-	Wed, 26 Nov 2025 11:34:25 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251126113423eusmtip1f3fa48d667a8b110b0790a7b70bca88e~7i1Ij3pon2329423294eusmtip1h;
-	Wed, 26 Nov 2025 11:34:23 +0000 (GMT)
-Message-ID: <cca5c7e8-d9c4-4e28-8da2-62dd521ceea3@samsung.com>
-Date: Wed, 26 Nov 2025 12:34:23 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YloxW97u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A38C113D0;
+	Wed, 26 Nov 2025 13:19:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764163201;
+	bh=Sxi/6Q4jvM2wf7pGd7IQAsQCeNxuHVhX9VsDta4LQiA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YloxW97ukkemiEAEPPhT3JNEHRNsVszBesyclyxTRy/EnrWClbK0bOMKoj3DfHXYz
+	 qoI4/w2RckPGF92iCtRSt0iYnXyoM8Tc88E/i3SGDnoJAVqj1KaIxoqV/t0KumtfHg
+	 7eQHOasX20pp/F4RF8CDvu7tYubl2WDsVGsRbqWeXsn9htX/5681mjms4g1PWtPT9m
+	 Z0H73pNH42qhH97McsOJran19ljL/9/E989x8UdZfitpJSEVz95DcX/Dbty5lKKfmz
+	 D63AVLSZR/MJ4CnCHUZ4j/BSbAPPTzStWNmNcKA9dSOgRtNbeK2KIECPRkfHhReJzG
+	 QTlTTkRMr0uGg==
+From: Philipp Stanner <phasta@kernel.org>
+To: Sumit Semwal <sumit.semwal@linaro.org>,
+	Gustavo Padovan <gustavo@padovan.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-kernel@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Philipp Stanner <phasta@kernel.org>
+Subject: [PATCH 0/6] dma-fence: Remove return code of dma_fence_signal() et al.
+Date: Wed, 26 Nov 2025 14:19:09 +0100
+Message-ID: <20251126131914.149445-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/10] rust: kernel: Update ARef and AlwaysRefCounted
- imports to use sync::aref
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	=?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Shankari Anand <shankari.ak0208@gmail.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?=
-	<arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen
-	<maco@android.com>, Joel Fernandes <joelagnelf@nvidia.com>, Christian
-	Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, Suren
-	Baghdasaryan <surenb@google.com>, Danilo Krummrich <dakr@kernel.org>, Alice
-	Ryhl <aliceryhl@google.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Alexandre Courbot <acourbot@nvidia.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Igor Korotin
-	<igor.korotin.linux@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
-	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
-	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Daniel
-	Almeida <daniel.almeida@collabora.com>, Abdiel Janulgue
-	<abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-	linux-pwm@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <CANiq72mQ4cu9wehGKxS92EK2H3kcX8XPpRmv2DdYmn6Ve9iDAw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251126113425eucas1p20472c28098c08344e4348a1ee22407ae
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251125123134eucas1p230415281df788e787f4b71e4d7b3ac3f
-X-EPHeader: CA
-X-CMS-RootMailID: 20251125123134eucas1p230415281df788e787f4b71e4d7b3ac3f
-References: <20251123092438.182251-1-shankari.ak0208@gmail.com>
-	<20251123092438.182251-7-shankari.ak0208@gmail.com>
-	<44gv3fhqppn4fyg5fnxkhhanlbbxr2slqq7k3kr3owx7frpnxw@idgwxlcv4otn>
-	<CGME20251125123134eucas1p230415281df788e787f4b71e4d7b3ac3f@eucas1p2.samsung.com>
-	<CANiq72mQ4cu9wehGKxS92EK2H3kcX8XPpRmv2DdYmn6Ve9iDAw@mail.gmail.com>
 
+Barely anyone uses dma_fence_signal()'s (and similar functions') return
+code. Checking it is pretty much useless anyways, because what are you
+going to do if a fence was already signal it? Unsignal it and signal it
+again? ;p
 
+Removing the return code simplifies the API and makes it easier for me
+to sit on top with Rust DmaFence.
 
-On 11/25/25 13:31, Miguel Ojeda wrote:
-> On Mon, Nov 24, 2025 at 5:10 PM Uwe Kleine-König
-> <u.kleine-koenig@baylibre.com> wrote:
->>
->> having no clue about Rust:
->>
->> Can this patch be applied independent of the others via the pwm tree? If
->> I understand correctly it's only patch #10 that depends on the previous
->> patches, right?
->>
->> Is there already a merge plan for this series?
-> 
-> Yeah, if subsystems pick the independent patches at their own pace,
-> then that is great, so please do!
-> 
-> Then, after 1 or 2 cycles, we can do the flag day change on the Rust
-> tree (with any last changes needed Ack'd, but ideally there will be
-> none remaining).
-> 
-> It is what did in similar cases for renaming (or moving across the
-> path hierarchy) things in Rust. For simple things that get Ack'd quick
-> enough by everyone, sometimes we may be able to take everything in the
-> Rust tree.
-> 
-> Thanks!
-> 
-> Cheers,
-> Miguel
-> 
+Philipp Stanner (6):
+  dma-buf/dma-fence: Add dma_fence_test_signaled_flag()
+  amd/amdkfd: Ignore return code of dma_fence_signal()
+  drm/gpu/xe: Ignore dma_fenc_signal() return code
+  dma-buf: Don't misuse dma_fence_signal()
+  drm/ttm: Remove return check of dma_fence_signal()
+  dma-buf/dma-fence: Remove return code of signaling-functions
 
-I think code wise it's fine, provided the subject is fixed like Uwe suggested.
+ drivers/dma-buf/dma-fence.c                   | 59 ++++++-------------
+ drivers/dma-buf/st-dma-fence.c                |  7 +--
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c      |  5 +-
+ .../gpu/drm/ttm/tests/ttm_bo_validate_test.c  |  3 +-
+ drivers/gpu/drm/xe/xe_hw_fence.c              |  5 +-
+ include/linux/dma-fence.h                     | 33 ++++++++---
+ 6 files changed, 53 insertions(+), 59 deletions(-)
 
-Acked-by: Michal Wilczynski <m.wilczynski@samsung.com>
+-- 
+2.49.0
+
