@@ -1,181 +1,108 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDD92FFDF7
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Nov 2025 09:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849E62FD1D3
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Nov 2025 09:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764150652; cv=none; b=Thy82MmtiSx8yaw6LAqJT35PD4L7ogstYL4M0q3CIOoPMI2Ol52MyznWMjkManfATxeRy/q/tMjoe5mwUUvzpym1wGyu7yvKOjm7azU07nOn5VL8hpUEvZFFOENdT+BRty62VyGpIq01t0U1Flo71SlSOkmLt3mfsyN6FEqIpkA=
+	t=1764150790; cv=none; b=qp//8cEiY2DOAzDXsOyXs6lOY5JyScxbtIpdJiCCE5D+/T3m0UNHzYKeB/3WXIFd2J0VTpKKh54/O/yl3h5C3uVh0FD9loxZA5/sgTKr3JToPguX2WUY0UwqnpjEbmR8eRzraoIXJnOveZ+f6/eldPKeZLqRrIs/zwqWQgtn0Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764150652; c=relaxed/simple;
-	bh=E/RU1dhL7sHkXwY6wCpifQdBufsgzqGxIPaX5zPDkrA=;
+	s=arc-20240116; t=1764150790; c=relaxed/simple;
+	bh=E/Vw1ge5hpfXiAjQ/SS66MHdB62gP4zJBU9ctmYyTW0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tv38bV/TvxLwO8FFqZCFhFKKdWm/tyIGsFwNIH7Kh2gL5kqkwwCIHoirhz5VnH3JtSWJs8uAGmiu6Ztt0bDEgSUgdWzxSbiPCMr8reils2jVg5lbYMxHt7dV9SduekOAP9AJPu+Tlj6xzHuEZa5TNXrOhr9kc+qnU6DQSKw8fEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GKV0l3OR; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=L/UilfIFYXRheReSrX6mbfwrHvtMqchc/kKi1Okwi3B4loz7CXFZYXJagVD1G2QI/a1r7mWK7WquCj4QWiYXvId0iip7bc476K42PTNsdffwON93x0IVxVNSENJ7OWG0plBO5gUQoWegRNa8xLFP+Py/55fOy/XBTSj6tLY3SSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hmZ+XVJA; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GKV0l3OR"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-40cfb98eddbso235686f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 26 Nov 2025 01:50:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hmZ+XVJA"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477563a0c75so34728465e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 26 Nov 2025 01:53:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764150646; x=1764755446; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1764150787; x=1764755587; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jSvzj95/YOMgXX2WrYYsc8VQubWjVbTM1tYJZOPIebA=;
-        b=GKV0l3ORf0zahec9/CeZZJhBSUxshL4seiMyY3dvKuImJJWX7Ytx3GETkxeYtNt5OB
-         GxIMCIoD8olQ92i3Ry0QtwsIimAsV2ciziioIGM0kghNKnRA0TUPT1RPU4nRuKl/3QIl
-         PycoN7ZXbesNDLnE3YbzW6dTOPcSrI91BRAsW3epYYvciR/4AcB4lYd0eUGXT3EtLH2W
-         L+XFdv7hgccDI1W/8ldn6jNNN9YPah1X8Cwkqb7kUzYJC+8nw6aUxM5tnWLzi8UoiuQm
-         +cVOPs34KkSvRHby1hTihLWUdaS+BIQ/+wFfNvZSXYlAUstdfIVfDP7VhffdzY9f5QBO
-         Ejug==
+        bh=jhEHhAF1sFWBdc1QzDdCrjT0zY8oot45leW9hxEVcLk=;
+        b=hmZ+XVJAc8etbEO5/VK/+DN2Ci5LVZXR+wX3y7FTeleaMTDSz4s3da3fthaFjop1UI
+         XsC/8F6sh0maQT4ieu25ZZndR2roC8f3TJm33lQb/Gcbu6WGP5FoIj4N53+tQjzblKN7
+         TDRp+ClnUIQg//5sOxAUaWINCOD0QCFTQ38ssj/8OOx0MPXfqMKf1RQWVLMrnuITS9gj
+         j960w43pzBIps5XI7HqIvVzQ89vURO+Ib6ReQ6g275Bj1FIR/+uOMSMjBF+O7c//AYvk
+         cWVBbiRIVVXzrD6oI21Xq8B2m15k3tqSmMKb3gEudE3PzU8ACyDu2rwo/PSDTvN4kIoX
+         1d3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764150646; x=1764755446;
+        d=1e100.net; s=20230601; t=1764150787; x=1764755587;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jSvzj95/YOMgXX2WrYYsc8VQubWjVbTM1tYJZOPIebA=;
-        b=goUvSfZPqbJdpo8pLeKLuuIY5I9P5a1hrjWWnnpOeAJzsaO+ckqocnvqg+cj8Sh+As
-         qfySPViB+RGnZchzLvjFzqMGJ+VSWVxwL2VFO6tBY2R3kY98id+Uyocnn7YCdR0tNF8V
-         6gvBgc6bP+01F/+xbGJqajfZnHaOzH+4vMA/iQMiJSsrlK8PEQLDvz0H8MYI59+IJZMn
-         LJuB/IU2Y33ei/HNi1O1MpPL7FsF2eu4qr/biHrctvBUIbvqRv8cQxbXu+JEXrPGHdNI
-         W6/OokcjRvqURWBxRgaYznDKpynp+wTzwNuFc+o9y4l4SwPiydAZ/yEHPzSpjqBxmpsR
-         PcLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVeERc1rgxDwblzVpQHJQcsj12iCsjYDsOH5I5zzm28tFR7N+jJYiUWRzh4D2sPIQQoe0sQmVi0dqioWKZxJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvvZ+wH+FU6zivnRCU34juuVT0fgNl+e/saYHBVqiwD2OUaStn
-	FwLVkiingauSzSF856d+isfJy2o9iUDDckhwRGz/7cqaiXyhsjzLjmFCRpcSZ3lYF4JrUOhhxLl
-	kthEzJ+UEPkdzjv+UhA==
-X-Google-Smtp-Source: AGHT+IEqNy6XkLEGvnBrcIM1oqNkFhyCHgbUhLMFwOhqN/xcPMxU4ziKwD306VJn7O/813l4Ug2PbJ6oZFBRHDE=
-X-Received: from wmdn1.prod.google.com ([2002:a05:600c:2941:b0:477:103e:8e30])
+        bh=jhEHhAF1sFWBdc1QzDdCrjT0zY8oot45leW9hxEVcLk=;
+        b=Z/c0xx8DX7zRGzhFhb1AJ+PC0VWZ4J4NAo0teWskaridxfEdhhxfCKe6v9N7UWVxqY
+         yrN9AJpzl21ctiBr1lxa1Id37/gMerPa9/xh5IOWaDHta+JkVqaqYqyuG4KThs4PdlY2
+         zJMsquxpa9EiFdMJP4rp6W648jKP8H2yTGeAnA7aD3Iw6zvBHFXSYYe6F8TJOfxOBaqm
+         EB6oan9cpp5w60X303ZrA+wyTjhzWOAUL0wgYHh411u4rnJE/ByYGBMJdXuxFN4ePbM2
+         fOBBVA/SnPVOetPW2KBPplUBcx+HDfn9wFYLJ4uFwuriEuDrSexLf3v+jwHMnseWRSs6
+         /Rtw==
+X-Forwarded-Encrypted: i=1; AJvYcCUu2QL/nyQ0rET3gxZG029pqolvRVINaDgo0gBfJgYZ0jb2X2tDIjgaYXWKokM/hg/nN1MJR0SMzfFuV0+ANw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfAZPUEdFIzQzKw0n77sLKydMvHiT4hxB9UWsl7VjhSXu8gA/L
+	US2hnYbTb+q9a+kdF678HI1GvvkGJWu8ebhtujxamIcjrWFF7EcMFA8MWnCPyBS0lgcgHFaC7ge
+	FBXK+gN3HVxcTnBgraQ==
+X-Google-Smtp-Source: AGHT+IE+qKOTlNOP6qk4XcA7FZuJhhCVo9nCRh/d2GGRWB4YahgXOtDPJUzXQ11aXHlXjufKyykmptnJ4oEGLdo=
+X-Received: from wmkz11.prod.google.com ([2002:a7b:c7cb:0:b0:477:9654:b44c])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4eca:b0:46f:a2ba:581f with SMTP id 5b1f17b1804b1-477c0540a68mr204945775e9.16.1764150646449;
- Wed, 26 Nov 2025 01:50:46 -0800 (PST)
-Date: Wed, 26 Nov 2025 09:50:45 +0000
-In-Reply-To: <DEIGORHCX5VR.2EIPZECA0XGVH@nvidia.com>
+ 2002:a05:600c:3b9c:b0:477:af07:dd22 with SMTP id 5b1f17b1804b1-47904b24243mr56076495e9.28.1764150786911;
+ Wed, 26 Nov 2025 01:53:06 -0800 (PST)
+Date: Wed, 26 Nov 2025 09:53:06 +0000
+In-Reply-To: <aSaU5lSmtD17U0kT@fedora>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251119112117.116979-1-zhiw@nvidia.com> <20251119112117.116979-4-zhiw@nvidia.com>
- <aSB1Hcqr6W7EEjjK@google.com> <DEHTK1CK84WO.28LTX338E4PXQ@nvidia.com>
- <aSXD-I8bYUA-72vi@google.com> <DEIGORHCX5VR.2EIPZECA0XGVH@nvidia.com>
-Message-ID: <aSbNddXgvv5AXqkU@google.com>
-Subject: Re: [PATCH v7 3/6] rust: io: factor common I/O helpers into Io trait
+References: <98227EBD-92F7-40FC-A5A4-3FF3780FB2CB@bne-home.net>
+ <aSV1rxXq4KuInexy@google.com> <aSaU5lSmtD17U0kT@fedora>
+Message-ID: <aSbOAsOJbhtkJACJ@google.com>
+Subject: Re: [PATCH 1/1] drm: nova: Align GEM memory allocation to system page size
 From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, dakr@kernel.org, 
-	bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, markus.probst@posteo.de, helgaas@kernel.org, 
-	cjia@nvidia.com, smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
-	kwankhede@nvidia.com, targupta@nvidia.com, joelagnelf@nvidia.com, 
-	jhubbard@nvidia.com, zhiwang@kernel.org
+To: Brendan Shephard <bshephar@bne-home.net>
+Cc: dakr@kernel.org, acourbot@nvidia.com, joelagnelf@nvidia.com, 
+	jhubbard@nvidia.com, airlied@gmail.com, rust-for-linux@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, brendan.shephard@gmail.com
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Nov 26, 2025 at 04:52:05PM +0900, Alexandre Courbot wrote:
-> On Tue Nov 25, 2025 at 11:58 PM JST, Alice Ryhl wrote:
-> > On Tue, Nov 25, 2025 at 10:44:29PM +0900, Alexandre Courbot wrote:
-> >> On Fri Nov 21, 2025 at 11:20 PM JST, Alice Ryhl wrote:
-> >> > On Wed, Nov 19, 2025 at 01:21:13PM +0200, Zhi Wang wrote:
-> >> >> The previous Io<SIZE> type combined both the generic I/O access helpers
-> >> >> and MMIO implementation details in a single struct.
-> >> >> 
-> >> >> To establish a cleaner layering between the I/O interface and its concrete
-> >> >> backends, paving the way for supporting additional I/O mechanisms in the
-> >> >> future, Io<SIZE> need to be factored.
-> >> >> 
-> >> >> Factor the common helpers into new {Io, Io64} traits, and move the
-> >> >> MMIO-specific logic into a dedicated Mmio<SIZE> type implementing that
-> >> >> trait. Rename the IoRaw to MmioRaw and update the bus MMIO implementations
-> >> >> to use MmioRaw.
-> >> >> 
-> >> >> No functional change intended.
-> >> >> 
-> >> >> Cc: Alexandre Courbot <acourbot@nvidia.com>
-> >> >> Cc: Alice Ryhl <aliceryhl@google.com>
-> >> >> Cc: Bjorn Helgaas <helgaas@kernel.org>
-> >> >> Cc: Danilo Krummrich <dakr@kernel.org>
-> >> >> Cc: John Hubbard <jhubbard@nvidia.com>
-> >> >> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
-> >> >
-> >> > I said this on a previous version, but I still don't buy the split
-> >> > into IoFallible and IoInfallible.
-> >> >
-> >> > For one, we're never going to have a method that can accept any Io - we
-> >> > will always want to accept either IoInfallible or IoFallible, so the
-> >> > base Io trait serves no purpose.
-> >> >
-> >> > For another, the docs explain that the distinction between them is
-> >> > whether the bounds check is done at compile-time or runtime. That is not
-> >> > the kind of capability one normally uses different traits to distinguish
-> >> > between. It makes sense to have additional traits to distinguish
-> >> > between e.g.:
-> >> >
-> >> > * Whether IO ops can fail for reasons *other* than bounds checks.
-> >> > * Whether 64-bit IO ops are possible.
-> >> >
-> >> > Well ... I guess one could distinguish between whether it's possible to
-> >> > check bounds at compile-time at all. But if you can check them at
-> >> > compile-time, it should always be possible to check at runtime too, so
-> >> > one should be a sub-trait of the other if you want to distinguish
-> >> > them. (And then a trait name of KnownSizeIo would be more idiomatic.)
-> >> >
-> >> > And I'm not really convinced that the current compile-time checked
-> >> > traits are a good idea at all. See:
-> >> > https://lore.kernel.org/all/DEEEZRYSYSS0.28PPK371D100F@nvidia.com/
-> >> >
-> >> > If we want to have a compile-time checked trait, then the idiomatic way
-> >> > to do that in Rust would be to have a new integer type that's guaranteed
-> >> > to only contain integers <= the size. For example, the Bounded integer
-> >> > being added elsewhere.
-> >> 
-> >> Would that be so different from using an associated const value though?
-> >> IIUC the bounded integer type would play the same role, only slightly
-> >> differently - by that I mean that if the offset is expressed by an
-> >> expression that is not const (such as an indexed access), then the
-> >> bounded integer still needs to rely on `build_assert` to be built.
-> >
-> > I mean something like this:
-> >
-> > trait Io {
-> >     const SIZE: usize;
-> >     fn write(&mut self, i: Bounded<Self::SIZE>);
-> > }
+On Wed, Nov 26, 2025 at 03:49:26PM +1000, Brendan Shephard wrote:
+> On Tue, Nov 25, 2025 at 09:23:59AM +0000, Alice Ryhl wrote:
+> > On Fri, Nov 21, 2025 at 02:04:28PM +1000, bshephar@bne-home.net wrote:
+> > >  impl NovaObject {
+> > >      /// Create a new DRM GEM object.
+> > >      pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef<gem::Object<Self>>> {
+> > > -        let aligned_size = size.next_multiple_of(1 << 12);
+> > > -
+> > > -        if size == 0 || size > aligned_size {
+> > > +        // Check for 0 size or potential usize overflow before calling page_align
+> > > +        if size == 0 || size > usize::MAX - PAGE_SIZE + 1 {
+> > 
+> > Maybe this should use isize::MAX as the maximum size instead? That's a
+> > pretty common maximum size for allocations in Rust and big enough for
+> > everyone.
+> > 
+> > Alice
 > 
-> I have experimented a bit with this idea, and unfortunately expressing
-> `Bounded<Self::SIZE>` requires the generic_const_exprs feature and is
-> not doable as of today.
+> Thanks for the review Alice. I used usize here because the page_align()
+> function specifically mentions that the provided value should not
+> overflow a ['usize'].
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/page.rs#n30
 > 
-> Bounding an integer with an upper/lower bound also proves to be more
-> demanding than the current `Bounded` design. For the `MIN` and `MAX`
-> constants must be of the same type as the wrapped `T` type, which again
-> makes rustc unhappy ("the type of const parameters must not depend on
-> other generic parameters"). A workaround would be to use a macro to
-> define individual types for each integer type we want to support - or to
-> just limit this to `usize`.
-> 
-> But the requirement for generic_const_exprs makes this a non-starter I'm
-> afraid. :/
+> I don't think that alone needs to be the deciding factor, but it's worth
+> expressing why I made that decision to begin with. Happy to hear your
+> thoughts, and if you still feel isize::MAX is more appropriate given
+> this information.
 
-Can you try this?
+I know that you picked this particular limit to avoid integer overflow.
 
-trait Io {
-    type IdxInt: Int;
-    fn write(&mut self, i: Self::IdxInt);
-}
+I think picking a lower limit makes sense because isize::MAX is a
+relatively standard choice for maximum allocation sizes. I think it is a
+nice choice because it means you can always compute 2*x for any index or
+size x without risk of overflow.
 
-then implementers would write:
-
-impl Io for MyIo {
-    type IdxInt = Bounded<17>;
-}
-
-instead of:
-impl Io for MyIo {
-    const SIZE = 17;
-}
+But it's up to the nova folks, not me.
 
 Alice
