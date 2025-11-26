@@ -1,93 +1,99 @@
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.ms.icloud.com (p-west3-cluster6-host6-snip4-10.eps.apple.com [57.103.75.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1091C30E856
-	for <rust-for-linux@vger.kernel.org>; Wed, 26 Nov 2025 04:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D808E1F03D9
+	for <rust-for-linux@vger.kernel.org>; Wed, 26 Nov 2025 05:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.75.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764130411; cv=none; b=GZNFX/XmwxxZNdUzMv+cICYRbbdVXx+eDQksOgtFB6qVTg+JByjbQyLpsFZchxRchb9wfuigxuUflcEUMbOCUM3KCOFIF5MUjuV0IshmKHsvtYbGKLQ5tFy3KYx8mSEq8xHr7ZEJmQ2/KKSgn7wZP9loeGWhZiPz/qaDPaaV060=
+	t=1764136179; cv=none; b=FSekgfcZq9shrVLkB8PObo4PK5urxJ1QdxbIEvuDbf7PyxMUH3cDWybImUgzoNTdQxAYMVsfJ5cUpuYrVr6Mu5Wtm19o2rwbSUOBI/2/35SVvGIXf9YN6UbYDEIbkK1UKYpXMNHuEQgelMo5iuK2L1x2fLqP90yF3nqCwxJ+Y0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764130411; c=relaxed/simple;
-	bh=MGDxNpIloB5vIbvwQLeKPI+FxQVeoe2nX2rYlo/DI1M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PwGdeANkJJ7qeVd4D0w8Ksd455EJdU27dczILkNUK6zBlY5Cj1A60H16GuQxri+XiWGexT9ZUQeWinsfu1fCN0Ofg1esHhGSB9yWUBSQMjKLZCAS9L12DUrGMSglHgyQsjo21bm9X/qcNe5rXtnTdosQzGnTst/YiBbjV8jocRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EhYtAY0V; arc=none smtp.client-ip=209.85.166.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764136179; c=relaxed/simple;
+	bh=dUG4qOhNY2Uh1rUMRYkOHYUqzIbuvvdp7DXrRHo7VDs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kOyyTBKDzyUWg/DKseaWp6jo20zx9swQXs+OmGNQkeId0um66Rok/sm+c/2a4BU3VeADYEqkZ9rDB7P9VstzMP+R4gkKw7wW/dHTVLKEG6m/BTM4yo3mPis7jsUOAo1OpPvRcJzDaVh7qYKabV5zLabzE+Uzs+4Jn5n7fwlZov8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=PDFaGEhN; arc=none smtp.client-ip=57.103.75.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EhYtAY0V"
-Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-43377ee4825so29299865ab.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Nov 2025 20:13:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764130409; x=1764735209; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MGDxNpIloB5vIbvwQLeKPI+FxQVeoe2nX2rYlo/DI1M=;
-        b=EhYtAY0VN9JL8Rhy6krZQ3BG4gns3vnbMLR4BYAkirvC7OaOdVCl7pWxNJNIPMA+cp
-         EfgYwsaN3dicbMdA3F1XggV0XDj6esF6jSrdSEbbNRV1SGnc8axzhRmK4WzgPqLoUfBj
-         71OLCFH0c02ppJBmTrlYPo67bsqNvliURPjWGLmASd5KXiLVucQzS6IDMpmNBm8kjW47
-         OVESm9embwXd+4EKKVMSeIgWeM/fwGRTKwHYK5vKSIZVjr4iS17AAvXGzwqF2/1X6igh
-         JxvBqTqvoplD+YpVwm1y399xFeum/sSPAZV/txHc54FFjIaMQ5e1jY3OVnnqw/iPcHu7
-         dWhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764130409; x=1764735209;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MGDxNpIloB5vIbvwQLeKPI+FxQVeoe2nX2rYlo/DI1M=;
-        b=f7BNoiklw3nxIkaEEe0pD5SEtug51eHJhpL4YTX3Xth9YIhn/IJpH9hLM9vjrMTX6o
-         m5KZACJuvGfLzARLbdN/nz56a2pXFalA/I8onzdPu34EV7Xooy1Es9tSNn21vob7Top8
-         OpSxh0lAubOX+SpO9b4ofDI//yS5q/XrUf6YsimU3SHfp7xUbfT8vFsF2rV5BLavq8oy
-         MiLTsPN7UEoZwsmaRHQVknhc7QnT52EArGulIxAmm8wqlLQ0R7RLz2A1r+qFxVz4aFoZ
-         6Jloc2gq3SwMQbMg4SsW6Em+J3g35XRW/XfKzPq2NbJHRa2FTuljXaEF2WbzlVm71cfF
-         g2Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCXr/NGt4kbguUE11HFQlywLLoCkg+q5sFFwFg2HkOnmYfMU+Fx9v69829a1cuwF5qcCuStW7h6D1GOdRAtCRQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz82P2CzxaXV/4e6gp2lENx2TVxXwtNniKJc97QWYESLNXABl/k
-	WdAAFsDu/wAfJ32PBs0F2Fa1tNHHfJlmmAPCp5N6lGT8B9z90qyBdpvrnb87rZF4+Lr4CfSeNOT
-	2j2pPRVbNVsgG+VWqJ9bVqs77KKBZ/nA=
-X-Gm-Gg: ASbGnctV1+h4i1ypIf1yIEvXcKJxVkEuNZQC9SmC7tsk6ydqedD26OjmNi542T3CEJI
-	9WFXK6DQM3UwiwyMvrUhv2Z17TTsyzhYF8ZjIyzd/LBTEFTmzPpsFeqm1wKH+HyXbUig/Ani1YH
-	bxyT3T+BDlninb4+Z441mTEBW9elqBk9vCL9BSDzMAyrGLKSp28EJvPz8ywDV1RKyBfZYk54E6U
-	eJnILM4XsR4VLxDY37BBW934u/O7okrAivj0ttjix6Pltpox9LdKnlgJuh86yXYlcF6QOvG7H+P
-	gsH8JG1HLl0=
-X-Google-Smtp-Source: AGHT+IHkrZQbDTb5KIToQHK6gP9+ReX3wNBHpwbIVC36yGMZXuMJbSiF4Ed+xu7lxDEMsY7XmkDJrcaxE7y0gTb16Zk=
-X-Received: by 2002:a05:6e02:1a0d:b0:433:773c:b5eb with SMTP id
- e9e14a558f8ab-435dd0fcc3emr45657035ab.19.1764130409086; Tue, 25 Nov 2025
- 20:13:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="PDFaGEhN"
+Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-3a-10-percent-2 (Postfix) with ESMTPS id 61E3E1800204;
+	Wed, 26 Nov 2025 05:49:33 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=irvx0QuVHJhLxA/iplmb/YluQ7fWz2Ch2DAugFvtT2Q=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=PDFaGEhN2xA3UAMMmijb/C5YXhC1im5JK4UNX6tgA9pn2MDby8+Fb0vtvmFI9MtOsTxnlGR4TlAp8hfo3m7SLfFvxofYivk9WDXzeMVV53Hh0coiLTpCvxOakr9nSgKntXItRyO74BKy0rmNCcWnv17M+udLg+O0r+4z+OSGUvrbBOkG09OcqgRXmfcCq1PUxL9XlfhvLAX9wwd8IEp8gQgFQLZ0/CKHTjT87yRv1dz9GGzPWcw0aCOdmAF2fU7fSVLPpmIp4vKRJH+1dzpD8RIA42dFtO1J1HDNFcMEMe8WAxnhk2NRR65qRx7tkhyAfm6wXRbBXA1qrTLcaSymjA==
+mail-alias-created-date: 1746336505199
+Received: from fedora (unknown [17.57.154.37])
+	by p00-icloudmta-asmtp-us-west-3a-10-percent-2 (Postfix) with ESMTPSA id 6264418000BE;
+	Wed, 26 Nov 2025 05:49:30 +0000 (UTC)
+Date: Wed, 26 Nov 2025 15:49:26 +1000
+From: Brendan Shephard <bshephar@bne-home.net>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: dakr@kernel.org, acourbot@nvidia.com, joelagnelf@nvidia.com,
+	jhubbard@nvidia.com, airlied@gmail.com,
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org,
+	brendan.shephard@gmail.com
+Subject: Re: [PATCH 1/1] drm: nova: Align GEM memory allocation to system
+ page size
+Message-ID: <aSaU5lSmtD17U0kT@fedora>
+References: <98227EBD-92F7-40FC-A5A4-3FF3780FB2CB@bne-home.net>
+ <aSV1rxXq4KuInexy@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6dbdf6e1c1639ae381ca9ab7041f84728ffa2267.1764062688.git.y.j3ms.n@gmail.com>
- <CANiq72nFu2vX7vOWtjutj8574Jy2eGvj87ryhhY_PxFHWSOh+A@mail.gmail.com>
-In-Reply-To: <CANiq72nFu2vX7vOWtjutj8574Jy2eGvj87ryhhY_PxFHWSOh+A@mail.gmail.com>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Wed, 26 Nov 2025 13:13:17 +0900
-X-Gm-Features: AWmQ_bmZmZbzCg7LArTaQ4DhJeAMABr2KiZl97jLALYLSl2-vuIrjtsverMCSN8
-Message-ID: <CA+tqQ4KJO4kHi7CEBQtebwSYEussf0s697ZNqsTruiTSpwhVXQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: syn: make rust-analyzer treat `std` as a dependency
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aSV1rxXq4KuInexy@google.com>
+X-Authority-Info: v=2.4 cv=QJFlhwLL c=1 sm=1 tr=0 ts=692694ee cx=c_apl:c_pps
+ a=qkKslKyYc0ctBTeLUVfTFg==:117 a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=JppZAXPjAAAA:8
+ a=Bcv9xwsS2OVvdwMGJkkA:9 a=CjuIK1q_8ugA:10 a=mTXuAFqUwmiQvsSFmwXH:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDA0NSBTYWx0ZWRfXwUljMWoC9SaO
+ 9OUPodwFYNL45lZ2XiXrGYTsNRbNiUcLLcJio18UjkfsN4qpXKalXHVcTAhcteQSNJ5M/LbZ8Sr
+ c8SjLMIOVfvwfCst201nsiNvnAPySA/wo+WP40r0qP64Tya4RfqmAaiVzOV5uOKKStOEbhSuWUR
+ 4FQZoVva+NUfdzoNHExVXv8b/e7WnpYhL/KlNrHPKxIJxFEdh+bYZOXwW6s5HeG+0OOe1/ugHMg
+ 2mbBaJl0pX0Z7IuYFC+dmPTkp/WOENfcdfDURFha2xszQSUFydBGyxuCKhROShqPyv2a3dwZ1+4
+ xz9ulfukx26Iz06QtFT
+X-Proofpoint-ORIG-GUID: KBvgApPOmXImsYQa4J90rS2jHxfwfwf9
+X-Proofpoint-GUID: KBvgApPOmXImsYQa4J90rS2jHxfwfwf9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-25_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxlogscore=452 clxscore=1030 malwarescore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 phishscore=0 adultscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511260045
+X-JNJ: AAAAAAABPy5DQoqLbqZOG9w+5DW6TJL2iTz0ElYt/EovhofDfVhNDTeCsv8ekALXrl8sLOBadMcxYlOeYTxLuxRJ2FDVx3M6N+rxDHblXD2OXmmmY+xKAP23l2HPl+N19af0dTQQwQ0UGOT6UV5EJ6Ebot/6l3LQMqQErsrLgrbkz+KJyiAolHSKn2KKTfzi6u7MqjKDCrp/d6n8B0QZuez1mTpcMFLFvDABGO2rkhOsAXZEmRh22uSQ9G8s2/dgzDA+Xmjq6iXBydTBVCLmK2QqLjY4nTuohR7oodrIkhL0fiYbNqk+2liq5Ihz6o/a0hnhX7jRrI7XUMlrN82wjXzHrSs7ak2nidhGMtt0daPWsZyRYuR+kn2rmiq2ykWg+UnV6Yz1uabVhMYiZhO7l9okfqFRL6lAsz12fODUtEHDKLvJIIBOGyMsIqXGHw6/3vDuUOZ0f9I7qxDy6dKp9xlekVspkF8a0veSbm6HIq4hBjDbQpUGyI5VIg4YWieItW/woKCc8Ym43v2/GRqYwrhzmHxLsKnWRTtD8vXI/C/mvXbQPmkT5gorIu+UP6NsjcKufOwWF8OV5qMJmxzDlYpPTSnckaTZL14nx7BjsQA7M4dv+wk+sgi/pO184trhCMXLzd48bx7/VX1ZZeaZm01gLUxaqvXyCN2gQOOeDk/y+vu+xSMNApqoLPAR7PKi2jVPaHYPTFrzNitH911mSvicOXb1Pns=
 
-On Wed, Nov 26, 2025 at 8:57=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> For something like this I am tempted to rebase, but given you took the
-> effort to write a nice commit message, I can apply them.
+On Tue, Nov 25, 2025 at 09:23:59AM +0000, Alice Ryhl wrote:
+> On Fri, Nov 21, 2025 at 02:04:28PM +1000, bshephar@bne-home.net wrote:
+> >  impl NovaObject {
+> >      /// Create a new DRM GEM object.
+> >      pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef<gem::Object<Self>>> {
+> > -        let aligned_size = size.next_multiple_of(1 << 12);
+> > -
+> > -        if size == 0 || size > aligned_size {
+> > +        // Check for 0 size or potential usize overflow before calling page_align
+> > +        if size == 0 || size > usize::MAX - PAGE_SIZE + 1 {
+> 
+> Maybe this should use isize::MAX as the maximum size instead? That's a
+> pretty common maximum size for allocations in Rust and big enough for
+> everyone.
+> 
+> Alice
 
-Feel free to rebase if that works better for you. I wrote those
-messages just to provide enough context. Thanks for considering the
-effort!
+Thanks for the review Alice. I used usize here because the page_align()
+function specifically mentions that the provided value should not
+overflow a ['usize'].
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/page.rs#n30
 
-Best Regards,
-Jesung
+I don't think that alone needs to be the deciding factor, but it's worth
+expressing why I made that decision to begin with. Happy to hear your
+thoughts, and if you still feel isize::MAX is more appropriate given
+this information.
+
+Brendan
+
+
+
