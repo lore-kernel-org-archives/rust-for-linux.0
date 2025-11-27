@@ -1,143 +1,353 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010061.outbound.protection.outlook.com [40.93.198.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF694A0C;
-	Thu, 27 Nov 2025 06:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764224705; cv=none; b=SQJlz4JHaCKHjRksXG50Xe+gaDR6NZ2+kTTtzxu3lGbqvLZkEkEi/SO3MxlFCSG0UoSXhyk5BBfyy+Ww0FgD9OyYR2aaGvo3EyOdUVFf9aUQ1YYvRCRoLndnCYpKbU0dPJf5nDwnvuEpcNACkoJ6hCJ72jCKmvGY4Fs0MDspqyI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764224705; c=relaxed/simple;
-	bh=R4j/+SfWFPfTOjJJhvG8UmzZTElqDhpfnL+sCjoX5ro=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HLkbDWt7sM8HLBrKcWzn7920f5MpyJ0pm7Emz4GUhIbun/J+Go0SOqdGXq+LJsisT9WGojq3C/7FVo+laozX3MwQ8cTpgJjaqVluuA0IAQNtWr5wLvDxI43qyqN7Y59pjhnEWwPlXcH3D2qMYNqwyeztdRd8z/OgVwYZGUkJ6Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dVjoN0WF; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2109223372C;
+	Thu, 27 Nov 2025 08:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764231105; cv=fail; b=qGMaT7M09W2JPqoWjQHfjMSeU6S6qTtZTFl6h21KNMgQgS4Xo37Yv2z3t3a5hufAE5QbpOPMBi70DlLaVAd7KJeeXe19eevMlhBMQ36NXPTwKnsndSa+x9/GXOVF9elj99sk14PFzo8EzikjGwQfgwlCdTVZgcTQ9ud/MM0p7TU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764231105; c=relaxed/simple;
+	bh=RGc6+bED1KzRzK2RNk2rg9omMI5LkndF182FLsd1tPI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=d+PHsT92oFdop7fBf7bcd/oE4UK93aYIu9FkSbiMe5ytpQ/TZKi5QScvFWO8i74HDXbO8D5+9FsUyQEkQHc59tp5ahkKAX5+XqdxvZV+zflYbo1Y4oSNjx+VrkSOn8sEfbcFE3Hkjh3y40wZubzhtdY2DyOoL0Vn+rTSYkrTlK4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=JM9orwra; arc=fail smtp.client-ip=40.93.198.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dVjoN0WF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F896C4CEF8;
-	Thu, 27 Nov 2025 06:25:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764224704;
-	bh=R4j/+SfWFPfTOjJJhvG8UmzZTElqDhpfnL+sCjoX5ro=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dVjoN0WFXDayuYp5cxV3lmaSDCsS8/DR5DXmZxjr9SYfUo89CcCyb9A2VkkqU19Ix
-	 1Vo+7H73aAIS4dtrRkZXC+Mk1Hp5Kc4We+YumTsTsmsLoJEDy6g5zkpHsUmNrGfh9V
-	 YCEH90Z8IupSR1i57GG1/6cs/aNl3egSRW/hmZJJjNN7mjwD8c84+PULfyEOwCZZci
-	 XExXDRNf4g/P9T2Z2OLviian/+3PnoJVBmeNY+2XZz4rN5BkN0lXCJBwSFGHCPdhjv
-	 Z/GCJFQsCylPBvzz0QV/WQPqFSuEQS9Fju60FfTIxkw4ouRgZHQqOh3NNLKCAGyY50
-	 v+ubILpjzZjLQ==
-Date: Thu, 27 Nov 2025 07:25:01 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Shankari Anand <shankari.ak0208@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Igor Korotin <igor.korotin.linux@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 06/10] rust: kernel: Update ARef and AlwaysRefCounted
- imports to use sync::aref
-Message-ID: <5p3nstyadh6txzo22eoerryjhegzuoeods7mscr663ipo4bi5u@ixpxt25lv5qc>
-References: <20251123092438.182251-1-shankari.ak0208@gmail.com>
- <20251123092438.182251-7-shankari.ak0208@gmail.com>
- <44gv3fhqppn4fyg5fnxkhhanlbbxr2slqq7k3kr3owx7frpnxw@idgwxlcv4otn>
- <CGME20251125123134eucas1p230415281df788e787f4b71e4d7b3ac3f@eucas1p2.samsung.com>
- <CANiq72mQ4cu9wehGKxS92EK2H3kcX8XPpRmv2DdYmn6Ve9iDAw@mail.gmail.com>
- <cca5c7e8-d9c4-4e28-8da2-62dd521ceea3@samsung.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="JM9orwra"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K4gbN6qIZ7JYHjrxB4KbtnkJMR7x88KsnSPOC+9ZFkJBuhp2TrEfSuipdWSP6nyy12LvHHMj3Xshz5W2kvfY1+bUVYeOarGJPQMEtlH09vUtns7Fj6pSIQ0kQseQNntrZ+XxFQ9MEuUuewG3ybtzwF2RZqfaU/XY5u5tDXy2F2GG6YzhnlQ+xocAr2pw99at9ag5QS/UNgrujJmnbAKw43/24k6ieloXF1DwZz+BRlpH84nMvhamjkzDZkLuliiMQaZUQvhQMXDBSX916IvxlVltGwZ/7cg+WwS/3XyMshnhCtypVGpHft0JsCrp+MztKv7YVsrltKvj714OnrqiIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FzRYFlOZ+yt7vCDTUIq9ouqOytX7LPGhlXKA/zsSmIs=;
+ b=Fr7lPaoz6fz3FyTkeSYURSQCovMQlDyZr0kzjNkd/qjYBwTTxD8NkxktoAgailGgF6o/vbUhY1f+RYSA09+0Jyb4NUMtcLGRL7B0LtB5w8TCzQ34miOIWM1blyHNGPQPClbA5OXVNeMW5LVH9Ctnx6jkXS8w0IBbmjONJmqdVYGStPE3xKawWsPP2YSe0+9xVrymx4HwnhoZgO6ZTXjS7cj9HU0Nttn0hkn0jC2Rr7p5qhwFv3sEvONrz1KZA/+8hXjCEAQrtOm/N6Hygha0+HeoOaIsEI0XG9F+u1EwZW4jE1HwS9/UnKFh+qJZ3O0pGror8RTRPz4CkXgmjGZNTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FzRYFlOZ+yt7vCDTUIq9ouqOytX7LPGhlXKA/zsSmIs=;
+ b=JM9orwra3FIXKl9kbk/d/zIyBxhE0xkOyCw8shBiPvgJV2bmO6GmE0q8AEeuV8GwlJ5o2zOATA9D6cM8aUKb5zmN9OFfppwpoO5ebvEKjhPi/8JDZBxYuIOcbokKkl+tYqi+SOp6Rr/ds5lxVkGeYP/Y3h36JBoNIlYhPKlWR4o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by MW4PR12MB6876.namprd12.prod.outlook.com (2603:10b6:303:208::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Thu, 27 Nov
+ 2025 08:11:41 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.9366.012; Thu, 27 Nov 2025
+ 08:11:41 +0000
+Message-ID: <f1864f6d-8403-406d-81a0-00a71495cae8@amd.com>
+Date: Thu, 27 Nov 2025 09:11:33 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] dma-buf/dma-fence: Add dma_fence_test_signaled_flag()
+To: Matthew Brost <matthew.brost@intel.com>,
+ Philipp Stanner <phasta@kernel.org>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>,
+ Gustavo Padovan <gustavo@padovan.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+References: <20251126131914.149445-2-phasta@kernel.org>
+ <20251126131914.149445-3-phasta@kernel.org>
+ <aSctt3QFiEIB61Gr@lstrano-desk.jf.intel.com>
+ <aScxGDYeNeN1WYja@lstrano-desk.jf.intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <aScxGDYeNeN1WYja@lstrano-desk.jf.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0011.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a::21) To SJ0PR12MB5673.namprd12.prod.outlook.com
+ (2603:10b6:a03:42b::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vfuv755wwcx3lvvj"
-Content-Disposition: inline
-In-Reply-To: <cca5c7e8-d9c4-4e28-8da2-62dd521ceea3@samsung.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|MW4PR12MB6876:EE_
+X-MS-Office365-Filtering-Correlation-Id: 307c0ab3-b7eb-4bc3-faa8-08de2d8c9843
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eFFNcmh6aWV4bjVWZG9KSEdEMUk3WTMzUGRxT2pKcGNtMlFtSlRNN3JaSzZm?=
+ =?utf-8?B?ZWE2SUhYcTNuMXNaUnZCdXBEWGo4K1A3NHRNL3VVSkhrRDNXMjBYMWRxV3VE?=
+ =?utf-8?B?RG1HYTdRVDlZL0c5MUhWS21ocFplSThYYXZ5MVRQL241SDBCMDJEZlNBOCtS?=
+ =?utf-8?B?MkZuN3ZHV3BuN3o2MWcrdFdURUdaRml4azhNcmdrYnFqVzZ5b1IrNGVlNUx3?=
+ =?utf-8?B?bzJha0ZSNERJV3lVb1hkMjBGc2hZSFpqSWJybEw4T09WdVZLNXBrT0xsWXZV?=
+ =?utf-8?B?bEp4bzFUcld6eC9idVd4T1FGaVRDK3hqSFUzYm11Rlozc1BxaTgwc3M4VWow?=
+ =?utf-8?B?a3UydDdhTWVIN3JrMFRhTVowVUFsWGFiZnRlWitaTkFYR3FuNE9tT2t0ZE9I?=
+ =?utf-8?B?Z21lUzNkVnJWaitnVTF5Q2ZpK2FsTnVTSEgyZ215YzFzdXlJYkd1QnVjbDNZ?=
+ =?utf-8?B?SjdTL0hwc2xtVlFZeDF6Nyt2bzIwUmhwbDEyYnBNbHAzZUc3OTExUEluTUxt?=
+ =?utf-8?B?bnQvN2JLRkFRSmZjZmwrblkyUW5KcG80a2x1emxMUEU2V0NwczZidk13SWlj?=
+ =?utf-8?B?RjVEc1BQclV1cmwrUDJBT2VjQi9ocklIaWU1cFZjZ3NPRjVBOGtwbWlGWmxx?=
+ =?utf-8?B?V3U4bzBoV1JSelE0Tm95R1Q0b2d0SzcrVE1keW4xNHpzaFY5ZWoyK3pmNVhF?=
+ =?utf-8?B?Rzk4eHhXTzV0QmVkZi9rT2d3SnNsaEdEZkhvV09BbExHRWxacWFneW43VCs2?=
+ =?utf-8?B?NnRNRWdFcEV5RzJ6QUFoN1dJVDBxRnM4QlpvOWNyaFJLNUMrTmphREQ1cFZy?=
+ =?utf-8?B?UW1zbjF3WmR2dXZTU1dQa2syL0dJditqWG5xMDBhdXJtV0RVUzF6eTllRXpu?=
+ =?utf-8?B?b01FSTI5TnZCUnFtV2JYcFhFQ0g3M1d4R3k3VUJ5TU4wVzRjUzY2YjBUSC95?=
+ =?utf-8?B?WUFqVVgzblh3TTE3Q2ZMaUd6bXZ5RWVxQkFCSjVOMUluVzNKUHcrZ2NMREtt?=
+ =?utf-8?B?RzdIais0UUNKanVhOUdIM3dJWDc3UlNOOTNVeUphc2JGYkdIaWV2ZWhNZ0Uv?=
+ =?utf-8?B?YStGUVRCd0lYUklEaGhqQXZPUUkwbWZQOVNyTG50QXlhWmtKR3NjVnJMczBJ?=
+ =?utf-8?B?TlRnejNldnVYcnExMW8rRndWQkJSWjFPYS85NWdmdU5nR1RxNVlaUVRqYmZ4?=
+ =?utf-8?B?RnpGSEsxUk12dzJ1MUdPV2p6dFNiUFhKN3Rrc2FQdjFGYlZKb1hMeW5PMTI4?=
+ =?utf-8?B?bC9mTlpTZEI2ZzY5dnhXYkhNS0pMdXdaOU43QUZRdzYreExLRXpScXpIUG91?=
+ =?utf-8?B?TlMzZ0I0eFdDZnBBcTVIUzdOdDc3UUJIL1VDMk1rTUZRNjZJUUt0U1U5SlVO?=
+ =?utf-8?B?OGNJQmd1Y1hHdDlvaGFKSWt2NFVQQ3FVZUVYQTZaQ3AvUERIN0JzS0F3anp4?=
+ =?utf-8?B?VmFvM0l6RFB6MERtVExyQkNPd0laY0pJeEdSQ04vOGNYWktTbXhKVUYwYUNi?=
+ =?utf-8?B?QWVxUlZUV2J3c2dPVG1JcGIzd3pJSXd2ZFhWbVhDd3d3bjMrblVkRTlzUGRw?=
+ =?utf-8?B?Nk1pREl5RytzMHR4SjdONm9Za1pyWW50M0pJV1BNZWdrekVQNThxRDBpMlRh?=
+ =?utf-8?B?cWdBVERDUHBIVGFCSGpDa1ZKY3lJMU1yZGRMYmJKL05sVHEyNW5KY2R1SFpl?=
+ =?utf-8?B?ODlaeGxhQ25iNFo0bVluTEwzVDFVV0ovR2gxV0JZVjVjV09OUnhVSWVTckVl?=
+ =?utf-8?B?dHVtSkk1aHVuNndyTEJMYTB0RUFLbUtYbUFXcDVCbGN1TkgxTVd2ZEJLbDVp?=
+ =?utf-8?B?cTlIOVFwcDIyUFYvcVByL1JpNUFZUWVGM1k5ZUpqR0pMTmN3TWtNYW45OHNU?=
+ =?utf-8?B?WE1PS2lwTDVGVWhyYU42bTR1bG5oQ0w4dmcvZjBmZjRVVzkwdTlYUkFGa0t6?=
+ =?utf-8?Q?A7q1GwfKnSpkQMWggCAOkdPbltddZfZu?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OWNaamx0dDZHY3NxRFhqMVFXR2d2QVNqUUNqYUlOckU2NG5haGZqYzZjUGwv?=
+ =?utf-8?B?NjlPNTJWb2NXdm1BWXdMZHFYOGhLNUs4anMrdWJjWUZMaURlVTBBc2xhYk5I?=
+ =?utf-8?B?aHVEbWp3TXI4ODB2VW5pYnJoQnF0cU9iVi9WSUYrZ28wVVhLU3NBRTZOVmZy?=
+ =?utf-8?B?NndMbEMwRXRBTy9rdkF0cUZyTVdXNTVaRnlUdHJ0SlJrMURPcC9kbk91VlVP?=
+ =?utf-8?B?N2hkUk9CRVorQXc0QTZ3Zmx0SmJGdDFEU21obDQ5NDlMT2k5K2pCSnhHbmJS?=
+ =?utf-8?B?dm8xYkpsd1l2V0IybHRUckZ4Rm9BYTFHOUVRaWRiMmhQTlNpTVRwZ0FDMEQ3?=
+ =?utf-8?B?SCtsdk5FS2ZyWUd6MExjdC9JZStjVHJMUktmd1hpM1NpcGJvM3ViS0RUaGti?=
+ =?utf-8?B?NVRVb1F0QS9pd1pUS0VDZFRmUGI0NkJ5WnVmbi9OS2dsQ2w4K2ZJajQrYU43?=
+ =?utf-8?B?Wlo2UlpuRnJSMFlhSGZEWlRXU3lwWTJYT29yZXJEMVlrK01wbllUMGxqUkhi?=
+ =?utf-8?B?eHVHTXRjZUd0Tk5BT09hYkdMSllLUmJvakFnSlNXdWF6VWlGd0U2aVl5cnZp?=
+ =?utf-8?B?TFpSREltb2oxYTU0K2w4dkpPY1pZUUl2bVNROThVWTgwMlQ4b2M1MThURFZv?=
+ =?utf-8?B?MEgyaG5qVVoxbVFJVnU2RlFleVBDNFRYMkhmRXRrMlpzbzJqdndISTRjaGdL?=
+ =?utf-8?B?cDN5dkJkREc4aURNYm1CeWt2UUJlaHFONjExRy92TEZrMTNNcGQxTElqMUl1?=
+ =?utf-8?B?Uk5KTkVySzVVZVluRWlTR3lsZ29ra1Fic3laNmFod2crclRMMjdJMzl3RHp5?=
+ =?utf-8?B?V0xNaGdLaTF6Q3VEVXFoZGZza1JTZmhIL1ExcnQ3b01kdWRqYXhUd0hETFRq?=
+ =?utf-8?B?L0NXWkFUNVhlTnJrRGp2eFd5ZHVzY09HdndvNnk3RHhXcUJjOEZXWXF5LzBF?=
+ =?utf-8?B?dkJldnd5SGZPM0FIMDY3Um1xY2V0VVRrSDZ0WEIydDVKTTRZRWlwdFB1Vmoy?=
+ =?utf-8?B?ZjhXeWlEU0tJTnpUdFVBQUE3eU9KMWFSRnZKbVhCYXVSUnp6OHErMUJRZmJM?=
+ =?utf-8?B?aVdRY2JxOEYrbldCbSs3QmpmUGlZSkE5VW1Hc2tPZVJyKzA2OUhMOGxrUWhK?=
+ =?utf-8?B?OEZiK2JaL3doQmlvaXByR1lVSlBJQTVZNVFLTUVhZjJtMFBNZjV3ZXF2ck80?=
+ =?utf-8?B?Qm1DV3hGWVZSU0JjZktDT29OUkt3RVZRL3pjd0cyS1p6a3JDYVFQWW9EbndJ?=
+ =?utf-8?B?MTAyajVLZXdaTk5PN3VvajZHU3F3d2FxRFAwQ0FIVGxCeUlhSDlnRFdzcjl2?=
+ =?utf-8?B?K3o5RFZ3dW5sTGJ4NWRxZjZIMXJFWDd2dVozNDdDUXdtSjRlU1FGenFIcHNl?=
+ =?utf-8?B?NFRpTEozWmVLSFdRTFpqSXF5Q3lrWG8vazlTNTBtREhQMUVHNm92L1MvN1E2?=
+ =?utf-8?B?aTdYSmJ2K2N6R1NCcXNsZjRWMkxVaWx6ZE5MTlVMNXQ2bzl4dWhPZUEwRyt4?=
+ =?utf-8?B?SHVKUG9kaWVYc1RDR3NKOURYSENoWm5hQlJUMnZsTzJRR3ZadVg0cXh4SXpt?=
+ =?utf-8?B?Z01IRlVqRmhOTHlXVGQ1TFBpZXc2c2JkOHA4QWZOenFMMEdGaExOOVJJelZi?=
+ =?utf-8?B?dzR3VWVVeG9tZWFJTUp6L3UvZGQzbTFuWDFySjBmZmlvOEJZQU5ybU5PelR4?=
+ =?utf-8?B?NWlVTWRrQXRIWVNBWUNiWUZ4bHRPRlpqN05hbVg0K0E1RVZmNVJBWnNFM2Vh?=
+ =?utf-8?B?bE43eWVaS1pXK001S2psbzlsaW5RQlMwWThBU2pXU2RmVTVyN211YjlJSkx0?=
+ =?utf-8?B?czI4ZStsRy83U2lMVFhqSGl4bFdoVkd0SndQbSs2VUFOMVhNb05qdkJnbS94?=
+ =?utf-8?B?b1E2amhXSWJwY3U2WWlDbmx4SWt6VWduMDMxMVU3UVF5dEppaVYxR3d2a2dC?=
+ =?utf-8?B?amZtUUttdG1ySjQzeXZYWG55Y25xMWxicW9KcFhGOVVQcythY0lxaGMwYWNv?=
+ =?utf-8?B?Z1gyOWVNdDBCY3hGcVRTYnI5UWpMWUo5dFA0dGsvMjNxQWxLU0RzUFlCUTcy?=
+ =?utf-8?B?b0pHL0hzSkxtaWFJdlBQdUI0R3FRYXJoTzYvWnIwZ3VZOWFrajhBVE9DYys3?=
+ =?utf-8?Q?GQWJnHbD6FWmkH/LfBOeQlofB?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 307c0ab3-b7eb-4bc3-faa8-08de2d8c9843
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR12MB5673.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2025 08:11:41.1299
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eafNy5qOGSf3a2X2ttbKXI9FWYGpwLaD3JB9VnoQI/UWsXRkJwKMrrHATbWZqySf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6876
 
+On 11/26/25 17:55, Matthew Brost wrote:
+> On Wed, Nov 26, 2025 at 08:41:27AM -0800, Matthew Brost wrote:
+>> On Wed, Nov 26, 2025 at 02:19:10PM +0100, Philipp Stanner wrote:
+>>> The dma_fence framework checks at many places whether the signaled flag
+>>> of a fence is already set. The code can be simplified and made more
+>>> readable by providing a helper function for that.
+>>>
+>>> Add dma_fence_test_signaled_flag(), which only checks whether a fence is
+>>> signaled. Use it internally.
+>>>
+>>> Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+>>
+>> This is a nice cleanp:
+>> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+>>
+>>> ---
+>>>  drivers/dma-buf/dma-fence.c | 19 +++++++++----------
+>>>  include/linux/dma-fence.h   | 24 ++++++++++++++++++++++--
+>>>  2 files changed, 31 insertions(+), 12 deletions(-)
+>>>
+>>> diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
+>>> index 39e6f93dc310..25117a906846 100644
+>>> --- a/drivers/dma-buf/dma-fence.c
+>>> +++ b/drivers/dma-buf/dma-fence.c
+>>> @@ -372,8 +372,7 @@ int dma_fence_signal_timestamp_locked(struct dma_fence *fence,
+>>>  
+>>>  	lockdep_assert_held(fence->lock);
+>>>  
+>>> -	if (unlikely(test_and_set_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
+>>> -				      &fence->flags)))
+> 
+> I need to read a little better, I think this change isn't quite right.
+> The original code is test and set, the updated code is test only (i.e.,
+> you are missing the set step). So maybe just leave this line as is.
 
---vfuv755wwcx3lvvj
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 06/10] rust: kernel: Update ARef and AlwaysRefCounted
- imports to use sync::aref
-MIME-Version: 1.0
+Oh, good point! I've totally missed that as well.
 
-Hello,
+But that means that this patch set hasn't even been smoke tested.
 
-On Wed, Nov 26, 2025 at 12:34:23PM +0100, Michal Wilczynski wrote:
-> On 11/25/25 13:31, Miguel Ojeda wrote:
-> > On Mon, Nov 24, 2025 at 5:10=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-> > <u.kleine-koenig@baylibre.com> wrote:
-> >>
-> >> having no clue about Rust:
-> >>
-> >> Can this patch be applied independent of the others via the pwm tree? =
-If
-> >> I understand correctly it's only patch #10 that depends on the previous
-> >> patches, right?
-> >>
-> >> Is there already a merge plan for this series?
-> >=20
-> > Yeah, if subsystems pick the independent patches at their own pace,
-> > then that is great, so please do!
-> >=20
-> > Then, after 1 or 2 cycles, we can do the flag day change on the Rust
-> > tree (with any last changes needed Ack'd, but ideally there will be
-> > none remaining).
-> >=20
-> > It is what did in similar cases for renaming (or moving across the
-> > path hierarchy) things in Rust. For simple things that get Ack'd quick
-> > enough by everyone, sometimes we may be able to take everything in the
-> > Rust tree.
->=20
-> I think code wise it's fine, provided the subject is fixed like Uwe sugge=
-sted.
->=20
-> Acked-by: Michal Wilczynski <m.wilczynski@samsung.com>
+Regards,
+Christian.
 
-OK, I applied it to
+> 
+> Matt
+> 
+>>> +	if (unlikely(dma_fence_test_signaled_flag(fence)))
+>>>  		return -EINVAL;
+>>>  
+>>>  	/* Stash the cb_list before replacing it with the timestamp */
+>>> @@ -545,7 +544,7 @@ void dma_fence_release(struct kref *kref)
+>>>  	trace_dma_fence_destroy(fence);
+>>>  
+>>>  	if (!list_empty(&fence->cb_list) &&
+>>> -	    !test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags)) {
+>>> +	    !dma_fence_test_signaled_flag(fence)) {
+>>>  		const char __rcu *timeline;
+>>>  		const char __rcu *driver;
+>>>  		unsigned long flags;
+>>> @@ -602,7 +601,7 @@ static bool __dma_fence_enable_signaling(struct dma_fence *fence)
+>>>  	was_set = test_and_set_bit(DMA_FENCE_FLAG_ENABLE_SIGNAL_BIT,
+>>>  				   &fence->flags);
+>>>  
+>>> -	if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags))
+>>> +	if (dma_fence_test_signaled_flag(fence))
+>>>  		return false;
+>>>  
+>>>  	if (!was_set && fence->ops->enable_signaling) {
+>>> @@ -666,7 +665,7 @@ int dma_fence_add_callback(struct dma_fence *fence, struct dma_fence_cb *cb,
+>>>  	if (WARN_ON(!fence || !func))
+>>>  		return -EINVAL;
+>>>  
+>>> -	if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags)) {
+>>> +	if (dma_fence_test_signaled_flag(fence)) {
+>>>  		INIT_LIST_HEAD(&cb->node);
+>>>  		return -ENOENT;
+>>>  	}
+>>> @@ -783,7 +782,7 @@ dma_fence_default_wait(struct dma_fence *fence, bool intr, signed long timeout)
+>>>  
+>>>  	spin_lock_irqsave(fence->lock, flags);
+>>>  
+>>> -	if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags))
+>>> +	if (dma_fence_test_signaled_flag(fence))
+>>>  		goto out;
+>>>  
+>>>  	if (intr && signal_pending(current)) {
+>>> @@ -800,7 +799,7 @@ dma_fence_default_wait(struct dma_fence *fence, bool intr, signed long timeout)
+>>>  	cb.task = current;
+>>>  	list_add(&cb.base.node, &fence->cb_list);
+>>>  
+>>> -	while (!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags) && ret > 0) {
+>>> +	while (!dma_fence_test_signaled_flag(fence) && ret > 0) {
+>>>  		if (intr)
+>>>  			__set_current_state(TASK_INTERRUPTIBLE);
+>>>  		else
+>>> @@ -832,7 +831,7 @@ dma_fence_test_signaled_any(struct dma_fence **fences, uint32_t count,
+>>>  
+>>>  	for (i = 0; i < count; ++i) {
+>>>  		struct dma_fence *fence = fences[i];
+>>> -		if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags)) {
+>>> +		if (dma_fence_test_signaled_flag(fence)) {
+>>>  			if (idx)
+>>>  				*idx = i;
+>>>  			return true;
+>>> @@ -1108,7 +1107,7 @@ const char __rcu *dma_fence_driver_name(struct dma_fence *fence)
+>>>  	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
+>>>  			 "RCU protection is required for safe access to returned string");
+>>>  
+>>> -	if (!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags))
+>>> +	if (!dma_fence_test_signaled_flag(fence))
+>>>  		return fence->ops->get_driver_name(fence);
+>>>  	else
+>>>  		return "detached-driver";
+>>> @@ -1140,7 +1139,7 @@ const char __rcu *dma_fence_timeline_name(struct dma_fence *fence)
+>>>  	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
+>>>  			 "RCU protection is required for safe access to returned string");
+>>>  
+>>> -	if (!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags))
+>>> +	if (!dma_fence_test_signaled_flag(fence))
+>>>  		return fence->ops->get_timeline_name(fence);
+>>>  	else
+>>>  		return "signaled-timeline";
+>>> diff --git a/include/linux/dma-fence.h b/include/linux/dma-fence.h
+>>> index 64639e104110..19972f5d176f 100644
+>>> --- a/include/linux/dma-fence.h
+>>> +++ b/include/linux/dma-fence.h
+>>> @@ -401,6 +401,26 @@ void dma_fence_enable_sw_signaling(struct dma_fence *fence);
+>>>  const char __rcu *dma_fence_driver_name(struct dma_fence *fence);
+>>>  const char __rcu *dma_fence_timeline_name(struct dma_fence *fence);
+>>>  
+>>> +/*
+>>> + * dma_fence_test_signaled_flag - Only check whether a fence is signaled yet.
+>>> + * @fence: the fence to check
+>>> + *
+>>> + * This function just checks whether @fence is signaled, without interacting
+>>> + * with the fence in any way. The user must, therefore, ensure through other
+>>> + * means that fences get signaled eventually.
+>>> + *
+>>> + * This function uses test_bit(), which is thread-safe. Naturally, this function
+>>> + * should be used opportunistically; a fence could get signaled at any moment
+>>> + * after the check is done.
+>>> + *
+>>> + * Return: true if signaled, false otherwise.
+>>> + */
+>>> +static inline bool
+>>> +dma_fence_test_signaled_flag(struct dma_fence *fence)
+>>> +{
+>>> +	return test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags);
+>>> +}
+>>> +
+>>>  /**
+>>>   * dma_fence_is_signaled_locked - Return an indication if the fence
+>>>   *                                is signaled yet.
+>>> @@ -418,7 +438,7 @@ const char __rcu *dma_fence_timeline_name(struct dma_fence *fence);
+>>>  static inline bool
+>>>  dma_fence_is_signaled_locked(struct dma_fence *fence)
+>>>  {
+>>> -	if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags))
+>>> +	if (dma_fence_test_signaled_flag(fence))
+>>>  		return true;
+>>>  
+>>>  	if (fence->ops->signaled && fence->ops->signaled(fence)) {
+>>> @@ -448,7 +468,7 @@ dma_fence_is_signaled_locked(struct dma_fence *fence)
+>>>  static inline bool
+>>>  dma_fence_is_signaled(struct dma_fence *fence)
+>>>  {
+>>> -	if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags))
+>>> +	if (dma_fence_test_signaled_flag(fence))
+>>>  		return true;
+>>>  
+>>>  	if (fence->ops->signaled && fence->ops->signaled(fence)) {
+>>> -- 
+>>> 2.49.0
+>>>
 
-	https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for=
--nexxt
-
-=2E I will rebase this branch to v6.19-rc1 once that's released and then
-send it to Linus for v6.20-rc1 (assuming he has so many fingers and toes
-to not switch to 7.0 before :-).
-
-If it turns out to go in via the rust tree, tell me, then I'll drop it.
-In that case take my
-
-Acked-by: Uwe Kleine-K=C3=B6nig <ukleinek@kernel.org>
-
-Best regards and thanks for the patch and the reviews,
-Uwe
-
---vfuv755wwcx3lvvj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmkn7roACgkQj4D7WH0S
-/k6ZHwf+Noz5chJYLoR5w2W8NQkWrDZTPRSGfLRgyvS2Ips8wejkfM7vURYuz3d4
-uxK4jTwvI8zJhG3Y6yDSgjZqAjPq1wX5xOy1AGKOJvBUNn+T6P4vgxkhbNOG8o1R
-NU5jowT5s1Kg15tbR7yBxCkHUiJlBSgMHHYiRNZyl/i/RtjgUzDKELZq7bF2WyF0
-LTdzLQrDUm1MwnMAEjJLOsavVruTRiSuPhx/DeknD56cASrCzieJENj0nrFlYQac
-whEs9Yey9+fXN1xV/LJFqQnWKnzBERchqxNNjSA7NuV1eQcNpBO8Oiobtm5nCmR0
-G3b2Qc7jMdTphZ2eYtG/GoiFK1RPMA==
-=OFiN
------END PGP SIGNATURE-----
-
---vfuv755wwcx3lvvj--
