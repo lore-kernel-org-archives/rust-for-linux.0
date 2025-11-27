@@ -1,55 +1,130 @@
-Received: from mail.korbix.pl (mail.korbix.pl [135.125.190.63])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D1A31DDA4
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 09:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.125.190.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FF3288CA6;
+	Thu, 27 Nov 2025 09:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764234700; cv=none; b=WUYPSa17NT7IPgk1SQNGG1lEweK3579nZY5eWafD9Uu1VXulKt8mV9oZxe+Q6pP3GqgcUZQFQruAnLA6BwILXnSFoCmwKD3pZzzbpAK1oFJvWniSCBW/kAfVpZ+9dWTBdzYbDaniKeTNZKW85HoYJH3oD7/gdTngpr5ATD1uqTI=
+	t=1764234984; cv=none; b=ShPu95JxtInScmscMfBNDjM9QunU8ggiTAlNNMd0U6Co9AFZOwIO2AlinCVzVWAygKGx5rWRDozqnxLaThxCX/UNA1Lfs7BShBPK1qqs0JJJoRFElQKGHfgJ+WYdox5X+uChoOvUDK8BSbWp/wxi260p3fBhpZOi8HpoYiS4hYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764234700; c=relaxed/simple;
-	bh=ZaQA1CC8ArBYu0Ic3DvFi6+b6annm5mSy2pFuhb12eA=;
-	h=Message-ID:Date:From:To:Subject:MIME-Version:Content-Type; b=lxWmjo1lh1xYTSINKBBe3w8balog90BnZUzyWpStr8BHAPWwmL1nfpI0/TxFn2IY53iW67xDs8/arZrHNIMhsZRqqJjmO2D5dDhzpkbD5n4gajX51XyZH2xdmO08ANSja49hciArTiGGPT1VMFQtlCVIjKDDwrDNrOWNBwi3Kro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=korbix.pl; spf=pass smtp.mailfrom=korbix.pl; arc=none smtp.client-ip=135.125.190.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=korbix.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korbix.pl
-Received: by mail.korbix.pl (Postfix, from userid 1002)
-	id 6EAE325CE2; Thu, 27 Nov 2025 10:11:31 +0100 (CET)
-Received: by mail.korbix.pl for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 09:11:13 GMT
-Message-ID: <20251127082758-0.1.l5.17gnf.0.j1llt0n0j8@FreshForge.pl>
-Date: Thu, 27 Nov 2025 09:11:13 GMT
-From: "Dominik Janikowski" <dominik.janikowski@korbix.pl>
-To: <rust-for-linux@vger.kernel.org>
-Subject: =?UTF-8?Q?Termin_p=C5=82atno=C5=9Bci_?=
-X-Mailer: mail.FreshForge.pl
+	s=arc-20240116; t=1764234984; c=relaxed/simple;
+	bh=LSTWpZ694gmrqMwIjxj3UrOdrcrNuYsAYGwhIa5HCXk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=F7U4tDKlmoBIR2ec/QT/soVb2lFLZmmFEqn9xYoY/256V7sWCVj34VBBIqKhJVn81uh0P7aVlL1UJcTofwQ5Hc984DgWQ24WIzwMbXswUtRC0JQoOR3o37eYXq7eo6WrrEkXOiLm4j8BQnvVe+cczdJzqhiXTweFvlk10/FpKG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=oMA0l5GF; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="oMA0l5GF"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4dH9ld1kxhz9tZ4;
+	Thu, 27 Nov 2025 10:16:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1764234973; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XFgdH560T3YiZGXpnSavHS2fNWjlZmWfX61HED3oDlY=;
+	b=oMA0l5GF20+89bOALj2AZEzZ3KIYCQ0sQV3nKIuCRZQwgA60GoBHIUvo5JRwMguBCc9aZn
+	F5inZjQemfWXADIy+1xs76rtlYJFo92RNRet6w4peIdc++GW6ttRGWxsCSXZqLLJ1K10VW
+	QLkDmrkejRTh1VxfNJZ4pklrXpAKF9HotuRSmTJqVuPBFkros9P2+ivH/W1otk+mQpr0t9
+	mnTm79fYRIiStVef/JAOqBwscFVop7s6hLDvpyU/Arc28NFYHaNpXsDjbYT9vMO0+bOAVO
+	gzwkxgjeZWdYc3mg70heVVNEMMx2BkFm+1Edzdqkw9Qv9hGCakXTyIbg4+8BCQ==
+Message-ID: <35189892c0cb774155e2012d41371b4d3f8e7d0f.camel@mailbox.org>
+Subject: Re: [PATCH 1/6] dma-buf/dma-fence: Add
+ dma_fence_test_signaled_flag()
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Matthew
+ Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>, Gustavo Padovan
+ <gustavo@padovan.org>, Felix Kuehling <Felix.Kuehling@amd.com>, Alex
+ Deucher <alexander.deucher@amd.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>,  Tvrtko Ursulin <tursulin@ursulin.net>, Huang Rui
+ <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,  Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Lucas De
+ Marchi <lucas.demarchi@intel.com>, Thomas =?ISO-8859-1?Q?Hellstr=F6m?=
+ <thomas.hellstrom@linux.intel.com>, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,  linaro-mm-sig@lists.linaro.org,
+ linux-kernel@vger.kernel.org,  amd-gfx@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org,  intel-xe@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Date: Thu, 27 Nov 2025 10:16:01 +0100
+In-Reply-To: <f1864f6d-8403-406d-81a0-00a71495cae8@amd.com>
+References: <20251126131914.149445-2-phasta@kernel.org>
+	 <20251126131914.149445-3-phasta@kernel.org>
+	 <aSctt3QFiEIB61Gr@lstrano-desk.jf.intel.com>
+	 <aScxGDYeNeN1WYja@lstrano-desk.jf.intel.com>
+	 <f1864f6d-8403-406d-81a0-00a71495cae8@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-META: bgpghhhhrg9u5u445qr6ka3upg67j9jx
+X-MBO-RS-ID: a7092e291bad71bbc06
 
-Dzie=C5=84 dobry,=20
+On Thu, 2025-11-27 at 09:11 +0100, Christian K=C3=B6nig wrote:
+> On 11/26/25 17:55, Matthew Brost wrote:
+> > On Wed, Nov 26, 2025 at 08:41:27AM -0800, Matthew Brost wrote:
+> > > On Wed, Nov 26, 2025 at 02:19:10PM +0100, Philipp Stanner wrote:
+> > > > The dma_fence framework checks at many places whether the signaled =
+flag
+> > > > of a fence is already set. The code can be simplified and made more
+> > > > readable by providing a helper function for that.
+> > > >=20
+> > > > Add dma_fence_test_signaled_flag(), which only checks whether a fen=
+ce is
+> > > > signaled. Use it internally.
+> > > >=20
+> > > > Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> > > > Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> > >=20
+> > > This is a nice cleanp:
+> > > Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+> > >=20
+> > > > ---
+> > > > =C2=A0drivers/dma-buf/dma-fence.c | 19 +++++++++----------
+> > > > =C2=A0include/linux/dma-fence.h=C2=A0=C2=A0 | 24 ++++++++++++++++++=
+++++--
+> > > > =C2=A02 files changed, 31 insertions(+), 12 deletions(-)
+> > > >=20
+> > > > diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fenc=
+e.c
+> > > > index 39e6f93dc310..25117a906846 100644
+> > > > --- a/drivers/dma-buf/dma-fence.c
+> > > > +++ b/drivers/dma-buf/dma-fence.c
+> > > > @@ -372,8 +372,7 @@ int dma_fence_signal_timestamp_locked(struct dm=
+a_fence *fence,
+> > > > =C2=A0
+> > > > =C2=A0	lockdep_assert_held(fence->lock);
+> > > > =C2=A0
+> > > > -	if (unlikely(test_and_set_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
+> > > > -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &fence->flags)))
+> >=20
+> > I need to read a little better, I think this change isn't quite right.
+> > The original code is test and set, the updated code is test only (i.e.,
+> > you are missing the set step). So maybe just leave this line as is.
+>=20
+> Oh, good point! I've totally missed that as well.
 
-czy rozwa=C5=BCali Pa=C5=84stwo podj=C4=99cie dodatkowych =C5=9Brodk=C3=B3=
-w finansuj=C4=85cych dzia=C5=82alno=C5=9B=C4=87?=20
+Oh dear; I also just saw it when opening the mail client ._.
 
-Jako firma specjalizuj=C4=85ca si=C4=99 w dopasowaniu rozwi=C4=85za=C5=84=
- faktoringowych dla przedsi=C4=99biorc=C3=B3w, chcia=C5=82bym wskaza=C4=87=
- Pa=C5=84stwu rozwi=C4=85zanie, kt=C3=B3re skutecznie poprawi p=C5=82ynno=
-=C5=9B=C4=87 finansow=C4=85 przy minimalnych formalno=C5=9Bciach.=20
+>=20
+> But that means that this patch set hasn't even been smoke tested.
 
-Faktoring przyspiesza obieg pieni=C4=85dza, w zwi=C4=85zku z tym nie musz=
-=C4=85 ju=C5=BC Pa=C5=84stwo oczekiwa=C4=87 zap=C5=82aty za faktur=C4=99,=
- poniewa=C5=BC my przelejemy =C5=9Brodki na konto ju=C5=BC nast=C4=99pneg=
-o dnia po jej wystawieniu.=20
+I've built it and did some basic testing with my Nouveau system. Any
+suggestions? Do you have a CI that one can trigger?
 
-Mo=C5=BCemy um=C3=B3wi=C4=87 si=C4=99 na wst=C4=99pna konsultacj=C4=99  i=
- wsp=C3=B3lnie znale=C5=BA=C4=87 korzystne dla Pa=C5=84stwa rozwi=C4=85za=
-nie. Interesuje Pa=C5=84stwa moja propozycja?
-
-
-Pozdrawiam
-Dominik Janikowski
+Thx
+P.
