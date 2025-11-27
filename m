@@ -1,41 +1,41 @@
-Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3D323EA96;
-	Thu, 27 Nov 2025 13:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A0023EA96;
+	Thu, 27 Nov 2025 13:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764251226; cv=pass; b=MYnKFQqNGNqsR0EKBmasDW8CyqqESIlA4EwhBjqkBzMkbkB6lLw5Of4NcZXskNIIWwAlFea92WgGQOOoVLIEl+sA3Eh4DW8hF73r9AdRunZU8htKeq8YtRg2mtqW+y2T7sFanjn04Mro1b64GM3LJKc6j4IfLK6E4fdtvuTt5S4=
+	t=1764251325; cv=pass; b=B1ZLcjX0BSHat9/nBGXs0G3iHBTyGjQjKBunUSpL723bcsTNChLUCdQOdxJ1/7976dcAHucv0P7PSn/Zg6grZ2ClhV4CcsTEcjS/72o3uqnkxBBdfXP3P8a+ps+gs3reVD1g4EhyeUXuQ21f7ISUuaGNMSi9db8WLvpKf9FxLro=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764251226; c=relaxed/simple;
-	bh=6qoxH9ptgl/aB01Z8akn4v3ycHTrveLcj8F9nGLEK3U=;
+	s=arc-20240116; t=1764251325; c=relaxed/simple;
+	bh=dntth6/jrCaqi0XYThnSHefekHvT/SUzYV/VVHS9ag4=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=qsvjKo5p96j1mUPRUFeOZAb7qy5hY0eeMuhAb7PbfjjLBw2BdRLkNISQeMksLHeHJfEWVrwgUBQDW+QLZFTSOpJsWj83J4WOoTkiAeZirkkaXCeh+EKyYStsXgEW8pzupsgicXJVdtis7ma1rcjZ9cra8B7HSEWCjMWig5gShjw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=fQEeq0SM; arc=pass smtp.client-ip=136.143.184.112
+	 Message-Id:References:To; b=Rvw2pP2tlfzXgQFO2xvNmLa9WLweWaYewzGEOt4Q5TmAQmRLXVRt5y0U7u9xqbIxoeBEoFxhXS1H85KcnCYn2JTN4W8JdgkaW9juaNcdiVfblwcNIURZic03WupGQwPeSRuuLOV//IlWXVE0e+pn1QolxQew1+ItPHC9dxCUAM0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=eaNSWJ+B; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="fQEeq0SM"
-ARC-Seal: i=1; a=rsa-sha256; t=1764251189; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="eaNSWJ+B"
+ARC-Seal: i=1; a=rsa-sha256; t=1764251309; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=fVcQ+c7LYCuIMLeDq8/LIEkG+CWZ3NvvwMpbM5PyafjXnBl+wV/wD9oWKkEPgc6Fyh2HOeH2N8IqRNNtFUjp7mAl80w4AP3K3VRsfZcbmvchdwaqcLxLIOsSNlK7ozi/lc20841EHDhn+87hCEl4UjgfxYibOoxBhyJp5NFztq0=
+	b=LqPqbHEkly0jpMdBadNxShd0ol37SIGAeTBs2JLI3wU1Vrekcb/mdwW+Jwf6b708a+YiwaP1BMG1DH6oM80cNDEHITF9uy0gO6PR3x1/EBGxtJiOK1L90wBLxuknNk6iq5Jha6aoAm09j1hIUjbveeiOLeqL7mfsUwMBv9GV8jE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764251189; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=6qoxH9ptgl/aB01Z8akn4v3ycHTrveLcj8F9nGLEK3U=; 
-	b=ZrZFcVMTiFAtXQIPX3NuquQfDjLW85ncMDM1Mh6ywk20uW9Fxw7u2aMA6z7h2LuGvJJ8Z/Bhk/p0ducUH4IqeRY627sFE07qw37wuLKXzhpe3TDzbz9Tp1jWDm6Kbg1B985WfPFfpoM4HfFl2Z1hvFlV2Kyc8ubblY10i+rEr9I=
+	t=1764251309; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=P2VdRqL1KlL0MJaXaQrAmhdLve9Li0HIxSSQ9BDhuuI=; 
+	b=N8F/Lxatz152KJJNVRK4TOrmpON8ocdeFWJkXNJtCjOUQz8fN7M3n7OBVH27LFJES4dh63neCwdxVDlqI+mtUgxvIOMV/3jzBjRHlALYpGpl9JltCaTSwZSg79It1WuxncFXNHVl9rMJaQljuHU+tdNJqexLVqIMHKoFJha1pd0=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764251189;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764251309;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=6qoxH9ptgl/aB01Z8akn4v3ycHTrveLcj8F9nGLEK3U=;
-	b=fQEeq0SM7mSYTv7fGYjuD+UxpbO0bdqz40nxUPrRYPUWiLNNV2ARD9424BlhEtTo
-	STITQYOBJ7l/Sl4SIAXICGhot4wNOVkixGvQQ29Uun7/+WNEshz2BkW/90ZX+uLUZba
-	AQZ9fsjOvnj9vOt4S3iAgfoByIpfYpAoZyxYEIQQ=
-Received: by mx.zohomail.com with SMTPS id 176425118740252.72308295728919;
-	Thu, 27 Nov 2025 05:46:27 -0800 (PST)
+	bh=P2VdRqL1KlL0MJaXaQrAmhdLve9Li0HIxSSQ9BDhuuI=;
+	b=eaNSWJ+Bcil2a1bixndv9D2TE9VZZp4mdEkabLPHFPbNf1BcJdaoRcwEMZ86Rf6D
+	Q4bqlJKj/PcFUoA6YzxfaYIQgge/3/MRm/XckmYFNBQEB4hZnnVi8MBbgaG5vmsvVLQ
+	Bo9R6wvfQCBPDJH6SFd5+opujpOyWwjv0UfuI7iI=
+Received: by mx.zohomail.com with SMTPS id 1764251305830980.9182361397502;
+	Thu, 27 Nov 2025 05:48:25 -0800 (PST)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,81 +44,98 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v7 5/6] rust: ww_mutex: implement LockSet
+Subject: Re: [RFC WIP 2/3] rust: sync: Add dma_fence abstractions
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251127131606.58d86291@nimda.home>
-Date: Thu, 27 Nov 2025 10:46:11 -0300
-Cc: Lyude Paul <lyude@redhat.com>,
- rust-for-linux@vger.kernel.org,
- lossin@kernel.org,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- peterz@infradead.org,
- mingo@redhat.com,
- will@kernel.org,
- longman@redhat.com,
- felipe_life@live.com,
- daniel@sedlak.dev,
- bjorn3_gh@protonmail.com,
- linux-kernel@vger.kernel.org
+In-Reply-To: <bc4f01ec5172d29abd64429e3017cc53c0522e01.camel@mailbox.org>
+Date: Thu, 27 Nov 2025 10:48:10 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Dave Airlie <airlied@redhat.com>,
+ Lyude Paul <lyude@redhat.com>,
+ Peter Colberg <pcolberg@redhat.com>,
+ dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <ECC0425A-8B18-4626-8EA8-2F843C45E0A1@collabora.com>
-References: <20251101161056.22408-1-work@onurozkan.dev>
- <20251101161056.22408-6-work@onurozkan.dev>
- <92563347110cc9fd6195ae5cb9d304fc6d480571.camel@redhat.com>
- <20251124184928.30b8bbaf@nimda>
- <6372d3fa58962bcad9de902ae9184200d2edcb9b.camel@redhat.com>
- <20251127131606.58d86291@nimda.home>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Message-Id: <8F85F97A-F411-48E1-9942-64B692E8CD79@collabora.com>
+References: <20251118132520.266179-2-phasta@kernel.org>
+ <20251118132520.266179-4-phasta@kernel.org>
+ <E55D72FC-AEF6-4D2D-973F-123306E4EB4C@collabora.com>
+ <bc4f01ec5172d29abd64429e3017cc53c0522e01.camel@mailbox.org>
+To: phasta@kernel.org
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
+Hi Phillipp,
 
+[=E2=80=A6]
 
-> On 27 Nov 2025, at 07:16, Onur =C3=96zkan <work@onurozkan.dev> wrote:
 >=20
-> On Tue, 25 Nov 2025 16:35:21 -0500
-> Lyude Paul <lyude@redhat.com> wrote:
->=20
->> On Mon, 2025-11-24 at 18:49 +0300, Onur =C3=96zkan wrote:
->>>>=20
->>>> I wonder if there's some way we can get rid of the safety contract
->>>> here and verify this at compile time, it would be a shame if every
->>>> single lock invocation needed to be unsafe.
->>>>=20
->>>=20
->>> Yeah :(. We could get rid of them easily by keeping the class that
->>> was passed to the constructor functions but that becomes a problem
->>> for the from_raw implementations.
->>>=20
->>> I think the best solution would be to expose ww_class type from
->>> ww_acquire_ctx and ww_mutex unconditionally (right now it depends on
->>> DEBUG_WW_MUTEXES). That way we can just access the class and verify
->>> that the mutex and acquire_ctx classes match.
->>>=20
->>> What do you think? I can submit a patch for the C-side
->>> implementation. It should be straightforward and shouldn't have any
->>> runtime impact.
 >>=20
->> I would be fine with this, and think this is definitely the right way
->> to go
+>>> +                // among all the fences. This can't become a UAF =
+because each fence takes a
+>>> +                // reference of the fence context.
+>>> +                unsafe { bindings::dma_fence_init(slot, &Self::OPS, =
+Opaque::cast_into(lock_ptr), context, seqno) };
+>>> +            }),
+>>> +            data <- data,
+>>> +            signalling: false,
+>>> +            signalling_cookie: false,
+>>> +            fctx: fctx,
+>>> +        });
+>>> +
+>>> +        let b =3D KBox::pin_init(fence, GFP_KERNEL)?;
+>>> +
+>>> +        // SAFETY: We don't move the contents of `b` anywhere here. =
+After unwrapping it, ARef will
+>>> +        // take care of preventing memory moves.
+>>> +        let rawptr =3D KBox::into_raw(unsafe { =
+Pin::into_inner_unchecked(b) });
+>>> +
+>>> +        // SAFETY: `rawptr` was created validly above.
+>>> +        let aref =3D unsafe { =
+ARef::from_raw(NonNull::new_unchecked(rawptr)) };
+>>> +
+>>> +        Ok(aref)
+>>> +    }
+>>> +
+>>> +    /// Mark the beginning of a DmaFence signalling critical =
+section. Should be called once a fence
+>>> +    /// gets published.
+>>> +    ///
+>>> +    /// The signalling critical section is marked as finished =
+automatically once the fence signals.
+>>> +    pub fn begin_signalling(&mut self) {
+>>> +        // FIXME: this needs to be mutable, obviously, but we can't =
+borrow mutably. *sigh*
 >>=20
+>> Is AtomicBool going away? Otherwise can you expand?
 >=20
-> It would be great to reach a consensus on this (whether we should send =
-a
-> patch to the C side or instead pass the Class to the from_raw =
-functions
-> without modifying the C code).
+> The AtomicBool is just used in the example demo code.
 >=20
-> -Onur=20
+> The issue here is that begin_signalling() should set a "this fence is
+> currently in the signalling section"-flag. So the fence needs to be
+> mutable. Then, however, Rust complains because self.signalling is not
+> protected by any lock.
 >=20
+> So one needs some sort of synchronization. Stuffing a DmaFence into a
+> SpinLock would be overkill, however, considering that the C code
+> already takes care of properly taking all locks.
+>=20
+> I've asked about that problem on Zulip once:
+> =
+https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/=
+.E2.9C.94.20ARef.20without.20locking/near/539747635
+>=20
+> Haven't looked deeper into solving it since, because those lockdep
+> guards are kind of nice-to-have at the moment.
+>=20
+> I think the solution will be to make self.signalling an AtomicBool (I
+> think you meant that above?)
 
-+1 from me on changing the C side, Onur.
-
-=E2=80=94 Daniel=
+Yes, that=E2=80=99s what I meant, i.e.: making self.signalling an =
+AtomicBool.=
