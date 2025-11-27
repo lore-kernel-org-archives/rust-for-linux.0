@@ -1,130 +1,190 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from forward502b.mail.yandex.net (forward502b.mail.yandex.net [178.154.239.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FF3288CA6;
-	Thu, 27 Nov 2025 09:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA062BDC3F;
+	Thu, 27 Nov 2025 09:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764234984; cv=none; b=ShPu95JxtInScmscMfBNDjM9QunU8ggiTAlNNMd0U6Co9AFZOwIO2AlinCVzVWAygKGx5rWRDozqnxLaThxCX/UNA1Lfs7BShBPK1qqs0JJJoRFElQKGHfgJ+WYdox5X+uChoOvUDK8BSbWp/wxi260p3fBhpZOi8HpoYiS4hYU=
+	t=1764236185; cv=none; b=ZyAFNTYOmhKqVFZ9PIoMa3tcL1cD1TETaho4ZNUn6f+DJUGBw+TTJqptQHc8lDAUgG0YMgH/reS42AGMSC+dT5V+3RAV6mBh1KThv1MYe8/F9bF5GvG2i2o+7xB94bkeRD/P7sRr4Up+9T+IejDPWFGzaIqPQjsAhktUwjYZIFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764234984; c=relaxed/simple;
-	bh=LSTWpZ694gmrqMwIjxj3UrOdrcrNuYsAYGwhIa5HCXk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=F7U4tDKlmoBIR2ec/QT/soVb2lFLZmmFEqn9xYoY/256V7sWCVj34VBBIqKhJVn81uh0P7aVlL1UJcTofwQ5Hc984DgWQ24WIzwMbXswUtRC0JQoOR3o37eYXq7eo6WrrEkXOiLm4j8BQnvVe+cczdJzqhiXTweFvlk10/FpKG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=oMA0l5GF; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1764236185; c=relaxed/simple;
+	bh=uiYox4PsOatAejl1SZIKDolKvWn42oQ9kwA2CfUAr0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kvP+r1uRKskP7LK3xOM+VSfsPS4PPvaTKjuOs72zZ6pvyhX5CbRzer+J9ZsWXd0pjCqcTy72E+glTUokkuCce5CXX4A5z/IOFkjqtHxZdObq1En2NdOYxFuKGrLDcki6hys1axJum29x0AU6CihmQI5c2KYU0X66XSR2B2gSRxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=cs5Pk9/n; arc=none smtp.client-ip=178.154.239.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="oMA0l5GF"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4dH9ld1kxhz9tZ4;
-	Thu, 27 Nov 2025 10:16:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1764234973; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XFgdH560T3YiZGXpnSavHS2fNWjlZmWfX61HED3oDlY=;
-	b=oMA0l5GF20+89bOALj2AZEzZ3KIYCQ0sQV3nKIuCRZQwgA60GoBHIUvo5JRwMguBCc9aZn
-	F5inZjQemfWXADIy+1xs76rtlYJFo92RNRet6w4peIdc++GW6ttRGWxsCSXZqLLJ1K10VW
-	QLkDmrkejRTh1VxfNJZ4pklrXpAKF9HotuRSmTJqVuPBFkros9P2+ivH/W1otk+mQpr0t9
-	mnTm79fYRIiStVef/JAOqBwscFVop7s6hLDvpyU/Arc28NFYHaNpXsDjbYT9vMO0+bOAVO
-	gzwkxgjeZWdYc3mg70heVVNEMMx2BkFm+1Edzdqkw9Qv9hGCakXTyIbg4+8BCQ==
-Message-ID: <35189892c0cb774155e2012d41371b4d3f8e7d0f.camel@mailbox.org>
-Subject: Re: [PATCH 1/6] dma-buf/dma-fence: Add
- dma_fence_test_signaled_flag()
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Matthew
- Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>, Gustavo Padovan
- <gustavo@padovan.org>, Felix Kuehling <Felix.Kuehling@amd.com>, Alex
- Deucher <alexander.deucher@amd.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>,  Tvrtko Ursulin <tursulin@ursulin.net>, Huang Rui
- <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,  Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Lucas De
- Marchi <lucas.demarchi@intel.com>, Thomas =?ISO-8859-1?Q?Hellstr=F6m?=
- <thomas.hellstrom@linux.intel.com>, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org,  linaro-mm-sig@lists.linaro.org,
- linux-kernel@vger.kernel.org,  amd-gfx@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org,  intel-xe@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Date: Thu, 27 Nov 2025 10:16:01 +0100
-In-Reply-To: <f1864f6d-8403-406d-81a0-00a71495cae8@amd.com>
-References: <20251126131914.149445-2-phasta@kernel.org>
-	 <20251126131914.149445-3-phasta@kernel.org>
-	 <aSctt3QFiEIB61Gr@lstrano-desk.jf.intel.com>
-	 <aScxGDYeNeN1WYja@lstrano-desk.jf.intel.com>
-	 <f1864f6d-8403-406d-81a0-00a71495cae8@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="cs5Pk9/n"
+Received: from mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:942:0:640:e3c0:0])
+	by forward502b.mail.yandex.net (Yandex) with ESMTPS id 2E48D81AA4;
+	Thu, 27 Nov 2025 12:24:54 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id mOa9DQ8LViE0-cZSHnfAw;
+	Thu, 27 Nov 2025 12:24:52 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1764235493;
+	bh=pD96XnJc1uvvSzdlPT27EyKGqjNgpJBA4wqJeKUjdEI=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=cs5Pk9/n3WG1JElAUFHTbJ6Z+KA8+wrTlhaBzuF588fHJL3sMILVrZokccTPUJ9M3
+	 dUe4tkLoXCvgOcnekw8VUbFHQsawPMJiV8hMSOt0eF//pB3idezjcyPg5uMkFMS94X
+	 b0W+EVG4sABe1hx/1y3Q0oqEAqAAVuZJfKu2LbC0=
+Authentication-Results: mail-nwsmtp-smtp-production-main-71.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Thu, 27 Nov 2025 12:24:46 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+ longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
+ bjorn3_gh@protonmail.com, daniel.almeida@collabora.com,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 4/6] rust: ww_mutex: add Mutex, AcquireCtx and
+ MutexGuard
+Message-ID: <20251127122446.5a5b4e23@nimda.home>
+In-Reply-To: <80844a3e9f27963592b9453b57f227e8fa5f802b.camel@redhat.com>
+References: <20251101161056.22408-1-work@onurozkan.dev>
+	<20251101161056.22408-5-work@onurozkan.dev>
+	<80844a3e9f27963592b9453b57f227e8fa5f802b.camel@redhat.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: bgpghhhhrg9u5u445qr6ka3upg67j9jx
-X-MBO-RS-ID: a7092e291bad71bbc06
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2025-11-27 at 09:11 +0100, Christian K=C3=B6nig wrote:
-> On 11/26/25 17:55, Matthew Brost wrote:
-> > On Wed, Nov 26, 2025 at 08:41:27AM -0800, Matthew Brost wrote:
-> > > On Wed, Nov 26, 2025 at 02:19:10PM +0100, Philipp Stanner wrote:
-> > > > The dma_fence framework checks at many places whether the signaled =
-flag
-> > > > of a fence is already set. The code can be simplified and made more
-> > > > readable by providing a helper function for that.
-> > > >=20
-> > > > Add dma_fence_test_signaled_flag(), which only checks whether a fen=
-ce is
-> > > > signaled. Use it internally.
-> > > >=20
-> > > > Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> > > > Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> > >=20
-> > > This is a nice cleanp:
-> > > Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-> > >=20
-> > > > ---
-> > > > =C2=A0drivers/dma-buf/dma-fence.c | 19 +++++++++----------
-> > > > =C2=A0include/linux/dma-fence.h=C2=A0=C2=A0 | 24 ++++++++++++++++++=
-++++--
-> > > > =C2=A02 files changed, 31 insertions(+), 12 deletions(-)
-> > > >=20
-> > > > diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fenc=
-e.c
-> > > > index 39e6f93dc310..25117a906846 100644
-> > > > --- a/drivers/dma-buf/dma-fence.c
-> > > > +++ b/drivers/dma-buf/dma-fence.c
-> > > > @@ -372,8 +372,7 @@ int dma_fence_signal_timestamp_locked(struct dm=
-a_fence *fence,
-> > > > =C2=A0
-> > > > =C2=A0	lockdep_assert_held(fence->lock);
-> > > > =C2=A0
-> > > > -	if (unlikely(test_and_set_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
-> > > > -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &fence->flags)))
+On Fri, 21 Nov 2025 16:00:18 -0500
+Lyude Paul <lyude@redhat.com> wrote:
+
+> Feedback down below:
+>=20
+> On Sat, 2025-11-01 at 19:10 +0300, Onur =C3=96zkan wrote:
+> > Implements full locking API (lock, try_lock, slow path,
+> > interruptible variants) and integration with kernel bindings.
 > >=20
-> > I need to read a little better, I think this change isn't quite right.
-> > The original code is test and set, the updated code is test only (i.e.,
-> > you are missing the set step). So maybe just leave this line as is.
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> > ---
+> >  rust/kernel/sync/lock/ww_mutex.rs             | 276
+> > ++++++++++++++++++ rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs |
+> > 211 +++++++++++++ 2 files changed, 487 insertions(+)
+> >  create mode 100644 rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs
+> >=20
+> > diff --git a/rust/kernel/sync/lock/ww_mutex.rs
+> > b/rust/kernel/sync/lock/ww_mutex.rs index
+> > 727c51cc73af..2a9c1c20281b 100644 ---
+> > a/rust/kernel/sync/lock/ww_mutex.rs +++
+> > b/rust/kernel/sync/lock/ww_mutex.rs @@ -1,7 +1,283 @@
+> >  // SPDX-License-Identifier: GPL-2.0
+> > =20
+> >  //! Rust abstractions for the kernel's wound-wait locking
+> > primitives. +//!
+> > +//! It is designed to avoid deadlocks when locking multiple
+> > [`Mutex`]es +//! that belong to the same [`Class`]. Each lock
+> > acquisition uses an +//! [`AcquireCtx`] to track ordering and
+> > ensure forward progress.=20
+> > +use crate::error::to_result;
+> > +use crate::prelude::*;
+> > +use crate::types::{NotThreadSafe, Opaque};
+> > +use crate::{bindings, container_of};
+> > +
+> > +use core::cell::UnsafeCell;
+> > +use core::marker::PhantomData;
+> > +
+> > +pub use acquire_ctx::AcquireCtx;
+> >  pub use class::Class;
+> > =20
+> > +mod acquire_ctx;
+> >  mod class;
+> > +
+> > +/// A wound-wait (ww) mutex that is powered with deadlock avoidance
+> > +/// when acquiring multiple locks of the same [`Class`].
+> > +///
+> > +/// Each mutex belongs to a [`Class`], which the wound-wait
+> > algorithm +/// uses to figure out the order of acquisition and
+> > prevent deadlocks. +///
+> > +/// # Examples
+> > +///
+> > +/// ```
+> > +/// use kernel::c_str;
+> > +/// use kernel::sync::Arc;
+> > +/// use kernel::sync::lock::ww_mutex::{AcquireCtx, Class, Mutex};
+> > +/// use pin_init::stack_pin_init;
+> > +///
+> > +/// stack_pin_init!(let class =3D
+> > Class::new_wound_wait(c_str!("some_class"))); +/// let mutex =3D
+> > Arc::pin_init(Mutex::new(42, &class), GFP_KERNEL)?; +///
+> > +/// let ctx =3D KBox::pin_init(AcquireCtx::new(&class), GFP_KERNEL)?;
+> > +///
+> > +/// // SAFETY: Both `ctx` and `mutex` uses the same class.
+> > +/// let guard =3D unsafe { ctx.lock(&mutex)? };
+> > +/// assert_eq!(*guard, 42);
+> > +///
+> > +/// # Ok::<(), Error>(())
+> > +/// ```
+> > +#[pin_data]
 >=20
-> Oh, good point! I've totally missed that as well.
-
-Oh dear; I also just saw it when opening the mail client ._.
-
+> You're missing a #[repr(C)] here, because=E2=80=A6 (cont. down below)
 >=20
-> But that means that this patch set hasn't even been smoke tested.
+> > +pub struct Mutex<'a, T: ?Sized> {
+> > +    #[pin]
+> > +    inner: Opaque<bindings::ww_mutex>,
+> > +    _p: PhantomData<&'a Class>,
+>=20
+> This should be at the bottom of the class
+>=20
 
-I've built it and did some basic testing with my Nouveau system. Any
-suggestions? Do you have a CI that one can trigger?
+Can't do that due to:
 
-Thx
-P.
+    error[E0277]: the size for values of type `T` cannot be known at
+    compilation time --> rust/kernel/sync/lock/global.rs:119:12
+         |
+    118  | pub struct GlobalLockedBy<T: ?Sized, B: GlobalLockBackend> {
+         |                           - this type parameter needs to be
+    `Sized` 119  |     value: UnsafeCell<T>,
+         |            ^^^^^^^^^^^^^ doesn't have a size known at
+    compile-time |
+
+
+It's the same reason we did the same thing on GlobalLockedBy like this:
+
+	pub struct GlobalLockedBy<T: ?Sized, B: GlobalLockBackend> {
+            _backend: PhantomData<B>,
+            value: UnsafeCell<T>,
+        }
+
+[...]
+> > +    /// Tries to lock the mutex on this [`AcquireCtx`] without
+> > blocking.
+> > +    ///
+> > +    /// Unlike `lock`, no deadlock handling is performed.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The given `mutex` must be created with the [`Class`] that
+> > was used
+> > +    /// to initialize this [`AcquireCtx`].
+> > +    pub unsafe fn try_lock<'a, T>(&'a self, mutex: &'a Mutex<'a,
+> > T>) -> Result<MutexGuard<'a, T>> {
+> > +        // SAFETY: By the safety contract, `mutex` belongs to the
+> > same `Class`
+> > +        // as `self` does.
+> > +        unsafe { lock_common(mutex, Some(self), LockKind::Try) }
+> > +    }
+> > +}
+> > +
+> > +#[pinned_drop]
+> > +impl PinnedDrop for AcquireCtx<'_> {
+> > +    fn drop(self: Pin<&mut Self>) {
+> > +        // SAFETY: Given the lifetime bounds we know no locks are
+> > held,
+> > +        // so calling `ww_acquire_fini` is safe.
+> > +        unsafe { bindings::ww_acquire_fini(self.inner.get()) };
+> > +    }
+> > +}
+>=20
+
+-Onur
