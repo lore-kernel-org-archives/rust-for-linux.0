@@ -1,108 +1,143 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB422ECD1D;
-	Thu, 27 Nov 2025 17:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5515C770FE;
+	Thu, 27 Nov 2025 21:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764263971; cv=none; b=F8f3DtsGkYpRwZO/jGjNb33ORg8ARoW2AxlStofmqkEKZWN2iZ+mK2Py3T8cJYNfZfRGAdbdQnyaU6Pg5d1BLxZFzXKbfmUCjERdvaXgvZROYBb90Zp3CKQiCO335+mzAA30tGNUSke6AYiTMOw1YToCHJFTn5etIZ3vWXgZxd4=
+	t=1764278050; cv=none; b=M4jzvk+AOKyB8+xVmO+bQTqF9PgW1FOwrgFKo1OA9f83lnNaWAmwHGuK026evj72mtDjEXIOrVIiJAFmgLl+7Fpt7hlDyPxUgNbAawN0VdCQ5Ln38+oP/9uC0NySvHzKe7cMJSUHMOQj1XNF3fNHavOUF7NVFGYsUvRMNBSqq7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764263971; c=relaxed/simple;
-	bh=+8mv6i8YDqflMNXf6rSyL0ngsI4DSuUXQc+IAsMcIoc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fd3Oxx/ktppvuYBnJlOshGrcf8Y4DBEIA3GTAkq01O1p3AmFHSHuxA0hNRVYlLdKK+jhxgqOnu3QWszcZILnMuZ6OflMhFxKdseQMrZFQznUB/ZnngbPem02vqpyXVDIYU2BAJIGRD4WN+ONSiI95+5qaBwtC3+0MIY10RaTRFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0KfnE/y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764278050; c=relaxed/simple;
+	bh=Fi9uBpjCD9vm8iluPdYQEZRrTQxH47uO4POYpNrObW4=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=IWU72LE3VW5wKl0TjsBgjSmJITKR9+8tAg+WddshZs4oZUlxNqyq7eaUUZvcsaUCzopisIbolI6rEmfqbiP39Soyi+Wi7zzxKc96lRJhuzNGyXWMErO33zyGbUvjwlZlPNuemZ8cRCbxpfI6Mbhr1myZOZDldyERvdc+1rmXFt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khkgOJ3j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0KfnE/y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF0EC113D0;
-	Thu, 27 Nov 2025 17:19:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khkgOJ3j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA79C4CEF8;
+	Thu, 27 Nov 2025 21:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764263970;
-	bh=+8mv6i8YDqflMNXf6rSyL0ngsI4DSuUXQc+IAsMcIoc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c0KfnE/yW9mBtNrtCv44gXHVw6SA0/m6sGRU7msy3eAgPWadTZyvHIkYKGNDUnM7W
-	 28ftgpbYM2BNqaIQH038Kl27gGXNVq7FV/E7oQRx3VLgZ6RFLtdff8s2iwtizMjgcg
-	 xeQzJCXOCOTb0EatsXDdloTWKGrDRCysTipTKHEftdjOa1ssf4m16kgkv0UgbXYc+4
-	 odbVSb8qMOxIkoimUTTcrsI13GEY0gYhIUAaRjZPomLyF0JlNFjl6w6aanfeYFQfA2
-	 lkq/9R63TZDx3yK+SxPvcsaAr1pNoICpg/TmokPgvFqSNd8ZcRbmaDKmPvRKVOfZ9s
-	 rAI1CjOpXsKAA==
-Date: Thu, 27 Nov 2025 18:19:27 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: phasta@kernel.org
-Cc: Matthew Brost <matthew.brost@intel.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Gustavo Padovan <gustavo@padovan.org>, 
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, Felix Kuehling <Felix.Kuehling@amd.com>, 
-	Alex Deucher <alexander.deucher@amd.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>, 
-	Matthew Auld <matthew.auld@intel.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Lucas De Marchi <lucas.demarchi@intel.com>, 
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 3/6] drm/gpu/xe: Ignore dma_fenc_signal() return code
-Message-ID: <enlnwawk3qtcbgfm7dmuyefb4tx3hxsrmzozkabpeixxsi3y24@pukuuth2zlke>
-References: <20251126131914.149445-2-phasta@kernel.org>
- <20251126131914.149445-5-phasta@kernel.org>
- <nrrk4kug6a42fztx7ryuz5bk6uy7roiszjhiivlvtrw3uvunps@wn44moyetzff>
- <aSeTsINKklqqJyIs@lstrano-desk.jf.intel.com>
- <q2kvwmnxomqlcx7zgvlvyhupduytfubcu5vghuf6ztrdaq55pb@gq4tg7qughun>
- <63274dd281ac94f2680a4aa91f541de82435fda5.camel@mailbox.org>
+	s=k20201202; t=1764278049;
+	bh=Fi9uBpjCD9vm8iluPdYQEZRrTQxH47uO4POYpNrObW4=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=khkgOJ3jyY5Z1bRFubXx8+PfzwwpzTLhKmfop/KpcKgOZsNorgafnpms8HWthBlZm
+	 Qjd+fBibf2KNWHwA60kRIHSzeqjIvG22F7oj5vdloc93fv9hv4l8KaBkJrRVc+ix3A
+	 qNW9H3ZKe0qRJMBV3nBa8qM1pz0GxGYSnGlezZ1NnfqTcyE8nX44WgR2tKPkYUEgbJ
+	 3hnD1zdApuKj+qKpcUvRaPdSb99IEx4ut3J/Re5H872dPTVyRnff2sxsVeH6S+e7Jz
+	 l8F4gH+/wnKZ+XCg81W1LX+OH0VsQa/DCQaWbyYoHg+PnmOL68kDGpGTByinNHagPP
+	 od+aoTIJWdbgg==
+Date: Thu, 27 Nov 2025 14:14:03 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: linux-riscv@lists.infradead.org
+cc: Deepak Gupta <debug@rivosinc.com>, tglx@linutronix.de, mingo@redhat.com, 
+    bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+    akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz, 
+    lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+    aou@eecs.berkeley.edu, conor@kernel.org, robh@kernel.org, 
+    krzk+dt@kernel.org, arnd@arndb.de, brauner@kernel.org, 
+    peterz@infradead.org, oleg@redhat.com, ebiederm@xmission.com, 
+    kees@kernel.org, corbet@lwn.net, shuah@kernel.org, jannh@google.com, 
+    conor+dt@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+    boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+    a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+    lossin@kernel.org, linux-kernel@vger.kernel.org, 
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+    devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
+    linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+    alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
+    andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
+    atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
+    alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
+    rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
+    zong.li@sifive.com, david@redhat.com, cmirabil@redhat.com
+Subject: Re: [PATCH v23 00/28] riscv control-flow integrity for usermode
+In-Reply-To: <176423222224.2476283.17736612090314280039.git-patchwork-notify@kernel.org>
+Message-ID: <b82ffcca-3173-8c07-4a8a-c42d8d092a72@kernel.org>
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com> <176423222224.2476283.17736612090314280039.git-patchwork-notify@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <63274dd281ac94f2680a4aa91f541de82435fda5.camel@mailbox.org>
+Content-Type: text/plain; charset=US-ASCII
 
-On Thu, Nov 27, 2025 at 02:51:39PM +0100, Philipp Stanner wrote:
-> On Thu, 2025-11-27 at 14:37 +0100, Andi Shyti wrote:
-> > On Wed, Nov 26, 2025 at 03:56:32PM -0800, Matthew Brost wrote:
-> > > On Wed, Nov 26, 2025 at 11:56:57PM +0100, Andi Shyti wrote:
-> > > > > @@ -85,7 +85,6 @@ void xe_hw_fence_irq_finish(struct xe_hw_fence_irq *irq)
-> > > > > @@ -93,9 +92,9 @@ void xe_hw_fence_irq_finish(struct xe_hw_fence_irq *irq)
-> > > > >  		spin_lock_irqsave(&irq->lock, flags);
-> > > > >  		list_for_each_entry_safe(fence, next, &irq->pending, irq_link) {
-> > > > >  			list_del_init(&fence->irq_link);
-> > > > > -			err = dma_fence_signal_locked(&fence->dma);
-> > > > 
-> > > > why don't we do
-> > > > 
-> > > > XE_WARN_ON(dma_fence_signal_locked(..))
+On Thu, 27 Nov 2025, patchwork-bot+linux-riscv@kernel.org wrote:
+
+> This series was applied to riscv/linux.git (for-next)
+> by Paul Walmsley <pjw@kernel.org>:
 > 
-> because it's impossible because the series is about removing the return
-> codes from the dma_fence_signal_* functions.
 
-oh yes, the last patch. Sorry, I went on reviewing and lost the
-final target from sight.
+[ the RISC-V CFI patch series ]
 
-> > > > 
-> > > 
-> > > IIRC the above statement can compile out. So the patch looks correct to me.
-> > 
-> > you have defined XE_WARN_ON as WARN_ON that should always
-> > evaluate the content and, depending on the configuration, it
-> > prints the logs or not.
-> > 
-> > What I don't like from this patch is that we end up checking
-> > twice for the DMA_FENCE_FLAG_SIGNALED_BIT bit.
 > 
-> Depends on what you mean by "we". The Xe code checks it only once, with
-> dma_fence_test_signaled_flag(). The dma_fence backend checks it yet
-> again, as it always does, to avoid signaling a signaled fence.
-> 
-> That's not racy here, however, because the fence lock is already being
-> held, as evidenced by the current usage of dma_fence_signal_locked().
+> Here is the summary with links:
+>   - [v23,01/28] mm: VM_SHADOW_STACK definition for riscv
+>     https://git.kernel.org/riscv/c/ae8460ac9db2
+>   - [v23,02/28] dt-bindings: riscv: zicfilp and zicfiss in dt-bindings (extensions.yaml)
+>     https://git.kernel.org/riscv/c/b32ccfc268db
+>   - [v23,03/28] riscv: zicfiss / zicfilp enumeration
+>     https://git.kernel.org/riscv/c/55a811a7f304
+>   - [v23,04/28] riscv: zicfiss / zicfilp extension csr and bit definitions
+>     https://git.kernel.org/riscv/c/92c96b16548e
+>   - [v23,05/28] riscv: usercfi state for task and save/restore of CSR_SSP on trap entry/exit
+>     https://git.kernel.org/riscv/c/7720cdd21962
+>   - [v23,06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ | VM_WRITE
+>     https://git.kernel.org/riscv/c/e60eb198b13d
+>   - [v23,07/28] riscv/mm: manufacture shadow stack pte
+>     https://git.kernel.org/riscv/c/f8fcb7b5bf30
+>   - [v23,08/28] riscv/mm: teach pte_mkwrite to manufacture shadow stack PTEs
+>     https://git.kernel.org/riscv/c/0276a5ea1105
+>   - [v23,09/28] riscv/mm: write protect and shadow stack
+>     https://git.kernel.org/riscv/c/ae615676bc37
+>   - [v23,10/28] riscv/mm: Implement map_shadow_stack() syscall
+>     https://git.kernel.org/riscv/c/d291fd38f841
+>   - [v23,11/28] riscv/shstk: If needed allocate a new shadow stack on clone
+>     https://git.kernel.org/riscv/c/d209ea2fa4bb
+>   - [v23,12/28] riscv: Implements arch agnostic shadow stack prctls
+>     https://git.kernel.org/riscv/c/8b49f512abc2
+>   - [v23,13/28] prctl: arch-agnostic prctl for indirect branch tracking
+>     https://git.kernel.org/riscv/c/3363a8d1044e
+>   - [v23,14/28] riscv: Implements arch agnostic indirect branch tracking prctls
+>     https://git.kernel.org/riscv/c/0177891ccdb7
+>   - [v23,15/28] riscv/traps: Introduce software check exception and uprobe handling
+>     https://git.kernel.org/riscv/c/6f71171a7448
+>   - [v23,16/28] riscv: signal: abstract header saving for setup_sigcontext
+>     (no matching commit)
+>   - [v23,17/28] riscv/signal: save and restore of shadow stack for signal
+>     https://git.kernel.org/riscv/c/4f9da7ad3478
+>   - [v23,18/28] riscv/kernel: update __show_regs to print shadow stack register
+>     https://git.kernel.org/riscv/c/320c96a55d73
+>   - [v23,19/28] riscv/ptrace: riscv cfi status and state via ptrace and in core files
+>     https://git.kernel.org/riscv/c/7a39f89a817e
+>   - [v23,20/28] riscv/hwprobe: zicfilp / zicfiss enumeration in hwprobe
+>     https://git.kernel.org/riscv/c/c09b490a9267
+>   - [v23,21/28] riscv: kernel command line option to opt out of user cfi
+>     https://git.kernel.org/riscv/c/6e0dc40ceb45
+>   - [v23,22/28] riscv: enable kernel access to shadow stack memory via FWFT sbi call
+>     https://git.kernel.org/riscv/c/dfd087078357
+>   - [v23,23/28] arch/riscv: compile vdso with landing pad and shadow stack note
+>     https://git.kernel.org/riscv/c/2cfe57e3bd9b
+>   - [v23,24/28] arch/riscv: dual vdso creation logic and select vdso based on hw
+>     https://git.kernel.org/riscv/c/418316aa61e8
+>   - [v23,25/28] riscv: create a config for shadow stack and landing pad instr support
+>     https://git.kernel.org/riscv/c/c5f5ce714457
+>   - [v23,26/28] riscv: Documentation for landing pad / indirect branch tracking
+>     https://git.kernel.org/riscv/c/73d0ccec35b8
+>   - [v23,27/28] riscv: Documentation for shadow stack on riscv
+>     https://git.kernel.org/riscv/c/6b8214c8cbd6
+>   - [v23,28/28] kselftest/riscv: kselftest for user mode cfi
+>     https://git.kernel.org/riscv/c/0f226cf6026f
 
-I haven't said it's racy, I just didn't like that we are testing
-for the DMA_FENCE_FLAG_SIGNALED_BIT twice. On the other hand,
-with dma_fence_signal_locked() being void, I wouldn't know how to
-do it better. So that I guess it's fine.
+As I noted with the SSE series (before we removed it from for-next), I may 
+not ultimately send this in a PR this merge window, for several reasons.  
+The series has been around for a while, and although I know some vendors 
+have tested it privately, I'd really like to have more public testing of 
+this code, particularly on hardware emulation platforms or unreleased 
+silicon.  It would be good to see some Tested-by:s. 
 
-Andi
+Thanks to everyone who has helped test this so far over the past few weeks 
+- particularly Joel Stanley of TensTorrent.
+
+
+- Paul
