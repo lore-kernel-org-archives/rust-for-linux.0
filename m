@@ -1,126 +1,183 @@
-Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC0B28751D
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 13:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764251085; cv=pass; b=cfH17IhJqzomFgXpIdjibL3X60MoUZQrZIy1D6lnYzfj3PTpf5FqzKH7HGqOrE6REtDAeOkL7k/aSBTALEOgBlnD77Lepz7A7ztOHCKOOS6eHHM6Yir+0Eblrb16op+e3F39zzRoqejadchcUcsPsRvPDvdtQpTG2xglrPpAyBI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764251085; c=relaxed/simple;
-	bh=kZXVAV0FJAf9tZuXD3gOyf+J5OQ7iOF02SsMH+Y8EGQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=NRbVsi0FkEH2gpF79iEVX/2/aR5adx5LdVgn8pcxibH80DivmhbAGV3IJVkyRywUsSnmnzUc2chQRvdyLo+Q2TihWBub/SRmPvo8LuA/d4Hr64e+7sqjFSg7VPsX1kYK3fnX8uzuUrgqnAsdbjkCsr556DTlBqteQDH1cOP01+w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Rlhwggzl; arc=pass smtp.client-ip=136.143.184.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918851EB1A4;
+	Thu, 27 Nov 2025 13:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764251121; cv=none; b=EzbrfTN6rWKXkCwmhY71KEh6uTxJhBYJmd709UJ/EE4Q37wKFoiC8OrtOuAoTikbpg76klEugg9wPSiASagEv3nkAcCQxYSvqj2FwXzbycMfzsHCVVfEOTN0XdoCTPnk9QA8pm7bxEnE9s5E/1cAwONWiP2fbDWkxpoqmx2dEl4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764251121; c=relaxed/simple;
+	bh=HDrromgx4HgbeBPOlXiv35zzN5FAtYly0SE4RV5MXdU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=inGxozA6MsJHpYZmTs/bdZUCnV6BjhaHBmmaaCriNbRdJlr9PC355zRVRIQlfGxu/HuShprXv9/d8cPICkgL8gTEPoEMhncWjn5HlFXKLVqQMPkrvPNMUYbUxqZdNTxf3nVPs2opTe9P4PnpOWx52zgyI43LONIX6dT2dxt8bNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=KX2HwYlK; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Rlhwggzl"
-ARC-Seal: i=1; a=rsa-sha256; t=1764251073; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=hF0pODLuW5X1J9zb4lXw6TUnQ/GcBDKBYJ3vxD1a/X/pq86sbvqUYnwsGMswFtgFIoLSO/qY1sTC9QKoFGmVd1jW/WScd4fspI9E6N5L0nTx9iLGg+9As7rT4bvQ9H57DR958JwWkLeM60lYl1qK5mjMkqAf0jgX68WBhI+5xlo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764251073; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=KK3oaVgw8LDzrkaElAZ11EaLh6Byk4OIxUmnrQvcNKo=; 
-	b=OqYOg+NdgvQBnmBtwNLym5Hj9Ss2z80PQc0daUarnSWgcEi11ZIwj8t9/FdMXS9Ha1ag68saNH9vfmoNNdm35uiGn+h57S9vT/c4Sa/03HH4Aw/Qdwc+Q6VOq2FlfhFBMoyJYtXrTXSNUU1BQK4O3ePFcxblZk2rK04LpucAbqE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764251073;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=KK3oaVgw8LDzrkaElAZ11EaLh6Byk4OIxUmnrQvcNKo=;
-	b=Rlhwggzl4svYTgYp9FIJPPlwnqZVjSNC1HBvLab1qx+6tPKXh6NbHoyrrMap+V+1
-	/bd3IrCRlgQrBIGanVdUXLjs8BPX1JJMWJ1PLrE+Q4FVi/N9Eq/qpzTIrPKNaILfERu
-	FqamSs+FCsCTDVh5zgahF9LmHQrsQQeGG85+T5tA=
-Received: by mx.zohomail.com with SMTPS id 176425106986544.53974635538327;
-	Thu, 27 Nov 2025 05:44:29 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="KX2HwYlK"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4dHHjy3pbyz9tHc;
+	Thu, 27 Nov 2025 14:45:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1764251110; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HDrromgx4HgbeBPOlXiv35zzN5FAtYly0SE4RV5MXdU=;
+	b=KX2HwYlKkmwopliaLzFiWdXjhyfBpMKWHxo94OICk95xgwkCUT6C1cf77sJ0/mO9ntEvji
+	K4x/TDrKD9Es/NhUDkyOfCkgYNqPDxDrqS9u9kYCVfnh5E4Yrbc3ChLHQH2onKqpLP4yGo
+	4WhU0QFPuQ5FUMJ93tr+6G5kkLU7dcS2dkmwWp6pgd4Z7BZG/zafTNx/rcgbPJ0QzUWQnF
+	JMNnmMMVESp8WJLZmURd37K8QOaYIDqsoItjNMjBPte9yEBenNGYaUpSo3/qsnbUjiZrdC
+	Uz+MNeyomlOX4eqaLwBMQKW+9Nj25IG7zsYYXVuo4PsMJNcrP03vKX0KUNBmDA==
+Message-ID: <dd1e28ccf9e78881da11f1c96c1ccb2fcfe5fd00.camel@mailbox.org>
+Subject: Re: [RFC WIP 2/3] rust: sync: Add dma_fence abstractions
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Lyude Paul <lyude@redhat.com>, Philipp Stanner <phasta@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
+ Christian =?ISO-8859-1?Q?K=F6nig?= <ckoenig.leichtzumerken@gmail.com>,
+ Tvrtko Ursulin <tursulin@ursulin.net>, Alexandre Courbot
+ <acourbot@nvidia.com>, Daniel Almeida <daniel.almeida@collabora.com>, Boris
+ Brezillon <boris.brezillon@collabora.com>, Dave Airlie
+ <airlied@redhat.com>, Peter Colberg <pcolberg@redhat.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Date: Thu, 27 Nov 2025 14:45:06 +0100
+In-Reply-To: <b8234f181d35b21a3319b95a54b21bdba11b8001.camel@redhat.com>
+References: <20251118132520.266179-2-phasta@kernel.org>
+	 <20251118132520.266179-4-phasta@kernel.org>
+	 <b8234f181d35b21a3319b95a54b21bdba11b8001.camel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] rust: Return Option from page_align and ensure no usize
- overflow
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aShM9CAyRPe2gYpK@fedora>
-Date: Thu, 27 Nov 2025 10:44:16 -0300
-Cc: dakr@kernel.org,
- acourbot@nvidia.com,
- airlied@gmail.com,
- aliceryhl@google.com,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <56446175-58B0-407B-9FC8-97DCE1969673@collabora.com>
-References: <aShM9CAyRPe2gYpK@fedora>
-To: Brendan Shephard <bshephar@bne-home.net>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-MBO-RS-ID: 0e1f101fe78498e00fb
+X-MBO-RS-META: 9zpu7pas74igesmozo8t1j1m1o95pi7w
 
-
-
-> On 27 Nov 2025, at 10:07, Brendan Shephard <bshephar@bne-home.net> =
-wrote:
+On Fri, 2025-11-21 at 18:03 -0500, Lyude Paul wrote:
+> I haven't gone through this fully yet. I meant to today, but I ended up
+> needing way more time to explain some of my review comments w/r/t some
+> ww_mutex bindings for rust then I was expecting. But I do already have so=
+me
+> comments worth reading below:
 >=20
-> Changed page_align() to return Option<usize> which allows for =
-validation
-
-nit: imperative voice here
-
-> of the provided addr value. This ensures that any value that is =
-provided
-> within one PAGE_SIZE of usize::MAX will not panic and instead =
-page_align
-> will return None.
+> On Tue, 2025-11-18 at 14:25 +0100, Philipp Stanner wrote:
+> >=20
+> > +
+> > +/// Container for driver data which the driver gets back in its callba=
+ck once the fence gets
+> > +/// signalled.
+> > +#[pin_data]
+> > +pub struct DmaFenceCb<T: DmaFenceCbFunc> {
+> > +=C2=A0=C2=A0=C2=A0 /// C struct needed for the backend.
+> > +=C2=A0=C2=A0=C2=A0 #[pin]
+> > +=C2=A0=C2=A0=C2=A0 inner: Opaque<bindings::dma_fence_cb>,
+> > +=C2=A0=C2=A0=C2=A0 /// Driver data.
+> > +=C2=A0=C2=A0=C2=A0 #[pin]
+> > +=C2=A0=C2=A0=C2=A0 pub data: T,
 >=20
-> Callers of page_align() should raise a EINVAL when they receive None
-> from page_align().
->=20
-> Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
-> ---
-> rust/kernel/page.rs | 13 ++++++-------
-> 1 file changed, 6 insertions(+), 7 deletions(-)
->=20
-> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> index 432fc0297d4a..b78473b67003 100644
-> --- a/rust/kernel/page.rs
-> +++ b/rust/kernel/page.rs
-> @@ -26,13 +26,12 @@
-> pub const PAGE_MASK: usize =3D !(PAGE_SIZE - 1);
->=20
-> /// Round up the given number to the next multiple of [`PAGE_SIZE`].
-> -///
-> -/// It is incorrect to pass an address where the next multiple of =
-[`PAGE_SIZE`] doesn't fit in a
-> -/// [`usize`].
+> It's entirely possible I've just never seen someone do this before but - =
+is
+> are we actually able to make pinned members of structs `pub`? I would hav=
+e
+> thought that wouldn't be allowed (especially if `data` was exposed as jus=
+t
+> `T`, since a user could then move it pretty easily and break the pinning
+> guarantee).
 
-Can you document the return value? I=E2=80=99d find it weird that this =
-returns Option otherwise.
-
-> -pub const fn page_align(addr: usize) -> usize {
-> -    // Parentheses around `PAGE_SIZE - 1` to avoid triggering =
-overflow sanitizers in the wrong
-> -    // cases.
-> -    (addr + (PAGE_SIZE - 1)) & PAGE_MASK
-> +/// Return None in cases where the next multiple of [`PAGE_SIZE`] =
-would overflow a [`usize`]
-> +pub const fn page_align(addr: usize) -> Option<usize> {
-> +    if let Some(sum) =3D addr.checked_add(PAGE_SIZE - 1) {
-> +        return Some(sum & PAGE_MASK);
-> +    }
-> +    None
-> }
 >=20
-> /// Representation of a non-owning reference to a [`Page`].
-> --
-> 2.51.1
+> =E2=80=A6snip=E2=80=A6
 >=20
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0 /// # Safety
+> > +=C2=A0=C2=A0=C2=A0 ///
+> > +=C2=A0=C2=A0=C2=A0 /// `ptr`must be a valid pointer to a [`DmaFence`].
+> > +=C2=A0=C2=A0=C2=A0 unsafe fn dec_ref(ptr: NonNull<Self>) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `ptr` is never a=
+ NULL pointer; and when `dec_ref()` is called
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // the fence is by definiti=
+on still valid.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let fence =3D unsafe { (*pt=
+r.as_ptr()).inner.get() };
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: Valid because `f=
+ence` was created validly above.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe { bindings::dma_fenc=
+e_put(fence) }
+> > +=C2=A0=C2=A0=C2=A0 }
+> > +}
+> > +
+> > +impl<T> DmaFence<T> {
+> > +=C2=A0=C2=A0=C2=A0 // TODO: There could be a subtle potential problem =
+here? The LLVM compiler backend can create
+> > +=C2=A0=C2=A0=C2=A0 // several versions of this constant. Their content=
+ would be identical, but their addresses
+> > +=C2=A0=C2=A0=C2=A0 // different.
+> > +=C2=A0=C2=A0=C2=A0 const OPS: bindings::dma_fence_ops =3D Self::ops_cr=
+eate();
+>=20
+> oh no, not you too!!! D:
+>=20
+> I can answer this question - yes, `OPS` definitely won't have a unique me=
+mory
+> address. Whether that's an issue or not depends on if you actually need t=
+o
+> check what pointer a `DmaFence` has its `dma_fence_ops` set to and compar=
+e it
+> against another. If not though, it's probably fine.
 
-With the change above:
+In C, there are some use cases where people check the fence_ops addr to
+see to whom the fence belongs, AFAIK.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+I, so far, can live with there being several ops as long as they all
+point to the same functions:
 
+get_driver_name() and get_timeline_name() won't be called by anyone any
+time soon (maybe we could even remove them from C, but so far they are
+mandatory), and release() receives its data pointer from the C backend,
+and since all is pinned we should be good.
+
+However, it's probably wise to at least leave a comment (without the
+"TODO") there to make future extenders aware that they cannot identify
+a fence by its ops.
+
+> >=20
+> >=20
+
+[=E2=80=A6]
+
+> > +
+> > +=C2=A0=C2=A0=C2=A0 /// Signal the fence. This will invoke all register=
+ed callbacks.
+> > +=C2=A0=C2=A0=C2=A0 pub fn signal(&self) -> Result {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `self` is refcou=
+nted.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let ret =3D unsafe { bindin=
+gs::dma_fence_signal(self.as_raw()) };
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ret !=3D 0 {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret=
+urn Err(Error::from_errno(ret));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>=20
+> You can just use to_result()
+
+OK.
+
+--
+
+
+I want to present a new version of DmaFence soonish which takes the
+separate spinlocks into account that Christian is working on.
+
+
+P.
