@@ -1,95 +1,55 @@
-Received: from forward501b.mail.yandex.net (forward501b.mail.yandex.net [178.154.239.145])
+Received: from mail.korbix.pl (mail.korbix.pl [135.125.190.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860EA322DC1;
-	Thu, 27 Nov 2025 09:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D1A31DDA4
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 09:11:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.125.190.63
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764234332; cv=none; b=PwrO61+Il3IO0hiN2YDHeopgUdkaUQzvaqzs8uuNUnz8HnMdalEO4KGWcxRYkR9tNn0aWMvGbo6ged5TP03A0cSDV5cm85OAf0Ktf1A+5Sgwmu84G4PFodNkS6aLB5PQCs41pU/vn7W+Sj0heQ1aQQCKRSnTpeDo5utvHr9Id3g=
+	t=1764234700; cv=none; b=WUYPSa17NT7IPgk1SQNGG1lEweK3579nZY5eWafD9Uu1VXulKt8mV9oZxe+Q6pP3GqgcUZQFQruAnLA6BwILXnSFoCmwKD3pZzzbpAK1oFJvWniSCBW/kAfVpZ+9dWTBdzYbDaniKeTNZKW85HoYJH3oD7/gdTngpr5ATD1uqTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764234332; c=relaxed/simple;
-	bh=QtglcwKM7w0LhzbPKsxjZGRZHcdXCK1iuxWk9+GoRxk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mcAvcTHPEWBL4SYGrhRZwTGXYl7c1B85MJmEJCG7c1pbf8TUPbtHxG+Ynaf4186/r4Q93Q7cIoatMcFqnp4QxgiLQgvCxffYHHhIggXRVKY3AIW5A9dWxy07NeSsRiewAff4CAxvPjTxLkWGKFoFjeh69R+5RbfxrhPfe13uPEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=cxs3pqQl; arc=none smtp.client-ip=178.154.239.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="cxs3pqQl"
-Received: from mail-nwsmtp-smtp-production-main-67.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-67.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:143b:0:640:90e9:0])
-	by forward501b.mail.yandex.net (Yandex) with ESMTPS id 230D4825F3;
-	Thu, 27 Nov 2025 11:57:43 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-67.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id bvZ3RE8LPeA0-ExrpC17I;
-	Thu, 27 Nov 2025 11:57:42 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1764233862;
-	bh=QtglcwKM7w0LhzbPKsxjZGRZHcdXCK1iuxWk9+GoRxk=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=cxs3pqQlbF3u4brDIgCGasuUv6P4g2qyZWmMJKUeNXDuMuKWrbS9+ZbN3AKL/yC/q
-	 n2rCf7+rRGYf/WsXRc1jYKEUGSljcdPajyR51oNvlsN2t3be+cPiYhCBra6ChbxSpt
-	 09yZgFnxc/WrpxKi1zWIc0/9dCsLyV9Nq9tD65uU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-67.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Thu, 27 Nov 2025 11:57:35 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- bjorn3_gh@protonmail.com, daniel.almeida@collabora.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 2/6] rust: implement `Class` for ww_class support
-Message-ID: <20251127115735.52946137@nimda.home>
-In-Reply-To: <eb0a838221064b02cd4f341e9201cc2cf31be8e2.camel@redhat.com>
-References: <20251101161056.22408-1-work@onurozkan.dev>
-	<20251101161056.22408-3-work@onurozkan.dev>
-	<eb0a838221064b02cd4f341e9201cc2cf31be8e2.camel@redhat.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	s=arc-20240116; t=1764234700; c=relaxed/simple;
+	bh=ZaQA1CC8ArBYu0Ic3DvFi6+b6annm5mSy2pFuhb12eA=;
+	h=Message-ID:Date:From:To:Subject:MIME-Version:Content-Type; b=lxWmjo1lh1xYTSINKBBe3w8balog90BnZUzyWpStr8BHAPWwmL1nfpI0/TxFn2IY53iW67xDs8/arZrHNIMhsZRqqJjmO2D5dDhzpkbD5n4gajX51XyZH2xdmO08ANSja49hciArTiGGPT1VMFQtlCVIjKDDwrDNrOWNBwi3Kro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=korbix.pl; spf=pass smtp.mailfrom=korbix.pl; arc=none smtp.client-ip=135.125.190.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=korbix.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korbix.pl
+Received: by mail.korbix.pl (Postfix, from userid 1002)
+	id 6EAE325CE2; Thu, 27 Nov 2025 10:11:31 +0100 (CET)
+Received: by mail.korbix.pl for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 09:11:13 GMT
+Message-ID: <20251127082758-0.1.l5.17gnf.0.j1llt0n0j8@FreshForge.pl>
+Date: Thu, 27 Nov 2025 09:11:13 GMT
+From: "Dominik Janikowski" <dominik.janikowski@korbix.pl>
+To: <rust-for-linux@vger.kernel.org>
+Subject: =?UTF-8?Q?Termin_p=C5=82atno=C5=9Bci_?=
+X-Mailer: mail.FreshForge.pl
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 21 Nov 2025 14:15:00 -0500
-Lyude Paul <lyude@redhat.com> wrote:
+Dzie=C5=84 dobry,=20
 
-> This should be is_wait_die.into() like you did in the code below.
+czy rozwa=C5=BCali Pa=C5=84stwo podj=C4=99cie dodatkowych =C5=9Brodk=C3=B3=
+w finansuj=C4=85cych dzia=C5=82alno=C5=9B=C4=87?=20
 
-Can't call into() in const function.
+Jako firma specjalizuj=C4=85ca si=C4=99 w dopasowaniu rozwi=C4=85za=C5=84=
+ faktoringowych dla przedsi=C4=99biorc=C3=B3w, chcia=C5=82bym wskaza=C4=87=
+ Pa=C5=84stwu rozwi=C4=85zanie, kt=C3=B3re skutecznie poprawi p=C5=82ynno=
+=C5=9B=C4=87 finansow=C4=85 przy minimalnych formalno=C5=9Bciach.=20
 
-> With that:
->=20
-> Reviewed-by: Lyude Paul <lyude@redhat.com>
->=20
-> On Sat, 2025-11-01 at 19:10 +0300, Onur =C3=96zkan wrote:
-> > +impl Class {
-> > +=C2=A0=C2=A0=C2=A0 /// Creates an unpinned [`Class`].
-> > +=C2=A0=C2=A0=C2=A0 ///
-> > +=C2=A0=C2=A0=C2=A0 /// # Safety
-> > +=C2=A0=C2=A0=C2=A0 ///
-> > +=C2=A0=C2=A0=C2=A0 /// Caller must guarantee that the returned value i=
-s not moved
-> > after creation.
-> > +=C2=A0=C2=A0=C2=A0 pub const unsafe fn unpinned_new(name: &'static CSt=
-r,
-> > is_wait_die: bool) -> Self {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Class {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 inn=
-er: Opaque::new(bindings::ww_class {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 stamp: bindings::atomic_long_t { counter: 0 },
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 acquire_name: name.as_char_ptr(),
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 mutex_name: name.as_char_ptr(),
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 is_wait_die: is_wait_die as u32,
->=20
+Faktoring przyspiesza obieg pieni=C4=85dza, w zwi=C4=85zku z tym nie musz=
+=C4=85 ju=C5=BC Pa=C5=84stwo oczekiwa=C4=87 zap=C5=82aty za faktur=C4=99,=
+ poniewa=C5=BC my przelejemy =C5=9Brodki na konto ju=C5=BC nast=C4=99pneg=
+o dnia po jej wystawieniu.=20
 
--Onur
+Mo=C5=BCemy um=C3=B3wi=C4=87 si=C4=99 na wst=C4=99pna konsultacj=C4=99  i=
+ wsp=C3=B3lnie znale=C5=BA=C4=87 korzystne dla Pa=C5=84stwa rozwi=C4=85za=
+nie. Interesuje Pa=C5=84stwa moja propozycja?
+
+
+Pozdrawiam
+Dominik Janikowski
