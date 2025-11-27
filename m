@@ -1,251 +1,103 @@
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
+Received: from outbound.mr.icloud.com (p-west2-cluster2-host5-snip4-3.eps.apple.com [57.103.68.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE995307AC6;
-	Thu, 27 Nov 2025 10:23:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282B821A459
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 13:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.68.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764239017; cv=none; b=kX94wjV7LH1QYN8lutNfY8tSw9oH5RaRQ1gt7R3zoQFIrNu5CwIeQ6gkZj1CAw2ELDZ0Ac/lRkHyx8U0GdYH75f4pF0k1IW8azY6DvzA8AQs8RNUG9CNmfPpX2FKzh12UEClsD1eZspqRhkRbvSclvrnWeuth/72k/pAvtgR044=
+	t=1764248854; cv=none; b=HH8LCkoHpsQD3Pbx2kAhTzbFxWc5DmxRo3qfP2TnOzTTUZJjxycyTzFvkd1CV+aha4nj/pDoRnKIWKq4o6Z092qYtFFMWc1XcU96kpUMTuJWeHYD8WFPtv/4IzV029gbRIkXg7VlrUKGn7CgmQ10pbzK1+sFU9vkiCxG5KBoxjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764239017; c=relaxed/simple;
-	bh=A/yEuM5jmf3fNkBM9ZFZ39nTLuL4AMIZ6iRZslYP48I=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nDjIBqoLZwLAp0Y4703thizi2d3pXhXQanhCcecxpAVR7jGzgHfeAplOJ4YFI8h6KEhUdoKmfcaS3wu9DWGEY9dFp8YX0XaDTgKw2dJO4UEBoB6AvxzTqDkNFljTjoPXHxyhUzVBPaFvL8NLcQPad8ea+NJHDmGypeztNd8g/ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Xy+vJzxV; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1764248854; c=relaxed/simple;
+	bh=gAfHcBfeXw6z+TTpu2ywPnF6wNc1kMbcKYGrRB1dDAA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=qg4HOFPkqvAk0A2/7X6T4kAnKpZCm2L5aGHw1+fjDiuXATpRwWISW2wnwZzveMSY3xfoKP8jEmlAUVM6o+CD3bjDTjSDKA8PlHX8qq3Cp3iWlicExB2DHnWUotUPKcoOD9t5T+cisw0985Y06XLrP2ivC3Bvt72w4lRYdbbu6aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=cPT6Zlt/; arc=none smtp.client-ip=57.103.68.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Xy+vJzxV"
-Received: from mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net [IPv6:2a02:6b8:c2d:6c0a:0:640:c879:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id D31BB80BF9;
-	Thu, 27 Nov 2025 13:16:13 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 8GbQwB9LtW20-Ol2W41kW;
-	Thu, 27 Nov 2025 13:16:12 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1764238573;
-	bh=A/yEuM5jmf3fNkBM9ZFZ39nTLuL4AMIZ6iRZslYP48I=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=Xy+vJzxVOdMpOJjo0D6abVhcnWWJU2MOFDJQi29xjJUuu2NVNVwmdGdo2OjaXU82x
-	 u4m8S29gyyfWBWLelz+h0tgMmddI6Um7rt6uH5FjjTnHEOm/dyJJjW0N7qhTvrwKor
-	 9nMNU5Bbma4lF6SGLVpApUgS6RwTz1aid/RrOy58=
-Authentication-Results: mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Thu, 27 Nov 2025 13:16:06 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- bjorn3_gh@protonmail.com, daniel.almeida@collabora.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 5/6] rust: ww_mutex: implement LockSet
-Message-ID: <20251127131606.58d86291@nimda.home>
-In-Reply-To: <6372d3fa58962bcad9de902ae9184200d2edcb9b.camel@redhat.com>
-References: <20251101161056.22408-1-work@onurozkan.dev>
-	<20251101161056.22408-6-work@onurozkan.dev>
-	<92563347110cc9fd6195ae5cb9d304fc6d480571.camel@redhat.com>
-	<20251124184928.30b8bbaf@nimda>
-	<6372d3fa58962bcad9de902ae9184200d2edcb9b.camel@redhat.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="cPT6Zlt/"
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-2a-20-percent-2 (Postfix) with ESMTPS id B32AB1801C32;
+	Thu, 27 Nov 2025 13:07:30 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=t64/D5LUlJWAc1hXQ63F7LBmpL4ZJWhY8Dh7FiTOgvU=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=cPT6Zlt/ub6Pyb4gn53cuodEY2aUjMFwC3INUa5Qp9aQw664FyZeDQG07EoSvMQx/Td5sscQJJzcGU/NfDcRkBG8iSNHsIb/9r2fOGTgPigv0MxTGr4D2sTFWETmYl2tY6EmtfTKXRb83IDs7tzRtSL9/IsXyrcRqLaqtEGW5CCKf+1UW8uu2gyHtH0r4z9qzdOpZsxmoFulV9vJzblxP2l4aWICbf7PgkF7/j8FYsJDvcJKV+GYMyPZsVPL7zEk3UYA2ezInhNQPa78iKekbjC9eYzSDenSYm7BpMke9s5rUmWpUonGGkRWZiDSh39RngAkvMJ0dTcChSSb6TTYvg==
+mail-alias-created-date: 1746336505199
+Received: from fedora (unknown [17.57.152.38])
+	by p00-icloudmta-asmtp-us-west-2a-20-percent-2 (Postfix) with ESMTPSA id B7F051800498;
+	Thu, 27 Nov 2025 13:07:04 +0000 (UTC)
+Date: Thu, 27 Nov 2025 23:07:00 +1000
+From: Brendan Shephard <bshephar@bne-home.net>
+To: dakr@kernel.org, acourbot@nvidia.com, airlied@gmail.com,
+	aliceryhl@google.com
+Cc: rust-for-linux@vger.kernel.org
+Subject: [PATCH] rust: Return Option from page_align and ensure no usize
+ overflow
+Message-ID: <aShM9CAyRPe2gYpK@fedora>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-GUID: eXdPPA6pgQjafM2UQhsEj3NSjxZYNSxw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI3MDA5NyBTYWx0ZWRfX0XBbTxUoidUJ
+ /mjxGiHUdatbySVYs+T4HRpRUJVOHA1ixlhqjWOk10SacliS0RtH6PqYQWSWJxfmzh74o3O1aCS
+ TjWInDP8kUuTjTC72+YaoqX814YbbUm0M9ZXa0F6gQdSwIh7xgEmivSgMhkotKzO4AJawS7vAdS
+ s0zlRJJU+JAyyDmQ8RBMESNNIOgJ1ygbu+BWqbWXKX6sz0EXtJLQnzVt+43j5ugHae5zB2Z/Zb2
+ 8OigfONZJbWybmMPlLIi5JAiTGJYkrtK3Ktse4wQuiay17QmcGHHNS4NftNVMC7jTEoVu7ORsgV
+ IYxRJIoPw1lY7NmGLkB
+X-Authority-Info: v=2.4 cv=Vr0uwu2n c=1 sm=1 tr=0 ts=69284d13 cx=c_apl:c_pps
+ a=9OgfyREA4BUYbbCgc0Y0oA==:117 a=9OgfyREA4BUYbbCgc0Y0oA==:17
+ a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=JppZAXPjAAAA:8 a=E8rjWuRsiTkYYbGZz-IA:9 a=CjuIK1q_8ugA:10
+ a=mTXuAFqUwmiQvsSFmwXH:22
+X-Proofpoint-ORIG-GUID: eXdPPA6pgQjafM2UQhsEj3NSjxZYNSxw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-25_02,2025-11-27_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ mlxlogscore=436 mlxscore=0 clxscore=1030 phishscore=0 suspectscore=0
+ malwarescore=0 adultscore=0 spamscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511270097
+X-JNJ: AAAAAAABUxKYy9zoC4Z8xbeFlY9qjR5pJOYgFeOtwQqKcYy2TLsOdRznq4khYeLch7AjCPt68Sqh/OfG/nplsr0xMaqdjT8O6WPPYnstPY+6pofBgYKH+3Z/R0Zter4ca3Cpm+DuR2cr+18mJAJ2UIlijAzqupZmaf4Zwfzx9khdemj0NJ+eIzYMMoaSWDdXM9rO8Ne4020LBepU8E6XXVbCPGmjeEOaLviIIXd9FTLXsuGXiYcjphKPx9IN6Z6sEXkWYxit/6DA9kmSr7t6WQooeosfnMpR0TlW4yxNGQqTEufHVP4azEG12Pgpws3Rm58/0Is5/phYR9qFbhLtuy197xB8WWZcZw4K3eEUtNfbMJnpDxjjxVZLgekHZkdDKwAEys+ziDbuYsiBUn/VWk6xRRa7BreuLVOisME5YHZetq5IXZaTbw1s3Pkzi9z2Wn5Pdu/fAuWqEpFxmtx9chbq8Ad3krs4aL/CwEdAP0c2uZGpJvoMD0Kr9H/n+AigoVL0OeltJffiN+v8oRn8Td0TCt/zFAw0+HWiykv4zda3re355IACrv7rUdODaOmXolBSz+GzlQivHhNol2FhQ3jGeHW169c+AcyZTfw6uXf6XmA7pA==
 
-On Tue, 25 Nov 2025 16:35:21 -0500
-Lyude Paul <lyude@redhat.com> wrote:
+Changed page_align() to return Option<usize> which allows for validation
+of the provided addr value. This ensures that any value that is provided
+within one PAGE_SIZE of usize::MAX will not panic and instead page_align
+will return None.
 
-> On Mon, 2025-11-24 at 18:49 +0300, Onur =C3=96zkan wrote:
-> > >=20
-> > > I wonder if there's some way we can get rid of the safety contract
-> > > here and verify this at compile time, it would be a shame if every
-> > > single lock invocation needed to be unsafe.
-> > >=20
-> >=20
-> > Yeah :(. We could get rid of them easily by keeping the class that
-> > was passed to the constructor functions but that becomes a problem
-> > for the from_raw implementations.
-> >=20
-> > I think the best solution would be to expose ww_class type from
-> > ww_acquire_ctx and ww_mutex unconditionally (right now it depends on
-> > DEBUG_WW_MUTEXES). That way we can just access the class and verify
-> > that the mutex and acquire_ctx classes match.
-> >=20
-> > What do you think? I can submit a patch for the C-side
-> > implementation. It should be straightforward and shouldn't have any
-> > runtime impact.
->=20
-> I would be fine with this, and think this is definitely the right way
-> to go
->=20
+Callers of page_align() should raise a EINVAL when they receive None
+from page_align().
 
-It would be great to reach a consensus on this (whether we should send a
-patch to the C side or instead pass the Class to the from_raw functions
-without modifying the C code).
+Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
+---
+ rust/kernel/page.rs | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
--Onur=20
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 432fc0297d4a..b78473b67003 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -26,13 +26,12 @@
+ pub const PAGE_MASK: usize = !(PAGE_SIZE - 1);
 
-> >=20
-> > > > +=C2=A0=C2=A0=C2=A0 ///
-> > > > +=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 Ok(())
-> > > > +=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0 },
-> > > > +=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0 // `on_all_locks_ta=
-ken` closure
-> > > > +=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0 |lock_set| {
-> > > > +=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 // Safely mutate both values while holding the
-> > > > locks.
-> > > > +=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 lock_set.with_locked(&mutex1, |v| *v +=3D 1)?;
-> > > > +=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 lock_set.with_locked(&mutex2, |v| *v +=3D 1)?;
-> > > > +=C2=A0=C2=A0=C2=A0 ///
-> > > > +=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 Ok(())
-> > > > +=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0 },
-> > >=20
-> > > I'm still pretty confident we don't need or want both closures and
-> > > can combine them into a single closure. And I am still pretty sure
-> > > the only thing that needs to be tracked here is which lock we
-> > > failed to acquire in the event of a deadlock.
-> > >=20
-> > > Let me see if I can do a better job of explaining why. Or, if I'm
-> > > actually wrong about this - maybe this will help you correct me
-> > > and see where I've misunderstood something :).
-> > >=20
-> > > First, let's pretend we've made a couple of changes here:
-> > >=20
-> > > =C2=A0 * We remove `taken: KVec<RawGuard>` and replace it with
-> > > `failed: *mut Mutex<=E2=80=A6>`
-> > > =C2=A0 * lock_set.lock():
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - Now returns a `Guard` that executes `ww_mu=
-tex_unlock` in
-> > > its destructor
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - If `ww_mutex_lock` fails due to -EDEADLK, =
-this function
-> > > stores a pointer to the respective mutex in `lock_set.failed`.
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - Before acquiring a lock, we now check:
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 + if lock_set.failed =3D=
-=3D lock
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Return=
- a Guard for lock without calling
-> > > ww_mutex_lock()
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * lock_s=
-et.failed =3D null_mut();
-> > > =C2=A0 * We remove `on_all_locks_taken()`, and rename
-> > > `locking_algorithm` to `ww_cb`.
-> > > =C2=A0 * If `ww_cb()` returns Err(EDEADLK):
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - if !lock_set.failed.is_null()
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 + ww_mutex_lock(lock_set.f=
-ailed) // Don't store a guard
-> > > =C2=A0 * If `ww_cb()` returns Ok(=E2=80=A6):
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - if !lock_set.failed.is_null()
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // This could only happen if we =
-hit -EDEADLK but then
-> > > `ww_cb` did not // re-acquire `lock_set.failed` on the next
-> > > attempt
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 + ww_mutex_unlock(lock_set=
-.failed)
-> > >=20
-> > > With all of those changes, we can rewrite `ww_cb` to look like
-> > > this:
-> > >=20
-> > > > lock_set| {
-> > > // SAFETY: Both `lock_set` and `mutex1` uses the same class.
-> > > let g1 =3D unsafe { lock_set.lock(&mutex1)? };
-> > >=20
-> > > // SAFETY: Both `lock_set` and `mutex2` uses the same class.
-> > > let g2 =3D unsafe { lock_set.lock(&mutex2)? };
-> > >=20
-> > > *g1 +=3D 1;
-> > > *g2 +=3D 2;
-> > >=20
-> > > Ok(())
-> > > }
-> > >=20
-> > > If we hit -EDEADLK when trying to acquire g2, this is more or less
-> > > what would happen:
-> > >=20
-> > > =C2=A0 * let res =3D ww_cb():
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - let g1 =3D =E2=80=A6; // (we acquire g1 su=
-ccessfully)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - let g2 =3D =E2=80=A6; // (enter .lock())
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 + res =3D ww_mutex_lock(mu=
-tex2);
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 + if (res) =3D=3D EDEADLK
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * lock_s=
-et.failed =3D mutex2;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 + return Err(EDEADLK);
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - return Err(-EDEADLK);
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // Exiting ww_cb(), so rust will=
- drop all variables in this
-> > > scope:
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 + ww_mutex_unlock(mutex1) =
-// g1's Drop
-> > >=20
-> > > =C2=A0 * // (res =3D=3D Err(EDEADLK))
-> > > =C2=A0=C2=A0=C2=A0 // All locks have been released at this point
-> > >=20
-> > > =C2=A0 * if !lock_set.failed.is_null()
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - ww_mutex_lock(lock_set.failed) // Don't cr=
-eate a guard
-> > > =C2=A0=C2=A0=C2=A0 // We've now re-acquired the lock we dead-locked on
-> > >=20
-> > > =C2=A0 * let res =3D ww_cb():
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - let g1 =3D =E2=80=A6; // (we acquire g1 su=
-ccessfully)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - let g2 =3D =E2=80=A6; // (enter .lock())
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 + if lock_set.failed =3D=
-=3D lock
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * lock_s=
-et.failed =3D null_mut();
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * return=
- Guard(=E2=80=A6); // but don't call ww_mutex_lock(),
-> > > it's already locked
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - // We acquired g2 successfully!
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - *g1 +=3D 1;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 - *g2 +=3D 2;
-> > >=20
-> > > =C2=A0 * etc=E2=80=A6
-> > >=20
-> > > The only challenge with this is that users need to write their
-> > > ww_cb() implementations to be idempotent (so that calling it
-> > > multiple times isn't unexpected). But that's already what we do
-> > > on the C side, and is kind of what I expected we would want to do
-> > > in rust anyhow.
-> > >=20
-> > > Does this make sense, or was there something I made a mistake with
-> > > here?
-> >=20
-> > Thanks a lot for analyzing and providing an alternative on this!
-> >=20
-> > However, collapsing everything into a single callback would require
-> > the caller to self-police various disciplines like "don't touch gN
-> > until gN+1 succeeded", which is exactly the foot-gun we are trying
-> > avoid with 2 closures.
-> >=20
-> > Separating acquire and use logics not just simpler API to implement
-> > (and provide), but also more effective compare to your example
-> > here. With single closure we basically move API responsibility to
-> > the users (e.g., do not run this part of the code in the loop, do
-> > not access to any data behind any guard if all the locks aren't
-> > taken yet, etc.), which is not a good thing to do, especially from
-> > the high-level API.
->=20
-> !!!!!
-> OK - now I finally understand what I was missing, it totally slipped
-> my mind that we would have this requirement. One thing I'm not sure
-> this takes into account though: what about a situation where you
-> can't actually know you need to acquire gN+1 until you've acquired gN
-> and looked at it? This is at least a fairly common pattern with KMS,
-> I'm not sure if it comes up with other parts of the kernel using ww
-> mutexes.
->=20
+ /// Round up the given number to the next multiple of [`PAGE_SIZE`].
+-///
+-/// It is incorrect to pass an address where the next multiple of [`PAGE_SIZE`] doesn't fit in a
+-/// [`usize`].
+-pub const fn page_align(addr: usize) -> usize {
+-    // Parentheses around `PAGE_SIZE - 1` to avoid triggering overflow sanitizers in the wrong
+-    // cases.
+-    (addr + (PAGE_SIZE - 1)) & PAGE_MASK
++/// Return None in cases where the next multiple of [`PAGE_SIZE`] would overflow a [`usize`]
++pub const fn page_align(addr: usize) -> Option<usize> {
++    if let Some(sum) = addr.checked_add(PAGE_SIZE - 1) {
++        return Some(sum & PAGE_MASK);
++    }
++    None
+ }
 
+ /// Representation of a non-owning reference to a [`Page`].
+--
+2.51.1
