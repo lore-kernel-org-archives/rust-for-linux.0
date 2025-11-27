@@ -1,96 +1,118 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CA233859B
-	for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 16:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B37F2D47E4
+	for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 16:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764259877; cv=none; b=D2MM6aCQA+9tdNiMoMXQgXGIwaAijaeQQVOs6SeQfZW/vwluUBecci4pQNhsKRp6EHk6M+9gAthCpxDg/2jMSBSbKF42/nJ+NegnZP7eyrZYrLN9Dd53xxFqhjyfi27Wq7m7wel9G2aolN03ijvCXZ/PXMCMnfHID6ag5iO3CMo=
+	t=1764260709; cv=none; b=Ay0s/qtBymVr5jh1xhBLEz7M3CBYtPa+pmKpCcI2JL2D1dn0y1SDodDhqX3BMy4/sf/T2IltWPGL5BuX7D/hDAeIt2qmWr7PtrIi8SFcoqemhM73TcEV/LoRl3xua75p6FiYMc6mJHRhIjScKcaBounDNWsjg3Rp300dQ6faUTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764259877; c=relaxed/simple;
-	bh=soAvbg+KTnZzbZBCJFV3GQ48tWsgmVN8v2pzSo0Nea4=;
+	s=arc-20240116; t=1764260709; c=relaxed/simple;
+	bh=v6JwegAm4ikhwCcSKf50iSKtkRDnGT5dpPezcddbzsc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c5xPehSUSGZbljk901Qvajy6SkTVk/F8Er0/Nv2UPgqB6zVvKJzdWNC9ke3U0beYAGhks3EWB4Jk2SCJenERK4yN7YUZL2RkSbkttYRys2ni7foS7bDFB2LyO3Kv1ENQ2wAIRpnt9eqK9AcBL1er6oFvGJBHVLyxTNSGhS8d82E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pu5HHLrz; arc=none smtp.client-ip=209.85.215.173
+	 To:Cc:Content-Type; b=FdMfP088IfF+k9XkJh9Njy1fLhsFEaWcCQ3B46MHodBqZM902R+XPY162z0HHFFEs3NndG+8MMTFpa5FmpCGLgD6Z6/ndyT6PtCVZ77olz3o284syZgnV1BqG2ZNfvs+lnjlj5mygs9VXJMTvI8o7HO2myH6CQWV4ZKT/34ARGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCYJW4Ae; arc=none smtp.client-ip=209.85.215.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pu5HHLrz"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-bda175a2013so81991a12.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 08:11:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCYJW4Ae"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-bda175a2013so84235a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 08:25:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764259875; x=1764864675; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764260707; x=1764865507; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=soAvbg+KTnZzbZBCJFV3GQ48tWsgmVN8v2pzSo0Nea4=;
-        b=Pu5HHLrzVWaFRk7o2KG7h2RQdgcsUE6u0NduOfqYD99ZsgU3wrTajiRUolYVliRCg5
-         seIuUuECEnaXS6LxtZu6XeSIn9H5cpvtyyAemHKYDcbd0IpiNx3WSjC9t7PG2tthHHxB
-         BWnZ2+Aj3cVEbEcS5kGcdRlu1/OaXuZrYEwFHzaoxuxWtpASbx0n95l8C5m2jg/HRXyV
-         DPxMePHAYEaa3DtxsLL/WvfpyOYrzb9sTH+bhKFh5biZONlBHF9jvIlurfGR1bJTo0LV
-         t0enQiKQ4A2jvTEc4aLZLdnU4KcYl8G8euIFOMJhdZSh1n/COkTAweANbBRQI46ULYTZ
-         7/gQ==
+        bh=VvwMxPMXkVguu9fyHSVTewNfjFK/r2bpKHgrRbM6C5I=;
+        b=RCYJW4Ae+prP7CY5mZw51Nislhlx+MzsmWcbVCVI57zxulB52CjoZ8+F4jBc11s3C1
+         Qo/WMzBZZrhti7IeUADFjheb73qWkYd9MLbxq3jDogbkB1wqi2w0mTDswOdc+zYS1L99
+         yu9oV+3d+IrDnxYGL/tnmYDR/nhReXkjsUSatgctIObJF4nrWdmSJqjsVriY2XO7x6g7
+         YO7bI/ESRrWWyDJNlWo+ybuSqSXJnLXAvtoJQ6De0NuKd6lBSv9wceJfFRk8VRuV9S4B
+         QXnc/9J/M3h6XjUhX0aqFqEkJFpGgNaialdAmZCJcKMxNNJMW8zsILVSdz4L5NmpuZDH
+         hjuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764259875; x=1764864675;
+        d=1e100.net; s=20230601; t=1764260707; x=1764865507;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=soAvbg+KTnZzbZBCJFV3GQ48tWsgmVN8v2pzSo0Nea4=;
-        b=qsvj/+OLY536A2tiqMq7z7kRZp4q51WnaCFDeW+IbqA975JAy+B5aSTvdUYETrzZ28
-         DR97ipnVBIhLd7ZK9lNU44jgzoek2O51HrF0mTPc+9vIxwTIiXEk2uyCBuq+i5KjvDaa
-         P6xxrqdTdIKSykqDkzT9klUi8nkIRCaJRL9xhzGlx/jbaV/dugAsKKei4oXmRcH+Cj89
-         Ntq3p25rBe8XvnVzqUbcy9ULWQe0Z0Nj/ohlyE+nk67JDrsY279Zv90I/Bix/xjT7rUZ
-         mfHO1/jFlkVFnOCOBr4TQwFlGW8nXKuY/ZrkFppqldCJ4VD4IlxO28ujJ15wt3jWmQBi
-         Dz1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXFXbCj61cOkj9jjwdIBWESCQ98IyjsTXQjkoX+uRfgljtf3xcLH6e1+mZFxseDXZgetyMJKU5dzCcKvcWU/A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyH6UdSiqsL+w+zZ0u7PRndoC8Rspd9i3q2qhA/jbuuBDROqD8S
-	YnvZLTNJOiXO+rU8HAZ51oppyU1Leob89nWjaZ2rFGp1IuivpTbuf4DFWDtrOyiB5N6+wxGYBqi
-	2tU2OY0rd/3JkFvk1Jze5KCUsG9j81m0=
-X-Gm-Gg: ASbGncvCEmfudeFlaDR/o1DxondpaXSyp6o+nYK0+U8InQ8JLBAVWXt7HyC8lne9318
-	3TXDiZKRDEmhVYWJ4+R4OjymeWeArEzgsnWElKNzT4Ix2A2TNYcqPfKtsNwCy+0IkHRTLTo730v
-	vdVl+nPa1/uS0VsrjlVZBuqxqQWTNesHIrOv+14taLVA6h0oVWAlAg6M3dP1E7fhhfh7LkfmGYA
-	Q0JsYwU8o2qDpYIWuAq6ktUMK/vbHUCJVQoMbVxhcDp1nCV9y2MaVlPR305wXGKcGz2UEOaIV91
-	QbujQpLDfKnbalzsZOsoJ81vebZXBPWEjz3gMV3NiVk9qKq9ePQqFssrLXVXntMAovMYBR+FvFa
-	A9PI/G0oH7vPyBw==
-X-Google-Smtp-Source: AGHT+IG8M+uIL0dPN76xnE2eW0lgsEynXAnduvrjXKwGpDax3qlhMqDwql5KQb8OaC7BZ6yf/4DBRO5Ns7wQ/1kScbE=
-X-Received: by 2002:a05:693c:2a0c:b0:2a4:3593:5fc8 with SMTP id
- 5a478bee46e88-2a719277278mr10615549eec.2.1764259874683; Thu, 27 Nov 2025
- 08:11:14 -0800 (PST)
+        bh=VvwMxPMXkVguu9fyHSVTewNfjFK/r2bpKHgrRbM6C5I=;
+        b=N+R/R1IhP8ivl9p/ebqjqCf/2PECU5HQdPJtqDP65w7DV5KvwWK2lO2ycSqUAGdsYI
+         ykptjyLyv2Cpr5bj8m9HzOTQa/mvivbggC/vjjJ62uegWAozwjTgwtB4LEUzySndTTwf
+         zelXVXvQfuNgo5FYE1uKTPQZO1Wgx/XXXe0D6FxMZa/rCHFAJoYItUBT6N+R4JxkX+P4
+         r0uglClHTr2A061FkMcRv+oCBFpd2ImDSsRT6NhD2WDXM+YbmcpQpyLzGBVowUmq80DG
+         BpuJGzZ/GE4JWBzjWZDfu7R6O1tcRC9B9XfLdgxC/13heHYVGIY7+8AFOWNrdIEstoZ9
+         jujQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVekAiSE2aChzgWWb15phJdy1oHQculZqw/V2scR1fgghlL9haUuv9y3yKdTMuF+h52v2Z3pWPz1UkkMQhHzg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8U6um3FLAiw63QcGQDJBleooApEtOy0n65CEUVlYah/hDr7C1
+	V7y8I9eBq0KmL2g6SFyKdCRQNR5wf2i6jnZkRNIKd/nyVLNR0yKXwzY0eAOw8aN0dhuKc++W6Zl
+	O+fpkvN4JiT/zLvoVsVIVtW63b5YXZM4=
+X-Gm-Gg: ASbGncvk3b45twTkmK/g/O87Qc108kdHk8C1FpBIl98/sAgnBgX+HmMezg57zkaZd1Y
+	zSJEFPWIVxcXqDmzPOu5R4pC51BlMZ1ZwLVqnd0lRnexkpEI11isJ4766RMmC3vwzt+h3In9P39
+	pdo06pkbIARuLS61TL9l7Ud6FHpdAPU5X3Ui0VNiaGsJauCscuQAerb1QmHAbmuApOPk4jyNGTs
+	JAePhRBZnbI05V28XurFpWIpvNev8bmJ5FFiQRwxH4mwi8MfiTFDJAeqObmGzx1eMLOX7o5UwyI
+	GhTzckZaxkOYrx7eLbrjyzqFm2tS8F0ta1zfX5BXxC5QcKkUHZ1PJz/Eb/dZvNNUGheE+v9LFGn
+	wbN4oL79g9gKr6rj/HNnRCW75
+X-Google-Smtp-Source: AGHT+IGhk6hUZ3a9bzNOnhZkcMChxXS70KNTBUiCe6/sighvrvSoTcvOenGcvVQ52PQpwNpYvz7HWyFhVnzTe7+4tyc=
+X-Received: by 2002:a05:7300:e80a:b0:2a4:3593:5fc6 with SMTP id
+ 5a478bee46e88-2a718b198bemr14716441eec.0.1764260707343; Thu, 27 Nov 2025
+ 08:25:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251127-io-build-assert-v1-1-04237f2e5850@nvidia.com> <A1A280D4-836E-4D75-863E-30B1C276C80C@collabora.com>
-In-Reply-To: <A1A280D4-836E-4D75-863E-30B1C276C80C@collabora.com>
+References: <aShM9CAyRPe2gYpK@fedora> <aShi9fAhQzRzWj9X@fedora>
+In-Reply-To: <aShi9fAhQzRzWj9X@fedora>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 27 Nov 2025 17:11:02 +0100
-X-Gm-Features: AWmQ_bndiBGSAQLZkqWaU0pmCUvWs_apCs5DYHNEvj6DeHKRg6VtRTJCeaDwLbc
-Message-ID: <CANiq72kC3Ff_zkzvi8oBqSvpkH1k5U9vtF+MkOiWeo=E0ttt=A@mail.gmail.com>
-Subject: Re: [PATCH] rust: io: always inline methods leading to build_assert
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Thu, 27 Nov 2025 17:24:54 +0100
+X-Gm-Features: AWmQ_blqBDLPT2REzNsWPz_PDt7dJoJrBrS5anBhRpnQUJwiYuPcI0kJZluI9kU
+Message-ID: <CANiq72m0Z5ax3_ABSCo6Ogpeuv3u4aGsK2Fixx_q5mAMaNcy3w@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: Return Option from page_align and ensure no
+ usize overflow
+To: Brendan Shephard <bshephar@bne-home.net>
+Cc: dakr@kernel.org, acourbot@nvidia.com, airlied@gmail.com, 
+	aliceryhl@google.com, daniel.almeida@collabora.com, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 27, 2025 at 3:54=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+On Thu, Nov 27, 2025 at 3:41=E2=80=AFPM Brendan Shephard <bshephar@bne-home=
+.net> wrote:
 >
-> I also faced this with genmask, by the way, i.e.: using genmask with an
-> in-bounds constant would trigger a build error. Very confusingly, this wo=
-uld be
-> randomly solved by moving the genmask invocation around in the code.
->
-> I wonder if the same fix is needed for it as well?
+> Changes in v2:
+>   - Reworded commit message to follow the imperative form.
+>   - Expanded the documentation to explain the `Some` and `None` return ca=
+ses.
+>   - Added a period at the end of the documentation comment.
 
-If you still have the ability to reproduce it, then please do check!
+This shouldn't be in the commit message. It should instead be placed
+below the first `---` line (the one below the Signed-off-by).
+
+Also, I would recommend not replying to the previous version but
+starting a new thread instead (it is good to provide a lore.kernel.org
+to the previous version in the change log).
+
+In addition, if possible, it is nice to use `--base` to tell Git to
+provide the base commit.
+
+> +/// Return Some [`usize`] that is page aligned. Or None in cases where t=
+he next multiple of
+> +/// [`PAGE_SIZE`] would overflow a [`usize`].
+
+Missing intra-doc link (this was feedback in v1). In addition, this
+reads a bit strangely, and it looks like the first line of the
+description wasn't removed? That would make the "short description"
+(the first paragraph) quite long. Please generate the docs to see if
+it looks good when generated.
+
+More importantly, please add some examples (doctests). They are tested
+as KUnit tests automatically. For new APIs, we always try to do add
+examples, and in cases where there are edge cases like here, it
+clarifies quite a bit, i.e. please provide a representative example of
+the `Some` case and the `None` case.
+
+Thanks!
 
 Cheers,
 Miguel
