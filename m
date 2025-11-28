@@ -1,265 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from outbound.ms.icloud.com (p-west3-cluster3-host10-snip4-10.eps.apple.com [57.103.72.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BDE27874F;
-	Fri, 28 Nov 2025 20:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764360131; cv=fail; b=CcrQ46R7/apWrzKAUBPgcOEIfV/2N3Sbfca/6DS56LZV1rXLV2qhOjcBgcxOm2bP//vhy0gbranL1oZg1ngpXXv1oWH08i4FNSKNZ0Omx3ORbLrSk015klKd84rTOQM3RZ1HziDUzMTPs66uEfpNL4UUCJTdxREMGJyb2j4zewQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764360131; c=relaxed/simple;
-	bh=MOBjPJBp8SAq5DpZ/ptjgHzbc8aAaAn/XdRwM5y7sCg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=uxjIIMaZSXytwm84wUvu2Dct4GX9G3Oaz4a+pU2luK/xYPpBAuJjciSunwy3lI3bKiL3UbAygR8oqmIjq6u/YkBnWob1Am7jP9onUOnv8b8Uiim89IWdJuXowqHCSfqrjPEfSoKJ2MHhV2lV0c6pXrDNg2NgMZzps/ZMxT4zl3g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=df9WLmuW; arc=fail smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FA9274650
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 21:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.72.251
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764366569; cv=none; b=WuQ3ZmLkmmVhwn3ZigrC+yP5Os2DlZ/j8yPNtmoT3i87fIjA4xMFgcxfvRLyHvhEsMOpwiwp1QcEdiyaKciYsuwik842W8kohyDLTiOoAPBZJeOWLCA1NAFux8jkXXvI0i3ksEXKiABCgY1g52lUXm9NaDEePj0dUnxskViBm98=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764366569; c=relaxed/simple;
+	bh=yN9SO5e2RhqdG7IFmOf5gtP9JXcl8mpJ1t4WYnr8uug=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=bP/aw1kIWDevb8ulMV+DgyJKyf90/V4/43YMLDubCpp8q87vF080NJZlyonUzj9cz7gyKkamJKrAQSiGeqOtM++Uaxo+y48Azv4IcDatDk/9rsknGcyrMqc3jWYDJPoT1NbChZG8n6ZfPfZbDkNom4oxBa7XuzUxP/3E6gUr78s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=gU0SvB/M; arc=none smtp.client-ip=57.103.72.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="df9WLmuW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764360128; x=1795896128;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=MOBjPJBp8SAq5DpZ/ptjgHzbc8aAaAn/XdRwM5y7sCg=;
-  b=df9WLmuWVJVeEQZngKfuqmdKKFqFaz9szGesf9wVOswTv8/cIJkgFSTB
-   mza8X7K2+rOEYHHyx0C2s4HZe5v5OOuORsebT58c7Zo9Xs1sK9eH6Vy2c
-   3P1CaHlklv0FFxobIvuiuX6mkMHg7yd90L83yId9S3/eSHlhSJYK3vcn+
-   kaRm3soFej+MTnM7KwXwG0YlKH+sqq2LCSAwGbiaU1hDGhZ1sPzG2YRqD
-   O3Y/B53bk5Hs98AT/T3bR/i2/4f981eauJUZvJZxue15y5X4Z54xHpc29
-   EoVHvd/hHIYUyckuyWRBkwowyCFV9MA6jRdHuR4LpnvQLk6e3H7mC4re/
-   A==;
-X-CSE-ConnectionGUID: In8GHac7QZCxBfYM3Q6OrQ==
-X-CSE-MsgGUID: ttsZ43XVRKKVRB3oGnifEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11627"; a="70256205"
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="70256205"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 12:02:06 -0800
-X-CSE-ConnectionGUID: GJWcecTkSNy/62MQk2TKHw==
-X-CSE-MsgGUID: Fh87YhBlQEWur9Vjuqz3hw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,234,1758610800"; 
-   d="scan'208";a="194311552"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2025 12:02:06 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 28 Nov 2025 12:02:04 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29 via Frontend Transport; Fri, 28 Nov 2025 12:02:04 -0800
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.11) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Fri, 28 Nov 2025 12:02:04 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rTzlSjRgHT7IKpAtpD+3DbBzfCOtmTKzoPnrd47yk6og2qNXkJUQtSYdtET7t/ThMfoWzZ6wsmpAhra9+des8ZnzYOnkEfK3Oms77D2QzbTJhFQ0lLVFDgg8NVnWN2FpIZ4dNf5uwRmSPbtOruu3B3NeXADfK2A3zbNZTbKGtAAMNe10deis3g3A8xUDioaEgJhfTHfZbjIgh3qDsa3pWWQwkwUeXQfkBsQXZSCWLC1omqRDON3QDvZNG0CaNej0BbQDvHPQdwx9m1Vm0mzyAmdt0vv51Xp6oMgyhci8JqUDCQmGX9gKmR6NbL1TFZ9spxoIIeDyXxvIhSFVewZpWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2d3ez9o/GwElTZfY/PA4LMjxfHttxv6lcraorXwl2vo=;
- b=yts1uDpRhckLk+dHjyx9cn4KxVNLcKrK/GRbDF0hS8KPLAYdHqIF8Lnx7+B1k6dXZ5eZ+Mt+L4ztW1rbudmveD0Fw/nq6ALahoHspVTtlwEYNWqAalj406K97BEFQnI58/E2xd67eMQyEgduP1oDGl2cCaQ32xaCicYqCDsWL3LGUCEItGLHafjLKhMAcEUsge8YaKwCN4j17DiFiBqDxdUmxCmyKXKRlNdIVIgQl2wQHlZWPCinU8iglRA2QOAJMwNAnYHK6X96I+JFRZIpf75saG6fq+MhFX7mExtcyTKTtL/LcKuHSK/ylU8j0uNuaZEjFLvaOjn+6i6lJJeZzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by PH7PR11MB8455.namprd11.prod.outlook.com (2603:10b6:510:30d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Fri, 28 Nov
- 2025 20:02:01 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%7]) with mapi id 15.20.9366.012; Fri, 28 Nov 2025
- 20:02:01 +0000
-Date: Fri, 28 Nov 2025 12:01:57 -0800
-From: Matthew Brost <matthew.brost@intel.com>
-To: <phasta@kernel.org>
-CC: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, "Sumit
- Semwal" <sumit.semwal@linaro.org>, Gustavo Padovan <gustavo@padovan.org>,
-	Felix Kuehling <Felix.Kuehling@amd.com>, Alex Deucher
-	<alexander.deucher@amd.com>, David Airlie <airlied@gmail.com>, Simona Vetter
-	<simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen
-	<joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
-	"Matthew Auld" <matthew.auld@intel.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, Lucas De Marchi
-	<lucas.demarchi@intel.com>, Thomas =?iso-8859-1?Q?Hellstr=F6m?=
-	<thomas.hellstrom@linux.intel.com>, <linux-media@vger.kernel.org>,
-	<dri-devel@lists.freedesktop.org>, <linaro-mm-sig@lists.linaro.org>,
-	<linux-kernel@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
-	<intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
-	<rust-for-linux@vger.kernel.org>, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: Re: [PATCH 1/6] dma-buf/dma-fence: Add dma_fence_test_signaled_flag()
-Message-ID: <aSn/tXWKuA+y1A4a@lstrano-desk.jf.intel.com>
-References: <20251126131914.149445-2-phasta@kernel.org>
- <20251126131914.149445-3-phasta@kernel.org>
- <aSctt3QFiEIB61Gr@lstrano-desk.jf.intel.com>
- <aScxGDYeNeN1WYja@lstrano-desk.jf.intel.com>
- <f1864f6d-8403-406d-81a0-00a71495cae8@amd.com>
- <35189892c0cb774155e2012d41371b4d3f8e7d0f.camel@mailbox.org>
- <adfd840e-fcc8-4cdb-8fd8-d0e48ee32247@amd.com>
- <89c04c8b3ca0fadf73452ca20ffd61cb106d762a.camel@mailbox.org>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <89c04c8b3ca0fadf73452ca20ffd61cb106d762a.camel@mailbox.org>
-X-ClientProxiedBy: MW4PR03CA0059.namprd03.prod.outlook.com
- (2603:10b6:303:8e::34) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="gU0SvB/M"
+Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-3a-20-percent-2 (Postfix) with ESMTPS id CDC6D180010E;
+	Fri, 28 Nov 2025 21:49:24 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=qnDQTjc0AolUELrbTPtaaT0aZGWFmRZvAaXRAyDXFtI=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=gU0SvB/Mt8iZ33uCdsM4OdqZ7kTc0is6H4x68qSTO+FUGjld/kyP8yFBqEx+fyKBbHQua3s54XW/jdS8e0nuR8jLN6vVe1rWGZe8dlwEUJCRszqKWsAQLJ6ytjFYWhtdfPCr+ooA/kPfaDQ8JBnSqFHyfhJKxFNv62/gHA3HKA8j2pUvQQcVgf3hiTJo/G4sDXRSw/MG7vmtgPpccr/VKjEZShcscVQzvej/Z/o5cr8EBiA7ebReGwF1ZSsN4vW6tBHd8MUAs92kWn7P7T/qi2HIHC63V9mbWOWRuMx4FG086pxFAJ8/yEK1Nhi67diyXSgyAghjUc4EZ4q5APeTVw==
+mail-alias-created-date: 1746336505199
+Received: from fedora (unknown [17.57.154.37])
+	by p00-icloudmta-asmtp-us-west-3a-20-percent-2 (Postfix) with ESMTPSA id C3959180039D;
+	Fri, 28 Nov 2025 21:49:22 +0000 (UTC)
+Date: Sat, 29 Nov 2025 07:49:19 +1000
+From: Brendan Shephard <bshephar@bne-home.net>
+To: aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com, dakr@kernel.org,
+	acourbot@nvidia.com
+Cc: rust-for-linux@vger.kernel.org
+Subject: [PATCH v3] rust: Return Option from page_align and ensure no usize
+ overflow
+Message-ID: <aSoY31U3uDI2y7V1@fedora>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|PH7PR11MB8455:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2debb5b3-f71d-465c-051e-08de2eb8fe6e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?R3nzNtkUIqE21La52wItEzAvfZahgIFBiZO94m9xhFcYxVISBQ4peN1jTj?=
- =?iso-8859-1?Q?mXbPFlflzA0FnyL7EBfWPVbBYmVNtnZLkMhf21kjC1/TBTBiTQsV2sj+tK?=
- =?iso-8859-1?Q?Lb7bkx4Rjh7TydkuD7j1t3ZSArLBVtGtn/W4ZaBac7B8O7HZAWeLU5O5KZ?=
- =?iso-8859-1?Q?eyKBRZEmhwpDJCsYCKJj1AGX8vhrhSoHObcXMZ24R3TKBwxerwqV9TYLfR?=
- =?iso-8859-1?Q?FL9Y/7uAy/Bq0UblOOI2ddcth6iait5rzQh5o+7EyBLO9dlZ3Q5TO86cEv?=
- =?iso-8859-1?Q?lO8OpdjRZTt+cwEP3ig0hKCEnzZQ67M7KKLOIbF3RVnkRl1VWLHmx/bD2U?=
- =?iso-8859-1?Q?+QsWduPU+c6EEtgvXj5XmVfw/alssFUwoXE2UydkMLXTJtJAPTl4aFh/Ov?=
- =?iso-8859-1?Q?eoWIEbv0PecX4JpHPGeqRVll4qWvhgQ8KlNnEMf/nW7s5flYgrxcEWvlvK?=
- =?iso-8859-1?Q?6VZdBPoQwHzGOqnJUuE38sG2M1SDJJFr9uwVT3zEWJBVmV9rfkOahVa3FB?=
- =?iso-8859-1?Q?waz0XxsuvL3FoFoIRlxP7zKeHKexTiUovqRcPi9E6d78eEeI2z9JhAeVQQ?=
- =?iso-8859-1?Q?8h4I8QaOeEyJTEChAvOITX/33PyDZ5JVVVU3BItHhneU+j5FQNJRj2RTYO?=
- =?iso-8859-1?Q?wFycmtvfB2FEzSRaeiByLlfswZYCUehqhu0SVoqijdvbCdCCxhAjyRlVNB?=
- =?iso-8859-1?Q?YltQGHNbD04UrdjQ+vk0aZemNucOejYrhzhhCEjd2KeGcjr8K4VUSIBHCM?=
- =?iso-8859-1?Q?jBqLxzxSACp32HjQ8hLc78BMFALIMtZpMAR2bk1mH6bkUidj/4AdBLzb28?=
- =?iso-8859-1?Q?aKCW2YfQbaiEoJ47Ts6HrPJCEWS9rP5W8j/TKr95T8Xb2AIjGc+/D17i0b?=
- =?iso-8859-1?Q?XVjsh1HEHONEfsWpYdbQHvBgPkJfEpCRWIBHzeU+djyMqoBJlaF4DgPgrw?=
- =?iso-8859-1?Q?NxX1GFYbWPJStCEza1ml7GLjoSnmZaCqFCnZYYP6h1gohF4fp4jSgU1xc/?=
- =?iso-8859-1?Q?qaendU5s5WlpNvcYbtDWbLWairI56i4enTAXaRkUufEkxZU3dKItaXhBWJ?=
- =?iso-8859-1?Q?oyeisJ4npGkxaMwtHuRtMqROdh0mWH6RaMXt1n398cf39EnJVHsw7lgygD?=
- =?iso-8859-1?Q?NcrnSQ/a6QLu1xbEd/CcFaOcEXIG9n3A18Vqvaxc0QnznFDJ2VoH8iK5kT?=
- =?iso-8859-1?Q?jrzxKWwqc29xWJ6tJz82NSzBu8H37hwLZmvtAYSLqEH06fPM7wtUBYNJ8v?=
- =?iso-8859-1?Q?eb+pFsanE/DseR71ejn3U/cAFvd1eWUX5tNEBPmQ6j9FWRPqgszV3yqJTa?=
- =?iso-8859-1?Q?XMS61/f0sr1xRKhWdp03YF10iX92p7un7LhaMFZ+Cjb0R7mVORq/ahHb/9?=
- =?iso-8859-1?Q?NLxegOKpexhhFG03vO+s/dZpsF6ZslCaFBTpkxELnipuafN3WM9WgYtMBq?=
- =?iso-8859-1?Q?Qkecflv/zJsOein5JgiDJFCZtl7vNwiX5AFJUQ=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?2X+eT5NGI/2pB3SRvc31R4EWCgTys8N5yGsVBa4O3I242u3YMLJ5B+Vwer?=
- =?iso-8859-1?Q?3rVXem6P/tE9EmlWISEl0KDDo477U59nMs0/sPhv91u4athw5z/ymkb18B?=
- =?iso-8859-1?Q?d47BPILdwj5cIajyIoE1Vws3FRPZuIUO929yLPSA2EXfGNKHj0SQk2Q1HD?=
- =?iso-8859-1?Q?bxp7d5QEHw2xeMt+LErjqf8sDyuXhc8lJxmzAl3tSpbMdfKdSOwCnAFmD8?=
- =?iso-8859-1?Q?JWc/7eVkwysarQuk+mtsYnF7ShWG9j35sYmPntgKfvwQ9iW1hY3Yxq+VLx?=
- =?iso-8859-1?Q?KPErNpLh4odN/YK6c3FgWSjnAS4zPdgyvHAJ5sPsiImIhJGUP2SG+4oD6g?=
- =?iso-8859-1?Q?1e75NQFACi6MczASlFbk7I3/XI7pl5gjXQa9R+7gR5SRJg0Rgp8PNvngZx?=
- =?iso-8859-1?Q?XXIVgBxWmG3NjTK1/749t3Xi5JcFyPqlqvathIVOmMvalTJCGENyonPrOD?=
- =?iso-8859-1?Q?FdhYC0+A1TqQJI0YyTvYe49xz0gSI/1ZVHwZGF31GrpS2UHJ3I7iJ2/+SO?=
- =?iso-8859-1?Q?penSfyuhkFy7kQet0DAuII37WPqIlfDMg165zkAHeU1X0TKROkdpTPNUlq?=
- =?iso-8859-1?Q?BPrmq1Lcj2nUYWs1NCqMIRNEEYA87QuTIzCc/EoPirpvRIAgQ0q5zW4MoJ?=
- =?iso-8859-1?Q?vUnl2Dnkwd8yCDOZA+cHLd92x6NFWKAEhfSYx3Us8Wq1zwM68FusMPKWxB?=
- =?iso-8859-1?Q?Oml+Pja9Yyk0hcjCWJGz4HDr5KTW2ac4OIPT0daBaaNQdeBhIHxsBaRZG6?=
- =?iso-8859-1?Q?yQ2ES3iHQVXjP01I7KsSHcejzhJxZZNRUNka1ApyalwxAIXDvcAYZ8iF7l?=
- =?iso-8859-1?Q?r00tUKSC6B93cX8ZUSEPEOpS/Z3WA8xlKszsoBOv39O79LQOnyuQMSVCx5?=
- =?iso-8859-1?Q?LhPxbHKzjppZR+Yx5+B1XJq3zQfMRkfabuYOyh0qRNhvuyf4BE/87ROY1b?=
- =?iso-8859-1?Q?/Q1wbVtYW6YN6YW6FDMYrr/iBZZsEfcIHhu3hJdgmlGAThO5LgmDSI0/b1?=
- =?iso-8859-1?Q?tZogsl4W5uC6TQW1kTs0mSDgQoh4oHr7mqozIeRMhcfliBervyidIT1OWD?=
- =?iso-8859-1?Q?9aaKvcEjvlYLKpeMqqFiZWM0MAO1fXBIIntNtHXJS+HPKj1yWJMTjjkldo?=
- =?iso-8859-1?Q?uDZRTqt7aQi1ChS2bOelf2Ao4J2F0sc+whnlxF8KEbIieEztQxtGETJhfV?=
- =?iso-8859-1?Q?xYaZ5DPnKJEsjZGih6Mm5IkGvg7L/aw2lc9EUD8rmIacYqZSkyvUoHUKWK?=
- =?iso-8859-1?Q?Xf2Gpf66dTHjiQ9zbT6kRXmBtviIYhjltetcaiaHRxq4X8uask8kM8kH1A?=
- =?iso-8859-1?Q?M5ASp4ft3L4gC4+G80/XXZALIrUzEfxMR4sg5vCMb4mP3c6z2mgd26O3Ww?=
- =?iso-8859-1?Q?+vhLu6Jur7HJLBkDbLUCirvGit42BtFk6Q8Q9oTgyiJY7JyVKHDMsEztcc?=
- =?iso-8859-1?Q?G/rawMZG2E2JaUv8Zq7dG5+L1FSPSmtVN3c9+d/dl92upSvAB5gRsKqsYJ?=
- =?iso-8859-1?Q?TrWlPBUs2C8Nvp+g6I9Q9B0gfx5y7RiXIjLf2jknhWsRdRUcEhNs2O6xuX?=
- =?iso-8859-1?Q?bjinHLBCUK7pNrXkzpbe+/pqBBqHviK1MFmTW6cnT/oOe4BtToZpxoCWvS?=
- =?iso-8859-1?Q?5PECLuMCLThnK/u5IUzwOyrqjDKDyvThrfK3D6vTAFezKXacMnACEoBg?=
- =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2debb5b3-f71d-465c-051e-08de2eb8fe6e
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2025 20:02:01.7621
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dt2fiaMkhQEKy3JZGkxgwpQbOk3SWPq+rUDLU5k6365ZHr/nwHb8d1emqBH4k1b8W5H9ZVMrlYseeX08vOnOBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8455
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Authority-Info: v=2.4 cv=GZcaXAXL c=1 sm=1 tr=0 ts=692a18e5 cx=c_apl:c_pps
+ a=qkKslKyYc0ctBTeLUVfTFg==:117 a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=JppZAXPjAAAA:8
+ a=NOBzSAs92IVqpsMOjEYA:9 a=CjuIK1q_8ugA:10 a=mTXuAFqUwmiQvsSFmwXH:22
+X-Proofpoint-GUID: eps24FaQP60NvChDfBJq6RmhON4DBXoI
+X-Proofpoint-ORIG-GUID: eps24FaQP60NvChDfBJq6RmhON4DBXoI
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI4MDE2MiBTYWx0ZWRfX7zvocRf8gi7y
+ UhVN7QNcmNbx1r1hOaOxE0BAKCDI9mu4QluUwQ+6b8mcUeWRcMNWJDk7r32JEGSAOhiD8jMMV0f
+ Li+znkGvgQksNI8QdNi+jCSfYxZFriBWvWFy9Z56KEd/4fPxlcgH9cDgDvgcgymGPrAoiJsEOm1
+ JrjTWFRqOPNS8/WBWohPebvH8T6ME8LN7u6eE1hUiocRqFsf38Ie88ULNZTnq6O42nVUmclhVKf
+ PgRMIlC0lVJsOHiyjmqUx1j/yRmYVnqr9XE9BbZaoUG/a1tOZf6hRfJz/nBltzBqfBu5PK6lWn+
+ TQ2iMFxTLuFXab6uhhf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-28_08,2025-11-27_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ adultscore=0 suspectscore=0 malwarescore=0 mlxlogscore=455 mlxscore=0
+ phishscore=0 clxscore=1030 spamscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511280162
+X-JNJ: AAAAAAABlprquTxX7hrEAvBIAIGDgdfO2lFmKDx5JtNQOoxd5XhPH+MetnDtkriXOPvArn3Ptj4SYbYW/O8WBzSoI2BYKVfonof08fMR5Ku1/U4NyeBj832kgzN9LwLjAJBp7dv65P4ex31Kb//z7sRQAZpvhD74l9uB1UMbanMgZNc3WmN2xdFcoJPQ+gnq8TJzegyp00/1gr6uYRtjYAOC8emeh3Skw19jF6olpQo48RlAVphMuEQ0luKSV4eUaPhBvwRa5pHdGMggZVZEO3J62hASqZ4oOkFxzUNE6vM5SNAfe/uZR1f3onYCun/lobIrBkZwrvHS/J/BiiJSlcjhySk9H/MOaoY/sdSUyiir0ELrP9ZTzbrqEJDXGRmGJJUVOPvOZBqT4MXYn/ibL/MdT60Ih8tFHG6RJ1vWRnSJnB/cO2PQRGweaCgwoAEP2UODdrtCaXIwXY5GF+qvtzlr+tpUqHmb6K+b/iWK/p9vYwwSUhpAj8SRe9/2neeuLMgjq46UcksAKoV1fBx2XXJ3poBOmG5wAFZmJnbLgeGyAYiDiLnqSkgbZQxth2iWGp8Tz75QQLLBhJojx/qx8p2tLLK9fIDMxECVuv49K+4+4onFBCukofR8tirLmZY3nWRMCA5c2Pq39jYoc/9ibjP8cmKMfAlhgbE=
 
-On Thu, Nov 27, 2025 at 11:16:26AM +0100, Philipp Stanner wrote:
-> On Thu, 2025-11-27 at 11:01 +0100, Christian König wrote:
-> > On 11/27/25 10:16, Philipp Stanner wrote:
-> > > On Thu, 2025-11-27 at 09:11 +0100, Christian König wrote:
-> > > > On 11/26/25 17:55, Matthew Brost wrote:
-> > > > > On Wed, Nov 26, 2025 at 08:41:27AM -0800, Matthew Brost wrote:
-> > > > > > On Wed, Nov 26, 2025 at 02:19:10PM +0100, Philipp Stanner wrote:
-> > > > > > > The dma_fence framework checks at many places whether the signaled flag
-> > > > > > > of a fence is already set. The code can be simplified and made more
-> > > > > > > readable by providing a helper function for that.
-> > > > > > > 
-> > > > > > > Add dma_fence_test_signaled_flag(), which only checks whether a fence is
-> > > > > > > signaled. Use it internally.
-> > > > > > > 
-> > > > > > > Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> > > > > > > Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> > > > > > 
-> > > > > > This is a nice cleanp:
-> > > > > > Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-> > > > > > 
-> > > > > > > ---
-> > > > > > >  drivers/dma-buf/dma-fence.c | 19 +++++++++----------
-> > > > > > >  include/linux/dma-fence.h   | 24 ++++++++++++++++++++++--
-> > > > > > >  2 files changed, 31 insertions(+), 12 deletions(-)
-> > > > > > > 
-> > > > > > > diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
-> > > > > > > index 39e6f93dc310..25117a906846 100644
-> > > > > > > --- a/drivers/dma-buf/dma-fence.c
-> > > > > > > +++ b/drivers/dma-buf/dma-fence.c
-> > > > > > > @@ -372,8 +372,7 @@ int dma_fence_signal_timestamp_locked(struct dma_fence *fence,
-> > > > > > >  
-> > > > > > >  	lockdep_assert_held(fence->lock);
-> > > > > > >  
-> > > > > > > -	if (unlikely(test_and_set_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
-> > > > > > > -				      &fence->flags)))
-> > > > > 
-> > > > > I need to read a little better, I think this change isn't quite right.
-> > > > > The original code is test and set, the updated code is test only (i.e.,
-> > > > > you are missing the set step). So maybe just leave this line as is.
-> > > > 
-> > > > Oh, good point! I've totally missed that as well.
-> > > 
-> > > Oh dear; I also just saw it when opening the mail client ._.
-> > > 
-> > > > 
-> > > > But that means that this patch set hasn't even been smoke tested.
-> > > 
-> > > I've built it and did some basic testing with my Nouveau system. Any
-> > > suggestions? Do you have a CI that one can trigger?
+Change `page_align()` to return `Option<usize>` to allow validation
+of the provided `addr` value. This ensures that any value that is
+within one `PAGE_SIZE` of `usize::MAX` will not panic, and instead
+returns `None` to indicate overflow.
 
-Intel's Xe list will trigger CI - you are authorized to trigger that
-flow. Navigate to Intel's list patchworks [1], find your series and see
-the results. It is noisy, so also certainly to say failure but I let you
-know if anything is actually a problem.
+Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
+---
+Changes in v2:
+- Reworded commit message to follow the imperative form.
+- Expanded the documentation to explain the `Some` and `None` return cases.
+- Added a period at the end of the documentation comment.
+- Link to v1 (and v2): https://lore.kernel.org/rust-for-linux/aSheTh-T1oroAUHR@fedora/T/#t
 
-Matt
+Changs in v3:
+- Fix documentation layout for better rustdoc rendering
+- Add doc examples and doctest
+- Ensure function is always inlined for performance optimisation
+- Restructure function so that early return is the None case and the
+  default is the happy path.
 
-[1] https://patchwork.freedesktop.org/project/intel-xe/series/?ordering=-last_updated
+ rust/kernel/page.rs | 34 ++++++++++++++++++++++++++++------
+ 1 file changed, 28 insertions(+), 6 deletions(-)
 
-> > 
-> > DMA-buf has CONFIG_DMABUF_SELFTESTS which should be able to catch things like that.
-> > 
-> > But even running Nouveau should have found this since basically no fence at would signal any more.
-> 
-> They will signal and execute their callbacks, but all is_signaled()
-> checks are then broken.
-> 
-> Thx for the feedback, I'll be more careful with changes like those and
-> test more extensively.
-> 
-> P.
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 432fc0297d4a..0409749e4ab8 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -27,12 +27,34 @@
+
+ /// Round up the given number to the next multiple of [`PAGE_SIZE`].
+ ///
+-/// It is incorrect to pass an address where the next multiple of [`PAGE_SIZE`] doesn't fit in a
+-/// [`usize`].
+-pub const fn page_align(addr: usize) -> usize {
+-    // Parentheses around `PAGE_SIZE - 1` to avoid triggering overflow sanitizers in the wrong
+-    // cases.
+-    (addr + (PAGE_SIZE - 1)) & PAGE_MASK
++/// Returns a page aligned [`usize`] in cases where the value can be aligned. Otherwise, returns `None`
++/// if the aligned size will overflow a [`usize`].
++/// # Examples
++///
++/// Assuming a `PAGE_SIZE` of 4096 (0x1000):
++///
++/// ```rust
++/// use kernel::page::{page_align, PAGE_SIZE};
++/// // Case 1: Already aligned
++/// assert_eq!(page_align(0x0), Some(0x0));
++/// assert_eq!(page_align(0x1000), Some(0x1000));
++///
++/// // Case 2: Needs alignment up
++/// assert_eq!(page_align(0x1), Some(0x1000));
++/// assert_eq!(page_align(0x1001), Some(0x2000));
++///
++/// // Case 3: Requested address causes overflow (returns None)
++/// // The check asserts that None is returned when a value is requested within one PAGE_SIZE of
++/// usize::MAX.
++/// let overflow_addr = usize::MAX - (PAGE_SIZE / 2);
++/// assert_eq!(page_align(overflow_addr), None);
++/// ```
++#[inline(always)]
++pub const fn page_align(addr: usize) -> Option<usize> {
++    let Some(sum) = addr.checked_add(PAGE_SIZE - 1) else {
++        return None;
++    };
++    Some(sum & PAGE_MASK)
+ }
+
+ /// Representation of a non-owning reference to a [`Page`].
+
+base-commit: 765e56e41a5af2d456ddda6cbd617b9d3295ab4e
+--
+2.51.1
