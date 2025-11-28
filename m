@@ -1,189 +1,222 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58A931984C
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 12:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE85328629
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 12:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764332708; cv=none; b=vAniS1nzNUsHlE2MbQN17BHW+VifXeXJ/OnqEi+TPGq4JtuP+asSR/t8jLZ4EmBuc1ubkjHXLnO2q9sPUAiY8XDWeeQDsgdEwR7d14PljEFM1WU0J/cBenej4FDovxKBhmKpRLNGa8LvhqlrkszDfr9kdNdv2xAl3cQY4ul5C+U=
+	t=1764332868; cv=none; b=oKPyqHpZQHTo0zrk8f4fi+7WO6JqzbWn/pkFyC5glgzodIGsRPtZ/DZoXDY9cVtFx7BtFYv45vAoy2xsGS0q6tnUfK8tT0t0z1PMK1pXxN5jVpdFeURV+S/2JI5cMj6huP5KBiXrbDo7OhDqT5sOF3E6AJO2dIxeqnmpi1BCxD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764332708; c=relaxed/simple;
-	bh=Uy+CKLSmjfEonlIIdz7ylya5/5TSAc/WK9H2XEkj/dA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Yyt+6Ik4f/sgtm/QFMA1s1AAEskpfPEw/rj58yFThXKAcSiWP9BsJT/SJhsQzlIpp9x5Ud3KA0yKUmx/ob/qGHc/8GSABCt0BUjIhOv5WdkT8DI2gM9fvc7UmGOOmht51M9AndEMXj0LvXC0WF2CAaU9GwcOMZN4v7s/Nabaq1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=G3BW2x9R; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1764332868; c=relaxed/simple;
+	bh=7CxlEtFNw6Z9MWHmL142nU6wGKtsXjNk6kzJMyfvIVM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=DyJVWoeRHVdo/pEAnlowR43Jd4An0WNeRuvIB7gIRtuTDd7Ofp11KwIBsTjAqXj+prASeZE4l6RAhh/5XYsrjndB4w7489uqMP/BY3K/Xm8LvBOIlcCTV8KhXE0gJiUj9kZkP4l4xc8JlxV2ffq+EDqYc1CzGIyJa9FiLB8UzGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cfxdZqMP; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="G3BW2x9R"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 276F8240106
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 13:25:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1764332705; bh=ygIWY5afUFzvHpwhYDklQ/i75zkS+Wu119xSFraOeSM=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=G3BW2x9RGG0O1+QELbAPhvd5tLXbzhCMYEk9H90d9IbnKjn5o/spNFfJfJ/TsDGDH
-	 jOFHR5UiUzcb28hF/N6YN118SL/+ltyT4Zu67aNMhO7K0ddiaSxGmR6yIf3rKBeXur
-	 LrU0sO4NKHdZY9R8qouSdFYd94LMsly3W64uhIQtyBLTIXFjQr+HlFmJQPQ8xwMSYx
-	 YpfIpYuJ6JpApbzJpF29pF1pW+A0E8v40jPhzcl3/JX05ZPq+74WDveWHZU6QWzASZ
-	 yCUHhWsjCG+JTYYY0w9ccpb2+asUAhmS0YwkJp2F8IOroMqXm/PxIM06m6uNeUE3WM
-	 syvRiCaOSgMwQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4dHsv16jN3z6tn4;
-	Fri, 28 Nov 2025 13:25:01 +0100 (CET)
-Message-ID: <8711d40496e0e12e3efcd7fd9e11bdea6de68c6d.camel@posteo.de>
-Subject: Re: [PATCH] Move pwm registration into pwm::Chip::new
-From: Markus Probst <markus.probst@posteo.de>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei	
- <wefu@redhat.com>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
- <ukleinek@kernel.org>,  Michal Wilczynski <m.wilczynski@samsung.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich	 <dakr@kernel.org>,
- linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Date: Fri, 28 Nov 2025 12:25:04 +0000
-In-Reply-To: <aSlrVLT92kmazgyh@google.com>
-References: <20251127-pwm_safe_register-v1-1-d22d0ed068ac@posteo.de>
-	 <aSlrVLT92kmazgyh@google.com>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- 66sLA9g==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-OiyZeEsFRz6+aj2Addkj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cfxdZqMP"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-429c521cf2aso1538422f8f.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 04:27:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764332865; x=1764937665; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2GrxI73IH1zb/tqoEbLnFEuvsfEsSAbtldPLm3aL+m8=;
+        b=cfxdZqMP5YuJulD+lP9SKOfNzZ5I3WPesFmJNA+bNlKKGIqOXeeb3IPsPRGSmTj0z5
+         4IBYwYrn7tnsswXvmQGz4Xp3g4FPROQ1nADleC2o6m+Xxb4r7vl4y4eFuOa9WHng5rv2
+         zWYJuMD5PPEJaeDgYCTE69xvPC/KtunKlorrj9IA2TL8UiYoD1U30QRbuiUoIb6z8MRz
+         xIGOXxdvEzO1edrKKfKMY9YIg7OOOqT3r/UAegg/iuP3AQ93LVQCHMP0400a8SVMYqiZ
+         0DK9Pq63iiz+kZfmhEAIawxkGJ0nkgYx3/+POG+wKl58Qzvn7igaXb2fMUZW1OD5yZ7Y
+         qYeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764332865; x=1764937665;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2GrxI73IH1zb/tqoEbLnFEuvsfEsSAbtldPLm3aL+m8=;
+        b=fB168egwf0+s6IsE7RqdEJnUd2WaZi/0PO1ZJ0lzc82eWhyfkm+hxgA0sBmCGSfCq2
+         Gc7PL0FJN6lD7olYErQ90/0CmKt7ltk2PxUfXH+cbECqjusgK/aOHiugmSY98rP8kqOP
+         EKF8fiT/kXyHCxJ5iV5IlUtzC/jLNOHIm2AuTNtxVY1WjaAm84+Z/+RShmJF9u/23OYQ
+         JA5m+5y+iR3BUVC4p5x6DIR7ZQgyiG7uXeMu4y33jg3aPfLvP+P81zJhJhoVBioZCxu7
+         /JnL09S6IK/ceWkGfgl9YnEyu0DE9UaiWgKUG7V4DCVBbAk17mP77UNkUPM2fE2m9S1K
+         mp5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWgjIjFYVNTlO1OEy7qqbV/A0GGkS2C/JA4AwJxo8HYy4bClk4ktjCTYuKTGgPa3ejoPryg8pNStndga+6tGw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJTebjUcROS6+iSEFC8ni5JK+ITgZw84U8I/2zHHIis/XJrRz4
+	0SPGnXKZOhKGHmhb/iwHbvaxd4FLLOA7jlzyBNdW6w4J7mv0fPvdUp9Fi+trsOdG0NvQlVORCt1
+	zuoC84y9F0rPsRrnIVw==
+X-Google-Smtp-Source: AGHT+IFrzQE9ShhEH+O/A+uGYvOpMCgB1tV6y31i20Qgk7dHyiQa17sa62hxuRWbws3zq/cXPMCUdX8VRnAvG8o=
+X-Received: from wrqj16.prod.google.com ([2002:a5d:4490:0:b0:42b:b28a:6747])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2410:b0:42b:396e:2817 with SMTP id ffacd0b85a97d-42cc1d199cdmr28747644f8f.40.1764332865299;
+ Fri, 28 Nov 2025 04:27:45 -0800 (PST)
+Date: Fri, 28 Nov 2025 12:27:44 +0000
+In-Reply-To: <12d99a54-e111-4877-b8cd-cb1e58cd6d30@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Mime-Version: 1.0
+References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com> <12d99a54-e111-4877-b8cd-cb1e58cd6d30@arm.com>
+Message-ID: <aSmVQDMXqwc8ctDf@google.com>
+Subject: Re: [PATCH v3] io: add io_pgtable abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
 
+On Fri, Nov 28, 2025 at 11:56:17AM +0000, Robin Murphy wrote:
+> On 2025-11-12 10:15 am, Alice Ryhl wrote:
+> > From: Asahi Lina <lina+kernel@asahilina.net>
+> > 
+> > This will be used by the Tyr driver to create and modify the page table
+> > of each address space on the GPU. Each time a mapping gets created or
+> > removed by userspace, Tyr will call into GPUVM, which will figure out
+> > which calls to map_pages and unmap_pages are required to map the data in
+> > question in the page table so that the GPU may access those pages when
+> > using that address space.
+> > 
+> > The Rust type wraps the struct using a raw pointer rather than the usual
+> > Opaque+ARef approach because Opaque+ARef requires the target type to be
+> > refcounted.
+> > 
+> > Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+> > Co-Developed-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
---=-OiyZeEsFRz6+aj2Addkj
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> > +/// Protection flags used with IOMMU mappings.
+> > +pub mod prot {
+> > +    /// Read access.
+> > +    pub const READ: u32 = bindings::IOMMU_READ;
+> > +    /// Write access.
+> > +    pub const WRITE: u32 = bindings::IOMMU_WRITE;
+> > +    /// Request cache coherency.
+> > +    pub const CACHE: u32 = bindings::IOMMU_CACHE;
+> > +    /// Request no-execute permission.
+> > +    pub const NOEXEC: u32 = bindings::IOMMU_NOEXEC;
+> > +    /// MMIO peripheral mapping.
+> > +    pub const MMIO: u32 = bindings::IOMMU_MMIO;
+> > +    /// Privileged mapping.
+> > +    pub const PRIV: u32 = bindings::IOMMU_PRIV;
+> 
+> Nit: probably best to call this PRIVILEGED from day 1 for clarity - some day
+> we may eventually get round to renaming the C symbol too, especially if we
+> revisit the notion of "private" mappings (that's still on my ideas list...)
 
-On Fri, 2025-11-28 at 09:28 +0000, Alice Ryhl wrote:
-> On Thu, Nov 27, 2025 at 05:15:06PM +0000, Markus Probst wrote:
-> > The `pwm::Registration::register` function provides no guarantee that t=
-he
-> > function isn't called twice with the same pwm chip, which is considered
-> > unsafe.
-> >=20
-> > Add the code responsible for the registration into `pwm::Chip::new`. Th=
-e
-> > registration will happen before the driver gets access to the refcounte=
-d
-> > pwm chip and can therefore guarantee that the registration isn't called
-> > twice on the same pwm chip.
-> >=20
-> > Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> > ---
-> > This patch provides the additional guarantee that the pwm chip doesn't
-> > get registered twice.
-> >=20
-> > The following changes were made:
-> > - change the visibility of `pwm::Registration` to private
-> > - remove the `pwm::Registration::register` function
-> > - add code for registering the pwm chip in `pwm::Chip::new`
-> > - add Send + Sync bounds to `PwmOps`
-> >=20
-> > Note that I wasn't able to test this patch, due to the lack of hardware=
-.
->=20
-> Overall looks reasonable, but I have one question:
->=20
-> > @@ -654,50 +668,23 @@ unsafe fn dec_ref(obj: NonNull<Chip<T>>) {
-> >  // structure's state is managed and synchronized by the kernel's devic=
-e model
-> >  // and PWM core locking mechanisms. Therefore, it is safe to move the =
-`Chip`
-> >  // wrapper (and the pointer it contains) across threads.
-> > -unsafe impl<T: PwmOps + Send> Send for Chip<T> {}
-> > +unsafe impl<T: PwmOps> Send for Chip<T> {}
-> > =20
-> >  // SAFETY: It is safe for multiple threads to have shared access (`&Ch=
-ip`) because
-> >  // the `Chip` data is immutable from the Rust side without holding the=
- appropriate
-> >  // kernel locks, which the C core is responsible for. Any interior mut=
-ability is
-> >  // handled and synchronized by the C kernel code.
-> > -unsafe impl<T: PwmOps + Sync> Sync for Chip<T> {}
-> > +unsafe impl<T: PwmOps> Sync for Chip<T> {}
->=20
-> Why was this changed?
+Sure, will rename.
 
-Registration::register required PwmOps to be Send + Sync.
-Prior to this change, Chip::new didn't require it for PwmOps. Meaning
-it was possible to allocate a new Chip with a PwmOps that is not Send +
-Sync. As there was no use for it and it isn't possible anymore to
-allocate a new Chip without registering it, I added Send + Sync as
-trait dependency (see 1. hunk of rust/kernel/pwm.rs in the patch).
+> > +    /// Map a physically contiguous range of pages of the same size.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// * This page table must not contain any mapping that overlaps with the mapping created by
+> > +    ///   this call.
+> 
+> As mentioned this isn't necessarily true of io-pgtable itself, but since
+> you've not included QUIRK_NO_WARN in the abstraction then it's fair if this
+> layer wants to be a little stricter toward Rust users.
 
-Because PwmOps now implied Send + Sync, it wasn't necessary anymore to
-have the additional bounds there.
+Assuming that we don't allow QUICK_NO_WARN, would you say that it's
+precise as-is?
 
-Thanks
-- Markus Probst
+> > +    /// * If this page table is live, then the caller must ensure that it's okay to access the
+> > +    ///   physical address being mapped for the duration in which it is mapped.
+> > +    #[inline]
+> > +    pub unsafe fn map_pages(
+> > +        &self,
+> > +        iova: usize,
+> > +        paddr: PhysAddr,
+> > +        pgsize: usize,
+> > +        pgcount: usize,
+> > +        prot: u32,
+> > +        flags: alloc::Flags,
+> > +    ) -> Result<usize> {
+> > +        let mut mapped: usize = 0;
+> > +
+> > +        // SAFETY: The `map_pages` function in `io_pgtable_ops` is never null.
+> > +        let map_pages = unsafe { (*self.raw_ops()).map_pages.unwrap_unchecked() };
+> > +
+> > +        // SAFETY: The safety requirements of this method are sufficient to call `map_pages`.
+> > +        to_result(unsafe {
+> > +            (map_pages)(
+> > +                self.raw_ops(),
+> > +                iova,
+> > +                paddr,
+> > +                pgsize,
+> > +                pgcount,
+> > +                prot as i32,
+> > +                flags.as_raw(),
+> > +                &mut mapped,
+> > +            )
+> > +        })?;
+> > +
+> > +        Ok(mapped)
+> 
+> Just to double-check since I'm a bit unclear on the Rust semantics, this can
+> correctly reflect all 4 outcomes back to the caller, right? I.e.:
+> 
+> - no error, mapped == pgcount * pgsize (success)
+> - no error, mapped < pgcount * pgsize (call again with the remainder)
+> - error, mapped > 0 (probably unmap that bit, unless clever trickery where
+> an error was expected)
+> - error, mapped == 0 (nothing was done, straightforward failure)
+> 
+> (the only case not permitted is "no error, mapped == 0" - failure to make
+> any progress must always be an error)
+> 
+> Alternatively you might want to consider encapsulating the partial-mapping
+> handling in this layer as well - in the C code that's done at the level of
+> the IOMMU API calls that io-pgtable-using IOMMU drivers are merely passing
+> through, hence why panfrost/panthor have to open-code their own equivalents,
+> but there's no particular reason to follow the *exact* same pattern here.
 
->=20
-> Alice
+Ah, no this signature does not reflect all of those cases. The return
+type is Result<usize>, which corresponds to:
 
---=-OiyZeEsFRz6+aj2Addkj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+struct my_return_type {
+    bool success;
+    union {
+        size_t ok;
+	int err; // an errno
+    }
+};
 
------BEGIN PGP SIGNATURE-----
+We need a different signature if it's possible to have mapped != 0 when
+returning an error.
 
-iQIzBAABCAAdFiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmkplJkACgkQNHYf+Oet
-Q9KJhQ//clYqiwDcWI4RaF0O+C3T96TqVmJsruXKfEMATKWDSFg5P8EJecH/Vgd8
-Jdk5FN8xjMy/+ZCP7rW8AZCUOi5vrL8d8EJQNTS0EXuG04UUUIgUPwqNXX9LxdG4
-2m4ZUqXN34HCxs2ojwN0irOogL9Bt0JlWwWDOm0fzvSEe1NCrtx4A7LOOUgdqplg
-vjQbxdR5qJ+/0bgGFk42h+nstvz1s05vOHJrMFcPSlvapzCL72jhnR2f/a6/1rSd
-VEZPuxp+K6VZ72YpFgG6SZDeRKgtKz8LSuKTSr11qXAL4UkKZXGpU9KSuD3eBLBD
-ERYNZ0ovq/m7JSv8q7tBSzgX5bGyw0FHnLmuar2CmYh/WNZ5FqagfF75sLgYnoVU
-+DFo3d26+O4V5QYGyu32iPEhpnoKMHvbm8EcLdjzepZ8tAgxX7f4daEPYJz1qyA0
-wxTrNY2qE6DHJfDe9pBXqj2giLjCyEKjY1cLbM8gV9k4aDEHxFTvufclosRuptWN
-n/IITBOMrdzD7cMnaZcs/6OBk+pQa1QDyqYMy4fqBVX3ZdhnkbzkDM6Owhd4oMuI
-MQJE3IPzullpRwAr+/8rtuSqikDuEMgXdCHrjv8kD2qeeAkgoodkwV1tpG+bs6Qi
-0vfjW+HbeawQw9wpFpiBb74tSzRpcf31cmi5ScevMCGHrQ6QYAw=
-=oy2y
------END PGP SIGNATURE-----
+> > +    }
+> > +
+> > +    /// Unmap a range of virtually contiguous pages of the same size.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// This page table must contain a mapping at `iova` that consists of exactly `pgcount` pages
+> > +    /// of size `pgsize`.
+> 
+> Again, the underlying requirement here is only that pgsize * pgcount
+> represents the IOVA range of one or more consecutive ranges previously
+> mapped, i.e.:
+> 
+> map(0, 4KB * 256);
+> map(1MB, 4KB * 256);
+> unmap(0, 2MB * 1);
+> 
+> is legal, since it's generally impractical for callers to know and keep
+> track of the *exact* structure of a given pagetable. In this case there
+> isn't really any good reason to try to be stricter.
 
---=-OiyZeEsFRz6+aj2Addkj--
+How about this wording?
+
+This page table must contain one or more consecutive mappings starting
+at `iova` whose total size is `pgcount*pgsize`.
+
+Alice
