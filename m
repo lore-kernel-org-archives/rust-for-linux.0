@@ -1,222 +1,224 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010005.outbound.protection.outlook.com [40.93.198.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE85328629
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 12:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764332868; cv=none; b=oKPyqHpZQHTo0zrk8f4fi+7WO6JqzbWn/pkFyC5glgzodIGsRPtZ/DZoXDY9cVtFx7BtFYv45vAoy2xsGS0q6tnUfK8tT0t0z1PMK1pXxN5jVpdFeURV+S/2JI5cMj6huP5KBiXrbDo7OhDqT5sOF3E6AJO2dIxeqnmpi1BCxD8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764332868; c=relaxed/simple;
-	bh=7CxlEtFNw6Z9MWHmL142nU6wGKtsXjNk6kzJMyfvIVM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DyJVWoeRHVdo/pEAnlowR43Jd4An0WNeRuvIB7gIRtuTDd7Ofp11KwIBsTjAqXj+prASeZE4l6RAhh/5XYsrjndB4w7489uqMP/BY3K/Xm8LvBOIlcCTV8KhXE0gJiUj9kZkP4l4xc8JlxV2ffq+EDqYc1CzGIyJa9FiLB8UzGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cfxdZqMP; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1F51E32A2
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 13:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764336930; cv=fail; b=uAL9o+b9a3ncewDH75sIwFj+ljtBJORNFuapFSGMNqQpPFbT7IIu0v/4huPD+u8WKrXXT6ME4TS7MpC3rXC3kUiV9pFyRnhojXBQRGYMijoJltHU8yt5AToWCVOs3iJGUg0az4Wo99Kd8WHPfNaO4HuLIJArAEGhVP49JMPoOHo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764336930; c=relaxed/simple;
+	bh=z1YqMgEk6s2Uy5TzM7H7rvgOMlZ8pWyh1TbHH9UJ7ic=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=csOdTxRbpnpBBMRhBe4XJPiCZfD/9rPYff3Fl6lC5k6RLgd6Q89nzXeGqXULAsFIE128cd8EITtqaBkk9CJf/xVvt2wCCYi3bN37MH0K/wKyXM9Y1WPrYNa6QsccVvmmdBnF9ZDz3OPyTndBiRviuYCryQmiv8HaoUOLlKI7dgM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VVZVsAhp; arc=fail smtp.client-ip=40.93.198.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cfxdZqMP"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-429c521cf2aso1538422f8f.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 04:27:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764332865; x=1764937665; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2GrxI73IH1zb/tqoEbLnFEuvsfEsSAbtldPLm3aL+m8=;
-        b=cfxdZqMP5YuJulD+lP9SKOfNzZ5I3WPesFmJNA+bNlKKGIqOXeeb3IPsPRGSmTj0z5
-         4IBYwYrn7tnsswXvmQGz4Xp3g4FPROQ1nADleC2o6m+Xxb4r7vl4y4eFuOa9WHng5rv2
-         zWYJuMD5PPEJaeDgYCTE69xvPC/KtunKlorrj9IA2TL8UiYoD1U30QRbuiUoIb6z8MRz
-         xIGOXxdvEzO1edrKKfKMY9YIg7OOOqT3r/UAegg/iuP3AQ93LVQCHMP0400a8SVMYqiZ
-         0DK9Pq63iiz+kZfmhEAIawxkGJ0nkgYx3/+POG+wKl58Qzvn7igaXb2fMUZW1OD5yZ7Y
-         qYeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764332865; x=1764937665;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2GrxI73IH1zb/tqoEbLnFEuvsfEsSAbtldPLm3aL+m8=;
-        b=fB168egwf0+s6IsE7RqdEJnUd2WaZi/0PO1ZJ0lzc82eWhyfkm+hxgA0sBmCGSfCq2
-         Gc7PL0FJN6lD7olYErQ90/0CmKt7ltk2PxUfXH+cbECqjusgK/aOHiugmSY98rP8kqOP
-         EKF8fiT/kXyHCxJ5iV5IlUtzC/jLNOHIm2AuTNtxVY1WjaAm84+Z/+RShmJF9u/23OYQ
-         JA5m+5y+iR3BUVC4p5x6DIR7ZQgyiG7uXeMu4y33jg3aPfLvP+P81zJhJhoVBioZCxu7
-         /JnL09S6IK/ceWkGfgl9YnEyu0DE9UaiWgKUG7V4DCVBbAk17mP77UNkUPM2fE2m9S1K
-         mp5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWgjIjFYVNTlO1OEy7qqbV/A0GGkS2C/JA4AwJxo8HYy4bClk4ktjCTYuKTGgPa3ejoPryg8pNStndga+6tGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJTebjUcROS6+iSEFC8ni5JK+ITgZw84U8I/2zHHIis/XJrRz4
-	0SPGnXKZOhKGHmhb/iwHbvaxd4FLLOA7jlzyBNdW6w4J7mv0fPvdUp9Fi+trsOdG0NvQlVORCt1
-	zuoC84y9F0rPsRrnIVw==
-X-Google-Smtp-Source: AGHT+IFrzQE9ShhEH+O/A+uGYvOpMCgB1tV6y31i20Qgk7dHyiQa17sa62hxuRWbws3zq/cXPMCUdX8VRnAvG8o=
-X-Received: from wrqj16.prod.google.com ([2002:a5d:4490:0:b0:42b:b28a:6747])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2410:b0:42b:396e:2817 with SMTP id ffacd0b85a97d-42cc1d199cdmr28747644f8f.40.1764332865299;
- Fri, 28 Nov 2025 04:27:45 -0800 (PST)
-Date: Fri, 28 Nov 2025 12:27:44 +0000
-In-Reply-To: <12d99a54-e111-4877-b8cd-cb1e58cd6d30@arm.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VVZVsAhp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L1/gLmsmG+fU61OX9T3gfpExHfyL0vpqJcoEv2Rfa1U1azqn//GXiUXV5rqdyvsu0GH8kSa7aPHyYkDvwGUtLkyBu5X7NGKaLhqKbS9JKJVXJ1hPWu2UEyWMrQq7kVK5m9yssW+OBNsLtbxf+Zm23Zu5WhzOYOwqFPEqxqCrAf5ctnHlhPdzVr0QkB7w8Uq5VX3HHCuwqRLsJVkNEBdosebaYZl+hcw2o0uMChUQt72NFUMHmdM8xK85hbvPNlxZ7/V4xZ7kFUyNGRjvEMR8ylIZwcm1cr4qk8/qri8HJPo+kcE8TiFRazFVyoHKj1g+L6M1K4J9BOnwyGkrxqGIUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iUiPBfK0MwnjsACSKtX8DQVOHVIo3v3E8Kg7skhvLig=;
+ b=TWRZoZ3+yW6wYF8KH9LspyvanGlTU97Ua2yxw35d/Q8dAzRjFPvMWcLcq4QLQgv0eQvUSkACj1vwWUkHY9F39lD0gAuyEx6F8bktoFMzw3OcRliuIG4vElvpcqF2MpuzgEPDptAQ8sbU4Y/dR4lar6llu2lW4XsHFU7OUShqDavs7RzGGdiHfiBI8U0T4YaNNOoHCPx926oUBPnPDNjvXkLr0raIjXnUxsLAxMRIz/S3runXq58MIKIruTOfVC5YF04IvGuUh+Zk6RlAeQBwRuiBCJ+hgnrWw/XiBcZZVsPTTQvI/S+ZBoTWtjaiSy3+v7gp7QmO9dZpQTpJ37cDAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iUiPBfK0MwnjsACSKtX8DQVOHVIo3v3E8Kg7skhvLig=;
+ b=VVZVsAhpFmJpFDInyY5CKI3j8hgSW0qCFlYJ25b5XjvYDVtSMsEk8b2l8Fp9AzWxTDnHsPXFd8xpu1srKBg+8+dwNXI0R1lVtE+QBg8Ihfh5jGaSzBbp4sUVpJff0XmaIwYD7dRKZqtBCzEMm2FYSctySGkzNHCvuYAIuUuvSBEGbxU0pIe+7KJVYLTTJIhWmxmpvhC54lng55Kybt19XTngcqNFvUsbcalleqaSVKaLKQrPKPEzUy3UsgBfy9Y7DVzdPOSmeuTVrt45irKZHDdapZNxiCPadMa7+Gwf2m099zRgszWpZIbu+JwpUNmC3Jsp2DkLNtbgwHvrfkaemw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by BN7PPFA42F4F89B.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6dd) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.16; Fri, 28 Nov
+ 2025 13:34:13 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9366.012; Fri, 28 Nov 2025
+ 13:34:13 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 28 Nov 2025 22:34:09 +0900
+Message-Id: <DEKD7RA5SYJ1.7RRBLFZ09X8W@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>
+Cc: "Brendan Shephard" <bshephar@bne-home.net>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>, <dakr@kernel.org>, <airlied@gmail.com>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] rust: Return Option from page_align and ensure no usize
+ overflow
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <aShM9CAyRPe2gYpK@fedora>
+ <DEJIRMFOO880.1V1IA1QDH9WQ0@nvidia.com> <aShdutWrmU2q7gUT@fedora>
+ <DEJWIFG5Y65B.17EZVKB63RUJ1@nvidia.com>
+ <CANiq72kiscT5euAUjcSzvxMzM9Hdj8aQGeUN_pVF-vHf3DhBuQ@mail.gmail.com>
+ <aSkzK4QDU6pN2GMS@fedora> <DEK4NFX9KS3U.38DNRG7ZMSZQJ@nvidia.com>
+ <CAH5fLggsmNd=3ezgK5A1k3YnO6ZHbJRhb0jsO0sR+ERChrewUw@mail.gmail.com>
+In-Reply-To: <CAH5fLggsmNd=3ezgK5A1k3YnO6ZHbJRhb0jsO0sR+ERChrewUw@mail.gmail.com>
+X-ClientProxiedBy: TYCP286CA0235.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c7::13) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com> <12d99a54-e111-4877-b8cd-cb1e58cd6d30@arm.com>
-Message-ID: <aSmVQDMXqwc8ctDf@google.com>
-Subject: Re: [PATCH v3] io: add io_pgtable abstraction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BN7PPFA42F4F89B:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9efdcf44-863f-4a59-3ab6-08de2e82d180
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bmhna1ZVbGVzbjZqWUhjNGt0UVVrbFF5TytzZEJCZUdvbENPWWtjclN2UnE1?=
+ =?utf-8?B?Rk9HN2ljWjFHOVllTVR3RFRRQlNaaDRxMGlnbGlta0FmeEI3eXZXTzNMSjd1?=
+ =?utf-8?B?bEJoZXFvNXB5c0Q2TnNkem1BUUFWSWNOMFpac3ZWYXFKcTQ4RjJIblJSdmZR?=
+ =?utf-8?B?ekROR2lsY2ZhTTAreDVXNzE1dWhudXB4SkhaRm1XdExONEp3dXQ4VGRFQVdn?=
+ =?utf-8?B?SXpEZzEvOFZjZFFiQSt1a0ZjMHF1UDFFZGpNNEYrSENSMmpZWmYzYVpCakJS?=
+ =?utf-8?B?MXE1MmFuU1VZa3JaYTBJZ2duQXQyRlZmTWdqS1Q4Z2FTWlI3UHRUaFdZVTIv?=
+ =?utf-8?B?M00yWUFkL1JBUDZkVk9RaWRnRlcxc3lGbEtNTlFGdCtuVk1hbG9UTXl0WjRr?=
+ =?utf-8?B?VHZPOHdEOXR3T1Q4SGZ4VExCTk45bFltUHpBSEtFcmNWUXlEZHB5NEdGZEFz?=
+ =?utf-8?B?emZEalN4QjcwN1AycFovVUY3WndOQ3B0K0VVNGlxenM4Zlo4dVUvVEFjV1VB?=
+ =?utf-8?B?a1owWExYcDlJUDVLV2REQm1obTd5NXljU1FUeWsvTHl4K0NiR0FUdEhWeXZ5?=
+ =?utf-8?B?UkE5Wk8zT0M5WTcrUmdFQVZsMGxDR05NbDdkRkdtYithRlM2KzQ4cWlVTDkr?=
+ =?utf-8?B?ZnFrMVdSakErOXFWYVhaK2Z3aVZZR1FhYTYwSVhuQ0xUTEZlM2xwZTdrRTNi?=
+ =?utf-8?B?dTBWR28wOVlKR0FzaXoyRVQvWGhKalVsaDBwc3hVLzRPSDVITVRuQmFiRndk?=
+ =?utf-8?B?a3U2dGxvS3NybjlDTDJaYVMxUXEyU010VWZabkRPNUhBa2dtMWU4YURJYksv?=
+ =?utf-8?B?dXBXeUo2OFZsbE04NE1NT09YMnBIelBVRjNYdWJIajF1Z01oMVpJbisrRGVP?=
+ =?utf-8?B?WktRQndCVXVOblhlUXdIRExxMUloajBVdFR2M2cyS1RTbHlxeG5acEtjY1Yw?=
+ =?utf-8?B?eE9rMEhPa09IVjhiaUIyVXpWcnlqekVRV1h5T09wUU1qeStLaTJtd0lrcmcw?=
+ =?utf-8?B?ZlJNS2FvUGorYzdlNGgzblh6VEF2cW5PNG1CTmZnRDd5RHVYUmQ0Z2pqYldY?=
+ =?utf-8?B?UmNPS01MRXlYeFIrS0lncUR2U25KcXlZK1ZjNVAycVgrWTBNbEkxNWxCSktm?=
+ =?utf-8?B?RHdZWDhMQ0tXdlVGYXdPei9RVlk1T3JMY3lkMjFmb0Q5eG94d0YwT3FoWmNq?=
+ =?utf-8?B?YmhPcllMQVBEVmlXdWJEMyt5SkU0ZlRVWG1RMVhITEFlMTg5SlZkZ3k4Yzds?=
+ =?utf-8?B?UHdVSStjRWxwS3U4UHhSd29IcWN5WG9zTTVhUjJBdUhNVmtVTk5YOElaakxP?=
+ =?utf-8?B?VVZiZ0Y4aXlocHdGL2hmTmlqK3hZRHhuNDd1LzdSUDRiV044N0pLRzZHNTJK?=
+ =?utf-8?B?VzRoQk14dUlRQUdNUmZZZjl0dlZtbG5BOEw1ellDWEpERWxNbWcvclJCeGx3?=
+ =?utf-8?B?MmtCdWdDNkFsczdoMTY4WnJYNHYvUnQxVEZmS2JJODlEUFVLSWlUdG8xVTlk?=
+ =?utf-8?B?Qm0zZTJpVjgwRTdVSllJZjRpZDdnWXpRSVZ0QWpTK3dxeWJJZkI5RmRGME9i?=
+ =?utf-8?B?eitsWThrbjRhL2NhSy9hYU9yS0h5UlVMQjhvSUVHR0VHNExUY29xQkw1REJu?=
+ =?utf-8?B?NWxwUm51TlBLVHRYZWhOWXh5WC9FYU4wcnNXTW1NQXF6aGFTM2tqa2M3RVpp?=
+ =?utf-8?B?WVJIWG1UN3A1c2R3MDJCZUhjS0lWcnFFRDF4ZzFIOUJkZlJqSVNqaEZGbUZt?=
+ =?utf-8?B?OWdmQW85K0dSTkxhNjVWemxPZ21DRHVzeFltRWdtM1BMdFZXUUwvcWFheEp3?=
+ =?utf-8?B?ZmYydGlKZVdSR29PN1ZSUGIrNWRxckNZajFKYm4rVEx1WDlqOGlKZ2JGWEtB?=
+ =?utf-8?B?NzZMTW9qeTdKd3ZKT1Vhdm44V0Z1TElrSDB3T2EvQnBjOUZsclZnaXFSQ1l2?=
+ =?utf-8?Q?D0f7vhttnbMtBbiWAi94UdO/BqI4gIgD?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U2tndGJ2ZTFITFpYbFNiVUZ2ODJNVEdtdC9wNGMxcWN1UDJIVEhOVHQyWVVy?=
+ =?utf-8?B?NFFmSURMSFIrSjJJaGVoSFgxM3NwYVR5UitjWTFzZHdDemFYYnEvTE5DL2o0?=
+ =?utf-8?B?akxNM1crbWZHT1BYekpmTGd5Mys3bFJzc3piV0NFVE0rUEE4K2JhTzZSN0M3?=
+ =?utf-8?B?YzhDSFdSUGxramFXb3hGdWxobVd2cXRtc3JyTE1mY0J6TG1CdVFhLzhWa2c4?=
+ =?utf-8?B?UFhHaTUvS2k4RktQdEE5dWllckVrL3FMKzdWWVV4OGtQbCtLRVN1cWt6MTlv?=
+ =?utf-8?B?MHZpbHFxVmZZcEhYMHM1aWE0Rktpek5RV2RFbmozZmszdTI3aWcwdnhkejlG?=
+ =?utf-8?B?NDl6VmhoczM2by9zQlh4VkExdk9TcUpSK1pvZUZCU1loL1ZPbnViMHM1M3NE?=
+ =?utf-8?B?ZHZlMFg2WXQ1Y2RqWWwyR2g5elVCZzh2VDV0NmJ6L29pS0FQTnhiNUY5cDNP?=
+ =?utf-8?B?MUtNd0xKU1ZCMzcvQmJzVXNRTDZsT1hib29vc0h5QzlOaFZ1ZUR5ZnlVbVFN?=
+ =?utf-8?B?RW9DTURGR0ZYYlUrQWUyZVlTNEIzbUVhaGprc1BFTjRrNG5tQmlHK1VQaUdS?=
+ =?utf-8?B?UnliUHJPWG80RUtsckk2L09OY2VIakt2dG1QYUlKU3V0SCtCYlU4MnoyYkc0?=
+ =?utf-8?B?dXQvVm9BTWZTajJjM21xWUFUanVhZjhSMlhmOXVPZmR3NkNGWVlBUmtubDQ3?=
+ =?utf-8?B?end0eFRidm9GU3IwNlFoNFdCUktqdFR3WDRjRVUveHQyT3o0cUM0aGYrM29H?=
+ =?utf-8?B?SGVzOTJIb1BLTTNrSmRvWmROM1orbW1WQm55ZnNjdURnT3MyREdBTkhxMmE3?=
+ =?utf-8?B?aWNjeFV3MVArbHIzZGEyT0ZYYlNTWS9kcTk0NXk2NGplVWoxdnQ1Ukp2SHRQ?=
+ =?utf-8?B?STFPR2NISHBuM1VvZk14UXJkVXNzOStCdi91dVBpT2gvUGxZclpWTXJVQVVG?=
+ =?utf-8?B?L1R3SDQxWERtVldqVmxIeXdJanRlaEpWWXFSc0wxSkcxc0JkWWtBb1JiaWdF?=
+ =?utf-8?B?eGtuNWNheWdHMlREUnVyQ1hzMnRGcTN1NmhFWHE1WisxalVvUTdpNGVaWHZK?=
+ =?utf-8?B?eTBSM1FRUE9JaWdwMFdTTkJDUktVd0dub3JjRHAxUWk5RytxMUdpZjdlaHJQ?=
+ =?utf-8?B?b05NdEVJZkVmWWxnK20rUStiVDBFekV4MlR2TjIvMzQzZllubS81SGYvelR2?=
+ =?utf-8?B?T2RtMmNnREROVjJ6anY5SnI1UGRsVDBMbEs2UzZWLzlvMlBjTE5oWmVqSXhT?=
+ =?utf-8?B?YXlNenlTaFhlV3BPUVpsVENGenZxWkFJTDF4ek51YVFLM0VGMnRCNUIxRTYw?=
+ =?utf-8?B?UURBMFhrM3JjTFBwSDhaUHFLbDZSMDljd1R4SWwwSGR4Y0Vma2dwV3hnZWRM?=
+ =?utf-8?B?eWYyVlpPdGdVZHV5RHpMbDBXWUVXRHNFTmQxUHZwV1QzTXBaQ25Ra2w4Y3Fx?=
+ =?utf-8?B?cU0yRy9MTW83SjU1NGExSUxZZFVOQTNxVkRlYnkxaFlyL0N1Z0liaEZvdHkw?=
+ =?utf-8?B?RlpuRlhrQlh3K1cvcXplYmV3ODA4djZseXhYOGZHN0JBVVBqbUlkUjNnS3lY?=
+ =?utf-8?B?NmQzQ1lhQlV4YmpubTlSSlZZSmluRXI3Qy9SUHVXU3gyWSsvd0JPd1lUdnRZ?=
+ =?utf-8?B?UzNKRmh3K3RnVEZqQ21Oc1V0UWhZNzdoNG9tWElOOVZZUWlHUHNobC8vQ29u?=
+ =?utf-8?B?U1R0eitRR3BkOFAzdnF0T09rVit0NDR2emkyeHFrVWtZSTZhemtYbHFwdGdV?=
+ =?utf-8?B?NFM2anpnWUlhWnlUUlVWc0hjcWZRMHJNMUhBTERpVUZ3QlpXcS9uQXZ4VzNY?=
+ =?utf-8?B?MmtaKzVKVVNtWjR3ZlVVTjFlY213VGhybnN5K0swMmt1QllNSzM3OVIvVmdH?=
+ =?utf-8?B?VXBXYmpuYnFsUjFMZjNhQUx4RTlMSS80bVhGUHQ1ZkEwSVM1dERPVHd0QlZu?=
+ =?utf-8?B?VmYxbldjK0J5ZEZEVlFKN0xSbXZwVUNHRWtaTlg5dkkvMit0N0hiNUkxSjRI?=
+ =?utf-8?B?RFgxUUlhZ2YzRzNWS29VNGNCYVRuRW0xclZsc0F0RjkxSVRIS1JmQkFmRDN3?=
+ =?utf-8?B?WUx3MGNCejJhZDRXN1hWdEpPRFhLUzZGR0xQN2FEelVydzZHZW1KSVBZTnIr?=
+ =?utf-8?B?NldYVTdFNFRMcVlVblJyKzZlMmxaQkdNcEg4aGZnMUtnb1BVMjdtckMwdXhk?=
+ =?utf-8?Q?tdVk61UVffN9fucrwqgnViPz6XJ4Hpk05UE5SRTXd7i2?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9efdcf44-863f-4a59-3ab6-08de2e82d180
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2025 13:34:13.0892
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QQ5t4moRjHfPjcDj8U85y2OuXF9hblsgk9NFEWEWT0kFYVX8mt9+YQXiYL/PRRb4rzK85DcIcHs3TRLjHjz8mw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFA42F4F89B
 
-On Fri, Nov 28, 2025 at 11:56:17AM +0000, Robin Murphy wrote:
-> On 2025-11-12 10:15 am, Alice Ryhl wrote:
-> > From: Asahi Lina <lina+kernel@asahilina.net>
-> > 
-> > This will be used by the Tyr driver to create and modify the page table
-> > of each address space on the GPU. Each time a mapping gets created or
-> > removed by userspace, Tyr will call into GPUVM, which will figure out
-> > which calls to map_pages and unmap_pages are required to map the data in
-> > question in the page table so that the GPU may access those pages when
-> > using that address space.
-> > 
-> > The Rust type wraps the struct using a raw pointer rather than the usual
-> > Opaque+ARef approach because Opaque+ARef requires the target type to be
-> > refcounted.
-> > 
-> > Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> > Co-Developed-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Fri Nov 28, 2025 at 6:09 PM JST, Alice Ryhl wrote:
+> On Fri, Nov 28, 2025 at 7:51=E2=80=AFAM Alexandre Courbot <acourbot@nvidi=
+a.com> wrote:
+>>
+>> On Fri Nov 28, 2025 at 2:29 PM JST, Brendan Shephard wrote:
+>> > On Fri, Nov 28, 2025 at 03:12:13AM +0100, Miguel Ojeda wrote:
+>> >> On Fri, Nov 28, 2025 at 1:29=E2=80=AFAM Alexandre Courbot <acourbot@n=
+vidia.com> wrote:
+>> >> >
+>> >> > Ah, indeed. In that case, can we make the if arms symmetric:
+>> >> >
+>> >> >     if let Some(sum) =3D addr.checked_add(PAGE_SIZE - 1) {
+>> >> >         Some(sum & PAGE_MASK);
+>> >> >     } else {
+>> >> >         None
+>> >> >     }
+>> >>
+>> >> Early return style makes the happy path less indented and is more
+>> >> consistent with the C side. However, here the happy case would be the
+>> >> indented case, so `let else` would be better:
+>> >>
+>> >>     let Some(sum) =3D addr.checked_add(PAGE_SIZE - 1) else {
+>> >>         return None;
+>> >>     };
+>> >>
+>> >>     Some(sum & PAGE_MASK)
+>> >>
+>> >> Cheers,
+>> >> Miguel
+>> >>
+>> >
+>> > A wildcard entrant to this conversation. We could do a match instead i=
+f
+>> > you all might prefer that?
+>> >
+>> > match addr.checked_add(PAGE_SIZE - 1) {
+>> >   Some(v) =3D> Some(v & PAGE_MASK),
+>> >   None =3D> None,
+>> > }
+>>
+>> Clippy will likely suggest to turn this into an `if { } else { }`, which
+>> puts us back to where we come from. Miguel's suggestion of returning
+>> early in the failure path looks good to me as well.
+>
+> How about using the question mark operator?
+>
+> Some(addr.checked_add(PAGE_SIZE - 1)? & PAGE_MASK)
 
-> > +/// Protection flags used with IOMMU mappings.
-> > +pub mod prot {
-> > +    /// Read access.
-> > +    pub const READ: u32 = bindings::IOMMU_READ;
-> > +    /// Write access.
-> > +    pub const WRITE: u32 = bindings::IOMMU_WRITE;
-> > +    /// Request cache coherency.
-> > +    pub const CACHE: u32 = bindings::IOMMU_CACHE;
-> > +    /// Request no-execute permission.
-> > +    pub const NOEXEC: u32 = bindings::IOMMU_NOEXEC;
-> > +    /// MMIO peripheral mapping.
-> > +    pub const MMIO: u32 = bindings::IOMMU_MMIO;
-> > +    /// Privileged mapping.
-> > +    pub const PRIV: u32 = bindings::IOMMU_PRIV;
-> 
-> Nit: probably best to call this PRIVILEGED from day 1 for clarity - some day
-> we may eventually get round to renaming the C symbol too, especially if we
-> revisit the notion of "private" mappings (that's still on my ideas list...)
+That's unfortunately not usable yet in const contexts:
 
-Sure, will rename.
+    error: `Try` is not yet stable as a const trait
+      --> ../rust/kernel/page.rs:35:10
+      |
+    35 |     Some(addr.checked_add(PAGE_SIZE - 1)? & PAGE_MASK)
+      |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      |
+    help: add `#![feature(const_try)]` to the crate attributes to enable
 
-> > +    /// Map a physically contiguous range of pages of the same size.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// * This page table must not contain any mapping that overlaps with the mapping created by
-> > +    ///   this call.
-> 
-> As mentioned this isn't necessarily true of io-pgtable itself, but since
-> you've not included QUIRK_NO_WARN in the abstraction then it's fair if this
-> layer wants to be a little stricter toward Rust users.
-
-Assuming that we don't allow QUICK_NO_WARN, would you say that it's
-precise as-is?
-
-> > +    /// * If this page table is live, then the caller must ensure that it's okay to access the
-> > +    ///   physical address being mapped for the duration in which it is mapped.
-> > +    #[inline]
-> > +    pub unsafe fn map_pages(
-> > +        &self,
-> > +        iova: usize,
-> > +        paddr: PhysAddr,
-> > +        pgsize: usize,
-> > +        pgcount: usize,
-> > +        prot: u32,
-> > +        flags: alloc::Flags,
-> > +    ) -> Result<usize> {
-> > +        let mut mapped: usize = 0;
-> > +
-> > +        // SAFETY: The `map_pages` function in `io_pgtable_ops` is never null.
-> > +        let map_pages = unsafe { (*self.raw_ops()).map_pages.unwrap_unchecked() };
-> > +
-> > +        // SAFETY: The safety requirements of this method are sufficient to call `map_pages`.
-> > +        to_result(unsafe {
-> > +            (map_pages)(
-> > +                self.raw_ops(),
-> > +                iova,
-> > +                paddr,
-> > +                pgsize,
-> > +                pgcount,
-> > +                prot as i32,
-> > +                flags.as_raw(),
-> > +                &mut mapped,
-> > +            )
-> > +        })?;
-> > +
-> > +        Ok(mapped)
-> 
-> Just to double-check since I'm a bit unclear on the Rust semantics, this can
-> correctly reflect all 4 outcomes back to the caller, right? I.e.:
-> 
-> - no error, mapped == pgcount * pgsize (success)
-> - no error, mapped < pgcount * pgsize (call again with the remainder)
-> - error, mapped > 0 (probably unmap that bit, unless clever trickery where
-> an error was expected)
-> - error, mapped == 0 (nothing was done, straightforward failure)
-> 
-> (the only case not permitted is "no error, mapped == 0" - failure to make
-> any progress must always be an error)
-> 
-> Alternatively you might want to consider encapsulating the partial-mapping
-> handling in this layer as well - in the C code that's done at the level of
-> the IOMMU API calls that io-pgtable-using IOMMU drivers are merely passing
-> through, hence why panfrost/panthor have to open-code their own equivalents,
-> but there's no particular reason to follow the *exact* same pattern here.
-
-Ah, no this signature does not reflect all of those cases. The return
-type is Result<usize>, which corresponds to:
-
-struct my_return_type {
-    bool success;
-    union {
-        size_t ok;
-	int err; // an errno
-    }
-};
-
-We need a different signature if it's possible to have mapped != 0 when
-returning an error.
-
-> > +    }
-> > +
-> > +    /// Unmap a range of virtually contiguous pages of the same size.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// This page table must contain a mapping at `iova` that consists of exactly `pgcount` pages
-> > +    /// of size `pgsize`.
-> 
-> Again, the underlying requirement here is only that pgsize * pgcount
-> represents the IOVA range of one or more consecutive ranges previously
-> mapped, i.e.:
-> 
-> map(0, 4KB * 256);
-> map(1MB, 4KB * 256);
-> unmap(0, 2MB * 1);
-> 
-> is legal, since it's generally impractical for callers to know and keep
-> track of the *exact* structure of a given pagetable. In this case there
-> isn't really any good reason to try to be stricter.
-
-How about this wording?
-
-This page table must contain one or more consecutive mappings starting
-at `iova` whose total size is `pgcount*pgsize`.
-
-Alice
