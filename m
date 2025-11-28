@@ -1,133 +1,186 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DDB264A92
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 16:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C81285406;
+	Fri, 28 Nov 2025 16:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764347034; cv=none; b=bLnv8rrraTzO1Nnsj6yAMwMCtOT2zaNFTIyjoHAzVQyjqY8Uz0HrYb/RaFP7FLft+9HXuXI02k5q2N06u29HwKgw5Tv4zT+KLhjAfBSlo4M/BhWo4e91yiVd6k15hYqq2zNFf3XhdGdX01tSjP2YfCM5R3XKvI0pBV7/5rN1zNk=
+	t=1764348487; cv=none; b=Mnu6Is9h9JVlq0rrJzEOBcjbm7Q9IrIcd2RzQPcFGWbPH16KVCt+73ORPqEP4q33674B0rNg76eFbk6eJcSax0oFxPcCYwPX7j0R59Xd5ohxzSpyu8ofOD07QFzDZcc0D3/RpYJfKglujsOyuj7BivssrdeIHU3/CpnvK3LbwxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764347034; c=relaxed/simple;
-	bh=8AJG5yBQKWcDE55dMkXjua1XYUKJh+EXVL9l65F7nDo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qcBpUyRnwfXbekZc3rEfwaK45fpMWrNllqEcCNj+XUZQzE+zb+zVEepnWbxuFkcXkUnRWCFVQs4FZBCJXlzKnrj5/ZY+0mYA0suy3hbnOQtGIpHZzRwYs68iDlYgcp7r3O8Nnyewczut7yoAK4TX1bDvJnUXS0lLCkimUUYBRMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V9Fs65e4; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V9Fs65e4"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3438d4ae152so2175296a91.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 08:23:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764347032; x=1764951832; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DYqWf7Ls1zY40ncijRlKULYV9gZmN8aGNLfyhjOpiow=;
-        b=V9Fs65e4SKP+a3uiyWJiwjtuPZ+PIpUsMTVgFmIACgyoblqFvYyhdFKpbcHZ1Do1ao
-         4xZLTVTXSjjiYyLADP1B/6h1UsuyzxC36xUqIfu0NoyCOx2NgVZe7WIh5eqANq0eNE2z
-         YPrXaXvChovVM3lmOpvaoN/wVFeu4U2M2WX2X+iAouSlkOCJ5DGCgXQI4lml3TtKJIZt
-         Bno7XzwHDcV1tr4SzF0IDf6MetyhUOk13U2HH6wsXXYEp+oGkqt0q4hkrUm772rb5J8M
-         LNWjMB+VJXPQYYrCy3u0YXkGs9YtQiams42gig6qxz9iJBlzm6rUDPCRbXY95fRp5TUR
-         NRmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764347032; x=1764951832;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DYqWf7Ls1zY40ncijRlKULYV9gZmN8aGNLfyhjOpiow=;
-        b=PNgtTNKpqWKuPsiiGUX+Br2O1w8sK+qvC+OCmdyZ6wBILLA3TvrULTTDEzh/dfeieD
-         N8UAaalTu9BktGdA0KvVzNS1tEdJymkImj4tnWBmVDLeDc2auU4AydyXR7b7aCHubjfq
-         j5+fV56J9hiRHU821xcm/ZXOj0/1hHOooevrktRwH/G+WpYk1oYRib1gR0+raoLRaLpx
-         Kq4TAI1xyjtNutC/9a64uwkPytJ/m+TbFkvbQp79D10fZwHCajk26rvXVZgEgAGMZmOT
-         1Qli7DY2fjOJoApOLYAqMv1D6xiQfKuGUrhArfjr0+1/YpQpkJqricBqxK9CUdadrX7Q
-         QbXA==
-X-Forwarded-Encrypted: i=1; AJvYcCVIb66khp2scNL6ReNW3zKaeEMxcUuSfl3xDmkpg9mfFCY9AzQST7rgKO8fGpNCgvJa+xN1zTppute3Wf71/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpfWwteo+hgLtPoGBt22V/f224DTcty6wo4DUu4evukCNHj9ux
-	08TuQoozqRf98a9OaOMpwPPM7qkA7mVU8pSmI9FIiKOw8wf3Xt8gUMuP
-X-Gm-Gg: ASbGncuFOUlj0jSH/FF+VDStHDH8D2ZUuVBVc3icYnMtTkvCdaAM9cfptyzrgIP28G0
-	EfKzDaH40khNZmc9qdo2ved+1baste1nk0Qh3409lV4wY0Cru/X0NtAk7SSMUoLOd9D2NSu4rdN
-	UJrzwEy+pFIvtVMIcB4qgU6vMv4235awsg3C4KtJgxAuWuqc1CXYpFhk+IfzbgyXXYqpKmgoPei
-	AYu+LkK3MPXWKj4YzCmqbZuOtD4PiHI88HYr6FDWkBpOC5vj8BI6B/tJtqd3iP18RtFXMPKB3H7
-	TrsiHKHm+UyQFBm0q1Ck8tp0MSvffhmX2GzuGRKMoo5paQnEC4Fu40aZ0UIfl38F18ppf7GHZhT
-	ePlnldPpr8fvsg6Vj4t1a4GE4Nd9VVuiDDsldNqGQLeTTvY8owHsOnljPve/iW38NVeCzaD/VRA
-	9H0autuLLx8BY6seAkXZCZeks9wj8fyYTccI9XlXjpMnSDyoQomkOaUWZ4zdm/hKNb3QKt3JYOB
-	RE=
-X-Google-Smtp-Source: AGHT+IH0A0s5mTjz9DmmYHjnCO3MTihjYmffYdYW00NMAmeSgGizWYLIMeWLhrh/KzSycZ+Knn6LuA==
-X-Received: by 2002:a17:90b:17d1:b0:313:1c7b:fc62 with SMTP id 98e67ed59e1d1-34733f2d167mr25371515a91.22.1764347031995;
-        Fri, 28 Nov 2025 08:23:51 -0800 (PST)
-Received: from atharv-HP-Pavilion-x360-2-in-1-Laptop-14-ek1xxx.. ([103.216.213.160])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3477b732e5dsm5218978a91.10.2025.11.28.08.23.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 08:23:51 -0800 (PST)
-From: Atharv Dubey <atharvd440@gmail.com>
-To: arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Cc: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Atharv Dubey <atharvd440@gmail.com>
-Subject: [PATCH] rust: miscdevice: use `pin_init::zeroed()` for C type initialization
-Date: Fri, 28 Nov 2025 21:53:37 +0530
-Message-ID: <20251128162337.12082-1-atharvd440@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1764348487; c=relaxed/simple;
+	bh=yhqyFj9IjCjd45jA0GmNd2OPcFWbGwSFUuAzV/OuujU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fupwM4rAbDrERaM9iPxHuLhSSALN5M92ZqsjyCsiTwF2khb+MZtOhZEbvSItF4hrB9FhjoyGlLrlRMmtb/MPnKchPHxIDmBXnnsPKxUJzOKMCsME0FQXtULZzZuKDkDwZL7uMgDXQ/7gfvdXiYkb87WMcrpxYWPsM2cAFPFR+10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD438176A;
+	Fri, 28 Nov 2025 08:47:51 -0800 (PST)
+Received: from [10.57.89.189] (unknown [10.57.89.189])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9FBA33F73B;
+	Fri, 28 Nov 2025 08:47:55 -0800 (PST)
+Message-ID: <c8229530-ab87-4b51-8f2b-6199a01095b3@arm.com>
+Date: Fri, 28 Nov 2025 16:47:52 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] io: add io_pgtable abstraction
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Joerg Roedel <joro@8bytes.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
+References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
+ <12d99a54-e111-4877-b8cd-cb1e58cd6d30@arm.com> <aSmVQDMXqwc8ctDf@google.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <aSmVQDMXqwc8ctDf@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Replace manual zero-initialization using
-`MaybeUninit::zeroed().assume_init()` with `pin_init::zeroed()`.
-The `pin_init` helper provides a safer and clearer API for
-zero-initializing C structs without requiring an `unsafe` block.
+On 2025-11-28 12:27 pm, Alice Ryhl wrote:
+[...]
+>>> +    /// Map a physically contiguous range of pages of the same size.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// * This page table must not contain any mapping that overlaps with the mapping created by
+>>> +    ///   this call.
+>>
+>> As mentioned this isn't necessarily true of io-pgtable itself, but since
+>> you've not included QUIRK_NO_WARN in the abstraction then it's fair if this
+>> layer wants to be a little stricter toward Rust users.
+> 
+> Assuming that we don't allow QUICK_NO_WARN, would you say that it's
+> precise as-is?
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1189
-Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
----
- rust/kernel/miscdevice.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+As an assumption of use for the Rust API, like I say it's fine - it's 
+still not really "unsafe" if a caller did try an overlapping mapping; 
+the call will still fail gracefully and accurately, it's just it will 
+also fire a WARN_ON() since ARM_64_LPAE_S1 without 
+IO_PGTABLE_QUIRK_NO_WARN considers this indicative of a usage error or 
+race in the caller.
 
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index d698cddcb4a5..e168e9da8f4a 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -20,7 +20,7 @@
-     seq_file::SeqFile,
-     types::{ForeignOwnable, Opaque},
- };
--use core::{marker::PhantomData, mem::MaybeUninit, pin::Pin};
-+use core::{marker::PhantomData, pin::Pin};
- 
- /// Options for creating a misc device.
- #[derive(Copy, Clone)]
-@@ -33,7 +33,7 @@ impl MiscDeviceOptions {
-     /// Create a raw `struct miscdev` ready for registration.
-     pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
-         // SAFETY: All zeros is valid for this C type.
--        let mut result: bindings::miscdevice = unsafe { MaybeUninit::zeroed().assume_init() };
-+        let mut result: bindings::miscdevice = pin_init::zeroed();
-         result.minor = bindings::MISC_DYNAMIC_MINOR as ffi::c_int;
-         result.name = crate::str::as_char_ptr_in_const_context(self.name);
-         result.fops = MiscdeviceVTable::<T>::build();
-@@ -421,7 +421,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-             None
-         },
-         // SAFETY: All zeros is a valid value for `bindings::file_operations`.
--        ..unsafe { MaybeUninit::zeroed().assume_init() }
-+        ..pin_init::zeroed()
-     };
- 
-     const fn build() -> &'static bindings::file_operations {
--- 
-2.43.0
+If we do end up wanting to support more opportunistic and/or 
+userspace-controlled mappings by Rust drivers in future then we can 
+relax this expectation as appropriate.
 
+>>> +    /// * If this page table is live, then the caller must ensure that it's okay to access the
+>>> +    ///   physical address being mapped for the duration in which it is mapped.
+>>> +    #[inline]
+>>> +    pub unsafe fn map_pages(
+>>> +        &self,
+>>> +        iova: usize,
+>>> +        paddr: PhysAddr,
+>>> +        pgsize: usize,
+>>> +        pgcount: usize,
+>>> +        prot: u32,
+>>> +        flags: alloc::Flags,
+>>> +    ) -> Result<usize> {
+>>> +        let mut mapped: usize = 0;
+>>> +
+>>> +        // SAFETY: The `map_pages` function in `io_pgtable_ops` is never null.
+>>> +        let map_pages = unsafe { (*self.raw_ops()).map_pages.unwrap_unchecked() };
+>>> +
+>>> +        // SAFETY: The safety requirements of this method are sufficient to call `map_pages`.
+>>> +        to_result(unsafe {
+>>> +            (map_pages)(
+>>> +                self.raw_ops(),
+>>> +                iova,
+>>> +                paddr,
+>>> +                pgsize,
+>>> +                pgcount,
+>>> +                prot as i32,
+>>> +                flags.as_raw(),
+>>> +                &mut mapped,
+>>> +            )
+>>> +        })?;
+>>> +
+>>> +        Ok(mapped)
+>>
+>> Just to double-check since I'm a bit unclear on the Rust semantics, this can
+>> correctly reflect all 4 outcomes back to the caller, right? I.e.:
+>>
+>> - no error, mapped == pgcount * pgsize (success)
+>> - no error, mapped < pgcount * pgsize (call again with the remainder)
+>> - error, mapped > 0 (probably unmap that bit, unless clever trickery where
+>> an error was expected)
+>> - error, mapped == 0 (nothing was done, straightforward failure)
+>>
+>> (the only case not permitted is "no error, mapped == 0" - failure to make
+>> any progress must always be an error)
+>>
+>> Alternatively you might want to consider encapsulating the partial-mapping
+>> handling in this layer as well - in the C code that's done at the level of
+>> the IOMMU API calls that io-pgtable-using IOMMU drivers are merely passing
+>> through, hence why panfrost/panthor have to open-code their own equivalents,
+>> but there's no particular reason to follow the *exact* same pattern here.
+> 
+> Ah, no this signature does not reflect all of those cases. The return
+> type is Result<usize>, which corresponds to:
+> 
+> struct my_return_type {
+>      bool success;
+>      union {
+>          size_t ok;
+> 	int err; // an errno
+>      }
+> };
+> 
+> We need a different signature if it's possible to have mapped != 0 when
+> returning an error.
+
+Aha, thanks for clarifying - indeed this is not the common "value or 
+error" case, it is two (almost) orthogonal return values. However if 
+we're not permitting callers to try to do anything clever with -EEXIST 
+then it might make sense to just embed the inevitable cleanup-on-failure 
+boilerplate here anyway (even if we still leave retry-on-partial-success 
+to the caller).
+
+Note that it does appear to be the case that io-pgtable-arm in its 
+current state won't actually do this, since it happens to handle all its 
+error return cases before any leaf PTEs are touched and "mapped" is 
+updated, but the abstraction layer shouldn't assume that in general 
+since other implementations like io-pgtable-arm-v7s definitely *can* 
+fail with a partial mapping.
+
+>>> +    }
+>>> +
+>>> +    /// Unmap a range of virtually contiguous pages of the same size.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// This page table must contain a mapping at `iova` that consists of exactly `pgcount` pages
+>>> +    /// of size `pgsize`.
+>>
+>> Again, the underlying requirement here is only that pgsize * pgcount
+>> represents the IOVA range of one or more consecutive ranges previously
+>> mapped, i.e.:
+>>
+>> map(0, 4KB * 256);
+>> map(1MB, 4KB * 256);
+>> unmap(0, 2MB * 1);
+>>
+>> is legal, since it's generally impractical for callers to know and keep
+>> track of the *exact* structure of a given pagetable. In this case there
+>> isn't really any good reason to try to be stricter.
+> 
+> How about this wording?
+> 
+> This page table must contain one or more consecutive mappings starting
+> at `iova` whose total size is `pgcount*pgsize`.
+
+Yes, that's a nice way to put it.
+
+Thanks,
+Robin.
