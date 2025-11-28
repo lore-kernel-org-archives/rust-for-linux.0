@@ -1,196 +1,413 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010070.outbound.protection.outlook.com [52.101.56.70])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E3C23E32D;
-	Fri, 28 Nov 2025 18:04:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECC525487C;
+	Fri, 28 Nov 2025 18:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764353063; cv=fail; b=BW4Vk0sLiiVkF1uCpAGR0rvTx84sHyww3CshBmMaNwxyemZ8HGWTukro8P/orWiqXw2uI+987Uh10gdhy9TfRjM30A1ytPe0QfrqU5Fx7Cr/n+lnqPEOU1DoRDchgBRVR6U+LXe8ahhbzDdj/VwXuOrtPexcVnfAwwV19nId4pI=
+	t=1764353290; cv=pass; b=ngelhNR13B89nik0NWSzZiVeIPJ56+7kODg/TU5l8yw7T6qgw/7abTY0XXIEjjieEhKEqEWssPDBVPV60MYkoKN/EmEOw6Lu+YHJHd/xtQYk8I0GTcEMjuJHZBUSgPrTnfGXSEIbDbpVo/u1Hsygw5P85TjfpqRuVKKNogJntxE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764353063; c=relaxed/simple;
-	bh=PxBh25GXW5p4AyGSxQ2HuIuBvszUtUO0pkdqeiD0t70=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=URbjQcQKcwmZC7O011gyDSJHwqfl+Lro5jA5tmYuoCOchjb4VWu3/NMPFXkQ1mgWLcYNQmuaSUMn4CnP2moFxl339NAQjHN9NzIe63nHKlGcp5CaKG6BE+h1sAppGY3B/5YGAMlsBO1sceay+VSuGrI80e/aQkHRKLiLOCbCVZo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eYcwBYWE; arc=fail smtp.client-ip=52.101.56.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1764353290; c=relaxed/simple;
+	bh=1IOmn5zMIOoJIKH2+9kJqRMZHEuUrVDmT9SeQuZ9Qho=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Te8C9L/pGwJ+pLcNXM2bPElfV67YOBTOu1bF8w5hEvrj3fPwuiINGwIvWJIE7XumHAHLSeQMlz/k6YqbybiGvGkq3aFq7RaV2zXWMbYk3PE6cBP0Whv+yD82CZghPm/mO1ZRxsSzCbjumpUTprlxNyACJY3TU0c+RtPC0FmLNZs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=cQMWT3gX; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eYcwBYWE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HN3tAFOM1eqMHPHE2a04sVruuviR1ZWsFIdHz3fa/WMY9aPui7y5tlvWZGPsMFfTBVKYIYgb+UkVAf1X8oC8+2GaBF9l5Yol/EutoQTQJyn0uBWPo1pokLyWn2nmJvIwITs6xECgRKUwb7JeGUnRRKlbACirN5W00XqhSJbTSp6n8173rM7ezLmVhRwB2H5JO+G9G0ZTFjnn6UnWy2AE56RJNRf/mhbVW+zpVVLyq9vvBv+lg+ypZgP4ne54xysZT2aSGwN5yOT+MAGEkeDW8pGeIsNb5cpNGUxBxeClpipRaEpEidLP57xLgmex5lrC/2A/HszjNWsznh4HG1hujA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1Hs2NNbE1oe0+1cpWPKFalHgFyh/qkXaJn97F3/f8Yw=;
- b=Kmj1UWfMYS4v8tqrfjLQczRvsHskWRRX7Qn7DFjGR76w5WMC3pIqjwXi0cNBHd+9nrXGZK49rlmedVU0mtq2w7mBNa77RW4XriaB2rIfko206jc6uRxHjnSb3Cbm1Tyls18KIvRKhfXdMLgbQDgYdNSUQKyi3mXD2XNru42fUz+3tRqSZST0l7LP3PXw7/+DX505yDM2UisjGJILPJRq6TkcxCBfOwNsMO98JxJkm1oZmvffamnQHPqldzryHw4rPXXYFlEFEIY5p1Q/vPiPCwx7/wv1nZ16gttRklPIE5U7XVLYIGkBtCAZkntGo3JhD71o9Stvr5Erav9hJN+eaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1Hs2NNbE1oe0+1cpWPKFalHgFyh/qkXaJn97F3/f8Yw=;
- b=eYcwBYWEuEBDTBxL4VjpsoiI9EmYNHXfkNdVUb+fYuKV08U5l6hhgyjVLJjDyo1l4Zp0KWxTrgLRMfHmEpwC2gvcKRWYCxJvWepz3N+vfiU/hjlRelPn2/3GrCDPjVZHpNHRgWsYllF4ryXTRtkf53xOTQo4J9QurwRa+Kw4bqcBShBFoNbxg7lOOZgf9pnyz5hixdWZIieLCvFWyRDRFixC8bgnpnBFYJhTELY4NQ0uU3bbdCipdgaJ8ukO1HYMSQgyxVMRXwvKWegUvC1VdAdGXi0vc22ba+oLm8DuF39HHxEYjLHqa4M6z20O+oDHCgCXK/O2x/g1rqkujyhsLA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com (2603:10b6:208:c1::17)
- by MW4PR12MB6753.namprd12.prod.outlook.com (2603:10b6:303:1ec::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.11; Fri, 28 Nov
- 2025 18:02:56 +0000
-Received: from MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b]) by MN2PR12MB3613.namprd12.prod.outlook.com
- ([fe80::1b3b:64f5:9211:608b%4]) with mapi id 15.20.9366.012; Fri, 28 Nov 2025
- 18:02:56 +0000
-Date: Fri, 28 Nov 2025 14:02:55 -0400
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v3] io: add io_pgtable abstraction
-Message-ID: <20251128180255.GA836877@nvidia.com>
-References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
-X-ClientProxiedBy: MN2PR11CA0030.namprd11.prod.outlook.com
- (2603:10b6:208:23b::35) To MN2PR12MB3613.namprd12.prod.outlook.com
- (2603:10b6:208:c1::17)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="cQMWT3gX"
+ARC-Seal: i=1; a=rsa-sha256; t=1764353224; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=RtG3ndtV6UjdVmNEugxfkY/hNqTZyTalZN9NIiBwE13LjiiQGrfVvqMIlCMsp2cR2P2V3BZjxj7axPKgJYr0fDdbSPxN1GTBWASZjGJdnONZS/yezjkw7I+//rihzgbrikAiSqC0HZUafMyQak5Jd2CE5YoCDUpLUmhT/Bwk/ls=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1764353224; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=7hCtVdIpYmvpIaG2Tepwl9t2OZhg+JztbnabjHdsDXw=; 
+	b=j1uXW3P5csnn5xBO8uGG/CYg16oq3me8gSQnLQlVJw5JE02U+XwW4CcPu0JMcCgNqtIU2mo2h22ckClb0Jn1u9EElgTUDqT6AtpOVux93CVzTAVQxFiCCkw700f5K+85rR3/6OM9haHQvh01rQ+nxQr11SX9m5R4Brfuh/mGa0Q=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764353224;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=7hCtVdIpYmvpIaG2Tepwl9t2OZhg+JztbnabjHdsDXw=;
+	b=cQMWT3gX69SgMPgVmoZ3O2F61xD0U8uLT41OSthjMpSgkT6ymH/aampfZQsduSSJ
+	Mnh+iUhoZu+90ceDRcdZMCKNINIP8yBhJvbThj8X8Y41Uz621+skz9GV68ZLyGGmayr
+	QO5jhfvm8In7Rn6Yhul0L9K3CuiAYR5Tg8wuvLZg=
+Received: by mx.zohomail.com with SMTPS id 1764353222335519.628984308173;
+	Fri, 28 Nov 2025 10:07:02 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3613:EE_|MW4PR12MB6753:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11140b22-b33a-45c1-aa0c-08de2ea85ba4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?c29vs0XkMZBbMbfkrAtndd9U3x/fQBJpXt2aGtMSYJJRIiCe95YFdYdcDlqj?=
- =?us-ascii?Q?iA+BamUdFyOnfaWAjok5fjP4qA9KOKBEnnkF+KFIUfOTF+Z47N+wPgKDYTi1?=
- =?us-ascii?Q?0n5ZJDcnVdFQTeo6ey6GET9pZPuz9AQSGuSptj4D1l4Dhlpf4c5ZypJfhx9P?=
- =?us-ascii?Q?8fMbJk6ZxNx30btUHt0xI6lDdR5EntIJeEfIJ66xUP567tnVjB7y0T+UG5rk?=
- =?us-ascii?Q?jFE5mka9i9QIB80/Xfz39Q343W/XPpz+WiMibjwn2Rtz7hKKNrQxBr11RNwh?=
- =?us-ascii?Q?IM/UV3Z0VF5afBoisZ0S1VoVp2NEFJY4He/egLbBXj9AuwSd0TD/8e+87vHv?=
- =?us-ascii?Q?3XV4NiRQwtfq7f0WsH8CFLg5EkNZK0zjX1eDFkFh0pM2xmds1WgodeQTlZAT?=
- =?us-ascii?Q?bRrHpr/jtPhxe92TE2eBpDBzyZJUX5Q9DQ0bonjsBd4/woxqUrnLsgya5fie?=
- =?us-ascii?Q?7gLyOo6uRe8gFI1XGVnaAtd5BLbCNYVbnFLSHi+f8oIF9pnPkNUAhbXfQvTF?=
- =?us-ascii?Q?Sc8E4dz8/vGEwg286lUvYnt11wBjgJzn5YWcGNWsHEXKznE+H4R91hgINy+8?=
- =?us-ascii?Q?gMHaxnuWWvYrCzC4QI1E4uWp4CN2S99rmbHh++pfa1kxgEdAhnLdBgjbpppQ?=
- =?us-ascii?Q?zBN1LzMpMwEplK+4zZqiqFnloh2vCqpW9kl3KOZb1Lly3u6GG1yluHoXWG3J?=
- =?us-ascii?Q?0FzvjjD+uafPSe/PGux1ZO714m1jijv09qwBLmmk+dds/qYyMJEpUxBFMvNY?=
- =?us-ascii?Q?MIPzSX2gSuO8ltMc4UnQEcQwNlZZfUzjcnCzdFoMTPmLF6Oq9KRo7vmu3HAn?=
- =?us-ascii?Q?inv9vyMUMM1mfUPc7XtweWCfOqsCR91skSGenyUbCQlFg1pSHlP28DFIiPFg?=
- =?us-ascii?Q?Lh+TozwV9NUE4P6j7ANQRndlyuc44xt3qTFNhL4MXb/OeFITlpwnLSw4Qh3k?=
- =?us-ascii?Q?4+JCFutknt6htkDJ5aRR43DrJ+hCqkDk2jdeKye3ByvkuVPsgjWsoQqFvWkc?=
- =?us-ascii?Q?Ev6NUL2kA3E2rdZQNitDw2gysADDiHOO7+gddHsW98qFoufzUMEQ+ZCMJqWF?=
- =?us-ascii?Q?EZqyoSsAfgKn0s2jjb7GX+KXk/4c/It1NJwUrXAIUfxWGKgKBSlX+Br1ouqn?=
- =?us-ascii?Q?M0+UfSSP9MDwDnkTooe2sby1BMWP8qesfZsKr+lnJvzeey+SIFE3keSagL54?=
- =?us-ascii?Q?PGkEpR9C4DmXpZ95dVwMD0uQZUauulK7naCFgfTU8I02eZD2xTlM+wB3S65i?=
- =?us-ascii?Q?jrsn848zk+aVuP6yQpLMm0ts8xwv60ppJoS3USbXOaEMaSpmmeCJu7iLLz3i?=
- =?us-ascii?Q?yCGFZDxPJ3OnJ7Qq59AKH98hHWLaZQdPi5ODhOLgo4eRk0SZtzobayO8ACrM?=
- =?us-ascii?Q?eIXl7rVWbiHTCJNmRICdBguzuJy7FJkOkusmdofGoLGvR+B1SMc9K8SRCDze?=
- =?us-ascii?Q?8I4ahjnMIO0BJys87BAoRDvKpzGCM81H?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3613.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Zw5edAE2VieZZKJyeuvhjEov47iJaOkpOrjGAn7dfvBnmv2C6X3y9U/87HTh?=
- =?us-ascii?Q?7XnoTQu83cLCE1MHs+TRFacsJG90iO58WrFO0VqQ3Drdz2Vem9KyxE8zd73e?=
- =?us-ascii?Q?x2Cu4C/QZcEgGlRx/g7BnRpW/BAOMsU7gSX+kdRCIX7Lg0jq9pPhVpU2tbL+?=
- =?us-ascii?Q?YArnwuvAPJG6jLqBEv9Y8kXPazil7l0mFn9M4bEaiOAIzCWtBgf5+u8JilRO?=
- =?us-ascii?Q?WEHxpqhn4PtD+b1aITZgGN2nQ+iwIG9eYimebl/TCRoBsbAlgoDS/J07m0oT?=
- =?us-ascii?Q?0iOA0334r6iTfjjOhIBF6SEy3PSaYbONVs/44x76MfW4EtrKYMxozKLa6B32?=
- =?us-ascii?Q?FnRCllkaN+/b18MPlId+jwGEk0PLjYaWJvhSzq6UdtXeSEPZe+46J2alV/qk?=
- =?us-ascii?Q?aQYwudbX0fzPTj9+RxC73Ue7mDvypIrwPEDYkae9fTRLgkdKp/uNl+G3X0hf?=
- =?us-ascii?Q?0v8bhKxpmYT5EumgFvy1gm93vtkl0YtooPbGI7lW+s6Oi76XmNTboz6dQ6Cr?=
- =?us-ascii?Q?23K92Ns9GSGmx+SctOmWKrkRnU8mK6UAI5/3f/sEkLpBDj5gJJ7+pXFlf5dR?=
- =?us-ascii?Q?tcBhJdSD/dFDt2lAupPidUctlqiBKgDHciX0q6jbZeLPGYMRHad5G6hEbdVm?=
- =?us-ascii?Q?ouhYQ5RVYWnVCc61B0og1wy9ovR59PdrRXPDc781R8Lxxp9NdriubvtBf/G3?=
- =?us-ascii?Q?qWqr2JTNiwQk8xQUHJVf4zguJOPTg7BIdDQnBW3q8f+NAy8yYwQdogmWKXMe?=
- =?us-ascii?Q?7XHgdDdOTxryveknRdY7iiRI+pO5yEvAOo/KnYbE9bVERuwAL7TGsbDTfZEz?=
- =?us-ascii?Q?S9Ze6ymfoli26OU+jvp8jwIgjujyKfnOi2q4bUf8YZ2PWrq5k/zvWeRO43Gz?=
- =?us-ascii?Q?xXetG/EPQGRzQ8olLtX5J8VgAXT/7ZzN44IoUiPub/SZkyAzPKCqxAc77edW?=
- =?us-ascii?Q?OzQZDnnbs5cubRbpN/AV/QEnRrJUi16hgW+CvIEy7OtsLHTYJ6lz1WmiEfzl?=
- =?us-ascii?Q?EniG7oxq7aekroZTQCrpPQvxO+MBiij2buj43mp3mDvcXcgzgBbgrb+iugyh?=
- =?us-ascii?Q?rh3OJ22bbS0PW5uIGxc8q6xEObr8bEhvk715toqV9MiGsNP6Q4N5/5YttFNj?=
- =?us-ascii?Q?slw6GWXt9g4rEilsoHJmVaCGREpWP4IZRVXRpXJkJVz001zDHptpbNEmEhXt?=
- =?us-ascii?Q?JEp4hRb/UXyjd5B0ScNlwzGX/5ea51vueSTEjgG2XLNH86DSZmtO4yAmpmAW?=
- =?us-ascii?Q?gCWcUUg/Ndtsbv3PmMbHBGQ3VjFFXav3dEU/Ij+zGd7A/h1JRM3J6sNGWEnX?=
- =?us-ascii?Q?F6JHQFDBZ5gA4fTlwug1w4ExSvPuqSq5eClnnQnWQDCCS/t60BlKzIQ+cpQh?=
- =?us-ascii?Q?R05FvExC6K4FE8WYIQLGSUSpQ+Qwt5OKHeIbiKjLKXyjfCzCA0w+CEB5ChTG?=
- =?us-ascii?Q?n41SJhOZ7yeFNtwkM9pjc/karTGXjKzYpiXKTJCF7lMPSRFBWAbXnBxfDhWL?=
- =?us-ascii?Q?sjFaML97tBI+xXwVCX7xolAf2yDoo5+jhGJFW2kue+2xmlcw6A3vi7uq+AQr?=
- =?us-ascii?Q?ehTWB3lm6+mNMuqttKM=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11140b22-b33a-45c1-aa0c-08de2ea85ba4
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3613.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2025 18:02:56.4890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /rtJ1kEyW+RpXJTriUTiFAlK+F8ksGwsbKMl+wId+5XielW92B1qRs7JCPs8+vUZ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6753
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v13 4/4] rust: Add `OwnableRefCounted`
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20251117-unique-ref-v13-4-b5b243df1250@pm.me>
+Date: Fri, 28 Nov 2025 15:06:42 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Benno Lossin <lossin@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dave Ertman <david.m.ertman@intel.com>,
+ Ira Weiny <ira.weiny@intel.com>,
+ Leon Romanovsky <leon@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Viresh Kumar <vireshk@kernel.org>,
+ Nishanth Menon <nm@ti.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Paul Moore <paul@paul-moore.com>,
+ Serge Hallyn <sergeh@kernel.org>,
+ Asahi Lina <lina+kernel@asahilina.net>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org,
+ linux-pm@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ linux-security-module@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A5A7C4C9-1504-439C-B4FF-C28482AF7444@collabora.com>
+References: <20251117-unique-ref-v13-0-b5b243df1250@pm.me>
+ <20251117-unique-ref-v13-4-b5b243df1250@pm.me>
+To: Oliver Mangold <oliver.mangold@pm.me>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Wed, Nov 12, 2025 at 10:15:00AM +0000, Alice Ryhl wrote:
-> +    /// Map a physically contiguous range of pages of the same size.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * This page table must not contain any mapping that overlaps with the mapping created by
-> +    ///   this call.
-> +    /// * If this page table is live, then the caller must ensure that it's okay to access the
-> +    ///   physical address being mapped for the duration in which it is mapped.
+Hi Oliver,
 
-All the iommu page table code runs with a caller provided locking
-regime.
+> On 17 Nov 2025, at 07:08, Oliver Mangold <oliver.mangold@pm.me> wrote:
+>=20
+> Types implementing one of these traits can safely convert between an
+> `ARef<T>` and an `Owned<T>`.
+>=20
+> This is useful for types which generally are accessed through an =
+`ARef`
+> but have methods which can only safely be called when the reference is
+> unique, like e.g. `block::mq::Request::end_ok()`.
+>=20
+> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+> rust/kernel/owned.rs     | 138 =
+++++++++++++++++++++++++++++++++++++++++++++---
+> rust/kernel/sync/aref.rs |  11 +++-
+> rust/kernel/types.rs     |   2 +-
+> 3 files changed, 141 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
+> index a26747cbc13b..26ab2b00ada0 100644
+> --- a/rust/kernel/owned.rs
+> +++ b/rust/kernel/owned.rs
+> @@ -5,6 +5,7 @@
+> //! These pointer types are useful for C-allocated objects which by =
+API-contract
+> //! are owned by Rust, but need to be freed through the C API.
+>=20
+> +use crate::sync::aref::{ARef, RefCounted};
+> use core::{
+>     mem::ManuallyDrop,
+>     ops::{Deref, DerefMut},
+> @@ -14,14 +15,16 @@
+>=20
+> /// Type allocated and destroyed on the C side, but owned by Rust.
+> ///
+> -/// Implementing this trait allows types to be referenced via the =
+[`Owned<Self>`] pointer type. This
+> -/// is useful when it is desirable to tie the lifetime of the =
+reference to an owned object, rather
+> -/// than pass around a bare reference. [`Ownable`] types can define =
+custom drop logic that is
+> -/// executed when the owned reference [`Owned<Self>`] pointing to the =
+object is dropped.
+> +/// Implementing this trait allows types to be referenced via the =
+[`Owned<Self>`] pointer type.
+> +///  - This is useful when it is desirable to tie the lifetime of an =
+object reference to an owned
+> +///    object, rather than pass around a bare reference.
+> +///  - [`Ownable`] types can define custom drop logic that is =
+executed when the owned reference
+> +///    of type [`Owned<_>`] pointing to the object is dropped.
+> ///
+> /// Note: The underlying object is not required to provide internal =
+reference counting, because it
+> /// represents a unique, owned reference. If reference counting (on =
+the Rust side) is required,
+> -/// [`RefCounted`](crate::types::RefCounted) should be implemented.
+> +/// [`RefCounted`] should be implemented. [`OwnableRefCounted`] =
+should be implemented if conversion
+> +/// between unique and shared (reference counted) ownership is =
+needed.
+> ///
+> /// # Safety
+> ///
+> @@ -143,9 +146,7 @@ impl<T: Ownable> Owned<T> {
+>     ///   mutable reference requirements. That is, the kernel will not =
+mutate or free the underlying
+>     ///   object and is okay with it being modified by Rust code.
+>     pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+> -        Self {
+> -            ptr,
+> -        }
+> +        Self { ptr }
+>     }
 
-The caller must effectively hold a range lock over the IOVA it is
-mapping/unmapping/iova_to_phys'ing and it is illegal to race those
-three functions with overlapping IOVA.
+Unrelated change?
 
-For example the caller cannot map to IOVA A-B while unmapping C-B or
-iova_to_physing(A).
+>=20
+>     /// Consumes the [`Owned`], returning a raw pointer.
+> @@ -193,3 +194,124 @@ fn drop(&mut self) {
+>         unsafe { T::release(self.ptr) };
+>     }
+> }
+> +
+> +/// A trait for objects that can be wrapped in either one of the =
+reference types [`Owned`] and
+> +/// [`ARef`].
+> +///
+> +/// # Examples
+> +///
+> +/// A minimal example implementation of [`OwnableRefCounted`], =
+[`Ownable`] and its usage with
+> +/// [`ARef`] and [`Owned`] looks like this:
+> +///
+> +/// ```
+> +/// # #![expect(clippy::disallowed_names)]
+> +/// # use core::cell::Cell;
+> +/// # use core::ptr::NonNull;
+> +/// # use kernel::alloc::{flags, kbox::KBox, AllocError};
+> +/// # use kernel::sync::aref::{ARef, RefCounted};
+> +/// # use kernel::types::{Owned, Ownable, OwnableRefCounted};
+> +///
+> +/// // Example internally refcounted struct.
 
-This locking detail should be a safety statement.
+nit: IMHO the wording could improve ^
 
-> +// These bindings are currently designed for use by GPU drivers, which use this page table together
-> +// with GPUVM. When using GPUVM, a single mapping operation may be translated into many operations
+> +/// //
+> +/// // # Invariants
+> +/// //
+> +/// // - `refcount` is always non-zero for a valid object.
+> +/// // - `refcount` is >1 if there are more than 1 Rust reference to =
+it.
+> +/// //
+> +/// struct Foo {
+> +///     refcount: Cell<usize>,
+> +/// }
+> +///
+> +/// impl Foo {
+> +///     fn new() -> Result<Owned<Self>, AllocError> {
+> +///         // We are just using a `KBox` here to handle the actual =
+allocation, as our `Foo` is
+> +///         // not actually a C-allocated object.
+> +///         let result =3D KBox::new(
+> +///             Foo {
+> +///                 refcount: Cell::new(1),
+> +///             },
+> +///             flags::GFP_KERNEL,
+> +///         )?;
+> +///         let result =3D NonNull::new(KBox::into_raw(result))
+> +///             .expect("Raw pointer to newly allocation KBox is =
+null, this should never happen.");
+> +///         // SAFETY: We just allocated the `Self`, thus it is valid =
+and there cannot be any other
+> +///         // Rust references. Calling `into_raw()` makes us =
+responsible for ownership and
+> +///         // we won't use the raw pointer anymore, thus we can =
+transfer ownership to the `Owned`.
+> +///         Ok(unsafe { Owned::from_raw(result) })
+> +///     }
+> +/// }
+> +///
+> +/// // SAFETY: We increment and decrement each time the respective =
+function is called and only free
+> +/// // the `Foo` when the refcount reaches zero.
+> +/// unsafe impl RefCounted for Foo {
+> +///     fn inc_ref(&self) {
+> +///         self.refcount.replace(self.refcount.get() + 1);
+> +///     }
+> +///
+> +///     unsafe fn dec_ref(this: NonNull<Self>) {
+> +///         // SAFETY: By requirement on calling this function, the =
+refcount is non-zero,
+> +///         // implying the underlying object is valid.
+> +///         let refcount =3D unsafe { &this.as_ref().refcount };
+> +///         let new_refcount =3D refcount.get() - 1;
+> +///         if new_refcount =3D=3D 0 {
+> +///             // The `Foo` will be dropped when `KBox` goes out of =
+scope.
+> +///             // SAFETY: The [`KBox<Foo>`] is still alive as the =
+old refcount is 1. We can pass
+> +///             // ownership to the [`KBox`] as by requirement on =
+calling this function,
+> +///             // the `Self` will no longer be used by the caller.
+> +///             unsafe { KBox::from_raw(this.as_ptr()) };
+> +///         } else {
+> +///             refcount.replace(new_refcount);
+> +///         }
+> +///     }
+> +/// }
+> +///
+> +/// impl OwnableRefCounted for Foo {
+> +///     fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, =
+ARef<Self>> {
+> +///         if this.refcount.get() =3D=3D 1 {
+> +///             // SAFETY: The `Foo` is still alive and has no other =
+Rust references as the refcount
+> +///             // is 1.
+> +///             Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
+> +///         } else {
+> +///             Err(this)
+> +///         }
+> +///     }
+> +/// }
+> +///
 
-Now that we have the generic pt stuff I wonder if GPUVM should be
-providing its own version of the page table implementation that
-matches its semantics better.
+We wouldn=E2=80=99t need this implementation if we added a =
+=E2=80=9Crefcount()=E2=80=9D
+member to this trait. This lets you abstract away this logic for all
+implementors, which has the massive upside of making sure we hardcode =
+(and thus
+enforce) the refcount =3D=3D 1 check.
 
-> +// on the page table, and in that case you generally want to flush the TLB only once per GPUVM
-> +// operation. Thus, do not use these callbacks as they would flush more often than needed.
 
-This doesn't sound quite right to me, the flushing requirements are a
-consequence of what flushing HW is available in the xTLB that is
-caching this. The flushes generated by the common arm code match the
-ARM64 architecture semantics. If the GPU has different semantics then
-it can do something else, but one must be careful not to match a GPU
-that is expecting ARM semantics with "do not use these callbacks"
+> +/// // SAFETY: This implementation of `release()` is safe for any =
+valid `Self`.
+> +/// unsafe impl Ownable for Foo {
+> +///     unsafe fn release(this: NonNull<Self>) {
+> +///         // SAFETY: Using `dec_ref()` from [`RefCounted`] to =
+release is okay, as the refcount is
+> +///         // always 1 for an [`Owned<Foo>`].
+> +///         unsafe{ Foo::dec_ref(this) };
+> +///     }
+> +/// }
+> +///
+> +/// let foo =3D Foo::new().expect("Failed to allocate a Foo. This =
+shouldn't happen");
 
-IOW it doesn't seem right that common code would be making decisions
-like this, the nature and requirements of the flushing are entirely up
-to the driver binding to HW.
+All these =E2=80=9Cexpects()=E2=80=9D and custom error strings would go =
+away if you
+place this behind a fictional function that returns Result.
 
-Jason
+> +/// let mut foo =3D ARef::from(foo);
+> +/// {
+> +///     let bar =3D foo.clone();
+> +///     assert!(Owned::try_from(bar).is_err());
+> +/// }
+> +/// assert!(Owned::try_from(foo).is_ok());
+> +/// ```
+> +pub trait OwnableRefCounted: RefCounted + Ownable + Sized {
+> +    /// Checks if the [`ARef`] is unique and convert it to an =
+[`Owned`] it that is that case.
+> +    /// Otherwise it returns again an [`ARef`] to the same underlying =
+object.
+> +    fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, =
+ARef<Self>>;
+
+Again, this method can go way if we add a method to expose the refcount.
+
+> +
+> +    /// Converts the [`Owned`] into an [`ARef`].
+> +    fn into_shared(this: Owned<Self>) -> ARef<Self> {
+> +        // SAFETY: Safe by the requirements on implementing the =
+trait.
+> +        unsafe { ARef::from_raw(Owned::into_raw(this)) }
+> +    }
+> +}
+> +
+> +impl<T: OwnableRefCounted> TryFrom<ARef<T>> for Owned<T> {
+> +    type Error =3D ARef<T>;
+> +    /// Tries to convert the [`ARef`] to an [`Owned`] by calling
+> +    /// [`try_from_shared()`](OwnableRefCounted::try_from_shared). In =
+case the [`ARef`] is not
+> +    /// unique, it returns again an [`ARef`] to the same underlying =
+object.
+> +    fn try_from(b: ARef<T>) -> Result<Owned<T>, Self::Error> {
+> +        T::try_from_shared(b)
+> +    }
+> +}
+> diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+> index 937dcf6ed5de..2dbffe2ed1b8 100644
+> --- a/rust/kernel/sync/aref.rs
+> +++ b/rust/kernel/sync/aref.rs
+> @@ -30,7 +30,10 @@
+> /// Note: Implementing this trait allows types to be wrapped in an =
+[`ARef<Self>`]. It requires an
+> /// internal reference count and provides only shared references. If =
+unique references are required
+> /// [`Ownable`](crate::types::Ownable) should be implemented which =
+allows types to be wrapped in an
+> -/// [`Owned<Self>`](crate::types::Owned).
+> +/// [`Owned<Self>`](crate::types::Owned). Implementing the trait
+> +/// [`OwnableRefCounted`](crate::types::OwnableRefCounted) allows to =
+convert between unique and
+> +/// shared references (i.e. [`Owned<Self>`](crate::types::Owned) and
+> +/// [`ARef<Self>`](crate::types::Owned)).
+> ///
+> /// # Safety
+> ///
+> @@ -180,6 +183,12 @@ fn from(b: &T) -> Self {
+>     }
+> }
+>=20
+> +impl<T: crate::types::OwnableRefCounted> From<crate::types::Owned<T>> =
+for ARef<T> {
+> +    fn from(b: crate::types::Owned<T>) -> Self {
+> +        T::into_shared(b)
+> +    }
+> +}
+> +
+
+Not sure why we=E2=80=99re using fully-qualified names here if we can =
+import them, but your call.
+
+> impl<T: RefCounted> Drop for ARef<T> {
+>     fn drop(&mut self) {
+>         // SAFETY: The type invariants guarantee that the `ARef` owns =
+the reference we're about to
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 8ef01393352b..a9b72709d0d3 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -11,7 +11,7 @@
+> };
+> use pin_init::{PinInit, Wrapper, Zeroable};
+>=20
+> -pub use crate::owned::{Ownable, Owned};
+> +pub use crate::owned::{Ownable, OwnableRefCounted, Owned};
+>=20
+> pub use crate::sync::aref::{ARef, AlwaysRefCounted, RefCounted};
+>=20
+>=20
+> --=20
+> 2.51.2
+>=20
+>=20
+>=20
+
+=E2=80=94 Daniel=
