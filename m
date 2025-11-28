@@ -1,101 +1,95 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906FD2C08B6
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 19:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C82F285058
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 19:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764356900; cv=none; b=F7Fvwot+GE2+9KpjWxbnBke43lcwuAuqHtlIP9Vy7XYvfKT9fxowwAT98DZWM2ta9EZDlL9fzDKgSXRWi5M0WnqNxNbdOHpwll8DYIctbTySP9lZOsqQmVdbX3WAbjM7yhihyCaN5jtpWpXvCtfAMCwoUsNVgYdyM+smfLdPitk=
+	t=1764356978; cv=none; b=N4/kyVNz64TRbRHFkkRjBtBKm1pHjiRkFbWL37w02/aXM1N9HfEbwMPpB6A7qDnEyF2ND8RcljZm8g4MidWtgfmvItPhv54sSvorW+y4dr4UYzPNNrWy7hxboAxmprBb8rKUNqUxh8GOF3UawTsD7rBL/jN7GzsCliPJsJ0+qps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764356900; c=relaxed/simple;
-	bh=Gf/I5rxn2W+WIilYfezBOQhljCPVg2xIfa3oJiNvjgc=;
+	s=arc-20240116; t=1764356978; c=relaxed/simple;
+	bh=WZYXsmXZiDc+6oGbeZOkNyKJJ5gm6081EhkQ3e00Wts=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VyHhpX3pZ7C6B5FnZjuErEa+abUcpQsLpEup7xfDZ1cY5iMdFD2QYWWqXU3ArdV0CIVckD3sMok9NYcpi8MkGRaLFu6miA1JiJmU2S8DFCIJ1jWxPuYeOiwat5dUHDE6lgiSueYcx3EQRdYlbOBCYF8Z0637jVUegDoKUX4Um0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y3Z26hyJ; arc=none smtp.client-ip=209.85.215.176
+	 To:Cc:Content-Type; b=SAv8qQFu0uFMW8XQrGHrbbIQeCWciTThy+qq51DO4ef8Vzx7lco4mcugS/6YPASL7gkTfm4Wpk7rb5YxSatmiiina8SgV8/EcRF5XW/9XATiEK158vdHUajODPjJsJfizgcPLPD0mpqOEtRoW+B9eWGrhBCMAGrB+xEBM/fGk3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mtayefEs; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y3Z26hyJ"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-bc0d28903c9so191152a12.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 11:08:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mtayefEs"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-297d6c0fe27so3046155ad.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 11:09:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764356899; x=1764961699; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764356976; x=1764961776; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Gf/I5rxn2W+WIilYfezBOQhljCPVg2xIfa3oJiNvjgc=;
-        b=Y3Z26hyJy4pJ2vSHLsIms4ceZmuAECMbc4Zn5pCRU4aS9O0TUsJcBu7wlLl8XVIXJ9
-         qB6ZAeeHD93Ne9T6v7UcouhkbBNywGPZ9mbQB+0jCiwwijL15MExFNlhkkztYZYNlexR
-         FCPispCO64ACRTNPjbBVtSSErVdmMV70W+grjCJNEo973Nak52deMZNPjV/txI+thnRQ
-         aCj46oggsC0IuhKN6C7CbMv3g73MHEA+Bo2Ukc2F9JwWHb4Zo19ncMzmd1juAsMj87WK
-         17Jbttm0etsU5YzS+e5rCVT5QKXnj/c9NqBvSK/iI4xpqDSpn0Upp22jBv7MVlugcEmw
-         Rtpw==
+        bh=BT/5LJ0ZitujHfqNEYrtQtZeuMs6gXK20d74EIzNeDU=;
+        b=mtayefEsdURTnVjhR42++T1/TRMHTRwCZykrHFek6YR6CRUQDVLh9KF8SrC9PRzmfC
+         oFEdjQRG1vA/fXho+X9Ut9cS+KTie0Zj4MUQ2L5f3ve6DSWjXNVvZ6GGZb5CKvjn2AJM
+         TMkZluMA4ZkpBItrHr0kWsVqmttFNC0cnjVGROi+qdOcyRP1y1Jvuc4rChwmmJOxWXrl
+         o4aj0pXCMF8EMGwV6k7nyWnk4vewFsW1GxI/RXN4pZt90mciZtBL/XO+/t+V1zAcHOLw
+         Y5+7vvIKtTXpkaaS9AuLRhLea03Zx4t4ldBBlIABYi9U5lYC71oFAjwczOqfyOZDKdsj
+         eD4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764356899; x=1764961699;
+        d=1e100.net; s=20230601; t=1764356976; x=1764961776;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Gf/I5rxn2W+WIilYfezBOQhljCPVg2xIfa3oJiNvjgc=;
-        b=wA5WMZUHh9q3zj4023+H4bGPDBs4HVcrevEgaplcw06BZI4B8QCwUz3OQK/a3L9tDy
-         ufapV/bUKX/T2KCkMOtmdtGtyrZLdQMdHisYXhJmUPFR4QqFYQIoLYS5dAFAisaWg7vi
-         P1gaLr9tHm5mynMbd527h+XktZ1UeaUSUg+dXPri7f0aZG1DXigmrchybkGgoSwnjhGS
-         XmTARw3qFxSTsosE+ksGoQwKosOY46OkTKFEKaEsCQurWQX8afqeQJDc0PAzqsdfGYxK
-         QyjatiIfBs2kcIQjcrS7aMOFEAQqhFBD5pI4Wr95B9pYD8drBeK008h6of1bNHcfks3A
-         2mVA==
-X-Forwarded-Encrypted: i=1; AJvYcCXdFx0po6IZi4rklYgW5RG8fFxH2Xvx9cy7uCUYSG6uuQN1F/L5CRHk3DTMkfD07mzuHpdpbc7udiBxvMTuTg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkW08y6TdH+DoR3bx+ypn+fubt/w6xFX9TUcqYayjdg1gEQWHK
-	Z5Yd6mX72NpRLifnZd6X5jl0Kj0BZd4mWkr7eUzfkCoJYMFqX2tzJo1bEcHu4O/7vNFheOCitg/
-	80buOM62uO9vs11moGq8Wof9zG0un7V8=
-X-Gm-Gg: ASbGncuQdYLROfXHoxkM1zss9+WWUGFXxqePWIVlySEs8zqF34CQqyI+JLwNVkYtn+j
-	ToorNTW8SqW9B/PEGJvks8uW68JI3eTKE72oHQ4mzLtifJ5nceCLZhPxvYoJKg+lRINefOs9UDV
-	6jSsoOIsY76itc8roC3gQnJbrZh+VDZXql+Jw0GVccQHSAxMNzYF5WWQPqJQd3OV9KZLfDr7RkM
-	b9HWB0plfR31iitytLSGfcFNmVfFYi9FJL2BjvYBecn6Sw9EOLCyyAxaF0ZpDhsDQ6xpH19FfYi
-	YgSuilVIs+TjBbSo0vOG5rcoYGlI750JjpOaFvt7/kl4zHZBj5oZVCbRl4iL8jHgnkYfIYBmuft
-	zPZd5Symn359yJ4bFLKIlryHf
-X-Google-Smtp-Source: AGHT+IHbVkNLbU42BgoiRG0ha5wUW/dlcnD+kiOtbeC0H6uzq1X32a7HRr4i5N/HSlNUIuuRk/AYn9U1Nkn3Sc/2zTU=
-X-Received: by 2002:a05:7301:4084:b0:2a4:3592:cf8b with SMTP id
- 5a478bee46e88-2a724bbea18mr16585600eec.2.1764356898749; Fri, 28 Nov 2025
- 11:08:18 -0800 (PST)
+        bh=BT/5LJ0ZitujHfqNEYrtQtZeuMs6gXK20d74EIzNeDU=;
+        b=KWtmx3leCgOU22XI+MtLchlyj8G03KvZP7VLdJ/0ajCjoTUstBCKewJ0Tmoz2KGSna
+         woDlCZpHlRaINZTbUdXcaA1ss/6vfGpLaLEZooB49nKNNO6Ss929rh9JkHtHR3xUvOTR
+         bWIw0KnrRj+ERSBFWb++WcZg5vj/jvKMMeSKL/xMg5hzd/yRBonODDdhcOochNKuuCXl
+         YfkzKVA5I8nwvEEITmlxCI8+FzdQGAbCXRXoYCqHH0qszgRrbiYphM6hyDPniGY7YAIm
+         G/dQ1bVAED7BDRVk/XjLOKcRHfCjHxqmZixtQAfQObtMJrnFK0UpZNZSlxzKx1UmNg70
+         UWvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWte1v1pU9QVC9oA4uqg4JwlkRI6pBrD9fOK6QhJ6GBYFPbkDkoscJ3xAwSZdX6ynfkT2LwF3WS3ZoFND0jDw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxH8bYhjIlUl5aZ04anrj11id7aXVl9lWgl1mlq4u+2rn67raix
+	Y0aDG8eiLLOuEcqwuPx1xCi/nzRTXQeUJNw6B6praSyVPSgDf7tqbp+9fK2lbTCUedY6Qej7e3C
+	ouDUWJIs43tSz3clJ/iCX2OcCpEzlvf8=
+X-Gm-Gg: ASbGncv78gEV/lDNHtedvbb2u4zBrpRfWJmaddkvxk7TClC1Z7mEblg7y1u55mRFj5B
+	2x61nFa9TgGN/+fdj5+S9U+jalUjRKH+VXnUydIIQZD97FcJkgHQZoVy3yQBWYstQkWwSxB9Ew1
+	23xxFMommEny3mwXgOe2JvSVnFewZaiCP/Mvh/+gZdn4UTbCdp8iJbJJ00h/+XJuAS6CH6q4F2q
+	yEloWVJbTWzkiZzDUqqnUpZ2lL/mXUG0Ue0fpvXDmmeQ8PlIUUWJNeeJ1TqVR8SRM0LSMcxocVI
+	rkAjYFQHSMUcEx+0VmeuEDAnmg98x7k9P+k7JbRu1aDO1NBDK0FvWNXwoNFHUBXNwlSP82PMIh5
+	2YiMQNNbc7vSkxQ==
+X-Google-Smtp-Source: AGHT+IFN0Rwgnn3PVQ9n0wV3KvasSjG79tx+LlauO9VKJzPdjNUV3o9dyZAhTjJJbkqOnY02yyscnGDaExH30tQbEgs=
+X-Received: by 2002:a05:7301:1906:b0:2a4:3593:5fc9 with SMTP id
+ 5a478bee46e88-2a7192a30bfmr17815118eec.3.1764356975613; Fri, 28 Nov 2025
+ 11:09:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251128162337.12082-1-atharvd440@gmail.com>
-In-Reply-To: <20251128162337.12082-1-atharvd440@gmail.com>
+References: <20251117163112.22515-1-alexandru.radovici@wyliodrin.com>
+In-Reply-To: <20251117163112.22515-1-alexandru.radovici@wyliodrin.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 28 Nov 2025 20:08:06 +0100
-X-Gm-Features: AWmQ_bleXEEU0JaubzRmv2_Nj7coh8rSMhOU-5SguMIprE_P57SlgjtxU0p66SI
-Message-ID: <CANiq72kmm_6fGRW9y0DXZVEmFoqi-8-YuGJifEcFF7vGQnPLHw@mail.gmail.com>
-Subject: Re: [PATCH] rust: miscdevice: use `pin_init::zeroed()` for C type initialization
-To: Atharv Dubey <atharvd440@gmail.com>
-Cc: arnd@arndb.de, gregkh@linuxfoundation.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 28 Nov 2025 20:09:23 +0100
+X-Gm-Features: AWmQ_blHhb04pD9gMUbg7ExDzFtno_SLkXhREMHK9KWep04iPr-cQ60rwQ4yikA
+Message-ID: <CANiq72kwr4EgqEBa2X9zdEK-iuhKyOUt=9sBnQWTpBqt-WFfrg@mail.gmail.com>
+Subject: Re: [PATCH] rust: add a function that returns a reference to the IO
+ Ports Resource
+To: Alexandru Radovici <alexandru.radovici@wyliodrin.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Fiona Behrens <me@kloenk.dev>, Daniel Almeida <daniel.almeida@collabora.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 28, 2025 at 5:23=E2=80=AFPM Atharv Dubey <atharvd440@gmail.com>=
- wrote:
+On Mon, Nov 17, 2025 at 5:31=E2=80=AFPM Alexandru Radovici
+<alexandru.radovici@wyliodrin.com> wrote:
 >
-> Replace manual zero-initialization using
-> `MaybeUninit::zeroed().assume_init()` with `pin_init::zeroed()`.
-> The `pin_init` helper provides a safer and clearer API for
-> zero-initializing C structs without requiring an `unsafe` block.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1189
-> Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
+> Co-developed-by: Fiona Behrens <me@kloenk.dev>
+> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Welcome! I am glad you ended up sending a patch :)
+Procedural nit: every Co-developed-by needs a Signed-off-by:
 
-Minor procedural nit: I think this is missing:
-
-Suggested-by: Benno Lossin <lossin@kernel.org>
-
-It should be picked up automatically, no need to resend a v2 just for this.
+    https://docs.kernel.org/process/submitting-patches.html#when-to-use-ack=
+ed-by-cc-and-co-developed-by
 
 Thanks!
 
