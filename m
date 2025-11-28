@@ -1,109 +1,117 @@
-Received: from outbound.ms.icloud.com (p-west3-cluster3-host1-snip4-5.eps.apple.com [57.103.72.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8D4AD2C
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 05:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.72.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702141EA7CE
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 06:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764307769; cv=none; b=Z/tCIV4w/dEZpCHn9xo7wE4ERD9lRObY6NfSw7oMThnF4KWcKkhqp6y1Se/jsBns9+SiEiC1MILz/mE7xm19evwHnBtRsM/lzuxmicUKaRzp5jm4bhe4koXXLhEK8gGj4icRYFlLJwQE7dxGtLxrPsaRUTFYlEW5V5ISQq/q8Xk=
+	t=1764310381; cv=none; b=IZEfgjHxc9bxPSksHbzpRz9mzD1OEa5XwaRnyLnQ+hnir2H3/Wt7Sc+9xcLxC/taqwjUudg8P2UCmP3Wrq/090oMTJq75AuFpKZYFrH6jZHkeFMIFokEIZ5bBR2S9DnbkECWRy/c8wQjmxzqnNJ120FV2Cw7Lh6cJe0vVzsWvio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764307769; c=relaxed/simple;
-	bh=tPIl5uu467AXrSvOKEDVoKmEhpW9R4jpQO8vf9/TB4I=;
+	s=arc-20240116; t=1764310381; c=relaxed/simple;
+	bh=FxoHkb7nyJiTSd6nPa8aGTfEfLKBIDOPPFcjWrCubMs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E9lXXVDpKquBcmi6A4RW2/ugdvxt6eMehcQO1rlnC7PRQC/1NH6Uycpm+yiOkoDIrsY8ZCSCOFws31UiKyEXYar9SVmxDORCwlKImGIDGEge3uWLuPy6P5YXMx7gl6E+8HoctTpii6BrhYeJW56TWNVaQWziwkxZIbhGfeCoJH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=OLfIc9pU; arc=none smtp.client-ip=57.103.72.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=XR9o0Ieo6LG/7oqvYHLksTfgwiYxZXukm31RKyta1nJeAKPHUqjJ4DGPiGHn/ppfrrG33pvThHM5wkAoA1giIVKb1ydDUabbdsmdec6Pd/v8ToSnpHtqjbZptHGU3f5z08SwGAQycgkcKAuuURpyVltcSw8md6wipaVO3TTYhn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VxNZqgh/; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="OLfIc9pU"
-Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-3a-60-percent-0 (Postfix) with ESMTPS id EF99E180046F;
-	Fri, 28 Nov 2025 05:29:24 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=MQSDnvztJyqdMRb9MUBG/0geiAqYJeNE0GtWGSgxvzM=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=OLfIc9pUtIsdgs3OHzuI+JcXgeeK/FM31jkeTVn31XNsvWMmYBNgXsNjxKjFfPDWx8QsgD5YgJsuqhdfPc3qtMcH+skBIGcUy3O84iiCyFtKuEl+SlHIKKeOSTMAx2Pl0/Fib7lbvCMad2aw8qXcfTH1jtD248BPeChTElgW41m+F35/KwwRHT/8vS8JYpgFQu9oGEMrur6Ius2izLvfkSQyQp+JdkRMfI8bGcf75rHRsBk/6MHggyVrUQWoCuYBP0mx3P8XbYvcy0tTsWvaOge1EO8KvV5UisRuN9nZvbe7sOfiFqpJSItTGu0akIpQ4G6l1FCHDtDEYnDtMAPSsA==
-mail-alias-created-date: 1746336505199
-Received: from fedora (unknown [17.57.154.37])
-	by p00-icloudmta-asmtp-us-west-3a-60-percent-0 (Postfix) with ESMTPSA id A649B1800450;
-	Fri, 28 Nov 2025 05:29:20 +0000 (UTC)
-Date: Fri, 28 Nov 2025 15:29:15 +1000
-From: Brendan Shephard <bshephar@bne-home.net>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, dakr@kernel.org,
-	airlied@gmail.com, aliceryhl@google.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: Return Option from page_align and ensure no usize
- overflow
-Message-ID: <aSkzK4QDU6pN2GMS@fedora>
-References: <aShM9CAyRPe2gYpK@fedora>
- <DEJIRMFOO880.1V1IA1QDH9WQ0@nvidia.com>
- <aShdutWrmU2q7gUT@fedora>
- <DEJWIFG5Y65B.17EZVKB63RUJ1@nvidia.com>
- <CANiq72kiscT5euAUjcSzvxMzM9Hdj8aQGeUN_pVF-vHf3DhBuQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VxNZqgh/"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso1711710b3a.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 27 Nov 2025 22:12:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1764310379; x=1764915179; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pbV5zoayEdyZYtO178MOH1oaskHxTibOVaCNtKxbEA4=;
+        b=VxNZqgh/UPPrvqVKO4kJ59/3ndDb4ZZGy8gq0Ly7nZZNzjHszv8SaZiMTr3Xr3CNHv
+         LL/zyYBM7iHuKVSyjYDHPp3LrwR+VmK+FaHMt05aJltdEfqdveRQh1RtFRI62p4iES28
+         dPwtSX4REmc8nZXBNPNBS8an67tTr4niuy2oTXmBg0vuRHNFjV3H0ZIJOdsLNnendCLc
+         oWDavFLFHMwCKDV290x9h2VJClEDt89nfdA8B8E3Omw5Nfg4PM58r96cAuHnl/zv9GPi
+         25MVxpvNXkrXstpC95/2t8B7aOcipllJg925SqAv9SwxMk/0RKLsKJtt01r19yYkmQBC
+         em0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764310379; x=1764915179;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pbV5zoayEdyZYtO178MOH1oaskHxTibOVaCNtKxbEA4=;
+        b=IzoHBxmKMUIhd8Y9iVEcgAMlwWivXWR0KsMzKLj2LkvQYtmR5BXaI0uDXVOD1O2Lsm
+         uQtLvmre29TRV7dTlgkxnz//HUMyN3YCXjQeZEcJqykmjh0YnOUKhsInBM7L3DaXPIpu
+         3jc88TKEeOkFGOG7y9KYAAOalQxk7jkLaqIxCpguYErlOnWD+rCk3086PBlnchf8VxqU
+         lWh3IOoTCfjBTg/T0Vh+9DO3/5ipFzBTP71AELO6K0T1C6Z805HbW/EbpuSFpW80l380
+         I5dnC9GJLC9aKNy7nr3scbG4OY6+CPZsIX3h/lUANXG2nCDtRClWEL10sGZlD9HZYpkL
+         r+mg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4IWnXSZ8lLC5Ubg/BTyGiy8L0nfcfKP2C33Jh9Zi/msK6G3GMM1VojdgFBCegGljLZF3v5qrLRFq8TXHqXQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxC0u/Q16P0LaICqs3rjDaFK5Cb208rGRANXUtsKxpeM2CQCP7Y
+	oIW0XUzYRYGD0gKfr1Q8EDHcjmyy14e7TVc30aI/dgz3ZLSmt/9fhEpBgN7CjbgB6y8=
+X-Gm-Gg: ASbGnctgg4CQD13KjZhmuqRMF5bkp/7SAfg76CuvtzVfB2n02DQV0TyR5eF7OrLkXYd
+	5KD9dP6kxQQ0QwvT33cpnaQIDZjrJR5znne97T/EmmxEen92HZJNutDiix+E8yluNTbJ0K86Yqv
+	0NV6d9Hge+4dL302F8/m9v7/qnw9IYVPup4SI/F906l2X2CwAXb9y8ZKQ/8fQO1touZgf8/AQon
+	z6kQhHzaz4WfJ9Mr0CjpfkGyzyqwYx5GdrJqho7O8ynd2ZvRrwAQu1rbSouFVJHdFyKEurHW2ZV
+	IOUgF92KrybkXD2N2+Yjd7UpUlM/fh7Mn0slCoWGIm8KP3lTvZD7VWHePiBsVSTLHjRQyqyWswx
+	jsOZgUYqt8rLpCWpvjZdUaRVNRpFoikCWbDqqAfQh4O0rMmItIM39x36BRYWy/OXAFTGG38/EQh
+	p8mcJauLJ7u5Q=
+X-Google-Smtp-Source: AGHT+IHjsfdXEFTf0OxB36Ajkhz9vTo0v1dVI1d+Dfpaapyciqck5ZyUFHvdETndhTkwemRanymW8w==
+X-Received: by 2002:a05:6a00:12e1:b0:7b9:e4af:719a with SMTP id d2e1a72fcca58-7c58c4a7d77mr27303823b3a.1.1764310378688;
+        Thu, 27 Nov 2025 22:12:58 -0800 (PST)
+Received: from localhost ([122.172.86.94])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d15f177566sm3685274b3a.51.2025.11.27.22.12.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Nov 2025 22:12:58 -0800 (PST)
+Date: Fri, 28 Nov 2025 11:42:55 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 3/7] rust: cpufreq: always inline functions using
+ build_assert with arguments
+Message-ID: <zis5k4oo3kq6dykzm3kav7rlblqvvnk43mrcvlwyxxfgwbpmjt@6r3f5432vr45>
+References: <20251128-io-build-assert-v2-0-a9ea9ce7d45d@nvidia.com>
+ <20251128-io-build-assert-v2-3-a9ea9ce7d45d@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kiscT5euAUjcSzvxMzM9Hdj8aQGeUN_pVF-vHf3DhBuQ@mail.gmail.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI4MDAzOCBTYWx0ZWRfX7WD0vp6kSD0B
- p0mc8zKt8ASwYzRvtkQQokThaJRKilRLPqTu+4Xnuske2abwpcVzXTkq10NYv49J3YriMY1yycy
- GKM2HATnUx2dAO4YJNLCX2e6ihFmXougPWVs/9+6/Lm29PrbC+Il5no1KFRjUS1o91vkRS5E6WU
- 321A74YiRpIPHBtvaBCx9HoQcbb8JvhBEcd4N+JxcUgCxMUQO2L86C85FKq5KZwPt1afDETYl9g
- jVrG/s9+2Ql36MuGV46I09+gLqEXnCTX+1bvoaWfhnKir7ormSq8NELhvNLka9LDIHB4D6GBE/y
- deIoo+w2wycnCYIJFdx
-X-Proofpoint-ORIG-GUID: VKu4S8N17n_NUvlAlyEmn07XLh5oXiRs
-X-Proofpoint-GUID: VKu4S8N17n_NUvlAlyEmn07XLh5oXiRs
-X-Authority-Info: v=2.4 cv=cvGWUl4i c=1 sm=1 tr=0 ts=69293335 cx=c_apl:c_pps
- a=qkKslKyYc0ctBTeLUVfTFg==:117 a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Ikd4Dj_1AAAA:8 a=zNjv603lqQ7L3aTxpD8A:9
- a=NqO74GWdXPXpGKcKHaDJD/ajO6k=:19 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_02,2025-11-27_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- bulkscore=0 mlxscore=0 clxscore=1030 spamscore=0 phishscore=0 suspectscore=0
- adultscore=0 mlxlogscore=365 classifier=spam authscore=0 adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2510240001 definitions=main-2511280038
-X-JNJ: AAAAAAABk2ptVXwQoCElm2tAnFJ1AV5hnD++Yy8t53aFUZxFcNB//0N9/+rWLmFQE9/L/AZsSCiqplk4MnSV2Xt3Hh2sNBx0urvKu/K1Z/ugTQ/3gd0VaEmLJwVnY7HJMq7CLWQfzAyjjFMZXqVbBpQmX0L/xlPOCi7vhWD+NokjLBDsRV/LhRAwoQjKeAu1Wn/EReGQKtinhzS9Ok5iqu49stFOcJlUifUWIWGGzwI3CrWZWaUw0SEkkujO9rCqpk1yyeEHiR+KYypchpuMoOiRGrKhGO0dO8Nn0NvySWhgVoVv4prPIcL+C4dstFSWgasNGmSVWzyqEjNhXTJIT+roSxBi11xjmR8KjNK4Qg2T6TuG9sDJZkMftvRDUfF/IFxh2Mnbg5ku7n5TjaRHbEoBANOFMIoTFt6Cmxqo5j0OjPMVLvEy5MxMBsezwhdeyupFGRyNFoZ7aXQWy7UTpqb2hiKOXT+NNLdZidYuUjYwlf/AMNumqwqOTKzFu2OhNFYJJJhqRVib0ibf3hGhMK2IIAxILjm6NFidid7/4GGMfkl2wpx+fXmq2Akv9TsHGRl2J+FHZVPITPtrDJRMA764e7l9kbws7oemmalltdB7s3V0xwKbwUKgCYlTlneLMEhw1m830AiMBOimVHGhOCBdf7TrsFGWHzQ=
+In-Reply-To: <20251128-io-build-assert-v2-3-a9ea9ce7d45d@nvidia.com>
 
-On Fri, Nov 28, 2025 at 03:12:13AM +0100, Miguel Ojeda wrote:
-> On Fri, Nov 28, 2025 at 1:29 AM Alexandre Courbot <acourbot@nvidia.com> wrote:
-> >
-> > Ah, indeed. In that case, can we make the if arms symmetric:
-> >
-> >     if let Some(sum) = addr.checked_add(PAGE_SIZE - 1) {
-> >         Some(sum & PAGE_MASK);
-> >     } else {
-> >         None
-> >     }
+On 28-11-25, 11:11, Alexandre Courbot wrote:
+> `build_assert` relies on the compiler to optimize out its error path.
+> Functions using it with its arguments must thus always be inlined,
+> otherwise the error path of `build_assert` might not be optimized out,
+> triggering a build error.
 > 
-> Early return style makes the happy path less indented and is more
-> consistent with the C side. However, here the happy case would be the
-> indented case, so `let else` would be better:
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  rust/kernel/cpufreq.rs | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
->     let Some(sum) = addr.checked_add(PAGE_SIZE - 1) else {
->         return None;
->     };
-> 
->     Some(sum & PAGE_MASK)
-> 
-> Cheers,
-> Miguel
-> 
+> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+> index 1a555fcb120a..df5d9f6f43f3 100644
+> --- a/rust/kernel/cpufreq.rs
+> +++ b/rust/kernel/cpufreq.rs
+> @@ -1015,6 +1015,8 @@ impl<T: Driver> Registration<T> {
+>          ..pin_init::zeroed()
+>      };
+>  
+> +    // Always inline to optimize out error path of `build_assert`.
+> +    #[inline(always)]
+>      const fn copy_name(name: &'static CStr) -> [c_char; CPUFREQ_NAME_LEN] {
+>          let src = name.to_bytes_with_nul();
+>          let mut dst = [0; CPUFREQ_NAME_LEN];
 
-A wildcard entrant to this conversation. We could do a match instead if
-you all might prefer that?
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-match addr.checked_add(PAGE_SIZE - 1) {
-  Some(v) => Some(v & PAGE_MASK),
-  None => None,
-}
+Lemme know if you want me to pick this instead.
 
-Something about that match syntax doesn't appeal to me though. I think I
-prefer Miguel's suggestion here where we flip the happy and sad paths.
-Make the sad path the early return and happy path the default. But I do
-see at least a couple of `match` examples here, so it's probably worth a
-mention to see what you think about it as an alternative?
+-- 
+viresh
