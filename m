@@ -1,91 +1,87 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CB0262FC1
-	for <rust-for-linux@vger.kernel.org>; Sat, 29 Nov 2025 14:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214884A23;
+	Sat, 29 Nov 2025 15:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764426669; cv=none; b=VRAguTJPSqnvXunsOr1irjXtBt9O1DqH9/OW4n4UQyGd4Zme6CJLizbYuYDvlnUQhYJ1nmhBZYHNaKZKHKTeiGbU23wg8DkxNslsyEKoGmEO08h/pph1G3rfNtUCo2LhCgdv38wAEFjhfRAIaVTdwrOCmzqKqHEm0Eku88l3yj4=
+	t=1764431201; cv=none; b=iR3luxvLb19riBvq9hDpyx4RBh9jqdd7415o8p5nH6gxfXzNEmGfUM3xQRXzQh2LxqqBDBYpCaS9z+p7dRg5Y6BpH4U6TqHuaJ3cW/xx0GJ5KPooZhQGDUbZB1p1CrUQQt2h2mI27uwbz/+5+zacjFSSP08lYZ7FPwc+ns+FNzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764426669; c=relaxed/simple;
-	bh=yMsbazQINn+Ap/ydJGs+KwKtfgjlcNUADEg2wwTJeFI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WDsnUPZSJJFwPXK/Ycn04Xt2c/1gbA+jrkaSj2JyASEDWel+Js1P4NiJzxA0bWPTFHRg6LhC8vagxzyoPNFdkbpLZUXGRnGKc1SB4SdN7LVwnstMbjZJReLh+oo8qsitKVgCBnPA4bWWwZ9c6H/l5q6gdIW2LLdqGH7b45/PP2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rpm29hHm; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764431201; c=relaxed/simple;
+	bh=Pu228IKjjP9wfLyw+qoHdP2x873bedNQ6c0tn8bGeJk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FQS1bNVyObbpX8EA22NuH09e4+kGo9iF72sUsbPnlZXdv7xA1u7ar98IqHnlo3xu1eD08hCcIH7bdb/UhJqVMuuLUz1my/tHc0HXhAbZKevm6XXFRTQg48tehDMjQCYyLcwq8t9mqxjS+BvXk3YOm3kKXBbOlH3Baxf3z2MzuZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=dw2f4KLz; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rpm29hHm"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-297f6ccc890so3587455ad.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 29 Nov 2025 06:31:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764426666; x=1765031466; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yMsbazQINn+Ap/ydJGs+KwKtfgjlcNUADEg2wwTJeFI=;
-        b=Rpm29hHm2bd7afCT+++ebk5sF3Je+SB7EmZNFzObqXUYOIbtE80+pSFbpndafybN5x
-         3lknfIhynyi+TWMiNYVsC1xmd2s/bei1lvXQ28g97encbv7Ise24v0aDdBaZpCc5SAoe
-         qnCBfUoWCxNkqe8fs+Es9iHLdBEwEm8LEIvJWE17Gf7RASvkYRm/7Vnwlhx2whcE0n5z
-         qtO2eNUOeR2JQ6ioyW7q3iUbBbaoa8eKh6i3/b/qpC5GHNAUozQnLEw3TAu8Vcjo+d/5
-         /DsHXHpSpVd3q0lsS7YInhODImzWVI1S061zYyRabn72dY0eozRCLCPZNm2l1lXsa5Pm
-         UKmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764426666; x=1765031466;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yMsbazQINn+Ap/ydJGs+KwKtfgjlcNUADEg2wwTJeFI=;
-        b=NWPWLV8gj5i5ewwjO/UQrxZ2/bnohE8UyAaLNEO0PfmrEJ9wde9WTkBp7jkQ8iWGVN
-         A7LKmTBwTnMRaVwzzZaW0w2QyVlBNUr8h8W8/MqJ9OOpEAQLgKbw0ZA1Yz5Ry0kFQGhk
-         PEqm1HOzunIgollFxtMJ+4RB60UgA/4TcGjzOUr71uPQiMaQFMS6TnYFSdqlLGuT3M6F
-         UIfsnIzawX/KXGndaWqouELeAcxhuQq8tHvGS1dE7cJ0zPxIdL96UMm11oyVMzyXQM2F
-         YW6i7ERAHH0wPZUS9NFVlrsnLL/rw8R8bwXB1pZ7UL3NqP+JBcqW36yv9ecm0s6Ee/iI
-         Ha5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWY1hI6QqEtvwrMixKRXZrGJ2p9LmHLgLzEIAbFQK8LHxNgYwq79m2pYO6/prL0nMHyHgYsSTRnUnaS/puepA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCEqnJ76Chf+1O0I+5KLreFRRNx9B9B2xduRIo2u9S9xpqdIMK
-	xzw1OfOkP054ems9vR7KKqzuNFmcIL2hml4MCQDubOhAptiyPxhsD8qSOz7MvRKL4ug3q62ov+d
-	ikz9T73lK+LgyyJMnha0w0lsGVhVNJ6I=
-X-Gm-Gg: ASbGnct41Rsf5DmOOD0iZSRZqa/7rdxVltyHfarvzuGrS1UxPxqO3LkK3VWm5xiO0Oc
-	VdFoTZPa/2GCnkcGfJgJ8SEv/d3FfjcrSeoFQ9xrXcBx+iRrpBvt6cU79Gou0VsNxR7qBiBYZvK
-	ASbryTHHRqWB4qxiZtnutd9nSoGEAwBre8GDJvOG/HoFdSP8KND8WDC/Wvvo6oenxMn30Gw9h9q
-	GtTKeh/xEWssDANLdoJCOMcBiDQQrXgwtMaTBIgH7gYWWYW6KntKKSZRQPM5rN4+k2stzn9N/6v
-	qJk/SGnbltY8G7R2fTzvzC1Q2eP1C+kk4nqw8rJ6usEHs3UTLE8Llo0MtXGr3ZOi0WqxJiLBQoF
-	F+MYF+Gi10li45A==
-X-Google-Smtp-Source: AGHT+IHcOsjVFY9XJX2BiFAdmsHJ/f20IbX6P9+zd7PQm2nCPKxCB5i/K/WGxRB0xol4Ze03XmNGaR0r/rbYJIpjsVo=
-X-Received: by 2002:a05:7301:4084:b0:2a4:3592:cf8b with SMTP id
- 5a478bee46e88-2a724bbea18mr18350746eec.2.1764426665752; Sat, 29 Nov 2025
- 06:31:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="dw2f4KLz"
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 41777406FB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1764431199; bh=DaBm0dYX+mOjDsOP9Q9L2WjGNrzHN0Sjw0foPa6Hwdo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=dw2f4KLzwqvdR7OFLmCqrDhwjaGtUvdE93M9f8AAV6l4c5bThMcK3SSloeljCpDmQ
+	 QEtdFnfTlKhyWzfoO76goajaxkkQjJJn+ctUFBjHHq/0TQy923XAuxC3Z34xCRhAqv
+	 BTRdDZiOk9DapCx/iRsimJteUOKRRS/616RC+STJQH1xpU/3wb6VRUCXnbFxl/SPW9
+	 LDF7lhmgNsrqPjomkeM9r1q6ReYdEHMVeqkJV84mibpGOuVpZyJLYy3rp8XrjmowDb
+	 f9YiYufKScfdP3NUAXrv6p5RqNhy/3WduP/5nVXNEmoE4kRGTVQTl2UWK3GRl1TGYV
+	 FK6nZDOaybkhQ==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 41777406FB;
+	Sat, 29 Nov 2025 15:46:39 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Linux Doc Mailing
+ List <linux-doc@vger.kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Alice Ryhl <aliceryhl@google.com>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Carlos Bilbao <carlos.bilbao@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] docs: makefile: move rustdoc check to the build
+ wrapper
+In-Reply-To: <c06b1834ef02099735c13ee1109fa2a2b9e47795.1763722971.git.mchehab+huawei@kernel.org>
+References: <cover.1763722971.git.mchehab+huawei@kernel.org>
+ <c06b1834ef02099735c13ee1109fa2a2b9e47795.1763722971.git.mchehab+huawei@kernel.org>
+Date: Sat, 29 Nov 2025 08:46:38 -0700
+Message-ID: <87sedwq1sx.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251129134834.34559-1-atharvd440@gmail.com>
-In-Reply-To: <20251129134834.34559-1-atharvd440@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 29 Nov 2025 15:30:53 +0100
-X-Gm-Features: AWmQ_bnPoDsTRNk5YATBKX1OFgMn8zdQLMedx-ZaZ6SNnvYibRdyQixueZZy5wk
-Message-ID: <CANiq72mSStPR2Htq3aRS9FLbiHALJP21tTSgiwDfQJBR1zHr4g@mail.gmail.com>
-Subject: Re: [PATCH] rust: drm: use `pin_init::zeroed()` for file operations initialization
-To: Atharv Dubey <atharvd440@gmail.com>
-Cc: airlied@gmail.com, simona@ffwll.ch, dakr@kernel.org, aliceryhl@google.com, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, daniel.almeida@collabora.com, 
-	lyude@redhat.com, shankari.ak0208@gmail.com, lina+kernel@asahilina.net, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Sat, Nov 29, 2025 at 2:48=E2=80=AFPM Atharv Dubey <atharvd440@gmail.com>=
- wrote:
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
+
+> The makefile logic to detect if rust is enabled is not working
+> the way it was expected: instead of using the current setup
+> for CONFIG_RUST, it uses a cached version from a previous build.
 >
-> +
+> The root cause is that the current logic inside docs/Makefile
+> uses a cached version of CONFIG_RUST, from the last time a non
+> documentation target was executed. That's perfectly fine for
+> Sphinx build, as it doesn't need to read or depend on any
+> CONFIG_*.
+>
+> So, instead of relying at the cache, move the logic to the
+> wrapper script and let it check the current content of .config,
+> to verify if CONFIG_RUST was selected.
+>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>  Documentation/Makefile          |  6 -----
+>  tools/docs/sphinx-build-wrapper | 41 +++++++++++++++++++++++++--------
+>  2 files changed, 32 insertions(+), 15 deletions(-)
 
-Spurious newline?
+Applied, thanks.
 
-Cheers,
-Miguel
+jon
