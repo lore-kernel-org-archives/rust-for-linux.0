@@ -1,143 +1,137 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BEC182B7
-	for <rust-for-linux@vger.kernel.org>; Sat, 29 Nov 2025 06:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F693081B1
+	for <rust-for-linux@vger.kernel.org>; Sat, 29 Nov 2025 12:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764398808; cv=none; b=PMuHZk1mWqOowXFDXKTyfZAxeZ4oHdz735m5it1gSJ/ruuUu0IMl2cClZl46vtkuKhMCzm9B+tzAstuDeo0/VxLVAUow5pzQWq2Vh4aGwXMVDm55Lzs9kKxr+VQQv5KsThyzLtVefU9h50MJnEKCN6aWFigyP1q40ByZ8x7IhLU=
+	t=1764418528; cv=none; b=q+ufMMcPKsGF7/GcSxkO3ImTSF1zhlqjrIUFjAAbXeDvcnCz4465L6J4u9Jn2hYny1xs/axqNUrvsQf01XABSOIxUy5CAOTYr4cCXjAPOXBHOr2JalUNieK5Or3bInB960fTRgqClcJrR7pBFCWadP/IAEyhndLmQDYklK1BH2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764398808; c=relaxed/simple;
-	bh=vrVUizHsfVQHvvuJCRyEp/ZVtTOP/4QZcYhctW8cmkg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sLSGW6ye35BtehRpztTd3XhAONALw9LrLBa3DMLiEpFsT3IVTiLhkn5jd3BTjWj/9Xl2aT+Ob8BErV0ouvWpUvtrKnwawEaTUKfF1ZGEfZXXxAckW5UZMiKwqeEo+R5RQFUPc3LIm53dHi+RS9M+h6XaBwg7stYs8fsADHmiCig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Btt/I2aa; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1764418528; c=relaxed/simple;
+	bh=xY0uWZHryLCto/bq7hjsFu2HnqYzhnHE9bfKCs5x3yw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AgKPpbwMOGhar8BThFWuB+pjLI+Nv5jxx5PpYCcjOEKUWnjOvy65VF++rl9K87GVExXh7L3D9xGg/L/d5CQ0EWaPv/SWANGdkaTSVWzPe8hPmvcqa1n45KuEXfBG8t87XnkZyRceUZ38+l3jozgj5U6FrRtXLY3dEN5W/lpf7Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DP+0Dr7o; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Btt/I2aa"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so3844977a12.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Nov 2025 22:46:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DP+0Dr7o"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7b9215e55e6so1805277b3a.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 29 Nov 2025 04:15:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764398805; x=1765003605; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RZ4Ac5J87qRoc0UDjhik9FaI6ERJsI+1N5VMhTD0tKU=;
-        b=Btt/I2aaAGvInzHy+DiySpdfwhXYHsHUmzxVcuoxm4hqGrE3QFhdwqcE7uuvweXWAC
-         mw1+OQssvBnEwxDugVNs/G3nxjhBXUu3Ao9CDVE0HxFe1GRswA/uxekqFGpNczHdpNHV
-         7IM5dTNFJMbev5Etz3m33Hkk7ptUplGTCci+rouGhGrJmVxKl0YM9d8XaDrkiEgE24/5
-         3LPjSI28q+tIMBetOTm7hapOlTPnaUZR6rnEpwgveqN7LQmUI/dF9Luew3NLv3OUo7ma
-         73QCnzUizrEnHYPwAFD0jhud590Q57aHC/EFymIFfBw8fuV+BK1PZ9NfP2n39/TKwoaF
-         MjIw==
+        d=gmail.com; s=20230601; t=1764418526; x=1765023326; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IHfM4Xy0kC8kiXxllr4QHorgmLl9IzarnsBKUByCQ+4=;
+        b=DP+0Dr7ofDSoqRo5y7Ks4lIIwq/V9G3dMBar9Pb9zr03I+tjGr7ZwVw0c+yiCVeyff
+         NlexUiQtOwo9kFT5c6RRHfCTd1rmGpRDi3FrYto+t1OXREORIinuj9VZ8JVjT3osG4Oo
+         W24Qcp5TkuZDUwwSD+E9VI4RFXZGzoAQORNw+iAWR/tbrjDHt7vw1i1Pv9pgdxVg32gp
+         9pHZB0iAQWEc+JNoNNEvVrx+FjWCHidzFLwSWRxZBh6pXlpFJKxUEAurVvSzmCtIXrf+
+         0iql4LHLB/Z8R3WIxwAK7e6KXNhDp+jNt9XIRuAIbq8pPwtnKsmq98YDRHB2dAEGB3o7
+         yjEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764398805; x=1765003605;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RZ4Ac5J87qRoc0UDjhik9FaI6ERJsI+1N5VMhTD0tKU=;
-        b=h9A6nixFlDytirLvvkSOm9hWi+L9c2qekJfXR1nS/cFj3QoTE1BVIiye9oAFE44+6W
-         tmSXl5aDuGRc4ULSAYYVg/u5ShWoeQhPVmKLdpJWr05sGCMXOUYJH92JzKg5maOuSYE+
-         jXnf/Dwym0aimGRJ0sJbA644TLQ2TTjKHXidHz38QV3wXzsQFU1cosTktIK9SHifhd4o
-         vMDD4PHTN88PuVOe9Uy3x+/phBsqkwT8tqB8RYz5nz/aH6HOYBUaNOV5O8QiS4183ic7
-         gE9VitBD1GhPFpo2ehXkbtWfkaGvMe9NdgivrWEk/AJ9esp4sxxEtxjU8CnIDTn2jQUQ
-         0nog==
-X-Forwarded-Encrypted: i=1; AJvYcCV9v5UHu/uXZunBl4iP/I65cv3YZ6IKRIUTWLz4lZQkziWpNMfawUAnTBTvekKZVs2PBbtC0ol+9LiufuQvIw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSIxiCOfxVFlhoNCn3xafpfN1NO3/HHiGWidaBFFHXAifc4FEC
-	g+QeWY4lrytSnfjw8wb4BiKikdhEIo/9csw8rVLGjZ/9X+4vu5y+/Giz
-X-Gm-Gg: ASbGncuaTwK8tBEjr2xQvJCQQcbIhA1/zzhT/QDZ0VUNAoFxrVS/Xsrzfs+3LURlbeo
-	FLhIqO5efZOjp87xYGu68W5PMWxY38lx+HnMUI2XucxMCyNkegUp2i0FkJzvotJpxkUqyLSwtgZ
-	lB/bpfs8ah9Xv1G91TAjRalPchnB3l9fJ/SSEFglADwOPJ/bGTS62Zf3DJQzYggnOSCLj0qroHT
-	voKBDHrAZtZGmDd5fDE9yBLbF+DSqrQ4L2YJwLZoWzxvHwtt1nSdIp0JeriNfhwP9lvRUUgUguf
-	cBTQ+08UATfDYPUEbmH09OH9ZrXylBcV11j7QFu4SBfugidlSojIIxEywsKugq7ZcX8H2zSQmnN
-	AVkjZWCL3ziqkuSjin98/CpDWuQBFFr5l9XRb14kxeWaCgEhScALFgKArfxK6F7JGkGzgN1bubL
-	vj6noCS5BSKMFyUpnmzP8GXy9XTdRtySQto2GIvzbEuXLaiupuTx0vmibUg9EkEgUcZwCRSlUBX
-	kVxSOn5ZyaMkSHb5uX22bkZ5WKgtL+cwTikpuJ/KuUfeQ==
-X-Google-Smtp-Source: AGHT+IFaL9iCf6pmMxfebNASmaVM/aMapXzXHiOLDjjSW5S9hudj1X9EP+LNDGnIQT4cuXwKA8I2Ag==
-X-Received: by 2002:a05:6402:3550:b0:63c:1073:4a69 with SMTP id 4fb4d7f45d1cf-64555d2aebamr25449286a12.34.1764398804943;
-        Fri, 28 Nov 2025 22:46:44 -0800 (PST)
-Received: from ?IPV6:2003:df:bf22:3c00:bd7d:4644:53b7:3323? (p200300dfbf223c00bd7d464453b73323.dip0.t-ipconnect.de. [2003:df:bf22:3c00:bd7d:4644:53b7:3323])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64750a90caasm6159605a12.11.2025.11.28.22.46.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Nov 2025 22:46:43 -0800 (PST)
-Message-ID: <071c5fcf-bd7d-40da-ad7c-c0edbe780671@gmail.com>
-Date: Sat, 29 Nov 2025 07:46:40 +0100
+        d=1e100.net; s=20230601; t=1764418526; x=1765023326;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IHfM4Xy0kC8kiXxllr4QHorgmLl9IzarnsBKUByCQ+4=;
+        b=o675XysKTRQLXnne95/sIvJK3rrDDjrotQm4AxWhC1IGdPsuHBWwq6b6jldYXcYjv3
+         iV4PARcBO9yp+YeMRy8q7wQoYgRfQupQ0HRfw4LdZ4umSqQWoqcpbJO1G8gRZn9Dxhxk
+         m77IjA/F/HDfeyxjr3vthyFfP8jvkzHUJBllsRCr7Ynxyii0eJQfUf8u1/9HD3ZlxZEo
+         mIp62+aJr7seanPC8P86YyHBiTiUXWtwo2qTm/t9yZP5SWRc4gDGzhGQoHnx6kVjdv1h
+         VlpDyCwVzlYryLAK1qjGotYn9x20BGA9o8H68K0JgZ+ptf2iLwyBFf7ieVlKMWocHYpF
+         1gog==
+X-Forwarded-Encrypted: i=1; AJvYcCWCO2CfrPfmkT/X5plVyxc6evCLMJ1KAjkrOxZ05dMGNOd0uU8fK1AgqZArk7ywvoAJV8GYj905AvokhRcyPQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSsUxi2ROPCi9jAKij/MZ6efRj9IW8DJ22vrVUJjoaQ/qm6m7V
+	fowFf1TNdauxCdAE//ERszSY2R0wLlmwpNJh4TrBo7u0JSzm28SBMmcj
+X-Gm-Gg: ASbGncukV68tz5GHN2SqaMywHQ5VxFhEI+ndr41HRje7BFlxsf3J0entiTsSGmKb/ot
+	eu8msycDWya0kLCE6OsmY9WwdYeUpEvIByKGBWos/uLj+Bh5eUAbzcLsjJ+nb+znQMx02n8awuh
+	JWbQqwX+cE01bhq23hO1pHuJIYTDBgVDgcTTIgCG3HsWxnN+7fUhNs2Nk/YAwgUfAM9EvjjIhtX
+	goJh8f4geV9RxEnVFDKAEdfoF6/ELey9xJtNvZIw8Fmq8yrjvjU2E3NLV6L0mXkOIrYRoKQ/ulq
+	4UVhh5096GzE6TpmPid1gaYWi+klZBjtplZlIWOqF1ub1K2fFHjgG7oXzuWC3ao18zuhFlZopqc
+	VE9gaNFMr3oi/GAuaHswchB720YD4Rm5SX6bpHmZQT7qEGb/4WNZGxfVKW4nT9x/CfPHgLuukKb
+	5CI61CW6pJ2bJNSl8PaDTxmPSTFYoEFB8ZBIBlNFZ1lL0ko5/5VW5q+e2fVzSLkfF0
+X-Google-Smtp-Source: AGHT+IHuaKornl3F87kZqBy2wb2ySuqsQ81vIH+V1Eri71hS2x8Lag2ULOa/Xbl3KuIq1yg+grXA6Q==
+X-Received: by 2002:a05:6a00:1a8f:b0:7a2:8308:3c8b with SMTP id d2e1a72fcca58-7ca879e80a7mr17623751b3a.10.1764418526157;
+        Sat, 29 Nov 2025 04:15:26 -0800 (PST)
+Received: from atharv-HP-Pavilion-x360-2-in-1-Laptop-14-ek1xxx.. ([103.216.213.160])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d15e7db577sm7858615b3a.31.2025.11.29.04.15.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Nov 2025 04:15:25 -0800 (PST)
+From: Atharv Dubey <atharvd440@gmail.com>
+To: arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Atharv Dubey <atharvd440@gmail.com>
+Subject: [PATCH v2] rust: miscdevice: use `pin_init::zeroed()` for C type initialization
+Date: Sat, 29 Nov 2025 17:45:13 +0530
+Message-ID: <20251129121513.20738-1-atharvd440@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: miscdevice: use `pin_init::zeroed()` for C type
- initialization
-To: Atharv Dubey <atharvd440@gmail.com>, arnd@arndb.de,
- gregkh@linuxfoundation.org
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251128162337.12082-1-atharvd440@gmail.com>
-Content-Language: de-AT-frami
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20251128162337.12082-1-atharvd440@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 28.11.25 17:23, Atharv Dubey wrote:
-> Replace manual zero-initialization using
-> `MaybeUninit::zeroed().assume_init()` with `pin_init::zeroed()`.
-> The `pin_init` helper provides a safer and clearer API for
-> zero-initializing C structs without requiring an `unsafe` block.
-> 
-> Link: https://github.com/Rust-for-Linux/linux/issues/1189
-> Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
-> ---
->  rust/kernel/miscdevice.rs | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> index d698cddcb4a5..e168e9da8f4a 100644
-> --- a/rust/kernel/miscdevice.rs
-> +++ b/rust/kernel/miscdevice.rs
-> @@ -20,7 +20,7 @@
->      seq_file::SeqFile,
->      types::{ForeignOwnable, Opaque},
->  };
-> -use core::{marker::PhantomData, mem::MaybeUninit, pin::Pin};
-> +use core::{marker::PhantomData, pin::Pin};
->  
->  /// Options for creating a misc device.
->  #[derive(Copy, Clone)]
-> @@ -33,7 +33,7 @@ impl MiscDeviceOptions {
->      /// Create a raw `struct miscdev` ready for registration.
->      pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
->          // SAFETY: All zeros is valid for this C type.
-> -        let mut result: bindings::miscdevice = unsafe { MaybeUninit::zeroed().assume_init() };
-> +        let mut result: bindings::miscdevice = pin_init::zeroed();
+Replace manual zero-initialization using
+`MaybeUninit::zeroed().assume_init()` with `pin_init::zeroed()`.
+The `pin_init` helper provides a safer and clearer API for
+zero-initializing C structs without requiring an `unsafe` block.
 
-While getting rid of the `unsafe`what's about dropping the `SAFETY`
-comment as well? As done by Benno in [1]?
+Link: https://github.com/Rust-for-Linux/linux/issues/1189
+Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
+---
+Changes in v2:
+  - Remove the Unwanted Comments.
 
-Cheers
+ rust/kernel/miscdevice.rs | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Dirk
-
-[1]
-https://lore.kernel.org/all/20250814093046.2071971-4-lossin@kernel.org/
-
-
->          result.minor = bindings::MISC_DYNAMIC_MINOR as ffi::c_int;
->          result.name = crate::str::as_char_ptr_in_const_context(self.name);
->          result.fops = MiscdeviceVTable::<T>::build();
-> @@ -421,7 +421,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
->              None
->          },
->          // SAFETY: All zeros is a valid value for `bindings::file_operations`.
-> -        ..unsafe { MaybeUninit::zeroed().assume_init() }
-> +        ..pin_init::zeroed()
->      };
->  
->      const fn build() -> &'static bindings::file_operations {
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index d698cddcb4a5..ba64c8a858f0 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -20,7 +20,7 @@
+     seq_file::SeqFile,
+     types::{ForeignOwnable, Opaque},
+ };
+-use core::{marker::PhantomData, mem::MaybeUninit, pin::Pin};
++use core::{marker::PhantomData, pin::Pin};
+ 
+ /// Options for creating a misc device.
+ #[derive(Copy, Clone)]
+@@ -32,8 +32,7 @@ pub struct MiscDeviceOptions {
+ impl MiscDeviceOptions {
+     /// Create a raw `struct miscdev` ready for registration.
+     pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
+-        // SAFETY: All zeros is valid for this C type.
+-        let mut result: bindings::miscdevice = unsafe { MaybeUninit::zeroed().assume_init() };
++        let mut result: bindings::miscdevice = pin_init::zeroed();
+         result.minor = bindings::MISC_DYNAMIC_MINOR as ffi::c_int;
+         result.name = crate::str::as_char_ptr_in_const_context(self.name);
+         result.fops = MiscdeviceVTable::<T>::build();
+@@ -420,8 +419,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+         } else {
+             None
+         },
+-        // SAFETY: All zeros is a valid value for `bindings::file_operations`.
+-        ..unsafe { MaybeUninit::zeroed().assume_init() }
++        ..pin_init::zeroed()
+     };
+ 
+     const fn build() -> &'static bindings::file_operations {
+-- 
+2.43.0
 
