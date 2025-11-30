@@ -1,101 +1,113 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6361F2222CA
-	for <rust-for-linux@vger.kernel.org>; Sun, 30 Nov 2025 17:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5CE1D6DA9;
+	Sun, 30 Nov 2025 19:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764524920; cv=none; b=cm9a1Fb49VgIvJGfSxnZMQ1wm6paZcE+h7Iidnt89lxGSKDbt5dK9PGX9roR2Jsv9RRHvqmIy3zTVNifC1ghBRpDpSx6Pj4xfJChXPgmgQTIuPLeb14zJDQEPe3zS3QiSyYWfB3nOZFHSk5HUyGSBrqwe4FUT5ajdBOMyP/ZWhw=
+	t=1764530634; cv=none; b=EqSaIr3a2sDDGe/DR8Y7V2d7wqFOVGSRNJxd67fh+BMmkO6bzCxBUAV8ciXYxoJYTevde+fRsAy/ebXgLtcWqRh7lZY6+116XCDlKzYl2P6z+PviCtXTSOLOnfXpgxuXP1WHaLejPJ2MKPLB1N6yOKBTSwDU2PngBfM8wjgg87c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764524920; c=relaxed/simple;
-	bh=ENHKHLuSnYs2YkjTDKE83XnIxIkg6P6Da60IQZLgvgM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WGHZ6EoXLxWy9706IYEmykOvvrTAWpUbCe8vb5fSUhEnlxkkDV3iIs7xNUAX+mZz9aSB3LrSO1wBHMpaT2iYdGNxj+8dPG7BTRiN1r3kh8YbWB82LTPoYiTkhckvZFV9KZLO2Qs5nchXmIqW7dC3f7x/VUUYNGlu+zeT9NSq+LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MuhpQOOO; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764530634; c=relaxed/simple;
+	bh=LfyJtq19fCJsTFJlJrjsLsvcphuceOuD2EkZHb/GLjE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GF0Z33u9YXoDTGbeGtkNd9eORC7+2D7M7b32TqfBIgWShvyIqxL22C8fycbZCEDHqtR4UvvFCU1/JML1fkP3uikXusuZq79HHGsC/12S0T6tLbrBOC6HKX6UUN/BNtBpI7I8Fswcnxdz4glfVMomVrNeBNY60ERyfVKGSr02V30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=dJVtkoqj; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=YmfSd3xh; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MuhpQOOO"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-295351ad2f5so7259905ad.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 30 Nov 2025 09:48:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764524919; x=1765129719; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ENHKHLuSnYs2YkjTDKE83XnIxIkg6P6Da60IQZLgvgM=;
-        b=MuhpQOOOp9bCV6FT+SOX2eNgG1GmKiCvj3O2Y1irOcb+ubbCvSROEppMtusXev0CAr
-         91s+1NFctLP/8oRHEph5EQizsDQPT/8oHpB81CxvLIXIaV2fm70SUenmakniDQ/8mM2e
-         e8joLg/yRsRp8z2hvRwcU76K1kGQCrjiI8JdZEtjrCSqCDoeYCrOz/llMY235+CYDxzc
-         ODsocW8Qe58PcrSx4WXmHJMILBv7bDHehnWPHwwlj03Cr7Saerg3h34pOLwqnqfalCxJ
-         lNWbhTan67BUQVy7KRNLSm+mMJ/GBg29Z1rJOjeqvurF8SCIh5s8JMB3f+DzPOZ2bQ+7
-         s7pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764524919; x=1765129719;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ENHKHLuSnYs2YkjTDKE83XnIxIkg6P6Da60IQZLgvgM=;
-        b=S9KIrW92DJ2/UoByzFF3hNJ5iiiyIjvNnGbZHPVFusz/H3rdbFsLNyrVAPnRZByN0R
-         OQAETOhhryTiwKN801wh97TDr9oqbY29Sv2Cm/Dp33ILnzcksVYIhd8FhdRhiLN9E4H4
-         4RxQEdh1oBkKOrUELzZs9qT2VS+OacjYWjvdnKra058MLuGIkldkHlDFmDN1ggDaDjVk
-         1naR6lSQGnz9wYYkBBUcZvWlqPIu10HJ0eRJXjlruJhiWNtcchrb/V+TGTiF9O8iqMu/
-         Xu4SxdYGvfpA58JYlQdUd5+0vEdN7l6iE1eDAOuBp+CYRHh+BqqGJczMeYrJWnny2M5I
-         RBiA==
-X-Forwarded-Encrypted: i=1; AJvYcCXUVHab+8BgzpLmEihEsTdVxYJXt2YJcIT0QBvEizmeYG0BefxFIibea1mj8brRkLIfPNLd9fbwWgRvvknGpQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yya6lSpQ4az5lqXLsUfGiimMULa/b4YHS2M0rEK1YiiS4cYZ3Vk
-	SW84WFdN4W/lc5vJQG2rzg30wRYsYkPeaocncO+6ijtAGpIZjvuueRvgONpAIebVWMP3GVZGsAW
-	GMGKY1eZY7Dh668tbTV2XQ4zOTTlfW7s=
-X-Gm-Gg: ASbGncvUf8DkGk4Qs42ZcZBRyHHSwN38cZlDc9HBLT7Bvi8GKbidxGJzrRhYnCmpdxm
-	yMlDg/MdNhXHOpmFyRXjIlETRbDCSwCMZH2BBRtqtKjCyIQLP6v9JW8C0jUr4tWAE/kwg0LMsCh
-	N1x5LoUdx+KlAbTN8IUGTW89CqR/zEm46fzKJ4jLy6u1NCKklS+aNLIk5t7nJmCtjXFtx7ozkpu
-	+gf0bF1yhMMQwacxrYF89NQxKpfstlvCy4CNIzmbgsM9x+paaXYqwKJFLwTQicfaBuGg4uOrya+
-	0e95+DDlbWxD/LAZJV3JIjIXl75mEl5MtNNvb+hfZ00VqdnUDw8odab/X7eEtGxDi+Si+MR4o/2
-	XNS1TNGjS43AXVW4gUToW3u4V
-X-Google-Smtp-Source: AGHT+IHaQbljRW3JXf4Me6UvkChwwjqlnlN4qWO8cOba3pFcBQeaqqHkhKuGpQIRmmBre+7aP8vHjxb9nEu324zXvPM=
-X-Received: by 2002:a05:7022:68a1:b0:11b:862d:8031 with SMTP id
- a92af1059eb24-11c9f216eccmr22574928c88.0.1764524918626; Sun, 30 Nov 2025
- 09:48:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="dJVtkoqj";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="YmfSd3xh"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4dKGw472sbz9tZk;
+	Sun, 30 Nov 2025 20:15:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1764530149;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZP04gDkooPufSMQBLiXSkYDe99N1J5STbRVLnGCgcmo=;
+	b=dJVtkoqjERnMwCI//dWCJjFGBOWZV1PgFITUphFgje04pFI4SWLa0Q6An+1sTma3V8S/43
+	Te8oKbDyKsDxzv4FCpYml6YZR/vBRpvfIgRZlW7gy5waZI7ddts9Vd30vp2R5eYf6TRE66
+	IqPevzlnbZ8vZvtPsMSu0YBbCbdU9gi82Us7bUXJCuqjBDBKgD/PkIkcadQ0vAxwmwT7Dq
+	hTxk8Q1Bs5zPibC0puyhhdMt5rbLkK9q/i3bDX3V4XeJiFpa043sQ+OxPiKB3OEHV6OZ3H
+	Uf7CPXTdt9PNNGyXRCSjPW1SCOPBgxK7stIqATjN4BnEgXTtUDiS0lduwOXlMw==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=YmfSd3xh;
+	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=mhi@mailbox.org
+From: Maurice Hieronymus <mhi@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1764530147;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZP04gDkooPufSMQBLiXSkYDe99N1J5STbRVLnGCgcmo=;
+	b=YmfSd3xho59ntL2ABoh5rtp3R6sF2NUirCK6E3NCYQaq3pqe40Z6W5ud8CmXbqPOmbKcx2
+	tziiZ0tqoR/BUam+cRwTh0wv6C83K8b2X6SMfMT/W7X8wSbDZpSUwGCk1WMJuLxhHNY8Ra
+	RoPH2bu9TGY3IV00QRwU8FRDRIbvk0pQR6U8Uvx9CaTyBQptjJ0rxRtg6MT6TikJlr2N9q
+	RHkaBbZJbHUQox6wTNSm/f+m6ZzKif2jeF+XuiX206Ny0ZjxLB/Ufq2Kkx95UkFtkR/l31
+	x0bUMGfNL4kpH4aVCD4XSnwjaMad9yh7mFfEJMtCd55Wjr3BAa16gI62NYpB/g==
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Maurice Hieronymus <mhi@mailbox.org>
+Subject: [PATCH v2] scripts: generate_rust_analyzer: Add message to sysroot assertion
+Date: Sun, 30 Nov 2025 20:15:35 +0100
+Message-ID: <20251130191535.77498-1-mhi@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251128-io-build-assert-v2-0-a9ea9ce7d45d@nvidia.com> <0A952509-8A00-48A0-B975-C23608A6048E@collabora.com>
-In-Reply-To: <0A952509-8A00-48A0-B975-C23608A6048E@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 30 Nov 2025 18:48:26 +0100
-X-Gm-Features: AWmQ_bnG_6Xr4-eWihxCptboZrSfawc8mOHoTttjB1v-YXZ-LMcla2ImwpX_8a0
-Message-ID: <CANiq72nSo4vuXc+XW6yynbNvpZi2vJEshXw2zA1RPgSUWwAZ_Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/7] rust: build_assert: document and fix use with
- function arguments
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 72e8bde94fa02b52e33
+X-MBO-RS-META: rqa74k8zoc71if5dy97jciz7coeg733h
+X-Rspamd-Queue-Id: 4dKGw472sbz9tZk
 
-On Sun, Nov 30, 2025 at 5:09=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
->
-> Ah, should this have a Fixes: tag?
+The assertion that checks whether sysroot lies within sysroot_src
+currently fails without explaining why. Add an error message that
+prints both paths to make diagnosing toolchain issues easier.
 
-Yes for those that trigger an error, e.g. the `Bounded` one with -Os
-in mainline soon. We probably want Cc: stable@ too -- it is not too
-risky to add these anyway.
+Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
+---
+Changes since v2:
+- Rebase to current rust/for-next
+- Send patch to all people received from scripts/get_maintainer.pl
 
-However, the tag should be different for each commit depending on
-where each method was introduced. #1 and #7 are not really fixes, so
-they don't need it.
+ scripts/generate_rust_analyzer.py | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-Cheers,
-Miguel
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index d2bc63cde8c6..06c220c9ceee 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -156,7 +156,13 @@ def main():
+     )
+ 
+     # Making sure that the `sysroot` and `sysroot_src` belong to the same toolchain.
+-    assert args.sysroot in args.sysroot_src.parents
++    assert args.sysroot in args.sysroot_src.parents, \
++        f"""
++        It seems like your sysroot and sysroot_src do not belong to the same toolchain.
++        The sysroot folder must be inside sysroot_src.
++        sysroot={args.sysroot}
++        sysroot_src={args.sysroot_src}
++        """
+ 
+     rust_project = {
+         "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs),
+
+base-commit: 8af7a50167833b6b22e30c008bbf95ab3ff1a5fb
+-- 
+2.50.1
+
