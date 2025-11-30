@@ -1,214 +1,247 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010064.outbound.protection.outlook.com [52.101.193.64])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B2C22B5AC;
-	Sun, 30 Nov 2025 22:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764540075; cv=fail; b=Cok+M3D4fXXZQ+joLd51tmtz2jlO9yqlEns7ZzaaChkJUaaog+4I+YAGDSb/8WtNhcCycUCX8WSec3oo64jnhDxK84z+G6lLGJbuWbgo5ac/vZZIoeci3YkoOXBTcFW6U49R8sM2m5A5kbeavriw65jDzf+Q/a/eZjV6q7+8X1I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764540075; c=relaxed/simple;
-	bh=28pn3mOLNlT975tTG0cXw2ED9HZTGoekelQY5UfP1aw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=D9g7kdOduknTdRsGiBQKjgeBWsQXsUVleROa/w+bRNYs/RhTho3ljAkuTkV89wsxseQburVtN9NVLZHSOjEuFj8nrcB974Ese/hNVUkg3xySRDvAo7udGOPq3nsWhSj2a1GrIoe5oa7PK/RIrB97im1sXhu9+AMsp9cxfudLEww=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uEBOoK1p; arc=fail smtp.client-ip=52.101.193.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7AA241665
+	for <rust-for-linux@vger.kernel.org>; Sun, 30 Nov 2025 22:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764540815; cv=none; b=VXVB9jEk1cGC60oQG2bOqyBZlMxqi+Q7kxRf3HZL0h9zHveelx4FwmD505n7DbQb4djdrc74WUqf5af4s1J8XoCUUrfzn2GUqfq5rPjtKYPr1OnwFNxLUfYv3IbtezbLep0CAzhRts5dozZynwVJYM9Oih28jNNCUth5P4snR1s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764540815; c=relaxed/simple;
+	bh=xDLFCOS/A0AfeJoF9WHaJINJxdqoUquBEvZB5FavmAQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=NaICkpr9zq92tqN6vnfuECdgrERMkNVN4/iH3VXdPxJYjl7yf0CKbUzrSv9OSBqn059CZEYjbSMTvu4hmiGaKprTgGjhpdEHFR/QZeK1dTJ4dw02fIQ8uCzElowimZquEx4xQlkytLih+r6nJHClE9wiT34PpocAlV3aq/tFQBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=PlFJiBDH; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uEBOoK1p"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y+n/27au+YD6qomoc1usjgcrdnUdPCBArR4o8xWQc8C9ul0TbJOhocT71lqHzdCQQMvQSs2vHllf/CmqTkiFozJt2cQVQfLWyEDfAnQrcTIcvJnwS5uveBYsgNOnlUpKiZH9wMkN8eUAm0kdNqU9Cqy9ZzunV1pgronfRf7hGk0rL6LAQmodUza2q3cvMdgEP5nDrkn/9zjf5rbIl2WdNX04LUIaB7AGPCfQ7pCNZhi6IV2C8UnA8GXDmyEpnfJn4KpftVm+MKEZrxF6vIeqXQEcydTIFWSWQjPeIw3yiQR+NthRjarJWwA7/xiRRYlNVjk6AY1PNXrO9LA2kFj3Dw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XGRUSC6cmaR4GlA4SEBaQWu/XxToASOyNwnYa2wHUd8=;
- b=Jt6O1s+L6x2oAVLDkqK8DuWvtrqWySYujIR1U9S0Wgu8cgIfXJO1lctfJoRqYbwIuJgJSpmBrb13GzYtu9AF2ddPNr5je0pZj7/4/2sB1vJh6qGOGMQp74mT3S9C3Han119dcuz33TWW4zoOfpOb3JMQ52LRGJo6/rU09MofnFvmR30RoTb4+3yaljglweY0T3TLH+YiAIMltuLngOXnb/Bm8wU1i8OFsXDcUF5pg1XPtTR5b/D4UkdbjqhNLvOJU70x/ElZjCqZv11DZKYRsC+h4JHOREAdZ8y2rbv7OFYcfLrEtVkQTcMJG5MpVCE/lsef+5afdD1eWUjYzWFjxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XGRUSC6cmaR4GlA4SEBaQWu/XxToASOyNwnYa2wHUd8=;
- b=uEBOoK1ppyD3onmplb2Mbmo1z7o+5AmCJ/4SAt6AMdR561NfNQGyzAsL8Davd1gKbvdiNX+cEQPgb0EdI49ZV2v2t7bj8cFIybvKPbT0L51orYTx3kDQE89/KEzCDYnW0DJ+k6zlpLO64gZTrljdHLzK4PBeGEwdcmrWwpiMWbATJu5zyqvOTI31p4+lZzQNvMP8Qo3n/MSdKlGeCcjb2rIOLsbr7RyS7RSOvswtA9In4/zacd0e3ZnruqEbg6ULi6jMVHYbnAYUFhKU5/eHOdmmbM8CKK9utuEE+91WI3cjHNT8fGrbGt4CfhGcljQ1xcQnFi1B44948CHiotMtcg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- SN7PR12MB6669.namprd12.prod.outlook.com (2603:10b6:806:26f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Sun, 30 Nov
- 2025 22:01:08 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9366.012; Sun, 30 Nov 2025
- 22:01:08 +0000
-Message-ID: <46b5eef7-2e8d-4801-93d0-6cea10f62dc9@nvidia.com>
-Date: Sun, 30 Nov 2025 14:00:45 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] rust: build_assert: add instructions for use with
- function arguments
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, Will Deacon <will@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org
-References: <20251128-io-build-assert-v2-0-a9ea9ce7d45d@nvidia.com>
- <20251128-io-build-assert-v2-1-a9ea9ce7d45d@nvidia.com>
- <db6a6b28-c0be-4bd8-a0b4-70431df7737a@nvidia.com>
- <CANiq72nGUuK9VTYJGob7pnXU5zuuCzqfw6fezAFpbqvte1sDFg@mail.gmail.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <CANiq72nGUuK9VTYJGob7pnXU5zuuCzqfw6fezAFpbqvte1sDFg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR04CA0035.namprd04.prod.outlook.com
- (2603:10b6:a03:40::48) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="PlFJiBDH"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251130221324euoutp01ac6870f285bd0f7692cb09c81c907c36~86IM9OyQg1293812938euoutp01f
+	for <rust-for-linux@vger.kernel.org>; Sun, 30 Nov 2025 22:13:24 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251130221324euoutp01ac6870f285bd0f7692cb09c81c907c36~86IM9OyQg1293812938euoutp01f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1764540804;
+	bh=4OsLgv/4/Kf3LZJYEQIvCogYjuXNU2BKQiAZmiyor6o=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=PlFJiBDHJet2fbjVBhK/w57tjjMasx4JVQ1n875y6C8DJpBP5IHz2mByiTbcFMuG7
+	 VoHft7zm38qb1xgYg73L/shvH5sUqa2GDNiytR22TWwuuLPh4lGW+deaPTIqQhlFTM
+	 +dVswwHe6taKa/OTysuioyrgCftr6l1PM5QiGb9c=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20251130221323eucas1p1194eb8ea8564946329033f14941c2794~86IL8XB7l2038820388eucas1p1o;
+	Sun, 30 Nov 2025 22:13:23 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251130221321eusmtip1f3821b65e9b95e4c544d8f094b4d7175~86IKt2aHw2338123381eusmtip1d;
+	Sun, 30 Nov 2025 22:13:21 +0000 (GMT)
+Message-ID: <9394dd00-a8a2-4ffd-98bd-a4d512e80591@samsung.com>
+Date: Sun, 30 Nov 2025 23:13:21 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|SN7PR12MB6669:EE_
-X-MS-Office365-Filtering-Correlation-Id: 362a8d63-1024-4bd4-f413-08de305bf75a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NElyN3dSSGpNRWZFUnVGanRUWjliZ1pQcS95RmQwZ1lhZFhMY1BMU25Hckxu?=
- =?utf-8?B?ai9VaVlmYkNtdTl1WWZ3aU1FOXMvcG5ZU1J6VHV2eURnYUtpR1Azb2Z5NG5m?=
- =?utf-8?B?RzNsUjBneC9mYTRVT2tHbGZnVW9GY1BGK3FBNWJhazBEU0ZqK2pva3Fnc0c4?=
- =?utf-8?B?UlJTNVZuQVprTXJ2R0tlYXVTSndFaTdMdUpFRC93SXZOcG9GNlpremdRMXZi?=
- =?utf-8?B?K29wMTJIY1BvZjFycEUxQXdzZlhFeDZCM1VJSTI5U09McVRNVzdBMXEvMEor?=
- =?utf-8?B?YU9PTmFOQ2xFQXJpa3hKOFcvSFdyL3RPbkR3Q1BhY1N5a2RUVUZXQmJUdE03?=
- =?utf-8?B?ZVlrUWxNU0dtT0hNOC8yWTFaRktkYUYrSzlYK05HcU9YTFdBODZGa0EwL3lJ?=
- =?utf-8?B?OXdGa1pxNTFlZnFlaXdDYzZXY2YwMWN1UXRkRUxCdXFQamJvNmZuNXltZ2NT?=
- =?utf-8?B?VFRZN08rQmd5OEd3QzlQQlZxQ0lNZGUzK01yTGRLZUppZUd0VTFISk9YR1ND?=
- =?utf-8?B?ZUdPdWlOU1dxcjQwUVcvbjJEcHB0cGtDZzFiUFVmZ2ZmeVFaeFFIeXA0U09B?=
- =?utf-8?B?eWtUbTI5NmVPaGNyVXZJbWgyT3dNbDB1NzBwWXlGNTVpRUlqbzMvRXA4UHNK?=
- =?utf-8?B?MWZUakhZRHpNa0RTYW96cFJTQ0x0b0JxS1NwWDNhZ0VGMkZ2Q3VPYVBXVXlF?=
- =?utf-8?B?Ukl0QjdJSm41d3ZNMEJ5OXdmVjlVeXIwdzFBSjVkMzhNcEJWWThXTGZRUmN3?=
- =?utf-8?B?OEdrWjVybFhMK0NiajVQYTR2ZkNleUtlZ1dVRnVsVjFzWGZNdTBQeG1jWTRx?=
- =?utf-8?B?VnZGZ1RUb0F6NEhjR0NTKy9LNTl4dHI4U1BhWWhPWG5Fb3BIK2V5NXNqNFB1?=
- =?utf-8?B?U0NKR2NCb3ZBV2lESmRXVWNBZTVZWnlXRnFoamphczlKcjd5ZnNHL01DL2gr?=
- =?utf-8?B?dEMwa3piV2FlVWdUWGd0Rkt6eXg1eVlPelpKRElDbHRQejNIUXlWTHhzNXY1?=
- =?utf-8?B?aVlqYUJhUDU3eDFxWlBMa1lDMEZIL1VxdXh3TzlMa1g3ditwdGcrL25EMjRq?=
- =?utf-8?B?UEh3T3NLMTgvNVBKc0tNSzBzNWZwWkh0eCtuNEFzaTdKRmY4U1RVT0VSM2Rq?=
- =?utf-8?B?bFdUN25aV09TcDV5eElyOSthRk1nWVFCUWJXeG5DcWtDTWwrMUJqK2gxdzJn?=
- =?utf-8?B?dVVzU1RENTgzMjNPUTF6eGkxQ2x2emNnZmRlQ21NWUNiTjA5bXRESU5LY2JK?=
- =?utf-8?B?cExVeEp1MGVDdDlZbXlJOEJIbWEvYTFkTVhoWEozOXNlSTlUa0lISEZ2K2VK?=
- =?utf-8?B?dmdxNURjSEdQT283UWNwaC9pZ3BNMm9iSlF0K1lBT0ZWMTJsbk5ZVzBpL2tM?=
- =?utf-8?B?cCs4ZEVLY0hST2htQUhnaHNndkZJazkxSnNnN1pVUE8wQkxKQlVreXFtdVd3?=
- =?utf-8?B?SnVjTEFCeHNpWnVheERnU2Ribi9KRnEyNXhQUU1EeVdVL043bzdmT3dwWkVL?=
- =?utf-8?B?QjBxQkJPM0FlMzlVd1g0ZkhlMVlTTUFFRTY2MStId2FpZlN2ZHUxSDNuY2hR?=
- =?utf-8?B?dERaTWZFdFF1MzBFMlNIeE9CRWptUUhubE9YWjBlMjlJSnhJd0JobFIrM3Z5?=
- =?utf-8?B?UmM0WkMxRHAvSDRUY3V5UVRoYUpJcW9RQWUyWW5zZFFMSCt1RDBLOS9vYnhy?=
- =?utf-8?B?aGNwdFRlUVdPc3E0Vm9lRU5xNDdJRGlDTThBSE1USzd4QWllWHVQWWFNVU4y?=
- =?utf-8?B?OUVtV1JPNlZpS0hQVEtwOW5sZjZxZ21xMEk4Z3MzRHZQVk5aWXd5RzZMZm1a?=
- =?utf-8?B?bmYvRlIybmhnVk5PdVo5S0RlczJhK2dvRHpXWWF1RTFtS1ZyWWR4NmJkRUpp?=
- =?utf-8?B?MEJEY1luMCtDamx5VUN0MVRPb2RTS2JrUEJXcjd0bVBTV29ndFZ2R0V0b3Jx?=
- =?utf-8?Q?ezGy0VU1pSjoQZUnn5nq1No91RTU0jQ+?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TzVnV0RUQXJjYUE5QXVYcTN5YVBpVDdtMUE1UUtnSTZJYk5yRUFnQkI0THdj?=
- =?utf-8?B?bExFODFCUzJ5T0hrWmpjbVRYL0dncUNVNDV5Vm9DdnZmRCtmQTZjVjBwTkZP?=
- =?utf-8?B?WmxQWTdNTnBFWjdGN3dWeHBnSEN4Z0tkQ2dUK0hYajQvMFJualBraXd3ejNz?=
- =?utf-8?B?ZGMxbXZOMGtUTXlkcDRpcjE1VUphVjkwVm9QTURWVGRnL1Z5NFF2UmEzNC90?=
- =?utf-8?B?eXMxODRNRnJxM2xDdlovMnJpaGtqTy9TY2pOOXd4NUswbjVRL3o4Yzd2ZnRS?=
- =?utf-8?B?WW5NeEFzZ25xYkp4SUxSdUNnaGM3NmtaUWdiYktRaWZIL1JOL3RUUE4xVTdl?=
- =?utf-8?B?QlFlbUVvWWEySnpvUWk2QW1meVJtZVdVcFRYMlFtc214VUd4QXFHU2ZXaXI4?=
- =?utf-8?B?NFAxRHFrZ3pyTW9jYTNKY2o5cnk1Vi9MN2llRHNsRTQwUHVkWUtPbUM1Tk96?=
- =?utf-8?B?WTU3cEhZeDV1bERDMTdHUTBhQ2pzWlNLWDhTQ1FDSHFyb2ZCZnNyalB5aWZK?=
- =?utf-8?B?U1BqWE85SUNwSnlrbVVFbVhxZSt4QjVZZktpcDMreS94dGVZVEhBeHZ5MjM5?=
- =?utf-8?B?RDJZaGJoeTcrZDZLVnM2alovUmlxbFg3V3BzQklEb2ZxUXBibE5IdGRpYUF0?=
- =?utf-8?B?bHNwb04vTXFmMlRFeFJ5OThCaEJhcUNoaTJZeXY5Qi9mbHR5K1VtM0ZBVExp?=
- =?utf-8?B?ZUltRzI4SHFtMkhhU1FJeThvaVRtd2o1djcxcVZpVFJKbTM2YkJYU1h1MkJm?=
- =?utf-8?B?aWJQd2lLZlhHbXFnSnBxYk8vcVVrSEdLVEN0QitaTnJrekpPU3kxaXJ4KzhN?=
- =?utf-8?B?TER1RUM4ZnJNNjkxZEJTTWdVbUVYdS8yRXRKMlAxZllFaWdNOFVRTFJBUlh3?=
- =?utf-8?B?ajBjejlFZTlmcXB2bnV1d3Q4UnpZaDlDZlM2YVVOQmlLSWc2bVZrZC93Mk82?=
- =?utf-8?B?TWxyUmZtbnNYdittdDh4eDJXSSsxcG42Q24yRTNINEtOWGRqTzZMTFptVmRa?=
- =?utf-8?B?ZnVPQmFxcGRzYlU5YlJzNWp0b1NpclJWY0FibDI0WGllYWI4eUZGSXdPRUsv?=
- =?utf-8?B?dGMvREhvdlBKbjVIUlRxd2U0RVExVXZOdVE0OE9wNC9MUmpHWG5wMk14TkdK?=
- =?utf-8?B?eGVGOHhkQXU2QkNxV2tjSmFodWF1cWE5UlNvMHBkMjZyR1pDNTFvTWcrSUQy?=
- =?utf-8?B?bGsrYURJbmZCNEp6UzdIRytnZ3NKYlB4WEhsbXVrNGtwaXNkZUhpN3ZvdTVr?=
- =?utf-8?B?R0hKSFFNVXkzTFNCdkc5ZWl5TGwwRUZiZ1VDSmZXeit2UEdJZGpYaGRhOXJK?=
- =?utf-8?B?Wityc0tsRW9zVGpkejdFUmkvSEc3NnNoSDYyazRGdjg2OVZMOVlvNW84a1Mw?=
- =?utf-8?B?Rk9wTDN1a2J6RjJwWWw5OHNZZ2hmZlJDN1ZGUkNJdHlON0p1bVU0b1lJTzha?=
- =?utf-8?B?WnkvRXNSUTRhYm41SjF2NWhveGo2QnNSRU52M0Y1eS94Q1dIenQ3bHplRkIv?=
- =?utf-8?B?b0grc1RpNFVkQlFpamZveHNHL3pvT05qdDV0YUJmOWg3YksweUhkNTJUT0Y4?=
- =?utf-8?B?d0svc2Vyb3pnSHUzaDBoRTZ1dS9WR0hoOGp6VmxFbEtUQ1p1OWdGbkhmT0Ru?=
- =?utf-8?B?VWNNcU9YajBLMjVyeXowbGhVQm83cXNlbzQwS3YwSm9vR2NLMTQ0Qnc4S2pJ?=
- =?utf-8?B?K2N3WjFsNW1YODV3T3FHRzUvaHRGcUltSnpmZ0tpbFNMS3J0WVZlck9CbWx6?=
- =?utf-8?B?WUlvWXBKckNPbVlMVGdVZjUzS0dNcnJ6M1d3YjBQSDRubytjcG12ZEdQNXRG?=
- =?utf-8?B?Z0l3T3JiZDRIRS9VWUlHTStHeTZDRlBLVnZNUUgydjlSTE5mdm1BZ0dKWGxM?=
- =?utf-8?B?N1Y2a3ptS2hBdExHY3lqQlhMVHI1NjNlUVo1V0grNHRDYTQ4SFpGSVB3TGJt?=
- =?utf-8?B?UkcwR2pGQkJUcWVSRktyZUk5Uys4VzBDdmpnM2lpaE1KT3c0RHF4VHppL01P?=
- =?utf-8?B?Ni9teGg3am5Za1JDd1VmclBzYjRZMTUwUXNxRHVVdkdwazdYMzhlcmNycGl1?=
- =?utf-8?B?VjBFMjNzSm0xQXhySTM2VldyWlBsWUFjSXVKNDc5M01BUlVQUVRpRGxCb1M5?=
- =?utf-8?B?V0VqS3ZNVXlRVElaYldCamRuYTAwOU1IY25JZGJoWlZyOU9xZisvVmtMRnpW?=
- =?utf-8?B?Wmc9PQ==?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 362a8d63-1024-4bd4-f413-08de305bf75a
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2025 22:01:08.4724
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CJbQUnAqa65b4Np3iLBgfp8B3ne5fJwiPZUksvKzaFguQMpgUl6yjhlwOPbXt06DgmoQ2aXXYYdbo0y1byH9sA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6669
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Move pwm registration into pwm::Chip::new
+To: Markus Probst <markus.probst@posteo.de>
+Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Drew Fustini
+	<fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,
+	=?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+	<dakr@kernel.org>
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <20251127-pwm_safe_register-v1-1-d22d0ed068ac@posteo.de>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20251130221323eucas1p1194eb8ea8564946329033f14941c2794
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251127171512eucas1p2eded6a14bdcba1e4dbeb15cc29b7860d
+X-EPHeader: CA
+X-CMS-RootMailID: 20251127171512eucas1p2eded6a14bdcba1e4dbeb15cc29b7860d
+References: <CGME20251127171512eucas1p2eded6a14bdcba1e4dbeb15cc29b7860d@eucas1p2.samsung.com>
+	<20251127-pwm_safe_register-v1-1-d22d0ed068ac@posteo.de>
 
-On 11/30/25 1:56 PM, Miguel Ojeda wrote:
-> On Sun, Nov 30, 2025 at 10:44 PM John Hubbard <jhubbard@nvidia.com> wrote:
->>
->> Very interesting. So by adding a partially faulty build_assert!() call,
->> these functions were actually wrong when they created! Maybe a Fixes:
->> tag is warranted.
+
+Hi Markus,
+On 11/27/25 18:15, Markus Probst wrote:
+> The `pwm::Registration::register` function provides no guarantee that the
+> function isn't called twice with the same pwm chip, which is considered
+> unsafe.
 > 
-> To clarify: it is the lack of optimization in certain configs (-Os,
-> CLIPPY=1...) as well as possibly certain code patterns that may
-> trigger it, not that the calls were faulty (note that `always` doesn't
+> Add the code responsible for the registration into `pwm::Chip::new`. The
+> registration will happen before the driver gets access to the refcounted
+> pwm chip and can therefore guarantee that the registration isn't called
+> twice on the same pwm chip.
 
-It seems pretty clear that if one writes a *build* assertion about
-a function argument, then that is just conceptually wrong unless it
-is inlined. Because it can only really be a run-time assertion.
+I agree that the double registration safety issue needs to be fixed.
 
-This is what Alex pointed out, and looking at the code I agree.
+However, merging the allocation and registration steps into Chip::new
+restricts the API significantly.
 
-Thoughts?
+There is a specific reason the C API separates pwmchip_alloc and
+pwmchip_add. Drivers might need to configure the chip e.g. setting the
+atomic flag, or acquire resources that require a pointer to the chip
+(like requesting an IRQ) after allocation but before the device is
+registered and visible to the subsystem.
 
+I suggest we solve this using the Builder Pattern instead. This would
+allow us to allocate, configure, and finally register the chip in
+distinct safe steps.
 
-> guarantee it either anyway).
-
-Yes, understood. So maybe "Fixes" is too strong. It's more like
-"Mitigates:".  :)
-
-
-thanks,
+Best regards,
 -- 
-John Hubbard
+Michal Wilczynski <m.wilczynski@samsung.com>
 
 > 
-> Daniel suggested Fixes in #0 -- if any of these trigger a build error
-> (like the `Bounded` one), then yeah. Cc: stable@ too.
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> ---
+> This patch provides the additional guarantee that the pwm chip doesn't
+> get registered twice.
 > 
-> Thanks!
+> The following changes were made:
+> - change the visibility of `pwm::Registration` to private
+> - remove the `pwm::Registration::register` function
+> - add code for registering the pwm chip in `pwm::Chip::new`
+> - add Send + Sync bounds to `PwmOps`
 > 
-> Cheers,
-> Miguel
-
-
+> Note that I wasn't able to test this patch, due to the lack of hardware.
+> ---
+>  drivers/pwm/pwm_th1520.rs |  4 +---
+>  rust/kernel/pwm.rs        | 53 ++++++++++++++++++-----------------------------
+>  2 files changed, 21 insertions(+), 36 deletions(-)
+> 
+> diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
+> index 955c359b07fb..1919b5a1f69e 100644
+> --- a/drivers/pwm/pwm_th1520.rs
+> +++ b/drivers/pwm/pwm_th1520.rs
+> @@ -363,7 +363,7 @@ fn probe(
+>              return Err(EINVAL);
+>          }
+>  
+> -        let chip = pwm::Chip::new(
+> +        pwm::Chip::new(
+>              dev,
+>              TH1520_MAX_PWM_NUM,
+>              try_pin_init!(Th1520PwmDriverData {
+> @@ -372,8 +372,6 @@ fn probe(
+>              }),
+>          )?;
+>  
+> -        pwm::Registration::register(dev, chip)?;
+> -
+>          Ok(KBox::new(Th1520PwmPlatformDriver, GFP_KERNEL)?.into())
+>      }
+>  }
+> diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+> index cb00f8a8765c..c5d03ee8bc95 100644
+> --- a/rust/kernel/pwm.rs
+> +++ b/rust/kernel/pwm.rs
+> @@ -173,7 +173,7 @@ pub struct RoundedWaveform<WfHw> {
+>  }
+>  
+>  /// Trait defining the operations for a PWM driver.
+> -pub trait PwmOps: 'static + Sized {
+> +pub trait PwmOps: 'static + Send + Sync + Sized {
+>      /// The driver-specific hardware representation of a waveform.
+>      ///
+>      /// This type must be [`Copy`], [`Default`], and fit within `PWM_WFHWSIZE`.
+> @@ -585,7 +585,7 @@ unsafe fn bound_parent_device(&self) -> &device::Device<Bound> {
+>      /// Returns an [`ARef<Chip>`] managing the chip's lifetime via refcounting
+>      /// on its embedded `struct device`.
+>      pub fn new(
+> -        parent_dev: &device::Device,
+> +        parent_dev: &device::Device<Bound>,
+>          num_channels: u32,
+>          data: impl pin_init::PinInit<T, Error>,
+>      ) -> Result<ARef<Self>> {
+> @@ -623,7 +623,21 @@ pub fn new(
+>          // SAFETY: `chip_ptr_as_self` points to a valid `Chip` (layout-compatible with
+>          // `bindings::pwm_chip`) whose embedded device has refcount 1.
+>          // `ARef::from_raw` takes this pointer and manages it via `AlwaysRefCounted`.
+> -        Ok(unsafe { ARef::from_raw(NonNull::new_unchecked(chip_ptr_as_self)) })
+> +        let chip = unsafe { ARef::from_raw(NonNull::new_unchecked(chip_ptr_as_self)) };
+> +
+> +        // SAFETY: `c_chip_ptr` points to a valid chip with its ops initialized.
+> +        // `__pwmchip_add` is the C function to register the chip with the PWM core.
+> +        unsafe {
+> +            to_result(bindings::__pwmchip_add(c_chip_ptr, core::ptr::null_mut()))?;
+> +        }
+> +
+> +        let registration = Registration {
+> +            chip: ARef::clone(&chip),
+> +        };
+> +
+> +        devres::register(parent_dev, registration, GFP_KERNEL)?;
+> +
+> +        Ok(chip)
+>      }
+>  }
+>  
+> @@ -654,50 +668,23 @@ unsafe fn dec_ref(obj: NonNull<Chip<T>>) {
+>  // structure's state is managed and synchronized by the kernel's device model
+>  // and PWM core locking mechanisms. Therefore, it is safe to move the `Chip`
+>  // wrapper (and the pointer it contains) across threads.
+> -unsafe impl<T: PwmOps + Send> Send for Chip<T> {}
+> +unsafe impl<T: PwmOps> Send for Chip<T> {}
+>  
+>  // SAFETY: It is safe for multiple threads to have shared access (`&Chip`) because
+>  // the `Chip` data is immutable from the Rust side without holding the appropriate
+>  // kernel locks, which the C core is responsible for. Any interior mutability is
+>  // handled and synchronized by the C kernel code.
+> -unsafe impl<T: PwmOps + Sync> Sync for Chip<T> {}
+> +unsafe impl<T: PwmOps> Sync for Chip<T> {}
+>  
+>  /// A resource guard that ensures `pwmchip_remove` is called on drop.
+>  ///
+>  /// This struct is intended to be managed by the `devres` framework by transferring its ownership
+>  /// via [`devres::register`]. This ties the lifetime of the PWM chip registration
+>  /// to the lifetime of the underlying device.
+> -pub struct Registration<T: PwmOps> {
+> +struct Registration<T: PwmOps> {
+>      chip: ARef<Chip<T>>,
+>  }
+>  
+> -impl<T: 'static + PwmOps + Send + Sync> Registration<T> {
+> -    /// Registers a PWM chip with the PWM subsystem.
+> -    ///
+> -    /// Transfers its ownership to the `devres` framework, which ties its lifetime
+> -    /// to the parent device.
+> -    /// On unbind of the parent device, the `devres` entry will be dropped, automatically
+> -    /// calling `pwmchip_remove`. This function should be called from the driver's `probe`.
+> -    pub fn register(dev: &device::Device<Bound>, chip: ARef<Chip<T>>) -> Result {
+> -        let chip_parent = chip.device().parent().ok_or(EINVAL)?;
+> -        if dev.as_raw() != chip_parent.as_raw() {
+> -            return Err(EINVAL);
+> -        }
+> -
+> -        let c_chip_ptr = chip.as_raw();
+> -
+> -        // SAFETY: `c_chip_ptr` points to a valid chip with its ops initialized.
+> -        // `__pwmchip_add` is the C function to register the chip with the PWM core.
+> -        unsafe {
+> -            to_result(bindings::__pwmchip_add(c_chip_ptr, core::ptr::null_mut()))?;
+> -        }
+> -
+> -        let registration = Registration { chip };
+> -
+> -        devres::register(dev, registration, GFP_KERNEL)
+> -    }
+> -}
+> -
+>  impl<T: PwmOps> Drop for Registration<T> {
+>      fn drop(&mut self) {
+>          let chip_raw = self.chip.as_raw();
+> 
+> ---
+> base-commit: fae00ea9f00367771003ace78f29549dead58fc7
+> change-id: 20251127-pwm_safe_register-e49b0a261101
+> 
+> 
