@@ -1,118 +1,116 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7215432B9BC
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 15:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764602896; cv=none; b=pkSeaky1FKMCiUoECWgrnPLxwENZr4r1PrmtEc+xlyQeMFS4Ng9PadIkPqn104FB4nsMLNrYpe0IZmlSDPqLEVXrKkKZnm75UmQJ8v65S7CEbLdCIQ6tgkqRslHz81EAE8vrDbYf3VgF+NWtoT4pePqaSzA1uwtrijWeEDeOaIQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764602896; c=relaxed/simple;
-	bh=t2N46lKoRo1GP2qUwaJVVUcVv67uyIj8NnYlUPfIiX4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X9Nk/Rm3AMh6Qn521gNs99b+AwxqSS+e+t6xC9I96ChAyhRGe69GGfAQnMtzyqF4TVp4LAw40ibUWBsa8jtTui24dYvYRWqJ6lo5mmqm50AcwZc5WKntN/dRcspNyaiHYGRHyP4hgfqaIwlN3T8MCnqGrdgr3RLkHZXuAIzBQUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vfxcq+NS; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981533321AB
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 15:32:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764603128; cv=pass; b=ULpP628PEpOCXICwqZ+e3glhkp4V/69ymhRr9Jou/hjtFnpc2dPKR0xha+HisiJ/XH/CsSu4OrEyo6ARQZJRFsQ+SZbAMdRh+ZBSjGWbLQAb+mkaWW719bn/GEclsc1Rcm92AX4eB7slBb7KJmxY0XY37liagCcYwo4nEpfDrTc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764603128; c=relaxed/simple;
+	bh=DEXfUlkwf9/dY3M6LU/JNWo1A5toSf2N2cnfe6rqxlY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=XVa3UCEDNxIr1bxQm/adL/uLe4impTHir/HQyyM0AuaVapob/J2IrBhdDVXm0bBP7lsX8IxkuBrK0aLD2ux6x7w2k3i5M7sxA6JYf6XnjkH9YrEIJ8UIJ10ei3y5WpJFd6Gakei5InrTjAZTlqgKm8yh/hlgcjjJ94gW5gslxTU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UIBVZiu9; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vfxcq+NS"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7b9c17dd591so3821666b3a.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 07:28:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764602895; x=1765207695; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dCB4uXBZgUQkOf1CP9f395NPph0GsGyOxLs8b8/ayBM=;
-        b=Vfxcq+NSUG5bt/g/cpYHgE5oNtYieRVl45uIaLMzEP4tvvcJwVzeUEjAspOIVOYrPz
-         wyZSD0SrN01UDxjJBxjbb8gS5bpwUjLhaXdyiA4q6a8T/9cnZVbkWCmZpIgYChpTVdGX
-         AGeejluAwqRgfBHm6+k5bd22E1p9rQZyzxvznBjphLwFEoUMWVa5EI2j2N/OHqURSwP1
-         TL0JhyNPvMiF0Kd5d2oUhyuJ7AlkhZ51T8EHXjrYnygG7NBjjnHOKrefowGHSC7OWGxB
-         dt/SJFODCNRJXh/2kr0JVANNezC0FAhjCL9LRxCnb1m/hM5aHpN8wL7PcXksRQMpHzRN
-         zHFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764602895; x=1765207695;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dCB4uXBZgUQkOf1CP9f395NPph0GsGyOxLs8b8/ayBM=;
-        b=Kl0D/7mBoWg9sUSW0Srrpl4lPaEUHV/XNTS212yxJ3gTTKeT26ayCyRw53O1aFlk6c
-         kL+D3SbCkeJ1GgsSdcWhxfTHY29XP9q4H+bLGsbwaEKlitIoifyTx0+pz2nyWvp8LG1T
-         pfK/vkqoswdY5aPdh76qBe01XLRh/LS7AwBVYF0vvCTNtSQ2v/xCpcisbYq6ZxCQc+MG
-         l8/fVr2WD0z4PPZbujYGGQgEtLkEz+4HOkxW0P59sGRe5mbGeQkMP/7wgW25z/xn2QnA
-         zwZaxbAsYmwUB7DpB8KcSIo16i6oYiTaU1Bl5domID9b9aSSr65aAvoWh/gtYIWDgBGB
-         kZYw==
-X-Forwarded-Encrypted: i=1; AJvYcCVte21dmsQ6lW7X3GJuuIXGivWEpFBjU92W6ADo1SNAnczMfXc4OoQGto8Y5Zcez3ceg2tRibATM3Zge1SY7g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+g7+zaBoYNU7Lyo9vZqmMK0h1i0Un0kaKVWQhDeIsdLDiHlCj
-	8b4hA42z5pgdMKh/FKyOXJkYYINDa5bCKFqQvX2GPgjoDB71+XM6+bf0
-X-Gm-Gg: ASbGncur0q8k+XDLJk0wHHAKOMUqi5QSkiuJZ1L2FwrfUz2ZyDZQ9Ve+4YBaFmL9kcj
-	jVE8E5kobuKaC9PMIif+3+jwteih5G279ErsT7l9EWzPv2JKJBLhhKvXjitzdjsOkFsXcYULsVX
-	y34/IRp7icJCsoJxS4LuGfg5D64H+THZ4HJmvJmtFk4QfEy1rCgWbQYU2rPEO2lz74eUEHR7qGC
-	ZkCKAEsfq1wve5Uuz8j98lStOCMZq9F79JZnyLoGhC++7Jymb2PI59bO1ynmIWoA78H/BPKhzv4
-	5tgVR5IqaDAcuYpvBQlGKw4td6izNYg/g9dHxk5kP5kaCyaLqr7LfKVDXcA9M7rbIUZw7+rQPIu
-	B0McjujXlap7IGdwBx/GIzUR17lBhaAZFd1nWhz2xYdivq4qa+S4ROjCcTsUckpOSPNi3XNWMt7
-	nuGcPJvMutflCXktBzGSRF469SvGPBwlDDoD691UBR9Y5ys6KIKfKm4L84bdt8DFxz
-X-Google-Smtp-Source: AGHT+IH0CcqA+i45zWE4hwAOZUK/YbYfpvPimm4i7NbGuR7Rv0Kwg1psJKl2PjAExOkxM1RJMnNT6A==
-X-Received: by 2002:a05:6a20:4320:b0:35e:deb8:bcd7 with SMTP id adf61e73a8af0-3637e0c5ce3mr30015738637.53.1764602894536;
-        Mon, 01 Dec 2025 07:28:14 -0800 (PST)
-Received: from atharv-HP-Pavilion-x360-2-in-1-Laptop-14-ek1xxx.. ([103.216.213.160])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7d15e9c3e41sm14059158b3a.33.2025.12.01.07.28.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Dec 2025 07:28:14 -0800 (PST)
-From: Atharv Dubey <atharvd440@gmail.com>
-To: Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Atharv Dubey <atharvd440@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2] rust: drm: use `pin_init::zeroed()` for file operations initialization
-Date: Mon,  1 Dec 2025 20:57:58 +0530
-Message-ID: <20251201152759.16429-1-atharvd440@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UIBVZiu9"
+ARC-Seal: i=1; a=rsa-sha256; t=1764603084; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Xuy+zrayxriwhuYfV/lVGssZKZ+Bjy7aYphus6QJ/hBrv939HE61Ad745hTjCtzVc5kx4WT9ABt8vM9ekMcBIK1zJVpxgEclYdCLoePwiPQkm7wAqnSofQWudJdg+L61dnNzPqFj3xr47S0vxMksduM+fAitX1b3WenFPZw6t0s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1764603084; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=3HbneU3qyka+xS+SgyzTpdhrl3NagdrNaKT2I4JJmeg=; 
+	b=fyY2x3hqyXc+eLlSejazJ4GEzzUSn6ZRpeCrTY+/AV5qDOock5KTgQPt1pO+EO/kp6u3hlxOfhcpFFr4P8Re6Hph16nZ76FlL9qrPqrQFsCczyLdD+HLk54xxsqzlY6M1FIluDxHRVhm1CsmT9mSzi4p90M5G/4zTps8cxQvJCU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764603084;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=3HbneU3qyka+xS+SgyzTpdhrl3NagdrNaKT2I4JJmeg=;
+	b=UIBVZiu9rxK3BZWr6HrP6U+QllaOJuwYNqVOggn6MYMG2I0i7qRSylEGzDSG78Zx
+	V3gwwUKPTl/1t5Qf+3RA9xmbBnhWIml8CbpDyEZJFttuv1yfxEKxxydFy33Paw7hYzu
+	bc0tDMOa5uirnHDAkatQcM+721cH5zFiiJfPZczs=
+Received: by mx.zohomail.com with SMTPS id 1764603079634801.5377747252071;
+	Mon, 1 Dec 2025 07:31:19 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2] rust: drm: use `pin_init::zeroed()` for file
+ operations initialization
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20251201152759.16429-1-atharvd440@gmail.com>
+Date: Mon, 1 Dec 2025 12:31:04 -0300
+Cc: Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Lyude Paul <lyude@redhat.com>,
+ Shankari Anand <shankari.ak0208@gmail.com>,
+ Asahi Lina <lina+kernel@asahilina.net>,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <6DE296DC-45BA-4915-8FB7-78A6A7339A66@collabora.com>
+References: <20251201152759.16429-1-atharvd440@gmail.com>
+To: Atharv Dubey <atharvd440@gmail.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-Replace the manual `unsafe { core::mem::zeroed() }` initialization of
-`bindings::file_operations` with `pin_init::zeroed()`. This removes the
-explicit unsafe
+Hi Atharv,
 
-Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
----
- rust/kernel/drm/gem/mod.rs | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+> On 1 Dec 2025, at 12:27, Atharv Dubey <atharvd440@gmail.com> wrote:
+>=20
+> Replace the manual `unsafe { core::mem::zeroed() }` initialization of
+> `bindings::file_operations` with `pin_init::zeroed()`. This removes =
+the
+> explicit unsafe
+>=20
+> Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
+> ---
+> rust/kernel/drm/gem/mod.rs | 4 +---
+> 1 file changed, 1 insertion(+), 3 deletions(-)
+>=20
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> index 30c853988b94..f9fd98dc102b 100644
+> --- a/rust/kernel/drm/gem/mod.rs
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -298,9 +298,7 @@ impl<T: DriverObject> AllocImpl for Object<T> {
+> }
+>=20
+> pub(super) const fn create_fops() -> bindings::file_operations {
+> -    // SAFETY: As by the type invariant, it is safe to initialize =
+`bindings::file_operations`
+> -    // zeroed.
+> -    let mut fops: bindings::file_operations =3D unsafe { =
+core::mem::zeroed() };
+> +    let mut fops: bindings::file_operations =3D pin_init::zeroed();
+>=20
+>     fops.owner =3D core::ptr::null_mut();
+>     fops.open =3D Some(bindings::drm_open);
+> --=20
+> 2.43.0
+>=20
+>=20
 
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 30c853988b94..f9fd98dc102b 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -298,9 +298,7 @@ impl<T: DriverObject> AllocImpl for Object<T> {
- }
- 
- pub(super) const fn create_fops() -> bindings::file_operations {
--    // SAFETY: As by the type invariant, it is safe to initialize `bindings::file_operations`
--    // zeroed.
--    let mut fops: bindings::file_operations = unsafe { core::mem::zeroed() };
-+    let mut fops: bindings::file_operations = pin_init::zeroed();
- 
-     fops.owner = core::ptr::null_mut();
-     fops.open = Some(bindings::drm_open);
--- 
-2.43.0
+I wonder if this should be part of a larger series that implements this =
+change
+throughout the tree?
 
+=E2=80=94 Daniel=
