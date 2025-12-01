@@ -1,115 +1,215 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022115.outbound.protection.outlook.com [52.101.96.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69149332ED0
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 15:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764604346; cv=none; b=bpWFG63bR/t6q/VrusZQ6nDFKj3dex82WNEPQRKIX7h2aKndkZSnTLK3StTtEYT5tjGO3gZ3meP0lR6kVFXJ11K6eA+6Le6ufRPKHrI1lkzNB3tQhzIw7W3uf8O0xVnoGyh15m3+MyYbL2aLqTxrccPI1z/VxEouvbEgdGdadNc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764604346; c=relaxed/simple;
-	bh=XGyeeigAK9L746tngnKMOCKOk5BQ+hWN4+EJTlSpqSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IjiaAyx+UDGbIB8eMbDEGk5+zdCu2BXmFl0qP1K65pPSPT4rYaT/EZFvuKv96dIYiq+PpxfdL/d6BxEfpkV4BC+qrSSXRpS6Uz9jH+wX2S1T4nypmENcpsrY05V96Gr6+YZOgcq7dGXFYW93YWIYX1AX2ijmc17jKgf9WtPqrOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImMRwE8b; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949562AE68;
+	Mon,  1 Dec 2025 16:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.115
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764604896; cv=fail; b=BgFG3/76Uh/U1BS7c7kAgOGnFJ/1BA9QHSAc8jYldopMCXn52OghLiCgVjfl9jSC8GN6c54hsfyhzefJPB30UhNO+oRaeSciTwKWZJRCc+MKPpD8VbNTG8/X/qlTa0Qhi7HqnE2RftVmBtiXtWdZSRvAj7rRwiaJ2YJmduvdHlY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764604896; c=relaxed/simple;
+	bh=Rat3SR48NqEMNyGZwx4ZUzm+aWU9ILcNwQj5KJ8Wcgk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EmjYpiRsaPLabsEWs7woH1LSMiVNyH3/aRb3J7xHMjVqStIqthCa3nLifjmgn+m0uKz+t3sw53DTHv1h9OTPQ5/foEiO866rr8WPi3t7KSjqBIi8AySq4r58C7YUqxgqqzZmEKrUMRWOVd3phHhHItwIHqFgVGfL6HBlX/b+ciE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=CR91mVdp; arc=fail smtp.client-ip=52.101.96.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImMRwE8b"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-298287a26c3so52330235ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 07:52:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764604345; x=1765209145; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pVKsqLAjHiedCsMTkQj6KU9uWiG9cI4IM21lpckerh0=;
-        b=ImMRwE8b/Fjc5hCvvFAs4/MtNwNQvIsehrcYoQ34UMRmy88hdHkudaz7hVav3ODsF0
-         +g4Bwwgn8XF0hCzld0EGWArZ3iqa1lsew9wgUzez6dRoFp4z/8BNBv0MAd0vLJ4BvAsH
-         /o5/8ChQ6MPoYk+/b57KvLOMxJKHLUq4cEygNReIukWJOoHUQoqpmWzRx3GPy3MMrrdu
-         OqhhpXUemzCDpYHlGAVjJCHyUzIXi1nNBXgKmeuEHcHMx2VhRZZwrChRUqlGNoT2GdeP
-         SM1HM+C7Tmxw76LMztzqmx5uZKIqX5ZtFNiohpc+Mw/AHos0s8VOn3ds4VarKXEzR2Ym
-         hwkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764604345; x=1765209145;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pVKsqLAjHiedCsMTkQj6KU9uWiG9cI4IM21lpckerh0=;
-        b=PFQMii8B/SEhY4Z1AZC7mTb19SjHx3toPgU/RSI4qV2zrRDJQc5V1aJJ6/pk52u+vq
-         EN5SJaAzfXHsy9kpV8y3fc8Obq+Vs7+umSFfW6myGAq3Vnnuyk38BZSGZdcBjQuOX7ko
-         O5O8eEP1QNYfbHP2y4Ighss/RaYN0Dz0SWh1gXJdazotWrnesp55KPr6tY0jBWNA7sKz
-         72xzF7ZEJLmCTl/XSLK3RlmQrn5Wu+WQgbgHYTX7IrFnFAYNlSxW5e9R7q/+5xLkjEJD
-         1HqYAcbkrzzf+UgAxXyD3svMF7iQdVkvMHS9v+XYiBqeu5HjabkZicIAO+Rnt2wBG187
-         Woow==
-X-Forwarded-Encrypted: i=1; AJvYcCVn9kW+0++LgaHJa3o5XiVKcSpK95GCh/L7tvEOV4K26PAdebB1gL05ouU9ZXqM+DwuIPBeEwXd9nizHINuFg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFTX3Ik504yS6krTLSSi6gaWGPdmCfgUv1UDPNHpKafFpfDasd
-	9m4bp31cfsdpEwmiiV5F7wQXDJUuw5vY2UJz/viBaxK8CkuuojYg/ynC
-X-Gm-Gg: ASbGncufzyidNR7JGSl0raL1qCcDfgQELjpiA+kIhLHtVthBduFEReL4z/iAIuykFKv
-	FIvmUzkhevcxvEAsc5nz3PmVqnKsqHuhcFSIcb0ARaV3cR5Ohqgtuc+3a1wRnmoXp67UVOXUIMM
-	xc3GR3UYUIDh+VLyiK1J+4+TlqRneNPAnAPjm1gNvv1ld6Si8dLuiE+wmwLEK7M+7e2jN40QOwm
-	5osfO4U6R1q/4KxrZKSm/5aAs1ZyZGshpj1lYcmFhEJT+Yt4C1w8xlqhpIZaNAc4LRJtmWwZ3IC
-	tOhd9oBDitBTDtak/dMPTuJb/PxELgeR7Ma+8q+WGXMqHVfcBJhAVkACfvPitJ4Wn0vbSU8ukAR
-	rLBBOUQuOGSqjIr0XIiv2xZ7RLi5qhzg8QB6gULxNLjXtWXvKvYCoaafPdtmGyU26ZpYn8QgAX3
-	lPZuO7rvOTby12fRTQKAilZ/bzKleTCK7IGYQ3rOyIC6TxQPzTlfGrT/AquMIz/AQV
-X-Google-Smtp-Source: AGHT+IGat4VhF83+oMq7CNZLZBFhrHJD09jfouaostnsMQaYHnfRxI2M9f052yuItSKVu6dT7hxfmw==
-X-Received: by 2002:a17:902:f641:b0:295:395c:ebf9 with SMTP id d9443c01a7336-29b6bf80942mr448394395ad.55.1764604344552;
-        Mon, 01 Dec 2025 07:52:24 -0800 (PST)
-Received: from atharv-HP-Pavilion-x360-2-in-1-Laptop-14-ek1xxx.. ([103.216.213.160])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb5442csm125777105ad.85.2025.12.01.07.52.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Dec 2025 07:52:24 -0800 (PST)
-From: Atharv Dubey <atharvd440@gmail.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Atharv Dubey <atharvd440@gmail.com>
-Subject: [PATCH v2] rust: acpi: replace manual zero-initialization with `pin_init::zeroed()`
-Date: Mon,  1 Dec 2025 21:22:10 +0530
-Message-ID: <20251201155210.22710-1-atharvd440@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="CR91mVdp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tk239u5kUrnEgGX2LGGbhTSTo1thYlO9L5EdRf4vaSm574At2jnV2EkyBrBmhJ70uCtAseZgrKQV6r3ulUIToobPzvX6g5QK8wOA76LD5rb90H3A4M2JX4mQlZZtsPH0D8EM+mjYUkXoV35bUZxh1P7uHaqiWcpUstYRxX2zdFMJUmUd9hX/iXhU+9+6H7QydZ5OVIcvVTRgCuW+2yERz5VZ6a455qdlw0dyjsWjo7nPHAc6Enbrt8oHJDYLNKv4xG7AENATS2MwuqT6b084XcNbiTNJdE7dBA3WetEQ3SHwjQux5mi9qXuKl2ubb2dPO4B/AfWZcD1jBSLtJlrYhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K+Xh0NjmWd6LoBGtG7p8ix71BjVu1+hkOimissFZr6Y=;
+ b=h3uSNG2IWofQRUlUMOJcbQ1IUDgTa3UxepyCnOeO0zphNKvMkkTPwfulq1fR5kuSm2Fvq5wHeYRw7LJxKJPNqaw9n/6ijqk2KC13vmswqd38X8SIzTs9QAICzFZa1VEzpkmkiagQUbrW/W32hG+x65DoBr8fc2qYG7a0JXcZcBk/vYFn4+yqJvkz8a1gEXxUuapyakWH/ehM3N7J02RhZSlDJARlS4z2KFjcIYbBS3PhT8DEtmtdc66rsIcmuh6KGynMUF/gkTFRdqphwAlKBznpJpSZFW1JGeoHq7a9VzYfDmyWtYn2nWhE4vMtrtOvl3Dx96EtTD3PpkVBy2xwug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K+Xh0NjmWd6LoBGtG7p8ix71BjVu1+hkOimissFZr6Y=;
+ b=CR91mVdplPYLhvVnbqad7cfe2QefkefEqhlU+S9vQfw7FbxkmrYfOaWnxIIuNbBgDRJsnQUXWxfdaCUxxe6qoluuJp/No0Yn1KcFWYLc+E7MCSfgSK2a8Ik+ONtA+4rST/Px02XO8ZjMwHYulN5a+QilffOjuW98TMHOIR3ZCU8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO2P265MB2990.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:178::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Mon, 1 Dec
+ 2025 16:01:30 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%6]) with mapi id 15.20.9366.012; Mon, 1 Dec 2025
+ 16:01:30 +0000
+Date: Mon, 1 Dec 2025 16:00:30 +0000
+From: Gary Guo <gary@garyguo.net>
+To: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Benno Lossin
+ <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Viresh Kumar <vireshk@kernel.org>, Nishanth
+ Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Krzysztof =?UTF-8?B?V2lsY3p5xYRza2k=?=
+ <kwilczynski@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge Hallyn
+ <sergeh@kernel.org>, Asahi Lina <lina+kernel@asahilina.net>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v13 2/4] rust: `AlwaysRefCounted` is renamed to
+ `RefCounted`.
+Message-ID: <20251201160030.6956a834.gary@garyguo.net>
+In-Reply-To: <20251117-unique-ref-v13-2-b5b243df1250@pm.me>
+References: <20251117-unique-ref-v13-0-b5b243df1250@pm.me>
+	<20251117-unique-ref-v13-2-b5b243df1250@pm.me>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0377.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a3::29) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO2P265MB2990:EE_
+X-MS-Office365-Filtering-Correlation-Id: 87e51919-53af-4fc6-0ee7-08de30f2e3ff
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|7416014|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?dQS4zknpLWJ8bvw2F0czGUuMXLjr5FTeTK72rr9fe21KqE7FkAfcqHqUl6J8?=
+ =?us-ascii?Q?ppMsjEVYuQIFG9PjCF7N9sZNQxQESKue3T2ZM7w3P6zYUaqLpBz6onwUkid2?=
+ =?us-ascii?Q?J0G9BRHtv3kKfzoZGBKhGRj09HVM5L1HHfMUdEY4ZyolxljXuxObaDObeOHD?=
+ =?us-ascii?Q?bqV0ZnOwN3GndVad54Qsw6KvzozYBhAK0+e01qrRwcAVa9vmpY8RlHEBygEz?=
+ =?us-ascii?Q?JlMqBK8W5/FizFS5QRfgJ544dNYK/ojFp7fRgN0eINDnoBlgqFAZ9Rdmy/nz?=
+ =?us-ascii?Q?tZpFANsK57/0dLoqzgfCbk6h6wApqCwx4ZAO6iUKJAumnCE6i0Ujb6/p6V1w?=
+ =?us-ascii?Q?yOiI2MszoqtWkfIHwOKD41HC1HcmjWjE+laEzFhUNHlYgHSTuBCYq8U6LWNb?=
+ =?us-ascii?Q?Gvedu3sI3Z3/W19pRsPXxKjQLrK04wknG5IeYk7Piinzf8HLn9aNvnNkJLEW?=
+ =?us-ascii?Q?U2xihCg68npxeWtSEg8bfqffFtibGdM2eNuPbkBhwBgLpQOZ6qTDDspflXvR?=
+ =?us-ascii?Q?B9pZaX5PLUyGdSMIxW/wi2lvh1J642qDX9G5QZlZBw/bkNP04u3/XEpFiFJV?=
+ =?us-ascii?Q?QGstGMOn/wnhCYwpKCc5b47dbD2ZkhwQXAaElWO2dpQN9aURXsPzNs42rdiB?=
+ =?us-ascii?Q?Pfwb7xmDwgNPxWm8xLemkIPeo3RelxOfC5cvov5QsfQYOTSV1Me9O65P6aTP?=
+ =?us-ascii?Q?6ybS3dVedl8M19mlc7zsmAP49JnIXHYQc6XdeR1j9z0UaEDEuwIi42XQt+qU?=
+ =?us-ascii?Q?h+9leDZoFYyb+pc+N4W/ries9ukdZtp+KsFPnG2+DpN2kf8KBLqcdP8Hoc/K?=
+ =?us-ascii?Q?vI4wCU4Rr17PPxthqVyUeI1nYQQoDFPeD4Blno+5cFCM+668uPystxvmOfmT?=
+ =?us-ascii?Q?O97PJ8ayn9WaGYWuSgSorTDYl770Hc7htjvrRbIb5fROaOji8e9GQhyz5N8q?=
+ =?us-ascii?Q?/6zf1qfIBxgEj8iTjBoCO3WKC4curHzZENEMQKiPh7xVyeyokeKxQJmJEOAp?=
+ =?us-ascii?Q?K/KEpa+WFDn9r2/3wKnnytFjh8FrfJxo2a03g0tD5r92X33AnTMKQYxyedCo?=
+ =?us-ascii?Q?/Y+CFYVGqAjuAYbFbimMUeV/iEQThU/FLmdShNS2lf1jSQEese6hDMX7PpSM?=
+ =?us-ascii?Q?bW6zK/+ehlyFhG3OY8FCGN+w+jgpgUDXzc/0EQ+6qSNP910WroACPgSRW38E?=
+ =?us-ascii?Q?1O8AxWkPPLSDDE/uQYA4YzSLvvw6PvlqTlMAsCRJWOWzcF/vXisYVfoh9IkN?=
+ =?us-ascii?Q?K2erMLHVYOzfaHykpMX7VQCgAPEIpnZvDju46/A/im41th6p5Bj4fiTvzF07?=
+ =?us-ascii?Q?I1eXeYIoSewjqM9scc3UTWMeZ/gHMzrMim9xz/LyUHzD3hzJjVEyZtzSv9pl?=
+ =?us-ascii?Q?mFmCHq+GyMDX5mpWWq5UHYqm2zUerycwr2F6bqkPOX6z3YpHu29ubMUcZiWy?=
+ =?us-ascii?Q?ZcdHq8gnyGYSuJJxvzektrCIOuM/BDrN?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?BeIkBVgVFmyYBSY0ouJA59JWpsYsOhhsOVti14eUmwLpEw88qfiP0a8/3ZUy?=
+ =?us-ascii?Q?0dcwHRySrmrCYszC7SLadViLVMo0nw64ZvDZoKoQfqnlw16kHbi+PRt7j8E1?=
+ =?us-ascii?Q?XGHVE09a5L8lOlX1kBjnXhnVyuJLtjQDi9HYuCpjotd2P03AeByx5PAineg3?=
+ =?us-ascii?Q?8S5HG+5C4hDFlW48pULFalk0mRf2e6kcJs9gqRva0BlXgyY20CkrobGDHGDc?=
+ =?us-ascii?Q?PmbLjFA+96FxQVXy8jzfi2/RlBhAls8MCQPpZhr0FFZ2KeKgc+evqwLXPhP1?=
+ =?us-ascii?Q?C/D6TU3I6P8lB0e/FvCwhYp4HwOWDQfz6DPNX/NTD7bXwGSyFhY8bCqR4jVs?=
+ =?us-ascii?Q?S+0HicXHKU/xpVP0G3rQsunNndGfaSipGCQhWvZ6H9fnHVKYuwSKtbJWsXWV?=
+ =?us-ascii?Q?mz4jGnYo0I1mEI7TXXnUiqAbZrI7we8yK/kV5dqiu0feR0owr40Y9T5m49xK?=
+ =?us-ascii?Q?NUId0MWrrtNdm/jW4jCqk46aIFEjwwoOKmBlp7QpsYQGbe8mY/MTKcLqV2OU?=
+ =?us-ascii?Q?pvJTY2ekxfjGYE6JSIDxUC4knP3c9NgseXGMADPhypB1hf462cf/wzSoAsN9?=
+ =?us-ascii?Q?dHPziajcoyJeMctkpwrXQjDkiBSedGUz9VJH84L8q3mIxEPaAbOAlWi0p2UV?=
+ =?us-ascii?Q?82Vn4o17WXgDUS+qAKu3m91ltYs2WZOtz1UKEzwk0dud0CrvIAPkarUm3Yw0?=
+ =?us-ascii?Q?CdnDZtLThu1tESE4Y6nntkfwrHlf+apxzPj7Sa6E8OJkVOqtNzZsO/kt9U+p?=
+ =?us-ascii?Q?WOOwXgxH1c5xjsph1dpK3OvUUpVMea6oEgkrsYiBQ2UVhfhGW+bdOrQ8NLtO?=
+ =?us-ascii?Q?JamCPPfBLe3NASLDf7Xn+vpbJHOgO9PmGnxirnyDOCAchQ4YCfTAGmSV1vnz?=
+ =?us-ascii?Q?qNC19r9jCtNNNNwq6gaXqrLStkqu2eiIXrFELCah6mAcue0umo4ud4cfs9Ku?=
+ =?us-ascii?Q?OTbALvJXFkm+L+Ulq1dDbcouBrHGV17mpmY7IE3erB7CfImfheR8oX+e2IdI?=
+ =?us-ascii?Q?M74xAL3JJ1X/O1EyhVgQRKeLbZQBEoSCWE63s+H29GjWRrRmZiuRmHt30iMC?=
+ =?us-ascii?Q?s+HgyNHtl9wQpOmr5kok/l+DkABfKlwCPxZJ2sBojMKmY8clABXhYtPqHmyW?=
+ =?us-ascii?Q?4sJtgNHli1VvWV9hBoaEkDd6C73qRdL045LN0ROMr7MiUEwMNZz8+IE03gpF?=
+ =?us-ascii?Q?3tRfuBzZzo0wRaq5+8LQHMZEmgsAqSclGUl2d1J4O9ICuWqXsYEFBhChlvTe?=
+ =?us-ascii?Q?Y8OugfOagC4tnFrpYNaqsn22NOn/RcBU2zvYOTsN8TjiC9IyBbYeQtpdn+n5?=
+ =?us-ascii?Q?DQjp5iGC0+J0syPleFIGjANPyNbQonIjwM30flLlM/nXl1sDIgSEX66szVx3?=
+ =?us-ascii?Q?+Rq0zNUcQ1y17gNMJDhdmzsBUdrb3M0vZOBxfmtAKGqa4CHFRt5NdzZEHhuo?=
+ =?us-ascii?Q?E2IQIILOPUkgr2GXyVU+YogdeNzE2w8W6wVbLuSR4IPcEqpoBJgrZG32D6zd?=
+ =?us-ascii?Q?DJDih6WnJIOeMtq/3GuH6/9RvyjwR1LAJPMV5hpIFsqDVj6OzXZnKl+mVhWS?=
+ =?us-ascii?Q?cevr0r1y6lZPTVRMXoU1R/5CnVSZ31kkjICO4a4I0GPxtWNXpS4hC7BZbpOz?=
+ =?us-ascii?Q?DA=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 87e51919-53af-4fc6-0ee7-08de30f2e3ff
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 16:01:29.9920
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rSBYlATzlV0k8QEuECqafBYn5mtP2v+zqpTk5UNMbi/XIC3rBwrLDIl+trrx/+WBoVu3zRtye6HWBCKlvan8CA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2990
 
-Use `pin_init::zeroed()` instead of `core::mem::zeroed()` for initializing
-`acpi_device_id`. This removes an explicit unsafe block and aligns ACPI
-initialization with the pin-init conversion used across the Rust tree.
+On Mon, 17 Nov 2025 10:07:57 +0000
+Oliver Mangold <oliver.mangold@pm.me> wrote:
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1189
-Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
----
- rust/kernel/acpi.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> `AlwaysRefCounted` will become a marker trait to indicate that it is
+> allowed to obtain an `ARef<T>` from a `&T`, which cannot be allowed for
+> types which are also Ownable.
 
-diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
-index 37e1161c1298..cc98b36b90a0 100644
---- a/rust/kernel/acpi.rs
-+++ b/rust/kernel/acpi.rs
-@@ -40,8 +40,7 @@ pub const fn new(id: &'static CStr) -> Self {
-         let src = id.to_bytes_with_nul();
-         build_assert!(src.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
-         // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
--        // SAFETY: FFI type is valid to be zero-initialized.
--        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
-+        let mut acpi: bindings::acpi_device_id = pin_init::zeroed();
-         let mut i = 0;
-         while i < src.len() {
-             acpi.id[i] = src[i];
--- 
-2.43.0
+The message needs a rationale for making the change rather than relying
+on the reader to deduce so.
 
+For example:
+
+	There are types where it may both be referenced counted in some
+	cases and owned in other. In such cases, obtaining `ARef<T>`
+	from `&T` would be unsound as it allows creation of `ARef<T>`
+	copy from `&Owned<T>`.
+
+	Therefore, we split `AlwaysRefCounted` into `RefCounted` (which
+	`ARef<T>` would require) and a marker trait to indicate that
+	the type is always reference counted (and not `Ownable`) so the
+	`&T` -> `ARef<T>` conversion is possible.
+
+Best,
+Gary
+
+> 
+> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/auxiliary.rs        |  7 +++++-
+>  rust/kernel/block/mq/request.rs | 15 +++++++------
+>  rust/kernel/cred.rs             | 13 ++++++++++--
+>  rust/kernel/device.rs           | 13 ++++++++----
+>  rust/kernel/device/property.rs  |  7 +++++-
+>  rust/kernel/drm/device.rs       | 10 ++++++---
+>  rust/kernel/drm/gem/mod.rs      | 10 ++++++---
+>  rust/kernel/fs/file.rs          | 16 ++++++++++----
+>  rust/kernel/mm.rs               | 15 +++++++++----
+>  rust/kernel/mm/mmput_async.rs   |  9 ++++++--
+>  rust/kernel/opp.rs              | 10 ++++++---
+>  rust/kernel/owned.rs            |  2 +-
+>  rust/kernel/pci.rs              | 10 ++++++---
+>  rust/kernel/pid_namespace.rs    | 12 +++++++++--
+>  rust/kernel/platform.rs         |  7 +++++-
+>  rust/kernel/sync/aref.rs        | 47 ++++++++++++++++++++++++++---------------
+>  rust/kernel/task.rs             | 10 ++++++---
+>  rust/kernel/types.rs            |  2 +-
+>  18 files changed, 154 insertions(+), 61 deletions(-)
