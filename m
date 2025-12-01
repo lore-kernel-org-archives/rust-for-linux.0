@@ -1,118 +1,134 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C589335092
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 17:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0832080C8
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 19:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764608965; cv=none; b=otlj4NsaVOv7gtRaSuxzjmyz0shIKTdgKB3VgjMRL3+CXq7wGfvUuWBMr9jPWHShsiLWPxodWsvhzhQdbOiQXQvjE3rDE+VdLwwznhmHgCsZNuJXAiGyfBbj+8puf0Xh8F1wucMyy8x1sdLHSv+2Yj8XyGc2mMI/1W5QPi4U51c=
+	t=1764617342; cv=none; b=PuGmvDnpbs6J6DZ2zOswVQhifGNIydviSYoNx23ICb6mqiVyBQ3f72I2VEnrQRKc3E6Sj2DxlKRgKRIyspslf69ZPQ5nE5iHesknUEDaUL/jFNeBBs6cVtZc+GSW6MRR19fxINHu0Jk98rClUsm0/CtTVn6487eobyqB8oEn9AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764608965; c=relaxed/simple;
-	bh=iBbiUzvYi/ln13SU4XKUqRn4bX9H63vGL1eyD6pfsfo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O2MxSN+bT0TvQtDIo5MPyLC4+YEiUkTIH9LV+PrJpt132l/Qq9Pak5Uw5ENkSIPKq9RxoLixUG0Qg6YYppjLzA/H4a2vS8jbVGeC7W8SajKla+A1cL/BiGqfDpfF6x3nMF2Qvb0wJTPk4Xgzu0/8Pxl3x8FHsnMUf2QBauq9T54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HC15yTDF; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1764617342; c=relaxed/simple;
+	bh=zfeMB2LmDcZWaYDjv7dMc5Q8/0QMwZt5kUiecWTGvyY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dY4glxTnobspUVa6mMVG7v5847FjGhluR+xuHQdzEUx0/GfKm4sujvcQ9t1+lTqHEdCr7q7FA0BZ/ou6UJYx25m7Uupa0gn9bV799b5AKsKKqMYINWtu2gvUOUxrtqh37G5jdXqRBS/XjablClXm1APnTYL+W6qRhg5GCZwbhAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BrSfb6b8; arc=none smtp.client-ip=209.85.128.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HC15yTDF"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2960771ec71so8909645ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 09:09:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BrSfb6b8"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-787e35ab178so37547317b3.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 11:28:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764608963; x=1765213763; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=10oqy7XG0ziR1jN7iIJoYu4N7Sm/NTHUpb4SiggOXnk=;
-        b=HC15yTDFMPAT0Lb1MqdcRSii4KackGdOk4+mnSLFKvQu0v3nYYM0yymTsluA866K0g
-         4wPZylYTIdvo1CrxrAEL4ajRaxaaWzButBecL9BjilU3/dhFAtW+rojUu8vCC6Yl5zsX
-         BLsenFBgxhaHLFtQuVHpJO+eFAvHVAHZKnAM6STfeELlh3+kopFlC9AJHQmfN9YvaXOK
-         EYX5i08LaZ1RO10SUaY6TrqF+SiwDI4iUDzElt/WUX6WEqCTYSCqHWt2H58UcW3HLowI
-         DTiRX73GhsiFHjfZHTHaRofvWJxqezdVthpcMV7iFihXwXRktd+rLkQb82BU8QLr12Jk
-         /EMg==
+        d=gmail.com; s=20230601; t=1764617339; x=1765222139; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=APljFRXaMCw5fST76I/JdjoAg3NunNjrMcBFSHPBuyM=;
+        b=BrSfb6b8Zn0E9ux4nn3O4x7dicge5iSK9nYgBuysy+AFo2EdH/eLpkRdzBok1ewZOJ
+         IGOHvLVs1hwoFs8NYcftFeyxM3VDexUSJcWWc0CG7JzboclczRb4XBOK2ZHHyBQuVJfQ
+         Le1BbXRj1k9/R/SisTQeDVZy/QbToA6JYtDL0HPGeqsxLjyPjyQ1joT1ZpDy/nd+5iTC
+         eQ7y8syQX3SGAMJgcMzfH2iAVuCMxh+DTNjAJ+19ix2CrujxKjJu/O7Hp4CbQD30VPfS
+         8LWml3GfzvMKVvJk9dlzG16aLHC+Q7z4if4AnZclNJ6Xbwb9awwDekBuH5TUZyQ3AKNF
+         BT/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764608963; x=1765213763;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=10oqy7XG0ziR1jN7iIJoYu4N7Sm/NTHUpb4SiggOXnk=;
-        b=YQPl1ROmQHEWsmUdeZqMyMYn3ml6Odj3yertPs+bgpRsqhLnBvZR1SqMjd/UA2lERj
-         4Ak5nDrNbWfzFyEpXVAyjjbT0yLzjuersD/exmB+NvtYb7bGyGAW6Keh3eCj49OoPBim
-         a0kqDxBKZ8QsWS7MECl6IVMUJmy1mUFT3Vauob5M4WnfL31ajnM/oiDZ2o8kqjOYXs6/
-         LhrKOvWI4z74eRyAlHwIw3ZCn2pM+eZsJLo0p+Tof+/KGTI9TFJgwUBG1WjYzC8tjKnb
-         Su4RpNJogE0tlZJin/WVS0/o9ykUz07ZKAFuEpigtvFwLa0pg6+J8BOiEm21AwScXl2c
-         LKLw==
-X-Forwarded-Encrypted: i=1; AJvYcCUjs4KrjiZ8r4a05oaGfhRwvdLfNXLKOdXMGdSmBKxcgvS7F4rsiEfSc3cvrxWeKXtC7QoMvjrnkO1OGaVScg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxscIl5DF7iXkLowFsFs7RMR9AAzLct8kbXfUR1zugaYZNVjWmE
-	eX1e0eqmxyodZuhRrfEPZSW1vCYfN/0mP28WUtRaM9zw8va5FZPrwSN5pk5f3LEj1ZjsRlsih8Q
-	0YdA7bDv+coPd2c88qdebSqyrR0wWOjk=
-X-Gm-Gg: ASbGnctwGUeJFUeQb/QUqrtZ/Wk6fXVSaPIUZ622oJY7Y8rVWXKgl+9+/OUlxEkjfQu
-	z7gSYyya0C4IeOEl03hzRGPPCW/hPaP1COhvaGAwqSYQzgBNq+52YMI7n9jH0yXxUVuv7LYE2+i
-	YbEijfngayAU9KDfeModkZNrcdIH/GNw4/czRSps6C/JvweTisz2y8uxTqseX1bc8p65vWpofLU
-	OIblsidFiqJ9cNr0CmZuPyN9MZd30QUrgsVGpCALyLOJ90ev43ZggZ4UZrQHjNMYyIKN+FFDq1C
-	jQEWhc9fxfVFbyYERJZGJncLZSXvmPZop13pB9K1z275wvXbeLpx5ZtRsdFQly9xVuESh2Dwa9G
-	4hp7MHfwzSEM00g==
-X-Google-Smtp-Source: AGHT+IF1YPYGD/E+eDHxFkwlvTUf8jqG51M5LA+tdLWxMqHx4a8yCVti7p4nga92l9CsKYM8VN2f66dz5zEFbxtTTgc=
-X-Received: by 2002:a05:7301:e24:b0:2a4:3593:2c07 with SMTP id
- 5a478bee46e88-2a7243ec7b9mr21959223eec.0.1764608963077; Mon, 01 Dec 2025
- 09:09:23 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764617339; x=1765222139;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=APljFRXaMCw5fST76I/JdjoAg3NunNjrMcBFSHPBuyM=;
+        b=R56VYVD/V0iK6MU5hZ6dd6XFXqr4Dm2V3htmGQXEilBKUCCyoC9+RUmMuUJWiDzhLe
+         dm9eJHFtU/q848CGuf8EDpux6/oP5xMta8LfEu2auGYbJx2X3avwpqZBM9Lin9FUXXpu
+         kSe20YDXPJN4JgBruJSfA+sK9z9v7p+nREe/Xyet7YppJvcR9SyLYoXzDUyf/RxBjwEU
+         7xnppJujQgJ/uqv8EJ3JVU/ZLPuaIX2VOdSxBPdkoq0GOi/o9LS2YKiBgaUGRAb5xkcc
+         y2WoFJWfqWNpEwhHvvbyB42EF3cUAHoiAiuF4lR55DfVNJEUHgNzEKIPJ40KqYyHlYBm
+         mFQw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2DKSrBEC76pAIJcRVj7PexGC0J/DAwgR+p7Yzx4qdc5t2osLENVFDFt7y2aS1d0JQ+h0gEGWdTIaXoRuQEA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWa59riZ5WQTlcYuha66LSNm0VM80vXK/VCizz+5bEsdu4CUms
+	TZ57RsgBqhMigMim4guY9nOni4gm0lnUSBATH4Fm+coA4bKmKH076CbS
+X-Gm-Gg: ASbGnctravJqinR2XbuZyR7seUqkwabsOAuJFfhAvBei5iJc3rcvQzwdHu9e3d0QTHE
+	af1VIsYeP5rOOvkrS50gDREN+fRwqq89+YKhNTSdsyOdW7OJOLMzwDxGgsc+/v+n9ZIqURyk/Kb
+	P2Ie++Vf1l+cBdCcxDaF477WcJguhq7s6y+yvmBAV8VCmFt7K87Zt3jyDm5TqLtTy8nneg+q0Hb
+	Tb7vmmb0sAk6TZFGbpVkpzKOtsXPwRhMl8CJS0Ny8U2QYdCPJHQDj5P5USvonMFgfjF5fCTeV1u
+	s8Jr0LUfr4CwFmnldTA5xK2SoEj2vZXMR7wg6yf8JKw5OZAalZPYoIaEEQaRsASIr0ajv17Ok4f
+	HA2TVY+v2kx2trzWQS2S6AW0wxUDhvPg4YQWUDm8z6+rU4pIyki5pLt3Gaenpu4YQzksFqJDROw
+	ODwojW/SU=
+X-Google-Smtp-Source: AGHT+IEttKn+//7++pOLi55YpQ9X7GejnUD2spd1fxC6Tw+xPr7mkrw42iQi7Zwskp5SI1O4LeCa3g==
+X-Received: by 2002:a05:690c:4483:b0:784:8647:4958 with SMTP id 00721157ae682-78a8b56803bmr355020387b3.67.1764617338630;
+        Mon, 01 Dec 2025 11:28:58 -0800 (PST)
+Received: from localhost ([2601:346:0:79bd:affb:cf6e:b908:f700])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78ad102d25csm53088337b3.44.2025.12.01.11.28.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 11:28:58 -0800 (PST)
+Date: Mon, 1 Dec 2025 14:28:57 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Burak Emir <bqe@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH] rust: id_pool: fix example
+Message-ID: <aS3seTNRum3ZXMom@yury>
+References: <20251201000949.1626363-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251117-unique-ref-v13-0-b5b243df1250@pm.me> <20251117-unique-ref-v13-4-b5b243df1250@pm.me>
- <A5A7C4C9-1504-439C-B4FF-C28482AF7444@collabora.com> <aS1slBD1t-Y_K-aC@mango>
-In-Reply-To: <aS1slBD1t-Y_K-aC@mango>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 1 Dec 2025 18:09:10 +0100
-X-Gm-Features: AWmQ_bnmy3Os7dUuxEXbA4TScnRqySjzLSX-NOnwmbpPdF9z2OcK2znpi-34sDw
-Message-ID: <CANiq72=mZXc5+fMzsdTRupUsmsuLdsx=GZucn2MNoCTLAT1qkw@mail.gmail.com>
-Subject: Re: [PATCH v13 4/4] rust: Add `OwnableRefCounted`
-To: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-	Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251201000949.1626363-1-ojeda@kernel.org>
 
-On Mon, Dec 1, 2025 at 11:23=E2=80=AFAM Oliver Mangold <oliver.mangold@pm.m=
-e> wrote:
->
-> Ah, yes, rustfmt must I done that, and I missed it. Will fix.
+On Mon, Dec 01, 2025 at 01:09:49AM +0100, Miguel Ojeda wrote:
+> When building with KUnit doctests enabled, `rustc` reports:
+> 
+>     error[E0599]: no method named `acquire_next_id` found for struct `IdPool` in the current scope
+>         --> rust/doctests_kernel_generated.rs:6722:24
+>          |
+>     6722 |     assert_eq!(i, pool.acquire_next_id(i).ok_or(ENOSPC)?);
+>          |                        ^^^^^^^^^^^^^^^ method not found in `IdPool`
+> 
+> Thus fix it.
+> 
+> Fixes: a5726454470c ("rust: id_pool: do not immediately acquire new ids")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Strange -- if you noticed a case where `rustfmt` wasn't idempotent,
-please let us (and upstream) know about it.
+Thanks Miguel,
 
-> Not sure what you mean by fictional function. Do you mean a non-existent
-> function? We want to compile this code as a unit test.
+I applied this, but the fact that you've sent a second fix to
+documentation that actually is a build fix, raises the questions.
 
-Typically that means either using a (hidden on rendering) function
-that wraps the code and returns a `Result` or directly a doctest that
-returns one (better, when applicable). Please check other tests for
-lines like
+Because Rust documentation bears compilable chunks of code, I think
+we need to enable rustdoc tests target by default, so that developers
+will not send broken tests.
 
-    /// # Ok::<(), Error>(())
+Thanks,
+Yury
 
-I hope that helps!
-
-Cheers,
-Miguel
+> ---
+> I saw this in -next.
+> 
+>  rust/kernel/id_pool.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/id_pool.rs b/rust/kernel/id_pool.rs
+> index 73a952d7dd83..384753fe0e44 100644
+> --- a/rust/kernel/id_pool.rs
+> +++ b/rust/kernel/id_pool.rs
+> @@ -28,7 +28,7 @@
+>  ///
+>  /// let mut pool = IdPool::with_capacity(64, GFP_KERNEL)?;
+>  /// for i in 0..64 {
+> -///     assert_eq!(i, pool.acquire_next_id(i).ok_or(ENOSPC)?);
+> +///     assert_eq!(i, pool.find_unused_id(i).ok_or(ENOSPC)?.acquire());
+>  /// }
+>  ///
+>  /// pool.release_id(23);
+> 
+> base-commit: 00c5ce039598e692e1dd4bf2b3ad5bc08bdf3270
+> --
+> 2.52.0
