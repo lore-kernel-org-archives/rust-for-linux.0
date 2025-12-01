@@ -1,37 +1,37 @@
-Received: from forward201a.mail.yandex.net (forward201a.mail.yandex.net [178.154.239.92])
+Received: from forward206a.mail.yandex.net (forward206a.mail.yandex.net [178.154.239.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C7C13DDAA;
-	Mon,  1 Dec 2025 10:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEA1849C;
+	Mon,  1 Dec 2025 10:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764584992; cv=none; b=XVzBCcpr9ZvZf3OgOwqeuVGw1ANlkB154LJwiKcCzEJkOYm4rjhMhmQQBpsKH8e9BUi+WUHCXZlce8G5xFwQOSd2ztECvpBx4bDWE5l3CyTn+FEuMTJZ0UDrhSdUP459gc2hiidMJ9mOYWO5Ov3TmgA72pTjxRPBRACdoqyf63U=
+	t=1764585308; cv=none; b=XXUWVibzefKg2R221guDoCDceZ41nTb9wT9ued70hh/I5s18byMOFFNku4MXwGpi/0bqyqYu71ZuiLepoEE/xNwW0RDZqBNgfyUbCi6k25wuwgpCJY3Zck09p51wuNjvvwyU4JWYOmBpe2O3Xyl0j3aXhvDVra7qjQM05RnzRtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764584992; c=relaxed/simple;
-	bh=8qpHjS58yRnMjonBxk24D7YNjaxNwLJ18ZG97fwDO+A=;
+	s=arc-20240116; t=1764585308; c=relaxed/simple;
+	bh=UxZJpuzvkI+pRjztOGLbPlkADkxS2KmZP3kBFUhNfIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j1jNIq+TznByoSWg1JsCkjFgE9vN/z3+pLWTQdU2HqPbCu3Pv8avD3idB3GjG69kOMx2eDt+9TFDinXoPXM91cxYtr2PTjgvcGODNauqG3RedQrBjg+36yYyfFqAU2XdrN1fJCMKC6lx/BLq2zEsCKEke5AYgwXR6CrqZ08kAdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Kq38vr1E; arc=none smtp.client-ip=178.154.239.92
+	 MIME-Version:Content-Type; b=oc+ANwDVzaOBhrVYRZUMWh1xFvUNq4wFTRjaJMypx+gVoAUTEsNbLHITqEs8BrsEeHKEhmx5Us9SpWso3B0O2zh1ipcLA+WQsAkyNl1pyiya8OjegTx46tVOocuy5cD0s6SBOjtdjtRblIkvlMDikFKvesL5FCiH9Flg/sFP3Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=qV1xcmsr; arc=none smtp.client-ip=178.154.239.87
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Kq38vr1E"
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="qV1xcmsr"
 Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d102])
-	by forward201a.mail.yandex.net (Yandex) with ESMTPS id E988A819B2;
-	Mon, 01 Dec 2025 13:29:24 +0300 (MSK)
+	by forward206a.mail.yandex.net (Yandex) with ESMTPS id BC8C486D62;
+	Mon, 01 Dec 2025 13:29:21 +0300 (MSK)
 Received: from mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:8a9a:0:640:e327:0])
-	by forward102a.mail.yandex.net (Yandex) with ESMTPS id DD92EC00B2;
-	Mon, 01 Dec 2025 13:29:16 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wSfJU4kLMiE0-2pzrFUMt;
-	Mon, 01 Dec 2025 13:29:15 +0300
+	by forward102a.mail.yandex.net (Yandex) with ESMTPS id AD358C0113;
+	Mon, 01 Dec 2025 13:29:13 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wSfJU4kLMiE0-Anm5W89U;
+	Mon, 01 Dec 2025 13:29:12 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1764584956;
-	bh=yFK6lRt2ssfqukpmgrenlQa2EpfYl8xx6d3OUJKDPLc=;
+	s=mail; t=1764584952;
+	bh=Um4AVQqdyl0PjnSlni/Z3hqSa8GEEEGbwaNnG1ThBAQ=;
 	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=Kq38vr1EMq3EORz6JgOfA1wQ7ipNRK1F8Xd2YKF/Uo6NKFOIUN/2EuqKu8d7cH72L
-	 mevL1gl4rDQkfNroJcgosaV1ugsvl73YGtNmZ/T6SOHVApH7hZvP6/oK9Y5ivrHKiz
-	 Yd2w6op6iJyXuBUMgZjT9spTXEnfUzRBo1yjEstE=
+	b=qV1xcmsraqmG14csZNCBLtVGyYPICDtAKBvAaZmb2gNA+vf9/m67VyNzoQWxJGuXn
+	 g0/Pyn7W94uZOhYEZC1Jw42vOjWRlYIkcs257cD/wn+a1UindDuNIzz3sRr1TvPr1X
+	 0pLzM1eh1QFNt+bPziV216ZMomjoCb0MfXWY2FiM=
 Authentication-Results: mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: rust-for-linux@vger.kernel.org
@@ -55,9 +55,9 @@ Cc: lossin@kernel.org,
 	thomas.hellstrom@linux.intel.com,
 	linux-kernel@vger.kernel.org,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v8 3/6] rust: error: add EDEADLK
-Date: Mon,  1 Dec 2025 13:28:52 +0300
-Message-ID: <20251201102855.4413-4-work@onurozkan.dev>
+Subject: [PATCH v8 2/6] ww_mutex: add `ww_class` field unconditionally
+Date: Mon,  1 Dec 2025 13:28:51 +0300
+Message-ID: <20251201102855.4413-3-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251201102855.4413-1-work@onurozkan.dev>
 References: <20251201102855.4413-1-work@onurozkan.dev>
@@ -70,26 +70,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is needed for the ww_mutex implementation so
-we can handle EDEADLK on lock attempts.
+Removes `DEBUG_WW_MUTEXES` guard on ww_class field
+from ww_acquire_ctx and ww_mutex.
 
+This helps us to write much safer Rust abstraction
+in very simple way.
+
+Link: https://lore.kernel.org/all/ECC0425A-8B18-4626-8EA8-2F843C45E0A1@collabora.com/
 Signed-off-by: Onur Özkan <work@onurozkan.dev>
 ---
- rust/kernel/error.rs | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/ww_mutex.h | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 1c0e0e241daa..9bf1072cfe19 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -66,6 +66,7 @@ macro_rules! declare_err {
-     declare_err!(EPIPE, "Broken pipe.");
-     declare_err!(EDOM, "Math argument out of domain of func.");
-     declare_err!(ERANGE, "Math result not representable.");
-+    declare_err!(EDEADLK, "Resource deadlock avoided.");
-     declare_err!(EOVERFLOW, "Value too large for defined data type.");
-     declare_err!(ETIMEDOUT, "Connection timed out.");
-     declare_err!(ERESTARTSYS, "Restart the system call.");
+diff --git a/include/linux/ww_mutex.h b/include/linux/ww_mutex.h
+index 45ff6f7a872b..c9835035b6d6 100644
+--- a/include/linux/ww_mutex.h
++++ b/include/linux/ww_mutex.h
+@@ -47,9 +47,7 @@ struct ww_class {
+ struct ww_mutex {
+ 	struct WW_MUTEX_BASE base;
+ 	struct ww_acquire_ctx *ctx;
+-#ifdef DEBUG_WW_MUTEXES
+ 	struct ww_class *ww_class;
+-#endif
+ };
+ 
+ struct ww_acquire_ctx {
+@@ -58,9 +56,9 @@ struct ww_acquire_ctx {
+ 	unsigned int acquired;
+ 	unsigned short wounded;
+ 	unsigned short is_wait_die;
++	struct ww_class *ww_class;
+ #ifdef DEBUG_WW_MUTEXES
+ 	unsigned int done_acquire;
+-	struct ww_class *ww_class;
+ 	void *contending_lock;
+ #endif
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+@@ -110,9 +108,7 @@ static inline void ww_mutex_init(struct ww_mutex *lock,
+ {
+ 	ww_mutex_base_init(&lock->base, ww_class->mutex_name, &ww_class->mutex_key);
+ 	lock->ctx = NULL;
+-#ifdef DEBUG_WW_MUTEXES
+ 	lock->ww_class = ww_class;
+-#endif
+ }
+ 
+ /**
+@@ -147,8 +143,8 @@ static inline void ww_acquire_init(struct ww_acquire_ctx *ctx,
+ 	ctx->acquired = 0;
+ 	ctx->wounded = false;
+ 	ctx->is_wait_die = ww_class->is_wait_die;
+-#ifdef DEBUG_WW_MUTEXES
+ 	ctx->ww_class = ww_class;
++#ifdef DEBUG_WW_MUTEXES
+ 	ctx->done_acquire = 0;
+ 	ctx->contending_lock = NULL;
+ #endif
 -- 
 2.51.2
 
