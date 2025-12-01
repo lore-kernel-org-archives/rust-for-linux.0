@@ -1,73 +1,73 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013035.outbound.protection.outlook.com [40.93.196.35])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012038.outbound.protection.outlook.com [40.107.209.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3081C29BDBF
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 23:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF7C29A31C
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 23:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.38
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764632500; cv=fail; b=g6JZICRzltwwaD/hCcA6LQ9m9QZNlAWjyaIFuJkOal9AexIS9c7IaKtrruBM21+yFUwVtMwp+KQXmmZ/wG3/8Vc2g8+2P9e7lpfrl+otob4BwIaRJUWvkdxsFAUKDeY1ykwlhYU4TimAfAyj3srKxsHhvpxmzs0RhTln8VwqgVw=
+	t=1764632501; cv=fail; b=adhhUt5f/72sP/yeh08TRknItd2ufFsW+Cx1At/p3fcajKoMDYQghEDONhY6/XRr8R7LXZMwztxm4o4pngsgmymd7644vFC7Am7KGnfMQO1n6qrb5LDUOF5cvKckYMAAgUWHC08faqoiTttqHy3Btjqchtb3aUffLGRmMVrEDFA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764632500; c=relaxed/simple;
-	bh=v8CyBEOFa3AfeMtUsENOrwepo2Lem+7UOvUNAtYRRD4=;
+	s=arc-20240116; t=1764632501; c=relaxed/simple;
+	bh=474tcnDbLD/yq5auYo52FqrxqXHHJhbDhacbpCfNR0A=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IJBkBZoo5R335C2ZtimLI/ATTeU71kxnCZ5HnxG+xL8n8rz9LKZ6aPyfk/lsV+hnV3XyFXmGTrTZJitKnBkbmF69+xvlLpkSqWgCV69yF8pQoXHEEsPXxr6FmVK3Ecq2xJuRXNMFG9SUyPebzvROH8yU+Wcqexe4pSt75d31Iu8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=exX9OLqP; arc=fail smtp.client-ip=40.93.196.35
+	 MIME-Version:Content-Type; b=TFrrNrQklT7V9jGLdpyLU/RSZm7njiHVS6VMqhaD1VVgLQqeDm8TL4o/FNGbDxWY352MKy0/FqCTbU7aw96OqhKIOwIYFg8KWWT+uFMmzdbXnlZLJQrQij/3sGoeSKcI/sOH5pIJx8LgdXmt2z8sTnOcvB3dnid6fVvSZgeJwl4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Rd6+q1JU; arc=fail smtp.client-ip=40.107.209.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="exX9OLqP"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Rd6+q1JU"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DqhrQAJn3FQ35jIfycdws9dM9UnCkMJIflLy9XEtM7T1mmYbIi7Ooh3TEdr3Q3vd0jy6hBi9UQ9D4b7C6HSv77UCJOa8s5HVowtAbXYiRFaX476qWWOhSF5Krg0arOkcOV8JL6j0YwACAS1NRMCyP6+Eh0fye1iKJUFNY7lgVcKdka87VlcSJGNmzuMpKts1vPDWFn9G//XbGE3BjLZhWRjQkU7t+gCJ4Q1LX9hcLQrH2gEZSAZ9kqrq3BbloC4LdB6JfAZTXg59TqlM1v6aMsP0rkLv0/4ds4Cs08Uxpqn3W2XfVGbyn7EZVcOqFmgWpkJQFF574Hc6fgeStH/XoQ==
+ b=fEEy32FVBW2DZYJVRy9oPNBWhWdlGye3P6khczaOrr+zH+xR6wrdHn5vk4tL31z2mYM3obRPcseYjG2Zj+Pd8XmaTQm9LYEUu2DoDRwXeFPJR1QPfWV1DAyirsoiMr16dG/iTMbdBF048WVWN3no2iD3s0YbAwKu0UdUZWsJyLlpdbOBTvMoZgFC6VnU5qc1kBQ/DnmLM0SHUhla24qfOxCETT374+eIkGKqsoGZs29i0+ktAbVR40T3gzOQJOmkq1X+X/1M/gZHRl5QNgfavNXDPNDPHCX84iUVXRLNKLgwN3FIKAto06QAr0R077VyfWCSp0W3LZ0+BeprnkyvEg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YsS4tiVgMvcCi9s1HA61+xiWHeaeG8S3wvqWmx8N22U=;
- b=sT/uQYnapmOo+JjVrZTxJfIVVVnxg3oywv73HlGhqIv3oITdpEZZpU5sUKu5OHPLcX8hqmZ9KB/VLmPAiWz1flZYFV4cyTKTG9wD8BzpxmPFeDPvVjY3EIgSH6ONOQ6vvroDLWHg+DkBBBmDE2mCLSixlEmmeg+4+qUmYtafhPXLU8zTDJbII9R906bkDzJWhgSPsbhHFKO69z5tbVaNQ1jOhAbzJK98IsO803rj5wXPTdIeOI31GOOhzJy5NNRSV3ehMesgK73C2tRqDHe/orSicrVu7cybssVitJ60mFokLWvxiMIl2dVXklVV7TDh13oUbAXrdM6IY9rV3WEhoA==
+ bh=+ha2J9orRUI0LTavALskIOVNQKq00h1weUHi74oIzVY=;
+ b=VTTLiX3M4T5jY9xQ43p4xKkYzKScGoN5rScYd6WXBkwr+Tj14sGPz/nmX5F8K/aW8vyBkvxhVgBD+LcrnsQMSAS69wV5nPkw6kWF96KDL3oVmximrZyBOYego007iXxIiEUZ9a8UEwEwNbRz6HoyPLNII0N4tkNTTtuxdToG/Xv1p0T6yskC9yT0LSUibNmxg6+E8chADsaX9Tm+xQtPKE9N6CbV43N+UE9X1BOTezy8Mee2DDH4Tas9TokfKB8MaPBl3laKLmMHk3B9Vhm46c0oKCJ1HAJT9lytdPYSAjNPZw/9bJYh8aayQdLMirZS3rYn7IjofnnIgi7HZLaCtA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YsS4tiVgMvcCi9s1HA61+xiWHeaeG8S3wvqWmx8N22U=;
- b=exX9OLqPV/2HgOgU9J1apHJEUWYWvTzyRoU3yzXu7WKV45SWmzPX5UXLbOY6eOa9Kb53my5DbTW5hWnADnnM2syhn6RywNGyWJD3ODn+wMAFrCNexC+hALI6wuzQVhzxu9bMdzifpZBGoTRLaAKgwx5NSNqCmqaOKFY9bXMtd2e3FTzT+bchYbjgoJ7uSnQab6AppAAxFLpPSmECQlXzUrVxGBBe6laXV5TTY8rMiNqLSgXzU0v5qIgfZhRayxwgJfQCW4Pm7ns/kt0dbVTYqP+ND5/bb2xVDbN9/lG8wJma1LvU20TUX4I3YlQQ2b3g2h1U1hucCYCkAD+BQwdl6w==
-Received: from DS7PR03CA0230.namprd03.prod.outlook.com (2603:10b6:5:3ba::25)
- by MN2PR12MB4077.namprd12.prod.outlook.com (2603:10b6:208:1da::15) with
+ bh=+ha2J9orRUI0LTavALskIOVNQKq00h1weUHi74oIzVY=;
+ b=Rd6+q1JUyHoIp8uyrwho/tBwXXcObdvK/uNo3M9fbU+dGacDhOGrJfLpW3FSYjnGZuiAnHqLWj15OkP75wsHAiIUeU8xb2S+iidM8CMCVR3/G7GTRg3bNmjRqPREYuf3ZpVg9ajNGX8RM1EIC0AVaVs3E6nueWBqXnJurQ+FzTzk+TfjERDZZuFMCLqtxhq3CGqGL56FDpUj8YeV3eQpGV2a6sd7rKq8utYraIVdSbvgfyO+A3kBp+CeOeY6oWeh9Gm2vqcTaig50lI26Hfvm6OoJ2bGYo1LV5sRmZmiDLOm7zP6I9se8qXB3WjHa+EjWAHUS0gi2ca1rV2u8hlavw==
+Received: from SA1PR03CA0001.namprd03.prod.outlook.com (2603:10b6:806:2d3::12)
+ by SA5PPF50009C446.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8c8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Mon, 1 Dec
- 2025 23:41:29 +0000
-Received: from DS1PEPF00017093.namprd03.prod.outlook.com
- (2603:10b6:5:3ba:cafe::9c) by DS7PR03CA0230.outlook.office365.com
- (2603:10b6:5:3ba::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.15 via Frontend Transport; Mon,
- 1 Dec 2025 23:41:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 2025 23:41:31 +0000
+Received: from SN1PEPF00026367.namprd02.prod.outlook.com
+ (2603:10b6:806:2d3:cafe::28) by SA1PR03CA0001.outlook.office365.com
+ (2603:10b6:806:2d3::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9366.17 via Frontend Transport; Mon,
+ 1 Dec 2025 23:41:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- DS1PEPF00017093.mail.protection.outlook.com (10.167.17.136) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SN1PEPF00026367.mail.protection.outlook.com (10.167.241.132) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9388.8 via Frontend Transport; Mon, 1 Dec 2025 23:41:27 +0000
+ 15.20.9388.8 via Frontend Transport; Mon, 1 Dec 2025 23:41:28 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 1 Dec
- 2025 15:41:12 -0800
+ 2025 15:41:09 -0800
 Received: from ttabi.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 1 Dec
- 2025 15:41:11 -0800
+ 2025 15:41:08 -0800
 From: Timur Tabi <ttabi@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot
 	<acourbot@nvidia.com>, Lyude Paul <lyude@redhat.com>, Joel Fernandes
 	<joelagnelf@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
 	<nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-Subject: [PATCH v2 12/13] gpu: nova-core: add PIO support for loading firmware images
-Date: Mon, 1 Dec 2025 17:39:21 -0600
-Message-ID: <20251201233922.27218-13-ttabi@nvidia.com>
+Subject: [PATCH v2 09/13] gpu: nova-core: add Falcon HAL method supports_dma()
+Date: Mon, 1 Dec 2025 17:39:18 -0600
+Message-ID: <20251201233922.27218-10-ttabi@nvidia.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251201233922.27218-1-ttabi@nvidia.com>
 References: <20251201233922.27218-1-ttabi@nvidia.com>
@@ -84,507 +84,125 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017093:EE_|MN2PR12MB4077:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1b7d310e-a783-4241-5dee-08de313325a3
+X-MS-TrafficTypeDiagnostic: SN1PEPF00026367:EE_|SA5PPF50009C446:EE_
+X-MS-Office365-Filtering-Correlation-Id: 986a9aa0-b673-4d58-b0cf-08de3133263a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|376014|1800799024;
+	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?aNGWV4/d1FJRxs54GrKchZtDPmnxbFm9ZwyQlw8nQ/9fGfMSBL6j9F0RmfVs?=
- =?us-ascii?Q?+ebd8hG4C2W6Tj0yIkN2uiRNQCu/MMIExFVk28Bc/tAPaI40h/YAR9vCZtS8?=
- =?us-ascii?Q?PPY53ZPr5yotlTaBejzp9CYT8HLr7sbs7XZo2LqSpqzs9SlpI/3yK+fikxxa?=
- =?us-ascii?Q?qKqMzvBy3SZm+RykPed+Ff6D2XzM3MImMwZGAw09QkpRKKr7kCvLozsfVKfQ?=
- =?us-ascii?Q?Upq8Lqc5GqfJfh3f0yyRcmuvKR+3I9JYzv2mFWb3GH7txXfKetaMv8fPd1gv?=
- =?us-ascii?Q?kHV4BPUG/05h+1vGXFWENz1LLn8pulBb2skai+FNVBzYdPZ7naFN/KGkSxl5?=
- =?us-ascii?Q?vECch1E/98gqxvERyjsbZAsm2qsdb8DCJsfIZozgohuJ/WbSvocsdlC++XaQ?=
- =?us-ascii?Q?9WKeKc5PuvdGtZ9XW13fSA3Bfau92Kv4GIeRCTsSEyWPDEWkg23OnasZt0TU?=
- =?us-ascii?Q?XSlhg6uY4CgVGGTz5Wm4RONIgEqjzYKsWgrIEUuFkaPRdhqywj7Rom/fI71m?=
- =?us-ascii?Q?1Aq4lXxNvcwavVBvglLcUkgPA0Tb2eHoY+emvNkEue8CZxU0FFyVpDvkoyyy?=
- =?us-ascii?Q?05Lw/dDSc84X1GFrqAKSEVK1lKgsCw7cc/IzI+qkIBQX8vW95vJ3/HHKfecR?=
- =?us-ascii?Q?M0IxVLg5lk7t/NkHmmpbBdItZf7vaqzHccRronBu4cIA1NF8PYavvUJInZTp?=
- =?us-ascii?Q?WxZxBCSZiwixRMQgUZfwi++2QFurRIIuoSmJQOMaqSf4Yewp51XyF/DGKRkm?=
- =?us-ascii?Q?fi8bNtJf/v+wCyMMquH4OaarWcqea4uumAmiOk3YE2ZxmLIdpnre8uVSu2gn?=
- =?us-ascii?Q?SBLhC4QeWc7vhcx4Gug/Hg47DRa2ZcCwfLCKR5HCS4cDeE8JouP4dknOH8oW?=
- =?us-ascii?Q?EGmGvLq05V5UMd80LXzjJIqh0hX+2nmuR2PFv0EDM9gOVD124lqisQFSXRcN?=
- =?us-ascii?Q?ou52wqFnrXTerCXE+KY12XHgyqHJhRZLr12GQBNgDyj7WXTpTKgAshFj81TJ?=
- =?us-ascii?Q?LPd943gKgKVFke/fwNJrHERNNFNdjsZoUJMljQL8kml5F/agRP0jexm5Z9Z8?=
- =?us-ascii?Q?V1WOod18s8ZgflPodfSCLQVrXEBVA7sjYA26n3Ts9s362dHMvMRHwraEAYsG?=
- =?us-ascii?Q?0gAw91D4wHtOLoi0NZ58SmYZwAbfGw/bt8LFugFjwqdZLLglOhWU1prg1auf?=
- =?us-ascii?Q?nwthToLZjlx56N/iB3KSX4qXP7n7CHQpa+oO8pdjtkuc6SCQn2XY3DxuSY94?=
- =?us-ascii?Q?9u8JMhhnVrDgQuN0eK964kFRDkZ7W+vsW3/rq7mVRd5x4NUxuXYXWYoxK/jf?=
- =?us-ascii?Q?2TcVdW9R8PGJcrGklA0zRyBowxJt8jPKd7IT/sO21UVHLcDBi5aS8JENBls1?=
- =?us-ascii?Q?EouLzoxYHcvQ0nvoa8zC0D7PyLys85npCfKy/Hu3XnYMG6EHbfjs9RGY+9Ce?=
- =?us-ascii?Q?BpHHUcQpnYHWW26GNA9vR+Wt4jigqvNLfOnhFOSD85bt+PAanNN7ioa7Aymk?=
- =?us-ascii?Q?U/CO/guSnJ7rsPy0RWAAct0UzHX6hGVxz8XvIvOSpckrmRY567hT3+gLxeiG?=
- =?us-ascii?Q?KY35Y26VafXafroKt8o=3D?=
+	=?us-ascii?Q?hUwY/cgxhSUN66rjd55O5F1zHoOiuj4Jj844D/fdatyOlE5MM5CEyROFv9tR?=
+ =?us-ascii?Q?kbc/AtPPatHfxWMZqKaMOXoGJJQNkGXafWFHrvlLkkjhWPvpPz5z6qr5Okr1?=
+ =?us-ascii?Q?stK993LhbRLhUjaKPt+NYJlFaXswqiWxObodSrnNXoo3nbFyhZEB7SOyiSt2?=
+ =?us-ascii?Q?o3sLWJ2ZqYCa5roCZR/SHRLCK7wAdRpOwGNxCG9qGYnM2O1jtag6qikBDigf?=
+ =?us-ascii?Q?lgoqLP7AtE5IxYrjJD7nIUU7Q3iMcYyEbFamW7x7iHqPzJ9JktXKJ+JaVkwX?=
+ =?us-ascii?Q?YH0dXdYFdz2pVwVHpM2c9I2PPhSoaxboiguOsYDYC0LBkKWeAte/I5Z/bCLs?=
+ =?us-ascii?Q?o6PuB/A1r+idgi/PnMUKSnPghkQzJsMXDAkWlKfHrsitBHBbPfNTMIca7BYb?=
+ =?us-ascii?Q?wDrjetvrXfCOTkEqsBiySrMb+lfQbZ1fK2hXgkh0ipFKn9CdxSd3SZixO/jw?=
+ =?us-ascii?Q?ahjzUGXuESMhgJrrbvPTZlDRNZVs4acpPCLebG7dKIdcViHclWOkegOUXi6a?=
+ =?us-ascii?Q?8KNbFRnBYwf/TJ/Zn81nsGU2+g30IHbdYuDNw2vtEGn1/0Ert00Ov/m6ABmT?=
+ =?us-ascii?Q?oaIM8hxkIs03Dx5v2UbxwTLiwIif29gVGL5UbJduH8SR8tJP/LssLIczXGA7?=
+ =?us-ascii?Q?458H+jNbc5o+Z3p3NglRKUJBPRaD+NVLg6EBqR7TI/2UBOfFmffPw3pzAnkH?=
+ =?us-ascii?Q?lMhyGRRfaR94u700J5zk4J5aa6gS1ksiAfptHrtg7E60049MsbdsVUCRfZVA?=
+ =?us-ascii?Q?L2+6toX1KwUu98MBos9GxnzAyt3ny47fltbULZpHcjchExbIvMq3qq9znCZf?=
+ =?us-ascii?Q?SWFv7ocUVfa6q0NfA0wqjaC7NUiGXB/xMDqfTZ5WGB9GMgfKWRNF9UOphVNU?=
+ =?us-ascii?Q?jjxk7YALn3K7rm5nVzxg5+Z/SGGErpXz522WUt+MWIqHTlGPO3vkRfC4KL57?=
+ =?us-ascii?Q?a13afYFVDn7MqsHi1ZO6SVgejQb31FH26uykAutAoedfALruPlDBlhGNX5wA?=
+ =?us-ascii?Q?OsTe3AqotLn+8WC/tNsb21dpjwpp7xbuNmVaDT8oZSxm/Jt8fTFJtkVAjavG?=
+ =?us-ascii?Q?Oi18yJG8VqcPnRbk4amP4YnEHGXJToW3MSSi+D9OQlAK5x3jXdT6rw6tIGEU?=
+ =?us-ascii?Q?cnMpmfeWWXXREpUhpoeZGkJORzSW9J1GSlESxVVarQGwbaetLkk+DWKTKjFh?=
+ =?us-ascii?Q?b6ZsejRcoFSGDyRi8E0ybHI4FuYRRzOIK7JTE3recnU6wi9hXWx2zI8dRgPh?=
+ =?us-ascii?Q?Ix8O0QUtvX3H4lK10U3KKoxOF5Q30dbYbvhJGd1MvPv7ICLOkm13g6dP0lfC?=
+ =?us-ascii?Q?8DrAx+kk27JMQQS5yujIpAdYzkN0OxK3E0ce0QLGtZrJQXgS1EwyqXkXOjiM?=
+ =?us-ascii?Q?ubFjjxWXc4NsF9ws9QJCstIEe8h3XUOBFpo3pH8RSwldgDPj/PGFNe5ke1t1?=
+ =?us-ascii?Q?z7IlBKOtO791ozOmNJZIcMYj5+hCF3baT/S1s0hKwvK8TVYVsi/9Q+Kiuc3d?=
+ =?us-ascii?Q?ZdnP4QJQ/gLd3ciwAf/UoD9CRV83QPT2ZmQld1FJv/FpM40LWx2l13sIqCjI?=
+ =?us-ascii?Q?c7EOh9X115gXJfaaRWM=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 23:41:27.6283
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 23:41:28.6029
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1b7d310e-a783-4241-5dee-08de313325a3
+X-MS-Exchange-CrossTenant-Network-Message-Id: 986a9aa0-b673-4d58-b0cf-08de3133263a
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017093.namprd03.prod.outlook.com
+	SN1PEPF00026367.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4077
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF50009C446
 
-Turing and GA100 use programmed I/O (PIO) instead of DMA to upload
-firmware images into Falcon memory.
-
-A new firmware called the Generic Bootloader (as opposed to the
-GSP Bootloader) is used to upload FWSEC.
+Some GPUs do not support using DMA to transfer code/data from system
+memory to Falcon memory, and instead must use programmed I/O (PIO).
+Add a function to the Falcon HAL to indicate whether a given GPU's
+Falcons support DMA for this purpose.
 
 Signed-off-by: Timur Tabi <ttabi@nvidia.com>
 ---
- drivers/gpu/nova-core/falcon.rs         | 149 +++++++++++++++++++++++-
- drivers/gpu/nova-core/firmware.rs       |   4 +-
- drivers/gpu/nova-core/firmware/fwsec.rs | 142 +++++++++++++++++++++-
- drivers/gpu/nova-core/gsp/boot.rs       |  10 +-
- 4 files changed, 293 insertions(+), 12 deletions(-)
+ drivers/gpu/nova-core/falcon.rs           | 7 +++++++
+ drivers/gpu/nova-core/falcon/hal.rs       | 3 +++
+ drivers/gpu/nova-core/falcon/hal/ga102.rs | 4 ++++
+ drivers/gpu/nova-core/falcon/hal/tu102.rs | 4 ++++
+ 4 files changed, 18 insertions(+)
 
 diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
-index 2770d608a2cf..88f65ee7805a 100644
+index f2da6a4a9d36..2770d608a2cf 100644
 --- a/drivers/gpu/nova-core/falcon.rs
 +++ b/drivers/gpu/nova-core/falcon.rs
-@@ -12,14 +12,17 @@
-     io::poll::read_poll_timeout,
-     prelude::*,
-     sync::aref::ARef,
--    time::{
--        Delta, //
--    },
-+    time::Delta,
-+    transmute::AsBytes, //
- };
+@@ -631,6 +631,13 @@ pub(crate) fn is_riscv_active(&self, bar: &Bar0) -> bool {
+         self.hal.is_riscv_active(bar)
+     }
  
- use crate::{
-     dma::DmaObject,
-     driver::Bar0,
-+    firmware::fwsec::{
-+        BootloaderDmemDescV2,
-+        GenericBootloader, //
-+    },
-     gpu::Chipset,
-     num::{
-         FromSafeCast,
-@@ -406,6 +409,146 @@ pub(crate) fn reset(&self, bar: &Bar0) -> Result {
++    /// Check if this Falcon supports DMA for loading firmware.
++    ///
++    /// Returns `true` if DMA is supported, `false` if PIO must be used instead.
++    pub(crate) fn supports_dma(&self) -> bool {
++        self.hal.supports_dma()
++    }
++
+     /// Write the application version to the OS register.
+     pub(crate) fn write_os_version(&self, bar: &Bar0, app_version: u32) {
+         regs::NV_PFALCON_FALCON_OS::default()
+diff --git a/drivers/gpu/nova-core/falcon/hal.rs b/drivers/gpu/nova-core/falcon/hal.rs
+index 7a6610e9d0a8..a760620221c3 100644
+--- a/drivers/gpu/nova-core/falcon/hal.rs
++++ b/drivers/gpu/nova-core/falcon/hal.rs
+@@ -48,6 +48,9 @@ fn signature_reg_fuse_version(
+ 
+     /// Reset the falcon engine.
+     fn reset_eng(&self, bar: &Bar0) -> Result;
++
++    /// Returns true of this Falcon supports DMA transfer from system memory to Falcon memory
++    fn supports_dma(&self) -> bool;
+ }
+ 
+ /// Returns a boxed falcon HAL adequate for `chipset`.
+diff --git a/drivers/gpu/nova-core/falcon/hal/ga102.rs b/drivers/gpu/nova-core/falcon/hal/ga102.rs
+index 232d51a4921f..684ca72b7cfe 100644
+--- a/drivers/gpu/nova-core/falcon/hal/ga102.rs
++++ b/drivers/gpu/nova-core/falcon/hal/ga102.rs
+@@ -160,4 +160,8 @@ fn reset_eng(&self, bar: &Bar0) -> Result {
+ 
          Ok(())
      }
- 
 +
-+    /// See nvkm_falcon_pio_wr - takes a byte array instead of a FalconFirmware
-+    fn pio_wr_bytes(
-+        &self,
-+        bar: &Bar0,
-+        img: &[u8],
-+        mem_base: u16,
-+        target_mem: FalconMem,
-+        port: u8,
-+        tag: u16
-+    ) {
-+        let port = usize::from(port);
-+
-+        match target_mem {
-+            FalconMem::ImemSecure | FalconMem::ImemNonSecure => {
-+                regs::NV_PFALCON_FALCON_IMEMC::default()
-+                    .set_secure(target_mem == FalconMem::ImemSecure)
-+                    .set_aincw(true)
-+                    .set_offs(mem_base)
-+                    .write(bar, &E::ID, port);
-+
-+                let mut tag = tag;
-+                for block in img.chunks(256) {
-+                    regs::NV_PFALCON_FALCON_IMEMT::default()
-+                        .set_tag(tag)
-+                        .write(bar, &E::ID, port);
-+                    for word in block.chunks(4) {
-+                        let w = u32::from_le_bytes(word.try_into().unwrap());
-+                        regs::NV_PFALCON_FALCON_IMEMD::default()
-+                            .set_data(w)
-+                            .write(bar, &E::ID, port);
-+                    }
-+                    tag += 1;
-+                }
-+            },
-+            FalconMem::Dmem => {
-+                regs::NV_PFALCON_FALCON_DMEMC::default()
-+                    .set_aincw(true)
-+                    .set_offs(mem_base)
-+                    .write(bar, &E::ID, port);
-+
-+                for block in img.chunks(256) {
-+                    for word in block.chunks_exact(4) {
-+                        regs::NV_PFALCON_FALCON_DMEMD::default()
-+                            .set_data(u32::from_le_bytes(word.try_into().unwrap()))
-+                            .write(bar, &E::ID, port);
-+                    }
-+                }
-+            },
-+        }
++    fn supports_dma(&self) -> bool {
++        true
 +    }
+ }
+diff --git a/drivers/gpu/nova-core/falcon/hal/tu102.rs b/drivers/gpu/nova-core/falcon/hal/tu102.rs
+index 19a8b49ca2cd..d8ec914bd3f8 100644
+--- a/drivers/gpu/nova-core/falcon/hal/tu102.rs
++++ b/drivers/gpu/nova-core/falcon/hal/tu102.rs
+@@ -71,4 +71,8 @@ fn reset_eng(&self, bar: &Bar0) -> Result {
+ 
+         Ok(())
+     }
 +
-+    fn pio_wr<F: FalconFirmware<Target = E>>(
-+        &self,
-+        bar: &Bar0,
-+        fw: &F,
-+        target_mem: FalconMem,
-+        load_offsets: &FalconLoadTarget,
-+        port: u8,
-+        tag: u16,
-+    ) -> Result {
-+        let start = usize::from_safe_cast(load_offsets.src_start);
-+        let len = usize::from_safe_cast(load_offsets.len);
-+
-+        // SAFETY: as_slice() ensures that start+len is within range
-+        let data = unsafe { fw.as_slice(start, len)? };
-+
-+        self.pio_wr_bytes(bar, data, u16::try_from(load_offsets.dst_start)?, target_mem, port, tag);
-+
-+        Ok(())
++    fn supports_dma(&self) -> bool {
++        false
 +    }
-+
-+    /// Perform a PIO copy into `IMEM` and `DMEM` of `fw`, and prepare the falcon to run it.
-+    pub(crate) fn pio_load<F: FalconFirmware<Target = E>>(
-+        &self,
-+        bar: &Bar0,
-+        fw: &F,
-+        gbl: Option<&GenericBootloader>
-+    ) -> Result {
-+        let imem_sec = fw.imem_sec_load_params();
-+        let imem_ns = fw.imem_ns_load_params().unwrap();
-+        let dmem = fw.dmem_load_params();
-+
-+        regs::NV_PFALCON_FBIF_CTL::read(bar, &E::ID)
-+            .set_allow_phys_no_ctx(true)
-+            .write(bar, &E::ID);
-+
-+        regs::NV_PFALCON_FALCON_DMACTL::default()
-+            .write(bar, &E::ID);
-+
-+        // If the Generic Bootloader was passed, then use it to boot FRTS
-+        if let Some(gbl) =  gbl {
-+            let dst_start = u16::try_from(0x10000 - gbl.desc.code_size)?;
-+            let data = &gbl.ucode[..usize::from_safe_cast(gbl.desc.code_size)];
-+            let tag = u16::try_from(gbl.desc.start_tag)?;
-+
-+            self.pio_wr_bytes(bar, data, dst_start, FalconMem::ImemNonSecure, 0, tag);
-+
-+            // This structure tells the generic bootloader where to find the FWSEC
-+            // image.
-+            let dmem_desc = BootloaderDmemDescV2 {
-+                reserved: [0; 4],
-+                signature: [0; 4],
-+                ctx_dma: 4, // FALCON_DMAIDX_PHYS_SYS_NCOH
-+                code_dma_base: fw.dma_handle(),
-+                non_sec_code_off: imem_ns.dst_start,
-+                non_sec_code_size: imem_ns.len,
-+                sec_code_off: imem_sec.dst_start,
-+                sec_code_size: imem_sec.len,
-+                code_entry_point: 0,
-+                data_dma_base: fw.dma_handle() + u64::from(dmem.src_start),
-+                data_size: dmem.len,
-+                argc: 0,
-+                argv: 0,
-+            };
-+
-+            regs::NV_PFALCON_FBIF_TRANSCFG::update(bar, &E::ID, 4, |v| {
-+                v.set_target(FalconFbifTarget::CoherentSysmem)
-+                    .set_mem_type(FalconFbifMemType::Physical)
-+            });
-+
-+            self.pio_wr_bytes(bar, dmem_desc.as_bytes(), 0, FalconMem::Dmem, 0, 0);
-+        } else {
-+            self.pio_wr(bar, fw, FalconMem::ImemNonSecure, &imem_ns, 0,
-+                u16::try_from(imem_ns.dst_start >> 8)?)?;
-+            self.pio_wr(bar, fw, FalconMem::ImemSecure, &imem_sec, 0,
-+                u16::try_from(imem_sec.dst_start >> 8)?)?;
-+            self.pio_wr(bar, fw, FalconMem::Dmem, &dmem, 0, 0)?;
-+        }
-+
-+        self.hal.program_brom(self, bar, &fw.brom_params())?;
-+
-+        // Set `BootVec` to start of non-secure code.
-+        regs::NV_PFALCON_FALCON_BOOTVEC::default()
-+            .set_value(fw.boot_addr())
-+            .write(bar, &E::ID);
-+
-+        Ok(())
-+    }
-+
-     /// Perform a DMA write according to `load_offsets` from `dma_handle` into the falcon's
-     /// `target_mem`.
-     ///
-diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-index 169b07ca340a..3008d18f9313 100644
---- a/drivers/gpu/nova-core/firmware.rs
-+++ b/drivers/gpu/nova-core/firmware.rs
-@@ -31,7 +31,7 @@
- pub(crate) const FIRMWARE_VERSION: &str = "570.144";
- 
- /// Requests the GPU firmware `name` suitable for `chipset`, with version `ver`.
--fn request_firmware(
-+pub(crate) fn request_firmware(
-     dev: &device::Device,
-     chipset: gpu::Chipset,
-     name: &str,
-@@ -258,7 +258,7 @@ fn no_patch_signature(self) -> FirmwareDmaObject<F, Signed> {
- /// Header common to most firmware files.
- #[repr(C)]
- #[derive(Debug, Clone)]
--struct BinHdr {
-+pub(crate) struct BinHdr {
-     /// Magic number, must be `0x10de`.
-     bin_magic: u32,
-     /// Version of the header.
-diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
-index 36ff8ed51c23..159aedd221e8 100644
---- a/drivers/gpu/nova-core/firmware/fwsec.rs
-+++ b/drivers/gpu/nova-core/firmware/fwsec.rs
-@@ -40,12 +40,15 @@
-         FalconLoadTarget, //
-     },
-     firmware::{
-+        FIRMWARE_VERSION,
-+        BinHdr,
-         FalconUCodeDesc,
-         FirmwareDmaObject,
-         FirmwareSignature,
-         Signed,
-         Unsigned, //
-     },
-+    gpu::Chipset,
-     num::{
-         FromSafeCast,
-         IntoSafeCast, //
-@@ -213,6 +216,72 @@ unsafe fn transmute_mut<T: Sized + FromBytes + AsBytes>(
-     T::from_bytes_mut(unsafe { fw.as_slice_mut(offset, size_of::<T>())? }).ok_or(EINVAL)
  }
- 
-+/// Descriptor used by RM to figure out the requirements of the boot loader.
-+#[repr(C)]
-+#[derive(Debug, Clone)]
-+pub(crate) struct BootloaderDesc {
-+	/// Starting tag of bootloader.
-+	pub start_tag: u32,
-+	/// DMEM offset where [`BootloaderDmemDescV2`] is to be loaded.
-+	pub dmem_load_off: u32,
-+	/// Offset of code section in the image.
-+	pub code_off: u32,
-+	/// Size of code section in the image.
-+	pub code_size: u32,
-+	/// Offset of data section in the image.
-+	pub data_off: u32,
-+	/// Size of data section in the image.
-+	pub data_size: u32,
-+}
-+// SAFETY: any byte sequence is valid for this struct.
-+unsafe impl FromBytes for BootloaderDesc {}
-+// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
-+unsafe impl AsBytes for BootloaderDesc {}
-+
-+/// Structure used by the boot-loader to load the rest of the code.
-+///
-+/// This has to be filled by the GPU driver and copied into DMEM at offset
-+/// [`BootloaderDesc.dmem_load_off`].
-+#[repr(C, packed)]
-+#[derive(Debug, Clone)]
-+pub(crate) struct BootloaderDmemDescV2 {
-+	/// Reserved, should always be first element.
-+	pub reserved: [u32; 4],
-+	/// 16B signature for secure code, 0s if no secure code.
-+	pub signature: [u32; 4],
-+	/// DMA context used by the bootloader while loading code/data.
-+	pub ctx_dma: u32,
-+	/// 256B-aligned physical FB address where code is located.
-+	pub code_dma_base: u64,
-+	/// Offset from `code_dma_base` where the non-secure code is located (must be multiple of 256).
-+	pub non_sec_code_off: u32,
-+	/// Size of the non-secure code part.
-+	pub non_sec_code_size: u32,
-+	/// Offset from `code_dma_base` where the secure code is located (must be multiple of 256).
-+	pub sec_code_off: u32,
-+	/// Size of the secure code part.
-+	pub sec_code_size: u32,
-+	/// Code entry point invoked by the bootloader after code is loaded.
-+	pub code_entry_point: u32,
-+	/// 256B-aligned physical FB address where data is located.
-+	pub data_dma_base: u64,
-+	/// Size of data block (should be multiple of 256B).
-+	pub data_size: u32,
-+	/// Arguments to be passed to the target firmware being loaded.
-+	pub argc: u32,
-+	/// Number of arguments to be passed to the target firmware being loaded.
-+	pub argv: u32,
-+}
-+// SAFETY: any byte sequence is valid for this struct.
-+unsafe impl FromBytes for BootloaderDmemDescV2 {}
-+// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
-+unsafe impl AsBytes for BootloaderDmemDescV2 {}
-+
-+pub(crate) struct GenericBootloader {
-+    pub desc: BootloaderDesc,
-+    pub ucode: Vec<u8, kernel::alloc::allocator::Kmalloc>,
-+}
-+
- /// The FWSEC microcode, extracted from the BIOS and to be run on the GSP falcon.
- ///
- /// It is responsible for e.g. carving out the WPR2 region as the first step of the GSP bootflow.
-@@ -221,6 +290,8 @@ pub(crate) struct FwsecFirmware {
-     desc: FalconUCodeDesc,
-     /// GPU-accessible DMA object containing the firmware.
-     ucode: FirmwareDmaObject<Self, Signed>,
-+    /// Generic bootloader
-+    gen_bootloader: Option<GenericBootloader>,
- }
- 
- impl FalconLoadParams for FwsecFirmware {
-@@ -275,7 +346,19 @@ fn brom_params(&self) -> FalconBromParams {
-     }
- 
-     fn boot_addr(&self) -> u32 {
--        0
-+        match &self.desc {
-+            FalconUCodeDesc::V2(_v2) => {
-+                // On V2 platforms, the boot address is extracted from the
-+                // generic bootloader, because the gbl is what actually copies
-+                // FWSEC into memory, so that is what needs to be booted.
-+                if let Some(ref gbl) = self.gen_bootloader {
-+                    gbl.desc.start_tag << 8
-+                } else {
-+                    0
-+                }
-+            },
-+            FalconUCodeDesc::V3(_v3) => 0,
-+        }
-     }
- }
- 
-@@ -376,6 +459,7 @@ impl FwsecFirmware {
-     /// command.
-     pub(crate) fn new(
-         dev: &Device<device::Bound>,
-+        chipset: Chipset,
-         falcon: &Falcon<Gsp>,
-         bar: &Bar0,
-         bios: &Vbios,
-@@ -432,9 +516,49 @@ pub(crate) fn new(
-             ucode_dma.no_patch_signature()
-         };
- 
-+        // The Generic Bootloader exists only on Turing and GA100.  To avoid a bogus
-+        // console error message on other platforms, only try to load it if it's
-+        // supposed to be there.
-+        let gbl_fw = if chipset < Chipset::GA102 {
-+            super::request_firmware(dev, chipset, "gen_bootloader", FIRMWARE_VERSION)
-+        } else {
-+            Err(ENOENT)
-+        };
-+
-+        let gbl = match gbl_fw {
-+            Ok(fw) => {
-+                let hdr = fw.data()
-+                    .get(0..size_of::<BinHdr>())
-+                    .and_then(BinHdr::from_bytes_copy)
-+                    .ok_or(EINVAL)?;
-+
-+                let desc_offset = usize::from_safe_cast(hdr.header_offset);
-+                let desc = fw.data()
-+                    .get(desc_offset..desc_offset + size_of::<BootloaderDesc>())
-+                    .and_then(BootloaderDesc::from_bytes_copy)
-+                    .ok_or(EINVAL)?;
-+
-+                let ucode_start = usize::from_safe_cast(hdr.data_offset);
-+                let ucode_size = usize::from_safe_cast(hdr.data_size);
-+                let ucode_data = fw.data()
-+                    .get(ucode_start..ucode_start + ucode_size)
-+                    .ok_or(EINVAL)?;
-+
-+                let mut ucode = KVec::new();
-+                ucode.extend_from_slice(ucode_data, GFP_KERNEL)?;
-+
-+                Some(GenericBootloader {
-+                    desc,
-+                    ucode,
-+                })
-+            },
-+            Err(_) => None,
-+        };
-+
-         Ok(FwsecFirmware {
--            desc: desc,
-+            desc,
-             ucode: ucode_signed,
-+            gen_bootloader: gbl,
-         })
-     }
- 
-@@ -449,9 +573,17 @@ pub(crate) fn run(
-         falcon
-             .reset(bar)
-             .inspect_err(|e| dev_err!(dev, "Failed to reset GSP falcon: {:?}\n", e))?;
--        falcon
--            .dma_load(bar, self)
--            .inspect_err(|e| dev_err!(dev, "Failed to load FWSEC firmware: {:?}\n", e))?;
-+
-+        // If the Generic Bootloader was found, then upload it via PIO , otherwise
-+        if let Some(ref gbl) = self.gen_bootloader {
-+            falcon
-+                .pio_load(bar, self, Some(gbl))
-+                .inspect_err(|e| dev_err!(dev, "Failed to load FWSEC firmware: {:?}\n", e))?;
-+        } else {
-+            falcon
-+                .dma_load(bar, self)
-+                .inspect_err(|e| dev_err!(dev, "Failed to load FWSEC firmware: {:?}\n", e))?;
-+        }
-         let (mbox0, _) = falcon
-             .boot(bar, Some(0), None)
-             .inspect_err(|e| dev_err!(dev, "Failed to boot FWSEC firmware: {:?}\n", e))?;
-diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
-index 54937606b5b0..fda01afda9ed 100644
---- a/drivers/gpu/nova-core/gsp/boot.rs
-+++ b/drivers/gpu/nova-core/gsp/boot.rs
-@@ -48,6 +48,7 @@ impl super::Gsp {
-     /// created the WPR2 region.
-     fn run_fwsec_frts(
-         dev: &device::Device<device::Bound>,
-+        chipset: Chipset,
-         falcon: &Falcon<Gsp>,
-         bar: &Bar0,
-         bios: &Vbios,
-@@ -65,6 +66,7 @@ fn run_fwsec_frts(
- 
-         let fwsec_frts = FwsecFirmware::new(
-             dev,
-+            chipset,
-             falcon,
-             bar,
-             bios,
-@@ -147,7 +149,7 @@ pub(crate) fn boot(
-         let fb_layout = FbLayout::new(chipset, bar, &gsp_fw)?;
-         dev_dbg!(dev, "{:#x?}\n", fb_layout);
- 
--        Self::run_fwsec_frts(dev, gsp_falcon, bar, &bios, &fb_layout)?;
-+        Self::run_fwsec_frts(dev, chipset, gsp_falcon, bar, &bios, &fb_layout)?;
- 
-         let booter_loader = BooterFirmware::new(
-             dev,
-@@ -186,7 +188,11 @@ pub(crate) fn boot(
-         );
- 
-         sec2_falcon.reset(bar)?;
--        sec2_falcon.dma_load(bar, &booter_loader)?;
-+        if sec2_falcon.supports_dma() {
-+            sec2_falcon.dma_load(bar, &booter_loader)?;
-+        } else {
-+            sec2_falcon.pio_load(bar, &booter_loader, None)?;
-+        }
-         let wpr_handle = wpr_meta.dma_handle();
-         let (mbox0, mbox1) = sec2_falcon.boot(
-             bar,
 -- 
 2.52.0
 
