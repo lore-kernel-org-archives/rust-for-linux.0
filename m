@@ -1,111 +1,118 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07E22F616B
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 16:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5BD305E00
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 16:41:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764606736; cv=none; b=joyz1NWtXEVaMgTz6f0L8VkbUD5h/i5wDKdUSYvozYmtLLQzFuj/72+5j3r0kpIsjfKxrUHXcbgNADyj7lL2jV4regWq7DyW+shhk7MRtoQMo2RZkjmaQ4Rz3kiZcYDqUt6wQj7GlCZAYxAyfURMGu53Kqdo1KzKDmVylMdD1I4=
+	t=1764607289; cv=none; b=nmxtUhkX4VNLsK2l0sn6AVjvXrtIij12e/K7O7//Z26sHRGTjAO9n+G0hEhHjzoc9Zj8r0+kiw2hqvxq8KGIr01HvjIHycW/UFZMjxiBmx3hBf7kHJvr/Dc0ZgcSP7ooz2u2uZBFbvweDFQyHmCUJPMcLw4b1CnuV7Rd6ld2c4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764606736; c=relaxed/simple;
-	bh=sw6lbfdaMYOrwnUAK6JJqbnSFVu5NtCzD19L3bQZnvw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ca0Xq4dFywJq+regephLU6C8jwz95cn3jDT8FH5ziiGjYJXzpeJIr/Nbe02BM/+9UnH5/R7WlIY1v9HmqEfv28ukFMG1KP/bEtB3H8yoMmW1EvSawf/F1lS2dRm9wSBngrUaPk2QUw549TRyfk47n2h/w/1wE5Roo2jK2G1KjaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nIrPlRu+; arc=none smtp.client-ip=209.85.215.169
+	s=arc-20240116; t=1764607289; c=relaxed/simple;
+	bh=XUmR2wfHbxbQRyahZsUJqUKrgvOGlZfO4mRkJxVrtkY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l4xx0AkT2mbj9i3zBmehgKm4HNW9DGF6wmoM/BUhY0yOfpQ5/ZY07Py0gJQmdKWVEFB4QQaEoV0QUQ75Ml3xj/0Z82SfqMlnz2fDNtTtFdkj7TVmJbLfPX6Bc7w0xNOfXocB1yH+KZtpXxKgVTbb5KSmc1jNW7fEea2sm6AX0ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HrjBm6ux; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nIrPlRu+"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-bdd38966c74so112821a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 08:32:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HrjBm6ux"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-298144fb9bcso43541735ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 08:41:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764606734; x=1765211534; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sw6lbfdaMYOrwnUAK6JJqbnSFVu5NtCzD19L3bQZnvw=;
-        b=nIrPlRu+/q7x/wK/sT062eP8PGC4iV4/ZI9+3KSmGiqU0ALe2wRM4EVGLq89Ja9HMF
-         JwvTSWEQ6kCWs/sguNAFhvmd08aMUGdCWHd+IaqaygJRtRFhKQwJxFb05Hph/IekcSid
-         skDcIsj/kh1Qdbx/kvi+LgihYOyJH0KGEm7tQoypdNQ6XJ9uqtb3av3dutzgbHx9nHXx
-         FJTpZIxq5MoG6WUJ3Q1uQG+3xKPKQQoxb8DhwHWDG0I7FWrcRGIOIArGr8PjpfyKR2X/
-         MojD54s+C0brKnyFvLeY3ejigCJi5PAHvm8zF0dojSag7NWygxrsznovgS/sntsAPyxQ
-         caSg==
+        d=gmail.com; s=20230601; t=1764607287; x=1765212087; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=nsNFvpyrWGxzJktkBjM0GDgeDCSAwgo15N2Rah1UbYI=;
+        b=HrjBm6uxlWLiJwenXycC+Lrp3UNPA4VQmJBsoJFOA6yHjd/z3VNS7Q7URo33PezaEZ
+         ErEO2sPpsP6M26Ujz3Jyu7eKY7CrHZw8uQKNtUZd8wJn7ufz41IQ+mnmUJLxEgLZJUxJ
+         CUmUZkk2ASgCVhb0T1rkvMkyCMjpzTRMDiMATjvEk21IWWocd4B03ye1ZMPXHToMAyOd
+         VD2WDOe9fJ5beTegtGj8oYnLk9uoocZWpLBaYGMA4Gzk6TJ44q6ChxxfRlnft8JRLQVu
+         whSXzi2Bwu7bI6fjQMYGr8mKstR084ybzzvVdEq7wjNplJauZM3zC6w9dRK0iYbjhlJM
+         XThQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764606734; x=1765211534;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sw6lbfdaMYOrwnUAK6JJqbnSFVu5NtCzD19L3bQZnvw=;
-        b=UI4iJ7L2PP9QUM6aoiYc2/FDl/XoNkk/SIUbofIR180zBrqPYLPHAkckaXwmV8M7RW
-         LJpGv8eTr+cVbd33Nig4Be0NDrX2hABSF12fsblJ3U/ypl6lhjOqgQR6f25dRlaR6jth
-         9GnEaXcmNtVZvLW42LFXEhz2SxeIM99dTaPtH0JJz5cl8LCofZaSO4cW7i+RkhFAmbFw
-         g4/SRbxVSPoUbiw91H29Ue3cAiXOu1kOx8r7rDTrT3EIdZasLQ5Ez8byq9oOth03kUaX
-         Ls87Xtu2CYw/c8wptvlux229falluumUS58sVFnT8QMXrk9SNDJKC6TuKSxdTbC/6xha
-         YgBw==
-X-Forwarded-Encrypted: i=1; AJvYcCXAdyKC72v4/oK4ovxDAoJoY8cJGx+uAgyTGOviG4+rPcqG7mVS+Ue7Wr5V/L+S3xKeKX5gbjqVtlPpJfJtPA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YygWk6fSRopbMR6w6TadkaXhwXGWTgG3P/5G1S3DBAWW/oyOaHt
-	ohwObKfr6FlGKsXe/BxHnshjzZGi+EkFVDl0j67hYm3fs9J6QRs7Yoiy+wIj+u3YNxN5khxfSX4
-	lAjBCRj35NIQqGLLGM/GkhQ8uiVSSVzA=
-X-Gm-Gg: ASbGncsIrGvwsFgsLLwQ4vYVdrp3zLrl6kVfKgkR8Y3Inr7kOGNqEC2S6xyKxHXqWI8
-	4fyCAPFGLL8dNLvBrvTMvQrhqPSIj3f5NPGXOU6T6CO3i07hA/f48BU/nrKdosg+CxUudNlxLXK
-	NIu53O7xPZSToAvexwyV292BxVMxtNnQyhGiSROGIQmqWyLzyaP9FYbm/4KiySdm9mD+2SuOqVq
-	2RGWtNbaLyUzNZRkxRNpb9XFG0b9joj/9FdbT62B08azprpk+GLNyM3AFZTkMi7HJh4sGh0bd+u
-	Qlzq/RXCqSCXXE6tBjlCUq85LWJ/Z5bm36kmkYxpFiHTDG7Etfs6MYAkDQtOJ5ZzAOeEtONlNed
-	ehVEe35fK37o/gA==
-X-Google-Smtp-Source: AGHT+IFSaSNSYsK9skLd9L3+GD87nHsBSTQ18ZktTY/G96pIsxF9X+6Kz0gUfJMhuXFXa1pntC2ut2LHSu9bZOjPBzc=
-X-Received: by 2002:a05:7301:e24:b0:2a4:3593:2c07 with SMTP id
- 5a478bee46e88-2a7243ec7b9mr21871944eec.0.1764606733811; Mon, 01 Dec 2025
- 08:32:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764607287; x=1765212087;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nsNFvpyrWGxzJktkBjM0GDgeDCSAwgo15N2Rah1UbYI=;
+        b=i27Dth6zPJp2aH7dLLnzZw2mjoDOoenUfdiohqJRATZSw5G1V3oNclMNvWjTYok9Lu
+         VGPP5mOGz6M1qkVTDIJ7524B8SbCx3DBhzHo3XqMWZcmG5tsU7hxaJhcpWwpLnsp046o
+         CbTDCQiEOFcx6KOUlB4DwpjUE9VjTEIOOxQkbzIEEda3HOFek+BbpUoI2YxcyV1ekJap
+         tKA2ks8G74F7GQVlOyKmPomfkN0OvYzv8VDNbRpYQis3fQsiT1n+dxbvWiLfaWxAhIKP
+         VPf/nNVOcom7v1gtDIj1+MG2cvrodslcERp2aJhEKQcT6dRfg9OSJpyyKy1KfFWPylof
+         YltQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVOj9Ga8B62jR9mRl2FhVUjV1rnCbJIlRdtLbE5meeebZx7/lrsaXp+d5EvtPWjuSJ9GA65SujS6UFNNut4ww==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuDCWxMlJ5pOrrnrG13VpIP4uifja0ION8ctSr++9penC4laHG
+	AdIgJLvtOC3FPeZkLaTWOEpDPCs0hQ6qPFRGb1WFGlh99Hjdkvm0lAJh
+X-Gm-Gg: ASbGncsN2Ff74HvtC/CXqNz+ZhTtTpmSanYS2uwL6SjZIcL386Xox660DXdtKM0IkNo
+	BlMRopJ7V3PDp9OoHwNoiAFO0wv59oDFRj19ulia2kgf+aB1SqXjAGJW00foAIU6Udqp9BeyjyZ
+	5hS/58GCtcGXKycD3YZz59Fco79d0yAHTfjkx8X2ebwhf9JBQOFMdaNfAJAglvSTQnnFGOHFUOT
+	il3qBdh8A7nV6V5tgxR8fKYQdPX8Ervx5oywlS+NJHDCq5c4/SwIjp0e13UtC9R+gZoX4xy8oUI
+	vbFlnyLBQuFSIc70yRXD5aqHriWsKJvUdZgANfqeVXX9y3MLY4HjcdZY9nZ1gTzOLOqNuDZeMz3
+	Cz/y9yxGKsla2q9zaVOAsYEyu8TSNR9fC7YuztWLsMItYl5IfzPKuSuogdxUWiT2147+O3Dwtyq
+	WOM2JQHfc1AesLLVZCbtI3Q39REv8T21WLb+qXc9cMIYiDZgdDNuvT1Kk0s41g2Q==
+X-Google-Smtp-Source: AGHT+IELnpBhVvAKBiZfSjTp1WSUwD6F40cumZstvRzADgthJTN3qJbqC7kl8No2Kn2EqGlrHmpfmw==
+X-Received: by 2002:a17:902:d4ce:b0:295:5da6:5ff3 with SMTP id d9443c01a7336-29baaca4394mr301096265ad.0.1764607287244;
+        Mon, 01 Dec 2025 08:41:27 -0800 (PST)
+Received: from atharv-HP-Pavilion-x360-2-in-1-Laptop-14-ek1xxx ([103.216.213.160])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb27764sm128578905ad.59.2025.12.01.08.41.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 08:41:26 -0800 (PST)
+Date: Mon, 1 Dec 2025 22:11:09 +0530
+From: Atharv Dubey <atharvd440@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Yutaro Ohno <yutaro.ono.418@gmail.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Borys Tyran <borys.tyran@protonmail.com>,
+	Daniel Sedlak <daniel@sedlak.dev>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: rbtree: fix minor typos in comments
+Message-ID: <aS3FJb9uRdsi70u3@atharv-HP-Pavilion-x360-2-in-1-Laptop-14-ek1xxx>
+References: <20251201160715.25991-1-atharvd440@gmail.com>
+ <CANiq72mkzeDTHuwdTSL7cy+z=nzEHA6bLYUUFOSU7RwFurDq1Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251201021659.1729308-1-ojeda@kernel.org> <20251201091514.0bea544b@pumpkin>
-In-Reply-To: <20251201091514.0bea544b@pumpkin>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 1 Dec 2025 17:32:00 +0100
-X-Gm-Features: AWmQ_bkmIhVv2rJrH-FGssiwc-d63OARlmBA3UX_0DtxkLH5hJJvHYQu-4zaClg
-Message-ID: <CANiq72nvzDmhDvFoOx5eyGGmHkpNyJSy-c9mZK4yu_fDKfeS9w@mail.gmail.com>
-Subject: Re: `KSYM_NAME_LEN` strikes again
-To: david laight <david.laight@runbox.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	=?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mkzeDTHuwdTSL7cy+z=nzEHA6bLYUUFOSU7RwFurDq1Q@mail.gmail.com>
 
-On Mon, Dec 1, 2025 at 10:15=E2=80=AFAM david laight <david.laight@runbox.c=
-om> wrote:
->
-> Given that is even more unreadable than a typical C++ name is it actually=
- worth printing?
-> Looking at it, perhaps some of the inner <...> could be replaced with a h=
-ash
-> (possibly with the last real name added) with the ability to look up the =
-hash
-> in a separate table if needed.
-
-For printing, yeah, parts could be skipped. But if we are looking into
-replacing parts of the mangling scheme, then at that point we could go
-with the single hash (although, yes, at least seeing "something" could
-perhaps clarify in some cases).
-
-> I think that is equivalent to using a short name for a type?
-
-Do you mean skipping the paths and/or the generics etc.?
-
-(That expansion I showed is actually already a "short" version in at
-least one way: it doesn't print add the actual crate hash, which e.g.
-the GNU c++filt prints without `--no-verbose`, and typically appears
-between brackets, e.g. `kernel[e6083e32b3c2ec6]::sync::lock...).
-
-Cheers,
-Miguel
+On Mon, Dec 01, 2025 at 05:12:33PM +0100, Miguel Ojeda wrote:
+> On Mon, Dec 1, 2025 at 5:07 PM Atharv Dubey <atharvd440@gmail.com> wrote:
+> >
+> > This patch corrects a few small grammatical errors in the
+> 
+> s/few/couple?
+> 
+> It is also not a grammatical error, no? i.e. it is just a typo within a word.
+> Thanks for the feedback !, I'll update the commit message according to
+> your suggestion. 
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1206
+> 
+> Thanks for doing these; however, since you already did other "good
+> first issues", please do not do more to let others pick them up :)
+> 
+> It is why I typically write "...to use it as a test to submit your
+> first patch to the kernel." in the issue text.
+> 
+> We can take this one since you did it already anyway. Please add the
+> Suggested-by tag as well.
+>  Got it, will keep this in mind for future contributions. 
+> Thanks!
+> 
+> Cheers,
+> Miguel
