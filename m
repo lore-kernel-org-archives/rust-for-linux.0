@@ -1,263 +1,118 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE2B301001;
-	Mon,  1 Dec 2025 09:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD01301018
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 09:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764580541; cv=none; b=p6wHPHgsIYpj97WoAbM8x4GTtGuBMduWEjM1oKyAqmDWSpGvN5tHMGbdY/IgaVhVmFAGh/ViaP5BKrdDJNe4iQFyvWLfRpAFF7MJ7hSDCvTmRuv2BUs/aTKXM1GqviPXbAy301if3rgJ6PYERgLwyAVELL6CLvot5kS0AHbI0tI=
+	t=1764582905; cv=none; b=hPDRpP1AdywEXyep/17SGlnTjaA5dgX/2rUCxiI2E8HGdAjLuUVg/XImEVD00cDzh/CA+x42vAxJsCx108VBsq61ovE7bwB+OzMxDFhcZ6fOeTMSjwTK//ooQBhISoxioHLy+EgsFBeX3RBc49GkGiBpK8qnEuAcY8AIuGYHf3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764580541; c=relaxed/simple;
-	bh=czIpE4+9+FfQLZx0FfytxxzcMS23ZMMCFTyej9A76rw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dz7ohRz1rHc8jsRRVYiz2qPN8Bot2DHy0q4nYQ8c9G38v/sDfDU0A7paOxyy2EUFnB5Cm4CmMxuKd29Gs0nnk/vmDzg6+Wxmz2u2OxluKkqv/Fr4iaOLLHVPRq0M3woi7x8ylLobL12Qwn4P7E5M2pjnU5Or0RPAqcq1jNmAmrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=runbox.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=kqGB9bm3; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=runbox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
+	s=arc-20240116; t=1764582905; c=relaxed/simple;
+	bh=qQliQQ50xmA8nSOzImbhq3Vz4boRpMYBIDIh6ji/bLQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TTV5r/6wN3RUbLBnhOoTSG+EPfeccz2tRK46dTOZzXYLLj8UMLoKzsG4v1nQ28jmMbM+QNI5EZ6nXJrbYAMjCOczzU4UZGYi8GgRk+HJeFnbED4g8I7RO15Rt6i9xUQc4tc+lrtX1KNm9pDuSLyZLUhxCEgax7BW7/6Ndf1l5ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ahXOM0cQ; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="kqGB9bm3"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <david.laight@runbox.com>)
-	id 1vQ00I-007D98-FD; Mon, 01 Dec 2025 10:15:30 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
-	 s=selector2; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date;
-	bh=A1aE9FNL9Wa0FF02Gl4fjI6YVQrv4fhCdVpT1ZzQa6M=; b=kqGB9bm3lAJJlrRo0w0reOO6d1
-	iXZioVyDL2Q1yxRxK+PCasHZDrdYLApbdZRyYWoEBMBdcGk0TCn5ke7wzg7YrVt4Eqlcx8a1fl8MD
-	0HXEa8WAGckaUHgG5oR9PNo+fAb+SbMBXO3ZsfY/6Aq97yuHVP4EAkjw6LJrc+BJt/Kdh47r/YOJw
-	ScpjSyoGnf7HShPnBxDhC02aesV2WYkSCR09sU8QDjxN1o3YdVqKaTsX+D2jLkX23ZFb4JLVl9dZT
-	4dfiZKNA6warGMS7CHSR3sjcU3R4GM5YpaZnvxXR64JdBDJujGNZ2N0vMzCTjm9IZ8xLL395slAY4
-	ysGHfUZQ==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <david.laight@runbox.com>)
-	id 1vQ00H-0003uU-Gc; Mon, 01 Dec 2025 10:15:29 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vQ007-007Kn9-RK; Mon, 01 Dec 2025 10:15:19 +0100
-Date: Mon, 1 Dec 2025 09:15:14 +0000
-From: david laight <david.laight@runbox.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier
- <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Sergio =?UTF-8?B?R29uesOhbGV6?= Collado
- <sergio.collado@gmail.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: `KSYM_NAME_LEN` strikes again
-Message-ID: <20251201091514.0bea544b@pumpkin>
-In-Reply-To: <20251201021659.1729308-1-ojeda@kernel.org>
-References: <20251201021659.1729308-1-ojeda@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ahXOM0cQ"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477bf8c1413so24835005e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 01:55:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764582902; x=1765187702; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=72s8cxP8m32nLOQlBnrTppnRNNSnWx6bZ8vmeua9AuM=;
+        b=ahXOM0cQBjRw3muTL6UFcCsTa8oh+L5YBJRK1MXdw1G74secpZ+F34f6W2eDPXb/42
+         2FiHc5vvQRzGFh6Bdh4T3R+cnk7yy4agX2huQRfv9BYbCfpm/ySfFKBauVmZA8m43veM
+         YWR5NPoqn4Up0MGGqeleFcBk1veENSPl0ZkBPjh5kuqW6wkNVWt1tAjFnc4GBIZmBuU4
+         5c2B+Xnmu3lIevTsQVtkXFe8+QkO/gN/JnEYGJUTdlmpsau0+yNaP8nPw7bAUJBXr0aw
+         HiPwqCsGSqnYcdqlJ5H7bxEI1I7ydSkvB+/r720ljCRWr+iO4ekkPaVLR/hCMK/JstBN
+         jDXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764582902; x=1765187702;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=72s8cxP8m32nLOQlBnrTppnRNNSnWx6bZ8vmeua9AuM=;
+        b=PgkTjbwFzLxY94RLPZ/SZZQ6/od+upitQ3gL+PXZzQ+B8NcZgUIQ6pQPLHJxVs1isb
+         8P3Habs4ZMlr4kf3hza3CYSKUwlZagVJSYou2c38rawSdNZ7SymlwF/DuHBjOBh/cFBI
+         7reDfUMAXVbv3Eb79frTEPRhAzrH+NmsvBW+7QOWvDR2sXUuNnmULekBjUIzzlcWCIzW
+         ZOp3HoFNM/6TTCjkXiRcIOoxz4VOfVQPsYGUzCPLIUuN2JTxp7idgf2U81I/hnu52d4q
+         1RxuEB+wjXfZM5QNnNfMWnqKiaQCyn7kGQBX+5nUbmUb9cQ60AQcxdtluI2nmNfog2Tq
+         4gmg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/dq4Wyht7zaOoeIoopHmXGeteyqoNEQ6ZX4MVO+IPoNjc7oh29xdOcMLKZ3EUPnSv4wOcxbBbCsHnw4CTlA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YybsR6B3uxi69gLKPlg/VHyJQ8ngkckhkiSGn1bVeqxli83peu/
+	ADXbl//1G2wzJryOTw9/h6RyXVE2K2j2dOeC93GO6O/HUWkL0JyvbutQmiYn0pVgLsEPXhXWkdR
+	p1AgazrTlcKrbIWhrkQ==
+X-Google-Smtp-Source: AGHT+IHR/gzeFh7+KeD1MsGLOFVqoY8R7VwUnjkirrmR28Kdsu+0Qy8DFoIl1J3N86VCTwEGoZO2EDfdb0ODTEY=
+X-Received: from wmba22.prod.google.com ([2002:a05:600c:6dd6:b0:477:7ad9:2aa])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f4c:b0:475:da1a:53f9 with SMTP id 5b1f17b1804b1-477c0184b1emr414720285e9.14.1764582901820;
+ Mon, 01 Dec 2025 01:55:01 -0800 (PST)
+Date: Mon, 1 Dec 2025 09:55:00 +0000
+In-Reply-To: <20251128152403.72aedafa@fedora>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20251128-gpuvm-rust-v1-0-ebf66bf234e0@google.com>
+ <20251128-gpuvm-rust-v1-1-ebf66bf234e0@google.com> <20251128152403.72aedafa@fedora>
+Message-ID: <aS1l9Mm9smUzAJ3A@google.com>
+Subject: Re: [PATCH 1/4] drm/gpuvm: take GEM lock inside drm_gpuvm_bo_obtain_prealloc()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Frank Binns <frank.binns@imgtec.com>, Matt Coster <matt.coster@imgtec.com>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
+	Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
+	Lyude Paul <lyude@redhat.com>, Lucas De Marchi <lucas.demarchi@intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
+	nouveau@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org
+Content-Type: text/plain; charset="utf-8"
 
-On Mon,  1 Dec 2025 03:16:59 +0100
-Miguel Ojeda <ojeda@kernel.org> wrote:
+On Fri, Nov 28, 2025 at 03:24:03PM +0100, Boris Brezillon wrote:
+> On Fri, 28 Nov 2025 14:14:15 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
+> 
+> > When calling drm_gpuvm_bo_obtain_prealloc() and using immediate mode,
+> > this may result in a call to ops->vm_bo_free(vm_bo) while holding the
+> > GEMs gpuva mutex. This is a problem if ops->vm_bo_free(vm_bo) performs
+> > any operations that are not safe in the fence signalling critical path,
+> > and it turns out that Panthor (the only current user of the method)
+> > calls drm_gem_shmem_unpin() which takes a resv lock internally.
+> > 
+> > This constitutes both a violation of signalling safety and lock
+> > inversion. To fix this, we modify the method to internally take the GEMs
+> > gpuva mutex so that the mutex can be unlocked before freeing the
+> > preallocated vm_bo.
+> > 
+> > Note that this modification introduces a requirement that the driver
+> > uses immediate mode to call drm_gpuvm_bo_obtain_prealloc() as it would
+> > otherwise take the wrong lock.
+> > 
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> 
+> Should we add a Fixes tag?
 
-> Hi all,
-> 
-> In some Rust configs with -Os and doctests enabled, we are hitting
-> KSYM_NAME_LEN again:
-> 
->     Symbol _RINvMs3_NvNtNtCs1ewLyjEZ7Le_6kernel4sync4lock1__INtB6_12___ThePinData
->     NtNvNvNvCs1RN9EnoqSlC_25doctests_kernel_generated43rust_doctest_kernel_sync_lock_spinlock_rs_0
->     4main52__doctest_main_rust_kernel_sync_lock_spinlock_rs_34_05InnerNtNtB8_8spinlock
->     15SpinLockBackendE5stateNtNtCsb7ts3l0a5c3_4core7convert10InfallibleINtNtCs5hDniGXnib3_
->     8pin_init10___internal11InitClosureNCINvMs5_NtBc_5typesINtB61_6OpaqueNtNtCse4H1uDrGHP9_
->     8bindings12bindings_raw8spinlockE8ffi_initNCNCNvMs0_B8_INtB8_4LockB15_B3F_E3new0s_0E0B6c_B4j_EEB1d_
->     too long for kallsyms (518 >= 512).
->     Please increase KSYM_NAME_LEN both in kernel and kallsyms.c
-> 
-> Which expands to e.g.
-> 
->     <kernel::sync::lock::_::__ThePinData<doctests_kernel_generated::rust_doctest_kernel_sync_lock_spinlock_rs_0::main::_doctest_main_rust_kernel_sync_lock_spinlock_rs_34_0::Inner,
->     kernel::sync::lock::spinlock::SpinLockBackend>>::state::<core::convert::Infallible,  
->     pin_init::__internal::InitClosure<<kernel::types::Opaque<bindings::bindings_raw::spinlock>>::ffi_init
->     <<kernel::sync::lock::Lock<doctests_kernel_generated::rust_doctest_kernel_sync_lock_spinlock_rs_0::main::_doctest_main_rust_kernel_sync_lock_spinlock_rs_34_0::Inner,
->     kernel::sync::lock::spinlock::SpinLockBackend>>::new::{closure#0}::{closure#1}>::{closure#0},  
->     kernel::types::Opaque<bindings::bindings_raw::spinlock>, core::convert::Infallible>>
+Yeah, let's add:
 
-Given that is even more unreadable than a typical C++ name is it actually worth printing?
-Looking at it, perhaps some of the inner <...> could be replaced with a hash
-(possibly with the last real name added) with the ability to look up the hash
-in a separate table if needed.
-I think that is equivalent to using a short name for a type?
+Fixes: 63e919a31625 ("panthor: use drm_gpuva_unlink_defer()")
 
-If rust is using the same ELF symbol resolution as C uses in shared libraries
-you really don't want long symbols at all.
-Clearly no one thought about the performance of dynamic linking.
-
-	David
-
-
-> 
-> If we decide to increase KSYM_NAME_LEN again, we need to use a number
-> that is a multiple of 64:
-> 
->     BUILD_BUG_ON(KSYM_NAME_LEN % sizeof(u64));
-> 
-> I first tried with 512+128, but I still saw things symbols slightly over
-> that:
-> 
->     too long for kallsyms (645 >= 640).
-> 
-> So I picked 512+256 and it builds clean with a patch like the one below.
-> Hopefully nobody relies on it being a power of 2.
-> 
-> Other options:
-> 
->   - Conditionally doing it only for those builds that need it, to avoid
->     penalizing other builds (including normal Rust builds).
-> 
->   - Building the Rust side with -O2 for now, or at least tweaking some
->     of the inlining behavior under -Os.
-> 
->   - Not supporting Rust for `CC_OPTIMIZE_FOR_SIZE` for now (e.g. under
->     `BROKEN`).
-> 
->   - Stop all this and go with a hashing approach like Willy/Linus
->     discussed back then:
-> 
->         https://lore.kernel.org/rust-for-linux/CAHk-=whzXv=Fu7dQshSTyd9H1-JS5=gyKwW-GMNGccAKs4Mwpg@mail.gmail.com/
-> 
-> Cheers,
-> Miguel
-> 
-> From: Miguel Ojeda <ojeda@kernel.org>
-> Date: Sun, 30 Nov 2025 17:46:29 +0100
-> Subject: [PATCH] kallsyms: increase KSYM_NAME_LEN to 768 (512+256)
-> 
-> Untested!
-> ---
->  include/linux/kallsyms.h            | 2 +-
->  kernel/livepatch/core.c             | 4 ++--
->  lib/tests/longest_symbol_kunit.c    | 7 +++++--
->  scripts/kallsyms.c                  | 2 +-
->  tools/include/linux/kallsyms.h      | 2 +-
->  tools/lib/perf/include/perf/event.h | 2 +-
->  tools/lib/symbol/kallsyms.h         | 2 +-
->  7 files changed, 12 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-> index d5dd54c53ace..f17d335f36b2 100644
-> --- a/include/linux/kallsyms.h
-> +++ b/include/linux/kallsyms.h
-> @@ -15,7 +15,7 @@
-> 
->  #include <asm/sections.h>
-> 
-> -#define KSYM_NAME_LEN 512
-> +#define KSYM_NAME_LEN 768
->  #define KSYM_SYMBOL_LEN (sizeof("%s+%#lx/%#lx [%s %s]") + \
->  			(KSYM_NAME_LEN - 1) + \
->  			2*(BITS_PER_LONG*3/10) + (MODULE_NAME_LEN - 1) + \
-> diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-> index 0e73fac55f8e..cf7f2d561386 100644
-> --- a/kernel/livepatch/core.c
-> +++ b/kernel/livepatch/core.c
-> @@ -210,7 +210,7 @@ static int klp_resolve_symbols(Elf_Shdr *sechdrs, const char *strtab,
->  	 * we use the smallest/strictest upper bound possible (56, based on
->  	 * the current definition of MODULE_NAME_LEN) to prevent overflows.
->  	 */
-> -	BUILD_BUG_ON(MODULE_NAME_LEN < 56 || KSYM_NAME_LEN != 512);
-> +	BUILD_BUG_ON(MODULE_NAME_LEN < 56 || KSYM_NAME_LEN != 768);
-> 
->  	relas = (Elf_Rela *) relasec->sh_addr;
->  	/* For each rela in this klp relocation section */
-> @@ -224,7 +224,7 @@ static int klp_resolve_symbols(Elf_Shdr *sechdrs, const char *strtab,
-> 
->  		/* Format: .klp.sym.sym_objname.sym_name,sympos */
->  		cnt = sscanf(strtab + sym->st_name,
-> -			     ".klp.sym.%55[^.].%511[^,],%lu",
-> +			     ".klp.sym.%55[^.].%767[^,],%lu",
->  			     sym_objname, sym_name, &sympos);
->  		if (cnt != 3) {
->  			pr_err("symbol %s has an incorrectly formatted name\n",
-> diff --git a/lib/tests/longest_symbol_kunit.c b/lib/tests/longest_symbol_kunit.c
-> index 9b4de3050ba7..ff8eed2cb4bd 100644
-> --- a/lib/tests/longest_symbol_kunit.c
-> +++ b/lib/tests/longest_symbol_kunit.c
-> @@ -19,8 +19,11 @@
->  #define DDDDI(name) DDDI(n##name##name)
->  #define DDDDDI(name) DDDDI(n##name##name)
-> 
-> -/*Generate a symbol whose name length is 511 */
-> -#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
-> +#define __SUM(A, B) s##A##B
-> +#define SUM(A, B) __SUM(A, B)
-> +
-> +/* Generate a symbol whose name length is KSYM_NAME_LEN (including null) */
-> +#define LONGEST_SYM_NAME SUM(DDDDDI(g1h2i3j4k5l6m7n),DDDDI(g1h2i3j4k5l6m7n))
-> 
->  #define RETURN_LONGEST_SYM 0xAAAAA
-> 
-> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
-> index 4b0234e4b12f..c90bb90c874e 100644
-> --- a/scripts/kallsyms.c
-> +++ b/scripts/kallsyms.c
-> @@ -31,7 +31,7 @@
-> 
->  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
-> 
-> -#define KSYM_NAME_LEN		512
-> +#define KSYM_NAME_LEN		768
-> 
->  struct sym_entry {
->  	unsigned long long addr;
-> diff --git a/tools/include/linux/kallsyms.h b/tools/include/linux/kallsyms.h
-> index f61a01dd7eb7..089b59906641 100644
-> --- a/tools/include/linux/kallsyms.h
-> +++ b/tools/include/linux/kallsyms.h
-> @@ -6,7 +6,7 @@
->  #include <stdio.h>
->  #include <unistd.h>
-> 
-> -#define KSYM_NAME_LEN 512
-> +#define KSYM_NAME_LEN 768
-> 
->  struct module;
-> 
-> diff --git a/tools/lib/perf/include/perf/event.h b/tools/lib/perf/include/perf/event.h
-> index aa1e91c97a22..ea3debf97db9 100644
-> --- a/tools/lib/perf/include/perf/event.h
-> +++ b/tools/lib/perf/include/perf/event.h
-> @@ -104,7 +104,7 @@ struct perf_record_throttle {
->  };
-> 
->  #ifndef KSYM_NAME_LEN
-> -#define KSYM_NAME_LEN 512
-> +#define KSYM_NAME_LEN 768
->  #endif
-> 
->  struct perf_record_ksymbol {
-> diff --git a/tools/lib/symbol/kallsyms.h b/tools/lib/symbol/kallsyms.h
-> index 542f9b059c3b..435f626c92d1 100644
-> --- a/tools/lib/symbol/kallsyms.h
-> +++ b/tools/lib/symbol/kallsyms.h
-> @@ -7,7 +7,7 @@
->  #include <linux/types.h>
-> 
->  #ifndef KSYM_NAME_LEN
-> -#define KSYM_NAME_LEN 512
-> +#define KSYM_NAME_LEN 768
->  #endif
-> 
->  static inline u8 kallsyms2elf_binding(char type)
-> 
-> base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
-> --
-> 2.52.0
-> 
-
+Alice
