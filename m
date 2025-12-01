@@ -1,492 +1,119 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE87230BB8E
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 12:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC83311979
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 12:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764591838; cv=none; b=leeNxuXA9SiO2u5G7jnuUyiCedfhArGpm78/AZomVNKnLdC06AI6zIQwKU2g49EDdNCoIHKAHeo8exDi82qPYY7VI5TrWqe8BrrpIO1pNFKeVkFk8VQaFPOFT9lJrXBF4BuW+C3cH4rF8AK9CxY+IykbnEkSsf3vveeFLzEcieQ=
+	t=1764593082; cv=none; b=Mj+jZiNdykKcxfFtODBzA3/f3gQd6HAbKAcUQh6vPB9sSJnJ8380s2mJBAaa5fSGnwcitffyw/l1BO36Tuc/v0HKLbsbbpVKc2GObm5kTtDaP5PbthWDWE2M+BGeo2F4ZplRPdxUSA46B9TwckgYtmf4ithxwp2/RKsFksPgj+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764591838; c=relaxed/simple;
-	bh=7FJu6G7py2hPi/gqPBGj3Rr40ECcla2mbeimGsmgkfU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oAdrOHpvoEV9QKQeLSR83POJe8SXfNid46Og3jNPl5lBc4gGirsiO2KZ/GlhECXtCrVCZw+NDercLseglhsd6S2eQsE8a6+2T6D0gtdWwR6X8NYb9cD8t3/XDhw9OoYKHi4imGcwWSu84QJ90/MDkwqCsACNxO3pVDbKKGNywU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L74OpQbM; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1764593082; c=relaxed/simple;
+	bh=XQBW+5Lo7mZallRp8mWLA9GmP+puBJoVHBIGjRx1fGE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EdQXzqA91IeO246SMWVqT7VphFhD+IWyFDir3wNGWKA2pYxbJYwyd9xAq3m8lfIKbaMrD973bntyXiX+K34/wsD/vZQeK91SOlHK4dY3TIlQZ9kSVQ9VQBro+1p1jFFjUA9/1dZtmzKBYW8YPsF8LS23ZMhoixmEJsBtRUekUCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z5yi8kR1; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L74OpQbM"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477964c22e0so27185635e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 04:23:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z5yi8kR1"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-37a4ab6aa55so2485781fa.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 04:44:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764591834; x=1765196634; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/SCAhmpvJBTo6EtHFLWFijtYJjxdGn01oZUMaCZ9TvA=;
-        b=L74OpQbMxLsKa1o5e0mrvp68t1cAXcZAhWnRSN4QzHVMryvjj0y1Y5QQYlaZNeCGbX
-         knUfPoYYzVhAI+z2JX3ypkTF7O84yvU7gaMzo2kwdYrI32uoBIpCUBlUtbbTMU7w4nZu
-         4B9+upxaTErbOPXEBYelCyw0NBvCqzPZJHJO6gDtZgUsUNN/K7GN8tdQwKWYF8rxojl9
-         2F3wBXt1E3o2VtMCGcKIUptrXX2va6zIIhFZCWNrxbPm57fykfdB8MerbLx3eGJ62/ix
-         rh2GudPKPXTPKh49SppiabQtfr4tgNS+e8qQOq052CSSJkumK9p2x43DykzPuC2/afle
-         QboA==
+        d=gmail.com; s=20230601; t=1764593079; x=1765197879; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XQBW+5Lo7mZallRp8mWLA9GmP+puBJoVHBIGjRx1fGE=;
+        b=Z5yi8kR1AvC9Aab4+FwQ90Dpa+UMjsr6h5ySBxqr9s8aLVZLnK3NGPtknNuBZkLbaq
+         KNe07p630ecNR0+sywlVX03uB29L6VYepv7Ehrvd9YmzXh5CG4TK40g1GS38pHDJMkec
+         RTuJK4V65WTwxHC4TR3nFYg9Y/92oCOvKheN20GIGGzHcUKNYj+50I9QdDYdwVIfgN5p
+         BjidNx8c156fMYKEJtgK/qAMRkdK404v4OkrsbzKtiKuQnWvQiYe2dSRlCkvcckCyhIt
+         Woi/C9iPjUrBeL9Ykxb8n0DN+WZ3R32j/TXHy9HsbwGiQczXFmRzW/Pa3Rxt97RRkNwv
+         tzcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764591834; x=1765196634;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/SCAhmpvJBTo6EtHFLWFijtYJjxdGn01oZUMaCZ9TvA=;
-        b=vj9kklArmXpBEdfhooWVFlH1M4UNEfn/TweSZySsCweoMAg2Wj2St1DC69EjHPdBlg
-         7Qki0dwH+1sUO7snO2tIA0qpFXM83XyjJu4cI645ERdEPZszaSUwOt2rvRV37rB6agod
-         jyuhtvwyROY+j854kGys5dy8TJihfEn5FVJ5tNIJgm1P/ZRxQexfrDTskujX6CDJ3e6p
-         BBGDYlkfhHrx5u4p2da9bKh5GZskeAWcrTXE6LaDx+BKMPRRFNaUKrqGzNFTUZNfQc7r
-         /r0EsyEfbZF2qtVs/4upNJ6RKhzWIgB887G5pmU35ziXHdb9eeUl5GRugdNlG8N7uTxV
-         WWDg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVEWoCZLgMg0cgT+CNtEyrpzRw6lv6CHcdtMXOvlPTKRsW7EaaR6JVMqnGL7A35VlmAgH4Uu8/xRGXnsVz1w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxhk+KkJVtSu4LAhaBuEoqSYN8sRWsiyor2ndb/HPhAxAe8bzpZ
-	bP/5FxI09a1/Mc96Ond2Ie9RtfTvlaFCACpTc8k/3OgInwhPGojaY26gceEJV47e6Gwiq+sR+7+
-	o49GX4G849sI/sVV4Pg==
-X-Google-Smtp-Source: AGHT+IFknxl2+JN9VuOGneKx9mUzIGrKj8KO3g4UaOQwV/K6bceXaYHuc2HNujh3PftyeMvcd0IlJ2TVLLyMDL8=
-X-Received: from wma6.prod.google.com ([2002:a05:600c:8906:b0:477:14b1:69d7])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3549:b0:477:9fa0:7495 with SMTP id 5b1f17b1804b1-477c053069fmr363795915e9.14.1764591834264;
- Mon, 01 Dec 2025 04:23:54 -0800 (PST)
-Date: Mon, 1 Dec 2025 12:23:53 +0000
-In-Reply-To: <DEMV14GBQWMC.28TXT8E5YO5NW@nvidia.com>
+        d=1e100.net; s=20230601; t=1764593079; x=1765197879;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XQBW+5Lo7mZallRp8mWLA9GmP+puBJoVHBIGjRx1fGE=;
+        b=LOESJgJIKUdQ5qEEHMBQJVuxz+LVc77qOsfyF9/2mg90elbFEiJi4FBT+y157IgDV3
+         ugEOBAVMiSLfdtyui+OH3Mdlj6uzrVO3v36sTPop4JJLKKKjSIbHkKkwHzOXIPYm/nBJ
+         E4fQtyd4rEGMiNZRKnXjXNZJOgSK9XRJ4rfoDz3D8oPgsKHb88KejGDIiETGJjchyhY4
+         ALHTb2A9bT3G2KGa/x3wJcmoeCL82RG0U+DeX6X5AkMy/2JqblIvKQWCRKsXVz3oFJX+
+         XDDowPTQm9qCX5jygq4JmRXqouADN7tgRDiI4A+9gRCUZhJwoZE8+j2LqNNOepzwRbSx
+         ElDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXGNl7zlooPJptEnhobZoR/FvN7qU9Eeke9cuoNr0C0b4YSQqOBTYGxjZc7DBnyL1k/MpdIWbiJXf24lbR+gQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQiTn5ic6zdkzQ6YqyUf+cGaiwhh1F5VsNj7UftQ41K3aOUPC4
+	0Xh8K5U/1JWsTrcxNKZWnnQ5JBPZvNZ0OjuxjFQ/K1ceTZ9Kk34b0pouflWk+doG62MQxDTmj18
+	Si9ZtPNd5xH4gYZGMVODwT/18+FZJpSM=
+X-Gm-Gg: ASbGnctc75vCb3EN8t0z4xLURNwsg/xT+dkBcTyafz3qxFS79b7x/RnWMQz1P4w0XEf
+	cMlhu8tc/qzf2J/URMs3Z7xSo+mFonoskal/n7+669CwW2/i3EdCtOtF4N9pgmqE3U5oUdQeeWj
+	g/2OjNxsh3BRtcnbMelnDZs19eMYIwco76QoA53sci3Aln86q+o1T1fcXQp0l7LEL+JrrkDcXa1
+	a2h8KgB9+6fdHxHVZip6YJawfbqj35lFnQxynhKpl8huLugMWf3HeQsDF48BJFubt/htiIqk5LG
+	S8xSvLm2DEyyhPALlb434+wNdjFJenpAu6b7Ywi9VpGWfLPinpd5Dlo8ayyqXOkapVWIC0P/fJY
+	poJ3T4fD3V2mOMA==
+X-Google-Smtp-Source: AGHT+IFb0iNykWSVn6vyzICdxUboIY90obmm0TncBvkDH8UTb6KhqxQpTLdymk0nGoJQddoU1IIMUVgJCL+bj3NOjsk=
+X-Received: by 2002:a05:651c:2583:b0:37a:407d:6359 with SMTP id
+ 38308e7fff4ca-37cdc33f096mr52002801fa.1.1764593079126; Mon, 01 Dec 2025
+ 04:44:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251119112117.116979-1-zhiw@nvidia.com> <20251119112117.116979-4-zhiw@nvidia.com>
- <aSB1Hcqr6W7EEjjK@google.com> <DEHTK1CK84WO.28LTX338E4PXQ@nvidia.com>
- <aSXD-I8bYUA-72vi@google.com> <DEIGORHCX5VR.2EIPZECA0XGVH@nvidia.com>
- <aSbNddXgvv5AXqkU@google.com> <DEIO1A8N2C66.11BXTCZW4MKWZ@nvidia.com> <DEMV14GBQWMC.28TXT8E5YO5NW@nvidia.com>
-Message-ID: <aS2I2eHZ9G96ER-h@google.com>
-Subject: Re: [PATCH v7 3/6] rust: io: factor common I/O helpers into Io trait
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, dakr@kernel.org, 
-	bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, markus.probst@posteo.de, helgaas@kernel.org, 
-	cjia@nvidia.com, smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
-	kwankhede@nvidia.com, targupta@nvidia.com, joelagnelf@nvidia.com, 
-	jhubbard@nvidia.com, zhiwang@kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20251201062516.45495-1-yu.whisper.personal@gmail.com>
+In-Reply-To: <20251201062516.45495-1-yu.whisper.personal@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 1 Dec 2025 13:44:24 +0100
+X-Gm-Features: AWmQ_bnTPmFyhykt133eoLggPfeMauUVftYvjsv0Hge8ZwC0uS140sO2INkthFc
+Message-ID: <CANiq72=MfmAKfV7GGwkyNVZfmtcxdvCroUCwC3D4Y0dN_f70CQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: num: bounded: add safety comment for Bounded::__new
+To: Hsiu Che Yu <yu.whisper.personal@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Yury Norov <yury.norov@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 01, 2025 at 08:57:09PM +0900, Alexandre Courbot wrote:
-> On Wed Nov 26, 2025 at 10:37 PM JST, Alexandre Courbot wrote:
-> > On Wed Nov 26, 2025 at 6:50 PM JST, Alice Ryhl wrote:
-> >> On Wed, Nov 26, 2025 at 04:52:05PM +0900, Alexandre Courbot wrote:
-> >>> On Tue Nov 25, 2025 at 11:58 PM JST, Alice Ryhl wrote:
-> >>> > On Tue, Nov 25, 2025 at 10:44:29PM +0900, Alexandre Courbot wrote:
-> >>> >> On Fri Nov 21, 2025 at 11:20 PM JST, Alice Ryhl wrote:
-> >>> >> > On Wed, Nov 19, 2025 at 01:21:13PM +0200, Zhi Wang wrote:
-> >>> >> >> The previous Io<SIZE> type combined both the generic I/O access helpers
-> >>> >> >> and MMIO implementation details in a single struct.
-> >>> >> >> 
-> >>> >> >> To establish a cleaner layering between the I/O interface and its concrete
-> >>> >> >> backends, paving the way for supporting additional I/O mechanisms in the
-> >>> >> >> future, Io<SIZE> need to be factored.
-> >>> >> >> 
-> >>> >> >> Factor the common helpers into new {Io, Io64} traits, and move the
-> >>> >> >> MMIO-specific logic into a dedicated Mmio<SIZE> type implementing that
-> >>> >> >> trait. Rename the IoRaw to MmioRaw and update the bus MMIO implementations
-> >>> >> >> to use MmioRaw.
-> >>> >> >> 
-> >>> >> >> No functional change intended.
-> >>> >> >> 
-> >>> >> >> Cc: Alexandre Courbot <acourbot@nvidia.com>
-> >>> >> >> Cc: Alice Ryhl <aliceryhl@google.com>
-> >>> >> >> Cc: Bjorn Helgaas <helgaas@kernel.org>
-> >>> >> >> Cc: Danilo Krummrich <dakr@kernel.org>
-> >>> >> >> Cc: John Hubbard <jhubbard@nvidia.com>
-> >>> >> >> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
-> >>> >> >
-> >>> >> > I said this on a previous version, but I still don't buy the split
-> >>> >> > into IoFallible and IoInfallible.
-> >>> >> >
-> >>> >> > For one, we're never going to have a method that can accept any Io - we
-> >>> >> > will always want to accept either IoInfallible or IoFallible, so the
-> >>> >> > base Io trait serves no purpose.
-> >>> >> >
-> >>> >> > For another, the docs explain that the distinction between them is
-> >>> >> > whether the bounds check is done at compile-time or runtime. That is not
-> >>> >> > the kind of capability one normally uses different traits to distinguish
-> >>> >> > between. It makes sense to have additional traits to distinguish
-> >>> >> > between e.g.:
-> >>> >> >
-> >>> >> > * Whether IO ops can fail for reasons *other* than bounds checks.
-> >>> >> > * Whether 64-bit IO ops are possible.
-> >>> >> >
-> >>> >> > Well ... I guess one could distinguish between whether it's possible to
-> >>> >> > check bounds at compile-time at all. But if you can check them at
-> >>> >> > compile-time, it should always be possible to check at runtime too, so
-> >>> >> > one should be a sub-trait of the other if you want to distinguish
-> >>> >> > them. (And then a trait name of KnownSizeIo would be more idiomatic.)
-> >>> >> >
-> >>> >> > And I'm not really convinced that the current compile-time checked
-> >>> >> > traits are a good idea at all. See:
-> >>> >> > https://lore.kernel.org/all/DEEEZRYSYSS0.28PPK371D100F@nvidia.com/
-> >>> >> >
-> >>> >> > If we want to have a compile-time checked trait, then the idiomatic way
-> >>> >> > to do that in Rust would be to have a new integer type that's guaranteed
-> >>> >> > to only contain integers <= the size. For example, the Bounded integer
-> >>> >> > being added elsewhere.
-> >>> >> 
-> >>> >> Would that be so different from using an associated const value though?
-> >>> >> IIUC the bounded integer type would play the same role, only slightly
-> >>> >> differently - by that I mean that if the offset is expressed by an
-> >>> >> expression that is not const (such as an indexed access), then the
-> >>> >> bounded integer still needs to rely on `build_assert` to be built.
-> >>> >
-> >>> > I mean something like this:
-> >>> >
-> >>> > trait Io {
-> >>> >     const SIZE: usize;
-> >>> >     fn write(&mut self, i: Bounded<Self::SIZE>);
-> >>> > }
-> >>> 
-> >>> I have experimented a bit with this idea, and unfortunately expressing
-> >>> `Bounded<Self::SIZE>` requires the generic_const_exprs feature and is
-> >>> not doable as of today.
-> >>> 
-> >>> Bounding an integer with an upper/lower bound also proves to be more
-> >>> demanding than the current `Bounded` design. For the `MIN` and `MAX`
-> >>> constants must be of the same type as the wrapped `T` type, which again
-> >>> makes rustc unhappy ("the type of const parameters must not depend on
-> >>> other generic parameters"). A workaround would be to use a macro to
-> >>> define individual types for each integer type we want to support - or to
-> >>> just limit this to `usize`.
-> >>> 
-> >>> But the requirement for generic_const_exprs makes this a non-starter I'm
-> >>> afraid. :/
-> >>
-> >> Can you try this?
-> >>
-> >> trait Io {
-> >>     type IdxInt: Int;
-> >>     fn write(&mut self, i: Self::IdxInt);
-> >> }
-> >>
-> >> then implementers would write:
-> >>
-> >> impl Io for MyIo {
-> >>     type IdxInt = Bounded<17>;
-> >> }
-> >>
-> >> instead of:
-> >> impl Io for MyIo {
-> >>     const SIZE = 17;
-> >> }
-> >
-> > The following builds (using the existing `Bounded` type for
-> > demonstration purposes):
-> >
-> >     trait Io {
-> >         // Type containing an index guaranteed to be valid for this IO.
-> >         type IdxInt: Into<usize>;
-> >
-> >         fn write(&mut self, i: Self::IdxInt);
-> >     }
-> >
-> >     struct FooIo;
-> >
-> >     impl Io for FooIo {
-> >         type IdxInt = Bounded<usize, 8>;
-> >
-> >         fn write(&mut self, i: Self::IdxInt) {
-> >             let idx: usize = i.into();
-> >
-> >             // Now do the IO knowing that `idx` is a valid index.
-> >         }
-> >     }
-> >
-> > That looks promising, and I like how we can effectively use a wider set
-> > of index types - even, say, a `u16` if a particular I/O happens to have
-> > a guaranteed size of 65536!
-> >
-> > I suspect it also changes how we would design the Io interfaces, but I
-> > am not sure how yet. Maybe `IoKnownSize` being built on top of `Io`, and
-> > either unwrapping the result of its fallible methods or using some
-> > `unchecked` accessors?
-> 
-> Mmm, one important point I have neglected is that the index type will
-> have to validate not only the range, but also the alignment of the
-> index! And the valid alignment is dependent on the access width. So
-> getting this right is going to take some time and some experimenting I'm
-> afraid.
-> 
-> Meanwhile, it would be great if we could agree (and proceed) with the
-> split of the I/O interface into a trait, as other work depends on it.
-> Changing the index type of compile-time checked bounds is I think an
-> improvement that is orthogonal to this task.
+On Mon, Dec 1, 2025 at 7:26=E2=80=AFAM Hsiu Che Yu
+<yu.whisper.personal@gmail.com> wrote:
+>
+> Reported-by: Miguel Ojeda <ojeda@kernel.org>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1211
 
+So typically we have "fixes" or "improvements". The former ones
+typically have Reported-by and Closes (and others like Fixes), while
+improvements don't (and instead Suggested-by would be used in this
+case).
 
+I created the issue in this way to have you think about whether it
+should be `unsafe fn` or not, and depending on the solution, the
+eventual patch would be considered a fix (i.e. making it `unsafe fn`,
+since it would not be intentional) or an improvement (i.e. documenting
+why it is not unsafe, since it would have been intentionally safe).
 
-> I have been thinking a bit (too much? ^_^;) about the general design for
-> this interface, how it would work with the `register!` macro, and how we
-> could maybe limit the boilerplate. Sorry in advance for this is going to
-> be a long post.
-> 
-> IIUC there are several aspects we need to tackle with the I/O interface:
-> 
-> - Raw IO access. Given an address, perform the IO operation without any
->   check. Depending on the bus, this might return the data directly (e.g.
->   `Mmio`), or a `Result` (e.g. the PCI `ConfigSpace`). The current
->   implementation ignores the bus error, which we probably shouldn't.
->   Also the raw access is reimplemented twice, in both the build-time and
->   runtime accessors, a fact that is mostly hidden by the use of macros.
-> - Access with dynamic bounds check. This can return `EINVAL` if the
->   provided index is invalid (out-of-bounds or not aligned), on top of
->   the bus errors, if any.
-> - Access with build-time index check. Same as above, but the error
->   occurs at build time if the index is invalid. Otherwise the return
->   type of the raw IO accessor is returned.
-> 
-> At the moment we have two traits for build-time and runtime index
-> checks. What bothers me a bit about them is that they basically
-> re-implement the same raw I/O accessors. This strongly hints that we
-> should implement the raw accessors as a base trait, which the
-> user-facing API would call into:
-> 
->   pub trait Io {
->       /// Error type returned by IO accessors. Can be `Infallible` for e.g. `Mmio`.
->       type Error: Into<Error>;
-> 
->       /// Returns the base address of this mapping.
->       fn addr(&self) -> usize;
-> 
->       /// Returns the maximum size of this mapping.
->       fn maxsize(&self) -> usize;
-> 
->       unsafe fn try_read8_unchecked(&self, addr: usize) -> Result<u8, Self::Error>;
->       unsafe fn try_write8_unchecked(&self, value: u8, addr: usize) -> Result<(), Self::Error>;
->       // etc. for 16/32 bits accessors.
->   }
-> 
-> Then we could build the current `IoFallible` trait on top of it:
-> 
->   pub trait IoFallible: Io {
->       fn io_addr<U>(&self, offset: usize) -> Result<usize> {
->           if !offset_valid::<U>(offset, self.maxsize()) {
->               return Err(EINVAL);
->           }
-> 
->           self.addr().checked_add(offset).ok_or(EINVAL)
->       }
-> 
->       /// 8-bit read with runtime bounds check.
->       fn try_read8_checked(&self, offset: usize) -> Result<u8> {
->           let addr = self.io_addr::<u8>(offset)?;
-> 
->           unsafe { self.try_read8_unchecked(addr) }.map_err(Into::into)
->       }
-> 
->       /// 8-bit write with runtime bounds check.
->       fn try_write8_checked(&self, value: u8, offset: usize) -> Result {
->           let addr = self.io_addr::<u8>(offset)?;
-> 
->           unsafe { self.try_write8_unchecked(value, addr) }.map_err(Into::into)
->       }
->   }
-> 
-> Note how this trait is now auto-implemented. Making it available for all
-> implementers of `Io` is as simple as:
-> 
->   impl<IO: Io> IoFallible for IO {}
-> 
-> (... which hints that maybe it should simply be folded into `Io`, as
-> Alice previously suggested)
+Here you considered the solution to be that it should not be unsafe,
+in which case it wouldn't be a fix and thus those tags wouldn't be
+used.
 
-Yes, it probably should. At the very least, it should be an extension
-trait, which means that it should never be used in trait bounds, since
-T: IoFallible is equivalent to T: Io. But in this case, probably just
-fold it into Io.
+The solution to the puzzle is now revealed, and indeed it should be
+`unsafe fn` (even if it is private), so it is indeed a fix (but not
+this fix, of course :).
 
-> `IoKnownSize` also calls into the base `Io` trait:
-> 
->   /// Trait for IO with a build-time known valid range.
->   pub unsafe trait IoKnownSize: Io {
->       /// Minimum usable size of this region.
->       const MIN_SIZE: usize;
-> 
->       #[inline(always)]
->       fn io_addr_assert<U>(&self, offset: usize) -> usize {
->           build_assert!(offset_valid::<U>(offset, Self::MIN_SIZE));
-> 
->           self.addr() + offset
->       }
-> 
->       /// 8-bit read with compile-time bounds check.
->       #[inline(always)]
->       fn try_read8(&self, offset: usize) -> Result<u8, Self::Error> {
->           let addr = self.io_addr_assert::<u8>(offset);
-> 
->           unsafe { self.try_read8_unchecked(addr) }
->       }
-> 
->       /// 8-bit write with compile-time bounds check.
->       #[inline(always)]
->       fn try_write8(&self, value: u8, offset: usize) -> Result<(), Self::Error> {
->           let addr = self.io_addr_assert::<u8>(offset);
-> 
->           unsafe { self.try_write8_unchecked(value, addr) }
->       }
->   }
-> 
-> Its accessors now return the error type of the bus, which is good for
-> safety, but not for ergonomics when dealing with e.g. code that works
-> with `Mmio`, which we know is infallible. But we can provide an extra
-> set of methods in this trait for this case:
-> 
->       /// Infallible 8-bit read with compile-time bounds check.
->       #[inline(always)]
->       fn read8(&self, offset: usize) -> u8
->       where
->           Self: Io<Error = Infallible>,
->       {
->           self.read8(offset).unwrap_or_else(|e| match e {})
->       }
-> 
->       /// Infallible 8-bit write with compile-time bounds check.
->       #[inline(always)]
->       fn write8(&self, value: u8, offset: usize)
->       where
->           Self: Io<Error = Infallible>,
->       {
->           self.write8(value, offset).unwrap_or_else(|e| match e {})
->       }
-> 
-> `Mmio`'s impl blocks are now reduced to the following:
-> 
->   impl<const SIZE: usize> Io for Mmio<SIZE> {
->       type Error = core::convert::Infallible;
-> 
->       #[inline]
->       fn addr(&self) -> usize {
->           self.0.addr()
->       }
-> 
->       #[inline]
->       fn maxsize(&self) -> usize {
->           self.0.maxsize()
->       }
-> 
->       unsafe fn try_read8_unchecked(&self, addr: usize) -> Result<u8, Self::Error> {
->           Ok(unsafe { bindings::readb(addr as *const c_void) })
->       }
-> 
->       unsafe fn try_write8_unchecked(&self, value: u8, addr: usize) -> Result<(), Self::Error> {
->           Ok(unsafe { bindings::writeb(value, addr as *mut c_void) })
->       }
->   }
-> 
->   unsafe impl<const SIZE: usize> IoKnownSize for Mmio<SIZE> {
->       const MIN_SIZE: usize = SIZE;
->   }
-> 
-> ... and that's enough to provide everything we had so far - all of the
-> accessors called by users are already implemented in the base traits.
-> Note also the lack of macros.
-> 
-> Another point that I noticed was the relaxed MMIO accessors. They are
-> currently implemented as a set of dedicated methods (e.g.
-> `read8_relaxed`) that are not part of a trait. This results in a lot of
-> additional methods, and limits their usefulness as the same generic
-> function could not be used with both regular and relaxed accesses.
-> 
-> So I'd propose to implement them using a relaxed wrapper type:
-> 
->   /// Wrapper for [`Mmio`] that performs relaxed I/O accesses.
->   pub struct RelaxedMmio<'a, const SIZE: usize>(&'a Mmio<SIZE>);
-> 
->   impl<'a, const SIZE: usize> RelaxedMmio<'a, SIZE> {
->     pub fn new(mmio: &'a Mmio<SIZE>) -> Self {
->         Self(mmio)
->     }
->   }
-> 
->   impl<'a, const SIZE: usize> Io for RelaxedMmio<'a, SIZE> {
->     fn addr(&self) -> usize {
->         self.0.addr()
->     }
-> 
->     fn maxsize(&self) -> usize {
->         self.0.maxsize()
->     }
-> 
->     type Error = <Mmio as Io>::Error;
-> 
->     unsafe fn try_read8_unchecked(&self, addr: usize) -> Result<u8, Self::Error> {
->         Ok(unsafe { bindings::readb_relaxed(addr as *const c_void) })
->     }
-> 
->     unsafe fn try_write8_unchecked(&self, value: u8, addr: usize) -> Result<(), Self::Error> {
->         Ok(unsafe { bindings::writeb_relaxed(value, addr as *mut c_void) })
->     }
-> 
->     // SAFETY: `MIN_SIZE` is the same as the wrapped type, which also implements `IoKnownSize`.
->     unsafe impl<'a, const SIZE: usize> IoKnownSize for RelaxedMmio<'a, SIZE> {
->         const MIN_SIZE: usize = SIZE;
->     }
->   }
-> 
-> This way, when you need to do I/O using a register, you can either pass
-> the `Mmio` instance or derive a `RelaxedMmio` from it, if that access
-> pattern is more adequate.
+[ In particular, functions having unsafe code inside of them is
+orthogonal to them being unsafe functions or not, e.g. you may have
+also safe functions with `unsafe` blocks inside. ]
 
-This sounds like a reasonable way to handle relaxed mmio.
+For v2, you should consider what documentation you should add to make
+it `unsafe fn` (please build with `CLIPPY=3D1` to check) and what others
+changes would be needed.
 
-> How does this sound? I can share a branch with a basic implementation
-> of this idea if that helps.
+Thanks for the patch!
 
-My main thoughts are:
-
-First, we need to think some more about the naming. Currently you have
-several methods with the same name. For example, you have a read8 method
-implemented in terms of a different read8 method. It'd be nice with a
-summary of the meaning of:
-
-* try_ prefix
-* _unchecked suffix
-* _checked suffix (not the same as try_ prefix?)
-
-
-
-Second, I think we need to think a bit more about the error types.
-Perhaps the trait could define:
-
-/// Error type used by `*_unchecked` methods.
-type Error;
-
-/// Error type that can be either `Self::Error` or a failed bounds
-/// check.
-type TryError: From<Self::Error> + From<BoundsError>;
-
-where BoundsError is a new zero-sized error type we can define
-somewhere. This way, Mmio can use these errors:
-
-type Error = Infallible;
-type TryError = BoundsError;
-
-wheres cases that can fail with an IO error can use kernel::error::Error
-for both cases.
-
-
-
-Third, if we're going to postpone the custom integer type for
-IoKnownSize, then I think we should get rid of build-checked IO ops
-entirely for now.
-
-
-
-Fourth, I didn't know about the alignment requirement. I would like to
-know how that fits in with the rest of this. Is it treated like a bounds
-check? That could make sense, and we could also have a custom integer
-type that both has a max value and alignment invariant. But what about
-the *_unchecked and runtime bounds-checked methods?
-
-Alice
+Cheers,
+Miguel
