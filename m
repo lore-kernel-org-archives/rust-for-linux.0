@@ -1,127 +1,103 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB629221D92;
-	Mon,  1 Dec 2025 22:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764629735; cv=pass; b=DTrZ/0gmyfuAs2F/v/hjy6hdmK5VwaOTk3/0zEh1B6UZBKMlpFtSGgLc0m0Ifx9HWwTWjYkOYy/2I2YEVgDHhiEHtnfGghyL6QmPYobXu64dlZVMyAF5DQmJZZ1xc++AoeYmnq0VxqA372uLPO2iBb4ZJs43gROolEmN69nUNLQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764629735; c=relaxed/simple;
-	bh=1Wy5u3DNvQwbxFZGLQgKlWKm5gcWutmTaFp8tL2MP9U=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=CApypfDFw0vg6R2SnG1Jykz4OE2fGazPzo0CppZF4Xi9Fq9kBospG5nZZGsoU5Mkci9qKxnrMakD9MUSyq/WIJdSS2n9+gMrFaRmBVS1wBrUjcPRx/IU/hfZWGIlDw7tixr/wGUkebFWyQ2RYCEDD5+U4en1gDEm6ENfllTDlh8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=bYDKXHai; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C9829ACF6
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 22:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764629922; cv=none; b=YJ/60YrA1B6SZiEQkbVpkU6U2aAxyefHKIVrdDaU2SYhrrjDsNC+hjE8UtDt4sZiLdM5JttjIrMQl9JuxbMsOF+9JHFQhInNxEBogoQm7/6gYDRTK38NRpAJSS6JI1L1hasrDSwgXaMB1DoDCaciGMjVt5yzGgBRc1rLU8HmhkU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764629922; c=relaxed/simple;
+	bh=a1pdL8EYMo2eswZyriHACheqxubZbCfaF1iStJizjuE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PvbzY8X4GG/mlRLMcB9E/52GckUsyJW8nPlYhgu4+eEOQbLU+G+jsax+AIo1I/45YCccckKdI+4pKtvS6etZRU0R+oIgKiwfDpVouUwMQdNSLFv55JiY26MWxJ/mp9zyIEl4ZxVy7Mu5oix7iozfGXMNIMhkuEj3+wuZOZ4mGzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X/rhy8nI; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="bYDKXHai"
-ARC-Seal: i=1; a=rsa-sha256; t=1764629708; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=WUUlwegPL+TaM1SCSPVueIIpNkDW8TM/B1c2ED/rd7bziI0UVJ0mVjiPfMeLQBbKP9ggr/O1CnMa2Rz1lYH/VkBct5O7jxQX+wmXrjD0DjzVmCIUJELiI+Lyn+NwgMwQ0BngLOF7vzO3iUPgRlNzVTB3xfdBaaQY2Tb8/ONtp30=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764629708; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ypRRmD2xCCGEl+qbk0MV7p2Ceeb2oGK2vSUVjqR1prk=; 
-	b=QMSshcslQMhtS/QxlpqIpp+0eIELmrIWAAQ1hwwdgx+6wh2avbf/LdgLTOZlkXhk+7tefC596uNMPsAL6sJAwpGuAlo63Rx1U4Hf1vLcXsiaKa6xfBK4g+Z5N563K2Kw13NCF8n8KzGwYZJfODuGutlt79he5d6NWUtUapnLuqw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764629708;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=ypRRmD2xCCGEl+qbk0MV7p2Ceeb2oGK2vSUVjqR1prk=;
-	b=bYDKXHaiL/nCoFUsA21cGFvl+BM5+e/nle8+/LsCBJ1cfSELuLvQIQnU7EB0cLNk
-	M8yHl+vEIjTfcFrF6LVm4gfUmnkVgh0U/fzCfRRZOurLRTbLJWZ/cJFik4o9qHjErJS
-	Sekn246SE48RQ0bvkzqYb+F9kjW9N6Fy6ES6muno=
-Received: by mx.zohomail.com with SMTPS id 1764629706021913.819960823426;
-	Mon, 1 Dec 2025 14:55:06 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X/rhy8nI"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7bac5b906bcso549370b3a.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 14:58:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764629919; x=1765234719; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a1pdL8EYMo2eswZyriHACheqxubZbCfaF1iStJizjuE=;
+        b=X/rhy8nIeTQdK/Y1MnflRVp9Eel/+ZuFLozA+w0umxbyG9WGXYlqI2l4X/fC5pKofH
+         jELhUCHZYOofU16M6Ni0W/rUtLl7Ljm6iblZ0B9QSsIGQ79C2dH0erZzkSXWs/4e2liL
+         wsPkQ9p/EwxqP++PUaPfqYFSglXsF6e+aRz2oJ4YlQh2DnD6JrqGlztLTiRbVyG57K6h
+         O85R0fT7dZRI4Mcy/tGzZ0VivJl7AQULGehWLn9fb3uoTkpvagwJRTCUnVoprfJBLTC0
+         h/k/BUlDUAOuvwVPfnAWkjqSsQNty/ETiY1icmCA24ujhxgO+9zhzMg4q/wsNIZcmuVw
+         2yBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764629919; x=1765234719;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=a1pdL8EYMo2eswZyriHACheqxubZbCfaF1iStJizjuE=;
+        b=jnRUNIV8CXjbkGzRXpZhrKQ9ZfZkuA+ifIWvjz5mFOaqvoQjWedJLr+FJUDBb80O6N
+         1Y/46oNjC3wdUEp2dw3o7lfP1JZZJosx+EIWlaHaFq8OnfMQs7hf3e/g5PRwELRU0fLj
+         AvHHLAANuoI9ePsxrI7Nl0YnZcs5cxWkjP5DpTvPu4b4/VJmQW6OhPfK94J0fJx0aJZh
+         Gt4ZkaYr4A9CekeGzDSGKGT/m6j3rswlNrTPQrThySLCkruPWdN7v28RcvwvkD60Gg5Z
+         oWL5wLUlWumCZUC50LC3Vmyt+NCXoda9iqylBotcPCffnBl9ENvZAK2M0JfbfEwCzFdw
+         sGQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/ZogQTW88SoJOoPUaSzG98B8GU3up1FB1g6Gz2aK/eYfcIqBZVJ7C6OZMgOkDu/lm4eGmpntf2ANTfVjU3w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUt0MK9Rdjq/VhjZDHKWAm1kbMugn39xyr6xzk7rfadtwnn5bH
+	VHSv2Ok+Zs2IZOVfS5GdXUJ+RJUUB/CQKi9jJxNaew3BILenq8Jsb7AKpTsmSXsHQIWe6ZP2XPv
+	rsTWJLSuosMt8dvEDWzHBK9jlQhH9PUQ=
+X-Gm-Gg: ASbGnctBEq6dt5sS7dxQmIsou4cpZXaGXIXO+Zk/e4R1FLDpS7utbVeZZJWHgB5KanG
+	HVLg99VjjApeEbECW2CU3MFECmuNwNU3tv7z5y6azxrrMTOALXB4CQZvZFIrN6KoUd14iTsf1tK
+	KtXAF43FdkL261ZSH7blEGXCWTKE2KiYR1fsBbedVVCF4TcWINfmZEcqepYRU3c4UYD9FSkPz5s
+	SulQ781Ydt0CTxB+15yHm4OvYYyX9j6qZ/KgXTkVTrplcWsiDOoAvKtv6hiYEjfWkfzl+OIcD8W
+	w/cXUAk8WZVW0xA5Nhe5+rNC2Gg49hPWqGeiYcj9pXZPpw7+W596Gleht98keCWXPiDCqle3zOo
+	Z4D5VL9YLvOGrUXVOop3EyaEN
+X-Google-Smtp-Source: AGHT+IFfuN9zEIrSqZ4UfzyHrOAWhLG/2/sm864P3ydB1iuIelR7Cpw9LcULJ3uSXFJitdhtK2p/ltt0ZFQOQNh8uwg=
+X-Received: by 2002:a05:7300:ac82:b0:2a4:3593:2c0a with SMTP id
+ 5a478bee46e88-2a724c02369mr27204611eec.3.1764629919416; Mon, 01 Dec 2025
+ 14:58:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3] rust: clist: Add support to interface with C linked
- lists
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <87d2c2d5-12d2-4655-b070-872c909f7e0a@nvidia.com>
-Date: Mon, 1 Dec 2025 19:54:49 -0300
-Cc: Joel Fernandes <joelagnelf@nvidia.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org,
- Danilo Krummrich <dakr@kernel.org>,
- Dave Airlie <airlied@gmail.com>,
- Alexandre Courbot <acourbot@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- bjorn3_gh@protonmail.com,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Timur Tabi <ttabi@nvidia.com>,
- Joel Fernandes <joel@joelfernandes.org>,
- Lyude Paul <elle@weathered-steel.dev>,
- Andrea Righi <arighi@nvidia.com>,
- Philipp Stanner <phasta@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <48EFFE1F-4D20-4A2D-B3E0-13E9CB796624@collabora.com>
+MIME-Version: 1.0
 References: <20251129213056.4021375-1-joelagnelf@nvidia.com>
- <5B89D953-BB52-4E8F-AC40-1FA33C016780@collabora.com>
- <87d2c2d5-12d2-4655-b070-872c909f7e0a@nvidia.com>
-To: John Hubbard <jhubbard@nvidia.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+ <2653abf6-5cd4-4385-b7c2-f377a9503160@nvidia.com> <7a88da9f-c67b-4a68-b8d6-a66f9096bab4@nvidia.com>
+ <497c91a2-ca6c-4e05-bc5e-7c3818302c7e@nvidia.com> <2700c827-d3af-403c-857a-30324e0d8502@nvidia.com>
+In-Reply-To: <2700c827-d3af-403c-857a-30324e0d8502@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 1 Dec 2025 23:58:26 +0100
+X-Gm-Features: AWmQ_bkl2DTKJWfF5AG_9aZv1tTBUZWM-ImMGF4ZqdhUPDiYIUQE-GRQbnKTx8c
+Message-ID: <CANiq72=wGCRrZGvsoqs5jZQ-n23H9chxpH+dwo=jomhEjCsrZA@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: clist: Add support to interface with C linked lists
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	nouveau@lists.freedesktop.org, Danilo Krummrich <dakr@kernel.org>, 
+	Dave Airlie <airlied@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Timur Tabi <ttabi@nvidia.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Lyude Paul <elle@weathered-steel.dev>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Andrea Righi <arighi@nvidia.com>, 
+	Philipp Stanner <phasta@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Dec 1, 2025 at 11:43=E2=80=AFPM Joel Fernandes <joelagnelf@nvidia.c=
+om> wrote:
+>
+> The documentation clearly says "doctests get
+> compiled as Rust kernel objects, allowing them to run against a built ker=
+nel.".
 
+Yeah, there is also a Python script that KUnit provides that some
+people like to use too, and quite convenient to pass certain configs etc.
 
-> On 1 Dec 2025, at 16:35, John Hubbard <jhubbard@nvidia.com> wrote:
->=20
-> On 12/1/25 8:51 AM, Daniel Almeida wrote:
->>> On 29 Nov 2025, at 18:30, Joel Fernandes <joelagnelf@nvidia.com> =
-wrote:
-> ...
->>> +#[repr(transparent)]
->>> +pub struct ClistHead(Opaque<bindings::list_head>);
->>=20
->> I still think we should call this CList. IMHO, it does not make sense =
-to have a
->=20
-> I am guessing you meant to place this comment after Clist, rather than =
-here
-> (after ClistHead)? Otherwise I don't know what you are actually =
-suggesting?
->=20
->> Clist, and a ClistHead (notice the capitalization). CList and =
-CListHead are
->> easier to read and reason about.
->>=20
->> Did anyone push back on this?
->=20
-> If you are simply recommending renaming:
->    Clist     --> CList
->    ClistHead --> CListHead
-
-Yes, this is what I meant.
-
->=20
-> ...then I'd say "+1" for that suggestion.
->=20
-> thanks,
-> --=20
-> John Hubbard
->=20
->=20
-
+Cheers,
+Miguel
