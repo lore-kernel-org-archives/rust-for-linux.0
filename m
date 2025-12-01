@@ -1,116 +1,98 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981533321AB
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 15:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764603128; cv=pass; b=ULpP628PEpOCXICwqZ+e3glhkp4V/69ymhRr9Jou/hjtFnpc2dPKR0xha+HisiJ/XH/CsSu4OrEyo6ARQZJRFsQ+SZbAMdRh+ZBSjGWbLQAb+mkaWW719bn/GEclsc1Rcm92AX4eB7slBb7KJmxY0XY37liagCcYwo4nEpfDrTc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764603128; c=relaxed/simple;
-	bh=DEXfUlkwf9/dY3M6LU/JNWo1A5toSf2N2cnfe6rqxlY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=XVa3UCEDNxIr1bxQm/adL/uLe4impTHir/HQyyM0AuaVapob/J2IrBhdDVXm0bBP7lsX8IxkuBrK0aLD2ux6x7w2k3i5M7sxA6JYf6XnjkH9YrEIJ8UIJ10ei3y5WpJFd6Gakei5InrTjAZTlqgKm8yh/hlgcjjJ94gW5gslxTU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UIBVZiu9; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A41A36D518
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 15:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764603330; cv=none; b=N5+F/PutI1rtOZM5oRyO/CJAHYtmMFjuNt94AtjtdxamFlcFkzIK+oGkkjZC7PYaNTaet93YL2QM1f/ePLCgJzBCBbtyMXHbRnpp3xsskCd6e0aUELVErH+a4ywGUy/FfcHV2MuQ8HTsCSyppnAuPTk+p/EY2LKIp8z+u+bdmQ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764603330; c=relaxed/simple;
+	bh=IUNxN5qrxyE5m7ZulRO3ENGx2G6kLUP7duXkt1dCvso=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Jc06duOvetOmjtYKssFhT1/UeybInTUJSRq2fe9zcSbVb/5ugNYdK2EQnvvBaLsDCnd1JcIrfwHJzJ2334I60aJQi/vMQ99lh427WVAnYP8cqh8l5w82zv+LvHDqTwhKdzz6md1INqzYtgrxAGHbXDUQ1J3pWOva/HKjiI9uu7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hZQuRRGN; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UIBVZiu9"
-ARC-Seal: i=1; a=rsa-sha256; t=1764603084; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Xuy+zrayxriwhuYfV/lVGssZKZ+Bjy7aYphus6QJ/hBrv939HE61Ad745hTjCtzVc5kx4WT9ABt8vM9ekMcBIK1zJVpxgEclYdCLoePwiPQkm7wAqnSofQWudJdg+L61dnNzPqFj3xr47S0vxMksduM+fAitX1b3WenFPZw6t0s=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764603084; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=3HbneU3qyka+xS+SgyzTpdhrl3NagdrNaKT2I4JJmeg=; 
-	b=fyY2x3hqyXc+eLlSejazJ4GEzzUSn6ZRpeCrTY+/AV5qDOock5KTgQPt1pO+EO/kp6u3hlxOfhcpFFr4P8Re6Hph16nZ76FlL9qrPqrQFsCczyLdD+HLk54xxsqzlY6M1FIluDxHRVhm1CsmT9mSzi4p90M5G/4zTps8cxQvJCU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764603084;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=3HbneU3qyka+xS+SgyzTpdhrl3NagdrNaKT2I4JJmeg=;
-	b=UIBVZiu9rxK3BZWr6HrP6U+QllaOJuwYNqVOggn6MYMG2I0i7qRSylEGzDSG78Zx
-	V3gwwUKPTl/1t5Qf+3RA9xmbBnhWIml8CbpDyEZJFttuv1yfxEKxxydFy33Paw7hYzu
-	bc0tDMOa5uirnHDAkatQcM+721cH5zFiiJfPZczs=
-Received: by mx.zohomail.com with SMTPS id 1764603079634801.5377747252071;
-	Mon, 1 Dec 2025 07:31:19 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hZQuRRGN"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-bc0dd142007so45238a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 07:35:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764603328; x=1765208128; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IUNxN5qrxyE5m7ZulRO3ENGx2G6kLUP7duXkt1dCvso=;
+        b=hZQuRRGN7xx3M3CMFV3urI4F/Khm2/cgnbOWPIQZrNUgWxxvoASFE5uMQZEPDzAygx
+         5kjFfRpDLAXCE0bhBlYiMyfgB888UempQp7vqeJRKnNQ8Nk5EwlKsWMPwr3/t/eCocKq
+         y1bOB7vIwwrnssz1V7Pm9uLBs9ZHK5Iqpslw0LEPW5RTWZl4JaSeCy9dQORRgZhZ8zRW
+         EyPocrZ0P5fTO4eLKMsOB354outkJwBilFs9sbxBlp+0JaJg7uAPx1Owih9UeAKow9i3
+         fBxzSsrDT7K7k8B8WkDfEK5LcN3vP6okOa4bsR+tXikJNT3uQUgsERsmnKKK/N36v9YS
+         N4fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764603328; x=1765208128;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IUNxN5qrxyE5m7ZulRO3ENGx2G6kLUP7duXkt1dCvso=;
+        b=ND2XfMqidlW+tFb00XOjCPMywRyWwrGC6rYjtKcx2NZTfh0e/hYGsia0XrbAGawR1v
+         h83JGZS4Fu/cr4kT9eIyh3DOdGakx5YW9XcF13QmsTvR+AaiCMgSdC5cJtujKoUgTDPV
+         0R+YqRfHpsZ1GbjeVUpTo9lZkbpKXlxeRmFdyKU7jHIO6FrD02/W6FHaJaRrkKwZ09pb
+         znMqx3mL5AwwLtMe/FuIVwuTxAKxrcAKve8SGLUgBtHfVSKrebHfIOOt+0mLuyotieZz
+         BC57PMwrarm+T29MQQYZiQtc1eMXrbHx2NNkQnwKZO4K2OlKFH2uQ/Uo6a+WgCucVp+2
+         8W9A==
+X-Forwarded-Encrypted: i=1; AJvYcCWiis5G64Q4FayPanIACAidJCbazJpiz5WSTTFVQKmZwDC7bXxL1xpEWqoLWNj/7qYOmZzf3XHSd09Th5pPaQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwNDN0VScSvIGDmcxJTeD766oWW5L6+q29MgEKYqcwdFFyx0w8
+	nOKS23u1SDVKlXAahDm0MyKKe1cn8X7xTgROdPPLtvrUTOZ85drxdOcvnPqOlKiSNrCLtkuRXK4
+	0SGAASzVXUX0Kbo2RL0ON4jsMwF/NjEc=
+X-Gm-Gg: ASbGncvk79H1f/vvr0531TZSJTP2bSamwdDf8dbY0OzGxr5si6etb6QJzNlv1awEGvi
+	M7FFAiLMc66V58p8xuKZr9DTVTR6/xyYcsHYo95FJYtNaK0gLh9APG3Dum1cK0B82xwLhLwfbxN
+	jf43l0vZ7Yh87zmW7tFrh05KRLaJ5hIsQh3hdcAMp7x2vd14F7dwyFQlPjW8VRw3JAdupvJfDmF
+	9J4jUzdRrxhglA0e7J3PpwIAPWL/iIdR1l1AvKk9h3nNHemTfGH9oWsBkRicGM25h3AvJBlGgzX
+	bunt8IigWVG8Z3o2BqUGOvYyZTuI54xJCRtqIRqGurgy1QgWnsHXvlTNsgkdFCbZnjzErpIz3uE
+	1UQ5z0lzhOnGDyw==
+X-Google-Smtp-Source: AGHT+IEoCLpm9lr0RH3SWQPZtNE57eOwkauItyiHao4q1iLnYOGMmNevS+W3sSEcxd7G4uHpfc3hJZOjQWWFcvoi3cQ=
+X-Received: by 2002:a05:7301:e24:b0:2a4:3593:2c07 with SMTP id
+ 5a478bee46e88-2a7243ec7b9mr21735269eec.0.1764603328166; Mon, 01 Dec 2025
+ 07:35:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+MIME-Version: 1.0
+References: <20251201152759.16429-1-atharvd440@gmail.com> <6DE296DC-45BA-4915-8FB7-78A6A7339A66@collabora.com>
+In-Reply-To: <6DE296DC-45BA-4915-8FB7-78A6A7339A66@collabora.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 1 Dec 2025 16:35:15 +0100
+X-Gm-Features: AWmQ_blJCkBhicE8Cax4nvSPCCoAJ0n5ZIvU9eCcCm1jzeuOpDDhMtG4FEcpZh4
+Message-ID: <CANiq72=CS6o9=2KUVgoOKoyEAOpMz+wepLCJe5Mftxuz-RV1Tg@mail.gmail.com>
 Subject: Re: [PATCH v2] rust: drm: use `pin_init::zeroed()` for file
  operations initialization
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251201152759.16429-1-atharvd440@gmail.com>
-Date: Mon, 1 Dec 2025 12:31:04 -0300
-Cc: Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Lyude Paul <lyude@redhat.com>,
- Shankari Anand <shankari.ak0208@gmail.com>,
- Asahi Lina <lina+kernel@asahilina.net>,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Atharv Dubey <atharvd440@gmail.com>, Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Lyude Paul <lyude@redhat.com>, 
+	Shankari Anand <shankari.ak0208@gmail.com>, Asahi Lina <lina+kernel@asahilina.net>, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <6DE296DC-45BA-4915-8FB7-78A6A7339A66@collabora.com>
-References: <20251201152759.16429-1-atharvd440@gmail.com>
-To: Atharv Dubey <atharvd440@gmail.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
-Hi Atharv,
+On Mon, Dec 1, 2025 at 4:31=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
+>
+> I wonder if this should be part of a larger series that implements this c=
+hange
+> throughout the tree?
 
-> On 1 Dec 2025, at 12:27, Atharv Dubey <atharvd440@gmail.com> wrote:
->=20
-> Replace the manual `unsafe { core::mem::zeroed() }` initialization of
-> `bindings::file_operations` with `pin_init::zeroed()`. This removes =
-the
-> explicit unsafe
->=20
-> Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
-> ---
-> rust/kernel/drm/gem/mod.rs | 4 +---
-> 1 file changed, 1 insertion(+), 3 deletions(-)
->=20
-> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index 30c853988b94..f9fd98dc102b 100644
-> --- a/rust/kernel/drm/gem/mod.rs
-> +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -298,9 +298,7 @@ impl<T: DriverObject> AllocImpl for Object<T> {
-> }
->=20
-> pub(super) const fn create_fops() -> bindings::file_operations {
-> -    // SAFETY: As by the type invariant, it is safe to initialize =
-`bindings::file_operations`
-> -    // zeroed.
-> -    let mut fops: bindings::file_operations =3D unsafe { =
-core::mem::zeroed() };
-> +    let mut fops: bindings::file_operations =3D pin_init::zeroed();
->=20
->     fops.owner =3D core::ptr::null_mut();
->     fops.open =3D Some(bindings::drm_open);
-> --=20
-> 2.43.0
->=20
->=20
+They are independent, so it is easier to land them as such (and may be
+clearer that is the case by sending them separately), but having them
+in a series (even if landed separately) is also OK.
 
-I wonder if this should be part of a larger series that implements this =
-change
-throughout the tree?
-
-=E2=80=94 Daniel=
+Cheers,
+Miguel
