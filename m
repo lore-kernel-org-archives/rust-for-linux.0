@@ -1,147 +1,129 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB9F200110;
-	Mon,  1 Dec 2025 23:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764630170; cv=pass; b=fZIjKGfAycuyXGIH8BHQB9rv0X4OVbyI6rwsKD1DdD/TeFe/jBNDdbebrCpvWi/TIRSNWfZDiwvZnGZ1yYdT4i95o0ZcasWt56nQEDyhIDss6ewUoMejAxh+6+2ywNtrfIbmslrbzpusTEZgaZUvAbGsL5H94eSK+EegGgLhD4s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764630170; c=relaxed/simple;
-	bh=eLPqjPkiorfvsCgBSQFYRJyUCggaob5rrOL9Yu/kEQk=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=sGzXkt+9D8m+HY3TKduPgwJEaulFCo7MVWcVmTBNlJBwBnSJxKCBdLASQSQasjqARN1KpGe4Y1oTeZKerMk0Gku+PNqyZnlpjUMfXLVQBGVckIBy09QsTi9rOoOXF+/tzCDHpi2gReSNy0MjAb6t+XVNTSAj2xEs148jDsObwn4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=FdGTmqbA; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29B92882AF
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 23:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764630400; cv=none; b=AZuwnsvjk05Jjx4Nq++ABMyQDFtU6RMhlLIl55+LstdsIgnnVOT3EBupjzx62SfAq2XEgnBIcSstT60QZxdG3m+kZoCQq2l1J+d4HJVjxBRfKlhTd3nEVIOnwiOK5og5yocweXo3elbRnRvKcWmdiRWwA8Ip8plRJqV5eeXi0iI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764630400; c=relaxed/simple;
+	bh=OMF5l7S3MDON+Bo+C3n6j/BgcNtrlF0sgYuH5OVBzBE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m2oxaPEE7QLHqnXDdWn2yTevcLBaBejnrMCmUjL2HTzY0L8Y7M3MKXKl99Qspz5iCmAKVCMYoXMxu+A2Ximt34Fja3jil5AxhqaiYHpJAw6KqMLeXAIstYHAiQbNuIOlVtcsaXpuKRaH9qxZ7Ovl4aHwYo2glOYC3E1ySgJfXkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PVxc9xua; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="FdGTmqbA"
-ARC-Seal: i=1; a=rsa-sha256; t=1764630138; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=jKfrW1A5lxguTIMp54rB70wi+PXhcLslTJX8rvz4hdkmq5B7G9rDgAK3ZcfzIkCXSjbS+ElQGjSvugADJPB9AulwoR40FZbWh4f30AfhBOrQLdGTQlQC6+LM1fx8Rxl4oinJKPo7CQgBlT9Jfi/wmhm3CW2zlb1egVFMunPEANo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1764630138; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=vVOcuLzLn7ix/bSszGqLHStAGdGJEE4HEpB2JdOabJY=; 
-	b=kSyxtQLdmeWqKAUo6r5pCL60GQ5X/EqL36f6kwJm00WBspXOUuLox8V1ROqq8dwDWqToh4/SVGMOiwby2tvrqCtK4BQ4WVMCHhOfBU7KCEZYG3XAYzU0RFFQJa4J3stpFNDJ1gwkYNdDzy/QG5Oy3IwrNV1hCCaF8T06fEcdPIU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764630138;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=vVOcuLzLn7ix/bSszGqLHStAGdGJEE4HEpB2JdOabJY=;
-	b=FdGTmqbAkChHbCIsmaUzM9C6cc8mW/E7FSYraanKrtvQO6zsWKQJWgWpLkGgineo
-	g7lrRyB1Li5s0eEehWvG9xQUHjsoORffX5I2Y1yJsomHehYlJMHcKg2l7HW+PHDM4kL
-	W6BEalHKUGUyOOZ4N1meQtO+n0N/XLr4sz4DKfmw=
-Received: by mx.zohomail.com with SMTPS id 1764630135734988.7309531841487;
-	Mon, 1 Dec 2025 15:02:15 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PVxc9xua"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-297cf964774so7621165ad.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 15:06:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764630398; x=1765235198; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OMF5l7S3MDON+Bo+C3n6j/BgcNtrlF0sgYuH5OVBzBE=;
+        b=PVxc9xua+Z6nyumnCiBtym91KqEFHJgcocp+NxyLwe1kMcANlhU0KJe0Y1jckp2r5L
+         cFPQh1uPX4GPW7DXQc3SCkq3YM2nzQ9IosxC723TdhPloLrZdesj1A0ZYj7lDTEaFA/t
+         5/UsXvhB9tkvkPZhMxjgMZwEr+NLJ3/XpYVtp/zlt1h1Kxb1qGbi7y7PVNXLZZuWY6q8
+         XmO5t3eNYFWTnOhGxul7LccXxN8lYkp04NJO3UGZum+hPgfS7KS2RYpUw2Yv4P1FiGrr
+         YXUW8gH/TEnAXlZU2XbJ/AEhdy3GE0QbyI8/SpvWtKqC3GYfuQ9G/hhKSww1bMw8818/
+         w8FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764630398; x=1765235198;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=OMF5l7S3MDON+Bo+C3n6j/BgcNtrlF0sgYuH5OVBzBE=;
+        b=d25evfOea4K7EUM4VFfyNxvhSQQvi+H672bkNaDGfygVT0tYF50r3uzdrQT/Bf//u7
+         ird+VttriJHpwdglCXf3n/luFWbXpJJDO7xD2GaLEEiLmlzhb2gGLSMGmQwu2PsWCIis
+         CFtalGxoNpG73L4NL3q6aROsjSFRyxh1YjG8IuHElSzVb9+/A4UIzhKCx4x3RuAJXZ2W
+         ukT+IeRUurDqwCTPZyt0wLs6gG6uha1RAXy+LQmjVbp92JI/6UeK1khC7sCN8wVQFEZg
+         glujpb9T4/2fTcoygksrJ2fq4V+MCm+JIwGMyWqPRl9MGhe7s08UrtlqVGNsGPj6z3c/
+         11hQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1P+hdAOgzLMDeemyAjBX4gM5I1dCzN/av1U4DbNpYP+bJjYre80He2vXxUDcIq+1B74653kYptBMtnr//cQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzjewbUsRHNJIFUSLCAgdHRcyW7aeTy5aTMYUEMd68cHamJTf2
+	dn0uqvKO/8x2MsXv3IYJCQda8c245q4JoZFjd5GOdZtKGB38ZdpwUpxEqy6fM7UhuPSX18L22iM
+	H/CLkvm0LlRqhttqewCaRg3qXF5kxz50=
+X-Gm-Gg: ASbGncvrznISl7PMyKu9pX+plWgBnHX4ZTv2gJZgLYkH0KCsgTLZZ3wQVG2AowUVduh
+	zZKf4NtJ1XwGCX4DadeenDJzWOvNxO02QEZMV2qc1fSnzuZj48mzFowka+nuJ9CCXoRFELtB7e8
+	pEObjuO0Ar90ODBLjVbuYscP47O+I4osokgXvPToLYUQlNmIOeamZSK4IctS1J6YspL72OtaEN1
+	xRUZQrw7Gr9vMHaLu/FyMslPwqrPDQUZyBJPy+ZLPsjwnGO/a1+daZSUchgRlfR3EXHdPEkS8xr
+	zKaXaGLaWl1p/2FQ1YFqHs4FyKRbfCkylZ2f8o3vYTa9vC+vzQDgpQOan3uJUh9p8zisLbqukfM
+	JRzerryOEht6DLA==
+X-Google-Smtp-Source: AGHT+IHgZ5GEJsO9WoLP6Z6Fh3KBUDDTwrz2Af9JYVEXFj34J5+7RHjFB7QeNqVNkB2lqkY2QyE/zTIrIUKGp3O3AbY=
+X-Received: by 2002:a05:7300:ec16:b0:2a4:5129:fe99 with SMTP id
+ 5a478bee46e88-2a724bc5450mr24399676eec.2.1764630397828; Mon, 01 Dec 2025
+ 15:06:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3] rust: clist: Add support to interface with C linked
- lists
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <1933c83d-7692-431b-b2b8-9c9a637ebed2@nvidia.com>
-Date: Mon, 1 Dec 2025 20:01:58 -0300
-Cc: John Hubbard <jhubbard@nvidia.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org,
- Danilo Krummrich <dakr@kernel.org>,
- Dave Airlie <airlied@gmail.com>,
- Alexandre Courbot <acourbot@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- bjorn3_gh@protonmail.com,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Timur Tabi <ttabi@nvidia.com>,
- Joel Fernandes <joel@joelfernandes.org>,
- Lyude Paul <elle@weathered-steel.dev>,
- Andrea Righi <arighi@nvidia.com>,
- Philipp Stanner <phasta@kernel.org>
+MIME-Version: 1.0
+References: <20251128-io-build-assert-v2-0-a9ea9ce7d45d@nvidia.com>
+ <20251128-io-build-assert-v2-1-a9ea9ce7d45d@nvidia.com> <db6a6b28-c0be-4bd8-a0b4-70431df7737a@nvidia.com>
+ <CANiq72nGUuK9VTYJGob7pnXU5zuuCzqfw6fezAFpbqvte1sDFg@mail.gmail.com>
+ <46b5eef7-2e8d-4801-93d0-6cea10f62dc9@nvidia.com> <CANiq72mhXajwj7HjiW_HQq9nO4o-HwBFUya3wjT8pRkWx3xjZw@mail.gmail.com>
+ <7d157605-4c59-4e04-8c41-1f7a4c86b34c@nvidia.com> <CANiq72n0UkuAtW=2JZK9Y7TK4VO8rKsMSvpv52BsW5+C2z9Dew@mail.gmail.com>
+ <ea455598-fc0e-4768-b540-5091f7ccd025@nvidia.com> <CANiq72kAnY2035vc2vvXDpUV-_vM=0W2_-mBts846jHo1ri3Yw@mail.gmail.com>
+ <fccc4878-a205-45cf-b651-53c151e48d25@nvidia.com>
+In-Reply-To: <fccc4878-a205-45cf-b651-53c151e48d25@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 2 Dec 2025 00:06:25 +0100
+X-Gm-Features: AWmQ_bm5mGKq7jyTKTNAST9qtSVF9nh8zt7Z5_rO8g8aiXjiIq_TKthUyj9O_fE
+Message-ID: <CANiq72kKsJz=SCjsTiPk=C=KWdJ_h2=A7AZsdEz_u0iemvuzJQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/7] rust: build_assert: add instructions for use with
+ function arguments
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <2584CA37-1AE6-4B1B-90B1-8DE4F826E760@collabora.com>
-References: <20251129213056.4021375-1-joelagnelf@nvidia.com>
- <5B89D953-BB52-4E8F-AC40-1FA33C016780@collabora.com>
- <87d2c2d5-12d2-4655-b070-872c909f7e0a@nvidia.com>
- <1933c83d-7692-431b-b2b8-9c9a637ebed2@nvidia.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
+On Mon, Dec 1, 2025 at 8:31=E2=80=AFPM John Hubbard <jhubbard@nvidia.com> w=
+rote:
+>
+> Mainly just: is there a way to automatically "derive" (generate) an
+> always-inline directive for any function that attempts to call
+> build_assert!() on any of its arguments? And in fact, *force* the
+> always-inline, if it is not forced hard enough today.
+>
+> Something along those lines.
 
+"Wide-scoped" macros can do passes like that, i.e. like some projects
+do to add extra syntax everywhere. Not sure we want to get into that
+world, though.
 
-> On 1 Dec 2025, at 17:06, Joel Fernandes <joelagnelf@nvidia.com> wrote:
->=20
->=20
->=20
-> On 12/1/2025 2:35 PM, John Hubbard wrote:
->> On 12/1/25 8:51 AM, Daniel Almeida wrote:
->>>> On 29 Nov 2025, at 18:30, Joel Fernandes <joelagnelf@nvidia.com> =
-wrote:
->> ...
->>>> +#[repr(transparent)]
->>>> +pub struct ClistHead(Opaque<bindings::list_head>);
->>>=20
->>> I still think we should call this CList. IMHO, it does not make =
-sense to have a
->>=20
->> I am guessing you meant to place this comment after Clist, rather =
-than here
->> (after ClistHead)? Otherwise I don't know what you are actually =
-suggesting?
->>=20
->>> Clist, and a ClistHead (notice the capitalization). CList and =
-CListHead are
->>> easier to read and reason about.
->>>=20
->>> Did anyone push back on this?
->>=20
->> If you are simply recommending renaming:
->>    Clist     --> CList
->>    ClistHead --> CListHead
->>=20
->> ...then I'd say "+1" for that suggestion.
->=20
-> I am not fond of the suggestion but I don't oppose it either. I =
-honestly don't
-> like the triple capitalization with CListHead though. Lets see where =
-all of us
-> stand and then take a call on it. Opinions?
->=20
-> Thanks.
+Instead, if we are just talking about checking, then I think we could
+have an attribute macro to mark such functions, and then
+`build_assert!` could fail "by default" unless inside one of those,
+and it would get rewritten into the proper form by the macro, so any
+call without it would fail. It is always nice to mark special
+functions anyway, just like our `export` one.
 
-Well, there are three things at play:
+Otherwise, for more than just checking, I guess a custom tool like
+Klint could also do it for us (I am sure Gary has ideas here).
 
-C, List, Head
+> I will bring this up (along with the KSYM_NAME_LEN hashed symbol project)
+> to our internal Rust groups. Both of these seem like nice, self-contained
+> projects that someone could really get into.
 
-So I think that the CListHead capitalization correctly describes it. =
-IMHO
-it=E2=80=99s hard to see =E2=80=9CC=E2=80=9D and =E2=80=9CList=E2=80=9D =
-if you spell it
-=E2=80=9CClist=E2=80=9D, i.e.: it=E2=80=99s easier to read this as a =
-single word and wonder
-what=E2=80=99s that for a few seconds.
+That is great -- thanks!
 
-This is a bit of a nitpick though, so feel free to keep the old spelling =
-if
-there is no consensus here.
+On related news, Antoni (Cc'd) told me yesterday that he noticed
+`inline(always)` was needed when using the GCC backend too, so this
+series will help him too.
 
-=E2=80=94 Daniel=
+Cheers,
+Miguel
