@@ -1,157 +1,153 @@
-Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
+Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10FE304967;
-	Mon,  1 Dec 2025 10:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB09F849C;
+	Mon,  1 Dec 2025 10:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764584621; cv=none; b=fs0ffw3++9bCyN0OkSynv6EAwblVCxMSP+6tBcPmMQUpmyqF8TTesMhi1QuX2Z+tIeRjS57e43F+utzTKLdSuG1NN3QfKIamkhYNRM3c+D/H/OjMvKdyBfLRVNtl0+crVrZ1GDilM7XpDKnltZKlDFnAHqdFhKNrxlv+oBLljfI=
+	t=1764584961; cv=none; b=APhalVhcUUifcZ90P4w6sIlUApZMyCQmFtrTak/L/f3XCb9/IoCTpNnEbJd54A8Ig11mxQh7OGeso41hxyUmC9kURMecw/uaY00z5Qcnz8B3DOwUXjKLBme0+GXmdu1q1R+QlKwBpjxY4l2Mb7mEHCb9ElkdvR6EW/wqTCvX+PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764584621; c=relaxed/simple;
-	bh=eKa/8ApbLqMOFRazYI2GV6d4odoAOzMspi5pP0Z2KQg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eUe7c85iOwG2fAhJQgyWj1+Nruql/2Jnb+uE7RERfVHY0DnnigI1I8+0DSydGfFV1WD/y2bS/Kc5EqSh2DuX1dlo8TYPwRHdziwJn6o81tAI7T8lWvUDdZx4iLF1jKOeSs692Gi+6L3opfGG+YxFnKrkgen/2Os7sM2D+3tK3vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=RpHDpQZz; arc=none smtp.client-ip=85.9.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1764584961; c=relaxed/simple;
+	bh=WqB6JNPv3gJi9R8OfwklKcAej1KKOMnsaU+KWUmdE9E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fbnoFCiUSTuLeKfDzVr8gMixnCezO5if7UJkTFtT9gp+50ukpDCAlW3ZLgGtgkgULWjYYWiqvBEN+gcH61eFNZ29uKF5zkcxqLb0p2sBt7WGE8I1UfcUIrGpWhYQ6lAUJjOKMgI6LGfDw+ueZZYvLyNupyEhxm/IgtDoGMq9eY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=IxvtlwVw; arc=none smtp.client-ip=178.154.239.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="RpHDpQZz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1764584606; x=1764843806;
-	bh=QnPScfECMfGXASlBfNyIG7Imc1U13Cp1f8LkX6qmIUk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=RpHDpQZzYuktwGoF6ihhp2LS52OTDz4RVT/GsNzw44D9RYrEC1d0h/X3FKZUNWqPq
-	 C/3rllP/4P22OrASzib/QAqi2dIGjis2zjL5mY7IIcUEAcL83/qda8oBG4rRQYE1+/
-	 kQfmdU2sN54teUEA3Qy+r6rCZdCytGsRdsQdv2yax5W/NEyYn8WumNdFtVs8q3XZBX
-	 JssZh5RD7Mv63jptrzfwaQaE+KTnySpGQ86wrEoxHZPpPQxzf0D7qSwEYj0RrWvDaN
-	 yJPVjChTQiiMSStQ6r5/HBN8EE64sr0hoQ9jOrXBjmhPw1E/49oN7sFYSsdfwwpWJm
-	 vcxWADWzG0sTQ==
-Date: Mon, 01 Dec 2025 10:23:20 +0000
-To: Daniel Almeida <daniel.almeida@collabora.com>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar
-	<vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v13 4/4] rust: Add `OwnableRefCounted`
-Message-ID: <aS1slBD1t-Y_K-aC@mango>
-In-Reply-To: <A5A7C4C9-1504-439C-B4FF-C28482AF7444@collabora.com>
-References: <20251117-unique-ref-v13-0-b5b243df1250@pm.me> <20251117-unique-ref-v13-4-b5b243df1250@pm.me> <A5A7C4C9-1504-439C-B4FF-C28482AF7444@collabora.com>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 4625f7cc3b95621c135f74a512f54cf7f5392afa
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="IxvtlwVw"
+Received: from mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:8a9a:0:640:e327:0])
+	by forward100b.mail.yandex.net (Yandex) with ESMTPS id 2F70B80CAC;
+	Mon, 01 Dec 2025 13:29:10 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wSfJU4kLMiE0-IBiVCnpX;
+	Mon, 01 Dec 2025 13:29:09 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1764584949;
+	bh=QrQ+327j2W3iit6ugo4sNV5cBkrdyg3asiiz3F9bmS8=;
+	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
+	b=IxvtlwVwfzXw2O+NIVXkYtMYKQ365MOK+hL+FGi9aRAl/umwV063SENXNM5RAmQqe
+	 u2ckQfMBlzrvGXN2W/UOfuAnPPBMD9RExWwmvUeI+FO25aYL1U10GyoKnYiKq/IMJI
+	 z4J5nlWbBN23YWVkTxsgX8Zw80KJLFgseww6RFdA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: lossin@kernel.org,
+	lyude@redhat.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	will@kernel.org,
+	longman@redhat.com,
+	felipe_life@live.com,
+	daniel@sedlak.dev,
+	daniel.almeida@collabora.com,
+	thomas.hellstrom@linux.intel.com,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v8 1/6] rust: add C wrappers for ww_mutex inline functions
+Date: Mon,  1 Dec 2025 13:28:50 +0300
+Message-ID: <20251201102855.4413-2-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20251201102855.4413-1-work@onurozkan.dev>
+References: <20251201102855.4413-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 251128 1506, Daniel Almeida wrote:
+Some of the kernel's `ww_mutex` functions are implemented as
+`static inline`, so they are inaccessible from Rust as bindgen
+can't generate code on them. This patch provides C function wrappers
+around these inline implementations, so bindgen can see them and generate
+the corresponding Rust code.
 
-> > /// Type allocated and destroyed on the C side, but owned by Rust.
-> > ///
-> > -/// Implementing this trait allows types to be referenced via the [`Ow=
-ned<Self>`] pointer type. This
-> > -/// is useful when it is desirable to tie the lifetime of the referenc=
-e to an owned object, rather
-> > -/// than pass around a bare reference. [`Ownable`] types can define cu=
-stom drop logic that is
-> > -/// executed when the owned reference [`Owned<Self>`] pointing to the =
-object is dropped.
-> > +/// Implementing this trait allows types to be referenced via the [`Ow=
-ned<Self>`] pointer type.
-> > +///  - This is useful when it is desirable to tie the lifetime of an o=
-bject reference to an owned
-> > +///    object, rather than pass around a bare reference.
-> > +///  - [`Ownable`] types can define custom drop logic that is executed=
- when the owned reference
-> > +///    of type [`Owned<_>`] pointing to the object is dropped.
-> > ///
-> > /// Note: The underlying object is not required to provide internal ref=
-erence counting, because it
-> > /// represents a unique, owned reference. If reference counting (on the=
- Rust side) is required,
-> > -/// [`RefCounted`](crate::types::RefCounted) should be implemented.
-> > +/// [`RefCounted`] should be implemented. [`OwnableRefCounted`] should=
- be implemented if conversion
-> > +/// between unique and shared (reference counted) ownership is needed.
-> > ///
-> > /// # Safety
-> > ///
-> > @@ -143,9 +146,7 @@ impl<T: Ownable> Owned<T> {
-> >     ///   mutable reference requirements. That is, the kernel will not =
-mutate or free the underlying
-> >     ///   object and is okay with it being modified by Rust code.
-> >     pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-> > -        Self {
-> > -            ptr,
-> > -        }
-> > +        Self { ptr }
-> >     }
->=20
-> Unrelated change?
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ MAINTAINERS             |  1 +
+ rust/helpers/helpers.c  |  1 +
+ rust/helpers/ww_mutex.c | 39 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 41 insertions(+)
+ create mode 100644 rust/helpers/ww_mutex.c
 
-Ah, yes, rustfmt must I done that, and I missed it. Will fix.
-
-> > +///
-> > +/// impl OwnableRefCounted for Foo {
-> > +///     fn try_from_shared(this: ARef<Self>) -> Result<Owned<Self>, AR=
-ef<Self>> {
-> > +///         if this.refcount.get() =3D=3D 1 {
-> > +///             // SAFETY: The `Foo` is still alive and has no other R=
-ust references as the refcount
-> > +///             // is 1.
-> > +///             Ok(unsafe { Owned::from_raw(ARef::into_raw(this)) })
-> > +///         } else {
-> > +///             Err(this)
-> > +///         }
-> > +///     }
-> > +/// }
-> > +///
->=20
-> We wouldn=E2=80=99t need this implementation if we added a =E2=80=9Crefco=
-unt()=E2=80=9D
-> member to this trait. This lets you abstract away this logic for all
-> implementors, which has the massive upside of making sure we hardcode (an=
-d thus
-> enforce) the refcount =3D=3D 1 check.
-
-This wouldn't work for the block `Request` use case. There a reference can
-be acquired "out of thin air" using a `TagSet`. Thus "check for unique
-refcount" + "create an owned reference" needs to be one atomic operation.
-
-Also I think it might be generally problematic to require a refcount()
-function. The API of the underlying kernel object we want to wrap might not
-offer that, so we would need to access internal data.
-
-
-> > +/// // SAFETY: This implementation of `release()` is safe for any vali=
-d `Self`.
-> > +/// unsafe impl Ownable for Foo {
-> > +///     unsafe fn release(this: NonNull<Self>) {
-> > +///         // SAFETY: Using `dec_ref()` from [`RefCounted`] to releas=
-e is okay, as the refcount is
-> > +///         // always 1 for an [`Owned<Foo>`].
-> > +///         unsafe{ Foo::dec_ref(this) };
-> > +///     }
-> > +/// }
-> > +///
-> > +/// let foo =3D Foo::new().expect("Failed to allocate a Foo. This shou=
-ldn't happen");
->=20
-> All these =E2=80=9Cexpects()=E2=80=9D and custom error strings would go a=
-way if you
-> place this behind a fictional function that returns Result.
-
-Not sure what you mean by fictional function. Do you mean a non-existent
-function? We want to compile this code as a unit test.
-
-The rest of your suggested changes make sense, I guess. I will implement
-them.
-
-Thanks,
-
-Oliver
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e8f06145fb54..bc6ea9cc1588 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14546,6 +14546,7 @@ F:	kernel/locking/
+ F:	lib/locking*.[ch]
+ F:	rust/helpers/mutex.c
+ F:	rust/helpers/spinlock.c
++F:	rust/helpers/ww_mutex.c
+ F:	rust/kernel/sync/lock.rs
+ F:	rust/kernel/sync/lock/
+ F:	rust/kernel/sync/locked_by.rs
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 551da6c9b506..58cf14d74516 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -59,4 +59,5 @@
+ #include "vmalloc.c"
+ #include "wait.c"
+ #include "workqueue.c"
++#include "ww_mutex.c"
+ #include "xarray.c"
+diff --git a/rust/helpers/ww_mutex.c b/rust/helpers/ww_mutex.c
+new file mode 100644
+index 000000000000..61a487653394
+--- /dev/null
++++ b/rust/helpers/ww_mutex.c
+@@ -0,0 +1,39 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/ww_mutex.h>
++
++void rust_helper_ww_mutex_init(struct ww_mutex *lock, struct ww_class *ww_class)
++{
++	ww_mutex_init(lock, ww_class);
++}
++
++void rust_helper_ww_acquire_init(struct ww_acquire_ctx *ctx, struct ww_class *ww_class)
++{
++	ww_acquire_init(ctx, ww_class);
++}
++
++void rust_helper_ww_acquire_done(struct ww_acquire_ctx *ctx)
++{
++	ww_acquire_done(ctx);
++}
++
++void rust_helper_ww_acquire_fini(struct ww_acquire_ctx *ctx)
++{
++	ww_acquire_fini(ctx);
++}
++
++void rust_helper_ww_mutex_lock_slow(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
++{
++	ww_mutex_lock_slow(lock, ctx);
++}
++
++int rust_helper_ww_mutex_lock_slow_interruptible(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
++{
++	return ww_mutex_lock_slow_interruptible(lock, ctx);
++}
++
++bool rust_helper_ww_mutex_is_locked(struct ww_mutex *lock)
++{
++	return ww_mutex_is_locked(lock);
++}
++
+-- 
+2.51.2
 
