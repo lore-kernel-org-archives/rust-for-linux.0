@@ -1,102 +1,125 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4065A284889
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 16:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EA73328E8
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 16:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764605152; cv=none; b=mH2gfjibzJXmroy3T5qNjE41UtQPw/9qs/bjs/mufjJr3G89/a02vK905NMimkmfjQ12pc6NOCa23meOpc8bseguCQEgwefV/Slw6SPuMsX2GgtE5gHZX6VxJlDuMs81tTbjPxuhHWgoRwQOpOKCfxFePjpcFZo5/sVF9r9kGmA=
+	t=1764605250; cv=none; b=OJfzGp1wPeBCWG+rsYGnW5Qgmcop9ej/Wf5oqAJrr4deiHBUCmKRpPse2o6RGs6hAnUEIwwfmT1qMKymenCM7wHaYRa3kjj+j5WUv7MHcMAA4/PAg2Y3btXeUUa8/wSkBFPgGrcOc1TDHXnWfiYPyuzEmH9tVVdUw/6/a05v2KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764605152; c=relaxed/simple;
-	bh=c3q80nezNjHGDnXQ7ld14RLMpjcS0bIEAqts88bRJjM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bk4m+rXdrcwBoSA9T65Dgqn25bZYKW1De1YtvaEUhfIJHW3O2Pd33lSghzJ6AtYZYy4C9Nsk7IDblHzJkytV7YyLr+8wcOd5PPK+e/LBcJrW6vmc8hAGji6aw/5SXI52IPczK8xcYs6Zjhp3xy+mK3GLvO1eYwQSwXDOUSxhLF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X/GV3IsK; arc=none smtp.client-ip=209.85.215.180
+	s=arc-20240116; t=1764605250; c=relaxed/simple;
+	bh=q4hEVwCIf3e3jafp7Hj7qDTlpV1EJ1EWkpDy5nFONjY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s1/b4G0hLdGUhV+DDYMHQxLs1h9yyxVb+9oMNJNKKXJCTAa2x0r1yS5sZco0yj8gyzJ+cLQ1V2edAihe1OQy18PMDiJebduZ08DBN2StQQBUWov7E2M7O5mvFIR0gyKsvok7ZOc0wLXlA8Ge53RuTIOYDw8XVEVjuhHuZF1Luj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RmTJhS3C; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X/GV3IsK"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b9da0ae5763so305495a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 08:05:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RmTJhS3C"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-299d40b0845so72341635ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 08:07:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764605150; x=1765209950; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c3q80nezNjHGDnXQ7ld14RLMpjcS0bIEAqts88bRJjM=;
-        b=X/GV3IsKqgwc6pORQL9hWiZwKzlkmhx3YtMj5mHJb4VN/RIQe3x4lMm0IygIuMKTuP
-         2A1qu4jCj+dtXKnuqaa2uycLcAbmDHWu6DFQf+taGkggokLOVxn6l29TArwo8h/Va+L1
-         KDlfEJifTaLVGs9dBoEx3iuVUMY1tVupeyvS2IJ1ZuwN+K5EjmT4XeY39+r/ef7QXQo+
-         iRLNbUzIUXWRpQHK6XNgJP1DtcqD/AhQtmsgEOz+0bDh/ahgYHzJHH3AKORF5KNgX2hj
-         o1FHRL35vopLeLyQsTD9uapnUIGqYua+R+iIEVh7xe4a1eyoLS5k3tqtTVsytbt0dyN5
-         HT2g==
+        d=gmail.com; s=20230601; t=1764605248; x=1765210048; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Dfsm1sPHd//8c29QHqvEAZuPXZqUTIp9fgppxKLZDA=;
+        b=RmTJhS3C9V9sy0jSLzfzfKJ2nb0+OPOwvfl5SvH3h4UbDNx3Y15TzJOdNdM4BuvU64
+         p7dwzJ5UPfw0XpxrhN308kmYUD+KHOBBqME/qgPx4ooeOXUh+Ntb/wl0AZmhKved+Ndz
+         fcgR54OcfiZYaVYjJccDgsK98sU3NbKczdNabiduEg9nclRy2m0h7mReRNsBfHb3J2rV
+         3Y/tp/ksH58Ev8FdmySB38d4EZT76HLhJbv/kgmQq9sgi5pzdT7tgGKdbIiiiYorEmcE
+         aNvIZdZF4U0upBDm1rpgQcMVPxOX1nQttor84dZwglnpWYbEAs9HMXc1RG36aJ397loG
+         2Gig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764605150; x=1765209950;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=c3q80nezNjHGDnXQ7ld14RLMpjcS0bIEAqts88bRJjM=;
-        b=ctONUtrepScux9UQvtr3J5WQkswXRTgZEs/5KOKjBi19rojc4kJrfW+R/Yndnb+ISQ
-         lq1JmL+RV+70Qt/66kaOuxlTViMdS7glJ5ta0VtuPwOc5j0jBs3OcK+Z2+id/JQjhzwB
-         se7geiPN6Zf43x6gUd2iLYUCnAb4Buc+E5wGP381esux19vSrsFM63YBzM7KTRdTKnuI
-         lQvN3I2e9yPZUA40bEQcwXUEt3pMVSruFkHZ4pex6xfYeLrWBqrZWrBdduFDR5B5UGUe
-         xPiDjWVm9yckRQNf6f+PJDiclIYLaodiNIqSZ8dZLoZhdOrmGZ6Wkj4JvZSgNBMKK047
-         nU0A==
-X-Forwarded-Encrypted: i=1; AJvYcCX9EkSm1WrJMJffMGcnxrQqgtI7bPUmWGbbAYbwfH55VmA8/fgE2Y6tRIGg3zo8+O3dKa8t7DaIcblxyJtHbw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiCzCd6G/1/owOPoOUwp7MEoq5FX+R+j8deA4fUPQxsSKKcT5G
-	3NDdpYwelDSN/a+HUVTDKWn5hhBHRdR6asYIsoyvLdUdacSD+MEWgn9SM0WpxIujrSo6gCHcU2e
-	PXwHqQTV6RljtTi0dk1qvB15+eqP4d24=
-X-Gm-Gg: ASbGncvHupccrQzIbxwYg9Y56OPfhjIxkY9eTaHjOzF9vxz29cyIz/t1wMWOlXGqev9
-	tVbTcg75ke48nvG7h/saFP+AOAYlY+ap5JUtBmZZZWSpV08guSjKPuTKTHcXBP8ddgxsR7HplKp
-	ixI4yl5As/fmZgcee0H9/tfPMo1ivE4psVYaQv7Jr9JZ8VhB/BBuX0MDK1WC6hueMmOsrcbZHBK
-	pnc1NTQF5de3dHYMfZrYDzWn0eguYAMq42ehR+YxN9mjBGzryR9S47IGJfo8luAEW5gt1bKI7fq
-	IoIrgfSLdXxThVYRwVXnZvFCC9Sb6gjoiVHpsfa7LNOEyaThuOd3o0S5TQE1RmlskLRjibrA4yu
-	FCfV9MBQCAVOWKg==
-X-Google-Smtp-Source: AGHT+IGAoaRGh+1dNKF31T2E+ShQgI9oD6O9jwhw+BWVZU4zpRBxVgcNHrK33G+LKd39IXKeX87dWzYun192+lq83u0=
-X-Received: by 2002:a05:7300:e80a:b0:2a4:3593:5fc6 with SMTP id
- 5a478bee46e88-2a718b198bemr24570111eec.0.1764605150329; Mon, 01 Dec 2025
- 08:05:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764605248; x=1765210048;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Dfsm1sPHd//8c29QHqvEAZuPXZqUTIp9fgppxKLZDA=;
+        b=DLKfX8KD4Q+yQgO82HoBrEZCpI1dmizQqL5ELG/aXsOgIf0NIqSAq34/GXbLK01kQ/
+         yKAVCDdXK2aa8fJ6PRxhlY0hfR8q9uGzfbcsVrrYKEUU52tKdWm4t2Be4adOv3XcTAqy
+         3apYNYmRIdDpmVPY9lPtMKXU/T/dpx68g0P8p4zZZwhJatIi1UUkZPg9fV62XhyEyEtV
+         3UlmOGYl2qzW1efjG6gmwWleYJm4zgcs9NDVOShvj8Egaei6ArJGZVAIN1jRTjNDiXc8
+         0YZRRP5kBDGvfMOMEgCZTSDa/aEqrNk29OLHuR2aIgrGTH49vtS4x9Yy1kS6kNXgEDMo
+         ImAg==
+X-Forwarded-Encrypted: i=1; AJvYcCXtd6RmQa46zFfqRgKMadNCLpT9MnZQ8cFQk0qn32WrgMshvAi4Za/MNd5DvP3F4W91OqLslwJaUjJdL+xEoQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx90zR8qb0c56Vg/6vw9GyMiTOuE7M4CPccJlO63YtbCjrx4oWH
+	o//sAnv6Ta3EIywGDbfkfeXJ8C8UZsIb6sG6qtkQ2Sj6FRPKtI6+Ti88
+X-Gm-Gg: ASbGncuZqOu5IKLxoWbPthOXl9CPW6yEuxNvnp8t6Tk/LyYZqcUjIzL1NQy+Ht1cDMb
+	A2W2sCFVvwUJLB7kTFB6y3pYiSL0l3B4kehdlg1ZNtx/uy+QdkSGix6Fulhuqz1Q3fz31t4z6l7
+	ZFeVZIQTQn6sKomVnOvHbGJv1ilDwmpM8586fNLN+Qjtan9LAH1ySyjKlUrnXCxjn2IurdRHtaK
+	QNt5e9gpRiPmaI5XLeL64tLq7EXxJWQfWci+hG5M9OpAdI5oKU+Oih7Xdkh/dh/fFiIevkODRII
+	7TgAYT4aION6ii1S5IUFfK/FEcD4WdMdGWd50oZwhMhpGpv8pIQkXYg+Jwn1b+/OC1kygL0wEPq
+	CN28ONK9w1xZHqRKxysVFzaEwwSOdM6BZ1qaUIAj+hafEtoVvD3Q4EeATd54ap5n7o3P06T7Z9G
+	0cE5qimS+UtTdeFVsgV158Bjvd+WclfX464Z795Qgm3Pz7xTr/azP+ZS/bHxE7osGS
+X-Google-Smtp-Source: AGHT+IGu2QAK9vh/UY1tG+9i4HQZzqMm0a1LmwXLI9dpN5njlpJh/BSA7UWh2EM2EBttbHz0xnoAgA==
+X-Received: by 2002:a17:903:388e:b0:298:616a:bae9 with SMTP id d9443c01a7336-29bab14892amr255899285ad.28.1764605247858;
+        Mon, 01 Dec 2025 08:07:27 -0800 (PST)
+Received: from atharv-HP-Pavilion-x360-2-in-1-Laptop-14-ek1xxx.. ([103.216.213.160])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb40281sm126525725ad.70.2025.12.01.08.07.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 08:07:27 -0800 (PST)
+From: Atharv Dubey <atharvd440@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Yutaro Ohno <yutaro.ono.418@gmail.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Atharv Dubey <atharvd440@gmail.com>,
+	Borys Tyran <borys.tyran@protonmail.com>,
+	Daniel Sedlak <daniel@sedlak.dev>,
+	Tamir Duberstein <tamird@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: rbtree: fix minor typos in comments
+Date: Mon,  1 Dec 2025 21:37:15 +0530
+Message-ID: <20251201160715.25991-1-atharvd440@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251201062516.45495-1-yu.whisper.personal@gmail.com>
- <CANiq72=MfmAKfV7GGwkyNVZfmtcxdvCroUCwC3D4Y0dN_f70CQ@mail.gmail.com> <692d9994.050a0220.d1d07.6e65@mx.google.com>
-In-Reply-To: <692d9994.050a0220.d1d07.6e65@mx.google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 1 Dec 2025 17:05:38 +0100
-X-Gm-Features: AWmQ_bkKI7siBocHIDls8qxiym3QvFUyrm6ytDhMBorA7LKgyMzZu150sRmjg9s
-Message-ID: <CANiq72kyECp8q2q3ySunR-LhQ4t6L1QA2113he1W1s9yrHfxUg@mail.gmail.com>
-Subject: Re: [PATCH] rust: num: bounded: add safety comment for Bounded::__new
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Yury Norov <yury.norov@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Cc: Hsiu Che Yu <yu.whisper.personal@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 1, 2025 at 2:35=E2=80=AFPM Hsiu Che Yu
-<yu.whisper.personal@gmail.com> wrote:
->
-> I previously believed that a function should only be marked unsafe when
-> it directly operates on unsafe code. I now understand that the decision
-> should be based on the actual safety implications rather than just
-> semantic considerations.
->
-> Thank you also for the clarification on the tags. I spent some time
-> trying to understand them, and your explanation is very helpful.
->
-> I will address this in v2 by making it an `unsafe fn` and documenting
-> the safety requirements in the `# Safety` section.
+This patch corrects a few small grammatical errors in the
+documentation comments to improve clarity and readability.
 
-My pleasure, and welcome to the Linux kernel!
+Link: https://github.com/Rust-for-Linux/linux/issues/1206
+Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
+---
+ rust/kernel/rbtree.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Cheers,
-Miguel
+diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+index b8fe6be6fcc4..6c9708201fd7 100644
+--- a/rust/kernel/rbtree.rs
++++ b/rust/kernel/rbtree.rs
+@@ -732,7 +732,7 @@ pub struct Cursor<'a, K, V> {
+ }
+ 
+ // SAFETY: The [`Cursor`] has exclusive access to both `K` and `V`, so it is sufficient to require them to be `Send`.
+-// The cursor only gives out immutable references to the keys, but since it has excusive access to those same
++// The cursor only gives out immutable references to the keys, but since it has exclusive access to those same
+ // keys, `Send` is sufficient. `Sync` would be okay, but it is more restrictive to the user.
+ unsafe impl<'a, K: Send, V: Send> Send for Cursor<'a, K, V> {}
+ 
+@@ -980,7 +980,7 @@ pub struct IterMut<'a, K, V> {
+ }
+ 
+ // SAFETY: The [`IterMut`] has exclusive access to both `K` and `V`, so it is sufficient to require them to be `Send`.
+-// The iterator only gives out immutable references to the keys, but since the iterator has excusive access to those same
++// The iterator only gives out immutable references to the keys, but since the iterator has exclusive access to those same
+ // keys, `Send` is sufficient. `Sync` would be okay, but it is more restrictive to the user.
+ unsafe impl<'a, K: Send, V: Send> Send for IterMut<'a, K, V> {}
+ 
+-- 
+2.43.0
+
