@@ -1,80 +1,106 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567602F6587;
-	Mon,  1 Dec 2025 13:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C982F25F8
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 14:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764597343; cv=none; b=jTDDhyQDK1H5FibGPfmx97dfDU7JFB6w7XwFfAqxFC8JQrx1AaG/RCIjwMfbSgKkxMvM9l0zMbnVM4vnRbxQFXYng803wL3uMJl8PUFbn2v9JtCaTjtcFKeI3DA9pjtCaUsCEpvru6MpfgRQE69Te9Ej74rKNoUPV7qxqLJvuYU=
+	t=1764599089; cv=none; b=D/h/J0hcmpGIFryzWkhRM5fHn1rXeHhpmX27w5WsuwYw332AmlcBbkmG2qOWOpgynrfiTIP0YXefIkbky7QVo6ptlV8ASn/a89YKKhO7FoSvscEG0RUsDQq+aJ4SLH3dvc3o14iNRoEplG7OAI2KJ/zGIRHJSdu8kOp9ZdQ0xD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764597343; c=relaxed/simple;
-	bh=X1gj20pKygKny0AkEY640rGN6m6QTXIwW5kngARq+y0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qzw35VOQ/f1M/LLhOz6CdUV6aQkPQZ1Uy0kjJbH5gXO3smO7WnmAaSTj3kXiM37CmCSU/p77yyL9gCDyLSvMLEIsFS8sqHK0hudo/aqyEg2RagdakQdRVWgYfxdv+s9kGzwAyUkkZYIOu3jdEBqCz+7fz4CCGPv4ygJdDLuTFuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 461BF153B;
-	Mon,  1 Dec 2025 05:55:34 -0800 (PST)
-Received: from [10.57.88.78] (unknown [10.57.88.78])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 97B653F73B;
-	Mon,  1 Dec 2025 05:55:37 -0800 (PST)
-Message-ID: <cfce9ad9-c518-44c7-a602-8ce7c3fffb2b@arm.com>
-Date: Mon, 1 Dec 2025 13:55:34 +0000
+	s=arc-20240116; t=1764599089; c=relaxed/simple;
+	bh=a8EPmF/cC+sqx/oY3kQwLOrt1PAQ2MkfTR36+NTxUvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f+vLNm2PSeh+V63EcviY8QQB6kl6VclBjN8UbNc+F1hOEEUrcjBQxrPRW1GHOnpeKQ9EmlrIOYqQuWu5DmsiIjMuE3smWPtgP6/hLtaXKuiifoPplKSahbm4ymD8ADou1VyM4x6R9U3IE+rRXHxGKsZNo2g0hIJJFOPXhtfuLqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NkDTV16+; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NkDTV16+"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-297dc3e299bso39892285ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 06:24:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764599087; x=1765203887; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8AWDIp8T2s8X8h6FiJ48ct1QGBJQJG4GkydFt3dHrIw=;
+        b=NkDTV16+oUktR098hNmUuI5JkpcpxpZv004lKKbAQQsQf17U2wHPiyXIBeMfmS8weg
+         MqZEa2S97pikcva4nkJbVcmoeE3pakVZKuxlPhNnZ0Zi/aFE1uYw5RtK1bE+FWBwMSv0
+         6qKRXA4H3Kaf3rsqLF8qo33eQ2gWvKUp1ZGIvK4fr880oZZOrKSVRRBETE7tBeiOXpEH
+         eEVhPklPkSnpUvvAo356SGGpz1svhSKqyY3UsitFiXlN5OttweWvj//5/4GpmXqvXTqV
+         eq/FCzGKn6ua2uN3r3vQiO1a7nKtUZr0Wy9Klg+CkEeuiKgpawxg7QWTb6sD6linjgUp
+         dm5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764599087; x=1765203887;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8AWDIp8T2s8X8h6FiJ48ct1QGBJQJG4GkydFt3dHrIw=;
+        b=ZaG25fXtrSmgQb7HmCl0BMK8tyNpZiLQ5hD3PDuQZmNQDKje6D6LKom12KT0IMF0+w
+         PTFgwLUmOiIxCWV8free8pYGzetvC30j2+ep7NDSbNnCKy0bzAaWhuD1Of9LnulnlQ2g
+         bjLpD1J+v8kk4YAxhucrny+ovxbwhNDz4HxPNLhijez2WwdRLEVCk+fy1EPAdKc6mxie
+         n1UAkfJPgzc5uGcBdMk/Jkhlq59xDY8S6S2UiZGhoMgH+NIe9apvhfQ5119IKcOMRAYH
+         XCZmB/U3TETZk0XRF+mMpn+fxwY9cWq5Q5eZl3hu3jTmcmnA3slIMTyCOegv5rOqKfAf
+         sRbA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrkfqjt7yxOq5PlOZyz0Hp/kR+Iv9DBBQ1esbA9SgDe4ggzxkOEpFjn5RT0mpTrWeDaKLMNE6Vog1n9gQp+Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9J804KuQudlpjc4KIswg9kOMZ+hn/sOX1ZXy/jXqXnD4ChjOW
+	M8BPVtqeVluHf37H/Sx4zLxkN7F37al1TsZbnJukd86s5hryZsddRRMz
+X-Gm-Gg: ASbGncu++BqCQHcArYZ1zlqZa0wNBOjiuZ/A+ANEQMYBwiSEe72iWc77MKnFXcg13ug
+	iVfVViut9RX9yXJu9Xyv+8BTBFovp1Xoau/Ojk20mQG5MhEpzjiCoAkbW0FpDBy86ptK+bYUzc6
+	qJCWpMqgi5/aVFcvxPHmoEuspBP6U9mh7r0D5Ax/xv/urqYOzV2HmW8Todl1jptFiutXPPSsZ8y
+	HEAoHKJbjWVortPiKRbsipsp9q50aobVlUkciP8Uri/K31WWNRjpyzeptjMLEkv11iI4LaOGyGr
+	mXHUOB9C/OjMHDXSPVb8kZBVGQxtoIh2trkGOeRh29+qP/nczjbVINpgrd2iNiJciJDhJboMjyB
+	W/vJbsZNd5AHU2fKvMCzQyZSybvmifCHG6NdfXNKwrAPJmPTuNzVkg2V17PyVbfiOxYixp9iY53
+	OU+zmMwezM7c0DxRPcTjqtsNVZKVoXpxOJjUs3QhsU+sWg4+DEvxIl4STJZPYV1w==
+X-Google-Smtp-Source: AGHT+IHXlL+uz4wzd9pwT3o1SbKlNtJgEl4Czg1l/kyuo15/sZMEMDPmtxHPUN8KgKdvQ6hwhp37GA==
+X-Received: by 2002:a17:902:db04:b0:276:d3e:6844 with SMTP id d9443c01a7336-29bab14895amr294065225ad.33.1764599086419;
+        Mon, 01 Dec 2025 06:24:46 -0800 (PST)
+Received: from atharv-HP-Pavilion-x360-2-in-1-Laptop-14-ek1xxx ([103.216.213.160])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bceb55192sm126853605ad.91.2025.12.01.06.24.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 06:24:46 -0800 (PST)
+Date: Mon, 1 Dec 2025 19:54:37 +0530
+From: Atharv Dubey <atharvd440@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Dirk Behme <dirk.behme@gmail.com>, arnd@arndb.de,
+	gregkh@linuxfoundation.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, dakr@kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: miscdevice: use `pin_init::zeroed()` for C type
+ initialization
+Message-ID: <aS2lJXfXy0fhc_F-@atharv-HP-Pavilion-x360-2-in-1-Laptop-14-ek1xxx>
+References: <20251128162337.12082-1-atharvd440@gmail.com>
+ <071c5fcf-bd7d-40da-ad7c-c0edbe780671@gmail.com>
+ <CANiq72mh=7nf7P67GFKpeO5temn+QCStPbwjGG2OUxDLPL970A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] io: add io_pgtable abstraction
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Joerg Roedel <joro@8bytes.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
-References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
- <12d99a54-e111-4877-b8cd-cb1e58cd6d30@arm.com> <aSmVQDMXqwc8ctDf@google.com>
- <c8229530-ab87-4b51-8f2b-6199a01095b3@arm.com> <aS1m4DawouC1utSj@google.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <aS1m4DawouC1utSj@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mh=7nf7P67GFKpeO5temn+QCStPbwjGG2OUxDLPL970A@mail.gmail.com>
 
-On 2025-12-01 9:58 am, Alice Ryhl wrote:
-[...]
->>> We need a different signature if it's possible to have mapped != 0 when
->>> returning an error.
->>
->> Aha, thanks for clarifying - indeed this is not the common "value or error"
->> case, it is two (almost) orthogonal return values. However if we're not
->> permitting callers to try to do anything clever with -EEXIST then it might
->> make sense to just embed the inevitable cleanup-on-failure boilerplate here
->> anyway (even if we still leave retry-on-partial-success to the caller).
+On Sat, Nov 29, 2025 at 05:33:28PM +0100, Miguel Ojeda wrote:
+> On Sat, Nov 29, 2025 at 7:46 AM Dirk Behme <dirk.behme@gmail.com> wrote:
+> >
+> > While getting rid of the `unsafe`what's about dropping the `SAFETY`
+> > comment as well? As done by Benno in [1]?
 > 
-> Is the only possible error -EEXIST? I could encode that in the API if
-> that is the case.
+> Yeah -- Atharv: please make sure to check your patches with `CLIPPY=1`
+> (which should detect that), `rustdoc`, `rusttest`... Some notes at:
+> 
+>     https://rust-for-linux.com/contributing#submit-checklist-addendum
+> 
+> Thanks!
+> 
+> Cheers,
+> Miguel 
 
-No, I was just calling out -EEXIST as the only error where I imagine a 
-caller *might* want to continue without cleaning up a partial mapping, 
-if for instance they were playing clever tricks like a background 
-mapping of a large buffer while already allowing other threads to 
-eagerly demand-page bits of it, so the "main" mapping thread just 
-adjusts and restarts to skip over already-present pages. Other errors 
-are still possible, but generally represent terminal failure conditions 
-at the caller's level too - in practice things like -EINVAL and -ENOMEM 
-are likely to happen before any mappings can be made, but io-pgtable 
-doesn't guarantee any particular behaviour here, so a well-behaved 
-caller should still generally handle cleaning up after an error (at 
-least if they intend to keep trying to use the pagetable beyond that point).
+>Sure,will keep this in mind while sending out patches.  
 
-Cheers,
-Robin.
+-Atharv
