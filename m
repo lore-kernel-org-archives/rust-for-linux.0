@@ -1,87 +1,102 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392E03019C4
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 10:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C300129BDA2
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Dec 2025 10:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764583679; cv=none; b=RwkMVbAUKEFDrcaT6KG0bzJLgcMh8/4JNe1pKW2rwmcI2sBl2LhH7MqIg/KsXq6V2Cy8Ra+dQh1Rd9TnFWgBRXHzVw4ubfWA8eeT/LjRZpB3ZRCAugebKiIj5LZgtv3KMVYv3BkstcJsF0uDq1WVbieo+PYb2aGqvnEKFjcY2QE=
+	t=1764583951; cv=none; b=ruj9XzWV3S6ijGcDC+mFUvpj1p/13CWftqzl7qMlP8IKD8ROR6pVETdx9Ug5g0c6FbUhCxf+MNPzgH05O4BdEDT3R7Hunshk+UExFnxkjtrMVs/CoirKyN8/NU4PnguGBGI1tTqvhlQcQ2/fjlnMyHRqJAlbQU0UWPxRIwIvFxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764583679; c=relaxed/simple;
-	bh=/tOIwCXkCHpEc853DZjChDkaxfhNn+7tc33Ws0sdTrM=;
+	s=arc-20240116; t=1764583951; c=relaxed/simple;
+	bh=b726nZknlbe9H+/++lomsJdo+2jt+ZOW4mKUjJxRTd0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sAQtKNmOQ2FqOA49/AO3ZgpWWrF8zHViQT60tlQOHV3whR2i03y/NVHHHy37lo2tIc1WDc+hv6KpuK03q6axxCbq2e8btbvfOMCOa8s8f/aCmhViYTxbqIdNo/2LheopLxiycB9RhZmIujNo4Y4nnLX45IeXln/v0YS/2HcU3MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iJjN3fKm; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=t0raL6e7DmZ8gy3RH/xXw+vPPMsmEq3ugNvBmosTiuRY01ooUp3zyjl/qCf4yudA/lM+pMFYnbdDuBpvMlLksu7mFIQEsHKHDBn8FETvnkUuUwP94Za8aM2Nf0P/HOk/RdE3idrvvqvn9OrHso180SY61jB/yugD5ky91XvYYwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HeKGAKL/; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iJjN3fKm"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4779da35d27so49616185e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 02:07:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HeKGAKL/"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b736eca894fso321674666b.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 02:12:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764583674; x=1765188474; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1764583948; x=1765188748; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=guaiVnq5wSGt0j6wYWbgKuppdOTiHe+D0rabrZE79JU=;
-        b=iJjN3fKmhzaUknEUcBlvOYveYiaIvRamK3+ZfiQuiM+ZOvAMQ9twHRM+etFu/DZiQw
-         4Jzpvr1kRDL+US7A11AntZUrZRrpegAXcegfvuXOnEryftBzW+R2Jpjvy0fAPHnsc7Du
-         8SRFGnjniAtp3QZX9uB5+FwhKnseUrjOA0rVZx96SgpFNtaNooAqlhpeCjuFjA5WcD8i
-         f2uhLnYvIbwbAMUejNb3pyKRYyFJv/aFTREC2kVn86Y/cekfJnjohJrxZCH1684xYRm7
-         QlKdhtaVwGcYRa/DeRa02oP9dWPn2Eoaf79c00gWQYCNxqYoIS/V7wqlY8ZyYgZkJnEr
-         cORg==
+        bh=zWRwUejBm9BKXVzUoav9cs2vUob0rmYezsnq2zTgDKI=;
+        b=HeKGAKL/u1tXrpFZanaSDksDnHfmskTg2G0vIU3PqNg+219TmMsveVTqhLQ2QwL4Es
+         thvnTj6LG/dd1oyJtvhm+LD1v+zu3NArCnA9DO73Bw56/xLyh8SrN1k/vUQjBp0VO21M
+         fYVHFil5azHQpQj/d8Gh17oq/ViuyMiYpb+Ekljxve5/5vRsi1UCExa9ErQ5ml2ZHQqY
+         adfqkVY+szwrbOoRQr6Ny7WgKshYXH0/0EZlQ7A2EXn0oCSZvJ6Y9IrcCqDOILs/EhRc
+         ooAzCTdyiRCKBcznrrSLXAsdH+MVUYtRwmYkXK0oICiI2evAtLC/uQfXhke9LFOK+vgl
+         xQag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764583674; x=1765188474;
+        d=1e100.net; s=20230601; t=1764583948; x=1765188748;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=guaiVnq5wSGt0j6wYWbgKuppdOTiHe+D0rabrZE79JU=;
-        b=ATz4VMs5CavvbyNl6f51IvZMBV8gDFeLd3aaBESqL0rjP01T4LjoIT4FJnLR/JxudF
-         +kn3vfLLNOEpfkazUh4avBGhWizJWS9HpoxK4JvLAAu261RvkgXwQQDdupNHtdbYj3NN
-         aeleDGRUj5zq5LCBrfAkfdNH+k95TRm3OfTIZIhWbzyLqY7v3hZ2B8LW5tP8CXSdrbUn
-         DZRkezqQWv/WCUeRADoabBE9ZjQgtj07QiQ4pH3Mzo4q9HpVBuR+AJSuEAkHg//+wpgQ
-         56fAbb0XlKint0z/3+fD2UEpqUhspCL/9PjR0Otb4fRBbDgx2Ej8oymf8RqpU3xzP/jZ
-         cyhA==
-X-Forwarded-Encrypted: i=1; AJvYcCXAICOiyW9SRxBDA161Lpz0sdTIz59AykNne6LO4QPe2XkBZ7Yhi6WLTddkdcrtMmIpfBBq/cxY/z3OhrqW7g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG2fkuIraUhMvuGLb/UGqtkl32M0dJiargJUNXXxED4AdOesj4
-	IcrRhZ2Wy7zDFQG+x9I9DW2vTRRvguCpMxBbInCIv0184cNFZzXHR8ahcvFwLE6ZA9bltrQ/kts
-	Oq5erGMUqxNU2K/tmSA==
-X-Google-Smtp-Source: AGHT+IF+F04jPnA8raxrrj0to7TSZ7tXuzclteHchQpMYkH1WruuUrR180MkD+2drBszGe2sUCH4YjcIrlB2WME=
-X-Received: from wmlm9.prod.google.com ([2002:a7b:ca49:0:b0:477:9e14:84dc])
+        bh=zWRwUejBm9BKXVzUoav9cs2vUob0rmYezsnq2zTgDKI=;
+        b=PwXwYueF6HWKbJdL6cX+nbClQUv8+WiX1DzwdzaanNCTZzXA5Jlxbi0u1ADqXOR2Hh
+         Vaj4R2iN2nK+/IdAQr9Q0Oi5UThfYsvNiH4WcWRrjIgp23rGmyYgfOpvjwlPBA1skvFf
+         LhpJizg4x6Oo+3erFcdcn4WiPB33DBXaAu9oHyYZcFy0yu8ZectvP+ZCkPdjqKqWO/cS
+         cMLgky5ngeQakJluy78fVU0mRWYXrIe4H1tRFjcCwBb68bbqZtdCXn8XvbwAC4UycazT
+         TVJe2mgC6prbaYyDu6uccJsoz6e1XVmcYaQK9aRjmB5eBNJH13HLn6oFqEUfIVREckOW
+         5sPA==
+X-Forwarded-Encrypted: i=1; AJvYcCWsNshVTvYbHJux1dT6x9V/89SMsROlVk9/KxZJ1WpEMWTau1bKt9+qa+yOpFLKUXlfHek8EXQbBZgDosuR4w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyl8aRSJzXzlKW/smnS6BSYYOsFUhhO5OsMKfIVeXbPX+BE4DH0
+	ELAlRioy2HkNGJ/VMQx5sRhhN2Mn9ix8vZ+Mbv+L0ebv35zWSHKD9nM/hbx2Joj4plt/60+siuZ
+	OaclT8KMD77hXsrJQtA==
+X-Google-Smtp-Source: AGHT+IFXoejl6BlNF4MzrCpuVuIpCdgqw9CGI6wR6ByG6Nhg/Q2M0hoVPH2SzRL1V5qyn/aHMEZ4oktF9KaI67Q=
+X-Received: from ejcsn19.prod.google.com ([2002:a17:906:6293:b0:b70:bbcd:93e8])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c8c:b0:471:1435:b0ea with SMTP id 5b1f17b1804b1-47904b242eemr260534545e9.24.1764583674469;
- Mon, 01 Dec 2025 02:07:54 -0800 (PST)
-Date: Mon, 1 Dec 2025 10:07:53 +0000
-In-Reply-To: <20251201000949.1626363-1-ojeda@kernel.org>
+ 2002:a17:906:6a22:b0:b73:8c6e:cf6f with SMTP id a640c23a62f3a-b767170cccemr3988317866b.32.1764583948141;
+ Mon, 01 Dec 2025 02:12:28 -0800 (PST)
+Date: Mon, 1 Dec 2025 10:12:27 +0000
+In-Reply-To: <20251201062516.45495-1-yu.whisper.personal@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251201000949.1626363-1-ojeda@kernel.org>
-Message-ID: <aS1o-f-_2s1QI9ja@google.com>
-Subject: Re: [PATCH] rust: id_pool: fix example
+References: <20251201062516.45495-1-yu.whisper.personal@gmail.com>
+Message-ID: <aS1qC_ol2XEpZ44b@google.com>
+Subject: Re: [PATCH] rust: num: bounded: add safety comment for Bounded::__new
 From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Burak Emir <bqe@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+To: Hsiu Che Yu <yu.whisper.personal@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
 	Yury Norov <yury.norov@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Dec 01, 2025 at 01:09:49AM +0100, Miguel Ojeda wrote:
-> When building with KUnit doctests enabled, `rustc` reports:
+On Mon, Dec 01, 2025 at 02:25:16PM +0800, Hsiu Che Yu wrote:
+> The `__new` constructor only performs a bounds check and stores the
+> value in the wrapper type. It does not perform any unsafe memory
+> operations, so it does not need to be marked as `unsafe`.
 > 
->     error[E0599]: no method named `acquire_next_id` found for struct `IdPool` in the current scope
->         --> rust/doctests_kernel_generated.rs:6722:24
->          |
->     6722 |     assert_eq!(i, pool.acquire_next_id(i).ok_or(ENOSPC)?);
->          |                        ^^^^^^^^^^^^^^^ method not found in `IdPool`
+> Reported-by: Miguel Ojeda <ojeda@kernel.org>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1211
 > 
-> Thus fix it.
+> Signed-off-by: Hsiu Che Yu <yu.whisper.personal@gmail.com>
+> ---
+>  rust/kernel/num/bounded.rs | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> Fixes: a5726454470c ("rust: id_pool: do not immediately acquire new ids")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+> index f870080af8ac..cde1b8ba6880 100644
+> --- a/rust/kernel/num/bounded.rs
+> +++ b/rust/kernel/num/bounded.rs
+> @@ -284,6 +284,9 @@ impl<T, const N: u32> Bounded<T, N>
+>      ///
+>      /// The caller remains responsible for checking, either statically or dynamically, that `value`
+>      /// can be represented as a `T` using at most `N` bits.
+> +    ///
+> +    /// **Note**: This function is not marked as `unsafe` because it performs no memory-unsafe
+> +    /// operations itself.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I disagree. For the same reasons as str::from_utf8_unchecked, this
+should also be unsafe. It creates a value that violates invariants,
+which may be used to trigger UB combined with other safe code.
+
+Alice
