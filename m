@@ -1,121 +1,240 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013011.outbound.protection.outlook.com [40.93.196.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B4319067C;
-	Tue,  2 Dec 2025 01:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764640196; cv=none; b=egMyHCgYETtn6nc8Yi7YdVQpvBFIPOybW1+C6b+eMS6Wrt9jL/+/ObQyusdfLuMTlI7FVvTneLN8DlbFFfi2XhE/j3dHqwnZjLL/mBt5KzcZYo2Nz8XEJ8w0HzC/BdRBcgIXu9c8F0OiUWy5ENJkzagmyEV9F11N5ze9M/T2h1o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764640196; c=relaxed/simple;
-	bh=HMsjCRo6Hs7VVm/tvsRz7J/MZ52pYZvPwUkSaLkmm2Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bVXlXMhAHeh/QZjn0QkLZfFoHlZE84OUe1pA5+5Vfl7jWFJ/SNGUK2PPnnA8ka69GV5sRPzr8Ky2RdMe4bo0G+8KCy1OsWde05l8Y9sCJWM9Z065/cdyG2DqgI4wrzW+wmITqizwZqAl5JSJILGHvTqnruxLH/GSIbeQyX3yxQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NHicr47K; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5D417BB35
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 02:56:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764644210; cv=fail; b=seKnH7wVroCeANB0lgqHnaiEAwe5kGaW66am5jQDT4AH9YjHT3FRV4yFJovjBNu7slilO4DHzoeNzgQsRXbVvuuT/4PZY3k77k909Wb7ie2pGxEWqvNVA3SPzDcUtVsaJUM3zHkNv13/yySlqOWIHMCNcA0hJpebyv8Sw3b7T24=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764644210; c=relaxed/simple;
+	bh=6+TnKVm75dZqQ97j37ox3UUSuBt2lrrj/Iza46lnD6g=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=gn7AVqaWsaZq2yjmD9xbky0wAdpOxcG+tVkwd9dqrn5WTwU6k9dfOgqu4XOPa/ZUj3NogVY+HwMTy1Kbc2RmAELNf/CtpGo/BpxtkjtjgwXTDCregPgScNQZ8fIZQo5xglGasa7nJRcvIN/0DEznWXydot44cyTZfBOc1xZr/tw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uU4EbH26; arc=fail smtp.client-ip=40.93.196.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NHicr47K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764640195; x=1796176195;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HMsjCRo6Hs7VVm/tvsRz7J/MZ52pYZvPwUkSaLkmm2Q=;
-  b=NHicr47KES+CBjHYHL1pXh3wCCQwUtr6bGsdqFQHa3+13df/UW0inzbq
-   ksOYzkWrwD4/zpMLfuudQvMBhtRm/FWYpBilI0fOuu5I+m5kZOlQk5FXE
-   cvPiNF0U745Ve0Y9ECKgniNsqaZ1sJsADalg2cQRyGm0Gs97EUHd2oGiG
-   FcCJZp2270TksIxuC8kaEWt2Is9RUbGO55KlqAMvbyD+kvzVXTnGrNOUm
-   SE3QHhcPY+dlo4Spuwc41Ux+xUidWJcwzk221EtBCW0wy9ZC+XViEkFmq
-   GYF8WPRHewRKR8jsTM08NsntM9eRpP1T8cJFRtMfBhYATl6pt2Q/eDn7p
-   w==;
-X-CSE-ConnectionGUID: OMAjwd7LSWWOA9rwXeQTIw==
-X-CSE-MsgGUID: SZmkExX8SmSUUz4RPvXVjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="65783288"
-X-IronPort-AV: E=Sophos;i="6.20,241,1758610800"; 
-   d="scan'208";a="65783288"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Dec 2025 17:49:55 -0800
-X-CSE-ConnectionGUID: GKwxFtV8TkSlCe5AdF6rjQ==
-X-CSE-MsgGUID: XDUTgTCHQMq4fRdbY0t7EA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,241,1758610800"; 
-   d="scan'208";a="217566757"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 01 Dec 2025 17:49:49 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vQFWV-000000009Iv-1UJJ;
-	Tue, 02 Dec 2025 01:49:47 +0000
-Date: Tue, 2 Dec 2025 09:49:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, lossin@kernel.org,
-	lyude@redhat.com, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
-	peterz@infradead.org, mingo@redhat.com, will@kernel.org,
-	longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
-	daniel.almeida@collabora.com, thomas.hellstrom@linux.intel.com,
-	linux-kernel@vger.kernel.org,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH v8 5/6] rust: ww_mutex: add Mutex, AcquireCtx and
- MutexGuard
-Message-ID: <202512020943.whFrDsXx-lkp@intel.com>
-References: <20251201102855.4413-6-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uU4EbH26"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gvu3jJBUMKqxIVQw9Z/akUgydAnSbAGM3eLQyB3mkppHI1t9Ebw6PU+VqEeiCZNnU9LHDxU8mMKKjEzARYMoTgxJ9P8HFMIJ8iEm1sp9WAyyvqUZCPmKFW7HpFIlE6ibffgWcGXkf99Polial6Mrrn98p6VRc9rxCoDQxOLizV9lFyP9kZSSKfbdZjnHGYURmfFn7UrDClmKgzZ/iQkkcv8x11/0xFuNsQzea4q4hHqvh+Fon05TEMF8aDq4xjHgKU3yNBGTMBGJ0c8hek+01wuJqVrj36A47W7YZ6VAD0sYrEpXu/sPWLWKtfnbFOUTmwwqBieu32Pb+pu+59yyPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pSgPl3ICCsNV0aYcNQn7ayfgvvH4zcGiYz7hMOlj+vk=;
+ b=dH10FyxqZpLU/k+kYBZPG0WamSfZXzIIwLL8ZmiH9+oS6GkJ+lxzDoPuWEaccMyOIboONCPErx2uvvRI/K7nO1VSy6b/MC3PI3NzIbCgrScFr+G7xyCctD3H8j3rO3ClJvnr63SCGRFxY2CuyD3B0vAmtiYAzC/ZtjY6AswNSM03I9zkZLjKbqwbTZF3bsst9ydiabE9qpMWYxmwkJZd+M+ASocu04RIAtwikGDV74rB0AWU08/p/A7WM5zn5/0lbq0tf0YhU7iadeGB3TylA0XYKrPXzc9xm3f2CC7Q7xgAHWl+2CrJN9kNnOqQ/aGAIpMR309L3x6JZDh7Hj/HWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pSgPl3ICCsNV0aYcNQn7ayfgvvH4zcGiYz7hMOlj+vk=;
+ b=uU4EbH26E1pP1PKDMHtPZ4xt8AIPInCLWQ8UdYNlBV2m0jWtYeW9a2XYso8f0JfjjXROCkqrt6sb1AccE2tkHrbOssNWiAh/7SxXAXMvlDVscfirwZ7QwwceHALdzHvxgBKtGd3mX8onYAP0S7WyKAxYFRvEtNDzQjY5k/2/VseKrSIaZjv8gYzNhDfKV6V4V4chGvql6ZQttpB7YmX21619+uSIHoFV4b/aDFOV0bCuIBMn7IWlRy+Lxedojip1Tl2PwbPWSaeAbTLZxICxJmsOF/WpAue2MkgAG173kqPL4GKf9AjTC7AvSwzp0UgUPQJJVvbZFITreUWtajWARA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ MW4PR12MB7014.namprd12.prod.outlook.com (2603:10b6:303:218::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9366.17; Tue, 2 Dec 2025 02:56:41 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
+ 02:56:41 +0000
+Message-ID: <02950fd9-8cb7-4264-b8c4-6e372eeade46@nvidia.com>
+Date: Mon, 1 Dec 2025 18:55:55 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/13] gpu: nova-core: add Turing support
+To: Timur Tabi <ttabi@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Lyude Paul <lyude@redhat.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, nouveau@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org
+References: <20251201233922.27218-1-ttabi@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20251201233922.27218-1-ttabi@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR03CA0023.namprd03.prod.outlook.com
+ (2603:10b6:a03:39a::28) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251201102855.4413-6-work@onurozkan.dev>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|MW4PR12MB7014:EE_
+X-MS-Office365-Filtering-Correlation-Id: ecf441a6-98db-4a3e-9131-08de314e6b54
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UVNpQi8wTHhEcmgzaWVIRVJ1WXp1UnVTYkwzNGcvYnhEZUhvTEtreTFVNExV?=
+ =?utf-8?B?N1FaVU5YS29qcVJGOHJ3c0RFNW95eGxkWTM1VUlEakxsWmgzemxWOTBMQzNv?=
+ =?utf-8?B?ZCtEL25ZTHVIN2V5U1QxOGpoUG14d2pKTHR6a0YyZmoydkpDR2dySXFBM0tG?=
+ =?utf-8?B?ckxGWW1QQjlpWXc3TDc0aTlHVVRDbHVVMXlHWGNqVXBPZHdVVFIwSlNtYkN2?=
+ =?utf-8?B?eE13OTJ3emZoL1ZhbnU5L2d4Y3ZEV3FYS2czY1JhSTgxb2wzVFF4NFk1M0VI?=
+ =?utf-8?B?TXJEaU16WFljNE9TRjROL0QwZ2JYdVAzL1pCT2J1OCs0VndUQStETjZTbXZz?=
+ =?utf-8?B?QzBnMHJXYnVJVkN1cEIxTmdBOUFCYWhSV1NjOTVlMEl6SU0xb3ArZGxQYVFs?=
+ =?utf-8?B?S1dTTzFjcnZhUm5LWGsyRFNWU1M3bDBIWDRKOW1jZ1ZjOCt4d3Q5M0ZKay9E?=
+ =?utf-8?B?NWN5VTRDcTAzYVBFa0VaOU1LZHcrb3V4SUxCQ0xYVDFvNExKN2dkdUJ1SXYz?=
+ =?utf-8?B?ZXRzNE9WMWVORDBWOFNLSUlKV04rQzNuUCtzR3BjaGlXK2FOQkxrZzFPaGFX?=
+ =?utf-8?B?dHFNWXBXcnFUcy9lRjdHSnVMU0ZkTlNTQk0wRnpyRDNXVjNnUjBuUE5IOVhK?=
+ =?utf-8?B?SjJFc1FEdVM5SXNHQWtWUGlpM1BIRGl2eFBNWEIzSmo5bUNTUFBkQ3RvOFpB?=
+ =?utf-8?B?RGZKOTR0WnRicGlHOE9TMWJOUnQ2Ynk1SDc4bHZQRVBHMWV6andWQTdJRW1q?=
+ =?utf-8?B?MEVHaFNkU1dvR2EwMG9uYmNSTXpyNnU4UTFQa3RqZ0Q4ak0wYkFpWVRaRExX?=
+ =?utf-8?B?L2lDbTFFcnBUazBJWWR1d3dLcUE5THl1dVJidGEvdDN6ZFQ3L0JtUDJXak1S?=
+ =?utf-8?B?UWZJQTg3elBnaTJyWWpiSWxIbm5aSXBKL3NMWkhGQll1c1hRd3JrV2tTYm04?=
+ =?utf-8?B?S3B4S1B6aTBQNTB2VWlOazNsMDFZRkxqRjMzdHY0dlNRLzFmbkZKd0hYZlJz?=
+ =?utf-8?B?eEd5Y05XYklPaS8xSkhnU2E4OU9KNndqUWFEbXU1VGxyQi9adnpCa09uK21t?=
+ =?utf-8?B?bUNGSDBqZmpkNFQ4Vk5Yd2U2enZIYnVLVStPYzNKMUw4RW1ua1ZOL3d3YktJ?=
+ =?utf-8?B?a2FLR1drbjFubXcrTG9PYjRaT21abk9HZVJQS1BGSDZNWjRUZWI2bkF4NWJM?=
+ =?utf-8?B?NFdjSlFINkY1SzJ6bUdVaC9zeXFJcTZLWFNES2wyb0FmdDltNWZNQzZ6L2JU?=
+ =?utf-8?B?bkIzRFpFdWhHVFJFd2NZV3N4Q1FrUDRuL1M1a1BqTThuczJ6QTAraWx2YTdC?=
+ =?utf-8?B?SkU5T1B5Sll2NTRpZ3VxRUxHNzFidFVIalpiMzF3anI4TmpMSjcwVFJZUGVy?=
+ =?utf-8?B?STdKTEo4WFVMSjBCVGhtY2cyMTJiQmNNQ1J2OUhObTRTRloxaTFoVWpOMEhK?=
+ =?utf-8?B?UmRIMFh0UW14MDIwUm9YU1hFQVNQYzdEd0JMd1U5SU1ocXIvc3RTU3FCWERl?=
+ =?utf-8?B?eGRybUNLVVRYNFVPTnBYekRhN2tyNnhjTEJUVngzYkNTVEJ6TDJZZDhwZEVL?=
+ =?utf-8?B?OVMvZlZqazhSUmk5TmFXeHUwZmJyK2hRTm5LcmFrdlJCcEEzS28xQisxYUVn?=
+ =?utf-8?B?VWVPN2VraU1Oc1cwMVpOaWR1bTdNVzlxY1NyNERNOEttSm5NeXEyQy8rRm5V?=
+ =?utf-8?B?aXVHNndndHN0THRIV1VoOW1xeHJXb0Rkb3lLSXRJblRnbkt2M2JFbk00b2dK?=
+ =?utf-8?B?ZzNYR0xWWkcvSm8ycWxmeUQwcU9zZlE2RTI0RDlTMHNiSG01dXQvTkFQd3R3?=
+ =?utf-8?B?VXk3YVowd0tvazcwQ0tObXk5cWpoQmllSHNzOHJreUMvTUdkS1BaSjNnZ1J3?=
+ =?utf-8?B?MEg5SG1QelFNSU1kS2NrbTd1elBiUGUzWkp1Rkt0VzBKaFAvWXUwbElCQWxy?=
+ =?utf-8?Q?zieIOxhu/oskFLOE1iUbTddkbo/wxLna?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UHpXQXdmTk5jNlBiTGRhUE9sN1o5TDhqRDB4WFJMVFhUd3ZLN0VmUFZXUHFy?=
+ =?utf-8?B?QWdhcnUxRGMyUSswZnBXaDQ1bHRWTC9BbWhKL3VDZTdxSk9qTWhzNmpEWlN4?=
+ =?utf-8?B?UHNBbmkvR2hkSEN6aktWeGZWNDNlQ1FHckFHUURXREpzeW9Xd1RUREVSQWxo?=
+ =?utf-8?B?MXJDQWluTTc4Wkl3VVA4Tm85aGtKSWxWWW56aVZnb1l5bVAzVzlJR0YrSDFq?=
+ =?utf-8?B?RWQyRTRJVHpaeVI5NnRGNVZab2FHMld3R1lBVmtMd0lHcUF0eitxRzRwMGM2?=
+ =?utf-8?B?VDNRRHoxMlY5UkxaTVVicFNLVEdvL0VtU2UrbGI2Z1hHQmNBVm1tQzh1S0w2?=
+ =?utf-8?B?bmZ6RjQyZ3lWQ3JxcTZMODhrdkVNcFZLdUg2Ym85RU5vRFVDaUw1RGdwRXhI?=
+ =?utf-8?B?RGdGQlhLWFQ0dnl3V0F1RU1ITlV2R2Z5bFJPK2ZHbWI0YUUydGhVRjY3VnZ6?=
+ =?utf-8?B?UUZFdEZQa0g3Tk1XekgySXYybnVmZUpwL0ZCOVI2VVRCWFl2MjgwaTh4TVdC?=
+ =?utf-8?B?UzFHR2lhYnF6RGpIaEExN1BreWt6cUMrU0JkdnllaFVrOURYRlBGbW9nQ3dR?=
+ =?utf-8?B?ZFRMdjZFRW9jb2lKU2FldXk1YlNUSHpzVzYwTWpqWnlFN3hIMTZDclFSMFJm?=
+ =?utf-8?B?Qnd0ZmdDZzdXZTVmaTB2YVo0cXgvanN6eERnU2hiR01uQVk1MVlCU2NUdlVF?=
+ =?utf-8?B?MzNYQkt3a2U1WERXY09NMTZWYkthYzZCTHFVK29GeFZTNmk4Ym0yai8xMUZh?=
+ =?utf-8?B?SVByQ2xYeEhVS3RaQzhtV1E0SVJSYkxadDM2RWJDd0tDUVZKTTVlK2JCR0cr?=
+ =?utf-8?B?aGZqbzUwU2l2MmUxT2phWkJrNVdFL3cweVZXWXNKaVR1RXkzU1k3eUQweVpn?=
+ =?utf-8?B?UFVOMEY1YVZmNU5jcmJmdFZGdFhvOWZDMTMzK1hPa2VvZ082ZmErS1N3Nkk4?=
+ =?utf-8?B?OEt2QXd1cmRISmE2MDZQOFVyWmdpeERmOCs2ZllWK1lHemdweWw3SzBaT1Jm?=
+ =?utf-8?B?MlovMHplWnd6aDhaS1c0akN6YVl6blRHZkVRejdrdldRWkloYVVwbzdBeW1r?=
+ =?utf-8?B?eVRsOVdOOWpUbTBPYm5QaCtTNm04SHg2bXRNQzRVSlpDMS9yYTcwc2RMbmZ0?=
+ =?utf-8?B?Nmc0bHVvYXVkd1V3Mjh0enNpak4wL1lYbWJGSU8wNHhFL1RkdGpzSEMvOXR1?=
+ =?utf-8?B?VEw2b25KRW1Vc0IzRFcvMmk4ZTJHblJEZmZ1TmxwR0Jibm1tYWNvWWF3OUE3?=
+ =?utf-8?B?T1dpVk5OM3FTRXA4S0UwRFV1QWhmUXRaQ25wd01mU0R6WjhLK2psR1JHL3lv?=
+ =?utf-8?B?dnZBUmVPSmhSeDJycWpDWTN6b2J2TjlrWFlrcVNMVGVtOUdWWHc1SVpzeE9i?=
+ =?utf-8?B?NU5PelVrZzNFWXNRTmczNmliclU2SzFUcHZ6KzdBcUcwbWxWejArV1ZVOHQ5?=
+ =?utf-8?B?dFN2TUduM0NuY2huN0FCZVBGRTU4SFJ5QjdoSTlnWkIvNVQ1WnkwcE1GL0d5?=
+ =?utf-8?B?ci9lenV6N2ovb0VzRmxvcE5sbjFkZTdGRXN0TzZKck1ySnNsQ1BKUXF2eGI5?=
+ =?utf-8?B?WDJUTmJBbDVLRXlZYWxFdUd2UmZ3YytVQ21Kc2ZyM3hqL1FxeHduR0hxRFF6?=
+ =?utf-8?B?cmRGcHkvSE40NFdkVm4zU2dJMVM1QldmOVBIZUlURVpmOW9qUk5BaUFUdldL?=
+ =?utf-8?B?SDA5Nkd0MG9NL2d2SU05dy9UVElMdkRhWTdQS1VwTmduR1pxL0lzeGtLaThO?=
+ =?utf-8?B?U1NhdHlZYUJodXpGOVc2TG9IL2tqYnFzVUZVUnltR1UxUE9Wd1NRNllXSGVw?=
+ =?utf-8?B?RzYrc1loZm9rRTYyeTlTNTZFSTJXYzgzUzVXYVJ0bjFza29nUCs2Yjc4b01I?=
+ =?utf-8?B?SjV5VmEwUndwc2pSZTRGUU81UUNtbkVXUTE0djgwa0o4VEIyQVhQWmJHUVF2?=
+ =?utf-8?B?ZVFRR3dTQk5wc0FuZWRyNEdwMzJsWnZZWG1zNEpxRTJZclFwUTJrWkFxaFpn?=
+ =?utf-8?B?NDZ4MjVld2lxQ1d3UHc4UGxDNnhkWFMvcHpFc2ZWSkFQbDN1YnJiandwR3g3?=
+ =?utf-8?B?TGNvK254ZDR3M3QrNnAyNnJFUk1ma01wY1JwT084a3YxY09QY2lHczZVbk5O?=
+ =?utf-8?Q?AK6RhwiE79TG71iWNnasTyrz+?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ecf441a6-98db-4a3e-9131-08de314e6b54
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 02:56:41.2865
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2Ue8gFIxgdHhRU6SUvYMKHSpSUzKTcOslTwTJFYEmQaqAKSs1K6lv9DeO835qhN2N/C1mizk0WCJqzCKWitpHQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7014
 
-Hi Onur,
+On 12/1/25 3:39 PM, Timur Tabi wrote:
+> This patch set adds basic support for pre-booting GSP-RM
+> on Turing.
+> 
+> There is also partial support for GA100, but it's currently not
+> fully implemented.  GA100 is considered experimental in Nouveau,
+> and so it hasn't been tested with NovaCore either.
+> 
+> That latest linux-firmware.git is required because it contains the
+> Generic Bootloader image that has not yet been propogated to
+> distros.
+> 
 
-kernel test robot noticed the following build errors:
+From an initial skim read of the patches, this is looking pretty clean.
+I'll try to do a full review in the next day or two
 
-[auto build test ERROR on tip/locking/core]
-[also build test ERROR on rust/rust-next linus/master v6.18 next-20251201]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Onur-zkan/rust-add-C-wrappers-for-ww_mutex-inline-functions/20251201-184152
-base:   tip/locking/core
-patch link:    https://lore.kernel.org/r/20251201102855.4413-6-work%40onurozkan.dev
-patch subject: [PATCH v8 5/6] rust: ww_mutex: add Mutex, AcquireCtx and MutexGuard
-config: arm64-randconfig-001-20251202 (https://download.01.org/0day-ci/archive/20251202/202512020943.whFrDsXx-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project b3428bb966f1de8aa48375ffee0eba04ede133b7)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251202/202512020943.whFrDsXx-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512020943.whFrDsXx-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0609]: no field `ww_class` on type `ww_acquire_ctx`
-   --> rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs:110:41
-   |
-   110 |         let class_ptr = unsafe { (*ctx).ww_class };
-   |                                         ^^^^^^^^ unknown field
-   |
-   = note: available field is: `_address`
---
->> error[E0609]: no field `ww_class` on type `ww_acquire_ctx`
-   --> rust/kernel/sync/lock/ww_mutex.rs:252:49
-   |
-   252 |             let ctx_class = unsafe { (*ctx_ptr).ww_class };
-   |                                                 ^^^^^^^^ unknown field
-   |
-   = note: available field is: `_address`
-
+thanks,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+John Hubbard
+
+> Summary of changes:
+> 
+> 1. Introduce non-secure IMEM support.  For GA102 and later, only secure IMEM
+> is used.
+> 2. Because of non-secure IMEM, Turing booter firmware images need some of
+> the headers parsed differently for stuff like the load target address.
+> 3. Add support the tu10x firmware signature section in the ELF image.
+> 4. Add several new registers used only on Turing.
+> 5. Some functions that were considered generic Falcon operations are
+> actually different on Turing vs GA102+, so they are moved to the HAL.
+> 6. The FRTS FWSEC firmware in VBIOS uses a different version of the
+> descriptor header.
+> 7. I don't know why this isn't necessary on GA102+, but GSP-RM
+> LIBOS args struct needs to have its 'size' field aligned to 4KB.
+> 8. Turing Falcons do not support DMA, so PIO is used to copy images
+> into IMEM/DMEM.
+> 
+> Changes from v1:
+> 1. Replaced pointer/length with slice in PIO code.
+> 2. Added RFC patch to implement trait object FalconUCodeDescriptor .
+> 3. Added comments to new registers, structs, and other places.
+> 4. Fixed all CLIPPY complaints.
+> 5. Added supports_dma() method for Falcon HAL
+> 6. Renamed ImemSec and ImemNs to ImemSecure and ImemNonSecure
+> 7. Several other miscellaneous fixes based on review comments.
+> 
+> Timur Tabi (13):
+>   gpu: nova-core: rename Imem to ImemSecure
+>   gpu: nova-core: add ImemNonSecure section infrastructure
+>   gpu: nova-core: support header parsing on Turing/GA100
+>   gpu: nova-core: add support for Turing/GA100 fwsignature
+>   gpu: nova-core: add NV_PFALCON_FALCON_DMATRFCMD::with_falcon_mem()
+>   gpu: nova-core: add Turing boot registers
+>   gpu: nova-core: move some functions into the HAL
+>   gpu: nova-core: Add basic Turing HAL
+>   gpu: nova-core: add Falcon HAL method supports_dma()
+>   gpu: nova-core: add FalconUCodeDescV2 support
+>   gpu: nova-core: align LibosMemoryRegionInitArgument size to page size
+>   gpu: nova-core: add PIO support for loading firmware images
+>   [RFC] gpu: nova: implement trait object FalconUCodeDescriptor
+> 
+>  drivers/gpu/nova-core/falcon.rs           | 226 +++++++++++++++++-----
+>  drivers/gpu/nova-core/falcon/hal.rs       |  19 +-
+>  drivers/gpu/nova-core/falcon/hal/ga102.rs |  47 +++++
+>  drivers/gpu/nova-core/falcon/hal/tu102.rs |  78 ++++++++
+>  drivers/gpu/nova-core/firmware.rs         | 135 ++++++++++++-
+>  drivers/gpu/nova-core/firmware/booter.rs  |  46 ++++-
+>  drivers/gpu/nova-core/firmware/fwsec.rs   | 215 +++++++++++++++++---
+>  drivers/gpu/nova-core/firmware/gsp.rs     |   9 +-
+>  drivers/gpu/nova-core/gsp/boot.rs         |  10 +-
+>  drivers/gpu/nova-core/gsp/fw.rs           |   2 +-
+>  drivers/gpu/nova-core/regs.rs             |  73 +++++++
+>  drivers/gpu/nova-core/vbios.rs            |  73 ++++---
+>  12 files changed, 805 insertions(+), 128 deletions(-)
+>  create mode 100644 drivers/gpu/nova-core/falcon/hal/tu102.rs
+> 
+> 
+> base-commit: 57dc2ea0b7bdb828c5d966d9135c28fe854933a4
+> prerequisite-patch-id: fcf54aca59a74f7ca677919565b427d18406462c
+
+
