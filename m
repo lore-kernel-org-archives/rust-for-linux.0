@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC3E2D592E
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 18:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B437E2DC772
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 18:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764700099; cv=none; b=XNUY+lHeGwB/lYRswAbrqHE5DrYaBZQg9fytaUtiUPVINV9KceKiaXXAb9AxKykLa1xPkqN4SLVxRuw80rMSeh3FyPhaluZqZ4XT9Ki5pu44EcMYQjGJqy0w2y+ExS3Yc5ujVsQEgbWXWV2SoMCF59ELAmddnTQi4v7rtufnNCg=
+	t=1764700102; cv=none; b=e44ZVebFbhk9d+ODn6a7OMBxj46hBoVYP3t5J8RiEPVK2QwBaGIqD4z5XtNxNjnSbz8Ece3/cBWwrQEAgzzgXd7O8vBsYATBIbye36eJKhvgtp1xTHW0vRzrfK3O4ygpacH8Pl2rnuKHZGHeYJIC1q2fDEgQyxv5x9LsJuToLkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764700099; c=relaxed/simple;
-	bh=2fa0mpdlM7b4TXRN52ERurlM4MiXvcMStP9VkQKMxFY=;
+	s=arc-20240116; t=1764700102; c=relaxed/simple;
+	bh=rSS7CCYrU9XdQT+TYL1PT6BnQjd6/VGbKXTySPilShw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiH0sYLZ1fRNTOWDCXNnlQOPfBqlw98brJdW+TiXTupj9pRcMv6zXNB3UCSBmDuV+GPeF5RR/5RrRG1KVFFfwuci0bCP2k6p39wVHmxppqMDokmWhvtvqBYYUZCcGF8b37gzRbfh9yNGvUifqcFeNcTRGlLIYJ7F0bYxz4EkHTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LFCSd/v9; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=ik+p1fIE0flRFq7cdVcKzTE8DydwlFYWx0yitjuoHANXccnZ3okIwtUBy8oWa0GbD6RFxT9QHTsY5/gefJPkf1Z4FB7pKW6pm5dnRMPBY4I/rvzedDg/NaNaVz1MMaYmU3Cxy3DoIR62t2hfeprkfYZ9F+3wIxok022/aaUpJ3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=imyFFfQJ; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LFCSd/v9"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="imyFFfQJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764700097;
+	s=mimecast20190719; t=1764700099;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tmwbp5cxkpesJO+Zgo2yprtrs4ZHk/zucD0LwIAvThU=;
-	b=LFCSd/v94EjBdQ4uiAuHqRJRQvBzqPSiONE3pjHhCwQLHiNo+qvG6lM9fVSAORnhSazs+/
-	M9fzqnkcS0iJxdr0wVZS6lHIHqemXM+2wTafeeDy0Fb+QVQ40XIEOPz8LIW93PNYxkTGHt
-	PAN+JPf30c3brEDk6NPpdI2XBgKW88Q=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=o3QwqvomQyYtHphg2lDys8v0/dFlltSrRGkZpxwdRgc=;
+	b=imyFFfQJo67rfhZOXL4C4ytNMeVZapae51q07gJHH2syXJxaTf6O6aXQtH5QocyQEqi3Hw
+	PzQ8JxGKzDW6ApsLnKEG3gqMmq9yAF9bi9yqA7agx4K738Ziom7dWY2FXNmc/FlpmsJaKs
+	yhFZzs4G5qy7n+QCRKbTVt8D8ugPZzo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-617-1EE5J4XuNym3O9wchcQ-TQ-1; Tue,
- 02 Dec 2025 13:28:14 -0500
-X-MC-Unique: 1EE5J4XuNym3O9wchcQ-TQ-1
-X-Mimecast-MFC-AGG-ID: 1EE5J4XuNym3O9wchcQ-TQ_1764700091
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-8uDi3oW4OUW9u_Q6BfYMRw-1; Tue,
+ 02 Dec 2025 13:28:16 -0500
+X-MC-Unique: 8uDi3oW4OUW9u_Q6BfYMRw-1
+X-Mimecast-MFC-AGG-ID: 8uDi3oW4OUW9u_Q6BfYMRw_1764700094
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BDB73195605A;
-	Tue,  2 Dec 2025 18:28:11 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54E22180035F;
+	Tue,  2 Dec 2025 18:28:14 +0000 (UTC)
 Received: from chopper.lan (unknown [10.22.80.109])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E922219560A7;
-	Tue,  2 Dec 2025 18:28:08 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D34F919560A7;
+	Tue,  2 Dec 2025 18:28:11 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	Will Deacon <will@kernel.org>,
 	Waiman Long <longman@redhat.com>
-Subject: [PATCH v15 10/16] rust: sync: lock: Add `Backend::BackendInContext`
-Date: Tue,  2 Dec 2025 13:24:18 -0500
-Message-ID: <20251202182720.125884-11-lyude@redhat.com>
+Subject: [PATCH v15 11/16] rust: sync: lock/global: Rename B to G in trait bounds
+Date: Tue,  2 Dec 2025 13:24:19 -0500
+Message-ID: <20251202182720.125884-12-lyude@redhat.com>
 In-Reply-To: <20251202182720.125884-1-lyude@redhat.com>
 References: <20251202182720.125884-1-lyude@redhat.com>
 Precedence: bulk
@@ -76,241 +76,169 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-From: Boqun Feng <boqun.feng@gmail.com>
+Due to the introduction of Backend::BackendInContext, if we want to be able
+support Lock types with a Context we need to be able to handle the fact
+that the Backend for a returned Guard may not exactly match the Backend for
+the lock. Before we add this though, rename B to G in all of our trait
+bounds to make sure things don't become more difficult to understand once
+we add a Backend bound.
 
-`SpinLockIrq` and `SpinLock` use the exact same underlying C structure,
-with the only real difference being that the former uses the irq_disable()
-and irq_enable() variants for locking/unlocking. These variants can
-introduce some minor overhead in contexts where we already know that
-local processor interrupts are disabled, and as such we want a way to be
-able to skip modifying processor interrupt state in said contexts in order
-to avoid some overhead - just like the current C API allows us to do. So,
-`BackendInContext` allows us to cast a lock into it's contextless version
-for situations where we already have whatever guarantees would be provided
-by `Backend::Context` in place.
-
-In some hacked-together benchmarks we ran, most of the time this did
-actually seem to lead to a noticeable difference in overhead:
-
-  From an aarch64 VM running on a MacBook M4:
-    lock() when irq is disabled, 100 times cost Delta { nanos: 500 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 292 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 834 }
-
-    lock() when irq is disabled, 100 times cost Delta { nanos: 459 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 291 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 709 }
-
-  From an x86_64 VM (qemu/kvm) running on a i7-13700H
-    lock() when irq is disabled, 100 times cost Delta { nanos: 1002 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 729 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 1516 }
-
-    lock() when irq is disabled, 100 times cost Delta { nanos: 754 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 966 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 1227 }
-
-    (note that there were some runs on x86_64 where lock() on irq disabled
-    vs. lock_with() on irq disabled had equivalent benchmarks, but it very
-    much appeared to be a minority of test runs.
-
-While it's not clear how this affects real-world workloads yet, let's add
-this for the time being so we can find out.
-
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Co-developed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-
----
-V10:
-* Fix typos - Dirk/Lyude
-* Since we're adding support for context locks to GlobalLock as well, let's
-  also make sure to cover try_lock while we're at it and add try_lock_with
-* Add a private function as_lock_in_context() for handling casting from a
-  Lock<T, B> to Lock<T, B::BackendInContext> so we don't have to duplicate
-  safety comments
-V11:
-* Fix clippy::ref_as_ptr error in Lock::as_lock_in_context()
-V14:
-* Add benchmark results, rewrite commit message
+There should be no functional changes in this patch.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/sync/lock.rs          | 61 ++++++++++++++++++++++++++++++-
- rust/kernel/sync/lock/mutex.rs    |  1 +
- rust/kernel/sync/lock/spinlock.rs | 41 +++++++++++++++++++++
- 3 files changed, 101 insertions(+), 2 deletions(-)
+ rust/kernel/sync/lock/global.rs | 56 ++++++++++++++++-----------------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 7df62923608b7..abc7ceff35994 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -30,10 +30,15 @@
- ///   is owned, that is, between calls to [`lock`] and [`unlock`].
- /// - Implementers must also ensure that [`relock`] uses the same locking method as the original
- ///   lock operation.
-+/// - Implementers must ensure if [`BackendInContext`] is a [`Backend`], it's safe to acquire the
-+///   lock under the [`Context`], the [`State`] of two backends must be the same.
+diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+index b8d78ca4c0cd3..c2349347976d8 100644
+--- a/rust/kernel/sync/lock/global.rs
++++ b/rust/kernel/sync/lock/global.rs
+@@ -33,18 +33,18 @@ pub trait GlobalLockBackend {
+ /// Type used for global locks.
  ///
- /// [`lock`]: Backend::lock
- /// [`unlock`]: Backend::unlock
- /// [`relock`]: Backend::relock
-+/// [`BackendInContext`]: Backend::BackendInContext
-+/// [`Context`]: Backend::Context
-+/// [`State`]: Backend::State
- pub unsafe trait Backend {
-     /// The state required by the lock.
-     type State;
-@@ -47,6 +52,9 @@ pub unsafe trait Backend {
-     /// The context which can be provided to acquire the lock with a different backend.
-     type Context<'a>;
- 
-+    /// The alternative backend we can use if a [`Context`](Backend::Context) is provided.
-+    type BackendInContext: Sized;
-+
-     /// Initialises the lock.
-     ///
-     /// # Safety
-@@ -166,10 +174,59 @@ pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a Self {
+ /// See [`global_lock!`] for examples.
+-pub struct GlobalLock<B: GlobalLockBackend> {
+-    inner: Lock<B::Item, B::Backend>,
++pub struct GlobalLock<G: GlobalLockBackend> {
++    inner: Lock<G::Item, G::Backend>,
  }
  
- impl<T: ?Sized, B: Backend> Lock<T, B> {
-+    /// Casts the lock as a `Lock<T, B::BackendInContext>`.
-+    fn as_lock_in_context<'a>(
-+        &'a self,
-+        _context: B::Context<'a>,
-+    ) -> &'a Lock<T, B::BackendInContext>
-+    where
-+        B::BackendInContext: Backend,
-+    {
-+        // SAFETY:
-+        // - Per the safety guarantee of `Backend`, if `B::BackendInContext` and `B` should
-+        //   have the same state, the layout of the lock is the same so it's safe to convert one to
-+        //   another.
-+        // - The caller provided `B::Context<'a>`, so it is safe to recast and return this lock.
-+        unsafe { &*(core::ptr::from_ref(self) as *const _) }
-+    }
-+
-     /// Acquires the lock with the given context and gives the caller access to the data protected
-     /// by it.
--    pub fn lock_with<'a>(&'a self, _context: B::Context<'a>) -> Guard<'a, T, B> {
--        todo!()
-+    pub fn lock_with<'a>(&'a self, context: B::Context<'a>) -> Guard<'a, T, B::BackendInContext>
-+    where
-+        B::BackendInContext: Backend,
-+    {
-+        let lock = self.as_lock_in_context(context);
-+
-+        // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
-+        // that `init` was called. Plus the safety guarantee of `Backend` guarantees that `B::State`
-+        // is the same as `B::BackendInContext::State`, also it's safe to call another backend
-+        // because there is `B::Context<'a>`.
-+        let state = unsafe { B::BackendInContext::lock(lock.state.get()) };
-+
-+        // SAFETY: The lock was just acquired.
-+        unsafe { Guard::new(lock, state) }
-+    }
-+
-+    /// Tries to acquire the lock with the given context.
-+    ///
-+    /// Returns a guard that can be used to access the data protected by the lock if successful.
-+    pub fn try_lock_with<'a>(
-+        &'a self,
-+        context: B::Context<'a>,
-+    ) -> Option<Guard<'a, T, B::BackendInContext>>
-+    where
-+        B::BackendInContext: Backend,
-+    {
-+        let lock = self.as_lock_in_context(context);
-+
-+        // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
-+        // that `init` was called. Plus the safety guarantee of `Backend` guarantees that `B::State`
-+        // is the same as `B::BackendInContext::State`, also it's safe to call another backend
-+        // because there is `B::Context<'a>`.
-+        unsafe {
-+            B::BackendInContext::try_lock(lock.state.get()).map(|state| Guard::new(lock, state))
-+        }
+-impl<B: GlobalLockBackend> GlobalLock<B> {
++impl<G: GlobalLockBackend> GlobalLock<G> {
+     /// Creates a global lock.
+     ///
+     /// # Safety
+     ///
+     /// * Before any other method on this lock is called, [`Self::init`] must be called.
+-    /// * The type `B` must not be used with any other lock.
+-    pub const unsafe fn new(data: B::Item) -> Self {
++    /// * The type `G` must not be used with any other lock.
++    pub const unsafe fn new(data: G::Item) -> Self {
+         Self {
+             inner: Lock {
+                 state: Opaque::uninit(),
+@@ -68,23 +68,23 @@ pub unsafe fn init(&'static self) {
+         // `init` before using any other methods. As `init` can only be called once, all other
+         // uses of this lock must happen after this call.
+         unsafe {
+-            B::Backend::init(
++            G::Backend::init(
+                 self.inner.state.get(),
+-                B::NAME.as_char_ptr(),
+-                B::get_lock_class().as_ptr(),
++                G::NAME.as_char_ptr(),
++                G::get_lock_class().as_ptr(),
+             )
+         }
      }
  
-     /// Acquires the lock and gives the caller access to the data protected by it.
-diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
-index be1e2e18cf42d..662a530750703 100644
---- a/rust/kernel/sync/lock/mutex.rs
-+++ b/rust/kernel/sync/lock/mutex.rs
-@@ -102,6 +102,7 @@ unsafe impl super::Backend for MutexBackend {
-     type State = bindings::mutex;
-     type GuardState = ();
-     type Context<'a> = ();
-+    type BackendInContext = ();
+     /// Lock this global lock.
+-    pub fn lock(&'static self) -> GlobalGuard<B> {
++    pub fn lock(&'static self) -> GlobalGuard<G> {
+         GlobalGuard {
+             inner: self.inner.lock(),
+         }
+     }
  
-     unsafe fn init(
-         ptr: *mut Self::State,
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index 70d19a2636afe..81384ea239955 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -102,6 +102,7 @@ unsafe impl super::Backend for SpinLockBackend {
-     type State = bindings::spinlock_t;
-     type GuardState = ();
-     type Context<'a> = ();
-+    type BackendInContext = ();
- 
-     unsafe fn init(
-         ptr: *mut Self::State,
-@@ -221,6 +222,45 @@ macro_rules! new_spinlock_irq {
- /// # Ok::<(), Error>(())
- /// ```
+     /// Try to lock this global lock.
+-    pub fn try_lock(&'static self) -> Option<GlobalGuard<B>> {
++    pub fn try_lock(&'static self) -> Option<GlobalGuard<G>> {
+         Some(GlobalGuard {
+             inner: self.inner.try_lock()?,
+         })
+@@ -94,19 +94,19 @@ pub fn try_lock(&'static self) -> Option<GlobalGuard<B>> {
+ /// A guard for a [`GlobalLock`].
  ///
-+/// The next example demonstrates locking a [`SpinLockIrq`] using [`lock_with()`] in a function
-+/// which can only be called when local processor interrupts are already disabled.
-+///
-+/// ```
-+/// use kernel::sync::{new_spinlock_irq, SpinLockIrq};
-+/// use kernel::interrupt::*;
-+///
-+/// struct Inner {
-+///     a: u32,
-+/// }
-+///
-+/// #[pin_data]
-+/// struct Example {
-+///     #[pin]
-+///     inner: SpinLockIrq<Inner>,
-+/// }
-+///
-+/// impl Example {
-+///     fn new() -> impl PinInit<Self> {
-+///         pin_init!(Self {
-+///             inner <- new_spinlock_irq!(Inner { a: 20 }),
-+///         })
-+///     }
-+/// }
-+///
-+/// // Accessing an `Example` from a function that can only be called in no-interrupt contexts.
-+/// fn noirq_work(e: &Example, interrupt_disabled: &LocalInterruptDisabled) {
-+///     // Because we know interrupts are disabled from interrupt_disable, we can skip toggling
-+///     // interrupt state using lock_with() and the provided token
-+///     assert_eq!(e.inner.lock_with(interrupt_disabled).a, 20);
-+/// }
-+///
-+/// # let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
-+/// # let interrupt_guard = local_interrupt_disable();
-+/// # noirq_work(&e, &interrupt_guard);
-+/// #
-+/// # Ok::<(), Error>(())
-+/// ```
-+///
- /// [`lock()`]: SpinLockIrq::lock
- /// [`lock_with()`]: SpinLockIrq::lock_with
- pub type SpinLockIrq<T> = super::Lock<T, SpinLockIrqBackend>;
-@@ -245,6 +285,7 @@ unsafe impl super::Backend for SpinLockIrqBackend {
-     type State = bindings::spinlock_t;
-     type GuardState = ();
-     type Context<'a> = &'a LocalInterruptDisabled;
-+    type BackendInContext = SpinLockBackend;
+ /// See [`global_lock!`] for examples.
+-pub struct GlobalGuard<B: GlobalLockBackend> {
+-    inner: Guard<'static, B::Item, B::Backend>,
++pub struct GlobalGuard<G: GlobalLockBackend> {
++    inner: Guard<'static, G::Item, G::Backend>,
+ }
  
-     unsafe fn init(
-         ptr: *mut Self::State,
+-impl<B: GlobalLockBackend> core::ops::Deref for GlobalGuard<B> {
+-    type Target = B::Item;
++impl<G: GlobalLockBackend> core::ops::Deref for GlobalGuard<G> {
++    type Target = G::Item;
+ 
+     fn deref(&self) -> &Self::Target {
+         &self.inner
+     }
+ }
+ 
+-impl<B: GlobalLockBackend> core::ops::DerefMut for GlobalGuard<B> {
++impl<G: GlobalLockBackend> core::ops::DerefMut for GlobalGuard<G> {
+     fn deref_mut(&mut self) -> &mut Self::Target {
+         &mut self.inner
+     }
+@@ -115,33 +115,33 @@ fn deref_mut(&mut self) -> &mut Self::Target {
+ /// A version of [`LockedBy`] for a [`GlobalLock`].
+ ///
+ /// See [`global_lock!`] for examples.
+-pub struct GlobalLockedBy<T: ?Sized, B: GlobalLockBackend> {
+-    _backend: PhantomData<B>,
++pub struct GlobalLockedBy<T: ?Sized, G: GlobalLockBackend> {
++    _backend: PhantomData<G>,
+     value: UnsafeCell<T>,
+ }
+ 
+ // SAFETY: The same thread-safety rules as `LockedBy` apply to `GlobalLockedBy`.
+-unsafe impl<T, B> Send for GlobalLockedBy<T, B>
++unsafe impl<T, G> Send for GlobalLockedBy<T, G>
+ where
+     T: ?Sized,
+-    B: GlobalLockBackend,
+-    LockedBy<T, B::Item>: Send,
++    G: GlobalLockBackend,
++    LockedBy<T, G::Item>: Send,
+ {
+ }
+ 
+ // SAFETY: The same thread-safety rules as `LockedBy` apply to `GlobalLockedBy`.
+-unsafe impl<T, B> Sync for GlobalLockedBy<T, B>
++unsafe impl<T, G> Sync for GlobalLockedBy<T, G>
+ where
+     T: ?Sized,
+-    B: GlobalLockBackend,
+-    LockedBy<T, B::Item>: Sync,
++    G: GlobalLockBackend,
++    LockedBy<T, G::Item>: Sync,
+ {
+ }
+ 
+-impl<T, B: GlobalLockBackend> GlobalLockedBy<T, B> {
++impl<T, G: GlobalLockBackend> GlobalLockedBy<T, G> {
+     /// Create a new [`GlobalLockedBy`].
+     ///
+-    /// The provided value will be protected by the global lock indicated by `B`.
++    /// The provided value will be protected by the global lock indicated by `G`.
+     pub fn new(val: T) -> Self {
+         Self {
+             value: UnsafeCell::new(val),
+@@ -150,11 +150,11 @@ pub fn new(val: T) -> Self {
+     }
+ }
+ 
+-impl<T: ?Sized, B: GlobalLockBackend> GlobalLockedBy<T, B> {
++impl<T: ?Sized, G: GlobalLockBackend> GlobalLockedBy<T, G> {
+     /// Access the value immutably.
+     ///
+     /// The caller must prove shared access to the lock.
+-    pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<B>) -> &'a T {
++    pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<G>) -> &'a T {
+         // SAFETY: The lock is globally unique, so there can only be one guard.
+         unsafe { &*self.value.get() }
+     }
+@@ -162,7 +162,7 @@ pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<B>) -> &'a T {
+     /// Access the value mutably.
+     ///
+     /// The caller must prove shared exclusive to the lock.
+-    pub fn as_mut<'a>(&'a self, _guard: &'a mut GlobalGuard<B>) -> &'a mut T {
++    pub fn as_mut<'a>(&'a self, _guard: &'a mut GlobalGuard<G>) -> &'a mut T {
+         // SAFETY: The lock is globally unique, so there can only be one guard.
+         unsafe { &mut *self.value.get() }
+     }
 -- 
 2.52.0
 
