@@ -1,78 +1,110 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6DA30F958
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 09:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7109E27FB03
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 10:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764668418; cv=none; b=V4yL3wzBulVgsvR07zxtiHHEsvOJlVOGfIACZ803A7ug9BRnldl9hV8+tbdqmNZyV5mW54cFXKHSIykR62o/kycAO6IlcM9hVPH7NngwKFx8hIheyZEMy27KSyxS8s4cW7+x91U2yAMsE7bIUT2RplBl+n3HZe3/hFN5NVEWIlQ=
+	t=1764670505; cv=none; b=MBv9kFZMd6fFPsBcl6zADKtHahXbHIWO4HQD4ZFY2IA355T4ywxuekgCG0S8XFxPI2m5tjdMpnTVnt81Bm3p38sMr4Q7vymmMcVOcqrg+Zn+GVu7hrNszbCKrbrSdcAYtPdsg6w+ScxjqPwaOUjcTHYOZd4Cjvl1LYET6uLuiFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764668418; c=relaxed/simple;
-	bh=PdVDF45+7BzUejD7WKOg6f3A9ioZTn8BAVAhOsVMavY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j46i6n9Kc2nne8q1K+WS0WkH7wVsSO6lPb5FubeBBMMEkesGdRonpvg7zrOn+TfXsDqQhXMsP9TSKRNvag3Eza89sz9CN9FCbFZm+SkrB/16E+afnAq4iYgJNRYjfs5RhFINxGtm4OPlMrR5LD7XwSPtJWu9sy0Y6/gW4b96K0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hPub4K5Y; arc=none smtp.client-ip=209.85.221.74
+	s=arc-20240116; t=1764670505; c=relaxed/simple;
+	bh=tluCUMdbZtzI70MpMNxT6XbTimg3FvfG4a7kkBpBftI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SoTzV8dYGgK+MeMSB9HOoVFhNLk0o+unTo/qzdXGlmOGe5XT8lta8JN8/J+02Vobw5jx6R2NbqWcq0Ezqg/sDWKv4kWnzVgEhrD+pCYzEtw5cGknK3DYziqzm6mKKM+djYEGyWrsKhEyz6getbvPKGptLv8YUV8OhBjvuRpML/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ic6jN//l; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hPub4K5Y"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42b2f79759bso3626515f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Dec 2025 01:40:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ic6jN//l"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-47796a837c7so37397575e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Dec 2025 02:15:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764668414; x=1765273214; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q6+dqzVS5WQJ2VvU8h5DB3PLWtil+ghthkGkAa9MHB4=;
-        b=hPub4K5Y4MNGQb34tlwkqTXT4f49ZXcpyqoB0WmIB2AMSGhPPe5F8D/y0eZwCinest
-         HjewSsuiJAXaeoFUekZMXu/Ivds1ZYjS1n4+qG9duh4HTxAB6g5dkRjpnFfHBrTDioIq
-         56WRsawXfNNXQuq+y6wTXwxiQzYFHbdCqiEsooIQx031eYRRgd40JoVRQHUgMNrUM2sU
-         TPpng9Ma8frgqP20oellqyzQWEDjPdDTzFQTZINYjFJS3f9REqKvE8HG2L2AGR4IZSo0
-         ZJyQnCYnVRexZtEbeoOMgC/Ob+QyKXt7vi0tDHU/yw3Ybhjvb4QBu/RG+gK5GEgNYLNV
-         +5tw==
+        d=google.com; s=20230601; t=1764670502; x=1765275302; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xj/gqbMEvC2U1EurKb6UYz7u2S6QJAk3SBUPxA7BZ0k=;
+        b=Ic6jN//l6u8CV3nf+ShALrI0NZPtmGhd0SF3XhXrm/DTRp/WvCFHYh34Tno3H7KAx1
+         XgA8LnPNy702J4zs5sVyBYfa8lu1nfLjnO1HZEYddbPvEueMLzH+XLTTUWmNSWjKGC0+
+         82bYaK5fMvbS87p+Jv8W95K88InGGZxULVgWgJ+C+C/xDihbtGaUPE91swFviLk/LV1B
+         18U7y9MaY9GYMwO6KbfyfHZQAaQsY0MOc03eo6ywxw3muSOln2Ac6KAwuAkbjgbJRVK3
+         tEnbld4TVL5wfTDupW1vBMC04x4pcNq4Y7L8oxt+cSVyre7JZQVRF8MlQ8+6Wpe6VVey
+         u9ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764668414; x=1765273214;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q6+dqzVS5WQJ2VvU8h5DB3PLWtil+ghthkGkAa9MHB4=;
-        b=NT91o+4xXTvmJmAj+5dBSjC+Yv1e62FWm9+ZHk0nD3zxJULHLRjxA89M9hMT6ZMiqz
-         bAqFQ5PjEhgZifSsZ/4x7AJoLxwJ9Rf1TsCAeSlymDDNUmAUF02bEtRMVtZL5bewGtnk
-         OfKRM4GZkpNLjinT3SlMvD/u7mi+dK+nN3oeTFddVyUUWjYno7QZUWB4aLX158FXt5ec
-         2jBCVZtaGLKvNpGNWQmYPbxV4pWdLZC1yY8jeqPtRB9XOo9QH3MuhpD2b11wPMdIxdx2
-         ERVGRz+9435zbyjg+kdYuzPZkHXO2spcfD9Q5IMP5QfF8GIy31fTJlPQbF0atSa7Co2Z
-         +9XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXgpC/Nuncmh6TJXklwTCzBvm5dODmuRc9lbw7bPO3YUYXvE6RV+p+biy+rW8BBP9N4B7xchZUL5yAxcPbsyw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzXrikGQ2x/DY8943twEMT/omDsmoDd8Zy2mIJE3jwkiM2x9MZ
-	JJwoWOhRlvl2LuwGdLSU0AiaDJSAPE7syeJiOWLVGNKAo0YXHgkrXciYKRrj19Hpq9DiAu9+JRu
-	lzXYzjarOJHxqUc4hNw==
-X-Google-Smtp-Source: AGHT+IHfJsB26zpLedZ3bqVtYwmFOOa9pxVFJXVyeSkUB7gg98/AHNiJrKqhO9SBFtwTK3t1KChujk6Nue39WIM=
-X-Received: from wrtl3.prod.google.com ([2002:a5d:4bc3:0:b0:42c:c2d6:294])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2203:b0:42b:32c3:392a with SMTP id ffacd0b85a97d-42cc1cedad0mr44938719f8f.20.1764668414486;
- Tue, 02 Dec 2025 01:40:14 -0800 (PST)
-Date: Tue, 2 Dec 2025 09:40:13 +0000
-In-Reply-To: <aS6y5blasMX0KcD7@fedora>
+        d=1e100.net; s=20230601; t=1764670502; x=1765275302;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Xj/gqbMEvC2U1EurKb6UYz7u2S6QJAk3SBUPxA7BZ0k=;
+        b=hAgJvolabFiI1La8+uk0eKS5to9MVA9W1rqmlTPoQDdMKCF+a5K3ZOnj6f67YvGtVS
+         QsZzLdzXmqC8Jz5LZ3tN5QyQiaq1DANmBzVpWYV525U9fiiy4OVNPgYEH6W86opPT1aE
+         2q9ZcztNxstldrXpGyRr/HP52yu2Ut05f8WSjP0H30/5pjpVEOzFVMahP7d3x5b1Bnb7
+         84XzfKPOdP178sNp+cswyvoujfz7VH4a5TZRLQlkvdkJGkFSxSLt3Gt4vloPhuE1PZea
+         6MEyhxUA196dnHlRoQHkJSlna9Yfj1bXXj2ABgEsIlNS1hKhBg+JjaSMNNECQBbtaZVe
+         2Zng==
+X-Forwarded-Encrypted: i=1; AJvYcCUxEHS3Oc/KsfiXm53mCOVG3fzpU7TjL3dWBRIWF+CmVGYpLQDkfdvKbY0HpGxgpScsIBWkmmg7sd1p/oK4wA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQzck94+LFRDRmtByXbl+h/ftNW4ScwhY7ZphzNbaRaEpq19Nn
+	OyiIqlvx9NL+sP2iRg1o1SAohrWc3bc/Iysn3V0QCmgAeOIXf5PhSP1LtvyQaRZTBztmK+1DDA/
+	gz6lf0p/EYSYnR5LJgOCuvAGd0DaftLZQxYrerKse
+X-Gm-Gg: ASbGncum9k27WE1J+65Hu+9M2o15PO8ZZcmhnx4pPueehIXgHzKzuy8Bijx5gNFJP6c
+	ljeAldbSMHyNQR7+RT63AXBpqVyBLPwic/d7kyIV0tdTbDawt8QtG4HeJoGKrzFvLeJHY9pCOBw
+	S6/AFeONyUQzlFQK20OOOtcjxAPMdcdfr+o+wn9woQbqftMVBUMQ0k0hk0GkrggaacgGynmdgiV
+	AVAw4jwzdlOimzdyhNNKRrsohSImpS/P4GMsxHAahEm/fszCN2NE0Irj8Y0MccaO6WR5ONNGc0w
+	yU+fVBkD/sHqOULLpELEIWxXCcqedJ1V2qj6mR4vTNkWW598Pnn5++jeXA==
+X-Google-Smtp-Source: AGHT+IH41ppbKo2ntsTFFVkqDJyv15OsfwqRLDbKCfbp32OEMtJv+7r8A3+XIAbI1BpBDvsTQpoln+8HEetvbhddqzA=
+X-Received: by 2002:a5d:64e6:0:b0:42b:36f4:cd20 with SMTP id
+ ffacd0b85a97d-42cc1d2e292mr45860682f8f.27.1764670501670; Tue, 02 Dec 2025
+ 02:15:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <aS6y5blasMX0KcD7@fedora>
-Message-ID: <aS6z_f7rQ3vRzWmU@google.com>
-Subject: Re: [PATCH v6] rust: Return Option from page_align and ensure no
- usize overflow
+MIME-Version: 1.0
+References: <20251128-io-build-assert-v2-0-a9ea9ce7d45d@nvidia.com>
+ <20251128-io-build-assert-v2-2-a9ea9ce7d45d@nvidia.com> <af76b544-a7ee-43da-878f-cadc1599d7f0@nvidia.com>
+In-Reply-To: <af76b544-a7ee-43da-878f-cadc1599d7f0@nvidia.com>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Brendan Shephard <bshephar@bne-home.net>
-Cc: miguel.ojeda.sandonis@gmail.com, dakr@kernel.org, acourbot@nvidia.com, 
-	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Date: Tue, 2 Dec 2025 11:14:47 +0100
+X-Gm-Features: AWmQ_bncCycjJtLo57Ks_3lnLDfKrcsh2eIAuKqvMlje8DUUWqYWLDIlb5gTms8
+Message-ID: <CAH5fLgjNXcWgCLp=GkOiycPtcR9dpSn-wZ0HK6YnQC9z+dWyTw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] rust: io: always inline functions using
+ build_assert with arguments
+To: Edwin Peer <epeer@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 02, 2025 at 07:35:33PM +1000, Brendan Shephard wrote:
-> Change `page_align()` to return `Option<usize>` to allow validation
-> of the provided `addr` value. This ensures that any value that is
-> within one `PAGE_SIZE` of `usize::MAX` will not panic, and instead
-> returns `None` to indicate overflow.
-> 
-> Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
+On Mon, Dec 1, 2025 at 9:07=E2=80=AFPM Edwin Peer <epeer@nvidia.com> wrote:
+>
+>
+> On 11/27/25 18:11, Alexandre Courbot wrote:
+> > diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
+> > index bea3ee0ed87b..d9851923562c 100644
+> > --- a/rust/kernel/io/resource.rs
+> > +++ b/rust/kernel/io/resource.rs
+> > @@ -223,6 +223,8 @@ impl Flags {
+> >      /// Resource represents a memory region that must be ioremaped usi=
+ng `ioremap_np`.
+> >      pub const IORESOURCE_MEM_NONPOSTED: Flags =3D Flags::new(bindings:=
+:IORESOURCE_MEM_NONPOSTED);
+> >
+> > +    // Always inline to optimize out error path of `build_assert`.
+> > +    #[inline(always)]
+> >      const fn new(value: u32) -> Self {
+>
+> Does the build_assert problem actually manifest for const functions?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Yes, the const marker only allows you to call it from const context.
+It does not change behavior when it is called from non-const context.
+
+Alice
