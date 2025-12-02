@@ -1,327 +1,211 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010006.outbound.protection.outlook.com [52.101.61.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37001FFC6D
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 03:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764644433; cv=fail; b=VdXxoY2LXe8tdJmTwGGspwXESSBKWsKiAugcD7RelQaPKXqaeT42YeEMVJsuhQ6MtDul/HBxQS9JmyMTFWsIxG7RrJ+w9uzilBAOw56ZjdetWtlOU/576BSMbuJ+h3IH1s4XSCoso21pDlxorR4956mtb159KBDVD4nzka2OmD8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764644433; c=relaxed/simple;
-	bh=87qhuUq+gBshR0Gqd+E+9BjBUnlqNiPnH0gaQTqGbZM=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=NcJGHpsvfV6uvQx3KSh0ICPE+2CYJag35AxzVjWntbgvGfPF935Q8YxNGaUeU1SlSgq4rL2zYMZBSng7wpgWo3Ah9xe7bD9yJuGU1aOjOO9gruo0HNjT4D3YaljeSU3EFkNxrrOPo19A5edNGIspDAN3JcD43nnjIc9hkIyCFts=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qySIODBs; arc=fail smtp.client-ip=52.101.61.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112ED18BC3D
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 03:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764645992; cv=none; b=I3YoO3nRNvxclzdtNhrAJ+TsE3/nqkqMXouX3TADjVoTA25MgZJnlg1/c4LI2Evzi1Z9x6n+EjB6coudE5WdMGV8KFHq0AwG2Ragmz19nCet0nHOXatmZPc54AZ57dPyJ6qs9lInR2F9lQC2BZaVopf0p0CXbdDP80xAA1/z/Ak=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764645992; c=relaxed/simple;
+	bh=ZAcdLTGsmjWXNxr63u1bgQhOKcSGgyz7fqHJekkeHYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JKz+kGZQUD6KOf0N6+5xxyQ6uhwZZU/Y+wqqvg+Ir7MwNyx8G5xN1LrPw9Ky5IvqQzpwc9tthtyz4zmP4LXaZF3LGaTJf4ATkl33h49ShC0xWHXtSOKCixmD9mHQqKnYZSQ29GVYhZjMkiam/7/FlOCWW13vkXZrnBb17lOaYFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nc3Jp3kT; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qySIODBs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sKuK1whZWG0UEISmnv2lMp3x71nQirZYt1i+XYYEXcI/kKMX4ieA+6mSWAeRj3JN8nUrzVue6uQ0mopWWxtnYjhay3RwMA2RhJHkMaBlK2xVa5AhEucOrPgW3RvvJ/YaVKgr9VWz7n5CKcDBxeCmFq7jEEJ+0t676KVtQDMNCzNxus5LKPwwbIM+etta/v8U/zH5G2IkWDn7VkOCTqUIEyLV7Grijh8BfSny2A4OGoJZv/1g6qQzDXR4rStr7NvuEB+Q3dcAZTXwSgrbWckzGRXwwJZ9BiOKoyh8HNsOna2qutQH/92nJwzqtqHCOJKjZB3QjdCiw//KTTYxwO6wZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SBnuqT+snAY+sufV2cmV/19sh4KHiJKp49DXYRaa+V0=;
- b=G/JZnBhwtGH5EFN4c+K4DnynIf/QwuB+C1b2nxnWYZ7xzKBjfjHAk6iHNJ7rJzMA2nzIME41AXbkgSELqenrtcbuBUorpjqKvXVw9uS5aRB0ao2MzsDtxjuTiES2XtrSLG4IRs67ta7Px5mdnw38PaLAQ5yI8AIZec/dHXPpOJsJVRN0Xv8G/dw7ddrGYbQWX0VgS/gD0uOpH6PEsy8caYFMsmylyJ+2Us9xan7LrsduthnWgC8+darirONZ2pkD9KNCb346ZgvcRc3GR1C5NUeHYilUeAuJDEeCt2FCC6jqRxR0uFRfun3b9GJ1NRfvcbWn2zQwQZx2W70JeJkvqw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SBnuqT+snAY+sufV2cmV/19sh4KHiJKp49DXYRaa+V0=;
- b=qySIODBsIXFQq2SfUanXMf0MAd7Xw/CRFKWygVJlM5b5hkdGAVn2V28VcNBulQQUfED4Aj1WcYVVmFEE9vIe3aKwZRoD/vqdJWNUGk3govSMGX623U5iJTS3rKrYeJo892SrxkjEcxIXX761e58no0xV+9ReGDVEWozvWL8DWxpiSrpKmNN53kCZiGj8hVACPc7yQ1799LljewYjPmZ+uBHo/qSg5yEFXZdPOzrPyIo+Q5pbMD8tIaPltvxIqmOBn03UWaiaLjFMYGFO9WOeyjnpr8N+wKrO/Ewar6/p2lWVzm5Q5HYLEuYGXqQH6LoGa8kJ60NmuEutJNFHKV7BNw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- MW4PR12MB7014.namprd12.prod.outlook.com (2603:10b6:303:218::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9366.17; Tue, 2 Dec 2025 03:00:28 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
- 03:00:28 +0000
-Message-ID: <c8483697-d5bf-4f56-91f7-06ec5f1d57f3@nvidia.com>
-Date: Mon, 1 Dec 2025 19:00:23 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/13] [RFC] gpu: nova: implement trait object
- FalconUCodeDescriptor
-To: Timur Tabi <ttabi@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, Lyude Paul <lyude@redhat.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, nouveau@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org
-References: <20251201233922.27218-1-ttabi@nvidia.com>
- <20251201233922.27218-14-ttabi@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20251201233922.27218-14-ttabi@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY3PR03CA0004.namprd03.prod.outlook.com
- (2603:10b6:a03:39a::9) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nc3Jp3kT"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2981f9ce15cso57420695ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Dec 2025 19:26:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764645990; x=1765250790; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DS793+wdpeuFJcL/JDji6kRr/gbz6UaiXbYfn3raMkU=;
+        b=Nc3Jp3kTJqkgHdPehwkV2/pOHaK50SKBuWoIJdGNQZmMMuDbWQGj3k5zpz1uhLsX8w
+         MT1iejd5QH4ugG6+1VAw/yvJrecobCroT6q2EAY1Af9WABeyaEz2tbRVu5OFoo0vUoEO
+         AVNrocumKzkAhK4jtxg2cLkxA57oOJJ5ry02b0sIOYjZeCG9KyJks2HUlh4IwCGw0JN7
+         f7BByR1epec4Us4X6UJZSPv2rRYI/mTi3rraa/4UnHzBdpcElbytJJAOyn5Ojr59PvGF
+         KxNNPWPaWa2imITKqTbA5jwJLX6k90ZBbg+KoUtisYMzsaLAvQjHQJH/9Z7ZC2ka93In
+         ma+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764645990; x=1765250790;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DS793+wdpeuFJcL/JDji6kRr/gbz6UaiXbYfn3raMkU=;
+        b=nj8pDgK9FvEpcROND1ufKuDwN7w1dUzKX425wIvgQO+vA9e/j/u1Po6SOagVWp7OLG
+         NgTx/YJR0NU39gMSRfgjIMnVjEC9oAnlNufcoTkD6++m5P1QvzFXgQ6zHswewRfdomQ5
+         TNDrp1c8OP9UDhs0F9VdmMcmNIuSRFUEHXFV86xXCcMlHypwCEigK4kKOLNQvB7dmlDA
+         gnZ+4NgOAcA419meT9+iR6ZPvVJ0Pe00ktZBmL8gfehMZ05pQBYXzDF/6sKAaOj+irqo
+         Z8jZG2Gtt37OdGeqZpWzx8iLA2Ym/222E5INjXBnAnCz5hxYcDpe1J1nckqDwKw9s0rj
+         FeQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3+t2DpSyySMTrdhOnotptge5O3CjxkXwJyQuaou5J9rviV3Z8w48V8PYB9F/IKfCkzfM707YhiFuOpYXXhQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyD+VFpVtYVA9Me5oWZe0PVLwe02cq99cKlsrYhHvDWcJrRuBng
+	ZlABPIKng+aUQYKbFcg6pbQTxxcf2vGSwlqHVttyUr3N2KsI5czJDMpH/wlGhxSy8pg=
+X-Gm-Gg: ASbGncv8pYXNxNZcwWCDChbFQ2FBaVmLYrRqwNgDLIrNxvc+kpsvpWLEeKSVCAo7enQ
+	yW6PzfOkEcOjzSxXghZEZyxiBF/aoIfgbqn9KXyVoDV6cxVv0Trm+2a5mY7o5TOb/nbIFGjTEkj
+	9uN9SsB5j6+fMgre8p595+aN8gIjRGI2yiOYqCnOFST98C9Fh7d6hANDHKO5mws4fmGfiNpSiTL
+	3ggS8cpOgyvBoOrUw2Uopla+IHM8ijunupn47Kn33c5SRxNz8N+lweUlLl9X7Q+l+rZu42EgtUZ
+	gbLnzNTmuStw06FnxrGFhQ7MHsYIRiN6Y8Hh9ri0tzOqUus00eh6e4gPmYiCEC39+siTDsQ17HG
+	UYlchdpXHIM4sXFoRXStdV5bPVKNd93GIZM+H4NCKilBPD8jH67auA8lh7oehqENQhGljPQL5c+
+	wfnm810izMJ97oeobQSiRjwO8RaRFHHQ7GLvA=
+X-Google-Smtp-Source: AGHT+IF/MCaBcPJ7oEdSsQvd8l5V5u3QJuyHglI1NZ/A5yZoIbJRAaG3S7Zo/gbGQ7o9MBQPinfbXw==
+X-Received: by 2002:a17:903:298e:b0:295:9b3a:16b7 with SMTP id d9443c01a7336-29b6be8b678mr456619935ad.4.1764645990203;
+        Mon, 01 Dec 2025 19:26:30 -0800 (PST)
+Received: from localhost.localdomain ([49.213.140.88])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-be4fbdeb242sm13392245a12.14.2025.12.01.19.26.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Dec 2025 19:26:29 -0800 (PST)
+From: Hsiu Che Yu <yu.whisper.personal@gmail.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Hsiu Che Yu <yu.whisper.personal@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2] rust: num: bounded: mark __new as unsafe
+Date: Tue,  2 Dec 2025 11:25:40 +0800
+Message-ID: <20251202032541.78497-1-yu.whisper.personal@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|MW4PR12MB7014:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90627ca3-cffc-4cac-6d01-08de314ef2ec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Q0ljSjNMVnFKU1RtLysvbE4vVlJnQmRrWE9CU1RCbmxpTmpKK2xhYkVoV2I0?=
- =?utf-8?B?MU53Uzd3T2c4WU9BYWVNN1VEa2EzOUhDcWNlczRBaXBsOWVNVGViT1Q2SjBj?=
- =?utf-8?B?cys3S1dEU1MvdkFHVlNoT2VmcU9iZE9zV0lZMWVTajRFOVJGSmRJZGlDc2FZ?=
- =?utf-8?B?SVhNZkU1THg1d0dSeDl2TjRuMENlVzlMYXNHTldIcllrREVpS1Bzb1lBMGVH?=
- =?utf-8?B?NTZtUm8zcGFXaGlZRFUrclpXUFBYbmNqYS92UUJpUjBDczJVZHZuM2crclI5?=
- =?utf-8?B?STR2dDIvWXIwd0pDUVU4VzRndGJ4dG1saTZEZ3pDQzNlU0ErS0NxdW9vNUZL?=
- =?utf-8?B?TGVzSk1tWGJqa0t0MmVKOEFyUytFd1RhSWtPS1dpR242bzQvOEhWNThYT2dY?=
- =?utf-8?B?WUtuVjAvbGRxMCtUdVk2NUJuMnBncW1ZbS9ObnppZEtFb0tXNWJhbDFqVTJS?=
- =?utf-8?B?cGpaemFXVXNHR3hMN1lpdzNqL0M5NGNUdWdoQnh5YW5FWFV6RnV4OE54dmdC?=
- =?utf-8?B?SS9pWnZEeWptVVIvbEUwd1VlOHp2R0ZZRDlQYS9EWXRlaFZ5dk12UTlkRVQ4?=
- =?utf-8?B?QTZFUC81cE51SFQxZ2FTNWRiUWd0eEVRN05xZzg2N1M4cTNickp0a0p1eFAy?=
- =?utf-8?B?WWVJYWJHRVFhd2h3ZytIKzFnYTdsbnJ5ZEQwdVdLYjgyY2hVMTlDME5MaFpR?=
- =?utf-8?B?cXh6ZXNhZW0rVVBxWjVtUGVHT0VHeWM1V0h3TWRkK2xSQXMxUGhyc0s1NU1J?=
- =?utf-8?B?azMybVE0NmxEYzkrTlplRE40c28rYkFrZjlITERiNC8wWXFuUVpoTzdnNk9S?=
- =?utf-8?B?SDhwWGQ0TVVjVWcyN3BSQU05US9lT1ZySU1HMHAvTXEwRUJDQVJhQW1xMUZB?=
- =?utf-8?B?TUV1K01qQTdWZVZwbWJITlZVdWk3RWdLa3FQNEdYZXhxZDJTWWlWcTlCN0hQ?=
- =?utf-8?B?OWg4VmJLaE1WencySDlaYXFFNjUwdnY1OWU4d2o1eThuRVhaOWVpVFprM3hn?=
- =?utf-8?B?ODFoN0VvSXRsRkUvYzBuM29aeUhOOFJrL2tSL3l4TkNQd25kMWRqTkt4Q01p?=
- =?utf-8?B?VlQvb0NGK2pLM0NzOW1LN3VNRlk1RUJRYkR4QkY4V3lpQlM0ZXJ2dGZhbmZL?=
- =?utf-8?B?NWIvcGFOMDZMeVUvTWFWeXIyVHNMWkdwRUMvTm9PaE5mSCtNQ0lWeWEyVUo5?=
- =?utf-8?B?Q2UvN2NrTklDRWpXbEpKNzRVYklFVGFDR1R5UFJrVjA1U0lPM3ozOVhhU0J0?=
- =?utf-8?B?OVZpYndKQk03QUlDTm95QUFQWkM3SGhmSm9PN2QwWlREZ0FSWWY2dWkvRmxY?=
- =?utf-8?B?RXVYQ2ZEc3ZHanN3UE1sOGMxTldqUjB1NEdrc1FXMlIyZmg1YkxVMGhhZWtB?=
- =?utf-8?B?WGx5bmplbXQ3RUFCVzM4aTdHUjdiMW8rWjd3cWJUaXFwUFNWL3IyNjBlUmV3?=
- =?utf-8?B?bkhMSnpkMks4NDRESHpTMFJQME1yYnFaQXJlb0RwaXc0djExZ2hqTE1la0lU?=
- =?utf-8?B?T1ZWbXFDMzRWR1NDTUxiMWswMS8vV2ZJeGp0YkVTQWVVYUk3WSszMk5ZcDA5?=
- =?utf-8?B?dXFDakR0Ly8zcEMzaUJpczRLVStiZ0xTS3VxVmpZVW1jNUd6dTU5eXdrc3lT?=
- =?utf-8?B?cTJEdGRsYUhwRm9UWUhLR3dpSEFHTDlkeUw0Y29DbDFtMGdtcnVCaG8xSXdu?=
- =?utf-8?B?NmJBVkRybGJ2UmNtYXp3MTBVRkI4akd5UjVXQWsyYVFWSkhPanFPSTVnbW5k?=
- =?utf-8?B?dVR4WXExVkxaeWIvUThlM1lEOFc1bHdOOFRpNUJPV2FnTmpJbUlwcmtyMHBy?=
- =?utf-8?B?amczdE9nbFNUdkgvcllFblRwZ1Z4b0gvS3BHdVpobUtYWWtwQ1lEeVF5aVk1?=
- =?utf-8?B?VTZvSjZobit4WjBTeDRSQUkraUlZbW1NazJZOG9EM0l5ZHErc0JTRDdnVllu?=
- =?utf-8?Q?dYQJsHvxFwZA93ckLKXF3eEucOH+nCV6?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SDJ6UkNONUE2YzJkdTZJc2Q5MW1PT1VqdEdHK2RsQ2tEbVFHRmNybE8ySHE0?=
- =?utf-8?B?V1c0QjBuS0VMa0ZRNW5nRGovVWZUeThnWjZxNWtIdWJRZGJSZHdyR2NyR21r?=
- =?utf-8?B?UG9aUDgzcjBKR2JpQllPOE1xL0V3cVRwSW8yZW1oem52ZU1RQ3RiZjBmS2J3?=
- =?utf-8?B?SXVoczlLU1l0dUUvV2pCeE9xUGtQQXkrRWk5Q1hrMGlKdzZUWEtVMmlYMGxx?=
- =?utf-8?B?NGFjNi9tNm0rOEt3QlFEVURkbTExL1prZ0JRQjBBMklPSVcwVmhDNWF2WEM2?=
- =?utf-8?B?MHJONEtFOVcvRjU3TURvUzlMS01uN0hGU3pXZk1tVmxuSTMvNHhkVFlzWVRr?=
- =?utf-8?B?QzltMWZDWkRQMkdWa05lSlhSRmhnS0F1MU95bnIySG5ZbEpGY0VMZ0lvY2Ev?=
- =?utf-8?B?OEorQVIrc2NwSUptK3BhM2hDZXRkYUx3MGJ1T2NrUVZQUmlEb0VSWjUwNjJJ?=
- =?utf-8?B?T3dzTGhUYjhEczZMcHFsdFhaT2U5M3VKVjJXQ3ZQaVp1bjJDQjFOdVlPdm1W?=
- =?utf-8?B?YXAvSUlIcXZITDQ2NnVBNlg0VVMxUHI4anFLVHdvamQvRUxkRUk5WXg5Q3Z6?=
- =?utf-8?B?NlF0eSsvTjVoWEtoSVBjeVoySE9ZUjY2T3ZsTm1IME03eFpUNmxPTG9TbW5W?=
- =?utf-8?B?N29xaktISUtRb25hbjFtbTlFYUhsSDBZMGJDL0FGTWl2eHdHckdxcnFoOHpB?=
- =?utf-8?B?d1dvaEphK1FrTjVoV0p2T2ZTa0lNU21JaFpRQ2IxUFVJNGIvZ0RVUnhXL1dN?=
- =?utf-8?B?clROeDZRTU9RTmhGTUtjY1pjbmRGRTZaRnU4TE1Qa0VjOHRIMVY1c2VlWGVC?=
- =?utf-8?B?R01EQ295QlZFekNrMnhka2lTVzF3dXJQOUN6NHRyRmRweUE0Zk5NNEpCUndO?=
- =?utf-8?B?bWpWS3N1azhLbEdEYXBLUkNiNGd5QXZoUUt0NjZydFlScXE5cE1pclVvUitw?=
- =?utf-8?B?UmZoa1RaVWpoNkpoTUZacHlxUFFER0VwMGNPRDRRTXBTaHB1MElVOUVTNGVQ?=
- =?utf-8?B?M1pyeUlJZ3RrYlR3QSs3MUFYdzdjV1hKNGs3eExkVkhXcTFFZnZUTGdiaTZx?=
- =?utf-8?B?WVRsQmpCcHhTMjBWcCtKZFZoN1ZRQVdrQlBtNjJBdUFxMXI4Rkd6Z2JxNE5j?=
- =?utf-8?B?cGpVR0I0RFRMMHFJdHl2a2xQdGp0L2tvUzVZRVlrdnZVeFRWTkVoY2RKbXFT?=
- =?utf-8?B?TjhuMFMwQW93S0x5Njg3TU5IS3N3TG1zVDI1dm4yWjIyREk3OUFSK3dsdDhr?=
- =?utf-8?B?R0ZhbjgvL21aRDlKUkZTQzN1QVZhNUxFSlJRckpjS1F4b1owaFUrZFBXS0w1?=
- =?utf-8?B?N05YS1lpRGhiUUpIeDBMa3lVRFhpTFFLblh3b3k4UzNxeHJPblZxS0pKZ21Z?=
- =?utf-8?B?SXB3Nk5HMEFFKzdZRGtpTTRoM1hnQitrUERVOUV5VVNCMTVVTmMvbFNiRitB?=
- =?utf-8?B?MUo2cmF3TTA5YzBzQTBUeWpESmJ3dHdoNVRBYVU3L1V0NGtkY2ZZQWh6SFZ1?=
- =?utf-8?B?bEE0aEl3WFRsWUR2OGxmcmpCWHZNWnhCcHlFREtkZ2Z1c2lHQkU2RWxXKzUv?=
- =?utf-8?B?bmoxSUpGZ2VCTWtKaDZQSEh4U3ZCbG5mYmpsOUJmZ1ROSU1oMzN2bDhSc01P?=
- =?utf-8?B?MTdGdWcza1krSjZNT2V3WU5acFROR21KNkpFT1F3YXZvYTRvZ29QUjZ1K05o?=
- =?utf-8?B?TWR0cXgrUzdneUtpTmxIUGpMcktEdW0zZ0RsNlk1bDNLVmtaRmRYVERSaFZX?=
- =?utf-8?B?NGd6MTAybVdRYXUxSHFqV3ZsN3k4NVJQeHNjck5Ncys3RFlGVitJOURIcmUz?=
- =?utf-8?B?dk1tL3ZSYVBlOEViK1M4ZmYvNWgvZTJuRkhYSitJMFU1WEhGdVZvTlNQZExW?=
- =?utf-8?B?Q3k4cTYyVHE5YUlWRXJuYUdYQmZhWHdiMUJJZnA2ZnpYUzB0WUY1OEk4Tkhz?=
- =?utf-8?B?clZCdnJNR0hMcnluTHk3TjZqWEs0ZkNoRCttaDZ5ZHd1WTB1a24wV200a2hz?=
- =?utf-8?B?SzY3MnNTYWd2b2owZVZhQzJBUi83S0sxaFZCVmE0TzVXaC93WlJYK2l6RGll?=
- =?utf-8?B?OGhhUjFjSW5RM1BVQWpkbmdBWkxwMnJaejRjNXltQlRZV1lCb1FtY015bkpG?=
- =?utf-8?Q?p0XICVWephn7B7jEfaxVX/Wld?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90627ca3-cffc-4cac-6d01-08de314ef2ec
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2025 03:00:28.7364
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E8jyJ1+i3sLziHCfC2LqH1Vg9rQXPWteaAOHSjYmzL2H5uy3U/l2jS1Hwj9YiZXWLyllsB3YNwfFeu8fJ5gbPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7014
+Content-Transfer-Encoding: 8bit
 
-On 12/1/25 3:39 PM, Timur Tabi wrote:
-> Implement the trait object FalconUCodeDescriptor to handle the two
-> versions of the Falcon microcode descriptor.
-> 
-> Introduce the FalconUCodeDescriptor trait to provide a unified interface
-> for accessing fields in both V2 and V3 Falcon microcode descriptor formats.
-> This replaces repetitive match statements in each accessor method with a
-> single as_descriptor() method that returns a trait object, reducing boilerplate
-> and making it easier to add new accessors in the future.
-> 
-> However, not all match states can be eliminated.  The FalconLoadParams
-> implementation still needs to match on the version because different fields
-> of the descriptor are used depending on the version.
-> 
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> ---
->  drivers/gpu/nova-core/firmware.rs | 91 ++++++++++++++++++-------------
->  1 file changed, 54 insertions(+), 37 deletions(-)
-> 
-> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-> index 3008d18f9313..2ad56a387a79 100644
-> --- a/drivers/gpu/nova-core/firmware.rs
-> +++ b/drivers/gpu/nova-core/firmware.rs
-> @@ -125,13 +125,55 @@ pub(crate) enum FalconUCodeDesc {
->      V3(FalconUCodeDescV3),
->  }
->  
-> +// First define trait
-> +pub(crate) trait FalconUCodeDescriptor {
-> +    fn hdr(&self) -> u32;
-> +    fn imem_load_size(&self) -> u32;
-> +    fn interface_offset(&self) -> u32;
-> +    fn dmem_load_size(&self) -> u32;
-> +    fn pkc_data_offset(&self) -> u32;
-> +    fn engine_id_mask(&self) -> u16;
-> +    fn ucode_id(&self) -> u8;
-> +    fn signature_count(&self) -> u8;
-> +    fn signature_versions(&self) -> u16;
-> +}
-> +
-> +impl FalconUCodeDescriptor for FalconUCodeDescV2 {
-> +    fn hdr(&self) -> u32  { self.hdr }
-> +    fn imem_load_size(&self) -> u32  { self.imem_load_size }
-> +    fn interface_offset(&self) -> u32  { self.interface_offset }
-> +    fn dmem_load_size(&self) -> u32 { self.dmem_load_size }
-> +    fn pkc_data_offset(&self) -> u32 { 0 }
-> +    fn engine_id_mask(&self) -> u16 { 0 }
-> +    fn ucode_id(&self) -> u8 { 0 }
-> +    fn signature_count(&self) -> u8 { 0 }
-> +    fn signature_versions(&self) -> u16 { 0 }
-> +}
-> +
-> +impl FalconUCodeDescriptor for FalconUCodeDescV3 {
-> +    fn hdr(&self) -> u32  { self.hdr }
-> +    fn imem_load_size(&self) -> u32  { self.imem_load_size }
-> +    fn interface_offset(&self) -> u32  { self.interface_offset }
-> +    fn dmem_load_size(&self) -> u32 { self.dmem_load_size }
-> +    fn pkc_data_offset(&self) -> u32 { self.pkc_data_offset }
-> +    fn engine_id_mask(&self) -> u16 { self.engine_id_mask }
-> +    fn ucode_id(&self) -> u8 { self.ucode_id }
-> +    fn signature_count(&self) -> u8 { self.signature_count }
-> +    fn signature_versions(&self) -> u16 { self.signature_versions }
-> +}
+The `Bounded::__new()` constructor relies on the caller to ensure the
+value can be represented within N bits. Failing to uphold this
+requirement breaks the type invariant. Mark it as unsafe and document
+this requirement in a Safety section to make the contract explicit.
 
-Being able to see the differences between v2 and v3 in just 20 lines
-of code is surprisingly helpful. I like this much more than I expected
-to like it. :)
+Update all call sites to use unsafe blocks and change their comments
+from `INVARIANT:` to `SAFETY:`, as they are now justifying unsafe
+operations rather than establishing type invariants.
 
-> +
->  impl FalconUCodeDesc {
-> +    // Return trait object, the only match needed.
-> +    pub(crate) fn as_descriptor(&self) -> &dyn FalconUCodeDescriptor {
-> +        match self {
-> +            FalconUCodeDesc::V2(v2) => v2,
-> +            FalconUCodeDesc::V3(v3) => v3,
-> +        }
-> +    }
-> +
->      /// Returns the size in bytes of the header.
->      pub(crate) fn size(&self) -> usize {
-> -        let hdr = match self {
-> -            FalconUCodeDesc::V2(v2) => v2.hdr,
-> -            FalconUCodeDesc::V3(v3) => v3.hdr,
-> -        };
-> +        let hdr = self.as_descriptor().hdr();
->  
->          const HDR_SIZE_SHIFT: u32 = 16;
->          const HDR_SIZE_MASK: u32 = 0xffff0000;
-> @@ -139,60 +181,35 @@ pub(crate) fn size(&self) -> usize {
->      }
->  
->      pub(crate) fn imem_load_size(&self) -> u32 {
-> -        match self {
-> -            FalconUCodeDesc::V2(v2) => v2.imem_load_size,
-> -            FalconUCodeDesc::V3(v3) => v3.imem_load_size,
-> -        }
-> +        self.as_descriptor().imem_load_size()
->      }
->  
->      pub(crate) fn interface_offset(&self) -> u32 {
-> -        match self {
-> -            FalconUCodeDesc::V2(v2) => v2.interface_offset,
-> -            FalconUCodeDesc::V3(v3) => v3.interface_offset,
-> -        }
-> +        self.as_descriptor().interface_offset()
->      }
->  
-> -
->      pub(crate) fn dmem_load_size(&self) -> u32 {
-> -        match self {
-> -            FalconUCodeDesc::V2(v2) => v2.dmem_load_size,
-> -            FalconUCodeDesc::V3(v3) => v3.dmem_load_size,
-> -        }
-> +        self.as_descriptor().dmem_load_size()
->      }
->  
->      pub(crate) fn pkc_data_offset(&self) -> u32 {
-> -        match self {
-> -            FalconUCodeDesc::V2(_v2) => 0,
-> -            FalconUCodeDesc::V3(v3) => v3.pkc_data_offset,
-> -        }
-> +        self.as_descriptor().pkc_data_offset()
->      }
->  
->      pub(crate) fn engine_id_mask(&self) -> u16 {
-> -        match self {
-> -            FalconUCodeDesc::V2(_v2) => 0,
-> -            FalconUCodeDesc::V3(v3) => v3.engine_id_mask,
-> -        }
-> +        self.as_descriptor().engine_id_mask()
->      }
->  
->      pub(crate) fn ucode_id(&self) -> u8 {
-> -        match self {
-> -            FalconUCodeDesc::V2(_v2) => 0,
-> -            FalconUCodeDesc::V3(v3) => v3.ucode_id,
-> -        }
-> +        self.as_descriptor().ucode_id()
->      }
->  
->      pub(crate) fn signature_count(&self) -> u8 {
-> -        match self {
-> -            FalconUCodeDesc::V2(_v2) => 0,
-> -            FalconUCodeDesc::V3(v3) => v3.signature_count,
-> -        }
-> +        self.as_descriptor().signature_count()
->      }
->  
->      pub(crate) fn signature_versions(&self) -> u16 {
-> -        match self {
-> -            FalconUCodeDesc::V2(_v2) => 0,
-> -            FalconUCodeDesc::V3(v3) => v3.signature_versions,
-> -        }
-> +        self.as_descriptor().signature_versions()
->      }
->  }
->  
+Fixes: 01e345e82ec3a ("rust: num: add Bounded integer wrapping type")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1211
 
-Overall, I'm really preferring this end result. The differences
-between v2 and v3 are concisely encapsulated, and the remaining
-code is clear and less error prone.
+Signed-off-by: Hsiu Che Yu <yu.whisper.personal@gmail.com>
+---
+Changes in v2:
+- Mark `Bounded::__new` as unsafe and add Safety documentation
+- Update all call sites with unsafe blocks and SAFETY comments
 
+Link to v1: https://lore.kernel.org/rust-for-linux/20251201062516.45495-1-yu.whisper.personal@gmail.com/
+---
+ rust/kernel/num/bounded.rs | 34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-thanks,
+diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
+index f870080af8ac..5838c84f8a53 100644
+--- a/rust/kernel/num/bounded.rs
++++ b/rust/kernel/num/bounded.rs
+@@ -259,9 +259,9 @@ pub const fn new<const VALUE: $type>() -> Self {
+                     assert!(fits_within!(VALUE, $type, N));
+                 }
+ 
+-                // INVARIANT: `fits_within` confirmed that `VALUE` can be represented within
++                // SAFETY: `fits_within` confirmed that `VALUE` can be represented within
+                 // `N` bits.
+-                Self::__new(VALUE)
++                unsafe { Self::__new(VALUE) }
+             }
+         }
+         )*
+@@ -284,7 +284,11 @@ impl<T, const N: u32> Bounded<T, N>
+     ///
+     /// The caller remains responsible for checking, either statically or dynamically, that `value`
+     /// can be represented as a `T` using at most `N` bits.
+-    const fn __new(value: T) -> Self {
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that `value` can be represented within `N` bits.
++    const unsafe fn __new(value: T) -> Self {
+         // Enforce the type invariants.
+         const {
+             // `N` cannot be zero.
+@@ -328,8 +332,8 @@ const fn __new(value: T) -> Self {
+     /// ```
+     pub fn try_new(value: T) -> Option<Self> {
+         fits_within(value, N).then(|| {
+-            // INVARIANT: `fits_within` confirmed that `value` can be represented within `N` bits.
+-            Self::__new(value)
++            // SAFETY: `fits_within` confirmed that `value` can be represented within `N` bits.
++            unsafe { Self::__new(value) }
+         })
+     }
+ 
+@@ -370,8 +374,8 @@ pub fn from_expr(expr: T) -> Self {
+             "Requested value larger than maximal representable value."
+         );
+ 
+-        // INVARIANT: `fits_within` confirmed that `expr` can be represented within `N` bits.
+-        Self::__new(expr)
++        // SAFETY: `fits_within` confirmed that `expr` can be represented within `N` bits.
++        unsafe { Self::__new(expr) }
+     }
+ 
+     /// Returns the wrapped value as the backing type.
+@@ -410,9 +414,9 @@ pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
+             );
+         }
+ 
+-        // INVARIANT: The value did fit within `N` bits, so it will all the more fit within
++        // SAFETY: The value did fit within `N` bits, so it will all the more fit within
+         // the larger `M` bits.
+-        Bounded::__new(self.0)
++        unsafe { Bounded::__new(self.0) }
+     }
+ 
+     /// Attempts to shrink the number of bits usable for `self`.
+@@ -466,9 +470,9 @@ pub fn cast<U>(self) -> Bounded<U, N>
+         // `U` and `T` have the same sign, hence this conversion cannot fail.
+         let value = unsafe { U::try_from(self.get()).unwrap_unchecked() };
+ 
+-        // INVARIANT: Although the backing type has changed, the value is still represented within
++        // SAFETY: Although the backing type has changed, the value is still represented within
+         // `N` bits, and with the same signedness.
+-        Bounded::__new(value)
++        unsafe { Bounded::__new(value) }
+     }
+ }
+ 
+@@ -944,9 +948,9 @@ impl<T, const N: u32> From<$type> for Bounded<T, N>
+             Self: AtLeastXBits<{ <$type as Integer>::BITS as usize }>,
+         {
+             fn from(value: $type) -> Self {
+-                // INVARIANT: The trait bound on `Self` guarantees that `N` bits is
++                // SAFETY: The trait bound on `Self` guarantees that `N` bits is
+                 // enough to hold any value of the source type.
+-                Self::__new(T::from(value))
++                unsafe { Self::__new(T::from(value)) }
+             }
+         }
+         )*
+@@ -1051,8 +1055,8 @@ impl<T, const N: u32> From<bool> for Bounded<T, N>
+     T: Integer + From<bool>,
+ {
+     fn from(value: bool) -> Self {
+-        // INVARIANT: A boolean can be represented using a single bit, and thus fits within any
++        // SAFETY: A boolean can be represented using a single bit, and thus fits within any
+         // integer type for any `N` > 0.
+-        Self::__new(T::from(value))
++        unsafe { Self::__new(T::from(value)) }
+     }
+ }
 -- 
-John Hubbard
+2.43.0
 
