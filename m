@@ -1,55 +1,55 @@
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746BB2FF662
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 19:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1472FFF9A
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 19:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764704317; cv=none; b=J6UITFq1rAvm9kgKYG8k4wSlxhhlbd2YSTmwpuXuBjst8Gcyq2bL0SpXlLHM4aC22FbcVbZfIM3ArZYRQUcNJZvcHAP/7nv8AAY0D1I5Uq4nX8nb4WU7ON8IjDxvc6fYVE674NMaeBL1jOKvZdCr0jVhDqqan7sEQSCBpjnYnmU=
+	t=1764704319; cv=none; b=Oq0b76Qwu1Y+KuWWwaozeAJsgO8Fc+1zvvteetxIFpRzD7H8eCnj7UFhGWh52ix3t8U1frEc4VfEaRAx/IsCc1sIn1m1H58oBT9+t6uLhCx+4gLOkWUYOK+LSE9RBDc5ULLdhPzzMvmlx6gabu5Qd5jMfuJHnK/yuT54OVREQd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764704317; c=relaxed/simple;
-	bh=hacth0a4406OsghefqrhaXrbvUZUuOkCCOw+ddGJ0s0=;
+	s=arc-20240116; t=1764704319; c=relaxed/simple;
+	bh=NEo81OnYLoeIBTiu58i1f5sfqGYGea/teY/C42KXlDU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tp0I0jj1AxxBdiv75Tc3B/1W13bc4TtAIaY2bbZDYPdw0DgJEfddJLZE+FPPWxuPs0O6Fs3g2v2Y9Pe6JjNjwu/gqcEzgqEwuNqngBqcxgVQuuuPUnq5mQnYaNT6p+kgdu9dByOYSYGhHCCOOSlvu7RwpOH0idzezTjp+ATRuyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t26h38Zj; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=HGoaxd+l3Bo88jvsW7X1+dXbWWP5Wb8CNauNqoUrcJb39mD4HOXVkrRqIJmueFUKzkA2BGdxn3shSrD04uYnc331c2vYmHGhOLv3rgA1z6j2FVWz8Gy47sohof4mcPgF7V7UmkwLRfy5WRjerPymwE12o4WdD6JhTggm1/q+XEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XNrA+Xpt; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t26h38Zj"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47799717212so44389805e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Dec 2025 11:38:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XNrA+Xpt"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4779b432aecso33981755e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Dec 2025 11:38:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764704314; x=1765309114; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1764704315; x=1765309115; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=p0d/eB1fQs7rmZ4HCfQGDjpM9sRegrHBa4mXJBpgTeY=;
-        b=t26h38Zjgs0Q84gtp5umcfdQuqQmaOXmjq4vnpkSbxkIJ8jsP4AU0FilCkZAbqFMNL
-         w2wdXFJVYugBBRt42rTMxMBfJCGLPe487Zood1l8M+4bFLNPfbfZ8HF3aZv4hBtKblk7
-         VcL+C7uleYV/sQzF373Xkixo+LoR1GgmLorJin6oFDjeD9ocoM/NhBnIIOYw8w0txQs7
-         hsUG81ofDqcboi7kh7TODzoKVr7enkKfyuYcM2VHTpDe0Z55wSbCk+kXSuBqI2ictXQe
-         ZIbxI5L86Kno4m3t+cBZ+C5d9WmfmRzEMrU7YMYp/Bks6eie1dqcbd7mj4LRzJIrRMH2
-         mTxQ==
+        bh=FWykuHZToj66G/MxeF8fmUld14jo6i6LfCUhY6lHEoc=;
+        b=XNrA+Xptfps6TlCRv8FrMm04ITOa95toGVRzsrRVu9UCFzLlbx/+bKdE2pSKEiEoln
+         qA4SEWOvrZBILK0urCdm81KzjiF94K+co9gmg/+bgMEjMWAmkVRli06biyCIX5XTDnXz
+         pA4VeplSzUX6Tj09vOAxYAcPoFcM6KyhUPxh51pPHXQr/VifJnlNLZ0USvmUZ9tSJbya
+         QQ+sHkSE/Yp3r0EH0eOJNIZIGyZCOZJz9rUZ0kk1uFEYbpOUqP0BdQTMWpskajWy48QH
+         du1UrGWOgUkvZvRhtd79rKulWraxFYb78R1/hJ2cCqNr6qfOsCpWxqw+HvhHEOrWnuk8
+         pfkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764704314; x=1765309114;
+        d=1e100.net; s=20230601; t=1764704315; x=1765309115;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p0d/eB1fQs7rmZ4HCfQGDjpM9sRegrHBa4mXJBpgTeY=;
-        b=YBIMKQ7NW7JDAuXh0+HvxQi3hhYMUmbzVC91xBpmwyh8fVItKyopvgfl1NxHuKZlHu
-         OGZDhIilX9mqich8zIO8l67xKZxyHNlx12aYcfKCR7AvwV4rm5s2lmobN9XBcdm8UNEe
-         Ko+OzzDZG9nDp3p0DJT+1mIb7sRcPp5SXECE7DFxj5JEqPULS5uC9mTLcGDIVidvMylN
-         5nqnCbou26Da+c/Dh30txE1INvs7bX4h18e1oUHANecvfxNzFxa0C8mppy8l1Dsa3hsl
-         j6Gio4rf4VNS1b7yy1mW+WmQFf9rW0bWlg8TkHfA9s1UNQ2G1DtxNZEwGi2VAjCHMBv8
-         epaA==
-X-Gm-Message-State: AOJu0Yywk5UwEfg4uS4wzG9vrL5vDjzjq/i5QAd5glNxlFLsTX5FG1v2
-	buQ5VRsmDq3Czfvoo4ATU0jmop4othDxKYKsU5LW7Lj4+s3aTbWw1LaMEhefbTYA+pR5CdGvzz+
-	tJN7IOq42qhF3fvS17/Ag/vuqeBkWfz3qXThL+mIzrtw1bkmaZHNk2N138VVROfxMS3MOA4Y9Cf
-	PqvN3kHzOr5fuUSdEjnMlrUDtu6bymc9OmOCpUxJYdSSPT+1/IDz6QcQw3c49zq40=
-X-Google-Smtp-Source: AGHT+IEUt0FSoBzuBFrcasSDgVBUsrlmIcOrWYcQeE4TNGcpmEOOlvRtAB+gaMtJN+SzZyh0n+Z+Nn06zAVJwGQ=
-X-Received: from wmjl7.prod.google.com ([2002:a7b:c347:0:b0:477:74f4:31c])
+        bh=FWykuHZToj66G/MxeF8fmUld14jo6i6LfCUhY6lHEoc=;
+        b=eQFxvIzDQ1Vhz+COEStJD2tp9JPkwlXwjrUAZDn10wS6cw+oKnyDrMpjAM7Zoer9ij
+         e/jRVHY+nw9aAextNKG5wADsyQBJ9xuBwaQxE8esz0m5kMoqwcXj47zbY+NJgr6z/sTP
+         Ibt47DPe09Sa8Yn8dbCIPMariK1njOiiM7DUMCLQZ35Pu80Q72ObhpI79F5MXqWIXYQJ
+         1ZKenSeaxi+8TNf+qTEW44PjOG0s5CHNB8xuhkk8KcZLuApleRSodEpt05M+/CNN62S1
+         L9Ja7qS/7dZb5rFMBanZd0bO2C3NrUwQVG0GFF2ES+xuMiTsJs0ymwzbFIUDcdxhfGZo
+         ws8A==
+X-Gm-Message-State: AOJu0YzWktIx1QjGd44Tgqf63rsAUkUPZKUYd4j9ntIu9xuHsfk+VC3n
+	JfoopADvWQbg5Cgh+hp7EeXW+H/vAQMOe60aeX8u6j/4BUhFOeO3fdgChFL2MHD2d+xWVKOAYhs
+	AimmNoNJqYzFqQ+UwmTU7N8TNtSReNqED3eqE0KobA4D1F6ZIuxQPYkxnZ1smHMUIdQuCXwZDHg
+	aVLYEsBt5ZvRZSQW6+JWq5vES7kyl2fpmYac3y/4W6GhfBCG/6ZUq2+a+H1S6sZyA=
+X-Google-Smtp-Source: AGHT+IEd2aHrb5NkrrBlEoHDtMpEDioA8uFicuIXJpZO5WFmKYX6kDMfylQzv42mf+aiELHL/3qdX29f5o5sJxg=
+X-Received: from wmlm9.prod.google.com ([2002:a7b:ca49:0:b0:477:9e14:84dc])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1546:b0:475:e007:baf1 with SMTP id 5b1f17b1804b1-4792a61e69amr7187575e9.34.1764704313881;
- Tue, 02 Dec 2025 11:38:33 -0800 (PST)
-Date: Tue, 02 Dec 2025 19:38:00 +0000
+ 2002:a05:600c:4f54:b0:477:54cd:202e with SMTP id 5b1f17b1804b1-4792a5ddbc1mr7612815e9.2.1764704315304;
+ Tue, 02 Dec 2025 11:38:35 -0800 (PST)
+Date: Tue, 02 Dec 2025 19:38:01 +0000
 In-Reply-To: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,77 +59,100 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1680; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=hacth0a4406OsghefqrhaXrbvUZUuOkCCOw+ddGJ0s0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpL0AKs2O+Z4UTuTs8BwpKb9vwCtZhVAMeOrr9M
- CRguvvPpiiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaS9ACgAKCRAEWL7uWMY5
- RkhUD/0YPrHvYLxp+ig26Uz0JITkGZEKUa0QxyZk7J7ebLa46zmWKFH9l8Tr8UMTuukfGZz1iq8
- p0upCEC2TAT1aPpsyiWJXBjhicuHi2EvPRMuHlbeXLH9nfywdD/NPSjGM5NU1PfnxALcFZfhmQy
- VuJqD66Mug2+jJD24nofxC23zdzx+PxBiiQHkpZh9vuorBe8sXa+culjq8DaMo9sleG33RUiaAK
- rus234m6bmV1PBcC+q6GZmUhCk40u1BOLqOe1LJvTAkVNl2ddTbwlnC+BA9Hu2Q/mksFXl2Mq7+
- 8IGiftKg/Y2G+hae9Ho35BUmBcvuXkqsi1lVbZYtjqPNe2oEvt0UqAIrBGnpH482vdUqs8k6nQ5
- e1nc9AP3jHbWgc+j1ThG160kwkH6kOgwtKVNtihnpB99OIdYg2iddI/RtboyYzp+mYR6+i1PXpf
- jXfJX7XI3BGx1nVUUHCdgSGqOKQFSIS4CXmiJj5txt/KG5XG1HzVr4xvZ6hUDWPh0aQ/09QrkCb
- eRKk4iibMK1EssPCW7LMN0+suuaVarLylmA5VFna9EXP7DFRv+Wzcv1WLECHaul4LIOblcLXvKe
- LUxrh+0LBKfcychaFbwstC9R/LHW+FHru7dxXkGf8Mq919wnBhVmPLh7vvbaxct/lBwc5Us40D0 9rVPqtKhsX8KdCQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2514; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=NEo81OnYLoeIBTiu58i1f5sfqGYGea/teY/C42KXlDU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpL0AK8URMtIpbheqidlvMIeVO0gK24Qbdyvh75
+ GwClIA6TteJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaS9ACgAKCRAEWL7uWMY5
+ RuU2D/0WnwWgQZA9mqsxQSZ5+ysBzw7YAjhiHjpCxm8QP036iQNj420B/8MZXlJA6w8icApJGVa
+ Tk4+jq10oOHx2tmzhJf2BYaCOpjNDKFCkDvaDujzXujA2Y4/5XutVnlYUxX+0deQltSVTXJCcWP
+ YaurQT3hcT2i2cK7QsFwRyhlIYajhFvxACU0w6XRqiKIjN6Jywi/UfMSTbuL9g0BhM+EQ/e88MG
+ hk2aKgwU5elQaKIACdToYOpcowYoddLeW0id0B3b7W4CN2Hpdk/NqKenEodFB0QDolVxqu+Qd5V
+ osbEWmOBFlJLsPl9HnxJvtLdvm+GxNlKQSSMzBQDxgp8k9Czr7XwzXIkjGwNuxNPW+eppKqY2n0
+ kNbFCUiDidFtPcB1cOPIKYzRVemnxBzs3I3g62c9Pfcxe7nynm1chbACnJBLQ9EpvDxbZSY54YY
+ v+La0mP+sTZK/WucAvfJII6tPT7fOUwpyOJFsKu2jPXPP416SCBTZHrgNRRvoRyDWLn4PsyLQYW
+ x6f1ZVnPx6PQ8dZB473oGIke078H88l9YeZmhDfE0fTRJCwksdXEWZW+kFl7aRr+mvmtTgp5xjv
+ Zcj5wUx/mj4VEJcgORBSI8FDqjcwLHvdNw0xD0aECCJbhs6jaouQlYmYZ5k9Vxh24zI2sG+JPnw fFmxFiCY7Xc/FCQ==
 X-Mailer: b4 0.14.2
-Message-ID: <20251202-define-rust-helper-v1-36-a2e13cbc17a6@google.com>
-Subject: [PATCH 36/46] rust: scatterlist: add __rust_helper to helpers
+Message-ID: <20251202-define-rust-helper-v1-37-a2e13cbc17a6@google.com>
+Subject: [PATCH 37/46] rust: security: add __rust_helper to helpers
 From: Alice Ryhl <aliceryhl@google.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>
+	Paul Moore <paul@paul-moore.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-security-module@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
 This is needed to inline these helpers into Rust code.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-security-module@vger.kernel.org
 ---
- rust/helpers/scatterlist.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ rust/helpers/security.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/rust/helpers/scatterlist.c b/rust/helpers/scatterlist.c
-index 80c956ee09ab4119a0951709c6f339a2a2c23894..f3c41ea5e20162d670d37557165de71325356351 100644
---- a/rust/helpers/scatterlist.c
-+++ b/rust/helpers/scatterlist.c
-@@ -2,23 +2,25 @@
+diff --git a/rust/helpers/security.c b/rust/helpers/security.c
+index ca22da09548dfed95a83168ed09263e75cf08fd2..8d0a25fcf931ac6540a986aa10187c345614fc9e 100644
+--- a/rust/helpers/security.c
++++ b/rust/helpers/security.c
+@@ -3,41 +3,45 @@
+ #include <linux/security.h>
  
- #include <linux/dma-direction.h>
- 
--dma_addr_t rust_helper_sg_dma_address(struct scatterlist *sg)
-+__rust_helper dma_addr_t rust_helper_sg_dma_address(struct scatterlist *sg)
+ #ifndef CONFIG_SECURITY
+-void rust_helper_security_cred_getsecid(const struct cred *c, u32 *secid)
++__rust_helper void rust_helper_security_cred_getsecid(const struct cred *c,
++						      u32 *secid)
  {
- 	return sg_dma_address(sg);
+ 	security_cred_getsecid(c, secid);
  }
  
--unsigned int rust_helper_sg_dma_len(struct scatterlist *sg)
-+__rust_helper unsigned int rust_helper_sg_dma_len(struct scatterlist *sg)
+-int rust_helper_security_secid_to_secctx(u32 secid, struct lsm_context *cp)
++__rust_helper int rust_helper_security_secid_to_secctx(u32 secid,
++						       struct lsm_context *cp)
  {
- 	return sg_dma_len(sg);
+ 	return security_secid_to_secctx(secid, cp);
  }
  
--struct scatterlist *rust_helper_sg_next(struct scatterlist *sg)
-+__rust_helper struct scatterlist *rust_helper_sg_next(struct scatterlist *sg)
+-void rust_helper_security_release_secctx(struct lsm_context *cp)
++__rust_helper void rust_helper_security_release_secctx(struct lsm_context *cp)
  {
- 	return sg_next(sg);
+ 	security_release_secctx(cp);
  }
  
--void rust_helper_dma_unmap_sgtable(struct device *dev, struct sg_table *sgt,
--				   enum dma_data_direction dir, unsigned long attrs)
-+__rust_helper void rust_helper_dma_unmap_sgtable(struct device *dev,
-+						 struct sg_table *sgt,
-+						 enum dma_data_direction dir,
-+						 unsigned long attrs)
+-int rust_helper_security_binder_set_context_mgr(const struct cred *mgr)
++__rust_helper int
++rust_helper_security_binder_set_context_mgr(const struct cred *mgr)
  {
- 	return dma_unmap_sgtable(dev, sgt, dir, attrs);
+ 	return security_binder_set_context_mgr(mgr);
+ }
+ 
+-int rust_helper_security_binder_transaction(const struct cred *from,
+-					    const struct cred *to)
++__rust_helper int
++rust_helper_security_binder_transaction(const struct cred *from,
++					const struct cred *to)
+ {
+ 	return security_binder_transaction(from, to);
+ }
+ 
+-int rust_helper_security_binder_transfer_binder(const struct cred *from,
+-						const struct cred *to)
++__rust_helper int
++rust_helper_security_binder_transfer_binder(const struct cred *from,
++					    const struct cred *to)
+ {
+ 	return security_binder_transfer_binder(from, to);
+ }
+ 
+-int rust_helper_security_binder_transfer_file(const struct cred *from,
+-					      const struct cred *to,
+-					      const struct file *file)
++__rust_helper int rust_helper_security_binder_transfer_file(
++	const struct cred *from, const struct cred *to, const struct file *file)
+ {
+ 	return security_binder_transfer_file(from, to, file);
  }
 
 -- 
