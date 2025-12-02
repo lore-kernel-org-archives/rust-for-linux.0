@@ -1,385 +1,86 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A0E2F691B
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 08:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0671BC08F
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 09:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764664788; cv=none; b=Xy2GdUv0OlTCRk2X8DqCFRQ7zrNZYST+q6D48cf2XFcSzhzz5SixhtlAVSifgD5KYvcmaxmotya8ghN38/kvMpGyTHfLFRu+JeTWtiVIFhjIHZw3hqgHKiwOnlew9FCn3axNd+gzESpgsgp/Uayd04h7OK0qAc0kCvTXtthIznI=
+	t=1764666694; cv=none; b=Jnn4zLkGlcwQy48r3+K8drAaCIATJu1nfUxJW8Q55yOxc7fg/9xHqPmxZrqyJfj6fjermY/EtkSdTWJwUzsJB/W0HMT/wXY7T4GOUVmyHMrg9SE1/seqQUUPRYP2ll6pgZLo96qgKmw2E1cJvhHfh6wae3XughHWtN8ar7GDxmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764664788; c=relaxed/simple;
-	bh=FnPu6oEodlhWTX3WVxQt0S2ddEoHTO6hIuIzPBzl1QY=;
+	s=arc-20240116; t=1764666694; c=relaxed/simple;
+	bh=Eo7DFhnAE7RKn0LcYMhh4NcM1gYKa2XxknWTpW5/6sA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fHaKt3PM2xvrLmMOd11iPyvCkL3MgMosnJpl3BemH7WjDHtFRPViGG9p9W5RlrcgMAsjc3febEAr2ymQ7XufwrinptW6yvUpK0KaO8UKiuFbrVlfJ9GnQbSyUawMl1NeWpZ/3GYNt6eVYAYdSuJGQXjDQAb2RgHMyz2euJIuI1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FdM6VjYG; arc=none smtp.client-ip=209.85.218.73
+	 To:Cc:Content-Type; b=I3FB5sh0awwpGETdYYvx68A1QyEAJ4wTW6E1rKe1kvJRpcCLdPXyCpkoC7tKbT5Oy31EHN84eqC3ckuvUVZxZk2alwjWdZPmVPtuNqBaayS7ZCmFGO5Sf0a9DN6mvWTMkzHgrVX78bNTIwtE6fPs5Y2jSlzt1uef1YJsNuiFYkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z9rmA9ft; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FdM6VjYG"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b733b21a138so559383166b.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Dec 2025 00:39:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z9rmA9ft"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477c49f273fso51551005e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Dec 2025 01:11:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764664784; x=1765269584; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dQk6tHmJTUqAiCtnsgjTJG63u9eDINxbLO7NMykMICA=;
-        b=FdM6VjYG8lo+y14erHD7l68twFOpCQmQUfYYgQTIqIan99v3YeTin44VsbCWDyerDl
-         8q2lqLmRhsvYsdX1fpMCjL1y2SkwjzmeqNwq4zngODA+19pZ9ZnWXzQRTnL4XLCQK01Q
-         zSHuKXmDMIEd9QamJ8aYfcgxtHk2zkxBhlVohk5OGKxsZcAirxj9HJdCaJbl9BISsSV8
-         MJ4l0KnhYSVpTurzdJRC9R2beOSx8r3gamqb35e+3wdEvy13HymZHf+qj+gum+NnQ1BD
-         kEAg4YXtvwdjz24cDazXmkrfQkGbxgsMNLwaQebIowE/Fa/qZZxx5BdXm76rRgqPZtSW
-         4J7g==
+        d=google.com; s=20230601; t=1764666690; x=1765271490; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LOvIHNI7MzU0j+TsPPOAcJWACtA74NjlNLtzJ+lAxKo=;
+        b=z9rmA9ftBtC0m3vKXSPHUfNKq+2NFtus5/dnN4gBr1Od2du0PqCjAc/yO4K1TlatQu
+         lvGVzKX5ebBYqgfLFzz0sQ16Mvb6RWtcGmXyHbkyLoeCc4FPjQMmlJBwMIrkgWhQAhwN
+         02DU/dLxAxhVfDG8O2CLgYblWfn/eK0m3BzMJSfKngIBFUsG0mU6yxMJwKDVXho3wTAW
+         zXARZWhKxuovQM1XBCO4e2Bte619MzFXAQAdM33ljtkIAP0deT0FFPKQ9hCHFTMWG5Rp
+         pKEPK6eTjcw6OUrOd9nDCoQtDnWi5Ju8RnyYXdCqOdcdvJDWWe+tPXKl6fgtPpDxvFNL
+         hAVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764664784; x=1765269584;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=dQk6tHmJTUqAiCtnsgjTJG63u9eDINxbLO7NMykMICA=;
-        b=prPnl51IFaRM1QmL8ITsBGfU/egRUoQyn9q9TliTQ+0qSSQlVX5M+P0qC13kdT7+vM
-         bBAK14TwqEc1Bi96MEkzUQhnNjj2CG2YDlsZ+EAidlGmSpSD9gls5vsmsom1eO+Ldu2/
-         l6Xw3snZTjBqWSoQKus1ieMWfJAbYtugBitmJuYG6QEMejnRccOe0J7x9NkiUhPDG5CU
-         KH8HYSpKpU21UqYu0ZFhg/h60jzZkr5romrYh2oQ6s0+A7BtlW5KyaKzKjg6BqSy+pVn
-         Ak0Yxxi73QXyFAeZ17/PtN5GxmzCBpY5qkoalAQ77nlCMGdyOfgYQxp6cYAGNdQY3LZf
-         51Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCX8MV5QTWT1AjQ8QWAEjAtrD8frAu+wAI8co6Hh+GkE8/9Er/j/PsMRlIm/E2QRsi7/ejtPS41+75OQZlDm7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXOARr3fdf+nDkn675jdWT4glfqlyu8PJDUU+gG4iJf0OcILB1
-	lSKfb8fVnPGIgdBC9WsKnt2LxvSaLWnMvwohhyWIeNVTWQzhVfJIo0EJNgAZWFdhWCJcxUJguhK
-	523GEKjd3ErazBxAKGA==
-X-Google-Smtp-Source: AGHT+IEc/TxQUgIpfEK5sufEIaSnr0GleDnpyvkysthlI+sYkIIqMQnKrFBu1nj0yiVqQjAh/i5hvFwh+Kb6vzw=
-X-Received: from ejcvt4.prod.google.com ([2002:a17:907:a604:b0:b73:5918:6cd0])
+        d=1e100.net; s=20230601; t=1764666690; x=1765271490;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LOvIHNI7MzU0j+TsPPOAcJWACtA74NjlNLtzJ+lAxKo=;
+        b=kKmjxmwxGlbFUawRne7MMz3YZjiBdChQp+qXuzv4E+NgKOj8hi5i69WRmqv4vjTls2
+         NvajsaZDADoE89ae+vbP3m6BWY121/+hV+PG/tF46Klz/3tiGIwOhrBRIxGSSakFIk2+
+         pB6869pL7V+At3YwGoQS99XP8iWN5cUTJxziV6tkyLDsHklHu8ttHbHDly9lnSWsu5DJ
+         WQw84kRcK4xRICfeBFh8nyy+liSVNjntx2p23T/8yzpMoDHGfuYDuWLYFmA0/ROvjo6B
+         cEbsWvnjq4TuRVFSzFwp1olCF23HauKJMdNuNY5TFYx8P7hB+AYSquhs+GjIMYWL3xoy
+         r8tA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSr9rjOLwq57iU63uRSoQf7JbUBY2WirNXPoLAjfEJJ9+vACrAuEchHFYE4yYYqmJWp/efQ/W3voVsG2oekg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHUu5/xj+krjI/YjxgDaDEEpLCT4JHFTW/B2XkhSJzTZa0pfy3
+	NyY7ED63IlAhKILLt7cEXmCzgq0qhDjlekd0xNLgzvFh4DomnM7YKihWpNYabMJCcik+xQ8FDRQ
+	3kdmrP3nG+Vq5ztGPFw==
+X-Google-Smtp-Source: AGHT+IHWIN0YuGSOPLWLOEi5fZHz7mFlcCip2UWeGRVHC5HGPtIdyX2L/vf1Djqmp3KExq+e20Dc7WITCYj8+Ec=
+X-Received: from wmin6.prod.google.com ([2002:a7b:cbc6:0:b0:475:d94e:4d5d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:6eaa:b0:b6d:6f46:9047 with SMTP id a640c23a62f3a-b76718b4dcbmr4682286966b.59.1764664784573;
- Tue, 02 Dec 2025 00:39:44 -0800 (PST)
-Date: Tue, 2 Dec 2025 08:39:43 +0000
-In-Reply-To: <3727982A-91A4-447C-B53C-B6037DA02FF9@collabora.com>
+ 2002:a05:600c:474b:b0:46e:35a0:3587 with SMTP id 5b1f17b1804b1-477c01ee377mr415781115e9.27.1764666690595;
+ Tue, 02 Dec 2025 01:11:30 -0800 (PST)
+Date: Tue, 2 Dec 2025 09:11:29 +0000
+In-Reply-To: <20251201152759.16429-1-atharvd440@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251128-gpuvm-rust-v1-0-ebf66bf234e0@google.com>
- <20251128-gpuvm-rust-v1-4-ebf66bf234e0@google.com> <3727982A-91A4-447C-B53C-B6037DA02FF9@collabora.com>
-Message-ID: <aS6lz12BIysBVHSV@google.com>
-Subject: Re: [PATCH 4/4] rust: drm: add GPUVM immediate mode abstraction
+References: <20251201152759.16429-1-atharvd440@gmail.com>
+Message-ID: <aS6tQc8hPcignbjE@google.com>
+Subject: Re: [PATCH v2] rust: drm: use `pin_init::zeroed()` for file
+ operations initialization
 From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
+To: Atharv Dubey <atharvd440@gmail.com>
+Cc: Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Frank Binns <frank.binns@imgtec.com>, Matt Coster <matt.coster@imgtec.com>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
-	Sean Paul <sean@poorly.run>, Marijn Suijten <marijn.suijten@somainline.org>, 
-	Lyude Paul <lyude@redhat.com>, Lucas De Marchi <lucas.demarchi@intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
-	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	nouveau@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
-	Asahi Lina <lina+kernel@asahilina.net>
+	Daniel Almeida <daniel.almeida@collabora.com>, Lyude Paul <lyude@redhat.com>, 
+	Shankari Anand <shankari.ak0208@gmail.com>, Asahi Lina <lina+kernel@asahilina.net>, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 01, 2025 at 12:16:09PM -0300, Daniel Almeida wrote:
-> Hi Alice,
->=20
-> I find it a bit weird that we reverted to v1, given that the previous gpu=
-vm
-> attempt was v3. No big deal though.
->=20
->=20
-> > On 28 Nov 2025, at 11:14, Alice Ryhl <aliceryhl@google.com> wrote:
-> >=20
-> > Add a GPUVM abstraction to be used by Rust GPU drivers.
-> >=20
-> > GPUVM keeps track of a GPU's virtual address (VA) space and manages the
-> > corresponding virtual mappings represented by "GPU VA" objects. It also
-> > keeps track of the gem::Object<T> used to back the mappings through
-> > GpuVmBo<T>.
-> >=20
-> > This abstraction is only usable by drivers that wish to use GPUVM in
-> > immediate mode. This allows us to build the locking scheme into the API
-> > design. It means that the GEM mutex is used for the GEM gpuva list, and
-> > that the resv lock is used for the extobj list. The evicted list is not
-> > yet used in this version.
-> >=20
-> > This abstraction provides a special handle called the GpuVmCore, which
-> > is a wrapper around ARef<GpuVm> that provides access to the interval
-> > tree. Generally, all changes to the address space requires mutable
-> > access to this unique handle.
-> >=20
-> > Some of the safety comments are still somewhat WIP, but I think the API
-> > should be sound as-is.
-> >=20
-> > Co-developed-by: Asahi Lina <lina+kernel@asahilina.net>
-> > Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> > Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Mon, Dec 01, 2025 at 08:57:58PM +0530, Atharv Dubey wrote:
+> Replace the manual `unsafe { core::mem::zeroed() }` initialization of
+> `bindings::file_operations` with `pin_init::zeroed()`. This removes the
+> explicit unsafe
+> 
+> Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
 
-> > +//! DRM GPUVM in immediate mode
-> > +//!
-> > +//! Rust abstractions for using GPUVM in immediate mode. This is when =
-the GPUVM state is updated
-> > +//! during `run_job()`, i.e., in the DMA fence signalling critical pat=
-h, to ensure that the GPUVM
->=20
-> IMHO: We should initially target synchronous VM_BINDS, which are the oppo=
-site
-> of what you described above.
-
-Immediate mode is a locking scheme. We have to pick one of them
-regardless of whether we do async VM_BIND yet.
-
-(Well ok immediate mode is not just a locking scheme: it also determines
-whether vm_bo cleanup is postponed or not.)
-
-> > +/// A DRM GPU VA manager.
-> > +///
-> > +/// This object is refcounted, but the "core" is only accessible using=
- a special unique handle. The
->=20
-> I wonder if `Owned<T>` is a good fit here? IIUC, Owned<T> can be refcount=
-ed,
-> but there is only ever one handle on the Rust side? If so, this seems to =
-be
-> what we want here?
-
-Yes, Owned<T> is probably a good fit.
-
-> > +/// core consists of the `core` field and the GPUVM's interval tree.
-> > +#[repr(C)]
-> > +#[pin_data]
-> > +pub struct GpuVm<T: DriverGpuVm> {
-> > +    #[pin]
-> > +    vm: Opaque<bindings::drm_gpuvm>,
-> > +    /// Accessed only through the [`GpuVmCore`] reference.
-> > +    core: UnsafeCell<T>,
->=20
-> This UnsafeCell has been here since Lina=E2=80=99s version. I must say I =
-never
-> understood why, and perhaps now is a good time to clarify it given the ch=
-anges
-> we=E2=80=99re making w.r.t to the =E2=80=9Cunique handle=E2=80=9D thing.
->=20
-> This is just some driver private data. It=E2=80=99s never shared with C. =
-I am not
-> sure why we need this wrapper.
-
-The sm_step_* methods receive a `&mut T`. This is UB if other code has
-an `&GpuVm<T>` and the `T` is not wrapped in an `UnsafeCell` because
-`&GpuVm<T>` implies that the data is not modified.
-
-> > +    /// Shared data not protected by any lock.
-> > +    #[pin]
-> > +    shared_data: T::SharedData,
->=20
-> Should we deref to this?
-
-We can do that.
-
-> > +    /// Creates a GPUVM instance.
-> > +    #[expect(clippy::new_ret_no_self)]
-> > +    pub fn new<E>(
-> > +        name: &'static CStr,
-> > +        dev: &drm::Device<T::Driver>,
-> > +        r_obj: &T::Object,
->=20
-> Can we call this =E2=80=9Creservation_object=E2=80=9D, or similar?
->=20
-> We should probably briefly explain what it does, perhaps linking to the C=
- docs.
-
-Yeah agreed, more docs are probably warranted here.
-
-> I wonder if we should expose the methods below at this moment. We will no=
-t need
-> them in Tyr until we start submitting jobs. This is still a bit in the fu=
-ture.
->=20
-> I say this for a few reasons:
->=20
-> a) Philipp is still working on the fence abstractions,
->=20
-> b) As a result from the above, we are taking raw fence pointers,
->=20
-> c) Onur is working on a WW Mutex abstraction [0] that includes a Rust
-> implementation of drm_exec (under another name, and useful in other conte=
-xts
-> outside of DRM). Should we use them here?
->=20
-> I think your current design with the ExecToken is also ok and perhaps we =
-should
-> stick to it, but it's good to at least discuss this with the others.
-
-I don't think we can postpone adding the "obtain" method. It's required
-to call sm_map, which is needed for VM_BIND.
-
-> > +    /// Returns a [`GpuVmBoObtain`] for the provided GEM object.
-> > +    #[inline]
-> > +    pub fn obtain(
-> > +        &self,
-> > +        obj: &T::Object,
-> > +        data: impl PinInit<T::VmBoData>,
-> > +    ) -> Result<GpuVmBoObtain<T>, AllocError> {
->=20
-> Perhaps this should be called GpuVmBo? That=E2=80=99s what you want to =
-=E2=80=9Cobtain=E2=80=9D in the first place.
->=20
-> This is indeed a question, by the way.
-
-One could possibly use Owned<_> here.
-
-> > +/// A lock guard for the GPUVM's resv lock.
-> > +///
-> > +/// This guard provides access to the extobj and evicted lists.
->=20
-> Should we bother with evicted objects at this stage?
-
-The abstractions don't actually support them right now. The resv lock is
-currently only here because it's used internally in these abstractions.
-It won't be useful to drivers until we add evicted objects.
-
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// Holds the GPUVM resv lock.
-> > +pub struct GpuvmResvLockGuard<'a, T: DriverGpuVm>(&'a GpuVm<T>);
-> > +
-> > +impl<T: DriverGpuVm> GpuVm<T> {
-> > +    /// Lock the VM's resv lock.
->=20
-> More docs here would be nice.
->=20
-> > +    #[inline]
-> > +    pub fn resv_lock(&self) -> GpuvmResvLockGuard<'_, T> {
-> > +        // SAFETY: It's always ok to lock the resv lock.
-> > +        unsafe { bindings::dma_resv_lock(self.raw_resv_lock(), ptr::nu=
-ll_mut()) };
-> > +        // INVARIANTS: We took the lock.
-> > +        GpuvmResvLockGuard(self)
-> > +    }
->=20
-> You can call this more than once and deadlock. Perhaps we should warn abo=
-ut this, or forbid it?
-
-Same as any other lock. I don't think we need to do anything special.
-
-> > +    /// Use the pre-allocated VA to carry out this map operation.
-> > +    pub fn insert(self, va: GpuVaAlloc<T>, va_data: impl PinInit<T::Va=
-Data>) -> OpMapped<'op, T> {
-> > +        let va =3D va.prepare(va_data);
-> > +        // SAFETY: By the type invariants we may access the interval t=
-ree.
-> > +        unsafe { bindings::drm_gpuva_map(self.vm_bo.gpuvm().as_raw(), =
-va, self.op) };
-> > +        // SAFETY: The GEM object is valid, so the mutex is properly i=
-nitialized.
->=20
-> > +        unsafe { bindings::mutex_lock(&raw mut (*self.op.gem.obj).gpuv=
-a.lock) };
->=20
-> Should we use Fujita=E2=80=99s might_sleep() support here?
-
-Could make sense yeah.
-
-> > +/// ```
-> > +/// struct drm_gpuva_op_unmap {
-> > +/// /**
-> > +/// * @va: the &drm_gpuva to unmap
-> > +/// */
-> > +/// struct drm_gpuva *va;
-> > +///
-> > +/// /**
-> > +/// * @keep:
-> > +/// *
-> > +/// * Indicates whether this &drm_gpuva is physically contiguous with =
-the
-> > +/// * original mapping request.
-> > +/// *
-> > +/// * Optionally, if &keep is set, drivers may keep the actual page ta=
-ble
-> > +/// * mappings for this &drm_gpuva, adding the missing page table entr=
-ies
-> > +/// * only and update the &drm_gpuvm accordingly.
-> > +/// */
-> > +/// bool keep;
-> > +/// };
-> > +/// ```
->=20
-> I think the docs could improve here ^
-
-Yeah I can look at it.
-
-> > +impl<T: DriverGpuVm> GpuVmCore<T> {
-> > +    /// Create a mapping, removing or remapping anything that overlaps=
-.
-> > +    #[inline]
-> > +    pub fn sm_map(&mut self, req: OpMapRequest<'_, T>) -> Result {
->=20
-> I wonder if we should keep this =E2=80=9Csm=E2=80=9D prefix. Perhaps
-> =E2=80=9Cmap_region=E2=80=9D or =E2=80=9Cmap_range=E2=80=9D would be bett=
-er names IMHO.
-
-I'll wait for Danilo to weigh in on this. I'm not sure where "sm"
-actually comes from.
-
-> > +/// Represents that a given GEM object has at least one mapping on thi=
-s [`GpuVm`] instance.
-> > +///
-> > +/// Does not assume that GEM lock is held.
-> > +#[repr(C)]
-> > +#[pin_data]
-> > +pub struct GpuVmBo<T: DriverGpuVm> {
->=20
-> Oh, we already have GpuVmBo, and GpuVmBoObtain. I see.
-
-Yeah, GpuVmBoObtain and GpuVmBoAlloc are pointers to GpuVmBo.
-
-> > +    #[pin]
-> > +    inner: Opaque<bindings::drm_gpuvm_bo>,
-> > +    #[pin]
-> > +    data: T::VmBoData,
-> > +}
-> > +
-> > +impl<T: DriverGpuVm> GpuVmBo<T> {
-> > +    pub(super) const ALLOC_FN: Option<unsafe extern "C" fn() -> *mut b=
-indings::drm_gpuvm_bo> =3D {
-> > +        use core::alloc::Layout;
-> > +        let base =3D Layout::new::<bindings::drm_gpuvm_bo>();
-> > +        let rust =3D Layout::new::<Self>();
-> > +        assert!(base.size() <=3D rust.size());
->=20
-> We should default to something else instead of panicking IMHO.
-
-This is const context, which makes it a build assertion.
-
-> My overall opinion is that we=E2=80=99re adding a lot of things that will=
- only be
-> relevant when we=E2=80=99re more advanced on the job submission front. Th=
-is
-> includes the things that Phillip is working on (i.e.: Fences + JobQueue).
->=20
-> Perhaps we should keep this iteration downstream (so we=E2=80=99re sure i=
-t works
-> when the time comes) and focus on synchronous VM_BINDS upstream.
-> The Tyr demo that you=E2=80=99ve tested this on is very helpful for this =
-purpose.
-
-Yeah let's split out the prepare, GpuVmExec, and resv_add_fence stuff to
-a separate patch.
-
-I don't think sync vs async VM_BIND changes much in which methods or
-structs are required here. Only difference is whether you call the
-methods from a workqueue or not.
+Thanks, I'll pick this up for drm-rust-next once the branch reopens in
+two weeks.
 
 Alice
