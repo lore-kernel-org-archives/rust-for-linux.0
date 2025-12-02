@@ -1,294 +1,127 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9672F2605
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 20:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74AF2E8B9C;
+	Tue,  2 Dec 2025 21:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764707301; cv=none; b=kOpZNG9KIJMauTQQHc9I2/khSc8iaFPjtktzqjxLa5VbooFV817Vd3OB/x+npRXXQNp2rTRsm69b8QUZg13igkSY6SN5yVdAMNqOxQWjGgrlMBKjVQVOPQ62c6xrUMlDojYSCfOEnOSOKE7gur/PGKvFEzwlibhtJjb4cV9HIDY=
+	t=1764709525; cv=none; b=X0PhFRkEh4MQciyV1oKaFIk1FQVSHX2NsJkYGEshnPJYQ0T5x8TbEwa4k91gtlaAbHmyBUx1mrjyAm2viAUQ5CCfPaDxHorSDORQl30fP78PWamNckctd86Th5bHWgHwENtvwF3a1pt2OORJ9XX33AMPhx4wmk4j5AyB1Fd5drE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764707301; c=relaxed/simple;
-	bh=j2kuLAZlOu1qDYVFIam1mftfSDlTjSfi8WMZfY1GIbw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HxInCX7bzdHmhipSJWNcfGh/qg7/c7VYfqP0F9lJyHiOfR1wwyn96IibgaJSmsjFxRnQ6Xk6YTperLrWb6NoNDR3rF+yYrc/w8DTXbV1nezM8XR9TCjKjVC+UvwhbgTXnDGK5+xPYGsGzct1Z/61w/jBZQfNXEAtlU5j07GCryI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l1p1tkbr; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1764709525; c=relaxed/simple;
+	bh=LxvmlEPnwcT3Fu4tZFgl635nHvjb95q21b94nDLlrVs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O3CPtZ5z6b+nlJJ9+sh6knZhhx9Ryi8e/eAf7csx3NNApaaNcyB6PO9J0TGaE6mvuZOrBZs2ixmprCGnVk8/B6cTPxXd4ws5tp1RIbH4v2c0TFJWDOkuMtwXz9lVvd+TJDWWnZ9KlgRKRl47h09Zya3wpiQZq3OrYNna2pnyzGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=reKcttf6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l1p1tkbr"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477a11d9e67so34845635e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Dec 2025 12:28:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764707295; x=1765312095; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Id46d5Vmg/QweH1w+t+fx2ST+00n7i1ciKT4MxLQ6Gk=;
-        b=l1p1tkbrtwaNVarZP97p9WynmYMXEtrFL6jKjGKN40AMTLHPXx2IUd0DOZ+nv0P0Bl
-         CN4bBtUAyPA4jvL6LSGrLzdMSjoFgUmJ5xLpu2Y2ddo8533hc9upa/a15xW4IFQYiWI4
-         HVfjq6wat6+V9EFnZQOOkOmotgNfAJal7ydzUF7WCX5ERK1i2lYt0+O+Uemn3n/Z08Vh
-         7CrkEgk3wGOy6ZCG90Xb55la1jVJJi+b6D3X3HL3v5n0s+cwsSmrK8JQ7uGle3tduXGM
-         Gs7ePxsJSOsJ802vzHjIDvRkDmIDtBn2ZnNF61qoMt+cUeOCOCrjhT3SttcxB/UrzL2e
-         j3Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764707295; x=1765312095;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Id46d5Vmg/QweH1w+t+fx2ST+00n7i1ciKT4MxLQ6Gk=;
-        b=Jepc+KWPCnnnH2iwhRVSXYINrh+ZmDYWQ6F5jliiLsWN0ZKq4FrhM4XmgyLehWxfgn
-         cxn/HnCLNgpcZC3pjOvMBOH7t+2RpOeS6FeX9tuoEXh0VZuRXZG2clZjB2vLgKbVX9O0
-         NY2vPlPOkdW7/YNQJxgOU+KtfUGUXkcjIG1qlCfj1XrykpdW7R4L+1wOP834PudYggnu
-         D2qWK9t7GxGjKGJ+IAjV/jGsTe+1IRCJ/KYTqTLUh/QITZRlCn769teXz89LG/XDVpJD
-         SCbzkvYYzO4TupxDSni4H/O3tMoLpoTb/nx8PlBZPVk6aDucc3meEnIVp14eo7Jt1uUz
-         K4Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/fS1pdp6O2H16b0iLjnjMUcgY8nP1iublyfX5i0K74dpl7Deqq5Sakg3XtwXaxxwXbgL9Mm4q9dZYcEZC/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+VyBhKcOJ7ZkbIKKhPZZm78v6qDpyW6EnaCH5hsvGn0peMur/
-	k2qC5VDGb9sMK0/gmtrqeCzawrehyVub/GG3e0z/dhQOtNOESVpJgtj6YnqLlr70qMlRYeJRC1u
-	NWQwDXhuUG5U6lIKhYQ==
-X-Google-Smtp-Source: AGHT+IEV8MdqGcyCgbe2mt3hk2i0zy9sL5yMlrGz8Wfzitbo0qZDeAoS7Bz5wRmT2BDTK8lUXG2WtOVPXNGQznc=
-X-Received: from wmqg19.prod.google.com ([2002:a05:600c:4ed3:b0:477:a1f9:138c])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e91:b0:477:7ae0:cd6e with SMTP id 5b1f17b1804b1-4792a5ddcc9mr8270815e9.5.1764707294808;
- Tue, 02 Dec 2025 12:28:14 -0800 (PST)
-Date: Tue, 02 Dec 2025 20:27:59 +0000
-In-Reply-To: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="reKcttf6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B31C113D0;
+	Tue,  2 Dec 2025 21:05:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764709524;
+	bh=LxvmlEPnwcT3Fu4tZFgl635nHvjb95q21b94nDLlrVs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=reKcttf6QJ32bgv7Cck3ohwz+kgNgnKhxlV3WBdI0fEqia1J46gxl+HlXJhg4con2
+	 C9DQt4qGggm7SijthKMXQ0UWemet7kzQN+dFfLTCG24WpkgvzG/qWt95bGehNJgALp
+	 iMMqzA9oGsWuzowcH9ccT6hREYAAqsXxecmbnio0Jc1Ej6ck5b/TrQCJ8gI7vpiI0a
+	 eX2j6ougYYdlxn11aKi3C9BrSIvC++69/2WIpxdVyarNYT8cFhoYxU6EN/pilsWDHM
+	 twtmP11NFrXwGrhypHc63DtjrqAE2lEvwBPDukafJFpIIV9tBzN3Fpdb0FrjurDy86
+	 ZTl95IzZDtEWw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	joelagnelf@nvidia.com
+Cc: linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] rust: pci: fix build failure when CONFIG_PCI_MSI is disabled
+Date: Wed,  3 Dec 2025 10:01:50 +1300
+Message-ID: <20251202210501.40998-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8979; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=ZnZgTS3QcWRawBw++AAPhDFQtHAEQIZjfTFyfZ+xDmk=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpL0vY58X0j2N0y6zci+722T9v5vmhEw8pSHYzy
- bBoMvTYi1uJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaS9L2AAKCRAEWL7uWMY5
- RgpGD/0fasxYXiW6xVDDz8y4znLsMtXtDdRWNS+6bJ+27GT03cNM49SunHDvdbd1REYSO2YPMBz
- kPaPyVggZHDWnyck1v+MiaG+x4LW+ZRIkW8vaUrh+aymRIXxt76FsCU9rUOcgAZ16qMAGGpu6N+
- phlcZRw3rBj1By8r+yuXf8PdJKxCF4DbMGLkzT41x5F1+oHfjrHV4azKoBtDZzOLfrQf14dJ+wE
- MXz5NrtQdnDi8+fGcMM6T2TA4rimlfzl817O9Ho/Z4sbqYoYciomv8XvLM3z5hS9pzvjfB8UYF5
- u5m/OyCU61eDcrbiyQJbjny4mgxknTjmeUmsF5u1ihqApi8vbB/ZlYHyZL9MgJEkFKqHAyZKga2
- qEGd/jKKrArjdJwDk4TLcMwofyvdezUNx56N+IwbaQ8nKUWxV01veHHnkhvHWBCrkKPP5LvnemU
- woHsvvPGxiX3D6uXJDgzNM2ZaO4uNVFBDnjOkWEUCRvzPFg4muptJlGYfXtrbLGar7KWHu+0scl
- +2UMIdbTQV7p5t32aiJn3k4MV+FSMnPlbBEFJohWVT0dFSUgOeB1jnuJHp6oFzzhJtevrHVJ5iD
- N2Q7FYIYgHL3/LwM4YB/7bDJs6WhgzHaAsvSbU71oiP9t2Fmzvrx0ndD1YMaaBeWrcRhhwR+AH9 PlvCH9Zp+KU5/LA==
-X-Mailer: b4 0.14.2
-Message-ID: <20251202-inline-helpers-v1-4-879dae33a66a@google.com>
-Subject: [PATCH 4/4] build: rust: provide an option to inline C helpers into Rust
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	nouveau@lists.freedesktop.org, Alice Ryhl <aliceryhl@google.com>, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Gary Guo <gary@garyguo.net>
+When CONFIG_PCI_MSI is disabled pci_alloc_irq_vectors() and
+pci_free_irq_vectors() are defined as inline functions and hence require
+a Rust helper.
 
-A new experimental Kconfig option, `RUST_INLINE_HELPERS` is added to
-allow C helpers (which were created to allow Rust to call into
-inline/macro C functions without having to re-implement the logic in
-Rust) to be inlined into Rust crates without performing global LTO.
+	error[E0425]: cannot find function `pci_alloc_irq_vectors` in crate `bindings`
+	    --> rust/kernel/pci/irq.rs:144:23
+	     |
+	 144 | ...s::pci_alloc_irq_vectors(dev.as_raw(), min_vecs, max_vecs, irq_types.as_raw())
+	     |       ^^^^^^^^^^^^^^^^^^^^^ help: a function with a similar name exists: `pci_irq_vector`
+	     |
+	    ::: .../rust/bindings/bindings_helpers_generated.rs:1197:5
+	     |
+	1197 |     pub fn pci_irq_vector(pdev: *mut pci_dev, nvec: ffi::c_uint) -> ffi::c_int;
+	     |     --------------------------------------------------------------------------- similarly named function `pci_irq_vector` defined here
 
-If the option is enabled, the following is performed:
-* For helpers, instead of compiling them to an object file to be linked
-  into vmlinux, they're compiled to LLVM IR.
-* The LLVM IR is compiled to bitcode (This is step is not necessary, but
-  is a performance optimisation to prevent LLVM from always have to
-  reparse the same IR).
-* When a Rust crate is compiled, instead of generating an object file, we
-  ask LLVM bitcode to be generated.
-* llvm-link is invoked with --internalize to combine the helper bitcode
-  with the crate bitcode. This step is similar to LTO, but this is much
-  faster since it only needs to inline the helpers.
-* clang is invoked to turn the combined bitcode into a final object file.
+	error[E0425]: cannot find function `pci_free_irq_vectors` in crate `bindings`
+	    --> rust/kernel/pci/irq.rs:170:28
+	     |
+	 170 |         unsafe { bindings::pci_free_irq_vectors(self.dev.as_raw()) };
+	     |                            ^^^^^^^^^^^^^^^^^^^^ help: a function with a similar name exists: `pci_irq_vector`
+	     |
+	    ::: .../rust/bindings/bindings_helpers_generated.rs:1197:5
+	     |
+	1197 |     pub fn pci_irq_vector(pdev: *mut pci_dev, nvec: ffi::c_uint) -> ffi::c_int;
+	     |     --------------------------------------------------------------------------- similarly named function `pci_irq_vector` defined here
 
-The --internalize flag tells llvm-link to treat all symbols in
-helpers.bc using `internal` linkage. This matches the behavior of
-`clang` on `static inline` functions, and avoids exporting the symbol
-from the object file.
+	error: aborting due to 2 previous errors
 
-To ensure that RUST_INLINE_HELPERS is not incompatible with BTF, we pass
-the -g0 flag when building helpers. See commit 5daa0c35a1f0 ("rust:
-Disallow BTF generation with Rust + LTO") for details.
+Fix this by adding the corresponding helpers.
 
-We have an intended triple mismatch of `aarch64-unknown-none` vs
-`aarch64-unknown-linux-gnu`, so we suppress the warning.
-
-Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Co-developed-by: Matthew Maurer <mmaurer@google.com>
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: 340ccc973544 ("rust: pci: Allocate and manage PCI interrupt vectors")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202512012238.YgVvRRUx-lkp@intel.com/
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- Makefile               |  4 +++-
- lib/Kconfig.debug      | 15 +++++++++++++++
- rust/Makefile          | 26 ++++++++++++++++++++++----
- rust/exports.c         |  5 ++++-
- scripts/Makefile.build |  5 ++++-
- 5 files changed, 48 insertions(+), 7 deletions(-)
+ rust/helpers/pci.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/Makefile b/Makefile
-index 96ddbaae7e12de71bcfabef4639de3a13a6e4815..5834bfd568548d1bee34b328dccce5d60f85526f 100644
---- a/Makefile
-+++ b/Makefile
-@@ -517,6 +517,8 @@ OBJCOPY		= $(LLVM_PREFIX)llvm-objcopy$(LLVM_SUFFIX)
- OBJDUMP		= $(LLVM_PREFIX)llvm-objdump$(LLVM_SUFFIX)
- READELF		= $(LLVM_PREFIX)llvm-readelf$(LLVM_SUFFIX)
- STRIP		= $(LLVM_PREFIX)llvm-strip$(LLVM_SUFFIX)
-+LLVM_LINK	= $(LLVM_PREFIX)llvm-link$(LLVM_SUFFIX)
-+LLVM_AS		= $(LLVM_PREFIX)llvm-as$(LLVM_SUFFIX)
- else
- CC		= $(CROSS_COMPILE)gcc
- LD		= $(CROSS_COMPILE)ld
-@@ -625,7 +627,7 @@ export RUSTC_BOOTSTRAP := 1
- export CLIPPY_CONF_DIR := $(srctree)
+diff --git a/rust/helpers/pci.c b/rust/helpers/pci.c
+index fb814572b236..bf8173979c5e 100644
+--- a/rust/helpers/pci.c
++++ b/rust/helpers/pci.c
+@@ -23,9 +23,21 @@ bool rust_helper_dev_is_pci(const struct device *dev)
+ }
  
- export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
--export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN
-+export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN LLVM_LINK LLVM_AS
- export HOSTRUSTC KBUILD_HOSTRUSTFLAGS
- export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
- export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 3034e294d50df55c4003c5fa5df442f59e711bd8..e63c5eb57b049aff988419ccd12dfd99d59f5080 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -3427,6 +3427,21 @@ config RUST_KERNEL_DOCTESTS
- 
- 	  If unsure, say N.
- 
-+config RUST_INLINE_HELPERS
-+    bool "Inline C helpers into Rust crates (EXPERIMENTAL)"
-+    depends on RUST && RUSTC_CLANG_LLVM_COMPATIBLE
-+    depends on EXPERT
-+    help
-+        Links C helpers into Rust crates through LLVM IR.
+ #ifndef CONFIG_PCI_MSI
++int rust_helper_pci_alloc_irq_vectors(struct pci_dev *dev,
++				      unsigned int min_vecs,
++				      unsigned int max_vecs,
++				      unsigned int flags)
++{
++	return pci_alloc_irq_vectors(dev, min_vecs, max_vecs, flags);
++}
 +
-+        If this option is enabled, instead of generating object files directly,
-+        rustc is asked to produce LLVM IR, which is then linked together with
-+        the LLVM IR of C helpers, before object file is generated.
++void rust_helper_pci_free_irq_vectors(struct pci_dev *dev)
++{
++	pci_free_irq_vectors(dev);
++}
 +
-+        This requires a matching LLVM version for Clang and rustc.
-+
-+        If unsure, say N.
-+
- endmenu # "Rust"
- 
- endmenu # Kernel hacking
-diff --git a/rust/Makefile b/rust/Makefile
-index d7d19c21b671dea10242b1772a8bcf0bf5dcc1cd..2344e2662ce29280582215954132c09f63cd8c9d 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -6,15 +6,19 @@ rustdoc_output := $(objtree)/Documentation/output/rust/rustdoc
- obj-$(CONFIG_RUST) += core.o compiler_builtins.o ffi.o
- always-$(CONFIG_RUST) += exports_core_generated.h
- 
-+ifdef CONFIG_RUST_INLINE_HELPERS
-+always-$(CONFIG_RUST) += helpers/helpers.bc
-+else
-+obj-$(CONFIG_RUST) += helpers/helpers.o
-+always-$(CONFIG_RUST) += exports_helpers_generated.h
-+endif
- # Missing prototypes are expected in the helpers since these are exported
- # for Rust only, thus there is no header nor prototypes.
--obj-$(CONFIG_RUST) += helpers/helpers.o
- CFLAGS_REMOVE_helpers/helpers.o = -Wmissing-prototypes -Wmissing-declarations
- 
- always-$(CONFIG_RUST) += bindings/bindings_generated.rs bindings/bindings_helpers_generated.rs
- obj-$(CONFIG_RUST) += bindings.o pin_init.o kernel.o
--always-$(CONFIG_RUST) += exports_helpers_generated.h \
--    exports_bindings_generated.h exports_kernel_generated.h
-+always-$(CONFIG_RUST) += exports_bindings_generated.h exports_kernel_generated.h
- 
- always-$(CONFIG_RUST) += uapi/uapi_generated.rs
- obj-$(CONFIG_RUST) += uapi.o
-@@ -468,6 +472,13 @@ $(obj)/bindings/bindings_helpers_generated.rs: private bindgen_target_extra = ;
- $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c FORCE
- 	$(call if_changed_dep,bindgen)
- 
-+quiet_cmd_rust_helper = HELPER  $@
-+      cmd_rust_helper = \
-+	$(CC) $(filter-out $(CFLAGS_REMOVE_helpers/helpers.o), $(c_flags)) -c -g0 $< -emit-llvm -o $@
-+
-+$(obj)/helpers/helpers.bc: $(obj)/helpers/helpers.c FORCE
-+	+$(call if_changed_dep,rust_helper)
-+
- rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__(pfx|cfi|odr_asan)/ { printf $(2),$$3 }'
- 
- quiet_cmd_exports = EXPORTS $@
-@@ -547,11 +558,13 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
- 	OBJTREE=$(abspath $(objtree)) \
- 	$(if $(skip_clippy),$(RUSTC),$(RUSTC_OR_CLIPPY)) \
- 		$(filter-out $(skip_flags),$(rust_flags)) $(rustc_target_flags) \
--		--emit=dep-info=$(depfile) --emit=obj=$@ \
-+		--emit=dep-info=$(depfile) --emit=$(if $(link_helper),llvm-bc=$(patsubst %.o,%.bc,$@),obj=$@) \
- 		--emit=metadata=$(dir $@)$(patsubst %.o,lib%.rmeta,$(notdir $@)) \
- 		--crate-type rlib -L$(objtree)/$(obj) \
- 		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
- 		--sysroot=/dev/null \
-+	$(if $(link_helper),;$(LLVM_LINK) --internalize --suppress-warnings $(patsubst %.o,%.bc,$@) $(obj)/helpers/helpers.bc -o $(patsubst %.o,%.m.bc,$@); \
-+		$(CC) $(CLANG_FLAGS) $(KBUILD_CFLAGS) -Wno-override-module -c $(patsubst %.o,%.m.bc,$@) -o $@) \
- 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@) \
- 	$(cmd_objtool)
- 
-@@ -678,4 +691,9 @@ $(obj)/kernel.o: $(obj)/kernel/generated_arch_warn_asm.rs $(obj)/kernel/generate
- endif
- endif
- 
-+ifdef CONFIG_RUST_INLINE_HELPERS
-+$(obj)/kernel.o: private link_helper = 1
-+$(obj)/kernel.o: $(obj)/helpers/helpers.bc
-+endif
-+
- endif # CONFIG_RUST
-diff --git a/rust/exports.c b/rust/exports.c
-index 587f0e776aba52854080f15aa91094b55996c072..1b52460b0f4eeef6df9081abb9b7e054a28c3c21 100644
---- a/rust/exports.c
-+++ b/rust/exports.c
-@@ -16,10 +16,13 @@
- #define EXPORT_SYMBOL_RUST_GPL(sym) extern int sym; EXPORT_SYMBOL_GPL(sym)
- 
- #include "exports_core_generated.h"
--#include "exports_helpers_generated.h"
- #include "exports_bindings_generated.h"
- #include "exports_kernel_generated.h"
- 
-+#ifndef CONFIG_RUST_INLINE_HELPERS
-+#include "exports_helpers_generated.h"
-+#endif
-+
- // For modules using `rust/build_error.rs`.
- #ifdef CONFIG_RUST_BUILD_ASSERT_ALLOW
- EXPORT_SYMBOL_RUST_GPL(rust_build_error);
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index d0ee33a487be95f8ba9a5c964ebecfbebc6c4bf8..04eaf2b4fbca2245f904a6dc7875cb3275aa7df6 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -343,7 +343,10 @@ rust_common_cmd = \
- # would not match each other.
- 
- quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
--      cmd_rustc_o_rs = $(rust_common_cmd) --emit=obj=$@ $< $(cmd_objtool)
-+      cmd_rustc_o_rs = $(rust_common_cmd) --emit=$(if $(CONFIG_RUST_INLINE_HELPERS),llvm-bc=$(patsubst %.o,%.bc,$@),obj=$@) $< \
-+	$(if $(CONFIG_RUST_INLINE_HELPERS),;$(LLVM_LINK) --internalize --suppress-warnings $(patsubst %.o,%.bc,$@) $(objtree)/rust/helpers/helpers.bc -o $(patsubst %.o,%.m.bc,$@); \
-+		$(CC) $(CLANG_FLAGS) $(KBUILD_CFLAGS) -Wno-override-module -c $(patsubst %.o,%.m.bc,$@) -o $@) \
-+	$(cmd_objtool)
- 
- define rule_rustc_o_rs
- 	$(call cmd_and_fixdep,rustc_o_rs)
+ int rust_helper_pci_irq_vector(struct pci_dev *pdev, unsigned int nvec)
+ {
+ 	return pci_irq_vector(pdev, nvec);
+ }
+-
+ #endif
 
+base-commit: d3666c1f8a31b7ff6805effcfedfac22454c6517
 -- 
-2.52.0.158.g65b55ccf14-goog
+2.52.0
 
