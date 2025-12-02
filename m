@@ -1,55 +1,55 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26942F4A04
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 19:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5310E2F6914
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 19:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764704300; cv=none; b=p37Hio0R9i9fd86xjsRIZJ2R/OhnulRqYqqIM3ZVOgKzANEF2qHW7z4ZWHlL0WgPh6QwcKMf+kWe6GgdxlqlQh4J8EawX8WXhZ0rQ2Sp5Ff41fuIJ0M8HdfyIDMYZhEMg/WD6KCfcfD6zIzMbjDN0mQFQaCZme2jF0W5B/9s6Dg=
+	t=1764704303; cv=none; b=EzGnk8MZ9TRb0hXFaxW6GfXzMUhl3Evo25ntaN/R9ZSra0+cCneA+KNrSsj5/s5yfg9CQ1E5ZBTXc450VAjffKc8EZjkJkTj3kAX19qWgjWw7K9mDLyamLxuBJ/Q8i3nAsihs4BxXmAH619OfTPfM0iwQRWrT6Y0UMozxtGChx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764704300; c=relaxed/simple;
-	bh=XEQRtG4ngq8j4eZKlMeUQVFI7+jbBl0S1gcS78Q3lKE=;
+	s=arc-20240116; t=1764704303; c=relaxed/simple;
+	bh=s5F849cKunCWhXEDw04RDI6ouvr7CQTpbwq+FWSvJxw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jCq8bhS7k0u9eXPLKQC+e5SalHepGIrpzS7rxNFvwA1Co4rmjQ8nJw4eYSFN/uLsw9LJ/dQNGW7FpQXwLUCOZDx76Vap2UETuW7H7IM75V9Gf4d10awn5Tjs7AUKBCQUVc2heSb5ztPmDuZUTI9bDQWEPgeje9WlpBz3nKz2J3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r047Ww7Z; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=tOxshfI0YfwzyZBswpq3EI2TO6ziMuHyTUlS2CK4tv/bsSuUqRuFswqoqTjpc9/Vp+9PfrGthX8l+eSo3dElqqsh/mvi9jwLG1a1Vl9XDsUgldJtbDz8kFP0flF+PQHZ7Ynhl8Rwxg058QSwZJp4TwMi/YGU6egg/zWaEEpMFNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K0ZxcRrl; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r047Ww7Z"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477a1e2b372so53760485e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Dec 2025 11:38:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K0ZxcRrl"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42e2d5e833fso1691073f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Dec 2025 11:38:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764704297; x=1765309097; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1764704298; x=1765309098; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cY6zIVgs8oj5wBS1r8U63RsVERdgroiyYEhYKwsINow=;
-        b=r047Ww7Z3nD1hLHHTzzgkhiCUbDFWEqUjxUMz2mB6dVt3m8uvnru5vrZ8Tt9oehv7+
-         bUr6jL/lbM/yc3NYN03vsiFqpjokDNVJhsbvZr3LfXkEj9EU78JYjG1TtQ/OjDp7yOJo
-         ixfIibg2RX24DP4mVPh/eKmxe4BYN4n9RWkfppLOlYhvq2+HVbN0IijpWktwTz4K/obR
-         0wZx9ExtBQur2+IrXeh0Ggo3Dsy5Um6otyo5J6MecOdEIDTmdeZZKC+188JHcIfDXDPM
-         NSImxFqAbbPTRihlCygdIeYvkNVqiNE3KXq8a0WfHDdaA3MhFfWTwdfDZBxQ0ii4xJVq
-         MDnA==
+        bh=0qMYBEWcYpIOM/tMAd0uS75dTnBdoaoIVwbOFkcZei8=;
+        b=K0ZxcRrlL4vlE9jtZl0iuBpjLZl+9w+9vrevasxiXmPw5o0SIi6bBmwx8zIxEfYmSv
+         KZv/HHFSUlJB9dXmm31BXIjSPjU7oGqhY4aCXFoOKN0dyd2fxcbswWxOyJf10HPYYie4
+         /qPJmXQKNW5yPro3zFF9UQTMc1Mnq+rGxqwJidoSOADJBHUAFuqKAgjjn9SBnh1KP5zO
+         lWsUon33Pd2YxSyTc+GmNRQ7k+tDESdkNeMXUAOmhd6O+K7n3rfEdYj62SEagThf3ef/
+         nQXsiqqL1NBZq/brkgwT5gGfIQq4yTj03Fv0y7saFt32YjrWdTtBbVpgc7XUGdPNOOxX
+         +KMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764704297; x=1765309097;
+        d=1e100.net; s=20230601; t=1764704298; x=1765309098;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cY6zIVgs8oj5wBS1r8U63RsVERdgroiyYEhYKwsINow=;
-        b=IXTv5HFBMOAwNZqYm9eQB+kCdJGltejLysB/L5im9Iz/TjyBouqau7lEFw1NaP4Dom
-         2szyyfyAUI6XwnsV7Bb7/JprkuiQ7dMJB5Z9d3gO9wNCHDjvIEw+1lr9EI/l4REt+FWF
-         8I6dfMZktZcYk74RpV3PxDlMtYvj4d4FS/N8C63BawJqvd94VG6BGgQ2hkTxFuCNYW4W
-         QhYd56YXX9vFI9mzMYdqlISKJfhul1gzvlMzHUbk7gAJTswORJkar8f8AcYr9Rw4n28i
-         hD5TBhNJMR4DKhnqoeKBd/rf3ak9ivPjtVwf+tNto8oh8LQfoBhLMyao0Im/0ECfo3pc
-         Mpxw==
-X-Gm-Message-State: AOJu0YwuJy2EVe4F1UzCYPv6OCVZuv0JgqqZdh3SjqJOGY+VZ7g7+Fsn
-	dmJWrp5Dg2pgXMZsx5IB/E0Ch2Zllj11zlweNiE+A2zBgP9mRAJHiNpiRTfg87n6sTyAYMWTVWR
-	iXjAoIK/VtLCiew4AXxHaI3W4Z8mBCWQ+590gAzr4TA9FFbsjvdfoeBuQXivTZht8vNF90M/EcO
-	7B1Hhp4EHuDBFPPv1jlgN7BIf4hVLf89nrLpWiE3HR674ya6qUj+GHNeC/GeS4S2c=
-X-Google-Smtp-Source: AGHT+IFcwWbMYlcRexEdOE1jDvEmEKwihlP9NvSbx51wpfs2n41agdwJLpO0F/fYzRDb2riuwhzLO80opasVOCE=
-X-Received: from wmkz11.prod.google.com ([2002:a7b:c7cb:0:b0:477:9654:b44c])
+        bh=0qMYBEWcYpIOM/tMAd0uS75dTnBdoaoIVwbOFkcZei8=;
+        b=UkpNJnpoB7lq1JMlckDc7pjXD5oCkRmuVPP3RTeD9gGItfJeyCSuKsXUJibL5jbY9e
+         O1T71q0Oa5usR451jto8yOcy9S2J3ejFLOZ/ZwlEvvwBuAYjx2xz3dpvFaRKYz4z0Y+b
+         DKyo/bYXA/7gmdeX+sJhmZtsdTtHjOsQ2F69soEQyHCQzPZ7gKs5zeV2DYe3jd+JhAK8
+         LVswQTSpQZGckuoMzcGfGK3oOHoU/WQnpJWMl/aI0PXC1NfW1m5YfR4wWQ7VSfd1anqT
+         WTOX4tDOCqVoSoRd3sTkzkSPBATpXGctrqR2FheniBOkq4TihMswjPzXRJTT8Hj0laWA
+         hLyA==
+X-Gm-Message-State: AOJu0YxFA2ccYWR4tUl92tDTdNEYG30yxlXJq1tWcGHK7ODCtGMgT7+W
+	s2q0eu4/5bBcuHZ36frxCmDmEDGOsiuj9jayXRVStl4R72rkrRhdhQMZ4OpDdN0G9gWqgkDZfuI
+	S/6q2mhpIK6oRQp4dElA2Lj7PfiiuagC3cMBsXBGc/nVMY3ZqPCLRZvOWxKd1I2DnCNc8ldDYIO
+	H//oO3pLHK0UuYw9Lfj3HhPBZxH0MwTopFaaFbHASPJVOen+8fDICRgAjoDkRNDzc=
+X-Google-Smtp-Source: AGHT+IF3Aj9rjblOcR3xPIzMTJeS1VxCNmkzb1lfjIl8FlvWxFuJ83OIWlXne2ViSMvh24ifU49i6uNyDCJKhgQ=
+X-Received: from wrbdi3.prod.google.com ([2002:a05:6000:ac3:b0:42b:3346:5434])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4fcb:b0:477:557b:691d with SMTP id 5b1f17b1804b1-477c01eea7fmr401133835e9.25.1764704297175;
- Tue, 02 Dec 2025 11:38:17 -0800 (PST)
-Date: Tue, 02 Dec 2025 19:37:47 +0000
+ 2002:a05:6000:310f:b0:429:bce4:20bf with SMTP id ffacd0b85a97d-42cc1d194fdmr45269347f8f.55.1764704298588;
+ Tue, 02 Dec 2025 11:38:18 -0800 (PST)
+Date: Tue, 02 Dec 2025 19:37:48 +0000
 In-Reply-To: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,28 +59,28 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=947; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=XEQRtG4ngq8j4eZKlMeUQVFI7+jbBl0S1gcS78Q3lKE=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpL0AJP35GVKABLJqVHhSfe4YaZmYI3EO+6htmH
- wgxD5vup0yJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaS9ACQAKCRAEWL7uWMY5
- Rk4SD/0WnfGtosH+E3CoFEpZy4BInOO22qAAUHaIIYRg0qldDVoF5v8cNx0xIEutblsjTOdGLl/
- ynKu1+UYXtJz59WovPFRKeLmjwCtGiLBXqE8Ko5auf9sogK7TsOwQERHIzcSgyZEUrynyfNYXAJ
- 7oiJmoUNXmTPkc2rIQ0pFLq0Lxuzu+j9q15n7ekvBoLIFETw/hDUmtCAZ0WP4GehXxsFqwB9SoU
- xsSvqWIVjtlxgm24rp/cj6jmZ5F0ECT3VhBna6a0IJj3VK+/YQ0pA6Z8QGMJHxXDRXXmqflBxJl
- 1EIXyRyegvhcQuqAKYh3MpWSK+jsbnvVOn3/c6lMWbJGXj2E/qREGc9fXlmDC4OTDpLBIRzCmWT
- St/+9gD/6WqIyj2pEMarUhya+o7bk4TbqbB5izGAp/cU0Md/DLRurq7uEWIvsyNpOoEOwrH6S7n
- 920XrgYGI5qIP7s50tL6MhDrYU6yh5UVVm3ey/h89cUWSSsZprN73mExdl3JjyBLTLWH60Bmq1K
- mMi75sUZtORA8cYpijsB2G84gtNfDqgplfrUcxKFJbRqxnWHNSVT077fKViv3nj7hLjlNVkMqy8
- IlT9hReYjGbdoD3ns1UXt0NhKK+79OVK0z1z5QVVbSnE2R2GjmxrCWHIkfDcW1XWsBhn2Ax/XwX ksepAqcYlargbwg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4042; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=s5F849cKunCWhXEDw04RDI6ouvr7CQTpbwq+FWSvJxw=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpL0AJWR/fRnVCj+DsWwJtPSwRwrcDjpzyN8mfq
+ 0sOX8tn6DKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaS9ACQAKCRAEWL7uWMY5
+ RvZUD/4qk2bOPLDVVH6o1xUcG7fKDtuBkgkvoaYHvWDhZyyaKHD8OGY9owyeYUcmt0x2jXq7bqH
+ EPkgKOcp+3Cw0AfukXcyx0o+uatdJultYdvh+OrKvhTVEBLmA0BJON86RPamY6m8AGpKPlf2NjT
+ UyRL9U+voiZJXo0oBSw0cGHezDPy7vYIWpncqGphzipHTJ30X6ilRQFdkfhXulX+ElmXbUxvZUJ
+ Am24xCt59rrJ9xE/WRBI9qf4jSVJFsbmJl0PRxsuBLTkRQmsHUhWLHCslAoFx9/6QcrwavEyPR8
+ 4h1GQG5bXrYNh2hXa9cX+0vroiDZ/HxAs6VzgVMc6N1idyZWwcAodb6uiyz3PCGUf4NPNE+1P8q
+ WUvfZO24jxODhRZXzfvUHqrZ2rL05qBY5uzj9XPpB/7EOF3ALh2PRTa2ze8+q6lVrQBF8zThKNb
+ D65FwQ7TvitYVjF2b7XPYnKHLOlJazGEx8NRmO+r3TKAD15fFqO78KZqjygtM+br0UeWHD5QyvP
+ FI0vxWYerfITc94IYwV4sG47FHjRtyieKyrKXnj58n51wtj95YVr4IMNO4XTmTu/y7ok18iCzak
+ X1Tn799NmNMmiOBUGzmsnHbx1oAI04dFiSaMXIfSvuvK+sEHy41PG2x+qznP/f4V9XUdqoEbx9s B+77XbIBao49Nvg==
 X-Mailer: b4 0.14.2
-Message-ID: <20251202-define-rust-helper-v1-23-a2e13cbc17a6@google.com>
-Subject: [PATCH 23/46] rust: maple_tree: add __rust_helper to helpers
+Message-ID: <20251202-define-rust-helper-v1-24-a2e13cbc17a6@google.com>
+Subject: [PATCH 24/46] rust: mm: add __rust_helper to helpers
 From: Alice Ryhl <aliceryhl@google.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org
 Content-Type: text/plain; charset="utf-8"
 
 This is needed to inline these helpers into Rust code.
@@ -88,27 +88,130 @@ This is needed to inline these helpers into Rust code.
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
 Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Andrew Ballance <andrewjballance@gmail.com>
-Cc: maple-tree@lists.infradead.org
+Cc: Uladzislau Rezki <urezki@gmail.com>
+Cc: Vitaly Wool <vitaly.wool@konsulko.se>
 Cc: linux-mm@kvack.org
 ---
- rust/helpers/maple_tree.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ rust/helpers/mm.c      | 20 ++++++++++----------
+ rust/helpers/page.c    |  9 +++++----
+ rust/helpers/vmalloc.c |  7 ++++---
+ 3 files changed, 19 insertions(+), 17 deletions(-)
 
-diff --git a/rust/helpers/maple_tree.c b/rust/helpers/maple_tree.c
-index 1dd9ac84a13feed53c0ed5eec6805517081d0673..5586486a76e0de60969af1510b4b0428392920e6 100644
---- a/rust/helpers/maple_tree.c
-+++ b/rust/helpers/maple_tree.c
-@@ -2,7 +2,8 @@
+diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
+index 81b510c96fd2692dcb7ab4705f790bd3a41a630e..b5540997bd20d4398e2838956ed70b2fb61c5661 100644
+--- a/rust/helpers/mm.c
++++ b/rust/helpers/mm.c
+@@ -3,48 +3,48 @@
+ #include <linux/mm.h>
+ #include <linux/sched/mm.h>
  
- #include <linux/maple_tree.h>
- 
--void rust_helper_mt_init_flags(struct maple_tree *mt, unsigned int flags)
-+__rust_helper void rust_helper_mt_init_flags(struct maple_tree *mt,
-+					     unsigned int flags)
+-void rust_helper_mmgrab(struct mm_struct *mm)
++__rust_helper void rust_helper_mmgrab(struct mm_struct *mm)
  {
- 	mt_init_flags(mt, flags);
+ 	mmgrab(mm);
+ }
+ 
+-void rust_helper_mmdrop(struct mm_struct *mm)
++__rust_helper void rust_helper_mmdrop(struct mm_struct *mm)
+ {
+ 	mmdrop(mm);
+ }
+ 
+-void rust_helper_mmget(struct mm_struct *mm)
++__rust_helper void rust_helper_mmget(struct mm_struct *mm)
+ {
+ 	mmget(mm);
+ }
+ 
+-bool rust_helper_mmget_not_zero(struct mm_struct *mm)
++__rust_helper bool rust_helper_mmget_not_zero(struct mm_struct *mm)
+ {
+ 	return mmget_not_zero(mm);
+ }
+ 
+-void rust_helper_mmap_read_lock(struct mm_struct *mm)
++__rust_helper void rust_helper_mmap_read_lock(struct mm_struct *mm)
+ {
+ 	mmap_read_lock(mm);
+ }
+ 
+-bool rust_helper_mmap_read_trylock(struct mm_struct *mm)
++__rust_helper bool rust_helper_mmap_read_trylock(struct mm_struct *mm)
+ {
+ 	return mmap_read_trylock(mm);
+ }
+ 
+-void rust_helper_mmap_read_unlock(struct mm_struct *mm)
++__rust_helper void rust_helper_mmap_read_unlock(struct mm_struct *mm)
+ {
+ 	mmap_read_unlock(mm);
+ }
+ 
+-struct vm_area_struct *rust_helper_vma_lookup(struct mm_struct *mm,
+-					      unsigned long addr)
++__rust_helper struct vm_area_struct *
++rust_helper_vma_lookup(struct mm_struct *mm, unsigned long addr)
+ {
+ 	return vma_lookup(mm, addr);
+ }
+ 
+-void rust_helper_vma_end_read(struct vm_area_struct *vma)
++__rust_helper void rust_helper_vma_end_read(struct vm_area_struct *vma)
+ {
+ 	vma_end_read(vma);
+ }
+diff --git a/rust/helpers/page.c b/rust/helpers/page.c
+index 7144de5a61dbdb3006a668961cd1b09440e74908..f8463fbed2a2670ddfd4c23dc922b46b0913c3a2 100644
+--- a/rust/helpers/page.c
++++ b/rust/helpers/page.c
+@@ -4,23 +4,24 @@
+ #include <linux/highmem.h>
+ #include <linux/mm.h>
+ 
+-struct page *rust_helper_alloc_pages(gfp_t gfp_mask, unsigned int order)
++__rust_helper struct page *rust_helper_alloc_pages(gfp_t gfp_mask,
++						   unsigned int order)
+ {
+ 	return alloc_pages(gfp_mask, order);
+ }
+ 
+-void *rust_helper_kmap_local_page(struct page *page)
++__rust_helper void *rust_helper_kmap_local_page(struct page *page)
+ {
+ 	return kmap_local_page(page);
+ }
+ 
+-void rust_helper_kunmap_local(const void *addr)
++__rust_helper void rust_helper_kunmap_local(const void *addr)
+ {
+ 	kunmap_local(addr);
+ }
+ 
+ #ifndef NODE_NOT_IN_PAGE_FLAGS
+-int rust_helper_page_to_nid(const struct page *page)
++__rust_helper int rust_helper_page_to_nid(const struct page *page)
+ {
+ 	return page_to_nid(page);
+ }
+diff --git a/rust/helpers/vmalloc.c b/rust/helpers/vmalloc.c
+index 7d7f7336b3d2f5a32e6a2b6cf8407da37775cfd9..469ebf2f41c94744e2a2719d7c0eb7d4d7dc58ff 100644
+--- a/rust/helpers/vmalloc.c
++++ b/rust/helpers/vmalloc.c
+@@ -2,9 +2,10 @@
+ 
+ #include <linux/vmalloc.h>
+ 
+-void * __must_check __realloc_size(2)
+-rust_helper_vrealloc_node_align(const void *p, size_t size, unsigned long align,
+-				gfp_t flags, int node)
++__rust_helper void *__must_check __realloc_size(2)
++	rust_helper_vrealloc_node_align(const void *p, size_t size,
++					unsigned long align, gfp_t flags,
++					int node)
+ {
+ 	return vrealloc_node_align(p, size, align, flags, node);
  }
 
 -- 
