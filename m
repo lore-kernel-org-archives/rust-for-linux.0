@@ -1,769 +1,234 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011015.outbound.protection.outlook.com [40.93.194.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD8F2FC003
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 22:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764713497; cv=none; b=rfXVYN1ailAQTcNPpo6JPXgMJ+bm69UAU5TpHt4+3Y/MFpjj4fxMtFfuaeJLSt09tvbrr+FWg5ksReeloOhAp7qx+PIpghimzPiBrahF6MdfATqRRaXEB+O1TI+ASsA6S+lPQO1kqLIYaSSE/NtguUa+ylh7NA3AuKXRfONmGt8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764713497; c=relaxed/simple;
-	bh=m7Kk3WQlYQC0msDeIZkJBmMOW3l4QN9qC9RQsd1qiE8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vyv0IPg4nateUOa6QYo/pgtS0ebxMjhQNwlq0P7VwB2OsOBhKqvitHiiD4FuKTi3NkDA/zHDDGgs8Gbh0TvzHinvDVPyQMVNW4l5tj3HINlxwMMauU27ajICPQ0VbiAFz4BAYB6ZqRp5ceXsUlCvUK18lxOB8A5aPyecROIYSEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UTh7RJwP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C3C1427A
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 22:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764715883; cv=fail; b=bT3STXore3Dpd2Zyc8NXtfORs0jzNFrxVdf9jDpQT7uVgEM6RfKVrPx+RvhNA7X7P6Rr8OoXt0Z486KQ0ClY+wkRNIlE4efh7vpnDRy29HUezwxuS6TpKjdQQLOAnHJ91j5ce6ZKrowwvZqi84dOIns6/CFwg7cE0093AJdIZtY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764715883; c=relaxed/simple;
+	bh=pOE4FdiRKT3ewAXYHap0kHmCD7LsmCOJKQKYqzHLCic=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=NzAqSQjp01lzLDkA5jrFEaI+D+L5e1TCNrF6zItxEwhIwfuOI0PC3tRDJxvi82uhvO+3RpwkYfb6odAUWJoQzcCMHemJ6306AjiVB28o7XWHS2uk/nnVoLto2eqPWLDng9n6alJV0ipW36bm773aXgXbnh6M/h6zOnqQxkqNFAo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=M2tPiyPV; arc=fail smtp.client-ip=40.93.194.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UTh7RJwP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764713494;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sVSXhDqABYWzmMQA/0LuQRp7eulxh4EKYMo6WUV2IwY=;
-	b=UTh7RJwP0uiZNRVIIAQyH7J5gPlYctBxN0yPVzc4hDmQQWOFCZglcq1RjVlqoZhaV5Jj9l
-	CBP0Mx0B6kzVhebFKKChg3KH4gpaJUrYqGAq6S4O8p0he9eS/l36Pc1teR/3pqIFoaMEuI
-	3xP6b9J95V6yCMhdssjSBEwzUBbyVJs=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-49-94mBMNnXPL-yPa4OzPNRLw-1; Tue,
- 02 Dec 2025 17:11:16 -0500
-X-MC-Unique: 94mBMNnXPL-yPa4OzPNRLw-1
-X-Mimecast-MFC-AGG-ID: 94mBMNnXPL-yPa4OzPNRLw_1764713474
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B4081195608D;
-	Tue,  2 Dec 2025 22:11:13 +0000 (UTC)
-Received: from chopper.lan (unknown [10.22.80.109])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1789B19560A7;
-	Tue,  2 Dec 2025 22:11:09 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Krishna Ketan Rai <prafulrai522@gmail.com>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>
-Subject: [PATCH v6 7/8] rust: Introduce iosys_map bindings
-Date: Tue,  2 Dec 2025 17:03:33 -0500
-Message-ID: <20251202220924.520644-8-lyude@redhat.com>
-In-Reply-To: <20251202220924.520644-1-lyude@redhat.com>
-References: <20251202220924.520644-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="M2tPiyPV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xtmswdtj6ffQfBXk0Tpdtb79L9mWXxotyFXXUe5H0VlCqUJq5DVjKTdO2WllrofKBk321t7vXhgspxKWunqQspzpphRQ9SNbaNozEAT+/mMpZnFmdSSbLqInBQjBzJDJ20D9A+bOOHrYEZL4L9i72FK+ERqbY3C2cV+RQJxbtRfeO93qxZaYeIP4oDfIz2a0E8HTopfxvz9P13nCgbj7bYuvKw9VMNV7QmjarqH5r2mwUCfgTj/0jtjkolu6Oo3ohjlYpa7ZCAZW9o0Ljxsz7ATzdYTfmXELtO0+IkYSnO7nh5jRXnGe+joR5ngWLqUvIAIm47arE9iGYvAjWnkw3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pOE4FdiRKT3ewAXYHap0kHmCD7LsmCOJKQKYqzHLCic=;
+ b=M0zuZGUIzWDiUnR2ZgUM49Q+SONj/YXk7UZQcrcf+UKE6yuNKMkEM6Ql18aRQxpf0NMjgDzHyffKme5X00PaSdEo8ul7DGSPrtGfUOgUGK8X1STvG5sFuHEh9Sgv+MsXJqfyqv+CmaqLOslFKY2RcR/nHi7QQPqaAoBt2JM6ooLEG2Y2QmW65KWfDYmtkiJ2cLwzHg1xC+UgQmD2GN5/klexsIHsXWjQx0xZHGnBMJnPV57k0DObBMIuaAVkwhnDyj17mNoODzjQxdimVMuXCMyDpjx91OaZOXMd6LB7HvlEFLka3D/rSKMqqGYfc1yNgrGfGIMu3GyLkRXKAFaVhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pOE4FdiRKT3ewAXYHap0kHmCD7LsmCOJKQKYqzHLCic=;
+ b=M2tPiyPVjr88LUHcFQeG7HBIIwdLSJRlIzIt6PfM7MEdrwhn85gclh6n+05qNBhwbpQIeCP/Hk1xe+j1FkSWjCAqlshKR5cy1yKz9g7cOpk5QLM7aQ8g4I2IYnj+L56K7AmcdccJIOYETm6hrmIGWIvu1tCPnsHeI82dzieef6kvlezREgAb8qeVUTP36JNoIM8kydMlRQykr6yjWJNiDbSD/pdOoG/+/GCxDDXAuxb5deVS4xtxbYtWd2FczVS+llZcTU/ziCjP+9YOkUJKVmVDJg5Wc0uwFKA18rd3iS3PaFBGh2s1SIPdB26TdZ3DtggVWsziaF061qfGim51ig==
+Received: from SJ2PR12MB7943.namprd12.prod.outlook.com (2603:10b6:a03:4c8::10)
+ by MW4PR12MB6825.namprd12.prod.outlook.com (2603:10b6:303:20d::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Tue, 2 Dec
+ 2025 22:51:18 +0000
+Received: from SJ2PR12MB7943.namprd12.prod.outlook.com
+ ([fe80::6a18:df97:8d1a:5d50]) by SJ2PR12MB7943.namprd12.prod.outlook.com
+ ([fe80::6a18:df97:8d1a:5d50%4]) with mapi id 15.20.9366.012; Tue, 2 Dec 2025
+ 22:51:18 +0000
+From: Timur Tabi <ttabi@nvidia.com>
+To: "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>, Joel
+ Fernandes <joelagnelf@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>,
+	"lyude@redhat.com" <lyude@redhat.com>, Alexandre Courbot
+	<acourbot@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 12/13] gpu: nova-core: add PIO support for loading
+ firmware images
+Thread-Topic: [PATCH v2 12/13] gpu: nova-core: add PIO support for loading
+ firmware images
+Thread-Index: AQHcYxwHBSave/ae9k2hA2nYTiWDUbUO3YEAgAAYngA=
+Date: Tue, 2 Dec 2025 22:51:18 +0000
+Message-ID: <aba0e260e8a2909c3c66a1aca07574c9192b0dbd.camel@nvidia.com>
+References: <20251201233922.27218-1-ttabi@nvidia.com>
+	 <20251201233922.27218-13-ttabi@nvidia.com>
+	 <581a1e44-e6a7-4ce1-8254-a92392d80cbd@nvidia.com>
+In-Reply-To: <581a1e44-e6a7-4ce1-8254-a92392d80cbd@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.3-0ubuntu1.1 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ2PR12MB7943:EE_|MW4PR12MB6825:EE_
+x-ms-office365-filtering-correlation-id: 0d5b528d-ff76-43e3-5afb-08de31f54e87
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?TnIwcndTYk9MVG1ueXdGN00zZjRJSXhIZDY3KzBqNjE2WjlvUU9Xa0UzVXdr?=
+ =?utf-8?B?dCtrMVdSUldWOFBveDcyakdlME9IVWU1dGJOK1pYTTBuOFRSSTVXWVFBc3h0?=
+ =?utf-8?B?N3d4Tm9YZ3oraHBYZFhyTmtDZ1dWUFpvT3pRS3FEY21ZZHR5Z0c0eHFMQllU?=
+ =?utf-8?B?dUtQM1lod3JNd2RFS0M5dlZzbE4wYXVWWUpqVDFVd1dGRkR3QmM0VjU2MGNw?=
+ =?utf-8?B?U096dGJ3Znl6VXJCaDVmWUFuWjFGbG1pNUpURC9kN3R2bmwyZW5KZDNkcFJU?=
+ =?utf-8?B?eUxEbi93SHBQNlVjZlRqL3U0WFJwWUd0c0Z3ZE5ZVU5kWlFUUWNoRzMwcDY2?=
+ =?utf-8?B?R0ZpY1JzcDRpakhjeGNSQmNHS2NHUjlnWlFlbW5JeUFtVERaYjZ2QnpteVlB?=
+ =?utf-8?B?V2x4ZHVWem5BWERXcVJ0dTYxOTZOSkpQZ2o3ZWlFWnFrdUtvelhyWjdCWGlw?=
+ =?utf-8?B?ZUFsOU1kN2VySWExMmh6R1VWR3RDZHF3OVZ3eStJTnhrV3ZHSitBZC9Sb3dF?=
+ =?utf-8?B?NzBmRmJXOVl1ajhLSEQyVHkwSG5iWXBTRHZaY0VvVVFOTU1STC9ObGRDT1FY?=
+ =?utf-8?B?Z1F3ZUdoSThBSzBCbHN6bXdidUpHNmtNV2ZudXZJdmUreVUvTDMxSWNKelF2?=
+ =?utf-8?B?bjhNTms0dVc5NnNNeEFGV2l1bmZuampQR1VsTGhCcS96cmtXVk1HM1BmZExT?=
+ =?utf-8?B?clJnZEcrSUNIcFdMQ1ViY1lnOUVVaUgrSmpZZnhyVi9RVWU2NCtNcnlBYVl1?=
+ =?utf-8?B?Tmt0VDlUS29XTVBqQ0pteWVJakN2cXBJaVpkcmx5MUdZM0F6L1drNjRGK2p2?=
+ =?utf-8?B?Tmdta3kzYUluZllmQ2ROMUZGQ3pyMFdZdDVIZ2MycEZOWS8yNERKb2wxSUJs?=
+ =?utf-8?B?Mzd3RnEwT3VVWkdkb0MvRXQ2cVVHRlVVRTVPOUxCZnhVNUVxSTdiNWMvYXl3?=
+ =?utf-8?B?dGYwd1FzRm4wbzkrSjhvdlptT2VRSE9DS1ZmZVZxaUhPSzE1QUJuYzQvRHBl?=
+ =?utf-8?B?dTdUKzREbzFETDR6VzJ5MXRlbVpJSTF0YmZIMkVjM2h4K3ZVbDdVd1h4Vnp2?=
+ =?utf-8?B?WmdzTjBoeGZRYlg2RXN6YUZoVmpocjN2Q0hTS3dHaWE5dEROZm4xQmFiRkNP?=
+ =?utf-8?B?a05YY0EwSUpmMzhXTnJrWEJoV0pSK2doQXZYVzNlWUN2dzhqcXQxSUlzZHRn?=
+ =?utf-8?B?Y3N5N0hYbG5MdDAwZk1kWWkya2VKTGpqRmpRNytxVDVSZ3lVTHNnT25nblBq?=
+ =?utf-8?B?bm0rWTFwbjR5aHBmL0pxc1NlMzU3Q01mTmFyWHhEa0JDMXFJR1lxbG5heDdQ?=
+ =?utf-8?B?SDlmRzMvNWticDNPd1BvQjNlTEhNb0c4cldleEpzMGppRGFFeDcrVk9sTHk1?=
+ =?utf-8?B?eTNDY3QvVjJlOVZaMy9NckdpK21wNE5wQWROQ29zOStJbEdZKzVmejN5RDJG?=
+ =?utf-8?B?ZUZQT2ZGUDdhWmVHZ1ZBQm9vVmZXVTM3ZlY2bmc1MktXU0VjZU1TSlVUOHNU?=
+ =?utf-8?B?YkdqekNBRXE4Ky9ZWTdKNU41ZFZSN3pjVUJyeTZxZmI0b3ppTkFkcGMxaUYr?=
+ =?utf-8?B?ZHlzdFVoT200aG92L3g3emJMVDJZbC9FNEJyM05CYklDeVVEV09HYUhIOTVm?=
+ =?utf-8?B?ODNQd1pJWlNjeTZPR0xpM2ZsMDIyZGFsK0NsV0U1ZGFlNFFWQzlCc1BzZTIr?=
+ =?utf-8?B?c3hhekpkN1Z3VFpJbDkrYnhSWGVGRXFEbUFNYUNOVjJpRDFFMXBGNndad1BZ?=
+ =?utf-8?B?YVZrT0J0T1BUUDVOUnowVStZanA3Nlg3VFY2OG9rUUxGaFFPcTMxSm5QQzFR?=
+ =?utf-8?B?c3NkUVB5MG5wVTExd3V6azdXYnRHNGRYeU9BRHBvVzdyMWtualpTT3dJVW5m?=
+ =?utf-8?B?TDJGVGNrNUZERTBVWXU4bk1Ibm9kanRrak9uWmhXSlF4R1dwcU9zSmJ3ZGIw?=
+ =?utf-8?B?eG9kb3pSeW91bXZKa0p2Q2JzbmVPWnZhQm9ZY3ZUbWtmQ3d5bEpTSVhIWTVT?=
+ =?utf-8?B?NFBSWGI2S1pEaUVhV0FrMXRKZ003dVNURVk2Vit2QzV2Z0JscEVsRDBpQWM3?=
+ =?utf-8?Q?bUMrtH?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB7943.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?TDc4SzVVTnA5Wm5Yd1hiQVNWN09iT3RnRkJkOU1uMHVReXh2NllzOHExTFd4?=
+ =?utf-8?B?R0Zkc3lUb2haTjZtL0FYM1N2RnVUZzFSVkRMeXJuSU9VYnplUExFcnpKWlM4?=
+ =?utf-8?B?Wng2T09RcGNuMHJzRUorb1NDNi9DeVVwUmkwdlpZMm52NkIrRTNnTjhOV3VN?=
+ =?utf-8?B?R3FtTTVldHpRNUo2bXNJdWM5a3I3VUpwMzA1M2xET2ZYaTZDRVRlN293emxO?=
+ =?utf-8?B?bWJwV00vM3p1WFNBaUlSbHVvL1BMelMvZXJkZXc2b2ZHNVdHTDBzWTkvWmRT?=
+ =?utf-8?B?VXdQWlVsbGN3NGVzeEtUSE9uRjVmZWxmUElLQnRaQ2p5aDNYaENucEMwL2VO?=
+ =?utf-8?B?YlpPZ2ErOFFHQzNrWmowcG5uc0hYNEdrZENCcE5BYVpUTDg4WVVqN0laZ2pV?=
+ =?utf-8?B?QXZ4em04ckdiMlZMMW1iN001S1JqQXVvY25ubmpRSy9GQnZRYStRRTBIYzFz?=
+ =?utf-8?B?YXdMdFlXNVU1ZGZ1WjRDekJhMStFSTIrUmtDVXl5M1hkOTBHVDZuMnR5TFAy?=
+ =?utf-8?B?SUwzNFh3dmVOQjZ0RVNGY3VRT2pDVnp6S2g0ZkF4UW1DaWlYaC9nRkE4S0s5?=
+ =?utf-8?B?a3hNeXRRUWRjMnoycDc5VHpuLzZkbVZtekRheUFTWVNtYkFFRnVyaFdRWjJM?=
+ =?utf-8?B?SzZUdE0wOXJmY1NHZk9xaUk4c2lGRWV4MGxQRDZxWFZDQ21jUm9jTnFmcUN5?=
+ =?utf-8?B?VFBvSHhJbGhnZ1MvWC9ZL2dRTlltZlhWQS9iMXVsWDV4UDVIR3JIZHJqMUdK?=
+ =?utf-8?B?WnpNRytEbzd3RS8zQU5GS3o5UEkzUFQvQVdQQW1uTjkwdExIcG1tb2lHVHQ3?=
+ =?utf-8?B?N3JGSHRiMkpXTnlIWDR5a3Y2TkVTbEJLTWxuL3BjV1l0LzdKVmRkKzBjQ1d3?=
+ =?utf-8?B?ME5SYWVMMDcrMzhteU02TVdmK1pqejhUbUY3YWdwdkpjTlRtSHRUR1pTUnlB?=
+ =?utf-8?B?MXRVcEp4OE1Va2IyVVdKSGcyVmxRVlRGZys4S0wycG9PZGtVRDFUc00zK2VF?=
+ =?utf-8?B?bU5qTEo0ZXBhbmNramZUZytHNXQ2T3k1TmFheUZ6dTBRNWV3TjN4elpQTHhv?=
+ =?utf-8?B?NkVSb1d5N29zWDVzYVRMc1hzeDVMYkk4VS9IcDU2cFdDQzhGc0o5K2Y2VWVH?=
+ =?utf-8?B?QkZnVWlITHFlKzJzYm5YQU9GbWNQMnpJVnV4MGF4MG5YRUlpNmpiMlNjcVB0?=
+ =?utf-8?B?a01YUWFMK0JxU1lFc1dVcnFKb1ZPclFwcmE4eDFYcWRDdmppMVJjYTlWVC9H?=
+ =?utf-8?B?RmNBVUZ2VXhQQUYwS0RFNDJEOGhCZzJFZG1mVVhFVHloQUoxR0tRNEdyRER0?=
+ =?utf-8?B?dXJwd05nL2NsRjJteFBpOURYVGdmVGRjSWhRQklHaG1nV2ZLRVIxejhRczVP?=
+ =?utf-8?B?NXdsM3FjWXRXcHN3eHRZZThtblpwclNWZ0Y0SERmYUozQmc4SGtPd2RGcy83?=
+ =?utf-8?B?dFd1R0gyOEdvRUQxQk96VTdKTFZPWm8vL2pLR3JPOU1VUFlGRW1xdGdKbGNY?=
+ =?utf-8?B?NCs1elFWNHQ4bFdSSHZUNllsdFhYSnZKanY4V2g4S0t3YUdmRXk4OGtYbmN3?=
+ =?utf-8?B?T2l0ZkxNUXh1dEZnaGlQc0MzdFl4TFFzMFRTZmdjVFRrVWZ2NFF1eisxQlZK?=
+ =?utf-8?B?NnBuTG9HZzNFcFdOcVg5UlJSR1UzRlZWSFhsbDdwakZPdU5TM1o1K2JVWUl4?=
+ =?utf-8?B?T1R0cUpoellYNm5zNmFqZTc4clJhSXlrdWJWQnBWZ3NXdk14SnZRMjlWelhn?=
+ =?utf-8?B?bkxzdHBEenpUbGdoTnhUbjEvTHN3azVUK3FDb1FicWR2WURVYkVuWTQvRFUr?=
+ =?utf-8?B?amdTZTU5Ynhva0lZVTBSaVJ0NzBkczV0dUJhUFExaUxNcmNQWVpGSHhGUlF4?=
+ =?utf-8?B?UTlqSDNWQnQrR1BnRWczTXcwVjVIRG1iSjBIOHBrTHVRdDBlM2JJdmV3ZnRh?=
+ =?utf-8?B?UjVweTZTNmx6NjJQMmdKcDdyYkpYRmxLVVJTcmswcng2MDRoSG5jK3hQWFFE?=
+ =?utf-8?B?TnFLZ0tNbXZXdUNKRFg3dm5KUyt4clJMbHdhVHc4QWNnWDJ6MWhSdjkrb2pF?=
+ =?utf-8?B?Q25CdFYzTmFIMzlSZDBhWGZicEowSy93WmEvNnRkZkJWczdMOE5aSmZiSWJ4?=
+ =?utf-8?Q?QoR1paEXXFnCbVSgM4RUm05Dk?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <45B2CC1DB6C83D429146EAB58DC4559E@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB7943.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d5b528d-ff76-43e3-5afb-08de31f54e87
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2025 22:51:18.6930
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: GzxvMj/IKXmjoulMCRLfL1xlPIZ3UNidnrSBsVVqXK28+emy1YRcnZYHE9bOvdZWAs8IpMmC8bYyIe1Epj9VMQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6825
 
-This introduces a set of bindings for working with iosys_map in rust code.
-The design of this is heavily based off the design for both the io and
-dma_map bindings for Rust.
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-
----
-V5:
-- Fix incorrect field size being passed to iosys_map_memcpy_to()
-- Add an additional unit test, basic_macro(), which can successfully catch
-  the above issue so it doesn't happen again in the future.
-V6:
-- Drop as_slice/as_mut_slice (Alice Rhyl)
-
- rust/helpers/helpers.c   |   1 +
- rust/helpers/iosys_map.c |  15 +
- rust/kernel/iosys_map.rs | 614 +++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs       |   1 +
- 4 files changed, 631 insertions(+)
- create mode 100644 rust/helpers/iosys_map.c
- create mode 100644 rust/kernel/iosys_map.rs
-
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 36d40f911345c..d549af697bd60 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -31,6 +31,7 @@
- #include "irq.c"
- #include "fs.c"
- #include "io.c"
-+#include "iosys_map.c"
- #include "jump_label.c"
- #include "kunit.c"
- #include "maple_tree.c"
-diff --git a/rust/helpers/iosys_map.c b/rust/helpers/iosys_map.c
-new file mode 100644
-index 0000000000000..b105261c3cf8a
---- /dev/null
-+++ b/rust/helpers/iosys_map.c
-@@ -0,0 +1,15 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/iosys-map.h>
-+
-+void rust_helper_iosys_map_memcpy_to(struct iosys_map *dst, size_t dst_offset,
-+				     const void *src, size_t len)
-+{
-+	iosys_map_memcpy_to(dst, dst_offset, src, len);
-+}
-+
-+void rust_helper_iosys_map_memcpy_from(void *dst, const struct iosys_map *src,
-+				       size_t src_offset, size_t len)
-+{
-+	iosys_map_memcpy_from(dst, src, src_offset, len);
-+}
-diff --git a/rust/kernel/iosys_map.rs b/rust/kernel/iosys_map.rs
-new file mode 100644
-index 0000000000000..884a3d2be3348
---- /dev/null
-+++ b/rust/kernel/iosys_map.rs
-@@ -0,0 +1,614 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! IO-agnostic memory mapping interfaces.
-+//!
-+//! This crate provides bindings for the `struct iosys_map` type, which provides a common interface
-+//! for memory mappings which can reside within coherent memory, or within IO memory.
-+//!
-+//! C header: [`include/linux/iosys-map.h`](srctree/include/linux/pci.h)
-+
-+use crate::{
-+    prelude::*,
-+    transmute::{AsBytes, FromBytes},
-+};
-+use bindings;
-+use core::{
-+    marker::PhantomData,
-+    mem::{self, MaybeUninit},
-+    ops::{Deref, DerefMut, Range},
-+};
-+
-+/// Raw unsized representation of a `struct iosys_map`.
-+///
-+/// This struct is a transparent wrapper around `struct iosys_map`. The C API does not provide the
-+/// size of the mapping by default, and thus this type also does not include the size of the
-+/// mapping. As such, it cannot be used for actually accessing the underlying data pointed to by the
-+/// mapping.
-+///
-+/// With the exception of kernel crates which may provide their own wrappers around `RawIoSysMap`,
-+/// users will typically not interact with this type directly.
-+pub struct RawIoSysMap<T: AsBytes + FromBytes>(bindings::iosys_map, PhantomData<T>);
-+
-+impl<T: AsBytes + FromBytes> RawIoSysMap<T> {
-+    /// Convert from a raw `bindings::iosys_map`.
-+    #[expect(unused)]
-+    #[inline]
-+    pub(crate) fn from_raw(val: bindings::iosys_map) -> Self {
-+        Self(val, PhantomData)
-+    }
-+
-+    /// Convert from a `RawIoSysMap<T>` to a raw `bindings::iosys_map` ref.
-+    #[inline]
-+    pub(crate) fn as_raw(&self) -> &bindings::iosys_map {
-+        &self.0
-+    }
-+
-+    /// Convert from a `RawIoSysMap<T>` to a raw mutable `bindings::iosys_map` ref.
-+    #[inline]
-+    pub(crate) fn as_raw_mut(&mut self) -> &mut bindings::iosys_map {
-+        &mut self.0
-+    }
-+
-+    /// Returns whether the mapping is within IO memory space or not.
-+    #[inline]
-+    pub fn is_iomem(&self) -> bool {
-+        self.0.is_iomem
-+    }
-+
-+    /// Returns the size of a single item in this mapping.
-+    pub const fn item_size(&self) -> usize {
-+        mem::size_of::<T>()
-+    }
-+
-+    /// Returns a mutable address to the memory pointed to by this iosys map.
-+    ///
-+    /// Note that this address is not guaranteed to reside in system memory, and may reside in IO
-+    /// memory.
-+    #[inline]
-+    pub fn as_mut_ptr(&self) -> *mut T {
-+        if self.is_iomem() {
-+            // SAFETY: We confirmed above that this iosys map is contained within iomem, so it's
-+            // safe to read vaddr_iomem
-+            unsafe { self.0.__bindgen_anon_1.vaddr_iomem }
-+        } else {
-+            // SAFETY: We confirmed above that this iosys map is not contaned within iomem, so it's
-+            // safe to read vaddr.
-+            unsafe { self.0.__bindgen_anon_1.vaddr }
-+        }
-+        .cast()
-+    }
-+
-+    /// Returns an immutable address to the memory pointed to by this iosys map.
-+    ///
-+    /// Note that this address is not guaranteed to reside in system memory, and may reside in IO
-+    /// memory.
-+    #[inline]
-+    pub fn as_ptr(&self) -> *const T {
-+        self.as_mut_ptr().cast_const()
-+    }
-+}
-+
-+// SAFETY: As we make no guarantees about the validity of the mapping, there's no issue with sending
-+// this type between threads.
-+unsafe impl<T: AsBytes + FromBytes> Send for RawIoSysMap<T> {}
-+
-+impl<T: AsBytes + FromBytes> Clone for RawIoSysMap<T> {
-+    fn clone(&self) -> Self {
-+        Self(self.0, PhantomData)
-+    }
-+}
-+
-+/// A sized version of a [`RawIoSysMap`].
-+///
-+/// Since this type includes the size of the [`RawIoSysMap`], it can be used for accessing the
-+/// underlying data pointed to by it.
-+///
-+/// # Invariants
-+///
-+/// - The iosys mapping referenced by this type is guaranteed to be of at least `size` bytes in
-+///   size
-+/// - The iosys mapping referenced by this type is valid for the lifetime `'a`.
-+#[derive(Clone)]
-+pub struct IoSysMapRef<'a, T: AsBytes + FromBytes> {
-+    map: RawIoSysMap<T>,
-+    size: usize,
-+    _p: PhantomData<&'a T>,
-+}
-+
-+impl<'a, T: AsBytes + FromBytes> IoSysMapRef<'a, T> {
-+    /// Create a new [`IoSysMapRef`] from a [`RawIoSysMap`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// - The caller guarantees that the mapping referenced by `map` is of at least `size` bytes in
-+    ///   size.
-+    /// - The caller guarantees that the mapping referenced by `map` remains valid for the lifetime
-+    ///   of `'a`.
-+    #[allow(unused)]
-+    pub(crate) unsafe fn new(map: RawIoSysMap<T>, size: usize) -> IoSysMapRef<'a, T> {
-+        // INVARIANT: Our safety contract fulfills the type invariants of `IoSysMapRef`.
-+        IoSysMapRef {
-+            map,
-+            size,
-+            _p: PhantomData,
-+        }
-+    }
-+
-+    /// Return the size of the `IoSysMapRef`.
-+    #[inline]
-+    pub fn size(&self) -> usize {
-+        self.size
-+    }
-+
-+    /// Writes `src` to the region starting from `offset`.
-+    ///
-+    /// `offset` is in units of `T`, not the number of bytes.
-+    ///
-+    /// This function can return the following errors:
-+    ///
-+    /// * [`EOVERFLOW`] if calculating the length of the slice results in an overflow.
-+    /// * [`EINVAL`] if the slice would go out of bounds of the memory region.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::iosys_map::*;
-+    ///
-+    /// # fn test() -> Result {
-+    /// # let mut map = tests::VecIoSysMap::new(&[0; 3])?;
-+    /// # {
-+    /// # let mut map = map.get();
-+    /// map.write(&[1, 2, 3], 0)?; // (now [1, 2, 3])
-+    /// map.write(&[4], 2)?; // (now [1, 2, 4])
-+    /// # }
-+    /// #
-+    /// # map.assert_eq(&[1, 2, 4]);
-+    /// #
-+    /// # Ok::<(), Error>(()) }
-+    /// # assert!(test().is_ok());
-+    /// ```
-+    pub fn write(&mut self, src: &[T], offset: usize) -> Result {
-+        let range = self.compute_range(offset, src.len())?;
-+
-+        // SAFETY:
-+        // - The address pointed to by this iosys_map is guaranteed to be valid via IoSysMapRef's
-+        //   type invariants.
-+        // - We checked that this range of memory is within bounds above
-+        unsafe {
-+            bindings::iosys_map_memcpy_to(
-+                self.as_raw_mut(),
-+                range.start,
-+                src.as_ptr().cast(),
-+                range.len(),
-+            )
-+        };
-+
-+        Ok(())
-+    }
-+
-+    /// Attempt to compute the offset of an item within the iosys map using its index.
-+    ///
-+    /// Returns an error if an overflow occurs.
-+    ///
-+    /// # Safety
-+    ///
-+    /// This function checks for overflows, but it explicitly does not check if the offset goes out
-+    /// of bounds. It is the caller's responsibility to check for this before using the returned
-+    /// offset with the iosys_map API.
-+    unsafe fn item_from_index(&self, idx: usize) -> Result<usize> {
-+        self.item_size().checked_mul(idx).ok_or(EOVERFLOW)
-+    }
-+
-+    /// Compute the range within this mapping a specific data type at a given offset would occupy.
-+    ///
-+    /// This function returns the computed range if it doesn't overflow, but does not check whether
-+    /// or not the range is within the bounds of the allocated region pointed to by this iosys
-+    /// mapping.
-+    ///
-+    /// On success, the range returned by this function is guaranteed:
-+    ///
-+    /// * To be a valid range of memory within the virtual mapping for this gem object.
-+    /// * To be properly aligned to [`RawIoSysMap::item_size()`].
-+    fn compute_range(&self, offset: usize, count: usize) -> Result<Range<usize>> {
-+        // SAFETY: If the offset is out of bounds, we'll catch this via overflow checks or when
-+        // checking range_end.
-+        let offset = unsafe { self.item_from_index(offset)? };
-+        let range_size = count.checked_mul(self.item_size()).ok_or(EOVERFLOW)?;
-+        let range_end = offset.checked_add(range_size).ok_or(EOVERFLOW)?;
-+
-+        if range_end > self.size {
-+            return Err(EINVAL);
-+        }
-+
-+        // INVARIANT: Since `offset` and `count` are both in units of `T`, we're guaranteed that the
-+        // range returned here is properly aligned to `T`.
-+        Ok(offset..range_end)
-+    }
-+
-+    /// Common helper to compute the memory address of an item within the iosys mapping.
-+    ///
-+    /// Public but hidden, since it should only be used from [`iosys_map_read`] and
-+    /// [`iosys_map_write`].
-+    #[doc(hidden)]
-+    pub fn ptr_from_index(&self, offset: usize) -> Result<*mut T> {
-+        // SAFETY: We check if the resulting offset goes out of bounds below.
-+        let offset = unsafe { self.item_from_index(offset)? };
-+
-+        if offset.checked_add(self.item_size()).ok_or(EOVERFLOW)? > self.size() {
-+            return Err(EINVAL);
-+        }
-+
-+        // SAFETY: We confirmed that `offset` + the item size does not go out of bounds above.
-+        Ok(unsafe { self.as_mut_ptr().byte_add(offset) })
-+    }
-+
-+    // TODO:
-+    // This function is currently needed for making the iosys_map_read!() and iosys_map_write!()
-+    // macros work due to a combination of a few limitations:
-+    //
-+    // * The current C API for iosys_map requires that we use offsets for reading/writing
-+    //   iosys_maps.
-+    // * Calculating the offset of a field within a struct requires that we either:
-+    //   * Use field projection for calculating the offset of the field. We don't have this yet.
-+    //   * Explicitly specify the type of the struct, which would be cumbersome to require in the
-+    //     read/write macros.
-+    //   * Provide a typed pointer (or other reference) to the struct in question, allowing the
-+    //     use of &raw const and &raw mut.
-+    //     * Keep in mind: we can't simply cast the offset of an item in the iosys map into a typed
-+    //       pointer to fulfill the third option. While having invalid memory addresses as pointers
-+    //       is ok, adding an offset to a pointer in rust requires that the resulting memory address
-+    //       is within the same allocation. Since an invalid pointer has no allocation, we can't
-+    //       make that guarantee.
-+    //
-+    // So, until we have field projection the way we workaround this:
-+    //
-+    // * Calculate the offset (self.item_from_index()) of the struct within the iosys map
-+    // * Calculate the memory address of the struct using the offset from the last step
-+    //   (self.ptr_from_index()).
-+    // * Use that memory address with &raw const/&raw mut in order to calculate the memory address
-+    //   of the desired field, ensuring it remains in the same allocation (happens within the
-+    //   macros).
-+    // * Convert the address from the last step back into an offset within the iosys map
-+    //   (offset_from_ptr()).
-+    //
-+    // Once we do get field projection, this silly code should be removed.
-+    //
-+    /// Convert a pointer to an item within the iosys map back into an offset.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` must be a valid pointer to data within the iosys map.
-+    unsafe fn offset_from_ptr<F>(&self, ptr: *const F) -> usize {
-+        // SAFETY: `ptr` always points to data within the memory pointed to by the iosys map,
-+        // meaning it is within the same memory allocation.
-+        //
-+        // Additionally, since `ptr` is within the iosys mapping, the offset here will always be
-+        // positive and safe to cast to a usize.
-+        // (TODO: replace this with byte_offset_from_unsigned once it's available in the kernel)
-+        unsafe { ptr.byte_offset_from(self.as_ptr()) as usize }
-+    }
-+
-+    /// Reads the value of `field` and ensures that its type is [`FromBytes`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// This must be called from the [`iosys_map_read`] macro which ensures that the `field`
-+    /// pointer is validated beforehand.
-+    ///
-+    /// Public but hidden since it should only be used from the [`iosys_map_read`] macro.
-+    #[doc(hidden)]
-+    pub unsafe fn field_read<F: FromBytes>(&self, field: *const F) -> F {
-+        let mut field_val = MaybeUninit::<F>::uninit();
-+
-+        // SAFETY: `field` is guaranteed valid via our safety contract.
-+        let offset = unsafe { self.offset_from_ptr(field) };
-+
-+        // SAFETY: Since we verified `field` is valid above, `offset_from_ptr` will always return a
-+        // valid offset within the iosys map.
-+        unsafe {
-+            bindings::iosys_map_memcpy_from(
-+                field_val.as_mut_ptr().cast(),
-+                self.as_raw(),
-+                offset,
-+                mem::size_of::<F>(),
-+            )
-+        }
-+
-+        // SAFETY: We just initialized `field_val` above.
-+        unsafe { field_val.assume_init() }
-+    }
-+
-+    /// Writes the value of `field` and ensures that its type is [`AsBytes`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// This must be called from the [`iosys_map_write`] macro which ensures that the `field`
-+    /// pointers validated beforehand.
-+    ///
-+    /// Public but hidden since it should only be used from the [`iosys_map_write`] macro.
-+    #[doc(hidden)]
-+    pub unsafe fn field_write<F: AsBytes>(&mut self, field: *mut F, val: F) {
-+        // SAFETY: `field` is guaranteed valid via our safety contract.
-+        let offset = unsafe { self.offset_from_ptr(field) };
-+
-+        // SAFETY: `offset_from_ptr` always returns a valid offset within the iosys map.
-+        unsafe {
-+            bindings::iosys_map_memcpy_to(
-+                self.as_raw_mut(),
-+                offset,
-+                core::ptr::from_ref(&val).cast(),
-+                mem::size_of::<F>(),
-+            )
-+        }
-+    }
-+}
-+
-+impl<'a, T: AsBytes + FromBytes> Deref for IoSysMapRef<'a, T> {
-+    type Target = RawIoSysMap<T>;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.map
-+    }
-+}
-+
-+impl<'a, T: AsBytes + FromBytes> DerefMut for IoSysMapRef<'a, T> {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        &mut self.map
-+    }
-+}
-+
-+/// Reads from a field of an item from an iosys map ref.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::{iosys_map::*, transmute::*};
-+///
-+/// #[derive(Copy, Clone, Debug, PartialEq, Eq)]
-+/// struct MyStruct { a: u32, b: u16 }
-+///
-+/// // SAFETY: All bit patterns are acceptable values for `MyStruct`.
-+/// unsafe impl FromBytes for MyStruct {};
-+/// // SAFETY: Instances of `MyStruct` have no uninitialized portions.
-+/// unsafe impl AsBytes for MyStruct {};
-+///
-+/// # fn test() -> Result {
-+/// # let mut map = tests::VecIoSysMap::new(&[MyStruct { a: 42, b: 2 }; 3])?;
-+/// # let map = map.get();
-+/// let whole = kernel::iosys_map_read!(map[2])?;
-+/// assert_eq!(whole, MyStruct { a: 42, b: 2 });
-+///
-+/// let field = kernel::iosys_map_read!(map[1].b)?;
-+/// assert_eq!(field, 2);
-+/// # Ok::<(), Error>(()) }
-+/// # assert!(test().is_ok());
-+/// ```
-+#[macro_export]
-+macro_rules! iosys_map_read {
-+    ($map:expr, $idx:expr, $($field:tt)*) => {{
-+        (|| -> ::core::result::Result<_, $crate::error::Error> {
-+            let map = &$map;
-+            let item = $crate::iosys_map::IoSysMapRef::ptr_from_index(map, $idx)?;
-+
-+            // SAFETY: `ptr_from_index()` ensures that `item` is always a valid (although
-+            // potentially not dereferenceable, which is fine here) pointer to within the iosys
-+            // mapping.
-+            unsafe {
-+                let ptr_field = &raw const (*item) $($field)*;
-+                ::core::result::Result::Ok(
-+                    $crate::iosys_map::IoSysMapRef::field_read(map, ptr_field)
-+                )
-+            }
-+        })()
-+    }};
-+    ($map:ident [ $idx: expr ] $($field:tt)* ) => {
-+        $crate::iosys_map_read!($map, $idx, $($field)*)
-+    };
-+    ($($map:ident).* [ $idx:expr ] $($field:tt)* ) => {
-+        $crate::iosys_map_read!($($map).*, $idx, $($field)*)
-+    };
-+}
-+
-+/// Writes to a field of an item from an iosys map ref.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::{iosys_map::*, transmute::*};
-+///
-+/// #[derive(Copy, Clone, Debug, PartialEq, Eq)]
-+/// struct MyStruct { a: u32, b: u16 };
-+///
-+/// // SAFETY: All bit patterns are acceptable values for `MyStruct`.
-+/// unsafe impl FromBytes for MyStruct {};
-+/// // SAFETY: Instances of `MyStruct` have no uninitialized portions.
-+/// unsafe impl AsBytes for MyStruct {};
-+///
-+/// # fn test() -> Result {
-+/// # let mut map = tests::VecIoSysMap::new(&[MyStruct { a: 42, b: 2 }; 3])?;
-+/// # let mut map = map.get();
-+/// kernel::iosys_map_write!(map[2].b = 1337)?;
-+/// # assert_eq!(kernel::iosys_map_read!(map[2].b)?, 1337);
-+///
-+/// kernel::iosys_map_write!(map[1] = MyStruct { a: 10, b: 20 })?;
-+/// # assert_eq!(kernel::iosys_map_read!(map[1])?, MyStruct { a: 10, b: 20 });
-+/// # Ok::<(), Error>(()) }
-+/// # assert!(test().is_ok());
-+/// ```
-+#[macro_export]
-+macro_rules! iosys_map_write {
-+    ($map:ident [ $idx:expr ] $($field:tt)*) => {{
-+        $crate::iosys_map_write!($map, $idx, $($field)*)
-+    }};
-+    ($($map:ident).* [ $idx:expr ] $($field:tt)* ) => {{
-+        $crate::iosys_map_write!($($map).*, $idx, $($field)*)
-+    }};
-+    ($map:expr, $idx:expr, = $val:expr) => {
-+        (|| -> ::core::result::Result<_, $crate::error::Error> {
-+            // (expand these outside of the unsafe block (clippy::macro-metavars-in-unsafe)
-+            let map = &mut $map;
-+            let val = $val;
-+
-+            let item = $crate::iosys_map::IoSysMapRef::ptr_from_index(map, $idx)?;
-+            // SAFETY: `item_from_index` ensures that `item` is always a valid item.
-+            unsafe { $crate::iosys_map::IoSysMapRef::field_write(map, item, val) };
-+            ::core::result::Result::Ok(())
-+        })()
-+    };
-+    ($map:expr, $idx:expr, $(.$field:ident)* = $val:expr) => {
-+        (|| -> ::core::result::Result<_, $crate::error::Error> {
-+            // (expand these outside of the unsafe block (clippy::macro-metavars-in-unsafe)
-+            let map = &mut $map;
-+            let val = $val;
-+
-+            let item = $crate::iosys_map::IoSysMapRef::ptr_from_index(map, $idx)?;
-+
-+            // SAFETY: `ptr_from_index()` ensures that `item` is always a valid (although
-+            // potentially not dereferenceable, which is fine here) pointer to within the iosys
-+            // mapping.
-+            unsafe {
-+                let ptr_field = &raw mut (*item) $(.$field)*;
-+                $crate::iosys_map::IoSysMapRef::field_write(map, ptr_field, val)
-+            };
-+            ::core::result::Result::Ok(())
-+        })()
-+    };
-+}
-+
-+#[doc(hidden)]
-+#[kunit_tests(rust_iosys_map)]
-+pub mod tests {
-+    use super::*;
-+
-+    /// A helper struct for managed IoSysMapRef structs which point to a [`Vec`].
-+    pub struct VecIoSysMap<T: AsBytes + FromBytes + Clone + PartialEq> {
-+        map: RawIoSysMap<T>,
-+        vec: KVec<T>,
-+    }
-+
-+    impl<T: AsBytes + FromBytes + Clone + PartialEq> VecIoSysMap<T> {
-+        pub fn new(src: &[T]) -> Result<Self> {
-+            let mut vec = KVec::<T>::new();
-+
-+            vec.extend_from_slice(src, GFP_KERNEL)?;
-+
-+            let map = RawIoSysMap(
-+                bindings::iosys_map {
-+                    is_iomem: false,
-+                    __bindgen_anon_1: bindings::iosys_map__bindgen_ty_1 {
-+                        vaddr: vec.as_mut_ptr().cast(),
-+                    },
-+                },
-+                PhantomData,
-+            );
-+
-+            Ok(Self { map, vec })
-+        }
-+
-+        pub fn get(&mut self) -> IoSysMapRef<'_, T> {
-+            // SAFETY:
-+            // * `map` points to `vec`, so the size of `map` is the size of the `vec`.
-+            unsafe { IoSysMapRef::new(self.map.clone(), self.vec.len() * self.map.item_size()) }
-+        }
-+
-+        /// Assert whether or not the contents of this struct match src.
-+        pub fn assert_eq(&self, src: &[T]) {
-+            assert_eq!(*self.vec.as_ref(), *src)
-+        }
-+    }
-+
-+    #[test]
-+    fn basic() -> Result {
-+        let mut map = VecIoSysMap::new(&[0; 3])?;
-+
-+        map.get().write(&[1, 2, 3], 0)?;
-+        map.assert_eq(&[1, 2, 3]);
-+
-+        map.get().write(&[42], 1)?;
-+        map.assert_eq(&[1, 42, 3]);
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn oob_accesses() -> Result {
-+        let mut map = VecIoSysMap::new(&[0; 3])?;
-+
-+        assert!(map.get().write(&[1, 2, 3, 69], 0).is_err());
-+        assert!(map.get().write(&[1, 2, 3], 69).is_err());
-+        map.assert_eq(&[0; 3]);
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn overflows() -> Result {
-+        let mut map = VecIoSysMap::new(&[0; 3])?;
-+
-+        assert!(map.get().write(&[1], usize::MAX).is_err());
-+        map.assert_eq(&[0; 3]);
-+
-+        Ok(())
-+    }
-+
-+    #[derive(Copy, Clone, Debug, PartialEq, Eq)]
-+    struct TestStruct {
-+        a: u32,
-+        b: u64,
-+    }
-+
-+    // SAFETY: All bit patterns are acceptable values for `TestStruct`.
-+    unsafe impl FromBytes for TestStruct {}
-+    // SAFETY: Instances of `TestStruct` have no uninitialized portions.
-+    unsafe impl AsBytes for TestStruct {}
-+
-+    #[test]
-+    fn basic_macro() -> Result {
-+        let mut expected = [TestStruct { a: 1, b: 2 }; 5];
-+        let mut map = VecIoSysMap::new(&expected)?;
-+
-+        {
-+            let mut map_ref = map.get();
-+
-+            iosys_map_write!(map_ref[3].a = u32::MAX)?;
-+            expected[3].a = u32::MAX;
-+
-+            assert_eq!(iosys_map_read!(map_ref[3].a)?, u32::MAX);
-+            assert_eq!(
-+                iosys_map_read!(map_ref[3])?,
-+                TestStruct { a: u32::MAX, b: 2 }
-+            );
-+        }
-+
-+        // Compare the entire array, so that we catch any mis-sized writes.
-+        map.assert_eq(&expected);
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn macro_oob_accesses() -> Result {
-+        let mut map = VecIoSysMap::new(&[TestStruct { a: 1, b: 2 }; 3])?;
-+        let mut map = map.get();
-+
-+        assert!(iosys_map_read!(map[5].b).is_err());
-+        assert!(iosys_map_read!(map[1000]).is_err());
-+        assert!(iosys_map_write!(map[6969].a = 999).is_err());
-+        assert!(iosys_map_write!(map[243] = TestStruct { a: 99, b: 22 }).is_err());
-+
-+        Ok(())
-+    }
-+
-+    #[test]
-+    fn macro_overflows() -> Result {
-+        let mut map = VecIoSysMap::new(&[TestStruct { a: 1, b: 2 }; 3])?;
-+        let mut map = map.get();
-+
-+        assert!(iosys_map_read!(map[usize::MAX]).is_err());
-+        assert!(iosys_map_read!(map[usize::MAX].b).is_err());
-+        assert!(iosys_map_write!(map[usize::MAX] = TestStruct { a: 1, b: 1 }).is_err());
-+        assert!(iosys_map_write!(map[usize::MAX].b = 1).is_err());
-+
-+        Ok(())
-+    }
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 2581a356d1141..f727dbe2c8254 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -101,6 +101,7 @@
- pub mod init;
- pub mod io;
- pub mod ioctl;
-+pub mod iosys_map;
- pub mod iov;
- pub mod irq;
- pub mod jump_label;
--- 
-2.52.0
-
+T24gVHVlLCAyMDI1LTEyLTAyIGF0IDE2OjIzIC0wNTAwLCBKb2VsIEZlcm5hbmRlcyB3cm90ZToK
+PiAKPiAKPiBPbiAxMi8xLzIwMjUgNjozOSBQTSwgVGltdXIgVGFiaSB3cm90ZToKPiA+IMKgCj4g
+PiArCj4gPiArwqDCoMKgIC8vLyBTZWUgbnZrbV9mYWxjb25fcGlvX3dyIC0gdGFrZXMgYSBieXRl
+IGFycmF5IGluc3RlYWQgb2YgYSBGYWxjb25GaXJtd2FyZQo+ID4gK8KgwqDCoCBmbiBwaW9fd3Jf
+Ynl0ZXMoCj4gPiArwqDCoMKgwqDCoMKgwqAgJnNlbGYsCj4gPiArwqDCoMKgwqDCoMKgwqAgYmFy
+OiAmQmFyMCwKPiA+ICvCoMKgwqDCoMKgwqDCoCBpbWc6ICZbdThdLAo+ID4gK8KgwqDCoMKgwqDC
+oMKgIG1lbV9iYXNlOiB1MTYsCj4gPiArwqDCoMKgwqDCoMKgwqAgdGFyZ2V0X21lbTogRmFsY29u
+TWVtLAo+ID4gK8KgwqDCoMKgwqDCoMKgIHBvcnQ6IHU4LAo+ID4gK8KgwqDCoMKgwqDCoMKgIHRh
+ZzogdTE2Cj4gPiArwqDCoMKgICkgewo+ID4gK8KgwqDCoMKgwqDCoMKgIGxldCBwb3J0ID0gdXNp
+emU6OmZyb20ocG9ydCk7Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqAgbWF0Y2ggdGFyZ2V0X21l
+bSB7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBGYWxjb25NZW06OkltZW1TZWN1cmUgfCBG
+YWxjb25NZW06OkltZW1Ob25TZWN1cmUgPT4gewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCByZWdzOjpOVl9QRkFMQ09OX0ZBTENPTl9JTUVNQzo6ZGVmYXVsdCgpCj4gPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLnNldF9zZWN1cmUodGFyZ2V0X21l
+bSA9PSBGYWxjb25NZW06OkltZW1TZWN1cmUpCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgLnNldF9haW5jdyh0cnVlKQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIC5zZXRfb2ZmcyhtZW1fYmFzZSkKPiA+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAud3JpdGUoYmFyLCAmRTo6SUQsIHBvcnQpOwo+ID4g
+Kwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBsZXQgbXV0IHRhZyA9IHRhZzsK
+PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZm9yIGJsb2NrIGluIGltZy5jaHVu
+a3MoMjU2KSB7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmVn
+czo6TlZfUEZBTENPTl9GQUxDT05fSU1FTVQ6OmRlZmF1bHQoKQo+ID4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLnNldF90YWcodGFnKQo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgLndyaXRlKGJhciwgJkU6
+OklELCBwb3J0KTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBm
+b3Igd29yZCBpbiBibG9jay5jaHVua3MoNCkgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbGV0IHcgPSB1MzI6OmZyb21fbGVfYnl0ZXMod29yZC50
+cnlfaW50bygpLnVud3JhcCgpKTsKPiAKPiBJZiBpbWcuc2l6ZSBpcyBub3QgYSBtdWx0aXBsZSBv
+ZiA0IGJ5dGVzLCB0aGlzIGNhbiBwYW5pYyByaWdodD8KCkkgdGhpbmsgc28uICBJIGp1c3Qgbm90
+aWNlZCB0aGF0IEkgdXNlZCBjaHVua3MoNCkgaGVyZSBhbmQgY2h1bmtzX2V4YWN0KDQpIGluIHRo
+ZSBEbWVtIGxvb3AgYmVsb3cuIApJIG5lZWQgdG8gbWFrZSBpdCBjb25zaXN0ZW50LgoKY2h1bmtz
+KDQpIHdpbGwgcmV0dXJuICZbdTg7IDNdIGlmIHRoZSBidWZmZXIgaXMgc2h5IG9uZSBieXRlLiAg
+Y2h1bmtzX2V4YWN0KDQpIHdpbGwgc2ltcGx5IHNraXAgdGhlCmxhc3QgMyBieXRlcy4KClRoZSBw
+cm9ibGVtIGlzIHRoYXQgaXQgaXMgYW4gZXJyb3IgZm9yIHRoZXNlIGltYWdlcyB0byBub3QgYmUg
+YSBtdWx0aXBsZSBvZiA0LiDCoFN1Y2ggYW4gaW1hZ2UgaXMKanVzdCBub3QgdmFsaWQuCgpTbyBp
+dCdzIGEgbG90IHNpbXBsZXIgdG8ganVzdCByZWplY3QgdGhlc2UgbWlzYWxpZ25lZCBpbWFnZXMu
+ICBUaGUgcHJldmlvdXMgdmVyc2lvbiBvZiB0aGlzIGZ1bmN0aW9uCmRpZCByZXR1cm4gYSBSZXN1
+bHQsIG1heWJlIEkgc2hvdWxkIHB1dCB0aGF0IGJhY2suICBJdCBqdXN0IHNlZW1zIHdhc3RlZnVs
+IHRvIHRlc3QgZm9yIG1pc2FsaWdubWVudApvbiBldmVyeSBwYXNzIG9mIHRoZSBsb29wLgoKV2hh
+dCB3ZSByZWFsbHkgbmVlZCBpcyBmb3IgZnJvbV9sZV9ieXRlcygpIHRvIGJlIGxlc3MgcGlja3kg
+YWJvdXQgdGhlIHNsaWNlIHNpemUuICBJZiBJIGdpdmUgaXQKJlt1ODsgM10sIHRoZW4gaXQgc2hv
+dWxkIGJlIGFibGUgdG8gaGFuZGxlIHRoYXQuCgo+IEV2ZW4gaWYgaXQgaXMgdW5saWtlbHksIHVu
+d3JhcCgpIGlzIHF1aXRlIGZyb3duZWQgdXAgZHVlIHRvIHBvc3NpYmlsaXR5IG9mCj4gcGFuaWMu
+IEknZCByZWNvbW1lbmQgc29tZXRoaW5nIGxpa2UgdGhlIGZvbGxvd2luZyBzaW5jZSB0aGUgZnVu
+Y3Rpb24gY2Fubm90Cj4gcmV0dXJuIGFuIGVycm9yOgo+IAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbGV0IHcgPSBpZiBsZXQgT2soYnl0ZXMpID0gd29y
+ZC50cnlfaW50bygpIHsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgdTMyOjpmcm9tX2xlX2J5dGVzKGJ5dGVzKQo+IMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfSBlbHNlIHsKPiAJCQnCoMKgwqAgLy8g
+Y2FuIHByaW50IGEgd2FybmluZyBoZXJlIHRvbyBpZiBuZWVkZWQuCj4gwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGxldCBtdXQgYnVmID0gWzB1
+ODsgNF07Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIGJ1ZlsuLndvcmQubGVuKCldLmNvcHlfZnJvbV9zbGljZSh3b3JkKTsKPiDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdTMyOjpmcm9t
+X2xlX2J5dGVzKGJ1ZikKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIH07CgpXb3VsZG4ndCBpdCBiZSBzaW1wbGVyIHRvIHVzZSBjaHVua3NfZXhhY3QoKSBh
+bmQgdGhlbiByZW1haW5kZXIoKT8gIFRoYXQgd2F5LCB3ZSB3b3VsZG4ndCBuZWVkIGEKdGVzdCBp
+bnNpZGUgdGhlIGxvb3A/Cgo+IEJ0dywgSSB3aXNoIHdlIGNvdWxkIGVuY29kZSB0aGUgc2xpY2Ug
+bGVuZ3RoIGNvbnN0cmFpbnQgaW4gdGhlIHNsaWNlIHR5cGUgaXRzZWxmCj4gKGkuZS4sIHRoZSBz
+bGljZSBsZW5ndGggb3VnaHQgdG8gYmUgYSBjZXJ0YWluIG11bHRpcGxlKS4gQnV0IEkgdGhpbmsg
+dGhlcmUncyBubwo+IHdheSB0byBkbyB0aGF0IHdpdGhvdXQgaW50cm9kdWNpbmcgYSBuZXcgdHlw
+ZS4KCldvdWxkbid0IGl0IGJlIGEgcnVuLXRpbWUgY29uc3RyYWludCBhbnl3YXk/IFdpdGggdGhl
+IGV4Y2VwdGlvbiBvZiB0aGUgQm9vdGxvYWRlckRtZW1EZXNjVjIgd3JpdGUsIAphbGwgb2YgdGhl
+IGNhbGxzIHRvIHBpb193cl9ieXRlcygpIGhhdmUgbGVuZ3RocyBvbmx5IGtub3duIGF0IHJ1bnRp
+bWUuCgo=
