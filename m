@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9BC2FC88A
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 22:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D280724886E
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 22:11:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764713475; cv=none; b=Zqdmq2QbwzpUXxYij4Kp3tAH/okf8Ph88ctuRd8799H5dd0qZs+weCFNbEGl4R+H2AEui2goFYTcPjieblXAx8E+Rm79CdEAuC6MdiGQXuSH29OBvmORGlTHTFzv92OrwrRW/pzj9nyefOQ9MwnJsP9f4cPsH4p8+y9vAzQaYSs=
+	t=1764713491; cv=none; b=kxkmM9IMuoNb2xxXtSvFW2fpAhU4JbEHjcyT/uY6/z/FVMdGTfU2almHS66MJFjHX+e376kKPzXwH0KvjbYbl//a+9uw/HeVeevrARr6O+pc0nVS+KXDUiVegOc6D7tM1Ze/iVZ55vdUztt7cy1yjIM93uLbSEu1j8JTU88F5r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764713475; c=relaxed/simple;
-	bh=IezbjyrKMd7CF4wmjtLwtz9ryJHkxALWTJ5+WLjf4Uc=;
+	s=arc-20240116; t=1764713491; c=relaxed/simple;
+	bh=mGnSw0u6UN0SD25/P1TD2X33g8zlDzZ18ttBtVIxLtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAqH8nuWaoYdggR+YmXtI19AyYMWtnJmrgJysrrTdyZ6Z35KYC1sYPwUKkk1o+FukQcsr+7l/z9MJxm4ikbNRc1lKzQ33GMBZGmOk8JO/sRVlRVFvrqC+fU/yYrNBB+Boa0Gva8W5MP01dGWkq9elJwhH3EGzszsko3sEnF+5CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eyCfbTug; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=XyR70jgPnm0Yx9gqU3JoUPO4jUlu59vvbqHK4XiiMW2rdRYV99zm4o56IIQVNa3kdqpDH0JnEvFrWXZhFTKoZZCgnI6Hq+wJB0Gg5YeSPZHow6d/hANTbvTnF5PWrDofxPx4VW9z8TxL5vss3WvhorhS+Ub+4uWByyQYiTyXaOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SkJgOAdQ; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eyCfbTug"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SkJgOAdQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764713472;
+	s=mimecast20190719; t=1764713488;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=alg7naeUAeeivJUgt+PHB4HQRyYZiikPJbRPV7cKwDk=;
-	b=eyCfbTugAYe5Aw+V7J4RvwgHPaT67uFTkG+Vyb3DpDZPtTiYcp8edl9G1T1xL8GhWiaA4w
-	Ic01BO4GERVe3Mkikym07nlO5P4Gw232vJCcYi82YJFJLQKT1a80ZPuL+9zc1M/nzdnAoU
-	1FDLHltbWqPIYUA9gfxteEopCTrobLQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=sUONzCKpgp9sphSRJABkyhTrpqvzQcZyR4eQMrAgr18=;
+	b=SkJgOAdQop6wXMSjQuI4wyB0CL9Xvk5gTlskL8dUOuuMZHFZQ1GWZBHHzyBQwqZMl6xdua
+	1hBXyeGmBWquAecWZn56zXU4WH8vbG1kRBU484wy7YAUqsX9gcpcZwRDm15/A8RFsHFeID
+	67gQGDynmHaXxO+nSHi2A+Qn4VaGP04=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-otA-ptBqOYmqDTXgCxnNIQ-1; Tue,
- 02 Dec 2025 17:11:09 -0500
-X-MC-Unique: otA-ptBqOYmqDTXgCxnNIQ-1
-X-Mimecast-MFC-AGG-ID: otA-ptBqOYmqDTXgCxnNIQ_1764713465
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-20-w90fZuHCN6utFXefMhBnNg-1; Tue,
+ 02 Dec 2025 17:11:25 -0500
+X-MC-Unique: w90fZuHCN6utFXefMhBnNg-1
+X-Mimecast-MFC-AGG-ID: w90fZuHCN6utFXefMhBnNg_1764713483
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C74E2195609F;
-	Tue,  2 Dec 2025 22:11:04 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 096B71955F19;
+	Tue,  2 Dec 2025 22:11:23 +0000 (UTC)
 Received: from chopper.lan (unknown [10.22.80.109])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 79C8419560B7;
-	Tue,  2 Dec 2025 22:11:01 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6647D19560A7;
+	Tue,  2 Dec 2025 22:11:19 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
@@ -60,9 +60,9 @@ Cc: David Airlie <airlied@gmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Trevor Gross <tmgross@umich.edu>,
 	Asahi Lina <lina+kernel@asahilina.net>
-Subject: [PATCH v6 6/8] rust: drm: gem: Introduce shmem::SGTable
-Date: Tue,  2 Dec 2025 17:03:32 -0500
-Message-ID: <20251202220924.520644-7-lyude@redhat.com>
+Subject: [PATCH v6 8/8] rust: drm/gem: Add vmap functions to shmem bindings
+Date: Tue,  2 Dec 2025 17:03:34 -0500
+Message-ID: <20251202220924.520644-9-lyude@redhat.com>
 In-Reply-To: <20251202220924.520644-1-lyude@redhat.com>
 References: <20251202220924.520644-1-lyude@redhat.com>
 Precedence: bulk
@@ -74,100 +74,232 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Currently we expose the ability to retrieve an SGTable for an shmem gem
-object using gem::shmem::Object::<T>::sg_table(). However, this only gives
-us a borrowed reference. This being said - retrieving an SGTable is a
-fallible operation, and as such it's reasonable that a driver may want to
-hold onto an SGTable for longer then a reference would allow in order to
-avoid having to deal with fallibility every time they want to access the
-SGTable. One such driver with this usecase is the Asahi driver.
+One of the more obvious use cases for gem shmem objects is the ability to
+create mappings into their contents, specifically iosys mappings. Now that
+we've added iosys_map rust bindings to the kernel, let's hook these up in
+gem shmem.
 
-So to support this, let's introduce shmem::SGTable - which both holds a
-pointer to the SGTable and a reference to its respective GEM object in
-order to keep the GEM object alive for as long as the shmem::SGTable. The
-type can be used identically to a normal SGTable.
+Similar to how we handle SGTables, we make sure there's two different types
+of mappings: owned mappings (kernel::drm::gem::shmem::VMap) and borrowed
+mappings (kernel::drm::gem::shmem::VMapRef).
+
+One last note: we change the #[expect(unused)] for RawIoSysMap::from_raw()
+to an #[allow(unused)]. Normally we would simply remove the lint assertion,
+however - since shmem is conditionally built, we need allow to avoid
+hitting warnings in certain kernel configurations.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
-
 ---
-V3:
-* Rename OwnedSGTable to shmem::SGTable. Since the current version of the
-  SGTable abstractions now has a `Owned` and `Borrowed` variant, I think
-  renaming this to shmem::SGTable makes things less confusing.
-  We do however, keep the name of owned_sg_table() as-is.
-V4:
-* Clarify safety comments for SGTable to explain why the object is
-  thread-safe.
-* Rename from SGTableRef to SGTable
-
- rust/kernel/drm/gem/shmem.rs | 50 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ rust/kernel/drm/gem/shmem.rs | 160 ++++++++++++++++++++++++++++++++++-
+ rust/kernel/iosys_map.rs     |   2 +-
+ 2 files changed, 160 insertions(+), 2 deletions(-)
 
 diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-index 45b95d60a3ec7..21ccb6c1824be 100644
+index 21ccb6c1824be..62a2c12b9fe2a 100644
 --- a/rust/kernel/drm/gem/shmem.rs
 +++ b/rust/kernel/drm/gem/shmem.rs
-@@ -173,6 +173,25 @@ pub fn sg_table(&self) -> Result<&scatterlist::SGTable> {
-         // pointer to a scatterlist
-         Ok(unsafe { scatterlist::SGTable::from_raw(sgt) })
+@@ -13,15 +13,18 @@
+     container_of,
+     drm::{device, driver, gem, private::Sealed},
+     error::{from_err_ptr, to_result},
++    iosys_map::*,
+     prelude::*,
+     scatterlist,
++    transmute::*,
+     types::{ARef, Opaque},
+ };
+ use core::{
++    mem::{self, MaybeUninit},
+     ops::{Deref, DerefMut},
+     ptr::NonNull,
+ };
+-use gem::{BaseObjectPrivate, DriverObject, IntoGEMObject};
++use gem::{BaseObject, BaseObjectPrivate, DriverObject, IntoGEMObject};
+ 
+ /// A struct for controlling the creation of shmem-backed GEM objects.
+ ///
+@@ -192,6 +195,72 @@ pub fn owned_sg_table(&self) -> Result<SGTable<T>> {
+             _owner: self.into(),
+         })
      }
 +
-+    /// Creates (if necessary) and returns an owned reference to a scatter-gather table of DMA pages
-+    /// for this object.
++    /// Attempt to create a [`RawIoSysMap`] from the gem object.
++    fn raw_vmap<U: AsBytes + FromBytes>(&self) -> Result<RawIoSysMap<U>> {
++        build_assert!(
++            mem::size_of::<U>() > 0,
++            "It doesn't make sense for the mapping type to be a ZST"
++        );
++
++        let mut map: MaybeUninit<bindings::iosys_map> = MaybeUninit::uninit();
++
++        // SAFETY: drm_gem_shmem_vmap can be called with the DMA reservation lock held
++        to_result(unsafe {
++            // TODO: see top of file
++            bindings::dma_resv_lock(self.raw_dma_resv(), core::ptr::null_mut());
++            let ret = bindings::drm_gem_shmem_vmap_locked(self.as_shmem(), map.as_mut_ptr());
++            bindings::dma_resv_unlock(self.raw_dma_resv());
++            ret
++        })?;
++
++        // SAFETY: if drm_gem_shmem_vmap did not fail, map is initialized now
++        Ok(unsafe { RawIoSysMap::from_raw(map.assume_init()) })
++    }
++
++    /// Unmap a [`RawIoSysMap`] from the gem object.
 +    ///
-+    /// This is the same as [`sg_table`](Self::sg_table), except that it instead returns an
-+    /// [`shmem::SGTable`] which holds a reference to the associated gem object, instead of a
-+    /// reference to an [`scatterlist::SGTable`].
++    /// # Safety
 +    ///
-+    /// This will pin the object in memory.
-+    ///
-+    /// [`shmem::SGTable`]: SGTable
-+    pub fn owned_sg_table(&self) -> Result<SGTable<T>> {
-+        Ok(SGTable {
-+            sgt: self.sg_table()?.into(),
-+            // INVARIANT: We take an owned refcount to `self` here, ensuring that `sgt` remains
-+            // valid for as long as this `SGTable`.
-+            _owner: self.into(),
++    /// - The caller promises that `map` came from a prior call to [`Self::raw_vmap`] on this gem
++    ///   object.
++    /// - The caller promises that the memory pointed to by `map` will no longer be accesed through
++    ///   this instance.
++    unsafe fn raw_vunmap<U: AsBytes + FromBytes>(&self, map: &mut RawIoSysMap<U>) {
++        let resv = self.raw_dma_resv();
++
++        // SAFETY:
++        // - This function is safe to call with the DMA reservation lock held
++        // - Our `ARef` is proof that the underlying gem object here is initialized and thus safe to
++        //   dereference.
++        unsafe {
++            // TODO: see top of file
++            bindings::dma_resv_lock(resv, core::ptr::null_mut());
++            bindings::drm_gem_shmem_vunmap_locked(self.as_shmem(), map.as_raw_mut());
++            bindings::dma_resv_unlock(resv);
++        }
++    }
++
++    /// Creates and returns a virtual kernel memory mapping for this object.
++    pub fn vmap<U: AsBytes + FromBytes>(&self) -> Result<VMapRef<'_, T, U>> {
++        let map = self.raw_vmap()?;
++
++        Ok(VMapRef {
++            // SAFETY:
++            // - The size of the vmap is the same as the size of the gem
++            // - The vmap will remain alive until this object is dropped.
++            map: unsafe { IoSysMapRef::new(map, self.size()) },
++            owner: self,
++        })
++    }
++
++    /// Creates and returns an owned reference to a virtual kernel memory mapping for this object.
++    pub fn owned_vmap<U: AsBytes + FromBytes>(&self) -> Result<VMap<T, U>> {
++        Ok(VMap {
++            map: self.raw_vmap()?,
++            owner: self.into(),
 +        })
 +    }
  }
  
  impl<T: DriverObject> Deref for Object<T> {
-@@ -223,3 +242,34 @@ impl<T: DriverObject> driver::AllocImpl for Object<T> {
-         dumb_map_offset: None,
+@@ -243,6 +312,95 @@ impl<T: DriverObject> driver::AllocImpl for Object<T> {
      };
  }
+ 
++/// A borrowed reference to a virtual mapping for a shmem-based GEM object in kernel address space.
++pub struct VMapRef<'a, D: DriverObject, T: AsBytes + FromBytes> {
++    map: IoSysMapRef<'a, T>,
++    owner: &'a Object<D>,
++}
 +
-+/// An owned reference to a scatter-gather table of DMA address spans for a GEM shmem object.
-+///
-+/// This object holds an owned reference to the underlying GEM shmem object, ensuring that the
-+/// [`scatterlist::SGTable`] referenced by this type remains valid for the lifetime of this object.
++impl<'a, D: DriverObject, T: AsBytes + FromBytes> Clone for VMapRef<'a, D, T> {
++    fn clone(&self) -> Self {
++        // SAFETY: We have a successful vmap already, so this can't fail
++        unsafe { self.owner.vmap().unwrap_unchecked() }
++    }
++}
++
++impl<'a, D: DriverObject, T: AsBytes + FromBytes> Deref for VMapRef<'a, D, T> {
++    type Target = IoSysMapRef<'a, T>;
++
++    fn deref(&self) -> &Self::Target {
++        &self.map
++    }
++}
++
++impl<'a, D: DriverObject, T: AsBytes + FromBytes> DerefMut for VMapRef<'a, D, T> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        &mut self.map
++    }
++}
++
++impl<'a, D: DriverObject, T: AsBytes + FromBytes> Drop for VMapRef<'a, D, T> {
++    fn drop(&mut self) {
++        // SAFETY: Our existence is proof that this map was previously created using self.owner.
++        unsafe { self.owner.raw_vunmap(&mut self.map) };
++    }
++}
++
++/// An owned reference to a virtual mapping for a shmem-based GEM object in kernel address space.
 +///
 +/// # Invariants
 +///
-+/// - `sgt` is kept alive by `_owner`, ensuring it remains valid for as long as `Self`.
-+/// - `sgt` corresponds to the owned object in `_owner`.
-+/// - This object is only exposed in situations where we know the underlying `SGTable` will not be
-+///   modified for the lifetime of this object. Thus, it is safe to send/access this type across
-+///   threads.
-+pub struct SGTable<T: DriverObject> {
-+    sgt: NonNull<scatterlist::SGTable>,
-+    _owner: ARef<Object<T>>,
++/// - The memory pointed to by `map` is at least as large as `T`.
++/// - The memory pointed to by `map` remains valid at least until this object is dropped.
++pub struct VMap<D: DriverObject, T: AsBytes + FromBytes> {
++    map: RawIoSysMap<T>,
++    owner: ARef<Object<D>>,
 +}
 +
-+// SAFETY: This object is thread-safe via our type invariants.
-+unsafe impl<T: DriverObject> Send for SGTable<T> {}
-+// SAFETY: This object is thread-safe via our type invariants.
-+unsafe impl<T: DriverObject> Sync for SGTable<T> {}
-+
-+impl<T: DriverObject> Deref for SGTable<T> {
-+    type Target = scatterlist::SGTable;
-+
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: Creating an immutable reference to this is safe via our type invariants.
-+        unsafe { self.sgt.as_ref() }
++impl<D: DriverObject, T: AsBytes + FromBytes> Clone for VMap<D, T> {
++    fn clone(&self) -> Self {
++        // SAFETY: We have a successful vmap already, so this can't fail
++        unsafe { self.owner.owned_vmap().unwrap_unchecked() }
 +    }
 +}
++
++impl<'a, D: DriverObject, T: AsBytes + FromBytes> From<VMapRef<'a, D, T>> for VMap<D, T> {
++    fn from(value: VMapRef<'a, D, T>) -> Self {
++        let this = Self {
++            map: value.map.clone(),
++            owner: value.owner.into(),
++        };
++
++        mem::forget(value);
++        this
++    }
++}
++
++impl<D: DriverObject, T: AsBytes + FromBytes> VMap<D, T> {
++    /// Return a reference to the iosys map for this `VMap`.
++    pub fn get(&self) -> IoSysMapRef<'_, T> {
++        // SAFETY: The size of the iosys_map is equivalent to the size of the gem object.
++        unsafe { IoSysMapRef::new(self.map.clone(), self.owner.size()) }
++    }
++
++    /// Borrows a reference to the object that owns this virtual mapping.
++    pub fn owner(&self) -> &Object<D> {
++        &self.owner
++    }
++}
++
++impl<D: DriverObject, T: AsBytes + FromBytes> Drop for VMap<D, T> {
++    fn drop(&mut self) {
++        // SAFETY: Our existence is proof that this map was previously created using self.owner
++        unsafe { self.owner.raw_vunmap(&mut self.map) };
++    }
++}
++
++/// SAFETY: `iosys_map` objects are safe to send across threads.
++unsafe impl<D: DriverObject, T: AsBytes + FromBytes> Send for VMap<D, T> {}
++/// SAFETY: `iosys_map` objects are safe to send across threads.
++unsafe impl<D: DriverObject, T: AsBytes + FromBytes> Sync for VMap<D, T> {}
++
+ /// An owned reference to a scatter-gather table of DMA address spans for a GEM shmem object.
+ ///
+ /// This object holds an owned reference to the underlying GEM shmem object, ensuring that the
+diff --git a/rust/kernel/iosys_map.rs b/rust/kernel/iosys_map.rs
+index 884a3d2be3348..fb1bb1bc03b73 100644
+--- a/rust/kernel/iosys_map.rs
++++ b/rust/kernel/iosys_map.rs
+@@ -31,7 +31,7 @@
+ 
+ impl<T: AsBytes + FromBytes> RawIoSysMap<T> {
+     /// Convert from a raw `bindings::iosys_map`.
+-    #[expect(unused)]
++    #[allow(unused)]
+     #[inline]
+     pub(crate) fn from_raw(val: bindings::iosys_map) -> Self {
+         Self(val, PhantomData)
 -- 
 2.52.0
 
