@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6212DC797
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 18:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF282DEA86
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Dec 2025 18:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764700109; cv=none; b=Or90YPEFNipJSxQLiPGpcdOrtrn0nMF+imVTTZU++1dBlBBUPIwIoycDAYSIGUSb8w6DAbPuMZ3QPEFwjMJPPhECu3vB6724a4k3zVMePxx74wwGe4lOV6NOlXUGRK8rtSujINy600r4O/zDThajlS4LDliVj4mCkl3+qpkZi2A=
+	t=1764700115; cv=none; b=q+n6EXo2ujS7kAHPWOceksIAHP6N80GdLyaPQG3suNQUXrKA8NhKRbVii2GaVaeFRiryyNyIrwWmPJJv1wO1J/pRIUF9Vy+TLOkcWEcATGbTwuSLeEsN5GaGnZF6wAnQRVbUCeCIL6zxxYn3mupVmG+LlRx2Xwiv7cY/hcBm1cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764700109; c=relaxed/simple;
-	bh=YP5nHpGCP5frHGxz59R99GmDjDWZ6b6Et8UTIPXjNKk=;
+	s=arc-20240116; t=1764700115; c=relaxed/simple;
+	bh=3jXt/fS4SI88qMIEkOpFGKsFIYm7WnyWCeahW0qmUdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axPIWfxTUBvyiE6NzlO9v2e6Kf+Yvc8+hhUjjgLeks5nyl11m8i9XzcojpfdOxH+uGtrWvDyWHkepNYCzM+432bb0kM0tPYJsrj2Dh1hT+V98jQAla20UnimGTOG3sK6fxO055YJk25dNBvUhbBqaA4YIWMqUyUrErPn3Yok+8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DTOGj1ct; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=EyVMeP6Ex3hGU5REVaGAAyZ8AwdfdlRvXXsVdHpE7HZvjk6o92g6O2J3GE7epOdeBW88QIZpiUnsLHPu2fqOPe9u73mV1QBuU8pbA93ftuwfrCqAcII3wfD9uuTqpQdmLLS83Yvop+1MiQYscVWo0dMsGtYTyAosbFwBHeB0sxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JtSQqBRE; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DTOGj1ct"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JtSQqBRE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764700107;
+	s=mimecast20190719; t=1764700113;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sZ1dfnd87LNuY6Ybc5qdt8fOiieffMFEXtuSDQq5xRg=;
-	b=DTOGj1cto0ztC9A4kiTXNLIpQkRMdblA+pMd6SlFiJAaycc1RtIXD3v2I2lpERF9efMR0v
-	LuzPuDOcZMEsv1zM97kabP6s3Sq+V07s5MMnrUimW7OsHrdvu2JmDIAvSDc8WHRAObWYsT
-	YQ+9+b5bvSM+O3ic3+bQUlYqHIkdN/0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=pnEYgNaFDB1k958f3dYNKjGG3prgj19hu0N27iWNaAM=;
+	b=JtSQqBREpA6pySRFnHdZC3i0P7oUau42b+i/kZnNAB8BvLRsfEbTSFL1j+YtLAKQbSnhs5
+	kO9qKncQ588qNrcZhIlomgC2RuISNfDDEH7jWgPKCq/KyURQpIpjZQJjsHrE/n7knmBILp
+	FRhc63rfTwY/sVY27El8zWePnTnR42Y=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-694-4wVgx2d2OxSd2mno-xdd3Q-1; Tue,
- 02 Dec 2025 13:28:24 -0500
-X-MC-Unique: 4wVgx2d2OxSd2mno-xdd3Q-1
-X-Mimecast-MFC-AGG-ID: 4wVgx2d2OxSd2mno-xdd3Q_1764700102
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-OvAE50XNNZS94w93K49X-g-1; Tue,
+ 02 Dec 2025 13:28:28 -0500
+X-MC-Unique: OvAE50XNNZS94w93K49X-g-1
+X-Mimecast-MFC-AGG-ID: OvAE50XNNZS94w93K49X-g_1764700105
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8087F1801233;
-	Tue,  2 Dec 2025 18:28:22 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7CFEB19560B2;
+	Tue,  2 Dec 2025 18:28:25 +0000 (UTC)
 Received: from chopper.lan (unknown [10.22.80.109])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0014919560B7;
-	Tue,  2 Dec 2025 18:28:19 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B23F419560A7;
+	Tue,  2 Dec 2025 18:28:22 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	Will Deacon <will@kernel.org>,
 	Waiman Long <longman@redhat.com>
-Subject: [PATCH v15 14/16] rust: sync: lock/global: Add Backend parameter to GlobalGuard
-Date: Tue,  2 Dec 2025 13:24:22 -0500
-Message-ID: <20251202182720.125884-15-lyude@redhat.com>
+Subject: [PATCH v15 15/16] rust: sync: lock/global: Add BackendInContext support to GlobalLock
+Date: Tue,  2 Dec 2025 13:24:23 -0500
+Message-ID: <20251202182720.125884-16-lyude@redhat.com>
 In-Reply-To: <20251202182720.125884-1-lyude@redhat.com>
 References: <20251202182720.125884-1-lyude@redhat.com>
 Precedence: bulk
@@ -76,98 +76,54 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Due to the introduction of sync::lock::Backend::Context, it's now possible
-for normal locks to return a Guard with a different Backend than their
-respective lock (e.g. Backend::BackendInContext). We want to be able to
-support global locks with contexts as well, so add a trait bound to
-explicitly specify which Backend is in use for a GlobalGuard.
+Now that we have the ability to provide an explicit lifetime for a
+GlobalGuard and an explicit Backend for a GlobalGuard, we can finally
+implement lock_with() and try_lock_with().
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/sync/lock/global.rs | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ rust/kernel/sync/lock/global.rs | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
 diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
-index 1d279be1a2eca..31264b68086b3 100644
+index 31264b68086b3..20fbe11d1a04b 100644
 --- a/rust/kernel/sync/lock/global.rs
 +++ b/rust/kernel/sync/lock/global.rs
-@@ -77,14 +77,14 @@ pub unsafe fn init(&'static self) {
-     }
- 
-     /// Lock this global lock.
--    pub fn lock(&'static self) -> GlobalGuard<'static, G> {
-+    pub fn lock(&'static self) -> GlobalGuard<'static, G, G::Backend> {
-         GlobalGuard {
-             inner: self.inner.lock(),
-         }
-     }
- 
-     /// Try to lock this global lock.
--    pub fn try_lock(&'static self) -> Option<GlobalGuard<'static, G>> {
-+    pub fn try_lock(&'static self) -> Option<GlobalGuard<'static, G, G::Backend>> {
-         Some(GlobalGuard {
+@@ -89,6 +89,34 @@ pub fn try_lock(&'static self) -> Option<GlobalGuard<'static, G, G::Backend>> {
              inner: self.inner.try_lock()?,
          })
-@@ -94,11 +94,11 @@ pub fn try_lock(&'static self) -> Option<GlobalGuard<'static, G>> {
+     }
++
++    /// Lock this global lock with the provided `context`.
++    pub fn lock_with<'a, B>(
++        &'static self,
++        context: <G::Backend as Backend>::Context<'a>,
++    ) -> GlobalGuard<'a, G, B>
++    where
++        G::Backend: Backend<BackendInContext = B>,
++        B: Backend,
++    {
++        GlobalGuard {
++            inner: self.inner.lock_with(context),
++        }
++    }
++
++    /// Try to lock this global lock with the provided `context`.
++    pub fn try_lock_with<'a, B>(
++        &'static self,
++        context: <G::Backend as Backend>::Context<'a>,
++    ) -> Option<GlobalGuard<'a, G, B>>
++    where
++        G::Backend: Backend<BackendInContext = B>,
++        B: Backend,
++    {
++        Some(GlobalGuard {
++            inner: self.inner.try_lock_with(context)?,
++        })
++    }
+ }
+ 
  /// A guard for a [`GlobalLock`].
- ///
- /// See [`global_lock!`] for examples.
--pub struct GlobalGuard<'a, G: GlobalLockBackend> {
--    inner: Guard<'a, G::Item, G::Backend>,
-+pub struct GlobalGuard<'a, G: GlobalLockBackend, B: Backend> {
-+    inner: Guard<'a, G::Item, B>,
- }
- 
--impl<'a, G: GlobalLockBackend> core::ops::Deref for GlobalGuard<'a, G> {
-+impl<'a, G: GlobalLockBackend, B: Backend> core::ops::Deref for GlobalGuard<'a, G, B> {
-     type Target = G::Item;
- 
-     fn deref(&self) -> &Self::Target {
-@@ -106,7 +106,7 @@ fn deref(&self) -> &Self::Target {
-     }
- }
- 
--impl<'a, G: GlobalLockBackend> core::ops::DerefMut for GlobalGuard<'a, G> {
-+impl<'a, G: GlobalLockBackend, B: Backend> core::ops::DerefMut for GlobalGuard<'a, G, B> {
-     fn deref_mut(&mut self) -> &mut Self::Target {
-         &mut self.inner
-     }
-@@ -154,7 +154,7 @@ impl<T: ?Sized, G: GlobalLockBackend> GlobalLockedBy<T, G> {
-     /// Access the value immutably.
-     ///
-     /// The caller must prove shared access to the lock.
--    pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<'_, G>) -> &'a T {
-+    pub fn as_ref<'a, B: Backend>(&'a self, _guard: &'a GlobalGuard<'_, G, B>) -> &'a T {
-         // SAFETY: The lock is globally unique, so there can only be one guard.
-         unsafe { &*self.value.get() }
-     }
-@@ -162,7 +162,7 @@ pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<'_, G>) -> &'a T {
-     /// Access the value mutably.
-     ///
-     /// The caller must prove shared exclusive to the lock.
--    pub fn as_mut<'a>(&'a self, _guard: &'a mut GlobalGuard<'_, G>) -> &'a mut T {
-+    pub fn as_mut<'a, B: Backend>(&'a self, _guard: &'a mut GlobalGuard<'_, G, B>) -> &'a mut T {
-         // SAFETY: The lock is globally unique, so there can only be one guard.
-         unsafe { &mut *self.value.get() }
-     }
-@@ -216,7 +216,7 @@ pub fn get_mut(&mut self) -> &mut T {
- /// ```
- /// # mod ex {
- /// # use kernel::prelude::*;
--/// use kernel::sync::{GlobalGuard, GlobalLockedBy};
-+/// use kernel::sync::{Backend, GlobalGuard, GlobalLockedBy};
- ///
- /// kernel::sync::global_lock! {
- ///     // SAFETY: Initialized in module initializer before first use.
-@@ -232,7 +232,7 @@ pub fn get_mut(&mut self) -> &mut T {
- ///     /// Increment the counter in this instance.
- ///     ///
- ///     /// The caller must hold the `MY_MUTEX` mutex.
--///     fn increment(&self, guard: &mut GlobalGuard<'_, MY_MUTEX>) -> u32 {
-+///     fn increment<B: Backend>(&self, guard: &mut GlobalGuard<'_, MY_MUTEX, B>) -> u32 {
- ///         let my_counter = self.my_counter.as_mut(guard);
- ///         *my_counter += 1;
- ///         *my_counter
 -- 
 2.52.0
 
