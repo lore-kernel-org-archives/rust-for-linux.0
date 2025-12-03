@@ -1,19 +1,19 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05F3296BCB;
-	Wed,  3 Dec 2025 23:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484552E9EDD;
+	Wed,  3 Dec 2025 23:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764806001; cv=none; b=ittm2AHIQeDTctX2q31wYoPe1IkEqU7fFkvCu6+Qu8pWxFKF5K4Ucf7kMnDo2FcQWwtxutfHhC3gehBeYksmd3fYeYkBREgW/rd0zvdkQum1/gg/7nc3Sj+szTFei5a33Ez7B6cMuBCZH2J5JzgpE1eveAyhLGt96v7Tsnu0X2o=
+	t=1764806001; cv=none; b=dUYAUbcvFinPxXc4RkKo2PacqjFvvcUepdIm735bfLAcbeewmrXJHZZMbmVNX8OhREtiG67P6r9WKdBjuaUnHOEdAyfyFKIFC1E0UT/fnwHG+Uz2Zu8hl9Uzr3kbPwVeO3uOUJl8CQbuIPKraJBVuleobitbnITdJmCX5GVhILg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764806001; c=relaxed/simple;
 	bh=92qEzZReLlxelG2frdP3ZplqXOLhww7TIHnMjOTH+eg=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Rkl2EICIBXbvtwuAZBD60KD+KoShfA3aSYQ447FweipzqNuRSfDAjrP/AAnjaGD+7fH+z4uL8EoqYgwiCm09nGXk7JAKoTO7JJn7V7BIhoR94lQPHc9SwRRopGbEeFCvabLvsXXaUMmBaLWJpRGONeftS5yNiqW4Y7dxZOqDMEQ=
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=IxWgMiddXE4cWc+dKsRhyBfcVVW4ETlEKk7WspP4Bi/LrR4pd1vU9NCXU8VEFyVT1j2iFJMvWTWPElWZw7ZLwqBsj//CYfhuRvR9lE3TfkvmfhzHD2OTEYJEy7KgzdCJjwsFSauHCJ6wG1CuXj2dwC91xSq+go2WeZzdBdc4veI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPjkjHNh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
 	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPjkjHNh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98A8C4CEF5;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2AE4C4CEFB;
 	Wed,  3 Dec 2025 23:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1764806000;
@@ -26,7 +26,7 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	 glzY2txWfE1otWLb3cIv9SYy35gVkCzgYecSS7qiatItSbr6MHLX0hBfHPZ36zwFAS
 	 RWMNgs0/L54jQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B5B713AA9A81;
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B87723AA9A82;
 	Wed,  3 Dec 2025 23:50:20 +0000 (UTC)
 Subject: Re: [GIT PULL] Rust for 6.19
 From: pr-tracker-bot@kernel.org
@@ -39,7 +39,7 @@ X-PR-Tracked-Commit-Id: 54e3eae855629702c566bd2e130d9f40e7f35bde
 X-PR-Merge-Tree: torvalds/linux.git
 X-PR-Merge-Refname: refs/heads/master
 X-PR-Merge-Commit-Id: 784faa8eca8270671e0ed6d9d21f04bbb80fc5f7
-Message-Id: <176480581998.130731.5073516452361308228.pr-tracker-bot@kernel.org>
+Message-Id: <176480581915.130841.18156368852050947508.pr-tracker-bot@kernel.org>
 Date: Wed, 03 Dec 2025 23:50:19 +0000
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
