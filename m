@@ -1,80 +1,80 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EF8301033
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Dec 2025 14:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EC8301483
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Dec 2025 14:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764773302; cv=none; b=BqpHeVGUkwvDboNk5+zJpqQQfwmxa/tzRdPgJBN/MJSN69IDBmROHSO6wO7YE1EVjU7pcGeExkkSnMsihXLUzSdCrxudsxyyd7NeWBxcL42Stwe9bmtdP0iMIOgdEyVnopBzOCrWRFircGi6d5X6+/QD/Laaeodb7oY74H98M8c=
+	t=1764773304; cv=none; b=MA+6DjVnwvElgOy9+yzySgjK6LnAXge2p29+2OeRBUPKcqbvDHtZDfMXLBqWdF6gyGYqBNc2WU3v+d9QLHNTWlR5GeBnbC/oxsytbpxWFQElgwjTZcEF60XbtmjxwAcS6znf/roXlllHPk+IkQWeicJIjuwiTMzANsLgLBsuOXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764773302; c=relaxed/simple;
-	bh=vFB2acYC6UTXJg6iXZzHyk84lfxBya/wDI98yOVq4Q4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UGV5/jA5xc6w8+GJOUnICEl15+AbZbUFZpuEfXhXUmVFJM8FLUlAFigCzsRx+pEcMuc/uA5v97zzgIY8WzjBYoVfloHtocExe6rZ2xspfmqZrz+xANJbr5OZl8cGZJ74EJBFljEGYcObGtAAo6BU8MpMNcriS2fkW5D74m8mbsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WoluHTsL; arc=none smtp.client-ip=209.85.208.74
+	s=arc-20240116; t=1764773304; c=relaxed/simple;
+	bh=olnH5YETSchoWfW4eXNpzYuZguSxzG935v3fEmxsmwI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BpfZ8nQAznODL51E4zqpwn71wZw0dEL1c4GcxvyQ6VizFLpKDXCo5Bg+d1AW59XhcGE6w76ZyX9VkIqidjQxcvGrTRoI0LOL6ZZ0q1dSJEr+GWKi2Whe4A+U/l+olFpkjGsFXz61Py/ykLK2RDTajUhga+tUYKCUhFTBpztxfuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ErVG7R36; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WoluHTsL"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6411c626af4so6548900a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 Dec 2025 06:48:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ErVG7R36"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47775585257so46902415e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 Dec 2025 06:48:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764773298; x=1765378098; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=R083YyKkmXAmCxeRjmCF4aawwgPM5D8Vwqqo+kBw6zI=;
-        b=WoluHTsLKEwcsmZFOK9v0ZjWml/9HyKS8LhYvORJ7bCI7KSbkHY+SdXT5u40ywcAlb
-         b6B7Icc+SNJomF6KbozL4r3WyvvU91dlN6uSjsFiGl/Qp6W39cS/ZchLiiY4sJDkjY2F
-         mtcRB+ZY9nX17HKsAXM9S/Oqu9PUTnMWEtZ6q9EQvbjrLxTsCqM1DjKznv8/cK0VBizT
-         80Cq2zgMQN1T09/7h19K6cSK4L+Ysk5oxxJoXstTLBXnEXiE+NEKwodxWaAGWlKIGTbR
-         Fbm8jaPBTu161yZ5OTeQ931Ymvbfa/mROCvaKHxA76QyIXnjyM9CRtRN0T3xQhkbp/yw
-         Y9hQ==
+        d=google.com; s=20230601; t=1764773300; x=1765378100; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KgQO/RKm33Ct3E94qzLO0Z9kCba8cyghV+1zPxuiX6c=;
+        b=ErVG7R36WcxGa+tKbxN9NnoYt1gVqFq0LAMljfFwPiQ5V06zljPuPkDmOE6CXod92s
+         vFeQFbT9AgVObxZRjItSsuFFgHCaNuXeKz6yps4XhtvtuxtS9rBBNHFSPMRHY1nHp6RV
+         8cgZZdYRcHvnSywaNEcTLVwgWoJEobM+hkPwINxD4dOSv8mOmoRor/e9H9bw35g4OzVd
+         4ScPEExMm9NwCh+AnKH3XhD3s6IOO8UYfANacxx4L+Edw4Pe8YiiakmsYwZ4MEyWXSy+
+         FzVQ/3Uea6Mkji1VMfKbMU2XwpO9WLWpdrFQOxuUN4iHv6C3j2Wp+zTaYa5hIlfXBGQe
+         rraA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764773298; x=1765378098;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=R083YyKkmXAmCxeRjmCF4aawwgPM5D8Vwqqo+kBw6zI=;
-        b=nqA2ZEQwh/KI5Eztqk/daznCX5XOc4lQ1trDe8yoe0AV80s/MjlxxCeFyWKksuHpR8
-         wLnsUSGF8YAb55EYCmE81/yQeQV+ILepe8HO2TZ8be4r7rdXz0fX+fmal/F9pgpmjTUg
-         eBf+VQakcKSk+DI/KGMkaiMuPKTXu+MNVIpCgnGpfAyRr0ujVzlTVuN9poW0JLWybwB1
-         9QA0oIFq+TERzFdoB64AYVML3Vz07L2Vty6GsHulCMWKIVPOD74kR46llhJkMFlelLD5
-         dTj55tFkA6+evrH957rVMlErMeIMC7LlKo/K4GtN3MYaAYblQmrQFBraUwK5sotuRKg0
-         7X2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUS/nqJQX9gH9ZSM5Wi4RSJLk4u/oh8Ls2sAfzVQNkjNUc63A332cdLm8NcTo2binBH9hNG7gsPQBc9CvZRPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxvEcTAXVK9WHoncEOlF3nQ0iIauNH8ykT/0NCafDrQeBKvS/R
-	T5i/RVajdqbOH8XYmj2haVI48A4z/KxglaGm+xBuIAzf0BYX4IkUWTTMMwZNI9/vMXRh2wHjwhN
-	1oa+pfOcuDJ6GOSV7nw==
-X-Google-Smtp-Source: AGHT+IEOBrAUlvapQuOyBy5jLmZU8vMlqp6OWY7wtvuY1C4CBIRQn9B9eNChTLF1OBbMVW1ZRA4jP3gDO07ldLs=
-X-Received: from ejctb5.prod.google.com ([2002:a17:907:8b85:b0:b73:7130:388f])
+        d=1e100.net; s=20230601; t=1764773300; x=1765378100;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KgQO/RKm33Ct3E94qzLO0Z9kCba8cyghV+1zPxuiX6c=;
+        b=jK70DlEwj35EPndNBUqGYa8cyDOV8W+g+zX0OkTNB0iWx/7RhIc9zAJ2cBRKdg0NkE
+         7ycYOf8YxTdbLTCvDTHWFGrPDDSNLb1F905u+IRp321d4L+hFydVIV+zStcfCo2Ms7HD
+         qpof/vq/gB5b5yxopWh116UQ6YfDp76/+aMNdsXeyHHb2uQ/WyC7AfJ2EnUck0jndraQ
+         82IgmzPuCd1O1f5E0QBtu5+akBy860cRjom9IrsV4cp6GcRjVBjFMFjLsbTi17W5jbni
+         NKqfeJvJEEIQnHOHY2eUNp5iErMBru02JFydmEEo/jcjstL6D70A5YGlh/gn10jy7oZP
+         yw6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXFDkxGbf8H+7KGAE4uKvQk1e0w9h0qucJct/2QqO+UMTwuABCGDQoaOMW631zDpeRGth/9P/MVL+9HZ6xYPw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHplAB9dMQ4D7NDTuA8D38Ei9Iij/3U06+z4+88ED1LxMOaTab
+	HFHFsuK3xtxnCGia/a56fHqRrh/aXHpmeMZJKfDAEqoh+Aqfy8YBNLC6tJnJdkv0NrQVhuk4VAz
+	T4/LLFbBMj+MhoLNiHw==
+X-Google-Smtp-Source: AGHT+IGc0cYyki8k/OJB1kgKye7QlKFFb2A2oXwvpN/U8/8XOsbYC3faMiqMIxyPsnhgPjvmr7AlBJPCnK1Bm0Q=
+X-Received: from wmco13.prod.google.com ([2002:a05:600c:a30d:b0:477:7f1b:5f89])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3da1:b0:b73:6c97:af4b with SMTP id a640c23a62f3a-b79dc761116mr253949466b.45.1764773298562;
- Wed, 03 Dec 2025 06:48:18 -0800 (PST)
-Date: Wed, 03 Dec 2025 14:48:07 +0000
+ 2002:a05:600c:3152:b0:477:7b16:5f9f with SMTP id 5b1f17b1804b1-4792af403c5mr30063255e9.31.1764773299805;
+ Wed, 03 Dec 2025 06:48:19 -0800 (PST)
+Date: Wed, 03 Dec 2025 14:48:08 +0000
+In-Reply-To: <20251203-binder-trace1-v1-0-22d3ffddb44e@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAKdNMGkC/x3MQQqAIBBA0avErBMcJaGuEi0sx5qNxRgRiHdPW
- r7F/wUyCVOGqSsg9HDmMzVg38F2+LST4tAMRpsBEa1aOQUSdYvfCNVqgnVjdJashtZcQpHf/zc vtX6ifxjIXwAAAA==
-X-Change-Id: 20251113-binder-trace1-b2d369f63e30
+References: <20251203-binder-trace1-v1-0-22d3ffddb44e@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1251; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=vFB2acYC6UTXJg6iXZzHyk84lfxBya/wDI98yOVq4Q4=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpME2q3rzX3kZ/g2sO46GEgDlqP/69bBV5ZQAjj
- YNx+34KjjqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaTBNqgAKCRAEWL7uWMY5
- Rl9PEACfjHXgsSQs1n2Agm9h7nDpT9RCupir36hDaGt15q2kZU14zBE9ojt8gzeFWWFyQajGbVa
- tRdZOkktVnqjZYAoNdufX07/XLD2Qw2ItItsYYf302fNsc7HKToL4qBc2Uy1n+D8WEc4L7DkWw+
- kypM/O6cLFXeWzhneVRJerJen03UZ0tCbvuqFFjpxe3l8Klr3G633ciYnrWyfwqd/WBMWIQ1Mpb
- lNDV+Yxv031WD36KQLwP5HLwTjRc0Dqg+RaO5LUKjgVVekofm+/lQ4LrYTiGdah0RsCRPy+ltUQ
- SifBXS+t+a+ZrGxfoItxbNZK3kgzgB+HHcokH6by1EeBn7gzxlyWfeEQ5gyu8khxxuBhopFQsZ0
- 1WUq86Vt3xlNP/HasmFB+Upn4vSdByHyG1GGYksWRirMpVCHKIt5hVgTLAtPp4c6Q7XhVRXgUHm
- +WKSWJLSadavjuimRXBQg46llVRqg8bRMxkRRby3+Uwgi8fqVN6zpsmZ2BxGn27h28rvGqxorIr
- KCaRjR31rsQ6qQj/Yme253wnPtDsrClDQkU552SpTzW7X6yp0msA6wcpTl9mD1YwJRERCQMU5J7
- 2zcDekDvTeYl7FevQpHKI99C4FtVhfD5k2uB9/WPzqa0yB5tfUQ5tdtgjRbC0qpu74ogpuvxMBk PXnNOno5o+3Cefw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=958; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=olnH5YETSchoWfW4eXNpzYuZguSxzG935v3fEmxsmwI=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpME2x1G/TRt7z6UAKUDD8HZvJemxzpA7iTVT9m
+ ND+NbaUP7aJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaTBNsQAKCRAEWL7uWMY5
+ RpRpD/4ycmVSA29L7VAouHz0CZrZOwMAXS0lO6KSs8C6pH9GDvWktpr8neYng/zkAkI8aI1Resc
+ m8C71CCe6gkHHkT5bmPvj3+PDkF18Kgu1ya2drFPHHxOi6973Wh3CGGughX8RPEQ9oNgJkTYBkm
+ ONxnTD5J5/wE1AwL3NEAuYRMFYTHXS2ho7WcV5LRmOhPXEPetZfudxmkIvn7JnsDpk86qp6vhaP
+ 8/2qSqADa/gVy1K5X18SR3IqTiCTDudOskqcvhuxsf6TjdBHB3ywc2l1K9GbhjLrFARp1C/qAZu
+ 97A1O6srzp1Fk/PqMF6rhLAASMZE2MMN3zn0JdilqqFaLY1P3M9Hf49sJGO1DoEYTZVF0g66JxE
+ 6bzIuOzNyi+wlygmqqg4IcAQo/8NrXnFS8dmNB+1RITwmtVfhF973zrzoViAG5xCWaXSZoL8rfX
+ RQgEgEbxiKOlf9eR8fh4yLPmeFlltDDW/5g8o71sxHusb/esPMUEtaKxOT21ARThx9+bFu6DxdX
+ J6BkZdg4wGsLe2axsRQHgCLtK8QtOImp7WtLNeXpjLDiCbYgFqIOZapAuGRezaQD2JyAOqwZFsy
+ pNqj0ydvAcI3mDHrwuQcONumt3fXk8/qMm9LNTatZkvZqM+aepZFY5tr94L+/d1uznsTmLNovap Jrfm+7vBd+3CXXw==
 X-Mailer: b4 0.14.2
-Message-ID: <20251203-binder-trace1-v1-0-22d3ffddb44e@google.com>
-Subject: [PATCH 0/2] Access Rust fields from TP_fast_assign in TRACE_EVENT
+Message-ID: <20251203-binder-trace1-v1-1-22d3ffddb44e@google.com>
+Subject: [PATCH 1/2] rust: sync: add Arc::DATA_OFFSET
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Steven Rostedt <rostedt@goodmis.org>
@@ -89,35 +89,31 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This patch shows one possible mechanism for accessing Rust fields from
-the TP_fast_assign() body of a trace event. The idea is to have the
-driver expose the offsets of the relevant fields, and to have the C code
-use those offsets to access the data.
-
-I'm currently using this mechanism in the Rust Binder driver on
-Android's fork of 6.12.
+This constant will be used to expose some offset constants from the Rust
+Binder driver to tracepoints which are implemented in C. The constant is
+usually equal to sizeof(refcount_t), but may be larger if T has a large
+alignment.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (2):
-      rust: sync: add Arc::DATA_OFFSET
-      rust_binder: add binder_transaction tracepoint
+ rust/kernel/sync/arc.rs | 3 +++
+ 1 file changed, 3 insertions(+)
 
- drivers/android/binder/node.rs              |  8 +++
- drivers/android/binder/process.rs           |  7 +++
- drivers/android/binder/rust_binder.h        | 79 +++++++++++++++++++++++++++++
- drivers/android/binder/rust_binder_events.h | 30 +++++++++++
- drivers/android/binder/rust_binder_main.rs  |  8 +++
- drivers/android/binder/thread.rs            |  1 +
- drivers/android/binder/trace.rs             | 21 ++++++++
- drivers/android/binder/transaction.rs       | 14 +++++
- rust/kernel/sync/arc.rs                     |  3 ++
- 9 files changed, 171 insertions(+)
----
-base-commit: 211ddde0823f1442e4ad052a2f30f050145ccada
-change-id: 20251113-binder-trace1-b2d369f63e30
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 289f77abf415a2a52e039a2c0291413eda01217c..921e19333b895f0d971591c4753047d0248a3029 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -240,6 +240,9 @@ pub fn new(contents: T, flags: Flags) -> Result<Self, AllocError> {
+         // `Arc` object.
+         Ok(unsafe { Self::from_inner(inner) })
+     }
++
++    /// The offset that the value is stored at.
++    pub const DATA_OFFSET: usize = core::mem::offset_of!(ArcInner<T>, data);
+ }
+ 
+ impl<T: ?Sized> Arc<T> {
 
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.52.0.158.g65b55ccf14-goog
 
