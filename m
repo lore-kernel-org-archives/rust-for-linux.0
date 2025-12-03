@@ -1,118 +1,112 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275FC2C0F9C
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Dec 2025 08:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46322D6E70
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Dec 2025 09:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764752395; cv=none; b=r/zfDWMWifkFGMbqnlinv2/8e1WG4MBSBY3+2uSMa6QCcyKNyqlG9/gpKiljpNfpjhQjHxlBcZsJ1ayyEx1RDrmNTSRLltbyZaAl5q1Frk8EFjtpjtXFE+6NWZfXoj1ZWK/d1uagcFEmbQQIpizpYcgSF8xhnKleNKKLgKTz6DU=
+	t=1764752592; cv=none; b=GwJSJEnD7myPqGlDoztxjZeGI/sKy+zF5NssCKFcy+gU+t9ffXIZfw+4FgIi1o7dCsK2WN3Bz7Hr9AkLTCz7bcAworI+uAa3Sc63QxF7oWcyDqi1UwXc9jr6CwkvmFB+RenNEktFMpwVJBMa9q0PM5oAw1IcIfBbs+u4s2x5vus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764752395; c=relaxed/simple;
-	bh=sIrdKwmuLsmQjOxxEb+3ByaAez5EbfKfFuGxE+SxYFs=;
+	s=arc-20240116; t=1764752592; c=relaxed/simple;
+	bh=sHRw72ir0jtF6UYhga3oGsB6lNlF4iMvtGvPuLIuIqk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=b+z7r7A8SlQebkmBdc1gYZ0TfFVT/TPjkUx0yBd1b902oRgnIK84W63nmhQ+4+mCpp7L4HvVWmZxS0rbwl7LIzANxkHCDMlR6FP6TiAjdLLe0mKCwc9wo75qeMjyIzp/alag5u7G4F5KmVsNfOek8qPJu8oPLiALfzNVzVYM6kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L/JDQYTk; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=LC3Z9eDkUOdTouH3HS/TdxLueoguABd1/wK4Qh4GlF0hsSYoQ6jV0VbuH7N3QTyf626ahNY7zo3WlUDOlg0r1Kob0KuR/ylBmjEWhpyqxDM9//lYtF4H6ZaaWcDbjJfKMwkxaHSLayWIyVcPh2b5IJklaP3PXCaTOBdB4J0ktHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4tJWNBVN; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L/JDQYTk"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4775f51ce36so48760945e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 Dec 2025 00:59:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4tJWNBVN"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42e2d5e833fso1960765f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 Dec 2025 01:03:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764752392; x=1765357192; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1764752589; x=1765357389; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=w2qjCfneRPNdybFJOwazXOzp6EzGQSTlHFm7BKrgpwc=;
-        b=L/JDQYTkKh9RTxqvLiYpqq3GChlw6HsY5fLdZsZpE7CyPnmoU2Kvotqba/er9FjBBZ
-         wCsKkuV3PTXlMMXDpslpciAs6LamkerlUVuItOoyadcXx+3a2uwYFsfa9QrYFKaYmdxp
-         0HWmL/kZZd6vWq1N9S8jUcYZ1BUDR3mJUcuKPpbrNzuVvsgepD3Ww0lT3E96WOSi5e9l
-         ZqfInpCe23csBwDU4EWuRRGL4rUfTZnByjEhuIQ7Y75TexqTGIGBk8RX3kKD9k+axR2R
-         QfFmjl9H4AaB2bb99KAWZB6XFrDDmLQqRuUfLKwwnSJAB8LMKsJnJu7bbLuQ/MKiHreE
-         1D7Q==
+        bh=Kfr+2vX4Q9tVYLgU8VtQjWCWyeZdN7Hd9t3ZToxEDh8=;
+        b=4tJWNBVNjpzb0aL05cePe6HDtxflXUBdnCQ2tKaQ5th6uxs5SHZ1kTwcJHAwVSDPjx
+         1wSK5gHHK1IKeM75ySQ4zH5HLoPZ7EW5F5sV5IBgSO6R2P4a1FNgd8pqa9YPiLHFFxCL
+         cUIoMX802hYKiOqziV+1nZxLEiNlxJlwtNH0Httj9d8RJHvyvcqXJWqhJYYuQ/DlZ5Fx
+         vnbl0xegVduVdtrJV82HqC/qGq1BlJHFXC27kg7R0nJ/nmXgNmTju4ZhE/Wp2uaFEJTW
+         s2HRtkn8MalzTOVYmAunlslVH869mGhIIHCg8DICn6iMM4kK1o0Pe1wO7BaOfS8gq0cw
+         Em6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764752392; x=1765357192;
+        d=1e100.net; s=20230601; t=1764752589; x=1765357389;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w2qjCfneRPNdybFJOwazXOzp6EzGQSTlHFm7BKrgpwc=;
-        b=iZvHbc5EY1bYobSoJz28PIQh2tOmTGd2xRclUXK0EEneSv120rErzHjIw34mhS/upu
-         mGr9I6eu4UtROlh5aKiY/mgc59nRZb6JEqHxCzFMyi4bLH9rTqyYCEK54fASe4qLGVEc
-         WPzR6CpnzIqXXzMlgBGrbErkwYT7K2rHIrNohJ5pZsbQno5Np//7PDVS5CJIiMVY1L0i
-         wIA14FnrQ8p6SGmx82ptoe5lzGUFGrNER5CekRUFyd/RoP5qbgBBcCkG2po5RzzC/tL6
-         aECo9h/y3zIevorA3rut7qMgn5tmUalU8kwvCQh/wtfgSRUkGzIsO61RhVtqDFhsKnXd
-         7SFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU7xxookZUpHhXXnD4xVxWndqZFztfkNys27DccHdpnwRBHqtELYv2ZHlZ+Oc14mkoErLXCaBxVkNfE8/x2Mg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwN8ao/r+n2nXHzyqJnGTkL2f1JlhxiGVqckFnceTipixijFms
-	GoBrki3+TuIa3WisyY0sIm1iHuNOqMtX3TsLhkUiXHwQc/OiQ7X4GcUYjrD1XdAjgcA9ozB0ji0
-	REIPdI6OHew4kX2y6cA==
-X-Google-Smtp-Source: AGHT+IH9vtv/i7CYP6tyRnwISXY4up53232P5t1z3PTIcbi/+llzPz0PUwcQpxLmhPW/Y4uS/xDQRvqIm91HMDU=
-X-Received: from wmlm26.prod.google.com ([2002:a7b:ca5a:0:b0:477:7ad9:2aa])
+        bh=Kfr+2vX4Q9tVYLgU8VtQjWCWyeZdN7Hd9t3ZToxEDh8=;
+        b=WsOa0ka6qYr9sMq+hUL2tns6JzVh7/g2pjTPXW7GCK33IrpP7E6Ploe+RbERDz4T+i
+         aiSq/SCOL7zmsQFJwUBJ75912sZQ0Y7MT0hbZP0OS9YwEp2E8ysoohEII48tKhMsk/Ob
+         zkSg7dliVy93qsE/olVdejF0aK7j5bkjwC1WCtYTcOj+0JH9BbdN2aeKSCv7+BaVi7Ug
+         LFIZ0oVGRb1gtO5/PWTTzoZjdXvX+0N575iMqsH5RVgaw3pTkOVLN5BQX60gImKz1qBR
+         Vbs4bfJvlCSFZGUJyh+GRgjwd4rMlOH4okMPNlG3YG2ZrFgX3s9jeJgMzwWm+uUjXRH3
+         fjcA==
+X-Gm-Message-State: AOJu0Yyw5U3sQIrsavvCuEb67Ty5Hsea7ShrmuS9f08ASaazPDeZFh5y
+	Dg8dITKgOuQWCcEpkiGXeXxNkMCeChRNG4EXz9/GTsqkVyTPDYTuEnKWLUcYw8dGXabYIBYnAr7
+	vE4o9BljoGZwajvNfLg==
+X-Google-Smtp-Source: AGHT+IFg5XueCO7iaVE54su6fSNrUy2hUT+JlKzlcb+hn4Wyg421uEEc8o4czxMlxykexPiBxK1dQhFnGN4+EkQ=
+X-Received: from wmkz15.prod.google.com ([2002:a7b:c7cf:0:b0:477:988a:7675])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c87:b0:477:9b4a:a82 with SMTP id 5b1f17b1804b1-4792af48eb2mr14624205e9.35.1764752392654;
- Wed, 03 Dec 2025 00:59:52 -0800 (PST)
-Date: Wed, 3 Dec 2025 08:59:51 +0000
-In-Reply-To: <20251202210501.40998-1-dakr@kernel.org>
+ 2002:a05:600c:46c6:b0:477:a21c:2066 with SMTP id 5b1f17b1804b1-4792aedec5dmr13878395e9.5.1764752588948;
+ Wed, 03 Dec 2025 01:03:08 -0800 (PST)
+Date: Wed, 3 Dec 2025 09:03:08 +0000
+In-Reply-To: <aS-WPmuwgvzbI0AA@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251202210501.40998-1-dakr@kernel.org>
-Message-ID: <aS_8ByHdEDZHj1F-@google.com>
-Subject: Re: [PATCH] rust: pci: fix build failure when CONFIG_PCI_MSI is disabled
+References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
+ <20251202-define-rust-helper-v1-38-a2e13cbc17a6@google.com> <aS-WPmuwgvzbI0AA@tardis.local>
+Message-ID: <aS_8zI1Od2Yl-BpK@google.com>
+Subject: Re: [PATCH 38/46] rust: slab: add __rust_helper to helpers
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, joelagnelf@nvidia.com, linux-pci@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel test robot <lkp@intel.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Vitaly Wool <vitaly.wool@konsulko.se>, Danilo Krummrich <dakr@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Dec 03, 2025 at 10:01:50AM +1300, Danilo Krummrich wrote:
-> When CONFIG_PCI_MSI is disabled pci_alloc_irq_vectors() and
-> pci_free_irq_vectors() are defined as inline functions and hence require
-> a Rust helper.
+On Tue, Dec 02, 2025 at 05:45:34PM -0800, Boqun Feng wrote:
+> On Tue, Dec 02, 2025 at 07:38:02PM +0000, Alice Ryhl wrote:
+> > This is needed to inline these helpers into Rust code.
+> > 
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Christoph Lameter <cl@gentwo.org>
+> > Cc: David Rientjes <rientjes@google.com>
+> > Cc: Vitaly Wool <vitaly.wool@konsulko.se>
+> > Cc: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  rust/helpers/slab.c | 14 ++++++++------
+> >  1 file changed, 8 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/rust/helpers/slab.c b/rust/helpers/slab.c
+> > index 7fac958907b0a7cbb28ef3a8a56e0cc10d39288f..970161023d8885935f2116fe81949d0ed622f9e9 100644
+> > --- a/rust/helpers/slab.c
+> > +++ b/rust/helpers/slab.c
+> > @@ -2,16 +2,18 @@
+> >  
+> >  #include <linux/slab.h>
+> >  
+> > -void * __must_check __realloc_size(2)
+> > -rust_helper_krealloc_node_align(const void *objp, size_t new_size, unsigned long align,
+> > -				gfp_t flags, int node)
+> > +__rust_helper void *__must_check __realloc_size(2)
+> > +	rust_helper_krealloc_node_align(const void *objp, size_t new_size,
 > 
-> 	error[E0425]: cannot find function `pci_alloc_irq_vectors` in crate `bindings`
-> 	    --> rust/kernel/pci/irq.rs:144:23
-> 	     |
-> 	 144 | ...s::pci_alloc_irq_vectors(dev.as_raw(), min_vecs, max_vecs, irq_types.as_raw())
-> 	     |       ^^^^^^^^^^^^^^^^^^^^^ help: a function with a similar name exists: `pci_irq_vector`
-> 	     |
-> 	    ::: .../rust/bindings/bindings_helpers_generated.rs:1197:5
-> 	     |
-> 	1197 |     pub fn pci_irq_vector(pdev: *mut pci_dev, nvec: ffi::c_uint) -> ffi::c_int;
-> 	     |     --------------------------------------------------------------------------- similarly named function `pci_irq_vector` defined here
+> Similar here, shouldn't it be:
 > 
-> 	error[E0425]: cannot find function `pci_free_irq_vectors` in crate `bindings`
-> 	    --> rust/kernel/pci/irq.rs:170:28
-> 	     |
-> 	 170 |         unsafe { bindings::pci_free_irq_vectors(self.dev.as_raw()) };
-> 	     |                            ^^^^^^^^^^^^^^^^^^^^ help: a function with a similar name exists: `pci_irq_vector`
-> 	     |
-> 	    ::: .../rust/bindings/bindings_helpers_generated.rs:1197:5
-> 	     |
-> 	1197 |     pub fn pci_irq_vector(pdev: *mut pci_dev, nvec: ffi::c_uint) -> ffi::c_int;
-> 	     |     --------------------------------------------------------------------------- similarly named function `pci_irq_vector` defined here
 > 
-> 	error: aborting due to 2 previous errors
-> 
-> Fix this by adding the corresponding helpers.
-> 
-> Fixes: 340ccc973544 ("rust: pci: Allocate and manage PCI interrupt vectors")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202512012238.YgVvRRUx-lkp@intel.com/
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> __rust_helper void *__must_check __realloc_size(2)
+> rust_helper_krealloc_node_align(const void *objp, size_t new_size,
+> 				unsigned long align, gfp_t flags,
+> 				int node)
 
-It may make sense to add __rust_helper to these helpers right away.
-
-otherwise:
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+This is what I got from ClangFormat, but your suggestion does look
+better, so I'll update it.
 
 Alice
-
-For context:
-https://lore.kernel.org/all/20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com/
-
