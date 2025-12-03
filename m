@@ -1,393 +1,294 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010034.outbound.protection.outlook.com [52.101.85.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F5330171C
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Dec 2025 14:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764773305; cv=none; b=Cq0t3f78VRe1VHnamzFRTaDVBPTBr82YKV8f7MBG0lr8ABylS1mPf7ukSeRFA778PlCVAsXWQJWikFsuaysQ3Vyo5/sWGPoa2bq8o4CVI/2+p9FVQmtWtx7rtXf3b2NJvOEMgaVeyj+gvyqng9vfYnw8uMNpDNm6Xgp+1M0Gk3g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764773305; c=relaxed/simple;
-	bh=k+c623oOfpzjhwM3pVGRq6IE/EspyvmItaNf7oOse4A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=joGFONH5uM2M+Le1LOsjLYOFk5t/TFs7RntZFAD3sxaYItVEkAB1kAMvxLdGKPDj1yeinNuN2S7P9iIUcXnbKoceH6mgODflu5Lobr3E6aaPPNQ0X4w5OxCJrdb9H4VtgwuYjS/yFV27PckLGwupf1Q2vh89QUoj5ag+4e+9AlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XsyM6BcO; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8F1325484;
+	Wed,  3 Dec 2025 15:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764774526; cv=fail; b=Fp/Srf5t2LcZHG0dk6orvsHiltnDJHS/RbJ+ImiTLeMuRdaWDXy8TSp+efSHsooR7hvYWhC5Y/D1SvyhNIrcLJeKm2xAFmmqAL3Ndd+NU8M8PyR7MCJboQv9sTrlsJWlHaw+FO15uX5DosY/3AsUFpv5IHjn3cT/1GtooV/JpP0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764774526; c=relaxed/simple;
+	bh=1XIq+dbfQ4vCpMTGrhp/YwXowGkrWn6xycLWetqxRDQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ajvVmceuvg4cRcA12vs68+dODtBtgqOf+Z4b+6KXWFAWaC70l6RJGE53JBy+Bv4S5Y+Afjup97sNH6aa5Hn5u0FJnLf0nvGiWtVFllQNbxCgvVgZRiKZhSgkbDDoJ/OpHSLdzTI7kdqJl2PS5FhiZ0n8D4Gv/+pT0legW/0ZA/E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oGHnva2u; arc=fail smtp.client-ip=52.101.85.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XsyM6BcO"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-42b3b5ed793so5132383f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 Dec 2025 06:48:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764773301; x=1765378101; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wMUyFvrAkX/8ln6edcoAi9LqawQ7vF8i3X7WaIzkFa4=;
-        b=XsyM6BcOGs/hl2VvVbId9mvkQz2Xb18pyOwy39HX0A7MaVOQg/IrQhvJbxKvJex063
-         Sl5v27SjCE2vQltvc5leC4UHwPUkycYWovr2KuglRaOBWPVFcxLj+sZO923l5ZQMVNz5
-         SGaKe7k9XONT9obmdZvWkcNZXn2UzcmO4KKPBG6M0fug30doc/vNHUvreBDlZSgdCn5m
-         X328IRpiI/VmT/L++FsfFoKd08a7dOWkjlXv35+HBwf5ynKdp5fi3cP68VDAQwBX1SYv
-         izT8OHRC826JAHgY7PBA2eUvQ7shTJbIO0YCBjkNn9uEVzSGevaYYYg3fvYco0TNSLle
-         UQxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764773301; x=1765378101;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wMUyFvrAkX/8ln6edcoAi9LqawQ7vF8i3X7WaIzkFa4=;
-        b=l5MQE2Bj30sSM0dsepozMzZtaB/XaiJUW9kpE2pBqLvvqwFftVgjViYLRWQ0JmMNGV
-         G4qeX2qg/muDZsUsXOJsyC4kWaclzaRSPoBOVDu1R8ZA+mMR3LX7oiQUwTQFoyFWpGT5
-         8s8sC/Ve1MO8hASVfQG4el+gmL5+H9COgIo37PFoigHW4r9g9QIySHzyXF0Rr1iniyUL
-         qQY/ZB4SVfs55z8rhGqTFjb39YZYg4GBYo9JafHb0AAYdg6TakI26g8iPGzFnMflyE3D
-         3VW/rbvhgVYDwhtSM8Wp3YT3UIBLiIR1KSsBpNK0nJGDeQCvJh2EvyaiUUSazBHLytmM
-         qBmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVM/UcHBfM34m/xWRLUbRUdM9ectf5r6Env9xn9ejRZb7QJynT17UXmCZy/KQVifWiwt5+1IqaM9ykMD4Wfdg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3BM/or5b2A7eyhPdVXxSAcYv7KfPmCZkD9O53o2dUHJGswm2s
-	hsMN/+sR6tp0zpjSkvKT+d7/bFRe9wDd2Urfl0Yr3EIpbs9MU/YKrRM6Fv3bltRxA1vZybai3sf
-	oxLbNFM/vj7chKuJ80w==
-X-Google-Smtp-Source: AGHT+IGjIuctMNYu6T6APhoJeiZmzbi3ln5p3ZQ3SLPt5BiLm+aFWhJE53huPcjpjt6n4KZUea1DLwBM1mOkQq8=
-X-Received: from wrqf1.prod.google.com ([2002:adf:f8c1:0:b0:42c:c2d6:2a0])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:588c:0:b0:42b:3825:2ac8 with SMTP id ffacd0b85a97d-42f731cf4a4mr2692514f8f.59.1764773300855;
- Wed, 03 Dec 2025 06:48:20 -0800 (PST)
-Date: Wed, 03 Dec 2025 14:48:09 +0000
-In-Reply-To: <20251203-binder-trace1-v1-0-22d3ffddb44e@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oGHnva2u"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lt7FgB4rmw15RlcWha6Nn3h9sMa+pP9o6zKQ69eouEjstJqkE0MGZ2XqeceaTkNQKsQLCmCvBN8BNwE6AIQ3fMoXxttRnBNBxX4LeF9tLQzFWzMoDFUERegLjyEHdKhhg3dH4Pb9xGoYTvOPdZJY/ifoOK/L4uY+egEWswgBlUGEUW+C3y8KS9yMNIlhJ9YgFRUKZagrZ4S3p4mm+K/uoo1FfSkId+w2lL4aNVApClJXoeGsU2/3WUCJnqEDWgWPeRHzw92njK521bb2u040brzGspG7aB9miXfqvN7d8QOOIC6coooy2VODREvFQnjyViB8Pbc0Bi6YDBekuhf1iQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eQJzFyrz1QcFPtw9hrzfEyKky3/DhzuUeasyGw+a/ww=;
+ b=qL3xTsi6hutHNdL1pn2Sf3SlCYvbiviorDqp8VfauMVzQAGCAC5epn/mrOKjB5VFtk/d9dJYdpxUuGElhno7sBNjq2++TCFw8mCPOtx9efVsI19Jt/IUVJyWorteB3S99YCY34qi13veEdWrCCJ8+dvo0e54FKMkNypdQW7s7swk+s8RB8azGqdoGVau2v1NoJ7IddUfYfXuWHtrSQTYcelpM5hf39LhJXMGuCIqNxN85CptZIv/7/yJ94IedP6c73h/k8gcrTmYr3LYn7tL+CQ9O+jniS8n35aMHg5xYtq1eFGoMxTTUB2URAuy6a5VdHnNOPPyUv+clC4MwHfuoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eQJzFyrz1QcFPtw9hrzfEyKky3/DhzuUeasyGw+a/ww=;
+ b=oGHnva2utpMJ1Med+X4nvSTbFvNIYkv9nKCEDe/wO+RCftekqFhl/tq2y6EYCz5/jXywDmSdJhIowg7KcapYdf4M27lW8xduJfRXfF4XFELSl9fN77r1k0Gy/F9du/DLDtLjTAP7L2+/EYKSuH0qaVv+NtTouebFq2NZHAzqKZt+JwhPPi4y+Aqt/7YPfAbUH8emRa2eHvf2bTO+rWpzzcfY2B+wBOa0T2OCxb7U4DzibP8v1nHnNDyXZzkxrL0kdIDbWGg//AWuJd5RMLT19olH05ZyvjktBovUCMMIUWP1Vky513iXN3I98uE3+s+Uxa1QR9koU7mkKO6Ior6LKw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by BL3PR12MB6641.namprd12.prod.outlook.com (2603:10b6:208:38d::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
+ 2025 15:08:39 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9366.012; Wed, 3 Dec 2025
+ 15:08:39 +0000
+Message-ID: <44b99b6e-1ab7-404f-aeb4-62eacd40ad8d@nvidia.com>
+Date: Wed, 3 Dec 2025 10:08:36 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] rust: clist: Add support to interface with C linked
+ lists
+To: Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org, Danilo Krummrich <dakr@kernel.org>,
+ Dave Airlie <airlied@gmail.com>
+Cc: Alistair Popple <apopple@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Joel Fernandes <joel@joelfernandes.org>,
+ Lyude Paul <elle@weathered-steel.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Andrea Righi <arighi@nvidia.com>, Philipp Stanner <phasta@kernel.org>,
+ Nouveau <nouveau-bounces@lists.freedesktop.org>
+References: <20251129213056.4021375-1-joelagnelf@nvidia.com>
+ <DEOLRLCZQMBG.1WHBR4YL8SKYR@nvidia.com>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <DEOLRLCZQMBG.1WHBR4YL8SKYR@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN0PR05CA0007.namprd05.prod.outlook.com
+ (2603:10b6:208:52c::9) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251203-binder-trace1-v1-0-22d3ffddb44e@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11108; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=k+c623oOfpzjhwM3pVGRq6IE/EspyvmItaNf7oOse4A=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpME2xuGik6iVmZv/mGNaGEB0+1/XH47eCG7gem
- bfLBlIRG5mJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaTBNsQAKCRAEWL7uWMY5
- RhCiD/4xr6a6Veu4bddvttHxzuIY8hKAgH1txQC00x2+mYbwovY8Yu/FsDKKBBd4SUmT65RYY3b
- rBV0+gSZAY1ibOXbMu0IVcJyVQ5PtAZSu1rJFWzB1zVg6S1MRGRlC5/kdoWWRH3IZuTYpLEjNI5
- lC0MPquDIEQPBFoiozDlLcL1sCniiKXGIbzokTqFgFPCydGGXEHETB2HvPap828ToklNovaoT0V
- 507ch2AQ9m7lV7IPlMptp1F2twASgZmC64YidB21UbUNaFkIF7YgYEM22EXEMdUzvj9df5JEC9H
- upPmz1dtG67vsTGNR2aaTBl2HuE42Pen6mzvW6C4MnXOC2vBADGtqpDCnIUxpqwi1NR2jmDOiT8
- DhSu0dMAQ7p8ewV+jdfNXC0ma3b3CyOQpfGHSvuu2oXQmQX10Ue7T7aTEz7X7A0Ku5+7KB7fPx+
- k6AR22udlAgxijFEMFbMrZTQco9BV7mb8dC9ptzc/yu48YSr1rKvdAK/QsVtgR0G5Z6eCVuW59X
- 4a7+kw/OvDneldF2eUgbJbNetg5md0jq6zcANokLSI0Nur6VI4X+4EtdjGYOC/HZeDaYdfffyoG
- YwlQTrANmcs1DR0XiodsB41WzWqfHWrPCjz1D6uxEcq7AL0SxNxvzqdCazYRRJFmNJNI4yjD+DN COcxoDn/mnWktSw==
-X-Mailer: b4 0.14.2
-Message-ID: <20251203-binder-trace1-v1-2-22d3ffddb44e@google.com>
-Subject: [PATCH 2/2] rust_binder: add binder_transaction tracepoint
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, "=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Martijn Coenen <maco@android.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Christian Brauner <brauner@kernel.org>, Suren Baghdasaryan <surenb@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|BL3PR12MB6641:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd468ac1-ed5a-449c-61eb-08de327dd6b4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?T1hUSWpwV1ZZMXZMRFMzUVJNZlI1Ty9SZnZUd3hKL3NSTmg5eU9iUHM5OUtp?=
+ =?utf-8?B?YkY1cXpGeVlrTTl0bUtCSW9Wa2R3b3IwbmNuTnRtc3dGNzhjd245eUZZcWd5?=
+ =?utf-8?B?UG9UeWc0a3NjVjZUdHEzak9ZTzRnYVdtTnlnUnFndys1Y2xtWVRtUWh6bUgr?=
+ =?utf-8?B?YjZkOEZldjBwTTQ2Z2NraE9YVEVwQlpjVzVvZlplVnJxbTRDSVh6TFpOemlR?=
+ =?utf-8?B?Q3R1Z3daTWExM3czNG1TWTljNG1wa1ZacktxT1kvcEpVTXgvaGNwbFdMSDVX?=
+ =?utf-8?B?RVhHUmx3WHlCVU1LbUcvaVNnTS9zRlRwL0ZRbGlaNXNIUWhNUmxpYks5cFRG?=
+ =?utf-8?B?Y2hISzZRcTFJdGR6NVJHUTBpazRSOGtHRlk4czN2S0tDNnphRnNZSVdVRytM?=
+ =?utf-8?B?TjFJaTIzbEM2MGk2M3ZyVzdPZURwTHB1KzZqT2FSTW1haXVRQlJYQ2R0LzUw?=
+ =?utf-8?B?UW9Fem42a1hBcThpb0VOSlRyeS9vUkpKV2lHSDgyNG1LTFlWRlpWMGlUMW9C?=
+ =?utf-8?B?S1padXBVcHMwS1VJakRiRTl2bWloTUNTS005b0FoemdaVk5sM3J2aVNBa0Ny?=
+ =?utf-8?B?WStWaGx2Z003bk9hMVhXeVhVUnNvR2xTRExiUnNUNVlxRjByb0xKMlE5czh4?=
+ =?utf-8?B?WmxYQU50b05Va2xhblpSSUpHRmUvQmUxbm1Wb0RZRm1oWXVHcTQxV3piYUta?=
+ =?utf-8?B?MThxZXAzd0xvczRjbSt6eVhiK3JibWJ1eVF4STFIQ2dVTWpZRjRlY2dMUmtM?=
+ =?utf-8?B?WEJyeExHT2FoUjgrNmNnK1BUYloxcThFRGdJcldUVWllbVdvZlUvNklYSVM2?=
+ =?utf-8?B?dVpOa29tUlp5VjBGenFvWUh3VEhYVCs2Mm84OWVkQmRRL0FHM3NVbnFOMDR5?=
+ =?utf-8?B?V0RzRW51c0RGL1J2Z3lKTi9lUGxFQXB5UnpVSEtNMHY5VjdRWEZHZlp2ZWJF?=
+ =?utf-8?B?cWs4YWs4Rjg4TjhCNFY1VVNWRnNFVmc5QStxdmV2bHNqWnV2aVhWY0g3K1Ir?=
+ =?utf-8?B?Slg1TVp4UTkyVGU3TkQzYWJhNzQ3NFNodHZlMm9ZQ1AxaFlXR0w3c3NSeEJN?=
+ =?utf-8?B?Yk9FOFFHWmVPWnRwMjBsUW5pU3AxMW1ObjZ2cTYyUm83bHZRT1RKMEMwbFJK?=
+ =?utf-8?B?enpRMzJIcVFhb0xraDN2R01WTFZoRWF5R0JkZDlESjhINm9wSUdvN1VHQ01q?=
+ =?utf-8?B?Qnh1K0I3NjhkVUxLbU1kNGh3My9Sejl2cUZpYnAwR0cxcy9JQzMwUDg4Zkhh?=
+ =?utf-8?B?bVpMTHdlZ0tvUURWTHMvd2xjYzFYWmJOWEI5aVNUQSs3TkRsRE04VElRWVg1?=
+ =?utf-8?B?Y1R2aEhWQkN0OXAyZ0JmQjdNc25NWE00ZmdScUxHZ0ZJOVdCQWlWaXU5bGhL?=
+ =?utf-8?B?TmFPSUxxMVhaUkkwYUlaQUFweGVURXR0bEUxcGdWS0orVFRXa3c3TFg2ZVZ3?=
+ =?utf-8?B?Q2lUVkRWdEtJSnBuR0VIbkVQT1NoQWE2V0ErUzdjcE12SExVNG9ERmFTZTdT?=
+ =?utf-8?B?Yk4vaEgrR3VlTTl5TkRjc3BHL0V4cUFFNXZnWXdFRXZ0RmtVVUlVR0EreWlK?=
+ =?utf-8?B?Q2QybzFheTNtR1JmRkh0Q0dEVHBOTWtBbkhVRUtoZkJzSHBMVTNyN3dvR0RJ?=
+ =?utf-8?B?UVdkY3FGdi9OQWpVeWY4YWpUcVA2OWREU1VUVjZFeEtqMnNGc0VRYlVXYXcy?=
+ =?utf-8?B?dGtKMTZLbStzVzRzQXc4QzllYWZBaWQ1bXdxSzAydWZJVys1Y3M0aGVlWlYx?=
+ =?utf-8?B?OFBtUzgwRlkyVThLUUZndkhETktnR0ZoZVJxVkY1K2F4b0VubWM1Y3FoV05K?=
+ =?utf-8?B?eVgzSWJ2WmkveGt5Y283WUpwQ3R3cDF3RHM4MldMbGN2N1U2M3lpMDFHMlhI?=
+ =?utf-8?B?M2cvVlF0elF2YS9Kb3gwbXVONm9FbFpObU50SDUwaDdtSUl2TW5ITm03NWk5?=
+ =?utf-8?Q?jUYKJemVgWqGE7ayITCX+3Xvr94EcgSV?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YnJFT2t3ek5aYjlvSERxM0gyTnJaZGl1Mjg2UnhmN2pqSUtCbmN6Q3lDUVB5?=
+ =?utf-8?B?QkQ2T1BlV1ZJS3JPZ3FkczAzSVJMTUtFNiticzh1MFZRTmhCN0N5bzFIRDBq?=
+ =?utf-8?B?ek15TkpLVW9IamV3WVdpSnBGRWpsYWlYeS9oK1VlZ0diU3hNNkhhM05MaTU2?=
+ =?utf-8?B?T0dTNTFlcFN0REFTeDh3QkVUSHZJUXFnRlhiNG84b2pWUGQ1ZlpDNnY0K3lT?=
+ =?utf-8?B?ZEw1bGM2Q0hXQ0FwQmRoU2t6N0g4T0tVRExIb1VXRGdNbkxDTlBmZmphTGxq?=
+ =?utf-8?B?dytITkJHd3FzYmlhOW5IVGIzZUhWR2JQQzlUOUtyWUkwaG1LSktuNTZsb2RW?=
+ =?utf-8?B?NlFWNXJLeEMzdEROeGFVUW00VHRTbVNsTGgrT1VDc3JtUTRjQy9zOUlObDNz?=
+ =?utf-8?B?RVdMQjBYODE1RXJKdFZocVg0U2l4QzFSUG5FQnNGY2Y1eHQ5ZHJMTjAwMXdS?=
+ =?utf-8?B?NGszWnlNejNEYzZvQXhDM2RGcmk5KzVMQmVWOTNOVmJaMkpFVmFFbjAvZ2o0?=
+ =?utf-8?B?V0Zwa2ZTejY0SUNPTWxKaXN5Z1dDM2RlNDg2dGMwRWdiNHdtVGVOL3B1V213?=
+ =?utf-8?B?eFJQNTlmMEsxZ2ZjN0QveC9YL2p3VWY0U0NLbllNVXczZ0w2SEdrbzI4OUNm?=
+ =?utf-8?B?bm9XaWZGM3pBci9PVFRaaXMvUk5TZ25iVUdqUFJTRzNjcGZsM2FMdkZoZi8y?=
+ =?utf-8?B?anY2eUxBYWprcHJIcDFoYUtPbThQSlNocTdKemhtM2JuQm1RbElYQWJuSldV?=
+ =?utf-8?B?cUtpS29KbWx6aXc0SkFYVFNqeVozVGovWUxZemJkZUxaR2FOd2FBZm9IQXp6?=
+ =?utf-8?B?OXl3WW5XUmpBTkx2UUtMaGR6QVEwM3dhZmk2K0UwSDJOZGVCK2pwaFRqK1hG?=
+ =?utf-8?B?bHpGWDRYczk5VUdBSVZOdkNrZURUVEN0M0ltaDBiL1A4U1BsNVJFV2c1eWVj?=
+ =?utf-8?B?Z0RGUis2SWM0NUVKS285WmhheXhVcUZoT2FKVjFFMkkzcHdWZVZYWFdRVDNz?=
+ =?utf-8?B?TWRDMTJCYkdxL01PViszbmsvTHBSZXFTN2dqdFdHMVIwcitmK0x1TVA5b09h?=
+ =?utf-8?B?OWhTRXltdlorR0F6VHpWVVBNQlVPUWpmQ2kvaS96WVRmbDJQUzQwaWIxREg3?=
+ =?utf-8?B?YytzVGVTT0xvclZiNzV2ZUlPbGdiNUVFMDdoMGhTeVlRR2U3WVp1Rkl2T1gw?=
+ =?utf-8?B?RWtsVFE0RUtISUkwMWJSUTFOZysyOVJ1ZlgwL09ja0ROUDIzcUlwYXJOT2hv?=
+ =?utf-8?B?cjBjRnk3eUxzVkFOL004akRUZjQveTdEamliWTd3dFQya0dvNzdEVC8xbm1h?=
+ =?utf-8?B?WTBZMGhRZFpNNURFMTg4dzJnbW5SWTBWeHl2MDRKRTQyV0RXMWRXd3dJM2hG?=
+ =?utf-8?B?MExqSkNTQ0ExdmV4YXNMb3ZvdFpDL1lydEUrYnp1QWN0OVRhODlpTFNyYkRm?=
+ =?utf-8?B?c2lIL2xyY1U5NkdaTS9paHNGNTFLV3BEZE1oYVJibkxQNjIyNXl1eXAxS1RG?=
+ =?utf-8?B?dGlPUDdpa1cxZFdJSHhETERmYjk5TFRVNU5IQ0hoVWZVWnV1QmlRZ1JBdVRJ?=
+ =?utf-8?B?M1FlSUppVHRFZHVZR1ZWZXBROU0rRUZHamUwV1g2Qm9hRjlBdXRnWGVXUTFX?=
+ =?utf-8?B?RlA5ZlNLWEZDdm01SlozVG85TWVFUE5HaENPeWtIeDhnWkRGY3dmdEJOQXpO?=
+ =?utf-8?B?S2VITFMzMDZScmRjZkdOcGdtTVJWVE5OZi80WEtJb1ArRHoyd2ltWGVCQUY1?=
+ =?utf-8?B?N3pTeUVhbmplQmNld080YUtUaVdGa05zL1BwMVFmclRIVUJZNXdKNVlCUThN?=
+ =?utf-8?B?N1R2V2N4T21jcFBOSFl3NURuWjdydlc2Vk9WVHl4OEk2akNsOWltVmthdWha?=
+ =?utf-8?B?U204MEFHS2hIZVppL0Q3RzdIVFpBTU8vb1NJYzdGNlRTVjBKWVdGQTJ1M3c5?=
+ =?utf-8?B?SFVoczZNK0JlWUJ2T2liM1gvZ1FuK1d5bzdYT3hOZUdsNU9NeEswK1Q2RUlY?=
+ =?utf-8?B?V3dXeCtIamF2elBkU2tIamU0aFpjcUY2YmpncWlHQmsyV09oLzRtU1gvM2Ew?=
+ =?utf-8?B?eTdwVXVpL0tVMWRhcWtBcUVLMU1TZ1VHcDRRRjlJK0hhQnFZNjFyOWdReFNt?=
+ =?utf-8?Q?KaBSgax7UI0237bUPoF5e0f6W?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd468ac1-ed5a-449c-61eb-08de327dd6b4
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 15:08:38.9129
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cAJeo20N+ZI5EQeCXjif9EsXpODhWeyjAImGchS3Ggr+YLftNiV450VaoDIovczb03uEHHQXlHtpkEPAVeZe0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6641
 
-This patch adds the binder_transaction tracepoint to Rust Binder. This
-was chosen as the next tracepoint to add as it is the most complex
-tracepoint. (And it's also an important tracepoint known to perfetto.)
+Hi Alex,
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/node.rs              |  8 +++
- drivers/android/binder/process.rs           |  7 +++
- drivers/android/binder/rust_binder.h        | 79 +++++++++++++++++++++++++++++
- drivers/android/binder/rust_binder_events.h | 30 +++++++++++
- drivers/android/binder/rust_binder_main.rs  |  8 +++
- drivers/android/binder/thread.rs            |  1 +
- drivers/android/binder/trace.rs             | 21 ++++++++
- drivers/android/binder/transaction.rs       | 14 +++++
- 8 files changed, 168 insertions(+)
+On 12/3/2025 8:06 AM, Alexandre Courbot wrote:
+[..]
+>> +}
+>> +
+>> +impl<'a> Iterator for ClistHeadIter<'a> {
+>> +    type Item = &'a ClistHead;
+>> +
+>> +    #[inline]
+>> +    fn next(&mut self) -> Option<Self::Item> {
+>> +        if self.exhausted {
+>> +            return None;
+>> +        }
+>> +
+>> +        // Advance to next node.
+>> +        self.current_head = self.current_head.next();
+>> +
+>> +        // Check if we've circled back to the sentinel head.
+>> +        if self.current_head == self.list_head {
+>> +            self.exhausted = true;
+>> +            return None;
+>> +        }
+>> +
+>> +        Some(self.current_head)
+>> +    }
+> 
+> IIUC you could just rewrite this as
+> 
+>     let next = self.current_head.next();
+>     if next == self.list_head {
+>         None
+>     } else {
+>         self.current_head = next;
+>         Some(self.current_head)
+>     }
+> 
+> and drop `exhausted` altogether.
+> 
 
-diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
-index ade895ef791ec5746f9f5c1bfc15f47d59829455..7e6c94c7c3373461520d52d0b1fe8c1fc871fbd8 100644
---- a/drivers/android/binder/node.rs
-+++ b/drivers/android/binder/node.rs
-@@ -178,6 +178,14 @@ struct NodeInner {
-     refs: List<NodeRefInfo, { NodeRefInfo::LIST_NODE }>,
- }
- 
-+use kernel::bindings::rb_node_layout;
-+use mem::offset_of;
-+pub(crate) const NODE_LAYOUT: rb_node_layout = rb_node_layout {
-+    arc_offset: Arc::<Node>::DATA_OFFSET + offset_of!(DTRWrap<Node>, wrapped),
-+    debug_id: offset_of!(Node, debug_id),
-+    ptr: offset_of!(Node, ptr),
-+};
-+
- #[pin_data]
- pub(crate) struct Node {
-     pub(crate) debug_id: usize,
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index f13a747e784c84a0fb09cbf47442712106eba07c..c4c8a0ba93366f3e2ec426fb5950f48edb0610ae 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -387,6 +387,13 @@ fn new() -> Self {
-     }
- }
- 
-+use core::mem::offset_of;
-+use kernel::bindings::rb_process_layout;
-+pub(crate) const PROCESS_LAYOUT: rb_process_layout = rb_process_layout {
-+    arc_offset: Arc::<Process>::DATA_OFFSET,
-+    task: offset_of!(Process, task),
-+};
-+
- /// A process using binder.
- ///
- /// Strictly speaking, there can be multiple of these per process. There is one for each binder fd
-diff --git a/drivers/android/binder/rust_binder.h b/drivers/android/binder/rust_binder.h
-index 31806890ed1a278793ae7178f9d76ca4d591a954..e68ba7a23c34de4688fa7d34341b0585b5dba7e9 100644
---- a/drivers/android/binder/rust_binder.h
-+++ b/drivers/android/binder/rust_binder.h
-@@ -20,4 +20,83 @@ struct inode;
- struct dentry *rust_binderfs_create_proc_file(struct inode *nodp, int pid);
- void rust_binderfs_remove_file(struct dentry *dentry);
- 
-+/*
-+ * The internal data types in the Rust Binder driver are opaque to C, so we use
-+ * void pointer typedefs for these types.
-+ */
-+
-+typedef void *rust_binder_transaction;
-+typedef void *rust_binder_process;
-+typedef void *rust_binder_node;
-+
-+struct rb_process_layout {
-+	size_t arc_offset;
-+	size_t task;
-+};
-+
-+struct rb_transaction_layout {
-+	size_t debug_id;
-+	size_t code;
-+	size_t flags;
-+	size_t from_thread;
-+	size_t to_proc;
-+	size_t target_node;
-+};
-+
-+struct rb_node_layout {
-+	size_t arc_offset;
-+	size_t debug_id;
-+	size_t ptr;
-+};
-+
-+struct rust_binder_layout {
-+	struct rb_transaction_layout t;
-+	struct rb_process_layout p;
-+	struct rb_node_layout n;
-+};
-+
-+extern const struct rust_binder_layout RUST_BINDER_LAYOUT;
-+
-+static inline size_t rust_binder_transaction_debug_id(rust_binder_transaction t)
-+{
-+	return *(size_t *) (t + RUST_BINDER_LAYOUT.t.debug_id);
-+}
-+
-+static inline u32 rust_binder_transaction_code(rust_binder_transaction t)
-+{
-+	return *(u32 *) (t + RUST_BINDER_LAYOUT.t.code);
-+}
-+
-+static inline u32 rust_binder_transaction_flags(rust_binder_transaction t)
-+{
-+	return *(u32 *) (t + RUST_BINDER_LAYOUT.t.flags);
-+}
-+
-+// Nullable!
-+static inline rust_binder_node rust_binder_transaction_target_node(rust_binder_transaction t)
-+{
-+	void *p = *(void **) (t + RUST_BINDER_LAYOUT.t.target_node);
-+
-+	if (p)
-+		p = p + RUST_BINDER_LAYOUT.n.arc_offset;
-+	return NULL;
-+}
-+
-+static inline rust_binder_process rust_binder_transaction_to_proc(rust_binder_transaction t)
-+{
-+	void *p = *(void **) (t + RUST_BINDER_LAYOUT.t.to_proc);
-+
-+	return p + RUST_BINDER_LAYOUT.p.arc_offset;
-+}
-+
-+static inline struct task_struct *rust_binder_process_task(rust_binder_process t)
-+{
-+	return *(struct task_struct **) (t + RUST_BINDER_LAYOUT.p.task);
-+}
-+
-+static inline size_t rust_binder_node_debug_id(rust_binder_node t)
-+{
-+	return *(size_t *) (t + RUST_BINDER_LAYOUT.n.debug_id);
-+}
-+
- #endif
-diff --git a/drivers/android/binder/rust_binder_events.h b/drivers/android/binder/rust_binder_events.h
-index 2f3efbf9dba68e6415f0f09ff5c8255dc5c5bc00..8ad785c6bd0f5783df1e764a8827fed41afbcb00 100644
---- a/drivers/android/binder/rust_binder_events.h
-+++ b/drivers/android/binder/rust_binder_events.h
-@@ -30,6 +30,36 @@ TRACE_EVENT(rust_binder_ioctl,
- 	TP_printk("cmd=0x%x arg=0x%lx", __entry->cmd, __entry->arg)
- );
- 
-+TRACE_EVENT(rust_binder_transaction,
-+	TP_PROTO(bool reply, rust_binder_transaction t, struct task_struct *thread),
-+	TP_ARGS(reply, t, thread),
-+	TP_STRUCT__entry(
-+		__field(int, debug_id)
-+		__field(int, target_node)
-+		__field(int, to_proc)
-+		__field(int, to_thread)
-+		__field(int, reply)
-+		__field(unsigned int, code)
-+		__field(unsigned int, flags)
-+	),
-+	TP_fast_assign(
-+		rust_binder_process to = rust_binder_transaction_to_proc(t);
-+		rust_binder_node target_node = rust_binder_transaction_target_node(t);
-+
-+		__entry->debug_id = rust_binder_transaction_debug_id(t);
-+		__entry->target_node = target_node ? rust_binder_node_debug_id(target_node) : 0;
-+		__entry->to_proc = rust_binder_process_task(to)->pid;
-+		__entry->to_thread = thread ? thread->pid : 0;
-+		__entry->reply = reply;
-+		__entry->code = rust_binder_transaction_code(t);
-+		__entry->flags = rust_binder_transaction_flags(t);
-+	),
-+	TP_printk("transaction=%d dest_node=%d dest_proc=%d dest_thread=%d reply=%d flags=0x%x code=0x%x",
-+		  __entry->debug_id, __entry->target_node,
-+		  __entry->to_proc, __entry->to_thread,
-+		  __entry->reply, __entry->flags, __entry->code)
-+);
-+
- #endif /* _RUST_BINDER_TRACE_H */
- 
- /* This part must be outside protection */
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index 6773b7c273ec9634057300954d67b51ca9b54f6f..3799b4707ed4e0505a3d3370e3dd1e74f974b641 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -89,6 +89,14 @@ fn default() -> Self {
-     license: "GPL",
- }
- 
-+use kernel::bindings::rust_binder_layout;
-+#[no_mangle]
-+static RUST_BINDER_LAYOUT: rust_binder_layout = rust_binder_layout {
-+    t: transaction::TRANSACTION_LAYOUT,
-+    p: process::PROCESS_LAYOUT,
-+    n: node::NODE_LAYOUT,
-+};
-+
- fn next_debug_id() -> usize {
-     static NEXT_DEBUG_ID: AtomicUsize = AtomicUsize::new(0);
- 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 7e34ccd394f8049bab88562ffb4601739aea670a..0874e2793e276e075802d97ea9bb02a4c2fc8c72 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1117,6 +1117,7 @@ fn deliver_single_reply(
-         transaction: &DArc<Transaction>,
-     ) -> bool {
-         if let Ok(transaction) = &reply {
-+            crate::trace::trace_transaction(true, transaction, Some(&self.task));
-             transaction.set_outstanding(&mut self.process.inner.lock());
-         }
- 
-diff --git a/drivers/android/binder/trace.rs b/drivers/android/binder/trace.rs
-index af0e4392805e7ef2a39b7c1e557ea233dcd810ab..9839901c7151590defed297b091f1339603c09df 100644
---- a/drivers/android/binder/trace.rs
-+++ b/drivers/android/binder/trace.rs
-@@ -2,11 +2,21 @@
- 
- // Copyright (C) 2025 Google LLC.
- 
-+use crate::transaction::Transaction;
-+
-+use kernel::bindings::{rust_binder_transaction, task_struct};
- use kernel::ffi::{c_uint, c_ulong};
-+use kernel::task::Task;
- use kernel::tracepoint::declare_trace;
- 
- declare_trace! {
-     unsafe fn rust_binder_ioctl(cmd: c_uint, arg: c_ulong);
-+    unsafe fn rust_binder_transaction(reply: bool, t: rust_binder_transaction, thread: *mut task_struct);
-+}
-+
-+#[inline]
-+fn raw_transaction(t: &Transaction) -> rust_binder_transaction {
-+    t as *const Transaction as rust_binder_transaction
- }
- 
- #[inline]
-@@ -14,3 +24,14 @@ pub(crate) fn trace_ioctl(cmd: u32, arg: usize) {
-     // SAFETY: Always safe to call.
-     unsafe { rust_binder_ioctl(cmd, arg as c_ulong) }
- }
-+
-+#[inline]
-+pub(crate) fn trace_transaction(reply: bool, t: &Transaction, thread: Option<&Task>) {
-+    let thread = match thread {
-+        Some(thread) => thread.as_ptr(),
-+        None => core::ptr::null_mut(),
-+    };
-+    // SAFETY: The raw transaction is valid for the duration of this call. The thread pointer is
-+    // valid or null.
-+    unsafe { rust_binder_transaction(reply, raw_transaction(t), thread) }
-+}
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index 02512175d6229535373f2d3e543ba8c91ecd72f0..6a12064a53ad4c477d8b6cb016333f5a10ec399a 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -24,6 +24,17 @@
-     BinderReturnWriter, DArc, DLArc, DTRWrap, DeliverToRead,
- };
- 
-+use core::mem::offset_of;
-+use kernel::bindings::rb_transaction_layout;
-+pub(crate) const TRANSACTION_LAYOUT: rb_transaction_layout = rb_transaction_layout {
-+    debug_id: offset_of!(Transaction, debug_id),
-+    code: offset_of!(Transaction, code),
-+    flags: offset_of!(Transaction, flags),
-+    from_thread: offset_of!(Transaction, from),
-+    to_proc: offset_of!(Transaction, to),
-+    target_node: offset_of!(Transaction, target_node),
-+};
-+
- #[pin_data(PinnedDrop)]
- pub(crate) struct Transaction {
-     pub(crate) debug_id: usize,
-@@ -249,6 +260,7 @@ pub(crate) fn submit(self: DLArc<Self>) -> BinderResult {
- 
-         if oneway {
-             if let Some(target_node) = self.target_node.clone() {
-+                crate::trace::trace_transaction(false, &self, None);
-                 if process_inner.is_frozen {
-                     process_inner.async_recv = true;
-                     if self.flags & TF_UPDATE_TXN != 0 {
-@@ -286,11 +298,13 @@ pub(crate) fn submit(self: DLArc<Self>) -> BinderResult {
-         }
- 
-         let res = if let Some(thread) = self.find_target_thread() {
-+            crate::trace::trace_transaction(false, &self, Some(&thread.task));
-             match thread.push_work(self) {
-                 PushWorkRes::Ok => Ok(()),
-                 PushWorkRes::FailedDead(me) => Err((BinderError::new_dead(), me)),
-             }
-         } else {
-+            crate::trace::trace_transaction(false, &self, None);
-             process_inner.push_work(self)
-         };
-         drop(process_inner);
+Yes, this is better, changed, thanks!
+>> +    _phantom: PhantomData<&'a T>,
+>> +}
+>> +
+>> +impl<'a, T> Clist<'a, T> {
+>> +    /// Create a typed `Clist` from a raw sentinel `list_head` pointer.
+>> +    ///
+>> +    /// The const generic `OFFSET` specifies the byte offset of the `list_head` field within
+>> +    /// the C struct that `T` wraps.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// - `ptr` must be a valid pointer to an allocated and initialized `list_head` structure
+>> +    ///   representing a list sentinel.
+>> +    /// - `ptr` must remain valid and unmodified for the lifetime `'a`.
+>> +    /// - The list must contain items where the `list_head` field is at byte offset `OFFSET`.
+>> +    /// - `T` must be `#[repr(transparent)]` over the C struct.
+>> +    #[inline]
+>> +    pub unsafe fn from_raw_and_offset<const OFFSET: usize>(ptr: *mut bindings::list_head) -> Self {
+>> +        Self {
+>> +            // SAFETY: Caller guarantees `ptr` is a valid, sentinel `list_head` object.
+>> +            head: unsafe { ClistHead::from_raw(ptr) },
+>> +            offset: OFFSET,
+>> +            _phantom: PhantomData,
+>> +        }
+>> +    }
+>> +
+>> +    /// Get the raw sentinel `list_head` pointer.
+>> +    #[inline]
+>> +    pub fn as_raw(&self) -> *mut bindings::list_head {
+>> +        self.head.as_raw()
+>> +    }
+>> +
+>> +    /// Check if the list is empty.
+>> +    #[inline]
+>> +    pub fn is_empty(&self) -> bool {
+>> +        let raw = self.as_raw();
+>> +        // SAFETY: self.as_raw() is valid per type invariants.
+>> +        unsafe { (*raw).next == raw }
+>> +    }
+>> +
+>> +    /// Create an iterator over typed items.
+>> +    #[inline]
+>> +    pub fn iter(&self) -> ClistIter<'a, T> {
+>> +        ClistIter {
+>> +            head_iter: ClistHeadIter {
+>> +                current_head: self.head,
+>> +                list_head: self.head,
+>> +                exhausted: false,
+>> +            },
+>> +            offset: self.offset,
+>> +            _phantom: PhantomData,
+>> +        }
+>> +    }
+>> +}
+>> +
+>> +/// High-level iterator over typed list items.
+>> +pub struct ClistIter<'a, T> {
+>> +    head_iter: ClistHeadIter<'a>,
+>> +    offset: usize,
+> 
+> Now that Clist's offset has moved to a const generic, let's do the same
+> here as well.
 
--- 
-2.52.0.158.g65b55ccf14-goog
+Yes, done.
+
+> Overall I think this version looks pretty clean! A nice,
+> easy to understand wrapper over the C API.
+
+Indeed, it has come out to be very nice. Simple design and clean code. Thanks
+for all the reviews! I will shoot for posting this patch with the DRM buddy
+series together today. There is also a pin initialization patch for `Clist` that
+I will separately add to the series on top of this patch.
+
+thanks,
+
+ - Joel
+
 
