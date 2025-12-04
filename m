@@ -1,186 +1,105 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1996934CDD
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 09:04:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949BA313E34;
+	Thu,  4 Dec 2025 09:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764839079; cv=none; b=XasI4KfjZtf50A/HxXSsk2VoCGGIVCHefZFG7Bp7T0BFhhTz5sNVjJOUPg40XovLqAFFo032wz5c5C9qQgX0t1VOHTvuEXzwXZliyA3K6bSpBD3v8syRlgibp5GSK5F0LBkuogRok35GdWv4OKOed+YZ0U64kA8SYgiZgIZL/ss=
+	t=1764839213; cv=none; b=GjI1Wm/miIECFtUr3ztXPOu28a/OGEBuv+DeF7dCxCXtLZ6VOIImhC9A3hrh8MTSmVyhv4JZMpmjaOONWdFLSZ5SJwQdHD18XCfNuIJDgpORcTixeoN4Jcqca9l4rLtOLoDtJYBFFwCtNIwuQa+2xeR0li+3TpteqU/DYkxgxdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764839079; c=relaxed/simple;
-	bh=MstDplDoTRIUEORY/6bLoD4DwGh6jpBhgUt8nNCdMy4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gDKcSGBdTtGHS00Fl+y0YNNrSJ/poaFLp2p00R12+lALj+k3pnmT6T60IeGplwI11YB01CGvFm3UaHCPdx1kAq3UJ2B4/eKt6lY6ik+XLuULD0a5czyOpRfQqqV1Zg4IE2dmQbkbQ6WxdVGK9OdrIKga3JmORp079Xz8zyx8xzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aDita2wP; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aDita2wP"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47775585257so4555175e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 01:04:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764839075; x=1765443875; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7sTPUp/OWbW90tydkouFv4yEa9SD/Z7hXDOvCNp2ptc=;
-        b=aDita2wPw/kMjRucwHhmVDcxfEbyGsBTqht6eaxZfbBMD1fiwT1C1ljaud4oNTaGUf
-         Hav9ouM+C++SGR76DW6mRtOSI/dPewlIQC1EE0ag5yc3u8EodmPtRj2yUNxryRMBkcnb
-         K+Vv8AN1ZKFYLr+NzTPKjITKdvy8CM4Onm4jySlyNj1S1UDeQB19dTgFUsyx4Z+al3hn
-         W+pUTMdK1hh4MgPtuRb5HsQO1E0frkekHtEGfCPS3iX7/p2M3kvYdi81lpDp3BbVhL2Q
-         ai9l+CG9UyaSx4St1o15VFt9MAiVQYqAzPomVaDLsZoDdSdfHNPmiBuSm/7mt1cB0AMY
-         C5JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764839075; x=1765443875;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7sTPUp/OWbW90tydkouFv4yEa9SD/Z7hXDOvCNp2ptc=;
-        b=hj7KnjxEvULJUYIKo6lefpbYzzYIBDi8PVadTL39aZK6O14tFG862LedoRcwPmZgrP
-         8bo8p7s6xVR5lX7WvnDNspxymSsP5EN0+p+DmJLv+FnYBPH3JHYmQXOxdjBAWnGnC1ca
-         B+wSaf/SkNN9F1dH+gLPd66Kh/v6CM0Was2guFv3Nksj854UFRSrp55sChRDiolo/dMC
-         bIU+Z1AygkfphoKNsK4iJX1QcLPc28VeFXnoE0XxM933G3LaFhsfOJW4koa41Z1VyCBy
-         CuYuI24cloUVAYwowKEYLg0s3tI4BGC9M9wwsD8GdQcXpy9BCu3TMgV8xrRHyAvD1Obf
-         TBqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVTYxwlNeA/C2guLacOrM5089qf3A9jmXkP/v1McEWmKlVTnwM62lcbeOtyUD5A3vwRHtA1PrFcDl0Shd//7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVdlDCyAK2Ln9efJz9faERCMsWEYJ+Ixo8E+QTEuTytB5tt5vC
-	k8tFdCKnAx/P5xhfTzrtl74RrY4h/zdZzcN+qAdp174ttcON+mvTcx36Hh9FjDNGVbdqq5LUm+I
-	R8xtG5mvEbn/G4l3iAg==
-X-Google-Smtp-Source: AGHT+IF2dyZIivJ8BCuSDrfTGmE8WIbECL2lNCS9H+ea1+piC75ZdOf8YlosETo2w+4ZG49OfYw6o1bYoGh329A=
-X-Received: from wmsm36.prod.google.com ([2002:a05:600c:3b24:b0:477:a4d4:607a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:45d2:b0:477:3543:3a3b with SMTP id 5b1f17b1804b1-4792aed9d13mr47575865e9.6.1764839075411;
- Thu, 04 Dec 2025 01:04:35 -0800 (PST)
-Date: Thu, 4 Dec 2025 09:04:34 +0000
-In-Reply-To: <87ikenw5v9.fsf@t14s.mail-host-address-is-not-set>
+	s=arc-20240116; t=1764839213; c=relaxed/simple;
+	bh=y5lRhbplovhxS8wXZdgJehPPhVuxa9eyvYlnoEEqbEI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hmYf1TZk4A66xML2HGL3Ician8cDnN8r+abfFAjIiirmEyBQ/bkYgyztoMB+BGiIGPND8+dNjVc/ZEYWoB8HDfYuqb5lpFH/GazVvbuvlQvfBaBxjZ5FRLoIxDv49oNx1dqPavKu+pG/NH0aX2oZzES2sN62ttlVTKRiNtzGSZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [192.168.0.107] (unknown [114.241.82.59])
+	by APP-01 (Coremail) with SMTP id qwCowAAnwdD+TjFpm+0MAw--.960S2;
+	Thu, 04 Dec 2025 17:06:06 +0800 (CST)
+Message-ID: <1a6bb8cd-cc08-458f-a6f6-cdfefd327320@iscas.ac.cn>
+Date: Thu, 4 Dec 2025 17:06:05 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251203-bitops-find-helper-v1-1-5193deb57766@google.com> <87ikenw5v9.fsf@t14s.mail-host-address-is-not-set>
-Message-ID: <aTFOouqQ3-PbN0Kk@google.com>
-Subject: Re: [PATCH] rust: bitops: add helpers for _find_* functions
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Yury Norov <yury.norov@gmail.com>, Burak Emir <bqe@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/4] rust: add a Kconfig function to test for support
+ of bindgen options
+To: Asuna Yang <spriteovo@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Jonathan Corbet <corbet@lwn.net>, Jason Montleon <jmontleo@redhat.com>,
+ Han Gao <rabenda.cn@gmail.com>, Conor Dooley <conor@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
+ linux-riscv@lists.infradead.org, linux-doc@vger.kernel.org
+References: <20251204-gcc-rust-v5-v5-0-2d4f20d86c24@gmail.com>
+ <20251204-gcc-rust-v5-v5-3-2d4f20d86c24@gmail.com>
+Content-Language: en-US
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <20251204-gcc-rust-v5-v5-3-2d4f20d86c24@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:qwCowAAnwdD+TjFpm+0MAw--.960S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZrWUWr4rtFWrCry7tw1fJFb_yoW8Xw1fpr
+	yvkF1q9rW8J3W8Aw17CFW0qF13ua1xtrWfW34kt347JrW7Xw40gaySkr47try8CFWv9ry2
+	vF4F9as09F4UCw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvvb7Iv0xC_Cr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I
+	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
+	c7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
+	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
+	14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
+	IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
+	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73Uj
+	IFyTuYvjxUVhL0UUUUU
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-On Wed, Dec 03, 2025 at 11:35:54PM +0100, Andreas Hindborg wrote:
-> Alice Ryhl <aliceryhl@google.com> writes:
-> 
-> > On 32-bit ARM, _find_next_bit does not exist because ARM provides that
-> > function through a #define instead. This means that Rust, which calls
-> > the underscored version, fails to find it. This triggers errors:
-> >
-> > 	ld.lld: error: undefined symbol: _find_next_bit
-> > 	>>> referenced by bitmap.rs:459 (rust/kernel/bitmap.rs:459)
-> > 	>>>               rust/kernel.o:(kernel::bitmap::tests::kunit_rust_wrapper_bitmap_borrow) in archive vmlinux.a
-> > 	>>> referenced by bitmap.rs:459 (rust/kernel/bitmap.rs:459)
-> > 	>>>               rust/kernel.o:(kernel::bitmap::tests::kunit_rust_wrapper_bitmap_set_clear_find) in archive vmlinux.a
-> > 	>>> referenced by bitmap.rs:459 (rust/kernel/bitmap.rs:459)
-> > 	>>>               rust/kernel.o:(kernel::bitmap::tests::kunit_rust_wrapper_bitmap_set_clear_find) in archive vmlinux.a
-> > 	>>> referenced 10 more times
-> >
-> > 	ld.lld: error: undefined symbol: _find_next_zero_bit
-> > 	>>> referenced by bitmap.rs:479 (rust/kernel/bitmap.rs:479)
-> > 	>>>               rust/kernel.o:(kernel::bitmap::tests::kunit_rust_wrapper_bitmap_copy) in archive vmlinux.a
-> > 	>>> referenced by bitmap.rs:479 (rust/kernel/bitmap.rs:479)
-> > 	>>>               rust/kernel.o:(kernel::bitmap::tests::kunit_rust_wrapper_bitmap_set_clear_find) in archive vmlinux.a
-> > 	>>> referenced by bitmap.rs:479 (rust/kernel/bitmap.rs:479)
-> > 	>>>               rust/kernel.o:(kernel::bitmap::tests::kunit_rust_wrapper_owned_bitmap_out_of_bounds) in archive vmlinux.a
-> > 	>>> referenced 6 more times
-> >
-> > To fix this, add Rust helpers in this particular case.
-> >
-> > Fixes: 6cf93a9ed39e ("rust: add bindings for bitops.h")
-> > Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
-> > Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/561677301
-> > Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/helpers/bitops.c | 32 ++++++++++++++++++++++++++++++++
-> >  1 file changed, 32 insertions(+)
-> >
-> > diff --git a/rust/helpers/bitops.c b/rust/helpers/bitops.c
-> > index 5d0861d29d3f0d705a014ae4601685828405f33b..84061af591a261f7268ffe6535282bf3c7608e2d 100644
-> > --- a/rust/helpers/bitops.c
-> > +++ b/rust/helpers/bitops.c
-> > @@ -1,6 +1,7 @@
-> >  // SPDX-License-Identifier: GPL-2.0
-> >  
-> >  #include <linux/bitops.h>
-> > +#include <linux/find.h>
-> >  
-> >  void rust_helper___set_bit(unsigned long nr, unsigned long *addr)
-> >  {
-> > @@ -21,3 +22,34 @@ void rust_helper_clear_bit(unsigned long nr, volatile unsigned long *addr)
-> >  {
-> >  	clear_bit(nr, addr);
-> >  }
-> > +
-> > +/*
-> > + * Rust normally calls the single-underscore-prefixed version of these
-> > + * functions, which are not inlined. However, on some platforms, they do not
-> > + * exist. In those cases, provide a rust helper for the underscored version.
-> > + */
-> > +#ifdef find_next_zero_bit
-> > +__rust_helper unsigned long
-> > +rust_helper__find_next_zero_bit(const unsigned long *addr, unsigned long size,
-> > +				unsigned long offset)
-> > +{
-> > +	return find_next_zero_bit(addr, size, offset);
-> > +}
-> > +#endif /* find_next_zero_bit */
-> > +
-> > +#ifdef find_next_bit
-> > +__rust_helper unsigned long
-> > +rust_helper__find_next_bit(const unsigned long *addr, unsigned long size,
-> > +			   unsigned long offset)
-> > +{
-> > +	return find_next_bit(addr, size, offset);
-> > +}
-> > +#endif /* find_next_bit */
-> > +
-> > +#ifdef find_last_bit
-> > +__rust_helper unsigned long
-> > +rust_helper__find_last_bit(const unsigned long *addr, unsigned long size)
-> > +{
-> > +	return find_last_bit(addr, size);
-> > +}
-> > +#endif /* find_last_bit */
-> >
-> > ---
-> > base-commit: 54e3eae855629702c566bd2e130d9f40e7f35bde
-> > change-id: 20251203-bitops-find-helper-25ed1bbae700
-> >
-> > Best regards,
-> > -- 
-> > Alice Ryhl <aliceryhl@google.com>
-> 
-> I messed up when testing this patch. It actually does not solve the
-> issue.
-> 
-> It appears that bindgen will emit an extern "C" declaration for the
-> missing C functions, even though they are not in the symbol table. When
-> we add the rust helpers, the declarations emitted based on the
-> non-existent C functions will mask the rust helper functions.
 
-Yeah, when Rust sees both a helper and real function, we configured it
-to pick the real one.
+On 12/4/25 15:54, Asuna Yang wrote:
+> From: Asuna Yang <spriteovo@gmail.com>
+>
+> Add a new `bindgen-backend-option` Kconfig function to test whether the
+> bindgen backend supports a given flag.
+>
+> A subsequent commit will use this function to test for RISC-V extension
+> flags.
+>
+> Signed-off-by: Asuna Yang <SpriteOvO@gmail.com>
+> ---
+>  scripts/Kconfig.include | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/scripts/Kconfig.include b/scripts/Kconfig.include
+> index d42042b6c9e2..5d4d29eed0b3 100644
+> --- a/scripts/Kconfig.include
+> +++ b/scripts/Kconfig.include
+> @@ -78,3 +78,8 @@ rustc-llvm-version := $(shell,$(srctree)/scripts/rustc-llvm-version.sh $(RUSTC))
+>  # If you are testing for unstable features, consider testing RUSTC_VERSION
+>  # instead, as features may have different completeness while available.
+>  rustc-option = $(success,trap "rm -rf .tmp_$$" EXIT; mkdir .tmp_$$; $(RUSTC) $(1) --crate-type=rlib /dev/null --out-dir=.tmp_$$ -o .tmp_$$/tmp.rlib)
+> +
+> +# $(bindgen-backend-option,<flag>)
+> +# Return y if bindgen backend supports <flag>, n otherwise
+> +# For now, the backend refers only to libclang, so more specifically, this function tests whether the given flag is recognized by the libclang used by bindgen.
+> +bindgen-backend-option = $(success,trap "rm -f .tmp_$$.h" EXIT; touch .tmp_$$.h; $(BINDGEN) .tmp_$$.h -- --target=$(BINDGEN_TARGET) $(1))
+>
+Can probably be simplified down to:
 
-> We can circumvent this by using another name for our helper. While it
-> works, it is not fixing the root cause. I am not sure why bindgen emits
-> these functions even though they are not in the symbol table at the end.
+$(BINDGEN) /dev/null -- -x c --target=$(BINDGEN_TARGET) $(1)
 
-I think a much better workaround is to adjust the header file:
-
-#ifndef find_next_zero_bit
-unsigned long _find_next_zero_bit(const unsigned long *addr, unsigned long nbits,
-					 unsigned long start);
-#endif
-
-Alice
