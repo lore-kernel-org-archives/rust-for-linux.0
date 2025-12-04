@@ -1,134 +1,105 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AF831B107;
-	Thu,  4 Dec 2025 14:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF677336ED5
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 14:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764858477; cv=none; b=FUhyu8QHRcS5Qnc2b1RNIi/nXhQuIGwRvB0EtRF/NF7/NZ/uHcVYxoVe7Hcd8p6lNEgWn/c5zk4EhWdzT8FozeGB8k5KSc2+K74p2rifY0W7wdXhI1uXeVVTfs1xxZh5+8rNzKhopizEV9aIjZhT3wBDSDMOvBsMMw/Z4h8vEGE=
+	t=1764858546; cv=none; b=lV4PM0YdACQyO1Es/plhqCWC4YdpOkiplXSHTzeR24D36wnc0eHj8Et/2nGSsgZ0g1tZUCFXD1lU0e/UELOr9/fNsX2c5brO7uMbQ4fl52cCDkbosqPrtmUAUkxfYuOe3hm7YuIXaGbXdSEOi2eqI/M1Q2IPYXFJpM8FrqpBaxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764858477; c=relaxed/simple;
-	bh=xtdePjrSkMnCMeffdJhgcTAykP6ckhRuVfR6k+uF+lE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=msch6Kzl/hPkOecFnlxLQxpHO3EYLfLv88Hyex1N3w+zlD/QDf0J+OuIJUicBBG1CPmHxMzNHKxWdtPhkUgNbUyOMTH2Ou0Wt41xBD+0DXJiMzs/STZQpC4JpPjI2Fl4E5S3dqGH5Vyg7oM3nCRn+IsmQJ8YHSS6kaYN0GfL3DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YwrF7ndD; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1764858546; c=relaxed/simple;
+	bh=5b3hSsheryc1omHURrJ2xQxSW8v9WxFH3SVZ+QsaB5Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Pmll8lwvAHZoi/qZCoDgG76ZFgLNw8sC2iWdxJJEmbaDvrPCzD0fUYO2Ir+rgXQBvZ5oXIwmpZG2AWRDo2EzcC3vkBBK/mal0Ull0g8v1MsMCO/y+H9r6MaTQj5Xep3jFyMpEeceCS0vt6erRUu3hgsQdm+SirPI94DtkYX3wSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z+GGS5/E; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YwrF7ndD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=fFnv22fcQB5aFcCjIbe5QaQi5Ay10FFsnk0wQwnxL/U=; b=YwrF7ndD6dZYtSnBju5djLf3B3
-	9BwkHu8OrlzXfyMe9mncsj4GToO/8tqG0JtcRmUtUn95c3+ke4l7EthXBRpW1hDCA4txDm0KfBxlr
-	uac/gVsFQHXWTT+0ldDi39DQYGDL7a09ckPOmCBRint6yxH5rrJeIDc88cwxVabg2dXtL8kn2nMt+
-	vgvICwVvQw2tHBO07bBT954nsePfsujxuOldWJA2g2bIZA7a2me0JT2k5VO8kTeZWtLVle+Ebt+MS
-	Q7bCGN4x5drE0np+zjvUTukF6CuC4mr5TlM7VO2qJC14ZL3jBLYAn5c9sIqH8WtCmYeUUz4Lh9uCL
-	XJbsVcSw==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vRAJ6-00000004IZt-18oA;
-	Thu, 04 Dec 2025 14:27:44 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id EF8FC3030B1; Thu, 04 Dec 2025 15:27:42 +0100 (CET)
-Date: Thu, 4 Dec 2025 15:27:42 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Emilio Cobos =?iso-8859-1?Q?=C1lvarez?= <emilio@crisal.io>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Antoni Boucher <bouanto@zoho.com>,
-	Arthur Cohen <arthur.cohen@embecosm.com>,
-	Gary Guo <gary@garyguo.net>, Josh Triplett <josh@joshtriplett.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
-	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
- into Rust
-Message-ID: <20251204142742.GM2528459@noisy.programming.kicks-ass.net>
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
- <20251202-inline-helpers-v1-4-879dae33a66a@google.com>
- <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
- <aTFhFXCqvy7nmDOp@google.com>
- <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
- <CANiq72=r+Fmu0uuNF=6x36GWWQZGZk9gApnMZxakJavviwG+ug@mail.gmail.com>
- <dd5856a8-e120-4884-8828-9d0c9edc60f0@crisal.io>
- <aTGJdlwMRxGg2iZ1@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z+GGS5/E"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-be84b64613dso29736a12.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 06:29:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764858541; x=1765463341; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UvlBvALnxJinTj+70puX84zt2GQ/5b3QlMKAbHtKqKY=;
+        b=Z+GGS5/EgDE6dj2M+qep/wVt13PGqXbI00YcnQeNxF7ITfI2KiFEZIVogbSJR1EzDk
+         LAbpZ6vTaWktEvQwC3j8fOm+PqODI66St5Ie6+9TLcQB40kc24eETKfqv3gcDUPb9AaJ
+         RcOqePyp0O+VtVVUHxVPkbheS9MoVX8/NO6gSRHLu4rGbqgKH/2342TRY4neXT6sBQvK
+         QNtljCJWWqMdzjhteFqLyaXknDgicf4QXhZP14VPvLNFsejUWR2Ry06zf9py4aQTAYf+
+         1hTZlIKh/sWQBCmuhD1pcBQsHkcRwkOuh+iCJD+Xk7U6k0yXPy9TkVeXtF99wH0ZI4VL
+         VVDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764858541; x=1765463341;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UvlBvALnxJinTj+70puX84zt2GQ/5b3QlMKAbHtKqKY=;
+        b=LtqXMMbtj+wk8S3WA2YNgY8DLVIVydpDIit0AtXT49nl/IrZeyIbM7NeaHThBIAwom
+         97KHhGuKOGLGBTlB74FZY+bZC0+usm2xMX5caInoemVJX0Qb6yAZTr6DVtJnUWqHvMbd
+         ottB1e4NWE+DyjT3gnRO/JzBjld6Y6hODZAcer31aHtr2BKdiIr02eQXkM3sWFXDXl8x
+         8m1FddSbQreFtMKgvxdKpD14jPI4rhL7KmMbsmVEgclfQVKOhglsaisA/qUM6yCwY1Ck
+         qHdc2aDKD/qYkL6tgHgkbk1uZlStGcIzK03uJhmCbQheMNnpLkd1fxXElh/fhXwyaiZE
+         U/vw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkvq4kE2uDciPBSejyHm6PWiLJ8wqvjTPuvuWaiBK+9eITCPVcxvIIJ6tFpuFEo4eLQ3Rj+OmThvtil80erQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzh4rnnT/nG2l3myFl656E870ej0Q25EDw6R6zdhPtUrp0JZqiI
+	Y4YsicAUoNz/syHuRuXNSPSl1ifYzMVimtWayvl4KhqwXoP2wslbFj9rIzu2eJSQrLguAd3fuqO
+	VmaGY7mH9ZlskK5Q1A4P7Sdtdr3ec1CA=
+X-Gm-Gg: ASbGnctBqI4pNeN0P+NOQy8lb2+UtjO0YxDMJoizvprQk4RCy98Lmj0Znin8ljoSpqE
+	HZC3TI17jwb8rCg3kosuOPbooqnCV9BXlNqKD8urc3hyaZi4HDxlWKjEUL5K/uCvha+RPeI5wI/
+	IRVrA0PKft5vIukZC3Lo5cUYnkzwv2qkqyYUiRoDYiFblsqqI7iT6kOdlYV0ovqP8AuDAfEcagC
+	x+DvcQXuXV+az2/vgXeeofg1MQw0mYJ66U7kNQlOFxbL5kZShxXKQsNyssouWF2Kro3+/6S9J9c
+	mNPH3+ktAt32FGinJYs/9WXtDNsi0IY/5HHRK0GfWTZgIsBe8ABwZ6UUcLFzNE7YC3xt5WK9APR
+	o9SK9yUHdSuUA9w==
+X-Google-Smtp-Source: AGHT+IHtUSP5Y0wYwIuDDslEVm5s578jrXfF6FezcJZ2WpivPEIlkQ8cu/0TNxZBLP7zDNKaBeN+6n8l+Z+CAbT6CCY=
+X-Received: by 2002:a05:7301:1005:b0:2a4:3592:8623 with SMTP id
+ 5a478bee46e88-2ab97ad920bmr3757076eec.1.1764858540971; Thu, 04 Dec 2025
+ 06:29:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aTGJdlwMRxGg2iZ1@google.com>
+References: <20251204033849.23480-1-yu.whisper.personal@gmail.com> <DEPHSZUPUJBB.2YEABTJ7OR86T@nvidia.com>
+In-Reply-To: <DEPHSZUPUJBB.2YEABTJ7OR86T@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 4 Dec 2025 15:28:49 +0100
+X-Gm-Features: AWmQ_bmSUueGdqk1F8UbrmRlo97r6g_p7mBVeWcqr7lAeD5mgAdAgTKt741ddS0
+Message-ID: <CANiq72kYGE_mX=rXu=SXAgdrOisELbvqyx--QuBZEc9dNQ6ucw@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: num: bounded: mark __new as unsafe
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Hsiu Che Yu <yu.whisper.personal@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Yury Norov <yury.norov@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 04, 2025 at 01:15:34PM +0000, Alice Ryhl wrote:
-> On Thu, Dec 04, 2025 at 01:49:28PM +0100, Emilio Cobos Álvarez wrote:
-> > On 12/4/25 12:57 PM, Miguel Ojeda wrote:
-> > > On Thu, Dec 4, 2025 at 12:11 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> > > > 
-> > > > Right. Earlier I also proposed using libclang to parse the C header and
-> > > > inject that. This might be a little simpler, in that..
-> > > 
-> > > Yeah, that would be closer to the `bindgen` route in that `libclang`
-> > > gets already involved.
-> > 
-> > Yeah, so... there are existing tools (c2rust [0] being the actively
-> > maintained one IIUC) that in theory could do something like that (translate
-> > the bodies of the functions from C to Rust so that rustc could consume them
-> > directly rather than via LLVM LTO).
-> > 
-> > I think the intended use case is more "translate a whole C project into
-> > rust", but it could be interesting to test how well / poorly it performs
-> > with the kernel helpers / with a single header translated to Rust.
-> > 
-> > I personally haven't tried it because for work I need to deal with C++,
-> > which means that automatic translation to Rust is a lot harder / probably
-> > impossible in general. So for Firefox we end up relying on bindgen +
-> > cross-language LTO for this kind of thing, and it works well for us.
-> > 
-> > If I'm understanding correctly, it seems the kernel needs this extra bit of
-> > help (__always_inline) to push LLVM to inline C functions into rust, which
-> > is a bit unfortunate... But this approach seems sensible to me, for now at
-> > least.
-> > 
-> > FWIW Bindgen recently gained an option to generate inline functions [1],
-> > which could help avoid at least the bindgen ifdef in the patch series?
-> > 
-> > Anyways, it might be interesting to give c2rust a go on the kernel helpers
-> > if nobody has done so, and see how well / poorly it works in practice? Of
-> > course probably introducing a new dependency would be kind of a pain, but
-> > could be a good data point for pushing into adding something like it built
-> > into rustc...
-> 
-> I already tried c2rust as an alternative to this patch. It works okay
-> for many functions, but it's missing support for some features such as
-> asm goto, though this is fixable. But a larger issue is that some things
-> simply do not translate to Rust right now. For example:
-> 
-> * Atomics use the Ir operand.
-> * static_branch uses the i operand.
-> 
-> neither of which translate directly to Rust.
+On Thu, Dec 4, 2025 at 3:13=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
+>
+> Miguel, do you prefer to take this directly, or should I gather all the
+> `num/*` patches and send you a PR in one go sometime later?
 
-Right this. AFAIK Rust simply does not have feature parity with inline
-asm. Them having picked a wildly different syntax for inline asm didn't
-help either of course. But Rust is Rust, must have terrible syntax :-)
+Just to avoid forgetting later, which ones do you mean? i.e. I have
+these in my radar:
+
+    [PATCH v3] rust: num: bounded: mark __new as unsafe
+    [PATCH] rust: num: fix typos in Bounded documentation
+    [PATCH] rust: num: bounded: rename `try_into_bitint` to `try_into_bound=
+ed`
+    One in [PATCH v2 0/7] rust: build_assert: document and fix use
+with function arguments
+
+None seems urgent, i.e. they can be added to `rust-fixes` after -rc1 I
+think, right?
+
+Thanks!
+
+Cheers,
+Miguel
