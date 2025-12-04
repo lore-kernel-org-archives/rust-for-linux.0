@@ -1,147 +1,182 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9094032F76C;
-	Thu,  4 Dec 2025 22:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0485019F40B
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 22:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764886679; cv=none; b=XOFwrYH/DAKg98e755nmh1Cal1Qd22sqtPEZ8aNqF6Cr19toC2HW7bE5B9a6m3ZJXAWfPvUoPjzcBSTc4nhy6dw6+kKnNDPX2KWqyLUcVly1p8IsanKZlCqILzbqWqxJGnf/qc+tiZXLSprBVODmKjbuM4AupkU1ZRxTW4D4UmY=
+	t=1764887680; cv=none; b=YVtdkAwVbmIPe9HgeJhm7l4zVSKucG8S1UYLxLX0vtOnI59F9FhNPPcKOKdl0qG10ME7uwIX4HiyzDwCuEXdQum1KRCxzxvor39uvBDuQE1ugki5GM7Vh+0n/5UesvxLvMsRw4Rgzz62cI3OlP5MsDfbTl1iCN6ONV1qBoaMpQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764886679; c=relaxed/simple;
-	bh=3QKwgDCuTEqLZTKJBXju+ayuc0pIM0+i0cJ+6vew634=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LSV6JAdU1B9HNf2mpsRx5rJLXmbOen1fqyTzoN/X0wcuLUc3qWsavk9LyUTtNwOJNSIyYi+G9wN33R5ffclhHS49hzGGbBPC8c1e8GJRa3NcrP0851Ul+838o0Lzv5jRkOT5iOvmVoxTbZCIplVBKo/PU6kulj3eriEXpiLZXrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pOEb2Ri0; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1764887680; c=relaxed/simple;
+	bh=72LnbM7KCZ/oGfeHqtTQMvOwjq/SndxTUhSqJiyCq50=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ImW2Y9FPlRy0wc0fDb/FofODzv4JbGIw75uwhkZbBIDya5kpCgIBkH/MCmO8L7Q62ehU8mOS7dlzsIcfGMtyWikYQ2GzKBztEYAbLrA7ASwYPED8CT7+otCDS2D/jHLnkMBkEsojbl4F8RckA98frhKXuYx4KUNa12Ro3w+M7O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cAKxzdh6; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pOEb2Ri0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=k6QVH/SWdP5H8bXIHeIZZPkQwVxQdNZJmtX24mN9i90=; b=pOEb2Ri0+biaDj8R76FKt8db8+
-	gNL4On3s42n2VRZLuJ70zlejVBo2mDgEk/EYYRx/Yt6E52rWb2buoeFpKyiPguCD0G5syhjXcXBeU
-	ze8d4CiTnMu2hAUWOfHD86DLXyVg/QKtpmBx4m0/vbRsPbjLQpe1akjW3F7V2zP6njlBxdpOguU4j
-	0FcrSKxHcCoKKFK4udrdX7Rn0v/C5CI+Z+ck3F3guEDNZ8VW0MRBqjbP2vKfZa5ixuhKpyMsGsRBk
-	Ut7N2ENViN/YTYVaQce/7brCDDoNtk5mhj0U25jHEnkusKsVLvJxUrtBZEPmPok1jgN5WvqEg5/PM
-	hiEYREbA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vRHdh-00000008ihQ-23Ud;
-	Thu, 04 Dec 2025 22:17:31 +0000
-Message-ID: <b5feba48-7e7c-4ab9-a193-072f3980f525@infradead.org>
-Date: Thu, 4 Dec 2025 14:17:27 -0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cAKxzdh6"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-298287a26c3so18543765ad.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 14:34:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764887678; x=1765492478; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YC/LG1hcVvWIm1a7VD+kVpIwg64WK68Yo/CpiarV5ok=;
+        b=cAKxzdh6R9Xd/uL8oEN5+EPOJbhlAWnnG+ObPHxoC7AV2KZBYGYZhbJZEDMdzkE1Xp
+         Z8I7/rQrDOh2cG41BSqlVq3Thc17ixqdJdUdZCEyocPa4xSR9RTQcAD9GDhuj7aOxFaF
+         6D4M51lLe8zXCmZmm7FsoWztM0vKKogOncaXPv1gQGQbFlLai+VBW1YavJQSL/ACZkqe
+         DjDOmoAE66PpAA9MpsCFY6qTbTeAn9vQ7fJz5vCy9EEs8GYQ5eeRrnWi4RWs3xvgpmKl
+         h0FsARWuXMuIwozJAQcfn8YxCQxhAv5B7ld5hH6AUz5y5mmsf628c6D9YOY3FXI5eBKH
+         4FFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764887678; x=1765492478;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YC/LG1hcVvWIm1a7VD+kVpIwg64WK68Yo/CpiarV5ok=;
+        b=g7PtKe6wO2wZo9kzk5/j6oe8tiMAAonhNL/QAqoD0Di/cdzT/FE+tFszPrbmDqd9gs
+         iYg02F26HM4Ivvr1bxm/zpOMweE1F2nU0zEsY3CfrhiEKwb8zPaVIUAgpycTYzLoHVuy
+         cEdFsntOXpLCneRqTHGiwBHhX4ljX6hnqHlGcFGfnTFMtLciIG0TfjZo3l11C7PdKl/P
+         rXEWTEF21uEU4w5gTCdcpw5OH2vsyzn9ZSg/rTYwhXurVIf/vWDBqEtek9Qvoyt84F9B
+         Qif/Al8Lt+8G0j7NixvuZpEaipGa2CoUcBimU9IDaW1fue5kM0PslNt8r2wMeA6+sxOK
+         tSOg==
+X-Forwarded-Encrypted: i=1; AJvYcCVG9XzOu8n8AMVz1qnvAAp0DlEi0JVm7MQ4KppGKjKCGp7OqVoEjzmwVlw2ASrFmE8Mc2MkVz2/EGgwrdNsXA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyv73uTCwrmJindq9dioDtdfh6oh/Yh0GXxQ15fnhigX9QZK2NU
+	sdn1HgtKV8TODhKQ3jT3J1iquthzijIruExJ7RoQxzAjLE2cC4S0KanK5Wenqg==
+X-Gm-Gg: ASbGncurO76Svzqi+7XMNcOA5CsQQNtgg9pQSThNlvdNdMdgdeXlTFLWU08NcLeh4VH
+	BPphiwNX58LS83AnZM0HuHbhVMy4GIbF89+sLocFwHNghsS9kjNBoDMiAbnIjOn8fD3Ky4v88Wz
+	WIjvqdIcwOzGdajrBpSaBeWNj9fwLWQep+m5px1Hr84MgAozv3EF++sYS8v0rckk/Qo+5KnO4Op
+	jXO/WFEunlYOp67uR2DEc3MQ4nDFPzXuYKX0qROmW4pJjxPe5b+ZaimwtbK9gMLAFE+VLWv4SH5
+	j5xrrL9rbULqkT8JaDAWjEV0a2AmEYTKpPsD3cF0OP2mSdKo8gBkbWf0KvG51PVZ0IKngQ5cwme
+	q2Ak4z02KZja6DgST/lHJiVWMn+UY94EV2DD8YMvLk4S9wX3ytGiMKSOG13FgLArLfWlhkMuwgG
+	Fp95vCcx5XfRIS4qfCLRQaGpx1f0nWG/fhhRW79cc7llHs2EtJjkRMHaJtdww=
+X-Google-Smtp-Source: AGHT+IE4xMONVAij6hUD7/dHadBsZtoNV1WFGDYQBThHNsUBEiIZnsTE3jgXcVNy1z9jjS8Mh6ykFg==
+X-Received: by 2002:a17:902:d043:b0:299:e215:f61e with SMTP id d9443c01a7336-29d68413ec6mr60570835ad.36.1764887678168;
+        Thu, 04 Dec 2025 14:34:38 -0800 (PST)
+Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29daeaabf7csm28785345ad.79.2025.12.04.14.34.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 14:34:37 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: ojeda@kernel.org
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: [PATCH v1] rust: bug: Support DEBUG_BUGVERBOSE_DETAILED option
+Date: Fri,  5 Dec 2025 07:34:05 +0900
+Message-ID: <20251204223405.454920-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v24 25/28] riscv: create a config for shadow stack and
- landing pad instr support
-To: Deepak Gupta <debug@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Christian Brauner <brauner@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>,
- Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
- Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-riscv@lists.infradead.org,
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com,
- andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
- atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
- alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
- Zong Li <zong.li@sifive.com>, Andreas Korb
- <andreas.korb@aisec.fraunhofer.de>,
- Valentin Haudiquet <valentin.haudiquet@canonical.com>
-References: <20251204-v5_user_cfi_series-v24-0-ada7a3ba14dc@rivosinc.com>
- <20251204-v5_user_cfi_series-v24-25-ada7a3ba14dc@rivosinc.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20251204-v5_user_cfi_series-v24-25-ada7a3ba14dc@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Make warn_on() support DEBUG_BUGVERBOSE_DETAILED option, which was
+introduced by the commit aec58b48517c ("bugs/core: Extend
+__WARN_FLAGS() with the 'cond_str' parameter").
 
+When the option is enabled, WARN splats now show the evaluated
+warn_on() condition alongside the file path, e.g.:
 
-On 12/4/25 12:04 PM, Deepak Gupta wrote:
-> This patch creates a config for shadow stack support and landing pad instr
-> support. Shadow stack support and landing instr support can be enabled by
-> selecting `CONFIG_RISCV_USER_CFI`. Selecting `CONFIG_RISCV_USER_CFI` wires
-> up path to enumerate CPU support and if cpu support exists, kernel will
-> support cpu assisted user mode cfi.
-> 
-> If CONFIG_RISCV_USER_CFI is selected, select `ARCH_USES_HIGH_VMA_FLAGS`,
-> `ARCH_HAS_USER_SHADOW_STACK` and DYNAMIC_SIGFRAME for riscv.
-> 
-> Reviewed-by: Zong Li <zong.li@sifive.com>
-> Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
-> Tested-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
-> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> ---
->  arch/riscv/Kconfig                  | 22 ++++++++++++++++++++++
->  arch/riscv/configs/hardening.config |  4 ++++
->  2 files changed, 26 insertions(+)
-> 
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index 0c6038dc5dfd..f5574c6f66d8 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -1146,6 +1146,28 @@ config RANDOMIZE_BASE
->  
->            If unsure, say N.
->  
-> +config RISCV_USER_CFI
-> +	def_bool y
-> +	bool "riscv userspace control flow integrity"
-> +	depends on 64BIT && \
-> +		$(cc-option,-mabi=lp64 -march=rv64ima_zicfiss_zicfilp -fcf-protection=full)
-> +	depends on RISCV_ALTERNATIVE
-> +	select RISCV_SBI
-> +	select ARCH_HAS_USER_SHADOW_STACK
-> +	select ARCH_USES_HIGH_VMA_FLAGS
-> +	select DYNAMIC_SIGFRAME
-> +	help
-> +	  Provides CPU assisted control flow integrity to userspace tasks.
+------------[ cut here ]------------
+WARNING: [val == 1] /linux/samples/rust/rust_minimal.rs:27 at _RNvXCsk7t4azzUqHP_12rust_minimalNtB2_11RustMinimalNtCs8pcx3n4
+Modules linked in: rust_minimal(+)
 
-	           CPU-assisted
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/kernel/bug.rs | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-> +	  Control flow integrity is provided by implementing shadow stack for
-> +	  backward edge and indirect branch tracking for forward edge in program.
-> +	  Shadow stack protection is a hardware feature that detects function
-> +	  return address corruption. This helps mitigate ROP attacks.
-> +	  Indirect branch tracking enforces that all indirect branches must land
-> +	  on a landing pad instruction else CPU will fault. This mitigates against
-> +	  JOP / COP attacks. Applications must be enabled to use it, and old user-
-> +	  space does not get protection "for free".
-> +	  default y.
+diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+index 36aef43e5ebe..a60db1ef4b48 100644
+--- a/rust/kernel/bug.rs
++++ b/rust/kernel/bug.rs
+@@ -11,15 +11,14 @@
+ #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
+ #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
+ macro_rules! warn_flags {
+-    ($flags:expr) => {
++    ($file:expr, $flags:expr) => {
+         const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+-        const _FILE: &[u8] = file!().as_bytes();
+         // Plus one for null-terminator.
+-        static FILE: [u8; _FILE.len() + 1] = {
+-            let mut bytes = [0; _FILE.len() + 1];
++        static FILE: [u8; $file.len() + 1] = {
++            let mut bytes = [0; $file.len() + 1];
+             let mut i = 0;
+-            while i < _FILE.len() {
+-                bytes[i] = _FILE[i];
++            while i < $file.len() {
++                bytes[i] = $file[i];
+                 i += 1;
+             }
+             bytes
+@@ -50,7 +49,7 @@ macro_rules! warn_flags {
+ #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
+ #[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
+ macro_rules! warn_flags {
+-    ($flags:expr) => {
++    ($file:expr, $flags:expr) => {
+         const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+ 
+         // SAFETY:
+@@ -75,7 +74,7 @@ macro_rules! warn_flags {
+ #[doc(hidden)]
+ #[cfg(all(CONFIG_BUG, CONFIG_UML))]
+ macro_rules! warn_flags {
+-    ($flags:expr) => {
++    ($file:expr, $flags:expr) => {
+         // SAFETY: It is always safe to call `warn_slowpath_fmt()`
+         // with a valid null-terminated string.
+         unsafe {
+@@ -93,7 +92,7 @@ macro_rules! warn_flags {
+ #[doc(hidden)]
+ #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
+ macro_rules! warn_flags {
+-    ($flags:expr) => {
++    ($file:expr, $flags:expr) => {
+         // SAFETY: It is always safe to call `WARN_ON()`.
+         unsafe { $crate::bindings::WARN_ON(true) }
+     };
+@@ -103,7 +102,7 @@ macro_rules! warn_flags {
+ #[doc(hidden)]
+ #[cfg(not(CONFIG_BUG))]
+ macro_rules! warn_flags {
+-    ($flags:expr) => {};
++    ($file:expr, $flags:expr) => {};
+ }
+ 
+ #[doc(hidden)]
+@@ -116,10 +115,16 @@ pub const fn bugflag_taint(value: u32) -> u32 {
+ macro_rules! warn_on {
+     ($cond:expr) => {{
+         let cond = $cond;
++
++        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
++        const _COND_STR: &[u8] = concat!("[", stringify!($cond), "] ", file!()).as_bytes();
++        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
++        const _COND_STR: &[u8] = file!().as_bytes();
++
+         if cond {
+             const WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
+ 
+-            $crate::warn_flags!(WARN_ON_FLAGS);
++            $crate::warn_flags!(_COND_STR, WARN_ON_FLAGS);
+         }
+         cond
+     }};
 
-	  Default is y if hardware supports it.
-?
-
-> +
->  endmenu # "Kernel features"
-
-
+base-commit: 500920fa76819b4909a32081e153bce80ce74824
 -- 
-~Randy
+2.43.0
 
