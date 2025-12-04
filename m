@@ -1,117 +1,153 @@
 Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BE133C181
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 09:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A5B2C326E
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 09:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764839586; cv=none; b=RZsXQs/ZlOOR7ntK83h/Gnm92Ms0jey1S5bzRgjI1uvFexF7p7eMEyoMJ2kCYIgdBFqf9+DsV3TEOf8uoHj2oN9nYBfcvagHv5t0OMDkL/K3E5Nv26gLO4U0zVen+m2SVpUezUMG88BLttH/jh/ogWfONcevRILJ6i0gKd6HQA0=
+	t=1764841567; cv=none; b=rfxMbcKbM/Bh6LhaHTQXSFuYzMq1Fj33P7BYGDsFHWOgtmSO5VQZRSNCYvujIoQTLHTq0hHksmBSyBqz3Dt4RNfPhEmTulY7V+oImnzNXlLPaTn41TxSkuCdLCqVhzHHMYizeAmcx0yVGGa5wgZIYg+/6TdgWVDkhbqIEc6LfdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764839586; c=relaxed/simple;
-	bh=E/Us579nTVgurFAyuKqneDAK/MMCEioOOwy1LAuVIGU=;
+	s=arc-20240116; t=1764841567; c=relaxed/simple;
+	bh=EzgpGjg1QwWDfYIOOESLFG/yLw37B0pgIc7/2w/E3vA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qb/SHcw7Aq+WEU5K2gkWEs3cLUEhR8/2gfzKy6cFywMLUNGyFCtcZwpEg+7jeASV1vQ69PdBQjKeB9EoD5H0ROPykq5kvT0DU42CUMUZjCYe0dEYo+zpeL4lNXPdQYbSaEgMqAvUFI8OB/lreyrT5i6MvubqhzE7/zUJLl0lqL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2UzPJpXe; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=YeX9y2QExde7aS0pPHmeLXgpK1mzF/v4x6EuJJiqeuAJcxqZXQLxR3Pvee+bsDo+ERUucIcsdRc4CddGpY5zFMM+i6PWwAJHRsxAqCP85zBasDK/wH64OY5mdHcfqiQpH2+fp0/GD1DTYdx0YEqMEJNCTqmDidEbAZdgVOu4JEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dit5ZXxb; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2UzPJpXe"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6407e61783fso721316a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 01:13:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dit5ZXxb"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6430efef759so674341a12.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 01:46:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764839583; x=1765444383; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1764841564; x=1765446364; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DRDZhJnUIfvx3/Hg/oNl3IHpJs7xKfq6AQy62QyhG00=;
-        b=2UzPJpXekgpnuKOY4Ky2aWKNgpBcX9xO+nwWecCG5HWdBM4T9wr8XjAFJiTCrhuUIL
-         PnY1nWpEz85sEvhGREWvlhFRTI7khO7fQfqH/b5l6xANoQP4gyHW6aYvvqnv0nmtf2A3
-         JJMkosDhlmenZRjq8raYAzL2Ek61bzIrDHqcc69wVVmiGsjgCV7xTUB1xj6PmPHpkhxb
-         J6IP657OmplhJy3FTy3mlPwEZvuam0mCjwxMEiAAAuBrUFt8ttqRex9UWPTF5s0nG5Uv
-         1/2slawXiti9g3WHZvs7NshqZ4lFyiasb5rGwaoBrztnRlf1iOZ4B6tnbAzYeyUk2ULO
-         rkUw==
+        bh=7Y+LEByl2j3nWQKuuz9R99dq4dapViIO+66bH6orc1c=;
+        b=dit5ZXxbz5w0YkpsHITRZEssjnXeUZvv6VpjX5s9AMdPLOhvrMSimGt76WUlCDM7Ta
+         NN8nTbr3n2Nf95XDArtK/A/ry8vKcYEpgN9nzimn4wg3yrzDouV77/IWG/Zr6D4RfdjR
+         t9aJwi4/xlI2g+AvYjZrlmkEI9HVkYU6r+zvHm8QKCvoMClHTjdVaoZ+F/GJxLYXIIzb
+         7Y7aTw1qNgd+Y4izoTaMLbUNTJvmyDc6EaMb+wo/69cwKW4Y0Qg//nwSwaev9b/CPwdR
+         roG7C3uSHVt8rGUnj74TvCQQQHWpTcODLoBMsZL4aZCjuE3w1S7T9Yv+gCy3z0NLhp/F
+         Eh7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764839583; x=1765444383;
+        d=1e100.net; s=20230601; t=1764841564; x=1765446364;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DRDZhJnUIfvx3/Hg/oNl3IHpJs7xKfq6AQy62QyhG00=;
-        b=abiHx7ILkkJRp2gp855l+1L19hsVgb5c3JL+5iFm6IjHazJUTvfC6ju821A7ihJTkd
-         vrKBS+XVpfxK14nu68+v8dH8zzoDCtRgQmB1L2Zc+mLXwPU6gaHNl0HyVDqVzWMHuKxY
-         S9RbSMCc0IxEkASG1DLJEYFT7azmrCiE92FRvMexsy6RkiSiHQuJXs5N3uIvCDe7FeYk
-         cvICa+B6oCk5156yrIg3MbhGgKiSIGbG/GogWUfcTCSUqn/0IubtqE3At9CLVS4BLzle
-         q9FuCK1UUuFqlIuIImyKJ9EVo1VFGOKKEqN4/eXGrzlrJB0jAl3L7XZJ7ATpDfrNDXZC
-         lyqw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNZ/DLsQtKFewptSijNLj8OYcYE+8PDdSwYcKatXhAgEZjUqUhaQHtRvVTlVPMdcYSQQKBfA7w/EiVgAdZtw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpyfJraW9GxoapphZqVEPQouBPKM6A8e8tgZcu5SlgsJnZ6K9t
-	cd7dm56+KykyTF7xDu77jgHSPyhHMSzej0KPJXCqgojotmitw74RB+r0kQlUfc1K1CCGhC2w4Qv
-	+5XxQn0WedA+pxoiHRA==
-X-Google-Smtp-Source: AGHT+IEhdPWvEmB4vfFoDOsOLUUthSnQqFGCrg+waysgL3RexQWT0QwI0B7dGIxK2uf85VyQcWDZE8BMbpilqHw=
-X-Received: from edc5.prod.google.com ([2002:a05:6402:4605:b0:643:3a03:788d])
+        bh=7Y+LEByl2j3nWQKuuz9R99dq4dapViIO+66bH6orc1c=;
+        b=c73qZXiVKgsLItm2QykXNv/1kY1Jh7IhZDn6dYbNgmNd+OtrDawzPJ4wXD2XuIp1Xo
+         xxIPTyqMI5Z1sGTiCtbmRrF+VXxlG5GPTj9xH4WKcdogaxBUHhIc/K8zaXu4OOgn37HI
+         1c9hwDAA6sGVSzjH2O36++eZ6+8feao0hNgPQHFgxgalllmVuCxjx1IiunNovwge7DB2
+         JObZ2XlzMDnHzAiC0t6angfumHPV/Ekvn8kZfBxlxbKimxNZrOrr2wcCKMorNIqwY9Ib
+         Om2gOY5coEGUPuxxjfWyUCq4ZuRBvAdQ7uXG1Z5ZQd3YNRtD3WasfOLsen4HYJweNsd2
+         pkeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWzg2S03PSPAM4HQHJscw47npQt7zFiZM+hgGW/vzGXl2K6QZAyOt/A2zGG6Kg2FS7Skumkl1MTRRofZ+SquQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4pN98ngUe9N7wBaU8Ho78fqKccP67iZ8+UgX+2hv6KQoRm1hE
+	JQZR8xRL6o3B4YvFPTa8kNCYf77hxNG/8aZKzT4Ve83roIvyNjWqFeJjeffoLIJtXi63TPJxpSn
+	WoFsrH38xjdyOy5UQxg==
+X-Google-Smtp-Source: AGHT+IH+B9WzKRmSWzOuHrGLt1JUxDjhE9BQol+oE79eSw4Io68p4o5P8fUOkglayWG/HVrXi6i/Vno1TKnYch4=
+X-Received: from edbig1.prod.google.com ([2002:a05:6402:4581:b0:62f:24aa:896a])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:1469:b0:647:a2b2:3db9 with SMTP id 4fb4d7f45d1cf-647abd80d9dmr1973340a12.7.1764839583215;
- Thu, 04 Dec 2025 01:13:03 -0800 (PST)
-Date: Thu, 4 Dec 2025 09:13:02 +0000
-In-Reply-To: <20251203203222.70415-1-sohammetha01@gmail.com>
+ 2002:a05:6402:1e94:b0:640:c640:98c5 with SMTP id 4fb4d7f45d1cf-6479c4c441bmr5333397a12.34.1764841564163;
+ Thu, 04 Dec 2025 01:46:04 -0800 (PST)
+Date: Thu, 4 Dec 2025 09:46:03 +0000
+In-Reply-To: <20251203212558.GB3060476@ax162>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251203203222.70415-1-sohammetha01@gmail.com>
-Message-ID: <aTFQnsTFuVO5DrYv@google.com>
-Subject: Re: [PATCH] rust: sync: ordering: Fix dead link to LKMM explanation
+References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+ <20251202-inline-helpers-v1-4-879dae33a66a@google.com> <20251203212558.GB3060476@ax162>
+Message-ID: <aTFYWyUE-ln5KrsX@google.com>
+Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
+ into Rust
 From: Alice Ryhl <aliceryhl@google.com>
-To: Soham Metha <sohammetha01@gmail.com>
-Cc: linux-kernel-mentees@lists.linuxfoundation.org, shuah@kernel.org, 
-	skhan@linuxfoundation.org, linux-kernel@vger.kernel.org, 
-	kernel test robot <lkp@intel.com>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, Dec 04, 2025 at 02:02:22AM +0530, Soham Metha wrote:
-> Fix the reference to the LKMM 'explanation' document, using the `srctree/`
-> prefix triggers an htmldocs warning.
+On Wed, Dec 03, 2025 at 02:25:58PM -0700, Nathan Chancellor wrote:
+> Hi Alice,
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202508301445.KuPDLTET-lkp@intel.com/
-> Signed-off-by: Soham Metha <sohammetha01@gmail.com>
-> ---
-> No functional changes.
+> On Tue, Dec 02, 2025 at 08:27:59PM +0000, Alice Ryhl wrote:
+> ...
+> > diff --git a/Makefile b/Makefile
+> > index 96ddbaae7e12de71bcfabef4639de3a13a6e4815..5834bfd568548d1bee34b328dccce5d60f85526f 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -517,6 +517,8 @@ OBJCOPY		= $(LLVM_PREFIX)llvm-objcopy$(LLVM_SUFFIX)
+> >  OBJDUMP		= $(LLVM_PREFIX)llvm-objdump$(LLVM_SUFFIX)
+> >  READELF		= $(LLVM_PREFIX)llvm-readelf$(LLVM_SUFFIX)
+> >  STRIP		= $(LLVM_PREFIX)llvm-strip$(LLVM_SUFFIX)
+> > +LLVM_LINK	= $(LLVM_PREFIX)llvm-link$(LLVM_SUFFIX)
+> > +LLVM_AS		= $(LLVM_PREFIX)llvm-as$(LLVM_SUFFIX)
 > 
->  rust/kernel/sync/atomic/ordering.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Please keep the binutils alphabetized (i.e, put LLVM_LINK between AR and
+> NM).
 > 
-> diff --git a/rust/kernel/sync/atomic/ordering.rs b/rust/kernel/sync/atomic/ordering.rs
-> index 3f103aa8db99..d71c4f582f75 100644
-> --- a/rust/kernel/sync/atomic/ordering.rs
-> +++ b/rust/kernel/sync/atomic/ordering.rs
-> @@ -20,7 +20,7 @@
->  //!   described in "DEPENDENCY RELATIONS" in [`LKMM`]'s [`explanation`].
->  //!
->  //! [`LKMM`]: srctree/tools/memory-model/
-> -//! [`explanation`]: srctree/tools/memory-model/Documentation/explanation.txt
-> +//! [`explanation`]: tools/memory-model/Documentation/explanation.txt
+> Other than that, this seems fine from a Kbuild perspective (but I did
+> not look too hard).
 
-Currently, when I view this on:
+Sure will reorder.
 
-https://rust.docs.kernel.org/kernel/sync/atomic/ordering/index.html
+> >  else
+> >  CC		= $(CROSS_COMPILE)gcc
+> >  LD		= $(CROSS_COMPILE)ld
+> > @@ -625,7 +627,7 @@ export RUSTC_BOOTSTRAP := 1
+> >  export CLIPPY_CONF_DIR := $(srctree)
+> >  
+> >  export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
+> > -export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN
+> > +export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN LLVM_LINK LLVM_AS
+> >  export HOSTRUSTC KBUILD_HOSTRUSTFLAGS
+> >  export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
+> >  export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
+> > diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> > index 3034e294d50df55c4003c5fa5df442f59e711bd8..e63c5eb57b049aff988419ccd12dfd99d59f5080 100644
+> > --- a/lib/Kconfig.debug
+> > +++ b/lib/Kconfig.debug
+> > @@ -3427,6 +3427,21 @@ config RUST_KERNEL_DOCTESTS
+> >  
+> >  	  If unsure, say N.
+> >  
+> > +config RUST_INLINE_HELPERS
+> > +    bool "Inline C helpers into Rust crates (EXPERIMENTAL)"
+> > +    depends on RUST && RUSTC_CLANG_LLVM_COMPATIBLE
+> > +    depends on EXPERT
+> > +    help
+> > +        Links C helpers into Rust crates through LLVM IR.
+> > +
+> > +        If this option is enabled, instead of generating object files directly,
+> > +        rustc is asked to produce LLVM IR, which is then linked together with
+> > +        the LLVM IR of C helpers, before object file is generated.
+> > +
+> > +        This requires a matching LLVM version for Clang and rustc.
+> > +
+> > +        If unsure, say N.
+> > +
+> 
+> I am just curious, why would someone want (or not) to do this? This help
+> text does not really indicate the point of the option, just what it
+> does. Is it just the standard tradeoffs with inlining (potential
+> improvements in performance due to better optimization opportunities
+> versus text size increase and icache pressure) or something else?
 
-the link goes to:
+Basically you probably want this on if you can enable it, but
+RUSTC_CLANG_LLVM_COMPATIBLE is actually a pretty harsh requirement. If
+you just install rustc and clang, it's likely they wont be sufficiently
+compatible for LTO to take place.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/memory-model/Documentation/explanation.txt?h=v6.18
-
-which is the source code of the relevant piece of documentation. Of
-course, a better link would be:
-https://docs.kernel.org/dev-tools/lkmm/docs/explanation.html
-
-However, I think this patch would case the link to go to
-
-https://rust.docs.kernel.org/kernel/sync/atomic/ordering/tools/memory-model/Documentation/explanation.txt
-
-instead, which seems wrong.
+I'll expand on this in the help text.
 
 Alice
