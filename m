@@ -1,379 +1,126 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012053.outbound.protection.outlook.com [52.101.43.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7502550D4;
-	Thu,  4 Dec 2025 07:55:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764834921; cv=fail; b=s0zEAkzbC0KoaE0qNIuWIktrWUUal6Z5x3w5JpGoeCHP5e9LxRJoT9zaIJfVCbzGIMQLc7adom4YZs46Z58KDVlnyIYjozp8kGyWHIpDpYHJbr2mZPpcIMEQELxDJua3Yp74dD3WX5kwkKp18hu0aWnbzKRSs7m1SG+32n6JV2E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764834921; c=relaxed/simple;
-	bh=VcfjZeex0N26mMgx0W8TX3iPV4k7Nzz1xdkbY9Ybvvs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=VgYl7tLQuUkAVfFDywU4nWABUejJbGFZrHURWkAAIPbd3UlusWDm4lI7Nx0xIITCNFyfqfwr3vNnxPTxgyeyvTMVVU3UAG409Vdf1TKyEb9YRxT5kSno4ab4rawly3zVIAxrYGReLwZ/TQX9liU+kWJkhRBg/EMkZKngD8X+iQ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eWNyjtCM; arc=fail smtp.client-ip=52.101.43.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9F530DECE
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 07:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764834924; cv=none; b=EX4GLEl8mb5RPaX5Q88YBxUFbr4jqSHWuZhrrbpF97855E4Q+f/u9VF9jggqyNPgtRq3M7Ki19wXocAxueKJCliEB/LrGAxL4VN00ht12molhIC0zpx/Dz0YlaoMXCKK+E0ufKKoqZPIszcEs+KjhwCGg+Fdk+HxohFkiIalDhw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764834924; c=relaxed/simple;
+	bh=3qpxref+fIz2xXinhbe3sx3733zbNSv6/Z2ffSx178M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=k5d2qtYYO6i2L0LoRRcGZcrzFdGKptNySdkGMRCj0yQbnV1ndc2v3Tnsn52ZcQIHTVgxXZdOUkG3QLNQFqClnyUdsblpNUt4EEbXIZMjGIKmDIPuNd4slg/axjS+1YynpWQd7T1lptBHkMIkAfb6rcc/2PuEX4qf5zhZkskM+Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EIElW2u5; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eWNyjtCM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I8mlbMvZ2MLZMGEZmOZy0JTPbMSbhpKXwMYxz68Q+oUP6KnNyUQsraxjTm/agDvzrFyj5zH0CC90CT9y46W0FMcIWxgDJbNNmDSTrU7/q3nxbSu35dHiOYUX+cmx1xmbEKK2ZjNzXEcUhORSgY9/vB7URTuMq5PbRBxi+ESUDeaNDtj4Yy9In2H3vm4znOFch0e7CorejemvEShOAv7expxV2x3ANweBASoiLXv64UOtCfDCAs8T2LuRtNEz303CAbfhNqU9bXVQVegGlck/PjOO9V+20kMKnSLvOEcm7bZUikGYaL1/LH4RFk59U3werhh+T/JtP1r217xzjKiC4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rSx303C9gWgwViMjfgAwdaP/BzZvhNcncpgvV11qT5g=;
- b=Jm/gCac76FwabxR284nZqTZw4qG3HDeXjB/Jo8XZvo2gg2ueEtJyRgeEdbnTC8EDLqU/GvXCusjMpcsV7+bJI6LF3jZ8udiatVoeqZrnJIFPSUQMhdqgkWY5rqD9sVLAJeBjPW0rZdJ58CArU3jrwI3dKPMcL3zhQb4s63fNXjUzxs12BVYkATmcn/lQmE/cMiA717AX35YgnnUR48B0LE162j4foiUbjXHXFz+DSEVm5y0u9+g/1DV6BEPW3l93dLamW1sxJwGakcgfY2MtCaK6ohl/zXkrMNuQzVDjTyAgeRd82IRXcvwSOLNITIzIT4hkF2F4NYnBZ5VvM98oGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rSx303C9gWgwViMjfgAwdaP/BzZvhNcncpgvV11qT5g=;
- b=eWNyjtCMeoGTW9hbAe4L+ZqqzmlLOXxpIxOMFk1ITDVL9k5IUtXGg9buWMRUY8z1hT3jU1XGhAeuO8DyuhexUAGs83U6gl8VHHG557NboSLVYra0d6JWOQ1igvQ14a3iBFvKqaUKuKax/VpPO8dAIJcVMQLOPWnuCv06iGwGq/8eKTdeOHWryvgmLLCvI8QyLFM1vo3d/hixOFuhHCBMKYaMQqIYELu2uAehnFIUcDbgJazcw3XS5qdLSMDiZsPKUfIgw2vn7uNXiXe8cX4otskL1Un5a5QHwiSnNaARVkQYz8obWuL+5jAiZNeoyz8o7Qq2LbWWvGicWnMuPPzlAQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- BN7PPFD91879A44.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6e5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Thu, 4 Dec
- 2025 07:55:15 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9366.012; Thu, 4 Dec 2025
- 07:55:15 +0000
-Message-ID: <f73512e9-085c-4cb3-be23-325c69ec85dc@nvidia.com>
-Date: Wed, 3 Dec 2025 23:55:06 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 21/31] gpu: nova-core: Hopper/Blackwell: add FMC signature
- extraction
-To: Joel Fernandes <joelagnelf@nvidia.com>, Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
- Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-References: <20251203055923.1247681-1-jhubbard@nvidia.com>
- <20251203055923.1247681-22-jhubbard@nvidia.com>
- <b9188e96-9ffa-4815-ab22-735e2506fe93@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <b9188e96-9ffa-4815-ab22-735e2506fe93@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0111.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::26) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EIElW2u5"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-37cd7f9de7cso4748801fa.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 Dec 2025 23:55:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764834920; x=1765439720; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9GoQPHU9Mpip9gR91Y3C4UfAkxVzcGqXTOlsYo71eKE=;
+        b=EIElW2u5jB6al2G7Hz4H+ICcnjJydJC5JEg8pDOmsOWs1WAHX+3gKmCLNjnbIXH5J1
+         axb1jYI3oe7p0xaP7oU5IyB8yywm4dqcT+9lfJZGNJWPVDWh7hsZjEEMYKYzgrmxGfOW
+         lJ8ZYfvYI2UlsYAn8/f+oqydj1qRGjmCk49x6uL9uIQfpbXU/VO/dQWU+myioW1H4iIY
+         F4n7WtBZRrBefDZmEZoNvqA41zy1yUe7SQeb/ojksSIR/+OBaNByKJrydX1lcoVTMK5C
+         mUVAUEU8lK5qGqgDtR+0arsJYcsi5IQBb2tLAXKOtPtpUn7571fZx4tRL7DcnANmwn+g
+         dLsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764834920; x=1765439720;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9GoQPHU9Mpip9gR91Y3C4UfAkxVzcGqXTOlsYo71eKE=;
+        b=jZ+jkZ+rPqN4wNIiuy1+aK5FYOdNZo9M0BkVcP54eXBXSvN9NUVp0ARm515VbFGoYR
+         dCi3/cBzQ/v5uyvS5zrtzNS0/Rn8HOpuM9n70X+NG5YZifZDNP3C0BMyfCqtIs3Sw3lY
+         l+FZpPA5jW1m1ttWh7d10wlGivJWIK6+7H6sBPWPcW8Ye5DUL6IE8Ty8rmYg2ExVzGDQ
+         F13s8xs5oT7Q4MhpsiM7YQLBqu/8d/ra4ynM0H2P9UIH27oLznsccAts3dw3ZC5o06+Y
+         OVKTquhXgXTU9GCrIJ6FHKJqBow8tC7jSsuUJUX+wcpSaH4x2RbcILDb997a6gCPoSAt
+         mtCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWmbLYnem4etlWRF1TnQ9/OeJJ06S/Z4yzMzkKYTOuI9rzUJvs9E35/Q3sVT56lvPxsRnx8SPi6gg4dz2e2eQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvApkRidWA8peHNN35aIljFfJLcl0/UAqD5Co2NQ9++p2mvZbX
+	VhJTB0dqAlTiLv6gyCN0pxLdEwVhxk7Y3/SxcE3Xxj/fpfcu9YN95VDF
+X-Gm-Gg: ASbGncsiexaz8pB93bUu7ZE7TE8J98+Pk4l3ZcznWTDtxJ6j3OR78f9JbWOv3Qrr+2Q
+	EZICf9UqfjuMudyNe32BomCNARTaengpk1AU7I9LG+b5Zi8gZLBC8QMTkEAmF4lixPj3Cow2SZN
+	43a2p1zq2llnTsLmlGjQBITrpgAKAWQT1/vGlkzgSpfdf+dGdZQZEjh55wW2JFyIOnmTJlgrJ0k
+	0Q2G8bTdrL/2bMJ4nh8wGnuU0s6HTq9V8HE2aT/yqJPMKylA//KvSicd1gqvIoNPA9FM72hCALh
+	rJm/PA8rC5tFG+BTB2bu9yQmngEeDDLgMlmJmpD6+C46U9qHzVP4Ig5pJA23R3oP3pRJv7aRRZ5
+	WugjgCssg3QTBYdEt3kbYsBSQytyqcub2aFOgtT5hB85JdwGV2+KopSx5WIB1RW7VCUtS9A==
+X-Google-Smtp-Source: AGHT+IHbKKwv3Cd14fMbRlzVZpxoDoNXbiyghddISZDjVQeIjBR6wf7cZ5tNAwGCF94LJdZf6RcGDg==
+X-Received: by 2002:a05:6512:3f14:b0:594:27fb:e7f5 with SMTP id 2adb3069b0e04-597d3feb5f1mr1891895e87.42.1764834919370;
+        Wed, 03 Dec 2025 23:55:19 -0800 (PST)
+Received: from minun.felixc.at ([2a01:4f9:6b:1cc4::2])
+        by smtp.googlemail.com with ESMTPSA id 2adb3069b0e04-597d7c28019sm239190e87.69.2025.12.03.23.55.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Dec 2025 23:55:18 -0800 (PST)
+From: Asuna Yang <spriteovo@gmail.com>
+X-Google-Original-From: Asuna Yang <SpriteOvO@gmail.com>
+Subject: [PATCH v5 0/4] EDITME: RISC-V: re-enable gcc + rust builds
+Date: Thu, 04 Dec 2025 08:54:50 +0100
+Message-Id: <20251204-gcc-rust-v5-v5-0-2d4f20d86c24@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|BN7PPFD91879A44:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90ce9d16-24d5-4d47-423f-08de330a75c5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VEVoa0JoK3VCVHhobmo2cTl4NU9LR1lOaGRMZ1pLR2ordklVNzk4ZWUzZjBP?=
- =?utf-8?B?MGd6eVV5VTVRQmdlSjhmZGVIWTNnR3BwZDQ0K1ErUGw0YjFlNlJId3M4N1NT?=
- =?utf-8?B?YkovcWV1S1BkekhHWTVSYmFtdndBQW0yYXQxVnVoRGJaaEFUR1VIazV5K1NX?=
- =?utf-8?B?L0lOT2pXTmJEeGlGN09tWGd0bVVFeFR0eFB0TlFtanNubXh0VjhtN0JZR2VH?=
- =?utf-8?B?RXhwM0ZtenRwQ0J4M3V6Tm9zZ0hORWZiS09UUnRNcDRXYmZLMEE4Z0QxSElJ?=
- =?utf-8?B?cVdtaHNHcWNvWGgwNXZJaFVxTFJOVDFsNGk5YmdiQ3BoL1l2NHJaUlNiYWlL?=
- =?utf-8?B?dG5Nb0E5NGx5aW9nN1NkdW05MlAybTVwSFZldHVlbFg2ZDM3SnZhSzExZXVo?=
- =?utf-8?B?SHAvRXpQUlNuSzFDMGoxOFhHSEd3S1VsWkFnditDK0o1NlJnb2xVRm90cU5q?=
- =?utf-8?B?TDFSdlovQmNoZ25OL0FLalc2RG4xaU52ems3R1ZuRHVXQnZyOURBNWRSbW9W?=
- =?utf-8?B?MVQyajBWNk0vcXhPVEZaOFF0RGRkZlpNM2tPM3NpdmtLc1ZYeDRXeTVnS3hO?=
- =?utf-8?B?Q3JWWGJSY1BkT1RZWEkxVFdkeW8yTE9MOWxWdTRId3FQb1ZNY3dpMlBsbysv?=
- =?utf-8?B?UXBjSUdoTjZoOWw3c1FDMzNQcVRNOWF4Ni9OcjdmZjI4ZlIxTDVUU1BjUzZ3?=
- =?utf-8?B?ajJ4eUpzMjdsZDN5UDVBYVFlK1VJOVdVd01mNVFwSEYzNDQ5MzZvQkRJeE5i?=
- =?utf-8?B?dE40SDBiY3crRG9RaUt5T2Q1c2tqZzFNUzZqajBzOFhaM3F6MVM0MzlyK29o?=
- =?utf-8?B?VEh4V3UwcUlya2MvS3dXT0ZDTTFNNHVYYVNleUdrSWlSbHhkM2ZibzkxU0pE?=
- =?utf-8?B?Vjc2Q1VSYW5mTENacWlzOWRrYkxjUHdrL1c4WVB0aU92Y3VSaktBQnpqMCs5?=
- =?utf-8?B?aFBCSWVxejZmdlRiT3F1VHZOeVU3MVhIUkxZT0JucGk3Wi9TWTllTDlRVTMw?=
- =?utf-8?B?TUpOR09TWUZiZmhkT05pM2p1eXpwdmZpRGtYNU9wNmFTbmRaL0NoOEhCa0NF?=
- =?utf-8?B?NGw0RGhGMmdxWjVVMkNwbmxnMlI4NEpGNVVTSEVpb1VSUjlIblduTmpuTU5U?=
- =?utf-8?B?cWFtRnI4NmxKOUNld2k5SzFBYytTVk1TcTIzTXBwbExnaHMrODlwV0t0elk0?=
- =?utf-8?B?WG5Ndk9vQ1l0VmdidVhXaUlWOG05R0FROHQ2cmVEM3hvM2lYdU9mbGR5ZXE2?=
- =?utf-8?B?QmMwUXUrYU1mcldiLzJwVG5ONHRrd01QdURLWmlLd1N4TkN6U0VRUWhpWDJO?=
- =?utf-8?B?elMyTysrcU5WK2lBQmF6d05BTUEzYXB2UU5ZOTVoLzUzM3hZZzI3L0JDMGw0?=
- =?utf-8?B?TjBTYjBRc3dBYVlZU1NtaVVaaWZ6aTQ0cjQxVHNLcUIzaFZya3J2ZWFhdDlu?=
- =?utf-8?B?L3hFY2dPR2xHekNabmluajZ2Smc1TnZ5dkVRYU1jTDBWK2E4MlptSXYybHFz?=
- =?utf-8?B?TWJENFFObUM4M3pZQmUrZ0VrV0NNT3h3aDJrS05kMndXQ2pDWGNYNWJRRWNq?=
- =?utf-8?B?SU5BYlI2Nmxyb3dNcnVqclJCUTBxSlNNM09WQk84WVQxNVl5amw4SVljdVVL?=
- =?utf-8?B?ZFRMUlBxTGRXSjV4NW9CSHo1elA4TGZESW11cnNSbHU1b09IWHdQbDRhajlq?=
- =?utf-8?B?T2xDTlFRa1JvSlh2dmRWdUpjZ2lGdTlpamxaa3U0T2YxK3BTbURTeGkrd2M4?=
- =?utf-8?B?TjVucC8wRmdQQ0xYR3M1ZlJDMWtNbmp3aVRWK3dWVEZUUDFRa2VNZWkzZkFP?=
- =?utf-8?B?ZDh2Y0E3QmdQNjZlTisyVUJRV3BPZEkrWnBydncrVUpIRlp3cHFtcFlIcGxM?=
- =?utf-8?B?Z2J2Ynd6V2JXemsxRHlFemxOdE84UHJOQnZHbHJGWEdxYlFoMnlGU0NEaWIw?=
- =?utf-8?B?dEtzMWxMUDQ0czVQT2s5K242bWhwT0VTUC9JeE1HVlJVUlhkTkhyeVBOR25T?=
- =?utf-8?B?TXBCYTVBRnB3PT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bmZmaWJ2aS9IZ2xYakhNOGpsVDVWZkwrc0oyQ3Zpc2Y1amMzZEQzSkV3ZTI0?=
- =?utf-8?B?WnVjOTFwdUVldzlJNnlBV1hqODFjVkxnRnh6YzJ6dGVSL2JncDY4enhvOS9Z?=
- =?utf-8?B?ZHlUVTFYdWtQTFVrcFJwRkhmNEltdVBXaUxVYVFiR0FYdTJ2anF3ZEFHZU95?=
- =?utf-8?B?bGdRdVVRNTU4Z3duQzREY28zL2p0NG1ZYVhVNncwU1l0SEtDTksySFY5azMx?=
- =?utf-8?B?am0rZ2lmWUZ4SGNsU0RnWVdMQ2FITFZZLzRnYktpOElkeVVwQkhMckcyb1Zy?=
- =?utf-8?B?SENJWWkwTmpFL1FDWjA1RGlmT1FTQWdBUHFYOW5sOXUyRkpDUmRZdE1sZmNO?=
- =?utf-8?B?RkkyQ2ozU2EwRW1DNGlDZkZjWlhBYTFmckcvTmNiMHhjdW0wcUY0cjR5Smkr?=
- =?utf-8?B?N1VjYUE4MVpwVVcvSmhDQTNiR05mQXErNlRxWG1HU3RZSkpYbXRkQnZuc0dM?=
- =?utf-8?B?SGxqSjlnQ09kcWlqUzlSZ1BkQVZVYUIyVlpHWDlDMUJrTkQ1VElKZzVMU3VC?=
- =?utf-8?B?RGJ1NENLVm9CTi9Sb25IamU4eDRIZytYdFVIaXcyNmRjeUxPVDZ5ZFlkc3g2?=
- =?utf-8?B?MkEyN0hrd0lKc2Z5NDdUbnlCSTBvWmVxY1NhTDFPUEZZblpQcERKTFZzb1o3?=
- =?utf-8?B?QmJKaUFBbVpuTUNNZzRzYmVsL0U1ak5td0FBbGcwK2dTOUQrNFBjU2c4Tkhj?=
- =?utf-8?B?MFNHVitlVjRYNGN1NzFEckFNbk13MENXRkQwTnZsaTNGK2RrS2dWNU0wWGxV?=
- =?utf-8?B?Z3hRSGI5TUNVOTNNOTExNXRiMGJYKy9BUWl3VnJNTC9CMGhUeFlCM09FMGZH?=
- =?utf-8?B?R3I3dUwwWjlCWkhlZjd3REQ0MTk1clRKWHduT25xazcyeUdJZmpCMFQ2Qy9u?=
- =?utf-8?B?c2VObTJwUjFLcFplM1VET2VRa3FJR3lONlpLYnZGWi9DYWJWWWNYdDhPcG9Q?=
- =?utf-8?B?ejhXZG1KemNpamNqMGdpNTlYTWZKUG9lNDFEUWl6bmF0aHJPUTlNaTFtUitF?=
- =?utf-8?B?bjE3VnBZdmFiWEEvTmRTNSs5cmsxeFhEbHBKT1JzRFZLNFFXUmZFWThHWVhp?=
- =?utf-8?B?Z3NWUGxmK0M1V3l2eXp3UFIyakNKaWxnMHhXMjlYN2FWRm5raW1ON2xvQmo1?=
- =?utf-8?B?T1VpTnFYVUtkMFlObitPQnBzZXc4amVvSk5xTVFsaEYvbDlwS0ljNXIyQUI4?=
- =?utf-8?B?VUg5NElNMm1tQjNYUmtiSUxONE5lM1lGbmFZWWVINUZqU01OOEtkam1MUUVn?=
- =?utf-8?B?WTRlelZNb01HU2xFanhjYTlqN0EySjBLamVEQVpyU0NwM2FnWnB3SlZGUFZO?=
- =?utf-8?B?YlIySDZCVlNQbWNjZFl4aUY3VXcrV0RaMDZDdmtUdndjdHRNOWhWR3BocG5H?=
- =?utf-8?B?WVQycE5Sd1pKZ0FHblhIUmNjS1ZtOGdOMW9zZ1NybDhOKzdZRFFJb09ENFdt?=
- =?utf-8?B?TGp4c1Z1Ulc4ajFNQlNwL0p6U1NzUEpVNi9nWjFVZUdoMGtBUVNhSTA0dEhh?=
- =?utf-8?B?dS9rT3pLSVR4WGJvTlZaTEhtcUJjY3M4dktPMHI1eEZCNW8rZjBSK0YwUFZx?=
- =?utf-8?B?SGFVV0c1VTcxTmJLMWh0RCtMcWRMK1JJNUY5RDZvUU95M2NIdVNEYVVkaHBI?=
- =?utf-8?B?QXVNZlNvbmFhWm5LMEtRYzhmMURFMzhTRzR0clBIT3hySFBFZEpxSHFwZU0z?=
- =?utf-8?B?T3NJeDhTWXlsUkcyT3pxV3gzVUdEa2VJeWdLVHNGWUVESHZEd3RFUG9HaGdN?=
- =?utf-8?B?K0hwWVBNUlI4SUVxZFFGdlFkTEQ5cTA0SjQzbURRamVJdzZQYlUxcitRd3VG?=
- =?utf-8?B?djYxaXUzSXFLYkw3SG1FdldTNVBRRHZXY1lpcS8vbEszeVRzZ2dxRHZ2MVlN?=
- =?utf-8?B?Um1DU3RRNGNONkdoL2JVYjFqQVh4dmY4TXE4Um1XTnFOa0RXNVZhcnlScnZZ?=
- =?utf-8?B?dUQ4cXdaNzU1cnNrcjVQSDhoYTJjVDlpNkY1Vys2MStzZzVYZlhjY3VKM2xo?=
- =?utf-8?B?cDZnaXRBV0tJaHdIeHhWQ1JrRGF2MlF3UDNweHpzcGdLQUlUY1hJeS9YUmN3?=
- =?utf-8?B?MnpCdjYyOHBWaWZPMzU0VnNRNnkzZlFKVldsUk1DMlBYcFZ3b2tzNGJISGhN?=
- =?utf-8?B?RlFTSE5MNmlJdGU4NzNXRisrNjdFL0I1a0hmM0RiMklMUkRMb0JaVFNKZ0l4?=
- =?utf-8?B?clE9PQ==?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90ce9d16-24d5-4d47-423f-08de330a75c5
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 07:55:15.3400
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZKhOQWQIW9eUezMRzLreomogJi44dUmaU3v3RRH6McTcqu+8Y0/paMxxbtKQe3RmLHUdSU34dZyIyQbSLId/Bg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFD91879A44
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEo+MWkC/x3MTQqAIBBA4avIrBvwJzddJVqIjjYbCy0JwrsnL
+ b/Fey9UKkwVFvFCocaVjzxgJwF+dzkRchgGLbVVWs6YvMdy1wubReeip0BGkTMwirNQ5Oe/rVv
+ vH4A+U+BdAAAA
+X-Change-ID: 20251204-gcc-rust-v5-aafcede31ea3
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Jonathan Corbet <corbet@lwn.net>, Jason Montleon <jmontleo@redhat.com>, 
+ Han Gao <rabenda.cn@gmail.com>, Conor Dooley <conor@kernel.org>, 
+ Vivian Wang <wangruikang@iscas.ac.cn>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+ linux-riscv@lists.infradead.org, linux-doc@vger.kernel.org, 
+ Asuna Yang <SpriteOvO@gmail.com>, Asuna Yang <spriteovo@gmail.com>
+X-Mailer: b4 0.14.3
 
-On 12/3/25 7:45 AM, Joel Fernandes wrote:
-> Hi John,
-> 
-> On 12/3/2025 12:59 AM, John Hubbard wrote:
->> Add extract_fmc_signatures_static() to parse cryptographic signatures
->> from FMC ELF firmware sections. This extracts the SHA-384 hash, RSA
->> public key, and signature needed for Chain of Trust verification.
->>
->> Also exposes the elf_section() helper from firmware.rs for use by FSP.
->>
->> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
->> ---
->>   drivers/gpu/nova-core/firmware.rs |   4 +-
->>   drivers/gpu/nova-core/fsp.rs      | 104 ++++++++++++++++++++++++++++++
->>   2 files changed, 107 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
->> index 5cbb8be7434f..7f8d62f9ceba 100644
->> --- a/drivers/gpu/nova-core/firmware.rs
->> +++ b/drivers/gpu/nova-core/firmware.rs
->> @@ -23,6 +23,8 @@
->>       },
->>   };
->>   
->> +pub(crate) use elf::elf_section;
->> +
->>   pub(crate) mod booter;
->>   pub(crate) mod fsp;
->>   pub(crate) mod fwsec;
->> @@ -419,7 +421,7 @@ fn elf32_section<'a>(elf: &'a [u8], name: &str) -> Option<&'a [u8]> {
->>       }
->>   
->>       /// Automatically detects ELF32 vs ELF64 based on the ELF header.
->> -    pub(super) fn elf_section<'a>(elf: &'a [u8], name: &str) -> Option<&'a [u8]> {
->> +    pub(crate) fn elf_section<'a>(elf: &'a [u8], name: &str) -> Option<&'a [u8]> {
->>           // Check ELF magic.
->>           if elf.len() < 5 || elf.get(0..4)? != b"\x7fELF" {
->>               return None;
->> diff --git a/drivers/gpu/nova-core/fsp.rs b/drivers/gpu/nova-core/fsp.rs
->> index 389c43bfd538..311b6d4c6011 100644
->> --- a/drivers/gpu/nova-core/fsp.rs
->> +++ b/drivers/gpu/nova-core/fsp.rs
->> @@ -256,4 +256,108 @@ pub(crate) fn wait_secure_boot(
->>           })
->>           .map(|_| ())
->>       }
->> +
->> +    /// Extract FMC firmware signatures for Chain of Trust verification.
->> +    ///
->> +    /// Extracts real cryptographic signatures from FMC ELF32 firmware sections.
->> +    /// Returns signatures in a heap-allocated structure to prevent stack overflow.
->> +    pub(crate) fn extract_fmc_signatures_static(
->> +        dev: &device::Device<device::Bound>,
->> +        fmc_fw_data: &[u8],
->> +    ) -> Result<KBox<FmcSignatures>> {
->> +        dev_dbg!(dev, "FMC firmware size: {} bytes\n", fmc_fw_data.len());
-> 
-> Let us remove these? I think we discussed [1] that once things are working, we'd
-> not want these and can add it on-demand if needed.
+Previous v4 patch:
+https://lore.kernel.org/rust-for-linux/20251124-gcc-rust-v4-v4-0-4e06e07421ae@gmail.com/T/#t
 
-Yes, absolutely. Thanks for checking on this, I was having trouble
-drawing the line at the right amount of output--I'm sure there is
-still too much, now that you point it out.
+Compared to v4, this v5:
+- Placed `include Makefile.rust` under `ifdef need-compiler` branch. From my local testing, this did not cause any issues.
+- The Kconfig function now only tests backend flags and has been renamed to `bindgen-option`, without depending on environment variable. Added a comment explaining the meaning of "backend".
+- Improved the wording of commit messages and provided further details.
 
-> 
-> [1] https://lore.kernel.org/all/d6c9c7f2-098e-4b55-b754-4287b698fc1c@nvidia.com/
-> 
->> +
->> +        // Extract hash section (SHA-384)
->> +        let hash_section = crate::firmware::elf_section(fmc_fw_data, "hash")
->> +            .ok_or(EINVAL)
->> +            .inspect_err(|_| dev_err!(dev, "FMC firmware missing 'hash' section\n"))?;
->> +
->> +        // Extract public key section (RSA public key)
->> +        let pkey_section = crate::firmware::elf_section(fmc_fw_data, "publickey")
->> +            .ok_or(EINVAL)
->> +            .inspect_err(|_| dev_err!(dev, "FMC firmware missing 'publickey' section\n"))?;
->> +
->> +        // Extract signature section (RSA signature)
->> +        let sig_section = crate::firmware::elf_section(fmc_fw_data, "signature")
->> +            .ok_or(EINVAL)
->> +            .inspect_err(|_| dev_err!(dev, "FMC firmware missing 'signature' section\n"))?;
->> +
->> +        dev_dbg!(
->> +            dev,
->> +            "FMC ELF sections: hash={} bytes, pkey={} bytes, sig={} bytes\n",
->> +            hash_section.len(),
->> +            pkey_section.len(),
->> +            sig_section.len()
->> +        );
->> +
-> 
-> Here as well.
+Signed-off-by: Asuna Yang <SpriteOvO@gmail.com>
+---
+Asuna Yang (4):
+      rust: export BINDGEN_TARGET from a separate Makefile
+      rust: generate a fatal error if BINDGEN_TARGET is undefined
+      rust: add a Kconfig function to test for support of bindgen options
+      RISC-V: handle extension configs for bindgen, re-enable gcc + rust builds
 
-Yes.
+ Documentation/rust/arch-support.rst |  2 +-
+ Makefile                            |  3 ++-
+ arch/riscv/Kconfig                  | 35 ++++++++++++++++++++++++++++++++++-
+ rust/Makefile                       | 11 ++---------
+ scripts/Kconfig.include             |  5 +++++
+ scripts/Makefile.rust               | 14 ++++++++++++++
+ 6 files changed, 58 insertions(+), 12 deletions(-)
+---
+base-commit: 559e608c46553c107dbba19dae0854af7b219400
+change-id: 20251204-gcc-rust-v5-aafcede31ea3
 
-> 
->> +        // Validate section sizes - hash must be exactly 48 bytes
->> +        if hash_section.len() != FSP_HASH_SIZE {
->> +            dev_err!(
->> +                dev,
->> +                "FMC hash section size {} != expected {}\n",
->> +                hash_section.len(),
->> +                FSP_HASH_SIZE
->> +            );
->> +            return Err(EINVAL);
->> +        }
->> +
->> +        // Public key and signature can be smaller than the fixed array sizes
->> +        if pkey_section.len() > FSP_PKEY_SIZE * 4 {
->> +            dev_err!(
->> +                dev,
->> +                "FMC publickey section size {} > maximum {}\n",
->> +                pkey_section.len(),
->> +                FSP_PKEY_SIZE * 4
->> +            );
->> +            return Err(EINVAL);
->> +        }
->> +
->> +        if sig_section.len() > FSP_SIG_SIZE * 4 {
->> +            dev_err!(
->> +                dev,
->> +                "FMC signature section size {} > maximum {}\n",
->> +                sig_section.len(),
->> +                FSP_SIG_SIZE * 4
->> +            );
->> +            return Err(EINVAL);
->> +        }
->> +
->> +        // Allocate signature structure on heap to avoid stack overflow
->> +        let mut signatures = KBox::new(FmcSignatures::default(), GFP_KERNEL)?;
->> +
->> +        // Copy hash section directly as bytes (48 bytes exactly)
->> +        // SAFETY: hash384 is a [u32; 12] array (48 bytes), and we create a byte slice of
->> +        // exactly FSP_HASH_SIZE (48) bytes. The pointer is valid and properly aligned.
->> +        let hash_bytes = unsafe {
->> +            core::slice::from_raw_parts_mut(
->> +                signatures.hash384.as_mut_ptr().cast::<u8>(),
->> +                FSP_HASH_SIZE,
->> +            )
->> +        };
->> +        hash_bytes.copy_from_slice(hash_section);
->> +
->> +        // Copy public key section (up to 388 bytes, zero-padded)
->> +        // SAFETY: public_key is a [u32; 96] array (384 bytes), and we create a byte slice of
->> +        // FSP_PKEY_SIZE * 4 bytes. The pointer is valid and properly aligned.
->> +        let pkey_bytes = unsafe {
->> +            core::slice::from_raw_parts_mut(
->> +                signatures.public_key.as_mut_ptr().cast::<u8>(),
->> +                FSP_PKEY_SIZE * 4,
->> +            )
->> +        };
->> +        pkey_bytes[..pkey_section.len()].copy_from_slice(pkey_section);
-> 
-> Even if this works in practice, I believe it's UB as the `from_raw_parts_mut()`
-> should have the entire slice range to be valid memory (see [2]), but
-> FSP_PKEY_SIZE * 4 is 388 bytes while public_key is only 384 bytes ([u32; 96]).
-> This is vulnerable as the KBox holding the signature may not have the extra
-> space even if it does now.
-> 
-> Can we create a slice with exactly the bytes we need? something like:
-> let pkey_bytes = unsafe {
->      core::slice::from_raw_parts_mut(
->          signatures.public_key.as_mut_ptr().cast::<u8>(),
->          pkey_section.len(),
->      )
-> };
-> pkey_bytes.copy_from_slice(pkey_section);
-> 
-> Another reason for doing this is, the code is more fragile left as is, as there
-> is a risk of unrelated memory leaking into the slice and accessed by new/future
-> code.
-
-Sure, I'll go in this direction, thanks for spotting that.
-
-
-thanks,
+Best regards,
 -- 
-John Hubbard
-
-> 
-> [2] "Behavior is undefined if any of the following conditions are violated"
-> https://doc.rust-lang.org/std/slice/fn.from_raw_parts_mut.html
-> 
-> thanks,
-> 
->   - Joel
-> 
->> +
->> +        // Copy signature section (up to 384 bytes, zero-padded)
->> +        // SAFETY: signature is a [u32; 96] array (384 bytes), and we create a byte slice of
->> +        // FSP_SIG_SIZE * 4 bytes. The pointer is valid and properly aligned.
->> +        let sig_bytes = unsafe {
->> +            core::slice::from_raw_parts_mut(
->> +                signatures.signature.as_mut_ptr().cast::<u8>(),
->> +                FSP_SIG_SIZE * 4,
->> +            )
->> +        };
->> +        sig_bytes[..sig_section.len()].copy_from_slice(sig_section);
->> +
->> +        Ok(signatures)
->> +    }
->>   }
-> 
-
+Asuna Yang <SpriteOvO@gmail.com>
 
