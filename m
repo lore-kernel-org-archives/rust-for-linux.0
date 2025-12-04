@@ -1,67 +1,67 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6049E398F85
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 02:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587A61A3160
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 03:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764816266; cv=none; b=U13USeI6zKyZOkJhIwEvjEy3hA0MQ0YMd0dp/ksxQFAiD8AJ48z6K8uDi08gpct7uLeqKb2NSPlRJin7ePh6VDRyaTJv9CcO+WSwfM8obr7dARyeg05dY00IHSLDYQ769nr+BzcwSxRiyRYBn7PPiWGHNi/BwbKC1LX3FXo613I=
+	t=1764819575; cv=none; b=Ra4R117z/f7XUOO34Q//AZuN55GiijU8f6tpjEmfiCdCWNhUCn7v9VJfd5UV/Tn/QlYX+b47i2gnRkRw2yhuNu1XCM10LaOWVl7sYJ4It7G/Ye/oFxSf6+CYZJVvoRU/yiapvyU6Mp/EC0hCeI9c73mk2VKpwAyjnXPk/whh6DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764816266; c=relaxed/simple;
-	bh=R9Itk2r0ZY9WI/5KEEWDRBPmHQ3/RCrN7LiJpYe7X9c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=baK/M8V9dlEsVv/GabuC69qry+tnAfJ2c/pbMekFeE/etcYJ/2PVWAJmrdRKax/fEgtsF48j/D+lwWzx+fWgz8wZc493gFVen7iFC2C5jJZQ6TW1Y3LcQ7vsY92x3UAz4eaowEUEC3BWICc/l0xaKPeRnrpTHrm4C5WK0akFG1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SRF7l6HH; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1764819575; c=relaxed/simple;
+	bh=+ybGsYf0RBQnvmp00NouKd8iAMMDnOtZX6WTXbrq2Ic=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FnspiJ3KkI0vgkBfTOjUVWEjDu07gtdDQMf7+cve4SNTef+xLjxW4oowjdKA2qw0qMqleWEd2lcdGJU1V45QtUbIHxnLsr8yh6tE5ncaxnzXXWwYR1JBvrQNApBeawymJvVyIwTXI4X1zkGG6h6y8aY+Riv0Tg5M+tlC8zFx9nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U5tH7CBA; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SRF7l6HH"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2953e415b27so5174855ad.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 Dec 2025 18:44:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U5tH7CBA"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3437ea05540so347155a91.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 Dec 2025 19:39:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764816265; x=1765421065; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1764819573; x=1765424373; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=axOHePUdMjXEL0yOaxPqWBLsDVcl/Dx1M9GLCFD3Il4=;
-        b=SRF7l6HHXVCI+DlR04o21k5apcZcmJ2FAnrcaWpxWaRF63s0DXeKhnZPM4sj6DHzB1
-         78dtmh5MU2Fa+043Xl7Hi0YXzYhheh3ef+IatQJc3juR/Rcq/nr2L05zOSz6VlXYsBr2
-         C53aLTyp/K34vqWRpUxCl0gwxXsR7SCQX9Ds/UWMOMEuFU18khX15Ui9WzVNnCSwjQuJ
-         0U8Z4a84/TVlArNkvzBSej/IsR5+Fi5V78yAj+V1GgJkrc1nVsvc7h9M3vmEdb5Cajag
-         /UlWZrYut4i5vX6mREch4RyTJiUAWmBa+PCTtmNU1fIZXaObJvjr6wsVY6cCk9G9J4bc
-         ftZg==
+        bh=smF45H3fLH7PutWmWCdb2k238cJntwhvu4VjXij7QU4=;
+        b=U5tH7CBAXuUrT5niC4fyYAofELAsqU7lMq4cCkCBicYRu1p/sl8shi74jH6ouM7FZ9
+         p8vBW/IB9vAoBAWaK9G639YdT7gFGenAi3RadsUmiBlrGRt8zIcct+uEfMxYitB0SO4F
+         us3dBtWVZVIGkbQiP+JLihg00dnZ/Qf9mEBuD2aOG7Ljt8xthED4wTLrKLR1RC1CNomP
+         prQ6SSAGhkvltGs5Zc7psZ2b4247/RLIKLk6YyUUZKlpx1jfcpfkyzhEkL8PycSSaEsN
+         DBBm7GsCTPHo3BUeru0IMzg7eaXFaNU9GMWGadL0sBz5npMXayXe21CjDKdTewhriSMI
+         loyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764816265; x=1765421065;
+        d=1e100.net; s=20230601; t=1764819573; x=1765424373;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=axOHePUdMjXEL0yOaxPqWBLsDVcl/Dx1M9GLCFD3Il4=;
-        b=D9ygtm5p41s5EuFfqgcGBsuq+O93cdYUCOFY+ardMiSJ9UE4Kf2c908sHr9xbPxIDj
-         ggWrkP0gIhmy4GJcNRrNwe5vU9vJVRt/E6Qu5F8bfdoAc5eQcvRFllJfxGKxdNcBJAyz
-         pg6Yj090YIzAiGHs4GRlRLFLXYKYEtfBdIGjDL1wwrJcEBrx894b8WzJ2T/jlLgy5inr
-         +voRZTXEROCp7IuJquntVF1fVJ0RazWenchmuc7mx3GsvS97wD7/2YoKHs/C/d/dlY4C
-         H6xj7JuDGtxTtEWgFwMXt392dXi6F/EPXvDACm25KXckOIhKE3qFj0KqqgN6Jal/Q0mG
-         cEnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUgijNsgPt3lKHhYCqZevhBTVIzORi5hNA/qZCvTmrjx2K2Mfn6M4n4w8jGd7/nvsTVOY0tuGiiRWdVMy2sUQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAQ5/92VZgkIeb1Qlxicngdolw+w+8KYsVBFNtypHxL37HNbws
-	oNPjcvCASKdPWo5ut8f6hJdkZ9g7UliKWRR4t1EchdlGey4wcb0Y5TPN
-X-Gm-Gg: ASbGncuWMJ10/c07E73yOjzWP+3gFLuYOWiTWq5LD6x+kipy4F12EldiUQ1s5ev570Q
-	PKQc0Q8GCBSfsN8PBhncwUGMJU6Qil4e9JkzURrvPK0C83nidLln00lyDR216438U+DsKP7s3xm
-	n9ca1EcQudirMxv9Scrwrg3LoX5UTOJoVWE4SLm6+VtBN+ivO9sY7C708bwb+prROeh6JDu1UFE
-	Q0X/rhJ7W6QpOlioIWq77vRWKdUqeWoutREjWez2qwA8mJ6l2aK/ESi5s1Preoytrj1E6wJmI6N
-	CTn86vlxkI9DhiQ9aEyp7VDtrYmamkqO/fl14VzBDAotq5IgF8OfN35nD+HJDkRK727Zzgps527
-	c35FZ1bte/LevCb0thjCGkwxe91KbhK2XDhBv1y2Vh4dUaxXacTBMh5B7JEEyUleLZb5FOAExxF
-	vJQ50DUWqF/bltIonQeYh8rFI/dklqV3nbjfz2wqM+ojNNe4R1CyU=
-X-Google-Smtp-Source: AGHT+IE/1oRW7djj3PF3lllhD2jsqIUJ4YnrzZc5/HveUGINDV6PilKjKnA12B11wB2yhwFfIGW+4Q==
-X-Received: by 2002:a17:903:1c7:b0:29b:ab3b:70c6 with SMTP id d9443c01a7336-29da1ebb12dmr16881485ad.30.1764816264563;
-        Wed, 03 Dec 2025 18:44:24 -0800 (PST)
-Received: from ubuntu (softbank060152129044.bbtec.net. [60.152.129.44])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bf6a1306ce0sm108330a12.17.2025.12.03.18.44.21
+        bh=smF45H3fLH7PutWmWCdb2k238cJntwhvu4VjXij7QU4=;
+        b=EGDxioia+Y8f2Cs31Qizj1VshPHiS0odJ7IDFCxFeqixUcWOpeFppu+GBqb2gCLe+3
+         8ggrRLTjx1Zq79oJ5g4KuFowCFH40ktkx8FvOG6Z3kA7+3ktD5MGJme1a18hVwrp0Yi+
+         5Vyqy5mINLkwiJR+PxHKaK5CAZtjGJLLRoQwEl8F1Mp2rucAet8Z2tLq7o22jOsUsAr/
+         JM+w1R7xmrRiyewEg4Da7se4yPdg/FkTym0WTqajx6vNN/JQhNx5UKH51NazduO0gTtQ
+         PxxMJpAzCmO/ihGJI/nWXkbgtNQq+QSfaiTbrwDZCY5uI2qmi2L3Z/OJRt7xZZxGsq+m
+         Ikpg==
+X-Forwarded-Encrypted: i=1; AJvYcCWrf4z98grrpIRlh/yibDGY7712N61zEpK9TrlAm9FAzwPWIlUhXxSwj+GKUL080JNn9fp5r/QV6JUAdShYkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxxjp9rG2XRT5pYI2I3dZz+WUI8xQV6XEcvNdwK40dS3J0ddgSt
+	tq8beb4kKDclod6iKVeLTDFJASfDndQfENPYe4bQjtMCsAtANaPumDj7
+X-Gm-Gg: ASbGncsDnifj9jlIspjvZMJ1gh9rZd+gO42K3NwDilYJYsnSiPWSWzT0smzQhOLBKao
+	iihhbyfHard3sFmRCdufNEWiBD55y7YHjNNZ/UDR1Kil5Zlt/X6S92fbHvTu9Uq7Wq5Xw8gQHH1
+	HXl170mgLobQnji95wbBqlQdzAwq7YCel5n81LR2RHgSWLYWT3rxnZpozArz9vThCmX0DC/z8r7
+	avjdLWt05XPJ+BjsF70n4NnUJp/JR9VL/T2KzLJkiQqmeWng0DD9jFKWM4yo88udLoa191Y8XKk
+	kzwPsJrfuNXhkt6hSqrccdc6NTwbgUc1XZ4np4kceh0mT1cK7VzzbdGTvwkvyU5pHDMjH3v24nt
+	jGwjEhhMuBTsxz+1yFJXYTSL1tEWx6fYUSDNcufsxXgVFqpcD3Xwxpnzu2vCGOK2GLHO3BvSLDx
+	wqMqFDeU1ynTCuSSATeESVM7GJy6j6KrrJ4Uo=
+X-Google-Smtp-Source: AGHT+IEcITuVheRBjkWopaK77Fb+R3+oNTtSfEUsOQkBlkV058WKkMu3hDPDBFPZubIbL9lBUJsr2w==
+X-Received: by 2002:a17:90b:37c6:b0:340:d1b5:bfda with SMTP id 98e67ed59e1d1-349125c1912mr5112173a91.3.1764819573468;
+        Wed, 03 Dec 2025 19:39:33 -0800 (PST)
+Received: from localhost.localdomain ([49.213.140.88])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-349129c44c0sm1922954a91.1.2025.12.03.19.39.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Dec 2025 18:44:24 -0800 (PST)
-From: Nakamura Shuta <nakamura.shuta@gmail.com>
-To: Alexandre Courbot <acourbot@nvidia.com>,
+        Wed, 03 Dec 2025 19:39:33 -0800 (PST)
+From: Hsiu Che Yu <yu.whisper.personal@gmail.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Hsiu Che Yu <yu.whisper.personal@gmail.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	rust-for-linux@vger.kernel.org
-Cc: Yury Norov <yury.norov@gmail.com>,
+	Yury Norov <yury.norov@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
@@ -70,12 +70,12 @@ Cc: Yury Norov <yury.norov@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Nakamura Shuta <nakamura.shuta@gmail.com>
-Subject: [PATCH] rust: num: fix typos in Bounded documentation
-Date: Thu,  4 Dec 2025 11:43:36 +0900
-Message-ID: <20251204024336.246587-1-nakamura.shuta@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] rust: num: bounded: mark __new as unsafe
+Date: Thu,  4 Dec 2025 11:38:48 +0800
+Message-ID: <20251204033849.23480-1-yu.whisper.personal@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -84,75 +84,133 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix several typos and grammatical errors in the Bounded type documentation:
-- "less significant bits" -> "least significant bits"
-- "with in" -> "within"
-- "withheld" -> "upheld"
-- "//  This" -> "// This" (double space)
-- "doesn't fits" -> "doesn't fit" (2 occurrences)
+The `Bounded::__new()` constructor relies on the caller to ensure the
+value can be represented within N bits. Failing to uphold this
+requirement breaks the type invariant. Mark it as unsafe and document
+this requirement in a Safety section to make the contract explicit.
 
+Update all call sites to use unsafe blocks and change their comments
+from `INVARIANT:` to `SAFETY:`, as they are now justifying unsafe
+operations rather than establishing type invariants.
+
+Fixes: 01e345e82ec3a ("rust: num: add Bounded integer wrapping type")
+Link: https://lore.kernel.org/all/aS1qC_ol2XEpZ44b@google.com/
 Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1210
-Link: https://github.com/Rust-for-Linux/linux/issues/1210
-Signed-off-by: Nakamura Shuta <nakamura.shuta@gmail.com>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1211
+Signed-off-by: Hsiu Che Yu <yu.whisper.personal@gmail.com>
 ---
- rust/kernel/num/bounded.rs | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Changes in v3:
+- Add `Link:` tag (suggested by Alexandre Courbot)
+- Remove empty line before Signed-off-by
+
+Changes in v2:
+- Mark `Bounded::__new` as unsafe and add Safety documentation
+- Update all call sites with unsafe blocks and SAFETY comments
+
+Link to v2: https://lore.kernel.org/rust-for-linux/20251202032541.78497-1-yu.whisper.personal@gmail.com/
+Link to v1: https://lore.kernel.org/rust-for-linux/20251201062516.45495-1-yu.whisper.personal@gmail.com/
+---
+ rust/kernel/num/bounded.rs | 34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
 diff --git a/rust/kernel/num/bounded.rs b/rust/kernel/num/bounded.rs
-index f870080af..c3ee79ba9 100644
+index f870080af8ac..5838c84f8a53 100644
 --- a/rust/kernel/num/bounded.rs
 +++ b/rust/kernel/num/bounded.rs
-@@ -40,11 +40,11 @@ fn fits_within<T: Integer>(value: T, num_bits: u32) -> bool {
-     fits_within!(value, T, num_bits)
+@@ -259,9 +259,9 @@ pub const fn new<const VALUE: $type>() -> Self {
+                     assert!(fits_within!(VALUE, $type, N));
+                 }
+ 
+-                // INVARIANT: `fits_within` confirmed that `VALUE` can be represented within
++                // SAFETY: `fits_within` confirmed that `VALUE` can be represented within
+                 // `N` bits.
+-                Self::__new(VALUE)
++                unsafe { Self::__new(VALUE) }
+             }
+         }
+         )*
+@@ -284,7 +284,11 @@ impl<T, const N: u32> Bounded<T, N>
+     ///
+     /// The caller remains responsible for checking, either statically or dynamically, that `value`
+     /// can be represented as a `T` using at most `N` bits.
+-    const fn __new(value: T) -> Self {
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that `value` can be represented within `N` bits.
++    const unsafe fn __new(value: T) -> Self {
+         // Enforce the type invariants.
+         const {
+             // `N` cannot be zero.
+@@ -328,8 +332,8 @@ const fn __new(value: T) -> Self {
+     /// ```
+     pub fn try_new(value: T) -> Option<Self> {
+         fits_within(value, N).then(|| {
+-            // INVARIANT: `fits_within` confirmed that `value` can be represented within `N` bits.
+-            Self::__new(value)
++            // SAFETY: `fits_within` confirmed that `value` can be represented within `N` bits.
++            unsafe { Self::__new(value) }
+         })
+     }
+ 
+@@ -370,8 +374,8 @@ pub fn from_expr(expr: T) -> Self {
+             "Requested value larger than maximal representable value."
+         );
+ 
+-        // INVARIANT: `fits_within` confirmed that `expr` can be represented within `N` bits.
+-        Self::__new(expr)
++        // SAFETY: `fits_within` confirmed that `expr` can be represented within `N` bits.
++        unsafe { Self::__new(expr) }
+     }
+ 
+     /// Returns the wrapped value as the backing type.
+@@ -410,9 +414,9 @@ pub const fn extend<const M: u32>(self) -> Bounded<T, M> {
+             );
+         }
+ 
+-        // INVARIANT: The value did fit within `N` bits, so it will all the more fit within
++        // SAFETY: The value did fit within `N` bits, so it will all the more fit within
+         // the larger `M` bits.
+-        Bounded::__new(self.0)
++        unsafe { Bounded::__new(self.0) }
+     }
+ 
+     /// Attempts to shrink the number of bits usable for `self`.
+@@ -466,9 +470,9 @@ pub fn cast<U>(self) -> Bounded<U, N>
+         // `U` and `T` have the same sign, hence this conversion cannot fail.
+         let value = unsafe { U::try_from(self.get()).unwrap_unchecked() };
+ 
+-        // INVARIANT: Although the backing type has changed, the value is still represented within
++        // SAFETY: Although the backing type has changed, the value is still represented within
+         // `N` bits, and with the same signedness.
+-        Bounded::__new(value)
++        unsafe { Bounded::__new(value) }
+     }
  }
  
--/// An integer value that requires only the `N` less significant bits of the wrapped type to be
-+/// An integer value that requires only the `N` least significant bits of the wrapped type to be
- /// encoded.
- ///
- /// This limits the number of usable bits in the wrapped integer type, and thus the stored value to
--/// a narrower range, which provides guarantees that can be useful when working with in e.g.
-+/// a narrower range, which provides guarantees that can be useful when working within e.g.
- /// bitfields.
- ///
- /// # Invariants
-@@ -56,7 +56,7 @@ fn fits_within<T: Integer>(value: T, num_bits: u32) -> bool {
- /// # Examples
- ///
- /// The preferred way to create values is through constants and the [`Bounded::new`] family of
--/// constructors, as they trigger a build error if the type invariants cannot be withheld.
-+/// constructors, as they trigger a build error if the type invariants cannot be upheld.
- ///
- /// ```
- /// use kernel::num::Bounded;
-@@ -82,7 +82,7 @@ fn fits_within<T: Integer>(value: T, num_bits: u32) -> bool {
- /// ```
- /// use kernel::num::Bounded;
- ///
--/// //  This succeeds because `15` can be represented with 4 unsigned bits.
-+/// // This succeeds because `15` can be represented with 4 unsigned bits.
- /// assert!(Bounded::<u8, 4>::try_new(15).is_some());
- ///
- /// // This fails because `16` cannot be represented with 4 unsigned bits.
-@@ -221,7 +221,7 @@ fn fits_within<T: Integer>(value: T, num_bits: u32) -> bool {
- /// let v: Option<Bounded<u16, 8>> = 128u32.try_into_bounded();
- /// assert_eq!(v.as_deref().copied(), Some(128));
- ///
--/// // Fails because `128` doesn't fits into 6 bits.
-+/// // Fails because `128` doesn't fit into 6 bits.
- /// let v: Option<Bounded<u16, 6>> = 128u32.try_into_bounded();
- /// assert_eq!(v, None);
- /// ```
-@@ -501,7 +501,7 @@ fn deref(&self) -> &Self::Target {
- /// let v: Option<Bounded<u16, 8>> = 128u32.try_into_bounded();
- /// assert_eq!(v.as_deref().copied(), Some(128));
- ///
--/// // Fails because `128` doesn't fits into 6 bits.
-+/// // Fails because `128` doesn't fit into 6 bits.
- /// let v: Option<Bounded<u16, 6>> = 128u32.try_into_bounded();
- /// assert_eq!(v, None);
- /// ```
+@@ -944,9 +948,9 @@ impl<T, const N: u32> From<$type> for Bounded<T, N>
+             Self: AtLeastXBits<{ <$type as Integer>::BITS as usize }>,
+         {
+             fn from(value: $type) -> Self {
+-                // INVARIANT: The trait bound on `Self` guarantees that `N` bits is
++                // SAFETY: The trait bound on `Self` guarantees that `N` bits is
+                 // enough to hold any value of the source type.
+-                Self::__new(T::from(value))
++                unsafe { Self::__new(T::from(value)) }
+             }
+         }
+         )*
+@@ -1051,8 +1055,8 @@ impl<T, const N: u32> From<bool> for Bounded<T, N>
+     T: Integer + From<bool>,
+ {
+     fn from(value: bool) -> Self {
+-        // INVARIANT: A boolean can be represented using a single bit, and thus fits within any
++        // SAFETY: A boolean can be represented using a single bit, and thus fits within any
+         // integer type for any `N` > 0.
+-        Self::__new(T::from(value))
++        unsafe { Self::__new(T::from(value)) }
+     }
+ }
 -- 
-2.51.0
+2.43.0
 
