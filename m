@@ -1,66 +1,39 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from outbound.qs.icloud.com (p-east3-cluster4-host8-snip4-10.eps.apple.com [57.103.84.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0496525D53C;
-	Thu,  4 Dec 2025 11:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC08A196C7C
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 11:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.84.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764846694; cv=none; b=FByKUOoJY2XEfWFVMu7SRx6rEE0drIHq9YziuuW4Lh7+Hi3zReRtJlvg+ntk7su0eLJgQD4dejHJap141e1wg7JSJT5WAxVhMvmAeVWGX7ylEIkxSjgVsBWNKC4nJ7YVnoP9A49Gf88vY9jzJYXXufx+0wK9b+78FoahFaddb20=
+	t=1764848600; cv=none; b=gA+I9Hccofrt6/VdLhNSz0UQun721xa+x56ftiSiWCJ1O9FO94eR9IVVjlGBjuUScyhOJJYJ4X5Yj6ncMl4MbitBmmAPSHX4DlkuIVPdPt5hbbvIlBFLF6q2PWUOhUd0NOk7PApt4RDM5Ieh6pncKvm5pmGa+cAL9dYWLdH55e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764846694; c=relaxed/simple;
-	bh=M7ISeND9A9esXIHou6CidHnURL2O/nVrJW73NSANohw=;
+	s=arc-20240116; t=1764848600; c=relaxed/simple;
+	bh=PfQYp6XQSks0Hsakt0zgbzgtRIr5yTiWuPEa8slDf3I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gOQdJ9K1epD4yRtWB/V584+nYmd4dyDWYZ3nOXK3dOCNVd+pre8YRLkLo/Gh/pYyn1e2ROPkDXgFME6Xi+v3AdC44BY6UYpKjeFpshlS2IqpENJOt6ybl/KGueJP9lO5aoeYerhis6+VDo9gKtLYNhneGqZLBK3dcK6Xv36SIUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pSckmItV; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=udK7/7niR9YpTN5JFCG2lnLgHs+bIlXAfXb08hNtDoaOuljxp213M/fDtjKT4LJVE1XbzbOPSCelxbosQGJfLhxaiWhRTuc66i9MHUd3W4/Gz86CbCKmS9vLMaU6qJHU8p1KnlRc0D/xuEo6qYEMomUsGJaPTfX25g+96ITPHyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=H30Na9P0; arc=none smtp.client-ip=57.103.84.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pSckmItV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Vs7IhsUdSawXMOrWf5f71JxGpFUjZulrktZ1Qm8Q2v8=; b=pSckmItVUmdbVyusV0O0TfiwUY
-	WLEioelO4DKGDd2BeLrPn03kKXhorOAL18yBqgatV/WrvupIb+SeLl/jVYIf7YyVn9tdpumdAf3XO
-	v1L3ZKwMUYsApXPAEl7saGJq0Uc6SoSCq8tXizZ/VE3MZ9qLaeWPqwe0q8bSeaXVgeDzjgqUBnIDF
-	L+w02J8EK0BsOFt+Ja1MizLg+TbFRyqe+mliXx4e2jbDE/aAi5xpFI0lsf81zE0cBkQg7y4zrKh89
-	MQCsixAsQO4lW6rgp10bnayICypIt2TtsY6rNnrhfvd0ppat9BBV1D7K62OI3cP6vRmwXWjnpf74h
-	RtUugM5A==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vR7F7-000000045pY-0kUI;
-	Thu, 04 Dec 2025 11:11:25 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 5415B3004B8; Thu, 04 Dec 2025 12:11:24 +0100 (CET)
-Date: Thu, 4 Dec 2025 12:11:24 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Josh Triplett <josh@joshtriplett.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
-	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
- into Rust
-Message-ID: <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
- <20251202-inline-helpers-v1-4-879dae33a66a@google.com>
- <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
- <aTFhFXCqvy7nmDOp@google.com>
+	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="H30Na9P0"
+Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-2d-20-percent-0 (Postfix) with ESMTPS id 55A82180013D;
+	Thu,  4 Dec 2025 11:43:15 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=N+S4S+F6NE2GdDOKSLmbrfw/yuEZ5y5xLjuwpZ2qy7o=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=H30Na9P05fXX92VqM4zULbnSY4v6yUsRq1jCqt9t1lnSxud+BrY7xY4KqgI4B79MxZwdmEhqq4Qr87ho/5jguRLaKGRHfjgNHdPpefLNvDZSRO/28N8ZtVxkzQOBVof4zMJqAB+ePxrqP9rU18WPX2z0bDhlBC0SauTFxw/mdEYYZrIMEjEn+GoxcBxp1H6oAoI/kAJZRnvROHPAYW9s97Ilu3+rS6fyYyZ5Mjz15UQruDAB1PouBHBax3asaG8/9hRDCj3NvCK/1Y1/i/WD3TVtEKbrcyGYynL4ZRjYvi9rX/Wbd3QmvVPpGI4urcZ6DuPC/LFmPY+64UAdt9ET9Q==
+mail-alias-created-date: 1746336505199
+Received: from fedora (unknown [17.57.155.37])
+	by p00-icloudmta-asmtp-us-east-2d-20-percent-0 (Postfix) with ESMTPSA id AA02C18000A7;
+	Thu,  4 Dec 2025 11:43:12 +0000 (UTC)
+Date: Thu, 4 Dec 2025 21:43:08 +1000
+From: Brendan Shephard <bshephar@bne-home.net>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com, dakr@kernel.org,
+	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v6] rust: Return Option from page_align and ensure no
+ usize overflow
+Message-ID: <aTFzzIjEZ-lMMjtw@fedora>
+References: <aS6y5blasMX0KcD7@fedora>
+ <DEOIMG7Z0J8B.3OOY2A989T3G6@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,43 +42,67 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aTFhFXCqvy7nmDOp@google.com>
+In-Reply-To: <DEOIMG7Z0J8B.3OOY2A989T3G6@nvidia.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA0MDA5NSBTYWx0ZWRfX/mM11O6uFj6w
+ YM3Xde3XiZjmekUiZIkhch3JjUQf1/mXAc0019VVf2sn3rCB5WqFCdU1xWMZyB/0JPVOCR0NIad
+ 1k+Swx05VQCOxdwbL0l90mVfgvmNp/LGqfVopL3+mEcKMsbcX7zzsPO3c/EvT1dNdPqFko22105
+ nvKqHwV5Zu73WEPDyP6UlmjIeUPhM1m0xdcmXwqAhka6shOB0Ws/QZ3kInXT3s7aqy3osHcHYhl
+ fr8er498P0QXI92SpF34oMXiJsC5tYnve3UhZ0x2n32Eo8SaT13nYqXhtTHGfN17cUk1S+R/0Up
+ r8L7qdk2ybke+wbZ/b9
+X-Authority-Info: v=2.4 cv=NJDYOk6g c=1 sm=1 tr=0 ts=693173d3 cx=c_apl:c_pps
+ a=bsP7O+dXZ5uKcj+dsLqiMw==:117 a=bsP7O+dXZ5uKcj+dsLqiMw==:17
+ a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=ei4SEBeUAAAA:8 a=JppZAXPjAAAA:8 a=Ikd4Dj_1AAAA:8 a=VebqvxzqAF6XTmt7Dz0A:9
+ a=CjuIK1q_8ugA:10 a=l_8y2aVsmG4A:10 a=8zIOOLb7Ym0NljyPXbuS:22
+ a=mTXuAFqUwmiQvsSFmwXH:22
+X-Proofpoint-ORIG-GUID: EB93IxHMUsMVneTQE4m3khdavekYJhyZ
+X-Proofpoint-GUID: EB93IxHMUsMVneTQE4m3khdavekYJhyZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-04_03,2025-12-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ adultscore=0 phishscore=0 mlxscore=0 spamscore=0 mlxlogscore=635
+ suspectscore=0 malwarescore=0 clxscore=1030 classifier=spam authscore=0
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2512040095
+X-JNJ: AAAAAAABk5Txq6FsV+9QO1DAL4K1taEEGNgMwv8QUZZw23gSBuAyai0mG8b5/0cfwW/d24/HTEnjgG0hxyeB1+csJ2o1UrQLkdjU1wel4z1PTRaO9RiJU4V0yaiBNm2jc+4yYJ5ltIdooU0yj/DslwpyEfZYTkOHDDWRniPSPdss4mOGNNuX3axkZCvw6aCtmteY2QUO9K2XqjX0Sv95+GnzCl0perIfs6sRwGDoVJi3JVIWb2udzp7WUNozdg+pvxBBC197eddeDInJYEuPHXIOlmLs0SKFjeRF5QeqHKsi6U5kcmkqTzpO6WkQnXRiFmjWC/84rCOx38VpFkkkplTPeZ+G8MmaIHCItoRQ8k1yDvEj4+Fu9CGH4joTQPGObCse6vEcL3V0eWJYNIplm7lSfOSOYe3J1bOMx1DwX3J1ne//byW3odwopdllfUN+Yb/WXTThx01Edx46CjV8ApvqbU1Mev58XPaSZZG7K8f9o5fxzk23kD579gQRaAQfAqcIkbde6YWgEJCh4lEDjeyyaqaBQayXP+aHNmSNTxgmRuxr/IVHiIxOF7x1axwpTPqeUt/LhZnXswii7ANHBexBzU6BkFniwo94dgbqmAa82Scq5wJ1EQ4QffZ4fF4OHF2b/eCX4HGVGW6HKXcR7cyTaPcrYNUKFxWdxE2hmimvO3BRPI3krmQJvQ==
 
-On Thu, Dec 04, 2025 at 10:23:17AM +0000, Alice Ryhl wrote:
-
-> > The other day [*] I proposed extending Rust such that it would be able
-> > to consume a clang precompiled header directly, this would allow doing
-> > away with most of all this. No more helpers and no more bindgen.
-> > 
-> > Would that not be a much saner approach to all this?
-> > 
-> > [*] https://lkml.kernel.org/r/20251124163315.GL4068168@noisy.programming.kicks-ass.net
+On Wed, Dec 03, 2025 at 07:39:06PM +0900, Alexandre Courbot wrote:
+> On Tue Dec 2, 2025 at 6:35 PM JST, Brendan Shephard wrote:
+> > Change `page_align()` to return `Option<usize>` to allow validation
+> > of the provided `addr` value. This ensures that any value that is
+> > within one `PAGE_SIZE` of `usize::MAX` will not panic, and instead
+> > returns `None` to indicate overflow.
+> >
+> > Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
 > 
-> I have actually discussed similar ideas in the past with Josh Triplett,
-> so you are not the only one who thinks it is a good idea. Unfortunately,
-> the road to get there is long.
-
-Right. Earlier I also proposed using libclang to parse the C header and
-inject that. This might be a little simpler, in that..
-
-> Another option to get rid of the helpers is that bindgen is working on a
-> --wrap-static-fns flag, which would generate the helpers for us.
-> However, that route would still require this patch for them to be
-> inlined.
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 > 
-> One detail that makes the precompiled clang header really tricky is
-> that IMO we should not require RUSTC_CLANG_LLVM_COMPATIBLE for the
-> build. With bindgen, you just need bindgen and clang to match LLVMs.
-> That's easy since bindgen loads a dylib from your clang install. But if
-> you build this logic into rustc, then you need to be really careful to
-> get rustc and clang from the same source, and that same source must use
-> the same LLVM to build both.
+> A few nits below.
+> 
+> > +/// Returns [`None`] on integer overflow.
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// ```rust
+> 
+> I never see the language specified in other doctests. I guess it doesn't
+> hurt, but just mentioning it for consistency.
+> 
+Fair, I just took this from the example on the rustdocs page:
+https://doc.rust-lang.org/rustdoc/write-documentation/documentation-tests.html
 
-... if you build rustc against libclang they are necessarily from the
-same LLVM build.
+And I didn't give it much additional thought. But I probably should have
+confirmed formatting of other examples in the project.
 
-But that might be more tricky in that you might need ways to specify C
-specific build flags.
+> > +/// use kernel::page::{page_align, PAGE_SIZE};
+> > +/// // Case 1: Already aligned
+> 
+> Why number the examples? It doesn't add anything since we don't refer to
+> them later.
+> 
 
-Anyway, good to know people are in fact pondering this, because IMO the
-whole interoperability thing with C is quite terrible.
+Another valid point. I think a common theme in my reviews is that I'm
+being a bit too verbose. Most of it, like in this case comes from my own
+internal monologue while I'm figuring it out. I'll take that on-board
+and try to be more INFO and less DEBUG moving forward.
