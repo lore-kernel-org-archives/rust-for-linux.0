@@ -1,108 +1,151 @@
-Received: from outbound.qs.icloud.com (p-east3-cluster4-host8-snip4-10.eps.apple.com [57.103.84.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC08A196C7C
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 11:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.84.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F1D30AD0B
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 11:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764848600; cv=none; b=gA+I9Hccofrt6/VdLhNSz0UQun721xa+x56ftiSiWCJ1O9FO94eR9IVVjlGBjuUScyhOJJYJ4X5Yj6ncMl4MbitBmmAPSHX4DlkuIVPdPt5hbbvIlBFLF6q2PWUOhUd0NOk7PApt4RDM5Ieh6pncKvm5pmGa+cAL9dYWLdH55e0=
+	t=1764849466; cv=none; b=Q7h/0IM1lG9TwnDsVgy3LpcJgAWklZcQconzvddjrGnd27UUS/02ps77gvbX6QvO1rh4AQgCziz9+SU3BRUrkrGUy8V9kU0aGIBmIA29QkTYfFa6Bx2Qh5yP3B8v4NBQSdInYuwkG8SxJ5i7XqLRbN/3FNdUI3cIA2WJhsnFFZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764848600; c=relaxed/simple;
-	bh=PfQYp6XQSks0Hsakt0zgbzgtRIr5yTiWuPEa8slDf3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=udK7/7niR9YpTN5JFCG2lnLgHs+bIlXAfXb08hNtDoaOuljxp213M/fDtjKT4LJVE1XbzbOPSCelxbosQGJfLhxaiWhRTuc66i9MHUd3W4/Gz86CbCKmS9vLMaU6qJHU8p1KnlRc0D/xuEo6qYEMomUsGJaPTfX25g+96ITPHyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=H30Na9P0; arc=none smtp.client-ip=57.103.84.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
+	s=arc-20240116; t=1764849466; c=relaxed/simple;
+	bh=pphVR1kisW1rn59IwFVxryo0TAPKvUFI46MwfIkrRm8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KX7Nx/wzdlljtAPKDV5fYT/iOn5ntUIEsSFKcqM/7LXBU6aJNu9dNwrmGdlNbfYq+7B+IiP/och9YgtHTlnieN0TtZDGBugcDPY88aHEWuIpBggASGrnnOvi/Bcbf6v40LVdsahfKpbFEgmtboaKWs5KB2brScQIrm9wd9/3HkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jXJapIvo; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="H30Na9P0"
-Received: from outbound.qs.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-2d-20-percent-0 (Postfix) with ESMTPS id 55A82180013D;
-	Thu,  4 Dec 2025 11:43:15 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=N+S4S+F6NE2GdDOKSLmbrfw/yuEZ5y5xLjuwpZ2qy7o=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=H30Na9P05fXX92VqM4zULbnSY4v6yUsRq1jCqt9t1lnSxud+BrY7xY4KqgI4B79MxZwdmEhqq4Qr87ho/5jguRLaKGRHfjgNHdPpefLNvDZSRO/28N8ZtVxkzQOBVof4zMJqAB+ePxrqP9rU18WPX2z0bDhlBC0SauTFxw/mdEYYZrIMEjEn+GoxcBxp1H6oAoI/kAJZRnvROHPAYW9s97Ilu3+rS6fyYyZ5Mjz15UQruDAB1PouBHBax3asaG8/9hRDCj3NvCK/1Y1/i/WD3TVtEKbrcyGYynL4ZRjYvi9rX/Wbd3QmvVPpGI4urcZ6DuPC/LFmPY+64UAdt9ET9Q==
-mail-alias-created-date: 1746336505199
-Received: from fedora (unknown [17.57.155.37])
-	by p00-icloudmta-asmtp-us-east-2d-20-percent-0 (Postfix) with ESMTPSA id AA02C18000A7;
-	Thu,  4 Dec 2025 11:43:12 +0000 (UTC)
-Date: Thu, 4 Dec 2025 21:43:08 +1000
-From: Brendan Shephard <bshephar@bne-home.net>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com, dakr@kernel.org,
-	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6] rust: Return Option from page_align and ensure no
- usize overflow
-Message-ID: <aTFzzIjEZ-lMMjtw@fedora>
-References: <aS6y5blasMX0KcD7@fedora>
- <DEOIMG7Z0J8B.3OOY2A989T3G6@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jXJapIvo"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7b827ff341cso69798b3a.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 03:57:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764849463; x=1765454263; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jy74VhsBG2iXSHso83Jci8BnfjXIZJpeGjIa5hx2ujU=;
+        b=jXJapIvozbiUJjPnYGgeVVbEfCNry0N6v6zsU6E2aA8NPhHuwlVisHklOBe0v/LcYa
+         tmu9x2IwgahU9tryhRm1Jx3YOwXYJkkie1VmqtCp2Vul548q4Gg7+18bH0rblgSwHi2q
+         Z+PXsskav1u1ji027gEI7wLCPMx+9cuSdeNprFDx/T99auJinttibRfwKxLtMP2GJBLH
+         BblnptLNIFv7QtzanDpBTLgwvgF7W3ukuXSMNgJWfSkmBOzF2aQl9OpAfrBgtqANuN+u
+         +C8W1Ye0XDgTPJfAfpcFB9QwLLh9Jj8hwB6Bw6tBepE+Wbt9vuJXq9wBnXcGGCNdD+ic
+         LTGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764849463; x=1765454263;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jy74VhsBG2iXSHso83Jci8BnfjXIZJpeGjIa5hx2ujU=;
+        b=Gg1IDW7eflQZCHI1+ub7KNGBDg0TymJ/dGFdiOjUOmcuB9a1OULqfY6vPkdOVOEZfP
+         DQK+gxtSCm9INFwHIgGVcgYAxgzPx7PWRTZZnxxHsqr7aiCufRWY2goeqDWcjZTKQM/q
+         NVrldoB4qQEmSpftayAqNAwYFs0IRD2RN4QDd5XH+pDnJ7qMKoSaZdhfLNY+5nRP0/ta
+         aBSO4AKTls1JC++HMLiDp6q6S4s50gWeQohK2iiMznSaaIC30a6tS6ICfGKNIzuF7yef
+         RYIyc/upBG4LvImhPOhEQQG8CKv1QudljblwFqQ6kglkzmUkODxmr8cMFHHaV2EaR90Y
+         v8Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCURFmLu3yfYZVu3lduVSsXF1OXgwSxk7NUvzNefOUWX9eEgK6fw4D7bQYm+AXUUpJXH6k/nf5uxugFZzOnGsQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9i23HPd2tk9KtKQ20Umfh0RuAYYk+VkXPbxfJh3AkdhRae7rc
+	z3lh7/IoHbiV6PzV49Jjx0xolZSp3vDCxz2QK0INGPIdLq0eVluIv9Rdolh4n+toq8aDB90FaGs
+	nPxUpcAbFuoLz2KVc1ovqhT+K/XRhw20=
+X-Gm-Gg: ASbGnctAfLRgIXrAfh+f/T+JZX3RxySaoX8zVSj32Vk11uLhQ8yCOS81Wg5W5+Yruz7
+	COsJbX8CWISPCFdqWN+al9tiA42ROlqzNYn10ECMhl9czd0HITo4ufezKyVEw34O3aWa0NWIWU/
+	+4P8wtGEDHKG3j+X7y577OFJasljNI3zF5PtMEoerqW4XIjXvpVuDGtVHf1ol77hUEvp65otafi
+	71PlEd+eMeI5zGRRKP553m+NkoRj4aGWb2H8LXfSEZquYTQTXlVyhx+ge0CYHEn0VINjqTuL3HI
+	E/pzQc6qhUpEbuGflwNTvnyhik/qJmtZ224EZQklemwQjbcwRhbj/jFp0DFxOhki832fn6inV02
+	YfPI8hv9yCJCTQw==
+X-Google-Smtp-Source: AGHT+IGeyoDrjBm9pUlwr3L1lIhuYxiVR/nMKBo3Q8beIteuq1z76e1BQfFIgP3nnV9ieQFXYxZbKA8xY2mkFTTQZGc=
+X-Received: by 2002:a05:7022:49a:b0:11b:98e8:624e with SMTP id
+ a92af1059eb24-11df25f6eb3mr3361650c88.4.1764849463230; Thu, 04 Dec 2025
+ 03:57:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DEOIMG7Z0J8B.3OOY2A989T3G6@nvidia.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA0MDA5NSBTYWx0ZWRfX/mM11O6uFj6w
- YM3Xde3XiZjmekUiZIkhch3JjUQf1/mXAc0019VVf2sn3rCB5WqFCdU1xWMZyB/0JPVOCR0NIad
- 1k+Swx05VQCOxdwbL0l90mVfgvmNp/LGqfVopL3+mEcKMsbcX7zzsPO3c/EvT1dNdPqFko22105
- nvKqHwV5Zu73WEPDyP6UlmjIeUPhM1m0xdcmXwqAhka6shOB0Ws/QZ3kInXT3s7aqy3osHcHYhl
- fr8er498P0QXI92SpF34oMXiJsC5tYnve3UhZ0x2n32Eo8SaT13nYqXhtTHGfN17cUk1S+R/0Up
- r8L7qdk2ybke+wbZ/b9
-X-Authority-Info: v=2.4 cv=NJDYOk6g c=1 sm=1 tr=0 ts=693173d3 cx=c_apl:c_pps
- a=bsP7O+dXZ5uKcj+dsLqiMw==:117 a=bsP7O+dXZ5uKcj+dsLqiMw==:17
- a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=ei4SEBeUAAAA:8 a=JppZAXPjAAAA:8 a=Ikd4Dj_1AAAA:8 a=VebqvxzqAF6XTmt7Dz0A:9
- a=CjuIK1q_8ugA:10 a=l_8y2aVsmG4A:10 a=8zIOOLb7Ym0NljyPXbuS:22
- a=mTXuAFqUwmiQvsSFmwXH:22
-X-Proofpoint-ORIG-GUID: EB93IxHMUsMVneTQE4m3khdavekYJhyZ
-X-Proofpoint-GUID: EB93IxHMUsMVneTQE4m3khdavekYJhyZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-04_03,2025-12-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- adultscore=0 phishscore=0 mlxscore=0 spamscore=0 mlxlogscore=635
- suspectscore=0 malwarescore=0 clxscore=1030 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512040095
-X-JNJ: AAAAAAABk5Txq6FsV+9QO1DAL4K1taEEGNgMwv8QUZZw23gSBuAyai0mG8b5/0cfwW/d24/HTEnjgG0hxyeB1+csJ2o1UrQLkdjU1wel4z1PTRaO9RiJU4V0yaiBNm2jc+4yYJ5ltIdooU0yj/DslwpyEfZYTkOHDDWRniPSPdss4mOGNNuX3axkZCvw6aCtmteY2QUO9K2XqjX0Sv95+GnzCl0perIfs6sRwGDoVJi3JVIWb2udzp7WUNozdg+pvxBBC197eddeDInJYEuPHXIOlmLs0SKFjeRF5QeqHKsi6U5kcmkqTzpO6WkQnXRiFmjWC/84rCOx38VpFkkkplTPeZ+G8MmaIHCItoRQ8k1yDvEj4+Fu9CGH4joTQPGObCse6vEcL3V0eWJYNIplm7lSfOSOYe3J1bOMx1DwX3J1ne//byW3odwopdllfUN+Yb/WXTThx01Edx46CjV8ApvqbU1Mev58XPaSZZG7K8f9o5fxzk23kD579gQRaAQfAqcIkbde6YWgEJCh4lEDjeyyaqaBQayXP+aHNmSNTxgmRuxr/IVHiIxOF7x1axwpTPqeUt/LhZnXswii7ANHBexBzU6BkFniwo94dgbqmAa82Scq5wJ1EQ4QffZ4fF4OHF2b/eCX4HGVGW6HKXcR7cyTaPcrYNUKFxWdxE2hmimvO3BRPI3krmQJvQ==
+References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+ <20251202-inline-helpers-v1-4-879dae33a66a@google.com> <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
+ <aTFhFXCqvy7nmDOp@google.com> <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
+In-Reply-To: <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 4 Dec 2025 12:57:31 +0100
+X-Gm-Features: AWmQ_bndz8ZZuXxUaBe-jxDMfOtEPNEq7y8MIf5_IqbpeKBzcbrA6kGhc4U4gvc
+Message-ID: <CANiq72=r+Fmu0uuNF=6x36GWWQZGZk9gApnMZxakJavviwG+ug@mail.gmail.com>
+Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
+ into Rust
+To: Peter Zijlstra <peterz@infradead.org>, Antoni Boucher <bouanto@zoho.com>, 
+	=?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>, 
+	Arthur Cohen <arthur.cohen@embecosm.com>, Gary Guo <gary@garyguo.net>
+Cc: Alice Ryhl <aliceryhl@google.com>, Josh Triplett <josh@joshtriplett.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 03, 2025 at 07:39:06PM +0900, Alexandre Courbot wrote:
-> On Tue Dec 2, 2025 at 6:35 PM JST, Brendan Shephard wrote:
-> > Change `page_align()` to return `Option<usize>` to allow validation
-> > of the provided `addr` value. This ensures that any value that is
-> > within one `PAGE_SIZE` of `usize::MAX` will not panic, and instead
-> > returns `None` to indicate overflow.
-> >
-> > Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
-> 
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> 
-> A few nits below.
-> 
-> > +/// Returns [`None`] on integer overflow.
-> > +///
-> > +/// # Examples
-> > +///
-> > +/// ```rust
-> 
-> I never see the language specified in other doctests. I guess it doesn't
-> hurt, but just mentioning it for consistency.
-> 
-Fair, I just took this from the example on the rustdocs page:
-https://doc.rust-lang.org/rustdoc/write-documentation/documentation-tests.html
+On Thu, Dec 4, 2025 at 12:11=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> Right. Earlier I also proposed using libclang to parse the C header and
+> inject that. This might be a little simpler, in that..
 
-And I didn't give it much additional thought. But I probably should have
-confirmed formatting of other examples in the project.
+Yeah, that would be closer to the `bindgen` route in that `libclang`
+gets already involved.
 
-> > +/// use kernel::page::{page_align, PAGE_SIZE};
-> > +/// // Case 1: Already aligned
-> 
-> Why number the examples? It doesn't add anything since we don't refer to
-> them later.
-> 
+> ... if you build rustc against libclang they are necessarily from the
+> same LLVM build.
 
-Another valid point. I think a common theme in my reviews is that I'm
-being a bit too verbose. Most of it, like in this case comes from my own
-internal monologue while I'm figuring it out. I'll take that on-board
-and try to be more INFO and less DEBUG moving forward.
+So currently there are 3 "LLVMs" that get involved:
+
+  - The one Clang uses (in LLVM=3D1 builds).
+  - The one `rustc` uses (the LLVM backend).
+  - The one `bindgen` uses (via libclang).
+
+If that is all done within `rustc` (so no `bindgen`), then there may
+still be `rustc` vs. Clang mismatches, which are harder to resolve in
+the Rust side at least (it is easier to pick another Clang version to
+match).
+
+For those using builds from distros, that shouldn't be a problem.
+Others using external `rustc` builds, e.g. from `rustup` (e.g. for
+testing different Rust versions) it would be harder.
+
+But I mean, anything approach that gets us into a better position is
+welcome and I think requiring people to match LLVM everywhere should
+be easier now that distributions are starting to enable Rust (even
+Debian).
+
+We have been talking about this since the very beginning of the
+project -- e.g. I remember Wedson and I talking to Josh et al. about
+improving the situation here (in particular, talking about integrating
+a solution into `rustc` directly) long before Rust was merged into the
+kernel. Even on things like a `rustc cc` or `cImport` like Zig (but
+Zig moved on the other direction since then), which I recall Gary
+having opinions about too.
+
+There is also the question about GCC. A deeper integration into
+`rustc` would ideally need to have a way (perhaps depending on the
+backend picked?) to support GCC builds properly (to read the header
+and flags as expected, as you mention).
+
+And finally there is the question of what GCC Rust would do in such a
+case. Things have substantially changed on the GCC Rust in the last
+years, and they are now closer to build the kernel, thus I think their
+side of things is getting important to consider too.
+
+Cc'ing Emilio (`bindgen`), Antoni (GCC backend) and Arthur (GCC Rust)
+so that they are in the loop -- context at:
+
+    https://lore.kernel.org/rust-for-linux/20251204111124.GJ2528459@noisy.p=
+rogramming.kicks-ass.net/
+
+Cheers,
+Miguel
