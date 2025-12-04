@@ -1,127 +1,145 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F7B342C99
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 13:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D166C343D67
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 13:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764853982; cv=none; b=hi7RUKEaNk9kU7SVnaUB6j2PfDOs3/jLtTBA5DGZT/2EgK2V6Y+o80R0pxpP39tR1oCSzY54B3+cLSrSo0G1yzHr1Z4pu5/kACPIJNV+OK8mxV69TX2Euw8TTAUNd9Tdafjvq4SGhu/I7/YRdENx2UeCD5Dysy3VxDaqpBL7Hbc=
+	t=1764854138; cv=none; b=rLz8kf99+a3yQnKoCzYv4r39/RurHDJYs6I1Ktf7LcVeXljW956xkMgvpZ5/yONQ8szsYb7YlDeEliG7YFIKc/zwUsMdYTm1k55sWElBW7RG9ZZMX0mt5Fed/bpTgvtCe4y/5YTOKjQY4bCKVAzMSZy3tIPIfBpv5lyfM6l7IE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764853982; c=relaxed/simple;
-	bh=gpuduBE5ngF7CKc5w+w/wGN0EJhfhtx1LD4XBufKNOk=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=gsCc2I1uFve7bctFExFV6YbbWeDlovATv2Et3ULtmHr0+YTWxriljHH65NBQMJI75ZlTjLEWP8tGEZh0PZ988N1kD7Pdzu4WH/9vQYazIHApK7pie1ySAaPazXcEDn1PzJnCg7qdLPHLg0EObvbfLqendDA9ooHOTvS1/7PaG9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kp2zs9eI; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764854138; c=relaxed/simple;
+	bh=Wny4M191Yr6Td48Z53labtwrelyi+1dAudOVsu2AK4M=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=b5X21ABYGYYB2rPI/pfybzrkIDuOBgkomxnB+qYxu8NeYFBWjZg9pcEB/B64KfNiPHQS6Lv3ptfv+DVFSjo7G81FzJHZOHfGhoW2R+HTJIBGkvfIdCKf4ytk0MweXom2YDUYEWBDUGt8mKDeZpssNxSHkQIGi9cmTa7g6ZY5Qms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eEfcJc7r; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kp2zs9eI"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3437af8444cso779216a91.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 05:13:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eEfcJc7r"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477cabba65dso5528855e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 05:15:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764853980; x=1765458780; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+        d=google.com; s=20230601; t=1764854135; x=1765458935; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=igKCTIjVWslPj/praAqkUjwRiMaXiYo199GSC8rvtKE=;
-        b=Kp2zs9eIS2Kx4fxOhrfD3oK+K+W6BxwAJZTzy91dlV/iNA1R+ag4+FwiOQ286FJPgi
-         RwtNn8KlfgOwlX1scvnNJQTyUjMjtMWlQ7XMomUKpqd3GrR81IMzcNb6YBOgnMEtUx8P
-         5cCiZQNg7V5juv6D+XbCiuQdU4y8IqA60wIShSNTAjyQs1NmdUcJIzFatV4lFWesAXfp
-         rGjhesov0nxQ98w5xJcPMWG2eDm7i9dWd2mAzk3gK9i61DOaWepkC1gEapPGKVuKEFfR
-         NaKcn4aDTSZNkypq/HDTjQXYmlvyu7CsOQdAAgUVSkkaNoUU/zL/t4+GziizUWOgureL
-         iTKA==
+        bh=Wny4M191Yr6Td48Z53labtwrelyi+1dAudOVsu2AK4M=;
+        b=eEfcJc7rhw0cV4AVNryfwcBVWVzGB9WlKaupTm7Da2GPKv/F15Drx6dff9i7hmhXux
+         91ywzr7ehL8Jn8Cut8F//aFCM80hZOtldydSRH4RAqYCnGEinGYUCxy8JUIqMrXsoZlW
+         BmIdCP9sV61gj9hEiL+kVcqoRbMxuM7+ZgYs3O7Xh37HoRrDiIV1wmR0BCWgRI+008zJ
+         w0zBqPuyuZV6kQiL9aHMLGG3vtrKBmqZlKEJKruCOG0Uo1AcFdjC/i1fb5zUZ2rzfthb
+         n3yegWPw/vgiNu1jFIejjQreRJlLUrkazHluobEuyp8VEpe2L2LXEpwuK+6A1DRuq7z0
+         EJjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764853980; x=1765458780;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=igKCTIjVWslPj/praAqkUjwRiMaXiYo199GSC8rvtKE=;
-        b=ibR1ihGJL7TPrZ2vXCwn/h1bV+A02hClEScgwc8fKnE0Odq/JX8Gv4u1XgDhHohktn
-         u2F/PYuTAbdpAh8l8FjupESq6qKtkv96oi/+2GPZYFILnEYekxI8EJ4n5q4rQUbNhCO9
-         Bi0UVzfM93QnDmf3NnCLv0Kdpfk87kQXQBAP/N+M1wcsA1Vl14azrCc2YBQ/0+anQZBw
-         RwxS7zXCeXTD+cJQVgP81/XQqYWqv0FXhd3H29e1mjUf4iRa284ZedNqCXGj6QpiWgSx
-         y9qS/y+uJlrc5gogDPRiP5Lkf3CaM1dYOF1dsy0ThPM5jzXKsJ0WNLNL+r6E3puqoZSv
-         gceQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUplG142AC/PdUnAs/yM8rxFNgcp+WKDzOVahEidTKi59lYJ5ntXDr/mJ94h/N0tVTZMQmPn8P3izT4D9wyoQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8voZ48AIJjq0ZsRdDmEyfhIvq3GSOZUGAP9OXaOo4PzbtJLxq
-	1LQmX8fItDRl5NiD+Zck4CS9QOdpKFJORFMKiDmNrwZIi9OZzA0fJK7f
-X-Gm-Gg: ASbGncuU0TAy5+R8BFE56zKu0/F0LpZzX+pH20R0fM4MWa3oednvrfD70OnBNDdDO1X
-	giKTfmX//faiopn17KNvbZEHLG6vgWu88/cBH3cMeoqAUtsvhpiW5Gio+tWi1IDEbQkeVBtaplq
-	xUngtQBuAqps/B3++eYhjPIextAQJiD4eco90iYCQDCA8ERGKoY0V5c9bVYxkCNHwgkfztoNdQK
-	Pja9OIfNlI5GdU6sUDQWpArZtH21QvG+yp9jcp83nwR1LXi7feOZ64rYSVPZmRtED3OxM5wejjj
-	BJZhtpfUsgmzdvPM60or8MnPgEPBFyMjXc6C3jDbZJzah/NUkoJdRANfLIMFVvggrmHQO0phn5C
-	OtCGyrqZv04pqlL0Mn4N+1Gc5PLYPHc+0co0ufciz4HLiJovNCDR+99swRupZkt5+G+HZ3gYz8/
-	8FW1ExMwlQLwmNmq7Gy+QYQ9xom54fp+gr4N60d5JmxNz1OJ8sTTZOwhvL2ZABifyP
-X-Google-Smtp-Source: AGHT+IEgfq4TftVMSfM8tppyvbbbkk6Dgo5biZcW8HvZ8wl/A44Tl2VYiC/LvriUPihyGpr8YJzcbw==
-X-Received: by 2002:a17:90b:5143:b0:340:bb51:17eb with SMTP id 98e67ed59e1d1-34912607f64mr7156213a91.15.1764853980410;
-        Thu, 04 Dec 2025 05:13:00 -0800 (PST)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3494ea7bb6bsm1963573a91.15.2025.12.04.05.12.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Dec 2025 05:12:59 -0800 (PST)
-Date: Thu, 04 Dec 2025 22:12:55 +0900 (JST)
-Message-Id: <20251204.221255.565451902531453581.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, peterz@infradead.org,
- will@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
- lossin@kernel.org, mark.rutland@arm.com, rust-for-linux@vger.kernel.org,
- tmgross@umich.edu
-Subject: Re: [PATCH v2 0/4] rust: Add i8 and i16 atomic support
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <aTECy9UTxhfz3E91@tardis.local>
-References: <20251117001035.4068507-1-fujita.tomonori@gmail.com>
-	<20251203.124148.1859835796360203240.fujita.tomonori@gmail.com>
-	<aTECy9UTxhfz3E91@tardis.local>
+        d=1e100.net; s=20230601; t=1764854135; x=1765458935;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Wny4M191Yr6Td48Z53labtwrelyi+1dAudOVsu2AK4M=;
+        b=ekArWFdTmjHz5731eb48SxFNg1j1V86VNasYPEfFTuT42C9/6DHZ+zK5iiFhRwzsfv
+         kDSFlmbLs2FlG5l/S8GoXgcmCIg1C8cUy8fqq2wQ6/aXhQQrFbcXmmYgCmdiK3jKMgAx
+         /6ItKkGRU1g7aTTRdmg1PX6wct+SOirR93Ose7EsT3z39GStyygjCog6XyNm3iSSODG4
+         JB2KxGzNZGV9kXfaiUkuvB8E8NIrvfF1tJB3/1X2D7RGe/JmDs3iqq/yyvVH4DhrOAeM
+         40/+2JISJF6vlfjBkWMwi1CtTBkXt2c4mcG8AmxB8us1kESeGjI1w/E6YdD6n7OEMRJq
+         iX+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVnFkmWmD3qsFJoY4WovMvpo3c+gU4km+Ql46KxLBU6z6KXd2VIshoA0o1ALXyOHJGwb1YClSIhKYOsu7ToGw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YznCzfcuSA9pfcchBus6LVh0gt8YWAnUBDqKuqYKzGlwmKM1VSm
+	e1Us+ByEgeRTCkETak+A06iuv0fjNcc2JTt9seJUwcT/ZTZBJJWpgMEAPxlB6RCUQGbuJidlkae
+	nIalOxRIxG0XmRi7LYA==
+X-Google-Smtp-Source: AGHT+IHhq1jpZSgsrG7+u70UeMI118GpL4lyrcZgSJfzAV0BpquOo2d1tIrYUXW40rz39aPBfrTMkT06vKIZZ8M=
+X-Received: from wmbjj12.prod.google.com ([2002:a05:600c:6a0c:b0:470:fd92:351d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4e89:b0:477:55c9:c3ea with SMTP id 5b1f17b1804b1-4792af485a4mr64437335e9.35.1764854135213;
+ Thu, 04 Dec 2025 05:15:35 -0800 (PST)
+Date: Thu, 4 Dec 2025 13:15:34 +0000
+In-Reply-To: <dd5856a8-e120-4884-8828-9d0c9edc60f0@crisal.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+ <20251202-inline-helpers-v1-4-879dae33a66a@google.com> <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
+ <aTFhFXCqvy7nmDOp@google.com> <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
+ <CANiq72=r+Fmu0uuNF=6x36GWWQZGZk9gApnMZxakJavviwG+ug@mail.gmail.com> <dd5856a8-e120-4884-8828-9d0c9edc60f0@crisal.io>
+Message-ID: <aTGJdlwMRxGg2iZ1@google.com>
+Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
+ into Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Emilio Cobos =?utf-8?Q?=C3=81lvarez?=" <emilio@crisal.io>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Antoni Boucher <bouanto@zoho.com>, Arthur Cohen <arthur.cohen@embecosm.com>, 
+	Gary Guo <gary@garyguo.net>, Josh Triplett <josh@joshtriplett.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 3 Dec 2025 19:40:59 -0800
-Boqun Feng <boqun.feng@gmail.com> wrote:
+On Thu, Dec 04, 2025 at 01:49:28PM +0100, Emilio Cobos =C3=81lvarez wrote:
+> On 12/4/25 12:57 PM, Miguel Ojeda wrote:
+> > On Thu, Dec 4, 2025 at 12:11=E2=80=AFPM Peter Zijlstra <peterz@infradea=
+d.org> wrote:
+> > >=20
+> > > Right. Earlier I also proposed using libclang to parse the C header a=
+nd
+> > > inject that. This might be a little simpler, in that..
+> >=20
+> > Yeah, that would be closer to the `bindgen` route in that `libclang`
+> > gets already involved.
+>=20
+> Yeah, so... there are existing tools (c2rust [0] being the actively
+> maintained one IIUC) that in theory could do something like that (transla=
+te
+> the bodies of the functions from C to Rust so that rustc could consume th=
+em
+> directly rather than via LLVM LTO).
+>=20
+> I think the intended use case is more "translate a whole C project into
+> rust", but it could be interesting to test how well / poorly it performs
+> with the kernel helpers / with a single header translated to Rust.
+>=20
+> I personally haven't tried it because for work I need to deal with C++,
+> which means that automatic translation to Rust is a lot harder / probably
+> impossible in general. So for Firefox we end up relying on bindgen +
+> cross-language LTO for this kind of thing, and it works well for us.
+>=20
+> If I'm understanding correctly, it seems the kernel needs this extra bit =
+of
+> help (__always_inline) to push LLVM to inline C functions into rust, whic=
+h
+> is a bit unfortunate... But this approach seems sensible to me, for now a=
+t
+> least.
+>=20
+> FWIW Bindgen recently gained an option to generate inline functions [1],
+> which could help avoid at least the bindgen ifdef in the patch series?
+>=20
+> Anyways, it might be interesting to give c2rust a go on the kernel helper=
+s
+> if nobody has done so, and see how well / poorly it works in practice? Of
+> course probably introducing a new dependency would be kind of a pain, but
+> could be a good data point for pushing into adding something like it buil=
+t
+> into rustc...
 
->> > This adds Atomic<i8> and Atomic<i16> support; including
->> > load/store(Relaxed) and load(Acquire)/store(Release) operations.
->> > 
->> > Relaxed operations are implemented in C's READ_ONCE() and
->> > WRITE_ONCE() macros.
->> > 
->> > load(Acquire)/store(Release) use C's smp_load_acquire() and
->> > smp_store_release() macros. They internally use the appropriate
->> > architecture-specific instructions.
->> > 
->> > v2:
->> > - Implement relaxed operations by using C's READ_ONCE/WRITE_ONCE
->> > - Rename smp_load_acquire() and smp_store_release() helpers
->> > - Simplify the macro to generate atomic methods
->> > v1: https://lore.kernel.org/rust-for-linux/20251115050305.3872412-1-fujita.tomonori@gmail.com/
->> > 
->> > FUJITA Tomonori (4):
->> >   rust: sync: Add i8/i16 atomic_load_acquire/atomic_store_release
->> >     helpers
->> >   rust: helpers: Add i8/i16 relaxed atomic helpers
->> >   rust: sync: atomic: Add i8/i16 load and store support
->> >   rust: sync: atomic: Add store_release/load_acquire tests
->> > 
->> >  rust/helpers/atomic_ext.c            | 44 +++++++++++++++++++++++++
->> >  rust/helpers/helpers.c               |  1 +
->> >  rust/kernel/sync/atomic/internal.rs  | 48 ++++++++++++++++++++++++++++
->> >  rust/kernel/sync/atomic/predefine.rs | 24 +++++++++++++-
->> >  4 files changed, 116 insertions(+), 1 deletion(-)
->> >  create mode 100644 rust/helpers/atomic_ext.c
->> 
->> Boqun, any thoughts on this?
->> 
-> 
-> Sorry for the late response, the patchset looks good to me, I'm just
-> waiting for more reviews and some free time to take it.
+I already tried c2rust as an alternative to this patch. It works okay
+for many functions, but it's missing support for some features such as
+asm goto, though this is fixable. But a larger issue is that some things
+simply do not translate to Rust right now. For example:
 
-Thanks for the update, and no problem about the late response. Please
-take your time. I just wanted to make sure if there was anything I
-needed to do on my side.
+* Atomics use the Ir operand.
+* static_branch uses the i operand.
 
+neither of which translate directly to Rust.
+
+Alice
