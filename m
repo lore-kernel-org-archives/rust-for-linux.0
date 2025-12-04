@@ -1,105 +1,109 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949BA313E34;
-	Thu,  4 Dec 2025 09:06:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896372F7AD4
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 09:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764839213; cv=none; b=GjI1Wm/miIECFtUr3ztXPOu28a/OGEBuv+DeF7dCxCXtLZ6VOIImhC9A3hrh8MTSmVyhv4JZMpmjaOONWdFLSZ5SJwQdHD18XCfNuIJDgpORcTixeoN4Jcqca9l4rLtOLoDtJYBFFwCtNIwuQa+2xeR0li+3TpteqU/DYkxgxdk=
+	t=1764839242; cv=none; b=UDAmuznI7tXWYg8LBFqAFF/uk7vDcVptqt8AY9KiRxFs372rY98p5wdPPt5awjNX4nXn4juFfFTkkiZAfc34caUikptiLjrXxUXM1oxTIq/d0TBl2B2O+1bD0EJNh7H9F6393sVlbK/MFyZnPAYmJf7/Z059ONIA9FLDH2ox27U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764839213; c=relaxed/simple;
-	bh=y5lRhbplovhxS8wXZdgJehPPhVuxa9eyvYlnoEEqbEI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hmYf1TZk4A66xML2HGL3Ician8cDnN8r+abfFAjIiirmEyBQ/bkYgyztoMB+BGiIGPND8+dNjVc/ZEYWoB8HDfYuqb5lpFH/GazVvbuvlQvfBaBxjZ5FRLoIxDv49oNx1dqPavKu+pG/NH0aX2oZzES2sN62ttlVTKRiNtzGSZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [192.168.0.107] (unknown [114.241.82.59])
-	by APP-01 (Coremail) with SMTP id qwCowAAnwdD+TjFpm+0MAw--.960S2;
-	Thu, 04 Dec 2025 17:06:06 +0800 (CST)
-Message-ID: <1a6bb8cd-cc08-458f-a6f6-cdfefd327320@iscas.ac.cn>
-Date: Thu, 4 Dec 2025 17:06:05 +0800
+	s=arc-20240116; t=1764839242; c=relaxed/simple;
+	bh=BsAIstq+CUngEFU7qZ7XNaeLu0o3BLktoMaG5egV2RQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PR/MLZiJfy4vFwEhmNFtGYE2pLYXyMihy0H+Z4BjJB6W8kGVuFUvcD2n3RWzp8iSA/HXUV7GcrrjPuXujqPIz128BooTC36s8owsDqlZJQvQfs21pdY60uLbeWgr+Rlef+WqrnXXcNBHWnuHvxKF9vbwcP/D3YjD/b2hcQNFDws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r+tQDkYM; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r+tQDkYM"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b79f6dcde96so38403366b.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 01:07:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764839239; x=1765444039; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BsAIstq+CUngEFU7qZ7XNaeLu0o3BLktoMaG5egV2RQ=;
+        b=r+tQDkYMknZbUUTRFLgo/nn22fB4ZEb08kYrlDClUS5U4gmy/hUOGHzmVAWaKU82+A
+         v5sD+40yBiOXL/tjcr2qILHG8jpoQyGaWX51Mx6is+kRWU3890g5ylUKdJ/m+eF1DEWc
+         2+4R9G2CjVrC+RGmTkpCl05cwnjwNc7h2/aUwnCE6u/lXIbOXJN5Ky+ks1a+BZmgPi7v
+         P9D3XqyIjFEIwdyryOxQfk2Al5yEH8Wwt31B8UtrnQ8Cky5v1Zm6wnjWwRkDyX6AAn5n
+         WhvSYoJzdH74Xa/hvTRRfRIGjNM+3yFySAx41rXSNc08ZlYYseY0QKvvjBU93uNXJBWZ
+         4XEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764839239; x=1765444039;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BsAIstq+CUngEFU7qZ7XNaeLu0o3BLktoMaG5egV2RQ=;
+        b=w8Z3D0yJBD8N03PFO8QZAVv5lcvi1EFag/djWVoI3fmqcB/gYGmi7+S4w1bK2IE5JI
+         IKhGLpYEGMzDwwmvoGimJqlZ59u/XNe5XIC86lVradCedq0E6IWVQ+bwyXaeoceh4NbL
+         M7Y6R5Zv0axIPKMfW14wq3U0tmoyXVXWz+oJKCGUKd7VoVz0xrHFi+Uq87KhntuZpdll
+         p0lf8d0aEdp0RRWONdmrgqQlmfpfUoRHYdvXp1NpcYs9Vzdmx/EE+UOLfn9jbvSFhflS
+         N8Y3yPAZwAxf0g3QVZsFeGJ4/8Ksi5y05X0CvqL/rwoJZOPuWw6RNpjS6GWjDvEC3Odq
+         tKpg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpmSYrDm5XfL2Qjm5416TqxGnuRg3Qvag/a5sohK255xxDLiCvaeVbf1q9SjKcssH8oj2FfZEn2uPf65EFiw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxw0xo9STENkzRde+COWXyR1X+5LbSME9afcThOeOOUa/gtL3Ko
+	97ICVgXswv9zR6ChflZ2h9q2XiIzAVrTn+5OLUUm+3FSxLTUBvwr3MbVbKU94nCvoNPLCfPCIQU
+	DMszv514WEk2fii7Oww==
+X-Google-Smtp-Source: AGHT+IG3QIVv3Yyq7FDGPkxtSQO1eLE3TyAN6wiuseoGGHp3LSKJyanxNNjuV0YyqJ734MHBXycVjXJfiWL/EcE=
+X-Received: from ejctr9.prod.google.com ([2002:a17:907:c589:b0:b79:f765:c382])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:906:1914:b0:b79:ecb0:db74 with SMTP id a640c23a62f3a-b79ecb0dc98mr172817766b.59.1764839238885;
+ Thu, 04 Dec 2025 01:07:18 -0800 (PST)
+Date: Thu, 4 Dec 2025 09:07:18 +0000
+In-Reply-To: <86E0C8EE-393D-4C6A-9C28-BB036A1FFAD6@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] rust: add a Kconfig function to test for support
- of bindgen options
-To: Asuna Yang <spriteovo@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Jonathan Corbet <corbet@lwn.net>, Jason Montleon <jmontleo@redhat.com>,
- Han Gao <rabenda.cn@gmail.com>, Conor Dooley <conor@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
- linux-riscv@lists.infradead.org, linux-doc@vger.kernel.org
-References: <20251204-gcc-rust-v5-v5-0-2d4f20d86c24@gmail.com>
- <20251204-gcc-rust-v5-v5-3-2d4f20d86c24@gmail.com>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <20251204-gcc-rust-v5-v5-3-2d4f20d86c24@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:qwCowAAnwdD+TjFpm+0MAw--.960S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZrWUWr4rtFWrCry7tw1fJFb_yoW8Xw1fpr
-	yvkF1q9rW8J3W8Aw17CFW0qF13ua1xtrWfW34kt347JrW7Xw40gaySkr47try8CFWv9ry2
-	vF4F9as09F4UCw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvvb7Iv0xC_Cr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
-	c7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
-	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
-	14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
-	IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
-	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73Uj
-	IFyTuYvjxUVhL0UUUUU
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+Mime-Version: 1.0
+References: <20251201102855.4413-1-work@onurozkan.dev> <20251201102855.4413-6-work@onurozkan.dev>
+ <aTA6f8gK60h6qaHs@google.com> <86E0C8EE-393D-4C6A-9C28-BB036A1FFAD6@collabora.com>
+Message-ID: <aTFPRv2ahM_KA3AB@google.com>
+Subject: Re: [PATCH v8 5/6] rust: ww_mutex: add Mutex, AcquireCtx and MutexGuard
+From: Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, lossin@kernel.org, 
+	lyude@redhat.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, a.hindborg@kernel.org, 
+	tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, 
+	will@kernel.org, longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev, 
+	thomas.hellstrom@linux.intel.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Dec 03, 2025 at 02:23:14PM -0300, Daniel Almeida wrote:
+>=20
+>=20
+> > On 3 Dec 2025, at 10:26, Alice Ryhl <aliceryhl@google.com> wrote:
+> >=20
+> > On Mon, Dec 01, 2025 at 01:28:54PM +0300, Onur =C3=96zkan wrote:
+> >> Yeah :(. We could get rid of them easily by keeping the class that was
+> >> passed to the constructor functions but that becomes a problem for the
+> >> from_raw implementations.
+> >>=20
+> >> I think the best solution would be to expose ww_class type from
+> >> ww_acquire_ctx and ww_mutex unconditionally (right now it depends on
+> >> DEBUG_WW_MUTEXES). That way we can just access the class and verify
+> >> that the mutex and acquire_ctx classes match.
+> >>=20
+> >> What do you think? I can submit a patch for the C-side implementation.
+> >> It should be straightforward and shouldn't have any runtime impact.
+> >=20
+> > I think there is a better solution. We can create a different type for
+> > every single class, like how rust/kernel/sync/lock/global.rs creates a
+> > different type for every single mutex. Then, you know that the classes
+> > are the same since the class is part of the type.
+>=20
+> I don=E2=80=99t think this would work with the from_raw() functions. What=
+ class
+> would you assign then? I think this is precisely what sparked the current
+> solution.
 
-On 12/4/25 15:54, Asuna Yang wrote:
-> From: Asuna Yang <spriteovo@gmail.com>
->
-> Add a new `bindgen-backend-option` Kconfig function to test whether the
-> bindgen backend supports a given flag.
->
-> A subsequent commit will use this function to test for RISC-V extension
-> flags.
->
-> Signed-off-by: Asuna Yang <SpriteOvO@gmail.com>
-> ---
->  scripts/Kconfig.include | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/scripts/Kconfig.include b/scripts/Kconfig.include
-> index d42042b6c9e2..5d4d29eed0b3 100644
-> --- a/scripts/Kconfig.include
-> +++ b/scripts/Kconfig.include
-> @@ -78,3 +78,8 @@ rustc-llvm-version := $(shell,$(srctree)/scripts/rustc-llvm-version.sh $(RUSTC))
->  # If you are testing for unstable features, consider testing RUSTC_VERSION
->  # instead, as features may have different completeness while available.
->  rustc-option = $(success,trap "rm -rf .tmp_$$" EXIT; mkdir .tmp_$$; $(RUSTC) $(1) --crate-type=rlib /dev/null --out-dir=.tmp_$$ -o .tmp_$$/tmp.rlib)
-> +
-> +# $(bindgen-backend-option,<flag>)
-> +# Return y if bindgen backend supports <flag>, n otherwise
-> +# For now, the backend refers only to libclang, so more specifically, this function tests whether the given flag is recognized by the libclang used by bindgen.
-> +bindgen-backend-option = $(success,trap "rm -f .tmp_$$.h" EXIT; touch .tmp_$$.h; $(BINDGEN) .tmp_$$.h -- --target=$(BINDGEN_TARGET) $(1))
->
-Can probably be simplified down to:
+There can be a way to create a type for a C-defined class, and
+from_raw() can require that you don't use the same Rust type for
+different C classes.
 
-$(BINDGEN) /dev/null -- -x c --target=$(BINDGEN_TARGET) $(1)
-
+Alice
