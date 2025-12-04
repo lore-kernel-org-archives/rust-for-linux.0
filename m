@@ -1,159 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6A11A9FAF;
-	Thu,  4 Dec 2025 10:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCA424E016;
+	Thu,  4 Dec 2025 10:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764842762; cv=none; b=H6dB8SmvBQer6o8lAwopJdD89PJ07qOeD2OT9Ht0OU8yJN0dia7pOyqU9x154aOUXWgTqHf8KszhNnWL6XZRIIkG4a5dKzojIE1z4pY/FvtSaT6NW9NZcq/tdXWu3i/0eybv/1ZMoScJCsuXGBB1Tz1WsBm1+WI4uDO2T+76x0s=
+	t=1764842859; cv=none; b=TLr3zgFadSKD6WXFFUFBHINLdJyYiHKZzz6PezeSEPoOm6uLCqvLvG7OyhgK/6YHaX/LeqbKFalalR8PWLRaKL67EKiiPfCgBqTiFJgWD0YQDLCMsFMyhk/+sluL207hCMWzDerhD1xQoYaFwzBzUjUuyRXy/h5LR4uAhTV8/vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764842762; c=relaxed/simple;
-	bh=HdxuyW48hjewxA37dD/zbSml/Oj0HqVBN0P1TbtJSfw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hu1oU3fCB3QYOBT/z4oPmr8VBoHZZLin1tam1oVq0OgnxFonGxb/7ROpXEeNreG8I2zXxA190KbPIlTp5nEd7QYbUrlpR7oKiWmhAFWmLucaVQY3gKTHE52seiQ8wdWqhos80eSi16CVQI/Ki8Nr3wjhFGMoePFPBBHASr8D0z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Osh22c/g; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764842859; c=relaxed/simple;
+	bh=f+rOXa05srq/haGavrCRm1n3nrsSdSGvsFVT1HwOGl4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U3fw44Z71zvBFfPB10XHgRne932fiJyySq52D17ItiZx4ZGEP0IXle0VYj7etuE1YOYf4QjL9qwEqNeakU95CClf43ntL9/7tBoM0AgO4FOhHeM9EJ6/dgRWghOyd0fnsnvCCF/JkmZElcHwjWMgTgiqmsLAMKc8cRVa5L/ovnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=HaSW3im3; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Osh22c/g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C558BC4CEFB;
-	Thu,  4 Dec 2025 10:05:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764842761;
-	bh=HdxuyW48hjewxA37dD/zbSml/Oj0HqVBN0P1TbtJSfw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Osh22c/gHyR+VPM2kPcT0dPiD6K9BvVhe5Ewzn9HXTkYe8a046bP8uE4VgCP19aDi
-	 K7xBIYI24RyUjLFUPu8Jsurggk4oUE//29xVfPPkiZv362d67AnRunbs4b5rs1+Gjw
-	 YS2XQ/6kgerJ6XOyYneyYfkre1v2DNabxE2eCArlBtO1fZs0/9oUkgnRGacd11N388
-	 /GqZScuD1gNPgkWGXr8EGPBS8fC6oU43ADwQuKp3i8wBSNVTdMRqREmWXwUbXqmGUE
-	 ffmQYPQtEzvEiW/FXBg4sDYheO7g+t6NXrH78pesoPO/l7JrqMckbFuomSJrJhGli1
-	 QsAy+pTCZPGgA==
-From: Christian Brauner <brauner@kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HaSW3im3"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WpEAcvMvK6YSRYCp4amZlv9jQN7IlgsqcQBRJ8YOgr8=; b=HaSW3im3y77oMAz/9WiXSDPHBD
+	sL1kHOVefSAV3h6BULyzzgRyOpqr6hQlY2QD0gwMkT4fBaaJgWyGZLHrV1HrJjmXo3AMrU1aMVsaB
+	3pCJJq2gF2W/1HUJ47/p6uPa86ILWXSNmCj4tGuhcHpPeVL7g4ZsPmZDkIP1GEb7gwXSoJbqZCQM5
+	e4Ctaw9iDlvsJpz4CU+JRk6D/k52ydDl/75OOjRbcneH09e9L8m7FWOVvmwD27aN/DIG0xQp8r7CS
+	XSrjM42BjKvyoG6bdhwQNpzKxzN/SHQqMdeWKG7nbBTE1nqnSUg3jbQXh2UP3yTH6hEb3+pXRvzIL
+	1vUul+Ng==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vR6FD-000000041rL-1oUc;
+	Thu, 04 Dec 2025 10:07:27 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id DA8A03004B8; Thu, 04 Dec 2025 11:07:25 +0100 (CET)
+Date: Thu, 4 Dec 2025 11:07:25 +0100
+From: Peter Zijlstra <peterz@infradead.org>
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Elle Rhumsaa <elle@weathered-steel.dev>,
-	Carlos Llamas <cmllamas@google.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	linux-block@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	linux-clk@vger.kernel.org,
-	Benno Lossin <lossin@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	linux-pm@vger.kernel.org,
-	Paul Moore <paul@paul-moore.com>,
-	Serge Hallyn <sergeh@kernel.org>,
-	linux-security-module@vger.kernel.org,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	linux-kselftest@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vitaly Wool <vitaly.wool@konsulko.se>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	devicetree@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	linux-pci@vger.kernel.org,
-	Remo Senekowitsch <remo@buenzli.dev>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	rcu@vger.kernel.org,
-	Will Deacon <will@kernel.org>,
-	Fiona Behrens <me@kloenk.dev>,
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Waiman Long <longman@redhat.com>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	linux-usb@vger.kernel.org,
-	Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Rae Moar <raemoar63@gmail.com>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: (subset) [PATCH 00/46] Allow inlining C helpers into Rust when using LTO
-Date: Thu,  4 Dec 2025 11:05:29 +0100
-Message-ID: <20251204-denkbar-stinktier-8a7c07650891@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
-References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
+	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
+Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
+ into Rust
+Message-ID: <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
+References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+ <20251202-inline-helpers-v1-4-879dae33a66a@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1456; i=brauner@kernel.org; h=from:subject:message-id; bh=HdxuyW48hjewxA37dD/zbSml/Oj0HqVBN0P1TbtJSfw=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQaxnzoC5KPC9BQ6Xq2IqjgffnvpRpvskU9368/659bp HtRXnNJRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwESuWjAyXDA8eVezNuVTq5R5 o8gOmf3FN+71+Ire2yjd+7GFVzhvPyPDbR6JQvt2uT/tr3YuKJvw1D1B7vuZ55NmCNlPeyuwRvU UKwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251202-inline-helpers-v1-4-879dae33a66a@google.com>
 
-On Tue, 02 Dec 2025 19:37:24 +0000, Alice Ryhl wrote:
-> This patch series adds __rust_helper to every single rust helper. The
-> patches do not depend on each other, so maintainers please go ahead and
-> pick up any patches relevant to your subsystem! Or provide your Acked-by
-> so that Miguel can pick them up.
+On Tue, Dec 02, 2025 at 08:27:59PM +0000, Alice Ryhl wrote:
+> From: Gary Guo <gary@garyguo.net>
 > 
-> These changes were generated by adding __rust_helper and running
-> ClangFormat. Unrelated formatting changes were removed manually.
+> A new experimental Kconfig option, `RUST_INLINE_HELPERS` is added to
+> allow C helpers (which were created to allow Rust to call into
+> inline/macro C functions without having to re-implement the logic in
+> Rust) to be inlined into Rust crates without performing global LTO.
 > 
-> [...]
+> If the option is enabled, the following is performed:
+> * For helpers, instead of compiling them to an object file to be linked
+>   into vmlinux, they're compiled to LLVM IR.
+> * The LLVM IR is compiled to bitcode (This is step is not necessary, but
+>   is a performance optimisation to prevent LLVM from always have to
+>   reparse the same IR).
+> * When a Rust crate is compiled, instead of generating an object file, we
+>   ask LLVM bitcode to be generated.
+> * llvm-link is invoked with --internalize to combine the helper bitcode
+>   with the crate bitcode. This step is similar to LTO, but this is much
+>   faster since it only needs to inline the helpers.
+> * clang is invoked to turn the combined bitcode into a final object file.
+> 
+> The --internalize flag tells llvm-link to treat all symbols in
+> helpers.bc using `internal` linkage. This matches the behavior of
+> `clang` on `static inline` functions, and avoids exporting the symbol
+> from the object file.
+> 
+> To ensure that RUST_INLINE_HELPERS is not incompatible with BTF, we pass
+> the -g0 flag when building helpers. See commit 5daa0c35a1f0 ("rust:
+> Disallow BTF generation with Rust + LTO") for details.
+> 
+> We have an intended triple mismatch of `aarch64-unknown-none` vs
+> `aarch64-unknown-linux-gnu`, so we suppress the warning.
 
-Applied to the vfs-6.20.rust branch of the vfs/vfs.git tree.
-Patches in the vfs-6.20.rust branch should appear in linux-next soon.
+So if I understand this correctly, it will consume the helpers twice,
+once for bindgen to generate the rust ffi glue, and then a second time
+to 'compile' to IR.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Then the IR is 'linked' into the rust translation units allowing the
+actual inlining to take place once 'LTO' runs.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+And while this works, this still has the downside of requiring those
+rust helper files and using bindgen.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+The other day [*] I proposed extending Rust such that it would be able
+to consume a clang precompiled header directly, this would allow doing
+away with most of all this. No more helpers and no more bindgen.
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs-6.20.rust
+Would that not be a much saner approach to all this?
 
-[18/46] rust: fs: add __rust_helper to helpers
-        https://git.kernel.org/vfs/vfs/c/02c444cc60e5
-[27/46] rust: pid_namespace: add __rust_helper to helpers
-        https://git.kernel.org/vfs/vfs/c/f28a178408e4
-[29/46] rust: poll: add __rust_helper to helpers
-        https://git.kernel.org/vfs/vfs/c/de98ed59d678
+
+[*] https://lkml.kernel.org/r/20251124163315.GL4068168@noisy.programming.kicks-ass.net
