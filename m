@@ -1,145 +1,137 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D166C343D67
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 13:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764854138; cv=none; b=rLz8kf99+a3yQnKoCzYv4r39/RurHDJYs6I1Ktf7LcVeXljW956xkMgvpZ5/yONQ8szsYb7YlDeEliG7YFIKc/zwUsMdYTm1k55sWElBW7RG9ZZMX0mt5Fed/bpTgvtCe4y/5YTOKjQY4bCKVAzMSZy3tIPIfBpv5lyfM6l7IE0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764854138; c=relaxed/simple;
-	bh=Wny4M191Yr6Td48Z53labtwrelyi+1dAudOVsu2AK4M=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=b5X21ABYGYYB2rPI/pfybzrkIDuOBgkomxnB+qYxu8NeYFBWjZg9pcEB/B64KfNiPHQS6Lv3ptfv+DVFSjo7G81FzJHZOHfGhoW2R+HTJIBGkvfIdCKf4ytk0MweXom2YDUYEWBDUGt8mKDeZpssNxSHkQIGi9cmTa7g6ZY5Qms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eEfcJc7r; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F9B26ED5D;
+	Thu,  4 Dec 2025 13:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764854826; cv=pass; b=Rt3oZty3qC/hUPygwrovDAr2xJEnMgi4xODZir/0dIpuO+VxT1R0uWEzzQbq/QPcAR/qcQYGjTVlsMrKxGB1RCqXx+aPScLD7D1NDJF5sZvDXRszrOCde7eBzv6i04IPxhWCprqAJf2I4F9/nvo71AVkAE5TyDzWwoCVKNGyJ0g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764854826; c=relaxed/simple;
+	bh=96LzJ7oxO+X3Ps6Rh0MmHlwiBxtem8ffrzwAG0xZ20Q=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=OqybYbWsmbNNP4pbvL5MI6P05eQy2YLwb2BAUrYKpsc0g29bK3SJrjqtUsH4STIQEE4FifzymwwpWKQjfteatOz80Bt3/xyrNwZV+vma38R+qP/uWWeX+J7KJdrGrTuNzVxfjxA2KjXjrjNmAn4mSvzlQxTgVZ9m3JIacoyORJQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=DFHNvamc; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eEfcJc7r"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477cabba65dso5528855e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 05:15:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764854135; x=1765458935; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Wny4M191Yr6Td48Z53labtwrelyi+1dAudOVsu2AK4M=;
-        b=eEfcJc7rhw0cV4AVNryfwcBVWVzGB9WlKaupTm7Da2GPKv/F15Drx6dff9i7hmhXux
-         91ywzr7ehL8Jn8Cut8F//aFCM80hZOtldydSRH4RAqYCnGEinGYUCxy8JUIqMrXsoZlW
-         BmIdCP9sV61gj9hEiL+kVcqoRbMxuM7+ZgYs3O7Xh37HoRrDiIV1wmR0BCWgRI+008zJ
-         w0zBqPuyuZV6kQiL9aHMLGG3vtrKBmqZlKEJKruCOG0Uo1AcFdjC/i1fb5zUZ2rzfthb
-         n3yegWPw/vgiNu1jFIejjQreRJlLUrkazHluobEuyp8VEpe2L2LXEpwuK+6A1DRuq7z0
-         EJjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764854135; x=1765458935;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Wny4M191Yr6Td48Z53labtwrelyi+1dAudOVsu2AK4M=;
-        b=ekArWFdTmjHz5731eb48SxFNg1j1V86VNasYPEfFTuT42C9/6DHZ+zK5iiFhRwzsfv
-         kDSFlmbLs2FlG5l/S8GoXgcmCIg1C8cUy8fqq2wQ6/aXhQQrFbcXmmYgCmdiK3jKMgAx
-         /6ItKkGRU1g7aTTRdmg1PX6wct+SOirR93Ose7EsT3z39GStyygjCog6XyNm3iSSODG4
-         JB2KxGzNZGV9kXfaiUkuvB8E8NIrvfF1tJB3/1X2D7RGe/JmDs3iqq/yyvVH4DhrOAeM
-         40/+2JISJF6vlfjBkWMwi1CtTBkXt2c4mcG8AmxB8us1kESeGjI1w/E6YdD6n7OEMRJq
-         iX+A==
-X-Forwarded-Encrypted: i=1; AJvYcCVnFkmWmD3qsFJoY4WovMvpo3c+gU4km+Ql46KxLBU6z6KXd2VIshoA0o1ALXyOHJGwb1YClSIhKYOsu7ToGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YznCzfcuSA9pfcchBus6LVh0gt8YWAnUBDqKuqYKzGlwmKM1VSm
-	e1Us+ByEgeRTCkETak+A06iuv0fjNcc2JTt9seJUwcT/ZTZBJJWpgMEAPxlB6RCUQGbuJidlkae
-	nIalOxRIxG0XmRi7LYA==
-X-Google-Smtp-Source: AGHT+IHhq1jpZSgsrG7+u70UeMI118GpL4lyrcZgSJfzAV0BpquOo2d1tIrYUXW40rz39aPBfrTMkT06vKIZZ8M=
-X-Received: from wmbjj12.prod.google.com ([2002:a05:600c:6a0c:b0:470:fd92:351d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e89:b0:477:55c9:c3ea with SMTP id 5b1f17b1804b1-4792af485a4mr64437335e9.35.1764854135213;
- Thu, 04 Dec 2025 05:15:35 -0800 (PST)
-Date: Thu, 4 Dec 2025 13:15:34 +0000
-In-Reply-To: <dd5856a8-e120-4884-8828-9d0c9edc60f0@crisal.io>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="DFHNvamc"
+ARC-Seal: i=1; a=rsa-sha256; t=1764854796; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=loqHiuBMnUzipACpIrX6qJC3UDNd9EjFb96hyF8yFFroBQJg6tsxwDgbfmOtnTTdIYUA1SodYWhzONc3UVpNnrauY9QFtrR3+B7jqG+PBV9Y6/QpscSQE+V7llvyq85F3bkMD2qW6FAQ2ErEhCHCXYKLu+cQbH0FG+vNe1N+kko=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1764854796; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=96LzJ7oxO+X3Ps6Rh0MmHlwiBxtem8ffrzwAG0xZ20Q=; 
+	b=RsZstK8745Gyv+akf+hqTIVq5RBhyW2zNdcaBWwmPTeNAlCyM8MRcVPH6/RrQrjgC/5sVliqxr0GwhvHE720p+zJlRGMs9Eqjy7fZfc0b6agT9qULDy04CoeHQcdZ5C+pTkdCSiuZuNPXXhHyKiqxJNhNhUmQVo+UcABTQ9Rgmo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1764854796;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=96LzJ7oxO+X3Ps6Rh0MmHlwiBxtem8ffrzwAG0xZ20Q=;
+	b=DFHNvamc8cEKGSHSNefulNGKgcDnLm/mABMrJQkrAJ95IleXMtJxZm7Nbjs2ljV3
+	KFta8KiC2yP1JGBfxzhSsRjotQfS6243iYMyMD9APbd9xvmEd0FwIL43CAvm3BiAitQ
+	AoKFjASLaTMUAWikgkHmUWWzPbfPPa5/mP6WgXbk=
+Received: by mx.zohomail.com with SMTPS id 1764854796182407.7823372204573;
+	Thu, 4 Dec 2025 05:26:36 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
- <20251202-inline-helpers-v1-4-879dae33a66a@google.com> <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
- <aTFhFXCqvy7nmDOp@google.com> <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
- <CANiq72=r+Fmu0uuNF=6x36GWWQZGZk9gApnMZxakJavviwG+ug@mail.gmail.com> <dd5856a8-e120-4884-8828-9d0c9edc60f0@crisal.io>
-Message-ID: <aTGJdlwMRxGg2iZ1@google.com>
-Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
- into Rust
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Emilio Cobos =?utf-8?Q?=C3=81lvarez?=" <emilio@crisal.io>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Antoni Boucher <bouanto@zoho.com>, Arthur Cohen <arthur.cohen@embecosm.com>, 
-	Gary Guo <gary@garyguo.net>, Josh Triplett <josh@joshtriplett.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v8 5/6] rust: ww_mutex: add Mutex, AcquireCtx and
+ MutexGuard
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aTFPRv2ahM_KA3AB@google.com>
+Date: Thu, 4 Dec 2025 07:26:25 -0600
+Cc: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ rust-for-linux@vger.kernel.org,
+ lossin@kernel.org,
+ lyude@redhat.com,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ a.hindborg@kernel.org,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ peterz@infradead.org,
+ mingo@redhat.com,
+ will@kernel.org,
+ longman@redhat.com,
+ felipe_life@live.com,
+ daniel@sedlak.dev,
+ thomas.hellstrom@linux.intel.com,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <E1879F44-A852-439A-966D-F074AE48E19C@collabora.com>
+References: <20251201102855.4413-1-work@onurozkan.dev>
+ <20251201102855.4413-6-work@onurozkan.dev> <aTA6f8gK60h6qaHs@google.com>
+ <86E0C8EE-393D-4C6A-9C28-BB036A1FFAD6@collabora.com>
+ <aTFPRv2ahM_KA3AB@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Thu, Dec 04, 2025 at 01:49:28PM +0100, Emilio Cobos =C3=81lvarez wrote:
-> On 12/4/25 12:57 PM, Miguel Ojeda wrote:
-> > On Thu, Dec 4, 2025 at 12:11=E2=80=AFPM Peter Zijlstra <peterz@infradea=
-d.org> wrote:
-> > >=20
-> > > Right. Earlier I also proposed using libclang to parse the C header a=
-nd
-> > > inject that. This might be a little simpler, in that..
-> >=20
-> > Yeah, that would be closer to the `bindgen` route in that `libclang`
-> > gets already involved.
->=20
-> Yeah, so... there are existing tools (c2rust [0] being the actively
-> maintained one IIUC) that in theory could do something like that (transla=
-te
-> the bodies of the functions from C to Rust so that rustc could consume th=
-em
-> directly rather than via LLVM LTO).
->=20
-> I think the intended use case is more "translate a whole C project into
-> rust", but it could be interesting to test how well / poorly it performs
-> with the kernel helpers / with a single header translated to Rust.
->=20
-> I personally haven't tried it because for work I need to deal with C++,
-> which means that automatic translation to Rust is a lot harder / probably
-> impossible in general. So for Firefox we end up relying on bindgen +
-> cross-language LTO for this kind of thing, and it works well for us.
->=20
-> If I'm understanding correctly, it seems the kernel needs this extra bit =
-of
-> help (__always_inline) to push LLVM to inline C functions into rust, whic=
-h
-> is a bit unfortunate... But this approach seems sensible to me, for now a=
-t
-> least.
->=20
-> FWIW Bindgen recently gained an option to generate inline functions [1],
-> which could help avoid at least the bindgen ifdef in the patch series?
->=20
-> Anyways, it might be interesting to give c2rust a go on the kernel helper=
-s
-> if nobody has done so, and see how well / poorly it works in practice? Of
-> course probably introducing a new dependency would be kind of a pain, but
-> could be a good data point for pushing into adding something like it buil=
-t
-> into rustc...
 
-I already tried c2rust as an alternative to this patch. It works okay
-for many functions, but it's missing support for some features such as
-asm goto, though this is fixable. But a larger issue is that some things
-simply do not translate to Rust right now. For example:
 
-* Atomics use the Ir operand.
-* static_branch uses the i operand.
+> On 4 Dec 2025, at 03:07, Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> On Wed, Dec 03, 2025 at 02:23:14PM -0300, Daniel Almeida wrote:
+>>=20
+>>=20
+>>> On 3 Dec 2025, at 10:26, Alice Ryhl <aliceryhl@google.com> wrote:
+>>>=20
+>>> On Mon, Dec 01, 2025 at 01:28:54PM +0300, Onur =C3=96zkan wrote:
+>>>> Yeah :(. We could get rid of them easily by keeping the class that =
+was
+>>>> passed to the constructor functions but that becomes a problem for =
+the
+>>>> from_raw implementations.
+>>>>=20
+>>>> I think the best solution would be to expose ww_class type from
+>>>> ww_acquire_ctx and ww_mutex unconditionally (right now it depends =
+on
+>>>> DEBUG_WW_MUTEXES). That way we can just access the class and verify
+>>>> that the mutex and acquire_ctx classes match.
+>>>>=20
+>>>> What do you think? I can submit a patch for the C-side =
+implementation.
+>>>> It should be straightforward and shouldn't have any runtime impact.
+>>>=20
+>>> I think there is a better solution. We can create a different type =
+for
+>>> every single class, like how rust/kernel/sync/lock/global.rs creates =
+a
+>>> different type for every single mutex. Then, you know that the =
+classes
+>>> are the same since the class is part of the type.
+>>=20
+>> I don=E2=80=99t think this would work with the from_raw() functions. =
+What class
+>> would you assign then? I think this is precisely what sparked the =
+current
+>> solution.
+>=20
+> There can be a way to create a type for a C-defined class, and
 
-neither of which translate directly to Rust.
+That=E2=80=99s the problem, if we don=E2=80=99t have patch 2, we don=E2=80=
+=99t know the class.
 
-Alice
+What you=E2=80=99re suggesting seems unimplementable to me at first. =
+Otherwise, can
+you expand some more?
+
+=E2=80=94 Daniel
+
+> from_raw() can require that you don't use the same Rust type for
+> different C classes.
+>=20
+> Alice
+
+
