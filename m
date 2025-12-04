@@ -1,116 +1,188 @@
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07DD2586E8
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 21:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C752FB978
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 21:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764882431; cv=none; b=vCL0TlHXQQ1+hBDUYP7mvLIr4CqNRBtX/u/8D1CLiv+hXvT2GMWg66Z5MgTWhgrgc0X5TMzUbN++YakVDRU2f9veHhZnNQGPGGPPUY8vNnia0mw1kp/1/RqPBIrTsRKOanW04aky3/NxiVoAXvTqE/JbZ3LIB/XE3UwjoViNMmg=
+	t=1764882471; cv=none; b=tNQNCtt4qIZPaHUqMlbzDsIiyIzAAbwgSvI99OIVMkcfHIM2SIKY/AfuleAk6Ueni74MuA+brVmHDiEowno7owyRCG93YhtJe+S/FTqvz75ua4oLOegu2gTjddciH5PxCCZJvqbwencn0ch8CPzY3vkEV3Tc+IVoVwvc82FGit4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764882431; c=relaxed/simple;
-	bh=XANNa0+fW6Yxkb3bup36rIJ7gJR914Afp07IHPoAPSE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t1ViM1bvEBTKNFIdtv6o97zgpAFXEuC/GlmLV0RR3+eLsguywKaLspvFlbu4btLsjSI7Q1PP12ycyOEdof/vNF/+TEUu2Eg925JTf0F4a0OoTQxXSnLFZQw75e6LNu+Q1NsVNySPP8HyhXRt98PBDEa8nPEshluoVQk4AG3HvAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SEy2lQbT; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764882471; c=relaxed/simple;
+	bh=NW9cQQoEAaaq3AA9nc6mb/b5UPvD+lPeMPRsPYxJB4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=Qpj8UMqszQvp2pj5J+tegmyFG5h6XtKkD23XEScSNABixLIV6VN+tvoNCSayiQlswBiYFhBeGyd5VxlDLeR64MFIYiKfaXIaN6URSZmxXBThVophFIMgZ+kIi280BAYNvkoMORdWd5wzvPh4xi4xAxG1hGs/sfb++D8zVqVu/ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CYiQL4aU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SEy2lQbT"
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7c6e815310aso992800a34.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 13:07:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764882426; x=1765487226; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ObKFiKGAyLeMY7FeWXEgr99pvhYgBonkdMqLPE6SxiE=;
-        b=SEy2lQbTK2UK80UQxfVSE27t5MOAlynpsr+ShgQ1QPG7wrHq9LQGEyIdO/8SVJ3hT8
-         lQs8FKaZnEEaNspXabBbCYhpuChvZMRp/Z5qvUlUlm6i1r+fZ5qlYa7LDs/VNYl3I07N
-         cG6yiTgOOshXV5fzZM0phxnYGOSe1u5JBcuHOdu7ivR8tllIa6jYxU8ULKwHVIlKfSBr
-         Ae6RM8KCtc6hK5WH7eh0owEXy3FEf+qhdUcbg9YTYxTTgx0CxCffrZiC1l0mO2bH510n
-         MQk1Awc95uPbjF+bYo7EKm6SeNUNK+o6RZibUhxwSVymQM2XOEgxej67dg/BXndbIzFP
-         RVCw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CYiQL4aU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764882467;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Utloqd78xIty0AP3e9N1+0oedDpwpptC21lH5x2/t7g=;
+	b=CYiQL4aUlncXZCvDOinYeR9qsKbWjQkRLPhhsc+kC7kCt6CKkVP0L8SsplxFQ8Y3aJVdlk
+	BnWMRV+i31FFEZtgHWXF3GHAjLNZP6/daYLgPoh1ZxwSiRsIau1J7KtZP1MujQb63OkGpJ
+	bPPlgNtl1yXeRGZP879oZ0+KtCAo8S0=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-583-3RF40kcrPBuuOivZiGveyQ-1; Thu, 04 Dec 2025 16:07:45 -0500
+X-MC-Unique: 3RF40kcrPBuuOivZiGveyQ-1
+X-Mimecast-MFC-AGG-ID: 3RF40kcrPBuuOivZiGveyQ_1764882464
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-7881cff41b7so18725417b3.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 13:07:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764882426; x=1765487226;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ObKFiKGAyLeMY7FeWXEgr99pvhYgBonkdMqLPE6SxiE=;
-        b=HJMbpgKb0jXfvG0IGVIJQbs4McjtVSOMz7TEM8/KUg1ejw8P+/zioSBU3Ja+Qbyelw
-         DDPlzQILp4j+LcI+Uk1GfbKCaOkPHAkxojLPfz5IDGktlkNkhXaaAKQ8xZgrSubM2d4h
-         NIG8Dzel9/xjRvLuukVRYqc89CQubmqVs4b/jhlUsmmBZenplHbgvUrrqiZUTwWO1nKp
-         C+7FSZ15iBF2k+a1YLVztFtIqWycR/+wj3DzDsnXvLpTbnMF65s1YpZOGrKADcg9QNqy
-         X2PVlTprpzIOTbvj+Rtu2rsve/QFwabWm/stiq8ocgeZZ11dghnIka83yJhBukOheD6v
-         Jn+A==
-X-Forwarded-Encrypted: i=1; AJvYcCWk0mRY8TADp8ay9v7zVn+Ik6mec5rEMUSm6/Oofe1SSypMlj8oA8Lv9FsgaeKLXQGzr5pE1QB12vGI0GMc+Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWH6ycTl3RXp6vHtpFzsICH0jsgLI/t9Bm+LlNaUa1zOS5mTRY
-	751vXRS+gQe+eHCoERc0dwxP64ZVq+2gckiif4csdnf2r56XNrHmXnoDWXhExA==
-X-Gm-Gg: ASbGncts2KKeGBK00OR2VURuSwcKckeZQJ21ejjfBNWPYc58L1ykG12JEHDnpyPu1Tf
-	gZAIDmwkTdRCwu1c1C2exBgthKhsRYsf74WXHFR7aNAH5lPtXaf2D3GtF8vH8oF9NOOhYHsY9eW
-	dqk3R+UbYPZjg4waFTrrwjTIRV9nnDx/h+HOu+hOkLToIDta4IOiv6oprsquAPsCwZ0RHdLSV7F
-	RiuoJROejxQdsW6RvUDpQmQNR7kBm3G+jBVGdIEPFFfBlihRgGB551y0qMjmcw/MQCt5onge2vd
-	mTrP3/faGy5hR/UjpnAFb2N2dkMAPqWYXEucyAHuL5leDTjUinwiTau3xpQ5dQnKAqhzOVIFqUi
-	k1dpNw4sL4iPeD5MIfAa5QW1onKLsBdDfm9PikxwDAH7XP9pyWruXEj7C/H6nHyA6Bh/kPE2UAu
-	KI2xRtHIAIUvypj5z2LDKqG5xeq5VnkXyoROf9X4wXJAvjOPqylNKyPf/17EfnZblP
-X-Google-Smtp-Source: AGHT+IFTX3Kk74h8stCW4HxZx6IIYHLV1Qpqejw7b6IEFFd7sdO8FN8wywBMKHB8xrUETeni0+4gtA==
-X-Received: by 2002:a05:6830:6ecb:b0:7c7:2cdb:ff4b with SMTP id 46e09a7af769-7c94db62470mr5185115a34.20.1764882425955;
-        Thu, 04 Dec 2025 13:07:05 -0800 (PST)
-Received: from [192.168.86.36] (c-73-166-115-174.hsd1.tx.comcast.net. [73.166.115.174])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c95ac8418esm2173751a34.16.2025.12.04.13.07.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Dec 2025 13:07:05 -0800 (PST)
-Message-ID: <be85b0fb-4bf0-4cb7-bba0-702c1682778c@gmail.com>
-Date: Thu, 4 Dec 2025 15:07:01 -0600
+        d=1e100.net; s=20230601; t=1764882464; x=1765487264;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Utloqd78xIty0AP3e9N1+0oedDpwpptC21lH5x2/t7g=;
+        b=jOfXqkYuiPOCqbJMQ71qTwJPkNY2jFsmvmg/4JeL5Oy+jzXTKaSBUzHdvQ9EunIx6R
+         FYVBcUxxGilwo3pQ+RRUGvDtbWznW8qxw9DiazxGnREzEsZMLdH5F4sMBdzYK0qjBoPz
+         UxojksEhzCJnO4IhJy0QtHxQfWntVHzn+drG2iIYOc/dHevzluCL0uxigQEWDgCwS5qI
+         HOtrN5OWZKzeWgYDg1FdCWh56re71pqjbgAZxjW6QLOIS9h2815rKRfDPncMB0nwvpep
+         YAWh4NZ+Ux26028pCU1KEa/cZiCOnQxKsXYU94HXFBnissk3unPZil+u7rMo8bWCwk+z
+         FXdg==
+X-Forwarded-Encrypted: i=1; AJvYcCW9ag4Z1QKblcYY2R5ctGmokxYL+6fyA5qb5oJwUyogjF5UmkQPlcfh2Xq6qevwSeuo6pU0EabrKSMWTjAWZw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQkTxUDtZBLRewqhGRDvUFE9FlSENpNmiDOWjMqnbXJAUJqalB
+	RA6tcqtGVBtygTrk8lHLzrz9HfT4zy6JJY+GzrFKbaeWdWmpnd8gn2cXuXFQRoeYvt4I9ftvajP
+	6jpLGVi3HeLS6XvOOVkpGq2xgtUhLcLaGiYZLePRBSUra2cETqvABtmGkboO8WLiw+b1g
+X-Gm-Gg: ASbGnctHUeG6nmgZLuppGb5lpOdqflNiTZdgAWzFzYzY+03rN6lXh8kpQKyGxPHmEyj
+	Urs5VP4xilfdZf7Zobcltsq6tEtiHRRS/lukZ4wjzMhwFaJdzxamQyZIpQuwpHVAG0AnOduzhNp
+	vkhlppSU/POor3LVqsjgfx/1+KzLBgCizJIz0uPrt7IwFQx4f7KvqZdhtWfBTyzG5U4tqLzfaNn
+	GKtNzIFkbhdGF99CSFb2pFWTSqh9z7VPeZhZPhM7G2bIv+tsJBfQpv8ZDLMWwPl+XtwKCnbTh/s
+	M0dkr3JBvbAiq6ZAsC2wpInUR9XN4rFw8r6dI5yozIsUtBoVF75wviamSISrmXSyvqnmwXjZteE
+	Ikiuo6acKcA==
+X-Received: by 2002:a05:690c:1e:b0:786:5789:57ce with SMTP id 00721157ae682-78c0bffa67bmr64181217b3.43.1764882464266;
+        Thu, 04 Dec 2025 13:07:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHm82XKkqw4kfk5U49CAGJ/i+43HgaWocHH822ewl7ru2nz49+bzl9Zv11OSszH0Ut14YtklA==
+X-Received: by 2002:a05:690c:1e:b0:786:5789:57ce with SMTP id 00721157ae682-78c0bffa67bmr64180817b3.43.1764882463673;
+        Thu, 04 Dec 2025 13:07:43 -0800 (PST)
+Received: from localhost ([2607:f2c0:b021:e700:58e4:f7ce:31b9:7841])
+        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-78c1b7a72dcsm9479027b3.52.2025.12.04.13.07.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Dec 2025 13:07:43 -0800 (PST)
+Date: Thu, 4 Dec 2025 16:07:42 -0500
+From: Peter Colberg <pcolberg@redhat.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
+Subject: Re: [PATCH 7/8] rust: pci: add physfn(), to return PF device for VF
+ device
+Message-ID: <aTH4HifpRnqWA6X8@earendel>
+Mail-Followup-To: Jason Gunthorpe <jgg@ziepe.ca>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
+References: <20251119-rust-pci-sriov-v1-0-883a94599a97@redhat.com>
+ <20251119-rust-pci-sriov-v1-7-883a94599a97@redhat.com>
+ <20251121232642.GG233636@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 23/46] rust: maple_tree: add __rust_helper to helpers
-To: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, maple-tree@lists.infradead.org,
- linux-mm@kvack.org
-References: <20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com>
- <20251202-define-rust-helper-v1-23-a2e13cbc17a6@google.com>
-Content-Language: en-US
-From: Andrew Ballance <andrewjballance@gmail.com>
-In-Reply-To: <20251202-define-rust-helper-v1-23-a2e13cbc17a6@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20251121232642.GG233636@ziepe.ca>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: cs6WtuXPzP6ERRal76cwSLkhYQ0n9Ci-2zEpXgsmDI4_1764882464
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 12/2/25 1:37 PM, Alice Ryhl wrote:
-> This is needed to inline these helpers into Rust code.
+On Fri, Nov 21, 2025 at 07:26:42PM -0400, Jason Gunthorpe wrote:
+> On Wed, Nov 19, 2025 at 05:19:11PM -0500, Peter Colberg wrote:
+> > Add a method to return the Physical Function (PF) device for a Virtual
+> > Function (VF) device in the bound device context.
+> > 
+> > Unlike for a PCI driver written in C, guarantee that when a VF device is
+> > bound to a driver, the underlying PF device is bound to a driver, too.
 > 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Cc: Andrew Ballance <andrewjballance@gmail.com>
-> Cc: maple-tree@lists.infradead.org
-> Cc: linux-mm@kvack.org
-> ---
->   rust/helpers/maple_tree.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+> You can't do this as an absolutely statement from rust code alone,
+> this statement is confused.
 > 
-> diff --git a/rust/helpers/maple_tree.c b/rust/helpers/maple_tree.c
-> index 1dd9ac84a13feed53c0ed5eec6805517081d0673..5586486a76e0de60969af1510b4b0428392920e6 100644
-> --- a/rust/helpers/maple_tree.c
-> +++ b/rust/helpers/maple_tree.c
-> @@ -2,7 +2,8 @@
->   
->   #include <linux/maple_tree.h>
->   
-> -void rust_helper_mt_init_flags(struct maple_tree *mt, unsigned int flags)
-> +__rust_helper void rust_helper_mt_init_flags(struct maple_tree *mt,
-> +					     unsigned int flags)
->   {
->   	mt_init_flags(mt, flags);
->   }
+> > When a device with enabled VFs is unbound from a driver, invoke the
+> > sriov_configure() callback to disable SR-IOV before the unbind()
+> > callback. To ensure the guarantee is upheld, call disable_sriov()
+> > to remove all VF devices if the driver has not done so already.
 > 
+> This doesn't seem like it should be in this patch.
+> 
+> Good drivers using the PCI APIs should be calling pci_disable_sriov()
+> during their unbind. 
+> 
+> The prior patch #3 should not have added "safe" bindings for
+> enable_sriov that allow this lifetime rule to be violated.
+> 
+> > +    #[cfg(CONFIG_PCI_IOV)]
+> > +    pub fn physfn(&self) -> Result<&Device<device::Bound>> {
+> > +        if !self.is_virtfn() {
+> > +            return Err(EINVAL);
+> > +        }
+> > +        // SAFETY:
+> > +        // `self.as_raw` returns a valid pointer to a `struct pci_dev`.
+> > +        //
+> > +        // `physfn` is a valid pointer to a `struct pci_dev` since self.is_virtfn() is `true`.
+> > +        //
+> > +        // `physfn` may be cast to a `Device<device::Bound>` since `pci::Driver::remove()` calls
+> > +        // `disable_sriov()` to remove all VF devices, which guarantees that the underlying
+> > +        // PF device is always bound to a driver when the VF device is bound to a driver.
+> 
+> Wrong safety statement. There are drivers that don't call
+> disable_sriov(). You need to also check that the driver attached to
+> the PF is actually working properly.
 
-Acked-by: Andrew Ballance <andrewjballance@gmail.com>
+Thank you for the review. I missed the obvious case where the
+PF driver is a C driver that does not disable SR-IOV on unbind
+and the VF driver is a Rust driver that invokes physfn().
+
+> I do not like to see this attempt to open code the tricky login of
+> pci_iov_get_pf_drvdata() in rust without understanding the issues :(
+
+I will work on a proper solution based on Danilo's proposal [1].
+
+[1] https://lore.kernel.org/all/DEFL4TG0WX1C.2GLH4417EPU3V@kernel.org/
+
+Thanks,
+Peter
 
