@@ -1,152 +1,190 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFD22FD7A3
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 17:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9387346E58
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Dec 2025 19:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764868755; cv=none; b=H3Xiz1ruVd+2CeXpQmOQ7y0fdVzChUmWmcM8no9AbeWaxreY/ABEB9L+gAsXL+C4TuHcBNCye/3qdrrA7uFol5f3Fo1XyHnSpbJKZaP/bsqYQgBWybvuPrhCXi+SDsF5GJhYqMWOfbQXcZUNe3RoLW7dMDkY7sf84j3AYVrShLk=
+	t=1764876570; cv=none; b=giZ6zp96gx4yACuHvjWuarGu0TWLF2StVOh/z8qRM3OplFINC3pA8p6Ti59hoXOPeDmS3d62Ab9D4ehvRHJfQseP9wtxrYOPAYgMAhVNlP+8sp2IjYDngzDTfo4KB/F2HW06fhZufQUX5Z3nslvxhQr1ROLTQuopgL6fIuYG39A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764868755; c=relaxed/simple;
-	bh=tbhl1hB6Go7cKeEzi9fq0ksxVXWeewQm1ULfbDi4zC4=;
+	s=arc-20240116; t=1764876570; c=relaxed/simple;
+	bh=li2jOPCpnZmjfOxkVB/u3Ntjt/9n1Mv+93gAuK1nZY4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=drC/a3l6Lj68z4QBDZcsrTc8TQLSBf1CPYF7i9uOWqa9NyjneqKizSngX8bp2DqJSGbs3PllXk7OXhy1o94Qf6gRmZ0pl+mxoTdpLe785vyQnDdA+30/bQDscBCgtJt7iZJMvptluP+T4x7xS8WqpLKHEJntIRrGNjVBCoFsetA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TS5lSMNY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=J22RMfoF0HqHz6HntB+yo6gzLZHd2jLV4la5Yz89estdnMGXSTQFNvBxNmN8nqRl7R9lLF+u9t+Ad/gHHwlol6qBc2VaOWxphOMiAz7q2tkjWzpR136JES6SO26jBvggL68vNbZYEUhj4zQL+vWF8/V2RkXmaA99NR/Cp1yUSFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WXGNBUCd; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TS5lSMNY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764868751;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tbhl1hB6Go7cKeEzi9fq0ksxVXWeewQm1ULfbDi4zC4=;
-	b=TS5lSMNYD35/wAmr4rMYBl+UllFP4mLh2L185PF1q4woIPAbSZsz8L1x5lqeq9LaYONq2W
-	01NQ8rgBBbkU0xhqnI1dzbvhxlTa0QsnUf8EX8feBKyKLCfptQF6NGNYArP9WJjkwe2l4e
-	Y7GMbbyrKy7gIYf/Q3PibphGczpFohQ=
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
- [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-_nRSLfdDOeeZdPXmbhp0Ig-1; Thu, 04 Dec 2025 12:19:10 -0500
-X-MC-Unique: _nRSLfdDOeeZdPXmbhp0Ig-1
-X-Mimecast-MFC-AGG-ID: _nRSLfdDOeeZdPXmbhp0Ig_1764868750
-Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-55b0cfe81afso1999484e0c.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 09:19:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WXGNBUCd"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4edb8d6e98aso83661cf.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Dec 2025 11:29:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1764876567; x=1765481367; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=li2jOPCpnZmjfOxkVB/u3Ntjt/9n1Mv+93gAuK1nZY4=;
+        b=WXGNBUCdN8gqregeMOTpujv/6QXlb0lJ6tHZ1+HNhTOEH9sFdroEm7PO3Eykw7HNVP
+         k22F/0sqTFDjY8gE5w8otLiN1QsI4ttaGg02N7TKqEXLX9qvwzD6kiHfRd/dYlZwbdiG
+         QaC9Eg1uaFdwc8JalYstdEVN4U+eQDESjqdloTYHfnMjpsrYaya1IuFtOKlRPysPKqmX
+         rut6fGao9zwzlgpBoY3lmQtkruvUFJgkmzsFFSTcMzMbq3bjnwv7nrEa+8HWt05AZbMm
+         amtTpOPFI38MYwd7rf7HpRHQWhReqFHtdceLU2pkitcJxy5M5f7v5tqwTRq7XAmBIjpN
+         CcnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764868750; x=1765473550;
+        d=1e100.net; s=20230601; t=1764876567; x=1765481367;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=tbhl1hB6Go7cKeEzi9fq0ksxVXWeewQm1ULfbDi4zC4=;
-        b=dYYSsDCvCR9ym9PSK88R5rqVLhmmdOhov0PnfZ4x6adt3ll9GsqY7SJtE3CFDtJVFv
-         eQEQSdU0Dc//Qup5lhnpXMIsI56F7GIpOEPoz4NsK8UuGCs3DONDStxv/IhxZ0EiQ481
-         KpfkMECBJg63NLlb+vd0zZmN2jbHFe/8cmlE/ZXijw8MPxO9ZOPm7RMg8Uj8Vos6Dgnj
-         JbhuxlClDTknEjFM42bdaBCT5/PtDJLmef8NSfUvziN+sYDHDeqSadZWwEcQOOlLNp7n
-         rluA4gKWp6T9Hgl3txr+GVy6TuAPMSNnORp+mo2fSJdzmuZKabdGzYia+cIS6acBmEyF
-         dh0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVvonnng19j57Qt/GaYnO7kaHADlO4I6rB/I7UWi5POluNZdzXSLpDmglt1uv7WF0mQQ3LOeSv1POTHijvfvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwFhgJEDFfQAOt4xn4Sswd+5gBh2vCjlZmFIxfl5I6fNTPERxg
-	zqnTBmMql6dHvyWxFlqwdjE6xHGrKBYWKUE8Ed3kVCWRhl8g0YTnwT5v+6hbn2ulfRxlEMIXqPh
-	XxVsgoWqe17xcL5kmL4vpVTit3e2cZtdrOBHSqi4tRnrPpLVSi6Irf3VLPpPmx0ERQl9JTIGRHu
-	d8VTM3NggMWMKyjEuDrc4CRB7OxbLpzckkvjgR2vQczKE=
-X-Gm-Gg: ASbGncsmoBcP1ajTrx9FzcjqCWYXYlh/M/0zoE6hcfJtGckKqjP/fv4KyQDWyotOqSA
-	QY1jZ1pYFDYL5tXyDfH/iDL13eMbStr7zFpSf7YmiyA//+nQJNZ1EK85jYNwadmQbCSytpt6nnz
-	MbXTc11An2GxsYydTcKIWnYylUhYOJeIxt19DSEZ0SKbyJWDQDLkBREgEYDGF43+U8SQdZtRxfw
-	4w=
-X-Received: by 2002:a05:6122:219e:b0:55b:d85:5073 with SMTP id 71dfb90a1353d-55e69d33928mr1380189e0c.4.1764868750229;
-        Thu, 04 Dec 2025 09:19:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEeIB0YNcpJAiGx/GNuObvXw/sfsBoL+Pu7iwpKlscfZjHDAR4upRzogd+N3zgiWodvzIxUpcfLPOjZg7ZeO+k=
-X-Received: by 2002:a05:6122:219e:b0:55b:d85:5073 with SMTP id
- 71dfb90a1353d-55e69d33928mr1380133e0c.4.1764868749828; Thu, 04 Dec 2025
- 09:19:09 -0800 (PST)
+        bh=li2jOPCpnZmjfOxkVB/u3Ntjt/9n1Mv+93gAuK1nZY4=;
+        b=UpXXpIMkdKMPwveNvRZP9EK6Xm9d2rOmKvU5s/n4EewaF5BXPUc08rx596nchRMUW5
+         QaJL+2VZlbHKFalI1NW0AjWZIQuh69QRpvhKingBiE+OZcwKWZ+WbmahL8DLhjcHLVdZ
+         Z+zhFtCr+WiqrHkKmIb8xFScNmp4O6avVwKbKugIZh6prWXJDkSinpcJG+3RaJrTsWaB
+         QUaXq03ACNFCYrrlDarXC3nXCBiJBwYQK/Co2BQRIybDj9jWieIfvxUGUrXAHmV0aZrm
+         EuuOyiC2B9/WIsRnGmOcZSOZ3UMzOCwgvMCwVNv6YTWjwcyypkd/TaD0N+308Nxtdv5P
+         nfCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNy+VOGxaVKxFI5ZnFx9k8Qz3z764RA3EHUZxZR4T4+t5Y/XWdR62g/jORhrkKjKrcS6+opqxa+102J87XRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2YcNkhnoKl/YMY3ZHvYXzrSG4viZIL45G963fWMrA3w1pXtNj
+	DqxsIm4apvgyAznZYQj6/43TpHQTKb3mywV4GkQSbQnHwykkQm1K2TYqb1BczhXnNMAXoUw4w+j
+	VgdhWHHpBE3M+3lwznuv0IRe4/5vCKCK1fsDqjgaW
+X-Gm-Gg: ASbGncuVawQ1S5q0QCMpdsHkHWsQj3vTM7Xbo28qi49SUYQwqQJD3WC6ZIzSPCbjLAI
+	ySD7ECfAmvs2DisVWlrCbqE6VXEaIu04HMaQ3E5h4/NUGk9McyYZd1ztxAKOHqPockiyk+uTr+S
+	cWrSSt0xDZjACzIfW4XMX7pr9vlG4i/1Io1fUzB1TuoT2V+bVI1v0InJZB7qNK8lNcFYd/PEVz2
+	xX+e1jX7oz6U5WfbpNeHftcJoCgXpEV4VOmaTOan3NL1gS3Xkwx44YEXmvYCFLX9Fz6EgJDk1XU
+	VXMqHMhm+63hFtbqWfrOD1/pKQ==
+X-Google-Smtp-Source: AGHT+IG/7kUZxd/9UMd9RxOWK7oRJw6LsWkyhbSwzHRq9dv3XGK3gE0ZwwYu8Q59dnHZWlQ+QWACJNmSaDdEdt4GFj0=
+X-Received: by 2002:ac8:7d91:0:b0:4ed:ff77:1a87 with SMTP id
+ d75a77b69052e-4f0310036bbmr1019101cf.19.1764876567093; Thu, 04 Dec 2025
+ 11:29:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
- <20251112-v5_user_cfi_series-v23-24-b55691eacf4f@rivosinc.com> <20251204175055-fefb76ff-2ff2-48b8-b92c-3d3ce33ec9f5@linutronix.de>
-In-Reply-To: <20251204175055-fefb76ff-2ff2-48b8-b92c-3d3ce33ec9f5@linutronix.de>
-From: Charles Mirabile <cmirabil@redhat.com>
-Date: Thu, 4 Dec 2025 12:18:57 -0500
-X-Gm-Features: AWmQ_bn9PjdtETVMsD9KORY8lffIPeFGUkSijG0lA3xh-eP2WvDjQUg18Xtxf3s
-Message-ID: <CABe3_aH6wRzKt+f8RyG+0mN0Kyu2eASRn4URxgU4R-zEmdwBgA@mail.gmail.com>
-Subject: Re: [PATCH v23 24/28] arch/riscv: dual vdso creation logic and select
- vdso based on hw
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Deepak Gupta <debug@rivosinc.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-	rust-for-linux@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: rqCouQWczXeWSR_W6L6cuKeaEIuTRPJmVh_7EMOyDfs_1764868750
-X-Mimecast-Originator: redhat.com
+References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+ <20251202-inline-helpers-v1-4-879dae33a66a@google.com> <20251204100725.GF2528459@noisy.programming.kicks-ass.net>
+ <aTFhFXCqvy7nmDOp@google.com> <20251204111124.GJ2528459@noisy.programming.kicks-ass.net>
+ <CANiq72=r+Fmu0uuNF=6x36GWWQZGZk9gApnMZxakJavviwG+ug@mail.gmail.com>
+ <dd5856a8-e120-4884-8828-9d0c9edc60f0@crisal.io> <aTGJdlwMRxGg2iZ1@google.com>
+ <20251204142742.GM2528459@noisy.programming.kicks-ass.net>
+In-Reply-To: <20251204142742.GM2528459@noisy.programming.kicks-ass.net>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Thu, 4 Dec 2025 11:29:13 -0800
+X-Gm-Features: AWmQ_blF4lJt3BfO2o2NOJRf3_Ss0kAS-vrqLdfp0qFcfHcQVmwUbXFySwWbsjc
+Message-ID: <CAGSQo01Am_rNeZqnqZU3hY7SwWG=dTHtzcksPSHUTiasgex+cA@mail.gmail.com>
+Subject: Re: [PATCH 4/4] build: rust: provide an option to inline C helpers
+ into Rust
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, =?UTF-8?Q?Emilio_Cobos_=C3=81lvarez?= <emilio@crisal.io>, 
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Antoni Boucher <bouanto@zoho.com>, 
+	Arthur Cohen <arthur.cohen@embecosm.com>, Gary Guo <gary@garyguo.net>, 
+	Josh Triplett <josh@joshtriplett.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
+	nouveau@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 4, 2025 at 12:04=E2=80=AFPM Thomas Wei=C3=9Fschuh
-<thomas.weissschuh@linutronix.de> wrote:
+On Thu, Dec 4, 2025 at 6:27=E2=80=AFAM Peter Zijlstra <peterz@infradead.org=
+> wrote:
 >
-> On Wed, Nov 12, 2025 at 04:43:22PM -0800, Deepak Gupta via B4 Relay wrote=
-:
-> > From: Deepak Gupta <debug@rivosinc.com>
+> On Thu, Dec 04, 2025 at 01:15:34PM +0000, Alice Ryhl wrote:
+> > On Thu, Dec 04, 2025 at 01:49:28PM +0100, Emilio Cobos =C3=81lvarez wro=
+te:
+> > > On 12/4/25 12:57 PM, Miguel Ojeda wrote:
+> > > > On Thu, Dec 4, 2025 at 12:11=E2=80=AFPM Peter Zijlstra <peterz@infr=
+adead.org> wrote:
+> > > > >
+> > > > > Right. Earlier I also proposed using libclang to parse the C head=
+er and
+> > > > > inject that. This might be a little simpler, in that..
+> > > >
+> > > > Yeah, that would be closer to the `bindgen` route in that `libclang=
+`
+> > > > gets already involved.
+> > >
+> > > Yeah, so... there are existing tools (c2rust [0] being the actively
+> > > maintained one IIUC) that in theory could do something like that (tra=
+nslate
+> > > the bodies of the functions from C to Rust so that rustc could consum=
+e them
+> > > directly rather than via LLVM LTO).
+> > >
+> > > I think the intended use case is more "translate a whole C project in=
+to
+> > > rust", but it could be interesting to test how well / poorly it perfo=
+rms
+> > > with the kernel helpers / with a single header translated to Rust.
+> > >
+> > > I personally haven't tried it because for work I need to deal with C+=
++,
+> > > which means that automatic translation to Rust is a lot harder / prob=
+ably
+> > > impossible in general. So for Firefox we end up relying on bindgen +
+> > > cross-language LTO for this kind of thing, and it works well for us.
+> > >
+> > > If I'm understanding correctly, it seems the kernel needs this extra =
+bit of
+> > > help (__always_inline) to push LLVM to inline C functions into rust, =
+which
+> > > is a bit unfortunate... But this approach seems sensible to me, for n=
+ow at
+> > > least.
+> > >
+> > > FWIW Bindgen recently gained an option to generate inline functions [=
+1],
+> > > which could help avoid at least the bindgen ifdef in the patch series=
+?
+> > >
+> > > Anyways, it might be interesting to give c2rust a go on the kernel he=
+lpers
+> > > if nobody has done so, and see how well / poorly it works in practice=
+? Of
+> > > course probably introducing a new dependency would be kind of a pain,=
+ but
+> > > could be a good data point for pushing into adding something like it =
+built
+> > > into rustc...
 > >
-> > Shadow stack instructions are taken from zimop (mandated on RVA23).
-> > Any hardware prior to RVA23 profile will fault on shadow stack instruct=
-ion.
-> > Any userspace with shadow stack instruction in it will fault on such
-> > hardware. Thus such userspace can't be brought onto such a hardware.
-> >
-> > It's not known how userspace will respond to such binary fragmentation.
-> > However in order to keep kernel portable across such different hardware=
-,
-> > `arch/riscv/kernel/vdso_cfi` is created which has logic (Makefile) to
-> > compile `arch/riscv/kernel/vdso` sources with cfi flags and then change=
+> > I already tried c2rust as an alternative to this patch. It works okay
+> > for many functions, but it's missing support for some features such as
+> > asm goto, though this is fixable. But a larger issue is that some thing=
 s
-> > in `arch/riscv/kernel/vdso.c` for selecting appropriate vdso depending
-> > on whether underlying hardware(cpu) implements zimop extension. Offset
-> > of vdso symbols will change due to having two different vdso binaries,
-> > there is added logic to include new generated vdso offset header and
-> > dynamically select offset (like for rt_sigreturn).
->
-> If the used vDSO variant only depends on the hardware and nothing else,
-> why not use alternative patching and avoid the complexity?
-> I see that RISCV_ALTERNATIVE depends on !XIP_KERNEL but the vDSO code is
-> moved to dynamically allocated memory in any case, so it is patchable.
+> > simply do not translate to Rust right now. For example:
+> >
+> > * Atomics use the Ir operand.
+> > * static_branch uses the i operand.
+> >
+> > neither of which translate directly to Rust.
 
-These instructions are emitted by the toolchain in the C code, so a
-traditional approach with alternatives is not exactly feasible. Maybe
-you could do it by scan the binary for them, but that sounds dubious.
+I took a shot at `c2rust` as well, the summary was that `c2rust` was missin=
+g:
+* Asm goto support
+* __builtin_types_compatible_p
+* Deduced types
+* __count
+* _Generic
+
+I was adding hacky implementations along the way to see if things
+could be made to work, but the %l and %i missing in Rust itself that
+Alice pointed out were not things that could really be worked around.
+
+I also think that the bitcode-based approach is more future proof -
+the kernel may pick up new C features that `c2rust` hasn't yet learned
+about. If `clang` is in charge of generating the bitcode for the
+to-be-inlined helpers, we don't risk any desync in terms of what
+features are supported either by `c2rust` or by `rustc` relative to
+what's in use by the rest of the kernel.
 
 >
-> > Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> > Acked-by: Charles Mirabile <cmirabil@redhat.com>
->
-> (...)
->
-
+> Right this. AFAIK Rust simply does not have feature parity with inline
+> asm. Them having picked a wildly different syntax for inline asm didn't
+> help either of course. But Rust is Rust, must have terrible syntax :-)
