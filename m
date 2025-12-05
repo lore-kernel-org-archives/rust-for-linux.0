@@ -1,184 +1,191 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E34F2BFC9B
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Dec 2025 18:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8792F33B947
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Dec 2025 18:24:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764958634; cv=none; b=r/v4f7PX8GaNAD6OYPVp95IEWL5cpijsRUkdHpRJlp57ZFuDLLJLB42+xRx8MDc1iF+tJAv/DLZVDin/e6QMthudsegCdB8ZzkHr6XVkCAXBrPCyySzRTuR4OVyH6FIRNu+nc60ObwQm40hqvumRETRbp+APvwDXI97KI0W4SXI=
+	t=1764959058; cv=none; b=LV1+JtT55vOiRQVnlqdSA+ggd2mbWeB3dilL5JnpYeE0iV42kHt4IuilSQ8KIseNzU+9x030iKopmBRDrSyqp9ziX99sgN7gpor+ajyUFqU0b3XgNlA+JyIHgD+q/2y734UnGLpozJ51E+UufD59zpr9RO08gFyoUtlpRYNsFAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764958634; c=relaxed/simple;
-	bh=kfOxdGTe7tI9bBSpavpRUT6P4uC27C+LWQwk0BcUY+Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HjJwGBUoqHaU9ZMvxP/8hAXR2+9oGmG1l7w/wqqN5DytzFy4/sJEc7pwE6MimPBcC2NdZLG/MPZJ+I5Q+XA+LvXrVudIMJKBOgM4JrP553kufLfZOi68tgszogxOiVHBM+YJsa0AUjFrrOIpi7DEd3lXL1Pia58tG5WeS+0Z/LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ISZxdRqm; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1764959058; c=relaxed/simple;
+	bh=NVR+U3jG2tQbxbWsFur6YJo3TCvjT6tp/C+uJQCGLEE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B6LmTBxq/Ax6ta2al/H6/UNiVndyh966wPlKqvBxYJmqP2AYGPwvY7LYe8PmlcDTD1qQ0ZW8MJ7P7GlpCzQd2/2eSH6XVjlXrULngWcUG8Qn8PnMvfIbZXF6qHOroICvIpQ4v5w/gLG5/Ct8t3UDGvICENAH/gEbh9kjptIu2lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=N4VXFbW5; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ISZxdRqm"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42b2ffe9335so1648163f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Dec 2025 10:17:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="N4VXFbW5"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-29ba9249e9dso34066095ad.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Dec 2025 10:24:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764958631; x=1765563431; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gYtQdVewYPYK+nwYYWgxTT03HxE0FT7b0fetIYX5WBk=;
-        b=ISZxdRqmS01rlToi3rBo06k0/3LJ8ge/KWlSdURtMAIw2mIvsGL58hdKX4O7QgL2aS
-         rkoEBdWdQfCF+bOvNR9y7Y9+szz5Su/ZQvCtyGHE0oRRhzv7unWaAlXG8BKC78Aa6hxN
-         07/1m2VAR+PafA5lUHiikuK3CHgXWOspc/KOl0JuqR2GShrBC0j0LaFipFu4k3ZJIi6G
-         PSYrsMxb2YMthnDnTa1x64vOcoZlUGCiN1i+bCGt5AJ/0vZ/EfwhIS5+3K8FcFI76if8
-         uhorWa0S6Agf70EBsv1uHq2tjztLMcQt29VbvRR7t+Gb2iZXP5R+VTEbGPXhv8pilknQ
-         c4yg==
+        d=rivosinc.com; s=google; t=1764959055; x=1765563855; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=R8W7GJchcQ4zk/poJ1GR6L1BtfcBrmnZJJRAQLqexSM=;
+        b=N4VXFbW52VVrQmp8Uuu7vQuE1a3Et5buPSLuzNdHCCAyg7nc/qiIyWzT8/SreCHd5S
+         m8VQNza1Guld4QsxgE3GrczagDJcSuWWeQ/2mWhbjmn7++weUnqqNo1n8CIPoNy1Qif6
+         4L3ziOogGMN9AGdDD/RYVMmXac8LKMIteAt1x+OMzUjs8gPaR3BFeL8IThAdRuNWstj3
+         /rLT1VOsaqQSz1ShQ95wQqfwHOxvvfHHzQoUx+sWJ6mPNChCC3203ZiSATfR0xVX7FoA
+         hXPF8SUy7ib/7ttMhHa3XBA9PP+00NUiIQqPm3gIR5mtdm1EWNKPmjUW2PK3S42VtL5I
+         Uo4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764958631; x=1765563431;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gYtQdVewYPYK+nwYYWgxTT03HxE0FT7b0fetIYX5WBk=;
-        b=JvHvO9QmbU/Yh9tpW61oaEWKEYT+cRwnQqI17QMLYtu97JKO8fl0yeMY7epi4GKBvB
-         WB71/hxGjNdW6v2p2Mmzn3qR0tdMKvQadTle3QH9Nt5SSSUkSyqbU49iAqlNQfXiDjJM
-         3CoVFLCPNy7z5lyWcVNQyoLzHu4/gR4/esTIeOcdI86eemGAcwnFbVPK2zbStYLHtpTx
-         TJ/GewdbcCiymCByDM6/rHh6v0FCBCwq4hAOBeMj9r1QqP1gATI84e10sXiwzZuBA6J4
-         uOWdnHlVBFdffccmfdAiONS+55vKdHQcXYmLbc+7jlqUWfDawuBhQ5XMESfamUfrxKUO
-         rVcg==
-X-Forwarded-Encrypted: i=1; AJvYcCWco5mw89cgQcKxBPGE1j0DCeYV4GJLMMBSWvnALmYvWtZ9jjpv+3ErbN5ofyTWkhOWV68Z8EGpqS21JZ205Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxv8yffGfaqW1FLRpx5Elt2rCgVevK6oPDLTexeeZi0uzMjCO0a
-	5HBu5QuW6InVtnUqaAelui1LDB7YFnA8cDp/4driyP/fx4dbjj40Nu3SOXLkA0Oe5zHXoTXii48
-	dEc9aXacGUQz1DAMX5w==
-X-Google-Smtp-Source: AGHT+IFbgI6+zFr2WThM/jHji6RSillc9y0ALmMhNF3P25uuiyAh3pxG84bb+AyWqmj9XeWywvftwi9tJFedKmY=
-X-Received: from wruq1.prod.google.com ([2002:a5d:6581:0:b0:429:8ccf:4ae7])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:608:b0:42b:396e:2817 with SMTP id ffacd0b85a97d-42f89f48530mr105514f8f.40.1764958630611;
- Fri, 05 Dec 2025 10:17:10 -0800 (PST)
-Date: Fri, 5 Dec 2025 18:17:09 +0000
-In-Reply-To: <aTMUqp5pXzAscrdZ@redhat.com>
+        d=1e100.net; s=20230601; t=1764959055; x=1765563855;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R8W7GJchcQ4zk/poJ1GR6L1BtfcBrmnZJJRAQLqexSM=;
+        b=J8PLlbxtE/6WmQcegcj4mEiasuh6/r2xnO0Vdxl2YVh7MzqzhMdgZiYPs2F1E7CBN6
+         XGyq8YMMV6YgniVdQwS7YYsAbfyLl5D44OZYfci1i7gDG6LKaE9dCp3JzTpUbdXuNg+L
+         xKEHEFNgFZDFHUT5g0ntJUg1cO6QlClztR3+19xzYGIquKMqLrslwy0z2SoONpqh6Ci9
+         +Si8zuIv2JBflN7bGLB6JTcS6clyu01CM2P4Ws52V2fryK6cetZr2XcjX7hP+IU6Ao2N
+         +ofx+GUksAATrtcJT0186rLUqj5DA4CBxUr1RDuwVr0yE4UAq927QC8To3yNKAitAIwm
+         s0zg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrjw4k2jU+qUhK5EAHC/lbwIAIgPATf95JCghkXOuVU/9USiGuYbwjIOpm6a4zjXa9u9afcf2D4zwa2nhdMw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/F6dpnq+0WS0npHxBjkiZd/aOV1sdx12BNmTcUGbw1GnAoHuk
+	SdhRoNTXWCjU1ohBsVsZKuqdqh2ncrGi0u0GbKCeWSBhU1QEl2jtjQsLJUQu2/vycQo=
+X-Gm-Gg: ASbGncsuZm7QxRpt/uS1zEHxKY5kzNWeyl+dw1j0x9YM6dSHZ1xvk4JezK3eAy2Zbfi
+	NQPHc1IqPRJwY3uLpak7OFIrUM0GhbQGFVcGAjTCt17y2HNId776kHnEFMkeL8rid8ox5dUOA0S
+	ds7PERanGx89GgOnn/sfE0aDCsyCdagqy0YGz8Q+AXcfAr0nHJD4bJTBnFJmpiDkjTzzfEb72mC
+	FjSoG3ZF6I+3zsIUYvcRO+Vqh/ZMRPaUh29QuaGpjKhqLLp3n8bQaniUaTYStMHVQHM4U6wtZZE
+	FwY2EiPjbaMwrNkheHl+fgUrcbGANuOYuk1oG+e59YV10VMHnjILFZDakKY3Fmn7okJFQxG3S/e
+	J0AUBn8Hcnu5HRwvJogdD4+fP2IfzWL4QKtsh9LCepvvyYnJ/+dplqxGDm4ef/M9cVE/hYkZM30
+	ezUOZmuxrJXil55n1vPB/E
+X-Google-Smtp-Source: AGHT+IHZMCsXUTCjOVQ3AFVu8onlvt7po3LO4OEVVdk3jTNgtLDl44M+FmDz1C3tnLg32Vfv9eEpZQ==
+X-Received: by 2002:a17:903:11c8:b0:269:4759:904b with SMTP id d9443c01a7336-29d6848df81mr135161565ad.58.1764959054851;
+        Fri, 05 Dec 2025 10:24:14 -0800 (PST)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae4a13d2sm54863235ad.9.2025.12.05.10.24.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Dec 2025 10:24:14 -0800 (PST)
+Date: Fri, 5 Dec 2025 10:24:11 -0800
+From: Deepak Gupta <debug@rivosinc.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
+	richard.henderson@linaro.org, jim.shu@sifive.com,
+	andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+	alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
+	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+	Zong Li <zong.li@sifive.com>,
+	Andreas Korb <andreas.korb@aisec.fraunhofer.de>,
+	Valentin Haudiquet <valentin.haudiquet@canonical.com>
+Subject: Re: [PATCH v24 25/28] riscv: create a config for shadow stack and
+ landing pad instr support
+Message-ID: <aTMjS-Ok-DrJJjQY@debug.ba.rivosinc.com>
+References: <20251204-v5_user_cfi_series-v24-0-ada7a3ba14dc@rivosinc.com>
+ <20251204-v5_user_cfi_series-v24-25-ada7a3ba14dc@rivosinc.com>
+ <b5feba48-7e7c-4ab9-a193-072f3980f525@infradead.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <aTLnV-5jlgfk1aRK@redhat.com> <aTLp73haymcs1fkX@google.com>
- <aTLsUDBbcbl2ivme@google.com> <aTMUqp5pXzAscrdZ@redhat.com>
-Message-ID: <aTMhpX-_H4Y4J7Ud@google.com>
-Subject: Re: rust: wrong SAFETY comments in group_leader() and pid() + questions
-From: Alice Ryhl <aliceryhl@google.com>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Christian Brauner <christian@brauner.io>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Panagiotis Foliadis <pfoliadis@posteo.net>, 
-	Shankari Anand <shankari.ak0208@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Alexey Gladkov <legion@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <b5feba48-7e7c-4ab9-a193-072f3980f525@infradead.org>
 
-On Fri, Dec 05, 2025 at 06:21:46PM +0100, Oleg Nesterov wrote:
-> On 12/05, Alice Ryhl wrote:
-> >
-> > pub fn group_leader(&self) -> &Task {
-> >     // SAFETY: The lifetime of the returned task reference is tied to
-> >     // the lifetime of `self`, and given that a task has a reference to
-> >     // its group leader, we know it must be valid for the lifetime of
-> >     // the returned task reference.
-> >     unsafe { &*bindings::task_group_leader(self.as_ptr()).cast::<Task>() }
-> > }
-> 
-> Thanks again Alice, but the comment still looks misleading to me...
-> OK, quite possibly this is because I don't understand what does the
-> "lifetime of the returned task reference" actually mean in the rust code.
-> Does it mean "lifetime of task_struct" of "lifetime of the process/thread" ?
+On Thu, Dec 04, 2025 at 02:17:27PM -0800, Randy Dunlap wrote:
+>
+>
+>On 12/4/25 12:04 PM, Deepak Gupta wrote:
+>> This patch creates a config for shadow stack support and landing pad instr
+>> support. Shadow stack support and landing instr support can be enabled by
+>> selecting `CONFIG_RISCV_USER_CFI`. Selecting `CONFIG_RISCV_USER_CFI` wires
+>> up path to enumerate CPU support and if cpu support exists, kernel will
+>> support cpu assisted user mode cfi.
+>>
+>> If CONFIG_RISCV_USER_CFI is selected, select `ARCH_USES_HIGH_VMA_FLAGS`,
+>> `ARCH_HAS_USER_SHADOW_STACK` and DYNAMIC_SIGFRAME for riscv.
+>>
+>> Reviewed-by: Zong Li <zong.li@sifive.com>
+>> Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
+>> Tested-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
+>> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+>> ---
+>>  arch/riscv/Kconfig                  | 22 ++++++++++++++++++++++
+>>  arch/riscv/configs/hardening.config |  4 ++++
+>>  2 files changed, 26 insertions(+)
+>>
+>> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+>> index 0c6038dc5dfd..f5574c6f66d8 100644
+>> --- a/arch/riscv/Kconfig
+>> +++ b/arch/riscv/Kconfig
+>> @@ -1146,6 +1146,28 @@ config RANDOMIZE_BASE
+>>
+>>            If unsure, say N.
+>>
+>> +config RISCV_USER_CFI
+>> +	def_bool y
+>> +	bool "riscv userspace control flow integrity"
+>> +	depends on 64BIT && \
+>> +		$(cc-option,-mabi=lp64 -march=rv64ima_zicfiss_zicfilp -fcf-protection=full)
+>> +	depends on RISCV_ALTERNATIVE
+>> +	select RISCV_SBI
+>> +	select ARCH_HAS_USER_SHADOW_STACK
+>> +	select ARCH_USES_HIGH_VMA_FLAGS
+>> +	select DYNAMIC_SIGFRAME
+>> +	help
+>> +	  Provides CPU assisted control flow integrity to userspace tasks.
+>
+>	           CPU-assisted
+>
+>> +	  Control flow integrity is provided by implementing shadow stack for
+>> +	  backward edge and indirect branch tracking for forward edge in program.
+>> +	  Shadow stack protection is a hardware feature that detects function
+>> +	  return address corruption. This helps mitigate ROP attacks.
+>> +	  Indirect branch tracking enforces that all indirect branches must land
+>> +	  on a landing pad instruction else CPU will fault. This mitigates against
+>> +	  JOP / COP attacks. Applications must be enabled to use it, and old user-
+>> +	  space does not get protection "for free".
+>> +	  default y.
+>
+>	  Default is y if hardware supports it.
+>?
 
-To start with, it's likely that this comment is not the right choice
-for this function, given our discussion. Most likely group_leader()
-needs to be moved to `impl CurrentTask {}` and the safety comment needs
-to explain why being the current task ensures that the returned &Task
-lives for long enough. I just took the safety comment from the code we
-have today.
+No default Y means support is built in the kernel for cfi.
+If hardware doesn't support CFI instructions, then kernel will do following
 
-To explain "lifetime of the returned task reference" it may be useful to
-show you the long form of this function signature:
-
-fn group_leader<'a>(&'a self) -> &'a Task;
-
-By "lifetime of the returned task reference" I am referring to 'a, which
-is some region of code in the caller. For example, 'a might be:
-
-* The region of code until I put the task I called group_leader() on.
-* The region of code between a rcu_read_lock() / rcu_read_unlock() pair.
-* The region of code until I release a mutex.
-* The region of code inside a scope or function.
-
-So for example, with the code as it is today, this example:
-
-	let leader = task.group_leader();
-	drop(task); // put refcount
-	do_something(leader); // COMPILE ERROR
-
-Rust will see that `task` may no longer be valid after the second line,
-so 'a becomes the region of code until drop(task), and the use of
-leader after the end of 'a is a compilation error.
+- prctls to manage shadow stack/landing pad enable/disable will fail.
+- vDSO will not have shadow stack instructions in it.
 
 
-Now, the above example is not really valid. It works today, but once we
-fix group_leader() to require the task to be the current task, then the
-example might look like this:
-
-	let leader;
-	{
-		let current = current!();
-		leader = current.leader();
-		do_something(leader); // OK
-	}
-	do_something(leader); // COMPILE ERROR
-
-And ok, this example isn't great because the last line is actually OK.
-However, the way that I designed current!() to work is that it gives you
-an `&'a CurrentTask` where 'a is the duration of the current scope. So
-any use of `leader` after the end of the current scope is a compile
-error.
-
-> Let me provide the artificial example. Suppose we have something like
-> 
-> 	struct task_struct *TASK = NULL;
-> 
-> 	void stupid_example(void)
-> 	{
-> 		TASK = get_task_struct(current);
-> 
-> 		do_exit(0);
-> 	}
-> 
-> and a non-leader task calls stupid_example().
-> 
-> After that the global TASK pointer is still valid, it is safe to
-> dereference it, task_struct itself can't go away.
-
-This would not compile in Rust. The &CurrentTask obtained using
-current!() can't leave the scope it is created in.
-
-> But! Right after that TASK->group_leader can point to nowhere (to the freed memory)
-> if another thread does do_group_exit() or sys_execve().
-> 
-> So. Perhaps the the comment should say something like
-> 
-> 	SAFETY: The lifetime of the returned task reference is tied to
-> 	the lifetime of the THREAD represented by `self`
-> 
-> ?
-
-I think the safety comment should make some reference to the fact that
-we know it was obtained from the current task. After all, that's why we
-know it's ok.
-
-impl CurrentTask {
-    fn group_leader(&self) -> &Task {
-        // SAFETY: This is the current task, so the task must be alive.
-        // Therefore the group leader cannot change, and thus it will
-        // stay valid as long as self is the current task.
-        unsafe { &*bindings::task_group_leader(self.as_ptr()).cast::<Task>() }
-    }
-}
-
-Alice
+>
+>> +
+>>  endmenu # "Kernel features"
+>
+>
+>-- 
+>~Randy
+>
