@@ -1,296 +1,122 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010045.outbound.protection.outlook.com [52.101.85.45])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3109A34EF14;
-	Fri,  5 Dec 2025 17:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764954941; cv=fail; b=s028hTlpF1XhpoDxpYVlTSnY5OsDza4TDCenfTjTGbLKPlBvg/e+ehW6kNxpDULaMtnPwXwisamIa4rIlIYV1KLoFhirPOLh7fmvFMBoCni0Vqi/2pV0aGYL2jGhbiqEVEzIrLGBoI3hUo5lAL78WmJnYb8J4TkUxaFXONYfJGo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764954941; c=relaxed/simple;
-	bh=ZJa/vPBlKsL9wzAXu/v73ucEN6Mp9QDIldloHEoNvKw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kPU/NgTVnPNnZwvMxyuMHh9rGmKttSw/BBD4918Wtu54R7rynhPr5M7WNEAfUyd3z/SLZ/nzT8spSqy8FgbQ283o2JhiDitW29KcH8fdXftULEUuyo28M+UGIDZ9TGaT4npSTIiL1Voe/tcLFJ91cqLhCecgU54yKaD3keGwPB0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (0-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Gg/UnruQ reason="key not found in DNS"; arc=fail smtp.client-ip=52.101.85.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266EB3590C0
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Dec 2025 17:22:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764955322; cv=none; b=qdUQ5M50Cm8MxhATURn7hzPZg1c33jRyMQfPPlF6HpnWVQR+oU/cnFFvsNTX5FBgWkKvvGVtacxoJngprM24XdGTuVr6vZconRm6HwsI1QIq7OSosKurmWqXxxlWCO8Usx/98JCo40yJGAgndL8Tbs55AjkACgl7iP5ELxM/5Dc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764955322; c=relaxed/simple;
+	bh=I9ttkriMxl9t6UAhfVHbJQ69OG47mK8uKAxNgPvx834=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B07HC1LVv7mAVp8Qr8hNO1MlESB59uzD5sfdfpizgT18WSEkehufdp20qZq4z39DsPMpHajwyGzIjxZFTjpLdFZfxgbOFrSAH7dj7ec6HP2LpMnzH9he4F+9kCEx0NABSMyk+gaUHya1OWIwuRexhZe9X7Mp231F59xfFyke8Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C1lIRgEB; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Gg/UnruQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GujjMio9ULhHZS1tP2ysuCInP1Q5rDPqwfI5ONGx3A3f7dqQiZ93wkfZyVOPyuBovOc3YAUQBVdYi1ap5ryLv2rtLNLjj9mZBSLloeEs6Iv3dAu7FaX4Aj8JMPYx0eWIf+pAsJFjGr3K/GHxof22mlwluCNfZhvhQLS0Hj8xHgJbr9NwsMGpuTbas4WsjjUevhaLeC+nwThAN7PvoKD8y4KXkS4Kyf6DWLYOlJBm8f6bSaevpW/zQydYVT8jDyqdt3mF1e5Vto1d+pUp/xN5hULvK+S1YtiZNDJNrXpF0ioGeK1Wm9L6vDYT5+VtKND2poha8YQTjGvqMX2pONngnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qAIaI/Iu1xSKASHYDnwBb70DoIqT2a1Y89SBsn8b3N0=;
- b=GyazPU3MBNBxv4/BivgdfrkgSxTak/8lcp09AJJSRweL4Fatm4Q59DPbKlBZ+5JWHKgO6AZxtb2qdwtgUhn2rftnTruUVTjje92cRPLq7ZjtMvtNYcn0VrLeLURuLBQZbqEI+NqJ36FrQmLN/U8cLDigDxd1kM7JhKN/+d3xolxSCQQB2sNcYg7czj9UWAgcdDDCV916D7+0bsBdxgQQymJlAylFb0MXtiiwzkjUSSw5GDKgCSQmvpgXFHS7bXfRrI0ld91U20VXKxOy6EYImU4tnFOIpFYSkwHb0CCQ8pN+huc+433PSBV4/Kecb+2L8qlIApnQykCSVAigWh20pw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qAIaI/Iu1xSKASHYDnwBb70DoIqT2a1Y89SBsn8b3N0=;
- b=Gg/UnruQfRXZjY2SV4ESFyXs1gKNX0Li9wW7/nHyu1RoiBxFxuP8rOu30FhB47reNgVd9NiY+Zp3izj/0vtgaB2HhUqbIJHV3SPv1J/uE1yZ9TvOax6onwv265q8AXQ0Wo9zG0y4BCxhiVl5OjwEMkiC0zdjnOthNMKGKlIlmDjld12/I+x4edvm+CKPZ3C39KbuJ4ppLcRQt+uCXn+PGupR8sqVaf/vM3J64KfZJ/FJw29B+Kusek104dXA3m8HzsRabjRZ81sTpoKR69LtCYcgYeTaHoBYu9GfPCvIPTGCTSrFSPp1nHWC8sUFmw1l1vrBAVwDNJExUpNog0rFmQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
- by DM4PR12MB6662.namprd12.prod.outlook.com (2603:10b6:8:b5::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.12; Fri, 5 Dec
- 2025 17:15:32 +0000
-Received: from SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
- ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9388.009; Fri, 5 Dec 2025
- 17:15:32 +0000
-Message-ID: <dcd18bd8-cb7e-4c28-b4c6-95a201710270@nvidia.com>
-Date: Fri, 5 Dec 2025 12:15:29 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 23/31] gpu: nova-core: Hopper/Blackwell: add FSP Chain of
- Trust boot
-To: John Hubbard <jhubbard@nvidia.com>, Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
- Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-References: <20251203055923.1247681-1-jhubbard@nvidia.com>
- <20251203055923.1247681-24-jhubbard@nvidia.com>
-Content-Language: en-US
-From: Joel Fernandes <joelagnelf@nvidia.com>
-In-Reply-To: <20251203055923.1247681-24-jhubbard@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BN9PR03CA0482.namprd03.prod.outlook.com
- (2603:10b6:408:130::7) To SN7PR12MB8059.namprd12.prod.outlook.com
- (2603:10b6:806:32b::7)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C1lIRgEB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764955320;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gh3WHTwrfEd/xh5vq0kXt4JOpGCIy5FJ/UXsnMyueQ8=;
+	b=C1lIRgEB4R9bspDrAYZc054+xlbFLaUUwZVd70xeo8Vg1DRjYyik/d7+GgOMzGXGteb+qP
+	mg2aDAz8IFJzyPP6F0JvSdOQyFpwD/oyvcKO62uYAEnMfJku3eV5o3kAzzaq0z96fAb8zR
+	2TVY5laVZQRyiVjE7kyn59L6BpkwnNM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-439-hCzoFuSHMombLDlxxJ3k7w-1; Fri,
+ 05 Dec 2025 12:21:56 -0500
+X-MC-Unique: hCzoFuSHMombLDlxxJ3k7w-1
+X-Mimecast-MFC-AGG-ID: hCzoFuSHMombLDlxxJ3k7w_1764955314
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3DB2F195608D;
+	Fri,  5 Dec 2025 17:21:54 +0000 (UTC)
+Received: from fedora (unknown [10.45.226.96])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 3DEB83011A86;
+	Fri,  5 Dec 2025 17:21:47 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Fri,  5 Dec 2025 18:21:53 +0100 (CET)
+Date: Fri, 5 Dec 2025 18:21:46 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Christian Brauner <christian@brauner.io>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Panagiotis Foliadis <pfoliadis@posteo.net>,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Alexey Gladkov <legion@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: rust: wrong SAFETY comments in group_leader() and pid() +
+ questions
+Message-ID: <aTMUqp5pXzAscrdZ@redhat.com>
+References: <aTLnV-5jlgfk1aRK@redhat.com>
+ <aTLp73haymcs1fkX@google.com>
+ <aTLsUDBbcbl2ivme@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|DM4PR12MB6662:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23a820f5-f62f-4def-760f-08de3421e53f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UE1IdXpLajQ0a1lQcGFnV2xxbXJOYlBUamlkc0tjNC9iR1cwa2pPOWNBTllp?=
- =?utf-8?B?bFE4djNibXlEZkx2NGp4NGJGV0lVT1NJbVhYSzBqaVNXV0dBL1MvT2oremZW?=
- =?utf-8?B?aTYzZmtGdXp5aWEweGVoYy94UXJkQUlrZnVhTlJsektCaWtneWplWVdtR2pq?=
- =?utf-8?B?L0lBcWw2TVkzWHYrb1ZmU2RCQ2V2dFBTVVZkdlRJbElWUmVJZFhDbTlubjN4?=
- =?utf-8?B?NjFRMElrd0doZ2pxaWl5VmZzbkhDSTBUK2ZLZGdQayt4ZTRoWGQ5bUNWV3VL?=
- =?utf-8?B?WmVyUU5xTnVFVWFzejZFZERMWXdaNTFnYy8ybzM5bUR3b0VkQ1dSVEVBRW5E?=
- =?utf-8?B?K0dSV0IwdEM5UFZjZzFuREUxd0duc2FjMmRZdkVqQ05Xc2RXZ3NDdDVSbTN2?=
- =?utf-8?B?OUVRaTdDMzNvckQza2taSjlrWEN0bk9ZSjljNEJRd2o2Mk9qWmltQkhJL2Rh?=
- =?utf-8?B?aGpvcHBnVXlZMjgzeVNrd1RBeHhjSHE3Z1ZIOTd5Z3RYdDdKdTBkeDlHZkxU?=
- =?utf-8?B?cGluZkxKa1JaR3Z5K0REV3kydGRkUDlBMWl4cys5UUo3dXo0aVk3QTd0YlhJ?=
- =?utf-8?B?QkloSHRibUF6cWhjdU5LZ0l3bm41WGZDUTU1VmNaUCtWWDJQRFYrSVplMDV4?=
- =?utf-8?B?ZXBZVGZ6SEw4dlFVdHpESzN3bnE5d0pEMEN6a2xuK0tLNmUxWlkyYm8zSDdl?=
- =?utf-8?B?ZDg5RzRocTV1eHB4OGJEd2o2UG1KV3hEaU1pKzlVRDBla2ZDQ3QxcWFnRHNR?=
- =?utf-8?B?YXl2SThqY3JzTElIa25nS2hZWVBReTUxUVFobzB4Nk1mb09TS0NUcGtlOWpJ?=
- =?utf-8?B?ODQwb2YwZE52NFhzNkt4NXpWUGpvRXA4UUNZVkdCTjJ2ZDhTTHdhelBXNWVE?=
- =?utf-8?B?K1c2RjhLelo3djJZcHh0dGYyKzNjZXNISHdqRENVYXdFZitaS0xuSlNqNWZ2?=
- =?utf-8?B?ckZXbXU2QVZKVzdWbnV3OVU3ZUc3L0l4WTVtQWxMRmpJb2k0QXJaLzI4azN1?=
- =?utf-8?B?TUdGNDQ3ODVKbDQvUHlwSXZLNFhEU1JTVEFIVkpvdjBmTlhIeUFCUUk3QVZI?=
- =?utf-8?B?NWtKbGZDWkN1d3dDYUpTdVVoZ3labkk3OXZHTEZxTXpsQjBLTWFqaENEdXhi?=
- =?utf-8?B?NVpqTCsyQVJLNEJtTlQ5MC9TK2ZkVUVzTGcvWVRvc2ttRDFhTStqbDhOZUdq?=
- =?utf-8?B?aWpnYlRDQ1BFUlMzRU1lclU3Kzgwa0lCVzVzd1htWlNQZklycytzWmhxUDYr?=
- =?utf-8?B?dEsyU3ZGaG84QlFaY08rOWY2dm90MnRBeGM1YkN6eVpVaFF4aDI0NlpjVzI4?=
- =?utf-8?B?Y1NDU2F6bStUbzBtRXlvcnk3QWlLd3lMc2xEdkZ0WmFwTzk1Ykk2eHlPSVV6?=
- =?utf-8?B?MldsWGJ6N3VETndyRjdtUXNXdTFLQTFtaUl2bDc1VHc4OE5RQnFGcHlPSzBE?=
- =?utf-8?B?T0o3YkkrT0JQK2l6U05KTlYyVmw0NzBWNnZTY2EySVM0dTdaaWs3RVpBRVpZ?=
- =?utf-8?B?TjJZZUFtWUFNM0lCSFU0YUhBVHVPMEtFaG5NelM1MlFHV0ZySWxjNUZrS2VF?=
- =?utf-8?B?VzZUSzVhUi8xdGl6dTNtanBQTVVnc2cwTlVzcmQ4UmtZRVpNeXRLL05nYndS?=
- =?utf-8?B?OFhuVUNWSVdXVjdPV3dHcXIzRlRmZy9nNE5wUk5DSzVDVGtvVFJtQUpCT3hU?=
- =?utf-8?B?QjhTdXdBQkVHc3dqbXNwclArQmxFVTVyUGV2WVFhTWZ3UVVtQ0dGRFc5Y2F1?=
- =?utf-8?B?eVVHT2ZLZUUvcUF3NXFMLzNsZlNtMEY4eHdib2xzRjltZDdFQWtWZnZEbWFG?=
- =?utf-8?B?Tml2MkNpT09FUDhkQi9EbXRyRFVRY2loS0daZnBVWWxidnZsV21tbTZkbnZh?=
- =?utf-8?B?UnB4WUgwODYreitwbzJtOHM3aWFubnhqMmhWVmxDa1pXT2FxbHlRYXVRREpW?=
- =?utf-8?B?YWN1aWpzOFpaNzZweTFRbVEreDlqdnI5WkdOZ3lSZUJJd3FuMlF0ZFhVdjJB?=
- =?utf-8?B?NEFMMmhqMVpRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TEN0SjFEekMwNDNjMUFDWVRxSnJKa1dTSnNORWtmT2VKN2d1MXZGK0FkRmJT?=
- =?utf-8?B?a2V5d2JleUxxeWpYd2xZOUxlRUk5dlZWcmNCNWVPcnVXdFJobHNLU0dZTzN3?=
- =?utf-8?B?WjJvNytkbWVKZllubFZLYnlzOUVjR0VtVFFuK2Y1WmxrZTUwZTArOE93d0N4?=
- =?utf-8?B?cWdHYkYwem1wTW82Tjl2ZTB2clFjNFhsbE0wU3dkMEhkNEoxSmR5MVpNdHFX?=
- =?utf-8?B?OHN5WGJWNXFuQ2p0RndZTW9FMTBvdm9aNjZCNDFjeFBBeEU1a2ZnemYwY21z?=
- =?utf-8?B?R3FxekhsRmFPQjJJbjAwd0YreFlrdTBiUkRCSldRaC9vNnBzV2tQc2hMYkNy?=
- =?utf-8?B?VTRmblEyWEkrUGlFNHdaRnVUTE1iOXFIbmtMQ2orTHY1bEpqaW4xMVlwSjFn?=
- =?utf-8?B?MUxoNE45QVNHS0lqSkNRWkhVKy9uU1prQ3crZ1hFRlRFTzJ1QmZaNFFFcXVq?=
- =?utf-8?B?dTZuWnJpWTFOUG5jUnRDVjdOZDIvL3ZFaFErUTBpbGtLWnExeDN2NDdYWnRU?=
- =?utf-8?B?VWJUaUcxRjVNbzYzOHZ1WnJHaThYLytQWWM4OG5Jc0VHRzZRMlpiSjVrSEo3?=
- =?utf-8?B?cTJPTEVIY1hRWWxRWlBScDE4NnNCdlRlRC85VnhTdnlRSnE1andTV2dMNEJp?=
- =?utf-8?B?eG0vbXZzaFcxVGRIald3RFBpWHFzTUVXK1VPWHlvSEFrSnpJdjJwQklEQWU1?=
- =?utf-8?B?czk4R1ZGcjY3cndKdlN6OU4vckJZWW5FNWhydUFjM1FDdGxYVkl0WXlvU3g1?=
- =?utf-8?B?d2JENVFTSElaVkNaR3hldkpPempxTTRyZ0ZPaFVBSVJwbXIwQzBWeDF0Mmor?=
- =?utf-8?B?UGU5bnVZdWRCSUdUakJZVzhFMkI3RmtRZno2V2lnVWdIQmNrMld1eTVJOXFm?=
- =?utf-8?B?ZHpQU3ZiVEdaT3JBcVZyV3RRdlNHTzVBTWJGWUxIWW1HZnZmdFBIdDM3emdz?=
- =?utf-8?B?YzVhYzBuNERDeGdyWm1FaURva21LcDVQZ3B5MUdBRktnVUR5Z3gyd2tBcHds?=
- =?utf-8?B?cGVLclpaQ3RtaStyRHJrYUdKdjVEc0dRSzJQb2pMS293eUpiUThmKzN0NkhB?=
- =?utf-8?B?eXc1MEtjNUZnN2ZkOEF5ZXYrbXBrQXdEZDlPVFBXSFJuSTkvWlNtVVVUQTVz?=
- =?utf-8?B?NU44Y1M4NjViaTZLOElONjM4Z21JMTM5ang1NUs0VGRZSHhtYzJsTWhwR0Zr?=
- =?utf-8?B?Z2U5NkgwZWxSanV6c095TDJ1elZuMkhUOXBDbWFLL2lYeEdFL0VrNitnaXBB?=
- =?utf-8?B?dU5GWVFuQ0pMT1VGZlZET0dIbkZKbklJZ2pxZWQ5aHAzRU5Fem9XdkU3STRI?=
- =?utf-8?B?RVQ1UWRQblIvYnZnNDdQdXQ5cTRqbTV1UG1pRUxvbjJnaDdoRWZxeVd6V0JJ?=
- =?utf-8?B?c0xCSDRQbGY2ajEra0dndHYrak5JWEkrRitOWURkdlVtbzgyM1Q5Smo3aVV6?=
- =?utf-8?B?R3JDdlVIVlNra3kzYnVXeWZQdkJMWG82N2dEMk02SXVkVnBpS09VdE1NYXdt?=
- =?utf-8?B?clFsRWQ2ekV4eWVjOHZaM1h2ZFlNL2RJY1pEN2lySWlCUURpemFJNUd5Uzh5?=
- =?utf-8?B?SE9FUjhQcTR6bDduQU1ScU9MWUl1dURMd0hhb214ZnlMa1psNVVOVnhzYmJr?=
- =?utf-8?B?S2JOZGRXeG5zWGZkU0pnZHpJOExPVHNXbXBJOWNVZEpnR3daWmVURG52QjRZ?=
- =?utf-8?B?ZytqRWpPWW1YRHZabWZwa1pUVUpBQ1ZiQ0hWc09hU0pmMUlEbGhTT0gweFZk?=
- =?utf-8?B?dUJQdk00dTVzMXFIRGxVbUFzckZvZ2tlY0F0V3ZxcGZrTWlxVFVTUDhlUUdC?=
- =?utf-8?B?QnY4NnV2dU9NZjk3U2JnRXhnM1pDREkwQkp6bDh3cWV2c2FHYzcxTnE2TzZN?=
- =?utf-8?B?OHZ4Y290RWhZUk40NjlOV0RpZ1FTNm9tYjRUSzcveDZ1WTUwekRpaFJKaS9u?=
- =?utf-8?B?b0RLR3BoL2podVk2MGg3elk5YmRjbU5IOGI4MkRjNDZ1SjY1bi9icXMrNVp0?=
- =?utf-8?B?VXEwZEliZlNIaWI3UFF4K1MwSTR2MzVna1VVaHdPTSt6NkZwWlhma1Q4UlFZ?=
- =?utf-8?B?VUxwS2Jaa1MyVjdkOGVHM0R4bFdhUnhrN1JLUElDbGRpSkwra0JMRHR4bEp5?=
- =?utf-8?Q?PmZUbX86LDpjoz5UtA3RVnf4x?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23a820f5-f62f-4def-760f-08de3421e53f
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 17:15:31.9199
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: In7rAr4uruclHhHXPkmYa045UanpVOdSlhtgwRlex5mhV2UZj1aYOag07Q1mDsuYHW9GenhVfQ4PwTq7Rscp9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6662
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aTLsUDBbcbl2ivme@google.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hi John,
+On 12/05, Alice Ryhl wrote:
+>
+> pub fn group_leader(&self) -> &Task {
+>     // SAFETY: The lifetime of the returned task reference is tied to
+>     // the lifetime of `self`, and given that a task has a reference to
+>     // its group leader, we know it must be valid for the lifetime of
+>     // the returned task reference.
+>     unsafe { &*bindings::task_group_leader(self.as_ptr()).cast::<Task>() }
+> }
 
-On 12/3/2025 12:59 AM, John Hubbard wrote:
-> +    ///
-> +    /// This version takes pre-extracted signatures and FMC image data.
-> +    /// Used when signatures are extracted separately from the full ELF file.
-> +    #[allow(clippy::too_many_arguments)]
-> +    pub(crate) fn boot_gsp_fmc_with_signatures(
-> +        dev: &device::Device<device::Bound>,
-> +        bar: &crate::driver::Bar0,
-> +        chipset: crate::gpu::Chipset,
-> +        fmc_image_fw: &crate::dma::DmaObject, // Contains only the image section
-> +        fmc_boot_params: &kernel::dma::CoherentAllocation<GspFmcBootParams>,
-> +        total_reserved_size: u64,
-> +        resume: bool,
-> +        fsp_falcon: &crate::falcon::Falcon<crate::falcon::fsp::Fsp>,
-> +        signatures: &FmcSignatures,
-> +    ) -> Result<()> {
-> +        dev_dbg!(dev, "Starting FSP boot sequence for {}\n", chipset);
+Thanks again Alice, but the comment still looks misleading to me...
+OK, quite possibly this is because I don't understand what does the
+"lifetime of the returned task reference" actually mean in the rust code.
+Does it mean "lifetime of task_struct" of "lifetime of the process/thread" ?
 
-I see lots of dev_dbg left as you also pointed. I guess you will remove these as
-we discussed in the other thread.
+Let me provide the artificial example. Suppose we have something like
 
-> +
-> +        // Build FSP Chain of Trust message
-> +        let fmc_addr = fmc_image_fw.dma_handle(); // Now points to image data only
-> +        let fmc_boot_params_addr = fmc_boot_params.dma_handle();
-> +
-> +        // frts_offset is relative to FB end: FRTS_location = FB_END - frts_offset
-> +        let frts_offset = if !resume {
-> +            let mut frts_reserved_size = if chipset.needs_large_reserved_mem() {
-> +                0x220000 // heap_size_non_wpr for Hopper/Blackwell+
+	struct task_struct *TASK = NULL;
 
-Can we please use constants for the magic numbers? Also with comment headers
-clearly documenting the constants where they are defined.
+	void stupid_example(void)
+	{
+		TASK = get_task_struct(current);
 
-> +            } else {
-> +                total_reserved_size
-> +            };
-> +
-> +            // Add PMU reserved size
-> +            frts_reserved_size += u64::from(crate::fb::PMU_RESERVED_SIZE);
-> +
-> +            frts_reserved_size
-> +                .align_up(Alignment::new::<0x200000>())
-> +                .unwrap_or(frts_reserved_size)
-> +        } else {
-> +            0
-> +        };
-> +        let frts_size = if !resume { 0x100000 } else { 0 }; // 1MB FRTS size
+		do_exit(0);
+	}
 
+and a non-leader task calls stupid_example().
 
-Should use SZ_ constants, here and everywhere. Like SZ_1M etc [1].
+After that the global TASK pointer is still valid, it is safe to
+dereference it, task_struct itself can't go away.
 
-[1] https://rust.docs.kernel.org/src/kernel/sizes.rs.html
+But! Right after that TASK->group_leader can point to nowhere (to the freed memory)
+if another thread does do_group_exit() or sys_execve().
 
-> +
-> +        // Build the FSP message
-> +        let msg = KBox::new(
-> +            FspMessage {
-> +                mctp_header: (mctp::HEADER_SOM << 31)
-> +                    | (mctp::HEADER_EOM << 30)
-> +                    | (mctp::HEADER_SEID << 16)
-> +                    | (mctp::HEADER_SEQ << 28),
-> +
-> +                nvdm_header: (mctp::MSG_TYPE_VENDOR_PCI)
-> +                    | (mctp::VENDOR_ID_NV << 8)
-> +                    | (mctp::NVDM_TYPE_COT << 24),
-> +
-> +                cot: NvdmPayloadCot {
-> +                    version: FSP_COT_VERSION,
-> +                    size: core::mem::size_of::<NvdmPayloadCot>() as u16,
-> +                    gsp_fmc_sysmem_offset: fmc_addr,
-> +                    frts_sysmem_offset: 0,
-> +                    frts_sysmem_size: 0,
-> +                    frts_vidmem_offset: frts_offset,
-> +                    frts_vidmem_size: frts_size,
-> +                    hash384: signatures.hash384,
-> +                    public_key: signatures.public_key,
-> +                    signature: signatures.signature,
-> +                    gsp_boot_args_sysmem_offset: fmc_boot_params_addr,
-> +                },
-> +            },
-> +            GFP_KERNEL,
-> +        )?;
-> +
-> +        // Convert message to bytes for sending
-> +        let msg_bytes = msg.as_bytes();
-> +
-> +        dev_dbg!(
-> +            dev,
-> +            "FSP COT Message:\n  size={} bytes\n  fmc_addr={:#x}\n  boot_params={:#x}\n  \
-> +             frts_offset={:#x}\n  frts_size={:#x}\n",
-> +            msg_bytes.len(),
-> +            fmc_addr,
-> +            fmc_boot_params_addr,
-> +            frts_offset,
-> +            frts_size
-> +        );
-> +
-> +        // Send COT message to FSP and wait for response
-> +        Self::send_sync_fsp(dev, bar, fsp_falcon, mctp::NVDM_TYPE_COT, msg_bytes)?;
+So. Perhaps the the comment should say something like
 
-This seems to diverge from the pattern we use in GSP `cmdq`. Can we keep it
-consistent, like `send_sync_fsp<M>` ?
+	SAFETY: The lifetime of the returned task reference is tied to
+	the lifetime of the THREAD represented by `self`
 
-    pub(crate) fn send_command<M>(&mut self, bar: &Bar0, command: M) -> Result
-    where
-        M: CommandToGsp,
+?
 
-Alistair/Alex may have more design suggestions since they came up with this
-pattern. Especially around safety (guarantees that the part of buffer being read
-will not be modified by HW etc).
-
-Over all, I feel we have 3 different mechanisms now (1 upstream, 2 in the
-works). The GSP cmdq, RM control and then this one. It would be good to get some
-consistency in the API designs for all these different mechanisms (and possibly
-share any common code).
-
-Thanks!
-
- - Joel
-
-
-
+Oleg.
 
