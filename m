@@ -1,133 +1,129 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF54358D0D
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Dec 2025 18:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4CA359702;
+	Fri,  5 Dec 2025 18:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764960044; cv=none; b=GQEYrG0eFggoyJPiBEbwaPbviLS5zGoJTUNHOBw2AMATuoFoIQSxCGcvFUtE+nelZ25RMqY7ZKQH77yAnaQTf/2r3xQAZKVW2DpOhiRKZsaKCJWXS+WCdu2PxHDLRh2XpSyI3u/ue/rAfYOdMwOmfVzokdaRPi3uH6/Ps/UefzU=
+	t=1764960110; cv=none; b=qbdA6Z2qxvd3gy4WydMML+TgLNaOufoOgpLK8K0VHOLZ9SGDBTAsGQMCzRasDu5DGn4jecyHA/TrEI9c2r11a0AFjWx9ng+Z9yHUDw//B3uOP3hXtQF4x0Bzb+/LQqdS6nuu15Itbl1zqXqB+mWjcbONUsPfIjfPVG0LWg1vB3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764960044; c=relaxed/simple;
-	bh=6Yy3IShQVWKoUdXCDZD3yBqKU2764SqgOZHs7jYW65g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HjRvmOcY0vnZ/FGMbOIawwVbD1AAYFzCmv0PyjHeq9bdljX3t2ujMLBO1ULkX2lcN8O1nXvPrD9xp3QR4studJR/ZW4Y0aac4kXx0Se5LRQ1A8AE9Hzk9GiW04bneda7NR9Lg/yM8ysd13Q/oXy30ui417/qQqCf2ohIWWe7iUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OB4B8ACn; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764960110; c=relaxed/simple;
+	bh=s9Nd8OrIdmTzTe15BEE4fAoU+yUwpq+wRGim3URhRCA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=t213bdvOLdMiinPGkB4MWBK+fK0Sjd5gPtts9cjzcnHPDr0UOqSqU5om15u2zOcFxD1vMLKiMdQKsldGdRzFM6bM8yYQ+FA7w3L5fN/zq1qJa3Pri6ZOFyS9yL43+Vxgy25C6O71lOqX/zzCyLdxKnuUlFIK50QEBTCN1QycddI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dC/TljCe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OB4B8ACn"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7e2762ad850so2410230b3a.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Dec 2025 10:40:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764960040; x=1765564840; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gx4zuHCdfmsBvfViSx4dewQ3NC0pwlIv6go7qc93ekw=;
-        b=OB4B8ACnPwttjampNMBOyr5SQc3Lvq62ehcw0tv8++5+w4VkufFKGOxcDXbCKO0ZfO
-         pqHpYswzVY/GbBPI+w8G4ywayCKLapa5R5RRM5i2PHXKwztAC+JznM87b23IhWGIJEVT
-         yG9433rpC9RO7QrY1GfZ+wpMP2+38InsAw4QmJFd1Bjsg6AGdaT1bZaBxwH4CGQ4fMcE
-         aId8rOKhpwqC3YyolpgTi+TLuRH/VfgLCHC0pVdT/YZ6awxPOzVVMl6bTAP733KmyNnW
-         M7SgQvULVcIthAa8zUMJM8LwpiUB1HemuP45Sq/wLzODq6jNbAW4kOyCRQJSdAnQZsSt
-         +pBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764960040; x=1765564840;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Gx4zuHCdfmsBvfViSx4dewQ3NC0pwlIv6go7qc93ekw=;
-        b=mhqTNqMpWNcgpqQfQagCk7tS96nynuMaACXL11joDFTJkM90i6VK/Ry4NsB5AqCYWN
-         1x7yY/JaEXYADQ2Mxe0R2BrxWZvdsyoNAt8zcPRuc6iMWJ2Fi4VF6pNEOPtf0S3g9Uu+
-         eu89MUNlHRj9HEdMYyICu4Q6U3/CMWVhpY2wuzDj07rH8od5QElJL2NdB+WHpRbpVjnJ
-         386DRJnInhV8UbSBZ2mbV8Tcdi3bgKlFM1Qm2cVVXQPI2ny3F2iXjniURBBMQyeIp2yE
-         EFQvoJ+sznqSyVDtqnTBAqO0cGWS9pmkZYjXUYlB4FuSnw9Ujgsu0V6LzDIM+ld4zq5U
-         73dA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxSFBrT8/3MGexawHVIeAdXB4LO4dFcq/QmAcj4aRB+cP0y5dckA37oQeU8OcvJQxKcLDLaBmWYEZmmeqKBQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCyjT3tnRkTwuC55vQNknSinuDiXSmC8n/RLQH8h5rSyJIWgW4
-	/N4ad/hY29+IOYExN73S69I0U/pyh+e3TNyL4r10R0XV2K1eyJ4OFPSj
-X-Gm-Gg: ASbGncuaKLUqEG9nUxCAbvURrGH+v+LSK+867dq8yTojH2jn97zR6K6jtbv6+JG8s0v
-	ATRgdGm+SyS28Vt4hz+3RS1iVHZ1IJjtY6mFt36qkVot6DgFIS2RtTSZ7qKilSWaf6sPj4izBtj
-	DJTkB7afhrOTQx2B2TDXc5jor+L4JMxXeEaXzv6whyFRyRfxTGOPbjjwp7uZeWs3xjDC5CzrObZ
-	mLroTgEVzdT9mrL7IiM1+cShKdJd5NB4tacRhmReFW87N5e7Bp0VdkAQLZPdwXPzyLX2KL36yNr
-	kjjdBkZrRpFsbE8/YQCMjkETTJ12/WZwCMiP1EipyNZyzkGNJzuiBYoAImV12CysMofd92zYMOq
-	nXt7l4a1DUDrzyhSk326R2bN/cEoDtSJpSz5WKrEjoDNARZmw9VzvM+tNYiR/dlZq/qdD0+yowF
-	vNQaSt/8qeW4H0OwbB7D7TGIRfWQ==
-X-Google-Smtp-Source: AGHT+IFdaIOl2EVfDf53MnHxu6h2Csp/9+fkL7qdsbkngVF7MJLua/LR1xBA2DmFila+UaeQfEKpNw==
-X-Received: by 2002:a05:6a00:ac3:b0:7e8:4433:8fb5 with SMTP id d2e1a72fcca58-7e8c6cab76fmr135748b3a.61.1764960039751;
-        Fri, 05 Dec 2025 10:40:39 -0800 (PST)
-Received: from shankari-IdeaPad.. ([103.24.60.188])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7e2a0533f08sm5952079b3a.23.2025.12.05.10.40.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 10:40:39 -0800 (PST)
-From: Shankari Anand <shankari.ak0208@gmail.com>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 05/10] rust: kernel: Update ARef and AlwaysRefCounted imports to use sync::aref
-Date: Sat,  6 Dec 2025 00:10:23 +0530
-Message-Id: <20251205184023.7230-1-shankari.ak0208@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <1b7408c5-64a8-42f1-92ab-dd90a883c1a4@gmail.com>
-References: <1b7408c5-64a8-42f1-92ab-dd90a883c1a4@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dC/TljCe"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 073BBC2BCB9;
+	Fri,  5 Dec 2025 18:41:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764960110;
+	bh=s9Nd8OrIdmTzTe15BEE4fAoU+yUwpq+wRGim3URhRCA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=dC/TljCeQTmM9QyTTClRVnyhHyedBNDcIxptohaOTqiV8LlbLmPwB+gLXYwx/NJMQ
+	 0ozNHbgWR1CIEoieVP+Ycu0cD8Pn2tUtZq+MI2StKE/Bk2edlegkfwxfoWr+3Z4LYz
+	 h7hTKSY2xbi3gyIV9+4F7qoZBgmOBHvbme0Rd/7Q4j85tvV5wcYzcCYCz1vJULO+cy
+	 EnovN3HVYNHRGCsDYjV3KHhep9zDQ/ZEUVXILaKmvFc66ZsH/W620lz8tAReypXVJz
+	 RhKebo4jqKHXTyRE2D8U8+80o+ggvfJp4BwSXkknoRq+aeOJVDH7jkFLTaAbbNpHc/
+	 rkkxMiWRWxtyg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DFE98D339AE;
+	Fri,  5 Dec 2025 18:41:49 +0000 (UTC)
+From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
+Date: Fri, 05 Dec 2025 10:41:39 -0800
+Subject: [PATCH v25 01/28] mm: VM_SHADOW_STACK definition for riscv
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251205-v5_user_cfi_series-v25-1-1a07c0127361@rivosinc.com>
+References: <20251205-v5_user_cfi_series-v25-0-1a07c0127361@rivosinc.com>
+In-Reply-To: <20251205-v5_user_cfi_series-v25-0-1a07c0127361@rivosinc.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+ Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+ Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
+ Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>, 
+ Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
+ Valentin Haudiquet <valentin.haudiquet@canonical.com>, 
+ Deepak Gupta <debug@rivosinc.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764960107; l=941;
+ i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
+ bh=DXRwVlzwdoQZD1P4AgHLEInq/8iOZjrgGgTHzLAJMYU=;
+ b=YaFqIGVEEgAinBOcot+5GK/TIE1JWkV3ZOIjMlei3bYV2a4/QHRD40EpwGyWa44u9/gPioyqW
+ EZmD3ziaznUCm1eIKcb6LCqGrPqgkz8sk0QS63UwyhgoGqEP8uYLx36
+X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
+ pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
+X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
+ auth_id=553
+X-Original-From: Deepak Gupta <debug@rivosinc.com>
+Reply-To: debug@rivosinc.com
 
-Hello Igor,
+From: Deepak Gupta <debug@rivosinc.com>
 
-> 
-> NIT: This module already imports `AlwaysRefCounted`, so please use the
-> imported name instead of the full path for consistency.
-> 
-> >       fn inc_ref(&self) {
-> >           // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-> >           unsafe { bindings::i2c_get_adapter(self.index()) };
-> 
-> Thanks
-> Igor
+VM_HIGH_ARCH_5 is used for riscv
 
-I apologize for the overlook. I was just focussing on changing the path. 
-I'll make the required changes and send a v2.
+Reviewed-by: Zong Li <zong.li@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
+Tested-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+---
+ include/linux/mm.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-As this patch is part of a series, am I supposed to send all the patches with a v2, 
-some have been acked by already, hence I had the question?
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index d16b33bacc32..2032d3f195f1 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -380,6 +380,13 @@ extern unsigned int kobjsize(const void *objp);
+ # define VM_SHADOW_STACK	VM_HIGH_ARCH_6
+ #endif
+ 
++#if defined(CONFIG_RISCV_USER_CFI)
++/*
++ * Following x86 and picking up the same bitpos.
++ */
++# define VM_SHADOW_STACK	VM_HIGH_ARCH_5
++#endif
++
+ #ifndef VM_SHADOW_STACK
+ # define VM_SHADOW_STACK	VM_NONE
+ #endif
 
-Thanks and regards,
-Shankari
+-- 
+2.43.0
+
+
