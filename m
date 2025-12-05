@@ -1,94 +1,408 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB54431B804
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Dec 2025 09:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF3830BB94;
+	Fri,  5 Dec 2025 09:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764927270; cv=none; b=THWv7yy6/UZJqkOxygPJswSnKfshbMqO5BWOtT/5YwDECIdgu3oehGveRw1PLlnbJCHz1PGwTke1QA1RJTS+u2PJtHiC8RgdNZ/xioo7aNnzHVoRcXm15vVi8rioDxJD9QEQcO8bCQ1qEFR6P9eUyBDwvx//m1J2xyD7RRj6kc4=
+	t=1764928213; cv=none; b=ZYB69DC9wYmigu/6GJsfl9BaT6F+J3JvKBg2eNnpGde6DvOujI58o4DZPI5W9IeNP8+7Ib5eVrQ3QpS0uDiFCve7ndYCe9kjo08I/GAhtq7v2jMeQtPMcV5VYbjfOIVda+uAG2omLIZsxoUZCXgBPIQGYXRAPolsgIvfbXozp5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764927270; c=relaxed/simple;
-	bh=7t2oOOIr4g6iyo5A9oCxWGSFWGvOurrVD62KENZp9XQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sqe5E7Ut/fO1enX2Tkmn5pgWQ8w51zO0Fy1qI+wPJfHj2OpzgfMA/Wale/9NmhqPkpGYcPGJk0crDrYxXcD3rgPiWOEh3877zbkdqZlc72MKdvEIhGdIe5zKKVtgBFDvSmTW6ipI6knRH8z46cY59bzi9QmJIIrtHgxe6ebVhxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KqW6EP3q; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1764928213; c=relaxed/simple;
+	bh=qfeFoWxW9ehKbe3EzIwQGdG2yZayU/tIkONBJcT+Ru0=;
+	h=Content-Type:Date:Message-Id:Cc:To:From:Subject:MIME-Version; b=dSpG/Q0jeJ/Z4HOqJIfR2sGuV3vgXAcwnVAsSps5+crGscG3sGIbsHFrTMJ6szB8KXXKuR3B6gZsxBMH0pRaUAFQYG0UEt63tLhZo4x3eg/cETf+LPUOlb7VlzcTXc81A0YV/uf43Uix+bGlV65eZcF4Kkho6E1fb1DYHry8zcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tEy9Y/SS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KqW6EP3q"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b9a2e3c4afcso194329a12.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Dec 2025 01:34:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764927245; x=1765532045; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7t2oOOIr4g6iyo5A9oCxWGSFWGvOurrVD62KENZp9XQ=;
-        b=KqW6EP3q9cFInZVX2JA3CWzjl+PFeRLux18b0PiHCGwlMKcxbvLSHmQF0xJRDniF+Z
-         kdq4mapyAgbKMgCWVCOCn6xGOYdVggIcy5j4WC3E/YnY5XJGdCgzMQkqxk5efYYRMEjY
-         AXcEQ+2lgl5uZKnXNzYEDZunJScEZd7G1xeH06Tvse8LaA/VJv306MCoX1cV3Z4lz17c
-         E2u/KU1X5BX6IwYq/5LIMoY6eM5731tKTpVQDP9Qurwo4jadb5w6kaPhki3WHOzZ2t2P
-         kLVWQzfGGnVOxDxYar3Ss82YuT/fW2goUW0NViSN+641PnBGMBk9uAp72k2vdrWz4UO5
-         vWKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764927245; x=1765532045;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7t2oOOIr4g6iyo5A9oCxWGSFWGvOurrVD62KENZp9XQ=;
-        b=P3AlemNg3QX+fnR32aDWj+ORjnVsu/WTVJEX3equY7Hhey4SRe6JUimD+KDyjtk+EV
-         EPVBnrEUxgXRh+kZvlsTRpv62c/CQ6PFOtUAGDMYGumBdaFjyy2855MBFYMYsqCo5P8V
-         lm+faEE3aPiHRchvOj2qz93d/1eZ+Mi0XbMvfNxjuAw92L4lKhyNWOe/5xJ/uposuhvk
-         umNduOu6WkP9cROWcYKzy8hIkyKnHHRCxrblqnlcjJSWvDyvpBfICLDvc/+BunfISzvW
-         KOBAyXx6BErl4FapjXXem1mt24o52NP4jj3pN6H1P+1uvPBt+7/aEgGLQshc4PIpwEOn
-         rTBw==
-X-Forwarded-Encrypted: i=1; AJvYcCWWjqsCcsXjFpohgmgyQr6DO9B/AcsVcb+5l/spvHf0yRlerTJFJ/GJ127/Ha764kbHhLeybDiKp/cGyf426g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6p+s0D7CYjyraRL0wT9imX36NyJ8dODsQFyXm1Mmec4dZTo2n
-	MoUKnt7OzTcKKXtUFBV/JPpMxgWuODTwodDkoqLv+nqhrbsdUzls59N1MnEjyfsexU+Jj3XrJw6
-	jY/XgvCkyuH+u69QZbUT+kBGTGl0L0iA=
-X-Gm-Gg: ASbGncuaxrYJOpqmOdMeKuAT6um+ro8gIoEH1Or12pvs61087Kv1OmKdm987xBPhfHT
-	jnHdQkr0zQbwl9rKmRGxjj6CF5I4NUij8zhA/lM7dXSkD71yF+kKoGKk5fCIm1ceWy8xS6QP8N+
-	eTUz4nnh99/3MJ1O68xkx8u7kifXas+4F0rftk0gNw2pxfLHgMV+3kws+b4AQGQRe0t0irxvfeH
-	t+M5A5+rj9Qz+yAQF2DByOOrsYsHsFxgz6bfJcR6KxzxxV8QWi1dI3F/oNJEwDrJr+WU4D81jlR
-	lYVqhh79kmtvEpcJ4C5n0qqcBrcVtRDgd8gHJXGEqfe0bNPEf2w5/9kvVRXgXU+TvjEUK4fGwKA
-	HpOI+ZQvOW1AlgQ==
-X-Google-Smtp-Source: AGHT+IFLd6JZGQx3xPU70vAUdLRVbSvVeAi5OK9jLxEIdFHA3xMD3dNxVxkvLbz2GYWKIRIMy5oAZJqzB2J0oobIUYs=
-X-Received: by 2002:a05:7301:e0d:b0:2a4:3593:5fc8 with SMTP id
- 5a478bee46e88-2ab97ca970amr3901562eec.2.1764927245157; Fri, 05 Dec 2025
- 01:34:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tEy9Y/SS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB90C4CEF1;
+	Fri,  5 Dec 2025 09:50:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764928210;
+	bh=qfeFoWxW9ehKbe3EzIwQGdG2yZayU/tIkONBJcT+Ru0=;
+	h=Date:Cc:To:From:Subject:From;
+	b=tEy9Y/SSRxJiVUSMPtIUrHV7jGffyNCZuGLyql4mnEIZFvoG7DUag4BribejAmB5L
+	 YEyjNn2YZd3e8okTKAbQagH5zL1QOR/ctA0o4RQcEaf05LJuOoUM9+LFLXXY3Ay5IK
+	 i4Bjf7FoouE7jH6LBY4y+Nvs0+KFm18Ks8cBM9jSWV2Ps7Oyr7E+F1tzYfu6+KS/Jd
+	 rILZM8d0UD7UsS9YRcZ76HNFekl30krL++j+J/ldJ+q3rW8Bi4A/On577gFmxKnjXC
+	 OgPcFmXb8pY3EuEYI2RbYbciAFj5puRTeCPDsZYXi7w4svth0olR/45Sm3QXByC/yw
+	 HQcDulgnwYyOQ==
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 05 Dec 2025 22:50:06 +1300
+Message-Id: <DEQ6U11MLIQW.370OVLWEKUIKV@kernel.org>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Saravana Kannan" <saravanak@google.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: [GIT PULL] Driver core changes for 6.19-rc1
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251204160639.364936-1-fujita.tomonori@gmail.com> <aTKkF_hpmtf_VrAD@google.com>
-In-Reply-To: <aTKkF_hpmtf_VrAD@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 5 Dec 2025 10:33:53 +0100
-X-Gm-Features: AQt7F2q9wt2cS4nx6Y0OPUYF25N7dgJPx3ggcXxgKfwC36ColBBmsmxMf69ztuI
-Message-ID: <CANiq72n4Tcu5ENbAGVDcu_HR8h_2uD1O5Qu23opkTtbXEvoAfw@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: Add some DMA helpers for architectures without CONFIG_HAS_DMA
-To: Alice Ryhl <aliceryhl@google.com>, David Gow <davidgow@google.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, dakr@kernel.org, ojeda@kernel.org, 
-	a.hindborg@kernel.org, abdiel.janulgue@gmail.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, daniel.almeida@collabora.com, gary@garyguo.net, 
-	lossin@kernel.org, robin.murphy@arm.com, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+X-Mozilla-Draft-Info: internal/draft; vcard=0; receipt=0; DSN=0; uuencode=0;
+ attachmentreminder=0; deliveryformat=0
+X-Identity-Key: id8
+Fcc: imap://kernel%40dakr.org@imap.dakr.org/Sent
+X-TUID: iFuKszWfwZxw
 
-On Fri, Dec 5, 2025 at 10:21=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> should this cc stable?
+Hi Linus,
 
-If possible, that would be nice. I "unofficially" test UML with Rust
-in stable and I have seen these in 6.17.y.
+Please pull these driver-core changes.
 
-Cc David who does some UML work and UML.
+There are a few conflicts with other trees: There are in total four minor i=
+mport
+conflicts with the DRM and Rust trees. Additionally, there is a conflict wi=
+th
+the tip tree replacing Rust native atomics in the debugfs code (the resolut=
+ion
+in linux-next should be fine).
 
-Cheers,
-Miguel
+In order to avoid non-trivial conflicts, the PR also contains a few patches
+usually going through other trees, i.e. the introduction of I2C Rust
+infrastructure, a few uaccess patches, as well as one (more minor) patch ea=
+ch of
+FS, pin-init and timekeeping.
+
+All changes have been in linux-next for at least five rounds; two (rather
+trivial) regression fixes [1][2] for two rounds.
+
+- Danilo
+
+[1] https://patch.msgid.link/20251202070927.14198-1-dev@null.aaront.org
+[2] https://patch.msgid.link/20251202210501.40998-1-dakr@kernel.org
+
+The following changes since commit dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa=
+:
+
+  Linux 6.18-rc3 (2025-10-26 15:59:49 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git=
+ tags/driver-core-6.19-rc1
+
+for you to fetch changes up to 473b9f331718267815649cd93801da832200db71:
+
+  rust: pci: fix build failure when CONFIG_PCI_MSI is disabled (2025-12-04 =
+00:24:47 +1300)
+
+----------------------------------------------------------------
+Driver core changes for 6.19-rc1
+
+- Arch Topology:
+  - Move parse_acpi_topology() from arm64 to common code for reuse in RISC-=
+V
+
+- CPU:
+  - Expose housekeeping CPUs through /sys/devices/system/cpu/housekeeping
+  - Print a newline (or 0x0A) instead of '(null)' reading
+    /sys/devices/system/cpu/nohz_full when nohz_full=3D is not set
+
+- debugfs
+  - Remove (broken) 'no-mount' mode
+  - Remove redundant access mode checks in debugfs_get_tree() and
+    debugfs_create_*() functions
+
+- Devres:
+  - Remove unused devm_free_percpu() helper
+  - Move devm_alloc_percpu() from device.h to devres.h
+
+- Firmware Loader:
+  - Replace simple_strtol() with kstrtoint()
+  - Do not call cancel_store() when no upload is in progress
+
+- kernfs:
+  - Increase struct super_block::maxbytes to MAX_LFS_FILESIZE
+  - Fix a missing unwind path in __kernfs_new_node()
+
+- Misc:
+  - Increase the name size in struct auxiliary_device_id to 40 characters
+  - Replace system_unbound_wq with system_dfl_wq and add WQ_PERCPU to
+    alloc_workqueue()
+
+- Platform:
+  - Replace ERR_PTR() with IOMEM_ERR_PTR() in platform ioremap functions
+
+- Rust:
+  - Auxiliary:
+    - Unregister auxiliary device on parent device unbind
+    - Move parent() to impl Device; implement device context aware parent()=
+ for
+      Device<Bound>
+    - Illustrate how to safely obtain a driver's device private data when
+      calling from an auxiliary driver into the parant device driver
+
+  - DebugFs:
+    - Implement support for binary large objects
+
+  - Device:
+    - Let probe() return the driver's device private data as pinned initial=
+izer,
+      i.e. impl PinInit<Self, Error>
+    - Implement safe accessor for a driver's device private data for
+      Device<Bound> (returned reference can't out-live driver binding and
+      guarantees the correct private data type)
+    - Implement AsBusDevice trait, to be used by class device abstractions =
+to
+      derive the bus device type of the parent device
+
+  - DMA:
+    - Store raw pointer of allocation as NonNull
+    - Use start_ptr() and start_ptr_mut() to inherit correct mutability of =
+self
+
+  - FS:
+    - Add file::Offset type alias
+
+  - I2C:
+    - Add abstractions for I2C device / driver infrastructure
+    - Implement abstractions for manual I2C device registrations
+
+  - I/O:
+    - Use "kernel vertical" style for imports
+    - Define ResourceSize as resource_size_t
+    - Move ResourceSize to top-level I/O module
+    - Add type alias for phys_addr_t
+    - Implement Rust version of read_poll_timeout_atomic()
+
+  - PCI:
+    - Use "kernel vertical" style for imports
+    - Move I/O and IRQ infrastructure to separate files
+    - Add support for PCI interrupt vectors
+    - Implement TryInto<IrqRequest<'a>> for IrqVector<'a> to convert an
+      IrqVector bound to specific pci::Device into an IrqRequest bound to t=
+he
+      same pci::Device's parent Device
+    - Leverage pin_init_scope() to get rid of redundant Result in IRQ metho=
+ds
+
+  - PinInit:
+    - Add {pin_}init_scope() to execute code before creating an initializer
+
+  - Platform:
+    - Leverage pin_init_scope() to get rid of redundant Result in IRQ metho=
+ds
+
+  - Timekeeping:
+    - Implement abstraction of udelay()
+
+  - Uaccess:
+    - Implement read_slice_partial() and read_slice_file() for UserSliceRea=
+der
+    - Implement write_slice_partial() and write_slice_file() for UserSliceW=
+riter
+
+- sysfs
+  - Prepare the constification of struct attribute
+
+----------------------------------------------------------------
+Aaron Thompson (3):
+      debugfs: Remove redundant access mode checks
+      debugfs: Remove broken no-mount mode
+      debugfs: Fix default access mode config check
+
+Aaron Tomlin (3):
+      sysfs/cpu: Use DEVICE_ATTR_RO for nohz_full attribute
+      tick/nohz: avoid showing '(null)' if nohz_full=3D not set
+      tick/nohz: Expose housekeeping CPUs in sysfs
+
+Alice Ryhl (4):
+      rust: io: define ResourceSize as resource_size_t
+      rust: io: move ResourceSize to top-level io module
+      rust: scatterlist: import ResourceSize from kernel::io
+      rust: io: add typedef for phys_addr_t
+
+Andy Shevchenko (2):
+      devres: Remove unused devm_free_percpu()
+      devres: Move devm_alloc_percpu() and related to devres.h
+
+Benno Lossin (1):
+      add `[pin_]init_scope` to execute code before creating an initializer
+
+Danilo Krummrich (32):
+      rust: pci: implement TryInto<IrqRequest<'a>> for IrqVector<'a>
+      rust: pci: move I/O infrastructure to separate file
+      rust: pci: move IRQ infrastructure to separate file
+      rust: driver: let probe() return impl PinInit<Self, Error>
+      rust: device: narrow the generic of drvdata_obtain()
+      rust: device: introduce Device::drvdata()
+      rust: auxiliary: consider auxiliary devices always have a parent
+      rust: auxiliary: unregister on parent device unbind
+      rust: auxiliary: move parent() to impl Device
+      rust: auxiliary: implement parent() for Device<Bound>
+      samples: rust: auxiliary: misc cleanup of ParentDriver::connect()
+      samples: rust: auxiliary: illustrate driver interaction
+      rust: usb: fix broken call to T::disconnect()
+      rust: fs: add file::Offset type alias
+      rust: uaccess: add UserSliceReader::read_slice_partial()
+      rust: uaccess: add UserSliceReader::read_slice_file()
+      rust: uaccess: add UserSliceWriter::write_slice_partial()
+      rust: uaccess: add UserSliceWriter::write_slice_file()
+      rust: debugfs: support for binary large objects
+      rust: debugfs: support blobs from smart pointers
+      samples: rust: debugfs: add example for blobs
+      rust: debugfs: support binary large objects for ScopedDir
+      samples: rust: debugfs_scoped: add example for blobs
+      rust: auxiliary: fix false positive warning for missing a safety comm=
+ent
+      rust: pci: get rid of redundant Result in IRQ methods
+      rust: platform: get rid of redundant Result in IRQ methods
+      rust: debugfs: Implement BinaryReader for Mutex<T> only when T is Unp=
+in
+      rust: io: cleanup imports and use "kernel vertical" style
+      rust: pci: use "kernel vertical" style for imports
+      rust: dma: make use of start_ptr() and start_ptr_mut()
+      rust: dma: use NonNull<T> instead of *mut T
+      rust: pci: fix build failure when CONFIG_PCI_MSI is disabled
+
+FUJITA Tomonori (3):
+      rust: simplify read_poll_timeout's example code
+      rust: add udelay() function
+      rust: Add read_poll_timeout_atomic function
+
+Greg Kroah-Hartman (1):
+      Merge 6.18-rc3 into driver-core-next
+
+Igor Korotin (4):
+      rust: i2c: add basic I2C device and driver abstractions
+      rust: i2c: add manual I2C device creation abstractions
+      samples: rust: add Rust I2C sample driver
+      samples: rust: add Rust I2C client registration sample
+
+Jane Chu (1):
+      fs/kernfs: raise sb->maxbytes to MAX_LFS_FILESIZE
+
+Joel Fernandes (1):
+      rust: pci: Allocate and manage PCI interrupt vectors
+
+Kaushlendra Kumar (2):
+      firmware_loader: Only call cancel when upload is active
+      firmware_loader: Replace simple_strtol() with kstrtoint()
+
+Marco Crivellari (2):
+      driver core: replace use of system_unbound_wq with system_dfl_wq
+      driver core: WQ_PERCPU added to alloc_workqueue users
+
+Markus Probst (1):
+      rust: Add trait to convert a device reference to a bus device referen=
+ce
+
+Miguel Ojeda (1):
+      rust: i2c: prepare for `core::ffi::CStr`
+
+Pei Xiao (1):
+      platform: Use IOMEM_ERR_PTR for ioremap error returns
+
+Peter Colberg (3):
+      rust: pci: refer to legacy as INTx interrupts
+      rust: pci: normalise spelling of PCI BAR
+      samples: rust: fix module name for Rust PCI driver sample
+
+Raag Jadav (1):
+      mod_devicetable: Bump auxiliary_device_id name size
+
+Thomas Wei=C3=9Fschuh (7):
+      sysfs: attribute_group: allow registration of const attribute
+      sysfs: transparently handle const pointers in ATTRIBUTE_GROUPS()
+      sysfs: introduce __SYSFS_FUNCTION_ALTERNATIVE()
+      sysfs: attribute_group: enable const variants of is_visible()
+      samples/kobject: add is_visible() callback to attribute group
+      samples/kobject: constify 'struct foo_attribute'
+      sysfs: simplify attribute definition macros
+
+Vincent Liu (1):
+      driver core: Check drivers_autoprobe for all added devices
+
+Will Rosenberg (1):
+      kernfs: fix memory leak of kernfs_iattrs in __kernfs_new_node
+
+Yunhui Cui (1):
+      arch_topology: move parse_acpi_topology() to common code
+
+ Documentation/ABI/testing/sysfs-devices-system-cpu |  11 +
+ Documentation/admin-guide/kernel-parameters.txt    |   6 +-
+ Documentation/driver-api/driver-model/devres.rst   |   1 -
+ MAINTAINERS                                        |  10 +
+ arch/arm64/include/asm/topology.h                  |   3 +
+ arch/arm64/kernel/topology.c                       | 101 --------
+ drivers/base/arch_topology.c                       |  96 +++++++-
+ drivers/base/base.h                                |  16 ++
+ drivers/base/bus.c                                 |   3 +-
+ drivers/base/core.c                                |   2 +-
+ drivers/base/cpu.c                                 |  26 +-
+ drivers/base/dd.c                                  |  12 +-
+ drivers/base/devres.c                              |  25 --
+ drivers/base/firmware_loader/sysfs.c               |  10 +-
+ drivers/base/firmware_loader/sysfs_upload.c        |   6 +-
+ drivers/cpufreq/rcpufreq_dt.rs                     |   4 +-
+ drivers/gpu/drm/nova/driver.rs                     |   4 +-
+ drivers/gpu/drm/nova/file.rs                       |   2 +-
+ drivers/gpu/drm/tyr/driver.rs                      |   4 +-
+ drivers/gpu/nova-core/driver.rs                    |  42 ++--
+ fs/debugfs/inode.c                                 |  36 +--
+ fs/debugfs/internal.h                              |  13 -
+ fs/kernfs/dir.c                                    |   5 +-
+ fs/kernfs/mount.c                                  |   1 +
+ fs/sysfs/group.c                                   |  10 +-
+ include/linux/arch_topology.h                      |   5 +
+ include/linux/device.h                             |  19 --
+ include/linux/device/devres.h                      |  17 ++
+ include/linux/mod_devicetable.h                    |   2 +-
+ include/linux/platform_device.h                    |   6 +-
+ include/linux/sysfs.h                              |  48 ++--
+ lib/Kconfig.debug                                  |   9 +-
+ rust/bindings/bindings_helper.h                    |   7 +
+ rust/helpers/pci.c                                 |  14 +-
+ rust/helpers/time.c                                |   5 +
+ rust/kernel/auxiliary.rs                           | 120 +++++----
+ rust/kernel/cpufreq.rs                             |   4 +-
+ rust/kernel/debugfs.rs                             | 110 ++++++++-
+ rust/kernel/debugfs/file_ops.rs                    | 146 ++++++++++-
+ rust/kernel/debugfs/traits.rs                      | 238 +++++++++++++++++=
+-
+ rust/kernel/device.rs                              | 130 +++++++++-
+ rust/kernel/devres.rs                              |  18 +-
+ rust/kernel/dma.rs                                 |  29 ++-
+ rust/kernel/driver.rs                              |   4 +-
+ rust/kernel/fs/file.rs                             |   5 +
+ rust/kernel/i2c.rs                                 | 586 +++++++++++++++++=
++++++++++++++++++++++++++++
+ rust/kernel/io.rs                                  |  32 ++-
+ rust/kernel/io/mem.rs                              |  36 +--
+ rust/kernel/io/poll.rs                             |  93 ++++++-
+ rust/kernel/io/resource.rs                         |  31 +--
+ rust/kernel/lib.rs                                 |   2 +
+ rust/kernel/pci.rs                                 | 231 ++++-------------
+ rust/kernel/pci/id.rs                              |   5 +-
+ rust/kernel/pci/io.rs                              | 144 +++++++++++
+ rust/kernel/pci/irq.rs                             | 252 +++++++++++++++++=
+++
+ rust/kernel/platform.rs                            |  63 +++--
+ rust/kernel/scatterlist.rs                         |   2 +-
+ rust/kernel/time/delay.rs                          |  37 +++
+ rust/kernel/uaccess.rs                             |  85 +++++++
+ rust/kernel/usb.rs                                 |  25 +-
+ rust/pin-init/src/lib.rs                           |  87 +++++++
+ samples/kobject/kset-example.c                     |  44 ++--
+ samples/rust/Kconfig                               |  25 +-
+ samples/rust/Makefile                              |   2 +
+ samples/rust/rust_debugfs.rs                       |  34 ++-
+ samples/rust/rust_debugfs_scoped.rs                |  14 +-
+ samples/rust/rust_dma.rs                           |  37 ++-
+ samples/rust/rust_driver_auxiliary.rs              |  59 +++--
+ samples/rust/rust_driver_i2c.rs                    |  74 ++++++
+ samples/rust/rust_driver_pci.rs                    |  53 ++--
+ samples/rust/rust_driver_platform.rs               |   6 +-
+ samples/rust/rust_driver_usb.rs                    |   5 +-
+ samples/rust/rust_i2c_client.rs                    | 147 +++++++++++
+ 73 files changed, 2876 insertions(+), 720 deletions(-)
+ create mode 100644 rust/kernel/i2c.rs
+ create mode 100644 rust/kernel/pci/io.rs
+ create mode 100644 rust/kernel/pci/irq.rs
+ create mode 100644 samples/rust/rust_driver_i2c.rs
+ create mode 100644 samples/rust/rust_i2c_client.rs
