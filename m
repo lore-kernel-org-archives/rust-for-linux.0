@@ -1,365 +1,133 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5427347BA9
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Dec 2025 18:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF54358D0D
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Dec 2025 18:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764959868; cv=none; b=fAE34xr8MGmI2uE8K3Pi5RbXiJod7SaonaRPYGR1uPyGy7QOwpK3uIBeo8rLZ0FqtsMoia8N0gTkYPo86ytcefbdUfMoxipLnxYZbqHuG/oZPF8JiYaUWIjbHgsjwg1iLOAJxxFn4Sn/IX7Qwa/ae2do5phxjOTdyigd7euFDa4=
+	t=1764960044; cv=none; b=GQEYrG0eFggoyJPiBEbwaPbviLS5zGoJTUNHOBw2AMATuoFoIQSxCGcvFUtE+nelZ25RMqY7ZKQH77yAnaQTf/2r3xQAZKVW2DpOhiRKZsaKCJWXS+WCdu2PxHDLRh2XpSyI3u/ue/rAfYOdMwOmfVzokdaRPi3uH6/Ps/UefzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764959868; c=relaxed/simple;
-	bh=x3JVG0Npt7Vp6FJ7VZ184tzfxWj7zfRDDLEdRgBiASw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NPhNiGKM4LxuQWstfGjEV5GpVUoeE2vFE/NYhQJioN1WkG7T0kPA6h1RteO56wZIwsdn7e3ClMlAks4Nn9gO0gkk3RiWl4IKvfp25KH5sRw4kX88KJFj7t3K6Je48TOYVxixkVokg7JpsqFDtFWWpdT2cWeVXmjs4LIzlQGixtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=Mg+yxr41; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	s=arc-20240116; t=1764960044; c=relaxed/simple;
+	bh=6Yy3IShQVWKoUdXCDZD3yBqKU2764SqgOZHs7jYW65g=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=HjRvmOcY0vnZ/FGMbOIawwVbD1AAYFzCmv0PyjHeq9bdljX3t2ujMLBO1ULkX2lcN8O1nXvPrD9xp3QR4studJR/ZW4Y0aac4kXx0Se5LRQ1A8AE9Hzk9GiW04bneda7NR9Lg/yM8ysd13Q/oXy30ui417/qQqCf2ohIWWe7iUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OB4B8ACn; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="Mg+yxr41"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-bea8b4ba79bso1969135a12.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Dec 2025 10:37:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OB4B8ACn"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7e2762ad850so2410230b3a.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Dec 2025 10:40:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1764959856; x=1765564656; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FbIk5cCPbojOJ9uTDKoU4N3fqpVL6wCeA1bHhTiYoys=;
-        b=Mg+yxr41RPX/gVcEeBtVQPQT5ZrkY5Xpv6MKzEMu49TtzoM88386LAgXZfcQCnA/71
-         mPtCv1YQtVJCc0fiJePeUUAC23Uv8cMZW6UhxsjHbq+K4sye28yeOvSBtNlhHPhj0UWn
-         GL9j23kqY1qJkT1NX4TPvQf+l5ecKxvq8pKrB5f5cCiTEXcYr4ZKOplP1nML40n+snvv
-         KgD0A00nA7QIJcEEuioNUc1y8XdzSw5W9tIefDUD8t+HMRIEpir97ezSq2gbJy1B9nJ+
-         9czfG5a9fuTEADfrFSzodKLicl7ObWaFgtSZ4VqWASBdKyFjwhHa87BihbI8ewbPZae2
-         Qn5A==
+        d=gmail.com; s=20230601; t=1764960040; x=1765564840; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gx4zuHCdfmsBvfViSx4dewQ3NC0pwlIv6go7qc93ekw=;
+        b=OB4B8ACnPwttjampNMBOyr5SQc3Lvq62ehcw0tv8++5+w4VkufFKGOxcDXbCKO0ZfO
+         pqHpYswzVY/GbBPI+w8G4ywayCKLapa5R5RRM5i2PHXKwztAC+JznM87b23IhWGIJEVT
+         yG9433rpC9RO7QrY1GfZ+wpMP2+38InsAw4QmJFd1Bjsg6AGdaT1bZaBxwH4CGQ4fMcE
+         aId8rOKhpwqC3YyolpgTi+TLuRH/VfgLCHC0pVdT/YZ6awxPOzVVMl6bTAP733KmyNnW
+         M7SgQvULVcIthAa8zUMJM8LwpiUB1HemuP45Sq/wLzODq6jNbAW4kOyCRQJSdAnQZsSt
+         +pBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764959856; x=1765564656;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=FbIk5cCPbojOJ9uTDKoU4N3fqpVL6wCeA1bHhTiYoys=;
-        b=d66D2rNNmbeuAs1jLpfv6BdSo5Sgllzp+kDvWAsg2+0RQv+Iuc2mcGH1tBuWB8zktH
-         8Ezfq33pIsfHI5w4A6ug5C+ZVmY633zlGE+uMyZcLJzb5d7PBkVz3ZvETHVHFboXHFXE
-         BebGsBc14yr68o1ftXf1QD9GL+Yerk7S77Zj1UAyKDAS7HUjFLPfQNbsUuinpCUMh7JB
-         ZUiSPMO1DTCjVEV51Lk4XJspR2Omvp3qwSn9PELBCu5g6a4pa/gNbm6TtmFlQ3z4nwSn
-         PDMlmoTa5TRgHWX5A59WGCLNm2XUWzEbyFjUgF+5RjuAUBnG+aK4JvsRsqyBJtR9b3kh
-         Wkwg==
-X-Forwarded-Encrypted: i=1; AJvYcCVsunHF5b3DpVED6joHEKn7fUX4t37Y4HwiL6g1hXLx2SOXkm+w0UV/etB06VpMlOXSXMroOgOq/IaeZpIVDg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqQ2XoawMiidWmDIxbajvRr2VtytzH3vzgXAJ39TiAEG0MCsbk
-	ZBM4B2WJLqeIBz9WJEW/j2TsoLnvXF0Qj64scBYPwTSxUzLBaEdB3AFjUX+AmLEClqk=
-X-Gm-Gg: ASbGncv+xBMBtwsHJNOuDGkgWXsLwWxPcjYvy/tieUaUsa4P0gZhlvTvWRwN/K1eBDr
-	UJ2hmim6XRfPc/dd7lFzEPlQg32629sTtFH53U8adlh863MuFDZBJg78EmXeDyWwzPWzuLk0YLX
-	96Ct6oCABebsRv4vlSlPg7pmjMYwzyCaaEwrdmm50VbZjNixvTLHpX6BLlVXZ1HN8Dd2j3wL2Oj
-	wvZjCU+PoRpFJqOqbvkK8st5k0FR++/DPenMbbl64m/PdXOkX3BQ5u/CIRZAxJ5oupI939AtF3o
-	fm4RaI95He5h/KHKetIWaB7DReVEAbr4QciJcDZX6HmFwUkD9ILbcC/kp2WrT0jajtYS37IFBvJ
-	cMZCCvaQmJSgF/Xu8M7s1I7gvJjMkktFsSOyoEpbty2eUXONgwRcDqJUCQa91NYY7BG03LBhkzd
-	mkmLpWfsitulW1st8E06mZ
-X-Google-Smtp-Source: AGHT+IHkjjsKzqNtkRXJFYg+Yls4ZdsONc5juLvXKNvtnLO3/ZLQmkbs2RVd7+58iM/Zo5/Mwe0wYQ==
-X-Received: by 2002:a05:7300:f40c:b0:2a4:432c:1e63 with SMTP id 5a478bee46e88-2abc712a348mr94020eec.5.1764959856105;
-        Fri, 05 Dec 2025 10:37:36 -0800 (PST)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2aba8395d99sm23933342eec.1.2025.12.05.10.37.34
+        d=1e100.net; s=20230601; t=1764960040; x=1765564840;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Gx4zuHCdfmsBvfViSx4dewQ3NC0pwlIv6go7qc93ekw=;
+        b=mhqTNqMpWNcgpqQfQagCk7tS96nynuMaACXL11joDFTJkM90i6VK/Ry4NsB5AqCYWN
+         1x7yY/JaEXYADQ2Mxe0R2BrxWZvdsyoNAt8zcPRuc6iMWJ2Fi4VF6pNEOPtf0S3g9Uu+
+         eu89MUNlHRj9HEdMYyICu4Q6U3/CMWVhpY2wuzDj07rH8od5QElJL2NdB+WHpRbpVjnJ
+         386DRJnInhV8UbSBZ2mbV8Tcdi3bgKlFM1Qm2cVVXQPI2ny3F2iXjniURBBMQyeIp2yE
+         EFQvoJ+sznqSyVDtqnTBAqO0cGWS9pmkZYjXUYlB4FuSnw9Ujgsu0V6LzDIM+ld4zq5U
+         73dA==
+X-Forwarded-Encrypted: i=1; AJvYcCWxSFBrT8/3MGexawHVIeAdXB4LO4dFcq/QmAcj4aRB+cP0y5dckA37oQeU8OcvJQxKcLDLaBmWYEZmmeqKBQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCyjT3tnRkTwuC55vQNknSinuDiXSmC8n/RLQH8h5rSyJIWgW4
+	/N4ad/hY29+IOYExN73S69I0U/pyh+e3TNyL4r10R0XV2K1eyJ4OFPSj
+X-Gm-Gg: ASbGncuaKLUqEG9nUxCAbvURrGH+v+LSK+867dq8yTojH2jn97zR6K6jtbv6+JG8s0v
+	ATRgdGm+SyS28Vt4hz+3RS1iVHZ1IJjtY6mFt36qkVot6DgFIS2RtTSZ7qKilSWaf6sPj4izBtj
+	DJTkB7afhrOTQx2B2TDXc5jor+L4JMxXeEaXzv6whyFRyRfxTGOPbjjwp7uZeWs3xjDC5CzrObZ
+	mLroTgEVzdT9mrL7IiM1+cShKdJd5NB4tacRhmReFW87N5e7Bp0VdkAQLZPdwXPzyLX2KL36yNr
+	kjjdBkZrRpFsbE8/YQCMjkETTJ12/WZwCMiP1EipyNZyzkGNJzuiBYoAImV12CysMofd92zYMOq
+	nXt7l4a1DUDrzyhSk326R2bN/cEoDtSJpSz5WKrEjoDNARZmw9VzvM+tNYiR/dlZq/qdD0+yowF
+	vNQaSt/8qeW4H0OwbB7D7TGIRfWQ==
+X-Google-Smtp-Source: AGHT+IFdaIOl2EVfDf53MnHxu6h2Csp/9+fkL7qdsbkngVF7MJLua/LR1xBA2DmFila+UaeQfEKpNw==
+X-Received: by 2002:a05:6a00:ac3:b0:7e8:4433:8fb5 with SMTP id d2e1a72fcca58-7e8c6cab76fmr135748b3a.61.1764960039751;
+        Fri, 05 Dec 2025 10:40:39 -0800 (PST)
+Received: from shankari-IdeaPad.. ([103.24.60.188])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7e2a0533f08sm5952079b3a.23.2025.12.05.10.40.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Dec 2025 10:37:35 -0800 (PST)
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Fri, 05 Dec 2025 10:37:10 -0800
-Subject: [PATCH v25 24/28] arch/riscv: dual vdso creation logic and select
- vdso based on hw
+        Fri, 05 Dec 2025 10:40:39 -0800 (PST)
+From: Shankari Anand <shankari.ak0208@gmail.com>
+To: Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	linux-pwm@vger.kernel.org
+Subject: Re: [PATCH 05/10] rust: kernel: Update ARef and AlwaysRefCounted imports to use sync::aref
+Date: Sat,  6 Dec 2025 00:10:23 +0530
+Message-Id: <20251205184023.7230-1-shankari.ak0208@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <1b7408c5-64a8-42f1-92ab-dd90a883c1a4@gmail.com>
+References: <1b7408c5-64a8-42f1-92ab-dd90a883c1a4@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251205-v5_user_cfi_series-v25-24-8a3570c3e145@rivosinc.com>
-References: <20251205-v5_user_cfi_series-v25-0-8a3570c3e145@rivosinc.com>
-In-Reply-To: <20251205-v5_user_cfi_series-v25-0-8a3570c3e145@rivosinc.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
- Christian Brauner <brauner@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
- Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
- Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
- andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
- atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
- alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
- rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Charles Mirabile <cmirabil@redhat.com>, 
- Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
- Valentin Haudiquet <valentin.haudiquet@canonical.com>, 
- Deepak Gupta <debug@rivosinc.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764959808; l=9634;
- i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
- bh=x3JVG0Npt7Vp6FJ7VZ184tzfxWj7zfRDDLEdRgBiASw=;
- b=DP0jaDo8GMIVR5mv16tqNdKkiXt+tqgS8UirLPKq+8lp6UPqdjFktNR5NSTnwQRkwH0UgQ58P
- gpSrWB1JqGOBa+zu4fC/nK7ifQXFg/wW4GVPQ/FV3XBbm/HuPXFvCVB
-X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
- pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
+Content-Transfer-Encoding: 8bit
 
-Shadow stack instructions are taken from zimop (mandated on RVA23).
-Any hardware prior to RVA23 profile will fault on shadow stack instruction.
-Any userspace with shadow stack instruction in it will fault on such
-hardware. Thus such userspace can't be brought onto such a hardware.
+Hello Igor,
 
-It's not known how userspace will respond to such binary fragmentation.
-However in order to keep kernel portable across such different hardware,
-`arch/riscv/kernel/vdso_cfi` is created which has logic (Makefile) to
-compile `arch/riscv/kernel/vdso` sources with cfi flags and then changes
-in `arch/riscv/kernel/vdso.c` for selecting appropriate vdso depending
-on whether underlying hardware(cpu) implements zimop extension. Offset
-of vdso symbols will change due to having two different vdso binaries,
-there is added logic to include new generated vdso offset header and
-dynamically select offset (like for rt_sigreturn).
+> 
+> NIT: This module already imports `AlwaysRefCounted`, so please use the
+> imported name instead of the full path for consistency.
+> 
+> >       fn inc_ref(&self) {
+> >           // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
+> >           unsafe { bindings::i2c_get_adapter(self.index()) };
+> 
+> Thanks
+> Igor
 
-Acked-by: Charles Mirabile <cmirabil@redhat.com>
-Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
-Tested-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
-Signed-off-by: Deepak Gupta <debug@rivosinc.com>
----
- arch/riscv/Makefile                        |  3 +++
- arch/riscv/include/asm/vdso.h              | 13 ++++++++++++-
- arch/riscv/kernel/Makefile                 |  1 +
- arch/riscv/kernel/vdso.c                   |  7 +++++++
- arch/riscv/kernel/vdso/Makefile            | 29 ++++++++++++++++++++---------
- arch/riscv/kernel/vdso/gen_vdso_offsets.sh |  4 +++-
- arch/riscv/kernel/vdso_cfi/Makefile        | 25 +++++++++++++++++++++++++
- arch/riscv/kernel/vdso_cfi/vdso-cfi.S      | 11 +++++++++++
- 8 files changed, 82 insertions(+), 11 deletions(-)
+I apologize for the overlook. I was just focussing on changing the path. 
+I'll make the required changes and send a v2.
 
-diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-index f60c2de0ca08..b74b63da16a7 100644
---- a/arch/riscv/Makefile
-+++ b/arch/riscv/Makefile
-@@ -176,6 +176,8 @@ ifeq ($(CONFIG_MMU),y)
- prepare: vdso_prepare
- vdso_prepare: prepare0
- 	$(Q)$(MAKE) $(build)=arch/riscv/kernel/vdso include/generated/vdso-offsets.h
-+	$(if $(CONFIG_RISCV_USER_CFI),$(Q)$(MAKE) \
-+		$(build)=arch/riscv/kernel/vdso_cfi include/generated/vdso-cfi-offsets.h)
- 	$(if $(CONFIG_COMPAT),$(Q)$(MAKE) \
- 		$(build)=arch/riscv/kernel/compat_vdso include/generated/compat_vdso-offsets.h)
- 
-@@ -183,6 +185,7 @@ endif
- endif
- 
- vdso-install-y			+= arch/riscv/kernel/vdso/vdso.so.dbg
-+vdso-install-$(CONFIG_RISCV_USER_CFI)	+= arch/riscv/kernel/vdso_cfi/vdso-cfi.so.dbg
- vdso-install-$(CONFIG_COMPAT)	+= arch/riscv/kernel/compat_vdso/compat_vdso.so.dbg
- 
- BOOT_TARGETS := Image Image.gz Image.bz2 Image.lz4 Image.lzma Image.lzo Image.zst Image.xz loader loader.bin xipImage vmlinuz.efi
-diff --git a/arch/riscv/include/asm/vdso.h b/arch/riscv/include/asm/vdso.h
-index f80357fe24d1..35bf830a5576 100644
---- a/arch/riscv/include/asm/vdso.h
-+++ b/arch/riscv/include/asm/vdso.h
-@@ -18,9 +18,19 @@
- 
- #ifndef __ASSEMBLER__
- #include <generated/vdso-offsets.h>
-+#ifdef CONFIG_RISCV_USER_CFI
-+#include <generated/vdso-cfi-offsets.h>
-+#endif
- 
-+#ifdef CONFIG_RISCV_USER_CFI
- #define VDSO_SYMBOL(base, name)							\
--	(void __user *)((unsigned long)(base) + __vdso_##name##_offset)
-+	  (riscv_has_extension_unlikely(RISCV_ISA_EXT_ZIMOP) ?			\
-+	  (void __user *)((unsigned long)(base) + __vdso_##name##_cfi_offset) :	\
-+	  (void __user *)((unsigned long)(base) + __vdso_##name##_offset))
-+#else
-+#define VDSO_SYMBOL(base, name)							\
-+	  ((void __user *)((unsigned long)(base) + __vdso_##name##_offset))
-+#endif
- 
- #ifdef CONFIG_COMPAT
- #include <generated/compat_vdso-offsets.h>
-@@ -33,6 +43,7 @@ extern char compat_vdso_start[], compat_vdso_end[];
- #endif /* CONFIG_COMPAT */
- 
- extern char vdso_start[], vdso_end[];
-+extern char vdso_cfi_start[], vdso_cfi_end[];
- 
- #endif /* !__ASSEMBLER__ */
- 
-diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-index 2d0e0dcedbd3..9026400cba10 100644
---- a/arch/riscv/kernel/Makefile
-+++ b/arch/riscv/kernel/Makefile
-@@ -72,6 +72,7 @@ obj-y	+= vendor_extensions/
- obj-y	+= probes/
- obj-y	+= tests/
- obj-$(CONFIG_MMU) += vdso.o vdso/
-+obj-$(CONFIG_RISCV_USER_CFI) += vdso_cfi/
- 
- obj-$(CONFIG_RISCV_MISALIGNED)	+= traps_misaligned.o
- obj-$(CONFIG_RISCV_MISALIGNED)	+= unaligned_access_speed.o
-diff --git a/arch/riscv/kernel/vdso.c b/arch/riscv/kernel/vdso.c
-index 3a8e038b10a2..43f70198ac3c 100644
---- a/arch/riscv/kernel/vdso.c
-+++ b/arch/riscv/kernel/vdso.c
-@@ -98,6 +98,13 @@ static struct __vdso_info compat_vdso_info __ro_after_init = {
- 
- static int __init vdso_init(void)
- {
-+	/* Hart implements zimop, expose cfi compiled vdso */
-+	if (IS_ENABLED(CONFIG_RISCV_USER_CFI) &&
-+	    riscv_has_extension_unlikely(RISCV_ISA_EXT_ZIMOP)) {
-+		vdso_info.vdso_code_start = vdso_cfi_start;
-+		vdso_info.vdso_code_end = vdso_cfi_end;
-+	}
-+
- 	__vdso_init(&vdso_info);
- #ifdef CONFIG_COMPAT
- 	__vdso_init(&compat_vdso_info);
-diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-index 272f1d837a80..a842dc034571 100644
---- a/arch/riscv/kernel/vdso/Makefile
-+++ b/arch/riscv/kernel/vdso/Makefile
-@@ -20,6 +20,10 @@ endif
- ifdef VDSO_CFI_BUILD
- CFI_MARCH = _zicfilp_zicfiss
- CFI_FULL = -fcf-protection=full
-+CFI_SUFFIX = -cfi
-+OFFSET_SUFFIX = _cfi
-+ccflags-y += -DVDSO_CFI=1
-+asflags-y += -DVDSO_CFI=1
- endif
- 
- # Files to link into the vdso
-@@ -48,13 +52,20 @@ endif
- CFLAGS_hwprobe.o += -fPIC
- 
- # Build rules
--targets := $(obj-vdso) vdso.so vdso.so.dbg vdso.lds
-+vdso_offsets := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),)-offsets.h
-+vdso_o := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).o
-+vdso_so := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).so
-+vdso_so_dbg := vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).so.dbg
-+vdso_lds := vdso.lds
-+
-+targets := $(obj-vdso) $(vdso_so) $(vdso_so_dbg) $(vdso_lds)
-+
- obj-vdso := $(addprefix $(obj)/, $(obj-vdso))
- 
--obj-y += vdso.o
--CPPFLAGS_vdso.lds += -P -C -U$(ARCH)
-+obj-y += vdso$(if $(VDSO_CFI_BUILD),$(CFI_SUFFIX),).o
-+CPPFLAGS_$(vdso_lds) += -P -C -U$(ARCH)
- ifneq ($(filter vgettimeofday, $(vdso-syms)),)
--CPPFLAGS_vdso.lds += -DHAS_VGETTIMEOFDAY
-+CPPFLAGS_$(vdso_lds) += -DHAS_VGETTIMEOFDAY
- endif
- 
- # Disable -pg to prevent insert call site
-@@ -63,12 +74,12 @@ CFLAGS_REMOVE_getrandom.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
- CFLAGS_REMOVE_hwprobe.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
- 
- # Force dependency
--$(obj)/vdso.o: $(obj)/vdso.so
-+$(obj)/$(vdso_o): $(obj)/$(vdso_so)
- 
- # link rule for the .so file, .lds has to be first
--$(obj)/vdso.so.dbg: $(obj)/vdso.lds $(obj-vdso) FORCE
-+$(obj)/$(vdso_so_dbg): $(obj)/$(vdso_lds) $(obj-vdso) FORCE
- 	$(call if_changed,vdsold_and_check)
--LDFLAGS_vdso.so.dbg = -shared -soname=linux-vdso.so.1 \
-+LDFLAGS_$(vdso_so_dbg) = -shared -soname=linux-vdso.so.1 \
- 	--build-id=sha1 --eh-frame-hdr
- 
- # strip rule for the .so file
-@@ -79,9 +90,9 @@ $(obj)/%.so: $(obj)/%.so.dbg FORCE
- # Generate VDSO offsets using helper script
- gen-vdsosym := $(src)/gen_vdso_offsets.sh
- quiet_cmd_vdsosym = VDSOSYM $@
--	cmd_vdsosym = $(NM) $< | $(gen-vdsosym) | LC_ALL=C sort > $@
-+	cmd_vdsosym = $(NM) $< | $(gen-vdsosym) $(OFFSET_SUFFIX) | LC_ALL=C sort > $@
- 
--include/generated/vdso-offsets.h: $(obj)/vdso.so.dbg FORCE
-+include/generated/$(vdso_offsets): $(obj)/$(vdso_so_dbg) FORCE
- 	$(call if_changed,vdsosym)
- 
- # actual build commands
-diff --git a/arch/riscv/kernel/vdso/gen_vdso_offsets.sh b/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-index c2e5613f3495..bd5d5afaaa14 100755
---- a/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-+++ b/arch/riscv/kernel/vdso/gen_vdso_offsets.sh
-@@ -2,4 +2,6 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- LC_ALL=C
--sed -n -e 's/^[0]\+\(0[0-9a-fA-F]*\) . \(__vdso_[a-zA-Z0-9_]*\)$/\#define \2_offset\t0x\1/p'
-+SUFFIX=${1:-""}
-+sed -n -e \
-+'s/^[0]\+\(0[0-9a-fA-F]*\) . \(__vdso_[a-zA-Z0-9_]*\)$/\#define \2'$SUFFIX'_offset\t0x\1/p'
-diff --git a/arch/riscv/kernel/vdso_cfi/Makefile b/arch/riscv/kernel/vdso_cfi/Makefile
-new file mode 100644
-index 000000000000..8ebd190782b0
---- /dev/null
-+++ b/arch/riscv/kernel/vdso_cfi/Makefile
-@@ -0,0 +1,25 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+# RISC-V VDSO CFI Makefile
-+# This Makefile builds the VDSO with CFI support when CONFIG_RISCV_USER_CFI is enabled
-+
-+# setting VDSO_CFI_BUILD triggers build for vdso differently
-+VDSO_CFI_BUILD := 1
-+
-+# Set the source directory to the main vdso directory
-+src := $(srctree)/arch/riscv/kernel/vdso
-+
-+# Copy all .S and .c files from vdso directory to vdso_cfi object build directory
-+vdso_c_sources := $(wildcard $(src)/*.c)
-+vdso_S_sources := $(wildcard $(src)/*.S)
-+vdso_c_objects := $(addprefix $(obj)/, $(notdir $(vdso_c_sources)))
-+vdso_S_objects := $(addprefix $(obj)/, $(notdir $(vdso_S_sources)))
-+
-+$(vdso_S_objects): $(obj)/%.S: $(src)/%.S
-+	$(Q)cp $< $@
-+
-+$(vdso_c_objects): $(obj)/%.c: $(src)/%.c
-+	$(Q)cp $< $@
-+
-+# Include the main VDSO Makefile which contains all the build rules and sources
-+# The VDSO_CFI_BUILD variable will be passed to it to enable CFI compilation
-+include $(src)/Makefile
-diff --git a/arch/riscv/kernel/vdso_cfi/vdso-cfi.S b/arch/riscv/kernel/vdso_cfi/vdso-cfi.S
-new file mode 100644
-index 000000000000..d426f6accb35
---- /dev/null
-+++ b/arch/riscv/kernel/vdso_cfi/vdso-cfi.S
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright 2025 Rivos, Inc
-+ */
-+
-+#define	vdso_start	vdso_cfi_start
-+#define	vdso_end	vdso_cfi_end
-+
-+#define __VDSO_PATH "arch/riscv/kernel/vdso_cfi/vdso-cfi.so"
-+
-+#include "../vdso/vdso.S"
+As this patch is part of a series, am I supposed to send all the patches with a v2, 
+some have been acked by already, hence I had the question?
 
--- 
-2.45.0
-
+Thanks and regards,
+Shankari
