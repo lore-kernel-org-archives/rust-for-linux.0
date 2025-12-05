@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7F935CB7E;
-	Fri,  5 Dec 2025 18:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF5D35C1A0;
+	Fri,  5 Dec 2025 18:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764960112; cv=none; b=jEhEbn0BM/XuMqaYfsKdKFsZW7PqV+wUmduPu5fZopFNxeBVHxqYH08FXEUpmig/bC3r+rG/84opyzbyEhSY7vmc/BjFF8HI+pOGC8VN6+3I2VFyj1urb44W8oI05kPhss+cLDFZabawSp4S0RKGrnaJNtkzl42vFR1/m30Q2Ds=
+	t=1764960112; cv=none; b=RjZo1t7sjpiqtCjZZsd5V0gOQ1R8BFF1MFIuq8AF8KKPUTTjU4oThZVWodL5POtfyK8jiluLRZ3dVnvzEA8G7WSuQM9dzfXz8UyCMPaMY3QriJ3RsVXNirBBLsuEzuz4rzPtE37hvkqY0ryuHaOIsznZ9QVFi3IsQkyxU2xScKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764960112; c=relaxed/simple;
-	bh=ly/QAA/61Anju/BdG7scvRW9qTC7lOqM9OgO/9B56Tk=;
+	bh=gKj05EfXWRzFgsdHcGDwkowJM1p6i+3gIjza9qiTqkA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SLJu52jkIjZLCRFvvXK/lN5Ns+ZUQvn0GlexSezoEs15xXJTxCJ6SyegaAEAHpfxC19v6xDphl3I/vxhPuwwX3nFvXTX6AnU4pMK3Z1EiBwEQnLtifKDh9JMmUL48yy5PhhcjmEvRdMj0iwzoVEQ5MQqrLM4XNlNnBAyganoFxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dp/rmgOs; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Nt39YgTyOFTlumna/rrYXtns9wvnSZ80RGb0rFdPltzySUVEmjxhckAJt0VO7GBcS35cIZSFtHpdaVbC++0vYjrr+XGLOcH/enwcW2CQ78DHF+QxwNxhHQa99QYziLVIi+L72P6QctDH5QRkdHTSr+/qg/d9k1ZyRRUI0XQeEtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrA9+hoT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dp/rmgOs"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D48D2C4AF49;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrA9+hoT"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AC753C4DDFD;
 	Fri,  5 Dec 2025 18:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1764960111;
-	bh=ly/QAA/61Anju/BdG7scvRW9qTC7lOqM9OgO/9B56Tk=;
+	bh=gKj05EfXWRzFgsdHcGDwkowJM1p6i+3gIjza9qiTqkA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Dp/rmgOsJgnUZAbgLM2x8YCwL28poWsTa3K3PqNetSf436AuEjJzQI4O4msUcQ46m
-	 28qonLWFHZ/E5soiXPlQd/Rr38izZ9KleLFYcyax6I6mPr3eNisawEMyFPLMXwuTTy
-	 02VAZReeD6LwwKrKIprNVGR+ovZGMLOrmagUmFIRAYYfMa3IpvK5igqoXNKW8u2lTJ
-	 GnR1WvT2S8fzOOFN4bH/ZOaFFGRpbzPdNvrhTj/SuoW/rXZPGgCAueLiDWpMBIxQnh
-	 wYQxgU5571i5x/+UFax2SEcRnj/pecgDC4pz74ItG1ug8GaIZVWoF/BU+wIhQQ5Gi6
-	 +TUqATxsAPBGg==
+	b=lrA9+hoTr2rXtUg3iXXS/9M9Jv5840hMcRepNTJgpUxDVzm1+raQrK77SQYuDEzNH
+	 GJogM9EuVytNk5wmPOa/jAOUZvXObYgzuRR4ZknaF+v2zDM45YdRIA+9IM3w6NByFr
+	 Ch7G8laVMENMImxp1btsjJ23j8pE/K7y5IN5Rf/OWZ0FqShFmhFzCqLaPhpOMV5rww
+	 jhvPSjSve+BHc/1fIf4NV8uOtncVBiUbPjDK5dNVatIEya3QtDkt9Uxmt88FW3lbiq
+	 NQgVJIfTc+fBUufFb15XI+/sVpjqsPEV4YHvVT/3VPhXN0hrVtX0RIUFI2QH8rMJuO
+	 LQYIUPy+K56Bg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C73C6D339AE;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C0B8D2F7F6;
 	Fri,  5 Dec 2025 18:41:51 +0000 (UTC)
 From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
-Date: Fri, 05 Dec 2025 10:41:58 -0800
-Subject: [PATCH v25 20/28] riscv/hwprobe: zicfilp / zicfiss enumeration in
- hwprobe
+Date: Fri, 05 Dec 2025 10:41:56 -0800
+Subject: [PATCH v25 18/28] riscv/kernel: update __show_regs to print shadow
+ stack register
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251205-v5_user_cfi_series-v25-20-1a07c0127361@rivosinc.com>
+Message-Id: <20251205-v5_user_cfi_series-v25-18-1a07c0127361@rivosinc.com>
 References: <20251205-v5_user_cfi_series-v25-0-1a07c0127361@rivosinc.com>
 In-Reply-To: <20251205-v5_user_cfi_series-v25-0-1a07c0127361@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -74,15 +74,15 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
  alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
  rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
- Zong Li <zong.li@sifive.com>, 
+ Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
  Valentin Haudiquet <valentin.haudiquet@canonical.com>, 
  Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764960107; l=1494;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1764960107; l=1182;
  i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
- bh=2JmRNzctibGknEiF/lJdumXBjnp4QWFhVuzyNKM/ZLQ=;
- b=iAMJytv5AiKmMhM1jdAOkPwLYhrQoQ6RDr6kVcqvXCzllIjhh+x7xpSu5Wn/WvI0yUy+7DXHr
- ofdbTkVpWaLDeEt2Omkxwp+WoVWtY5cDCJy3Y1iErifoLKCZE/tOedh
+ bh=XI4ppsK62Fegg41RmjuRUH5R6YykPAMiGtdfLotNIGk=;
+ b=l6Q7qF73uJomHw0ehkP1t2QZ7pGlMrNsJbPbw5cJvi95Vi+ilYXg5KGXrCDdAnxDZhga/lxhp
+ xahKwdn8tu7DmrT3yXGJiEa3qCcNZ52OENO38Q/98iauV2pY4SXd480
 X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
  pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
 X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
@@ -92,42 +92,32 @@ Reply-To: debug@rivosinc.com
 
 From: Deepak Gupta <debug@rivosinc.com>
 
-Adding enumeration of zicfilp and zicfiss extensions in hwprobe syscall.
+Updating __show_regs to print captured shadow stack pointer as well.
+On tasks where shadow stack is disabled, it'll simply print 0.
 
-Reviewed-by: Zong Li <zong.li@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
 Tested-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- arch/riscv/include/uapi/asm/hwprobe.h | 2 ++
- arch/riscv/kernel/sys_hwprobe.c       | 2 ++
- 2 files changed, 4 insertions(+)
+ arch/riscv/kernel/process.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/include/uapi/asm/hwprobe.h b/arch/riscv/include/uapi/asm/hwprobe.h
-index 5d30a4fae37a..0efc9c7d1199 100644
---- a/arch/riscv/include/uapi/asm/hwprobe.h
-+++ b/arch/riscv/include/uapi/asm/hwprobe.h
-@@ -82,6 +82,8 @@ struct riscv_hwprobe {
- #define		RISCV_HWPROBE_EXT_ZAAMO		(1ULL << 56)
- #define		RISCV_HWPROBE_EXT_ZALRSC	(1ULL << 57)
- #define		RISCV_HWPROBE_EXT_ZABHA		(1ULL << 58)
-+#define		RISCV_HWPROBE_EXT_ZICFILP	(1ULL << 59)
-+#define		RISCV_HWPROBE_EXT_ZICFISS	(1ULL << 60)
- #define RISCV_HWPROBE_KEY_CPUPERF_0	5
- #define		RISCV_HWPROBE_MISALIGNED_UNKNOWN	(0 << 0)
- #define		RISCV_HWPROBE_MISALIGNED_EMULATED	(1 << 0)
-diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
-index 000f4451a9d8..d13d9d0d1669 100644
---- a/arch/riscv/kernel/sys_hwprobe.c
-+++ b/arch/riscv/kernel/sys_hwprobe.c
-@@ -114,6 +114,8 @@ static void hwprobe_isa_ext0(struct riscv_hwprobe *pair,
- 		EXT_KEY(ZCMOP);
- 		EXT_KEY(ZICBOM);
- 		EXT_KEY(ZICBOZ);
-+		EXT_KEY(ZICFILP);
-+		EXT_KEY(ZICFISS);
- 		EXT_KEY(ZICNTR);
- 		EXT_KEY(ZICOND);
- 		EXT_KEY(ZIHINTNTL);
+diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+index 49f527e3acfd..aacb23978f93 100644
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -93,8 +93,8 @@ void __show_regs(struct pt_regs *regs)
+ 		regs->s8, regs->s9, regs->s10);
+ 	pr_cont(" s11: " REG_FMT " t3 : " REG_FMT " t4 : " REG_FMT "\n",
+ 		regs->s11, regs->t3, regs->t4);
+-	pr_cont(" t5 : " REG_FMT " t6 : " REG_FMT "\n",
+-		regs->t5, regs->t6);
++	pr_cont(" t5 : " REG_FMT " t6 : " REG_FMT " ssp : " REG_FMT "\n",
++		regs->t5, regs->t6, get_active_shstk(current));
+ 
+ 	pr_cont("status: " REG_FMT " badaddr: " REG_FMT " cause: " REG_FMT "\n",
+ 		regs->status, regs->badaddr, regs->cause);
 
 -- 
 2.43.0
