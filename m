@@ -1,64 +1,64 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36D430F544
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Dec 2025 14:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564B6319860
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Dec 2025 14:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764944373; cv=none; b=oTsDUKDp9kHmDR0eIP2HirJJoW/KPUZ8qvopW2wYxxqvhATV+ZUKw41j0Axfv/zxk1KHGvbvPpA3ANjptORYtvQj8EKUkCshZ8pR2PmaMBwfp21Ib3OSL0gydBn3S7p79KTCRV/fZcuTnEdMsiC4Oe+Y2H2Yi6XOyZWcx6SrBVE=
+	t=1764944983; cv=none; b=osbIsh6m3GMbwZofd1D6FhRLqg4NQLh99yeTPcxz9byGYrbbpeuuj+w811RIF+SfL0f1Zl6H8lrQ3hyQdlsVchzpGclvaZVTJE7+nWmBYc8rZU0aMKepEyHQ7C1H4oqO194tNygMbpqaNkNe/2ErRgCKJTV7n9CRPokgS4/qDs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764944373; c=relaxed/simple;
-	bh=emzIcLUu0cGaXtsYDSvbR/o80gfqNGaw2w6HNBlxPgQ=;
+	s=arc-20240116; t=1764944983; c=relaxed/simple;
+	bh=abCVAtbqooyF0UIqD8BhSOUnhoH4MFmezPBKW027k0s=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ae7oFNOFolzKdJsMNPpD8ZKs14UKyaBfnAjNhot0RRZ8xYOjhsuj0m1wDrKQk4RML1qKYRVgkCiFuPVZJwqGc1swTvx2JhawzRY0rjPOAZODw+dG/DvflbateeCoowpBrmuIs3W9j6L3X0THyZ1fUbYuTDbWICMiAHelWB3YdhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FCClnvMr; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=LU2DymQLCG7e4ANt8B/b7OCO+JRdm6h0Rnn0vUDHunYgkROTukpbVY2u3mn2iY1dXMSot8XC6c9qLfHYBDfE+ZsaNMj3WI9G1DAPlxkxNotV8TZOG2qIp1rfxATkKB70wwkFChYWsOKBSZeO8/4T7u4183wy7/EAz9DGzVCZyis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nLgv2ewN; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FCClnvMr"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4779b3749a8so16755015e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Dec 2025 06:19:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nLgv2ewN"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477bf8c1413so13666025e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Dec 2025 06:29:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1764944369; x=1765549169; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1764944978; x=1765549778; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wybqj2YM/RmGp6K+DACfRxN6tMdEBqPyADU71HzzJms=;
-        b=FCClnvMrr07nP4T+/RVbftGyb4X90u1vaNELzmN5J4nKpUB5NTAU0QOzYlm+HfQVgE
-         NF6gJYRvc/3m60+AniCaJ/s6uMPCWEttyswe0Om6H5varlrqGwj+4fSUmix82G9/7WMR
-         0GDwiYm+3MCKvG60JgOI3C1uTUhBdBrJr3VRjtk/yYpbP5j3F+OMSskoSXgeOHwoZC03
-         1JeH/1S0mmQQVBok/3CQ5bjMhwgJAsKzWYVoFdqCfSMuk9QN8Qj44RS1cMoWloyK2XI/
-         MfXq8uBVj4r7KNTwoQr66E2cPrC6L6xtdy6inrNcw6OsdZTD1SzOs8AdP7I5RIxABalQ
-         FoBQ==
+        bh=ihHXRiFptoSn1UPDej1d31iPMC/rnq4IC8M6YRoybz4=;
+        b=nLgv2ewNxT4zNmRtxqHlfPrFIe6U63+bDtY7rs+NUALipgyQ5/JYC2YbU6ucqjFVxt
+         3J4n79cs33GrZ+/MQE/qEJl+NY8unEwh1EpNxpbpOX5VR0sO0goOmOAI5YFDZXj9uamJ
+         TrEw6aDsDduJ1BwLr2gREcn/gfbF7iYFSaRtq0hp69ki6qVu7ku1ex9YM3nI+xcODCkI
+         HsxUQBvjAxGZ+gyoWYMusNyjzwYqxgtqqad7I2CD9Ag9bUdHVG/4C9FuQLbecobK26IN
+         kllgIvJC+K5Q5R65YCSNZ+l1IFRvpjUTxL3HiprXqXlI3ehf4KPG+2+QCfuHeKZAmzcs
+         KETQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764944369; x=1765549169;
+        d=1e100.net; s=20230601; t=1764944978; x=1765549778;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wybqj2YM/RmGp6K+DACfRxN6tMdEBqPyADU71HzzJms=;
-        b=dCfv+DjoeyZSRSTzRAfODNBZM8Grv7a45n0g32RS+VMlaXS2gHxNo2cGv39fOPqCV5
-         cM7csAm3iSt5RvlRICnAX4Noo7Cgh8sKoscDV0Zb10DrDewjSV1IOJIHTFsNqrcCdlJ6
-         MM1XGHqmifSd0vhYSWfQhIku3Ml8/Hutfd4K9J5p7oc68NFYdVdxp6PIwxP/Nf8L4EIU
-         Ow7/PNc7VviMAKgAJVwPOzOLt8PHzS38sHciOS53Lbx0XSXBPPGXYYSgx9eWYFtkTjiq
-         OKd3M8g2XwepAy/QgP6/u9oIhKowyj96VU/wjDPI4lgIf7ik3oIgLvXHwHPrO8RNjmOe
-         sPlg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJQHHfQhz/RmyagWgomFupyw6vCw6F/SUs4cNZZEiYWr9nsk5j90plZnqbYR/VKfAtOp1E/XxiLNjeRccIDQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyD9MlT/U3BaEDb0TpF0VjxJmtcCbd3/o6CJi4PCxfVgRJutAt2
-	F3OHSZ83aQ+K3gf3YJZWGMwP0AOesS79K5kt5tWrz11ehbB//VH57NeBCJOtxrx80riAY/wAtYU
-	i2UQeap2tWLSvsAuNEw==
-X-Google-Smtp-Source: AGHT+IE2G3uXl2LwX23LIlmQwFS8l3svvl1S3Kmikb7WxrYY7e4wUY/ghc5JChAHsYEsJn7prxOterQc0vftIzg=
-X-Received: from wmbh4.prod.google.com ([2002:a05:600c:a104:b0:477:81d8:54c6])
+        bh=ihHXRiFptoSn1UPDej1d31iPMC/rnq4IC8M6YRoybz4=;
+        b=X1jr20ZQoFWaZIcE9nr8zAtmLbkLqvPeEm44/WlbR4T3lwAhft1yfZYUO8+Ll4eRPF
+         vDnhC5vfFpLT+QJIDTrVwGmhB16KhdDgGME85HvgKOlrYfNkKAVKgS3yzKoUysioNUyN
+         74h4ARHGig+neXtGwg1ndYaVxfLyvsfsqzhyKiAfi5qEE6E1Ae8MqYN7XxqBm6gkxPzb
+         Zgllf/38HuEBgoAJma0W+ts19OZOU3y5EU3SixA0grXOd0NETn7QotqvZUMvOBJTdsjz
+         qer+UTHjttLcNGuakkqvz93uaJmGT3EXf5CYAf+3+/Toiq2SR8wvvm0myJid/mzZQUmw
+         1Z+w==
+X-Forwarded-Encrypted: i=1; AJvYcCWJv1N7ksMD1ua8jSU3ZhHGfzPwes4MaxcS+XNNQ2UlYsdAETztzfUCkpadYmO26XmBnvr72dVZWn/HOOmhEQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YywjOTUbOWGXzoIVq6hcBiz/l8/PjwhsSrpdXPw0Xtrip57UiYP
+	+h7YWyQgYygshJS0qqIMq5oCEWIy0DTTivp7lDPkRmxlAGJAzLFIdx89cA7bknegss+QG1x7moJ
+	fX35MP/yAkE8PiQfBFw==
+X-Google-Smtp-Source: AGHT+IG/BdKdEolpce9IynSZK74/u+mPv+jtkZRvtfG4q4RMC/qkIoJnhSAcuXTaRoHTzDBZuG0/i+Hsy6zvrX0=
+X-Received: from wmxb5-n2.prod.google.com ([2002:a05:600d:8445:20b0:477:a148:c6bf])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4689:b0:477:73e9:dbe7 with SMTP id 5b1f17b1804b1-4792af607f4mr116442435e9.35.1764944368528;
- Fri, 05 Dec 2025 06:19:28 -0800 (PST)
-Date: Fri, 5 Dec 2025 14:19:27 +0000
-In-Reply-To: <aTLnV-5jlgfk1aRK@redhat.com>
+ 2002:a05:600c:474b:b0:477:9392:8557 with SMTP id 5b1f17b1804b1-4792af30ebcmr105499115e9.18.1764944977722;
+ Fri, 05 Dec 2025 06:29:37 -0800 (PST)
+Date: Fri, 5 Dec 2025 14:29:36 +0000
+In-Reply-To: <aTLp73haymcs1fkX@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <aTLnV-5jlgfk1aRK@redhat.com>
-Message-ID: <aTLp73haymcs1fkX@google.com>
+References: <aTLnV-5jlgfk1aRK@redhat.com> <aTLp73haymcs1fkX@google.com>
+Message-ID: <aTLsUDBbcbl2ivme@google.com>
 Subject: Re: rust: wrong SAFETY comments in group_leader() and pid() + questions
 From: Alice Ryhl <aliceryhl@google.com>
 To: Oleg Nesterov <oleg@redhat.com>, Christian Brauner <christian@brauner.io>
@@ -72,83 +72,49 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-Thanks a lot for your email!
+On Fri, Dec 05, 2025 at 02:19:27PM +0000, Alice Ryhl wrote:
+> Thanks a lot for your email!
+> 
+> +Christian Brauner
+> 
+> On Fri, Dec 05, 2025 at 03:08:23PM +0100, Oleg Nesterov wrote:
+> > 2. I am working on the patch(es) which move ->group_leader from task_struct to
+> >    signal_struct, so the 1st change adds the new trivial helper in preparation:
+> > 
+> > 	struct task_struct *task_group_leader(struct task_struct *task)
+> > 	{
+> > 		return task->group_leader; // will be updated
+> > 	}
+> > 
+> >    Now, how can I change group_leader() to use it? I guess I need to add
+> > 
+> > 	struct task_struct *rust_helper_task_group_leader(struct task_struct *task)
+> > 	{
+> > 		return task_group_leader(task);
+> > 	}
+> > 
+> >    into rust/helpers/task.c, but will something like
+> > 
+> > 	pub fn group_leader(&self) -> &Task {
+> > 		unsafe { bindings::task_group_leader(self.as_ptr()) }
+> > 	}
+> > 
+> >     work? I'm afraid it won't ;)
+> 
+> That looks like it should work. The rust_helper_ function is only
+> required if task_group_leader is marked `static inline`. Otherwise
+> bindings:: will pick up the function straight from the C header. (As
+> long as the relevant header is included in bindings_helper.h)
 
-+Christian Brauner
+Ah, actually you need to convert from *mut bindings::task_struct to
+&Task. And you need a safety comment. E.g.:
 
-On Fri, Dec 05, 2025 at 03:08:23PM +0100, Oleg Nesterov wrote:
-> From rust/kernel/task.rs:
-> 
->     pub fn group_leader(&self) -> &Task {
->         // SAFETY: The group leader of a task never changes after initialization, so reading this
->         // field is not a data race.
->         let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
-> 
->         // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
->         // and given that a task has a reference to its group leader, we know it must be valid for
->         // the lifetime of the returned task reference.
->         unsafe { &*ptr.cast() }
->     }
-> 
->     /// Returns the PID of the given task.
->     pub fn pid(&self) -> Pid {
->         // SAFETY: The pid of a task never changes after initialization, so reading this field is
->         // not a data race.
->         unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
->     }
-> 
-> The comments look wrong. Unless same_thread_group(current, task) == T, task->group_leader
-> and/or task->pid can change if a non-leader task's sub-thread execs. This also means that
-> in general it is not safe to dereference group_leader, for example this C code is not safe:
-> 
-> 	rcu_read_lock();
-> 	task = find_task_by_vpid(vpid);
-> 	if (task)
-> 		get_task_struct(task);
-> 	rcu_read_unlock();
-> 
-> 	if (task)
-> 		pid = task->group_leader->pid; // BUG! ->group_leader can be already freed
-> 
-> 
-> Now the questions. Sorry! I don't know rust.
-> 
-> 1. Can I simply remove these misleading comments? Or SAFETY comment is mandatory?
-
-If the safety comments are wrong, then the code is probably wrong too!
-
-What is the correct way to read the pid or group_leader fields of a
-struct task_struct?
-
-> 2. I am working on the patch(es) which move ->group_leader from task_struct to
->    signal_struct, so the 1st change adds the new trivial helper in preparation:
-> 
-> 	struct task_struct *task_group_leader(struct task_struct *task)
-> 	{
-> 		return task->group_leader; // will be updated
-> 	}
-> 
->    Now, how can I change group_leader() to use it? I guess I need to add
-> 
-> 	struct task_struct *rust_helper_task_group_leader(struct task_struct *task)
-> 	{
-> 		return task_group_leader(task);
-> 	}
-> 
->    into rust/helpers/task.c, but will something like
-> 
-> 	pub fn group_leader(&self) -> &Task {
-> 		unsafe { bindings::task_group_leader(self.as_ptr()) }
-> 	}
-> 
->     work? I'm afraid it won't ;)
-
-That looks like it should work. The rust_helper_ function is only
-required if task_group_leader is marked `static inline`. Otherwise
-bindings:: will pick up the function straight from the C header. (As
-long as the relevant header is included in bindings_helper.h)
-
-That still does raise the question of how you correctly call this
-function if the group leader could be freed at any time.
+pub fn group_leader(&self) -> &Task {
+    // SAFETY: The lifetime of the returned task reference is tied to
+    // the lifetime of `self`, and given that a task has a reference to
+    // its group leader, we know it must be valid for the lifetime of
+    // the returned task reference.
+    unsafe { &*bindings::task_group_leader(self.as_ptr()).cast::<Task>() }
+}
 
 Alice
