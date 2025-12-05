@@ -1,408 +1,417 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF3830BB94;
-	Fri,  5 Dec 2025 09:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8662A3064A3
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Dec 2025 10:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764928213; cv=none; b=ZYB69DC9wYmigu/6GJsfl9BaT6F+J3JvKBg2eNnpGde6DvOujI58o4DZPI5W9IeNP8+7Ib5eVrQ3QpS0uDiFCve7ndYCe9kjo08I/GAhtq7v2jMeQtPMcV5VYbjfOIVda+uAG2omLIZsxoUZCXgBPIQGYXRAPolsgIvfbXozp5Q=
+	t=1764929758; cv=none; b=Jqw9RGtVDPpUtdHEep9yqM3VTF/VWqHtLYUEEKSxl5YTzY/BHAXgdWh4veSUcU0sGmESPWFN7/n4T18VSisoW1TM3m3fe3tYu+Mq2vYWJpTpqV6pXK9m+iOF/kVp07n8Oe2dH4j/G3sy5VYe3n417KQelgu5aTMIB5O/Vin66H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764928213; c=relaxed/simple;
-	bh=qfeFoWxW9ehKbe3EzIwQGdG2yZayU/tIkONBJcT+Ru0=;
-	h=Content-Type:Date:Message-Id:Cc:To:From:Subject:MIME-Version; b=dSpG/Q0jeJ/Z4HOqJIfR2sGuV3vgXAcwnVAsSps5+crGscG3sGIbsHFrTMJ6szB8KXXKuR3B6gZsxBMH0pRaUAFQYG0UEt63tLhZo4x3eg/cETf+LPUOlb7VlzcTXc81A0YV/uf43Uix+bGlV65eZcF4Kkho6E1fb1DYHry8zcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tEy9Y/SS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764929758; c=relaxed/simple;
+	bh=k0KN7P6dl2a6Ne5wdTQhHWK++Hut6FAQmstW/n8LZiM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mUYuf3VLkcmdhwL4N6jQpLHr8bhVsYZRQacHLsvgSSCy3WBWSkZQF1APvzNueLLJJZcyZ4K+LmjruGyHzK9njFKb+yXzEad9PV2n5MwqzCvj8v2iGwspvpwx/TLFAEA6Ps6K4XRhF6g+Wz2NBfodr+H3BGxIMs1aBPKVpEpgElg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BiL3ywlW; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tEy9Y/SS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB90C4CEF1;
-	Fri,  5 Dec 2025 09:50:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764928210;
-	bh=qfeFoWxW9ehKbe3EzIwQGdG2yZayU/tIkONBJcT+Ru0=;
-	h=Date:Cc:To:From:Subject:From;
-	b=tEy9Y/SSRxJiVUSMPtIUrHV7jGffyNCZuGLyql4mnEIZFvoG7DUag4BribejAmB5L
-	 YEyjNn2YZd3e8okTKAbQagH5zL1QOR/ctA0o4RQcEaf05LJuOoUM9+LFLXXY3Ay5IK
-	 i4Bjf7FoouE7jH6LBY4y+Nvs0+KFm18Ks8cBM9jSWV2Ps7Oyr7E+F1tzYfu6+KS/Jd
-	 rILZM8d0UD7UsS9YRcZ76HNFekl30krL++j+J/ldJ+q3rW8Bi4A/On577gFmxKnjXC
-	 OgPcFmXb8pY3EuEYI2RbYbciAFj5puRTeCPDsZYXi7w4svth0olR/45Sm3QXByC/yw
-	 HQcDulgnwYyOQ==
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 05 Dec 2025 22:50:06 +1300
-Message-Id: <DEQ6U11MLIQW.370OVLWEKUIKV@kernel.org>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Saravana Kannan" <saravanak@google.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: [GIT PULL] Driver core changes for 6.19-rc1
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BiL3ywlW"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7b8e49d8b35so2269990b3a.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Dec 2025 02:15:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764929748; x=1765534548; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qlCVgLVeA0P6k5Hmt3N5pioJaret9Pyw9mt1Sqene2k=;
+        b=BiL3ywlWXoxyijxdaPTh/EsiPD18DMqRbvwPt/S/2aFQP1POe/QHDuDv7n4XxDa44+
+         O/yw+aI8GC47zaYcvuIYqnQSCT/TX+19dX+NUjWb+nKU1L1MhI4NXzX0qZ8IaASmAyNP
+         VW7LwspUElnqYzjELcOtt/3nkFvXJ2LoHvXrxylTFKBRCnufCF+pMGskCePS3aAcKnpX
+         DJtA2Pot9Aq5KaDcDsTDYBlJtVAnuOnFecxwx/4stGY8UkL8hnlIpDYViO2OQk1g+Huk
+         Hhab/eUHm9HJRq4yGocmFxHKu2wEl00EpAdD2SItXiQ4JVSAHWYNyx5OgoD3ogyyOnJi
+         fV9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764929748; x=1765534548;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qlCVgLVeA0P6k5Hmt3N5pioJaret9Pyw9mt1Sqene2k=;
+        b=CsE+CunzAGMcJgDN15zYY6cpLllcV52E8JEcYPOrUG1Y75nKREBDaHa9H8WgIjCGXl
+         pIbTR65qafLMTIVfrrWWSFcQ9beI3CNZcMW+qBueD1SgEOA6IvRTht03Lw/HeW68m58F
+         UIt+kH9S+edx4QUvpD1cDamg3RDJeXX3le7Ki1vQ68IXddnFHsL8GypBblSv+idy9U3H
+         gR7rdDFzIknMCzw6pLSVuvd0XwX6CAJiTajNd3IFuFX4C/CsQMkuIFplqB/+q9Kez3Iw
+         qX5pVAkShFXXiaIUbypYZxEepXe4Qx8xexMXeNVJJ6db6aLzFNQUbLHVeMAmiNBvepmu
+         30Hg==
+X-Forwarded-Encrypted: i=1; AJvYcCUsYXSM3BroodzFmgrmti9AaP4sq7h62DL3UluKydaFbULzksz8TeldpSBOvs5u5eEs1ECHzCyw1O+1fSe5yQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsTSXAmQDKarHsSGp2DlZZwyBW6gWTFlUDuIMrdaj5CFppHB4U
+	8V15TrrI3Vzxaqt1/js4y0CM3YL2h1tk+kLWwZtQUw4iFJx5AdRlWbpi
+X-Gm-Gg: ASbGncsHoL3Oxsg0rshpMqSHT0oKmFWXFZsONX5ohKOvC9r7gZfOw4AnxdPf14lbR8F
+	kq20fO/AKN6JEMngN5++Jlda9K0J/hvM81gKF71/5x098sRpt9tCUVh7CYDGAOkiiZ1qupAvJrn
+	xM+Y5l7v6AR3MJ/iVn1mhaF6bAPLMTLE7tsTzx9RJ3Ig6OJ7bUm0vKXf/NmUPYrvVkk96O9y3pT
+	Dzseftm6q/6TqIvrC/aViLVW3xd8OPREMZUhPQnBSk4+lCWYejngPS1JHunFYLegrVwvzY+p0PR
+	N/PMpi3h9YztWrY0aAhyUU7ykbleqAmkoP7IsqbVe7zSy2lmMqp0WkcveG3jRWx5P8KSLVPyCV4
+	q2y7ti5eliSNAQ3gvc6YnVfLn5lSZAuy1vYwDowANBPke/++JxTjibfFaZbhaYncBJgLfcLV3zi
+	NvB6ShEGyoBCaZkpA0uA==
+X-Google-Smtp-Source: AGHT+IFW3nGKE+9P/dJCZBPsQDlpFpbwat83tGC0IRJ+Y+OxSdTfHHsWmPdzp81Y6y+09+b62j5OMw==
+X-Received: by 2002:a05:7023:b87:b0:119:e569:f620 with SMTP id a92af1059eb24-11df0c474efmr7310113c88.25.1764929747459;
+        Fri, 05 Dec 2025 02:15:47 -0800 (PST)
+Received: from fedora.local ([2804:d57:4e50:a700:f33d:65d1:e22e:109b])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11df76e2f3csm15252108c88.5.2025.12.05.02.15.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Dec 2025 02:15:46 -0800 (PST)
+From: Filipe Xavier <felipeaggger@gmail.com>
+Date: Fri, 05 Dec 2025 07:15:17 -0300
+Subject: [PATCH v6] rust: add new macro for common bitmap operations
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-X-Mozilla-Draft-Info: internal/draft; vcard=0; receipt=0; DSN=0; uuencode=0;
- attachmentreminder=0; deliveryformat=0
-X-Identity-Key: id8
-Fcc: imap://kernel%40dakr.org@imap.dakr.org/Sent
-X-TUID: iFuKszWfwZxw
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251205-feat-add-bitmask-macro-v6-1-31fbbf14b15a@gmail.com>
+X-B4-Tracking: v=1; b=H4sIALSwMmkC/4XPwWrDMAwG4FcpPtfDku1k7qnvMXawbKU1a5pih
+ 7BR8u5zelhLIAydfoE+SXdROCcu4rC7i8xTKmm41tDsdyKc/fXEMsWaBSq0SisjO/aj9DFKSmP
+ vy5fsfciDbAwagqChZRR1+Ja5S98P+OOz5nMq45B/HnsmWLr/khPIWgEjUiDTNnQ89T5d3sLQi
+ 4Wc8IVBu8lgZaIm9hR9dKpbM/rJGIBNRi/XvLcUNRuvNK8Z88eAwmaTMZVhIOuWl+pna8Y+GVB
+ uk7GVcdEBEKqWO/PKzPP8CyKeI3LYAQAA
+X-Change-ID: 20250304-feat-add-bitmask-macro-6424b1c317e2
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org, 
+ felipe_life@live.com, linux-kernel@vger.kernel.org, 
+ Filipe Xavier <felipeaggger@gmail.com>, Lyude Paul <lyude@redhat.com>
+X-Mailer: b4 0.14.2
 
-Hi Linus,
+We have seen a proliferation of mod_whatever::foo::Flags
+being defined with essentially the same implementation
+for BitAnd, BitOr, contains and etc.
 
-Please pull these driver-core changes.
+This macro aims to bring a solution for this,
+allowing to generate these methods for user-defined structs.
+With some use cases in KMS and upcoming GPU drivers.
 
-There are a few conflicts with other trees: There are in total four minor i=
-mport
-conflicts with the DRM and Rust trees. Additionally, there is a conflict wi=
-th
-the tip tree replacing Rust native atomics in the debugfs code (the resolut=
-ion
-in linux-next should be fine).
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/We.20really.20need.20a.20common.20.60Flags.60.20type
+Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
+Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
+Suggested-by: Lyude Paul <lyude@redhat.com>
+---
+Changes in v6:
+- New methods: add new methods contains_any and contains_all.
+- Link to v5: https://lore.kernel.org/r/20251109-feat-add-bitmask-macro-v5-1-9d911b207ef4@gmail.com
 
-In order to avoid non-trivial conflicts, the PR also contains a few patches
-usually going through other trees, i.e. the introduction of I2C Rust
-infrastructure, a few uaccess patches, as well as one (more minor) patch ea=
-ch of
-FS, pin-init and timekeeping.
+Changes in v5:
+- Docs: improve macro documentation.
+- Link to v4: https://lore.kernel.org/r/20251026-feat-add-bitmask-macro-v4-1-e1b59b4762bc@gmail.com
 
-All changes have been in linux-next for at least five rounds; two (rather
-trivial) regression fixes [1][2] for two rounds.
+Changes in v4:
+- Use enum: changed flag type from struct to enum.
+- Minor fix: airect casting (flag as $ty) instead of field access (.0).
+- Link to v3: https://lore.kernel.org/r/20250411-feat-add-bitmask-macro-v3-1-187bd3e4a03e@gmail.com
 
-- Danilo
+Changes in v3:
+- New Feat: added support to declare flags inside macro use.
+- Minor fixes: used absolute paths to refer to items, fix rustdoc and fix example cases.
+- Link to v2: https://lore.kernel.org/r/20250325-feat-add-bitmask-macro-v2-1-d3beabdad90f@gmail.com
 
-[1] https://patch.msgid.link/20251202070927.14198-1-dev@null.aaront.org
-[2] https://patch.msgid.link/20251202210501.40998-1-dakr@kernel.org
+Changes in v2:
+- rename: change macro and file name to impl_flags.
+- negation sign: change char for negation to `!`. 
+- transpose docs: add support to transpose user provided docs.
+- visibility: add support to use user defined visibility.
+- operations: add new operations for flag, 
+to support use between bit and bitmap, eg: flag & flags.
+- code style: small fixes to remove warnings.
+- Link to v1: https://lore.kernel.org/r/20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com
+---
+ rust/kernel/impl_flags.rs | 243 ++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs        |   2 +
+ rust/kernel/prelude.rs    |   1 +
+ 3 files changed, 246 insertions(+)
 
-The following changes since commit dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa=
-:
+diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..aff6f14bc2f6097e78ba21bb13d124ff999b376a
+--- /dev/null
++++ b/rust/kernel/impl_flags.rs
+@@ -0,0 +1,243 @@
++// SPDX-License-Identifier: GPL-2.0
++
++/// Common helper for declaring bitflag and bitmask types.
++///
++/// This macro handles:
++/// - A struct representing a bitmask, and an enumerator representing bitflags which
++/// may be used in the aforementioned bitmask.
++/// - Implementations of common bitmap op. ([`::core::ops::BitOr`], [`::core::ops::BitAnd`], etc.).
++/// - Utility methods such as `.contains()` to check flags.
++///
++/// # Examples
++///
++/// Defining and using impl_flags:
++///
++/// ```
++/// use kernel::impl_flags;
++///
++/// impl_flags!(
++///     /// Represents multiple permissions.
++///     #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
++///     pub struct Permissions(u32);
++///     /// Represents a single permission.
++///     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
++///     pub enum Permission {
++///         Read    = 1 << 0,
++///         Write   = 1 << 1,
++///         Execute = 1 << 2,
++///     }
++/// );
++///
++/// // Combine multiple permissions using operation OR (`|`).
++/// let read_write: Permissions = Permission::Read | Permission::Write;
++///
++/// assert!(read_write.contains(Permission::Read));
++/// assert!(read_write.contains(Permission::Write));
++/// assert!(!read_write.contains(Permission::Execute));
++/// assert!(read_write.contains_any(Permission::Read | Permission::Execute));
++/// assert!(read_write.contains_all(Permission::Read | Permission::Write));
++///
++/// // Removing a permission with operation AND (`&`).
++/// let read_only: Permissions = read_write & Permission::Read;
++/// assert!(read_only.contains(Permission::Read));
++/// assert!(!read_only.contains(Permission::Write));
++///
++/// // Toggling permissions with XOR (`^`).
++/// let toggled: Permissions = read_only ^ Permission::Read;
++/// assert!(!toggled.contains(Permission::Read));
++///
++/// // Inverting permissions with negation (`!`).
++/// let negated = !read_only;
++/// assert!(negated.contains(Permission::Write));
++/// ```
++#[macro_export]
++macro_rules! impl_flags {
++    (
++        $(#[$outer_flags:meta])*
++        $vis_flags:vis struct $flags:ident($ty:ty);
++
++        $(#[$outer_flag:meta])*
++        $vis_flag:vis enum $flag:ident {
++            $(
++                $(#[$inner_flag:meta])*
++                $name:ident = $value:expr
++            ),+ $( , )?
++        }
++    ) => {
++        $(#[$outer_flags])*
++        #[repr(transparent)]
++        $vis_flags struct $flags($ty);
++
++        $(#[$outer_flag])*
++        #[repr($ty)]
++        $vis_flag enum $flag {
++            $(
++                $(#[$inner_flag])*
++                $name = $value
++            ),+
++        }
++
++        impl ::core::convert::From<$flag> for $flags {
++            #[inline]
++            fn from(value: $flag) -> Self {
++                Self(value as $ty)
++            }
++        }
++
++        impl ::core::convert::From<$flags> for $ty {
++            #[inline]
++            fn from(value: $flags) -> Self {
++                value.0
++            }
++        }
++
++        impl ::core::ops::BitOr for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitor(self, rhs: Self) -> Self::Output {
++                Self(self.0 | rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitOrAssign for $flags {
++            #[inline]
++            fn bitor_assign(&mut self, rhs: Self) {
++                *self = *self | rhs;
++            }
++        }
++
++        impl ::core::ops::BitAnd for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitand(self, rhs: Self) -> Self::Output {
++                Self(self.0 & rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitAndAssign for $flags {
++            #[inline]
++            fn bitand_assign(&mut self, rhs: Self) {
++                *self = *self & rhs;
++            }
++        }
++
++        impl ::core::ops::BitOr<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitor(self, rhs: $flag) -> Self::Output {
++                self | Self::from(rhs)
++            }
++        }
++
++        impl ::core::ops::BitOrAssign<$flag> for $flags {
++            #[inline]
++            fn bitor_assign(&mut self, rhs: $flag) {
++                *self = *self | rhs;
++            }
++        }
++
++        impl ::core::ops::BitAnd<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitand(self, rhs: $flag) -> Self::Output {
++                self & Self::from(rhs)
++            }
++        }
++
++        impl ::core::ops::BitAndAssign<$flag> for $flags {
++            #[inline]
++            fn bitand_assign(&mut self, rhs: $flag) {
++                *self = *self & rhs;
++            }
++        }
++
++        impl ::core::ops::BitXor for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitxor(self, rhs: Self) -> Self::Output {
++                Self(self.0 ^ rhs.0)
++            }
++        }
++
++        impl ::core::ops::BitXorAssign for $flags {
++            #[inline]
++            fn bitxor_assign(&mut self, rhs: Self) {
++                *self = *self ^ rhs;
++            }
++        }
++
++        impl ::core::ops::Not for $flags {
++            type Output = Self;
++            #[inline]
++            fn not(self) -> Self::Output {
++                Self(!self.0)
++            }
++        }
++
++        impl ::core::ops::BitOr for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitor(self, rhs: Self) -> Self::Output {
++                $flags(self as $ty | rhs as $ty)
++            }
++        }
++
++        impl ::core::ops::BitAnd for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitand(self, rhs: Self) -> Self::Output {
++                $flags(self as $ty & rhs as $ty)
++            }
++        }
++
++        impl ::core::ops::BitXor for $flag {
++            type Output = $flags;
++            #[inline]
++            fn bitxor(self, rhs: Self) -> Self::Output {
++                $flags(self as $ty ^ rhs as $ty)
++            }
++        }
++
++        impl ::core::ops::Not for $flag {
++            type Output = $flags;
++            #[inline]
++            fn not(self) -> Self::Output {
++                $flags(!(self as $ty))
++            }
++        }
++
++        impl ::core::ops::BitXor<$flag> for $flags {
++            type Output = Self;
++            #[inline]
++            fn bitxor(self, rhs: $flag) -> Self::Output {
++                self ^ Self::from(rhs)
++            }
++        }
++
++        impl $flags {
++            /// Returns an empty instance of `type` where no flags are set.
++            #[inline]
++            pub const fn empty() -> Self {
++                Self(0)
++            }
++
++            /// Checks if a specific flag is set.
++            #[inline]
++            pub fn contains(self, flag: $flag) -> bool {
++                (self.0 & flag as $ty) == flag as $ty
++            }
++
++            /// Checks if at least one of the provided flags is set.
++            #[inline]
++            pub fn contains_any(self, flags: $flags) -> bool {
++                (self.0 & flags.0) != 0
++            }
++
++            /// Checks if all of the provided flags are set.
++            #[inline]
++            pub fn contains_all(self, flags: $flags) -> bool {
++                (self.0 & flags.0) == flags.0
++            }
++        }
++    };
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 28007be98fbad0e875d7e5345e164e2af2c5da32..57b789315deda3d2fa8961af79cad4462fff7fa8 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -67,6 +67,8 @@
+ #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+ pub mod firmware;
+ pub mod fs;
++#[doc(hidden)]
++pub mod impl_flags;
+ pub mod init;
+ pub mod io;
+ pub mod ioctl;
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index baa774a351ceeb995a2a647f78a27b408d9f3834..085f23502544c80c2202eacd18ba190186a74f30 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -27,6 +27,7 @@
+ #[doc(no_inline)]
+ pub use super::dbg;
+ pub use super::fmt;
++pub use super::impl_flags;
+ pub use super::{dev_alert, dev_crit, dev_dbg, dev_emerg, dev_err, dev_info, dev_notice, dev_warn};
+ pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
+ 
 
-  Linux 6.18-rc3 (2025-10-26 15:59:49 -0700)
+---
+base-commit: edc5e6e019c99b529b3d1f2801d5cce9924ae79b
+change-id: 20250304-feat-add-bitmask-macro-6424b1c317e2
 
-are available in the Git repository at:
+Best regards,
+-- 
+Filipe Xavier <felipeaggger@gmail.com>
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git=
- tags/driver-core-6.19-rc1
-
-for you to fetch changes up to 473b9f331718267815649cd93801da832200db71:
-
-  rust: pci: fix build failure when CONFIG_PCI_MSI is disabled (2025-12-04 =
-00:24:47 +1300)
-
-----------------------------------------------------------------
-Driver core changes for 6.19-rc1
-
-- Arch Topology:
-  - Move parse_acpi_topology() from arm64 to common code for reuse in RISC-=
-V
-
-- CPU:
-  - Expose housekeeping CPUs through /sys/devices/system/cpu/housekeeping
-  - Print a newline (or 0x0A) instead of '(null)' reading
-    /sys/devices/system/cpu/nohz_full when nohz_full=3D is not set
-
-- debugfs
-  - Remove (broken) 'no-mount' mode
-  - Remove redundant access mode checks in debugfs_get_tree() and
-    debugfs_create_*() functions
-
-- Devres:
-  - Remove unused devm_free_percpu() helper
-  - Move devm_alloc_percpu() from device.h to devres.h
-
-- Firmware Loader:
-  - Replace simple_strtol() with kstrtoint()
-  - Do not call cancel_store() when no upload is in progress
-
-- kernfs:
-  - Increase struct super_block::maxbytes to MAX_LFS_FILESIZE
-  - Fix a missing unwind path in __kernfs_new_node()
-
-- Misc:
-  - Increase the name size in struct auxiliary_device_id to 40 characters
-  - Replace system_unbound_wq with system_dfl_wq and add WQ_PERCPU to
-    alloc_workqueue()
-
-- Platform:
-  - Replace ERR_PTR() with IOMEM_ERR_PTR() in platform ioremap functions
-
-- Rust:
-  - Auxiliary:
-    - Unregister auxiliary device on parent device unbind
-    - Move parent() to impl Device; implement device context aware parent()=
- for
-      Device<Bound>
-    - Illustrate how to safely obtain a driver's device private data when
-      calling from an auxiliary driver into the parant device driver
-
-  - DebugFs:
-    - Implement support for binary large objects
-
-  - Device:
-    - Let probe() return the driver's device private data as pinned initial=
-izer,
-      i.e. impl PinInit<Self, Error>
-    - Implement safe accessor for a driver's device private data for
-      Device<Bound> (returned reference can't out-live driver binding and
-      guarantees the correct private data type)
-    - Implement AsBusDevice trait, to be used by class device abstractions =
-to
-      derive the bus device type of the parent device
-
-  - DMA:
-    - Store raw pointer of allocation as NonNull
-    - Use start_ptr() and start_ptr_mut() to inherit correct mutability of =
-self
-
-  - FS:
-    - Add file::Offset type alias
-
-  - I2C:
-    - Add abstractions for I2C device / driver infrastructure
-    - Implement abstractions for manual I2C device registrations
-
-  - I/O:
-    - Use "kernel vertical" style for imports
-    - Define ResourceSize as resource_size_t
-    - Move ResourceSize to top-level I/O module
-    - Add type alias for phys_addr_t
-    - Implement Rust version of read_poll_timeout_atomic()
-
-  - PCI:
-    - Use "kernel vertical" style for imports
-    - Move I/O and IRQ infrastructure to separate files
-    - Add support for PCI interrupt vectors
-    - Implement TryInto<IrqRequest<'a>> for IrqVector<'a> to convert an
-      IrqVector bound to specific pci::Device into an IrqRequest bound to t=
-he
-      same pci::Device's parent Device
-    - Leverage pin_init_scope() to get rid of redundant Result in IRQ metho=
-ds
-
-  - PinInit:
-    - Add {pin_}init_scope() to execute code before creating an initializer
-
-  - Platform:
-    - Leverage pin_init_scope() to get rid of redundant Result in IRQ metho=
-ds
-
-  - Timekeeping:
-    - Implement abstraction of udelay()
-
-  - Uaccess:
-    - Implement read_slice_partial() and read_slice_file() for UserSliceRea=
-der
-    - Implement write_slice_partial() and write_slice_file() for UserSliceW=
-riter
-
-- sysfs
-  - Prepare the constification of struct attribute
-
-----------------------------------------------------------------
-Aaron Thompson (3):
-      debugfs: Remove redundant access mode checks
-      debugfs: Remove broken no-mount mode
-      debugfs: Fix default access mode config check
-
-Aaron Tomlin (3):
-      sysfs/cpu: Use DEVICE_ATTR_RO for nohz_full attribute
-      tick/nohz: avoid showing '(null)' if nohz_full=3D not set
-      tick/nohz: Expose housekeeping CPUs in sysfs
-
-Alice Ryhl (4):
-      rust: io: define ResourceSize as resource_size_t
-      rust: io: move ResourceSize to top-level io module
-      rust: scatterlist: import ResourceSize from kernel::io
-      rust: io: add typedef for phys_addr_t
-
-Andy Shevchenko (2):
-      devres: Remove unused devm_free_percpu()
-      devres: Move devm_alloc_percpu() and related to devres.h
-
-Benno Lossin (1):
-      add `[pin_]init_scope` to execute code before creating an initializer
-
-Danilo Krummrich (32):
-      rust: pci: implement TryInto<IrqRequest<'a>> for IrqVector<'a>
-      rust: pci: move I/O infrastructure to separate file
-      rust: pci: move IRQ infrastructure to separate file
-      rust: driver: let probe() return impl PinInit<Self, Error>
-      rust: device: narrow the generic of drvdata_obtain()
-      rust: device: introduce Device::drvdata()
-      rust: auxiliary: consider auxiliary devices always have a parent
-      rust: auxiliary: unregister on parent device unbind
-      rust: auxiliary: move parent() to impl Device
-      rust: auxiliary: implement parent() for Device<Bound>
-      samples: rust: auxiliary: misc cleanup of ParentDriver::connect()
-      samples: rust: auxiliary: illustrate driver interaction
-      rust: usb: fix broken call to T::disconnect()
-      rust: fs: add file::Offset type alias
-      rust: uaccess: add UserSliceReader::read_slice_partial()
-      rust: uaccess: add UserSliceReader::read_slice_file()
-      rust: uaccess: add UserSliceWriter::write_slice_partial()
-      rust: uaccess: add UserSliceWriter::write_slice_file()
-      rust: debugfs: support for binary large objects
-      rust: debugfs: support blobs from smart pointers
-      samples: rust: debugfs: add example for blobs
-      rust: debugfs: support binary large objects for ScopedDir
-      samples: rust: debugfs_scoped: add example for blobs
-      rust: auxiliary: fix false positive warning for missing a safety comm=
-ent
-      rust: pci: get rid of redundant Result in IRQ methods
-      rust: platform: get rid of redundant Result in IRQ methods
-      rust: debugfs: Implement BinaryReader for Mutex<T> only when T is Unp=
-in
-      rust: io: cleanup imports and use "kernel vertical" style
-      rust: pci: use "kernel vertical" style for imports
-      rust: dma: make use of start_ptr() and start_ptr_mut()
-      rust: dma: use NonNull<T> instead of *mut T
-      rust: pci: fix build failure when CONFIG_PCI_MSI is disabled
-
-FUJITA Tomonori (3):
-      rust: simplify read_poll_timeout's example code
-      rust: add udelay() function
-      rust: Add read_poll_timeout_atomic function
-
-Greg Kroah-Hartman (1):
-      Merge 6.18-rc3 into driver-core-next
-
-Igor Korotin (4):
-      rust: i2c: add basic I2C device and driver abstractions
-      rust: i2c: add manual I2C device creation abstractions
-      samples: rust: add Rust I2C sample driver
-      samples: rust: add Rust I2C client registration sample
-
-Jane Chu (1):
-      fs/kernfs: raise sb->maxbytes to MAX_LFS_FILESIZE
-
-Joel Fernandes (1):
-      rust: pci: Allocate and manage PCI interrupt vectors
-
-Kaushlendra Kumar (2):
-      firmware_loader: Only call cancel when upload is active
-      firmware_loader: Replace simple_strtol() with kstrtoint()
-
-Marco Crivellari (2):
-      driver core: replace use of system_unbound_wq with system_dfl_wq
-      driver core: WQ_PERCPU added to alloc_workqueue users
-
-Markus Probst (1):
-      rust: Add trait to convert a device reference to a bus device referen=
-ce
-
-Miguel Ojeda (1):
-      rust: i2c: prepare for `core::ffi::CStr`
-
-Pei Xiao (1):
-      platform: Use IOMEM_ERR_PTR for ioremap error returns
-
-Peter Colberg (3):
-      rust: pci: refer to legacy as INTx interrupts
-      rust: pci: normalise spelling of PCI BAR
-      samples: rust: fix module name for Rust PCI driver sample
-
-Raag Jadav (1):
-      mod_devicetable: Bump auxiliary_device_id name size
-
-Thomas Wei=C3=9Fschuh (7):
-      sysfs: attribute_group: allow registration of const attribute
-      sysfs: transparently handle const pointers in ATTRIBUTE_GROUPS()
-      sysfs: introduce __SYSFS_FUNCTION_ALTERNATIVE()
-      sysfs: attribute_group: enable const variants of is_visible()
-      samples/kobject: add is_visible() callback to attribute group
-      samples/kobject: constify 'struct foo_attribute'
-      sysfs: simplify attribute definition macros
-
-Vincent Liu (1):
-      driver core: Check drivers_autoprobe for all added devices
-
-Will Rosenberg (1):
-      kernfs: fix memory leak of kernfs_iattrs in __kernfs_new_node
-
-Yunhui Cui (1):
-      arch_topology: move parse_acpi_topology() to common code
-
- Documentation/ABI/testing/sysfs-devices-system-cpu |  11 +
- Documentation/admin-guide/kernel-parameters.txt    |   6 +-
- Documentation/driver-api/driver-model/devres.rst   |   1 -
- MAINTAINERS                                        |  10 +
- arch/arm64/include/asm/topology.h                  |   3 +
- arch/arm64/kernel/topology.c                       | 101 --------
- drivers/base/arch_topology.c                       |  96 +++++++-
- drivers/base/base.h                                |  16 ++
- drivers/base/bus.c                                 |   3 +-
- drivers/base/core.c                                |   2 +-
- drivers/base/cpu.c                                 |  26 +-
- drivers/base/dd.c                                  |  12 +-
- drivers/base/devres.c                              |  25 --
- drivers/base/firmware_loader/sysfs.c               |  10 +-
- drivers/base/firmware_loader/sysfs_upload.c        |   6 +-
- drivers/cpufreq/rcpufreq_dt.rs                     |   4 +-
- drivers/gpu/drm/nova/driver.rs                     |   4 +-
- drivers/gpu/drm/nova/file.rs                       |   2 +-
- drivers/gpu/drm/tyr/driver.rs                      |   4 +-
- drivers/gpu/nova-core/driver.rs                    |  42 ++--
- fs/debugfs/inode.c                                 |  36 +--
- fs/debugfs/internal.h                              |  13 -
- fs/kernfs/dir.c                                    |   5 +-
- fs/kernfs/mount.c                                  |   1 +
- fs/sysfs/group.c                                   |  10 +-
- include/linux/arch_topology.h                      |   5 +
- include/linux/device.h                             |  19 --
- include/linux/device/devres.h                      |  17 ++
- include/linux/mod_devicetable.h                    |   2 +-
- include/linux/platform_device.h                    |   6 +-
- include/linux/sysfs.h                              |  48 ++--
- lib/Kconfig.debug                                  |   9 +-
- rust/bindings/bindings_helper.h                    |   7 +
- rust/helpers/pci.c                                 |  14 +-
- rust/helpers/time.c                                |   5 +
- rust/kernel/auxiliary.rs                           | 120 +++++----
- rust/kernel/cpufreq.rs                             |   4 +-
- rust/kernel/debugfs.rs                             | 110 ++++++++-
- rust/kernel/debugfs/file_ops.rs                    | 146 ++++++++++-
- rust/kernel/debugfs/traits.rs                      | 238 +++++++++++++++++=
--
- rust/kernel/device.rs                              | 130 +++++++++-
- rust/kernel/devres.rs                              |  18 +-
- rust/kernel/dma.rs                                 |  29 ++-
- rust/kernel/driver.rs                              |   4 +-
- rust/kernel/fs/file.rs                             |   5 +
- rust/kernel/i2c.rs                                 | 586 +++++++++++++++++=
-+++++++++++++++++++++++++++
- rust/kernel/io.rs                                  |  32 ++-
- rust/kernel/io/mem.rs                              |  36 +--
- rust/kernel/io/poll.rs                             |  93 ++++++-
- rust/kernel/io/resource.rs                         |  31 +--
- rust/kernel/lib.rs                                 |   2 +
- rust/kernel/pci.rs                                 | 231 ++++-------------
- rust/kernel/pci/id.rs                              |   5 +-
- rust/kernel/pci/io.rs                              | 144 +++++++++++
- rust/kernel/pci/irq.rs                             | 252 +++++++++++++++++=
-++
- rust/kernel/platform.rs                            |  63 +++--
- rust/kernel/scatterlist.rs                         |   2 +-
- rust/kernel/time/delay.rs                          |  37 +++
- rust/kernel/uaccess.rs                             |  85 +++++++
- rust/kernel/usb.rs                                 |  25 +-
- rust/pin-init/src/lib.rs                           |  87 +++++++
- samples/kobject/kset-example.c                     |  44 ++--
- samples/rust/Kconfig                               |  25 +-
- samples/rust/Makefile                              |   2 +
- samples/rust/rust_debugfs.rs                       |  34 ++-
- samples/rust/rust_debugfs_scoped.rs                |  14 +-
- samples/rust/rust_dma.rs                           |  37 ++-
- samples/rust/rust_driver_auxiliary.rs              |  59 +++--
- samples/rust/rust_driver_i2c.rs                    |  74 ++++++
- samples/rust/rust_driver_pci.rs                    |  53 ++--
- samples/rust/rust_driver_platform.rs               |   6 +-
- samples/rust/rust_driver_usb.rs                    |   5 +-
- samples/rust/rust_i2c_client.rs                    | 147 +++++++++++
- 73 files changed, 2876 insertions(+), 720 deletions(-)
- create mode 100644 rust/kernel/i2c.rs
- create mode 100644 rust/kernel/pci/io.rs
- create mode 100644 rust/kernel/pci/irq.rs
- create mode 100644 samples/rust/rust_driver_i2c.rs
- create mode 100644 samples/rust/rust_i2c_client.rs
