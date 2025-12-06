@@ -1,95 +1,94 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561252EC0A4;
-	Sat,  6 Dec 2025 16:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3551514DC;
+	Sat,  6 Dec 2025 17:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765037540; cv=none; b=pxFCituz5S1VXWPrRi8OqPbNAZFBx/3JLFXz+mH8XDgYbFbN11kql78QIlN4EDOnFrqkouQfquZn3Tqv+do8zNGrFgItvJXCPhlZtxELg8+/3E2+FIfXNGw8qETiXDrAsMPlI8wnGpiUS3GvbbXIjhyi3K8y8Y4LNilAWxvTDqs=
+	t=1765040541; cv=none; b=d3V7ozTWzSIqgM3HMQpQbZjkr/8095cGer5mpaKjDtQVQ3oEJIx0Dp1aRHDGxyxHaDX6xpR1PLh6t632647YRX9FDz/amA6/jk4/XDqJTWfAdg1U2xnIBIPKU7KPfIg0MQiQwweO7XGb0j3erxHo6FoE/5LHSkIDG3tmlMI59Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765037540; c=relaxed/simple;
-	bh=CBHAAnw5khEHCjAQO6yfUon4jcU2DVVVCzs1PhIb3Os=;
+	s=arc-20240116; t=1765040541; c=relaxed/simple;
+	bh=YDEldHxbXirkW4qrGW5JIGNP7PwWmaOgDy1K8WA8i4s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UJP6cwENeVKPsOPoz5RErvCROp07PPnGTVs1/7XZNQSpY/PFR3I+lvF1a1Zw5nm2toh56RhiMPKcQEh6Nupkf7Bibz/G7YrBxdhbrOR94wirnFudysnbynotc5cLVMpdpl79W/t4Jfv6tYT0HKNWaLrD+cYcg7dwD7n99cn3k0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=hkTUx/OL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=N+ZT6ZsE; arc=none smtp.client-ip=202.12.124.148
+	 Content-Type:Content-Disposition:In-Reply-To; b=mx7Z5kIwFIeYzFRvnUmD3O+Sy1CufmVx/mUnxYl2ZaN2DYKro1ZYBLWEVPOb/84814uZwq+mdz3r1R4YBiOsbKP2Ezi/rWgAao55SIaMQhzBXcEjXxVgGbweo18b5vCVlyrz10Xa+D6iCQsa4BY3qJYVQHmpCY/qKNEzWqP1hq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=iqnoTEh2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=d0F9+jaZ; arc=none smtp.client-ip=202.12.124.156
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="hkTUx/OL";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="N+ZT6ZsE"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id 2E9E31D00166;
-	Sat,  6 Dec 2025 11:12:17 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Sat, 06 Dec 2025 11:12:17 -0500
+	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="iqnoTEh2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="d0F9+jaZ"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 2E4CB7A003F;
+	Sat,  6 Dec 2025 12:02:17 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Sat, 06 Dec 2025 12:02:17 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
 	:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1765037537; x=1765123937; bh=MTIdpj+rpv
-	3945oOw4R8hSyX7wcBsVw+Ac3eE8LU0JQ=; b=hkTUx/OLreMr/z5lZsL9Q86a4a
-	BbSiyO4LKW8umnLoRlgkS/3SnQHcOGcLdXk5S0shov+IHpecw5AKyfpOXqkqqfvu
-	Q2vZ17fUVQyp5mNP98DGb4DYYEcdoBwCInwF8AZrUrESORVWaAsdNLbffERpjVvC
-	nrDafePEZJlGEBY0CufxEDrK4anuq/GNldd889f3mGwcTyBEJEcus15+pp605Onu
-	9TZCRr1K16sGp4JxwzS5LR9u1EjfLQM9N3ge2whG7AOiKjcNLGtHrS4KKopBYYTr
-	gffGgk6nuw8sqopV3QI3dMgfxizakcddqUP/B53hNUeK2GpzYD89CtObUlrg==
+	:subject:to:to; s=fm3; t=1765040537; x=1765126937; bh=akElKtMCvE
+	opTkcA7oc7FuQirAtyfyYhr24fQVunu+M=; b=iqnoTEh2A3s75E7E+4BwZp9OE9
+	rs3ewr+kl6BgHK7a3Wrl7LxDDba8ELtTATPe4gYtqD9wKWSkXg+9gNL2s9JVLgYw
+	319gIyY58hDxEJ8BHKeuyBSxzs1Q3uHDIPuhZQB01Hcxprn5mnYmcz5V5torxRsN
+	qnl+0Wrq4ZjkMJ0Ig+Mz9+AaoztBshaFKwn8Go4Fr9DdzaTwGHFUHOkWOzKuyg+Y
+	l8ZsTrlAGFhATsUIj9gqu1eSUzyauikleru0rq7KPnRYjjMUN3PNDPqAdeR8DBui
+	bsMGg+ZdAaO7gO33w5GxwoX2Et36quojx5bLlBDa/4MgyqONSVR71qHiHjpA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1765037537; x=1765123937; bh=MTIdpj+rpv3945oOw4R8hSyX7wcBsVw+Ac3
-	eE8LU0JQ=; b=N+ZT6ZsELzpHm9Lw8KmJs5RXhjVfUIDu58W/N7512hRYFyVyHo6
-	/GY4VwaSVtayJT8hg+3D16bt3ki0Rsejce0YFqZQuY6dWVtdT/Ib689+t/SR7/Sm
-	R178ENkIEOneS1bf0hos7G4PemcQ3KireviOMB3vR362FR/DckmnwEXh2KbixQm4
-	9w02EvBedESDFx7gTxJq8Vb4a1upjp28Y/CpCmTYZUQiUdm5v1WC91TQ9JcVQhko
-	RCPHTJ+bZ3WpE4Ky9HQOfgYn7qsEjp3HZpiEAsizjab/pwTvZsu7ly1GzDjwF3fh
-	ijQVs9nR+yP4TkRs0pfVY1L4/6kr+Bg18Zg==
-X-ME-Sender: <xms:31U0aU36gnXpHeGzhhKTHHNGC6qhV_fbWSkJefrNVwjFFDlDZc5d-Q>
-    <xme:31U0aejkCFY5zQXyl279v5we8sSIjLcvEZzFr82kJgUpIXqPQd42mLa9_8y0GFyGT
-    nTEw-Z3nf8476jw2s88rZNmDwqjyCKU3d6ZBI5jYR1rxkffsVp7rgo>
-X-ME-Received: <xmr:31U0ad_rfGkT-2o-OngVnnctCe4QDsFIMFOi3SXvpzPh3-qjxa2oNKaPLr5XiW6PvfWUNNWXpScZSiP3PtCTHuWhWS1518zSgN4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudefkecutefuodetggdotefrod
+	1765040537; x=1765126937; bh=akElKtMCvEopTkcA7oc7FuQirAtyfyYhr24
+	fQVunu+M=; b=d0F9+jaZiu11FcUGiK+qKuhbiYmsG8uoQhXnTKkS0ObAjL0MVVh
+	MbrmfzYxU/6MweUVnPQ+8oUwIyFyZxQhtL6AkmcuSa8xdfSlTsZa5APpJ36SX/eJ
+	VjCQ73XdgM3hiHYpETUG5hdGvQNfQ9yZEpU5amfKR9ZOBnBTotTdsBKflKnvI+Wr
+	eM6u7MZggdMX5KBey+B4hVu8e/hD5Zh8lqSMsyoBqCD9/7dZ5rHubaBtPvyxItoD
+	FoF59YTuj1G/LJO1AUrmfaqKIfF46MyVgrWBNbRsBgDXOHhUI2H58QwCt2TqYjxU
+	8J8h5HRjw1KAj9HIZUrIxiSEhAxhpgDYrjA==
+X-ME-Sender: <xms:mGE0acwbYaRS_eZm09MF5zfWTkrEijSwIFgcdi9CoEmdkKhtDvKqiQ>
+    <xme:mGE0aftByd-nlvhHEpeadx4zp8Qhcy47pISrS3eFi0oxnXVWrtKNr0GISwXyMn9FR
+    3AuVSVv302qOD68LeNv8zYZ_grfdHkMgN97mLQCdZsD2dlM9Gu4Ig8>
+X-ME-Received: <xmr:mGE0afaehyt43uLL73g1i5tl5DSBYisN6-refuNG169EiLAWtnpt7vvKg4Ltjt4DeXoQ0VnlNrwbkJFP5C0YGJm3u9_ZBfJNnq4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudeglecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpeflrghnnhgvucfi
-    rhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnhepudefte
-    evvdduhfeugfehuddtlefgkeevtdeggfegteeiieegvdevhefhgeetleefnecuffhomhgr
-    ihhnpehfrhgvvgguvghskhhtohhprdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepjhesjhgrnhhnrghurdhnvghtpdhnsggprhgtphht
-    thhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhihuhguvgesrhgvug
-    hhrghtrdgtohhmpdhrtghpthhtohepughrihdquggvvhgvlheslhhishhtshdrfhhrvggv
-    uggvshhkthhophdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohho
-    ghhlvgdrtghomhdprhgtphhtthhopegurghnihgvlhdrrghlmhgvihgurgestgholhhlrg
-    gsohhrrgdrtghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhg
-    rgihnhhorhesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:31U0aSI7WS1G8QJwpnlzMAEBy7Qbtbi2MShSq5lknsbQGFfJgcFMMA>
-    <xmx:31U0aawpWtrKiDPvCgI6SNuBTOaw4t8Q0pogdPLW3RO1IUR11-kouQ>
-    <xmx:31U0ad0V9uLSnSsBkkoL9EgPVWJVk8vRtmpSZnq5gdCHDrot3NOcLA>
-    <xmx:31U0ab_n0qIEfIRGqllKdc0VK7HPlfAUNVDUJnrAp6kd9r5JFpH-WQ>
-    <xmx:4VU0aerrpfa5v811lamC1EkpfHAJQIJQxd4HEwFexjh5NrDAarHcdex5>
+    rhhunhgruhcuoehjsehjrghnnhgruhdrnhgvtheqnecuggftrfgrthhtvghrnheptdfhff
+    euvedvueeijeejjeetvdfgfefgteefveeiueevtddtffehfefhhfetudfhnecuffhomhgr
+    ihhnpehgihhthhhusgdrtghomhdpthihphgvshdrrhhsnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepjhesjhgrnhhnrghurdhnvghtpdhnsggp
+    rhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhoshhsih
+    hnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpth
+    htohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhih
+    sehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtoh
+    hnmhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtph
+    htthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:mGE0ae0lAnQAZPZPJx3chOoc0UFLD_Y31zYo-CzoLSNRpq8zzHEGkg>
+    <xmx:mGE0aRuEXDCz03iFqY5YGpjb_lADmAFKBFeVo93jxF511_LVGGpW5w>
+    <xmx:mGE0aSBRij925YZFqTW-aEiNF4fB9e9Rzixx6ANALYK0oTgCG6p2Og>
+    <xmx:mGE0aUZV8vZXUQkmBhBpAaYjTfGSTWTFEQE3OxplvKt00Z-gTYnhAg>
+    <xmx:mWE0aecCCJGUipLD0gnZ32K3nYtQBHT8dpJOAGqJKRsyk6_aRkOcirMJ>
 Feedback-ID: i47b949f6:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 6 Dec 2025 11:12:15 -0500 (EST)
-Date: Sat, 6 Dec 2025 17:12:14 +0100
+ 6 Dec 2025 12:02:15 -0500 (EST)
+Date: Sat, 6 Dec 2025 18:02:14 +0100
 From: Janne Grunau <j@jannau.net>
-To: Lyude Paul <lyude@redhat.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+To: Benno Lossin <lossin@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH v6 0/8] Rust bindings for gem shmem + iosys_map
-Message-ID: <20251206161214.GD1097212@robin.jannau.net>
-References: <20251202220924.520644-1-lyude@redhat.com>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>,
+	Alban Kurti <kurti@invicto.ai>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, asahi@lists.linux.dev
+Subject: Re: [PATCH] rust: pin-init: add references to previously initialized
+ fields
+Message-ID: <20251206170214.GE1097212@robin.jannau.net>
+References: <20250905140047.3325945-1-lossin@kernel.org>
+ <20251203220516.GA592465@robin.jannau.net>
+ <DEQZLZ9AVCZE.380X3OF521Y5L@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -98,41 +97,72 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251202220924.520644-1-lyude@redhat.com>
+In-Reply-To: <DEQZLZ9AVCZE.380X3OF521Y5L@kernel.org>
 
-On Tue, Dec 02, 2025 at 05:03:26PM -0500, Lyude Paul wrote:
-> This is the next version of the shmem backed GEM objects series
-> originally from Asahi, previously posted by Daniel Almeida.
+On Sat, Dec 06, 2025 at 09:23:08AM +0100, Benno Lossin wrote:
+> On Wed Dec 3, 2025 at 11:05 PM CET, Janne Grunau wrote:
+> > On Fri, Sep 05, 2025 at 04:00:46PM +0200, Benno Lossin wrote:
+> >> After initializing a field in an initializer macro, create a variable
+> >> holding a reference that points at that field. The type is either
+> >> `Pin<&mut T>` or `&mut T` depending on the field's structural pinning
+> >> kind.
+> >
+> > just as a heads up: creating references broke part of the agx firmware
+> > init structs which uses a `#[repr(C, packed)]` struct as field in
+> > another struct. This fails with
+> >
+> > | error[E0793]: reference to packed field is unaligned
+> > |    --> ../drivers/gpu/drm/asahi/initdata.rs:722:28
+> > |     |
+> > | 722 |                       sub <- try_init!(raw::GlobalsSub::ver {
+> > |     |  ____________________________^
+> > | 723 | |                         unk_54: cfg.global_unk_54,
+> > | 724 | |                         unk_56: 40,
+> > | 725 | |                         unk_58: 0xffff,
+> > | ...   |
+> > | 731 | |                         ..Zeroable::init_zeroed()
+> > | 732 | |                     }),
+> > |     | |______________________^
+> > |     |
+> > |     = note: packed structs are only aligned by one byte, and many modern architectures penalize unaligned field accesses
+> > |     = note: creating a misaligned reference is undefined behavior (even if that reference is never dereferenced)
+> > |     = help: copy the field contents to a local variable, or replace the reference with a raw pointer and use `read_unaligned`/`write_unaligned` (loads and stores via `*p` must be properly aligned even when using raw pointers)
+> > |     = note: this error originates in the macro `$crate::__init_internal` which comes from the expansion of the macro `try_init` (in Nightly builds, run with -Z macro-backtrace for more info)
+> >
+> > This was easy enough to work around, I don't see how this embedding of a
+> > `#[repr(C, packed)]` struct was necessary or at least helpful. The code
+> > is not expected to be included in the upstream driver so it no worth
+> > spending effort on this.
+> >
+> > I don't think it's likely that anyone else will run into this but I
+> > thought I mention it at least.
+> >
+> > The asahi driver also ran into the discussed variable shadowing issue (a
+> > variable was used to initialize a field of the same name and was later
+> > used to initialize another field). This was trivially fixed by renaming
+> > the variable.
 > 
-> One of the major changes in this patch series is a much better interface
-> around vmaps, which we achieve by introducing a new set of rust bindings
-> for iosys_map.
-> 
-> The previous version of the patch series can be found here:
-> 
-> https://patchwork.freedesktop.org/series/156093/
-> 
-> Changelogs are per-patch
-> 
-> Asahi Lina (2):
->   rust: helpers: Add bindings/wrappers for dma_resv_lock
->   rust: drm: gem: shmem: Add DRM shmem helper abstraction
-> 
-> Lyude Paul (6):
->   rust/drm: Add gem::impl_aref_for_gem_obj!
->   rust: drm: gem: Add raw_dma_resv() function
->   rust: gem: Introduce DriverObject::Args
->   rust: drm: gem: Introduce shmem::SGTable
->   rust: Introduce iosys_map bindings
->   rust: drm/gem: Add vmap functions to shmem bindings
+> Thanks for the report, I expected the latter kind of error, but was not
+> aware of the packed struct issue. If anyone needs a proper workaround
+> from pin-init, let me know.
 
-whole series is tested with the asahi (Apple silicon GPU driver) on top
-of v6.18 plus further modifications.
+I spoke too soon. The packed struct issue is also present in the capture
+driver for Macbook microphones (aop_audio). Working around this issue
+there is less obvious and more effort. I think it might be enough to use
+unaligned u32 / u64 types already present in asahi [1].
 
-Tested-by: Janne Grunau <j@jannau.net>
+I'm not sure how prevalent packed structs are outside of Apple's
+firmware interfaces. I was surprised running into the same issue in a
+second driver but I shouldn't have been. There are plans for another
+driver where this isssue will be present.
 
-Patches I did not reply to directly are
+A workaround on pin-init side would be appreciated. Due to the nature of
+these packed structs I do not see a need to have access to previously
+initialized fields. An optional way to supress the references would be
+good enough for the cases I'm aware off.
 
-Reviewed-by: Janne Grunau <j@jananu.net>
+Thanks
 
 Janne
+
+1: https://github.com/AsahiLinux/linux/blob/asahi-6.17.9-1/drivers/gpu/drm/asahi/fw/types.rs#L48
