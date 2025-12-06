@@ -1,126 +1,377 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013015.outbound.protection.outlook.com [40.93.201.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E825023A9BE;
-	Sat,  6 Dec 2025 18:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765045045; cv=none; b=cnkcg41jlDPvrWqOX3ov/4yY7jV8gZ3XV8HM7FYS6B21tAXq4Yg9YNWDWVAaEZ0UCL9uGecmzMm4lhV4dj0w/P8FPMESFs4JcNncHprJP0T1WVXal8KYZQT73E7LB/8sT4RaCdeaZQaoWOu21u16KtMGAaZxxQ/Ktt0Ru85YOAA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765045045; c=relaxed/simple;
-	bh=XDyLb4pfrbhH+H5hbDPdb5NwRxG4IzhCGeuKBK5USQk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iwp9/CMezFME0PJaaqXR+uJldeBU05WYliKWxS0UhfWuFBjOyLYBF8TZzpRkXKfQYX6oXu+7Yn7I9BvGA0AFbiH88HrYz6o2b7IoJv89vpOem+Jmow9lCLjc39XkETWTdLgxcj2Erswmz1LTFmvmIWmC1j4/Wx9Xo9lN5GrduOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [192.168.0.116] (unknown [114.241.82.59])
-	by APP-03 (Coremail) with SMTP id rQCowAB3_tALczRp1lJkAw--.48747S2;
-	Sun, 07 Dec 2025 02:16:45 +0800 (CST)
-Message-ID: <35bacd20-c7e8-4a3f-be79-aa52701fc257@iscas.ac.cn>
-Date: Sun, 7 Dec 2025 02:16:43 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002512AD00;
+	Sat,  6 Dec 2025 21:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765056981; cv=fail; b=nqEf+1Jj0+0/XxCMsCyASRXsm1KXu4ho5yHu9/6KiC1HsslHhQd8S1+0emL0nVrKM5zL/o7i2Kt4ImoG7em4TyTXU8eDXzwohGsy1kE3P15h4mDM6ytIz+xypvT97utAT1Z+yMWE/Id93W9MRTLrCk4+HJ+FcTYAv32JJ8lZhSU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765056981; c=relaxed/simple;
+	bh=Ry3s0gR+p+Sj9YH8xIwHfuOv92r1Nd3Wy03uVnr8tcU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Mgshc350GB2IfqJxlEkj6np1zfjgiDKo0dswWxYuc8V9WJta931alLNxrbOxZrKFzxtJQqLZasnHurvn3t0nl/y4om+n7qwDOtWP9StYSUiVWDTC7OY/FRk1qgfLowIR5+3NKoYkuGGH9Kej8/upqMT4DeuVIoB9dupioRIHR50=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=onEHySvc; arc=fail smtp.client-ip=40.93.201.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="onEHySvc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PzUOu+p1MEHP7EISdkzgf0mCTctMeGPKIZJMTEKHfbTJwgVFHMukjnVhI4VTG7ejSrcYvOXmJCSMJRpnKfH3qwRVyDr/KsGfQtTJ9fGHDTg1sr4Z39n0BKwFQgmvTY5t3BGGIv+eU3L1bQxzAhFHXCo6egSdvH8jeaKM/kkDHs8Voit/8PAzr2a7CVLt5BPz1PeHF65em/6ENe9Ihxba+6/nxVcr6lEvxZmGGbKTJyh9Dyi0zCYCG0jpOwg2ifUeEBmBC9ChnUaqP0+Amarg6eKdn4Ho7ooBJ7yag6qEuy1JYeB5DqvyzKQbhsra01cll89BP18qWxomD5fcNZPd6Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IpUn3YCpzxaEe5WTDI5bdNs3wpplPJDEJZFSwJHCS6M=;
+ b=ibwd2JpLkRxSRxl7q6sRJ80HxTk2HPnv1BsLRCCWrqniJDXvgpuchvzBCgB+USBl+O7kXvYchNjL09FACiAEIvgHHZN+hN554noT1AAkJN4NDbBv1WloXKHy3lgJ7mGErmGalUcho88TQpdG8pOgnoBKG6yZDqcUq1G1h/gKuPG15Mf4sZ4UGcxCaBLmjwjeeli+Su3mR58REwmyILFJbS5CYBhRqTxBypMgiAP/LGdJGUuk6GVX/ciePXc/KaKP7wP9pesteqlB34VfydUc8NHLCsT2XZ7WWX0xnLPGdUfFM6QVDsnDK6fnVV+ExA3qQNlDx2woj0u3wBOfiC8wAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IpUn3YCpzxaEe5WTDI5bdNs3wpplPJDEJZFSwJHCS6M=;
+ b=onEHySvcRdX3MktmlMe1hbUCBF1ELmueSHe99zRWpKbBJKyYkWkNc+w8+k27h090YeBchMkSJirfIlsO4zg32Q753qyw+yZX7R3gIqWi8wMGI2bqK84BNMz89t3UmqB4Ful/IzSREZ0S476Zo8QnS4iBylx86+QZuO4QJUnr5F4rRApjXQAFxSMquH1JiIgSKdgphEj+rQNAssFBhfRMdvT5b0z4dwy/84J1ofjLatlCHjRaeBc8tCIhyv5BFUdgWm3jHdHltYCHzWSIy3WX1whg7aGkOjLdij1YBjt1P6/KjNggpBXK4wyOYTN0U9WVFCO1eiKhrRZV0WkuFi8l0g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB8056.namprd12.prod.outlook.com (2603:10b6:510:269::21)
+ by DM4PR12MB8451.namprd12.prod.outlook.com (2603:10b6:8:182::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.13; Sat, 6 Dec
+ 2025 21:36:16 +0000
+Received: from PH7PR12MB8056.namprd12.prod.outlook.com
+ ([fe80::5682:7bec:7be0:cbd6]) by PH7PR12MB8056.namprd12.prod.outlook.com
+ ([fe80::5682:7bec:7be0:cbd6%4]) with mapi id 15.20.9388.003; Sat, 6 Dec 2025
+ 21:36:16 +0000
+Date: Sat, 6 Dec 2025 16:36:14 -0500
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+	Edwin Peer <epeer@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 23/31] gpu: nova-core: Hopper/Blackwell: add FSP Chain of
+ Trust boot
+Message-ID: <20251206213614.GA177930@joelbox2>
+References: <20251203055923.1247681-1-jhubbard@nvidia.com>
+ <20251203055923.1247681-24-jhubbard@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251203055923.1247681-24-jhubbard@nvidia.com>
+X-ClientProxiedBy: BL0PR1501CA0005.namprd15.prod.outlook.com
+ (2603:10b6:207:17::18) To PH7PR12MB8056.namprd12.prod.outlook.com
+ (2603:10b6:510:269::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] rust: add a Kconfig function to test for support
- of bindgen options
-To: Asuna Yang <spriteovo@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Jonathan Corbet <corbet@lwn.net>, Jason Montleon <jmontleo@redhat.com>,
- Han Gao <rabenda.cn@gmail.com>, Conor Dooley <conor@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
- linux-riscv@lists.infradead.org, linux-doc@vger.kernel.org
-References: <20251204-gcc-rust-v5-v5-0-2d4f20d86c24@gmail.com>
- <20251204-gcc-rust-v5-v5-3-2d4f20d86c24@gmail.com>
- <1a6bb8cd-cc08-458f-a6f6-cdfefd327320@iscas.ac.cn>
- <9687109b-dc93-4535-848c-e5f22aeb8e9d@gmail.com>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <9687109b-dc93-4535-848c-e5f22aeb8e9d@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAB3_tALczRp1lJkAw--.48747S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr17JFWUCryrJw43XF1DWrg_yoW8AFyxpF
-	18Wa1jva1kJ3W8t34v9Fy0qF15Kw18WrW2k3s5W342van8Ww1kKr1IyF1ak393XFy0vr42
-	vFsrKF90yan09aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvmb7Iv0xC_Zr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7
-	MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-	x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-	UI43ZEXa7IUneBT5UUUUU==
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB8056:EE_|DM4PR12MB8451:EE_
+X-MS-Office365-Filtering-Correlation-Id: 660f77e5-f7c5-4f52-0047-08de350f7c81
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?eMlKOFKl+9SAq1KzBZ15PS/sCGXibT/5/BS0dS/E63Cu4gyVX2rO4TehcMwU?=
+ =?us-ascii?Q?iZ1XolOt3HWsc7pdQymEBkc3VcB0sLEtC6/vPlnZVaTXrj3L92UDiUYoxtTH?=
+ =?us-ascii?Q?BKJ6RsEtGi/9lgxWaBTSPEmSeRWv2aHWd+1c5slpbLWcO//pB08//4Q9AL7i?=
+ =?us-ascii?Q?MKAsNjG9GBtaz381t4yzoQNEKs1xCEkYDO8cE5MiSORYVsQ5WFr/o0ScnsF4?=
+ =?us-ascii?Q?YkLBcLmbDgBq/NvdEtzH+zZjeUN1n2m9kI6C5nsRQOgjzAlzD2wrkjf1uOyO?=
+ =?us-ascii?Q?vMCGP91t3gk1lDHa0RBynwaNmeibHJxhD3snOgg9+zkix0RAjVwFldVM1Fu4?=
+ =?us-ascii?Q?b3POz8RONACZci1l6bhKntLpkGAJWYprtEXv162z5xDx7zp6if8WzJhxGmbI?=
+ =?us-ascii?Q?k7jwpflV00YpknYEYcwf76KCXHsIvNqNK4iLcw9TXcOwAsNEofIdDDHDNvEH?=
+ =?us-ascii?Q?bJ1pVDSeBIxW5YJ87peIBrEq1b90/GhXeYAiAw5qdsNHfZ5Pg3Iyi5dPydk/?=
+ =?us-ascii?Q?664BKLFsfYrPNGPSdESCh9x/Hj4xCCArkBIAYi7xEWHQNzP8N4kf6SK0S6eH?=
+ =?us-ascii?Q?GxYUIz2mTxVX8+qDKbqv8cgFcifCLCWSFsQsX2jnh6cp+MB3Nxh5EyGMPzeJ?=
+ =?us-ascii?Q?srDdT0u4hmiD1xucgLaS0pg4FvLjvV4ockBjmxhzzs8YsylHxqlFLfxTPr2C?=
+ =?us-ascii?Q?+V43Jd/AErxLw52hjGSHLR0+zouZG3dTEKg5X/YulI9gTn/3JMBKTJkjlVmT?=
+ =?us-ascii?Q?A7oHWeU1/2Ks1tVYBHMAh7mVouVPG9WC7OKVvUSFFSh2inPWNrmM69SN0c5D?=
+ =?us-ascii?Q?k+ry5Wcp6RhVYGiuXdzrDuplgg30OJGDEkZj/F4Tkzt9ELLqXHMln5ls0Ms8?=
+ =?us-ascii?Q?6PcAFaArgOeUCOTijmgiyrbXvLwD8omu9xtRLQIo3Xrp3+Z/NLre0Cbrbczl?=
+ =?us-ascii?Q?P29f1o1GflNsUa8ASyiCUnMuMp+batqHNywElwa4rqeThJ81aqLgc0MeIiH3?=
+ =?us-ascii?Q?QTvPcZ40NYE46q9m849r/riDP8//rmlR3c7TzpTQkIg83i8pKm4kNCu4E52C?=
+ =?us-ascii?Q?tV2FOK0S6OkyMEh4U/O6EebwTC6LMaKraJJuy8m7uOl0195rcaKvHMYIBf5G?=
+ =?us-ascii?Q?jSe4kSUwqBW5VHNwTPnvQHPrMHUDkBrXoN+loO4fPgIv5Kh3T+KdFNVZufx0?=
+ =?us-ascii?Q?hpOGwGKlebswRqr/2BV29W8jWgxtbBvgxXssDQ5VvnCwWqEEXgoqvuEzTgKa?=
+ =?us-ascii?Q?3/wlTtmYwGX8hTCz7HV1s+EncQ+08vWboW1jdW7r/mCMTJOC+y5yrPrj5Jp3?=
+ =?us-ascii?Q?aIp6G0k6T3buAUfd2Ch69w7VVpD+Ge9FPWvwGjTCVAuDqJW4jrLZbL9FGd+d?=
+ =?us-ascii?Q?yVWqgWFthiNcOHoTT6LVPDFPt4YdEXhQvpT90zqLJ9ORUVKR7oeWK4nWoglX?=
+ =?us-ascii?Q?1lbNJ1LiiqNIUzB2dVkEyU/fXniFkahg?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB8056.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?AGXxLIGPjtIkucAxOm82MmRHl8yhxGqGfLw6JNRn3+e4S4J24cUz/DIlSR2k?=
+ =?us-ascii?Q?09szjsorXT5v8xgeEgMJa9V1FW0MNJm0eeujmzBHJpBH6CZShu1mGrAlO22s?=
+ =?us-ascii?Q?s5tgPBivYOjuZ5yz8MEQ7OlUr8sNosHkq1Vv3uFOTvKw0BaLmDGQAkk04OMq?=
+ =?us-ascii?Q?qCxBGSqszo3P//VoD4ai+CZ87v4xGkF0i4MmlqjIfsY7YdBDmFVINYZEcnfD?=
+ =?us-ascii?Q?sqYh8r25qNQkq+w9uNVUSRL5RdPRdfdhsMQaciIkqpPf5HoJBbsP0oEumud4?=
+ =?us-ascii?Q?A3mXTDGDrTVlt9RMMQYHqWZTJuP8J+fTR4LSgPaECUDgOJLvfAjEpusMmvQB?=
+ =?us-ascii?Q?/LbnPNowSyB6x+Ca3gR4beefDpF1hCJL/9Tigj2G3SPh12rggiojy1e1FIhA?=
+ =?us-ascii?Q?xFwO92KxaIGK5jn68Loo7bNvnTcbBQiAduQy90dcNCUQwH0xpB68rBNVVCCK?=
+ =?us-ascii?Q?EBvT95B9tqUo2o1QKTCUZ9L61yN9OZs/S2eREwYD8xIQBiSZqBLAk6Bd3K/f?=
+ =?us-ascii?Q?ohz+Knn6WzFM+syCgkDp5KQQ7qo4xMmAiB4U2ZPf1u3C/J8Q4Lxnu7B06nPr?=
+ =?us-ascii?Q?fwySM1jXDiCmEcJcsMCk4T7faF1fa2RuOqci3JPQjBCslBN6glA4ItgyJkJm?=
+ =?us-ascii?Q?+kgswlLlAjAzcjryI3iE/K3Vr7MV/P4KrChvsz+4f2KdUchSj++9aMe5GEgv?=
+ =?us-ascii?Q?MBSOYRdhJR76m0cKa0ebI0hrxnxetHjWr0He5b+6/uUQ0F8DZKec9dUc4EPG?=
+ =?us-ascii?Q?k0yav5KiDWvCT6nLMlQjwkCH4AHtkzJSZp5ti4W7tbBzHQ5+c3JieAugACEt?=
+ =?us-ascii?Q?d6MipHNAlQB5l2VhKM41htSZ/bWKaZg+zBf8NetxjmuEyIQ7yuSvTmHt7KJJ?=
+ =?us-ascii?Q?lZm398AhEQtsMq7T0KkyY1X1lND43Fe6vZxxria64s6M5Fq73fKeJrFv7Ts3?=
+ =?us-ascii?Q?rdo1bBrn+ZEqTVIXO+vqkCC1YdstvLiCZr71AM3204bTkIth4or9NW7WA4Up?=
+ =?us-ascii?Q?+ruhO7lnzkY83jj2OVSeYFDrr1vfgw26jiXHS+r3uLI0gx6IfnWSx3ooTFXQ?=
+ =?us-ascii?Q?HtNbtqOmT5oKqKBfIttr5pru2HC/R4PJqRjqiiw/5poNJbi90zO+h1kL5BGr?=
+ =?us-ascii?Q?eKPbJBDqRoSlUVV6b6kFOP5IdmJxOhjjs7UFSvGRqui/GB0enp4YviTAvmy8?=
+ =?us-ascii?Q?qMx0WwBK8ara4UyFqKOXLup3BHMBySYtWhDlxhUJS0G2XPHmfND9UIDi3Tah?=
+ =?us-ascii?Q?lFS8ymkTQTIhsUIe9BzeqCzLlHTGSFQegG6qrlGCTRQLr7zzNs1vXPnfd7Ki?=
+ =?us-ascii?Q?SJVQLK4DOYpNvYVe+qCa1NNzxTgULnrvGR5kwdFfB8bqrtdiqXOnXl2MlELh?=
+ =?us-ascii?Q?ckbcMxgNyBVDRIXNaEQiKvEMg+iQfest1pOe3bFniqtsJJbFa6yY/ODEZS5O?=
+ =?us-ascii?Q?xybyHX41HrMFpjuB0Sw5KJaX5xa7XIDjnWbW2IH6LP1mqVxd8dFNUbY/oWka?=
+ =?us-ascii?Q?txzIxL5aEF4lEXkp6abLcsGMHV8Kon9geePyokjMX3IpsDNWxxpumyksmMbF?=
+ =?us-ascii?Q?1MG22VmYAq/UadIokMLpC7wa7Swa265dxOLB/paO?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 660f77e5-f7c5-4f52-0047-08de350f7c81
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB8056.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2025 21:36:16.4252
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qHZKmtswCAACevEPnpwjXNkQesVj/97PRlVphWvdex2aBC/eGAwUQ3XRWpHyvPAU/p3ahOTA+hzc+4f/PKFMvA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8451
+
+On Tue, Dec 02, 2025 at 09:59:15PM -0800, John Hubbard wrote:
+> Add the boot functions that construct FMC boot parameters and send the
+> Chain of Trust message to FSP. This completes the FSP communication
+> infrastructure needed to boot GSP firmware on Hopper/Blackwell GPUs.
+> 
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/fsp.rs | 156 +++++++++++++++++++++++++++++++++++
+>  drivers/gpu/nova-core/gpu.rs |   1 -
+>  2 files changed, 156 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/nova-core/fsp.rs b/drivers/gpu/nova-core/fsp.rs
+> index bb1e19c03c30..5840ab78e79f 100644
+> --- a/drivers/gpu/nova-core/fsp.rs
+> +++ b/drivers/gpu/nova-core/fsp.rs
+> @@ -13,6 +13,10 @@
+>      device,
+>      io::poll::read_poll_timeout,
+>      prelude::*,
+> +    ptr::{
+> +        Alignable,
+> +        Alignment, //
+> +    },
+>      time::Delta,
+>      transmute::{
+>          AsBytes,
+> @@ -22,6 +26,10 @@
+>  
+>  use crate::regs::FSP_BOOT_COMPLETE_SUCCESS;
+>  
+> +/// FSP Chain of Trust (COT) version for Blackwell.
+> +/// GB202 uses version 2 (not 1 like GH100)
+> +const FSP_COT_VERSION: u16 = 2;
+
+the comment says that Hopper needs this to be version 1 so how does this
+series boot on Hopper? maybe we need to add a new function to return a
+different version number for Hopper versus Blackwell?
+
+edit: I just noticed in the cover letter that you mentioned this is tested
+only on Blackwell. I think perhaps we should drop the claim that the series
+works on hopper in the patches / cover letter.
+
+thanks,
+
+ - Joel
 
 
-On 12/4/25 20:33, Asuna Yang wrote:
-> On 12/4/25 5:06 PM, Vivian Wang wrote:
->
->>> +
->>> +# $(bindgen-backend-option,<flag>)
->>> +# Return y if bindgen backend supports <flag>, n otherwise
->>> +# For now, the backend refers only to libclang, so more
->>> specifically, this function tests whether the given flag is
->>> recognized by the libclang used by bindgen.
->>> +bindgen-backend-option = $(success,trap "rm -f .tmp_$$.h" EXIT;
->>> touch .tmp_$$.h; $(BINDGEN) .tmp_$$.h -- --target=$(BINDGEN_TARGET)
->>> $(1))
->>>
->> Can probably be simplified down to:
->>
->> $(BINDGEN) /dev/null -- -x c --target=$(BINDGEN_TARGET) $(1)
->>
->
-> bindgen is sensitive to file extensions. If the file is not .h or
-> .hpp, it complains:
->
-> panicked at bindgen/ir/context.rs:562:15:
-> libclang error; possible causes include:
-> - Invalid flag syntax
-> - Unrecognized flags
-> - Invalid flag arguments
-> - File I/O errors
-> - Host vs. target architecture mismatch 
 
-That's so weird... I can't reproduce this if i pass -x c to bindgen,
-like this:
 
-$ bindgen --version
-bindgen 0.72.1
-$ bindgen /dev/null
-panicked at /build/rust-bindgen-unwrapped-0.72.1-vendor/bindgen-0.72.1/ir/context.rs:562:15:
-libclang error; possible causes include:
-- Invalid flag syntax
-- Unrecognized flags
-- Invalid flag arguments
-- File I/O errors
-- Host vs. target architecture mismatch
-If you encounter an error missing from this list, please file an issue or a PR!
-$ bindgen /dev/null -- -x c
-Failed to run rustfmt: No such file or directory (os error 2) (non-fatal, continuing)
-/* automatically generated by rust-bindgen 0.72.1 */
-
-The -x argument should explicitly tell (lib)clang what language the file
-is without needing an extension. I don't know why it's not working for
-you...
-
+> +
+>  /// FSP message timeout in milliseconds.
+>  const FSP_MSG_TIMEOUT_MS: i64 = 2000;
+>  
+> @@ -364,6 +372,154 @@ pub(crate) fn extract_fmc_signatures_static(
+>          Ok(signatures)
+>      }
+>  
+> +    /// Creates FMC boot parameters structure for FSP.
+> +    ///
+> +    /// This structure tells FSP how to boot GSP-RM with the correct memory layout.
+> +    pub(crate) fn create_fmc_boot_params(
+> +        dev: &device::Device<device::Bound>,
+> +        wpr_meta_addr: u64,
+> +        wpr_meta_size: u32,
+> +        libos_addr: u64,
+> +    ) -> Result<kernel::dma::CoherentAllocation<GspFmcBootParams>> {
+> +        use kernel::dma::CoherentAllocation;
+> +
+> +        const GSP_DMA_TARGET_COHERENT_SYSTEM: u32 = 1;
+> +        const GSP_DMA_TARGET_NONCOHERENT_SYSTEM: u32 = 2;
+> +
+> +        let fmc_boot_params = CoherentAllocation::<GspFmcBootParams>::alloc_coherent(
+> +            dev,
+> +            1,
+> +            GFP_KERNEL | __GFP_ZERO,
+> +        )?;
+> +
+> +        // Configure ACR boot parameters (WPR metadata location) using dma_write! macro
+> +        kernel::dma_write!(
+> +            fmc_boot_params[0].boot_gsp_rm_params.target = GSP_DMA_TARGET_COHERENT_SYSTEM
+> +        )?;
+> +        kernel::dma_write!(
+> +            fmc_boot_params[0].boot_gsp_rm_params.gsp_rm_desc_offset = wpr_meta_addr
+> +        )?;
+> +        kernel::dma_write!(fmc_boot_params[0].boot_gsp_rm_params.gsp_rm_desc_size = wpr_meta_size)?;
+> +
+> +        // Blackwell FSP expects wpr_carveout_offset and wpr_carveout_size to be zero;
+> +        // it obtains WPR info from other sources.
+> +
+> +        kernel::dma_write!(fmc_boot_params[0].boot_gsp_rm_params.b_is_gsp_rm_boot = 1)?;
+> +
+> +        // Configure RM parameters (libos location) using dma_write! macro
+> +        kernel::dma_write!(
+> +            fmc_boot_params[0].gsp_rm_params.target = GSP_DMA_TARGET_NONCOHERENT_SYSTEM
+> +        )?;
+> +        kernel::dma_write!(fmc_boot_params[0].gsp_rm_params.boot_args_offset = libos_addr)?;
+> +
+> +        dev_dbg!(
+> +            dev,
+> +            "FMC Boot Params (addr={:#x}):\n  target={}\n  desc_size={:#x}\n  \
+> +             desc_offset={:#x}\n  rm_target={}\n  boot_args_offset={:#x} \
+> +             (libos_addr passed in: {:#x})\n",
+> +            fmc_boot_params.dma_handle(),
+> +            GSP_DMA_TARGET_COHERENT_SYSTEM,
+> +            wpr_meta_size,
+> +            wpr_meta_addr,
+> +            GSP_DMA_TARGET_NONCOHERENT_SYSTEM,
+> +            libos_addr,
+> +            libos_addr
+> +        );
+> +
+> +        Ok(fmc_boot_params)
+> +    }
+> +
+> +    /// Boot GSP FMC with pre-extracted signatures.
+> +    ///
+> +    /// This version takes pre-extracted signatures and FMC image data.
+> +    /// Used when signatures are extracted separately from the full ELF file.
+> +    #[allow(clippy::too_many_arguments)]
+> +    pub(crate) fn boot_gsp_fmc_with_signatures(
+> +        dev: &device::Device<device::Bound>,
+> +        bar: &crate::driver::Bar0,
+> +        chipset: crate::gpu::Chipset,
+> +        fmc_image_fw: &crate::dma::DmaObject, // Contains only the image section
+> +        fmc_boot_params: &kernel::dma::CoherentAllocation<GspFmcBootParams>,
+> +        total_reserved_size: u64,
+> +        resume: bool,
+> +        fsp_falcon: &crate::falcon::Falcon<crate::falcon::fsp::Fsp>,
+> +        signatures: &FmcSignatures,
+> +    ) -> Result<()> {
+> +        dev_dbg!(dev, "Starting FSP boot sequence for {}\n", chipset);
+> +
+> +        // Build FSP Chain of Trust message
+> +        let fmc_addr = fmc_image_fw.dma_handle(); // Now points to image data only
+> +        let fmc_boot_params_addr = fmc_boot_params.dma_handle();
+> +
+> +        // frts_offset is relative to FB end: FRTS_location = FB_END - frts_offset
+> +        let frts_offset = if !resume {
+> +            let mut frts_reserved_size = if chipset.needs_large_reserved_mem() {
+> +                0x220000 // heap_size_non_wpr for Hopper/Blackwell+
+> +            } else {
+> +                total_reserved_size
+> +            };
+> +
+> +            // Add PMU reserved size
+> +            frts_reserved_size += u64::from(crate::fb::PMU_RESERVED_SIZE);
+> +
+> +            frts_reserved_size
+> +                .align_up(Alignment::new::<0x200000>())
+> +                .unwrap_or(frts_reserved_size)
+> +        } else {
+> +            0
+> +        };
+> +        let frts_size = if !resume { 0x100000 } else { 0 }; // 1MB FRTS size
+> +
+> +        // Build the FSP message
+> +        let msg = KBox::new(
+> +            FspMessage {
+> +                mctp_header: (mctp::HEADER_SOM << 31)
+> +                    | (mctp::HEADER_EOM << 30)
+> +                    | (mctp::HEADER_SEID << 16)
+> +                    | (mctp::HEADER_SEQ << 28),
+> +
+> +                nvdm_header: (mctp::MSG_TYPE_VENDOR_PCI)
+> +                    | (mctp::VENDOR_ID_NV << 8)
+> +                    | (mctp::NVDM_TYPE_COT << 24),
+> +
+> +                cot: NvdmPayloadCot {
+> +                    version: FSP_COT_VERSION,
+> +                    size: core::mem::size_of::<NvdmPayloadCot>() as u16,
+> +                    gsp_fmc_sysmem_offset: fmc_addr,
+> +                    frts_sysmem_offset: 0,
+> +                    frts_sysmem_size: 0,
+> +                    frts_vidmem_offset: frts_offset,
+> +                    frts_vidmem_size: frts_size,
+> +                    hash384: signatures.hash384,
+> +                    public_key: signatures.public_key,
+> +                    signature: signatures.signature,
+> +                    gsp_boot_args_sysmem_offset: fmc_boot_params_addr,
+> +                },
+> +            },
+> +            GFP_KERNEL,
+> +        )?;
+> +
+> +        // Convert message to bytes for sending
+> +        let msg_bytes = msg.as_bytes();
+> +
+> +        dev_dbg!(
+> +            dev,
+> +            "FSP COT Message:\n  size={} bytes\n  fmc_addr={:#x}\n  boot_params={:#x}\n  \
+> +             frts_offset={:#x}\n  frts_size={:#x}\n",
+> +            msg_bytes.len(),
+> +            fmc_addr,
+> +            fmc_boot_params_addr,
+> +            frts_offset,
+> +            frts_size
+> +        );
+> +
+> +        // Send COT message to FSP and wait for response
+> +        Self::send_sync_fsp(dev, bar, fsp_falcon, mctp::NVDM_TYPE_COT, msg_bytes)?;
+> +
+> +        dev_dbg!(dev, "FSP Chain of Trust completed successfully\n");
+> +        Ok(())
+> +    }
+> +
+>      /// Send message to FSP and wait for response.
+>      fn send_sync_fsp(
+>          dev: &device::Device<device::Bound>,
+> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+> index c0473ef8ac47..8fdce488612a 100644
+> --- a/drivers/gpu/nova-core/gpu.rs
+> +++ b/drivers/gpu/nova-core/gpu.rs
+> @@ -124,7 +124,6 @@ pub(crate) const fn arch(&self) -> Architecture {
+>          }
+>      }
+>  
+> -    #[expect(dead_code)]
+>      pub(crate) fn needs_large_reserved_mem(&self) -> bool {
+>          matches!(self.arch(), Architecture::Hopper | Architecture::Blackwell)
+>      }
+> -- 
+> 2.52.0
+> 
