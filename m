@@ -1,109 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704792C08D7;
-	Mon,  8 Dec 2025 18:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579E71B983F
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Dec 2025 21:56:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765219744; cv=none; b=CuYpV3sFSnQKbmxiVHJZm9W336Y2HKCmeU3dHJs0eCG8fE4B4729OwxXnnO3VOodAS6T4GJ0lHSNf4EvT+JvZbXi0PVfFgV3Iisc9vS3A0KQiER78oUa1CxP+SuEXtWg3aU1O4pJtGs7OIJ0M91SM6U3pGa8b+Fq4Ws6AC5dpTw=
+	t=1765231006; cv=none; b=Z5ZGmByk//fYT4SmRJKDzWAMzFiGQ2SueGQfU+2tmvhj5XM4GB0NIbU0E3S36kCseiPM/3vkrPJM7KED7JzXssZwcOfzGAIZsU/x/ynWpYElRznjY0QoXiDyAgEeS23FIJzSsN3vlqdcYUMOEjHHHOR/k+zHTB2UooKlevlTNdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765219744; c=relaxed/simple;
-	bh=ZNDcp7ntkaCV9+gmJSA9IUJ55TC4NpxlMjdEcGu2HkA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kl6+lhrFYdpJlOAPwSSUTjo1YpBVkvw/U21fJbPLywm2XAV9QKJ+BMVNljsTWDX6DJ/6ldfYx4nAh/GZknTecSbxSwLZLoLF+fxCYuG+WORv2fwTHG2d6WC3M/guCBLKTCpYbn7aRsoUiLgr5cgl+hK5hnp9N74b0xVTFfL4NWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S2YviBwG; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1765231006; c=relaxed/simple;
+	bh=zcEmJge43qc6diYing4j/CPMIn8o3s5fu/cHGKIw5D8=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=bdo5ZRmMik5K/tYNaY4qjFTkvr1v7AuLegbC/yxnmrMDvkPpFsjvV7fH/6E+vNXid5NTKKRPNIF/I5ZQTVn8ulbrD4AD48G7xau/of05NcRsF03VriFOXbws3Fjx4ZG8J2/T8DAwtNEQE8PKslY1i5fA+GBNiE/d/Xm1x0LkhJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J1inZxV6; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S2YviBwG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765219742; x=1796755742;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZNDcp7ntkaCV9+gmJSA9IUJ55TC4NpxlMjdEcGu2HkA=;
-  b=S2YviBwG+QeYjaLUUXhqotPLJ6hrSpn6N7yV2wWqx8RwVgZMvtD9lfF0
-   rZFPwORf3a69EeNlDsoImPA+jouJ1ke6H45H1tz/5MXTE8vsTYr0pnkYq
-   pmqes1QC300EEhJk30cVPj8fMQfKpaFzPHNbz6+Bspj5n6YvufZ4mXtvi
-   MdQ6DRqQG9G64HHtRG4JHRvGiBSxN4SbHyFh9nVqUeom8bKfKXI9XdoQD
-   zNcp9gVSmIL5NkDamMRl0fLeWjUTippEcTOtAaUWUqQUiYS5MFZbsH+Z5
-   3kTk3J4+X4Kt+gcFMf5uybAsoOGX6NzoJRToMZXOpW4U1u0TdaOLaHHNs
-   g==;
-X-CSE-ConnectionGUID: D4n1WrNuT/2l0MpdMLsunQ==
-X-CSE-MsgGUID: /pcTo2hTQB6N3YDFH2Br3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11636"; a="67247786"
-X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; 
-   d="scan'208";a="67247786"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2025 10:49:00 -0800
-X-CSE-ConnectionGUID: WQCC2vZhRkaq/1Xfrar6tg==
-X-CSE-MsgGUID: tMcjIeBYS22juL3x+m+Tpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,259,1758610800"; 
-   d="scan'208";a="201128972"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 08 Dec 2025 10:48:56 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vSgI1-000000000jN-3dZB;
-	Mon, 08 Dec 2025 18:48:53 +0000
-Date: Tue, 9 Dec 2025 02:48:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Moritz Zielke via B4 Relay <devnull+moritz.zielke.gmail.com@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>
-Cc: oe-kbuild-all@lists.linux.dev, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Moritz Zielke <moritz.zielke@gmail.com>
-Subject: Re: [PATCH] rust: io: convert ResourceSize to newtype
-Message-ID: <202512090237.rE4zx0Ob-lkp@intel.com>
-References: <20251203-res-size-newtype-v1-1-22ed0b8a7a18@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J1inZxV6"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7ba49f92362so2722544b3a.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Dec 2025 13:56:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765231004; x=1765835804; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HdfW6RgR1PcfYG4CkIDQLcy+617j9bQJpQVrv2aFxu0=;
+        b=J1inZxV6TztA5AwlU7OU1Xhu3RCxhgtpRaujVXweSID1FzSOWfi8yl+IIMoGT3ngez
+         5AnRjXlrzPB0wMAPgjsXDcIqKOG8+0E+G7Kiusd7/Yh3FgjtnfAf3bod3aYIB+qONSe2
+         4lhh+LFSl8UvAaNl+l1UTlTUaChyvdTxzNBwcQ5qPqeJNiiLmBkNq5njpDerVtZxtmE+
+         3SV1PfhYo9GGzHJ2bGqO5ey4UGbMYsUM4upQD4Z+tg9F/86CvM+DAv9rYizmtyJ64BKQ
+         wOqh//4ZrWmXx2qnnHAJFdgk1lxadNO4g/oTlnWyVqkmYbLrDZIYggdqPpEmrBfZQ93/
+         2SUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765231004; x=1765835804;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HdfW6RgR1PcfYG4CkIDQLcy+617j9bQJpQVrv2aFxu0=;
+        b=upV8+CpzVOs7TL4oYBXHMMH4hDu1rfUr4kX3LTaAv+R/0mguJMjCazSGrM7O6iQIhw
+         YdTuu6eGGLRF1vmAAxKovkneDBRTQC7w/JeH9ilR7VWwRnGI6arivWb7x3edetD4ManE
+         EnFp1xwn/bMvm39/tK4fXV8Z4GVHoYKoO7a1z80xi6OFVD4sQS/lbYucJaDXpmSBgZyb
+         aIf/x9eNhbJ/I1lq6wTdUBs485pZICUnc2Lcaz2jv/mTf+xjyF2E/bzn+cNt+B/JwyvY
+         05zf0LjJ9H+NXuveP6Prs0Q9scG3fDzcMQOllCED2lsidd35w2LvKeu/mOInCb+AnXYj
+         g/vA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvBI7680Rc5pts5rOUeIRe7cG9CakPPXAQEgosJRToVkZCtCFt3q7+cCT/sg4INWrl/mGPF2ZmF698EZ5vmg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGy+n1CAq4Jh+Wlz1Z/gn9zicMkQ2WiHNe9PwnQ6AlQ0ii4gxK
+	QQaN8cqLVIK0fIkpzXMwUaHCob14NFG7R2FSAEJHeNTJnzrbQ+KYwMDj
+X-Gm-Gg: ASbGncuSksAUvjkY6AZiWTnRIlyM0veIae2l/1tHnYZ2m38AuJ02hG0ABEnRUfLzJpO
+	5Ksbw1pLt23UkKOSRGlfwEdG1OjpFnase8V8A5kbmbvXFDaD4YRh1TlH2wOPJce9PaBT0F09aKY
+	0qhZY8ixYZiN7hXaw+ixvmgNtUfDxbYJUNvZSR3Z0MiMuupFjDKCHHVIEbQ/YCS0QUdvBPh1J6Y
+	iUkd9Jp5VC0sQqlMlBylGU2XX24T0rW2HWJ35dL64UdN824VmVgJIZecIEAChvz9J/Dxyw9+S/N
+	WOpDGXZeh3R6AbLbgBCmrzPIh0yCimB1lMDHt8tzxs4cMQqatxSZRYEIFDNpfxg46uEuO6cyFsN
+	1wvhrw4SVSQ9vxaTa1gqUOdRPMhmDJTg6LLtf2QTkI1vFc0Am7VyGMtUCS9QXXsCdTbe3+Baien
+	saaxWfXGF+PhcDfGC1hz5Y8FOSSd0X4qmaTqZY6yvq8WgEPQ2GTm8s8awT5aH9XeJLAg==
+X-Google-Smtp-Source: AGHT+IFP/boNOqYDoXkU3RIkdRKIrnpb51NMsdoJdtT2VzPhVZ9CaG1ghjWJtI8S7+dPdzyX8TNyow==
+X-Received: by 2002:a05:6a00:130b:b0:7e8:3fcb:9b06 with SMTP id d2e1a72fcca58-7f03dcac664mr755773b3a.28.1765231004516;
+        Mon, 08 Dec 2025 13:56:44 -0800 (PST)
+Received: from localhost (p4783053-ipxg23301hodogaya.kanagawa.ocn.ne.jp. [153.209.99.53])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7e2a081587esm13936902b3a.27.2025.12.08.13.56.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Dec 2025 13:56:44 -0800 (PST)
+Date: Tue, 09 Dec 2025 06:56:27 +0900 (JST)
+Message-Id: <20251209.065627.1182423847170566963.fujita.tomonori@gmail.com>
+To: acourbot@nvidia.com, boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org,
+ peterz@infradead.org, will@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ gary@garyguo.net, lossin@kernel.org, mark.rutland@arm.com,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH v2 1/4] rust: sync: Add i8/i16
+ atomic_load_acquire/atomic_store_release helpers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <DESI0L685D0M.1NP1X7KGIDJEW@nvidia.com>
+References: <20251117001035.4068507-1-fujita.tomonori@gmail.com>
+	<20251117001035.4068507-2-fujita.tomonori@gmail.com>
+	<DESI0L685D0M.1NP1X7KGIDJEW@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251203-res-size-newtype-v1-1-22ed0b8a7a18@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hi Moritz,
+Thanks for the review!
 
-kernel test robot noticed the following build errors:
+On Mon, 08 Dec 2025 12:01:12 +0900
+"Alexandre Courbot" <acourbot@nvidia.com> wrote:
 
-[auto build test ERROR on 473b9f331718267815649cd93801da832200db71]
+> On Mon Nov 17, 2025 at 9:10 AM JST, FUJITA Tomonori wrote:
+>> Add helper functions to expose smp_load_acquire() and
+>> smp_store_release() for i8 and i16 types.
+>>
+>> The smp_load_acquire() and smp_store_release() macros require type
+>> information (sizeof) to generate appropriate architecture-specific
+>> memory ordering instructions. Therefore, separate helper functions are
+>> needed for each type size.
+>>
+>> These helpers will be used by the upcoming Atomic<i8> and Atomic<i16>
+>> implementation to provide proper Acquire/Release semantics across all
+>> architectures.
+>>
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> ---
+>>  rust/helpers/atomic_ext.c | 23 +++++++++++++++++++++++
+>>  rust/helpers/helpers.c    |  1 +
+>>  2 files changed, 24 insertions(+)
+>>  create mode 100644 rust/helpers/atomic_ext.c
+> 
+> Why not add these to `rust/helpers/atomic.c`?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Moritz-Zielke-via-B4-Relay/rust-io-convert-ResourceSize-to-newtype/20251204-012104
-base:   473b9f331718267815649cd93801da832200db71
-patch link:    https://lore.kernel.org/r/20251203-res-size-newtype-v1-1-22ed0b8a7a18%40gmail.com
-patch subject: [PATCH] rust: io: convert ResourceSize to newtype
-config: um-randconfig-r064-20251207 (https://download.01.org/0day-ci/archive/20251209/202512090237.rE4zx0Ob-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project a805147ac1ba123916de182babb0831fbb148756)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251209/202512090237.rE4zx0Ob-lkp@intel.com/reproduce)
+https://lore.kernel.org/rust-for-linux/20251115050305.3872412-1-fujita.tomonori@gmail.com/
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512090237.rE4zx0Ob-lkp@intel.com/
+I split them into atomic_ext.c because Boqun specifically asked me to
+keep the new helpers separate. My understanding is that these helpers
+expose different symbol names than their C counterparts, so he
+preferred to isolate them from the existing ones.
 
-All errors (new ones prefixed by >>):
+>> diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
+>> new file mode 100644
+>> index 000000000000..d05f6f7ba10c
+>> --- /dev/null
+>> +++ b/rust/helpers/atomic_ext.c
+>> @@ -0,0 +1,23 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +#include <asm/barrier.h>
+>> +
+>> +s8 rust_helper_atomic_i8_load_acquire(s8 *ptr)
+> 
+> I guess you will want to prefix these with `__rust_helper` in the next
+> revision.
 
->> error[E0605]: non-primitive cast: `ResourceSize` as `usize`
-   --> drivers/gpu/nova-core/firmware/gsp.rs:234:25
-   |
-   234 |         let num_pages = (sg_entry.dma_len() as usize).div_ceil(GSP_PAGE_SIZE);
-   |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ an `as` expression can only be used to convert between primitive types or to coerce to a specific trait object
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ah, you are right. I will add it in v3.
