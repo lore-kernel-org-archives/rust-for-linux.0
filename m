@@ -1,76 +1,79 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2872BD587
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 23:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DC618C008
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 23:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765322781; cv=none; b=ou/Z02WyqX31dNU0DrVYVIenAlMHmaVuVGAup1eEWSSBjGsSoM4obswZsVb4KwzHCO7T+whuRboKj8k9VI/WwfDVXd6q6KbO1ofg5QtS/ml+fhAsLbUH7bc6Mnz0HJNFKqTYn7eo26rAE9CHlhsRTgGDK2gyt/pLQTjLVeUYEO4=
+	t=1765323114; cv=none; b=adrIbo/CLPTBOiLR+tSU1g5R7ETi6t1QLGC6DENvOiDUHAGFKYLrw5BAC3k5H4LvlcBcPXu5DiB2LRY2Gew58KtmDZ1zAezR69ORGuWa0LVp+DGtmgUskPfUnAhiyJJugIcyWNX67jM+Bt8g8nvpCAQrW+YqyTizuAXpJ4ux4O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765322781; c=relaxed/simple;
-	bh=Cvac8Lr4vQTZyhPenNZe352BDh72OTK02amYVsu/V4A=;
+	s=arc-20240116; t=1765323114; c=relaxed/simple;
+	bh=XH/RVTRviqUzLXdi+vebkSF7CXoi8l8eoAUgf4/GsiE=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=s3U68dQn+QM8BLaY3zUHdjaoNAivddJ6YPoiivqqu2gF0BgM5iMfe7PiKfxZ7MYxZq78jiUZIdc42Hools+qpA+gVlNt1fCQ6d+3vbJTflqLehqjV+fY0wk5EC81cWEsSPpWgbfVQB8uYvKrTENn2Q3IfhYE5FU3OAZITrfOy8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cnk9dX9i; arc=none smtp.client-ip=209.85.216.52
+	 Mime-Version:Content-Type; b=ckW1o2BVexC3JNoWdiJpSOurb/gwFiT1huNNXM8IeP0jgWkc9gWNmbRw+tWhXuq0tx+KDHF6eoLcCnbpWfpqvNmDXERCPpZu0noDWaUK2H0XMZV3+NgCHONuWzLTqL+dEnliwBeMbivS9ma56aYDi70EWLAwayptKVVVqkxuHLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jiTzsL0z; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cnk9dX9i"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-349195f1a52so189887a91.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Dec 2025 15:26:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jiTzsL0z"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-29555b384acso62926035ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Dec 2025 15:31:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765322779; x=1765927579; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1765323112; x=1765927912; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sFSMglxi03HRAT0yehis6m77IOxVyy21KOVUh0nvSuU=;
-        b=cnk9dX9iYbf89UizBTJQ4edjkv4NvAUBIbMdJOg/ovgmsqrzrPr7LntKt9uBTt1S3/
-         P3s4Ylc5RECOyb7V+s3Jqp6bcfYW+E8UuHixEdWKyaRH9w73xfeZotTq4jYw6zFZVzox
-         ofBh5zwJXA6htIxtY4A/bz4176Ikq8OjbjUCfYBshacOXweqczkB9m1rM3c/yxd9Adti
-         7j9NuzZunvXQQGk2t6lfGvq7cTm1vtLdZZM9GIrNvZebEHir4pPSSs0bigNQaYeppSxZ
-         n8Yl/JJUWhGzjpRgFMIuPDjUFGiCYz/UeX1S2U1tzZvt9QiT5X+3H1eJrIlNxk2VtUkt
-         NiQw==
+        bh=B/JpyykJChc4+E6bNdj5oQI9BXWJ7FWqfKBT4z47184=;
+        b=jiTzsL0zwnX27fsq9PZojfdxfcmIuLLewAjF4LcFsQ6X1v3p75LG34kmaOcjjXL+KV
+         QsJF1pSyG8l5eSVBkWnglvYu6Eohgbg9LJC+OtM11sgznN9S1G3W/Bx5k2i1HQdzksAr
+         dqNuIikX6qb0N494ru+bguUq34eevQ1nLcpQ4Rwe1pn+iWigdjRGSrkT8P1vEKFsUL2U
+         OPwCOKllMwBaeObvbvYG7MZACiCbX1Q7ItKKmEStQTdUiaz3yj9pa3MuEytQbfTNuhn4
+         wdJmSqOfGLlcasKw0ODtMvdcGZY7K6d8MdfRdHh2CrwIikoMpL2EDF+H/VLyU0LuD7An
+         i8rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765322779; x=1765927579;
+        d=1e100.net; s=20230601; t=1765323112; x=1765927912;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sFSMglxi03HRAT0yehis6m77IOxVyy21KOVUh0nvSuU=;
-        b=vynNBKZqhG+uPHsolRrN6nXCIsy0EcV23/FeQURtiZ3c5gRwb5FAXBJi35HOYGtZtm
-         t5KQykpj4SUU3316Wc4SFfPXUmwYgmXnYSfb10uW+mhJmFJXaB/7tjR1rKKHxeUFEXjX
-         /fT+PtFFelmTHDTc965eHOR8+fLXmoCvsUryRZDxKkLzyYPerUmHUQKza05CV54H5V2X
-         ryPUufuBByUD6izEGz4SF/6xi3zBz13F6nzmQ73ZJRfiYUzVtKeUWIpcXufNwGmkzO6E
-         VBmTsHB4MNg6aUhZa/DC8NnCQEK/YNljAQWkmlUCSSDewscZFNBeBsKlqa8UPoky96bs
-         2lXA==
-X-Forwarded-Encrypted: i=1; AJvYcCWfIsiRvsQJjYDpKRcra4zBLHCKVC7LUdmN8GuFp60DdceCFKN3o4MuIboP7nElTY3pDLb0CvFPN+vDs53HYw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywv0Dn2es/1tizW41ihe2vAWrcXdQOauFTe10w4bZaGkhf+uShC
-	jCbwmlx0vkiheAl3DZU4r8DJc8nfO2l0c7RT+nFCMKMMGrhPcm6xx0zq
-X-Gm-Gg: AY/fxX4K2txgAY8q5m1y1PijZBxBFd4m+UYpk67wT+tZLZuQqfYFtYGpLYnAK8oNE38
-	VpLXY48HXkDHybZ7bUvNJPitk10oAOldt8Fi9N0u3kARyFWBWCv+dygLODlai++X72w6Mn3ylg/
-	btxNUzTIGellVZFzQe26Wok/sQ2GfCyivRk4hjM5jjvhU1TJspsr7be7Lg3Lmz8caWOO4ftsMIf
-	Lz0bD4JxCiUFAfT5iRqgt388qRo04B5njbsj6oURowhGiUsRyJaAyX9qWdhTt0C4hahMSXoAIhq
-	PC12tXQ/7aSC576VNr0YQry7pJeOBPhY0YLaL0oV85ZKdkYk97Gk6eAcfBcEQVOXhfM3TFI3LB2
-	9stUu3t783a1lUwgjmHQtV+C2AqWirBJ6bKWZnjzKargUodBCWHfXhkbAaciBDbMTBR7W7kcflQ
-	J6BC0FBtpMqusa26hyM+wdsY3amPq2fyM2Jlg9JvTrMN+eQmm0F5IwUeDN+W0CQ0M++A==
-X-Google-Smtp-Source: AGHT+IFipAgprEncksYPWxHvJftE0v7vy//a1Esb7V76NMt6GGRBpflRHmfK4ouR12GWa83QVdARPQ==
-X-Received: by 2002:a17:90b:3849:b0:343:7711:127d with SMTP id 98e67ed59e1d1-34a4f89b438mr2613916a91.9.1765322778645;
-        Tue, 09 Dec 2025 15:26:18 -0800 (PST)
+        bh=B/JpyykJChc4+E6bNdj5oQI9BXWJ7FWqfKBT4z47184=;
+        b=az1NqccUC9IVpznEJp+jNdJQVqbezytMZMnGoHLebmMTlaM6GoWD9jDHfh27plp6HG
+         wdKQxoZPa0OzsoMxYb22/KgTKDK8ozhxAvlxV6F+3qm67KwozdPp8JVfLXdArqVzUdGn
+         FiR9McBKWqEJ1cNdzoSXPI+JTmfiRNlYKQyb41O0zMLjRlHmf1gOUnaB563UtSZj1YGZ
+         pNmv81GfLG0IOBtvG9zC7GzEqVj37uuq7m5weEzuQoTbiMDDh1yPaNmZ+SF9FWc3ptFG
+         r39aXj49Edc+8qUWRzxMYWwDGtlfleeydNI9Ta+mMzRzb6pRcKB4KZi3ur87h+wYYgI1
+         tG7A==
+X-Forwarded-Encrypted: i=1; AJvYcCWMCZL/Iq96WCWZMWpryXFWnpcq+Yus8I79tI35fQlJfHUwqVPx4VP8PwEVBYCrNUCkfTTd2FV2RX4devExNg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfNsopZFE1nHFMd15RHodQRPRoTJm3YjeNFbvalj15spFswT2O
+	C9FhKZG7ubNh41OVv7gDyzBpCUPC68Q1BFVQV0uQjH5IL7ZbZc8UkEkj6d9RqMoF
+X-Gm-Gg: AY/fxX4RvwAl7tIR1kK92HW3BU+fUReq2P0uSgPUnJR8X3rWPDVj0vLVRruZp3YfOLZ
+	tz1DHI9oNynTU4gyIq1YOszi0vqgFJEf6jfMI+FTSMem9jYrihbs/0Kiiej8Rjsc92bFPHGXYs/
+	/773SOo0mq5dONCkl3kUwjKH6sH7clu7RBM0Yv93zuXXB3fTY+A0UPVeVxDyvUUBvXZ8F5KnoO3
+	95GdZHNfCVwdXJH+Hlj+al9/mOgHh/frGSN6nCawA7DRU+D/kOeesvTjORaaiiR52TvG5eJcTec
+	a6D2ij1fvKAH/wnzxW5hGYAh1Mcm/YFWyrJRcSDtVP8JmqbT2Jmuy+i5YsHH30Okc6DyDOFdPfF
+	kNY0y606Mo9mQol9RRDYUvrH/bmcBFyeaB4/eLDbOlh6czWebiIseHp1RqYZF8aPKN2JgWYA8vA
+	aVUBC65XH8uEkaumO7ojS03HAfHV0WkFrl+8CyFzpGgTXetlf/Kg1stLj8LZcIclievw==
+X-Google-Smtp-Source: AGHT+IGHH+gVf8ObA464cNmP+dlhgdr0ZK9yn/yxIxAX8GHT9qvAliJUEOsHfdeb7L8qpHOTkw/6ZQ==
+X-Received: by 2002:a17:902:f70a:b0:295:6e0:7b0d with SMTP id d9443c01a7336-29ec2da56b0mr4419145ad.56.1765323112372;
+        Tue, 09 Dec 2025 15:31:52 -0800 (PST)
 Received: from localhost (p4783053-ipxg23301hodogaya.kanagawa.ocn.ne.jp. [153.209.99.53])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae99f6b8sm165814375ad.52.2025.12.09.15.26.15
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae49caa4sm166857045ad.15.2025.12.09.15.31.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Dec 2025 15:26:17 -0800 (PST)
-Date: Wed, 10 Dec 2025 08:26:03 +0900 (JST)
-Message-Id: <20251210.082603.290476643413141778.fujita.tomonori@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: boqun.feng@gmail.com, gary@garyguo.net, a.hindborg@kernel.org,
- bjorn3_gh@protonmail.com, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, lossin@kernel.org, will@kernel.org, peterz@infradead.org,
- mark.rutland@arm.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: Mainline x86_64/arm64 defconfig+Rust `rusttest` error
+        Tue, 09 Dec 2025 15:31:51 -0800 (PST)
+Date: Wed, 10 Dec 2025 08:31:47 +0900 (JST)
+Message-Id: <20251210.083147.1370409203593259538.fujita.tomonori@gmail.com>
+To: acourbot@nvidia.com, boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org,
+ peterz@infradead.org, will@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ gary@garyguo.net, lossin@kernel.org, mark.rutland@arm.com,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH v2 3/4] rust: sync: atomic: Add i8/i16 load and store
+ support
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CANiq72mEYacdZmHKvpbahJzO_X_qqYyiSiSTYaWEQZAfp6sbxg@mail.gmail.com>
-References: <CANiq72mEYacdZmHKvpbahJzO_X_qqYyiSiSTYaWEQZAfp6sbxg@mail.gmail.com>
+In-Reply-To: <DET9DDRLLQYT.1LUXV5C3U6ABB@nvidia.com>
+References: <DESI62R10XIZ.245BISU72Z2V8@nvidia.com>
+	<20251209.081456.1519886345847572170.fujita.tomonori@gmail.com>
+	<DET9DDRLLQYT.1LUXV5C3U6ABB@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,96 +83,48 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Tue, 9 Dec 2025 11:56:08 +0100
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+On Tue, 09 Dec 2025 09:27:25 +0900
+"Alexandre Courbot" <acourbot@nvidia.com> wrote:
 
-> Hi all,
+>>> Can you document this macro a bit, in particular the motivations for not
+>>> leveraging the existing ones (I guess this has to be with the new
+>>> helpers, but following the code through is a bit difficult without
+>>> comments).
+>>
+>> // Since i8 and i16 are not expected to support the full feature set
+>> // of i32 and i64, using the current declare_and_impl_atomic_methods!
+>> // would require refactoring it to handle specific types or splitting
+>> // the definitions. Furthermore, supporting Atomic<bool> will require
+>> // even more significant structural changes.
+>> //
+>> // To avoid premature refactoring, a separate macro for i8 and i16 is
+>> // used for now, leaving the existing macros untouched until the overall
+>> // design requirements are settled.
+>>
+>> makes sense?
 > 
-> I am seeing in mainline x86_64/arm64 defconfig+Rust the following
-> `rusttest` error [1].
+> Absolutely, thanks! Maybe also give a short explanation for *why* i8 and
+> i16 won't support the same feature set as i32 and i64.
 
-I think that simply marking the module! doctests as ignore would avoid
-the issue. But it's possible to make the atomic helpers run on the
-host side so we might want a better fix?
+I could add, though Boqun might have a different perspective.
 
-=
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v1] rust: macros: make module! doctests as ignore
+In my opinion, the reason is that the C side doesn't fully support
+atomic operations for i8 and i16. While the C side doesn't support
+load and store for i8/i16, we can easily support them with simple
+wrappers (as this patchset does). I believe that xchg and cmpxchg
+could also be supported easily.
 
-ModuleParamAccess started using SetOnce, and SetOnce depends on the
-helper functions so `make rusttest` doesn't work for module! macro.
+However, supporting AtomicArithmeticOps (like fetch_add) for i8/i16
+would likely require more than wrappers; architecture-dependent code
+(likely with assembly). I don't think that it's a good idea to
+implement such.
 
-Fix the followings:
 
- ---- rust/macros/lib.rs - module (line 62) stdout ----
-error: linking with `cc` failed: exit status: 1
-  |
-  =3D note:  "cc" "-m64" "/tmp/rustcHhYZSx/symbols.o" "<2 object files
-omitted>" "-Wl,--as-needed" "-Wl,-Bstatic"
-"./rust/test/{libkernel,libuapi,libbindings,libbuild_error,libpin_init,libf=
-fi}.rlib"
-"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwi=
-nd-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,libcfg_if-*,librustc=
-_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,l=
-ibminiz_oxide-*,libadler2-*,libunwind-*,liblibc-*,librustc_std_workspace_co=
-re-*,liballoc-*,libcore-*,libcompiler_builtins-*}.rlib"
-"-Wl,-Bdynamic" "-lgcc_s" "-lutil" "-lrt" "-lpthread" "-lm" "-ldl"
-"-lc" "-L" "/tmp/rustcHhYZSx/raw-dylibs"
-"-B<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld"
-"-fuse-ld=3Dlld" "-Wl,--eh-frame-hdr" "-Wl,-z,noexecstack" "-L"
-"./rust/test" "-L"
-"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib" "-o"
-"/tmp/rustdoctest9bUijb/rust_out" "-Wl,--gc-sections" "-pie"
-"-Wl,-z,relro,-z,now" "-nodefaultlibs"
-  =3D note: some arguments are omitted. use `--verbose` to show all
-linker arguments
-  =3D note: rust-lld: error: undefined symbol:
-rust_helper_atomic_try_cmpxchg_relaxed
-          >>> referenced by kernel.e6083e32b3c2ec6-cgu.05
-          >>>
-kernel.kernel.e6083e32b3c2ec6-cgu.05.rcgu.o:(kernel::sync::set_once::SetOnc=
-e$LT$T$GT$::populate::hd1ceefad3c0dd5d9)
-in archive ./rust/test/libkernel.rlib
+My plan is to add supoprt for limited atomic operations for i8/i16,
+and then use the i8 support to implement Atomic<bool>.
 
-          rust-lld: error: undefined symbol: rust_helper_atomic_set_release
-          >>> referenced by kernel.e6083e32b3c2ec6-cgu.05
-          >>>
-kernel.kernel.e6083e32b3c2ec6-cgu.05.rcgu.o:(kernel::sync::set_once::SetOnc=
-e$LT$T$GT$::populate::hd1ceefad3c0dd5d9)
-in archive ./rust/test/libkernel.rlib
-          collect2: error: ld returned 1 exit status
+Once that is in place, I intend to replace the Atomic<i32> usage in
+SetOnce and OnceLite [1]. I believe the AtomicBool usage in the
+binder driver could be replaced too.
 
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/rust-for-linux/CANiq72mEYacdZmHKvpbahJzO_X_qqYyiSiSTYaWEQZAfp6sbxg@mail.gmail.com/
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/macros/lib.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index b38002151871..8b2af1dc79d0 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -59,7 +59,7 @@
- ///
- /// # Examples
- ///
--/// ```
-+/// ```ignore
- /// use kernel::prelude::*;
- ///
- /// module!{
-@@ -99,7 +99,7 @@
- /// build an initramfs uses this information to put the firmware files into
- /// the initramfs image.
- ///
--/// ```
-+/// ```ignore
- /// use kernel::prelude::*;
- ///
- /// module!{
-
-base-commit: cb015814f8b6eebcbb8e46e111d108892c5e6821
--- 
-2.43.0
-
+[1] https://lore.kernel.org/rust-for-linux/20251117002452.4068692-1-fujita.tomonori@gmail.com/
