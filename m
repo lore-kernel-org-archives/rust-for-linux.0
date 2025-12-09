@@ -1,206 +1,186 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012025.outbound.protection.outlook.com [40.107.200.25])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AB61F12F8;
-	Tue,  9 Dec 2025 14:29:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765290561; cv=fail; b=SL4ChRifHEgY/crAEzswEVLY6coEabg8bHwK8xY3v1fboPaglKlwzj5SkuKb45gEVr8CVBhuKeIg9jbE3X7Q8GZlOCoar4hBRsHvjM8KUB7TqYuGP5lweaN9LpDndOBmB+PCxuGb7MJw9pN7d766WFxKMVaHS1ImO3l06izejxg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765290561; c=relaxed/simple;
-	bh=jpJXpbfoFEnqwF1PhaAiDXXgbV90/mGxpYaAN/mQsJc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mr262RDEtEgCSkQU5E4295GvPpV3W5SZNw13Yles+9Om4gqRxa+9fe3xyV764ZUKBDTsLWKzka6tTsQh56PsOCjBMXzX48yj8+2ekFMYR0/Caj+JxBDEoMQ3f7jXLlrCbTpu5avBH99ioRxp3eELkmpkklHr5DFdfvlwI5hGVuI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CkTWTrsR; arc=fail smtp.client-ip=40.107.200.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E201E8332
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 15:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765292449; cv=none; b=fNccNu0yspjQpaaPW80SmTFjINpJftR+D69KRDdmNRdIpfyX3jMSsh2xVRnbqnPqvw4OKJtS/8FJ7fzUjXaVF6oVeLV/36Cx3N6dbudfH3zY5XISbskUc88za7QtLeC9EJHwQk6wmknVsKAaVq6LZH7OiMNg7I9sezbUrKbZkDA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765292449; c=relaxed/simple;
+	bh=36qzw8IWiwA1r69hcDoUCvlH7eTKvlEjw+Yf2aLfZEw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lv1S+JA+9CT3r6m3hyMftW6UBrankhjGWpUv+NyAt0//Idx363KoLSN5HNcXrdTacQmwAXBdciXlADwMbVYGP3IThW1gdjwnai7ZkrC2wYbvPk42LQKQanok3FVMOhzxdiGLbCeZeokUeAcX0JWcGYB5fCvMcHHnsrb44HMHAaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=CYHa6v5D; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CkTWTrsR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cPkNsugdQCAdv5ei2IbJadjWwvQFaYsPhz28UAw8PTwr82UY1BZYjPhbeQA0CJMU9+COtGnxiFXmBWqlOU604dhYKDQdw89XrNui69WrS4L/3ZXL1skR8ssGZ4sRSBdIgjqLVoMiGOPeNom7PwaRD8MuTuFUymF8xBvpTLDjb3flQqmbnkkAKqyUf8B0OQX1NC3fUZ7yP+fnKdwVZHWV+1E5Bhm7zbwcuNXdKA3W4Lc7e7eTwOoAu4XN9fVZuQHwi/w+L8ls9r5+Ue57xmUvyM746j+6vA6XlkaiaKoHfDRCeG4PzX39ZdaSumrrfaYRuwT4rjijqNp3S0BVwq7qQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lb+qqanzNhVZL1mSY4OKmFOHZ3bi9xP/28e5MRBummM=;
- b=j0hXd26j57G7WL+75klGeXkC2kYwjHGvP4i0hYWmmTQpLVmrihdrNP/2Y8SF6xiddc8reTAcjIq2M2Hc/a/XXdnqqDwPG7JJyVhCsM/E/Sr+NLNpX2QJRf6NeBHiA0MuItSGs+xRW6VnSAlNfRgFftr1uSOBcCgmHu4O7gkbtPhBpF5iBYljdI9EXyE6B9YLhs+JFKaxfHtFg9XjI0KI7Ba8uDR3DydIQZ5PQ/76dW1PLBRpZfBqk/+ashfc4IuJOnoDmd0ytmGC9OCJLNqGmVgGPPifGnl5TRjLAQKyJfnpZsN/gxlOnop6tUpT4pPAWmeiAe9UokXBtNsZ24A5ZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lb+qqanzNhVZL1mSY4OKmFOHZ3bi9xP/28e5MRBummM=;
- b=CkTWTrsRn6lvdljdOlZ9/2v4PdgIH4WHhvkvMOMU9M7CFFjlZ1xeR50G5c6RT4fbJU15RTox9RJ99zjQVuka3C5tjiUVIsxG39Yx/3eZ2z1qz1VSlNy5hZRl+k7/a9qEKKSCAfLlVbyt4s/1xfxoy5PgeVHl6i50U87QLFWaA+vqH2qEygMvylVWr1Tv9rzwoXQw0KNvrJgXyfqS1SktpqWJ8cM1B61naIC7afUYYCBssBhU3w/lFSoE5ndTD8PxmtEZUvUAPe96UlbE4uVeJGaE/efi07LF5AIRrwymwxSxr0eaIlQJINZjbDNIm5lbk06co3QxrAh1NrE6JuL31g==
-Received: from PH7P222CA0008.NAMP222.PROD.OUTLOOK.COM (2603:10b6:510:33a::35)
- by CYXPR12MB9318.namprd12.prod.outlook.com (2603:10b6:930:de::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Tue, 9 Dec
- 2025 14:29:11 +0000
-Received: from CY4PEPF0000E9DA.namprd05.prod.outlook.com
- (2603:10b6:510:33a:cafe::a8) by PH7P222CA0008.outlook.office365.com
- (2603:10b6:510:33a::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.7 via Frontend Transport; Tue, 9
- Dec 2025 14:29:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000E9DA.mail.protection.outlook.com (10.167.241.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9412.4 via Frontend Transport; Tue, 9 Dec 2025 14:29:11 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 9 Dec
- 2025 06:28:52 -0800
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 9 Dec
- 2025 06:28:52 -0800
-Received: from inno-ThinkPad-X280 (10.127.8.14) by mail.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Tue, 9 Dec 2025 06:28:44 -0800
-Date: Tue, 9 Dec 2025 16:28:39 +0200
-From: Zhi Wang <zhiw@nvidia.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-CC: Timur Tabi <ttabi@nvidia.com>, "linux-pci@vger.kernel.org"
-	<linux-pci@vger.kernel.org>, "nouveau@lists.freedesktop.org"
-	<nouveau@lists.freedesktop.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>, Kirti Wankhede <kwankhede@nvidia.com>,
-	"a.hindborg@kernel.org" <a.hindborg@kernel.org>, "markus.probst@posteo.de"
-	<markus.probst@posteo.de>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
-	"Neo Jia" <cjia@nvidia.com>, "ojeda@kernel.org" <ojeda@kernel.org>, Aniket
- Agashe <aniketa@nvidia.com>, "tmgross@umich.edu" <tmgross@umich.edu>,
-	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "helgaas@kernel.org"
-	<helgaas@kernel.org>, "lossin@kernel.org" <lossin@kernel.org>,
-	"alex@shazbot.org" <alex@shazbot.org>, Surath Mitra <smitra@nvidia.com>,
-	"John Hubbard" <jhubbard@nvidia.com>, Ankit Agrawal <ankita@nvidia.com>,
-	"Alexandre Courbot" <acourbot@nvidia.com>, "bjorn3_gh@protonmail.com"
-	<bjorn3_gh@protonmail.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>,
-	"zhiwang@kernel.org" <zhiwang@kernel.org>, "airlied@gmail.com"
-	<airlied@gmail.com>, "aliceryhl@google.com" <aliceryhl@google.com>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "bhelgaas@google.com"
-	<bhelgaas@google.com>, "gary@garyguo.net" <gary@garyguo.net>,
-	"dakr@kernel.org" <dakr@kernel.org>
-Subject: Re: [RFC 5/7] gpu: nova-core: set RMSetSriovMode when NVIDIA vGPU
- is enabled
-Message-ID: <20251209162839.51e2cf0e@inno-ThinkPad-X280>
-In-Reply-To: <26FAD9BC-9CFC-4BFE-9985-DD660BCD840A@nvidia.com>
-References: <20251206124208.305963-1-zhiw@nvidia.com>
-	<20251206124208.305963-6-zhiw@nvidia.com>
-	<6c2e13d934c11170edba603fb88e8f2d67a2a049.camel@nvidia.com>
-	<26FAD9BC-9CFC-4BFE-9985-DD660BCD840A@nvidia.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="CYHa6v5D"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 26ED0240027
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 16:00:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1765292445; bh=tvb7rItouogstTWsPzKXtOqwxKwfUVT4nIECDW5F+cE=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=CYHa6v5DQObRlLXXQYjHnVlO22Q6PL6HbyxGStDjxI4j1NUaAKKVPFU+J60sIBpIS
+	 U3xniGYnmxuicug6uCDfYHg0gTm9KoMk8kCb3j2XixREEjCTJis2IKTHglCM2zRCI2
+	 d94CdOyxrUup9dhM7eqn6M9xBkBB4N2cGqaaiGTkPXBZ01C6GixLPMHr0PR+SEu5Gr
+	 ksVdqIjyNfeVAloZlF+XeY1QCLntGn7UDyn2TdxKI4AKbbAamqZsJEDRYkEk+Zyab1
+	 P6lDCLRdLSdGY2/s4vQNM5UrE8XrrDn/Vxv7ANeIY0/IV2d5sxpgflNQ3kop5utEST
+	 RBkjm5/NHq3JQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4dQhqZ450tz9rwn;
+	Tue,  9 Dec 2025 16:00:42 +0100 (CET)
+Message-ID: <3fd85a37a09bb4636affbec1ce282ec843d59103.camel@posteo.de>
+Subject: Re: [PATCH v2] rust: pwm: Add UnregisteredChip wrapper around Chip
+From: Markus Probst <markus.probst@posteo.de>
+To: Michal Wilczynski <m.wilczynski@samsung.com>, Uwe
+ =?ISO-8859-1?Q?Kleine-K=F6nig?=
+	 <ukleinek@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Drew Fustini	
+ <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei
+ <wefu@redhat.com>,  Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
+ <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Date: Tue, 09 Dec 2025 15:00:44 +0000
+In-Reply-To: <5a742181-dff6-4073-ada0-342298da63b6@samsung.com>
+References: 
+	<CGME20251202181800eucas1p18be878cb74d14444f2df8bdcd7a718ee@eucas1p1.samsung.com>
+		<20251202-pwm_safe_register-v2-1-7a2e0d1e287f@posteo.de>
+		<a3f4e795-e56d-4de0-8b46-5c8ff96d5f77@samsung.com>
+		<zdwto7ahccckl2r3qoculu52lsus3dey2lcur2l3ltrxp5nrcf@djusgl5cdfu3>
+		<a66b337528d700ae92d7940a04c59206e06a8495.camel@posteo.de>
+	 <5a742181-dff6-4073-ada0-342298da63b6@samsung.com>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ 66sLA9g==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-aPNxVAyZOO5XAtovTjhN"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+
+
+--=-aPNxVAyZOO5XAtovTjhN
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DA:EE_|CYXPR12MB9318:EE_
-X-MS-Office365-Filtering-Correlation-Id: e9e1dcd8-e3a8-488f-b228-08de372f51ff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|7416014|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?T0pjQTZJWDQrVXFGSFJjaTFYZ0dqdHNvcDVmb3BFOWVtcGhaYnFXNFA1SlUx?=
- =?utf-8?B?K3VrdXoxazB6RDhjMkJvYndPZnZyMEtwakdDekJvaUNUNFU2UGxUUElPWVJr?=
- =?utf-8?B?V2FUNjN5dGNVSklkVFhTLzJmQzEyWk1lVVhUZHZrcFJ4VUM3Z1JUWVdSYlZ3?=
- =?utf-8?B?RWJyVi84dzExbDlwL1Ixci83SXNxQWRHVDZtbWlIMUZDN2Q3dk1tSHZFOVlT?=
- =?utf-8?B?OEFNNW1meUw3V1Bqc1VXYU9uenF4NkFuQlB3WG80alpBbTIwQ3hWS3JvTVk3?=
- =?utf-8?B?OGo5WTN6UUlRSVpNeStJZTA0YVR3Rk82a0tZMVE4d1V3VWsrSzNUcmNXdTVF?=
- =?utf-8?B?OS8yR1NwNGlha1hDLzk4QjFkSUhUblFKbnArV0Nvd3JsR3pYNDhJRzdaMXM3?=
- =?utf-8?B?NFlvR3pyMVpCNWFYb3l1c3JFMGwzNzFVUDJtWTMyVkFlc3lRc3dQYk9OK281?=
- =?utf-8?B?SDV2VGxMSWVjNzNLck9tTlBlTURKcGRrelVITy9PdmgwTHEvcUVTWDV1Y0lQ?=
- =?utf-8?B?NU95WmZRVTc2bmcweHZ4cmRacENSU3FrOWFBYWhieWlpTm1ZaHgvVHpVRFR4?=
- =?utf-8?B?Mk9uMys2UDNJUk9Dc0ZuTmhBQkU5dVlJd3owSHUyNjlhN1ZaMnN5c1hxSjc3?=
- =?utf-8?B?dFFEZ1RWQ1d5MmpaSm0rV1E4Q3g5RFBWS3owTkVnMnB1TUxaRExrTWtOWnAz?=
- =?utf-8?B?Y2RwSFl2SDdTdTlyMDhQaWY4ZWJrWWdWWVhxM2lLdm9JVEV6bTdxZ1RPTEJC?=
- =?utf-8?B?SVV6R3EvUjkwWGpnWU94c05nZTNsYlNLa0JpVE1UOHFlQi9zQk8xUWtMaW4w?=
- =?utf-8?B?WmxJR2ZFV2JtK0RZNnFOak9lKzlGRlZNQXJ0MWlVSndoUTBqZ1J3NnhRQVFN?=
- =?utf-8?B?amhFNXZ3cmVjS1JQOXE1Vzluc3Z1VUhIbDlmaThWNG9aTVpMSHFkQ21hRnp0?=
- =?utf-8?B?QU1rdW1PeURSVElKT0RucnRnYzFrSjdJeHUzbnZrZTU1QlNES01qcHR1M29V?=
- =?utf-8?B?MHZyYWJveTYyd0tISXdpS1Z2eFRVdldEazc0ZDdXR3VRMWwxS256MHBnb1lk?=
- =?utf-8?B?NlBWbURYczdUREI2SlZCWEp6eEVvRVlxTXJSRnJ3WXBSVTJESUgxU2pLS3Q5?=
- =?utf-8?B?Z0JJZDVhVmF0b2RYeXVPN2NxZEsyZzB1WFVOZmhxYk5sQ0YrTzh2Nmx1Y09D?=
- =?utf-8?B?OWdyVzdWQkZqak8vSFJwKzBzZDk3cHVhSXc1LzQrT2ZOMk9OM3NrQW5xSVRp?=
- =?utf-8?B?bUY0aWg3SXNFcmtKYWhJS25Id2toWDNUbUdJdHFXV25qZTl6RFJ6Q3dxVU9Q?=
- =?utf-8?B?c1dtMFY5QUF1ZGtFMEx3ZDYzTkVuK2orTWhDQXBQUXlRMTlCR0tSSEp4OVZG?=
- =?utf-8?B?ZmtYYVIvVWVSL0xDRHAzSjRIeG5TampoZnBIZGFsQU5DZGdGRW5udllEQzN6?=
- =?utf-8?B?RXgxdUNON05Ha1ZsMlRibHk5T1dDT29id1V1RzFWS1IyVkZvM0ptenB5Z0U5?=
- =?utf-8?B?a3RVYWNkdnlQNHBxamtSblVINVFaOVQyUFhOMUg0dFZLTlFNdG8rblZPM2ZG?=
- =?utf-8?B?L2hDMHI4NGJmMFh2N1BKMGVpNlBaYytaTmJYc2hGRXcvWFFIR1JpWURxZFhm?=
- =?utf-8?B?YkZuK3dCNGFFdS84L1NGSWVEeUtyN2JQaXVSOUtvZDFSWEZQZ2ttWjZBczhF?=
- =?utf-8?B?VnVKVzlHMXVjWWJQQXZpdmhtYmo2YU9sL1ZqL2cvYlBIRURYalpMTTJOc3Ri?=
- =?utf-8?B?Q1NDWU9lY1FEODBzSmhWeXVHQTRSaFA3ek1SMVpXZlF6TEJJV1dQY1F1TkxW?=
- =?utf-8?B?NGJTdTNZMzFkM2wvOHp3YmJoblNEdHE5aTVQVy9iQmJQRG9IaVNxU3Z5Vis1?=
- =?utf-8?B?eklvckErVHc1RkpNU1l5bllGU2ZFUEtMd2JuMy9WNTZuaFl4REhrbWFaa2E3?=
- =?utf-8?B?MTN0cW1ab3pzWW0xRVVVSmFuQzdkdzZQcWo2YkFsT3FBendDSktrWmk0a1ZS?=
- =?utf-8?B?VTJBb0pQaGZQaWJYQ1JSRklPREJ5aDZMcjJRbUVGVVVVS0pESzUrWCtWeUdw?=
- =?utf-8?B?SnpVN2dFYTRJMnRnOTFvUkhRbCtobkw3MW0rUVFZQ3RWTGZjMTd4MzBuUDdP?=
- =?utf-8?Q?SUKY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700013)(7416014)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2025 14:29:11.0816
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9e1dcd8-e3a8-488f-b228-08de372f51ff
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9DA.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9318
 
-On Sun, 7 Dec 2025 16:57:01 +0000
-Joel Fernandes <joelagnelf@nvidia.com> wrote:
-
+On Tue, 2025-12-09 at 14:41 +0100, Michal Wilczynski wrote:
 >=20
->=20
-> > On Dec 7, 2025, at 10:55=E2=80=AFAM, Timur Tabi <ttabi@nvidia.com> wrot=
-e:
+> On 12/9/25 13:26, Markus Probst wrote:
+> > On Tue, 2025-12-09 at 09:08 +0100, Uwe Kleine-K=C3=B6nig wrote:
+> > > On Sun, Dec 07, 2025 at 11:16:59PM +0100, Michal Wilczynski wrote:
+> > > > On 12/2/25 19:17, Markus Probst wrote:
+> > > What does "not able to successfully compile drivers/pwm/pwm_th1520.rs=
+"
+> > > mean? You were unable to find a .config that included CONFIG_PWM_TH15=
+20,
+> > > or you got a compiler error? If it's the latter, ...
+> > >=20
+> > > > I suspect your kernel configuration is missing CONFIG_COMMON_CLK.
+> > >=20
+> > > ... are we missing a dependency for the driver?
+> > I got a compiler error. Enabling CONFIG_COMMON_CLK indeed fixes it.
 > >=20
-> >> On Sat, 2025-12-06 at 12:42 +0000, Zhi Wang wrote:
-> >> -    pub(crate) fn new() -> Self {
-> >> +    pub(crate) fn new(vgpu_support: bool) -> Self {
-> >> +        let num_entries =3D if vgpu_support { 4 } else { 3 };
+> > Without it:
+> >   CLIPPY     drivers/pwm/pwm_th1520.o
+> > error[E0432]: unresolved import `kernel::clk::Clk`
+> >   --> drivers/pwm/pwm_th1520.rs:26:5
+> >    |
+> > 26 |     clk::Clk,
+> >    |     ^^^^^^^^ no `Clk` in `clk`
 > >=20
-> > Instead of passing a bool, and then hard-coding the length based on
-> > that bool (which would require that RMSetSriovMode always be the
-> > last entry in the array), you need to do what Nouveau does: if VGPU
-> > is enabled, then dynamically append the entry to the array.
+> > error: aborting due to 1 previous error
+> >=20
+> > For more information about this error, try `rustc --explain E0432`.
+> > make[4]: *** [scripts/Makefile.build:354: drivers/pwm/pwm_th1520.o]
+> > Error 1
+> > make[3]: *** [scripts/Makefile.build:556: drivers/pwm] Error 2
+> > make[2]: *** [scripts/Makefile.build:556: drivers] Error 2
+> > make[1]: *** [/home/markustieger/build/synology/linux-
+> > upstream/Makefile:2010: .] Error 2
+> > make: *** [Makefile:248: __sub-make] Error 2
+> >=20
+> > A simple fix would be to add "depends on COMMON_CLK" in
+> > drivers/pwm/Kconfig for PWM_TH1520.
+> =09
+> While at it I think we should also add dependency on ARCH_THEAD |
+> COMPILE_TEST as well as HAS_IOMEM in my opinion. I think some of those
+> dependencies were lost when we were iterating on the patchset for some
+> reason, can't recall when exactly.
 >=20
-> Yeah, I agree with Timur.=20
+> If you plan to send a patch include those as well. Otherwise let me know
+> and I send a patch.
+No, I am currently busy writing the serial device bus rust abstractions
+(include/linux/serdev.h) for a driver.
+
+Thanks
+- Markus Probst
+
 >=20
+> >=20
+> > Thanks
+> > - Markus Probst
+> Best regards,
 
-Hey Timur and Joe:
+--=-aPNxVAyZOO5XAtovTjhN
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
 
-Let me see how this could be solved dynamically. Probably need more
-changes on other items as well.
+-----BEGIN PGP SIGNATURE-----
 
-Apart from this, I felt that we might need a struct GspBootConfig to
-pass around the GSP booting path, while writing these patches. As we
-already had coming items, like reserved memory size when vGPU is
-enabled or not, vGPU enabled switch, also reserved memory size on
-Hopper/Blackwell in John's patch.
+iQIzBAABCAAdFiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmk4OY4ACgkQNHYf+Oet
+Q9JqMQ//TcrTZhIXkMSY5d+8hTE+/b96ALeD35aVgmOmBv+2Ju1zmJ+ewF6kvBw8
+mmszSUq5xh/orRiK+LlCGGH70IlgpPwk4vLauUDpuirCHg+kf3ycGoH0YlprRh9S
+h9QzjiphWJHv84FHe0MmmJvCvovXw4w33qw5P7kgtc13OEVhR9DYDwlkqGbC89JA
+A4LLb42vzunXaXcJGtPuVFxKakPTKnFvC0P+u9CMzRyZH4u9mNPY5FfKAgEIlW5j
+XtKqCkSYbyClrKKM9n1ydHER+c79b/K/XKk9ASS0bD29rbcT0Y64s+7tWyNGsDPS
+YhIbQa/gfDU5cx6bdZESK9sSrqBmR7/lLhTsYD5c3JjNJ/UHccKOmf3sf6/VeCXC
+P6K2JTWy1X2UGHVmj9qljiI1tv1nwvfG3fGG9arUns4racgsZU4NnAXwjJ5HWei3
+8XqjbLwfdzCao0DM6upbxMu8m9wzz1DXc5qAyjSd4zBU/6qMmeFeY6XS4qkGiuon
+KXFcaiYjCcvjPimpt22jG5/B76RQTLnSu1RyCt2M1d51db11s2+NrCHkRkUibEd4
+HBBC4l/wMtLD8HZnGw9X4YDRy/RgeT44Mc/CPdrlYzcX6NMVe4+K+cyQUeuG1BSG
+kt7hPnUzParVQoSPD9IY51Qxs4m4T2s9aQ2L1r13/LlgnopONPs=
+=65Ny
+-----END PGP SIGNATURE-----
 
-It seems we need a central object to host these tuning for GSP booting
-up.=20
-
-Z.
-
-> Thanks.
->=20
->=20
-
+--=-aPNxVAyZOO5XAtovTjhN--
