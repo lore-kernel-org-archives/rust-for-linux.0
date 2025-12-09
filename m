@@ -1,69 +1,73 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012020.outbound.protection.outlook.com [40.93.195.20])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011035.outbound.protection.outlook.com [52.101.62.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C23221F11
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 00:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A473A2139CE;
+	Tue,  9 Dec 2025 00:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.35
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765240055; cv=fail; b=YHp7x4/8OL6sv3Ck3F7eLfKZU/HDK4ITzdfEc+k1/wkMUoij8sNhSJo7k3AwM0TrTrQiYCYemp7wGEc/CUGu8+cRu0n+bVOezMfQU/yQK7fsyPcXs9MfL/yNgQCZoqOzWHB7pqZeM0CSEkcH3v4y36IwsgpzkVzyDS34t6cK1qg=
+	t=1765241542; cv=fail; b=RgYBqIaxJKSwd43DANa20IBI3SH3jGzqPSnOTupdebx5ZSbCYo3XfehqI8Ou9gw6urfkRS9u8BeqveZwmpxJRNo5fRzq9JmDlGlq9kvKzlNFKRnJsmSUFLcU0Bbtgkx1sseDSl+WvRCx1fVJYpzcs2vRlaMiFpawBxSwct4vxbA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765240055; c=relaxed/simple;
-	bh=9VwiCzKBm3T0HtnlTuz83osbe/MN0XwIiiEC3hgHQC0=;
+	s=arc-20240116; t=1765241542; c=relaxed/simple;
+	bh=VFUoA/Zj6Dxxvqxg9mAc5ESGl2cm9bWvcqCI9q/+h54=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=rqUTyXF6Cvt6245sCXi7F6AxdZpCLdA/YtcSPB7yeD+QGzE6gn8cxgS5oR8SDzA/R0zTg+3XahKKxqNHf9IJFI/JwZVpzyNJDnMbvpfFLR4TXSA0a66SHIT4JAfiSv9zQu4UZdWFNsE3W+wx7EkFXr8zpSkT99Ghj1pBjGVPjsk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TCSBiVAn; arc=fail smtp.client-ip=40.93.195.20
+	 In-Reply-To:MIME-Version; b=Zgyf7GQ13DzQ+bYQuXvParPg3ZKK2HqeWVPUTO4jLib09v8JwDG6w+9XsXkxTdEsbars2Na26xfYCawluaSCq9ZZN9QUMM72Vhr7m3UDigylrGi7s4LkKvkDNVaYNUDq6Nn5q2+WLUGuEVEtVGnSeacNStk4PAZ6n/OgHVnnaJI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rXcvOcRB; arc=fail smtp.client-ip=52.101.62.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TCSBiVAn"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rXcvOcRB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VKgkegmz+ChdWMvmKpu4HV322GBD7e3KXH+NfR8jRUUReTIdjD/rohTToo9tqgSmA1nqlr0rGv9RQxMQxLV1unVAj3k+sxA6kw/M4fbEz4ghv1FU7s/lopTGJM8U8Xnzg0Dad3+8tz8/l9n6NWRAvG96Iu1310yGa3V4Qr1W9BEt39S7SnhbUcREH5t6VieJoMVQzVbDfTMgsmg+8mxVY/ANtpo4sYstOVmzIbFMMzp06UdKo6ZhqP3PZCbnonRvtv9VStAvqU77byur4BVkyCtFRzUvvAZqSE+9j+SpDqLldacuwcEKjehTmnnOjjMR1ziX1WFdkXtLUL+OeFe9wg==
+ b=vqQmfboilmjK06QOrbaJZvsGNS029IdoQFF9WFROQYus3MT256qbo+1dloI/8WedCaBvONgZgCXWQvDT3ZouzpSSCLjz91ASy+jV18IRA8+hffrwlFOCmh4yQC78/t4rVmCudRNz6IIYcvcV/vn+6/gvLq90IG8MHNl8rNmHdGJ/bMzlZXyXatExChS3Bc271I9OE0W4zDw54Lw5EFXBltpAFsZ14wyjQ6yXnjaIr8H4IGS9s+muMOMsu4Jjr9YSI20oWhFNH9Bk8SgVs92yQ11en41eKQ6u2pZVlbCABUKGOLvomTfpik+MbHe6VGMETWROTSeG3RdGj/XD/I/mxw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UNVqhfb+Pw1P6WuyePRtsjJeQC8z1DN2Ma1TAfJFxDc=;
- b=iCQhR0HgxxzCfJz/0L8i3w6t+Oy8Tk0r1a65vdko0DY7AH1SqB/NOD1HsR9YZC32B3cwJtUrwurgl64gDr7tS//csobK10EhopS/ylHHC8EYmZoQ4sYCyGSIq28g7ASU9Nk9nHzEJGiUczQtZgnkSSjNLkSGF//SnoOJCY+0uDqDMFAGjHLBug20Fwn79GLP4AUBeL2Bb5+AlUE7x8P6PDMrvpeIzt6XDEF+Sss8r2Kr2vISCtbH2LmDToY2YyCdZwejL7Bmne4h26RrCKaSh+SW+TYdxf7J+dl0YkhXDC6R2LZzTcIWDTpuH1bQfdHFJedoI48Jm3Yfg7M6IMNghw==
+ bh=k9Pkc+5sWQ9Jl/1oNihLHw4tGe39Wq/KRNDnki8F5uo=;
+ b=enZobG3iE10TbFtMKJnoujQ4H52XZy5k4R2p55bIFDTkbKAemufPEigyEe66Q1ymSoX+tc/rVaIAyVEfrDqRvpGib/kNs4WzzoPjk6Xp238ua3QwOFzodiYJWthzvAWlTFgLFbKPq5c3SI4Y5+Vw1rlyZOsU3HIp4FSwHPqtYguL9MPEQD1BKcJ5uL2yFEuQrltZlggSvtdo0Q7Eyo+9/mHHQqWXlOzz8EUeNE51PNrEpSZZOc2T7lnUw4VtKgU55+ZHIuOOviPB64Uldfinq4mPRN7/7qhar4QK1Pk3nrQA2HGvkwecFV+ifGdFIHdsrFyDNRdyj/eRZ+JcqbqT2Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UNVqhfb+Pw1P6WuyePRtsjJeQC8z1DN2Ma1TAfJFxDc=;
- b=TCSBiVAncYCVmtRM2CZ54IINNZ2RM933JSzD78o7MsDz1nHOpNzhka6mwZ5on5jhZT93gxmYniSH/gFllkS8/Klp/Oz5A+soV4XJ4J9yPsglwU1f8hG3ew9yAhYV9ijE3id/OwYBaHlrdmPE4fMpQvJ3/JP/RDagtBUY2KcX4Lm1IF9MYFRjo2QgkQs49exk/hWGjq4vtYzIUUuJ8+C9oyHOcFtEMYLB8urNL2qU6g6uMi8lllaHTsSzua/WVjw//Nzm2SsbyBrV9dQOx4DQUadjcFrtV8UYK2MVuEma9I6hiJ7wlyyK41ntNSikJfUqKLiGGcSAoPi1MygSXnxiZw==
+ bh=k9Pkc+5sWQ9Jl/1oNihLHw4tGe39Wq/KRNDnki8F5uo=;
+ b=rXcvOcRBHPbv+8nYVMtthpQ9OsMxvjoZL8d4Y6ZQXkmmBGrFFI+mLxmxrlk+PAwW3e94zq6dWeq8Rg8DIhU46X2PV+A7B681mJL107fij6jbo0ciaTVMTJc2lfi5fnHgaVaHavjjxjC3kf+uY7EbsxQIrlPAioxs9lsEneoXWJGO1kxMfu+VvEPxC70013nmBacOPc48LBbDaMN0XI5th74jJXdubj2d3KIhC5CAVtBR8hVAmSGEnZSoOe8nd5CwcKjASZQgJpRNR/znSlB8FLNgMsUbpUOFblD06gl8V0SU5uYHlDPcNNfRBS7XygWtOe7RLjRmmgXwxXVJA3Jm/Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SN7PR12MB7372.namprd12.prod.outlook.com (2603:10b6:806:29b::15) with
+ by IA1PR12MB7760.namprd12.prod.outlook.com (2603:10b6:208:418::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Tue, 9 Dec
- 2025 00:27:30 +0000
+ 2025 00:52:17 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9388.011; Tue, 9 Dec 2025
- 00:27:30 +0000
+ 00:52:17 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 09 Dec 2025 09:27:25 +0900
-Message-Id: <DET9DDRLLQYT.1LUXV5C3U6ABB@nvidia.com>
-Cc: <alex.gaynor@gmail.com>, <ojeda@kernel.org>, <peterz@infradead.org>,
- <will@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <bjorn3_gh@protonmail.com>, <dakr@kernel.org>, <gary@garyguo.net>,
- <lossin@kernel.org>, <mark.rutland@arm.com>,
- <rust-for-linux@vger.kernel.org>, <tmgross@umich.edu>
-Subject: Re: [PATCH v2 3/4] rust: sync: atomic: Add i8/i16 load and store
- support
+Date: Tue, 09 Dec 2025 09:52:13 +0900
+Message-Id: <DET9WD6T0KR4.1MILPHIC2LIWB@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Viresh Kumar"
+ <viresh.kumar@linaro.org>, "Will Deacon" <will@kernel.org>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Mark Rutland" <mark.rutland@arm.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v3 3/7] rust: cpufreq: always inline functions using
+ build_assert with arguments
 From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>, <acourbot@nvidia.com>,
- <boqun.feng@gmail.com>
+To: "Gary Guo" <gary@garyguo.net>, "Alexandre Courbot" <acourbot@nvidia.com>
 X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251117001035.4068507-1-fujita.tomonori@gmail.com>
- <20251117001035.4068507-4-fujita.tomonori@gmail.com>
- <DESI62R10XIZ.245BISU72Z2V8@nvidia.com>
- <20251209.081456.1519886345847572170.fujita.tomonori@gmail.com>
-In-Reply-To: <20251209.081456.1519886345847572170.fujita.tomonori@gmail.com>
-X-ClientProxiedBy: TY4P286CA0114.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:37c::12) To CH2PR12MB3990.namprd12.prod.outlook.com
+References: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
+ <20251208-io-build-assert-v3-3-98aded02c1ea@nvidia.com>
+ <20251208135521.5d1dd7f6.gary@garyguo.net>
+In-Reply-To: <20251208135521.5d1dd7f6.gary@garyguo.net>
+X-ClientProxiedBy: TYWPR01CA0008.jpnprd01.prod.outlook.com
+ (2603:1096:400:a9::13) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -72,211 +76,160 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SN7PR12MB7372:EE_
-X-MS-Office365-Filtering-Correlation-Id: aaf29bc4-d3e8-46b9-35bc-08de36b9bcaa
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA1PR12MB7760:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f72c3e6-8c1b-4e05-8bde-08de36bd3349
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014|7053199007;
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?dm1PeVUrYnJXMTFrRk51L1RxaHJ3UlpOTUN0U2VSK1B5U3lPY1dBNFRWeE1r?=
- =?utf-8?B?TTExUVRXTmliS0wzRVlYTnB0M1IzcVFZZFRkWjliR0lkRzVvcmIvNVdTZE1H?=
- =?utf-8?B?bzIrem05UVdvY0hLSEQ5MC8xZ1VxcHFWSE53MlI0azZMTldRaTljdHZ1SkE0?=
- =?utf-8?B?WTkxblBUb2hxK2ZKa0hacC9EOEowS3FPMkZZQm5aYmQ5ODZKbnlwK2lUL09p?=
- =?utf-8?B?YUZkbmRoYlJkTXJpVkV6VmhlRzYxSUtpNzZmZ2JxVlMrKzNWWkxrclNMT0x0?=
- =?utf-8?B?SDZNQTdUWlJCQ1lVOE5keitBQWlrdWRBYUh5L1UrNlRlekxHL0pwYzB5UlE3?=
- =?utf-8?B?Y09ldFNHbm5MZUkrQmtkUmxMSFBvd2tDUmtvNjVudnZIMjBYd3NLVDk1RmVv?=
- =?utf-8?B?ZjJSMHdxVURVbFRRMjBSNmVCSCt5Q3pwMGFUa3VwUTJoRjFaU3BHR1lUVkVM?=
- =?utf-8?B?NUZQVUlIZENRTEpmMU96ZjUvTitwVWQxdURyTUp0RWZkcnFqWE9sczEwdDUx?=
- =?utf-8?B?OEx3TU91MS9vR0h4TzhNdjZLY29FVFR2ZGhVQ3ZhYXFoTWNRd3didWJ2WCs1?=
- =?utf-8?B?Wk5aQWFUVjErdGhWYmZuOXVaRWVEcVlVa3FOWWhSR0JkTHFIK3J0YTZYcFBG?=
- =?utf-8?B?OFlVYUhzREw5MW9ib2ZrRFM4dGJBNEtIbVFtR3E0SVFNOTdSVEo1RWg4NHRW?=
- =?utf-8?B?S3JVOVQrbTVobDhVUDBBUmFuRDBYSlJNM3pNOTFML3dwQU4vUVpJelRXSDAz?=
- =?utf-8?B?azFQT2tybVZuL2JuRGFLUllhRHUxZ1ZCbnhCVCs3SWJ6WTdVMzJlYlNYWCta?=
- =?utf-8?B?V0ovbXhnQzNLeUVUd1VHL3BzaWV1eHQzR0J3RmQzOHR5OTFpaHdGVHh3ek1a?=
- =?utf-8?B?VlozVlM5eFBwWnA3VldrN3ZLTUdCb0hqamkvMGFOUDQxcVZXM1BFdmE3K1pY?=
- =?utf-8?B?N3ZnYitGZXFUMThhTUI0Mndxei9jaHVFaVdKRFhNSm1IT1VRZVBrdXVqdUgy?=
- =?utf-8?B?bTE2TXNCS1RNa1NLcWMxeEYxU2dCU2x0a2tqcjBLazBLM1pmNlhnaUFtMm1Y?=
- =?utf-8?B?OW53MnUxNFZGQWRGc05JaWJ2MlJuREM1ZHpwNWszQVk3RDJkc2l5ekNQOS8z?=
- =?utf-8?B?dzg3ZHhlbllpSnlyRnZPTldlMkNLODBJL3hQRXpOQmxGMXJlL1kySmphdng1?=
- =?utf-8?B?UXhoQ3RTMUdtN092SW5xWStsZk0xVHpsZjdWV1hEeTV3OEpHN3pRSVBEMGUr?=
- =?utf-8?B?TWpUZWRNM2tWUlNZQ1NiZEhCaFFtV0Zoclpjcml6SHlvOTJMNUNYa3dZaHVP?=
- =?utf-8?B?VC9RL2hmSWo2dTFuQldXZ1JTblhRYWl2MU1LVHh6TEtjcW5lWXF2QUVKWXJ4?=
- =?utf-8?B?a2UrVEkzS3RpcFIyc3NZc1QrVnBqS2VIRUNMZk1mbkJ6U3JValhRd1ppM1dW?=
- =?utf-8?B?anFHOXphcy90RFVmbVNpWW41U1dZVU1SVEM1VTJONVQ5S1pObUdCKzJmTFh1?=
- =?utf-8?B?Zm00T3hOcGJVTWt0dEFFSlNCUHYxYld5WmZqZk15Y2V5T25wQ0JTOXVYRXlX?=
- =?utf-8?B?VXhkWE1KNlhIRmJlVUVHY3NuRzRyZ1BrRmZBSXArZ2xhUXZZR2FadDQrWFZV?=
- =?utf-8?B?RFd2WTExZW52cXQ0bzA0d1JzZjQxcXB0aW13d1hJcEhXZXNkKzc0dW52UGZB?=
- =?utf-8?B?SEpHU1o0blRWSlNDeVJsT2EyQzdLMzdTeGpRVjJyM043UVh5Uy9VZEc3ODBj?=
- =?utf-8?B?SFZWQkVOK0duUnNYVlFYeXJUVVI2S2hSOHdETTZjOWVaaFJwUFVMK1F6S3FK?=
- =?utf-8?B?VWF4Q0V6TVVmd05CT0RJYkdwVVdPOS9rUTV2SnppaGd5ME5TZW5RemZ4bUFO?=
- =?utf-8?B?VzMzSTJra2wrMTZHWlJIUW1zYkptTUNLTW5ZRlR5VHZ5b21qUzE2S3B5NThY?=
- =?utf-8?Q?pnfsPQ820eM0C9BPlyh9bm8KaxEbUP62?=
+	=?utf-8?B?c1dyRkcyemtYMjNPK3NzdTN2enBvZFl0dDEreEJLRFBsRmcwd3JuNWxWWkpi?=
+ =?utf-8?B?bVZsbHJ5WUY2aDM2aDNHa2lYUldYY3FRWjNjRVZWQW1rRm9LRkFHdWNUQyt2?=
+ =?utf-8?B?SGFXTFFnMHFBbEw2V3NldVBud005cGJhZEFzTWFBWm1WMWJ4cnRLVjVLaENB?=
+ =?utf-8?B?MVprWDJCaVp4WEkyTUFsalM2SjdZMnNiOEhFeDdiMjZWdHRDM0tmU0ZPOXJj?=
+ =?utf-8?B?ZkR6QWdLQkhGTHdEcmRVR0l5VU1LTU1STkE4Q0ZVcU9tY0gydUszSzRVbUFI?=
+ =?utf-8?B?RWJORi9HRHFoajFVNGxvODZYMnFrNWY1SFkxOTlsZGgrd0tFSDdrdFgxNWNv?=
+ =?utf-8?B?TkpyU05UYXgvMXlMRnIxOURXV0tMSlYzLzR6bHpuVjc5Zit1cHF5YVBhQVkv?=
+ =?utf-8?B?WnkzMmdqWFFIL0VxaFEzR0dWaUZVRzhaTldpVmtoQnJlV2xFaUd4d3o2YUhU?=
+ =?utf-8?B?cXgrZFQ3UjNFdnBIbE54MERNNGZSdStKcjhURERDZ1YvTjJrTGpqdmg0OE1W?=
+ =?utf-8?B?QVZnTzFZZGxWd2xhbDlSTnJKNE14ZEhKdm9hbW90eTFseTdxSU55Tm96MWlz?=
+ =?utf-8?B?MDhqQXhwZVg5eEJCUmVkTkN0V0d3ZFUyUzdiWml2QmMveDRjbHlLWDFTMXBx?=
+ =?utf-8?B?a2thM0pzbWp5M1lacUlyMVRYZWJyZXpPd2phMW1rVlRaZEN5WlhNelQwK09m?=
+ =?utf-8?B?YVVPUm13dmRzYXoxMExidDhxTlRHcmhFbEhOdVdSbUZsUnpYQ0x5bUloeXRi?=
+ =?utf-8?B?cC9sMzVQVG5odUE3aEZXcHJ5cW4xa2pZQUpLRVM0eXpUQWd1Smxvb09tNW12?=
+ =?utf-8?B?K2V6bXFPenMrWlZmWXNndGxTVDc2RkthekVHVUw5aldkV1lralNUWGRNRHpx?=
+ =?utf-8?B?aW56U1NtcXd4Q1F4NlJRTTRLM1ZxVjc4TVl3UURyUnFiRStvY0JuNk5OTFRY?=
+ =?utf-8?B?VGY2ajJQVXBBNW5TWllMWTNuNW90NEJHYVFnTEg3NkUwUzVveGhKd0Y3UmhH?=
+ =?utf-8?B?WklVbkhZRFNQbDVpNDIxQ3NXckQ0bHVZZ2w3c1ZKZjZGMTdUNjUvQ3FtRXJQ?=
+ =?utf-8?B?TDdLWU9BRnhxcDJhQzc0MGRYRmJiTmRodEtTcjFqdVR4YmxLNVR1ZjdEczly?=
+ =?utf-8?B?OUFFL1pqTmVoejRRQlhGdWU5STkvL1BWcFJWMDlRL0ZxR08zZnZMQmpUcGh1?=
+ =?utf-8?B?MWFCNEVCTFBpWXdRQU5wVi81N2dIYTl0U3VRMWFaRXpMekFqMHFNcmdXWFlx?=
+ =?utf-8?B?d1lnNVlUVVlxWlVJTkxTT09MTXp0b3p2dXVxRDFPaWtaZGgrZG5qbnB0VTY2?=
+ =?utf-8?B?NWhHTmZ4SkNhZkVoN2pDM29scjVjVDBmaHNRZ2pvbUsvZnR0SG1Ra1VScElx?=
+ =?utf-8?B?ZU9PeFZuZ1duaHRHVVNadmVWZGtTVk5KV0t5ZElPMGxuajh5NEtucjhxNjNl?=
+ =?utf-8?B?K2c2c3MzTk11YmN0S0J5eXFlRW00cXd6YytNUStFTndpTEQwazNZbmgzT09l?=
+ =?utf-8?B?UGE1UXBPbmtCSEdtdXNvMW44RnVSdFJ5aFp0WHZDbW9DalZNMDBxSHMraURE?=
+ =?utf-8?B?cGNjL0hLKzVzcnJvZ0dtb2NtcmsvZE9OQk9UdlBpR1lReW1WZXJnYWQ3bEhU?=
+ =?utf-8?B?Q3VzYzNVVXFQNVpwcXIxdnoza3YvZHd1cEU3UStmdjNBZmNXUGk4dEpoRWdj?=
+ =?utf-8?B?ek5rZnE3d1JTZVhQQ2VNcG1BbzByQkU1QVBnTXlvSlRuMFlZRGhJR2NVWHVw?=
+ =?utf-8?B?SjRSNjNzUUtPQUpFT0c0U1JLMU1FdnJnZ1FmQkJFMnNJV3RRM2JBeWMyTnRC?=
+ =?utf-8?B?eDBRQkpNZll1aTVpR3VaSDlWWTJJdGZFQzVQSjA4TnBmdGVadXl0c0FRUUtH?=
+ =?utf-8?B?cnJnUTJXOWxNWjFIREdqOTZTd2dvMERTWFN3TUh3T2NvQ25WTWhkMHBXOU5h?=
+ =?utf-8?Q?IxJZS5tUXNPJaphTEaFFfDo5MT6FonCd?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K28wa0FTUlM2cjdKSVh2K3ZoL0dWTVh1QXdOK1dIUkVHd1ZJWmt3VzFHTG5r?=
- =?utf-8?B?UUxaRFo2SlBsN09ZTG1XYVQ5UGtVSkxNeWNFdUM3WS9HaXlVZ0xYZmoya2Vj?=
- =?utf-8?B?M2w3TEk1R0ROUDhFVUszRmtYVFhlNkRDcmJpR2doaTVRZmJ5dlAwUWRlUlVt?=
- =?utf-8?B?RkV2ZWpYeEkyWEpCdDJxZVlQZXNlc1B2SlpsSDB1S0ZqSks3UC96K25maS8z?=
- =?utf-8?B?V0tmZnZ0U09oNU9YdERPN2JCWHpIVEY1SDArelUxWVAxczJxL2lyVitGd05K?=
- =?utf-8?B?RVorK3NFVmpqWGVBWXVYeWFySGh5cWcydjFDaGFMY05QV3daV0Q4VlhsdS9L?=
- =?utf-8?B?cDFXbk5NeXJFWDQrSW5oTHdZQktSekt2cEJkS1U5a3ZocTR6aXZBMVJjL2xh?=
- =?utf-8?B?aDZPNDF1L2c3YlhYQmZ0M25mMGk0Z0tiU1RxajZjSEd6MWRidG9BeEFIUXJZ?=
- =?utf-8?B?aHZLdjlkcS9EbG1qWWVuRUJ0LzJKZEtScGpNUlhtZkFhb01TSXVxbHFKQktJ?=
- =?utf-8?B?cnJFbXY1NzZUV3BpTkw3ZkhiSUV1cjZlUGxuam1keHQvTEdWamwyamRXWnhi?=
- =?utf-8?B?cHhxL2xEdU5qZUFRdVFVT3FuR0ptWUxiYUlTeXM5d0UrRWhZWEVUbFUvS016?=
- =?utf-8?B?WXBaaEhmM2s4azU0emEzQWJUSFFFNFFFS3BjeDVQM2ZaRDJZbDNmVVBtRlR1?=
- =?utf-8?B?TkNSYXhxOERHOG50MFgrLzI4RkI3UVJTekRLWXZ3dXgrcUJ6cHU1UE5qZTdq?=
- =?utf-8?B?Y3pYcEljUUdxYmxxSk9RanR2UGFjN0MySmFUbjRZeE56bmVvVnljS3J4aUhp?=
- =?utf-8?B?ekR4blJKTExMRU9vUFBRb3g2ajRGZTBrZFJpbnYxU291YnhpaVYxR3FHcVVk?=
- =?utf-8?B?ZmZyMVJRcG9Rc3hGMnY1V2Y4MHIxYkNYUHg3UlZyYkQ2Q0tOQ2RBcjh1NzRt?=
- =?utf-8?B?TDREVlF2cmoxMHJES0w2K2wzMFhJSjF5Tm5yMHRzRDJVZ0FvRnVqTHlaOFF4?=
- =?utf-8?B?UHlTNUR0V09lZ3cxUUZLTEhJWWlTVHVxZS9ucUNaaW1TbXhZc0hvNGQ2N3dS?=
- =?utf-8?B?b0dra2JJbEhJS2ZKTzJLKzNiVU5SMVZvanQrcEJGV1hlYUMvUHd0ekxIcHVy?=
- =?utf-8?B?Y09TVTRqYW05c2FPWHFRZUp5a0VFWFRHVU1xckRYK3NzdytzSFhvdEcxSTVl?=
- =?utf-8?B?dy8xQ0NuWVVRM29GT1BwS0ViTXpDNkxxWGtFMUtoYS9FcE5yZ0t3SnFUU3Q4?=
- =?utf-8?B?YjlRdjN1RmJPTTBRKzZIV2d4V0J6Tk1MVWFNcGM2NmhoMzNUblMrVWZKeDIx?=
- =?utf-8?B?UG9JNEcxN0dYdjJBNTlXb2drUUVqWVpSVHJub0VwejU1dnd6b3E0SzIvb1E2?=
- =?utf-8?B?K3BtYW5LNWJJcHdZVkZnQ2RzUmExNTJUNm1zVmFiQzNUQlZVS1JpSHpBdDY2?=
- =?utf-8?B?WTVHSUNVTU1lL2JUZFJqQmF2MkFIWVprOGhMYUJzTkYwWlhzUGF5THlwS2hp?=
- =?utf-8?B?YkhQYVhzUXNJa0FINCtHN0pIMnk2eVpsbzVmODJpWWN2QW5vZVVRNUZRSm10?=
- =?utf-8?B?KzJURWcyZGZ4WnFDYWwyRGs1R2o3VUdZbFdGaXBrS2p0U3FXQy9iOWxKWk10?=
- =?utf-8?B?ZzdiSVQ3aXY3aEtqMnZEUm4yVzdZMUMrZHZ1QWlUZDRlS0tpNXVYbGMva1F1?=
- =?utf-8?B?NmpHK25UUFlpRW82U1dYU3Y1TFE2WHVtMFc0RXpCQjdaaUtrRit5T2RFOEdF?=
- =?utf-8?B?M28ySWRIK2d5M1g5bmFHU0MzcmZ4czhZcFNPYU9mM05FYUdaOFpYRXY0d1RH?=
- =?utf-8?B?U1lGLzRLNndhM0tURFVYQWdwOXo3Zms1MStVTHVVL0JlYXNtYVNod2V6aHF4?=
- =?utf-8?B?ZWtIK2x0TzdwMUJqcHFjQzFQVUJWSE0rRHpLNm0xOFB4bXY3TnNsUnhheUsw?=
- =?utf-8?B?RDNuTDQwVEdmcnNSRVAyYkJ2NitBU0Z0cnY1cjRJMzRyWTVTTFZWZnZCUnBO?=
- =?utf-8?B?T0lhSkVjL3BrOHREMEZwSkYrQUhVOEdsdzdONkp4T1oxdkhJTExyQ2E2UGR6?=
- =?utf-8?B?SXRVTmc2dkxKZUtXM2FyMFFpZHZiTFVJK1RzRDFPTEh2bU4zSFY1QlFHYWI1?=
- =?utf-8?B?cERJZEdJQ3B0ZHR3OUFxV0pVWVFiYll4SE9tRFNIV1F0SDNvbXNhL0NGVXI3?=
- =?utf-8?Q?zQ0H8ckxEutzU7YR1mOaIgyYoWQU4+uOpBPmkV4YXRaf?=
+	=?utf-8?B?czBURS85WjliODZEUjFEaDZ1cHgrUTFFS1dtREUzeVNZekFFQmVwL0MwQTBw?=
+ =?utf-8?B?NEtxR09OQSttNzlCSCtKYW41Y0RVb2FEWWNyalZFT1BhLzZ1UjQvR0Y0dDBX?=
+ =?utf-8?B?U2dCVEdUMVJXT2xhSmh4UTREeFVJekJQQnU1dVpaQXRhZ21NTFBCT0lHcGZi?=
+ =?utf-8?B?QytyVTJpTjllQzNQS055VEUxZHFvRTFJbWVCc1RRazBHQzNkd3VUZHhYODAv?=
+ =?utf-8?B?Y0Rtd2hXaUU0MFozM0huU09rVTVSelNlN0wwdWpVWU5wTDBXSUx1a3RwZUlN?=
+ =?utf-8?B?bVhaUmdKS0RJOERxazk4STRrQ0IzUlg4elF6SW9PYjMxV1ZzaGdiajFUWmlk?=
+ =?utf-8?B?SFM1MDV2eXo5WjBZdGNDaGw2bFpGdTJ3d3BwMThrTzJOUXdLMlRzQUhNL0ta?=
+ =?utf-8?B?YlY3WndMVnF6UHlIZGlDdWpNMmNXTnBvelJGMnpQTTFsbHovay82aVcrb1dy?=
+ =?utf-8?B?d0prcG9sWko3REd2VFZJUjB4NkJlSFk5ejc4OVhBVVVBcExOcHZ6MEF6cWJo?=
+ =?utf-8?B?c0VQM0VnUmlMSE10b3lkaWV3OTJ5eW1sTWNoTGkxMStTaVhPZmd2VElKcG9G?=
+ =?utf-8?B?UFlCZHhvS25EQWszWDl2TUtuSzAvVGFVQzlGM0FHS0cweWhaNWhXVlQ0cFl3?=
+ =?utf-8?B?bUt6Q3lMVkxiQVMrR1JZdzNMNlg1NmxlMDJHTkN1TEhsZEEycGkvTFBpVUZP?=
+ =?utf-8?B?OE5RbFBvODQ5UUVNUFRVMWpKR1JXRWFQWE9YdllLMnlzM2dsNEgzbnBzZC9u?=
+ =?utf-8?B?UXRoNmxKdzJLMUxZRDhFMVB4YU1EWGlJb21RT3k0QlZQV3htVWJMRkYvNzBZ?=
+ =?utf-8?B?UStOQkw1MWovUUVhaGdiZ0hXNUtISU11WGZCZnluc1hwZGh1R0FBUld5c1R0?=
+ =?utf-8?B?Q0ZtVGttek9tRVJFZkpMYzdaV1lLQVh2ZVB1c0JqUkplS20wWkpsMElhd2lh?=
+ =?utf-8?B?c3owTjBpendPWWc3TmNabGRkdENEdlhqbDAvZXh1ZEtQZGFRYWxhRGRsNS85?=
+ =?utf-8?B?dUtsWnBVcnN3QXpVdTZWWWtrVzl3WWtwVXBEWnF5L3pPUFR1bGhmSlJ4OHRG?=
+ =?utf-8?B?N0hPVnhyRE5LU3FnbnlQRE9DZ0xVQmNIZTNiVEcwMng4WVdnOW1YR2dESW93?=
+ =?utf-8?B?bFYrcS9NWStSQndCNHVGcWg5ZXZsSU83WE9OckE4MjZMVlRybmFoWjNYcTNa?=
+ =?utf-8?B?a3hzWHpqdnV2TkRzSURLM3I3SlkvZ0FKMzZkMDBCampxZnRqUkxEK2VQOU1H?=
+ =?utf-8?B?ejc4ZkFxZm81WGVPUWhlYXF6Y1EvRmZJcnVBcEs3Z1UyZmd4VTBhZWNoamxI?=
+ =?utf-8?B?TVVjQUp3bTNtQjJxcE92bUloLy95TWxjNlpXVlFlejhmUlU1RVVuZVZSMDRY?=
+ =?utf-8?B?Z2hKMDBPbFc5NFVaTDYrc09kZ1I1c1ZCcHNVSlFvS08vclhFSWlGMHR0cSsy?=
+ =?utf-8?B?cHVSNmpjbng1alQ4UlVHNXFIanIwVE1qUXlidGNTcytBUnA0akEycDFXdzcv?=
+ =?utf-8?B?Q3J2Y1RJRHp1OHBUVk9ITEdqNlFDZ1N0RWFtVWNYUmlMcHlib2VLOHVxS1JR?=
+ =?utf-8?B?cXhPbVowV05SSFhmd1VDa3ArK0ltTnI1STN4bXRaQ29tMzZlWmNneGo2V29W?=
+ =?utf-8?B?NUxsTzJTRHBxNEdYMjhaU0NoMmJTZ3ZoUmUza2VpWUYyK3Q1VzRPVE1MaEt6?=
+ =?utf-8?B?WS96bnc3aUNaeWJTanR0RkNkcm55SkJ4Vi9vZEI1ZjcwdWUzQ3JsbWljSUFS?=
+ =?utf-8?B?YWxuRWpOd0ZEMk8vZXlmV2hCc3EyaXNmYTI2bFFNWTl0SFZDdnV1UzYzbW4v?=
+ =?utf-8?B?SzA4SEdIYTFCNmcyQVU5TkN0c0dob0xxUnhibldIVE9tU3dWOUU2Si9xWGxJ?=
+ =?utf-8?B?QUcydlUyY0d1bWxIemFlU3VzYlJIcG1MSWpYbTArQlBza0Fra3lqTUk1R01l?=
+ =?utf-8?B?UlZEeFRzcWpCSU1hYW9UMGRaV2I4L1hnUEtWUXNUMUhXa2l2OHdRUXpKWlZY?=
+ =?utf-8?B?NEpYQm13YXF3SFgxSHFCcjAzemg3a09paWtrZ3Z4MEo4Uy9PRnpXdUtjTThQ?=
+ =?utf-8?B?MFphSk9RS0VKMjNKbGFSbHFxTWNldWFhU0JBMmQyb0g2R2FkWVY4SzQzbTdm?=
+ =?utf-8?B?NGFVaVc1Qk5LMnJnSWdhWTduZWhVSllvaUhzY1FzaU80M1VWdVpMK3VxdGJC?=
+ =?utf-8?Q?HSs9u1vtcn3yrvzqKRbBAB/61trGXGju79e7c5uX5tz5?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aaf29bc4-d3e8-46b9-35bc-08de36b9bcaa
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f72c3e6-8c1b-4e05-8bde-08de36bd3349
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2025 00:27:29.7959
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2025 00:52:17.3339
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lVOUQ/1dMSbAMky6QGWszNF2aM3STVMnqt2H7qfwSdE9pg265jKjRc0pKG6U3/F3zh2CV94z7qZtZpW2iNzGmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7372
+X-MS-Exchange-CrossTenant-UserPrincipalName: fi8S8epRkQ/kGmo/nIU9c/73y/UXnWk935X7VG5bjjjpLkgoLDUuVlOiGVJp0vwMIYsRdaZ1KALwFQyOkgwNaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7760
 
-On Tue Dec 9, 2025 at 8:14 AM JST, FUJITA Tomonori wrote:
-> On Mon, 08 Dec 2025 12:08:23 +0900
-> "Alexandre Courbot" <acourbot@nvidia.com> wrote:
+On Mon Dec 8, 2025 at 10:55 PM JST, Gary Guo wrote:
+> On Mon, 08 Dec 2025 11:47:01 +0900
+> Alexandre Courbot <acourbot@nvidia.com> wrote:
 >
->> On Mon Nov 17, 2025 at 9:10 AM JST, FUJITA Tomonori wrote:
->>> Add atomic operation support for i8 and i16 types using volatile
->>> read/write and smp_load_acquire/smp_store_release helpers.
->>>
->>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>> ---
->>>  rust/kernel/sync/atomic/internal.rs  | 48 ++++++++++++++++++++++++++++
->>>  rust/kernel/sync/atomic/predefine.rs | 14 +++++++-
->>>  2 files changed, 61 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/ato=
-mic/internal.rs
->>> index 6fdd8e59f45b..4c9f4f76dbdf 100644
->>> --- a/rust/kernel/sync/atomic/internal.rs
->>> +++ b/rust/kernel/sync/atomic/internal.rs
->>> @@ -263,3 +263,51 @@ fn fetch_add[acquire, release, relaxed](a: &Atomic=
-Repr<Self>, v: Self::Delta) ->
->>>          }
->>>      }
->>>  );
->>> +
->>> +impl private::Sealed for i8 {}
->>> +impl private::Sealed for i16 {}
->>> +
->>> +impl AtomicImpl for i8 {
->>> +    type Delta =3D Self;
->>> +}
->>> +
->>> +impl AtomicImpl for i16 {
->>> +    type Delta =3D Self;
->>> +}
+>> `build_assert` relies on the compiler to optimize out its error path.
+>> Functions using it with its arguments must thus always be inlined,
+>> otherwise the error path of `build_assert` might not be optimized out,
+>> triggering a build error.
 >>=20
->> I'd suggest putting these next to the impls for `i32` and `i64`, for cla=
-rity.
->
-> I'm fine with either. Boqun, what do you think?
->
-> The reason I didn't put i8/i16 next to i32/i64 is that I assume that
-> i8/i16 won't support all the methods supported by i32/i64. I thought
-> keeping them separate would make that distinction clearer.
-
-The `AtomicImpl` blocks are the same, it is the macro-implemented blocks
-that differ and these can come later. But having all the types and their
-basic implementations at the same place helps understanding the basics
-of what this module provides IMHO.
-
->
->>> +macro_rules! impl_atomic_only_load_and_store_ops {
->>> +    ($($ty:ty),* $(,)?) =3D> {
->>> +        $(
->>> +            impl AtomicBasicOps for $ty {
->>> +                paste! {
->>> +                    #[inline(always)]
->>> +                    fn atomic_read(a: &AtomicRepr<Self>) -> Self {
->>> +                        // SAFETY: `a.as_ptr()` is valid and properly =
-aligned.
->>> +                        unsafe { bindings::[< atomic_ $ty _load >](a.a=
-s_ptr().cast()) }
->>> +                    }
->>> +
->>> +                    #[inline(always)]
->>> +                    fn atomic_read_acquire(a: &AtomicRepr<Self>) -> Se=
-lf {
->>> +                        // SAFETY: `a.as_ptr()` is valid and properly =
-aligned.
->>> +                        unsafe { bindings::[< atomic_ $ty _load_acquir=
-e >](a.as_ptr().cast()) }
->>> +                    }
->>> +
->>> +                    // Generate atomic_set and atomic_set_release
->>> +                    #[inline(always)]
->>> +                    fn atomic_set(a: &AtomicRepr<Self>, v: Self) {
->>> +                        // SAFETY: `a.as_ptr()` is valid and properly =
-aligned.
->>> +                        unsafe { bindings::[< atomic_ $ty _store >](a.=
-as_ptr().cast(), v) }
->>> +                    }
->>> +
->>> +                    #[inline(always)]
->>> +                    fn atomic_set_release(a: &AtomicRepr<Self>, v: Sel=
-f) {
->>> +                        // SAFETY: `a.as_ptr()` is valid and properly =
-aligned.
->>> +                        unsafe { bindings::[< atomic_ $ty _store_relea=
-se >](a.as_ptr().cast(), v) }
->>> +                    }
->>> +                }
->>> +            }
->>> +        )*
->>> +    };
->>> +}
+>> Cc: stable@vger.kernel.org
+>> Fixes: c6af9a1191d0 ("rust: cpufreq: Extend abstractions for driver regi=
+stration")
+>> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> ---
+>>  rust/kernel/cpufreq.rs | 2 ++
+>>  1 file changed, 2 insertions(+)
 >>=20
->> Can you document this macro a bit, in particular the motivations for not
->> leveraging the existing ones (I guess this has to be with the new
->> helpers, but following the code through is a bit difficult without
->> comments).
+>> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+>> index f968fbd22890..0879a79485f8 100644
+>> --- a/rust/kernel/cpufreq.rs
+>> +++ b/rust/kernel/cpufreq.rs
+>> @@ -1015,6 +1015,8 @@ impl<T: Driver> Registration<T> {
+>>          ..pin_init::zeroed()
+>>      };
+>> =20
+>> +    // Always inline to optimize out error path of `build_assert`.
+>> +    #[inline(always)]
+>>      const fn copy_name(name: &'static CStr) -> [c_char; CPUFREQ_NAME_LE=
+N] {
+>>          let src =3D name.to_bytes_with_nul();
+>>          let mut dst =3D [0; CPUFREQ_NAME_LEN];
+>>=20
 >
-> // Since i8 and i16 are not expected to support the full feature set
-> // of i32 and i64, using the current declare_and_impl_atomic_methods!
-> // would require refactoring it to handle specific types or splitting
-> // the definitions. Furthermore, supporting Atomic<bool> will require
-> // even more significant structural changes.
-> //
-> // To avoid premature refactoring, a separate macro for i8 and i16 is
-> // used for now, leaving the existing macros untouched until the overall
-> // design requirements are settled.
->
-> makes sense?
+> This change is not needed as this is a private function only used in
+> const-eval only.
 
-Absolutely, thanks! Maybe also give a short explanation for *why* i8 and
-i16 won't support the same feature set as i32 and i64.
+... for now. :)
+
+>
+> I wonder if I should add another macro to assert that the function is
+> only used in const eval instead? Do you think it might be useful to have
+> something like:
+>
+> 	#[const_only]
+> 	const fn foo() {}
+>
+> or
+>
+> 	const fn foo() {
+> 	    const_only!();
+> 	}
+>
+> ? If so, I can send a patch that adds this feature.=20
+>
+> Implementation-wise, this will behave similar to build_error, where a
+> function is going to be added that is never-linked but has a body for
+> const eval.
+
+It could be useful in the general sense, but for this particular case
+the rule "if you do build_assert on a function argument, then always
+inline it" also covers us in case `copy_name` gets used outside of const
+context, so isn't it the preferable workaround?
