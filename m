@@ -1,186 +1,107 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E201E8332
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 15:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6D24C97
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 15:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765292449; cv=none; b=fNccNu0yspjQpaaPW80SmTFjINpJftR+D69KRDdmNRdIpfyX3jMSsh2xVRnbqnPqvw4OKJtS/8FJ7fzUjXaVF6oVeLV/36Cx3N6dbudfH3zY5XISbskUc88za7QtLeC9EJHwQk6wmknVsKAaVq6LZH7OiMNg7I9sezbUrKbZkDA=
+	t=1765293403; cv=none; b=tcM63cvlbMSvkdwyNXvF+f6O8hoG8aKanA/ttE6YHDkHjT2v0UqqSxQ148+eGfc81TlRyZ+QjwAVFzN2Uy7FMLBqMaSTpUtt9XfzkcDl5v5/iU3MMiqAYQYEZrQvrCqRN68uNFhw6xyldzUmdCRUA0PQ2D+RxTiR1HBwICzJMQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765292449; c=relaxed/simple;
-	bh=36qzw8IWiwA1r69hcDoUCvlH7eTKvlEjw+Yf2aLfZEw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lv1S+JA+9CT3r6m3hyMftW6UBrankhjGWpUv+NyAt0//Idx363KoLSN5HNcXrdTacQmwAXBdciXlADwMbVYGP3IThW1gdjwnai7ZkrC2wYbvPk42LQKQanok3FVMOhzxdiGLbCeZeokUeAcX0JWcGYB5fCvMcHHnsrb44HMHAaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=CYHa6v5D; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="CYHa6v5D"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 26ED0240027
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 16:00:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1765292445; bh=tvb7rItouogstTWsPzKXtOqwxKwfUVT4nIECDW5F+cE=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=CYHa6v5DQObRlLXXQYjHnVlO22Q6PL6HbyxGStDjxI4j1NUaAKKVPFU+J60sIBpIS
-	 U3xniGYnmxuicug6uCDfYHg0gTm9KoMk8kCb3j2XixREEjCTJis2IKTHglCM2zRCI2
-	 d94CdOyxrUup9dhM7eqn6M9xBkBB4N2cGqaaiGTkPXBZ01C6GixLPMHr0PR+SEu5Gr
-	 ksVdqIjyNfeVAloZlF+XeY1QCLntGn7UDyn2TdxKI4AKbbAamqZsJEDRYkEk+Zyab1
-	 P6lDCLRdLSdGY2/s4vQNM5UrE8XrrDn/Vxv7ANeIY0/IV2d5sxpgflNQ3kop5utEST
-	 RBkjm5/NHq3JQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4dQhqZ450tz9rwn;
-	Tue,  9 Dec 2025 16:00:42 +0100 (CET)
-Message-ID: <3fd85a37a09bb4636affbec1ce282ec843d59103.camel@posteo.de>
-Subject: Re: [PATCH v2] rust: pwm: Add UnregisteredChip wrapper around Chip
-From: Markus Probst <markus.probst@posteo.de>
-To: Michal Wilczynski <m.wilczynski@samsung.com>, Uwe
- =?ISO-8859-1?Q?Kleine-K=F6nig?=
-	 <ukleinek@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Drew Fustini	
- <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei
- <wefu@redhat.com>,  Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
- <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Date: Tue, 09 Dec 2025 15:00:44 +0000
-In-Reply-To: <5a742181-dff6-4073-ada0-342298da63b6@samsung.com>
-References: 
-	<CGME20251202181800eucas1p18be878cb74d14444f2df8bdcd7a718ee@eucas1p1.samsung.com>
-		<20251202-pwm_safe_register-v2-1-7a2e0d1e287f@posteo.de>
-		<a3f4e795-e56d-4de0-8b46-5c8ff96d5f77@samsung.com>
-		<zdwto7ahccckl2r3qoculu52lsus3dey2lcur2l3ltrxp5nrcf@djusgl5cdfu3>
-		<a66b337528d700ae92d7940a04c59206e06a8495.camel@posteo.de>
-	 <5a742181-dff6-4073-ada0-342298da63b6@samsung.com>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- 66sLA9g==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-aPNxVAyZOO5XAtovTjhN"
+	s=arc-20240116; t=1765293403; c=relaxed/simple;
+	bh=rgblbkO7U0NEFrQ/P6yZVtMxHgbgDSj8uUqm/ZcEgJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j5XkcTMJI39hTxIw3xQnDVXF5FHbmrUg2EL1ng2x3TXmFIhb300eAMh9i6cVfJTbJ34ZpsBx77tJ0uzprIbK7uI4qutYIikEJJJ5glB8gsbfGfH7jAtenqBJIwwBA0IvWfCEtM+E6Axk8CodN76tsA/JzuB7es6YoDUzXdZ8hfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7b6dd81e2d4so6159445b3a.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Dec 2025 07:16:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765293401; x=1765898201;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BtJT7KFDWenu5lWNr0S7Xd8igjHFN5TA0NP45P0ZPX0=;
+        b=Gq4L8jp6OYHHOytgEay1zOqUnOler5kMas3/FQ6pqX8QTa8lAA3/RH2bn+VneTZney
+         etLevRv49l9frj+vF3oJmnVEumhiwZjBCF/DV43f+SAsRADaeRykoLu5fU2e7SZcXKUL
+         Ql8t3S4BqigsANzJ9eNEzzrgPNCGbvlW1uQGUHlNloFkZOwWmz+/GDuFtsXd7W65ILGp
+         vjVK+UkdbUOlzBZ2CzIAyrsNG3Xay7VOg8xrsiVJ8kHd5aJsb/2uxvmJFMh9K38ABvy/
+         qgH6zu4WU02W6DU32gGb86I5Z9i9w51X6iFy5i2RGUZ0n9pky7SlecSOm/SyLkpCJtjz
+         /eQA==
+X-Gm-Message-State: AOJu0YxCkw/S0MtZZA6wwwfntKDHRc96cl3YI882SQ/VbcYQgJyUuLjJ
+	stWttKHwAiswT1XOsn7tg/SsvHRrIG593fswcdhGY++NL0jmA/lf5oxP
+X-Gm-Gg: ASbGncu74BPehxTgvbFlv5EXXF28/4xf0FRD68TB/e+pyljYyfDkhbqBWXruqEgcpgg
+	fnhpyV/S4/V916aVr38Can5nxtBCYNXHZhJ0xMdacCEUK+XQB4Ie5qUeNWGBbgbEeaQkCUFybLj
+	N3STLbL4n4j/LXSKN6pk3szSDHuguuugPSKS+Rx8xMr6yCNAqg0SrFxeqtWV9x+f4KsJMuk0+7z
+	Be9g8k2xvMhUsK6mCD9Ie8Z7uHuZUuSYiUjR9EmO1Z2qzmwb16rD6mZrXuOmdKKOAsrjbxfCLvV
+	9ERTLGmN5RTYvlDS22CsrtSt1EOuBOeWpeHR5S0YW12f3MTkBj2zQ3X9BWkC83qX/patEavs7kP
+	etd1sLyurOP5T7OcLQz9Wah2om7jNFSgJReJLxqazRJ3fNL40CNISza0vj9Yt/dlluhNaVdlCVn
+	azDhSWRRe8L7ruIXTatBvZCgLGLtO+IGA8
+X-Google-Smtp-Source: AGHT+IF+R9FKj4Xs1iZJf9bvEg7/YYB2XkTL5vFHVR56z8dGm3EMNinpCSzcXu53Nwt3r7/RVdP4rA==
+X-Received: by 2002:a05:6a00:12cb:b0:7e8:4433:8fb9 with SMTP id d2e1a72fcca58-7e8c6fa1c09mr8244813b3a.65.1765293400326;
+        Tue, 09 Dec 2025 07:16:40 -0800 (PST)
+Received: from localhost.localdomain ([116.128.244.169])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7e2aedb474fsm16538952b3a.52.2025.12.09.07.16.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Dec 2025 07:16:39 -0800 (PST)
+From: Ke Sun <sunke@kylinos.cn>
+To: ojeda@kernel.org,
+	linux@armlinux.org.uk
+Cc: rust-for-linux@vger.kernel.org,
+	Ke Sun <sunke@kylinos.cn>
+Subject: [PATCH 0/2] rust: add AMBA bus support
+Date: Tue,  9 Dec 2025 23:16:14 +0800
+Message-ID: <20251209151616.2491085-1-sunke@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Transfer-Encoding: 8bit
 
+This patch series adds AMBA (Advanced Microcontroller Bus Architecture) bus
+support to the Rust for Linux kernel.
 
---=-aPNxVAyZOO5XAtovTjhN
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The implementation follows the same patterns as existing Rust bus abstractions
+(i2c, platform, etc.) and provides:
 
-On Tue, 2025-12-09 at 14:41 +0100, Michal Wilczynski wrote:
->=20
-> On 12/9/25 13:26, Markus Probst wrote:
-> > On Tue, 2025-12-09 at 09:08 +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > > On Sun, Dec 07, 2025 at 11:16:59PM +0100, Michal Wilczynski wrote:
-> > > > On 12/2/25 19:17, Markus Probst wrote:
-> > > What does "not able to successfully compile drivers/pwm/pwm_th1520.rs=
-"
-> > > mean? You were unable to find a .config that included CONFIG_PWM_TH15=
-20,
-> > > or you got a compiler error? If it's the latter, ...
-> > >=20
-> > > > I suspect your kernel configuration is missing CONFIG_COMMON_CLK.
-> > >=20
-> > > ... are we missing a dependency for the driver?
-> > I got a compiler error. Enabling CONFIG_COMMON_CLK indeed fixes it.
-> >=20
-> > Without it:
-> >   CLIPPY     drivers/pwm/pwm_th1520.o
-> > error[E0432]: unresolved import `kernel::clk::Clk`
-> >   --> drivers/pwm/pwm_th1520.rs:26:5
-> >    |
-> > 26 |     clk::Clk,
-> >    |     ^^^^^^^^ no `Clk` in `clk`
-> >=20
-> > error: aborting due to 1 previous error
-> >=20
-> > For more information about this error, try `rustc --explain E0432`.
-> > make[4]: *** [scripts/Makefile.build:354: drivers/pwm/pwm_th1520.o]
-> > Error 1
-> > make[3]: *** [scripts/Makefile.build:556: drivers/pwm] Error 2
-> > make[2]: *** [scripts/Makefile.build:556: drivers] Error 2
-> > make[1]: *** [/home/markustieger/build/synology/linux-
-> > upstream/Makefile:2010: .] Error 2
-> > make: *** [Makefile:248: __sub-make] Error 2
-> >=20
-> > A simple fix would be to add "depends on COMMON_CLK" in
-> > drivers/pwm/Kconfig for PWM_TH1520.
-> =09
-> While at it I think we should also add dependency on ARCH_THEAD |
-> COMPILE_TEST as well as HAS_IOMEM in my opinion. I think some of those
-> dependencies were lost when we were iterating on the patchset for some
-> reason, can't recall when exactly.
->=20
-> If you plan to send a patch include those as well. Otherwise let me know
-> and I send a patch.
-No, I am currently busy writing the serial device bus rust abstractions
-(include/linux/serdev.h) for a driver.
+1. Safe Rust abstractions for AMBA devices and drivers
+2. Device ID table support with compile-time type checking
+3. Resource management (memory and IRQ) for AMBA devices
+4. Integration with the generic driver registration framework
+5. A sample driver demonstrating the API usage
 
-Thanks
-- Markus Probst
+The first patch implements the core AMBA bus abstractions, including:
+- DeviceId type for AMBA device identification
+- Device wrapper providing safe access to AMBA device operations
+- Driver trait that AMBA drivers must implement
+- Adapter for driver registration
+- Macros for device table and module declaration
 
->=20
-> >=20
-> > Thanks
-> > - Markus Probst
-> Best regards,
+The second patch adds a sample AMBA driver that demonstrates:
+- How to define an AMBA device ID table
+- How to implement the amba::Driver trait
+- How to access device resources (memory and IRQ)
+- How to use the module_amba_driver! macro
 
---=-aPNxVAyZOO5XAtovTjhN
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+This enables developers to write AMBA drivers in Rust with memory safety
+guarantees and a clean, idiomatic API.
 
------BEGIN PGP SIGNATURE-----
+Ke Sun (2):
+  rust: amba: add AMBA bus abstractions
+  rust: samples: add AMBA driver sample
 
-iQIzBAABCAAdFiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmk4OY4ACgkQNHYf+Oet
-Q9JqMQ//TcrTZhIXkMSY5d+8hTE+/b96ALeD35aVgmOmBv+2Ju1zmJ+ewF6kvBw8
-mmszSUq5xh/orRiK+LlCGGH70IlgpPwk4vLauUDpuirCHg+kf3ycGoH0YlprRh9S
-h9QzjiphWJHv84FHe0MmmJvCvovXw4w33qw5P7kgtc13OEVhR9DYDwlkqGbC89JA
-A4LLb42vzunXaXcJGtPuVFxKakPTKnFvC0P+u9CMzRyZH4u9mNPY5FfKAgEIlW5j
-XtKqCkSYbyClrKKM9n1ydHER+c79b/K/XKk9ASS0bD29rbcT0Y64s+7tWyNGsDPS
-YhIbQa/gfDU5cx6bdZESK9sSrqBmR7/lLhTsYD5c3JjNJ/UHccKOmf3sf6/VeCXC
-P6K2JTWy1X2UGHVmj9qljiI1tv1nwvfG3fGG9arUns4racgsZU4NnAXwjJ5HWei3
-8XqjbLwfdzCao0DM6upbxMu8m9wzz1DXc5qAyjSd4zBU/6qMmeFeY6XS4qkGiuon
-KXFcaiYjCcvjPimpt22jG5/B76RQTLnSu1RyCt2M1d51db11s2+NrCHkRkUibEd4
-HBBC4l/wMtLD8HZnGw9X4YDRy/RgeT44Mc/CPdrlYzcX6NMVe4+K+cyQUeuG1BSG
-kt7hPnUzParVQoSPD9IY51Qxs4m4T2s9aQ2L1r13/LlgnopONPs=
-=65Ny
------END PGP SIGNATURE-----
+ rust/bindings/bindings_helper.h  |   1 +
+ rust/kernel/amba.rs              | 445 +++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs               |   2 +
+ samples/rust/Kconfig             |  11 +
+ samples/rust/Makefile            |   1 +
+ samples/rust/rust_driver_amba.rs |  86 ++++++
+ 6 files changed, 546 insertions(+)
+ create mode 100644 rust/kernel/amba.rs
+ create mode 100644 samples/rust/rust_driver_amba.rs
 
---=-aPNxVAyZOO5XAtovTjhN--
+-- 
+2.43.0
+
