@@ -1,111 +1,142 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E688A3019C8
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 06:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3F88F4A;
+	Tue,  9 Dec 2025 08:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765261769; cv=none; b=YmbKRhof0USMct6mCWYk0dZyjHBDqQgyet2cSQ7c3m2WXcQvSGJ6OeZWkVDlfk1yhjZdajlAZ7mWQ7isJGJu4S4rV/Vbui/Sm5Pjej85VTQ+U0MAx7O+v/edIE5KLBwzCa5Ilyfr1s4EHwOLtf6l3a8POyh7CVgUf1k96PvfnM4=
+	t=1765267721; cv=none; b=eO0MCo0rCQSB7iGB5vjywKsT2H8rAdxXs786RqQish04yd7qAeoWxjhc9a3VqHuz3bDkYmrgfLFWXHSv95xh7Z4dj/t8OKcrTUoBC57ooVG8yZIybWhbJ5hKnXlcrPo5NZgf4dTz6XvDeoy3zjGzvNvFRabhmJT5e9rQM6HzjCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765261769; c=relaxed/simple;
-	bh=4wu4HghV9eutcXZg9QykpHAVBOCpOEqzmk05aTWPYjQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fe8eogSaszbTXuS5ym1dCGa5/VNPrZn64TKK8DORXh7qSxFFMu2zdGbZPjJ+yAyivVA8J9Z9BlbxN7Z0yZacp6O66+h2ZL9wP/m60uTsOSBzRF2xS4ECXPzHbSZ2PJxScniWeqIlJhVR3/ZnuZ8HM0jQaAAQMe1pVCJonTn/svg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P2xC+ia2; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765267721; c=relaxed/simple;
+	bh=RtLlcpTfLz2USeJH4EgZ5Bfw+5bkPGymDSn32qHKB5w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZH6rnyWgTJadTn/ZGwCDQytiKH6aIppSHZy+9GkZRiqY7WGjKwCCCNRoF3limfB8W7ooNzk+kyTf3+8Uyy4KQQCHuNjPkprmTCUNCUdHtkjR+KXISodGMBAbs3OrUjiRay0K7ncHKo7T4BruPo0woYmHCqsBRlyG5joNAI+J/sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jd3rxWb/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P2xC+ia2"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-bceaaed0514so398284a12.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 08 Dec 2025 22:29:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765261767; x=1765866567; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F/okAXkk7BGFghBjc5ApOsP8AJT8qAM3/hNVNZVYhOY=;
-        b=P2xC+ia2QdKG4/JMXldylEDcpdI3/9YQiXVJVmqb3n4WuwICF0A2HkLASzkuJO9dzL
-         8Dz1s1kFHk37A8C3U5VtGoht3RK2hgtHQX3CcYpv7eJOA7r/AQhizjzpdEVldhMA3tMm
-         9hxC6BXBsw3ZrTvlEHO0EeL+n6quZPMCo8iYF+oRuT9q/bWW10d26VQ7p8riClwqbAiy
-         zPpt6nvOdmRVYTijHkcswAlNeGJIm7WlESlrFQgWAwfAvhlYTxNVk+T8Nngl4iiqbZNK
-         TO2oWraRZB1Dfm2k9o21/kZ+ec4waz2B2onlqlfNsJz89vtooXY0VC0BmQx2LL0MI0Lt
-         ZQGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765261767; x=1765866567;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=F/okAXkk7BGFghBjc5ApOsP8AJT8qAM3/hNVNZVYhOY=;
-        b=rHNE9lPcPvRZCPQj3nnc/J781zNuiVpi7k5+RcPL9nM4FM2lwtBHL1s+PCpMrTVtdc
-         npuLMuz2qErBDd4s0JwKL3IGIp0SHXqO2LfGteTrPQUd/FEQQvfXbP5Wsl5eWKp7+wzO
-         GOb7iuKzNt+a5Dojr4EtJUSPwVBDuXQCjpdLS+kGDx9dIGsV4nFJ3XRfNoHjeufxDkAT
-         h3BczkHWht9IOvMJO75niaxmcUz7wxoM+0bb78K1lzbGr+Dmk4a85uoXkCJI52s0pD9k
-         ED6n8Bv3IPYFm4+e5R9V4KgHaTZhD8qiuPxs1/4mUPAfk2orIamseFLP15gW9fZv3XPZ
-         RY2A==
-X-Gm-Message-State: AOJu0Yy1uAGe8xFG+68vPqLlcOxMCqyIZrGlgYL+A5Y5y5urygpASXck
-	fQ4fOmr7VZuH34aodHmYhkb9ya+pheC+OWmbqir7rx8CPFb2ht3N1qnXztkyc6nJfMB0csONP5r
-	wqAypLTkXN4cnMXKunwM9ZuoJSCieKDw=
-X-Gm-Gg: ASbGncvRD/VrXrr3g7Q3vQeYC8Gwod7b2GVEglcDbQU8T/rYk+eYhoTTqzNbp3BYDKx
-	Ojr8MaOUFD+0Pz64ONW7GQhk5SluCon1txB9njXSkK4qMxluYDwt2wSsKebBB31i6EsmP33zy1b
-	PYvV/2EonG9egvJAETN6tCB6DJiWkkP0cMvKWFseZ3iPzTstQPUopL5uuujPn1ZsQPSI7MSQ5j2
-	HX5sbwDigfqxFx9/KRtuurEpy0UgRPXd+PcJA9oiNgISll8YgdsfB/zoHiIoqUpc+59W96Zva74
-	Tdm2NSDzfVjM2Z2AZr/cKCmmt6dZMjAgKISi+UVXDhANOZ+cnP8ORBi/l0z0c2IiEf1joIqEvK8
-	5o5X8QcX7rkC/bQ==
-X-Google-Smtp-Source: AGHT+IGRuNySzZFg7LnxO0DUBwmTDE2SGnhd2Hq7klfkMjK1ebsVPO1rSgGRAy0b6w6lmNPUlHQbLRmAlrxzvF6MMX8=
-X-Received: by 2002:a05:7300:b919:b0:2a4:3592:cf89 with SMTP id
- 5a478bee46e88-2abc6f5253fmr3734203eec.0.1765261766948; Mon, 08 Dec 2025
- 22:29:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jd3rxWb/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0824C4CEF5;
+	Tue,  9 Dec 2025 08:08:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765267720;
+	bh=RtLlcpTfLz2USeJH4EgZ5Bfw+5bkPGymDSn32qHKB5w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jd3rxWb/To5DpiKkKBBr2Zs3L2K8wvokog/m9FqvtGHziX/K1HppotDOO9+LU85gX
+	 G9UmQlfDAnaVUGVvNAvNgXXuQx0B5h4g4mx88v2qZN1UgddX4KaIDkyUyR08nehqzY
+	 DG0H9bRj2a0sYmnHMsCAb3R9wP2F3oTes9RWOLAYuRudGD/MeGxoeVteTLhnH4WUbs
+	 tq3+v250cHhl+1AApeR2QllCZFFJXN2+hCHgA0q9+Bw2BMC3xIIvmq9MPmryBTttKy
+	 pb0viuh5GF4RK8jRYG6NA7DcxJamvUG11dgvj9bwPMAGETZc1YTMZwrfsJR01KUyua
+	 B1CbHPf00fYPA==
+Date: Tue, 9 Dec 2025 09:08:37 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Markus Probst <markus.probst@posteo.de>, 
+	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v2] rust: pwm: Add UnregisteredChip wrapper around Chip
+Message-ID: <zdwto7ahccckl2r3qoculu52lsus3dey2lcur2l3ltrxp5nrcf@djusgl5cdfu3>
+References: <CGME20251202181800eucas1p18be878cb74d14444f2df8bdcd7a718ee@eucas1p1.samsung.com>
+ <20251202-pwm_safe_register-v2-1-7a2e0d1e287f@posteo.de>
+ <a3f4e795-e56d-4de0-8b46-5c8ff96d5f77@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251209014312.575940-1-fujita.tomonori@gmail.com> <20251209.151817.744108529426448097.fujita.tomonori@gmail.com>
-In-Reply-To: <20251209.151817.744108529426448097.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Dec 2025 07:29:14 +0100
-X-Gm-Features: AQt7F2r_TvGDcpVIBygy_ezYL0Tnw2PmcofnZL97AP3BScTrwyy9ndPCst7m11o
-Message-ID: <CANiq72m=XqGpkJt2-KrbaHMAJ2bMLEk0k-EyDX5iX+XmeE+cUg@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: helpers: Fix pci_free_irq_vectors() build with
- CONFIG_PCI disabled
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, dakr@kernel.org, ojeda@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, bhelgaas@google.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	kwilczynski@kernel.org, lossin@kernel.org, tmgross@umich.edu, 
-	linux-pci@vger.kernel.org, Guillaume Gomez <guillaume1.gomez@gmail.com>, 
-	Alona Enraght-Moony <contact@alona.page>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="s4iw3gf4t2dpvedc"
+Content-Disposition: inline
+In-Reply-To: <a3f4e795-e56d-4de0-8b46-5c8ff96d5f77@samsung.com>
+
+
+--s4iw3gf4t2dpvedc
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2] rust: pwm: Add UnregisteredChip wrapper around Chip
+MIME-Version: 1.0
 
-On Tue, Dec 9, 2025 at 7:18=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> +#[cfg_attr(CONFIG_PCI =3D "y", doc =3D "[`pci::Device`](kernel::pci::Dev=
-ice).")]
-> +#[cfg_attr(not(CONFIG_PCI =3D "y"), doc =3D "`pci::Device`.")]
+On Sun, Dec 07, 2025 at 11:16:59PM +0100, Michal Wilczynski wrote:
+> On 12/2/25 19:17, Markus Probst wrote:
+> > The `pwm::Registration::register` function provides no guarantee that t=
+he
+> > function isn't called twice with the same pwm chip, which is considered
+> > unsafe.
+> >=20
+> > Add `pwm::UnregisteredChip` as wrapper around `pwm::Chip`.
+> > Implement `pwm::UnregisteredChip::register` for the registration. This
+> > function takes ownership of `pwm::UnregisteredChip` and therefore
+> > guarantees that the registration can't be called twice on the same pwm
+> > chip.
+> >=20
+> > Signed-off-by: Markus Probst <markus.probst@posteo.de>
+> > ---
+> > This patch provides the additional guarantee that the pwm chip doesn't
+> > get registered twice.
+> >=20
+> > The following changes were made:
+> > - change the visibility of `pwm::Registration` to private
+> > - remove the `pwm::Registration::register` function
+> > - add `pwm::UnregisteredChip` - a wrapper around `pwm::Chip`
+> > - return `pwm::UnregisteredChip` in `pwm::Chip::new`
+> > - add `pwm::UnregisteredChip::register` for registering the pwm chip
+> >   once
+> > - add Send + Sync bounds to `PwmOps`
+> >=20
+> > Note that I wasn't able to test this patch, due to the lack of hardware.
+> >=20
+> > Also I was not able to successfully compile drivers/pwm/pwm_th1520.rs,
+> > as `clk::Clk` seems to be missing. I haven't found the missing patch
+> > in linux-next nor in
+> >=20
+> > https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git/log/=
+?h=3Dpwm/for-next
+> >=20
+> > (the tree in which the th1520 pwm driver was merged).
+> > So please verify yourself that the driver compiles and throws no errors.
 
-Yeah... these become fairly messy and we may have quite some of these :(
+What does "not able to successfully compile drivers/pwm/pwm_th1520.rs"
+mean? You were unable to find a .config that included CONFIG_PWM_TH1520,
+or you got a compiler error? If it's the latter, ...
 
-Hmm... This is tangentially related to the "references map" proposal I
-have due to the custom intra-doc links syntax we discussed with
-upstream `rustdoc`: we could perhaps have a syntax for "tentative
-intra-doc links", i.e. ones where it is not an error if they do not
-resolve (sadly that makes them harder to know if they are correct),
-e.g.
+> I suspect your kernel configuration is missing CONFIG_COMMON_CLK.
 
-    [~`pci::Device`]
+=2E.. are we missing a dependency for the driver?
 
-Or, ideally, a short-hand to specify the condition. That would not
-have that disadvantage, e.g.
+> Thank you for your work. I've tested this patch successfully.
+> Other than the typo this looks perfect.
+>=20
+> Tested-by: Michal Wilczynski <m.wilczynski@samsung.com>
+> Acked-by: Michal Wilczynski <m.wilczynski@samsung.com>
 
-    [`pci::Device`~CONFIG_PCI]
+I applied the the patch to
 
-Or, even better, both: the former for complex cases, and the latter
-for those that only depend on a single `cfg`.
+	https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for=
+-nexxt
 
-Cc'ing Guillaume and Alona so that they are aware / in the loop.
+as 6.20 material with Michal's tags and the typo fixed.
 
-Cheers,
-Miguel
+Thanks
+Uwe
+
+--s4iw3gf4t2dpvedc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmk32QIACgkQj4D7WH0S
+/k6nAgf/QrIW2SOzj5VyC7JWffgkMmIgcpXgz5LJAJH69mlroGtDRaNWm6PiGF2+
+KmyupX1UWeA+MQnNUyN5q5QafwNI8SpPAyJhQ/RXv5tpYeI25gsTeJg6xRw9STDR
+nuaU9VnNRv26IS507511zdmWBGdWtjiup6QzogHlJIBbBe1plzW2nmg4p9jXU66A
+8VbobpUWltvz8n7xlaycHOK4tkaPR7DLqiOATWxfBOyipfCbAPsUEjF0M9N8m1W0
+As2+iCPEQ3QmnNFIAKr7wdkPDC9V58TStvl72F6yYF3kl0COfihZu3fIsAaPPkiI
+ER2GAeFD3+56UAXKGQgYEyB+zuhNDg==
+=+IKm
+-----END PGP SIGNATURE-----
+
+--s4iw3gf4t2dpvedc--
