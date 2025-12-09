@@ -1,101 +1,113 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from xry111.site (xry111.site [89.208.246.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323A4258ECB
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 10:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8E6291C1F;
+	Tue,  9 Dec 2025 11:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765277810; cv=none; b=IuWblkfWJ8Xazrg3LdZtFi3abOvpD4aWRd8rjoy4l6FgJJy+ztsBOlc9EkT4SxxrYUqLEwwr1lvG2xTNSgFEguJR8unlwhAMsHomnt/MccZvY5V6FSd2Wxzaxd49qPPQHbmdTQzhehvPDisnGjZN8zxaRVbrp4TuP7415838DO0=
+	t=1765280367; cv=none; b=h0Ta+q6/rnMACz3hhajb+z2hnQOPvTu+cPOv7qJF5hlZpF7DPWLFyFk4Pmd6YFQz/fwgn1/igYlAXY2Ms0StsY/ga3dE8Z7hcVf4nVZhSPmnUYhKgzmWwPw7x79juLwBQe4cfnBRezyTprjnO+CYBppsaOUMINZYTDH5Gofa7NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765277810; c=relaxed/simple;
-	bh=asy34GF/k7rwU26Lp+ifZwgVFrPkNZdWmRI8UBGyztE=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=p155SCd0+J0NThLfDNHLXb4lhVfeQMcQGMn+2FteEHzcocZRcWHx0sXkVoC9ep0Um159/8fkiqLjfz0dbrqv5TqBa0O7no1L10cU93yNS1PORzIE5mD3k5NQpbEyjIZsBOmshPnwbiUcYlwZnIjpzix0mCA9MTXousmmukRw86E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l9yPrsX+; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765280367; c=relaxed/simple;
+	bh=JASJFymmHEE+03TJCMcRA+WQT91fNCC9u7nLosB+wQk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ncgBu4scZ5+cDSToZPrWTWWfy5AWFkuJzukNfAL10uM4kBL7inf8TjPWMb99nJZReEPlduskddcvYvRkjkScgEXCTOERL6kGvYL2qCOYzM9fHUXoxAv3JmG5R+WiWBOftIS6Aa2Hfhay9VhCUXu95HdujpekSLJs9NX/kTPuouQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=c4uCiPGR; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l9yPrsX+"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-297f5278e5cso9346395ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Dec 2025 02:56:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765277808; x=1765882608; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Bwdcr6J6JkQ5MN9u9veUQ8APZTuYdOs+09yDTwCve4c=;
-        b=l9yPrsX+8byyBmjG9gxEzQ2EAllipiOI5pp8Co/0EkB+bMYuyRjs5PSc79FcYkFajx
-         hBdcV5VLzHKgspRK1AusP1c8+agbcRn7ITsbkhIQg4PQZhVCl8RtDTj8JdR2StVvjWS9
-         3j/Ud9V1ESTo7O16SrZaqkANNa6QP4KUKLQxc+r9G5d8T3K4bFtY4P33CzyGL8i0+bcG
-         TG0jRDm2Ah7a6wM1UcFqrYkc0sRen2ZlICpQiSnuIhttwwXNE6U86ydo9efcE699+GsR
-         uxpwW7E9cVGPxWhkzHgKT/QjLTlWxV7VU/ewCETOHDqlIkDHFpyuX82vaOWO0JIJcQOO
-         HzmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765277808; x=1765882608;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bwdcr6J6JkQ5MN9u9veUQ8APZTuYdOs+09yDTwCve4c=;
-        b=Ndsbt++EbF94095fwfzLSyqCPOFa3ROX6hyxqmfEnOMJThaL42aNIOjPtJXwPJ47Zx
-         lDNlo+LR7MBzmriUiM1kvlRxvsBJYj54BT1wVBmRFyPKxM69ArKfS161M4WocodXPt0y
-         2jSp2Srmh45Ym1cHhEV+DBfXMR2VcH8pk91kpFbZjWLBt+DnfngnyQ10IIdSce4e+kbk
-         8IpSLMEtiPdX0bXVPswKoGdKPGYv0KnROW1twwUvoxQEdKqehRXepFtdJiUihbnvh26B
-         ics0SeEs5536wLIfRe8QxKoF/tlFPMqOkK9a1ZghGpapPvbecUMSC5wc4JTairmVfbYs
-         iGSg==
-X-Forwarded-Encrypted: i=1; AJvYcCXk134jQ5FkV4btvvSSb8c7/imdA8UbgnV8U89LZrRU6DVyzlD5R9vnY14nepOL0VVOjfHTtuzdkbOKm+U+Ag==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywadpsc35ojlMXEIlyqWJ+qEXsz+ZBuThNOkIiPSi6RAZWIsmT+
-	ceEtIr9R89pbUYHGDffQM/j7nr+2LvZYfFPpoBTm2+5PaXeK4mXzpoSwuVvyBCtOR5lipP7+x2P
-	G3Am7OAjC5gbOGQHpAH7UjwGisLUtZSQ=
-X-Gm-Gg: ASbGncvGytmYvoaQLnetEsB/2jgca+oeN6CK3LRUS01czawnVB7hb+T7QfAfS28/mjP
-	4NvhFXrLJzvC9RMH1znNlQybKPleoeOvKt0Xin8D1dqGoiURBNoJRRnOVThACGICvx1cOEsY3xp
-	CDqjmVJjed3LRgRYJAosSfZXrt860e7yVC81eaAn50LM2rinfBRVOQf2HwcyDGC9+EpmPEhpaiU
-	Gvp5IKB5zmaIgCGHGS70gzDqDUV2/03eDfHpkaR97qeBeX+WR/un4qnrB6C44Gbx+IRknAGNKfC
-	QE8UkNs1S/ariiYmkAj1Tt7uP7jo8oxn2eAkJz/V7XbzPHgwZgup38NhimJh/biTqNATQGrBLok
-	pFXVo+IdgFVjFkw==
-X-Google-Smtp-Source: AGHT+IFvhi0cPvzSCKaZ1uKZHwQq5MrmhfsTuE4vvBZn212BPKoqThiqfNhiGSZoJvwzmV5G5qGINyy3cGPYIpxbNJ4=
-X-Received: by 2002:a05:7300:d706:b0:2ab:ca55:89c9 with SMTP id
- 5a478bee46e88-2abca559a26mr3005396eec.4.1765277808339; Tue, 09 Dec 2025
- 02:56:48 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="c4uCiPGR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1765279736;
+	bh=feYjYZt3lAYhpw83489LQO33YflIoPzI0pKB0wBY1Hg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=c4uCiPGRyX5lEjNUNCePWqFiNTPtpRTKBK4zP45gsBIney4aCQYBQV9fiLKoGeO7P
+	 0p8Wi79Xud9fz+XUnUuzQKvEIqDEGp5AlZSr7HBqaFIi/Vx1mSQqtRljuAeY9o09zr
+	 Cccq9DjOnT9MzOGCMOL6V7jLf7HJgBhC/q8Rvqew=
+Received: from [IPv6:2409:8a4c:e27:5840::b3c] (unknown [IPv6:2409:8a4c:e27:5840::b3c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id C72A166B53;
+	Tue,  9 Dec 2025 06:28:50 -0500 (EST)
+Message-ID: <fb77069524eec1df222b2ecbc6ddf5c3b4b041bb.camel@xry111.site>
+Subject: Re: Mainline loongarch64 defconfig+Rust build error
+From: Xi Ruoyao <xry111@xry111.site>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Huacai Chen
+	 <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Alice Ryhl
+	 <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Arve =?ISO-8859-1?Q?Hj=F8nnev=E5g?=
+	 <arve@android.com>, Todd Kjos <tkjos@android.com>, Christian Brauner
+	 <christian@brauner.io>, Carlos Llamas <cmllamas@google.com>
+Cc: =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Danilo
+ Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>,  Andreas Hindborg <a.hindborg@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, loongarch@lists.linux.dev, rust-for-linux	
+ <rust-for-linux@vger.kernel.org>, linux-kernel
+ <linux-kernel@vger.kernel.org>
+Date: Tue, 09 Dec 2025 19:28:33 +0800
+In-Reply-To: <CANiq72mrVzqXnAV=Hy2XBOonLHA6YQgH-ckZoc_h0VBvTGK8rA@mail.gmail.com>
+References: 
+	<CANiq72mrVzqXnAV=Hy2XBOonLHA6YQgH-ckZoc_h0VBvTGK8rA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.0 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Dec 2025 11:56:35 +0100
-X-Gm-Features: AQt7F2onLl2G2SdnTe3M9zZMQUo29ueZ3enRDYXrYXm6UqTPRsCYNL8c_CkSU9k
-Message-ID: <CANiq72mrVzqXnAV=Hy2XBOonLHA6YQgH-ckZoc_h0VBvTGK8rA@mail.gmail.com>
-Subject: Mainline loongarch64 defconfig+Rust build error
-To: Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <christian@brauner.io>, 
-	Carlos Llamas <cmllamas@google.com>
-Cc: =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, loongarch@lists.linux.dev, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-Hi all,
+On Tue, 2025-12-09 at 11:56 +0100, Miguel Ojeda wrote:
+> Hi all,
+>=20
+> I am seeing in mainline loongarch64 defconfig+Rust the following build
+> error [1].
+>=20
+> Cheers,
+> Miguel
+>=20
+> [1]
+>=20
+> =C2=A0error[E0425]: cannot find value `compat_ptr_ioctl` in crate `bindin=
+gs`
+> =C2=A0=C2=A0=C2=A0=C2=A0 --> drivers/android/binder/rust_binder_main.rs:3=
+17:38
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> 317=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 compat_=
+ioctl: Some(bindings::compat_ptr_ioctl),
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^^^^^^^^^^^^^^^^ help: a
+> function with a similar name exists: `compat_sys_ioctl`
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> =C2=A0=C2=A0=C2=A0=C2=A0 ::: /__w/quick/quick/linux/rust/bindings/binding=
+s_generated.rs:78264:5
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> 78264 |=C2=A0=C2=A0=C2=A0=C2=A0 pub fn compat_sys_ioctl(fd: ffi::c_uint, =
+cmd: ffi::c_uint,
+> arg: compat_ulong_t) -> ffi::c_long;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0 ----------------=
+---------------------------------------------------------------------------=
+---
+> similarly named function `compat_sys_ioctl` defined here
 
-I am seeing in mainline loongarch64 defconfig+Rust the following build
-error [1].
+I highly doubt if this is really a LoongArch-only issue.  We have:
 
-Cheers,
-Miguel
+#ifdef CONFIG_COMPAT
+extern long compat_ptr_ioctl(struct file *file, unsigned int cmd,=20
+                    unsigned long arg);
+#else
+#define compat_ptr_ioctl NULL
+#endif
 
-[1]
+AFAIK bindgen does not translate C preprocessor macro definitions, so
+when !CONFIG_COMPAT we won't have the Rust binding for it.
 
- error[E0425]: cannot find value `compat_ptr_ioctl` in crate `bindings`
-     --> drivers/android/binder/rust_binder_main.rs:317:38
-      |
-317   |         compat_ioctl: Some(bindings::compat_ptr_ioctl),
-      |                                      ^^^^^^^^^^^^^^^^ help: a
-function with a similar name exists: `compat_sys_ioctl`
-      |
-     ::: /__w/quick/quick/linux/rust/bindings/bindings_generated.rs:78264:5
-      |
-78264 |     pub fn compat_sys_ioctl(fd: ffi::c_uint, cmd: ffi::c_uint,
-arg: compat_ulong_t) -> ffi::c_long;
-      |     ----------------------------------------------------------------------------------------------
-similarly named function `compat_sys_ioctl` defined here
+And as LA32 is not upstreamed it's pointless to support COMPAT for
+LoongArch, yet.
+
+--=20
+Xi Ruoyao <xry111@xry111.site>
