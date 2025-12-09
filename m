@@ -1,183 +1,175 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B32C2F6167
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 18:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2872BD587
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Dec 2025 23:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765304668; cv=none; b=HEOAwMEVLpKhGxaAvDeeLzAeB82y2ntWNB193ppSq6CekjqJ/twClUtBDDJfrJ5xqlMI15KTP9IPmrCz948jwDVHQHlwxGpxT3McJNd8eu4iOgaPaZBUIy/Tr4SgoAcEEWCBt+kaYZ8HYr3Bj8IKzJtoCvPP+nngLcZlltm6qqE=
+	t=1765322781; cv=none; b=ou/Z02WyqX31dNU0DrVYVIenAlMHmaVuVGAup1eEWSSBjGsSoM4obswZsVb4KwzHCO7T+whuRboKj8k9VI/WwfDVXd6q6KbO1ofg5QtS/ml+fhAsLbUH7bc6Mnz0HJNFKqTYn7eo26rAE9CHlhsRTgGDK2gyt/pLQTjLVeUYEO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765304668; c=relaxed/simple;
-	bh=hAn/Z5Df5IfuEg5YxLgjH2jmnTaDG3wqcDn0Zcz6LNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=fAZxXkuyjBylsOyfDW5X4fBsoFaUIVeBKXcD+LoIXi5qWZaZ17sxDDMdtvdKQuFI8Vd19QajNTCQ2lw7jlu9h7UJcZHXc9SJwW1rhFUcjypzhj2O9xkNiy8lCMnmtj8S5JGDZyOfa4yzqBmWPLocw+kUSdp0Ta0msdfHJwehvyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HctDhQJ+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1765322781; c=relaxed/simple;
+	bh=Cvac8Lr4vQTZyhPenNZe352BDh72OTK02amYVsu/V4A=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=s3U68dQn+QM8BLaY3zUHdjaoNAivddJ6YPoiivqqu2gF0BgM5iMfe7PiKfxZ7MYxZq78jiUZIdc42Hools+qpA+gVlNt1fCQ6d+3vbJTflqLehqjV+fY0wk5EC81cWEsSPpWgbfVQB8uYvKrTENn2Q3IfhYE5FU3OAZITrfOy8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cnk9dX9i; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HctDhQJ+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765304666;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dnmWADxON+YmdpGHvTe/CcMuyEKp/5Q83Q83DsKz/iw=;
-	b=HctDhQJ+4A3aUhAaAhKQnY+g776Z8uPWBktbJDdybVFtgq1Qc0Y9RQnJzsCIiGlIg09oWO
-	9haPNMbODlSTqDLthKNGZxmG7tDPjVqSWvlLq1qsMEYy1FC5K6+J3U40SVlmBomXp+p1Ke
-	f5b64Wv47GiSxbWV2n07CXJcO+3UwYM=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-201-eOhTOctBOESrT9uqEBFEwg-1; Tue, 09 Dec 2025 13:24:21 -0500
-X-MC-Unique: eOhTOctBOESrT9uqEBFEwg-1
-X-Mimecast-MFC-AGG-ID: eOhTOctBOESrT9uqEBFEwg_1765304660
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-88239fa9ec9so155535686d6.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Dec 2025 10:24:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cnk9dX9i"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-349195f1a52so189887a91.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Dec 2025 15:26:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765322779; x=1765927579; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sFSMglxi03HRAT0yehis6m77IOxVyy21KOVUh0nvSuU=;
+        b=cnk9dX9iYbf89UizBTJQ4edjkv4NvAUBIbMdJOg/ovgmsqrzrPr7LntKt9uBTt1S3/
+         P3s4Ylc5RECOyb7V+s3Jqp6bcfYW+E8UuHixEdWKyaRH9w73xfeZotTq4jYw6zFZVzox
+         ofBh5zwJXA6htIxtY4A/bz4176Ikq8OjbjUCfYBshacOXweqczkB9m1rM3c/yxd9Adti
+         7j9NuzZunvXQQGk2t6lfGvq7cTm1vtLdZZM9GIrNvZebEHir4pPSSs0bigNQaYeppSxZ
+         n8Yl/JJUWhGzjpRgFMIuPDjUFGiCYz/UeX1S2U1tzZvt9QiT5X+3H1eJrIlNxk2VtUkt
+         NiQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765304660; x=1765909460;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dnmWADxON+YmdpGHvTe/CcMuyEKp/5Q83Q83DsKz/iw=;
-        b=kxQnucddLnV/6py7N1tP+qs/3PrJpxLn27A7SfoO4uuI6kIGouOCWy/VE6Kbzr539C
-         OOYViygh9Xwm9moLDRdcHtUzBwOK9VV3FOgyHswXO254qMQIslLXO7oj1o6EiOs6pDue
-         SPkMdBsqrDrgV3pQ3MCbXYOI0trfYXh4uygB7gt5HNZ98HFlzKTQ2LXDl/qK7w50F2Wy
-         IgNmvEp6yPW8UdrSQrMnhZRo9gopp7AxGGJ38M8psM9pXzRf3LADBkQNNjncNh5udQ0F
-         DmMBfBcs9xxD2NJKqn/EtdvqJZntIvrYO7BgeinevdImz7vR4NL5aSBgyWAE8v1jYmC7
-         qTrw==
-X-Forwarded-Encrypted: i=1; AJvYcCU2YLqtdpHuuiuWqx05CVG+fqO4rF80JdESud7YoCGaVdX/15+qac4OV0lfOGj3XUGNhvZZXAXl/u4+Lxpqng==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxG3g47pSEPf0kRrucQJz6AejN6EFvqRINrIec6c2Pw9xyWeouB
-	+jBQDY7QmdM6dAukfiSayEtKCk8SJmjLUloP+Kzww1Oprw1WKL5aRAilW2Tp3fSPrlSWSuZc3Ql
-	gNEeX2+DWG1FT53K/DnQeo1zx926+1p2O/0Y829WmR55TENLpNweR/lBDQyPQaKtpFavU
-X-Gm-Gg: AY/fxX66rlvODnw8GQJ7StD1KCAEXkSdUVaJbkQEQrfwPLcvf8BO0JIVqnaP18Y+U2s
-	W51CTXFODdBY2Hldx4wfg92jo+TX6wsE2mPwZKGLzyoCaCvc1ntSF4xMAv3Ayx0zVSPxGiTcdeq
-	kT7tWK0XJdIuWw87I/mvWb0oPLsi84u2vY/G14iyhfAQqOy+MKE4cost2BgKxS2wHHW1hFJtXom
-	ci0ByFYFT75j6tew7vjVnzIu3eMJd+tVTLX4fG55xns5loHSK3sQMHj9ZqJfZlDnJr0B9Q1DsIn
-	hbkUtOl1+cBGzNKv7cGM/ojqepekg2V+21WpuydVFBPpXthknvqpJnXOSgDlgcsmf6P6PWI6ojv
-	Z1ji/usZXTQ==
-X-Received: by 2002:a05:6214:ca4:b0:880:5a6d:acdd with SMTP id 6a1803df08f44-8883db2a6b2mr191692806d6.20.1765304660182;
-        Tue, 09 Dec 2025 10:24:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFJ8wAtHimvFzUwt+2wodU61BXEoK2Jlph6a1B6dGPRD3NMrmeZ11TpnWCcFApbeYhstxlBjw==
-X-Received: by 2002:a05:6214:ca4:b0:880:5a6d:acdd with SMTP id 6a1803df08f44-8883db2a6b2mr191692316d6.20.1765304659571;
-        Tue, 09 Dec 2025 10:24:19 -0800 (PST)
-Received: from localhost ([2607:f2c0:b021:e700:1a3d:b7ef:5d4d:bee5])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-888287d5f9csm131225306d6.46.2025.12.09.10.24.19
+        d=1e100.net; s=20230601; t=1765322779; x=1765927579;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sFSMglxi03HRAT0yehis6m77IOxVyy21KOVUh0nvSuU=;
+        b=vynNBKZqhG+uPHsolRrN6nXCIsy0EcV23/FeQURtiZ3c5gRwb5FAXBJi35HOYGtZtm
+         t5KQykpj4SUU3316Wc4SFfPXUmwYgmXnYSfb10uW+mhJmFJXaB/7tjR1rKKHxeUFEXjX
+         /fT+PtFFelmTHDTc965eHOR8+fLXmoCvsUryRZDxKkLzyYPerUmHUQKza05CV54H5V2X
+         ryPUufuBByUD6izEGz4SF/6xi3zBz13F6nzmQ73ZJRfiYUzVtKeUWIpcXufNwGmkzO6E
+         VBmTsHB4MNg6aUhZa/DC8NnCQEK/YNljAQWkmlUCSSDewscZFNBeBsKlqa8UPoky96bs
+         2lXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWfIsiRvsQJjYDpKRcra4zBLHCKVC7LUdmN8GuFp60DdceCFKN3o4MuIboP7nElTY3pDLb0CvFPN+vDs53HYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywv0Dn2es/1tizW41ihe2vAWrcXdQOauFTe10w4bZaGkhf+uShC
+	jCbwmlx0vkiheAl3DZU4r8DJc8nfO2l0c7RT+nFCMKMMGrhPcm6xx0zq
+X-Gm-Gg: AY/fxX4K2txgAY8q5m1y1PijZBxBFd4m+UYpk67wT+tZLZuQqfYFtYGpLYnAK8oNE38
+	VpLXY48HXkDHybZ7bUvNJPitk10oAOldt8Fi9N0u3kARyFWBWCv+dygLODlai++X72w6Mn3ylg/
+	btxNUzTIGellVZFzQe26Wok/sQ2GfCyivRk4hjM5jjvhU1TJspsr7be7Lg3Lmz8caWOO4ftsMIf
+	Lz0bD4JxCiUFAfT5iRqgt388qRo04B5njbsj6oURowhGiUsRyJaAyX9qWdhTt0C4hahMSXoAIhq
+	PC12tXQ/7aSC576VNr0YQry7pJeOBPhY0YLaL0oV85ZKdkYk97Gk6eAcfBcEQVOXhfM3TFI3LB2
+	9stUu3t783a1lUwgjmHQtV+C2AqWirBJ6bKWZnjzKargUodBCWHfXhkbAaciBDbMTBR7W7kcflQ
+	J6BC0FBtpMqusa26hyM+wdsY3amPq2fyM2Jlg9JvTrMN+eQmm0F5IwUeDN+W0CQ0M++A==
+X-Google-Smtp-Source: AGHT+IFipAgprEncksYPWxHvJftE0v7vy//a1Esb7V76NMt6GGRBpflRHmfK4ouR12GWa83QVdARPQ==
+X-Received: by 2002:a17:90b:3849:b0:343:7711:127d with SMTP id 98e67ed59e1d1-34a4f89b438mr2613916a91.9.1765322778645;
+        Tue, 09 Dec 2025 15:26:18 -0800 (PST)
+Received: from localhost (p4783053-ipxg23301hodogaya.kanagawa.ocn.ne.jp. [153.209.99.53])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29dae99f6b8sm165814375ad.52.2025.12.09.15.26.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Dec 2025 10:24:19 -0800 (PST)
-Date: Tue, 9 Dec 2025 13:24:18 -0500
-From: Peter Colberg <pcolberg@redhat.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH 2/8] rust: pci: add is_physfn(), to check for PFs
-Message-ID: <aThpUqJDqa_7VYtx@earendel>
-Mail-Followup-To: Joel Fernandes <joelagnelf@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>
-References: <20251119-rust-pci-sriov-v1-0-883a94599a97@redhat.com>
- <20251119-rust-pci-sriov-v1-2-883a94599a97@redhat.com>
- <20251207063529.GA213398@joelbox2>
+        Tue, 09 Dec 2025 15:26:17 -0800 (PST)
+Date: Wed, 10 Dec 2025 08:26:03 +0900 (JST)
+Message-Id: <20251210.082603.290476643413141778.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: boqun.feng@gmail.com, gary@garyguo.net, a.hindborg@kernel.org,
+ bjorn3_gh@protonmail.com, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, lossin@kernel.org, will@kernel.org, peterz@infradead.org,
+ mark.rutland@arm.com, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: Mainline x86_64/arm64 defconfig+Rust `rusttest` error
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANiq72mEYacdZmHKvpbahJzO_X_qqYyiSiSTYaWEQZAfp6sbxg@mail.gmail.com>
+References: <CANiq72mEYacdZmHKvpbahJzO_X_qqYyiSiSTYaWEQZAfp6sbxg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20251207063529.GA213398@joelbox2>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: axIEwpyxSRPfqb-qQf-3yIc8xhQ4iRl6bX7KuDoYzyg_1765304660
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Sun, Dec 07, 2025 at 01:35:29AM -0500, Joel Fernandes wrote:
-> On Wed, Nov 19, 2025 at 05:19:06PM -0500, Peter Colberg wrote:
-> > Add a method to check if a PCI device is a Physical Function (PF).
-> > 
-> > Signed-off-by: Peter Colberg <pcolberg@redhat.com>
-> > ---
-> >  rust/kernel/pci.rs | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> > 
-> > diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-> > index c20b8daeb7aadbef9f6ecfc48c972436efac9a08..814990d386708fe2ac652ccaa674c10a6cf390cb 100644
-> > --- a/rust/kernel/pci.rs
-> > +++ b/rust/kernel/pci.rs
-> > @@ -409,6 +409,12 @@ pub fn resource_start(&self, bar: u32) -> Result<bindings::resource_size_t> {
-> >          Ok(unsafe { bindings::pci_resource_start(self.as_raw(), bar.try_into()?) })
-> >      }
-> >  
-> > +    /// Returns `true` if this device is a Physical Function (VF).
-> 
-> nit:  s/VF/PF/
-> 
-> also, add #[inline].
-> 
-> With that,
-> 
-> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+On Tue, 9 Dec 2025 11:56:08 +0100
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-Thanks, done.
+> Hi all,
+> 
+> I am seeing in mainline x86_64/arm64 defconfig+Rust the following
+> `rusttest` error [1].
 
-Peter
+I think that simply marking the module! doctests as ignore would avoid
+the issue. But it's possible to make the atomic helpers run on the
+host side so we might want a better fix?
 
-> 
-> thanks,
-> 
->  - Joel
-> 
-> 
-> 
-> > +    pub fn is_physfn(&self) -> bool {
-> > +        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
-> > +        unsafe { (*self.as_raw()).is_physfn() != 0 }
-> > +    }
-> > +
-> >      /// Returns `true` if this device is a Virtual Function (VF).
-> >      pub fn is_virtfn(&self) -> bool {
-> >          // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
-> > 
-> > -- 
-> > 2.51.1
-> > 
-> 
+=
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v1] rust: macros: make module! doctests as ignore
+
+ModuleParamAccess started using SetOnce, and SetOnce depends on the
+helper functions so `make rusttest` doesn't work for module! macro.
+
+Fix the followings:
+
+ ---- rust/macros/lib.rs - module (line 62) stdout ----
+error: linking with `cc` failed: exit status: 1
+  |
+  =3D note:  "cc" "-m64" "/tmp/rustcHhYZSx/symbols.o" "<2 object files
+omitted>" "-Wl,--as-needed" "-Wl,-Bstatic"
+"./rust/test/{libkernel,libuapi,libbindings,libbuild_error,libpin_init,libf=
+fi}.rlib"
+"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwi=
+nd-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,libcfg_if-*,librustc=
+_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,l=
+ibminiz_oxide-*,libadler2-*,libunwind-*,liblibc-*,librustc_std_workspace_co=
+re-*,liballoc-*,libcore-*,libcompiler_builtins-*}.rlib"
+"-Wl,-Bdynamic" "-lgcc_s" "-lutil" "-lrt" "-lpthread" "-lm" "-ldl"
+"-lc" "-L" "/tmp/rustcHhYZSx/raw-dylibs"
+"-B<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld"
+"-fuse-ld=3Dlld" "-Wl,--eh-frame-hdr" "-Wl,-z,noexecstack" "-L"
+"./rust/test" "-L"
+"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib" "-o"
+"/tmp/rustdoctest9bUijb/rust_out" "-Wl,--gc-sections" "-pie"
+"-Wl,-z,relro,-z,now" "-nodefaultlibs"
+  =3D note: some arguments are omitted. use `--verbose` to show all
+linker arguments
+  =3D note: rust-lld: error: undefined symbol:
+rust_helper_atomic_try_cmpxchg_relaxed
+          >>> referenced by kernel.e6083e32b3c2ec6-cgu.05
+          >>>
+kernel.kernel.e6083e32b3c2ec6-cgu.05.rcgu.o:(kernel::sync::set_once::SetOnc=
+e$LT$T$GT$::populate::hd1ceefad3c0dd5d9)
+in archive ./rust/test/libkernel.rlib
+
+          rust-lld: error: undefined symbol: rust_helper_atomic_set_release
+          >>> referenced by kernel.e6083e32b3c2ec6-cgu.05
+          >>>
+kernel.kernel.e6083e32b3c2ec6-cgu.05.rcgu.o:(kernel::sync::set_once::SetOnc=
+e$LT$T$GT$::populate::hd1ceefad3c0dd5d9)
+in archive ./rust/test/libkernel.rlib
+          collect2: error: ld returned 1 exit status
+
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://lore.kernel.org/rust-for-linux/CANiq72mEYacdZmHKvpbahJzO_X_qqYyiSiSTYaWEQZAfp6sbxg@mail.gmail.com/
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/macros/lib.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index b38002151871..8b2af1dc79d0 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -59,7 +59,7 @@
+ ///
+ /// # Examples
+ ///
+-/// ```
++/// ```ignore
+ /// use kernel::prelude::*;
+ ///
+ /// module!{
+@@ -99,7 +99,7 @@
+ /// build an initramfs uses this information to put the firmware files into
+ /// the initramfs image.
+ ///
+-/// ```
++/// ```ignore
+ /// use kernel::prelude::*;
+ ///
+ /// module!{
+
+base-commit: cb015814f8b6eebcbb8e46e111d108892c5e6821
+-- 
+2.43.0
 
