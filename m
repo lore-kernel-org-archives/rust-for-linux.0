@@ -1,101 +1,101 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A92C1B3B19
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Dec 2025 23:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFD2316917
+	for <rust-for-linux@vger.kernel.org>; Wed, 10 Dec 2025 23:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765407744; cv=none; b=EAZFtbs4rJrFTDss/MXRzYYWi0HDKxRcktMaUs4mpXQSpJ9QBvuoMliLUls2R3kUv/3gN+fMtBAQzI99vq7egDDw2+GJSImHNi9V9UV0aOGS6mMoLjikku/BuutMWB+l52UedS9M5nTyV5Q7i7cZw3/rnHMJDgD2x32ufcls9OI=
+	t=1765408607; cv=none; b=TrN//rKwuBzBt9OkkuXmPdyGkca3vYYN1wlCIz/dugRq5kauEV6ItPNEy36JqVgtr4P8UQJyiaqs6y2oKnyj17JFYUGwL2pl0WuZkaQ4U9yodT4x6+97n+7xcIn//WVAa9I5CWo8E8S7htkc0pwDqiGLUb8fwlh9K46Esv439Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765407744; c=relaxed/simple;
-	bh=TMsOg0EFR+UD64BBXz5fs9hL3fa0Q7npqIA+cjm8z8w=;
+	s=arc-20240116; t=1765408607; c=relaxed/simple;
+	bh=l0RtyPHZ+Ix54QifQhLTGhFTA3v+L3EyhfXG/ZqkScM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GdMTR8F6UpGnPP7U9ciXsbyfdSqYL0JbrsWYqfmbYhnE1Lc4HRLcAAjQwrh84pQ2p/OgO7o/Cb5/YfkN3u0jBJoiLq2IXY/P9FIPjlTzD54sFPkjgRPsh6lF4GY1mY/MM8WoX0KoLXqTm8Hv5LHQONfbsqlIqBIgiVwmwyPadhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ls+BNl+c; arc=none smtp.client-ip=209.85.222.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xe304JI6VyqtWsjTAe1IQDtF+EXK+iOdgLE+wsNmbD0PX+gM/r5o1p9wT5cJy5Wa1bPd7imuWf2C7nsWM07LVAZgA/OoH+XJmTnaqw92OlAoq0uTQah+ku5XhSz2atPJSlRzU1nd9jWdkghTMkacBgafYkIv4KfSr7ePBRTXGOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KDXaiWHF; arc=none smtp.client-ip=209.85.160.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ls+BNl+c"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8b2ec756de0so42749685a.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 10 Dec 2025 15:02:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KDXaiWHF"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ee328b8e38so2802691cf.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Dec 2025 15:16:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765407740; x=1766012540; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1765408603; x=1766013403; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JUoBBL2VOn+YOW5vsEXLFDa2rH2hmmbgJMn0OL7Moac=;
-        b=ls+BNl+cwKGV8DEzSnh3DA2/ZTBUB5JcVC76EM3txqgQftKlJCeCKrrZhoXkNAvwlY
-         A/ObH5NlUG97uzWYcYJMusGUSP2k/r49y2aeCHtzNFCtAKB46PYPWO7TZa96ZQUqD2bC
-         8KxNygxlCbGniBW838uThKP60fUJIXTP2CxUT13wS+I48ywwC5mpJZqgF4QpNQ3wrB3k
-         jhmaEv3u4Km1rzoucbvceotk/hJfvdaM+3Gl4Z7/CJepza3PxEpp6OpiVOYRG0Cad2M1
-         vb0xvDuWFile5I7SO3KUSDe9xo51yl8Z0bmGKuiOLABgELtoLQlK3YZWzUD29ABdvmc2
-         q8vA==
+        bh=g9fqsZDhXIOU56z8Su7/pzwrmQiHykwN0+E6dAXKTAQ=;
+        b=KDXaiWHFoYCmx9MOEuJ6HJjH4R5xgxVrXXIXNG5UC53+wY3JtbRnlrTwcJEYN0HSKU
+         TjmEXV4BGrfuoqO/wgSU6VRhYJLk34RmqrpZPJ4iFcfeFbhWNXW0t8ptvCL+BZ7ay32Q
+         AMt7KkTfKepY6ULXIUi2Kays1x1QItfsRnw8WdYpjJoknHOhkNNjcmMD6pUjHESl4Ctz
+         gUAamW4SnbsuQfZAFXdf1+8jGGtzNOocepe9MHZwpdtEe2qV84rlqZwOJdHNRKrKtRFW
+         VSR1rKNHUfhGikQOVbBDN9OS4HeL4dxY/ADW9EOXKRVn7KPwvLbGalrJr6Mk7tMA0y7s
+         wRnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765407740; x=1766012540;
+        d=1e100.net; s=20230601; t=1765408603; x=1766013403;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JUoBBL2VOn+YOW5vsEXLFDa2rH2hmmbgJMn0OL7Moac=;
-        b=Hx7ftN6jjntWx9qo1N4KX8yFlFAVH0JJGXgOuhp4daNlSwslO0B1EqWpbLvMiINVgk
-         DezpBePPNeNl5p5OKUvQwra74P4r7b4rtEYVJ37tTAePta75eCVMsw/sIo6ZKtrFssMi
-         WYQvQeX25rIQb68qYYzL68gKgSqY2SVsWj/ftFa9UawMrOQE5rVY53E+B1A1SlN6Jgp+
-         TngMm61FTIXQOmYs/yM3PXX9qo5ATGl2sphUKJREZKZE23I1L+EhAK5Sh8TrIyk1m3W/
-         OK1DNRDxpAhzeDdhJWb8qhfmOdczWl1dFhS+TtiUbAg5s/vbeRQuvOrbjdSLqnnCKBiI
-         OPmw==
-X-Forwarded-Encrypted: i=1; AJvYcCXuGnpWE00Dfbmk/VpX2v1dq6/78/gCGkJV/c+79bOD3QM/fwuMAY97MqikmL1W3LvhnAHEL4iKPV5WZaUXxg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGLXY99dRsoLWBDz8do0QX68Cz0UFY3pSs6XrKbP7xYlwaEbtZ
-	GGz1ujLp1y6ODkEhKbeLfmTJ0P9O57wVA7IiLx7XeZEuiXG1F+EzIve4
-X-Gm-Gg: ASbGncuZH3x/Sv+JEt+mrJy+0bMaWIYi/lR712Xvojxvk+K0+AgXS05F6CX3X0O235G
-	hQI6pBBVrXoszImsG5IbV9FQY1dtYADEtZP60w1Jcrx3LlZV0/uopuqcBplHmCEL27zO0JYVLkV
-	+yYqf7fcy7QaBttKDS+tP4iEw56G1z9lnmM889HCm67zO74xW84UoyUyUMIPm9ZPVQcZX1ix8ho
-	m/Kh1dIkl2cGRWgGXW/LMc/s6wExYqD2S9OcUqOpt5JhyJINdGWseo9CpKtidC8LFQWBsJRxdy9
-	ols5S+YYyZ8CdZzHRfl8eehAM/l+koC/pXbg6j0Jvxla1ilMgo0IPHi12Oan3kPX+dxM6Ne2zXl
-	ZSxklp2qlt9BcFVbbNUGLYvicIlmdCOR/aFL40F/bmZa9OZIqX/9vEvkFthBtlIDm2Qg3ySbONJ
-	/DoiQhod6ma1Dh/5XL0SguXLuGGYCPPGcliEI3y5X3OdYaNpXUYNf4Q1ioby9KvuZDTT6jNp50f
-	oGTt7LOofcF37c=
-X-Google-Smtp-Source: AGHT+IEAjeKNPJryWjUXIduq40MIuE9hd1XIAFGK8m6EVj0DpXi5MjAo3OdKcsWzjzpX2CVIIeEaWw==
-X-Received: by 2002:a05:620a:280c:b0:8b2:eaf3:5cd8 with SMTP id af79cd13be357-8ba39357ebemr627394585a.29.1765407740132;
-        Wed, 10 Dec 2025 15:02:20 -0800 (PST)
+        bh=g9fqsZDhXIOU56z8Su7/pzwrmQiHykwN0+E6dAXKTAQ=;
+        b=w95iaK6x/BcqgxJ0Zmf09G2c9z9kpELj2Qojq2boZZx9/E/2cjxadBY2u3KMwT6vDo
+         OuRFo3Cku6htQheJsRzuNLqMeqSagsiPx254IIW4jeKugPBTvIp3XLblzEyqYRMtNGkD
+         w1rYIRq58HVvfA/VyuNCiSX/YFUFO8EtGVXHpNI8dXNF3oMRADz5niYU5koFJXex1yIx
+         N9EUzyrvHK6vBHsKopYCGOM3IRhE2ma+9WhAbIctFhuj+mOEYa+sQlr/BJQE5pNJ0iSu
+         JZ6cxMGdd28/S/RLI6020VX19B/cwCWLgEji7c9WIn0jJo9hDcLFMPdTcLQP0ivCoif3
+         ySpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX5dHF5YPQO5ksRn66GbJyBKzb16Niqr2uovGTLRpJDaUdRjF4m4/QIuqLRw4Pq4IpdwfJIVujDBd2QvK9F6w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbpqNjm3M2hnv86LM0GOuYn5t1iENLDAsAOKPN3Ttlw9Mh6hX+
+	/mqhAXWX55ZYxJ52ux6VRRZwOnGvajwb3EMl5s70NkX/nqgD2WNLPgkz
+X-Gm-Gg: ASbGnctlRmLHlsXpD5sN/0yRwvVMJuLC9CtcsFWTp0QVG8pw92nmYuoOS+TcB8FaAUA
+	KpmjB1xkTWgFKN3X8QcmBH3MoRylH1n9cwrs3/19nsZsWW3It1jU6HMnnyT+BdY0OFoXcvuK/WT
+	v4TWcgtatHwp/0lWcsGxZxJHIb+KAqhiQwvi7tiT5BdryF3X72qlNcBkeZAiRiq0kWNo7c4eXe0
+	D5dYtffIDLFiIyXBz8/k9Whjc8WNom+LisiRL8RK/HGQkjUtsB/3mWo8LSn9WQV8td4RX26jQBl
+	8he1JGgUByvpjHodjkwB/xQ9edrZJr2oEj6L6IR10tFZCNkO4HYgNqObiuNTr8U92zo1cJdbzAs
+	pSPBcOmcckLduWW2Y6QTg2jHoAO4EJ1q7L+2rKnZuqyZzZrs08Nx4quOs712Ly3G/HXrlwXqaGv
+	+0xdbJ5CzGfXcV2ebDeiw6UVCQpaJdFfgrXD7tjlIFDeu4LhL0jDa5LBFrRLtgdQk2HJnvOKwyg
+	VNhabqEWfHzXviTyXZ0bh0Fhg==
+X-Google-Smtp-Source: AGHT+IE49Q1CPkwypOMQGX1LOTBFn6NbpnIco2xJUe1xupMtcecpT7JfcSK1W1X5OF2j/YxQRxIWVw==
+X-Received: by 2002:a05:622a:251b:b0:4ed:6803:6189 with SMTP id d75a77b69052e-4f1b1b0ff9cmr64425641cf.53.1765408603373;
+        Wed, 10 Dec 2025 15:16:43 -0800 (PST)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8bab5453001sm69285185a.11.2025.12.10.15.02.19
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f1bfb87836sm752521cf.25.2025.12.10.15.16.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Dec 2025 15:02:19 -0800 (PST)
+        Wed, 10 Dec 2025 15:16:42 -0800 (PST)
 Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E2D88F4006D;
-	Wed, 10 Dec 2025 18:02:18 -0500 (EST)
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5F566F4007C;
+	Wed, 10 Dec 2025 18:16:42 -0500 (EST)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Wed, 10 Dec 2025 18:02:18 -0500
-X-ME-Sender: <xms:-vs5aaiNJ6m71ipyIM2anMFX3zmB-ZYk4SECAtlX_88Xm-PHXpkPsg>
-    <xme:-vs5abezpgnWtCWllhx3wOlGcMzZMRYu6jlm36FvWB-tGfExaGkSv7ArLg9es9q99
-    ryELWFkm2DkzpfnRZhRFZVOLKWL5rtx_yiJrSYsrg3CYgdasIwuZtk>
-X-ME-Received: <xmr:-vs5aR1fCKFFWIXN5YSOMnuks_r0aFaHbYcLnl9tJl2p-Ps8SbXR7Hq5tO3oLKCTcrKZYm7I13UkzzFPQo-gbSnVrn1_uDtM2XM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejtdcutefuodetggdotefrod
+  by phl-compute-06.internal (MEProxy); Wed, 10 Dec 2025 18:16:42 -0500
+X-ME-Sender: <xms:Wv85aVx1qt_nyhZsnUwjFNm8nLAFi2wW_Y8-1gOH0HQEjbNDrE2O8Q>
+    <xme:Wv85aVsTf43R829WrEH2UJSQ3hiVg-AC-_aOqoeHCFU7_p7mofQFEzK5HY8ifv1W3
+    2ESu5D1wjvy1ZINM98PdJZxOESyrc-4yQ6Q47rAAvQ_f4yOylcMgA>
+X-ME-Received: <xmr:Wv85afFvRo3Bnu9CGp9pZD8gwASgm9Qwtx6YJNlpqjSiV6YziO4lsM_wQdIUVvphX0G2Dvr1Ku3TIpbBvN6DEZYDbVsFI2omJW8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejfecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
     vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtth
-    hopegrtghouhhrsghothesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprghlvgigrdhg
-    rgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgt
-    phhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusg
-    horhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohho
-    ghhlvgdrtghomhdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilh
-    drtghomh
-X-ME-Proxy: <xmx:-vs5afpcUkGgvhKcpfbmxPCkx1cK4Ob1qY0uyQz9DzvQRz6nlbWVKQ>
-    <xmx:-vs5aRg9vWxOnZJIs58dUQOwI3Anip40UtT9hjL597PMoDb-_AMHew>
-    <xmx:-vs5abnySScZ92JpHa_U6v0I-aq6XR59o-8floXSjUvJvS8qKPB7nA>
-    <xmx:-vs5aaoWbG8IUF4AKSCKaj1H84BcQ6ML1P1NH5SzJsdkDl2OJInqMA>
-    <xmx:-vs5aXKgoL2Ct8_cvpDUicYIM85kV1XTRbFu7E5KU0nsF1Lgsb9xKx9P>
+    hrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeegvddvhedt
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
+    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohep
+    udeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonh
+    horhhisehgmhgrihhlrdgtohhmpdhrtghpthhtoheprggtohhurhgsohhtsehnvhhiughi
+    rgdrtghomhdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpd
+    hrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgv
+    rhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepsg
+    hjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:Wv85aT7_TfbLeDV_dXNDhLAN86rCkm3WKZ0eWpDlZUAVV1M6IJd9cA>
+    <xmx:Wv85aQxsWh4hY2TEJFcfmBU85CQnZ0a8q2t-hdU8deGrWJrHOhQ6jA>
+    <xmx:Wv85aZ0oVuAM2UHJcgBEc-rXf5s6W3DASZlUqP42mu0UTrLac6WAYw>
+    <xmx:Wv85ab7gOZhHB9EO2CxZ45ra_qK-Wn3W1HS7rxtf3mlj0-lxivmGNA>
+    <xmx:Wv85afaiPaMA-nNTzS8IQziVf0Xr2Oelv9aXFnYssIBANxMDm9pR0WlY>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 10 Dec 2025 18:02:18 -0500 (EST)
-Date: Thu, 11 Dec 2025 08:02:15 +0900
+ 10 Dec 2025 18:16:41 -0500 (EST)
+Date: Thu, 11 Dec 2025 08:16:40 +0900
 From: Boqun Feng <boqun.feng@gmail.com>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: acourbot@nvidia.com, alex.gaynor@gmail.com, ojeda@kernel.org,
@@ -105,11 +105,11 @@ Cc: acourbot@nvidia.com, alex.gaynor@gmail.com, ojeda@kernel.org,
 	rust-for-linux@vger.kernel.org, tmgross@umich.edu
 Subject: Re: [PATCH v2 3/4] rust: sync: atomic: Add i8/i16 load and store
  support
-Message-ID: <aTn794JgkRrwGpzm@tardis-2.local>
-References: <20251117001035.4068507-1-fujita.tomonori@gmail.com>
- <20251117001035.4068507-4-fujita.tomonori@gmail.com>
- <DESI62R10XIZ.245BISU72Z2V8@nvidia.com>
+Message-ID: <aTn_WK-ldlzOxBHq@tardis-2.local>
+References: <DESI62R10XIZ.245BISU72Z2V8@nvidia.com>
  <20251209.081456.1519886345847572170.fujita.tomonori@gmail.com>
+ <DET9DDRLLQYT.1LUXV5C3U6ABB@nvidia.com>
+ <20251210.083147.1370409203593259538.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -118,56 +118,86 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251209.081456.1519886345847572170.fujita.tomonori@gmail.com>
+In-Reply-To: <20251210.083147.1370409203593259538.fujita.tomonori@gmail.com>
 
-On Tue, Dec 09, 2025 at 08:14:56AM +0900, FUJITA Tomonori wrote:
-> On Mon, 08 Dec 2025 12:08:23 +0900
+On Wed, Dec 10, 2025 at 08:31:47AM +0900, FUJITA Tomonori wrote:
+> On Tue, 09 Dec 2025 09:27:25 +0900
 > "Alexandre Courbot" <acourbot@nvidia.com> wrote:
 > 
-> > On Mon Nov 17, 2025 at 9:10 AM JST, FUJITA Tomonori wrote:
-> >> Add atomic operation support for i8 and i16 types using volatile
-> >> read/write and smp_load_acquire/smp_store_release helpers.
+> >>> Can you document this macro a bit, in particular the motivations for not
+> >>> leveraging the existing ones (I guess this has to be with the new
+> >>> helpers, but following the code through is a bit difficult without
+> >>> comments).
 > >>
-> >> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> >> ---
-> >>  rust/kernel/sync/atomic/internal.rs  | 48 ++++++++++++++++++++++++++++
-> >>  rust/kernel/sync/atomic/predefine.rs | 14 +++++++-
-> >>  2 files changed, 61 insertions(+), 1 deletion(-)
+> >> // Since i8 and i16 are not expected to support the full feature set
+> >> // of i32 and i64, using the current declare_and_impl_atomic_methods!
+> >> // would require refactoring it to handle specific types or splitting
+> >> // the definitions. Furthermore, supporting Atomic<bool> will require
+> >> // even more significant structural changes.
+> >> //
+> >> // To avoid premature refactoring, a separate macro for i8 and i16 is
+> >> // used for now, leaving the existing macros untouched until the overall
+> >> // design requirements are settled.
 > >>
-> >> diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
-> >> index 6fdd8e59f45b..4c9f4f76dbdf 100644
-> >> --- a/rust/kernel/sync/atomic/internal.rs
-> >> +++ b/rust/kernel/sync/atomic/internal.rs
-> >> @@ -263,3 +263,51 @@ fn fetch_add[acquire, release, relaxed](a: &AtomicRepr<Self>, v: Self::Delta) ->
-> >>          }
-> >>      }
-> >>  );
-> >> +
-> >> +impl private::Sealed for i8 {}
-> >> +impl private::Sealed for i16 {}
-> >> +
-> >> +impl AtomicImpl for i8 {
-> >> +    type Delta = Self;
-> >> +}
-> >> +
-> >> +impl AtomicImpl for i16 {
-> >> +    type Delta = Self;
-> >> +}
+> >> makes sense?
 > > 
-> > I'd suggest putting these next to the impls for `i32` and `i64`, for clarity.
+> > Absolutely, thanks! Maybe also give a short explanation for *why* i8 and
+> > i16 won't support the same feature set as i32 and i64.
 > 
-> I'm fine with either. Boqun, what do you think?
-> 
-
-I think we should put them together.
-
-> The reason I didn't put i8/i16 next to i32/i64 is that I assume that
-> i8/i16 won't support all the methods supported by i32/i64. I thought
-> keeping them separate would make that distinction clearer.
+> I could add, though Boqun might have a different perspective.
 > 
 
-Even if that's true, it still make sense to put the impl blocks with
-i32 and i64.
+Yeah, I think it's more of an "undecided" stage. The reasons that why we
+want to avoid the same feature as i32 and i64 for i8/i16 are:
+
+1. For some architectures, 1-byte or 2-byte atomic RmW
+   (read-modify-write) operations are not supported, they would generate
+   worse binary than designing the algorithm with Atomic<i32/i64>.
+
+2. For some architectures, atomics RmW are implemented by lock-based
+   operations on C side, in that case READ_ONCE()/WRITE_ONCE() based
+   load/store implementations are incorrect, because it would race with
+   lock-based RmW for example.
+
+   atomic_add_unless(v, 1, 0);
+    lock();
+    ret = READ_ONCE(v->counter); // == 1
+						atomic_set(v, 0);
+    if (ret != u)				  WRITE_ONCE(v->counter, 0);
+      WRITE_ONCE(v->counter, ret + 1);
+    unlock();
+
+    Hence, we need to make a design decision here, either 1) we make
+    Atomic<i8> support RmW and Atomic::<i8>::load() may contain locking
+    on certain architecture (that also means you cannot use it as
+    READ_ONCE()), or 2) we disallow RmW for Atomic<i8> if they use
+    lock-based atomic.
+
+I feel we are not having the enough data to make the call here, 
+therefore I would avoid premature conclusion in the documentation.
+
+Thanks!
 
 Regards,
 Boqun
+
+> In my opinion, the reason is that the C side doesn't fully support
+> atomic operations for i8 and i16. While the C side doesn't support
+> load and store for i8/i16, we can easily support them with simple
+> wrappers (as this patchset does). I believe that xchg and cmpxchg
+> could also be supported easily.
+> 
+> However, supporting AtomicArithmeticOps (like fetch_add) for i8/i16
+> would likely require more than wrappers; architecture-dependent code
+> (likely with assembly). I don't think that it's a good idea to
+> implement such.
+> 
+> 
+> My plan is to add supoprt for limited atomic operations for i8/i16,
+> and then use the i8 support to implement Atomic<bool>.
+> 
+> Once that is in place, I intend to replace the Atomic<i32> usage in
+> SetOnce and OnceLite [1]. I believe the AtomicBool usage in the
+> binder driver could be replaced too.
+> 
+> [1] https://lore.kernel.org/rust-for-linux/20251117002452.4068692-1-fujita.tomonori@gmail.com/
