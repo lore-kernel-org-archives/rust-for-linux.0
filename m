@@ -1,273 +1,121 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C59A325734;
-	Wed, 10 Dec 2025 13:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086D11B423B
+	for <rust-for-linux@vger.kernel.org>; Wed, 10 Dec 2025 14:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765375133; cv=none; b=jt92bNg02JMFyFUHX1l2m8YpmAejf34V93rP+H47H62f+SnuEZ7LgloJeBeIW9rfrdETxqE/HZyrwO8+03q7+kvOBxvukrqQ0vno9jEnMnrwXErrUOl5jJ4kikNDywMnoeUFCPIWTbWXrnWJGFZKvjMzCnjTaZ2mZbk1DNChQzs=
+	t=1765375818; cv=none; b=RksEYKef8adpD/thFW12czLlp9vP6Mh3Kk9z8Np87jR9JOPIxL6vUu5Dqz0fDYrCu+0csidVmul3vdl1FvQGGE+YdkPuU0ns1RizpyZFuMBk05fx+XXwvbbOxyV7Ki3Xshn4haOUmqvMbpkYvNSrKw/YHk3rYF3OBehB//8ejgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765375133; c=relaxed/simple;
-	bh=/JzziIh37MwT/Lfc9x2Hc7McrdTQf1fNaek9/J7N4B4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nd3mc/U9LdrHwLxNQi/Rwy1GlLHPrr6uouVBwod8LBcln9oobH+GnHqBTSPqFMO8SfFFm3uWcJbLHTNQ53v3LuqoBlZ896jnF/dRSYnhrUyPdpfs3W3DwS0YMPgRdzsDfVf4uSWq2Zqv6/Wq1yjL9534CzZnIbTVhIEy0vRwzgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=ikrjS9wn; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1765375818; c=relaxed/simple;
+	bh=vC7RWNazEQw8SHO84BYOhsU+Fq47hH70Yj2HGICY+tg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Ix4U8AV0Ht6jt2VX8zMvJpv5CYfLTW/IbQD9dR5I7Jlij6Kf+lQLJPvixHUa2p63zjc/fzaYLPOvpkxXEVTQMpmwuejKIGwsFGvTO8ZI9UKzsSMKKrHNTUEwNf9duJjAl8jrDHPvJfsSVznEwQe2bKxp/5Edz8G1gl5EWqXnOsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XVrjGYSu; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="ikrjS9wn"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 92CC64441A;
-	Wed, 10 Dec 2025 13:58:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1765375124;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NFTzSy6FXFZbxrTvw84HxQJWfiUUGwmuc4pWf0PrSYI=;
-	b=ikrjS9wnllx6lvLrWk5y5uI86Y9rXEB6BMOdoK1CR0y47zqbfnkvsshIeu29oraAuQ3Eh6
-	AVlMsTil4uvj6UjulZFUZQVFdWZm0iQF85ZuO4b9blatYCShMHocIf3tlXQRXD66XPUrb6
-	Ph80YiSUX4y6MMnE+F5Gbmr7HpjeCxih1+w4vAYnSiNRj8yWZdJ4ch8bTaXf4KtD8taDCq
-	Wny8vIc3AQ27BZiZyHevvTDdXH4GXrxkayliaWXB7UEwF8h65qrPYfSIRFrQdsLB+mxOUO
-	hpVpgXgkLQI54IZ8a7rReHjzh2lStJICSRFXINtLdqSbR1miaVJUhkgTARQ0oA==
-From: Guillaume Tucker <gtucker@gtucker.io>
-To: Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	automated-testing@lists.yoctoproject.org,
-	workflows@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Guillaume Tucker <gtucker@gtucker.io>
-Subject: [PATCH v1 2/2] Documentation: dev-tools: add container.rst page
-Date: Wed, 10 Dec 2025 14:58:29 +0100
-Message-ID: <97fb956ee0d303c8e41f4266f25ebadc9ce295d7.1765374789.git.gtucker@gtucker.io>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1765374789.git.gtucker@gtucker.io>
-References: <cover.1765374789.git.gtucker@gtucker.io>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XVrjGYSu"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so77373815e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Dec 2025 06:10:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765375815; x=1765980615; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sH7JNMw89euFON+lTWkqyHT9U4TKnyHQz31vhEK550c=;
+        b=XVrjGYSuajhwmcdKKPl6M34sjr8SAFBSPI7f1FdkOrk7dfYKaH8sZXpLfYHGZNcuF4
+         KoJyK69U9m06gOXgoS8zcgCrPZ5Nf24osNa15GBCXgv0A7pUNY5YZaetpUrkSWx7x4O0
+         DA6FGWAYIeO9ZsqufK/hgOc5525GhsVYs+33XM7SGq2UOBUGSv9mJPKhZTI8Tu9LUuZd
+         XfrUM6OQ3Fd1ZuGXkLWKAOTENSgxIAi+Vvbi2nX2WROWrHEyPH+xPP6tXpu4EiRwn4uz
+         oi5Guro/ynfTRPN6omo7LwnZrm4d36u7erG90GMCee0IempT2e/5THVkvXclq8K4UBYr
+         bpIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765375815; x=1765980615;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sH7JNMw89euFON+lTWkqyHT9U4TKnyHQz31vhEK550c=;
+        b=ZE8BaCRwcUFMUlhTCpYMk3mgK+FZfi1HJxYX13SEOtBrVUvmGxh+1ewhUG7yvMhKJ4
+         PakZwB2k1CmciroAxHvRWXCpdAGdnn1wlkGMI+UyJgf0p+wJMckr3fdJx+StiCBooPwQ
+         d2MCxMNeNruJUt6GPFMrZaL6ExS6ady/1GibtYd4kuKqZehPQL9AoXWiDrIxkSx7QmIS
+         ECGuZcK+KGFiC74aIhaq39cV3KuSU5B0quxUsivHJt4tmU9+4QzC5U5iy63hkkzzjC04
+         E/ny7cOkwdP+i61LM0/pqViid9OQ4FQOcLTj62S9pysBkF4LAKYVXYceFK8s6btXoa8m
+         JXdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXlSIZRP2vTamZ+FGB7zcm5SyZ6jE8t/Fkue8rDzIBtlvmjDretB9zp//9sjz9zlD2mQfs4JxKMyhhzMwJCiA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YybMHmSsLoTZ3fNBmTIMxUapUDe62MdkbDEHEO5qGnf1U5eGIr0
+	gx5cgvaeDm81A+YARNfNPeCibYrH0882DnDr4aZ/b5aQ/4IxTlaEoWMy
+X-Gm-Gg: ASbGncsDUI5eN71FvttvL8VKEUuVIkstgUdp/96jcrXI5isoZc5b7ZOom7blEwAeStG
+	c6/2LKrZS1iljMhpHZILHoleRoshHC2TRYNhayhoPRITFVPU24i9L+6KBqmOrV/cAZCSdITqdRs
+	WN3XELAsXbeSgcIfXFL5QVStQcH2BUUwjip8/Q6JH6AgKaBbC33l1Um3lOEw5uw1Mr34btSbixD
+	rLn+9Q07mCZokgjdMXv21iMQRvBLwnOAY4ELCdf+YHxWY4SWx1FheaWRZ55ZacUdzDDWiiUoWZI
+	G3kcOb/JY0N7G2+7NKOCg9RMkfDRTzFYlFS3fhLDHljxeHJCgDG6aZMw1tJBOCwGU+ulgLIBaq3
+	5uIeGhqc0UJptOUomn7iCd4m0UvXQcbT1i9GPKLr+zQfm+G6qxop5NVJb9cE7KsbyjQeNjXDuXW
+	Xfv/o3GQleSHmJgTkaT96WPXNwCSZfaGfTgGieApTXk2cxqpi/Ce7vTDHCKisWgpwqIiEB2pJqV
+	k7RIMjFqZVaFJ4PJsg+r4jU3C5/905H87sBbPoNAVm4ng==
+X-Google-Smtp-Source: AGHT+IFL4Dce+iS2AP/9BKbMr5rmVqef9MiJuRV86rp31kh7Gm6lbR3JrPFyWk/6qAOeGdT18Qg/Vw==
+X-Received: by 2002:a05:600c:46d2:b0:477:429b:3b93 with SMTP id 5b1f17b1804b1-47a83843246mr27645065e9.18.1765375815135;
+        Wed, 10 Dec 2025 06:10:15 -0800 (PST)
+Received: from ?IPV6:2003:df:bf2d:e300:ddf9:5fd9:1909:eb2e? (p200300dfbf2de300ddf95fd91909eb2e.dip0.t-ipconnect.de. [2003:df:bf2d:e300:ddf9:5fd9:1909:eb2e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a7d3532e7sm48107705e9.1.2025.12.10.06.10.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Dec 2025 06:10:14 -0800 (PST)
+Message-ID: <cac484ba-904b-447d-b802-3e324c843ffe@gmail.com>
+Date: Wed, 10 Dec 2025 15:10:12 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: gtucker@gtucker.io
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvdeiudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepifhuihhllhgruhhmvgcuvfhutghkvghruceoghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhoqeenucggtffrrghtthgvrhhnpedvgfevuedtteeiudduffetgedtkeeigfegffdvledutdeviedvkeegleetkeefudenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhgihhtlhgrsgdrtghomhenucfkphepvddttddumeekiedumeegrgegtdemkeeivddtmeejkegrsgemkehfkedumedvkeeludemgegsvgegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeegrgegtdemkeeivddtmeejkegrsgemkehfkedumedvkeeludemgegsvgegpdhhvghlohepshhtrghrughushhtrdhlrghnpdhmrghilhhfrhhomhepghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhopdhqihgupeelvdevveeigeeggedutedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopedutddprhgtphhtthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrt
- ghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgsuhhilhgusehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghuthhomhgrthgvugdqthgvshhtihhngheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
-X-GND-State: clean
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] samples: rust: fix endianness issue in
+ rust_driver_pci
+To: Marko Turk <mt@markoturk.info>, dakr@kernel.org, bhelgaas@google.com,
+ kwilczynski@kernel.org, miguel.ojeda.sandonis@gmail.com,
+ dirk.behme@de.bosch.com, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20251210112503.62925-1-mt@markoturk.info>
+ <20251210112503.62925-2-mt@markoturk.info>
+Content-Language: de-AT-frami, en-US
+From: Dirk Behme <dirk.behme@gmail.com>
+In-Reply-To: <20251210112503.62925-2-mt@markoturk.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add a dev-tools/container.rst documentation page for the
-scripts/container tool.  This covers the basic usage with additional
-information about environment variables and user IDs.  It also
-includes a number of practical examples with a reference to the
-experimental kernel.org toolchain images.
+On 10.12.25 12:25, Marko Turk wrote:
+> MMIO backend of PCI Bar always assumes little-endian devices and
+> will convert to CPU endianness automatically. Remove the u32::from_le
+> conversion which would cause a bug on big-endian machines.
+> 
+> Signed-off-by: Marko Turk <mt@markoturk.info>
+> Fixes: 685376d18e9a ("samples: rust: add Rust PCI sample driver")
+> ---
+>  samples/rust/rust_driver_pci.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
+> index 5823787bea8e..fa677991a5c4 100644
+> --- a/samples/rust/rust_driver_pci.rs
+> +++ b/samples/rust/rust_driver_pci.rs
+> @@ -48,7 +48,7 @@ fn testdev(index: &TestIndex, bar: &Bar0) -> Result<u32> {
+>          // Select the test.
+>          bar.write8(index.0, Regs::TEST);
+>  
+> -        let offset = u32::from_le(bar.read32(Regs::OFFSET)) as usize;
+> +        let offset = bar.read32(Regs::OFFSET) as usize;
 
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Guillaume Tucker <gtucker@gtucker.io>
----
- Documentation/dev-tools/container.rst | 175 ++++++++++++++++++++++++++
- Documentation/dev-tools/index.rst     |   1 +
- 2 files changed, 176 insertions(+)
- create mode 100644 Documentation/dev-tools/container.rst
+Yes, dropping from_le() is what we talked about:
 
-diff --git a/Documentation/dev-tools/container.rst b/Documentation/dev-tools/container.rst
-new file mode 100644
-index 000000000000..2a56f256f648
---- /dev/null
-+++ b/Documentation/dev-tools/container.rst
-@@ -0,0 +1,175 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+.. Copyright (C) 2025 Guillaume Tucker
-+
-+====================
-+Containerized Builds
-+====================
-+
-+The ``container`` tool can be used to run any command in the kernel source tree
-+from within a container.  Doing so facilitates reproducing builds across
-+various platforms, for example when a test bot has reported an issue which
-+requires a specific version of a compiler or an external test suite.  While
-+this can already be done by users who are familiar with containers, having a
-+dedicated tool in the kernel tree lowers the barrier to entry by solving common
-+problems once and for all (e.g. user id management).  It also makes it easier
-+to share an exact command line leading to a particular result.  The main use
-+case is likely to be kernel builds but virtually anything can be run: KUnit,
-+checkpatch etc. provided a suitable image is available.
-+
-+
-+Options
-+=======
-+
-+Command line syntax::
-+
-+  scripts/container [OPTION]... CMD...
-+
-+Available options:
-+
-+``-e, --env-file ENV_FILE``
-+
-+    Path to an environment file to load in the container.
-+
-+``-g, --gid GID``
-+
-+    Group id to use inside the container.
-+
-+``-i, --image IMAGE``
-+
-+    Container image, default is ``gcc``.
-+
-+``-r, --runtime RUNTIME``
-+
-+    Container runtime, default is ``docker``.  Supported runtimes: ``docker``,
-+    ``podman``.
-+
-+``-u, --uid UID``
-+
-+    User id to use inside the container.  If the ``-g`` option is not
-+    specified, the user id will also be used for the group id.
-+
-+``-v, --verbose``
-+
-+    Enable verbose output.
-+
-+``-h, --help``
-+
-+    Show the help message and exit.
-+
-+
-+Usage
-+=====
-+
-+It's entirely up to the user to choose which image to use and the ``CMD``
-+arguments are passed directly as an arbitrary command line to run in the
-+container.  The tool will take care of mounting the source tree as the current
-+working directory and adjust the user and group id as needed.
-+
-+The container images are provided by the user and selected via the ``-i``
-+option.  They will typically include a compiler toolchain to build the kernel
-+and as such, the default image tag is set to ``gcc`` to give a convenient way
-+of running builds.  Any local image with a GCC compiler toolchain could be
-+tagged as ``gcc`` to make it point to it.  For example::
-+
-+  docker tag my-user/gcc:15 gcc
-+
-+The container runtime can be selected with the ``-r`` option, which can be
-+either Docker or Podman.  Support for other runtimes may be added later
-+depending on their popularity among users.
-+
-+
-+Environment Variables
-+=====================
-+
-+Environment variables are not propagated to the container so they have to be
-+either defined in the image itself or via the ``-e`` option using an
-+environment file.  In some cases it makes more sense to have them defined in
-+the Containerfile used to create the image.  For example, a Clang-only compiler
-+toolchain image would most likely have ``LLVM=1`` defined.  The local
-+environment file is more useful for user-specific variables during development.
-+
-+Please note that ``make`` options can still be passed on the command line, so
-+while this can't be done as the first argument needs to be the executable::
-+
-+  scripts/container INSTALL_MOD_STRIP=1 make modules_install
-+
-+this will work::
-+
-+  scripts/container make modules_install INSTALL_MOD_STRIP=1
-+
-+
-+User IDs
-+========
-+
-+This is an area where the behaviour will vary slightly depending on the
-+container runtime.  The goal is to run commands as the user invoking the tool.
-+With Podman, a namespace is created to map the current user id to a different
-+one in the container (1000 by default).  With Docker, while this is also
-+possible with recent versions it requires a special feature to be enabled in
-+the daemon so it's not used here for simplicity.  Instead, the container is run
-+with the current user id directly.  In both cases, this will provide the same
-+file permissions for the kernel source tree mounted as a volume.  The only
-+difference is that when using Docker without a namespace, the user id may not
-+be the same as the default one set in the image.
-+
-+Say, we're using an image which sets up a default user with id 1000 and the
-+current user calling the ``container`` tool has id 1234.  The kernel source
-+tree was checked out by this same user so the files belong to user 1234.  With
-+Podman, the container will be running as user id 1000 with a mapping to id 1234
-+so that the files from the mounted volume appear to belong to id 1000 inside
-+the container.  With Docker and no namespace, the container will be running
-+with user id 1234 which can access the files in the volume but not in the user
-+1000 home directory.  This shouldn't be an issue when running commands only in
-+the kernel tree but it is worth highlighting here as it might matter for
-+special corner cases.
-+
-+
-+Examples
-+========
-+
-+The shortest example is to run a basic kernel build using Docker and the
-+default ``gcc`` image::
-+
-+  scripts/container -- make defconfig
-+  scripts/container -- make -j$(nproc)
-+
-+.. note::
-+
-+   When running a command with options within the container, it should be
-+   separated with a double dash ``--`` to not confuse them with the
-+   ``container`` tool options.  Simple make targets with no options don't
-+   strictly require the double dashes e.g.::
-+
-+     scripts/container make mrproper
-+
-+To run ``checkpatch.pl`` in a ``patches`` directory with a generic image::
-+
-+  scripts/container -i perl:slim-trixie scripts/checkpatch.pl patches/*
-+
-+To build using the TuxMake Clang image::
-+
-+  scripts/container -i tuxmake/x86_64_korg-clang -- make LLVM=1 -j$(nproc)
-+
-+The examples below refer to ``kernel.org`` images which are based on the
-+`kernel.org compiler toolchains
-+<https://mirrors.edge.kernel.org/pub/tools/>`__.  These aren't (yet) available
-+in any public registry but users can build their own locally instead using this
-+`experimental repository <https://gitlab.com/gtucker/korg-containers>`__ by
-+running ``make PREFIX=kernel.org/``.
-+
-+To build just ``bzImage`` using Clang::
-+
-+  scripts/container -i kernel.org/clang -- make bzImage -j$(nproc)
-+
-+To run KUnit::
-+
-+  scripts/container -i kernel.org/gcc:kunit -- \
-+      tools/testing/kunit/kunit.py \
-+          run \
-+          --arch=x86_64 \
-+          --cross_compile=x86_64-linux-
-+
-+To build the HTML documentation, which requires the ``kdocs`` image built with
-+``make PREFIX=kernel.org/ extra`` as it's not a compiler toolchain::
-+
-+  scripts/container -i kernel.org/kdocs make htmldocs
-diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tools/index.rst
-index 4b8425e348ab..527a0e4cf2ed 100644
---- a/Documentation/dev-tools/index.rst
-+++ b/Documentation/dev-tools/index.rst
-@@ -38,6 +38,7 @@ Documentation/process/debugging/index.rst
-    gpio-sloppy-logic-analyzer
-    autofdo
-    propeller
-+   container
- 
- 
- .. only::  subproject and html
--- 
-2.47.3
+Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+
+Thanks
+
+Dirk
+
+P.S.: I'm not sure if the `Fixes` is required: As far as I understood
+there are no big-endian machines supported by Rust, yet. On all other
+supported little-endian machines this is a no-op. So I think it is at
+least debatable if this is a "bug" which needs back porting.
 
