@@ -1,58 +1,58 @@
 Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DEE21C175;
-	Thu, 11 Dec 2025 15:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5910C21C175;
+	Thu, 11 Dec 2025 15:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.192
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765466275; cv=none; b=NRLAtGmrrWjsmjLXBYQ1M1623FjO6ekcRX9tW8kapfOeWVwd63CwXlXTnU2q/WnilSfDiDAz5ZIX5OYjTBoi4OzXpuiAmH44hAH6upD4zxzfz4E37LU5Zomphayx7+Dw9HuZwNkANwZ1//JnS3x33uAb9qfskU509jdGtDRiMcE=
+	t=1765466288; cv=none; b=SA3PgPBfetlB/mxF0w54P4k+SwkS3mTPxjBsz4Nc5Q4GF7j3Lw6qvbL6mUYd8DBWYPI2pAzX2rt8w+MAu/F/Pj1kP6jPu3x4bJaTkkKO9wExC+U9vtHKw6y7DMZA7/Tq+EIpIqrRaNWAIMkvQyOa2MOJc7IcxuxeyCHYy0nco6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765466275; c=relaxed/simple;
-	bh=OPKdaJng0svvBZhKbuTRnBRDbEgbGubCgS4sr35H27w=;
+	s=arc-20240116; t=1765466288; c=relaxed/simple;
+	bh=jMmwbuaF/J+aS1DiX9F6BBS5Uj7nz2sQmE+hZSXb2+0=;
 	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=UeDC8yLy/QSnwweHVzAKe8a+Dr1D0dxqV0hHXzPbUKIcUkobcQavi2NNA15DCbk013l69TK97aac7QlS+UDHSwPITZRb6UCuS8WBeQjp2z1UpHU7sqdv6O0cmTf/vdp58RbPxUJ9ov23dmug1oMFmFpSfR45Ym6rNdEW3wK55CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=QD/CDf5w; arc=none smtp.client-ip=203.205.221.192
+	 MIME-Version; b=C6BuZoMT7d6pJ+XUQDWEhxMzNad1YmiJbu9h/KVtGTn7t6/da3iuEG5JxxX/OlVkhAgE+pd0pBoZc5+xxe6+AogPtYbUInd0kS+LTM5aU228Ld8+ucebG0IjX/T9vVbYLdRTjMZ6vendtQKkv7tC6MMlqUXtzQ+M2Lx0KIugeIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=sGeIw5DF; arc=none smtp.client-ip=203.205.221.192
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="QD/CDf5w"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="sGeIw5DF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1765466271; bh=Fte2RX/QcfZzKrkaFqsYv8nLDW96G3U1zKwE3fKSbyY=;
+	t=1765466282; bh=vCrlGfuMYjqOzwOUZxISTC/WPIdY1C0Ou3RjuX0eIHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QD/CDf5wqk2LJuiGzajLeK7q32IEPI55SeZTaOp1F3lbsyK3Zx0JCiKhdYdm9zDAy
-	 Q5M1DBJ0iHR9zlFQvyUWF1wTFj4/P1oZOwuoP571dTDvdLEezckRgG1yGgKChlGBjr
-	 9h4On9KUVA57ixO311NXl7jqOpvJqTQK0FxO+m8Y=
+	b=sGeIw5DF20ydieJLpk0nSJJCrHjsulae7YXPKAAREA65EJYwWm+pOa+EFUrE8Z5gm
+	 /snLa7FVlSC9MK8CUDsGmN/L9+cXp2iWhEMP22JBm2zrTE2L3O9qHy6yKzNlP1s3L1
+	 DN+wiojPlv1EPtv6N6nXI1aX0lBrl2A6GCynteLM=
 Received: from xh6010.. ([202.120.234.37])
-	by newxmesmtplogicsvrsza56-0.qq.com (NewEsmtp) with SMTP
-	id 471B42C8; Thu, 11 Dec 2025 23:17:49 +0800
-X-QQ-mid: xmsmtpt1765466269t8nuwjyfc
-Message-ID: <tencent_DFB9918EA024C929E2BF3DE6EAF938EFB905@qq.com>
-X-QQ-XMAILINFO: NUYPVyrd/y6PqOnXHwmOpfFZD80NfzE7bMuPetqzRJDpuE39SkHypLzGNiqxBv
-	 MuKuSleXA/QXCWAYdS+hyCWK7YRZbN7xn2vEpW7rO8n1ia9I4O0UyefKhAO5Ae1EQyMNnDoC6qDo
-	 ZpuuQuCoFAszSnGTNCOzcohUtUUhRMBF5s4G+qi1wkeSbVpdtdycdfa24hu0QyUpuUNYEgLngDzY
-	 D/hIWqd5XSeAPAbEPlmZR3PpVHG+HKmkKg7O1JOn1ybOeY+g1Id5E5UnKd2Xh0VGJ/Ly1fZLMJK2
-	 23TKp/t1W8SnmTsv8E6IPschZLR12JeaRL6AnXIxZYeQFE+w0YuztYy8+j6mlDjM2+Bjk5QP9Cmd
-	 SmgsuBHXd7PV4L6QfQdZqt9SQrN4TbH39k1fb8ugh6ES2bC13+YkRWQb2kvNym2BROHYlcU650r+
-	 R8Wg3TqIRszpnkAr19gFJajAM3w7PKq9zvwHOKTsGJq51oXUcMtwkDmeUwJijg7K3k7INhfaUMrK
-	 4cV1xuJDPfxa6+lNhWzZV/ibHozPSx0sy4nFnXePcxaYcI5N68mk4KaS0O3k3421ZxyxJpOOf6KB
-	 pRkfqJEQRVxunph0pAtsFZNyA5pLGs3baYXz1Kgp70IBLMwqbeSorY8a5J1AQKilngDFEU7jKMNL
-	 BXF6yTKcE7XXUKokn3BRfjUQLBQw/TNyrWuSXlUfAknyQISP7i9ew/dJ7Ttly09vnvsF3dTrzkGI
-	 7psmQw1hWYe8kqz/RHW6i5SFl4m8BkmTjbuDkJh6BwAaYBGowjQDqPxnzJFJ889GygX6lGjT/4Xs
-	 nDgvfbKNXvdJX31LVP0Akka9FyheAL3XoknUohIcgvaa5nt80VPjh2byKfik6RyFqMpYVLQAA+j0
-	 pAV73UaPhsn84h1eAGfp+5oon/1iAK3V8DqnmVaxXOdtIVUfFeqM3c8ATay1aD2LoUNZIYuayIGJ
-	 z2rm4Q++XltyFfD4kh7nJVLix++J3eBk3Uj+N2tC2STAtIG27CXUNewCW92kdd72W7uqK6mqKEd0
-	 m3fI2nr8KsRB9weF/ba76hz7DYkyf3BR7xriKDu30mBT89DF2Y5pY2UROS/VzLnmzxsIfOhEBi6/
-	 0WqyWl6vrEor8rRu1UwAXukA0Bwg==
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id 4810EEE1; Thu, 11 Dec 2025 23:18:01 +0800
+X-QQ-mid: xmsmtpt1765466281tjwgh1hcf
+Message-ID: <tencent_5524A2A07DE84AF0D8E4B9B21199603AE905@qq.com>
+X-QQ-XMAILINFO: N2PXJXefbcU4ZtiYCrZyBxSlVOwnNIs2lYVK2EEvxXKF7tYV/plXxSXPzD6n45
+	 nrU7SJPMoa4iMk+lOJuNjLyJRQBShoOv/9l3Ahg+lPrMfRaDtEcRgc9GSjqd+62iKqjvhwJLqjPS
+	 m3kwUuQNRuHmZKNGLj5kJW3GtWMpi/YunyHx9ZczR4ShgTYX2CtGeEq9w1TrZ3PMQU97vH+RFkE2
+	 oeg+SWeW1v5qDLaeug42d+nsId9lQYYSyvwyr1AQp8BC3uDPIUiFMGmhCvT/i30CIHxr/TbziJhX
+	 MQdmR3M7Dhy3WKZssPAuUcXa7tLl0dIZlBFS+mosxSM9yGVNnimxLW5CQISQZTckiF+j/SNMph43
+	 nZnioKka3oh72I3QTWtfOmB67OCUxVgAyUx4v7QstYnzxKBkFd/vWQNKxC1ynnVJbF2s+iaUDehZ
+	 /wtNQBfhm7M7Y50/n0rR2shnPRyiFsiBo5EdZWPNdcbSVSkpCSSlIgNIGNwuowQf9C/QpmTMwdMI
+	 xDKKXK4dlcJHTz3Go38TRW7JdSFZthvgy1XXmakfFK2Oc2xISVknde+e8kuiw2tzO5Aw7tpbqMT6
+	 YCUg+B/tqfDa4R/pIjSm/Vyz3altV5zvpp631wJvZPIQQHorye0okyJTzpE6YPVi3fCccuwO573q
+	 Mr3dv72E2/ixgh0cvtwpw2jr+vYH/a9Wj5flOgPX5+pvfA3+aQjCkhQwssUSZOy0r872Rr8ekA5b
+	 K8j0GQftiS3Eg6uwFEz3n3abjoiFScvybAlYO6G9OkweB8Q5CVD4wpgfLz3DdK387OV+lZ34w056
+	 vUdH8WjZ9xao1iRg/kfv13EzcNXogJNmikV9/taFq6QwgWGHPVjD2q1WNucZAjwJ1yhdhfsnMrQ8
+	 8ygf5fCsoxsegwSbG0R0h2z0mGHm0lxOTAO6zAD9OFDNYPr+lvLVwdGpJfsVqCxTCmNApGl6Mc23
+	 n9SxhzdS6elbwvlOIVrvhavXm4Hri2Pf9kt6/kNBR489gTV2bUzKtDmvQIRQqfZ8eCd0NxyG+LJd
+	 wkY9uWWrrXi+J80HPe7ZGT/WfOoheng/8TkreUmqqDo0+FavpFjrqFM1vZ5BdwxWuDhSM7Ae9W/2
+	 3kfKXK/Mrj5x1zEDZ6l6S8wwxtHg==
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
 From: yilin <1479826151@qq.com>
-To: Danilo Krummrich <dakr@kernel.org>,
+To: Viresh Kumar <viresh.kumar@linaro.org>,
 	Miguel Ojeda <ojeda@kernel.org>
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	yilin <1479826151@qq.com>
-Subject: [PATCH 2/3] rust: dma: remove incorrect safety documentation
-Date: Thu, 11 Dec 2025 23:17:48 +0800
-X-OQ-MSGID: <20251211151748.2894290-1-1479826151@qq.com>
+Subject: [PATCH 3/3] rust: cpumask: rename methods of Cpumask for clarity and consistency
+Date: Thu, 11 Dec 2025 23:17:59 +0800
+X-OQ-MSGID: <20251211151759.2894403-1-1479826151@qq.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251211151553.2893838-1-1479826151@qq.com>
 References: <20251211151553.2893838-1-1479826151@qq.com>
@@ -64,28 +64,60 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Removes a safety requirement that incorrectly states callers must
-ensure the device does not access memory while the returned slice
-is live, as this method doesn't return a slice.
+Rename `as_ref` and `as_mut_ref` to `from_raw` and `from_raw_mut` to
+align with the established naming convention for constructing types
+from raw pointers in the kernel's Rust codebase.
 
 Signed-off-by: yilin <1479826151@qq.com>
 ---
- rust/kernel/dma.rs | 2 --
- 1 file changed, 2 deletions(-)
+ rust/kernel/cpumask.rs | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 84d3c6726..2ac107d8f 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -532,8 +532,6 @@ pub unsafe fn as_slice_mut(&mut self, offset: usize, count: usize) -> Result<&mu
+diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
+index c1d17826a..44bb36636 100644
+--- a/rust/kernel/cpumask.rs
++++ b/rust/kernel/cpumask.rs
+@@ -39,7 +39,7 @@
+ /// fn set_clear_cpu(ptr: *mut bindings::cpumask, set_cpu: CpuId, clear_cpu: CpuId) {
+ ///     // SAFETY: The `ptr` is valid for writing and remains valid for the lifetime of the
+ ///     // returned reference.
+-///     let mask = unsafe { Cpumask::as_mut_ref(ptr) };
++///     let mask = unsafe { Cpumask::from_raw_mut(ptr) };
+ ///
+ ///     mask.set(set_cpu);
+ ///     mask.clear(clear_cpu);
+@@ -49,13 +49,13 @@
+ pub struct Cpumask(Opaque<bindings::cpumask>);
+ 
+ impl Cpumask {
+-    /// Creates a mutable reference to an existing `struct cpumask` pointer.
++    /// Creates a mutable reference from an existing `struct cpumask` pointer.
      ///
      /// # Safety
      ///
--    /// * Callers must ensure that the device does not read/write to/from memory while the returned
--    ///   slice is live.
-     /// * Callers must ensure that this call does not race with a read or write to the same region
-     ///   that overlaps with this write.
+     /// The caller must ensure that `ptr` is valid for writing and remains valid for the lifetime
+     /// of the returned reference.
+-    pub unsafe fn as_mut_ref<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
++    pub unsafe fn from_raw_mut<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
+         // SAFETY: Guaranteed by the safety requirements of the function.
+         //
+         // INVARIANT: The caller ensures that `ptr` is valid for writing and remains valid for the
+@@ -63,13 +63,13 @@ pub unsafe fn as_mut_ref<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
+         unsafe { &mut *ptr.cast() }
+     }
+ 
+-    /// Creates a reference to an existing `struct cpumask` pointer.
++    /// Creates a reference from an existing `struct cpumask` pointer.
      ///
+     /// # Safety
+     ///
+     /// The caller must ensure that `ptr` is valid for reading and remains valid for the lifetime
+     /// of the returned reference.
+-    pub unsafe fn as_ref<'a>(ptr: *const bindings::cpumask) -> &'a Self {
++    pub unsafe fn from_raw<'a>(ptr: *const bindings::cpumask) -> &'a Self {
+         // SAFETY: Guaranteed by the safety requirements of the function.
+         //
+         // INVARIANT: The caller ensures that `ptr` is valid for reading and remains valid for the
 -- 
 2.34.1
 
