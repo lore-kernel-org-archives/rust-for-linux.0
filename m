@@ -1,35 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B374F212FB9;
-	Thu, 11 Dec 2025 18:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70879212550
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Dec 2025 19:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765477366; cv=none; b=pHc87jaiVVX+OdP4MyIQuzQ6g5WgZ+iqe0pMR7VAjEzZP0woNgNjJmj3+KgWnv3SjZpN7WNhG9pd7PiEtEPI5FN+wNyGDH+/W74V+HGYGhl2C1KXjlp4JrnrOYYE5auYgVohUftVee20xGeEvh6edz4KI1ylOUtVmgTr6Ffjd8E=
+	t=1765481317; cv=none; b=E00H8woXkAsLtz2nVRSF+QMKWSqs6hIh1VEO08pbaqxbCrgi8fnbFCOd4X4v4HIE1T4dQmkzJQGkMzCJSfTa0Rw0U1lmz+J1TDu5eszrpYPJQf/bVzkKOhK+AqkZDb0i8etFvmeHbrXIZzl2AiMGoQBw/TA3yLHCu/UztAWuJv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765477366; c=relaxed/simple;
-	bh=iBQjv3NyRtOjmLtefM8m6iGDiD1Mh1LPOFF6RcjDQW8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Uq9WbUvo+kTNww3sMoHdgj9IL8pfaKxRoP/5B7RinkC+raHt71smemygIVUsK38VpYz+f6rpyWYoDfka4q3+8FO5Qj/RyfyYydL8QCRa3M8v4qgMyr140kOarHnIiTNeX+EVLGqjDLdbPjFpV5+85ou/JUbLG12ThO2nmO9RkmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJhroV1Q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765481317; c=relaxed/simple;
+	bh=+FDsGbASE4PfJwMfYp0PIaCIHqPqtiuJYwLW6f2Pz+c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U2pqs83xYgzplsfXa/99zfzz34zWcZ2UE3Sd9cRFNNjNV4V+o8FWb4ieFCFpfOdtQFodGkeQQg5TXy6Eb3QRoLRPUxjz7ceCs98R1ULZBZvjbZ9PFBwrdkZJ+sUENIRceGFbaYtvQaLugQ71fz2NiTb5SM3ef9E6KITt5EJ7wtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ej33RHN8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJhroV1Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5407BC4CEF7;
-	Thu, 11 Dec 2025 18:22:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ej33RHN8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D425C4CEF7;
+	Thu, 11 Dec 2025 19:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765477366;
-	bh=iBQjv3NyRtOjmLtefM8m6iGDiD1Mh1LPOFF6RcjDQW8=;
+	s=k20201202; t=1765481316;
+	bh=+FDsGbASE4PfJwMfYp0PIaCIHqPqtiuJYwLW6f2Pz+c=;
 	h=From:To:Cc:Subject:Date:Reply-To:From;
-	b=ZJhroV1QaoQ2yInEmrI7Tqff7LFfOckTnWcyiahfVwo5bppagQpREI1PTHTx6Njvy
-	 5XGU0b/2WAGwInMPljQVHDuMMTM6xlKWHqjKG7ecX2usJxDugxU3APbcgU4aXQO2Ny
-	 x+clncd3fZehdb19Pq5vNqLLpu5PODx1BYqrVRzI+9PWJ2eCFX7jQuqWvxlHVPR21Q
-	 NjuUNlify6sgCJkDBlhctMw6a8/RquLj+hGWCIrNIjvW18/LcWWpj031wW7Rms7Hdt
-	 Z516tNgC8jPWyhe6WLSCOncqvfshei6jvN8sTXbeGIg1q0KxW3Tf3OzLUpg02DmPAR
-	 3AhDMMl5URBYQ==
+	b=Ej33RHN8gJ9KjUgiecRrJZwpTqtn2Ytw9fJCAmOShumE1nxJJniWEMtHPYUqDWf8E
+	 8BEx2y307VLTDoxOl3k4GC2yxJ99c5SYR1eLQrgvWC3rTYeT3q/C6yz5b0VDarobpQ
+	 F/XORo3EN2q4pl21J9TeLn2MJbRYMnol1HGdMlsrFm8rA/k2rEgARvcy3kIrEyDiFm
+	 Lk/N5PM6HyXmqCvYUvdZwt4hT4boCCIUoepfKGpaVhBhMWS1JLdS9xmGTnf6KvvAv0
+	 c9O2/G1VbGAwUi+OqRJsSMjTclmhPwictVztm85IGmfFDS7/1A+qxfHyQtbtdhJ1/R
+	 t5/H3FbrEdM/Q==
 From: Gary Guo <gary@kernel.org>
-To: Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Rae Moar <raemoar63@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
@@ -38,13 +35,10 @@ To: Brendan Higgins <brendan.higgins@linux.dev>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: fix off-by-one line number in rustdoc tests
-Date: Thu, 11 Dec 2025 18:22:07 +0000
-Message-ID: <20251211182208.2791025-1-gary@kernel.org>
+Cc: rust-for-linux@vger.kernel.org
+Subject: [PATCH 00/11] refactor Rust proc macros with `syn`
+Date: Thu, 11 Dec 2025 18:56:40 +0000
+Message-ID: <20251211185805.2835633-1-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
@@ -57,29 +51,60 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-When the `#![allow]` line was added, the doctest line number anchor
-isn't updated which causes the line number printed in kunit test to be
-off-by-one.
+This series convert Rust proc macros that we have with `syn`, and replace the
+custom `quote!` macro that we have with the vendored `quote!` macro. The
+`pin-init` macros are not converted `syn` yet; Benno has a work in progress in
+converting them. They're however converted to use `quote` and `proc-macro2`
+crate so our custom `quote!` macro can be removed.
 
-Fixes: ab844cf32058 ("rust: allow `unreachable_pub` for doctests")
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- scripts/rustdoc_test_gen.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Overall this improves the robustness of the macros as we have precise parsing of
+the AST rather than relying on heuristics to extract needed information from
+there. This is also a quality-of-life improvement to those using language
+servers (e.g. Rust analyzer) as the span information of the proc macros are now
+preserved which allows the "jump-to-definition" feature to work, even when used
+on completely custom macros such as `module!`.
 
-diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
-index be05610496605..6fd9f5c84e2e4 100644
---- a/scripts/rustdoc_test_gen.rs
-+++ b/scripts/rustdoc_test_gen.rs
-@@ -206,7 +206,7 @@ macro_rules! assert_eq {{
- 
-     /// The anchor where the test code body starts.
-     #[allow(unused)]
--    static __DOCTEST_ANCHOR: i32 = ::core::line!() as i32 + {body_offset} + 1;
-+    static __DOCTEST_ANCHOR: i32 = ::core::line!() as i32 + {body_offset} + 2;
-     {{
-         #![allow(unreachable_pub, clippy::disallowed_names)]
-         {body}
+Miguel gave a very good explaination on why `syn` is a good idea in the patch
+series that introduced it [1], which I shall not repeat here.
+
+Link: https://lore.kernel.org/rust-for-linux/20251124151837.2184382-1-ojeda@kernel.org/ [1]
+
+Benno Lossin (1):
+  rust: pin-init: internal: remove proc-macro[2] and quote workarounds
+
+Gary Guo (10):
+  rust: macros: use `quote!` from vendored crate
+  rust: macros: convert `#[vtable]` macro to use `syn`
+  rust: macros: use `syn` to parse `module!` macro
+  rust: macros: use `quote!` for `module!` macro
+  rust: macros: convert `#[export]` to use `syn`
+  rust: macros: convert `concat_idents!` to use `syn`
+  rust: macros: convert `#[kunit_tests]` macro to use `syn`
+  rust: macros: allow arbitrary types to be used in `module!` macro
+  rust: macros: rearrange `#[doc(hidden)]` in `module!` macro
+  rust: kunit: use `pin_init::zeroed` instead of custom null value
+
+ rust/Makefile                             |  16 +-
+ rust/kernel/kunit.rs                      |  26 +-
+ rust/macros/concat_idents.rs              |  39 +-
+ rust/macros/export.rs                     |  26 +-
+ rust/macros/fmt.rs                        |   4 +-
+ rust/macros/helpers.rs                    | 104 +---
+ rust/macros/kunit.rs                      | 275 ++++------
+ rust/macros/lib.rs                        |  44 +-
+ rust/macros/module.rs                     | 638 +++++++++++++---------
+ rust/macros/paste.rs                      |   2 +-
+ rust/macros/quote.rs                      | 182 ------
+ rust/macros/vtable.rs                     | 154 +++---
+ rust/pin-init/internal/src/helpers.rs     |   5 +-
+ rust/pin-init/internal/src/lib.rs         |  16 -
+ rust/pin-init/internal/src/pin_data.rs    |   6 +-
+ rust/pin-init/internal/src/pinned_drop.rs |   6 +-
+ rust/pin-init/internal/src/zeroable.rs    |   6 +-
+ scripts/generate_rust_analyzer.py         |   2 +-
+ 18 files changed, 694 insertions(+), 857 deletions(-)
+ delete mode 100644 rust/macros/quote.rs
+
 
 base-commit: 559e608c46553c107dbba19dae0854af7b219400
 -- 
