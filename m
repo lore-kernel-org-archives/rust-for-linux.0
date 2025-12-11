@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3529E2D5C91;
-	Thu, 11 Dec 2025 19:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D2830171D;
+	Thu, 11 Dec 2025 19:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765481395; cv=none; b=aQ2VkX6EjzgUds2gu8l8HVZ18aty7tBpkCtcM3IssWLNhnGJTUYFg+6/nUHeffHs0t6syUBePOV3YVSve+Zo+Cxry1g6o9gTZt06UWMuQrZXM2J/susm3GAHPrlqEToGUcR4Ytja0VsPu6V37rmScuqE7uGhJha6ifXwiPB8WQY=
+	t=1765481404; cv=none; b=nIcjMfq8C2VE0J7mgRbnz74usoc+GI6xuy+VnOJqXpUfSH5ZYW9tgFRuJfzmDbbqJZ7NP5sqY/fwC0BALn3BrfJXn757pGrmaH1KqRbHemqxWpmA5rLMxNglhXllSypx992KSlfhXA+na/SZACWTvnKKS/VdYysk1T7eUDEYUzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765481395; c=relaxed/simple;
-	bh=ARAX3BCerEubKzWbkqRQwyMKnhBoh/wXeqkt8COXy6k=;
+	s=arc-20240116; t=1765481404; c=relaxed/simple;
+	bh=kZVsIHl2c54v0M/OgsPNX5P78HMnOcvSG1weK1177C8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2NY+tt7hRsyp1ZBCkv64n/2e5QMs9HvXUxazJpjdi6LtNho+hBLNCDCEbos4EwUQhqJ2l6n7wqbo6o6ZpDfaITJO26MqCtHBYlVYgKj2fAn4SpLboz8Iyrm0X6y8b7glAXixNNa+o/Z/STtVNwzvJIsZ/AUbt7AEkBZ8TEgumQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3F3BDrC; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ZUR1kvz3WuzihHIh/kCKdMcm1L0ZQ2aIhlthaXfqz8fmw6C/4o4QHDHMWzRPemoVHBS9wUekrUNoqPqSsR48ncddc3iR0YzdzpWYr+bXDqvOn9iDZUDbkRw2SU/l1CjTUc4eiHTP04EAW0Q3CyjQT1kHUVnk5B8jN0J0ai0RqqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PrJ2P641; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3F3BDrC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DA7C4CEFB;
-	Thu, 11 Dec 2025 19:29:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PrJ2P641"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90FCC4CEF7;
+	Thu, 11 Dec 2025 19:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765481394;
-	bh=ARAX3BCerEubKzWbkqRQwyMKnhBoh/wXeqkt8COXy6k=;
+	s=k20201202; t=1765481403;
+	bh=kZVsIHl2c54v0M/OgsPNX5P78HMnOcvSG1weK1177C8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=I3F3BDrCYOxkp71ZM/Psatbf6fb0p6ORJMu0sdQ42YNvYM73CBerbrtn/lvRxlEPn
-	 tpetUj2+QGlluzVkVAwDzY4ykYEF6xqab2WMkwUpJtDpXZ/4jFClxGEVnFklL5uS+/
-	 9rsvm3CcRLpNYwYjWMjw/AWJ8vIh7USDe7w/v6SLpKQZHoq1A47xX2OZoIjaOrR/eD
-	 coibTjnCNzpZLm4ahecjD6UL8+iI1mgcSa8Y0cv8sXNtGN4stxhqXD/U2/YgcTeZ7g
-	 GDRRqZHdEMlfSHn8Y21bD33pD0pzW3OyYCHGab6o3403KZPBFSRQLoC7G3UbseCll/
-	 ZUYjbltJ1bLow==
+	b=PrJ2P641im+kK3ci9/SI6KNfkFC+K3WR1sj01W/TczJH92hp/QsBZgSmD97LkxvOq
+	 5Yyv3B0i0Gytznw0Fsn8jvTLANLAcSHZBa8pebWaZc1H/z6X4uNATKKnCPRXXdOwjc
+	 b/7Erx+wHyWvOKikCG2WDX+2GorKaditETxFQnwaIZFzGwqTDL8pZ093i2msxhZ0Nd
+	 argddQo4ehFgnRsZYbclLPY3c8XW9ZQIyT44F0O9ZasTcIFQ0FNLaLCUMbjLHEuXqB
+	 sDEju3ZkjVt3wUDFET01rnELV2XilxMNGdlxoi+HafZCCPTEZA3RYrjMgFvoDeZN62
+	 SDjx8v5IaNe7Q==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -36,17 +36,16 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Fiona Behrens <me@kloenk.dev>,
+	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
 	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
 	Tamir Duberstein <tamird@gmail.com>
 Cc: rust-for-linux@vger.kernel.org,
 	David Gow <davidgow@google.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 06/11] rust: macros: convert `#[export]` to use `syn`
-Date: Thu, 11 Dec 2025 18:56:46 +0000
-Message-ID: <20251211185805.2835633-7-gary@kernel.org>
+Subject: [PATCH 07/11] rust: macros: convert `concat_idents!` to use `syn`
+Date: Thu, 11 Dec 2025 18:56:47 +0000
+Message-ID: <20251211185805.2835633-8-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251211185805.2835633-1-gary@kernel.org>
 References: <20251211185805.2835633-1-gary@kernel.org>
@@ -61,110 +60,115 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-This eliminates the custom `function_name` helper.
+This eliminates the need for `expect_punct` helper.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/macros/export.rs  | 24 +++++++++---------------
- rust/macros/helpers.rs | 18 ------------------
- rust/macros/lib.rs     |  5 +++--
- 3 files changed, 12 insertions(+), 35 deletions(-)
+ rust/macros/concat_idents.rs | 39 ++++++++++++++++++++++++------------
+ rust/macros/helpers.rs       | 14 +------------
+ rust/macros/lib.rs           |  4 ++--
+ 3 files changed, 29 insertions(+), 28 deletions(-)
 
-diff --git a/rust/macros/export.rs b/rust/macros/export.rs
-index 92d9b30971929..6d53521f62fc7 100644
---- a/rust/macros/export.rs
-+++ b/rust/macros/export.rs
-@@ -3,19 +3,14 @@
- use proc_macro2::TokenStream;
- use quote::quote;
+diff --git a/rust/macros/concat_idents.rs b/rust/macros/concat_idents.rs
+index 12cb231c3d715..47b6add378d2c 100644
+--- a/rust/macros/concat_idents.rs
++++ b/rust/macros/concat_idents.rs
+@@ -1,23 +1,36 @@
+ // SPDX-License-Identifier: GPL-2.0
  
--use crate::helpers::function_name;
--
- /// Please see [`crate::export`] for documentation.
--pub(crate) fn export(_attr: TokenStream, ts: TokenStream) -> TokenStream {
--    let Some(name) = function_name(ts.clone()) else {
--        return "::core::compile_error!(\"The #[export] attribute must be used on a function.\");"
--            .parse::<TokenStream>()
--            .unwrap();
--    };
-+pub(crate) fn export(f: syn::ItemFn) -> TokenStream {
-+    let name = &f.sig.ident;
+-use proc_macro2::{token_stream, Ident, TokenStream, TokenTree};
++use proc_macro2::{
++    Ident,
++    TokenStream,
++    TokenTree, //
++};
++use syn::{
++    parse::{
++        Parse,
++        ParseStream, //
++    },
++    Result,
++    Token, //
++};
  
--    // This verifies that the function has the same signature as the declaration generated by
--    // bindgen. It makes use of the fact that all branches of an if/else must have the same type.
--    let signature_check = quote!(
-+    quote! {
-+        // This verifies that the function has the same signature as the declaration generated by
-+        // bindgen. It makes use of the fact that all branches of an if/else must have the same
-+        // type.
-         const _: () = {
-             if true {
-                 ::kernel::bindings::#name
-@@ -23,9 +18,8 @@ pub(crate) fn export(_attr: TokenStream, ts: TokenStream) -> TokenStream {
-                 #name
-             };
-         };
--    );
--
--    let no_mangle = quote!(#[no_mangle]);
+-use crate::helpers::expect_punct;
++pub(crate) struct Input {
++    a: Ident,
++    _comma: Token![,],
++    b: Ident,
++}
  
--    TokenStream::from_iter([signature_check, no_mangle, ts])
-+        #[no_mangle]
-+        #f
-+    }
- }
-diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
-index f6bbdb02d9d7d..754c827cc21e1 100644
---- a/rust/macros/helpers.rs
-+++ b/rust/macros/helpers.rs
-@@ -2,7 +2,6 @@
- 
- use proc_macro2::{
-     token_stream,
--    Ident,
-     TokenStream,
-     TokenTree, //
- };
-@@ -50,23 +49,6 @@ pub(crate) fn value(&self) -> String {
+-fn expect_ident(it: &mut token_stream::IntoIter) -> Ident {
+-    if let Some(TokenTree::Ident(ident)) = it.next() {
+-        ident
+-    } else {
+-        panic!("Expected Ident")
++impl Parse for Input {
++    fn parse(input: ParseStream<'_>) -> Result<Self> {
++        Ok(Self {
++            a: input.parse()?,
++            _comma: input.parse()?,
++            b: input.parse()?,
++        })
      }
  }
  
--/// Given a function declaration, finds the name of the function.
--pub(crate) fn function_name(input: TokenStream) -> Option<Ident> {
--    let mut input = input.into_iter();
--    while let Some(token) = input.next() {
--        match token {
--            TokenTree::Ident(i) if i.to_string() == "fn" => {
--                if let Some(TokenTree::Ident(i)) = input.next() {
--                    return Some(i);
--                }
--                return None;
--            }
--            _ => continue,
--        }
+-pub(crate) fn concat_idents(ts: TokenStream) -> TokenStream {
+-    let mut it = ts.into_iter();
+-    let a = expect_ident(&mut it);
+-    assert_eq!(expect_punct(&mut it), ',');
+-    let b = expect_ident(&mut it);
+-    assert!(it.next().is_none(), "only two idents can be concatenated");
++pub(crate) fn concat_idents(Input { a, b, .. }: Input) -> TokenStream {
+     let res = Ident::new(&format!("{a}{b}"), b.span());
+     TokenStream::from_iter([TokenTree::Ident(res)])
+ }
+diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
+index 754c827cc21e1..adfa60d8f42d8 100644
+--- a/rust/macros/helpers.rs
++++ b/rust/macros/helpers.rs
+@@ -1,10 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-use proc_macro2::{
+-    token_stream,
+-    TokenStream,
+-    TokenTree, //
+-};
++use proc_macro2::TokenStream;
+ use quote::ToTokens;
+ use syn::{
+     parse::{
+@@ -16,14 +12,6 @@
+     Result, //
+ };
+ 
+-pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> char {
+-    if let TokenTree::Punct(punct) = it.next().expect("Reached end of token stream for Punct") {
+-        punct.as_char()
+-    } else {
+-        panic!("Expected Punct");
 -    }
--    None
 -}
 -
- pub(crate) fn file() -> String {
-     #[cfg(not(CONFIG_RUSTC_HAS_SPAN_FILE))]
-     {
+ /// A string literal that is required to have ASCII value only.
+ pub(crate) struct AsciiLitStr(LitStr);
+ 
 diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 4e440deaed853..870a42d41ac91 100644
+index 870a42d41ac91..bb2dfd4a4dafc 100644
 --- a/rust/macros/lib.rs
 +++ b/rust/macros/lib.rs
-@@ -206,8 +206,9 @@ pub fn vtable(attr: TokenStream, input: TokenStream) -> TokenStream {
- /// This macro is *not* the same as the C macros `EXPORT_SYMBOL_*`. All Rust symbols are currently
- /// automatically exported with `EXPORT_SYMBOL_GPL`.
- #[proc_macro_attribute]
--pub fn export(attr: TokenStream, ts: TokenStream) -> TokenStream {
--    export::export(attr.into(), ts.into()).into()
-+pub fn export(attr: TokenStream, input: TokenStream) -> TokenStream {
-+    parse_macro_input!(attr as syn::parse::Nothing);
-+    export::export(parse_macro_input!(input)).into()
+@@ -283,8 +283,8 @@ pub fn fmt(input: TokenStream) -> TokenStream {
+ /// assert_eq!(BR_OK, binder_driver_return_protocol_BR_OK);
+ /// ```
+ #[proc_macro]
+-pub fn concat_idents(ts: TokenStream) -> TokenStream {
+-    concat_idents::concat_idents(ts.into()).into()
++pub fn concat_idents(input: TokenStream) -> TokenStream {
++    concat_idents::concat_idents(parse_macro_input!(input)).into()
  }
  
- /// Like [`core::format_args!`], but automatically wraps arguments in [`kernel::fmt::Adapter`].
+ /// Paste identifiers together.
 -- 
 2.51.2
 
