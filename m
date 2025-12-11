@@ -1,207 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69BB2F616F;
-	Thu, 11 Dec 2025 08:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C586E2D3A70
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Dec 2025 11:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765442876; cv=none; b=WMwIFLr1cZ47DL9ncA9o+QThZR4Md64GQS1qGjnPC3E4qeLxXE0NH557JTNOe8O4oVFnMHH2sYpwB8a6B1RrB0g8FbLqG1rJflXTncW2+S/TT84mJTSydxJaLXmhMdu6JmfSsXJEqEUrYHgHz7QLb2rO2axYaOq1MNSKmRLXVCw=
+	t=1765453135; cv=none; b=gwsJkMGfa/OPazVpHm0VpJlZ4H+Zgcz5SMQulfcwZsabydX2riaxFQ19ZAVJrpg4HiXK6PjgLqM4YQxBGloV9wNpsOwBKYV9gaAtfewuYYVadulqbRmwW+lbCFLzs/7Bi+6MC5hotmudlYGHtdXgrQ3OS8tZPMc7qgp2Qcrawtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765442876; c=relaxed/simple;
-	bh=j9P0IoM2VBePZSGPEbquteAAJ7kda9NDqMa0x5DcGEA=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=r8g0c1rN2oJ6zLO4JwIeKsIkGzAo1I4rN2dbOF0zODkwNbxol0s3M2/IyJVIVobqJ3LbrbdrlfhZp3dy45xSangwg6+4yO4sxJQp52ktXHAZsLbpRbK4CmgAs1+kuSd+4idm4UfPrPgbzyPsbPYO+XRSfEHfJVlJY3QdYOU7if0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bJ0iyKYn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765453135; c=relaxed/simple;
+	bh=5Y31NDzJOQLo8zstlBB7RMo9nYwxoJpvA5Kw/9r3xDw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DczPpp3JA3qwAI7SjLnRX/EWUIoQ8hvNw3b3rScWl2MTLTkaSgPV/hJNdntst1lRtRDwRuPx/K9PgVPiC+aU84lNkAhINs99CjzX76SlIIwMzhit5k0qtmv+iRyjlmhIQe247MDXMzTOnx21VUUk5X6+vbXLmWo5GiSe3HeJP40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FyZqEFFr; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bJ0iyKYn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193FAC116B1;
-	Thu, 11 Dec 2025 08:47:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765442876;
-	bh=j9P0IoM2VBePZSGPEbquteAAJ7kda9NDqMa0x5DcGEA=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=bJ0iyKYn09dnRksKbPpgQmWootITzm8qVZhTdWApSd9uvdsPxcVhV7mIhnSB0VyVw
-	 CdEpBfzhw5XdXRzCX9L82VIBXUczNVsYnFc+ucOJzF19XzZO4VMQX1ADrokC2/oDkG
-	 9ggl9wYfnF3lz9Wq/njMYTLjJ/x3PDVZXo/1+OL3UU1Y15RmT4rH6q2uX5k5y1gEq4
-	 bXiHzR1v1YiwnkitVB0pZDC4IYcpMPOr3pD98vZCRK2y4L5RtPmrkNnkeRFxC6vyBl
-	 w1uq9/KBI2S5tSZuzi3PpZkt3/5F8hLa3tInVhJ2Nr+1Cz/Q0Z9YXPlNYbezWTsly6
-	 4Jlt9kQkWrogQ==
-Date: Thu, 11 Dec 2025 01:47:42 -0700 (MST)
-From: Paul Walmsley <pjw@kernel.org>
-To: Deepak Gupta <debug@rivosinc.com>
-cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-    x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-    Vlastimil Babka <vbabka@suse.cz>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-    Paul Walmsley <paul.walmsley@sifive.com>, 
-    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
-    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
-    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-    Andreas Hindborg <a.hindborg@kernel.org>, 
-    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-    richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-    kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-    evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-    samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-    rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>, 
-    Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
-    Valentin Haudiquet <valentin.haudiquet@canonical.com>
-Subject: Re: [PATCH v25 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ
- | VM_WRITE
-In-Reply-To: <20251205-v5_user_cfi_series-v25-6-1a07c0127361@rivosinc.com>
-Message-ID: <b2acb9ca-1320-ab42-3937-2ea17153fac2@kernel.org>
-References: <20251205-v5_user_cfi_series-v25-0-1a07c0127361@rivosinc.com> <20251205-v5_user_cfi_series-v25-6-1a07c0127361@rivosinc.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FyZqEFFr"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-343774bd9b4so715120a91.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 Dec 2025 03:38:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765453133; x=1766057933; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HHttjLmk7tTFtYOCzdqr5Ogxj4lalzdnDKACJ4Izyds=;
+        b=FyZqEFFrmv6jH9yWun0h/+CGnez1omE6EBu9+xvY8z7zGySSPXTKAAMkW4bJU1fX6j
+         ft9xc0i3u/dpBy/UfftEdDqKIYPe8FtFt8yFy6belP0q8IZlJr6Al6LJM0ZoV/8Yovm+
+         NfKM7NXANq3gg1iGCRo+GmFcZ/wMPwFAMLqt6tBi6B+mxTDrY9kaT3R/xn2/AraJIUJu
+         B8/CGWw6ugrVN5DV9wsHfPwCO7W+224f3oR/nydS7SE4xT4dSgDLqoTX7lBZSqHesHXu
+         VjYkUJRCE2sbs+Ee24OCuKqKODoCAZwpuEYQjDVnbcywKsVSQuj7Pja8T2JTWZ/wdu+f
+         6NlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765453133; x=1766057933;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HHttjLmk7tTFtYOCzdqr5Ogxj4lalzdnDKACJ4Izyds=;
+        b=RwvUmnT8aF7wLjpYKH8akn/tBuRzYq0L4c9xHtVJSrgLl3+LVoBSczonDUjZmuNZ7N
+         DXU68vIp6MHd3w2s0safZd4A3wL0i2V8kppDL+1LNZe9SwcEHNG+lT9GVn1ININaKrc9
+         FJJekYI4iapo2sJ8mWXE4tBfKEXaw8K6Oj4nXapyeoZZZKBgpSL8qFmPHoVe+o/AuFyR
+         iVjNQIGjeb8WLYyPbuCqLUVWTieA1ED6BhZZ4LHvQPCFcXvo+Gc4K73rFEgk23rK9cN2
+         pImpkIOq86LdyfWC/sMpbES0YH5mQWlU2gLCFjIHv8E0+PhHnbHd7ETp3IwyIEPENFod
+         jtXg==
+X-Forwarded-Encrypted: i=1; AJvYcCVSpfnkVkWgnFwrQYvHih1ENiVOvpeblhGYVcmhKHB6f+6zgyq/cAOEJxX+0+iJE+VwgFf+NyYcla2i+94HFQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCJWatmlDTaGQ7G9NET6AGHT6Quj4Qw1/MmP/cLLlV+UwRegN9
+	+hVHue0lw+84xmSbV7Px8Sa3jTEzGQACKG5ko/OLY7fZayY56gk0IQrb
+X-Gm-Gg: AY/fxX5OggE7sp3kgJp8VhNz/qORJLrPrXfVSrKhW+7syHdl5Lj6j8cSh5UU6cJtNG1
+	7/qbHL3YBjm8f8aZFqr20KIR00ARntcsh580QNnRpDBISYCpeoKSdjcGCfeSuaHbrSi9u/y7p4M
+	sZ6VDb71a+MEMX1UcRETk8TlGYb5unQxl2DQajrx0qPgHxcIUXR5W/NrBNHDKMX2ATrLd18OZZu
+	ia0zhHXC4PKRx2e4451wqKrd5GKNoXWn+oOnZTevACbbsMH/U1Qt0F68nEi8q/KrtVo0Z4UMUwB
+	o55yYrW5koG4FrT9W13rctHa1l9ARGVToBpo1sKEFIKPo3y/mplLFBSlr1h83Z3e/UxH5EeH6om
+	D1cBsJ18a+CNa4BCCffOR6V64BuNsIiVgXJIxAJ3CvPql5GfuzZUx8B2VBGGC1g/pEUMHlLFtbo
+	4ciumkgBShXskq2ZvuRg+mCVUMuuKVOK2tbQP4tmL08KcVSBrttfphWS+E5PU0sWOVQTq5Vnay
+X-Google-Smtp-Source: AGHT+IE53R8K8WEvN737u//oWFmHAX2pr/X06pE0KkgLSXUbNZk2k/kNhvsnA2KXjTvi3wp9mxOf5Q==
+X-Received: by 2002:a17:90b:2d4b:b0:32e:64ca:e84e with SMTP id 98e67ed59e1d1-34a7284d094mr5626008a91.15.1765453133081;
+        Thu, 11 Dec 2025 03:38:53 -0800 (PST)
+Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34a9264e4f6sm1780337a91.2.2025.12.11.03.38.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Dec 2025 03:38:52 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com,
+	ojeda@kernel.org,
+	peterz@infradead.org,
+	will@kernel.org
+Cc: acourbot@nvidia.com,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	mark.rutland@arm.com,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v3 0/4] rust: Add i8 and i16 atomic support
+Date: Thu, 11 Dec 2025 20:38:22 +0900
+Message-ID: <20251211113826.1299077-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-On Fri, 5 Dec 2025, Deepak Gupta via B4 Relay wrote:
+This adds Atomic<i8> and Atomic<i16> support; including
+load/store(Relaxed) and load(Acquire)/store(Release) operations.
 
-> From: Deepak Gupta <debug@rivosinc.com>
-> 
-> `arch_calc_vm_prot_bits` is implemented on risc-v to return VM_READ |
-> VM_WRITE if PROT_WRITE is specified. Similarly `riscv_sys_mmap` is
-> updated to convert all incoming PROT_WRITE to (PROT_WRITE | PROT_READ).
-> This is to make sure that any existing apps using PROT_WRITE still work.
-> 
-> Earlier `protection_map[VM_WRITE]` used to pick read-write PTE encodings.
-> Now `protection_map[VM_WRITE]` will always pick PAGE_SHADOWSTACK PTE
-> encodings for shadow stack. Above changes ensure that existing apps
-> continue to work because underneath kernel will be picking
-> `protection_map[VM_WRITE|VM_READ]` PTE encodings.
-> 
-> Reviewed-by: Zong Li <zong.li@sifive.com>
-> Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Relaxed operations are implemented in C's READ_ONCE() and
+WRITE_ONCE() macros.
 
-This Signed-off-by: doesn't look right.  It doesn't look like Arnd 
-developed this patch, and it doesn't appear that he replied with a 
-Signed-off-by: to the list regarding a patch that you wrote.  Did I miss 
-it?  Did you mean Co-developed-by: or some other tag?
+load(Acquire)/store(Release) use C's smp_load_acquire() and
+smp_store_release() macros. They internally use the appropriate
+architecture-specific instructions.
 
-> Tested-by: Andreas Korb <andreas.korb@aisec.fraunhofer.de>
-> Tested-by: Valentin Haudiquet <valentin.haudiquet@canonical.com>
-> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> ---
->  arch/riscv/include/asm/mman.h    | 26 ++++++++++++++++++++++++++
->  arch/riscv/include/asm/pgtable.h |  1 +
->  arch/riscv/kernel/sys_riscv.c    | 10 ++++++++++
->  arch/riscv/mm/init.c             |  2 +-
->  4 files changed, 38 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/riscv/include/asm/mman.h b/arch/riscv/include/asm/mman.h
-> new file mode 100644
-> index 000000000000..0ad1d19832eb
-> --- /dev/null
-> +++ b/arch/riscv/include/asm/mman.h
-> @@ -0,0 +1,26 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __ASM_MMAN_H__
-> +#define __ASM_MMAN_H__
-> +
-> +#include <linux/compiler.h>
-> +#include <linux/types.h>
-> +#include <linux/mm.h>
-> +#include <uapi/asm/mman.h>
-> +
-> +static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
-> +						   unsigned long pkey __always_unused)
-> +{
-> +	unsigned long ret = 0;
-> +
-> +	/*
-> +	 * If PROT_WRITE was specified, force it to VM_READ | VM_WRITE.
-> +	 * Only VM_WRITE means shadow stack.
-> +	 */
-> +	if (prot & PROT_WRITE)
-> +		ret = (VM_READ | VM_WRITE);
-> +	return ret;
-> +}
-> +
-> +#define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
-> +
-> +#endif /* ! __ASM_MMAN_H__ */
-> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-> index 29e994a9afb6..4c4057a2550e 100644
-> --- a/arch/riscv/include/asm/pgtable.h
-> +++ b/arch/riscv/include/asm/pgtable.h
-> @@ -182,6 +182,7 @@ extern struct pt_alloc_ops pt_ops __meminitdata;
->  #define PAGE_READ_EXEC		__pgprot(_PAGE_BASE | _PAGE_READ | _PAGE_EXEC)
->  #define PAGE_WRITE_EXEC		__pgprot(_PAGE_BASE | _PAGE_READ |	\
->  					 _PAGE_EXEC | _PAGE_WRITE)
-> +#define PAGE_SHADOWSTACK       __pgprot(_PAGE_BASE | _PAGE_WRITE)
->  
->  #define PAGE_COPY		PAGE_READ
->  #define PAGE_COPY_EXEC		PAGE_READ_EXEC
-> diff --git a/arch/riscv/kernel/sys_riscv.c b/arch/riscv/kernel/sys_riscv.c
-> index 795b2e815ac9..22fc9b3268be 100644
-> --- a/arch/riscv/kernel/sys_riscv.c
-> +++ b/arch/riscv/kernel/sys_riscv.c
-> @@ -7,6 +7,7 @@
->  
->  #include <linux/syscalls.h>
->  #include <asm/cacheflush.h>
-> +#include <asm-generic/mman-common.h>
->  
->  static long riscv_sys_mmap(unsigned long addr, unsigned long len,
->  			   unsigned long prot, unsigned long flags,
-> @@ -16,6 +17,15 @@ static long riscv_sys_mmap(unsigned long addr, unsigned long len,
->  	if (unlikely(offset & (~PAGE_MASK >> page_shift_offset)))
->  		return -EINVAL;
->  
-> +	/*
-> +	 * If PROT_WRITE is specified then extend that to PROT_READ
-> +	 * protection_map[VM_WRITE] is now going to select shadow stack encodings.
-> +	 * So specifying PROT_WRITE actually should select protection_map [VM_WRITE | VM_READ]
-> +	 * If user wants to create shadow stack then they should use `map_shadow_stack` syscall.
-> +	 */
-> +	if (unlikely((prot & PROT_WRITE) && !(prot & PROT_READ)))
-> +		prot |= PROT_READ;
-> +
->  	return ksys_mmap_pgoff(addr, len, prot, flags, fd,
->  			       offset >> (PAGE_SHIFT - page_shift_offset));
->  }
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index d85efe74a4b6..62ab2c7de7c8 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -376,7 +376,7 @@ pgd_t early_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
->  static const pgprot_t protection_map[16] = {
->  	[VM_NONE]					= PAGE_NONE,
->  	[VM_READ]					= PAGE_READ,
-> -	[VM_WRITE]					= PAGE_COPY,
-> +	[VM_WRITE]					= PAGE_SHADOWSTACK,
->  	[VM_WRITE | VM_READ]				= PAGE_COPY,
->  	[VM_EXEC]					= PAGE_EXEC,
->  	[VM_EXEC | VM_READ]				= PAGE_READ_EXEC,
-> 
-> -- 
-> 2.43.0
-> 
-> 
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
-> 
+v3:
+- Move i8/i16 AtomicImp next to i32/i64 with the comments updated
+- Add a comment about leaving the existing macros untouched
+- Add __rust_helper for helpers
+- Update commit messages about atomic_ext.c instead of atomic.c
+v2: https://lore.kernel.org/rust-for-linux/20251117001035.4068507-1-fujita.tomonori@gmail.com/
+- Implement relaxed operations by using C's READ_ONCE/WRITE_ONCE
+- Rename smp_load_acquire() and smp_store_release() helpers
+- Simplify the macro to generate atomic methods
+v1: https://lore.kernel.org/rust-for-linux/20251115050305.3872412-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (4):
+  rust: sync: Add i8/i16 atomic_load_acquire/atomic_store_release
+    helpers
+  rust: helpers: Add i8/i16 relaxed atomic helpers
+  rust: sync: atomic: Add i8/i16 load and store support
+  rust: sync: atomic: Add store_release/load_acquire tests
+
+ rust/helpers/atomic_ext.c            | 44 ++++++++++++++++++
+ rust/helpers/helpers.c               |  1 +
+ rust/kernel/sync/atomic/internal.rs  | 69 ++++++++++++++++++++++++++--
+ rust/kernel/sync/atomic/predefine.rs | 24 +++++++++-
+ 4 files changed, 132 insertions(+), 6 deletions(-)
+ create mode 100644 rust/helpers/atomic_ext.c
+
+
+base-commit: d358e5254674b70f34c847715ca509e46eb81e6f
+-- 
+2.43.0
+
