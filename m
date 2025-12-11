@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A532531B12D;
-	Thu, 11 Dec 2025 19:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434EE31B12D;
+	Thu, 11 Dec 2025 19:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765481420; cv=none; b=YV7jTlMmDmrrryOF4w877q3Eg2vru3T77hdE+07YNR7KB9adMaXfrHcCNl5erS03Bw3q83bdguXFFhhUv/T1WgRmlP3kV9vYzOiKt6mmEdI9Q7oujSh5Xk3XgZDRYeo3ToAuG/lDt2FVm4Cd/gurYl8UPbWQvBqDYFAGFoAuJhU=
+	t=1765481424; cv=none; b=CYXVdn1HXJRqILs8kECRJKD6HeVViABigeEmt/GDY+H22BwGnjXjUrZIERmdz1N5bK0oUTSzi4l/rdep+t5wwGvZQkgLSkCvDOTm4zSz6OL9cmr92qPHeiueVh1Bfct8SVltK6fnz8LQog9Hgs+5xFebELwdplAqGTShNSwdKd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765481420; c=relaxed/simple;
-	bh=T5GFpTndzj5bhRmtv0IJpXD8NDw7/7ylRpytzQVlQGc=;
+	s=arc-20240116; t=1765481424; c=relaxed/simple;
+	bh=gvcQWRbHO5oXNfaq+pIACHMiyAWHPnCzQ5sPRAzBkgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mSsDsfgCT8yybMmanE0P7WTtbRQVJHHYV5qneLvqEV78WtMMpZ+BWuKT2AHqZfsPjkFW3PofQh8JglHPnSDz1Te6SiECHPqmRlhnAYJtsDLfQLKQGk1swfI++OCO4DqgqbkW2TxVMe5n4sSApPNKnGByHnZgRxj9UD+8WKEwCOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHZyUpSM; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=a+3GfJvYWlkWcOxAY9nRzN4ULXpGMxzAOVrTApbTWAt8IaWHWz9x4PQAjNU3dem6gNTiaqCDlIF4bGxoAcSJxv2Ac6f3GGhxhotD/7eEsAIeAnfCw9Ietc2yhqMm6SSHBOY8nyn4rnWRQJxymGkbCC6koeRV8/wohA/+s5Q/Y5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tofkmiun; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHZyUpSM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CC7C16AAE;
-	Thu, 11 Dec 2025 19:30:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tofkmiun"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123F6C4CEF7;
+	Thu, 11 Dec 2025 19:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765481420;
-	bh=T5GFpTndzj5bhRmtv0IJpXD8NDw7/7ylRpytzQVlQGc=;
+	s=k20201202; t=1765481423;
+	bh=gvcQWRbHO5oXNfaq+pIACHMiyAWHPnCzQ5sPRAzBkgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=nHZyUpSMICBU/CSHHpq2b8mmAVuKTpGMIdEiwVkJEI7+pWMgc94RZOLXlqSrpoWo8
-	 UPfNUyZgn7ufHxkpMlxGZCH7GgbdJgsXH0Wbw7sK3ReKDGfZBzibjoPOge8m0vIta2
-	 AAQqzb3kzplnkSY7YDu0FuihjvLOkPHT+pD1KUkWmk9iykIoY/3l17eAJaYUmiWcsx
-	 3ZyhU9pkx1g+Vli1i2QjjYuvKtN8YPu/PWEDxkJZCJwZJSob5JOXNSHOL6P/Jw0iuV
-	 dvwFd6oZrMH3jhYBAOvBuF1uyzIhaMAqQI+dRiE5+WbY30hjlIf94+ynXSQ6wBTgCN
-	 xGXiRt/TuYWng==
+	b=TofkmiunCzW6t0VV8Gu1+j2+aw2e0VvEy5+zfbExy1flkAojFNddAIFpjZBrHPdIt
+	 CuFuF6JG8HCQw0wihbmZ1TwkBOfG02hlRI4jBbLhCpZu1WGPJwQnuLApMw25kKPybr
+	 T+HoV/QozDPUOqudOXS99H1gA/sPQJTfg2QiSGybU7UF+kQK/NWV26BXbbTaZyakDz
+	 4+MCEEX6tVNoQIkVlSHxzrs4yX3kkXVxqXeXStEP1/QNTjyALJjmI6R5PArBFzNKwj
+	 zSUWgmNdyQBqfvWNypsRrpaZ5KUet8uE18tUdJP4HrOCaJy3PgGnWWpbfkckXJhVvW
+	 atn1JGJsqfv7g==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -36,14 +36,16 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
-	Tamir Duberstein <tamird@gmail.com>
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Rae Moar <raemoar63@gmail.com>
 Cc: rust-for-linux@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 10/11] rust: macros: rearrange `#[doc(hidden)]` in `module!` macro
-Date: Thu, 11 Dec 2025 18:56:50 +0000
-Message-ID: <20251211185805.2835633-11-gary@kernel.org>
+Subject: [PATCH 11/11] rust: kunit: use `pin_init::zeroed` instead of custom null value
+Date: Thu, 11 Dec 2025 18:56:51 +0000
+Message-ID: <20251211185805.2835633-12-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251211185805.2835633-1-gary@kernel.org>
 References: <20251211185805.2835633-1-gary@kernel.org>
@@ -58,97 +60,88 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-This `#[doc(hidden)]` can just be applied on a module to hide anything
-within.
+The last null element can be created (constly) using `pin_init::zeroed`,
+so prefer to use it instead of adding a custom way of building it.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/macros/module.rs | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ rust/kernel/kunit.rs | 26 +-------------------------
+ rust/macros/kunit.rs |  4 ++--
+ 2 files changed, 3 insertions(+), 27 deletions(-)
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index d6298d04c86f4..75a4eae5610cd 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -71,7 +71,6 @@ fn emit_base(&mut self, field: &str, content: &str, builtin: bool) {
-         );
-         self.ts.extend(quote! {
-             #cfg
--            #[doc(hidden)]
-             #[cfg_attr(not(target_os = "macos"), link_section = ".modinfo")]
-             #[used(compiler)]
-             pub static #counter: [u8; #length] = *#string;
-@@ -375,6 +374,7 @@ impl ::kernel::ModuleMetadata for #type_ {
-         }
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 79436509dd73d..034158cdaf06b 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -192,9 +192,6 @@ pub fn is_test_result_ok(t: impl TestResult) -> bool {
+ }
  
-         // Double nested modules, since then nobody can access the public items inside.
-+        #[doc(hidden)]
-         mod __module_init {
-             mod __module_init {
-                 use pin_init::PinInit;
-@@ -384,7 +384,6 @@ mod __module_init {
-                 // This may be best done another way later on, e.g. as a new modinfo
-                 // key or a new section. For the moment, keep it simple.
-                 #[cfg(MODULE)]
--                #[doc(hidden)]
-                 #[used(compiler)]
-                 static __IS_RUST_MODULE: () = ();
+ /// Represents an individual test case.
+-///
+-/// The [`kunit_unsafe_test_suite!`] macro expects a NULL-terminated list of valid test cases.
+-/// Use [`kunit_case_null`] to generate such a delimiter.
+ #[doc(hidden)]
+ pub const fn kunit_case(
+     name: &'static kernel::str::CStr,
+@@ -215,27 +212,6 @@ pub const fn kunit_case(
+     }
+ }
  
-@@ -397,7 +396,6 @@ mod __module_init {
-                 /// This function must not be called after module initialization, because it may be
-                 /// freed after that completes.
-                 #[cfg(MODULE)]
--                #[doc(hidden)]
-                 #[no_mangle]
-                 #[link_section = ".init.text"]
-                 pub unsafe extern "C" fn init_module() -> ::kernel::ffi::c_int {
-@@ -408,14 +406,12 @@ mod __module_init {
-                 }
- 
-                 #[cfg(MODULE)]
--                #[doc(hidden)]
-                 #[used(compiler)]
-                 #[link_section = ".init.data"]
-                 static __UNIQUE_ID___addressable_init_module: unsafe extern "C" fn() -> i32 =
-                     init_module;
- 
-                 #[cfg(MODULE)]
--                #[doc(hidden)]
-                 #[no_mangle]
-                 #[link_section = ".exit.text"]
-                 pub extern "C" fn cleanup_module() {
-@@ -429,7 +425,6 @@ pub extern "C" fn cleanup_module() {
-                 }
- 
-                 #[cfg(MODULE)]
--                #[doc(hidden)]
-                 #[used(compiler)]
-                 #[link_section = ".exit.data"]
-                 static __UNIQUE_ID___addressable_cleanup_module: extern "C" fn() = cleanup_module;
-@@ -438,7 +433,6 @@ pub extern "C" fn cleanup_module() {
-                 // and the identifiers need to be unique.
-                 #[cfg(not(MODULE))]
-                 #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
--                #[doc(hidden)]
-                 #[link_section = #initcall_section]
-                 #[used(compiler)]
-                 pub static #ident_initcall: extern "C" fn() ->
-@@ -449,7 +443,6 @@ pub extern "C" fn cleanup_module() {
-                 ::core::arch::global_asm!(#global_asm);
- 
-                 #[cfg(not(MODULE))]
--                #[doc(hidden)]
-                 #[no_mangle]
-                 pub extern "C" fn #ident_init() -> ::kernel::ffi::c_int {
-                     // SAFETY: This function is inaccessible to the outside due to the double
-@@ -459,7 +452,6 @@ pub extern "C" fn #ident_init() -> ::kernel::ffi::c_int {
-                 }
- 
-                 #[cfg(not(MODULE))]
--                #[doc(hidden)]
-                 #[no_mangle]
-                 pub extern "C" fn #ident_exit() {
-                     // SAFETY:
+-/// Represents the NULL test case delimiter.
+-///
+-/// The [`kunit_unsafe_test_suite!`] macro expects a NULL-terminated list of test cases. This
+-/// function returns such a delimiter.
+-#[doc(hidden)]
+-pub const fn kunit_case_null() -> kernel::bindings::kunit_case {
+-    kernel::bindings::kunit_case {
+-        run_case: None,
+-        name: core::ptr::null_mut(),
+-        generate_params: None,
+-        attr: kernel::bindings::kunit_attributes {
+-            speed: kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
+-        },
+-        status: kernel::bindings::kunit_status_KUNIT_SUCCESS,
+-        module_name: core::ptr::null_mut(),
+-        log: core::ptr::null_mut(),
+-        param_init: None,
+-        param_exit: None,
+-    }
+-}
+-
+ /// Registers a KUnit test suite.
+ ///
+ /// # Safety
+@@ -254,7 +230,7 @@ pub const fn kunit_case_null() -> kernel::bindings::kunit_case {
+ ///
+ /// static mut KUNIT_TEST_CASES: [kernel::bindings::kunit_case; 2] = [
+ ///     kernel::kunit::kunit_case(kernel::c_str!("name"), test_fn),
+-///     kernel::kunit::kunit_case_null(),
++///     pin_init::zeroed(),
+ /// ];
+ /// kernel::kunit_unsafe_test_suite!(suite_name, KUNIT_TEST_CASES);
+ /// ```
+diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
+index 516219f5b1356..fd2cfabfaef76 100644
+--- a/rust/macros/kunit.rs
++++ b/rust/macros/kunit.rs
+@@ -74,7 +74,7 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
+     // static mut TEST_CASES: [::kernel::bindings::kunit_case; 3] = [
+     //     ::kernel::kunit::kunit_case(::kernel::c_str!("foo"), kunit_rust_wrapper_foo),
+     //     ::kernel::kunit::kunit_case(::kernel::c_str!("bar"), kunit_rust_wrapper_bar),
+-    //     ::kernel::kunit::kunit_case_null(),
++    //     ::pin_init::zeroed(),
+     // ];
+     //
+     // ::kernel::kunit_unsafe_test_suite!(kunit_test_suit_name, TEST_CASES);
+@@ -159,7 +159,7 @@ macro_rules! assert_eq {
+     processed_items.push(parse_quote! {
+         static mut TEST_CASES: [::kernel::bindings::kunit_case; #num_tests_plus_1] = [
+             #(#test_cases,)*
+-            ::kernel::kunit::kunit_case_null(),
++            ::pin_init::zeroed(),
+         ];
+     });
+     processed_items.push(parse_quote! {
 -- 
 2.51.2
 
