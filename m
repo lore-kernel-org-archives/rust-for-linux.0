@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39C83195FC;
-	Thu, 11 Dec 2025 19:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33812212550;
+	Thu, 11 Dec 2025 19:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765481369; cv=none; b=LUoPg/bCQ8Z5ffkOoNN0xMfm3vPk4eTRpCrFsyPDe+DCgInUauB+9vMP+3V2vHYvwCfUkEcvY4DYOb24mVxAslNjDQHrxtYeh9yLNxLZU2FQTMDtA/C3VX+kWwP2bJJGRhknwLfDggOa24HBn9N1Ctl94j55Yga3isF0oaJlmIk=
+	t=1765481379; cv=none; b=IVd//UT59xnD+ef2V2SlW3CCWGgbhArXBqtt33fTrbBrkadfMr3Beo6fmQWDr9hJLlvW6/+Z030OMKbr43eucVKWVvMbJQT2j8YbKeq7S7h2XBsApgGYKYLp7sTXoKtoqKvUOIpPOZWIrJ/zUrUEm2UU2Vtqb5aOtIB+j9kUKKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765481369; c=relaxed/simple;
-	bh=6Fr4zL443OClgjD+TsvwmJlLQoqtNEW4GQcPKyNPQME=;
+	s=arc-20240116; t=1765481379; c=relaxed/simple;
+	bh=YEe1iyx6NgqucAPHcBh21ibUjJe8SlvsBk+62GRMAEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4Nj8swh/8aUQGvomlB5K4V0yWMVkiBoNOzXHKIWveJ4hQIYuWEZsr8PQKpNZbgXZ9H+AJ8DbrImkybHNzgCx4pQYxBLcLNYqLPtzgU5ji71BRxTu9sRQ+p0Lra5+g4zGW8AuVoJ8UX1cwlSGIohNVIWWpjFDz4c3gcBb+kM4VQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InGFy/oK; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=By+VvrxyVsUnnfgNLCmRD+GPV1rj2/mNymXqnIsxs4u6RWIhY/venXZuqsXdXDJZpekU2iKTQgMVPMywx5/DKjWbwnfjmLsTnP87zbrrq4BnBiwtgGRGJWrOtmrjaTjbqDQzbDIx0LwJZq7dTAUTSkhik6ZEMUTb+aULR6wz9g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMwxPcH/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InGFy/oK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5070C4CEFB;
-	Thu, 11 Dec 2025 19:29:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMwxPcH/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C76C4CEFB;
+	Thu, 11 Dec 2025 19:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765481369;
-	bh=6Fr4zL443OClgjD+TsvwmJlLQoqtNEW4GQcPKyNPQME=;
+	s=k20201202; t=1765481378;
+	bh=YEe1iyx6NgqucAPHcBh21ibUjJe8SlvsBk+62GRMAEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=InGFy/oK1+ZrKnfJRd77lJGD0j0sJN6f03L32KDcIR/ID1Y+4ooyfChDYXqeIQ7Be
-	 1ro3sT7+e/BDmEpk511Q0cIMfAkGqhWe+sHvdJHuEwc/r0NFkKROBgFaRYpuNt1q5A
-	 LSgyc+rgQ4i32bexWeBZGC+JFINLQYYQ7uNrLP8tZgHa7QmFLlr2DGrem4/ceQGqoC
-	 xMu15RJdHV7t8Ups/c6rNDn3b647o7sVENny+C/yn9eZVGXLI485MQ54u5vDpunJMd
-	 hcnQ8F6mUihWA7tVqeCxxj/ELyqItX4psTXaQRzIe+UhPHAdqwMDS+Fn5viLIOefhE
-	 yNoCAJDVER5Gg==
+	b=mMwxPcH/Di1E+6ZEAsR42VD3nSFcFA1By/OsD85xcd1YLWJaVOdiex6pVk1HDnnBk
+	 0PyA/LVRlGkneGLi/yeBHSZyIBEuwdOJc8d1dStYQjacmclfblTOWbCEvuP06Ggq4c
+	 Vylpn+kVOVT0wgVmH1jGTbFWkeZEbMm98ystWYhYVCwKpWmOzuWaqHvDP+QedhK5RI
+	 WZeOcVRM1i767gz7w0tvDWXJkFm7m94hUKsuV+n1a9adylaqvEppv973T4UeBLC4Q6
+	 PR7eghh5CsoZIqeAJTsZ0y+XJFZquVX9hAUJVSO0PY3WAMl1+WZ4bmqkUqCRa3lrzv
+	 5oeIF5KZ3nHWQ==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -36,14 +36,18 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	Fiona Behrens <me@kloenk.dev>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Patrick Miller <paddymills@proton.me>,
 	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	Tamir Duberstein <tamird@gmail.com>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 Cc: rust-for-linux@vger.kernel.org,
+	Igor Korotin <igor.korotin.linux@gmail.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 03/11] rust: macros: convert `#[vtable]` macro to use `syn`
-Date: Thu, 11 Dec 2025 18:56:43 +0000
-Message-ID: <20251211185805.2835633-4-gary@kernel.org>
+Subject: [PATCH 04/11] rust: macros: use `syn` to parse `module!` macro
+Date: Thu, 11 Dec 2025 18:56:44 +0000
+Message-ID: <20251211185805.2835633-5-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251211185805.2835633-1-gary@kernel.org>
 References: <20251211185805.2835633-1-gary@kernel.org>
@@ -58,224 +62,469 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-`#[vtable]` is converted to use syn. This is more robust than the
-previous heuristic-based searching of defined methods and functions.
+With `syn` being available in the kernel, use it to parse the complex
+custom `module!` macro to replace existing helpers. Only parsing is
+changed in this commit, the code generation is untouched.
 
-When doing so, the trait and impl are split into two code paths as the
-types are distinct when parsed by `syn`.
+This has the benefit of better error message when the macro is used
+incorrectly, as it can point to a concrete span on what's going wrong.
 
+For example, if a field is specified twice, previously it reads:
+
+    error: proc macro panicked
+      --> samples/rust/rust_minimal.rs:7:1
+       |
+    7  | / module! {
+    8  | |     type: RustMinimal,
+    9  | |     name: "rust_minimal",
+    10 | |     author: "Rust for Linux Contributors",
+    11 | |     description: "Rust minimal sample",
+    12 | |     license: "GPL",
+    13 | |     license: "GPL",
+    14 | | }
+       | |_^
+       |
+       = help: message: Duplicated key "license". Keys can only be specified once.
+
+now it reads:
+
+    error: duplicated key "license". Keys can only be specified once.
+      --> samples/rust/rust_minimal.rs:13:5
+       |
+    13 |     license: "GPL",
+       |     ^^^^^^^
+
+Co-developed-by: Benno Lossin <lossin@kernel.org>
+Signed-off-by: Benno Lossin <lossin@kernel.org>
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/macros/lib.rs    |   9 ++-
- rust/macros/vtable.rs | 155 +++++++++++++++++++++---------------------
- 2 files changed, 85 insertions(+), 79 deletions(-)
+ rust/macros/helpers.rs |  84 ++++++----------
+ rust/macros/lib.rs     |   9 +-
+ rust/macros/module.rs  | 220 ++++++++++++++++++++++++++++++-----------
+ 3 files changed, 202 insertions(+), 111 deletions(-)
 
+diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
+index 853527b5d9567..f6bbdb02d9d7d 100644
+--- a/rust/macros/helpers.rs
++++ b/rust/macros/helpers.rs
+@@ -1,42 +1,21 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-use proc_macro2::{token_stream, Group, Ident, TokenStream, TokenTree};
+-
+-pub(crate) fn try_ident(it: &mut token_stream::IntoIter) -> Option<String> {
+-    if let Some(TokenTree::Ident(ident)) = it.next() {
+-        Some(ident.to_string())
+-    } else {
+-        None
+-    }
+-}
+-
+-pub(crate) fn try_literal(it: &mut token_stream::IntoIter) -> Option<String> {
+-    if let Some(TokenTree::Literal(literal)) = it.next() {
+-        Some(literal.to_string())
+-    } else {
+-        None
+-    }
+-}
+-
+-pub(crate) fn try_string(it: &mut token_stream::IntoIter) -> Option<String> {
+-    try_literal(it).and_then(|string| {
+-        if string.starts_with('\"') && string.ends_with('\"') {
+-            let content = &string[1..string.len() - 1];
+-            if content.contains('\\') {
+-                panic!("Escape sequences in string literals not yet handled");
+-            }
+-            Some(content.to_string())
+-        } else if string.starts_with("r\"") {
+-            panic!("Raw string literals are not yet handled");
+-        } else {
+-            None
+-        }
+-    })
+-}
+-
+-pub(crate) fn expect_ident(it: &mut token_stream::IntoIter) -> String {
+-    try_ident(it).expect("Expected Ident")
+-}
++use proc_macro2::{
++    token_stream,
++    Ident,
++    TokenStream,
++    TokenTree, //
++};
++use quote::ToTokens;
++use syn::{
++    parse::{
++        Parse,
++        ParseStream, //
++    },
++    Error,
++    LitStr,
++    Result, //
++};
+ 
+ pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> char {
+     if let TokenTree::Punct(punct) = it.next().expect("Reached end of token stream for Punct") {
+@@ -46,27 +25,28 @@ pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> char {
+     }
+ }
+ 
+-pub(crate) fn expect_string(it: &mut token_stream::IntoIter) -> String {
+-    try_string(it).expect("Expected string")
+-}
++/// A string literal that is required to have ASCII value only.
++pub(crate) struct AsciiLitStr(LitStr);
+ 
+-pub(crate) fn expect_string_ascii(it: &mut token_stream::IntoIter) -> String {
+-    let string = try_string(it).expect("Expected string");
+-    assert!(string.is_ascii(), "Expected ASCII string");
+-    string
++impl Parse for AsciiLitStr {
++    fn parse(input: ParseStream<'_>) -> Result<Self> {
++        let s: LitStr = input.parse()?;
++        if !s.value().is_ascii() {
++            return Err(Error::new_spanned(s, "expected ASCII-only string literal"));
++        }
++        Ok(Self(s))
++    }
+ }
+ 
+-pub(crate) fn expect_group(it: &mut token_stream::IntoIter) -> Group {
+-    if let TokenTree::Group(group) = it.next().expect("Reached end of token stream for Group") {
+-        group
+-    } else {
+-        panic!("Expected Group");
++impl ToTokens for AsciiLitStr {
++    fn to_tokens(&self, ts: &mut TokenStream) {
++        self.0.to_tokens(ts);
+     }
+ }
+ 
+-pub(crate) fn expect_end(it: &mut token_stream::IntoIter) {
+-    if it.next().is_some() {
+-        panic!("Expected end");
++impl AsciiLitStr {
++    pub(crate) fn value(&self) -> String {
++        self.0.value()
+     }
+ }
+ 
 diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 8e0f49ac783b2..33935b38d11c0 100644
+index 33935b38d11c0..4e440deaed853 100644
 --- a/rust/macros/lib.rs
 +++ b/rust/macros/lib.rs
-@@ -22,6 +22,8 @@
+@@ -10,6 +10,9 @@
+ // which was added in Rust 1.88.0. This is why `cfg_attr` is used here, i.e.
+ // to avoid depending on the full `proc_macro_span` on Rust >= 1.88.0.
+ #![cfg_attr(not(CONFIG_RUSTC_HAS_SPAN_FILE), feature(proc_macro_span))]
++//
++// Stable since Rust 1.81.0.
++#![feature(lint_reasons)]
  
- use proc_macro::TokenStream;
- 
-+use syn::parse_macro_input;
-+
- /// Declares a kernel module.
- ///
- /// The `type` argument should be a type which implements the [`Module`]
-@@ -173,8 +175,11 @@ pub fn module(ts: TokenStream) -> TokenStream {
- ///
- /// [`kernel::error::VTABLE_DEFAULT_ERROR`]: ../kernel/error/constant.VTABLE_DEFAULT_ERROR.html
- #[proc_macro_attribute]
--pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
--    vtable::vtable(attr.into(), ts.into()).into()
-+pub fn vtable(attr: TokenStream, input: TokenStream) -> TokenStream {
-+    parse_macro_input!(attr as syn::parse::Nothing);
-+    vtable::vtable(parse_macro_input!(input))
+ mod concat_idents;
+ mod export;
+@@ -100,8 +103,10 @@
+ ///   - `firmware`: array of ASCII string literals of the firmware files of
+ ///     the kernel module.
+ #[proc_macro]
+-pub fn module(ts: TokenStream) -> TokenStream {
+-    module::module(ts.into()).into()
++pub fn module(input: TokenStream) -> TokenStream {
++    module::module(parse_macro_input!(input))
 +        .unwrap_or_else(|e| e.into_compile_error())
 +        .into()
  }
  
- /// Export a function so that C code can call it via a header file.
-diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
-index f209216785745..51a7990fd51f3 100644
---- a/rust/macros/vtable.rs
-+++ b/rust/macros/vtable.rs
-@@ -1,97 +1,98 @@
- // SPDX-License-Identifier: GPL-2.0
+ /// Declares or implements a vtable trait.
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 6974fb04f58fa..e4d51878a5360 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -2,28 +2,27 @@
  
- use std::collections::HashSet;
--use std::fmt::Write;
+ use std::fmt::Write;
  
--use proc_macro2::{Delimiter, Group, TokenStream, TokenTree};
-+use proc_macro2::{Ident, TokenStream};
-+use quote::ToTokens;
-+use syn::{parse_quote, Error, ImplItem, Item, ItemImpl, ItemTrait, Result, TraitItem};
+-use proc_macro2::{token_stream, Delimiter, Literal, TokenStream, TokenTree};
++use proc_macro2::{
++    Literal,
++    TokenStream, //
++};
++use syn::{
++    bracketed,
++    parse::{
++        Parse,
++        ParseStream, //
++    },
++    punctuated::Punctuated,
++    token::Bracket,
++    Error,
++    Ident,
++    LitStr,
++    Result,
++    Token, //
++};
  
--pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
--    let mut tokens: Vec<_> = ts.into_iter().collect();
+ use crate::helpers::*;
+ 
+-fn expect_string_array(it: &mut token_stream::IntoIter) -> Vec<String> {
+-    let group = expect_group(it);
+-    assert_eq!(group.delimiter(), Delimiter::Bracket);
+-    let mut values = Vec::new();
+-    let mut it = group.stream().into_iter();
 -
--    // Scan for the `trait` or `impl` keyword.
--    let is_trait = tokens
--        .iter()
--        .find_map(|token| match token {
--            TokenTree::Ident(ident) => match ident.to_string().as_str() {
--                "trait" => Some(true),
--                "impl" => Some(false),
--                _ => None,
--            },
--            _ => None,
--        })
--        .expect("#[vtable] attribute should only be applied to trait or impl block");
+-    while let Some(val) = try_string(&mut it) {
+-        assert!(val.is_ascii(), "Expected ASCII string");
+-        values.push(val);
+-        match it.next() {
+-            Some(TokenTree::Punct(punct)) => assert_eq!(punct.as_char(), ','),
+-            None => break,
+-            _ => panic!("Expected ',' or end of array"),
+-        }
+-    }
+-    values
+-}
 -
--    // Retrieve the main body. The main body should be the last token tree.
--    let body = match tokens.pop() {
--        Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Brace => group,
--        _ => panic!("cannot locate main body of trait or impl block"),
--    };
--
--    let mut body_it = body.stream().into_iter();
-+fn handle_trait(mut item: ItemTrait) -> Result<ItemTrait> {
-     let mut functions = Vec::new();
-     let mut consts = HashSet::new();
--    while let Some(token) = body_it.next() {
--        match token {
--            TokenTree::Ident(ident) if ident.to_string() == "fn" => {
--                let fn_name = match body_it.next() {
--                    Some(TokenTree::Ident(ident)) => ident.to_string(),
--                    // Possibly we've encountered a fn pointer type instead.
--                    _ => continue,
--                };
--                functions.push(fn_name);
-+    for item in &item.items {
-+        match item {
-+            TraitItem::Fn(fn_item) => {
-+                functions.push(fn_item.sig.ident.clone());
-             }
--            TokenTree::Ident(ident) if ident.to_string() == "const" => {
--                let const_name = match body_it.next() {
--                    Some(TokenTree::Ident(ident)) => ident.to_string(),
--                    // Possibly we've encountered an inline const block instead.
--                    _ => continue,
--                };
--                consts.insert(const_name);
-+            TraitItem::Const(const_item) => {
-+                consts.insert(const_item.ident.clone());
-             }
--            _ => (),
-+            _ => {}
-         }
+ struct ModInfoBuilder<'a> {
+     module: &'a str,
+     counter: usize,
+@@ -91,8 +90,107 @@ fn emit(&mut self, field: &str, content: &str) {
      }
+ }
  
--    let mut const_items;
--    if is_trait {
--        const_items = "
--                /// A marker to prevent implementors from forgetting to use [`#[vtable]`](vtable)
--                /// attribute when implementing this trait.
--                const USE_VTABLE_ATTR: ();
--        "
--        .to_owned();
-+    item.items.push(parse_quote! {
-+         /// A marker to prevent implementors from forgetting to use [`#[vtable]`](vtable)
-+         /// attribute when implementing this trait.
-+         const USE_VTABLE_ATTR: ();
-+    });
- 
--        for f in functions {
--            let gen_const_name = format!("HAS_{}", f.to_uppercase());
--            // Skip if it's declared already -- this allows user override.
--            if consts.contains(&gen_const_name) {
--                continue;
--            }
--            // We don't know on the implementation-site whether a method is required or provided
--            // so we have to generate a const for all methods.
--            write!(
--                const_items,
--                "/// Indicates if the `{f}` method is overridden by the implementor.
--                const {gen_const_name}: bool = false;",
--            )
--            .unwrap();
--            consts.insert(gen_const_name);
-+    for name in functions {
-+        let gen_const_name = Ident::new(
-+            &format!("HAS_{}", name.to_string().to_uppercase()),
-+            name.span(),
-+        );
-+        // Skip if it's declared already -- this allows user override.
-+        if consts.contains(&gen_const_name) {
-+            continue;
-         }
--    } else {
--        const_items = "const USE_VTABLE_ATTR: () = ();".to_owned();
-+        // We don't know on the implementation-site whether a method is required or provided
-+        // so we have to generate a const for all methods.
-+        let comment = format!("Indicates if the `{name}` method is overridden by the implementor.");
-+        item.items.push(parse_quote! {
-+            #[doc = #comment]
-+            const #gen_const_name: bool = false;
-+        });
-+        consts.insert(gen_const_name);
-+    }
- 
--        for f in functions {
--            let gen_const_name = format!("HAS_{}", f.to_uppercase());
--            if consts.contains(&gen_const_name) {
--                continue;
-+    Ok(item)
++mod kw {
++    syn::custom_keyword!(name);
++    syn::custom_keyword!(authors);
++    syn::custom_keyword!(description);
++    syn::custom_keyword!(license);
++    syn::custom_keyword!(alias);
++    syn::custom_keyword!(firmware);
 +}
 +
-+fn handle_impl(mut item: ItemImpl) -> Result<ItemImpl> {
-+    let mut functions = Vec::new();
-+    let mut consts = HashSet::new();
-+    for item in &item.items {
-+        match item {
-+            ImplItem::Fn(fn_item) => {
-+                functions.push(fn_item.sig.ident.clone());
-             }
--            write!(const_items, "const {gen_const_name}: bool = true;").unwrap();
-+            ImplItem::Const(const_item) => {
-+                consts.insert(const_item.ident.clone());
-+            }
-+            _ => {}
++#[allow(dead_code, reason = "some fields are only parsed into")]
++enum ModInfoField {
++    Type(Token![type], Token![:], Ident),
++    Name(kw::name, Token![:], AsciiLitStr),
++    Authors(
++        kw::authors,
++        Token![:],
++        Bracket,
++        Punctuated<LitStr, Token![,]>,
++    ),
++    Description(kw::description, Token![:], LitStr),
++    License(kw::license, Token![:], AsciiLitStr),
++    Alias(
++        kw::authors,
++        Token![:],
++        Bracket,
++        Punctuated<LitStr, Token![,]>,
++    ),
++    Firmware(
++        kw::firmware,
++        Token![:],
++        Bracket,
++        Punctuated<LitStr, Token![,]>,
++    ),
++}
++
++impl ModInfoField {
++    /// Obtain the key identifying the field.
++    fn key(&self) -> Ident {
++        match self {
++            ModInfoField::Type(key, ..) => Ident::new("type", key.span),
++            ModInfoField::Name(key, ..) => Ident::new("name", key.span),
++            ModInfoField::Authors(key, ..) => Ident::new("authors", key.span),
++            ModInfoField::Description(key, ..) => Ident::new("description", key.span),
++            ModInfoField::License(key, ..) => Ident::new("license", key.span),
++            ModInfoField::Alias(key, ..) => Ident::new("alias", key.span),
++            ModInfoField::Firmware(key, ..) => Ident::new("firmware", key.span),
 +        }
 +    }
-+
-+    item.items.push(parse_quote! {
-+         const USE_VTABLE_ATTR: () = ();
-+    });
-+
-+    for name in functions {
-+        let gen_const_name = Ident::new(
-+            &format!("HAS_{}", name.to_string().to_uppercase()),
-+            name.span(),
-+        );
-+        // Skip if it's declared already -- this allows user override.
-+        if consts.contains(&gen_const_name) {
-+            continue;
-         }
-+        item.items.push(parse_quote! {
-+            const #gen_const_name: bool = true;
-+        });
-+        consts.insert(gen_const_name);
-     }
- 
--    let new_body = vec![const_items.parse().unwrap(), body.stream()]
--        .into_iter()
--        .collect();
--    tokens.push(TokenTree::Group(Group::new(Delimiter::Brace, new_body)));
--    tokens.into_iter().collect()
-+    Ok(item)
 +}
 +
-+pub(crate) fn vtable(input: Item) -> Result<TokenStream> {
-+    match input {
-+        Item::Trait(item) => Ok(handle_trait(item)?.into_token_stream()),
-+        Item::Impl(item) => Ok(handle_impl(item)?.into_token_stream()),
-+        _ => Err(Error::new_spanned(
-+            input,
-+            "`#[vtable]` attribute should only be applied to trait or impl block",
-+        ))?,
++impl Parse for ModInfoField {
++    fn parse(input: ParseStream<'_>) -> Result<Self> {
++        let key = input.lookahead1();
++        if key.peek(Token![type]) {
++            Ok(Self::Type(input.parse()?, input.parse()?, input.parse()?))
++        } else if key.peek(kw::name) {
++            Ok(Self::Name(input.parse()?, input.parse()?, input.parse()?))
++        } else if key.peek(kw::authors) {
++            let list;
++            Ok(Self::Authors(
++                input.parse()?,
++                input.parse()?,
++                bracketed!(list in input),
++                Punctuated::parse_terminated(&list)?,
++            ))
++        } else if key.peek(kw::description) {
++            Ok(Self::Description(
++                input.parse()?,
++                input.parse()?,
++                input.parse()?,
++            ))
++        } else if key.peek(kw::license) {
++            Ok(Self::License(
++                input.parse()?,
++                input.parse()?,
++                input.parse()?,
++            ))
++        } else if key.peek(kw::alias) {
++            let list;
++            Ok(Self::Alias(
++                input.parse()?,
++                input.parse()?,
++                bracketed!(list in input),
++                Punctuated::parse_terminated(&list)?,
++            ))
++        } else if key.peek(kw::firmware) {
++            let list;
++            Ok(Self::Firmware(
++                input.parse()?,
++                input.parse()?,
++                bracketed!(list in input),
++                Punctuated::parse_terminated(&list)?,
++            ))
++        } else {
++            Err(key.error())
++        }
 +    }
++}
++
+ #[derive(Debug, Default)]
+-struct ModuleInfo {
++pub(crate) struct ModuleInfo {
+     type_: String,
+     license: String,
+     name: String,
+@@ -102,9 +200,13 @@ struct ModuleInfo {
+     firmware: Option<Vec<String>>,
+ }
+ 
+-impl ModuleInfo {
+-    fn parse(it: &mut token_stream::IntoIter) -> Self {
+-        let mut info = ModuleInfo::default();
++impl Parse for ModuleInfo {
++    fn parse(input: ParseStream<'_>) -> Result<Self> {
++        let mut info = Self::default();
++
++        let span = input.span();
++        let fields = Punctuated::<ModInfoField, Token![,]>::parse_terminated(input)?;
++        let mut errors = Vec::new();
+ 
+         const EXPECTED_KEYS: &[&str] = &[
+             "type",
+@@ -118,40 +220,38 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
+         const REQUIRED_KEYS: &[&str] = &["type", "name", "license"];
+         let mut seen_keys = Vec::new();
+ 
+-        loop {
+-            let key = match it.next() {
+-                Some(TokenTree::Ident(ident)) => ident.to_string(),
+-                Some(_) => panic!("Expected Ident or end"),
+-                None => break,
+-            };
++        for field in fields {
++            let key = field.key();
+ 
+             if seen_keys.contains(&key) {
+-                panic!("Duplicated key \"{key}\". Keys can only be specified once.");
++                errors.push(Error::new_spanned(
++                    &key,
++                    format!(r#"duplicated key "{key}". Keys can only be specified once."#),
++                ));
++                continue;
+             }
++            seen_keys.push(key);
+ 
+-            assert_eq!(expect_punct(it), ':');
+-
+-            match key.as_str() {
+-                "type" => info.type_ = expect_ident(it),
+-                "name" => info.name = expect_string_ascii(it),
+-                "authors" => info.authors = Some(expect_string_array(it)),
+-                "description" => info.description = Some(expect_string(it)),
+-                "license" => info.license = expect_string_ascii(it),
+-                "alias" => info.alias = Some(expect_string_array(it)),
+-                "firmware" => info.firmware = Some(expect_string_array(it)),
+-                _ => panic!("Unknown key \"{key}\". Valid keys are: {EXPECTED_KEYS:?}."),
++            match field {
++                ModInfoField::Type(_, _, ty) => info.type_ = ty.to_string(),
++                ModInfoField::Name(_, _, name) => info.name = name.value(),
++                ModInfoField::Authors(_, _, _, list) => {
++                    info.authors = Some(list.into_iter().map(|x| x.value()).collect())
++                }
++                ModInfoField::Description(_, _, desc) => info.description = Some(desc.value()),
++                ModInfoField::License(_, _, license) => info.license = license.value(),
++                ModInfoField::Alias(_, _, _, list) => {
++                    info.alias = Some(list.into_iter().map(|x| x.value()).collect())
++                }
++                ModInfoField::Firmware(_, _, _, list) => {
++                    info.firmware = Some(list.into_iter().map(|x| x.value()).collect())
++                }
+             }
+-
+-            assert_eq!(expect_punct(it), ',');
+-
+-            seen_keys.push(key);
+         }
+ 
+-        expect_end(it);
+-
+         for key in REQUIRED_KEYS {
+             if !seen_keys.iter().any(|e| e == key) {
+-                panic!("Missing required key \"{key}\".");
++                errors.push(Error::new(span, format!(r#"missing required key "{key}""#)));
+             }
+         }
+ 
+@@ -163,18 +263,24 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
+         }
+ 
+         if seen_keys != ordered_keys {
+-            panic!("Keys are not ordered as expected. Order them like: {ordered_keys:?}.");
++            errors.push(Error::new(
++                span,
++                format!(r#"keys are not ordered as expected. Order them like: {ordered_keys:?}."#),
++            ));
++        }
++
++        if let Some(err) = errors.into_iter().reduce(|mut e1, e2| {
++            e1.combine(e2);
++            e1
++        }) {
++            return Err(err);
+         }
+ 
+-        info
++        Ok(info)
+     }
+ }
+ 
+-pub(crate) fn module(ts: TokenStream) -> TokenStream {
+-    let mut it = ts.into_iter();
+-
+-    let info = ModuleInfo::parse(&mut it);
+-
++pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
+     // Rust does not allow hyphens in identifiers, use underscore instead.
+     let ident = info.name.replace('-', "_");
+     let mut modinfo = ModInfoBuilder::new(ident.as_ref());
+@@ -203,7 +309,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+         std::env::var("RUST_MODFILE").expect("Unable to fetch RUST_MODFILE environmental variable");
+     modinfo.emit_only_builtin("file", &file);
+ 
+-    format!(
++    Ok(format!(
+         "
+             /// The module name.
+             ///
+@@ -377,5 +483,5 @@ unsafe fn __exit() {{
+         initcall_section = ".initcall6.init"
+     )
+     .parse()
+-    .expect("Error parsing formatted string into token stream.")
++    .expect("Error parsing formatted string into token stream."))
  }
 -- 
 2.51.2
