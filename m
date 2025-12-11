@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33812212550;
-	Thu, 11 Dec 2025 19:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66326319847;
+	Thu, 11 Dec 2025 19:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765481379; cv=none; b=IVd//UT59xnD+ef2V2SlW3CCWGgbhArXBqtt33fTrbBrkadfMr3Beo6fmQWDr9hJLlvW6/+Z030OMKbr43eucVKWVvMbJQT2j8YbKeq7S7h2XBsApgGYKYLp7sTXoKtoqKvUOIpPOZWIrJ/zUrUEm2UU2Vtqb5aOtIB+j9kUKKU=
+	t=1765481384; cv=none; b=C+uXjVMzk+c9eMao/o5BEzjH8u9LpNYh4S+ZYFyzH51Xv+akvUUmLyQvg9ICWECJA2VCnbv2teV9oST7F2PLo1ncs7aV4z0ryeqfvfN00f/cE0O5mz9Weyf86XNCmcW/VK0JvB52YBjJhs0Y8EQjV1B107qwndh/6Yl5XjEXMpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765481379; c=relaxed/simple;
-	bh=YEe1iyx6NgqucAPHcBh21ibUjJe8SlvsBk+62GRMAEw=;
+	s=arc-20240116; t=1765481384; c=relaxed/simple;
+	bh=pfxM0c+rR8GlpmK6+wPCAR5++a9CmT8xXiEGeUXq7oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=By+VvrxyVsUnnfgNLCmRD+GPV1rj2/mNymXqnIsxs4u6RWIhY/venXZuqsXdXDJZpekU2iKTQgMVPMywx5/DKjWbwnfjmLsTnP87zbrrq4BnBiwtgGRGJWrOtmrjaTjbqDQzbDIx0LwJZq7dTAUTSkhik6ZEMUTb+aULR6wz9g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMwxPcH/; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=U+PSKkrcVWVZ0UZwjmt7S2awemrrOwcotfmAk0UG+GM9S0gWQW8tykO8bS032hBYxCZnTMIXkw5v0srvRspMIzkZvqVdoGqF+PUR3661dydkCIOzqwq2eceRxRUKttMja+UlsO1O5i8qN9evQGPRHxUzoyz9kKUmnmQK/Pez5I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cAffyxDx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMwxPcH/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C76C4CEFB;
-	Thu, 11 Dec 2025 19:29:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cAffyxDx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43D1C4CEF7;
+	Thu, 11 Dec 2025 19:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765481378;
-	bh=YEe1iyx6NgqucAPHcBh21ibUjJe8SlvsBk+62GRMAEw=;
+	s=k20201202; t=1765481384;
+	bh=pfxM0c+rR8GlpmK6+wPCAR5++a9CmT8xXiEGeUXq7oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=mMwxPcH/Di1E+6ZEAsR42VD3nSFcFA1By/OsD85xcd1YLWJaVOdiex6pVk1HDnnBk
-	 0PyA/LVRlGkneGLi/yeBHSZyIBEuwdOJc8d1dStYQjacmclfblTOWbCEvuP06Ggq4c
-	 Vylpn+kVOVT0wgVmH1jGTbFWkeZEbMm98ystWYhYVCwKpWmOzuWaqHvDP+QedhK5RI
-	 WZeOcVRM1i767gz7w0tvDWXJkFm7m94hUKsuV+n1a9adylaqvEppv973T4UeBLC4Q6
-	 PR7eghh5CsoZIqeAJTsZ0y+XJFZquVX9hAUJVSO0PY3WAMl1+WZ4bmqkUqCRa3lrzv
-	 5oeIF5KZ3nHWQ==
+	b=cAffyxDx3cjNT2NwNukCrcWuvLRmSX2DSd+0k1LyMI3GY4A1KRKJ4mROGjNlu4qnT
+	 MCboHw2N6aM7FZtE8jVhGNvclFwkpaAKahFf8vMSDufvvBxKFiCfEJQ08XhcFR8czM
+	 OS64GC5V3c1bRkbDpGYm/AysPgoi0BLo7WNpgwohgGyQobqsKtxhoW74GQYRUIwOXh
+	 mis3eKQQ1ZSHdhrPCYdFlhpOFziFjxQuXu6lGaxvUJ0nE53HxnWKuWeirKX1ZfjVQV
+	 VqqhtaKCEi6eiBR5rItpZkTfamXb0xEmU4WnUBaAeeTY+PBkltsQw7SWjo88THy9Vo
+	 2qRclWfVSNy2A==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -36,18 +36,14 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Fiona Behrens <me@kloenk.dev>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Patrick Miller <paddymills@proton.me>,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tamir Duberstein <tamird@gmail.com>,
 	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 Cc: rust-for-linux@vger.kernel.org,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 04/11] rust: macros: use `syn` to parse `module!` macro
-Date: Thu, 11 Dec 2025 18:56:44 +0000
-Message-ID: <20251211185805.2835633-5-gary@kernel.org>
+Subject: [PATCH 05/11] rust: macros: use `quote!` for `module!` macro
+Date: Thu, 11 Dec 2025 18:56:45 +0000
+Message-ID: <20251211185805.2835633-6-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251211185805.2835633-1-gary@kernel.org>
 References: <20251211185805.2835633-1-gary@kernel.org>
@@ -62,469 +58,543 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-With `syn` being available in the kernel, use it to parse the complex
-custom `module!` macro to replace existing helpers. Only parsing is
-changed in this commit, the code generation is untouched.
+This has no behavioural change, but is good for maintainability. With
+`quote!`, we're no longer using string templates, so we don't need to
+quote " and {} inside the template anymore. Further more, editors can
+now highlight the code template.
 
-This has the benefit of better error message when the macro is used
-incorrectly, as it can point to a concrete span on what's going wrong.
-
-For example, if a field is specified twice, previously it reads:
-
-    error: proc macro panicked
-      --> samples/rust/rust_minimal.rs:7:1
-       |
-    7  | / module! {
-    8  | |     type: RustMinimal,
-    9  | |     name: "rust_minimal",
-    10 | |     author: "Rust for Linux Contributors",
-    11 | |     description: "Rust minimal sample",
-    12 | |     license: "GPL",
-    13 | |     license: "GPL",
-    14 | | }
-       | |_^
-       |
-       = help: message: Duplicated key "license". Keys can only be specified once.
-
-now it reads:
-
-    error: duplicated key "license". Keys can only be specified once.
-      --> samples/rust/rust_minimal.rs:13:5
-       |
-    13 |     license: "GPL",
-       |     ^^^^^^^
+This also improves the robustness as it eliminates the need for string
+quoting and escaping.
 
 Co-developed-by: Benno Lossin <lossin@kernel.org>
 Signed-off-by: Benno Lossin <lossin@kernel.org>
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/macros/helpers.rs |  84 ++++++----------
- rust/macros/lib.rs     |   9 +-
- rust/macros/module.rs  | 220 ++++++++++++++++++++++++++++++-----------
- 3 files changed, 202 insertions(+), 111 deletions(-)
+ rust/Makefile         |   8 +-
+ rust/macros/module.rs | 427 ++++++++++++++++++++++--------------------
+ 2 files changed, 229 insertions(+), 206 deletions(-)
 
-diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
-index 853527b5d9567..f6bbdb02d9d7d 100644
---- a/rust/macros/helpers.rs
-+++ b/rust/macros/helpers.rs
-@@ -1,42 +1,21 @@
- // SPDX-License-Identifier: GPL-2.0
+diff --git a/rust/Makefile b/rust/Makefile
+index c816ca8663e42..96f0ac53ec0e8 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -215,7 +215,7 @@ rustdoc-pin_init_internal: private rustc_target_flags = --cfg kernel \
+     --extern proc_macro --extern proc_macro2 --extern quote --extern syn \
+     --crate-type proc-macro
+ rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
+-    rustdoc-clean FORCE
++    rustdoc-clean rustdoc-proc_macro2 rustdoc-quote rustdoc-syn FORCE
+ 	+$(call if_changed,rustdoc)
  
--use proc_macro2::{token_stream, Group, Ident, TokenStream, TokenTree};
--
--pub(crate) fn try_ident(it: &mut token_stream::IntoIter) -> Option<String> {
--    if let Some(TokenTree::Ident(ident)) = it.next() {
--        Some(ident.to_string())
--    } else {
--        None
--    }
--}
--
--pub(crate) fn try_literal(it: &mut token_stream::IntoIter) -> Option<String> {
--    if let Some(TokenTree::Literal(literal)) = it.next() {
--        Some(literal.to_string())
--    } else {
--        None
--    }
--}
--
--pub(crate) fn try_string(it: &mut token_stream::IntoIter) -> Option<String> {
--    try_literal(it).and_then(|string| {
--        if string.starts_with('\"') && string.ends_with('\"') {
--            let content = &string[1..string.len() - 1];
--            if content.contains('\\') {
--                panic!("Escape sequences in string literals not yet handled");
--            }
--            Some(content.to_string())
--        } else if string.starts_with("r\"") {
--            panic!("Raw string literals are not yet handled");
--        } else {
--            None
--        }
--    })
--}
--
--pub(crate) fn expect_ident(it: &mut token_stream::IntoIter) -> String {
--    try_ident(it).expect("Expected Ident")
--}
-+use proc_macro2::{
-+    token_stream,
-+    Ident,
-+    TokenStream,
-+    TokenTree, //
-+};
-+use quote::ToTokens;
-+use syn::{
-+    parse::{
-+        Parse,
-+        ParseStream, //
-+    },
-+    Error,
-+    LitStr,
-+    Result, //
-+};
+ rustdoc-pin_init: private rustdoc_host = yes
+@@ -276,7 +276,8 @@ rusttestlib-macros: $(src)/macros/lib.rs \
+ rusttestlib-pin_init_internal: private rustc_target_flags = --cfg kernel \
+     --extern proc_macro --extern proc_macro2 --extern quote --extern syn
+ rusttestlib-pin_init_internal: private rustc_test_library_proc = yes
+-rusttestlib-pin_init_internal: $(src)/pin-init/internal/src/lib.rs FORCE
++rusttestlib-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
++    rusttestlib-proc_macro2 rusttestlib-quote rusttestlib-syn FORCE
+ 	+$(call if_changed,rustc_test_library)
  
- pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> char {
-     if let TokenTree::Punct(punct) = it.next().expect("Reached end of token stream for Punct") {
-@@ -46,27 +25,28 @@ pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> char {
-     }
- }
+ rusttestlib-pin_init: private rustc_target_flags = --extern pin_init_internal \
+@@ -550,7 +551,8 @@ $(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rlib \
  
--pub(crate) fn expect_string(it: &mut token_stream::IntoIter) -> String {
--    try_string(it).expect("Expected string")
--}
-+/// A string literal that is required to have ASCII value only.
-+pub(crate) struct AsciiLitStr(LitStr);
+ $(obj)/$(libpin_init_internal_name): private rustc_target_flags = --cfg kernel \
+     --extern proc_macro2 --extern quote --extern syn
+-$(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs FORCE
++$(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs \
++	$(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
+ 	+$(call if_changed_dep,rustc_procmacro)
  
--pub(crate) fn expect_string_ascii(it: &mut token_stream::IntoIter) -> String {
--    let string = try_string(it).expect("Expected string");
--    assert!(string.is_ascii(), "Expected ASCII string");
--    string
-+impl Parse for AsciiLitStr {
-+    fn parse(input: ParseStream<'_>) -> Result<Self> {
-+        let s: LitStr = input.parse()?;
-+        if !s.value().is_ascii() {
-+            return Err(Error::new_spanned(s, "expected ASCII-only string literal"));
-+        }
-+        Ok(Self(s))
-+    }
- }
- 
--pub(crate) fn expect_group(it: &mut token_stream::IntoIter) -> Group {
--    if let TokenTree::Group(group) = it.next().expect("Reached end of token stream for Group") {
--        group
--    } else {
--        panic!("Expected Group");
-+impl ToTokens for AsciiLitStr {
-+    fn to_tokens(&self, ts: &mut TokenStream) {
-+        self.0.to_tokens(ts);
-     }
- }
- 
--pub(crate) fn expect_end(it: &mut token_stream::IntoIter) {
--    if it.next().is_some() {
--        panic!("Expected end");
-+impl AsciiLitStr {
-+    pub(crate) fn value(&self) -> String {
-+        self.0.value()
-     }
- }
- 
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 33935b38d11c0..4e440deaed853 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -10,6 +10,9 @@
- // which was added in Rust 1.88.0. This is why `cfg_attr` is used here, i.e.
- // to avoid depending on the full `proc_macro_span` on Rust >= 1.88.0.
- #![cfg_attr(not(CONFIG_RUSTC_HAS_SPAN_FILE), feature(proc_macro_span))]
-+//
-+// Stable since Rust 1.81.0.
-+#![feature(lint_reasons)]
- 
- mod concat_idents;
- mod export;
-@@ -100,8 +103,10 @@
- ///   - `firmware`: array of ASCII string literals of the firmware files of
- ///     the kernel module.
- #[proc_macro]
--pub fn module(ts: TokenStream) -> TokenStream {
--    module::module(ts.into()).into()
-+pub fn module(input: TokenStream) -> TokenStream {
-+    module::module(parse_macro_input!(input))
-+        .unwrap_or_else(|e| e.into_compile_error())
-+        .into()
- }
- 
- /// Declares or implements a vtable trait.
+ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L $@
 diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 6974fb04f58fa..e4d51878a5360 100644
+index e4d51878a5360..4a02aadef25a7 100644
 --- a/rust/macros/module.rs
 +++ b/rust/macros/module.rs
-@@ -2,28 +2,27 @@
+@@ -1,11 +1,16 @@
+ // SPDX-License-Identifier: GPL-2.0
  
- use std::fmt::Write;
+-use std::fmt::Write;
++use std::ffi::CString;
  
--use proc_macro2::{token_stream, Delimiter, Literal, TokenStream, TokenTree};
-+use proc_macro2::{
-+    Literal,
-+    TokenStream, //
+ use proc_macro2::{
+     Literal,
++    Span,
+     TokenStream, //
+ };
++use quote::{
++    format_ident,
++    quote, //
 +};
-+use syn::{
-+    bracketed,
-+    parse::{
-+        Parse,
-+        ParseStream, //
-+    },
-+    punctuated::Punctuated,
-+    token::Bracket,
-+    Error,
-+    Ident,
-+    LitStr,
-+    Result,
-+    Token, //
-+};
- 
- use crate::helpers::*;
- 
--fn expect_string_array(it: &mut token_stream::IntoIter) -> Vec<String> {
--    let group = expect_group(it);
--    assert_eq!(group.delimiter(), Delimiter::Bracket);
--    let mut values = Vec::new();
--    let mut it = group.stream().into_iter();
--
--    while let Some(val) = try_string(&mut it) {
--        assert!(val.is_ascii(), "Expected ASCII string");
--        values.push(val);
--        match it.next() {
--            Some(TokenTree::Punct(punct)) => assert_eq!(punct.as_char(), ','),
--            None => break,
--            _ => panic!("Expected ',' or end of array"),
--        }
--    }
--    values
--}
--
+ use syn::{
+     bracketed,
+     parse::{
+@@ -26,7 +31,7 @@
  struct ModInfoBuilder<'a> {
      module: &'a str,
      counter: usize,
-@@ -91,8 +90,107 @@ fn emit(&mut self, field: &str, content: &str) {
-     }
+-    buffer: String,
++    ts: TokenStream,
  }
  
-+mod kw {
-+    syn::custom_keyword!(name);
-+    syn::custom_keyword!(authors);
-+    syn::custom_keyword!(description);
-+    syn::custom_keyword!(license);
-+    syn::custom_keyword!(alias);
-+    syn::custom_keyword!(firmware);
-+}
-+
-+#[allow(dead_code, reason = "some fields are only parsed into")]
-+enum ModInfoField {
-+    Type(Token![type], Token![:], Ident),
-+    Name(kw::name, Token![:], AsciiLitStr),
-+    Authors(
-+        kw::authors,
-+        Token![:],
-+        Bracket,
-+        Punctuated<LitStr, Token![,]>,
-+    ),
-+    Description(kw::description, Token![:], LitStr),
-+    License(kw::license, Token![:], AsciiLitStr),
-+    Alias(
-+        kw::authors,
-+        Token![:],
-+        Bracket,
-+        Punctuated<LitStr, Token![,]>,
-+    ),
-+    Firmware(
-+        kw::firmware,
-+        Token![:],
-+        Bracket,
-+        Punctuated<LitStr, Token![,]>,
-+    ),
-+}
-+
-+impl ModInfoField {
-+    /// Obtain the key identifying the field.
-+    fn key(&self) -> Ident {
-+        match self {
-+            ModInfoField::Type(key, ..) => Ident::new("type", key.span),
-+            ModInfoField::Name(key, ..) => Ident::new("name", key.span),
-+            ModInfoField::Authors(key, ..) => Ident::new("authors", key.span),
-+            ModInfoField::Description(key, ..) => Ident::new("description", key.span),
-+            ModInfoField::License(key, ..) => Ident::new("license", key.span),
-+            ModInfoField::Alias(key, ..) => Ident::new("alias", key.span),
-+            ModInfoField::Firmware(key, ..) => Ident::new("firmware", key.span),
-+        }
-+    }
-+}
-+
-+impl Parse for ModInfoField {
-+    fn parse(input: ParseStream<'_>) -> Result<Self> {
-+        let key = input.lookahead1();
-+        if key.peek(Token![type]) {
-+            Ok(Self::Type(input.parse()?, input.parse()?, input.parse()?))
-+        } else if key.peek(kw::name) {
-+            Ok(Self::Name(input.parse()?, input.parse()?, input.parse()?))
-+        } else if key.peek(kw::authors) {
-+            let list;
-+            Ok(Self::Authors(
-+                input.parse()?,
-+                input.parse()?,
-+                bracketed!(list in input),
-+                Punctuated::parse_terminated(&list)?,
-+            ))
-+        } else if key.peek(kw::description) {
-+            Ok(Self::Description(
-+                input.parse()?,
-+                input.parse()?,
-+                input.parse()?,
-+            ))
-+        } else if key.peek(kw::license) {
-+            Ok(Self::License(
-+                input.parse()?,
-+                input.parse()?,
-+                input.parse()?,
-+            ))
-+        } else if key.peek(kw::alias) {
-+            let list;
-+            Ok(Self::Alias(
-+                input.parse()?,
-+                input.parse()?,
-+                bracketed!(list in input),
-+                Punctuated::parse_terminated(&list)?,
-+            ))
-+        } else if key.peek(kw::firmware) {
-+            let list;
-+            Ok(Self::Firmware(
-+                input.parse()?,
-+                input.parse()?,
-+                bracketed!(list in input),
-+                Punctuated::parse_terminated(&list)?,
-+            ))
+ impl<'a> ModInfoBuilder<'a> {
+@@ -34,7 +39,7 @@ fn new(module: &'a str) -> Self {
+         ModInfoBuilder {
+             module,
+             counter: 0,
+-            buffer: String::new(),
++            ts: TokenStream::new(),
+         }
+     }
+ 
+@@ -51,27 +56,26 @@ fn emit_base(&mut self, field: &str, content: &str, builtin: bool) {
+             // Loadable modules' modinfo strings go as-is.
+             format!("{field}={content}\0")
+         };
++        let length = string.len();
++        let string = Literal::byte_string(string.as_bytes());
++        let cfg = if builtin {
++            quote!(#[cfg(not(MODULE))])
 +        } else {
-+            Err(key.error())
-+        }
-+    }
-+}
-+
- #[derive(Debug, Default)]
--struct ModuleInfo {
-+pub(crate) struct ModuleInfo {
-     type_: String,
-     license: String,
-     name: String,
-@@ -102,9 +200,13 @@ struct ModuleInfo {
-     firmware: Option<Vec<String>>,
- }
++            quote!(#[cfg(MODULE)])
++        };
  
--impl ModuleInfo {
--    fn parse(it: &mut token_stream::IntoIter) -> Self {
--        let mut info = ModuleInfo::default();
-+impl Parse for ModuleInfo {
-+    fn parse(input: ParseStream<'_>) -> Result<Self> {
-+        let mut info = Self::default();
-+
-+        let span = input.span();
-+        let fields = Punctuated::<ModInfoField, Token![,]>::parse_terminated(input)?;
-+        let mut errors = Vec::new();
+-        write!(
+-            &mut self.buffer,
+-            "
+-                {cfg}
+-                #[doc(hidden)]
+-                #[cfg_attr(not(target_os = \"macos\"), link_section = \".modinfo\")]
+-                #[used(compiler)]
+-                pub static __{module}_{counter}: [u8; {length}] = *{string};
+-            ",
+-            cfg = if builtin {
+-                "#[cfg(not(MODULE))]"
+-            } else {
+-                "#[cfg(MODULE)]"
+-            },
++        let counter = format_ident!(
++            "__{module}_{counter}",
+             module = self.module.to_uppercase(),
+-            counter = self.counter,
+-            length = string.len(),
+-            string = Literal::byte_string(string.as_bytes()),
+-        )
+-        .unwrap();
++            counter = self.counter
++        );
++        self.ts.extend(quote! {
++            #cfg
++            #[doc(hidden)]
++            #[cfg_attr(not(target_os = "macos"), link_section = ".modinfo")]
++            #[used(compiler)]
++            pub static #counter: [u8; #length] = *#string;
++        });
  
-         const EXPECTED_KEYS: &[&str] = &[
-             "type",
-@@ -118,40 +220,38 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-         const REQUIRED_KEYS: &[&str] = &["type", "name", "license"];
-         let mut seen_keys = Vec::new();
- 
--        loop {
--            let key = match it.next() {
--                Some(TokenTree::Ident(ident)) => ident.to_string(),
--                Some(_) => panic!("Expected Ident or end"),
--                None => break,
--            };
-+        for field in fields {
-+            let key = field.key();
- 
-             if seen_keys.contains(&key) {
--                panic!("Duplicated key \"{key}\". Keys can only be specified once.");
-+                errors.push(Error::new_spanned(
-+                    &key,
-+                    format!(r#"duplicated key "{key}". Keys can only be specified once."#),
-+                ));
-+                continue;
-             }
-+            seen_keys.push(key);
- 
--            assert_eq!(expect_punct(it), ':');
--
--            match key.as_str() {
--                "type" => info.type_ = expect_ident(it),
--                "name" => info.name = expect_string_ascii(it),
--                "authors" => info.authors = Some(expect_string_array(it)),
--                "description" => info.description = Some(expect_string(it)),
--                "license" => info.license = expect_string_ascii(it),
--                "alias" => info.alias = Some(expect_string_array(it)),
--                "firmware" => info.firmware = Some(expect_string_array(it)),
--                _ => panic!("Unknown key \"{key}\". Valid keys are: {EXPECTED_KEYS:?}."),
-+            match field {
-+                ModInfoField::Type(_, _, ty) => info.type_ = ty.to_string(),
-+                ModInfoField::Name(_, _, name) => info.name = name.value(),
-+                ModInfoField::Authors(_, _, _, list) => {
-+                    info.authors = Some(list.into_iter().map(|x| x.value()).collect())
-+                }
-+                ModInfoField::Description(_, _, desc) => info.description = Some(desc.value()),
-+                ModInfoField::License(_, _, license) => info.license = license.value(),
-+                ModInfoField::Alias(_, _, _, list) => {
-+                    info.alias = Some(list.into_iter().map(|x| x.value()).collect())
-+                }
-+                ModInfoField::Firmware(_, _, _, list) => {
-+                    info.firmware = Some(list.into_iter().map(|x| x.value()).collect())
-+                }
-             }
--
--            assert_eq!(expect_punct(it), ',');
--
--            seen_keys.push(key);
-         }
- 
--        expect_end(it);
--
-         for key in REQUIRED_KEYS {
-             if !seen_keys.iter().any(|e| e == key) {
--                panic!("Missing required key \"{key}\".");
-+                errors.push(Error::new(span, format!(r#"missing required key "{key}""#)));
-             }
-         }
- 
-@@ -163,18 +263,24 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-         }
- 
-         if seen_keys != ordered_keys {
--            panic!("Keys are not ordered as expected. Order them like: {ordered_keys:?}.");
-+            errors.push(Error::new(
-+                span,
-+                format!(r#"keys are not ordered as expected. Order them like: {ordered_keys:?}."#),
-+            ));
-+        }
-+
-+        if let Some(err) = errors.into_iter().reduce(|mut e1, e2| {
-+            e1.combine(e2);
-+            e1
-+        }) {
-+            return Err(err);
-         }
- 
--        info
-+        Ok(info)
+         self.counter += 1;
      }
+@@ -281,24 +285,36 @@ fn parse(input: ParseStream<'_>) -> Result<Self> {
  }
  
--pub(crate) fn module(ts: TokenStream) -> TokenStream {
--    let mut it = ts.into_iter();
--
--    let info = ModuleInfo::parse(&mut it);
--
-+pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
+ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
++    let ModuleInfo {
++        type_,
++        license,
++        name,
++        authors,
++        description,
++        alias,
++        firmware,
++    } = info;
++
++    let type_ = Ident::new(&type_, Span::mixed_site());
++
      // Rust does not allow hyphens in identifiers, use underscore instead.
-     let ident = info.name.replace('-', "_");
+-    let ident = info.name.replace('-', "_");
++    let ident = name.replace('-', "_");
      let mut modinfo = ModInfoBuilder::new(ident.as_ref());
-@@ -203,7 +309,7 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+-    if let Some(authors) = info.authors {
++    if let Some(authors) = authors {
+         for author in authors {
+             modinfo.emit("author", &author);
+         }
+     }
+-    if let Some(description) = info.description {
++    if let Some(description) = description {
+         modinfo.emit("description", &description);
+     }
+-    modinfo.emit("license", &info.license);
+-    if let Some(aliases) = info.alias {
++    modinfo.emit("license", &license);
++    if let Some(aliases) = alias {
+         for alias in aliases {
+             modinfo.emit("alias", &alias);
+         }
+     }
+-    if let Some(firmware) = info.firmware {
++    if let Some(firmware) = firmware {
+         for fw in firmware {
+             modinfo.emit("firmware", &fw);
+         }
+@@ -309,179 +325,184 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
          std::env::var("RUST_MODFILE").expect("Unable to fetch RUST_MODFILE environmental variable");
      modinfo.emit_only_builtin("file", &file);
  
--    format!(
-+    Ok(format!(
-         "
-             /// The module name.
-             ///
-@@ -377,5 +483,5 @@ unsafe fn __exit() {{
-         initcall_section = ".initcall6.init"
-     )
-     .parse()
--    .expect("Error parsing formatted string into token stream.")
-+    .expect("Error parsing formatted string into token stream."))
+-    Ok(format!(
+-        "
+-            /// The module name.
+-            ///
+-            /// Used by the printing macros, e.g. [`info!`].
+-            const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
+-
+-            // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
+-            // freed until the module is unloaded.
+-            #[cfg(MODULE)]
+-            static THIS_MODULE: ::kernel::ThisModule = unsafe {{
+-                extern \"C\" {{
+-                    static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
+-                }}
+-
+-                ::kernel::ThisModule::from_ptr(__this_module.get())
+-            }};
+-            #[cfg(not(MODULE))]
+-            static THIS_MODULE: ::kernel::ThisModule = unsafe {{
+-                ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
+-            }};
+-
+-            /// The `LocalModule` type is the type of the module created by `module!`,
+-            /// `module_pci_driver!`, `module_platform_driver!`, etc.
+-            type LocalModule = {type_};
+-
+-            impl ::kernel::ModuleMetadata for {type_} {{
+-                const NAME: &'static ::kernel::str::CStr = c\"{name}\";
+-            }}
+-
+-            // Double nested modules, since then nobody can access the public items inside.
+-            mod __module_init {{
+-                mod __module_init {{
+-                    use super::super::{type_};
+-                    use pin_init::PinInit;
+-
+-                    /// The \"Rust loadable module\" mark.
+-                    //
+-                    // This may be best done another way later on, e.g. as a new modinfo
+-                    // key or a new section. For the moment, keep it simple.
+-                    #[cfg(MODULE)]
+-                    #[doc(hidden)]
+-                    #[used(compiler)]
+-                    static __IS_RUST_MODULE: () = ();
+-
+-                    static mut __MOD: ::core::mem::MaybeUninit<{type_}> =
+-                        ::core::mem::MaybeUninit::uninit();
+-
+-                    // Loadable modules need to export the `{{init,cleanup}}_module` identifiers.
+-                    /// # Safety
+-                    ///
+-                    /// This function must not be called after module initialization, because it may be
+-                    /// freed after that completes.
+-                    #[cfg(MODULE)]
+-                    #[doc(hidden)]
+-                    #[no_mangle]
+-                    #[link_section = \".init.text\"]
+-                    pub unsafe extern \"C\" fn init_module() -> ::kernel::ffi::c_int {{
+-                        // SAFETY: This function is inaccessible to the outside due to the double
+-                        // module wrapping it. It is called exactly once by the C side via its
+-                        // unique name.
+-                        unsafe {{ __init() }}
+-                    }}
+-
+-                    #[cfg(MODULE)]
+-                    #[doc(hidden)]
+-                    #[used(compiler)]
+-                    #[link_section = \".init.data\"]
+-                    static __UNIQUE_ID___addressable_init_module: unsafe extern \"C\" fn() -> i32 = init_module;
+-
+-                    #[cfg(MODULE)]
+-                    #[doc(hidden)]
+-                    #[no_mangle]
+-                    #[link_section = \".exit.text\"]
+-                    pub extern \"C\" fn cleanup_module() {{
+-                        // SAFETY:
+-                        // - This function is inaccessible to the outside due to the double
+-                        //   module wrapping it. It is called exactly once by the C side via its
+-                        //   unique name,
+-                        // - furthermore it is only called after `init_module` has returned `0`
+-                        //   (which delegates to `__init`).
+-                        unsafe {{ __exit() }}
+-                    }}
+-
+-                    #[cfg(MODULE)]
+-                    #[doc(hidden)]
+-                    #[used(compiler)]
+-                    #[link_section = \".exit.data\"]
+-                    static __UNIQUE_ID___addressable_cleanup_module: extern \"C\" fn() = cleanup_module;
+-
+-                    // Built-in modules are initialized through an initcall pointer
+-                    // and the identifiers need to be unique.
+-                    #[cfg(not(MODULE))]
+-                    #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
+-                    #[doc(hidden)]
+-                    #[link_section = \"{initcall_section}\"]
+-                    #[used(compiler)]
+-                    pub static __{ident}_initcall: extern \"C\" fn() ->
+-                        ::kernel::ffi::c_int = __{ident}_init;
+-
+-                    #[cfg(not(MODULE))]
+-                    #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
+-                    ::core::arch::global_asm!(
+-                        r#\".section \"{initcall_section}\", \"a\"
+-                        __{ident}_initcall:
+-                            .long   __{ident}_init - .
+-                            .previous
+-                        \"#
+-                    );
+-
+-                    #[cfg(not(MODULE))]
+-                    #[doc(hidden)]
+-                    #[no_mangle]
+-                    pub extern \"C\" fn __{ident}_init() -> ::kernel::ffi::c_int {{
+-                        // SAFETY: This function is inaccessible to the outside due to the double
+-                        // module wrapping it. It is called exactly once by the C side via its
+-                        // placement above in the initcall section.
+-                        unsafe {{ __init() }}
+-                    }}
+-
+-                    #[cfg(not(MODULE))]
+-                    #[doc(hidden)]
+-                    #[no_mangle]
+-                    pub extern \"C\" fn __{ident}_exit() {{
+-                        // SAFETY:
+-                        // - This function is inaccessible to the outside due to the double
+-                        //   module wrapping it. It is called exactly once by the C side via its
+-                        //   unique name,
+-                        // - furthermore it is only called after `__{ident}_init` has
+-                        //   returned `0` (which delegates to `__init`).
+-                        unsafe {{ __exit() }}
+-                    }}
+-
+-                    /// # Safety
+-                    ///
+-                    /// This function must only be called once.
+-                    unsafe fn __init() -> ::kernel::ffi::c_int {{
+-                        let initer =
+-                            <{type_} as ::kernel::InPlaceModule>::init(&super::super::THIS_MODULE);
+-                        // SAFETY: No data race, since `__MOD` can only be accessed by this module
+-                        // and there only `__init` and `__exit` access it. These functions are only
+-                        // called once and `__exit` cannot be called before or during `__init`.
+-                        match unsafe {{ initer.__pinned_init(__MOD.as_mut_ptr()) }} {{
+-                            Ok(m) => 0,
+-                            Err(e) => e.to_errno(),
+-                        }}
+-                    }}
+-
+-                    /// # Safety
+-                    ///
+-                    /// This function must
+-                    /// - only be called once,
+-                    /// - be called after `__init` has been called and returned `0`.
+-                    unsafe fn __exit() {{
+-                        // SAFETY: No data race, since `__MOD` can only be accessed by this module
+-                        // and there only `__init` and `__exit` access it. These functions are only
+-                        // called once and `__init` was already called.
+-                        unsafe {{
+-                            // Invokes `drop()` on `__MOD`, which should be used for cleanup.
+-                            __MOD.assume_init_drop();
+-                        }}
+-                    }}
+-
+-                    {modinfo}
+-                }}
+-            }}
+-        ",
+-        type_ = info.type_,
+-        name = info.name,
+-        ident = ident,
+-        modinfo = modinfo.buffer,
+-        initcall_section = ".initcall6.init"
+-    )
+-    .parse()
+-    .expect("Error parsing formatted string into token stream."))
++    let modinfo = modinfo.ts;
++
++    let ident_init = format_ident!("__{ident}_init");
++    let ident_exit = format_ident!("__{ident}_exit");
++    let ident_initcall = format_ident!("__{ident}_initcall");
++    let initcall_section = ".initcall6.init";
++
++    let global_asm = format!(
++        r#".section "{initcall_section}", "a"
++        __{ident}_initcall:
++            .long   __{ident}_init - .
++            .previous
++        "#
++    );
++
++    let name_cstr =
++        Literal::c_string(&CString::new(name.as_str()).expect("name contains NUL-terminator"));
++
++    Ok(quote! {
++        /// The module name.
++        ///
++        /// Used by the printing macros, e.g. [`info!`].
++        const __LOG_PREFIX: &[u8] = #name_cstr.to_bytes_with_nul();
++
++        // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
++        // freed until the module is unloaded.
++        #[cfg(MODULE)]
++        static THIS_MODULE: ::kernel::ThisModule = unsafe {
++            extern "C" {
++                static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
++            };
++
++            ::kernel::ThisModule::from_ptr(__this_module.get())
++        };
++
++        #[cfg(not(MODULE))]
++        static THIS_MODULE: ::kernel::ThisModule = unsafe {
++            ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
++        };
++
++        /// The `LocalModule` type is the type of the module created by `module!`,
++        /// `module_pci_driver!`, `module_platform_driver!`, etc.
++        type LocalModule = #type_;
++
++        impl ::kernel::ModuleMetadata for #type_ {
++            const NAME: &'static ::kernel::str::CStr = #name_cstr;
++        }
++
++        // Double nested modules, since then nobody can access the public items inside.
++        mod __module_init {
++            mod __module_init {
++                use super::super::#type_;
++                use pin_init::PinInit;
++
++                /// The "Rust loadable module" mark.
++                //
++                // This may be best done another way later on, e.g. as a new modinfo
++                // key or a new section. For the moment, keep it simple.
++                #[cfg(MODULE)]
++                #[doc(hidden)]
++                #[used(compiler)]
++                static __IS_RUST_MODULE: () = ();
++
++                static mut __MOD: ::core::mem::MaybeUninit<#type_> =
++                    ::core::mem::MaybeUninit::uninit();
++
++                // Loadable modules need to export the `{init,cleanup}_module` identifiers.
++                /// # Safety
++                ///
++                /// This function must not be called after module initialization, because it may be
++                /// freed after that completes.
++                #[cfg(MODULE)]
++                #[doc(hidden)]
++                #[no_mangle]
++                #[link_section = ".init.text"]
++                pub unsafe extern "C" fn init_module() -> ::kernel::ffi::c_int {
++                    // SAFETY: This function is inaccessible to the outside due to the double
++                    // module wrapping it. It is called exactly once by the C side via its
++                    // unique name.
++                    unsafe { __init() }
++                }
++
++                #[cfg(MODULE)]
++                #[doc(hidden)]
++                #[used(compiler)]
++                #[link_section = ".init.data"]
++                static __UNIQUE_ID___addressable_init_module: unsafe extern "C" fn() -> i32 =
++                    init_module;
++
++                #[cfg(MODULE)]
++                #[doc(hidden)]
++                #[no_mangle]
++                #[link_section = ".exit.text"]
++                pub extern "C" fn cleanup_module() {
++                    // SAFETY:
++                    // - This function is inaccessible to the outside due to the double
++                    //   module wrapping it. It is called exactly once by the C side via its
++                    //   unique name,
++                    // - furthermore it is only called after `init_module` has returned `0`
++                    //   (which delegates to `__init`).
++                    unsafe { __exit() }
++                }
++
++                #[cfg(MODULE)]
++                #[doc(hidden)]
++                #[used(compiler)]
++                #[link_section = ".exit.data"]
++                static __UNIQUE_ID___addressable_cleanup_module: extern "C" fn() = cleanup_module;
++
++                // Built-in modules are initialized through an initcall pointer
++                // and the identifiers need to be unique.
++                #[cfg(not(MODULE))]
++                #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
++                #[doc(hidden)]
++                #[link_section = #initcall_section]
++                #[used(compiler)]
++                pub static #ident_initcall: extern "C" fn() ->
++                    ::kernel::ffi::c_int = #ident_initcall;
++
++                #[cfg(not(MODULE))]
++                #[cfg(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS)]
++                ::core::arch::global_asm!(#global_asm);
++
++                #[cfg(not(MODULE))]
++                #[doc(hidden)]
++                #[no_mangle]
++                pub extern "C" fn #ident_init() -> ::kernel::ffi::c_int {
++                    // SAFETY: This function is inaccessible to the outside due to the double
++                    // module wrapping it. It is called exactly once by the C side via its
++                    // placement above in the initcall section.
++                    unsafe { __init() }
++                }
++
++                #[cfg(not(MODULE))]
++                #[doc(hidden)]
++                #[no_mangle]
++                pub extern "C" fn #ident_exit() {
++                    // SAFETY:
++                    // - This function is inaccessible to the outside due to the double
++                    //   module wrapping it. It is called exactly once by the C side via its
++                    //   unique name,
++                    // - furthermore it is only called after `#ident_init` has
++                    //   returned `0` (which delegates to `__init`).
++                    unsafe { __exit() }
++                }
++
++                /// # Safety
++                ///
++                /// This function must only be called once.
++                unsafe fn __init() -> ::kernel::ffi::c_int {
++                    let initer =
++                        <#type_ as ::kernel::InPlaceModule>::init(&super::super::THIS_MODULE);
++                    // SAFETY: No data race, since `__MOD` can only be accessed by this module
++                    // and there only `__init` and `__exit` access it. These functions are only
++                    // called once and `__exit` cannot be called before or during `__init`.
++                    match unsafe { initer.__pinned_init(__MOD.as_mut_ptr()) } {
++                        Ok(m) => 0,
++                        Err(e) => e.to_errno(),
++                    }
++                }
++
++                /// # Safety
++                ///
++                /// This function must
++                /// - only be called once,
++                /// - be called after `__init` has been called and returned `0`.
++                unsafe fn __exit() {
++                    // SAFETY: No data race, since `__MOD` can only be accessed by this module
++                    // and there only `__init` and `__exit` access it. These functions are only
++                    // called once and `__init` was already called.
++                    unsafe {
++                        // Invokes `drop()` on `__MOD`, which should be used for cleanup.
++                        __MOD.assume_init_drop();
++                    }
++                }
++
++                #modinfo
++            }
++        }
++    })
  }
 -- 
 2.51.2
