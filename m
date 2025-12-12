@@ -1,132 +1,149 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF7F1990C7
-	for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 02:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E823C465;
+	Fri, 12 Dec 2025 05:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765505253; cv=none; b=Fe0Vvdomr6g0gKfpXuMAYOMXZla3vNuQMNHPySLYD8zYFcjc/du0JTWXxvjkgx3rMwD/dxylOA+SB3/oJ5Lm/kT6mkkewjzIxjGydh2ulmdMdOfrbuDx29eJjp8V/1NYCvEdX7Z5qDm3z/YQVabliOdI98GVwUYG/9N17GhaR5Y=
+	t=1765518802; cv=none; b=ls8Bs8YjOTnJtho1gY+NFjisv4S2hK4tY9xBaECDiZmX7moo0eMkFsL+8fxIbY+wVsIz7DMZx2e0vvrESuoXn+dsNbt/MTU8k97SauT0SA67QHsvrYbrytcZt/yIuz+UfMjXd77g0TCj6qIFhBvAYZy7pM6Sxd6+WtVjMQN0+gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765505253; c=relaxed/simple;
-	bh=OKgICG0NzHvK/Mr0iZAZckP1OzI7gTJ3x/RhQi5vaZ8=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=bexQrjsZFCHYtO2EaelWhChddiJH27Tm2yCQEAKutZN9ORBNCLjqwss2sHg3Yzqn6L/X8WHdd9QTalth31J7KlC9yZn83GntqC8JHeaQfNJ/gJDyMhzUay6uOxBfIiGBsnqbKlVyo7Vexcm545pBizn4RiJVyyYE5cGiMoFBt50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iquFhGiZ; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765518802; c=relaxed/simple;
+	bh=hqZiXxUv6smJHZEauESfPalDA9+KANqTpadXMEusfNw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=UtSESvPkb/iSuX3SpjXZjQYcz5M0VIDGRnSVTJhdoyrs5Bi5tJfutSTpmE0Eixc8gKJ+XepFxKYjQDHI5BQCpqtJasYvaQmOaFN3QgInhQiuuC9pwYnKICIwru0JM+f34FyQLq5I7ynY1OS3eQnlMydMCH/qUQNh2CQLNHU0rZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AyO/BSfw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iquFhGiZ"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-297ef378069so6791035ad.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 11 Dec 2025 18:07:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765505251; x=1766110051; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NOA/UkMm1d/5Oj9XkXOk6yS2Pl1roA9E7bITIRe1vwI=;
-        b=iquFhGiZD+pPvqLIdUIpPHa425Drr2yPhUt7sWIlQvwFjEDL1g3JEjoTyXLOrp6NvR
-         LdKe3+X3sDGDQPRYXGbNui2/QDI4Ae4cKFhjBJ7RWyONO9AuVRAmxNjJ++kKGhcER0Ls
-         BYCgqlgfjS4qwmouWAEJhU5CLiolM1N6FyZ9s3vA89B7UCp4e3XZDv8Id8V9APMK1Gw6
-         uMktYBFXpyWnWzGU7u3VJJPov847hQUJrELTFTKgtRMXwLszGn7lmsbfz22dEV3JjQk9
-         pJxrU1SaQt2+jhGZq4QRi9kHyUOPcS2D1Wa9KotwmqXY6C9xZUYLdnEcGWsd0l0HG7WY
-         9gug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765505251; x=1766110051;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NOA/UkMm1d/5Oj9XkXOk6yS2Pl1roA9E7bITIRe1vwI=;
-        b=OlpY41JfB+ywkene1/AQbYJqyejkJSUv91GHsv+7GPuJI2Vqc/pzuj2If4lWyvB87J
-         eUZs2ecavDTlUAZtFT88Duad1wC24oYxWpwtSUCggPFIwigOH32tthtggmPZcbnO8JOD
-         Ie0vcI9QQVZOoMVZWIIYOyUy5D8jPCBAemQ5r/u1vw26eVi15faCVsbHQlQ4KcGwUigO
-         evcayCJTjnDzl06vwOTZi8RKXhs97y3qZaqiYylk42ffiXIbAjLUPxzCX/96dHaNlo5+
-         raGQ0jBOEy5LSsO6bBccmk+iimOVFyU7cpR9akm1/6GXUD7y8QLdmMmvW/9IdWV4BQA2
-         0n4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVZtXHGeH1Xx83HzMzdgMh6X9Ur0YC7Nk8WkTqGtcSARYhHdbjIeSgjD1bUNC88XHcb5hZfJMFkxk7KI7naDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyegqDQs6a0qp+4Utk+95nJPRTkgLMSpSk/v+4/6o771UcN6Tl
-	VGiQ3/vfyD0hafmhnZdN73ENTujYDUwThqJhgminYOuTxcCI8ZrPILQ1
-X-Gm-Gg: AY/fxX7ZM0TNBYOaTEITBTxvA492i5hB86byrNbUH66Mn56auk6UJV/eLmvBEICcpsk
-	Y6LQGKXS9Hvaf4KJq1aSa17Z0k7oCve3twNAjSEw9R6h9TOQRBMDCSgN6/1BoV1QjDNrdbrVDFr
-	MbGtgvALmRzORlzVDz36BIqox+e03wqt6q27Tk7RbXkdwcJFDzaGwjzkHr0WDxPG50LSdPcXrwa
-	cMm5LdI2jR5syZ9z86LYB67Qbo/PV7rFzx5kjb/gSFsi3Q+zv2ImYZdGQdTb4SP7mYARtP7NYT4
-	tyUZu6sgFwGwfSIY40ugKJ6FFxxlutvd5sPTDT+c8YIP6+99iVrDjCTq1xbr/eF5IXst2uruKB3
-	eVe3lpQYsef5K6vrN19cyaWToBSibxHKw5j9DpdiV1oFheGYVdHYq4xp50tts4ONIZRVsNaXDVc
-	rGmcW+w/Y9rLDVz12Nud0L5xrKiFXETv+ppSFQDWJGBOX8Bnde16aXOpRc3rwWAyR96OY=
-X-Google-Smtp-Source: AGHT+IHw0pxCohWx+wwHwZQMRraWL3GlKpehnjwprZqIQqRYSrc80MJqKUxfNBla9xqzFEO4m/XOKw==
-X-Received: by 2002:a17:902:f70b:b0:297:e252:9e50 with SMTP id d9443c01a7336-29f23caa91amr6151485ad.42.1765505251050;
-        Thu, 11 Dec 2025 18:07:31 -0800 (PST)
-Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9d38c3asm37306375ad.38.2025.12.11.18.07.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 18:07:30 -0800 (PST)
-Date: Fri, 12 Dec 2025 11:07:19 +0900 (JST)
-Message-Id: <20251212.110719.1712545729385097553.fujita.tomonori@gmail.com>
-To: gary@garyguo.net
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- dakr@kernel.org, lossin@kernel.org, tmgross@umich.edu,
- rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v1 2/3] rust: sync: set_once: Implement Send and Sync
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20251212003401.524495ae.gary@garyguo.net>
-References: <20251211230919.1303926-1-fujita.tomonori@gmail.com>
-	<20251211230919.1303926-2-fujita.tomonori@gmail.com>
-	<20251212003401.524495ae.gary@garyguo.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AyO/BSfw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4EAC4CEF1;
+	Fri, 12 Dec 2025 05:53:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765518802;
+	bh=hqZiXxUv6smJHZEauESfPalDA9+KANqTpadXMEusfNw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=AyO/BSfwTPEnPYiKTNe49XE5ReOcZayLHxn1jhIueisyharCn+IGjtVnILr1TyT4G
+	 nKspnHRVYrODD0i8/slxWhZO45GVoryW8+V/nxlc/cl74nTuJRbLhh3ggNHZOEBuYb
+	 QDmLjiWrVjXjswh87/9uwuRkEI8eFewPySbNTeNTwGLTcMN1WG3UEMMW4dyWT3R8WC
+	 usqvWUjSdiWX6RPs7TcBpBmWUvNqIWTkoQltHM7P5Np0sArdIfW5uDHthsrsmogOdO
+	 hIkW5ifAR2CVWEU0QaSLWbDYhAy2B4dDGsH3opzA5PTXmucpnskg1uCN7anY9zjNbX
+	 o+vLEGqelWAfA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F34E13809A37;
+	Fri, 12 Dec 2025 05:50:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <176551861579.2032148.13920544388182691102.git-patchwork-notify@kernel.org>
+Date: Fri, 12 Dec 2025 05:50:15 +0000
+References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
+In-Reply-To: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: linux-riscv@lists.infradead.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, conor@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ arnd@arndb.de, brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
+ ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net, shuah@kernel.org,
+ jannh@google.com, conor+dt@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, lossin@kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com,
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+ zong.li@sifive.com, david@redhat.com, andreas.korb@aisec.fraunhofer.de,
+ valentin.haudiquet@canonical.com, cmirabil@redhat.com
 
-On Fri, 12 Dec 2025 00:34:01 +0000
-Gary Guo <gary@garyguo.net> wrote:
+Hello:
 
-> On Fri, 12 Dec 2025 08:09:18 +0900
-> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+This series was applied to riscv/linux.git (for-next)
+by Paul Walmsley <pjw@kernel.org>:
+
+On Thu, 11 Dec 2025 09:20:33 -0800 you wrote:
+> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shadow stack
+> on MMU). Used b4 to pick tags, apparantly it messed up some tag picks. Fixing it
 > 
->> Implement Send and Sync for SetOnce<T> to allow it to be used across
->> thread boundaries.
->> 
->> Send: SetOnce<T> can be transferred across threads when T: Send, as
->> the contained value is also transferred and will be dropped on the
->> destination thread.
->> 
->> Sync: SetOnce<T> can be shared across threads when T: Sync, as
->> as_ref() provides shared references &T and atomic operations ensure
->> proper synchronization.
->> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> ---
->>  rust/kernel/sync/set_once.rs | 7 +++++++
->>  1 file changed, 7 insertions(+)
->> 
->> diff --git a/rust/kernel/sync/set_once.rs b/rust/kernel/sync/set_once.rs
->> index 889d37dfd17f..5894d0dda14e 100644
->> --- a/rust/kernel/sync/set_once.rs
->> +++ b/rust/kernel/sync/set_once.rs
->> @@ -127,3 +127,10 @@ fn drop(&mut self) {
->>          }
->>      }
->>  }
->> +
->> +// SAFETY: `SetOnce` can be transferred across thread boundaries iff the data it contains can.
->> +unsafe impl<T: Send> Send for SetOnce<T> {}
->> +
->> +// SAFETY: `SetOnce` synchronises access to the inner value via atomic operations, so it is `Sync`
->> +// as long as the data it contains is `Sync`.
->> +unsafe impl<T: Sync> Sync for SetOnce<T> {}
+> v25: Removal of `riscv_nousercfi` from `cpufeature.c` and instead placing
+> it as extern in `usercfi.h` was leading to build error whene cfi config
+> is not selected. Placed `riscv_nousercfi` outside cfi config ifdef block
+> in `usercfi.h`
 > 
-> This needs to be `T: Send + Sync` as `T` can be destroyed on a
-> different thread that creates it.
+> [...]
 
-Thanks!
+Here is the summary with links:
+  - [v26,01/28] mm: VM_SHADOW_STACK definition for riscv
+    https://git.kernel.org/riscv/c/e53803e4a8c5
+  - [v26,02/28] dt-bindings: riscv: zicfilp and zicfiss in dt-bindings (extensions.yaml)
+    https://git.kernel.org/riscv/c/d6c9672baa77
+  - [v26,03/28] riscv: zicfiss / zicfilp enumeration
+    (no matching commit)
+  - [v26,04/28] riscv: zicfiss / zicfilp extension csr and bit definitions
+    (no matching commit)
+  - [v26,05/28] riscv: usercfi state for task and save/restore of CSR_SSP on trap entry/exit
+    https://git.kernel.org/riscv/c/2acf75f432dc
+  - [v26,06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ | VM_WRITE
+    https://git.kernel.org/riscv/c/813c549f5b08
+  - [v26,07/28] riscv/mm: manufacture shadow stack pte
+    https://git.kernel.org/riscv/c/d3cea05f52a7
+  - [v26,08/28] riscv/mm: teach pte_mkwrite to manufacture shadow stack PTEs
+    https://git.kernel.org/riscv/c/444404ff99bf
+  - [v26,09/28] riscv/mm: write protect and shadow stack
+    https://git.kernel.org/riscv/c/5da46726825d
+  - [v26,10/28] riscv/mm: Implement map_shadow_stack() syscall
+    (no matching commit)
+  - [v26,11/28] riscv/shstk: If needed allocate a new shadow stack on clone
+    (no matching commit)
+  - [v26,12/28] riscv: Implements arch agnostic shadow stack prctls
+    https://git.kernel.org/riscv/c/46f2da262367
+  - [v26,13/28] prctl: arch-agnostic prctl for indirect branch tracking
+    https://git.kernel.org/riscv/c/5b23a2d70976
+  - [v26,14/28] riscv: Implements arch agnostic indirect branch tracking prctls
+    https://git.kernel.org/riscv/c/2b1bd48147c5
+  - [v26,15/28] riscv/traps: Introduce software check exception and uprobe handling
+    (no matching commit)
+  - [v26,16/28] riscv: signal: abstract header saving for setup_sigcontext
+    (no matching commit)
+  - [v26,17/28] riscv/signal: save and restore of shadow stack for signal
+    (no matching commit)
+  - [v26,18/28] riscv/kernel: update __show_regs to print shadow stack register
+    https://git.kernel.org/riscv/c/35d89b5390a9
+  - [v26,19/28] riscv/ptrace: riscv cfi status and state via ptrace and in core files
+    (no matching commit)
+  - [v26,20/28] riscv/hwprobe: zicfilp / zicfiss enumeration in hwprobe
+    (no matching commit)
+  - [v26,21/28] riscv: kernel command line option to opt out of user cfi
+    (no matching commit)
+  - [v26,22/28] riscv: enable kernel access to shadow stack memory via FWFT sbi call
+    https://git.kernel.org/riscv/c/ef83c58ab12f
+  - [v26,23/28] arch/riscv: compile vdso with landing pad and shadow stack note
+    (no matching commit)
+  - [v26,24/28] arch/riscv: dual vdso creation logic and select vdso based on hw
+    https://git.kernel.org/riscv/c/fbe7823a03f1
+  - [v26,25/28] riscv: create a config for shadow stack and landing pad instr support
+    (no matching commit)
+  - [v26,26/28] riscv: Documentation for landing pad / indirect branch tracking
+    (no matching commit)
+  - [v26,27/28] riscv: Documentation for shadow stack on riscv
+    (no matching commit)
+  - [v26,28/28] kselftest/riscv: kselftest for user mode cfi
+    (no matching commit)
 
-You're right. T must also be `Send` in order for `SetOnce<t>` to be
-`Sync`.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-I'll update the `Sync` impl to require `T: Send + Sync` and adjust the
-SAFETY comment in v2.
 
