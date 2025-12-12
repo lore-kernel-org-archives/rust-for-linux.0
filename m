@@ -1,55 +1,55 @@
 Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9477030F534
-	for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 23:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FB317DFE7
+	for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 23:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765581309; cv=none; b=uw270piJ3icjo6JJtQX1Jgco6DTdl4B77uArriDzs7XJPTJ5atLh6eeIOhg1ok3+Blox1v5AQK/RtBxGiPrkSs2mYcO/ZgAEU8ilgUSECcodCJnAx8/N/w9gBatKO8VzmIIJ0Jp7eu9RdXxnjQ9qyDffJVS49B7pHJfsceD1dLE=
+	t=1765581312; cv=none; b=ZG2IqMwMmdzuWQnaYu4iFZMGrrgOvkIRqefK4XroeHcWjZOOWirDjXtG0G0KdYruAX6ORSh7Z3YuVQ4G7SYkIU90PjDIUmVHnugPj6PzPjQEpTCJeOaOmh0T1qtOVe2GUky8PWlsqOjfRWD2gdPBJvNLPu06dnfUphxuHJg0FSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765581309; c=relaxed/simple;
-	bh=BB+Eg8n+4O9ZedIQbOqF11dMdqp9IJcEk7Jpmsg8upI=;
+	s=arc-20240116; t=1765581312; c=relaxed/simple;
+	bh=AQz7A04h1bgLBtHKWjo2r4fkCOjEQnkQFoWC2phwYWs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oM4asnGMjIVl1l2EzoeSGV1KK4rpCcueSxwYFkJB61YyhJwUEEiKcTwYjdCrmbZ9n8YP6FRrEDW7DVUzVMfKJjSlFviXVhW2PqLu4/z2NAZq4L1Q4llb/Naxau108qEdfy+CuzLX9r7z6UEn8wxQH45XFoAy9thFZfchoXBDgi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=33Yiwnm0; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=RamF9UGycYhkUTPKL/5Kaltlm0uYvEQmKLsycvBXupDoMlGbSlB21WGXa6keVL5fpEfVysQ8Uu+asnH2t3S6tH3zvn6kNpS8fv5YRpRbBQhIKnp2zjmhRLhqW0h6V0nTjenRacVBOPYLZHx68GaPeSLqOpZOjZz28Wyjtvy6p70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=anv04UdF; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="33Yiwnm0"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b6ce1b57b9cso1859385a12.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 15:15:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="anv04UdF"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-bc09a8454b9so3333386a12.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 15:15:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765581307; x=1766186107; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1765581309; x=1766186109; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QX553GJLvlV7oXg2YdBVQASii+8KSTzYKv8qfYedNdg=;
-        b=33Yiwnm0B4RiQF+NObt/L5E0mt1UDf053pxQELsbSSUkkra7tM2db8j/Dzc811hVeh
-         BoY+YlVytfbBRZ1fFDat/NjnD3zEa0UnSX/qSqJz6334AS4cOwsd/+tvWH3SctrcGjAt
-         KIzoVyHZ19IQTFUpauLvQPH96xQdRl8Sl31JfNZIYDQeiQUfVY4KG8uIWNzqtYA9xSPM
-         Y2VfsvBu/PcAvpF+9y0Sd6oyK5NCkaLVI2OTgR1LfAeCwAgv95JqKJXFC0oIseSvG7Dc
-         LwaPv9iPScFdBnu4y5DxLDwjJEUlpmbq6c7xhPFKwZ2hl/CjHB0n1O101xQC45w5lBZI
-         09FA==
+        bh=ITRsrBfFLPXeEMYmsYqDsrHYJ78/qjByazuVizcrhmQ=;
+        b=anv04UdF3RnaU7LmoM7Ascnd3l4FKSS2zclh+c9eAiAxThslrAbowz8fjxbPQGrGSl
+         V5Z965bjIK/R3C1EsHz7YT6hDuIxhLOTj6LWtFTvLnMiy6+BdgkjUJFY9jnzgITEnLrP
+         b8Mmx8acj2Ey4WgjKu3GZNpP+dL7lOYCQ6G5tc2tRimffRsrHBl6OEFZhYZSgAlSUkCJ
+         ryZGR2Nr+t5ZeXUpe4mhxaG7pW1MhnngXpXtZ3bzXA0kIzZKsOw+MXZCnE1TNl1SzRFu
+         GMxpPTWwnWi35/qi5PJftm3pzMx6a2UzGrrtizRPJhbBSMzHuXb9wJ0OzAdw7l2sUYXq
+         gDew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765581307; x=1766186107;
+        d=1e100.net; s=20230601; t=1765581309; x=1766186109;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QX553GJLvlV7oXg2YdBVQASii+8KSTzYKv8qfYedNdg=;
-        b=guY6YnHrmjtodG14DTTCwIA1xEh+cMmuMmnAKKBejX6PA7+FTywgtmLmnJ2P+BvPuT
-         VM28NTMdX+/JVpcz8RdEjLcv9J+qeunB3vmkvg6UHrNJwdB8FPJpIjaahGso6l6pJKZX
-         oh0uYOfqPPX6B47Wy+LLDpCmBh61IYAvj6A6WuGbblXIheyLmLIIXEGoS4ADGJAih+0Y
-         LlfZJs6ufsTAtRdNplm4k7LuoKbf1eg9OM9E2fGYDSSeFXekGUuEDpalwJii//1ElLyC
-         5cb+evMa6mKA6WWND1SCRxlYWhvqLNz2jYTBQsGbTskhs+yIm56WhWhOw3duaKpU1PI5
-         o9uQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWLAvt/+fsXWgRzV7us2+OHkCsBQgCBldRKgUGCb+c/B29gVYHVz15V7Vm599gXu2GAwZeY1o0SGahi4kfzBQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YztFKP6i/BomQ9TLutaM2TBPz3tAqKOZoqd5cBN1W+R2c9zbmad
-	04lte8zGXDjeFsz/xlF/8+acUIz3M19s3F3OJ9kKzHOehrHhot31bzCJLqP63cxLvJps0vTgrgy
-	73c+yp+HXLQ==
-X-Google-Smtp-Source: AGHT+IF9LnQXtjA599msQYqIJ97ArWAA7r5j7LWzMKTbd3Ox6en5Nxc/AEMs8ti50UoeRuf+ObVybQ40bQQq
-X-Received: from dyaa9.prod.google.com ([2002:a05:693c:40c9:b0:2a6:a19b:9a22])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:f144:b0:2a4:6a87:7285
- with SMTP id 5a478bee46e88-2ac3014dc4fmr2165890eec.39.1765581306758; Fri, 12
- Dec 2025 15:15:06 -0800 (PST)
-Date: Fri, 12 Dec 2025 23:14:55 +0000
+        bh=ITRsrBfFLPXeEMYmsYqDsrHYJ78/qjByazuVizcrhmQ=;
+        b=g3Pdl2qmDNsBQ83R5FeWil8BBw52oTh+S2pdU5Myi/k13mA1YBk+n105Hl69qhe4yU
+         gGs9m5AiTx7RfTtdgbXefvugfwpj8t5Za1wzyxm6uxqYTzm3kTNOoLcyEGmGMh+SDbU3
+         2Wcgy5eJb3EYodkp02UIWqIJG4m8udPcum6j2Wmia4prNCrV6XvMYwBEdjwMCM/WCiDl
+         ohSH2u5a5xNQ79kx6kvSpmfjj9vBHJY+LJ2zr4B57YSaXXvCKj5+37EzU2hJj1XSy4qP
+         o2pTzFPbdcESO/+TKlNqlxT5oZazGbddjngk+uoIraiulgK6WhdFpx0YZ1uTZ81btnrR
+         UOAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWNj1bB44XcAwxqHY6VUHmOkK1D2OQSoxoAptFGaHi8SLgjiZi15kbVA1EXdX6FTSW8JE/GV/MphBBykch2ew==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoTDRgRXkRcihYFlZH7wOg+CFSxmAyVao+YXvDjEP3GcSU/lu7
+	xShR8IrYue9jX6iTdTq5q0K64SY0PewHuqd/ap//AjWdbYgvyIEv56zKWToF34/aUYivmS8xJHp
+	yECd1XgJJIw==
+X-Google-Smtp-Source: AGHT+IH2FAFHDmZscleFJuxwBaCJeQNIlsiysJoXrY1tEUcgzyr/DK3TBhmPpSnM5HkhHW1QyNBRhdP0yIGJ
+X-Received: from dybcq12.prod.google.com ([2002:a05:7300:a10c:b0:2a4:6577:68f1])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:7b07:b0:2a4:3592:cf60
+ with SMTP id 5a478bee46e88-2ac3018c36bmr2323371eec.4.1765581309423; Fri, 12
+ Dec 2025 15:15:09 -0800 (PST)
+Date: Fri, 12 Dec 2025 23:14:56 +0000
 In-Reply-To: <20251212-soc-bindings-v1-0-db51044ce805@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,13 +59,13 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251212-soc-bindings-v1-0-db51044ce805@google.com>
 X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1765581303; l=6876;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765581303; l=4640;
  i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=BB+Eg8n+4O9ZedIQbOqF11dMdqp9IJcEk7Jpmsg8upI=; b=lu50R0mQBljHaheW/ktEJbF5o08ArK46LmiiwgMs9soVPjx2r1Bn3bEKoqUT3sLyh+FHzc3Qi
- EXEZ7lxG9cICNYy/1G5+FWmRMPvPcMw2hjxCpw1Vm7vdHhQn4JiQi8d
+ bh=AQz7A04h1bgLBtHKWjo2r4fkCOjEQnkQFoWC2phwYWs=; b=35cWEktAnNrcaDwjo6AUDaAdjvcnCNtHIsKKlB3IxUTeLWsyDmnQjx/zfUQZjy9OS3MCZpPe4
+ fz3KpgonsEEC/N1R1xwNHDIgwKPLTAvacYJof1wkjzSzALJvAQV3qch
 X-Mailer: b4 0.14.2
-Message-ID: <20251212-soc-bindings-v1-1-db51044ce805@google.com>
-Subject: [PATCH 1/2] rust: Add soc_device support
+Message-ID: <20251212-soc-bindings-v1-2-db51044ce805@google.com>
+Subject: [PATCH 2/2] rust: Add SoC Driver Sample
 From: Matthew Maurer <mmaurer@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
@@ -76,195 +76,141 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Adds the ability to register SoC devices.
+Shows registration of a SoC device upon receipt of a probe.
 
 Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
- MAINTAINERS                     |   1 +
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/lib.rs              |   2 +
- rust/kernel/soc.rs              | 137 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 141 insertions(+)
+ MAINTAINERS              |  1 +
+ samples/rust/Kconfig     | 11 +++++++
+ samples/rust/Makefile    |  1 +
+ samples/rust/rust_soc.rs | 74 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 87 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index c5a7cda26c600e49c7ab0d547306d3281333f672..4ff01fb0f1bda27002094113c0bf9d074d28fdb6 100644
+index 4ff01fb0f1bda27002094113c0bf9d074d28fdb6..bb2e710277cc84dd6042d4d46076e665d9f68752 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -7700,6 +7700,7 @@ F:	rust/kernel/devres.rs
- F:	rust/kernel/driver.rs
- F:	rust/kernel/faux.rs
- F:	rust/kernel/platform.rs
-+F:	rust/kernel/soc.rs
- F:	samples/rust/rust_debugfs.rs
+@@ -7705,6 +7705,7 @@ F:	samples/rust/rust_debugfs.rs
  F:	samples/rust/rust_debugfs_scoped.rs
  F:	samples/rust/rust_driver_platform.rs
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index a067038b4b422b4256f4a2b75fe644d47e6e82c8..9fdf76ca630e00715503e2a3a809bedc895697fd 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -80,6 +80,7 @@
- #include <linux/sched.h>
- #include <linux/security.h>
- #include <linux/slab.h>
-+#include <linux/sys_soc.h>
- #include <linux/task_work.h>
- #include <linux/tracepoint.h>
- #include <linux/usb.h>
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index f812cf12004286962985a068665443dc22c389a2..6d637e2fed1b605e2dfc2e7b2247179439a90ba9 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -138,6 +138,8 @@
- pub mod seq_file;
- pub mod sizes;
- pub mod slice;
-+#[cfg(CONFIG_SOC_BUS)]
-+pub mod soc;
- mod static_assert;
- #[doc(hidden)]
- pub mod std_vendor;
-diff --git a/rust/kernel/soc.rs b/rust/kernel/soc.rs
+ F:	samples/rust/rust_driver_faux.rs
++F:	samples/rust/rust_soc.rs
+ 
+ DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
+ M:	Nishanth Menon <nm@ti.com>
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index 3efa51bfc8efccd91d9ee079ccd078ed1a6e8aa7..c49ab910634596aea4a1a73dac87585e084f420a 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -161,6 +161,17 @@ config SAMPLE_RUST_DRIVER_AUXILIARY
+ 
+ 	  If unsure, say N.
+ 
++config SAMPLE_RUST_SOC
++	tristate "SoC Driver"
++	select SOC_BUS
++	help
++	  This option builds the Rust SoC driver sample.
++
++	  To compile this as a module, choose M here:
++	  the module will be called rust_soc.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_HOSTPROGS
+ 	bool "Host programs"
+ 	help
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index f65885d1d62bf406b0db13121ef3e5b09829cfbc..6c0aaa58ccccfd12ef019f68ca784f6d977bc668 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -15,6 +15,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_USB)		+= rust_driver_usb.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
+ obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
++obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
+ 
+ rust_print-y := rust_print_main.o rust_print_events.o
+ 
+diff --git a/samples/rust/rust_soc.rs b/samples/rust/rust_soc.rs
 new file mode 100644
-index 0000000000000000000000000000000000000000..b8412751a5ca8839e588cf5bd52f2e6a7f33d457
+index 0000000000000000000000000000000000000000..ca0294819f100fa7b713c6b41c5b8a9b3906b863
 --- /dev/null
-+++ b/rust/kernel/soc.rs
-@@ -0,0 +1,137 @@
++++ b/samples/rust/rust_soc.rs
+@@ -0,0 +1,74 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+// Copyright (C) 2025 Google LLC.
++//! Rust SoC Platform driver sample.
 +
-+//! SoC Driver Abstraction
-+//!
-+//! C header: [`include/linux/sys_soc.h`](srctree/include/linux/sys_soc.h)
-+
-+use crate::bindings;
-+use crate::error;
-+use crate::prelude::*;
-+use crate::str::CString;
-+use core::marker::PhantomPinned;
-+use core::ptr::addr_of;
-+
-+/// Attributes for a SoC device
-+pub struct DeviceAttribute {
-+    /// Machine
-+    pub machine: Option<CString>,
-+    /// Family
-+    pub family: Option<CString>,
-+    /// Revision
-+    pub revision: Option<CString>,
-+    /// Serial Number
-+    pub serial_number: Option<CString>,
-+    /// SoC ID
-+    pub soc_id: Option<CString>,
-+}
-+
-+// SAFETY: We provide no operations through `&BuiltDeviceAttribute`
-+unsafe impl Sync for BuiltDeviceAttribute {}
-+
-+// SAFETY: All pointers are normal allocations, not thread-specific
-+unsafe impl Send for BuiltDeviceAttribute {}
++use kernel::{
++    acpi, c_str, device::Core, of, platform, prelude::*, soc, str::CString, sync::aref::ARef,
++};
++use pin_init::pin_init_scope;
 +
 +#[pin_data]
-+struct BuiltDeviceAttribute {
++struct SampleSocDriver {
++    pdev: ARef<platform::Device>,
 +    #[pin]
-+    backing: DeviceAttribute,
-+    inner: bindings::soc_device_attribute,
-+    // Since `inner` has pointers to `backing`, we are !Unpin
-+    #[pin]
-+    _pin: PhantomPinned,
++    _dev_reg: soc::DeviceRegistration,
 +}
 +
-+fn cstring_to_c(mcs: &Option<CString>) -> *const kernel::ffi::c_char {
-+    mcs.as_ref()
-+        .map(|cs| cs.as_char_ptr())
-+        .unwrap_or(core::ptr::null())
-+}
++kernel::of_device_table!(
++    OF_TABLE,
++    MODULE_OF_TABLE,
++    <SampleSocDriver as platform::Driver>::IdInfo,
++    [(of::DeviceId::new(c_str!("test,rust-device")), ())]
++);
 +
-+impl BuiltDeviceAttribute {
-+    fn as_mut_ptr(&self) -> *mut bindings::soc_device_attribute {
-+        core::ptr::from_ref(&self.inner).cast_mut()
-+    }
-+}
++kernel::acpi_device_table!(
++    ACPI_TABLE,
++    MODULE_ACPI_TABLE,
++    <SampleSocDriver as platform::Driver>::IdInfo,
++    [(acpi::DeviceId::new(c_str!("LNUXBEEF")), ())]
++);
 +
-+impl DeviceAttribute {
-+    fn build(self) -> impl PinInit<BuiltDeviceAttribute> {
-+        pin_init!(BuiltDeviceAttribute {
-+            inner: bindings::soc_device_attribute {
-+                machine: cstring_to_c(&self.machine),
-+                family: cstring_to_c(&self.family),
-+                revision: cstring_to_c(&self.revision),
-+                serial_number: cstring_to_c(&self.serial_number),
-+                soc_id: cstring_to_c(&self.soc_id),
-+                data: core::ptr::null(),
-+                custom_attr_group: core::ptr::null(),
-+            },
-+            backing: self,
-+            _pin: PhantomPinned,
++impl platform::Driver for SampleSocDriver {
++    type IdInfo = ();
++    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
++    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
++
++    fn probe(
++        pdev: &platform::Device<Core>,
++        _info: Option<&Self::IdInfo>,
++    ) -> impl PinInit<Self, Error> {
++        let dev = pdev.as_ref();
++
++        dev_dbg!(dev, "Probe Rust SoC driver sample.\n");
++
++        let pdev = pdev.into();
++        pin_init_scope(move || {
++            let machine = CString::try_from(c_str!("Rust Machine"))?;
++            let family = CString::try_from(c_str!("Rust Family"))?;
++            let revision = CString::try_from(c_str!("Rust Revision"))?;
++            let serial_number = CString::try_from(c_str!("Rust Serial Number"))?;
++            let soc_id = CString::try_from(c_str!("Rust SoC ID"))?;
++
++            let attr = soc::DeviceAttribute {
++                machine: Some(machine),
++                family: Some(family),
++                revision: Some(revision),
++                serial_number: Some(serial_number),
++                soc_id: Some(soc_id),
++            };
++
++            Ok(try_pin_init!(SampleSocDriver {
++                pdev: pdev,
++                _dev_reg <- soc::DeviceRegistration::register(attr),
++            }? Error))
 +        })
 +    }
 +}
 +
-+// SAFETY: We provide no operations through &Device
-+unsafe impl Sync for Device {}
-+
-+// SAFETY: Device holds a pointer to a `soc_device`, which may be sent to any thread.
-+unsafe impl Send for Device {}
-+
-+/// A registered soc device
-+#[repr(transparent)]
-+pub struct Device(*mut bindings::soc_device);
-+
-+impl Device {
-+    /// # Safety
-+    /// * `attr` must be pinned
-+    /// * `attr` must be valid for reads during the function call
-+    /// * If a device is returned (e.g. no error), `attr` must remain valid for reads until the
-+    ///   returned `Device` is dropped.
-+    unsafe fn register(attr: *const BuiltDeviceAttribute) -> Result<Device> {
-+        let raw_soc =
-+            // SAFETY: The struct provided through attr is backed by pinned data next to it, so as
-+            // long as attr lives, the strings pointed to by the struct will too. By caller
-+            // invariant, `attr` is pinned, so the pinned data won't move. By caller invariant,
-+            // `attr` is valid during this call. If it returns a device, and so others may try to
-+            // read this data, by caller invariant, `attr` won't be released until the device is.
-+            error::from_err_ptr(unsafe { bindings::soc_device_register((*attr).as_mut_ptr()) })?;
-+        Ok(Device(raw_soc))
-+    }
-+}
-+
-+#[pin_data(PinnedDrop)]
-+/// Registration handle for your soc_dev. If you let it go out of scope, your soc_dev will be
-+/// unregistered.
-+pub struct DeviceRegistration {
-+    #[pin]
-+    attr: BuiltDeviceAttribute,
-+    soc_dev: Device,
-+    // Since Device transitively points to the contents of attr, we are !Unpin
-+    #[pin]
-+    _pin: PhantomPinned,
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for DeviceRegistration {
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAFETY: Device always contains a live pointer to a soc_device that can be unregistered
-+        unsafe { bindings::soc_device_unregister(self.soc_dev.0) }
-+    }
-+}
-+
-+impl DeviceRegistration {
-+    /// Register a new SoC device
-+    pub fn register(attr: DeviceAttribute) -> impl PinInit<Self, Error> {
-+        try_pin_init!(&this in Self {
-+                    attr <- attr.build(),
-+                    // SAFETY: We have already initialized attr, and we are inside PinInit and Self
-+                    // is !Unpin, so attr won't be moved and is valid. If it returns success, attr
-+                    // will not be dropped until after our `PinnedDrop` implementation runs, so the
-+                    // device will be unregistered first.
-+                    soc_dev: unsafe { Device::register(addr_of!((*this.as_ptr()).attr))? },
-+                    _pin: PhantomPinned,
-+        }? Error)
-+    }
++kernel::module_platform_driver! {
++    type: SampleSocDriver,
++    name: "rust_soc",
++    authors: ["Matthew Maurer"],
++    description: "Rust SoC Driver",
++    license: "GPL",
 +}
 
 -- 
