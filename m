@@ -1,154 +1,171 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3D02C0273;
-	Fri, 12 Dec 2025 09:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5032F3054C4
+	for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 18:33:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765532474; cv=none; b=UoHoI6ZkQ95Srm3MlR0CqsKi/fvCOFQJxeKYyvfEelg2m8WTCRNlU3xCrHllijzRyaIT2fcWTYj4zTkamP9jc5/jv82uYvzjE6m2345s7pmXsn7nyrPr+qZYiekhLPQLO7VQ7s7alDTR2SqKKd/D8PH5kkPZUOD4RNDmqU1MFDo=
+	t=1765564403; cv=none; b=jhO1jPzqCVk/oMpVY4JZFF7BHIUsNV/FTxqC3O3oy2zP2IXHWb0mSWlrT/tGpl1jvOEn9khgi2qZ6CAzL3fN59FSOkgajBfLEvX+bI0NzX3SZo7YAR+yl6gXRfBpwNF1leAcqckkr7/TDAtcdBjJh3b+kOYi3yR6imbw5Q0r1HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765532474; c=relaxed/simple;
-	bh=/DwHOk5c2eD0Vxh7f5OQ4V+UKKui+51GMERXKOPoGK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rXgJUFXyLzCEgIZeBxBh9EaD677ZmOTBHjovZM+zyun/o0qvaI8nm95+166E+fYDNg3vvtNp2ewQniYr2YZ/P5u9BaD0+2OsFRuF6CQJl3BFyIdciRS34BbxwRL+DXvEcfLykziItJgrJndQmM+F5naB7akmz9mLM5trP7hFW3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=jKl/sZPT; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1765564403; c=relaxed/simple;
+	bh=v8LGo5rep+oNiHljlHrcb1/qPP3q5ouQwFXofTc8V8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZL71uPss7tTGOJDHAmCymjXqbiSwM3ZmyA0OA0/lIPa5ZOLwdGd6e48SR5u3ZtJbu6HoJAOl99dMoR6GX1VmVplLfq8xd6qBDnqEXXT0gDof6yREAbtyrfrYoAMOAmkDa5mfI8aWck0rPgopf5QIHUFWlXlp+iOGHBUdaLw8/uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=FSKlyM7e; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="jKl/sZPT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1765532471;
-	bh=/DwHOk5c2eD0Vxh7f5OQ4V+UKKui+51GMERXKOPoGK0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jKl/sZPT5Fq8we2J4h12wq9dhaferqqG7WYrh7c5Y1k5yBsJRMxSPvRCYDSthsFe8
-	 pRqw/bWdb5arjO4jzO0ebG7e3egbR/5HaJg3gCz1rMcvTGYH23kRmB7RO/abMhPeXv
-	 pP44WpV+iM3lP2u6jLE3rcBHt99HTvhioEdkk9vV/zsqJzhBc+WelZKtTdeIp6hRZI
-	 kmpNosTBznVu+OWO723zn0UqOjgkh4gRNzv8gubsK5YawM0ijxqLCMQ3L+hxcgdI1g
-	 HvFUydetaOLNCQ1Pm2xQnAIFIdzuv4f22nuxZ8yOhxrtVyypGcGEw32L5sKR8OKSyU
-	 Ko6IEHLDYFUQQ==
-Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4DBE917E0451;
-	Fri, 12 Dec 2025 10:41:10 +0100 (CET)
-Date: Fri, 12 Dec 2025 10:41:05 +0100
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Will
- Deacon <will@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Joerg Roedel
- <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v3] io: add io_pgtable abstraction
-Message-ID: <20251212104105.6af97d05@fedora>
-In-Reply-To: <aTveh8c3RngvnIMp@nvidia.com>
-References: <20251112-io-pgtable-v3-1-b00c2e6b951a@google.com>
-	<20251128180255.GA836877@nvidia.com>
-	<20251212094427.2ec0b31e@fedora>
-	<aTveh8c3RngvnIMp@nvidia.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="FSKlyM7e"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-298145fe27eso22059195ad.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 10:33:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc.com; s=google; t=1765564401; x=1766169201; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eUSGmEJqTzYByGnUlGU1GkRTgZG6xNYZQ+XlXEoFmO0=;
+        b=FSKlyM7eSovvmr5cj3Hu93OFhDLQSJZWqkQ3xqj/yrR8BnMb4QZW8ArYGL+QIEeDLa
+         meBncfDWtcrvqRkgIYrSzSAnW4JcmFxZnuuCZuysf2HN5I63zIFyy5mUQGIPsJ7qOcjM
+         5Oi1AFHY8QS+1yGNUzFcR1k0oXNA1hjSu3RbCdG6d0XHg1Z7LYCWmB+fCWDA10KVMyzF
+         JvTS5XbYQZ8qdZEu4mQqoo6mBGvuKZ/M6eWiCRd8h5xG/mDVZMyvJ+wRF1LAkmnqq3xI
+         GCoFNKwjXxXdqUgutKTzFoBpsK3oDgdyriyYdIa2dTmqMucgVcvy2qeySSy/xL2EsNJ4
+         kGKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765564401; x=1766169201;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eUSGmEJqTzYByGnUlGU1GkRTgZG6xNYZQ+XlXEoFmO0=;
+        b=lbp9CoCkJl2t7B5cbx1LWBkL8FNCxm5B3hz9xPerspvMYa7Fdm1cTSORRIjBBUcts0
+         UzYhWF3l/1pFxxCvv1wCct37HEoWlFUfW8qrXg3tgJ8iy+T1qR3kchM+mZWQ8/hTT/r6
+         UmQceN/9htSLYgUOvgON2CSQOTtRuEyUzNPBR8iduu90qpaN5LSPUEnrFxm4fTSNuzoT
+         slvfwEznJ5jkjKbib3ZEj9nJMjDYH6rbgFePrZfVqCXFlo98t6gQeqr7p0i+QluMkxDS
+         VgMoNQmRs220jP3SQl9cVfx9dCPUEmSxfuk2dZpgobpEFaHwZoTP5fIAM8/El/UyzRyJ
+         JEmw==
+X-Forwarded-Encrypted: i=1; AJvYcCWvrbaoD/tYURxP3zxBPph+vsiQIAsycZK8om8GG8+rZPwBoTZed42Fx6n0piKpOWopFhakc9pkrOsKXpfDgA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSYCDSzE8BMd6F6d58P/vZqAS6Mt3SjXcg1fy2AAGY4sCP+OYi
+	+n2z2T4E/jZ22LeNX4Xl3WdMYwehq+5aJ10KdJ2xwPo9TL7LP+CuyU96d0pgXby4cXQ=
+X-Gm-Gg: AY/fxX7dogAbAZfjyWODJREszP+W48NcdzpwYDTXqlhAxNkqd2mg9Ap6jh2mvUpxsHJ
+	1F0+PJyMMrYbLaFv3rlJyJ3U/uuN63/c7wO7FSKqEu4N+f7wBiDeq6BE6TBMiabdukW6QmxQPx0
+	yVlje38nLZSciYsox3kVl3bzi2I467hClQN++f9oiBJCVmoMVa8Y4GzHDh4WgMZCOhgSHQ9QpTu
+	zOZuPFKIT+YFbvEnVVI/BJL1ICBFQBIX7Kmg+MlflhBcllTDDkJcZP3AiajkTl+HyLZKFyATeSd
+	Is9illw5WoLrQOoY7dPa2yCJ5LZcDUo27khQMasvE38qvVbsUsRHTgpcLZPqm3qQ4RQcJiEsncX
+	/huJNim9TIR+Sl7AkaFSzwfUcCP2SwSPGNok2dXRrVSe+gW5dKdNf97jBjZBdRsUYPLFfdaHkn+
+	tu5nKMYa45epJtIP7NCz2Z
+X-Google-Smtp-Source: AGHT+IFtnl41QfJeu3IJ/uV+L4EiFBX8zP0ux5EampS/J9pJIP4sBjIMESLAF9z1UPcxbBQKr8xzaw==
+X-Received: by 2002:a17:903:22cc:b0:29f:2456:8cde with SMTP id d9443c01a7336-29f245690bdmr29337135ad.4.1765564400511;
+        Fri, 12 Dec 2025 10:33:20 -0800 (PST)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29eea04b7bdsm59970265ad.85.2025.12.12.10.33.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Dec 2025 10:33:20 -0800 (PST)
+Date: Fri, 12 Dec 2025 10:33:16 -0800
+From: Deepak Gupta <debug@rivosinc.com>
+To: Paul Walmsley <pjw@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
+	richard.henderson@linaro.org, jim.shu@sifive.com,
+	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com,
+	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com,
+	cleger@rivosinc.com, alexghiti@rivosinc.com,
+	samitolvanen@google.com, broonie@kernel.org,
+	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+	Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>,
+	Andreas Korb <andreas.korb@aisec.fraunhofer.de>,
+	Valentin Haudiquet <valentin.haudiquet@canonical.com>,
+	Charles Mirabile <cmirabil@redhat.com>
+Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
+Message-ID: <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
+References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
+ <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org>
 
-On Fri, 12 Dec 2025 05:21:11 -0400
-Jason Gunthorpe <jgg@nvidia.com> wrote:
+On Fri, Dec 12, 2025 at 01:30:29AM -0700, Paul Walmsley wrote:
+>On Thu, 11 Dec 2025, Deepak Gupta via B4 Relay wrote:
+>
+>> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shadow stack
+>> on MMU). Used b4 to pick tags, apparantly it messed up some tag picks. Fixing it
+>
+>Deepak: I'm now (at least) the third person to tell you to stop resending
+>this entire series over and over again.
 
-> On Fri, Dec 12, 2025 at 09:44:27AM +0100, Boris Brezillon wrote:
-> 
-> > > > +// These bindings are currently designed for use by GPU drivers, which use this page table together
-> > > > +// with GPUVM. When using GPUVM, a single mapping operation may be translated into many operations    
-> > > 
-> > > Now that we have the generic pt stuff I wonder if GPUVM should be
-> > > providing its own version of the page table implementation that
-> > > matches its semantics better.  
-> > 
-> > Not too sure what you mean here. Are you saying that we should fork
-> > io-pgtable-arm.c (or rather a subset of it), and have it all
-> > implemented in panthor?  
-> 
-> Not quite, probably next yearish some of iommu is going to stop using
-> io-pgtable-arm.c, and switch to the new stuff.
-> 
-> The new stuff has alot less duplication if you want to make your own
-> special stuff like this:
-> 
-> > against it. Now, I see good reasons to do that, like the fact we
-> > would be able to add features like batched repeat mapping updates
-> > (mapping the same page over a wide virtual range without having to
-> > duplicate the intermediate page table levels that are exactly the
-> > same),   
-> 
-> That's certainly a unique requirement and it could be implemented with
-> a gpusvm specific set of operations.
-> 
-> > or the ability to extend the mapping arguments with
-> > shareability/coherency info (that we can do by adding IOMMU_xx flags
-> > too). But there's also downsides to it, like the fact we wouldn't
-> > benefit from bugfixes materializing in io-pgtable-arm.c, if any.  
-> 
-> The new stuff is significantly modular already so this risk is a lot
-> lower, and we could further modularize things that are actually
-> duplicated.
-> 
-> But doing something like repeating page table levels will require some
-> fairly different unmaping logic already...
-> 
-> You also had the special allocator asks (and presumably optimizations
-> are possible there too) and probably optimizations like taking page
-> lists directly out of GPU structures instead of multiple calls and so
-> on.
-> 
-> When 6.19 comes out go look in drivers/iommo/generic_pt and read the
-> documentation pages that will generate under the kernel docs site.
+To be very honest I also feel very bad doing and DOSing the lists. Sorry to you
+and everyone else.
 
-Ah, nice! I will certainly have a look when it's out. Thanks for the
-heads-up.
+But I have been sitting on this patch series for last 3-4 merge windows with
+patches being exactly same/similar. So I have been a little more than desperate
+to get it in.
 
-> 
-> Then you can think about what is ideal for GPU and consider what the
-> work would be like. My uneducated feeling is with gpuvm trying to be
-> common code it could also have gpuvm provide shared common code that
-> directly builds page tables in CPU memory using the above framework.
+I really haven't had any meaningful feedback on patch series except stalling
+just before each merge window for reasons which really shouldn't stall its
+merge. Sure that's the nature of open source development and it's maintainer's
+call at the end of the day. And I am new to this. I'll improve.
 
-So, gpuvm is one level up (it doesn't deal at all with any HW
-representation), but I guess we could provide helpers for UMA-GPUs,
-where preparing the page table on the CPU is a thing, and it could be
-that MSM would be interested in using those helpers too.
+>
+>First, a modified version of the CFI v23 series was ALREADY SITTING IN
+>LINUX-NEXT.  So there's no reason you should be resending the entire
+>series, UNLESS your intention for me is to drop the entire existing series
+>and wait for another merge window.
+>
+>Second: when someone asks you questions about an individual patch, and you
+>want to answer those questions, it's NOT GOOD for you to resend the entire
+>28 series as the response!  You are DDOSing a bunch of lists and E-mail
+>inboxes.  Just answer the question in a single E-mail.  If you want to
+>update a single patch, just send that one patch.
 
-> 
-> > > IOW it doesn't seem right that common code would be making decisions
-> > > like this, the nature and requirements of the flushing are entirely up
-> > > to the driver binding to HW.  
-> > 
-> > We're not saying this will work for everyone, but rather, this is a
-> > default implementation that does nothing, and if you need to do
-> > something, override it with your own. I guess if that's really
-> > problematic, we can force the user to provide one and keep the NOP
-> > implementation on Tyr's side.  
-> 
-> In my view there is no possible correct way to use this page table
-> code with HW unless you also provide flushing ops. I can't remark what
-> is more rusty to do but having a default full of NOPS should at least
-> come with a comment explaining that the driver still need to provide
-> something.
+Noted. I wasn't sure about it. I'll explicitly ask next time if you want me to
+send another one.
 
-I'll let Alice decide, but I'm perfectly fine with both options
-(NOP default with a disclaimer, or no default at all).
+>
+>If you don't start paying attention to these rules then people are going
+>to start ignoring you -- at best! -- and it's going to give the entire
+>community a bad reputation.
 
-Thanks,
+Even before this, this patch series has been ignored largely. I don't know
+how to get attention. All I wanted was either feedback or get it in. And as I
+said I've been desparate to get it in. Also as I said, I'll improve.
 
-Boris
+>
+>Please acknowledge that you understand this,
+
+ACKed.
+
+>
+>
+>- Paul
