@@ -1,171 +1,210 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011037.outbound.protection.outlook.com [40.93.194.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5032F3054C4
-	for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 18:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765564403; cv=none; b=jhO1jPzqCVk/oMpVY4JZFF7BHIUsNV/FTxqC3O3oy2zP2IXHWb0mSWlrT/tGpl1jvOEn9khgi2qZ6CAzL3fN59FSOkgajBfLEvX+bI0NzX3SZo7YAR+yl6gXRfBpwNF1leAcqckkr7/TDAtcdBjJh3b+kOYi3yR6imbw5Q0r1HM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765564403; c=relaxed/simple;
-	bh=v8LGo5rep+oNiHljlHrcb1/qPP3q5ouQwFXofTc8V8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZL71uPss7tTGOJDHAmCymjXqbiSwM3ZmyA0OA0/lIPa5ZOLwdGd6e48SR5u3ZtJbu6HoJAOl99dMoR6GX1VmVplLfq8xd6qBDnqEXXT0gDof6yREAbtyrfrYoAMOAmkDa5mfI8aWck0rPgopf5QIHUFWlXlp+iOGHBUdaLw8/uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=FSKlyM7e; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5E5226541
+	for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 20:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765572620; cv=fail; b=gmZwbbpLyjpUlMblCcivl4hhmvhRKPqUY1DXI2hdMqVE76u05DNrrxV/QulDdmjxPFnMf3xJxNyf9Bn/G8059fgLNDWa9ZoAhWuRc9ypsv/YQqepGTQ4pWlgXkznAO3nBJjL3dkT4UBjEC7V/O1x9vUfVg6E/brZGl2O7Q27yKQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765572620; c=relaxed/simple;
+	bh=vKAN7Ngg2x88ryD9QV36ocRXXR1o1tqhaMenfMAXUAo=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sHN50uMK8LMsmx0qmNEKrsckd/jjExHvPBCikzIbeKplr97243h8wib38LgYXNXJn3uaXmpUMC14svvkOxEkQ0XwGvGE/qIxK9iXbdppaQbfXnhW7hHUGBT/J9NLv6i6vya/nZimuqeb+JizYgdeoKlAUDg/TrQk5ne4aaDdP2s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UgwbNb3J; arc=fail smtp.client-ip=40.93.194.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="FSKlyM7e"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-298145fe27eso22059195ad.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 10:33:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1765564401; x=1766169201; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eUSGmEJqTzYByGnUlGU1GkRTgZG6xNYZQ+XlXEoFmO0=;
-        b=FSKlyM7eSovvmr5cj3Hu93OFhDLQSJZWqkQ3xqj/yrR8BnMb4QZW8ArYGL+QIEeDLa
-         meBncfDWtcrvqRkgIYrSzSAnW4JcmFxZnuuCZuysf2HN5I63zIFyy5mUQGIPsJ7qOcjM
-         5Oi1AFHY8QS+1yGNUzFcR1k0oXNA1hjSu3RbCdG6d0XHg1Z7LYCWmB+fCWDA10KVMyzF
-         JvTS5XbYQZ8qdZEu4mQqoo6mBGvuKZ/M6eWiCRd8h5xG/mDVZMyvJ+wRF1LAkmnqq3xI
-         GCoFNKwjXxXdqUgutKTzFoBpsK3oDgdyriyYdIa2dTmqMucgVcvy2qeySSy/xL2EsNJ4
-         kGKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765564401; x=1766169201;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eUSGmEJqTzYByGnUlGU1GkRTgZG6xNYZQ+XlXEoFmO0=;
-        b=lbp9CoCkJl2t7B5cbx1LWBkL8FNCxm5B3hz9xPerspvMYa7Fdm1cTSORRIjBBUcts0
-         UzYhWF3l/1pFxxCvv1wCct37HEoWlFUfW8qrXg3tgJ8iy+T1qR3kchM+mZWQ8/hTT/r6
-         UmQceN/9htSLYgUOvgON2CSQOTtRuEyUzNPBR8iduu90qpaN5LSPUEnrFxm4fTSNuzoT
-         slvfwEznJ5jkjKbib3ZEj9nJMjDYH6rbgFePrZfVqCXFlo98t6gQeqr7p0i+QluMkxDS
-         VgMoNQmRs220jP3SQl9cVfx9dCPUEmSxfuk2dZpgobpEFaHwZoTP5fIAM8/El/UyzRyJ
-         JEmw==
-X-Forwarded-Encrypted: i=1; AJvYcCWvrbaoD/tYURxP3zxBPph+vsiQIAsycZK8om8GG8+rZPwBoTZed42Fx6n0piKpOWopFhakc9pkrOsKXpfDgA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSYCDSzE8BMd6F6d58P/vZqAS6Mt3SjXcg1fy2AAGY4sCP+OYi
-	+n2z2T4E/jZ22LeNX4Xl3WdMYwehq+5aJ10KdJ2xwPo9TL7LP+CuyU96d0pgXby4cXQ=
-X-Gm-Gg: AY/fxX7dogAbAZfjyWODJREszP+W48NcdzpwYDTXqlhAxNkqd2mg9Ap6jh2mvUpxsHJ
-	1F0+PJyMMrYbLaFv3rlJyJ3U/uuN63/c7wO7FSKqEu4N+f7wBiDeq6BE6TBMiabdukW6QmxQPx0
-	yVlje38nLZSciYsox3kVl3bzi2I467hClQN++f9oiBJCVmoMVa8Y4GzHDh4WgMZCOhgSHQ9QpTu
-	zOZuPFKIT+YFbvEnVVI/BJL1ICBFQBIX7Kmg+MlflhBcllTDDkJcZP3AiajkTl+HyLZKFyATeSd
-	Is9illw5WoLrQOoY7dPa2yCJ5LZcDUo27khQMasvE38qvVbsUsRHTgpcLZPqm3qQ4RQcJiEsncX
-	/huJNim9TIR+Sl7AkaFSzwfUcCP2SwSPGNok2dXRrVSe+gW5dKdNf97jBjZBdRsUYPLFfdaHkn+
-	tu5nKMYa45epJtIP7NCz2Z
-X-Google-Smtp-Source: AGHT+IFtnl41QfJeu3IJ/uV+L4EiFBX8zP0ux5EampS/J9pJIP4sBjIMESLAF9z1UPcxbBQKr8xzaw==
-X-Received: by 2002:a17:903:22cc:b0:29f:2456:8cde with SMTP id d9443c01a7336-29f245690bdmr29337135ad.4.1765564400511;
-        Fri, 12 Dec 2025 10:33:20 -0800 (PST)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29eea04b7bdsm59970265ad.85.2025.12.12.10.33.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Dec 2025 10:33:20 -0800 (PST)
-Date: Fri, 12 Dec 2025 10:33:16 -0800
-From: Deepak Gupta <debug@rivosinc.com>
-To: Paul Walmsley <pjw@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Conor Dooley <conor@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
-	richard.henderson@linaro.org, jim.shu@sifive.com,
-	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com,
-	charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com,
-	cleger@rivosinc.com, alexghiti@rivosinc.com,
-	samitolvanen@google.com, broonie@kernel.org,
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
-	Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>,
-	Andreas Korb <andreas.korb@aisec.fraunhofer.de>,
-	Valentin Haudiquet <valentin.haudiquet@canonical.com>,
-	Charles Mirabile <cmirabil@redhat.com>
-Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
-Message-ID: <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
-References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
- <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UgwbNb3J"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LBaIHvf+blUmoz43FVYPd79GhhJmD2g3LLX/kybsbDGuC8/3JwVaF++IrHIwNBBT1uxcnekVa9KDHSxQ/IrGAbV8JQO6XqudXQdYAoO6wleYNHED7bkX8qFHIqS4RAxwnsIX2n69mS91JdW8NuyoDoyG460NzqFo/QjwYu98PVNrFsjg2DMrJukjGYArVtX06zELoGOBQopBZLkw+jF1Zz6gXx2CTW1dvKEj8I1dpyUwrBo0b9PYBRFDX10vD4ZEFU7XJiyaDgX56UaJVoLMhErPjFHJRmsIbKWCChbGvzDr3Ohw32TcVhrUufK6ojnIndSr7UxuOfPJOHRE8tIAxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HgCN0EtvZ5igkide6TahH9d2h2ZnoU+oSU5xQkmun/Y=;
+ b=t8UeGxVF2oa+OfholyoC2sEWYXrogxf95b3+fxjXku3Z8mpUHy84/JsluXIHgHZOy83JHdiY9lBQAZbntvG2KSOg1wfBQtcyjy/YGCUCe5FsbaTLh//oNuIG/SzRCqiBWimcDRrVks6X2Hl5w3b416cOiVTIHy977QuJ86XGl+FjhD/kaPXbNoZlMM7PWfcltj4Hu4+q7dQB4RY0wJPhl3KDyxFAqBquhlFhF291Zb7/p7D1L9KYhvntw2YeYfVWQjiWfb5a0dLUyu+WMmFIE/lL83TBBwRjH//mh/+KlQL1hYNmyuvvhtvJDFoCL6e/jgXJBMdpQURUEGKIiJHGQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HgCN0EtvZ5igkide6TahH9d2h2ZnoU+oSU5xQkmun/Y=;
+ b=UgwbNb3JQpO+r8VGlFvzCrsrOle/UhDIaoVUjUBZs/2gniMOlKwmWLmgduMnKCQB9oI8ZYoLP1AMsR6iHRG5rlm3ZCBrjJaFjpVrSFtEsibleK39jsv+yeqJHwsL9KOuEjZoL+g1YTqNV7DRP9iSjMydnYTFaZ89x+3na6jV5U0vMuQD8jWy33TTpn7ZqXtR4wKMvffUEU+C4uiSjm5EviBszgwvEiQT+0KDSlGqtG6xlSGp5gbSZwIMLqlPjnxZ4J0PUeTIR9WiM0q45CyhMTr4xC2jPqw/yDuXaAzUAS0sYX3tvcWDx9BgASL/oLRbQB2Vm2vNgbaaJiZKsLrW6A==
+Received: from SA1P222CA0004.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:22c::14)
+ by IA1PR12MB7565.namprd12.prod.outlook.com (2603:10b6:208:42f::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.9; Fri, 12 Dec
+ 2025 20:50:14 +0000
+Received: from SA2PEPF00003AE6.namprd02.prod.outlook.com
+ (2603:10b6:806:22c:cafe::a4) by SA1P222CA0004.outlook.office365.com
+ (2603:10b6:806:22c::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9412.9 via Frontend Transport; Fri,
+ 12 Dec 2025 20:50:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SA2PEPF00003AE6.mail.protection.outlook.com (10.167.248.6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9412.4 via Frontend Transport; Fri, 12 Dec 2025 20:50:13 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 12 Dec
+ 2025 12:50:03 -0800
+Received: from ttabi.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 12 Dec
+ 2025 12:50:02 -0800
+From: Timur Tabi <ttabi@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot
+	<acourbot@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
+	<joelagnelf@nvidia.com>, <lyude@redhat.com>, <nouveau@lists.freedesktop.org>,
+	<rust-for-linux@vger.kernel.org>
+Subject: [PATCH 1/7] rust: pci: add PCI device name method
+Date: Fri, 12 Dec 2025 14:49:46 -0600
+Message-ID: <20251212204952.3690244-2-ttabi@nvidia.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251212204952.3690244-1-ttabi@nvidia.com>
+References: <20251212204952.3690244-1-ttabi@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org>
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE6:EE_|IA1PR12MB7565:EE_
+X-MS-Office365-Filtering-Correlation-Id: 89570102-d8da-4835-518d-08de39c00c50
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?TKqgoO0C82MSk3Q5UgU4B6t/0TNHqL5w5WLNjsHxWtZbaZfTvaWyn7Ob867O?=
+ =?us-ascii?Q?k+/oaGfss6u6dDgugtnB4N4IRfjkWPjbk+0YxUGHzgg28XLLuwPhJCf6qIN9?=
+ =?us-ascii?Q?IU+VJdEt+3Ss2TJc5M4SRDNCjT/IJjg3UA/EGCnE/2nWS5hnNYL5HJDv9EDm?=
+ =?us-ascii?Q?HmtXqh+9Pqh8r0j93OBtH1TLHtWXLnIkXLBCqrXv4x2BN9ZIo4CjwxZO8zFK?=
+ =?us-ascii?Q?kGNG3q0lmRFKLrpr9nuW+3lmXzWc2SwMcEZrIwZTihPwuCWh3p/t6U+KAn6+?=
+ =?us-ascii?Q?qk2ZG3j+4z+mWFgBJrK3lnPe2cHjr8Upew0kjVut3j63PsK6KD2jub2QDrUs?=
+ =?us-ascii?Q?fJoDLVdKlFav6rBMKUc+17YHwGpI/E6MLbkLPnFnPE1SMAEJ0haOr80hAc6e?=
+ =?us-ascii?Q?fM5aM9lT1RQygwrdqe9x5VczmPMHjEaNex2zqVX1rU3QVLmrcgN0oSu7Ekh5?=
+ =?us-ascii?Q?ZyTC7cwPf92N2w5V5O3mP5VWGYF9bm3jI3+hsFXrnwRQW24x0CjbanGvKy/I?=
+ =?us-ascii?Q?9ghSoMKq5vMJGADlVKsdsxMxSw68hxbcX/3P7OtG0xXMQ4qUOh9POnFcYgcd?=
+ =?us-ascii?Q?U63mxyERrY2ZTTRlM7SqHsIo7hDcWn93kYw2oK82tyWXhfCpiy8PwqpOpb2q?=
+ =?us-ascii?Q?f/QF8asNloCYTeL829NMIMDWpnodkfPTno9IuKiEAb2ZRdrxDZrsYv3HoqEB?=
+ =?us-ascii?Q?F5cCFcbrHyMEScdOXaxfsxSnr4i4txoeEhfOiyV4EKCrEDNSbobqyYMLhyn0?=
+ =?us-ascii?Q?ePvJjqYATMAemeUy1C0XWFE1wyEBYe9nAFlTAYM/HKUSUt+MDgX95hGKFHlx?=
+ =?us-ascii?Q?ovh9maskMrYrw5dNT2ZqfYmNBayOniVCB7m1jdmmPz4cVVkHK/DXRmWdOW1E?=
+ =?us-ascii?Q?KgX6Hftq6Bk1u0tjNzWIafYrMxWY3JV4IiRFL3GlwqxGuT+CMHgyLXXuXT/y?=
+ =?us-ascii?Q?YHwLRkJ8ABdTnDU23ZhoJkfcMege8CJILRvahFkqF274GJRgvhgyokMbmcDG?=
+ =?us-ascii?Q?E7Nhdn9vEY0AnsZXKl4XpKGDenv+3Q46BIuFLt13qfitf3N9VEfbzMoJk8n1?=
+ =?us-ascii?Q?FlBsDbuRvyZFx95vy/Veg4Lpqq4AvrCbOX8oBnNcnLAaF+xpBQddu+Uacgvy?=
+ =?us-ascii?Q?tu4wciHDM6D2h+otaxhMmLHJ0SHcgCmR0fDtCdFbLCpeJ0L/xoDJGiYL+X17?=
+ =?us-ascii?Q?KK7Cw1BiualTBLRcNJEZJ+XzKK1kFpUEZiz4VvACj5jU6aFFLYoZiABkxiV+?=
+ =?us-ascii?Q?sNwk7l2/uLSgeAobtrp+cO6EDrS0G/FH/ZLGYZOetv3n4TaLeHkZKtTCnPag?=
+ =?us-ascii?Q?nG+1jWidJxXEIlfow84QJJ/z9In4NVMjsy29fJ4kiWKJ2KirJdiJ+uGo3psC?=
+ =?us-ascii?Q?EaXjJzo4UqZajCLCtUw8h38TRYBEADEW5QTzuwxe9H0AEntBvDuH8BozQ/X/?=
+ =?us-ascii?Q?9a342QSCPGStP96Rp8GeQp9AlrhOV44giyhNpKjn0nXE2nUywfJxz2VHVQ+L?=
+ =?us-ascii?Q?UYUD9HpyBB70IHHrc9N5+7ot3+xxSKRDdLCvKg/n3B3+UZi3AdudwwIvdDnE?=
+ =?us-ascii?Q?0VtqhB3C//wprdkZMFE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2025 20:50:13.4850
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89570102-d8da-4835-518d-08de39c00c50
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00003AE6.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7565
 
-On Fri, Dec 12, 2025 at 01:30:29AM -0700, Paul Walmsley wrote:
->On Thu, 11 Dec 2025, Deepak Gupta via B4 Relay wrote:
->
->> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shadow stack
->> on MMU). Used b4 to pick tags, apparantly it messed up some tag picks. Fixing it
->
->Deepak: I'm now (at least) the third person to tell you to stop resending
->this entire series over and over again.
+Add a name() method to the PCI `Device` type, which returns a CStr
+that contains the device name, typically the BDF address.
 
-To be very honest I also feel very bad doing and DOSing the lists. Sorry to you
-and everyone else.
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+---
+ rust/helpers/pci.c |  5 +++++
+ rust/kernel/pci.rs | 37 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
 
-But I have been sitting on this patch series for last 3-4 merge windows with
-patches being exactly same/similar. So I have been a little more than desperate
-to get it in.
+diff --git a/rust/helpers/pci.c b/rust/helpers/pci.c
+index bf8173979c5e..411bc743fcc2 100644
+--- a/rust/helpers/pci.c
++++ b/rust/helpers/pci.c
+@@ -2,6 +2,11 @@
+ 
+ #include <linux/pci.h>
+ 
++const char *rust_helper_pci_name(const struct pci_dev *pdev)
++{
++	return pci_name(pdev);
++}
++
+ u16 rust_helper_pci_dev_id(struct pci_dev *dev)
+ {
+ 	return PCI_DEVID(dev->bus->number, dev->devfn);
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 82e128431f08..d0c0c2f6aa32 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -427,6 +427,43 @@ pub fn pci_class(&self) -> Class {
+         // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
+         Class::from_raw(unsafe { (*self.as_raw()).class })
+     }
++
++    /// Returns the PCI device name.
++    ///
++    /// This returns the device name in the format "DDDD:BB:DD.F" where:
++    /// - DDDD is the PCI domain (4 hex digits)
++    /// - BB is the bus number (2 hex digits)
++    /// - DD is the device number (2 hex digits)
++    /// - F is the function number (1 hex digit)
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::{c_str, debugfs::Dir, device::Core, pci, prelude::*};
++    /// fn create_debugfs(pdev: &pci::Device<Core>) -> Result {
++    ///     let dir = Dir::new(pdev.name());
++    ///     Ok(())
++    /// }
++    /// ```
++    #[inline]
++    pub fn name(&self) -> &CStr {
++        // SAFETY: By its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`, which contains a `struct device dev` member.
++        unsafe {
++            let pci_dev = self.as_raw();
++            let dev = addr_of_mut!((*pci_dev).dev);
++
++            // If init_name is set, use it; otherwise use the kobject name
++            let init_name = (*dev).init_name;
++            let name_ptr = if !init_name.is_null() {
++                init_name
++            } else {
++                (*dev).kobj.name
++            };
++
++            CStr::from_char_ptr(name_ptr)
++        }
++    }
+ }
+ 
+ impl Device<device::Core> {
+-- 
+2.52.0
 
-I really haven't had any meaningful feedback on patch series except stalling
-just before each merge window for reasons which really shouldn't stall its
-merge. Sure that's the nature of open source development and it's maintainer's
-call at the end of the day. And I am new to this. I'll improve.
-
->
->First, a modified version of the CFI v23 series was ALREADY SITTING IN
->LINUX-NEXT.  So there's no reason you should be resending the entire
->series, UNLESS your intention for me is to drop the entire existing series
->and wait for another merge window.
->
->Second: when someone asks you questions about an individual patch, and you
->want to answer those questions, it's NOT GOOD for you to resend the entire
->28 series as the response!  You are DDOSing a bunch of lists and E-mail
->inboxes.  Just answer the question in a single E-mail.  If you want to
->update a single patch, just send that one patch.
-
-Noted. I wasn't sure about it. I'll explicitly ask next time if you want me to
-send another one.
-
->
->If you don't start paying attention to these rules then people are going
->to start ignoring you -- at best! -- and it's going to give the entire
->community a bad reputation.
-
-Even before this, this patch series has been ignored largely. I don't know
-how to get attention. All I wanted was either feedback or get it in. And as I
-said I've been desparate to get it in. Also as I said, I'll improve.
-
->
->Please acknowledge that you understand this,
-
-ACKed.
-
->
->
->- Paul
