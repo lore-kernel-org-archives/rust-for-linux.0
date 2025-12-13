@@ -1,46 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240DC72627;
-	Sat, 13 Dec 2025 13:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003B61FD4
+	for <rust-for-linux@vger.kernel.org>; Sat, 13 Dec 2025 14:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765634247; cv=none; b=ROxuj4deHSGkc1Gw8lNHhBgsUP9NZCrGUpG3LvVBEJ6R3W2yL2zxkuS0jvGBLvoBQq4Iv3xRoLux82QXUG+ASfArQ1HZBzopzzHCDKHBs0xgFThpzcPGT0/cQp2U8zHSOxjRxoKstyTlTqHDZOUDmmHNjEID9/gA0MUR2Y821F8=
+	t=1765637152; cv=none; b=LpyWcD5HCxz6Urhh9bE6NnkXl5eX4exGquAxIvPUB7RssNf2OWETN2oJk0W1FUCLL2mnLGAuHxilqGomKBStCUr6McKu6+zWeDLsYW7AnsPSlYkHQnTEQjV1bcMs9OYehJMB5gnxCogz4wagNfBnRnrZZBE9v4m7XudWYsbVU8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765634247; c=relaxed/simple;
-	bh=Io5huw5drv5uRuB1bYPQezJ2mtuCFgnaWSOURAvlUkw=;
+	s=arc-20240116; t=1765637152; c=relaxed/simple;
+	bh=x3O7UystAmu0laPnZukWplU+jTS2X0j4gWkEiv+zu7M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mGeKgX3sRrBcoAZfd4fb00dneWD5S2muU9XST2lWOJQYvGRWkPwFhgLFXgtyVzEiyzZIamhaxk5mZWE7DcrW7Qf9XHgLrg+mfeFxGTMQ3dhMBbfzz+dbnFexyqa0eC5bqertjLWC3E5pMLGGjp2pkPp/BLSYNg4ZYrXOqaWdBto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRSvoBGQ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=pdfCaFsnUnLIB8ijn945OyR8H2iStj9Fsgly+bQVF5n4r99muGLwBFlJKMJ4/d/GmvkuY8Y3fqOLSqHP/UAr7ZFp+36sXqK/wa3O0Hrztn+ujQDisMVBuxwAILxo1P1UwE/fVJ2lY7T4Cb2z8UIr7qWdDWqh0zATk5mQcrzA4Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MFUxfOQE; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRSvoBGQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164CEC4CEF7;
-	Sat, 13 Dec 2025 13:57:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1765634246;
-	bh=Io5huw5drv5uRuB1bYPQezJ2mtuCFgnaWSOURAvlUkw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vRSvoBGQ+63EV1g0MtaKWpRxmd38Y7L6I+V+ekbS5isNvGcBZqnzr1erOoyINJ2x7
-	 t/arm7hZXNnN+tmWFoQPJ9g56vvDC4jc5gBQiYLIcZBlVtoQsc8qSql2BdLEY+E7dB
-	 QJ8pHQQpidNEB74w8PynyHgD2LJL2O0inz5nsbT4=
-Date: Sat, 13 Dec 2025 14:57:22 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Satya Durga Srinivasu Prabhala <satyap@quicinc.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Trilok Soni <tsoni@quicinc.com>,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RFC] soc: qcom: socinfo: Re-implement in Rust
-Message-ID: <2025121303-railing-fountain-bebf@gregkh>
-References: <20251213-qcom-socinfo-v1-1-5daa7f5f2a85@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MFUxfOQE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765637152; x=1797173152;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=x3O7UystAmu0laPnZukWplU+jTS2X0j4gWkEiv+zu7M=;
+  b=MFUxfOQEL4v61VWsLUof/rRrVBwfqUaBpg5vAAlwoLFWm9s02rCyzLYL
+   KxvOO4n10v1ZDeGEjM7Hgv602wiSq/QHydFnqoQBMZrgnrMa26oBhlGhB
+   peKRS32ZZPSJbV+64qEnNyef5poEhFsOoCBc6tFl0fl5otIUzZZz6Dh8m
+   GHf+OnpduxjxChYqEty7OW0npoywoWFriMRxPbsk2O0pt6uYPGWKQFRCF
+   Ypg7oOg/O18jUi+xudgVt2RsOu/hp8kvdQnekLJpBulkvfXzcj1Pw9O/g
+   YfMLM5Ycf0i6Tc8ntKyb5VCOdBDbxXg1p2XTIXtDWnKxw2SFbTplsVW96
+   Q==;
+X-CSE-ConnectionGUID: 3r/tbWTdTJyB8hyBtAGG8g==
+X-CSE-MsgGUID: GVE46/vNQn6IW6iHPoR6fQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11641"; a="78727491"
+X-IronPort-AV: E=Sophos;i="6.21,146,1763452800"; 
+   d="scan'208";a="78727491"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2025 06:45:51 -0800
+X-CSE-ConnectionGUID: Pv9s2lbRQmSJaXuB0ktrRw==
+X-CSE-MsgGUID: r3LA0x/jQp2Xk2n+5OlajA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,146,1763452800"; 
+   d="scan'208";a="201502891"
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 13 Dec 2025 06:45:48 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vUQsU-000000007kV-0nSD;
+	Sat, 13 Dec 2025 14:45:46 +0000
+Date: Sat, 13 Dec 2025 22:45:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Brendan Shephard <bshephar@bne-home.net>, aliceryhl@google.com,
+	joelagnelf@nvidia.com, acourbot@nvidia.com, airlied@redhat.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org,
+	Brendan Shephard <bshephar@bne-home.net>
+Subject: Re: [PATCH v3] drm/nova: Align GEM memory allocation to system page
+ size
+Message-ID: <202512132208.bhsQf8d8-lkp@intel.com>
+References: <20251208071810.653223-1-bshephar@bne-home.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,26 +66,36 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251213-qcom-socinfo-v1-1-5daa7f5f2a85@google.com>
+In-Reply-To: <20251208071810.653223-1-bshephar@bne-home.net>
 
-On Sat, Dec 13, 2025 at 12:36:00AM +0000, Matthew Maurer wrote:
->  drivers/soc/qcom/Kconfig             |   1 +
->  drivers/soc/qcom/Makefile            |   2 +-
->  drivers/soc/qcom/socinfo.c           | 931 -----------------------------------
->  drivers/soc/qcom/socinfo/Makefile    |   2 +
->  drivers/soc/qcom/socinfo/bindings.rs |  59 +++
->  drivers/soc/qcom/socinfo/data.rs     | 424 ++++++++++++++++
->  drivers/soc/qcom/socinfo/socinfo.rs  | 362 ++++++++++++++
+Hi Brendan,
 
-Shouldn't this all just be in 1 .rs file?  By not doing that, you have a
-number of public symbols (that are very generic), that will "pollute"
-the global namespace of the kernel symbol table (unless rust does this
-somehow differently?)
+kernel test robot noticed the following build errors:
 
-But putting this all in 1 file should solve all of that, and remove all
-global symbols.  Especially for just a small and simple driver like
-this, no need to split it up at all.
+[auto build test ERROR on 37bb2e7217b01404e2abf9d90d8e5705a5603b52]
 
-thanks,
+url:    https://github.com/intel-lab-lkp/linux/commits/Brendan-Shephard/drm-nova-Align-GEM-memory-allocation-to-system-page-size/20251208-153603
+base:   37bb2e7217b01404e2abf9d90d8e5705a5603b52
+patch link:    https://lore.kernel.org/r/20251208071810.653223-1-bshephar%40bne-home.net
+patch subject: [PATCH v3] drm/nova: Align GEM memory allocation to system page size
+config: x86_64-buildonly-randconfig-002-20251213 (https://download.01.org/0day-ci/archive/20251213/202512132208.bhsQf8d8-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251213/202512132208.bhsQf8d8-lkp@intel.com/reproduce)
 
-greg k-h
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512132208.bhsQf8d8-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0599]: no method named `ok_or` found for type `usize` in the current scope
+   --> drivers/gpu/drm/nova/gem.rs:31:45
+   |
+   31 |         let aligned_size = page_align(size).ok_or(EINVAL)?;
+   |                                             ^^^^^ method not found in `usize`
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
