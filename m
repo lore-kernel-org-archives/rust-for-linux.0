@@ -1,95 +1,95 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E47283686
-	for <rust-for-linux@vger.kernel.org>; Sat, 13 Dec 2025 16:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2C02D97A4
+	for <rust-for-linux@vger.kernel.org>; Sat, 13 Dec 2025 16:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765643114; cv=pass; b=ThfZAsUrLB0UOTfqFBlDFXahabz4seLn2TWnfSIMKI7h+44wwbb1whpNs8gdmeuXbGr70VX5s+WxS33pQFwnrqQ667Df+fAf0WBOBsRr9FaENqzCELNgsLXNahxrhZUM6RGxgG/g0CdzBYxXjHvtSs60d9igRoU0UnyNQJqqFI8=
+	t=1765643186; cv=pass; b=jSY2uzXlu/Vsllpm7MiBuijzoAItlOaauGkv8GFQ7HahxlATdIdUUpNehOiIw/ZPSRBVc3KsLK102U4+46qOQfN54ALC0ET6/z+TVtaVOWZJGBtk8qzOiZSpkANkFblDT3xjwMEAYAfkIjfKCsnvaSIbicbxyxyR0+ft2by26c4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765643114; c=relaxed/simple;
-	bh=YAnZzpjbBwBWlqenRjdeOvVeURSHJvqxbcXNkssf0m0=;
+	s=arc-20240116; t=1765643186; c=relaxed/simple;
+	bh=hEBudBX3Q01w199DsTrrFGpPOeohMRWrBP1pwxGVdm4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cn6lLnX1euPSd5Y6jKAGcpvfzxQ1u7Au8OcDOssaFy+cBUi7jRgT6JkfaGhQY3u776jVvKD0ezQ+zaoSyAGuEh2veh98iKjEUFkDyLgAEy2URtVYEI2APGC6V4hRV6Mv4GHLL0gfdbNe2ddH14ecB+Sp6hu8M7Wel0g07wFYH1U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZXCYt6VT; arc=pass smtp.client-ip=209.85.208.42
+	 To:Cc:Content-Type; b=DSQQUSUK0Xgff2zLN+ule+3RDa1flnfF1smpCgvrGtR2j9crUaVqynnDFc1GFi1Tm7dBfEliSRnIKPhitR8qsGXoEECCqFJbaH2RtpghjRqJxT7OICNYovvxqI4G02kdvs1stG7dNeDp+T7veeJDI2b8cYYdVn0eEMDF7xdsBEQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t8QKCbk1; arc=pass smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZXCYt6VT"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-645ed666eceso28847a12.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 13 Dec 2025 08:25:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1765643112; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t8QKCbk1"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64969e4c588so30582a12.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 13 Dec 2025 08:26:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765643182; cv=none;
         d=google.com; s=arc-20240605;
-        b=jSDiNjETEjSWO9ZgmE4hI1vCB4Ejo950T58pOn0JAmKGFCPM4Ds9HjLYRpv+VUTqe3
-         x+UoFs09rmHRzuHpCUquS0PzA46NZUt+B2qkuGfLQi5NViLj0Z0RW8c2BngIJs773Q5W
-         v7T2Lyw8qi6ObAsW6EdC3Q6lgGhPZ1RstBh7zUdbkHqJHMoPVZ0Uv8bmP1JN9JtJ1muq
-         IuRX+1qrK0jgNyDYycQxSrnLe1BmoxgkLQl863IbtF5lW7UN9kYQxdoNmhXMmLq6q0r1
-         Yeflm6spvonyt10ez0rrwKURt56qy4Fi8H1fCqAgr+Ko0Kh8KeUsLDn7GtMGoCOjCkLX
-         As1Q==
+        b=LG4PvDlwbdG278M7hgDU7ORduXsHE98ScYrPfp1Q/58VzO3KgdTpdMWdbj3z+B3l/b
+         oXJ59FT7BRj+Cv5GyYL6s1f+/i6BTvtfpEINEBJ2ZJt6eIsSA/5qAjwqTG3L94j3xKwl
+         AeGYjEWvPj2WpDUKRdezlDNQKmXHz+h2PkzGrFtEU+CSWwiyxgFu26t63ZKCQCR+dtA+
+         zQGWEBLIyJTKymmdYoL8HeVnZAdomTgCz8qEr6by+4mFdz+ku0x6Jj4GAXU6oeTaYCxz
+         QV8i3gx5MIbRZOyfZO5HddNso9vjvF+TArg/C/T/YtZXdNXxAPniuZo5u+NEFZqDYNgE
+         +c+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=qkuU2QpOJIUvy477P8mZDSi2Umf+2ZZ4kkB+P93Igz8=;
-        fh=ci9kPTXR86JEgDdyYtF/d5El/d5j8D1obSEfe4Tai28=;
-        b=QYLES7oVvhb3sbhzfst4tbEqvz8bXoVmEklFjE0epSvZdEu3tEmA4LT+O9fauN34ZQ
-         m0fHxfUeFWhsLiJ/sQtHVCgC58qj8DrxQmliPFRXv4fznLtbnhIeHPkuAolwKtHzZS4K
-         6KCsliH6aaVrwBBaw43L8sohjQlODQaZHi2oFyDjKq0wDkALP2m+x137fA0/x8VFzEZv
-         0qVOgSIqva3Z4iWsKYrHq2l58vDI8FVRM/jRgpWtRFqIAyIZunum3wcS2SYAqLRaCDBs
-         ZRWxfAdMxq6VoPW/O+maDrdVkY7wiRImz+reoDvM+qp+PkbeLrtXpkvykpqsP+jYIfwS
-         jjaA==;
+        bh=UCcUMaLmmuSJyWtPXvbL8wx2gaEQjZqepTePqkogohg=;
+        fh=ucPSjvuqRr+Lkyy0HA1VScUFy9VegmmBz8TuajFYVuw=;
+        b=ERXCaRKnmhjge/orcq5gHcsr1zRtp55LakSIDRy5dE7KI6jVY12wc1RxQaQgC+8/Z0
+         MxA9v8mlT+eVPI8vDlNdOgL6XtKQX5PBHdmsSp67JXRk6UfJU9MYQnJ4KSkIJGHjfcPi
+         zlZwZmfn+8ua2MSTdUTYP+MOvsVVIzySecjFdtDtd+C3r025K3EGVe0xnOnNKCSiD9m1
+         cWTKBRT8tUHf7XWYrOuMNGx6vknLSGeIZkU5qD7jwxZGDjNL/YuDRJnpjSfirDkJhSuf
+         8zw6RpvpwyjDjLJxnwbVGlIfr/k3y7uP8Km5CKbkNyCJujyUQ8Sz9tA7Wj1MFICruqjO
+         DUOQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765643112; x=1766247912; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1765643182; x=1766247982; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qkuU2QpOJIUvy477P8mZDSi2Umf+2ZZ4kkB+P93Igz8=;
-        b=ZXCYt6VTniEINfW5eBE9SU8jVFKws2qN3OB7YTMuPVH3sINodC58UOSuifMKk8Q3mz
-         rmz5ZxpkVXETrzaDUjZ1/wZe+YOMf8PTo4noWOVrKEkXJbdHpqK6pQkmrRVo1ke3EnrL
-         gjC+xggg+d/AXSTckSpXhPJ3IRMGvWe7sfwtIIhx1ubzXkEaNW1kITtMjJscfOfdhJsx
-         E5GEbGSvcUtgsSzsR2my9WsNIq9NrSUzjEDpuWuWO7shEG//DPh1yybyB/yy3jBP5kVc
-         mPHI2Phi2+/XcxzPQ7rFBViANIcImMun8i1TuWW2Ktqd/oWKwVmRBMXg9TR/A2lCAaWT
-         MnSg==
+        bh=UCcUMaLmmuSJyWtPXvbL8wx2gaEQjZqepTePqkogohg=;
+        b=t8QKCbk1TybRm+hIkp8I6RokTjqO4TMhksmZT6mXwPPet8rYm4J6qT/2B/h+XszKAJ
+         I/ueeejSKGbimJSjSIM+Y9kMZ+osBljaucqEXHgqS7bx1NU6je4/5GaEoWbBn9QT+eNz
+         OGGTS1QTlRnjfjqBld7wOetHPz/t8vYKMjVKnlkuRG81ty/5kVpD8a/ca3OZEMvawCfi
+         jMXxiXKYdWawxb9owE8WJEtV+Od+5oqud7AJtJJ6XEIQGFDC7pFjuM+ZYorM0ryGYsts
+         OlNoOEZM5/d9fd8eb2g/z1TUeQ7vFejESQwnIAscVfYNfAhxhMDlL6QiziTRawMBDNwq
+         8c/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765643112; x=1766247912;
+        d=1e100.net; s=20230601; t=1765643182; x=1766247982;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=qkuU2QpOJIUvy477P8mZDSi2Umf+2ZZ4kkB+P93Igz8=;
-        b=G0jJoTLlwZ80/3RSWNDDgHImOQ7XQ2VeocBDcHlp0aStu7U/mIX1xnkcS2DZhxF5DC
-         U3aFRBR/vHII+jfQiZjmn7xJDSqhmQmaE4l3yErn7l9YiCJuNI4iE7Ra0z4oUNy58RH1
-         WYlJe7XuRfAQkWvJq4OOtTkrzD6ovDKUdS3t4pCmSHRgp7NV60Zxo2y67ieh0hA7WexC
-         LgHtyQ6daWKhzeIj9FV6REHnULrGmOFQ5B4HJ4uHU0zuWVVXNproEx/6NvyXRx3NkZFA
-         ThdpRoGlYMcaWv0jgYsez3xpw5qmfKAydH36CHap31oO8sMCXsTbfTlfWUS3B/ETrf8M
-         FQhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxoZL+zWGpr+eZhxn0LhMYCOpAMTdWo9I8KxIoIa/Qzoe45JA1r7Jp7m5OO33A3zdvShUHg4iLMQvehMHZSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCAYpg29BDN1e1IqBr4MKKQlmpF6Swf03FA0kY8FwpOpr0QD0g
-	IsBOXLHBzBKjoU67Z0CjDE/XBnvEXZasZlFXQFUMPGTSTJhwIVV58e61r2PjGzi5MvnMMPDmquG
-	5DPgEqSLCLChKUr0V0ZgiqRItqLiZXNlpqefnKFuD
-X-Gm-Gg: AY/fxX5H+/wp1ydc/JhFm2jdgNVfi3sgAyi6b2Tmf9+VTYdg/oEAaP9UD+jGMFFfnKU
-	X6y8accw0SRSotX00tPA+S952HAaWwD9j3e/odqv1V65lw2q/MVvL609aI8iG4AuF/7X3Z+JMYK
-	TcRymWqaeE2p8kPCko5LTIhROQ8VqybL1VuMYSwjym6CfwqvuBEWAgI7vDwYA9pkDY/BLzoRT9r
-	DtbRPQUvbqAZsNRk43hzhfJdV3SqbgVIJK/NcgB6hFaWG3n4SCxV3L1l7HMMGhu211wJlaJt+7F
-	FeBaBUuIXovloN2pwnCgmqVq/w==
-X-Google-Smtp-Source: AGHT+IHlyJhnracVgNkSH6sJ3VIaGS7tv2RfDg7Zb2bwsXSyz7Si0k9LU9wFEB63RmvI9k8PDpzPf7a543mVVoDz97Y=
-X-Received: by 2002:aa7:c4cb:0:b0:643:6975:5380 with SMTP id
- 4fb4d7f45d1cf-649b0899656mr27353a12.14.1765643111359; Sat, 13 Dec 2025
- 08:25:11 -0800 (PST)
+        bh=UCcUMaLmmuSJyWtPXvbL8wx2gaEQjZqepTePqkogohg=;
+        b=ki6M1/50l3FedyduqEN7uez4e6qrVcaIVMf3Yiium3SkAaDTZ/zHvRetF+kbHR9oCw
+         TIw4+8p6J/OgmqWtmZplyGG3JAw3OIsOeJhQwmIjuQ4k/bZ5JM16kzBHNHWi7jpiR+R+
+         r6VzyKbfQaa+HiTR1D50DJ69vEZJpPn28GShBqyn47rSysrc2e+FMWaSnzztushBEZG5
+         KK/6S48pE8s96FipxGzH+J+Bsnr84rv12rBumADZKrK4N46ebMWDrXkB/d6VAcaYVecw
+         a84xGQdO+yVhYGVB7ETEMvTG5p75vK2MeDmSFwX1l/caPcnUmU1DNebwDZ5q6jLcptKY
+         cC0g==
+X-Forwarded-Encrypted: i=1; AJvYcCUweNNxRwNBXWz66qxi29rrGu4Uf5rcqu8VrDjHZiksTr8H0SV+xa8Ol7acXXRbbQ78fYcsoMq07PHjHsGiZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxx1Eg9eNB38pH0U9sfckRQ/JLD4rDrg5mc/zd5EaI5vuuQPuGe
+	JJmq1tEdbgyrfWFsSVfbXuSkgje0qft6awOY68kfWw2fVt9E8Kls8n8Cjs7IxMaL7AWLenSIbQo
+	UB5Gj4kipy2+IzNkOIjjf22W5lyd9Tb38J5MSyAgv
+X-Gm-Gg: AY/fxX7unJUg7inpzRMkSVhd2+30lUT3IAa8hPpLNJhlJkObfNkIqfrSsC1wbgJDAot
+	G8FMNeTxLz6zkcE4tXQ3Hb/gchoK20poycgxznzb/rK6V89lwSO0WjTPfOL7AY9KtGUw2utdaYZ
+	rRa2kntVaUF/M6cRjrBWYxlhQilwifDtN91z8qtciUlIHDt9o+WUtLCmAaAODD4G/d86/e/XhHG
+	hTjcoh1h6xA07U5WS9GEOr58nYQg6vyebSW3dE8tjQjA9pyDCCTQjDCRGkP7ZMaiEtuaT8VVjTk
+	h3bgBGoKbuw8CG2psPgg7qB3EA==
+X-Google-Smtp-Source: AGHT+IEUdvD3cjPJQUd+i/38ghXd7WenRONQcYN+rKti7PPh2t3kdQCDmEphkPsjiPrvX15XZMhthgHlSRSiTWQxA1g=
+X-Received: by 2002:a05:6402:717:b0:643:1fab:c9fa with SMTP id
+ 4fb4d7f45d1cf-649b08ebd80mr24795a12.9.1765643181930; Sat, 13 Dec 2025
+ 08:26:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251213-qcom-socinfo-v1-1-5daa7f5f2a85@google.com> <2025121303-railing-fountain-bebf@gregkh>
-In-Reply-To: <2025121303-railing-fountain-bebf@gregkh>
+References: <20251213-qcom-socinfo-v1-1-5daa7f5f2a85@google.com> <2025121339-giggle-throat-3ef5@gregkh>
+In-Reply-To: <2025121339-giggle-throat-3ef5@gregkh>
 From: Matthew Maurer <mmaurer@google.com>
-Date: Sat, 13 Dec 2025 08:24:55 -0800
-X-Gm-Features: AQt7F2rNZWVlEAhBEp8mKqO2tMqx4M7nqSCG6O3FgARgI9k9Njcg_E4ZsUfDmiU
-Message-ID: <CAGSQo01yhgPVRzeZjGu=xV-eHMARRThYL7bbD4o=VskG3mYLCw@mail.gmail.com>
+Date: Sat, 13 Dec 2025 08:26:06 -0800
+X-Gm-Features: AQt7F2pmvKYqLnlo-7jEPckxGSTBhy44qunYOEwxpz9Yk_kxzY64crBZWsMxapc
+Message-ID: <CAGSQo03JTd3g7RYsqQcGNwWR708JMg3wOnnBxxii_SuxN=49oQ@mail.gmail.com>
 Subject: Re: [PATCH RFC] soc: qcom: socinfo: Re-implement in Rust
-To: Greg KH <gregkh@linuxfoundation.org>
+To: Greg KH <greg@kroah.com>
 Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
 	Satya Durga Srinivasu Prabhala <satyap@quicinc.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -100,28 +100,26 @@ Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.or
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Dec 13, 2025 at 5:57=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
+On Sat, Dec 13, 2025 at 5:28=E2=80=AFAM Greg KH <greg@kroah.com> wrote:
 >
-> Shouldn't this all just be in 1 .rs file?  By not doing that, you have a
-> number of public symbols (that are very generic), that will "pollute"
-> the global namespace of the kernel symbol table (unless rust does this
-> somehow differently?)
+> On Sat, Dec 13, 2025 at 12:36:00AM +0000, Matthew Maurer wrote:
+> > Re-implements qcom-socinfo driver in Rust, using `Scoped`-based DebugFS
+> > bindings.
+> >
+> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> > ---
+> > This patch converts the QC socinfo driver to Rust, intended to be the
+> > first Rust driver in Android that is owned by a vendor rather than the
+> > platform.
+>
+> Um, shouldn't you have a signed-off-by from the maintainers of the .c
+> file here?  You are deleting it, and then not adding anything to the
+> MAINTAINERS file to take ownership of this new file, which I thought
+> checkpatch would have warned about.
 
-Rust produces one compilation unit per "crate". In this case,
-`socinfo` is the crate, and the other files are included as "modules".
-Symbols defined in them are not public unless annotated with `pub`.
-`pub(crate)` makes them only exported within the scope of the crate,
-i.e. inside the single produced `.o` file.
-
-> But putting this all in 1 file should solve all of that, and remove all
-> global symbols.  Especially for just a small and simple driver like
-> this, no need to split it up at all.
-
-I'm willing to put it all in one file if that's preferred for
-organizational purposes, but as explained above, this shouldn't bloat
-the symbol count in Rust. If it were my own codebase this would be
-separate files, so up to y'all what level of granularity you'd prefer.
+Checkpatch did not warn me about this, but I did add the maintainers
+of that file on this RFC, so we can see how they feel about it on this
+thread.
 
 >
 > thanks,
