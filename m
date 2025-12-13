@@ -1,319 +1,202 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazolkn19013080.outbound.protection.outlook.com [52.103.74.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614FA29B77C
-	for <rust-for-linux@vger.kernel.org>; Sat, 13 Dec 2025 03:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765598104; cv=none; b=dLt/6j86Lku65k5lu8jS0X7exmA2stSoSVFG/hw+E0JPo9n5O9uWCSPiO0NRcDfi6WdcwNrPgPLwrK8uVaMH1ykaFNVBjUZH6uKiIVi0wmKG6JWYcV1/UjPa6tcAvM/9zMXLoR78BCh5wn/ldAlRXE8sNO4UNyC7DRLbwmZyeiQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765598104; c=relaxed/simple;
-	bh=WImCn9FzSjj+r9v5eycunV8H6D1flDAfnmUE/i1HfsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qEKEtE5gNBTOewe+zDcVm/GNd87hT7qaeg7qaZpvoFmtlwln3dJvU9MMYIkDQFuNhjCC7ldBn74TMCXh2o8cgthJcfzdIIk+2WniX4EYCy623sMG1klP2pT+fOM2378Lm2GpdGUyjGRWXqy67jI/tozqk2eBLtUfMX1mKhtbrJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZKwN7cje; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KvdmiEmF; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A49E1EF36C;
+	Sat, 13 Dec 2025 06:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.74.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765607834; cv=fail; b=Dw5fNvzto2z4WeobdJ06lldaMbrVPYAQJOCJReQjUbqbAjph5aweyecB67jQd3Bsu6125gty7GBd+RJQCWKIGbYWIhdtkXYFUmJupC/sYlHjv7KmJDJ5uVTPvAV8iJjKnaYxPbByVztmBw6uAtL2b5Rx3uvea0XWcY+9i+cUj9Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765607834; c=relaxed/simple;
+	bh=gv8JacO2rAgn9Nqb8UW7hS2cqbfz8ezVZZrgtFXBDF4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=D7yDOLZFhyfPZd+/6nGZto2mtNK1Ka7uugJ8rlhEXk60T4c5xpSk4+EAZa8XNONTYwgwYs+6f7GuwDdXKxO7bSlI0A+icrhRtb/bQ0WHmMymnorpxNpRbMbgD/8KrNI9t1a+L83GhReSLMk3+WQjt5SOfiyIx1J7RgoAVoOWN+I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=K3+Il8Yj; arc=fail smtp.client-ip=52.103.74.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZKwN7cje";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KvdmiEmF"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BD2BiLC2592199
-	for <rust-for-linux@vger.kernel.org>; Sat, 13 Dec 2025 03:55:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=OiRjrMcPXJynpd5t04J8nEqd
-	9i5Eho9ROloGYsJJ3xY=; b=ZKwN7cjeOXjqXYkqHDsQtuCTfYI2jh+OGClyIK1T
-	IevCp/EFMiOq9DxmiZOP/oIofA5FY6i6zO4vwmMaQr6gfp545qZ2lqdYRWlSScZS
-	PuGewRImSZWRjFckbfPHQfLOa1LsZSOi1UsEw8ea03IUwtPylk8s60irbhMxA+OL
-	7MClA3JPgy+o9Te6slA0yfLKWykob61WFSfN3DwJL/LX5K75QMx52GHxuH/CwnRg
-	QlLLTWNo07TVnw0eTZbzoVFhuyiSfxGc6TWeNS3Iovv7jfsLp40iXXxm50qWBwwX
-	sXBr2Qb0JWvGjQabYUKDjtPKjqkEDIPemEa3AFhudPHuEQ==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b0y5603uh-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <rust-for-linux@vger.kernel.org>; Sat, 13 Dec 2025 03:54:59 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-4ee0c1c57bcso64262461cf.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 19:54:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765598099; x=1766202899; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OiRjrMcPXJynpd5t04J8nEqd9i5Eho9ROloGYsJJ3xY=;
-        b=KvdmiEmF6NckHsGaS7U2NOe6c9uMB3BTJEivB7eii4Wnhp0bIEz5p2ItzEFvKNTE1T
-         T2/12aon0Lzaz21rWDg+ByHSIx8aabxr13eqHlZmVrX7Imfgx71EujYgoP9EyrjaPm6X
-         eZyQRisLqtLkrjGuY8P+S8GQOufoft5jQOvwKp/RSJE6SS64Da34JwfDwxMGThM+lq+R
-         q/A7qbPWAUSe4Xgx7HbEd2p/NWGnxQx6+euQbjQQQD2mn7TXTmZTmZYDQ/gsgR+BVYWe
-         KIeFD2q1eGcPdvcnxAbOSlTsZFOJqx/lJoIs+8qseiBqAhHSLK0A6uJkrzplESRLmdz+
-         6a3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765598099; x=1766202899;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OiRjrMcPXJynpd5t04J8nEqd9i5Eho9ROloGYsJJ3xY=;
-        b=vF02pbP6vhWCfR1SG8ax4xCYDCmzaANt2Z9IpgTBrk5PhXpQY1Rcl9YnVQM/0AvF5e
-         yaCfDv3ZcI/wk2IyOzzRGKuGXdzW594Eg/QpIFkZEtfoFGV1bMG6ZZP5EkbqIMjDIqJ1
-         zO8pHnayK10dOQ51GSQlrHDgS5gQDGKnnlO+VSG8M+bwTd5kVF88n7c5fVFnWbPPlW8u
-         efbDtlsrZI5VBxMKsex/VWHz6vYzI+mMP/cAtXsx0nF8q9sbDWp51jnerJqdagSxkBTV
-         C3i1H/canwO/U906qix8O0SL2RnvA9u4T6IKUT7O9Dbe5ysB3ycI6OeNioxYu0FtFrfz
-         DB4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUxFUarixlY9COv/dzA+LP/TGL6GLtrhjIfJOM/zjegaDg//edyKa8qrcoE/C5ek0sYWg3npidz6b7Xr2FLNA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMtqp2Z92lD3+bJEMeJESprtaDEtAb3AIyzML/U1KyKy8enC5R
-	lQBBEUnc2q1gkm2GhEPfMlxC1nhVNNgHjbEiQf0EwT8zfkTEPobGLXk26LonTlaOeBBkLi9IhIO
-	s+9qNA6tWrAfjohEin9cU1rwDdb3zdO+AD5szN8cYReJVYa4q1B6tghHNZ88BrbqOcrj5Vw==
-X-Gm-Gg: AY/fxX64bKceWAlKH8auxgUfp22ZDX92s9ITj3WkSdcXYbf5bW9OdO/QtuJXnzzJpZO
-	uszhjVh1WmF8RyY6nwAykRFH5JsyJsUV1l6BPJjQQ/BmlBttHiTYCgvExBo0s6kyE8Dbgi3ptBD
-	eiBvqg+ubBBu9QHOUrDCBpgsJHbCArTap2QE8VVHiWNRtHzKsKk1ymUkVc+Z41ioAfY37OWPwJF
-	cPSDP1jY5bE+0Sdrj1JwhghdCEFk4QWfbyrfLGQvvWa7FiofrtTAuiVG6cbtLZO+q3PDsXEZVmA
-	m3pr3pLIAhbHj7dnSFrMyoVCTlkyfnVDUzjeyT/t/TB2nnpuxv1VL7OESDtLJszsqSnwm8dS6/o
-	F/5ykSAPr845J2ye5cHddcE2zLV9Ljyt4+0zwyxx9udSagBOWXeIYMgn0dhsKvUGl+7hBAyQKbn
-	ftNp9dJWSxF6Ce+I7odLO11X4=
-X-Received: by 2002:a05:622a:5c8e:b0:4ed:bad6:9fa9 with SMTP id d75a77b69052e-4f1d0467087mr60912511cf.6.1765598099316;
-        Fri, 12 Dec 2025 19:54:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IG8CqPeKor3JPIQUTDPbTmdRuInyQB443I+eB0ZPIvKOo0ZrgoDVqmQF0EARjC9WG/qyUX7Lg==
-X-Received: by 2002:a05:622a:5c8e:b0:4ed:bad6:9fa9 with SMTP id d75a77b69052e-4f1d0467087mr60912321cf.6.1765598098846;
-        Fri, 12 Dec 2025 19:54:58 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-598f2fa7780sm2617488e87.67.2025.12.12.19.54.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Dec 2025 19:54:58 -0800 (PST)
-Date: Sat, 13 Dec 2025 05:54:55 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Satya Durga Srinivasu Prabhala <satyap@quicinc.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-        Danilo Krummrich <dakr@kernel.org>, Trilok Soni <tsoni@quicinc.com>,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RFC] soc: qcom: socinfo: Re-implement in Rust
-Message-ID: <4qgnlilx2vyi6yf73d47z2o342lotq7vsvycigsv5fb3rcwsjv@t4ank62skqny>
-References: <20251213-qcom-socinfo-v1-1-5daa7f5f2a85@google.com>
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="K3+Il8Yj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qIDtlH5KO1VwRHj9M6Q//7Y6s/tJyKV/meINym2+yAfuByWZfZZieu1XMJybd/qu3mCbzkqEuO0VNosIBWnJZas9koMYlwf/yad8y6t7uLTgFdKQYOdc/6p+vdO8us/bwlFDctbGZrlGo+IiJmA/aAyIQYriHOefa7JIRXL2rx3NT8NVa3U4HIqDbPMQHH41o2cbZ0CT7r8H0YcDpjQp5Y6HUyiIOmqnWtUmfObkaFz1Tx0bP6IRQfNQHfHHzcg5vzjL0htJFOs+qIkVuRPQKrEvp+ZKFw6n08G/7HJS+m8utzJ+qwgCxJ5l0Tw65Unr7pixeEMOiza1MgRY6U8rSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GNrR7vCIqDxtSx7qDtl4T+wX3ZuqNDxJJVEJl+t9GzM=;
+ b=RgWN2dSOMgXRvCYhSQ3/Qz8xHx1cCZO5BuxRykZOJGnLXfQ9tspvV/9kK5RyJ7wbTUIuDOMYpS+iquBmacZg5+T5W0l1gYIjuPh8jR6cgvU7ABb4Ou0t62XQ61I8SANouEwV3TWzxOS40cmHvQbpDHphCF2BUCoVevj8BNL8I529VUR4ULywYNRmVDEtDWWczhlikDx03s/MpLPO2tl8AohOP8SdahGiaWjEDxNiv9g9aQVXxAd+INXWVvBzB+g3DChAV6q/a4LVS68vkllsp+/TdayCcXwapsfScUQjRimrh4FxJ1023/gZdA+aEeaFGJ9pSIOZCvAFFLUdn9nOng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GNrR7vCIqDxtSx7qDtl4T+wX3ZuqNDxJJVEJl+t9GzM=;
+ b=K3+Il8YjLYrxOEfBvfhZnFYuP2oKbCAgrcG3jSRL6JD8/cu7jIv4r3OMauUeiwilMEByX76aB8vW9wQT59+ytFpaB6cheAio/J2NG9txzzPAx4Nnv9MRYql338ti3fhPAwmsY5toituRrEue4F9YlaxYdLwJ1rJ3+q5UAjBD4u49Dvk/CcO89vzyPOTjutSk40nYSvmC2YaqtVYyNfWvotkw6GLXFvb1El9YHk9NqNoypqI1yIWbr0Ijp4vivAlCqnhkbef+ICtuFEhbr5A8u/fZIKIldIFwFgTg+Vc9/Rmq45FC0gmT9PHxIUkyabKjnHQIJ5o7bVOIM2ZqM0GkZQ==
+Received: from JH0PR01MB5514.apcprd01.prod.exchangelabs.com
+ (2603:1096:990:1b::5) by SEZPR01MB5461.apcprd01.prod.exchangelabs.com
+ (2603:1096:101:10e::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.12; Sat, 13 Dec
+ 2025 06:37:06 +0000
+Received: from JH0PR01MB5514.apcprd01.prod.exchangelabs.com
+ ([fe80::9db9:d597:8118:abf2]) by JH0PR01MB5514.apcprd01.prod.exchangelabs.com
+ ([fe80::9db9:d597:8118:abf2%3]) with mapi id 15.20.9412.011; Sat, 13 Dec 2025
+ 06:37:06 +0000
+Date: Sat, 13 Dec 2025 14:36:54 +0800
+From: Weikang Guo <guoweikang.kernel@outlook.com>
+To: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, "
+ =?UTF-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: Add support for feeding entropy to randomness
+ pool
+Message-ID:
+ <JH0PR01MB551469C82704BD748841CC52ECAFA@JH0PR01MB5514.apcprd01.prod.exchangelabs.com>
+In-Reply-To: <20251212-add-entropy-v1-1-e70ad1bc9c65@google.com>
+References: <20251212-add-entropy-v1-1-e70ad1bc9c65@google.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: TPYP295CA0010.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:7d0:9::19) To JH0PR01MB5514.apcprd01.prod.exchangelabs.com
+ (2603:1096:990:1b::5)
+X-Microsoft-Original-Message-ID: <20251213143654.4f4e7e8b@laoyekang-imini-Pro>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251213-qcom-socinfo-v1-1-5daa7f5f2a85@google.com>
-X-Authority-Analysis: v=2.4 cv=f5dFxeyM c=1 sm=1 tr=0 ts=693ce394 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=1XWaLZrsAAAA:8 a=jfDATOuUeH7LmkgJeJUA:9 a=CjuIK1q_8ugA:10
- a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-ORIG-GUID: UAncrkjyvwCCd6cJuCrmsGhVtpbi7jAI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAyOSBTYWx0ZWRfX3+aTMNKYeM4c
- zHlhdZwxp+K/kGUHPlP68e4Ic9tX/20zLcl3DzKm2rAW6NdWSMYtE53+BuoVd8a5h8tluJGGeZA
- 5worRCRy+E71glFKxYpdF33kkIP1cTeOSSA8rMdXFAT1n/BHo/HsYiXDmSiSA0Zcmubg4gRpnsB
- ftkFdJWW8gBvwR6uAJctbQeFzf5PhLhRB6DwdnKrqTYJpzxEj1/PT/gmjnXy1E4YJKwP9Gx3p1z
- VyFW+LpIRe7J+pdcxv+/r5djWSACpMGN81WGMN57zcE6odV0C6igNS7rDp6q4cRWlVcu/a5K1dO
- CbDrb1l6oruMKDp03aE1pQVwAYpjChvofRCELMduwutOIjGs7ht2s9iFXwUPTmCGfGRevfkEp1P
- Jl3PtyiKIiMmQktO/LxWAg3GninJyA==
-X-Proofpoint-GUID: UAncrkjyvwCCd6cJuCrmsGhVtpbi7jAI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-12_07,2025-12-11_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0 suspectscore=0 clxscore=1011 adultscore=0
- lowpriorityscore=0 malwarescore=0 bulkscore=0 phishscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512130029
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: JH0PR01MB5514:EE_|SEZPR01MB5461:EE_
+X-MS-Office365-Filtering-Correlation-Id: c9c21801-36a8-4099-d5fb-08de3a120842
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|9112599006|461199028|6090799003|5072599009|51005399006|8060799015|19110799012|15080799012|23021999003|12121999013|440099028|3412199025|40105399003|3420499032|3430499032|13041999003;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3YPxQ6P7yfW5rAL6J6cD59kgAbQ3nLqheREBkqazmOi1I9lcp31nTgXMfWB9?=
+ =?us-ascii?Q?20SUi8Y02yKSkmNGBxsBVfZel2cT5fh3BI/EZ56qdYF57OW5gHiDWaFzKjGE?=
+ =?us-ascii?Q?HcDVXAO7zG+QE5wG3z0FUsoXL8U3iQvUb+5EQq1zMdyb4BaGO3FEA3U3ihLR?=
+ =?us-ascii?Q?CuCMrHiQTAiqJYKjFuWiUfF4BYcT/98bYbkUh9I5axSlqDrp8HeAeS5v1EIL?=
+ =?us-ascii?Q?uiD/V4sOGQWvz1einpzHva6LtHzLDEUgX8qoPeavW6mHZvUBTxC0D0sUPsRb?=
+ =?us-ascii?Q?m3XUr3ZUb0iAcnZSAE/vLJ/ESKfAHhow5I8NQ95b63OufH88CRMSkstvurnw?=
+ =?us-ascii?Q?jg1eYZiQupGJBOcTqcJSHGaHkO7qc4NMbfibajbYzsrJTg4V/JAeDVU1FLs5?=
+ =?us-ascii?Q?gVP8Fk5M7e0AtR+8I5/wDkXTWTbuKeDOUZ5ScwfTNrqPCVmo6y/iZ8Vea00s?=
+ =?us-ascii?Q?4zinwXjUS4hrgLfsI82qLv6IE2xWIr3OeK8EtvnPatnGwAh9SyL5R8pu7xWc?=
+ =?us-ascii?Q?xIto5G4TBfDix42EKGBX4YDclpMip/PavDEZkLzbcgdmDPibup3xi9eJRQbE?=
+ =?us-ascii?Q?4QzRXJr8PM6hR1W2L3Qo424y4sBK0hFGZIvd7CNCJAfXmrREFaXb47D20Top?=
+ =?us-ascii?Q?zy7YuGV3VtmUWiP/qVpU/wKxPW3y5N7aECeNwGPSPh1JolbCDJLA+0ktPFjN?=
+ =?us-ascii?Q?RcmtTqsWd2rnM1nX78F2CqlRrwkg960QFUctbA29RFnLOSqytItXAEZY76Wi?=
+ =?us-ascii?Q?W2WeiglrWQgFw9YxFu0HyuoAvChwRjUfe77+TFAB+mLIh5G38HBoK+IFMjZb?=
+ =?us-ascii?Q?K0lV9pDax00W6ZvqYhPeVff6tmr/Wmv/DFs88E+7E132nICLbAPUz2hyc3DM?=
+ =?us-ascii?Q?T+ps3OiOEHgSm+IqO0uZPKVbC+os0oVb7KS60ySFH1AQXVKWfYM6UbXS2j0S?=
+ =?us-ascii?Q?/HRMUj50iEVbGsTGZ/vkkazFJhCLiD5D85FJWeWCjfmTrhuzoZ/4ht92LVdQ?=
+ =?us-ascii?Q?mHju6T4PdMo7+1GcQ10vWnr/UdtUhR0Zo96377i6i6Yx1BDQEVMGIWfBxWoS?=
+ =?us-ascii?Q?Q+SQmWWNUUCQasy0N3ZG+OamJFXrw/old0giVC1/KkbXJKLHSQpyjDkczbni?=
+ =?us-ascii?Q?IHFe61DyHx+bIDu3Y4Uw/s1hmzJbKljJY0HEc9cln0Ah2c9CqV/0AL3Uasmz?=
+ =?us-ascii?Q?BpFQWvg3VPJjBNyXYVyEQ3NBc8j/e/uEWeLeO3/pYDj6a//vlVox3KoQN9W1?=
+ =?us-ascii?Q?/Pop5Ajjh1z0FDC5+2DCuIwQe4f0nwt036HaFiTSAFjVG6xhzSWMK5GQEt/b?=
+ =?us-ascii?Q?6LI=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ss1Gokxh+rV1ZJclDArOZTOV7E6AIHlvwjhgltqm+0qsjVHZt6Ep9q2djYYk?=
+ =?us-ascii?Q?fPFnC3I24z5weZBWQZxd6mSKe4+OZeHgi1xyVK4FfphYwcLSfnQeQ7wvqG22?=
+ =?us-ascii?Q?ITRyyTmvF/5VGnwI0iN+W3Unz2quzUbmDazWII5pmrJ2HAJGw2h7x+xzZu0r?=
+ =?us-ascii?Q?HPFIcOu5k4gsG5k0T+wgF09yJnRWnLukZfLeUoA6Sl9WYa83tQ63NkAn6bCp?=
+ =?us-ascii?Q?x6HFAO5b+pzg4h6j6Ek4jwGFISpdUMO8kIFEG9b0+SPcPvKg4spDfqWozctu?=
+ =?us-ascii?Q?TV0+f2mGORqLT8SH5W0rCU/5rfUfvREkVXCdQoKg2seTr4mw0K4J6OG5MEiM?=
+ =?us-ascii?Q?/Mwk3vu8y0X1cakEiYQ8suScGwbhrBGa7cYER8HVMSvZXCRTpwOfqIwSeUUE?=
+ =?us-ascii?Q?4jYUPvu8SQKqQxcef7CDBM5d6RJQ542chkuCU98mujtoCtv4derz6ZobkmKP?=
+ =?us-ascii?Q?zlgWr6vd734Tv/yWjZKaOIjiQ/jWYF3yNeSLKR5+IVXCa2IMhSJPSMRW1Yb2?=
+ =?us-ascii?Q?ZqUwBaQfucp3NV2nSeX+9+hSH2TtdpV/5cs75LrxUUSFSVhmEKJnXRtQ0K6g?=
+ =?us-ascii?Q?jbKLiR8SPgE1B051vclpTQ71S8pMoIKSH/Fn316Hm6CJQy2sAKQd8jCVuOU8?=
+ =?us-ascii?Q?rzFee/dACI1YW2k5viENfIrggeLHk19vr4h8mFpQu1IQjxCtnP8qiCwqOcjf?=
+ =?us-ascii?Q?oRV/RWzLJTR+I6pCHZsA0Egz3RE9okhLHORPd7zzEb8DqDcP76q9ecGnkevc?=
+ =?us-ascii?Q?XVyoxeI4oIUQ5YpflFJx1te6/kRzaalkMKwSaJQm/P+bqYdb666O93bYG2UU?=
+ =?us-ascii?Q?3g+yuUgeOfYR4bFK8TlOn5q0cejZE03roIA49p9NttZl2wQDDtIXoDTCSnfV?=
+ =?us-ascii?Q?xTGWk1t3JontzPMMVG79Nbcm7nt7RWZAXq0Ed7KCi/TRImF1qbPM6lS3Xvu7?=
+ =?us-ascii?Q?c9dVpjX0LrFTDzENu8KB3qPA1POQ/2l85oAz7XRlYN0BThcyq4eFOu4IqVnG?=
+ =?us-ascii?Q?sD9SqwSy9+hQyflhfap38YBWuESjAHpbmYVkLxgA4OeYS3PADNs0rgh7JIpl?=
+ =?us-ascii?Q?CGPBbVv+zhwM5wgLjbyDwlrj6jtFAaymr06QQl/klGpTsZ3wn+COfAGwNdve?=
+ =?us-ascii?Q?t9EhD+0HprC7M60nj5oXhRIjjJj5sE22Cr/X6gsyYU0cQxyHwepzgetNNSQ+?=
+ =?us-ascii?Q?ChRhITkaFMfCnjsXcrL7xJQhtJim0wiIWlpHLBv5/17t6A9F40uUeXiLX3yC?=
+ =?us-ascii?Q?Iinzr73+nk17brE/q1zb?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c9c21801-36a8-4099-d5fb-08de3a120842
+X-MS-Exchange-CrossTenant-AuthSource: JH0PR01MB5514.apcprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2025 06:37:06.3984
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR01MB5461
 
-On Sat, Dec 13, 2025 at 12:36:00AM +0000, Matthew Maurer wrote:
-> Re-implements qcom-socinfo driver in Rust, using `Scoped`-based DebugFS
-> bindings.
-> 
+On Fri, 12 Dec 2025 23:19:07 +0000
+Matthew Maurer <mmaurer@google.com> wrote:
+
+Hi, Matthew.
+
+I think exposing add_device_randomness() in rust/kernel makes sense,
+especially for Rust device drivers that already have access to
+hardware-specific noise sources.
+
+> Adds just enough support to allow device drivers to feed entropy to
+> the central pool.
+>=20
 > Signed-off-by: Matthew Maurer <mmaurer@google.com>
 > ---
-> This patch converts the QC socinfo driver to Rust, intended to be the
-> first Rust driver in Android that is owned by a vendor rather than the
-> platform.
-> 
-> This driver is currently quirk-compatible in DebugFS-exported values. If
-> the maintainers do not believe that maintaining the exact formats is a
-> benefit, we could simplify the code further by dropping some of the
-> custom formatting functions used to match the output.
-> 
-> I sent an earlier draft of this privately a while back that was much
-> rougher, but didn't get much feedback.
-> 
-> Now that we've got all the interfaces we need for this driver reasonably
-> available (DebugFS was the one that took a bit here), I wanted to bring
-> it up again, this time as an RFC. With the new features, the only place
-> it needs `unsafe` is to define an abstraction over `qcom_get_smem`.
-> 
-> I have tested this on a SM8650-HDK by diffing the contents of the
-> exported DebugFS and examining the files under /sys/bus/soc/devices/soc0
-> 
-> While I believe I have everything correctly exported via DebugFS, I have
-> not checked equivalence across a large swath of devices, only the one.
-> ---
-
-> +
-> +pub(crate) fn qcom_smem_get(host: i32, item: u32) -> Result<&'static [u8]> {
-> +    let mut size = 0;
-> +    // SAFETY: qcom_smem_get only requires that the size pointer be a writable size_t,
-> +    // host and item are error checked in the qcom_smem module.
-> +    let err_ptr = unsafe { kernel::bindings::qcom_smem_get(host as u32, item, &mut size) };
-> +    let ptr = from_err_ptr(err_ptr)?;
-> +    // SAFETY: If qcom_smem_get does not return an error, the returned pointer points to a readable
-> +    // byte buffer with its size written into size. Because these buffers are derived from the
-> +    // static ranges in the DT, this buffer remains accessible even if the qcom_smem module is
-> +    // unloaded, so 'static is appropriate. The underlying buffer cannot mutate, so upgrading it
-> +    // to a reference is allowed.
-
-This is definitely not true. The smem data is ioremap'ped during
-qcom_smem_probe() and will be unmapped if qcom_smem is unloaded.
-Accessing such a pointer after unloading smem would result in the
-exception. Current socinfo ignores that and keeps on accessing the data
-at runtime (which also allows it to read DSP versions which are updated
-at runtime), but the comment needs to be corrected.
-
-> +    Ok(unsafe { core::slice::from_raw_parts(ptr as *const u8, size) })
-> +}
-> +
-
-> +
-> +pub(crate) static SOC_IDS: &[SocId] = &[
-> +    id_entry!(MSM8260),
-> +    id_entry!(MSM8660),
-
-As we are performing a linear search over the array, would it be sensible
-to sort it?
-
-> +    id_entry!(APQ8060),
-> +    id_entry!(MSM8960),
-
-> +
-> +pub(crate) const PMIC_MODELS: [Option<&str>; 92] = {
-> +    let mut models = [None; 92];
-
-I don't like the magic 92 appearing twice here just because the last
-element of the array has number 91. Is there a sensible but idiomatic
-way to express that (note in C we just use flex array without the size
-and don't specify the size at all, so we don't have the duplication).
-
-> +    models[0] = Some("Unknown PMIC model");
-> +    models[1] = Some("PM8941");
-> +    models[2] = Some("PM8841");
-> +    models[3] = Some("PM8019");
-> +    models[4] = Some("PM8226");
-> +    models[5] = Some("PM8110");
-> +    models[6] = Some("PMA8084");
-> +    models[7] = Some("PMI8962");
-> +    models[8] = Some("PMD9635");
-> +    models[9] = Some("PM8994");
-> +    models[10] = Some("PMI8994");
-> +    models[11] = Some("PM8916");
-> +    models[12] = Some("PM8004");
-> +    models[13] = Some("PM8909/PM8058");
-> +    models[14] = Some("PM8028");
-> +    models[15] = Some("PM8901");
-> +    models[16] = Some("PM8950/PM8027");
-> +    models[17] = Some("PMI8950/ISL9519");
-> +    models[18] = Some("PMK8001/PM8921");
-> +    models[19] = Some("PMI8996/PM8018");
-> +    models[20] = Some("PM8998/PM8015");
-> +    models[21] = Some("PMI8998/PM8014");
-> +    models[22] = Some("PM8821");
-> +    models[23] = Some("PM8038");
-> +    models[24] = Some("PM8005/PM8922");
-> +    models[25] = Some("PM8917/PM8937");
-> +    models[26] = Some("PM660L");
-> +    models[27] = Some("PM660");
-> +    models[30] = Some("PM8150");
-> +    models[31] = Some("PM8150L");
-> +    models[32] = Some("PM8150B");
-> +    models[33] = Some("PMK8002");
-> +    models[36] = Some("PM8009");
-> +    models[37] = Some("PMI632");
-> +    models[38] = Some("PM8150C");
-> +    models[40] = Some("PM6150");
-> +    models[41] = Some("SMB2351");
-> +    models[44] = Some("PM8008");
-> +    models[45] = Some("PM6125");
-> +    models[46] = Some("PM7250B");
-> +    models[47] = Some("PMK8350");
-> +    models[48] = Some("PM8350");
-> +    models[49] = Some("PM8350C");
-> +    models[50] = Some("PM8350B");
-> +    models[51] = Some("PMR735A");
-> +    models[52] = Some("PMR735B");
-> +    models[54] = Some("PM6350");
-> +    models[55] = Some("PM4125");
-> +    models[58] = Some("PM8450");
-> +    models[65] = Some("PM8010");
-> +    models[69] = Some("PM8550VS");
-> +    models[70] = Some("PM8550VE");
-> +    models[71] = Some("PM8550B");
-> +    models[72] = Some("PMR735D");
-> +    models[73] = Some("PM8550");
-> +    models[74] = Some("PMK8550");
-> +    models[78] = Some("PMM8650AU");
-> +    models[79] = Some("PMM8650AU_PSAIL");
-> +    models[80] = Some("PM7550");
-> +    models[82] = Some("PMC8380");
-> +    models[83] = Some("SMB2360");
-> +    models[91] = Some("PMIV0108");
-> +    models
-> +};
-> +
-> diff --git a/drivers/soc/qcom/socinfo/socinfo.rs b/drivers/soc/qcom/socinfo/socinfo.rs
+>  rust/kernel/lib.rs  |  1 +
+>  rust/kernel/rand.rs | 14 ++++++++++++++
+>  2 files changed, 15 insertions(+)
+>=20
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index
+> f812cf12004286962985a068665443dc22c389a2..f93886ef4eec9c4356799f4b55916bc=
+12c10c621
+> 100644 --- a/rust/kernel/lib.rs +++ b/rust/kernel/lib.rs
+> @@ -128,6 +128,7 @@
+>  pub mod print;
+>  pub mod processor;
+>  pub mod ptr;
+> +pub mod rand;
+>  #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
+>  pub mod pwm;
+>  pub mod rbtree;
+> diff --git a/rust/kernel/rand.rs b/rust/kernel/rand.rs
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..bff1bf8fd672e3c461352075aa85ef8fdedff953
-> --- /dev/null
-> +++ b/drivers/soc/qcom/socinfo/socinfo.rs
-> @@ -0,0 +1,362 @@
+> index
+> 0000000000000000000000000000000000000000..b3fb30f40a8950ac7b47d48129eb890=
+24a1cbd26
+> --- /dev/null +++ b/rust/kernel/rand.rs
+> @@ -0,0 +1,14 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +
-> +// Copyright (C) 2025 Google LLC.
+> +//! Randomness.
+> +//!
+> +//! C header:
+> [`include/linux/random.h`](../../../../include/linux/random.h) +
+> +use crate::bindings;
+> +use crate::ffi::c_void;
 > +
-> +//! Re-implementation of Qualcomm's Socinfo driver in Rust
+> +/// Adds the given buffer to the entropy pool.
+I wonder if it would be useful to document more explicitly that this
+function does not credit entropy, matching the C-side semantics, to
+avoid semantic misuse by drivers.
+> +pub fn add_device_randomness(buf: &[u8]) {
+> +    // SAFETY: We just need the pointer to be valid for the length,
+> which a slice provides.
+From a Rust safety-contract perspective, this wrapper looks fine to be
+safe, since the pointer is not retained and the data is only read
+synchronously.(may be you )
+> +    unsafe {
+> bindings::add_device_randomness(buf.as_ptr().cast::<c_void>(),
+> buf.len()) }; +}
+>=20
+> ---
+> base-commit: 008d3547aae5bc86fac3eda317489169c3fda112
+> change-id: 20251029-add-entropy-f57e12ebe110
+>=20
+> Best regards,
 
-I think this comment can be dropped. If it gets merged, there is no old
-Socinfo driver.
-
-> +use core::fmt;
-> +use core::fmt::Formatter;
-> +use kernel::debugfs::{Scope, ScopedDir};
-> +use kernel::device::Core;
-> +use kernel::module_platform_driver;
-> +use kernel::platform::{self, Device};
-> +use kernel::prelude::{fmt, pin_data, Error, PinInit, Result};
-> +use kernel::soc;
-> +use kernel::str::{CStr, CStrExt, CString};
-> +use kernel::transmute::FromBytes;
-> +use kernel::{c_str, pr_warn, try_pin_init};
-> +use pin_init::pin_init_scope;
-> +
-
-> +        let versions = self.versions.unwrap_or(&[]);
-> +        let versions2 = self.versions2.unwrap_or(&[]);
-> +        for (version, image_name) in versions
-> +            .iter()
-> +            .take(32)
-> +            .chain(versions2.iter())
-> +            .zip(IMAGE_NAMES.iter())
-> +        {
-> +            version.build_debugfs(dir, image_name);
-> +        }
-
-I like this idiomatic code, we even get what original driver misses:
-size checks for those memory regions.
-
-> +    }
-> +}
-> +
-
--- 
-With best wishes
-Dmitry
