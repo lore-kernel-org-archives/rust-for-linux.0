@@ -1,126 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98A313D8B1;
-	Sat, 13 Dec 2025 00:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77733191484
+	for <rust-for-linux@vger.kernel.org>; Sat, 13 Dec 2025 00:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765584071; cv=none; b=O/BMQL2ULWCu0UKolD/xdHRJfFPgsqrQeSGm+cfWPwlRQ0xfSsEizxYq41U/zYEEheHo2n0IFJBxvwN+WHTWHyq8kpD5J7wcxh4nLPMtwJ4ESm2S8AxTWs0zBWDK8knHJo7tsuqzzVTtTURGn/79YIJ4G0NW8ep0iG31BeuwK3A=
+	t=1765585289; cv=none; b=mb6Y4WVWMPr194tqmlkzLbImKz68so8aIZ0KPH6DDOyqxbPfs88oT/egaqDLJiWkMGbDrNm401xCQOp3CyXcrNr8naYMYzvLLZAz/9WzRr/gSS8i8w3KT97rB7Z8DDso3qNAwKJiflqnZIjXttSL1cKha1lQKap5hTxgGoPgiK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765584071; c=relaxed/simple;
-	bh=ygnPTdtrSkVZiTnHhrQo6Ytny9BCjcOEi0bO2jqXtLo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dzR0CrlAhwJUniB/QauSp2vhNg+xrxUAuQaVbsc2vKNk1NgocmWvvj6cE0Rn2MedLo3rG+ErFcYGuZYHcXpcMzH/+4SK/rb+8HJtzhF+IJdvmh4RA1x4SC8URqIsZ1an/9+RQr3+19hzxLw4apcnC1tyUznNhX/nwbGHHehyeuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZLjT6v28; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765585289; c=relaxed/simple;
+	bh=APyDvW6fQ1EbVIuHlB3g523wtBvhEHf+WZ1u0mvxV7g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pzrAicJCnIjuiDWlhbEmHii9ZLOt3DYq1LUcR94ELxPXtMdZNP613q/8UgjL+vIRFKpiHXvbeqDGsdnv/WTUHDFDnZzKHliP0U6E/SdHyMWKegnQVTHGLUGBsoAEl4rHtCs8+oiPdAziTFg4qhdmupwPrdeUnxagWSBuPvKMBJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LpUOgizW; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZLjT6v28"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD69C4CEF1;
-	Sat, 13 Dec 2025 00:01:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765584071;
-	bh=ygnPTdtrSkVZiTnHhrQo6Ytny9BCjcOEi0bO2jqXtLo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZLjT6v28N4yM7ef1xINi+v2n6PszfN1SE9yZOfWkmD0Q0jLn7yx8V8MLzCMmaGNjq
-	 uPGafTAfIj/czv8YiBuQ+/05NWYyOcMqfeekoPvawljbMcBpSnlO3ILgz1bmrDgTYL
-	 oyPrG8kssoaX31hvU719Fi1OP1D+EqdzS343yKUvSrRLd8NrHyt95M1t/EFZuoOQEL
-	 1xOOlhP5gP9MC+M0PhRJLYPzGDO094IDYk3LNkgQPE7u1qxy+7O/rcnuXHD0TR5jmO
-	 PdJCFfQQ8E25gxLjHNVOviLH12nyPVjBRu8Um0AgTHHPaSjlMtuxh6JYizgdWBJszw
-	 oJouBYdYLae7g==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: conclude the Rust experiment
-Date: Sat, 13 Dec 2025 01:00:42 +0100
-Message-ID: <20251213000042.23072-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LpUOgizW"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-29f3018dfc3so1483435ad.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 12 Dec 2025 16:21:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765585288; x=1766190088; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=APyDvW6fQ1EbVIuHlB3g523wtBvhEHf+WZ1u0mvxV7g=;
+        b=LpUOgizW+ZvSC6ml4L/DX3RFCxFlWJUA7ibBLn4cpIGlAPhRGUqvscVl+fsF7Zl06c
+         doexruitg7Cn/QLCILuQIT89N7rL5TVm2RZ47oZNQ1tR5WMEwSrMerk6IAe5dP27byVv
+         6i0/Y1FZCIXBES3WCo+iawveGfHLdccETuEDTXdx4svZDqtGhgjR7GIBLEZlMEQXQAs8
+         m5z6bqfWyE3lYTbayAbPHzBcQVaPj4CQqU6L9xW0RNdLG87D6S0tOPjylu9oJn/YBmLa
+         rkBYrqM9PLDM4oB4FaKFpl88S8ukf08U8VzqeHquNIDDQtjKrH0Jho8XDgnEMV4NjGPa
+         wiUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765585288; x=1766190088;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=APyDvW6fQ1EbVIuHlB3g523wtBvhEHf+WZ1u0mvxV7g=;
+        b=UTzElQ+vdHcATnzy5+EgmSOYFfrgmENyPNXvWl52WKQLELJ9lHdFPRylGQ7YNO5f1L
+         EauM7li/g29KBHt2a7mYn4Rn9r8oGXtpk6Ytsc6j8WaBehwDFNJb+6EvV2/Tfq35wSPc
+         eLoDJDhxOu4IpjWmn4NMo6cJQDfKRbuhZxq0gJ5ockwi1ky+suxDni9MiwacWn2EICoG
+         fcg30ODsJBRxCOop4igwKeUyaliLDcM5AdC60KE7eVeHoQBzhvv1GgxTQGqi/Dsw9g5N
+         J12idU6oqxYO7vaYdyqNPFgQpybMgP+bULdtrmP9lt5RGQreYe9AEbFQmsiKIiX/d+vu
+         HKfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVC0wjURS/TY0o01gTjsubKTzDrpK9QnLSLpJSW6kEC5QpOHn7f+jc2yi2n9fwtlaLTqYlURsOImK4minWAQQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0Janu5QQKikV5XuyrC34snkWwzzuXLaIrpt86v/VkuQL26Wg0
+	+C5W0Lh15pAHvkGxOBKrcgecAL6NVxMZCh7NSBQRlNAbKrQ/i9X1TRc7d6m9jnQzu3IpZio8BIN
+	wVrRlGHGqej8XHM8x4sg8m4Y0l8+Lbyc=
+X-Gm-Gg: AY/fxX4PXna4zuYokopiwTao35yGz4W5acpsa1MB2ozKqzNZWnifF3ZGS7eX3iLbPJf
+	OysXLmbpI896CyWEEj7GwsOkCvwp+baotpbBfsxrzukL1Y2AQGejgAhZXljk1BuxWzKd8t9kYoJ
+	JFDPY3gm+iatgg05VLOxAC4INGkmMw+86xVFAFDGu0tsngKe8K4+/2OYWvMmvUmvMNioTvIpwHy
+	gGB1wvBL+jJzUn/zKQwrnniQ7vjuAovA9bjRRAni6P/6zPCr85LaiN1xiCV5Kb2+LE1Q3nyB30Z
+	lJE6khTYWsaoFHksDtrl72Wgs7B8jr2x/cjUsH366aeEFKPqpp4MGMQxxWtEr8KasCFnxVj0ryZ
+	pvDfUp6i354A=
+X-Google-Smtp-Source: AGHT+IGvmJFSRg3pku/XCc4bkSEttsOeTUucdXVX7pbq92k9JkqPBDEaCCKfODAXTwD2tMIx+M11Mnt7gNFogMJlthI=
+X-Received: by 2002:a05:7300:4624:b0:2ab:ca55:8942 with SMTP id
+ 5a478bee46e88-2ac3015d78emr1371865eec.9.1765585287639; Fri, 12 Dec 2025
+ 16:21:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251213000042.23072-1-ojeda@kernel.org>
+In-Reply-To: <20251213000042.23072-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 13 Dec 2025 01:21:14 +0100
+X-Gm-Features: AQt7F2oAWZVPbgHgNr8kOPTjynv8PNZnNj6z6SGIxIsBYM3cDU7JHHnF22i5fmc
+Message-ID: <CANiq72mNRONqF4g9S42zhWU-g64DvyN4t3jyF20Ux_xugxn-pA@mail.gmail.com>
+Subject: Re: [PATCH] rust: conclude the Rust experiment
+To: Miguel Ojeda <ojeda@kernel.org>, Carlos Llamas <cmllamas@google.com>, Todd Kjos <tkjos@android.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The Rust support was merged in v6.1 into mainline in order to help
-determine whether Rust as a language was suitable for the kernel,
-i.e. worth the tradeoffs, technically, procedurally and socially.
+On Sat, Dec 13, 2025 at 1:01=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
+>
+> it is already in millions of devices
+> via Android.
 
-At the 2025 Linux Kernel Maintainers Summit, the experiment has just
-been deemed concluded [1].
+Thanks to Google for confirming this, by the way.
 
-Thus remove the section -- it was not fully true already anyway, since
-there are already uses of Rust in production out there, some well-known
-Linux distributions enable it and it is already in millions of devices
-via Android.
-
-Obviously, this does not mean that everything works for every kernel
-configuration, architecture, toolchain etc., or that there won't be
-new issues. There is still a ton of work to do in all areas, from the
-kernel to upstream Rust, GCC and other projects. And, in fact, certain
-combinations (such as the mixed GCC+LLVM builds and the upcoming GCC
-support) are still quite experimental but getting there.
-
-But the experiment is done, i.e. Rust is here to stay.
-
-I hope this signals commitment from the kernel to companies and other
-entities to invest more into it, e.g. into giving time to their kernel
-developers to train themselves in Rust.
-
-Thanks to the many kernel maintainers that gave the project their
-support and patience throughout these years, and to the many other
-developers, whether in the kernel or in other projects, that have
-made this possible. I had a long list of 173 names in the credits of
-the original pull that merged the support into the kernel [2], and now
-such a list would be way longer, so I will not even try to compose one,
-but again, thanks a lot, everybody.
-
-Link: https://lwn.net/Articles/1049831/ [1]
-Link: https://git.kernel.org/linus/8aebac82933f [2]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-I could update the first link to the full LWN article when published.
-
- Documentation/rust/index.rst | 18 ------------------
- 1 file changed, 18 deletions(-)
-
-diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
-index ec62001c7d8c..e61524959dbc 100644
---- a/Documentation/rust/index.rst
-+++ b/Documentation/rust/index.rst
-@@ -7,24 +7,6 @@ Documentation related to Rust within the kernel. To start using Rust
- in the kernel, please read the quick-start.rst guide.
- 
- 
--The Rust experiment
---------------------
--
--The Rust support was merged in v6.1 into mainline in order to help in
--determining whether Rust as a language was suitable for the kernel, i.e. worth
--the tradeoffs.
--
--Currently, the Rust support is primarily intended for kernel developers and
--maintainers interested in the Rust support, so that they can start working on
--abstractions and drivers, as well as helping the development of infrastructure
--and tools.
--
--If you are an end user, please note that there are currently no in-tree
--drivers/modules suitable or intended for production use, and that the Rust
--support is still in development/experimental, especially for certain kernel
--configurations.
--
--
- Code documentation
- ------------------
- 
-
-base-commit: cb015814f8b6eebcbb8e46e111d108892c5e6821
--- 
-2.52.0
-
+Cheers,
+Miguel
