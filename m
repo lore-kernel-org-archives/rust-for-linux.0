@@ -1,147 +1,202 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034302D1303
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 05:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75831322537;
+	Mon, 15 Dec 2025 05:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765775220; cv=none; b=G5j5tpUpAn312b3rYnTQF9i1EeiVosyEIowublUwV+TogGRJFMbXY0fU4asIHF29QW9HuUuwmW0Q0Bh/HYpwXSCfFPZNog/Jwjz9xTZ2M1sK7zVHl4J7k5ihC1a7V03hc1UL6/CfF3oYSpFDSmEBOrBX7F4un+NNzYd6W4dux/0=
+	t=1765775730; cv=none; b=mNSPL2LGqvKGjxTG4kpBJfjUtXklu0MPf9tbvEwMS3yhMqA4k8a3D6h66UBg1DYwyGI0NNmww6VXQKu6R9sDUdcQBGpRjS5156Gh8E0Fq+aK58UYaFJIQZGogF6EIKD1xd4lcNBRXhuvjXpGLbTMDsF66wXy0iMNqJEnK2682jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765775220; c=relaxed/simple;
-	bh=P1UlgDaSJmzuIGslfcG68oC/62YkhLSGmHGTzg2/0V8=;
+	s=arc-20240116; t=1765775730; c=relaxed/simple;
+	bh=axbVRlmpoqHXKy7D9DYTP2RH8Eh/CvptUY+r60J/TOg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hNA5eUfLP9yNWeG2kcR35G4BQJZi6r8OEXZRVA4b5ePk+W3VX8qs+b4LUT7OL1LpkeBy/sio/6eiRKWRAkqTJALWik31K+zk0PnvBUMCA+eBF4uN0sdWLhoAyiTolVbkrhdpXWX7RgoV2nxQUGTZw4Vc62nIr8zjg4k01LMl8Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nzMZ/jBO; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nzMZ/jBO"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-29efd139227so36967735ad.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 14 Dec 2025 21:06:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765775218; x=1766380018; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QD5AfpltJqpI2l+MydX1CftV7t4suDe5EgTpBUwzKkA=;
-        b=nzMZ/jBOtO8WpZnVNPqrlk3XwOKoPQhqAqSKqHWbVuGfeu13Qfe5Xa9it7be5kUYEe
-         Kq6eabc1zK3ZUatwT6UgTndw4rVQJkfTMrGvrlXzQYtJ4L+XsHiXHAqWPmuhkMSIHxfa
-         8SjRxEWDFvx3QRo7+SnH3fUi89d3xvLTRWNYAfvXRkVqUlznSrNx8bvTnXJfH2JHbvlw
-         7eMZ1eUXa8aLqqukF8pwleyoVweJ3TjhbjBQ5XkVCZ3ieUDSCADPkmksrbs24pvdCsb5
-         nSpAhfj5ZUsegEDL90p311VAZY6McV/Vs9zeeWoizUp0797Rvzj6C7aFxP2paatMsLJE
-         IBcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765775218; x=1766380018;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QD5AfpltJqpI2l+MydX1CftV7t4suDe5EgTpBUwzKkA=;
-        b=iw66/Qrf50p6ZIWRH0iaalz8CJHY4WZwf0bbABBwhpTy9V0x7eLTCDt8ZVbUCneEH8
-         3xQcVzLWIl6kipMcoWmI2KYm6ITT5w+DRY0brwZfNb/pORTQO6rECkaiCCM0BMx8Mw+P
-         T4NsaUkhkIx+6HWlOg7RQBnn41VOcWFj770LVLDGThfSFEFKnQ0cwqKk1SmsVfBLpZR3
-         QhM9baWyGKKBmLnkvvVZIywvgjGG5zkPj7oRL8HgAuYjVDu3G8aTxE05a4yriO/cqXdw
-         rkkaHpmKk2nZ/X7/hgpUNpyvo2I9gXJEYcMmt14pYNDdSC+vJVRvfW5QcqZJl27FcIVI
-         P6zA==
-X-Forwarded-Encrypted: i=1; AJvYcCV37ttQ6WBKjC3v1ZIVau/LkdUzVOkd3Xz1b6lkQDr2G0031lZ9KKO00J54hzio5DYmklvcrFLrKrm7yLmqrw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxet2Ck5zNT+4Scfo4vRgYz1q/JQWFEQoe33BDyxxZfgHqCscwx
-	rczPz8DXcC9xlOl/FGdxa1bojd2GcfFLjrHxo1HMzEPFMzgWVsiou+pr6RX+JuqrgUM=
-X-Gm-Gg: AY/fxX6HoHY0SFlzwf96MjA5D8bweyn/Btnh7lgXIv25roj9YYXrCD3taaO/tct3VdX
-	bE3Hf5efu9ZEs5unNW2o5rvTiT8S9yWzfulyD+RjbxOvm1rHHA0ICCsjaCCkAOHDYY9atmfRuB/
-	MOmXGHDXhi0q/wAMPg08khXdneA0GeNmG4i6GTY7L5LkK5T+hUE1IbZpUOJQRKFhAsC7hhLIF+3
-	O1zDFc7DsjpwjR1DKtMVvrSlW0ckgMQsNarzH/8aKGlGSRLqKSsi68lXl/oHfaM4AeDGxCLb9E/
-	+xSeCJzvGKHR+5EeJwv94Z7BNP5QyT70f3/7qYksxHZFKYp7WTicxTjaMZk+XelTgCi6hFjs6bd
-	5IjR6LegBhsCky18pvX8MkAjhawURlR43vrW+n1RJ5fuL7OZbSjLtu+dt1I4UV5EqY45jpO/dmE
-	LQ6+vMS3QQzcOL1lerIkc8Kw==
-X-Google-Smtp-Source: AGHT+IFiq4XBKISuRbg/g/qlo5IAeZxOSRMhCIgvYlrlLa7gHi+mGGd/EpBdbdy1lZD8FGtEp1HENg==
-X-Received: by 2002:a17:902:ec91:b0:2a0:d5b0:dd82 with SMTP id d9443c01a7336-2a0d5b0e0aemr31538545ad.61.1765775218143;
-        Sun, 14 Dec 2025 21:06:58 -0800 (PST)
-Received: from localhost ([122.172.80.63])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29eea016ba9sm119380125ad.52.2025.12.14.21.06.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 21:06:57 -0800 (PST)
-Date: Mon, 15 Dec 2025 10:36:55 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/7] rust: cpufreq: always inline functions using
- build_assert with arguments
-Message-ID: <fmdoyqoyksspygcjg3wbqxtqqntunk2wfny6vvt3iq6wddwuzr@a4kfi2hcc5x2>
-References: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
- <20251208-io-build-assert-v3-3-98aded02c1ea@nvidia.com>
- <20251208135521.5d1dd7f6.gary@garyguo.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=He6zUHzYCiKlaxCIrlTtOO7YsD6PqM2XRq4hDJkTx8Iisu2hGUN1PsE0B9A22AQWUXCXnmCkux1ut5t9EsRgHnaAwL8ajQQWGxHmSfMGIf7hptJzPJ6qzMTFFebRX7anPK4VZKNUNwsFCRkMO5/MStdP45aHiaEi8dReODr1Q/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-de-693f996afb50
+Date: Mon, 15 Dec 2025 14:15:17 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+	dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+	melissa.srw@gmail.com, hamohammed.sa@gmail.com,
+	harry.yoo@oracle.com, chris.p.wilson@intel.com,
+	gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com,
+	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
+	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v18 41/42] SUNRPC: relocate struct rcu_head to the first
+ field of struct rpc_xprt
+Message-ID: <20251215051517.GB49936@system.software.com>
+References: <20251205071855.72743-1-byungchul@sk.com>
+ <20251205071855.72743-42-byungchul@sk.com>
+ <cd65b963dd4edade3afb2e7d27eb33af1c62682e.camel@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251208135521.5d1dd7f6.gary@garyguo.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cd65b963dd4edade3afb2e7d27eb33af1c62682e.camel@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0yTZxiG837nFko+OpivsOhSJXMaRBe3PMmM29yPfdkfl+3Hkrlk68Y3
+	aTjVFtCaGMtJGauu0xRC67RF6JgrhnHY5NCIzBQZNC0QpTOwFsQKKbCNCKZIZf0gy/jz5M79
+	3M99vT9ejlS2M2mcpqBI1BWo81SMnJLPJzoyc+ve0uw7P/gSjAenabhf2kvB3bEyCoJLVQjW
+	3B4EAf8tElztpQTUzpZS8JfThMAatrEwH+ymIVaTC1fr2xiI1PzNwDOvj4Raix+BY3KChMXZ
+	EIJ2z58I3E1lDDwyd5AwOp0ECy0M2MvcNAwPRRB8b7uIIPzATUBnqIuF4cgqAUFnmIJBc70E
+	ZaDm5y1gqy0n4mOGAEtzNwFR53UWhq6NU+A0ZoDNO0rDVJOVhdXJ/bBmLwTPT49ZuDHvoyES
+	vshAsP8sDb8aQyy4TGESqrqWKGh9eJ+GHvcABVWxJwg8N6cIGO26zICppYMGo+0pDf7eQRoa
+	x4YJmAwFaGjzDpGwfCEdAuZHCC4thNHb2ULlSIwRXFdcSHjSWE4Klea4ahycY4SVpXuM4F62
+	U8Lv9Vho+HqFEL7zZgqd1glWsLcWCxV35mmhrWm3cK1nlhAci0v0B5mfyA9mi3maElGXdehz
+	ec5i+TirvfriyWj3diP6lq9GMg7zB3DFmoeuRty6dj/fJdkUn4HH7sUYSTP8KzgQiJJSJIXf
+	iR8YNdVIzpG8ZRuem1mhpMwL/DHc0mkhJa3gAbtnbpFSSMnbEXbUuNiNRTIeqJtePyDjpatX
+	RtZLST4d//Cc27C34/IO27ot4wU8+41BslP5Hbj3l35CqsT8ggw77/rIjedvxbebApQZJVs3
+	EaybCNb/CdZNBDuiriOlpqAkX63JO7A3x1CgObn3y8L8VhT/y87Tq0dvokX/R32I55AqUeFv
+	P6RR0uoSvSG/D2GOVKUoqgJxS5GtNpwSdYWf6YrzRH0fSuco1RbFa8snspX8MXWRmCuKWlH3
+	35bgZGlGtGeX1p/00PJ0YLL49X9efTfhi/7pZhe7w3TYPJZwPulc8puhUpt4JrIno/qr2+Ej
+	lcffSHy5Qryckko0RHs+ftw/fvTH0760DynXH+zUkRsOx05edkcbeC/fkDV3JrjNxDSMZA1/
+	OnNB8U7dYdbrS0htvjQR5bfqi96P/aaVTXSaM1SUPke9fzep06v/BfYi22nHAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxbZRTH89zn9t5LtcsFcTzZjDOdi2buReNMjlG3GZPxxDizxA/LFhOp
+	2824AwppkVGNSqnName2rqZF2rG1KJVAHW/bFEldAxOdE0YZSMPLgKwyCEwMFrYWCrYsRr6c
+	/M///M8v58MRcMaX3AZB1hZLOq0mX80pWeXbr5i2H6/cIz/fFdgKFvOnMDwaUcAfxiAL81EL
+	C+ca/Bwk3N/zYGmuVMCvA+Us9FysRzA6b0Fwf9GNwdy6wkLC3slDNDbEg8OIYCXQicAZsmMI
+	91zF4L9kZOCfxmUOpjvmEDjGIxxUTBlZmPV9gcA14eZh6udsuDfapoCVkbsMDCzMIPBFlhmI
+	BE8iSDjz4EJ1S3Ld+TcHi103MVQ4ehB4x0cwzE2NIbjUeRtBoLacgz9tlzHciqyDvvlZDq47
+	TnFwL3SOgb8aOfCUBxQQ+n0aQZXbjmBiMMCA6esGDpxVzSy0jv3IQ2h6iYFhp52B+ub9MOqb
+	YOGGrZpJnptMNWWBu8LEJMskA47v2hiI+er4vTWI3jefZmldyxWGmnsTHPWf9yO6GLcjGq0x
+	YWq2JduOmVlMP2s5QWtuzHA0Pt/P0cCCh6W/VRP6zedxhp7t2k5bXSP8gdcPK189KuXLJZJu
+	5+4cZe6caZgvurC+NNa2qQydEa1IEIi4iwSWn7WiNIEVt5CB/gSX0pz4DAmHYzgVyRSfJoNl
+	shUpBSw6niQzk3E2lXlMPEYaWx04pVUikMDkVZwKZYgeRLxOP/9wkE6uV0ZWF3ASunS+dxWK
+	xY3k22Xhob2JmC67V+00kZKpU4aU/bi4mQSv/MLY0DrXGpBrDcj1P8i1BuRBbB3KlLUlBRo5
+	/6Ud+rxcg1Yu3XGksKAZJV/V9/HS2R9Q9FZ2OxIFpH5UFW7bLWcoNCV6Q0E7IgJWZ6os4aSl
+	OqoxfCjpCt/TfZAv6dvRRoFVZ6nePCjlZIjHNMVSniQVSbr/poyQtqEMXfvkq13vW2ZdQWuY
+	dMefe6Ij54j13TdO9598ai5EFofEvvTgcPYd7519fnrxTJWye/Px2sOG17r3+uvWNyTe2jlo
+	Gw9n5WiMRfv3NDnQOx/x3n1jL9tevG3sS1uY8Dy4+WDbCm1K9/Qe3PbIoWis9NqQ8W7Em1Vf
+	LGsLa/UlP52wqVl9ruaFrVin1/wLMb4wZaYDAAA=
+X-CFilter-Loop: Reflected
 
-On Mon, 08 Dec 2025 11:47:01 +0900
-Alexandre Courbot <acourbot@nvidia.com> wrote:
+On Fri, Dec 05, 2025 at 04:27:52AM -0500, Jeff Layton wrote:
+> On Fri, 2025-12-05 at 16:18 +0900, Byungchul Park wrote:
+> > While compiling Linux kernel with DEPT on, the following error was
+> > observed:
+> >
+> >    ./include/linux/rcupdate.h:1084:17: note: in expansion of macro
+> >    ‘BUILD_BUG_ON’
+> >    1084 | BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);        \
+> >         | ^~~~~~~~~~~~
+> >    ./include/linux/rcupdate.h:1047:29: note: in expansion of macro
+> >    'kvfree_rcu_arg_2'
+> >    1047 | #define kfree_rcu(ptr, rhf) kvfree_rcu_arg_2(ptr, rhf)
+> >         |                             ^~~~~~~~~~~~~~~~
+> >    net/sunrpc/xprt.c:1856:9: note: in expansion of macro 'kfree_rcu'
+> >    1856 | kfree_rcu(xprt, rcu);
+> >         | ^~~~~~~~~
+> >     CC net/kcm/kcmproc.o
+> >    make[4]: *** [scripts/Makefile.build:203: net/sunrpc/xprt.o] Error 1
+> >
+> > Since kfree_rcu() assumes 'offset of struct rcu_head in a rcu-managed
+> > struct < 4096', the offest of struct rcu_head in struct rpc_xprt should
+> > not exceed 4096 but does, due to the debug information added by DEPT.
+> >
+> > Relocate struct rcu_head to the first field of struct rpc_xprt from an
+> > arbitrary location to avoid the issue and meet the assumption.
+> >
+> > Reported-by: Yunseong Kim <ysk@kzalloc.com>
+> > Signed-off-by: Byungchul Park <byungchul@sk.com>
+> > ---
+> >  include/linux/sunrpc/xprt.h | 9 ++++++++-
+> >  1 file changed, 8 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/include/linux/sunrpc/xprt.h b/include/linux/sunrpc/xprt.h
+> > index f46d1fb8f71a..666e42a17a31 100644
+> > --- a/include/linux/sunrpc/xprt.h
+> > +++ b/include/linux/sunrpc/xprt.h
+> > @@ -211,6 +211,14 @@ enum xprt_transports {
+> >
+> >  struct rpc_sysfs_xprt;
+> >  struct rpc_xprt {
+> > +     /*
+> > +      * Place struct rcu_head within the first 4096 bytes of struct
+> > +      * rpc_xprt if sizeof(struct rpc_xprt) > 4096, so that
+> > +      * kfree_rcu() can simply work assuming that.  See the comment
+> > +      * in kfree_rcu().
+> > +      */
+> > +     struct rcu_head         rcu;
+> > +
+> >       struct kref             kref;           /* Reference count */
+> >       const struct rpc_xprt_ops *ops;         /* transport methods */
+> >       unsigned int            id;             /* transport id */
+> > @@ -317,7 +325,6 @@ struct rpc_xprt {
+> >  #if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
+> >       struct dentry           *debugfs;               /* debugfs directory */
+> >  #endif
+> > -     struct rcu_head         rcu;
+> >       const struct xprt_class *xprt_class;
+> >       struct rpc_sysfs_xprt   *xprt_sysfs;
+> >       bool                    main; /*mark if this is the 1st transport */
+> 
+> Seems fine to me.
+> 
+> Reviewed-by: Jeff Layton <jlayton@kernel.org>
 
-> `build_assert` relies on the compiler to optimize out its error path.
-> Functions using it with its arguments must thus always be inlined,
-> otherwise the error path of `build_assert` might not be optimized out,
-> triggering a build error.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: c6af9a1191d0 ("rust: cpufreq: Extend abstractions for driver registration")
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  rust/kernel/cpufreq.rs | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-> index f968fbd22890..0879a79485f8 100644
-> --- a/rust/kernel/cpufreq.rs
-> +++ b/rust/kernel/cpufreq.rs
-> @@ -1015,6 +1015,8 @@ impl<T: Driver> Registration<T> {
->          ..pin_init::zeroed()
->      };
->  
-> +    // Always inline to optimize out error path of `build_assert`.
-> +    #[inline(always)]
->      const fn copy_name(name: &'static CStr) -> [c_char; CPUFREQ_NAME_LEN] {
->          let src = name.to_bytes_with_nul();
->          let mut dst = [0; CPUFREQ_NAME_LEN];
-> 
- 
-> This change is not needed as this is a private function only used in
-> const-eval only.
-> 
-> I wonder if I should add another macro to assert that the function is
-> only used in const eval instead? Do you think it might be useful to have
-> something like:
-> 
-> 	#[const_only]
-> 	const fn foo() {}
-> 
-> or
-> 
-> 	const fn foo() {
-> 	    const_only!();
-> 	}
-> 
-> ? If so, I can send a patch that adds this feature. 
-> 
-> Implementation-wise, this will behave similar to build_error, where a
-> function is going to be added that is never-linked but has a body for
-> const eval.
+Thank you, Jeff.
 
-I already applied this from V2, should I drop this change ?
-
--- 
-viresh
+	Byungchul
