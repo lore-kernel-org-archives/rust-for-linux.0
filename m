@@ -1,559 +1,112 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward501b.mail.yandex.net (forward501b.mail.yandex.net [178.154.239.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814E5329C5E
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 09:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C266A291C3F;
+	Mon, 15 Dec 2025 09:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765789599; cv=none; b=R+Xt8fFD4Hzs+DPQpQAKIyzNTC+TRnLPBDKMPsH6doVrpLuqfbLlbgwoxhgiTnmvZNcnB2y+Kgaydw3QcH+ahnUad9IRSmNPMHFXZvv/45n6xAuWJaR22nv8eG8wP4HulMdf55Pd0W/tq8PkO65HujWXG/wzkg4ZU6pG8fRcaTM=
+	t=1765790169; cv=none; b=jUNgS/C5QvtG55NeAGJsFSyVxAIvMQfrLOXvZyo08Zyo4o2OdYuIWQXP0BORa/RKk/8BLS6roDt4GkRnqt/GBfmQImIfsof+Vh12VDUcUgayXVhDucPfwo0HlEu1qybpX4s/XiBz67iWb3X6tm8MfK5pE0J0AcnpPRdPcYPhd7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765789599; c=relaxed/simple;
-	bh=S+I//71CAh3HG/ntXLeYl26reZdigPregIquYcMsXSQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GQWluhBrsIUGAUGsfNiIbBzD4uUYE9f+XPCAVqFEz9zr+uX6fwB9+MRbogU3nfjGAt8VtjbkziQHrjes03J1mvZZWrjjSM36w+0QJu5CLAxR3opFxict1f31IzMKMznxbATk26TyFX3aRCRR2VXvLeJCwi9CWZ+GW9S1YodZ7WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DbFVAkV+; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765790169; c=relaxed/simple;
+	bh=vNkB/HA8hX6K5AnbCeDiVHb5JnK8UkNmAYFGN7kCTN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jwst+K2wm7AqDRhtBz+BozgrgP/TkQiKSRqeCrwFhPe3/jZL03V+stuP1SWI+N8D3twiQO8xrCtV06faLtAcjq+wGlNCy07oGOMGVjL9C5IvjeoFl7KiYU1ntIhXrnMnkhcstXklSxCa2ulUXBzCve6RK23XhHtKxE8rbY5UHFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=gQKv5f6/; arc=none smtp.client-ip=178.154.239.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DbFVAkV+"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a0d0788adaso8271935ad.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 01:06:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765789594; x=1766394394; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8TFzbFLNA/s8ANuMZPs94U2cOEd+GIJ7ZeP4XFmQHWk=;
-        b=DbFVAkV+9bTUaL3zUOZGSc0ehmkKrcH059r2y+rCYu7r+CHzao1iJXSCCC5cedExGk
-         lUC2x3ndImTxfy2TzVNU7aYEMm8XfAAcAwI+/6JLFQ9jLRJvSbjYfnlhjcC5TrYW9VjU
-         R+FFVb8CvOJyUo4cFcBrc9zCq4UNwbfkmt0RK4S/sFIrK8JRRDElD4P2xebPK4ZF+RDQ
-         PN38jaHyahmmFKr8N+L8e7UCZhhKzUzX4GyVaFn1lHh1UyLS/UnZQqaJrNfKgZyKoiHn
-         g2szT0mVHspGhIaaEeT5bxxsrxGNsX8UTGokIauxxAN1NuvFMl13TZFfSZYm5Hjzvf6n
-         9OOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765789594; x=1766394394;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8TFzbFLNA/s8ANuMZPs94U2cOEd+GIJ7ZeP4XFmQHWk=;
-        b=ZRR3fWw1Ytg1PS2vD00nXTvUvL2m1KdyKMRbmt71KiBIU8SH16UiME5zu744MpAB/K
-         Enz/7wDc4WSnyEZKnsLjgr5QDg5NvtX4z2UJQYY5lxa6qkf+0x/U8QN8fWtm3qQ3RW4P
-         cZvoEQ3FAnJmz2zonGRYNv150tcmLTKvoPjAi81QbjhoesI7uKggfTLOcJW1JTgqpa14
-         Vvh3/psfCaU3aZSdB1hg3kU5wPt+uCB1wc6/PbGvTPLqz5VyA5yzFXKKY5LBFnUlmMzA
-         0JRwH8aioQdTQhO/7SWJU1UNWV/P4h12dEyEq1XKQOMMC5BkTfeh2Mb42FRg48n2EmPK
-         yFgw==
-X-Forwarded-Encrypted: i=1; AJvYcCWMTDoq+t9o9viQF1jmwqP6nptb5XKAZynZKCA6ZFQS+IViHsc/HXmxrYD+R8dHtu4OQBFqzxW4avQamVWCIg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyynAkbkecjimSCpmjMZCyyVjhrJpRFvTEj5gNjpZpE+IajDxo7
-	kITgQju9TIDCMcz1epB6YenQlQv0rpfVcWxC+A8PC8Wj4yd8O4+Oorf9
-X-Gm-Gg: AY/fxX4c7y5a5C5UHG2zI/3HuSar7QcgfxZvjLtF93Gwg0kD0GMEXoWve27JxjFQlWd
-	8pk1sJOSGvK567UrfxEL5gtmWEbZTPeLMguU0kTXQ6cGJ2JtF+iYwunwMbgt6/nLrhURC3iNxSZ
-	AQmYYKq/C96ppkDlO+4XQaOvyTJq/bwV5aXSDhpXPaj8vZArV/F9Xl5/17XtMLui27qS/SzXigl
-	XX4IqNDxkG0V9vA7YhxxZbIizwfh0ZAM4ZDAFdY7w1ihBqbE03f7/YT/VnjbP400i5z01wOdTPg
-	23BDvv5W1prX3fJXgN6Q7joze4ATaXlQl0v6rOHbmGyWjDuwLKyJeWqj3XvUbvR2viygu5Un9PA
-	dGXM1SM4+AYSARnUrvC3myCcz3icced7AfiSF8X6zyKUDN3XFjacu23YBisfb2U/D/Hl5NjOHSe
-	0yIMvuKFHudHjH0mRw7exl/Q==
-X-Google-Smtp-Source: AGHT+IGzyDWmqhEU1Z8oAXr89HQnWirxmApn4cZ+UbhSq+NqKKmus5Ux4BVNBkt46IA1IaRTWuk54w==
-X-Received: by 2002:a17:903:2f10:b0:295:570d:116e with SMTP id d9443c01a7336-29f243447f0mr103959285ad.41.1765789593648;
-        Mon, 15 Dec 2025 01:06:33 -0800 (PST)
-Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29ee9d38ae7sm127996155ad.35.2025.12.15.01.06.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 01:06:32 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id 271FE41902F7; Mon, 15 Dec 2025 16:06:28 +0700 (WIB)
-Date: Mon, 15 Dec 2025 16:06:28 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
-	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
-	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
-	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
-	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
-	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
-	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
-	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
-	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
-	gustavo@padovan.org, christian.koenig@amd.com,
-	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
-	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
-	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
-	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
-	josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
-	wsa+renesas@sang-engineering.com, dave.hansen@intel.com,
-	geert@linux-m68k.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v18 25/42] dept: add documents for dept
-Message-ID: <aT_PlFHyQB6HyZXG@archie.me>
-References: <20251205071855.72743-1-byungchul@sk.com>
- <20251205071855.72743-26-byungchul@sk.com>
- <aTN38kJjBftxnjm9@archie.me>
- <20251215042237.GA49936@system.software.com>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="gQKv5f6/"
+Received: from mail-nwsmtp-smtp-production-main-87.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-87.sas.yp-c.yandex.net [IPv6:2a02:6b8:c1c:405:0:640:8814:0])
+	by forward501b.mail.yandex.net (Yandex) with ESMTPS id 07D2481818;
+	Mon, 15 Dec 2025 12:10:10 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-87.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 3APbApHLrmI0-z3ZKRY2N;
+	Mon, 15 Dec 2025 12:10:08 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1765789808;
+	bh=vNkB/HA8hX6K5AnbCeDiVHb5JnK8UkNmAYFGN7kCTN0=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=gQKv5f6/bUm/MW4eYzRVDXxdRTUm90NX07LAy/1zw2lJFKMhm/ZX5JX7Axr6rhKT4
+	 tm6Y7qC2VbfNSpzsbjhZIpAeIwRONM2khCVInOEJLr14xyQ7gyplkqvXnDTItFsoc+
+	 zjDc7dMi3E0OSTVhA7dcEs8ZDJVpo16ifC1B/4ww=
+Authentication-Results: mail-nwsmtp-smtp-production-main-87.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Mon, 15 Dec 2025 12:10:01 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+ rust-for-linux@vger.kernel.org, lossin@kernel.org, lyude@redhat.com,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, a.hindborg@kernel.org, tmgross@umich.edu,
+ dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+ longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
+ thomas.hellstrom@linux.intel.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 5/6] rust: ww_mutex: add Mutex, AcquireCtx and
+ MutexGuard
+Message-ID: <20251215121001.5a0cc42c@nimda>
+In-Reply-To: <aTFPRv2ahM_KA3AB@google.com>
+References: <20251201102855.4413-1-work@onurozkan.dev>
+	<20251201102855.4413-6-work@onurozkan.dev>
+	<aTA6f8gK60h6qaHs@google.com>
+	<86E0C8EE-393D-4C6A-9C28-BB036A1FFAD6@collabora.com>
+	<aTFPRv2ahM_KA3AB@google.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oXMU5jEQKY7U45cC"
-Content-Disposition: inline
-In-Reply-To: <20251215042237.GA49936@system.software.com>
-
-
---oXMU5jEQKY7U45cC
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 15, 2025 at 01:22:37PM +0900, Byungchul Park wrote:
-> On Sat, Dec 06, 2025 at 07:25:22AM +0700, Bagas Sanjaya wrote:
-> > On Fri, Dec 05, 2025 at 04:18:38PM +0900, Byungchul Park wrote:
-> > > Add documents describing the concept and APIs of dept.
+On Thu, 4 Dec 2025 09:07:18 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
+
+> On Wed, Dec 03, 2025 at 02:23:14PM -0300, Daniel Almeida wrote:
+> >=20
+> >=20
+> > > On 3 Dec 2025, at 10:26, Alice Ryhl <aliceryhl@google.com> wrote:
 > > >=20
-> > > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > > ---
-> > >  Documentation/dev-tools/dept.rst     | 778 +++++++++++++++++++++++++=
-++
-> > >  Documentation/dev-tools/dept_api.rst | 125 +++++
+> > > On Mon, Dec 01, 2025 at 01:28:54PM +0300, Onur =C3=96zkan wrote:
+> > >> Yeah :(. We could get rid of them easily by keeping the class
+> > >> that was passed to the constructor functions but that becomes a
+> > >> problem for the from_raw implementations.
+> > >>=20
+> > >> I think the best solution would be to expose ww_class type from
+> > >> ww_acquire_ctx and ww_mutex unconditionally (right now it
+> > >> depends on DEBUG_WW_MUTEXES). That way we can just access the
+> > >> class and verify that the mutex and acquire_ctx classes match.
+> > >>=20
+> > >> What do you think? I can submit a patch for the C-side
+> > >> implementation. It should be straightforward and shouldn't have
+> > >> any runtime impact.
+> > >=20
+> > > I think there is a better solution. We can create a different
+> > > type for every single class, like how
+> > > rust/kernel/sync/lock/global.rs creates a different type for
+> > > every single mutex. Then, you know that the classes are the same
+> > > since the class is part of the type.
 > >=20
-> > You forget to add toctree entries:
->=20
-> I'm sorry for late reply.
->=20
-> Thanks a lot!
->=20
-> > ---- >8 ----
-> > diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tool=
-s/index.rst
-> > index 4b8425e348abd1..02c858f5ed1fa2 100644
-> > --- a/Documentation/dev-tools/index.rst
-> > +++ b/Documentation/dev-tools/index.rst
-> > @@ -22,6 +22,8 @@ Documentation/process/debugging/index.rst
-> >     clang-format
-> >     coccinelle
-> >     sparse
-> > +   dept
-> > +   dept_api
-> >     kcov
-> >     gcov
-> >     kasan
-> >=20
-> > > +Lockdep detects a deadlock by checking lock acquisition order.  For
-> > > +example, a graph to track acquisition order built by lockdep might l=
-ook
-> > > +like:
-> > > +
-> > > +.. literal::
-> > > +
-> > > +   A -> B -
-> > > +           \
-> > > +            -> E
-> > > +           /
-> > > +   C -> D -
-> > > +
-> > > +   where 'A -> B' means that acquisition A is prior to acquisition B
-> > > +   with A still held.
-> >=20
-> > Use code-block directive for literal code blocks:
->=20
-> I will.
->=20
-> > ---- >8 ----
-> > diff --git a/Documentation/dev-tools/dept.rst b/Documentation/dev-tools=
-/dept.rst
-> > index 333166464543d7..8394c4ea81bc2a 100644
-> > --- a/Documentation/dev-tools/dept.rst
-> > +++ b/Documentation/dev-tools/dept.rst
-> > @@ -10,7 +10,7 @@ Lockdep detects a deadlock by checking lock acquisiti=
-on order.  For
-> >  example, a graph to track acquisition order built by lockdep might look
-> >  like:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     A -> B -
-> >             \
-> > @@ -25,7 +25,7 @@ Lockdep keeps adding each new acquisition order into =
-the graph at
-> >  runtime.  For example, 'E -> C' will be added when the two locks have
-> >  been acquired in the order, E and then C.  The graph will look like:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >         A -> B -
-> >                 \
-> > @@ -41,7 +41,7 @@ been acquired in the order, E and then C.  The graph =
-will look like:
-> > =20
-> >  This graph contains a subgraph that demonstrates a loop like:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >                  -> E -
-> >                 /      \
-> > @@ -76,7 +76,7 @@ e.g. irq context, normal process context, wq worker c=
-ontext, or so on.
-> > =20
-> >  Can lockdep detect the following deadlock?
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context X	   context Y	   context Z
-> > =20
-> > @@ -91,7 +91,7 @@ Can lockdep detect the following deadlock?
-> > =20
-> >  No.  What about the following?
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context X		   context Y
-> > =20
-> > @@ -116,7 +116,7 @@ What leads a deadlock
-> >  A deadlock occurs when one or multi contexts are waiting for events th=
+> > I don=E2=80=99t think this would work with the from_raw() functions. Wh=
 at
-> >  will never happen.  For example:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context X	   context Y	   context Z
-> > =20
-> > @@ -148,7 +148,7 @@ In terms of dependency:
-> > =20
-> >  Dependency graph reflecting this example will look like:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >      -> C -> A -> B -
-> >     /                \
-> > @@ -171,7 +171,7 @@ Introduce DEPT
-> >  DEPT(DEPendency Tracker) tracks wait and event instead of lock
-> >  acquisition order so as to recognize the following situation:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context X	   context Y	   context Z
-> > =20
-> > @@ -186,7 +186,7 @@ acquisition order so as to recognize the following =
-situation:
-> >  and builds up a dependency graph at runtime that is similar to lockdep.
-> >  The graph might look like:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >      -> C -> A -> B -
-> >     /                \
-> > @@ -199,7 +199,7 @@ DEPT keeps adding each new dependency into the grap=
-h at runtime.  For
-> >  example, 'B -> D' will be added when event D occurrence is a
-> >  prerequisite to reaching event B like:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context W
-> > =20
-> > @@ -211,7 +211,7 @@ prerequisite to reaching event B like:
-> > =20
-> >  After the addition, the graph will look like:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >                       -> D
-> >                      /
-> > @@ -236,7 +236,7 @@ How DEPT works
-> >  Let's take a look how DEPT works with the 1st example in the section
-> >  'Limitation of lockdep'.
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context X	   context Y	   context Z
-> > =20
-> > @@ -256,7 +256,7 @@ event.
-> > =20
-> >  Adding comments to describe DEPT's view in detail:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context X	   context Y	   context Z
-> > =20
-> > @@ -293,7 +293,7 @@ Adding comments to describe DEPT's view in detail:
-> > =20
-> >  Let's build up dependency graph with this example.  Firstly, context X:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context X
-> > =20
-> > @@ -304,7 +304,7 @@ Let's build up dependency graph with this example. =
- Firstly, context X:
-> > =20
-> >  There are no events to create dependency.  Next, context Y:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context Y
-> > =20
-> > @@ -332,7 +332,7 @@ event A cannot be triggered if wait B cannot be awa=
-kened by event B.
-> >  Therefore, we can say event A depends on event B, say, 'A -> B'.  The
-> >  graph will look like after adding the dependency:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     A -> B
-> > =20
-> > @@ -340,7 +340,7 @@ graph will look like after adding the dependency:
-> > =20
-> >  Lastly, context Z:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context Z
-> > =20
-> > @@ -362,7 +362,7 @@ triggered if wait A cannot be awakened by event A. =
- Therefore, we can
-> >  say event B depends on event A, say, 'B -> A'.  The graph will look li=
-ke
-> >  after adding the dependency:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >      -> A -> B -
-> >     /           \
-> > @@ -386,7 +386,7 @@ Interpret DEPT report
-> > =20
-> >  The following is the same example in the section 'How DEPT works'.
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context X	   context Y	   context Z
-> > =20
-> > @@ -425,7 +425,7 @@ We can simplify this by labeling each waiting point=
- with [W], each
-> >  point where its event's context starts with [S] and each event with [E=
-].
-> >  This example will look like after the labeling:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context X	   context Y	   context Z
-> > =20
-> > @@ -443,7 +443,7 @@ DEPT uses the symbols [W], [S] and [E] in its repor=
-t as described above.
-> >  The following is an example reported by DEPT for a real problem in
-> >  practice.
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     Link: https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485=
-657d@I-love.SAKURA.ne.jp/#t
-> >     Link: https://lore.kernel.org/lkml/1674268856-31807-1-git-send-emai=
-l-byungchul.park@lge.com/
-> > @@ -646,7 +646,7 @@ practice.
-> > =20
-> >  Let's take a look at the summary that is the most important part.
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     ---------------------------------------------------
-> >     summary
-> > @@ -669,7 +669,7 @@ Let's take a look at the summary that is the most i=
-mportant part.
-> > =20
-> >  The summary shows the following scenario:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context A	   context B	   context ?(unknown)
-> > =20
-> > @@ -684,7 +684,7 @@ The summary shows the following scenario:
-> > =20
-> >  Adding comments to describe DEPT's view in detail:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context A	   context B	   context ?(unknown)
-> > =20
-> > @@ -711,7 +711,7 @@ Adding comments to describe DEPT's view in detail:
-> > =20
-> >  Let's build up dependency graph with this report. Firstly, context A:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context A
-> > =20
-> > @@ -735,7 +735,7 @@ unlock(&ni->ni_lock:0) depends on folio_unlock(&f1)=
-, say,
-> > =20
-> >  The graph will look like after adding the dependency:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     unlock(&ni->ni_lock:0) -> folio_unlock(&f1)
-> > =20
-> > @@ -743,7 +743,7 @@ The graph will look like after adding the dependenc=
-y:
-> > =20
-> >  Secondly, context B:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >     context B
-> > =20
-> > @@ -762,7 +762,7 @@ folio_unlock(&f1) depends on unlock(&ni->ni_lock:0)=
-, say,
-> > =20
-> >  The graph will look like after adding the dependency:
-> > =20
-> > -.. literal::
-> > +.. code-block::
-> > =20
-> >      -> unlock(&ni->ni_lock:0) -> folio_unlock(&f1) -
-> >     /                                                \
-> >=20
-> > > +Limitation of lockdep
-> > > +---------------------
-> > > +
-> > > +Lockdep deals with a deadlock by typical lock e.g. spinlock and mute=
-x,
-> > > +that are supposed to be released within the acquisition context.
-> > > +However, when it comes to a deadlock by folio lock that is not suppo=
-sed
-> > > +to be released within the acquisition context or other general
-> > > +synchronization mechanisms, lockdep doesn't work.
-> > > +
-> > > +NOTE:  In this document, 'context' refers to any type of unique cont=
-ext
-> > > +e.g. irq context, normal process context, wq worker context, or so o=
-n.
-> > > +
-> > > +Can lockdep detect the following deadlock?
-> > > +
-> > > +.. literal::
-> > > +
-> > > +   context X	   context Y	   context Z
-> > > +
-> > > +		   mutex_lock A
-> > > +   folio_lock B
-> > > +		   folio_lock B <- DEADLOCK
-> > > +				   mutex_lock A <- DEADLOCK
-> > > +				   folio_unlock B
-> > > +		   folio_unlock B
-> > > +		   mutex_unlock A
-> > > +				   mutex_unlock A
-> > > +
-> > > +No.  What about the following?
-> > > +
-> > > +.. literal::
-> > > +
-> > > +   context X		   context Y
-> > > +
-> > > +			   mutex_lock A
-> > > +   mutex_lock A <- DEADLOCK
-> > > +			   wait_for_complete B <- DEADLOCK
-> > > +   complete B
-> > > +			   mutex_unlock A
-> > > +   mutex_unlock A
-> > > +
-> > > +No.
-> >=20
-> > One unanswered question from my v17 review [1]: You explain in "How DEP=
-T works"
-> > section how DEPT detects deadlock in the first example (the former with=
- three
-> > contexts). Can you do the same on the second example (the latter with t=
-wo
-> > contexts)?
+> > class would you assign then? I think this is precisely what sparked
+> > the current solution.
 >=20
-> Did you mean to update the document with it?  I misunderstood what you
-> meant but sure I will update it as [1].
+> There can be a way to create a type for a C-defined class, and
+> from_raw() can require that you don't use the same Rust type for
+> different C classes.
+>=20
 
-Of course!
+Do you think this is a better alternative? IMO it doesn't seem worth
+it for what it's doing. Current approach adds less complexity and is
+easier to maintain. It's not just helping from_raw functions, the class
+validation is being much simpler without having to deal with storing
+class references or creating new types.
 
---=20
-An old man doll... just what I always wanted! - Clara
+I am holding off the next version because we don't have a clear
+consensus on this.
 
---oXMU5jEQKY7U45cC
-Content-Type: application/pgp-signature; name=signature.asc
+- Onur
 
------BEGIN PGP SIGNATURE-----
+> Alice
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCaT/PiwAKCRD2uYlJVVFO
-o2U6AQDUdKZUTdPI5wclaV+upvJdG2B4MNuJFQ3Ausve1JhRAgD9FqcmmRDdNgTg
-fQNwIxnV8dOThdPBY4c1vylRfqTVTQg=
-=1ic4
------END PGP SIGNATURE-----
-
---oXMU5jEQKY7U45cC--
