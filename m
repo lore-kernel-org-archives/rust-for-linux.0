@@ -1,47 +1,45 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D6433859E
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 18:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635923376A9
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 18:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765821877; cv=none; b=pz6cehoo+t3+vKHB8U69QlYntaOQZWn9fNnOm1Q85x0NLC/FOkAu3PIOpzUchvh3oRoHkGhDSQtB5eYJLszcI0tOBz2tFqnMoG2x/kCs8mtEk643oDL+y4nGI93U0foorf1M1KH+IY3gAYaO9YAp4aABn+Vii6kwge+EkeuO5Pk=
+	t=1765821896; cv=none; b=RS0smGXl++4eZY+UiyPbiKqmBLrahAi0HwzBwHFGS/44yXxvA9FALCA1GrKPoV2iclIfUWZMPKE3yQ9r17atqtmZuoekvI+lKpt2nBBaZGwX6NIBydjXa6dXjj6gG4/F5pr1g9aq2zTw6OG1VM6J1ZbYNsVdCfniHj89Q2wyOa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765821877; c=relaxed/simple;
-	bh=Nsew5WVYcnIVKjzy9ZH47Z7m4Gui0DMYEziJL+DQ+WA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIihtZlcUcq0jmtSTnVKVOsbSUQ6dbRKjGIKvsF1Cct4bW1DVGx9D9T5o/shvoRrX29FdC9uuKFG8tbx8tePK6HtG3BGkxvDjORYc0QDZPrOyn/VmF65xwdKlUH5e3R0GKtD93YF8TQuob8/avwr7FZt5YgPUGDmiFgBIRZ7z8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MM2DysMf; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1765821896; c=relaxed/simple;
+	bh=0mnSLoBUn/EZWg2+JhX5hfIbx/BiMSTEVUsZpQyM/Bo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dFapnweFmH1RSpFct5oXwNTbVPDDewJaVAzPWPaR2CN7BXcw5+B3LVtkTNMDr7aQR72LKMaFFMIQf5wZ0d1XHu1ktEXvMiUTTeFN1KbMf8BkKJXlh6ZXIqY6BeepyI280QzC/WystO3EOluk2wzmGda78ShmFwpC/qYl2BCt2XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ycuhzjel; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MM2DysMf"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ycuhzjel"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765821874;
+	s=mimecast20190719; t=1765821893;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EH3ES6AA+QRCOsHlcZKtsYa2XtonPK9oiLh9VZOeMQo=;
-	b=MM2DysMfypoJDhpVrCx0fqo/oFyVuT3oJ7V9IZjXIXI6U1Wk95ntAuEI+J2vUpJrbT5bEG
-	XFfGGDhv7A3e4yAJieNqWHkP+dMH9H1A1uqkikEknr1fvQByZWRFnKaXmcRvcS1LhdpVfv
-	XfURda4ZMV6mKw3uwqRFAZNnkRSQJp8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NRRRaAQdveNe6ZF/1v+2sl20HT0B/NMlLd6U8/DoaEM=;
+	b=YcuhzjelTqtp0GSbKH6K6lR7uXmYgruiJtP5rjaRTSkK1nM74BQksb0r3SR5JJJFE02vIO
+	2/ZjdBIJ2hVYdS8NotGZH4kfzP5+bQ1yc14GRPpwScV+ZDte2NGJQpEeNeV6WQu/1L3j3h
+	HkbcuvzNcA6SU7KrgAjl2nPSrPjfl7E=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-EmAb8MXqORmqzNSaOv4-SQ-1; Mon,
- 15 Dec 2025 13:01:35 -0500
-X-MC-Unique: EmAb8MXqORmqzNSaOv4-SQ-1
-X-Mimecast-MFC-AGG-ID: EmAb8MXqORmqzNSaOv4-SQ_1765821693
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-587-2CSFVVBnOvyHVAKauhzi4A-1; Mon,
+ 15 Dec 2025 13:02:20 -0500
+X-MC-Unique: 2CSFVVBnOvyHVAKauhzi4A-1
+X-Mimecast-MFC-AGG-ID: 2CSFVVBnOvyHVAKauhzi4A_1765821737
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D6BE01860168;
-	Mon, 15 Dec 2025 17:58:33 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF5B81954AF3;
+	Mon, 15 Dec 2025 17:58:14 +0000 (UTC)
 Received: from chopper.lan (unknown [10.22.81.30])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5844B180044F;
-	Mon, 15 Dec 2025 17:58:29 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 21692180044F;
+	Mon, 15 Dec 2025 17:58:09 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -62,85 +60,316 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	Will Deacon <will@kernel.org>,
 	Waiman Long <longman@redhat.com>
-Subject: [PATCH v16 04/17] openrisc: Include <linux/cpumask.h> in smp.h
-Date: Mon, 15 Dec 2025 12:57:51 -0500
-Message-ID: <20251215175806.102713-5-lyude@redhat.com>
-In-Reply-To: <20251215175806.102713-1-lyude@redhat.com>
-References: <20251215175806.102713-1-lyude@redhat.com>
+Subject: [PATCH v16 00/17] Refcounted interrupts, SpinLockIrq for rust
+Date: Mon, 15 Dec 2025 12:57:47 -0500
+Message-ID: <20251215175806.102713-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-While OpenRISC currently doesn't fail to build upstream, it appears that
-include <asm/smp.h> in the right headers is enough to break that -
-primarily because OpenRISC's asm/smp.h header doesn't actually provide any
-definition for struct cpumask. Which means the only reason we aren't
-failing to build kernel is because we've been lucky enough that every spot
-including asm/smp.h already has definitions for struct cpumask pulled in.
+This is the latest patch series for adding rust bindings for controlling
+local processor interrupts, adding support for spinlocks in rust that
+are acquired with local processor interrupts disabled, and implementing
+local interrupt controls through refcounting in the kernel.
 
-This became evident when trying to work on a patch series for adding
-ref-counted interrupt enable/disables to the kernel, where introducing a
-new interrupt_rc.h header suddenly introduced a build error on OpenRISC:
+The previous version of this patch series can be found here:
 
-     In file included from include/linux/interrupt_rc.h:17,
-                      from include/linux/spinlock.h:60,
-                      from include/linux/mmzone.h:8,
-                      from include/linux/gfp.h:7,
-                      from include/linux/mm.h:7,
-                      from arch/openrisc/include/asm/pgalloc.h:20,
-                      from arch/openrisc/include/asm/io.h:18,
-                      from include/linux/io.h:12,
-                      from drivers/irqchip/irq-ompic.c:61:
-     arch/openrisc/include/asm/smp.h:21:59: warning: 'struct cpumask'
-     declared inside parameter list will not be visible outside of this
-     definition or declaration
-        21 | extern void arch_send_call_function_ipi_mask(const struct cpumask *mask);
-           |                                                           ^~~~~~~
-     arch/openrisc/include/asm/smp.h:23:54: warning: 'struct cpumask'
-     declared inside parameter list will not be visible outside of this
-     definition or declaration
-        23 | extern void set_smp_cross_call(void (*)(const struct cpumask *, unsigned int));
-           |                                                      ^~~~~~~
-     drivers/irqchip/irq-ompic.c: In function 'ompic_of_init':
-  >> drivers/irqchip/irq-ompic.c:191:28: error: passing argument 1 of
-     'set_smp_cross_call' from incompatible pointer type
-     [-Werror=incompatible-pointer-types]
-       191 |         set_smp_cross_call(ompic_raise_softirq);
-           |                            ^~~~~~~~~~~~~~~~~~~
-           |                            |
-           |                            void (*)(const struct cpumask *, unsigned int)
-     arch/openrisc/include/asm/smp.h:23:32: note: expected 'void (*)(const
-     struct cpumask *, unsigned int)' but argument is of type 'void
-     (*)(const struct cpumask *, unsigned int)'
-        23 | extern void set_smp_cross_call(void (*)(const struct cpumask *, unsigned int));
+https://marc.info/?l=linux-kernel&m=176470290118899
 
-To fix this, let's take an example from the smp.h headers of other
-architectures (x86, hexagon, arm64, probably more): just include
-linux/cpumask.h at the top.
+This patch series applies on top of the rust-next branch.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- arch/openrisc/include/asm/smp.h | 2 ++
- 1 file changed, 2 insertions(+)
+There's a few big changes from the last time. Mainly that we've
+addressed all(?) of the open questions on this patch series:
 
-diff --git a/arch/openrisc/include/asm/smp.h b/arch/openrisc/include/asm/smp.h
-index e21d2f12b5b67..0327d8cdae2d0 100644
---- a/arch/openrisc/include/asm/smp.h
-+++ b/arch/openrisc/include/asm/smp.h
-@@ -9,6 +9,8 @@
- #ifndef __ASM_OPENRISC_SMP_H
- #define __ASM_OPENRISC_SMP_H
- 
-+#include <linux/cpumask.h>
-+
- #include <asm/spr.h>
- #include <asm/spr_defs.h>
- 
+* Thanks to Joel Fernandes, we now have a seperate per-CPU counter for
+  tracking NMI nesting - which ensures that we don't have to sacrifice
+  NMI nest level bits in order to store a counter for refcounted IRQs.
+  These patches have been included at the start of the series.
+* We've been able to prove that being able to convert the kernel over to
+  this new interface is indeed possible, more on this below.
+* Also thank to Joel, we also now have actual benchmarks for how this
+  affects performance:
+  https://lore.kernel.org/rust-for-linux/20250619175335.2905836-1-joelagnelf@nvidia.com/
+* Also some small changes to the kunit test I added, mainly just making
+  sure I don't forget to include a MODULE_DESCRIPTION or MODULE_LICENSE.
+
+Regarding the conversion plan: we've had some success at getting kernels
+to boot after attempting to convert the entire kernel from the
+non-refcounted API to the new refcounted API. It will definitely take
+quite a lot of work to get this right though, at least in the kernel
+core side of things. To give readers an idea of what I mean, here's a
+few of the issues that we ended up running into:
+
+On my end, I tried running a number of coccinelle conversions for this.
+At first I did actually try simply rewiring
+local_irq_disable()/local_irq_enable() to
+local_interrupt_enable()/local_interrupt_disable(). This wasn't really
+workable though, as it causes the kernel to crash very early on in a
+number of ways that I haven't fully untangled. Doing this with
+coccinelle on the other hand allowed me to convert individual files at a
+time, along with specific usage patterns of the old API, and as a result
+this ended up giving me a pretty good idea of where our issues are
+coming from. This coccinelle script, while still leaving most of the
+kernel unconverted, was at least able to be run on almost all of kernel/
+while still allowing us to boot on x86_64
+
+@depends on patch && !report@
+@@
+- local_irq_disable();
++ local_interrupt_disable();
+...
+- local_irq_enable();
++ local_interrupt_enable();
+
+There were two files in kernel/ that were exceptions to this:
+
+* kernel/softirq.c
+* kernel/main.c (I figured out at least one fix to an issue here)
+
+The reason this worked is because it seems like the vast majority of the
+issues we're seeing come from "unbalanced"/"misordered" usages of the
+old irq API. And there seems to be a few reasons for this:
+
+* The first simple reason: occasionally the enable/disable was split
+  across a function, which this script didn't handle.
+* The second more complicated reason: some portions of the kernel core
+  end up calling processor instructions that modify the processor's
+  local interrupt flags independently of the kernel. In x86_64's case, I
+  believe we came to the conclusion the iret instruction (interrupt
+  return) was modifying the interrupt flag state. There's possibly a few
+  more instances like this elsewhere.
+
+Boqun also took a stab at this on aarch64, and ended up having similar
+findings. In their case, they discovered one of the culprits being
+raw_spin_rq_unlock_irq(). Here the reason is that on aarch64
+preempt_count is per-thread and not just per-cpu, and when context
+switching you generally disable interrupts from one task and restore it
+in the other task. So in order to fix it, we'll need to make some
+modifications to the aarch64 context-switching code.
+
+So - with this being said, we decided that the best way of converting it
+is likely to just leave us with 3 APIs for the time being - and have new
+drivers and code use the new API while we go through and convert the
+rest of the kernel.
+
+FULL CHANGELOG BELOW
+
+Boqun Feng (6):
+  preempt: Introduce HARDIRQ_DISABLE_BITS
+  preempt: Introduce __preempt_count_{sub, add}_return()
+  irq & spin_lock: Add counted interrupt disabling/enabling
+  rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+  rust: sync: lock: Add `Backend::BackendInContext`
+  locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+
+Joel Fernandes (1):
+  preempt: Track NMI nesting to separate per-CPU counter
+
+Lyude Paul (9):
+  irq: Add KUnit test for refcounted interrupt enable/disable
+  rust: Introduce interrupt module
+  rust: sync: Add SpinLockIrq
+  rust: sync: Introduce lock::Backend::Context
+  rust: sync: lock/global: Rename B to G in trait bounds
+  rust: sync: Add a lifetime parameter to lock::global::GlobalGuard
+  rust: sync: Expose lock::Backend
+  rust: sync: lock/global: Add Backend parameter to GlobalGuard
+  rust: sync: lock/global: Add BackendInContext support to GlobalLock
+
+                               --- Changelog ---
+V15 (series-wide):
+* Added a patch for fixing build errors introduced on OpenRISC
+
+* preempt: Introduce HARDIRQ_DISABLE_BITS
+  V14:
+    * Fix HARDIRQ_DISABLE_MASK definition
+
+* preempt: Track NMI nesting to separate per-CPU counter
+* preempt: Introduce __preempt_count_{sub, add}_return()
+  V10:
+    * Add commit message I forgot
+    * Rebase against latest pcpu_hot changes
+  V11:
+    * Remove CONFIG_PROFILE_ALL_BRANCHES workaround from
+      __preempt_count_add_return()
+
+* irq & spin_lock: Add counted interrupt disabling/enabling
+  V10:
+    * Add missing __raw_spin_lock_irq_disable() definition in spinlock.c
+  V11:
+    * Move definition of spin_trylock_irq_disable() into this commit
+    * Get rid of leftover space
+    * Remove unneeded preempt_disable()/preempt_enable()
+  V12:
+    * Move local_interrupt_enable()/local_interrupt_disable() out of
+      include/linux/spinlock.h, into include/linux/irqflags.h
+  V14:
+    * Move local_interrupt_enable()/disable() again, this time into its own
+      header, interrupt_rc.h, in order to fix a hexagon-specific build issue
+      caught by the CKI bot.
+      The reason this is needed is because on most architectures, irqflags.h
+      ends up including <arch/smp.h>. This provides a definition for the
+      raw_smp_processor_id() function which we depend on like so:
+
+                                 <linux/percpu-defs.h>    <arch/smp.h>
+        local_interrupt_disable() → raw_cpu_write() → raw_smp_processor_id()
+
+      Unfortunately, hexagon appears to be one such architecture which does
+      not pull in <arch/smp.h> by default here - causing kernel builds to
+      fail and claim that raw_smp_processor_id() is undefined:
+
+         In file included from kernel/sched/rq-offsets.c:5:
+         In file included from kernel/sched/sched.h:8:
+         In file included from include/linux/sched/affinity.h:1:
+         In file included from include/linux/sched.h:37:
+         In file included from include/linux/spinlock.h:59:
+      >> include/linux/irqflags.h:277:3: error: call to undeclared function
+         'raw_smp_processor_id'; ISO C99 and later do not support implicit
+         function declarations [-Wimplicit-function-declaration]
+           277 |   raw_cpu_write(local_interrupt_disable_state.flags, flags);
+               |   ^
+         include/linux/percpu-defs.h:413:34: note: expanded from macro
+         'raw_cpu_write'
+
+      While including <arch/smp.h> in <linux/irqflags.h> does fix the build
+      on hexagon, it ends up breaking the build on x86_64:
+
+        In file included from kernel/sched/rq-offsets.c:5:
+        In file included from kernel/sched/sched.h:8:
+        In file included from ./include/linux/sched/affinity.h:1:
+        In file included from ./include/linux/sched.h:13:
+        In file included from ./arch/x86/include/asm/processor.h:25:
+        In file included from ./arch/x86/include/asm/special_insns.h:10:
+        In file included from ./include/linux/irqflags.h:22:
+        In file included from ./arch/x86/include/asm/smp.h:6:
+        In file included from ./include/linux/thread_info.h:60:
+        In file included from ./arch/x86/include/asm/thread_info.h:59:
+        ./arch/x86/include/asm/cpufeature.h:110:40: error: use of undeclared
+        identifier 'boot_cpu_data'
+
+          [cap_byte] "i" (&((const char *)boot_cpu_data.x86_capability)[bit >> 3])
+                                          ^
+      While boot_cpu_data is defined in <asm/processor.h>, it's not possible
+      for us to include that header in irqflags.h because we're already
+      inside of <asm/processor.h>.
+
+      As a result, I just concluded there's no reasonable way of having these
+      functions in <linux/irqflags.h> because of how many low level ASM
+      headers depend on it. So, we go with the solution of simply giving
+      ourselves our own header file.
+  V15:
+    * Fix build error on CONFIG_SMP=n reported by Kernel CI
+
+* rust: Introduce interrupt module
+  V10:
+    * Fix documentation typos
+  V11:
+    * Get rid of unneeded `use bindings;`
+    * Move ASSUME_DISABLED into assume_disabled()
+    * Confirm using lockdep_assert_irqs_disabled() that local interrupts are in
+      fact disabled when LocalInterruptDisabled::assume_disabled() is called.
+
+* rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+* rust: sync: Add SpinLockIrq
+  V10:
+    * Also add support to GlobalLock
+    * Documentation fixes from Dirk
+  V11:
+    * Add unit test requested by Daniel Almeida
+  V14:
+    * Improve rustdoc for SpinLockIrqBackend
+
+* rust: sync: Introduce lock::Backend::Context
+  V10:
+    * Fix typos - Dirk
+
+* rust: sync: lock: Add `Backend::BackendInContext`
+  V10:
+    * Fix typos - Dirk/Lyude
+    * Since we're adding support for context locks to GlobalLock as well, let's
+      also make sure to cover try_lock while we're at it and add try_lock_with
+    * Add a private function as_lock_in_context() for handling casting from a
+      Lock<T, B> to Lock<T, B::BackendInContext> so we don't have to duplicate
+      safety comments
+  V11:
+    * Fix clippy::ref_as_ptr error in Lock::as_lock_in_context()
+  V14:
+    * Add benchmark results, rewrite commit message
+
+* rust: sync: lock/global: Rename B to G in trait bounds
+* rust: sync: Add a lifetime parameter to lock::global::GlobalGuard
+* rust: sync: Expose lock::Backend
+* rust: sync: lock/global: Add Backend parameter to GlobalGuard
+* rust: sync: lock/global: Add BackendInContext support to GlobalLock
+* locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+  V10:
+    * Add PREEMPT_RT build fix from Guangbo Cui
+
+Boqun Feng (6):
+  preempt: Introduce HARDIRQ_DISABLE_BITS
+  preempt: Introduce __preempt_count_{sub, add}_return()
+  irq & spin_lock: Add counted interrupt disabling/enabling
+  rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+  rust: sync: lock: Add `Backend::BackendInContext`
+  locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+
+Joel Fernandes (1):
+  preempt: Track NMI nesting to separate per-CPU counter
+
+Lyude Paul (10):
+  openrisc: Include <linux/cpumask.h> in smp.h
+  irq: Add KUnit test for refcounted interrupt enable/disable
+  rust: Introduce interrupt module
+  rust: sync: Add SpinLockIrq
+  rust: sync: Introduce lock::Backend::Context
+  rust: sync: lock/global: Rename B to G in trait bounds
+  rust: sync: Add a lifetime parameter to lock::global::GlobalGuard
+  rust: sync: Expose lock::Backend
+  rust: sync: lock/global: Add Backend parameter to GlobalGuard
+  rust: sync: lock/global: Add BackendInContext support to GlobalLock
+
+ arch/arm64/include/asm/preempt.h     |  18 ++
+ arch/openrisc/include/asm/smp.h      |   2 +
+ arch/s390/include/asm/preempt.h      |  10 +
+ arch/x86/include/asm/preempt.h       |  10 +
+ include/asm-generic/preempt.h        |  14 ++
+ include/linux/hardirq.h              |  16 +-
+ include/linux/interrupt_rc.h         |  63 +++++++
+ include/linux/preempt.h              |  23 ++-
+ include/linux/spinlock.h             |  51 +++--
+ include/linux/spinlock_api_smp.h     |  27 +++
+ include/linux/spinlock_api_up.h      |   8 +
+ include/linux/spinlock_rt.h          |  15 ++
+ kernel/irq/Makefile                  |   1 +
+ kernel/irq/refcount_interrupt_test.c | 109 +++++++++++
+ kernel/locking/spinlock.c            |  29 +++
+ kernel/softirq.c                     |   5 +
+ rust/helpers/helpers.c               |   1 +
+ rust/helpers/interrupt.c             |  18 ++
+ rust/helpers/spinlock.c              |  15 ++
+ rust/helpers/sync.c                  |   5 +
+ rust/kernel/interrupt.rs             |  86 +++++++++
+ rust/kernel/lib.rs                   |   1 +
+ rust/kernel/sync.rs                  |   5 +-
+ rust/kernel/sync/atomic.rs           |   2 +-
+ rust/kernel/sync/lock.rs             |  69 ++++++-
+ rust/kernel/sync/lock/global.rs      |  93 ++++++---
+ rust/kernel/sync/lock/mutex.rs       |   2 +
+ rust/kernel/sync/lock/spinlock.rs    | 272 +++++++++++++++++++++++++++
+ 28 files changed, 914 insertions(+), 56 deletions(-)
+ create mode 100644 include/linux/interrupt_rc.h
+ create mode 100644 kernel/irq/refcount_interrupt_test.c
+ create mode 100644 rust/helpers/interrupt.c
+ create mode 100644 rust/kernel/interrupt.rs
+
+
+base-commit: 559e608c46553c107dbba19dae0854af7b219400
 -- 
 2.52.0
 
