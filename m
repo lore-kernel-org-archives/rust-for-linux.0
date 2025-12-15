@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F3032570E
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 18:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527C132573C
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 18:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765821809; cv=none; b=rUiz2b+3SvORzIFhBuF5KwNiPXdQHFWIIY4rYU8XUJ7rSFB/xkT1dQ6rh0i6QN1tz6KpZms393mJaU3fpPMmsOVpWw584GJulm43HpPBSOUArkc2Hdjpgl+WR8uNN5h4wbLsuSrZYMqq7jBN5IErIWXLI+mbJeE9MmsqpPvDI70=
+	t=1765821811; cv=none; b=D0n0LhTIK9WUP480EseIybiuT9sxScw/FS1Ae/ddZRfPu1ZAPQC+Lopw5znkCPPiNOXmSkRhjaUFLqE8Tb0vOx9Mzt2iwfeLyEbX16B7ro5cWbKz2inaph5kAYLZZK+/2ALzShrS14u1ZuIaz3KVdq95qRAIQm3gjMT8QHNH76c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765821809; c=relaxed/simple;
-	bh=s9cSj+K9Y0k0UzbN2VX0uArP/QEE/E4vsQs2/fsyzSs=;
+	s=arc-20240116; t=1765821811; c=relaxed/simple;
+	bh=fPxAdolV1q9+D0A+THWo+HP/AlBcsMa5ra6MfSfe9+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DLJ8M288q/UYH3yfkWIGn6KeuDI2KWAKky0f5JF2uNyGg/TWgLXcW4BWNrHUGZYwSiMHR16Hd0aR9JLa5btFjtu52Sm45BJG3kUi7Lv3TT1oyEHNF38ZVJl48WWlvurjtnVzFJai+BG2a7mOD/WdSLoVZziR3COLFrdwidsHiB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O3eBDJrS; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=lwGHj5lDBreI/GeMO83BtsMG0IF0WpVZikl6W1nuALRTihT1FTov7/1o+rkrgyrfgjosmRrAq4YGeRfCpidvuPIjX+b0Ffv4isYmYy7lj6yzLGGoywiuoBo5zrm7++wYVRZNj38e1r7sGYgn2MsYd4iP6q1RKWxuHWAhimU5r3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bkbd/+q5; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O3eBDJrS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bkbd/+q5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765821806;
+	s=mimecast20190719; t=1765821805;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d/ey7ksw/+pRqj50E/exPto1IduKCmbLnZyX6h0aAno=;
-	b=O3eBDJrSVFpAjmuzquQY1XQfzEJUSbGao52uuQ24L88ibFEKRlLuRFTFHaMtvUBYHfcDGq
-	vRuvkvbOo3vVaGGyikh16u+/QDYxYXCC7NsDwsOm1NHpp6yNA24NC55/yCeBduAbmSSur6
-	YNWPAlR5HxrCyw5+K55uMYjqEcua1uY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=hPS5Nw8KLa1+bD9ZupFJcOjHObvSWqJUha8JDoIkYoY=;
+	b=bkbd/+q5jKTV6FXmCmbqsXpz1ETetdo7Wd3f+wcod4Cfdy9VDMhpNt5kR+WK3Kr0dJvUeH
+	n0TDuRYO3CzBL2uRbzwDWeurjciWWUP6n/Cu86QQCntoIr8/Q7J9jfTzzzUeSVRZW217ia
+	NA7nYSjo9omOJJrAWyQHPCaWEN9Ev78=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-552-DthgbZdIN9SXfjCY2h123Q-1; Mon,
- 15 Dec 2025 13:02:59 -0500
-X-MC-Unique: DthgbZdIN9SXfjCY2h123Q-1
-X-Mimecast-MFC-AGG-ID: DthgbZdIN9SXfjCY2h123Q_1765821768
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-1LkcYrb2NnOG6FNbIq1MJQ-1; Mon,
+ 15 Dec 2025 13:02:55 -0500
+X-MC-Unique: 1LkcYrb2NnOG6FNbIq1MJQ-1
+X-Mimecast-MFC-AGG-ID: 1LkcYrb2NnOG6FNbIq1MJQ_1765821773
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9438619539BA;
-	Mon, 15 Dec 2025 17:58:43 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E5F3B189C312;
+	Mon, 15 Dec 2025 17:59:35 +0000 (UTC)
 Received: from chopper.lan (unknown [10.22.81.30])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 615A61800294;
-	Mon, 15 Dec 2025 17:58:39 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 105FE180044F;
+	Mon, 15 Dec 2025 17:59:30 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	Will Deacon <will@kernel.org>,
 	Waiman Long <longman@redhat.com>
-Subject: [PATCH v16 06/17] irq: Add KUnit test for refcounted interrupt enable/disable
-Date: Mon, 15 Dec 2025 12:57:53 -0500
-Message-ID: <20251215175806.102713-7-lyude@redhat.com>
+Subject: [PATCH v16 17/17] locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+Date: Mon, 15 Dec 2025 12:58:04 -0500
+Message-ID: <20251215175806.102713-18-lyude@redhat.com>
 In-Reply-To: <20251215175806.102713-1-lyude@redhat.com>
 References: <20251215175806.102713-1-lyude@redhat.com>
 Precedence: bulk
@@ -73,151 +73,90 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-While making changes to the refcounted interrupt patch series, at some
-point on my local branch I broke something and ended up writing some kunit
-tests for testing refcounted interrupts as a result. So, let's include
-these tests now that we have refcounted interrupts.
+From: Boqun Feng <boqun.feng@gmail.com>
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+The semantics of various irq disabling guards match what
+*_irq_{disable,enable}() provide, i.e. the interrupt disabling is
+properly nested, therefore it's OK to switch to use
+*_irq_{disable,enable}() primitives.
+
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
 ---
-V13:
-* Add missing MODULE_DESCRIPTION/MODULE_LICENSE lines
-* Switch from kunit_test_suites(…) to kunit_test_suite(…)
+V10:
+* Add PREEMPT_RT build fix from Guangbo Cui
 
- kernel/irq/Makefile                  |   1 +
- kernel/irq/refcount_interrupt_test.c | 109 +++++++++++++++++++++++++++
- 2 files changed, 110 insertions(+)
- create mode 100644 kernel/irq/refcount_interrupt_test.c
+ include/linux/spinlock.h | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/irq/Makefile b/kernel/irq/Makefile
-index 6ab3a40556670..7b5bb5510b110 100644
---- a/kernel/irq/Makefile
-+++ b/kernel/irq/Makefile
-@@ -20,3 +20,4 @@ obj-$(CONFIG_SMP) += affinity.o
- obj-$(CONFIG_GENERIC_IRQ_DEBUGFS) += debugfs.o
- obj-$(CONFIG_GENERIC_IRQ_MATRIX_ALLOCATOR) += matrix.o
- obj-$(CONFIG_IRQ_KUNIT_TEST) += irq_test.o
-+obj-$(CONFIG_KUNIT) += refcount_interrupt_test.o
-diff --git a/kernel/irq/refcount_interrupt_test.c b/kernel/irq/refcount_interrupt_test.c
-new file mode 100644
-index 0000000000000..b4f224595f261
---- /dev/null
-+++ b/kernel/irq/refcount_interrupt_test.c
-@@ -0,0 +1,109 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * KUnit test for refcounted interrupt enable/disables.
-+ */
-+
-+#include <kunit/test.h>
-+#include <linux/interrupt_rc.h>
-+
-+#define TEST_IRQ_ON() KUNIT_EXPECT_FALSE(test, irqs_disabled())
-+#define TEST_IRQ_OFF() KUNIT_EXPECT_TRUE(test, irqs_disabled())
-+
-+/* ===== Test cases ===== */
-+static void test_single_irq_change(struct kunit *test)
-+{
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+}
-+
-+static void test_nested_irq_change(struct kunit *test)
-+{
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_ON();
-+}
-+
-+static void test_multiple_irq_change(struct kunit *test)
-+{
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_ON();
-+
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_ON();
-+}
-+
-+static void test_irq_save(struct kunit *test)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_irq_restore(flags);
-+	TEST_IRQ_ON();
-+
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_irq_save(flags);
-+	TEST_IRQ_OFF();
-+	local_irq_restore(flags);
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_ON();
-+}
-+
-+static struct kunit_case test_cases[] = {
-+	KUNIT_CASE(test_single_irq_change),
-+	KUNIT_CASE(test_nested_irq_change),
-+	KUNIT_CASE(test_multiple_irq_change),
-+	KUNIT_CASE(test_irq_save),
-+	{},
-+};
-+
-+/* (init and exit are the same */
-+static int test_init(struct kunit *test)
-+{
-+	TEST_IRQ_ON();
-+
-+	return 0;
-+}
-+
-+static void test_exit(struct kunit *test)
-+{
-+	TEST_IRQ_ON();
-+}
-+
-+static struct kunit_suite refcount_interrupt_test_suite = {
-+	.name = "refcount_interrupt",
-+	.test_cases = test_cases,
-+	.init = test_init,
-+	.exit = test_exit,
-+};
-+
-+kunit_test_suite(refcount_interrupt_test_suite);
-+MODULE_AUTHOR("Lyude Paul <lyude@redhat.com>");
-+MODULE_DESCRIPTION("Refcounted interrupt unit test suite");
-+MODULE_LICENSE("GPL");
+diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+index bbbee61c6f5df..72bb6ae5319c7 100644
+--- a/include/linux/spinlock.h
++++ b/include/linux/spinlock.h
+@@ -568,10 +568,10 @@ DEFINE_LOCK_GUARD_1(raw_spinlock_nested, raw_spinlock_t,
+ 		    raw_spin_unlock(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
+-		    raw_spin_lock_irq(_T->lock),
+-		    raw_spin_unlock_irq(_T->lock))
++		    raw_spin_lock_irq_disable(_T->lock),
++		    raw_spin_unlock_irq_enable(_T->lock))
+ 
+-DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq(_T->lock))
++DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq_disable(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_bh, raw_spinlock_t,
+ 		    raw_spin_lock_bh(_T->lock),
+@@ -580,12 +580,11 @@ DEFINE_LOCK_GUARD_1(raw_spinlock_bh, raw_spinlock_t,
+ DEFINE_LOCK_GUARD_1_COND(raw_spinlock_bh, _try, raw_spin_trylock_bh(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1(raw_spinlock_irqsave, raw_spinlock_t,
+-		    raw_spin_lock_irqsave(_T->lock, _T->flags),
+-		    raw_spin_unlock_irqrestore(_T->lock, _T->flags),
+-		    unsigned long flags)
++		    raw_spin_lock_irq_disable(_T->lock),
++		    raw_spin_unlock_irq_enable(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irqsave, _try,
+-			 raw_spin_trylock_irqsave(_T->lock, _T->flags))
++			 raw_spin_trylock_irq_disable(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1(spinlock, spinlock_t,
+ 		    spin_lock(_T->lock),
+@@ -594,11 +593,11 @@ DEFINE_LOCK_GUARD_1(spinlock, spinlock_t,
+ DEFINE_LOCK_GUARD_1_COND(spinlock, _try, spin_trylock(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
+-		    spin_lock_irq(_T->lock),
+-		    spin_unlock_irq(_T->lock))
++		    spin_lock_irq_disable(_T->lock),
++		    spin_unlock_irq_enable(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1_COND(spinlock_irq, _try,
+-			 spin_trylock_irq(_T->lock))
++			 spin_trylock_irq_disable(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1(spinlock_bh, spinlock_t,
+ 		    spin_lock_bh(_T->lock),
+@@ -608,12 +607,11 @@ DEFINE_LOCK_GUARD_1_COND(spinlock_bh, _try,
+ 			 spin_trylock_bh(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1(spinlock_irqsave, spinlock_t,
+-		    spin_lock_irqsave(_T->lock, _T->flags),
+-		    spin_unlock_irqrestore(_T->lock, _T->flags),
+-		    unsigned long flags)
++		    spin_lock_irq_disable(_T->lock),
++		    spin_unlock_irq_enable(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1_COND(spinlock_irqsave, _try,
+-			 spin_trylock_irqsave(_T->lock, _T->flags))
++			 spin_trylock_irq_disable(_T->lock))
+ 
+ DEFINE_LOCK_GUARD_1(read_lock, rwlock_t,
+ 		    read_lock(_T->lock),
 -- 
 2.52.0
 
