@@ -1,65 +1,67 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022074.outbound.protection.outlook.com [52.101.101.74])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022092.outbound.protection.outlook.com [52.101.96.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B930829A9C8
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 11:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7C62459F7;
+	Mon, 15 Dec 2025 11:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.92
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765798845; cv=fail; b=XAfoNLzWpnCz3dgOz29fSINYwFb78W3UDN0aTUnf94PdBhJSL+fa/NKhjNSvBq8wMBFjHdgo88L15V/j+Xhg4Q1AaVlfAMK7scAiaWqirgTm9KENYaka4aplcL7gQ90gz8zojK8dNwwiSuGa6zVXnVqYtQdmuE4f/+RI3twnLBw=
+	t=1765799728; cv=fail; b=qdeZ7r5btaqKNICqYGtmv0+l5KETXMjxooHY9g0nYx20mDGnLbeE3I5bRBsSB60rj3U9QpnlrQQLm/DdkSFBQft1nCKNC2+lxYHA5hrpFZCk2zjjhU3/rDielmnVyATg5inae7x0Klhpqw6jVUiuu4fwfCpcKWd8p2pybnEq/Ik=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765798845; c=relaxed/simple;
-	bh=heo61V/ysn4+V6/oOzuJJg7YwTk+p0iOpa0Xv+2IXvM=;
+	s=arc-20240116; t=1765799728; c=relaxed/simple;
+	bh=4Q5ompEVFbb6E4GKYORe7fHkHjxNZAeP1nbkdbU0gcA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=W6ATW4xJSqZoCXy9JYctGElbTECg+WxW0Lxps8sbGzm7TJpdBZqQhqnekzQzEjfcKRjU/4By4EXtM/25e0lmQGuVJ7gWbje8L+S3ShFExIUSZiSX/yqNSp5KQhWwRXdHFjtHqLjKziEzpvEJP1ZwVSXSsHHDq5iAEvUGWlc4Syg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Rg/xhJft; arc=fail smtp.client-ip=52.101.101.74
+	 Content-Type:MIME-Version; b=eaJ4xB1z9vJmQwuQxhjGcImeG2qcd6LB4jSuYJooYXLmz9/I6n91c16vFTDgNtZ51nStE3w95m91mi1JGxmBK7VRktLnUmBe6U94ujnNKk+mEft80AWxqKGwZoYCEc1CP5QW1jM26wTWQnJT9c9VexFgfnmdVzaFdqwv7khF9vk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=X8OoouFy; arc=fail smtp.client-ip=52.101.96.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Rg/xhJft"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="X8OoouFy"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j+rF4bb85HujUCu+qO4ag1m2ZcU9kbqtt8VpZEVQz8SyMm5upoDmSTzFaMYKzyc3bOr+ONVB8/xVqX1lSEGaclPDtP9CDMjj9Dlut7TGg9rHP1pVG/+PNzk7qzUhK7wIIXu/dIah/nVaIprhBIS52naCy5vvnW26r9Y3Hyh6ro14JsT9l8V98TgOWeJHe01PH+vfZAz8fv3kvNJGubGcYkzzZrvWqtADS8gUbDDyJt2V0dVdT7qbsOk6O0Ct6XI0k1zpMMF4XEflgG9s0JjHFNYDY0O8Ezq7lF1Iw2wFqun0Du6Jq+rA0Ro8vNyC6PR8mOCSzlDvx2uxR6ULxq88Kg==
+ b=GUcC+DfhCNRmkbXVz4wH2Y9F0VobTEBCN7yBVKCHZWwzrrVuSsWsjz0Gqj17uhPeToRfhrkmclJy9tcjF+m1Wxz3aJrPFMp3pFfW1BdyVzs5UrPZt35mq4A4I31nHAA9Zf2FY/LTUJl/lnJZtHO+As2VpWY2Xj6lvjH2Mc0IlP4I2Nj4PFrsWyeIfFk8kn2gmvtaVIYnGfJfMAvQaKDKkRv3GOxeYyWF9624shYES5JiHGzoxS6DcH3OaJM+QQW9nfB+d5VNeg7dJjMp9zprAiJXlB1yqRUSkAX/45MJiRSp3qLZGJF6SdwpSuuYhG8MEfl8GJIXCqDIAfgJdg0eCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TKg3diLlurzzTRZDeeMhMqzLdob/4O4p8rTYuAeARIY=;
- b=HtEJu695+5wRY7xGN0VHjIM0tyhyHtflxoxlnhwPW8q46t9o4c0OimJaMEUkx/Gv8j/vBqwBdeIRwG12Qz5wONepPxQGKBdnrQognTKrKMqLYsE0UsGDyqADX6lQC6bQXKLH7xHKPEqSBu01IvkOnAMDAoxZchaJxnpUr077tsnhBn2paydaOvRXBLOQ18ePn2Y/MzT3UzCpYJ5RuKfS0XuIGawjTrD7C4gR30004ZCr0Qm07OzrGYNiAOAmkotLk3XTVl0s/LwNnJIZ4aGVmAAdr7/9nqooHGH8l7iSzcceqZsl5E1sbCoJsNatKg0zD0V0hzHzBfoNUo4gQGQGKg==
+ bh=PO81E+F2QfRr96bvWjLzMkW0Wm5TSLBJUzTcku9QOyE=;
+ b=qlMhmqHSoL1A3kX7knV7O86Kp+m9dBlTnXJZvxYe9UyHHFiZFxwXcnq6Ef3gP/9JBN4xa1hz2521rzdtKWfhFRWxGY5C8Vz1Yau4oYraKMjWefSDwZDutz6E+ILVxh65RqS9yqkd1hgsR7hkQdTxnQaeQYysJ7wpiNHY+l2BXog/l/A3Boxv0ncj5Vzaa1e1qqRJ0tH6vsAa7ury7hpxf89a5abKwHD+a/+PJ8rgyMDs/4nrbdUhLPwJKlyLm8xewMR5Rn2AtgUFmCtLYSlxa35E2tIRxEjM5G+B/qeBEDZxbwSHjvGfhVg6CTtWsxV2jNbsj+AC/i1C7a4T+u8sPw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TKg3diLlurzzTRZDeeMhMqzLdob/4O4p8rTYuAeARIY=;
- b=Rg/xhJftAbqmcRz/VykH3QfhEjglI5EVbxDIar6veeH9+H69M/IOAxiBQ6EAxgW4aiKc5nnsiYjpN0E25liqrzWdlRV4MuIUGGrk/Vjk8DC+Mgr6vQg9QpSGiVtd4ED01qLh3OXfhGpGeOc+qrZGFPCcDnvnf+56sKEg8UGBKw4=
+ bh=PO81E+F2QfRr96bvWjLzMkW0Wm5TSLBJUzTcku9QOyE=;
+ b=X8OoouFy4vdE5o5LH3zS+7iNvpHi1ibUPf0fu/x3Ad/17udJ8PNS5S1fX08tpV0FYnev1/eOaXQ2QLSYLXAzwlr6PQQDGnP8LxbTjBNsv9VRhoslrJCJ77emKY/DKdTWlteyP01IaaTSnfA9+TiAitkDkU7PlfsYcMav0yo0umI=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO4P265MB6445.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2e1::13) with
+ by CWXP265MB1846.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:31::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Mon, 15 Dec
- 2025 11:40:38 +0000
+ 2025 11:55:23 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%6]) with mapi id 15.20.9412.011; Mon, 15 Dec 2025
- 11:40:38 +0000
-Date: Mon, 15 Dec 2025 11:40:36 +0000
+ 11:55:23 +0000
+Date: Mon, 15 Dec 2025 11:55:21 +0000
 From: Gary Guo <gary@garyguo.net>
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
- <joelagnelf@nvidia.com>, <lyude@redhat.com>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 3/7] gpu: nova-core: create debugfs root in PCI init
- closure
-Message-ID: <20251215114036.302303e0.gary@garyguo.net>
-In-Reply-To: <20251212204952.3690244-4-ttabi@nvidia.com>
-References: <20251212204952.3690244-1-ttabi@nvidia.com>
-	<20251212204952.3690244-4-ttabi@nvidia.com>
+To: Filipe Xavier <felipeaggger@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
+ felipe_life@live.com, linux-kernel@vger.kernel.org, Lyude Paul
+ <lyude@redhat.com>
+Subject: Re: [PATCH v6] rust: add new macro for common bitmap operations
+Message-ID: <20251215115521.1c85fe23.gary@garyguo.net>
+In-Reply-To: <20251205-feat-add-bitmask-macro-v6-1-31fbbf14b15a@gmail.com>
+References: <20251205-feat-add-bitmask-macro-v6-1-31fbbf14b15a@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0237.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:315::20) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO2P265CA0005.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:62::17) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -68,153 +70,202 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB6445:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f75175e-881d-444b-76f3-08de3bcec49b
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB1846:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1388f0f1-044e-4bb7-51cd-08de3bd0d3ef
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|10070799003|1800799024|7053199007;
+	BCL:0;ARA:13230040|10070799003|1800799024|7416014|376014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xwI4zJnB2iBDk/AXyEDoN1OE3Zz0UBsbnw5yGJ7TvYSYQx5/1MeIeFx3sHLK?=
- =?us-ascii?Q?7vcLWHITRv0Ak4ovn/+CrU6tgbrUyJX2PHAdNcNsCGNvt1CZO1N57N/MC+p4?=
- =?us-ascii?Q?DCmqb+/Wbqn0u2ibo0X0yD+SDph6Co9YVqoaVi/CTePPXRa6Itqws1ui78+A?=
- =?us-ascii?Q?VkSXJUPsDjsUAUrq5fML/dfVCXU/9BDJe7m3b6RMX9o8GNBYI1+4tuiR4pr5?=
- =?us-ascii?Q?SLB2Z92BVY+KnxM7wpifm8Hlgdw4LVkNSIwssTCIB/45bkDs5JG8gd/KZQ8l?=
- =?us-ascii?Q?1vyob6DqWED+WZXvDpup70f/IgYBxHTXfUiScmeruCEblFVJ1L0t7hWnpjzy?=
- =?us-ascii?Q?g7dsZgh1DRj1njelJxp93YUxf77C2J8dh6/ky1l40DP5XmbAZNSLj30pg9O7?=
- =?us-ascii?Q?R2GGtJYtjcwo4eAzLjS7w3f6IPLuBJciUqMmCLB+u4b1x8Xk7M6fuTM8cucm?=
- =?us-ascii?Q?aZTnRN6MTVo7ynwf/bBbEG0RlUHxTMmABWIy3gHPaIxTNUmCVP+Jvq/8Vc8c?=
- =?us-ascii?Q?R3edO2Nh/oI3dIag+2iTRkmfKEAggMmgoZWgM1GU3wMzOuRa+MOYgL4D02jE?=
- =?us-ascii?Q?eLTNuF+o6J2qofwS3sqkNcMCs9bhLhQHjnWVm5LFlndxM5XvSOmrfmWuTE+9?=
- =?us-ascii?Q?AK/1HbbesaGDNudx8eIYMsn6W6M3x4jSa5uO9mlQdQLrWT/L5OmDoHmSLy6t?=
- =?us-ascii?Q?mDtqJSiL/puyuYo4DfS1GbOFdPBXgMEKdaWNlIuvjohF0AMtZA+rkZhiUU3x?=
- =?us-ascii?Q?HCcw6U21zMcv7d/GWzWCldeeLBjmupKQAca/dffqzvVIADSqxJXmMH8AtvoV?=
- =?us-ascii?Q?4DJamYzNPqi5scw0lWxzD2H3OP68Gsvj1uc2DKO4p1WKin9AfQIQvJ9o+h21?=
- =?us-ascii?Q?VeMFVpIkCETDV72JcubSOEGBDeXzWhtBIu2BzBShVLcujwxMaNjdEv1dtCbk?=
- =?us-ascii?Q?BXj99YfaPdguD1tM/0Rjg/8X9HE/YODMSjWmMKYCzUNBcYWrp5HI8+JJJ7Yj?=
- =?us-ascii?Q?ijzgofpeXW/vRMo321BJlm/LHOyJY9g4onkf95n6OU8dLPXeg7WstKh7MnOO?=
- =?us-ascii?Q?Ecn72cYf6GOmN338SgO11k463q2b+IjgoNsIzkpHG2X3no1hqRKkWKUh5/oF?=
- =?us-ascii?Q?LVwcnJUbewN/Jm3jbenQxwt4k6cGvAp/8dRvwWvepxXNdWnkCf0i2qug2NoU?=
- =?us-ascii?Q?8zg3wsB7qziA52Rqbve3A2OJCzavnsN23rPQgyw43ixft2zq/IrcbAUmCCv8?=
- =?us-ascii?Q?2y8akCwsQrVuF6/fstvHA1p4jyrh/PdWpZ7/SwNjlKF6y4Dw6xuCTYBgty9L?=
- =?us-ascii?Q?K72Sm/FJP/bOWggf2wFIgB10GxMBljhSP+JqJnz2CX7w+TdvtUV9fneQMetK?=
- =?us-ascii?Q?m3DIhd/VL90OfihDf4A0kSwg4OSMytMPelaWUA/c4fNsqtuW4BlZP8D5WSyV?=
- =?us-ascii?Q?ZzcPBDtSwRZGCQ/dt1xPF1gr4CL4umRP?=
+	=?us-ascii?Q?qx0MQUA34AN/0a2Eb3+OYxzemBTeYhQ52p26rB5AkKAH+huQw/4uA/Cbevt2?=
+ =?us-ascii?Q?KhzmGrzS7lW9MM7wdl0UV1KnH7CcXm7nPlAKh42sZxUAhM9KvIGvHSaMRHfk?=
+ =?us-ascii?Q?m7UbywulQCn36TbePDC9+Lqqa+3Qtenf2Aho4MHOTpLIeIPT1xrW37Yo7w6N?=
+ =?us-ascii?Q?vrUtO/12Ca6+yZOl2VYwjJgTvVq498i6B6bbNranuRawBPr0y8varQhe6JG2?=
+ =?us-ascii?Q?NW5ieaotiJoKllbBpD8kH/YYJaXJ7G22oEmtqvisQtIytPr3QpeY7q664Owe?=
+ =?us-ascii?Q?7xoTnV6pcZt+djkCCSyAN1uCeCKdFWtEVV5Wp5pnkurVu3TB6PgCR2rp4qaY?=
+ =?us-ascii?Q?kTZkrP6eWYnZA5B1DYloAVjlJKs9jLxEdMdH7ojHYPWr9mLo7XGBVfgb9BDN?=
+ =?us-ascii?Q?+3ZtHtOyCkSM1uD+sZNiICxHA+UlQr1BN+37Q29pi8uhiy4Ui0PzTCjKj87x?=
+ =?us-ascii?Q?AWYXD24gKKCVA4lqZfRz0O1JrgXrAnveZtgpb1TZXqjPXHspyeDyHjRfn483?=
+ =?us-ascii?Q?WSjehCWB4jGbNrOjo3vNFvon7Nxclqb66uQiImhWvpfpHXLtiTJWeXKGnLwT?=
+ =?us-ascii?Q?PJ+jhka7IBQHeYG9Sv1OslMHuk6QdOrIbHXnaWoikuifQrDaAlHQQjrEQq4L?=
+ =?us-ascii?Q?XXJ8hLMUVy/UhCO6ub9Uz3PH7Iv08drcPoHvejUTYOP2Gqjf7UvS+Gqju2/h?=
+ =?us-ascii?Q?i17loaftKAyPRXvpUbvMs6Tz1+NgS610yom0erlgzdWM6E4Y6x0HkjFDr8aY?=
+ =?us-ascii?Q?Zu0BLkqCNpYGWaDIA7ENE4lERoSYU7zALQ/gHzQfs12dv4Xb1OUBLuTdmawB?=
+ =?us-ascii?Q?9QgfVdC/c/8xVoer6VukQ26vFrov58OsSKP7e8rgQ/rZwDnjFW8rvTDxol7a?=
+ =?us-ascii?Q?xYIRjGsogQStajU7rRRy7D0X+Jrnbqn5q8KqOUGDJlW0r/AHu8UtunjjBnNj?=
+ =?us-ascii?Q?996mDRfxjx4ElC6OqWFqJyJ8lqxOdshoJnmGfGKoEhJ1Bwmjc/w7twTym6Hb?=
+ =?us-ascii?Q?7TJE+FRNMIbPfPvgDGm83KmaeNx3FlN1WG7HDCYFwnBj/PsRol6vl29fhgF2?=
+ =?us-ascii?Q?sdSw6cnm/ZPCjyhmLcm0rdjGmhe/lILlPCxnbDdo69SXbCjwuV8StIdRezjo?=
+ =?us-ascii?Q?2CDdmfK9zoPLgKqHk0OEgzh/93Rs3mO+1H1Y/kTthpZgS8IIyuxdDV3Xrxtk?=
+ =?us-ascii?Q?fozmFSsOr924r+RQJcmIsv/lauOvGPPSApEwTOiDNU5gBl27Nfi0BeFFZyDM?=
+ =?us-ascii?Q?X7cLQeZFn90N9mLan9ldH5amBBDmCthp+wvlbU4I4ax3/WHcx/0cI8MprrmY?=
+ =?us-ascii?Q?AIPVdEgtWt4VEW38zlIUhoUVbaN4ghYJDshN75ExZV3I7M/ZQHxZVi5TMshm?=
+ =?us-ascii?Q?u9DZfYxFVVwcMSOTXzOE1veitYwiN/S+kAXm+Oy+HKrDTY7h5w=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?jYg564LnyI49tOaYt8NDD+RMkW8NBt6qQLU+4ya6NotLWWCizNrHxouqBuSV?=
- =?us-ascii?Q?Cu/MZQeX8vD8orAhmXQykKbmcl/H7sIaN/htfxG1Cr+0Z1VlSzgybHJoOnNb?=
- =?us-ascii?Q?D/nt2sHYszQXAvtcaOGqgzTmsBLqbeeLatpntqq1CrWoMuwlJj+U7cv+wvtS?=
- =?us-ascii?Q?izUlysdTw5mW7onrr3jP7n8CXASlxeSDXJ6nQL/81qm1fT9f2qe6WvgdleTz?=
- =?us-ascii?Q?tVft28Pg+m5Eb0p7VxDSCK+drvhQ/bZRhVCKXUG5O2fOXLVK5XdJXujh7LEy?=
- =?us-ascii?Q?ca4dGROmH++uOv5pH4jmg7tmjDXlstyKJ7F3TDAirFAZQSxcbmoJzWjlRmOx?=
- =?us-ascii?Q?SUHvYHjWbOYtv0t+fb9c9+bCnEEE0SLy0ZO5E8PDyepUo9dVDlq5nmQd+e1b?=
- =?us-ascii?Q?2Djk4LW0NGUcJSk6ZYEFKPtSqHN51EkHAR7UEhSNPTpB1dk3diuq6tnaFVqh?=
- =?us-ascii?Q?bR7AYIwk/QdVgtJqWo6KgP99RVwo/gvoOFXCNZVLO1cH9mlRLTnhQhcek/cd?=
- =?us-ascii?Q?mHF7xlaTHPbQapaoFfy2bNJ4MWpmNhhQa9rICbuSAsldMu4KEzeLeVK6t4DN?=
- =?us-ascii?Q?t5cUAVExbsKis9UxexMmDu5U2WA4yg0E0dUbGbpoJOWgc9eP3Ldcz0gHs5wg?=
- =?us-ascii?Q?M5yXnqymYCV7GokX6z/B0hkjCWdMjVC9Zsoz2EBisU7L0UerrOL7eCaMYF1V?=
- =?us-ascii?Q?d3dBDNgUdDiLB08pRPROHYuHndIhK/YdcdtIU4SLvC4e1ZIm4jSnQrtKzw+5?=
- =?us-ascii?Q?ntRCOsUZJ/UCzYsZJDGcHMVVDucvPlKawhAggYJFfZNIbO4Fk7DbTi67n562?=
- =?us-ascii?Q?DLVP0CtxGNViZttr4PuiYvdKQDgCVimK3xSI6YgGzSBSfPaLlJuA8P+3/pV3?=
- =?us-ascii?Q?lr4mFZEJIeOVQ7wYzjcT36erXp5TWJJdgc95PnxsVMOQ8UuiXyGDu6WwIoJ6?=
- =?us-ascii?Q?8I8r3j9hP1a+Z3XR4xTbDnQD9ZDfKmxAqPyU87CVcD6eLs5bPzrb/LPuLANO?=
- =?us-ascii?Q?LHjg3Is5iBlU7BftRwbJPDC2LLaJ8hR5zVEaSHx+WQlSjt+1JYjCVAltKWZ4?=
- =?us-ascii?Q?oOIdTudQB05Gp1gSq2IEqxssUxEo77sigUer4v1KOUsjOczBqiNr1Tc5OZ3I?=
- =?us-ascii?Q?gFsPYWu+0xZrp7q0DuyVKE/JjbnKm7avY6NgeQqiE6aofk+Ecrzw/emt1bj6?=
- =?us-ascii?Q?uvfsPAPLiY+1knNwXvdx06dHaCie1FIKCX6voWaepimnViW3lIBqlBnJAgoy?=
- =?us-ascii?Q?uNS3S2hwU2LtG3Oaif3/y+vKndVqoJPKsscT2zhmo/BQ92brO23BmtDs6bwm?=
- =?us-ascii?Q?j0chxn2kVLihx+imCh3Mx5QbG4dVWQM1nT6KPel3NhT4JSswJo43s3qSPpSH?=
- =?us-ascii?Q?yz32lfFw1ymmp34imfe+mccsPitVS9o7jzvZ6I2avb5VklKRFiTsjp6dFgxJ?=
- =?us-ascii?Q?IJcz4t/XS9qLIImLYE5UznW8Y3mx0KgJf6grtWwPnntxeRVMYqyx1h9UMR3d?=
- =?us-ascii?Q?VRYUWQDy8q0j0uYDHT5jrQtR21jzTYqs6SwFGrLUbUxowf5JsZ9fFQchZRuL?=
- =?us-ascii?Q?mJ/72N+Us+1mnkTQastYO96aUi9LE1kXQ3VcdTAGI1g+9CNVYL/TaIPYjI6t?=
- =?us-ascii?Q?sA=3D=3D?=
+	=?us-ascii?Q?G7U9ajGdXYxUoThDF9RiP0Ohg/mjeVHj5veLa+XxI7z+ChmZutgbI4JLxlhp?=
+ =?us-ascii?Q?iBHTo6p1eVJylH6fHo7uqxSOnk9pkQZGOqp6K+ye5cn3Gpv2C/VnTVWt+dgb?=
+ =?us-ascii?Q?i8++JMHattiU1EuEEoN1eM9wToypLVM6XYtBu8qfYpss/DpQiqhRlYtOyGwj?=
+ =?us-ascii?Q?JJph/jUKL9iMlYwCf6CoN5EZQ8RpYHVLx/SkV7nxQ0Qkk+PdNW+6HCfqqtx8?=
+ =?us-ascii?Q?zfR3GmdNiFqydf/tK0aQQ+D8PMJyVUAqVy+rrsPlhhq3h56TjmwbH6yuYQRc?=
+ =?us-ascii?Q?MO6J8WgejLSZD4lV11fvuYooNEbMuo4bktcJWR7oJaoHx6WIAMq+P1dt59/7?=
+ =?us-ascii?Q?psE641yhJ6nAfhozGQGRpMKFnQL4R63HffTpFiJgUTIi9SEAhACKxb19ptG7?=
+ =?us-ascii?Q?nmZiuqo1FodIwdx6osk9Zl+kTw4qETTSznwDFcIv5rB5DZjByNJ2uGwMmieS?=
+ =?us-ascii?Q?Rl/4Aos1BYK5xuFIF4nfAZmvAal8xIt088NM1i8C3Vks0CeMNYLETj5AO/Kz?=
+ =?us-ascii?Q?FcbO9XvQGY4EWK7XfagzSScsVSFQXHdIUOvBo9nOF3gu+dkDDfmHpK/DOXC3?=
+ =?us-ascii?Q?mQJXcekMXafe/DU6FAuID8nzGU0rg+IOblOeYzEITorvrnuE7ah+zeBL2RqK?=
+ =?us-ascii?Q?XZe/zrMrPbh5vYnZmnDo867oPnUx/Hg34V2ulJPeWGcvJbso9fZkB6JZuG6o?=
+ =?us-ascii?Q?6fvmvz+zJRUsst9gprL7it5GIE1qiAVc/I/w7ZexbxU433bF5XuxeqI7mvv2?=
+ =?us-ascii?Q?Ig1EOUT3jfWxFqiXUbAitkj/E1Ch5YiA6aujQeFNvbGpR3axDe7foPmJKdCV?=
+ =?us-ascii?Q?ahW+JKzQQJjV7hCPo6s9rRCXwK3z1kqIaigSTErZHV9qbKfcxOVixJy3o9kI?=
+ =?us-ascii?Q?Pu6PgsuqGb81HurAxbSbSf8tf5tHqVHnvR/2ssmFWgTpI5DwklU4NOrqlwvX?=
+ =?us-ascii?Q?PNcstl2jOJUpC3qeF+gBfpRCptC4Tc4Wvm670+gTibol+Qy0GBADabyByzBS?=
+ =?us-ascii?Q?JVq214VoWd+bnCW5QHQFLuKQO4EDde+wrd02BloVSjxn+WrFSrnlKzpnsnx+?=
+ =?us-ascii?Q?/Ld6y9DiA2DWUPB3nZXrJF0kSoXGx/HLefjzzAIxfc3Ov7bBxWgoXc4csF44?=
+ =?us-ascii?Q?1S33PHEpRRXljYwdXVH0fxMapNYFokKrXHocoCG3M5h9eb0aOg/o/wfJCkQv?=
+ =?us-ascii?Q?gYhS9i+v8jaSrLTcgSxCkYdnbi/VKp+iIp7Yg1ruO5Qt3Ka5gzZ3P+tLNXov?=
+ =?us-ascii?Q?eU8d6P9HAO4a9BDRx4PMPS3DIHBB+xXQhqF7Codov+sdbDZz7WKm3Qsp4wJn?=
+ =?us-ascii?Q?kQWTyL2BTqlu1cu5Z27gnpMeVFTxuV1J6f98RInx0Q8Mqi//EVJ47TsPwr5h?=
+ =?us-ascii?Q?uXh/ptQevFjKuYtAUzbxIBHseSKU61yuHe5AoL0JeA0jaB0lIATz8nQpdNP9?=
+ =?us-ascii?Q?5jPIJD6h2ZxpdOlaa9dUU1vk7Au2+wMF/9VPf9Is2rRPw2TTTr2xfw1jzPxb?=
+ =?us-ascii?Q?+a+5qtRT7Fg2Xep9DnH77SpsJredgF5/fYBf8tK/0CK6ZDxKsn5sA88kklNE?=
+ =?us-ascii?Q?K0FnnV/BrikpB+x6oUE3GyxaF70lxEWCTSNE6WCmEHvf2desLv/zaJ1pitkj?=
+ =?us-ascii?Q?rQ=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f75175e-881d-444b-76f3-08de3bcec49b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1388f0f1-044e-4bb7-51cd-08de3bd0d3ef
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2025 11:40:38.2365
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2025 11:55:22.9730
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: V2j4nIahfdBnf45Gm5krADyCrhQP0g+FRP5X2JVUYWlnnSQbQr1Jfcps8X6UVVe1ZgBD5lBMhaG5PQJrF/9wNQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6445
+X-MS-Exchange-CrossTenant-UserPrincipalName: aQASX1n+7TeRzCQEcdyEozOylO20mpsj+mgOL3Q/03uAnQGuhc9GULD0NuVrT6WPvdbrtpGofuoCiXA/j3WkSg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB1846
 
-On Fri, 12 Dec 2025 14:49:48 -0600
-Timur Tabi <ttabi@nvidia.com> wrote:
+On Fri, 05 Dec 2025 07:15:17 -0300
+Filipe Xavier <felipeaggger@gmail.com> wrote:
 
-> Create the 'nova_core' root debugfs entry when the driver loads.
+> We have seen a proliferation of mod_whatever::foo::Flags
+> being defined with essentially the same implementation
+> for BitAnd, BitOr, contains and etc.
 > 
-> Normally, non-const global variables need to be protected by a
-> mutex.  Instead, we use unsafe code, as we know the entry is never
-> modified after the driver is loaded.  This solves the lifetime
-> issue of the mutex guard, which would otherwise have required the
-> use of `pin_init_scope`.
+> This macro aims to bring a solution for this,
+> allowing to generate these methods for user-defined structs.
+> With some use cases in KMS and upcoming GPU drivers.
 > 
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/We.20really.20need.20a.20common.20.60Flags.60.20type
+> Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
+> Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Suggested-by: Lyude Paul <lyude@redhat.com>
 > ---
->  drivers/gpu/nova-core/nova_core.rs | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
+> Changes in v6:
+> - New methods: add new methods contains_any and contains_all.
+> - Link to v5: https://lore.kernel.org/r/20251109-feat-add-bitmask-macro-v5-1-9d911b207ef4@gmail.com
 > 
-> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
-> index 7d7b75650b04..591edede4376 100644
-> --- a/drivers/gpu/nova-core/nova_core.rs
-> +++ b/drivers/gpu/nova-core/nova_core.rs
-> @@ -2,7 +2,7 @@
->  
->  //! Nova Core GPU Driver
->  
-> -use kernel::{error::Error, pci, prelude::*, InPlaceModule};
-> +use kernel::{error::Error, pci, prelude::*, InPlaceModule, debugfs::Dir};
->  use pin_init::{PinInit, pinned_drop};
->  
->  #[macro_use]
-> @@ -24,6 +24,8 @@
->  
->  pub(crate) const MODULE_NAME: &kernel::str::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
->  
-> +static mut DEBUGFS_ROOT: Option<Dir> = None;
+> Changes in v5:
+> - Docs: improve macro documentation.
+> - Link to v4: https://lore.kernel.org/r/20251026-feat-add-bitmask-macro-v4-1-e1b59b4762bc@gmail.com
+> 
+> Changes in v4:
+> - Use enum: changed flag type from struct to enum.
+> - Minor fix: airect casting (flag as $ty) instead of field access (.0).
+> - Link to v3: https://lore.kernel.org/r/20250411-feat-add-bitmask-macro-v3-1-187bd3e4a03e@gmail.com
+> 
+> Changes in v3:
+> - New Feat: added support to declare flags inside macro use.
+> - Minor fixes: used absolute paths to refer to items, fix rustdoc and fix example cases.
+> - Link to v2: https://lore.kernel.org/r/20250325-feat-add-bitmask-macro-v2-1-d3beabdad90f@gmail.com
+> 
+> Changes in v2:
+> - rename: change macro and file name to impl_flags.
+> - negation sign: change char for negation to `!`. 
+> - transpose docs: add support to transpose user provided docs.
+> - visibility: add support to use user defined visibility.
+> - operations: add new operations for flag, 
+> to support use between bit and bitmap, eg: flag & flags.
+> - code style: small fixes to remove warnings.
+> - Link to v1: https://lore.kernel.org/r/20250304-feat-add-bitmask-macro-v1-1-1c2d2bcb476b@gmail.com
+> ---
+>  rust/kernel/impl_flags.rs | 243 ++++++++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs        |   2 +
+>  rust/kernel/prelude.rs    |   1 +
+>  3 files changed, 246 insertions(+)
+> 
+> diff --git a/rust/kernel/impl_flags.rs b/rust/kernel/impl_flags.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..aff6f14bc2f6097e78ba21bb13d124ff999b376a
+> --- /dev/null
+> +++ b/rust/kernel/impl_flags.rs
+> @@ -0,0 +1,243 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/// Common helper for declaring bitflag and bitmask types.
+> +///
+> +/// This macro handles:
+> +/// - A struct representing a bitmask, and an enumerator representing bitflags which
+> +/// may be used in the aforementioned bitmask.
+> +/// - Implementations of common bitmap op. ([`::core::ops::BitOr`], [`::core::ops::BitAnd`], etc.).
+> +/// - Utility methods such as `.contains()` to check flags.
+> +///
+> +/// # Examples
+> +///
+> +/// Defining and using impl_flags:
+> +///
+> +/// ```
+> +/// use kernel::impl_flags;
+> +///
+> +/// impl_flags!(
+> +///     /// Represents multiple permissions.
+> +///     #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
+> +///     pub struct Permissions(u32);
+> +///     /// Represents a single permission.
+> +///     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> +///     pub enum Permission {
+> +///         Read    = 1 << 0,
+> +///         Write   = 1 << 1,
+> +///         Execute = 1 << 2,
+> +///     }
+> +/// );
+> +///
+> +/// // Combine multiple permissions using operation OR (`|`).
+> +/// let read_write: Permissions = Permission::Read | Permission::Write;
+> +///
+> +/// assert!(read_write.contains(Permission::Read));
+> +/// assert!(read_write.contains(Permission::Write));
+> +/// assert!(!read_write.contains(Permission::Execute));
+> +/// assert!(read_write.contains_any(Permission::Read | Permission::Execute));
+> +/// assert!(read_write.contains_all(Permission::Read | Permission::Write));
+> +///
+> +/// // Removing a permission with operation AND (`&`).
+> +/// let read_only: Permissions = read_write & Permission::Read;
+> +/// assert!(read_only.contains(Permission::Read));
+> +/// assert!(!read_only.contains(Permission::Write));
+> +///
+> +/// // Toggling permissions with XOR (`^`).
+> +/// let toggled: Permissions = read_only ^ Permission::Read;
+> +/// assert!(!toggled.contains(Permission::Read));
+> +///
+> +/// // Inverting permissions with negation (`!`).
+> +/// let negated = !read_only;
+> +/// assert!(negated.contains(Permission::Write));
 
-Please don't use `static mut`. If you need anything associcated with the
-lifetime of the driver, please just put it into the module.
+Your implementation of `!` does not specify whether it may contain bit
+flags that are not defined. In this example, `negated` contains bit 3~31
+as well despite not defined anywhere. Same for `^` implementation.
 
-> +
->  #[pin_data(PinnedDrop)]
->  struct NovaCoreModule {
->      #[pin]
-> @@ -33,6 +35,13 @@ struct NovaCoreModule {
->  impl InPlaceModule for NovaCoreModule {
->      fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, Error> {
->          pr_info!("NovaCore GPU driver loaded\n");
-> +
-> +        let dir = Dir::new(kernel::c_str!("nova_core"));
-> +
-> +        // SAFETY: we are the only driver code running, so there cannot be any concurrent access to
-> +        // `DEBUGFS_ROOT`.
-> +        unsafe { DEBUGFS_ROOT = Some(dir) };
-> +
->          try_pin_init!(Self {
->              _driver <- kernel::driver::Registration::new(MODULE_NAME, module),
->          })
-> @@ -42,6 +51,9 @@ fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, Error> {
->  #[pinned_drop]
->  impl PinnedDrop for NovaCoreModule {
->      fn drop(self: Pin<&mut Self>) {
-> +        // SAFETY: we are the only driver code running, so there cannot be any concurrent access to
-> +        // `DEBUGFS_ROOT`.
-> +        unsafe { DEBUGFS_ROOT = None };
+AFAIK this is a similar behaviour to bitflags crate v1 and in v2 they're
+changing the impl to unset unknown flags. For a bitflags that's only ever
+used in the driver itself, either behaviour makes sense, but it might be a
+safer approach to unset all unknown flags in flag operations.
 
-Sorry, I missed this from my previous email. But if you put this struct
-inside module itself, the dtor will automatically be run on module unload.
+bitflags 2.x provides a `_ = !0` approach to mark all bits as known.
+
+(Yes I know you currently do not expose any methods to get raw values, but
+we'll either have that in the future, or currently you can do `flags.0`
+directly in the same module)
 
 Best,
 Gary
-
->      }
->  }
->  
-
