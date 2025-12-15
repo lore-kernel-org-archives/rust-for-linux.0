@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75D632549B
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 18:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A1D253932
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 18:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765821746; cv=none; b=KUEQ2Ia0+HsKxju8DH8bRc6g/PueI8VvpvWc2pGusUh7TlpBMQdyALjOyDIHc7Vm96SOoUhOFVqi8poCdrjEAwh8AH3evvzkDT4LT+3QfzqW9vWVfp7yPoC5nmOOqfV8BnkofAgeYzh/K8aspn1YwcXHZszjzyVKUoNwWK78b9A=
+	t=1765821779; cv=none; b=DJby5dkNZy2RmtUPOX0I6hOze8p1yULC4d4RZgwXkSduhGb45kWP+sYF17i4HTGopxx65bGdvmppf/S7KCnsN7+SR3jLd4FICOHioWCBJoHOCtyoqVjAX28OtsLCQ3Pl3TAeeSF5BjqgwOUnKAD9gccNplvFz5U2c7mslJkGXac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765821746; c=relaxed/simple;
-	bh=4KmugcrHydZtA4FvS83IMjLfuFNJu3ywAxEr3DryFOw=;
+	s=arc-20240116; t=1765821779; c=relaxed/simple;
+	bh=V+CYd43G0Rxq8MaOFhL0sj51fwZ35kG9ivvYSUylXvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wq8UJLSRVejytsmsNxlDR1yA5nFFCJxZ+hC6IUAAYXAID2ANlbut6izszrqDpQ4NefX1loTPAM22ff+xAxZNhwIJQXUwns8vcVxJD1dLfN0cGc79WMMwwaS5DB6mvZZ9Kbu75GzKojpD0uYglaaQH0JMulTw7xSpRTP5Wg1eAH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UVCO3i06; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=hLr7t5FbDq2I2R4EuQh/tjR0w4kGVleeF3FUk7BdM4rdpfHMcMeqck8Sa9GJimJPi3fT7yhB1YzgZBlv7AuL/FeMjizws0grbsDl6XMJnqJLjRbcTz5TJUu7lrQgfEYojEu8y1YYk+6rXOOO4rZEZWZw2ijvORz5/03lK5icaco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eNZBGVov; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UVCO3i06"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eNZBGVov"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765821743;
+	s=mimecast20190719; t=1765821775;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HJ5+HqZXS7lh9wbJ+hRTtrtZrrubRkkg6uazMC6eVC0=;
-	b=UVCO3i06KQ9LG+XeRrzOBlYmYSv2bMx7lZ+dlBHEsUXy8BUdAKbSsnxfJy1H5KP0gCD6Rz
-	91wrm/Gh/ffE/Q28LCxOt6bXmeHvv7wWoOlDnV7P/d3VRF0z0Gjhi2EV4xzH5EBE+q8wrN
-	Ef+9zF3Mng8/HrSr1CgUR/OGR+zUliQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=TjqIueDDstKW3uLG/uaM+O+TnIyJC2fCUs0r35KoPk0=;
+	b=eNZBGVovPjta9jAg8M2jPl+T1OAewY7Y2GTLk5iHsL2x/6IQO2LQk/Q7Krhh9KZiYnLjj3
+	0P/9/dSdp3Koy1wzqu2GOLDutvFYrS6L4Zp4gn9G7RNfItkOtGyuL6WnzWUA8Cmv2Fe29S
+	xOiwqn2zQfmQ2D+Ma8vOL8HnN5dB6C0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-449-CFISnRXjNhaZS1TLiIcrAg-1; Mon,
- 15 Dec 2025 13:02:13 -0500
-X-MC-Unique: CFISnRXjNhaZS1TLiIcrAg-1
-X-Mimecast-MFC-AGG-ID: CFISnRXjNhaZS1TLiIcrAg_1765821727
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-460-74QAVwWBMRmgYe5elRjSAg-1; Mon,
+ 15 Dec 2025 13:02:50 -0500
+X-MC-Unique: 74QAVwWBMRmgYe5elRjSAg-1
+X-Mimecast-MFC-AGG-ID: 74QAVwWBMRmgYe5elRjSAg_1765821764
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8042818E68F3;
-	Mon, 15 Dec 2025 17:58:18 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7504B1886248;
+	Mon, 15 Dec 2025 17:59:16 +0000 (UTC)
 Received: from chopper.lan (unknown [10.22.81.30])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DD053180045B;
-	Mon, 15 Dec 2025 17:58:14 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CF4B9180044F;
+	Mon, 15 Dec 2025 17:59:11 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	Will Deacon <will@kernel.org>,
 	Waiman Long <longman@redhat.com>
-Subject: [PATCH v16 01/17] preempt: Introduce HARDIRQ_DISABLE_BITS
-Date: Mon, 15 Dec 2025 12:57:48 -0500
-Message-ID: <20251215175806.102713-2-lyude@redhat.com>
+Subject: [PATCH v16 13/17] rust: sync: Add a lifetime parameter to lock::global::GlobalGuard
+Date: Mon, 15 Dec 2025 12:58:00 -0500
+Message-ID: <20251215175806.102713-14-lyude@redhat.com>
 In-Reply-To: <20251215175806.102713-1-lyude@redhat.com>
 References: <20251215175806.102713-1-lyude@redhat.com>
 Precedence: bulk
@@ -76,78 +76,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-From: Boqun Feng <boqun.feng@gmail.com>
+While a GlobalLock is always going to be static, in the case of locks with
+explicit backend contexts the GlobalGuard will not be 'static and will
+instead share the lifetime of the context. So, add a lifetime parameter to
+GlobalGuard to allow for this so we can implement GlobalGuard support for
+SpinlockIrq.
 
-In order to support preempt_disable()-like interrupt disabling, that is,
-using part of preempt_count() to track interrupt disabling nested level,
-change the preempt_count() layout to contain 8-bit HARDIRQ_DISABLE
-count.
-
-Note that HARDIRQ_BITS and NMI_BITS are reduced by 1 because of this,
-and it changes the maximum of their (hardirq and nmi) nesting level.
-
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Lyude Paul <lyude@redhat.com>
-
 ---
-V14:
-* Fix HARDIRQ_DISABLE_MASK definition
+ rust/kernel/sync/lock/global.rs | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
- include/linux/preempt.h | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-index d964f965c8ffc..f07e7f37f3ca5 100644
---- a/include/linux/preempt.h
-+++ b/include/linux/preempt.h
-@@ -17,6 +17,7 @@
-  *
-  * - bits 0-7 are the preemption count (max preemption depth: 256)
-  * - bits 8-15 are the softirq count (max # of softirqs: 256)
-+ * - bits 16-23 are the hardirq disable count (max # of hardirq disable: 256)
-  *
-  * The hardirq count could in theory be the same as the number of
-  * interrupts in the system, but we run all interrupt handlers with
-@@ -26,29 +27,34 @@
-  *
-  *         PREEMPT_MASK:	0x000000ff
-  *         SOFTIRQ_MASK:	0x0000ff00
-- *         HARDIRQ_MASK:	0x000f0000
-- *             NMI_MASK:	0x00f00000
-+ * HARDIRQ_DISABLE_MASK:	0x00ff0000
-+ *         HARDIRQ_MASK:	0x07000000
-+ *             NMI_MASK:	0x38000000
-  * PREEMPT_NEED_RESCHED:	0x80000000
-  */
- #define PREEMPT_BITS	8
- #define SOFTIRQ_BITS	8
--#define HARDIRQ_BITS	4
--#define NMI_BITS	4
-+#define HARDIRQ_DISABLE_BITS	8
-+#define HARDIRQ_BITS	3
-+#define NMI_BITS	3
+diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+index 06d62ad02f90d..be17a30c66bf8 100644
+--- a/rust/kernel/sync/lock/global.rs
++++ b/rust/kernel/sync/lock/global.rs
+@@ -77,14 +77,14 @@ pub unsafe fn init(&'static self) {
+     }
  
- #define PREEMPT_SHIFT	0
- #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
--#define HARDIRQ_SHIFT	(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
-+#define HARDIRQ_DISABLE_SHIFT	(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
-+#define HARDIRQ_SHIFT	(HARDIRQ_DISABLE_SHIFT + HARDIRQ_DISABLE_BITS)
- #define NMI_SHIFT	(HARDIRQ_SHIFT + HARDIRQ_BITS)
+     /// Lock this global lock.
+-    pub fn lock(&'static self) -> GlobalGuard<G> {
++    pub fn lock(&'static self) -> GlobalGuard<'static, G> {
+         GlobalGuard {
+             inner: self.inner.lock(),
+         }
+     }
  
- #define __IRQ_MASK(x)	((1UL << (x))-1)
+     /// Try to lock this global lock.
+-    pub fn try_lock(&'static self) -> Option<GlobalGuard<G>> {
++    pub fn try_lock(&'static self) -> Option<GlobalGuard<'static, G>> {
+         Some(GlobalGuard {
+             inner: self.inner.try_lock()?,
+         })
+@@ -94,11 +94,11 @@ pub fn try_lock(&'static self) -> Option<GlobalGuard<G>> {
+ /// A guard for a [`GlobalLock`].
+ ///
+ /// See [`global_lock!`] for examples.
+-pub struct GlobalGuard<G: GlobalLockBackend> {
+-    inner: Guard<'static, G::Item, G::Backend>,
++pub struct GlobalGuard<'a, G: GlobalLockBackend> {
++    inner: Guard<'a, G::Item, G::Backend>,
+ }
  
- #define PREEMPT_MASK	(__IRQ_MASK(PREEMPT_BITS) << PREEMPT_SHIFT)
- #define SOFTIRQ_MASK	(__IRQ_MASK(SOFTIRQ_BITS) << SOFTIRQ_SHIFT)
-+#define HARDIRQ_DISABLE_MASK	(__IRQ_MASK(HARDIRQ_DISABLE_BITS) << HARDIRQ_DISABLE_SHIFT)
- #define HARDIRQ_MASK	(__IRQ_MASK(HARDIRQ_BITS) << HARDIRQ_SHIFT)
- #define NMI_MASK	(__IRQ_MASK(NMI_BITS)     << NMI_SHIFT)
+-impl<G: GlobalLockBackend> core::ops::Deref for GlobalGuard<G> {
++impl<'a, G: GlobalLockBackend> core::ops::Deref for GlobalGuard<'a, G> {
+     type Target = G::Item;
  
- #define PREEMPT_OFFSET	(1UL << PREEMPT_SHIFT)
- #define SOFTIRQ_OFFSET	(1UL << SOFTIRQ_SHIFT)
-+#define HARDIRQ_DISABLE_OFFSET	(1UL << HARDIRQ_DISABLE_SHIFT)
- #define HARDIRQ_OFFSET	(1UL << HARDIRQ_SHIFT)
- #define NMI_OFFSET	(1UL << NMI_SHIFT)
+     fn deref(&self) -> &Self::Target {
+@@ -106,7 +106,7 @@ fn deref(&self) -> &Self::Target {
+     }
+ }
  
+-impl<G: GlobalLockBackend> core::ops::DerefMut for GlobalGuard<G>
++impl<'a, G: GlobalLockBackend> core::ops::DerefMut for GlobalGuard<'a, G>
+ where
+     G::Item: Unpin,
+ {
+@@ -157,7 +157,7 @@ impl<T: ?Sized, G: GlobalLockBackend> GlobalLockedBy<T, G> {
+     /// Access the value immutably.
+     ///
+     /// The caller must prove shared access to the lock.
+-    pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<G>) -> &'a T {
++    pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<'_, G>) -> &'a T {
+         // SAFETY: The lock is globally unique, so there can only be one guard.
+         unsafe { &*self.value.get() }
+     }
+@@ -165,7 +165,7 @@ pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<G>) -> &'a T {
+     /// Access the value mutably.
+     ///
+     /// The caller must prove shared exclusive to the lock.
+-    pub fn as_mut<'a>(&'a self, _guard: &'a mut GlobalGuard<G>) -> &'a mut T {
++    pub fn as_mut<'a>(&'a self, _guard: &'a mut GlobalGuard<'_, G>) -> &'a mut T {
+         // SAFETY: The lock is globally unique, so there can only be one guard.
+         unsafe { &mut *self.value.get() }
+     }
+@@ -235,7 +235,7 @@ pub fn get_mut(&mut self) -> &mut T {
+ ///     /// Increment the counter in this instance.
+ ///     ///
+ ///     /// The caller must hold the `MY_MUTEX` mutex.
+-///     fn increment(&self, guard: &mut GlobalGuard<MY_MUTEX>) -> u32 {
++///     fn increment(&self, guard: &mut GlobalGuard<'_, MY_MUTEX>) -> u32 {
+ ///         let my_counter = self.my_counter.as_mut(guard);
+ ///         *my_counter += 1;
+ ///         *my_counter
 -- 
 2.52.0
 
