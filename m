@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6632EC571
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 18:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2DF334C31
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 18:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765821824; cv=none; b=FgULi7EV6AKv3ubwM6oGEQyx7biTGXOZT559RNDrsoC3+R4SnMPJKQd/XbeSMQB/A1rGL5mki3VYuEXa+7dvHtkx46vDrT/muRBfgTp7BAP79vFVCI1Ar0CLQI/niK5o1tYHEN/bW/N3ZBMXkfD/bFsB+KGWHRN1IJruuHKzDI4=
+	t=1765821828; cv=none; b=N0s5rybiKilS8gnsEumwB9k9QkfJt5rjOSfvwukHrBaPlsdhSSEqZrsRWCHuEGoqMoX2f1Es6eki/bfh3pstPggBAnvXAUX1Mh0I5ICm1U8ntkBPI3CwQd/YH0yRUM0basBn67YQyG//n9wPJTFV8NlDH9FxLUu25QIVBcmwMaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765821824; c=relaxed/simple;
-	bh=Hv8poHE2O98fYOp3Y68wbGNXSFxcm3ueSfXe3mNmI4U=;
+	s=arc-20240116; t=1765821828; c=relaxed/simple;
+	bh=0EDtGy67sbcMtonwjGxPUyf4fnAu6cVCFLi68oUxz6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bADW7KdqoCDX0l+LQhxFVgghp4hMJ1JgaDjMpckPj+AOd7EzReN25uKMc1R5lZFOm2qtkcgYX6pC3UVFCoSdgQQ48/mjEiRyIu6vszeSOjNCSsDYz4g7CPwaQTR9UcK6xO3vqcQZAgvaJ1MooEVpR7Ri/DPmh6zjYfmz2hW2iRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XQeCjKyI; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=bBHkwdskfLRyXas7aqb+7Q9OU6UcV2didikA8XDwHvSBX/XdHPc23SDPviYSQtEtqyC2maJGNdnn7kP0KUgk7i9sXQoznIh0jbaGC3O3xqtorSs2xNTr3aQDwRu1rCgVuYtfoEm1Z6GKRus0yYnRifIQr+MMDpgfzpsfFzyXbbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TLGjLmf3; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XQeCjKyI"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TLGjLmf3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1765821820;
+	s=mimecast20190719; t=1765821824;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=t/2vrXZGCGDvtwhDve6dSbvbtmIASyHWERC1j3nx7E8=;
-	b=XQeCjKyIrgqs/PJvaWraJ8lG0CdxDAA6k454F2uPfYQ2bqXh52V2MmytJyq3iZhAeyVOZo
-	dhabIvGAF+/HRPmGRKf/yKiWMsYIuKdAgp7nfPPBQLK/IiUb5KTlGkvpxld0D4bGQ3OM3p
-	uz+fwyVv9V9jaY0BdgJydeGCAcGIEZk=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+	bh=NPXbpVkoQILJpCk9IhXa/hmpE7g50auFpY6RHrWLkQE=;
+	b=TLGjLmf3PY/QiGEyYXEM3rOfdzeEF+Qy9hEjEtFYJFXY2xBwfOC6cO1RLxrGiOciXCRbR+
+	ZbKjraGwAQws17ReQwZ0IqxLsKdPdSU+JT+CMwc87Fy4IZXRX9vQnip1atyP8A0cZPm2UI
+	Ktn6O0GKfPwPR6Lsu7195JTZnOX1W+0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-600-6pCEryHeNXmpIyiC4VlWTA-1; Mon,
- 15 Dec 2025 13:02:42 -0500
-X-MC-Unique: 6pCEryHeNXmpIyiC4VlWTA-1
-X-Mimecast-MFC-AGG-ID: 6pCEryHeNXmpIyiC4VlWTA_1765821732
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-ZtwmeZ5MMDCsUmMMwVvWFw-1; Mon,
+ 15 Dec 2025 13:03:16 -0500
+X-MC-Unique: ZtwmeZ5MMDCsUmMMwVvWFw-1
+X-Mimecast-MFC-AGG-ID: ZtwmeZ5MMDCsUmMMwVvWFw_1765821768
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 74FBA196E090;
-	Mon, 15 Dec 2025 17:58:23 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 757C618868BB;
+	Mon, 15 Dec 2025 17:59:11 +0000 (UTC)
 Received: from chopper.lan (unknown [10.22.81.30])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C5C08180044F;
-	Mon, 15 Dec 2025 17:58:18 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3E524180044F;
+	Mon, 15 Dec 2025 17:59:07 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -61,11 +61,10 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>
-Subject: [PATCH v16 02/17] preempt: Track NMI nesting to separate per-CPU counter
-Date: Mon, 15 Dec 2025 12:57:49 -0500
-Message-ID: <20251215175806.102713-3-lyude@redhat.com>
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH v16 12/17] rust: sync: lock/global: Rename B to G in trait bounds
+Date: Mon, 15 Dec 2025 12:57:59 -0500
+Message-ID: <20251215175806.102713-13-lyude@redhat.com>
 In-Reply-To: <20251215175806.102713-1-lyude@redhat.com>
 References: <20251215175806.102713-1-lyude@redhat.com>
 Precedence: bulk
@@ -77,124 +76,187 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-From: Joel Fernandes <joelagnelf@nvidia.com>
+Due to the introduction of Backend::BackendInContext, if we want to be able
+support Lock types with a Context we need to be able to handle the fact
+that the Backend for a returned Guard may not exactly match the Backend for
+the lock. Before we add this though, rename B to G in all of our trait
+bounds to make sure things don't become more difficult to understand once
+we add a Backend bound.
 
-Move NMI nesting tracking from the preempt_count bits to a separate per-CPU
-counter (nmi_nesting). This is to free up the NMI bits in the preempt_count,
-allowing those bits to be repurposed for other uses.  This also has the benefit
-of tracking more than 16-levels deep if there is ever a need.
+There should be no functional changes in this patch.
 
-Reduce multiple bits in preempt_count for NMI tracking. Reduce NMI_BITS
-from 3 to 1, using it only to detect if we're in an NMI.
-
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Joel Fernandes <joelaf@google.com>
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- include/linux/hardirq.h | 16 ++++++++++++----
- include/linux/preempt.h | 13 +++++++++----
- kernel/softirq.c        |  2 ++
- 3 files changed, 23 insertions(+), 8 deletions(-)
+ rust/kernel/sync/atomic.rs      |  2 +-
+ rust/kernel/sync/lock/global.rs | 58 ++++++++++++++++-----------------
+ 2 files changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/include/linux/hardirq.h b/include/linux/hardirq.h
-index d57cab4d4c06f..cc06bda52c3e5 100644
---- a/include/linux/hardirq.h
-+++ b/include/linux/hardirq.h
-@@ -10,6 +10,8 @@
- #include <linux/vtime.h>
- #include <asm/hardirq.h>
+diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+index 3afc376be42d9..c07a53f8360b4 100644
+--- a/rust/kernel/sync/atomic.rs
++++ b/rust/kernel/sync/atomic.rs
+@@ -21,8 +21,8 @@
+ mod predefine;
  
-+DECLARE_PER_CPU(unsigned int, nmi_nesting);
-+
- extern void synchronize_irq(unsigned int irq);
- extern bool synchronize_hardirq(unsigned int irq);
+ pub use internal::AtomicImpl;
+-pub use ordering::{Acquire, Full, Relaxed, Release};
+ pub(crate) use internal::{AtomicArithmeticOps, AtomicBasicOps, AtomicExchangeOps};
++pub use ordering::{Acquire, Full, Relaxed, Release};
  
-@@ -102,14 +104,16 @@ void irq_exit_rcu(void);
-  */
+ use crate::build_error;
+ use internal::AtomicRepr;
+diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+index 7030a47bc0ad1..06d62ad02f90d 100644
+--- a/rust/kernel/sync/lock/global.rs
++++ b/rust/kernel/sync/lock/global.rs
+@@ -33,18 +33,18 @@ pub trait GlobalLockBackend {
+ /// Type used for global locks.
+ ///
+ /// See [`global_lock!`] for examples.
+-pub struct GlobalLock<B: GlobalLockBackend> {
+-    inner: Lock<B::Item, B::Backend>,
++pub struct GlobalLock<G: GlobalLockBackend> {
++    inner: Lock<G::Item, G::Backend>,
+ }
  
- /*
-- * nmi_enter() can nest up to 15 times; see NMI_BITS.
-+ * nmi_enter() can nest - nesting is tracked in a per-CPU counter.
-  */
- #define __nmi_enter()						\
- 	do {							\
- 		lockdep_off();					\
- 		arch_nmi_enter();				\
--		BUG_ON(in_nmi() == NMI_MASK);			\
--		__preempt_count_add(NMI_OFFSET + HARDIRQ_OFFSET);	\
-+		BUG_ON(__this_cpu_read(nmi_nesting) == UINT_MAX);	\
-+		__this_cpu_inc(nmi_nesting);			\
-+		__preempt_count_add(HARDIRQ_OFFSET);		\
-+		preempt_count_set(preempt_count() | NMI_MASK);	\
- 	} while (0)
+-impl<B: GlobalLockBackend> GlobalLock<B> {
++impl<G: GlobalLockBackend> GlobalLock<G> {
+     /// Creates a global lock.
+     ///
+     /// # Safety
+     ///
+     /// * Before any other method on this lock is called, [`Self::init`] must be called.
+-    /// * The type `B` must not be used with any other lock.
+-    pub const unsafe fn new(data: B::Item) -> Self {
++    /// * The type `G` must not be used with any other lock.
++    pub const unsafe fn new(data: G::Item) -> Self {
+         Self {
+             inner: Lock {
+                 state: Opaque::uninit(),
+@@ -68,23 +68,23 @@ pub unsafe fn init(&'static self) {
+         // `init` before using any other methods. As `init` can only be called once, all other
+         // uses of this lock must happen after this call.
+         unsafe {
+-            B::Backend::init(
++            G::Backend::init(
+                 self.inner.state.get(),
+-                B::NAME.as_char_ptr(),
+-                B::get_lock_class().as_ptr(),
++                G::NAME.as_char_ptr(),
++                G::get_lock_class().as_ptr(),
+             )
+         }
+     }
  
- #define nmi_enter()						\
-@@ -124,8 +128,12 @@ void irq_exit_rcu(void);
+     /// Lock this global lock.
+-    pub fn lock(&'static self) -> GlobalGuard<B> {
++    pub fn lock(&'static self) -> GlobalGuard<G> {
+         GlobalGuard {
+             inner: self.inner.lock(),
+         }
+     }
  
- #define __nmi_exit()						\
- 	do {							\
-+		unsigned int nesting;				\
- 		BUG_ON(!in_nmi());				\
--		__preempt_count_sub(NMI_OFFSET + HARDIRQ_OFFSET);	\
-+		__preempt_count_sub(HARDIRQ_OFFSET);		\
-+		nesting = __this_cpu_dec_return(nmi_nesting);	\
-+		if (!nesting)					\
-+			__preempt_count_sub(NMI_OFFSET);	\
- 		arch_nmi_exit();				\
- 		lockdep_on();					\
- 	} while (0)
-diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-index f07e7f37f3ca5..e2d3079d3f5f1 100644
---- a/include/linux/preempt.h
-+++ b/include/linux/preempt.h
-@@ -18,6 +18,8 @@
-  * - bits 0-7 are the preemption count (max preemption depth: 256)
-  * - bits 8-15 are the softirq count (max # of softirqs: 256)
-  * - bits 16-23 are the hardirq disable count (max # of hardirq disable: 256)
-+ * - bits 24-27 are the hardirq count (max # of hardirqs: 16)
-+ * - bit 28 is the NMI flag (no nesting count, tracked separately)
-  *
-  * The hardirq count could in theory be the same as the number of
-  * interrupts in the system, but we run all interrupt handlers with
-@@ -25,18 +27,21 @@
-  * there are a few palaeontologic drivers which reenable interrupts in
-  * the handler, so we need more than one bit here.
-  *
-+ * NMI nesting depth is tracked in a separate per-CPU variable
-+ * (nmi_nesting) to save bits in preempt_count.
-+ *
-  *         PREEMPT_MASK:	0x000000ff
-  *         SOFTIRQ_MASK:	0x0000ff00
-  * HARDIRQ_DISABLE_MASK:	0x00ff0000
-- *         HARDIRQ_MASK:	0x07000000
-- *             NMI_MASK:	0x38000000
-+ *         HARDIRQ_MASK:	0x0f000000
-+ *             NMI_MASK:	0x10000000
-  * PREEMPT_NEED_RESCHED:	0x80000000
-  */
- #define PREEMPT_BITS	8
- #define SOFTIRQ_BITS	8
- #define HARDIRQ_DISABLE_BITS	8
--#define HARDIRQ_BITS	3
--#define NMI_BITS	3
-+#define HARDIRQ_BITS	4
-+#define NMI_BITS	1
+     /// Try to lock this global lock.
+-    pub fn try_lock(&'static self) -> Option<GlobalGuard<B>> {
++    pub fn try_lock(&'static self) -> Option<GlobalGuard<G>> {
+         Some(GlobalGuard {
+             inner: self.inner.try_lock()?,
+         })
+@@ -94,21 +94,21 @@ pub fn try_lock(&'static self) -> Option<GlobalGuard<B>> {
+ /// A guard for a [`GlobalLock`].
+ ///
+ /// See [`global_lock!`] for examples.
+-pub struct GlobalGuard<B: GlobalLockBackend> {
+-    inner: Guard<'static, B::Item, B::Backend>,
++pub struct GlobalGuard<G: GlobalLockBackend> {
++    inner: Guard<'static, G::Item, G::Backend>,
+ }
  
- #define PREEMPT_SHIFT	0
- #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 77198911b8dd4..af47ea23aba3b 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -88,6 +88,8 @@ EXPORT_PER_CPU_SYMBOL_GPL(hardirqs_enabled);
- EXPORT_PER_CPU_SYMBOL_GPL(hardirq_context);
- #endif
+-impl<B: GlobalLockBackend> core::ops::Deref for GlobalGuard<B> {
+-    type Target = B::Item;
++impl<G: GlobalLockBackend> core::ops::Deref for GlobalGuard<G> {
++    type Target = G::Item;
  
-+DEFINE_PER_CPU(unsigned int, nmi_nesting);
-+
- /*
-  * SOFTIRQ_OFFSET usage:
-  *
+     fn deref(&self) -> &Self::Target {
+         &self.inner
+     }
+ }
+ 
+-impl<B: GlobalLockBackend> core::ops::DerefMut for GlobalGuard<B>
++impl<G: GlobalLockBackend> core::ops::DerefMut for GlobalGuard<G>
+ where
+-    B::Item: Unpin,
++    G::Item: Unpin,
+ {
+     fn deref_mut(&mut self) -> &mut Self::Target {
+         &mut self.inner
+@@ -118,33 +118,33 @@ fn deref_mut(&mut self) -> &mut Self::Target {
+ /// A version of [`LockedBy`] for a [`GlobalLock`].
+ ///
+ /// See [`global_lock!`] for examples.
+-pub struct GlobalLockedBy<T: ?Sized, B: GlobalLockBackend> {
+-    _backend: PhantomData<B>,
++pub struct GlobalLockedBy<T: ?Sized, G: GlobalLockBackend> {
++    _backend: PhantomData<G>,
+     value: UnsafeCell<T>,
+ }
+ 
+ // SAFETY: The same thread-safety rules as `LockedBy` apply to `GlobalLockedBy`.
+-unsafe impl<T, B> Send for GlobalLockedBy<T, B>
++unsafe impl<T, G> Send for GlobalLockedBy<T, G>
+ where
+     T: ?Sized,
+-    B: GlobalLockBackend,
+-    LockedBy<T, B::Item>: Send,
++    G: GlobalLockBackend,
++    LockedBy<T, G::Item>: Send,
+ {
+ }
+ 
+ // SAFETY: The same thread-safety rules as `LockedBy` apply to `GlobalLockedBy`.
+-unsafe impl<T, B> Sync for GlobalLockedBy<T, B>
++unsafe impl<T, G> Sync for GlobalLockedBy<T, G>
+ where
+     T: ?Sized,
+-    B: GlobalLockBackend,
+-    LockedBy<T, B::Item>: Sync,
++    G: GlobalLockBackend,
++    LockedBy<T, G::Item>: Sync,
+ {
+ }
+ 
+-impl<T, B: GlobalLockBackend> GlobalLockedBy<T, B> {
++impl<T, G: GlobalLockBackend> GlobalLockedBy<T, G> {
+     /// Create a new [`GlobalLockedBy`].
+     ///
+-    /// The provided value will be protected by the global lock indicated by `B`.
++    /// The provided value will be protected by the global lock indicated by `G`.
+     pub fn new(val: T) -> Self {
+         Self {
+             value: UnsafeCell::new(val),
+@@ -153,11 +153,11 @@ pub fn new(val: T) -> Self {
+     }
+ }
+ 
+-impl<T: ?Sized, B: GlobalLockBackend> GlobalLockedBy<T, B> {
++impl<T: ?Sized, G: GlobalLockBackend> GlobalLockedBy<T, G> {
+     /// Access the value immutably.
+     ///
+     /// The caller must prove shared access to the lock.
+-    pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<B>) -> &'a T {
++    pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<G>) -> &'a T {
+         // SAFETY: The lock is globally unique, so there can only be one guard.
+         unsafe { &*self.value.get() }
+     }
+@@ -165,7 +165,7 @@ pub fn as_ref<'a>(&'a self, _guard: &'a GlobalGuard<B>) -> &'a T {
+     /// Access the value mutably.
+     ///
+     /// The caller must prove shared exclusive to the lock.
+-    pub fn as_mut<'a>(&'a self, _guard: &'a mut GlobalGuard<B>) -> &'a mut T {
++    pub fn as_mut<'a>(&'a self, _guard: &'a mut GlobalGuard<G>) -> &'a mut T {
+         // SAFETY: The lock is globally unique, so there can only be one guard.
+         unsafe { &mut *self.value.get() }
+     }
 -- 
 2.52.0
 
