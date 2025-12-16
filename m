@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85661313E00;
-	Tue, 16 Dec 2025 10:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745FB34DB48;
+	Tue, 16 Dec 2025 12:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765880444; cv=none; b=pLaznPS+pgxxKqmm/A48GM1I2dc25uBIuXMN0lwaRd0+9eOWnvbiuSfHHWUUyGPHeDGKaXjXIjWo3xf0BdM8JkI4x30qD/ioWiz8LSvEbRnbAcmUocAmeKY7EkFX20K7pud/GkeElUXWiYxU6Ognryf09MKWOWuh0tNTRJhY7wI=
+	t=1765887249; cv=none; b=Qq/0iXyrThfXb8cWWAppHAkkX3CSNBj/XtQ50FwQlPcED4s/gnwNX/gqOYRjh0WWFocsJPttEXK0jhhhD+7AjV+irogHoMd9UgmJWJmLhsZQDpfk1LOgLXdgTjTDD8NSuDOt0gPT/KB2ypMSUIdMeFVD6t4wmeg/u0GGwU4QKHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765880444; c=relaxed/simple;
-	bh=3aVCwSoZFtIeQo2I89KCit5XpgJ7Mbyf5LkP8iyCGJw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=aHyS3ZVuWHW5ZUVei5FvDngnKgLB58S5GqEB2BkbfCww7xk8lDIRKf+/KMDxd8pwUMsMfYru7wdby70KiQQCulUS3ghJQhcAocb4O7gDLTlaDhZAgkiC4LQk9Ws5ZugFaXVY8p0/dxuBemSmpgz41M5OLDxA+w0zHmZcdC5hjjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0PeE4IU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765887249; c=relaxed/simple;
+	bh=pZP2BYvtE9bxefV3Xhyf3JysEWckorGNQUlBT4sl0HE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=ujd9hTfGS2HK/gEaEyOJ0q9w7kwmP1g0T+1cEqS62V6GNjCEbU+CWPesXwaq0MVadsdmMHE84RXW1OibEMuMDbvLxvBZAJ6jfWdjEdkTQXXQZzkI/8jQCw4ddkv3dxaJV5z37BC2SXMXXXXrUORBTh2CRjitC69gYLpy4Szr2HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwArkI3A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0PeE4IU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA47C4CEF1;
-	Tue, 16 Dec 2025 10:20:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwArkI3A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448E7C4CEF5;
+	Tue, 16 Dec 2025 12:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765880444;
-	bh=3aVCwSoZFtIeQo2I89KCit5XpgJ7Mbyf5LkP8iyCGJw=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=Y0PeE4IU7wct4fEb8AY1U3Sy93VQFZZ0LPh7KElQRjDgsnuu5GYx4p6sT7TuAO6ZX
-	 J9+fnyN0EZ7Mdcal396LQxO3/BxPmS/3DCOmvUIZQ3w0A5WI2yQiTvNxfQRSD0lFsi
-	 NP/UF2bueJk0qwf1rXkrhxCHZ2ei+tgEB+hy2M9WAMUpK82IN4W+SonmNd9awo9s3R
-	 uVy1Z3EeX1gi+X+WJAjUbA0RqYFrtlF+r2KdoPo0yy5eljiMADYSp3AdRrKzy5HpED
-	 8MJYEglSFfVagYfjG/AUMgGCiRj4TwKyBCQswL1FT5BpzmfKzCa4hSd+DWx1dQmhYh
-	 RW95nO4FFW1uA==
+	s=k20201202; t=1765887247;
+	bh=pZP2BYvtE9bxefV3Xhyf3JysEWckorGNQUlBT4sl0HE=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=mwArkI3A22We2dV9k1nt+llKSV/PdjOlNKOSh58EWc2WT3tKVntnnU6I/YiUggG3i
+	 Tqh2Avr7N+p89KUHE18Db1eNRQr79btWxbHXefSDfhZbHyPA/X5xWRI6d6bq8M/40R
+	 iV8mM+xU+ytME+2AjSpNZGzkx0IfVa7eE8uf0+3iDgrlmtU4sIq2ms8QUuDz+/wK8P
+	 m4yWOoT3dvUDqi/WRJE4SvI7m8geXpOuHNWA1S5VFcizIh/UM8imRRxIg0GS8i499V
+	 jjoKi9KwaPezhIb7cI2YtgnG3oibWCi65T41bi5MZzcwoSs2uqWgnMrLLbCZakN2of
+	 +r0DoPlVFuRgg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,281 +34,112 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 Dec 2025 11:20:39 +0100
-Message-Id: <DEZKDEPMCQ7N.1VK1WNX9B1ZI7@kernel.org>
-Subject: Re: [PATCH v2 1/3] rust: Add soc_device support
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Matthew Maurer" <mmaurer@google.com>
+Date: Tue, 16 Dec 2025 13:14:00 +0100
+Message-Id: <DEZMS6Y4A7XE.XE7EUBT5SJFJ@kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251216-soc-bindings-v2-0-1fb394cc921a@google.com>
- <20251216-soc-bindings-v2-1-1fb394cc921a@google.com>
-In-Reply-To: <20251216-soc-bindings-v2-1-1fb394cc921a@google.com>
+Subject: Re: [PATCH 1/7] rust: pci: pass driver data by value to `unbind`
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+References: <20251216-nova-unload-v1-0-6a5d823be19d@nvidia.com>
+ <20251216-nova-unload-v1-1-6a5d823be19d@nvidia.com>
+In-Reply-To: <20251216-nova-unload-v1-1-6a5d823be19d@nvidia.com>
 
-On Tue Dec 16, 2025 at 1:43 AM CET, Matthew Maurer wrote:
-> +/// Attributes for a SoC device.
-> +///
-> +/// These are both exported to userspace under /sys/devices/socX and pro=
-vided to other drivers to
-> +/// match against via `soc_device_match` (not yet available in Rust) to =
-enable quirks or
-> +/// device-specific support where necessary.
-> +///
-> +/// All fields are freeform - they have no specific formatting, just def=
-ined meanings.
-> +/// For example, the [`machine`](`Attributes::machine`) field could be "=
-DB8500" or
-> +/// "Qualcomm Technologies, Inc. SM8560 HDK", but regardless it should i=
-dentify a board or product.
-> +pub struct Attributes {
-> +    /// Should generally be a board ID or product ID. Examples
-> +    /// include DB8500 (ST-Ericsson) or "Qualcomm Technologies, inc. SM8=
-560 HDK".
-> +    ///
-> +    /// If this field is not populated, the SoC infrastructure will try =
-to populate it from
-> +    /// `/model` in the device tree.
-> +    pub machine: Option<CString>,
-> +    /// The broader class this SoC belongs to. Examples include ux500
-> +    /// (for DB8500) or Snapdragon (for SM8650).
-> +    ///
-> +    /// On chips with ARM firmware supporting SMCCC v1.2+, this may be a=
- JEDEC JEP106 manufacturer
-> +    /// identification.
-> +    pub family: Option<CString>,
-> +    /// The manufacturing revision of the part. Frequently this is MAJOR=
-.MINOR, but not always.
-> +    pub revision: Option<CString>,
-> +    /// Serial Number - uniquely identifies a specific SoC. If present, =
-should be unique (buying a
-> +    /// replacement part should change it if present). This field cannot=
- be matched on and is
-> +    /// solely present to export through /sys.
-> +    pub serial_number: Option<CString>,
-> +    /// SoC ID - identifies a specific SoC kind in question, sometimes m=
-ore specifically than
-> +    /// `machine` if the same SoC is used in multiple products. Some dev=
-ices use this to specify a
-> +    /// SoC name, e.g. "I.MX??", and others just print an ID number (e.g=
-. Tegra and Qualcomm).
-> +    ///
-> +    /// On chips with ARM firmware supporting SMCCC v1.2+, this may be a=
- JEDEC JEP106 manufacturer
-> +    /// identification (the family value) followed by a colon and then a=
- 4-digit ID value.
-> +    pub soc_id: Option<CString>,
-> +}
+On Tue Dec 16, 2025 at 6:13 AM CET, Alexandre Courbot wrote:
+> When unbinding a PCI driver, the `T::unbind` callback is invoked by the
+> driver framework, passing the driver data as a `Pin<&T>`.
+>
+> This artificially restricts what the driver can do, as it cannot mutate
+> any state on the data. This becomes a problem in e.g. Nova, which needs
+> to invoke mutable methods when unbinding.
+>
+> `remove_callback` retrieves the driver data by value, and drops it right
+> after the call to `T::unbind`, meaning it is the only reference to the
+> driver data by the time `T::unbind` is called.
+>
+> There is thus no reason for not granting full ownership of the data to
+> `T::unbind`, so do it.
 
-Thanks for expanding the documentation!
+There are multiple reasons I did avoid this for:
 
-> +struct BuiltAttributes {
-> +    // While `inner` has pointers to `_backing`, it is to the interior o=
-f the `CStrings`, not
-> +    // `backing` itself, so it does not need to be pinned.
-> +    _backing: Attributes,
-> +    // `Opaque` makes us `!Unpin`, as the registration holds a pointer t=
-o `inner` when used.
-> +    inner: Opaque<bindings::soc_device_attribute>,
-> +}
-> +
-> +fn cstring_to_c(mcs: &Option<CString>) -> *const kernel::ffi::c_char {
-> +    mcs.as_ref()
-> +        .map(|cs| cs.as_char_ptr())
-> +        .unwrap_or(core::ptr::null())
-> +}
-> +
-> +impl BuiltAttributes {
-> +    fn as_mut_ptr(&self) -> *mut bindings::soc_device_attribute {
-> +        self.inner.get()
-> +    }
-> +}
-> +
-> +impl Attributes {
-> +    fn build(self) -> BuiltAttributes {
-> +        BuiltAttributes {
-> +            inner: Opaque::new(bindings::soc_device_attribute {
-> +                machine: cstring_to_c(&self.machine),
-> +                family: cstring_to_c(&self.family),
-> +                revision: cstring_to_c(&self.revision),
-> +                serial_number: cstring_to_c(&self.serial_number),
-> +                soc_id: cstring_to_c(&self.soc_id),
-> +                data: core::ptr::null(),
-> +                custom_attr_group: core::ptr::null(),
-> +            }),
-> +            _backing: self,
-> +        }
-> +    }
-> +}
-> +
-> +/// # Safety
-> +/// If a device is returned (e.g. no error), `attr` must remain valid fo=
-r reads until the
-> +/// returned pointer is released through `soc_device_unregister`.
-> +unsafe fn register_device(attr: Pin<&BuiltAttributes>) -> Result<NonNull=
-<bindings::soc_device>> {
-> +    let raw_soc =3D
-> +            // SAFETY:
-> +            // * The struct provided through attr is backed by pinned da=
-ta next to it, so as
-> +            //   long as attr lives, the strings pointed to by the struc=
-t will too.
-> +            // * `attr` is pinned, so the pinned data won't move.
-> +            // * If it returns a device, and so others may try to read t=
-his data, by caller
-> +            //   invariant, `attr` won't be released until the device is=
+(1) Race conditions
+
+A driver can call Device::drvdata() and obtain a reference to the driver's
+device private data as long as it has a &Device<Bound> and asserts the corr=
+ect
+type of the driver's device private data [1].
+
+Assume you have an IRQ registration, for instance, that lives within this d=
+evice
+private data.  Within the IRQ handler, nothing prevents us from calling
+Device::drvdata() given that the IRQ handler has a Device<Bound> reference.
+
+Consequently, with passing the device private data by value to unbind() it =
+can
+happen that we have both a mutable and immutable reference at of the device
+private data at the same time.
+
+The same is true for a lot of other cases, such as work items or workqueues=
+ that
+are scoped to the Device being bound living within the device private data.
+
+More generally, you can't take full ownership of the device private data as=
+ long
+as the device is not yet fully unbound (which is not yet the case in unbind=
+()).
+
+(2) Design
+
+It is intentional that the device private data has a defined lifetime that =
+ends
+with the device being unbound from its driver. This way we get the guarante=
+e
+that any object stored in the device private data won't survive device / dr=
+iver
+unbind. If we give back the ownership to the driver, this guarantee is lost=
 .
-> +            error::from_err_ptr(unsafe { bindings::soc_device_register(a=
-ttr.as_mut_ptr()) })?;
-> +    // `soc_device_register` should not return NULL, but it doesn't hurt=
- to be paranoid.
-> +    NonNull::new(raw_soc).ok_or(EINVAL)
-> +}
 
-I think it turns out cleaner without this helper function, inlining the
-contained code directly into Registration::new().
+Conclusion:
 
-> +#[pin_data(PinnedDrop)]
-> +/// Registration handle for your soc_dev. If you let it go out of scope,=
- your soc_dev will be
-> +/// unregistered.
-> +pub struct Registration {
-> +    #[pin]
-> +    attr: BuiltAttributes,
-> +    soc_dev: NonNull<bindings::soc_device>,
-> +}
-> +
-> +// SAFETY: We provide no operations through `&Registration`.
-> +unsafe impl Sync for Registration {}
-> +
-> +// SAFETY: All pointers are normal allocations, not thread-specific.
-> +unsafe impl Send for Registration {}
-> +
-> +#[pinned_drop]
-> +impl PinnedDrop for Registration {
-> +    fn drop(self: Pin<&mut Self>) {
-> +        // SAFETY: Device always contains a live pointer to a soc_device=
- that can be unregistered
-> +        unsafe { bindings::soc_device_unregister(self.soc_dev.as_ptr()) =
-}
-> +    }
-> +}
-> +
-> +impl Registration {
-> +    /// Register a new SoC device
-> +    pub fn register(attr: Attributes) -> impl PinInit<Self, Error> {
+Having that said, if you need mutable access to the fields of the device pr=
+ivate
+data within unbind() the corresponding field(s) should be protected by a lo=
+ck.
 
-Let's just call this Registration::new() please. We usually use new() if we
-return a Registration object (or an initializer as in this case) and regist=
-er()
-if we do not return a Registration object, but rather automatically clean u=
-p the
-registration silently, e.g. through devres.
+Alternatively, you have mutable access within the destructor as well, but t=
+here
+you don't have a bound device anymore. Which is only consequent, since we c=
+an't
+call the destructor of the device private data before the device is fully
+unbound.
 
-> +        try_pin_init!(&this in Self {
+(In fact, as by now, there is a bug with this, which I noticed a few days a=
+go
+when I still was on vacation: The bus implementations call the destructor o=
+f the
+device private data too early, i.e. when the device is not fully unbound ye=
+t.
 
-You should be able to just access Self::attr directly, i.e. no need for &th=
-is.
-(When you access attr within the code block of soc_dev it will be Self::att=
-r and
-not the attr from the function argument.)
+I'm working on a fix for this. Luckily, as by now, this is not a real bug i=
+n
+practice, yet it has to be fixed.)
 
-Please find a diff [1] below.
+From your end you don't have to worry about this though. nova-core should j=
+ust
+employ a lock for this, as we will need it in the future anyways, since we =
+will
+have concurrent access to the GSP.
 
-> +                    attr: attr.build(),
-> +                    // SAFETY: We have already initialized attr, and we =
-are inside PinInit and Self
-> +                    // is !Unpin, so attr won't be moved and is valid. I=
-f it returns success, attr
-> +                    // will not be dropped until after our `PinnedDrop` =
-implementation runs, so the
-> +                    // device will be unregistered first.
-> +                    soc_dev: unsafe {
-> +                        register_device(Pin::new_unchecked(&(*this.as_pt=
-r()).attr))?
-> +                    },
-> +        }? Error)
-> +    }
-> +}
-
-
-[1]
-
-diff --git a/rust/kernel/soc.rs b/rust/kernel/soc.rs
-index fb9e46121878..242dcd09e7f5 100644
---- a/rust/kernel/soc.rs
-+++ b/rust/kernel/soc.rs
-@@ -89,22 +89,6 @@ fn build(self) -> BuiltAttributes {
-     }
- }
-=20
--/// # Safety
--/// If a device is returned (e.g. no error), `attr` must remain valid for =
-reads until the
--/// returned pointer is released through `soc_device_unregister`.
--unsafe fn register_device(attr: Pin<&BuiltAttributes>) -> Result<NonNull<b=
-indings::soc_device>> {
--    let raw_soc =3D
--            // SAFETY:
--            // * The struct provided through attr is backed by pinned data=
- next to it, so as
--            //   long as attr lives, the strings pointed to by the struct =
-will too.
--            // * `attr` is pinned, so the pinned data won't move.
--            // * If it returns a device, and so others may try to read thi=
-s data, by caller
--            //   invariant, `attr` won't be released until the device is.
--            error::from_err_ptr(unsafe { bindings::soc_device_register(att=
-r.as_mut_ptr()) })?;
--    // `soc_device_register` should not return NULL, but it doesn't hurt t=
-o be paranoid.
--    NonNull::new(raw_soc).ok_or(EINVAL)
--}
--
- #[pin_data(PinnedDrop)]
- /// Registration handle for your soc_dev. If you let it go out of scope, y=
-our soc_dev will be
- /// unregistered.
-@@ -131,14 +115,24 @@ fn drop(self: Pin<&mut Self>) {
- impl Registration {
-     /// Register a new SoC device
-     pub fn register(attr: Attributes) -> impl PinInit<Self, Error> {
--        try_pin_init!(&this in Self {
-+        try_pin_init!(Self {
-                     attr: attr.build(),
-                     // SAFETY: We have already initialized attr, and we ar=
-e inside PinInit and Self
-                     // is !Unpin, so attr won't be moved and is valid. If =
-it returns success, attr
-                     // will not be dropped until after our `PinnedDrop` im=
-plementation runs, so the
-                     // device will be unregistered first.
--                    soc_dev: unsafe {
--                        register_device(Pin::new_unchecked(&(*this.as_ptr(=
-)).attr))?
-+                    soc_dev: {
-+                        // SAFETY:
-+                        // * The struct provided through attr is backed by=
- pinned data next to it,
-+                        //   so as long as attr lives, the strings pointed=
- to by the struct will too.
-+                        // * `attr` is pinned, so the pinned data won't mo=
-ve.
-+                        // * If it returns a device, and so others may try=
- to read this data, by
-+                        //   caller invariant, `attr` won't be released un=
-til the device is.
-+                        let raw_soc =3D error::from_err_ptr(unsafe {
-+                            bindings::soc_device_register(attr.as_mut_ptr(=
-))
-+                        })?;
-+
-+                        NonNull::new(raw_soc).ok_or(EINVAL)?
-                     },
-         }? Error)
-     }
-
+[1] https://rust.docs.kernel.org/kernel/device/struct.Device.html#method.dr=
+vdata
