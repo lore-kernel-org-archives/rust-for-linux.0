@@ -1,93 +1,104 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4252D33E340;
-	Tue, 16 Dec 2025 09:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B734A32860A;
+	Tue, 16 Dec 2025 09:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765876942; cv=none; b=GXIZN5ZBS6mmWvJFodwUVbi9Q8oIZPX2FvfciyEEmKr/olVncFbek0Ozg++jOejCzsucMWrTgKqbWLKLPzIAf/AvoiaKaW2eSo2p+jHJK48Il6Uf1Yf36HOSO4JH3Kps9jlTTt5/yfkaz77pZJhRXw6zG5bmfmwIpX130YURf20=
+	t=1765878216; cv=none; b=CQBd3t1Iy1ed1wyfK+oih8uaxEx/lLgBtfOqlqwwxrYJjIcltH6/2VnYlVMKkzaugAbBOE4lRa4GYqSAArOpLa7JVLIuoj43bws/IDe8PohHUYfyClVGc421hhdS8UnnjdiNY/tLk1kXs8wKvW035EJ460lrY8Lmn0K+ozaSEUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765876942; c=relaxed/simple;
-	bh=VGvR+1VocsFl+CQ7pfvKsbPjnNsQs3mPzYbAczL3mcY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QPFkE7XGdJiVubV93uXvKQAYlcsX+hqqba+wEspN0IrMfeJa728/2NpdBqGtRZbDRaSh+6xFHgf+0Z9fptEmWqvt4Qpmv6LFJ8Om7rkIHelmz8BKm0QcgbDPtoxbrG3nl7nF2VC/ugI5ccShxmhJNFVQmlwR1ORte+NZAnsEO9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ObV2QpAm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765878216; c=relaxed/simple;
+	bh=cfcdtetFkkWNBzeIYB5+LYKxMFXItsltsd0eP6JoMKI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=HH/yNUziwhduzar8qGIkMpt7TI02C+jXqTgB6v0MUZcfWD3SFja50hoZAS0Cidv+ouQ5NmONqjaqzjmXve6ZoIYc45kpas3dWtcTDaO0rhVNooj3DEygCGYvZsgOCHylmF56K+69ZvQhMGOCmhVhFF//NlOyNG4qvip0M/1SvyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPfNSc/A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ObV2QpAm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10BEC4CEF1;
-	Tue, 16 Dec 2025 09:22:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KPfNSc/A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FD4C4CEF1;
+	Tue, 16 Dec 2025 09:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765876941;
-	bh=VGvR+1VocsFl+CQ7pfvKsbPjnNsQs3mPzYbAczL3mcY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ObV2QpAmMOlJgoyUD/EOXNI9J0+bAxpID/KzV0J/D1DNYO1H38w4tvywvQFMsUHzu
-	 lOAJ6PI9l9zjp5dsbwprKj+VUO8ckM7yAOGP3jJ7VJ7z7MuBOjJ8Ixf9bmRqWi+HzB
-	 dw1mDw8vEOW9pe6J/9Gx5cX0hmaso4lecvB5wrh/uUwbF4CMmUa/RqckuqkcbKNTE3
-	 5tyFaUu0+5xf2ibnpWfTHrYBeWeFAk0bOC7TUt7s6LmQ8kVO+6tPoJGt/6Rb36TmOi
-	 4faIfgtU9QcQ+9Bne9hPFkoHtoeMMlHJyoUo67C0PifwIHhHscEvlxGOFRVox+O3ym
-	 Yh+E+cZDDjnDQ==
-Date: Tue, 16 Dec 2025 09:22:15 +0000
-From: Lee Jones <lee@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] docs: ABI: sysfs-devices-soc: Fix swapped sample
- values
-Message-ID: <20251216092215.GH9275@google.com>
-References: <20251216-soc-bindings-v2-0-1fb394cc921a@google.com>
- <20251216-soc-bindings-v2-2-1fb394cc921a@google.com>
+	s=k20201202; t=1765878216;
+	bh=cfcdtetFkkWNBzeIYB5+LYKxMFXItsltsd0eP6JoMKI=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=KPfNSc/AAIy/tuFtUPsYj2ocTMFpUJNN6AF4OfkHX0Xz+WsrwF6OlLY3yspn/Mygv
+	 IoSWxgOsVv4WyviRDSYjOcUDu1FHgrwVF9vj3SWrJi1+wJSj50gkDqh8VanaaFZD4P
+	 6Pu92MOwnpBn4WTYOquAuyjN3+SI6qlqaqbqBgjYAjDdubttDwuoruK+IXZoMxIZOm
+	 a5WfM9Z289S4KZTJiQepuTj+9g7NYTApxuZ5UIdeYy9/wKJL/cLsln/bclkLHvJFD6
+	 kmawmSo7wnd7GBrzF/DzvjcLWJbuEpCed8ePYPmO6e7mI3I5SUvMn2TuSn4ihlCe/4
+	 6wFj8S//UEl/g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251216-soc-bindings-v2-2-1fb394cc921a@google.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 Dec 2025 10:43:32 +0100
+Message-Id: <DEZJKZF7787A.3SJOG26WXJ441@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Fiona Behrens" <me@Kloenk.dev>, <rust-for-linux@vger.kernel.org>, "Tamir
+ Duberstein" <tamird@gmail.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 01/11] rust: pin-init: internal: remove proc-macro[2]
+ and quote workarounds
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>, "Christian Schrefl"
+ <chrisi.schrefl@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20251211185805.2835633-1-gary@kernel.org>
+ <20251211185805.2835633-2-gary@kernel.org>
+ <f3699da2-288a-4743-895a-f54daa1a51e7@gmail.com>
+ <20251215130156.23926cea.gary@garyguo.net>
+In-Reply-To: <20251215130156.23926cea.gary@garyguo.net>
 
-On Tue, 16 Dec 2025, Matthew Maurer wrote:
+On Mon Dec 15, 2025 at 2:01 PM CET, Gary Guo wrote:
+> On Thu, 11 Dec 2025 22:50:35 +0100
+> Christian Schrefl <chrisi.schrefl@gmail.com> wrote:
+>
+>> Hi Gary,
+>>=20
+>> On 12/11/25 7:56 PM, Gary Guo wrote:
+>> > From: Benno Lossin <lossin@kernel.org>
+>> >=20
+>> > The kernel only had the `proc-macro` library available, whereas the
+>> > user-space version also used `proc-macro2` and `quote`. Now both are
+>> > available to the kernel, making it possible to remove the workarounds.
+>> >=20
+>> > Signed-off-by: Benno Lossin <lossin@kernel.org>
+>> > Co-developed-by: Gary Guo <gary@garyguo.net>
+>> > Signed-off-by: Gary Guo <gary@garyguo.net>
+>> > --- =20
+>>=20
+>> Its good to see some workarounds/hacks get removed!
+>>=20
+>> Overall seems fine, but maybe the imports should be changed to the
+>> multiline kernel style?
+>>=20
+>> Anyways:
+>>=20
+>> Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+>
+> `pin-init` is its own subproject as it's also intended for userspace (or
+> other baremetal/embedded users). I'll let Benno to decide if he would lik=
+e
+> to use kernel multiline import for `pin-init`.
 
-> The sample values for `family` and `machine` were swapped relative to
-> what the driver actually does, and doesn't match the field description.
-> 
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->  Documentation/ABI/testing/sysfs-devices-soc | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+I haven't thought about this too much yet. In pin-init, I rarely get
+merge conflicts (in fact I don't recall any time when I had one), since
+I author most of the patches. Now if the kernel were to change the
+rustfmt config, then I'd change it as well.
 
-Reviewed-by: Lee Jones <lee@kernel.org>
+If I convert it, then I will do so in a separate series as well.
 
-> diff --git a/Documentation/ABI/testing/sysfs-devices-soc b/Documentation/ABI/testing/sysfs-devices-soc
-> index 5269808ec35f8e2b18516556f886c77f5fac9401..cb6776a4afe02a76fe27ac6fc236babdc7865287 100644
-> --- a/Documentation/ABI/testing/sysfs-devices-soc
-> +++ b/Documentation/ABI/testing/sysfs-devices-soc
-> @@ -17,14 +17,14 @@ Date:		January 2012
->  contact:	Lee Jones <lee@kernel.org>
->  Description:
->  		Read-only attribute common to all SoCs. Contains the SoC machine
-> -		name (e.g. Ux500).
-> +		name (e.g. DB8500).
->  
->  What:		/sys/devices/socX/family
->  Date:		January 2012
->  contact:	Lee Jones <lee@kernel.org>
->  Description:
->  		Read-only attribute common to all SoCs. Contains SoC family name
-> -		(e.g. DB8500).
-> +		(e.g. ux500).
->  
->  		On many of ARM based silicon with SMCCC v1.2+ compliant firmware
->  		this will contain the JEDEC JEP106 manufacturer’s identification
+Cheers,
+Benno
 
--- 
-Lee Jones [李琼斯]
+> The rest of this series convert files to use kernel import style when
+> depednencies are changed.
+>
+> Best,
+> Gary
+
