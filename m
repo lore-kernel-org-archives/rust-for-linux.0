@@ -1,106 +1,92 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BB1327C1B
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 17:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB1C202C5C
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 17:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765904599; cv=none; b=TZibSwag9AqaNVs65QXvaroYs4OmHlQRSlDIdXPx82D6EAFF8YaoNMLeGtHUj48ScbVWq8x9X639fPJoNxI6LSSuPxRenwWuMWMUbCh0KAN5g6CoibJVXkJu9fsi75nhkI9W1Ma7BQ4R9gRGto9qeRef3+Vjn+1C8/VZ/mWesLM=
+	t=1765905613; cv=none; b=qjWyb7MJJCO21zN/o3ElsZo6xmBJBoBGL6REcNhMFRNeF35hK1n/Rkal06n8nsVCqN8I4ENceN5iIP+WnIwk/tvzFrpZkvkAqClnwBfKSfVlNLnlgOgzVuimEQ01Ua7aCzSyRbekBPJtTJpQKdyhqw8E3l+11uY4BJncJKIZuao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765904599; c=relaxed/simple;
-	bh=o28FZU2eyfE0k0nQhHK9fW9HlH9wMECsfQZDC0284vc=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=FnUm0D9U5Espn0PyowqWFciUI8OZORs3h4Hc27pO2glrU6KR4BwTV3VhClX/eNbSaKIMs0Pon7LFYReWLlvtRTaI8yOruDAnz467ay9TNoldhHVpa38oNjp3NUva5jCd07eQdXi6nohqJYCp/FLqXakWyLdrqQmuvHH7e0gy7fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ot0lYiiw; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1765905613; c=relaxed/simple;
+	bh=Q3xSUzpZVzpM72qz1ELqk18PlnXt2ts3aZ5ceF8wcGg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NdHraKJ5PF6KV1qv4CirbJ5jOHd+qTlPkRjBM42pnJymW8UBdRqwjhcgp9gM3dhiiVcaa87D6u088of3VGEjO7Gb3L1+0bAfKpBPwho+sOgsuj0tiDm3W9cZJwrm0h7BuzPo+o5kxkkSER92SBd6D9I0GEmGOQS523oxJmqmvx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTo9RRel; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ot0lYiiw"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4779ce2a624so52320085e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 09:03:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTo9RRel"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-42fbc305552so2747653f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 09:20:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765904593; x=1766509393; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wdkr38QTJAPcpLAthn9VgGdaWuWTWa11kuD8ioY1nvw=;
-        b=Ot0lYiiw/vEL0Khn1RZ0PCL+gUEcXW8FTVFnRa5HwDTvplv8MCVHx1KOtPZWqaoqQw
-         IFURpcGRUmng8kUqma4mpuZZhmUVVcQgSub6PXPXjdU6LmEQ6lwbbxAohxyDdX5PiBzN
-         L+lW38sm9zdCb8Nmdoj/DUunaXqRrmZNRRkgTcebK+H6AtH0Em8/hRmj+aOZw06ZlUN6
-         j1v3N9fULGa3oLM8yNAvX1IOtwkwKK8a+ZGXIZiGnS6GX/4Oz+2aqo9+dC4ZvQqcnRwf
-         igpJt6tfC+r3txSuO+BaJJK7GfMDGcW6lr/dm4eIpSwLZjGPfIRD2+lGfoH1+2PnzXp2
-         KPoA==
+        d=gmail.com; s=20230601; t=1765905609; x=1766510409; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q3xSUzpZVzpM72qz1ELqk18PlnXt2ts3aZ5ceF8wcGg=;
+        b=mTo9RRelNpvtIRN1FEebCYtoTjkOiG75JQRTOkKdRTOmyXkP7RUOdyzXE4tTIO8jQa
+         fuLzY5CBaeN18rUvUGKNvqN/dHonBaavBLsim/RoJ97AqdzQU1A/B1c/gX2C1BswIwlM
+         3wKa+WK9LWJ2HHfCCjgpdfxx1ZVzFfr0iSAY9yc7S6FEhd+JezPdXpbRDSqeK+O3qbiY
+         Ekk4AAVawc3lX9iP1nuTWz2GubEc7xUYzQrboZi4TK1EeH/palD/BpUNQ+v0P1BQaLkX
+         y1afqt0yn+5/Rsi6QHrpItpORQAFVwRCcxc1ccJcfJ286f86aB+oJx141JzrVL5Qfilp
+         kYAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765904593; x=1766509393;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wdkr38QTJAPcpLAthn9VgGdaWuWTWa11kuD8ioY1nvw=;
-        b=uiGPDS3qbfrFC46X1rSkk94eLU+6J9nLK4H2jCFMMt0Ah9QAKbHhUqgXs6m4xtjtEz
-         v37q1enYZNiyxxuzb7CyilcLdPTo3NxIvT8u3Uymf7Lb299wSBQCkHHkUDH4gKs/YopN
-         ukdEMn1tCvJdJqp9AHC57qAf9f3gJ84YHBlwqDjo1O8rfSqWXIwKRX3mSkGgsftk1iNc
-         S71SSHNZMQ2CEA0pFqlAs7tUEr9KFmllDs+bwdl8jULicS6eEo1KzJ4uW7x8Ag0uAD/G
-         7dBhmGMq+pEd6K3f1soueMgUDtzWeGxjzbzlEcdey7leKfJBJmS1sgiwWoj3mb3Sp59R
-         B03Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU4sq8c6uLTAIqkF8IPnKCpJhGfBRMGP9MD/0Kp6VJ62knza8oBaK3woHnwztpB1GSjFIptk2jgfXaHfECr7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yza7Hd2CS7jync559zMQm+m2YeUCTa4HhWCa4clraSKqci7sl2l
-	u6RKT/82uIk2/uuWoLPCfLeYppv2GhJFJxkLA2yx7jD03SEk+Ba4giHv
-X-Gm-Gg: AY/fxX5zvpBLtmwKYLUqPPcCzZ9549EiYFNMf2tO8r7OILrgXJ36E818PMut/Hjf4AH
-	ax+lFpwULdqKDfG6yz8zz+aVvkaoQJke9DUetQZIlXespfs6HDKSse2el24HHtsrBYcbM3CHVJ/
-	Lg5SUBJzkNYGnZqf948KErRT1xFPnwSQIUzEHXX4e3FxWaw6bFWDDFwFmaGovJXQTS3vvesonyf
-	Q/46OpRmnHiGggi9es1TJns2OTFAwlptEsC2n9PdTQyoHlnBd/R3gz2MVJpBJ3nRRT7N+ENuqO1
-	cyD1rfebu7AzH4Nt3LM7hwOde4uaN5EbE0LHAgx/ivZCzsRGDyZzPgucfm68Ry2S0CyYWuL0z+w
-	OkbSbwtLXFfURcFr/vIXGZ+yKP1+4eCwe3x7j4nwsDbNc0cZsEXMinI31sGbcnTVMaL0DPpGqw1
-	9QUI0tLuE7TJE6yTKTXrDffIE0WtfUPuwbccAOn05LFBySjcuV6a2eN0+G2p4PXuTViK6SWH70f
-	0QHZp4HELMArNuS
-X-Google-Smtp-Source: AGHT+IGoEuhivnEJtCF/1hKiY+Xym1qtv77KOIkHQZJWfAGgOE/Hr/PbK0AQK0NfWAZKiftyiU/j6Q==
-X-Received: by 2002:a05:600c:4f90:b0:477:6d96:b3e5 with SMTP id 5b1f17b1804b1-47a8f8ab02bmr139278345e9.7.1765904593274;
-        Tue, 16 Dec 2025 09:03:13 -0800 (PST)
-Received: from [192.168.1.203] (ip-095-222-069-115.um34.pools.vodafone-ip.de. [95.222.69.115])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4310ada8477sm100861f8f.7.2025.12.16.09.03.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Dec 2025 09:03:12 -0800 (PST)
-Message-ID: <266b9b35-aed1-4c2f-9fd1-4da349876ac5@gmail.com>
-Date: Tue, 16 Dec 2025 18:03:11 +0100
+        d=1e100.net; s=20230601; t=1765905609; x=1766510409;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Q3xSUzpZVzpM72qz1ELqk18PlnXt2ts3aZ5ceF8wcGg=;
+        b=eWu6FyTVbBryFfr8I5icRyHj1OewDz1ZvdQPCUAKPQznXUUCpZvdkFPDSUeH2BQ6Q+
+         re15BUtoHMRvl/eqcvrBTHWX6aWGHGFgNCL8xTSfLaf/40PhjcG1A45gWJ6VpVF/HYyU
+         5Tb6TPKckMuIg8gCNC6y0wZyOIpZOA9f68RvGagoZ9e1Q6Vh+g4eM9Go+mThmINqEiPW
+         275/52turVVk20+K1OS4L7TiA9qWJvCC/qFab7T3zpRF9yq6zjwN/w7GLbn/4YtRqYap
+         YVQjd7CVwxjon89jTWsZ1j7zfLRiVG001tL/bcsgsKrW4DskkFSKARnDH4Wf2l3QmNaI
+         dzHA==
+X-Gm-Message-State: AOJu0YwusjChW+jrMljFZjzMfstJaBBemblm79U2zz4G/4LW7VDqS00Z
+	X1tYGXTt+dkaxN1ZhZ3RsuUVEkoRTpHt+FmVDpL7ci5sOfxlZEc7nV41XSPgblN9RNQ7T5ABVqR
+	tcbIasQ1hJJdAKXsNS0dH8NeXPLGBM6c=
+X-Gm-Gg: AY/fxX6eeXvbEpO/9BN9Av4nIPEmBajvPqTZnFIKdnYWLea+nLsyxN9EG6/NgH1b+RW
+	Fstm3AkruFy38mkaA2xak7Ph7vvhFP6/8wUvLd6aX4MW6mkm2jXD3Fj2YV8SC4bdyanZRAq1tL0
+	X77YeBC/dSDZhEhHZn4oUdVtPNXOwALtbnfATJskHwmiYeoU+rCrsDR0GD/OTijD034XeuWzDkr
+	WX0Ve8ShZDXzVv+oI7HLSGzNIaHOO7OUZHo8l9up3YjGc8DQuYTMhD8mDCjTt5dLyZHUwlVU20K
+	2GttBFcx6fs=
+X-Google-Smtp-Source: AGHT+IHZzJ9MmaPu/VQj1S6qIKv69/SRg5KzI0V+EFB1zK9bjBi9qIGvZ8Ui604hf52nWS8omHX8esMDC2/jcQPwkwk=
+X-Received: by 2002:a05:6000:1842:b0:430:f622:8cd4 with SMTP id
+ ffacd0b85a97d-430f62292admr10212354f8f.49.1765905608455; Tue, 16 Dec 2025
+ 09:20:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: daniel.almeida@collabora.com
-Cc: a.hindborg@kernel.org, acourbot@nvidia.com, alex.gaynor@gmail.com,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- dakr@kernel.org, gary@garyguo.net, kernel@collabora.com,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- lossin@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org,
- tmgross@umich.edu
-References: <20250818-v4l2-v1-0-6887e772aac2@collabora.com>
-Subject: Re: [PATCH 0/7] rust: add initial v4l2 support
-Content-Language: en-US
-From: Frederic Laing <frederic.laing.development@gmail.com>
-In-Reply-To: <20250818-v4l2-v1-0-6887e772aac2@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <CAO3Qcbi-bLkOGQdYRwCGTX2+TZuRyXrGS-GXmU=AzeeeUoa-aA@mail.gmail.com>
+In-Reply-To: <CAO3Qcbi-bLkOGQdYRwCGTX2+TZuRyXrGS-GXmU=AzeeeUoa-aA@mail.gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Tue, 16 Dec 2025 09:19:57 -0800
+X-Gm-Features: AQt7F2pjySzwZjFiHlNkmsZ02WA3DAvIqs-qq6rlvifEU8mQzGV4ixmQsNk3A7E
+Message-ID: <CAADnVQ+TsLfhJDa8ghqBHbP4wJCaB8CeMJa7SuDJoT6LavoF9Q@mail.gmail.com>
+Subject: Re: [RFC] Rust implementation of BPF verifier
+To: cb m <mcb2720838051@gmail.com>
+Cc: rust-for-linux <rust-for-linux@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, ojeda@kernel.org, 
+	Andrii Nakryiko <andrii@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+On Tue, Dec 16, 2025 at 9:09=E2=80=AFAM cb m <mcb2720838051@gmail.com> wrot=
+e:
+>
+> # RFC: Rust Implementation of BPF Verifier
+>
+> > **To:** rust-for-linux@vger.kernel.org
+> > **Cc:** bpf@vger.kernel.org, Alexei Starovoitov, Daniel Borkmann, Migue=
+l Ojeda, Andrii Nakryiko
+>
+> ## Summary
+>
+> With Rust now officially adopted as a core language in the Linux kernel (=
+2025 Kernel Maintainer Summit), this RFC proposes a Rust implementation of =
+the BPF verifier.
 
-I’m new to contributing to the kernel and was reading through this 
-thread. I would like to ask about the current status of this patch set. 
-Is anyone still actively working on it?
-
-If it’s unmaintained at the moment, I’d be happy to take over and work 
-on addressing the review comments and resubmitting an updated version.
-
-In case you're wondering why I am interested; I am currently working on 
-camera software that utilizes the Microsoft Kinect 360 and V2 camera 
-variants. Luckily there is already `drivers/media/usb/gspca/kinect.c` 
-but it has some errors (like reporting invalid frame rates for color 
-data) and design flaws that makes it impossible to stream depth and 
-color data from a single device at the same time. I already got a new 
-user space driver working in rust and would like to upstream it to the 
-kernel to replace the older kinect driver written in C.
-
-Thanks for your time,
-Frederic Laing
+Not interested.
