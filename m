@@ -1,92 +1,222 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB1C202C5C
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 17:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E648329D280
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 17:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765905613; cv=none; b=qjWyb7MJJCO21zN/o3ElsZo6xmBJBoBGL6REcNhMFRNeF35hK1n/Rkal06n8nsVCqN8I4ENceN5iIP+WnIwk/tvzFrpZkvkAqClnwBfKSfVlNLnlgOgzVuimEQ01Ua7aCzSyRbekBPJtTJpQKdyhqw8E3l+11uY4BJncJKIZuao=
+	t=1765905723; cv=none; b=BFgiKQQI50un/lf4p0Bzifz4i4qTlWHYtUzswswECQ4ZKFP/6c4v4M5ij1lm3fwQyMnw4wsMQxP9DLYTwJ94Y2qlXIh4Xm3rdW2GOv8wNp8ROCizKZKIbpFmXRLf31WKHTnl1lMZdfj79k2RqWe1IXs1IoAx02c4/FB4S5hRq4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765905613; c=relaxed/simple;
-	bh=Q3xSUzpZVzpM72qz1ELqk18PlnXt2ts3aZ5ceF8wcGg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NdHraKJ5PF6KV1qv4CirbJ5jOHd+qTlPkRjBM42pnJymW8UBdRqwjhcgp9gM3dhiiVcaa87D6u088of3VGEjO7Gb3L1+0bAfKpBPwho+sOgsuj0tiDm3W9cZJwrm0h7BuzPo+o5kxkkSER92SBd6D9I0GEmGOQS523oxJmqmvx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTo9RRel; arc=none smtp.client-ip=209.85.221.48
+	s=arc-20240116; t=1765905723; c=relaxed/simple;
+	bh=eIgY/c8RdDw5i5dZKZXKrVM4WWOFEUU3zrqwERCuVb8=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=meBwv9gqxuiF5B62y6Q6CWFCBwMLxSYez6eG+6Xd4UoCPyisl9FfeSXI6JG+IyrQCcdC+Gq/1obdMITxUB7Lnjpt2dtkoKKkRhM68/ZqkshRmxrvCBnI9HDZJRNDo0A2Godzwb5EqNhn7bAzH+sCviVMtjeI6FQ/IDr3nzbiwx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J16ObFfY; arc=none smtp.client-ip=209.85.160.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTo9RRel"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-42fbc305552so2747653f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 09:20:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J16ObFfY"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4eddfb8c7f5so47340891cf.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 09:22:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765905609; x=1766510409; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q3xSUzpZVzpM72qz1ELqk18PlnXt2ts3aZ5ceF8wcGg=;
-        b=mTo9RRelNpvtIRN1FEebCYtoTjkOiG75JQRTOkKdRTOmyXkP7RUOdyzXE4tTIO8jQa
-         fuLzY5CBaeN18rUvUGKNvqN/dHonBaavBLsim/RoJ97AqdzQU1A/B1c/gX2C1BswIwlM
-         3wKa+WK9LWJ2HHfCCjgpdfxx1ZVzFfr0iSAY9yc7S6FEhd+JezPdXpbRDSqeK+O3qbiY
-         Ekk4AAVawc3lX9iP1nuTWz2GubEc7xUYzQrboZi4TK1EeH/palD/BpUNQ+v0P1BQaLkX
-         y1afqt0yn+5/Rsi6QHrpItpORQAFVwRCcxc1ccJcfJ286f86aB+oJx141JzrVL5Qfilp
-         kYAA==
+        d=gmail.com; s=20230601; t=1765905721; x=1766510521; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3xg8naONACF8hcDCihq1qUcqf/P+mMXkkg/WKCFR1K4=;
+        b=J16ObFfYKX7UTQYGIcDexkCOh9dkWebTTYFY8/RwcYfk5qf/3n009lA2epF5fewtJC
+         vij+dzEqUExOLx+VwXS8xuG1r/Z6cDMeQLSxgQiIqRbTp0hHRk4SS4+U0NjygllrZ1Np
+         67ZrmU0V559gc1bgbq+kWVn1cjKpiKNj3UK3Bt0xaCqgglv9OarvAYZT+u0BIHUTtLuM
+         rck0OtNIcRhjw5Jqlo/nRAbo/Bz8IfJZcLAmQ4aTiJSeAC/fTIaXNwlVSNwy05/8ZMQ1
+         iFbZRYQ7ZZdWBifjSgUArtHFMWwFFLt7cg3/6AETNtgxZs3AQt4xkk2dX4LSl9gCL14L
+         HtJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765905609; x=1766510409;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Q3xSUzpZVzpM72qz1ELqk18PlnXt2ts3aZ5ceF8wcGg=;
-        b=eWu6FyTVbBryFfr8I5icRyHj1OewDz1ZvdQPCUAKPQznXUUCpZvdkFPDSUeH2BQ6Q+
-         re15BUtoHMRvl/eqcvrBTHWX6aWGHGFgNCL8xTSfLaf/40PhjcG1A45gWJ6VpVF/HYyU
-         5Tb6TPKckMuIg8gCNC6y0wZyOIpZOA9f68RvGagoZ9e1Q6Vh+g4eM9Go+mThmINqEiPW
-         275/52turVVk20+K1OS4L7TiA9qWJvCC/qFab7T3zpRF9yq6zjwN/w7GLbn/4YtRqYap
-         YVQjd7CVwxjon89jTWsZ1j7zfLRiVG001tL/bcsgsKrW4DskkFSKARnDH4Wf2l3QmNaI
-         dzHA==
-X-Gm-Message-State: AOJu0YwusjChW+jrMljFZjzMfstJaBBemblm79U2zz4G/4LW7VDqS00Z
-	X1tYGXTt+dkaxN1ZhZ3RsuUVEkoRTpHt+FmVDpL7ci5sOfxlZEc7nV41XSPgblN9RNQ7T5ABVqR
-	tcbIasQ1hJJdAKXsNS0dH8NeXPLGBM6c=
-X-Gm-Gg: AY/fxX6eeXvbEpO/9BN9Av4nIPEmBajvPqTZnFIKdnYWLea+nLsyxN9EG6/NgH1b+RW
-	Fstm3AkruFy38mkaA2xak7Ph7vvhFP6/8wUvLd6aX4MW6mkm2jXD3Fj2YV8SC4bdyanZRAq1tL0
-	X77YeBC/dSDZhEhHZn4oUdVtPNXOwALtbnfATJskHwmiYeoU+rCrsDR0GD/OTijD034XeuWzDkr
-	WX0Ve8ShZDXzVv+oI7HLSGzNIaHOO7OUZHo8l9up3YjGc8DQuYTMhD8mDCjTt5dLyZHUwlVU20K
-	2GttBFcx6fs=
-X-Google-Smtp-Source: AGHT+IHZzJ9MmaPu/VQj1S6qIKv69/SRg5KzI0V+EFB1zK9bjBi9qIGvZ8Ui604hf52nWS8omHX8esMDC2/jcQPwkwk=
-X-Received: by 2002:a05:6000:1842:b0:430:f622:8cd4 with SMTP id
- ffacd0b85a97d-430f62292admr10212354f8f.49.1765905608455; Tue, 16 Dec 2025
- 09:20:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765905721; x=1766510521;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3xg8naONACF8hcDCihq1qUcqf/P+mMXkkg/WKCFR1K4=;
+        b=gGBvjwlBTxAsqQo2cXULzw3z8KqIfc4M0f+BP4YzMGxu3cbnl9yO40B/7YpSbGRCZ7
+         GaJmb9gwB9LyIqYv6jdBG1SmnYOUVjZjLmBgADHjddbv+cBF1OaUPkKwx5JDfmnvo3Sw
+         gIAJzcNL8gt5cKMNPDHyL/nshHtgwOFDwJ9zmxet0/lNztAvXoIkRtkqDAJL5KyW1Uu0
+         bvX5rgLCjGHhsWywcqmte36XqNqlxDnfueZ9TlvFKvG2C2z+gw5vrWeJlgQyai+q5WCU
+         gY7Me/dNMi2YrvQrmLZQV7sS+wrWM0cqXT62K0wao6KCOpHQjcq7fP88XUEST66l3J5N
+         YIEQ==
+X-Gm-Message-State: AOJu0YxxazMjoPoWqh3PqZvjLP/22GiRqkzho9QRROZFr3O+bkTBePav
+	p/coHHx0lBQqWK0GSQUHkqGiTzniuyVh79ldmul58sOwqPiZCBrhlku5Rzh5/Sc2ZSRS4ZTUf26
+	dZXjTmoFFTTpZndPRsFMp7DLPpvMsmbtMn5zPyJ5KdA==
+X-Gm-Gg: AY/fxX7ZsjsPtauDe5jSEdZHGZP9e2U76AuUZRUaJyfshYqQvNJwMw1bhS2DPIyDn7X
+	ILF9ndg+wH6R06ZkjSTt8/hdT+ZyV/hX90DJI7WI5gELnKYojiaYNCmyxSfDXx1Mvk049yvJlrP
+	uCiQ4nX7hO4HDpM69l+WWwn2DV6y5/srJCbPo7HnBPZDUqCRvqsZDhP3UprjmtDE0FkiU2CR398
+	UNHamNuTesI5KqOt9XltT3tS2rUkIzO3gUtOD4uRrVKS74r2aZ3LJzOUzUC7LAM+95iAbkhdoaC
+	GxIHWUU=
+X-Google-Smtp-Source: AGHT+IE063AL0MNCe7NNfilzsr2xWXIYFSezV65iS8s6du/2o5M63c5bbtHo0kGEyebR3CXUJZQTbVB9BkK6Z22RHFc=
+X-Received: by 2002:a05:622a:53ca:b0:4ee:1920:2b1c with SMTP id
+ d75a77b69052e-4f1d0471499mr193538831cf.2.1765905720611; Tue, 16 Dec 2025
+ 09:22:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAO3Qcbi-bLkOGQdYRwCGTX2+TZuRyXrGS-GXmU=AzeeeUoa-aA@mail.gmail.com>
-In-Reply-To: <CAO3Qcbi-bLkOGQdYRwCGTX2+TZuRyXrGS-GXmU=AzeeeUoa-aA@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 16 Dec 2025 09:19:57 -0800
-X-Gm-Features: AQt7F2pjySzwZjFiHlNkmsZ02WA3DAvIqs-qq6rlvifEU8mQzGV4ixmQsNk3A7E
-Message-ID: <CAADnVQ+TsLfhJDa8ghqBHbP4wJCaB8CeMJa7SuDJoT6LavoF9Q@mail.gmail.com>
-Subject: Re: [RFC] Rust implementation of BPF verifier
-To: cb m <mcb2720838051@gmail.com>
-Cc: rust-for-linux <rust-for-linux@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, ojeda@kernel.org, 
-	Andrii Nakryiko <andrii@kernel.org>
+From: cb m <mcb2720838051@gmail.com>
+Date: Wed, 17 Dec 2025 01:21:49 +0800
+X-Gm-Features: AQt7F2rOZk6dfo8G9OXKhwpUNBND1s7rFG4Iv5EnKe4pnrfpcjFizn9vMKQi40I
+Message-ID: <CAO3QcbgU-wbyxgeYL87j6adrQP+-FhHXiXdsgKwvKGMzmzeVPA@mail.gmail.com>
+Subject: [RFC] Rust implementation of BPF verifier
+To: rust-for-linux@vger.kernel.org
+Cc: bpf@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net, 
+	ojeda@kernel.org, andrii@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 16, 2025 at 9:09=E2=80=AFAM cb m <mcb2720838051@gmail.com> wrot=
-e:
->
-> # RFC: Rust Implementation of BPF Verifier
->
-> > **To:** rust-for-linux@vger.kernel.org
-> > **Cc:** bpf@vger.kernel.org, Alexei Starovoitov, Daniel Borkmann, Migue=
-l Ojeda, Andrii Nakryiko
->
-> ## Summary
->
-> With Rust now officially adopted as a core language in the Linux kernel (=
-2025 Kernel Maintainer Summit), this RFC proposes a Rust implementation of =
-the BPF verifier.
+Subject: [RFC] Rust implementation of BPF verifier
 
-Not interested.
+Dear Rust for Linux and BPF maintainers,
+
+I hope this email finds you well. I am writing to respectfully submit
+an RFC for a Rust implementation of the BPF verifier, and I would be
+very grateful for your feedback and guidance.
+
+With Rust now officially adopted as a core language in the Linux kernel
+following the 2025 Kernel Maintainer Summit, I have been working on a
+Rust implementation of the BPF verifier and would like to humbly seek
+the community's opinion on whether this direction is worthwhile.
+
+
+MOTIVATION
+==========
+
+The BPF verifier (kernel/bpf/verifier.c) is approximately 30,000 lines
+of complex C code. I believe a Rust implementation could potentially
+offer the following benefits:
+
+  * Compile-time safety through Rust's ownership model
+  * Type-safe state tracking for registers and bounds
+  * Reduced attack surface via strict aliasing rules
+  * Improved maintainability through pattern matching
+
+I fully understand that these are my assumptions, and I would greatly
+appreciate any corrections or different perspectives from the experts
+in this community.
+
+
+CURRENT IMPLEMENTATION STATUS
+=============================
+
+I have been working on this project for some time, and the current
+status is as follows (~78,000 lines including tests):
+
+Core Features:
+  - Full register state tracking (R0-R10)
+  - Tnum arithmetic for precise bounds
+  - 211 BPF helper function signatures
+  - 85+ kfunc definitions (synced with kernel 6.12)
+  - State pruning with hash-indexed equivalence
+  - Reference tracking (locks, RCU, acquired refs)
+  - IRQ flag state tracking
+
+Memory Verification:
+  - Stack, packet, context, map, arena
+  - Spectre v1/v4 mitigation checks
+
+Technical Characteristics:
+  - #![no_std] compatible
+  - GPL-2.0-only license
+  - Pure Rust implementation (no C glue code, Linux 6.12+ style)
+  - 300+ unit tests
+
+Preliminary Benchmark Results:
+  - simple_verification:   ~14.6 us
+  - medium_verification:   ~28.7 us
+  - complex_verification:  ~736 us
+  - state_creation:        ~406 ns
+  - bounds_operations:     ~5.8 ns
+
+I acknowledge that these benchmarks are preliminary and would welcome
+suggestions on more comprehensive testing approaches.
+
+
+PROPOSED INTEGRATION APPROACH
+=============================
+
+Following the patterns established in the kernel, I propose using the
+native kernel::Module trait:
+
+    use kernel::prelude::*;
+
+    module! {
+        type: RustBpfVerifier,
+        name: "rust_bpf_verifier",
+        license: "GPL",
+    }
+
+    impl kernel::Module for RustBpfVerifier {
+        fn init(_module: &'static ThisModule) -> Result<Self> {
+            pr_info!("Rust BPF verifier loaded\n");
+            Ok(Self { })
+        }
+    }
+
+Configuration would be:
+
+    CONFIG_BPF_VERIFIER_RUST=y
+    echo 1 > /proc/sys/kernel/bpf_rust_verifier
+
+
+PROPOSED PHASES (Subject to Community Feedback)
+===============================================
+
+  Phase 1: RFC and community discussion (current)
+  Phase 2: Add necessary kernel crate APIs for BPF
+  Phase 3: Validation through selftests, benchmarks, and security audit
+  Phase 4: Gradual adoption (initially disabled by default)
+
+I am completely open to adjusting this plan based on the community's
+suggestions and requirements.
+
+
+QUESTIONS FOR THE COMMUNITY
+===========================
+
+I would be very grateful if the maintainers and community members could
+share their thoughts on the following questions:
+
+1. Is there interest in pursuing a Rust BPF verifier now that Rust has
+   been officially adopted in the kernel?
+
+2. If so, what would be the preferred approach:
+   a) Eventually replace the C implementation?
+   b) Coexist as a selectable alternative?
+   c) Focus on specific verification passes only?
+
+3. What kernel crate APIs would need to be added for proper BPF
+   integration?
+
+4. What validation criteria and benchmarks would be required for this
+   to be considered for inclusion?
+
+I understand that the maintainers are very busy, and I am grateful for
+any time you can spare to review this proposal.
+
+
+REPOSITORY
+==========
+
+The code is available at:
+  https://github.com/MCB-SMART-BOY/verifier-rs
+
+I welcome any feedback, criticism, or suggestions for improvement.
+
+
+REFERENCES
+==========
+
+  - Rust for Linux Documentation: https://docs.kernel.org/rust/
+  - Kernel Crate API: https://rust-for-linux.github.io/docs/kernel/
+  - BPF Verifier Source:
+https://github.com/torvalds/linux/blob/master/kernel/bpf/verifier.c
+
+
+Thank you very much for taking the time to read this proposal. I look
+forward to hearing from you and learning from your expertise.
+
+With sincere respect,
+MCB-SMART-BOY
