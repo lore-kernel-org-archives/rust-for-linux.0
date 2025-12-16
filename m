@@ -1,342 +1,160 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A5626B2B0
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 00:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765845899; cv=none; b=cVfk9Js1OCNX3oU4pIGVsqo8kBYYkEtMigF6qir4l/7yZWY+nguFfkIu60CcNfAxVFOGqQiyKzUXSIhKASpIh7+x8Vc0XIQ7w17NB7aQ/0aV1la/UV+pjKlCaPqKK5xxbSyGab54zIonoaBvRWGXw8swDvaQ5bMxgOTaNOA6Q7M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765845899; c=relaxed/simple;
-	bh=eJzzXyTehyDOrkdA4s2sZqkwAreYcpT1LVD5yuHGCEg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mcEDwERtkUccIvxMrE7dqIzlslpfDHLrGhCkZSSOTw2Pwrx25AnelObNpGXkdXSCXFVQy4gulCqU6mB+5VFGnxO7nxj3lrk3YuvEEt/MXnmsdTL/8pihw4+rS7ZLmeJ9v36HJqWSSwi9n4stlDghqlWBoFabGgCkJUtzP1zmjmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PLx3t8+F; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354492DF68
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 00:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765846531; cv=pass; b=pslXvEKwQfjZJCLEaAoMgUw9BPpesGhv2rQVlXVbnyS/FiwS7ojSLyGvUfUDLwZ/fGVRNcst/iLRJhvvbPctj+fC3VqHlO6/JaAAZ4wtrUtsY5Tekri/gLbCnqHVIqTHJpvkyBDJDH43zxsj1in2ZUD9mbZMFU/lWPZU6p0Ddb8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765846531; c=relaxed/simple;
+	bh=XedozhfciyhSP4b9nDQllsAAs0EUvQS6wn7xvBD6/wI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QitOoCg3XDlddW4ZVd027sALVQAx5naduFlR/aXIKQ7d4ccL+zlDVza5ISSChGb75L8cAZyMJ1CK2VAX+KNaxtlYLrEb48DE6o/I5uIWgfzHO10V27psNzuU5JJkF04sVAPTu5efe/ZXKyAFCyjqpFdFXcQhEaPaMIN668qpxlQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O14ocu4G; arc=pass smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PLx3t8+F"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c1290abb178so4395001a12.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 16:44:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O14ocu4G"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64969e4c588so853a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Dec 2025 16:55:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765846528; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RvCpHSo5JV3jHrjQK65w6Gr459anosYcya2cf/IAzDc2r8T8cepW5JIs3VcTK5Gbj8
+         62WI7241FY6yHed4UUeKbXrMO3SSXdoaxbBXKcCtTDbYhEx12YpgDdBWTZJLzwSGMI7g
+         Q7VcgTGxm8t8EB3eNgjF0R3H5lnjTG1Ttw8DSFaaHx493/uZSuMZ9y9nKx77g+EDRI02
+         3hAOnyW4AwLuvBsF3QemSMkEcpZ8ELqeHLNW/ditMWl10bmO14u6fkEfbDj+DHxbJG5w
+         +PKHY6Z0AgvugBUg3dmOhBjZobHTtwLPsi9xleHMUsAQ3iBZB0rG/RfKb/MleIcKlbqh
+         mjJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=hkMrsakpV4xdoiuv01S0CrO/w65fx468q7ZaOYRKG+o=;
+        fh=nCAp41PkhA0gt9gA1ExqzzB/2m1y3uJQyhsiFra5s8E=;
+        b=Zme7YLGOIJgTBzMOcivXWp4N6RP1EOfuh4tCdmUjeQBX1DnS3B8RgEkDYDSFUaOKl6
+         4AIesJbTBM8rjt9cHUZeQNx60N32Ehe5G6dQfIMgtmNZdR4IbtG8qV5mbVHhNTCzHadQ
+         SRdRxOUNR5JXte7QVaYUkv8vTO+qvGnrSPYGSMKW0PzR0qsG3yzeI9pmuabY2Q7Vc3QH
+         Pj4peU7qE0Gm1fKQnJWuReJIAo9Hdl+Larj8TVJFnaXT2+Qk2O8Ptb9jDW8YsbNxZqCF
+         JYTW3nvub3pFxtToxlZxw3zCJCy3isz1zRByYO1ItiYgdZTyTLtMxQ5ghlbTXQ9292bm
+         cSGg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765845897; x=1766450697; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KesyPju459Z9i93tKmGW4+cYM/ROQPbIUqpeFkvB4f4=;
-        b=PLx3t8+FbeQpm64MFqzsR9DM+MYXAPSuDO+xXaJrWLgVVrujI87TsGlra48uZqMjEF
-         hLh21j+YT1HbiC00bDMRLDrYMRmv7SKxyHPJYH+B5k1uHX4n94FLBkGVHZWLilSxuiPp
-         P3I1G6CoBB2/xwSYj2HyUYJCu41Z+70ne8ij5KsQ6q29Tby1qXns6yLYJpUGB4/HsBMF
-         Ct791J1L8HGEaSnzq28a3374yiQODYBQLP+oX9Ofr8Mnoecs3PhR5wyNepTzCngJ56eW
-         F8ahnjJW9KZMLrvQKVge+ZBDUmF1JElRlVjU/HBVZZcz/ToZjmSiYh1/ccN0v2mS9Nc8
-         WrnQ==
+        d=google.com; s=20230601; t=1765846528; x=1766451328; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hkMrsakpV4xdoiuv01S0CrO/w65fx468q7ZaOYRKG+o=;
+        b=O14ocu4G9tZd4w4Lhwk2KyfG0R+RclS/ZaCOaVAmonJtYpgY6jc81ZNuqyGtSFfqIj
+         GLnh1rwm774/luN4Aym9/92bNbFmAVgI1gdMewlgfQyi4R4+hNRbv0WDezGAZo9kJHpt
+         MkzHFK4ugnA9wWLsEfzDukOtsoXJvWzcoGYhADDPZ/0pLGmi322FsOPmgNDrdcvFXua2
+         nW5oUq05vMVidtnRLzFBAZdfxsvlkxGxi4P316ZSakoWvc6IcAav7u86YD1bn/DTwzdd
+         h6AL3L+j6HWz891ELiiH4CsJpsj0hEnIHN2izjuugTIMiDdbbbFbDMrhQ7fm4tmbiIzY
+         KPDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765845897; x=1766450697;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KesyPju459Z9i93tKmGW4+cYM/ROQPbIUqpeFkvB4f4=;
-        b=m4V5AX4oYFokDNjr23m+7CSLdR9zCFQtQVSyYmJd16yrnT1YR+9YTHSQvlxkE+MTC+
-         2Vs0FaSvBciIq6iobcHvUbMSu3bHjaSYNCsemNlJv544bcLktqpjjVZbq27se0K3RGxN
-         tFR1996WGq7subzclybV0gCT1MzaiewVxHIOSfRKq2+gv9PbpbMnPz7RzU6VuMTYEWtC
-         MBY4jFczurc4CMLRTBlF3Ox/hjTpKk0Jps81PKZxXjNRV6M8VWTLAipMsujXSTYSYFP3
-         v2m6sFc3bJ7AQnKm2SgwGekPt94+FC+FfK2geuiuEHAvNKdaITYLhoNPy4rmmitewFZ6
-         PNsA==
-X-Gm-Message-State: AOJu0YwPtXJTmBlMjZRV2Kb4jsdwZ8YFNLwJkHts/OSPQA/yC1EhUHc2
-	ffRWcUXkNHVcKll+l+TGt5Ak7Q/UmzUklmLCaeoKbp3fg1F+Gzq0itGx12BCgMmsd/RZSzGntnB
-	yca1YM3UAxw==
-X-Google-Smtp-Source: AGHT+IEQ5wxKL6gYrutG2VXGN+zazB4TwDak9ykhby/gvEC3VGcHSiTMhK8WLTx5Vhbjtidy0p3BqhJLi54F
-X-Received: from dycns7.prod.google.com ([2002:a05:7300:f787:b0:2ac:2c66:7180])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:50e4:b0:2a4:3593:6452
- with SMTP id 5a478bee46e88-2ac2f85e8a0mr8360771eec.2.1765845896521; Mon, 15
- Dec 2025 16:44:56 -0800 (PST)
-Date: Tue, 16 Dec 2025 00:44:43 +0000
-In-Reply-To: <20251216-transmute-v2-0-b23e5277ad02@google.com>
+        d=1e100.net; s=20230601; t=1765846528; x=1766451328;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hkMrsakpV4xdoiuv01S0CrO/w65fx468q7ZaOYRKG+o=;
+        b=KQTqe8T7FN4GM/NZg7zHPIXDVAvcphCvQeOdRZmY2rczsP6OEiAM5jIA/+dBPBGRmg
+         DWYSzpNUvnKw2nha8iXy7Wgt4Z2mw9a1IaOZgL52+Na6KoVB0k3Z7qh/+s4PBRDp3bsN
+         hE6N39o5PzarzUbUJfx8HLuXS6sk3Hpxf5SXf/tGzUJ3P4SasjAti3EavIiC+UpAuHqQ
+         fJYd2vXMwvvj+z93i8BJYnv6YIYi8PARpoxGeYqfxpbaDYQbOQr7o0OJGw6vbW/SAL1r
+         UQVihvg5jLdGZ01W0650mPB47ZwsSgvSj1JnEUqQGBpYx11FTRsr3CsHTTIN9GQziCot
+         hNsw==
+X-Forwarded-Encrypted: i=1; AJvYcCU7Zf/jcBt3aYtGfwdtM52INfNVQNeScZ8NjSB3qv17gprb0HA/XVCQ/DJf3tqlz3rC9j3ZJtVdbLe+bwKpwQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGgw58y6fVI2yy2nqkdyQVe8A1eJ2hv/edKpHU3evqSwCmFd8O
+	Chsh4Hvi+50OxDIp1+fUOAtZbHfv96SSCA1QasIQCSJL/npM8rqv0xHpeUCfsPQ6s3ur1FQvCxf
+	tRRMjp3SjaZQLTtPhxCBxEjRIgL1FUdA5wqHSE09n
+X-Gm-Gg: AY/fxX6QTNVglThSbypn74OnQFt9Anjx20QRpN/SMknITHaPMi80S1ePXl6QcOX9ZeA
+	fKjCOG4+Cfih5mJSgZdaAqR1rqivZy/yXSXhU6AcpGoxCwUr4wmVUcEZAhraayRZkVOAbM8Uab3
+	N75UlyRce8/oWtE0lpcm6cbMNU7MjqD4slsV1+/g2wuQKJh7u8uSAbYTNiNm50Bf4Qkw46Ozx8W
+	Zx3G3pPY0a+GY+QQ+WgXzJG1UrnuBBvAF308HJxDFUh2wQ/TDdeqVcKJrIuKw0m+jUGORRKFrev
+	Ym5oc3HxbUC1NynsvSuX8YqYgg==
+X-Google-Smtp-Source: AGHT+IGLXFs6ZQQjk1EVFsSaR/XVMTlgzBvW4YPps7Xv9R6FU3z3dQSvYkmM2olzGcfSdFq+ShBjksrAZKnvMeWwNio=
+X-Received: by 2002:a05:6402:23c6:b0:643:1fab:c9fa with SMTP id
+ 4fb4d7f45d1cf-64b300ec1cdmr5438a12.9.1765846527695; Mon, 15 Dec 2025 16:55:27
+ -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251216-transmute-v2-0-b23e5277ad02@google.com>
-X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1765845890; l=10908;
- i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=eJzzXyTehyDOrkdA4s2sZqkwAreYcpT1LVD5yuHGCEg=; b=9udXk9G1Dt7+BmcMMAc+ksdY1kYgvCDrvn2/pYGVJNNN24pKAJAmnOVsaftEkpz6lfgfYo9fx
- GhEmAzrI3tGCqrxK1FPXWRJpUApNy7EOA3hKdERdIscJ2MwWvPB8w+i
-X-Mailer: b4 0.14.2
-Message-ID: <20251216-transmute-v2-3-b23e5277ad02@google.com>
-Subject: [PATCH v2 3/3] rust: Support deriving `AsBytes`/`FromBytes` on
- bindgen types
+MIME-Version: 1.0
+References: <20251213-qcom-socinfo-v1-1-5daa7f5f2a85@google.com>
+ <4qgnlilx2vyi6yf73d47z2o342lotq7vsvycigsv5fb3rcwsjv@t4ank62skqny>
+ <CAGSQo03uOmC2G-MnkY-8_R8Bo_s7Q97xEh-re4WPqSuWkotOuA@mail.gmail.com> <zgzucan5ysxexmmjantx6sz7upbtouazj4hagjzlhaoo5hvzo5@limvqfce2lrw>
+In-Reply-To: <zgzucan5ysxexmmjantx6sz7upbtouazj4hagjzlhaoo5hvzo5@limvqfce2lrw>
 From: Matthew Maurer <mmaurer@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
+Date: Mon, 15 Dec 2025 16:55:13 -0800
+X-Gm-Features: AQt7F2pHWe0LIWFXW8BDLU_8yyVD7qL8ToGLKpD173W1Z7xz7u27E-MDk1pJUSs
+Message-ID: <CAGSQo01-yjNBpo0jCO0sK+0XHLKUyZY8vyA0X2M=fDtcmv6Vkw@mail.gmail.com>
+Subject: Re: [PATCH RFC] soc: qcom: socinfo: Re-implement in Rust
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Satya Durga Srinivasu Prabhala <satyap@quicinc.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Trilok Soni <tsoni@quicinc.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-To support this, we need to move the `transmute` module into a separate
-crate to allow the `bindings` crate to depend on it. Most user code is
-still expected to address the module as `kernel::transmute`, which is a
-re-export. `ffi::transmute` is now available for use in `bindings`.
+I'll get to your other comments in a v2 soon, but wanted to focus on
+the lifetime of `qcom_smem_get` buffers for a moment.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
- rust/Makefile                     | 14 +++++++++-----
- rust/bindgen_parameters           |  8 ++++++++
- rust/bindings/lib.rs              |  4 ++++
- rust/{ffi.rs => ffi/lib.rs}       |  5 +++++
- rust/{kernel => ffi}/transmute.rs |  0
- rust/kernel/lib.rs                |  2 +-
- rust/macros/lib.rs                | 24 ++++++++++++++++++++++--
- rust/macros/transmute.rs          | 12 +++++++-----
- rust/uapi/lib.rs                  |  4 ++++
- scripts/generate_rust_analyzer.py |  2 +-
- 10 files changed, 61 insertions(+), 14 deletions(-)
+> > > > ---
+> > >
+> > > > +
+> > > > +pub(crate) fn qcom_smem_get(host: i32, item: u32) -> Result<&'static [u8]> {
+> > > > +    let mut size = 0;
+> > > > +    // SAFETY: qcom_smem_get only requires that the size pointer be a writable size_t,
+> > > > +    // host and item are error checked in the qcom_smem module.
+> > > > +    let err_ptr = unsafe { kernel::bindings::qcom_smem_get(host as u32, item, &mut size) };
+> > > > +    let ptr = from_err_ptr(err_ptr)?;
+> > > > +    // SAFETY: If qcom_smem_get does not return an error, the returned pointer points to a readable
+> > > > +    // byte buffer with its size written into size. Because these buffers are derived from the
+> > > > +    // static ranges in the DT, this buffer remains accessible even if the qcom_smem module is
+> > > > +    // unloaded, so 'static is appropriate. The underlying buffer cannot mutate, so upgrading it
+> > > > +    // to a reference is allowed.
+> > >
+> > > This is definitely not true. The smem data is ioremap'ped during
+> > > qcom_smem_probe() and will be unmapped if qcom_smem is unloaded.
+> > > Accessing such a pointer after unloading smem would result in the
+> > > exception. Current socinfo ignores that and keeps on accessing the data
+> > > at runtime (which also allows it to read DSP versions which are updated
+> > > at runtime), but the comment needs to be corrected.
+> >
+> > Thanks for the info. In v2 I'll look into seeing if I can make those
+> > slices hold a reference on the smem module while they're alive.
+>
+> It should be a reference to the _bound_ device. I don't think we have
+> a way to do it. I suggest just fixing the comment instead.
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 5d357dce1704d15e43effc528be8f5a4d74d3d8d..178aa3036c4acba1c4c266196912da2d60fe0d5f 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -207,7 +207,7 @@ rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORCE
- 	+$(call if_changed,rustdoc)
- 
- rustdoc-ffi: private is-kernel-object := y
--rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
-+rustdoc-ffi: $(src)/ffi/lib.rs rustdoc-core FORCE
- 	+$(call if_changed,rustdoc)
- 
- rustdoc-pin_init_internal: private rustdoc_host = yes
-@@ -249,7 +249,7 @@ quiet_cmd_rustc_test_library = $(RUSTC_OR_CLIPPY_QUIET) TL $<
- rusttestlib-build_error: $(src)/build_error.rs FORCE
- 	+$(call if_changed,rustc_test_library)
- 
--rusttestlib-ffi: $(src)/ffi.rs FORCE
-+rusttestlib-ffi: $(src)/ffi/lib.rs FORCE
- 	+$(call if_changed,rustc_test_library)
- 
- rusttestlib-proc_macro2: private rustc_target_flags = $(proc_macro2-flags)
-@@ -657,22 +657,26 @@ $(obj)/build_error.o: $(src)/build_error.rs $(obj)/compiler_builtins.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
- $(obj)/ffi.o: private skip_gendwarfksyms = 1
--$(obj)/ffi.o: $(src)/ffi.rs $(obj)/compiler_builtins.o FORCE
-+$(obj)/ffi.o: $(src)/ffi/lib.rs $(obj)/compiler_builtins.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
--$(obj)/bindings.o: private rustc_target_flags = --extern ffi --extern pin_init
-+$(obj)/bindings.o: private rustc_target_flags = --extern ffi --extern pin_init \
-+	--extern macros
- $(obj)/bindings.o: $(src)/bindings/lib.rs \
-     $(obj)/ffi.o \
-     $(obj)/pin_init.o \
-+    $(obj)/$(libmacros_name) \
-     $(obj)/bindings/bindings_generated.rs \
-     $(obj)/bindings/bindings_helpers_generated.rs FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
--$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init
-+$(obj)/uapi.o: private rustc_target_flags = --extern ffi --extern pin_init \
-+	--extern macros
- $(obj)/uapi.o: private skip_gendwarfksyms = 1
- $(obj)/uapi.o: $(src)/uapi/lib.rs \
-     $(obj)/ffi.o \
-     $(obj)/pin_init.o \
-+    $(obj)/$(libmacros_name) \
-     $(obj)/uapi/uapi_generated.rs FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index fd2fd1c3cb9a51ea46fcd721907783b457aa1378..d56343ca03979e345f8adb7eb8fd7f2b9d4be6ee 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -64,3 +64,11 @@
- # Structs should implement `Zeroable` when all of their fields do.
- --with-derive-custom-struct .*=MaybeZeroable
- --with-derive-custom-union .*=MaybeZeroable
-+
-+# Every C struct can try to derive FromBytes. If they have unmet requirements,
-+# the impl will just be a no-op due to the where clause.
-+--with-derive-custom-struct .*=FromBytesFfi
-+
-+# We can't auto-derive AsBytes, as we need a const-time check to see if there
-+# is padding involved. Add it explicitly when you expect no padding.
-+--with-derive-custom-struct cpumask=AsBytesFfi
-diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
-index 0c57cf9b4004f176997c59ecc58a9a9ac76163d9..c29312fca1b01b707bb11b05d446d44480a4b81f 100644
---- a/rust/bindings/lib.rs
-+++ b/rust/bindings/lib.rs
-@@ -31,6 +31,10 @@
- #[allow(clippy::undocumented_unsafe_blocks)]
- #[cfg_attr(CONFIG_RUSTC_HAS_UNNECESSARY_TRANSMUTES, allow(unnecessary_transmutes))]
- mod bindings_raw {
-+    use macros::{
-+        AsBytesFfi,
-+        FromBytesFfi, //
-+    };
-     use pin_init::{MaybeZeroable, Zeroable};
- 
-     // Manual definition for blocklisted types.
-diff --git a/rust/ffi.rs b/rust/ffi/lib.rs
-similarity index 87%
-rename from rust/ffi.rs
-rename to rust/ffi/lib.rs
-index f961e9728f590fd2c52d4c03a1f715d654051d04..14052362f091a609bc505fe6eca77fe998fe2321 100644
---- a/rust/ffi.rs
-+++ b/rust/ffi/lib.rs
-@@ -10,6 +10,11 @@
- 
- #![no_std]
- 
-+#[doc(hidden)]
-+// This lives here to make it accessible to `bindings`, similar to the other `ffi` types.
-+// User code should access it through `kernel::transmute`.
-+pub mod transmute;
-+
- macro_rules! alias {
-     ($($name:ident = $ty:ty;)*) => {$(
-         #[allow(non_camel_case_types, missing_docs)]
-diff --git a/rust/kernel/transmute.rs b/rust/ffi/transmute.rs
-similarity index 100%
-rename from rust/kernel/transmute.rs
-rename to rust/ffi/transmute.rs
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index f812cf12004286962985a068665443dc22c389a2..4aa54dd83319ef16bd4baa1964114f1e6549942b 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -63,6 +63,7 @@
- extern crate self as kernel;
- 
- pub use ffi;
-+pub use ffi::transmute;
- 
- pub mod acpi;
- pub mod alloc;
-@@ -146,7 +147,6 @@
- pub mod task;
- pub mod time;
- pub mod tracepoint;
--pub mod transmute;
- pub mod types;
- pub mod uaccess;
- #[cfg(CONFIG_USB = "y")]
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index d66397942529f67697f74a908e257cacc4201d84..bde94c2a8ddf708872bcd56a4713784b5ccdf04e 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -506,7 +506,7 @@ pub fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
- #[proc_macro_derive(FromBytes)]
- pub fn derive_from_bytes(tokens: TokenStream) -> TokenStream {
-     let input = parse_macro_input!(tokens as DeriveInput);
--    transmute::from_bytes(input).into()
-+    transmute::from_bytes("kernel", input).into()
- }
- 
- /// Implements `AsBytes` for a struct.
-@@ -536,5 +536,25 @@ pub fn derive_from_bytes(tokens: TokenStream) -> TokenStream {
- #[proc_macro_derive(AsBytes)]
- pub fn derive_as_bytes(tokens: TokenStream) -> TokenStream {
-     let input = parse_macro_input!(tokens as DeriveInput);
--    transmute::as_bytes(input).into()
-+    transmute::as_bytes("kernel", input).into()
-+}
-+
-+#[doc(hidden)]
-+#[proc_macro_derive(FromBytesFfi)]
-+/// This is equivalent to `FromBytes`, but uses the `ffi` crate as the trait definition site
-+/// instead of `kernel`. This is intended for use inside `bindings`. Everyone else can refer to the
-+/// trait through `kernel`.
-+pub fn derive_from_bytes_trait(tokens: TokenStream) -> TokenStream {
-+    let input = parse_macro_input!(tokens as DeriveInput);
-+    transmute::from_bytes("ffi", input).into()
-+}
-+
-+#[doc(hidden)]
-+#[proc_macro_derive(AsBytesFfi)]
-+/// This is equivalent to `AsBytes`, but uses the `ffi` crate as the trait definition site
-+/// instead of `kernel`. This is intended for use inside `bindings`. Everyone else can refer to the
-+/// trait through `kernel`.
-+pub fn derive_as_bytes_trait(tokens: TokenStream) -> TokenStream {
-+    let input = parse_macro_input!(tokens as DeriveInput);
-+    transmute::as_bytes("ffi", input).into()
- }
-diff --git a/rust/macros/transmute.rs b/rust/macros/transmute.rs
-index 43cf36a1334f1fed23c0e777026392f987f78d8d..9bd6d279675fb1d58cdceff1f4dde0dcf33fbf99 100644
---- a/rust/macros/transmute.rs
-+++ b/rust/macros/transmute.rs
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use proc_macro2::TokenStream;
-+use proc_macro2::{Span, TokenStream};
- use syn::{parse_quote, DeriveInput, Fields, Ident, ItemConst, Path, WhereClause};
- 
- fn all_fields_impl(fields: &Fields, trait_: &Path) -> WhereClause {
-@@ -19,7 +19,8 @@ fn struct_padding_check(fields: &Fields, name: &Ident) -> ItemConst {
-     }
- }
- 
--pub(crate) fn as_bytes(input: DeriveInput) -> TokenStream {
-+pub(crate) fn as_bytes(crate_: &str, input: DeriveInput) -> TokenStream {
-+    let crate_ = Ident::new(crate_, Span::call_site());
-     if !input.generics.params.is_empty() {
-         return quote::quote! { compile_error!("#[derive(AsBytes)] does not support generics") };
-     }
-@@ -27,7 +28,7 @@ pub(crate) fn as_bytes(input: DeriveInput) -> TokenStream {
-         return quote::quote! { compile_error!("#[derive(AsBytes)] only supports structs") };
-     };
-     let name = input.ident;
--    let trait_ = parse_quote! { ::kernel::transmute::AsBytes };
-+    let trait_ = parse_quote! { ::#crate_::transmute::AsBytes };
-     let where_clause = all_fields_impl(&ds.fields, &trait_);
-     let padding_check = struct_padding_check(&ds.fields, &name);
-     quote::quote! {
-@@ -37,13 +38,14 @@ unsafe impl #trait_ for #name #where_clause {}
-     }
- }
- 
--pub(crate) fn from_bytes(input: DeriveInput) -> TokenStream {
-+pub(crate) fn from_bytes(crate_: &str, input: DeriveInput) -> TokenStream {
-+    let crate_ = Ident::new(crate_, Span::call_site());
-     let syn::Data::Struct(ref ds) = &input.data else {
-         return quote::quote! { compile_error!("#[derive(FromBytes)] only supports structs") };
-     };
-     let (impl_generics, ty_generics, base_where_clause) = input.generics.split_for_impl();
-     let name = input.ident;
--    let trait_ = parse_quote! { ::kernel::transmute::FromBytes };
-+    let trait_ = parse_quote! { ::#crate_::transmute::FromBytes };
-     let mut where_clause = all_fields_impl(&ds.fields, &trait_);
-     if let Some(base_clause) = base_where_clause {
-         where_clause
-diff --git a/rust/uapi/lib.rs b/rust/uapi/lib.rs
-index 1d5fd9efb93e9db97fec84fca2bae37b500c20c5..2033b7125558d7ccfae67b94777f5ce59593a528 100644
---- a/rust/uapi/lib.rs
-+++ b/rust/uapi/lib.rs
-@@ -34,6 +34,10 @@
- type __kernel_ssize_t = isize;
- type __kernel_ptrdiff_t = isize;
- 
-+use macros::{
-+    AsBytesFfi,
-+    FromBytesFfi, //
-+};
- use pin_init::MaybeZeroable;
- 
- include!(concat!(env!("OBJTREE"), "/rust/uapi/uapi_generated.rs"));
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 147d0cc940681426771db865bc2462e7029a6d7d..843d081eacaca8edeeac5978bd8107a498008186 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -137,7 +137,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
- 
-     append_crate(
-         "ffi",
--        srctree / "rust" / "ffi.rs",
-+        srctree / "rust" / "ffi" / "lib.rs",
-         ["core", "compiler_builtins"],
-     )
- 
+So, unfortunately fixing the comment doesn't really address this issue
+- a `&'static [u8]` is a promise that this buffer is immutable and
+will remain valid to read indefinitely, and it sounds like neither of
+these are actually true (the former due to the DSP live updates, and
+the latter due to the potential for the buffer to be unmapped).
 
--- 
-2.52.0.305.g3fc767764a-goog
+I can deal with "this buffer may mutate" by changing to another
+abstraction, but it'd help a lot if I understood the intended way
+(even in C, we can ignore Rust for a moment) to know that the buffer
+you got from `qcom_smem_get` is still valid. My best guess right now
+is that because the smem driver is a *parent* driver to at least this
+one, we know based on where we are instantiated that it will clean us
+up before we go away. Is that the intended mechanism?
 
+If that is the case, then question for the Rust maintainers, since
+`probe` is not an `unsafe` function, could allow the equivalent of
+safety requirements on probe methods? Since the match tables are
+empty, it will only be probed if explicitly requested, so there's an
+argument to be made for "this driver may only be probed by a device
+descended from a qcom smem device".
+
+>
+> >
+> > >
+> > > > +    Ok(unsafe { core::slice::from_raw_parts(ptr as *const u8, size) })
+> > > > +}
+> > > > +
