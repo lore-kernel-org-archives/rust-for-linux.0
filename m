@@ -1,97 +1,131 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005F9337B95
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 17:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3523D2494FE
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 19:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765906648; cv=none; b=En0S0xvI+4m2ZGwuhUMUvBOOcige0bDJdhBuSMj9/QEo8+8Nm0QSuETfpGuMpXbzzFTavTV8B0EH6vak8qDiU7nqY7o6PtmZ7inEb62CRoB/Mjlq+jJEIxUGkxv92pNe6RHdHA8DA2m2HzNaxF6al0INQdsf0TCCb5mHQhICRXY=
+	t=1765913075; cv=none; b=rdgrukXKcfkXxtwZJMbuaMr/zqOxtBcBocCc1i1Fpp9nnoZ7i2mhCn+ca4TG8z3F/R8jan9mE5jnrTPGMdRDprw4z+C4pz4PARukjgtCExKKdFrRgaj7NTg5yPBc2rXJZbFonxv+ayh2cvKQAKuaqP2MblnRqnPweRaMlphNVLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765906648; c=relaxed/simple;
-	bh=MJyTk49qQ51yGfo3Is/GLV+08CyR4vObYZ8zXkA2AnI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=OeB3U2h3IVIVOpqpUSz05vzTCCeyTZJ4eua2d0IU+NQpV11nSQnNy1CmpDM+GUDuN0sDxFma/wKZr8Eu5r1wllSvUH8uO0vGayUZQnUBbjYHF6zgtfoDPC82zlxHg1+01re4mmReKF+jg6Rlz4ARO2nP0reDc9hBOMFekbUox/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mcwSQ73F; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765913075; c=relaxed/simple;
+	bh=SWHEdBxZo+FRHgj7C4w5tSRd4qW/bziiVVJ4X7sXMYU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TfsZfiVB2kFyvI/yRIiR0jv5wH8gnItTXmE2/GWnVvbV1cb7GaowlYDv51g+++aroR5qFEPH+Tl+1EzdlRUxKPGKpEdXFm3TrPBIlLfU5RvetJgmgpHdSMJHhNv5QU2SaAN6NYvnDGHzBLI1lIMawQcylXnffUDiWSkPdM29aDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VZUeLz0i; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mcwSQ73F"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4ed861eb98cso53767081cf.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 09:37:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VZUeLz0i"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7b89ee2c1a4so8677878b3a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 11:24:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765906645; x=1766511445; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+        d=google.com; s=20230601; t=1765913073; x=1766517873; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=MJyTk49qQ51yGfo3Is/GLV+08CyR4vObYZ8zXkA2AnI=;
-        b=mcwSQ73FpdCsyaaKtuETn37SD4FZto2pQHe7kpn07bhxD0D5VfwNem7OaYwApBG0Qr
-         Fq6jb0EOZofGDS8HgQzUVleb2IY3YkbGVTrm/QGp8aVyLmKNFFRe6ENMyiYMI1nhq3MK
-         PJJYCyIy3ToOd/5hp5ZquLyIHYK2iyXih1FJ0iF1SVBxXcSPlj8vNeadPSIJuR3QAS9w
-         14V9cwdSnPH3uxyB/Va14O+vhwnWQGL+Oeh3Dh7+/oPL246mtHYo5KzQes3i3/R4IryV
-         /Cr/OEggaeqaY5Usne9FWIWuLCYPLK7FOkgT84E3kf0l3cG7NuyI7X3ZFAegjKvczGCt
-         y4zQ==
+        bh=5q23d00oE8UFGkLbHQX+aW+agLtL7gXbtiEaOVDZIWI=;
+        b=VZUeLz0iqrXN7Jzyq/vXnwkBHUOQWqK3CncSp5ZJ893ka6lJfzyjInT7FiRno13NGn
+         4WsdVWCCaFtOk275PPeNfOKBx8+t7EhpiASixjmc+ueX/otryi2ejs0rpeTqZeT3tBhg
+         Ih3hwc0hR68jfm0sMH6R4v958QWYaugheKFUyGGo3bHwz2diCsjTDVAUpOhzYMHQr0SE
+         GDw+MT/EdhwAv4jaIQOK8BUZWAUnC6CWnsBJb6k65zz2O7xbjA10J137PDa0uzfvqnjV
+         tT5PHXLMME65zfqy534sWmN4aXCMMFjsj2A+FRG7gnPnEWIuNdx5rm1dvLpfRPWzjsn8
+         0R1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765906645; x=1766511445;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MJyTk49qQ51yGfo3Is/GLV+08CyR4vObYZ8zXkA2AnI=;
-        b=l5vN8Cz6VATpMYtcmRJJRlPonhETlT0kyrZynhpSyC0+fol7RlrYHhlkMWleVYe8un
-         RArWAC22LXE8ilb0JHuKSxOpMuSgyFUtzZyJ7pblNgXEWkXEkS9leEj8iJXZyW6T6a99
-         FqGdk/kNBOHLhEaHx1/xM53gDIsUZYdzlLei2Y4wUWuoMVxmkY1hEbVgGEVqotDeT/yF
-         SwGcXbSQ2VQY9RhQe4YauCGhNnJzj4GrLkeanCoqu+n1hGQwzwQssRYfoTABOAfuEXrI
-         Hl5dkVjHgQ04mdsu0dAEwI8jtgByxQiuueNS+h3uGo4SkuOK64BnplBNYb5Ki8SkIKNm
-         B4Ig==
-X-Gm-Message-State: AOJu0YwQtv4TW3yTzDC9hstd06gwMcQvrhuQMHMyULstBZU93NymwAN1
-	zcwCVzX3jlnd0Ugcs48RMhff8aJ7WpesDppEbEqhx2wVoxZsz2+UCY6p6ej4ozQtbCtghyi1p5T
-	JcA6jJcV4fhXAJYQbL8xlgAMSSZaQ7htLuQ/F8Rk=
-X-Gm-Gg: AY/fxX7PNHVRjbzDSiN5QuiAzpU43x+izkV2dzYF+chAk19IadhXU5CGbZUKhy7eor5
-	RDRHqg8F7Ums7SVlRwpHMfgtE/4twKnfEsHl1mOdxs0OtlG+fb7a75QGkliDC7zqzoCeSig9IqK
-	G/wGOrjW6iD7B8xbcQU0X34vkKkJvauRtNPC/97jEzwd8NSZ0/8d5tytgVl0yV5jJGFX9S18/R4
-	Oir11T807YTMPGRtK6jEyfWj5N3Jc/T4/7MX/iVZOZI3wYTKOYpGu+V0EGkPIwV1JW3XP6u
-X-Google-Smtp-Source: AGHT+IHWNTNcPs2oFOZ9gpnmgUPL7ItQR8XFnZ5lar/ptwvKsSwNIt9TeT/RrvxqAFMZ+qV3LVFY8rcJ4jGnNtSaK4o=
-X-Received: by 2002:a05:622a:1e8e:b0:4ed:b441:d866 with SMTP id
- d75a77b69052e-4f1d05fcb76mr205460621cf.65.1765906644581; Tue, 16 Dec 2025
- 09:37:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1765913073; x=1766517873;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5q23d00oE8UFGkLbHQX+aW+agLtL7gXbtiEaOVDZIWI=;
+        b=bqEOzh9WYS+L6InNwopmWPQH+wqaE7BhyNJGvABkXFppGpnAXpahIKQD1rHWAox5X/
+         5V+gg7/N2Zh5dJp3hKsOlAyKgGFy5B/E2NnB71hChG6Yl/oz0a9Syo+SNlYd+daDH5yd
+         ad9xJY6WYDECOsEyZfWjbg6Sxvc7nIN9Nr+A4M9FKZjtFNrp2DW1o9tdhOQCEHb8iMrP
+         z4zWurWjD19zjHAT2InANVhsfuflGg5aKg5MpnY6RnIdWFrLNEwo5fDR/doMh4eUZZVe
+         ZbKBQZ4lZpY+Sf9S5P5DnMo6cd79+jD/cYQiqc6n+Ro1Hp+th4ZsPBuMfedUB0vIKmGF
+         7pYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlvZXR78f0PbTwCji5qQ3afAFD27gR5Tg3Kr2JCvhX/dTI0r6ky7qZHQHszz0P3ds8fgucwHSb3d/97XyOtQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMralOd2pzYllxzB9ctxrvvSPzxw4FVMm2eUxrjVyoing7UnZF
+	uQMnu+AOHJADNASaJUZ6d6xRnE7WxEcYx3gQiTfiA6lp4Yd0eo9XsQ+SX2lUiyiy3vgGgIqa7XL
+	fK0bSyAGWAQ==
+X-Google-Smtp-Source: AGHT+IEAslWa1QKiMy5RK/NKN4ucsuPFRI0rRfM41tmE84fajfDkDYHFW8H/IyF5Ctfmskm8bfxOthlI91V8
+X-Received: from pfbjc42.prod.google.com ([2002:a05:6a00:6caa:b0:7f1:471b:64df])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1c83:b0:7a2:7cc3:c4ed
+ with SMTP id d2e1a72fcca58-7f66773937emr15039039b3a.4.1765913073454; Tue, 16
+ Dec 2025 11:24:33 -0800 (PST)
+Date: Tue, 16 Dec 2025 19:24:28 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: cb m <mcb2720838051@gmail.com>
-Date: Wed, 17 Dec 2025 01:37:13 +0800
-X-Gm-Features: AQt7F2pCFS0Q6wgiH1NCE0m5Q63maT0o7tLDEnILtTrz_SYxMpdzyeIVcoHTrLs
-Message-ID: <CAO3QcbiQqPpnCQFPcJYFf1O+-vJR9rUTHKdYwJJ+BMhviXKgFQ@mail.gmail.com>
-Subject: Re: [RFC] Rust implementation of BPF verifier
-To: alexei.starovoitov@gmail.com
-Cc: rust-for-linux@vger.kernel.org, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAOyxQWkC/12NwQ7CIBAFf6XhLAa2rYon/8N4KLClmyg0YIim6
+ b9L68V6nJfMvIkljISJnauJRcyUKPgC9a5iZui8Q062MAMBrRSgeAqGa/KWvEtcaXGspTZWo2V
+ FGSP29Fpz11vhgdIzxPdaz3JZvyGQsA1lyQW3ulw0jcGTaC8uBHfHvQkPtpQy/NqHPxuKLXtdq 8YYBbLb2PM8fwDiHSwX5wAAAA==
+X-Change-Id: 20251029-soc-bindings-9b0731bcdbed
+X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765913070; l=2111;
+ i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
+ bh=SWHEdBxZo+FRHgj7C4w5tSRd4qW/bziiVVJ4X7sXMYU=; b=8iknRXoVdF3S0A5SXduSnn1QPNg/ocKZIoc/Al3SGdwk0Hao7jVeJ05tLKi9uLYfN7ifzN4wq
+ Gz9wAk55AHfCMQssWiRV5yoTd+lCgux9L2xzPuyfk6kskr8HzG/Vatf
+X-Mailer: b4 0.14.2
+Message-ID: <20251216-soc-bindings-v3-0-42ecdc8c117e@google.com>
+Subject: [PATCH v3 0/3] Support exporting SoC info from Rust
+From: Matthew Maurer <mmaurer@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-Dear Alexei,
+This is a fairly straightforward binding of `soc_device_register` and
+`soc_device_unregister` which allows a driver to export basic info about
+a SoC.
 
-First of all, it is truly an honor to receive a response from you.
-As the co-creator of eBPF and one of the most respected figures in
-the Linux kernel community, your work has been a great source of
-inspiration for me. I have learned so much from studying the BPF
-subsystem and your contributions to the kernel.
+The last patch is a sample demonstrating usage, and can be dropped
+without issue.
 
-Thank you for taking the time to review my RFC.
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+---
+Changes in v3:
+- Renamed `Registration::register` to `Registration::new`
+- Inlined registration function and avoided `this` usage, per Danilo's
+  suggestion.
+- Link to v2: https://lore.kernel.org/r/20251216-soc-bindings-v2-0-1fb394cc921a@google.com
 
-I completely understand and respect your decision. I am just a
-sophomore student who became interested in BPF and Rust, and this
-project was born out of pure curiosity and passion for learning.
-I realize I have so much more to learn, and receiving feedback
-from someone of your expertise is itself a valuable experience.
+Changes in v2:
+- Switch to new import style
+- Increased documentation. Some of this had to be gathered by looking at
+  what is done in practice at the moment, as documentation was absent or
+  did not match code.
+- Remove `Device` intermediate abstraction
+- Removed unnecessary pinning of `BuiltDeviceAttributes` - it only needs
+  to be pinned for registration, not to exist.
+- Aesthetic renames (`Attributes` pluralization, dropping `Device`,
+  etc.)
+- Use more representative values for attributes in the sample driver
+- Fix swap of example values in the documentation for machine vs family
+- Link to v1: https://lore.kernel.org/r/20251212-soc-bindings-v1-0-db51044ce805@google.com
 
-If it would not be too much trouble, I would be very grateful if
-you could share any specific concerns or reasons behind your
-decision. Understanding your perspective would be invaluable for
-my learning and would help me improve my approach for any future
-contributions to the kernel community.
+---
+Matthew Maurer (3):
+      rust: Add soc_device support
+      docs: ABI: sysfs-devices-soc: Fix swapped sample values
+      rust: Add SoC Driver Sample
 
-Regardless of the outcome, I am grateful for this opportunity to
-engage with the community. I will continue to study and improve,
-and I hope to contribute meaningfully to the kernel someday.
+ Documentation/ABI/testing/sysfs-devices-soc |   4 +-
+ MAINTAINERS                                 |   2 +
+ rust/bindings/bindings_helper.h             |   1 +
+ rust/kernel/lib.rs                          |   2 +
+ rust/kernel/soc.rs                          | 135 ++++++++++++++++++++++++++++
+ samples/rust/Kconfig                        |  11 +++
+ samples/rust/Makefile                       |   1 +
+ samples/rust/rust_soc.rs                    |  82 +++++++++++++++++
+ 8 files changed, 236 insertions(+), 2 deletions(-)
+---
+base-commit: 008d3547aae5bc86fac3eda317489169c3fda112
+change-id: 20251029-soc-bindings-9b0731bcdbed
 
-Thank you again for your time and guidance.
+Best regards,
+-- 
+Matthew Maurer <mmaurer@google.com>
 
-With sincere respect,
-MCB-SMART-BOY
