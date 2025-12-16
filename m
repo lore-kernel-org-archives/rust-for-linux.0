@@ -1,189 +1,314 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011013.outbound.protection.outlook.com [52.101.52.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E7F2F4A18
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Dec 2025 10:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765879478; cv=fail; b=eHEsarW2v/13vY7TDvIh7SIcMiq0vJMwulYNKHepCPBrKIdrMTbz9kpKT5YIy6NfYnkvZ7wpZKOffTfzX0Eqjeb48gvMYJpbU3mkazW/BCivIH7ULk9YcUFPmeOvzvuQIQIWpfLcW+kHg3luoc0oGrUx2e6UgRHeyYGxrjk2AYk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765879478; c=relaxed/simple;
-	bh=in1zLJPMc0fngxmPo6PYe+hF+3fWz8iPhJw9Bl2ymAI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=azNZMhJ+RP1q4WGCGuAnNEtQbsxh58QKUCHu8gVtb0uuS1FVwYJbOpKWn69PTJQBgkZyc+9hc2SVLuGvF6hm3UHRmwgz2EsWbHSTvTk7H/GZeqv0ZK+FSVUwdbVXkOawSjqCtBbW7WZ28CyE6TWBGTwRWSH1QHfUtVeRs2P2VW4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eRyOnpya; arc=fail smtp.client-ip=52.101.52.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85661313E00;
+	Tue, 16 Dec 2025 10:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765880444; cv=none; b=pLaznPS+pgxxKqmm/A48GM1I2dc25uBIuXMN0lwaRd0+9eOWnvbiuSfHHWUUyGPHeDGKaXjXIjWo3xf0BdM8JkI4x30qD/ioWiz8LSvEbRnbAcmUocAmeKY7EkFX20K7pud/GkeElUXWiYxU6Ognryf09MKWOWuh0tNTRJhY7wI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765880444; c=relaxed/simple;
+	bh=3aVCwSoZFtIeQo2I89KCit5XpgJ7Mbyf5LkP8iyCGJw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=aHyS3ZVuWHW5ZUVei5FvDngnKgLB58S5GqEB2BkbfCww7xk8lDIRKf+/KMDxd8pwUMsMfYru7wdby70KiQQCulUS3ghJQhcAocb4O7gDLTlaDhZAgkiC4LQk9Ws5ZugFaXVY8p0/dxuBemSmpgz41M5OLDxA+w0zHmZcdC5hjjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0PeE4IU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eRyOnpya"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bD38FGjkwm0BkEOvt6M1PtDqotPOinPDW3AkCSJ8lc4RO8EMV7g239EytAtXWlzsQQYFvxRCQdSIVkYoOZUuuG7bSQ5UbuuF2oq0bmIpcDc1hkPa3NN8clN5M84Te5tPkK8PuoQUhb5OCbptmegJCa/rnFY1tkS3G3bEAsSD9KCmmHYQHq6BDgTyLJp3av64YDxXvdHfQtcP29eKOnEnoEW25rCunCgrNskkyxH0x80uTfuPCkXuwahknWo848EQF84sacpUffKo5GIGbTTrDq1eiemkeIpcHrkrYkUyrD1nohVpFUVx22l2ChAyJoq8VPoc8Vo0VbrPwNBtAESQFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xoEgJmXmVWYvYLYIRLddJwe4CUJApiQnMAzlC0mJjAk=;
- b=Cyv4e75LiaL591q9yNH6jTlwITLfS1rsS2ZcNH4ZKmScBiqt9MbGN27k+PG5/IuXf28F/eYAbXHJgzVn3HFjFKS3jMfSRdUe1J4gSt5RI8OkeZXebmqym2X7faCEfRJYbv4kNqZrlKypqOsesaUlmFf4VIw+FVqraXK2dzQ0MzEO7pexFxPnA2iwa1W6Sy48q/qyWUUf9DtnWHWrTinqoF8HVlFrASkvbAHyQGRKfjqbwpFIZ7l9N1B2p1FAvKwZ0zoqv6/Od8h1Y62WKba2z8BNMeH5/K8iMuTzlIQcHN7XUcvVbIieGPX4DkL/0lXo2eGcTSnvAOb5fGsyZhxuZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xoEgJmXmVWYvYLYIRLddJwe4CUJApiQnMAzlC0mJjAk=;
- b=eRyOnpyal0rXwFHdHDalKRpbP1fb+P9Rv5rb/orOUfScWWYanGlg+OhrfhvlzQduMxlyGYFIfcHqhNqhbik7/7lnCUiKXuoJW/4LGOs7nSnqWBgCxaDkpefbus71KUoG2jyrV7CUI2f80xargVUa4TKG+6Y442oY3bHZ4d61dCtX4fD86BztwLJZOuk0sKEHGYG/IiI1wzqETy3XRiewHIGNqO9Xb3I+U/4jwuXiz+GhdYgXKKOc5N1xqtVWs+XkdVUc5MIgsMQV6nW/uUko6slT2OtHiSEwC7srBsnDUIAaoURBe3D9noqyISSeYDGnXgN6d2sHTv5Mmw31PvlltQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- SJ2PR12MB8011.namprd12.prod.outlook.com (2603:10b6:a03:4c8::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
- 2025 10:04:30 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
- 10:04:30 +0000
-Message-ID: <a7220609-63e3-4288-84e0-4e3257f2c3ad@nvidia.com>
-Date: Tue, 16 Dec 2025 19:04:21 +0900
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/7] gpu: nova-core: create debugfs root in PCI init
- closure
-To: Timur Tabi <ttabi@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>
-Cc: "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
- Alexandre Courbot <acourbot@nvidia.com>, "dakr@kernel.org"
- <dakr@kernel.org>, "lyude@redhat.com" <lyude@redhat.com>,
- Joel Fernandes <joelagnelf@nvidia.com>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-References: <20251212204952.3690244-1-ttabi@nvidia.com>
- <20251212204952.3690244-4-ttabi@nvidia.com>
- <20251215114036.302303e0.gary@garyguo.net>
- <5b457694fe94757959fe251cc3e3ddf31b6b1fcf.camel@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <5b457694fe94757959fe251cc3e3ddf31b6b1fcf.camel@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TY4PR01CA0037.jpnprd01.prod.outlook.com
- (2603:1096:405:2bd::10) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0PeE4IU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA47C4CEF1;
+	Tue, 16 Dec 2025 10:20:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765880444;
+	bh=3aVCwSoZFtIeQo2I89KCit5XpgJ7Mbyf5LkP8iyCGJw=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Y0PeE4IU7wct4fEb8AY1U3Sy93VQFZZ0LPh7KElQRjDgsnuu5GYx4p6sT7TuAO6ZX
+	 J9+fnyN0EZ7Mdcal396LQxO3/BxPmS/3DCOmvUIZQ3w0A5WI2yQiTvNxfQRSD0lFsi
+	 NP/UF2bueJk0qwf1rXkrhxCHZ2ei+tgEB+hy2M9WAMUpK82IN4W+SonmNd9awo9s3R
+	 uVy1Z3EeX1gi+X+WJAjUbA0RqYFrtlF+r2KdoPo0yy5eljiMADYSp3AdRrKzy5HpED
+	 8MJYEglSFfVagYfjG/AUMgGCiRj4TwKyBCQswL1FT5BpzmfKzCa4hSd+DWx1dQmhYh
+	 RW95nO4FFW1uA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|SJ2PR12MB8011:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6031661-e4c1-4593-ea35-08de3c8a811f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MDBCbHlnVmFLVi92QTV6ODYxaVZ6YVJLT1lHYTBqZmhNV1dGOWE3YkVZOUd4?=
- =?utf-8?B?cVRCNXhqUUtDdFgxRG9KbHQwc1FNbmtHSm84bzhOZFh1NXZVS25KcGM4ZVRX?=
- =?utf-8?B?MkNRa1dobjdRZlJzOHI4RzhaaHkyR3NDRnpxUUlkSzBJQ1BCQWF1RlVHdzVP?=
- =?utf-8?B?YzF6NUwyK0dWLzY1T0F1dERXMXFJbW5wRHcxLzhOdnBTYlNuQTVmU1RIbGhQ?=
- =?utf-8?B?Y2pqR0lSYnNEeFphdTBqa0tJTk1CVksvL1VhUUJ4ck84VUhxbDU4eHZFZkZQ?=
- =?utf-8?B?TzZmSEE5RVFUbTZkcGRoN3d1RkdQdUhaNVFTTTgwcWRKUnJWbjNyanlLNGln?=
- =?utf-8?B?SGkxd1kxYTlQOTRXSE9tOHNndFF0emJvcERqQU9hSFR0eWxIT0JHQnVvUm1x?=
- =?utf-8?B?UDJra1Qydkh6Ri94OVRIVm9GUVBqN25lMTR1bVl5ZVRPMjg1N0lUaE5NZ0hj?=
- =?utf-8?B?Z0FHUTQ3RG53MlZwSDllcVpyL240Y2YxMnJWVHNpZHhYdk1uRHRTSG1aMllB?=
- =?utf-8?B?TE9lR1hWNHFnWTdsMDRTaWVKVmM4Y01SWVVMSzAvNXdKTkpNSHg4RzlleFJa?=
- =?utf-8?B?WE5jbTEyUWFETktKTUlLTVFzTG1WMHJ6ZElCRjE2cVhsdDg3aXlvVUo0dVox?=
- =?utf-8?B?ejhPczByUGE4NXJiWVZQZTdESnVMOVcvR0FocS94NCsxb1U3RS9GTUozc2c5?=
- =?utf-8?B?N3piTHNRQ0tQeXMycVFrKy9xc0V0SEpCNlh5WkdkRkk0cjZjVlg4RzZ6S1hN?=
- =?utf-8?B?NFh6Umg3QktKdkhOMmlUY3VibitaOEJXa1d4c3VtYXlZQXlZd0l5U1FOL0Nk?=
- =?utf-8?B?MWNWckYyMnJEckprRnVxaWRjdGlwdW1qbVRkK29zcVN4d0xwU082UzNKeGZG?=
- =?utf-8?B?dEFDWjFid0l5Rnl0RndUam53OTZ0MG12RnI3VE0vd3VQTGdYcnRUQlczbExK?=
- =?utf-8?B?VldkWDZyZ3ZsVTE4eVVSeDFHRHdFOFlFcHZsZG9LOUd0cml0bitYTXdFWWVN?=
- =?utf-8?B?NXR4RWlCekRWOEpTZlFoMHZvcFV6QUI0VldRWFRaT0l6UTJGakZGMUhoSll1?=
- =?utf-8?B?ajFtWm9sektKQS9KS0haNGJGcytBTVF1bjU4Q1RPbTdNRDBtbDhDaFlPYllt?=
- =?utf-8?B?bHFtKzBvaGtmRkFxS2k2MXhyMzZsbDlSSXdEZTQ2aVBlSTRGUkFYKzJyakN0?=
- =?utf-8?B?d2hUbVZYeitRWUdEN09rOUpwTSt0emN6UTVnMDA3eThkSnM3dXRuMDJxdXdw?=
- =?utf-8?B?Tk83NWdrOVpxUy9LOTZDcDB4V3pqbFFOYjNuRVNWVkVIb3RrdWsycDZRWUNz?=
- =?utf-8?B?Y1JwQjlETkxVSmdMUWZTWUVUeEpCcDNtVUJEbkRKUnlnNVAwL2lMYzlwY0pQ?=
- =?utf-8?B?VU5CcmlacFFuaFp4TkY3Zlhvbm0yZ3ZkdkhYRDh6RGIvMWJWRllra3phSnNY?=
- =?utf-8?B?Y3JqQ0lLdGZkYU93UjY5OFBtbzNXbUlVMTlsWldCUC9NMnhFSThsMThiUGNv?=
- =?utf-8?B?UEdjeWhORUt6Ukp0ZVhQK29qSlFGYWZzWGVGOGtqdlhXUTYxUjkyYWs2THBS?=
- =?utf-8?B?Q0xtejU2dTJvbjdQQlorNzNKbElUZjNDRTJkN1krUTdXVkx6aGROSmY4OVVH?=
- =?utf-8?B?RmZxZUpvY1ZIczFIREs1N3FFMGx4Ym1Ja3pZZW45MFBSdU5ES2RDaEhlTXpl?=
- =?utf-8?B?ZTZzWWdtTVNwNFdSMnZPK2dKU2dpNUttbVNDcSs0c2hNRFJGamRsU3lEZlU5?=
- =?utf-8?B?SzJnaHl5NzQ3ZVU5UW9yS3EwTWhLK0l1cEdOQlE5dzZmMWpIcG40TU5ZWEha?=
- =?utf-8?B?ZDFUaXQ2YjB3a3pCZ2drQ05KUExHNkgwWCt4bWtFejJyNjJLYjN6VEMxbkxH?=
- =?utf-8?B?ck5sU3J5R1NTNHdYOFhZQ1JIT0pKeUlleE9kcFpIREQ4TDdtQkNJaGliM3Js?=
- =?utf-8?Q?URyHDxJOPB04b7/A1gQa0fYxF7sFQXgI?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?STNad3BUNFhabytrVWxwUDcvYllRWUw2NTNMYXNrUWlYWFBqMkh6WXBJMG1Y?=
- =?utf-8?B?TVBGdU0rZWFnMTRnODZBZEVaZkUvRlptOGdyUjNyeDdxS0lCNHhEUGZMWDJU?=
- =?utf-8?B?QmZCSG9QMHJ3OEpySHNRTWlzVm0yRXdDc3RVVVVwTm1CUVRDYnNmK1o1di94?=
- =?utf-8?B?VHhEVVNEazE3QnhlK01WUWNKbFJHSExVb3VIMlBaZ2lnMWNDbmZQa3FJSmll?=
- =?utf-8?B?NzNzcG1wTm5MOG9MWFB3Z2JMTUJaVnFnOXlXNFZHQ2gzWHB6Rnl0NmJyR3Nk?=
- =?utf-8?B?TjM2WGd5enZnSUFMRUNHRWUyTDdEbVFOL2xHeUFkT09mWnhPc1BhVjlxcVVD?=
- =?utf-8?B?K0h1VlNYUG1wc2svdk1JUWc2ZVhXcVBBb3NkemQ5REROay9JbGlEUVZ3bkpo?=
- =?utf-8?B?ZCtidWtUb2Z5V0o3ZmZhajY4SVBtUHIwSkxlRWpVUUJvNHhudjZrZDdvblNW?=
- =?utf-8?B?bzJyUWhFS1VuU0xDTzdkMTNZRFl6MnFFQVRQdUZCOFQ5aUlwNEx2VkEzRTF4?=
- =?utf-8?B?TTVkWHpTem02T2FMYkVUeC9MVWJIWEFiTzFKS0RvRlRvR2FZdmdCZGZnVkxy?=
- =?utf-8?B?dHBMTU1QellPdnFlZFEzWVFrR2FPS1dXSWxxNmhQZWxuY25zOVdCbE01aTZQ?=
- =?utf-8?B?K2ZPSkFjWk1QRFQ5RG5aYXY2YUJhVTNZTHI1Qkd3VVJCVlJBZVliaTNTQ0Z4?=
- =?utf-8?B?VXM2M3R6VUt3VDVFU2JnbmE4RW9IWnlOZDMxQklFNWxpZDJXZWpCcDNSRTJJ?=
- =?utf-8?B?cVIyNkZqeFRqa2NOaDJxOGovcVJ1UGp4dlg5L1c4dndaeUJqdmk2Rm9pamlN?=
- =?utf-8?B?bGtRQ0g4bU1jR1N1M0Z5eVVSaUV0dkF0UUFwNUhBU2hNV0hLc1VQRlpKR1Z3?=
- =?utf-8?B?V095S1hHbmo1Nk51cWNDQ0dGbERITXFlTmlKWTdLLzZ5ZnFhM0h4c2N1Z2VT?=
- =?utf-8?B?WEFoZWU2Y1pmTXpTc0p4bjVtTHZHRXVEVnZMajZrTjRrblN6YWFwdTY0UCsy?=
- =?utf-8?B?K1N4K3JaNEJRZW9qSTFVbWZYU3UvQXdXaTVOK2xRRUgvMHBOdHhqdGNENXM0?=
- =?utf-8?B?Q08wUmJ5b280NGNVN2gyVGdxOHZuTVBCV1ZZSG9MVldxSmkyRER5NVpkMm1G?=
- =?utf-8?B?L0o0Q2R2ZlRRZS8vWGlPRURvK0hobzBzbVM3V3NjdktaVHQxOXNBQ2NmRDk0?=
- =?utf-8?B?ZWJLM0JKZDgvdlhTRzZYTHBOVytwS2I5azVFZWVKTFZFZmpSWkJxek9ERXM0?=
- =?utf-8?B?Z21VNFlNSGQyejlVMHJjcWxvVzBad3pnTmZVOThWdEk0cEpRSFRxQ0VnRVI1?=
- =?utf-8?B?cjgrdWg3VXN3N2dXZGVHM0FCU2hWSlk0Mis3dFJOSWF2akZXVExHaGtVVmp5?=
- =?utf-8?B?NmM1eTVpbE5EVzZCdTZHcG40dGZJRmpwa1FBTzluMlloTTA1bUljRkwwSWNw?=
- =?utf-8?B?eHpOa1dZV2pYWkptZ3RzSUZIbG1aODdnanpsWW00VVVHamNWTFNyL3p4YXpY?=
- =?utf-8?B?RThKRm1DRmZDMnZ3YjhLeTRTSjV0ZmtQTlhvTndUSzNoRXcrS2J2aDVUT1ow?=
- =?utf-8?B?RWdKME43NlFuYXQyREZ2OGp6ekhjTTlZWFBITEJXQnk1TjlpcnF0WVZ6dG9Q?=
- =?utf-8?B?aFI3dy8zdG16WGc4NDhkVWVlcTFObiswTWJJL09tcW51TFV0U09aUVR2cEh4?=
- =?utf-8?B?OThDU0xMMm1tSkdCd1J0cGNqUEk1Y0FhZm5zWEtubjVTMEE0WXhDYm5sM3ho?=
- =?utf-8?B?ekFyM1JxWlBLNlFCb09TV2lmWWMwa0ZXTU11TEVHYlBzc1lMSFYyTkZyazZ6?=
- =?utf-8?B?VTVKSy9WeDF5L2tHL0ROaDV3VFpucHNFMG5KVkFud2wzenJlREpZbS9PK0dP?=
- =?utf-8?B?aERKcmMyRmVBc3lHRXVCdjB4ZklvTlJKdVlCcDRzZUVEOU4xMDM5MUYwWjF2?=
- =?utf-8?B?MkFiUDVPVzJnV2FRT0pzS3dwVEtQclc2OFh0MVRWMitsQTJqc0U1N3hZWVFy?=
- =?utf-8?B?SHRSZXZtbEwyQXdHYTZIaXJNMWhmc0hOYlNtWHZaZ1R5Vi9DbCt5ODAyN0J4?=
- =?utf-8?B?WkllNkxId0QwWTUwTHJIT2hObEtYd2ZOcWd2Zy8zR0NkdnZEYmFRUURJOXBl?=
- =?utf-8?Q?AEQ2cnimez0M55j30N1v/Spvr?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6031661-e4c1-4593-ea35-08de3c8a811f
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 10:04:30.5414
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3D5KxmiWbGnJSAFJ1otsrjXU7c96SUp7h+jbl0jt1ApBhtBdkl46F++1gDEFTqqtrz9I5v4Zrcw/LflS3J92jw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8011
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 Dec 2025 11:20:39 +0100
+Message-Id: <DEZKDEPMCQ7N.1VK1WNX9B1ZI7@kernel.org>
+Subject: Re: [PATCH v2 1/3] rust: Add soc_device support
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: "Matthew Maurer" <mmaurer@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251216-soc-bindings-v2-0-1fb394cc921a@google.com>
+ <20251216-soc-bindings-v2-1-1fb394cc921a@google.com>
+In-Reply-To: <20251216-soc-bindings-v2-1-1fb394cc921a@google.com>
 
-On 12/16/25 1:45 AM, Timur Tabi wrote:
-> On Mon, 2025-12-15 at 11:40 +0000, Gary Guo wrote:
->>>   
->>> +static mut DEBUGFS_ROOT: Option<Dir> = None;
->>
->> Please don't use `static mut`. If you need anything associcated with the
->> lifetime of the driver, please just put it into the module.
-> 
-> If I do that, then how do I access it from gsp.rs (the last patch in this series)?
+On Tue Dec 16, 2025 at 1:43 AM CET, Matthew Maurer wrote:
+> +/// Attributes for a SoC device.
+> +///
+> +/// These are both exported to userspace under /sys/devices/socX and pro=
+vided to other drivers to
+> +/// match against via `soc_device_match` (not yet available in Rust) to =
+enable quirks or
+> +/// device-specific support where necessary.
+> +///
+> +/// All fields are freeform - they have no specific formatting, just def=
+ined meanings.
+> +/// For example, the [`machine`](`Attributes::machine`) field could be "=
+DB8500" or
+> +/// "Qualcomm Technologies, Inc. SM8560 HDK", but regardless it should i=
+dentify a board or product.
+> +pub struct Attributes {
+> +    /// Should generally be a board ID or product ID. Examples
+> +    /// include DB8500 (ST-Ericsson) or "Qualcomm Technologies, inc. SM8=
+560 HDK".
+> +    ///
+> +    /// If this field is not populated, the SoC infrastructure will try =
+to populate it from
+> +    /// `/model` in the device tree.
+> +    pub machine: Option<CString>,
+> +    /// The broader class this SoC belongs to. Examples include ux500
+> +    /// (for DB8500) or Snapdragon (for SM8650).
+> +    ///
+> +    /// On chips with ARM firmware supporting SMCCC v1.2+, this may be a=
+ JEDEC JEP106 manufacturer
+> +    /// identification.
+> +    pub family: Option<CString>,
+> +    /// The manufacturing revision of the part. Frequently this is MAJOR=
+.MINOR, but not always.
+> +    pub revision: Option<CString>,
+> +    /// Serial Number - uniquely identifies a specific SoC. If present, =
+should be unique (buying a
+> +    /// replacement part should change it if present). This field cannot=
+ be matched on and is
+> +    /// solely present to export through /sys.
+> +    pub serial_number: Option<CString>,
+> +    /// SoC ID - identifies a specific SoC kind in question, sometimes m=
+ore specifically than
+> +    /// `machine` if the same SoC is used in multiple products. Some dev=
+ices use this to specify a
+> +    /// SoC name, e.g. "I.MX??", and others just print an ID number (e.g=
+. Tegra and Qualcomm).
+> +    ///
+> +    /// On chips with ARM firmware supporting SMCCC v1.2+, this may be a=
+ JEDEC JEP106 manufacturer
+> +    /// identification (the family value) followed by a colon and then a=
+ 4-digit ID value.
+> +    pub soc_id: Option<CString>,
+> +}
 
-Given that the current PCI .probe() doesn't pass in module data,
-I looked around and saw that Binder is using global_lock!()
-instead of passing around module data. It seems like this area
-is still new in Rust for Linux.
+Thanks for expanding the documentation!
 
-I wonder if global_lock!() is what Gary had in mind? That is still
-effectively global access, but at least it's synchronized,
-unlike static mut.
+> +struct BuiltAttributes {
+> +    // While `inner` has pointers to `_backing`, it is to the interior o=
+f the `CStrings`, not
+> +    // `backing` itself, so it does not need to be pinned.
+> +    _backing: Attributes,
+> +    // `Opaque` makes us `!Unpin`, as the registration holds a pointer t=
+o `inner` when used.
+> +    inner: Opaque<bindings::soc_device_attribute>,
+> +}
+> +
+> +fn cstring_to_c(mcs: &Option<CString>) -> *const kernel::ffi::c_char {
+> +    mcs.as_ref()
+> +        .map(|cs| cs.as_char_ptr())
+> +        .unwrap_or(core::ptr::null())
+> +}
+> +
+> +impl BuiltAttributes {
+> +    fn as_mut_ptr(&self) -> *mut bindings::soc_device_attribute {
+> +        self.inner.get()
+> +    }
+> +}
+> +
+> +impl Attributes {
+> +    fn build(self) -> BuiltAttributes {
+> +        BuiltAttributes {
+> +            inner: Opaque::new(bindings::soc_device_attribute {
+> +                machine: cstring_to_c(&self.machine),
+> +                family: cstring_to_c(&self.family),
+> +                revision: cstring_to_c(&self.revision),
+> +                serial_number: cstring_to_c(&self.serial_number),
+> +                soc_id: cstring_to_c(&self.soc_id),
+> +                data: core::ptr::null(),
+> +                custom_attr_group: core::ptr::null(),
+> +            }),
+> +            _backing: self,
+> +        }
+> +    }
+> +}
+> +
+> +/// # Safety
+> +/// If a device is returned (e.g. no error), `attr` must remain valid fo=
+r reads until the
+> +/// returned pointer is released through `soc_device_unregister`.
+> +unsafe fn register_device(attr: Pin<&BuiltAttributes>) -> Result<NonNull=
+<bindings::soc_device>> {
+> +    let raw_soc =3D
+> +            // SAFETY:
+> +            // * The struct provided through attr is backed by pinned da=
+ta next to it, so as
+> +            //   long as attr lives, the strings pointed to by the struc=
+t will too.
+> +            // * `attr` is pinned, so the pinned data won't move.
+> +            // * If it returns a device, and so others may try to read t=
+his data, by caller
+> +            //   invariant, `attr` won't be released until the device is=
+.
+> +            error::from_err_ptr(unsafe { bindings::soc_device_register(a=
+ttr.as_mut_ptr()) })?;
+> +    // `soc_device_register` should not return NULL, but it doesn't hurt=
+ to be paranoid.
+> +    NonNull::new(raw_soc).ok_or(EINVAL)
+> +}
+
+I think it turns out cleaner without this helper function, inlining the
+contained code directly into Registration::new().
+
+> +#[pin_data(PinnedDrop)]
+> +/// Registration handle for your soc_dev. If you let it go out of scope,=
+ your soc_dev will be
+> +/// unregistered.
+> +pub struct Registration {
+> +    #[pin]
+> +    attr: BuiltAttributes,
+> +    soc_dev: NonNull<bindings::soc_device>,
+> +}
+> +
+> +// SAFETY: We provide no operations through `&Registration`.
+> +unsafe impl Sync for Registration {}
+> +
+> +// SAFETY: All pointers are normal allocations, not thread-specific.
+> +unsafe impl Send for Registration {}
+> +
+> +#[pinned_drop]
+> +impl PinnedDrop for Registration {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // SAFETY: Device always contains a live pointer to a soc_device=
+ that can be unregistered
+> +        unsafe { bindings::soc_device_unregister(self.soc_dev.as_ptr()) =
+}
+> +    }
+> +}
+> +
+> +impl Registration {
+> +    /// Register a new SoC device
+> +    pub fn register(attr: Attributes) -> impl PinInit<Self, Error> {
+
+Let's just call this Registration::new() please. We usually use new() if we
+return a Registration object (or an initializer as in this case) and regist=
+er()
+if we do not return a Registration object, but rather automatically clean u=
+p the
+registration silently, e.g. through devres.
+
+> +        try_pin_init!(&this in Self {
+
+You should be able to just access Self::attr directly, i.e. no need for &th=
+is.
+(When you access attr within the code block of soc_dev it will be Self::att=
+r and
+not the attr from the function argument.)
+
+Please find a diff [1] below.
+
+> +                    attr: attr.build(),
+> +                    // SAFETY: We have already initialized attr, and we =
+are inside PinInit and Self
+> +                    // is !Unpin, so attr won't be moved and is valid. I=
+f it returns success, attr
+> +                    // will not be dropped until after our `PinnedDrop` =
+implementation runs, so the
+> +                    // device will be unregistered first.
+> +                    soc_dev: unsafe {
+> +                        register_device(Pin::new_unchecked(&(*this.as_pt=
+r()).attr))?
+> +                    },
+> +        }? Error)
+> +    }
+> +}
 
 
-thanks,
--- 
-John Hubbard
+[1]
+
+diff --git a/rust/kernel/soc.rs b/rust/kernel/soc.rs
+index fb9e46121878..242dcd09e7f5 100644
+--- a/rust/kernel/soc.rs
++++ b/rust/kernel/soc.rs
+@@ -89,22 +89,6 @@ fn build(self) -> BuiltAttributes {
+     }
+ }
+=20
+-/// # Safety
+-/// If a device is returned (e.g. no error), `attr` must remain valid for =
+reads until the
+-/// returned pointer is released through `soc_device_unregister`.
+-unsafe fn register_device(attr: Pin<&BuiltAttributes>) -> Result<NonNull<b=
+indings::soc_device>> {
+-    let raw_soc =3D
+-            // SAFETY:
+-            // * The struct provided through attr is backed by pinned data=
+ next to it, so as
+-            //   long as attr lives, the strings pointed to by the struct =
+will too.
+-            // * `attr` is pinned, so the pinned data won't move.
+-            // * If it returns a device, and so others may try to read thi=
+s data, by caller
+-            //   invariant, `attr` won't be released until the device is.
+-            error::from_err_ptr(unsafe { bindings::soc_device_register(att=
+r.as_mut_ptr()) })?;
+-    // `soc_device_register` should not return NULL, but it doesn't hurt t=
+o be paranoid.
+-    NonNull::new(raw_soc).ok_or(EINVAL)
+-}
+-
+ #[pin_data(PinnedDrop)]
+ /// Registration handle for your soc_dev. If you let it go out of scope, y=
+our soc_dev will be
+ /// unregistered.
+@@ -131,14 +115,24 @@ fn drop(self: Pin<&mut Self>) {
+ impl Registration {
+     /// Register a new SoC device
+     pub fn register(attr: Attributes) -> impl PinInit<Self, Error> {
+-        try_pin_init!(&this in Self {
++        try_pin_init!(Self {
+                     attr: attr.build(),
+                     // SAFETY: We have already initialized attr, and we ar=
+e inside PinInit and Self
+                     // is !Unpin, so attr won't be moved and is valid. If =
+it returns success, attr
+                     // will not be dropped until after our `PinnedDrop` im=
+plementation runs, so the
+                     // device will be unregistered first.
+-                    soc_dev: unsafe {
+-                        register_device(Pin::new_unchecked(&(*this.as_ptr(=
+)).attr))?
++                    soc_dev: {
++                        // SAFETY:
++                        // * The struct provided through attr is backed by=
+ pinned data next to it,
++                        //   so as long as attr lives, the strings pointed=
+ to by the struct will too.
++                        // * `attr` is pinned, so the pinned data won't mo=
+ve.
++                        // * If it returns a device, and so others may try=
+ to read this data, by
++                        //   caller invariant, `attr` won't be released un=
+til the device is.
++                        let raw_soc =3D error::from_err_ptr(unsafe {
++                            bindings::soc_device_register(attr.as_mut_ptr(=
+))
++                        })?;
++
++                        NonNull::new(raw_soc).ok_or(EINVAL)?
+                     },
+         }? Error)
+     }
 
