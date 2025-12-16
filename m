@@ -1,145 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021119.outbound.protection.outlook.com [52.101.100.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745FB34DB48;
-	Tue, 16 Dec 2025 12:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765887249; cv=none; b=Qq/0iXyrThfXb8cWWAppHAkkX3CSNBj/XtQ50FwQlPcED4s/gnwNX/gqOYRjh0WWFocsJPttEXK0jhhhD+7AjV+irogHoMd9UgmJWJmLhsZQDpfk1LOgLXdgTjTDD8NSuDOt0gPT/KB2ypMSUIdMeFVD6t4wmeg/u0GGwU4QKHk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765887249; c=relaxed/simple;
-	bh=pZP2BYvtE9bxefV3Xhyf3JysEWckorGNQUlBT4sl0HE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=ujd9hTfGS2HK/gEaEyOJ0q9w7kwmP1g0T+1cEqS62V6GNjCEbU+CWPesXwaq0MVadsdmMHE84RXW1OibEMuMDbvLxvBZAJ6jfWdjEdkTQXXQZzkI/8jQCw4ddkv3dxaJV5z37BC2SXMXXXXrUORBTh2CRjitC69gYLpy4Szr2HY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwArkI3A; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E683635CB8E;
+	Tue, 16 Dec 2025 12:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.119
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765887312; cv=fail; b=JdUpKjv2qH4KrhzDA1qs1KitGX/hwTRT/zxxIBC3E1r7mmC4PRpgAEJXwrv6AxO8k0XIftQQ9B9xQX9d9Bt8qNDc7GVZcCzpjLEjKCr4fYrjeg3tXqFAxo+JoYo9UNICAC5dY+XYlx6usY11eYRvVd8bLSozCmDAkfx84S0L2fI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765887312; c=relaxed/simple;
+	bh=f5vr7MLjpBpXq558vDQkLj6Gd2DzSQBF+8c0Q4VTA+0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kz2bc0vhGxjmoyRdorxz+DPMQnEc5YLE1wH0Ac2sOpwr//4d1JDnbadMoFIJc/fIxntTQDxzNZ9AgZT6TBBfZJZeqqG42O/VwLu/OTBQ8KSxs74Xoe1yIxdo7oOgLA1b573DDMmp6W+Rc8k1cVfk+GgfbseLMcHlqOP2xVhRr84=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ofXeRlK7; arc=fail smtp.client-ip=52.101.100.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwArkI3A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448E7C4CEF5;
-	Tue, 16 Dec 2025 12:14:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765887247;
-	bh=pZP2BYvtE9bxefV3Xhyf3JysEWckorGNQUlBT4sl0HE=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=mwArkI3A22We2dV9k1nt+llKSV/PdjOlNKOSh58EWc2WT3tKVntnnU6I/YiUggG3i
-	 Tqh2Avr7N+p89KUHE18Db1eNRQr79btWxbHXefSDfhZbHyPA/X5xWRI6d6bq8M/40R
-	 iV8mM+xU+ytME+2AjSpNZGzkx0IfVa7eE8uf0+3iDgrlmtU4sIq2ms8QUuDz+/wK8P
-	 m4yWOoT3dvUDqi/WRJE4SvI7m8geXpOuHNWA1S5VFcizIh/UM8imRRxIg0GS8i499V
-	 jjoKi9KwaPezhIb7cI2YtgnG3oibWCi65T41bi5MZzcwoSs2uqWgnMrLLbCZakN2of
-	 +r0DoPlVFuRgg==
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ofXeRlK7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RJYzSXX4F5jyvlyxXs4UcqSGuQFdbGTHyFlKoTLED+IOH2/jNdk5Z+e8E7maORgv0ci9jUPlkbPop0M1dYlQqIQHbA1VpoeUjHDl68gC3mpjW+uDkCUiMcw4ej/+HRGaMrnM7rvdye0dg6F8GY5zms6Lr3gZUB68h0T5AmEhJHVDlOqe3xw+e0IWgtW6PbLQOus/nT2iNYImf7G5vvDHFhAbRpriHxx2tCWqU6nosP5Rpn6hyW8brBKRt4E7UdyVU6dAUx6JKgdYefo4OWisAuJfzpBNlFtOB7UIi+FGb1wefA6aG6Jb98JCCRIse9CkWSf8n1knGYF55eECkBPCLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ezof+KHvAiEjxYRtJ6IsgJlooUKZFJEAo8w/WtWB/Ts=;
+ b=ylLdPwFwjbWlqltkW5vFNym8z0QHxZT2NsF/tkvM8olI8YbRr1IayrzMEYaiSPF7JtpmwIivo01fTUHIq7dj0olTZHepXPuXDYRiMN5ok8IqN6+fV1ogxC3YjBC1h7q3g4xgYT/k+9qkJOZn8GtL+rxrw9YQVpBn7NeDU/LPyj0QZMIxZPTf9YDtoU8PGi/Rbh1ZyDLGT1PE8gfWRTapGgaV+KDS3FfUr+5TeVRnvce0MuyJqxRkUaLV3B9CeAx2YQrRsS2SqHHQescxZV9A77ZM6yVk+Pq84ye7hFtFW+tlGxctcTfZYancW405vlCZ5x8NtlOJnv3YbM8aepfqyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ezof+KHvAiEjxYRtJ6IsgJlooUKZFJEAo8w/WtWB/Ts=;
+ b=ofXeRlK7Y+iGLvxRRtVgoxNASJ9Ix8N7WQS41wR1dYJEkr8nVKzdU0gJAjiDM2AM994n9BFge/iMeJn7Xhl7dUV4qLgM2bci/uWNlCbYFK6qVvP8nF5gKH0ZiWdsC5u0TaioOyxwv+JKtVpuiJOxvkL0+QFhS90ywJt2WuCRnN4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:15f::14)
+ by CWLP265MB5834.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1a4::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.13; Tue, 16 Dec
+ 2025 12:15:05 +0000
+Received: from CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::c17:159b:10ec:af4c]) by CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::c17:159b:10ec:af4c%7]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
+ 12:15:05 +0000
+Date: Tue, 16 Dec 2025 12:15:03 +0000
+From: Gary Guo <gary@garyguo.net>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Thomas
+ Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>, Daniel
+ Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long
+ <longman@redhat.com>
+Subject: Re: [PATCH v16 08/17] rust: helper: Add
+ spin_{un,}lock_irq_{enable,disable}() helpers
+Message-ID: <20251216121503.3aef341b.gary@garyguo.net>
+In-Reply-To: <20251215175806.102713-9-lyude@redhat.com>
+References: <20251215175806.102713-1-lyude@redhat.com>
+	<20251215175806.102713-9-lyude@redhat.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0191.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a4::16) To CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:15f::14)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 Dec 2025 13:14:00 +0100
-Message-Id: <DEZMS6Y4A7XE.XE7EUBT5SJFJ@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 1/7] rust: pci: pass driver data by value to `unbind`
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-References: <20251216-nova-unload-v1-0-6a5d823be19d@nvidia.com>
- <20251216-nova-unload-v1-1-6a5d823be19d@nvidia.com>
-In-Reply-To: <20251216-nova-unload-v1-1-6a5d823be19d@nvidia.com>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CWLP265MB5186:EE_|CWLP265MB5834:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cb687d5-31f4-488c-df25-08de3c9cbf37
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|10070799003|1800799024|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?/yVUPsHJKSG6OPfjmvw/qhjohBMsPVVA5sdfv+ydTNpV46f12NCJv2ln1HHM?=
+ =?us-ascii?Q?dYOplTy8HqebEkCdwpfJqg6YU8Uk4uVy02PXXXNn8DHKfQIk0i5UkA79xz0j?=
+ =?us-ascii?Q?ulYghFvpkDkFd82psF/o8fjRupynnXuHlAev+kpTN/Ars5gvDvZTpZeHwQT7?=
+ =?us-ascii?Q?8hLQ1Cbf1yEmMpNmpoA28MK2Uhqbb8gBudSLOHfAcqy1SLhOz1Lhl2kzkSR+?=
+ =?us-ascii?Q?2MMruF7r5eZujCbHvBNCMT3bXtmpOVM9QOEhj0u7mhCvOoIiEPF3DDxerzrF?=
+ =?us-ascii?Q?1YqFzMWsarEdpHSEC8aBtRVVMFTjGiQb4m4br2/Pog057P1gitqYq8IUht/Y?=
+ =?us-ascii?Q?hryNPrBLwl2tRf7zPnjReMBh/OUZwXgtOsZjrbZK/xEWkhjXhkmD/rQvui5O?=
+ =?us-ascii?Q?JBQM1uztWBlZuL6ZsORT8vG8bpzgFgv1P+xwDAAVJV/NssXC3ZZOI2XQHI52?=
+ =?us-ascii?Q?lVMaW1zSb3NGSNRJmbB9aF1+lnEq7vcz431VCf782Yg/FNkE7LHZqbqt8KKi?=
+ =?us-ascii?Q?7xlqIPNFBnHNJ65i5MDVZ2FM2IkxMeHsGYtSpY8vzgDmPHhavGbAY4fSTHJ/?=
+ =?us-ascii?Q?2cuzirrI9DLsABq98xtCMU+5PetxWJAbogNAvdMMhJ+YjEm4zKuA54hAf9Wr?=
+ =?us-ascii?Q?nAvHm4vulF+wRhyCD75J1v445yCCQVvJ0Es7tPet7LPwGgHBknMWJDePx7Xf?=
+ =?us-ascii?Q?qhnlfHkUdXw0AJpl4OexXbJZEJ29RUWAOMwB95lF1h3aAJFGpe67TNw2f6PE?=
+ =?us-ascii?Q?3txNas6CG3NwK9QopYotszt5opWS+STmA7+zSH28JhPPvJZTnXj4A1vdZqAg?=
+ =?us-ascii?Q?LuwPwLDhrK7uB6JI4UOD62zPfZzllzDKnfcSMIMVPWFBtO4rGD7XKJvG5Lbx?=
+ =?us-ascii?Q?ePDalkelcIWd9vz9CT3+7hf7cwbMtOtgNid3xp3/GM5btx5gTBWNHczhyhtm?=
+ =?us-ascii?Q?pmYJuqmtw18+s/f5XjxoqqFZ8xeythRPnfnDXfARxiiG5pD4ri1mJSAf+TOD?=
+ =?us-ascii?Q?ODOJT4O9IKOttZR9rFjkywCxCYpZylPd1Wdu3acJ4LkfAFljBxEIbh8/4OgM?=
+ =?us-ascii?Q?bQc1KFrmkWwWC/Qlq712j+DCqU/NxIhkUzcIXqNcZNzs/Ts+oRfBM8AGocE5?=
+ =?us-ascii?Q?Dmkq2G9o9vUQtS9Nlre9wNmj+M3/tng2InQReOlIC6GovtLTC0k36fc8EH99?=
+ =?us-ascii?Q?4m30N/UflD89vnzK4hvnzYITYuylDJReFK+aLGzCOqPHd3gMeAOxh/uKr5TP?=
+ =?us-ascii?Q?01Ji5qfhLsWMgu7tlncrd9S3sdpodDmjFjejBgsZ5BpymFfpYteljqnyS0Iq?=
+ =?us-ascii?Q?lAm+mzmeZ66a2taRfBZkeacrzSwozL/xvrd0K0x4DsdlK8JfeZkuM3bJkTgM?=
+ =?us-ascii?Q?bnHZSMzj2eOgtNRzg1rRM0BLH1l0OyZrcaFWbA60eIqK6S97a8K/N6la7vCV?=
+ =?us-ascii?Q?KFpMLZVgQXqHs4VDx+8HeQpXJr7kp95x?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(10070799003)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ymaumsoq1n/p2GrzJ08uQR4jZ3mm5rUTk1IKIAgxdJCueoOsiNzxwrsDsulF?=
+ =?us-ascii?Q?iTZkpwoVpmsdHUeDMzyZ9KSps3FBsr256+0j5EOuJwrqP3nt4mmp1yB85jxK?=
+ =?us-ascii?Q?2vcAsXw7SG3QX6z9aE69fSw3eDH6qVkipjle20vZn1TyDPS/c2CQpGd4k2dF?=
+ =?us-ascii?Q?sOocJnWd8z4A/falTnmRPvtQr4K5B83oWjnv08OTnmfjir6AqESuYpP2fUc/?=
+ =?us-ascii?Q?DPfQmsKgeSbz5Ng2U99GD09T40ucNdHVfQ10c53b4NE78IIqz1G2rebJO9On?=
+ =?us-ascii?Q?RWQwxGzouT9bWkYOMmSAmj9UR/8JfnDuUrJNS7wCP0u+uO2MCzXEmAxDQUp2?=
+ =?us-ascii?Q?fbiS4oZANWC41NO6ShjnXOBz1P1FvPDfL/eIKugrFt2PSE9E85kdmzuLaTQW?=
+ =?us-ascii?Q?tH7cwLyF1rUAWhfa3PWtdnexcKI/UDW7x91781KsAY40hNgEUhez91WvKfQL?=
+ =?us-ascii?Q?mwigUIPe7bkqn3+4x+isl5QWem0ztHr97MSNc+tbXxuADXEJLwfFkk7sUGxR?=
+ =?us-ascii?Q?j8x41Vmp5pzgcZ8slyPCTpZ6q/IxeDXjRLCmRINbLjUjW9Y0Vs0PsodSzfRa?=
+ =?us-ascii?Q?pT2oP53TlrZThNMoR5ZE0+c5YKq9YdhEwhF/PBzPoCgY+XGGtj379mSsahYt?=
+ =?us-ascii?Q?joe5m2G1NS0/C1eObCx1xVMeZGUSYoUKzdERYJV0KQ/BiycAg0934QsEyZtq?=
+ =?us-ascii?Q?XCvxVQQYHnE16FR7g+T2KbCqQRtEHS50mbNjEBNf9LDz0m3aZqiLg81HQlpN?=
+ =?us-ascii?Q?5f74lspgR7YnJXit1VMdyO1GIhIZ5BZ6E9BPTBhrBgc+bB3cvr4vjXMLDw7w?=
+ =?us-ascii?Q?3ggsh7DzfQJgHmfBOV2SmZZ6dJjoMWPlFwpIs9Jw6+0NZEecYcFUIyUfYtTm?=
+ =?us-ascii?Q?BDnMcg8XTDQG+GZCS76jFai8Ze3cdAJ5LhcsoL1tR8UdxXKMVOOt44t/7UHd?=
+ =?us-ascii?Q?3/P8O/zTOOkQY+iIvuTeugjGgsQduPbHC00mCBQzR5OfSRy+zbDKy8G4M9V1?=
+ =?us-ascii?Q?9imeYNtuH8J97Q49wHYSvUpo+jgInnnLr802+gzlHJOTiOkZygZj/iuhq/mO?=
+ =?us-ascii?Q?Ff4KRje0sKusc6cwaI0KDOxnMbDGWMZNMvz732hX3DU0dUxnPET3HDT3/B+H?=
+ =?us-ascii?Q?sFEEH6lBFbrCMw3gWz1vel4a2fyyLFuZUkK+9zTETShL3RCaOxdG4CaIG70r?=
+ =?us-ascii?Q?RWne4eYbREp55JcPyK2P6qMcaV4oqbuxGIPhibg+UjUNSyk13t0w8ubLmGOc?=
+ =?us-ascii?Q?M/XQ3lg5o9wTCmeA77ShDB0sbO0UzS0tJp9eWQyWlxAYgzWnOjG8c9HdpAUI?=
+ =?us-ascii?Q?O6JPn12NgiSV69fSYvHd/eguh/Gj9mn+Ze//OnuLNnLCpw0WR1R1/F8UYL8g?=
+ =?us-ascii?Q?fWjwMkRzbN2fKJ6kFWJwAxYakWYJkp7V2ECXS1J9HXPnFqiAsFSVDqpIjKv5?=
+ =?us-ascii?Q?YR02rBgKlcrE5rrE9HpezI2PBJDqKDhRNSvGS0e61tvmTxApk4/IgmCVksQl?=
+ =?us-ascii?Q?kIktVl2FsO+g/zmX5hZgQlUYnjbCml3PvR6IvWPi9biEXduhcMsVgjOd8O5/?=
+ =?us-ascii?Q?zrzAD/MjzhCnDQQf3yjhgPK1wPSwZRajZkhxJptM?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cb687d5-31f4-488c-df25-08de3c9cbf37
+X-MS-Exchange-CrossTenant-AuthSource: CWLP265MB5186.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 12:15:05.5258
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sZU8f7BX4Jeek1Ew9beBByrw5YTE4s2MsIHn5Aj2ZQF/4gxP6eiBgmKmDgmT9y7H8i4FGlbTnYqLc2M7XbVCJw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5834
 
-On Tue Dec 16, 2025 at 6:13 AM CET, Alexandre Courbot wrote:
-> When unbinding a PCI driver, the `T::unbind` callback is invoked by the
-> driver framework, passing the driver data as a `Pin<&T>`.
->
-> This artificially restricts what the driver can do, as it cannot mutate
-> any state on the data. This becomes a problem in e.g. Nova, which needs
-> to invoke mutable methods when unbinding.
->
-> `remove_callback` retrieves the driver data by value, and drops it right
-> after the call to `T::unbind`, meaning it is the only reference to the
-> driver data by the time `T::unbind` is called.
->
-> There is thus no reason for not granting full ownership of the data to
-> `T::unbind`, so do it.
+On Mon, 15 Dec 2025 12:57:55 -0500
+Lyude Paul <lyude@redhat.com> wrote:
 
-There are multiple reasons I did avoid this for:
+> From: Boqun Feng <boqun.feng@gmail.com>
+> 
+> spin_lock_irq_disable() and spin_unlock_irq_enable() are inline
+> functions, to use them in Rust, helpers are introduced. This is for
+> interrupt disabling lock abstraction in Rust.
+> 
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+>  rust/helpers/spinlock.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
+> index 42c4bf01a23e4..d4e61057c2a7a 100644
+> --- a/rust/helpers/spinlock.c
+> +++ b/rust/helpers/spinlock.c
+> @@ -35,3 +35,18 @@ void rust_helper_spin_assert_is_held(spinlock_t *lock)
+>  {
+>  	lockdep_assert_held(lock);
+>  }
+> +
+> +void rust_helper_spin_lock_irq_disable(spinlock_t *lock)
+> +{
+> +	spin_lock_irq_disable(lock);
+> +}
+> +
+> +void rust_helper_spin_unlock_irq_enable(spinlock_t *lock)
+> +{
+> +	spin_unlock_irq_enable(lock);
+> +}
+> +
+> +int rust_helper_spin_trylock_irq_disable(spinlock_t *lock)
+> +{
+> +	return spin_trylock_irq_disable(lock);
+> +}
 
-(1) Race conditions
+Can you add __rust_helper prefix to these helpers please.
 
-A driver can call Device::drvdata() and obtain a reference to the driver's
-device private data as long as it has a &Device<Bound> and asserts the corr=
-ect
-type of the driver's device private data [1].
-
-Assume you have an IRQ registration, for instance, that lives within this d=
-evice
-private data.  Within the IRQ handler, nothing prevents us from calling
-Device::drvdata() given that the IRQ handler has a Device<Bound> reference.
-
-Consequently, with passing the device private data by value to unbind() it =
-can
-happen that we have both a mutable and immutable reference at of the device
-private data at the same time.
-
-The same is true for a lot of other cases, such as work items or workqueues=
- that
-are scoped to the Device being bound living within the device private data.
-
-More generally, you can't take full ownership of the device private data as=
- long
-as the device is not yet fully unbound (which is not yet the case in unbind=
-()).
-
-(2) Design
-
-It is intentional that the device private data has a defined lifetime that =
-ends
-with the device being unbound from its driver. This way we get the guarante=
-e
-that any object stored in the device private data won't survive device / dr=
-iver
-unbind. If we give back the ownership to the driver, this guarantee is lost=
-.
-
-Conclusion:
-
-Having that said, if you need mutable access to the fields of the device pr=
-ivate
-data within unbind() the corresponding field(s) should be protected by a lo=
-ck.
-
-Alternatively, you have mutable access within the destructor as well, but t=
-here
-you don't have a bound device anymore. Which is only consequent, since we c=
-an't
-call the destructor of the device private data before the device is fully
-unbound.
-
-(In fact, as by now, there is a bug with this, which I noticed a few days a=
-go
-when I still was on vacation: The bus implementations call the destructor o=
-f the
-device private data too early, i.e. when the device is not fully unbound ye=
-t.
-
-I'm working on a fix for this. Luckily, as by now, this is not a real bug i=
-n
-practice, yet it has to be fixed.)
-
-From your end you don't have to worry about this though. nova-core should j=
-ust
-employ a lock for this, as we will need it in the future anyways, since we =
-will
-have concurrent access to the GSP.
-
-[1] https://rust.docs.kernel.org/kernel/device/struct.Device.html#method.dr=
-vdata
+Best,
+Gary
