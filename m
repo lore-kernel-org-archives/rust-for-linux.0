@@ -1,85 +1,95 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from buffalo.birch.relay.mailchannels.net (buffalo.birch.relay.mailchannels.net [23.83.209.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355682C0F8F
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 21:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766007894; cv=none; b=hSAq/OxmoGNMREXAFdIYT6WpFuFLbmayQHoauDPG7jt/d+lwf76miFnWPot0aFVEw7Is5AAyQoaHsCenY4W9twIIUTAtZ3fO2wb0f6n8T2mNMGcGSGWzXEluei0JJhFSzyYInEXCBf430xLnmwzlbJFZoly2MukmNInZt8w3S4o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766007894; c=relaxed/simple;
-	bh=lceIE1F6qI1dmKW8+IkblLdNnXDn8bvsrlBPfjAIpgE=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AA630B53F;
+	Wed, 17 Dec 2025 22:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.209.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766011306; cv=pass; b=aPEkZYluS1EB2UQNSf/xl2woSMEa+Eqek4U0++WTFQVrB2Ot/8olYLB104SEABPfaePwVlmKm/XLPXQt13hKhruf8i/a26YqM+F1rSW3EbQ7fcmkPXZ4WGK1/qcYHIIXJoKHeiWWKgMtDiBZb3fNqT/E6BUk8aAQr/8R2xTyPDY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766011306; c=relaxed/simple;
+	bh=Xw7pAZ3tecQ5tyn5e5+anhkBPw4nMmP5QuyB8XoHluY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Br4MMzJOSY4D+Gdjzzdq+uSnlDxiY/IPM16EqxANKWgazlIo3XFhh4Hjti9R7xeAspKbF/rT2MZGANeD4gUR2nkDCw59y2DbT7D4b7pizaQQgSdsoaQI/dB6saharCQ2BWFDVlYLf1AH8vhoWglioiaovUpSK1kmgcfFkAVrF7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fmZ0HT0R; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=ZcVG40bQG458mbAcT4L99879t+k0oGNsY/uCpu6gLla7i2AgjOz/2fu39fZo5e14ELoiyAXxLAb4KDp3Pu9S4jz3kczzBwzvvaQBKxc2tPpfiFwauYeplAQdsUPAWvorrAFRyR7A4uKN0OcRitshkktWRmFoN/iOonST4yBvRDk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gotplt.org; spf=pass smtp.mailfrom=gotplt.org; dkim=pass (2048-bit key) header.d=gotplt.org header.i=@gotplt.org header.b=h188dOBO; arc=pass smtp.client-ip=23.83.209.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gotplt.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gotplt.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fmZ0HT0R"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a0bae9aca3so56650735ad.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 13:44:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766007892; x=1766612692; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wi4VtNswfYgI0LC15nM4RND64Bg6aXM75M6lneCHO0U=;
-        b=fmZ0HT0RXtK0rXlQyLADUFoEGxbtrBFdnn2k1kKtf3c4atBjwxaEaJ2L7zpk7Fdk/x
-         4eTfO5PtyP1P8HbEXlRy+jWbzuQAAexJ8C8M0l6CPS2iu2JWVQY+FkDaIkZ5tHehFW1g
-         l3LWWGU1uHQcQUEChurFoeUYB7NBOtkNN6ibmW1mk/ABFUc9f54VuLP+ssUfm3rT/DYf
-         a55uxCqZ/diHgYm6KJSZYx3dwxCYHmfVxlrRwAkGVhogYXF1HXB9C+VKzVhn0AXuSkX6
-         CcM/5+v2diGxU8H6FU0Ecf1+mpiSH1u/7O9PQkxWuKIbjP3kFHblqPvndoEwF8ZXuNkv
-         vm8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766007892; x=1766612692;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wi4VtNswfYgI0LC15nM4RND64Bg6aXM75M6lneCHO0U=;
-        b=pjTME7+/pmgWR72p1ymZ7yHHZnS1Hz4MyM+I93eSd9tkRfm1SVor+x2WzF94XKGidV
-         nN5XclkiPlGfhtSqkFzmLdqhjhfMxPYu2Z1ycFwseSsHGuLO5tJhOrCFicezFaZ4Cwpg
-         K7rRMcP+3B3lhmF/7t8boKaZvtBgqyfsyaWbiG8/fHiA0cV9ifsPze89eHNQl44Upj5I
-         spMPgFqZWGTPCGzZaGsiJ3ki43HNAA1kMId3TbLlrVHlz1rOFDXxGOtaRMVcaGsYRIIm
-         LL3J4tF7AWqzkTw7m0agH75OqyHjRw8rfpK4BtCWCsPn4fqCgGLQF8dhV43LzNUET1k9
-         fETQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX9wFlDL0FPWH2EM8gAEdOgPs9BxqPMbdmwJtEVPebAUd0TOVYod8v+9IttVr92TYrARjTUPvEqaewhAGeFqg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZAYglv26g6mrhN0wrTK11c1ua/PvjZERjMdz+pdoTBbQZOh2G
-	11o6J8smsn/VpTzt6+3vIXC5cCo6LC1WL/0D3RG4z6HNEPxmoD9hv6pw
-X-Gm-Gg: AY/fxX6yDUG+f0yj7xY6nYrRfgEDllIy/ntmqIdgEzL7Kvsqutkkb9XjoC5jiBZIWCz
-	pUuNDCSyzNRIhQmQgmHlK1bbvouM9rpUtccVvRub5IntxLrw5kJTtxl8HYhFLeQ5g67WAsRS0pf
-	NuFbU4zNza5/QI2XQ2ryHqxia7I//DdQnxLst3z3RWTGDm3k4onS+ztQIumiPqHYiO/pgers2XX
-	q/dd9/cz1VbJe8iQ9IuP+cNqyr2p4uwTXfaST72Ls1IN0FQhLLXswamRmWiFimZLz/IrFulG5EQ
-	iPmMzgsjzaCZE4eekdSOiXPLxgPvHhDrKwa+BT1o3S2L15efPjpvroaJRxOdAr7eoWi0J9t6TaA
-	ZxmWeCSQGj/g5Tmd4AhaXalhANFGWMduc/XNKNwY3UkDfu37Ot5K+3WjcyMA9FqRO+2zrsHRgep
-	v4yrb/ycXbazKQgBzjFe+uHDNKoo4T0geLgOrQ9OBGIESg/zl70RghwBJTSCw5pQ==
-X-Google-Smtp-Source: AGHT+IG9CCfbhxUU3xWaRRCduAh7tFTLN8ZaXUO5xTSI+5uu/mOZCTiUjQsnw9OO/PU9ced5/KUrsg==
-X-Received: by 2002:a17:903:22c4:b0:295:290d:4afa with SMTP id d9443c01a7336-29f26d12fe5mr174263405ad.23.1766007892286;
-        Wed, 17 Dec 2025 13:44:52 -0800 (PST)
-Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2d0888fc8sm3050905ad.26.2025.12.17.13.44.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 13:44:52 -0800 (PST)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com,
-	ojeda@kernel.org,
-	peterz@infradead.org,
-	will@kernel.org
-Cc: acourbot@nvidia.com,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	mark.rutland@arm.com,
-	tmgross@umich.edu,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v1 4/4] rust: helpers: Add i8/i16 atomic xchg_relaxed helpers
-Date: Thu, 18 Dec 2025 06:37:42 +0900
-Message-ID: <20251217213742.639812-5-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251217213742.639812-1-fujita.tomonori@gmail.com>
-References: <20251217213742.639812-1-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=gotplt.org header.i=@gotplt.org header.b="h188dOBO"
+X-Sender-Id: dreamhost|x-authsender|siddhesh@gotplt.org
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 996BC4619EF;
+	Wed, 17 Dec 2025 22:41:43 +0000 (UTC)
+Received: from pdx1-sub0-mail-a251.dreamhost.com (100-103-186-183.trex-nlb.outbound.svc.cluster.local [100.103.186.183])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 2199A460BC5;
+	Wed, 17 Dec 2025 22:41:43 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1766011303;
+	b=2ws4TLG9rKFiC5eRcqyW5tZrQM27474IcagANyEruoEWEcgV7yaIUdJCgRos2ApPJenWaT
+	VFYVWlwMMTFQS1giMIzsDifJR4Orfh9w1k/pbD4fo4Fkd83Pdvj0AsTcwC95P7vrBWLwja
+	CbywGqsFBP/eU8CS3+dNwUplNcho04iamQ1xZcHMqo8TB6zafaI9mC1iCv1Lpfx5jw7R0w
+	VGaZh30mERpr+/ik6eDaxx5jSGhnVVGkETx3Dhzpg2jt8K7PgKXBvuuJDMlYuMDRrui8+N
+	4cnZH+Q1trroXyN3VI+QCBR2h0xIyv/cG9fqyT9vnBA8+GqG++rLodaJNBEDwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1766011303;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8Ygin6w7FA2VrPO9XI0JOikCLVny+JD/M6BqEleLMlM=;
+	b=ynb/yoM4AtL3RlbfAWIuJ99k1iRf5mAXXuftCD15djbbFj5CpqDcgvAiOZNhRotEixNUv8
+	9Vh5cz5isr9+BYgPqEWe7rsTee86Z1I8x3VIMdo3Voa5lK3M5SDLZfSE2G8A9HO48Jm1aN
+	ekuCW5xkTgWnvwuxnH9uKEhw4/X8LHThz/Gj0Ng7/CnwuoYYHpmor5c8O5GrJVsjKBb8yL
+	kZ/VxPW8mKrFa4VVnxoZTaGhaI+LoHvmJ1kLCJRD4bZeCJOFtWElTxVDzdEuJyW+Bgrgl6
+	lVxEO9oNxIzuwe0YZfjm4YZ0U02O1RnCyooWFFBCNuzrEjPwbbVUbNoJFLIriA==
+ARC-Authentication-Results: i=1;
+	rspamd-659888d77d-mh4kt;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=siddhesh@gotplt.org
+X-Sender-Id: dreamhost|x-authsender|siddhesh@gotplt.org
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|siddhesh@gotplt.org
+X-MailChannels-Auth-Id: dreamhost
+X-Trade-Eight: 77eefdfa22a2a0c0_1766011303389_446266803
+X-MC-Loop-Signature: 1766011303388:2288621669
+X-MC-Ingress-Time: 1766011303388
+Received: from pdx1-sub0-mail-a251.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.103.186.183 (trex/7.1.3);
+	Wed, 17 Dec 2025 22:41:43 +0000
+Received: from fedora.redhat.com (unknown [38.23.181.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: siddhesh@gotplt.org)
+	by pdx1-sub0-mail-a251.dreamhost.com (Postfix) with ESMTPSA id 4dWpgp1sSnz1041;
+	Wed, 17 Dec 2025 14:41:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gotplt.org;
+	s=dreamhost; t=1766011302;
+	bh=8Ygin6w7FA2VrPO9XI0JOikCLVny+JD/M6BqEleLMlM=;
+	h=From:To:Cc:Subject:Date:Content-Transfer-Encoding;
+	b=h188dOBOMCKz8fokSnqDRbWCQl+vxNlgeM7zn5Im1+A0Ern5Jus3I6nO8cRNMjsv5
+	 /NDWMpb0z3Ea0bfs9vr7+ic+eOJ+f8vHNseaJnM5wtvWFup59VgXQNl+0TtfRAxbKV
+	 H0R8z1DoB9/5gISJbGWGbO3gFaMOPA7D/lzEO400W+ZSih6ySq8eBaKUv1lweQvEPR
+	 nfbSt+uMDMCcoOyByC3fJ/7UCVHypqvfGr0fPU7HG1xshf+iTB7i8v5P+zG6pLMf6b
+	 l1buAKuvtav/nxlw5WoFot2FwSgc0bgj5SW18pQpFz9QCtRGx/d6V+umk7hik6Fcik
+	 Z92+OmnEbKGZQ==
+From: Siddhesh Poyarekar <siddhesh@gotplt.org>
+To: rust-for-linux@vger.kernel.org
+Cc: Kees Cook <kees@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] rust: Add -fdiagnostics-show-context to bindgen_skip_c_flags
+Date: Wed, 17 Dec 2025 17:40:50 -0500
+Message-ID: <20251217224050.1186896-1-siddhesh@gotplt.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251217150010.665153-1-siddhesh@gotplt.org>
+References: <20251217150010.665153-1-siddhesh@gotplt.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,37 +98,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add i8/i16 atomic xchg_relaxed helpers that call raw_xchg_relaxed()
-macro implementing atomic xchg_relaxed using architecture-specific
-instructions.
+This got added with:
 
-x86_64 and loongarch use full-ordering xchg.
+  7454048db27d6 ("kbuild: Enable GCC diagnostic context for value-tracking warnings")
 
-arm64, riscv, and arm v7 implement relaxed-ordering xchg.
+but clang does not have this option, so avoid passing it to bindgen.
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: 7454048db27d6 ("kbuild: Enable GCC diagnostic context for value-tracking warnings")
+Signed-off-by: Siddhesh Poyarekar <siddhesh@gotplt.org>
 ---
- rust/helpers/atomic_ext.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ rust/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
-index dcd115091c91..669f4832eb54 100644
---- a/rust/helpers/atomic_ext.c
-+++ b/rust/helpers/atomic_ext.c
-@@ -73,3 +73,13 @@ __rust_helper s16 rust_helper_atomic_i16_xchg_release(s16 *ptr, s16 new)
- {
- 	return raw_xchg_release(ptr, new);
- }
-+
-+__rust_helper s8 rust_helper_atomic_i8_xchg_relaxed(s8 *ptr, s8 new)
-+{
-+	return raw_xchg_relaxed(ptr, new);
-+}
-+
-+__rust_helper s16 rust_helper_atomic_i16_xchg_relaxed(s16 *ptr, s16 new)
-+{
-+	return raw_xchg_relaxed(ptr, new);
-+}
+diff --git a/rust/Makefile b/rust/Makefile
+index 5d357dce1704..4dcc2eff51cb 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -383,6 +383,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+ 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
+ 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
+ 	-fzero-init-padding-bits=% -mno-fdpic \
++	-fdiagnostics-show-context -fdiagnostics-show-context=% \
+ 	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
+ 
+ # Derived from `scripts/Makefile.clang`.
 -- 
-2.43.0
+2.52.0
 
