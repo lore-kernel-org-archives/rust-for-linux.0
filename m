@@ -1,103 +1,85 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE88D2C027A
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 20:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0159C309EE4
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 20:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766003911; cv=none; b=WP/WKVzPuOtSbriYQnJ9loIelM6zloGQzWI8iLoEwW4NRpgnKX/omwUo5BvCXXmA6SuVHWUndN+s1h3xiXRH6LHYIsHufFJh5QIG9vOnNaj9d8MzZhkIfjQ/RWm/do3/1tPHDZWOEtQPYOAl1sRl/anhyRqHdUQvehywpi5ZFKQ=
+	t=1766003992; cv=none; b=dwkXcp2EyQJ7ESEio/2uy5wptluKjeashiwYDWhacEcd3P0BXNYvlsVjwjlCkfcPHGyHnDRwhVX7OF/nCf036JEcg2J0gim5ICdXa9os36Jkn/ZSz22JWo1qqlY/P0eLrOWv1KOmmg6Pk5tZsz23tL1eQPeZZBUSXJ+UMjBQc7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766003911; c=relaxed/simple;
-	bh=yci5mH2cV/pT7oG7BhiBAS/j2KCKhW4AQnnME6O0Rfw=;
+	s=arc-20240116; t=1766003992; c=relaxed/simple;
+	bh=/uBNnphXU0rjVmgr2q4UmXoMHsYzPtaEbSgh0Iw1axk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZMsAVna0Xj65U7xV9qQXt8nI0DmYzIQgLiHY34vDGtWWU4KoNRS/n8JdMKH9irxMNUjeD9l9n1Hmgb+naOdfJbvjZruzW4eTMCbDE/MYXxA4wXD1naQdqFoGRd50KJeSMYX5oKrYcweD0Gy6X30mYr0SWuxGhMMokXRiBj8K9WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z4VUw5vg; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=ThwoB5ldv595HwPcTyofsBZcuGd2HgXx6C9GZMuZfQRg21UQG/zEwgBHbKLwufCdcSqdH+bWydzqFTlLyN8j3lIhMIuGILon2DW2lzUIcd/7jTpznXKScoFbg1VmwMkC4/WAX5eTTnDfrMj0IPQ26J5haRXTzyMwXS3UWFKrnh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yrYiaNA2; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z4VUw5vg"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47921784b97so45477955e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 12:38:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yrYiaNA2"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b801b94fedcso57520266b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 12:39:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766003908; x=1766608708; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1766003988; x=1766608788; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7i5ut8wsLiMpoaCbO6Vuqt68f30SnWA5WfTkgL24kp8=;
-        b=z4VUw5vgQvjtrD1Cdh5L2gj1EdQZbcKzIuOirlLr8I/rpkW2nam6XTemHBcytI3oQT
-         98gdnJ2+9PO0G6NZRCX368HExFMUVBzTnbN+EIf7iRekQX26hGFGJNA17mzvEkqn67pF
-         2oYXob+BYG0e3fKTMDbnSFBk/7bJOl4LafyflrfSS+FsDg7LYJTM4BjiYYp0ow1r5+PW
-         rPadeKgiCfPvgKF8KUAt3pNwGe+bTCEb1yzHoG0/7u5SA1Ox+JyyNLbzw14eZHo9mNjs
-         QhiV2WP9gDXTE0KB1Yl3eAgDsALfwgW71BI8DvMCxTcb70mz+sws1f5MXIHAdgV64MmE
-         Qv6A==
+        bh=4Um2cszXZJr/pG1Mv1V8QtZtgxoz6p014sDFB55pUeE=;
+        b=yrYiaNA2J+jqIEFAd0mUPodho4075I17O+GIQOmgxl2UNf6cFqQl6mwsoaxcZPybNV
+         M7bguExcWkwtH3XjFPcR51+HkU/Jt5rmSLF9wV3y4xLUykI9BWmxbTtZ3vpJAD7T1WrF
+         zzeyRXnfsyEPiJ2tF02ArR7KY+BzUrFkBP9fwEEkOtCQMUjKj59MsNx/EClfoLeOPcgQ
+         IWMsloHlBY33gssgOuDxheIdQzZd63LF6+cMJ+cywa8yXpTTRmobyGOYlMGpRi+P2Hqe
+         ACFj/6WqgWB0znc114fvys9kbnvjOUVtHwsewOquEhVKaFf64uuRdaOqszKA38gjD0FQ
+         XUbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766003908; x=1766608708;
+        d=1e100.net; s=20230601; t=1766003988; x=1766608788;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7i5ut8wsLiMpoaCbO6Vuqt68f30SnWA5WfTkgL24kp8=;
-        b=K5BaFczjhZzZO+Tc0sID5S4d1pSnd+EOfS9Qtt8NjGCbC2f76WREc/zcmmVAQXwyCi
-         sP6J/rKJlLQQzAt7w4pMC1jExdB8giwTvfBdzrzPobxPsvkSw5ILvL3OVLEE+qM5gkEp
-         FlkBojaiv/SE9N4vFvP/n8UTI119GdYMF7AgHjYbCa90c4PboGKdssx7ffWSv59zqpL9
-         GcfK2+ddY98Uo3jsIf4qYKt1AIH/aoQ2BCe4JgUfEfBo0235j4qGSds6lRk1ppBEULEH
-         FSA4oAJnXxOOa2xrXjI58Jm+yYV9SkLVUNz88Gq3g87256vxbem81E8xcJ6hbZxfHH6X
-         kO6w==
-X-Gm-Message-State: AOJu0YzJmyOUKxgSPULO8cJmYckh/nrmFtvOXGtS9W0/hLyt0JZ4enX6
-	AFM4030sNWHlKL81qfze9BQmYJbgZtkw9qLPKEoY+mxOgvUFEtuGU/AwHyZ5y9+c/nAxNAXGYRY
-	409L4DKhmXoW/deXVaw==
-X-Google-Smtp-Source: AGHT+IH3SpcBHI+b7O+W6ISfhWLyY5q9VCTacPR3UxdcNf18t+LHd/WnROxHJ2Zb5DQ/nDlEYAkO6Vx84Y25fkk=
-X-Received: from wmph33.prod.google.com ([2002:a05:600c:49a1:b0:477:a678:a39a])
+        bh=4Um2cszXZJr/pG1Mv1V8QtZtgxoz6p014sDFB55pUeE=;
+        b=junJYoDTAtj48XATe5C3xEbPIW6yzwDw4pWJc3VhVBx6FJ228GkdN6LTej3EopwTlK
+         2bfAHeqSUEXySLftae5hnCX/P0/InURkKhj29QX8DtSwEB7YZOkTaplP1RWm1fr4sou4
+         nmXjWysKb5m2/62JZHAWJHX6R4g2wCkTw2RBwHcadk4OUaeDGBePa1FwByXemk0IH7in
+         Q9OjMlhyptUaJct2mtX+PR9wiCMarUI6Hz0v/Md07YZWB5kA8uVNy7PwMVDt2gzstxO0
+         /miEhiLFpwuFBgp0MWsX5vHHzpHO6sq13Lp2oSk+JOR1kpEybjDL9zMfCs8izhdMxFtB
+         5rww==
+X-Forwarded-Encrypted: i=1; AJvYcCWhMapoPMZ36oBUJqEoNt+k+Z5O8qMHggm17zSGt9rvaiYfYRLNkzypnacRtU9Y8z14S5StH99f8tem9XnKog==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgYq1I6DdW7Ne3MJ1GMdSZPI7Tdnen5UdwgPHnOjf/NWf+p3v4
+	fqwVRrBAUV3qP085IqZ/GmpqrOQyff8EFQev7yPl7A+Ky9DwKNSa6YdAzU00no6wqn7q97cQdvc
+	C813QT0gobkspnhLEsw==
+X-Google-Smtp-Source: AGHT+IF5FgPrVLQko51RhPdl0jo/OMBpR+5bDwGGAuE8Pom6j72aqaHt53eSQ849fUmu8aFbhndwKK1ISeHaDKw=
+X-Received: from ejcsq16.prod.google.com ([2002:a17:907:3890:b0:b6d:7849:5800])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:818f:b0:477:8a2a:1244 with SMTP id 5b1f17b1804b1-47a8f8bd357mr168730215e9.11.1766003908208;
- Wed, 17 Dec 2025 12:38:28 -0800 (PST)
-Date: Wed, 17 Dec 2025 20:38:27 +0000
-In-Reply-To: <CAO0d=D8c_JYAvhe6cB-R+23-uxH5AnKi7TtuLA3Ra3hfViiGgw@mail.gmail.com>
+ 2002:a17:907:3d92:b0:b76:4c8f:2cd8 with SMTP id a640c23a62f3a-b7d23a6db3bmr1995360166b.55.1766003988340;
+ Wed, 17 Dec 2025 12:39:48 -0800 (PST)
+Date: Wed, 17 Dec 2025 20:39:47 +0000
+In-Reply-To: <JH0PR01MB55140AA42EB3AAF96EF7F3E8ECAEA@JH0PR01MB5514.apcprd01.prod.exchangelabs.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <CAO0d=D-+p2QbA9bxOSO0rd185GY5Pe0ruq=A=hcgTvovC3d1oA@mail.gmail.com>
- <CAO0d=D8c_JYAvhe6cB-R+23-uxH5AnKi7TtuLA3Ra3hfViiGgw@mail.gmail.com>
-Message-ID: <aUMUw3A5yWxugLyC@google.com>
-Subject: Re: Fwd: [PATCH] rust: document safety requirements for
- fmt::Arguments dereference
+References: <JH0PR01MB55140AA42EB3AAF96EF7F3E8ECAEA@JH0PR01MB5514.apcprd01.prod.exchangelabs.com>
+Message-ID: <aUMVE7ZbiDREijFl@google.com>
+Subject: Re: [PATCH] docs: rust: rbtree: fix incorrect description for `peek_next`
 From: Alice Ryhl <aliceryhl@google.com>
-To: Riccardo Adami <riccioadami@gmail.com>
-Cc: rust-for-linux@vger.kernel.org
+To: WeiKang Guo <guoweikang.kernel@outlook.com>
+Cc: ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, akr@kernel.org, mattgilbride@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sun, Dec 14, 2025 at 02:11:08PM +0100, Riccardo Adami wrote:
-> ---------- Forwarded message ---------
-> Da: Riccardo Adami <riccioadami@gmail.com>
-> Date: dom 14 dic 2025 alle ore 13:54
-> Subject: [PATCH] rust: document safety requirements for fmt::Arguments
-> dereference
-> To: <rust-for-linux@vger.kernel.org>
+On Fri, Dec 12, 2025 at 05:31:10PM +0800, WeiKang Guo wrote:
+> The documentation for `Cursor::peek_next` incorrectly describes it as
+> "Access the previous node without moving the cursor" when it actually
+> accesses the next node. Update the description to correctly state
+> "Access the next node without moving the cursor" to match the function
+> name and implementation.
 > 
-> 
-> The `unsafe` dereference of `*ptr.cast::<fmt::Arguments<'_>>()` in
-> `rust_fmt_argument` is safe because `ptr` is provided by the kernel
-> formatting path for the `%pA` specifier and  during `vsnprintf`
-> processing.
->  It always points to a valid `fmt::Arguments` value created by the caller.
->  The value lives at least for the duration of this call and it is only
-> read here and not stored or accessed after returning.
-> 
-> 
-> --- a/rust/kernel/print_dot_rs
-> +++ b/rust/kernel/print_dot_rs
-> @@
-> -    // SAFETY: TODO.
-> +    // SAFETY: `ptr` is provided by the kernel formatting path for the `%pA`
-> +    // specifier during `vsnprintf` processing and always points to a valid
-> +    // `fmt::Arguments` value created by the caller. The value lives at least
-> +    // for the duration of this call and is only read here. It is not stored
-> +    // or accessed after returning, so dereferencing it is safe.
->      let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
-> 
-> Thanks
+> Reported-by: Miguel Ojeda <ojeda@kernel.org>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1205
+> Fixes: 98c14e40e07a0 ("rust: rbtree: add cursor")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: WeiKang Guo <guoweikang.kernel@outlook.com>
 
-This patch does not appear to be formatted correctly. Can you try using
-git send-email?
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
