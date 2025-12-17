@@ -1,81 +1,81 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C61021D3E8
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 18:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8831A23B9
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 18:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765994507; cv=pass; b=C+afNAK1uGfJDHhRcgCBeC2oSqrgpaMF+aQghHAb69ec2TiQoq9ThyTvvl3OTdSAZqmV6Dn1WJu38JQX6DYjS38gDoaaLLS5Vl3ZEDPy3hI4OKZ/JDQSogRoAdQ7Lr0eOjCkxzfGGAG4dL4MDNLBeuVnTi8T9jHLDOdxaPjVfgA=
+	t=1765996034; cv=pass; b=aApWn6Q3BCdQ3OvktQDcMGQ65GyA9lEkbLJ5uVt3Z7KQv3OjDdVesS4UlRIWDfzkO9M2ATfm3Q4FRvuOGDLzVPZXtYqTXfEBS/1jyFhRPsj3sJQs7oMSE0bOVoU82u7pLTj09/+8MPw5OyhBMPY4fDt9GeDqgJpvCC1p/nMpJ9k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765994507; c=relaxed/simple;
-	bh=KJK42aQsKP3zhpFhKKFUbUrJrVAWTNuU0BYG8woC0Pw=;
+	s=arc-20240116; t=1765996034; c=relaxed/simple;
+	bh=ewEYgNOm190ziCcM4ftuyL9f4S1UUql3Z66KiOur/gM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E6bCo7N6LxZmf9ofBj7VIEC3E7M/xGqzoIVVRHR+8AFcTsmrd0TINjjLj/VID0H19N7frdzsr7+RdKehi4/9Kgt/Xw6ZLChCk6oVq8vgyvinaQHHNfB8zrd78RzWBqd5wz1MzHUr6jxnmCLu9C6eo8mPPsATwsIqsFqy72Ptsls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z45/sW65; arc=pass smtp.client-ip=209.85.208.42
+	 To:Cc:Content-Type; b=maIyvY5TaDoYWO60+nZL537hDgfnRqnwt33PEr8rGDQxZSo2+Q4wGYzS88rBmVItTXibiAKAgXV4wAdYix5Uzqpuf+H8sg86rdeMrFBwap9yYRAcEMzh7lPJMyyd/0vFOMTOR4p3sdZ7sMIjUf0Fr9V2TQ+378SmepCFnsyqn0w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G0a9yQF8; arc=pass smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z45/sW65"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-645ed666eceso291a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 10:01:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1765994504; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G0a9yQF8"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-644fbd758b3so913a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 10:27:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765996029; cv=none;
         d=google.com; s=arc-20240605;
-        b=U/LkEYDV9/oOY8TW2FKwU+cR0P4DfikIxhsdlHlp6C9rpi5VVL0NmUR79gZRdAYaaQ
-         Y1CyfpOWzfXJh8E+/OOLeHtvaBlL9fD5rc2sK6RtSjs7eTiPmNaJh+6FYSPVADKvKH5Y
-         2U0icX8N62DCymUcRUbWYu+HIvQeIRVvPTRh7yAtYK2SsisKOJ2G5Ya0RyBj0QloOwBH
-         hrGE8JIxXHcsJwJpNt+XctqvsSsv+ElNSf4+dSaOP7tlQK2GNPP5opSfygacaHFQlgsm
-         RdmT8prt8H3hsg7XgMeFqfLcsxvlpIVMwIQckb+jt/EzpBOZaM6EIUHXQcb9ZUrxn48/
-         ITkg==
+        b=ZBEOuxRpJkmqDpJXjL7ElT4SOEi77BZeAN1c7VRastIPH1btbsKugKv1YWYhrt2TDb
+         wKuSx7UU9krgGoy97NtDy0rWr0/6zOT3e5yVuWcI94NKmKjcF7o25TGtUKKFwpStHKZF
+         PcMPH8Vb0XSc2hCTkhM/zlmQwaTa3Ahp2a5uNRK/35PZoHsFf1TAvFbgyTF/weKt/WQs
+         LRxbYoQg6AltpJpMIrtOheJ1ZYpBvXuOIn57vzzptV8DbPmkVUR9gIxtYyoYG4O7EY4S
+         J/bdFnnuj13dfIL9ASztn/Ks8QD0u4efPv8ybzQCKbN8oi8Qb00a6xajbq+mo6eSbRor
+         oAVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=bYm0euCESRjcpDzcyojsdpFeRbiA18k3+f9vNibZW8U=;
-        fh=DV6v1UhsBBUvFsSgdbyhz8HFn7LwCEaeT7Ki2lmBS9g=;
-        b=MbB3d65S3HH/jlzLFjCDZs8jXSpVOFsTglPDNTlZnnhhRn+RnqXtdVVthxZLKgIgpD
-         h/chCqQo6OCdcUKcOi7/3VN2UzJ0ZDQLw7uw7DebE1Lgbskx0qnjVWW8uxkn3R4AhdE6
-         Pj8Ntdkk20ez5IwBqQkQuQrfkxgJoV+WXsxKPqY39vxfQRoRihljVeDPfYxZk0v7TdyA
-         6CBH727v5TKbsFgo7AfnOcRuh3dy+H3CzoYvYUIN6lpxeR9Y/nW5WPF5owh0CRwDG34y
-         hHFnavPWYeRV7ITX1P6pQmCcVZD7N/T5rg5pkRga3FBbnSJE5VDEt1T4UIYMg7gBHuZC
-         FaDA==;
+        bh=IWQoeAvy7a5qW8vA4aqOhFG4WVRLwSORR6OcQHoWncE=;
+        fh=G6TKzGNkGZ3i5M3ZHjkHbUb5NQ8foUDyqHmBSuLzvdQ=;
+        b=DeQKL6+STWIIJuTIRk4GdkzxLY4pvBp+vMGOwt1z5wETOzYxNcT4S0MsX18yDodFee
+         LhEQYqKAGbXoy8mlMXI8mf50gpmigUgwCO5Wk+P3rXnxB5Nb6+rVb/8q7FsHioBEu4kB
+         pzlJzguTBudDkaP8ZE8M6I8JFcb9LFUDpZmmVJkAGkCkyg1PUxWvyVMiy/xCcEXuA0lx
+         0ombSyHlw6lf0c0vXwc2UrC3V7/c+AF/A41/U9mnyc2ycUuthTikbSZOtqsU0XP9tbSU
+         y4qgRL49PewVIe92V7iBMvXR9LCStY0pWRiiN14FOE2e0DjiImgOSF2E7678f3ujQR1i
+         oDeg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1765994504; x=1766599304; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1765996029; x=1766600829; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bYm0euCESRjcpDzcyojsdpFeRbiA18k3+f9vNibZW8U=;
-        b=Z45/sW65sGLin7Jcy/dDlwSmkyb8Lzn8nvlBlzrX6yn48pivZEX1pNc6YOMzI/mzl/
-         c1NYqotnHYIuHhvt302D09TSQ6sk+Kxw5RQUgXxYY66KMRJXEdVhJ5pIcXPT9JkBxrjC
-         wz/ROG7dsKQLg2K+ORv9jirC9esjeb8OoNeA+snMe15k5Nhsqh31FirPHUxhgH4CPXo0
-         FyCh/lLKpRaVotY9k7dcvwxYSODhU+c6/6Xj63qvxlnrp/1sWjg2JWbwJ0Zs3g4ZaiaM
-         Zcq9VFFXvPesB5oXILsXXtwdL7DlGdtmBD6VFxcFg/3tluS5nlfD9X81CO9npWZZGfcr
-         nyYQ==
+        bh=IWQoeAvy7a5qW8vA4aqOhFG4WVRLwSORR6OcQHoWncE=;
+        b=G0a9yQF8RZG/iAFrKWyNz4Q/2dPXqcR8Xxfvoexi1R3ficYhFEZ6SJA8JipaDQsDUr
+         2qcHaxxlipnYvJ+6FoG/vpkvFPU7FGNe6p/ncbnbveY4CYwPXsf2g5q4Rq+zVk25LKv3
+         AnPwKHOFnYerqyXwlS96rgGTPu/c8gTkGIaMIKDTvmYYVaAhm/OiDZCBzpUpAdls2q6a
+         iqzCbwZoyN9Kma2YWR9SA0iogFfAj1Kd3Yx4PGLN5t5HMhHgrpOyOyhhG8W+wOJiY1OY
+         1sJLOsw++6ssKe/jaMWAkE4ejEg8Mgdl2VODgu3Sr/1tCkXbxHSWB8kg4d6JMgYvILgV
+         KS1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765994504; x=1766599304;
+        d=1e100.net; s=20230601; t=1765996029; x=1766600829;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bYm0euCESRjcpDzcyojsdpFeRbiA18k3+f9vNibZW8U=;
-        b=CSnobtjO8jTsBUHh7JhVCFlkG8c9rSUT9zAvtwkwdjWmYBvoZrAA81LQtkIoFU0rg4
-         c+IL3Krqq25PENFdH46yyClibVvLZViBSnL3SB2BLz/6VC54Pt2qkdbdOLslc3Iv79Rd
-         IhENEKJ09BgArbxcm+8p2PRQMjt+pZZr2E6P7sdzKahFTG6hwcBajfRIt0BVX+zOshnP
-         XwZiUUuJ/nQAIsDk/F2rMh60/7E654I2afRnuHpDObCGPpbGVyHnWmZZ4QGa0+CMpOZK
-         qqBtvJfbEL5XBDhHvDvPgF8RI81Oyos6lm0HorBDEIybiLgZBPvfBFVZF20zuwQDLg3x
-         UH4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXvHf2ZGmiI8qOLs9u8j+sGG8JjkIQYP7xusgAtCmOWU1vyeJguzkj8ad4lMFx4fp2AC5PphgCFfVZtCb6TjA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxfDT+nsDicDbSElL51+C8OwhPdPT5cOr2J54hx7Ja58xujwHj
-	KP2bAZ6kRztqA1TSLG7EvgjoTEGvWNp7ibxszWvyzsnhjAhPG8q1co/8Ld1eE8Ok/LjP+SHAWdy
-	GSSPEOAv0H3zJJDUbT0I5SK4ehy5MbSX7K8EG32EF
-X-Gm-Gg: AY/fxX694X1XPWWldKNI7P9Z7jZrcmhwTtZTAzvlX/zm2tYN1zd9QEl0NPoTbZIDBN9
-	p9zGPq6eXH4ZTYQzkGJWZQki0/JPs0+xqrCNSH6xVKwGu5o06DgdN+lbEKJLPn/B+7BWmyW8N9y
-	CoNwaIAwRYGqmbWsu5iJ0amFiV82CS9HC7bVKYYsRamwjyXP/X8nVCQCFqf3jmkNQPcA2sL8GwO
-	uug70JFLAwm5+ztOVzGJNHE5JVEGJyz3SsEpRkcDbjfdO241ISPXzu1xBPqPPN+SoakzZDsyHYN
-	XG2PPMZBwvONvRx8l1UBli2E0g==
-X-Google-Smtp-Source: AGHT+IFHWQGLw0S1eiFpeRxUl2gvoI5zsSoZl7Yt9sUAXIbCD6ZXZnY4qYky91A+td57SNxDM81IwEXNAVfQvXEs8YY=
-X-Received: by 2002:a05:6402:20d6:10b0:643:e9f:2e5c with SMTP id
- 4fb4d7f45d1cf-64b420ce21emr47219a12.9.1765994503440; Wed, 17 Dec 2025
- 10:01:43 -0800 (PST)
+        bh=IWQoeAvy7a5qW8vA4aqOhFG4WVRLwSORR6OcQHoWncE=;
+        b=A1IU00QcRYYP6TsqCnF1OUi1oQkQIegcpkh/y7s8V0Yu30IIlSrP6jGoFwgH9pYCw/
+         AS0utneDmilfDm5Peoeo+FX4bOgDTzYmL095hbCwpHFIeDyTzVCk2C3nfLTh8XNJft9u
+         lEUCmrCtZ1hyyykxGTZxa/Mya66UP0StSUarxRsXc/ninnC5HHYo/mX/03lgEuuZZTdX
+         j30/78PDoBOMFI6TnxDUAl34eNzks1LB+YSulkOt8RlYQ0gM+yvq4Ssuj0fOkIsR8RD/
+         JgY/D1Xyf74Y49bVE4DyXUg73b0nm7xLsfpJBcYnqec3vAtZdZ5/Qzc74cgv6CsW3RhP
+         aliw==
+X-Forwarded-Encrypted: i=1; AJvYcCWjN6Xn1CXTTzwnlGcdsLIDWeYjLjOub3jaU2WQDzL2JCHlIkSTnGNMOMI4L+NPxW2LHeBbSRAvN4IArwMOKA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfl54/FzP6MxHdlJZT1Di7AKEg8PRdcPcckkwJvd/puvEPR32t
+	Tf/SfwlqYeV+a4Z96+wYvJ/6XnkAXXwIZJxDgWP0YPdC8IDkw290DabplT+RpjUf+9U0NeV0d4D
+	A82/FPyT6gMBGMSiM0HTwiQzFjuw9SqWmjjiULj78
+X-Gm-Gg: AY/fxX649ShVgrgqeahW7XkDGdDHxC2t9aIkdpH9S8nOnJzI1XWEiSKsaSCAkYrjAQ+
+	XYCOHyo002mw6BU5gNOyC9FC1YbzkDns1ZZRVYTU45n7jcUccBKDqFIC3lyFiJC44DWHSYvTBTs
+	a9pXAtCXMk9r4f1CTpx4py0ncWFv5gEbpVGcdt4yj/Z0nE+ug3SCfWfM3yMxbjTtNwwQs35RCLU
+	4VdQ0Z1822/bKDRiE3Z+sS3Um4TlfIhM4iMcgO/Dx9zn8tXk9cHMNAl2wy1fUeRlUx4E8fvcBxj
+	TXaIHwhNRUs+wMWj3lVjUPC7OhqeckhQCkKg
+X-Google-Smtp-Source: AGHT+IHCxTmC8LT2jy8w8rvRx/4zrU05KTODF8jVez/OKavIx4f2bO4duA3kKZ2yoSkShjG6TLPm3AGH2CypMw3YWzM=
+X-Received: by 2002:aa7:c757:0:b0:63e:11ae:ff2e with SMTP id
+ 4fb4d7f45d1cf-64b5a425c5emr1011a12.3.1765996028642; Wed, 17 Dec 2025 10:27:08
+ -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,13 +83,14 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20251216-transmute-v2-0-b23e5277ad02@google.com>
- <20251216-transmute-v2-2-b23e5277ad02@google.com> <DF05VVOUA70W.30GJE9P4Z3OL9@nvidia.com>
-In-Reply-To: <DF05VVOUA70W.30GJE9P4Z3OL9@nvidia.com>
+ <20251216-transmute-v2-3-b23e5277ad02@google.com> <DF05YSVN174B.XRTT5CHPF0N0@nvidia.com>
+In-Reply-To: <DF05YSVN174B.XRTT5CHPF0N0@nvidia.com>
 From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 17 Dec 2025 10:01:32 -0800
-X-Gm-Features: AQt7F2qzB-Mw47N6boXw26l0bJNZMt-5H5vREBW6SwuC51Tr9mVZDZtFrktZct8
-Message-ID: <CAGSQo00qe74q-Ztn2UubrMR+F-knO-DhrznSgM8Gk3j9OjNfKg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] rust: Add support for deriving `AsBytes` and `FromBytes`
+Date: Wed, 17 Dec 2025 10:26:57 -0800
+X-Gm-Features: AQt7F2rm_ioZJMPoeFkWZhqohuB_Yo3UWPBG3JRlf4FIFDBCq3pZHQUWSgugeRg
+Message-ID: <CAGSQo02KiCBPCFfpv7xLqFM8znN9w+KfGhy62O3YLu2UfVHCTw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] rust: Support deriving `AsBytes`/`FromBytes` on
+ bindgen types
 To: Alexandre Courbot <acourbot@nvidia.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -100,97 +101,54 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 16, 2025 at 7:12=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
+On Tue, Dec 16, 2025 at 7:16=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
 com> wrote:
 >
 > On Tue Dec 16, 2025 at 9:44 AM JST, Matthew Maurer wrote:
-> > This provides a derive macro for `AsBytes` and `FromBytes` for structs
-> > only. For both, it checks the respective trait on every underlying
-> > field. For `AsBytes`, it emits a const-time padding check that will fai=
-l
-> > the compilation if derived on a type with padding.
+> > To support this, we need to move the `transmute` module into a separate
+> > crate to allow the `bindings` crate to depend on it. Most user code is
+> > still expected to address the module as `kernel::transmute`, which is a
+> > re-export. `ffi::transmute` is now available for use in `bindings`.
 > >
 > > Signed-off-by: Matthew Maurer <mmaurer@google.com>
 >
-> I like this a lot. We have a bunch of unsafe impls in Nova that this
-> could help us get rid of.
->
-> Amazed that this even seems to work on tuple structs!
->
-> > ---
-> >  rust/macros/lib.rs       | 63 ++++++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  rust/macros/transmute.rs | 58 ++++++++++++++++++++++++++++++++++++++++=
-++++
-> >  2 files changed, 121 insertions(+)
-> >
-> > diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> > index b38002151871a33f6b4efea70be2deb6ddad38e2..d66397942529f67697f74a9=
-08e257cacc4201d84 100644
-> > --- a/rust/macros/lib.rs
-> > +++ b/rust/macros/lib.rs
-> > @@ -20,9 +20,14 @@
-> >  mod kunit;
-> >  mod module;
-> >  mod paste;
-> > +mod transmute;
-> >  mod vtable;
-> >
-> >  use proc_macro::TokenStream;
-> > +use syn::{
-> > +    parse_macro_input,
-> > +    DeriveInput, //
-> > +};
-> >
-> >  /// Declares a kernel module.
-> >  ///
-> > @@ -475,3 +480,61 @@ pub fn paste(input: TokenStream) -> TokenStream {
-> >  pub fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream =
-{
-> >      kunit::kunit_tests(attr, ts)
-> >  }
-> > +
-> > +/// Implements `FromBytes` for a struct.
-> > +///
-> > +/// It will fail compilation if the struct you are deriving on cannot =
-be determined to implement
-> > +/// `FromBytes` safely. It may still fail for some types which would b=
-e safe to implement
-> > +/// `FromBytes` for, in which case you will need to write the implemen=
-tation and justification
-> > +/// yourself.
-> > +///
-> > +/// Main reasons your type may be rejected:
-> > +/// * Not a `struct`
-> > +/// * One of the fields is not `FromBytes`
-> > +///
-> > +/// # Examples
-> > +///
-> > +/// ```
-> > +/// #[derive(FromBytes)]
-> > +/// #[repr(C)]
-> > +/// struct Foo {
-> > +///   x: u32,
-> > +///   y: u16,
-> > +///   z: u16,
-> > +/// }
-> > +/// ```
->
-> One thing I have noticed is that I could sucessfully derive `FromBytes`
-> on a struct that is not `repr(C)`... Is that something we want to
-> disallow?
->
+> Maybe this should be two commits, one for the new crate, another one to
+> introduce the ability to use on bindgen types.
 
-Why should we disallow this? I can enforce it very easily if we want
-it, but the only difference between `#[repr(C)]` and `#[repr(Rust)]`
-is whether we can statically predict their layout. In theory you can
-use this to elide the padding check for `#[repr(C)]` structs (and
-`zerocopy` does this), but it's significantly more complicated.
+I could do this if people think it'd be helpful, but moving it into
+the `ffi` crate has no point without using on the main set of bindgen
+types.
 
-The only argument I see in favor of disallowing `#[repr(Rust)]` here
-is that if it's not a struct that also supports `AsBytes`, there's a
-question about where you're getting the bytes to load from.
+>
+> I have tried this with the Nova bindings, and somehow could not get past
+> this error:
+>
+>     error[E0433]: failed to resolve: could not find `ffi` in the list of =
+imported crates
+>       --> ../drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs:321:54
+>         |
+>     321 | #[derive(Debug, Default, Copy, Clone, MaybeZeroable, FromBytesF=
+fi)]
+>         |                                                      ^^^^^^^^^^=
+^^ could not find `ffi` in the list of imported crates
+>         |
+>         =3D note: this error originates in the derive macro `FromBytesFfi=
+` (in Nightly builds, run with -Z macro-backtrace for more info)
+>
+> I do have `kernel::ffi` imported in the bindings module though, so I am
+> not quite sure what this is about. Any idea?
 
-I will point out that we probably don't *just* want to restrict to
-`#[repr(C)]` because `#[repr(transparent)]` and `#[repr(packed)]` are
-also great use cases.
+If you have the kernel module available, please set the bindgen flag
+to apply `FromBytes` and `AsBytes` rather than `FromBytesFfi` and
+`AsBytesFfi`. Those are only for the crates that are used by the
+kernel crate, and so do not have access to the `kernel` crate.
+
+The macro itself will generate `::kernel::transmute::FromBytes` when
+you use `FromBytes` and `::ffi::transmute::FromBytes` when you use
+`FromBytesFfi`, specifically to avoid weirdness around namespaces and
+imports.
+
+If for some reason you really wanted to use `FromBytesFfi` (you
+shouldn't, but just so you understand the mechanism), you'd need to
+add a direct dependency edge on the `ffi` crate, i.e. `--extern crate
+ffi`
