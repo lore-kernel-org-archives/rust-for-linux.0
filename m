@@ -1,128 +1,121 @@
-Received: from buffalo.birch.relay.mailchannels.net (buffalo.birch.relay.mailchannels.net [23.83.209.24])
+Received: from iguana.tulip.relay.mailchannels.net (iguana.tulip.relay.mailchannels.net [23.83.218.253])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AA630B53F;
-	Wed, 17 Dec 2025 22:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.209.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9732F32F761
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 22:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.253
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766011306; cv=pass; b=aPEkZYluS1EB2UQNSf/xl2woSMEa+Eqek4U0++WTFQVrB2Ot/8olYLB104SEABPfaePwVlmKm/XLPXQt13hKhruf8i/a26YqM+F1rSW3EbQ7fcmkPXZ4WGK1/qcYHIIXJoKHeiWWKgMtDiBZb3fNqT/E6BUk8aAQr/8R2xTyPDY=
+	t=1766012291; cv=pass; b=f3YpK9cXXyT7LUOC1dfzc4ur8vyN7b6J1dssnJccm5atYIfI5JMDMTatXkPDPeY+44CHRo81SwIGjYSxwEF/TA2Ij/I+u4BP3HlY44ZnLI4cEsU8nXfG5SvT8e64nNZhi5HxLFf54YpmpwA+Z7LSqhNpjgVPgN00YFwtw6iKhp8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766011306; c=relaxed/simple;
-	bh=Xw7pAZ3tecQ5tyn5e5+anhkBPw4nMmP5QuyB8XoHluY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcVG40bQG458mbAcT4L99879t+k0oGNsY/uCpu6gLla7i2AgjOz/2fu39fZo5e14ELoiyAXxLAb4KDp3Pu9S4jz3kczzBwzvvaQBKxc2tPpfiFwauYeplAQdsUPAWvorrAFRyR7A4uKN0OcRitshkktWRmFoN/iOonST4yBvRDk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gotplt.org; spf=pass smtp.mailfrom=gotplt.org; dkim=pass (2048-bit key) header.d=gotplt.org header.i=@gotplt.org header.b=h188dOBO; arc=pass smtp.client-ip=23.83.209.24
+	s=arc-20240116; t=1766012291; c=relaxed/simple;
+	bh=fumxxnhJKGzyyiK38D0o8KCUnwy5TZNNuu1zn5iwpBg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NoDICN2bgyQ6AJLJJGvH+++SlGODZYbEu2OA/U7PBHqY9BQCY9ul6PUgn44cEuASLoW+HjSj3MfHZS8pT/BEu3B2aisRHLQ8XcxZXkSmI6qmpYpdkfAg5WJJQ926RUW5Xlx+p2/bbf/rKnHY9O1dTKvcrhlYNdkz+gtwRnjOH5I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gotplt.org; spf=pass smtp.mailfrom=gotplt.org; dkim=pass (2048-bit key) header.d=gotplt.org header.i=@gotplt.org header.b=k8D6PsB4; arc=pass smtp.client-ip=23.83.218.253
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gotplt.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gotplt.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gotplt.org header.i=@gotplt.org header.b="h188dOBO"
+	dkim=pass (2048-bit key) header.d=gotplt.org header.i=@gotplt.org header.b="k8D6PsB4"
 X-Sender-Id: dreamhost|x-authsender|siddhesh@gotplt.org
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 996BC4619EF;
-	Wed, 17 Dec 2025 22:41:43 +0000 (UTC)
-Received: from pdx1-sub0-mail-a251.dreamhost.com (100-103-186-183.trex-nlb.outbound.svc.cluster.local [100.103.186.183])
+	by relay.mailchannels.net (Postfix) with ESMTP id 41D67722400;
+	Wed, 17 Dec 2025 22:41:57 +0000 (UTC)
+Received: from pdx1-sub0-mail-a251.dreamhost.com (trex-green-8.trex.outbound.svc.cluster.local [100.102.180.166])
 	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 2199A460BC5;
-	Wed, 17 Dec 2025 22:41:43 +0000 (UTC)
+	by relay.mailchannels.net (Postfix) with ESMTPA id CFA8D7217A2;
+	Wed, 17 Dec 2025 22:41:56 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1766011303;
-	b=2ws4TLG9rKFiC5eRcqyW5tZrQM27474IcagANyEruoEWEcgV7yaIUdJCgRos2ApPJenWaT
-	VFYVWlwMMTFQS1giMIzsDifJR4Orfh9w1k/pbD4fo4Fkd83Pdvj0AsTcwC95P7vrBWLwja
-	CbywGqsFBP/eU8CS3+dNwUplNcho04iamQ1xZcHMqo8TB6zafaI9mC1iCv1Lpfx5jw7R0w
-	VGaZh30mERpr+/ik6eDaxx5jSGhnVVGkETx3Dhzpg2jt8K7PgKXBvuuJDMlYuMDRrui8+N
-	4cnZH+Q1trroXyN3VI+QCBR2h0xIyv/cG9fqyT9vnBA8+GqG++rLodaJNBEDwQ==
+	t=1766011316;
+	b=7XgPd33rtWSsfwKQwDZJ7HYgREPReB/zRXFZRY3O9nhrV59lOQcnZwP54p7bWC4AHx3bkQ
+	c1KS+wBhJawZGWo1UEFcDbIBnX8L8lGdecZp75ne4Jcp/2J+Zf+vDjo8Q0ihUTxpsuodfb
+	wDyqlDruKdsoiZAik+AmjYd79SKEoqIQ/NR+QNBXovWjsybfj1iWd+fNtPzQn3cEpdXzcJ
+	WPrdUg8q92l/iH5CF20aOmLyldGN51IWDrq/EiQOYeala3pCiADy+8I8xL6s8ZboyykXyu
+	bLJUVMFMVT0BwpmZDJ0DjL8peMqAV8YpBM7Fq2AmzQNdDjLK0xrE5d++KM9dng==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=mailchannels.net;
-	s=arc-2022; t=1766011303;
+	s=arc-2022; t=1766011316;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8Ygin6w7FA2VrPO9XI0JOikCLVny+JD/M6BqEleLMlM=;
-	b=ynb/yoM4AtL3RlbfAWIuJ99k1iRf5mAXXuftCD15djbbFj5CpqDcgvAiOZNhRotEixNUv8
-	9Vh5cz5isr9+BYgPqEWe7rsTee86Z1I8x3VIMdo3Voa5lK3M5SDLZfSE2G8A9HO48Jm1aN
-	ekuCW5xkTgWnvwuxnH9uKEhw4/X8LHThz/Gj0Ng7/CnwuoYYHpmor5c8O5GrJVsjKBb8yL
-	kZ/VxPW8mKrFa4VVnxoZTaGhaI+LoHvmJ1kLCJRD4bZeCJOFtWElTxVDzdEuJyW+Bgrgl6
-	lVxEO9oNxIzuwe0YZfjm4YZ0U02O1RnCyooWFFBCNuzrEjPwbbVUbNoJFLIriA==
+	bh=Q8ufNqwwwOMlrjLqQ6PcpUY7Zftvgl3J+95B6QjEJ+E=;
+	b=1DDtW9RyMHRBR7Otuyxk1ICNCK4awkBJwkqZMHwO2knKP97neF6jdh9irLUyqRfj0vaMPA
+	kuTPl+GCSv/P2I6FCgjtAGo9JaAYoN9h+mapiVEdOk8JeUr9rV9WbaFD9ad1lBaV+By9Vt
+	/Kcf+srm2ZRzI7FpES5Y0WKy1axlgHdyPBO8r/GUVc4EPJbAJvORCYglWvgRkvSmtoD/Vq
+	n9otPg0GbW7queBjVYwFZgrfP/1mJ5uL0C8iLWRpAYtI5pbAQCGmoNAgkHxVpOWOqShadv
+	F/YOxqyyPev8T3k0zGXl9m4nXbJtQMb8i0IL5GTWodxhG4hCgYLAcOJHaYBWdg==
 ARC-Authentication-Results: i=1;
-	rspamd-659888d77d-mh4kt;
+	rspamd-659888d77d-xst98;
 	auth=pass smtp.auth=dreamhost smtp.mailfrom=siddhesh@gotplt.org
 X-Sender-Id: dreamhost|x-authsender|siddhesh@gotplt.org
 X-MC-Relay: Neutral
 X-MailChannels-SenderId: dreamhost|x-authsender|siddhesh@gotplt.org
 X-MailChannels-Auth-Id: dreamhost
-X-Trade-Eight: 77eefdfa22a2a0c0_1766011303389_446266803
-X-MC-Loop-Signature: 1766011303388:2288621669
-X-MC-Ingress-Time: 1766011303388
+X-Stupid-Average: 54dcb33f2055a909_1766011317093_856320088
+X-MC-Loop-Signature: 1766011317093:3459152058
+X-MC-Ingress-Time: 1766011317092
 Received: from pdx1-sub0-mail-a251.dreamhost.com (pop.dreamhost.com
  [64.90.62.162])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.103.186.183 (trex/7.1.3);
-	Wed, 17 Dec 2025 22:41:43 +0000
-Received: from fedora.redhat.com (unknown [38.23.181.90])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	by 100.102.180.166 (trex/7.1.3);
+	Wed, 17 Dec 2025 22:41:57 +0000
+Received: from [192.168.0.135] (unknown [38.23.181.90])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: siddhesh@gotplt.org)
-	by pdx1-sub0-mail-a251.dreamhost.com (Postfix) with ESMTPSA id 4dWpgp1sSnz1041;
-	Wed, 17 Dec 2025 14:41:42 -0800 (PST)
+	by pdx1-sub0-mail-a251.dreamhost.com (Postfix) with ESMTPSA id 4dWph40kWWz1041;
+	Wed, 17 Dec 2025 14:41:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gotplt.org;
-	s=dreamhost; t=1766011302;
-	bh=8Ygin6w7FA2VrPO9XI0JOikCLVny+JD/M6BqEleLMlM=;
-	h=From:To:Cc:Subject:Date:Content-Transfer-Encoding;
-	b=h188dOBOMCKz8fokSnqDRbWCQl+vxNlgeM7zn5Im1+A0Ern5Jus3I6nO8cRNMjsv5
-	 /NDWMpb0z3Ea0bfs9vr7+ic+eOJ+f8vHNseaJnM5wtvWFup59VgXQNl+0TtfRAxbKV
-	 H0R8z1DoB9/5gISJbGWGbO3gFaMOPA7D/lzEO400W+ZSih6ySq8eBaKUv1lweQvEPR
-	 nfbSt+uMDMCcoOyByC3fJ/7UCVHypqvfGr0fPU7HG1xshf+iTB7i8v5P+zG6pLMf6b
-	 l1buAKuvtav/nxlw5WoFot2FwSgc0bgj5SW18pQpFz9QCtRGx/d6V+umk7hik6Fcik
-	 Z92+OmnEbKGZQ==
-From: Siddhesh Poyarekar <siddhesh@gotplt.org>
-To: rust-for-linux@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] rust: Add -fdiagnostics-show-context to bindgen_skip_c_flags
-Date: Wed, 17 Dec 2025 17:40:50 -0500
-Message-ID: <20251217224050.1186896-1-siddhesh@gotplt.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251217150010.665153-1-siddhesh@gotplt.org>
-References: <20251217150010.665153-1-siddhesh@gotplt.org>
+	s=dreamhost; t=1766011316;
+	bh=Q8ufNqwwwOMlrjLqQ6PcpUY7Zftvgl3J+95B6QjEJ+E=;
+	h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
+	b=k8D6PsB4p+Fm4/3JbyTo1mC/atyoStjt/5sY3518HtncfDP1lBDbLHTEYTG0Vwt00
+	 kBzoUpli8BbYcsnnx3HZHsR8u2ub/HPvx9ePecFs4tRY+kPaPp3O+n6TYS0HmMDyPA
+	 mnwrEa7qofkFY3yxt/jvKejLEVlDW/emZhDw2c7LvFwa+yKfbhiEbIL79tj8Xy43Wb
+	 UWjsF60Ei5IaW/2TsDVRE6H9AIurz/f7qOrytvpgNq9B9leXkIij6WntNDcM2cEFnr
+	 RtEeKO5ngnrnjMd260EzKd+C78dXhX2mNZVcirM2qYVrshvTAbY3BXdR1hnhWYuWEU
+	 4piT8Lk2RYAiA==
+Message-ID: <450694fc-f834-4af1-9437-afabfbf4853b@gotplt.org>
+Date: Wed, 17 Dec 2025 17:41:54 -0500
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: Add -fdiagnostics-show-context to
+ bindgen_skip_c_flags
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>
+References: <20251217150010.665153-1-siddhesh@gotplt.org>
+ <aUMWuezmBHFnZUaM@google.com>
+Content-Language: en-US
+From: Siddhesh Poyarekar <siddhesh@gotplt.org>
+In-Reply-To: <aUMWuezmBHFnZUaM@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This got added with:
 
-  7454048db27d6 ("kbuild: Enable GCC diagnostic context for value-tracking warnings")
 
-but clang does not have this option, so avoid passing it to bindgen.
+On 2025-12-17 15:46, Alice Ryhl wrote:
+> On Wed, Dec 17, 2025 at 10:00:10AM -0500, Siddhesh Poyarekar wrote:
+>> This got added with:
+>>
+>>    7454048db27d6 ("kbuild: Enable GCC diagnostic context for value-tracking warnings")
+>>
+>> but clang does not have this option, so avoid passing it to bindgen.
+>>
+>> Signed-off-by: Siddhesh Poyarekar <siddhesh@gotplt.org>
+> 
+> Seems like this should have a fixes tag for the offending commit, and cc
+> stable?
+> 
 
-Cc: stable@vger.kernel.org
-Fixes: 7454048db27d6 ("kbuild: Enable GCC diagnostic context for value-tracking warnings")
-Signed-off-by: Siddhesh Poyarekar <siddhesh@gotplt.org>
----
- rust/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+Ack, sent v2.
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 5d357dce1704..4dcc2eff51cb 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -383,6 +383,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
- 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
- 	-fzero-init-padding-bits=% -mno-fdpic \
-+	-fdiagnostics-show-context -fdiagnostics-show-context=% \
- 	--param=% --param asan-% -fno-isolate-erroneous-paths-dereference
- 
- # Derived from `scripts/Makefile.clang`.
--- 
-2.52.0
-
+Thanks,
+Sid
