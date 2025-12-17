@@ -1,145 +1,177 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E512D77F5
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 20:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A852B14A60C
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 20:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766003031; cv=none; b=CjF2ewew5epWebUIjoaa6/Vv91x64WDXptOvsIHVi5kJLbr/Y2rMjk7hL/jjGxgSpDrS1P5Whvr3W2DXzK1yiTo2NwXbOv1BQrzdJ2gnH0Iey2q+vUFeO2YKReia109Ys0Uf4O48hjTFjvgnD5ZBux+eIBe4q9Ai0rpn15xuTvQ=
+	t=1766003645; cv=none; b=AiavJscDL0+P4HT298jRtinBRalap3VXheIKcX6xJLRojQxkAg7hkuLX7y/VNpg9kIvzWDm7qHXDSYMY+ugIvBN/o40KTFENp2tLA6ZCL5DQ1/o/JUtSkCm0XZoxz1mGO60Lz2+viYAWO9RydLtVTVJiCKVStr7aQkQxgBHwLsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766003031; c=relaxed/simple;
-	bh=1v2ii48ES/WKvW2UtzdM5TsGxD0Y2FGi3H3LMmjMMIg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=O2bVkazJi6fBEXACAsw+caO3XbNRWp/9xwHZbg5k0ZUNJCgLCn153gMmYcFANq9V3wsc4HV6uECb6HWg3hjDPdgn8LMT+OvrU9XF6upBR/l+bcgYixIqCin3gKAr0NLO1wdsA0He3Izfi1nRd+1+iRnwzC7OYqC3t8NbqN2yscI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RsnXHAHw; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1766003645; c=relaxed/simple;
+	bh=DsRGi/hSp8EK7EDmytbt+x7nTTpcnFVzpygXVzk2yGQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Erh9fcpLhwhWmlQYMKEG1+tb55V659RpX0jdp1xYd3jMaiKyq/mpjROtpzpXa4ExHEqc+MMNrGSltWzlKr2iPtopW+Uh4JRFTqLH0db+pcWnzWu8yDGhnRyaDvZE/lzgZhmXlY3pnmpWmzcoAAdNibPGx8XTZzMib06rZ8yK7XY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J6hqdSvl; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RsnXHAHw"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430f57cd2caso3205146f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 12:23:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J6hqdSvl"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4ee1a3ef624so36303521cf.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 12:34:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766003028; x=1766607828; darn=vger.kernel.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BDhEke3Pf/QosbPquaV4OeIZU/HBm2+1j+nd/s0NsM0=;
-        b=RsnXHAHwZ6lGonQZVlrmLyNKyUnJwtqxDgnFZS/xqgtQXiqlQT9G8P5Penla9G7AIe
-         zeplTMfqsVHWV75b3HbMHrhW81KlLI3Hm2lh2py75mo5NjOhdz4Uod4O/9mxZlM7sULW
-         1XCQ1gvRG8mWtdFDER7f0NpQ8T3DV+VzW5X43jH66PguCFtuklpbABB1AFa9JkJdwkE6
-         87TqhsHHE2dFwv1mS21SM+9xyt30w72redhN6x1tJVWIURLsQC5GJCKOD0fppBYgZy0Z
-         zSSkx4IEXL81xSbU73aJjIhqgJHLUoFy/BXn9oZH8tnfSGxRp9i5iIaAyreWK1ktR5ke
-         6apQ==
+        d=gmail.com; s=20230601; t=1766003642; x=1766608442; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m7QehkS426jgCW/qanvHWT74kZfdlsBIw6TFN+NiIlc=;
+        b=J6hqdSvlpazaP/W2ae13lw9E/KSsnUz3QZMCP68bq77Q7JM/dCWjLB+ZNEwBejdsN/
+         OosOZ2a11yx85tiMtU2igDICv3C1iuFl+3CXnFWZ0B3qUBw1g4FrlhvupGvTzahJdSSP
+         bFIXKtO6wNAax8LsfY2XlBe0Qrlo0twvlkhcvlJZ2Lo8AiMY2reRnBZTHepd+vOKPOzS
+         3/p5NNT+5YPYdRygjWAmxxGZqu4nQI6q+BYpzvh3GMdc65Q+y4F80rgGsAH5M9lAHVqK
+         kg87n3bQN8nvUrBe4kHHlLbrYmcNRc8ERJe6dEHlTfxbvodkjxSXTqGnSShzyYCz28rj
+         C29g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766003028; x=1766607828;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BDhEke3Pf/QosbPquaV4OeIZU/HBm2+1j+nd/s0NsM0=;
-        b=O8jjYnu3fFsgltcz/OkYpCAayL7CNCqyeIPL92RnvIwVUdRX47QJn0b3iXQsiRVxDT
-         0wMk1lLMBr43c+Ls9A1HsnbJAi14oR0ZGNzI/Wzx0ctbus+MzGJayCJ9Da8wbTYgdeG6
-         N+pIb0j3JlxyVxGpHvgpJNibR/C2R9351nhnXPLSSHYkE1pBsi6uZo4e9qsm0zW/Kk1t
-         Q7DwC/+jEuV2Bt8/fylxqmLbVTD0BFlvUlD9cOvwlMsEXC53AqcikoP1EfXeo5lCj2HJ
-         3YEKexKDj6AUFaIgoTdhnfhuFw7qLlBYJDA9OLgTCcgKzqdCXgPPBnlNstUKLar8zjil
-         jBIA==
-X-Forwarded-Encrypted: i=1; AJvYcCVua9xAuztq5YuXGQXh9Brxlyzo7EdwzjCCprR7gLyIBUhJrjm9z+xG24fcKqC79uy11fiyTpRuQ7IM4ddFSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLYHsLx1hYkgckdV2D5SPVF0I+v4JNPWXYhqeGtlbFzDj4ZvRg
-	HeDLG/D3YHZocqpUeIPyxj0ZaSLFPF3cAM0G+6Wxczmfbg13uMu0wOOQBPUuQAX85QISubHlGKK
-	5w0gQhlh7s+WkumJqJA==
-X-Google-Smtp-Source: AGHT+IGe1YKA5nJYn157r/8t+8P2Lqp3XAQpgh8jYBuoKq5Q9ybBqIVF49axwtfUPOWQ8rlRijN6+2u3mSKJ2LU=
-X-Received: from wrbgv21.prod.google.com ([2002:a05:6000:4615:b0:430:f87c:654f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:438a:b0:430:fa52:9eaf with SMTP id ffacd0b85a97d-430fa52a19emr14329354f8f.60.1766003028201;
- Wed, 17 Dec 2025 12:23:48 -0800 (PST)
-Date: Wed, 17 Dec 2025 20:23:47 +0000
-In-Reply-To: <rfpdf2suobpchpuw5gqzgivwvon2kd2cub5eltvbburnsus2iy@j26cinzdxxnl>
+        d=1e100.net; s=20230601; t=1766003642; x=1766608442;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=m7QehkS426jgCW/qanvHWT74kZfdlsBIw6TFN+NiIlc=;
+        b=SAM1ybqn0tPRxTSZ8PH9rCyA9NUFccX5RvB1nduRURSXnQCDDD/Xgq1LEUMyzCedy+
+         X9jP60TUE2tqUBvM0gB2WOeKxQJ7UomMesgRUoEgyVoJY09w18I2IRpoxh5rBMHW7TF8
+         AwnArWzrwAxM+qt00oPmAIotjCRAc+EWuI60tHT2UYxQj3gPYXyW1j4WofW9IyqU1DI5
+         +abhUW6xY6llWIL5pNJ6fhqmDClSXoD1Y2lOVFCcDyk0CNPsDkrr9r2k/kfjvwQEVKo7
+         XNr8qRDJL93nc5tgxyeLIbKuMRA2vojaMz+UR32UOanSJrCGrtpWVlBAjF85dmtwYkrc
+         OStg==
+X-Forwarded-Encrypted: i=1; AJvYcCXcinbT/rDBJQRp86z0nahtXZdAfCVjXe2uBkR0LJZm1MJFtVYQMeThJZpVF5C4Bvej7jVbAmIvAP23Hzmitw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzO7TioJk2nJYj6RSpFcJKr6YZg+e73aS9yU6QXpNNWGKQLUrpv
+	WfONlUh+T1mxlbQETLrIoTbFBFHzR2PhFSmWEzesLBhwICxhiEFe/myI
+X-Gm-Gg: AY/fxX5JoewQlF0dgqRwzcbULOepSvnsR3hJjn33+Baz6yFn69ZJTvXZyyVu7HbUWOM
+	4XwGh0uCTX4W8pJZGtmks6wdJcd4DP4Z2RrIkJUoa/IZhrUQDIFYwJcb7FJRk/JNqYxbpNlqwG7
+	Kbz953m+3eZ67Wfb6tivUEbnl3eMLW8AksXJjTIuThHUA/+PzMl/JPEjeTq5kjyB8o1hMw/71wO
+	7afHT4zywTTzn649BrFy7s5AqJ0QUZuPfm9zl+g6Pq4OCuu5jj+SUgDR+zEq0NB0JhvKhYj8crU
+	KDkMKEkeRMloTOsxBDNmtIRWRlrMhN6qIqmYu7zaCT3yxjzwC1EWU8fGUXJibDawgZwDaDIIUhr
+	0RCbzhPS52frmD8LIZ+DN2dcxxZGpinSKgebeY5zZACOVzjpwGHLakvMN59CLyW0QTECSxQdW51
+	qq+2WbdLeLp2MNBo8vzRdgqzZU3EOgF2Ugh88oJDPcrzBFbvqw/rE9TAhR9gpOWCykoTCEeMpdx
+	n6kgzQESeKB0r4=
+X-Google-Smtp-Source: AGHT+IFp8jshm5pfP8IDvuoU+SXpztplps4FbwbrmSw+vNnQt6JX7Mrm5IBZ7Fku/nIhWQk7oVR5mQ==
+X-Received: by 2002:a05:622a:550f:b0:4f0:441:96be with SMTP id d75a77b69052e-4f1d05deeaemr251756561cf.51.1766003642503;
+        Wed, 17 Dec 2025 12:34:02 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f35fd60ed1sm1792781cf.22.2025.12.17.12.34.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 12:34:01 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4C5B8F40069;
+	Wed, 17 Dec 2025 15:34:01 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Wed, 17 Dec 2025 15:34:01 -0500
+X-ME-Sender: <xms:uRNDaXp3EECddlitN_kU0DRFYX3Ebc_gHUNjtYmDvNcSlljjimrTZw>
+    <xme:uRNDaQBlRVba9jRhqu5-YDdpPzLK-o6sHU3c9A6mCj4UaEQMml3GsCAtHJhutBc5d
+    tnX7Ud4CadKHBy8IK3LqAoStDeHqDY1Yy-UxU581E0MXMTpOMlIiik>
+X-ME-Received: <xmr:uRNDaQO6tavsCw-6LmAKW0at3KR92MMyr64kgjuoVUw3OIE7EOulzW92Qg6d>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegfeehfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdortddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhepteffiedtiefhleetleeileehfeetudetteduheeijefggfdvhfduueevfeejffeg
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghdprghtohhmihgtrdhrshenucevlhhush
+    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghs
+    mhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhe
+    dvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdp
+    nhgspghrtghpthhtohepvddupdhmohguvgepshhmthhpohhuthdprhgtphhtthhopeguih
+    hrkhdrsggvhhhmvgesghhmrghilhdrtghomhdprhgtphhtthhopehlhihuuggvsehrvggu
+    hhgrthdrtghomhdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrd
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghr
+    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrd
+    guvgdprhgtphhtthhopegurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdr
+    tghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    grlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehg
+    rghrhihguhhordhnvght
+X-ME-Proxy: <xmx:uRNDaeB7njYGf2myzWkmV-gKlxhZuJu1-W9qNQFLrzabTV5UyianLw>
+    <xmx:uRNDae8fECERdqXHkI0DiFYkpDKaw29aifMQXkJ6-sjUHqJthh1pmA>
+    <xmx:uRNDafEG8QztfsPN1en00Ec2-OT6vyM1poPmBW1ggxIEFrr5uaRJLQ>
+    <xmx:uRNDaVKIwvEvn_Ay5YZfPjF6RstAiwBTqWHCU46BpMs3_WDDvuaMag>
+    <xmx:uRNDaSdotxs23xDnFIUyEPh0xU78C06onpmlRAaagbwlsd5hz6bAxDd5>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 17 Dec 2025 15:34:00 -0500 (EST)
+Date: Thu, 18 Dec 2025 05:33:58 +0900
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>
+Subject: Re: [PATCH v16 12/17] rust: sync: lock/global: Rename B to G in
+ trait bounds
+Message-ID: <aUMTtmxJTQDkpgeL@tardis-2.local>
+References: <20251215175806.102713-1-lyude@redhat.com>
+ <20251215175806.102713-13-lyude@redhat.com>
+ <08d00540-9de9-43a5-9e36-df2d575b4c24@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251217-maple-drop-rcu-v1-1-702af063573f@google.com> <rfpdf2suobpchpuw5gqzgivwvon2kd2cub5eltvbburnsus2iy@j26cinzdxxnl>
-Message-ID: <aUMRU0yKwQVDuUnZ@google.com>
-Subject: Re: [PATCH] rust: maple_tree: rcu_read_lock() in destructor to
- silence lockdep
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <08d00540-9de9-43a5-9e36-df2d575b4c24@gmail.com>
 
-On Wed, Dec 17, 2025 at 02:49:18PM -0500, Liam R. Howlett wrote:
-> * Alice Ryhl <aliceryhl@google.com> [251217 08:10]:
-> > When running the Rust maple tree kunit tests with lockdep, you may
-> > trigger a warning that looks like this:
+On Tue, Dec 16, 2025 at 05:15:18PM +0100, Dirk Behme wrote:
+> On 15.12.25 18:57, Lyude Paul wrote:
+> > Due to the introduction of Backend::BackendInContext, if we want to be able
+> > support Lock types with a Context we need to be able to handle the fact
+> > that the Backend for a returned Guard may not exactly match the Backend for
+> > the lock. Before we add this though, rename B to G in all of our trait
+> > bounds to make sure things don't become more difficult to understand once
+> > we add a Backend bound.
 > > 
-> > 	lib/maple_tree.c:780 suspicious rcu_dereference_check() usage!
+> > There should be no functional changes in this patch.
 > > 
-> > 	other info that might help us debug this:
+> > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> > ---
+> >  rust/kernel/sync/atomic.rs      |  2 +-
+> >  rust/kernel/sync/lock/global.rs | 58 ++++++++++++++++-----------------
+> >  2 files changed, 30 insertions(+), 30 deletions(-)
 > > 
-> > 	rcu_scheduler_active = 2, debug_locks = 1
-> > 	no locks held by kunit_try_catch/344.
-> > 
-> > 	stack backtrace:
-> > 	CPU: 3 UID: 0 PID: 344 Comm: kunit_try_catch Tainted: G                 N  6.19.0-rc1+ #2 NONE
-> > 	Tainted: [N]=TEST
-> > 	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
-> > 	Call Trace:
-> > 	 <TASK>
-> > 	 dump_stack_lvl+0x71/0x90
-> > 	 lockdep_rcu_suspicious+0x150/0x190
-> > 	 mas_start+0x104/0x150
-> > 	 mas_find+0x179/0x240
-> > 	 _RINvNtCs5QSdWC790r4_4core3ptr13drop_in_placeINtNtCs1cdwasc6FUb_6kernel10maple_tree9MapleTreeINtNtNtBL_5alloc4kbox3BoxlNtNtB1x_9allocator7KmallocEEECsgxAQYCfdR72_25doctests_kernel_generated+0xaf/0x130
-> > 	 rust_doctest_kernel_maple_tree_rs_0+0x600/0x6b0
-> > 	 ? lock_release+0xeb/0x2a0
-> > 	 ? kunit_try_catch_run+0x210/0x210
-> > 	 kunit_try_run_case+0x74/0x160
-> > 	 ? kunit_try_catch_run+0x210/0x210
-> > 	 kunit_generic_run_threadfn_adapter+0x12/0x30
-> > 	 kthread+0x21c/0x230
-> > 	 ? __do_trace_sched_kthread_stop_ret+0x40/0x40
-> > 	 ret_from_fork+0x16c/0x270
-> > 	 ? __do_trace_sched_kthread_stop_ret+0x40/0x40
-> > 	 ret_from_fork_asm+0x11/0x20
-> > 	 </TASK>
-> > 
-> > This is because the destructor of maple tree calls mas_find() without
+> > diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+> > index 3afc376be42d9..c07a53f8360b4 100644
+> > --- a/rust/kernel/sync/atomic.rs
+> > +++ b/rust/kernel/sync/atomic.rs
+> > @@ -21,8 +21,8 @@
+> >  mod predefine;
+> >  
+> >  pub use internal::AtomicImpl;
+> > -pub use ordering::{Acquire, Full, Relaxed, Release};
+> >  pub(crate) use internal::{AtomicArithmeticOps, AtomicBasicOps, AtomicExchangeOps};
+> > +pub use ordering::{Acquire, Full, Relaxed, Release};
 > 
-> The wording of "destructor of maple tree" makes it sound like the tree
-> itself is being destroyed, but this is to do with the stored entries
-> being destroyed, correct?
-
-Yes, it's the destructor of the Rust MapleTree<T>, which performs a
-mas_find() loop to drop each Rust value before it calls mtree_destroy().
-
-> > taking rcu_read_lock() or the spinlock. Doing that is actually ok in
-> > this case since the destructor has exclusive access to the entire maple
-> > tree, but it triggers a lockdep warning. To fix that, take the rcu read
-> > lock.
-> > 
-> > In the future, it's possible that memory reclaim could gain a feature
-> > where it reallocates entries in maple trees even if no user-code is
-> > touching it. If that feature is added, then this use of rcu read lock
-> > would become load-bearing, so I did not make it conditional on lockdep.
-> > 
-> > We have to repeatedly take and release rcu because the destructor of T
-> > might perform operations that sleep.
+> Just fyi, there is a (trivial) conflict of this with Miguel's recently
+> merged
 > 
-> The c side avoids handling the life cycle of the entries because we
-> really don't know what is required.  Maybe it would be better to let the
-> person storing the data handle the freeing of the entries (and thus the
-> locking)?
 
-The general expectation is that dropping a container also drops anything
-contained within it. It would be very surprising for a data structure to
-violate that in Rust.
+I think what Lyude has here is probably automatically added by rustfmt,
+rebasing on v6.19-rc1 should avoid this.
 
-The end-user is always welcome to use a type with no destructor if they
-don't want the mas_find() loop.
+Regards,
+Boqun
 
-Alice
+> commit 309e49039f124a ("rust: sync: atomic: separate import "blocks"")
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/rust/kernel/sync/atomic.rs?id=309e49039f124a9dcb99c05651af8eb8fa05bc29
+> 
+> If I haven't missed anything this is just to fix the alphabetical
+> order? So maybe this should go as an independent patch like Miguel's one?
+> 
+> Dirk
