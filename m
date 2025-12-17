@@ -1,501 +1,193 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E63138E168;
-	Wed, 17 Dec 2025 14:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6783A1E62;
+	Wed, 17 Dec 2025 14:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765980292; cv=pass; b=YiqAcvRMeOjm2a4eHz+/WSLts28Jxcx5juH8b1rnO0tCBG1UzuH7R17Pe28SPCvVSBF8a/rFcXllzfSrE+QqIyQDZTX6V80h75Y6JqBdpE+vLCeQme0z1guMQhYbRRc6w9gViJmtZVVl5i/xIQftAmR9Wjzutw/zvh0klHcobjM=
+	t=1765980732; cv=pass; b=MK05EHsAupj2oiDlgGu9scc4T6GuNp7FFmIKdtdZlh2QCZW3suIMBxDxr7nzMS0Z3lU/tMrx+AzpgA8coMHguHteT4R8UJlvX61Ocj8/bNjnKabhkwPpbohlKYmxvjIBPTrglYATZ+ish15k4IDzTM+0WGDlIMR+6pDihliBS3c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765980292; c=relaxed/simple;
-	bh=9djqxxlgqT1U1Br/7Gx1HS5y6Kex6pc1iAZVfmd6ZBo=;
+	s=arc-20240116; t=1765980732; c=relaxed/simple;
+	bh=p+lVOXVaEGR+Rf1rDAMxlfJhtfZ9RgU9+EchPKsfEag=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Ex8YpHLZzP6Z/0MJtKCOkTnbIInr/6Wh0Ujd7FLGY4fXwGWPRbygw4Ixt6txP+d5kySsZucTdcDskCqrD4IDF5zkwaQRGiFaMrqwqKbXR5Ct1ilmnyPKJsKPQhEgklhWzOe3VP1AYHtyeDqsU5AlKNkn2tZSCSa43QwU+f7UFRo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=W1kUNwkl; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=YTCsfxOIbBL+UpiDQDf4HniaEu1JRFwbPKR/j4ik/bYI6xMmnv54SqfhBUES19P0IWOr3eXDVmqx/Ray4KCuDgYV9/O6j2Nd/uor5hZoOX7JzyKQuZxGOjLVmSkZTQfS/uePtW5lvxh32ECuoIQZ//nz2aGbFXQ9QKNZHb+UiB8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Yj0gUMdC; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="W1kUNwkl"
-ARC-Seal: i=1; a=rsa-sha256; t=1765980248; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Yj0gUMdC"
+ARC-Seal: i=1; a=rsa-sha256; t=1765980688; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=d7FYvzgHHLAWozb/DnDvubSltB+Ri2PFSdM1Ez+b3NR/4kr2kdroRGCFYj4DrKR9sy/WOL/Unyh426MhGIRVLT6l6S7k+MC5+keNWmCTn253lHz7PLrCVLAojzDm/2HPGczknOqVmCzyKraPJXYDDq/aPpZeVGjv6XD8TJeuXyE=
+	b=FBptBmmkmPE6HFFbhch2bl97lKxB+Dr0T6UbgC+7IlbUUWxd/q2br5bZy4t9+HyaCqRoTJeYkjydQgWiiNdj4miFXSzl3IB+hk+YJI2aBRxhaHhONiqyrIkDEp/lqDLuRhcwASqyB4U1dSzc+ORwvrtJxFUhz4uJW1PPJtFQO1s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1765980248; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Dp17UFxxKHGg6NNEHcm07W/nKZBAVZyabC23LoyiySo=; 
-	b=eNcrYUdqkzjhmXfmZEdQUw9NrpY0b6hkgluyLnaR7iHoyRv22DSWiDcQilCniop/mQOyaiFaIdKViEUC7QfifqBTGUAR4/jYR7goQUv9acm76gC7n+C2fkm/C/eG9cztBmbJcY8Qy33YnMVbCl6Nl6hOY4zvfRAw7GDhdeF2BdI=
+	t=1765980688; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=fFCC+AzadfVlGXWre6gah9ux2PXfd4oGQ2inbMA+VUk=; 
+	b=lAT6AyzS8y1fsxifcT8xKTCiWAddhl5MbkmGq2MgcAiJW7d4Y5Zkf8vhYLVJFCxbDr6DZfhDE9w76XC98aZqwhblUm/ATrHnJlc37wIL8Xs80BJNKBbuWHKRXoGh0OXZ9BFgN+xY6kZ2+Xzs6UrHPqxTaXyP4cEY0QSU/7UJgO0=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1765980248;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1765980688;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=Dp17UFxxKHGg6NNEHcm07W/nKZBAVZyabC23LoyiySo=;
-	b=W1kUNwkl7L7SwPZhsNZvmOR5mGZ13usDiWFQHJQWsXsk4fg0FoLuu+46cQey79AN
-	G/DEZ6oOb68EPL9A1+tqJweUzgXFPb5DfOT3KfvEQcqM04YcAUgH0QfSN4ZuxULSx6u
-	neqrTP1kKMVZwqqE+h1+IrfRNlRUncLQwT6rb6Sw=
-Received: by mx.zohomail.com with SMTPS id 1765980245617184.63308842063577;
-	Wed, 17 Dec 2025 06:04:05 -0800 (PST)
+	bh=fFCC+AzadfVlGXWre6gah9ux2PXfd4oGQ2inbMA+VUk=;
+	b=Yj0gUMdCzdatNdsJwNwXeYNUZuS4Y38rNE+DAf/YEex2XbyRDD7v0W27LZLAy1PK
+	sLL5JYEBnczSYTUvWVa8v7yr3cU+QIDadSn1NBh7RFR3XhL94dqyHNdPOCybhtqNaaN
+	w4xO/Ls1ifnoTUbE6kfw10BTA6EkVjtzNDFabf3E=
+Received: by mx.zohomail.com with SMTPS id 1765980686277212.72937863971833;
+	Wed, 17 Dec 2025 06:11:26 -0800 (PST)
 Content-Type: text/plain;
-	charset=utf-8
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] hrtimer: add usage examples to documentation
+Subject: Re: [PATCH] rust: maple_tree: rcu_read_lock() in destructor to
+ silence lockdep
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251217-hrtimer-examples-v6-19-rc1-v1-1-4ad0e7e4c4e0@kernel.org>
-Date: Wed, 17 Dec 2025 11:03:48 -0300
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>,
- John Stultz <jstultz@google.com>,
- Stephen Boyd <sboyd@kernel.org>,
+In-Reply-To: <20251217-maple-drop-rcu-v1-1-702af063573f@google.com>
+Date: Wed, 17 Dec 2025 11:11:09 -0300
+Cc: Matthew Wilcox <willy@infradead.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Andrew Ballance <andrewjballance@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
  Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
  Trevor Gross <tmgross@umich.edu>,
  Danilo Krummrich <dakr@kernel.org>,
+ maple-tree@lists.infradead.org,
+ linux-mm@kvack.org,
  rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <C1C6DB90-202A-45FF-9D01-D7304A8DC8B0@collabora.com>
-References: <20251217-hrtimer-examples-v6-19-rc1-v1-1-4ad0e7e4c4e0@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
+Message-Id: <A20E6CF7-5ABA-46BF-8FE3-A3D1BF61F0A7@collabora.com>
+References: <20251217-maple-drop-rcu-v1-1-702af063573f@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
-Hi Andreas,
 
-> On 17 Dec 2025, at 07:30, Andreas Hindborg <a.hindborg@kernel.org> =
-wrote:
+
+> On 17 Dec 2025, at 10:10, Alice Ryhl <aliceryhl@google.com> wrote:
 >=20
-> Add documentation examples showing various ways to use hrtimers:
+> When running the Rust maple tree kunit tests with lockdep, you may
+> trigger a warning that looks like this:
 >=20
-> - Box-allocated timers with shared state in Arc.
-> - Arc-allocated timers.
-> - Stack-based timers for scoped usage.
-> - Mutable stack-based timers with shared state.
+> lib/maple_tree.c:780 suspicious rcu_dereference_check() usage!
 >=20
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> other info that might help us debug this:
+>=20
+> rcu_scheduler_active =3D 2, debug_locks =3D 1
+> no locks held by kunit_try_catch/344.
+>=20
+> stack backtrace:
+> CPU: 3 UID: 0 PID: 344 Comm: kunit_try_catch Tainted: G                =
+ N  6.19.0-rc1+ #2 NONE
+> Tainted: [N]=3DTEST
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS =
+rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+> Call Trace:
+> <TASK>
+> dump_stack_lvl+0x71/0x90
+> lockdep_rcu_suspicious+0x150/0x190
+> mas_start+0x104/0x150
+> mas_find+0x179/0x240
+> =
+_RINvNtCs5QSdWC790r4_4core3ptr13drop_in_placeINtNtCs1cdwasc6FUb_6kernel10m=
+aple_tree9MapleTreeINtNtNtBL_5alloc4kbox3BoxlNtNtB1x_9allocator7KmallocEEE=
+CsgxAQYCfdR72_25doctests_kernel_generated+0xaf/0x130
+> rust_doctest_kernel_maple_tree_rs_0+0x600/0x6b0
+> ? lock_release+0xeb/0x2a0
+> ? kunit_try_catch_run+0x210/0x210
+> kunit_try_run_case+0x74/0x160
+> ? kunit_try_catch_run+0x210/0x210
+> kunit_generic_run_threadfn_adapter+0x12/0x30
+> kthread+0x21c/0x230
+> ? __do_trace_sched_kthread_stop_ret+0x40/0x40
+> ret_from_fork+0x16c/0x270
+> ? __do_trace_sched_kthread_stop_ret+0x40/0x40
+> ret_from_fork_asm+0x11/0x20
+> </TASK>
+>=20
+> This is because the destructor of maple tree calls mas_find() without
+> taking rcu_read_lock() or the spinlock. Doing that is actually ok in
+> this case since the destructor has exclusive access to the entire =
+maple
+> tree, but it triggers a lockdep warning. To fix that, take the rcu =
+read
+> lock.
+>=20
+> In the future, it's possible that memory reclaim could gain a feature
+> where it reallocates entries in maple trees even if no user-code is
+> touching it. If that feature is added, then this use of rcu read lock
+> would become load-bearing, so I did not make it conditional on =
+lockdep.
+>=20
+> We have to repeatedly take and release rcu because the destructor of T
+> might perform operations that sleep.
+>=20
+> Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
+> Closes: =
+https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/564215=
+108
+> Fixes: da939ef4c494 ("rust: maple_tree: add MapleTree")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
-> rust/kernel/time/hrtimer.rs | 327 =
-++++++++++++++++++++++++++++++++++++++++++++
-> 1 file changed, 327 insertions(+)
+> Intended for the same tree as any other maple tree patch. (I believe
+> that's Andrew Morton's tree.)
+> ---
+> rust/kernel/maple_tree.rs | 11 ++++++++++-
+> 1 file changed, 10 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index 856d2d929a008..6ca198947b679 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -66,6 +66,333 @@
-> //!
-> //! A `restart` operation on a timer in the **stopped** state is =
-equivalent to a
-> //! `start` operation.
-> +//!
-> +//! When a type implements both `HrTimerPointer` and `Clone`, it is =
-possible to
-> +//! issue the `start` operation while the timer is in the **started** =
-state. In
-> +//! this case the `start` operation is equivalent to the `restart` =
-operation.
-> +//!
-> +//! # Examples
-> +//!
-> +//! ## Using an intrusive timer living in a [`Box`]
-> +//!
-> +//! ```
-> +//! # use kernel::{
-> +//! #     alloc::flags,
-> +//! #     impl_has_hr_timer,
-> +//! #     prelude::*,
-> +//! #     sync::{
-> +//! #         atomic::{ordering, Atomic},
-> +//! #         completion::Completion,
-> +//! #         Arc,
-> +//! #     },
-> +//! #     time::{
-> +//! #         hrtimer::{
-> +//! #             RelativeMode, HrTimer, HrTimerCallback, =
-HrTimerPointer,
-> +//! #             HrTimerRestart, HrTimerCallbackContext
-> +//! #         },
-> +//! #         Delta, Monotonic,
-> +//! #     },
-> +//! # };
-> +//!
-> +//! #[pin_data]
-> +//! struct Shared {
-> +//!     #[pin]
-> +//!     flag: Atomic<u64>,
-> +//!     #[pin]
-> +//!     cond: Completion,
-> +//! }
-> +//!
-> +//! impl Shared {
-> +//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
-> +//!         try_pin_init!(Self {
-> +//!             flag <- Atomic::new(0),
-> +//!             cond <- Completion::new(),
-> +//!         })
-
-This doesn=E2=80=99t seem to be fallible? Can=E2=80=99t this use =
-pin_init!() directly?
-
-Ditto elsewhere.
-
-> +//!     }
-> +//! }
-> +//!
-> +//! #[pin_data]
-> +//! struct BoxIntrusiveHrTimer {
-> +//!     #[pin]
-> +//!     timer: HrTimer<Self>,
-> +//!     shared: Arc<Shared>,
-> +//! }
-> +//!
-> +//! impl BoxIntrusiveHrTimer {
-> +//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
-> +//!         try_pin_init!(Self {
-> +//!             timer <- HrTimer::new(),
-> +//!             shared: Arc::pin_init(Shared::new(), =
-flags::GFP_KERNEL).unwrap(),
-
-Why the unwrap() here instead of the "?" operator? I think that having =
-unwrap() in examples encourages
-people to panic the kernel.
-
-
-> +//!         })
-> +//!     }
-> +//! }
-> +//!
-> +//! impl HrTimerCallback for BoxIntrusiveHrTimer {
-> +//!     type Pointer<'a> =3D Pin<KBox<Self>>;
-> +//!
-> +//!     fn run(this: Pin<&mut Self>, _ctx: HrTimerCallbackContext<'_, =
-Self>) -> HrTimerRestart {
-> +//!         pr_info!("Timer called\n");
-
-Blanks here, ditto elsewhere.
-
-> +//!         let flag =3D this.shared.flag.fetch_add(1, =
-ordering::Full);
-> +//!         this.shared.cond.complete_all();
-> +//!         if flag =3D=3D 4 {
-> +//!             HrTimerRestart::NoRestart
-> +//!         } else {
-> +//!             HrTimerRestart::Restart
-> +//!         }
-> +//!     }
-> +//! }
-> +//!
-> +//! impl_has_hr_timer! {
-> +//!     impl HasHrTimer<Self> for BoxIntrusiveHrTimer {
-> +//!         mode: RelativeMode<Monotonic>, field: self.timer
-> +//!     }
-> +//! }
-> +//!
-> +//! let has_timer =3D Box::pin_init(BoxIntrusiveHrTimer::new(), =
-GFP_KERNEL)?;
-> +//! let shared =3D has_timer.shared.clone();
-> +//! let _handle =3D has_timer.start(Delta::from_micros(200));
-> +//!
-> +//! while shared.flag.load(ordering::Relaxed) !=3D 5 {
-> +//!     shared.cond.wait_for_completion();
-> +//! }
-> +//!
-> +//! pr_info!("Counted to 5\n");
-> +//! # Ok::<(), kernel::error::Error>(())
-> +//! ```
-> +//!
-> +//! ## An intrusive timer in an [`Arc`]
-
-This one is the only one that reads differently, FYI.
-
-> +//!
-> +//! ```
-> +//! # use kernel::{
-> +//! #     alloc::flags,
-> +//! #     impl_has_hr_timer,
-> +//! #     prelude::*,
-> +//! #     sync::{
-> +//! #         atomic::{ordering, Atomic},
-> +//! #         completion::Completion,
-> +//! #         Arc, ArcBorrow,
-> +//! #     },
-> +//! #     time::{
-> +//! #         hrtimer::{
-> +//! #             RelativeMode, HrTimer, HrTimerCallback, =
-HrTimerPointer, HrTimerRestart,
-> +//! #             HasHrTimer, HrTimerCallbackContext
-> +//! #         },
-> +//! #         Delta, Monotonic,
-> +//! #     },
-> +//! # };
-> +//!
-> +//! #[pin_data]
-> +//! struct ArcIntrusiveHrTimer {
-> +//!     #[pin]
-> +//!     timer: HrTimer<Self>,
-> +//!     #[pin]
-> +//!     flag: Atomic<u64>,
-> +//!     #[pin]
-> +//!     cond: Completion,
-> +//! }
-> +//!
-> +//! impl ArcIntrusiveHrTimer {
-> +//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
-> +//!         try_pin_init!(Self {
-> +//!             timer <- HrTimer::new(),
-> +//!             flag <- Atomic::new(0),
-> +//!             cond <- Completion::new(),
-> +//!         })
-> +//!     }
-> +//! }
-> +//!
-> +//! impl HrTimerCallback for ArcIntrusiveHrTimer {
-> +//!     type Pointer<'a> =3D Arc<Self>;
-
-> +//!
-> +//!     fn run(
-> +//!         this: ArcBorrow<'_, Self>,
-> +//!         _ctx: HrTimerCallbackContext<'_, Self>,
-> +//!     ) -> HrTimerRestart {
-> +//!         pr_info!("Timer called\n");
-> +//!         let flag =3D this.flag.fetch_add(1, ordering::Full);
-> +//!         this.cond.complete_all();
-> +//!         if flag =3D=3D 4 {
-> +//!             HrTimerRestart::NoRestart
-> +//!         } else {
-> +//!             HrTimerRestart::Restart
-> +//!         }
-> +//!     }
-
-Blanks as well ^
-
-> +//! }
-> +//!
-> +//! impl_has_hr_timer! {
-> +//!     impl HasHrTimer<Self> for ArcIntrusiveHrTimer {
-> +//!         mode: RelativeMode<Monotonic>, field: self.timer
-> +//!     }
-> +//! }
-> +//!
-> +//! let has_timer =3D Arc::pin_init(ArcIntrusiveHrTimer::new(), =
-GFP_KERNEL)?;
-> +//! let _handle =3D has_timer.clone().start(Delta::from_micros(200));
-> +//!
-> +//! while has_timer.flag.load(ordering::Relaxed) !=3D 5 {
-> +//!     has_timer.cond.wait_for_completion();
-> +//! }
-> +//!
-> +//! pr_info!("Counted to 5\n");
-> +//! # Ok::<(), kernel::error::Error>(())
-> +//! ```
-> +//!
-> +//! ## Using a stack-based timer
-> +//!
-> +//! ```
-> +//! # use kernel::{
-> +//! #     impl_has_hr_timer,
-> +//! #     prelude::*,
-> +//! #     sync::{
-> +//! #         atomic::{ordering, Atomic},
-> +//! #         completion::Completion,
-> +//! #     },
-> +//! #     time::{
-> +//! #         hrtimer::{
-> +//! #             ScopedHrTimerPointer, HrTimer, HrTimerCallback, =
-HrTimerPointer, HrTimerRestart,
-> +//! #             HasHrTimer, RelativeMode, HrTimerCallbackContext
-> +//! #         },
-> +//! #         Delta, Monotonic,
-> +//! #     },
-> +//! # };
-> +//! # use pin_init::stack_try_pin_init;
-> +//!
-> +//! #[pin_data]
-> +//! struct IntrusiveHrTimer {
-> +//!     #[pin]
-> +//!     timer: HrTimer<Self>,
-> +//!     #[pin]
-> +//!     flag: Atomic<u64>,
-> +//!     #[pin]
-> +//!     cond: Completion,
-> +//! }
-> +//!
-> +//! impl IntrusiveHrTimer {
-> +//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
-> +//!         try_pin_init!(Self {
-> +//!             timer <- HrTimer::new(),
-> +//!             flag <- Atomic::new(0),
-> +//!             cond <- Completion::new(),
-> +//!         })
-> +//!     }
-> +//! }
-> +//!
-> +//! impl HrTimerCallback for IntrusiveHrTimer {
-> +//!     type Pointer<'a> =3D Pin<&'a Self>;
-> +//!
-> +//!     fn run(this: Pin<&Self>, _ctx: HrTimerCallbackContext<'_, =
-Self>) -> HrTimerRestart {
-> +//!         pr_info!("Timer called\n");
-> +//!         this.flag.store(1, ordering::Release);
-> +//!         this.cond.complete_all();
-> +//!         HrTimerRestart::NoRestart
-> +//!     }
-> +//! }
-> +//!
-> +//! impl_has_hr_timer! {
-> +//!     impl HasHrTimer<Self> for IntrusiveHrTimer {
-> +//!         mode: RelativeMode<Monotonic>, field: self.timer
-> +//!     }
-> +//! }
-> +//!
-> +//! stack_try_pin_init!( let has_timer =3D? IntrusiveHrTimer::new() =
-);
-
-??? Benno, the syntax is getting more interesting with each passing day =
-:)
-
-> +//! has_timer.as_ref().start_scoped(Delta::from_micros(200), || {
-> +//!     while has_timer.flag.load(ordering::Relaxed) !=3D 1 {
-> +//!         has_timer.cond.wait_for_completion();
-> +//!     }
-> +//! });
-> +//!
-> +//! pr_info!("Flag raised\n");
-> +//! # Ok::<(), kernel::error::Error>(())
-> +//! ```
-> +//!
-> +//! ## Using a mutable stack-based timer
-> +//!
-> +//! ```
-> +//! # use kernel::{
-> +//! #     alloc::flags,
-> +//! #     impl_has_hr_timer,
-> +//! #     prelude::*,
-> +//! #     sync::{
-> +//! #         atomic::{ordering, Atomic},
-> +//! #         completion::Completion,
-> +//! #         Arc,
-> +//! #     },
-> +//! #     time::{
-> +//! #         hrtimer::{
-> +//! #             ScopedHrTimerPointer, HrTimer, HrTimerCallback, =
-HrTimerPointer, HrTimerRestart,
-> +//! #             HasHrTimer, RelativeMode, HrTimerCallbackContext
-> +//! #         },
-> +//! #         Delta, Monotonic,
-> +//! #     },
-> +//! # };
-> +//! # use pin_init::stack_try_pin_init;
-> +//!
-> +//! #[pin_data]
-> +//! struct Shared {
-> +//!     #[pin]
-> +//!     flag: Atomic<u64>,
-> +//!     #[pin]
-> +//!     cond: Completion,
-> +//! }
-> +//!
-> +//! impl Shared {
-> +//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
-> +//!         try_pin_init!(Self {
-> +//!             flag <- Atomic::new(0),
-> +//!             cond <- Completion::new(),
-> +//!         })
-> +//!     }
-> +//! }
-> +//!
-> +//! #[pin_data]
-> +//! struct IntrusiveHrTimer {
-> +//!     #[pin]
-> +//!     timer: HrTimer<Self>,
-> +//!     shared: Arc<Shared>,
-> +//! }
-> +//!
-> +//! impl IntrusiveHrTimer {
-> +//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
-> +//!         try_pin_init!(Self {
-> +//!             timer <- HrTimer::new(),
-> +//!             shared: Arc::pin_init(Shared::new(), =
-flags::GFP_KERNEL).unwrap(),
-> +//!         })
-> +//!     }
-> +//! }
-> +//!
-> +//! impl HrTimerCallback for IntrusiveHrTimer {
-> +//!     type Pointer<'a> =3D Pin<&'a mut Self>;
-> +//!
-> +//!     fn run(this: Pin<&mut Self>, _ctx: HrTimerCallbackContext<'_, =
-Self>) -> HrTimerRestart {
-> +//!         pr_info!("Timer called\n");
-> +//!         let flag =3D this.shared.flag.fetch_add(1, =
-ordering::Full);
-> +//!         this.shared.cond.complete_all();
-> +//!         if flag =3D=3D 4 {
-> +//!             HrTimerRestart::NoRestart
-> +//!         } else {
-> +//!             HrTimerRestart::Restart
-> +//!         }
-> +//!     }
-> +//! }
-> +//!
-> +//! impl_has_hr_timer! {
-> +//!     impl HasHrTimer<Self> for IntrusiveHrTimer {
-> +//!         mode: RelativeMode<Monotonic>, field: self.timer
-> +//!     }
-> +//! }
-> +//!
-> +//! stack_try_pin_init!( let has_timer =3D? IntrusiveHrTimer::new() =
-);
-> +//! let shared =3D has_timer.shared.clone();
-> +//! has_timer.as_mut().start_scoped(Delta::from_micros(200), || {
-> +//!     while shared.flag.load(ordering::Relaxed) !=3D 5 {
-> +//!         shared.cond.wait_for_completion();
-> +//!     }
-> +//! });
-> +//!
-> +//! pr_info!("Counted to 5\n");
-> +//! # Ok::<(), kernel::error::Error>(())
-> +//! ```
-> +//!
-> +//! [`Arc`]: kernel::sync::Arc
->=20
-> use super::{ClockSource, Delta, Instant};
-> use crate::{prelude::*, types::Opaque};
+> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+> index =
+e72eec56bf5772ada09239f47748cd649212d8b0..265d6396a78a17886c8b5a3ebe7ba39c=
+cc354add 100644
+> --- a/rust/kernel/maple_tree.rs
+> +++ b/rust/kernel/maple_tree.rs
+> @@ -265,7 +265,16 @@ unsafe fn free_all_entries(self: Pin<&mut Self>) =
+{
+>         loop {
+>             // This uses the raw accessor because we're destroying =
+pointers without removing them
+>             // from the maple tree, which is only valid because this =
+is the destructor.
+> -            let ptr =3D ma_state.mas_find_raw(usize::MAX);
+> +            //
+> +            // Take the rcu lock because mas_find_raw() requires that =
+you hold either the spinlock
+> +            // or the rcu read lock. This is only really required if =
+memory reclaim might
+> +            // reallocate entries in the tree, as we otherwise have =
+exclusive access. That feature
+> +            // doesn't exist yet, so for now, taking the rcu lock =
+only serves the purpose of
+> +            // silencing lockdep.
+> +            let ptr =3D {
+> +                let _rcu =3D kernel::sync::rcu::Guard::new();
+> +                ma_state.mas_find_raw(usize::MAX)
+> +            };
+>             if ptr.is_null() {
+>                 break;
+>             }
 >=20
 > ---
 > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20251215-hrtimer-examples-v6-19-rc1-2658ce9bb5d0
+> change-id: 20251217-maple-drop-rcu-dfe72fb5f49e
 >=20
 > Best regards,
 > --=20
-> Andreas Hindborg <a.hindborg@kernel.org>
+> Alice Ryhl <aliceryhl@google.com>
 >=20
 >=20
->=20
 
-FWIW:
-
-[10:52:46] [PASSED] rust_doctest_kernel_time_hrtimer_rs_0
-[10:52:46] [PASSED] rust_doctest_kernel_time_hrtimer_rs_1
-[10:52:46] [PASSED] rust_doctest_kernel_time_hrtimer_rs_2
-[10:52:46] [PASSED] rust_doctest_kernel_time_hrtimer_rs_3
-
-This looks good to me. The rendering looks ok as well.
-
-With the nits addressed:
-
-Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
