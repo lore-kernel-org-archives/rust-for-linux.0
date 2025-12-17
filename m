@@ -1,158 +1,206 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3242BEC5E
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 08:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765961756; cv=pass; b=Mqq5DaPFPK3zJ6NcP8PxF5Q3yRyt4RiCDihGJfCIRI1Mo8DoIPfhn8MSTRUVezxlR8XM9TQL90xR0yTXJxDEvNZIccwonmZAJQ5OL/D00kH1x65ILQXWpFZI6vXC88XhuvT2PlZsVeJGxWlJ8WPr46geeIs4NazC+y25/uPJUj4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765961756; c=relaxed/simple;
-	bh=pdSNAMzU0dYiODL4hGX3ra+6iuIwjN+4DsS49s7aBYE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=WPddPE6X0jbA373z++IywtmQbnOG5M1BeySBq/irqbUqAeW2PtloHtR0x03FGt6n5MPgesc5fzKKGK34/BhRx5cKGMRhHo+l5UWVecjtPJetpO09mYSlPjcCtdAyvRRzt2+YBjYK8s1U/BD5nxxuLOtZ/B32g3TlJbTY9PaB5HI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=IWH0PLo3; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED1B339873
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 09:57:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765965431; cv=none; b=YDgAdp1UxVcjrGFlVGwEDGUeli+yEOMtnGG+sXxk83W9aBCa7oqm2V976MQtNnuEZjElK2oCeXZwQooovWa8b7dcUcXvJkPDnAAuAai7snwW/Xt3PJM5VbpkddQDUpj/KNDQBQF62HQ6uiell+kC3TzrSSROmyrhX3sASTzEdEM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765965431; c=relaxed/simple;
+	bh=HX+FsRIc/6aOu0ra/yR8MRfRsJxyQIUVlae7ujCR7pY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XRmA4EU0lK6L4jGFANaXVP2Wdm9p74JYVfQCN0c1AGS00TKFKL6JXVK6C3K+dmHLZaQSgQXhH61Z+cv1pGKgq/ojKwcztfMokfR+74PVYXdPer9ioKb2Co/b98VBZUcfnMoYMQU69CEHnKIbdvDfIbbTvtomCWN7GR40BP8Tym4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X+i25Zf5; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="IWH0PLo3"
-ARC-Seal: i=1; a=rsa-sha256; t=1765961706; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=I9rbaCxsZXhyT7jE2Wk+22p950598jhAk/Gf+3kYqXGzswHYY1cb69DZOCldQsNNzWd7V3dMulu2LcDRoVrWhynK7g40aTSYajp5DdawN7bqbbwi9awfgV53e60o3/0Elmf6Hxsd012dIqUlHimNqgTKmG/Tn70Mr2ctVIS+Snc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1765961706; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=pdSNAMzU0dYiODL4hGX3ra+6iuIwjN+4DsS49s7aBYE=; 
-	b=U3WF7YlEDPx8EVmU34MyMy/e1+Y7J11Dn3fUYDTvn0pW8rqB4YdK3B2d82G+xpXbxxj00+W9odo97co5DOuhYm5yIOUi1uiZYrE8ZuPbP2eh8sZ3lsiPwj+mcIbOvDawQZ5jQp/4025Qq/quydCB2l15W1xK1Nd7n3eD64KZQE0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1765961706;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=pdSNAMzU0dYiODL4hGX3ra+6iuIwjN+4DsS49s7aBYE=;
-	b=IWH0PLo3H0/J8cTA1DTdYQYlucMaRcLEQtIfKRRH2TupiWfiZqSIx5sHI/MpK238
-	IwGca7WyLAU7DJ/iht7Kj8ItjNESiTvQJuvtS4pjewDbvS3MQkMXw0fW0ZeZVT8E+kR
-	bwYhVuwf1a9Mo3R2vbFjVC+bzHCBUVPbcet3Rs6Q=
-Received: by mx.zohomail.com with SMTPS id 1765961704452980.6410829158114;
-	Wed, 17 Dec 2025 00:55:04 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X+i25Zf5"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-42fbc544b09so3005271f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 01:57:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765965425; x=1766570225; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qLmhf9C49Ol1jzvYxhJDB556bZPRTviOFLLG+AsvajY=;
+        b=X+i25Zf5Bn0AIZ2+qsduYb5i9gK6+Mr0er9xKKD36o61V1FOnjhIo4+2/1OB45hXvi
+         q9quWIJamxFR1nCVkCXCuVeiFseypVVugfx3spBZtbYFofX301NcOOFgHkUuH23BwPiG
+         UQgy8H0Q/8dqhbjuL31dosYkW9qZO7V88PKps3HPHijxcxJt3NlV7MW10ZvK5YJFxtMv
+         qeqz9FnayRg/dso55/kICNGbmC1yb/hpFS7PZaagK6mowOoAeEATkj8ULurjE79FqhEj
+         RWzLNXU+j+9s4fBV8fbC7Cw6EC29l3VfnPEJO6wV3ItUkItcw/OBcTDSKG6WXVmf2xcL
+         KuhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765965425; x=1766570225;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qLmhf9C49Ol1jzvYxhJDB556bZPRTviOFLLG+AsvajY=;
+        b=uLNE/rt6bTALUaJaYSMrc4FzWt7lMC8NXXSRdRSMnDpJB9lSroJ8zASk6dhXbU/SqS
+         iBG1oxzYmjhbobj8vTn4sdHVyfLil6If2eYXTNggWOoQRpANgMBPBEKUWjSrl8U7ABWC
+         sVrCPKEERKE0AXyRAToWQipGGOPG7dy8kjzI1t8BMn5JBX3PVkkag2YGee46KJ7xHsJH
+         nRAxs8+W/lrb8KBcDWgaduwlo5+k3gELWYCcpI+/Xe2SYbxN/ZzeMHBqiOOBlLTYONOj
+         tL2o8ch7qjpfMVmRVtqAO8nzpok1pDcsUzHzBGEaVAACRBCDUoyAUY3qlJXh2PDFXJQ/
+         9R+g==
+X-Forwarded-Encrypted: i=1; AJvYcCUvd7+fueehjapyl+Z3l+PI0xfdP/5XUqNz7usFcD8a9xwWWd7A1wDgsJezHzFCC8/YBTr1ToBKhjn0faJxXQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn78peH7NmK5kzpBvKvgQpDdTde9sILG8n/Sy5f8ldgd+oguo7
+	fsfIwKcaEMb/LElWnr0WMbZ4kgKCV6Bt6O316uakE80VnAwPMjPAa8QiULZ9K2bFgS369HDuVSf
+	y2SqtlaTeZV/H4rpYRhCzyUH+Oe5iOQKrsTV8yEcu
+X-Gm-Gg: AY/fxX4Eo9BDftBAPBDgx0dRjgzFCU7OaZpGUfplCcMVB49C9V8wpyu79kDwypPrpEe
+	AHnaFVOiIBSlx9GcjRKCjnL/flj8/ejK6tqx5lkonNPIAuOKzD++NNfujuscP2ka5pSRvjHQNKK
+	B++qE5P6jCXE1/bXe+p3puahUfuqMl3QpwZ2XucR1bpZSqCKvPjKHklDkliyEBMvQvMOVQEfhUW
+	g0GqFb3tvPLzjlZUcOZ+R41ox1CdeFEy/c4G2+fj6XrFsUbo2TzugKjj4fez66IEay0jA==
+X-Google-Smtp-Source: AGHT+IHe0EpDSE2rlnkUlEGZ3VEge9khn+TJt9E10ytBVJjq0gppvxESBaZUmPR3wD3QT8PoqUKzjGkbvv2DqA5R+u0=
+X-Received: by 2002:a05:6000:1842:b0:430:f494:6abb with SMTP id
+ ffacd0b85a97d-430f4946d6amr11864834f8f.8.1765965425249; Wed, 17 Dec 2025
+ 01:57:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v8 5/6] rust: ww_mutex: add Mutex, AcquireCtx and
- MutexGuard
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251215121001.5a0cc42c@nimda>
-Date: Wed, 17 Dec 2025 05:54:46 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org,
- lossin@kernel.org,
- lyude@redhat.com,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- a.hindborg@kernel.org,
- tmgross@umich.edu,
- dakr@kernel.org,
- peterz@infradead.org,
- mingo@redhat.com,
- will@kernel.org,
- longman@redhat.com,
- felipe_life@live.com,
- daniel@sedlak.dev,
- thomas.hellstrom@linux.intel.com,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <55E30790-0370-4910-B8E9-C007052BF285@collabora.com>
-References: <20251201102855.4413-1-work@onurozkan.dev>
- <20251201102855.4413-6-work@onurozkan.dev> <aTA6f8gK60h6qaHs@google.com>
- <86E0C8EE-393D-4C6A-9C28-BB036A1FFAD6@collabora.com>
- <aTFPRv2ahM_KA3AB@google.com> <20251215121001.5a0cc42c@nimda>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+References: <cover.1765374789.git.gtucker@gtucker.io> <97dec58ebe4161027f13f2215ed9da4a43bc8c47.1765374789.git.gtucker@gtucker.io>
+In-Reply-To: <97dec58ebe4161027f13f2215ed9da4a43bc8c47.1765374789.git.gtucker@gtucker.io>
+From: David Gow <davidgow@google.com>
+Date: Wed, 17 Dec 2025 17:56:52 +0800
+X-Gm-Features: AQt7F2oTqtembk-preTyOs_15GU6b4Z2klG1ITK7nRS2fi1pLPL8_IcTYBRaAXU
+Message-ID: <CABVgOS=LD_7gTk+qivoLJpAk0susehrCVdazApQAM=9311M4+w@mail.gmail.com>
+Subject: Re: [Automated-testing] [PATCH v1 1/2] scripts: add tool to run
+ containerized builds
+To: gtucker@gtucker.io
+Cc: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org, 
+	llvm@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000e5c13a064622dd2e"
 
+--000000000000e5c13a064622dd2e
+Content-Type: text/plain; charset="UTF-8"
 
+On Wed, 10 Dec 2025 at 21:58, Guillaume Tucker via
+lists.yoctoproject.org <gtucker=gtucker.io@lists.yoctoproject.org>
+wrote:
+>
+> Add a 'scripts/container' tool written in Python to run any command in
+> the source tree from within a container.  This can typically be used
+> to call 'make' with a compiler toolchain image to run reproducible
+> builds but any arbitrary command can be run too.  Only Docker and
+> Podman are supported for this initial version.
+>
+> Cc: Nathan Chancellor <nathan@kernel.org>
+> Cc: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://lore.kernel.org/all/affb7aff-dc9b-4263-bbd4-a7965c19ac4e@gtucker.io/
+> Signed-off-by: Guillaume Tucker <gtucker@gtucker.io>
+> ---
 
-> On 15 Dec 2025, at 06:10, Onur =C3=96zkan <work@onurozkan.dev> wrote:
->=20
-> On Thu, 4 Dec 2025 09:07:18 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
->=20
->> On Wed, Dec 03, 2025 at 02:23:14PM -0300, Daniel Almeida wrote:
->>>=20
->>>=20
->>>> On 3 Dec 2025, at 10:26, Alice Ryhl <aliceryhl@google.com> wrote:
->>>>=20
->>>> On Mon, Dec 01, 2025 at 01:28:54PM +0300, Onur =C3=96zkan wrote:
->>>>> Yeah :(. We could get rid of them easily by keeping the class
->>>>> that was passed to the constructor functions but that becomes a
->>>>> problem for the from_raw implementations.
->>>>>=20
->>>>> I think the best solution would be to expose ww_class type from
->>>>> ww_acquire_ctx and ww_mutex unconditionally (right now it
->>>>> depends on DEBUG_WW_MUTEXES). That way we can just access the
->>>>> class and verify that the mutex and acquire_ctx classes match.
->>>>>=20
->>>>> What do you think? I can submit a patch for the C-side
->>>>> implementation. It should be straightforward and shouldn't have
->>>>> any runtime impact.
->>>>=20
->>>> I think there is a better solution. We can create a different
->>>> type for every single class, like how
->>>> rust/kernel/sync/lock/global.rs creates a different type for
->>>> every single mutex. Then, you know that the classes are the same
->>>> since the class is part of the type.
->>>=20
->>> I don=E2=80=99t think this would work with the from_raw() functions. =
-What
->>> class would you assign then? I think this is precisely what sparked
->>> the current solution.
->>=20
->> There can be a way to create a type for a C-defined class, and
->> from_raw() can require that you don't use the same Rust type for
->> different C classes.
->>=20
->=20
-> Do you think this is a better alternative? IMO it doesn't seem worth
-> it for what it's doing. Current approach adds less complexity and is
-> easier to maintain. It's not just helping from_raw functions, the =
-class
-> validation is being much simpler without having to deal with storing
-> class references or creating new types.
->=20
-> I am holding off the next version because we don't have a clear
-> consensus on this.
->=20
-> - Onur
->=20
->> Alice
+I gave this a go, and am liking it so far. My only real complaints are
+that the defaults don't totally match my prejudices. :-)
 
+Having a good default container, and perhaps falling back
+automatically to podman if docker isn't running (or just defaulting to
+podman) would make this very convenient for one-line
+tests/reproducers.
 
-I am frankly not sure whether what Alice suggested is an improvement =
-either.
-Having the class stored seems like a much simpler solution to the =
-problem.
+-- David
 
-> Then when you call from_raw(), you call
->=20
-> Mutex::<T, MY_C_CLASS>::from_raw(ptr_to_mutex)
+--000000000000e5c13a064622dd2e
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-That=E2=80=99s what we are trying to avoid in the first place. It does =
-not really
-matter that from_raw() is unsafe, because this is not really about UB, =
-but
-rather about trying to avoid broken code if possible.
-
-IMHO, if we can check this, then I propose that we do. Hence why we are =
-storing
-the class.
-
-
-=E2=80=94 Daniel=
+MIIUnQYJKoZIhvcNAQcCoIIUjjCCFIoCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
+4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
+mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
+KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
+VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
+ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
+vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
+BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
+OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
+1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
+ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
+BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
+18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
+bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
+AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
+BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
+A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
+MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
+jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
+0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
+jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
+jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
+C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
+NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
+zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
+A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
+hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
+NjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UEAxMKR2xvYmFsU2lnbjAeFw0xNDEyMTAwMDAw
+MDBaFw0zNDEyMTAwMDAwMDBaMEwxIDAeBgNVBAsTF0dsb2JhbFNpZ24gUm9vdCBDQSAtIFI2MRMw
+EQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpHbG9iYWxTaWduMIICIjANBgkqhkiG9w0BAQEF
+AAOCAg8AMIICCgKCAgEAlQfoc8pm+ewUyns89w0I8bRFCyyCtEjG61s8roO4QZIzFKRvf+kqzMaw
+iGvFtonRxrL/FM5RFCHsSt0bWsbWh+5NOhUG7WRmC5KAykTec5RO86eJf094YwjIElBtQmYvTbl5
+KE1SGooagLcZgQ5+xIq8ZEwhHENo1z08isWyZtWQmrcxBsW+4m0yBqYe+bnrqqO4v76CY1DQ8BiJ
+3+QPefXqoh8q0nAue+e8k7ttU+JIfIwQBzj/ZrJ3YX7g6ow8qrSk9vOVShIHbf2MsonP0KBhd8hY
+dLDUIzr3XTrKotudCd5dRC2Q8YHNV5L6frxQBGM032uTGL5rNrI55KwkNrfw77YcE1eTtt6y+OKF
+t3OiuDWqRfLgnTahb1SK8XJWbi6IxVFCRBWU7qPFOJabTk5aC0fzBjZJdzC8cTflpuwhCHX85mEW
+P3fV2ZGXhAps1AJNdMAU7f05+4PyXhShBLAL6f7uj+FuC7IIs2FmCWqxBjplllnA8DX9ydoojRoR
+h3CBCqiadR2eOoYFAJ7bgNYl+dwFnidZTHY5W+r5paHYgw/R/98wEfmFzzNI9cptZBQselhP00sI
+ScWVZBpjDnk99bOMylitnEJFeW4OhxlcVLFltr+Mm9wT6Q1vuC7cZ27JixG1hBSKABlwg3mRl5HU
+Gie/Nx4yB9gUYzwoTK8CAwEAAaNjMGEwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8w
+HQYDVR0OBBYEFK5sBaOTE+Ki5+LXHNbH8H/IZ1OgMB8GA1UdIwQYMBaAFK5sBaOTE+Ki5+LXHNbH
+8H/IZ1OgMA0GCSqGSIb3DQEBDAUAA4ICAQCDJe3o0f2VUs2ewASgkWnmXNCE3tytok/oR3jWZZip
+W6g8h3wCitFutxZz5l/AVJjVdL7BzeIRka0jGD3d4XJElrSVXsB7jpl4FkMTVlezorM7tXfcQHKs
+o+ubNT6xCCGh58RDN3kyvrXnnCxMvEMpmY4w06wh4OMd+tgHM3ZUACIquU0gLnBo2uVT/INc053y
+/0QMRGby0uO9RgAabQK6JV2NoTFR3VRGHE3bmZbvGhwEXKYV73jgef5d2z6qTFX9mhWpb+Gm+99w
+MOnD7kJG7cKTBYn6fWN7P9BxgXwA6JiuDng0wyX7rwqfIGvdOxOPEoziQRpIenOgd2nHtlx/gsge
+/lgbKCuobK1ebcAF0nu364D+JTf+AptorEJdw+71zNzwUHXSNmmc5nsE324GabbeCglIWYfrexRg
+emSqaUPvkcdM7BjdbO9TLYyZ4V7ycj7PVMi9Z+ykD0xF/9O5MCMHTI8Qv4aW2ZlatJlXHKTMuxWJ
+U7osBQ/kxJ4ZsRg01Uyduu33H68klQR4qAO77oHl2l98i0qhkHQlp7M+S8gsVr3HyO844lyS8Hn3
+nIS6dC1hASB+ftHyTwdZX4stQ1LrRgyU4fVmR3l31VRbH60kN8tFWk6gREjI2LCZxRWECfbWSUnA
+ZbjmGnFuoKjxguhFPmzWAtcKZ4MFWsmkEDCCBeQwggPMoAMCAQICEAGEC3/wSMy6MPZFqg/DMj8w
+DQYJKoZIhvcNAQELBQAwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2Ex
+KjAoBgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMzAeFw0yNTEwMTMyMzQ3
+NDlaFw0yNjA0MTEyMzQ3NDlaMCQxIjAgBgkqhkiG9w0BCQEWE2RhdmlkZ293QGdvb2dsZS5jb20w
+ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC7T8v6fZyfEDlp38NMe4GOXuodILGOFXh6
+iVuecsKchx1gCg5Qebyxm+ndfb6ePkd2zzsBOkBJmYrx4G009e+oyTnynr5KXvucs+wLlgm53QU7
+6pYikvqTM2hezoWz48Ve/6Jq/6I/eAzKGhn4E/3zG15ETIeMpPFy/E7/lGqq+HFRCb6s0tl/QWhC
+BiR+n2UvmXbVWPSR51aRAifsKqiuraeU5g9bGCcbuvdbiYQf1AzNDilkvA6FfUaOPTzVj3rgMyZb
+mnZpzWOV1bfib3tYXd2x4IvUS3xlvrap0g9EiDxJKUhCskOf7dPTjaS/kku768Y6U/sDVH5ptgvP
+Dxz3AgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
+/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFHZtY3XkWtC2
+e2Idfk+0JyK7BLzzMFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
+MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
+LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
+bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
+FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQBo
+hqjbVaHxZoT6HHUuwQcTlbgXpuVi59bQPrSwb/6Pn1t3h3SLeuUCvOYpoQjxlWy/FexsPW+nWS0I
+PUmWpt6sxbIRTKPfb7cPk32XezfnA0jexucybiXzkZKTrbI7zoMOzDIWpTKYZAonB9Zzi7Dso4An
+ZOtz/E3yhdR/q1MK30d5fiCS0vorEd0Oy8Jzcc7TJ2HGMzEEXiFFvVrJYJHvfYOeXE4ywAG6YWO0
+x78+bXeB9vkeWHhOYKyYXuAXrnHASddEICg1QlJCHDAISMC1Wn/tjqTMTt3sDAe+dhi9V1FEGTbG
+g9PxPVP4huJEMIBu/MWNMzHfiW4E7eCHVPrmtX7CFDlMik7qsgQBbO5h6EcxBamhIflfMgoISsRJ
+Vyll2E5BNVwkNstMgU3WMg5yIaQcuGFgFnMTrQcaLEEFPV3cCP9pgXovYDirnB7FKNdCZNHfeBY1
+HEXJ2jIPDP6nWSbYoRry0TvPgxh5ZeM5+sc1L7kY75C8U4FV3t4qdC+p7rgqfAggdvDPa5BJbTRg
+KAzwyf3z7XUrYp38pXybmDnsEcRNBIOEqBXoiBxZXaKQqaY921nWAroMM/6I6CVpTnu6JEeQkoi4
+IgGIEaTFPcgAjvpDQ8waLJL84EP6rbLW6dop+97BXbeO9L/fFf40kBhve6IggpJSeU9RdCQ5czGC
+Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
+BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAYQLf/BIzLow9kWqD8My
+PzANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgU4E738d3uMcerC6CVXGYsugBWBPK
+YbIAyeBci4Ac1FYwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUx
+MjE3MDk1NzA1WjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
+AQEBBQAEggEAuVAXlZyytGXtWi2petJ1rOSbw0snC2OTZma9Div1wA9j+mqUjWNjdE+ieQfEVEeD
+eImhecw7r+ZeLRYcvzehwB52yUOY4DZRRFwWNrTw6bc8ph8C4DY+PIy0VjwwLohg6W1NlYXDVumw
+OsSIT+rmnGtnNxNKf1+1qrfEXyzEmUYwPAKnMzWJPz2TElvsdXCSt18M7ly5dR/guXmSdOdmlpfA
+0Kav/ai0KztkVkYnR2FuMX7orwi6JS/Esci5hPo/rVK4L3LowJ9Hvljr5BHOmyl3Ib51hwtyW42u
+YDzhv2/Sjfsdla0a8RaEUiOlHpJWiwbRtXvsmNd1pnk0OBvnNA==
+--000000000000e5c13a064622dd2e--
