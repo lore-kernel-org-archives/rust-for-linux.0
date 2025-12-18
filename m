@@ -1,117 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1067B23F27B
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 09:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A3D30F7F6
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 09:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766048480; cv=none; b=AoBtJ3v/QP1ANigoYj2I49Dme5aHa2ZHOwu4MsfQma2MCxXRKfWYvgu5om2T8g7Z4aGHqGkmGeTFMDdPA03QnueH3VneuTaM2KHimD3iFcdCVwInO2ICLwtXVqTruRTgbGkCQ8pkj/FHUNqJwdu8DVvS3V0u1Xe7Yhufek7K5Wc=
+	t=1766049504; cv=none; b=ZXGvBC/sANxPvvF60Te+eeaiNyIv4gIu5I5e2i0zsEbh6ea3oa3zJFyHBM4wTgdhRR7mnKcuX8EUolvYfQxs0yKexZ69xxz3GAfDemRPnvuFBvKdXusYaJBwfK0Qg1+5dmrYhJLdlIuhTxUqXajilVjjfiLrDsTIMl8KVCnVXKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766048480; c=relaxed/simple;
-	bh=afeAQJRCnu4GRHnu5E5kfLOK1xWhPyYLbd+eFtITJ+w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=TTLagifp/+Y2WSXqKEnkHJCK7/WJq5osy9PF85IO5s2sWvBMvhu4Fj3A8U2pNyeFOl1OQN5KkYT8GJFvQ2+dQrcp6M2RkZIH6AncSROxf+VO4PlejMIt9A13eqGZNEz0fINIMXk+ylKYQDpbBs/blKVZL0zUZvpdF4j1NBLgnbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sBEbtPot; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766049504; c=relaxed/simple;
+	bh=RyEgzxI8oPffOHkVVOIZhsjUU0Nu1XWYtTHFe1Aa1ZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LxehrS9zu9phqIl52dw98PdT+xv2aVKcu+IutL3zPe1ckw9iumIQTmJI9TbXYWJPXS0bqGVAM2DGcUy9qpsuz4AzZqBPXHQ6kxQk2vRP+xtUj02da3m43NluI9bTk3lGjiXTuHYYRwZinjYmcslGVEQJEDVOmc+IicCOMXRB7+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ff3f/CoS; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sBEbtPot"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A25C4CEFB;
-	Thu, 18 Dec 2025 09:01:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766048479;
-	bh=afeAQJRCnu4GRHnu5E5kfLOK1xWhPyYLbd+eFtITJ+w=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=sBEbtPotMzYJvW58gLZbIA2sN4jEkILwBFePD5sTuF8TqonBXGW4QYxLuCvusY7gI
-	 U/9bFCey1JZhHUyfb5zyHXNcyvVxlwjRjmlww/6IflJuJNGwsEC/y8AVlPNB/aPCPW
-	 PL4oG/YylRUKKTfgypYpUN0FpISqhjrmlI7GGLZ0MQuu6TRQvwvvRfSJiqwSVIyXQA
-	 RSE6QRmp5bWu1VeRhsshxE9wNCD2Yi34uah2mTiTbugyZqE8mRdZ3ZNk/Mbk/nc4zN
-	 GfmFcosRvKDbOv0MXWQLFV22MashEyvjpmIk0oaB+jaywLnt760m1oArdLowTi9ipo
-	 tz3m4ksujvphQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ff3f/CoS"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-88a32bf0248so3421126d6.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 01:18:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766049501; x=1766654301; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xrxnNnWxI4nS0YOrpBWcQANh5SNRLcQSO0aWER1QbrU=;
+        b=ff3f/CoSZIyY8Yp+aNjFhuiGt8Qjx/bywKPCZPifz1HR7J6M4F9+mknbF2EBZUEnwr
+         PNPPh/FfmW08lN/b4B8kkjikAyNh8NLW6/yOhPRl3Dvbw5Z0SoTfYjwvV8iCNWh6TB/4
+         bhLSakQipGLykNwFbF1/ELIjNwtH/fL836We1unBdPypk8J0m768TwRJI7eU8Up2BOy8
+         AFOmUf+23UaSmoBVOJfUgQLj9sXrEQnjPAdjP1MbtMCidCZ+rW2QY/qAzYRme+Z+hdLP
+         7VGT5W82nnVHvXIBRwkVtc/zD3mqvkCGSjcQCh1CwSgVhhLBNWTeY92Os3gtOOSETlFb
+         scTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766049501; x=1766654301;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xrxnNnWxI4nS0YOrpBWcQANh5SNRLcQSO0aWER1QbrU=;
+        b=xMHlwONmPENcd9EbHzBDb8bPmVs5n+YLyzvoTzUZVk61Rj70tP5GaUwQF8dFs9Fime
+         Ecc8481ctJD59gd0vf4JZcMzXzetuXcAHkSxOsWHDTOv8SXYcwA0EnWuPjHzP4sKFZnP
+         EnCESN1lAdM7ZScY1560ZWDYaBpb2FCtBFEKDd/V14IIVR7Y2M4DDNjKhZ3IEVre8/E3
+         QQBgatkGzxbGCFxEJJr7CzLd7kvB+mREPPPSOOHSlxBmOqEY6rpfyepnJgwQoaD5HN6m
+         mGJ4nidHUx+UJSuMZ5jCO0/81qaOls8oziPhGO2FsVTI4lA/XxzBCCHH1KlBCsO3kqzi
+         aWJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVK6nbRV/88N1KLNlBoliisaBLu/kpF1+QqfA2b+hkzzBniOxat25a9SQpSlc8Vo0kIhXstAPk9nDHkRFioFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywuw5R+BJ22zyGABvUPmm2wOJqrRgcfyqThaafI6zfsH7Ali/qT
+	rmMONNekHDl9baNRkByoJA2xcLNXx1qZz5F9rpZN9VP7Tnm4krl8DUph
+X-Gm-Gg: AY/fxX47ODtKFTgifpuN53wTUDp4F/INm/VM8ERSW8MAVJUpSfbrJTcMpUbn4zARTW5
+	8gWYf4uHyFnTrYXyet1q8eqfjDV3treQP5zf2lfg13qRa9Cy2TpTJydPUbn5oAsuXpi1WAJfUim
+	WZMmzqK3QhawTiqc1vtaISCK4qloHy/i5HSOM7lJo6kD1FSj6pRbRbRXePTuEqWtcqU3gN5cs6E
+	DlqFT3GNpTcBIgCk+GTyciRrYmHrxsrXz6oPjaKhHWOD4Z+KSHqTD9uAPdMXq663aL4711m4dpl
+	OwFRMuWDBod0GFuyOgeBFQci4qIVyyem3AuQKACGJwZRvaidZpxbz7afwqG1ykJ8iyweStcn1E+
+	wKFayIORrjTOmJl8P+giR4V56r4FYOqKYyPUA6VxAygsWj9k0pYtDW7dzdh+44xaZeQtGvLR5j/
+	oqOPKXK+jNr3fp53KR7TwMI/emZGdejXFrtDo7zA6qbXi3O/agOP4vAblPN9sbmqBwpNn1Z9z74
+	Qf4/GSbHLrqHeo=
+X-Google-Smtp-Source: AGHT+IGcCSZ2GTde4aBCYX1t8a7toNqTh87um5AM7sqyimiK1IjG5xXwzjeXHFVeUXoPi5AeBf7daw==
+X-Received: by 2002:a05:6214:3f88:b0:888:f03f:3d60 with SMTP id 6a1803df08f44-888f03f3fd4mr298428876d6.23.1766049500611;
+        Thu, 18 Dec 2025 01:18:20 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88c6089a7c3sm13752156d6.27.2025.12.18.01.18.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 01:18:20 -0800 (PST)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 93062F4007D;
+	Thu, 18 Dec 2025 04:18:19 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Thu, 18 Dec 2025 04:18:19 -0500
+X-ME-Sender: <xms:28ZDaYZEfJvWf-SbMYzrwGR3XiBc9nchrwXFhKQR8GJSSPC5Ar8EDQ>
+    <xme:28ZDaQ3X24tbFZCKSuy5BC9I-mJ6F97xHygLeYsX0Q24WXatFCtqulZ7k7xDXldMD
+    w8thToUOyrSqYEOYVh9FeLhsV3yHiaH4wNjMKNGLA9kWLxJNQIW5A>
+X-ME-Received: <xmr:28ZDaS76HLTNf9hsmzSKKCFzqme6tSv1wQBubRlahd7SzJkjvySDN_JZ4AwY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeghedtgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedviedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtth
+    hopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghriiesihhn
+    fhhrrgguvggrugdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheprggtohhurhgsohhtsehnvhhiughirgdrtghomhdprhgtphhtthhopegr
+    rdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhi
+    hhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohht
+    ohhnmhgrihhlrdgtohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:28ZDaURyyKmDQ4rzO87pKe_8fgOq1CvxIA38rZW58_FyV787JuMOoA>
+    <xmx:28ZDaToXdtq1vvHJfqWGgCi5IrxlFpN9arJc7JnP0gCVwOlnuJ_8BA>
+    <xmx:28ZDaW8x_MNLpH_gvIPSydRn1Oxq4VIuot4c-gyvDK1ojt2oOdljwQ>
+    <xmx:28ZDaYMv8CQExp0AUKVWhGPIMDC66fwr1u9bQ-Paapulqomq_rU8JQ>
+    <xmx:28ZDaQlMxy_vd7Y9jFbADfvmvXTPmU_Nc3DIq04M5dpRvhc5Lkr_GE4M>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 18 Dec 2025 04:18:18 -0500 (EST)
+Date: Thu, 18 Dec 2025 18:18:17 +0900
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: ojeda@kernel.org, peterz@infradead.org, will@kernel.org,
+	acourbot@nvidia.com, a.hindborg@kernel.org, aliceryhl@google.com,
+	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
+	lossin@kernel.org, mark.rutland@arm.com, tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
+	Vineet Gupta <vgupta@kernel.org>,
+	linux-snps-arc@lists.infradead.org, Brian Cain <bcain@kernel.org>,
+	linux-hexagon@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v1 0/4] rust: Add i8/i16 atomic xchg helpers
+Message-ID: <aUPG2Q_sSPDnlQ0G@tardis-2.local>
+References: <20251217213742.639812-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 18 Dec 2025 10:01:16 +0100
-Message-Id: <DF17XPT1MU64.ZXT4LSXR9CIG@kernel.org>
-Subject: Re: [PATCH v3 5/9] gpu: nova-core: Replace module_pci_driver! with
- explicit module init
-Cc: "Gary Guo" <gary@garyguo.net>, <rust-for-linux@vger.kernel.org>, "John
- Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "Lyude Paul" <lyude@redhat.com>,
- <nouveau@lists.freedesktop.org>
-To: "Timur Tabi" <ttabi@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251218013910.459045-1-ttabi@nvidia.com>
- <20251218013910.459045-6-ttabi@nvidia.com>
-In-Reply-To: <20251218013910.459045-6-ttabi@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251217213742.639812-1-fujita.tomonori@gmail.com>
 
-On Thu Dec 18, 2025 at 2:39 AM CET, Timur Tabi wrote:
-> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/n=
-ova_core.rs
-> index b98a1c03f13d..01353be103ca 100644
-> --- a/drivers/gpu/nova-core/nova_core.rs
-> +++ b/drivers/gpu/nova-core/nova_core.rs
-> @@ -2,6 +2,9 @@
-> =20
->  //! Nova Core GPU Driver
-> =20
-> +use kernel::{error::Error, pci, prelude::*, InPlaceModule};
-> +use pin_init::{PinInit, pinned_drop};
+[Cc parisc, sparc32, arc and hexagon]
 
-Please use kernel vertical style [1].
+On Thu, Dec 18, 2025 at 06:37:38AM +0900, FUJITA Tomonori wrote:
+> This adds atomic xchg helpers with full, acquire, release, and relaxed
+> orderings in preparation for i8/i16 atomic xchg support.
+> 
+> The architectures supporting Rust, implement atomic xchg families
+> using architecture-specific instructions. So the helpers just call
+> them.
+> 
+> Note that the architectures that support Rust handle xchg differently:
+> 
+> - arm64 and riscv support xchg with all the orderings.
+> 
+> - x86_64 and loongarch support only full-ordering xchg. They calls the
+>   full-ordering xchg for any orderings.
+> 
+> - arm v7 supports only relaxed-odering xchg. It uses __atomic_op_
+>  macros to add barriers properly.
+> 
 
-[1] https://docs.kernel.org/rust/coding-guidelines.html#imports
+Thanks for the work! And please do Cc linux-arch next time when doing
+architecture-related changes. We would get more experts to take a look.
 
-> +
->  #[macro_use]
->  mod bitfield;
-> =20
-> @@ -21,13 +24,27 @@
-> =20
->  pub(crate) const MODULE_NAME: &kernel::str::CStr =3D <LocalModule as ker=
-nel::ModuleMetadata>::NAME;
-> =20
-> -kernel::module_pci_driver! {
-> -    type: driver::NovaCore,
-> +#[pin_data(PinnedDrop)]
-> +struct NovaCoreModule {
-> +    #[pin]
-> +    _driver: kernel::driver::Registration<pci::Adapter<driver::NovaCore>=
->,
-> +}
-> +
-> +impl InPlaceModule for NovaCoreModule {
-> +    fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, E=
-rror> {
-> +        pr_info!("NovaCore GPU driver loaded\n");
+I think the current implementation expects that xchg() work with normal
+store/load, and that requires ARCH_SUPPORTS_ATOMIC_RMW. So could you add
+a comment saying the current implementation only support
+ARCH_SUPPORTS_ATOMIC_RMW architectures? And when you wire up the rust
+helpers, I think using #[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)] is a good
+idea. This will at least let the !ARCH_SUPPORTS_ATOMIC_RMW archs know
+that something is missing here.
 
-Please don't add such print statements, drivers should be silent when they =
-work
-properly.
+Regards,
+Boqun
 
-> +        try_pin_init!(Self {
-> +            _driver <- kernel::driver::Registration::new(MODULE_NAME, mo=
-dule),
-> +        })
-> +    }
-> +}
-> +
-> +module! {
-> +    type: NovaCoreModule,
->      name: "NovaCore",
->      authors: ["Danilo Krummrich"],
->      description: "Nova Core GPU driver",
->      license: "GPL v2",
-> -    firmware: [],
-
-This change seems unrelated, please send a separate patch for this.
-
->  }
-> =20
->  kernel::module_firmware!(firmware::ModInfoBuilder);
-> --=20
-> 2.52.0
-
+> FUJITA Tomonori (4):
+>   rust: helpers: Add i8/i16 atomic xchg helpers
+>   rust: helpers: Add i8/i16 atomic xchg_acquire helpers
+>   rust: helpers: Add i8/i16 atomic xchg_release helpers
+>   rust: helpers: Add i8/i16 atomic xchg_relaxed helpers
+> 
+>  rust/helpers/atomic_ext.c | 41 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 41 insertions(+)
+> 
+> 
+> base-commit: 02c5c8c11bbd34cdd9c566dd4ecca48995c09621
+> -- 
+> 2.43.0
+> 
