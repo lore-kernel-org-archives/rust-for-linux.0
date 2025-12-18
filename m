@@ -1,144 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999C121773D;
-	Thu, 18 Dec 2025 09:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E6C2DF3F2
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 09:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766050440; cv=none; b=lp53pIVFM2NpVxdwJ/twxISu/B4bztjTq7w6YQVbnezYAmbBQGQLAIQu8bScp0pmoOaEl+W3ZkOK13wBxZkfuykDpOEJYTJoxUV1KY/1EkB3Y/NJ5mL9sfgvHDbhydYOhii6OUxvvxs4EaY7XCQnNou/hs2I4ABIs42QEmuiFwE=
+	t=1766050814; cv=none; b=mhC6lKmOOtISywu6CBNxUcCX7QYxyNeDIK8WHcqLpsuMM/RBE8XzG05+Eu8ZVRmsfehdruV7flcP6Jci7q2u/jib7G3epbnBtrNrFn0lBU93Ixcpa3CyGIP5NAe6xAxYsG9I7WnBjiyvEkwafgZD1oh2n4o5C4bRomFMJ4kOaqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766050440; c=relaxed/simple;
-	bh=+C1Bdl/WXBZJL9d8n+I9VSoMdLX32zzL5FOnc3cxGlo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uc37st2NQFkW/SmtCS/R/UB5iyLI1MJApmXiA+FN6kPm9q3KslhaGQYnvG2zw/y9grWJVeL3f6w8QwJ3rzUS1aK7JrH8dzW6DsPZepCRuDCj49FM74jefd7XDwGI4RTCLFV8RiyuZ1KLlfm5TK3384A3QdHAmuluy1uueF/4jfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p6aZxZiJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766050814; c=relaxed/simple;
+	bh=kw99CZ6VErZHARNPDm5gv9tWcubRwTnXuIl8lydkx3g=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=fCVf5spmH/rKxoosgzpaq2n48WslxUXTpHAG74ZLhj0m41RsSig7GAJX/eUgsJyOzetC4tcNtHpaWFBQ8WuARa7tSJsMdcXnuFLBxjGe/FcUVekQSzDe+VtdfyrQP5u61p32u6kmlVKOGVVkYyAZJt5ZqYZOcrSfL+xk3N4JTog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHY/NIT6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p6aZxZiJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96089C4CEFB;
-	Thu, 18 Dec 2025 09:33:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHY/NIT6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E966C4CEFB;
+	Thu, 18 Dec 2025 09:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766050439;
-	bh=+C1Bdl/WXBZJL9d8n+I9VSoMdLX32zzL5FOnc3cxGlo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=p6aZxZiJ/HN6o7yiwTXrBDFPBosk3uBs5CFdJ00KlXgbRg7EI4d/AzZKT9k5MjWGe
-	 Zrfem64CyCYfmij/qnhTCElDPQoiYRJ+aER9lQ8WKy5DR6tCq/o+IySSWlVhAaABjA
-	 qp2Qh6WFpdefjxjLt/49C0GqHHE6okSRHEU+Nkf7JyHuohm+SP0mGakn2BwD17Mtgm
-	 qq6fD/zy7IkHru7ytL73z1yAS+LP5AxAIYVFHzaAg9NNlndJ1t3bnTDtdmdafeGRhe
-	 x0iA6rMFwH4skhLrUDuXm8+yvm2F6DXHdD4UzII9IHvx0p2rfNoXTRofEmnnvKSdRm
-	 5baUNmlkE/g6g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda
- <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hrtimer: add usage examples to documentation
-In-Reply-To: <B10A2EE1-C5A7-490F-B85F-82D5C905DE7A@collabora.com>
-References: <20251217-hrtimer-examples-v6-19-rc1-v1-1-4ad0e7e4c4e0@kernel.org>
- <ppzmlAVupzBwfQchQvMLdXNjAU_JEy5uR-s2OhGLegkP3b32qNl67HZIMbZJ1Yk5Yj1MGBTG0TLFQ4vAbW8rcg==@protonmail.internalid>
- <C1C6DB90-202A-45FF-9D01-D7304A8DC8B0@collabora.com>
- <87ms3guqxo.fsf@t14s.mail-host-address-is-not-set>
- <v0gPKXGHYQbFY0p9j5K4pR-jTk2bPWACZCUPBCJuzxR8VCWtS7WgZdakJZm27y_TrcOQgBNY0YZE86-tdZD_2g==@protonmail.internalid>
- <B10A2EE1-C5A7-490F-B85F-82D5C905DE7A@collabora.com>
-Date: Thu, 18 Dec 2025 10:33:49 +0100
-Message-ID: <87ike4uoaq.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1766050809;
+	bh=kw99CZ6VErZHARNPDm5gv9tWcubRwTnXuIl8lydkx3g=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=OHY/NIT6Ow5kInnxL9eF94GYantJTnHTEgpfVN81AMbIolrWTTawcpyk8mB2k/wE/
+	 z7SXmVYMaNGVbq4EQd6wjb7ialrP0MbCd256J4GT81Cce5f3ncN2XAigwuENDAum7P
+	 z470N0arGQp6r1wFyQQHGXAJuWzu9TvZLosFR9jeUmWiaxZQ6KIbw5XbJdY7fWoPmB
+	 q/CI9FeV+1uV85qkEE45XXD204fuu2h/3n8+PXRtbmGwrDrW/9LxMZs+4Cn+NfWWvt
+	 wIIKXLUGnnErz8jsReEOn0cKEl6K+8RK/B2yaXU3gzJWzzr2Pe7uFLRbHpjqeHR8kU
+	 Wg6c+FNgm1wUA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 18 Dec 2025 10:40:05 +0100
+Message-Id: <DF18RFX3IHVP.3GYNJIYAFFJU6@kernel.org>
+Subject: Re: [PATCH v3 2/9] rust: debugfs: add lookup contructor
+Cc: "Gary Guo" <gary@garyguo.net>, <rust-for-linux@vger.kernel.org>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, "Lyude Paul" <lyude@redhat.com>,
+ <nouveau@lists.freedesktop.org>, "Alice Ryhl" <aliceryhl@google.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Matthew Maurer"
+ <mmaurer@google.com>
+To: "Timur Tabi" <ttabi@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251218013910.459045-1-ttabi@nvidia.com>
+ <20251218013910.459045-3-ttabi@nvidia.com>
+In-Reply-To: <20251218013910.459045-3-ttabi@nvidia.com>
 
-"Daniel Almeida" <daniel.almeida@collabora.com> writes:
+On Thu Dec 18, 2025 at 2:39 AM CET, Timur Tabi wrote:
+> Add a new constructor for Dir that uses the debugfs_lookup() API to
+> obtain a reference to an existing debugfs directory entry.
+>
+> The key difference from Dir::new() and Dir::subdir() is the cleanup
+> semantics: when a Dir obtained via lookup() is dropped, it calls
+> dput() to release the reference rather than debugfs_remove() which
+> would delete the directory.
+>
+> To implement this cleanup distinction, the Entry class now includes
+> an is_lookup boolean that specifies how the entry was created and
+> therefore how it should be dropped.
 
->> On 18 Dec 2025, at 05:36, Andreas Hindborg <a.hindborg@kernel.org> wrote:
->>
->> "Daniel Almeida" <daniel.almeida@collabora.com> writes:
->>
->> <cut>
->>
->>>>
->>>>
->>>
->>> FWIW:
->>>
->>> [10:52:46] [PASSED] rust_doctest_kernel_time_hrtimer_rs_0
->>> [10:52:46] [PASSED] rust_doctest_kernel_time_hrtimer_rs_1
->>> [10:52:46] [PASSED] rust_doctest_kernel_time_hrtimer_rs_2
->>> [10:52:46] [PASSED] rust_doctest_kernel_time_hrtimer_rs_3
->>>
->>> This looks good to me. The rendering looks ok as well.
->>>
->>> With the nits addressed:
->>>
->>> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
->>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->>
->> Thanks for calling out the sloppy error handling, will fix.
->>
->> I don't understand what you mean about blanks?
->
->
-> e.g.:
->
->
->> +//!
->> +//!     fn run(
->> +//!         this: ArcBorrow<'_, Self>,
->> +//!         _ctx: HrTimerCallbackContext<'_, Self>,
->> +//!     ) -> HrTimerRestart {
->> +//!         pr_info!("Timer called\n");
->> +//!         let flag =3D this.flag.fetch_add(1, ordering::Full);
->> +//!         this.cond.complete_all();
->> +//!         if flag =3D=3D 4 {
->> +//!             HrTimerRestart::NoRestart
->> +//!         } else {
->> +//!             HrTimerRestart::Restart
->> +//!         }
->> +//!     }
->
-> There are zero blank lines here and elsewhere. Makes the code harder
-> to read. I am simply suggesting:
->
->
->> +//!
->> +//!     fn run(
->> +//!         this: ArcBorrow<'_, Self>,
->> +//!         _ctx: HrTimerCallbackContext<'_, Self>,
->> +//!     ) -> HrTimerRestart {
->> +//!         pr_info!("Timer called\n");
->
-> <blank line>
->
->> +//!         let flag =3D this.flag.fetch_add(1, ordering::Full);
->> +//!         this.cond.complete_all();
->
-> <blank line>
->
->> +//!         if flag =3D=3D 4 {
->> +//!             HrTimerRestart::NoRestart
->> +//!         } else {
->> +//!             HrTimerRestart::Restart
->> +//!         }
->> +//!     }
+I have two main comments about this.
 
-Ah, thanks for explaining. I was looking around for blank lines that was
-maybe not supposed to be there.
+(1) I think it would be better to wrap "lookup entries" into a new type in =
+order
+to account for the fact that they do not behave like regular entries. I.e. =
+when
+a "lookup entry" is dropped, it does not cause the entry to disappear from =
+the
+file system. Analogously, when the regular entry is dropped it disappears f=
+rom
+the file system regardless of whether a "lookup entry" still has a referenc=
+e
+count.
 
-I can sprinkle blank lines around, no problem =F0=9F=91=8D
+(2) The commit message lacks the motiviation for adding this functionality,
+which is only for the purpose of a workaround of an unrelated limitation wi=
+th
+accessing the fields of a module structure (which Gary already works on a
+solution for).
 
+I understand it might take a while until the solution Gary works on is read=
+y and
+I'm perfectly fine with a temporary workaround. But, this workaround has to=
+ be
+on nova-core only and not introduce a feature in core code that in the near
+future becomes dead code.
 
-Best regards,
-Andreas Hindborg
+If we have a use-case for lookup() elsewhere, I'd like to see it first. But=
+ if
+we don't I prefer not to add this feature as a pure workaround for somethin=
+g
+else.
 
+In fact, I think that debugfs_lookup() rarely is the correct solution and m=
+ore
+often indicates some kind of (design) issue, like in this case.
 
-
+- Danilo
