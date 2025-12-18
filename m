@@ -1,28 +1,28 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011000.outbound.protection.outlook.com [40.107.208.0])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011010.outbound.protection.outlook.com [52.101.62.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C981624C5
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 04:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5701E9915
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 04:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766030534; cv=fail; b=tBNiDoMWsKFhnwnGvNIEVGH6CGbXJwGVYhLu95kKfBSh52uBdLnsPkktLs2QrnqCVwuQMzrrJL2zDZ5FOv05+JyNi3CtG4tc+WexX0eGDSZNWZkS+q3XIPuu90lzBhWPEVjlRFe79lxQ9qqb6bPL5MxvbVbWxjTajRhSA468fD4=
+	t=1766030583; cv=fail; b=VfXX5YRgVspVg5vjqKOMTKl9rgCnW+p0FyZ7cKaAQbvXi6p+HaK2hVFNojxR0E/H/Da7RPye3NSCooUHmFAvWMe6mAVASiXStmBaTVHz2YlQEDHxbOOwnqyHjjjwHJtZclsBeMDuYF2hNHzpx+ZZ17MksR/HlEnnAMnXErHiMJ8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766030534; c=relaxed/simple;
-	bh=pcMS3s6oWVThApg47jyufOjJWVBq3PbyxQuNfKGYoxw=;
+	s=arc-20240116; t=1766030583; c=relaxed/simple;
+	bh=2fnu8fc1qFZBNm76DSzzwpktKdp7dm8DYm6RcGBb7UM=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sp8vMXF4tDUjkyWqbTSTHsQjrMRCR17Vt7nPY2cM7/Ppqd3L57vdVUsvr1gif4fad+ueiq1DVWUniYZogPJlLFGixLIRqeOkEUjCu4ylHnTmVjJdxDStW21a0C9wspQ62cbIAZlWC7KmSAL6bpoU15RBj5aEMOByDaKkI+0p4Q4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lNVphVOg; arc=fail smtp.client-ip=40.107.208.0
+	 MIME-Version:Content-Type; b=EShenu1Jvyw1Z367S8A+EUDdOZe/8Lhci+yhx7pO9OOMdeWQAwdIKR8B9gZmmU/9rKkHGUPWpHgkc8ySNvzi8BlYWvFT0MBJB9NEHZasdG82g4W6gTmQ2iMPdKA0pclT7vpk9g7U5mjv9HNu7ELXPvmtpy1BJQcNx7Xe0efd+jE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=USBigK7t; arc=fail smtp.client-ip=52.101.62.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lNVphVOg"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="USBigK7t"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d9Sn0zdHsomrJot9uewrTQvqbpX7l8ZyGuIn48LQ/yaQYTaDTKrLy3BKs9b+iOZDlFQblCx9iuHCdPTuBVnt+I3p5icdZR+f4BPkSgbzV4oP1z3KA9yyg98R5cBJHM56mJG3JUBy8ejMBK2uYtEh4l6RZ5fYs+gSygUOkCMSzoFFaD9RYl06Kdord98KudX+U0dVMeQgA+a/4RmT2LKBYV5ASJnj8hCZRSeL1fBSnYaGCUJV+chyfMo/eT6zKvrc3CMJi6QAiA1uwTAgVtrWzlGDnaThh/Q2OzRIfyldW0XLRDrzFnMb22WYP1rrl5nhN3LqJhe5eGRQ3hIaK8ZkTw==
+ b=Uzknl9FbRLRH8Lieyk8cljv7PkCbvFwPguJ37SMhdJmzRuCBlrr7i7LCxkIIsEZC2C7rGwDCS1ZAOlzO8Ye961ljgiQHMpOD+p7ZhpO+2xQnLLarvhABLdLg/NrCW7hQXloyLg4hdgJrp9N9ZamsO5O6QsmFCZGMc+wFcj+qFis4mR873S0FYkELh3s3e8wkJqDTFh8jmH/XmRUzWLiXwdMrrjyC59ngG/8JVkM0wM4XwFZ0rfx8VTHPkmjkz8I7cPP+DewRjrpRWYrucREz8lCRu6Fjm4m3BtQvfB5NbXqpRLJ6Jcoqtrk5gx0cOBzABBHk2p3o2SuKKsiKHSspdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=T3jshI0b4h4q7MvAwfag0z6A1jjGq7+f+oSKWmK9HxY=;
- b=QwFmkgnYgsBtTt+xN+Zz6x5vtmE0C50keo0MSYj65ve4DTqhPnH1O+h9tWTVts9eXbgB60B5svlpCD1weaTPgP7wZY2eM8O47SecqRTP4WvwfySk9hNrEZiPbVg4OGhx4lAwtEEpRYvVbfp54dEvskOg/BgZe/EYNQ6DZNTJs40dvYQCit5x5OmPYlmFk2xFQDOcmsYLRp2lbRLmF6hZ7F9eNnbyVJMvz0x3Xb2hmD3+u0k9a6FKx0MA5rp2zzp97FsmF0Ym1T8D31TaZs1/NLo7uneGGjpGE1qVoelylQ24uu5SijTAP66OvP95kb4EFAXNzsM0CjEnG6Ih9L9MPA==
+ bh=raH+s7pTclMDT1PpP++A8netEBbXRh7XWrqxFT8NTFI=;
+ b=gX0E4E22wEbfGCkVT1WFtWn1LQddIFa6Ap58cVK1eow1YxZX0ji4p/NkGJHwLDX867UAd4R24C42JdR4RzAXXu0J1yio4Wi1cDKso8/LC8pXTdcyhNVqT/jJ+32ExkqhywXLt3P7Yds1mEjaA4t9G+8MSHnvWJcAs17uUOuOpMICyoqGBFdQ6Wy3s2A0v+WcRit8S5vjLXFMX3vFVgz6tpvu9z8Bx6T+Pl0JGtF6SpbzWEoDTIsWTlAnD5XL2UB0SwgKbESL/PgzhRRp8KRh0OvF98p26dV/h9/gsiZK5mi1bRaV1jUBqd6D5q4UMklglMIBm/Y5yi6IRPG/jdEaNQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=T3jshI0b4h4q7MvAwfag0z6A1jjGq7+f+oSKWmK9HxY=;
- b=lNVphVOgaGtwGJTFGGyshqQeTc/kjcsFAhSM3sTY4u8HXJjfgRPe8xiEnsLndz1DdG/8XjuwRyldW/qJ3NudmPzdjNbJ0KG1Wliw6ibYlde3xtVQB97j4SM+bGiVQ2x1XKP76Hb5+Rfr+J94/1ZuRe9aSYYL/ARJNA3xBVsTUMR+HxB5HoEVuWfxLyx7kWVYf6/ip9UaU8j/wssFiiTv7dfV3NuROHDehse4nGDjFJJE6znjmMKJOT6NpnXhj6SFngUQkrL/FEJ/Qk5QeusYJfUnXvwgA+H1rInWfLDSwhYJpn5w5iEWdtL2EgTTgP9rBic8BQZwoJ1Hl+/HMvyXiQ==
-Received: from CH2PR10CA0022.namprd10.prod.outlook.com (2603:10b6:610:4c::32)
- by SA0PR12MB7090.namprd12.prod.outlook.com (2603:10b6:806:2d5::16) with
+ bh=raH+s7pTclMDT1PpP++A8netEBbXRh7XWrqxFT8NTFI=;
+ b=USBigK7tcus2k/H7CK6V5wi8YBwEHfRgkRH8QMZAR3/oWEFGCvADQnaVuLZ9O3hkYFGLR5bsu6/GnBLXTnl+eNSsPhlWmVGY0a5fy0ujCqERWc6EX2+A11V5rj8cxekoraeAno/k77qJ8qlXHVTU1w4IDndgROfcrV3S0rjnA23LSMLLVUlnnb4HUV8D4UyqxYWW/yxGqX+RySgmmuytW5HqZrgOnqEz+igSg/4XuzRwkMrSe+7Y1jh6X6ZvVynDVjkRoIV+gswC8XuTnic0E/DY+7KEqunEP074QJi9kv7jkqoVWtI3duws5h5uC9vzVRAyc6slWQokQKsgsT2O9Q==
+Received: from CH2PR10CA0029.namprd10.prod.outlook.com (2603:10b6:610:4c::39)
+ by BY5PR12MB4083.namprd12.prod.outlook.com (2603:10b6:a03:20d::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Thu, 18 Dec
- 2025 03:30:27 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.7; Thu, 18 Dec
+ 2025 03:30:24 +0000
 Received: from CH3PEPF00000018.namprd21.prod.outlook.com
- (2603:10b6:610:4c:cafe::e) by CH2PR10CA0022.outlook.office365.com
- (2603:10b6:610:4c::32) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:610:4c:cafe::4c) by CH2PR10CA0029.outlook.office365.com
+ (2603:10b6:610:4c::39) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.6 via Frontend Transport; Thu,
- 18 Dec 2025 03:30:26 +0000
+ 18 Dec 2025 03:30:23 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -51,23 +51,23 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
 Received: from mail.nvidia.com (216.228.117.160) by
  CH3PEPF00000018.mail.protection.outlook.com (10.167.244.123) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9456.0 via Frontend Transport; Thu, 18 Dec 2025 03:30:27 +0000
+ 15.20.9456.0 via Frontend Transport; Thu, 18 Dec 2025 03:30:23 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Dec
- 2025 19:30:09 -0800
+ 2025 19:30:08 -0800
 Received: from ttabi.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Dec
- 2025 19:30:07 -0800
+ 2025 19:30:06 -0800
 From: Timur Tabi <ttabi@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot
 	<acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard
 	<jhubbard@nvidia.com>, <nouveau@lists.freedesktop.org>,
 	<rust-for-linux@vger.kernel.org>
-Subject: [PATCH v4 05/11] gpu: nova-core: add NV_PFALCON_FALCON_DMATRFCMD::with_falcon_mem()
-Date: Wed, 17 Dec 2025 21:29:49 -0600
-Message-ID: <20251218032955.979623-6-ttabi@nvidia.com>
+Subject: [PATCH v4 03/11] gpu: nova-core: support header parsing on Turing/GA100
+Date: Wed, 17 Dec 2025 21:29:47 -0600
+Message-ID: <20251218032955.979623-4-ttabi@nvidia.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20251218032955.979623-1-ttabi@nvidia.com>
 References: <20251218032955.979623-1-ttabi@nvidia.com>
@@ -84,138 +84,115 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000018:EE_|SA0PR12MB7090:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0800ba8e-867c-4d2f-a883-08de3de5c9a2
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000018:EE_|BY5PR12MB4083:EE_
+X-MS-Office365-Filtering-Correlation-Id: f2daef49-d1a0-455e-4dcf-08de3de5c7a5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|82310400026|36860700013;
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?CvFoYr/aIB/nf7xw9YUQBw3zq2lBq1L+A3/UrkoIKYhBrWJkbU9nQc2gwDKN?=
- =?us-ascii?Q?RfwQdffhTZZhzU0ID9+qLAO6P1NaAtqIJt5SjjjTDKInX+NROVA5UMU16QQZ?=
- =?us-ascii?Q?YaUouw/1WjvfSP4G9VNE/cRJEApnArqNiH8zytfAEU+p4SOU694O0oeVSXNu?=
- =?us-ascii?Q?NnN0856lE/dNId2ubiC5UkFmrZOopNc4o05D5RIeweZrJ+RFQT+aBmKK+1JD?=
- =?us-ascii?Q?qxgERNAl9gegFJ3OOl5AKqESIWPXw1vtmyRXcgL2cMrsNabbxBO0R6zFynbp?=
- =?us-ascii?Q?TC+V8E9sFribaDUkefvXbVT58shuSSWQAt72M2PnAPqGjK+r0TDYh+hZSTKw?=
- =?us-ascii?Q?CIles+yG48+1E6P8AOu7fyPJFj5ZZjMpn9pQ33N/kB+oy7Nv4/nXbzO8TgZp?=
- =?us-ascii?Q?QPOAnGdmPkdH2+Gz99x8AtMhpxJAH+ROPui3kJ3nJAy5V/k+AS2rNWtUbXE8?=
- =?us-ascii?Q?QOg1akavdZfkMTKTAwg6hNf4HydGuiF59oI06wmehjU+hmXCqsgzmJ6wswM8?=
- =?us-ascii?Q?tu6zPUr3oAwWbiGb5W+Un1MynJjp9LRjid7cn2ds7C9qTNpQj2FBsIqRazDD?=
- =?us-ascii?Q?zegKbVAo5S4WIwSnnF0rX/ezsylsEVCxv9fcJ3ZegEdrcobpRM9H0yiNeWaF?=
- =?us-ascii?Q?HzM244Eql/8wgg3OZuVa2MbxMLA640UghFpCUEvggegQmeDMveWAlMkZjMZc?=
- =?us-ascii?Q?Xq3yGKjG+YMPrwcJ9Igib4wx6/anVw8kiH/5qByGHaXHwnCIKdckjYbAPYyE?=
- =?us-ascii?Q?qnCbXhsWMkzShCwyUQHGEeRlluO18aAhcFNfxIT2MAQsa324w0yypfg+Av+X?=
- =?us-ascii?Q?rP/Gm4z4r1peCuajxfVY9dbud3FV0emzTT9avnnGHAW9uHXcnl+oALpAlP4N?=
- =?us-ascii?Q?0QlhOLM7EIQjHSvFkD+A/L5VTVCP5YcqeoVOvNADITkZJQ8uTzRkAWhqz7Dl?=
- =?us-ascii?Q?gZy27/jgjVBn7gtKx9CSsV9qmn1cTuEIWGI7NWmQX24m8uVF1Tw5WQ729h8v?=
- =?us-ascii?Q?BDuvQracOFQWHjHN+R8YyH9+1Dxzpn39o1jfRLF1JLmTtqbHiL0u3BpTzz4x?=
- =?us-ascii?Q?117tx8SFAUepfdpEgl0r7zjvf8rIhJpoE3HQKaPM8jYmLt1stNKopOH9XFmF?=
- =?us-ascii?Q?Em865iCptpZlPEgoEL4Dz9kbcu6YIDBe1o6SpAI+OxO7S9SWabQIGLoZdLU8?=
- =?us-ascii?Q?wewJqiODyxHKb1eD5PS2ToUf1ps9ryd0SfgE2sPpDleDEahdcd0io1a210qG?=
- =?us-ascii?Q?RzJWEK313RJmZ3nnn7BA+6iI3aTKg23txQtMqesV4jrBBCaNCjfJrzloHGmD?=
- =?us-ascii?Q?GpRiJlNCZxsjobwIBIzakFWJ7hqNg6kfHKNDhS3gISP9o8VSa8Jp3Svl7Qel?=
- =?us-ascii?Q?P8XGUPT41xU7d5tIANsLIsskamuQncvLZUaJVNvQtTH8GK/dR9OuTJQK4YY8?=
- =?us-ascii?Q?0s9ivNDHZDQnOyC7XimxIbcZRdhuDmsj0/pHrtDOuT4Ecxi6Gb9MPTFvl/B+?=
- =?us-ascii?Q?pIYoWiHPJdLPwRib4LtEa0g4GEMXuvXHO+bFjtjlT9wdfV1jHepBXtMf2p2M?=
- =?us-ascii?Q?eMQCLS60r4iLMc9nNRk=3D?=
+	=?us-ascii?Q?CTLykylM4iMC0sf1oToR4dnYlJyWwjj6g5xAF0brLB8LnfK2xCyaKa00WATM?=
+ =?us-ascii?Q?8L4nFjHf0mLf7fjjqBOL3gaOGI5T+YiG2RhjmZj7E3CFSEleTKWbSIouPmSR?=
+ =?us-ascii?Q?7YEEoZx870VS6Uz8CMtNSyAku9FcSRbQW9z3dYTkBu2wntmvMVXdsKIUuyHG?=
+ =?us-ascii?Q?XtORoMweFH3t/auv7V9QBCZX/kT0tY5k5oLUVdc8qhziGVBFGOliYU0qmkG7?=
+ =?us-ascii?Q?lkkdK/yfVoANaXOxXzq1QWvJk09qcv+cRLS9QEAzdz+EjaFfnZ/eHbkVXt+h?=
+ =?us-ascii?Q?zNO1q/vEp1RmbJX6FoxJW36aoe6V7jp7auRDXZqBe2iMLPM7QyUgwMyrypbv?=
+ =?us-ascii?Q?OAU6fUMqeGZclhR+NKQ5zXlg3tyjsLhFNTF8boNjit7A31p09M/aFQTkedeB?=
+ =?us-ascii?Q?zdLY7S/4Try7UVhmuLe4rAxvSTt2f/XysJQAO8A7B+krPpDCUzfMoZCz3Ozi?=
+ =?us-ascii?Q?LqwI/KZYsD10cgcdJ8bhdt1Nf+636whci4HP4YIvoQ4kcH7YZvdon/lkY9FA?=
+ =?us-ascii?Q?gkc6z9EPkSGOwrw9xrSI8eGR71Y5PQaMC5PaavHrVvItwcdvq5kWDy6Y78OB?=
+ =?us-ascii?Q?LhUUGj8exzZPsvIaijodv+fdLCo+WAtQwyom6ypTRDV0Y/+ReHPJ16NY3N04?=
+ =?us-ascii?Q?aqTGwHqbNeP9PuEqcIeQiDUokTp/k2gGwfk1hUm2lG3WfYZNwqnMWNClsjqs?=
+ =?us-ascii?Q?Lwy2KpiE515IyA/ByVwq+XGCZi8UgNLAf41mOc3YnRu1opoAaTRPq6s2e80W?=
+ =?us-ascii?Q?fdS0QAUOgCZUhLeEwgIiYnhN88y12Pceu9YHyx2yRSElA6b6NbTftwYA0UGq?=
+ =?us-ascii?Q?1KdB9EpWDSL5cQ1xDPieAQa1xYkgFg8Xd/tkzvinXStBK6/Y7aiqrcy6sFl3?=
+ =?us-ascii?Q?Yk/OR8wM/Oh0asg+1w0SFg7sOyXZrZmMZP6PyfPVyPVFL5UI/oBOw8DWqXBr?=
+ =?us-ascii?Q?fL3uh50mFuPFdKMLymHaIlgKkUogWyQJeSKBK3TwgKM85Oy/EdsWs6rmaswO?=
+ =?us-ascii?Q?lyY4rhDiq0MslZBfCsJvzquIyhRF+vA87pFNzDGrkdhTd1+acEKSFRgBHxAW?=
+ =?us-ascii?Q?rp6Yw6s5S6X1+BWAB2VcvGHsCzjg2aZjF9Y+bK4iiGY+ZMQ42JUMjgaacF6l?=
+ =?us-ascii?Q?KgKpKLMxwtaJZzl26kQE8xhtki5ut41s3Gd7fFQmGGwIOsRmY9+Cutd3cuL+?=
+ =?us-ascii?Q?RLf0+KwSapKerq8hBbkFMtX4Lcuq3BdTwla8rUApLYxwbTPDJxx4Oh+tzqjq?=
+ =?us-ascii?Q?0RU5BgXUlFF7Ek4WkRdu1qls9h9PpmIinIQ+BCl+WjWIjBBk3VqbBjsKX/G7?=
+ =?us-ascii?Q?u2Wj52RAeU4eX3NKkdoWhNw4/gDliAsU/i9oM2qyTtmkVVbp5IXf0ymlNPPL?=
+ =?us-ascii?Q?2qoz9zZUaanW5z76+StzYX4NUkHx2WoQ/uo8OfroBOfxoNv11WeX/uL96KDT?=
+ =?us-ascii?Q?w3rYSTm6h0hn4Bv24+oL8+vCRx9cfZluZQp1AiO1dDxBUTHB18eD4x3x03w1?=
+ =?us-ascii?Q?LE0WF7AQ+gVzzW1uLqECe9Uy0a13bzy2I/Le97mMjoqzJsvABAlI6Ub89V0a?=
+ =?us-ascii?Q?3sjpme09RcrfTAnygRs=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 03:30:27.1174
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 03:30:23.7947
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0800ba8e-867c-4d2f-a883-08de3de5c9a2
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2daef49-d1a0-455e-4dcf-08de3de5c7a5
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	CH3PEPF00000018.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7090
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4083
 
-The with_falcon_mem() method initializes the 'imem' and 'sec' fields of
-the NV_PFALCON_FALCON_DMATRFCMD register based on the value of
-the FalconMem type.
+The Turing/GA100 version of Booter is slightly different from the
+GA102+ version.  The headers are the same, but different fields of
+the headers are used to identify the IMEM section.  In addition,
+there is an NMEM section on Turing/GA100.
 
 Signed-off-by: Timur Tabi <ttabi@nvidia.com>
 ---
- drivers/gpu/nova-core/falcon.rs | 16 ++++------------
- drivers/gpu/nova-core/regs.rs   |  9 +++++++++
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ drivers/gpu/nova-core/firmware/booter.rs | 28 ++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
-index b92152277d00..44a1a531a361 100644
---- a/drivers/gpu/nova-core/falcon.rs
-+++ b/drivers/gpu/nova-core/falcon.rs
-@@ -454,7 +454,6 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
-         fw: &F,
-         target_mem: FalconMem,
-         load_offsets: FalconLoadTarget,
--        sec: bool,
-     ) -> Result {
-         const DMA_LEN: u32 = 256;
+diff --git a/drivers/gpu/nova-core/firmware/booter.rs b/drivers/gpu/nova-core/firmware/booter.rs
+index 1b98bb47424c..86556cee8e67 100644
+--- a/drivers/gpu/nova-core/firmware/booter.rs
++++ b/drivers/gpu/nova-core/firmware/booter.rs
+@@ -356,14 +356,30 @@ pub(crate) fn new(
+             }
+         };
  
-@@ -516,8 +515,7 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
- 
-         let cmd = regs::NV_PFALCON_FALCON_DMATRFCMD::default()
-             .set_size(DmaTrfCmdSize::Size256B)
--            .set_imem(target_mem != FalconMem::Dmem)
--            .set_sec(if sec { 1 } else { 0 });
-+            .with_falcon_mem(target_mem);
- 
-         for pos in (0..num_transfers).map(|i| i * DMA_LEN) {
-             // Perform a transfer of size `DMA_LEN`.
-@@ -551,21 +549,15 @@ pub(crate) fn dma_load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F)
-                 .set_mem_type(FalconFbifMemType::Physical)
-         });
- 
--        self.dma_wr(
--            bar,
--            fw,
--            FalconMem::ImemSecure,
--            fw.imem_sec_load_params(),
--            true,
--        )?;
--        self.dma_wr(bar, fw, FalconMem::Dmem, fw.dmem_load_params(), true)?;
-+        self.dma_wr(bar, fw, FalconMem::ImemSecure, fw.imem_sec_load_params())?;
-+        self.dma_wr(bar, fw, FalconMem::Dmem, fw.dmem_load_params())?;
- 
-         if let Some(nmem) = fw.imem_ns_load_params() {
-             // This code should never actual get executed, because the Non-Secure
-             // section only exists on firmware used by Turing and GA100, and
-             // those platforms do not use DMA.  But we include this code for
-             // consistency.
--            self.dma_wr(bar, fw, FalconMem::ImemNonSecure, nmem, false)?;
-+            self.dma_wr(bar, fw, FalconMem::ImemNonSecure, nmem)?;
-         }
- 
-         self.hal.program_brom(self, bar, &fw.brom_params())?;
-diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
-index 82cc6c0790e5..c049f5aaf2f2 100644
---- a/drivers/gpu/nova-core/regs.rs
-+++ b/drivers/gpu/nova-core/regs.rs
-@@ -16,6 +16,7 @@
-         FalconCoreRevSubversion,
-         FalconFbifMemType,
-         FalconFbifTarget,
-+        FalconMem,
-         FalconModSelAlgo,
-         FalconSecurityModel,
-         PFalcon2Base,
-@@ -325,6 +326,14 @@ pub(crate) fn mem_scrubbing_done(self) -> bool {
-     16:16   set_dmtag as u8;
- });
- 
-+impl NV_PFALCON_FALCON_DMATRFCMD {
-+    /// Programs the 'imem' and 'sec' fields for the given FalconMem
-+    pub(crate) fn with_falcon_mem(self, mem: FalconMem) -> Self {
-+        self.set_imem(mem != FalconMem::Dmem)
-+            .set_sec(if mem == FalconMem::ImemSecure { 1 } else { 0 })
-+    }
-+}
++        // There are two versions of Booter, one for Turing/GA100, and another for
++        // GA102+.  The extraction of the IMEM sections differs between the two
++        // versions.  Unfortunately, the file names are the same, and the headers
++        // don't indicate the versions.  The only way to differentiate is by the Chipset.
++        let (imem_sec_dst_start, imem_ns_load_target) = if chipset <= Chipset::GA100 {
++            (
++                app0.offset,
++                Some(FalconLoadTarget {
++                    src_start: 0,
++                    dst_start: load_hdr.os_code_offset,
++                    len: load_hdr.os_code_size,
++                }),
++            )
++        } else {
++            (0, None)
++        };
 +
- register!(NV_PFALCON_FALCON_DMATRFFBOFFS @ PFalconBase[0x0000011c] {
-     31:0    offs as u32;
- });
+         Ok(Self {
+             imem_sec_load_target: FalconLoadTarget {
+                 src_start: app0.offset,
+-                dst_start: 0,
++                dst_start: imem_sec_dst_start,
+                 len: app0.len,
+             },
+-            // Exists only in the booter image for Turing and GA100
+-            imem_ns_load_target: None,
++            imem_ns_load_target,
+             dmem_load_target: FalconLoadTarget {
+                 src_start: load_hdr.os_data_offset,
+                 dst_start: 0,
+@@ -393,7 +409,11 @@ fn brom_params(&self) -> FalconBromParams {
+     }
+ 
+     fn boot_addr(&self) -> u32 {
+-        self.imem_sec_load_target.src_start
++        if let Some(ns_target) = &self.imem_ns_load_target {
++            ns_target.dst_start
++        } else {
++            self.imem_sec_load_target.src_start
++        }
+     }
+ }
+ 
 -- 
 2.52.0
 
