@@ -1,137 +1,363 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011025.outbound.protection.outlook.com [52.101.62.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2970D1624DF
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 07:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766044731; cv=none; b=K2UolGkSzpkHmYK9zwPlZ/A7+3czdlgBOP3FdGW7znLUIuu5zJVPQrm3UpsYpFRiJPYuWNDm4FwJXtaKYOO7UBwCVzPETnxtLLcnBgks0d1nG0TjVLza4fiX5BTD+3W/kP1irYqERYzuv5KEz8ZBHpgUVb0gzbXjy9zB7mVQzMM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766044731; c=relaxed/simple;
-	bh=ad4JtdXB10kqAwoic4P8PTyGVURX0Aky+Y9cfkr+8hM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Sjj+KnfE5fQKHOItMK3GzTg/6UpX/jHe5tvifX9CQtMNky7baODGl++NfcDqkrAOnbamx4Jj9adMaSYCqkiJ2b6/6JVrTSodOpMW9rkDGkXYDSTLQTktb/O7XhUUHzKTfWCifI/ilTXkHBj5dNxa908sx0UPeaoZK38T0FPwUbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SdEdXNmV; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595AE220F3A
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 08:01:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766044875; cv=fail; b=PlDHQuKtI3p014EXUYy9It2Xds/MiE7nvns/USLsaRsQZSpnHN009ZGAcsHxa1hGIy8K54DbL6bPjlcuy2eeRjvyUN7yJvMJhyvtL/UJhqJmES+W6GBRoCQP262zToG/HT5z/V4ejXukgDR4jqiGlpuZAs2Gz2oDE79HyE2Jn78=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766044875; c=relaxed/simple;
+	bh=tDbLXO0pPo8M55rJWRQOed/TsGcJxdIC5bLj0t2wlLE=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=WJG5DdkXObpKuMWFdmZ7FJpvqXARcXJbV0aRjAa92qW1k7f7OsiivICrYZN9zoqetrbuNC7S2r7fwAo1KJG5vgewEpiR1t56USqsbCQ8BwbPRlX3a1k3CzMuPJYVvb+CFeLULT4vGZxmaw6daQrjaqvMvSP686+yc9+MgPUhMiw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YsgYwYx6; arc=fail smtp.client-ip=52.101.62.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SdEdXNmV"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477cf25ceccso3540895e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 23:58:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766044728; x=1766649528; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=md62W1YsJCgLupdlzTMxr2/ROOaivn6j126LqmfDgw8=;
-        b=SdEdXNmVx66xKqdkBEVLZT3eB3kxCKWVa82X+lKSn9iDPaYzH6lCnck4XGRjRm1zu0
-         8AdSwOeWFCQLa/a0CD3pI3EsvUIfrrf3wERyP8T99w0jeEkn5kZX3Easu3DfYviXn2U1
-         Ubgk0mh2kkUWhe7jYgt7jgWR5B7VBxhHE/X3UW6qrcNJxs+Vc5dT1rdmNXiAa+Yefna3
-         DueNy/ZjL2mf9MeIryrBw5tHa2YVZcJSJNWg+CePTAXlgvIJdkzyMgrZGol9ZsO0t7oU
-         dL8z+D3u4nISKVI+TQ2634vBQ85yd2rev/AdG3e+pfzw7qcXQcK2gEx/heEQ1EZWr1Cp
-         SDDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766044728; x=1766649528;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=md62W1YsJCgLupdlzTMxr2/ROOaivn6j126LqmfDgw8=;
-        b=BU9fa59u4LPQMG0mk2d2jVUKR8fURhwmC0H8l6V2ACxqLqxMRWSTPD7MZ8SQGo8Gde
-         RQcM4xQmAmHxRPKNW4mxrGY/CuVDIYGpVbx37kPBZWjQUx9emyXRqI0JsHjGWSmxdUls
-         gTOziOLo5c+rv5ovxpGGa2DYxZ1OjieL9MEKDpuGKniKt4t/kifrpQEExcvHcfjTnwBc
-         E/Y4s5xug+HdZf6m78EpdaVRLDXHk1ucgcxHxuuO1Q4KYrHaC+L90Ze3hmqXhnAUtk/i
-         AgoYnwVp5AWhL12ZkXWGMLjvBw7qL2PI6z74NWCEXAumKdWS5co34jbBYDsyEXojVXZk
-         9dwA==
-X-Forwarded-Encrypted: i=1; AJvYcCWPUtQTJFi0cdtt68MMUUjhxRnAzoR3YZwKL16LSHrO199nbSyRrb+Z4wxDRnkKyGeI9RuBxRmhqYQocn3RDw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxs2+A2GUST6lr0G2nXupscCnTQmYoxAEFqjH8ikxjd+kDz/2o+
-	ZNp1oGIK7Nu5L+drumIVP5odiizUS+nkE9bvrmdJfMqAOHDThuvgCedXu6+miRiZDB3Cuci5DRX
-	XqS3p3Go9WwXrTAE9ow==
-X-Google-Smtp-Source: AGHT+IFw33aMgISUv1AuO62yzLKJGOLFribtjM3JjoifAhhjILOt1o93zREKql7/vqOneQJ7FTT1vj957zJB/m8=
-X-Received: from wmbd24.prod.google.com ([2002:a05:600c:58d8:b0:46e:4c7c:5162])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8115:b0:477:a36f:1a57 with SMTP id 5b1f17b1804b1-47a8f8a9c26mr206893945e9.3.1766044728614;
- Wed, 17 Dec 2025 23:58:48 -0800 (PST)
-Date: Thu, 18 Dec 2025 07:58:47 +0000
-In-Reply-To: <aUMcTWJ7ag5VJxnq@tardis-2.local>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YsgYwYx6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gn5N1JJOto0NP+6imV+5lh9Jd47xWC4y37BlwnCytFxfnmbsILEcqBx9QzIYgbclH0ff8+wSaOdzm1Jl2BNt80T4qTknJQSWJwltSrUUq1Mykb85urp3QTrco3ebugq4DTSTLEn8W4wQw3JiZbym0aewhPSKWMab2duQAa9l3jWKO8eMM4IST9wEisJhZH2vUNZz3ZACY6ppHXmfj4QAarCy6T4Rvgop9n0SiqV/xc09PWDgxEO2YBKK1Dm1BBYr2LJDW5nABDS82qAJ6e2wVCmLWYl0cxGZfqEPC1mYxVgMaCfLcbS4ame9NzvrhnOCJekJNMeRZ8R/IILFhzqrEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SAgIu0is338yIVUnOxFhANTdlUmU2ihOc5BSokHwAfI=;
+ b=RATI6pxjQIDtHdKHGVZeGW28jLUl0aW5u+MHjuKnQ+hMZk3JJnkiSTxzPNVbUBvTXRu6SvQGAifry280li+n15xqI4ez7wEyy+fpxeO7d8cXMmvD78Yhu+bMRDU9q14CR9cr/JNrkHz39H+7vTQ1nufkKTe0f4vHbCfFOr6+DivqV1hJE5QbD3RP2ys5OM9SXFQSRe14F8Zem/6P+qAA4rVezTCgSBljd7asdTOSYnh8clAb2F3qrYxOwXolMX+mLg2+uqm32jsqDVHb8looI2pYoZT6J+g/9c2J422v26V62I8ndl1144vrWgegctPR2zneMl6TWL42WOuhg0tRSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SAgIu0is338yIVUnOxFhANTdlUmU2ihOc5BSokHwAfI=;
+ b=YsgYwYx6/tocmJk7Z8U2w7AzcVXhvweol69INN0wzazFsT/hcGg/wp64oGtNTt5P7YbixTq9lDtp3HguGMH6F5ZGQ8EfEwZ1BLAPzeJ6ISxjC98x3FcApyFZK5olj/dAEMtl/Zfi9xc08ngUkrw+0dC24WjuIxXJHAbFLwEliPqlY8EN3eji6x0uucpDngdIZRwgRu5IVH/sjvj+DsT7QPQy/ywDl9tuXUdNsdFzdk4sCySHH+pNDHLvQrWIt8x5u2fgLfKXj1cAKp4CtfeHnQvXsFdnE//euT4SbORCb6woy0nTAAXvBBVsNkzf4js51lQj2O4egUNkp7Nw44TNRQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MN2PR12MB4048.namprd12.prod.outlook.com (2603:10b6:208:1d5::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.7; Thu, 18 Dec
+ 2025 08:01:09 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
+ 08:01:09 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 18 Dec 2025 17:01:06 +0900
+Message-Id: <DF16NN6KJKK2.FFY3S0XOV9IN@nvidia.com>
+Subject: Re: [PATCH v4 09/11] gpu: nova-core: add FalconUCodeDescV2 support
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Timur Tabi" <ttabi@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251218032955.979623-1-ttabi@nvidia.com>
+ <20251218032955.979623-10-ttabi@nvidia.com>
+In-Reply-To: <20251218032955.979623-10-ttabi@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0099.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b4::17) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251216000901.221375-1-fujita.tomonori@gmail.com>
- <aUMWb2VvA48s0jur@google.com> <aUMcTWJ7ag5VJxnq@tardis-2.local>
-Message-ID: <aUO0N4s2ksf0cotX@google.com>
-Subject: Re: [PATCH v2] rust: sync: set_once: Implement Send and Sync
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, ojeda@kernel.org, a.hindborg@kernel.org, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, dakr@kernel.org, 
-	lossin@kernel.org, tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN2PR12MB4048:EE_
+X-MS-Office365-Filtering-Correlation-Id: 102ffa42-9c9b-4b4a-160f-08de3e0b9a88
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ekZFSXZvY2t6UC9nZGUwMHlHWEhqZWtTVHd6VUU3TnQ5c1l2MXlPZmJ0Y1dE?=
+ =?utf-8?B?Q3JKdUNZS3pvSXVMOWY1Nmp1eFE1M1lPb3NwY3R3bE5wd3lvclNUOWVweHVs?=
+ =?utf-8?B?MjBqSnU1Z1cyOGdEaDZjZWZjYm8xNzVTM3lETXhaMXRZQUx6eWJxZXNLYmNI?=
+ =?utf-8?B?Rk1YSm1nTjVtbEMwNXJ4MzllaVVVcUd0OHFud3ltbFBSYzNRZEc2NU4vbUlU?=
+ =?utf-8?B?dnl6TEttYmZPd081NXdoWE52Y2ZpNEM3bDVDTDNhRDgyR0U4a281OVdjZE5J?=
+ =?utf-8?B?UFJSUXpKV3ZkRVFwUFVLd0VWQUFJZGtTS281N2Fpb0VLM0JXeWp2TU04Qzh1?=
+ =?utf-8?B?d1NRbzhZL2M2OCtPUlkrK1Y4UnRqMWR3S3lrcEJkR0NjZkV6UGJQV2owRmtH?=
+ =?utf-8?B?WUY3UHpkd1A2dUVrMEh5b2dobmlYMGdmKzQxb0RPNCsrZXRUeVRRbU1QcEdG?=
+ =?utf-8?B?NHZlVVpTSHR1aEtDWWowRSs5bWlXWkJVZWlnTVlRSmg5ZXErZ25lSkpMMFBo?=
+ =?utf-8?B?T0RMODg0M01vRTdZRUQxTDlLbzd5MW5aZFNLS1AvVHNVZG5CTldPNlJXU29C?=
+ =?utf-8?B?NEdLMzlLWWx1UUhKaVRsQmtXS25ONnhFUjYzSzdIemJPNyswMVRkNWx1Yzl3?=
+ =?utf-8?B?WkJDK3ZUT3JSUEFDK1lnLzFvQWx5eHFTMXlIWkJ1Z3NRY2VrZm41d3htN0pw?=
+ =?utf-8?B?UDF4YkRObDh4d2p3bnhxZ3VBRitQdGF6SjZsaThFS3ExdVdYM1AxZUJoMkwv?=
+ =?utf-8?B?eWZ2Kzc2WG42N2VITHFMaUNUeTJkWWlPYmdQZXFrOFNlcHQyb3NNdlBrdjJs?=
+ =?utf-8?B?SHFPYnRNa3ZJUFVUcHlVNHlZeWc2T3VUZkFuUkRyZWpyaTVKVlU4L2N5N0tu?=
+ =?utf-8?B?MzErUVNNa3JpL3gzWXZCVEhhM0EzczRFNmZiUWpENndnb0hTWThyRG1VdldH?=
+ =?utf-8?B?Z0I5dDBqYkNYZC9qZGdNYXBSaUdsN1l4S2NvUmxjTEliamx6bGk5VVBtMTFi?=
+ =?utf-8?B?NmRYQ1k2RTNnTEk5dTg5b1FyZE5hK283bzdBVHZjbmNrQzJuZkIwWFVsMk9Y?=
+ =?utf-8?B?RTg0K1Ria2ltOU5ZdExIMXZVVXRMYnRtM0VlOCtBQ1BNZlFDNzlpRGtzK2Rs?=
+ =?utf-8?B?R0lyNURRMlVLelNaeG1wckRJNHNTd01vdUIrbmR2MVFvVTVWUVF6cXFXb1hF?=
+ =?utf-8?B?Ym82QXlDbUNoakpiMzc0d2EvN2RuMmFkUXQrQTlOUlFDa0crb0diTUpydnp5?=
+ =?utf-8?B?TEVYblJMTVBUTTJCdENlOWlaY25mYldKa3d1R001K0Facm1SZndiOTRrWWNr?=
+ =?utf-8?B?T3VqUi9TV3hzWUVRQlJQbnlTWWk4WTdBSE11SnVpemxUdEx4RXRvcG5Mc0Fv?=
+ =?utf-8?B?MmdHbEF6cWZ2M2NYUGFodHhXNzJ5R2ZEc3BCREpXd1o4VFZwV09QcEJRVGMy?=
+ =?utf-8?B?ZUllM0ZmNDVaYi9Ya05YQVZSTDlCbThteVVmWTUxYzNpQ0krM2RnbUJhcGk5?=
+ =?utf-8?B?c0VoK0VXdmtJZ0RQWnBhK3FMeVN0UHlzaHV5dHhvb0o1UGs2MUlFTFNMdkpL?=
+ =?utf-8?B?VU1HT1QwWmkvYy85Lzk0bmFDdnZ6c3gvSVZPWGJwYjcrSzZxdElkRVY1MmFa?=
+ =?utf-8?B?WG5qUTJVemoxU3lxdkE4TlBPckhGclYxZ2hVYXBySlpLb3ltV1AwcWtUcmJu?=
+ =?utf-8?B?d0xhT0RUTkFFRWRNdzJHOC9iMWxJWThna051QkRKSTVKaWdoakNGZUQyYzZE?=
+ =?utf-8?B?R25kdHRHV010L3ZUZkhzOEVKTEFMQjF2akVISS9Ec2dBdE5CVlAxa3dmeEhy?=
+ =?utf-8?B?dXVWSkx3TzFmZnlYWTRhWEgrRk5RZHRuZmVxRlNjdHpZeFkyNGhlQXA0eFpN?=
+ =?utf-8?B?NmZHVndVencyQnpVNTZNQ0hadWs4eTBoL21ZL3pJS1ZrWkJLWkFGZ1Y5UDMv?=
+ =?utf-8?Q?HQt5ZLYkxO/9Wp25SJ7nViP+WCI061g0?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YlRCRGg4dWRQRzQzNDV6ejYzMDBJWVpPN2E4NVlTVXFkZDZldlRMbFFDaVZY?=
+ =?utf-8?B?THg1MG5hWGpvT2wzVk9HRkJXWVBpeVdtbjg5STZHYmczRlpWd0ZmNUt2aDcx?=
+ =?utf-8?B?K2NxQzFnTWJvbzRLbmp5RDNBSE9TekdMaHJpMytmbldEMXVJRnJXTkhGZE5K?=
+ =?utf-8?B?MkVidmxXVERRRzcvOWFyL2VhTGhTZTBieTU0MUNhdThUUHNUaU1mWUkrcjhS?=
+ =?utf-8?B?TURNYS9IVHVEL0ltYllIMC9OVys5MlVhaFk5dkJjaS8veUxtakxhZUJHNExS?=
+ =?utf-8?B?endmc05HZkUvSUpJbHkzNXk4TkRoY2RJVjJ0YnRjSWwwUkF5bVJlK3lGWDJy?=
+ =?utf-8?B?c05pbFBYaFYrMm9FTFprTlZnQ3EwekZDRXdXQjlabmNMUHNOOFoyYjhFTEdu?=
+ =?utf-8?B?UTdpSzc0alJJUXowekppVGhiTmIrdXNycWIvZElERk5KNjYwenN2L0IyV0p6?=
+ =?utf-8?B?K2hneWkzcVBCL0IzalBiRnB5cmY4aTFmV3NxNzQyM2NPdE9lZUxvS0k1OTNS?=
+ =?utf-8?B?Y2JuVXFpSmloY2c4dU5TSEZubTY4QUxLc1ZnWEc2MVlIdHNVbUI4dXFiUUdw?=
+ =?utf-8?B?TG82SHVrNTR4aGZNdnQweHBQR202SHM2cXpKY3Nodm1tMXE1YVV5MHJCWlUw?=
+ =?utf-8?B?bWJjNGc4YU9vR2NPOFhyQ2ZwSEp5ZExSUXNOS1pyVW14YnRrWUh4ajc4cHR3?=
+ =?utf-8?B?eWNidVFxalNRcWhYcGVFeWZxdlZNT0ZQNnB4M1ZDT3BBNmgrOEtJNXhadWY2?=
+ =?utf-8?B?akZqSExwYUdxeERQTjN1M0JZc1BsYWlpQXlBdjFrRmF1eFlvWStsQ25rUlRG?=
+ =?utf-8?B?NDQxQU9nMW00R05hMlRLcEFhaDFhdmlUM2lJM0FSSGdMR2lZQWNnSGk0N0gv?=
+ =?utf-8?B?bzc4aVBuZ0ZJZlFkVHpSMmtEVDNBSGxXZkFuSThUcXBqZ0NyYVV2dTdZc2Fy?=
+ =?utf-8?B?ZTg2SUJUSTQvbEdmZVg0a2VZWXJQUUxCOTM0RlpNdXBEOFBTQXNmZjNXdUNq?=
+ =?utf-8?B?VUt6ek9jcThXL2xjeFB0V0ltdTdDTEh3UCtKeTB4U2Q2ZFFPNlltUkxxOEdC?=
+ =?utf-8?B?ODVyTzlRMzcySWVDS0I0V2k1bHcxUnlnY0lZcXVPZ0ZKZzFRTXJwNkcybmc0?=
+ =?utf-8?B?UGU0ZVpUQzB2ZXFVSzFXcXIyVksyQ1ZyS3Iwa0JzT2NNNEhrL240aGQ1VzdU?=
+ =?utf-8?B?Nk9ZNUJucnFxKzdJeE9Pc0hzV0tRL05VeklDQ0ZzeTJidjFiWUl5Vjc4Y0pm?=
+ =?utf-8?B?dDYvU3czUmdhcG9HK3Q5ZDY2S0dMbzNSZm5lTnJqeENhWkN2aWNqR0hDZk0x?=
+ =?utf-8?B?VkZKeitRMmhZeEc3KzN2Y2tjRStpWkIrN2Vsa3VxOEd4SERtOVdjU1RUU1FH?=
+ =?utf-8?B?b3FTRUVpV2g5MkNxS2s4SG9pMm0xRWFsRGg5cElMTjZ1RFdNSmp3bm44K3A3?=
+ =?utf-8?B?anVCVFhlTmJMM1pwQmVjQi9MZHFrYUpNNG10b1Q5cXFBRWhTNkVna0k0VDR6?=
+ =?utf-8?B?ZmgvY0NPRkFqZHVNeDJNVDlhWDk3MVVjN3poMDRVTGdvMkJLY0hpc0dVdHg3?=
+ =?utf-8?B?NEVycWpBMVZ1RUtITVhVNEp3RmV2NmhlbFpHNjJFbnErR3NrQTg0RWQ1QjZS?=
+ =?utf-8?B?Z3pFYkRQdTlrSzVudjhHbkhqSDlKWDBLVWxDNUdmWGF6VmVpQU1xNC9OY3FY?=
+ =?utf-8?B?K2RXZkJOMU5wTyswWnp3c0F4WVlCZVZlTEJTTk11NFVObTNBbVI4MmpxRnhW?=
+ =?utf-8?B?OUhpRVljSWk0RVU0Zk1vVTRnU2RCcGJVRmxoaWtaR1JNOTlsZERjcXUzS210?=
+ =?utf-8?B?QkhlS2t2TEticGxhUXllVHdITkFRaU9ET05iOUtjMUpjTHRYZ09Ma0tiNDdF?=
+ =?utf-8?B?YUMrV1FpTVRDUTVtQnh0Z3ZKaVNpalBKMlRiL01DemcyTW52V0U2VVY2NGlq?=
+ =?utf-8?B?dXhlYjJnZEtEVFFYdXQrbDVHUk9aZDhBYzVRa2J0TE9yNlZWampIdkRBTndu?=
+ =?utf-8?B?Z0hTdEJnOEp0bVdUV0JIeC9WcThMNHVGUFk2Y21md0FZU0ZPK1dnckFFK0NR?=
+ =?utf-8?B?MjRIa3duVCtSRGxyOE9rWVlqdlR1M3RTTExmeHdqUjRkUGpVYW1CbUlwblFB?=
+ =?utf-8?B?eFVEU0xGSTlEdGVycE9ZN2lERUdmSFg5MFYrR1BaTmtRMW02U2lsb09INXo5?=
+ =?utf-8?Q?Jfv0y2ZsSP59AUWUSQ0iIGcE7rR0xRB1aRyHtyCWX93L?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 102ffa42-9c9b-4b4a-160f-08de3e0b9a88
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 08:01:09.2762
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BNIAy2/qu0h1myAle/ElQuiIpez89c4KbKNEIBmGRAc59nUvbT25WMZ3CFCvNJ8u63ML712vHSkTlxPfMLgATA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4048
 
-On Thu, Dec 18, 2025 at 06:10:37AM +0900, Boqun Feng wrote:
-> On Wed, Dec 17, 2025 at 08:45:35PM +0000, Alice Ryhl wrote:
-> > On Tue, Dec 16, 2025 at 09:09:01AM +0900, FUJITA Tomonori wrote:
-> > > Implement Send and Sync for SetOnce<T> to allow it to be used across
-> > > thread boundaries.
-> > > 
-> > > Send: SetOnce<T> can be transferred across threads when T: Send, as
-> > > the contained value is also transferred and will be dropped on the
-> > > destination thread.
-> > > 
-> > > Sync: SetOnce<T> can be shared across threads when T: Sync, as
-> > > as_ref() provides shared references &T and atomic operations ensure
-> > > proper synchronization. Since the inner T may be dropped on any
-> > > thread, we also require T: Send.
-> > > 
-> > > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > > ---
-> > > v2:
-> > >   - update the `Sync` impl to require `T: Send + Sync` with the comment adjusted
-> > > v1: https://lore.kernel.org/rust-for-linux/20251211230919.1303926-2-fujita.tomonori@gmail.com/
-> > > 
-> > >  rust/kernel/sync/set_once.rs | 8 ++++++++
-> > >  1 file changed, 8 insertions(+)
-> > > 
-> > > diff --git a/rust/kernel/sync/set_once.rs b/rust/kernel/sync/set_once.rs
-> > > index bdba601807d8..139cef05e935 100644
-> > > --- a/rust/kernel/sync/set_once.rs
-> > > +++ b/rust/kernel/sync/set_once.rs
-> > > @@ -123,3 +123,11 @@ fn drop(&mut self) {
-> > >          }
-> > >      }
-> > >  }
-> > > +
-> > > +// SAFETY: `SetOnce` can be transferred across thread boundaries iff the data it contains can.
-> > > +unsafe impl<T: Send> Send for SetOnce<T> {}
-> > > +
-> > > +// SAFETY: `SetOnce` synchronises access to the inner value via atomic operations,
-> > > +// so shared references are safe when `T: Sync`. Since the inner `T` may be dropped
-> > > +// on any thread, we also require `T: Send`.
-> > > +unsafe impl<T: Send + Sync> Sync for SetOnce<T> {}
-> > 
-> > The reason you need Sync is because &SetOnce<T> allows you to access &T.
-> > It's not because atomic operations are used.
-> > 
-> 
-> I think the point here is that atomic operations contribute to the
-> safety of sharing &SetOnce<T> between threads, if the synchronization
-> part of SetOnce is not done via atomics (or any other synchronization),
-> then SetOnce is not Sync. In other words, making `SetOnce<T>: Sync`
-> requires all the following:
-> 
-> * The internal operation is proper synchronized
-> * T is Sync because a `&T` can be derived from `&SetOnce<T>`
-> * T is Send because copy() may create a `T` on another thread.
-> 
-> (hmm... the third condition does looks weird to me, because if `T` is
-> `Sync` and `Copy`, the copy on `T` should guarante the drop of the
-> copied `T` is safe, otherwise `T` itself is not `Sync`. Gary, do you
-> have an example in mind that requires `T` being `Send` for `SetOnce<T>`
-> being `Sync`?)
+On Thu Dec 18, 2025 at 12:29 PM JST, Timur Tabi wrote:
+<snip>
+> +impl FalconUCodeDesc {
+> +    // Return trait object, the only match needed.
+> +    pub(crate) fn as_descriptor(&self) -> &dyn FalconUCodeDescriptor {
+> +        match self {
+> +            FalconUCodeDesc::V2(v2) =3D> v2,
+> +            FalconUCodeDesc::V3(v3) =3D> v3,
+> +        }
+> +    }
+> +
+>      /// Returns the size in bytes of the header.
+>      pub(crate) fn size(&self) -> usize {
+> +        let hdr =3D self.as_descriptor().hdr();
+> +
+>          const HDR_SIZE_SHIFT: u32 =3D 16;
+>          const HDR_SIZE_MASK: u32 =3D 0xffff0000;
+> +        ((hdr & HDR_SIZE_MASK) >> HDR_SIZE_SHIFT).into_safe_cast()
+> +    }
+> +
+> +    pub(crate) fn imem_load_size(&self) -> u32 {
+> +        self.as_descriptor().imem_load_size()
+> +    }
+> +
+> +    pub(crate) fn interface_offset(&self) -> u32 {
+> +        self.as_descriptor().interface_offset()
+> +    }
+> +
+> +    pub(crate) fn dmem_load_size(&self) -> u32 {
+> +        self.as_descriptor().dmem_load_size()
+> +    }
+> +
+> +    pub(crate) fn pkc_data_offset(&self) -> u32 {
+> +        self.as_descriptor().pkc_data_offset()
+> +    }
+> +
+> +    pub(crate) fn engine_id_mask(&self) -> u16 {
+> +        self.as_descriptor().engine_id_mask()
+> +    }
+> +
+> +    pub(crate) fn ucode_id(&self) -> u8 {
+> +        self.as_descriptor().ucode_id()
+> +    }
+> +
+> +    pub(crate) fn signature_count(&self) -> u8 {
+> +        self.as_descriptor().signature_count()
+> +    }
+> =20
+> -        ((self.hdr & HDR_SIZE_MASK) >> HDR_SIZE_SHIFT).into_safe_cast()
+> +    pub(crate) fn signature_versions(&self) -> u16 {
+> +        self.as_descriptor().signature_versions()
+>      }
+>  }
 
-I guess in general safety comments for Send/Sync are a bit tricky ...
-you really need to argue that the entire API is designed correctly to
-show that having &SetOnce<T> on multiple threads in parallel is sound
-(in the case of Sync).
+I wanted to make this comment on v3, but took the time to write some
+code to validate the idea so this has slipped to this version. :)
 
-Alice
+This whole impl block becomes unneeded if you leverage `Deref` as a
+replacement for `as_descriptor`:
+
+    impl Deref for FalconUCodeDesc {
+        type Target =3D dyn FalconUCodeDescriptor;
+
+        fn deref(&self) -> &Self::Target {
+            match self {
+                FalconUCodeDesc::V2(v2) =3D> v2,
+                FalconUCodeDesc::V3(v3) =3D> v3,
+            }
+        }
+    }
+
+What this does is that it makes all the methods of
+`FalconUCodeDescriptor` available automagically whenever the `.`
+dereference operator it used, which is basically what these proxy
+methods did.
+
+Then the only remaining method, `size`, can be moved as a default method
+of `FalconUCodeDescriptor` itself since all it does is call other
+methods from that trait.
+
+> =20
+> diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-c=
+ore/firmware/fwsec.rs
+> index e4009faba6c5..1c1dcdacf5f5 100644
+> --- a/drivers/gpu/nova-core/firmware/fwsec.rs
+> +++ b/drivers/gpu/nova-core/firmware/fwsec.rs
+> @@ -40,7 +40,7 @@
+>          FalconLoadTarget, //
+>      },
+>      firmware::{
+> -        FalconUCodeDescV3,
+> +        FalconUCodeDesc,
+>          FirmwareDmaObject,
+>          FirmwareSignature,
+>          Signed,
+> @@ -218,38 +218,59 @@ unsafe fn transmute_mut<T: Sized + FromBytes + AsBy=
+tes>(
+>  /// It is responsible for e.g. carving out the WPR2 region as the first =
+step of the GSP bootflow.
+>  pub(crate) struct FwsecFirmware {
+>      /// Descriptor of the firmware.
+> -    desc: FalconUCodeDescV3,
+> +    desc: FalconUCodeDesc,
+>      /// GPU-accessible DMA object containing the firmware.
+>      ucode: FirmwareDmaObject<Self, Signed>,
+>  }
+> =20
+>  impl FalconLoadParams for FwsecFirmware {
+>      fn imem_sec_load_params(&self) -> FalconLoadTarget {
+> -        FalconLoadTarget {
+> -            src_start: 0,
+> -            dst_start: self.desc.imem_phys_base,
+> -            len: self.desc.imem_load_size,
+> +        match &self.desc {
+> +            FalconUCodeDesc::V2(v2) =3D> FalconLoadTarget {
+> +                src_start: 0,
+> +                dst_start: v2.imem_sec_base,
+> +                len: v2.imem_sec_size,
+> +            },
+> +            FalconUCodeDesc::V3(v3) =3D> FalconLoadTarget {
+> +                src_start: 0,
+> +                dst_start: v3.imem_phys_base,
+> +                len: v3.imem_load_size,
+> +            },
+>          }
+>      }
+> =20
+>      fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
+> -        // Only used on Turing and GA100, so return None for now
+> -        None
+> +        match &self.desc {
+> +            FalconUCodeDesc::V2(v2) =3D> Some(FalconLoadTarget {
+> +                src_start: 0,
+> +                dst_start: v2.imem_phys_base,
+> +                len: v2.imem_load_size - v2.imem_sec_size,
+> +            }),
+> +            // Not used on V3 platforms
+> +            FalconUCodeDesc::V3(_v3) =3D> None,
+> +        }
+>      }
+> =20
+>      fn dmem_load_params(&self) -> FalconLoadTarget {
+> -        FalconLoadTarget {
+> -            src_start: self.desc.imem_load_size,
+> -            dst_start: self.desc.dmem_phys_base,
+> -            len: self.desc.dmem_load_size,
+> +        match &self.desc {
+> +            FalconUCodeDesc::V2(v2) =3D> FalconLoadTarget {
+> +                src_start: v2.dmem_offset,
+> +                dst_start: v2.dmem_phys_base,
+> +                len: v2.dmem_load_size,
+> +            },
+> +            FalconUCodeDesc::V3(v3) =3D> FalconLoadTarget {
+> +                src_start: v3.imem_load_size,
+> +                dst_start: v3.dmem_phys_base,
+> +                len: v3.dmem_load_size,
+> +            },
+>          }
+>      }
+> =20
+>      fn brom_params(&self) -> FalconBromParams {
+>          FalconBromParams {
+> -            pkc_data_offset: self.desc.pkc_data_offset,
+> -            engine_id_mask: self.desc.engine_id_mask,
+> -            ucode_id: self.desc.ucode_id,
+> +            pkc_data_offset: self.desc.pkc_data_offset(),
+> +            engine_id_mask: self.desc.engine_id_mask(),
+> +            ucode_id: self.desc.ucode_id(),
+>          }
+
+For `brom_params` you are calling the virtual methods of
+`FalconUCodeDescriptor`, but on the other methods you are doing a match.
+I guess the reason is that using virtual methods all the way would make
+`FalconUCodeDescriptor` grow some more, but still we would like to avoid
+the match here.
+
+You can achieve this by adding the following methods to
+`FalconUCodeDescriptor`:
+
+    fn imem_sec_load_params(&self) -> FalconLoadTarget;
+    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget>;
+    fn dmem_load_params(&self) -> FalconLoadTarget;
+    fn brom_params(&self) -> FalconBromParams;
+
+And implementing them appropriately for the V2 and V3 headers. Then the
+methods of the impl block above can just become:
+
+    fn imem_sec_load_params(&self) -> FalconLoadTarget {
+        self.desc.imem_sec_load_params()
+    }
+
+    fn imem_ns_load_params(&self) -> Option<FalconLoadTarget> {
+        self.desc.imem_ns_load_params()
+    }
+
+    fn dmem_load_params(&self) -> FalconLoadTarget {
+        self.desc.dmem_load_params()
+    }
+
+    fn brom_params(&self) -> FalconBromParams {
+        self.desc.brom_params()
+    }
+
