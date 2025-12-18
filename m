@@ -1,119 +1,137 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCF42E7F20
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 07:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2970D1624DF
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 07:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766044620; cv=none; b=jqPCwn+3re1wsi+7QD+lSGpv9sszrMZuDCjXgNAdq0yhyNnCJRQYJJxWX2IOS+1+WcrdL/FnY2VlI14tVLWsag/IKBlGHIy/BboGbZd1yJg8jRsveRsFo39nvfC2rRDPUeAhRMTAa9XEtSBZIVvBo5CIFX6j+KgvLLeM1R43l9U=
+	t=1766044731; cv=none; b=K2UolGkSzpkHmYK9zwPlZ/A7+3czdlgBOP3FdGW7znLUIuu5zJVPQrm3UpsYpFRiJPYuWNDm4FwJXtaKYOO7UBwCVzPETnxtLLcnBgks0d1nG0TjVLza4fiX5BTD+3W/kP1irYqERYzuv5KEz8ZBHpgUVb0gzbXjy9zB7mVQzMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766044620; c=relaxed/simple;
-	bh=PfAi7Yk8IS7tVVJ58Ad93og1GcLCfL8n6xeo4xi24BA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ovfXGxl4GYbGonmu0FoJ+V50TfUh5Ihto40L56UNFjnz+t/DCnU4r28Uzx7MjVLNxXllEj+ZRQAaa6KNtQFG8UQobdsdiyPThkq4dEXJCoSveKxfIAcuVucjyEg05AuAXHjxsyvOTRGY/i/0515qr0VNhmGQ5veCdBQo7pbLOy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OIcA4GMU; arc=none smtp.client-ip=209.85.221.44
+	s=arc-20240116; t=1766044731; c=relaxed/simple;
+	bh=ad4JtdXB10kqAwoic4P8PTyGVURX0Aky+Y9cfkr+8hM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Sjj+KnfE5fQKHOItMK3GzTg/6UpX/jHe5tvifX9CQtMNky7baODGl++NfcDqkrAOnbamx4Jj9adMaSYCqkiJ2b6/6JVrTSodOpMW9rkDGkXYDSTLQTktb/O7XhUUHzKTfWCifI/ilTXkHBj5dNxa908sx0UPeaoZK38T0FPwUbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SdEdXNmV; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OIcA4GMU"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42fb2314eb0so216489f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 23:56:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SdEdXNmV"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477cf25ceccso3540895e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 23:58:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766044617; x=1766649417; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=reflEkCbL1WL57v2B5U9Chv9SZ2png695NbwK5Wv+aY=;
-        b=OIcA4GMU+sLxzpWhUgK12801MvN92zCsv1puB57DKTuN/ZUCXIXM1qBXOY9ZAdJH2v
-         QRDih2PTZ75ZXqvu/jI8W5EG2FPH+iEbtkgAC3rMaFX7jO27qUefKnk9gBpxA1ddTK7n
-         IfsrFULfoy5IzBlMX7LHJmA/P9TSj632E169tT2CWwSDb+i9V7zwkQtqkY2sLp7EV4Qu
-         WQCuC19fOsp66iEBAbsQ69XkG0qc+iqDfMai6i7eOe/etWMe9I0CVg6FbDJrCwKKyElz
-         eVC/JOvn4kju8CFsvjXIxrTmBTm0iRTlCZPWFlwdFbLZ33DiT5QWbtUw3KwIJE0W9nX/
-         kxzg==
+        d=google.com; s=20230601; t=1766044728; x=1766649528; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=md62W1YsJCgLupdlzTMxr2/ROOaivn6j126LqmfDgw8=;
+        b=SdEdXNmVx66xKqdkBEVLZT3eB3kxCKWVa82X+lKSn9iDPaYzH6lCnck4XGRjRm1zu0
+         8AdSwOeWFCQLa/a0CD3pI3EsvUIfrrf3wERyP8T99w0jeEkn5kZX3Easu3DfYviXn2U1
+         Ubgk0mh2kkUWhe7jYgt7jgWR5B7VBxhHE/X3UW6qrcNJxs+Vc5dT1rdmNXiAa+Yefna3
+         DueNy/ZjL2mf9MeIryrBw5tHa2YVZcJSJNWg+CePTAXlgvIJdkzyMgrZGol9ZsO0t7oU
+         dL8z+D3u4nISKVI+TQ2634vBQ85yd2rev/AdG3e+pfzw7qcXQcK2gEx/heEQ1EZWr1Cp
+         SDDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766044617; x=1766649417;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=reflEkCbL1WL57v2B5U9Chv9SZ2png695NbwK5Wv+aY=;
-        b=WVoO1R/j6/8FwHMpkMaqMVHePI0clHofr5b923BqZUUmHcNHY0PhCM1ujIIeu06zVB
-         A7uIpo/EhSCrT2WlcmkFLcjlqsDbF++fd22lQWRlQffVfXJA/doZyovr000Nk4s2ampk
-         P424iBLiGcl82naBXT9N2G23tCae9gfCy7yieJXEyWtvG3brjBSBly3iA691tjzNgE/h
-         p03sCWIizI4FM+oJERYQaPz+1KhXUgRkJJQLpAk9S9NyTM1XAyBIunq1POjb7GcR1r/Z
-         G1yzVvI0DY148aPR426/Ns4QSfuzwiB7h7E0ZBZKSxLb6J8LzjMl6Hs7qxqNBVZRnF0w
-         DfiA==
-X-Forwarded-Encrypted: i=1; AJvYcCXetiuXtbnGmYpUNFLAtnefLeEYi9vMbQkqtSoZ6DjVkrcH9xVSshls6o+A17X5kk+/BHNm8m21lXHsqp5dnw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0uUo+6GkqjjMCJtnubW9uFccxeJhu2C1suBLvuWK+FG0wAXBV
-	hCKG8UdFphIfHa1vM4DRaaOinGLTRc5MHj5TDYN6IOTWS7kGPq7hlFS5cu/CjkVd+nT4z45+UNm
-	TvnjRExIrp82fMUHJgjt5LipVp4fNkDgQylzs0rvQ
-X-Gm-Gg: AY/fxX5Wv5a6iYNvvuk1fVoUXr9B92s+3FaksII7IY7RVeLMcrx3SGdobfGqmn5I+Fu
-	i/0n1rExcH06b8SIZW5kGGNO3n+ZMwhxiX0Yjixy9ry7LU7jBLs4JCEZ2goA+gKNFvuI9JPMw5H
-	RntAT+VRPQXc3X2EmOHyuuNWJu8xfB1RS4LTP8JQPwAkulYKSgPEbIhKj/lYTK9C1Se66yuA516
-	QOyXZaCisXoVNX1OFfn69/cDrOok8jtEd0LG0D3g/aw2t+Mm7QPyim9F71AGIxMAsq+Ez8cyTm4
-	OiJENRdzIZOK586MdK9xKD1Mtw==
-X-Google-Smtp-Source: AGHT+IFz9yogMQP7CQkl3rt6bCn9HCCA+fPnGdwZ1l9XoWDgjGwxtg3JFKXod9kLOuyUjfG7g6zb/zI34eq7D5UuKWk=
-X-Received: by 2002:a05:6000:3108:b0:430:f23f:4bc9 with SMTP id
- ffacd0b85a97d-430f23f5243mr19980056f8f.62.1766044616946; Wed, 17 Dec 2025
- 23:56:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766044728; x=1766649528;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=md62W1YsJCgLupdlzTMxr2/ROOaivn6j126LqmfDgw8=;
+        b=BU9fa59u4LPQMG0mk2d2jVUKR8fURhwmC0H8l6V2ACxqLqxMRWSTPD7MZ8SQGo8Gde
+         RQcM4xQmAmHxRPKNW4mxrGY/CuVDIYGpVbx37kPBZWjQUx9emyXRqI0JsHjGWSmxdUls
+         gTOziOLo5c+rv5ovxpGGa2DYxZ1OjieL9MEKDpuGKniKt4t/kifrpQEExcvHcfjTnwBc
+         E/Y4s5xug+HdZf6m78EpdaVRLDXHk1ucgcxHxuuO1Q4KYrHaC+L90Ze3hmqXhnAUtk/i
+         AgoYnwVp5AWhL12ZkXWGMLjvBw7qL2PI6z74NWCEXAumKdWS5co34jbBYDsyEXojVXZk
+         9dwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPUtQTJFi0cdtt68MMUUjhxRnAzoR3YZwKL16LSHrO199nbSyRrb+Z4wxDRnkKyGeI9RuBxRmhqYQocn3RDw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxs2+A2GUST6lr0G2nXupscCnTQmYoxAEFqjH8ikxjd+kDz/2o+
+	ZNp1oGIK7Nu5L+drumIVP5odiizUS+nkE9bvrmdJfMqAOHDThuvgCedXu6+miRiZDB3Cuci5DRX
+	XqS3p3Go9WwXrTAE9ow==
+X-Google-Smtp-Source: AGHT+IFw33aMgISUv1AuO62yzLKJGOLFribtjM3JjoifAhhjILOt1o93zREKql7/vqOneQJ7FTT1vj957zJB/m8=
+X-Received: from wmbd24.prod.google.com ([2002:a05:600c:58d8:b0:46e:4c7c:5162])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8115:b0:477:a36f:1a57 with SMTP id 5b1f17b1804b1-47a8f8a9c26mr206893945e9.3.1766044728614;
+ Wed, 17 Dec 2025 23:58:48 -0800 (PST)
+Date: Thu, 18 Dec 2025 07:58:47 +0000
+In-Reply-To: <aUMcTWJ7ag5VJxnq@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251216-add-entropy-v2-1-4d866f251474@google.com>
-In-Reply-To: <20251216-add-entropy-v2-1-4d866f251474@google.com>
+Mime-Version: 1.0
+References: <20251216000901.221375-1-fujita.tomonori@gmail.com>
+ <aUMWb2VvA48s0jur@google.com> <aUMcTWJ7ag5VJxnq@tardis-2.local>
+Message-ID: <aUO0N4s2ksf0cotX@google.com>
+Subject: Re: [PATCH v2] rust: sync: set_once: Implement Send and Sync
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 18 Dec 2025 08:56:44 +0100
-X-Gm-Features: AQt7F2oQRhF08Af7BU9mB-eXXcRbutDYOhOrHFhJb8AYhfU-XkY5S3BOmLbMkSI
-Message-ID: <CAH5fLgh3u8h9kcxMXvPiBTrTgpE81kopjWL1ySYSjWucHT+Dkg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: Add support for feeding entropy to randomness pool
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, ojeda@kernel.org, a.hindborg@kernel.org, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, dakr@kernel.org, 
+	lossin@kernel.org, tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Dec 16, 2025 at 1:37=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
-> Adds just enough support to allow device drivers to feed entropy to the
-> central pool.
->
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+On Thu, Dec 18, 2025 at 06:10:37AM +0900, Boqun Feng wrote:
+> On Wed, Dec 17, 2025 at 08:45:35PM +0000, Alice Ryhl wrote:
+> > On Tue, Dec 16, 2025 at 09:09:01AM +0900, FUJITA Tomonori wrote:
+> > > Implement Send and Sync for SetOnce<T> to allow it to be used across
+> > > thread boundaries.
+> > > 
+> > > Send: SetOnce<T> can be transferred across threads when T: Send, as
+> > > the contained value is also transferred and will be dropped on the
+> > > destination thread.
+> > > 
+> > > Sync: SetOnce<T> can be shared across threads when T: Sync, as
+> > > as_ref() provides shared references &T and atomic operations ensure
+> > > proper synchronization. Since the inner T may be dropped on any
+> > > thread, we also require T: Send.
+> > > 
+> > > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > > ---
+> > > v2:
+> > >   - update the `Sync` impl to require `T: Send + Sync` with the comment adjusted
+> > > v1: https://lore.kernel.org/rust-for-linux/20251211230919.1303926-2-fujita.tomonori@gmail.com/
+> > > 
+> > >  rust/kernel/sync/set_once.rs | 8 ++++++++
+> > >  1 file changed, 8 insertions(+)
+> > > 
+> > > diff --git a/rust/kernel/sync/set_once.rs b/rust/kernel/sync/set_once.rs
+> > > index bdba601807d8..139cef05e935 100644
+> > > --- a/rust/kernel/sync/set_once.rs
+> > > +++ b/rust/kernel/sync/set_once.rs
+> > > @@ -123,3 +123,11 @@ fn drop(&mut self) {
+> > >          }
+> > >      }
+> > >  }
+> > > +
+> > > +// SAFETY: `SetOnce` can be transferred across thread boundaries iff the data it contains can.
+> > > +unsafe impl<T: Send> Send for SetOnce<T> {}
+> > > +
+> > > +// SAFETY: `SetOnce` synchronises access to the inner value via atomic operations,
+> > > +// so shared references are safe when `T: Sync`. Since the inner `T` may be dropped
+> > > +// on any thread, we also require `T: Send`.
+> > > +unsafe impl<T: Send + Sync> Sync for SetOnce<T> {}
+> > 
+> > The reason you need Sync is because &SetOnce<T> allows you to access &T.
+> > It's not because atomic operations are used.
+> > 
+> 
+> I think the point here is that atomic operations contribute to the
+> safety of sharing &SetOnce<T> between threads, if the synchronization
+> part of SetOnce is not done via atomics (or any other synchronization),
+> then SetOnce is not Sync. In other words, making `SetOnce<T>: Sync`
+> requires all the following:
+> 
+> * The internal operation is proper synchronized
+> * T is Sync because a `&T` can be derived from `&SetOnce<T>`
+> * T is Send because copy() may create a `T` on another thread.
+> 
+> (hmm... the third condition does looks weird to me, because if `T` is
+> `Sync` and `Copy`, the copy on `T` should guarante the drop of the
+> copied `T` is safe, otherwise `T` itself is not `Sync`. Gary, do you
+> have an example in mind that requires `T` being `Send` for `SetOnce<T>`
+> being `Sync`?)
 
-Some nits below. With those fixed:
+I guess in general safety comments for Send/Sync are a bit tricky ...
+you really need to argue that the entire API is designed correctly to
+show that having &SetOnce<T> on multiple threads in parallel is sound
+(in the case of Sync).
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-> +//! Randomness.
-> +//!
-> +//! C header: [`include/linux/random.h`](../../../../include/linux/rando=
-m.h)
-
-Needs to use srctree instead of ../
-
-> +use crate::bindings;
-> +use crate::ffi::c_void;
-
-Please import the prelude here.
-
-> +/// Adds the given buffer to the entropy pool, but does not credit any e=
-ntropy.
-> +///
-> +/// This is intended for use mixing in data that is likely to differ bet=
-ween devices or boots, but
-> +/// may otherwise be predictable. Examples include MAC addresses or RTC =
-values. This slightly
-> +/// improves randomness in entropy-constrained environments (especially =
-common for embedded
-> +/// devices).
-> +pub fn add_device_randomness(buf: &[u8]) {
-> +    // SAFETY: We just need the pointer to be valid for the length, whic=
-h a slice provides.
-> +    unsafe { bindings::add_device_randomness(buf.as_ptr().cast::<c_void>=
-(), buf.len()) };
-> +}
+Alice
