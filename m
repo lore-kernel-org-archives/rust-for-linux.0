@@ -1,89 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB9033CEBF;
-	Thu, 18 Dec 2025 10:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1853446BB
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 10:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766052766; cv=none; b=WLLZeD4PNSEjdWJ/tPV+mbY+fdVC76uSI/Kpkf8DUFNCnQH6Jtl+NTUhUktdL3WOc4XMZ7iKmA+fPuBE0doTWaxXmHLGwYlCVFafZ36T0gP56auMrcNx0PkiHiY1khFA57H9m65ADE7simbuahzb+WzRIyg96P0XEzvRMvSxgi0=
+	t=1766053112; cv=none; b=FuIO/+StQFHqQd1YZNC0MYA011+oRb5qj5d2zSA7hvSgrIwQRWtaPwSwb65ZLBggD+YfCE1A479w00p2+j8SV5IQxlDwULXWz4hUGT4OAqY7GiN9M3p79CbwPhL+DRXcDg66hIPHuzvxeHLZcFes6Hi89vaZoyAsg+2Ko1MUBqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766052766; c=relaxed/simple;
-	bh=SXv7/CChtg+veUFY2FOAVOi9sIz/SkLoMXxvPciPXqM=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=u6OxKi+SFCeIEZffZp0c8hUM0SE0Kz87sLpcRa4UaydR5nk7CzkCh5DJ6PLisuR2zRXZQND6+XWRz3U3l0T6zB2br4Di8mad7i+T6NrTIfEcqiV6VGCT4QnCoDU7VY2fAOekNNdZYMvLkAiI5OV3qGYcc/0TwiBqdbMU3kGlD74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gBZyg3z+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766053112; c=relaxed/simple;
+	bh=I/6kvKM9p8XY3+0CKtKDEdvBP+NxnC4Rq9qspP9kerk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=EkNFZMP3/qQYzfh+Mw+VTu5h3EvmQuvMb+ndqrUiKuc2XiMKDNaNs1AeqNfTN//9Qq/Slv8eBTRMxmQVl+EIoBqMT77NknRGkNhw8K41abVwCakISwc4ijwsC9FNubKJXylSSCl/2qFfzophth/85J0kr+OB6T3YNbjiuIliKAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/THVjnM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gBZyg3z+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69BCC113D0;
-	Thu, 18 Dec 2025 10:12:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/THVjnM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56396C4CEFB;
+	Thu, 18 Dec 2025 10:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766052765;
-	bh=SXv7/CChtg+veUFY2FOAVOi9sIz/SkLoMXxvPciPXqM=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=gBZyg3z+UR2aWeUXEE24gqSoyEuuCtbz1uBEuJb3LnU170oz1wSEAB+9FCZL7kQ+F
-	 Vi6BiMfm+yDOllvK14OeaqE+hll89AeI9JHwEF9RwLOCac8Ez1G09hBcy5zQxzKE0m
-	 VWLFnQxcBvfkNkroGQDfMYxOF9snR6/5fGwt8lKHalIHxanl/hGJxMZC+EiJd6xBLu
-	 lqmsEOhQ4kY/kfiC2CIpsjsxSKI7g0fDZ7CZRMCw9ZcmVYlNEl+oGD3phySMfEVAK3
-	 MQXEnfkHcrlJSdISOdKDNHFtsWS+pOdHbShYb/wz0cW0rMCL+3C3b1Y3uMtknYEPSe
-	 nKxDHyT8eDpgA==
-Message-ID: <18f85697-358c-480c-89a0-8559f600f62d@kernel.org>
-Date: Thu, 18 Dec 2025 11:12:40 +0100
+	s=k20201202; t=1766053111;
+	bh=I/6kvKM9p8XY3+0CKtKDEdvBP+NxnC4Rq9qspP9kerk=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=Y/THVjnM1abEaJR+U1aTdEdX6K+6AeFV/du+Aq+CHT8c4CoEXDkcm9Cf+PPuz3rJ9
+	 5B9eL9CTda38tTo++OYWq1sW1R3wemxZgUw/WqAsats/psF7yQx8F85pxfo8pXLyJ6
+	 WLvCsdMVHluBfiiFMpOhk2X9jh96oBfWYU+xw8v/cxesibp7OEOAc1Ssdo5WcdTte2
+	 keTw0LWLTIQMt6Sqes/2SirtQyuT6tyMuQKkwz7PjFO/sxx/9mNneI5xH87FBBivUy
+	 a+g2rLs4k45DiTXqcSQLMBbs4b6tMDicQCcP0/W6EX8ZjrXlQSFFE4M4tuikdro2H8
+	 yiGHFbJU4m/Wg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: Re: [PATCH 0/7] rust: add initial v4l2 support
-To: Daniel Almeida <daniel.almeida@collabora.com>,
- Frederic Laing <frederic.laing.development@gmail.com>
-Cc: a.hindborg@kernel.org, acourbot@nvidia.com, alex.gaynor@gmail.com,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- dakr@kernel.org, gary@garyguo.net, kernel@collabora.com,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- lossin@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org,
- tmgross@umich.edu
-References: <20250818-v4l2-v1-0-6887e772aac2@collabora.com>
- <266b9b35-aed1-4c2f-9fd1-4da349876ac5@gmail.com>
- <73B8194B-4E21-4E5D-99AA-54CD273858B4@collabora.com>
-Content-Language: en-US, nl
-In-Reply-To: <73B8194B-4E21-4E5D-99AA-54CD273858B4@collabora.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Thu, 18 Dec 2025 11:18:28 +0100
+Message-Id: <DF19KTQTKOS9.33N1KT9WNLAUO@kernel.org>
+To: "Timur Tabi" <ttabi@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 7/9] gpu: nova-core: implement BinaryWriter for
+ LogBuffer
+Cc: "Gary Guo" <gary@garyguo.net>, <rust-for-linux@vger.kernel.org>, "John
+ Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, "Lyude Paul" <lyude@redhat.com>,
+ <nouveau@lists.freedesktop.org>
+References: <20251218013910.459045-1-ttabi@nvidia.com>
+ <20251218013910.459045-8-ttabi@nvidia.com>
+In-Reply-To: <20251218013910.459045-8-ttabi@nvidia.com>
 
-On 17/12/2025 15:35, Daniel Almeida wrote:
-> Hi Frederic,
-> 
->> On 16 Dec 2025, at 14:03, Frederic Laing <frederic.laing.development@gmail.com> wrote:
->>
->> Hi all,
->>
->> I’m new to contributing to the kernel and was reading through this thread. I would like to ask about the current status of this patch set. Is anyone still actively working on it?
->>
->> If it’s unmaintained at the moment, I’d be happy to take over and work on addressing the review comments and resubmitting an updated version.
->>
->> In case you're wondering why I am interested; I am currently working on camera software that utilizes the Microsoft Kinect 360 and V2 camera variants. Luckily there is already `drivers/media/usb/gspca/kinect.c` but it has some errors (like reporting invalid frame rates for color data) and design flaws that makes it impossible to stream depth and color data from a single device at the same time. I already got a new user space driver working in rust and would like to upstream it to the kernel to replace the older kinect driver written in C.
->>
->> Thanks for your time,
->> Frederic Laing
-> 
-> I did not hear anything from the media people so far.
-> 
-> Mauro, Hans?
+On Thu Dec 18, 2025 at 2:39 AM CET, Timur Tabi wrote:
+> From: Alexandre Courbot <acourbot@nvidia.com>
+>
+> `LogBuffer` is the entity we ultimately want to dump through debugfs.
+> Provide a simple implementation of `BinaryWriter` for it, albeit it
+> might not cut the safety requirements.
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/gsp.rs | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>
+> diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
+> index fb6f74797178..860674dac31e 100644
+> --- a/drivers/gpu/nova-core/gsp.rs
+> +++ b/drivers/gpu/nova-core/gsp.rs
+> @@ -3,6 +3,7 @@
+>  mod boot;
+> =20
+>  use kernel::{
+> +    debugfs,
+>      device,
+>      dma::{
+>          CoherentAllocation,
+> @@ -117,6 +118,29 @@ pub(crate) struct Gsp {
+>      rmargs: CoherentAllocation<GspArgumentsCached>,
+>  }
+> =20
+> +impl debugfs::BinaryWriter for LogBuffer {
+> +    fn write_to_slice(
+> +        &self,
+> +        writer: &mut kernel::uaccess::UserSliceWriter,
+> +        offset: &mut kernel::fs::file::Offset,
+> +    ) -> Result<usize> {
+> +        // SAFETY: This is a debug log buffer. GSP may write concurrentl=
+y, so the
+> +        // snapshot may contain partially-written entries. This is accep=
+table for
+> +        // debugging purposes - users should be aware logs may be slight=
+ly garbled
+> +        // if read while GSP is actively logging.
+> +        let slice =3D unsafe { self.0.as_slice(0, self.0.count()) }?;
 
-Speaking only for myself, there still isn't the time available for me at least
-to support rust. We also need to get the multicommitter model started, which
-is only pending on the documentation right now. That really should have been
-done this year, and I really hope we can finish that early next year. We
-need that up and running.
+Unfortunately, it's still undefined behavior to create a slice when the bac=
+king
+buffer can change unexpectedly.
 
-Basically the situation is unchanged from 2 (?) years ago: too much to do, not
-enough time.
+You can use UserSliceWriter::write() instead or add an unsafe method to
+UserSliceWriter that takes a raw pointer, length and offset.
 
-I don't see this changing for me for 2026.
+Given the context of a debug log buffer, I suggest the former.
 
-Regards,
+> +        writer.write_slice_file(slice, offset)
+> +    }
+> +}
+> +
+> +// SAFETY: `LogBuffer` only provides shared access to the underlying `Co=
+herentAllocation`.
+> +// GSP may write to the buffer concurrently regardless of CPU access, so=
+ concurrent reads
+> +// from multiple CPU threads do not introduce any additional races beyon=
+d what already
+> +// exists with the device. Reads may observe partially-written log entri=
+es, which is
+> +// acceptable for debug logging purposes.
+> +unsafe impl Sync for LogBuffer {}
+> +
+>  impl Gsp {
+>      // Creates an in-place initializer for a `Gsp` manager for `pdev`.
+>      pub(crate) fn new(pdev: &pci::Device<device::Bound>) -> Result<impl =
+PinInit<Self, Error>> {
+> --=20
+> 2.52.0
 
-	Hans
