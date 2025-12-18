@@ -1,180 +1,129 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E83C330312
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 09:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766050876; cv=none; b=MQ1xsuF4Rc218PLvtwqgyj2T3l7SRut8hS9jAnrxhwmu0Gffm9DReY590T8l8qPplo1w/qv4VhUUmKVfwkIBM6V3iErMGo/6Lg6LYBtE/kwadeD3fRPOjH/OsvEnMt1m6QfdOR5pAZao9DicKj3zKcKCFdT25FqIiqAtLTFgzOM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766050876; c=relaxed/simple;
-	bh=XYH4u6sei1EsidlFeyOpqvTMGNqvJ295Z3V4Mke0XRs=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GaAgvq9Tszl83MW26Bko7nmLX2+yW3I8Ib5h0Iz+XYcukKyY2OrgUFY1jUp9Ue2+X/H6xNHPaAG5yW/KXT1Rx5YRRB8ZoAy0sVv9SxMyf0i3YqdVYLKKN6zfT54wTjNh+N2EG87J9C1z0NXHaDLT/Y5MFas78RA//lGhRAEVkI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n8jy7cyI; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2993358B5
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 10:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766052612; cv=pass; b=K2aGgUjbmzv/b7SlQHf4j2NnBfQghZBGnKuxkjv462fHGloWsXnwaInoHdaz7/cfexS/58VA+2exG53UxXfh7hEQyg8m/GzTZqTbJTeT+p6/5Q5ujV8Q75rQxVHQ48lWTI2JhgbdWQLJsLiL23grwfEAomiGgYg0kTScWqFiIDI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766052612; c=relaxed/simple;
+	bh=NvvEhEKg8mBHdLSm1cbmP51NE95Day6J419XJmG/1Bc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j1Bt6N5869WQ1jaehElH0PcXhkQjIuttrUntyxZ1NtJkyEetx91M2gMMwcghqv2d8PbmYogFNNZogU3qdH+488l169Bqyv/NhG4w+osTpBMkwWlYIb2lmJ7+ORAI6NywQNtQHcylPrradX6k4nsvdhqEYV/3L+CcLFCcpv3LeaI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R9yzVlSu; arc=pass smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n8jy7cyI"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47921784b97so3078435e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 01:41:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R9yzVlSu"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b9a2e3c4afcso15657a12.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 02:10:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1766052610; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LbSXfrvZRZsdS8gRGmnek9ccqpOK+gH5C28yRKInQSGKv2mfpKpEROfIdW3c3MuE4A
+         9NSrkLx37XzfWt7dFmfxjbJh3giPOjCei3BTc/79fr3RxbNALGCHq3SXRZ2qAiGisBNe
+         2ptwK0mELeeY3QpFMkUdIH3Ybr7cAdph9hFBYQVH7raIOfkKwFYxZqQnNWS//PM0lklm
+         MuJA0EtDcdgnZysqLoxMS57DU9QN+KrP4NBMBH2w3rIP5TfwraN1mWpKNKWRW0+hkDnj
+         dOP01YBEZtW0miYXoXhDFJfObRmdM2MYEz0zyaQkW/u+DizLLLdc0BY6HaP48JtWC+oR
+         Szyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ShMd5RsgoCCs+7pbJSDKC7+gIM3DjjQQXbLBPRzr+LI=;
+        fh=/0nd1eLlZITzk4xmCwNn5wb2yfeACACgnuGrVoDTQpk=;
+        b=FUpsH6W9lLb9cxFwxz62VGdW69dZDeCkdnrwZ6AZJsthFBZea0JXWMjcZi+xHGRwPU
+         ilFCdMvtTMtdzBwgcfyv2Bh53w+h8STUAoIHoev2YM4+6xcXXHwAZJ9ymLyPMh7xYBYW
+         CaWH52OVFTsqYd1CzzuV/hDsyV6WC5k4reN+v4wIDhYhaokCX9T4LXn/xwDIlithbXzl
+         IPX6+1h2NZcOHnT7aQfOlDKR6doBhQEp4OSwGRG7/FBVx9Enzd8+P3gkPQzzLCKhcX6J
+         gPR/KO3hPFZqAVSCjRPA1gfog4lGgZD3b2YVR4tmgD8gweL0U0DKHUGs97RIvFrp3k/o
+         NBow==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766050870; x=1766655670; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tb2d6Cb3DcPhwKvIWU5F/kRUeFtqPtRNxpGpAq3DFrY=;
-        b=n8jy7cyI+bDY0NfPnUj0wX7l7eiHLtsncGlfN9ddH28ZuRe+v4lqAluOGVC3hMs79E
-         ECt2E+DxA6Wf1lQY2j187GUchPsjE4hUQyfV1XKmZIhpvCcrrX6ZQQBntHgWmWHOTsfN
-         C1VG7xVYb9rzIrdqEbMHo+dIIDCAiJ7dadIVWl8DhrRyI3YGPi/e27vaG2H5+H/w8C53
-         RT+qoMONA18NCSslkKwEHD84H+pN+KLrq7N3/o4wBDCGQPs87Am/xVmkUjufF+bV4jsu
-         +x+3pr6Y+LH72A9XZBPtjHRNNMQIytD09Kr98sZB7I1q2a96EiYalw/zoLpy+xz1Mx+S
-         Jb4g==
+        d=gmail.com; s=20230601; t=1766052610; x=1766657410; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ShMd5RsgoCCs+7pbJSDKC7+gIM3DjjQQXbLBPRzr+LI=;
+        b=R9yzVlSuQY6LrT7RLTUsj9JQmx4kmFkeXTBt9Fa2zkrt6Wy9O8SUouHyvQLTy1IL+J
+         zjaEHJrI3TWQTD4EXbZC5mtNcu3U3+8/TSYYhBz6boTf7tVcDoQSVmC0GMy3acFxaRbi
+         y9blAk8DPPIYS9AuzitOYOMwO33aJJjiP62MINMWB/XCPROXb0IfPRcRxy2S96vpN7LJ
+         OOKtiQEPoJS8YScPtXsGi9NDtLHVwNsamg23YBs+I1A2gHnhrU6d8PAGktPEe7ETBGhY
+         X7AgNCeFlMIZCiZkXNAVu85C2R1v+v7dcyG13FhwPNqfteGOJG3CSttpkAF8OqOQJmDU
+         w3ZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766050870; x=1766655670;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tb2d6Cb3DcPhwKvIWU5F/kRUeFtqPtRNxpGpAq3DFrY=;
-        b=bJw5QTkybr7muioUDyFzH99A4l+TVK2Gh6hr3RVEbgZ0f2XTZ8Mhp2xFu8cISIBBHj
-         zSDxiKETYiWr8kBGAbAt3Z/wRPZXyPTSXdM2XESgReJVrNg2u0GxHNfU7Xy1lQaqsOk8
-         9LkrLa67algimJ6/s6dKllC2SI2z+nvdG8hstFyjl0RyfnnJ5ZWTszFwyn0km3eG5Mpm
-         SHeBgdLhzQa18tvz6PL9y/GIkCfD2nEGLR5RPTJEx7j2IeHAuO+dCiqn9h3REfJi0IJr
-         WCz5fhTkfduhp81yisWiwQ4+lOUlhRJbeUae4Etz/AkjUKBVY0V1qn0tLRwa1d9ozk6s
-         LV2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVgYQKhC+pOInrOYvW3W14UmHBw9PW+e37D8XIC8OaW/2KhK+naSpjoyYOaUieLAy+fjRx9fBSJ3LgvBmH8og==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwITfbDCItXqu1MuRnN+wnhFBJW2h7NVWXNfu76sKcKO4kndtC
-	x1rlydfBh311wXGp3dKX/PMlrGVwrz9kZE6UTdW9ITzFvgQfMMlGiabg297gzlR1PitK2U86xHt
-	DrZ1h5dQYyLZX+1ClDg==
-X-Google-Smtp-Source: AGHT+IF0IOWby5SoajBqRsWVgMnbSnAo2HCb+2Jd+SVjfbdQJmilnqMXGXlqZhtlSQW7B6sJkpI/Jfybcx4gAkk=
-X-Received: from wmbh27.prod.google.com ([2002:a05:600c:a11b:b0:477:9f20:94cb])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:46cf:b0:477:a3d1:aafb with SMTP id 5b1f17b1804b1-47a8f90d757mr208363335e9.29.1766050870555;
- Thu, 18 Dec 2025 01:41:10 -0800 (PST)
-Date: Thu, 18 Dec 2025 09:41:00 +0000
+        d=1e100.net; s=20230601; t=1766052610; x=1766657410;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ShMd5RsgoCCs+7pbJSDKC7+gIM3DjjQQXbLBPRzr+LI=;
+        b=N+0VX0M0ObRj7CSNElccIp32YfujvSYkJr/j5cVWWe0wRC4o2eitwyC/c46JA8Z9+R
+         m4Az3Hofh/PJCW5rzO73C2Ix+a8HM5v2d/arAJ0nabkYA+sGiR72dcTRl+uMiNrPQG5A
+         Rab3bgKdFMhDHaN3/1wGx2AFGOKSW8WTCL9nSo+wjzbREMgAPz/o2lWBDVy7kOMT/pUV
+         4ss/3Pn3aSyK8yOB6fbz89OD0LFiMY44d2ERYl3hOjZjnVtpcVsDK4nLOXdXc3KIju0Y
+         bb+omR6F6ALaqFnehmJi67Ha8vrLTDlx79XVCtlY/r6hmRqx0SdzyLavMJ3LuorzUEUq
+         cUoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUH9BoVN9Qpb0Y2RXOwz/EJL8FgVo+9nYwGK39feJvEIbcfvEZjOMIhFLRy+WyY2gKgTAU50bvD098mF13NxA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxivvBLEYvRnEBtC1wkX+dnEbWQWWcbB/U46w8Qqu6/ZEdtA8R1
+	k95piKo5zXkmlrfoyRP4ZRTm1jR90pyNaQ3+EdDPtVVQ2Yzy8T8uJMLdB01fJUs8lqfNiPfwcfp
+	21lBDdgtwLJzNOMH6O8R6MKUYQ1AlGq0=
+X-Gm-Gg: AY/fxX5S/a+T3gAYpOjaemNqSd+9uPKy25OMqGzc/vlRYczkOEWDPZ5y1L27kZj1FKU
+	LCUWM2dRiMlo8GrKs9OJ6FG1dYty7eC3LZd9ACBAoYkp3c6Wc5zZaON6SAq7RpSXVmZqpq3AKvP
+	0YLVIzi+AGXj3ywV4YdK7dvGG09KNx1kLXfWar3Mb2u7tksjXGOkxsOjaxuzeQn+DtAsyZFJ/lq
+	+Cd48HXOF4wXuvtpBnp92NUk8F2HIyJh47AS4ihUlPdubQvFzZeuwbpsDfhrRHziUr4WlD74QUQ
+	HNcuOIUx9bdWPEdNHAGFWcWwSYWAk8fFFIbUsW5v7khMo7M5OIZ77uWx12V0tLwmr66uF2nzkXK
+	vHeOk5QnYMMxgRw==
+X-Google-Smtp-Source: AGHT+IHQbBEe6RbCdFHu1fn1QiVN/swj/9ZD0sCwj+fIRULQ2zfxp07+2Vth/JPcNxD7+ZtAGAtVuxSS0clkJ+Xv/rY=
+X-Received: by 2002:a05:7300:dd43:b0:2b0:502d:c27c with SMTP id
+ 5a478bee46e88-2b050656404mr698153eec.5.1766052609822; Thu, 18 Dec 2025
+ 02:10:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIACvMQ2kC/x3MTQ5AQAxA4atI15ro+HcVsZiYoiFIB5GIu5tYf
- ov3HvCswh6a6AHlS7xsawDFEfSTXUdGccFgEpOToQoP62ccdTt3XNg6VrQl1Sn17IoshdDtyoP c/7Pt3vcDbpeUqmMAAAA=
-X-Change-Id: 20251218-task-group-leader-a71931ced643
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4208; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=XYH4u6sei1EsidlFeyOpqvTMGNqvJ295Z3V4Mke0XRs=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpQ8wxjYIwrPxCXnMyt+mAikGCReAP81auoJOfs
- /NhmIKJHJ+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaUPMMQAKCRAEWL7uWMY5
- RgN8D/9aaPQWO4u1ChmSACkZsVO/zHrE9heGf6aznNludSd8GrDw1374HdlRZWQ3lNXF6hzyyu6
- XBteu8H2UekZoBMXLnSWWbu1KvWfFQNes8DPrAnrg1baOI4AyFcmL6HA+RQuUwtqlWz6IHHqOAL
- 8Ub+E2plJj3uhs8qp/MO4KDvqD7bBqDQRqez/79HFY/7a21knq8v+8fI/C7X6GyzG9cWZqmhQa7
- YOFGSHVuCBwG/MCnn05y9VVl1y6xGIUSwdFROK+tT7v9Tm48O32S2gPiPnYpLfzBR+zUXiqo6mg
- pBwF9lLdpu1aC/xZ1fH4ArKlaYRQzr1qaTDvYUAW6BMt8Fiqf1BKextv2EMaV1uATO95U/WiOUV
- +ufhCNIPVqHzNhflDM+uXrHo6XVAXnahtKhC8D1c4HrExVoxUbI4Fp/SxFuJJQuWSb2nady56bt
- n3zfnGQ6+I2qvMxCj6d0w/4e6v9D52KnLwXlUeE9+uc5QHmOjVGOPY2b3QYhMd/owYHcBD+CnEl
- Ivhb0YSojKZA5rNPyr0kSFmvVTXsaaiWuaAY7tUB8by4bS7cyHm4ihy6g3STUwU0AF7bxJ9g63U
- 6ssT/nIrIJx0NPcbxYARi7wd3Fs5uPAzqYr42P/OSWL0abTk6HSkzxgTsz+673fEjo/MHZcyrOl wcJPV3/FOOIb38w==
-X-Mailer: b4 0.14.2
-Message-ID: <20251218-task-group-leader-v1-1-4fb7ecd4c830@google.com>
-Subject: [PATCH] rust: task: restrict Task::group_leader() to current
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Christian Brauner <brauner@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>, stable@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20251218013910.459045-1-ttabi@nvidia.com> <20251218013910.459045-2-ttabi@nvidia.com>
+In-Reply-To: <20251218013910.459045-2-ttabi@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 18 Dec 2025 11:09:56 +0100
+X-Gm-Features: AQt7F2oLOGrUtKfwwSjj0SjFhxy_KX0J4BetzT_Vf8Xgjs9LtDZc-yngX1nri3c
+Message-ID: <CANiq72mEsqgyHZoP0gA-Mev0M=TrgKFruJTACfaGW1DgDG5Lyg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/9] rust: pci: add PCI device name method
+To: Timur Tabi <ttabi@nvidia.com>
+Cc: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	John Hubbard <jhubbard@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Lyude Paul <lyude@redhat.com>, nouveau@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The Task::group_leader() method currently allows you to access the
-group_leader() of any task, for example one you hold a refcount to. But
-this is not safe in general since the group leader could change when a
-task exits. See for example commit a15f37a40145c ("kernel/sys.c: fix the
-racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths").
+On Thu, Dec 18, 2025 at 2:40=E2=80=AFAM Timur Tabi <ttabi@nvidia.com> wrote=
+:
+>
+> +    /// Returns the PCI device name.
+> +    ///
+> +    /// This returns the device name in the format "DDDD:BB:DD.F" where:
+> +    /// - DDDD is the PCI domain (4 hex digits)
+> +    /// - BB is the bus number (2 hex digits)
+> +    /// - DD is the device number (2 hex digits)
+> +    /// - F is the function number (1 hex digit)
 
-All existing users of Task::group_leader() call this method on current,
-which is guaranteed running, so there's not an actual issue in Rust code
-today. But to prevent code in the future from making this mistake,
-restrict Task::group_leader() so that it can only be called on current.
+It probably looks better like (i.e. code spans + ending in period):
 
-There are some other cases where accessing task->group_leader is okay.
-For example it can be safe if you hold tasklist_lock or rcu_read_lock().
-However, only supporting current->group_leader is sufficient for all
-in-tree Rust users of group_leader right now. Safe Rust functionality
-for accessing it under rcu or while holding tasklist_lock may be added
-in the future if required by any future Rust module.
+    /// This returns the device name in the format `DDDD:BB:DD.F` where:
+    /// - `DDDD` is the PCI domain (4 hex digits).
+    /// - `BB` is the bus number (2 hex digits).
+    /// - `DD` is the device number (2 hex digits).
+    /// - `F` is the function number (1 hex digit).
 
-Reported-by: Oleg Nesterov <oleg@redhat.com>
-Closes: https://lore.kernel.org/all/aTLnV-5jlgfk1aRK@redhat.com/
-Fixes: 313c4281bc9d ("rust: add basic `Task`")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-The rust/kernel/task.rs file has had changes land through a few
-different trees:
+> +            // If init_name is set, use it; otherwise use the kobject na=
+me
 
-* Originally task.rs landed through Christian's tree together with
-  file.rs and pid_namespace.rs
-* The change to add CurrentTask landed through Andrew Morton's tree
-  together with mm.rs
-* There was a patch to mark some methods #[inline] that landed through
-  tip via Boqun.
+Similarly:
 
-I don't think there's a clear owner for this file, so to break ambiguity
-I'm doing to declare that this patch is intended for Andrew Morton's
-tree. Please let me know if you think a different tree is appropriate.
----
- rust/kernel/task.rs | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+    // If `init_name` is set, use it; otherwise use the kobject name.
 
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 49fad6de06740a9b9ad80b2f4b430cc28cd134fa..9440692a3a6d0d3f908d61d51dcd377a272f6957 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -204,18 +204,6 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
-         self.0.get()
-     }
- 
--    /// Returns the group leader of the given task.
--    pub fn group_leader(&self) -> &Task {
--        // SAFETY: The group leader of a task never changes after initialization, so reading this
--        // field is not a data race.
--        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
--
--        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
--        // and given that a task has a reference to its group leader, we know it must be valid for
--        // the lifetime of the returned task reference.
--        unsafe { &*ptr.cast() }
--    }
--
-     /// Returns the PID of the given task.
-     pub fn pid(&self) -> Pid {
-         // SAFETY: The pid of a task never changes after initialization, so reading this field is
-@@ -345,6 +333,18 @@ pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
-         // `release_task()` call.
-         Some(unsafe { PidNamespace::from_ptr(active_ns) })
-     }
-+
-+    /// Returns the group leader of the current task.
-+    pub fn group_leader(&self) -> &Task {
-+        // SAFETY: The group leader of a task never changes while the task is running, and `self`
-+        // is the current task, which is guaranteed running.
-+        let ptr = unsafe { (*self.as_ptr()).group_leader };
-+
-+        // SAFETY: `current.group_leader` stays valid for at least the duration in which `current`
-+        // is running, and the signature of this function ensures that the returned `&Task` can
-+        // only be used while `current` is still valid, thus still running.
-+        unsafe { &*ptr.cast() }
-+    }
- }
- 
- // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+Thanks!
 
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20251218-task-group-leader-a71931ced643
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Cheers,
+Miguel
