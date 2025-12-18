@@ -1,281 +1,555 @@
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010042.outbound.protection.outlook.com [52.101.201.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD2B332EC0;
-	Thu, 18 Dec 2025 12:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766062223; cv=none; b=UX+qlIuJXWL7cswtoYaMwhpAanZQGRy1V4ROzlm+4O4DbHDzSJEqQaiJDvBrDeKcQBJOmlWhAM2XcTdtGN8Xyd/JbF6Dded0a5WXSTzKCCd8COC/17pSXdXtQ64d/dpmNS2d8ILZmblou7aW3ZTJvRR7Y3SyF+i7bt/hJxybV5s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766062223; c=relaxed/simple;
-	bh=cb1EYuLPZCGCXdZa0orsidPlMBk7O0+4oMcaMbjHA38=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HeAy35H2eSjYOEV709APB6Bb2QnYhynhFCod/FoD8kYGyrwCr/zKJIPe7C3+/1tSb0CjLQNizNuq+2HbAfFOfgUT2tFasNPDZbjjEeBDEsfhM2nRGePVsmW1cIc1WffCLgW8e8B1qzvCdo8PjqSQxb0it0Ffbz3xBep7m7ws6c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=M2c1mYol; arc=none smtp.client-ip=217.70.178.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D56833ADB1
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 12:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766062776; cv=fail; b=FCk4ar4rnlr01UK/1MyhZQdIWoVrpcz1IEqjidIvAt6NyzPIeyYQdNRt3qJtUQ0vQenXnWWKwwChcBkjxiFVj9BJvNxgo7GTPtPfL+Tq2QUnMNnzp+E37mNVBwG/tpP4//jN3UqyeEUqlIZ7l0f2Y7dPlq21yiG7LU9wf1mCtzY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766062776; c=relaxed/simple;
+	bh=f/Zt7pWhq4q4VG0T9f+BVUX2TSQ3uDbauSdEw8hWcTU=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Ub0/9Tlyo/80/rWKgAS6L8I/sJ2xbGsKFyoTu4BmM7Y2GP6/83vAZQaKfe+yPKwdqLX2WSMpmVtnlUwKLPL6NV9zF8UxBh2ziXMHAnYhjdFpuJr3pAXy0/AKpGRelP5Eg1rG1C/wp2rQifg/+mU7Fj592kWZoyLFc7rrxPEiMDY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jms0xou5; arc=fail smtp.client-ip=52.101.201.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="M2c1mYol"
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 1B1485813AF;
-	Thu, 18 Dec 2025 12:50:17 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A87C5443CB;
-	Thu, 18 Dec 2025 12:50:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1766062209;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hfiV+MXAPfvRTSCJL7TaIGOT2OdBflC/9gc07OtO5hM=;
-	b=M2c1mYolZqchb5R1EW7NiuQUkluBmdcrNYgQiL21FG+gcds4f4ZLFQCnMbSFAlQkrRMDYH
-	yNtH/JqrMo4UORder2YWmQecHheKkVnmqJIn9aBUm4DkKNSNZke/GzBBBAVQvXq1khE5yA
-	Zulr4popkEldBzi51i54mmv+EnZGQMMEVl30Ca23EkwwkcMPivPH0sdeXr4wfBccYe0OxJ
-	lWx8fVgWNZugsuQ/Stf+wo47QqWf9sQgOUqeR01aRTG5JSveaQUNcxmPSjIhqpNvVJA3TY
-	cQmw0WhpMRqcbM0Xb9JNMgkakDwqPaXDQtlGmRL3vzHQO2p1ZGssR3JTp38Qxg==
-From: Guillaume Tucker <gtucker@gtucker.io>
-To: Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	David Gow <davidgow@google.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Cc: Guillaume Tucker <gtucker@gtucker.io>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	automated-testing@lists.yoctoproject.org,
-	workflows@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v2 2/2] Documentation: dev-tools: add container.rst page
-Date: Thu, 18 Dec 2025 13:49:53 +0100
-Message-ID: <ff8da6b9680ef01ee44f6d0cf89e34dd76abb116.1766061692.git.gtucker@gtucker.io>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1766061692.git.gtucker@gtucker.io>
-References: <cover.1766061692.git.gtucker@gtucker.io>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jms0xou5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eIj1qhYvFH7wxyZ/2eZiPuvgQ0OJHCqizktGkUvMa5qZuLrCjPuH4czQwvj/PKJwfH2L8aquuhjn/cvmhvD5Os8IyC24UUdDgn8kTQCZnZtT+/BPgZhMTial7fOkGwHnTt99v49ToUXqYRYiE+wBvIY7l3aazh1HqEFgieXvuVD3zQUh/uVBF1bRo+FFMuFRmrM4Bez/xzmOdCS+oqyVNKwBFdOtbP86Ry3RxdrLauSVha3tfv/SzjyjeP7eZKWJpGBEaz4g311VpVaZUYnhE7a3FVIadywZd/441Es9PUM6ov2PJyrCsEu050ABps5J67qwoRFyFl+MwhcsFA01/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DT4YnZBRtgYw4icXxqt4rj8x249+2wdMDhRHzQv9G2s=;
+ b=tSL+gebu+imz0Xa7pfNCCO+4WcomIEGj5Cqrto5XAvh4uhEL07ugy6dS2ybwEmfXjPWD1tXqSWWxTslRbDym0gMCiattk6H7v32Ij755pdG2XCTeCXVM2Ei2CIzOFgHoHLjG2R/iS7K561cWulQflQugdB5A7IanLDt5aA9OOzJ0HjLiZMKUeegRCe8lkQ2yn4Wu64t2ZuruyJ4OMNkF9Haom+2EY8Fu7K3oe7xHNJAvOetIctWf8NYI3ep/JmX3AO0BBYcHPTljW7vmtNUA39/1bBFOUr7I6yjf/r9CSylSBy5nrvAuU85WDX+tmrJoOuQcqP3GAFxuH5ISY/7AyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DT4YnZBRtgYw4icXxqt4rj8x249+2wdMDhRHzQv9G2s=;
+ b=jms0xou5tkQWfPHii3JMU5wHMYgquDNkDDGy2wrxNBYi7F3gvzZRxRkUkV/SUCBSIrXAo2viNlfqvid8VZ4jM/kMCpITJzWElIDZXFZVXz0/7LZX+SehuJVnkWoPjIrdEJxBMI3tyULYyQ53+hrbu4M+5GTMU+DQHbD5sgEfOY9Wj22D8P/FPxWEJPfrMeRQjQf8Tn5qmjkB0skE42wa1UyTur68PemFFJqcQf/sP33+j7QAua+LGx+OrINGhFRx4bFLXmWY2Vva0XhpBFKDapS5wcfrw0/Gq++qMQBocmJpck7P2PMuBoZJ97dD1HQjY6bpoWk0cT8zC9vxqJbiLA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MW3PR12MB4442.namprd12.prod.outlook.com (2603:10b6:303:55::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.8; Thu, 18 Dec
+ 2025 12:59:30 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
+ 12:59:30 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 18 Dec 2025 21:59:25 +0900
+Message-Id: <DF1D026W0BQ9.1DUWS5LKR09TG@nvidia.com>
+Subject: Re: [PATCH v4 11/11] gpu: nova-core: add PIO support for loading
+ firmware images
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Timur Tabi" <ttabi@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20251218032955.979623-1-ttabi@nvidia.com>
+ <20251218032955.979623-12-ttabi@nvidia.com>
+In-Reply-To: <20251218032955.979623-12-ttabi@nvidia.com>
+X-ClientProxiedBy: TYWPR01CA0009.jpnprd01.prod.outlook.com
+ (2603:1096:400:a9::14) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: gtucker@gtucker.io
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegheegjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpefiuhhilhhlrghumhgvucfvuhgtkhgvrhcuoehgthhutghkvghrsehgthhutghkvghrrdhioheqnecuggftrfgrthhtvghrnhepheevgfdutdeufefhgfeuleeuffejkeelfefhueffkefgieevheeigeeigfejjeetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpghhithhlrggsrdgtohhmnecukfhppedvtddtudemkeeiudemgegrgedtmeekiedvtdemheegiegvmeekfeefrgemfeeffhgumegvieekfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgegrgedtmeekiedvtdemheegiegvmeekfeefrgemfeeffhgumegvieekfedphhgvlhhopehrihhnghhordhlrghnpdhmrghilhhfrhhomhepghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhopdhqihgupeetkeejveehgeegfeevuedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopeduvddprhgtphhtthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpt
- hhtohepuggrvhhiughgohifsehgohhoghhlvgdrtghomhdprhgtphhtthhopeifohhrkhesohhnuhhrohiikhgrnhdruggvvhdprhgtphhtthhopehgthhutghkvghrsehgthhutghkvghrrdhiohdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggv
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW3PR12MB4442:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c180bc8-c55b-4471-4e0a-08de3e354792
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YjlqTUNtaGxjU2k0eEprUVRrWlBZMzVDUGdNV0xPSW9ZeFBpVVlpSTh5WGk0?=
+ =?utf-8?B?NTMyVWVyOXEweUVNT2UrNzhtUVpLUHZ1WXdzbUI4aE1qTUxaamtDaHorV09a?=
+ =?utf-8?B?SkVqSFZ4UVoyWjRHSGRXYXNkbm1NYmUxOWh3MzRjd0RXc24yWkpxYmhYWFRL?=
+ =?utf-8?B?ZlJVWU1zT09FMUVrQjgrcm9aMExRclpYK0p5SlJldG5ZemFIQWlyeVhOR2Y0?=
+ =?utf-8?B?eXVNTlJ6dC9WdmNkWFVEc0NlWHc3QUFZRTRocUU4RFJYTTlVbWpxZVNtY3p1?=
+ =?utf-8?B?UFNwZG1wbXp0dEVDVmpMelVTUW9qS29zQnhablV5di9NZHJsaXBYMnN3Z1Jt?=
+ =?utf-8?B?VTJ5QlQzMkUxbkRlK21DL2t5UHRNUlZhSW9icjd3bVVDSy9BSkdCQUdMQXhU?=
+ =?utf-8?B?VFhhcFBkYW5ncnl2M3BLZGJmOXNqd3RRRXhzQk5ULzlkUGdRblcwd3l0TmE2?=
+ =?utf-8?B?QnY5SjE5b25ML3RJMlZ4S005bllQcDcwVkgwNFdyVU16anNVVXl6emNiaGdD?=
+ =?utf-8?B?YTZiNjZra2o1c0x1THArcG04UFk2RFJST2UxSVB4TUkyZUNpLzV5d1pJRjRo?=
+ =?utf-8?B?akQxZml2eVdNc1pkRm9mTm9xYnIyYzd1Ly9EbkxkYjZYcGk1SUF3dVlBMVpF?=
+ =?utf-8?B?dmtZNzgzQzlBRzdvUDdEbVpBbUFWVzhxdWhNSm1oTmcxaWVWd1FndFNEeEpC?=
+ =?utf-8?B?bVp6M3hPOHhrNzVOaU4rZVVGTjZRU0RvMVFJa21DOCtIaFFscUtWU3FJNWZ0?=
+ =?utf-8?B?NUtvMkJvVzNieDFsbzArRHNBTWtqSjJjYWZuM2lrUEo3OE9UOWhPT1hlOW5H?=
+ =?utf-8?B?eHQ3eXp3M0FyTjRxMlJYQTV6OFB5T05udldVK3dZOTNIN05BQU02eFc2b2tT?=
+ =?utf-8?B?MTNGWFdybmhhZHAwNk1yNGlUY0JXbzVlOUlxSnN0d2ZFdHU3ZElqd0hYeVNM?=
+ =?utf-8?B?d0I4SExEZTdCS0dodXdXcVVFRzNEUnZFTHpTd05jd1BNNnVtOTFXN0hka0VP?=
+ =?utf-8?B?L0RGcTlLUTMwZitSVEV4OFhzdHEvUEJXa0lseTBsUWRUN21kZ3U1RmVZVEdZ?=
+ =?utf-8?B?SHBWZWF4RHQrNG9TeXZtTzZ0d2pJUmNoVzh1QlVmRUI2blZCZUtPWCtzVTN6?=
+ =?utf-8?B?bXlhZmdMNDhZMjBQT09lWng4bW1SUEFPQjJFdUo2VktkQkxNbEhLd3RXQjho?=
+ =?utf-8?B?TmVzWXVONzVvTHFoRUlFalpDTURYMk1jQVZ4ZFpEL3Y2aDdlOERra2c1WU1O?=
+ =?utf-8?B?R0xRQUk1VGtZMkFxK1NNdnY2b0VjUW9KYURUd1VPSGJuRVNYVmFaam1hNTdC?=
+ =?utf-8?B?S3ZuWk9kMmFtakJBOVhQWWNJTVorYlJSOXU5UUZrdmRSZk5ucmpOL3psdTNZ?=
+ =?utf-8?B?OURaUThkM0FmSy9IWGRucGRheEtkL1pTblowMkZNQVNWR2NKZ3pUUTE1emNE?=
+ =?utf-8?B?T0hJd29CY3V5NnZUaDdiYkFvN0FaYXVqWkU2d0FVNEMzSjFJSDM3OEoreFp2?=
+ =?utf-8?B?Wmw5YmRIdWg2NVR5dXRSZXpNZkdTT21oQW5VSlIrbzlUVGVzdlRVSGhRaStQ?=
+ =?utf-8?B?Ylpad0lyYmc5ckZQamlkZGZRekRRYWVFQVdBQmw2a1BSQ0oyaGp2VlN0NFhT?=
+ =?utf-8?B?dVVRZ1UwT0hqcFVydnVYSlpLQU0xcnhpZnFVRUZ3czBqbEluY2k1WGdyN0RP?=
+ =?utf-8?B?SVI0a2VPbG1ESGMrTFVZT0h3SlhNODVqOXVJaUlIdUZhS3hzWlI1ZHdPSW1Q?=
+ =?utf-8?B?YXRJVUQvQVVOQ3c5OXZvWnE1WkZHWTIvUlJ3TVY2MFBnd0p5WG9OZmlDajU4?=
+ =?utf-8?B?UnFXdUV3dElrSi9lWS9teGIvc2c0SDhoVzh6My8vaVM1T3ZhSWh1RlM1SGUr?=
+ =?utf-8?B?aXJybWZOYlNyMHdHSUVYRVAvWEhqR0ZTeTllNCtuZUkzRjd3UllOMVl0OUZF?=
+ =?utf-8?Q?AVV/2lTmwUSVdr5YuSVd5DD2HFW84Tjm?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R3J0MXJ3T29jbmRabUt2TWpEdVdQYmxTRWtVR2hvTHBiaXEvMjVSWEcrcmhs?=
+ =?utf-8?B?Z3lUQXc5c1NHV2JvT0Fkak5HclFnK1YwVFpGUG5RZXExYlN6d25zSG9kVUJV?=
+ =?utf-8?B?c2E1QjN3UWgxVkNhUmJKNWVCY25TdFpTejYwRmVYczgzTVM3djgvWjVwbVMz?=
+ =?utf-8?B?VWh6MXh0d2c2aU5wSnA0cGxIM2JtS2l6YmVQd3pXYTR3N0JqT1NQMU5WNUVB?=
+ =?utf-8?B?YStPOEIzd1M2UnVwUFRzcTFRWXdTVlBwbzRBRHAzWGt1ckkyRkxtektGR090?=
+ =?utf-8?B?WXJCQ2h4Z0dCUTY2U29pTDRDS21GV0xaL3Q5Nk90emVPbmVUYXREaW5Eajh5?=
+ =?utf-8?B?OVJlVkJadXozSzE4c0x6akJCbmZGKzlSQlVFMDJVcnMwVmdpMGVnQy9CTytu?=
+ =?utf-8?B?TnNKYllYSzkxVGY3bnM3T0w4SndmZVl5Qkw4aTBPU3pXNTNLd00rcVRMUmNh?=
+ =?utf-8?B?Q3ZhZTM1ZUZLSWdyQ0V4SXJLNkoyMW9KeHpVNUtyVXdtNlhhbHh6RThJa2dT?=
+ =?utf-8?B?M1ZreXBsclh5allBQzdna2xqM25YZjRTelg3dzBjVGU3Y1czWmJraTVSUHRr?=
+ =?utf-8?B?bklITmRBOG54SHFGOGUvaXI1bmhHa21jTU9tZFJtbk9tejlDTVNWdkxrb1dM?=
+ =?utf-8?B?L2JGeWRaN3E0eWw1STU5NHBJREkwUUpSekZZVFZnNUJ0TW5hdWhEZXlKR2Vo?=
+ =?utf-8?B?d2FvcHpwN2Z1ZG1ISEFZbkpsanRiU3BKMUtZTHBBR2ttM0ZUdC9DWTRaSkRY?=
+ =?utf-8?B?bzRud3E5ZkNqeWdZaURIR1NmU1lyeUlRaDhJQUZieXc3a0dySVFQS2UwWWZs?=
+ =?utf-8?B?Sm1Ecys3elp3cS9HTWZETE1nY0xKb1RwcjRIcFo1djB2WWUyOVRNNFVocnRv?=
+ =?utf-8?B?eFJlWVRsZ2VNaDI0TEViWUMvMlptUm5jYUJNTHJiR28vQkI2SEFyYmVkcURi?=
+ =?utf-8?B?K3FNREk5bU5tQ1UxN1Qxc29IdURiRmdQcXU2b3ZhbEIwMTh1aklJdGEzZGxH?=
+ =?utf-8?B?aFM3TDN1d3ZGQVE1UVNEUDJORUFqTEx5THVreU9ta2pweGErTjdlWkZLcnpT?=
+ =?utf-8?B?Y3I4VUN2OTNxN1JDcVp6TW1kSmZadERqU3dLSzFMbnlJZ1UxU1ErNmc0VW9s?=
+ =?utf-8?B?TnFjVlp1OU9PMkszcDFINHlNQmFnQTl5Q0hVb3AyU3ZLYlU3ZWd2bHRIRkc5?=
+ =?utf-8?B?MTRNR0ZoU0xuTmRjVVJVS2ZkaGtGcU5CNTYrWmtBVVJEWDZ6TGdWM21Oa1RT?=
+ =?utf-8?B?dms2eG5kRVg5cUxTblRoam9iRm9qdm0vVXJXaVVSQU9CUVFxOWh5OS82MHJ4?=
+ =?utf-8?B?V20xZXF6dndYYitrdmdueTQrcGFKWmU2dE1jcUxDTzdRTTB3aVJuOVdwMisw?=
+ =?utf-8?B?TTRrcVVaRm1ySHErdklUSGR6dkdLNVAxS2taUnR6NmtTMXFIdW1PYzVoL3VK?=
+ =?utf-8?B?VDRDdkREaTgwZkNVQUliWlNURVpZbTE5cXB5MjU5VXlYV2ZSWXpnWnlOU2pr?=
+ =?utf-8?B?MjZmcWdFQ3lmODBVQUJ6S082QXlsUlY1VEl0ck1XUEhWRHBoTFlwb1hsa25J?=
+ =?utf-8?B?RzkvSnZCcjR2RW9aK3dRV0hxQjdBRmZxdTlNQmNLcUtDVW9WU3YzQjNBUG44?=
+ =?utf-8?B?T3owTkNiQTZvaUU5cmowdk83QjhlM3lIKzBhcWtaMThqVUZreHZDSHE4Q0Jv?=
+ =?utf-8?B?OUJ2SDQwWkwzaitMQ09NenVMaHVna284bm11bVFtejNOZUNWMnhTZ2JJTVRO?=
+ =?utf-8?B?RExJZThmbzZMbHpTOThMM3U3dGFiNmJHMEQwS3J5aDhhZlp1N3RHVVFuNldh?=
+ =?utf-8?B?RkVUK0NBblk2TG5OL0tHY1p0QWpxTHY0N3NRNFIrR2xLNU82OEFiOG0rd1Ft?=
+ =?utf-8?B?RXBrWHp2ZG40ak8vaW1pRjNIeUd0OWZ6bVVHWGV5R3BIT1A3cUpPcm5oWHVy?=
+ =?utf-8?B?ZW16blBpaDNYc2FJSkVzcnd3SFZiaEJ4dW1tQnVTSlpUVkd2ZkFLU2RKNzNI?=
+ =?utf-8?B?Qk85TnMrbFZEdlp4NDFraWdhMWhCeEJEOGFYM05UeENoQ1ozUDB4eWlwU3V0?=
+ =?utf-8?B?aUxmemVLdzZWNGFpVWM2ZWt5WWVGMExlbnVWTEpRUHJJd2o3eDJSYlAxa09F?=
+ =?utf-8?B?SjUydWIwZC9xNjZkTEFiSkd3Rnorbm02S0hzNkxMM2I1QVhoVHlZTmVuemZG?=
+ =?utf-8?Q?ycCAeIE3kqmty8ekd1h87bODPSlZxJ3wN8/NEZ6kHJLv?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c180bc8-c55b-4471-4e0a-08de3e354792
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 12:59:30.1028
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FuWXoZQQITEL9Gj+rtbfuPzKGF7JRCmT+2kZbNx43XauDMNKc5ZbtGjdC+DTzAz/YoWTuTPO+cPOBuY2BtfEaQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4442
 
-Add a dev-tools/container.rst documentation page for the
-scripts/container tool.  This covers the basic usage with additional
-information about environment variables and user IDs.  It also
-includes a number of practical examples with a reference to the
-experimental kernel.org toolchain images.
+On Thu Dec 18, 2025 at 12:29 PM JST, Timur Tabi wrote:
+<snip>
+> +    fn pio_wr<F: FalconFirmware<Target =3D E>>(
+> +        &self,
+> +        bar: &Bar0,
+> +        fw: &F,
+> +        target_mem: FalconMem,
+> +        load_offsets: &FalconLoadTarget,
+> +        port: u8,
+> +        tag: u16,
+> +    ) -> Result {
+> +        let start =3D usize::from_safe_cast(load_offsets.src_start);
+> +        let len =3D usize::from_safe_cast(load_offsets.len);
+> +        let mem_base =3D u16::try_from(load_offsets.dst_start)?;
+> +
+> +        // SAFETY: as_slice() ensures that start+len is within range
 
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: David Gow <davidgow@google.com>
-Cc: "Onur Özkan" <work@onurozkan.dev>
-Signed-off-by: Guillaume Tucker <gtucker@gtucker.io>
----
- Documentation/dev-tools/container.rst | 175 ++++++++++++++++++++++++++
- Documentation/dev-tools/index.rst     |   1 +
- 2 files changed, 176 insertions(+)
- create mode 100644 Documentation/dev-tools/container.rst
+That's not the safety concern - check the documentation for `as_slice`.
+We need to ensure that there won't be any concurrent access to the DMA
+object. Since we are the only user of it at this stage, that's a
+guarantee we can indeed provide.
 
-diff --git a/Documentation/dev-tools/container.rst b/Documentation/dev-tools/container.rst
-new file mode 100644
-index 000000000000..5254feae02c2
---- /dev/null
-+++ b/Documentation/dev-tools/container.rst
-@@ -0,0 +1,175 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+.. Copyright (C) 2025 Guillaume Tucker
-+
-+====================
-+Containerized Builds
-+====================
-+
-+The ``container`` tool can be used to run any command in the kernel source tree
-+from within a container.  Doing so facilitates reproducing builds across
-+various platforms, for example when a test bot has reported an issue which
-+requires a specific version of a compiler or an external test suite.  While
-+this can already be done by users who are familiar with containers, having a
-+dedicated tool in the kernel tree lowers the barrier to entry by solving common
-+problems once and for all (e.g. user id management).  It also makes it easier
-+to share an exact command line leading to a particular result.  The main use
-+case is likely to be kernel builds but virtually anything can be run: KUnit,
-+checkpatch etc. provided a suitable image is available.
-+
-+
-+Options
-+=======
-+
-+Command line syntax::
-+
-+  scripts/container -i IMAGE [OPTION]... CMD...
-+
-+Available options:
-+
-+``-e, --env-file ENV_FILE``
-+
-+    Path to an environment file to load in the container.
-+
-+``-g, --gid GID``
-+
-+    Group id to use inside the container.
-+
-+``-i, --image IMAGE``
-+
-+    Container image name (required).
-+
-+``-r, --runtime RUNTIME``
-+
-+    Container runtime name.  Supported runtimes: ``docker``, ``podman``.
-+
-+    If not specified, the first one found on the system will be used
-+    i.e. Docker if present, otherwise Podman.
-+
-+``-u, --uid UID``
-+
-+    User id to use inside the container.
-+
-+    If the ``-g`` option is not specified, the user id will also be used for
-+    the group id.
-+
-+``-v, --verbose``
-+
-+    Enable verbose output.
-+
-+``-h, --help``
-+
-+    Show the help message and exit.
-+
-+
-+Usage
-+=====
-+
-+It's entirely up to the user to choose which image to use and the ``CMD``
-+arguments are passed directly as an arbitrary command line to run in the
-+container.  The tool will take care of mounting the source tree as the current
-+working directory and adjust the user and group id as needed.
-+
-+The container image which would typically include a compiler toolchain is
-+provided by the user and selected via the ``-i`` option.  The container runtime
-+can be selected with the ``-r`` option, which can be either ``docker`` or
-+``podman``.  If none is specified, the first one found on the system will be
-+used.  Support for other runtimes may be added later depending on their
-+popularity among users.
-+
-+
-+Environment Variables
-+=====================
-+
-+Environment variables are not propagated to the container so they have to be
-+either defined in the image itself or via the ``-e`` option using an
-+environment file.  In some cases it makes more sense to have them defined in
-+the Containerfile used to create the image.  For example, a Clang-only compiler
-+toolchain image may have ``LLVM=1`` defined.  The local environment file is
-+more useful for user-specific variables added during development.
-+
-+Please note that ``make`` options can still be passed on the command line, so
-+while this can't be done since the first argument needs to be the executable::
-+
-+  scripts/container -i tuxmake/korg-clang LLVM=1 make
-+
-+this will work::
-+
-+  scripts/container -i tuxmake/korg-clang make LLVM=1
-+
-+
-+User IDs
-+========
-+
-+This is an area where the behaviour will vary slightly depending on the
-+container runtime.  The goal is to run commands as the user invoking the tool.
-+With Podman, a namespace is created to map the current user id to a different
-+one in the container (1000 by default).  With Docker, while this is also
-+possible with recent versions it requires a special feature to be enabled in
-+the daemon so it's not used here for simplicity.  Instead, the container is run
-+with the current user id directly.  In both cases, this will provide the same
-+file permissions for the kernel source tree mounted as a volume.  The only
-+difference is that when using Docker without a namespace, the user id may not
-+be the same as the default one set in the image.
-+
-+Say, we're using an image which sets up a default user with id 1000 and the
-+current user calling the ``container`` tool has id 1234.  The kernel source
-+tree was checked out by this same user so the files belong to user 1234.  With
-+Podman, the container will be running as user id 1000 with a mapping to id 1234
-+so that the files from the mounted volume appear to belong to id 1000 inside
-+the container.  With Docker and no namespace, the container will be running
-+with user id 1234 which can access the files in the volume but not in the user
-+1000 home directory.  This shouldn't be an issue when running commands only in
-+the kernel tree but it is worth highlighting here as it might matter for
-+special corner cases.
-+
-+
-+Examples
-+========
-+
-+The shortest example is to run a basic kernel build using Docker and a tuxmake
-+Clang image::
-+
-+  scripts/container -i tuxmake/korg-clang -- make LLVM=1 defconfig
-+  scripts/container -i tuxmake/korg-clang -- make LLVM=1 -j$(nproc)
-+
-+.. note::
-+
-+   When running a command with options within the container, it should be
-+   separated with a double dash ``--`` to not confuse them with the
-+   ``container`` tool options.  Plain commands with no options don't strictly
-+   require the double dashes e.g.::
-+
-+     scripts/container -i tuxmake/korg-clang make mrproper
-+
-+To run ``checkpatch.pl`` in a ``patches`` directory with a generic image::
-+
-+  scripts/container -i perl:slim-trixie scripts/checkpatch.pl patches/*
-+
-+The examples below refer to ``kernel.org`` images which are based on the
-+`kernel.org compiler toolchains
-+<https://mirrors.edge.kernel.org/pub/tools/>`__.  These aren't (yet) officially
-+available in any public registry but users can build their own locally instead
-+using this `experimental repository
-+<https://gitlab.com/gtucker/korg-containers>`__ by running ``make
-+PREFIX=kernel.org/``.
-+
-+To build just ``bzImage`` using Clang::
-+
-+  scripts/container -i kernel.org/clang -- make bzImage -j$(nproc)
-+
-+Same with GCC 15 as a particular version tag::
-+
-+  scripts/container -i kernel.org/gcc:15 -- make bzImage -j$(nproc)
-+
-+To run KUnit::
-+
-+  scripts/container -i kernel.org/gcc:kunit -- \
-+      tools/testing/kunit/kunit.py \
-+          run \
-+          --arch=x86_64 \
-+          --cross_compile=x86_64-linux-
-+
-+To build the HTML documentation, which requires the ``kdocs`` image built with
-+``make PREFIX=kernel.org/ extra`` as it's not a compiler toolchain::
-+
-+  scripts/container -i kernel.org/kdocs make htmldocs
-diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tools/index.rst
-index 4b8425e348ab..527a0e4cf2ed 100644
---- a/Documentation/dev-tools/index.rst
-+++ b/Documentation/dev-tools/index.rst
-@@ -38,6 +38,7 @@ Documentation/process/debugging/index.rst
-    gpio-sloppy-logic-analyzer
-    autofdo
-    propeller
-+   container
- 
- 
- .. only::  subproject and html
--- 
-2.47.3
+> +        let data =3D unsafe { fw.as_slice(start, len).map_err(|_| EINVAL=
+)? };
+> +
+> +        self.pio_wr_bytes(bar, data, mem_base, target_mem, port, tag)
+> +    }
+> +
+> +    /// Perform a PIO copy into `IMEM` and `DMEM` of `fw`, and prepare t=
+he falcon to run it.
+> +    pub(crate) fn pio_load<F: FalconFirmware<Target =3D E>>(
+> +        &self,
+> +        bar: &Bar0,
+> +        fw: &F,
+> +        gbl: Option<&GenericBootloader>,
+> +    ) -> Result {
+> +        let imem_sec =3D fw.imem_sec_load_params();
+> +        let imem_ns =3D fw.imem_ns_load_params().ok_or(EINVAL)?;
+> +        let dmem =3D fw.dmem_load_params();
+> +
+> +        regs::NV_PFALCON_FBIF_CTL::read(bar, &E::ID)
+> +            .set_allow_phys_no_ctx(true)
+> +            .write(bar, &E::ID);
+> +
+> +        regs::NV_PFALCON_FALCON_DMACTL::default().write(bar, &E::ID);
+> +
+> +        // If the Generic Bootloader was passed, then use it to boot FRT=
+S
+> +        if let Some(gbl) =3D gbl {
+> +            let dst_start =3D u16::try_from(0x10000 - gbl.desc.code_size=
+)?;
+> +            let data =3D &gbl.ucode[..usize::from_safe_cast(gbl.desc.cod=
+e_size)];
+> +            let tag =3D u16::try_from(gbl.desc.start_tag)?;
+> +
+> +            self.pio_wr_bytes(bar, data, dst_start, FalconMem::ImemNonSe=
+cure, 0, tag)?;
+> +
+> +            // This structure tells the generic bootloader where to find=
+ the FWSEC
+> +            // image.
+> +            let dmem_desc =3D BootloaderDmemDescV2 {
+> +                reserved: [0; 4],
+> +                signature: [0; 4],
+> +                ctx_dma: 4, // FALCON_DMAIDX_PHYS_SYS_NCOH
+> +                code_dma_base: fw.dma_handle(),
+> +                non_sec_code_off: imem_ns.dst_start,
+> +                non_sec_code_size: imem_ns.len,
+> +                sec_code_off: imem_sec.dst_start,
+> +                sec_code_size: imem_sec.len,
+> +                code_entry_point: 0,
+> +                data_dma_base: fw.dma_handle() + u64::from(dmem.src_star=
+t),
+> +                data_size: dmem.len,
+> +                argc: 0,
+> +                argv: 0,
+> +            };
+> +
+> +            regs::NV_PFALCON_FBIF_TRANSCFG::update(bar, &E::ID, 4, |v| {
+> +                v.set_target(FalconFbifTarget::CoherentSysmem)
+> +                    .set_mem_type(FalconFbifMemType::Physical)
+> +            });
+> +
+> +            self.pio_wr_bytes(bar, dmem_desc.as_bytes(), 0, FalconMem::D=
+mem, 0, 0)?;
+
+So this `if` branch is really special-casing the generic bootloader. But
+at the end of the day it just does these things:
+
+- Write an `ImemNonSecure` section,
+- Write an `Dmem` section,
+- Program the `TRANSCFG` register so the bootloader can initiate the DMA
+  transfer.
+
+The first two steps can be expressed as a set of `FalconLoadTarget`s.
+That way they can be handled by the non-generic-bootloader path, and we
+can remove the `gbl` argument.
+
+So `FwsecFirmware` could have an optional member that contains both the
+generic bootloader and the `BootloaderDmemDescV2` corresponding to it.
+If that optional member is `Some`, then it returns the `FalconLoadTarget`s
+corresponding to the generic bootloader. Otherwise, it behaves as
+before.
+
+Interestingly there is no `ImemSecure` section to write so I guess we
+will have to make `imem_sec_load_params` return an `Option` as well.
+
+And `NV_PFALCON_FBIF_TRANSCFG` is always programmed as the worst thing
+that can happen is that we don't use the DMA engine if there is no
+generic bootloader.
+
+> +        } else {
+> +            self.pio_wr(
+> +                bar,
+> +                fw,
+> +                FalconMem::ImemNonSecure,
+> +                &imem_ns,
+> +                0,
+> +                u16::try_from(imem_ns.dst_start >> 8)?,
+> +            )?;
+> +            self.pio_wr(
+> +                bar,
+> +                fw,
+> +                FalconMem::ImemSecure,
+> +                &imem_sec,
+> +                0,
+> +                u16::try_from(imem_sec.dst_start >> 8)?,
+> +            )?;
+> +            self.pio_wr(bar, fw, FalconMem::Dmem, &dmem, 0, 0)?;
+> +        }
+> +
+> +        self.hal.program_brom(self, bar, &fw.brom_params())?;
+> +
+> +        // Set `BootVec` to start of non-secure code.
+> +        regs::NV_PFALCON_FALCON_BOOTVEC::default()
+> +            .set_value(fw.boot_addr())
+> +            .write(bar, &E::ID);
+> +
+> +        Ok(())
+> +    }
+> +
+>      /// Perform a DMA write according to `load_offsets` from `dma_handle=
+` into the falcon's
+>      /// `target_mem`.
+>      ///
+> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/fi=
+rmware.rs
+> index 44897feb82a4..26efbf4f6760 100644
+> --- a/drivers/gpu/nova-core/firmware.rs
+> +++ b/drivers/gpu/nova-core/firmware.rs
+> @@ -31,7 +31,7 @@
+>  pub(crate) const FIRMWARE_VERSION: &str =3D "570.144";
+> =20
+>  /// Requests the GPU firmware `name` suitable for `chipset`, with versio=
+n `ver`.
+> -fn request_firmware(
+> +pub(crate) fn request_firmware(
+
+There is no need to change the visibility of this function.
+
+>      dev: &device::Device,
+>      chipset: gpu::Chipset,
+>      name: &str,
+> @@ -321,7 +321,7 @@ fn no_patch_signature(self) -> FirmwareDmaObject<F, S=
+igned> {
+>  /// Header common to most firmware files.
+>  #[repr(C)]
+>  #[derive(Debug, Clone)]
+> -struct BinHdr {
+> +pub(crate) struct BinHdr {
+
+Same for this type.
+
+>      /// Magic number, must be `0x10de`.
+>      bin_magic: u32,
+>      /// Version of the header.
+> diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-c=
+ore/firmware/fwsec.rs
+> index 1c1dcdacf5f5..4c26257bbfe0 100644
+> --- a/drivers/gpu/nova-core/firmware/fwsec.rs
+> +++ b/drivers/gpu/nova-core/firmware/fwsec.rs
+> @@ -40,12 +40,15 @@
+>          FalconLoadTarget, //
+>      },
+>      firmware::{
+> +        BinHdr,
+>          FalconUCodeDesc,
+>          FirmwareDmaObject,
+>          FirmwareSignature,
+>          Signed,
+>          Unsigned, //
+> +        FIRMWARE_VERSION,
+>      },
+> +    gpu::Chipset,
+>      num::{
+>          FromSafeCast,
+>          IntoSafeCast, //
+> @@ -213,6 +216,72 @@ unsafe fn transmute_mut<T: Sized + FromBytes + AsByt=
+es>(
+>      T::from_bytes_mut(unsafe { fw.as_slice_mut(offset, size_of::<T>())? =
+}).ok_or(EINVAL)
+>  }
+> =20
+> +/// Descriptor used by RM to figure out the requirements of the boot loa=
+der.
+> +#[repr(C)]
+> +#[derive(Debug, Clone)]
+> +pub(crate) struct BootloaderDesc {
+> +    /// Starting tag of bootloader.
+> +    pub start_tag: u32,
+> +    /// DMEM offset where [`BootloaderDmemDescV2`] is to be loaded.
+> +    pub dmem_load_off: u32,
+> +    /// Offset of code section in the image.
+> +    pub code_off: u32,
+> +    /// Size of code section in the image.
+> +    pub code_size: u32,
+> +    /// Offset of data section in the image.
+> +    pub data_off: u32,
+> +    /// Size of data section in the image.
+> +    pub data_size: u32,
+> +}
+> +// SAFETY: any byte sequence is valid for this struct.
+> +unsafe impl FromBytes for BootloaderDesc {}
+> +// SAFETY: This struct doesn't contain uninitialized bytes and doesn't h=
+ave interior mutability.
+> +unsafe impl AsBytes for BootloaderDesc {}
+
+We only need to implement `FromBytes` for this type, `AsBytes` is not
+needed.
+
+> +
+> +/// Structure used by the boot-loader to load the rest of the code.
+> +///
+> +/// This has to be filled by the GPU driver and copied into DMEM at offs=
+et
+> +/// [`BootloaderDesc.dmem_load_off`].
+> +#[repr(C, packed)]
+> +#[derive(Debug, Clone)]
+> +pub(crate) struct BootloaderDmemDescV2 {
+> +    /// Reserved, should always be first element.
+> +    pub reserved: [u32; 4],
+> +    /// 16B signature for secure code, 0s if no secure code.
+> +    pub signature: [u32; 4],
+> +    /// DMA context used by the bootloader while loading code/data.
+> +    pub ctx_dma: u32,
+> +    /// 256B-aligned physical FB address where code is located.
+> +    pub code_dma_base: u64,
+> +    /// Offset from `code_dma_base` where the non-secure code is located=
+ (must be multiple of 256).
+> +    pub non_sec_code_off: u32,
+> +    /// Size of the non-secure code part.
+> +    pub non_sec_code_size: u32,
+> +    /// Offset from `code_dma_base` where the secure code is located (mu=
+st be multiple of 256).
+> +    pub sec_code_off: u32,
+> +    /// Size of the secure code part.
+> +    pub sec_code_size: u32,
+> +    /// Code entry point invoked by the bootloader after code is loaded.
+> +    pub code_entry_point: u32,
+> +    /// 256B-aligned physical FB address where data is located.
+> +    pub data_dma_base: u64,
+> +    /// Size of data block (should be multiple of 256B).
+> +    pub data_size: u32,
+> +    /// Arguments to be passed to the target firmware being loaded.
+> +    pub argc: u32,
+> +    /// Number of arguments to be passed to the target firmware being lo=
+aded.
+> +    pub argv: u32,
+> +}
+> +// SAFETY: any byte sequence is valid for this struct.
+> +unsafe impl FromBytes for BootloaderDmemDescV2 {}
+> +// SAFETY: This struct doesn't contain uninitialized bytes and doesn't h=
+ave interior mutability.
+> +unsafe impl AsBytes for BootloaderDmemDescV2 {}
+
+Here we can do without `FromBytes`.
+
+> +
+> +pub(crate) struct GenericBootloader {
+> +    pub desc: BootloaderDesc,
+> +    pub ucode: Vec<u8, kernel::alloc::allocator::Kmalloc>,
+> +}
+> +
+>  /// The FWSEC microcode, extracted from the BIOS and to be run on the GS=
+P falcon.
+>  ///
+>  /// It is responsible for e.g. carving out the WPR2 region as the first =
+step of the GSP bootflow.
+> @@ -221,6 +290,8 @@ pub(crate) struct FwsecFirmware {
+>      desc: FalconUCodeDesc,
+>      /// GPU-accessible DMA object containing the firmware.
+>      ucode: FirmwareDmaObject<Self, Signed>,
+> +    /// Generic bootloader
+> +    gen_bootloader: Option<GenericBootloader>,
+>  }
+> =20
+>  impl FalconLoadParams for FwsecFirmware {
+> @@ -275,7 +346,19 @@ fn brom_params(&self) -> FalconBromParams {
+>      }
+> =20
+>      fn boot_addr(&self) -> u32 {
+> -        0
+> +        match &self.desc {
+> +            FalconUCodeDesc::V2(_v2) =3D> {
+> +                // On V2 platforms, the boot address is extracted from t=
+he
+> +                // generic bootloader, because the gbl is what actually =
+copies
+> +                // FWSEC into memory, so that is what needs to be booted=
+.
+> +                if let Some(ref gbl) =3D self.gen_bootloader {
+> +                    gbl.desc.start_tag << 8
+> +                } else {
+> +                    0
+> +                }
+> +            }
+> +            FalconUCodeDesc::V3(_v3) =3D> 0,
+> +        }
+>      }
+>  }
+> =20
+> @@ -376,6 +459,7 @@ impl FwsecFirmware {
+>      /// command.
+>      pub(crate) fn new(
+>          dev: &Device<device::Bound>,
+> +        chipset: Chipset,
+>          falcon: &Falcon<Gsp>,
+>          bar: &Bar0,
+>          bios: &Vbios,
+> @@ -432,9 +516,49 @@ pub(crate) fn new(
+>              ucode_dma.no_patch_signature()
+>          };
+> =20
+> +        // The Generic Bootloader exists only on Turing and GA100.  To a=
+void a bogus
+> +        // console error message on other platforms, only try to load it=
+ if it's
+> +        // supposed to be there.
+> +        let gbl_fw =3D if chipset < Chipset::GA102 {
+> +            super::request_firmware(dev, chipset, "gen_bootloader", FIRM=
+WARE_VERSION)
+> +        } else {
+> +            Err(ENOENT)
+> +        };
+
+Using `Err` to indicate no firmware means that we will proceed even if
+`request_firmware` returns an error. This should be:
+
+    let gbl_fw =3D if chipset < Chipset::GA102 {
+        Some(super::request_firmware(dev, chipset, "gen_bootloader", FIRMWA=
+RE_VERSION)?)
+    } else {
+        None
+    };
+
+> +
+> +        let gbl =3D match gbl_fw {
+> +            Ok(fw) =3D> {
+> +                let hdr =3D fw
+> +                    .data()
+> +                    .get(0..size_of::<BinHdr>())
+> +                    .and_then(BinHdr::from_bytes_copy)
+> +                    .ok_or(EINVAL)?;
+> +
+> +                let desc_offset =3D usize::from_safe_cast(hdr.header_off=
+set);
+> +                let desc =3D fw
+> +                    .data()
+> +                    .get(desc_offset..desc_offset + size_of::<Bootloader=
+Desc>())
+> +                    .and_then(BootloaderDesc::from_bytes_copy)
+> +                    .ok_or(EINVAL)?;
+> +
+> +                let ucode_start =3D usize::from_safe_cast(hdr.data_offse=
+t);
+> +                let ucode_size =3D usize::from_safe_cast(hdr.data_size);
+> +                let ucode_data =3D fw
+> +                    .data()
+> +                    .get(ucode_start..ucode_start + ucode_size)
+> +                    .ok_or(EINVAL)?;
+> +
+> +                let mut ucode =3D KVec::new();
+> +                ucode.extend_from_slice(ucode_data, GFP_KERNEL)?;
+> +
+> +                Some(GenericBootloader { desc, ucode })
+> +            }
+> +            Err(_) =3D> None,
+> +        };
+> +
+
+Actually, let's put that code into a new `GenBootloader` type. You can
+follow the example of `BooterFirmware`, which is quite similar (only a
+bit more complex).
 
