@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512A419D071
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 08:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1067B23F27B
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 09:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766048138; cv=none; b=nQu7yk9Uq9Mnn+vVvoUvKuYU8RIHZMz+S4pWdgnxhiUSlJV7dkhIOzNtL4nE7dTdOrt78xtxaM7j+ysWaApRJZVVdYunHj2WmzS7HcKuSozCccZZtqX2ZTPtLsib/b5M1Vd73C9k87SApU7HwfaNT2JeTpxpXk+czKLDbcH0zpQ=
+	t=1766048480; cv=none; b=AoBtJ3v/QP1ANigoYj2I49Dme5aHa2ZHOwu4MsfQma2MCxXRKfWYvgu5om2T8g7Z4aGHqGkmGeTFMDdPA03QnueH3VneuTaM2KHimD3iFcdCVwInO2ICLwtXVqTruRTgbGkCQ8pkj/FHUNqJwdu8DVvS3V0u1Xe7Yhufek7K5Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766048138; c=relaxed/simple;
-	bh=APgZFUJ+vBo7lg8PesH/7B10j9ZTgBKzRnI9GYl+hx4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=WP7/4IV3LL7RBkjHmcufy3ty3nfPqUmAxXhsnkKtvqSyJ1tqeiswLnXi9PGDsDa/GIMw7tuVW0yBRrvGMuuDxeNtJlVvAgXg8IuiYbp68Fqki39vguoPUFll5aB+l7gFqR5QNjQkoDs/ntogDZh58FtF++noO9JThftRmticxYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LsAh0o1b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766048480; c=relaxed/simple;
+	bh=afeAQJRCnu4GRHnu5E5kfLOK1xWhPyYLbd+eFtITJ+w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=TTLagifp/+Y2WSXqKEnkHJCK7/WJq5osy9PF85IO5s2sWvBMvhu4Fj3A8U2pNyeFOl1OQN5KkYT8GJFvQ2+dQrcp6M2RkZIH6AncSROxf+VO4PlejMIt9A13eqGZNEz0fINIMXk+ylKYQDpbBs/blKVZL0zUZvpdF4j1NBLgnbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sBEbtPot; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LsAh0o1b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03058C4CEFB;
-	Thu, 18 Dec 2025 08:55:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sBEbtPot"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A25C4CEFB;
+	Thu, 18 Dec 2025 09:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766048137;
-	bh=APgZFUJ+vBo7lg8PesH/7B10j9ZTgBKzRnI9GYl+hx4=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=LsAh0o1b17VDFNIJCmsvw8lYVKnieaD/Jjnud3cAi5rA84NjUJm1mhdedfoNwXs3a
-	 zrSnsgDgmpDu8gopwiTPaxDWynXM9udXjPvOkYl+bK9NpMS5sEzA10Z42voq1UzN9T
-	 Ux1VqcPydya11y6U9kT6MZisVDH9Vv/OxS/oPEZSm00RmvhAPmOgiKMO6V+Wd9n5zA
-	 qADQmTDlwf4bPOyYvEqLBI2On+nYZ3i2y4NsWZFpLz9zqejqvNlZgwp0oL0CYOQudv
-	 OSIYze5O53LOpZsua2hPixiS6+oO89WOU9ccVQdEse6wIfUJZX8+VlAPS83jWcY71+
-	 BTMViIVsdVTmQ==
+	s=k20201202; t=1766048479;
+	bh=afeAQJRCnu4GRHnu5E5kfLOK1xWhPyYLbd+eFtITJ+w=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=sBEbtPotMzYJvW58gLZbIA2sN4jEkILwBFePD5sTuF8TqonBXGW4QYxLuCvusY7gI
+	 U/9bFCey1JZhHUyfb5zyHXNcyvVxlwjRjmlww/6IflJuJNGwsEC/y8AVlPNB/aPCPW
+	 PL4oG/YylRUKKTfgypYpUN0FpISqhjrmlI7GGLZ0MQuu6TRQvwvvRfSJiqwSVIyXQA
+	 RSE6QRmp5bWu1VeRhsshxE9wNCD2Yi34uah2mTiTbugyZqE8mRdZ3ZNk/Mbk/nc4zN
+	 GfmFcosRvKDbOv0MXWQLFV22MashEyvjpmIk0oaB+jaywLnt760m1oArdLowTi9ipo
+	 tz3m4ksujvphQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,46 +34,84 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 18 Dec 2025 09:55:34 +0100
-Message-Id: <DF17TCJPO9RT.2BK28ZOQSF9SN@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 1/9] rust: pci: add PCI device name method
+Date: Thu, 18 Dec 2025 10:01:16 +0100
+Message-Id: <DF17XPT1MU64.ZXT4LSXR9CIG@kernel.org>
+Subject: Re: [PATCH v3 5/9] gpu: nova-core: Replace module_pci_driver! with
+ explicit module init
 Cc: "Gary Guo" <gary@garyguo.net>, <rust-for-linux@vger.kernel.org>, "John
  Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
  "Alexandre Courbot" <acourbot@nvidia.com>, "Lyude Paul" <lyude@redhat.com>,
- <nouveau@lists.freedesktop.org>, "Alice Ryhl" <aliceryhl@google.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>
+ <nouveau@lists.freedesktop.org>
 To: "Timur Tabi" <ttabi@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20251218013910.459045-1-ttabi@nvidia.com>
- <20251218013910.459045-2-ttabi@nvidia.com>
-In-Reply-To: <20251218013910.459045-2-ttabi@nvidia.com>
+ <20251218013910.459045-6-ttabi@nvidia.com>
+In-Reply-To: <20251218013910.459045-6-ttabi@nvidia.com>
 
 On Thu Dec 18, 2025 at 2:39 AM CET, Timur Tabi wrote:
-> +    #[inline]
-> +    pub fn name(&self) -> &CStr {
-> +        // SAFETY: By its type invariant `self.as_raw` is always a valid=
- pointer to a
-> +        // `struct pci_dev`, which contains a `struct device dev` member=
-.
-> +        unsafe {
-> +            let pci_dev =3D self.as_raw();
-> +            let dev =3D &raw const (*pci_dev).dev;
+> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/n=
+ova_core.rs
+> index b98a1c03f13d..01353be103ca 100644
+> --- a/drivers/gpu/nova-core/nova_core.rs
+> +++ b/drivers/gpu/nova-core/nova_core.rs
+> @@ -2,6 +2,9 @@
+> =20
+>  //! Nova Core GPU Driver
+> =20
+> +use kernel::{error::Error, pci, prelude::*, InPlaceModule};
+> +use pin_init::{PinInit, pinned_drop};
+
+Please use kernel vertical style [1].
+
+[1] https://docs.kernel.org/rust/coding-guidelines.html#imports
+
 > +
-> +            // If init_name is set, use it; otherwise use the kobject na=
-me
-> +            let init_name =3D (*dev).init_name;
-> +            let name_ptr =3D if !init_name.is_null() {
-> +                init_name
-> +            } else {
-> +                (*dev).kobj.name
-> +            };
+>  #[macro_use]
+>  mod bitfield;
+> =20
+> @@ -21,13 +24,27 @@
+> =20
+>  pub(crate) const MODULE_NAME: &kernel::str::CStr =3D <LocalModule as ker=
+nel::ModuleMetadata>::NAME;
+> =20
+> -kernel::module_pci_driver! {
+> -    type: driver::NovaCore,
+> +#[pin_data(PinnedDrop)]
+> +struct NovaCoreModule {
+> +    #[pin]
+> +    _driver: kernel::driver::Registration<pci::Adapter<driver::NovaCore>=
+>,
+> +}
 > +
-> +            CStr::from_char_ptr(name_ptr)
-> +        }
+> +impl InPlaceModule for NovaCoreModule {
+> +    fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, E=
+rror> {
+> +        pr_info!("NovaCore GPU driver loaded\n");
+
+Please don't add such print statements, drivers should be silent when they =
+work
+properly.
+
+> +        try_pin_init!(Self {
+> +            _driver <- kernel::driver::Registration::new(MODULE_NAME, mo=
+dule),
+> +        })
 > +    }
+> +}
+> +
+> +module! {
+> +    type: NovaCoreModule,
+>      name: "NovaCore",
+>      authors: ["Danilo Krummrich"],
+>      description: "Nova Core GPU driver",
+>      license: "GPL v2",
+> -    firmware: [],
+
+This change seems unrelated, please send a separate patch for this.
+
 >  }
+> =20
+>  kernel::module_firmware!(firmware::ModInfoBuilder);
+> --=20
+> 2.52.0
 
-This does not belong into pci::Device, but device::Device.
-
-Also, please do not open-code the init_name dance, please use dev_name() in=
-stead.
