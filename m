@@ -1,286 +1,287 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013012.outbound.protection.outlook.com [40.93.196.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38091F3FEC
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 11:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766058857; cv=fail; b=eUNggIAOAEbENQoiYv4mOp0XuwMd0zLrQZaDNaS/nHmOc5k0X/HSehAYAlYLQQTs2JYpArE1881yuNPFiQ37wySXvDFFZUQbEqWncoV3kPlszlGvIe1mb1r2xqPSoOZXcGSc4NJ8U053o+bQp0nHenYLfiO2e4t+/UHx2ORBJ3w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766058857; c=relaxed/simple;
-	bh=jaWESE+87qaL9h1giSB7pesNqx8I1pAyiJdfkaKI10Q=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=PQUs1mesntdxFX6foUzrzGulcsXEy79eOLsaN0MXQFcTCEky6a6SYb2XhMPCk2mZ1kaxF3ud3DLcptVnKhHZJ6ONqkAgy6onPby+ZL1qXUqxiIllP+VfU93+lt4sChpNW6pdJHSs/a/qsw8t6tECfdLzckWnxfXOnIQJWh7/cSs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VecAbe2C; arc=fail smtp.client-ip=40.93.196.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7406732C309
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 12:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766059836; cv=none; b=fPOmrDaH1LBLhq+g/yDQ/KSDoqn2Q69oj16mf9VQCEpyhX/nddZ4ORh11kXGj6D1G4QjmLXkaVq3q5aG730oHOBWR3z24U4DMIWLDG82IdoWnwQMGp4eZlwJ1Hbd2p9VtefIkGuY5TjBnkPPZZSziIL5Amp+n58WZ1UvEXGUlWg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766059836; c=relaxed/simple;
+	bh=IfBs5iGp9D+UowfOCy1DBPwl4u1/S0AirwdGCSIUmZ4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=CHpc6dv8AaANr7YpJn//nZXyMhp8ivtdAkrDZu3TmvFNj37wWIg5SzplNJ36fOvbCLV6RUJUWby+efrMLO7dIE1Y01Wctw4+xg7XjAvJ39DI349kBcBhzxxG80y6U1kRMCv6PhQECF4KnVLCA8SUT8yx6Dl4w4bcRWHxy3hpvHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oDg1RXrK; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VecAbe2C"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RP1vpQzlIj8yh+4KD5pVnZRkLJt1BSU9rgMrWNioQyIYwaoAo3rvl0XiJxxo6qsKQqAsscqLJycQcdlU+IUZDxTRIHKFFkbB7uxTCPxq8iqJn+SMqlnVZEPFlykZVjXlyFRjaxSD7ZOLhuw3uz+Ilun5m1/MyaMUrJ+Yo4MF4zYhUyzc6RdWWaEKVNFMUIcgS+RwGabtJSKxQZ/aRTYMTdHzgByPfgIIYIRJ1T8ADQ2+c/NYVxKxVuU2w7vtJTiThjy2UDZKZnlERkTsZej3e1zSIcyYWAorJq+PzODCq7f+CXV71zk24jKlQIRSsWAWyzxGvl0rc8YTZFZPz7iyug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7JFy2/BHEhgEevooYPHDc9Jl/BvVwInbF/ACO9MDO48=;
- b=MnJ5kjZ8aKP6s+tQCutDzwoX5X3XJ7huA2bcjL3uf4w2L2160NcSRfelnCTC8OTGLjmpY4yziIvbGpLIEGq8WoEYbnZLAQh/mko2LNHQ+kCV0n1iNJxCZzpELjhP+QOPR1roxnaoYsJawrD5e/fbzmWTQtd9hxZZZA8DiTtG80He+vSzKUf9rz4LnOuGOAjNXJ1S/Qr7GX0Qabj38UT5FzpTDEfin4bHRly3hJTZr9+WRNSURxliOLBIW51jPUpreiH7caiG50xdSV7KG5LpnrcHeM4xWHia9M7Z3uAMZHWJzDtE7qEziRHpgcb7kxTzmZciGUZMYn2+y1WD3i9aww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7JFy2/BHEhgEevooYPHDc9Jl/BvVwInbF/ACO9MDO48=;
- b=VecAbe2CBSifXJsWpZ+dC9eRL0AkAmrUpok6zeFKi6J0RJp2te/EicPVb+UXY7uKM9Lqq2nUZN+oDZd2LQOH0meOBa6SqoM+jhRpci3582tyP/esFK5fTgVF3kJm5M+rxVhy8MBClcgkNfocYMpZ8e6/oY/q/IDD9P/m9GJ5Nt/3zChVXxJv4yrz9FQTkfhS/gR+W033ia2KzY/lSgOSYYTdD9P0T6EIgba7at3D/Esulo0V881/NKJkvJFL8ZYVpswTPl3q5VWICJfq0NB8oxI2lDCraT7sv3rEQvncphobG41zZkNdQLES7BO/8zCy0AMECTzNuz+/NOfh9ULrPw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DM6PR12MB4106.namprd12.prod.outlook.com (2603:10b6:5:221::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.8; Thu, 18 Dec
- 2025 11:54:12 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
- 11:54:12 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 18 Dec 2025 20:54:09 +0900
-Message-Id: <DF1BM2Z71OY4.246P9YGJC6J4N@nvidia.com>
-Subject: Re: [PATCH v4 10/11] gpu: nova-core: align
- LibosMemoryRegionInitArgument size to page size
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Timur Tabi" <ttabi@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251218032955.979623-1-ttabi@nvidia.com>
- <20251218032955.979623-11-ttabi@nvidia.com>
-In-Reply-To: <20251218032955.979623-11-ttabi@nvidia.com>
-X-ClientProxiedBy: TY4PR01CA0088.jpnprd01.prod.outlook.com
- (2603:1096:405:37d::9) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oDg1RXrK"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b79f8db2c81so76102466b.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 04:10:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766059832; x=1766664632; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uS0pi/gOX62cWjMHzFS3+4XatPVUtYzquaqH1RV+tKY=;
+        b=oDg1RXrK2bt+vDhIFFr+d0Rxxli62it/ietZeSBBuz8/3FmbCCOo51Dx8HN8E/pSlK
+         YFQ19N6iZVBW6i+JmBQ0MTNWYzffTj6IXz/9w6AtTeIHDiviaX4YhypQ8XhF+YxvmxmU
+         XwSwuH4rzPADKE+h/QyegTg4Fto62kmb1zl3onhmKpgp6TlmqdXp74r4pvvotxlTA2+8
+         +ZBQ87r/aQC5moFKioGsE81XIDULPsL42AbtjqsYqiXw1k9lxwQufXcRBBQ/Oao77EPo
+         wtj6owHFIrEB1N6W/2b62c7pbvsCfp36nH57GLsM54FvijfSY3vstM0NnavAqk4nWETX
+         gfyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766059832; x=1766664632;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uS0pi/gOX62cWjMHzFS3+4XatPVUtYzquaqH1RV+tKY=;
+        b=MgnsYUhQ75o4IC/+aGz6D6y2rw2ZWkYjB2nCZpaiSIDBZzOS9pr6e/+ohStLUJTGs/
+         XQ7BmWGNJASleJD7YOc//nCQGiS3YeZiumOXKYYprCmjV0Cjkyid4IAHWrMCMSrjVCKl
+         3Pl1RtCn/QwmWNEQkr414riJdvlZalgsiwqEG/pA3glFM0uXAApvLcU4s3zgO3u1xJE3
+         HIW/neFHAiMwYzBNUViW/aNAuiahIi8SqfRBUYUEhmNeJqi8sFK6I7z9tgRi2fszKd02
+         s+hAAHGe8HGUAiZQ0lv4uGbGzNvj1lcfGU9J0UJyzSLXq+PipWAz8xa+e7wF2Ep7jz8Q
+         FqZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXWuHFhUZidYouGQTTw++JEZ1JqPGUlURfzZeQSft9TRTbCfGzaXSaPC1lLtY3SXmCqPrN9Jc2J38HYv0agnA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWGZJ7RL4ya0OZqk0SjY8KcpntdcfpNfRFqBcdSZxLeUHyDH1g
+	EwBSmd4RFw8RxryK3LY79uAX3H/TWUq5ybgeoB/iJtTHoAP2hXvwk8wXKjhALFeLl+X2Tv0cq+j
+	mx3tVOFQK+CTap1KMJQ==
+X-Google-Smtp-Source: AGHT+IHtEYg2wogrQNtmaMiEPnzW0pbtvPueRRkeUpVkbgNqex7/3gPD3UxhxBlen7ygjuL+78sxM2CtuMorA34=
+X-Received: from edrz19.prod.google.com ([2002:aa7:c653:0:b0:640:7e43:7e92])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:9613:b0:b4c:137d:89bb with SMTP id a640c23a62f3a-b7d236ff023mr2469983766b.29.1766059831780;
+ Thu, 18 Dec 2025 04:10:31 -0800 (PST)
+Date: Thu, 18 Dec 2025 12:10:23 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM6PR12MB4106:EE_
-X-MS-Office365-Filtering-Correlation-Id: e8395af3-1932-49f3-73ad-08de3e2c2909
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UGNqTWEvTksvWVRSQmI5RjhCejluSHJUeG01eTVYZS9nU25DalFJK2ZPOWZk?=
- =?utf-8?B?VUY4WWo4dGt3UkV3WmttSjMxYVNHd2t6dzBvNzNYY0UycVhHWWVzTEIvRDFP?=
- =?utf-8?B?VXlMNGxuWHpodSsvdW5yaHEzL01TUnFTQ1RKa1RJejdHTWJHUXE3YUw0ekdi?=
- =?utf-8?B?azBXNHlkUnFWZG9yZmpaUVlKd0lmZjVXMXlCUFVlV1diMW40ZzhzV1VmWnYy?=
- =?utf-8?B?WnVSU2pCcnQ3R0h3a2l5OGx5b2hqdDdub2w0OEFkYXlLQ1cydjcwalBmZE53?=
- =?utf-8?B?R1VDZVpjUTUzeDBVVUIycEEwa0dMZHZFaFJlUElGS0hrYys1ZGx2UkoyekJQ?=
- =?utf-8?B?YlJkZHhUa2psSlovUmtvWGhBdFhnaFFjMzBYQnR4RnRHa1NDNk42cndSUEln?=
- =?utf-8?B?NnFhcFpIVTgya2xSTkRuQVpQd3hHRDk1Z2N0dUNtTlpTU1hQWXNVSUVLdGdm?=
- =?utf-8?B?b1RodnFzS01tTytxZVhnOWo4RlYrS2VGdWNlRTJJZWUvZHN6eVpQM25ldVdJ?=
- =?utf-8?B?NjZReXNYUW45SXJKV2s0T3JSa0xlSEZ5YVc5TDV4dVplU2dkUlpkeFRqRUxt?=
- =?utf-8?B?Y3RHakVySm5IMUZWQWlTa0NYaExRSHcyWWRaRXJFWVBDSS9SWkM3L0tGVUpw?=
- =?utf-8?B?ODhvTnBOWlRXQW1FS3AyMTliRGJSY3BJUUZjbkU1czFZd2FZRFFONWlCK29C?=
- =?utf-8?B?dEM0RDdDZ25UYW5zbk9DMmVKa3pFazUremNxOXZOT0trVlVmVThDSG1GaS9N?=
- =?utf-8?B?VkVnVlVRYUJxN2NUeno4VGVHbkpRbmpJaVFyOEFmWExadUQyUFg2YUNDeFA4?=
- =?utf-8?B?dlVPTFVSOGhhajVvYUpONy81bDNlYlBjcDMxNkV0TWQ2bWZXRGNDRHZ3WThJ?=
- =?utf-8?B?YWZSSit6amw5NlBsWDdja2gvZmxIeFBQU29uOFBObEFBZTV4U1FQZTFKYlR3?=
- =?utf-8?B?anFwd0hpRmNyQTVsK1Yrbm1DRGdaNWZqbFJUb2l1WWhtS3FySFVBbC9xekF1?=
- =?utf-8?B?azk5aDFWN1M4bTJwZVk0cWN0SDhnNWRLSS9WS2pYTXZuWGkvd2g4VzN2a1Zk?=
- =?utf-8?B?V1NEU0NLUDErMlp6cXBPTVE4NWJkbUNHOXBmMU5nNllScFd4bkdYL3hpbmNJ?=
- =?utf-8?B?VkNORFJWc1AvNzRBWS95eVlvZE5mblhHK043REIvbTdmek9lU3hxcHQxUzNW?=
- =?utf-8?B?VVJjQjN2alRmdVZ6cnRuaHhYZTVMNy9pWmhBbFRzTC90c0M0Uk4vR2djTnB0?=
- =?utf-8?B?blRNN3lEQmpFYytwODY3ZEh5Q0xNL1ZQRllYY2R1cVh3UXh5ZjNFZXRvNzJF?=
- =?utf-8?B?N2hkMS8wVUhGUFNzU0FnWGsybXRIT215TG9WaDIxb001SDhiOTFoem96QnNK?=
- =?utf-8?B?UytudllUbG95WUtUQWR1TXlqQUl4ZkVJRktwbFV4aTFZMXlNR3RoM2F1ZmVY?=
- =?utf-8?B?c0d3YlpLb2Nlc0p3QVpRWEl2YmptQkNqU3huS3VWOCtNY2M2KzcxTEtvRjMz?=
- =?utf-8?B?emNSOWFsdzV1Y1oxcVVZSlNFY0RKbjRxdDc4dG80aWNraTdWMHRmQkxYRW5I?=
- =?utf-8?B?enFyNU5HTE9ab0ZzQlNUSlVSSDlFdm80ZlF6YTNzUmF3UHo1QjVTcjRHblNW?=
- =?utf-8?B?Y0dNV0FsZXZJWmJkb1VoamtJZWNXSmhPUHdVK0xxdmc2ZFNsZ2Nlb0dmL251?=
- =?utf-8?B?OW9LWVoxQWtRY05FVE9ONGhQYkR2L01rMTJVNXc3RFZ6OE9TRE8xSWFmV0NR?=
- =?utf-8?B?OUQzb1RqWW9CODZDZHZrRDBLSXh5OVRXRUpqQ3RzaFY1bkovUGNvQ3FqYjFM?=
- =?utf-8?B?NFYyOE5tNmxzQ1UzVVRBWmJCNys3QVBYRzMzd3NnQ1dLMlkyamRaNXpHL05T?=
- =?utf-8?B?VU5vb3RYTzRaMFh6Mmc2RUU0MGFBazMvc25idmxMbFp2U0xqanU4VkhYMFZH?=
- =?utf-8?Q?LWB7jsILrLRb4K8F6/nMxE3SkmX2+X4G?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Y0lBTzFGM0FOdWhWYjRoZVhIQ20zdW9uUUxDZEh4K3BXYUVveElKdS9kczRm?=
- =?utf-8?B?cm03S1NQb2tKcTE2NWxoS0hNdGlPWG83L0MvYWRMTzJkbVpFUCs0UDR5VUFl?=
- =?utf-8?B?RnJvdzNQcnBTSlpmdDNkSE9IamZZME1nZGdlMlZHYmZHZzUzcTJ2UzdpcDdX?=
- =?utf-8?B?eEc4WGtWNFNaSHVEU1JrWXFlRldISXdSb0k1MmZ6WitmaExpTlFYY2dPSnY1?=
- =?utf-8?B?V0FBNDRtUVY0eWlIRzRrU2xhd3R4cWhxZTg0b0RPU2NEK0N5dktraEUxcE5r?=
- =?utf-8?B?VmYrRGp4S3AvRFBvOTltWkUrc0pvak1adW5oY0s4S3dTOG5LS3Y3cHRCQzRQ?=
- =?utf-8?B?YURwdStLMFYzWWt5ejlwL08zcEZreTRENldiQnI2OExIL01iODExRDg4TU1F?=
- =?utf-8?B?R3IvanBPWlRYSnRDeFNLQU1jdDJoMkpTU013OUtzUk9zSzlhQzhyUnU3TGVm?=
- =?utf-8?B?a3pRa2NzSmVOM2YwRFBqODE3ZzcyOFpscDNrL2lYWE9xQ2M5VjZITng4Vk12?=
- =?utf-8?B?SXN1RXNTanBmc2h6b3hRYlE2dFZLckh3Y2YxczlOUTdhNmJxdzZMSXlSNHNv?=
- =?utf-8?B?V1JEMlFnZ3k0ODRQSDQydmJ4Q0tNaTB4ZG05MmN5S1V6SmJQMGExa2xqUXYw?=
- =?utf-8?B?TSt4R0xwUzUwNTY1eXRGQThnaDNSNksveGtPalZIaHdHdW5WcE1uK1hjUy9U?=
- =?utf-8?B?OTZGRXhZS0V3VGE1aFdVaW92eXhjNm1GUjdWd0ZpT1NBZENKdlc5M2dTOG01?=
- =?utf-8?B?N1NOa241Q3lEZkE1NUNBaHJzNFh5eitmcWxtZ0lUcEhYT1VwM05nVDh4K2dw?=
- =?utf-8?B?T2ZNUkNZQTVub0dKcmZHbFd4cWV5U1ZXZ1M1bG9wQ3ZxL2lOMTFyc0VkQk9l?=
- =?utf-8?B?OXpQbzd2aWFVUms4SlhNSEdPL2dRdXptUlo3R0hTV3ZncWt4UDdjK0x2allR?=
- =?utf-8?B?NkdTMHQ0SjVoTkNHc3N1UWlTd2VVTG9hQjFaVUROTFgvbUdYRnUxczhZQlVR?=
- =?utf-8?B?UU9tUkVjMmlDTkxRMmkzb3U5QmlWVlVBaGFuWkFDengvNFZZbnRNNi9veno2?=
- =?utf-8?B?WEowdzhKVzhGYkQ0VWx4K1A4cnpPb01DSXpzVXpFeWJXTWVhWEtya1BKbGs5?=
- =?utf-8?B?K0IzR2U1ZHp1TzJzQ0ZzUG9Ma2dVQnYrYWtBUlZLQzltTisvRlZ2eUpiT3dU?=
- =?utf-8?B?RWUveUIrMHVHbXVCUDZuNHlndUlWZTVIVHYvYmFGZjByQ2FuOGhqVWw4V2JQ?=
- =?utf-8?B?UHIrTkxWZG45N1RqSkVCazJvQXMyejV1QXpVVngrU003ZVZ1eGM3YXdnekI1?=
- =?utf-8?B?TmRVdUZwVFhsd08zb2RKMXBSb2hhUVN5UFB1NzJzZzFlQVdGRFAwbzVsVkJ3?=
- =?utf-8?B?SU1vTlJYdjFCYXB1UzlxajhWQitFb1JDZ0l5Z0dtNU54NjY2cXBCb0I3d0h6?=
- =?utf-8?B?dkM3YlhrTWtSaGhhTno2VFJ5enRObkp5Z2RaSTBMV0ZhU2hRRk9mcDNxL3Bw?=
- =?utf-8?B?YjFLOU45a1ZOcElIUklZU2lQYW41YWhoV3A0d0Q1TjBTRGpwbWsxV3lOZll0?=
- =?utf-8?B?WFVxOGdsN2lHdy8rcy9sVDRsUWRJMEJKMU8zcUVEcFl6a3BMdTJsQ1BqanhB?=
- =?utf-8?B?OFRaTk1LdHdKcEhjZ2dCZ0Z1WE0rcEovN1N1eWl6Q1lIRzZnak9PT0hQdnlO?=
- =?utf-8?B?VTM4dmRwcVBDWDA3ZXZlZ0xMWU1wTmpEdlVJOC91Z0FoMlJ1a2hDZjV3YzNF?=
- =?utf-8?B?U3ZSNWl1VHpVZm9lS3dWRnB1L1U2RlpOVEtLOWNxRis1aFViRjJyYU1mYlFR?=
- =?utf-8?B?cnpLbVM2WGlKdlJTdStXRzdIUTlVNUV0azZxZ2Z5VlRFZHdnNHd5dHp1SHg1?=
- =?utf-8?B?UllQeDM2eExBT0lHdzdkK1hUcTlGckQ0eCtrR3B3STR0N1pkaGtneElONzZF?=
- =?utf-8?B?cTFLTkR5RmlZdElTS05DbFdsbk96WlV6NWdZNFJKS3ArZDFtK1dMakxnNTNP?=
- =?utf-8?B?RFQ2YTdiRHNvSGRNYXYyMkU4QkhLbUNEcGlacERUKzBJTHpEeitRQk5wUzZY?=
- =?utf-8?B?MVZBWEFmUVo5Z2R2ekJRTmpLb2p0ajJZam1NV1FzeW83MTFRWFJEalNKcVNV?=
- =?utf-8?B?Wnl5Q1hURWlVRGViWFBFMTMrVGFOMWZoZnFRczZkTlA1Nld4Vnp6aGNjcitH?=
- =?utf-8?Q?eKTZhd4aY6+vM3885+R70slHSnA7orR4qXAAYZKqFrg5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e8395af3-1932-49f3-73ad-08de3e2c2909
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 11:54:12.2848
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YoepvG+Jf7uQMfWSP7tGVRAjJxzohVQSeEmX6IPIXP0bnge+jfN/vcyYQm3miYhmZ0aBYpBbQe5+c6P/DIYOQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4106
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAC7vQ2kC/32NQQ7CIBREr9L8tRiBiNaV9zBdFPpLf0RoQImm4
+ e4iBzCzmLxJZmaDhJEwwaXbIGKmRMFXELsOzDJ6i4ymyiAO4sg5l4y8I4/MBXNnL99M85NQSoq x7yeoxTXiTO82ehsqL5SeIX7aR+a/9O9c5qxKKzwbKaQ289WGYB3uTXjAUEr5Akotz2y1AAAA
+X-Change-Id: 20251113-inline-lock-unlock-b1726632a99d
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8546; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=IfBs5iGp9D+UowfOCy1DBPwl4u1/S0AirwdGCSIUmZ4=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpQ+8ydbXrCypw1fve/DLU/bHdKwVMxfk8bPMsp
+ 5eSgzlf79yJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaUPvMgAKCRAEWL7uWMY5
+ RkbeD/9Gbhvj/cZzQU3x8zV5El0UrtEJfZH0jJoX5NaHfwoTpiVBNpy1+ekhtSXSZvqD5FojO0O
+ 90WwhbFqRuqVvy4llsrBcrsJ8MCxdz0HxNKvwj32gxn8ZOXpUdYmAPXbOMAbKJCNRQez16Txdh4
+ +L5XvdoipzyLSyWxY10brdBYmDD8/5bkwCTS8eBDJ8sKa9LxJI92uzKhP8NWuxHcNwRT+QduBg8
+ HkgYznanat6bJm+IsqdjthxmfoV0JCB4iuLBAOSb95fU+wUyEqVswIOYJ5pdnmo8O4ygIoTeqPp
+ qpQDhQvVcfwbIsR4UeVSwwvAHGMW2i49iqVseSNArEHF7YmJOekJQPDzZ2lTzS9YBBiSwdNgr0W
+ cvpRRcVxPGxrLJgtgcK1yRWencxEmY6TAx2HlDejeNga+VFfhlCC6Rmc1Uva6uSSzHsJJfwlwnd
+ GhhgvRcxowwIr/UIPUn+FyAHsUBhPXOKSoqrXgJetpE8nLbI9BW72D+MgA65OR3iYCkz3oV8XkE
+ 2Eh6aBQYqiUlo8D1kisiHAfTyvjRjsTZD8Cba8wRXMybAHwU6p4sSNqcRICzfXhQ1ONgBgWs/PH
+ Y2gS7AinXkaLqlnYGa6KPuxjsE4Zjf+w+o6j4DdJxCZlm3s2b62JkSAXG1EI0mHveNjvuaTmhd9 fMNi3fPQmfThHwA==
+X-Mailer: b4 0.14.2
+Message-ID: <20251218-inline-lock-unlock-v2-1-fbadac8bd61b@google.com>
+Subject: [PATCH v2] rust: sync: inline various lock related methods
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu Dec 18, 2025 at 12:29 PM JST, Timur Tabi wrote:
-> On Turing and GA100 (i.e. the versions that use Libos v2), GSP-RM insists
-> that the 'size' parameter of the LibosMemoryRegionInitArgument struct be
-> aligned to 4KB.  The logging buffers are already aligned to that size, so
-> only the GSP_ARGUMENTS_CACHED struct needs to be adjusted.  Make that
-> adjustment by adding padding to the end of the struct.
->
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> ---
->  drivers/gpu/nova-core/gsp/fw.rs | 24 +++++++++++++++++-------
->  1 file changed, 17 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/=
-fw.rs
-> index abffd6beec65..ab3ad038889c 100644
-> --- a/drivers/gpu/nova-core/gsp/fw.rs
-> +++ b/drivers/gpu/nova-core/gsp/fw.rs
-> @@ -889,17 +889,27 @@ unsafe impl AsBytes for GspMsgElement {}
->  unsafe impl FromBytes for GspMsgElement {}
-> =20
->  /// Arguments for GSP startup.
-> -#[repr(transparent)]
-> -pub(crate) struct GspArgumentsCached(bindings::GSP_ARGUMENTS_CACHED);
-> +///
-> +/// On Turing and GA100, the entries in the `LibosMemoryRegionInitArgume=
-nt`
-> +/// must all be a multiple of GSP_PAGE_SIZE in size, so add padding to f=
-orce it
-> +/// to that size.
-> +#[repr(C)]
-> +pub(crate) struct GspArgumentsCached(
-> +    bindings::GSP_ARGUMENTS_CACHED,
-> +    [u8; GSP_PAGE_SIZE - core::mem::size_of::<bindings::GSP_ARGUMENTS_CA=
-CHED>()],
-> +);
+While debugging a different issue [1], I inspected a rust_binder.ko file
+and noticed the following relocation:
 
-In gsp.rs we are still initializing the rmarg as follows:
+	R_AARCH64_CALL26	_RNvXNtNtNtCsdfZWD8DztAw_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend6unlock
 
-    dma_write!(rmargs[0] =3D fw::GspArgumentsCached::new(&cmdq))?;
+This relocation (and a similar one for lock) occurred many times
+throughout the module. That is not really useful because all this
+function does is call spin_unlock(), so what we actually want here is
+that a call to spin_unlock() dirctly is generated in favor of this
+wrapper method.
 
-Which passes the `GspArgumentsCached` queue by value to
-`CoherentAllocation::field_write`, i.e. 4KB on the stack.
+Thus, mark these methods inline.
 
-So I think the proper approach is to keep `GspArgumentsCached` as-is,
-and use a different type just for allocation:
+Link: https://lore.kernel.org/p/20251111-binder-fix-list-remove-v1-0-8ed14a0da63d@google.com
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Rebased on v6.19-rc1.
+- Link to v1: https://lore.kernel.org/r/20251113-inline-lock-unlock-v1-1-1b6e8c323bcf@google.com
+---
+ rust/kernel/sync/lock.rs          | 7 +++++++
+ rust/kernel/sync/lock/global.rs   | 2 ++
+ rust/kernel/sync/lock/mutex.rs    | 5 +++++
+ rust/kernel/sync/lock/spinlock.rs | 5 +++++
+ 4 files changed, 19 insertions(+)
 
-diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-index fb6f74797178..0feaff5784a7 100644
---- a/drivers/gpu/nova-core/gsp.rs
-+++ b/drivers/gpu/nova-core/gsp.rs
-@@ -25,10 +25,9 @@
- };
-
- use crate::{
--    gsp::cmdq::Cmdq,
--    gsp::fw::{
--        GspArgumentsCached,
--        LibosMemoryRegionInitArgument, //
-+    gsp::{
-+        cmdq::Cmdq,
-+        fw::LibosMemoryRegionInitArgument, //
-     },
-     num,
- };
-@@ -114,7 +113,7 @@ pub(crate) struct Gsp {
-     /// Command queue.
-     pub(crate) cmdq: Cmdq,
-     /// RM arguments.
--    rmargs: CoherentAllocation<GspArgumentsCached>,
-+    rmargs: CoherentAllocation<fw::GspArgumentsAligned>,
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 46a57d1fc309d330a4c82fe1ecce18297205faed..10b6b5e9b024f2d3ee7458fc2f64190bd38f4391 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -156,6 +156,7 @@ impl<B: Backend> Lock<(), B> {
+     /// the whole lifetime of `'a`.
+     ///
+     /// [`State`]: Backend::State
++    #[inline]
+     pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a Self {
+         // SAFETY:
+         // - By the safety contract `ptr` must point to a valid initialised instance of `B::State`
+@@ -169,6 +170,7 @@ pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a Self {
+ 
+ impl<T: ?Sized, B: Backend> Lock<T, B> {
+     /// Acquires the lock and gives the caller access to the data protected by it.
++    #[inline]
+     pub fn lock(&self) -> Guard<'_, T, B> {
+         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
+         // that `init` was called.
+@@ -182,6 +184,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+     /// Returns a guard that can be used to access the data protected by the lock if successful.
+     // `Option<T>` is not `#[must_use]` even if `T` is, thus the attribute is needed here.
+     #[must_use = "if unused, the lock will be immediately unlocked"]
++    #[inline]
+     pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
+         // that `init` was called.
+@@ -275,6 +278,7 @@ pub fn as_mut(&mut self) -> Pin<&mut T> {
+ impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
+     type Target = T;
+ 
++    #[inline]
+     fn deref(&self) -> &Self::Target {
+         // SAFETY: The caller owns the lock, so it is safe to deref the protected data.
+         unsafe { &*self.lock.data.get() }
+@@ -285,6 +289,7 @@ impl<T: ?Sized, B: Backend> core::ops::DerefMut for Guard<'_, T, B>
+ where
+     T: Unpin,
+ {
++    #[inline]
+     fn deref_mut(&mut self) -> &mut Self::Target {
+         // SAFETY: The caller owns the lock, so it is safe to deref the protected data.
+         unsafe { &mut *self.lock.data.get() }
+@@ -292,6 +297,7 @@ fn deref_mut(&mut self) -> &mut Self::Target {
  }
+ 
+ impl<T: ?Sized, B: Backend> Drop for Guard<'_, T, B> {
++    #[inline]
+     fn drop(&mut self) {
+         // SAFETY: The caller owns the lock, so it is safe to unlock it.
+         unsafe { B::unlock(self.lock.state.get(), &self.state) };
+@@ -304,6 +310,7 @@ impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
+     /// # Safety
+     ///
+     /// The caller must ensure that it owns the lock.
++    #[inline]
+     pub unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
+         // SAFETY: The caller can only hold the lock if `Backend::init` has already been called.
+         unsafe { B::assert_is_held(lock.state.get()) };
+diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+index eab48108a4aebeb72b2026d6c21d5748b0e62f0a..aecbdc34738fbd746de79eb0f1abe995478ad785 100644
+--- a/rust/kernel/sync/lock/global.rs
++++ b/rust/kernel/sync/lock/global.rs
+@@ -77,6 +77,7 @@ pub unsafe fn init(&'static self) {
+     }
+ 
+     /// Lock this global lock.
++    #[inline]
+     pub fn lock(&'static self) -> GlobalGuard<B> {
+         GlobalGuard {
+             inner: self.inner.lock(),
+@@ -84,6 +85,7 @@ pub fn lock(&'static self) -> GlobalGuard<B> {
+     }
+ 
+     /// Try to lock this global lock.
++    #[inline]
+     pub fn try_lock(&'static self) -> Option<GlobalGuard<B>> {
+         Some(GlobalGuard {
+             inner: self.inner.try_lock()?,
+diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
+index 581cee7ab842ad62ec144e67138676c000a3f5e4..cda0203efefb9fcb32c7eab28721e8678ccec575 100644
+--- a/rust/kernel/sync/lock/mutex.rs
++++ b/rust/kernel/sync/lock/mutex.rs
+@@ -102,6 +102,7 @@ unsafe impl super::Backend for MutexBackend {
+     type State = bindings::mutex;
+     type GuardState = ();
+ 
++    #[inline]
+     unsafe fn init(
+         ptr: *mut Self::State,
+         name: *const crate::ffi::c_char,
+@@ -112,18 +113,21 @@ unsafe fn init(
+         unsafe { bindings::__mutex_init(ptr, name, key) }
+     }
+ 
++    #[inline]
+     unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
+         // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
+         // memory, and that it has been initialised before.
+         unsafe { bindings::mutex_lock(ptr) };
+     }
+ 
++    #[inline]
+     unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+         // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
+         // caller is the owner of the mutex.
+         unsafe { bindings::mutex_unlock(ptr) };
+     }
+ 
++    #[inline]
+     unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+         let result = unsafe { bindings::mutex_trylock(ptr) };
+@@ -135,6 +139,7 @@ unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+         }
+     }
+ 
++    #[inline]
+     unsafe fn assert_is_held(ptr: *mut Self::State) {
+         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+         unsafe { bindings::mutex_assert_is_held(ptr) }
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+index d7be38ccbdc7dc4d70caaed0e7088f59f65fc6d1..ef76fa07ca3a2b5e32e956e828be5b295da0bc28 100644
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -101,6 +101,7 @@ unsafe impl super::Backend for SpinLockBackend {
+     type State = bindings::spinlock_t;
+     type GuardState = ();
+ 
++    #[inline]
+     unsafe fn init(
+         ptr: *mut Self::State,
+         name: *const crate::ffi::c_char,
+@@ -111,18 +112,21 @@ unsafe fn init(
+         unsafe { bindings::__spin_lock_init(ptr, name, key) }
+     }
+ 
++    #[inline]
+     unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
+         // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
+         // memory, and that it has been initialised before.
+         unsafe { bindings::spin_lock(ptr) }
+     }
+ 
++    #[inline]
+     unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+         // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
+         // caller is the owner of the spinlock.
+         unsafe { bindings::spin_unlock(ptr) }
+     }
+ 
++    #[inline]
+     unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+         let result = unsafe { bindings::spin_trylock(ptr) };
+@@ -134,6 +138,7 @@ unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+         }
+     }
+ 
++    #[inline]
+     unsafe fn assert_is_held(ptr: *mut Self::State) {
+         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+         unsafe { bindings::spin_assert_is_held(ptr) }
 
- impl Gsp {
-@@ -141,12 +140,12 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>) =
--> Result<impl PinInit<Self
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251113-inline-lock-unlock-b1726632a99d
 
-         let cmdq =3D Cmdq::new(dev)?;
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
--        let rmargs =3D CoherentAllocation::<GspArgumentsCached>::alloc_coh=
-erent(
-+        let rmargs =3D CoherentAllocation::<fw::GspArgumentsAligned>::allo=
-c_coherent(
-             dev,
-             1,
-             GFP_KERNEL | __GFP_ZERO,
-         )?;
--        dma_write!(rmargs[0] =3D fw::GspArgumentsCached::new(&cmdq))?;
-+        dma_write!(rmargs[0].inner =3D fw::GspArgumentsCached::new(&cmdq))=
-?;
-         dma_write!(libos[3] =3D LibosMemoryRegionInitArgument::new("RMARGS=
-", &rmargs))?;
-
-         Ok(try_pin_init!(Self {
-diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/fw=
-.rs
-index abffd6beec65..15ca9c183ae1 100644
---- a/drivers/gpu/nova-core/gsp/fw.rs
-+++ b/drivers/gpu/nova-core/gsp/fw.rs
-@@ -906,9 +906,21 @@ pub(crate) fn new(cmdq: &Cmdq) -> Self {
- // SAFETY: Padding is explicit and will not contain uninitialized data.
- unsafe impl AsBytes for GspArgumentsCached {}
-
-+/// On Turing and GA100, the entries in the `LibosMemoryRegionInitArgument=
-`
-+/// must all be a multiple of GSP_PAGE_SIZE in size, so add padding to for=
-ce it
-+/// to that size.
-+#[repr(C)]
-+pub(crate) struct GspArgumentsAligned {
-+    pub(crate) inner: GspArgumentsCached,
-+    _padding: [u8; GSP_PAGE_SIZE - core::mem::size_of::<bindings::GSP_ARGU=
-MENTS_CACHED>()],
-+}
-+
-+// SAFETY: Padding is explicit and will not contain uninitialized data.
-+unsafe impl AsBytes for GspArgumentsAligned {}
-+
- // SAFETY: This struct only contains integer types for which all bit patte=
-rns
- // are valid.
--unsafe impl FromBytes for GspArgumentsCached {}
-+unsafe impl FromBytes for GspArgumentsAligned {}
-
- /// Init arguments for the message queue.
- #[repr(transparent)]
