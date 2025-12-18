@@ -1,93 +1,171 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9087C3321B5
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 10:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A72E2ED161
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 10:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766053595; cv=none; b=Ee75K88uFRmxxRlsLOn2Hv9bdKvMEz142SOk6m3AFZJOqIDB8WdH/oPKRXsWzLxJhfk7Jgbev5rr7G1gPiClrQ7JTTc5G0ETfVHyfEStw5rb8FUFExyxWoSuy7NVFrl2yUO82bZTO6l1+ncwLVADHMyBGk/YExmPvmOIBqKEhLw=
+	t=1766053939; cv=none; b=e6rcdKB5DxWZoAFmm4G7rP5+LXyXxc611hbywU9a9oHOGhv6wEHk8B7eDnBi2vNLeX4DVPkZk2GgNG8EJte7gHUZ2kFpyGmQu7l1G0wjdSfc5N2TjU44zIC6pfN2ksWQ6MVmwliB/brNIkoA7gtg/5tjDB2KczT0l2N/SsU57PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766053595; c=relaxed/simple;
-	bh=F4LleOZVaW4yOFpKN5u7W3YsIwRCqWt47OlwAQo0nUY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R43Kis3A96vcxrtZ9Kitsq1OIupnY2vQTgVVOvCKeVjSoGqycjY4Ge50by4PPpEIy0OKg0TkO/U4tRrOZp3yq0G/SMebYbg5ctCbjXCafxq2YrdaYsupBkxk1xrzrL4cbX4AP9/qT2Zlea6ej4OKu9y47hkAPc1VZ5jOcjPCgdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=StiPgOA3; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766053939; c=relaxed/simple;
+	bh=WEw+8wSpWC19+iqEuW0++sr+v2+f+3QOV5qZtNFnOWc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GVMttMy+L0b/qnifwTPZCHbo3VTOhR82KVrad9k+Ou8uZcui8ZMAUGc8QAad3UClRXG9knjVr3+e5ydv5oRRxgYEinWG5+u/BvQmPA8ejxsheJGc1tufV93K4Yu6Uv0jdi86UjRhjhiWyF0g7CO2TaUPtYfIckP/ZUvJbhqGzkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WncilEXg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="StiPgOA3"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29efc031eddso1358965ad.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 02:26:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766053593; x=1766658393; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ABpitmj3d2sNhyIxS6xYKemUBz4/GR1gjv0gru6vHw4=;
-        b=StiPgOA3RoUBwm32l32Z8BbXeg3lojvyxRZ8hsr2MxXszNa52gqGIIQMbqLza2NHsw
-         KgHdhunfLDWnKs55lIK5jbLFvJWj8ps1hIImzzr9CWIvfnFwMrKChWYLcKt58icgqfS3
-         4N/95V1/SKztqwfFRBnrnFub6dT0Pqi1zX3izusz2CnxiJYap5lsh7CdYo6cJI3O2QSS
-         696/OXij6SvePDIXXevv7E513LqeRmfy55EiUBdtNK14cIiwJUN0rpUDGzT1DgDDQ67P
-         xJJl+DSY+fYpyxuu8yzA4XgfWC6KBausTLgqI/Q2bmwTKYJv5sL59Zcrm1es2kHERSXX
-         0dQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766053593; x=1766658393;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ABpitmj3d2sNhyIxS6xYKemUBz4/GR1gjv0gru6vHw4=;
-        b=NUWFNz2jg2HvLg8jrnrP2Vr9gL9Q3gk3y9gncuRQBsGI2bigk3x7J6HP2ogwS5j9Uo
-         WBfds6/63jfV26YqKurHohrefy7BYr0k2o/X+bPuxRrgOAiJffuzFn4vkSvvaQ11BtSF
-         Ar5wwLyJKbziw3E202bg3mqkU8Ggb4RZVkPFp++B64mga2WHrM9F/7CQfky0Oih7VRr7
-         1W5DaC6rdDDibVeExfCPH0clG1AitOVYWO8IhmbrlUHQWo2HK9JHknQq04wcjspzRAeS
-         4fGDEPRK/PoQdEFKVpnErQUArh6wCyIsP+ZEIRUiVVvoPJfUycqgYWoI+IgqaqhtakDO
-         gVUg==
-X-Forwarded-Encrypted: i=1; AJvYcCVkj0Rg9z1KpEj3fefJ8Rci5Bk+Q8NfnCdp1vHze0gz/05gRBNrYlb3xliVjXZ3OGxYeDjNjjAXPOfj45/ZNQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyn/aNUe4+ldYKA0GtJwk/LeZV4JgsdVQDRGIJxoBMkRnxqoDKb
-	lkkg//8E6ZaFip0WCTony2U5dToL74xruVu0pAb4Dj/YE54AF7ONF/1uDUa3X1WUHJTsTviVjAd
-	dZ5IcQcY/hGkEpMvM7KHoMtg2zd6PZLs=
-X-Gm-Gg: AY/fxX7atRPLnmlfBYEAIU2fmcZT+g0YAQx1Kjg1BgP9ZfkncEydDqLOj2Uyzw6EMq4
-	aL1MZJvggeYo1MhiD7nJMb14IslDEVpPmXKuaZrFmvXaETIfO/+AJxm/9OABm1dW7woLMJEXH8e
-	OhHlk31FiNGoActyaLeW2ALizpAWNy8DF5DCDJmKpnZL8WWk7YEvCQ38oknGisZYJbIdFTvXwIQ
-	aMlyAy9RoQRDPsHlUnOobKWW4MhIQx/tAso6ovxTdpMlevIOvrpUzxA6oNca+KiGwQoev7k4dhe
-	FLxhTXAGQDKFg3et0p9CKLL7tRuUzRjmIEntgqzNSDHrDZPu60O7WzOadt3vQmtfuKTNINn1iUT
-	c8Zu23hnyD2hOzA==
-X-Google-Smtp-Source: AGHT+IFItTsDOp5cdOko6xJuNtHpwOY37eef8kCT+0QcfcrivdSjk719b/KoNVNdJsbCH7xGzV0hywjlpE6PH3K6Qkw=
-X-Received: by 2002:a05:7300:d403:b0:2ab:ca55:89c9 with SMTP id
- 5a478bee46e88-2b0505aca41mr765085eec.4.1766053592725; Thu, 18 Dec 2025
- 02:26:32 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WncilEXg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766053936;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y/I5sayEMN0mY3tDaMbjqVMPYXNApewEJkrlF9jhCSY=;
+	b=WncilEXgvVLBdB1I3/uwWkcsHWDI3n2AhRxW39YOzXFBLGYywugzo5a2xmLjloEpKDTWFF
+	kTyH7FYuB/oepCAy5xkZZawqnrdavIxQonZTbVgoLMNKHGb77tA0A7TkDsE6wsaJVDcPTj
+	BsI+fRI80YeMZGM/dIA9X+MLxy2lN5c=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-49-jFEx2aaJO8u4KW9vHTwOWg-1; Thu,
+ 18 Dec 2025 05:32:12 -0500
+X-MC-Unique: jFEx2aaJO8u4KW9vHTwOWg-1
+X-Mimecast-MFC-AGG-ID: jFEx2aaJO8u4KW9vHTwOWg_1766053931
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 85DEA195DE49;
+	Thu, 18 Dec 2025 10:32:10 +0000 (UTC)
+Received: from fedora (unknown [10.45.226.44])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id A8C7A180045B;
+	Thu, 18 Dec 2025 10:32:04 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Thu, 18 Dec 2025 11:32:09 +0100 (CET)
+Date: Thu, 18 Dec 2025 11:32:02 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Alice Ryhl <aliceryhl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] rust: task: restrict Task::group_leader() to current
+Message-ID: <aUPYIm6jhceRC4J7@redhat.com>
+References: <20251218-task-group-leader-v1-1-4fb7ecd4c830@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251218-unpin-for-aref-v2-1-30d77129cbc6@google.com>
-In-Reply-To: <20251218-unpin-for-aref-v2-1-30d77129cbc6@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 18 Dec 2025 11:26:19 +0100
-X-Gm-Features: AQt7F2oU_9Gd1a3m1hsJIjN_NuB0XnCYokop8XH7DYGcPebKd9VPFbANBfLzhZc
-Message-ID: <CANiq72nijV5iqmFzWErKAuFMw7oPPP5heQoHR=YsUUYFuUU3Sg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: sync: implement Unpin for ARef
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Daniel Almeida <daniel.almeida@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251218-task-group-leader-v1-1-4fb7ecd4c830@google.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Thu, Dec 18, 2025 at 9:25=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On 12/18, Alice Ryhl wrote:
 >
-> +// Even if T is pinned, pointers to T can still move.
+> The Task::group_leader() method currently allows you to access the
+> group_leader() of any task, for example one you hold a refcount to. But
+> this is not safe in general since the group leader could change when a
+> task exits. See for example commit a15f37a40145c ("kernel/sys.c: fix the
+> racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths").
+>
+> All existing users of Task::group_leader() call this method on current,
+> which is guaranteed running, so there's not an actual issue in Rust code
+> today. But to prevent code in the future from making this mistake,
+> restrict Task::group_leader() so that it can only be called on current.
+>
+> There are some other cases where accessing task->group_leader is okay.
+> For example it can be safe if you hold tasklist_lock or rcu_read_lock().
+> However, only supporting current->group_leader is sufficient for all
+> in-tree Rust users of group_leader right now. Safe Rust functionality
+> for accessing it under rcu or while holding tasklist_lock may be added
+> in the future if required by any future Rust module.
 
-Boqun, if you pick this up, then please tweak this to:
+I obviously can't ACK this patch ;) but just in case, it looks good to me.
 
-    // Even if `T` is pinned, pointers to `T` can still move.
+Although I am not sure this is a stable material... Exactly because,
+as you mentioned, all existing users call this method on current.
 
-Otherwise, if you want me to pick it up, please let me know -- thanks!
+> I don't think there's a clear owner for this file, so to break ambiguity
+> I'm doing to declare that this patch is intended for Andrew Morton's
+> tree. Please let me know if you think a different tree is appropriate.
 
-Cheers,
-Miguel
+If Andrew agrees and nobody objects this would be nice. I am going to
+send some tree-wide changes related to task_struct.group_leader usage,
+it would be simpler to route them all via -mm tree.
+
+So far I sent the trivial preparations
+
+	[PATCH 0/7] don't abuse task_struct.group_leader
+	https://lore.kernel.org/all/aTV1pbftBkH8n4kh@redhat.com/
+
+and I am still waiting for more reviews. Alice, perhaps you can review
+the (hopefully trivial) 1-2 which touch android/binder?
+
+Oleg.
+
+> ---
+>  rust/kernel/task.rs | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+>
+> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+> index 49fad6de06740a9b9ad80b2f4b430cc28cd134fa..9440692a3a6d0d3f908d61d51dcd377a272f6957 100644
+> --- a/rust/kernel/task.rs
+> +++ b/rust/kernel/task.rs
+> @@ -204,18 +204,6 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
+>          self.0.get()
+>      }
+>
+> -    /// Returns the group leader of the given task.
+> -    pub fn group_leader(&self) -> &Task {
+> -        // SAFETY: The group leader of a task never changes after initialization, so reading this
+> -        // field is not a data race.
+> -        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
+> -
+> -        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
+> -        // and given that a task has a reference to its group leader, we know it must be valid for
+> -        // the lifetime of the returned task reference.
+> -        unsafe { &*ptr.cast() }
+> -    }
+> -
+>      /// Returns the PID of the given task.
+>      pub fn pid(&self) -> Pid {
+>          // SAFETY: The pid of a task never changes after initialization, so reading this field is
+> @@ -345,6 +333,18 @@ pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
+>          // `release_task()` call.
+>          Some(unsafe { PidNamespace::from_ptr(active_ns) })
+>      }
+> +
+> +    /// Returns the group leader of the current task.
+> +    pub fn group_leader(&self) -> &Task {
+> +        // SAFETY: The group leader of a task never changes while the task is running, and `self`
+> +        // is the current task, which is guaranteed running.
+> +        let ptr = unsafe { (*self.as_ptr()).group_leader };
+> +
+> +        // SAFETY: `current.group_leader` stays valid for at least the duration in which `current`
+> +        // is running, and the signature of this function ensures that the returned `&Task` can
+> +        // only be used while `current` is still valid, thus still running.
+> +        unsafe { &*ptr.cast() }
+> +    }
+>  }
+>
+>  // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+>
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20251218-task-group-leader-a71931ced643
+>
+> Best regards,
+> --
+> Alice Ryhl <aliceryhl@google.com>
+>
+
