@@ -1,121 +1,193 @@
-Received: from iguana.tulip.relay.mailchannels.net (iguana.tulip.relay.mailchannels.net [23.83.218.253])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012007.outbound.protection.outlook.com [40.107.200.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9732F32F761
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 22:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.253
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87E81E5714
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 01:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766012291; cv=pass; b=f3YpK9cXXyT7LUOC1dfzc4ur8vyN7b6J1dssnJccm5atYIfI5JMDMTatXkPDPeY+44CHRo81SwIGjYSxwEF/TA2Ij/I+u4BP3HlY44ZnLI4cEsU8nXfG5SvT8e64nNZhi5HxLFf54YpmpwA+Z7LSqhNpjgVPgN00YFwtw6iKhp8=
+	t=1766021983; cv=fail; b=Q9wlnLnvqkjJzWUT7GwMrn7YNdG5wVdao7xhdvQbH2IiZ0Y44kpjVuhDfrZ5lbSxRXOQZrfskO1bZW80jCbYRl4u05X+juni3cUVNshPC/aougnmSrBMMJME1OqWaq1in2uD2HhZASGN8KEp2xLfhrhsHCY1DEQJomChPCZaXXo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766012291; c=relaxed/simple;
-	bh=fumxxnhJKGzyyiK38D0o8KCUnwy5TZNNuu1zn5iwpBg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NoDICN2bgyQ6AJLJJGvH+++SlGODZYbEu2OA/U7PBHqY9BQCY9ul6PUgn44cEuASLoW+HjSj3MfHZS8pT/BEu3B2aisRHLQ8XcxZXkSmI6qmpYpdkfAg5WJJQ926RUW5Xlx+p2/bbf/rKnHY9O1dTKvcrhlYNdkz+gtwRnjOH5I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gotplt.org; spf=pass smtp.mailfrom=gotplt.org; dkim=pass (2048-bit key) header.d=gotplt.org header.i=@gotplt.org header.b=k8D6PsB4; arc=pass smtp.client-ip=23.83.218.253
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gotplt.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gotplt.org
+	s=arc-20240116; t=1766021983; c=relaxed/simple;
+	bh=whXVgV9g31kq3gp5e/C2T5Jt80arLOJoymXEpES1NoU=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=urRAFOTT1eRucBDwo5olPrYSEJachjlm6MpV9cP2Kz0JbXV1hFILs62ZmUtQA5+SYz4CWDLvFoaovQfc11fJxmc3AJu5WNElmpZ1ek/BWq99/3kGgOtd7lMgatReGGFiCDjUYtgo015K3i1wvFHa+9jwf0gwCcperyXJvglUl1c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oAdm3/We; arc=fail smtp.client-ip=40.107.200.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gotplt.org header.i=@gotplt.org header.b="k8D6PsB4"
-X-Sender-Id: dreamhost|x-authsender|siddhesh@gotplt.org
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 41D67722400;
-	Wed, 17 Dec 2025 22:41:57 +0000 (UTC)
-Received: from pdx1-sub0-mail-a251.dreamhost.com (trex-green-8.trex.outbound.svc.cluster.local [100.102.180.166])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id CFA8D7217A2;
-	Wed, 17 Dec 2025 22:41:56 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1766011316;
-	b=7XgPd33rtWSsfwKQwDZJ7HYgREPReB/zRXFZRY3O9nhrV59lOQcnZwP54p7bWC4AHx3bkQ
-	c1KS+wBhJawZGWo1UEFcDbIBnX8L8lGdecZp75ne4Jcp/2J+Zf+vDjo8Q0ihUTxpsuodfb
-	wDyqlDruKdsoiZAik+AmjYd79SKEoqIQ/NR+QNBXovWjsybfj1iWd+fNtPzQn3cEpdXzcJ
-	WPrdUg8q92l/iH5CF20aOmLyldGN51IWDrq/EiQOYeala3pCiADy+8I8xL6s8ZboyykXyu
-	bLJUVMFMVT0BwpmZDJ0DjL8peMqAV8YpBM7Fq2AmzQNdDjLK0xrE5d++KM9dng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1766011316;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q8ufNqwwwOMlrjLqQ6PcpUY7Zftvgl3J+95B6QjEJ+E=;
-	b=1DDtW9RyMHRBR7Otuyxk1ICNCK4awkBJwkqZMHwO2knKP97neF6jdh9irLUyqRfj0vaMPA
-	kuTPl+GCSv/P2I6FCgjtAGo9JaAYoN9h+mapiVEdOk8JeUr9rV9WbaFD9ad1lBaV+By9Vt
-	/Kcf+srm2ZRzI7FpES5Y0WKy1axlgHdyPBO8r/GUVc4EPJbAJvORCYglWvgRkvSmtoD/Vq
-	n9otPg0GbW7queBjVYwFZgrfP/1mJ5uL0C8iLWRpAYtI5pbAQCGmoNAgkHxVpOWOqShadv
-	F/YOxqyyPev8T3k0zGXl9m4nXbJtQMb8i0IL5GTWodxhG4hCgYLAcOJHaYBWdg==
-ARC-Authentication-Results: i=1;
-	rspamd-659888d77d-xst98;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=siddhesh@gotplt.org
-X-Sender-Id: dreamhost|x-authsender|siddhesh@gotplt.org
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|siddhesh@gotplt.org
-X-MailChannels-Auth-Id: dreamhost
-X-Stupid-Average: 54dcb33f2055a909_1766011317093_856320088
-X-MC-Loop-Signature: 1766011317093:3459152058
-X-MC-Ingress-Time: 1766011317092
-Received: from pdx1-sub0-mail-a251.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.102.180.166 (trex/7.1.3);
-	Wed, 17 Dec 2025 22:41:57 +0000
-Received: from [192.168.0.135] (unknown [38.23.181.90])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: siddhesh@gotplt.org)
-	by pdx1-sub0-mail-a251.dreamhost.com (Postfix) with ESMTPSA id 4dWph40kWWz1041;
-	Wed, 17 Dec 2025 14:41:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gotplt.org;
-	s=dreamhost; t=1766011316;
-	bh=Q8ufNqwwwOMlrjLqQ6PcpUY7Zftvgl3J+95B6QjEJ+E=;
-	h=Date:Subject:To:Cc:From:Content-Type:Content-Transfer-Encoding;
-	b=k8D6PsB4p+Fm4/3JbyTo1mC/atyoStjt/5sY3518HtncfDP1lBDbLHTEYTG0Vwt00
-	 kBzoUpli8BbYcsnnx3HZHsR8u2ub/HPvx9ePecFs4tRY+kPaPp3O+n6TYS0HmMDyPA
-	 mnwrEa7qofkFY3yxt/jvKejLEVlDW/emZhDw2c7LvFwa+yKfbhiEbIL79tj8Xy43Wb
-	 UWjsF60Ei5IaW/2TsDVRE6H9AIurz/f7qOrytvpgNq9B9leXkIij6WntNDcM2cEFnr
-	 RtEeKO5ngnrnjMd260EzKd+C78dXhX2mNZVcirM2qYVrshvTAbY3BXdR1hnhWYuWEU
-	 4piT8Lk2RYAiA==
-Message-ID: <450694fc-f834-4af1-9437-afabfbf4853b@gotplt.org>
-Date: Wed, 17 Dec 2025 17:41:54 -0500
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oAdm3/We"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V2c/XXIGt3/LU9bEzehUUCqslNI3CXC6K7P2yrkUgH8tuswoCPyR+lnWxsoX9xYYzZTBhGR/r2PRquK/ttirqecK39arNY4ows3WhKt/OPzV5cQzilVGf7y9eiKUx5tzr0KsSJCT9K8iIuRbxxMp5hxl7S+/xSzVoVpWI1qkRQQHn26LgcpbPPzT58pMtK/jOMYn9T2EU7fAjpELA3Mab0f+Cn3bvWOgxYeKr4KOYaZHdcPEnxEr9ul/Zw/Oup4XjQSxAOL6XUtYjtFN8cmNk+0WWoaqjgt6RC3t2cw3w6N2yDfRM4KwuBLHQJn6aJ0JF6ZYtdNSc57/QdTjLjh0ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+6OHKTZxWhBvXk4EcUwnEsSYwmRlbNWv9Qc6LBIrIEk=;
+ b=M0tdBLjIPkmwrcFtP3MXywbThFk86fbwG3TUcjAxY3wM73WGTI0whKDEVpbGqViU2ttec6/rBRw9z8xRDh+eCOYX/ygA/R8kBJbldAdBGkQPeqVK3dMfd5afvDl0+gthzGrATIdatTgPDektFSpo+qWXUyvXFUfPaHYF8eBJ19kkRES9Sy7TBzYa6W/it8ir/wxb4ukQtIwLWI7NpaA4uOy4lpKhRyOn+jS5SdYj/IoaCnRRxJXzPPz44qHEvyKkUIVfJ8AJI1p1vgnaDnAuDN6opQbDaeztwPxUexhCzkYqv+Z8xaJIX/X5dQjpcfDYWqTv//fJ9gcL/jKsaYoylg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=garyguo.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+6OHKTZxWhBvXk4EcUwnEsSYwmRlbNWv9Qc6LBIrIEk=;
+ b=oAdm3/We63vzdGDj7y5V7zoK7OweV6HylA1jeMwmWaOxZIS5c2hkQwrYS4D/vWcKxIEdxfZclxyllzQLtbq1smiuem07mbwdgznDaDgvc5WNKx1IKSmo5GD2zaTQeoM8dBmXY3qLa7y5lZ59CL/6n0mZpoZ4UzvBl/HdckI7Wr4aD5tHBzGTBHVea0ul1MxZejdYdXNtVwxF5i7lWOb6f70pMzXF++tTN4E+VhgjkXQQGGWbkFgKQrW/3SvTYwUuq8y/dSX0e4TMWLB5fdsWntUBV1DWFh+B3i5Uw8cD7fVe9d8EM0wgAeksndgm8tlGgONiHWekLhPV6JqSLKzSlw==
+Received: from BN9PR03CA0415.namprd03.prod.outlook.com (2603:10b6:408:111::30)
+ by MN0PR12MB6053.namprd12.prod.outlook.com (2603:10b6:208:3cf::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.8; Thu, 18 Dec
+ 2025 01:39:37 +0000
+Received: from BN1PEPF00005FFE.namprd05.prod.outlook.com
+ (2603:10b6:408:111:cafe::b3) by BN9PR03CA0415.outlook.office365.com
+ (2603:10b6:408:111::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.6 via Frontend Transport; Thu,
+ 18 Dec 2025 01:39:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN1PEPF00005FFE.mail.protection.outlook.com (10.167.243.230) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9434.6 via Frontend Transport; Thu, 18 Dec 2025 01:39:37 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Dec
+ 2025 17:39:20 -0800
+Received: from ttabi.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Dec
+ 2025 17:39:19 -0800
+From: Timur Tabi <ttabi@nvidia.com>
+To: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>,
+	<rust-for-linux@vger.kernel.org>, John Hubbard <jhubbard@nvidia.com>, "Joel
+ Fernandes" <joelagnelf@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>,
+	Lyude Paul <lyude@redhat.com>, <nouveau@lists.freedesktop.org>
+Subject: [PATCH v3 1/9] rust: pci: add PCI device name method
+Date: Wed, 17 Dec 2025 19:39:02 -0600
+Message-ID: <20251218013910.459045-2-ttabi@nvidia.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251218013910.459045-1-ttabi@nvidia.com>
+References: <20251218013910.459045-1-ttabi@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: Add -fdiagnostics-show-context to
- bindgen_skip_c_flags
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>
-References: <20251217150010.665153-1-siddhesh@gotplt.org>
- <aUMWuezmBHFnZUaM@google.com>
-Content-Language: en-US
-From: Siddhesh Poyarekar <siddhesh@gotplt.org>
-In-Reply-To: <aUMWuezmBHFnZUaM@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00005FFE:EE_|MN0PR12MB6053:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9964d59e-14ca-4db6-763b-08de3dd64dfa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?lQDH9CgugeDq4dZ9C0pta5SGam1XZW/Q4u992aedXXnLtMDy8sRyuFJcLDBm?=
+ =?us-ascii?Q?smI45ctcVBDSlcSc0Vdd2t2DvnCmpgYRu+IKhRiljC6JJRDo4vZbEkjccy0V?=
+ =?us-ascii?Q?/1eCMYAROFXTOTC9WYee29HISskZL8wz2JNrXpl8KFkp81ELtSWIh+f13say?=
+ =?us-ascii?Q?35BxzJsEH3DO3CxmuSelI0Q73sUvxjqlA6yI+G0Op1xrVO6TMyG/CjYz1sjl?=
+ =?us-ascii?Q?HMiiPCJN0kr2yQZqjiRlxGi/PgovJYUnQ3mVHYzl1U+7WVeO0ZlbmDBRU4v/?=
+ =?us-ascii?Q?7yYgxnw5JdOUtk8rICJCITX7zzoMH1fOUouu4oEbckiWB0Hthc9yb3XuTzz9?=
+ =?us-ascii?Q?oKuRZrm1ESesgGU1ZmMSFODRqR2TkbTs1ilTL6T7szPy4KjbNEhxzl8QovVQ?=
+ =?us-ascii?Q?dCITpUGzOXArjn1Bg0g0jwwAkq5aMSVJfekj3BLNs0jBIoRGoUIXyAj0q2u4?=
+ =?us-ascii?Q?d8buGJGfucDiNj5CWORKWCNMvM01yPbAzT/m0ryny/TrS8+WACa0lRO4reNh?=
+ =?us-ascii?Q?cw6s/lRnsD7v91/lFhvhYmBjzDeeyMrxMH+OgzUI57Bp6izeeNiVtm7sTur6?=
+ =?us-ascii?Q?y1N8h8Kqfohsjc58xdKVHvHfIAJz3jcraSZ2H1PB6bYCeT82J3VlvXCKW5m4?=
+ =?us-ascii?Q?sjRdPdueg1SnJwIUvVnX3mExUtQPXViXD+Mzc9U6B2j+Fu7FBSYGPRh+UqA1?=
+ =?us-ascii?Q?EbbuUGilJvRPBdxQsHZQEom1ldS9aQS8+InfAS3RIg0rdEEgALEj7HZmM1tb?=
+ =?us-ascii?Q?9cY3zFIdbqP4fqNVEmJUgE9MqASnApaBHwmPl0QoS3ETBnRLHfShMvhDiSWt?=
+ =?us-ascii?Q?ZpxICKkMTO4y+muN4iAHVGcayDidLs6IQs0lfRWUl1h+cT6fNRtnFl9bAYi3?=
+ =?us-ascii?Q?sHID2TcFMKQr00Ld22BSjgX9dfTPdkUgb1TADZ6Mcu3a9EVYEHvY6X7DmIOc?=
+ =?us-ascii?Q?mb8/pbYoMDon4cn3fdrKTU9Qr8TGOkoVhX2fDCFFLQi0jMV0kmzroT9Ms9pq?=
+ =?us-ascii?Q?7u6sEMcI/O+RunbidW5agd53AhJxlY6MaWku0Z3JJ5pp6q+qH6rfaO+N5dOM?=
+ =?us-ascii?Q?vqdfxfvS8jWXn2FD9IkGy+juQyl0DssBUSkN7hubRTdfTMU2FEgSVVAwLeVt?=
+ =?us-ascii?Q?1TMfozpX8KfU9Irvu5LALoupmOjrz1UGFAE/l6jYegZCqnFmVDKC/LerqLuZ?=
+ =?us-ascii?Q?FMCj1NK3EPofMxACLLVpVfb8VAjbH2pvNJ+ZcjzkQDjZTeHCITKz+yg8jPDT?=
+ =?us-ascii?Q?2fgvg/ttkKQrOTPhGOJIg+IGNrI5ox1mkZ2CG6JZv5yzJW8XCc3x8C1D3f9h?=
+ =?us-ascii?Q?4ykZvithIOAkXFDbDhCmjA2aFVzDNCERqmubxppa5vumHYN8n0v3LERRebxV?=
+ =?us-ascii?Q?yEnvOIodGgDAyUiXg3IYSgX5EfNL3ABSDwzbA1AUi2e/jhu3tNqHu2Wr4vAS?=
+ =?us-ascii?Q?922zIYraSfAzBkmPFb7ruoa3Ho2oSUCm9rDdNcZRgPNQZWJVsp+9Ce0BcY/8?=
+ =?us-ascii?Q?IxdDBU/nisC0wW2vfXNx3OXw7WMdFztLBD35vlBG+vFe9ozxrxZB9AzU3Cjo?=
+ =?us-ascii?Q?WhevGzQzvcfAP7Ql8/4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 01:39:37.1811
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9964d59e-14ca-4db6-763b-08de3dd64dfa
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00005FFE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6053
 
+Add a name() method to the PCI `Device` type, which returns a CStr
+that contains the device name, typically the BDF address.
 
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+---
+ rust/kernel/pci.rs | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-On 2025-12-17 15:46, Alice Ryhl wrote:
-> On Wed, Dec 17, 2025 at 10:00:10AM -0500, Siddhesh Poyarekar wrote:
->> This got added with:
->>
->>    7454048db27d6 ("kbuild: Enable GCC diagnostic context for value-tracking warnings")
->>
->> but clang does not have this option, so avoid passing it to bindgen.
->>
->> Signed-off-by: Siddhesh Poyarekar <siddhesh@gotplt.org>
-> 
-> Seems like this should have a fixes tag for the offending commit, and cc
-> stable?
-> 
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 82e128431f08..125fb39f4316 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -427,6 +427,43 @@ pub fn pci_class(&self) -> Class {
+         // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
+         Class::from_raw(unsafe { (*self.as_raw()).class })
+     }
++
++    /// Returns the PCI device name.
++    ///
++    /// This returns the device name in the format "DDDD:BB:DD.F" where:
++    /// - DDDD is the PCI domain (4 hex digits)
++    /// - BB is the bus number (2 hex digits)
++    /// - DD is the device number (2 hex digits)
++    /// - F is the function number (1 hex digit)
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::{c_str, debugfs::Dir, device::Core, pci, prelude::*};
++    /// fn create_debugfs(pdev: &pci::Device<Core>) -> Result {
++    ///     let dir = Dir::new(pdev.name());
++    ///     Ok(())
++    /// }
++    /// ```
++    #[inline]
++    pub fn name(&self) -> &CStr {
++        // SAFETY: By its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`, which contains a `struct device dev` member.
++        unsafe {
++            let pci_dev = self.as_raw();
++            let dev = &raw const (*pci_dev).dev;
++
++            // If init_name is set, use it; otherwise use the kobject name
++            let init_name = (*dev).init_name;
++            let name_ptr = if !init_name.is_null() {
++                init_name
++            } else {
++                (*dev).kobj.name
++            };
++
++            CStr::from_char_ptr(name_ptr)
++        }
++    }
+ }
+ 
+ impl Device<device::Core> {
+-- 
+2.52.0
 
-Ack, sent v2.
-
-Thanks,
-Sid
