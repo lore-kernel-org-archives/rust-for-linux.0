@@ -1,135 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73971338927
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 10:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB9033CEBF;
+	Thu, 18 Dec 2025 10:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766052656; cv=none; b=AJvO89GDQCuWtcq3ReB2JbPpWn26qnOSKzqmGBW2POvEADdszBsAQoSGmG4uPOUFwGhHI6qHvF0s7N14EqEwT/28yretOugFJg7IdEUWqVjsIDtLriYqYMhM+F8SOZsSc0PqFU45cL2WhF3bO631/+uAHCp2RkdWEMeWXcKjUSg=
+	t=1766052766; cv=none; b=WLLZeD4PNSEjdWJ/tPV+mbY+fdVC76uSI/Kpkf8DUFNCnQH6Jtl+NTUhUktdL3WOc4XMZ7iKmA+fPuBE0doTWaxXmHLGwYlCVFafZ36T0gP56auMrcNx0PkiHiY1khFA57H9m65ADE7simbuahzb+WzRIyg96P0XEzvRMvSxgi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766052656; c=relaxed/simple;
-	bh=k4AnuEM5cM2z9536PBg/Etme6m+ff94jyEewMOwsOmk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=MCqRlQkboJdjwFHEIfEtXXQNuFTfrO6O+WeRUC3CIHumEafxGv3dfZpVrqMQyQX6AooQsqZLVJxIJEDlLZi+vxr9d7TOk2U7F0O1p3xJIRP1JPCbzV5kKBb4XjA9arUbPX8hTQZVDDK2UuZif87xouRqIGmL3DQbtW+ps/sYgHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWgYRsg2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766052766; c=relaxed/simple;
+	bh=SXv7/CChtg+veUFY2FOAVOi9sIz/SkLoMXxvPciPXqM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=u6OxKi+SFCeIEZffZp0c8hUM0SE0Kz87sLpcRa4UaydR5nk7CzkCh5DJ6PLisuR2zRXZQND6+XWRz3U3l0T6zB2br4Di8mad7i+T6NrTIfEcqiV6VGCT4QnCoDU7VY2fAOekNNdZYMvLkAiI5OV3qGYcc/0TwiBqdbMU3kGlD74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gBZyg3z+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWgYRsg2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A00C4CEFB;
-	Thu, 18 Dec 2025 10:10:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gBZyg3z+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69BCC113D0;
+	Thu, 18 Dec 2025 10:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766052656;
-	bh=k4AnuEM5cM2z9536PBg/Etme6m+ff94jyEewMOwsOmk=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=KWgYRsg2Zn8mcfSAfiVY5zZ3Mb6ClUOuvpSD1be8ebGq7DKvMBoulmUEN/qqT1ABs
-	 kmcu1WtCY/heLLMzzIeORfZjOA3tma5Fre45E7KS0ydN2LLDostkJwZtJwyv126DZA
-	 mkKihaIKIyksnmQro1Xs6KG8XNcddQfNUnMiey4Q0sZ1hb66c9HvFicZdS2U8cSwcH
-	 tDVQJ1zib5UfbMxzXw4DZdeDFbh1Ol+l3XyCSMfKjWK0vLLCg+g1tZmCbfmYTOVxka
-	 WfXbvIrJx2oMktIkqDir5wfGgArm3iunR6/6a1X075eZ5PeLG/U5Xt/cyGgAGNmVT0
-	 d9aM+4ae853jg==
+	s=k20201202; t=1766052765;
+	bh=SXv7/CChtg+veUFY2FOAVOi9sIz/SkLoMXxvPciPXqM=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=gBZyg3z+UR2aWeUXEE24gqSoyEuuCtbz1uBEuJb3LnU170oz1wSEAB+9FCZL7kQ+F
+	 Vi6BiMfm+yDOllvK14OeaqE+hll89AeI9JHwEF9RwLOCac8Ez1G09hBcy5zQxzKE0m
+	 VWLFnQxcBvfkNkroGQDfMYxOF9snR6/5fGwt8lKHalIHxanl/hGJxMZC+EiJd6xBLu
+	 lqmsEOhQ4kY/kfiC2CIpsjsxSKI7g0fDZ7CZRMCw9ZcmVYlNEl+oGD3phySMfEVAK3
+	 MQXEnfkHcrlJSdISOdKDNHFtsWS+pOdHbShYb/wz0cW0rMCL+3C3b1Y3uMtknYEPSe
+	 nKxDHyT8eDpgA==
+Message-ID: <18f85697-358c-480c-89a0-8559f600f62d@kernel.org>
+Date: Thu, 18 Dec 2025 11:12:40 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: Re: [PATCH 0/7] rust: add initial v4l2 support
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+ Frederic Laing <frederic.laing.development@gmail.com>
+Cc: a.hindborg@kernel.org, acourbot@nvidia.com, alex.gaynor@gmail.com,
+ aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
+ dakr@kernel.org, gary@garyguo.net, kernel@collabora.com,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ lossin@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org,
+ tmgross@umich.edu
+References: <20250818-v4l2-v1-0-6887e772aac2@collabora.com>
+ <266b9b35-aed1-4c2f-9fd1-4da349876ac5@gmail.com>
+ <73B8194B-4E21-4E5D-99AA-54CD273858B4@collabora.com>
+Content-Language: en-US, nl
+In-Reply-To: <73B8194B-4E21-4E5D-99AA-54CD273858B4@collabora.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 18 Dec 2025 11:10:52 +0100
-Message-Id: <DF19F07P95XZ.32ISH5C9QQK75@kernel.org>
-Subject: Re: [PATCH v3 6/9] gpu: nova-core: create debugfs root when driver
- loads
-Cc: "Gary Guo" <gary@garyguo.net>, <rust-for-linux@vger.kernel.org>, "John
- Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "Lyude Paul" <lyude@redhat.com>,
- <nouveau@lists.freedesktop.org>
-To: "Timur Tabi" <ttabi@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251218013910.459045-1-ttabi@nvidia.com>
- <20251218013910.459045-7-ttabi@nvidia.com>
-In-Reply-To: <20251218013910.459045-7-ttabi@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu Dec 18, 2025 at 2:39 AM CET, Timur Tabi wrote:
-> Create the 'nova_core' root debugfs entry when the driver loads.
-> The Dir entry is part of the NovaCoreModule, so when the module
-> unloads, the NovaCoreModule object is dropped, and that drops the
-> _debugfs_root, which automatically deletes the debugfs file.
->
-> Field order in Rust structs determines drop order - fields are dropped
-> in declaration order. By placing _driver before _debugfs_root:
->
-> 1. The driver registration is dropped first, which removes all PCI
->    devices and their associated debugfs subdirectories
-> 2. Then _debugfs_root is dropped, removing the now-empty nova_core
->    directory
->
-> This ordering is critical because debugfs_remove() performs recursive
-> removal. If the parent directory were removed first, it would free the
-> child dentries, and then the child's drop would attempt to remove an
-> already-freed dentry, causing a use-after-free crash.
->
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> ---
->  drivers/gpu/nova-core/nova_core.rs | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/n=
-ova_core.rs
-> index 01353be103ca..f17505e5e2b3 100644
-> --- a/drivers/gpu/nova-core/nova_core.rs
-> +++ b/drivers/gpu/nova-core/nova_core.rs
-> @@ -2,8 +2,7 @@
-> =20
->  //! Nova Core GPU Driver
-> =20
-> -use kernel::{error::Error, pci, prelude::*, InPlaceModule};
-> -use pin_init::{PinInit, pinned_drop};
-> +use kernel::{debugfs::Dir, error::Error, pci, prelude::*, InPlaceModule}=
-;
+On 17/12/2025 15:35, Daniel Almeida wrote:
+> Hi Frederic,
+> 
+>> On 16 Dec 2025, at 14:03, Frederic Laing <frederic.laing.development@gmail.com> wrote:
+>>
+>> Hi all,
+>>
+>> I’m new to contributing to the kernel and was reading through this thread. I would like to ask about the current status of this patch set. Is anyone still actively working on it?
+>>
+>> If it’s unmaintained at the moment, I’d be happy to take over and work on addressing the review comments and resubmitting an updated version.
+>>
+>> In case you're wondering why I am interested; I am currently working on camera software that utilizes the Microsoft Kinect 360 and V2 camera variants. Luckily there is already `drivers/media/usb/gspca/kinect.c` but it has some errors (like reporting invalid frame rates for color data) and design flaws that makes it impossible to stream depth and color data from a single device at the same time. I already got a new user space driver working in rust and would like to upstream it to the kernel to replace the older kinect driver written in C.
+>>
+>> Thanks for your time,
+>> Frederic Laing
+> 
+> I did not hear anything from the media people so far.
+> 
+> Mauro, Hans?
 
-Again, please use kernel vertical style.
+Speaking only for myself, there still isn't the time available for me at least
+to support rust. We also need to get the multicommitter model started, which
+is only pending on the documentation right now. That really should have been
+done this year, and I really hope we can finish that early next year. We
+need that up and running.
 
-> =20
->  #[macro_use]
->  mod bitfield;
-> @@ -24,17 +23,24 @@
-> =20
->  pub(crate) const MODULE_NAME: &kernel::str::CStr =3D <LocalModule as ker=
-nel::ModuleMetadata>::NAME;
-> =20
-> -#[pin_data(PinnedDrop)]
-> +#[pin_data]
->  struct NovaCoreModule {
-> +    // Note: field order matters for drop order. The driver must be drop=
-ped before
-> +    // the debugfs directory so that device subdirectories are removed f=
-irst.
+Basically the situation is unchanged from 2 (?) years ago: too much to do, not
+enough time.
 
-This is not correct, subdirectories have a reference count of their parent
-directory. Hence, the drop order does not matter.
+I don't see this changing for me for 2026.
 
->      #[pin]
->      _driver: kernel::driver::Registration<pci::Adapter<driver::NovaCore>=
->,
-> +    _debugfs_root: Dir,
->  }
-> =20
->  impl InPlaceModule for NovaCoreModule {
->      fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, E=
-rror> {
->          pr_info!("NovaCore GPU driver loaded\n");
-> +
-> +        let debugfs_root =3D Dir::new(kernel::c_str!("nova_core"));
+Regards,
 
-I'd just inline this statement below.
-
-> +
->          try_pin_init!(Self {
->              _driver <- kernel::driver::Registration::new(MODULE_NAME, mo=
-dule),
-> +            _debugfs_root: debugfs_root,
->          })
->      }
->  }
-> --=20
-> 2.52.0
-
+	Hans
