@@ -1,225 +1,137 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011030.outbound.protection.outlook.com [52.101.52.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC58E3191CE
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 11:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766056474; cv=fail; b=bPCKuGSvU3cu9rEYSe3CDvL+zzElyX2P/B3xPxr569zMaGhyO2Mut2GB7yr3N8+xXMg2a/c8Y9szVtWJPNruz1N+xjpe0U+aoC0lsI3y4/fPGAvp+bWFyyyv1dqdLoHkAd28+PGJgecgaBuyMt5bqUOQ+uOMZrXbWno4EamQmZs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766056474; c=relaxed/simple;
-	bh=d4aVqSpPrc1gtiJ3UV+bdlWfHSmcEe7NfzJvYTr+ssQ=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=QOOiSjNLcGMla32B+hldHpkF8s04ZMEh/xHfbdk06wuC0tmkbwR7YCOfpOFG9E1OXAamBQtm1FdUclaBPutAqB8QyJ1ajwd21Md01DMi/oZay/lfme8tprjtfrVOaQ56gIyTtSbVRGZl9uL+3A63u+S50toDH25pUbqv096/5nc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=s7nHQbyq; arc=fail smtp.client-ip=52.101.52.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DB73FFD
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 11:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766056601; cv=none; b=oU1U/Tv8vpAASIsHz8YKa7BWz975AaSmEQLhvf7RvECRyxFKDftTIOIdCpX12va6EYT02GMqIEu7QbbzCEUyUtvtPZdIxHupjaIlWsu1ycsuMJ3Y27KwZbi4IrXy8JZUSG0tvFpLDneJuoowML0PbVChlWbi79ehlud8foNsb+A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766056601; c=relaxed/simple;
+	bh=KztlaeGaKnd/OAfSmunex5j7GqNA94eUF0mYNucDr+Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d/KGM7UwMgZjF7wZofJI63P9rTJ+Ty+KqOyNDcz7B9l08lYOigQJ+l5NJkIhX652nqcObpXGcsuAlKozBJZfBXKnLKx9CeiSAbuSfzP+fsCfwph3piHi/8aSKuSm0X+xO/DVPGHPNuuYq6hxG2Jsk/JQ23QegsSadUhmaE1WrG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oFVOvXAM; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="s7nHQbyq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g5dymher6pyWwjwyOLXotHIbmV2T2j262dx2UswnTKXhQPQDD6j1spDpQuyir9EuoYY/nCQa8Ve0eKRjRKkXZuxG5LDDKTzj31jRSkRPeVlxdGOn0F60qbz4Dj6HNErgPNfx4I9Igzt8IAagZJWN8u6v7iG4JY4hiO/TyEU15bEf2cUHGI/4ex6NpW0Lk/EXabsscM+8o9uHlzrDp3NDKTOSSHjLeLoQuhDqWpEBh8eMnOmpqUkPHR6c05ctvb2uCpFNfC1sIx60mM1mocjfw+1JDgAmJa3bpsiLrg+gIJxAh5khkE1t0LRNpftrHUYiYzlQdOB/4seqVqac2oi/Ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hwHuANfdzxFRAajRTqLVKSFsjgDsRAvwext9xtq01tI=;
- b=wk0KsJgkOmFBOfU5EqttVZobg97bCqYEuLrqGPynurYamPnt6MytrxVI3ieKmItO2yuy3/2pQC27G6h5XZg6maJBc0mdNnsjqP2Vo9Agz8ApEycgYga9fhoDQLE1UJjBqTlLiXbDoAd0+a8r7GtvxpjBp8TlbQ5UIOP1ubr+iiokEKY5bL5k1n6IA6nzrfl+iFVqI/ywI2yswDJAm9Tq2X+dVZ4NkkcyUp0PPpNfyl+x6qgYvQgq7k/6X9lNXypSUj8poEMqNzWqGTQRtmGpEQEmZBdQA3X5LjEk0Gae5KQCGNCpPcv4ymtBVRG61C07yZZ2fiMMDKDTisquTB58IQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hwHuANfdzxFRAajRTqLVKSFsjgDsRAvwext9xtq01tI=;
- b=s7nHQbyq42vK9mBWshdDk2aJkdvxxSpFfN0ah7EvzanuRCltmQeYknjnRtIZs9gxi+S5HokbhFv8RwS7+4HcBE55Qkw1KTGpaQBHOqf7GqxJhKonDTcRh35gNxmQruX32DGg3ay65y6Qzjj7q45PzALjkeuc+n5vP6jhL03oKE/phnolHOIs0aXEHmHvmGsOgyWJhicbrKnsD7x7dsBvpG6BJGfxoWVeYUWg211v5eC8VS4UAR/2hPc+qUXmlFGg+LoBXEWYTL9Ydl1ZUlRLv2EzyzY8LLHem6RgyCw+JTzkOTFKJB6SvpUvuKtnV//w/64TYNqo0zjFiAKfLo3Miw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SJ2PR12MB8874.namprd12.prod.outlook.com (2603:10b6:a03:540::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.8; Thu, 18 Dec
- 2025 11:14:27 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.20.9434.001; Thu, 18 Dec 2025
- 11:14:26 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 18 Dec 2025 20:14:22 +0900
-Message-Id: <DF1ARMP4N97P.3SHVEW8B3EB1Z@nvidia.com>
-Subject: Re: [PATCH v3 7/9] gpu: nova-core: implement BinaryWriter for
- LogBuffer
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Timur Tabi" <ttabi@nvidia.com>, "Gary Guo" <gary@garyguo.net>, "Danilo
- Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>, "John
- Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "Lyude Paul" <lyude@redhat.com>,
- <nouveau@lists.freedesktop.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20251218013910.459045-1-ttabi@nvidia.com>
- <20251218013910.459045-8-ttabi@nvidia.com>
-In-Reply-To: <20251218013910.459045-8-ttabi@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0267.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:455::10) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oFVOvXAM"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42e2e77f519so316919f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 03:16:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766056598; x=1766661398; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uOXkpA8lYBVLvZTCg8IrEbi29SdqOpQhJylQGG6roho=;
+        b=oFVOvXAMF8hxSEcwv80N6KIQ+TW8wwmGs9xaVH9RcJ/ELWfgZy+gAWG3fa06EK7lEQ
+         nm7yLHc6479YjcNE4xWojXpkf9lJ498DQBQ3ZC3/m6Nrx+YnR/lcPAjIE1+y/x0/H8tg
+         kOtbmHGuDbP2j5X1pvj2/p4o3cj885fLSKgsUYF64M/v64u6AcNJZZStSGrqLvOvk8w3
+         C9ftA2fhzLrOv/9I1gJjkh+i6MRwo+GNvETtafOLNLC4HRwDLvjpAhD6UypdV8Ek3L52
+         b/62YbTufkYUYHVByHMdrNZR0LSPqN+SkE7oIjpzFHLgF0UU5+ZzIg9dg+9S6ysPtR62
+         HaNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766056598; x=1766661398;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uOXkpA8lYBVLvZTCg8IrEbi29SdqOpQhJylQGG6roho=;
+        b=s8wMYzhabmAK5MSm52vOz1pDB+XozhS5vY5KdAcqeo5Hr6NUNvDWcSSpfopgptND2+
+         kLdvPnBWAIDS9Mn8GKmScm3hx9kg3GmWsgLuVP07EDmThISed5lyUDGbPmeak/ftWPz3
+         S85X3zavZQQKbri5/o8MZm8+qP79Q/QuZsFGe6kqkPzDe4XKBTTLeQMyS9+4SdtN3ww0
+         MakqmgLNMOibusGbh+mbgMKZ9l55LHQS85+rVZT3JtJXMUDpevL849c8qOvyr+1Pi6Ye
+         vbcXqTZ962AHKOPNarpvvjeud32Jy0Sc8S7edPQmzyeFJWluPU8XpkgZ4aHKoj5vMRqz
+         lt7A==
+X-Forwarded-Encrypted: i=1; AJvYcCWtBY6+Rr8XRdV3dX0iDK+l6zTzDzB711PF1uVCOUa1pSopP7AJdku4ireabRYtsteCCyGujfFhZfNtb95O+Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd/XqzAFbJb4sZOy/CrNH2DWj3qrMPRAcZYam161llXtYlq4oy
+	NLfOTgr5vdnG2xYEQ4D6M/q0flZvO3wIQxtOsVOD/Gk51+aDJ2Igyxf6XsHnymD4T6fvQHKXD+k
+	E+frOgxwaIsbNdpPG39MfRgOcc6oICD3tml0GDakN
+X-Gm-Gg: AY/fxX6xgV9sObg4Bkqvs2f0su92B9l56pGdY+A8Gd0ouNPLl20yyy+EzrMejPLN/ys
+	ieEWgaDxSl9PgCHr3WZTxdA5bf9Dn559d3mryZP1z6M6rWxdlLsMj1iyakzguFlo3AwZPG7D4vw
+	5OanEAU7vyuo+BsrwsLlwkuyADoDZ+PRnjQFFReB54UQ4iiMpqJ8lq8hhf0rh/oFM44zdDG31Dp
+	8k09utZEB4EaF1df4aGc0VupFlg4WxrHPFOid9pmvKGV1pso4xCtM5ZlnEFobakUJ/fhVFFD7lH
+	mvSY26AJf6WOSk4PeYu8/P5XJA==
+X-Google-Smtp-Source: AGHT+IFrXoEzEmVRVSzOzT1YZ+gWxS6eF1Sdu95x/QMJlgrz+t1Ee2yozvEWMo/cVsiyiwqvxXVU3aGVoS8tAA05mWI=
+X-Received: by 2002:a05:6000:d82:b0:42f:b9c6:c89b with SMTP id
+ ffacd0b85a97d-42fb9c6caccmr19207847f8f.50.1766056597425; Thu, 18 Dec 2025
+ 03:16:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ2PR12MB8874:EE_
-X-MS-Office365-Filtering-Correlation-Id: fe13a089-8b58-4336-a89d-08de3e269abf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|10070799003|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?aktWV2s0QXVXRy9NYjRhUGQ0ejZTQ2cyY3dka1FmT3JEOFFjVFJXQU5NUjVF?=
- =?utf-8?B?UVZ1aUNMQWpnajBqZVBqSXlHQWhJbDRmUU9pazNGeUVSK1lBTjQ2anNoYk5I?=
- =?utf-8?B?L0krdGJKT2hLZG95cnhPT0VwS3FRblBRbFJjK3hheVRiZnRqUkxrMzNJRVRq?=
- =?utf-8?B?eFB6REgxb0pqN253M01MYm1ZTm9BUWROeWNDMWFiUE1NcUJ1blN4ZmZ1Zkl0?=
- =?utf-8?B?Tm1FTldUaG9IT3VTYmMrbXgrVzk4VDlRT2ZtZjBYeDRLc1Jaa3o1MUVIbDd1?=
- =?utf-8?B?cHgvSW85MUZPZXZRZFlJVU1EWTlOZEVtRW9VZEVTZ0lidWpwbjZtN1BPMWlJ?=
- =?utf-8?B?UUUvaDQ0VjY4YXVSZy9CKzc2bjVIekFBZXQ0TXlhNFRtMlZnUlN6T0FCdmEw?=
- =?utf-8?B?UWpLOVFjYTcrQ01wVlBscXd2VCsyZEtnVHR1R2tFbFNmS0NDSmx1OE1xYnJm?=
- =?utf-8?B?SWNyN015M0RQL0xDdThRVmUrN1lURGZaYm5pNXFuem9qRjRYM2xyYk9uSUdO?=
- =?utf-8?B?TE9tQUc0ZDFWbHRZWXNxRldSOTNBdml3OEdGVms3TmJqQjRTQ3llcm1BZ1pr?=
- =?utf-8?B?Z2hET1JuV2N0ZHNYOElHQkhHTGNwQ3lPeTdvRnNPSVpLTm45cnFsb2hSYXRW?=
- =?utf-8?B?OFluVFR3bDlXcll1UVNjQ0lUZi9JVkRMVHcrUkVOeW5mMk1uZEEyUUw4RlBy?=
- =?utf-8?B?RWVmSUxqR3I5V3ZVZG1IOVhpUnhORHBkVEQ3TktGUUtMT1kyUEN4VXliZEE1?=
- =?utf-8?B?SnRMNUhWclExS05UV2NkUEhNSFBpdDA4Ti8xM1pRd3lubldYVkJzOVd6TjVN?=
- =?utf-8?B?SUVRL0lSOE9QSjRIVXo1bUZQWHBJK1prcGVVRmtpUjBnV083akp3RW5nSXNV?=
- =?utf-8?B?QTBQbHY4VlpwdXJkQ3FndVJma0xwalF0S3BEMzVRV0FlZ2dzUlNNTXY1VTk1?=
- =?utf-8?B?VUNYSE5WUGFpZVlQTEROOWM4d2hsZmU4S3lMcWQyZEdhNXc4KzJnSDlRU2hC?=
- =?utf-8?B?WHVZZzIvMkpoV2RycmVrT3IrQjlYZ0xvTW9MV3FWS1I0S2cvODJyb2cxaDN3?=
- =?utf-8?B?LyswaEdNRHRjS0s3NFg5TVRtSzJEejR0N01HdklJQzFIcS9BdS9SOXc2cmlq?=
- =?utf-8?B?c1pnaDJRdTdpWHI4VE5VLytTNThYQVlYbnFxSTZqNjIrOHVuNWVRQTZCOVdG?=
- =?utf-8?B?Ukc0VitVYkg5TmNCZ1YyTkNacWo2czA2RHYwYzZVSWZGbzVpNkpRZElkbVo2?=
- =?utf-8?B?cWZaQ1huQTNsZ3A1UGNaZFdyTW8wdFBzY3J1TkRVcFV0ZEN3S1dFUTI2d1Bp?=
- =?utf-8?B?Z0g3ZktzNFpQZjJZenNOZHVaT2lxOTdUdDZyTDdxZ2E3UUFJZXBkZi9HTU1l?=
- =?utf-8?B?YTg0dytsZFEvT2YzZHpOTkgweFFtcDEzT2xqMkovYnVCRjN2UHB1YUJBaThj?=
- =?utf-8?B?V2p1ZWlXU0FpZkVRNXNPL0t3b2JWQnNramNrTjBkS0tIVVdaNFoyRFRQblRO?=
- =?utf-8?B?L1lpYmZURE5COUx4U3l1am1sWGE1OE03bjduSy9mM0gyYmNPSnFDTkUxeVFS?=
- =?utf-8?B?eWJlcDV3eGZkRjVtbzhzOFpqN0NyelV1NUN3L2FyNFpGdVBvb1lSSzFqaHRh?=
- =?utf-8?B?aUowQlF1c1Q5NmJuSXhpQTJ0TXZBRmo3VG0veEtnOVZXRVZ5NXo0WmVGZDVM?=
- =?utf-8?B?MCtlcmVLRWJHUHhWUElibWpFQnRjN1dRK1ZVWE9lMVN1MFZBczNub3RLMDcy?=
- =?utf-8?B?VCtmbEY2bGhDL0M5eC8zSTZ6ZkltN2ZaOU10L094RTBSTzk2YzRiWXBVSVNa?=
- =?utf-8?B?UDFCeXNwb2ZtZnlSODZ6SDlxeXA2QlVFVktuaEhEVm5hbzZyUzIxamszYnZM?=
- =?utf-8?B?cjRnb0RMWDBCei9kN0VmRlQyR2t5NHNRRTUvU2gvK0lMTzZTdG9wYVVzLzlh?=
- =?utf-8?Q?p0tpfw9XuSk64I5bA1xNvya0uEbztUJ2?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(10070799003)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cm5PMElNREdidVI0Q0xiK3lTSy9KSWkvbElia21kaFI3cElkTnI3N3YzREJZ?=
- =?utf-8?B?V3BFbGlmamM4UnJkd0pBM3dUamJzeE4wODVZdnoySExTVmRnU25EN1FNSWpJ?=
- =?utf-8?B?MGJodFJLRWhDZGZtcmRyMm4xK09MR1l1VXJTbEhhaEo1T2VNeGdtMmc2WUhu?=
- =?utf-8?B?Mi80cUw1L1huUDNFMGVCUlBtUFoyV3BoRUdDVjUxSURzMFFXVmdnT29qNk9V?=
- =?utf-8?B?dGpjWjZOSnpaL0o2YzZvVno3TysyajNLWCtFcHVHamRKUUdSZTVITzF1Z3JX?=
- =?utf-8?B?emlVZkhQclF0MEo1ZnNCbHBpZmgzVEI1MjluVGkvOCtlR1NtUVlBbzVzWjBW?=
- =?utf-8?B?WkhtUURkeEFoZXRWQ3hjc2JRNUh0bjdIM0ZKRC8rcWJZcjRmRjNRazNKT0d5?=
- =?utf-8?B?clZVb2ZkcGF1Q1MxdzU0b0t5WUlSdy8xcSt3M1NtR0UzSkQyNVJGNUFnM1FU?=
- =?utf-8?B?U2hqUHB2ejVjVUFCMTFmSTdZY2prVHNOR2xaclpUQnZuWU5ZYWxtaVVNSGVO?=
- =?utf-8?B?VDMvTUswa0dmeU9KRlhRemtHWThoRmw5YmZpNmZoUEZHT1Z4M20xcEg0c0I3?=
- =?utf-8?B?WThQU01WajdyL3VCaTJ4K0kzQmdtbVBnNnRjZ2JHVFdUOUxxbS9tejBPMzdM?=
- =?utf-8?B?TTJYVG02UU1IY3RXN0cvLytIRm5pamJEdXZwbVIzVXZYL2Y3V0daRFJHUFFz?=
- =?utf-8?B?YU5uYVI2TW1GNHY5WWRnLzdocTRIdGdJa0xyRGpxMU1rNWYzTlZab1NOaVhZ?=
- =?utf-8?B?OHprRnpQci9yQUs1bTRNd1V3czh5cVhqRlV3Q3dGR0plSXNFb0p2aW4yQ24x?=
- =?utf-8?B?bE1QSDR6alFVSmpaK09hYjAzZDlyQ3JpSEFuSnJuZjg1NWErQk54SVFCdGxv?=
- =?utf-8?B?NDQ3N09JdHNlYktkb1A3ckVEbExIU3Evd1lZaXpsdTgvUG96Vi81Kzd2Wnk5?=
- =?utf-8?B?TFFKK05FeFdLSEMzejdJTkRYdWQ5L2d0bjFhQjhEcm9rK2U2cEkwbktUMFVt?=
- =?utf-8?B?L25kNk9lNVB5NWdFNUVHTzRDQU0rUndWcGxBb0hUWFJPcTZQUVEvcFhPbS8r?=
- =?utf-8?B?NGx4TXRDR3g0QmhtQjRjRmd3K3NKcThOMU1ISk5QUjE3MTdhUWRrMVliS2I0?=
- =?utf-8?B?TEQvTFhUWHJnNDgvVXdZRHJISStEcGgxMVE4TlZNaFI4UmYyNUpyUzl6eFBp?=
- =?utf-8?B?M3VyckpzN0xNTlVscHhtZ3hhNDFOR2p3SlJDMmNwVEw2SFVHS0xCcUovc1la?=
- =?utf-8?B?R3lBWmtrTUxvY1JGN2xJWEJnUGhZQzlBN0hzNkZRclo4MG14UStoNk9EUzc3?=
- =?utf-8?B?MlBQclJUeWpxeEJadXNyNHZzcGIrUElNNmNiWjBLcjFzcXZ0QjRKK2dKV29z?=
- =?utf-8?B?NW5uNWt4dW45Q05Yc3l4V1BiWThGNjNFOFNvV1ZEQXNvaDh5ZjV2Z0JMR01X?=
- =?utf-8?B?TVc0M3V6VUF5OEVMOHdSRkt0a1ZjZTd6aS92TFRDMW9tRXlDV3ZjSGt4cndJ?=
- =?utf-8?B?a2M5K1Q1MUJJelc1dy82STlRckxIQVJBaVZHMFRNd0tCYXlhc2YyQ1Zmcmhr?=
- =?utf-8?B?MnhkYk1zTU1jUW1id0d1WjA5NnZhZkJORFNlRFZPeUlyNlp5aWh6S204emVT?=
- =?utf-8?B?N1lmeDllSnNOU2RmWGJmTCtJSUZoUjBjczIzSG9wNlpibEZmK2ZwT1EyT3VW?=
- =?utf-8?B?bVRsRUw3L3hxQlFFVC96aExkV0V4eUpjVTJoRkJSY29CTEpJTk16WEJDV3NV?=
- =?utf-8?B?OUNqQTlKOUE0OXBkcmdZbmNTblZpZjdSeW9QcWNxNVJudHVpQVVBVjJUR3Vx?=
- =?utf-8?B?RXBUVmtYT1hxYnpHcWg0MkZRVTVya1VXQjM4UkN5UHVjL2MwOGgvZjluRk1k?=
- =?utf-8?B?ZE16alNBdjF3MXl5aDNtZUZITjFVRW5ia010ZGlBa0FzN1ZVM0NPUy9Mc3dZ?=
- =?utf-8?B?VGNRcDU0eDlZcjV5ZUUwOVhGZXdrTkRHbFM3cWVJL0lUSlpLQitnOWVrSDJv?=
- =?utf-8?B?WXR1cG5YRmIxdXdGcFRPSnJQRWIvQ0V1TmlsWmU4WFNoS0pSZjBXNDYvaVQ0?=
- =?utf-8?B?WkJLanZZZk81TXdOd3pPVWY2ajVnSVkvRENCMDYxbHA2Q3M2ak1wUW9IdC9O?=
- =?utf-8?B?c25Xdlgyb2R4aDVyTm5sUVVraEJvQUpxZFplVzNCSzU5a25Ydk5BMUV5T0RQ?=
- =?utf-8?Q?5SBiYLIW4ylJSVEXl811FP2SMsSiCNJGuu6QNWDVBfZ+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fe13a089-8b58-4336-a89d-08de3e269abf
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 11:14:26.1568
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GNMyAb0kFSHooirYEP0YeMKdMPOb7ulGeJgwVCY90f7vMKSOHHoNyfFRhSVgnZS//EhTrQRc/1/07XDBkV+4zQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8874
+References: <20251218-task-group-leader-v1-1-4fb7ecd4c830@google.com> <aUPYIm6jhceRC4J7@redhat.com>
+In-Reply-To: <aUPYIm6jhceRC4J7@redhat.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 18 Dec 2025 12:16:24 +0100
+X-Gm-Features: AQt7F2rMx8pc5mdf6C10I1W6Z_S5-bI58P6NNbu4f_kBP2JBUttYy3TkZlHcKzA
+Message-ID: <CAH5fLgjhBZRn_gPcFK41RTRgQzqOscD+tKms0QrXdYrSZ-g+Vw@mail.gmail.com>
+Subject: Re: [PATCH] rust: task: restrict Task::group_leader() to current
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu Dec 18, 2025 at 10:39 AM JST, Timur Tabi wrote:
-> From: Alexandre Courbot <acourbot@nvidia.com>
+On Thu, Dec 18, 2025 at 11:32=E2=80=AFAM Oleg Nesterov <oleg@redhat.com> wr=
+ote:
 >
-> `LogBuffer` is the entity we ultimately want to dump through debugfs.
-> Provide a simple implementation of `BinaryWriter` for it, albeit it
-> might not cut the safety requirements.
+> On 12/18, Alice Ryhl wrote:
+> >
+> > The Task::group_leader() method currently allows you to access the
+> > group_leader() of any task, for example one you hold a refcount to. But
+> > this is not safe in general since the group leader could change when a
+> > task exits. See for example commit a15f37a40145c ("kernel/sys.c: fix th=
+e
+> > racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths").
+> >
+> > All existing users of Task::group_leader() call this method on current,
+> > which is guaranteed running, so there's not an actual issue in Rust cod=
+e
+> > today. But to prevent code in the future from making this mistake,
+> > restrict Task::group_leader() so that it can only be called on current.
+> >
+> > There are some other cases where accessing task->group_leader is okay.
+> > For example it can be safe if you hold tasklist_lock or rcu_read_lock()=
+.
+> > However, only supporting current->group_leader is sufficient for all
+> > in-tree Rust users of group_leader right now. Safe Rust functionality
+> > for accessing it under rcu or while holding tasklist_lock may be added
+> > in the future if required by any future Rust module.
 >
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> ---
->  drivers/gpu/nova-core/gsp.rs | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
+> I obviously can't ACK this patch ;) but just in case, it looks good to me=
+.
 >
-> diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-> index fb6f74797178..860674dac31e 100644
-> --- a/drivers/gpu/nova-core/gsp.rs
-> +++ b/drivers/gpu/nova-core/gsp.rs
-> @@ -3,6 +3,7 @@
->  mod boot;
-> =20
->  use kernel::{
-> +    debugfs,
->      device,
->      dma::{
->          CoherentAllocation,
-> @@ -117,6 +118,29 @@ pub(crate) struct Gsp {
->      rmargs: CoherentAllocation<GspArgumentsCached>,
->  }
-> =20
-> +impl debugfs::BinaryWriter for LogBuffer {
-> +    fn write_to_slice(
-> +        &self,
-> +        writer: &mut kernel::uaccess::UserSliceWriter,
-> +        offset: &mut kernel::fs::file::Offset,
-> +    ) -> Result<usize> {
-> +        // SAFETY: This is a debug log buffer. GSP may write concurrentl=
-y, so the
-> +        // snapshot may contain partially-written entries. This is accep=
-table for
-> +        // debugging purposes - users should be aware logs may be slight=
-ly garbled
-> +        // if read while GSP is actively logging.
-> +        let slice =3D unsafe { self.0.as_slice(0, self.0.count()) }?;
-> +
-> +        writer.write_slice_file(slice, offset)
-> +    }
-> +}
-> +
-> +// SAFETY: `LogBuffer` only provides shared access to the underlying `Co=
-herentAllocation`.
-> +// GSP may write to the buffer concurrently regardless of CPU access, so=
- concurrent reads
-> +// from multiple CPU threads do not introduce any additional races beyon=
-d what already
-> +// exists with the device. Reads may observe partially-written log entri=
-es, which is
-> +// acceptable for debug logging purposes.
-> +unsafe impl Sync for LogBuffer {}
-> +
+> Although I am not sure this is a stable material... Exactly because,
+> as you mentioned, all existing users call this method on current.
 
-Did I actually write all this? I don't have any recollection of
-submitting such a patch (and the safety comments don't look like my
-style).
+Well, I suppose you are right that it isn't. I would like it to land
+on Android's fork of 6.18 somehow so that nobody makes this mistake in
+future Android drivers using 6.18, but I can always do that separately
+of upstream Linux.
+
+> > I don't think there's a clear owner for this file, so to break ambiguit=
+y
+> > I'm doing to declare that this patch is intended for Andrew Morton's
+> > tree. Please let me know if you think a different tree is appropriate.
+>
+> If Andrew agrees and nobody objects this would be nice. I am going to
+> send some tree-wide changes related to task_struct.group_leader usage,
+> it would be simpler to route them all via -mm tree.
+>
+> So far I sent the trivial preparations
+>
+>         [PATCH 0/7] don't abuse task_struct.group_leader
+>         https://lore.kernel.org/all/aTV1pbftBkH8n4kh@redhat.com/
+>
+> and I am still waiting for more reviews. Alice, perhaps you can review
+> the (hopefully trivial) 1-2 which touch android/binder?
+
+Done.
+
+Alice
