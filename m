@@ -1,127 +1,278 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012051.outbound.protection.outlook.com [40.107.209.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B89B22A4E1
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 03:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766028441; cv=none; b=Eeg9xjIz4gzYYz4BVRh3/6Jnm9YYjZMhBItkHYvKCUB3e2rSlsFWkS2umdyT4RDC6K2kepR6Sp0ew2hgOadB0BqSfL5iVMjy7kUkFG/KfxGOnxCzUte4DaDK2FlMPK1QT4dsqPr0+ROjNlgk3m+XZ1cTcJygETXam8LE8irhBo4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766028441; c=relaxed/simple;
-	bh=s1Igz2HWhLX0HzksA5HhUjzhBjNL0VJmxvPxlhBHNGU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oHi/asn3E6ZMUy+Z7JRvdmDBDFaPyGun3JSHcNLJM9LXYAs/H9A6THaAVqqoV0nvFbevyGl35oG2e9Q5EQSjWN7D8l3smAbig+oQK+eoYijvx3ZhApEUQiQZSNdSPuN3KC9lG836bGUwI0ihoXrEFbO4QUN+XlJ6xgznjkwys2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a0d6f647e2so2943495ad.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Dec 2025 19:27:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766028440; x=1766633240;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qN4Qhd+BtZVyX/azUXh6nWsHf7iGIIf/Y55LWrTs3kE=;
-        b=Ts7CobbogBkYg6UuBLGXsXvv4eMOxeFWee9iLWyf/v7we0YyrMlGU9DFQzxriBcDeR
-         dHQIi2xJWfyd+Ne5DXqOwkjP0fo7FRDGy/YwmVfC6vuqQLg2GhbViDIJffWgUPfTO4VD
-         EF+lGFDiaF5GnY17BPWPurQhZbiJFgF6PBGbdQ4LW4pvxKNZArpZ4CtEubu7dfYEMI7N
-         KDoPgZFZ9Kj1w4Knf6PNAvBH1ABW5JCPhsfRnZ40++JwkUDekPbv52MBAFrqKKwR3HMH
-         wyfOvlile3Lr7z5zJA6aHkkD3frfs+3m5SOJkKUxHQcXX9QtcsqGda+AqLW75e8UosQp
-         +7ew==
-X-Forwarded-Encrypted: i=1; AJvYcCXLs5roIeEvFtpwCLZ0GW1pGkOrVo9TMPONvkBBxokEzx44YtNXq6Suf6m//J7WB6ZGK757BjT6l7vkH4AKKg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzO0TEgbJQp/tWYSl5M/WvEV2d9sHerSJnIr252XcskPvwEBbtS
-	v7Y7VGvBuPYi16tCjNzBjvzivih3FRcDJfl03t5QLvJ7Ozw7cbmPkZ6F
-X-Gm-Gg: AY/fxX6TcMkyV7gaCe/4w+y+CnhzkvNr1LpvA+EdEWere0d+KfdgUjTsScN+pCvnOAc
-	AhmFp80ezYLn21X1AnYkgoMi1ZHIPO5lZ2QnjbJvg1SZ1TOII0u0s/T1sJQKFOKnV36CRLv0sEa
-	+N1+MjY/SbsGFi96BUh/RGh0CLaK/hFr+G42tEE5rtWmH9FOVBwv0DfaxKaWMiT1rnwe4/jVGi2
-	MHnMHYAuN1HpcU0iaAgnaU9Nl112IMh3K0163a5IA/rspcZgMSTABcWEBB8o58s26HY9sTOiu1k
-	CPY/LJZrYQrP2BUsNAdaf318tOMuKTBYb3dF1KPJQSamqa1rGL5RQ5xegO9yCUhyNBCozK/nMDe
-	y1DQZg03E6z9mHmNO/+h+0MUIx7vYXUuc45vDWG3tXXg1QSBDHSo0uk+D7y8Xgp/kDI/egy3nio
-	Xd3Y0vEJkIgh2StlF57tB9Tw==
-X-Google-Smtp-Source: AGHT+IGw+ikvvveltoHhdNQjDwVPKSrO+Gvb8vPFoPoVgn8vdj3ssoqZFTRV8EsRST5p8a6hUlyWYQ==
-X-Received: by 2002:a17:902:c40f:b0:298:6a9b:238b with SMTP id d9443c01a7336-29f23d12fd6mr185190235ad.51.1766028439551;
-        Wed, 17 Dec 2025 19:27:19 -0800 (PST)
-Received: from localhost.localdomain ([116.128.244.169])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2d0888f8csm8067115ad.33.2025.12.17.19.27.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Dec 2025 19:27:19 -0800 (PST)
-From: Ke Sun <sunke@kylinos.cn>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH] rust: fmt: fix {:p} formatting for raw pointers
-Date: Thu, 18 Dec 2025 11:27:09 +0800
-Message-ID: <20251218032709.2184890-1-sunke@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388111C5486
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Dec 2025 03:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766028623; cv=fail; b=ZR09uyIR3EfdcdO5WgpRJpeMWhHpOagNy0E/U25zVGhNT9dQk+CW92nTuUu69IT7ddUWI2XnSWcx0VM7pin+3pk3/IrYhCKFz6PFC7ZYx2b9UU31U79Y0TwA9aMM+hNS/S12asPQznPsCbwSkfKGBavMtVNrSYX+8ZQunGjW6AE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766028623; c=relaxed/simple;
+	bh=OhmndOM5zWPt9C3ALM/YzicfSe9ThL8aUiuY441ODWk=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AEHrPqrX9uaoLZzctsvZiOuer34iurJcsLz+oyUJr34yxMEvQBZu6413SxWpwM/VOoGfBOEI4SKoenWqKsiXRQYitv1AaDyNR2ynSjdRjo86jx63XtDWyeVFu4/ftBSTdNvZrmn+L6I6O/qeGPSfGqkbkhtlAG3aWam8oDqWD2E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=j6M8HIkH; arc=fail smtp.client-ip=40.107.209.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="j6M8HIkH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wKgiko/IlRJfSIXWptFqLInoy7xhDJo9iDul4iAbFdiRyUIsY1Yawtfwgz9d3O+Csok3gH2xN97XTBgBb+E8pDktpbBgfM3FuFiF1pwvuTlKhFQNnD4AJ++SI/zo6Rh06bA1tehBbJe4zZNO4tTZ5i42gWu4eZz/dgVxIncoGAGwwf99YjzafiNmAvnFktD/7haBAYoF37GoDdC0EwOyrj/IXgCaFpx8wyHsJUlxVDnoZvDAgPwn0xbUuAllwn8xg6BvUd95qswNrjK6xiBaa0J4ycsnva+mSh6+LhpvNxCLYe+sMRnhOaicVC/wwdrs5y5IVsNnygmzBYVO7Re+gw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m9L1hC1L8/WnA58TJjcevxe6EOrA7+1t6oC6gyq5eoY=;
+ b=vlPKEWAAjjP0HTOHztEpt+6suFVVLl4XL9XSoxDkp5Vs2LMSLrQU9JDfWLnIYAQvxcrQjkj07XDogUaqF9JZj22OBJkN1ZhFrsqS4USackNrejuItcrpHpjP3xzDd7S7Ci1T/sqKSGifPvHdyT036l3BYAVmCpCIRbcKhdbkoJET78W5E8MuMBPqKeYxF1ifxr3QRVFqBT/M6XpiFKG3MMTGJ+d5ni29jSSxieCXia2iIqRzAxIUijc+1T2zAgfdCwWBXA1TR9syNMLMhf7A5FFuy/lqO4VC18KNXTacvNAMe0sUqfrD54MuvDzPZT3MrneFwEl7J0uFjjB5jBPuGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m9L1hC1L8/WnA58TJjcevxe6EOrA7+1t6oC6gyq5eoY=;
+ b=j6M8HIkHi20fDTRzRYo3J0wWnzG5TyZi4tvgWwu7V+TI42dNwk/BXlPBrvbaJI2p+bBTo4GDld/ZLY1F4L5SiWyNpzCIF/o6N2h5190M+1/2c5eEYs9fHmYIgwTPQg2LuFoKwgfL1jR+hIo5AanekyUQyTdiQwe8k00+JGBof5YfPkvzFSgclswpotxY7+dZV1Y1JkPEH+kHBHgpc1OjDOSljASHYjwbd92x6TaQ+DWB6TH7gIGx+rt7lHf+2au9Euex9Ftohitn5mrhRkao+WavG+4sj3nRWb+gYtNgyuAghMGf70auVgVxtWL4wreHsz6BFjhpLemnSR5w4agYVw==
+Received: from SJ0PR05CA0026.namprd05.prod.outlook.com (2603:10b6:a03:33b::31)
+ by SA1PR12MB8886.namprd12.prod.outlook.com (2603:10b6:806:375::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Thu, 18 Dec
+ 2025 03:30:18 +0000
+Received: from SJ5PEPF000001EE.namprd05.prod.outlook.com
+ (2603:10b6:a03:33b:cafe::16) by SJ0PR05CA0026.outlook.office365.com
+ (2603:10b6:a03:33b::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9456.4 via Frontend Transport; Thu,
+ 18 Dec 2025 03:30:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ5PEPF000001EE.mail.protection.outlook.com (10.167.242.202) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9434.6 via Frontend Transport; Thu, 18 Dec 2025 03:30:18 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Dec
+ 2025 19:30:06 -0800
+Received: from ttabi.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 17 Dec
+ 2025 19:30:04 -0800
+From: Timur Tabi <ttabi@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot
+	<acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard
+	<jhubbard@nvidia.com>, <nouveau@lists.freedesktop.org>,
+	<rust-for-linux@vger.kernel.org>
+Subject: [PATCH v4 01/11] gpu: nova-core: rename Imem to ImemSecure
+Date: Wed, 17 Dec 2025 21:29:45 -0600
+Message-ID: <20251218032955.979623-2-ttabi@nvidia.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20251218032955.979623-1-ttabi@nvidia.com>
+References: <20251218032955.979623-1-ttabi@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EE:EE_|SA1PR12MB8886:EE_
+X-MS-Office365-Filtering-Correlation-Id: abc3cf7f-4b5b-4ef3-c839-08de3de5c42c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?4CLlO1z1f2RW6cJVZgWOBdudjMSK8cd0N0pgbHhOJrvZ6GJtIYzPe+mx7ZxM?=
+ =?us-ascii?Q?DKuNHiauzmZlM/baBSK5O7k56gBO44UK1qtUfjOU8p8GTiVI8GWgOiwup1oK?=
+ =?us-ascii?Q?/6fWxYHJpczQh5l0v10VZuVcrHHW6bO6joXjHZiPuUbzIYAqEcDA1cFlRvpH?=
+ =?us-ascii?Q?ppp6pLEzK0x0XWBIiCVqX/I0IZdOQ1UPs4f9zngSi7ZfcJ7CbwroyQ6aNRMF?=
+ =?us-ascii?Q?TbNqHvaARVir5Zy91TbZy60S3+wJM77XvCcqdaK7FqCeA47ZJaAYwIZXFs/b?=
+ =?us-ascii?Q?g/FTRyPKA4Ajsn5kMOCGm3KoVQrcDqaeQVb+8hpm48LCelRnrJ5krBjo2BvF?=
+ =?us-ascii?Q?c9vwIRmDwQjP7evDXglhbKjoqqRdK3TCzpcPb7wNgvhPRxmGOkdevRnbpraA?=
+ =?us-ascii?Q?Wwus6m8cxOw/FFBfZmYVVSNiOQa2HlR4Z5WvrYeZevCXtydhCpSYKkC5EZxX?=
+ =?us-ascii?Q?6OLv6RGe9dDWedT99zHGDLb25ZgVsO6QiGqz8RQNRQ/OEbgGOummRCB5hR8D?=
+ =?us-ascii?Q?n325dAg/18zDV6WCgfFnCjeDBWcAN9bg2HDVBeRHeQEI5tgEz1tht9F1hpaX?=
+ =?us-ascii?Q?FCnUfdMeWh013Nr/HKB608qsGgMSkAtnjZx3MteJ/JabS7cdjjozIyoxBmYt?=
+ =?us-ascii?Q?tZT5FijM4jWjp+wiSElNQVhkZiiXfG+jStUzQg4pujhUHOjYoquda54Fonzo?=
+ =?us-ascii?Q?X7Mb2tLhTfbQF1dkMjBlpKhBHdhpp4oZctBTdjVmJwo7KmvpmQhlLnGbicsx?=
+ =?us-ascii?Q?++2a0PyKnd3hM4BpJ2WJ9gugEMRVZ86yR1mQ+wk/npky//8tMnVSj2y9XzdB?=
+ =?us-ascii?Q?eCwcVPTwfwusmFpdjVwiSzz/UVPPlBVv22NgbRJ09qU5WpXHGlYqBfpXzQcW?=
+ =?us-ascii?Q?gkVqB0ZITjwug5IgrieXLS4XDlmjGEiFYppAmiKVc8gtXctNaBinFdBJed5M?=
+ =?us-ascii?Q?3RgPhyWDzp1PgZQ7ygbS2j9hLIsd0tnhmhs8/LtWNAPB58WCGmYKUt9pYmwz?=
+ =?us-ascii?Q?VFKAMVgifxn8qxyE9dytzqGVwZDLdwjIbnfg+4Ks7Xkvne1XCj+whdbI9cKx?=
+ =?us-ascii?Q?YsgkZvkSvoRcam0uH7wT92cjiZYCtDKVZkyWDz9iE8LdmvwWk7IOm1do3+BN?=
+ =?us-ascii?Q?m9qUznnqcWTfkNTAIg3MISTwdDbdm+Ytb4pZ0MpskVXjuQkX8A5ESVuhtyYx?=
+ =?us-ascii?Q?Fopbx1CVflUgw0dSYYMzoMhegQQjUnbWIjwh4OPSbWVCRfCiuXDh77tSP3jL?=
+ =?us-ascii?Q?zT1K8YKJH+Yh+k+a1eP5Uv+XoAZmZ9Nv7W+Fqbdlh9QyeB92ybzAUbt0GUgd?=
+ =?us-ascii?Q?Z4A5QKWNriU8+Peh9JlgZOO0huncBdbmJETCZlBGZec4XODj6uxBKfqhnW0H?=
+ =?us-ascii?Q?Cg1EDLUEB7whmuuRLPcSzKSBcU868LSQjyhlqcFcSehnY8k5iNi2XLB54Cuj?=
+ =?us-ascii?Q?hHXTPcLrjylfggNTXC6KacQV4W/PLaOqwfXAOb3cs+prs1E0uCBD7phWMTbF?=
+ =?us-ascii?Q?fS79dc0ldyyryg40yEa3WlhCT2R/ZwuOp3dEdp0CTcfAX5z0SYRXwm3a5tpX?=
+ =?us-ascii?Q?y1EN3OzO2fhjAhTYVoE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Dec 2025 03:30:18.0906
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: abc3cf7f-4b5b-4ef3-c839-08de3de5c42c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001EE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8886
 
-The fmt! macro wraps arguments as Adapter(&arg), causing raw pointers
-to be wrapped as Adapter(&*mut T). The generic Pointer implementation
-then formats the reference address (stack address of the variable)
-instead of the pointer value.
+Rename FalconMem::Imem to ImemSecure to indicate that it references
+Secure Instruction Memory.  This change has no functional impact.
 
-Add specialized Pointer implementations for Adapter<&*mut T> and
-Adapter<&*const T> that dereference before formatting.
+On Falcon cores, pages in instruction memory can be tagged as Secure
+or Non-Secure.  For GA102 and later, only Secure is used, which is why
+FalconMem::Imem seems appropriate.  However, Turing firmware images
+can also contain non-secure sections, and so FalconMem needs to support
+that.  By renaming Imem to ImemSec now, future patches for Turing support
+will be simpler.
 
-Example:
-    let ptr: *mut SomeStruct = 0x12345678 as *mut _;
-    dev_info!(dev, "ptr: {:p}", ptr);
+Nouveau uses the term "IMEM" to refer both to the Instruction Memory
+block on Falcon cores as well as to the images of secure firmware
+uploaded to part of IMEM.  OpenRM uses the terms "ImemSec" and "ImemNs"
+instead, and uses "IMEM" just to refer to the physical memory device.
 
-Before (wrong): prints stack address of `ptr` variable, e.g. 0xffffc90001234560
-After (correct): prints pointer value, e.g. 0x12345678
+Renaming these terms allows us to align with OpenRM, avoid confusion
+between IMEM and ImemSec, and makes future patches simpler.
 
-Signed-off-by: Ke Sun <sunke@kylinos.cn>
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
 ---
- rust/kernel/fmt.rs | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ drivers/gpu/nova-core/falcon.rs          | 20 +++++++++++++-------
+ drivers/gpu/nova-core/firmware/booter.rs | 12 ++++++------
+ drivers/gpu/nova-core/firmware/fwsec.rs  |  2 +-
+ 3 files changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
-index 84d634201d90a..2aebc782fedf9 100644
---- a/rust/kernel/fmt.rs
-+++ b/rust/kernel/fmt.rs
-@@ -28,7 +28,27 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
+index 82c661aef594..0965cb50568b 100644
+--- a/drivers/gpu/nova-core/falcon.rs
++++ b/drivers/gpu/nova-core/falcon.rs
+@@ -237,8 +237,8 @@ fn from(value: PeregrineCoreSelect) -> Self {
+ /// Different types of memory present in a falcon core.
+ #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub(crate) enum FalconMem {
+-    /// Instruction Memory.
+-    Imem,
++    /// Secure Instruction Memory.
++    ImemSecure,
+     /// Data Memory.
+     Dmem,
+ }
+@@ -345,8 +345,8 @@ pub(crate) struct FalconBromParams {
+ 
+ /// Trait for providing load parameters of falcon firmwares.
+ pub(crate) trait FalconLoadParams {
+-    /// Returns the load parameters for `IMEM`.
+-    fn imem_load_params(&self) -> FalconLoadTarget;
++    /// Returns the load parameters for Secure `IMEM`.
++    fn imem_sec_load_params(&self) -> FalconLoadTarget;
+ 
+     /// Returns the load parameters for `DMEM`.
+     fn dmem_load_params(&self) -> FalconLoadTarget;
+@@ -457,7 +457,7 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
+         //
+         // For DMEM we can fold the start offset into the DMA handle.
+         let (src_start, dma_start) = match target_mem {
+-            FalconMem::Imem => (load_offsets.src_start, fw.dma_handle()),
++            FalconMem::ImemSecure => (load_offsets.src_start, fw.dma_handle()),
+             FalconMem::Dmem => (
+                 0,
+                 fw.dma_handle_with_offset(load_offsets.src_start.into_safe_cast())?,
+@@ -508,7 +508,7 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
+ 
+         let cmd = regs::NV_PFALCON_FALCON_DMATRFCMD::default()
+             .set_size(DmaTrfCmdSize::Size256B)
+-            .set_imem(target_mem == FalconMem::Imem)
++            .set_imem(target_mem == FalconMem::ImemSecure)
+             .set_sec(if sec { 1 } else { 0 });
+ 
+         for pos in (0..num_transfers).map(|i| i * DMA_LEN) {
+@@ -543,7 +543,13 @@ pub(crate) fn dma_load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F)
+                 .set_mem_type(FalconFbifMemType::Physical)
+         });
+ 
+-        self.dma_wr(bar, fw, FalconMem::Imem, fw.imem_load_params(), true)?;
++        self.dma_wr(
++            bar,
++            fw,
++            FalconMem::ImemSecure,
++            fw.imem_sec_load_params(),
++            true,
++        )?;
+         self.dma_wr(bar, fw, FalconMem::Dmem, fw.dmem_load_params(), true)?;
+ 
+         self.hal.program_brom(self, bar, &fw.brom_params())?;
+diff --git a/drivers/gpu/nova-core/firmware/booter.rs b/drivers/gpu/nova-core/firmware/booter.rs
+index f107f753214a..096cd01dbc9d 100644
+--- a/drivers/gpu/nova-core/firmware/booter.rs
++++ b/drivers/gpu/nova-core/firmware/booter.rs
+@@ -251,8 +251,8 @@ impl<'a> FirmwareSignature<BooterFirmware> for BooterSignature<'a> {}
+ 
+ /// The `Booter` loader firmware, responsible for loading the GSP.
+ pub(crate) struct BooterFirmware {
+-    // Load parameters for `IMEM` falcon memory.
+-    imem_load_target: FalconLoadTarget,
++    // Load parameters for Secure `IMEM` falcon memory.
++    imem_sec_load_target: FalconLoadTarget,
+     // Load parameters for `DMEM` falcon memory.
+     dmem_load_target: FalconLoadTarget,
+     // BROM falcon parameters.
+@@ -354,7 +354,7 @@ pub(crate) fn new(
+         };
+ 
+         Ok(Self {
+-            imem_load_target: FalconLoadTarget {
++            imem_sec_load_target: FalconLoadTarget {
+                 src_start: app0.offset,
+                 dst_start: 0,
+                 len: app0.len,
+@@ -371,8 +371,8 @@ pub(crate) fn new(
  }
  
- use core::fmt::{Binary, LowerExp, LowerHex, Octal, Pointer, UpperExp, UpperHex};
--impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, Pointer, LowerExp, UpperExp);
-+impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, LowerExp, UpperExp);
-+
-+// Special handling for raw pointers: when Adapter wraps a reference to a raw pointer,
-+// we want to print the pointer value itself, not the reference's address.
-+// This fixes the issue where {:p} prints the stack address of the pointer variable
-+// instead of the address the pointer points to.
-+impl<T> Pointer for Adapter<&*mut T> {
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        let Self(t) = self;
-+        // Dereference the reference to get the raw pointer, then format it
-+        Pointer::fmt(*t, f)
-+    }
-+}
-+
-+impl<T> Pointer for Adapter<&*const T> {
-+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-+        let Self(t) = self;
-+        // Dereference the reference to get the raw pointer, then format it
-+        Pointer::fmt(*t, f)
-+    }
-+}
+ impl FalconLoadParams for BooterFirmware {
+-    fn imem_load_params(&self) -> FalconLoadTarget {
+-        self.imem_load_target.clone()
++    fn imem_sec_load_params(&self) -> FalconLoadTarget {
++        self.imem_sec_load_target.clone()
+     }
  
- /// A copy of [`core::fmt::Display`] that allows us to implement it for foreign types.
- ///
+     fn dmem_load_params(&self) -> FalconLoadTarget {
+@@ -384,7 +384,7 @@ fn brom_params(&self) -> FalconBromParams {
+     }
+ 
+     fn boot_addr(&self) -> u32 {
+-        self.imem_load_target.src_start
++        self.imem_sec_load_target.src_start
+     }
+ }
+ 
+diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
+index b28e34d279f4..6a2f5a0d4b15 100644
+--- a/drivers/gpu/nova-core/firmware/fwsec.rs
++++ b/drivers/gpu/nova-core/firmware/fwsec.rs
+@@ -224,7 +224,7 @@ pub(crate) struct FwsecFirmware {
+ }
+ 
+ impl FalconLoadParams for FwsecFirmware {
+-    fn imem_load_params(&self) -> FalconLoadTarget {
++    fn imem_sec_load_params(&self) -> FalconLoadTarget {
+         FalconLoadTarget {
+             src_start: 0,
+             dst_start: self.desc.imem_phys_base,
 -- 
-2.43.0
+2.52.0
 
