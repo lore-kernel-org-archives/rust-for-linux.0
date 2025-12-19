@@ -1,93 +1,42 @@
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9722D1914
-	for <rust-for-linux@vger.kernel.org>; Fri, 19 Dec 2025 17:32:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2325834AAE2;
+	Fri, 19 Dec 2025 19:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766165551; cv=none; b=fIBtZpHiAT20jQC1BJCScx+q8Wgbt0C5XeEiWys8u3s3ZL+JK/ADPIo5tCBb2p4GflZ8T1A3GD+CXhba93Gru01Hl7+T5++6bj7h87gLlGVbekG1b6bhT74+/CMBuF6ZvRtnZ1Jm/DHkzSsMjDu2vmKKIUixCXJ6PFWi9ov+yX8=
+	t=1766173673; cv=none; b=CGwIZMZvSWRtVuaeggpCUmMFnU6rAxeub72bOls/S95F1/jAySzd0OMMT7fxVOnTnMHHkBWrOwHojwu7GY0HvJK1u20fTvCBIMnvHWipbnhnLbCCKmlHeD128aq27KCqUzqLtT8GvN9mYi9IZaWd26mGKS495KUdsVfFxWQZnKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766165551; c=relaxed/simple;
-	bh=SKR0y4ke7g6uJ3VfaXAV4HNn1trVq7fWIQgt9S4Hft8=;
+	s=arc-20240116; t=1766173673; c=relaxed/simple;
+	bh=ahnklD8wORDhqxGMbS9i1+02tEsICBFL946J+GACCa4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gcdvutw0Ot8O9uXbofYdUMpA2y2ZUQ4ClEjYp1nJYsJNhrYOuI+1P8ObvZWarDNZzC08z9HoTUc6Jw5wHKpQvj+xLi/fuTV4YW1s4Lgfr7rAWpriKBoZVLY5XKbeU+6PSSgaccIDlBe+cZ462rygZIAnkMIIDM4OI8HgkIZGXXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=fgkX3VhT; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=jr7rXhz/Typv8cwD2J72/9YFXXUfMoigNLcuwiYtfWnxlfX76d675b+pMLU5we504RaAbpfWb4SDPl5cW1GKHfCCPYFWWYq1ZX48P03XhU6P2tV9kLG+U1wA+oUIsTBtia+uZhzTFLKQbqYAAH2/ITM4CZhdZhEDZCXeofBdcgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWX+j/ZN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="fgkX3VhT"
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-88a37cb5afdso36468966d6.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 19 Dec 2025 09:32:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1766165549; x=1766770349; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1hC/VXab9lpTCQATnomkfbW2pa0Vc9kadnS6vaPWuw8=;
-        b=fgkX3VhTZy/Ty7vqFvfFyl85WVAwVSAYyNQCGbKSBtkeEfi4/S9aUVGtpS2il/BvsX
-         9dginh/2SgSNuWp1q+mnK9Y2IWXedcYnW1WEKuAVLOeMUNpPHUByLufNnWFsvoQDRLOX
-         8/+Kwkruvr7QSkBbRxL2LzCzwP3UzeZxpDd8YmUsJSS9Adjnu7jQp9igPB1DwVPbKiBt
-         dEN3zIe5kLGnVj0VJJIAmWa9gMMDMuEY7zrAvJfBsxXidwHbbypUhXpSaUGHo6HSk+xr
-         FGB5zKTvWG71ZGTgEL6gUMtOr25bchQUtOHfH0lEapzM45aW7oTBaFrKvQbLA99/Qdi8
-         uwjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766165549; x=1766770349;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1hC/VXab9lpTCQATnomkfbW2pa0Vc9kadnS6vaPWuw8=;
-        b=RbFsaSNgR73zPFRgY6Db3Dp2zxylJpQ8Ms4rqnzyLBmJwPUx3QVAwS5HksCoEdhTr3
-         vKlF4tapzbOVd5bay2qMIgnztj1mO+WeT3eAzAe5Dv+ImoqqQ8D6UsKhbqnJsrOw4Tfw
-         gvMF1txmH+1CQbiu1btEl+M7+a+SZXQ+3XnOS5q0zKBf+hT8frZC3ji8DnUD37pLRIUt
-         adZUkQf0sy0+y5vRY+4580UTqL+pno6t3m0FIFFf3iXU+LMUgKidHxjnA7TgxP3bjpgk
-         qMfwSPAY/yaQb69UX7ja6V/CIz0FAswCZrCI64SgPWskcut4dHM0HaVWA0wr6lnxxe4Z
-         g1rg==
-X-Forwarded-Encrypted: i=1; AJvYcCXavbVmCgbbzLT6Uiq/jFoxwTRtzS4+Mxu8x+ucr6/pVN/kl1SHMlNDnfBPJtX98cTzB57mf823FYKlGWAW8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpDyt4L2qfa3Fd/MNFV5ClcqSCo6GKoGOUX6FyFB2GHJmLhqhP
-	wM0OlnOHii4iHc3FolBNqQUlMH+GR3OIy5czy7aj0AxSQEfveKLb0hqBxmjHxUNJXcA=
-X-Gm-Gg: AY/fxX59UI9enh0WAY91zcEHluDxIzSYJhmRJ1TJBdM0Q7OFAU8wUZfR9beLSI4aoxO
-	xFkMt/CmTFG8m/k+0tr+rTlzpPVfX+H/slAPzyh4FTZVv+m0AZkKOgyl1B574BE4GXbBotDpkFE
-	DNjph2ohq72sMRKAdgpX8vinelUlnNF1TaMybnkx45qfkM1iQxkWS20zNInJ30qBQlzr4ioIQC3
-	kxT/kaU+5yQ/TtyP9ud642eUqGKE6Bt8/U0jkAKvGNm0z4CS8fws8IKomVIE0xjrzqTnTpV72yy
-	cjqmFCxCpblafeR2GWOt8iwBwiSe4LS9qEbZ1pM/Sk1AOpeTx5qQ92i4TMxNEUYn0Q9NAG+ENCJ
-	1qvtm1ozKy8ol68FsqvwA3kG87YSQflFQApN1O8Jx5lzfUI3aYyp9sp6/OiR8mP2dxd3PKiuU5y
-	4SW8gpkFkSvZ8dXQzDbTxBq7b99pHZGY4D/m4m5yLyZ40/QP9ZgF0KC322Z6ESShJu6Gc=
-X-Google-Smtp-Source: AGHT+IGYAWh2sxLwizpTExt2w6pCX2ECxkldvqQUVe1MFbSK91RMxz7SwBO+heTsOJkJoalFRECn7g==
-X-Received: by 2002:a05:620a:c50:b0:8b2:3484:8e22 with SMTP id af79cd13be357-8bee5dcdd8cmr986687885a.0.1766165548739;
-        Fri, 19 Dec 2025 09:32:28 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d925f935asm23424216d6.0.2025.12.19.09.32.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Dec 2025 09:32:27 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vWeL5-00000001b6X-0xBQ;
-	Fri, 19 Dec 2025 13:32:27 -0400
-Date: Fri, 19 Dec 2025 13:32:27 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v4] io: add io_pgtable abstraction
-Message-ID: <20251219173227.GJ31492@ziepe.ca>
-References: <20251219-io-pgtable-v4-1-68aaa7a40380@google.com>
- <20251219140557.GH31492@ziepe.ca>
- <aUVje_QZvJ9rjedp@google.com>
- <20251219161153.420d1c46@fedora>
- <20251219151434.GI31492@ziepe.ca>
- <20251219162734.46f3aa9d@fedora>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWX+j/ZN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C8CC4CEF1;
+	Fri, 19 Dec 2025 19:47:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766173672;
+	bh=ahnklD8wORDhqxGMbS9i1+02tEsICBFL946J+GACCa4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZWX+j/ZNZypVxNfs89M4aNVcj7H6c+U3GCxKJgp02HOL1JTUm/nhqJmDG7UOU4ftY
+	 T+YrSsNPf2XyYqERI8R9TK3eQ76DDiUPwai43+STAvDD44+1Ljlc7LsaW3YIqnyFnM
+	 jY4et1nYbJp7ahWBZc9BYuHZBgo/GyMH27+LkErUGc3ovPRQ8MOs1V1HGFyDj7YSkp
+	 qIDP9/64nh/AT2bxk4lFXQQiXFg+l34hTsBsYakc2Z8VNcw7KS74GqIPyBJHf3aLu6
+	 EWCx/OXxhcUGqqX33STgDLOWnJY9uspAanoBtamTATAce9Nokn0a9J/7dn87EKKRhY
+	 ascYxZtOnhX8Q==
+Date: Fri, 19 Dec 2025 12:47:48 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Guillaume Tucker <gtucker@gtucker.io>
+Cc: Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
+	llvm@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v1 1/2] scripts: add tool to run containerized builds
+Message-ID: <20251219194748.GA1404325@ax162>
+References: <cover.1765374789.git.gtucker@gtucker.io>
+ <97dec58ebe4161027f13f2215ed9da4a43bc8c47.1765374789.git.gtucker@gtucker.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -96,35 +45,175 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251219162734.46f3aa9d@fedora>
+In-Reply-To: <97dec58ebe4161027f13f2215ed9da4a43bc8c47.1765374789.git.gtucker@gtucker.io>
 
-On Fri, Dec 19, 2025 at 04:27:34PM +0100, Boris Brezillon wrote:
-> On Fri, 19 Dec 2025 11:14:34 -0400
-> Jason Gunthorpe <jgg@ziepe.ca> wrote:
+Hi Guillaume,
+
+On Wed, Dec 10, 2025 at 02:58:28PM +0100, Guillaume Tucker wrote:
+> Add a 'scripts/container' tool written in Python to run any command in
+> the source tree from within a container.  This can typically be used
+> to call 'make' with a compiler toolchain image to run reproducible
+> builds but any arbitrary command can be run too.  Only Docker and
+> Podman are supported for this initial version.
 > 
-> > On Fri, Dec 19, 2025 at 04:11:53PM +0100, Boris Brezillon wrote:
-> > 
-> > > There's actually a confusion between TLB invalidation and L1/L2 cache
-> > > flush/invalidation. The things we can decide to flush/invalidate around
-> > > map/unmap ops are L1/L2 caches. The TLB invalidate, we don't have
-> > > direct control on: it happens as part of the LOCK+UNLOCK sequence, and
-> > > no matter what you execute (map or unmap), you have to surround it with
-> > > a LOCK/UNLOCK to provide support for atomic updates (GPU is blocked if
-> > > anything accesses the locked range while an update is on-going).  
-> > 
-> > That makes more sense, so these GPU drivers just flush the entire TLB
-> > every time they change it - built into the UNLOCK operation?
+> Cc: Nathan Chancellor <nathan@kernel.org>
+> Cc: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://lore.kernel.org/all/affb7aff-dc9b-4263-bbd4-a7965c19ac4e@gtucker.io/
+> Signed-off-by: Guillaume Tucker <gtucker@gtucker.io>
+
+Overall, I like the concept here. It is simple and should be relatively
+easy for people to drive. I think having some short quick examples (or a
+link to the Documentation file that inclues them) would be good in case
+people stumble across the script first.
+
+One initial comment (or perhaps feature request) would be handling O= /
+KBUILD_OUTPUT for building out of tree. It may be a little complicated
+for mounting the build directory into the container but it might make it
+easier for folks who build out of tree to use.
+
+> ---
+>  scripts/container | 112 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 112 insertions(+)
+>  create mode 100755 scripts/container
 > 
-> I don't have implementation details, so I can't really tell what
-> happens internally. What's sure is that LOCK takes a range, so they
-> might be optimizing the TLB flush to only evict entries covered by this
-> range, dunno.
+> diff --git a/scripts/container b/scripts/container
+> new file mode 100755
+> index 000000000000..74644ac33685
+> --- /dev/null
+> +++ b/scripts/container
+> @@ -0,0 +1,112 @@
+> +#!/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +# Copyright (C) 2025 Guillaume Tucker
+> +
+> +"""Containerized builds"""
+> +
+> +import argparse
+> +import logging
+> +import os
+> +import subprocess
+> +import sys
+> +
+> +
+> +def get_logger(verbose):
+> +    """Set up a logger with the appropriate level"""
+> +    logger = logging.getLogger('container')
+> +    handler = logging.StreamHandler()
+> +    handler.setFormatter(logging.Formatter(
+> +        fmt='[container {levelname}] {message}', style='{'
+> +    ))
+> +    logger.addHandler(handler)
+> +    logger.setLevel(logging.DEBUG if verbose is True else logging.INFO)
+> +    return logger
+> +
+> +
+> +def run_docker(args):
+> +    """Run a command in a Docker container"""
+> +    uid = args.uid or os.getuid()
+> +    gid = args.gid or args.uid or os.getgid()
+> +    cmd = [
+> +        'docker', 'run',
+> +        '--interactive',
+> +        '--volume', f'{os.getcwd()}:/src',
 
-So, I'd probably just simplify that comment:
+Is there a minimum python version required for this? If not, I would
+prefer using pathlib here:
 
- For the initial users of these rust bindings the GPU FW is managing the
- IOTLB and performs all required invalidations using a range. There is no
- need for it get ARM style invalidation instructions from the page
- table code.
+  from pathlib import Path
 
-Jason
+then
+
+  Path.cwd()
+
+> +        '--workdir', '/src',
+> +        '--user', f'{uid}:{gid}'
+> +    ]
+> +    if args.env_file:
+> +        cmd += ['--env-file', args.env_file]
+> +    cmd.append(args.image)
+> +    cmd += args.cmd
+> +    return subprocess.call(cmd)
+> +
+> +
+> +def run_podman(args):
+> +    """Run a command in a Podman container"""
+> +    uid = args.uid or 1000
+> +    gid = args.gid or args.uid or 1000
+
+Why 1000 instead of using getuid() and getgid() as above?
+
+> +    cmd = [
+> +        'podman', 'run',
+> +        '--interactive',
+> +        '--volume', f'{os.getcwd()}:/src',
+> +        '--workdir', '/src',
+> +        '--userns', f'keep-id:uid={uid},gid={gid}',
+> +    ]
+> +    if args.env_file:
+> +        cmd += ['--env-file', args.env_file]
+> +    cmd.append(args.image)
+> +    cmd += args.cmd
+> +    return subprocess.call(cmd)
+
+Most of these two functions are the same. Maybe they could be abstracted
+into a simple class so that most of the logic could be shared between
+the two implementations? That also might simplify main() a bit and make
+fulfilling David's request a little simpler as well.
+
+> +def main(args):
+> +    """Main entry point for the container tool"""
+> +    logger = get_logger(args.verbose)
+> +    logger.debug("runtime=%s, image=%s", args.runtime, args.image)
+> +    runtimes = {
+> +        'docker': run_docker,
+> +        'podman': run_podman,
+> +    }
+> +    handler = runtimes.get(args.runtime)
+> +    if not handler:
+> +        logger.error("Unknown container runtime: %s", args.runtime)
+> +        return 1
+> +    try:
+> +        return handler(args)
+> +    except KeyboardInterrupt:
+> +        logger.error("aborted")
+> +        return 1
+> +
+> +
+> +if __name__ == '__main__':
+> +    parser = argparse.ArgumentParser("Containerized builds")
+> +    parser.add_argument(
+> +        '-e', '--env-file',
+> +        help="Path to an environment file to load in the container."
+> +    )
+
+Is there documentation for how an environment file should be formatter?
+
+> +    parser.add_argument(
+> +        '-g', '--gid',
+> +        help="Group ID to use inside the container."
+> +    )
+> +    parser.add_argument(
+> +        '-i', '--image', default='gcc',
+> +        help="Container image, default is gcc."
+> +    )
+> +    parser.add_argument(
+> +        '-r', '--runtime', choices=['docker', 'podman'], default='docker',
+> +        help="Container runtime, default is docker."
+> +    )
+> +    parser.add_argument(
+> +        '-u', '--uid',
+> +        help="User ID to use inside the container.  If the -g option is not"
+> +        "specified, the user ID will also be used for the group ID."
+> +    )
+> +    parser.add_argument(
+> +        '-v', '--verbose', action='store_true',
+> +        help="Enable verbose output."
+> +    )
+> +    parser.add_argument(
+> +        'cmd', nargs='+',
+> +        help="Command to run in the container"
+> +    )
+> +    sys.exit(main(parser.parse_args(sys.argv[1:])))
+> -- 
+> 2.47.3
+> 
