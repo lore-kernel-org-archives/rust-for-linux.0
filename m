@@ -1,140 +1,132 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5355B2D837B
-	for <rust-for-linux@vger.kernel.org>; Fri, 19 Dec 2025 09:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BEE2E8DFD
+	for <rust-for-linux@vger.kernel.org>; Fri, 19 Dec 2025 10:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766136354; cv=none; b=cR3KK5GTk2kx7UCqmTJZDAazecJe2Rg16yQxAHrTUMhGtxB/++iqbYBJflfclPdqZTUi6FQPpID9n66j0a29Gq5Gn91nmEk8AnFFj5yv0qT/3iMgeHc5PTbH5lZwcNX7F4qxKWaT4th+tHVtfajvlAoUqwWJUKVLvekCmRcselA=
+	t=1766138681; cv=none; b=XDx4PJetVVCIuZ7qe1Fwct2V0FjDxLs/j9T/PxT519c0Zp1fKlYhlO1yjbDHjOhXsC2eTjSDztoxZHMMn8W7STfsqlBOXfsQrvzkvD6WO+ZS3gk02kz8fTw0VKIW78YtjH2Utlk4M3jA6YIaCED4S7iCGhuDMXHn+wng7JYMUHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766136354; c=relaxed/simple;
-	bh=eAL3LC+2dHh9zMBn+hXpoAz7Jvm8uTTfKLQguRTeU5c=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=o0BeTnorgcn1pe+ulv07e66KMJgOBZ+4AW2C4Wa1/cM/dOxHxicmjEuvDAp9ZLhjfbAgLXHU6yqxWOPsAmYmAPpWhZZVSWy2/wyInXI+Wx3Yxv9aq1+ZQv9uyTjGxqw7YrfLor1jeJ/7rIzXRXPgF998XZnlsae5JhhNI/su67U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PTbGSqIn; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
+	s=arc-20240116; t=1766138681; c=relaxed/simple;
+	bh=ihMVyDllurToHeLiN93dhlOh8p/bZUYBfmk1fHtLRA0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZUK95Y5vbj8E2ewRK1cNiv2kP8GxGf1JSyxFUumnDUA0ObOO3eqPwGMMkmK39qABqdmtpaE7ClClQ7Ha6FpRVKKFfa30svEVqpKv2jAeesDfcAJ+aSSnho/499ywlXCcQdb99SxgSeJvHDuIyDwCtRL8LgYRqn2FK+XUePlH16w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JK1vGGt6; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PTbGSqIn"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-29efd658fadso48348895ad.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 19 Dec 2025 01:25:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JK1vGGt6"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a07fb1527cso3369455ad.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 19 Dec 2025 02:04:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766136352; x=1766741152; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FDiA9++PSC1lAnu943IjFuSz/gL1rZEi0ur8htsl9Kk=;
-        b=PTbGSqInE0e+O9rKa6U8v1gh+FYYaKgeE1N8wmN77PpVzeqQ1NyVNLL4QnGRuOgoHq
-         cPy6HG/w63N69+VpkbhrfzpR+4o2w774obOJ6A/z/q+EGtij67+ocs6YI9VfJyFqC6Xy
-         QBkRLkQ6JVdgjQ2fjnKg+Inr8Kh1oWlHgPg2Fj4WHJrmKZMYariHHBBwsNCK1zzF4iLC
-         Xetunopi/P3F2KLisosEwlhN5L3cH1tmai4wWQQtItSsFBRx2/SqLIqSJVlD44/vkWEO
-         VzDkG9LRNvPJz+ISbOq7B2yxhg11HBJJaI5YQoDbLPBCwy85xk6bmy0CfCJbvBx5xHkJ
-         /Q2A==
+        d=gmail.com; s=20230601; t=1766138678; x=1766743478; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q1VrxEK+gDnV8ugE5t26U+jWY1Ysmnza3WwUpdmSU7o=;
+        b=JK1vGGt6H73ZX0imlh38isbvIAthLBakm1IXpjITZKLC4B8dNL8OlIg8ImxNH3lzO6
+         OC+1sGyiUKxWr+CIj2t8+oVaE2TUlpg9XyIPAt8mGlizqHUrobpl9IzHTzywb4qRwzo4
+         oD0AkWERaIHnduAXqYnrt5kGgzvGUfqTvnjTaeHl5aNw6sFCSCMsWU/6ixziOrFEBSov
+         tX+fKXljIVG3DX2Z+Mh8PVyFh0nJQqZyyVJuxnc1YAC5J9BL1fA1Od4BsDJHus2zXIfq
+         cJcwB3OMPR9n26YU1kx54gvEXAWm4TClRg+E1S0a6vUY9r8K++mf797qtNJnOgnW4f3S
+         ASNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766136352; x=1766741152;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FDiA9++PSC1lAnu943IjFuSz/gL1rZEi0ur8htsl9Kk=;
-        b=EV8+ZC61LVdnwI7vcQ0pVvKULgN/SvgcM6ZMEXEnvT2PVrLTKERBmnjnEnU8WAbQ0B
-         ZUM3Vo23v2h8ALpTF6t7Afn0QroEWKwST1sz/oRFMNQp8Su7aGgz4JUxM2i9/joqfIAv
-         nJSDgOqZBoGMXo0ChuzYu5Cbp8PLD71uKbnaXBKnfrGpOSPmXqkwa9M3M0xsp6bh6yOF
-         pc+5I7h2M09ilRy+YRtv3bo5Qlad0rx4y41F6jF3FiRGdpEO72OkJGs/CpLdJIKg0wIA
-         liVXAK69tuzasDULlR4khH7MqUxP0re/6LwYgqQrpCCKL0R0maJBRHxRNW1JkIY/WjOt
-         HK+A==
-X-Forwarded-Encrypted: i=1; AJvYcCU91+mxblAAdtm19vv3I8DhVrb64uJffP5GF0m6z97SYSRngLyVJ+Vszz8UBVdPJiBs01A6LCQl4zXqfjhilA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YypCfYXRu4/Ae3bnTVWEJ1o7YtJiDnMeE/R/ECFy53jy8tLJidk
-	+uA0687mfkAzmSv43b7EKa+gQ4hn3hTJzy4cjNuIrC0wNPrr23MZ8+NuTbAk7Kx8pucoSDdn3ut
-	4/YyWy5cEB/rUpg==
-X-Google-Smtp-Source: AGHT+IFESw50RYH9ypgSn2SiV5z0LY9j1QZK87YYocisEWy4PFUqcOeZorDnuMip9BneY5uX4han6LJmRN+G/A==
-X-Received: from pjboh15.prod.google.com ([2002:a17:90b:3a4f:b0:34c:d212:cb7f])
- (user=davidgow job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ce11:b0:2a0:c5b6:67de with SMTP id d9443c01a7336-2a2f2a3d5b0mr23777415ad.52.1766136351586;
- Fri, 19 Dec 2025 01:25:51 -0800 (PST)
-Date: Fri, 19 Dec 2025 17:25:36 +0800
+        d=1e100.net; s=20230601; t=1766138678; x=1766743478;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=q1VrxEK+gDnV8ugE5t26U+jWY1Ysmnza3WwUpdmSU7o=;
+        b=M6gAPVBSgCdQONH5nYBMK8bRpiqBgESNO8lcd3FaorMY13ByQjoIBAG9sHQnrndnC1
+         +IvxhUgZoUvDijqC8Fv9Bfs7ksFxzbHkfp/b5eRIjbtzdNJxXvjrsILtMRhoZiDkhx7Q
+         HY5u+7gJF+XnyAdCnYQ2Oepznofji36QoLRFwEr4p+uxfMxoRq/UCOdV5ueN5wHQL4sx
+         SfYj+V/VaJt2CgR3RW3W6qnrKsaeLoUsjdNJ6k/OKmerQYy3hCXKK+kB9Cle1AUXmIFE
+         tMPu5V0CdwGAzDrcfZ+dnYA0CbSglbeZqXneAA6HGa6M157aylzq0wICdq+36lmVSTon
+         F6sg==
+X-Forwarded-Encrypted: i=1; AJvYcCVwJVZLfBuIzNN4DkaNLCKw40LSIj1f37kOh1ViMC0cQzxH204B21UW0YMnqkEhrc5PSrz9XGCq7V6LlGu/fA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzToy50Avwyzs/Q89BCO76qoTU809+UtMOfGZGaRPX2XEul0MGI
+	eQ9jvAVTNkVEQLzXlQYVL3ExAyNsb3O0dX6UiX6ChXpMC/xnda79LxTtsgzYsXn4gvGcxCOFjtL
+	l6SiED+ZVpGXM0NXchEIw3cmUKfJhoPg=
+X-Gm-Gg: AY/fxX6o8XR90kej478pKmTaH8IgLiEBm+AvgWyd6pTUaA6tNi50nauNv1uVWgYfaZ2
+	IGpOSOyxU1LB8XfJYuZNmVy76+yurD5rpQWwmqkLWN4KAB7LWnnTpfHXm2n0GfzzyHy78zLbTAR
+	kHtHySfiL0lkgCpexoDDr3dB+OZE8tAX+IuxPvoix/E+6Rl7fq0Jt+CGGQMn/BoLG7jVWhzOVPq
+	4BYX1eJ1qsoE3KsxcDuMTLowuxcHqhyukdXMXGdT2AL4i0UNql+iTzr6AGAmegg4YfFGqZAZrxC
+	alVY7qRFT0UOnVip3C1n/3qggMTg20Mre4hIDGM60oB5Xl48ZkBaFGJJCCs3wVXUNQaWX7Jb7B8
+	SXKZu6y9nkjOnIQ==
+X-Google-Smtp-Source: AGHT+IHtUE602FvgMsT8GOtnJov33zxYYov4x3dhU+tYUl3Bs4Jcfe4thjZtl5QPHbP1Vrw5LKSSxaJg77FzcCaSzio=
+X-Received: by 2002:a05:7022:6294:b0:11b:98e8:624e with SMTP id
+ a92af1059eb24-121722e11famr1344359c88.4.1766138677829; Fri, 19 Dec 2025
+ 02:04:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.322.g1dd061c0dc-goog
-Message-ID: <20251219092537.1227513-1-davidgow@google.com>
-Subject: [RFC PATCH] rust: doctests: Number tests by line numerically, not lexicographically.
-From: David Gow <davidgow@google.com>
-To: Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>, 
+MIME-Version: 1.0
+References: <20251219092537.1227513-1-davidgow@google.com>
+In-Reply-To: <20251219092537.1227513-1-davidgow@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 19 Dec 2025 11:04:23 +0100
+X-Gm-Features: AQt7F2oEuGq9y_76Xm5CdUbTK6H7VwI7P-ClCTr86yLdf4auZUg3tY0uCinYqK0
+Message-ID: <CANiq72=ZKGXpsmvKHGsX9=tr9Tbdkd-7baJ-RN4crBdXkcB6Yw@mail.gmail.com>
+Subject: Re: [RFC PATCH] rust: doctests: Number tests by line numerically, not lexicographically.
+To: David Gow <davidgow@google.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Guillaume Gomez <guillaume1.gomez@gmail.com>
-Cc: David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Shuah Khan <skhan@linuxfoundation.org>, Guillaume Gomez <guillaume1.gomez@gmail.com>, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The rust doctests are numbered -- instead of named with the line number
--- in order to keep them moderately consistent even as the source file
-changes.
+On Fri, Dec 19, 2025 at 10:25=E2=80=AFAM David Gow <davidgow@google.com> wr=
+ote:
+>
+> 1. Is it worth renumbering all of the tests (hopefully just once), or
+> would that break too many people's test histories?
 
-However, the test numbers are generated by sorting the file/line
-strings, and so the line numbers were sorted as strings, not integers.
-So, for instance, a test on line 7 would sort in-between one on line 65
-and one on line 75.
+Personally I don't have such histories just yet (and anyway the tests
+generally work), and even if someone does, it may be best to pay the
+price sooner rather than later.
 
-Instead, parse the numbers as an integer, and sort based on that. This
-is a bit slower, uglier, and will break things once, but I suspect is
-worth it (at least until we have a better solution).
+> 2. Is there a better way of doing this in Rust? I can think of ways
+> which might be nicer if the whole thing is refactored somewhat
+> seriously, but if there's an easy numeric sort on strings, that'd be
+> much easier.
 
-Signed-off-by: David Gow <davidgow@google.com>
----
+We do essentially the same in the main loop (which is where I suppose
+you picked it up), so it isn't too bad:
 
-This is a pretty unpolished, likely-unidiomatic patch to work around the
-test numbering being horrible.
+        // The `name` follows the `{file}_{line}_{number}` pattern
+(see description in
+        // `scripts/rustdoc_test_builder.rs`). Discard the `number`.
+        let name =3D path.file_name().unwrap().to_str().unwrap().to_string(=
+);
 
-I have three questions before I decide if this is worth continuing with:
+        // Extract the `file` and the `line`, discarding the `number`.
+        let (file, line) =3D
+name.rsplit_once('_').unwrap().0.rsplit_once('_').unwrap();
 
-1. Is it worth renumbering all of the tests (hopefully just once), or
-would that break too many people's test histories?
+However, we could perhaps save the information so that the main loop
+is cleaner instead of redoing it.
 
-2. Is there a better way of doing this in Rust? I can think of ways
-which might be nicer if the whole thing is refactored somewhat
-seriously, but if there's an easy numeric sort on strings, that'd be
-much easier.
+Having said that, given we are migrating anyway, this patch may be
+simpler to avoid reworking this code. So I am happy either way.
 
-3. Should we wait until after all or some of the changes to the test
-generation? Does the new --output-format=doctest option make this
-easier/harder/different?
+> 3. Should we wait until after all or some of the changes to the test
+> generation? Does the new --output-format=3Ddoctest option make this
+> easier/harder/different?
 
-Does anyone have opinions/advice on those (or, indeed, on anything
-else)?
+We could do it there -- it would be easier in the sense that we have
+the proper data already with the proper types etc.
+
+On the other hand, it may be best to define the order we want to
+follow (independently of the approaches), and then the migration would
+be a smaller change conceptually, i.e. one less thing to decide then.
+
+(I have to send the version to finally integrate the migration soon,
+by the way -- I would like to put it in this cycle if possible).
+
+Thanks!
 
 Cheers,
--- David
-
----
- scripts/rustdoc_test_gen.rs | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
-index be0561049660..60b0bbfb1896 100644
---- a/scripts/rustdoc_test_gen.rs
-+++ b/scripts/rustdoc_test_gen.rs
-@@ -116,7 +116,19 @@ fn main() {
-         .collect::<Vec<_>>();
- 
-     // Sort paths.
--    paths.sort();
-+    paths.sort_by(|a, b|{
-+        let a_name = a.file_name().unwrap().to_str().unwrap().to_string();
-+        let (a_file, a_line) = a_name.rsplit_once('_').unwrap().0.rsplit_once('_').unwrap();
-+        let a_line_no = a_line.parse::<u64>().unwrap();
-+        let b_name = b.file_name().unwrap().to_str().unwrap().to_string();
-+        let (b_file, b_line) = b_name.rsplit_once('_').unwrap().0.rsplit_once('_').unwrap();
-+        let b_line_no = b_line.parse::<u64>().unwrap();
-+
-+        match a_file.cmp(b_file) {
-+            std::cmp::Ordering::Equal => a_line_no.cmp(&b_line_no),
-+            order => order,
-+        }
-+    });
- 
-     let mut rust_tests = String::new();
-     let mut c_test_declarations = String::new();
--- 
-2.52.0.322.g1dd061c0dc-goog
-
+Miguel
