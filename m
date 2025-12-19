@@ -1,219 +1,303 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012058.outbound.protection.outlook.com [40.107.209.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2325834AAE2;
-	Fri, 19 Dec 2025 19:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766173673; cv=none; b=CGwIZMZvSWRtVuaeggpCUmMFnU6rAxeub72bOls/S95F1/jAySzd0OMMT7fxVOnTnMHHkBWrOwHojwu7GY0HvJK1u20fTvCBIMnvHWipbnhnLbCCKmlHeD128aq27KCqUzqLtT8GvN9mYi9IZaWd26mGKS495KUdsVfFxWQZnKs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766173673; c=relaxed/simple;
-	bh=ahnklD8wORDhqxGMbS9i1+02tEsICBFL946J+GACCa4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jr7rXhz/Typv8cwD2J72/9YFXXUfMoigNLcuwiYtfWnxlfX76d675b+pMLU5we504RaAbpfWb4SDPl5cW1GKHfCCPYFWWYq1ZX48P03XhU6P2tV9kLG+U1wA+oUIsTBtia+uZhzTFLKQbqYAAH2/ITM4CZhdZhEDZCXeofBdcgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWX+j/ZN; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479DF26F2A8;
+	Fri, 19 Dec 2025 20:38:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766176699; cv=fail; b=EhEVrvyDGYcN/mrs+l74K/yjqwRLYEHRczwA2vrM6iKlKRJFIFpK+wjpf//FQG+3ZxKiIs38okE2XPx4UkN9MLicHsnOddWKPxBvU5/suXHzYe5vhjKpNCL3oZupxVJCLMfpfPWxBpMzXhA6X8mir8Q2FWe8TikgXMLrEzLYvlk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766176699; c=relaxed/simple;
+	bh=HDF4HqBeVxfIXbcZFM+WScIGDAP3Rzw7a8nAS2y4ITI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Uw9S7GPPUpovKehRpH2k2smpRM6QB2rjkIFGVZ7lPDimmN6tFwv6GnI1m3GYKY2EpqJdfwSXSyTZGCpkdVwGhgkJd+2Op7f8xF3juGCtVVn3JRUIJ/31dJkLn1CA1+2oD9GgUXGVE0ZcLB2rYY8fkDM/H0TbfzsLD3pG38wF8F4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NHiYD59q; arc=fail smtp.client-ip=40.107.209.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWX+j/ZN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C8CC4CEF1;
-	Fri, 19 Dec 2025 19:47:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766173672;
-	bh=ahnklD8wORDhqxGMbS9i1+02tEsICBFL946J+GACCa4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZWX+j/ZNZypVxNfs89M4aNVcj7H6c+U3GCxKJgp02HOL1JTUm/nhqJmDG7UOU4ftY
-	 T+YrSsNPf2XyYqERI8R9TK3eQ76DDiUPwai43+STAvDD44+1Ljlc7LsaW3YIqnyFnM
-	 jY4et1nYbJp7ahWBZc9BYuHZBgo/GyMH27+LkErUGc3ovPRQ8MOs1V1HGFyDj7YSkp
-	 qIDP9/64nh/AT2bxk4lFXQQiXFg+l34hTsBsYakc2Z8VNcw7KS74GqIPyBJHf3aLu6
-	 EWCx/OXxhcUGqqX33STgDLOWnJY9uspAanoBtamTATAce9Nokn0a9J/7dn87EKKRhY
-	 ascYxZtOnhX8Q==
-Date: Fri, 19 Dec 2025 12:47:48 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Guillaume Tucker <gtucker@gtucker.io>
-Cc: Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
-	llvm@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v1 1/2] scripts: add tool to run containerized builds
-Message-ID: <20251219194748.GA1404325@ax162>
-References: <cover.1765374789.git.gtucker@gtucker.io>
- <97dec58ebe4161027f13f2215ed9da4a43bc8c47.1765374789.git.gtucker@gtucker.io>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NHiYD59q"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AsuGWw9XgRunBdmEMiHEjrcd5ephnWyqqYPD6ITwXZQHfQ8HOGCiOsAR+Ps0uNHffObxjfnD9dMQQgxIR8k3pLf5EDRrMVmAKFrp6KMuQra4i40FWB3RiqyYhrfjD23wEY7OZco4r4mnJNBK0DE94C+UCYdfz39mg8bQne3IjofbnI7gdy5Cukna637Bt5EVm/XggaKCq1pufNW5Wwnrb/w84avlNsE875m8+ShESu7pviD0FKVVaIBnZ3q+y7fi2hbtipjQN8y7U/GNqV4E0VFVXkVzmdEHsx3q6M4GoZIyRVUHa+W87XcTm3dieqw+4VdrXS1uO+qaN6o6OolCaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=g5vpq9kAsPE8M4dr8GKMjVgztODwSuR62pZ8lOOp6LE=;
+ b=uIGTetOh7j/zX/HN4NVxP9D2yOwZxLfPHPBvY3R8o7iWIwtfFZB+CINb0GMVpDPaayohjPBELvZakJK1rxInmMaZfvfB5TtPptln6d7ETCfTy5GUVI+D7aeqoYaZcpf5/4OfANGMkt/nAfdAF5RaHmagZcvfNhmF+5bUrNmdWR0+0+B544bCGcnGIM/4oFZCYK/G5FOr8NV8JciL0yjqszwh4o4UyCuA8+dJsBuWgBUBP9PFH9YmBDkZFJOuejCwwU9F4Dvk2Viu9lHEt3XHx5W9qC2s93MxUyBsCir9YS9TmbPblz4eAkuNFJRtM9QjFIfYgXCUN9A4UEqm9eY9zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g5vpq9kAsPE8M4dr8GKMjVgztODwSuR62pZ8lOOp6LE=;
+ b=NHiYD59q0qf+5BqgQEf2h8eT73aP1FrVZeeDeRGl687O2po2VeGixmAmQspTDmsb15yqAfPKW9/NZS5poYmLwv5GYW6d7AhrMF5L+VWJUHPdYGx+i4AwMsW3jS9tXw4OhPzzSbqL0cwFJZVPT01vGSQrC/6u26eigqy7W3lQaFL0icSb4n9LsSeiWdWYzLFhFpm3ajxUcIPEuqVsv7SpoXA6qxDL7vJjEKu+6YW6Eo2to8rdorDPqeoD/MNNUE5vP7lGofqmU1/S2rbdz1QMGvtCMrgGQLrHXMuVWhejM5Rbg5Tmb1Wgooz1jZNiSpBYAG39ZHMw1PUk9X8kujQnSw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by CH2PR12MB4248.namprd12.prod.outlook.com (2603:10b6:610:7a::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Fri, 19 Dec
+ 2025 20:38:09 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%2]) with mapi id 15.20.9434.009; Fri, 19 Dec 2025
+ 20:38:09 +0000
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Helge Deller <deller@gmx.de>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Edwin Peer <epeer@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Elle Rhumsaa <elle@weathered-steel.dev>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	joel@joelfernandes.org,
+	nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	Joel Fernandes <joelagnelf@nvidia.com>
+Subject: [PATCH RFC v5 0/6] nova-core: Memory management initial patches
+Date: Fri, 19 Dec 2025 15:37:59 -0500
+Message-Id: <20251219203805.1246586-1-joelagnelf@nvidia.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: IA4P220CA0006.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:208:558::7) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <97dec58ebe4161027f13f2215ed9da4a43bc8c47.1765374789.git.gtucker@gtucker.io>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|CH2PR12MB4248:EE_
+X-MS-Office365-Filtering-Correlation-Id: 20ba80d7-1b87-4ecd-8ee7-08de3f3e8580
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|376014|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Iu8cYFQs918VyX08wfS+mLJO7zdXRKeOogFR5C0hMzQZfDm8Vj0zf7/grZjX?=
+ =?us-ascii?Q?VdT4t3hb7VWDZki58G1Eq0lV6keJBDBYmFvqOYSvj1w8ryCoZMXZEd25szK1?=
+ =?us-ascii?Q?YevSpaCXV7h8mPl/P46FnqppAHQxZDUlsECYh08LvyPCJ4FHDw1g4ITti5kD?=
+ =?us-ascii?Q?PDy0WLfFb8qhsSSUI/belbgfgxwIO5DGGfeC81rYj0qBUflH9KBkNdAqzeav?=
+ =?us-ascii?Q?sQxMqpLcuAEz/l5Ww7R57CHqC+ty95uo7Ry4/uPRJuAOlcQyiemARi88Fa4b?=
+ =?us-ascii?Q?zTMakFXiqtQp3DZrR9HVc7sXj+D5cn1gkJHpjVw7jzZ/JOlnnt3ueehv2/In?=
+ =?us-ascii?Q?zUUTW49yeH0zWm2610/II1rCqSjNwSamHl2b26CAIBdK2dwXnU2CbFER5BDK?=
+ =?us-ascii?Q?S08e0YWt5uID9lrskTkr+k/oKQBxnzc+/PXXxbKbpzZsAXVaLRqHcyDsL3OC?=
+ =?us-ascii?Q?KcNu92lED/Pm73cQjxTbUjpudm/JXLMfSOLVwPQGRY6zlEkMx8vVDtvevwfg?=
+ =?us-ascii?Q?K9CPsGLzg1/+kZId2wkcE677VwA18w89uGm9leYDvG9wmxZ9DMz7d9vdOh75?=
+ =?us-ascii?Q?zir/4YCEwuFY/DNwvo6bT7FZR9g6t86cxZGmQCQZMTUx9sbR1t0mVbyS4vUa?=
+ =?us-ascii?Q?O9vVsSl38IO4h8P29GB7Pc+hoAOumgqlAxtmfndt2cQt/k86z52KXKNKfHFR?=
+ =?us-ascii?Q?L+BCNREuD3qhFDkLBte+la/he07wJfMzqUYnrktOjdQOiOROknUUAW4Sxoo/?=
+ =?us-ascii?Q?frS0R2EB9ZxTAmDHEraxZ/EFKSOACaxGQ/1A9iSab6vTP5adjSN/bVutCl0s?=
+ =?us-ascii?Q?K9Gbvm+Cr9A3gZx9hsQcX8IcX3fIlX/5ZYuGJiq0+juSWST3sHZFzBmFX4aU?=
+ =?us-ascii?Q?TTijvKIk76yowubHdCXgEAmHTzYo/CMKvpMNl9k8YRLEGSVNEzZF88Q7/P7i?=
+ =?us-ascii?Q?PyuWRGq83r3gQkiVu7oAFhDiOWuSS/rMgybeNiTnlHFFr0GK6DPhTRyJMaZO?=
+ =?us-ascii?Q?wXU3JTug56Vm4Btks0I86cnzaxN2d8hEL60grIPvsp6hUwU5j0NmHKhiUZDp?=
+ =?us-ascii?Q?RZjSnbNGReG7Lh6a6JIoGhqjN+iSKY3+n2hWwdr0k1cJdoreY3+H2aPmmz8R?=
+ =?us-ascii?Q?0Bac5YU8PPcGHsl30/Mi9wC6Pk9xDT23+zz8N47UPxfu1EycS2jlxlbrt0yw?=
+ =?us-ascii?Q?0vyAi/+4PIZoWhlVLuobJijBrZpPzAaD4YYLh7xmWOHC2Drx4Rmlqxwu6xb3?=
+ =?us-ascii?Q?8aH2hX8BFfTV63j/MgnRcAEuv+S57jn2XCf99IpP7zpupi+Boo2KzF7TeoA3?=
+ =?us-ascii?Q?GZ2he4T3y8hIN7843KtwM4CKgSXa7Ytn/t38FkW+wruhMOfr+2JBM9+63zdm?=
+ =?us-ascii?Q?RipjAs56xgxHpKms2RA+UZg8mdLpqm04qKmaec2gveHg3HkiPBAsgyiCwLM4?=
+ =?us-ascii?Q?/ShKKfL3/LEbMcKiFzuaamvTkiYTWHa6XCto3G8Nl0Vg8qkuys9SrztYCNHo?=
+ =?us-ascii?Q?+vV+bGg+AbRZ0FONHLiHpk42QzqW6uve8qPJ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?TvTW6UlduMUJndQTMtpAxhGASHJRzxCJmREGfi0KIMetrjlvjNfyGCWdH5UV?=
+ =?us-ascii?Q?dpGVz8HSnnsAyI502/iitmuSPhYD8435QzTyClUTcPebfPu0WsdEbrKAofGq?=
+ =?us-ascii?Q?pDpu1CAl8lHJhtLvb6whlpoP60K/dSJBTv8vzQO1FzBR0QB+tFE4wO2FzDhT?=
+ =?us-ascii?Q?gzjUaCYtkDbAAeFTf7oONTtuM3Rvbd4kZdpLpTw5lfI5YmNnn+3a1duwLu1o?=
+ =?us-ascii?Q?iGrKmUFUq1f3bBTfqUPW8CquUzeVm2AK0Qta25ZL4SPthDMHNYKn+zm+hAKX?=
+ =?us-ascii?Q?cWcNBBuMED2cHeS7ZBV+SoDF4GB9iK0WBpZmxlfslmZYic3EFIEaXhA2wPPi?=
+ =?us-ascii?Q?gvx5geEr74tva1ASLhA6HdG3LSAuxwn5ny/Z8/qofyiyaB3cHW4UuJ7kcRZD?=
+ =?us-ascii?Q?eUsL+gpG6taYNTyqhMfdXVwGsjWM0QLoPmH/amwxaVPFKldO7z0+EW3Z+vos?=
+ =?us-ascii?Q?slka28HONSw41vkHaRZvyOnxXnS1dW2aw8Weix75ohaClmrBlG8sEaM+OSf0?=
+ =?us-ascii?Q?HX3fTb7YmsXb2a5QzG88bHvSfdJ63IXyXzlNDBJcD7BkzexC83pW4tMcXWAk?=
+ =?us-ascii?Q?Jg9KxMNFOYcYxXSTT1CtWtN4iI5xZoCNVSd3hRltYC1Y7eCb9+M/Bxx5qUF4?=
+ =?us-ascii?Q?LTKE50SvKHTpB0hmhrbfaPlKIhSA+/HPfFwDWF2x3n4aYvSmFUCyVw6+VHnA?=
+ =?us-ascii?Q?MJIl+9uI60FUUboOGfg2IMMXPMu1975jBwzVivASJEckmSqqgCYFpFab9Erf?=
+ =?us-ascii?Q?Gl6ILni66IrRHlJGEQbLebU8GCkkVNItfTG8kV/FNrbdwqwZyLLrxmKZMbvk?=
+ =?us-ascii?Q?hbd+XD0j+J/YkTzc+3g0VCVivur5Ep3m8LBbQB5gCYQcUEUXZOLiV1ZO7BtL?=
+ =?us-ascii?Q?qBYMBeMUIRPTD1THbVoABPTCVJHLoZ1g8pY23baho4BJT3pQksJf1NXG67+Q?=
+ =?us-ascii?Q?Jhn5TWoIiLIEa6de0brkMYbuLsIjX67k2sri9nx68aktvo1qlnF37qB81KOD?=
+ =?us-ascii?Q?pseaWP78w7oon0CjlWGrWPz6padSSgfiLeg+K8veptHj4cOmj5FFnFFSiULr?=
+ =?us-ascii?Q?3He/4GgOa+dtdjrzN+XR2cGoG63spvTDC816ix9eHHKh5BJC+KngRjxim8Sa?=
+ =?us-ascii?Q?+kteduQ+qNneIMEyPDRfAexnfrEqccwisGUt9nDT5E61fzs73gbRaRvk7Iaf?=
+ =?us-ascii?Q?Beg1kLnR6WIVCOmlB9y5RMzUnvup+QQpxBi0Ug9MCeC/SZBHTtGyutCwqZJ5?=
+ =?us-ascii?Q?MfHvSnCMBXcmNbFaQ2T6+E5NhXFTAt7tnQDqGOhgHSWDgX1e42N1759MqCbN?=
+ =?us-ascii?Q?KJZEVNwZJfC90fcgCDFOxG9QmzMmeIi+Ciy1K7+Y3hxXDPd/0c1vc1wLw/2R?=
+ =?us-ascii?Q?nIOYnIqSzRbuC/3Mv1chVrOaAApGCPUTxG0nJoF2fkHcW1TsYNnQ2Zrcu+8O?=
+ =?us-ascii?Q?i7xgWsSAs32zQvVuVmpe4tKSS1WyVwhGfPShcNAhGKVoNYOGF1fpFaK3sGyi?=
+ =?us-ascii?Q?S/NfFen5lhThGtPeRjQJTdFlqwZXuxPEcO89mdMTCNLMHyv7mJNpCtRoIAwE?=
+ =?us-ascii?Q?91HwBZbHeKoD26gqHa1IXeS/U/TibVcB2v7qlG6ADZpaRA4C8kBoyXWkM5uG?=
+ =?us-ascii?Q?ZSh1KfkDZUBzH9GLmqAODK2CoV6oH3me2HiD7mvdsonureVG69EZeTVdiO16?=
+ =?us-ascii?Q?k5Jl5E8E9qSHyAPN1xzMaYzA/fVjc+6uNmtdD929skjAuJ8CS2kypD5K1tqd?=
+ =?us-ascii?Q?O4lOvIGG5g=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 20ba80d7-1b87-4ecd-8ee7-08de3f3e8580
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 20:38:09.5085
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wMzFItwkBH5Piz2An0rQR1m/qV0U21KA12s1FddNnY177OOGwARcmuMPavXg2vMfzsPJaJMZyryqB8KTDhhMUw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4248
 
-Hi Guillaume,
+This series is based on the latest drm-rust-next tree and provides initial memory management infrastructure for the nova-core
+GPU driver. It combines and builds upon several previous series and provides a foundation for nova GPU memory management.
 
-On Wed, Dec 10, 2025 at 02:58:28PM +0100, Guillaume Tucker wrote:
-> Add a 'scripts/container' tool written in Python to run any command in
-> the source tree from within a container.  This can typically be used
-> to call 'make' with a compiler toolchain image to run reproducible
-> builds but any arbitrary command can be run too.  Only Docker and
-> Podman are supported for this initial version.
-> 
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://lore.kernel.org/all/affb7aff-dc9b-4263-bbd4-a7965c19ac4e@gtucker.io/
-> Signed-off-by: Guillaume Tucker <gtucker@gtucker.io>
+The RFC series includes:
+- A Rust module (CList) to interface with C circular linked lists, required
+  for iterating over buddy allocator block lists.
+- Movement of the DRM buddy allocator up to drivers/gpu/ level, renamed to GPU
+  buddy, making it available for GPU drivers with non-DRM use cases (e.g., vGPU).
+- Rust bindings for the GPU buddy allocator.
+- PRAMIN aperture support for direct VRAM access before page tables are initialized.
+- Documentation for the PRAMIN mechanism.
+- VRAM read/write self-tests for PRAMIN (disabled by default via Kconfig).
 
-Overall, I like the concept here. It is simple and should be relatively
-easy for people to drive. I think having some short quick examples (or a
-link to the Documentation file that inclues them) would be good in case
-people stumble across the script first.
+The series combines various previous series since all the patches are related.
+Moving forward I will only send one coherent series with the mm patches.
 
-One initial comment (or perhaps feature request) would be handling O= /
-KBUILD_OUTPUT for building out of tree. It may be a little complicated
-for mounting the build directory into the container but it might make it
-easier for folks who build out of tree to use.
+Next steps:
+Page table types and page table mapping support will be added on top of this
+foundation extracted from the original PRAMIN series. I need to make several
+changes there such as to support multiple page table formats, as well as
+updating it to use the new PRAMIN and buddy APIs.
 
-> ---
->  scripts/container | 112 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 112 insertions(+)
->  create mode 100755 scripts/container
-> 
-> diff --git a/scripts/container b/scripts/container
-> new file mode 100755
-> index 000000000000..74644ac33685
-> --- /dev/null
-> +++ b/scripts/container
-> @@ -0,0 +1,112 @@
-> +#!/bin/env python3
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +# Copyright (C) 2025 Guillaume Tucker
-> +
-> +"""Containerized builds"""
-> +
-> +import argparse
-> +import logging
-> +import os
-> +import subprocess
-> +import sys
-> +
-> +
-> +def get_logger(verbose):
-> +    """Set up a logger with the appropriate level"""
-> +    logger = logging.getLogger('container')
-> +    handler = logging.StreamHandler()
-> +    handler.setFormatter(logging.Formatter(
-> +        fmt='[container {levelname}] {message}', style='{'
-> +    ))
-> +    logger.addHandler(handler)
-> +    logger.setLevel(logging.DEBUG if verbose is True else logging.INFO)
-> +    return logger
-> +
-> +
-> +def run_docker(args):
-> +    """Run a command in a Docker container"""
-> +    uid = args.uid or os.getuid()
-> +    gid = args.gid or args.uid or os.getgid()
-> +    cmd = [
-> +        'docker', 'run',
-> +        '--interactive',
-> +        '--volume', f'{os.getcwd()}:/src',
+Changes from v4 to v5:
+- Added PRAMIN aperture support for bootstrapping memory management.
+- Added documentation for the PRAMIN aperture mechanism.
+- Added PRAMIN self-tests for VRAM read/write verification (disabled by default).
+- Improved buddy allocator bindings a bit (fewer lines of code).
 
-Is there a minimum python version required for this? If not, I would
-prefer using pathlib here:
+The patches on based on drm-rust-next commit:
+97cf6bc0abd3 ("rust: drm: use `pin_init::zeroed()` for file operations initialization")
 
-  from pathlib import Path
+Previous series that are combined:
+- v4 (clist + buddy): https://lore.kernel.org/all/20251204215129.2357292-1-joelagnelf@nvidia.com/
+- v3 (clist only): https://lore.kernel.org/all/20251129213056.4021375-1-joelagnelf@nvidia.com/
+- v2 (clist only): https://lore.kernel.org/all/20251111171315.2196103-4-joelagnelf@nvidia.com/
+- clist RFC (original with buddy): https://lore.kernel.org/all/20251030190613.1224287-1-joelagnelf@nvidia.com/
+- DRM buddy move: https://lore.kernel.org/all/20251124234432.1988476-1-joelagnelf@nvidia.com/
+- PRAMIN series: https://lore.kernel.org/all/20251020185539.49986-1-joelagnelf@nvidia.com/
 
-then
+Joel Fernandes (6):
+  rust: clist: Add support to interface with C linked lists
+  gpu: Move DRM buddy allocator one level up
+  rust: gpu: Add GPU buddy allocator bindings
+  nova-core: mm: Add support to use PRAMIN windows to write to VRAM
+  docs: gpu: nova-core: Document the PRAMIN aperture mechanism
+  nova-core: Add PRAMIN aperture self-tests
 
-  Path.cwd()
+ Documentation/gpu/drm-mm.rst                  |   10 +-
+ Documentation/gpu/nova/core/pramin.rst        |  125 ++
+ Documentation/gpu/nova/index.rst              |    1 +
+ MAINTAINERS                                   |    7 +
+ drivers/gpu/Kconfig                           |   13 +
+ drivers/gpu/Makefile                          |    2 +
+ drivers/gpu/buddy.c                           | 1310 +++++++++++++++++
+ drivers/gpu/drm/Kconfig                       |    1 +
+ drivers/gpu/drm/Kconfig.debug                 |    4 +-
+ drivers/gpu/drm/amd/amdgpu/Kconfig            |    1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c       |    2 +-
+ .../gpu/drm/amd/amdgpu/amdgpu_res_cursor.h    |   12 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c  |   80 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h  |   20 +-
+ drivers/gpu/drm/drm_buddy.c                   | 1287 +---------------
+ drivers/gpu/drm/i915/Kconfig                  |    1 +
+ drivers/gpu/drm/i915/i915_scatterlist.c       |   10 +-
+ drivers/gpu/drm/i915/i915_ttm_buddy_manager.c |   55 +-
+ drivers/gpu/drm/i915/i915_ttm_buddy_manager.h |    6 +-
+ .../drm/i915/selftests/intel_memory_region.c  |   20 +-
+ drivers/gpu/drm/tests/Makefile                |    1 -
+ .../gpu/drm/ttm/tests/ttm_bo_validate_test.c  |    5 +-
+ drivers/gpu/drm/ttm/tests/ttm_mock_manager.c  |   18 +-
+ drivers/gpu/drm/ttm/tests/ttm_mock_manager.h  |    4 +-
+ drivers/gpu/drm/xe/Kconfig                    |    1 +
+ drivers/gpu/drm/xe/xe_res_cursor.h            |   34 +-
+ drivers/gpu/drm/xe/xe_svm.c                   |   12 +-
+ drivers/gpu/drm/xe/xe_ttm_vram_mgr.c          |   73 +-
+ drivers/gpu/drm/xe/xe_ttm_vram_mgr_types.h    |    4 +-
+ drivers/gpu/nova-core/Kconfig                 |   11 +
+ drivers/gpu/nova-core/gsp/boot.rs             |    4 +
+ drivers/gpu/nova-core/mm/mod.rs               |    5 +
+ drivers/gpu/nova-core/mm/pramin.rs            |  298 ++++
+ drivers/gpu/nova-core/nova_core.rs            |    1 +
+ drivers/gpu/nova-core/regs.rs                 |    5 +
+ drivers/gpu/tests/Makefile                    |    3 +
+ .../gpu_buddy_test.c}                         |  390 ++---
+ drivers/gpu/tests/gpu_random.c                |   48 +
+ drivers/gpu/tests/gpu_random.h                |   28 +
+ drivers/video/Kconfig                         |    2 +
+ include/drm/drm_buddy.h                       |  163 +-
+ include/linux/gpu_buddy.h                     |  177 +++
+ rust/bindings/bindings_helper.h               |   11 +
+ rust/helpers/gpu.c                            |   23 +
+ rust/helpers/helpers.c                        |    2 +
+ rust/helpers/list.c                           |   12 +
+ rust/kernel/clist.rs                          |  357 +++++
+ rust/kernel/gpu/buddy.rs                      |  518 +++++++
+ rust/kernel/gpu/mod.rs                        |    5 +
+ rust/kernel/lib.rs                            |    3 +
+ 50 files changed, 3385 insertions(+), 1800 deletions(-)
+ create mode 100644 Documentation/gpu/nova/core/pramin.rst
+ create mode 100644 drivers/gpu/Kconfig
+ create mode 100644 drivers/gpu/buddy.c
+ create mode 100644 drivers/gpu/nova-core/mm/mod.rs
+ create mode 100644 drivers/gpu/nova-core/mm/pramin.rs
+ create mode 100644 drivers/gpu/tests/Makefile
+ rename drivers/gpu/{drm/tests/drm_buddy_test.c => tests/gpu_buddy_test.c} (68%)
+ create mode 100644 drivers/gpu/tests/gpu_random.c
+ create mode 100644 drivers/gpu/tests/gpu_random.h
+ create mode 100644 include/linux/gpu_buddy.h
+ create mode 100644 rust/helpers/gpu.c
+ create mode 100644 rust/helpers/list.c
+ create mode 100644 rust/kernel/clist.rs
+ create mode 100644 rust/kernel/gpu/buddy.rs
+ create mode 100644 rust/kernel/gpu/mod.rs
+-- 
+2.34.1
 
-> +        '--workdir', '/src',
-> +        '--user', f'{uid}:{gid}'
-> +    ]
-> +    if args.env_file:
-> +        cmd += ['--env-file', args.env_file]
-> +    cmd.append(args.image)
-> +    cmd += args.cmd
-> +    return subprocess.call(cmd)
-> +
-> +
-> +def run_podman(args):
-> +    """Run a command in a Podman container"""
-> +    uid = args.uid or 1000
-> +    gid = args.gid or args.uid or 1000
-
-Why 1000 instead of using getuid() and getgid() as above?
-
-> +    cmd = [
-> +        'podman', 'run',
-> +        '--interactive',
-> +        '--volume', f'{os.getcwd()}:/src',
-> +        '--workdir', '/src',
-> +        '--userns', f'keep-id:uid={uid},gid={gid}',
-> +    ]
-> +    if args.env_file:
-> +        cmd += ['--env-file', args.env_file]
-> +    cmd.append(args.image)
-> +    cmd += args.cmd
-> +    return subprocess.call(cmd)
-
-Most of these two functions are the same. Maybe they could be abstracted
-into a simple class so that most of the logic could be shared between
-the two implementations? That also might simplify main() a bit and make
-fulfilling David's request a little simpler as well.
-
-> +def main(args):
-> +    """Main entry point for the container tool"""
-> +    logger = get_logger(args.verbose)
-> +    logger.debug("runtime=%s, image=%s", args.runtime, args.image)
-> +    runtimes = {
-> +        'docker': run_docker,
-> +        'podman': run_podman,
-> +    }
-> +    handler = runtimes.get(args.runtime)
-> +    if not handler:
-> +        logger.error("Unknown container runtime: %s", args.runtime)
-> +        return 1
-> +    try:
-> +        return handler(args)
-> +    except KeyboardInterrupt:
-> +        logger.error("aborted")
-> +        return 1
-> +
-> +
-> +if __name__ == '__main__':
-> +    parser = argparse.ArgumentParser("Containerized builds")
-> +    parser.add_argument(
-> +        '-e', '--env-file',
-> +        help="Path to an environment file to load in the container."
-> +    )
-
-Is there documentation for how an environment file should be formatter?
-
-> +    parser.add_argument(
-> +        '-g', '--gid',
-> +        help="Group ID to use inside the container."
-> +    )
-> +    parser.add_argument(
-> +        '-i', '--image', default='gcc',
-> +        help="Container image, default is gcc."
-> +    )
-> +    parser.add_argument(
-> +        '-r', '--runtime', choices=['docker', 'podman'], default='docker',
-> +        help="Container runtime, default is docker."
-> +    )
-> +    parser.add_argument(
-> +        '-u', '--uid',
-> +        help="User ID to use inside the container.  If the -g option is not"
-> +        "specified, the user ID will also be used for the group ID."
-> +    )
-> +    parser.add_argument(
-> +        '-v', '--verbose', action='store_true',
-> +        help="Enable verbose output."
-> +    )
-> +    parser.add_argument(
-> +        'cmd', nargs='+',
-> +        help="Command to run in the container"
-> +    )
-> +    sys.exit(main(parser.parse_args(sys.argv[1:])))
-> -- 
-> 2.47.3
-> 
