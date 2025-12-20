@@ -1,154 +1,349 @@
-Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B445923ABAA
-	for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 13:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BE71E3762
+	for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 18:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766237219; cv=none; b=dZuBj/8K3kpamMpUd0GOEvl9tfVi6BABhdWQpHhoWy1yeQqNYX9L9LdeF2UH11bv+nRohkNaSEZrI6l/xnoyNdt8n2QcqqV7uBMWz6ab1aF4e0DThBmLoqn7TDpLEdj1N6I6WNorpF6VgQqyfuE6CN0THhzBpJQydlaMz65sEJc=
+	t=1766256252; cv=none; b=B+AKhiWNUWLsmmB4PRmt/0qiNi8TsJvvAyYVJCzrYRlNHH9ZehI2Ry2rbakibcCPHNcqJn/iWLkNnl/zoKVrKow/LTEk0xTm1nzgCHJvhaEYuJp8217yExEMyRHWbe6FFFVNNKzdSHRNj8Au7WIPvUbOpeykpaJKNjoESxBXKgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766237219; c=relaxed/simple;
-	bh=ZszcD9aZyqLmppNl6uOYsAZ/9RvyvzsZifB0jXA3f2M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xh8HgC2gs0tiL3Vwp+vTzbgP44PgzvgPJjSEA8yvC6kwyQW19NNEKqNDT6hmToakBRn1aDuzKeEmI3YZ9+KHAow1LkW0Ei36XMVbQPUvys+urcjJG4tM1p27dIhkFjcEFricZG2mWb6t50dpy80ffhhwSJNIoe7OfrqRpgrmS6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hTHMbCBH; arc=none smtp.client-ip=209.85.208.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766256252; c=relaxed/simple;
+	bh=aZqeahUjQLCiJk72azPd4I5DmJ0fC6eqFPQ9m57O/Fc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=V5qMsPCDxK2qZrUg1WyWZ5usZ0Vq7oFZ1v9b04wLXE2Kj2304+YzOJLXZsnaO/pYOSazd/KEFY6bbRIDiE8mTFN0W31VT9wL+s8kvYoEI3zGxL+AhxbTmnS1Wy3Q9oykPOBi6QDrZ72mwjlIDbMMRh0E4gOKZbkGYWPAQ6QZFgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=p3ulSR5p; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hTHMbCBH"
-Received: by mail-ed1-f68.google.com with SMTP id 4fb4d7f45d1cf-64b921d9e67so2589516a12.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 05:26:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766237216; x=1766842016; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J0hMXtp/lfaKs61nOjhlRq2RZbYRAnfd/dUReiralVc=;
-        b=hTHMbCBH4qr1vHUqXbStopOYeZi840obDA6drJtieldITnPh3RiywU5HGgMNzQjUnl
-         nTskan3TloCayerovN+CZPVahOrwI7RUyZ71WxKwJqBR9ElPNOZSd7DRARHu6lvGBKut
-         bJbHrnSb+r+Fp0fSMapd7RHrCHrkqly9eKJMMLDHmUVRNtovDSryf7cZ0MmGBlKA5JS8
-         1sez7j9iKlOW3CnvB2RWzzBpCpYqFd8zRbW08I1QTz37vTvK1Ieq4TXBYtSBTHGt17rp
-         3NkT97UUE9riKJ3A0ZpaHNa4ln/WxBcwavKq14zIAn98yxKdKqgQG9YLbY45OaNe9xnE
-         VjdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766237216; x=1766842016;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=J0hMXtp/lfaKs61nOjhlRq2RZbYRAnfd/dUReiralVc=;
-        b=TluwiYKGoiofuiRBUrPAxvkTLAo6D+fOOHOeDEE2/a95Xdg8ft00lrQwOCz5eVzXyQ
-         P/1pjqG3G79ws5c20rj48RKiKfkH5Qfc0++NwrKK0v8KG8nXS7YKbt0wYaOnB3Qz9fbs
-         QJsbNvty3gcbtw0SSjPjQWyZdfZwSLPUa1n7WPEPmFB7wEq4qH6ER5i3RdNSwNRUnRhD
-         Q2TB0iXvGyYMJs//N3u1CZzkmCmXn1IIM89B5xsZKFu4ksa3FS7ZqVeCbBybxoqdlAZ9
-         FbLqCpzHwfmaZFfuNtSDHizCX1y6YKdf2pkyiPGUytbr35EXNKBvhnSHtwtltznDkdnd
-         DyGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXFMp6VXs9qd+2Rlxhh5RTUB5RxNrtMQAatSioS2T5EoXC4vVbLhCSlJK0r661i++R632C5HpLtB0V7GaW1Lg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGqatw+Gy2zt9we7V4gNGs+CAh26uk68z+N8Ht9j9f09ODbSg9
-	d94xKT1Aa4k9wjEi9/SVUJpFa2YyPkd/kgkDgt8CPFcrOWYApXEXwuDX
-X-Gm-Gg: AY/fxX7nEMi9gjsAngP69WI4pFC0uf0FAoF67W7de6+y7/4K7UST23q1vDe6mNRaCq6
-	7RfZeBR5A/hIsPB2uvbE+02KNiMdK0IbSEL1Im0nxpE8bH6Mg3tjikLwoepfWAI1XnwQMwhUz56
-	K/Jtq0NhDJtT9OYJRTNt7wKDmRsMkbXq/UHP1XHeLV3UDs3qX2voVKlf5X3UHYpa89F9tZY6il3
-	IN+0BMxhci42ID1y3hOlI92/y8jNDOHYhhvtEMiPKW1lBT45mykJjWTwrhtUUv4JjSH7jtbyRc+
-	DigwkXWEEuokzt4cRRIdc58paYr9l3BL7EvQz+wcYH5wAnd7iIeyFweRMs3VjHcEhPtE4Zy4cJg
-	SmcGEZHodBFZUjeX32oRKXpUIAUI3qa0FXIKpSuUpeIQQkMbZXMgno0e7vCPDQS3lwx530AOyCY
-	41Klt9c/tLLJQGqsObc8yfAJbAxgZplFwdVknzeomqSRU26RJSH3M5gEtfkmv3mdxaEzYQ3WPXg
-	R5NA9n6fRyT/oicu/wqKASZLer/t46ZfJ4/in+F3ZZuhQ==
-X-Google-Smtp-Source: AGHT+IGQG9QpYLfU4h8xN3mNdzv5dB2m+jacD8KkbE346mRyFnogzecStI4R3a2FK5Ch18aosbwARA==
-X-Received: by 2002:a17:907:c14:b0:b80:1309:aa09 with SMTP id a640c23a62f3a-b803718387cmr612957166b.47.1766237215643;
-        Sat, 20 Dec 2025 05:26:55 -0800 (PST)
-Received: from ?IPV6:2003:df:bf2d:e300:6a92:2e3e:53e0:d832? (p200300dfbf2de3006a922e3e53e0d832.dip0.t-ipconnect.de. [2003:df:bf2d:e300:6a92:2e3e:53e0:d832])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b803d3cea32sm436626666b.34.2025.12.20.05.26.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 20 Dec 2025 05:26:55 -0800 (PST)
-Message-ID: <518143d5-b273-48df-94f0-664116358665@gmail.com>
-Date: Sat, 20 Dec 2025 14:26:54 +0100
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="p3ulSR5p"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 75CAF24002F
+	for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 19:44:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1766256248; bh=wOcrld681LngU0MiZ8DHfy9jiZ/IlT36yUJBg6cYTFE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
+	b=p3ulSR5p6AeuirYDy53zNUAmAUxXF3w4hKOCUoeEI3qCObtRWT0/gUNutyxWynLuE
+	 4zaxAqAEnbGoH0Qbv7R+PNgAfjaQL8Q6xYgebvSGOgiPzfWhEtKF/DVIsZxGEJSk0A
+	 MMm0ALjEbHizkq2ZXwT/LAIkoH7LRIiR9QRJBmQVuMZXPdSvfab0pcaDV1OVXF6tc5
+	 PbmAeXlqz+1jzuMB4XnIyYvNYc+SxKcaQvW1izSXhXshP38LvsvUe4Sxi4IbM2DSY5
+	 AVicaeSaZvBXv+5MsOFPJSahYZLwcbWTM3IOYjoEbCcI72WEySlwxnGgnzq8oSKonz
+	 vfdExD9yq3PuQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4dYYGG5mCZz9rxN;
+	Sat, 20 Dec 2025 19:44:06 +0100 (CET)
+From: Markus Probst <markus.probst@posteo.de>
+Date: Sat, 20 Dec 2025 18:44:07 +0000
+Subject: [PATCH RFC 3/4] samples: rust: add Rust serial device bus sample
+ device driver
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: document safety requirements for fmt::Arguments
- dereference
-To: Riccardo <riccioadami@gmail.com>, rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-References: <20251220130014.3961-1-riccioadami@gmail.com>
-Content-Language: de-AT-frami, en-US
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20251220130014.3961-1-riccioadami@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20251220-rust_serdev-v1-3-e44645767621@posteo.de>
+References: <20251220-rust_serdev-v1-0-e44645767621@posteo.de>
+In-Reply-To: <20251220-rust_serdev-v1-0-e44645767621@posteo.de>
+To: Rob Herring <robh@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Kari Argillander <kari.argillander@gmail.com>
+Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7285;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=aZqeahUjQLCiJk72azPd4I5DmJ0fC6eqFPQ9m57O/Fc=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBpRu5yHydp1I6kFuWuDobSCuH260q/vBGf+f5cr
+ O4mDgJ7vx+JAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaUbuchsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMSwyLDIACgkQNHYf+OetQ9Lqdw/+O9fMa5pBmvSfhAVU0AcRAR/y3ymDFiG
+ 41sXVugZojnAYPqq1BvYvsau0mToX6F8XIPjdXpOSsSYT3462FUOS8nU6s2xWfcaf15tixLESw9
+ WzckrC0R7lHkjvn5CMnb8D9qpRBPnfVqMXav+7vuVjxQHoJfv0hBFiTK7Y3BjDh/A4jNnJPq0/l
+ s4IrOk/SrmHSjisfT0S3SP45GwRkwYqP1g0WLteoByQicew0zxQM3TbLHOa2oKmvUIDvSElG1o/
+ MyTv5LrD7wwbZXBM+D2KYWKTdl2Yd2vCNpj0YxD5HjmvxxYyTf4sTLPg4S6NAWh7KlwC5iI7A6K
+ HNs8/ESFTOGyYI/XjG85nQCMeJkuf+C/NzGkG5nbnuquSf12RW4bim/JmATWNJmmSEwUN92QukH
+ 4Xi4k6qpV/XSir7SYVcv+xPicb7CceOqe+DTXtkh/Qq4dLks1LQXsGYW0SFqyNWRh6a9qGt6Y3t
+ BwTsKiHUO3y+KZKyElE9SgTdLKbmoAjNiHxRmzI0JVGEF3igwyadOUdxGiQz3/9X8fOiB3+vE1A
+ bVWzGyfjK8aD1msrGtTgXQdXShhDBN3L+zkfsYVESTYZVhsurN/7c3fw900EWPk0ycitj0Ao/I8
+ mBQuK2gUnxgTgWVeT/dI/78SEft2uKhOgh57ShjPup8vC4XXpoV8=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Hi Riccardo,
+Add a sample Rust serial device bus device driver illustrating the usage
+of the platform bus abstractions.
 
-On 20.12.25 14:00, Riccardo wrote:
-> From: Riccardo Adami <riccioadami@gmail.com>
+This drivers probes through either a match of device / driver name or a
+match within the OF ID table.
+---
+ samples/rust/Kconfig               |  10 +++
+ samples/rust/Makefile              |   1 +
+ samples/rust/rust_driver_serdev.rs | 175 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 186 insertions(+)
 
-If you configure your mail tool to use `Riccardo Adami
-<riccioadami@gmail.com>` automatically in the `From: ...` (instead
-of`Riccardo <riccioadami@gmail.com>` which is there at the moment)
-there is no need to add this `From: ...` manually here.
+diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+index 3efa51bfc8ef..3b6663b4bc9b 100644
+--- a/samples/rust/Kconfig
++++ b/samples/rust/Kconfig
+@@ -161,6 +161,16 @@ config SAMPLE_RUST_DRIVER_AUXILIARY
+ 
+ 	  If unsure, say N.
+ 
++config SAMPLE_RUST_DRIVER_SERDEV
++	tristate "Serial Device Bus Device Driver"
++	help
++	  This option builds the Rust serial device bus driver sample.
++
++	  To compile this as a module, choose M here:
++	  the module will be called rust_driver_serdev.
++
++	  If unsure, say N.
++
+ config SAMPLE_RUST_HOSTPROGS
+ 	bool "Host programs"
+ 	help
+diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+index f65885d1d62b..ec5cb8065fb7 100644
+--- a/samples/rust/Makefile
++++ b/samples/rust/Makefile
+@@ -14,6 +14,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_USB)		+= rust_driver_usb.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
+ obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
++obj-$(CONFIG_SAMPLE_RUST_DRIVER_SERDEV)		+= rust_driver_serdev.o
+ obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
+ 
+ rust_print-y := rust_print_main.o rust_print_events.o
+diff --git a/samples/rust/rust_driver_serdev.rs b/samples/rust/rust_driver_serdev.rs
+new file mode 100644
+index 000000000000..f23b38a26c32
+--- /dev/null
++++ b/samples/rust/rust_driver_serdev.rs
+@@ -0,0 +1,175 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Rust Serial device bus device driver sample.
++
++use kernel::{
++    acpi,
++    device::{
++        self,
++        property::{
++            FwNodeReferenceArgs,
++            NArgs, //
++        },
++        Bound,
++        Core, //
++    },
++    of,
++    prelude::*,
++    serdev,
++    str::CString,
++    sync::aref::ARef, //
++};
++
++struct SampleDriver {
++    sdev: ARef<serdev::Device>,
++}
++
++struct Info(u32);
++
++kernel::of_device_table!(
++    OF_TABLE,
++    MODULE_OF_TABLE,
++    <SampleDriver as serdev::Driver>::IdInfo,
++    [(of::DeviceId::new(c"test,rust_driver_serdev"), Info(42))]
++);
++
++kernel::acpi_device_table!(
++    ACPI_TABLE,
++    MODULE_ACPI_TABLE,
++    <SampleDriver as serdev::Driver>::IdInfo,
++    [(acpi::DeviceId::new(c"LNUXBEEF"), Info(0))]
++);
++
++#[vtable]
++impl serdev::Driver for SampleDriver {
++    type IdInfo = Info;
++    type InitialData = ();
++    type LateProbeData = ();
++    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
++    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
++
++    fn probe(sdev: &serdev::Device, info: Option<&Self::IdInfo>) -> impl PinInit<Self, Error> {
++        let dev = sdev.as_ref();
++
++        dev_dbg!(dev, "Probe Rust Serial device bus device driver sample.\n");
++
++        if let Some(info) = info {
++            dev_info!(dev, "Probed with info: '{}'.\n", info.0);
++        }
++
++        if dev.fwnode().is_some_and(|node| node.is_of_node()) {
++            Self::properties_parse(dev)?;
++        }
++
++        Ok(Self { sdev: sdev.into() })
++    }
++
++    fn configure(
++        sdev: &serdev::Device<Core>,
++        _this: Pin<&Self>,
++        _id_info: Option<&Self::IdInfo>,
++    ) -> Result {
++        dev_dbg!(
++            sdev.as_ref(),
++            "Configure Rust Serial device bus device driver sample.\n"
++        );
++
++        sdev.set_baudrate(115200);
++        sdev.set_flow_control(false);
++        sdev.set_parity(serdev::Parity::None)?;
++        Ok(())
++    }
++
++    fn late_probe(
++        sdev: &serdev::Device<Bound>,
++        _this: Pin<&Self>,
++        _initial_data: Self::InitialData,
++    ) -> impl PinInit<Self::LateProbeData, Error> {
++        dev_dbg!(
++            sdev.as_ref(),
++            "Late Probe Rust Serial device bus device driver sample.\n"
++        );
++        Ok(())
++    }
++
++    fn receive(
++        sdev: &serdev::Device<Bound>,
++        _this: Pin<&Self>,
++        _late_probe_this: Pin<&Self::LateProbeData>,
++        data: &[u8],
++    ) -> usize {
++        let _ = sdev.write_all(data, serdev::Timeout::MaxScheduleTimeout);
++        data.len()
++    }
++}
++
++impl SampleDriver {
++    fn properties_parse(dev: &device::Device) -> Result {
++        let fwnode = dev.fwnode().ok_or(ENOENT)?;
++
++        if let Ok(idx) = fwnode.property_match_string(c"compatible", c"test,rust-device") {
++            dev_info!(dev, "matched compatible string idx = {}\n", idx);
++        }
++
++        let name = c"compatible";
++        let prop = fwnode.property_read::<CString>(name).required_by(dev)?;
++        dev_info!(dev, "'{name}'='{prop:?}'\n");
++
++        let name = c"test,bool-prop";
++        let prop = fwnode.property_read_bool(c"test,bool-prop");
++        dev_info!(dev, "'{name}'='{prop}'\n");
++
++        if fwnode.property_present(c"test,u32-prop") {
++            dev_info!(dev, "'test,u32-prop' is present\n");
++        }
++
++        let name = c"test,u32-optional-prop";
++        let prop = fwnode.property_read::<u32>(name).or(0x12);
++        dev_info!(dev, "'{name}'='{prop:#x}' (default = 0x12)\n");
++
++        // A missing required property will print an error. Discard the error to
++        // prevent properties_parse from failing in that case.
++        let name = c"test,u32-required-prop";
++        let _ = fwnode.property_read::<u32>(name).required_by(dev);
++
++        let name = c"test,u32-prop";
++        let prop: u32 = fwnode.property_read(name).required_by(dev)?;
++        dev_info!(dev, "'{name}'='{prop:#x}'\n");
++
++        let name = c"test,i16-array";
++        let prop: [i16; 4] = fwnode.property_read(name).required_by(dev)?;
++        dev_info!(dev, "'{name}'='{prop:?}'\n");
++        let len = fwnode.property_count_elem::<u16>(name)?;
++        dev_info!(dev, "'{name}' length is {len}\n");
++
++        let name = c"test,i16-array";
++        let prop: KVec<i16> = fwnode.property_read_array_vec(name, 4)?.required_by(dev)?;
++        dev_info!(dev, "'{name}'='{prop:?}' (KVec)\n");
++
++        for child in fwnode.children() {
++            let name = c"test,ref-arg";
++            let nargs = NArgs::N(2);
++            let prop: FwNodeReferenceArgs = child.property_get_reference_args(name, nargs, 0)?;
++            dev_info!(dev, "'{name}'='{prop:?}'\n");
++        }
++
++        Ok(())
++    }
++}
++
++impl Drop for SampleDriver {
++    fn drop(&mut self) {
++        dev_dbg!(
++            self.sdev.as_ref(),
++            "Remove Rust Serial device bus device driver sample.\n"
++        );
++    }
++}
++
++kernel::module_serdev_device_driver! {
++    type: SampleDriver,
++    name: "rust_driver_serdev",
++    authors: ["Markus Probst"],
++    description: "Rust Serial device bus device driver",
++    license: "GPL v2",
++}
 
-> This patch documents the safety requirements for dereferencing
-> `fmt::Arguments` in the kernel's `vsnprintf` formatting path. This
-> clarifies why it is safe to perform the unsafe dereference in
-> `rust_fmt_argument` and helps future maintainers understand the
-> invariants, reducing the risk of incorrect modifications.
+-- 
+2.51.2
 
-Empty line between the description and the Signed-off-by please.
-
-> Signed-off-by: Riccardo <riccioadami@gmail.com>
-
-Please use your "full" name here. Like you have done in the manually
-added `From: ...` above: Riccardo Adami <riccioadami@gmail.com>
-
-> ---
-
-If you send newer versions of your patch please use some versioning
-v2, v3 etc. This has to go into the subject e.g. `[PATCH v2] ...` and
-needs a change log here below the `---` e.g.
-
-v2: Add Signed-off-by ....
-
-Maybe you like to have a look to existing patches like
-
-https://lore.kernel.org/rust-for-linux/20251218-inline-lock-unlock-v2-1-fbadac8bd61b@google.com/
-
->  rust/kernel/print.rs | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-> index 899bed9c08fd..5f54be97a6a0 100644
-> --- a/rust/kernel/print.rs
-> +++ b/rust/kernel/print.rs
-> @@ -25,10 +25,10 @@
->      // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
->      let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
->      //SAFETY: `ptr` is provided by the kernel formatting path for the `%pA`
-> -// specifier during `vsnprintf` processing and always points to a valid
-> -// `fmt::Arguments` value created by the caller. The value lives at least
-> -// for the duration of this call and is only read here. It is not stored
-> -// or accessed after returning, so dereferencing it is safe.
-> +    // specifier during `vsnprintf` processing and always points to a valid
-> +    // `fmt::Arguments` value created by the caller. The value lives at least
-> +    // for the duration of this call and is only read here. It is not stored
-> +    // or accessed after returning, so dereferencing it is safe.
-
-I have some difficulties matching the description in the commit
-message above with this change. For me it looks like you just fix the
-indentation but haven't changed anything on the SAFETY comment itself?
-
-Looking at the original file
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/print.rs?h=v6.19-rc1#n27
-
-I wonder if in the end you want to update the `// SAFETY: TODO.`
-there? What would match the commit description? But that isn't done
-here. So if this is the case you might want to check if you sent an
-intermediate version of you work?
-
-Thanks for working on this!
-
-Dirk
