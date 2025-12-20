@@ -1,99 +1,109 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E667828850B
-	for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 12:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9337B1C6FF5
+	for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 13:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766235241; cv=none; b=erOcQqtng35JF3tvB76SeWULkRZW4mc+2uqSHMz3EvPoyeuc2V5tnFCvaQa8GwTB7+9mVlk52DBFA9g9Rt/4s59d7DG4mwAzXTOjf0Z7Mm6gCSOYa++SnnokyxsVGF/P/LvLkPqmmwyd6ZBC573zPnRHFJEHBmtADYteZWj7t5E=
+	t=1766235783; cv=none; b=iFHCQpYoh/hSGaK1XbtKl2tbi1Yf2xRYqsgJVoQyTozzGM2OebcBXqd7bTMAKoAC7vCCNfDbXrBaqFFGWhJbeqblJP0ojKSchyOA8Y0VnX1SmnwM0nH5sKaFpsCVaHnb+aRVvN/eSN11CR+/T/sCVuNzOxU0zy7edv3WzY/cviI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766235241; c=relaxed/simple;
-	bh=DCt1NiXGvYVNiSKFRGiFenUe4OH0SVeIOjJJWZ88kDs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QlEbbo0p8IFM37P71AVBRHdMAsRUtArK4WMHS/aoU2LF7DMNebrR0/ex2c0UjV4M3hNmZpRo1qkywd5Q10CFG35SLE39ViFczZ3TbUmQQzqQoTz4HQwSs3qWd28fwseOcnGcNbRbLToZQvlhmNPJPBILNLh4JBxdQcX9w0sQHgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SeaIKpP1; arc=none smtp.client-ip=209.85.216.43
+	s=arc-20240116; t=1766235783; c=relaxed/simple;
+	bh=05LHoiuSPBTSfyzJSUG75GOop8lpP0cxRU4f94/G6WU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YU9x9DXyVW4Myl+TvCbUhqurRP9D9JFVuESTUMNo/JnRnZ7J06/9mU3LqBx5IpOQ9yAHDk4M8DMcnY3N+nBwCq/lWXpAjqB1kKcaXIa9KO4CWrzCrRK4lKDmUloPqCwBJSHPzDAs6kmAJLfer/iOE6bqnCuqUjkDF8ZKYiFWhxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q0Lg9y7R; arc=none smtp.client-ip=209.85.218.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SeaIKpP1"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-34e730f5fefso2695986a91.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 04:53:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q0Lg9y7R"
+Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-b736d883ac4so467504966b.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 05:03:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766235239; x=1766840039; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DCt1NiXGvYVNiSKFRGiFenUe4OH0SVeIOjJJWZ88kDs=;
-        b=SeaIKpP1wVhp8GGemF/MLZtd+AAJBZY2Cclx0gI23fXmZWtxUNNeugUWVGjlermE9c
-         e/3Ok69rbKZdd8PKsznRRju9hdDoZviMkpl4Da1cLQDrMzPtvIK2wpsP5G0r9utIxWpB
-         pr/UCUxWgu3adOXyU7QkoJKQE0geaNa/qcgC2r8mtbqb+zlWzn2c76DbinvF85Hx2R2k
-         QQF9lBdm96x0iZn/WPT2t+YsiXRXjBJBV9dEJWJyVLwUKL5fJkw2fSju7cW78vlgcHE8
-         cpmJWhxidWXmshxv3sJWOuZzCrQNWwN+7mp8h2cMJ3qT/YBEHl54XZFJ1iBJBmkO0KQX
-         MQsQ==
+        d=gmail.com; s=20230601; t=1766235779; x=1766840579; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=V7RIGHedqTvoAMB4Jqxtxps60zRuzPPKf7xiOF7nG2A=;
+        b=Q0Lg9y7R3CvOf1p9k3Dv7+yHyfekhSycC+1Ka4W2CPmoPOB6l6EXCrXQnwGl4lR/di
+         8ffy7rfp8lNoTmwgYqJyb+gaRzPtvvAIrLyGrlU2S2rQxiGeKmZ9ONsdVCAPeMrD4+UJ
+         fv9yLubbJqkl8We3VI2EatIDAGalwOkIndrxA3EQj9T6aJSLcZ+Ex78lAUZdYHiVH951
+         mMMl0NmeJoXfrgWZEz47pu8IPhihZuX7xdH69sUR+HCJIQXbT8qCeM1YH0mN2aTzgfLo
+         y3Y7tDvjraZ3w2lwaZpmnh3cXru3QKCPK26IlBuz2b6epQyvxneQAecT6RRbSGICE1vy
+         LYTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766235239; x=1766840039;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DCt1NiXGvYVNiSKFRGiFenUe4OH0SVeIOjJJWZ88kDs=;
-        b=qn+Jq1Kl3/Ii+uvKgC0+Zygdtk1LiOGk4/YeTba3NmabTX+I31IeE5FMLCsj6U2ycW
-         ojv82JQo5mvT5FdCZ8IR5tb2eROXbA4ms4Ef1Ku6Owhw9a5EnSD3N3GDmmU718/pntZB
-         KaIzvYZLalkhs+1tuC39edyugMZokYqoK6HYFez9kBvR3VH/7XPrI5hNnKQSpmihzXPg
-         yQ2V83Z8w3bjRMhS1yjvulfnXJEqi25pZti1+SZ4yquApzirwgiVD5kZdo7traZoiU+T
-         QhOEsCdhBEQc/+ZUYAS9PlYcuplQtlsgsFoZR5kuq41WpyE2CXgkXzdC0jcK5Lk6nnCi
-         lybQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXzsXedUpQugimWZPRHvK8uluUpXSV5neADvzG/ZyDyuQeCgqTGpvAmykkeNzzGDyuTDJyaksID/jk8hnhvNA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0z0dmCk/vGXISu4VudoocgQHCu8iWDv7eMranWmTOD6NUiOdl
-	3AbtN93YfvgsHp3pbaZUZ3aVpCeklhoissLQJckQJrOJTyOnOUKF9BgTLRavLypTUm5j5L5Wguf
-	BnmYhxJJI8gfX2ehkoiE8BwBxXU9Gul4=
-X-Gm-Gg: AY/fxX4NTsvLRXq1nMFJEujqrhLqhmN0qUb/Che/PNwrm7349V1RYUNfZ9NIMUeWOH1
-	8A5BfiyDqfd2HGi3Y2iLPqQg5zCgpzbQaxkyM1O4HADfk2zn6CQJxsu7qYp/gxxt5GZnfGdII/Y
-	EtPhUUYk1mrghCOEoIEApPBGqCM94O7WwGqkGNcFiTrzvIUsAcu6RVFqGd8QcWBrH5OZdi40eQl
-	sBWd2L88D0RK0b4Oe5IBJLZQ9xTB2hl4Nrdq9svr/z4xKz7I7bDTi6Xlt5RcMvrQEZR+GLJp+RK
-	nw04ySE9Iv7o6iOVwDRSLxlvP4o=
-X-Google-Smtp-Source: AGHT+IGxNP/OFMZ9VQzxbDRyZknUn4r2tWcISDr4M8YPv4RUlT3pFlEiCYhZwoZk9P9jMjfG7pp8xWIa63+jRalj8zo=
-X-Received: by 2002:a17:90b:590b:b0:34e:5aa2:cf61 with SMTP id
- 98e67ed59e1d1-34e921cc3b8mr4507598a91.28.1766235239094; Sat, 20 Dec 2025
- 04:53:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766235779; x=1766840579;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V7RIGHedqTvoAMB4Jqxtxps60zRuzPPKf7xiOF7nG2A=;
+        b=bHnfzs7qwj4vYQVRnanxz2XuobYd/yvzkRBjK+Gh6wCs5+GPizNNynRWEDzmVJ7sHb
+         Y9+ehZQWVFpOqQQV4LCeQVIH0gZDzVUP1CwAThxZHm4Ld3nQC9ZuBx1lH2PptrzWgsQO
+         s93aSW5qXM5+vsq8hDhPocWooURD19BzCt7PiHEwvuGYM3FD3r068dVJJpEj93eW9BJX
+         vz9KGRNpkUjeINzkrVoBrbWcQLxXoJjJaVgi14fC7QpTbgrB8SnPij9KVfvQy1q5/zSr
+         JXMjlDBCeQGntawbcz7zsYlw/A+bemCIv7D1ISo2UMCO9yKPd8YbeIxfVSFG8TLNOVti
+         xQ3A==
+X-Gm-Message-State: AOJu0Yw5jm+iPN0nwD+QFUTjLoEJg1CR8Y1sC5DsZlDQEsQgkYIuPzpJ
+	99GhkT87lezzjagEhpcCckm2CYNvDBDexabc8zs9LA+GrGk80otYalB1scCbxiagIaE=
+X-Gm-Gg: AY/fxX53dwSzWXXrVwD29nKMalGwJHRybUr8JHwwOevCVTyxIetYsFpFdqXoy9mGXz0
+	OkuVKa0HqCIjkzvtnVX23FMDE20eQbdUzfEGx0sE/zR8wJWe+SvO9Iow2hemCnOl5P9R2/UbNcm
+	g3+Kh3cno5DX4HJ9NTcw6GIeEUuWGVBOTABuGa85PryJxGNM+yPwYpgMw+D1TmUTWxDnrDa/FYd
+	KgmtolpCcC1LZ9ucMgDvbghu3gAsXdEw4cC0Hy0p62L9Zl9nzDSmtd6lBBpQTUneiXauywEYXyG
+	DSLDYkkx3XZLGD9NfgM+FAuOGVvkSidIUzmLd85T7ey932j8+/1MNBO9Hn9tJeFmhZxP1Zh9SRP
+	LH1YFZ2hhpfk3varzkzIs3sOvJTEWg97P8H1ASVJ8MS5hK56o8PNuh5lRyYJYlTDjpieP63u9SX
+	X/qnonRqRduJuGTxSXh3YI7TOAd8D0sRfBdMLmw2YwCrt/MFAS75heFfZGgGbA+AyKS8S58orPd
+	pIkVyqFKWMv3AzC
+X-Google-Smtp-Source: AGHT+IEt4sv0r1yld1dZFh8MPRnd0bauAeNkmQUxaYCYs60O9Jan6jQ2QuSsgx4NiyEpPi57zZmBHw==
+X-Received: by 2002:a17:907:984:b0:b6d:6f46:9047 with SMTP id a640c23a62f3a-b803722ba21mr632196466b.59.1766235779270;
+        Sat, 20 Dec 2025 05:02:59 -0800 (PST)
+Received: from codespaces-4ad828.m1k4x3cq3poebda54cltipn05g.ax.internal.cloudapp.net ([4.210.177.137])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037f13847sm481981566b.57.2025.12.20.05.02.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Dec 2025 05:02:58 -0800 (PST)
+From: Riccardo <riccioadami@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Riccardo Adami <riccioadami@gmail.com>
+Subject: [PATCH] rust: document safety requirements for fmt::Arguments dereference
+Date: Sat, 20 Dec 2025 13:00:13 +0000
+Message-ID: <20251220130014.3961-1-riccioadami@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251219-rust-page-check-v1-1-df2e52fa3bd5@gmail.com> <9efae3dc-05d5-475b-bc69-250c2186dd70@gmail.com>
-In-Reply-To: <9efae3dc-05d5-475b-bc69-250c2186dd70@gmail.com>
-From: Kari Argillander <kari.argillander@gmail.com>
-Date: Sat, 20 Dec 2025 14:53:43 +0200
-X-Gm-Features: AQt7F2q2KCAmh1RkxHvGyCP5QJH5FmUFdWQjor_e7FhxwJWiL0SnJgUIgH-KIfU
-Message-ID: <CAC=eVgSkqruKPn=-5RJW-1SR5TmPRj5BtbPH0Nu3_kuUqk53Eg@mail.gmail.com>
-Subject: Re: [PATCH] rust: page: Simplify overflow check using checked_add()
-To: Dirk Behme <dirk.behme@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 20.12.2025 10.41 Dirk Behme (dirk.behme@gmail.com) wrote:
->
-> On 19.12.25 22:29, Kari Argillander wrote:
-> > Option::is_none_or() would be nicer, but it requires Rust 1.82; the
-> > kernel currently targets 1.78.
-> >
->
-> I just wonder if we would like to add a comment like
->
-> // TODO: replace `map_or` with `is_none_or` once the MSRV is >=3D 1.82.
->
-> like we do in e.g. transmute.rs [2]?
+From: Riccardo Adami <riccioadami@gmail.com>
 
-Sure, I can do that. I=E2=80=99ll send a respin maybe next Tuesday.
+This patch documents the safety requirements for dereferencing
+`fmt::Arguments` in the kernel's `vsnprintf` formatting path. This
+clarifies why it is safe to perform the unsafe dereference in
+`rust_fmt_argument` and helps future maintainers understand the
+invariants, reducing the risk of incorrect modifications.
+Signed-off-by: Riccardo <riccioadami@gmail.com>
+---
+ rust/kernel/print.rs | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-> [2]
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/r=
-ust/kernel/transmute.rs#n75
+diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+index 899bed9c08fd..5f54be97a6a0 100644
+--- a/rust/kernel/print.rs
++++ b/rust/kernel/print.rs
+@@ -25,10 +25,10 @@
+     // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
+     let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
+     //SAFETY: `ptr` is provided by the kernel formatting path for the `%pA`
+-// specifier during `vsnprintf` processing and always points to a valid
+-// `fmt::Arguments` value created by the caller. The value lives at least
+-// for the duration of this call and is only read here. It is not stored
+-// or accessed after returning, so dereferencing it is safe.
++    // specifier during `vsnprintf` processing and always points to a valid
++    // `fmt::Arguments` value created by the caller. The value lives at least
++    // for the duration of this call and is only read here. It is not stored
++    // or accessed after returning, so dereferencing it is safe.
+ 
+     let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
+     w.pos().cast()
+-- 
+2.52.0
+
