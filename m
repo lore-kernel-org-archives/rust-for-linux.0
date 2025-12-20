@@ -1,106 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2296B1E32CF;
-	Sat, 20 Dec 2025 09:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D5823EA92
+	for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 10:01:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766224520; cv=none; b=ZE5wDoLf4GbfqMyCOfw07uAtzmiEqk2QeTX6KN65Gvyip843ObpdaDYYSFQuzYwWG+7cVYNwtG9l4WpYVu36voBodA14THQUgqNbdui3jiq6+A3lUKHogwwttfEI89xvInEm4YOTSS+wogzpKAX3SbXQ/5IXQBuEXf4+vOx2DBs=
+	t=1766224910; cv=none; b=DQ7fL4jHH7VaGkDauW5/6jZ6yKTa/klNoGQdmTFCkfFTb3wHioJHpuiVaUYwzwGE4fFca/6J8M3ZWV6qogiERzePHSLdyZCRXHtVL3DyrZPEE3UHDp+sW8DMIKq3ituC5zx/3ATA6TKmzEZiIDipPv2sskGWvtMmjzL8HWwlBn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766224520; c=relaxed/simple;
-	bh=DsXPYUVbREy4zRd6Zi8tQA71E7JOmmLFEOMCqh9ffNg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KxxFMayRW9jv5LKdMkq4vzyDoWB004wO2iL7vfU+VuK9aHQVfZ0HWPAY7Zm465kkQ5JbWw702kCDH2penT9/PxDf3CQv2XYYzbtnvnWtzoQyO8k59mIN4ts7SIsYWZaD2GNKYyZ4hVC+T+rmjxoSMvIeA7P9Dt2KyeFrq4NrH4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrYagWMf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766224910; c=relaxed/simple;
+	bh=ocwPq1u4g2mzhV09irHynQ5ZI4NxkFIUPpevQXULN2g=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Yu6/da+kSVlslGzgylGlyrunBIQ2b/7xm0aij4vUdCTWZFoU/YZ6KhZ1MSTw5kGFJt21G5LgM6MuH0Wr34Qy1cpEOz8MScELmcYJnQh+ExPSxVnQrce+ZDhhOXlh5ewR3LWlvqDBlVveHeRay0tF5ZMPDnKsPmruSzIPYRTnrs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iDve27GU; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrYagWMf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93092C4CEF5;
-	Sat, 20 Dec 2025 09:55:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1766224520;
-	bh=DsXPYUVbREy4zRd6Zi8tQA71E7JOmmLFEOMCqh9ffNg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RrYagWMfHN2LTZJlubyK2V8wpIDkkvAEfDPAQkZb2UhEq8cUAss7YFJhYEJw3kA0d
-	 KKISRm7pGR0fRQuL7vIainuvbY7x8eg1PwiAa3gkor3u/UscWIfMwdVJBC8ZLpme40
-	 C4nLn70X6Dhp49KtlGpJ0zkCJTG8jGcYvuCMSjcQ=
-Date: Sat, 20 Dec 2025 10:55:14 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Riccardo <riccioadami@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: document safety requirements for fmt::Arguments
- dereference
-Message-ID: <2025122027-roast-boggle-bab8@gregkh>
-References: <20251220094332.12254-1-riccioadami@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iDve27GU"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b7a29e6f9a0so332104766b.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 02:01:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766224907; x=1766829707; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ocwPq1u4g2mzhV09irHynQ5ZI4NxkFIUPpevQXULN2g=;
+        b=iDve27GUkw38lY0+2WnwuPkEeOIQ0ipYYDdG/jAY7DZFIMmPCPQbimEjgxxFm1im5W
+         PmxZmGyDh/PEb+8M38T4U8Z0dStqRr2y7X1h/FOr0GjdAwP8xEINlWk3c1XJtdirWEas
+         8s8AhTVtWcDopYKFAmkdGMp1KJSYpHtCpKy0VlEE7vBhNWF8iai9EN83kneDvlLaUgRi
+         jPGJxg0knV9ZUBFw23L418dVeTWS2bdYOaKSV2gJEUF/Zmd4EiU4vA7VUVTISxHQJ5lU
+         qtDy+cpPTGfArRRtTg9IVjeTSdQfeA8If/4c2Ye9bBV47wE/nmjWeAyfvG35dY6uc9rm
+         LxbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766224907; x=1766829707;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ocwPq1u4g2mzhV09irHynQ5ZI4NxkFIUPpevQXULN2g=;
+        b=rACbKGOHtjbsaDKC6CwJMg1lZVpn93lSqaXQlHxqRcsFPhq6Fa6PUbPbD5STLH82fb
+         Y5AK4KVNMtuYfFUJ/Z9N2BoPBCYkA85lJzRm5q/i5rx5etQoZgIP9EJki/LXwk/10N0n
+         RNuvnkNNfYhK63sBgkjfUPTywd2XFywDJvFtPIi0gO2zImbQqLm3KXiJty8xZDQxwUr5
+         5AZ5nhgJZY+LoQ5xQkvCocTgTD089C9KvA0ryhCqMzMsrb/+ShgmlgA24MIM1nuVLt3O
+         mRD331EM4hpoBIHFVt/RFMotdCWk5EORyfvova6VzqWg+qrGQsA08mpDH9yJIFUI2x1/
+         LiXg==
+X-Forwarded-Encrypted: i=1; AJvYcCVhVohlWiWLX13NGNr0aSTgt6Xn3DUP5TDEuJMN9SfZibHZQbOncWI6j7uFNgrhaeZRfqf5WttHqIgf3j/6iQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJMufZIYi2sgeUINWkGM5dT2Kx9he3MHCMpfsw5WHdc+FRnupT
+	EomVP+bym52xl1EZk7rXEE7Dq808OL2p/AHO1eyG47Ot5i9VcFB17KDnaLhyV0nr+1tOMrpdqXA
+	SUxWALmOTwdw2gidyQg==
+X-Google-Smtp-Source: AGHT+IG5pJx6M7iv4XX9yaURjf8mepTlu7YYJc3wOo7y0QcuEDT1u5dJwGmGqq3CfkKzGEqd1szxRNtAfdZCVwY=
+X-Received: from ejdcw8.prod.google.com ([2002:a17:907:1608:b0:b72:41e4:7557])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:7e85:b0:b73:4006:1875 with SMTP id a640c23a62f3a-b803719ef9amr511534366b.38.1766224907016;
+ Sat, 20 Dec 2025 02:01:47 -0800 (PST)
+Date: Sat, 20 Dec 2025 10:01:46 +0000
+In-Reply-To: <aUZw4fpWRUWFsb9r@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251220094332.12254-1-riccioadami@gmail.com>
+Mime-Version: 1.0
+References: <20251128-gpuvm-rust-v1-0-ebf66bf234e0@google.com>
+ <20251128-gpuvm-rust-v1-4-ebf66bf234e0@google.com> <DF2AXQ67412G.33JOX2CF0VFCK@kernel.org>
+ <aUZw4fpWRUWFsb9r@google.com>
+Message-ID: <aUZ0CsLrHjP3wMac@google.com>
+Subject: Re: [PATCH 4/4] rust: drm: add GPUVM immediate mode abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Matthew Brost <matthew.brost@intel.com>, 
+	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, Steven Price <steven.price@arm.com>, 
+	Liviu Dudau <liviu.dudau@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Frank Binns <frank.binns@imgtec.com>, Matt Coster <matt.coster@imgtec.com>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Abhinav Kumar <abhinav.kumar@linux.dev>, Sean Paul <sean@poorly.run>, 
+	Marijn Suijten <marijn.suijten@somainline.org>, Lyude Paul <lyude@redhat.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	"Christian =?utf-8?B?S8O2bmln?=" <christian.koenig@amd.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
+	nouveau@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	linux-media@vger.kernel.org, Asahi Lina <lina+kernel@asahilina.net>
+Content-Type: text/plain; charset="utf-8"
 
-On Sat, Dec 20, 2025 at 09:43:32AM +0000, Riccardo wrote:
-> Signed-off-by: Riccardo <riccioadami@gmail.com>
-> ---
->  rust/kernel/print.rs | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-> index 899bed9c08fd..5f54be97a6a0 100644
-> --- a/rust/kernel/print.rs
-> +++ b/rust/kernel/print.rs
-> @@ -25,10 +25,10 @@
->      // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
->      let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
->      //SAFETY: `ptr` is provided by the kernel formatting path for the `%pA`
-> -// specifier during `vsnprintf` processing and always points to a valid
-> -// `fmt::Arguments` value created by the caller. The value lives at least
-> -// for the duration of this call and is only read here. It is not stored
-> -// or accessed after returning, so dereferencing it is safe.
-> +    // specifier during `vsnprintf` processing and always points to a valid
-> +    // `fmt::Arguments` value created by the caller. The value lives at least
-> +    // for the duration of this call and is only read here. It is not stored
-> +    // or accessed after returning, so dereferencing it is safe.
->  
->      let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
->      w.pos().cast()
-> -- 
-> 2.52.0
-> 
-> 
+On Sat, Dec 20, 2025 at 09:48:17AM +0000, Alice Ryhl wrote:
 
-Hi,
-
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
-
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- You did not specify a description of why the patch is needed, or
-  possibly, any description at all, in the email body.  Please read the
-  section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what is needed in
-  order to properly describe the change.
-
-- It looks like you did not use your "real" name for the patch on either
-  the Signed-off-by: line, or the From: line (both of which have to
-  match).  Please read the kernel file,
-  Documentation/process/submitting-patches.rst for how to do this
-  correctly.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+Test email
