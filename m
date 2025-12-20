@@ -1,198 +1,91 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D8215539A
-	for <rust-for-linux@vger.kernel.org>; Sat, 20 Dec 2025 01:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFDF2F7445;
+	Sat, 20 Dec 2025 08:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766193585; cv=none; b=ZUpGeux5wcwrC3JeAD052aaBO58zbEKKNkZzqdBuvv3G/KHD8p6O2Me22aCiJ4uLm9C7mSilDbYVwAyn7R3I8VXrR3drU9Gb9uUKFaKQmR2W6dXSLP8tg7QrtrsjM1lxEpQn3Wad+Qo8P3UZMl4suOo+K6/RIBKWf4dskT5LLU4=
+	t=1766220044; cv=none; b=ID9O4SJU/FVYHRFs2FLaVg4sUw05mdi5sd/cfP23Dq6MUTFGhrWB3+wSOOIxpHKS4DmIP5Sdr0VQVmPuJd1+dL8m85A0rXjXPIIDQ/K3svB76hYIrsJ78r3BE9+kp4c8QSrg/loxAn87ZhiC8varj7Da19svRUqep2z6cIJl3IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766193585; c=relaxed/simple;
-	bh=UAv4VsnO1f6WhxU7SkgAuV0N5XBMbtSHDkWqN01Nnf0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hrmnKbIFdi9IjWz3Qe7QVu+x7RmnnfSqAOyfeS1TLHqevHjTyNors4iQbvNxvR4k2h/C7wVWd8r43rxj9trm+IY+TffMLvKlV0Df41I1Z3PzyDRW8XxwD5tA99NendPlsItsBP7Co8E3UyoeLXfR0kgGyHO0LiXYe7p0qUlChBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fPHuZKdS; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766220044; c=relaxed/simple;
+	bh=ibXe5uqNLfUAY3B2eDjyr4K0gR2q3RAuZxva6cYitVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EUoGGO5luxy90/V5yRThunLYr6ppRXQJnssC9sRsZuuTvc8Q7tPSf70VMHhYSev+XPWNPTtF3eIx0V2NCOx0uMbul+np8yO15AV4tme+ajJXW5lVux2Oh1lUlAJuICzGVfuPLv4c04UE7OFB+b1/H2COvtujKWWQKpdTjotvYZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3uRl58W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fPHuZKdS"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-477a219dbcaso20478295e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 19 Dec 2025 17:19:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766193581; x=1766798381; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zK22OFLvaJjEwSRzCjqir8eHtku5CMTMzFAHnPXvPsE=;
-        b=fPHuZKdSr2zeCKN9yRiU7PqjOCG6nORLasjQXmKQSF1pU7JU9qjyaikBf/9lwxk6cJ
-         sSRp/fh0ut3+IRd2uItKZA0Khne4hlHp59zDM5IVXMyUkVn7QvInfbOqRMMV/43XwEoe
-         sRDv5uciVQRGNpnq8LBJzQrpaLBh6JUmOk3jFYlabd2gMctuLKA7xIcWmcvMmxUXJ8vk
-         x/pXNhGsY0kD2sA8R7FobPI+laALO83jdbzgnelctjyKNA/svzQRkLh0WDRQgmhyuiXJ
-         Jqf8mfnvRZRG9CEyaPfevSWaHu7VEZIT08n1YMBFnXrb7vxqCf13DJbLOYTs2fS/8f3C
-         lU7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766193581; x=1766798381;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zK22OFLvaJjEwSRzCjqir8eHtku5CMTMzFAHnPXvPsE=;
-        b=F0j0AGf0BZFvAwn6GlhBn5d90SLSHBwWNs4WjFhOGNm1ezv+2PHkLLQpxqkXbW3Jjv
-         W9EOsIlSq3+xgDeAbqlilq2/QTqLsgm7CA1Y/EL2PCe0CfRR4TYIAPk6LebK/6iSWxEL
-         O3Jv3Y4ZPEBpWI3sL6Rytz6D//xVYzoBArmVnFpC5IjEkAk9sDK3DahVJdlNI9ZcRm/r
-         PFlBxjIexgsQgnOOAxuX+DYKqZc5dXrvZHYl2iz38SdUY5QopUaMFTjEOZOlPFfgKyiQ
-         4Y+Q+39d81HPxlj8+L7oKMg4icUl+XoJm/plYGRtBFLKdN42kaQ/VpdGi12ddq4N63nQ
-         qW1g==
-X-Forwarded-Encrypted: i=1; AJvYcCXG5oMBU7xRJNQ7keeZSbq2mU2QsBAYGR4WhgO2/a/qEzA1zjWDCrub24MTN1zka0vHfpjCAUbmYJG8ZZBB0Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyjTm/RKl111oPdc98TlgK7SHNLfCzv3luwyEo/EPUQnYKWC5R
-	d2gJi///8Bh0LSX1PEBaLL0wImvLlXahIukqipuiV78uL5E2SHQ0cVS9
-X-Gm-Gg: AY/fxX4jcFFsVqVuc+DZRDRTp0Sh/Vqgz97NmJZbrolxzsgxiAx01UOgX1TkjTRMAa5
-	u4F4KNGbuEFBS4oYiFfpweARzrheejxK5uAT80jIzcPvyqD/0DIFCe1lPUgiwsXCB4RN2UXFhOj
-	d2q8z1+5ZNIzqtmIPD+dorxq2qsZNygxzGBTAW8SMrbrZcWF3kdt3YIOGFCMtaFomPmHw20uGwS
-	eqgTymjyI8tmD9fLAthX1IJG3qs3+yA5RGVXciHZI0n592w2T2AYOPxDyOe8ekkCmLBoh3HyM8q
-	t8vnXwjt7eF+YlIKHSclgWZKbz5Wy4MB3PyYBtsPHYzdIvBRhoZPOhAjiKgLUO7+d8BvHKbS8Gh
-	D8DV9KBpQyvIALpiA8uFWsjP4p86HltYfQ4VUKvsgqF0LT3yexwvCU8bQTZrGzzQDqcY/Z0gESb
-	2OpxQwrluL94lMoNT2Rc34SQ7eKNdLgcJplYQ=
-X-Google-Smtp-Source: AGHT+IF0wGcWgILC9H3tfPesbVD2VmsjrslWPh0/J9HlYlPO8n11RyhVH5Pxz5vhOfwwh8J55YseTQ==
-X-Received: by 2002:a05:600c:4f09:b0:477:7bca:8b2b with SMTP id 5b1f17b1804b1-47d195672d1mr43896195e9.15.1766193580895;
-        Fri, 19 Dec 2025 17:19:40 -0800 (PST)
-Received: from ?IPV6:2001:871:22a:3342::171c? ([2001:871:22a:3342::171c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47be2723d19sm135576055e9.2.2025.12.19.17.19.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Dec 2025 17:19:40 -0800 (PST)
-Message-ID: <0169d4f7-1a31-4ec6-a456-a6dfe2d99886@gmail.com>
-Date: Sat, 20 Dec 2025 02:19:38 +0100
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3uRl58W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40473C4CEF5;
+	Sat, 20 Dec 2025 08:40:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1766220043;
+	bh=ibXe5uqNLfUAY3B2eDjyr4K0gR2q3RAuZxva6cYitVs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B3uRl58W40r5/E4jCsng+XpaN1P3mb5K3w7X9lxoI91ZITFY2no4c+DPCxfYSCZNJ
+	 48xFJR1Fg7l6JtQfb4EezJKx8gqpMaAgMYGpt7ALksjKKVXk4qltY33VlslA39XWuC
+	 CQr6Wm2ACCdqigqE0NwJLu5S64auCr8pp8xhdJmk=
+Date: Sat, 20 Dec 2025 09:40:40 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: rafael@kernel.org, ojeda@kernel.org, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	mmaurer@google.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: debugfs: use "kernel vertical" style for imports
+Message-ID: <2025122011-elves-plywood-07e5@gregkh>
+References: <20251218165626.450264-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ARMv7 Linux + Rust doesn't boot when compiling with only LLVM=1
-To: Nathan Chancellor <nathan@kernel.org>,
- Rudraksha Gupta <guptarud@gmail.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
- rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- llvm@lists.linux.dev, Linux ARM <linux-arm-kernel@lists.infradead.org>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
-References: <1286af8e-f908-45db-af7c-d9c5d592abfd@gmail.com>
- <0705db10-3cbb-4958-a116-112457f9af6c@gmail.com>
- <1910f4b6-db74-4c86-9010-28ab4462c5a7@gmail.com>
- <20251219211147.GA1407372@ax162>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20251219211147.GA1407372@ax162>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251218165626.450264-1-dakr@kernel.org>
 
-On 12/19/25 10:11 PM, Nathan Chancellor wrote:
-> Hi Rudraksha,
+On Thu, Dec 18, 2025 at 05:56:11PM +0100, Danilo Krummrich wrote:
+> Convert all imports in the debugfs Rust module to use "kernel vertical"
+> style.
 > 
-> On Wed, Dec 17, 2025 at 02:21:11AM -0800, Rudraksha Gupta wrote:
->> On 12/16/25 06:41, Christian Schrefl wrote:
->>> On 12/14/25 12:54 AM, Rudraksha Gupta wrote:
->>>> Hello all,
->>>>
->>>>
->>>> I have the following problem: https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/issues/2635
->>>>
->>>>
->>>> In short, what is happening is the following:
->>>>
->>>>
->>>> - The kernel boots and outputs via UART when I build the kernel with the following:
->>>>
->>>> make LLVM=1 ARCH="$arm" CC="${CC:-gcc}"
->>>>
->>>>
->>>> - The kernel doesn't boot and there is no output via UART when I build the kernel with the following:
->>>>
->>>> make LLVM=1 ARCH="$arm"
->>>>
->>>>
->>>> The only difference being: CC="${CC:-gcc}". Is this expected? I think this was present in the Linux kernel ever since Rust was enabled for ARMv7, and I never encountered it because postmarketOS was originally building the first way.
->>>
->>> I've managed to the get the build setup for qemu-armv7. For some reason
->>> I could not get past the initrd even on kernels that are supposed to work,
->>> but I think that is unrelated (and not a kernel issue).
->>
->> Yep, I just got qemu-arm working to drop into a debug shell for now. I have
->> to look into why other things aren't behaving nicely (but that's a problem
->> for later me :P). For now, it seems to demonstrate the problem nicely:
->>
->> https://gitlab.postmarketos.org/postmarketOS/pmbootstrap/-/issues/2635#note_521740
->>
->>
->>> On the linux-next kernel I didn't get any output on the console from qemu so I
->>> think I've reproduced the issue. Changing CONFIG_RUST=n did not change the behavior.
->>>
->>> So I this is almost certainly a LLVM/clang issue and not a Rust issue. I'll try to
->>> do a bit more digging, but I'm not sure how much I'll get done.
->>
->> Did a little more testing in addition to the testing in the gitlab issue
->> mentioned above:
->>
->> - Removed Rust configs from linux-next/pmos.config -> didn't boot on
->> qemu-arm and my phone
->>
->> - Then I removed Rust dependencies from linux-next/APKBUILD -> didn't boot
->> on qemu-arm and my phone
->>
->> - used linux-stable instead of linux-next -> booted on qemu-arm to a debug
->> shell
->>
->> linux-stable is built via gcc:
->> https://gitlab.alpinelinux.org/alpine/aports/-/blob/master/community/linux-stable/APKBUILD#L179
->>
->> linux-next is built via clang:
->> https://gitlab.postmarketos.org/postmarketOS/pmaports/-/blob/master/device/testing/linux-next/APKBUILD#L68
+> With this subsequent patches neither introduce unrelated changes nor
+> leave an inconsistent import pattern.
 > 
-> It certainly seems like LLVM / clang is a factor here based on the fact
-> that LLVM binutils were being used with GCC based on the original report
-> using 'LLVM=1 CC=gcc'. A few additional ideas for narrowing this down:
+> While at it, drop unnecessary imports covered by prelude::*.
 > 
->   * Does this reproduce with GNU binutils + clang (i.e.,
->     CROSS_COMPILE=... CC=clang)? This would further confirm that clang
->     is the cuplrit since GNU binutils and GCC are confirmed working with
->     linux-stable, correct?
+> Link: https://docs.kernel.org/rust/coding-guidelines.html#imports
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/debugfs.rs                   | 46 ++++++++++++++++++------
+>  rust/kernel/debugfs/callback_adapters.rs | 21 +++++++----
+>  rust/kernel/debugfs/entry.rs             | 14 +++++---
+>  rust/kernel/debugfs/file_ops.rs          | 25 ++++++++-----
+>  rust/kernel/debugfs/traits.rs            | 43 ++++++++++++++++------
+>  5 files changed, 109 insertions(+), 40 deletions(-)
 > 
->   * Does this reproduce when linux-stable is built with clang / LLVM=1?
->     This would rule out a -next specific regression as well as allow
->     diffing the linux-stable GCC configuration with the clang
->     configuration to see if there are any configurations that get
->     enabled only with clang, which could be another reason no issue is
->     seen with GCC.
-> 
->   * Our continuous integration boot tests several ARM configurations in
->     QEMU, including Alpine Linux's:
-> 
->     https://github.com/ClangBuiltLinux/continuous-integration2/actions/runs/20379046102/job/58575229973
-> 
->     So it is possible that a postmarketOS configuration option
->     introduces this?
-> 
-> The results of that testing might give us a more obvious direction to go
-> for troubleshooting, especially since this appears to reproduce in QEMU,
-> which should make debugging in gdb possible.
+> diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
+> index facad81e8290..536a320334bf 100644
+> --- a/rust/kernel/debugfs.rs
+> +++ b/rust/kernel/debugfs.rs
+> @@ -8,28 +8,52 @@
+>  // When DebugFS is disabled, many parameters are dead. Linting for this isn't helpful.
+>  #![cfg_attr(not(CONFIG_DEBUG_FS), allow(unused_variables))]
+>  
+> -use crate::fmt;
+> -use crate::prelude::*;
+> -use crate::str::CStr;
+>  #[cfg(CONFIG_DEBUG_FS)]
+>  use crate::sync::Arc;
+> -use crate::uaccess::UserSliceReader;
+> -use core::marker::PhantomData;
+> -use core::marker::PhantomPinned;
+> +use crate::{
+> +    fmt,
+> +    prelude::*,
+> +    str::CStr,
+> +    uaccess::UserSliceReader, //
 
-I've found the issue (at least on qemu), it was just that the driver for
-the PL011 serial was not included in the config.
+While I hate the // use here, I have hope that one day the compiler will
+be fixed to allow this...
 
-I don't know why Rudraksha would have observed any difference disabling
-Rust or clang though.
-Maybe it's an entirely different issue on Hardware?
-
-> 
-> Also, what version of clang is this?
->
-
-Alpine clang version 21.1.8
-
-Cheers,
-Christian
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
