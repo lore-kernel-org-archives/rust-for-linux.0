@@ -1,210 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD762F83B2
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 19:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC941DEFF5;
+	Mon, 22 Dec 2025 20:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766431978; cv=none; b=Wr1WO6O3DQ+8V8rVTHBrzR8oGpcLocOPgn+8O3oxn68Ze4Kk+l0Trc+uIT2uTaukcRH5jC/f3lpZPGwvuJuBkfEDirS+b5Rt0yw3/OZ7spSLTzDwiQWzGb4fCZGIvkjPFMd6GlMs2MlL/NkWUtogECRZsYtNJOzV51n5xJV9zZQ=
+	t=1766433861; cv=none; b=VlBhSziaKRTLWj6xSAO8+kqiMSrpD8oS4cyrFOpuqserMwj6fgnyl+2L5e3KacdnSxacNV1hD3wXW6+z8NLoSUjylptAFHV/3SABiuRTTLpNqhL6Pnpw6vhENiv/PnoMUXstSCiD0cDK+zyBtVE9J+z+fqs6Zyk/IE6+OVi9jQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766431978; c=relaxed/simple;
-	bh=2YLmqYLXG8cvuDMIXMSVNeC2qAgNhbNu2d7uOd4IqIM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IBY+/+2xlXF30MrG0FAWu4gTz+su75rvZWLBUJMz1Uqm0ybpyVeJGl5zhwFRItxt44w92AYCe5J3Oz+Fzm+hQsn9U04xVIDYw/aH8LsUIFsMIjgBl25PmhnMgFBsd5ctjZZebos7t5bdV4hfwh/Gcim+3rN8pHl5ORtKvjZJNvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3VNGzT/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766433861; c=relaxed/simple;
+	bh=zwpPZI3aCzU701r+bt49CUPkrH2uvexax+yCoGFo4dk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=a1SDRZJsVLetj3lRd+Z3FcidGLtkZh/rWrbU1Km3ExQX0ooL96QrIqksEkD2l1L4k3TP0bydRq7mk+gaUDILcd0i4LW73HRolFdS4foqhtvURH7GFoS6oLaZ3eCQzji7O3/xREPkIuu/XIcL6ZcTh/l0hFm6qyRrgvRPdAtVggE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ks4sEbD4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3VNGzT/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C09C116D0
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 19:32:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ks4sEbD4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB36C4CEF1;
+	Mon, 22 Dec 2025 20:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766431978;
-	bh=2YLmqYLXG8cvuDMIXMSVNeC2qAgNhbNu2d7uOd4IqIM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=F3VNGzT/CsTfe3DWl7QcMrwTXVtn7t6zeoXDfhEPGhZ8KJPJl2uXQ02WkMORvq++0
-	 M3Y/0Ooo3Rys3UNO1LLKOclnu1WitUhxezbdiE4ztqcbtZhpKm5b7QM3ViSsfuDP6W
-	 CM0la+t4L6g6BR+A06W2p6Hfervi3uga6tfq3TLLd0v1HFL2cWx+3fsEm3GmHmgp/t
-	 6qrIGJQYFcEBhxhVJnMpLsENK6GqCyDEl19o7QmxW2f/RZ3t299FdiPUNlrP9VCQxm
-	 lDElXiiAAb+e/R7IOH4m1JsLj8pRXDvt0tFJWB6GzaO10akhoqOUgfhvK4F0aNBoI9
-	 vD7IEJCcpb+9g==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-3ece54945d9so1477855fac.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 11:32:58 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVeyCHNVPK/RUC9tcgfP7VZARMq9rXLVr+QZCcqjqV6wgUREBiEQhcPe7pG59/lPnJAil2wfo3Pg3qfaixpQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2TVKppuQQLXpDMvd2WOeuIaMZahf9UI2zyK4XQOD+04Zx/oZF
-	vIZimL4/QNZyDmfSSPHea6mjRrHDNmIINd3FmQ2Qj5c2S9z9fhwN5PmmE1CyTsj9IOQCFoguSj9
-	i00LeGzmfY6PBTnihZu5qC0sUm6hP/Ck=
-X-Google-Smtp-Source: AGHT+IH9Oh5ISckXWZDzO/JklOW5Tf/iJ8QC33F5miP3LQxw43hjKyPUfvzG4hyaummAbxFPPPUyE01caboS86H4kxc=
-X-Received: by 2002:a05:6820:827:b0:659:9a49:8dd0 with SMTP id
- 006d021491bc7-65d0ea2a39emr4539336eaf.18.1766431977292; Mon, 22 Dec 2025
- 11:32:57 -0800 (PST)
+	s=k20201202; t=1766433861;
+	bh=zwpPZI3aCzU701r+bt49CUPkrH2uvexax+yCoGFo4dk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Ks4sEbD4BmEIL+iZbfylQlhQIi6pN3LrZ83VQb9hSJU3r7XUizrxcsW6e/FeWfUvd
+	 gUHvKlGB9e7kpSWLMwSsxLIajsEJesvz+egvwY9KfQKhXq5lWNSDo7ad5p76ERuwYn
+	 nx733ghtCo2Vv0USO877gmZtEIAvFFkMMf4O5yXdUVX8g1KzsKgmEYf13snZfFswn2
+	 UzB43OXM0N2SIksoQEeMUYVUD9pc+B9Qd24TzWGVxk7U11h1w87whOpqfCRkCfjgCG
+	 trJawH2puCyAErsYIAFuNf7WoKp1zQJIft2VjIy4xRgaq9BOtNkaBPi2FfphiVKZ71
+	 5RKGWht8ECTkQ==
+From: Mark Brown <broonie@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Breno Leitao <leitao@debian.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
+ David Gow <davidgow@google.com>, Jens Axboe <axboe@kernel.dk>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Rae Moar <raemoar63@gmail.com>, 
+ Tamir Duberstein <tamird@gmail.com>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
+ linux-clk@vger.kernel.org, linux-pci@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org
+In-Reply-To: <20250925-core-cstr-cstrings-v2-0-78e0aaace1cd@gmail.com>
+References: <20250925-core-cstr-cstrings-v2-0-78e0aaace1cd@gmail.com>
+Subject: Re: (subset) [PATCH v2 00/19] rust: replace `kernel::c_str!` with
+ C-Strings
+Message-Id: <176643385114.959021.16173066477128119135.b4-ty@kernel.org>
+Date: Mon, 22 Dec 2025 20:04:11 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1766331321.git.foxido@foxido.dev> <a28e83201e1413091333509628274807e50ec170.1766331321.git.foxido@foxido.dev>
-In-Reply-To: <a28e83201e1413091333509628274807e50ec170.1766331321.git.foxido@foxido.dev>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 22 Dec 2025 20:32:46 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hQwopbJox0QpT5tmZ0Eobgpfii47cDP8OWEON+iT4Qxg@mail.gmail.com>
-X-Gm-Features: AQt7F2pLyfssaq8QK0jeDWulf5Uchu82OKpzC-ivQuaspV6Nq4x_CDAxy2F83U4
-Message-ID: <CAJZ5v0hQwopbJox0QpT5tmZ0Eobgpfii47cDP8OWEON+iT4Qxg@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] rust: implement wrapper for acpi_object
-To: Gladyshev Ilya <foxido@foxido.dev>
-Cc: "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, Armin Wolf <W_Armin@gmx.de>, 
-	platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-On Sun, Dec 21, 2025 at 7:24=E2=80=AFPM Gladyshev Ilya <foxido@foxido.dev> =
-wrote:
->
-> ACPI Object is represented via union on C-side. On Rust side, it's
-> zero-cost type wrapper for each ACPI Type, with individual methods for
-> getters and other interactions.
+On Thu, 25 Sep 2025 09:53:48 -0400, Tamir Duberstein wrote:
+> This series depends on step 3[0].
+> 
+> Subsystem maintainers: I would appreciate your `Acked-by`s so that this
+> can be taken through Miguel's tree (where the previous series must go).
+> 
+> Link: https://lore.kernel.org/all/20250925-cstr-core-v16-0-5cdcb3470ec2@gmail.com/ [0]
+> 
+> [...]
 
-This is ACPICA stuff though and switching over ACPICA to Rust any time
-soon is rather unlikely.
+Applied to
 
-Is this really needed on the Rust side?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-> Signed-off-by: Gladyshev Ilya <foxido@foxido.dev>
-> ---
->  rust/kernel/acpi.rs | 103 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 103 insertions(+)
->
-> diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
-> index 9b8efa623130..0a164ca8cceb 100644
-> --- a/rust/kernel/acpi.rs
-> +++ b/rust/kernel/acpi.rs
-> @@ -63,3 +63,106 @@ macro_rules! acpi_device_table {
->          $crate::module_device_table!("acpi", $module_table_name, $table_=
-name);
->      };
->  }
-> +
-> +/// An ACPI object.
-> +///
-> +/// This structure represents the Rust abstraction for a C [`struct acpi=
-_object`].
-> +/// You probably want to convert it into actual object type.
-> +///
-> +/// # Example
-> +/// ```
-> +/// # use kernel::prelude::*
-> +/// use kernel::acpi::{AcpiObject};
-> +///
-> +/// fn read_first_acpi_byte(obj: &AcpiObject) -> Result<u8> {
-> +///     if obj.type_id() !=3D AcpiBuffer::ACPI_TYPE {
-> +///         return Err(EINVAL);
-> +///     }
-> +///
-> +///     let obj: &AcpiBuffer =3D obj.try_into()?;
-> +///
-> +///     Ok(obj.payload()[0])
-> +/// }
-> +/// ```
-> +#[repr(transparent)]
-> +pub struct AcpiObject(bindings::acpi_object);
-> +
-> +impl AcpiObject {
-> +    /// Returns object type (see `acpitypes.h`)
-> +    pub fn type_id(&self) -> u32 {
-> +        // SAFETY: `type` field is valid in all union variants
-> +        unsafe { self.0.type_ }
-> +    }
-> +}
-> +
-> +/// Generate AcpiObject subtype
-> +///
-> +/// For given subtype implements
-> +/// - `TryFrom<&AcpiObject> for &SubType` trait
-> +/// - unsafe try_from_unchecked() with same semantics, but without type =
-check
-> +macro_rules! acpi_object_subtype {
-> +    ($subtype_name:ident <- ($acpi_type:ident, $field_name:ident, $union=
-_type:ty)) =3D> {
-> +        /// Wraps `acpi_object` subtype
-> +        #[repr(transparent)]
-> +        pub struct $subtype_name($union_type);
-> +
-> +        impl TryFrom<&AcpiObject> for &$subtype_name {
-> +            type Error =3D Error;
-> +
-> +            fn try_from(value: &AcpiObject) -> core::result::Result<Self=
-, Self::Error> {
-> +                // SAFETY: type_ field present in all union types and is=
- always valid
-> +                let real_type =3D unsafe { value.0.type_ };
-> +
-> +                if (real_type !=3D $subtype_name::ACPI_TYPE) {
-> +                    return Err(EINVAL);
-> +                }
-> +
-> +                // SAFETY: We validated union subtype
-> +                Ok(unsafe {
-> +                    ::core::mem::transmute::<&$union_type, &$subtype_nam=
-e>(&value.0.$field_name)
-> +                })
-> +            }
-> +        }
-> +
-> +        impl $subtype_name {
-> +            /// This ACPI type int value (see `acpitypes.h`)
-> +            pub const ACPI_TYPE: u32 =3D bindings::$acpi_type;
-> +
-> +            /// Converts AcpiObject reference into exact ACPI type wrapp=
-er
-> +            ///
-> +            /// # Safety
-> +            ///
-> +            /// Assumes that value is correct (`Self`) subtype
-> +            pub unsafe fn try_from_unchecked(value: &AcpiObject) -> &Sel=
-f {
-> +                // SAFETY: Only unsafety comes from unchecked transforma=
-tion and
-> +                // we transfered
-> +                unsafe {
-> +                    ::core::mem::transmute::<&$union_type, &$subtype_nam=
-e>(&value.0.$field_name)
-> +                }
-> +            }
-> +        }
-> +    };
-> +}
-> +
-> +acpi_object_subtype!(AcpiInteger
-> +    <- (ACPI_TYPE_INTEGER, integer, bindings::acpi_object__bindgen_ty_1)=
-);
-> +acpi_object_subtype!(AcpiString
-> +    <- (ACPI_TYPE_STRING, string, bindings::acpi_object__bindgen_ty_2));
-> +acpi_object_subtype!(AcpiBuffer
-> +    <- (ACPI_TYPE_BUFFER, buffer, bindings::acpi_object__bindgen_ty_3));
-> +acpi_object_subtype!(AcpiPackage
-> +    <- (ACPI_TYPE_PACKAGE, package, bindings::acpi_object__bindgen_ty_4)=
-);
-> +acpi_object_subtype!(AcpiReference
-> +    <- (ACPI_TYPE_LOCAL_REFERENCE, reference, bindings::acpi_object__bin=
-dgen_ty_5));
-> +acpi_object_subtype!(AcpiProcessor
-> +    <- (ACPI_TYPE_PROCESSOR, processor, bindings::acpi_object__bindgen_t=
-y_6));
-> +acpi_object_subtype!(AcpiPowerResource
-> +    <- (ACPI_TYPE_POWER, power_resource, bindings::acpi_object__bindgen_=
-ty_7));
-> +
-> +impl AcpiBuffer {
-> +    /// Get Buffer's content
-> +    pub fn payload(&self) -> &[u8] {
-> +        // SAFETY: (pointer, length) indeed represents byte slice
-> +        unsafe { ::core::slice::from_raw_parts(self.0.pointer, self.0.le=
-ngth as usize) }
-> +    }
-> +}
-> --
+Thanks!
+
+[19/19] rust: regulator: replace `kernel::c_str!` with C-Strings
+        commit: b0655377aa5a410df02d89170c20141a1a5bbc28
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
