@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBA2299952;
-	Mon, 22 Dec 2025 12:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F59B299952;
+	Mon, 22 Dec 2025 12:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766406960; cv=none; b=g1RJlnOxqr/RGeHimF6qLsZ/HpyvngrrjgFM2xjv0dQLg75LwCEXzRoaf9ANNWwJ1+vwKl6aT2lH+88hGl6PVMs/ZSD3953DOxXJrYLPUZGaOglkCe9+KHzKvhs1kl+vT8/qIFWiYSzkmZ9CsZcnEKTixTsVOvEVWtjEpVWAlOc=
+	t=1766406964; cv=none; b=C2oP73lolXx9bzPe8HrZVWJhpmWMAZPfejxO2uI2t/yhqks6tiivfZ3K534if8LmgoixGe0SVLi+vE0heP50kv0l+2xQyk08Nc1jdpov4pQVoGKWEfPUxnFaCg21/4QIuP8tHUcMQ179OVa1ADuBQ+3XRSc2agQ0OcaKTjwbQBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766406960; c=relaxed/simple;
-	bh=GZefr2miDJVPz7/AUrQZGGN8nlgyECV12X9IsaSBhCc=;
+	s=arc-20240116; t=1766406964; c=relaxed/simple;
+	bh=8DQ/FR0EAoq7PDZ/SgyPus1AoqbyZO25KcfK/QGVXsI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ieQTkoX5wF96Sadc/HixGLIF9cLzuFMxmwCrgooIYJMEbO5ByV6m4f/TOPKrju+XlzLmaf8694FH0LJGwRcyvHY9PpnEA6rU01DRTytxr47EqeobwA54LdMHJCAmwFCcf4tGbTlizyTPHcq/HEZqtM4mGv8HGLPLOy0d0FlOA3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixjllw0w; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=lbEGGwGRvqVZ7OcdB4ejGlojzpsF5h+LxIgpmvMd+idh3prhySeJ/DwmsGuRb/521JIeQMMLbx1TPkBEf+NFthazCcUVxhQNiE/xWy/wkKBqnQP66C0ouFWONa4d7LSS/FXZFOfYAWqQwXyv5vVmRSiEkf5IPz2+8KnkPgDHJTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/GSrRbX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixjllw0w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8282CC4CEF1;
-	Mon, 22 Dec 2025 12:35:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/GSrRbX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9702DC113D0;
+	Mon, 22 Dec 2025 12:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766406960;
-	bh=GZefr2miDJVPz7/AUrQZGGN8nlgyECV12X9IsaSBhCc=;
+	s=k20201202; t=1766406964;
+	bh=8DQ/FR0EAoq7PDZ/SgyPus1AoqbyZO25KcfK/QGVXsI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ixjllw0wAHsjklLaIb3kMcqfoa3UeqL5PKLzncxqgiW3PH2yxeUHFPCFXVwpzoKsj
-	 k898X6+CjAm8Q97Y3TRHUnVLaBaXa6Yq/vuu7zecO198swOvIjDtElOIfsStdaFsvm
-	 szi592WB+7oQ06+cvBoNf/WQx5+gjn9PZEzui/D3oH+wo0nEeE9fFmjNTcoH0ogjbn
-	 +uYgJeR3kDxqZennDRzibNbIoSUrPNho4vKtkLkb8MAFlLqbeWk2h8MezSgy468BYi
-	 LiCwMwQaifkKPqxgfH0Zm0xiYUOfDrlB7N+saxeIF0IaoC+7pK5MqACW+tRIaTxTse
-	 mh/yBPee+pxmw==
+	b=Q/GSrRbXMMmybHtwZJpyTtUXmAqu6G1xCXKTR90ULLFwfUmo5+aRNNzzjZ1zh+7IW
+	 6EZ8bAbnkCUXLtiQ23C8yNevxDEzCAlIQKj2Jvx7B7K1yxww4hvkpe1iFnL60Y+dvc
+	 D4PrwC0LQ4K3rz4dPpzZx5eYbWiNkLQLuSpT8BzlJPjTfp68J5bfWUXO8wNgV7g5qU
+	 UwXxL84HnMFrkaCsRgEyDgKyF4zM6hOATjJzxSPgxBZ0bry8AIzseRUG88BL/wxqpo
+	 t2Ih3D+HwSuugSCCOQvPOQqJ6uBqV0ix091UHQuShWySgGHIZvqu2b0SFPb+OclyU1
+	 fOc/E5bWD+CSw==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 22 Dec 2025 13:35:32 +0100
-Subject: [PATCH 6/7] rust: debugfs: replace `kernel::c_str!` with C-Strings
+Date: Mon, 22 Dec 2025 13:35:33 +0100
+Subject: [PATCH 7/7] samples: rust: debugfs: replace `kernel::c_str!` with
+ C-Strings
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +38,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251222-cstr-driver-core-v1-6-1142a177d0fd@gmail.com>
+Message-Id: <20251222-cstr-driver-core-v1-7-1142a177d0fd@gmail.com>
 References: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
 In-Reply-To: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -52,13 +53,13 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1766406931; l=3123;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1766406931; l=4838;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=wnJzdd7Q/TsdMm0CR2JTey0rC7wKqMRx7YZzm8OaozQ=;
+ bh=mqXYZLE8JU4rujJv0HsYLd4wAnkasrCISB5W8jpNYxM=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QNQv54f8lXcI0JW5/+ZgOT0kqH5VnR7sBAanDaln/RB63mYRHhl/n7qd8XPaTIPr/iCytWIAmIL
- sYV/J/kcrXA0=
+ QMUGgCsZl99Mn//Bri041qr3BeQnX2BRwTwL68uHBvH2I0a3BegqDksFKDC2IuKmuie9xLKLC/6
+ BFHiPvXjSWwg=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
@@ -69,80 +70,122 @@ C-String literals were added in Rust 1.77. Replace instances of
 
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- rust/kernel/debugfs.rs | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ samples/rust/rust_debugfs.rs        | 17 ++++++++---------
+ samples/rust/rust_debugfs_scoped.rs | 20 ++++++++------------
+ 2 files changed, 16 insertions(+), 21 deletions(-)
 
-diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
-index facad81e8290..fe7c8c5e3301 100644
---- a/rust/kernel/debugfs.rs
-+++ b/rust/kernel/debugfs.rs
-@@ -102,9 +102,8 @@ fn create_file<'a, T, E: 'a>(
-     /// # Examples
-     ///
-     /// ```
--    /// # use kernel::c_str;
-     /// # use kernel::debugfs::Dir;
--    /// let debugfs = Dir::new(c_str!("parent"));
-+    /// let debugfs = Dir::new(c"parent");
-     /// ```
-     pub fn new(name: &CStr) -> Self {
-         Dir::create(name, None)
-@@ -115,10 +114,9 @@ pub fn new(name: &CStr) -> Self {
-     /// # Examples
-     ///
-     /// ```
--    /// # use kernel::c_str;
-     /// # use kernel::debugfs::Dir;
--    /// let parent = Dir::new(c_str!("parent"));
--    /// let child = parent.subdir(c_str!("child"));
-+    /// let parent = Dir::new(c"parent");
-+    /// let child = parent.subdir(c"child");
-     /// ```
-     pub fn subdir(&self, name: &CStr) -> Self {
-         Dir::create(name, Some(self))
-@@ -132,11 +130,10 @@ pub fn subdir(&self, name: &CStr) -> Self {
-     /// # Examples
-     ///
-     /// ```
--    /// # use kernel::c_str;
-     /// # use kernel::debugfs::Dir;
-     /// # use kernel::prelude::*;
--    /// # let dir = Dir::new(c_str!("my_debugfs_dir"));
--    /// let file = KBox::pin_init(dir.read_only_file(c_str!("foo"), 200), GFP_KERNEL)?;
-+    /// # let dir = Dir::new(c"my_debugfs_dir");
-+    /// let file = KBox::pin_init(dir.read_only_file(c"foo", 200), GFP_KERNEL)?;
-     /// // "my_debugfs_dir/foo" now contains the number 200.
-     /// // The file is removed when `file` is dropped.
-     /// # Ok::<(), Error>(())
-@@ -161,11 +158,10 @@ pub fn read_only_file<'a, T, E: 'a>(
-     /// # Examples
-     ///
-     /// ```
--    /// # use kernel::c_str;
-     /// # use kernel::debugfs::Dir;
-     /// # use kernel::prelude::*;
--    /// # let dir = Dir::new(c_str!("my_debugfs_dir"));
--    /// let file = KBox::pin_init(dir.read_binary_file(c_str!("foo"), [0x1, 0x2]), GFP_KERNEL)?;
-+    /// # let dir = Dir::new(c"my_debugfs_dir");
-+    /// let file = KBox::pin_init(dir.read_binary_file(c"foo", [0x1, 0x2]), GFP_KERNEL)?;
-     /// # Ok::<(), Error>(())
-     /// ```
-     pub fn read_binary_file<'a, T, E: 'a>(
-@@ -188,12 +184,11 @@ pub fn read_binary_file<'a, T, E: 'a>(
-     ///
-     /// ```
-     /// # use core::sync::atomic::{AtomicU32, Ordering};
--    /// # use kernel::c_str;
-     /// # use kernel::debugfs::Dir;
-     /// # use kernel::prelude::*;
--    /// # let dir = Dir::new(c_str!("foo"));
-+    /// # let dir = Dir::new(c"foo");
-     /// let file = KBox::pin_init(
--    ///     dir.read_callback_file(c_str!("bar"),
-+    ///     dir.read_callback_file(c"bar",
-     ///     AtomicU32::new(3),
-     ///     &|val, f| {
-     ///       let out = val.load(Ordering::Relaxed);
+diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
+index 025e8f9d12de..2888619443d3 100644
+--- a/samples/rust/rust_debugfs.rs
++++ b/samples/rust/rust_debugfs.rs
+@@ -32,7 +32,6 @@
+ //! ```
+ 
+ use core::str::FromStr;
+-use kernel::c_str;
+ use kernel::debugfs::{Dir, File};
+ use kernel::new_mutex;
+ use kernel::prelude::*;
+@@ -98,7 +97,7 @@ fn from_str(s: &str) -> Result<Self> {
+     ACPI_TABLE,
+     MODULE_ACPI_TABLE,
+     <RustDebugFs as platform::Driver>::IdInfo,
+-    [(acpi::DeviceId::new(c_str!("LNUXBEEF")), ())]
++    [(acpi::DeviceId::new(c"LNUXBEEF"), ())]
+ );
+ 
+ impl platform::Driver for RustDebugFs {
+@@ -125,34 +124,34 @@ fn probe(
+ 
+ impl RustDebugFs {
+     fn build_counter(dir: &Dir) -> impl PinInit<File<Atomic<usize>>> + '_ {
+-        dir.read_write_file(c_str!("counter"), Atomic::<usize>::new(0))
++        dir.read_write_file(c"counter", Atomic::<usize>::new(0))
+     }
+ 
+     fn build_inner(dir: &Dir) -> impl PinInit<File<Mutex<Inner>>> + '_ {
+-        dir.read_write_file(c_str!("pair"), new_mutex!(Inner { x: 3, y: 10 }))
++        dir.read_write_file(c"pair", new_mutex!(Inner { x: 3, y: 10 }))
+     }
+ 
+     fn new(pdev: &platform::Device<Core>) -> impl PinInit<Self, Error> + '_ {
+-        let debugfs = Dir::new(c_str!("sample_debugfs"));
++        let debugfs = Dir::new(c"sample_debugfs");
+         let dev = pdev.as_ref();
+ 
+         try_pin_init! {
+             Self {
+                 _compatible <- debugfs.read_only_file(
+-                    c_str!("compatible"),
++                    c"compatible",
+                     dev.fwnode()
+                         .ok_or(ENOENT)?
+-                        .property_read::<CString>(c_str!("compatible"))
++                        .property_read::<CString>(c"compatible")
+                         .required_by(dev)?,
+                 ),
+                 counter <- Self::build_counter(&debugfs),
+                 inner <- Self::build_inner(&debugfs),
+                 array_blob <- debugfs.read_write_binary_file(
+-                    c_str!("array_blob"),
++                    c"array_blob",
+                     new_mutex!([0x62, 0x6c, 0x6f, 0x62]),
+                 ),
+                 vector_blob <- debugfs.read_write_binary_file(
+-                    c_str!("vector_blob"),
++                    c"vector_blob",
+                     new_mutex!(kernel::kvec!(0x42; SZ_4K)?),
+                 ),
+                 _debugfs: debugfs,
+diff --git a/samples/rust/rust_debugfs_scoped.rs b/samples/rust/rust_debugfs_scoped.rs
+index 702a6546d3fb..358c47bae4d0 100644
+--- a/samples/rust/rust_debugfs_scoped.rs
++++ b/samples/rust/rust_debugfs_scoped.rs
+@@ -11,7 +11,7 @@
+ use kernel::sizes::*;
+ use kernel::sync::atomic::Atomic;
+ use kernel::sync::Mutex;
+-use kernel::{c_str, new_mutex, str::CString};
++use kernel::{new_mutex, str::CString};
+ 
+ module! {
+     type: RustScopedDebugFs,
+@@ -80,7 +80,7 @@ fn create_file_write(
+                     };
+                     dir.read_write_file(&name, val);
+                 }
+-                dir.read_write_binary_file(c_str!("blob"), &dev_data.blob);
++                dir.read_write_binary_file(c"blob", &dev_data.blob);
+             },
+         ),
+         GFP_KERNEL,
+@@ -119,20 +119,16 @@ struct DeviceData {
+ }
+ 
+ fn init_control(base_dir: &Dir, dyn_dirs: Dir) -> impl PinInit<Scope<ModuleData>> + '_ {
+-    base_dir.scope(
+-        ModuleData::init(dyn_dirs),
+-        c_str!("control"),
+-        |data, dir| {
+-            dir.write_only_callback_file(c_str!("create"), data, &create_file_write);
+-            dir.write_only_callback_file(c_str!("remove"), data, &remove_file_write);
+-        },
+-    )
++    base_dir.scope(ModuleData::init(dyn_dirs), c"control", |data, dir| {
++        dir.write_only_callback_file(c"create", data, &create_file_write);
++        dir.write_only_callback_file(c"remove", data, &remove_file_write);
++    })
+ }
+ 
+ impl kernel::Module for RustScopedDebugFs {
+     fn init(_module: &'static kernel::ThisModule) -> Result<Self> {
+-        let base_dir = Dir::new(c_str!("rust_scoped_debugfs"));
+-        let dyn_dirs = base_dir.subdir(c_str!("dynamic"));
++        let base_dir = Dir::new(c"rust_scoped_debugfs");
++        let dyn_dirs = base_dir.subdir(c"dynamic");
+         Ok(Self {
+             _data: KBox::pin_init(init_control(&base_dir, dyn_dirs), GFP_KERNEL)?,
+         })
 
 -- 
 2.52.0
