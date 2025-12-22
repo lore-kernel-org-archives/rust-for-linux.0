@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D524246BC6;
-	Mon, 22 Dec 2025 12:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB94157480;
+	Mon, 22 Dec 2025 12:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766406011; cv=none; b=j/mvTuAO5TpBKqEFKthEZRf5cBc5FCw0bofIbdWOdOx7XZQyE96m47BHrMrdrBoLkLE2uA89Lijw+sIYDZWtWdvEPmOT8PXOpvadQKfCLT2mB+h31LHEa2h9ucbgT5N7ZXVoTM02jDWUoibHggpx3/nKFPG3rb0Cw4M3oTtfBUU=
+	t=1766406096; cv=none; b=ulYlUH48mtW5vfv7Fil7ypYpVZf+wtW4TzE/LsDqXCvUyr8maxIXaaYt1nmuFYsY6A6gptzTFQ/ACDpKPSII3yRBJua++8HTxLimuV/pQh1uNlUQ9tJS8YQBSV/YPptgoTI7Z47I2f3RtIwwo1QEws6Z8miR+xgtJQjmFRClGRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766406011; c=relaxed/simple;
-	bh=xUbDYRMhRGvhEuJm/NydkAH3/SfSiO2L4qbftyB1Grc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=kPBJrhitNM4pkqeFgDxbUa97BErrj4GHnEMspzGChLvfObi2fkYeYn6C5vC0oiEPbvKOBcszr2Uc394VUe71a2JiZDYhHIK8dNGWS6ZUszGpZpkXjhsXgxiHhu/wRRXhtqUHKpubG3x9BcLsom1NWXSg+02rXyddVJOACUOZNKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxPgH3Tb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766406096; c=relaxed/simple;
+	bh=ek2xz558ftkpNkkwFOEXohAxiUiqeobmdKxLVg5bADg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IP0Alz0dv7vDO5fcbUIyBrNSepg+v7+A6yQP9YD5Rx7g86+tFHlUai05KJdhmEiZUZRyrJzcyHrZevVyScVdyDlny/uMsNVVMYxtqw9T/hoYdI+SjRwdo6BsGVKp77Sdg83VmDlDdIz1Dw6uj/ZnRZAacFvP2SacxQv0w4TDvOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B79evPIz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxPgH3Tb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C72C4CEF1;
-	Mon, 22 Dec 2025 12:20:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B79evPIz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EF6C4CEF1;
+	Mon, 22 Dec 2025 12:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766406011;
-	bh=xUbDYRMhRGvhEuJm/NydkAH3/SfSiO2L4qbftyB1Grc=;
+	s=k20201202; t=1766406096;
+	bh=ek2xz558ftkpNkkwFOEXohAxiUiqeobmdKxLVg5bADg=;
 	h=From:Date:Subject:To:Cc:From;
-	b=WxPgH3TbeDo3foUeQiDX3qnI3FSvuoqS+1+kd1cDo+3NE16ffUv3jBWNNRc48qOcv
-	 ynhfbYuuaT/xtHNUZ2drLfkvsT4dmE1qeUR7mILlRA7Pvcd7loR2HGyfLoGcNGsZG7
-	 tlonpH0G5or+dDWmWvt+hVUz74KWXmRWoEITbLW3LkhNRnVrStT3xnj24WtQDrtbUx
-	 3pwKsebO5+uZpLG4x0WNDLOl+uEF8cwuDrJTM2ue8jJdFtbG8dRrZRT9D1lG7na7pv
-	 ng3Bg+avHb852oZ3IfBjQm1qH4imaLsaoBFjVP58kOB2NqupVFlb0sbzI22hYFktgW
-	 JJ+9oQBldRWZA==
+	b=B79evPIz1FxtMLFxVCyDSvMbNelvpbpDABcBIp37RJ2hKR+1T8AfJcwBXbY9VkR8r
+	 DGlvnsl0yRgpG9s8lvyXJbLcvAhLRijCH5oCG977XW8YDxuG8IqkuhOjaOce9mOQHZ
+	 ClBYGVojnL5nFnlLPKaCQMKVscGIMSehWmDuFclJyooSYPQg6jTZoxY2GXt14SKw1a
+	 UQkq1Gww0Pxgf0mgPnwVWOtZhTHeqnpZJIElNPYqxGBHohxIsBJHNXV4KOnVpI5qXE
+	 LToDt63IPGoesheSeepPAAe6DS/H+ob/+rM8HrDDpWDCCSs19j1FJdMua3osVx4HPc
+	 6PAGPNmagUykQ==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 22 Dec 2025 13:20:05 +0100
-Subject: [PATCH] gpu: nova-core: replace `kernel::c_str!` with C-Strings
+Date: Mon, 22 Dec 2025 13:21:23 +0100
+Subject: [PATCH] rust: miscdevice: replace `kernel::c_str!` with C-Strings
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,30 +36,29 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251222-cstr-nova-v1-1-0e2353d5debe@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQpAQBCA4VfRnG3ZEcmryGGNwTgs7SAl725x/
- Orvv0A5CCvUyQWBD1FZfIRNE6DJ+ZGN9NGAGRYWEQ3pFoxfDmfI5q5isn1WVhD7NfAg5/dq2t+
- 6dzPT9g7gvh+naKmVbQAAAA==
-X-Change-ID: 20251222-cstr-nova-c13a8ec1d068
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Message-Id: <20251222-cstr-char-misc-v1-1-d218537d28ab@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMSwqEQAxF0a1IxgaqQongVqQHWkaN4IfElgZx7
+ 13q8PB49wRjFTaoshOUDzFZlwSfZxDHZhkYpUsGclR4IsJou2KaFGexiK4PPoTONWVLkE6bci+
+ /J1h/Xtu3nTjudwWu6w+Gd78ZcgAAAA==
+X-Change-ID: 20251222-cstr-char-misc-0f4144d0a7b2
+To: Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1766406007; l=3053;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1766406092; l=1301;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=dUjHOkrrvsSc1u9P7jrlnCVchHjcZqseOJZTYW8zbyk=;
+ bh=Pslohf2TfBKRgVKO8/PtJolNNRTsz/IN/lr0LkQtwVY=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QFOoY1nRi3XD+xbrraMdWOBTctqzUO+id/xxlMbErl10DPk89P1KTUKoGzzK9QYDvmuWu4vLYBL
- b6NB0ILdiOQA=
+ QD8RKaqj4wOO9jtUDTo6wW03UhouFeWjLxAvRy400uOyKrNIN6YdKq2H6fZFx5iFlqD0bhcNem1
+ z6k73AM5ILgQ=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
@@ -71,79 +70,36 @@ C-String literals were added in Rust 1.77. Replace instances of
 Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Benno Lossin <lossin@kernel.org>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- drivers/gpu/drm/nova/driver.rs  | 12 +++++-------
- drivers/gpu/nova-core/driver.rs |  5 ++---
- 2 files changed, 7 insertions(+), 10 deletions(-)
+ samples/rust/rust_misc_device.rs | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-index 2246d8e104e0..d24ade17f7a0 100644
---- a/drivers/gpu/drm/nova/driver.rs
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -1,8 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use kernel::{
--    auxiliary, c_str, device::Core, drm, drm::gem, drm::ioctl, prelude::*, sync::aref::ARef,
--};
-+use kernel::{auxiliary, device::Core, drm, drm::gem, drm::ioctl, prelude::*, sync::aref::ARef};
- 
- use crate::file::File;
- use crate::gem::NovaObject;
-@@ -24,12 +22,12 @@ pub(crate) struct NovaData {
-     major: 0,
-     minor: 0,
-     patchlevel: 0,
--    name: c_str!("nova"),
--    desc: c_str!("Nvidia Graphics"),
-+    name: c"nova",
-+    desc: c"Nvidia Graphics",
- };
- 
--const NOVA_CORE_MODULE_NAME: &CStr = c_str!("NovaCore");
--const AUXILIARY_NAME: &CStr = c_str!("nova-drm");
-+const NOVA_CORE_MODULE_NAME: &CStr = c"NovaCore";
-+const AUXILIARY_NAME: &CStr = c"nova-drm";
- 
- kernel::auxiliary_device_table!(
-     AUX_TABLE,
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index b8b0cc0f2d93..5a4cc047bcfc 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -2,7 +2,6 @@
+diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+index d69bc33dbd99..49dd5814e1ab 100644
+--- a/samples/rust/rust_misc_device.rs
++++ b/samples/rust/rust_misc_device.rs
+@@ -98,7 +98,6 @@
+ use core::pin::Pin;
  
  use kernel::{
-     auxiliary,
 -    c_str,
-     device::Core,
-     devres::Devres,
-     dma::Device,
-@@ -82,7 +81,7 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, E
-             unsafe { pdev.dma_set_mask_and_coherent(DmaMask::new::<GPU_DMA_BITS>())? };
+     device::Device,
+     fs::{File, Kiocb},
+     ioctl::{_IO, _IOC_SIZE, _IOR, _IOW},
+@@ -133,7 +132,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+         pr_info!("Initialising Rust Misc Device Sample\n");
  
-             let bar = Arc::pin_init(
--                pdev.iomap_region_sized::<BAR0_SIZE>(0, c_str!("nova-core/bar0")),
-+                pdev.iomap_region_sized::<BAR0_SIZE>(0, c"nova-core/bar0"),
-                 GFP_KERNEL,
-             )?;
+         let options = MiscDeviceOptions {
+-            name: c_str!("rust-misc-device"),
++            name: c"rust-misc-device",
+         };
  
-@@ -90,7 +89,7 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<Self, E
-                 gpu <- Gpu::new(pdev, bar.clone(), bar.access(pdev.as_ref())?),
-                 _reg <- auxiliary::Registration::new(
-                     pdev.as_ref(),
--                    c_str!("nova-drm"),
-+                    c"nova-drm",
-                     0, // TODO[XARR]: Once it lands, use XArray; for now we don't use the ID.
-                     crate::MODULE_NAME
-                 ),
+         try_pin_init!(Self {
 
 ---
 base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20251222-cstr-nova-c13a8ec1d068
+change-id: 20251222-cstr-char-misc-0f4144d0a7b2
 
 Best regards,
 --  
