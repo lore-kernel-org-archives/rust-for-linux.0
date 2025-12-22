@@ -1,57 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5218A330300;
-	Mon, 22 Dec 2025 16:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248F414D29B;
+	Mon, 22 Dec 2025 16:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766419934; cv=none; b=MNJGJGpJyKXLHUz6/gVvDCzo9wrbKBX64QejmTzrfBvHKIRZx1C1hJwChiFoTV/sbPYTV2rKCFIibxC/AsIDRgYDBHU/0cGhFl48NIC+q6emGAlihLgqOgugT3N0pEfNdpySavbgU+xHlpTqntGKiD65TriD0pFA7p3AfkXBaHo=
+	t=1766421974; cv=none; b=KAbNC9BBe0PWshcpmlmI8rf5knNO/7XcPLe4eyaNtdBTS+0zr1aSV4AGqmXH/yy3mKAcuaBXhtkBzw9e3AIZ+b9MvJ2FEFSzNFES1UdQkrwmiMbdJrdW4iv9J2dSnxeF/ym18laaTpVl0+jgym7AsTj4p51doVwcw/Lpzn9mqjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766419934; c=relaxed/simple;
-	bh=M6DhZvlSsq1rhfR277ODwk5R1IidPifAsL792UbrqPE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d4WvOHoWAXRcyLsnnR9YJzNpw/CMYsWJJKDHuVmg76kB2X+pZkqQW80C+KlV5qdRG1Bq0+l9bY6E00LsHQDQ18p46hmJweEf47qcbOmN6YB4c5y/KhWCh5psM+rJ+UUavAqxDp6U9CTXRm0dFhBMSB0wBYaB6Ix/py7S4gBqqf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdX/37A+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766421974; c=relaxed/simple;
+	bh=eGWlOdWO2OflHLELXqOh3HmoOY0aEDSov4EGldITT7s=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=gpwUy4pfC2rOwXFQAwv8own2x814A0xKUbiTpIy/cXMdXLduxTE14WLp2GNed+VQNo2c4KLtiPwT/KUSgmQ4870IGGbVF+Qc8Ru5uONC5wrdSL85sVPFFtddNFnB/iCd6U+gXtQuIo4cvXiEJtifKlSZAyAoNbcINBB4xVFZyKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZT9Lk1ug; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdX/37A+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3111C4CEF1;
-	Mon, 22 Dec 2025 16:12:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1766419931;
-	bh=M6DhZvlSsq1rhfR277ODwk5R1IidPifAsL792UbrqPE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fdX/37A+PAyKz9lvuylArUF/YfbRmXPvjV7LCdB3suySnKWypb6Hnm4XGZvg5CINU
-	 0qjjb6SAF2uzvxtuQZcXUk0N8AqSlEGbj1pkOaLgodfhrBWXjASouoJR+Ve83D5mtb
-	 YK/p7RuoBUji167QPrD4Xu+dqwHwnx8grvo1lERM=
-Date: Mon, 22 Dec 2025 11:12:10 -0500
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Guillaume Tucker <gtucker@gtucker.io>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2 1/2] scripts: add tool to run containerized builds
-Message-ID: <20251222-aboriginal-guppy-of-charisma-49fe02@lemur>
-References: <cover.1766061692.git.gtucker@gtucker.io>
- <35b951506304b141047812f516fa946a4f1549a1.1766061692.git.gtucker@gtucker.io>
- <3241bbcb-d9c1-49bd-b8a7-610543dfb454@gtucker.io>
- <CANiq72mtqdR0EU9GM6yu1-Rn0V98ZftUA814eY3ue2YH1xdNHw@mail.gmail.com>
- <09b3bc78-6c55-4d8c-8d09-9f313454dee3@gtucker.io>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZT9Lk1ug"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52B1C4CEF1;
+	Mon, 22 Dec 2025 16:46:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766421973;
+	bh=eGWlOdWO2OflHLELXqOh3HmoOY0aEDSov4EGldITT7s=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=ZT9Lk1ugl6HerylMI7Ud1lZY2miJNzwnYdxepcNjf4F+1M1sK6QQwAJcM3tAws/6B
+	 KahzoghgPNzH8TuZuQ5V6fRgTURhgEcjLQ3683tgxjIC8MqSsvIkcrmznlKwzDsLZ/
+	 yfbGM7vbeGQkoVjX/h5IFGlbzTSQWazj78ijB/1sMiz3nn3IZSJuOqXGD1L0MmyK46
+	 KyriNqoQsiYyNRXLQNovZGcTehEdyOfFJJC7MHNW1sXzhYQV4wndmMhPvlhDttW5Jt
+	 BPWVHOC6S9tRQzx0w+Y6zS/X/AgjbL9V5FrDa1RvUAtvS22fZSM0Iin/qh5rr0dPUc
+	 RjPT27voRHYMg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <09b3bc78-6c55-4d8c-8d09-9f313454dee3@gtucker.io>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 22 Dec 2025 17:46:05 +0100
+Message-Id: <DF4WBS5EQVVK.3TS8CJ4XBVRNF@kernel.org>
+To: "Tamir Duberstein" <tamird@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 0/7] driver-core: rust: replace `kernel::c_str!` with
+ C-Strings
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Tamir Duberstein" <tamird@gmail.com>
+References: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
+In-Reply-To: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
 
-On Mon, Dec 22, 2025 at 10:11:25AM +0100, Guillaume Tucker wrote:
-> Ah yes, good point.  Except right now it's returning HTTP 403...
-> Hopefully that's just a temporary technical glitch.
+On Mon Dec 22, 2025 at 1:35 PM CET, Tamir Duberstein wrote:
 
-(it was)
+Applied to driver-core-testing, thanks!
 
--K
+> Tamir Duberstein (7):
+>       rust: auxiliary: replace `kernel::c_str!` with C-Strings
+>       rust: device: replace `kernel::c_str!` with C-Strings
+>       rust: platform: replace `kernel::c_str!` with C-Strings
+
+    [ Use kernel vertical import style; discard unrelated faux changes.
+      - Danilo ]
+
+>       rust: io: replace `kernel::c_str!` with C-Strings
+
+    [ Use kernel vertical import style. - Danilo ]
+
+>       rust: irq: replace `kernel::c_str!` with C-Strings
+>       rust: debugfs: replace `kernel::c_str!` with C-Strings
+>       samples: rust: debugfs: replace `kernel::c_str!` with C-Strings
+
+@Tamir: Can you please send a separate patch for the faux bus?
