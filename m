@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6FC2D738E;
-	Mon, 22 Dec 2025 14:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF402F83BB;
+	Mon, 22 Dec 2025 14:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766413964; cv=pass; b=fnEMwCjiZ78Rz1R55vgRduqgVmY/FQk1Jh66IqEPpjGXwfbkww5BySbxXEL/sz3LykSxqJLxmJ/u7u2ozNhn65va6HAo8epsrk6A0FhdI0dagiyQDuHCCA4BUPzzB2g2jIGRGGf6Tclu8acNxV3zKyTB8mVF/u3qQ5BAN1JGFis=
+	t=1766414061; cv=pass; b=aIPRWWMgUrbeu30+AYKMZzQX79Kr1EpAa+Lz4hiujzrPjDxqMiOhJ7Q1wCzRbCQ3LIiQI2xTQhB7M7QVbr38KJYobrTXlf2KZaZ5OTulEDFZiEGAi/RcePpds4Md8pU9u70puAT+H2voFNjMlJhNmby+9HWWmTVNkIi58sLGip8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766413964; c=relaxed/simple;
-	bh=xHQA30nq/9OWMxphyKsKsbr1ItGgYEOcffQ4phEwvHM=;
+	s=arc-20240116; t=1766414061; c=relaxed/simple;
+	bh=BbygIyVTraM7seyE8f3XaSchAG5rEnhJaq45mNFxxFA=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=hoN63VYCa98iuTPYQT2PlSoxCsT+y6NJuNp3dbmruM0kIkLjW0h18DiRCHI88CYRTKt6L/Rn6gwUIDXAvHC2BAryDmat1/xhTjM1rZnZ11Wy8+Ij8TzdkLf7MeomZRhIlzYWeS/OzW5biIyWSyeK0paZACTEapDeUZ3C90fxnq0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=TRjDYwUL; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=U1IS2r1ozSEfFkf+lEMunZSDpfkbKjWU8gK9FAmTpaLZOB7XzQlkfcbwZyzCrmiVnw1A7Yqzvv3YxelNjO3cM6GVl1TarpWQwEz8i8SH8wU8fIVDnkOB4PeiWzaNpEVC3HwEMx/JSkryXsjD9hH2l4qdMu1al1NdH133WmkNBos=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=FL3+901w; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="TRjDYwUL"
-ARC-Seal: i=1; a=rsa-sha256; t=1766413935; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="FL3+901w"
+ARC-Seal: i=1; a=rsa-sha256; t=1766414043; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=TF3d24BYfzI3d1cXZPOUxy1Kt7yhIDjKDmhMgFoAVLjj59af3DeE4OHkrnSGgep/L9BTmx2YYhQdcwUBDSV5Pfy9bNDnEDsoUfUZGHSGMdrR7Qe/qyl6quWw9sqzm/tDfUy3PA+3QXKGdncjbjFn0Ed6ANwJWxF2e2XeY1G+jrQ=
+	b=EQE30NkZyNDsbgrePhBGe3CRfaoI961G02uluRHnxQ7nf95/QNuzlNUKq8Gn9NzjvWNGO0dtWMbLCZ6+hwDyTOCLtMBt4bOYZD6gA8xn+hpxC5wIyeVbMp+vox/SKZ46Ch+Y3yFd8gS0hy6TkbFOEMTtoOcIhAHri2/Uj4GkWdE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1766413935; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=MIsebt+0bW61I/ZAHjyZRH22/kuuWpq+aRZENXzI4ss=; 
-	b=DJ5c7J6HM2N+HN05vrsXjT+URBRJUUDUd0no1jdPzE26FH/WusjWZ0AhawuBtvzJuERKCp3iTZemNP0uy05MUcfqf4Ps/hPRBWK8NpWFcqTYuCJfI6YKCVfXvzhuyE8GSmsoP0ZvUfLGmD0GyFRfgol0Ta/SPig3bEsgsQ+8y5s=
+	t=1766414043; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=avAWDCCJZHmdro2RzMgiznhC0Y9VFamywQRYOE3W28o=; 
+	b=GPujciV8KNEwx1ayZ5XFpE4ouFVQSg2StTomP0fj1g4PsrSdGUxnbqItlvGyADeEbQc4gk0Fc93c5JnPHV1fVYLH03FRFFXPLJSJYekeNGCprR0qFs5qt6t9yAPUg7mTZ2jgpSYv6WFAuI5aDWcEnByWKQZSEqR9qsfVTze/heY=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766413935;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766414043;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=MIsebt+0bW61I/ZAHjyZRH22/kuuWpq+aRZENXzI4ss=;
-	b=TRjDYwULCFJHHqehnDRLU6wUbi7vkT4D58/qj9qLat+kf0FTXu4HMHJpDd6emHHf
-	DeY41iKV88Ka86M4e39dgSzWRKkgMDH/9rkAiVwrbiUcTVSC0pMBvieeH+mfsxetqIG
-	y6pOHWUMgkppOXyteWMXESNdb9cLFMT+lh9N1LtI=
-Received: by mx.zohomail.com with SMTPS id 1766413933869679.9055953780143;
-	Mon, 22 Dec 2025 06:32:13 -0800 (PST)
+	bh=avAWDCCJZHmdro2RzMgiznhC0Y9VFamywQRYOE3W28o=;
+	b=FL3+901wlWctlOqe8wCO66HovxKkV5u4qCRcR91xnKtO40swZ0g+JVCUHFfSSHce
+	C/WNkq/HYOfEksJXeZQvV7q9TrNJY7Q0Z/vtnFWW0pkeayvmiP06Q1RVpKK9TSrPAPm
+	N2lCJ+PfRMdnki4SFKRoxaZHQK6i+wGWx7yzCrCs=
+Received: by mx.zohomail.com with SMTPS id 1766414040944178.93574651737333;
+	Mon, 22 Dec 2025 06:34:00 -0800 (PST)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -44,13 +44,12 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] rust: seq_file: replace `kernel::c_str!` with C-Strings
+Subject: Re: [PATCH] rust: clk: replace `kernel::c_str!` with C-Strings
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251222-cstr-vfs-v1-1-18e3d327cbd7@gmail.com>
-Date: Mon, 22 Dec 2025 11:31:57 -0300
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>,
+In-Reply-To: <20251222-cstr-clk-v1-1-ef0687717aa1@gmail.com>
+Date: Mon, 22 Dec 2025 11:33:43 -0300
+Cc: Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>,
  Miguel Ojeda <ojeda@kernel.org>,
  Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
@@ -60,21 +59,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
  Danilo Krummrich <dakr@kernel.org>,
- linux-fsdevel@vger.kernel.org,
+ linux-clk@vger.kernel.org,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org,
  Tamir Duberstein <tamird@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <3F4AEA7B-65E3-41E8-90BB-7F5896041FB8@collabora.com>
-References: <20251222-cstr-vfs-v1-1-18e3d327cbd7@gmail.com>
+Message-Id: <E7DE7379-7F5A-437A-A518-FCF90824CDB0@collabora.com>
+References: <20251222-cstr-clk-v1-1-ef0687717aa1@gmail.com>
 To: Tamir Duberstein <tamird@kernel.org>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
 
 
-> On 22 Dec 2025, at 09:18, Tamir Duberstein <tamird@kernel.org> wrote:
+> On 22 Dec 2025, at 09:16, Tamir Duberstein <tamird@kernel.org> wrote:
 >=20
 > From: Tamir Duberstein <tamird@gmail.com>
 >=20
@@ -84,42 +84,54 @@ X-ZohoMailClient: External
 > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Acked-by: Stephen Boyd <sboyd@kernel.org>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > ---
-> rust/kernel/seq_file.rs | 4 ++--
-> 1 file changed, 2 insertions(+), 2 deletions(-)
+> rust/kernel/clk.rs | 6 ++----
+> 1 file changed, 2 insertions(+), 4 deletions(-)
 >=20
-> diff --git a/rust/kernel/seq_file.rs b/rust/kernel/seq_file.rs
-> index 855e533813a6..518265558d66 100644
-> --- a/rust/kernel/seq_file.rs
-> +++ b/rust/kernel/seq_file.rs
-> @@ -4,7 +4,7 @@
-> //!
-> //! C header: =
-[`include/linux/seq_file.h`](srctree/include/linux/seq_file.h)
->=20
-> -use crate::{bindings, c_str, fmt, str::CStrExt as _, =
-types::NotThreadSafe, types::Opaque};
-> +use crate::{bindings, fmt, str::CStrExt as _, types::NotThreadSafe, =
-types::Opaque};
->=20
-> /// A utility for generating the contents of a seq file.
-> #[repr(transparent)]
-> @@ -36,7 +36,7 @@ pub fn call_printf(&self, args: fmt::Arguments<'_>) =
-{
->         unsafe {
->             bindings::seq_printf(
->                 self.inner.get(),
-> -                c_str!("%pA").as_char_ptr(),
-> +                c"%pA".as_char_ptr(),
->                 =
-core::ptr::from_ref(&args).cast::<crate::ffi::c_void>(),
->             );
->         }
+> diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+> index c1cfaeaa36a2..68a0c2f4e318 100644
+> --- a/rust/kernel/clk.rs
+> +++ b/rust/kernel/clk.rs
+> @@ -104,13 +104,12 @@ mod common_clk {
+>     /// The following example demonstrates how to obtain and configure =
+a clock for a device.
+>     ///
+>     /// ```
+> -    /// use kernel::c_str;
+>     /// use kernel::clk::{Clk, Hertz};
+>     /// use kernel::device::Device;
+>     /// use kernel::error::Result;
+>     ///
+>     /// fn configure_clk(dev: &Device) -> Result {
+> -    ///     let clk =3D Clk::get(dev, Some(c_str!("apb_clk")))?;
+> +    ///     let clk =3D Clk::get(dev, Some(c"apb_clk"))?;
+>     ///
+>     ///     clk.prepare_enable()?;
+>     ///
+> @@ -272,13 +271,12 @@ fn drop(&mut self) {
+>     /// device. The code functions correctly whether or not the clock =
+is available.
+>     ///
+>     /// ```
+> -    /// use kernel::c_str;
+>     /// use kernel::clk::{OptionalClk, Hertz};
+>     /// use kernel::device::Device;
+>     /// use kernel::error::Result;
+>     ///
+>     /// fn configure_clk(dev: &Device) -> Result {
+> -    ///     let clk =3D OptionalClk::get(dev, =
+Some(c_str!("apb_clk")))?;
+> +    ///     let clk =3D OptionalClk::get(dev, Some(c"apb_clk"))?;
+>     ///
+>     ///     clk.prepare_enable()?;
+>     ///
 >=20
 > ---
 > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20251222-cstr-vfs-55ca2ceca0a4
+> change-id: 20251222-cstr-clk-122a1428b919
 >=20
 > Best regards,
 > -- =20
