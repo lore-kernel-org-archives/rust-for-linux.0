@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01995329C70;
-	Mon, 22 Dec 2025 06:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D2C1C5D5E;
+	Mon, 22 Dec 2025 06:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766383860; cv=none; b=L7hU7lZFfINXBBDwQ7eB9JPeYQMsn6gRqfj/Z/VMveoO+s0JwsUd6m4kqoU40wEk3f6DVoP5sReasYJu9fduhhIj+FL/RVUSpEH6etwzavWCWsjBf/K/cWxNhba8CtCJbOubcxsnhVEusGkhKeXp+RiTGt5bz2PRSVTB38zeXOM=
+	t=1766384373; cv=none; b=hgp6hTqz0bVKtlGTeDnGSdWj8X61IajrGEAdtkn3ZaB8kRA0UiVA76CU7RcnjiT0MRnnki++c0v/zMmutcQB4HL2Un0/lKSaEQggd22l3cwqr1Nu9/cVCFQnFXJAoBUJgmaOzKClysTffjsHZgX0DVlaNZy+GB1cYcx2QsUjySo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766383860; c=relaxed/simple;
-	bh=D+qIikUFT04oFQbZsgnsbDh+MC0xnpcUYZrh5tDQ3Bg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=P4AO/L/uBYbSNXiqbMUXqxLZ+1P6nU4fgOHBKPGNiZ45gNb+VnGSXWgVTrAyNORYUj4Eckq9re2SaaqhTYupN6ja5zqNVZVe0/4/ctKzsM7BRW0lNqNt+VEkxi9HO2oEjh84ptPEQCSfCBbEmuZ8NK3vHGbFTEhFMlWvKGBK2tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kw+5iESN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766384373; c=relaxed/simple;
+	bh=/ZY8CN6yuzaS/ZzWkH++O/BqOMlDDJ+xgTTtHWmRHOE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=SkWEzKW+KDZ+pyN8+LK8yf8mDlULs6d0KTEsvTEvGOaHiy6kSYe4WSYTk5n6ZAm8yLa4PnHp7oN5eh+cXX26Jlg1lDbCXXs5LHVVNFHviuQPtYYF3SfwF9a5iPjEMillMwXVXpnloPM0/LhZz7YnrfgTolo+f1+HHOj9WbriiAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCyrCS8r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kw+5iESN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3E4C4CEF1;
-	Mon, 22 Dec 2025 06:10:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCyrCS8r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BC8C4CEF1;
+	Mon, 22 Dec 2025 06:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766383859;
-	bh=D+qIikUFT04oFQbZsgnsbDh+MC0xnpcUYZrh5tDQ3Bg=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=kw+5iESNBpQewgFqpo1Z6xMY4rZwmEqVi3Dg5VlAe/Wht1VKlFM4Htjzvg+gO+mcu
-	 On34lc2b95jI0/A+Eu4f//fjF9Kzt/CFyH7neuJxTmhsPYgSzN9bxCBfXBZ5ysmHOx
-	 GAgfubW8ppZIHSshb0xPKBmtesSHYvHqAZxVDFxauyBfHzWMtajjqfg48NWujnwoeQ
-	 a83DJU/L3dBY2W1VnWJMlRb77LoMJwAfuT+xaNfwzGjAR0U4XMIEQgkUbMX8ldnho7
-	 B3JbOzz2vUPMGSHeTrY8MeUzDEKC0JsJz/DzZLthv0Nrwq+JyLXySc+jwARPrfrbaF
-	 xUOvz4XoDqzzw==
+	s=k20201202; t=1766384371;
+	bh=/ZY8CN6yuzaS/ZzWkH++O/BqOMlDDJ+xgTTtHWmRHOE=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=TCyrCS8rwfuVzl4pGvyBPQSviKfjmfIZHwbmnYoKQsPGvotFtNEwd6k9sR8pVffc2
+	 ++z4ELYFGFeX7n6hcG8GR0P31Ov1G1duBAJbIrgA1ye1Z4GTzQiWV+uvYAg1fJOsiy
+	 fNdaHH/5jykmYJKJ8uvMNZMN3hWB4a06EpDCj5hTiwZkK2J8XF6tqj64t+rSAaybuZ
+	 XqpXvEMxboZv8s8a26Oy5VVM765rwL/i/F0YQQmF3ZKArQiFvr022tek75ldKNG/id
+	 +CQwq1sr+i6eB5s9z5fW2LB1ORVH+AbwkUFn8wvQqmuoIaMzS52E0mwAbUGsz9axig
+	 2TOcBvuZX3D2A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,10 +34,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 22 Dec 2025 07:10:48 +0100
-Message-Id: <DF4ITDTG0RQH.8VVU1YY3RC6T@kernel.org>
-To: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Thomas Gleixner" <tglx@linutronix.de>
+Date: Mon, 22 Dec 2025 07:19:26 +0100
+Message-Id: <DF4IZZCCY3OL.3L759760HY8LD@kernel.org>
 Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Daniel Almeida"
  <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
  Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
@@ -47,91 +45,71 @@ Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Daniel Almeida"
  "Andrew Morton" <akpm@linux-foundation.org>, "Peter Zijlstra"
  <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
  <will@kernel.org>, "Waiman Long" <longman@redhat.com>
-Subject: Re: [PATCH v16 10/17] rust: sync: Introduce lock::Backend::Context
+Subject: Re: [PATCH v16 11/17] rust: sync: lock: Add
+ `Backend::BackendInContext`
 From: "Benno Lossin" <lossin@kernel.org>
+To: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Thomas Gleixner" <tglx@linutronix.de>
 X-Mailer: aerc 0.21.0
 References: <20251215175806.102713-1-lyude@redhat.com>
- <20251215175806.102713-11-lyude@redhat.com>
-In-Reply-To: <20251215175806.102713-11-lyude@redhat.com>
+ <20251215175806.102713-12-lyude@redhat.com>
+In-Reply-To: <20251215175806.102713-12-lyude@redhat.com>
 
 On Mon Dec 15, 2025 at 6:57 PM CET, Lyude Paul wrote:
-> Now that we've introduced an `InterruptDisabled` token for marking
-> contexts in which IRQs are disabled, we can have a way to avoid
-> `SpinLockIrq` disabling interrupts if the interrupts have already been
-> disabled. Basically, a `SpinLockIrq` should work like a `SpinLock` if
-> interrupts are disabled. So a function:
->
-> 	(&'a SpinLockIrq, &'a InterruptDisabled) -> Guard<'a, .., SpinLockBacken=
-d>
->
-> makes senses. Note that due to `Guard` and `InterruptDisabled` having the
-> same lifetime, interrupts cannot be enabled while the Guard exists.
->
-> Add a `lock_with()` interface for `Lock`, and an associate type of
-> `Backend` to describe the context.
-
-This message doesn't mention `Context`, which is included in the title
-and the message itself isn't written in imperative style. I'd recommend
-putting the `lock_with` in the title, since that is the important part.
-
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->
-> ---
-> V10:
-> - Fix typos - Dirk
->
->  rust/kernel/sync/lock.rs          | 12 +++++++++++-
->  rust/kernel/sync/lock/mutex.rs    |  1 +
->  rust/kernel/sync/lock/spinlock.rs |  4 +++-
->  3 files changed, 15 insertions(+), 2 deletions(-)
->
 > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index 46a57d1fc309d..bf2d94c1999bd 100644
+> index bf2d94c1999bd..938ffe1bac06c 100644
 > --- a/rust/kernel/sync/lock.rs
 > +++ b/rust/kernel/sync/lock.rs
-> @@ -44,6 +44,9 @@ pub unsafe trait Backend {
->      /// [`unlock`]: Backend::unlock
->      type GuardState;
-> =20
-> +    /// The context which can be provided to acquire the lock with a dif=
+> @@ -30,10 +30,15 @@
+>  ///   is owned, that is, between calls to [`lock`] and [`unlock`].
+>  /// - Implementers must also ensure that [`relock`] uses the same lockin=
+g method as the original
+>  ///   lock operation.
+> +/// - Implementers must ensure if [`BackendInContext`] is a [`Backend`],=
+ it's safe to acquire the
+> +///   lock under the [`Context`], the [`State`] of two backends must be =
+the same.
+>  ///
+>  /// [`lock`]: Backend::lock
+>  /// [`unlock`]: Backend::unlock
+>  /// [`relock`]: Backend::relock
+> +/// [`BackendInContext`]: Backend::BackendInContext
+> +/// [`Context`]: Backend::Context
+> +/// [`State`]: Backend::State
+>  pub unsafe trait Backend {
+>      /// The state required by the lock.
+>      type State;
+> @@ -47,6 +52,9 @@ pub unsafe trait Backend {
+>      /// The context which can be provided to acquire the lock with a dif=
 ferent backend.
-> +    type Context<'a>;
-> +
->      /// Initialises the lock.
->      ///
->      /// # Safety
-> @@ -168,8 +171,15 @@ pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'=
-a Self {
->  }
+>      type Context<'a>;
 > =20
->  impl<T: ?Sized, B: Backend> Lock<T, B> {
-> +    /// Acquires the lock with the given context and gives the caller ac=
-cess to the data protected
-> +    /// by it.
-
-I feel like this "it" could refer to both the lock and the context, so
-it's best to repeat "the lock" here.
-
-> +    pub fn lock_with<'a>(&'a self, _context: B::Context<'a>) -> Guard<'a=
-, T, B> {
-> +        todo!()
-> +    }
+> +    /// The alternative backend we can use if a [`Context`](Backend::Con=
+text) is provided.
+> +    type BackendInContext: Sized;
 > +
->      /// Acquires the lock and gives the caller access to the data protec=
-ted by it.
-> -    pub fn lock(&self) -> Guard<'_, T, B> {
-> +    #[inline]
 
-This change isn't in the message? Is it intended to be here or somewhere
-else?
+I'm wondering if it'd be better to have a subtrait of `Backend` that
+stores all this information instead:
+
+    pub unsafe trait BackendWithContext: Backend {
+        type Context<'a>;
+
+        type ContextualBackend: Backend<State =3D Self::State>;
+    }
+
+That way, we don't need to specify `()` for the `Context`/`BackendInContext=
+`
+in e.g. `Mutex`. And the safety requirements also get much simpler: the
+state requirement is directly encoded in the trait bound and the other
+part loses the `if` condition.
+
+Then only implement the `lock_with` method on `Lock<T, B>` where `B` is
+a `BackendWithContext`.
 
 Cheers,
 Benno
 
-> +    pub fn lock<'a>(&'a self) -> Guard<'a, T, B> {
->          // SAFETY: The constructor of the type calls `init`, so the exis=
-tence of the object proves
->          // that `init` was called.
->          let state =3D unsafe { B::lock(self.state.get()) };
+>      /// Initialises the lock.
+>      ///
+>      /// # Safety
