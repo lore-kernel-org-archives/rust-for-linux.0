@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695D6299A8F;
-	Mon, 22 Dec 2025 12:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878C829A32D;
+	Mon, 22 Dec 2025 12:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766406952; cv=none; b=TVe8A60e+8/NoWWDlXNheCGiSraetzLk/tfpqdwOx0A3woDS5UusqtsUsqzG3O88J7SEmN15kN5hQLAO5RvCQMhZiHLxeXBJlbSlxZjaZAdmhfzg2NyjjRqDx80ihIf2xyPf1DLp/bG91lEW9ri2+FmGYvdFdrEBTBbM950Qy/4=
+	t=1766406956; cv=none; b=ZQfaWvvHI6nQocchhBcAkQHwd9N9s9DMBRHtr99vTz7TGhvYx+OsqSktwKRUy9gDueGsHsVgwUF6JgYzQu11wFQxNKYVm4l6VM7C1BA52UDhZwFEKn7Rjq4lfPB59A68MJzDLKdxsPhbKckXV5mX6fh14rgEVvJXCnyls43TIvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766406952; c=relaxed/simple;
-	bh=MFh6mggRYW3+kj5WDpGpaaaM7+3cG6rn3t7+x13dnTc=;
+	s=arc-20240116; t=1766406956; c=relaxed/simple;
+	bh=dYSg3oVdufgzL/W13arMrKcCV9A5JJmzSffp3kHFq2Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QIM2lfHWBvaZ7lbN7gTwM35JO1YrKmTrAdR8sBS61BXSmQt23NXWAibenzRqrhStD7TPwhLyfWrU+m/ucHizG9FjWHtXmRqT+fAV2tcK2ihcWoWyoLXW0Ux5HP8T4Tg5tLfpr+NCoJms78BlVSnR3/V37hsHtf6oUMGIwj3CxYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m/y4zDMM; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=AmW1hAwlYNPyJIe8zwz4cJUFxqFafwEFxkxvswViKNL2B3B92TgDqcbs0be0PfMX94D6bF9Clqc9GFQGnS050gYzKh5NBeK/9/iABce3efps/UYA1LyE7ZC0Yq7Jyiozy5KsPTVL9XBi70cnDaxTfKi+sA7zb9BPIzIfBRDH+Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQJ3rFx9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m/y4zDMM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5841AC4CEF1;
-	Mon, 22 Dec 2025 12:35:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQJ3rFx9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1AEC113D0;
+	Mon, 22 Dec 2025 12:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766406952;
-	bh=MFh6mggRYW3+kj5WDpGpaaaM7+3cG6rn3t7+x13dnTc=;
+	s=k20201202; t=1766406956;
+	bh=dYSg3oVdufgzL/W13arMrKcCV9A5JJmzSffp3kHFq2Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=m/y4zDMMjepLhYLxi+xqbjp+eatZ7aUlVuKQEB7Hx4S9k0R3VQbxJabpVMNR5mgaC
-	 qsyOqXC1VAdbBlSYVTw+IQrtDymPP39FGVnHX7vuHYQutdIXDKhnRLdaKt0ky8AF6Z
-	 rZEhrW0yiPtV1hzG+ClDazc/KSecKfVcjwWivLc5VYZQ7gnuWa8/SGZroNlKPMjNWZ
-	 MpiF//tti70MkpqT+mXp0RYzo8PuEFnhBlWyd+Men1HiZYO7tx6NAptxuuTkHbBqmB
-	 Lo45kyhepETgYiTLysYGX06HxpScsy05VEu/f+dF2vi2WHO4jdmKQ3PKb4GNvl4CJW
-	 arrib+hOuvGEA==
+	b=bQJ3rFx9gdZltXZP5dI/b4heuDpQYfRDq8bl06P0xY0Qj7D6U+5L4Jv2QFuVlxY5d
+	 y6AzXtJXe3YzzznTSlssJSWQ1eS5oEW99631jV4r4kwL7u+Xn9t6G5CryyXZAnI7X1
+	 roNNhB2EC/CnSwV87jhipE8x1WMk70srzfaxYHhoaGjs+5JJIJTZ+Pus6SLFlaZDFQ
+	 pDeq52SnfjJr0znYGOu+0H8f3D9uIdmMH73oUZH8OeLsiCWyUCYdt+3QSkaiAWTbGV
+	 tNQKP17bpSnEiuGuXoBLcHGEVbbPGu9gAy/DzmkgTRQWX2PqcYmHh1yinmtQjlOpkl
+	 BpvvcpFzs8ivg==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 22 Dec 2025 13:35:30 +0100
-Subject: [PATCH 4/7] rust: io: replace `kernel::c_str!` with C-Strings
+Date: Mon, 22 Dec 2025 13:35:31 +0100
+Subject: [PATCH 5/7] rust: irq: replace `kernel::c_str!` with C-Strings
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251222-cstr-driver-core-v1-4-1142a177d0fd@gmail.com>
+Message-Id: <20251222-cstr-driver-core-v1-5-1142a177d0fd@gmail.com>
 References: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
 In-Reply-To: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -52,13 +52,13 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1766406930; l=1697;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1766406931; l=2062;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=XRqPEc+02APN7oufULgtA4lYVdXfRUqvkbUWAXMp5AE=;
+ bh=L02rHNwqlKnpUDu9cZ6amzsQm+VwhgqPRTW13V9PPFY=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QCW84UhhUAPsc7t+I4FrOEVUp608OXG+5Ez1004s9XKoB730WzzVi5xrzcCWtQ3b70/j3QlIWbs
- lLzpXQpF8WQM=
+ QAndKJlAuFBouzwIkP/nWdHkSbKLG9+X1dNneKVFcKXvJWT2QhHGrqr4ZNGsYH/np9kyxmFjuMx
+ XhkMiHAA6+wA=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
@@ -69,48 +69,47 @@ C-String literals were added in Rust 1.77. Replace instances of
 
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- rust/kernel/io/mem.rs | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ rust/kernel/irq/request.rs | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-index b03b82cd531b..3b131f6f7733 100644
---- a/rust/kernel/io/mem.rs
-+++ b/rust/kernel/io/mem.rs
-@@ -5,7 +5,6 @@
- use core::ops::Deref;
- 
- use crate::{
--    c_str,
-     device::{
-         Bound,
-         Device, //
-@@ -52,7 +51,7 @@ pub(crate) unsafe fn new(device: &'a Device<Bound>, resource: &'a Resource) -> S
-     /// illustration purposes.
-     ///
-     /// ```no_run
--    /// use kernel::{bindings, c_str, platform, of, device::Core};
-+    /// use kernel::{bindings, platform, of, device::Core};
-     /// struct SampleDriver;
-     ///
-     /// impl platform::Driver for SampleDriver {
-@@ -110,7 +109,7 @@ pub fn iomap_exclusive_sized<const SIZE: usize>(
-     /// illustration purposes.
-     ///
-     /// ```no_run
--    /// use kernel::{bindings, c_str, platform, of, device::Core};
-+    /// use kernel::{bindings, platform, of, device::Core};
-     /// struct SampleDriver;
-     ///
-     /// impl platform::Driver for SampleDriver {
-@@ -172,7 +171,7 @@ impl<const SIZE: usize> ExclusiveIoMem<SIZE> {
-     fn ioremap(resource: &Resource) -> Result<Self> {
-         let start = resource.start();
-         let size = resource.size();
--        let name = resource.name().unwrap_or(c_str!(""));
-+        let name = resource.name().unwrap_or_default();
- 
-         let region = resource
-             .request_region(
+diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
+index b150563fdef8..67769800117c 100644
+--- a/rust/kernel/irq/request.rs
++++ b/rust/kernel/irq/request.rs
+@@ -139,7 +139,6 @@ pub fn irq(&self) -> u32 {
+ /// [`Completion::wait_for_completion()`]: kernel::sync::Completion::wait_for_completion
+ ///
+ /// ```
+-/// use kernel::c_str;
+ /// use kernel::device::{Bound, Device};
+ /// use kernel::irq::{self, Flags, IrqRequest, IrqReturn, Registration};
+ /// use kernel::prelude::*;
+@@ -167,7 +166,7 @@ pub fn irq(&self) -> u32 {
+ ///     handler: impl PinInit<Data, Error>,
+ ///     request: IrqRequest<'_>,
+ /// ) -> Result<Arc<Registration<Data>>> {
+-///     let registration = Registration::new(request, Flags::SHARED, c_str!("my_device"), handler);
++///     let registration = Registration::new(request, Flags::SHARED, c"my_device", handler);
+ ///
+ ///     let registration = Arc::pin_init(registration, GFP_KERNEL)?;
+ ///
+@@ -340,7 +339,6 @@ fn handle_threaded(&self, device: &Device<Bound>) -> IrqReturn {
+ /// [`Mutex`](kernel::sync::Mutex) to provide interior mutability.
+ ///
+ /// ```
+-/// use kernel::c_str;
+ /// use kernel::device::{Bound, Device};
+ /// use kernel::irq::{
+ ///   self, Flags, IrqRequest, IrqReturn, ThreadedHandler, ThreadedIrqReturn,
+@@ -381,7 +379,7 @@ fn handle_threaded(&self, device: &Device<Bound>) -> IrqReturn {
+ ///     request: IrqRequest<'_>,
+ /// ) -> Result<Arc<ThreadedRegistration<Data>>> {
+ ///     let registration =
+-///         ThreadedRegistration::new(request, Flags::SHARED, c_str!("my_device"), handler);
++///         ThreadedRegistration::new(request, Flags::SHARED, c"my_device", handler);
+ ///
+ ///     let registration = Arc::pin_init(registration, GFP_KERNEL)?;
+ ///
 
 -- 
 2.52.0
