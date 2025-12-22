@@ -1,95 +1,210 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA921487E9
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 18:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD762F83B2
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 19:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766429128; cv=none; b=k3pw58JThkmChs1s4pXdXT0wKXHEaaQLF9Qb+PlYv4gV3zhFvOmLKnWMdFclPKDFPTROPBPQ+IekHfiBUSvXIrYbnV93PQ3EWRYxCr6JL8Lq6YaQF4s6djx7gROcqt/nDDqvWXJ/qh/fhxEY0Z3vXOSEMZJX2JOCM41cAUJQ/TM=
+	t=1766431978; cv=none; b=Wr1WO6O3DQ+8V8rVTHBrzR8oGpcLocOPgn+8O3oxn68Ze4Kk+l0Trc+uIT2uTaukcRH5jC/f3lpZPGwvuJuBkfEDirS+b5Rt0yw3/OZ7spSLTzDwiQWzGb4fCZGIvkjPFMd6GlMs2MlL/NkWUtogECRZsYtNJOzV51n5xJV9zZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766429128; c=relaxed/simple;
-	bh=0V99LgdBACo3xxJHbBCDcAZxLNLyf+l6Fy3cte0oM+Q=;
+	s=arc-20240116; t=1766431978; c=relaxed/simple;
+	bh=2YLmqYLXG8cvuDMIXMSVNeC2qAgNhbNu2d7uOd4IqIM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OsYQKk49d/nxBdmLqHt8tRtXxxfXOEJKeSyGM1N0cs0Y2CSfOUkCqse3qUlWsDbWJzP/r2on9nA38NkLopc6uzXkEZ0kIxdqHUb7XQECbULlfP7gP+PW8mFyETQ80b5LED8Z6VE007Stu3pFJbjrnhKLqJjBKGF3bn4/uipDjZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i4/X+aFy; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=IBY+/+2xlXF30MrG0FAWu4gTz+su75rvZWLBUJMz1Uqm0ybpyVeJGl5zhwFRItxt44w92AYCe5J3Oz+Fzm+hQsn9U04xVIDYw/aH8LsUIFsMIjgBl25PmhnMgFBsd5ctjZZebos7t5bdV4hfwh/Gcim+3rN8pHl5ORtKvjZJNvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3VNGzT/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i4/X+aFy"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2a08ced9a36so10486845ad.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 10:45:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766429127; x=1767033927; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0V99LgdBACo3xxJHbBCDcAZxLNLyf+l6Fy3cte0oM+Q=;
-        b=i4/X+aFyZnaRllXz5iN0aWqdHjUnuCQOJr1XCKSWdv+q4mcUed2aSc6dAa6zL32p4/
-         jPM7rKlQJmLILW4gNJfIw5k2w0pRrJa8yCeJeUH6ghYd+aKUevAWfaO1ZrZv86WZyoVB
-         nl84pWx39yj0x/oHkpLHNfyK1oWsvr7nl56ca5gn41kbonq8HF5Ko7GIgH/+I7X5uyDE
-         +O9oXuBeAZF7x0w6LbXjXPu2Xl63APE5FCVrGWBWVGgKct5O/PS8hWQpuE6nbWq2QMN2
-         2wplsCkKrlGH6m5+jGymafY5AtdwH7CSUBYoUKbiUr71uaJQtUQ/kuvAuG4PnofGVJZC
-         RqKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766429127; x=1767033927;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0V99LgdBACo3xxJHbBCDcAZxLNLyf+l6Fy3cte0oM+Q=;
-        b=vRbS63cJ4jp7ZFMFZCB4PbgaiUDUYmUTHUOYgcNOCp+MYR9DNYdTUehCosOfe+EMb0
-         qsycLqe+MYknAfwROvj+T5u0LB0sPsI0OXFJQf+1SfRHJCQlzntUvRxdbjE9b3A1ZlV7
-         CE76r2QQ2hE9QD8AP/Ns3JdaFYJlXOuinFNMujjgMFOxu7XwpBJEaq07ibt7/eg0AMs6
-         ikYEHI1EZU7BcgxiXYEseLi+NJy+weabfZyk7FJ1ONkfqnexK7M0nz2wL8tMp1P8w9K9
-         ws/HMD1/hdTF4j2SQpIIEgggZ2/bojEqo1hjsoquf5yElpU5WXhB+Ilpke+3ZrqjdVBj
-         knag==
-X-Forwarded-Encrypted: i=1; AJvYcCXc7IDbhd0IyQP3m3o5sY2LGjocgpxQIH1JcArIsK7URvMWYzvVn79MjZeoa+29SXAB+ZSlXSyV6Jc7oQuCQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9KZGTWL2s+wMxJEmak+o+WGF3FH56Cdpy4hKbX3nmHQGvbl8R
-	UKB8kDHnPNY2wi6IHKjnzH8RdIEzWgwIG2E/xoz9u4v2/CE99vdL0lXy/vXZb1opQVQBVCjN37g
-	VwXTWFxw3kG0M6HL5ceN3rFasuXQfKxc=
-X-Gm-Gg: AY/fxX7Nydbff30/YxzrtWXDxV64yXGDT5iHqsi+zcSqTsVcIvg/gSKotjv52TYVLon
-	NA6yon4DrhECb9p9Z/HNhGzTnlI86WStUJQWpuhq8GG2bpG2jy0ukF+HSW40CPPy0NkgqBjKtGX
-	tcWWzhLoUCGnjlO+9WrOfRz1YPlx73WFD88Z3iw2XO5fFTJXAq9UoEe8lT85siO4agmbRNvG6jr
-	pcenEbIp17TX75xqotEUAiMJ3vnXZkkxmWc75WrbUMI6QjzvI3ktMtWL0uFw+qkfnrtjBbysnlx
-	zLXw1ci5LOd9QPTYLL8Lro64H91XR9JhPpt+f9qYHiHaQACbG6Smfu3yO+9CI5J9iOxNbECv9mB
-	yAZoMG9c+q4i+
-X-Google-Smtp-Source: AGHT+IEVyNhkgcvIagnTngabZtenk9WfgkzkXjmffkiPYIbBKr6Bvo6J0p2a+xWqn6m9fufk/xazVKMPD90VLH4K3yY=
-X-Received: by 2002:a05:7301:1a18:b0:2ab:ca55:89bd with SMTP id
- 5a478bee46e88-2b05ec309f6mr4941730eec.4.1766429126486; Mon, 22 Dec 2025
- 10:45:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3VNGzT/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C09C116D0
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 19:32:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766431978;
+	bh=2YLmqYLXG8cvuDMIXMSVNeC2qAgNhbNu2d7uOd4IqIM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=F3VNGzT/CsTfe3DWl7QcMrwTXVtn7t6zeoXDfhEPGhZ8KJPJl2uXQ02WkMORvq++0
+	 M3Y/0Ooo3Rys3UNO1LLKOclnu1WitUhxezbdiE4ztqcbtZhpKm5b7QM3ViSsfuDP6W
+	 CM0la+t4L6g6BR+A06W2p6Hfervi3uga6tfq3TLLd0v1HFL2cWx+3fsEm3GmHmgp/t
+	 6qrIGJQYFcEBhxhVJnMpLsENK6GqCyDEl19o7QmxW2f/RZ3t299FdiPUNlrP9VCQxm
+	 lDElXiiAAb+e/R7IOH4m1JsLj8pRXDvt0tFJWB6GzaO10akhoqOUgfhvK4F0aNBoI9
+	 vD7IEJCcpb+9g==
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-3ece54945d9so1477855fac.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 11:32:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVeyCHNVPK/RUC9tcgfP7VZARMq9rXLVr+QZCcqjqV6wgUREBiEQhcPe7pG59/lPnJAil2wfo3Pg3qfaixpQA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2TVKppuQQLXpDMvd2WOeuIaMZahf9UI2zyK4XQOD+04Zx/oZF
+	vIZimL4/QNZyDmfSSPHea6mjRrHDNmIINd3FmQ2Qj5c2S9z9fhwN5PmmE1CyTsj9IOQCFoguSj9
+	i00LeGzmfY6PBTnihZu5qC0sUm6hP/Ck=
+X-Google-Smtp-Source: AGHT+IH9Oh5ISckXWZDzO/JklOW5Tf/iJ8QC33F5miP3LQxw43hjKyPUfvzG4hyaummAbxFPPPUyE01caboS86H4kxc=
+X-Received: by 2002:a05:6820:827:b0:659:9a49:8dd0 with SMTP id
+ 006d021491bc7-65d0ea2a39emr4539336eaf.18.1766431977292; Mon, 22 Dec 2025
+ 11:32:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251222-cstr-i2c-v1-0-df1c258d4615@gmail.com> <a0109742-8213-4aa3-a64a-d9326c694f46@gmail.com>
-In-Reply-To: <a0109742-8213-4aa3-a64a-d9326c694f46@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 22 Dec 2025 19:45:13 +0100
-X-Gm-Features: AQt7F2qrpCbDesQWhnZ8QAwHCGHKx5A9FpJpuaBPqZQSwCgxxKeWanD09r4fup4
-Message-ID: <CANiq72m_ZMiPObgSHW-ja0jD+gjgH5-DZ01h-UkRvj9jmXG9eA@mail.gmail.com>
-Subject: Re: [PATCH 0/2] rust: i2c: replace `kernel::c_str!` with C-Strings
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Tamir Duberstein <tamird@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+References: <cover.1766331321.git.foxido@foxido.dev> <a28e83201e1413091333509628274807e50ec170.1766331321.git.foxido@foxido.dev>
+In-Reply-To: <a28e83201e1413091333509628274807e50ec170.1766331321.git.foxido@foxido.dev>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 22 Dec 2025 20:32:46 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hQwopbJox0QpT5tmZ0Eobgpfii47cDP8OWEON+iT4Qxg@mail.gmail.com>
+X-Gm-Features: AQt7F2pLyfssaq8QK0jeDWulf5Uchu82OKpzC-ivQuaspV6Nq4x_CDAxy2F83U4
+Message-ID: <CAJZ5v0hQwopbJox0QpT5tmZ0Eobgpfii47cDP8OWEON+iT4Qxg@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/3] rust: implement wrapper for acpi_object
+To: Gladyshev Ilya <foxido@foxido.dev>
+Cc: "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, Armin Wolf <W_Armin@gmx.de>, 
+	platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 22, 2025 at 7:17=E2=80=AFPM Igor Korotin
-<igor.korotin.linux@gmail.com> wrote:
+On Sun, Dec 21, 2025 at 7:24=E2=80=AFPM Gladyshev Ilya <foxido@foxido.dev> =
+wrote:
 >
-> Acked-by: Igor Korotin<igor.korotin.linux@gmail.com>
+> ACPI Object is represented via union on C-side. On Rust side, it's
+> zero-cost type wrapper for each ACPI Type, with individual methods for
+> getters and other interactions.
+
+This is ACPICA stuff though and switching over ACPICA to Rust any time
+soon is rather unlikely.
+
+Is this really needed on the Rust side?
+
+> Signed-off-by: Gladyshev Ilya <foxido@foxido.dev>
+> ---
+>  rust/kernel/acpi.rs | 103 ++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 103 insertions(+)
 >
-> Since I don=E2=80=99t yet have a public kernel tree, I=E2=80=99d apprecia=
-te it if
-> someone could pick this up through their tree.
-
-I can do that.
-
-Cheers,
-Miguel
+> diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
+> index 9b8efa623130..0a164ca8cceb 100644
+> --- a/rust/kernel/acpi.rs
+> +++ b/rust/kernel/acpi.rs
+> @@ -63,3 +63,106 @@ macro_rules! acpi_device_table {
+>          $crate::module_device_table!("acpi", $module_table_name, $table_=
+name);
+>      };
+>  }
+> +
+> +/// An ACPI object.
+> +///
+> +/// This structure represents the Rust abstraction for a C [`struct acpi=
+_object`].
+> +/// You probably want to convert it into actual object type.
+> +///
+> +/// # Example
+> +/// ```
+> +/// # use kernel::prelude::*
+> +/// use kernel::acpi::{AcpiObject};
+> +///
+> +/// fn read_first_acpi_byte(obj: &AcpiObject) -> Result<u8> {
+> +///     if obj.type_id() !=3D AcpiBuffer::ACPI_TYPE {
+> +///         return Err(EINVAL);
+> +///     }
+> +///
+> +///     let obj: &AcpiBuffer =3D obj.try_into()?;
+> +///
+> +///     Ok(obj.payload()[0])
+> +/// }
+> +/// ```
+> +#[repr(transparent)]
+> +pub struct AcpiObject(bindings::acpi_object);
+> +
+> +impl AcpiObject {
+> +    /// Returns object type (see `acpitypes.h`)
+> +    pub fn type_id(&self) -> u32 {
+> +        // SAFETY: `type` field is valid in all union variants
+> +        unsafe { self.0.type_ }
+> +    }
+> +}
+> +
+> +/// Generate AcpiObject subtype
+> +///
+> +/// For given subtype implements
+> +/// - `TryFrom<&AcpiObject> for &SubType` trait
+> +/// - unsafe try_from_unchecked() with same semantics, but without type =
+check
+> +macro_rules! acpi_object_subtype {
+> +    ($subtype_name:ident <- ($acpi_type:ident, $field_name:ident, $union=
+_type:ty)) =3D> {
+> +        /// Wraps `acpi_object` subtype
+> +        #[repr(transparent)]
+> +        pub struct $subtype_name($union_type);
+> +
+> +        impl TryFrom<&AcpiObject> for &$subtype_name {
+> +            type Error =3D Error;
+> +
+> +            fn try_from(value: &AcpiObject) -> core::result::Result<Self=
+, Self::Error> {
+> +                // SAFETY: type_ field present in all union types and is=
+ always valid
+> +                let real_type =3D unsafe { value.0.type_ };
+> +
+> +                if (real_type !=3D $subtype_name::ACPI_TYPE) {
+> +                    return Err(EINVAL);
+> +                }
+> +
+> +                // SAFETY: We validated union subtype
+> +                Ok(unsafe {
+> +                    ::core::mem::transmute::<&$union_type, &$subtype_nam=
+e>(&value.0.$field_name)
+> +                })
+> +            }
+> +        }
+> +
+> +        impl $subtype_name {
+> +            /// This ACPI type int value (see `acpitypes.h`)
+> +            pub const ACPI_TYPE: u32 =3D bindings::$acpi_type;
+> +
+> +            /// Converts AcpiObject reference into exact ACPI type wrapp=
+er
+> +            ///
+> +            /// # Safety
+> +            ///
+> +            /// Assumes that value is correct (`Self`) subtype
+> +            pub unsafe fn try_from_unchecked(value: &AcpiObject) -> &Sel=
+f {
+> +                // SAFETY: Only unsafety comes from unchecked transforma=
+tion and
+> +                // we transfered
+> +                unsafe {
+> +                    ::core::mem::transmute::<&$union_type, &$subtype_nam=
+e>(&value.0.$field_name)
+> +                }
+> +            }
+> +        }
+> +    };
+> +}
+> +
+> +acpi_object_subtype!(AcpiInteger
+> +    <- (ACPI_TYPE_INTEGER, integer, bindings::acpi_object__bindgen_ty_1)=
+);
+> +acpi_object_subtype!(AcpiString
+> +    <- (ACPI_TYPE_STRING, string, bindings::acpi_object__bindgen_ty_2));
+> +acpi_object_subtype!(AcpiBuffer
+> +    <- (ACPI_TYPE_BUFFER, buffer, bindings::acpi_object__bindgen_ty_3));
+> +acpi_object_subtype!(AcpiPackage
+> +    <- (ACPI_TYPE_PACKAGE, package, bindings::acpi_object__bindgen_ty_4)=
+);
+> +acpi_object_subtype!(AcpiReference
+> +    <- (ACPI_TYPE_LOCAL_REFERENCE, reference, bindings::acpi_object__bin=
+dgen_ty_5));
+> +acpi_object_subtype!(AcpiProcessor
+> +    <- (ACPI_TYPE_PROCESSOR, processor, bindings::acpi_object__bindgen_t=
+y_6));
+> +acpi_object_subtype!(AcpiPowerResource
+> +    <- (ACPI_TYPE_POWER, power_resource, bindings::acpi_object__bindgen_=
+ty_7));
+> +
+> +impl AcpiBuffer {
+> +    /// Get Buffer's content
+> +    pub fn payload(&self) -> &[u8] {
+> +        // SAFETY: (pointer, length) indeed represents byte slice
+> +        unsafe { ::core::slice::from_raw_parts(self.0.pointer, self.0.le=
+ngth as usize) }
+> +    }
+> +}
+> --
