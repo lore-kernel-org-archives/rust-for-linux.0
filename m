@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E969C41C62;
-	Mon, 22 Dec 2025 12:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC54279DB7;
+	Mon, 22 Dec 2025 12:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766405687; cv=none; b=p0q+TpXZSGfdY0ljMb0zZ6bq82Ex64XZRT3tToZi/WnQKWSE6B6/CnGkn+7BqhDjPB9sGKSV73CHJqmy1iB66ro+4HM1nyKJtye/zqfBegmC+5p1l8HFuR2y3CS01oiWSeEfIDBKG8we4wuGQAgzcRD+f3j7iA0Jllfkvd0CHSw=
+	t=1766405690; cv=none; b=jEw1N46ftaYZVzdccvSFsandtuxyHmsvRN/8/6mVpwaYpxJ8Yx+wr2znLnoibl8/VLs6ihGjDg9zYVhuiSG6HtQaB8k2dKm6oaDvemPxBeQ+7ER3mvWpQAqRTHn9RTYjjmArsKPlmbip0k7nyTStm7VxFAGzI7zu2Xlxa7PR+Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766405687; c=relaxed/simple;
-	bh=RZeHMaQWuBnm0I0bJRfnTc6BV3QILxnT50pOKZUxQh0=;
+	s=arc-20240116; t=1766405690; c=relaxed/simple;
+	bh=0d11QVK9Ev2Dz/qMQjhZJ9dFeqGYcbzod45ipeUugdg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=X3ly3svSKDtdIZQnRUnW7XUj6nLnD1bRdLP0o1vEH3bI/q7KCKMGTGyx9Y22jetpydGkulEkX5V8blFgi7TWUu+TsvMm62Vd4K3zbfPuAWK4RqOJsgygUsm+t5G7r09DMmxWAkTYFt8ZzSwRAod7f2k8ufybdUSC5wRjVfv2iYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQK6s1Sz; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=q56GWqx2x0FkY71RyQDISVkFL3xo/g6lBvm1yVgUTzPhfSUWuaVVBn1GMX0tA4bXUvHK91IBRtf0NEDoWz1igYczWXqGz5fwL/TUT4/z2QWDBea5Tt3GtdCVzEukNmmp/ZfATLtigHzlHwaY75s7wh5U/cP6AWi+qdgpNG8I+30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k43q7Bpl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQK6s1Sz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89D1C113D0;
-	Mon, 22 Dec 2025 12:14:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k43q7Bpl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1386EC116C6;
+	Mon, 22 Dec 2025 12:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766405686;
-	bh=RZeHMaQWuBnm0I0bJRfnTc6BV3QILxnT50pOKZUxQh0=;
+	s=k20201202; t=1766405689;
+	bh=0d11QVK9Ev2Dz/qMQjhZJ9dFeqGYcbzod45ipeUugdg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=TQK6s1Szhrs4uI4pSnhM7U8mPIm1GkhN/IfjFHo20HqrK157L3QgC7yGUCye1gw9o
-	 fyfcqA9FL2bFkI0l4IKLC9OQM0rexr+9whsPh5GqIh09daMUlJ7pC4Orzb+FkBguBM
-	 uNrLqDHi3H/i/OfXOCu4gUEK6a8JkYhEI5blVghnKaqTQo2a9vVjarE7qzmZmYEQ4R
-	 zCjSGQ5qdiQG5pC8ll2i4TbeCg7nlL5YRYpWH8ZpobelqAWirzQiqLxsM7IxXre9jM
-	 UQydGNpPhfXFodJC395DLg7MAPO2bmYO9Gj/+Ifxf04lHg4v/ERHNYBA+suQnM49/Q
-	 kwfWjlPVLz3qQ==
+	b=k43q7BplJFdPNAH/wNGsiyZXnYtAznxu/MWZ5MwFEQZ4F8wdDdvE2Q6qQ4+3H0EGR
+	 R/0Tc7t07+ABAIHW6ZCpW15PXMo6ZumnJ/G2gb24UoFspA24bhqTr2uE4KQwsdNZfq
+	 SICdpVdiv2VgoNtyKhpri9zq1P1oZUBnCJ6qUv7H3WUZMXA0XhceM57OSH2cbL2md6
+	 ZAYIJMxQeXp+p7zybw5yfAP1QYjD0yXIPC6G5w7T3HS9uCLl/B7ylBAyW0bcNoxSAc
+	 w/jxOciI8UiuqfaWqODlvZE+XB+O2WTqq0wVSBm23TXqlXqNfJtfOIbI5H0VJeIUwD
+	 MuhAWBIPIsAXw==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 22 Dec 2025 13:14:32 +0100
-Subject: [PATCH 1/2] rust: i2c: replace `kernel::c_str!` with C-Strings
+Date: Mon, 22 Dec 2025 13:14:33 +0100
+Subject: [PATCH 2/2] samples: rust: i2c: replace `kernel::c_str!` with
+ C-Strings
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +38,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251222-cstr-i2c-v1-1-df1c258d4615@gmail.com>
+Message-Id: <20251222-cstr-i2c-v1-2-df1c258d4615@gmail.com>
 References: <20251222-cstr-i2c-v1-0-df1c258d4615@gmail.com>
 In-Reply-To: <20251222-cstr-i2c-v1-0-df1c258d4615@gmail.com>
 To: Igor Korotin <igor.korotin.linux@gmail.com>, 
@@ -51,13 +52,13 @@ To: Igor Korotin <igor.korotin.linux@gmail.com>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1766405679; l=1531;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1766405680; l=2514;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=HPJmWKMG9wdsh/oNvEgt8OonxR2OdRnCsLVZPkcVDOc=;
+ bh=e6wngjqR4FRY8Z65B6bWnRS2cUgbyeAj/EOZWZOPK9Q=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QH8iJYIIdZ0yAoTgD8cbYTqvL1wO1X3v36u5NeQdOcFlCzCe25vk2/NOGTpKkIBsC2TxqBkXKAa
- U1lq7yF+Grw4=
+ QAa6Ugr/UMpQ3tCnfonNTSTKrU3pS4FAWSOOdDvzwEvlRnmFubxR6qVSyArkGUwkm628WhDroV+
+ Vk/PM407YOQg=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
@@ -68,49 +69,83 @@ C-String literals were added in Rust 1.77. Replace instances of
 
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- rust/kernel/i2c.rs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ samples/rust/rust_driver_i2c.rs | 7 +++----
+ samples/rust/rust_i2c_client.rs | 7 +++----
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index 491e6cc25cf4..792a71b15463 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -253,7 +253,7 @@ macro_rules! module_i2c_driver {
- /// # Example
- ///
- ///```
--/// # use kernel::{acpi, bindings, c_str, device::Core, i2c, of};
-+/// # use kernel::{acpi, bindings, device::Core, i2c, of};
- ///
- /// struct MyDriver;
- ///
-@@ -262,7 +262,7 @@ macro_rules! module_i2c_driver {
- ///     MODULE_ACPI_TABLE,
- ///     <MyDriver as i2c::Driver>::IdInfo,
- ///     [
--///         (acpi::DeviceId::new(c_str!("LNUXBEEF")), ())
-+///         (acpi::DeviceId::new(c"LNUXBEEF"), ())
- ///     ]
- /// );
- ///
-@@ -271,7 +271,7 @@ macro_rules! module_i2c_driver {
- ///     MODULE_I2C_TABLE,
- ///     <MyDriver as i2c::Driver>::IdInfo,
- ///     [
--///          (i2c::DeviceId::new(c_str!("rust_driver_i2c")), ())
-+///          (i2c::DeviceId::new(c"rust_driver_i2c"), ())
- ///     ]
- /// );
- ///
-@@ -280,7 +280,7 @@ macro_rules! module_i2c_driver {
- ///     MODULE_OF_TABLE,
- ///     <MyDriver as i2c::Driver>::IdInfo,
- ///     [
--///         (of::DeviceId::new(c_str!("test,device")), ())
-+///         (of::DeviceId::new(c"test,device"), ())
- ///     ]
- /// );
- ///
+diff --git a/samples/rust/rust_driver_i2c.rs b/samples/rust/rust_driver_i2c.rs
+index ecefeca3e22f..6be79f9e9fb5 100644
+--- a/samples/rust/rust_driver_i2c.rs
++++ b/samples/rust/rust_driver_i2c.rs
+@@ -4,7 +4,6 @@
+ 
+ use kernel::{
+     acpi,
+-    c_str,
+     device::Core,
+     i2c,
+     of,
+@@ -17,21 +16,21 @@
+     ACPI_TABLE,
+     MODULE_ACPI_TABLE,
+     <SampleDriver as i2c::Driver>::IdInfo,
+-    [(acpi::DeviceId::new(c_str!("LNUXBEEF")), 0)]
++    [(acpi::DeviceId::new(c"LNUXBEEF"), 0)]
+ }
+ 
+ kernel::i2c_device_table! {
+     I2C_TABLE,
+     MODULE_I2C_TABLE,
+     <SampleDriver as i2c::Driver>::IdInfo,
+-    [(i2c::DeviceId::new(c_str!("rust_driver_i2c")), 0)]
++    [(i2c::DeviceId::new(c"rust_driver_i2c"), 0)]
+ }
+ 
+ kernel::of_device_table! {
+     OF_TABLE,
+     MODULE_OF_TABLE,
+     <SampleDriver as i2c::Driver>::IdInfo,
+-    [(of::DeviceId::new(c_str!("test,rust_driver_i2c")), 0)]
++    [(of::DeviceId::new(c"test,rust_driver_i2c"), 0)]
+ }
+ 
+ impl i2c::Driver for SampleDriver {
+diff --git a/samples/rust/rust_i2c_client.rs b/samples/rust/rust_i2c_client.rs
+index f67938396dce..8d2c12e535b0 100644
+--- a/samples/rust/rust_i2c_client.rs
++++ b/samples/rust/rust_i2c_client.rs
+@@ -69,7 +69,6 @@
+ 
+ use kernel::{
+     acpi,
+-    c_str,
+     device,
+     devres::Devres,
+     i2c,
+@@ -90,20 +89,20 @@ struct SampleDriver {
+     OF_TABLE,
+     MODULE_OF_TABLE,
+     <SampleDriver as platform::Driver>::IdInfo,
+-    [(of::DeviceId::new(c_str!("test,rust-device")), ())]
++    [(of::DeviceId::new(c"test,rust-device"), ())]
+ );
+ 
+ kernel::acpi_device_table!(
+     ACPI_TABLE,
+     MODULE_ACPI_TABLE,
+     <SampleDriver as platform::Driver>::IdInfo,
+-    [(acpi::DeviceId::new(c_str!("LNUXBEEF")), ())]
++    [(acpi::DeviceId::new(c"LNUXBEEF"), ())]
+ );
+ 
+ const SAMPLE_I2C_CLIENT_ADDR: u16 = 0x30;
+ const SAMPLE_I2C_ADAPTER_INDEX: i32 = 0;
+ const BOARD_INFO: i2c::I2cBoardInfo =
+-    i2c::I2cBoardInfo::new(c_str!("rust_driver_i2c"), SAMPLE_I2C_CLIENT_ADDR);
++    i2c::I2cBoardInfo::new(c"rust_driver_i2c", SAMPLE_I2C_CLIENT_ADDR);
+ 
+ impl platform::Driver for SampleDriver {
+     type IdInfo = ();
 
 -- 
 2.52.0
