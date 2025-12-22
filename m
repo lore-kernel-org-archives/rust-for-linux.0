@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA83F30C622;
-	Mon, 22 Dec 2025 13:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585DC2C11E2;
+	Mon, 22 Dec 2025 13:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766409204; cv=pass; b=HJnRZCD30M4ikuvisxl4IWDFQUy43vr7uR/IBTBKjYCHfOMK0hvjRKWlNWFwXB9orKW1MaQmrQYyudlTdrophoSNFkOOqas/MMjo0vtk4TKNGFYgKalNfFht4DldfoRq4p3TXxO5ev1C1UqTo+bdqsL7EvK8fdsNbFglSZd8Oqk=
+	t=1766409429; cv=pass; b=E9GQCOzhm1LO2Ne/YCzfXmQU2MX4ArSozh+hZziMJXdVHWVCmX762iIYi/ATsT6JzxbzoIa/yNRUg4JMH8WXnRi91AJ2nYtNNG4Lp7UwIpY3dcSNsLkMsi99sth8rEmJk0UmfdtkjCbNHb/aXYTcGE12GjTS/GUyfHZYMdCc9KY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766409204; c=relaxed/simple;
-	bh=rdkz93A53XlyZYYM4wbYdypSLR5cPImkOCNcr9vhIWY=;
+	s=arc-20240116; t=1766409429; c=relaxed/simple;
+	bh=/CFHnZRv8iJQS4gN/AvftpVO5uZjHr6Jv6/flQ2LNSM=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=g/FsuYe1ZouVHKZTyYCUfDxT6aqZTS48YUitVL3Hzxs0E3+Z3zJXV/vf/eNJ6yXu+BmLBP4ynMNgt9wiXxF8aBu5HR4RZM47K1UyInhRuGWX7IJT3IluPTBvkxApxLsLzPqYwmWmaSrIbGvzgxh+LJdI6+5KEhXBNxLa74LGaf8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Dbf25pie; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=VryGcDmWGP0dTkcE6b7tW/+yBuqgjYLjFPKpAet9rndz4GzI/BtJqVoOz8eb1sts3GNmOCriy5/M8CZfEGL3zTHSJaL1mtr59Wxcqu0+RZxU4ci6G24EL2lM/7TSkbbuu5z1P4oqqu8tCR/9nKjHg1IUk3kSbH+8dEnuWc1w+Po=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=fbYpEacx; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Dbf25pie"
-ARC-Seal: i=1; a=rsa-sha256; t=1766409154; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="fbYpEacx"
+ARC-Seal: i=1; a=rsa-sha256; t=1766409407; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=FIeD0yoC0useamq64DFbpwGscnpFoFRO916jtMcGT87ucm9BM4lJ4r1lcukwra0bpbdFiKzoLoXO+NLey5J1dvjjRka78euAHRAPKcQ1P2lCzx7TfPHaFQUEhRrBKejWhQOWNA2VKf2I8Mj4KYc1a5zqsS58aTa2x0aBqKkGeQ8=
+	b=grVsiWrLKSsZ7++9wTG28PzeI59aKiC/nf0KNZSkZ+m89R3SZYK6Jq8fkn1+vNVJtBzFKVJyNJ6QdtVKjWaOsVcGvFObgIzY3NcX1agwvXmswo1D8fvRUqVoTSAvD4ZIXyyjZDsXADVCs+KvyTZQrpAXE5gULQiZdEiQ3fMQR/E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1766409154; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=jg3clCCdy+UwXNh1uiaX076qZBrP9rx5pJBCUZVZw/0=; 
-	b=ZfhtZ3cFQ2x0ZOnu0/6k6L5fyNNoHXOCMGnhotzA5/AuvuAiIlemTGps21Dx15yhHyh0FJJYVdiB/ScKxW9XyALy+gx5TST+/Jd2Wo3Sham2XSofqfjuWraB3qJMeCavG0vfn4d8f7VU1zfEk5NJtDUNFBoVpRnOAQpGY+h8ho0=
+	t=1766409407; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Kbpbxml/MOu/aVBScrUPOfSS8Lzk/nvoyTNytxtJfjE=; 
+	b=ncD5s2XGpNoyDYNPJfZNC5x8Lo7hljrLTV72l/50t9EGvyKaSIvThQtFQlD2yzUWOee32QoIUWMimNmUIWoBzQcm7fKS55qD7+F+LPw5+lkpDDifpWkEbjsRfwFssOAoAVYtqy9cTq5VjAArnV/rt/tiF8L6natpVspr61T2NSU=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766409154;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766409407;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=jg3clCCdy+UwXNh1uiaX076qZBrP9rx5pJBCUZVZw/0=;
-	b=Dbf25piewtZGCaBibPZLbFMKpFIf16/kSFcwb8G8Q6FNMTD4NWtZY4Z/b3rhsNIw
-	hrjombiOfnWCVQZv1qiM65Nu027Vi7c/xFNs5I8apgvWpGlxYZ6pN7QTBa3FVwJBQVZ
-	rDuanIkZB0FuZDoM1pTIcAwEfBdqhPUrBEZ98vSg=
-Received: by mx.zohomail.com with SMTPS id 17664091288402.246003345621716;
-	Mon, 22 Dec 2025 05:12:08 -0800 (PST)
+	bh=Kbpbxml/MOu/aVBScrUPOfSS8Lzk/nvoyTNytxtJfjE=;
+	b=fbYpEacxYVn5SQPgj4v004IRx3Y3eQY2LEvCizr9GwNA0ZX3ls7g6nEm6QkF6JOP
+	icq9ch17hQ3hmz8AnO5QikFfcwAfbmtmQ2ddiLFr/HJoVTNguHUvHGCf5frO6RAfMYy
+	haGIg+C1Wj/8RCE57o2L/+vFf+qI2Tici5E34WWI=
+Received: by mx.zohomail.com with SMTPS id 17664094062896.333037342333114;
+	Mon, 22 Dec 2025 05:16:46 -0800 (PST)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -44,467 +44,72 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH 2/2] rust/drm/gem: Use DeviceCtx with GEM objects
+Subject: Re: [PATCH 0/7] driver-core: rust: replace `kernel::c_str!` with
+ C-Strings
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251107193204.398657-3-lyude@redhat.com>
-Date: Mon, 22 Dec 2025 10:11:51 -0300
-Cc: linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
+In-Reply-To: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
+Date: Mon, 22 Dec 2025 10:16:30 -0300
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dave Ertman <david.m.ertman@intel.com>,
+ Ira Weiny <ira.weiny@intel.com>,
+ Leon Romanovsky <leon@kernel.org>,
  Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <lossin@kernel.org>,
  Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Shankari Anand <shankari.ak0208@gmail.com>,
- "open list:DRM DRIVER FOR NVIDIA GPUS [RUST]" <nouveau@lists.freedesktop.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F713E667-3414-4BBF-9820-FA21C7F1A4CE@collabora.com>
-References: <20251107193204.398657-1-lyude@redhat.com>
- <20251107193204.398657-3-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
+ Danilo Krummrich <dakr@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Tamir Duberstein <tamird@gmail.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <332B4589-762C-4881-B3B4-6378FB92230C@collabora.com>
+References: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
+To: Tamir Duberstein <tamird@kernel.org>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
 
 
-> On 7 Nov 2025, at 16:23, Lyude Paul <lyude@redhat.com> wrote:
->=20
-> Now that we have the ability to represent the context in which a DRM =
-device
-> is in at compile-time, we can start carrying around this context with =
-GEM
-> object types in order to allow a driver to safely create GEM objects =
-before
-> a DRM device has registered with userspace.
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> On 22 Dec 2025, at 09:35, Tamir Duberstein <tamird@kernel.org> wrote:
+> 
+> C-String literals were added in Rust 1.77. Replace instances of
+> `kernel::c_str!` with C-String literals where possible.
+> 
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > ---
-> drivers/gpu/drm/nova/driver.rs |  2 +-
-> drivers/gpu/drm/nova/gem.rs    | 11 +++---
-> drivers/gpu/drm/tyr/driver.rs  |  2 +-
-> drivers/gpu/drm/tyr/gem.rs     |  3 +-
-> rust/kernel/drm/device.rs      | 14 ++++----
-> rust/kernel/drm/driver.rs      |  2 +-
-> rust/kernel/drm/gem/mod.rs     | 66 ++++++++++++++++++++++------------
-> 7 files changed, 63 insertions(+), 37 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/nova/driver.rs =
-b/drivers/gpu/drm/nova/driver.rs
-> index c78d69d5f045a..54245ee439042 100644
-> --- a/drivers/gpu/drm/nova/driver.rs
-> +++ b/drivers/gpu/drm/nova/driver.rs
-> @@ -59,7 +59,7 @@ fn probe(adev: &auxiliary::Device<Core>, _info: =
-&Self::IdInfo) -> Result<Pin<KBo
-> impl drm::Driver for NovaDriver {
->     type Data =3D NovaData;
->     type File =3D File;
-> -    type Object =3D gem::Object<NovaObject>;
-> +    type Object<Ctx: drm::DeviceCtx> =3D gem::Object<NovaObject, =
-Ctx>;
->=20
->     const INFO: drm::DriverInfo =3D INFO;
->=20
-> diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
-> index 2760ba4f3450b..14d275dc74ce7 100644
-> --- a/drivers/gpu/drm/nova/gem.rs
-> +++ b/drivers/gpu/drm/nova/gem.rs
-> @@ -2,7 +2,7 @@
->=20
-> use kernel::{
->     drm,
-> -    drm::{gem, gem::BaseObject},
-> +    drm::{gem, gem::BaseObject, DeviceCtx},
->     prelude::*,
->     sync::aref::ARef,
-> };
-> @@ -19,21 +19,24 @@ pub(crate) struct NovaObject {}
-> impl gem::DriverObject for NovaObject {
->     type Driver =3D NovaDriver;
->=20
-> -    fn new(_dev: &NovaDevice, _size: usize) -> impl PinInit<Self, =
-Error> {
-> +    fn new<Ctx: DeviceCtx>(_dev: &NovaDevice<Ctx>, _size: usize) -> =
-impl PinInit<Self, Error> {
->         try_pin_init!(NovaObject {})
->     }
-> }
->=20
-> impl NovaObject {
->     /// Create a new DRM GEM object.
-> -    pub(crate) fn new(dev: &NovaDevice, size: usize) -> =
-Result<ARef<gem::Object<Self>>> {
-> +    pub(crate) fn new<Ctx: DeviceCtx>(
-> +        dev: &NovaDevice<Ctx>,
-> +        size: usize,
-> +    ) -> Result<ARef<gem::Object<Self, Ctx>>> {
->         let aligned_size =3D size.next_multiple_of(1 << 12);
->=20
->         if size =3D=3D 0 || size > aligned_size {
->             return Err(EINVAL);
->         }
->=20
-> -        gem::Object::new(dev, aligned_size)
-> +        gem::Object::<Self, Ctx>::new(dev, aligned_size)
->     }
->=20
->     /// Look up a GEM object handle for a `File` and return an =
-`ObjectRef` for it.
-> diff --git a/drivers/gpu/drm/tyr/driver.rs =
-b/drivers/gpu/drm/tyr/driver.rs
-> index e3ea5ad85f49b..78fc08945e08e 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -187,7 +187,7 @@ fn drop(self: Pin<&mut Self>) {
-> impl drm::Driver for TyrDriver {
->     type Data =3D TyrData;
->     type File =3D File;
-> -    type Object =3D drm::gem::Object<TyrObject>;
-> +    type Object<R: drm::DeviceCtx> =3D drm::gem::Object<TyrObject, =
-R>;
->=20
->     const INFO: drm::DriverInfo =3D INFO;
->=20
-> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-> index 1273bf89dbd5d..5e1403409f468 100644
-> --- a/drivers/gpu/drm/tyr/gem.rs
-> +++ b/drivers/gpu/drm/tyr/gem.rs
-> @@ -3,6 +3,7 @@
-> use crate::driver::TyrDevice;
-> use crate::driver::TyrDriver;
-> use kernel::drm::gem;
-> +use kernel::drm::DeviceCtx;
-> use kernel::prelude::*;
->=20
-> /// GEM Object inner driver data
-> @@ -12,7 +13,7 @@ pub(crate) struct TyrObject {}
-> impl gem::DriverObject for TyrObject {
->     type Driver =3D TyrDriver;
->=20
-> -    fn new(_dev: &TyrDevice, _size: usize) -> impl PinInit<Self, =
-Error> {
-> +    fn new<Ctx: DeviceCtx>(_dev: &TyrDevice<Ctx>, _size: usize) -> =
-impl PinInit<Self, Error> {
->         try_pin_init!(TyrObject {})
->     }
-> }
-> diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-> index 00072984930a3..227df6bf88c31 100644
-> --- a/rust/kernel/drm/device.rs
-> +++ b/rust/kernel/drm/device.rs
-> @@ -127,13 +127,13 @@ impl<T: drm::Driver> UnregisteredDevice<T> {
->         master_set: None,
->         master_drop: None,
->         debugfs_init: None,
-> -        gem_create_object: T::Object::ALLOC_OPS.gem_create_object,
-> -        prime_handle_to_fd: T::Object::ALLOC_OPS.prime_handle_to_fd,
-> -        prime_fd_to_handle: T::Object::ALLOC_OPS.prime_fd_to_handle,
-> -        gem_prime_import: T::Object::ALLOC_OPS.gem_prime_import,
-> -        gem_prime_import_sg_table: =
-T::Object::ALLOC_OPS.gem_prime_import_sg_table,
-> -        dumb_create: T::Object::ALLOC_OPS.dumb_create,
-> -        dumb_map_offset: T::Object::ALLOC_OPS.dumb_map_offset,
-> +        gem_create_object: =
-T::Object::<AnyCtx>::ALLOC_OPS.gem_create_object,
-> +        prime_handle_to_fd: =
-T::Object::<AnyCtx>::ALLOC_OPS.prime_handle_to_fd,
-> +        prime_fd_to_handle: =
-T::Object::<AnyCtx>::ALLOC_OPS.prime_fd_to_handle,
-> +        gem_prime_import: =
-T::Object::<AnyCtx>::ALLOC_OPS.gem_prime_import,
-> +        gem_prime_import_sg_table: =
-T::Object::<AnyCtx>::ALLOC_OPS.gem_prime_import_sg_table,
-> +        dumb_create: T::Object::<AnyCtx>::ALLOC_OPS.dumb_create,
-> +        dumb_map_offset: =
-T::Object::<AnyCtx>::ALLOC_OPS.dumb_map_offset,
->         show_fdinfo: None,
->         fbdev_probe: None,
->=20
-> diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-> index fde0447566bef..4e8735e9018c4 100644
-> --- a/rust/kernel/drm/driver.rs
-> +++ b/rust/kernel/drm/driver.rs
-> @@ -104,7 +104,7 @@ pub trait Driver {
->     type Data: Sync + Send;
->=20
->     /// The type used to manage memory for this driver.
-> -    type Object: AllocImpl;
-> +    type Object<Ctx: drm::DeviceCtx>: AllocImpl;
->=20
->     /// The type used to represent a DRM File (client)
->     type File: drm::file::DriverFile;
-> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-> index eb5f3feac8907..62ca11126e1c0 100644
-> --- a/rust/kernel/drm/gem/mod.rs
-> +++ b/rust/kernel/drm/gem/mod.rs
-> @@ -7,13 +7,16 @@
-> use crate::{
->     alloc::flags::*,
->     bindings, drm,
-> -    drm::driver::{AllocImpl, AllocOps},
-> +    drm::{
-> +        device::{DeviceCtx, Registered},
-> +        driver::{AllocImpl, AllocOps},
-> +    },
->     error::{to_result, Result},
->     prelude::*,
->     sync::aref::{ARef, AlwaysRefCounted},
->     types::Opaque,
-> };
-> -use core::{ops::Deref, ptr::NonNull};
-> +use core::{marker::PhantomData, ops::Deref, ptr::NonNull};
->=20
-> /// A type alias for retrieving a [`Driver`]s [`DriverFile`] =
-implementation from its
-> /// [`DriverObject`] implementation.
-> @@ -22,21 +25,30 @@
-> /// [`DriverFile`]: drm::file::DriverFile
-> pub type DriverFile<T> =3D drm::File<<<T as DriverObject>::Driver as =
-drm::Driver>::File>;
->=20
-> +/// A type alias for retrieving the current [`AllocImpl`] for a given =
-[`DriverObject`].
-> +///
-> +/// [`Driver`]: drm::Driver
-> +pub type DriverAllocImpl<T, Ctx =3D Registered> =3D
-> +    <<T as DriverObject>::Driver as drm::Driver>::Object<Ctx>;
-> +
-> /// GEM object functions, which must be implemented by drivers.
-> pub trait DriverObject: Sync + Send + Sized {
->     /// Parent `Driver` for this object.
->     type Driver: drm::Driver;
->=20
->     /// Create a new driver data object for a GEM object of a given =
-size.
-> -    fn new(dev: &drm::Device<Self::Driver>, size: usize) -> impl =
-PinInit<Self, Error>;
-> +    fn new<Ctx: DeviceCtx>(
-> +        dev: &drm::Device<Self::Driver, Ctx>,
-> +        size: usize,
-> +    ) -> impl PinInit<Self, Error>;
->=20
->     /// Open a new handle to an existing object, associated with a =
-File.
-> -    fn open(_obj: &<Self::Driver as drm::Driver>::Object, _file: =
-&DriverFile<Self>) -> Result {
-> +    fn open(_obj: &DriverAllocImpl<Self>, _file: &DriverFile<Self>) =
--> Result {
->         Ok(())
->     }
->=20
->     /// Close a handle to an existing object, associated with a File.
-> -    fn close(_obj: &<Self::Driver as drm::Driver>::Object, _file: =
-&DriverFile<Self>) {}
-> +    fn close(_obj: &DriverAllocImpl<Self>, _file: &DriverFile<Self>) =
-{}
-> }
->=20
-> /// Trait that represents a GEM object subtype
-> @@ -62,9 +74,12 @@ extern "C" fn open_callback<T: DriverObject>(
->     // SAFETY: `open_callback` is only ever called with a valid =
-pointer to a `struct drm_file`.
->     let file =3D unsafe { DriverFile::<T>::from_raw(raw_file) };
->=20
-> -    // SAFETY: `open_callback` is specified in the AllocOps structure =
-for `DriverObject<T>`,
-> -    // ensuring that `raw_obj` is contained within a =
-`DriverObject<T>`
-> -    let obj =3D unsafe { <<T::Driver as drm::Driver>::Object as =
-IntoGEMObject>::from_raw(raw_obj) };
-> +    // SAFETY:
-> +    // * `open_callback` is specified in the AllocOps structure for =
-`DriverObject`, ensuring that
-> +    //   `raw_obj` is contained within a `DriverAllocImpl<T>`
-> +    // * It is only possible for `open_callback` to be called after =
-device registration, ensuring
-> +    //   that the object's device is in the `Registered` state.
-> +    let obj: &DriverAllocImpl<T> =3D unsafe { =
-IntoGEMObject::from_raw(raw_obj) };
->=20
->     match T::open(obj, file) {
->         Err(e) =3D> e.to_errno(),
-> @@ -81,12 +96,12 @@ extern "C" fn close_callback<T: DriverObject>(
->=20
->     // SAFETY: `close_callback` is specified in the AllocOps structure =
-for `Object<T>`, ensuring
->     // that `raw_obj` is indeed contained within a `Object<T>`.
-> -    let obj =3D unsafe { <<T::Driver as drm::Driver>::Object as =
-IntoGEMObject>::from_raw(raw_obj) };
-> +    let obj: &DriverAllocImpl<T> =3D unsafe { =
-IntoGEMObject::from_raw(raw_obj) };
->=20
->     T::close(obj, file);
-> }
->=20
-> -impl<T: DriverObject> IntoGEMObject for Object<T> {
-> +impl<T: DriverObject, Ctx: DeviceCtx> IntoGEMObject for Object<T, =
-Ctx> {
->     fn as_raw(&self) -> *mut bindings::drm_gem_object {
->         self.obj.get()
->     }
-> @@ -94,7 +109,7 @@ fn as_raw(&self) -> *mut bindings::drm_gem_object {
->     unsafe fn from_raw<'a>(self_ptr: *mut bindings::drm_gem_object) -> =
-&'a Self {
->         // SAFETY: `obj` is guaranteed to be in an `Object<T>` via the =
-safety contract of this
->         // function
-> -        unsafe { &*crate::container_of!(Opaque::cast_from(self_ptr), =
-Object<T>, obj) }
-> +        unsafe { &*crate::container_of!(Opaque::cast_from(self_ptr), =
-Object<T, Ctx>, obj) }
->     }
-> }
->=20
-> @@ -111,7 +126,7 @@ fn size(&self) -> usize {
->     fn create_handle<D, F>(&self, file: &drm::File<F>) -> Result<u32>
->     where
->         Self: AllocImpl<Driver =3D D>,
-> -        D: drm::Driver<Object =3D Self, File =3D F>,
-> +        D: drm::Driver<Object<Registered> =3D Self, File =3D F>,
->         F: drm::file::DriverFile<Driver =3D D>,
->     {
->         let mut handle: u32 =3D 0;
-> @@ -126,7 +141,7 @@ fn create_handle<D, F>(&self, file: &drm::File<F>) =
--> Result<u32>
->     fn lookup_handle<D, F>(file: &drm::File<F>, handle: u32) -> =
-Result<ARef<Self>>
->     where
->         Self: AllocImpl<Driver =3D D>,
-> -        D: drm::Driver<Object =3D Self, File =3D F>,
-> +        D: drm::Driver<Object<Registered> =3D Self, File =3D F>,
->         F: drm::file::DriverFile<Driver =3D D>,
->     {
->         // SAFETY: The arguments are all valid per the type =
-invariants.
-> @@ -166,16 +181,18 @@ impl<T: IntoGEMObject> BaseObject for T {}
-> ///
-> /// Invariants
-> ///
-> -/// - `self.obj` is a valid instance of a `struct drm_gem_object`.
-> +/// * `self.obj` is a valid instance of a `struct drm_gem_object`.
-> +/// * Any type invariants of `Ctx` apply to the parent DRM device for =
-this GEM object.
-> #[repr(C)]
-> #[pin_data]
-> -pub struct Object<T: DriverObject + Send + Sync> {
-> +pub struct Object<T: DriverObject + Send + Sync, Ctx: DeviceCtx =3D =
-Registered> {
->     obj: Opaque<bindings::drm_gem_object>,
->     #[pin]
->     data: T,
-> +    _ctx: PhantomData<Ctx>,
-> }
->=20
-> -impl<T: DriverObject> Object<T> {
-> +impl<T: DriverObject, Ctx: DeviceCtx> Object<T, Ctx> {
->     const OBJECT_FUNCS: bindings::drm_gem_object_funcs =3D =
-bindings::drm_gem_object_funcs {
->         free: Some(Self::free_callback),
->         open: Some(open_callback::<T>),
-> @@ -195,11 +212,12 @@ impl<T: DriverObject> Object<T> {
->     };
->=20
->     /// Create a new GEM object.
-> -    pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> =
-Result<ARef<Self>> {
-> +    pub fn new(dev: &drm::Device<T::Driver, Ctx>, size: usize) -> =
-Result<ARef<Self>> {
->         let obj: Pin<KBox<Self>> =3D KBox::pin_init(
->             try_pin_init!(Self {
->                 obj: Opaque::new(bindings::drm_gem_object::default()),
->                 data <- T::new(dev, size),
-> +                _ctx: PhantomData,
->             }),
->             GFP_KERNEL,
->         )?;
-> @@ -208,6 +226,8 @@ pub fn new(dev: &drm::Device<T::Driver>, size: =
-usize) -> Result<ARef<Self>> {
->         unsafe { (*obj.as_raw()).funcs =3D &Self::OBJECT_FUNCS };
->=20
->         // SAFETY: The arguments are all valid per the type =
-invariants.
-> +        // INVARIANT: We use `dev` for creating the GEM object, which =
-is known to be in state `Ctx` -
-> +        // ensuring that the GEM object's pointer to the DRM device =
-is always in the same state.
->         to_result(unsafe { bindings::drm_gem_object_init(dev.as_raw(), =
-obj.obj.get(), size) })?;
->=20
->         // SAFETY: We never move out of `Self`.
-> @@ -221,13 +241,15 @@ pub fn new(dev: &drm::Device<T::Driver>, size: =
-usize) -> Result<ARef<Self>> {
->     }
->=20
->     /// Returns the `Device` that owns this GEM object.
-> -    pub fn dev(&self) -> &drm::Device<T::Driver> {
-> +    pub fn dev(&self) -> &drm::Device<T::Driver, Ctx> {
->         // SAFETY:
->         // - `struct drm_gem_object.dev` is initialized and valid for =
-as long as the GEM
->         //   object lives.
->         // - The device we used for creating the gem object is passed =
-as &drm::Device<T::Driver> to
->         //   Object::<T>::new(), so we know that `T::Driver` is the =
-right generic parameter to use
->         //   here.
-> +        // - Any type invariants of `Ctx` are upheld by using the =
-same `Ctx` for the `Device` we
-> +        //   return.
->         unsafe { drm::Device::from_raw((*self.as_raw()).dev) }
->     }
->=20
-> @@ -253,7 +275,7 @@ extern "C" fn free_callback(obj: *mut =
-bindings::drm_gem_object) {
-> }
->=20
-> // SAFETY: Instances of `Object<T>` are always reference-counted.
-> -unsafe impl<T: DriverObject> crate::types::AlwaysRefCounted for =
-Object<T> {
-> +unsafe impl<T: DriverObject, Ctx: DeviceCtx> =
-crate::types::AlwaysRefCounted for Object<T, Ctx> {
->     fn inc_ref(&self) {
->         // SAFETY: The existence of a shared reference guarantees that =
-the refcount is non-zero.
->         unsafe { bindings::drm_gem_object_get(self.as_raw()) };
-> @@ -268,9 +290,9 @@ unsafe fn dec_ref(obj: NonNull<Self>) {
->     }
-> }
->=20
-> -impl<T: DriverObject> super::private::Sealed for Object<T> {}
-> +impl<T: DriverObject, Ctx: DeviceCtx> super::private::Sealed for =
-Object<T, Ctx> {}
->=20
-> -impl<T: DriverObject> Deref for Object<T> {
-> +impl<T: DriverObject, Ctx: DeviceCtx> Deref for Object<T, Ctx> {
->     type Target =3D T;
->=20
->     fn deref(&self) -> &Self::Target {
-> @@ -278,7 +300,7 @@ fn deref(&self) -> &Self::Target {
->     }
-> }
->=20
-> -impl<T: DriverObject> AllocImpl for Object<T> {
-> +impl<T: DriverObject, Ctx: DeviceCtx> AllocImpl for Object<T, Ctx> {
->     type Driver =3D T::Driver;
->=20
->     const ALLOC_OPS: AllocOps =3D AllocOps {
-> --=20
-> 2.51.1
->=20
->=20
+> Tamir Duberstein (7):
+>      rust: auxiliary: replace `kernel::c_str!` with C-Strings
+>      rust: device: replace `kernel::c_str!` with C-Strings
+>      rust: platform: replace `kernel::c_str!` with C-Strings
+>      rust: io: replace `kernel::c_str!` with C-Strings
+>      rust: irq: replace `kernel::c_str!` with C-Strings
+>      rust: debugfs: replace `kernel::c_str!` with C-Strings
+>      samples: rust: debugfs: replace `kernel::c_str!` with C-Strings
+> 
+> rust/kernel/debugfs.rs                | 23 +++++++++--------------
+> rust/kernel/device.rs                 |  4 +---
+> rust/kernel/device/property.rs        |  6 +++---
+> rust/kernel/io/mem.rs                 |  7 +++----
+> rust/kernel/irq/request.rs            |  6 ++----
+> rust/kernel/platform.rs               |  6 +++---
+> samples/rust/rust_debugfs.rs          | 17 ++++++++---------
+> samples/rust/rust_debugfs_scoped.rs   | 20 ++++++++------------
+> samples/rust/rust_driver_auxiliary.rs |  4 ++--
+> samples/rust/rust_driver_faux.rs      |  4 ++--
+> samples/rust/rust_driver_platform.rs  | 30 ++++++++++++++----------------
+> 11 files changed, 55 insertions(+), 72 deletions(-)
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20251222-cstr-driver-core-8bf66543f532
+> 
+> Best regards,
+> --  
+> Tamir Duberstein <tamird@gmail.com>
+> 
 
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
-(See comments on patch 1 before applying this)=20
-
