@@ -1,34 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AD527FB2D;
-	Mon, 22 Dec 2025 12:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAA0280A52;
+	Mon, 22 Dec 2025 12:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766406240; cv=none; b=m9fee7Bps/LkBOi6bnvF7X2QbonQ8V1rqRGT4v99fG4pLNhS2Ev6LoANOl+JNSoH1cPheJ1ll72nw6MMgBxwtjt09PxJHCvJIrkSPZPjuLwu8AOs8ycENZIrWvYfnmF1MLaSTQR914Jg7+k2aUMOQj+PZwmerMbRI0lU2lNSzvg=
+	t=1766406293; cv=none; b=ebhMY3RLuElLHp9ehBMjuaVAm219PxNnKkn9PUGp9EZEzecUq9q2gyJ6qqZMuXn8jDw12PkTT9/G94bq+8SEDT42+t4ZPCqP5xMxwj4Edi0Uf420Aq1XgxiS3yW+hR/xvIR5sRpYc/F5fAmkJvBMpMZTphlteUwHQ9uPnKdkziM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766406240; c=relaxed/simple;
-	bh=cRfzS6hpsjm3mIVx+KnpeZYYf1Z9hwfZCyLq4++zOnI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=o/zEwA0QH6fNJ/4Yg/Jat5FdokgFxjAYpMvJdqGlHz227w3xdeskbsD7QmI76BJ77WibHobyn8WgJ2T6omIW8jjHnoUPQLPzPqG72UvVNXgSCyYIX46LppA0kFRbvcwiuPXu+SZyV+XnBbltAEUZtyIPUKyJI/WdAmy5J7FpHEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RhshdWIr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766406293; c=relaxed/simple;
+	bh=lnjqsDYEgCfO4ZddSccMgn38v9kLuF3K9z5CoiieAag=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DvN7pUDjeuKvBMtPU0ItnLnw3tGyGAeTxpoiBjOl4BjIJh+YIAdpir9Shb/yOC4dPGuZisZZCN9sCBgC9BCqIh0Mtmca3kJWrg3095Qnih8Q5fEnNEShKAdRqwexeDDrez/9TMJQ1iRwIxGVU0IZGivly1psNPDdk2ht2wQkdCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdIRGWpo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RhshdWIr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCD7C4CEF1;
-	Mon, 22 Dec 2025 12:23:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdIRGWpo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DB1C4CEF1;
+	Mon, 22 Dec 2025 12:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766406239;
-	bh=cRfzS6hpsjm3mIVx+KnpeZYYf1Z9hwfZCyLq4++zOnI=;
+	s=k20201202; t=1766406293;
+	bh=lnjqsDYEgCfO4ZddSccMgn38v9kLuF3K9z5CoiieAag=;
 	h=From:Date:Subject:To:Cc:From;
-	b=RhshdWIrgy3ZvMVqSXx16+LQ7o1+nkjQq3ksiMkPm8atU8nDqXoQ+6vRzfkfL9MRe
-	 +Zzwskw+zQzhlnl60pBMfT81vUA46EbJWgxFLZK7vAh5gmBoyU72NaWiIQCN2Q27b+
-	 QZKfvEXApYPjA8GiZZGOOUYPaqI4bTMIcicPIDkx9XagPCOB5d1R/0roo9FZD3JCbW
-	 KYU7v3Wy0K5tsQQEtq+nYJl8BeEvAJJYh1fKxCfqiOUfuvxmY3/XfVQW5MUrVo5suJ
-	 QHL4Digr2IG+vTfWd1isEMJxUNJjijlWDAHRDW3VaockkIFb8a1dTGQUNOsjpPblgA
-	 QaH2QOYsn9AWg==
+	b=kdIRGWpo44iKVb+6ueuZw3guWj4LA077LyfYGHyIkzAq5xpOqjgAWIjqD7gbFNqrM
+	 Ehe/Wh2i8jIagao63bqVU+P04x8KQhkQWLPomQ2p2KUDFmIL0ga9H8CVLlSPucNsnR
+	 ZPVv7q3aJLHKjj/F7wi4b60TWGrAIi6DemJUBFMLqlb3pxaFOah4MTHdUKXKEVYP9C
+	 yDmvxe0WHLXiWnXqJU5apUYL/G4/Z6Q07vNlqckBw5LsVRllTNtS2slYNH530Waunn
+	 f4FjFsT76vv8GucmJC95j664jDhDIPdH4Sjd5KaVB7+6Kb7B0zjOqVIBMucUcuq1r6
+	 yKqgHXvo6JMdw==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 22 Dec 2025 13:23:54 +0100
-Subject: [PATCH] samples: rust: pci: replace `kernel::c_str!` with
- C-Strings
+Date: Mon, 22 Dec 2025 13:24:46 +0100
+Subject: [PATCH] drivers: pwm: replace `kernel::c_str!` with C-Strings
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,29 +36,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251222-cstr-pci-v1-1-a0397c61bbe4@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM0QpAQBCF4VfRXNuyY5W8ilysMRgXaAcpeXeLy
- 6/+cy5QDsIKVXJB4ENUljnCpgnQ6OeBjXTRgBkWFhEN6RbMSmKcK8nb3nmfW4j5GriX87uqm9+
- 6txPT9u7hvh+A1X+LbAAAAA==
-X-Change-ID: 20251222-cstr-pci-448ca1f4aa31
-To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+Message-Id: <20251222-cstr-pwm-v1-1-e8916d976f8d@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMSwqAMAxF0a1IxhZsUErdijjQGjWCHxp/IO7dq
+ sMD970LhDyTQB5d4Gln4XkK0HEErq+mjhQ3wYAJZhoRlZPVq+UYlbO1rVKTaJ0ZCPniqeXzuyr
+ K37LVA7n13cN9P6upymhsAAAA
+X-Change-ID: 20251222-cstr-pwm-c9b9a4701157
+To: Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+ Fu Wei <wefu@redhat.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1766406236; l=1610;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1766406288; l=1078;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=eIiCZEpCXwm0lYW7nlIcBC4LISLHmRjJ00ysC+jHjbI=;
+ bh=l+He6MEds9B9z2LyZUQ1+D0MyaUqDKaef7Is8IURDCM=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QJobuKeGzjj3ZQiIDYXhu86F4ytiiGBMjxXU/dz8Py9vOSdaZqBykF18s3n9TbFt+QxhWYWzZAe
- 9xPy3F4ByQgc=
+ QFUXcXXV1sboqInuxMT5xqzVkmaROt+v/opgjZTA4adhR15BnVO+8Wv6E9k2catimkHqHF6q9iN
+ u8aplJduG9wM=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
@@ -68,41 +69,36 @@ From: Tamir Duberstein <tamird@gmail.com>
 C-String literals were added in Rust 1.77. Replace instances of
 `kernel::c_str!` with C-String literals where possible.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- samples/rust/rust_driver_pci.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pwm/pwm_th1520.rs | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-index 5823787bea8e..991cc111fd63 100644
---- a/samples/rust/rust_driver_pci.rs
-+++ b/samples/rust/rust_driver_pci.rs
-@@ -4,7 +4,7 @@
- //!
- //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
+diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
+index e3b7e77356fc..8ae8f852ec02 100644
+--- a/drivers/pwm/pwm_th1520.rs
++++ b/drivers/pwm/pwm_th1520.rs
+@@ -22,7 +22,6 @@
  
--use kernel::{c_str, device::Core, devres::Devres, pci, prelude::*, sync::aref::ARef};
-+use kernel::{device::Core, devres::Devres, pci, prelude::*, sync::aref::ARef};
+ use core::ops::Deref;
+ use kernel::{
+-    c_str,
+     clk::Clk,
+     device::{Bound, Core, Device},
+     devres,
+@@ -327,7 +326,7 @@ fn drop(self: Pin<&mut Self>) {
+     OF_TABLE,
+     MODULE_OF_TABLE,
+     <Th1520PwmPlatformDriver as platform::Driver>::IdInfo,
+-    [(of::DeviceId::new(c_str!("thead,th1520-pwm")), ())]
++    [(of::DeviceId::new(c"thead,th1520-pwm"), ())]
+ );
  
- struct Regs;
- 
-@@ -79,7 +79,7 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> impl PinInit<Self, Er
-             pdev.set_master();
- 
-             Ok(try_pin_init!(Self {
--                bar <- pdev.iomap_region_sized::<{ Regs::END }>(0, c_str!("rust_driver_pci")),
-+                bar <- pdev.iomap_region_sized::<{ Regs::END }>(0, c"rust_driver_pci"),
-                 index: *info,
-                 _: {
-                     let bar = bar.access(pdev.as_ref())?;
+ impl platform::Driver for Th1520PwmPlatformDriver {
 
 ---
 base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20251222-cstr-pci-448ca1f4aa31
+change-id: 20251222-cstr-pwm-c9b9a4701157
 
 Best regards,
 --  
