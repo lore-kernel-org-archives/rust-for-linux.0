@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222B023C503;
-	Mon, 22 Dec 2025 14:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6FC2D738E;
+	Mon, 22 Dec 2025 14:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766413731; cv=pass; b=i3OIwuKSc1KQaVZGx2jiM7IQEecswApBvq24CWTibraennmsr2hAsZmCeXAZ9yo5D4W4l2piFNQ+bli11CFIqgi+x7M9diyHiimT7qPTsUHoOsuwYzDNgAAKg8LlNlKNCLugNpSV7MwMpRV8Ml+6a5HFlVqatxQH5TXVwW0grnE=
+	t=1766413964; cv=pass; b=fnEMwCjiZ78Rz1R55vgRduqgVmY/FQk1Jh66IqEPpjGXwfbkww5BySbxXEL/sz3LykSxqJLxmJ/u7u2ozNhn65va6HAo8epsrk6A0FhdI0dagiyQDuHCCA4BUPzzB2g2jIGRGGf6Tclu8acNxV3zKyTB8mVF/u3qQ5BAN1JGFis=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766413731; c=relaxed/simple;
-	bh=lQMzvl5taAIdsWEKqJ9y78QCpVP+DaAuokbbGtbrLuE=;
+	s=arc-20240116; t=1766413964; c=relaxed/simple;
+	bh=xHQA30nq/9OWMxphyKsKsbr1ItGgYEOcffQ4phEwvHM=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=tqg2hhbC67dWYtEwAlOOp/tlL34EniF3Rg5ziysvewhh5X3SIS9fg9553tNOlUCc6ykXhVwKcjXEa9ttobRgtfOGwZjUS+2RIS9cgqdncY4V4Qvyfd3zGzdAhl3hf41qNyovCA6qP28bV2YZAYfXdexUzd1uMwRsSY5RubbgtwE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YoIALPLq; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=hoN63VYCa98iuTPYQT2PlSoxCsT+y6NJuNp3dbmruM0kIkLjW0h18DiRCHI88CYRTKt6L/Rn6gwUIDXAvHC2BAryDmat1/xhTjM1rZnZ11Wy8+Ij8TzdkLf7MeomZRhIlzYWeS/OzW5biIyWSyeK0paZACTEapDeUZ3C90fxnq0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=TRjDYwUL; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YoIALPLq"
-ARC-Seal: i=1; a=rsa-sha256; t=1766413713; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="TRjDYwUL"
+ARC-Seal: i=1; a=rsa-sha256; t=1766413935; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=KmoK9aOCbcgZrCXEi89MPC/gIpCxlQBUXKQYwTtJCAlnQvIByFgwTRxateT/aIUtEg9fHcaTeGCkbuC1DkOHTFYEGqiVRLC3Dfv71OyQPpSKy8EMhwnpw8uy/czWQQKiE0z7fjPqdyCWUK2iMUt+ssRHpAUE3fXxn4ICOVDFh3s=
+	b=TF3d24BYfzI3d1cXZPOUxy1Kt7yhIDjKDmhMgFoAVLjj59af3DeE4OHkrnSGgep/L9BTmx2YYhQdcwUBDSV5Pfy9bNDnEDsoUfUZGHSGMdrR7Qe/qyl6quWw9sqzm/tDfUy3PA+3QXKGdncjbjFn0Ed6ANwJWxF2e2XeY1G+jrQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1766413713; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=1IHzftE6pqH7b16lrsnXTjD+Dbu+oz0HhOml5yDROoM=; 
-	b=RWmEgkZWEow31F8vknRJpc9m6UuQWvYHZlY3DGkf+XJ1vpFhfKhe6yuPZSNFWlAgfeF7dDb9Ov5TIaiRHkKZ58qKeI3ghANZfGQJ4gNbrjj/TqwcjhDewGgQtqxrMO1Y619axojK2wr2T8b1VkiFk1yL4TruO5WoX+h2XtCEhAU=
+	t=1766413935; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=MIsebt+0bW61I/ZAHjyZRH22/kuuWpq+aRZENXzI4ss=; 
+	b=DJ5c7J6HM2N+HN05vrsXjT+URBRJUUDUd0no1jdPzE26FH/WusjWZ0AhawuBtvzJuERKCp3iTZemNP0uy05MUcfqf4Ps/hPRBWK8NpWFcqTYuCJfI6YKCVfXvzhuyE8GSmsoP0ZvUfLGmD0GyFRfgol0Ta/SPig3bEsgsQ+8y5s=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766413713;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766413935;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=1IHzftE6pqH7b16lrsnXTjD+Dbu+oz0HhOml5yDROoM=;
-	b=YoIALPLq+wbCnQ4N2DbH+pQfQLM4GxpojNfXYQYNgCz0AklbpBBfOL5+j48834p7
-	H95HlUgc5W+NlloCm+B+1HXcx3165HvtMFgNlz86+ikg2u2o2ideb7Ite00NSAa8aJX
-	fXhgHHdTVx5jq++BtjbB3qQGgloH58aBCfIDLWRU=
-Received: by mx.zohomail.com with SMTPS id 1766413712508187.41210361032677;
-	Mon, 22 Dec 2025 06:28:32 -0800 (PST)
+	bh=MIsebt+0bW61I/ZAHjyZRH22/kuuWpq+aRZENXzI4ss=;
+	b=TRjDYwULCFJHHqehnDRLU6wUbi7vkT4D58/qj9qLat+kf0FTXu4HMHJpDd6emHHf
+	DeY41iKV88Ka86M4e39dgSzWRKkgMDH/9rkAiVwrbiUcTVSC0pMBvieeH+mfsxetqIG
+	y6pOHWUMgkppOXyteWMXESNdb9cLFMT+lh9N1LtI=
+Received: by mx.zohomail.com with SMTPS id 1766413933869679.9055953780143;
+	Mon, 22 Dec 2025 06:32:13 -0800 (PST)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -44,38 +44,37 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] gpu: nova-core: replace `kernel::c_str!` with C-Strings
+Subject: Re: [PATCH] rust: seq_file: replace `kernel::c_str!` with C-Strings
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251222-cstr-nova-v1-1-0e2353d5debe@gmail.com>
-Date: Mon, 22 Dec 2025 11:28:15 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Alexandre Courbot <acourbot@nvidia.com>,
+In-Reply-To: <20251222-cstr-vfs-v1-1-18e3d327cbd7@gmail.com>
+Date: Mon, 22 Dec 2025 11:31:57 -0300
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>,
  Miguel Ojeda <ojeda@kernel.org>,
  Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <lossin@kernel.org>,
  Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
- nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>,
+ linux-fsdevel@vger.kernel.org,
  rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
  Tamir Duberstein <tamird@gmail.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <AF29924C-81D0-4478-908B-204C3071EF0A@collabora.com>
-References: <20251222-cstr-nova-v1-1-0e2353d5debe@gmail.com>
+Message-Id: <3F4AEA7B-65E3-41E8-90BB-7F5896041FB8@collabora.com>
+References: <20251222-cstr-vfs-v1-1-18e3d327cbd7@gmail.com>
 To: Tamir Duberstein <tamird@kernel.org>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
 
 
-> On 22 Dec 2025, at 09:20, Tamir Duberstein <tamird@kernel.org> wrote:
+> On 22 Dec 2025, at 09:18, Tamir Duberstein <tamird@kernel.org> wrote:
 >=20
 > From: Tamir Duberstein <tamird@gmail.com>
 >=20
@@ -85,90 +84,42 @@ X-ZohoMailClient: External
 > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > Reviewed-by: Benno Lossin <lossin@kernel.org>
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > ---
-> drivers/gpu/drm/nova/driver.rs  | 12 +++++-------
-> drivers/gpu/nova-core/driver.rs |  5 ++---
-> 2 files changed, 7 insertions(+), 10 deletions(-)
+> rust/kernel/seq_file.rs | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/drivers/gpu/drm/nova/driver.rs =
-b/drivers/gpu/drm/nova/driver.rs
-> index 2246d8e104e0..d24ade17f7a0 100644
-> --- a/drivers/gpu/drm/nova/driver.rs
-> +++ b/drivers/gpu/drm/nova/driver.rs
-> @@ -1,8 +1,6 @@
-> // SPDX-License-Identifier: GPL-2.0
+> diff --git a/rust/kernel/seq_file.rs b/rust/kernel/seq_file.rs
+> index 855e533813a6..518265558d66 100644
+> --- a/rust/kernel/seq_file.rs
+> +++ b/rust/kernel/seq_file.rs
+> @@ -4,7 +4,7 @@
+> //!
+> //! C header: =
+[`include/linux/seq_file.h`](srctree/include/linux/seq_file.h)
 >=20
-> -use kernel::{
-> -    auxiliary, c_str, device::Core, drm, drm::gem, drm::ioctl, =
-prelude::*, sync::aref::ARef,
-> -};
-> +use kernel::{auxiliary, device::Core, drm, drm::gem, drm::ioctl, =
-prelude::*, sync::aref::ARef};
+> -use crate::{bindings, c_str, fmt, str::CStrExt as _, =
+types::NotThreadSafe, types::Opaque};
+> +use crate::{bindings, fmt, str::CStrExt as _, types::NotThreadSafe, =
+types::Opaque};
 >=20
-> use crate::file::File;
-> use crate::gem::NovaObject;
-> @@ -24,12 +22,12 @@ pub(crate) struct NovaData {
->     major: 0,
->     minor: 0,
->     patchlevel: 0,
-> -    name: c_str!("nova"),
-> -    desc: c_str!("Nvidia Graphics"),
-> +    name: c"nova",
-> +    desc: c"Nvidia Graphics",
-> };
->=20
-> -const NOVA_CORE_MODULE_NAME: &CStr =3D c_str!("NovaCore");
-> -const AUXILIARY_NAME: &CStr =3D c_str!("nova-drm");
-> +const NOVA_CORE_MODULE_NAME: &CStr =3D c"NovaCore";
-> +const AUXILIARY_NAME: &CStr =3D c"nova-drm";
->=20
-> kernel::auxiliary_device_table!(
->     AUX_TABLE,
-> diff --git a/drivers/gpu/nova-core/driver.rs =
-b/drivers/gpu/nova-core/driver.rs
-> index b8b0cc0f2d93..5a4cc047bcfc 100644
-> --- a/drivers/gpu/nova-core/driver.rs
-> +++ b/drivers/gpu/nova-core/driver.rs
-> @@ -2,7 +2,6 @@
->=20
-> use kernel::{
->     auxiliary,
-> -    c_str,
->     device::Core,
->     devres::Devres,
->     dma::Device,
-> @@ -82,7 +81,7 @@ fn probe(pdev: &pci::Device<Core>, _info: =
-&Self::IdInfo) -> impl PinInit<Self, E
->             unsafe { =
-pdev.dma_set_mask_and_coherent(DmaMask::new::<GPU_DMA_BITS>())? };
->=20
->             let bar =3D Arc::pin_init(
-> -                pdev.iomap_region_sized::<BAR0_SIZE>(0, =
-c_str!("nova-core/bar0")),
-> +                pdev.iomap_region_sized::<BAR0_SIZE>(0, =
-c"nova-core/bar0"),
->                 GFP_KERNEL,
->             )?;
->=20
-> @@ -90,7 +89,7 @@ fn probe(pdev: &pci::Device<Core>, _info: =
-&Self::IdInfo) -> impl PinInit<Self, E
->                 gpu <- Gpu::new(pdev, bar.clone(), =
-bar.access(pdev.as_ref())?),
->                 _reg <- auxiliary::Registration::new(
->                     pdev.as_ref(),
-> -                    c_str!("nova-drm"),
-> +                    c"nova-drm",
->                     0, // TODO[XARR]: Once it lands, use XArray; for =
-now we don't use the ID.
->                     crate::MODULE_NAME
->                 ),
+> /// A utility for generating the contents of a seq file.
+> #[repr(transparent)]
+> @@ -36,7 +36,7 @@ pub fn call_printf(&self, args: fmt::Arguments<'_>) =
+{
+>         unsafe {
+>             bindings::seq_printf(
+>                 self.inner.get(),
+> -                c_str!("%pA").as_char_ptr(),
+> +                c"%pA".as_char_ptr(),
+>                 =
+core::ptr::from_ref(&args).cast::<crate::ffi::c_void>(),
+>             );
+>         }
 >=20
 > ---
 > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20251222-cstr-nova-c13a8ec1d068
+> change-id: 20251222-cstr-vfs-55ca2ceca0a4
 >=20
 > Best regards,
 > -- =20
@@ -176,4 +127,5 @@ now we don't use the ID.
 >=20
 >=20
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+
