@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43CD299952;
-	Mon, 22 Dec 2025 12:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58337299A8F;
+	Mon, 22 Dec 2025 12:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766406944; cv=none; b=hGleR43xRM/oZuysF/UyI4aGw3ciVGFXGXCUh4L4DH15GxwJvJhe7lI+RERAquR2m+k8K39+RFGAGTv1EbMtcfZptBZzSIsHl+6cRIafupE/M5JSqARZDd7BAzyitUYd+5yLpxkDprj2Q4rsNlCV0fsjr/j/FKrXTTuQ4w+f6EI=
+	t=1766406948; cv=none; b=NNyq44sc1/kHOKRXshSGODJbxpLTVoJeQxhlMxcqsGb7S/cuidhKcSX/2LCFkK4iB8H4v93emStBr5aj/aLiVR8R8o034V9q6Vg9SPp4ZHx6p1HFez+S35PnOCjGwlKmHsjjc7hBOk7cJw6ESqfi6CEjxOQoD5fM+dR/P3+lhbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766406944; c=relaxed/simple;
-	bh=Ld5AMvq8OJucAYk0l6FmF7jpWtheRCiDax246Pt3bCo=;
+	s=arc-20240116; t=1766406948; c=relaxed/simple;
+	bh=wczg3gxdWuvvrPdCGIwbc3VRTJlOe0wnMFC/o5HTNRk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qerilF67eebKc+BAHErf1N2wUcwDJ4KLog50C/7VC4t9W1LLVPB22xhtJIEEiP81u51FhkUusDeuDJhnMLY+G1NGrnEz4RvOO9RVxqe8AgMHoaEaeigI3Xw1Lv0YcNBOCHgZvlgDOoHk3rH3vZsYa42ximf4pLAN2sSSWxmKtP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oqNTTB7J; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=SUQJmiEII1OdAKK9/UX0lMxcFiS8vsl4bUTwDn6B1jfNJBb5+nVv+4UKPxhyR6FsLSRDGNK8x36MtcHwJO8kHIXWENmQkN4ZSChaW96FMSZaaImzbVfSYNoD3iZc7NJTQPu6hOtogv2zeyp2TTXsnwJKPEXf5TShFS6PQom4ftM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jtumiqxg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oqNTTB7J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7D5C113D0;
-	Mon, 22 Dec 2025 12:35:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jtumiqxg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407B8C113D0;
+	Mon, 22 Dec 2025 12:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766406943;
-	bh=Ld5AMvq8OJucAYk0l6FmF7jpWtheRCiDax246Pt3bCo=;
+	s=k20201202; t=1766406947;
+	bh=wczg3gxdWuvvrPdCGIwbc3VRTJlOe0wnMFC/o5HTNRk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=oqNTTB7JuixL7DC5vuaVEcIZ6xQOPwyrT20UVZzmGeL41Qn060eP7hErSU9oQvsyV
-	 EIPUU79xHPwHUwZbEB8OdJtwmwjHGKOua4DFVZpVGLWD8ohNgZ8jsuHBOaS+fYqzpe
-	 ZS9gZAVQJP2kAbv65RoR4D/qnFRGUFfpNxVds9Jsd7aj7gc39alXmMMXlxOb7CU3b3
-	 ss4pHYL+Z0slxwxOAxw5LeTu6u6ltlYsM1xbZJXQXrVvGcWIUIChnIu4qNUI395mKz
-	 NAIU4UBwe1xIKrHuFG496a3GYoy9Ptu2aqGPIUFnRc/z5zKP8l+r+dtG3AuF78K4NX
-	 jeRX6wJrZWZnQ==
+	b=JtumiqxgLd0r6JTZCpsRlxWq5Al63GT1Zw5bmyFekuFx31Xer9T197+fjHD4PoPqu
+	 dJFdBFovNWJRoZyIzst7CHHRQeG3yAA0hAT4LihtaaCzxg2l8SiJc8wQ12Ch2iCK7U
+	 IMyrYuq2uYVeJLy/+GfevYP6Ad+TNDiQ2rN7oSpzIAha8lF9XozocqA4/TPlgm09Fx
+	 OkycMB/n0Mvq3bdxzQMmN6IXoWfyRlVJpw1F/2zbeUfddfchUDXOLFQr1SdnSrajy1
+	 tOCfFm3ksrgBxY2dwl4QaXPdMjp4P39cGXGJGUlc3B5OaSHLLzYUAZYoHo0vaZBmp+
+	 9/CqJlJdtKgTw==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 22 Dec 2025 13:35:28 +0100
-Subject: [PATCH 2/7] rust: device: replace `kernel::c_str!` with C-Strings
+Date: Mon, 22 Dec 2025 13:35:29 +0100
+Subject: [PATCH 3/7] rust: platform: replace `kernel::c_str!` with
+ C-Strings
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +38,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251222-cstr-driver-core-v1-2-1142a177d0fd@gmail.com>
+Message-Id: <20251222-cstr-driver-core-v1-3-1142a177d0fd@gmail.com>
 References: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
 In-Reply-To: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -52,13 +53,13 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1766406930; l=2310;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1766406930; l=6208;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=nWAn8MY6906Q4EishesDMMvYRfPHt+KKPvTZXz4jgBk=;
+ bh=h/sRZfx3QwnPveZU7T8G3CkwT5gXbXtgWKtN6SPI+7U=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QDRTJNH8AXR+X+JXg/Z19XhYiMYJrRpyN43mwAJfW138EgM52X9zYujTw3znehfTfGtpPCnt5Hj
- ea768GFgJNAQ=
+ QK8iQqIXtLmsMk1B5MtEVatxRm+peIT0xGOFWtdgcBg+uU8IqOOg+Zry5MMgC+C4AnrFEgZ77Ad
+ I97UO0cgQRgE=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
@@ -73,51 +74,155 @@ Reviewed-by: Benno Lossin <lossin@kernel.org>
 Acked-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- rust/kernel/device.rs          | 4 +---
- rust/kernel/device/property.rs | 6 +++---
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ rust/kernel/platform.rs              |  6 +++---
+ samples/rust/rust_driver_faux.rs     |  4 ++--
+ samples/rust/rust_driver_platform.rs | 30 ++++++++++++++----------------
+ 3 files changed, 19 insertions(+), 21 deletions(-)
 
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index c79be2e2bfe3..d4edceaf3020 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -12,8 +12,6 @@
- };
- use core::{any::TypeId, marker::PhantomData, ptr};
+diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+index ed889f079cab..abb22a787131 100644
+--- a/rust/kernel/platform.rs
++++ b/rust/kernel/platform.rs
+@@ -137,7 +137,7 @@ macro_rules! module_platform_driver {
+ /// # Examples
+ ///
+ ///```
+-/// # use kernel::{acpi, bindings, c_str, device::Core, of, platform};
++/// # use kernel::{acpi, bindings, device::Core, of, platform};
+ ///
+ /// struct MyDriver;
+ ///
+@@ -146,7 +146,7 @@ macro_rules! module_platform_driver {
+ ///     MODULE_OF_TABLE,
+ ///     <MyDriver as platform::Driver>::IdInfo,
+ ///     [
+-///         (of::DeviceId::new(c_str!("test,device")), ())
++///         (of::DeviceId::new(c"test,device"), ())
+ ///     ]
+ /// );
+ ///
+@@ -155,7 +155,7 @@ macro_rules! module_platform_driver {
+ ///     MODULE_ACPI_TABLE,
+ ///     <MyDriver as platform::Driver>::IdInfo,
+ ///     [
+-///         (acpi::DeviceId::new(c_str!("LNUXBEEF")), ())
++///         (acpi::DeviceId::new(c"LNUXBEEF"), ())
+ ///     ]
+ /// );
+ ///
+diff --git a/samples/rust/rust_driver_faux.rs b/samples/rust/rust_driver_faux.rs
+index ecc9fd378cbd..23add3160693 100644
+--- a/samples/rust/rust_driver_faux.rs
++++ b/samples/rust/rust_driver_faux.rs
+@@ -2,7 +2,7 @@
  
--#[cfg(CONFIG_PRINTK)]
--use crate::c_str;
- use crate::str::CStrExt as _;
+ //! Rust faux device sample.
  
- pub mod property;
-@@ -463,7 +461,7 @@ unsafe fn printk(&self, klevel: &[u8], msg: fmt::Arguments<'_>) {
-             bindings::_dev_printk(
-                 klevel.as_ptr().cast::<crate::ffi::c_char>(),
-                 self.as_raw(),
--                c_str!("%pA").as_char_ptr(),
-+                c"%pA".as_char_ptr(),
-                 core::ptr::from_ref(&msg).cast::<crate::ffi::c_void>(),
-             )
-         };
-diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
-index 3a332a8c53a9..3eb3f36d66d0 100644
---- a/rust/kernel/device/property.rs
-+++ b/rust/kernel/device/property.rs
-@@ -178,11 +178,11 @@ pub fn property_count_elem<T: PropertyInt>(&self, name: &CStr) -> Result<usize>
-     /// # Examples
-     ///
-     /// ```
--    /// # use kernel::{c_str, device::{Device, property::FwNode}, str::CString};
-+    /// # use kernel::{device::{Device, property::FwNode}, str::CString};
-     /// fn examples(dev: &Device) -> Result {
-     ///     let fwnode = dev.fwnode().ok_or(ENOENT)?;
--    ///     let b: u32 = fwnode.property_read(c_str!("some-number")).required_by(dev)?;
--    ///     if let Some(s) = fwnode.property_read::<CString>(c_str!("some-str")).optional() {
-+    ///     let b: u32 = fwnode.property_read(c"some-number").required_by(dev)?;
-+    ///     if let Some(s) = fwnode.property_read::<CString>(c"some-str").optional() {
-     ///         // ...
-     ///     }
-     ///     Ok(())
+-use kernel::{c_str, faux, prelude::*, Module};
++use kernel::{faux, prelude::*, Module};
+ 
+ module! {
+     type: SampleModule,
+@@ -20,7 +20,7 @@ impl Module for SampleModule {
+     fn init(_module: &'static ThisModule) -> Result<Self> {
+         pr_info!("Initialising Rust Faux Device Sample\n");
+ 
+-        let reg = faux::Registration::new(c_str!("rust-faux-sample-device"), None)?;
++        let reg = faux::Registration::new(c"rust-faux-sample-device", None)?;
+ 
+         dev_info!(reg.as_ref(), "Hello from faux device!\n");
+ 
+diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
+index 6bf4f0c9633d..a3044d773176 100644
+--- a/samples/rust/rust_driver_platform.rs
++++ b/samples/rust/rust_driver_platform.rs
+@@ -63,7 +63,7 @@
+ //!
+ 
+ use kernel::{
+-    acpi, c_str,
++    acpi,
+     device::{
+         self,
+         property::{FwNodeReferenceArgs, NArgs},
+@@ -85,14 +85,14 @@ struct SampleDriver {
+     OF_TABLE,
+     MODULE_OF_TABLE,
+     <SampleDriver as platform::Driver>::IdInfo,
+-    [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
++    [(of::DeviceId::new(c"test,rust-device"), Info(42))]
+ );
+ 
+ kernel::acpi_device_table!(
+     ACPI_TABLE,
+     MODULE_ACPI_TABLE,
+     <SampleDriver as platform::Driver>::IdInfo,
+-    [(acpi::DeviceId::new(c_str!("LNUXBEEF")), Info(0))]
++    [(acpi::DeviceId::new(c"LNUXBEEF"), Info(0))]
+ );
+ 
+ impl platform::Driver for SampleDriver {
+@@ -124,49 +124,47 @@ impl SampleDriver {
+     fn properties_parse(dev: &device::Device) -> Result {
+         let fwnode = dev.fwnode().ok_or(ENOENT)?;
+ 
+-        if let Ok(idx) =
+-            fwnode.property_match_string(c_str!("compatible"), c_str!("test,rust-device"))
+-        {
++        if let Ok(idx) = fwnode.property_match_string(c"compatible", c"test,rust-device") {
+             dev_info!(dev, "matched compatible string idx = {}\n", idx);
+         }
+ 
+-        let name = c_str!("compatible");
++        let name = c"compatible";
+         let prop = fwnode.property_read::<CString>(name).required_by(dev)?;
+         dev_info!(dev, "'{name}'='{prop:?}'\n");
+ 
+-        let name = c_str!("test,bool-prop");
+-        let prop = fwnode.property_read_bool(c_str!("test,bool-prop"));
++        let name = c"test,bool-prop";
++        let prop = fwnode.property_read_bool(c"test,bool-prop");
+         dev_info!(dev, "'{name}'='{prop}'\n");
+ 
+-        if fwnode.property_present(c_str!("test,u32-prop")) {
++        if fwnode.property_present(c"test,u32-prop") {
+             dev_info!(dev, "'test,u32-prop' is present\n");
+         }
+ 
+-        let name = c_str!("test,u32-optional-prop");
++        let name = c"test,u32-optional-prop";
+         let prop = fwnode.property_read::<u32>(name).or(0x12);
+         dev_info!(dev, "'{name}'='{prop:#x}' (default = 0x12)\n");
+ 
+         // A missing required property will print an error. Discard the error to
+         // prevent properties_parse from failing in that case.
+-        let name = c_str!("test,u32-required-prop");
++        let name = c"test,u32-required-prop";
+         let _ = fwnode.property_read::<u32>(name).required_by(dev);
+ 
+-        let name = c_str!("test,u32-prop");
++        let name = c"test,u32-prop";
+         let prop: u32 = fwnode.property_read(name).required_by(dev)?;
+         dev_info!(dev, "'{name}'='{prop:#x}'\n");
+ 
+-        let name = c_str!("test,i16-array");
++        let name = c"test,i16-array";
+         let prop: [i16; 4] = fwnode.property_read(name).required_by(dev)?;
+         dev_info!(dev, "'{name}'='{prop:?}'\n");
+         let len = fwnode.property_count_elem::<u16>(name)?;
+         dev_info!(dev, "'{name}' length is {len}\n");
+ 
+-        let name = c_str!("test,i16-array");
++        let name = c"test,i16-array";
+         let prop: KVec<i16> = fwnode.property_read_array_vec(name, 4)?.required_by(dev)?;
+         dev_info!(dev, "'{name}'='{prop:?}' (KVec)\n");
+ 
+         for child in fwnode.children() {
+-            let name = c_str!("test,ref-arg");
++            let name = c"test,ref-arg";
+             let nargs = NArgs::N(2);
+             let prop: FwNodeReferenceArgs = child.property_get_reference_args(name, nargs, 0)?;
+             dev_info!(dev, "'{name}'='{prop:?}'\n");
 
 -- 
 2.52.0
