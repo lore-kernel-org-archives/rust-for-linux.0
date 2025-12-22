@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBF1299952;
-	Mon, 22 Dec 2025 12:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3EB29A312;
+	Mon, 22 Dec 2025 12:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766406935; cv=none; b=ZixuELcvtWOpxjb4A8SJ4FlROEwmPby4gw8lIxhbVne66ULmeY0zuxnsZdiarxu3ZUK4e8jaa20Xv7gh9TD0wRsYQkWgGS2o269SvkN+5m/BPUIe+tmORHoDBzmJqXwpX4DCMS6AAF+WW7ssanMYec8pJ2HH9gpqmvlXPpt3Bi4=
+	t=1766406940; cv=none; b=mQ6YflbvgPzYcbeHK2G/eHFkeXU7Ubtz2Yv4r9saAPyySUxFONyv0uOO1JY8G9cuA8LSKwUt7BLZyj+s8ljoW58Un3TOQ5ot1UNIIr1vlt0FJ7YzmonmBOC0sM8c9W6VYqyTblSIuPoUTAA+8bL7+H2iaJQuXzMNYs15WUiogHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766406935; c=relaxed/simple;
-	bh=PFg7CDPmD7eb4pfOkU3lUuqgep/h+jFBdQBcHkuSNtM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Rtk0K8XOKafFFt2QtJmybNoAHQdlXdcpOhIGq8Gc1iu99NYkuy48wzic1fWAzMw6gZ1M6Jx8DYfvTgBp0pT+/ntY3KiEDUEREeNIdQvjVP7hmGi5yoGLi/B9QU4lcKhcYpUTKiF2yXFlB85crCRAegvIWnQfApuzoJUkDHS+dRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GhHSgcr1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766406940; c=relaxed/simple;
+	bh=drUNuwKRIeYo3aZL0WqkYRPMSOhXeSndodp4MXIUrt8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=cOleTWc32GM6elLVB6yaiooltDWFhWR56mwVXPXvHJE+JkYkHVTm/7sraQWaimOk41TjPs/rpUibGd3QQqmMz6mIqDGi5Asxb4uB0xq8dZ5SAM8ijATNwAZvVB0FHDxLJLaOEvqf4Yl5LMp55A68Zmg2FDE0KItaEyRckOCXGkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qYIwghCd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GhHSgcr1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAF2C4CEF1;
-	Mon, 22 Dec 2025 12:35:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qYIwghCd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E4EC4CEF1;
+	Mon, 22 Dec 2025 12:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766406935;
-	bh=PFg7CDPmD7eb4pfOkU3lUuqgep/h+jFBdQBcHkuSNtM=;
-	h=From:Subject:Date:To:Cc:From;
-	b=GhHSgcr1uZd1H400PNVo01E6/J5njE+oDFxQZjPSo08Wocxz6uyU1w+vADF9466h9
-	 /XtR0KjRKqFhDeYYY213SZgE2sWPl85fVqNj8xEgnYaUC9upyZG/mVgNC2UJXQQD30
-	 z4OfNXOPHWalH3KvTehPuNrKZbO0AfZE5uyxscwopiU8X3PBsSdLQVI9SIyshj0COG
-	 8ao61SQRB1XhM/JrK//rRkGypRMJ9+PtoHNjwJzYdrofgol7o9EEkhJ2Q4WEjsZ/P9
-	 TtwDkoXF0p9UthbAqe8zuU7qXQkTSeufrug4SIdWOKAuzO+XtAlNKQ3hHg0lOD/rbg
-	 kmrByaZS9S27g==
+	s=k20201202; t=1766406939;
+	bh=drUNuwKRIeYo3aZL0WqkYRPMSOhXeSndodp4MXIUrt8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=qYIwghCdrvOOb4RCD2GsOTYCwiBSQCle9Np6YC3PQ21XmMrIIxkWvLI3kBYGnDf3H
+	 04oI5edw4g/RsZPxwDxTr7TDA00AWkAIaPcIFCCWqUTwstgtu/HzzPbKR69MrdR3M7
+	 WFU9NLh9eoCKFGGqHGNxHgwxEc9x3hQ5zooksTfX3IjxYj0sFsI7ap+NapFsdidcoe
+	 HXCBHWPhDXlnjr9Yx6QAV27DLWCyF22AYfuqbu0fhtyZZ96XMCOhordMEE5QD4O2TI
+	 qBa76wFK4U6j3JJhgQSr95Abe050GaTqTju0sxzUkdyEc7xaVO56BvCquOpfe/ozRS
+	 65xtb3mfKl1CA==
 From: Tamir Duberstein <tamird@kernel.org>
-Subject: [PATCH 0/7] driver-core: rust: replace `kernel::c_str!` with
+Date: Mon, 22 Dec 2025 13:35:27 +0100
+Subject: [PATCH 1/7] rust: auxiliary: replace `kernel::c_str!` with
  C-Strings
-Date: Mon, 22 Dec 2025 13:35:26 +0100
-Message-Id: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -38,10 +38,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ5EQAyA4VeRnrcJZUS8iuxhjQ51QForEvHuB
- sfv8P8HGKuwQZ0coLyJyTxFZJ8E/PCbekbpooFSchkRobdVsVPZWNHPyli1oSxdkQeXE8RsUQ6
- yP8vm+9r+7ch+vT9wnhfw8LuBdAAAAA==
-X-Change-ID: 20251222-cstr-driver-core-8bf66543f532
+Message-Id: <20251222-cstr-driver-core-v1-1-1142a177d0fd@gmail.com>
+References: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
+In-Reply-To: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
  Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -54,47 +53,53 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Tamir Duberstein <tamird@gmail.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1766406930; l=1500;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1766406930; l=1194;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=PFg7CDPmD7eb4pfOkU3lUuqgep/h+jFBdQBcHkuSNtM=;
+ bh=BVDdV23Nh6e2Ckn6TwYKXo68sSRbr3pGInAvEOSVe/w=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QBXz7hSRkSklMDHaXp6rj09psjTfoFbWf257IJZcROJKJYYLYuaDc5ck2zjSCwUh8dVxLHwsEyt
- spVeB7URYiww=
+ QDsKWgMARMDErf9c+y1rdphqPMwTb3TZ7XuXhDp7tuBVTxIOOyOILuTsPZlVK+wcH0IAhQ0okug
+ 9NHeqCJ/2oQc=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+
+From: Tamir Duberstein <tamird@gmail.com>
 
 C-String literals were added in Rust 1.77. Replace instances of
 `kernel::c_str!` with C-String literals where possible.
 
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
-Tamir Duberstein (7):
-      rust: auxiliary: replace `kernel::c_str!` with C-Strings
-      rust: device: replace `kernel::c_str!` with C-Strings
-      rust: platform: replace `kernel::c_str!` with C-Strings
-      rust: io: replace `kernel::c_str!` with C-Strings
-      rust: irq: replace `kernel::c_str!` with C-Strings
-      rust: debugfs: replace `kernel::c_str!` with C-Strings
-      samples: rust: debugfs: replace `kernel::c_str!` with C-Strings
+ samples/rust/rust_driver_auxiliary.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- rust/kernel/debugfs.rs                | 23 +++++++++--------------
- rust/kernel/device.rs                 |  4 +---
- rust/kernel/device/property.rs        |  6 +++---
- rust/kernel/io/mem.rs                 |  7 +++----
- rust/kernel/irq/request.rs            |  6 ++----
- rust/kernel/platform.rs               |  6 +++---
- samples/rust/rust_debugfs.rs          | 17 ++++++++---------
- samples/rust/rust_debugfs_scoped.rs   | 20 ++++++++------------
- samples/rust/rust_driver_auxiliary.rs |  4 ++--
- samples/rust/rust_driver_faux.rs      |  4 ++--
- samples/rust/rust_driver_platform.rs  | 30 ++++++++++++++----------------
- 11 files changed, 55 insertions(+), 72 deletions(-)
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20251222-cstr-driver-core-8bf66543f532
+diff --git a/samples/rust/rust_driver_auxiliary.rs b/samples/rust/rust_driver_auxiliary.rs
+index 5761ea314f44..1e4fb23cfcb0 100644
+--- a/samples/rust/rust_driver_auxiliary.rs
++++ b/samples/rust/rust_driver_auxiliary.rs
+@@ -5,7 +5,7 @@
+ //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
+ 
+ use kernel::{
+-    auxiliary, c_str,
++    auxiliary,
+     device::{Bound, Core},
+     devres::Devres,
+     driver,
+@@ -19,7 +19,7 @@
+ use pin_init::PinInit;
+ 
+ const MODULE_NAME: &CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
+-const AUXILIARY_NAME: &CStr = c_str!("auxiliary");
++const AUXILIARY_NAME: &CStr = c"auxiliary";
+ 
+ struct AuxiliaryDriver;
+ 
 
-Best regards,
---  
-Tamir Duberstein <tamird@gmail.com>
+-- 
+2.52.0
 
