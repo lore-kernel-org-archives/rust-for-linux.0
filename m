@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B53B1C84A2;
-	Mon, 22 Dec 2025 12:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E946BFCE;
+	Mon, 22 Dec 2025 12:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766406515; cv=none; b=bmcicKEYuDWt7TTg9SrrGKfJLQGxuEADr44SKOXB+euZM5isUTtIp/tAv0low5ydhAouXUiYttsxRSyWOvwPR6rfqddXREJpU800NNFd9HQS046KoM/6LpEcopmx80RCqa27LjeqdPnLkMG4EKa9wEiuBdmRh1+chDghwuVTwKk=
+	t=1766406579; cv=none; b=A6KNOYZ++efDqwMbblfkeNuXwLPtviXCUjxHtI4Wj8CjgaUpnjHfiiCwPGIF+4lT3CiDkqGj3H5jAqBe3roi3r1KAKM49EA30rsWqmZwlPwqSGItI3uwZdXvzTzshM2/eBfxpMZ8hJ0795ghkVMLQcmOG29l1D3vY0Ge4lkPKFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766406515; c=relaxed/simple;
-	bh=jOwV7nUJ5dOaWvUO6114YDd2fspA3/2foFpNPnjb0x4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FqrKmVRzsZvPoIbuQef3U6U69pxcNdZQkfzNUJy1LYJ7GvbTuE9AiGnRjI8Cx2T/HyN++SiUtC6VLNyk1eUAnvkmoql2m0UFMRic20tO08eFUmX9SYbYdaWqxRRLkgVL0sWlHJH6kMAl5Dpxw3N/+wxvT7IHHE9gcZ0yG7diDS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F4tw116O; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766406579; c=relaxed/simple;
+	bh=2G0/TbpRpEY08Dw+lJgLBhbGwn9HvxIvXWSw1WPXQow=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tflV2gINQJSuxd1uiaKPOBJ1kQO5m5dmYVrWAtYnfasCeY/tQ5NVAIgjnJKVPhZ1nCICJ3+GJlauX2bl/jo05sxPB0jcZlUGkv1RPSMtMFqt2LGn5DzUn83ZAc6ktc6CEceb7P2IU8MF1FzIcHsmTX5TuHNgESwpyT1MhEABVQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQgCSt2n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F4tw116O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8E4C113D0;
-	Mon, 22 Dec 2025 12:28:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQgCSt2n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FEEC4CEF1;
+	Mon, 22 Dec 2025 12:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766406515;
-	bh=jOwV7nUJ5dOaWvUO6114YDd2fspA3/2foFpNPnjb0x4=;
+	s=k20201202; t=1766406578;
+	bh=2G0/TbpRpEY08Dw+lJgLBhbGwn9HvxIvXWSw1WPXQow=;
 	h=From:Date:Subject:To:Cc:From;
-	b=F4tw116OuitRQxfvc/ZKQIX5IB/+wFDkqQBm6H9rdU/jUU0fhk29Z7r7YfOGjdW0T
-	 V+ea/cd+Tv71m2EuTyN0cmqo/IXf5rSdaeUShCbewpwmmMwYDvnduaLlDPh/MQwEL+
-	 LX+0WcovE5Dj8HAvHduBgPnyefid66SEA265TeSHzh3mayhXj2+LPDEQ9E+W8ufPQf
-	 vjkZTey0/QiZWt9L+GZInXF06kq2wZfZTYVWwb4S2nvGfE7EOay2roVljsOtoo+Ust
-	 4qRzwe5wRC+yYKtnTg0uJ0FUccVgRH9C2m7tYQ0Sp0+YYFfMJBWjDp99QhaVEiOwv+
-	 LyyRUHBh8D86w==
+	b=iQgCSt2nDpREmaxV5n847O4OFRkZ2VIljxcOMpy2J19Fyyuc6lFbJ1MaZXi7gpevy
+	 QdZ+KY3Zyq8J14f7Sr9j+MnwKNHZ0t3Mmi9BrVqcIg9wJw93fMjCihRWMQ/u9wCxWW
+	 ZLDpLe1/WjtvyKpp9Umo3BNIdtSxl27eeWCZ9feRxPnvotAgJlk194/W682tUcKPAV
+	 bzeWPfiZw7+hEuwcX4hok865IZyxt2laiYPzCKDuGUXGKPZNLDxvRucx4jkw2wN5on
+	 h1EK670TjFAnsYqplDZsYlOWde5otlcvyagd0fukXXUOfO4V9+KTARPCHCvUeSkf1z
+	 FeI1W3CExmc1g==
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Mon, 22 Dec 2025 13:28:27 +0100
-Subject: [PATCH] rust: kunit: replace `kernel::c_str!` with C-Strings
+Date: Mon, 22 Dec 2025 13:29:32 +0100
+Subject: [PATCH] rust: cpufreq: replace `kernel::c_str!` with C-Strings
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,31 +36,29 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251222-cstr-kunit-v1-1-39d999672f35@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ5AMBBA0avIrDVhkoq4ilhoOxiSkk6JRNxds
- XyL/y8QCkwCTXZBoIOFV59Q5hnYqfcjKXbJgAXqEhGVlRjUsnuOylBVO1fbwTgNKdgCDXx+s7b
- 7LbuZycb3APf9ABtIlkJuAAAA
-X-Change-ID: 20251222-cstr-kunit-be68dd8cfbd5
-To: Brendan Higgins <brendan.higgins@linux.dev>, 
- David Gow <davidgow@google.com>, Rae Moar <raemoar63@gmail.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
+Message-Id: <20251222-cstr-cpufreq-v1-1-2d99dfc88cbb@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ5EQAyA4VeRnncSU0HiVTZ7oDrUwdIiEvHuB
+ sfv8P8HGKuwQZUcoLyJyX+M8J8EqK/Hjp200YAp5h4RHdmijqY1KM+uxJzarKA6DR5iMikH2Z/
+ d9/fa1mZgWu4HnOcF8ZpLNXAAAAA=
+X-Change-ID: 20251222-cstr-cpufreq-725cd36ca0f1
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
  Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
  Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>, 
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1766406510; l=5424;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1766406574; l=2533;
  i=tamird@gmail.com; h=from:subject:message-id;
- bh=pwc3vGXHK+ibZCWjh3w0zYv5qhibNAV50Z6yzjPg+KU=;
+ bh=URejYURVdgM8xsn8wNpsqiJMx/VUH8dxw+RDn7bQgdw=;
  b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
  MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QPHR7xsCCwONVpfA7DwG98VZ4PJ6knRY06MAhx0lsZjwcogcRr81hLQJQl62oeN9LPaVvD5Dv9R
- k8fM1IjR1ag4=
+ QEyO4qNIUfiiQW9I5t4F7WkcUXH4wt9Bo9uqWZs3y+Dq3yJSj18scNHUGrfLjsEdKwgn1PYlxDR
+ irs+xzDBMtQE=
 X-Developer-Key: i=tamird@gmail.com; a=openssh;
  fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
@@ -72,131 +70,68 @@ C-String literals were added in Rust 1.77. Replace instances of
 Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Benno Lossin <lossin@kernel.org>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 ---
- rust/kernel/kunit.rs        | 11 ++++-------
- rust/macros/kunit.rs        | 10 +++++-----
- scripts/rustdoc_test_gen.rs |  4 ++--
- 3 files changed, 11 insertions(+), 14 deletions(-)
+ drivers/cpufreq/rcpufreq_dt.rs | 5 ++---
+ rust/kernel/cpufreq.rs         | 3 +--
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 79436509dd73..21aef6c97325 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -9,9 +9,6 @@
- use crate::fmt;
- use crate::prelude::*;
+diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
+index 31e07f0279db..f17bf64c22e2 100644
+--- a/drivers/cpufreq/rcpufreq_dt.rs
++++ b/drivers/cpufreq/rcpufreq_dt.rs
+@@ -3,7 +3,6 @@
+ //! Rust based implementation of the cpufreq-dt driver.
  
--#[cfg(CONFIG_PRINTK)]
--use crate::c_str;
--
- /// Prints a KUnit error-level message.
+ use kernel::{
+-    c_str,
+     clk::Clk,
+     cpu, cpufreq,
+     cpumask::CpumaskVar,
+@@ -52,7 +51,7 @@ impl opp::ConfigOps for CPUFreqDTDriver {}
+ 
+ #[vtable]
+ impl cpufreq::Driver for CPUFreqDTDriver {
+-    const NAME: &'static CStr = c_str!("cpufreq-dt");
++    const NAME: &'static CStr = c"cpufreq-dt";
+     const FLAGS: u16 = cpufreq::flags::NEED_INITIAL_FREQ_CHECK | cpufreq::flags::IS_COOLING_DEV;
+     const BOOST_ENABLED: bool = true;
+ 
+@@ -197,7 +196,7 @@ fn register_em(policy: &mut cpufreq::Policy) {
+     OF_TABLE,
+     MODULE_OF_TABLE,
+     <CPUFreqDTDriver as platform::Driver>::IdInfo,
+-    [(of::DeviceId::new(c_str!("operating-points-v2")), ())]
++    [(of::DeviceId::new(c"operating-points-v2"), ())]
+ );
+ 
+ impl platform::Driver for CPUFreqDTDriver {
+diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+index f968fbd22890..8be634eaabe9 100644
+--- a/rust/kernel/cpufreq.rs
++++ b/rust/kernel/cpufreq.rs
+@@ -840,7 +840,6 @@ fn register_em(_policy: &mut Policy) {
+ /// ```
+ /// use kernel::{
+ ///     cpufreq,
+-///     c_str,
+ ///     device::{Core, Device},
+ ///     macros::vtable,
+ ///     of, platform,
+@@ -853,7 +852,7 @@ fn register_em(_policy: &mut Policy) {
  ///
- /// Public but hidden since it should only be used from KUnit generated code.
-@@ -22,7 +19,7 @@ pub fn err(args: fmt::Arguments<'_>) {
-     #[cfg(CONFIG_PRINTK)]
-     unsafe {
-         bindings::_printk(
--            c_str!("\x013%pA").as_char_ptr(),
-+            c"\x013%pA".as_char_ptr(),
-             core::ptr::from_ref(&args).cast::<c_void>(),
-         );
-     }
-@@ -38,7 +35,7 @@ pub fn info(args: fmt::Arguments<'_>) {
-     #[cfg(CONFIG_PRINTK)]
-     unsafe {
-         bindings::_printk(
--            c_str!("\x016%pA").as_char_ptr(),
-+            c"\x016%pA".as_char_ptr(),
-             core::ptr::from_ref(&args).cast::<c_void>(),
-         );
-     }
-@@ -60,7 +57,7 @@ macro_rules! kunit_assert {
-                 break 'out;
-             }
- 
--            static FILE: &'static $crate::str::CStr = $crate::c_str!($file);
-+            static FILE: &'static $crate::str::CStr = $file;
-             static LINE: i32 = ::core::line!() as i32 - $diff;
-             static CONDITION: &'static $crate::str::CStr = $crate::c_str!(stringify!($condition));
- 
-@@ -253,7 +250,7 @@ pub const fn kunit_case_null() -> kernel::bindings::kunit_case {
- /// }
+ /// #[vtable]
+ /// impl cpufreq::Driver for SampleDriver {
+-///     const NAME: &'static CStr = c_str!("cpufreq-sample");
++///     const NAME: &'static CStr = c"cpufreq-sample";
+ ///     const FLAGS: u16 = cpufreq::flags::NEED_INITIAL_FREQ_CHECK | cpufreq::flags::IS_COOLING_DEV;
+ ///     const BOOST_ENABLED: bool = true;
  ///
- /// static mut KUNIT_TEST_CASES: [kernel::bindings::kunit_case; 2] = [
--///     kernel::kunit::kunit_case(kernel::c_str!("name"), test_fn),
-+///     kernel::kunit::kunit_case(c"name", test_fn),
- ///     kernel::kunit::kunit_case_null(),
- /// ];
- /// kernel::kunit_unsafe_test_suite!(suite_name, KUNIT_TEST_CASES);
-diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-index b395bb053695..3d7724b35c0f 100644
---- a/rust/macros/kunit.rs
-+++ b/rust/macros/kunit.rs
-@@ -102,8 +102,8 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     // unsafe extern "C" fn kunit_rust_wrapper_bar(_test: *mut ::kernel::bindings::kunit) { bar(); }
-     //
-     // static mut TEST_CASES: [::kernel::bindings::kunit_case; 3] = [
--    //     ::kernel::kunit::kunit_case(::kernel::c_str!("foo"), kunit_rust_wrapper_foo),
--    //     ::kernel::kunit::kunit_case(::kernel::c_str!("bar"), kunit_rust_wrapper_bar),
-+    //     ::kernel::kunit::kunit_case(c"foo", kunit_rust_wrapper_foo),
-+    //     ::kernel::kunit::kunit_case(c"bar", kunit_rust_wrapper_bar),
-     //     ::kernel::kunit::kunit_case_null(),
-     // ];
-     //
-@@ -133,7 +133,7 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-         writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
-         writeln!(
-             test_cases,
--            "    ::kernel::kunit::kunit_case(::kernel::c_str!(\"{test}\"), {kunit_wrapper_fn_name}),"
-+            "    ::kernel::kunit::kunit_case(c\"{test}\", {kunit_wrapper_fn_name}),"
-         )
-         .unwrap();
-         writeln!(
-@@ -143,7 +143,7 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
- #[allow(unused)]
- macro_rules! assert {{
-     ($cond:expr $(,)?) => {{{{
--        kernel::kunit_assert!("{test}", "{path}", 0, $cond);
-+        kernel::kunit_assert!("{test}", c"{path}", 0, $cond);
-     }}}}
- }}
- 
-@@ -151,7 +151,7 @@ macro_rules! assert {{
- #[allow(unused)]
- macro_rules! assert_eq {{
-     ($left:expr, $right:expr $(,)?) => {{{{
--        kernel::kunit_assert_eq!("{test}", "{path}", 0, $left, $right);
-+        kernel::kunit_assert_eq!("{test}", c"{path}", 0, $left, $right);
-     }}}}
- }}
-         "#
-diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
-index be0561049660..967064ebd391 100644
---- a/scripts/rustdoc_test_gen.rs
-+++ b/scripts/rustdoc_test_gen.rs
-@@ -174,7 +174,7 @@ pub extern "C" fn {kunit_name}(__kunit_test: *mut ::kernel::bindings::kunit) {{
-     macro_rules! assert {{
-         ($cond:expr $(,)?) => {{{{
-             ::kernel::kunit_assert!(
--                "{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $cond
-+                "{kunit_name}", c"{real_path}", __DOCTEST_ANCHOR - {line}, $cond
-             );
-         }}}}
-     }}
-@@ -184,7 +184,7 @@ macro_rules! assert {{
-     macro_rules! assert_eq {{
-         ($left:expr, $right:expr $(,)?) => {{{{
-             ::kernel::kunit_assert_eq!(
--                "{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $left, $right
-+                "{kunit_name}", c"{real_path}", __DOCTEST_ANCHOR - {line}, $left, $right
-             );
-         }}}}
-     }}
 
 ---
 base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20251222-cstr-kunit-be68dd8cfbd5
+change-id: 20251222-cstr-cpufreq-725cd36ca0f1
 
 Best regards,
 --  
