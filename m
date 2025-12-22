@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F0D2BE048;
-	Mon, 22 Dec 2025 14:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF4F2BE048;
+	Mon, 22 Dec 2025 14:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766413234; cv=pass; b=crdVoRxdOnwgIHQrjhFpqxCg+mMFU3DWHPD4/sqYQGUZPF4ZAYQbvMQWFMNghMJzlW1BnHmSt4B0/LjzFVaE3LMnXJtVZbF16VsBeVmCzYztU4mE4LHHvO/tg/4EnOqiiu7hAwKlclZChTdDI0PCkDrJlhL/rTTBkLhjQlXc1o8=
+	t=1766413323; cv=pass; b=Eah//3Z34iAL6YS/dUQvs6QWZBYghrsEN4uQphe/H+PDs2lMKN0nwxujAsr5GpnZ1OWb+2gXdEaWmGuurjgeXnkLcC9+CykfE8/St6TNEWhve5tOWABA0Fmv51ZoW6sYP8lMyzBFgklJK/gu0Ol6o20X3m9m49oklRTA8sq9RoE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766413234; c=relaxed/simple;
-	bh=/7AkD5MoGLoJ9E0uIl0cXggdSAyflF5Z3k/pqlk9AHk=;
+	s=arc-20240116; t=1766413323; c=relaxed/simple;
+	bh=R2nplfYnI5UXtK/0Y8D6GrkdO71eLFjuU0Q8vbZoidU=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=jfsEbo1UE37xU9hTwWN2YoMp/JkbwGxRiFBuXajd8DwFoCCb1lLatPSx0R3wQVbNwmHLtL18nWvLyVdiRDOM6/yRBmmNLgTYBiv2CRKk5+A2gXX2YuLexiNLZjmIzq02l90rPuA87Yo33NsuevztByBiY/MHf+s8ZKK4Lj0ubB0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=hHm2zh8i; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=O4jL3xl6ADSldCj7WodkUEl7ORhahcfoVhWMKUWkoBmAo0AFH9WHv2g+z2II2gUZEymmqRYxpccLfgMRw78XY915yG70Y1Fc+K+AJpkN65EyV6cKmuqRgQwHoOEenMOn/LIqZyC9ZnjlwdHazBjOJ7uBttZkCa0brAhQiNYw/lk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=DCvWmjBy; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="hHm2zh8i"
-ARC-Seal: i=1; a=rsa-sha256; t=1766413216; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="DCvWmjBy"
+ARC-Seal: i=1; a=rsa-sha256; t=1766413299; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=mKHOwEpsdpTYqSsOlM9PPJY66nGbqiIPGyY3SXyrt4qL5fRzjN4fYVZVBniYRbj9Om5mpkEPQ2OVAJN9o1EhKy1z9bBv6jJeju+GbAUTBj5nGlOHZ30PXthRty/hIyxf0MVqaBuEhDJGhg0xm2hciWwvo/QYbBLN9Dy6tXisimI=
+	b=dSJA3frU6QuloPJJDWgkZ6o1bJd9LXPMPFMfvnII4R3z4ppxhQHfsbXfnJ75hZdquAOUQmDkfs9/UqpqSqsY6zE8E0gKxAQDpZSY+HS0+51R3f6q4gVaLo9GE6CBmge35G/KeQ6zB4/kiYkPKbuFlT18rvsC+jcUA5yAUeE0Mb4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1766413216; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=1Ko8sRL3XFUTsdfrXmGabUt+wzKpzjrULj5gkrSJQns=; 
-	b=mrQh5LnBRPZqvt/yhHrLXkJtkP5RbyrWIDYre8WPDAkGwRVh9c4B/V7ykl4phbVMvdXYZuM4tUqZ3GsAQDHv81+Jh/Xuf9vWfAVJbfWRAjiRyj398yy1LZAn5UzkIV/5qdoRO9sXrgE/WI5YHbdhl1ICO8bjhCYhbqiMTqYjvZY=
+	t=1766413299; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=a9KrdtA4sTPYPLeGS9oWNYHBt1scy7mdbGzi7GGj4R4=; 
+	b=CwE0Vd7HAzfAJJGN3Fo4IUd8X9+79ZVriSQu2cBXMgB9WFJDn3ADQj7OE1FILJPbubUQsGTWJoLXGqMC1cDtyHO2h7jdgnueKP3AYqygV0M2n40PBzYhD6F2KAZVMEbsIxYqIAKmce3QnF1u6tpwxDVIyGDoGfg5Pq/HdrcFj2s=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766413216;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1766413299;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=1Ko8sRL3XFUTsdfrXmGabUt+wzKpzjrULj5gkrSJQns=;
-	b=hHm2zh8icw2bvPkWEWNqu+JT9W72T4LkgWp98iWWmFui/7SLyoDvZwUmvfQE6fgi
-	uUKdVXyS5sp9FEs1THf5B7p8Xp+oAOqsqtaVKkOiVCEYgBZDTHaVqXPEiihbk1g5q/B
-	qNKs5QOL1yXLEdpMZCi2aiIKoHqYtmFsXJZcEDL4=
-Received: by mx.zohomail.com with SMTPS id 176641321412580.97702557807827;
-	Mon, 22 Dec 2025 06:20:14 -0800 (PST)
+	bh=a9KrdtA4sTPYPLeGS9oWNYHBt1scy7mdbGzi7GGj4R4=;
+	b=DCvWmjBy68tXZW/QwbdL7dV6gfGYITgZbzVws93gdr0fl4UloTTJU4+WSuP028e+
+	bfDLsJcEq33TfuLT9FUB+bfOOkg+79ZNnOU8VsnNYY2/53H2kZipnVZy6aYLOMr2YV0
+	z9/MB4UPC8DO6kE/iCy6AgfDEy9Tull5TJwmWwGA=
+Received: by mx.zohomail.com with SMTPS id 1766413298347127.09238611384126;
+	Mon, 22 Dec 2025 06:21:38 -0800 (PST)
 Content-Type: text/plain;
 	charset=us-ascii
 Precedence: bulk
@@ -44,72 +44,80 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] rnull: replace `kernel::c_str!` with C-Strings
+Subject: Re: [PATCH] drivers: pwm: replace `kernel::c_str!` with C-Strings
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20251222-cstr-block-v1-1-fdab28bb7367@gmail.com>
-Date: Mon, 22 Dec 2025 11:19:58 -0300
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Jens Axboe <axboe@kernel.dk>,
+In-Reply-To: <20251222-cstr-pwm-v1-1-e8916d976f8d@gmail.com>
+Date: Mon, 22 Dec 2025 11:21:21 -0300
+Cc: Drew Fustini <fustini@kernel.org>,
+ Guo Ren <guoren@kernel.org>,
+ Fu Wei <wefu@redhat.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
  Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
  Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
  Danilo Krummrich <dakr@kernel.org>,
- linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
+ linux-riscv@lists.infradead.org,
+ linux-pwm@vger.kernel.org,
  linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
  Tamir Duberstein <tamird@gmail.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4015C791-D9C1-49D3-893E-79FD1167AD50@collabora.com>
-References: <20251222-cstr-block-v1-1-fdab28bb7367@gmail.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <607D76B0-1A8A-4A62-A961-14796A7FD31E@collabora.com>
+References: <20251222-cstr-pwm-v1-1-e8916d976f8d@gmail.com>
 To: Tamir Duberstein <tamird@kernel.org>
 X-Mailer: Apple Mail (2.3826.700.81)
 X-ZohoMailClient: External
 
 
 
-> On 22 Dec 2025, at 09:26, Tamir Duberstein <tamird@kernel.org> wrote:
->=20
+> On 22 Dec 2025, at 09:24, Tamir Duberstein <tamird@kernel.org> wrote:
+> 
 > From: Tamir Duberstein <tamird@gmail.com>
->=20
+> 
 > C-String literals were added in Rust 1.77. Replace instances of
 > `kernel::c_str!` with C-String literals where possible.
->=20
+> 
 > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > ---
-> drivers/block/rnull/configfs.rs | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/block/rnull/configfs.rs =
-b/drivers/block/rnull/configfs.rs
-> index 6713a6d92391..2f5a7da03af5 100644
-> --- a/drivers/block/rnull/configfs.rs
-> +++ b/drivers/block/rnull/configfs.rs
-> @@ -25,7 +25,7 @@ pub(crate) fn subsystem() -> impl =
-PinInit<kernel::configfs::Subsystem<Config>, E
->         ],
->     };
->=20
-> -    kernel::configfs::Subsystem::new(c_str!("rnull"), item_type, =
-try_pin_init!(Config {}))
-> +    kernel::configfs::Subsystem::new(c"rnull", item_type, =
-try_pin_init!(Config {}))
-> }
->=20
-> #[pin_data]
->=20
+> drivers/pwm/pwm_th1520.rs | 3 +--
+> 1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
+> index e3b7e77356fc..8ae8f852ec02 100644
+> --- a/drivers/pwm/pwm_th1520.rs
+> +++ b/drivers/pwm/pwm_th1520.rs
+> @@ -22,7 +22,6 @@
+> 
+> use core::ops::Deref;
+> use kernel::{
+> -    c_str,
+>     clk::Clk,
+>     device::{Bound, Core, Device},
+>     devres,
+> @@ -327,7 +326,7 @@ fn drop(self: Pin<&mut Self>) {
+>     OF_TABLE,
+>     MODULE_OF_TABLE,
+>     <Th1520PwmPlatformDriver as platform::Driver>::IdInfo,
+> -    [(of::DeviceId::new(c_str!("thead,th1520-pwm")), ())]
+> +    [(of::DeviceId::new(c"thead,th1520-pwm"), ())]
+> );
+> 
+> impl platform::Driver for Th1520PwmPlatformDriver {
+> 
 > ---
 > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20251222-cstr-block-0611c0c035e3
->=20
+> change-id: 20251222-cstr-pwm-c9b9a4701157
+> 
 > Best regards,
-> -- =20
+> --  
 > Tamir Duberstein <tamird@gmail.com>
->=20
->=20
+> 
+> 
 
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
