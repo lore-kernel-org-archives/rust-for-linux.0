@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D592327202;
-	Mon, 22 Dec 2025 06:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E4A169AD2;
+	Mon, 22 Dec 2025 06:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766384900; cv=none; b=GJ+jBbdVhghc7gAosWzU9Bp+W+Dy6jOE/p7ocUanTtIOqP1Nu+XcWZtY5EbBeRPuugiQqrekRfqximR3MQvCgRvg9NbQ9BYL9Kdgmwe356YkGn4qr1t24gV+WsNYKz+aacGVdXjMOxBnq8n597XUHF4+bGGWfRphLqVlZW0tV3U=
+	t=1766385270; cv=none; b=a2xWwZNYJWCfImqMMlnA2NxpWDZxFBvyu/NjStUNZHZKTOwI5FN9RBONFpo1cXSWIiE6e10c37ew8ILx5cNu3y/2CLt1+e+lLZvLW5+dhiH44K1SeBkSCBBiceiz2nKfd3mDyVera2IC5YLaESkc7UmkIsKNhEuiLzQZrqKFZNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766384900; c=relaxed/simple;
-	bh=qTE6iTdUnxWBm0oirVqOQb0G6arcg5L6d26+IiMynRU=;
+	s=arc-20240116; t=1766385270; c=relaxed/simple;
+	bh=DEaHfqHAH+00nPps05nWYQNEzU59QLYjyzdT04Ty50c=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=ZnvhPJ0iDtXYEVr4eGyDZ6OHa7lIWkdGj8gD7ETsGFbQ4ZlronbvH9dy133usZFtFvks1OPnimrSDtcSfXSLG+nwff/9xaOxqwdU7Hc/zogDs6NweX1zWqRogbU7AF936LCSnu8oFSVvvkg6Nlx5KvZYy3A5OrRj7rX/HQ4jGkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MxKyKLLg; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=O7g/BB8/mLb8on4HM+wIZqWGM4W2SJ00YWNmgyl9YtE8W9qc9g+/hyvkCTNzGfYF1qQLAAl4Xj6l1KVYgeMO84XnZ7sAdNNhfbI1sfOERUdlAdvNETGCU8nxIsuo/P1UsdyAT7AXpBldYkGgZ4w0oFsE7ceLrWue5ObcYOrUGcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F1wPPfAr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MxKyKLLg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101EAC4CEF1;
-	Mon, 22 Dec 2025 06:28:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1wPPfAr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C8E1C4CEF1;
+	Mon, 22 Dec 2025 06:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766384899;
-	bh=qTE6iTdUnxWBm0oirVqOQb0G6arcg5L6d26+IiMynRU=;
+	s=k20201202; t=1766385269;
+	bh=DEaHfqHAH+00nPps05nWYQNEzU59QLYjyzdT04Ty50c=;
 	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=MxKyKLLg/Rma1EKW2U2ILI7sVjDd9mJryGZ2SHQIG1FS8opOcLuakGe5TvjWAlw65
-	 VTgRwID3GEBuD5lJQMGAvOlcACzzjqlUSJ+IH4YUHm30Bywb7w3TOkt+Or3EQWXNRf
-	 qIJ3t0jXBfUe7XtTQ02OX+bUPXoRbb6cDfmobtpVociIVgZsh8P6nVm2GSLiAltzJv
-	 ghQQ2Q2jvIkbwp7TsEKF1by/oNyEWL10W6uEnhGmTh+/3BzYTi1B6nUuDe5xP/+9Og
-	 rSMimL8CxoHYJy6ikgbW2shLiAQZ8UTd6U+3cYwTBzd/XhDiG2QLAmW3LpcyWce7/6
-	 nrtDJq210+HRA==
+	b=F1wPPfArHzY9gfDPtjbtF/CMQAAFuIbajrEU1t2wxx/YMDkhrR2qHhv2JHopyKu3v
+	 zi1BNKkosp+AB269YSPiLN08LdwnXqwbJSDK9Vea6op9Jm+uf0/x6vYngZgJaC6uNJ
+	 JCwyY30loDScUcSDkDj9DWoyCDpHPjsWyojoHw1+sZ8XrLH+WYe+C7gGXQYe5i1dsq
+	 EoJhEmre8CuwVyKvR7StQfwiwWD3JLtvyhQcTUVDfX2yZ/yvrDVMzptD/2xfR7gRBW
+	 TBF2ACx5TdFj4cLt03GkFOhAe6r7CUU/x5g/i64wh17CPvMQkbAAU3+i08YSo5dd0E
+	 6Pt6R6adXLteA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,43 +34,57 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 22 Dec 2025 07:28:14 +0100
-Message-Id: <DF4J6Q6YVQ51.11ERBEYH4SA4G@kernel.org>
-Subject: Re: [PATCH v16 13/17] rust: sync: Add a lifetime parameter to
- lock::global::GlobalGuard
+Date: Mon, 22 Dec 2025 07:34:24 +0100
+Message-Id: <DF4JBGAGVKYW.367WAXDU2B0B1@kernel.org>
+Subject: Re: [PATCH 07/11] rust: macros: convert `concat_idents!` to use
+ `syn`
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Thomas Gleixner" <tglx@linutronix.de>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Peter Zijlstra"
- <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
- <will@kernel.org>, "Waiman Long" <longman@redhat.com>
+To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@kloenk.dev>,
+ "Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com>,
+ =?utf-8?q?Jos=C3=A9_Exp=C3=B3sito?= <jose.exposito89@gmail.com>, "Tamir
+ Duberstein" <tamird@gmail.com>
+Cc: <rust-for-linux@vger.kernel.org>, "David Gow" <davidgow@google.com>,
+ <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20251215175806.102713-1-lyude@redhat.com>
- <20251215175806.102713-14-lyude@redhat.com>
-In-Reply-To: <20251215175806.102713-14-lyude@redhat.com>
+References: <20251211185805.2835633-1-gary@kernel.org>
+ <20251211185805.2835633-8-gary@kernel.org>
+In-Reply-To: <20251211185805.2835633-8-gary@kernel.org>
 
-On Mon Dec 15, 2025 at 6:58 PM CET, Lyude Paul wrote:
-> While a GlobalLock is always going to be static, in the case of locks wit=
-h
-> explicit backend contexts the GlobalGuard will not be 'static and will
-> instead share the lifetime of the context. So, add a lifetime parameter t=
-o
-> GlobalGuard to allow for this so we can implement GlobalGuard support for
-> SpinlockIrq.
+On Thu Dec 11, 2025 at 7:56 PM CET, Gary Guo wrote:
+> From: Gary Guo <gary@garyguo.net>
 >
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> This eliminates the need for `expect_punct` helper.
+
+This commit message could use some more details :)
+
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
 Reviewed-by: Benno Lossin <lossin@kernel.org>
+
+> ---
+>  rust/macros/concat_idents.rs | 39 ++++++++++++++++++++++++------------
+>  rust/macros/helpers.rs       | 14 +------------
+>  rust/macros/lib.rs           |  4 ++--
+>  3 files changed, 29 insertions(+), 28 deletions(-)
+
+> -pub(crate) fn concat_idents(ts: TokenStream) -> TokenStream {
+> -    let mut it =3D ts.into_iter();
+> -    let a =3D expect_ident(&mut it);
+> -    assert_eq!(expect_punct(&mut it), ',');
+> -    let b =3D expect_ident(&mut it);
+> -    assert!(it.next().is_none(), "only two idents can be concatenated");
+> +pub(crate) fn concat_idents(Input { a, b, .. }: Input) -> TokenStream {
+>      let res =3D Ident::new(&format!("{a}{b}"), b.span());
+
+There is `quote::format_ident!`, which directly returns an identifier,
+but with the span of the first of the two. Not sure if that is better.
 
 Cheers,
 Benno
 
-> ---
->  rust/kernel/sync/lock/global.rs | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+>      TokenStream::from_iter([TokenTree::Ident(res)])
+>  }
