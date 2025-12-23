@@ -1,97 +1,122 @@
-Received: from outbound.st.icloud.com (p-east2-cluster5-host1-snip4-1.eps.apple.com [57.103.79.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4024E883F
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 06:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.79.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F132FFFBE
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 06:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766470267; cv=none; b=O+R/k+Kj87PwED47L8WCGzRKqFUOwyqV3zgE/BE/hpBvEruq2/EV1Gw86ut9OTYkvfhhHjOkXJbCHM2q7BEkHozjB6xqPYIDv2CGpAi/GZd5uFH8yi55KSkLEj9H9aaMQbJBfD7BBP5BbLLpYPAyJ8zdDs+lQrrrj7wHTh/1wb8=
+	t=1766470938; cv=none; b=N1DvBVQ1QzbnAgm4XuPEjkCLHX0doyp5FfXmy3qgifiNx183gjqsBQa1XTPkmDS2Ae63fDWFIuWq0Y5aZD+VCiI5vamt+an5YXLrYVcwwByVoP1X7IS99hqlMLgSnXlYC9QHaZiiwSu9qZ30g5ogq0xqBFpw8QzTBFhLYUW7g2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766470267; c=relaxed/simple;
-	bh=PMn/Xt/uk0Fi88EhUegbm1jhHMbBhLKjEL1P5KoirQw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dUFfKGnFpoVOHL0IkqiHBLMps0R0iQz4KMOCW3reAuGclUdR4yUuw6hjAbMWjCOFtwCJMG6Zq11Rz3SWw7DHUMLGOT862uP+oeJUviO16hqngQoaiv5f6nP6qBC5Pu73w+xwx6BrMdNIPyb8gc8F1RQvrKtX5ge0G24jc801MXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=dkPNA7ix; arc=none smtp.client-ip=57.103.79.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
+	s=arc-20240116; t=1766470938; c=relaxed/simple;
+	bh=9IpNWk4XZs89WEN3U5XtWoTeUoZhaaQQghmf0KvaYR0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QVl/upNs7FG2QAtJKp81N4jIKWChbUC4McEhbZL3/MBJ17EghQx+4uQkwr43z8lwncfJXnekKraz3j4skY+RzY9V/Pa/kbNJvRrW0oVnUnZTsR08v/UZ0EmQfnHRESMV2g7b1YXhRlYkzTOZKacqSyb5wZZgFXczYWXM0TE60dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WsknRvkQ; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="dkPNA7ix"
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-60-percent-15 (Postfix) with ESMTPS id 7285118000A0;
-	Tue, 23 Dec 2025 06:11:01 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=PgFncF/RAuPmSd/ndbWFGHlEySnfTyAhpN6Jo23lMt0=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=dkPNA7ixGNjp6V5Mf3oPEYh6bIgPuETaNIcRLNKqGPLfXL1/WlYAksqTjp3El6gfil25yHPM+jzlJQJaLs1HYAAAuaHDWuoYm6b5NguMsEsuYuOTEVD7n2vmziM+nzaOJ6IW3pfQIztJLgD3k0lN9RxU9aldHIzi4ZOyUOZP/lEw3q3C/rP83LXI4nX2xcdTKuAjeM5SHpJm0LI1JIpZ+PuIRLbrhVyUVP/fEuYlCIZm1uePevW1oapw3RzeqJzVsLxsf/NZpnse+3NBKd7QGG8DMvWfjkUdDy+NSmA5eO3lmPm99vC8paYX0JJRcOZs+k+KkKucRiojGs+KmEQhjw==
-mail-alias-created-date: 1746336505199
-Received: from fedora (unknown [17.42.251.67])
-	by p00-icloudmta-asmtp-us-east-1a-60-percent-15 (Postfix) with ESMTPSA id 003DE180009F;
-	Tue, 23 Dec 2025 06:10:58 +0000 (UTC)
-Date: Tue, 23 Dec 2025 16:10:55 +1000
-From: Brendan Shephard <bshephar@bne-home.net>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: aliceryhl@google.com, joelagnelf@nvidia.com, airlied@redhat.com,
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
-Subject: Re: [PATCH v4] drm/nova: Align GEM memory allocation to system page
- size
-Message-ID: <aUoyb9BcnYS0xp8f@fedora>
-References: <20251215083416.266469-1-bshephar@bne-home.net>
- <DF1DDD8BUIYQ.1YCAA8T6557NP@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WsknRvkQ"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7baf61be569so5043212b3a.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 22:22:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766470935; x=1767075735; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ovND0kPjb8CwNQINf6h6haDpGM/6RmL30Y0iCssV0xI=;
+        b=WsknRvkQSSIV6OyXtapWZX2CI0UdPmnkyZuSNL6VZ7v7ilahi5KbWMUTqxgMv5FBtR
+         oov+sfgzqbzGXW8zqwSqxfLOctjdjUdWpvOrxaiISfhUU/2ssf0wPRk5MI/nRYDNPLDQ
+         0DQPlSN4jdUfkytv8Ypy2+ZuUor+Wb9wKEmmhZUUEJiCjfHbqYyBbN+nfEngHTBLmPsH
+         vJWuQ1Mzd/KvZCLtjKjFUvd71WnUBcGwWQpkOfp1yJ/Bcq3lJNc/VFdBgYrLjEpgvNQm
+         58TTC77q4VOQYnxQjph/BsGMHbDq7F6+sGSebKFPusmn7Ivh8LqSD8xTHF9MwO5Ua4Iq
+         aMcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766470935; x=1767075735;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ovND0kPjb8CwNQINf6h6haDpGM/6RmL30Y0iCssV0xI=;
+        b=GRdMpviJBmaaMI7S/+Td7dNL6xHtn0Xl4Rpl7k+/+Vxet39b0jzMsy8GtIEEqDQR93
+         IG0viSCL00pv5EehbBJcEBrQC+XmJ9ZR42xyhJxFBDtPBqnUCpW5ix+QFs/APTaRyNBN
+         sh0maF8y1TYBLUZgafyvfNIjNEMtw5yCUgdX4nI+6FEKqvfuadbVnTW8UCjuIWs/zitO
+         wQO2ukEhLjJjY4zoEVATqz5gweKallSIZgLNpezcqt2mXD6Lt8PpqTQ4PiHBWHKHDkW1
+         ChXSgyl7COMMWeScZ7B+LZA6XwVFYwtL1cG6FxsOqKU9pQ0akmUlDzPH+4c6gvfC6TlO
+         ju6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXw9VovBa9fB54p3JX0cPkF9ts3trkh4SPOF29HwY9pKHi7GkVJUJYgQUmrAEOBBWKLMkhxPnIHY14fxhL1lw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsidhuxqJJXAQFljx838NH8B/DYhjHC4eEHGp3NpAznW9GVj/K
+	HznWPBB060OEO+Giemrm0TvstJLPl9A7kszrbgnWOUgc1ioqmzXa8f1z
+X-Gm-Gg: AY/fxX6Gps8hnyXoEdsU/GgjnHkAQPoJlEG1OXhwCTGX23m0MUD80kTB5esf7zC29dI
+	cfrbHJLrEaKZ22eSteNn/KVj9M4i53byWgvx61vq1CX64u7d6mz+5pbRKvZvpHvCDxaXTtleygI
+	gEzQ39IklHSPhvILY8uLQlPuPSvb4sWeHRXRxYkjQsOyCJWC5yzEXK7vchMJLvFbZDSMkhrv5nO
+	sPt9TE1w/fyKRs0+MTz+6ZAEi7WHKqIoDvy7QPd7aBqQvxO8nH2HdhNYGYgVpkLCIsBdw9Esb9X
+	9/SqpHlH2ClXwazfgRLY6IiyAyJNsXpk63kZXN9UAAJwI9ScaKM19UmF5PMe03dTBupxsRyjoco
+	7rTzkQkhLYa6Jv9R1io5wE2qMCUWzt2yDt9pIXjGrpdeBgxz602uoJCQ/DizbWk26kkuprEp3Oj
+	rEwXKg5Gp+KPwG8s/ScnKv0V2YIeiq+eU/4/4PR4Hde/JM7f/B1L/IUKAC0ox5HA==
+X-Google-Smtp-Source: AGHT+IG1KaweWMqCFNI5IyK2Iyck6ddrbW6P6bYU8dxPQsEM6rx7XWMSfbevH/CsT3hoWXQm1yjYUQ==
+X-Received: by 2002:a05:6a00:90a2:b0:7e8:4471:ae5c with SMTP id d2e1a72fcca58-7ff67456c12mr11022198b3a.40.1766470935217;
+        Mon, 22 Dec 2025 22:22:15 -0800 (PST)
+Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7dfab841sm12395362b3a.35.2025.12.22.22.22.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Dec 2025 22:22:14 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com,
+	ojeda@kernel.org
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	tmgross@umich.edu,
+	acourbot@nvidia.com,
+	rust-for-linux@vger.kernel.org,
+	linux-arch@vger.kernel.org
+Subject: [PATCH v2 0/4] rust: Add i8/i16 atomic xchg helpers
+Date: Tue, 23 Dec 2025 15:21:36 +0900
+Message-ID: <20251223062140.938325-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DF1DDD8BUIYQ.1YCAA8T6557NP@nvidia.com>
-X-Proofpoint-GUID: qrFTykA8JDHO5cXb2BsBDRPj8ldWf9Iv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDA1MCBTYWx0ZWRfX9/eoxI1WLkk8
- SRzMXAOA3mK5OdYUW0I5MYgeNffdMLh6X3Uuo6yb94o5hBn9u5wpNaAd1emZDzfpXNERZNu5yTo
- Lvn9OHqh4tZQ0svCJS8N3QalBFj1bZJqISvLjiKdFvt57SjX72v11sVwcvqmmKcmaZ6DoTXfwf4
- l+l6NbJfe1XlCZkbfS/Tvl6nDyWjajMYeVc2X1CEpQ3ahy10FWo/xVzkf/UEBIxTB7FRaBecCOl
- pX/dc0cAkUzc6iBXBCNj5tqFHrWKIXF/QzC117lfQYeUf2JwpgNQrFsrA+N32zKIX/GzZfQGvuT
- DpVFISwDg1LKicXnj4b
-X-Authority-Info: v=2.4 cv=BJG+bVQG c=1 sm=1 tr=0 ts=694a3276 cx=c_apl:c_pps
- a=YrL12D//S6tul8v/L+6tKg==:117 a=YrL12D//S6tul8v/L+6tKg==:17
- a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Tqo27WzTpzf5rUx77aUA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: qrFTykA8JDHO5cXb2BsBDRPj8ldWf9Iv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-23_02,2025-12-22_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxscore=0 clxscore=1030 mlxlogscore=714 suspectscore=0 adultscore=0
- spamscore=0 malwarescore=0 bulkscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512230050
-X-JNJ: AAAAAAABrBUh0yJo2WecKsw9Hv3boXtZQNEIRW4PhSyfeYiRT8qVuab8LUmVdCsRfjA1SWwhz+kAi9d2GfcZy1oQxF0AgF5nLnwwDxGYMj9UJufxAj/2RA6V4zXbfk1yDPZcY2rEudqjhH+btUbf0Nr+d8mFa2mGR/y0NHjB0vJgO9aM8mcoPlj3SvM46gi8Q7gBq33xqQxrD+qspyQW8Na/hHiGcA0h/TCJaHlUBsctrK2TTqIlPNCPAjLuggR87MJU4KDs7dxz8UIK3Rn3BpSB56ggs3ls1CAekOi+3AgjNyl6z6ZzlCxM03UKrsPqSXk4oLYOl3B5zJDJCxMYa9L+WOhX0cvOcaLjCND+3DAOFjvh/3e5mkps6/5cAYtWP9qVsyLRF+bjQqBlqDh+Qoi6SHuLN9VdaJ8nX+1ByKn52KsDNxX907rqgJA2A1vA46LvuAf0zXLCZS4twlebskemMsa/XdcHRPiT2uea1Z4MgSy71Wl4D8/xM2VnlBo++J2kbozqV4x9RvnrS5UVZv80A/AqojIpbRL6jS4Zvjn5jEESbyNJtIAS1B+FXe/pq6Sv5+llzztd8c4bmXtPS3etG1jg+USziuU0FrnLjWXZllYKLojLBva+4naVvQgSWEGSmiSj5L2rgzW8c/SuI66H/WmEQrmo8z01w8bYeSRi
+Content-Transfer-Encoding: 7bit
 
-On Thu, Dec 18, 2025 at 10:16:48PM +0900, Alexandre Courbot wrote:
-> On Mon Dec 15, 2025 at 5:34 PM JST, Brendan Shephard wrote:
-> >  impl NovaObject {
-> >      /// Create a new DRM GEM object.
-> >      pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef<gem::Object<Self>>> {
-> > -        let aligned_size = size.next_multiple_of(1 << 12);
-> > -
-> > -        if size == 0 || size > aligned_size {
-> > +        if size == 0 {
-> >              return Err(EINVAL);
-> >          }
-> > +        let aligned_size = page_align(size).ok_or(EINVAL)?;
-> 
-> nit, but it's a good practice to always leave an empty line before a
-> block of variable declarations.
-> 
-> >  
-> >          gem::Object::new(dev, aligned_size)
-> 
-> ... or if you prefer to avoid the variable altogether:
-> 
->     page_align(size)
->         .ok_or(EINVAL)
->         .and_then(|size| gem::Object::new(dev, size))
-> 
+This adds atomic xchg helpers with full, acquire, release, and relaxed
+orderings in preparation for i8/i16 atomic xchg support.
 
-Sounds good, I'll use `and_then`. I like the idea of not unnecessarily
-assigning variables just to use them once. I'll make that change, re-test
-and send a new revision of this one.
+The architectures supporting Rust, implement atomic xchg families
+using architecture-specific instructions. They work for i8/i16 too so
+the helpers just call them.
 
-Thanks!
+Tested on QEMU (86_64, arm64, riscv, loongarch, and armv7).
+
+Note the architectures that support Rust handle xchg differently:
+
+- arm64 and riscv support xchg with all the orderings.
+
+- x86_64 and loongarch support only full-ordering xchg. They calls the
+  full-ordering xchg for any orderings.
+
+- arm v7 supports only relaxed-odering xchg. It uses __atomic_op_
+ macros to add barriers properly.
+
+v2:
+- Add comment about ARCH_SUPPORTS_ATOMIC_RMW dependency
+- Add Alice's Reviewed-by
+v1: https://lore.kernel.org/rust-for-linux/20251217213742.639812-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (4):
+  rust: helpers: Add i8/i16 atomic xchg helpers
+  rust: helpers: Add i8/i16 atomic xchg_acquire helpers
+  rust: helpers: Add i8/i16 atomic xchg_release helpers
+  rust: helpers: Add i8/i16 atomic xchg_relaxed helpers
+
+ rust/helpers/atomic_ext.c | 48 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+
+
+base-commit: cae418334e4c402e410d3ee234935da33c7f904b
+-- 
+2.43.0
+
