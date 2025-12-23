@@ -1,39 +1,39 @@
-Received: from outbound.ms.icloud.com (p-west3-cluster1-host11-snip4-10.eps.apple.com [57.103.73.241])
+Received: from outbound.st.icloud.com (p-east2-cluster5-host1-snip4-1.eps.apple.com [57.103.79.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633EA2FBDE0
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 06:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.73.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4024E883F
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 06:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.79.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766469829; cv=none; b=hd28/HhxAr1kEyoAoh1u4xdgog1W/rWJoTd7nPK6xTow/ADo8IRWoyhupaDkR02fTyaSux9+GRZUkNBaFPbeA91owvs2gaRpYYTFFtj0nrcm4Uyfi3ysiOu+ndPEy7m/JywO8yBYAVaCUzOUhKfENR5P4iPtCCBNQRsyMXB7ZNk=
+	t=1766470267; cv=none; b=O+R/k+Kj87PwED47L8WCGzRKqFUOwyqV3zgE/BE/hpBvEruq2/EV1Gw86ut9OTYkvfhhHjOkXJbCHM2q7BEkHozjB6xqPYIDv2CGpAi/GZd5uFH8yi55KSkLEj9H9aaMQbJBfD7BBP5BbLLpYPAyJ8zdDs+lQrrrj7wHTh/1wb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766469829; c=relaxed/simple;
-	bh=5N+ppz6xW3EQX4KdAXNoQ/tJIebH+jA4eUMm2GWEMSs=;
+	s=arc-20240116; t=1766470267; c=relaxed/simple;
+	bh=PMn/Xt/uk0Fi88EhUegbm1jhHMbBhLKjEL1P5KoirQw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AU1Z6bcxRpwfw/hwaGncPPXgYwAWLSpIdBnUvRq7mep74yRcGNbkk0+xvT24/0y2z3SFSIBQTzuLN9Ocxf7aR2M/sFTTNNQQcgTK56pGZNsS4XMv19s215/963TtdsvwUUtxyGXaCIB+igYidyGb1yLU5nDgNHx4nTtA/d9hHhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=Ty+j86+R; arc=none smtp.client-ip=57.103.73.241
+	 Content-Type:Content-Disposition:In-Reply-To; b=dUFfKGnFpoVOHL0IkqiHBLMps0R0iQz4KMOCW3reAuGclUdR4yUuw6hjAbMWjCOFtwCJMG6Zq11Rz3SWw7DHUMLGOT862uP+oeJUviO16hqngQoaiv5f6nP6qBC5Pu73w+xwx6BrMdNIPyb8gc8F1RQvrKtX5ge0G24jc801MXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=dkPNA7ix; arc=none smtp.client-ip=57.103.79.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="Ty+j86+R"
-Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-3a-100-percent-10 (Postfix) with ESMTPS id EAB5E18000B2;
-	Tue, 23 Dec 2025 06:03:44 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=ZJ4TYUwyP7txZMYmqY+y1UD83wF4NidfNzPjm+tPklI=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=Ty+j86+RCAtncOePeJkKU9FSMqog8HRZwUimqmJtfukRv9rK552G16uW912E99/SnxKIAWIsFr6zVvQkGogMz+OLDhUBoD5rMHnJCft0t/pTIKc2CATn8ORYQsPx+TDJvxZiLWWQjuEw5WTmyt4mu6S8pNHpHIrBmX/9HV7c3BwunlOl8wnXQ+GkPD5hEIlLPRcIpo/INUu9jtWk9EcufseWdm44bGVSKZZTWh+ylozaXZf6sCkMnsuIIm4HI0dc6ckKU41UOHHpuoqJD57GesCE0qsJn/TStNLlNFdXAke8L8Ctsx6YOUKQyZ26J9oH4SmpPh9n+iA6MC1byfcvSg==
+	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="dkPNA7ix"
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-15 (Postfix) with ESMTPS id 7285118000A0;
+	Tue, 23 Dec 2025 06:11:01 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=PgFncF/RAuPmSd/ndbWFGHlEySnfTyAhpN6Jo23lMt0=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=dkPNA7ixGNjp6V5Mf3oPEYh6bIgPuETaNIcRLNKqGPLfXL1/WlYAksqTjp3El6gfil25yHPM+jzlJQJaLs1HYAAAuaHDWuoYm6b5NguMsEsuYuOTEVD7n2vmziM+nzaOJ6IW3pfQIztJLgD3k0lN9RxU9aldHIzi4ZOyUOZP/lEw3q3C/rP83LXI4nX2xcdTKuAjeM5SHpJm0LI1JIpZ+PuIRLbrhVyUVP/fEuYlCIZm1uePevW1oapw3RzeqJzVsLxsf/NZpnse+3NBKd7QGG8DMvWfjkUdDy+NSmA5eO3lmPm99vC8paYX0JJRcOZs+k+KkKucRiojGs+KmEQhjw==
 mail-alias-created-date: 1746336505199
-Received: from fedora (unknown [17.57.154.37])
-	by p00-icloudmta-asmtp-us-west-3a-100-percent-10 (Postfix) with ESMTPSA id DEA6418000A2;
-	Tue, 23 Dec 2025 06:03:42 +0000 (UTC)
-Date: Tue, 23 Dec 2025 16:03:39 +1000
+Received: from fedora (unknown [17.42.251.67])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-15 (Postfix) with ESMTPSA id 003DE180009F;
+	Tue, 23 Dec 2025 06:10:58 +0000 (UTC)
+Date: Tue, 23 Dec 2025 16:10:55 +1000
 From: Brendan Shephard <bshephar@bne-home.net>
 To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: aliceryhl@google.com, miguel.ojeda.sandonis@gmail.com, dakr@kernel.org,
-	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v7] rust: Return Option from page_align and ensure no
- usize overflow
-Message-ID: <aUowuzq9bTV1nYrn@fedora>
-References: <20251204224006.353646-2-bshephar@bne-home.net>
- <DF1DAR4ZZ9KG.3UE6JTJOOMULO@nvidia.com>
+Cc: aliceryhl@google.com, joelagnelf@nvidia.com, airlied@redhat.com,
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
+Subject: Re: [PATCH v4] drm/nova: Align GEM memory allocation to system page
+ size
+Message-ID: <aUoyb9BcnYS0xp8f@fedora>
+References: <20251215083416.266469-1-bshephar@bne-home.net>
+ <DF1DDD8BUIYQ.1YCAA8T6557NP@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,73 +42,56 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DF1DAR4ZZ9KG.3UE6JTJOOMULO@nvidia.com>
-X-Authority-Info: v=2.4 cv=TLJIilla c=1 sm=1 tr=0 ts=694a30c1 cx=c_apl:c_pps
- a=qkKslKyYc0ctBTeLUVfTFg==:117 a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=JppZAXPjAAAA:8
- a=paxOtANTK2pwymM8rTEA:9 a=CjuIK1q_8ugA:10 a=mTXuAFqUwmiQvsSFmwXH:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDA0NyBTYWx0ZWRfX0KArKWp+u5/Y
- Bo4uzVaV2BjQsSG6rQrcOGtsvXTqH8n6JKJ6djmahRauA7TNQH/RCyNh77UehiYVOrN0bIHBWdo
- O2mGCj7R4z1EkJXfD18mCW2YdcQS9sbzemBR/vn72Xjj3Ihv7MThVvpQDEV7zaubZN/1ZJHKMfa
- 6tS58tyySbgPSO9IErqpPhwmJtN8RNe+oWxy6O4k58erSgW08DJQNTPqjQjVkcJDwdifLCjpSQ5
- B9MHaf4mCkugGQukZKApB4tQ3XYNMRMbS/ItpdHc9sI/6TyoPjSJvlFzsykGq/cf3adRTG8BjLI
- iwPpU9k2olAmxxy3bDk
-X-Proofpoint-ORIG-GUID: 9Ef-GBNQp7B0mMQ3HiiEoJZ6gCiZSVUx
-X-Proofpoint-GUID: 9Ef-GBNQp7B0mMQ3HiiEoJZ6gCiZSVUx
+In-Reply-To: <DF1DDD8BUIYQ.1YCAA8T6557NP@nvidia.com>
+X-Proofpoint-GUID: qrFTykA8JDHO5cXb2BsBDRPj8ldWf9Iv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjIzMDA1MCBTYWx0ZWRfX9/eoxI1WLkk8
+ SRzMXAOA3mK5OdYUW0I5MYgeNffdMLh6X3Uuo6yb94o5hBn9u5wpNaAd1emZDzfpXNERZNu5yTo
+ Lvn9OHqh4tZQ0svCJS8N3QalBFj1bZJqISvLjiKdFvt57SjX72v11sVwcvqmmKcmaZ6DoTXfwf4
+ l+l6NbJfe1XlCZkbfS/Tvl6nDyWjajMYeVc2X1CEpQ3ahy10FWo/xVzkf/UEBIxTB7FRaBecCOl
+ pX/dc0cAkUzc6iBXBCNj5tqFHrWKIXF/QzC117lfQYeUf2JwpgNQrFsrA+N32zKIX/GzZfQGvuT
+ DpVFISwDg1LKicXnj4b
+X-Authority-Info: v=2.4 cv=BJG+bVQG c=1 sm=1 tr=0 ts=694a3276 cx=c_apl:c_pps
+ a=YrL12D//S6tul8v/L+6tKg==:117 a=YrL12D//S6tul8v/L+6tKg==:17
+ a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Tqo27WzTpzf5rUx77aUA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: qrFTykA8JDHO5cXb2BsBDRPj8ldWf9Iv
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
  definitions=2025-12-23_02,2025-12-22_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- spamscore=0 mlxscore=0 bulkscore=0 suspectscore=0 clxscore=1030
- malwarescore=0 phishscore=0 mlxlogscore=829 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2512230047
-X-JNJ: AAAAAAABsmnGgScSGTRM46JbA0sRGFPcP1uvdwCiHf89DkWcLbJq2YqwvSOLrMzaK5zP4WEZr+xepdRkjcMPcIh10+8Wuk0wrKIpaAIDr5YD6+GdPsnK7AXvPgUZZUwugvvC8bFHEh5mqMwscjXqcHWDKu/gOhq9+twuNb3rpThRto02skgQ9nbZiBskHMgEbvUWkFuJyZ0pkHM/44hho8zRMITXr9p+UoXgyuOEh8TXMFtOSuRZbb2bEHK32KsJxBCeG24PDtxx7RA7FDNcPHt2fITpGORrbUavbFxLCo6pypF36P65okr1R70WuZ2YJdchB8w2K5TzcinYlfDfLTk9iAsYEic7G7bf4U4uUz5g8Q6CKjdNAWuh0e8LChW0n7H/+BT/XH5AWGBUr4vsCTWiOXPOz0tN47dKiy/OMiumQdKsJHmn59T3HOadFpbO1ma11v/BYHLf9ra6/btKQcEKmces8ExLLMCgvskG43LXYT8RGO5aT+gESyVN0soWWuz3AF0FNbmYWsWWKkR6yryzCkP7rbvrtiCadE8dcxkMWyDo6mw195DlszGYp/GMvXU7LE9nnf0DmUOF4587oGG8ESuJ4AsPksXAJ5yaL66Osyvhy/OAmAG2hq+7vIvNOdC8SX7nVLdi+NIhyq1eUQLiqT/2/cAYy7wmVex4iOkT/uACLssz+kHKknY=
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ mlxscore=0 clxscore=1030 mlxlogscore=714 suspectscore=0 adultscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512230050
+X-JNJ: AAAAAAABrBUh0yJo2WecKsw9Hv3boXtZQNEIRW4PhSyfeYiRT8qVuab8LUmVdCsRfjA1SWwhz+kAi9d2GfcZy1oQxF0AgF5nLnwwDxGYMj9UJufxAj/2RA6V4zXbfk1yDPZcY2rEudqjhH+btUbf0Nr+d8mFa2mGR/y0NHjB0vJgO9aM8mcoPlj3SvM46gi8Q7gBq33xqQxrD+qspyQW8Na/hHiGcA0h/TCJaHlUBsctrK2TTqIlPNCPAjLuggR87MJU4KDs7dxz8UIK3Rn3BpSB56ggs3ls1CAekOi+3AgjNyl6z6ZzlCxM03UKrsPqSXk4oLYOl3B5zJDJCxMYa9L+WOhX0cvOcaLjCND+3DAOFjvh/3e5mkps6/5cAYtWP9qVsyLRF+bjQqBlqDh+Qoi6SHuLN9VdaJ8nX+1ByKn52KsDNxX907rqgJA2A1vA46LvuAf0zXLCZS4twlebskemMsa/XdcHRPiT2uea1Z4MgSy71Wl4D8/xM2VnlBo++J2kbozqV4x9RvnrS5UVZv80A/AqojIpbRL6jS4Zvjn5jEESbyNJtIAS1B+FXe/pq6Sv5+llzztd8c4bmXtPS3etG1jg+USziuU0FrnLjWXZllYKLojLBva+4naVvQgSWEGSmiSj5L2rgzW8c/SuI66H/WmEQrmo8z01w8bYeSRi
 
-On Thu, Dec 18, 2025 at 10:13:23PM +0900, Alexandre Courbot wrote:
-> On Fri Dec 5, 2025 at 7:40 AM JST, Brendan Shephard wrote:
-> > +/// Returns [`None`] on integer overflow.
-> > +///
-> > +/// # Examples
-> > +///
-> > +/// ```
-> > +/// use kernel::page::{page_align, PAGE_SIZE};
+On Thu, Dec 18, 2025 at 10:16:48PM +0900, Alexandre Courbot wrote:
+> On Mon Dec 15, 2025 at 5:34 PM JST, Brendan Shephard wrote:
+> >  impl NovaObject {
+> >      /// Create a new DRM GEM object.
+> >      pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef<gem::Object<Self>>> {
+> > -        let aligned_size = size.next_multiple_of(1 << 12);
+> > -
+> > -        if size == 0 || size > aligned_size {
+> > +        if size == 0 {
+> >              return Err(EINVAL);
+> >          }
+> > +        let aligned_size = page_align(size).ok_or(EINVAL)?;
 > 
-> Add an extra line to separate the imports from the code.
+> nit, but it's a good practice to always leave an empty line before a
+> block of variable declarations.
 > 
-> > +/// // Requested address is already aligned
+> >  
+> >          gem::Object::new(dev, aligned_size)
 > 
-> Please consistently finish sentences with a `.`.
+> ... or if you prefer to avoid the variable altogether:
 > 
-> > +/// assert_eq!(page_align(0x0), Some(0x0));
-> > +/// assert_eq!(page_align(PAGE_SIZE), Some(PAGE_SIZE));
-> > +///
-> > +/// // Requested address needs alignment up
-> > +/// assert_eq!(page_align(0x1), Some(PAGE_SIZE));
-> > +/// assert_eq!(page_align(PAGE_SIZE + 1), Some(2 * PAGE_SIZE));
-> > +///
-> > +/// // Requested address causes overflow (returns None)
-> > +/// // The check asserts that `None` is returned when a value is requested within one `PAGE_SIZE` of
-> > +/// // `usize::MAX`.
-> 
-> We can see what the check does by looking at it, so this last sentence
-> feels heavy and unnecessary.
-> 
-> > +/// let overflow_addr = usize::MAX - (PAGE_SIZE / 2);
-> > +/// assert_eq!(page_align(overflow_addr), None);
-> > +///
-> > +/// // Requested address of `usize::MAX` would overflow, and subsequently returns `None`.
-> > +/// assert_eq!(page_align(usize::MAX), None);
-> 
-> This test is basically equivalent to the previous one and can be
-> discarded imho.
-> 
-> I have checked the tests and rustdoc fwiw, and saw no issue, so this
-> looks good to go after these last details are fixed.
-> 
+>     page_align(size)
+>         .ok_or(EINVAL)
+>         .and_then(|size| gem::Object::new(dev, size))
 > 
 
-Yeah, sounds good. I fixed up those and sent a new revision:
-https://lore.kernel.org/rust-for-linux/20251223055647.9761-1-bshephar@bne-home.net/T/#u
+Sounds good, I'll use `and_then`. I like the idea of not unnecessarily
+assigning variables just to use them once. I'll make that change, re-test
+and send a new revision of this one.
 
-Thanks again! Hope you enjoy your holidays.
+Thanks!
