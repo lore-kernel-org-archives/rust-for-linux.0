@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A21033E36B;
-	Mon, 22 Dec 2025 22:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D648120E005;
+	Tue, 23 Dec 2025 01:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766443491; cv=none; b=H7wbJTLeSLM8w9X4wWtbbvUrCVWQviqJLNC99RcEm8PFKMQ3g7W4insozvZ1v88ytltn4F9gIl0Lx0y5+e4BETZNAM1MNCGA18pGtQtKguIayK+oZ57TecRce8aFI25bUlaJakgRYd+XQ5DOleAqPYqb5fXsdQ5Yb+/0BcEBeuQ=
+	t=1766453560; cv=none; b=fLTem0xchs0e8x7oiTJizd4rXFI7b+2v6t9aE9x7XQkfR4cwdUirqtLF48OAUc1tw0CREXUqW6GZmIgT3CmTdsaclMNmhut7zdKi9dcpP75S+WMVLjXM6EgyeAKBzcCvlsHhBbqDZoNSJs/+D1AjFFEDnhtXymbv1CdRsCGJHWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766443491; c=relaxed/simple;
-	bh=TUCyA3EC02TvaUugoS44x2r6rqCoKDDtUUFU7OnlwOM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=eZwMfUpo2rIzjkSofPQL6dUyUXD2ggzIWMHQ7Zvltilxt2LMpmTeLTCLxV9AkqNx3C5pyN1A7FJVUbjLjWTR5gFbT+wWj69CFTJHyjVKhbdvPlhljBBaxVOyZxtQd6q3t7AF2DSWCnKQhsch+h/MFY+IlJUSqCylhGO0GEEr6Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hDTuYVCt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766453560; c=relaxed/simple;
+	bh=MVPgh7F4FJ7HWk7lVpx777u+NAWCHDQnuFOCWHhMk+A=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=EPBuTcZDX6xUGWb6c8K0ooikCuSyMc5Fi28UNb3lKIfHqcQ+/0E5o9XmTgg2aCIjTapyXrA+s+kPtMUnGpslx4nqiH2vCooIfWeivsvmEusp0DGKpw/kzKNgQGVdrfYuIQJC7yKFNEfmU2T4Sy9ekC5EYIhRt+XCyPNBWFItGtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XO4iJi4I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hDTuYVCt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDBDC4CEF1;
-	Mon, 22 Dec 2025 22:44:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XO4iJi4I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB69C4CEF1;
+	Tue, 23 Dec 2025 01:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766443490;
-	bh=TUCyA3EC02TvaUugoS44x2r6rqCoKDDtUUFU7OnlwOM=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=hDTuYVCtrNn7IhuTo6qJfP140jkidhiadq+kg2N/tHHohTamuY6TMmQ8q4yKkj0pB
-	 fhjiNvSYvrIYQRaWR2pSIRSRMBM3eTw6PihsCkjyC42eoVaCKIQIhwLu4jMhIvOQq8
-	 BmKFFmmtCYdqNuyU/TDu7JyCPXkj0zOz/L5QXcZ/TsbTtBxafqcmWpQQALxvqZovMH
-	 Lt7BYhxOgT5dQem1R7WBfDBrskSlEbe5vKx6PXawiyNsHSDSgsfqrtHBJBLxtO/2H9
-	 McKH1/2/Bo6YycGKdngW5wI1TAOzeYISVopHXI2wzYWSSU7gXzcQQFtmRDOjyOeJqd
-	 fQHwt4joAN6BA==
+	s=k20201202; t=1766453560;
+	bh=MVPgh7F4FJ7HWk7lVpx777u+NAWCHDQnuFOCWHhMk+A=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=XO4iJi4Ie9kt0KM3Cu8iaIp/lyef+HieQv8yzMnuec/QeKskjGjMvtsFwLYvw36Hi
+	 rnaqm8LVZzv5qtFTDpZd03DcoRXt9uZv5dQJTSJjSMmX0sU/TMO0OVWc+/OY/wAEYv
+	 uN9BgT04/IuJzSYeeSf/Xgi1+V6lgfEzlkoU/lMeKn1doNpmnoSII+jmHbPyamDOVs
+	 0bgMIVTI+JfHc9NVvmRZgcr3y9ycIEcu2VhjfjXNHD790PF3T9HWl90oJmgI4JkTKf
+	 7Lam2Tv1eoxDfPgSiSLG9FCW610swBnCz/oejKGwrJ45QYA+mplC6MyGRz7zb1I39+
+	 wmBUQ4TJ4+ekQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,58 +34,60 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 22 Dec 2025 23:44:45 +0100
-Message-Id: <DF53YEJYNNBD.1W5RQEVY41RLP@kernel.org>
-Subject: Re: [RFC PATCH 1/3] rust: implement wrapper for acpi_object
-Cc: "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>, "Len
- Brown" <lenb@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Tamir
- Duberstein" <tamird@gmail.com>, "Armin Wolf" <W_Armin@gmx.de>,
- <platform-driver-x86@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-To: "Gladyshev Ilya" <foxido@foxido.dev>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <cover.1766331321.git.foxido@foxido.dev>
- <a28e83201e1413091333509628274807e50ec170.1766331321.git.foxido@foxido.dev>
- <DF4PPPGQBPNA.13TJNSRSRUW0A@kernel.org>
- <4266e3d2-141e-44bd-a4c1-b140674542e3@foxido.dev>
-In-Reply-To: <4266e3d2-141e-44bd-a4c1-b140674542e3@foxido.dev>
+Date: Tue, 23 Dec 2025 02:32:36 +0100
+Message-Id: <DF57IWUPXAHM.27OHGD93IW5W@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] rust: pin_init_internal: fix rust-analyzer `mod quote`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>
+X-Mailer: aerc 0.21.0
+References: <20250319-pin-init-internal-quote-v1-1-19de6a33a257@gmail.com>
+ <D8L34IUZGXWX.D2LSS2S2NAN7@proton.me>
+ <CAJ-ks9nTmno12ZC4DnLxV_b0NLUK5Kn5K+cRi4BEvKtveQzJjg@mail.gmail.com>
+ <D8L5JXRXHX0N.UIFZ5M15FB3S@proton.me>
+ <CAJ-ks9mwNiJbr4MN5jfr7KCJc8j=B5=MUfX9XfhPg6yeRiFK=g@mail.gmail.com>
+ <CAJ-ks9n6wtA45+sJ2ZiL4KJ4MK0eaWomoDTN6d04oseJ-gmavw@mail.gmail.com>
+In-Reply-To: <CAJ-ks9n6wtA45+sJ2ZiL4KJ4MK0eaWomoDTN6d04oseJ-gmavw@mail.gmail.com>
 
-On Mon Dec 22, 2025 at 10:47 PM CET, Gladyshev Ilya wrote:
-> I couldn't really decide between implementing all types or only the one=
-=20
-> needed... Probably, I should provide simple implementations for all the=
-=20
-> others, I will fix that.
+On Mon Dec 22, 2025 at 1:43 PM CET, Tamir Duberstein wrote:
+> On Thu, Mar 20, 2025 at 3:15=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
+m> wrote:
+>>
+>> On Thu, Mar 20, 2025 at 10:10=E2=80=AFAM Benno Lossin <benno.lossin@prot=
+on.me> wrote:
+>> >
+>> > On Thu Mar 20, 2025 at 2:31 PM CET, Tamir Duberstein wrote:
+>> > > On Thu, Mar 20, 2025 at 8:16=E2=80=AFAM Benno Lossin <benno.lossin@p=
+roton.me> wrote:
+>> > >> I'd rather not have this change, since this will introduce a dangli=
+ng
+>> > >> symlink upstream [1].
+>> > >>
+>> > >> [1]: https://github.com/rust-for-Linux/pin-init
+>> > >
+>> > > I agree it's aesthetically displeasing. I'm not aware of any
+>> > > alternative that fixes the development workflow of this crate in the
+>> > > kernel.
+>> >
+>> > I don't think it's too bad, and this code is going away soon-ish
+>> > anyways.
+>>
+>> What would Andreas say? :)
+>>
+>> I don't think the going away soon argument is relevant in this case -
+>> the same applies to the dangling symlink.
+>
+> 9 months later, this code is still here. What would make it go away?
 
-If they are not needed by any of the drivers you're aiming at, you should
-probably just drop them.
+The pin-init `syn` changes will land this cycle, which removes this
+code.
 
-> Wouldn't it be confusing to overload Deref on a non "pointer-like" type=
-=20
-> just for an implicit cast?
-
-What do you mean with overload Deref? What I mean is
-
-	impl Deref for AcpiBuffer {
-		type Target =3D [u8];
-
-		[...]
-	}
-
-	impl Deref for AcpiInteger {
-		type Target =3D u64;
-
-		[...]
-	}
-
-	impl Deref for AcpiString {
-		type Target =3D CStr;
-
-		[...]
-	}
-
-etc.
+Cheers,
+Benno
