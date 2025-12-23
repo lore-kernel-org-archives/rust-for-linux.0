@@ -1,115 +1,107 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8138628DC4
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 03:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E64022D4E9
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 04:54:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766460633; cv=none; b=HuHATkThTJl9Rh2iZAtdJuHYl4oFIdnVyNEPZrGrQpPEV2DYCDD9v52sL7OcZWiC0IaP9VAME2plsMQypg0NEjOVowbufSoIdsfRjcQer2RDJ82j/xJWlYyDEjf4S4uC7F+23nMHK24ifmszt7mAsNObJV11EecD1ZGbcknrNbE=
+	t=1766465643; cv=none; b=Tct9nY5ZiysdRE42zv/DaYN+xjn+IR50Zf4Pmxa5ut04a0ylCZzD7qGIHlWRABfQvoUMyX16Y9tlbi/DbV85COaJBYpEhrSGxdqy6fAOPvE9OJHnIEBCtlZDlQBg+W+yzIU9+nFMm+Wy57KWhN/1hQ6w+5oJjPUcrjXWIs04S8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766460633; c=relaxed/simple;
-	bh=3gZYqrHL5SxR293L17TalMGNv6j/hvYSH9//RwE7nSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ngiLF8X8E3KkR+2tN6PmknOfaRIiHOyQWfYjceR1YLBdCb1EwTxIeFfvOQKfxsnX4vKXpwAm3Xicl6UrtQbLnf1/xHuOTVMl/wsDsZhXnCU0TIcN+s9g2o68BZtTYzZ8lBlsqYYDIiD0VNoYej2AegILH7raGRV2T5m49QdjMRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+	s=arc-20240116; t=1766465643; c=relaxed/simple;
+	bh=qLpP523aAmyAJ41p9m75RrcgnIuRG0JYZTi48i2BLGk=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=PmAhps1Q/+RK1r77Ebvz19Kq7884U+UpNZ8xaeOXZ1vv7rAWM9xB4h1/l9R3KMsN1e7OX4HT6JJ1jAZRxl9Zo39vTOq8ZGxigG2tdEjE8RR81IANowNVukDBY45zDmKyeFDgGzLrd4oThMVPCsMwDIKmKSCtyqiWk2qrLdJQhSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aARXnC5R; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7f0db5700b2so4136069b3a.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 19:30:31 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aARXnC5R"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a09d981507so33334305ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 20:54:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766465641; x=1767070441; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Wq+2iFrosRcl8h/Pjv1SkVbM8N3eRAOAbbgT8dXVoCY=;
+        b=aARXnC5Rwnu5Kjw4wc3Ekhvh3Ucg1gqNy2/Ev1yJ4pQqhT0lfpposnvYeqy1dWLM6U
+         Hj5znCCekstPeX3iOIcaU7iJu/e9QOofkhRA5HQog9Ulzp/cyTj2IXRBlf5UX5L+ubHx
+         JiFGtZ7Z0Yc1Ei04cY9mbZo6p6QxtNQPIHBhykbBhOY3qj8/EohEKHsJ0pQMzRItbo0x
+         P3574ZepERegH/XxPkj87kDi7P5LzJ4JRlmXuSi7fUCdOzgP2wspDHMLhkyB8WmWTGum
+         jYKQbdTodRGflVGE+0Wnnw/MbYW+gE9ypGIKkCaVnBVRwbY7lBb0A4QG1mtJN/95caOj
+         iTAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766460631; x=1767065431;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lpHVnBTxKp2cnNqszSmakIYlUkXE2Lvx62BhaCZJjCg=;
-        b=Zij2s6NVjbVGwi2dHwHL7Xg97bhU9ugXvJg9camwCnesgJcqOmH2irWSj2ldUJswN+
-         S+UO8yo8/MDEs/0gQu+YlELrdGYb4NHKFzWLGTwd5cZ8jd0XpY9VHy7UWH0JDY1EAacE
-         JgUxTJDSx8ax+AIoi3HcJsogdQOQTyRywO4MRDC0V0gf4EQ2g03hP6Hwdl3F73cgqUHw
-         Rhn2rKTCtlOv3CcwFGmog2HxQre3bsZ02B+cjsAti5HLzw+q1kCJzVONLaFVt2F7f4xn
-         AYqTIeBpGUWK+E6fbJ5I4mLePBz35T3MDDxpDurxPotCpkVnZqTKXnLCXC+hMryf9dM+
-         0T+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVCV8cg77rXPo6QME4yrvbOwckj/U7woliaMZxgcu9zltMVQgivL2N8O3//jQFCs6ZZCxdakvsPmbEJw3EYFg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPuGR9+HFC2RcwltF8+pILV+n6jQACr5UEz316KKsPRQEaGgdv
-	rA2V/EHZPDodrt6Ai/nwT6iXUdH/7rADXF/hlVi7OqMyECu8AbQ5/C2L
-X-Gm-Gg: AY/fxX45ZhdLX3wWDXdkovPz2Zjc/iz0ospwkcbjNFJ2CIsk4xrouLO5BRt5CuUhTm0
-	ayCSMr/OVBVd/Dj0VJf/1ZLBH6PLYK6XeQ8rTzAOzghYtsai3HtgSSemn3GGGSl1d1PjAWV8Zee
-	Q0hVvQeOEaMTiYfHwFxAsUtmTKDpRYSY+1b0N3eCl27mBM4uMfkKs02pfyL8Oq4/V1g8Qv197ox
-	5H4V0Uuagv0k+AUCyYYi9pxm7mLRwFYn/yYv/A6Bu/BzvUdXmxgp+wfM/c4y893KuYwAWDaRpTy
-	5zh7l44IpRsrlbLlVL6GAQh2PnqOh7SpZa3b4t4BL0iY7VG7RzdjLBKOc8WLi62uBFI78LQKCFh
-	zTHeMsugNDmmw30xEZacfGUO0QN+Cd01t4HYkmrZvGxh/NK93PYCMWabYXf+bYl55Up1t2/B5Gj
-	XfPWyYuFV/1AunDxvq1POy
-X-Google-Smtp-Source: AGHT+IENj6POVkDt2KOP+1WC7q1bqWisyrDVGLOwRIn//+ZyDmKWsUb6V5JhODv0Bks3fo68SgtG9g==
-X-Received: by 2002:a05:6a00:400d:b0:7b2:2d85:ae53 with SMTP id d2e1a72fcca58-7ff64215d9dmr11630779b3a.8.1766460630621;
-        Mon, 22 Dec 2025 19:30:30 -0800 (PST)
-Received: from localhost.localdomain ([195.245.219.240])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7b22536esm11807869b3a.23.2025.12.22.19.30.26
+        d=1e100.net; s=20230601; t=1766465641; x=1767070441;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wq+2iFrosRcl8h/Pjv1SkVbM8N3eRAOAbbgT8dXVoCY=;
+        b=TSGV98t38fCIlCOpo8Z4K5joBTPTyKK6B6gOjV7oms8G+TT9jy2/8U+hwQdjoDXg9I
+         lTBkL/Zqvz0lrKOgtMaTMOfHKbFI2c5upZQGjP5XVb520MBuNblJg5eEWxDdVyMfhNow
+         4zosS2McQq3qNLSLF9JGse8n9rO6IWZfVLWSaktodsv4FMf1tPVhR6gqP0cf3Ws+XdSZ
+         guKVJZ7zuWS+rcbEixTvlTvk44kpOSAkXUY9OkqJgZop6ehozucoPAOV8TRuXZONzwXn
+         2esFCP7bUk0JSr3i05yyGqZlI/8AbeKfmew8R5pFIGIDUGiVrqY6j3aI16Ynv+VlkH2S
+         ylcg==
+X-Forwarded-Encrypted: i=1; AJvYcCUcFG6Li9vH2wtpvegRPthmbxQhSlEO+35zdmgvJw2U8XAdhtpJvD8AWH1EriN97LP/l3lwgZzhEDEswc+Kxg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0HvwiUIJd1WfV5HkJbQUx7fybbHJ/lNlDIq9J7wbgGM50wAMg
+	XbxgcMqSq5ckE0NymVXNKTTwuJnzPZuKwPdckQDy/0a10v8WTWo3iGqv
+X-Gm-Gg: AY/fxX4DCzZBueLy6MKCKg5TxZG4kL9d8w8olpqbo5BFhN0FUn29gsr2F9ckKYIawMt
+	uJQMH5OtHr4tOIOVSc8CZonlCZviGwJaEpXBk6Y9GnIceR0pQFVtb4hvnCy8zensV/DvgbJ63CG
+	nEH44RGqT3uxQQwekr0xFfwropPOwIzst+z2tArrgX1K5Nfi+TeNzSvyNQdXh7hsad7eucNbtlU
+	RdUhZuGTLo0trCAkcZ6cecgLCy7Y3AwnfFGO8bw/GsaB55RgvweI9Nx3znpv+oTxDQLl785m96K
+	+q7VGNAGbuw7bknOUeOfYhilY1cAzUQB3ZXfGGG3lQVVRxb1Q5NPaM1vUxWiRRL9QN3k44kSnmP
+	ZYRHf4vjHApVsOodjOEL+ZBvMgihAbv0dAobX2AB1Pi3hMWotd1bL5TwM96DOIxIo64fABvJy5O
+	EDNGGKNclyd6MYuRssMtO+xrHkiJSQjfkV9vqaua7X2C9HE0hgYyuF31jjY5BtgeDrWx4=
+X-Google-Smtp-Source: AGHT+IEnueW9XJWReJEoENzLygv/WqzFObA6mLnZX3ys+kdkGpI1RYUpgPanB28I1VK0QGm/vDzE+A==
+X-Received: by 2002:a17:902:ebc1:b0:2a0:a33d:1385 with SMTP id d9443c01a7336-2a2cab16191mr172702915ad.17.1766465641326;
+        Mon, 22 Dec 2025 20:54:01 -0800 (PST)
+Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d776b2sm113451265ad.98.2025.12.22.20.53.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Dec 2025 19:30:30 -0800 (PST)
-From: Ke Sun <sunke@kylinos.cn>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH] rust: fmt: reject {:p} format specifier for raw pointers
-Date: Tue, 23 Dec 2025 11:30:18 +0800
-Message-ID: <20251223033018.2814732-1-sunke@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
+        Mon, 22 Dec 2025 20:54:00 -0800 (PST)
+Date: Tue, 23 Dec 2025 13:53:39 +0900 (JST)
+Message-Id: <20251223.135339.1140460779640053821.fujita.tomonori@gmail.com>
+To: tamird@kernel.org
+Cc: fujita.tomonori@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ dakr@kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ tamird@gmail.com, gregkh@linuxfoundation.org
+Subject: Re: [PATCH 0/2] rust: net: replace `kernel::c_str!` with C-Strings
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20251222-cstr-net-v1-0-cd9e30a5467e@gmail.com>
+References: <20251222-cstr-net-v1-0-cd9e30a5467e@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Add compile-time check in fmt! macro to detect {:p} format specifier
-and emit a compile error when it's used.
+On Mon, 22 Dec 2025 13:32:26 +0100
+Tamir Duberstein <tamird@kernel.org> wrote:
 
-Signed-off-by: Ke Sun <sunke@kylinos.cn>
----
-Changes: 
-- According to Alice's suggestion, attempting to print raw pointers with
-  {:p} format specifier should not compile at all.
-- Link: https://lore.kernel.org/all/aUO1nRdaAISMjMTG@google.com/
----
- rust/macros/fmt.rs | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+> C-String literals were added in Rust 1.77. Replace instances of
+> `kernel::c_str!` with C-String literals where possible.
+> 
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+> Tamir Duberstein (2):
+>       rust: net: replace `kernel::c_str!` with C-Strings
+>       drivers: net: replace `kernel::c_str!` with C-Strings
+> 
+>  drivers/net/phy/ax88796b_rust.rs | 7 +++----
+>  drivers/net/phy/qt2025.rs        | 5 ++---
+>  rust/kernel/net/phy.rs           | 6 ++----
+>  3 files changed, 7 insertions(+), 11 deletions(-)
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20251222-cstr-net-3bfd7b35acc1
 
-diff --git a/rust/macros/fmt.rs b/rust/macros/fmt.rs
-index 2f4b9f6e22110..76dd3d1ee56ad 100644
---- a/rust/macros/fmt.rs
-+++ b/rust/macros/fmt.rs
-@@ -36,6 +36,23 @@ pub(crate) fn fmt(input: TokenStream) -> TokenStream {
-             }
-             if let Some((name, rest)) = first_str.split_once('}') {
-                 first_str = rest;
-+                // Check for {:p} format specifier and emit compile error
-+                if name.contains(':') {
-+                    let (_, format_spec) = name.split_once(':').unwrap_or(("", name));
-+                    if format_spec.trim() == "p" {
-+                        let error_msg = "{:p} formatting for raw pointers is not supported!";
-+                        // Generate compile_error! that returns a format_args! placeholder
-+                        // This ensures the macro expansion produces a valid expression
-+                        // Use raw string literal for format! to avoid manual escaping
-+                        // error_msg already contains escaped quotes, so regular string literal is sufficient
-+                        return format!(
-+                            r##"{{ ::core::compile_error!("{}"); ::core::format_args!("") }}"##,
-+                            error_msg
-+                        )
-+                        .parse::<TokenStream>()
-+                        .unwrap();
-+                    }
-+                }
-                 let name = name.split_once(':').map_or(name, |(name, _)| name);
-                 if !name.is_empty() && !name.chars().all(|c| c.is_ascii_digit()) {
-                     names.insert(name);
--- 
-2.43.0
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
