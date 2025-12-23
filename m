@@ -1,62 +1,64 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F132FFFBE
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 06:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E016B2FFDEE
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 06:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766470938; cv=none; b=N1DvBVQ1QzbnAgm4XuPEjkCLHX0doyp5FfXmy3qgifiNx183gjqsBQa1XTPkmDS2Ae63fDWFIuWq0Y5aZD+VCiI5vamt+an5YXLrYVcwwByVoP1X7IS99hqlMLgSnXlYC9QHaZiiwSu9qZ30g5ogq0xqBFpw8QzTBFhLYUW7g2I=
+	t=1766470940; cv=none; b=i1sbJoq7CjGVWYwv1LRscCd5sjpeam6E9Ol3bGSRLUIsNDkEWWnTFIFfIzY6F70rZLMcGGMc1m8LS96aei1oPNpA1UQO+5yFa3xR5WRx4ZJ0NztaPD2hs0wGITxfnJk/3BdEW+jZKZ5fOeKOOGSYINOnWneBeZBmuM3pLeoCxVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766470938; c=relaxed/simple;
-	bh=9IpNWk4XZs89WEN3U5XtWoTeUoZhaaQQghmf0KvaYR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QVl/upNs7FG2QAtJKp81N4jIKWChbUC4McEhbZL3/MBJ17EghQx+4uQkwr43z8lwncfJXnekKraz3j4skY+RzY9V/Pa/kbNJvRrW0oVnUnZTsR08v/UZ0EmQfnHRESMV2g7b1YXhRlYkzTOZKacqSyb5wZZgFXczYWXM0TE60dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WsknRvkQ; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1766470940; c=relaxed/simple;
+	bh=OvsQthW770yxENUXStYMksug7LfpS2AgweNaEp49SqM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sdyIw4gLion/eSESYp5STk2pvlUGtSPc4IRk3p7BV/cvRdnk+Pz/xZkOSKCUOU+3ejt0xFrrCLqBEE6kwTIA/RtURwiPg1ps/VqCN7dJHcT/vIk62uW7BgjsPKm2+MTKwdTyUnkIaXMZZDvQlWzixHjWsiD+iybeq4DYMY0h2q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=asXweOHP; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WsknRvkQ"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7baf61be569so5043212b3a.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 22:22:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="asXweOHP"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7f0da2dfeaeso4827865b3a.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 22:22:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766470935; x=1767075735; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ovND0kPjb8CwNQINf6h6haDpGM/6RmL30Y0iCssV0xI=;
-        b=WsknRvkQSSIV6OyXtapWZX2CI0UdPmnkyZuSNL6VZ7v7ilahi5KbWMUTqxgMv5FBtR
-         oov+sfgzqbzGXW8zqwSqxfLOctjdjUdWpvOrxaiISfhUU/2ssf0wPRk5MI/nRYDNPLDQ
-         0DQPlSN4jdUfkytv8Ypy2+ZuUor+Wb9wKEmmhZUUEJiCjfHbqYyBbN+nfEngHTBLmPsH
-         vJWuQ1Mzd/KvZCLtjKjFUvd71WnUBcGwWQpkOfp1yJ/Bcq3lJNc/VFdBgYrLjEpgvNQm
-         58TTC77q4VOQYnxQjph/BsGMHbDq7F6+sGSebKFPusmn7Ivh8LqSD8xTHF9MwO5Ua4Iq
-         aMcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766470935; x=1767075735;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1766470938; x=1767075738; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ovND0kPjb8CwNQINf6h6haDpGM/6RmL30Y0iCssV0xI=;
-        b=GRdMpviJBmaaMI7S/+Td7dNL6xHtn0Xl4Rpl7k+/+Vxet39b0jzMsy8GtIEEqDQR93
-         IG0viSCL00pv5EehbBJcEBrQC+XmJ9ZR42xyhJxFBDtPBqnUCpW5ix+QFs/APTaRyNBN
-         sh0maF8y1TYBLUZgafyvfNIjNEMtw5yCUgdX4nI+6FEKqvfuadbVnTW8UCjuIWs/zitO
-         wQO2ukEhLjJjY4zoEVATqz5gweKallSIZgLNpezcqt2mXD6Lt8PpqTQ4PiHBWHKHDkW1
-         ChXSgyl7COMMWeScZ7B+LZA6XwVFYwtL1cG6FxsOqKU9pQ0akmUlDzPH+4c6gvfC6TlO
-         ju6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXw9VovBa9fB54p3JX0cPkF9ts3trkh4SPOF29HwY9pKHi7GkVJUJYgQUmrAEOBBWKLMkhxPnIHY14fxhL1lw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsidhuxqJJXAQFljx838NH8B/DYhjHC4eEHGp3NpAznW9GVj/K
-	HznWPBB060OEO+Giemrm0TvstJLPl9A7kszrbgnWOUgc1ioqmzXa8f1z
-X-Gm-Gg: AY/fxX6Gps8hnyXoEdsU/GgjnHkAQPoJlEG1OXhwCTGX23m0MUD80kTB5esf7zC29dI
-	cfrbHJLrEaKZ22eSteNn/KVj9M4i53byWgvx61vq1CX64u7d6mz+5pbRKvZvpHvCDxaXTtleygI
-	gEzQ39IklHSPhvILY8uLQlPuPSvb4sWeHRXRxYkjQsOyCJWC5yzEXK7vchMJLvFbZDSMkhrv5nO
-	sPt9TE1w/fyKRs0+MTz+6ZAEi7WHKqIoDvy7QPd7aBqQvxO8nH2HdhNYGYgVpkLCIsBdw9Esb9X
-	9/SqpHlH2ClXwazfgRLY6IiyAyJNsXpk63kZXN9UAAJwI9ScaKM19UmF5PMe03dTBupxsRyjoco
-	7rTzkQkhLYa6Jv9R1io5wE2qMCUWzt2yDt9pIXjGrpdeBgxz602uoJCQ/DizbWk26kkuprEp3Oj
-	rEwXKg5Gp+KPwG8s/ScnKv0V2YIeiq+eU/4/4PR4Hde/JM7f/B1L/IUKAC0ox5HA==
-X-Google-Smtp-Source: AGHT+IG1KaweWMqCFNI5IyK2Iyck6ddrbW6P6bYU8dxPQsEM6rx7XWMSfbevH/CsT3hoWXQm1yjYUQ==
-X-Received: by 2002:a05:6a00:90a2:b0:7e8:4471:ae5c with SMTP id d2e1a72fcca58-7ff67456c12mr11022198b3a.40.1766470935217;
-        Mon, 22 Dec 2025 22:22:15 -0800 (PST)
+        bh=y3w5zbPApeRzvnGzxav5MDuWlnN3SbnXqPeI7CxYT+M=;
+        b=asXweOHPw4oFGbcv+NyvgyJB0TUroa1PrbO4M3uvIFgtqGIO4b2dmHUKQdPUmGAB7U
+         ygvWO7AbcST7svNgwUOe6RIUK97fLASeK0zIACXG2Vikk1YHW9wWbki4CMsj0VzU6BoF
+         dr3KxoD7NSNN1mnnEfUPowDzbgK1BkoV5MRmwdyJSYKtyna47gmVyXoJN65weGQGo8VS
+         PMql3AIaPIc4oLjP1PyzSjmf/BDb5qMuWAqQ6PAI+6fAl0B7XEYPWKa26QPZ+2XHMx8n
+         UVbMmXw6Prh43bObMLGp+ZmrCJMFZC0cGEUoBt8Z0sUX60223JgkNdyTAgDRgyIEnpMb
+         XlJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766470938; x=1767075738;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=y3w5zbPApeRzvnGzxav5MDuWlnN3SbnXqPeI7CxYT+M=;
+        b=QTH7p+slGdPyZL2+b6BMy8eURy79Oqo0mqVkk2gNCiVbP8sO3oFCcnrWR05xp4jTv9
+         T7T0vEbN4fnSsazLVhRAWMMDH2bGs3O/0WXkuiwH2gWAyATR1+PwuwncbWPI5bmETgqF
+         F3kjTkXCjYtQHa2eNm4l/VJmQsVNmujQAMt0WZEoS97Kn5QVzF1OkTnMEBLVyyi79GIR
+         80yVbMKe8LmC0w3HU4dtLV3pWOeRVQNaLUR6ZGF4sgVyA2hv/5LzhuU99wFgAPOWexMK
+         UUJokzHU9l/mHqEFx5gLmyJYLCmjxOW3F+Fl4wyLDe3P7E7z7GtJIuLlQEuV2PbOjSXF
+         IhkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXPJreIT16GkKHuzSK3R6ugdaWR5m2P/U/majv65UsJTeY6A34pe8iMKKmvBdhQoZDh+5i0MIEJf02lOoTrJg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpV/DtLf4TTwFtR0iw/qi3XXwo9DLdIADd6X4NGFeTLv7TL3uw
+	AU4B1IEvvXaQ8gAFRZpo87UaWQsbDvBFF8hYAoHmMBn2dEyGxPYPh2Cr
+X-Gm-Gg: AY/fxX6LI4iG0h4BxTxIMtfjyjAh1imb0ND3jml68yUbwt8QgnS6bRexKs0Pq2DfEOQ
+	qPiN4V0C4lgmAxQSO3m3f7uaa2Tx2NUYzewPHSg1ZD2KSzRURVDAiekY875VEAFJ/FrJG3EGZ9T
+	ingDZXm0O3Zga6Or/yHHEVvfVnN9whRm9Qx4GgHeo25FPIfSsXqANZ6RK6fckDngdCRcP6/+/eb
+	cCuIdtub/P37qEWr42EMNs2Bu7XqCJ9WYGusDP+LdEfwy5eARidMZLW0/F/HxgGWQyIeSK1sHd6
+	y69W5bTlTHUTfziooue0YspTr8jki74/zPgVQUzBVMW+LAsism9XWwlsTz/2g2vyp1BEGfxOqvc
+	855NCwb3S7P0lIdieYuDsq6OeyxMOfrAo99YW460Gh+gVrlSB9N3qkd1X1db2b2/PoxBwSdh7st
+	Elp0jBFKads8lfuYKgbCW/fUFV9CqSGLEyKZlmkvjHOckx9phmISeckQ3mdxjZQA==
+X-Google-Smtp-Source: AGHT+IEhvmpcoeiUAZvA5rhSi6UGGcejl2p2zgmpoBbNe1/2AFX9Poh5cZH1/+Tjrv6xlF5XlHIyHA==
+X-Received: by 2002:a05:6a00:4298:b0:7a2:8529:259 with SMTP id d2e1a72fcca58-7ff650c7d8dmr11403476b3a.9.1766470938078;
+        Mon, 22 Dec 2025 22:22:18 -0800 (PST)
 Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7dfab841sm12395362b3a.35.2025.12.22.22.22.12
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7dfab841sm12395362b3a.35.2025.12.22.22.22.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Dec 2025 22:22:14 -0800 (PST)
+        Mon, 22 Dec 2025 22:22:17 -0800 (PST)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: boqun.feng@gmail.com,
 	ojeda@kernel.org
@@ -70,10 +72,12 @@ Cc: a.hindborg@kernel.org,
 	acourbot@nvidia.com,
 	rust-for-linux@vger.kernel.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH v2 0/4] rust: Add i8/i16 atomic xchg helpers
-Date: Tue, 23 Dec 2025 15:21:36 +0900
-Message-ID: <20251223062140.938325-1-fujita.tomonori@gmail.com>
+Subject: [PATCH v2 1/4] rust: helpers: Add i8/i16 atomic xchg helpers
+Date: Tue, 23 Dec 2025 15:21:37 +0900
+Message-ID: <20251223062140.938325-2-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251223062140.938325-1-fujita.tomonori@gmail.com>
+References: <20251223062140.938325-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -82,41 +86,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-This adds atomic xchg helpers with full, acquire, release, and relaxed
-orderings in preparation for i8/i16 atomic xchg support.
+Add i8/i16 atomic xchg helpers that call raw_xchg() macro implementing
+atomic xchg using architecture-specific instructions.
 
-The architectures supporting Rust, implement atomic xchg families
-using architecture-specific instructions. They work for i8/i16 too so
-the helpers just call them.
+x86_64, loongarch, arm64, and riscv implement xchg with full ordering.
 
-Tested on QEMU (86_64, arm64, riscv, loongarch, and armv7).
+arm v7 only supports relaxed-ordering xchg; __atomic_op_fence() macro
+is used to add barriers before and after the relaxed xchg.
 
-Note the architectures that support Rust handle xchg differently:
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/helpers/atomic_ext.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-- arm64 and riscv support xchg with all the orderings.
-
-- x86_64 and loongarch support only full-ordering xchg. They calls the
-  full-ordering xchg for any orderings.
-
-- arm v7 supports only relaxed-odering xchg. It uses __atomic_op_
- macros to add barriers properly.
-
-v2:
-- Add comment about ARCH_SUPPORTS_ATOMIC_RMW dependency
-- Add Alice's Reviewed-by
-v1: https://lore.kernel.org/rust-for-linux/20251217213742.639812-1-fujita.tomonori@gmail.com/
-
-FUJITA Tomonori (4):
-  rust: helpers: Add i8/i16 atomic xchg helpers
-  rust: helpers: Add i8/i16 atomic xchg_acquire helpers
-  rust: helpers: Add i8/i16 atomic xchg_release helpers
-  rust: helpers: Add i8/i16 atomic xchg_relaxed helpers
-
- rust/helpers/atomic_ext.c | 48 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
-
-
-base-commit: cae418334e4c402e410d3ee234935da33c7f904b
+diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
+index fedf808383e0..b1ce7c038ac4 100644
+--- a/rust/helpers/atomic_ext.c
++++ b/rust/helpers/atomic_ext.c
+@@ -2,6 +2,7 @@
+ 
+ #include <asm/barrier.h>
+ #include <asm/rwonce.h>
++#include <linux/atomic.h>
+ 
+ __rust_helper s8 rust_helper_atomic_i8_load(s8 *ptr)
+ {
+@@ -42,3 +43,20 @@ __rust_helper void rust_helper_atomic_i16_store_release(s16 *ptr, s16 val)
+ {
+ 	smp_store_release(ptr, val);
+ }
++
++/*
++ * xchg helpers depend on ARCH_SUPPORTS_ATOMIC_RMW and on the
++ * architecture provding xchg() support for i8 and i16.
++ *
++ * The architectures that currently support Rust (x86_64, armv7,
++ * arm64, riscv, and loongarch) satisfy these requirements.
++ */
++__rust_helper s8 rust_helper_atomic_i8_xchg(s8 *ptr, s8 new)
++{
++	return raw_xchg(ptr, new);
++}
++
++__rust_helper s16 rust_helper_atomic_i16_xchg(s16 *ptr, s16 new)
++{
++	return raw_xchg(ptr, new);
++}
 -- 
 2.43.0
 
