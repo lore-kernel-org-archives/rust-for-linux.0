@@ -1,76 +1,129 @@
-Received: from m.foxido.dev (m.foxido.dev [81.177.217.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068332D6E73;
-	Tue, 23 Dec 2025 16:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.177.217.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227E92D97BB;
+	Tue, 23 Dec 2025 17:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766508419; cv=none; b=A06ERPali68MWgW77j7MzfTj2kyWq7hs0h1Xv7CTwKVcijULMDIbNUSf9DK0QOvF7wMGwIh001FC9VQjbt/Vueg4eUk+AhxG+n5Nnnih1jBoMMwdED/VpTk/m6yR9c2NU+vG1y8O+yPSbjIKWkPbGFLoZCqGftnCmNCKWr2gg+M=
+	t=1766512499; cv=none; b=hoYpbtFKS8cnxJnfdpxe20RMHoIvYVSW0RCxb21pdajHACx9Szspzzbg9kPvqiQgz8gyJ/+2jBM+KwIHTXU5Tv7h78oVJ3v0FhNGiHROeoqsLxM+QwspnoQ/X69HWpKXTeVubadCeYBFvveXBclnxBJ/4MoaN/J9+UApOhNGw08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766508419; c=relaxed/simple;
-	bh=c3oruc5JNPL3tmclWUMJaqookCpPc3ku7t6M4H9XVBg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P7crlxJJOztqDxB7EP07X8fK3VYwJFyXtXZRFfWmP0eJT2RfmTVnZhx3vhb+aq/6E6UR4rzHGFR/m+tPYYIEz8iUbc0iBXYfGBtBnHCdBQtErP0+ytWudGYyn9PElOjMUIlKki55eRFqzT0yb1JnvA8RXPHhCj7DHTjtEdKvVrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev; spf=pass smtp.mailfrom=foxido.dev; dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=DPsZ/D6e; dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=2uPdkJDm; arc=none smtp.client-ip=81.177.217.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxido.dev
+	s=arc-20240116; t=1766512499; c=relaxed/simple;
+	bh=XLM2fikAcavvgjUlqwc5tL6SD3nCDVnUcFY/V0XJ4HY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kjm9YZj1+JbIgMz5430PX0IWZn0gU4BiwlcMGQeKyYpUdzCej+7J2ILPNgbsutpzkNu99VgHXEDgwSQkAGPjIjxUnW3gliziUeCKxKCUoWQ+uS0W4hC5YURmgyCFjQbi3k3L8WLs66QuxL4zC1rNaiTMGGxemvvKPqeT9QdFS0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWF5rpw4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="DPsZ/D6e";
-	dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="2uPdkJDm"
-DKIM-Signature: v=1; a=rsa-sha256; s=202508r; d=foxido.dev; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1766507796; bh=ZWOnZuUMlVXzgHCTwvw9NNQ
-	mfdOfpyNA3gzYuFDdTAM=; b=DPsZ/D6eonS0NWChqhm2efhUulODxaaaQ3iRcbOxJoo+5KV/16
-	NW9CB/OhCf3knj49qwGXS7SkDlYCBNqshWPBBX4rhPmKvNm4wgPm2vuvHQQ7fbdnp7ptX9oqx55
-	7zBoXCmixWP4rp4Oqzbmvgsqjb4AxybIzUXEjS8ATB2JRxLObcFv1mvlTHSHPADPLfD7jFoUZC1
-	m96hsqGjvHJVo9Qalku2abprUax3RlbKo0D82eNqruwem5ftCVpmXdatfbDePD9uSyjc8wRIciY
-	5KbWpyTm0E6KjCW/CvYc8zl8J/NfPZZDSclURl4Im3Dwzlsp0OLAz5iIqJjaG0hUX0g==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202508e; d=foxido.dev; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1766507796; bh=ZWOnZuUMlVXzgHCTwvw9NNQ
-	mfdOfpyNA3gzYuFDdTAM=; b=2uPdkJDmvR/9Ge6TcjQfAu6c81SN9E3FTLtLEN+GukIZVLTgys
-	d0nY/WA/qg9AjtpMB/99fBIRf/w11tpKOJBg==;
-Message-ID: <3aa3ef74-ee40-4a57-94c8-bf642e23aee5@foxido.dev>
-Date: Tue, 23 Dec 2025 19:36:34 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWF5rpw4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCA7C116B1;
+	Tue, 23 Dec 2025 17:54:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766512498;
+	bh=XLM2fikAcavvgjUlqwc5tL6SD3nCDVnUcFY/V0XJ4HY=;
+	h=From:To:Cc:Subject:Date:Reply-To:From;
+	b=ZWF5rpw4IlCT9luOR7eqj2o3IOokxIpGUpbyMj8xqkHECttuE9k6EavV6nDS+ZVkY
+	 V6neOwj5ZMW0aBeqj8CtykSZa6oUhiJCDSjxCkgIzQLDqTkL2XwamdxMxSSOUqhbXU
+	 GvN7QOJZzM32cVy8wf8Bw3OKKyNx9Xzux+9MNgaBVyyHJiv/hQQKhTNd1ETFHkBJkP
+	 U881tHlB8BfyX5fhjtiT/szW7hGDqOWPHREf2K2sJSbFIP6+sXuNkZqlx7KpAbBJcl
+	 d2H7arKE/4aoGztdcX5vwLPKsez9cxuB6f18IRVdr5UPJsXIEAMvuoCd/XAktio7ha
+	 N/gsnsdXUrOpw==
+From: Gary Guo <gary@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH] perf symbol: remove Rust symbol workarounds
+Date: Tue, 23 Dec 2025 17:52:10 +0000
+Message-ID: <20251223175216.1353814-1-gary@kernel.org>
+X-Mailer: git-send-email 2.51.2
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/3] rust: implement wrapper for acpi_object
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>,
- Armin Wolf <W_Armin@gmx.de>, platform-driver-x86@vger.kernel.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-acpi@vger.kernel.org
-References: <cover.1766331321.git.foxido@foxido.dev>
- <a28e83201e1413091333509628274807e50ec170.1766331321.git.foxido@foxido.dev>
- <CAJZ5v0hQwopbJox0QpT5tmZ0Eobgpfii47cDP8OWEON+iT4Qxg@mail.gmail.com>
-Content-Language: en-US
-From: Gladyshev Ilya <foxido@foxido.dev>
-In-Reply-To: <CAJZ5v0hQwopbJox0QpT5tmZ0Eobgpfii47cDP8OWEON+iT4Qxg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 12/22/25 22:32, Rafael J. Wysocki wrote:
-> On Sun, Dec 21, 2025 at 7:24 PM Gladyshev Ilya <foxido@foxido.dev> wrote:
->>
->> ACPI Object is represented via union on C-side. On Rust side, it's
->> zero-cost type wrapper for each ACPI Type, with individual methods for
->> getters and other interactions.
-> 
-> This is ACPICA stuff though and switching over ACPICA to Rust any time
-> soon is rather unlikely.
-> 
-> Is this really needed on the Rust side?
+From: Gary Guo <gary@garyguo.net>
 
-At least acpi_buffer is needed, and for now, only that will be wrapped 
-(I will remove other types).
+Due to an off-by-one error introduced in commit 73bbb94466fd ("kallsyms:
+support "big" kernel symbols"), long symbols (which are currently only
+produced by Rust) can have their symbol type being wrongly parsed by
+kernel/kallsyms.c.
 
-Note that there are no actual types on the Rust side, only transparent 
-wrappers around C acpi structs (for type safety).
+This has been fixed in commit f3f9f42232dee5 ("kallsyms: Fix wrong "big"
+kernel symbol type read from procfs"), and these symbols are now
+reported correctly.
+
+Drop the workaround in perf symbol that filter out these symbol types.
+
+Specifically, '1' and 'l' can never be generated by nm -- 'u' does
+indicate GNU unique, however such symbols are only generated by G++ for
+C++ templates, and are never generated by LLVM (LLVM generates weak
+symbols in such cases instead). Therefore, the previous occurrence of
+these symbols types must be due to the off-by-error and can be safely
+removed.
+
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ tools/perf/util/symbol.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
+
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 814f960fa8f8d..eabb218b4e195 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -106,19 +106,8 @@ static enum dso_binary_type binary_type_symtab[] = {
+ 
+ static bool symbol_type__filter(char __symbol_type)
+ {
+-	// Since 'U' == undefined and 'u' == unique global symbol, we can't use toupper there
+-	// 'N' is for debugging symbols, 'n' is a non-data, non-code, non-debug read-only section.
+-	// According to 'man nm'.
+-	// 'N' first seen in:
+-	// ffffffff9b35d130 N __pfx__RNCINvNtNtNtCsbDUBuN8AbD4_4core4iter8adapters3map12map_try_foldjNtCs6vVzKs5jPr6_12drm_panic_qr7VersionuINtNtNtBa_3ops12control_flow11ControlFlowB10_ENcB10_0NCINvNvNtNtNtB8_6traits8iterator8Iterator4find5checkB10_NCNvMB12_B10_13from_segments0E0E0B12_
+-	// a seemingly Rust mangled name
+-	// Ditto for '1':
+-	// root@x1:~# grep ' 1 ' /proc/kallsyms
+-	// ffffffffb098bc00 1 __pfx__RNCINvNtNtNtCsfwaGRd4cjqE_4core4iter8adapters3map12map_try_foldjNtCskFudTml27HW_12drm_panic_qr7VersionuINtNtNtBa_3ops12control_flow11ControlFlowB10_ENcB10_0NCINvNvNtNtNtB8_6traits8iterator8Iterator4find5checkB10_NCNvMB12_B10_13from_segments0E0E0B12_
+-	// ffffffffb098bc10 1 _RNCINvNtNtNtCsfwaGRd4cjqE_4core4iter8adapters3map12map_try_foldjNtCskFudTml27HW_12drm_panic_qr7VersionuINtNtNtBa_3ops12control_flow11ControlFlowB10_ENcB10_0NCINvNvNtNtNtB8_6traits8iterator8Iterator4find5checkB10_NCNvMB12_B10_13from_segments0E0E0B12_
+ 	char symbol_type = toupper(__symbol_type);
+-	return symbol_type == 'T' || symbol_type == 'W' || symbol_type == 'D' || symbol_type == 'B' ||
+-	       __symbol_type == 'u' || __symbol_type == 'l' || __symbol_type == 'N' || __symbol_type == '1';
++	return symbol_type == 'T' || symbol_type == 'W' || symbol_type == 'D' || symbol_type == 'B';
+ }
+ 
+ static int prefix_underscores_count(const char *str)
+
+base-commit: b927546677c876e26eba308550207c2ddf812a43
+-- 
+2.51.2
+
