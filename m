@@ -1,152 +1,154 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23A531B11D
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 09:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB19359F9D
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 10:07:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766481171; cv=none; b=VIjYBI0Ys48CcQ4FlzSCRJUxwrbX8RrsWAV26oBAyBN1jg5m42DsOWl3eVfS6FwR6gXyCG+R6B0u5gEfC4nzB6vTNYoT3ZcvtRGittYct5HMBNeB9FHnbzeoDlClX06+rUON7o+1DG6sTzAgqHcV3HBwUVaIBDdbJHzCeJ4MSOQ=
+	t=1766484444; cv=none; b=DJKmLs2aa9YjHM2G4RuXuLtixqN7JiQhIa0+l1vlFz74wVV6ixAG/gpbxbZ8Tv8j+Z+rvt9zi25WkeCAsn+tkIMXbLinHgZG1seQoIlF+OptEzWCmphp/U8pNmUsSTAkD8xNiNlHqsMP99BXWKIXh34CwZ8/ifbQoFLvrAbKJDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766481171; c=relaxed/simple;
-	bh=4FkWXhtu13kD4OyN2bZgoN0a465kXRfMbPSW5tH55cI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lDd9MVDWd1iCpVTL8lhCulwFr/xd6jpKAoN87hvrLEKlE3GyoM1O51NSJtQh3+nw9fB65MjEA9pH28yLKGB4NxcpaVVoyClm6dqOELuOR5aWCCP7zVIzoxUOBqkEEBsCE6IMSyq4wCCGX9KO9MVyZemb4yoPK0LGaKmHKl1o5mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VMCl+itL; arc=none smtp.client-ip=209.85.210.179
+	s=arc-20240116; t=1766484444; c=relaxed/simple;
+	bh=SKYy/YgRp1r9S3quaeIxAAdqBkH5PhOTty0BpFAOeK4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SR20VGwV3j0Z5hDicQyUXJrZZH8fm3QSbwpP+v416llyKJdEkudVT0hPgpC5hJjvxWZ1f8OQqc3eXWr7kfNgw97SyDiKqN68W9MB6nONWAL5GC2CvbGEvA90Z2tw7BxisHUFdmNIr3CUpUozxXYqaymoamQ5asqKHG3nG7y2doY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XqL+nI/v; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VMCl+itL"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7a9c64dfa8aso3696813b3a.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 01:12:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XqL+nI/v"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-595819064cdso7802867e87.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 02:07:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766481169; x=1767085969; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0t+U/2h1qjeax+EbR3c7S7/3a3hJALPrbwZw/eEGcbU=;
-        b=VMCl+itLhD5vmv4cSD0KXMgALdIoCNkPYLF1X3DpYPU5ws7tOHtjJp96PxZnBWvhSZ
-         84YQRJ3whS1GbTJvBwBNBDoVffXn+an5cdZRiTq7nuMIdgtjz9gECpbTL/+k+fg3G4Ak
-         Faq1ae45Bn8+9LN0G2F0h1OgXf0m/A6oa9MnNsETBUTgOoHFX3nqS5lw98QyiLmpj42X
-         PHd6VFxbHcMPo1Bh/Ry8dan6d1ICftehgUXNrYwdzgVlXFdGC1LiTM+bdIV221AXosNI
-         rtEWMu8KuRKdhWYW+Zc6uSrns5wKIGMpgxhNSIwqtfR00JHNB1a7OS+xR52DmLvHf9Mt
-         I8xg==
+        d=gmail.com; s=20230601; t=1766484440; x=1767089240; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lae5UGB0sBbMmlSigC5w6caqUQw5AlV5GUxciIGUOA8=;
+        b=XqL+nI/v0HfUPw5xPn1kwOJmAg5MYdhM38F7q1Z7TrWIibgJGI7WVHpEU+IKDnTXtT
+         2lI2wJtgFCvyrFtdQsgXDIyg/ZiygrfjyJs2PzdPX0mIQzGWle4Y572NS8qEScc3BSP8
+         QeeP2tPMxlxTfcD32/1l+f3QMNhC9bnnkSQUUCV8G51aGluRbOvOgvmb7AVPXQ0U/deE
+         xwXXjWpaEo5AOtu2Fb1gCnPjAoFa4uKfnaoviJP5MWKh/wUmcXhWWkm9dMq3uPn8vLxf
+         bOFUzMYhevrTPC2yqjXqyeDIPEyDc4lse8mcQSGn92BM+eYHG0g3h2ijNUBL5sxyRP6+
+         AM/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766481169; x=1767085969;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0t+U/2h1qjeax+EbR3c7S7/3a3hJALPrbwZw/eEGcbU=;
-        b=T4XJbRWi7eDOE/LqdbTGjNaaUzFdV8/dG3bnkzRISRBm6EbMOZe74Wd8qcWExJyYFm
-         QFTLu0QMzvowq/hQctOEsxy+hQifGEocnDYxNtfW7DtZu6P1nANWaOHuKrzbcAjWLamn
-         Txhq37+GU/mTTVJ9DwNl20K9o7LTJlIW/9b3Y1QUwY0lGe8MwfPNvAVkMvKnfbLRgUrP
-         2J1oJhgBXmW6Vd/KOTn9YXnx2OCpheR6Hjb7hMXFIczSqEIc1GPh4Vzj7p+UrNi5JjIN
-         8uE4PDaa2SkI3uFLpfMAvCyX6z4fKzu6amaOLu8TIql5TCYiLv9R68AlQ3g/t9JhMSnM
-         1UPw==
-X-Forwarded-Encrypted: i=1; AJvYcCXZYwIaIZ2P736ajZUi5G8BAL5VgWUu1g/uFfzEh+YmVviRYV+Cqm3cjp09VewPqerny3/XFBPmoOchGYvxFQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy26xExsmnUQyE7D/YLA265J+3On9rJuGUBKOTQg9wjP7OgoKYu
-	uGLkxyWVvtrNUjGWn9vI5lZaKoz0bXh4M1hNIvFQi6HCtcgbCy1i8gi2
-X-Gm-Gg: AY/fxX5Z0SSsQXsHe06sofXVgNS7ifz7IUsV9FucmX8GlljmJ2wfSEMX3xQnFHS4v+d
-	zcrRwk0gYRipK2MZPvULK3vP/ALqqfSbLa6u8BdUulA6ntH/rBd0T2wg17bMf8YVU4p3NYFU7f4
-	q7O1FAEQSxZ1eAe0LGrHEFfC1rtGwLEzKksyjBodX88QyAzqQ8GX4GSDSo1j7YOD0+n2oLwfweZ
-	HJvA0KemrFllJjmL6+rWU2ISPbCTNELDYzDo8kkc2kYfnIjgLmiiT8jSQJxx5IyUUgtr0pq+1xB
-	LhUO/Fkts32rpVUKcRgVhYywRgROa5TE0RsNh1CECWcqc7lg4UBpIoreXoyFxhseB3qCEe5M/kp
-	KaT9grLc2YAQiRZYqkytiFTdW5qKWfejoGmNAguxGYHnqa6R53QGfiEkQYNRG56Ai3UIIC/SuLz
-	Q+mPmcswGZap8N
-X-Google-Smtp-Source: AGHT+IHih9fiMPujtNcpQFt4xklE4OfZc65ZP5sotp3curLMywWAonhLCK+6CW7QJvWjdlYn/Flgaw==
-X-Received: by 2002:a05:6a00:600e:b0:7e8:43f5:bd39 with SMTP id d2e1a72fcca58-7ff66d5fca3mr12418214b3a.37.1766481169024;
-        Tue, 23 Dec 2025 01:12:49 -0800 (PST)
-Received: from [10.0.10.3] ([195.245.219.240])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7dfac29bsm13017682b3a.39.2025.12.23.01.12.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Dec 2025 01:12:48 -0800 (PST)
-Message-ID: <dd797bde-419b-4c1f-b93c-b0c62a7f340e@gmail.com>
-Date: Tue, 23 Dec 2025 17:12:42 +0800
+        d=1e100.net; s=20230601; t=1766484440; x=1767089240;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Lae5UGB0sBbMmlSigC5w6caqUQw5AlV5GUxciIGUOA8=;
+        b=RW0mdQ6ch05Tpgz60qbMaBZvFJW2xSLem6eKHrvlDA51yuk/61bug2FwY8YVHnb7zD
+         EVg/yFz0EUi3ZLhK19UEJDSJaRYOPaeSyD/c6aCvh9GokotKZL3D5eh/0GTDwf7N24+r
+         vPY3aYKzWC0P/biZ6JrPjrATSGFesIK85X49b4PveQGxj9JMjfUXllgx0sKpSglC/hWL
+         pzm/Q0U1UTlvHAnKb1COyVcoR2WKpQRn14r9Q4mnis2KHtjog7+fNpK9TZ6o0jO2v39V
+         wqCYBEW9UtLSxs1NvpFqD1MvbqvbEIyVE0+WF/PK5kuSvejn1DYJV3Ie2xy3r4mNQHyk
+         /7ug==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ5VH3eYZ129RNN2zzHiU4OpBMLC+am0L+jvNLaPI+rcm68aocpMhHmH4FmihgezgwZgWYrtl1BPHXDWlr9Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8gRg77B3frmvrUWTeUEyWDqKH0Ze0oCcXsMza+NzucqdKgsOq
+	0BBSjxyH1IVPQCVJDy5ZKV91eCittzcQRHoH4OtLkbTUD8+/3hx1Y2Rt
+X-Gm-Gg: AY/fxX6QEmG/31U6DsboWTJKfldRZ6riWf5XTyxeUTSk7pUUICZjU8ByHLvEtFgNaIB
+	uhBjWdpftvvFX4hbgFEaY/oWnMFOrTiLpWpyrZzlbJW1UJOp6g1AMfz4YW/S/gpEE4dopRT2nI6
+	ere7kmAnLyqvjHjIleUGOhSuIn27WipqduQ5xmZGoI4lHVsWBhDtdSIFpLEyw0254um4J56Qb9G
+	xYCkZPG7xC4hWTAhzghMRF7O9VWXcTYnby3MWIJhHM2S/CmFm+h2gssm6pqDfaIN+os/5NtQ8Go
+	8VAJeABcXtL9FUTVtzc28O3p/NDSBtzMZiZ+irVzn80MdiUI0aljtnDZNrrWLo0OC+jvZaEj5aa
+	4q6i7Lv0Fzjz0+x8LR5+9fKP+pmoogg9t7hkBW3khYN19i4S1QoYlz3LeX0g366Zi8wcYHzlSp9
+	BGXJ2A3j/V593jzZImRZ2NmfPQeWjFfXjchMd8IkuLGunujD8Qu0N8I9VMozriW8L3OfhKvfITv
+	1ubPQJ47L8=
+X-Google-Smtp-Source: AGHT+IGN8Vxqk7TEa/HSRtqK0wjzo/ktRj/6q57PMgBH4vZllHFBJy79YxEqw8earTNcRnAgxsYsVA==
+X-Received: by 2002:a05:6512:b28:b0:595:9195:338f with SMTP id 2adb3069b0e04-59a17d70bf8mr4996009e87.23.1766484440099;
+        Tue, 23 Dec 2025 02:07:20 -0800 (PST)
+Received: from LT-5CG5341NQ4.nordic.imtech.com (87-95-81-50.bb.dnainternet.fi. [87.95.81.50])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59a185d5e32sm3865918e87.8.2025.12.23.02.07.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Dec 2025 02:07:19 -0800 (PST)
+From: Kari Argillander <kari.argillander@gmail.com>
+Date: Tue, 23 Dec 2025 12:06:17 +0200
+Subject: [PATCH v2] rust: page: Simplify overflow check using checked_add()
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: fmt: reject {:p} format specifier for raw pointers
-To: Benno Lossin <lossin@kernel.org>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Ke Sun <sunke@kylinos.cn>,
- Gary Guo <gary@garyguo.net>, Trevor Gross <tmgross@umich.edu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>,
- rust-for-linux@vger.kernel.org
-References: <20251223033018.2814732-1-sunke@kylinos.cn>
- <CANiq72nZp-ULXMV9yG_PP=gkr0HUPTcE6ZRQhtgRp5Zk5SR6sA@mail.gmail.com>
- <DF5FTUW7WN59.1YJXZUL5F5LD5@kernel.org>
-From: Ke Sun <sk.alvin.x@gmail.com>
-In-Reply-To: <DF5FTUW7WN59.1YJXZUL5F5LD5@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251223-rust-page-check-v2-1-fba3dbdde1d8@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAJhpSmkC/3WNwQ7CIBBEf6XZsxiBkIgn/8P0gMu2bLSlgUo0D
+ f8u9u7xzWTebJApMWW4dBskKpw5zg3UoQMMbh5JsG8M6qSMVNKK9MqrWFwrMBA+xFlaRNQWjXb
+ QVkuigd+78dY3DpzXmD77QZG/9L+rSCGFHxQZNTh99+Y6To6fR4wT9LXWL6Dpu6euAAAA
+X-Change-ID: 20251219-rust-page-check-819ccc39c53a
+To: Alice Ryhl <aliceryhl@google.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Kari Argillander <kari.argillander@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766484438; l=2211;
+ i=kari.argillander@gmail.com; s=20251219; h=from:subject:message-id;
+ bh=SKYy/YgRp1r9S3quaeIxAAdqBkH5PhOTty0BpFAOeK4=;
+ b=eDq3mAAdL87bd1kGflfZuQemmgrHgZMjA+4U7KTkOhoEVqa5T3AaiJX306VXEbUHbwR8s+PF0
+ Qh9ieyXxc8nDTMB3+0Pbhz81iZQ9WoAI2AQICkKYLbFmV6GUZS8BKHm
+X-Developer-Key: i=kari.argillander@gmail.com; a=ed25519;
+ pk=RwSxyhTpE3z4sywdDbIkC3q33ZQLNyhYWxT44iTY6r4=
 
+Replace the explicit bounds comparisons with a single checked_add()-based
+range check. This avoids redundant comparisons, makes the overflow case
+explicit, and results in simpler generated code (checked with godbolt
+for x86).
 
-On 12/23/25 16:03, Benno Lossin wrote:
-> On Tue Dec 23, 2025 at 7:41 AM CET, Miguel Ojeda wrote:
->> Regarding the patch itself, ideally what we probably want is to do
->> something similar to the C side, i.e. by default hash the pointers
->> like C does, and then have an explicit way to request the real address
->> when really needed.
-> Could that just be some kconfig option or do people want to do that
-> without recompiling? But yeah, as always with these things, we should
-> use the principle of "add those capabilities, which already are
-> available on the C side to Rust".
->
->> For the real address case, we could require wrapping the pointer-like
->> argument into another type, so that it is very explicit and opt-in
->> (since having our own custom formatting is harder, though perhaps we
->> should finally look into that -- Cc'ing Gary/Benno may have some ideas
->> in this domain).
-> Well, we could have something like `PrintRealPointerAddress`. But if
-> someone would really want to print the address of a pointer without
-> using it, they could just do:
->
->      let ptr: *mut T = ...;
->      pr_info!("pointer value: {:x}", ptr.addr());
->
-> So unless we also have a lint on printing `<*mut T>::addr`, then I'd say
-> it's only useful for people that know of it and reviewers still need to
-> be on the lookout for people trying to print pointers. (but I guess this
-> is similar to the C side, where you can just cast to an size_t or
-> whatever is the correct thing, right? (or are there lints for that?))
+No functional change intended.
 
-Add wrapper types matching C printk's pointer format specifiers:
-HashedPtr → %p (hashed, default)
-RestrictedPtr → %pK (restricted, respects kptr_restrict)
-RawPtr → %px (raw address, debug only)
+Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+---
+Changes in v2:
+- Added MSVR todo (Dirk Behme)
+- Link to v1: https://lore.kernel.org/r/20251219-rust-page-check-v1-1-df2e52fa3bd5@gmail.com
+---
+ rust/kernel/page.rs | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-Require using these wrapper types when formatting pointers？
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index 432fc0297d4a..cd2af7e4c357 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -239,17 +239,16 @@ fn with_pointer_into_page<T>(
+         len: usize,
+         f: impl FnOnce(*mut u8) -> Result<T>,
+     ) -> Result<T> {
+-        let bounds_ok = off <= PAGE_SIZE && len <= PAGE_SIZE && (off + len) <= PAGE_SIZE;
+-
+-        if bounds_ok {
+-            self.with_page_mapped(move |page_addr| {
+-                // SAFETY: The `off` integer is at most `PAGE_SIZE`, so this pointer offset will
+-                // result in a pointer that is in bounds or one off the end of the page.
+-                f(unsafe { page_addr.add(off) })
+-            })
+-        } else {
+-            Err(EINVAL)
++        // TODO: Replace `map_or` with `is_none_or` once the MSRV is >= 1.82.
++        if off.checked_add(len).map_or(true, |end| end > PAGE_SIZE) {
++            return Err(EINVAL);
+         }
++
++        self.with_page_mapped(move |page_addr| {
++            // SAFETY: The `off` integer is at most `PAGE_SIZE`, so this pointer offset will
++            // result in a pointer that is in bounds or one off the end of the page.
++            f(unsafe { page_addr.add(off) })
++        })
+     }
+ 
+     /// Maps the page and reads from it into the given buffer.
 
->
->> Otherwise, if we land something like this, how does one print a
->> pointer when needed without having to manually replicate the
->> formatting? `:?` perhaps? But that is almost as easy to make a mistake
->> with as `:p`, so that should probably be included. It is actually what
->> was done in https://github.com/rust-lang/rust-clippy/pull/14792, i.e.
->> both are caught by the lint. Cc'ing Trevor who was involved in
->> reviewing that one.
->>
->> Speaking about the lint: since it got implemented, assuming it works
->> well, then we could just use the lint, which allows developers to at
->> least opt-out when needed, e.g. debugging, until we get the hashing
->> etc.
-> We'd still need something for the older compiler versions, or is it
-> enough to have the lint in the latest/only in some stable releases?
->
->> Finally, when the macro shouldn't work, normally we just panic the
->> macro, is the `compiler_error` meant for diagnostics?
-> Emitting a `compiler_error` normally is more ergonomic wrt. diagnostics,
-> since the erroneous code still gets emitted, which prevents other errors
-> from occurring. Here it probably isn't necessary, but an example where
-> it is important is `#[pin_data]`, if it panics, it also doesn't emit the
-> struct definitions, leading to undefined type errors everywhere the type
-> is used.
->
-> Cheers,
-> Benno
->
+---
+base-commit: cc3aa43b44bdb43dfbac0fcb51c56594a11338a8
+change-id: 20251219-rust-page-check-819ccc39c53a
+
+Best regards,
+-- 
+Kari Argillander <kari.argillander@gmail.com>
+
