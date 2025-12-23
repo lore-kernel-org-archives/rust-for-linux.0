@@ -1,109 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86C72673AA;
-	Tue, 23 Dec 2025 07:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436992673AA
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 07:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766475631; cv=none; b=jhVtmM699oriQh6wVkGbUlbM2V8TaPNv/siFmP9/wsBzSSF+UaUrNCBL3dw2kGmyNKl04/zI/pZcjX2t9w0Fpr7LZPtZyvZXNAcOAYNzIXkHcyH6iZYfnInoqnDIM0t7fEeWIExT7uI8YftCbuJ6hAj/0RqjcC9MaJcIqDR6AgQ=
+	t=1766475711; cv=none; b=tbDQW2el03pkvQoqZ2zVjGaLB7yQuu1JqwRm6NR0d6O6Ojvt36mRAkobEmsgt6t63y7EiKG3j+AKL7yYAzNF67wSzI/DwbWgiuLf8e1Y2TUPs4KHY/gVWIFKKad8fxYPP0WF3vBe8sHU972wjsBAPFAYUZxn+m3Zz2cLMK7sJLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766475631; c=relaxed/simple;
-	bh=UW5HbN6yO9LJ8iDgB5Ii6rK/IdZgfGxp+ApRXp4BcsY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=X3qsIkLmJ0LWClZi2ZFZFBxr0BjvsTonc7cL0qSq8nILQjToagnibg8rirkcfsEO5ZJ35Ys/EINP36sTLO/SCHebpMjU3b5gA9XGyJI+0jnR/HhXCgaBYahd6TM7IRFi/wYQl8kOlfvYODR57ElJguG8H568By5BXoDKsweiyHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PnHOrvHa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766475711; c=relaxed/simple;
+	bh=ahHK7VADMyGzxCu2ktltvYUN5RtqjCFJ61ab34MZUfM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cMFNEycKJzsaojwdEPDhu1+p/hnPzoR1BeWqNngDb81x6BoYtoPdYmV8BwGoGmNuXKqaY1i3j60qJ0MY3/bwepKDx/wDUIMSIlwLcZn/Teim+5emtqSQnnh6/gnP01uRLf59qzThe+P4w8O9WtU86L+1dj34SdcOzVKgeY+wrJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZkCVpVkq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PnHOrvHa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A8DC113D0;
-	Tue, 23 Dec 2025 07:40:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZkCVpVkq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A6DC19422
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 07:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766475630;
-	bh=UW5HbN6yO9LJ8iDgB5Ii6rK/IdZgfGxp+ApRXp4BcsY=;
-	h=From:Date:Subject:To:Cc:From;
-	b=PnHOrvHaMRmydJTu9kOe1eSHmWAm78u/qsFn5zJQ2JYse/laheId7WqMgjHkfYU0j
-	 6hQLNDWCm3oPK6+VAK6sm/fg5LH+svVck6+2ezcwQHc0vTJUA5gOWoPgOmPfkE0t1d
-	 x6fIM6BxNkdzgEanyfSSOuZNsSP+PxVZoPhqCRWdku2nMQGM2PLu8thzRC7BMzpZPp
-	 nZCg6hO1m9CYMREiIlPdrzgSXo7nMwhIW0hDUBcMXEOIIX4QNqNqY4U5XYz2i/eeVR
-	 00ys19k3zs9o/sA18Nc4AajO+ZB3Hgl3sRIAcfPNR+qcYap4zXtRPkKNVgjqNoDHxL
-	 hu3a8lKx4bDlg==
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Tue, 23 Dec 2025 08:40:24 +0100
-Subject: [PATCH] samples: rust: faux: replace `kernel::c_str!` with
- C-Strings
+	s=k20201202; t=1766475710;
+	bh=ahHK7VADMyGzxCu2ktltvYUN5RtqjCFJ61ab34MZUfM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZkCVpVkqB7R9c0HvPxEIaFPUgEGNI5hBVD6tVmEjGknc/KdnOCWj18QiEZ6i1+a6q
+	 6p/lqk3+YAXXAkDGXhHA2I5HmmEZYDXgEXu2wZIEaTiZhSbj4/V5zyVtVoCkpetWvr
+	 Y6JWgpxYvYv/pCDMh7EyA7WRat6Xu2TW6OPj0fcUO95LdgNwf0BU3kLvocktkFNyXr
+	 CxOg4rMhXviJyfE+JgMds8ezTmJBaWd4Biv+numHCZAP+N+XRwCczHtejXSvQnn+ur
+	 akj0OZqym72otnqgcnkuR3w4IGaCdUZXSEBOVv1OTdvDhM/VOHi42KbXj3sCusQ5Yy
+	 FeyNO5REkxrDA==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-37b95f87d4eso41214011fa.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 23:41:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX+TZv54SCo2++TVUBMU8Z8qm6s3nIgVxqEnoSNHxrg9NzkKW5umWt1LpoZjddSWAMiY7XDuXXStrhrcaAOUA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywmfmurnq+bFOx/KCQZ67jOa5PJb+6/moXhiohz9+efOuqXrDBW
+	lWka9Lz8XmRhxECev761YmzDwATF9ZPCkXclZK4mbd0KISAr3Z7dJBYIeSHz8kHuxJb1R3R9gsr
+	5knqjet2YduhA2KayuGX2j66lmZOzIU4=
+X-Google-Smtp-Source: AGHT+IHXo+ZFzxa85f6R6SkbPoxDHnq9OqurPIv9c+1WoTJ3GSVbVMeq7fyMrooxUMk3B15pZB0xCHkxRSE4p7dHqMM=
+X-Received: by 2002:a05:651c:c91:b0:37a:3ab8:6686 with SMTP id
+ 38308e7fff4ca-381216371c8mr47202281fa.32.1766475709635; Mon, 22 Dec 2025
+ 23:41:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251223-cstr-faux-v1-1-ee0c5cf1be4b@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ5AMBBA0avIrDXR0hBXEYtqB2OBdFQkjbsrl
- i/5+REYPSFDm0XweBLTtibIPAM7m3VCQS4ZVKG0VKoUlg8vRhMuUVe2cA6bSqOB1O8eR7q+V9f
- /5jAsaI93APf9AGOZsPBtAAAA
-X-Change-ID: 20251223-cstr-faux-74c0dde845ea
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1766475626; l=1446;
- i=tamird@gmail.com; h=from:subject:message-id;
- bh=0ocY9fdOlJR/F1j3Vttdyt12otrQLMDZ30YuvaZc5F0=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
- MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QM+HBC7Fa18tBeNYIl+spL+HSI2i9k9BHJNmUE+Kt/tyvqk4xs3W5nAX+h5qLEQBbAdQjw1tpJT
- COxteevdGwwQ=
-X-Developer-Key: i=tamird@gmail.com; a=openssh;
- fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+References: <20251222-cstr-driver-core-v1-0-1142a177d0fd@gmail.com> <DF4WBS5EQVVK.3TS8CJ4XBVRNF@kernel.org>
+In-Reply-To: <DF4WBS5EQVVK.3TS8CJ4XBVRNF@kernel.org>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 23 Dec 2025 08:41:13 +0100
+X-Gmail-Original-Message-ID: <CAJ-ks9n4iouVU2f9yU0wjQFt=-HVSYVwhCd_G3wqXM6kXvpsww@mail.gmail.com>
+X-Gm-Features: AQt7F2r7v-SPYJae2Gc2kIyDFjxWiG2chiie6b2LpTA91om8podcwiakKiB2HZk
+Message-ID: <CAJ-ks9n4iouVU2f9yU0wjQFt=-HVSYVwhCd_G3wqXM6kXvpsww@mail.gmail.com>
+Subject: Re: [PATCH 0/7] driver-core: rust: replace `kernel::c_str!` with C-Strings
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Tamir Duberstein <tamird@gmail.com>
+On Mon, Dec 22, 2025 at 5:46=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Mon Dec 22, 2025 at 1:35 PM CET, Tamir Duberstein wrote:
+>
+> Applied to driver-core-testing, thanks!
+>
+> > Tamir Duberstein (7):
+> >       rust: auxiliary: replace `kernel::c_str!` with C-Strings
+> >       rust: device: replace `kernel::c_str!` with C-Strings
+> >       rust: platform: replace `kernel::c_str!` with C-Strings
+>
+>     [ Use kernel vertical import style; discard unrelated faux changes.
+>       - Danilo ]
+>
+> >       rust: io: replace `kernel::c_str!` with C-Strings
+>
+>     [ Use kernel vertical import style. - Danilo ]
+>
+> >       rust: irq: replace `kernel::c_str!` with C-Strings
+> >       rust: debugfs: replace `kernel::c_str!` with C-Strings
+> >       samples: rust: debugfs: replace `kernel::c_str!` with C-Strings
+>
+> @Tamir: Can you please send a separate patch for the faux bus?
 
-C-String literals were added in Rust 1.77. Replace instances of
-`kernel::c_str!` with C-String literals where possible.
+Sure!
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
- samples/rust/rust_driver_faux.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/samples/rust/rust_driver_faux.rs b/samples/rust/rust_driver_faux.rs
-index ecc9fd378cbd..23add3160693 100644
---- a/samples/rust/rust_driver_faux.rs
-+++ b/samples/rust/rust_driver_faux.rs
-@@ -2,7 +2,7 @@
- 
- //! Rust faux device sample.
- 
--use kernel::{c_str, faux, prelude::*, Module};
-+use kernel::{faux, prelude::*, Module};
- 
- module! {
-     type: SampleModule,
-@@ -20,7 +20,7 @@ impl Module for SampleModule {
-     fn init(_module: &'static ThisModule) -> Result<Self> {
-         pr_info!("Initialising Rust Faux Device Sample\n");
- 
--        let reg = faux::Registration::new(c_str!("rust-faux-sample-device"), None)?;
-+        let reg = faux::Registration::new(c"rust-faux-sample-device", None)?;
- 
-         dev_info!(reg.as_ref(), "Hello from faux device!\n");
- 
-
----
-base-commit: 185c81461ff4987d35fdfc4c8da46ae51ee5ada4
-change-id: 20251223-cstr-faux-74c0dde845ea
-
-Best regards,
---  
-Tamir Duberstein <tamird@gmail.com>
-
+https://lore.kernel.org/all/20251223-cstr-faux-v1-1-ee0c5cf1be4b@gmail.com/
