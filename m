@@ -1,123 +1,127 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE4D238C33
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 06:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A01D4204E
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 06:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766470949; cv=none; b=Af5ZG1HVcV2LMcrGrNWywFGJTrDl2az4D+L5g4W/k31I2slD2Zu6gg9Jb/wOFrDXaE52BKKJtcHn98qjB9UrxTsf/m+y/E7rL+KrsOr3+DHvQsuCMfiwG0Ee5cv+hQIREdcdEsMb+o2DvwDbvwQeO3BsCKwjDZvG0GhbfOQI0l0=
+	t=1766472101; cv=none; b=JK/HuaGoE1aVCvTZcURC/DA5Tp230OlrxapNsyDnjYk2PpC/lvlLT97+pP1XjZPGWjHnrJ+kaFfI983tzGhpYbe9hOJGejgznPyhjhHV4BKgZL+dAmMKI+5Zl0WIbPmI4dBzJwRTP19VbgSukSg4eyx1qmVtzkwCAKdYWCZYRkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766470949; c=relaxed/simple;
-	bh=CAzqIn1NxWbBnmsyzqSrr/LhlLLbLy8JxidNUttic+I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHh/vYuaRCLnOFgt9d8/Z9NIuYO125gbWXxSFR4lhGSlwkEreEkAwFZEPnj050XvAJ9n1TEuIhMQ1J3RqQcTtV4whXZeJh58aVo3MNXap12QDsB8gojScEyZOqOaWpyOtqyGs0iSAVMVOJ+Ayf0OxfAzn5YJUFH8LBPx/mVabQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ESdJ31ml; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1766472101; c=relaxed/simple;
+	bh=NLViVmaAOVroFXDwtc+Z4yIl2fJzlqgHCzXmn7ocwcw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FKs+igFv55oesHxNIyyk7o0Gwq8gPRdf0T9fqPQMNcvBwfp+iEEyX0/evIUNtQwflQYWCoYyNZbju4N2WWAlsXzwpCrvm9ML1ey0Ct0W88f/X4+/eZaZOqZ+raTaVMA/sVd84C8ueoTQiqCEsCl/gXTlkSN/n7am40LmuT7Ts88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CiIV2myI; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ESdJ31ml"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso5397175b3a.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 22:22:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CiIV2myI"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-29f08b909aeso8829055ad.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Dec 2025 22:41:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766470947; x=1767075747; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1766472098; x=1767076898; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QwIMmpL7HRi3JDgDXRqtgrbht8A5w6aG4m2Qtk/qxLc=;
-        b=ESdJ31mlXxakeopw5PLJVswl8qxENHJJ/owvnF7qc0HMHp5IcW+nOEmaCYY13V/yJF
-         0UwyI5vXFs87zinwo8LrWL0ZSTbHBIbHYkb3/e8Zv9ViIMP+loQZQmfHSKZNm0qFFGbI
-         cFVhVFJVm8G/iAgb2p7/Wwo8Wxtfmb5Muk8QhehZ3NjDAciL90uyucTMFV/0HOzvohPq
-         5W7pYrfaerub7/Wmw5w/vTXUdN40EJbQWoTeL8n3NnhnbAW7ZRbmXxIGBZ1JSxTAVm9x
-         H/sYlh/X9agxIpYZXovKuk6zsjVt2kGlvwXSMsnZQzpHhajM3UtuvkNvUbu+q4kOmD+O
-         Vfcw==
+        bh=NLViVmaAOVroFXDwtc+Z4yIl2fJzlqgHCzXmn7ocwcw=;
+        b=CiIV2myIxI+XpUkJkgX1joc3oG+Xy3K8Mz9vK4CURMtncxfsEgShlM0Ddg9I/MKr4q
+         gmk6gW3HFaFmmnEPhAjSFf/WMF989OTValTO82IVeTWFRMV1LEPy+pLlCI5f6bmvDP8o
+         63mAx21Oceqs7Yvjoew0PqFbrbmUFXPwt3W7Qzu1Q3m++bV9VpJGaTwBgVUTjspYKLEW
+         vGisuhUAdNOG3vuyyzEehSuQ7nOpwwCo1flNQAAziF/+SGOziCJkWe8NBbkCGF7v7/Dv
+         qmqHMdq3R/yy1FejM6ZG8UARewFHEtfm5LYleU6teMwG4uN3eyP6cp0LegXKs3TE+1lv
+         Ckwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766470947; x=1767075747;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1766472098; x=1767076898;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=QwIMmpL7HRi3JDgDXRqtgrbht8A5w6aG4m2Qtk/qxLc=;
-        b=ERpOOSEGKNZ08aMAA5Rj0a56UGn8ejucmLyxofbsOG2sJbx68uhnP7Cagmu8UAagng
-         Au6tQi+XDIEYEakOtWUMOHAXyXF+HCb/zPwuuD/BuQpa0JF/5byB2Ou7M1PFFhgcOHxK
-         qCu6GlQnGePGt/+WxJwSDnf8oyAc3txVfTU2yTP/bLv7WQtLkW1Ueojs84tnKvP7OQrn
-         zCbBSLjTPxnrncYWOHsEfszAHzvlMLyQpAklSW9Zbph3cU8aLbh1tysi2/r7ONhhzj/Q
-         Mayll4L8dd4rZehYVMCW2ZTJ20GNRUf0zB/do6rQIVNkGXvhh/Y2jqfDgw+reFnBwMKj
-         Tprw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvYkX+UUJZhc6nBQLonSuI9KTaM/DnJ6Hl5DCbXIDGokwcQpz4FaWkFGIm93xpY+1kWCHFA7yikL0zNyHCiQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFBaB5m8B6sLTOxZ/F+xoDP7KX4SQfvMDA4gqphL2SnxLcH5aH
-	K8CVKjrdFg/9/A2rgzcZ7lWDl/5nQtoq/eLJ8fxwj+sm9t6IP7ujHNdA
-X-Gm-Gg: AY/fxX5BDFtlI4cABX41lj5/k4Gt1L+sFKcsRalcH+QLYnpoT5XHY8O7KinTsFIGOw1
-	oOAE6bo+f5u6ZamvJzcRMxjZGrThW+/2j+g76JCsIXDfkbDRgDItZ60UIcl5fhbuRuImMsecODN
-	ufHxJvw4UAU69+k1MI23ZdxG0woWSYg25pqGEU2H6+z0FafJaknJEWGeQTTdr1Wl9VLuhj/pr9/
-	xxLDUE68DqIwH7c2ighNcbp2lPERvwwQew/CRlyzDCxBow9GwexN+ZWrY216ncJzoiRmxEXL8ss
-	NFoeIHkHXl250R9GSlSs1SF57z8RvKOZWgwj4thd/5G04/N+877SDmbC5djIGBA6zhrYW7Yeueo
-	O8P+iIRm0gRdjWQAItO0VXUJGNPz0+ddrnOn8hxyBIEeJ+OsT2eMGXf1/6hZ0fNbav1qeKbF5g0
-	30XP3xGnmSD98ILABXLeYzUW4KMTeK9Bw/zuJSjl0y209vC0IlR1Hfa73rnaF8CA==
-X-Google-Smtp-Source: AGHT+IHPU+0SQ+q0XOYb/8CVg8fHZEnjX9/sJMBQ6gXaryp0fDKm7joEP0BYIYZXLRSjCH3RsQpDeg==
-X-Received: by 2002:a05:6a21:99a7:b0:2cd:a43f:78fb with SMTP id adf61e73a8af0-376aa1efc33mr13239340637.48.1766470946893;
-        Mon, 22 Dec 2025 22:22:26 -0800 (PST)
-Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7dfab841sm12395362b3a.35.2025.12.22.22.22.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Dec 2025 22:22:26 -0800 (PST)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com,
-	ojeda@kernel.org
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	tmgross@umich.edu,
-	acourbot@nvidia.com,
-	rust-for-linux@vger.kernel.org,
-	linux-arch@vger.kernel.org
-Subject: [PATCH v2 4/4] rust: helpers: Add i8/i16 atomic xchg_relaxed helpers
-Date: Tue, 23 Dec 2025 15:21:40 +0900
-Message-ID: <20251223062140.938325-5-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251223062140.938325-1-fujita.tomonori@gmail.com>
-References: <20251223062140.938325-1-fujita.tomonori@gmail.com>
+        bh=NLViVmaAOVroFXDwtc+Z4yIl2fJzlqgHCzXmn7ocwcw=;
+        b=THdSqls2QcKZCYtS/24V55QlEhUeECQvsQ/RdAIZgAKiGC03/bUdAV2FQZreJyzuRV
+         9sHJDddhiKMOwIJDPOSsFyew2/9Em2Rt3f+dWH8SZm7kCLDy/BU/iEVACwfcNEsXNetU
+         5KY98I9UDV/Kjl2ZUH3ukGlOpd3DKfcTi1F2Uzt033Tqe0kULUtM7xmrRiaYA/KuY2LS
+         /lgoyGmAuo9eg/4BBI1nPTqjTDapA2Mxj88UKHVBmKOP/fepjzLOpoXCRNqJbSE8WdB0
+         pkjjuW0aMY2o7TZNg6IVnZY/dl6lfQV/pHn3GrNyrUnec/5NXwOC4itQ71febDF7ZP7R
+         Ckpg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXmGXHAzkl45Yj2xjDi/oHkxbdRJGE948hDsXwI3TUXIsh662YRUNHxxeb5tpZfVul9XBGYcsbeM7Oev46HA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyur3nSROfZJJ2IaAuNauJSl9xAyPHHmGQJ/Io4/9lzN6+jX6CM
+	gT7q+WP1j7vN1b1o4UUjrkIv9G4Wv9TO2kB0FCWLOQbdwsIZLToqUdytDlmABs4KU2lfAohvyh4
+	FCZ2TcxtRRdUsMFpRsHMBcd3mUqXetjI=
+X-Gm-Gg: AY/fxX78agE+et2mH/Wa6L51OT7+1l47jnhk6dGC5V0Vu6qI033YbW+us6kPuJ1aPne
+	8vIPJmaQ91mCdAj0NEQ7LgNZsMRmQDbnQiELrqhUpXsSne2kwPFIiqD2FMiumWFlUUNBftErZkl
+	uzf8U+gmkpQHuug5puolDv/Dx7T25co8I2xWGob5XuTyfnOeBD9mrKirZiA/FfULu/Lcq1UaqgP
+	Do/Tsx0OWLAbpS2iHK0X2mt17L8Tshe6jqHEhhFDebW2efrGgXLpW3MSGXwNsmpZdmqSG8ALdw0
+	pR+/HhG6BaOR5i544UuP8PNT1K4C7ahYj99BR/m2Lh42prt1DqWC0HqIv3uAdvXCE3DIR5sPC7J
+	uuemzHI3f253R
+X-Google-Smtp-Source: AGHT+IF0gpBSFg9g3C9p7b3WprZB7rplZaaASllGESKgF7Qipj0FQPaLuNAYc0CrWkXEGJnK1czmHtz0DoDixKgxNCE=
+X-Received: by 2002:a05:7301:4090:b0:2ab:ca55:89cb with SMTP id
+ 5a478bee46e88-2b05ec45daemr8051110eec.6.1766472098357; Mon, 22 Dec 2025
+ 22:41:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20251223033018.2814732-1-sunke@kylinos.cn>
+In-Reply-To: <20251223033018.2814732-1-sunke@kylinos.cn>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 23 Dec 2025 07:41:25 +0100
+X-Gm-Features: AQt7F2ohOlgYMeGhLIyXZi0JlKaibG_S40sESb7YcIPYt0pbj_TXDIs8YxAVv3s
+Message-ID: <CANiq72nZp-ULXMV9yG_PP=gkr0HUPTcE6ZRQhtgRp5Zk5SR6sA@mail.gmail.com>
+Subject: Re: [PATCH] rust: fmt: reject {:p} format specifier for raw pointers
+To: Ke Sun <sunke@kylinos.cn>, Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add i8/i16 atomic xchg_relaxed helpers that call raw_xchg_relaxed()
-macro implementing atomic xchg_relaxed using architecture-specific
-instructions.
+On Tue, Dec 23, 2025 at 4:30=E2=80=AFAM Ke Sun <sunke@kylinos.cn> wrote:
+>
+> Add compile-time check in fmt! macro to detect {:p} format specifier
+> and emit a compile error when it's used.
+>
+> Signed-off-by: Ke Sun <sunke@kylinos.cn>
 
-x86_64 and loongarch use full-ordering xchg.
+Please use the `git format-patch -vN` flag so that you can set a
+version for the patch (it is true that it is fairly different than the
+other one, so perhaps you did not use v2 for that reason).
 
-arm64, riscv, and arm v7 implement relaxed-ordering xchg.
+Regarding the patch itself, ideally what we probably want is to do
+something similar to the C side, i.e. by default hash the pointers
+like C does, and then have an explicit way to request the real address
+when really needed.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/helpers/atomic_ext.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+For the real address case, we could require wrapping the pointer-like
+argument into another type, so that it is very explicit and opt-in
+(since having our own custom formatting is harder, though perhaps we
+should finally look into that -- Cc'ing Gary/Benno may have some ideas
+in this domain).
 
-diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
-index a48bb632dc44..089f31bc8de8 100644
---- a/rust/helpers/atomic_ext.c
-+++ b/rust/helpers/atomic_ext.c
-@@ -80,3 +80,13 @@ __rust_helper s16 rust_helper_atomic_i16_xchg_release(s16 *ptr, s16 new)
- {
- 	return raw_xchg_release(ptr, new);
- }
-+
-+__rust_helper s8 rust_helper_atomic_i8_xchg_relaxed(s8 *ptr, s8 new)
-+{
-+	return raw_xchg_relaxed(ptr, new);
-+}
-+
-+__rust_helper s16 rust_helper_atomic_i16_xchg_relaxed(s16 *ptr, s16 new)
-+{
-+	return raw_xchg_relaxed(ptr, new);
-+}
--- 
-2.43.0
+Otherwise, if we land something like this, how does one print a
+pointer when needed without having to manually replicate the
+formatting? `:?` perhaps? But that is almost as easy to make a mistake
+with as `:p`, so that should probably be included. It is actually what
+was done in https://github.com/rust-lang/rust-clippy/pull/14792, i.e.
+both are caught by the lint. Cc'ing Trevor who was involved in
+reviewing that one.
 
+Speaking about the lint: since it got implemented, assuming it works
+well, then we could just use the lint, which allows developers to at
+least opt-out when needed, e.g. debugging, until we get the hashing
+etc.
+
+Finally, when the macro shouldn't work, normally we just panic the
+macro, is the `compiler_error` meant for diagnostics?
+
+(By the way, eventually (i.e. not for this patch), it would be nice to
+point to the user to the docs on pointers are printed, i.e. we should
+probably expand on pointers on the `fmt!` docs linking to
+`prink-formats.rst` to explain the hashing when we have that etc.).
+
+Thanks!
+
+Cheers,
+Miguel
