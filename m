@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F152690F9;
-	Tue, 23 Dec 2025 19:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D20283FDF
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Dec 2025 20:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766519424; cv=none; b=iHCwNGNc3/82XhJysA5Z4r2zdo7ZJElp7P6z1r4LeIAMGMNtp7tQPQHGV+iOAxxGIpJ5H8xqcjlIPoZkGGIoObeG/M2wEKL673NsO5w50BejRV+wSFitw48z6qv3NAl3g100vHnYheqEMlZwus29ofVaOQB4MuJ6jsltP++S7sY=
+	t=1766520699; cv=none; b=Dqw26dcYj3YL98fcEzRK93oXYuoSmduY2yXuhHTalRIZZJ8++K7PNX+5i8QZ8DifWd0FNdQG+H0sDaFFLNsGItU05mwlqMq2+FXcFv8rbZCtMomDVouLuS3+o5Fdemb8vz7Ym4KKA5eDfeE5JbjT2XnhHh6RWhfzU8QqVgCKePY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766519424; c=relaxed/simple;
-	bh=msWbe6o7wz9buRvDCWTrSNFnWDRlPCmecbHKGjIgAgs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=oFFEX2cKaoeOeqkdgxbgegEZvc+zv7vHgFe8U+TWPcH2ynNvZ2/cXU2mgK8jks2s2jsiNGhtNliPIxU5jhA9DwXU3PD/tVNwhgreaoXsz7XjLWhc4QDWHFXuutm9ds434VvHJuh/hbVThRuSQsUkd3uhTftxfAJvcYiGHHJ1oSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLwqTDqu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766520699; c=relaxed/simple;
+	bh=0lN7vWYq46IlRuow/qy6yXcoWMg8gDx9Z3ZPDRYqS2A=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=BDIrzghj1ZsmeK51o34Ns/1YV1trNZTmedyIlItNDFvGqzeNDKAevoUJ0Sb561uFFzHO1wpktZdqnAM0fo8bkpFtG1SpHPM/Yvn0cmb/UL58nZoG+x7fu+3zeqFNcP5zUAqm1K67wbqlVEWdZQHfeUy0ngsMYF07GxpWs0diBs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJ2xcI9i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLwqTDqu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD8AC116D0;
-	Tue, 23 Dec 2025 19:50:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJ2xcI9i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90841C113D0;
+	Tue, 23 Dec 2025 20:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766519423;
-	bh=msWbe6o7wz9buRvDCWTrSNFnWDRlPCmecbHKGjIgAgs=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=KLwqTDqu73l6w1YiNRuSN0mGSgJsFE9DFpvxBnRLRtLIanySqPhA35VlQH6cgNJlN
-	 vWrYNq4EJJONFSG8BO8PU4V+tzZRtwYKfqzaVI753wAHfTWt2uWtXiyJvIkwsm7Lqj
-	 5/wYvSVb2sGL6GEDQYaCSlyF6KHUgTQ1kLX5HtzPjMbBzduP8ccc8EfcsHAnxig+cj
-	 NRh0d+PLW7Xhf3XuNVGoHVZXmZDdEGbPYaBWXkX903bpLkiiTFP0Id5JIpxjwstNpK
-	 ASL0+WdwVHEBNh/tfDWNzBqOYL2B3Wjjr0TYNvXDpJGQX7dEihfvAWdKb7ngQw6ztZ
-	 yRIhiPBuKUoUQ==
+	s=k20201202; t=1766520698;
+	bh=0lN7vWYq46IlRuow/qy6yXcoWMg8gDx9Z3ZPDRYqS2A=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=EJ2xcI9iSqN9afEDPOK3ZBCbtQg8sA/Lm0jmxBOGybtiCeBc7vAd/gMADukz0PEa6
+	 4dLEGn5YolY8n1ci0FbYUOt7ZUtLmof1sAFwVoIZPvooxsXW3lUAR913aUjWu9rFnj
+	 +Ls47Xg6HeDv3LPlnV+N97ZgtJa8z1SVAy0eAjl+LU+lDXkAr6GTXrQAV1EQFgfmVX
+	 sM9ggGNG8zCZkPI771aoma5xK4mYwMGIZMTD/5+HCfRaYPTMrQZwXYCCiWPaNFYqT5
+	 nnBc1FEW6BkUxG6QXxk4fyWEQZ4dhvYijQqoKH+3wEwIit46RQqqk/iquecfuv/bd2
+	 Ts8cGhgWmDvtA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,63 +34,69 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 23 Dec 2025 20:50:14 +0100
-Message-Id: <DF5UVBWESS8Y.2M1TCH1OIT9EP@kernel.org>
-To: "Gary Guo" <gary@garyguo.net>, "Peter Zijlstra" <peterz@infradead.org>,
- "Ingo Molnar" <mingo@redhat.com>, "Arnaldo Carvalho de Melo"
- <acme@kernel.org>, "Namhyung Kim" <namhyung@kernel.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Alexander Shishkin"
- <alexander.shishkin@linux.intel.com>, "Jiri Olsa" <jolsa@kernel.org>, "Ian
- Rogers" <irogers@google.com>, "Adrian Hunter" <adrian.hunter@intel.com>,
- "James Clark" <james.clark@linaro.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Bill Wendling" <morbo@google.com>, "Justin Stitt"
- <justinstitt@google.com>, "Andi Kleen" <ak@linux.intel.com>, "Dmitry
- Vyukov" <dvyukov@google.com>, "Stephen Brennan"
- <stephen.s.brennan@oracle.com>
-Cc: "Arnaldo Carvalho de Melo" <acme@redhat.com>,
- <linux-perf-users@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <llvm@lists.linux.dev>
-Subject: Re: [PATCH] perf symbol: remove Rust symbol workarounds
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20251223175216.1353814-1-gary@kernel.org>
-In-Reply-To: <20251223175216.1353814-1-gary@kernel.org>
+Date: Tue, 23 Dec 2025 21:11:36 +0100
+Message-Id: <DF5VBOI4LSTZ.5O2XJRIFMK3S@kernel.org>
+Subject: Re: [PATCH v5] drm/nova: Align GEM memory allocation to system page
+ size
+Cc: <acourbot@nvidia.com>, <aliceryhl@google.com>, <joelagnelf@nvidia.com>,
+ <airlied@redhat.com>, <rust-for-linux@vger.kernel.org>
+To: "Brendan Shephard" <bshephar@bne-home.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251223135902.35767-1-bshephar@bne-home.net>
+In-Reply-To: <20251223135902.35767-1-bshephar@bne-home.net>
 
-On Tue Dec 23, 2025 at 6:52 PM CET, Gary Guo wrote:
-> From: Gary Guo <gary@garyguo.net>
+On Tue Dec 23, 2025 at 2:59 PM CET, Brendan Shephard wrote:
+> diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
+> index a07e922e25ef..e1b57609b8f7 100644
+> --- a/drivers/gpu/drm/nova/gem.rs
+> +++ b/drivers/gpu/drm/nova/gem.rs
+> @@ -3,10 +3,7 @@
+>  use kernel::{
+>      drm,
+>      drm::{gem, gem::BaseObject},
+> -    page::{
+> -        page_align,
+> -        PAGE_SIZE, //
+> -    },
+> +    page::page_align,
+>      prelude::*,
+>      sync::aref::ARef,
+>  };
+> @@ -31,14 +28,12 @@ fn new(_dev: &NovaDevice, _size: usize) -> impl PinIn=
+it<Self, Error> {
+>  impl NovaObject {
+>      /// Create a new DRM GEM object.
+>      pub(crate) fn new(dev: &NovaDevice, size: usize) -> Result<ARef<gem:=
+:Object<Self>>> {
+> -        // Check for 0 size or potential usize overflow before calling p=
+age_align
+> -        if size =3D=3D 0 || size > usize::MAX - PAGE_SIZE + 1 {
+> +        if size =3D=3D 0 {
+>              return Err(EINVAL);
+>          }
+> -
+> -        let aligned_size =3D page_align(size);
+> -
+> -        gem::Object::new(dev, aligned_size)
+> +        page_align(size)
+> +            .ok_or(EINVAL)
+> +            .and_then(|size| gem::Object::new(dev, size))
+>      }
+> =20
+>      /// Look up a GEM object handle for a `File` and return an `ObjectRe=
+f` for it.
 >
-> Due to an off-by-one error introduced in commit 73bbb94466fd ("kallsyms:
-> support "big" kernel symbols"), long symbols (which are currently only
-> produced by Rust) can have their symbol type being wrongly parsed by
-> kernel/kallsyms.c.
->
-> This has been fixed in commit f3f9f42232dee5 ("kallsyms: Fix wrong "big"
-> kernel symbol type read from procfs"), and these symbols are now
-> reported correctly.
->
-> Drop the workaround in perf symbol that filter out these symbol types.
->
-> Specifically, '1' and 'l' can never be generated by nm -- 'u' does
-> indicate GNU unique, however such symbols are only generated by G++ for
-> C++ templates, and are never generated by LLVM (LLVM generates weak
-> symbols in such cases instead). Therefore, the previous occurrence of
-> these symbols types must be due to the off-by-error and can be safely
+> base-commit: b927546677c876e26eba308550207c2ddf812a43
+> prerequisite-patch-id: 7154ef17c3e40275152c90eff07bffcb5ef5e5cb
 
-Typo: off-by-one error
+This looks like this is an incremental patch on top of some previous versio=
+n of
+this one.
 
-Cheers,
-Benno
+However, in this case I don't think there is a need to resend, since I pref=
+er v4
+over this one. Eventually we will need to use size (or aligned_size) outsid=
+e of
+the closure for further calculations.
 
-> removed.
->
-> Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-> Cc: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
->  tools/perf/util/symbol.c | 13 +------------
->  1 file changed, 1 insertion(+), 12 deletions(-)
+I will pick up v4 of this patch, no need to resend, thanks!
