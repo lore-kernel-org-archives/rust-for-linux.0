@@ -1,91 +1,134 @@
-Received: from forward206a.mail.yandex.net (forward206a.mail.yandex.net [178.154.239.87])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530773563ED;
-	Wed, 24 Dec 2025 14:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE213A55
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Dec 2025 20:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766584917; cv=none; b=u+c+GJdF7CtUORiUIJZ53qNHTryryDcyJ9ac3Y8WboHNRpXSJw8ZfNOyDfbgfGwt+NKMSew/ytAszJ1RyepfC3WRO4fqumyohBSOM0Kg3rTBQVpROcRH2ng4kBB0oUWwREPKXYQjS0YcnX77+guuqhgj2fQjt0uTfAEk8Ick3jY=
+	t=1766609944; cv=none; b=T7V2ulWR7RuluevNUaRGQ+XhdXMf5KY7V6PpYaRgVP5bnBtY+M8BeYWedIyhr/fCNRIGMEPTc/d0/QT0K+6Aq57LtX5/TCTFdGr2oH12srIne47TUtSaLo+HQ9GBl3vfwd4lCI+4Us/2EBIi3BikP3xxZ5Wfc8s6dYuMiJLDd14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766584917; c=relaxed/simple;
-	bh=cO991nW5urK9/OXkLEZmSQRBSSTG1gg61Ln2YmTXY64=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RQQJmzz1inqok/AR8o3haqy6U7+hmvkoCz9usu0L0u+YHXaMHNJBhUAwbMLStY7yEQ7gyV+kPhPiQI//49mfLegAATwOnLZ3iK0ztx8S9Y5eThY0JQ9e6DBT9xxA4wYuUjb4SllNcoa60ovjOeD1Q5DBPcd48CYwQCskEH8X9XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=f6G9iKr9; arc=none smtp.client-ip=178.154.239.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1766609944; c=relaxed/simple;
+	bh=I+aYQvpk/IQ3Z2qc6j/++GXIx14TlmKjZimxO+89TP4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hjgIDUGSbTSDo3f+M8+Va8BvrBVhJwyd65kC5TVUQiIE3x14us4vD0Ah0dpQmQjJvgPUxwXm5ls2PppiWcrToUACrOsyKwWTe9UMjCzgk2ovSDRJTV7DU12Y+fgL5njPgHZE3M0OrrAKPqpyviQfZCyztpfb858PMoPO/CKS4lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=avfM+XUo; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="f6G9iKr9"
-Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d101])
-	by forward206a.mail.yandex.net (Yandex) with ESMTPS id B1C2E883E3;
-	Wed, 24 Dec 2025 16:54:16 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-97.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-97.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:2804:0:640:a3ea:0])
-	by forward101a.mail.yandex.net (Yandex) with ESMTPS id CA3E7806AF;
-	Wed, 24 Dec 2025 16:54:08 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-97.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id jrctgn1HTiE0-TsspEcnG;
-	Wed, 24 Dec 2025 16:54:07 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1766584448;
-	bh=eSIvKMG94eNJsUJQbnQOUr24UTSlu42e0Qza5prctJE=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=f6G9iKr9mvHhI4BhI7Pop9U13YbP/tf4wp6SIbdEgEqquDs8txAVpRdKh6AN4Pn8q
-	 hed9Ffar7amlil2kbKOdP6vI65aU5zuDtzPi+J1GMIDea9bjAs+WKzvXMrzm+kMAQw
-	 maEeHgU4mcfUSzrwz7pWDQicskhZq/8+O/78iWcE=
-Authentication-Results: mail-nwsmtp-smtp-production-main-97.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: llvm@lists.linux.dev
-Cc: ojeda@kernel.org,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH] remove sysroot assertion in generate_rust_analyzer.py
-Date: Wed, 24 Dec 2025 16:53:43 +0300
-Message-ID: <20251224135343.32476-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="avfM+XUo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766609943; x=1798145943;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=I+aYQvpk/IQ3Z2qc6j/++GXIx14TlmKjZimxO+89TP4=;
+  b=avfM+XUoEgIvKg8e9B8HxAK2kvqUXCTHGLlSBozZ6fXvfxNqLWRekaEs
+   whUBkTmbKZ5SxG0wxmDkMNZq1UTFXa3wYlAcOxuZjhlypSlHatTQp1rpU
+   u6O45hwCCPh8sKLSQMjqw4AakhG2tB9eoay4fRS9HGJ2NfiGGTpbvaN/A
+   DKBHPXut8aEqiW83aANKuOyF+nxZ7wlP275GuyWxnKjb4LEOX5w6keFBx
+   nXsDNnzJae1X3yMbcYvyZQJvJ9prpSDgQMtmmXVpIGpVp6yBx7LerQat2
+   CDrCRobJ2jzBkEsW0jPSkUBBKgPz32ARVq8jl3yok+Igkk+OgBLQ6eH1n
+   A==;
+X-CSE-ConnectionGUID: S7+P6JnWSL2Vadgr7NSdMQ==
+X-CSE-MsgGUID: NzFAMA1qT5OZDEM2/fpYcg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11652"; a="91095213"
+X-IronPort-AV: E=Sophos;i="6.21,174,1763452800"; 
+   d="scan'208";a="91095213"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2025 12:59:03 -0800
+X-CSE-ConnectionGUID: LN1m8mLsTeS1a+hrB2lUkQ==
+X-CSE-MsgGUID: HWb7SWV2TfaY/OJ4xKUFqQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,174,1763452800"; 
+   d="scan'208";a="199997472"
+Received: from igk-lkp-server01.igk.intel.com (HELO 8a0c053bdd2a) ([10.211.93.152])
+  by fmviesa006.fm.intel.com with ESMTP; 24 Dec 2025 12:58:58 -0800
+Received: from kbuild by 8a0c053bdd2a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vYVwe-000000006L2-3j9m;
+	Wed, 24 Dec 2025 20:58:56 +0000
+Date: Wed, 24 Dec 2025 21:58:34 +0100
+From: kernel test robot <lkp@intel.com>
+To: Ke Sun <sunke@kylinos.cn>, Miguel Ojeda <ojeda@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>, Timur Tabi <ttabi@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Benno Lossin <lossin@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	Ke Sun <sunke@kylinos.cn>
+Subject: Re: [PATCH v3 3/4] rust: fmt: Default raw pointer formatting to
+ HashedPtr
+Message-ID: <202512242153.r68Pb25u-lkp@intel.com>
+References: <20251224081315.729684-4-sunke@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251224081315.729684-4-sunke@kylinos.cn>
 
-With nixpkgs's rustc, rust-src component is not bundled
-with the compiler by default and is instead provided from
-a separate store path, so this assumption does not hold.
+Hi Ke,
 
-The assertion assumes these paths are in the same location
-which causes `make LLVM=1 rust-analyzer` to fail on NixOS.
+kernel test robot noticed the following build errors:
 
-Link: https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/565284250
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- scripts/generate_rust_analyzer.py | 3 ---
- 1 file changed, 3 deletions(-)
+[auto build test ERROR on 9448598b22c50c8a5bb77a9103e2d49f134c9578]
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 147d0cc94068..e69fa5e0a9b9 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -213,9 +213,6 @@ def main():
-         level=logging.INFO if args.verbose else logging.WARNING
-     )
- 
--    # Making sure that the `sysroot` and `sysroot_src` belong to the same toolchain.
--    assert args.sysroot in args.sysroot_src.parents
--
-     rust_project = {
-         "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs, args.core_edition),
-         "sysroot": str(args.sysroot),
+url:    https://github.com/intel-lab-lkp/linux/commits/Ke-Sun/lib-vsprintf-Export-ptr_to_hashval-for-Rust-use/20251224-161946
+base:   9448598b22c50c8a5bb77a9103e2d49f134c9578
+patch link:    https://lore.kernel.org/r/20251224081315.729684-4-sunke%40kylinos.cn
+patch subject: [PATCH v3 3/4] rust: fmt: Default raw pointer formatting to HashedPtr
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20251224/202512242153.r68Pb25u-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251224/202512242153.r68Pb25u-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512242153.r68Pb25u-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS= -fno-crash-diagnostics -Wno-error=return-type -Wreturn-type -funsigned-char -Wundef W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
+   make: Entering directory '/kbuild/src/consumer'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in rust/kernel/fmt.rs:30:
+    use core::fmt::{Binary, LowerExp, LowerHex, Octal, Pointer, UpperExp, UpperHex};
+    impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, LowerExp, UpperExp);
+    
+   -use crate::ptr::{HashedPtr, RestrictedPtr, RawPtr};
+   +use crate::ptr::{HashedPtr, RawPtr, RestrictedPtr};
+    // Special handling for Pointer: default to HashedPtr for raw pointers.
+    // This overrides the default Pointer implementation for raw pointers to use hashing,
+    // which is the safe default behavior for kernel pointers.
+>> Diff in rust/kernel/fmt.rs:30:
+    use core::fmt::{Binary, LowerExp, LowerHex, Octal, Pointer, UpperExp, UpperHex};
+    impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, LowerExp, UpperExp);
+    
+   -use crate::ptr::{HashedPtr, RestrictedPtr, RawPtr};
+   +use crate::ptr::{HashedPtr, RawPtr, RestrictedPtr};
+    // Special handling for Pointer: default to HashedPtr for raw pointers.
+    // This overrides the default Pointer implementation for raw pointers to use hashing,
+    // which is the safe default behavior for kernel pointers.
+   make[2]: *** [Makefile:1871: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src/consumer'
+
 -- 
-2.51.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
