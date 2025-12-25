@@ -1,527 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA1330ACF1;
-	Thu, 25 Dec 2025 08:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766651875; cv=none; b=oVHNOrTG77Z+oKf3RbH+I0RuVD68+yynyE2J6+PSrTPW7onmeZAjpz4pSszjWQ598bT39fEmKqfXpLqBhY6slKXgpLuVnwryLnVf/JLwAcmKgosFay4AxKuJFCeYqr8LIRio+oCXLl7Momk8DDXngwF+wy5L4mdrYUL9daf8CGk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766651875; c=relaxed/simple;
-	bh=eBZWbUMtB9g7AP2jiTel5PiCma6wU3T2xSvKajGCa+g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cB73DDQAJ7OqXYCcH205JgpbXI6Cvn7QbNhszxot+BDbve3UNCP/HbuW1KYb0a6Zu6YgIN9RmFAckFdt0w7DXDOdBjkLshVdxSpYmqsBIfFOKDkTeb4Vec/r2tpBLp7vsZLbjhS3vMcBR80lE3te5HG4cJpv8o4DT6uTQssMzdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GO0/MFk+; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BA22EF66E
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Dec 2025 08:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766652796; cv=pass; b=Gk+lzLKeyBHGnh8WG+UzP3PrCJ84oIScjk7MV8IvSQGvs6kA9TVU6Nf1GTdKWFcozhELrQZ9vUpESD9IKpC92wD7deLH6kL5crotuvSJ9mun/4U3wTr27P/z8ePXnhThXXn/zLnpGRGVN3/V5E2WXhnWulbIgr3DVgHkPsZkGjE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766652796; c=relaxed/simple;
+	bh=tYHSTvgoAy9+tJlkd/9ZeuLZQbgHEkcZjkZ6FBldCTI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QY5aFnOzhJhlmzZsz24HOpERizjO082zQ57c6bGgKNq978fSgd07mtcK0GT8GSKtYnpx3v1NVTPLc+73IjoU73w02onspYn5u+h7nUFVh7If22N0AYQ4nVaF4l3WcGhOs1MndlfhnAdqnMpy44Huv0aDHz3AQoF2dOgho1AByqE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R6uqlX8J; arc=pass smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GO0/MFk+"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 46372C19423;
-	Thu, 25 Dec 2025 08:37:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766651875;
-	bh=eBZWbUMtB9g7AP2jiTel5PiCma6wU3T2xSvKajGCa+g=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=GO0/MFk+Zww35ruZgCPHwcBXrPNtjt/EXlCrRRWa+BhlO4aY+LUJta+tEnCaI03vm
-	 XD99w2M6W00RsKhZ8OKwQiosMC2l+WUbj4ubSIlOO4YX0f/9YcHo7vQ81+5Mr6hF+Y
-	 WdILR0Cydgp+KiWVf8GPPzbQ0YA0+OyoWWR/+jPIbZjvuNP8FFA7g+eksy8cQMgsxm
-	 KiDNd/9zrcoSef0qEiBow5URUTVY6dB/0M9Cam8KFrHNp9BTaZlZMcOckLQXLiYelF
-	 pnJhfyxLda3OqOE52o9gcb1X+O0Vvb6czYHWjAbHatqHjnUHmVEEvu/RcWVLiJcd6w
-	 H+tr8DHTpmN1w==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D986E7AD45;
-	Thu, 25 Dec 2025 08:37:55 +0000 (UTC)
-From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
-Date: Thu, 25 Dec 2025 08:37:49 +0000
-Subject: [PATCH v4 3/4] rust: macros: add private doctests for `Into`
- derive macro
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R6uqlX8J"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a2bff5f774so14631165ad.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Dec 2025 00:53:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1766652794; cv=none;
+        d=google.com; s=arc-20240605;
+        b=B38Wfs3EbWMBO3v5sNH8R1BZS/4wI+uRSMh+PI4G6GMBdFaXAyIGe3qdloZ4QxhEPA
+         j84Q63vu7HxyADyCMjfV8+fHrrbGoWeCAxP8TxuZowyy3lhxSyGIgdk+mYDySHyZnSj8
+         RE2CXCax5lCKqR1kCu4SnXtYeNVIke6UnV/qhHZ/8+F75E7hLFWuWSwf1R+JIVMhCjrb
+         W8vwsFJXpDQZ8SZpCAi96euktULHvS5CPCGfaNVixkvtT93K3LzPuAyqT67Pj4Rhl2OW
+         3NY/Q9Tld6SSQBAEbCMgRAC5FQWwcY9M/Nt+UwpPw6peZOoSNWvzVQSo8xuuOi+TRDH3
+         T8pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tYHSTvgoAy9+tJlkd/9ZeuLZQbgHEkcZjkZ6FBldCTI=;
+        fh=zIOHWdN/ypDm5JoNucnKR6J/5USw2zTBD9+idlFtmDo=;
+        b=czJAWJRPOtmhkBIJVfTZOCm7vumoDYpSUmWCaoPjLJ9fSf9UiAVmJNX2ynfdXTuT0N
+         Vf8B+lZ3c68hXOGC9p0bGm8gt5AimMY7UdP1z+WbQMxpAL7u9tsTw/IcG8POlgTuRZIa
+         UEFBwpdTmb/h6WUIJGY0osmuqcDrzTGgd4fnQPr99S9FSQqU8+ysZchfhyp7cd2yk9eW
+         83KRycaKlNDANxy/O2LH8O823vEqz95DC/VenNlaKxmT2wtkHAsMpjVallkN5SdWsQ1/
+         T7aI9T/dRciahxMlR/+j3zHpxLXQHdDmyYgYvmDSFybEXHZUcuWNywQIvGjIO/GhN5Es
+         LTUg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766652794; x=1767257594; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tYHSTvgoAy9+tJlkd/9ZeuLZQbgHEkcZjkZ6FBldCTI=;
+        b=R6uqlX8JHOR4PHsGlYHCRLYyo3rrxWx4YNiL+aY15UDoCOr+NUcSPmD1rBqboFXJdo
+         d2teTZC57LsLjzf1nZ2hpecX7JUBZolWYGsNkuy2XHqn99pn0oIs8etQOWdJutbjH1LS
+         qreLzD20oMdmqQXVj66gaFdmHH/tVnN3TTKx41EBxNYDZQv0HnQn8l4qmQEmFraG2aGP
+         ABTG/gQ9GEhe/nYldl2Lq7UpduT8zzk7wZncZ6R8dkYtYAVhgBBmPpsSjVEVMVcw0y8J
+         EQuvp1QX5tLlB5miXWJdLvQY0jWDB0e7fOFZSVu3fBSq6HcFBGUEijPnoiXzr/Lw34nc
+         sygA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766652794; x=1767257594;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tYHSTvgoAy9+tJlkd/9ZeuLZQbgHEkcZjkZ6FBldCTI=;
+        b=Hm7Qk8uB78FymPnKzuwkjZTRmGZRw7FQ6VG2b3cbyHAX4W29li8hgPGRsAiHoZ0Pf4
+         7CIJpJs2ORTQOfUWAQUN7feQuD4mog2HShviw5icS1k7cOSrRXou7DYkODMWxGShmqNv
+         ZTTBwxAlB9bDTJAsgJH8k0yx/dxIYzs6dDlhM/XzXsSDK35JwinEj1eu8037/VLiuCWU
+         KPBjsvdjKvObjEEPJ6zOWPhMBHfk4OJ401stJ1aH9Fj7SQjXbkqJeBGvtvsqi4V38XnF
+         DvkxWlNlLu9lmzycp7l90hxn9xz9LC3TH+GU1t57lxK6WCzRHUytWkSwchkuxhrZlUBo
+         EuTw==
+X-Forwarded-Encrypted: i=1; AJvYcCULBfkNX76V15bNK+k9iCx0bqkNM74fcD3ocOov0dJm+ujaEMRwgBfsqu1viBsO+HghjV3AEFkL0QMtiMOTYA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9WCktJuPoyD2G3kQhx16csGD0leFGhatn6tTOBx1RiC3yGR7i
+	0/mU/14C4fI8NzdNaFCw9e+LbEmyaCK5PJmZd4OXq1xVVfKrMOV337GwUsQvnRfiowW5y3qL2jn
+	dAUf/HMeyNJoBZnZSss9Iul4LbDoJn8s=
+X-Gm-Gg: AY/fxX52EPRerP4ZtX4LoxHyUpLNPzaO8v7NLzzEuthRgMtSYSvCh0zTKlgRgSLbLxx
+	Sh1A3nY3Tzl/QRUiumX7bc+PP+7ysX5pG+Ct4TaCef5u4qBHKT5i+SiIeX+bpi7C/jjkSkfh4a2
+	ie9FtA0gw2rpg36IwhkDSreOungsuR54HE7+w82D68q4KGTqSXw+cnOmqCQ5+rKBRSrV870v5Uo
+	qDaaP7om+dMFeq6RtASSEBkHB0OKS9Y+u+LKlVEOYgG5NXJwGqEdvFzIWs96cBQZB4E74FV2uOr
+	wFSHG3NqQS4g3RQJNX6G2ElJFYlYslsfp1z2Kqbdtcit6lafK6HLCtGxuW33oLpQHEozIWModhh
+	3LcTp9kcEnbyC
+X-Google-Smtp-Source: AGHT+IGxHS3T41bMJah+h2fxoRQGgY2sv8KmscfPcELHkB8uJ/e3gNBZFklo//OrPgmq2bwh2jTeW0bN0bzjOW+vJfA=
+X-Received: by 2002:a05:7300:881a:b0:2a4:3593:5fc6 with SMTP id
+ 5a478bee46e88-2b05ea06747mr11031639eec.0.1766652794240; Thu, 25 Dec 2025
+ 00:53:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251225-try-from-into-macro-v4-3-4a563d597836@gmail.com>
-References: <20251225-try-from-into-macro-v4-0-4a563d597836@gmail.com>
-In-Reply-To: <20251225-try-from-into-macro-v4-0-4a563d597836@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- nouveau@lists.freedesktop.org, Jesung Yang <y.j3ms.n@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1766651873; l=12327;
- i=y.j3ms.n@gmail.com; s=20251225; h=from:subject:message-id;
- bh=lMOPIc4clzbCypgXQIv3rNSmwd950xQ9+ntiFJzHqx4=;
- b=T6p9JQKyPNjovnL84Q1S3wtM1tzNhIr3rm4p87AtpW7GOZWsR6H2HEDWIsDNdhCNbb1lFdv9o
- A+zo9xyyrgPBpL3GHCsJ/uaqKUT0pR7B5uyNv+5w7sIzcFglQrx+AY+
-X-Developer-Key: i=y.j3ms.n@gmail.com; a=ed25519;
- pk=2yVgO1I+y7kkFSF2Dc/Dckj4L2FgRnvmERHFt4bspbI=
-X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/20251225 with
- auth_id=586
-X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
-Reply-To: y.j3ms.n@gmail.com
+References: <20251215-transmute_unit-v4-0-477d71ec7c23@nvidia.com>
+ <20251215-transmute_unit-v4-1-477d71ec7c23@nvidia.com> <DEYMFYQH2GY0.3HF506HL8OHY6@kernel.org>
+ <DF1DP93V7IQ2.2BA2EV61WUA6C@nvidia.com>
+In-Reply-To: <DF1DP93V7IQ2.2BA2EV61WUA6C@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 25 Dec 2025 09:53:01 +0100
+X-Gm-Features: AQt7F2r48akHot5jZJNdEdgXb5JrNE8DTBABH7PSmZUQtoXBVsr75a95o5RFSCs
+Message-ID: <CANiq72kc_SY9Nsy0kYDa__Uqjt3WqNnT-yfqvF=1La7ox2Fzyg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] rust: transmute: implement FromBytes and AsBytes
+ for inhabited ZSTs
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Timur Tabi <ttabi@nvidia.com>, Edwin Peer <epeer@nvidia.com>, 
+	Eliot Courtney <ecourtney@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jesung Yang <y.j3ms.n@gmail.com>
+On Thu, Dec 18, 2025 at 2:32=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
+>
+> Miguel, are you ok if we take this one through the drm-rust tree? Nova
+> is likely to make use of it this cycle.
 
-Add internal doctests to verify the `Into` derive macro's logic. This
-ensures comprehensive testing while keeping the public-facing
-documentation compact and readable.
+Sure:
 
-Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
----
- rust/macros/convert.rs | 436 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 436 insertions(+)
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-diff --git a/rust/macros/convert.rs b/rust/macros/convert.rs
-index d49a58e85de16d13ce9a51cafa31940e42c5840f..63b391a47867fde3ed3d4873daccfc50b0872314 100644
---- a/rust/macros/convert.rs
-+++ b/rust/macros/convert.rs
-@@ -529,3 +529,439 @@ fn is_valid_primitive(ident: &Ident) -> bool {
-             | "isize"
-     )
- }
-+
-+mod derive_into_tests {
-+    /// ```
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(u8)]
-+    /// enum Foo {
-+    ///     // Works with const expressions.
-+    ///     A = add(0, 0),
-+    ///     B = 2_isize.pow(1) - 1,
-+    /// }
-+    ///
-+    /// const fn add(a: isize, b: isize) -> isize {
-+    ///     a + b
-+    /// }
-+    ///
-+    /// assert_eq!(0_u8, Foo::A.into());
-+    /// assert_eq!(1_u8, Foo::B.into());
-+    /// ```
-+    mod works_with_const_expr {}
-+
-+    /// ```
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(bool)]
-+    /// enum Foo {
-+    ///     A,
-+    ///     B,
-+    /// }
-+    ///
-+    /// assert_eq!(false, Foo::A.into());
-+    /// assert_eq!(true, Foo::B.into());
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(bool)]
-+    /// enum Foo {
-+    ///     // `-1` cannot be represented with `bool`.
-+    ///     A = -1,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(bool)]
-+    /// enum Foo {
-+    ///     // `2` cannot be represented with `bool`.
-+    ///     A = 2,
-+    /// }
-+    /// ```
-+    mod overflow_assert_works_on_bool {}
-+
-+    /// ```
-+    /// use kernel::{
-+    ///     macros::Into,
-+    ///     num::Bounded, //
-+    /// };
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<i8, 7>)]
-+    /// enum Foo {
-+    ///     A = -1 << 6,      // The minimum value of `Bounded<i8, 7>`.
-+    ///     B = (1 << 6) - 1, // The maximum value of `Bounded<i8, 7>`.
-+    /// }
-+    ///
-+    /// let foo_a: Bounded<i8, 7> = Foo::A.into();
-+    /// let foo_b: Bounded<i8, 7> = Foo::B.into();
-+    /// assert_eq!(Bounded::<i8, 7>::new::<{ -1_i8 << 6 }>(), foo_a);
-+    /// assert_eq!(Bounded::<i8, 7>::new::<{ (1_i8 << 6) - 1 }>(), foo_b);
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<i8, 7>)]
-+    /// enum Foo {
-+    ///     // `1 << 6` cannot be represented with `Bounded<i8, 7>`.
-+    ///     A = 1 << 6,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<i8, 7>)]
-+    /// enum Foo {
-+    ///     // `(-1 << 6) - 1` cannot be represented with `Bounded<i8, 7>`.
-+    ///     A = (-1 << 6) - 1,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```
-+    /// use kernel::{
-+    ///     macros::Into,
-+    ///     num::Bounded, //
-+    /// };
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<i8, 1>)]
-+    /// enum Foo {
-+    ///     A = -1, // The minimum value of `Bounded<i8, 1>`.
-+    ///     B,      // The maximum value of `Bounded<i8, 1>`.
-+    /// }
-+    ///
-+    /// let foo_a: Bounded<i8, 1> = Foo::A.into();
-+    /// let foo_b: Bounded<i8, 1> = Foo::B.into();
-+    /// assert_eq!(Bounded::<i8, 1>::new::<{ -1_i8 }>(), foo_a);
-+    /// assert_eq!(Bounded::<i8, 1>::new::<{ 0_i8 } >(), foo_b);
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<i8, 1>)]
-+    /// enum Foo {
-+    ///     // `1` cannot be represented with `Bounded<i8, 1>`.
-+    ///     A = 1,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<i8, 1>)]
-+    /// enum Foo {
-+    ///     // `-2` cannot be represented with `Bounded<i8, 1>`.
-+    ///     A = -2,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```
-+    /// use kernel::{
-+    ///     macros::Into,
-+    ///     num::Bounded, //
-+    /// };
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<i32, 32>)]
-+    /// #[repr(i64)]
-+    /// enum Foo {
-+    ///     A = i32::MIN as i64,
-+    ///     B = i32::MAX as i64,
-+    /// }
-+    ///
-+    /// let foo_a: Bounded<i32, 32> = Foo::A.into();
-+    /// let foo_b: Bounded<i32, 32> = Foo::B.into();
-+    /// assert_eq!(Bounded::<i32, 32>::new::<{ i32::MIN }>(), foo_a);
-+    /// assert_eq!(Bounded::<i32, 32>::new::<{ i32::MAX }>(), foo_b);
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<i32, 32>)]
-+    /// #[repr(i64)]
-+    /// enum Foo {
-+    ///     // `1 << 31` cannot be represented with `Bounded<i32, 32>`.
-+    ///     A = 1 << 31,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<i32, 32>)]
-+    /// #[repr(i64)]
-+    /// enum Foo {
-+    ///     // `(-1 << 31) - 1` cannot be represented with `Bounded<i32, 32>`.
-+    ///     A = (-1 << 31) - 1,
-+    /// }
-+    /// ```
-+    mod overflow_assert_works_on_signed_bounded {}
-+
-+    /// ```
-+    /// use kernel::{
-+    ///     macros::Into,
-+    ///     num::Bounded, //
-+    /// };
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<u8, 7>)]
-+    /// enum Foo {
-+    ///     A,                // The minimum value of `Bounded<u8, 7>`.
-+    ///     B = (1 << 7) - 1, // The maximum value of `Bounded<u8, 7>`.
-+    /// }
-+    ///
-+    /// let foo_a: Bounded<u8, 7> = Foo::A.into();
-+    /// let foo_b: Bounded<u8, 7> = Foo::B.into();
-+    /// assert_eq!(Bounded::<u8, 7>::new::<{ 0 }>(), foo_a);
-+    /// assert_eq!(Bounded::<u8, 7>::new::<{ (1_u8 << 7) - 1 }>(), foo_b);
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<u8, 7>)]
-+    /// enum Foo {
-+    ///     // `1 << 7` cannot be represented with `Bounded<u8, 7>`.
-+    ///     A = 1 << 7,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<u8, 7>)]
-+    /// enum Foo {
-+    ///     // `-1` cannot be represented with `Bounded<u8, 7>`.
-+    ///     A = -1,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```
-+    /// use kernel::{
-+    ///     macros::Into,
-+    ///     num::Bounded, //
-+    /// };
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<u8, 1>)]
-+    /// enum Foo {
-+    ///     A, // The minimum value of `Bounded<u8, 1>`.
-+    ///     B, // The maximum value of `Bounded<u8, 1>`.
-+    /// }
-+    ///
-+    /// let foo_a: Bounded<u8, 1> = Foo::A.into();
-+    /// let foo_b: Bounded<u8, 1> = Foo::B.into();
-+    /// assert_eq!(Bounded::<u8, 1>::new::<{ 0 }>(), foo_a);
-+    /// assert_eq!(Bounded::<u8, 1>::new::<{ 1 }>(), foo_b);
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<u8, 1>)]
-+    /// enum Foo {
-+    ///     // `2` cannot be represented with `Bounded<u8, 1>`.
-+    ///     A = 2,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<u8, 1>)]
-+    /// enum Foo {
-+    ///     // `-1` cannot be represented with `Bounded<u8, 1>`.
-+    ///     A = -1,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```
-+    /// use kernel::{
-+    ///     macros::Into,
-+    ///     num::Bounded, //
-+    /// };
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<u32, 32>)]
-+    /// #[repr(u64)]
-+    /// enum Foo {
-+    ///     A = u32::MIN as u64,
-+    ///     B = u32::MAX as u64,
-+    /// }
-+    ///
-+    /// let foo_a: Bounded<u32, 32> = Foo::A.into();
-+    /// let foo_b: Bounded<u32, 32> = Foo::B.into();
-+    /// assert_eq!(Bounded::<u32, 32>::new::<{ u32::MIN }>(), foo_a);
-+    /// assert_eq!(Bounded::<u32, 32>::new::<{ u32::MAX }>(), foo_b);
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<u32, 32>)]
-+    /// #[repr(u64)]
-+    /// enum Foo {
-+    ///     // `1 << 32` cannot be represented with `Bounded<u32, 32>`.
-+    ///     A = 1 << 32,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<u32, 32>)]
-+    /// #[repr(u64)]
-+    /// enum Foo {
-+    ///     // `-1` cannot be represented with `Bounded<u32, 32>`.
-+    ///     A = -1,
-+    /// }
-+    /// ```
-+    mod overflow_assert_works_on_unsigned_bounded {}
-+
-+    /// ```
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(isize)]
-+    /// #[repr(isize)]
-+    /// enum Foo {
-+    ///     A = isize::MIN,
-+    ///     B = isize::MAX,
-+    /// }
-+    ///
-+    /// assert_eq!(isize::MIN, Foo::A.into());
-+    /// assert_eq!(isize::MAX, Foo::B.into());
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(isize)]
-+    /// #[repr(usize)]
-+    /// enum Foo {
-+    ///     A = (isize::MAX as usize) + 1
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(i32)]
-+    /// #[repr(i64)]
-+    /// enum Foo {
-+    ///     A = (i32::MIN as i64) - 1,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(i32)]
-+    /// #[repr(i64)]
-+    /// enum Foo {
-+    ///     A = (i32::MAX as i64) + 1,
-+    /// }
-+    /// ```
-+    mod overflow_assert_works_on_signed_int {}
-+
-+    /// ```
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(usize)]
-+    /// #[repr(usize)]
-+    /// enum Foo {
-+    ///     A = usize::MIN,
-+    ///     B = usize::MAX,
-+    /// }
-+    ///
-+    /// assert_eq!(usize::MIN, Foo::A.into());
-+    /// assert_eq!(usize::MAX, Foo::B.into());
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(usize)]
-+    /// #[repr(isize)]
-+    /// enum Foo {
-+    ///     A = -1,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(u32)]
-+    /// #[repr(i64)]
-+    /// enum Foo {
-+    ///     A = (u32::MIN as i64) - 1,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(u32)]
-+    /// #[repr(i64)]
-+    /// enum Foo {
-+    ///     A = (u32::MAX as i64) + 1,
-+    /// }
-+    /// ```
-+    mod overflow_assert_works_on_unsigned_int {}
-+
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(Bounded<i8, 7>, i8, i16, i32, i64)]
-+    /// #[repr(i8)]
-+    /// enum Foo {
-+    ///     // `i8::MAX` cannot be represented with `Bounded<i8, 7>`.
-+    ///     A = i8::MAX,
-+    /// }
-+    /// ```
-+    ///
-+    /// ```compile_fail
-+    /// use kernel::macros::Into;
-+    ///
-+    /// #[derive(Into)]
-+    /// #[into(i8, i16, i32, i64, Bounded<i8, 7>)]
-+    /// #[repr(i8)]
-+    /// enum Foo {
-+    ///     // `i8::MAX` cannot be represented with `Bounded<i8, 7>`.
-+    ///     A = i8::MAX,
-+    /// }
-+    /// ```
-+    mod any_into_target_overflow_is_rejected {}
-+}
+(Catching up on emails...)
 
--- 
-2.47.3
-
-
+Cheers,
+Miguel
