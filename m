@@ -1,95 +1,132 @@
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565682FD694
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Dec 2025 07:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6D72D9EC4;
+	Thu, 25 Dec 2025 08:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766649413; cv=none; b=rhT7bI/PuwKkA8vhk3FQOKLJzOJTQpKxG2T4cViIubEGFs/lAqdo/dzck6HPCCQcPiND7rT1V1XvHbj0p5X+a2RGDVAsL6R/fM0Dsbwe5bgW3SfyWrxnT6sOkHpef41PWqLOPntqOA+Yh0uzzZ3/93GGUS3/PSJJAr11H/wIFRs=
+	t=1766651875; cv=none; b=q0t7GWkat/5cV7DUUvPoDREzj/7l+V6/pE92EHTCZbwAkgvJKPQZIQ19HNfan1RZ2DFub2wW7y9GFGyT4+QP3s8kuvSUat4J3XtlZfJlmLuGGHEZS9OeE7O3hEwzrAES+MoVIVhmuEHjSbfMx+mwa5bpV54dewgRbuf8wgiD5mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766649413; c=relaxed/simple;
-	bh=Jkb7kGbg83vVfRQBzRktntKWITXsGXoxh8aDW2gaq4s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D5WCKugTLAuBKBwjafBfrXcUMQ4+/cw2r3uVgKm/et3xrrU52ErCfQ3iL+BsNATe56eBjUHRm7lrLNlmi8PCisECimeVPiSNiHL/SSwvrTgusH7580WPha0IJ0veHfbU4V60DMuPunUNDZkbDvFYBi4HOQGztLaP1/51wpymKmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PUraQRDI; arc=none smtp.client-ip=209.85.160.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766651875; c=relaxed/simple;
+	bh=gtGFPnrT1tGUALhUzT4VmeMkygUixFFu28cqcGEINdg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RTUnpAMiYL2B3baIbPluVYwuWWs4RxCefaHl3W6Z4Rr5HD8aLSXNX22g4jORB9gnh/INv/3GKc3XgY31jAr8T7Uq2bHppVWxmgOlt72zFsoeqdeRLk7uHpkehq2lbWbxfg3AtU/QlrAOCGF9ehpG59d45GVmi4UHPcVuNLP1c48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t1VSkYPm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PUraQRDI"
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-3ec96ee3dabso5098359fac.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Dec 2025 23:56:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766649411; x=1767254211; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Jkb7kGbg83vVfRQBzRktntKWITXsGXoxh8aDW2gaq4s=;
-        b=PUraQRDIb4kRJb7++IHIp0ZETEbvicAMSDTZIxtSkEBukjH+YtyTlqugkx35lgHLga
-         QaNLwG5KBN3ipOyscXeYLmxdEIDzcKjwZUsyurNvpUbJ2NcJjDe+E5BG7KZjp0kqhQcp
-         bPot1qK7J8vuJGS49veOm2uKODPFcwT0W67FzVYm7hqLb32weSuWJDZNCvFmSIFFD4JC
-         KCNBvMjgzl2moiO0cNhItioVwU47mNqeQxpMMJQi2vGEjTfNW7Q+0jdmh92vTLleq6hb
-         cdIqT2gBkzFkvGD3+jEIidoijjq3Of3kSpgeOYRXWIqbMoA4aI4D50va+fuvXz8ryxGy
-         jfXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766649411; x=1767254211;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Jkb7kGbg83vVfRQBzRktntKWITXsGXoxh8aDW2gaq4s=;
-        b=ThCCPZD5fErSXEhDllKML9XEo18kGLHmR+BvAwKMO1HNC9hhJiP7TqzaGwxuWm5ryA
-         9jVp7O15uPC5TJdGPMImmSCE3rWYQ7CISXNBpbe6aulsggXC+7meYCkgkYLb8owu1v8S
-         OolJJzEig1a/ijvllukGRbXmIdof6EzOCD/7zspDzv8mao00xPPkJKdMnC739gq9hTRJ
-         yuEzidXNfqCfu0IoloSMy2GRfI2oYSGF/8MJU5zBsvbmBmyzfDjZ6v584qsl5/+93Z1l
-         vUOIjTKZm21VVSenVXi2Damx7q7YtXuqX7WbvXYcj2bqMWrhHFxixFfdi26EmFLnWjl5
-         22gw==
-X-Forwarded-Encrypted: i=1; AJvYcCWvi8Y8Nvhp8C+mYwtb2rV8Ri0g08YM5cnx//5Ie/+ANdxU9EZKOLVdS3PnZOQ4LSp4KO1K0j4M9Fy+AFrB3w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKVed3M6jkFvV3JYFbnz6GNOe69aRKswAr2ad+e9BqIcvIJcuP
-	H/KJjRlrOxxY8O3XRyOFGjjR16TSZeoasTEALF7j4k5ZpK1yS7v+Oygiqvquw06xtZVdxXadJns
-	2uPn/Uv8EVsAUpfa95mRaNnkwNhyRdqetGuzU
-X-Gm-Gg: AY/fxX5yYkXoTQh2Pe/ekGHWuPWdRX3i+I9yQxho2DrvEaS3Ljlp64EyAvvsdRes5xC
-	LREjcVsimPo2T+G7sSxX5xNOT7xMti49OON7Yk8H2ox8SFu2pbGvRRqbVB/KeQLFRTVLRscTMF7
-	mu0fbY6Iu4nniycgihYKZ0MAsf59Klch3hnvPH/eGYPq/0hnCcOgPJiFvET7Atd2n827zZ/cq8c
-	oH4vE+rx/hAmm4CffI5YAUa5+6aN6HUS4MTdfSlx4aqcNxgkUqk+gkqssHYHplk6tlQN6c=
-X-Google-Smtp-Source: AGHT+IHjjISiJB64hPaDzLvcDDJ1oFaUtkQ5hlp7Bgc2Mtq04qc4sWgRQ3cAw2CDCD0iKzI/6zYZU7KrXzFALJsjnbo=
-X-Received: by 2002:a4a:db6d:0:b0:659:9a49:8fbd with SMTP id
- 006d021491bc7-65d0eb309aamr6233965eaf.54.1766649411188; Wed, 24 Dec 2025
- 23:56:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t1VSkYPm"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1CDDBC4CEF1;
+	Thu, 25 Dec 2025 08:37:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766651875;
+	bh=gtGFPnrT1tGUALhUzT4VmeMkygUixFFu28cqcGEINdg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=t1VSkYPmAnxYAk7Z3lA/s1fNjrVbJjgtLfkTYZ5WA0s1CjWzPeFlLUiszFVNsv/nx
+	 2TsaFcKirzK0x+4aEXwmxwtBs3wk2xCE8rbjbxiNnzB/HI0i54W1mXTcsy9niGdm3A
+	 Edlw5KFhj4Tnaz3RMdDoXYcNHrSZvlRSWY/BkKq+KKgX3viHJqYSiYcZMwqzsCCL6C
+	 lm3P8abdwZNP8HZgV3QAMaEHi6QNJgRChAUc2fJIY0hViE57mx067NES4V5ohNNQ/q
+	 0/aOaRp/xOhn2x0n1YHFpjRIQut+Ntd+N/2FaStvxYWkfIh208qgiDsO2a8xh/eZjI
+	 hZ++a4qmOD6mQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C54FE776C0;
+	Thu, 25 Dec 2025 08:37:55 +0000 (UTC)
+From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
+Subject: [PATCH v4 0/4] rust: add `TryFrom` and `Into` derive macros
+Date: Thu, 25 Dec 2025 08:37:46 +0000
+Message-Id: <20251225-try-from-into-macro-v4-0-4a563d597836@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1766544407.git.y.j3ms.n@gmail.com> <DF74FEXHESCV.3L0KB1DLDMFTV@nvidia.com>
-In-Reply-To: <DF74FEXHESCV.3L0KB1DLDMFTV@nvidia.com>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Thu, 25 Dec 2025 16:56:40 +0900
-X-Gm-Features: AQt7F2qc1qa8xEDR7xtZ51CzGnbsA1YjyS535MDQSLxKRj43RK8il4FSew6ZvRM
-Message-ID: <CA+tqQ4KpWmjJfgBdphraHJrxDjp5J3Tq3ZN-o54wBUNpij5dOQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] rust: add `TryFrom` and `Into` derive macros
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	nouveau@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANr3TGkC/x3MQQqAIBBA0avIrBsoyYiuEi3ExppFGqNEId09a
+ fkW/xdIJEwJJlVA6OLEMVT0jQK327AR8loNutWm09pglge9xAM55IiHdRKxGwazttY770ao5Sn
+ k+f6v8/K+H1wD4FVlAAAA
+X-Change-ID: 20251225-try-from-into-macro-1665d0afcfc8
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ nouveau@lists.freedesktop.org, Jesung Yang <y.j3ms.n@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766651873; l=2575;
+ i=y.j3ms.n@gmail.com; s=20251225; h=from:subject:message-id;
+ bh=gtGFPnrT1tGUALhUzT4VmeMkygUixFFu28cqcGEINdg=;
+ b=oigpxcVK0qRw2hfEHNznCMSACcO+TLwNfRoj4zhgyPnUAXGPdYnQkaUM5e5vnt+cUVr6z3VEu
+ VFUC8d3eOCQBpAxbPgueUtNdXE75ng8xK66QUGb1+caZvSXQNDDO6JB
+X-Developer-Key: i=y.j3ms.n@gmail.com; a=ed25519;
+ pk=2yVgO1I+y7kkFSF2Dc/Dckj4L2FgRnvmERHFt4bspbI=
+X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/20251225 with
+ auth_id=586
+X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
+Reply-To: y.j3ms.n@gmail.com
 
-On Thu, Dec 25, 2025 at 4:32=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
->
-> I'm really looking forward to reviewing this one, but for some reason
-> patches 1 and 2 appear to not have been sent. They don't even appear on
-> lore: https://lore.kernel.org/all/cover.1766544407.git.y.j3ms.n@gmail.com=
-/
+I am resending the full series (with minor typo fixes) as Gmail
+consistently dropped several patches in v3.
 
-Hi,
+This patch series introduces derive macros for the `TryFrom` and `Into`
+traits.
 
-I'm having some issues with Gmail. It's blocking some of the patches
-in the series [1]. I will resend the whole series using b4 to avoid further
-issues. Apologies for the noise.
+Primary updates in v3:
+- Adopt `syn` for improved macro parsing.
+- Allow `kernel::num::Bounded` to be specified in helper attributes,
+  enabling the generation of `TryFrom` and `Into` implementations for
+  types with restricted bit ranges as required by the nova-core [1].
+- Add compile-time overflow assertion to ensure that enum discriminants
+  fit within the types being converted to or from, preventing silent
+  overflows.
 
-[1] https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/5652=
-66787
+Note: 1015+ insertions are purely from doctests. Most of them are kept
+private to keep the public API documentation clean and simple for
+users. This might not be the usual way of doing things, but for now I
+don't think I have a better option. Feedback and suggestions are always
+appreciated.
+
+[1] https://lore.kernel.org/rust-for-linux/DDHU4LL4GGIY.16OJMIL7ZK58P@nvidia.com/
+
+Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
+---
+Changes in v4:
+- Fix typos.
+- Link to (broken) v3: https://lore.kernel.org/rust-for-linux/cover.1766544407.git.y.j3ms.n@gmail.com/
+
+Changes in v3:
+- Use the vendored `syn` and `quote` crates.
+- Support `kernel::num::Bounded`.
+- Add compile-time overflow assertion.
+- Add a comment about `#[repr(C)]` enums.
+- Drop Tested-by and Reviewed-by tags, as the code structure has
+  changed substantially. (Thanks for the previous reviews and testing!)
+- Link to v2: https://lore.kernel.org/rust-for-linux/cover.1755235180.git.y.j3ms.n@gmail.com/
+
+Changes in v2 (no functional changes):
+- Split the patch "rust: macros: extend custom `quote!()` macro"
+  into two separate patches.
+- Remove unnecessary spaces between tags.
+- Use a consistent commit subject prefix: "rust: macros:".
+- Add Tested-by tags.
+- Link to v1: https://lore.kernel.org/rust-for-linux/cover.1754228164.git.y.j3ms.n@gmail.com/
+
+---
+Jesung Yang (4):
+      rust: macros: add derive macro for `Into`
+      rust: macros: add derive macro for `TryFrom`
+      rust: macros: add private doctests for `Into` derive macro
+      rust: macros: add private doctests for `TryFrom` derive macro
+
+ rust/macros/convert.rs | 1546 ++++++++++++++++++++++++++++++++++++++++++++++++
+ rust/macros/lib.rs     |  319 ++++++++++
+ 2 files changed, 1865 insertions(+)
+---
+base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
+change-id: 20251225-try-from-into-macro-1665d0afcfc8
+
+Best regards,
+-- 
+Jesung Yang <y.j3ms.n@gmail.com>
+
+
