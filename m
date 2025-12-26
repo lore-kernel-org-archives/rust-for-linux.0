@@ -1,282 +1,1117 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11181D63EF
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 15:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583A324CEEA
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 15:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766761812; cv=none; b=mHkeLiV8Fxx/SNUEwrbH4/6dxrGJz1iJejEKn1KTRM4G6ljG5O99+rjrRt0yONWnO1bgAvF41EkgmbHjHyXVt11JtgRIxHa/MOg9TBghDKyqliQK7yu0bwlY79U8N711EgtcRUy/sD90I4BWE1nNYUT+CAsG11KWJFEDiRJ7L3E=
+	t=1766761817; cv=none; b=C/QsexTdyhWNXUBZA9gNZ+Q6mMNNAPQs0l+qVvG/2Al+BhJNvu9CfqqMmbloaqIDfCYIzXeSGH7/HIaEpt5Wf4A0j5w7zGCzH1DdB7oQ68ezbb5cftnfPrOqDy1iAyOVZMEspCoE33vFaIBtQO+uP/U3WdJV5UG3wpA8GvZ98Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766761812; c=relaxed/simple;
-	bh=9cJ5qY6CSdJWPEcWxBMLinhj9l6uacWLavuZ9cqDIJA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OIjhpwlJpsrPeOLrNj58iZD7irAjApSc21mhjE+pDc6rFv4BJ8IHzd12esXiSeNqtrabsNewCZJhtVLOX+bgfQFneum41ASLh+zZBfKB7MIAVzJ4l08rUfyB608SpSK3bDEPxBc12oZNb6lJpQ6E5uwYdVFi2o853Z/e8WGsJUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PV0wtTEX; arc=none smtp.client-ip=209.85.218.54
+	s=arc-20240116; t=1766761817; c=relaxed/simple;
+	bh=7Vq2oZ4TXN7gEy7yy3JkMPjKjhu775k0GOzgiKeabK0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ON5MgspI0jbtI9wkgVYnUwIBFeqOwJ9YzO7AFzQY4H3wQotL2Hedn1rPmIH4yLugDMPDGRD5EhcQhRKczhjHgTUk6SInKQa6dZkQIswwIz8oAr47M2HI3PbmLOx+Ez6FLOOW6v2zaJOsHeagUPhz7PUtthmdEOggk4gz/FXzKfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JfmFzuR6; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PV0wtTEX"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b79f8f7ea43so1614186866b.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 07:10:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JfmFzuR6"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7b7828bf7bcso8411328b3a.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 07:10:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766761809; x=1767366609; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Li6nID7Dm0vkPKdmH0SYT2o0ZF8gILQbk9Xv2tEcANI=;
-        b=PV0wtTEXwh2DaIQSUMHWSL3gi+RMWoRwcO42f2BKSQKfSm2PA2Iu46Lrb2OfLbYtSV
-         p/opHaWLCyiNv06rL4YWFTSZgPpRUlKbFvWJmVZ0A0rIcakxs8OXcUoo6u8NA+FA/ICu
-         3xShxByO8BCwBGtoprY86Ck0mE2QJvouxIyr9HSmmWNTLwV7SLIM21YjCmVjCAXxBvQW
-         bFPMxboC1iWQZT0nlTsgTdJE9hcpsLNb4gKH18OtJPM+QyhXAdsj4ir54xtDXL4QX8jF
-         TJQE8vkSPNoWi6lmWlNcGOsQFppo1n3+AtOmR15uILNmRU/kMCNfyFxbRvHhzEwKICDK
-         07Bw==
+        d=gmail.com; s=20230601; t=1766761812; x=1767366612; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jXjhecXMvTuilyVrt8i61jpnzXKHviPZ0AeF4RHpqT4=;
+        b=JfmFzuR6TUnifuhwNIwJDmBOURu/dsv2xg5qXeXikNCmpljJMzEcozOslwPk6rd4e3
+         u6ErvHI82kAzZmbjbHm/fhe5Y7Jknnytwji+V6FbgzLjajqn1l+zHb1cz8H5SxJrJcB4
+         dNIW2QlLjh7MC+kqO59qYCjqwZm/mpWMi4Jls2ApIlLzhcdyzisxLRj9KctUAozMb6uJ
+         AeI33F3fUZDNQqok2Eb+HX6KOMec7cJHgvyfYj8lAAUScIapqbhAKwEffUK4rscvmdUn
+         N4hYho6KO/+H71t2J+KxrARTNpWvr1uJUhi6HU+5Ii7rdud39/zjN1H2aSchRe48Qybd
+         PT7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766761809; x=1767366609;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Li6nID7Dm0vkPKdmH0SYT2o0ZF8gILQbk9Xv2tEcANI=;
-        b=dySxBonNWIiAjP0IRUpuTXH33J5vyZE00QyiNiVnE6LC3SQsrLMEaGYIqnVDsRWwpd
-         +3HxwtF8vh1ZiazolGS8xRTHtG21pRU/Poo6ovQ7gJkqDu66Tkuls9JpicrnFcimWuX9
-         +pz7edgC4e67ihdRR8omeuC2G0uPPp43NyBf+MHK0WmgaZFusa4c3Rq5cMEEmKFm/VtR
-         cd9nyDYoC1WNQHpCnbCLBXTsL8bP6pDy3rosPrmLAHa7yKlvIEM45npt272Bojzad1VA
-         BiLRn8BUm2aDHRUKTy4BdxmDAnH6T6OjwnFmddoqLyBjTngUI5OJ2I4JQHi18ei3II3q
-         1ENA==
-X-Forwarded-Encrypted: i=1; AJvYcCXpxS15CdjMBKQ0xd+UcZuYe2Y0P+2nKdt+N2tTNvjr4MNxSITyBaplA3zJbSICCBT+dpwolyuucSGFiQ81lA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsQNL8o3zcmvKgis9K+gM/Yi/Z2egk+fR0V7jrS6fjzm4ukYJ7
-	Y3QKQCTsdgXaESg2JE9LPkAuPjobY/2xtRUCK8TAUrdVsBiFDTnviNrA
-X-Gm-Gg: AY/fxX4NsTPg09PMS1Ox468oDFv5dqHXFoKENg5CqSunSmawmI1ufs4lGgQY8yQqD3Z
-	+a5BDer4Hgjn3zrTyhaMIM3I263iGNN227w6GArDzPDSjXy4kjfer1MQB16vK0h8pOXCfGRH3zz
-	j4FQR7kCvw9sYUGVwIGNMWRCQ1A9R9sUe8mwP9xlD4Qxm53KvBs04Kg06RYl67/ALgzhQq7BC9h
-	syTUV72r/601wJoID97R+TjEarBVVHUlanGHwXTUZoch0T7JkgX8tvXiLDlRz344PCBRvhCowHb
-	394FbpcOzKFci0yjk3SWH6J6EtvnPMoSvrSAOZquLdFvXxtQ+hCa8foYIKqonHqJvGcg5yjuwJC
-	BndUdD/svISgEVM8GW3YZTvTUGyFda8MU75iM08Gqj48Od624w22zjg8rbiOGWzD6s+Cy9qsvRk
-	/KiOuoeblHFCLTOjkp3pghbM18UHQiAq+qNQ22TAUxrjuuu06jNPV7mhDCwVxhjGkNCmNaeL5aU
-	5JzzGIYI4KqdUs0NTIGU8VPrsvZsq1/DO68noXOKNQajg==
-X-Google-Smtp-Source: AGHT+IFF3wxJjr2teMyI6xAeqH8enn81h90yFaKuH5/HmUEa3MwyEL+ShxML9eJ4710QnAKpzhsuzQ==
-X-Received: by 2002:a17:906:99c3:b0:b79:f9b4:4c5d with SMTP id a640c23a62f3a-b803715359emr2518098566b.39.1766761808675;
-        Fri, 26 Dec 2025 07:10:08 -0800 (PST)
-Received: from ?IPV6:2003:df:bf2d:e300:c021:66e1:bdea:4b58? (p200300dfbf2de300c02166e1bdea4b58.dip0.t-ipconnect.de. [2003:df:bf2d:e300:c021:66e1:bdea:4b58])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037f37edasm2376025266b.58.2025.12.26.07.10.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Dec 2025 07:10:08 -0800 (PST)
-Message-ID: <fb0f146c-8d0d-47e0-82ae-e815eb9bd2dc@gmail.com>
-Date: Fri, 26 Dec 2025 16:10:06 +0100
+        d=1e100.net; s=20230601; t=1766761812; x=1767366612;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jXjhecXMvTuilyVrt8i61jpnzXKHviPZ0AeF4RHpqT4=;
+        b=iDC9XWt3YSJXe5GnL2CxuMyivWpiIZLnpeQVJifEFctRWmrEmpe7mU5dLe8RGp4xpT
+         tSr0+mLAUO7PFi4s6cUD7wJ30HIWn1grunvkBhmpVQ0kD7RQ9pZHlyx9cTvrIVlU+RL5
+         rtcwBAPAZE6lCeiFPotN1wK55OCQjvIMWayafKOex3ElF4ANn6Ee1msj2C0HlIC8cH4U
+         9TvmPWMgLGvkCWv3UjTForlA3nFd9a2sMXnCfctJlSg47Pa4d05T+EJ7N3X0BhVatx8o
+         pidusjLUn/BJaimEHZuC7wc2pcU7bgnDySQf4UvhgiyVZ4ByikC98WR7banrNB5Khk2d
+         6qlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW9x11VWuAxK2F1KshQ0mgN39gK5aGMyg4WoLYNT4mDVuVojmOuzw7kV7wtUaSpQhSP/VfWPuFZc40s/NukcA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuWEyI5BEyqKYzXRdZuVA7ya6ot4BogXbMRtz6/K07DpjV7wMy
+	amRywuidKWxRW7GtkQ+kOy0aQjRcuWR9MBRxtb97+8V0XYRE6ckniyGVskVHG8xKPVu6Y1jNFCZ
+	mMsvCgYTJAqGyxOJ93tZcbbZ91KeY9jI=
+X-Gm-Gg: AY/fxX7mvFaax54+6h8+n8Aoo4bix+BVRWXqn05QPHEMRxWDEZ0LUJlke/NnKFaeM39
+	i7Sq+BAXmX/fNhL7r0IcqhpfU7tesTP3s/0/C+Dpf224bWXgM7J8iGI6s4++UndscsXC+mbJlpy
+	ubN7lGISposVAzxLRkTv5TJDWqqJcCEjVOws4VpZm3SRp/W5dyYVwjGSzjZa/p+RDkvF5HakYj3
+	yiAEH23wEbTxZLtfol888pwPbUzxX1LylUqYuaKqtcz9f/K+ezsS3+AlC4aazEZY3g1R0wWV64q
+	d35a0LjJSJPHuoaviHQwwjaa7vb0
+X-Google-Smtp-Source: AGHT+IERcIrcwrVJEGeIZm4sLXjLrAVReoxd3b/5xXknLM0RzGjp6+qaUzZtMUitadrwkhEKQz7WC3glpJZB9C/GqVg=
+X-Received: by 2002:a05:6a20:a11a:b0:35d:bb66:5ce3 with SMTP id
+ adf61e73a8af0-376a81e2e1dmr22165293637.12.1766761811826; Fri, 26 Dec 2025
+ 07:10:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/4] rust: kernel: Add pointer wrapper types for safe
- pointer formatting
-To: Ke Sun <sunke@kylinos.cn>, Miguel Ojeda <ojeda@kernel.org>,
- Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Timur Tabi <ttabi@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
- Benno Lossin <lossin@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@gmail.com>,
- Ke Sun <sk.alvin.x@gmail.com>, rust-for-linux@vger.kernel.org
-References: <20251226140751.2215563-1-sunke@kylinos.cn>
- <20251226140751.2215563-3-sunke@kylinos.cn>
-Content-Language: de-AT-frami
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20251226140751.2215563-3-sunke@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20251220-rust_serdev-v1-0-e44645767621@posteo.de> <20251220-rust_serdev-v1-2-e44645767621@posteo.de>
+In-Reply-To: <20251220-rust_serdev-v1-2-e44645767621@posteo.de>
+From: Kari Argillander <kari.argillander@gmail.com>
+Date: Fri, 26 Dec 2025 17:09:55 +0200
+X-Gm-Features: AQt7F2pCDe7cDhXUZ15f4DdLyxson5tv60wheiTBAZG4umQWI61H2Og0B_bjhR4
+Message-ID: <CAC=eVgR2WYdDTW3kOeemyQPP-H0aAUsrzn5Gk5zCe2hQEB709w@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/4] rust: add basic serial device bus abstractions
+To: Markus Probst <markus.probst@posteo.de>
+Cc: Rob Herring <robh@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-serial@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 26.12.25 15:07, Ke Sun wrote:
-> Add three pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr) to
-> rust/kernel/ptr.rs that correspond to C kernel's printk format specifiers
-> %p, %pK, and %px. These types provide type-safe pointer formatting that
-> matches C kernel patterns.
-> 
-> These wrapper types implement core::fmt::Pointer and delegate to the
-> corresponding kernel formatting functions, enabling safe pointer
-> formatting in Rust code that prevents information leaks about kernel
-> memory layout.
-> 
-> Users can explicitly use these types:
->     pr_info!("{:p}\n", HashedPtr::from(ptr));
->     pr_info!("{:p}\n", RestrictedPtr::from(ptr));
->     pr_info!("{:p}\n", RawPtr::from(ptr));
-> 
-> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+Here are some review comments. Overall it seems that this will be quite hard to
+get right, safe and easy to use. Example many null pointer dereferences can
+happen with C API if things are not done in right order. That currently force
+this abstraction to do those things in right order (like you have done and kudos
+for that). That however makes this probably too rigid for many use cases. Maybe
+right thing to do is to fix C API so it is safer to use. That way we can call
+things in wrong order and that is still safe but just logic bug in driver.
+
+On 20.12.2025 20.44 +0200 Markus Probst (markus.probst@posteo.de) wrote:
+>
+> Implement the basic serial device bus abstractions required to write a
+> serial device bus device driver with or without the need for initial device
+> data. This includes the following data structures:
+>
+> The `serdev::Driver` trait represents the interface to the driver.
+>
+> The `serdev::Device` abstraction represents a `struct serdev_device`.
+>
+> In order to provide the Serdev specific parts to a generic
+> `driver::Registration` the `driver::RegistrationOps` trait is
+> implemented by `serdev::Adapter`.
+
+Maybe add more info about design decisions here.
+
+> Co-developed-by: Kari Argillander <kari.argillander@gmail.com>
+> Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
 > ---
->  rust/helpers/fmt.c     |  65 +++++++++++
->  rust/helpers/helpers.c |   3 +-
->  rust/kernel/ptr.rs     | 240 ++++++++++++++++++++++++++++++++++++++++-
->  3 files changed, 304 insertions(+), 4 deletions(-)
->  create mode 100644 rust/helpers/fmt.c
-....
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/helpers.c          |   1 +
+>  rust/helpers/serdev.c           |  22 ++
+>  rust/kernel/lib.rs              |   2 +
+>  rust/kernel/serdev.rs           | 815 ++++++++++++++++++++++++++++++++++++++++
+>  5 files changed, 841 insertions(+)
+>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index a067038b4b42..bec6c6d0913a 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -79,6 +79,7 @@
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/sched.h>
+>  #include <linux/security.h>
+> +#include <linux/serdev.h>
+>  #include <linux/slab.h>
+>  #include <linux/task_work.h>
+>  #include <linux/tracepoint.h>
 > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 79c72762ad9c4..b6877fe8dafc0 100644
+> index 79c72762ad9c..834e9fbb897d 100644
 > --- a/rust/helpers/helpers.c
 > +++ b/rust/helpers/helpers.c
-> @@ -27,8 +27,9 @@
->  #include "dma.c"
->  #include "drm.c"
->  #include "err.c"
-> -#include "irq.c"
-> +#include "fmt.c"
->  #include "fs.c"
-> +#include "irq.c"
->  #include "io.c"
->  #include "jump_label.c"
->  #include "kunit.c"
-> diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
-> index e3893ed04049d..ed5069c954146 100644
-> --- a/rust/kernel/ptr.rs
-> +++ b/rust/kernel/ptr.rs
-> @@ -1,11 +1,22 @@
->  // SPDX-License-Identifier: GPL-2.0
->  
->  //! Types and functions to work with pointers and addresses.
+> @@ -50,6 +50,7 @@
+>  #include "regulator.c"
+>  #include "scatterlist.c"
+>  #include "security.c"
+> +#include "serdev.c"
+>  #include "signal.c"
+>  #include "slab.c"
+>  #include "spinlock.c"
+> diff --git a/rust/helpers/serdev.c b/rust/helpers/serdev.c
+> new file mode 100644
+> index 000000000000..c52b78ca3fc7
+> --- /dev/null
+> +++ b/rust/helpers/serdev.c
+> @@ -0,0 +1,22 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/serdev.h>
+> +
+> +__rust_helper
+> +void rust_helper_serdev_device_driver_unregister(struct serdev_device_driver *sdrv)
+> +{
+> +       serdev_device_driver_unregister(sdrv);
+> +}
+> +
+> +__rust_helper
+> +void rust_helper_serdev_device_put(struct serdev_device *serdev)
+> +{
+> +       serdev_device_put(serdev);
+> +}
+> +
+> +__rust_helper
+> +void rust_helper_serdev_device_set_client_ops(struct serdev_device *serdev,
+> +                                             const struct serdev_device_ops *ops)
+> +{
+> +       serdev_device_set_client_ops(serdev, ops);
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index f812cf120042..cc71195466b6 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -136,6 +136,8 @@
+>  pub mod scatterlist;
+>  pub mod security;
+>  pub mod seq_file;
+> +#[cfg(CONFIG_SERIAL_DEV_BUS)]
+> +pub mod serdev;
+>  pub mod sizes;
+>  pub mod slice;
+>  mod static_assert;
+> diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
+> new file mode 100644
+> index 000000000000..0f5ef325a054
+> --- /dev/null
+> +++ b/rust/kernel/serdev.rs
+> @@ -0,0 +1,815 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Abstractions for the serial device bus.
 > +//!
-> +//! This module provides wrapper types for formatting kernel pointers that correspond to the
-> +//! C kernel's printk format specifiers `%p`, `%pK`, and `%px`.
->  
-> -use core::mem::align_of;
-> -use core::num::NonZero;
-> +use core::{
-> +    fmt,
-> +    fmt::Pointer,
-> +    mem::align_of,
-> +    num::NonZero, //
-> +};
->  
-> -use crate::build_assert;
+> +//! C header: [`include/linux/serdev.h`](srctree/include/linux/serdev.h)
+> +
 > +use crate::{
-> +    bindings,
-> +    build_assert,
-> +    ffi::c_void, //
-> +};
->  
->  /// Type representing an alignment, which is always a power of two.
->  ///
-> @@ -225,3 +236,226 @@ fn align_up(self, alignment: Alignment) -> Option<Self> {
->  }
->  
->  impl_alignable_uint!(u8, u16, u32, u64, usize);
-> +
-> +/// Placeholder string used when pointer hashing is not ready yet.
-> +const PTR_PLACEHOLDER: &str = if core::mem::size_of::<*const c_void>() == 8 {
-> +    "(____ptrval____)"
-> +} else {
-> +    "(ptrval)"
+> +    acpi,
+> +    container_of,
+> +    device,
+> +    driver,
+> +    error::{
+> +        from_result,
+> +        to_result,
+> +        VTABLE_DEFAULT_ERROR, //
+> +    },
+> +    of,
+> +    prelude::*,
+> +    time::Jiffies,
+> +    types::{AlwaysRefCounted, Opaque}, //
 > +};
 > +
-> +/// Macro to implement common methods for pointer wrapper types.
-> +macro_rules! impl_ptr_wrapper {
-> +    ($($name:ident),* $(,)?) => {
-> +        $(
-> +            impl $name {
-> +                /// Creates a new instance from a raw pointer.
-> +                #[inline]
-> +                pub fn from<T>(ptr: *const T) -> Self {
-> +                    Self(ptr.cast())
-> +                }
+> +use core::{
+> +    cell::UnsafeCell,
+> +    marker::PhantomData,
+> +    mem::offset_of,
+> +    num::NonZero,
+> +    ptr::{
+> +        addr_of_mut, //
+> +        NonNull,
+> +    }, //
+> +};
 > +
-> +                /// Creates a new instance from a mutable raw pointer.
-> +                #[inline]
-> +                pub fn from_mut<T>(ptr: *mut T) -> Self {
-> +                    Self(ptr.cast())
-> +                }
+> +/// Parity bit to use with a serial device.
+> +#[repr(u32)]
+> +pub enum Parity {
+> +    /// No parity bit.
+> +    None = bindings::serdev_parity_SERDEV_PARITY_NONE,
+> +    /// Even partiy.
+> +    Even = bindings::serdev_parity_SERDEV_PARITY_EVEN,
+> +    /// Odd parity.
+> +    Odd = bindings::serdev_parity_SERDEV_PARITY_ODD,
+> +}
 > +
-> +                /// Returns the inner raw pointer.
-> +                #[inline]
-> +                pub fn as_ptr(&self) -> *const c_void {
-> +                    self.0
-> +                }
+> +/// Timeout in Jiffies.
+> +pub enum Timeout {
+> +    /// Wait for a specific amount of [`Jiffies`].
+> +    Value(NonZero<Jiffies>),
+
+Maybe better name this Jiffies than value. As Jiffies is not yet real unit. Also
+many C drivers use msecs_to_jiffies() maybe also have Msecs variant that takes
+NonZero<Msecs>. Then into_jiffies() can call msecs_to_jiffies() for that. That
+would make construction easier. Also that way people can have const
+Timeout::Msecs which is quite nice. Probably people usually will define timeouts
+as consts and then use those consts.
+
+> +    /// Wait as long as possible.
+> +    ///
+> +    /// This is equivalent to [`kernel::task::MAX_SCHEDULE_TIMEOUT`].
+> +    MaxScheduleTimeout,
+
+As enum is already Timeout maybe Max or MaxSchedule is better name than
+MaxScheduleTimeout.
+
+> +}
+> +
+> +impl Timeout {
+> +    fn into_jiffies(self) -> isize {
+> +        match self {
+> +            Self::Value(value) => value.get().try_into().unwrap_or_default(),
+> +            Self::MaxScheduleTimeout => 0,
+> +        }
+> +    }
+> +}
+> +
+> +/// An adapter for the registration of serial device bus device drivers.
+> +pub struct Adapter<T: Driver>(T);
+> +
+> +// SAFETY: A call to `unregister` for a given instance of `RegType` is guaranteed to be valid if
+> +// a preceding call to `register` has been successful.
+> +unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+> +    type RegType = bindings::serdev_device_driver;
+> +
+> +    unsafe fn register(
+> +        sdrv: &Opaque<Self::RegType>,
+> +        name: &'static CStr,
+> +        module: &'static ThisModule,
+> +    ) -> Result {
+> +        let of_table = match T::OF_ID_TABLE {
+> +            Some(table) => table.as_ptr(),
+> +            None => core::ptr::null(),
+> +        };
+> +
+> +        let acpi_table = match T::ACPI_ID_TABLE {
+> +            Some(table) => table.as_ptr(),
+> +            None => core::ptr::null(),
+> +        };
+> +
+> +        // SAFETY: It's safe to set the fields of `struct serdev_device_driver` on initialization.
+> +        unsafe {
+> +            (*sdrv.get()).driver.name = name.as_char_ptr();
+> +            (*sdrv.get()).probe = Some(Self::probe_callback);
+> +            (*sdrv.get()).remove = Some(Self::remove_callback);
+> +            (*sdrv.get()).driver.of_match_table = of_table;
+> +            (*sdrv.get()).driver.acpi_match_table = acpi_table;
+> +        }
+> +
+> +        // SAFETY: `sdrv` is guaranteed to be a valid `RegType`.
+> +        to_result(unsafe { bindings::__serdev_device_driver_register(sdrv.get(), module.0) })
+> +    }
+> +
+> +    unsafe fn unregister(sdrv: &Opaque<Self::RegType>) {
+> +        // SAFETY: `sdrv` is guaranteed to be a valid `RegType`.
+> +        unsafe { bindings::serdev_device_driver_unregister(sdrv.get()) };
+> +    }
+> +}
+> +
+> +#[pin_data]
+> +struct Drvdata<T: Driver + 'static> {
+> +    #[pin]
+> +    driver: T,
+> +    initial_data: UnsafeCell<Option<T::InitialData>>,
+
+Maybe also box initial_data as that can be destroyed in after late_probe.
+
+> +    late_probe_data: UnsafeCell<Option<Pin<KBox<T::LateProbeData>>>>,
+> +}
+> +
+> +impl<T: Driver + 'static> Adapter<T> {
+> +    const OPS: &'static bindings::serdev_device_ops = &bindings::serdev_device_ops {
+> +        receive_buf: if T::HAS_RECEIVE {
+> +            Some(Self::receive_buf_callback)
+> +        } else {
+> +            None
+> +        },
+> +        write_wakeup: if T::HAS_WRITE_WAKEUP {
+> +            Some(Self::write_wakeup_callback)
+> +        } else {
+> +            Some(bindings::serdev_device_write_wakeup)
+> +        },
+> +    };
+> +    const INITIAL_OPS: &'static bindings::serdev_device_ops = &bindings::serdev_device_ops {
+> +        receive_buf: Some(Self::initial_receive_buf_callback),
+> +        write_wakeup: if T::HAS_WRITE_WAKEUP_INITIAL {
+> +            Some(Self::initial_write_wakeup_callback)
+> +        } else {
+> +            Some(bindings::serdev_device_write_wakeup)
+> +        },
+> +    };
+> +    const NO_OPS: &'static bindings::serdev_device_ops = &bindings::serdev_device_ops {
+> +        receive_buf: None,
+> +        write_wakeup: Some(bindings::serdev_device_write_wakeup),
+> +    };
+> +
+> +    extern "C" fn probe_callback(sdev: *mut bindings::serdev_device) -> kernel::ffi::c_int {
+> +        // SAFETY: The serial device bus only ever calls the probe callback with a valid pointer to
+> +        // a `struct serdev_device`.
+> +        //
+> +        // INVARIANT: `sdev` is valid for the duration of `probe_callback()`.
+> +        let sdev = unsafe { &*sdev.cast::<Device<device::CoreInternal>>() };
+> +        let info = <Self as driver::Adapter>::id_info(sdev.as_ref());
+> +
+> +        from_result(|| {
+> +            let data = try_pin_init!(Drvdata {
+> +                driver <- T::probe(sdev, info),
+> +                initial_data: Some(Default::default()).into(),
+> +                late_probe_data: None.into(),
+> +            });
+> +
+> +            sdev.as_ref().set_drvdata(data)?;
+> +
+> +            // SAFETY: We just set drvdata to `Drvdata<T>`.
+> +            let data = unsafe { sdev.as_ref().drvdata_borrow::<Drvdata<T>>() };
+> +
+> +            // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
+> +            unsafe { bindings::serdev_device_set_client_ops(sdev.as_raw(), Self::INITIAL_OPS) };
+> +
+> +            // SAFETY: The serial device bus only ever calls the probe callback with a valid pointer
+> +            // to a `struct serdev_device`.
+> +            to_result(unsafe {
+> +                bindings::devm_serdev_device_open(sdev.as_ref().as_raw(), sdev.as_raw())
+> +            })?;
+> +
+> +            // SAFETY: `&data.driver` is guaranteed to be pinned.
+> +            T::configure(sdev, unsafe { Pin::new_unchecked(&data.driver) }, info)?;
+> +
+> +            if !T::HAS_RECEIVE_INITIAL {
+> +                // SAFETY:
+> +                // - It is guaranteed that we have exclusive access to `data.initial_data` and
+> +                //   `data.late_probe_data`.
+> +                // - We just initialized `data.initial_data` with Some.
+> +                unsafe { Self::do_late_probe(sdev, data)? };
 > +            }
 > +
-> +            impl<T> From<*const T> for $name {
-> +                #[inline]
-> +                fn from(ptr: *const T) -> Self {
-> +                    Self::from(ptr)
-> +                }
-> +            }
+> +            Ok(0)
+> +        })
+> +    }
 > +
-> +            impl<T> From<*mut T> for $name {
-> +                #[inline]
-> +                fn from(ptr: *mut T) -> Self {
-> +                    Self::from_mut(ptr)
+> +    /// # Safety
+> +    ///
+> +    /// The caller must guarantee, that we have exclusive access to `data.initial_data` and
+> +    /// `data.late_probe_data`. `data.initial_data` must be Some.
+> +    /// (i. e. `late_probe` has not been called yet).
+> +    unsafe fn do_late_probe(sdev: &Device<device::CoreInternal>, data: Pin<&Drvdata<T>>) -> Result {
+> +        // SAFETY: `&data.driver` is guaranteed to be pinned.
+> +        let data_driver = unsafe { Pin::new_unchecked(&data.driver) };
+> +
+> +        // SAFETY: The function contract guarantees that we have exclusive access to
+> +        // `data.initial_data`.
+> +        let initial_data = unsafe { &mut *data.initial_data.get() };
+> +
+> +        // SAFETY: The function contract guarantees that we have exclusive access to
+> +        // `data.late_probe_data`.
+> +        let late_probe_data = unsafe { &mut *data.late_probe_data.get() };
+> +
+> +        *late_probe_data = Some(KBox::pin_init(
+> +            T::late_probe(
+> +                sdev,
+> +                data_driver,
+> +                // SAFETY: The function contract guarantees that `data.initial_data` is Some.
+> +                unsafe { initial_data.take().unwrap_unchecked() },
+> +            ),
+> +            GFP_KERNEL,
+> +        )?);
+> +        // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
+> +        unsafe { bindings::serdev_device_set_client_ops(sdev.as_raw(), Self::OPS) };
+
+How can this be safe? What if serdev core is accessing the ops while we are
+changing them? SAFETY comment should address also concurrency issues in this
+case.
+
+> +        Ok(())
+> +    }
+> +
+> +    extern "C" fn remove_callback(sdev: *mut bindings::serdev_device) {
+> +        // SAFETY: The serial device bus only ever calls the remove callback with a valid pointer
+> +        // to a `struct serdev_device`.
+> +        //
+> +        // INVARIANT: `sdev` is valid for the duration of `remove_callback()`.
+> +        let sdev = unsafe { &*sdev.cast::<Device<device::CoreInternal>>() };
+> +
+> +        // SAFETY: `remove_callback` is only ever called after a successful call to
+> +        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
+> +        // and stored a `Pin<KBox<T>>`.
+> +        let data = unsafe { sdev.as_ref().drvdata_obtain::<Drvdata<T>>() };
+> +
+> +        // SAFETY: `&data.driver` is guaranteed to be pinned.
+> +        let data_driver = unsafe { Pin::new_unchecked(&data.driver) };
+> +
+> +        // SAFETY:
+> +        // - `data.late_probe_data` is guaranteed to be pinned.
+> +        // - It is guaranteed that we have exclusive access to `data.late_probe_data`.
+> +        let late_probe_data = unsafe {
+> +            (*data.late_probe_data.get())
+> +                .as_deref()
+> +                .map(|data| Pin::new_unchecked(data))
+> +        };
+> +
+> +        T::unbind(sdev, data_driver, late_probe_data);
+> +    }
+> +
+> +    extern "C" fn receive_buf_callback(
+> +        sdev: *mut bindings::serdev_device,
+> +        buf: *const u8,
+> +        length: usize,
+> +    ) -> usize {
+> +        // SAFETY: The serial device bus only ever calls the receive buf callback with a valid
+> +        // pointer to a `struct serdev_device`.
+> +        //
+> +        // INVARIANT: `sdev` is valid for the duration of `receive_buf_callback()`.
+> +        let sdev = unsafe { &*sdev.cast::<Device<device::CoreInternal>>() };
+> +
+> +        // SAFETY: `receive_buf_callback` is only ever called after a successful call to
+> +        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
+> +        // and stored a `Pin<KBox<Drvdata<T>>>`.
+> +        let data = unsafe { sdev.as_ref().drvdata_borrow::<Drvdata<T>>() };
+> +
+> +        // SAFETY: `buf` is guaranteed to be non-null and has the size of `length`.
+> +        let buf = unsafe { core::slice::from_raw_parts(buf, length) };
+> +
+> +        // SAFETY: `&data.driver` is guaranteed to be pinned.
+> +        let data_driver = unsafe { Pin::new_unchecked(&data.driver) };
+> +
+> +        // SAFETY:
+> +        // - `data.late_probe_data` is guaranteed to be Some.
+> +        // - `data.late_probe_data` is guaranteed to be pinned.
+> +        let late_probe_data = unsafe {
+> +            Pin::new_unchecked((*data.late_probe_data.get()).as_deref().unwrap_unchecked())
+> +        };
+> +
+> +        T::receive(sdev, data_driver, late_probe_data, buf)
+> +    }
+> +
+> +    extern "C" fn write_wakeup_callback(sdev: *mut bindings::serdev_device) {
+> +        // SAFETY: The serial device bus only ever calls the write wakeup callback with a valid
+> +        // pointer to a `struct serdev_device`.
+> +        //
+> +        // INVARIANT: `sdev` is valid for the duration of `write_wakeup_callback()`.
+> +        let sdev = unsafe { &*sdev.cast::<Device<device::CoreInternal>>() };
+> +
+> +        // SAFETY: `write_wakeup_callback` is only ever called after a successful call to
+> +        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
+> +        // and stored a `Pin<KBox<Drvdata<T>>>`.
+> +        let data = unsafe { sdev.as_ref().drvdata_borrow::<Drvdata<T>>() };
+> +
+> +        // SAFETY: `sdev.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+> +        unsafe { bindings::serdev_device_write_wakeup(sdev.as_raw()) };
+> +
+> +        // SAFETY: `&data.driver` is guaranteed to be pinned.
+> +        let data_driver = unsafe { Pin::new_unchecked(&data.driver) };
+> +
+> +        // SAFETY:
+> +        // - `data.late_probe_data` is guaranteed to be Some.
+> +        // - `data.late_probe_data` is guaranteed to be pinned.
+> +        let late_probe_data = unsafe {
+> +            Pin::new_unchecked((*data.late_probe_data.get()).as_deref().unwrap_unchecked())
+> +        };
+> +
+> +        // SAFETY: As long as the driver implementation meets the safety requirements, this call
+> +        // is safe.
+> +        unsafe { T::write_wakeup(sdev, data_driver, late_probe_data) };
+> +    }
+> +
+> +    extern "C" fn initial_receive_buf_callback(
+> +        sdev: *mut bindings::serdev_device,
+> +        buf: *const u8,
+> +        length: usize,
+> +    ) -> usize {
+> +        if !T::HAS_RECEIVE_INITIAL {
+> +            return 0;
+> +        }
+> +
+> +        // SAFETY: The serial device bus only ever calls the receive buf callback with a valid
+> +        // pointer to a `struct serdev_device`.
+> +        //
+> +        // INVARIANT: `sdev` is valid for the duration of `receive_buf_callback()`.
+> +        let sdev = unsafe { &*sdev.cast::<Device<device::CoreInternal>>() };
+> +
+> +        // SAFETY: `buf` is guaranteed to be non-null and has the size of `length`.
+> +        let buf = unsafe { core::slice::from_raw_parts(buf, length) };
+> +
+> +        // SAFETY: `initial_receive_buf_callback` is only ever called after a successful call to
+> +        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
+> +        // and stored a `Pin<KBox<Drvdata<T>>>`.
+> +        let data = unsafe { sdev.as_ref().drvdata_borrow::<Drvdata<T>>() };
+> +
+> +        // SAFETY: `&data.driver` is guaranteed to be pinned.
+> +        let driver_data = unsafe { Pin::new_unchecked(&data.driver) };
+> +
+> +        // SAFETY:
+> +        // - `data.initial_data` is always Some until `InitialReceiveResult::Ready` is
+> +        //   returned below.
+> +        // - It is guaranteed that we have exclusive access to `data.initial_data`.
+> +        let initial_data = unsafe { (*data.initial_data.get()).as_mut().unwrap_unchecked() };
+> +
+> +        match T::receive_initial(sdev, driver_data, initial_data, buf) {
+> +            Ok(InitialReceiveResult::Pending(size)) => size,
+> +            Ok(InitialReceiveResult::Ready(size)) => {
+> +                // SAFETY:
+> +                // - It is guaranteed that we have exclusive access to `data.initial_data` and
+> +                //   `data.late_probe_data`.
+> +                // - We just initialized `data.initial_data` with Some.
+> +                if let Err(err) = unsafe { Self::do_late_probe(sdev, data) } {
+> +                    dev_err!(sdev.as_ref(), "Unable to late probe device: {err:?}\n");
+
+Not an abstraction job to log this.
+
+> +                    // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to
+> +                    // `serdev_device`.
+> +                    unsafe { bindings::serdev_device_set_client_ops(sdev.as_raw(), Self::NO_OPS) };
+
+What if write_wakeup is accessed by serdev core while we are changing the ops? I
+checked and even taking serdev write lock does not prevent that as checking
+write_wakeup ops is done outside the lock. We could probably change that however
+if necessary.
+
+> +                    return length;
 > +                }
+> +                size
 > +            }
-> +        )*
+> +            Err(err) => {
+> +                dev_err!(
+> +                    sdev.as_ref(),
+> +                    "Unable to receive initial data for probe: {err:?}.\n"
+> +                );
+
+Same here. Not an abstraction job to log this.
+
+> +                // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
+> +                unsafe { bindings::serdev_device_set_client_ops(sdev.as_raw(), Self::NO_OPS) };
+> +                length
+> +            }
+> +        }
+> +    }
+> +
+> +    extern "C" fn initial_write_wakeup_callback(sdev: *mut bindings::serdev_device) {
+> +        // SAFETY: The serial device bus only ever calls the write wakeup callback with a valid
+> +        // pointer to a `struct serdev_device`.
+> +        //
+> +        // INVARIANT: `sdev` is valid for the duration of `write_wakeup_callback()`.
+
+initial_write_wakeup_callback
+
+> +        let sdev = unsafe { &*sdev.cast::<Device<device::CoreInternal>>() };
+> +
+> +        // SAFETY: `initial_write_wakeup_callback` is only ever called after a successful call to
+> +        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
+> +        // and stored a `Pin<KBox<Drvdata<T>>>`.
+> +        let data = unsafe { sdev.as_ref().drvdata_borrow::<Drvdata<T>>() };
+> +
+> +        // SAFETY: `sdev.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+> +        unsafe { bindings::serdev_device_write_wakeup(sdev.as_raw()) };
+> +
+> +        // SAFETY: `&data.driver` is guaranteed to be pinned.
+> +        let data_driver = unsafe { Pin::new_unchecked(&data.driver) };
+> +
+> +        // SAFETY: As long as the driver implementation meets the safety requirements, this call
+> +        // is safe.
+> +        unsafe { T::write_wakeup_initial(sdev, data_driver) };
+> +    }
+> +}
+> +
+> +impl<T: Driver + 'static> driver::Adapter for Adapter<T> {
+> +    type IdInfo = T::IdInfo;
+> +
+> +    fn of_id_table() -> Option<of::IdTable<Self::IdInfo>> {
+> +        T::OF_ID_TABLE
+> +    }
+> +
+> +    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
+> +        T::ACPI_ID_TABLE
+> +    }
+> +}
+> +
+> +/// Declares a kernel module that exposes a single serial device bus device driver.
+> +///
+> +/// # Examples
+> +///
+> +/// ```ignore
+> +/// kernel::module_serdev_device_driver! {
+> +///     type: MyDriver,
+> +///     name: "Module name",
+> +///     authors: ["Author name"],
+> +///     description: "Description",
+> +///     license: "GPL v2",
+> +/// }
+> +/// ```
+> +#[macro_export]
+> +macro_rules! module_serdev_device_driver {
+
+To be consistent with other bus module macros this should be named
+module_serdev_driver. Also change in example.
+
+> +    ($($f:tt)*) => {
+> +        $crate::module_driver!(<T>, $crate::serdev::Adapter<T>, { $($f)* });
 > +    };
 > +}
 > +
-> +/// Helper function to hash a pointer and format it.
-> +///
-> +/// Returns `Ok(())` if the hash was successfully computed and formatted,
-> +/// or the placeholder string if hashing is not ready yet.
-> +fn format_hashed_ptr(ptr: *const c_void, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +    let mut hashval: crate::ffi::c_ulong = 0;
-> +    // SAFETY: We're calling the kernel's ptr_to_hashval function which handles
-> +    // hashing. This is safe as long as ptr is a valid pointer value.
-> +    let ret = unsafe { bindings::ptr_to_hashval(ptr, core::ptr::addr_of_mut!(hashval)) };
-> +
-> +    if ret != 0 {
-> +        // Hash not ready yet, print placeholder
-> +        return f.write_str(PTR_PLACEHOLDER);
-> +    }
-> +
-> +    // Successfully got hash value, format it using Pointer::fmt to preserve
-> +    // formatting options (width, alignment, padding, etc.)
-> +    Pointer::fmt(&(hashval as *const c_void), f)
+> +/// Result for `receive_initial` in [`Driver`].
+> +pub enum InitialReceiveResult {
+> +    /// More data is required.
+> +    ///
+> +    /// The inner data is the number of bytes accepted.
+> +    Pending(usize),
+> +    /// Ready for late probe.
+> +    ///
+> +    /// The inner data is the number of bytes accepted.
+> +    Ready(usize),
 > +}
 > +
-> +/// A pointer that will be hashed when printed (corresponds to `%p`).
+> +/// The serial device bus device driver trait.
 > +///
-> +/// This is the default behavior for kernel pointers - they are hashed to prevent
-> +/// leaking information about the kernel memory layout.
+> +/// Drivers must implement this trait in order to get a serial device bus device driver registered.
 > +///
-> +/// # Example
+> +/// # Examples
 > +///
-> +/// ```
-> +/// use kernel::{
-> +///     prelude::fmt,
-> +///     ptr::HashedPtr,
-> +///     str::CString, //
+> +///```
+> +/// # use kernel::{
+> +///     acpi,
+> +///     bindings,
+> +///     device::{
+> +///         Bound,
+> +///         Core, //
+> +///     },
+> +///     of,
+> +///     serdev, //
 > +/// };
 > +///
-> +/// let ptr = HashedPtr::from(0x12345678 as *const u8);
-> +/// pr_info!("Hashed pointer: {:016p}\n", ptr);
+> +/// struct MyDriver;
 > +///
-> +/// // Width option test
-> +/// let cstr = CString::try_from_fmt(fmt!("{:30p}", ptr))?;
-> +/// let width_30 = cstr.to_str()?;
-> +/// assert_eq!(width_30.len(), 30);
-> +/// # Ok::<(), kernel::error::Error>(())
-> +/// ```
+> +/// kernel::of_device_table!(
+> +///     OF_TABLE,
+> +///     MODULE_OF_TABLE,
+> +///     <MyDriver as serdev::Driver>::IdInfo,
+> +///     [
+> +///         (of::DeviceId::new(c"test,device"), ())
+> +///     ]
+> +/// );
+> +///
+> +/// kernel::acpi_device_table!(
+> +///     ACPI_TABLE,
+> +///     MODULE_ACPI_TABLE,
+> +///     <MyDriver as serdev::Driver>::IdInfo,
+> +///     [
+> +///         (acpi::DeviceId::new(c"LNUXBEEF"), ())
+> +///     ]
+> +/// );
+> +///
+> +/// #[vtable]
+> +/// impl serdev::Driver for MyDriver {
+> +///     type IdInfo = ();
+> +///     type LateProbeData = ();
+> +///     type InitialData = ();
+> +///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
+> +///     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
+> +///
+> +///     fn probe(
+> +///         _sdev: &serdev::Device,
+> +///         _id_info: Option<&Self::IdInfo>,
+> +///     ) -> impl PinInit<Self, Error> {
+> +///         Err(ENODEV)
+> +///     }
+> +///
+> +///     fn configure(
+> +///         dev: &serdev::Device<Core>,
+> +///         _this: Pin<&Self>,
+> +///         _id_info: Option<&Self::IdInfo>,
+> +///     ) -> Result {
+> +///         dev.set_baudrate(115200);
+> +///         Ok(())
+> +///     }
+> +///
+> +///     fn late_probe(
+> +///        _dev: &serdev::Device<Bound>,
+> +///        _this: Pin<&Self>,
+> +///        _initial_data: Self::InitialData,
+> +///    ) -> impl PinInit<Self::LateProbeData, Error> {
+> +///        Ok(())
+> +///    }
+> +/// }
+> +///```
+> +#[vtable]
+> +pub trait Driver: Send {
+> +    /// The type holding driver private data about each device id supported by the driver.
+> +    // TODO: Use associated_type_defaults once stabilized:
+> +    //
+> +    // ```
+> +    // type IdInfo: 'static = ();
+> +    // type LateProbeData: Send + 'static = ();
+> +    // type InitialData: Default + Send + 'static = ();
+> +    // ```
+> +    type IdInfo: 'static;
+> +
+> +    /// Data returned in `late_probe` function.
+> +    type LateProbeData: Send + 'static;
+> +    /// Data used for initial data.
+> +    type InitialData: Default + Send + 'static;
+> +
+> +    /// The table of OF device ids supported by the driver.
+> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
+> +
+> +    /// The table of ACPI device ids supported by the driver.
+> +    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
+> +
+> +    /// Serial device bus device driver probe.
+> +    ///
+> +    /// Called when a new serial device bus device is added or discovered.
+> +    /// Implementers should attempt to initialize the device here.
+> +    fn probe(sdev: &Device, id_info: Option<&Self::IdInfo>) -> impl PinInit<Self, Error>;
 
+As probe has serdev::Device. This means we cannot example enable let's say
+regulators as those needs device::Device<Bound>. So we could enable those just
+in configure(). That means open() is called before we can do preparations. This
+seems to be a problem to me. It might not be so someone else can comment if this
+is actually a problem.
 
-Is this intended?
+If we cannot do any preparation before open() we might as well call open()
+before probe() and have probe() receive Device<Core>. So something does not seem
+quite right here.
 
-[    1.932037]     # rust_doctest_kernel_ptr_rs_6.location:
-rust/kernel/ptr.rs:315
-[    1.932322] rust_doctests_kernel: Hashed pointer: (____ptrval____)
-[    1.933032]     # rust_doctest_kernel_ptr_rs_6: ASSERTION FAILED at
-rust/kernel/ptr.rs:329
-[    1.933032]     Expected width_30.len() == 30 to be true, but is false
-[    1.933892]     not ok 179 rust_doctest_kernel_ptr_rs_6
+Also like I said in another thread I think user should be able to control when
+open() is called.
 
+> +
+> +    /// Serial device bus device driver configure.
+> +    ///
+> +    /// Called directly after the serial device bus device has been opened.
+> +    /// This should be used for setting up the communication (i. e. baudrate, flow control, parity)
+> +    /// and sending an initial hello if required.
+> +    fn configure(
+> +        sdev: &Device<device::Core>,
+> +        this: Pin<&Self>,
+> +        id_info: Option<&Self::IdInfo>,
+> +    ) -> Result;
+> +
+> +    /// Serial device bus device data receive callback (initial).
+> +    ///
+> +    /// Called when data got received from device, before `late_probe` has been called.
+> +    /// This should be used, to get information about the device for `late_probe`.
+> +    ///
+> +    /// Returns `InitialReceiveResult::Pending` if more data is still required for `late_probe`.
+> +    /// Otherwise `InitialReceiveResult::Ready`. The inner data is the number of bytes accepted.
+> +    fn receive_initial(
+> +        sdev: &Device<device::Bound>,
+> +        this: Pin<&Self>,
+> +        initial_data: &mut Self::InitialData,
+> +        data: &[u8],
+> +    ) -> Result<InitialReceiveResult> {
+> +        let _ = (sdev, this, initial_data, data);
+> +        build_error!(VTABLE_DEFAULT_ERROR)
+> +    }
 
-[    1.934097]     # rust_doctest_kernel_ptr_rs_7.location:
-rust/kernel/ptr.rs:353
-[    1.934434] rust_doctests_kernel: Restricted pointer: (____ptrval____)
-[    1.934707]     # rust_doctest_kernel_ptr_rs_7: ASSERTION FAILED at
-rust/kernel/ptr.rs:367
-[    1.934707]     Expected width_30.len() == 30 to be true, but is false
-[    1.935156]     not ok 180 rust_doctest_kernel_ptr_rs_7
+Maybe just let implementors could just write to `this` in receive_initial and
+then we do not need initial_data at all. That would simplify things a bit. That
+would mean some "locking" from implementors is required though. But I think that
+is acceptable. Maybe same for late_probe data.
 
-This is v5 on top of v6.19-rc1 with x86_64_defconfig booting on QEMU.
+> +    /// Serial device bus device write wakeup callback (initial).
+> +    ///
+> +    /// Called when ready to transmit more data, before `late_probe` has been called.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// This function must not sleep.
+> +    unsafe fn write_wakeup_initial(sdev: &Device<device::Core>, this: Pin<&Self>) {
+> +        let _ = (sdev, this);
+> +        build_error!(VTABLE_DEFAULT_ERROR)
+> +    }
 
-Cheers
+This seems useless as during probe we can just do sequential writes as nothing
+else is happening. After late_probe we can use the normal write_wakeup.
 
-Dirk
+> +
+> +    /// Serial device bus device late probe.
+> +    ///
+> +    /// Called after the initial data is available.
+> +    /// If `receive_initial` isn't implemented, this will be called directly after configure.
+> +    fn late_probe(
+> +        sdev: &Device<device::Bound>,
+> +        this: Pin<&Self>,
+> +        initial_data: Self::InitialData,
+> +    ) -> impl PinInit<Self::LateProbeData, Error>;
+> +
+> +    /// Serial device bus device driver unbind.
+> +    ///
+> +    /// Called when a [`Device`] is unbound from its bound [`Driver`]. Implementing this callback
+> +    /// is optional.
+> +    ///
+> +    /// This callback serves as a place for drivers to perform teardown operations that require a
+> +    /// `&Device<Core>` or `&Device<Bound>` reference. For instance.
+> +    ///
+> +    /// Otherwise, release operations for driver resources should be performed in `Self::drop`.
+> +    fn unbind(
+> +        sdev: &Device<device::Core>,
+> +        this: Pin<&Self>,
+> +        late_probe_this: Option<Pin<&Self::LateProbeData>>,
+> +    ) {
+> +        let _ = (sdev, this, late_probe_this);
+> +    }
+> +
+> +    /// Serial device bus device data receive callback.
+> +    ///
+> +    /// Called when data got received from device.
+> +    ///
+> +    /// Returns the number of bytes accepted.
+> +    fn receive(
+> +        sdev: &Device<device::Bound>,
+> +        this: Pin<&Self>,
+> +        late_probe_this: Pin<&Self::LateProbeData>,
+> +        data: &[u8],
+> +    ) -> usize {
+> +        let _ = (sdev, this, late_probe_this, data);
+> +        build_error!(VTABLE_DEFAULT_ERROR)
+> +    }
+> +
+> +    /// Serial device bus device write wakeup callback.
+> +    ///
+> +    /// Called when ready to transmit more data.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// This function must not sleep.
+
+Maybe add hint here that implementors should enable DEBUG_ATOMIC_SLEEP when
+developing to catch accidental sleeps.
+
+> +    unsafe fn write_wakeup(
+> +        sdev: &Device<device::Bound>,
+> +        this: Pin<&Self>,
+> +        late_probe_this: Pin<&Self::LateProbeData>,
+> +    ) {
+> +        let _ = (sdev, this, late_probe_this);
+> +        build_error!(VTABLE_DEFAULT_ERROR)
+> +    }
+
+I do not see how writing can actually be done. Only place we can actually write
+after late probe is receive(). This is because all write functions are in
+serdev::Device<Bound>. Also we cannot use those in write_wakeup as that is
+atomic context. We should schedule work there but if we schedule work there is
+no way to actually call any write function in there as we only have
+Aref<serdev::Device> and that has no write functions. So this seems like a very
+big problem.
+
+Also I fear that as we do OPS swap we lost first write wakeup call. That means
+as this usually schedules work we might never schedule that work if we miss the
+first call. I'm not sure of if this is a real problem or not.
+
+> +}
+> +
+> +/// The serial device bus device representation.
+> +///
+> +/// This structure represents the Rust abstraction for a C `struct serdev_device`. The
+> +/// implementation abstracts the usage of an already existing C `struct serdev_device` within Rust
+> +/// code that we get passed from the C side.
+> +///
+> +/// # Invariants
+> +///
+> +/// A [`Device`] instance represents a valid `struct serdev_device` created by the C portion of
+> +/// the kernel.
+> +#[repr(transparent)]
+> +pub struct Device<Ctx: device::DeviceContext = device::Normal>(
+> +    Opaque<bindings::serdev_device>,
+> +    PhantomData<Ctx>,
+> +);
+> +
+> +impl<Ctx: device::DeviceContext> Device<Ctx> {
+> +    fn as_raw(&self) -> *mut bindings::serdev_device {
+> +        self.0.get()
+> +    }
+> +}
+> +
+> +impl Device<device::Bound> {
+> +    /// Set the baudrate in bits per second.
+> +    ///
+> +    /// Common baudrates are 115200, 9600, 19200, 57600, 4800.
+> +    ///
+> +    /// Use [`Device::write_flush`] before calling this if you have written data prior to this call.
+> +    pub fn set_baudrate(&self, speed: u32) -> u32 {
+> +        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+> +        unsafe { bindings::serdev_device_set_baudrate(self.as_raw(), speed) }
+> +    }
+
+Here I'm wondering two things. Could we just have Baudare enum instead. That
+would mean that return value is not needed as it will always succeed.
+
+Another thing is if we do not use enum is that should we do something like
+
+```rust
+    pub fn set_baudrate(&self, speed: u32) -> Result<(), u32> {
+       // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a
+valid `serdev_device`.
+       let ret = unsafe {
+bindings::serdev_device_set_baudrate(self.as_raw(), speed) };
+       if ret != speed {
+           Err(ret)
+       }
+
+       Ok(())
+    }
+
+```
+
+I'm still not quite convinced for this idea. So I still think maybe enum is good
+idea. But then again there must be reason why C API does not use enum?
+It might be
+historical reason only and we should not make same thing again.
+
+Another idea is to have enum which have all bauderates but last one is
+Custom(u32). But having this kind of work done during this abstraction layer
+seems a bit off so I'm totally ok if we just use u32 here.
+
+> +    /// Set if flow control should be enabled.
+> +    ///
+> +    /// Use [`Device::write_flush`] before calling this if you have written data prior to this call.
+> +    pub fn set_flow_control(&self, enable: bool) {
+> +        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+> +        unsafe { bindings::serdev_device_set_flow_control(self.as_raw(), enable) };
+> +    }
+> +
+> +    /// Set parity to use.
+> +    ///
+> +    /// Use [`Device::write_flush`] before calling this if you have written data prior to this call.
+> +    pub fn set_parity(&self, parity: Parity) -> Result {
+> +        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+> +        to_result(unsafe { bindings::serdev_device_set_parity(self.as_raw(), parity as u32) })
+> +    }
+> +
+> +    /// Write data to the serial device until the controller has accepted all the data or has
+> +    /// been interrupted by a timeout or signal.
+> +    ///
+> +    /// Note that any accepted data has only been buffered by the controller. Use
+> +    /// [ Device::wait_until_sent`] to make sure the controller write buffer has actually been
+> +    /// emptied.
+> +    ///
+> +    /// Returns the number of bytes written (less than data if interrupted).
+> +    /// [`kernel::error::code::ETIMEDOUT`] or [`kernel::error::code::ERESTARTSYS`] if interrupted
+> +    /// before any bytes were written.
+> +    pub fn write_all(&self, data: &[u8], timeout: Timeout) -> Result<usize> {
+> +        // SAFETY:
+> +        // - `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+> +        // - `data.as_ptr()` is guaranteed to be a valid array pointer with the size of
+> +        //   `data.len()`.
+> +        let ret = unsafe {
+> +            bindings::serdev_device_write(
+> +                self.as_raw(),
+> +                data.as_ptr(),
+> +                data.len(),
+> +                timeout.into_jiffies(),
+> +            )
+> +        };
+
+Use to_result()
+
+> +        if ret < 0 {
+> +            // CAST: negative return values are guaranteed to be between `-MAX_ERRNO` and `-1`,
+> +            // which always fit into a `i32`.
+> +            Err(Error::from_errno(ret as i32))
+> +        } else {
+> +            Ok(ret.unsigned_abs())
+> +        }
+> +    }
+> +
+> +    /// Write data to the serial device.
+> +    ///
+> +    /// If you want to write until the controller has accepted all the data, use
+> +    /// [`Device::write_all`].
+> +    ///
+> +    /// Note that any accepted data has only been buffered by the controller. Use
+> +    /// [ Device::wait_until_sent`] to make sure the controller write buffer has actually been
+> +    /// emptied.
+> +    ///
+> +    /// Returns the number of bytes written (less than data if interrupted).
+> +    /// [`kernel::error::code::ETIMEDOUT`] or [`kernel::error::code::ERESTARTSYS`] if interrupted
+> +    /// before any bytes were written.
+> +    pub fn write(&self, data: &[u8]) -> Result<u32> {
+> +        // SAFETY:
+> +        // - `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+> +        // - `data.as_ptr()` is guaranteed to be a valid array pointer with the size of
+> +        //   `data.len()`.
+> +        let ret =
+> +            unsafe { bindings::serdev_device_write_buf(self.as_raw(), data.as_ptr(), data.len()) };
+
+Use to_result()
+
+> +        if ret < 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(ret.unsigned_abs())
+> +        }
+> +    }
+> +
+> +    /// Send data to the serial device immediately.
+> +    ///
+> +    /// Note that this doesn't guarantee that the data has been transmitted.
+> +    /// Use [`Device::wait_until_sent`] for this purpose.
+> +    pub fn write_flush(&self) {
+> +        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+> +        unsafe { bindings::serdev_device_write_flush(self.as_raw()) };
+> +    }
+> +
+> +    /// Wait for the data to be sent.
+> +    ///
+> +    /// After this function, the write buffer of the controller should be empty.
+> +    pub fn wait_until_sent(&self, timeout: Timeout) {
+> +        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+> +        unsafe { bindings::serdev_device_wait_until_sent(self.as_raw(), timeout.into_jiffies()) };
+> +    }
+> +}
+> +
+> +// SAFETY: `serdev::Device` is a transparent wrapper of `struct serdev_device`.
+> +// The offset is guaranteed to point to a valid device field inside `serdev::Device`.
+> +unsafe impl<Ctx: device::DeviceContext> device::AsBusDevice<Ctx> for Device<Ctx> {
+> +    const OFFSET: usize = offset_of!(bindings::serdev_device, dev);
+> +}
+> +
+> +// SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
+> +// argument.
+> +kernel::impl_device_context_deref!(unsafe { Device });
+> +kernel::impl_device_context_into_aref!(Device);
+> +
+> +// SAFETY: Instances of `Device` are always reference-counted.
+> +unsafe impl AlwaysRefCounted for Device {
+> +    fn inc_ref(&self) {
+> +        self.as_ref().inc_ref();
+> +    }
+> +
+> +    unsafe fn dec_ref(obj: NonNull<Self>) {
+> +        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
+> +        unsafe { bindings::serdev_device_put(obj.cast().as_ptr()) }
+> +    }
+> +}
+> +
+> +impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<Ctx> {
+> +    fn as_ref(&self) -> &device::Device<Ctx> {
+> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
+> +        // `struct serdev_device`.
+> +        let dev = unsafe { addr_of_mut!((*self.as_raw()).dev) };
+
+Now days `&raw mut` is preferred instead of `addr_of_mut!`.
+
+> +        // SAFETY: `dev` points to a valid `struct device`.
+> +        unsafe { device::Device::from_raw(dev) }
+> +    }
+> +}
+> +
+> +impl<Ctx: device::DeviceContext> TryFrom<&device::Device<Ctx>> for &Device<Ctx> {
+> +    type Error = kernel::error::Error;
+> +
+> +    fn try_from(dev: &device::Device<Ctx>) -> Result<Self, Self::Error> {
+> +        // SAFETY: By the type invariant of `Device`, `dev.as_raw()` is a valid pointer to a
+> +        // `struct device`.
+> +        if !unsafe { bindings::is_serdev_device(dev.as_raw()) } {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        // SAFETY: We've just verified that the device_type of `dev` is
+> +        // `serdev_device_type`, hence `dev` must be embedded in a valid `struct
+> +        // serdev_device_driver` as guaranteed by the corresponding C code.
+> +        let sdev = unsafe { container_of!(dev.as_raw(), bindings::serdev_device, dev) };
+> +
+> +        // SAFETY: `sdev` is a valid pointer to a `struct serdev_device_driver`.
+> +        Ok(unsafe { &*sdev.cast() })
+> +    }
+> +}
+> +
+> +// SAFETY: A `Device` is always reference-counted and can be released from any thread.
+> +unsafe impl Send for Device {}
+> +
+> +// SAFETY: `Device` can be shared among threads because all methods of `Device`
+> +// (i.e. `Device<Normal>) are thread safe.
+> +unsafe impl Sync for Device {}
