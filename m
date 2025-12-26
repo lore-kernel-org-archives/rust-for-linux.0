@@ -1,59 +1,57 @@
 Received: from out203-205-221-173.mail.qq.com (out203-205-221-173.mail.qq.com [203.205.221.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FAF259C80;
-	Fri, 26 Dec 2025 16:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9583C5464D;
+	Fri, 26 Dec 2025 16:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766765335; cv=none; b=cgA4uSaoD169OSxqUAbVmp92cefyA4Y5CgJ5waSiFNNnJn8cJFkM8XzBwZyHk4YcEOecKTwBwAe+BoyNPMvRpKM6KVCny8tSeUvtfL548Mux8sJZUEn79F5Kdjo5dtHa07EpsSHszRPgltSRHlNJNuHHVl4p/aHeGU+jlC9RWGE=
+	t=1766765444; cv=none; b=hvOa7G7HygauEYLZP81uci4vf0MsDQDK2tzI+DzkLoh5o7VMqX/S9kTdYADq8OA+Dstxaq4E3drfqGqqbtmE9JEqZ/yxC6xEsygJ9ke/LqDXi4nMzys0Uoa7MuMcamLau+nrVF7H38YqtpHJGugI0hmlCTtE7nGmNyc/hFmJzBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766765335; c=relaxed/simple;
-	bh=UfuG2Ig9h8EQ17s1JhzfGF9EZS/bfRlj5bzoLzQxlng=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=crlJ2jWTZE1/wCD+i5BRx8OxJa+IuHSWpw/1Ywv0RSd15/d8SB//jzA4evDfe7X4jNbnIDiKuAWg0Xg97b/AwnxXev1y0uDX4MbAecEAGC9P4KiZbsvwe9YmywyEjU4KK/jlad4dwVsl5xegdJ5Ke+NjvcHgBMTKieQh/y/B6uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=oYjCuGl/; arc=none smtp.client-ip=203.205.221.173
+	s=arc-20240116; t=1766765444; c=relaxed/simple;
+	bh=npVADthl43s8nFfJiLP/573n5rQCJXK8CQ4e7XYY7ZQ=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=gaST4cxrVAJe0CRbh4oshwTdI1WUdlr8quPFjnjhwB7NlcmQCvr/UA8BA4SwH+xALxMhEPmOZhNBzWETQDZWEFTsYJ+1GVt86awXLcYSA77/LzXAZ/cJU43/qP6Kr0zuYMhhq1SexRmOL8TjwWiWZhh6X8yw2s8/EdsnTfxlaNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=MgVpPxOr; arc=none smtp.client-ip=203.205.221.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="oYjCuGl/"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="MgVpPxOr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1766765329; bh=gPFqo8KWiXv2OUZl0ia6bDHIOq72XHRC2s7AHhTWGTE=;
+	t=1766765439; bh=Qjz0v1XIpBCptFDzRlnN/MSpEILFppOzfS9Xb6eODr0=;
 	h=From:To:Cc:Subject:Date;
-	b=oYjCuGl/s4FOvPYw2fQWXwfoVYQLbq+I88FUORqYE3EFAbn+/rK5fRFUXaoZfhngA
-	 vROHXTLstq8XODY4soJ464x1UlBvtvm/k7uYdM6vHKHBCSA657IsqxYa57EjgnG3oH
-	 BEPcWXnkyVY7+nG13QhoC5+67VbVGlHztnkFABOg=
+	b=MgVpPxOrsnYduPB5+kUXaugZYSi8bAtRWHWnZHQHj5J4qEBpLJfeqpDFBlsRXGWQT
+	 +ZpH+b3fWT2VBNt7uDFLE2EL2Z4WDhzYHHNZp6XV71VA9J8iZm8VQKTVQV6h7mHDAy
+	 RarPNP0LD4q+rkNWcIITa1kGeaGhwq9X7z1/hj5M=
 Received: from xh6010.. ([202.120.234.37])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id 22FB2C72; Sat, 27 Dec 2025 00:08:47 +0800
-X-QQ-mid: xmsmtpt1766765327t45ckjhxo
-Message-ID: <tencent_9F74630DC16B92484463BBC055DEB1F17306@qq.com>
-X-QQ-XMAILINFO: Oayzr6Bt9/qsla3Ws/HEzCIhZ3BHnxSB63ZL7hqYqVpYklASGSXax74Mit8mk/
-	 ++vZUocCcFWm5C5ps/f3Qwpc49L73Eo/WshVbggVcb/wF8JIFOBMlu1jjN/79IHMH+2gp1/GfcO5
-	 +usabMDoHvMC6bPgKcGSI8Tb2zjXNdoLSAxULPg8UrxaO04K9mv5zl2EEr4E5SKUnxOxpI6fEBQu
-	 O/tWyCE64VLYDEd2MF4lM84uH0X84rz/TWglLfQhCdQHlVcwOSfFnBZzbeII1kjBfTuX98Uc0m0S
-	 nAb+OQ+CBPTS6nwmU5NILjd/swSSsmcVAatOWC3LV2k/PqZPljipHkP3cWHkJqi8oBGHZZk0nIlG
-	 xOYsMKTjTJyh/CuDviH4YYYotRZMAEFD6lUFZRc32iro88HaqT5suNRSM3J50VUSRhqEkkqRCvvm
-	 +VATLEd2jjQclN3toinViY/5YRenfoFRxjxY7sUJII01W2pP40T0SGBRxpocH9KKXWpdMlqRkOBk
-	 FLOXF6VjX9TCmW88EVeeIMjIS3zrXFDlxDVX/w2WXgLfhoJUgdBy7CFb6ShxO7EO0iwY2JUyLOUq
-	 o0+zkewTBReuL1gwQqA3ht825SCea5HR8RYTDFATxtAHzUShsxCsLoLMSHp+vB4SvZXAdNQfOgKk
-	 oW7ODNli4K5IjLiLu2mJOi7f3A0IlPYwaWim39jfB83ZlHRsej70xEH0+IBGost9c+USv4/a0Sn3
-	 NgD6XwT2GAlSZuD++j3OLtbm4Csaudm3vkeBnxDWhyGZ8a5P6egRrNhO0Kk6RAznAw4SWDcnSDA8
-	 sr7Z1daycnY9pJul0hPQ019PHq6qbWJKyMqCFNTWOIKNzThQoqsJcvLDlgMUVxRFcq0rW+osUV0R
-	 enycJrQTYA1mKbEKfIPoXvTBqRRb+p2cCCv7yiMU/uaVZoTtCIIpJM4YD8/GvqiwZZOWde1jO6or
-	 rqVnImCK0oqlE/6ZFEiM79V3jspz5H+3Zjzhsf8Jx8OJAgPjQjxHbaEPyHr8B02QZrRdMjpyZb6N
-	 UKOn8Y6nkqlQ+bpxIyc1ebQehgLP3/LlLJUQeIIwwsxv50jzZ8dFGXET7frPEjjpNTjwybNxR+r2
-	 GsM6i4Hi4wr0l0mW0=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id 2A63EC8A; Sat, 27 Dec 2025 00:10:38 +0800
+X-QQ-mid: xmsmtpt1766765438twsakx3i9
+Message-ID: <tencent_7183098292B42248DA2FAE7C8EA39E3B1A09@qq.com>
+X-QQ-XMAILINFO: MllZffuBkEb5dGRU9c4pcusVbUbUz827diBQv258xL9ZNc0w3475WNdqj5W/EC
+	 aJQQ8JxSiihd8pSvJrX56oOJ/XwpqkMRi/Ng2D0hthT3MT9tztv/fo9Rikvc0UwyGAbpzO6+IhkL
+	 hkYorcCWLc4vcuobuWQaKZfOhd0a65DpvagQzTWC9+ihQq1UqWPQyC43DrA+Mj5KxxdQFl7RCLRs
+	 vYFzsN2gkOzS4IROcx9+wtXF3+lh1fysrlXgR3h5ayMDYYYoRR/ZjxuZ4XfnOGTL0OM1MC6VP0Kc
+	 Te4XQa4yQSsFOJ9bRAJlYAIM0F0enLUZCkAe7OqrMrSkEtbMxziZyRiAbWIZqonVpqNOYcYfEkio
+	 bJCfbFIjdyctY6raSzaV+tJgljteDR71ZjPN3J2sxZ4KZTr3SDribhWL1mZS71mPjOWunYPhzqtW
+	 cGLwv2Aqv3eeJLBVuB0/oMoZBamGouxurnbG3uLN0Nwtak5wFFXZeGOGge7vP6jqKsT41xeM8x3m
+	 tu9gmcB4dIEPN08dSyyqsqU0+nLMpnyESJh6KDxQzjk+WtjQCSnmtPH6G+i2TF/prmTLrPnbztzC
+	 iZUADWVct4c9dXNzB04Dn7Xnow/6E2wvIJscV/2A6BKh2YSt2k330JYNCb/gdDQrww2nx1eZprNK
+	 Gz+JkbCVdr7zuVaOvofBvAVvW2bo6O1ncYt1id6/tEPJu4ZsKQphpd5n/8b5mpvBXSuIR+L57UCR
+	 miu4p6D0yXTx4O/BCHIzHNmt0XuGskIID6Z+vY8O4B0LFNxRGKq4772aDkYvUSMhEOZwY9CFQ2Rb
+	 h7ntE3jQqupz25il94cvMpGRV1Ze7bfEzunbWYoouoTvGejaNWzM0oWPdxZpWFEa7iSd1i8z4zeD
+	 wSegPjk9TyOFGCjQgJuXAR4bh776k42KK2KhDLhG1z1f1ZBlNj7r1TuAeJgNbeyHqLIOouLmgL5+
+	 gbMGaEDnyLI4Y9SLfw0w4hwVu/pvh9tW1YhygeLNTqpcsOf3EBmSZSPxTQKa+JkX1Ipg6mo5PHW+
+	 9YFYsbQPy8WjHxgRluPkTZyUzyxGhXX/+bcBC1kA2F/VkEcnIV8/7pT0ayUe68kfxvJtdma4pns1
+	 Vzl7O3
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
 From: Yilin Chen <1479826151@qq.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
+To: Danilo Krummrich <dakr@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yilin Chen <1479826151@qq.com>
-Subject: [PATCH] rust: device_id: replace possible incorrect word in safety documentation
-Date: Sat, 27 Dec 2025 00:08:24 +0800
-X-OQ-MSGID: <20251226160824.1635183-1-1479826151@qq.com>
+Subject: [PATCH] rust: dma: remove incorrect safety documentation
+Date: Sat, 27 Dec 2025 00:10:27 +0800
+X-OQ-MSGID: <20251226161027.1635891-1-1479826151@qq.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -63,29 +61,28 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The safety documentation incorrectly refers to `RawDeviceId` when
-transmuting to `RawType`. This fixes the documentation to correctly
-indicate that implementers must ensure layout compatibility with
-`RawType`, not `RawDeviceId`.
+Removes a safety requirement that incorrectly states callers must
+ensure the device does not access memory while the returned slice
+is live, as this method doesn't return a slice.
 
 Signed-off-by: Yilin <1479826151@qq.com>
 ---
- rust/kernel/device_id.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/dma.rs | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
-index 62c42da12e9d..8e9721446014 100644
---- a/rust/kernel/device_id.rs
-+++ b/rust/kernel/device_id.rs
-@@ -15,7 +15,7 @@
- /// # Safety
- ///
- /// Implementers must ensure that `Self` is layout-compatible with [`RawDeviceId::RawType`];
--/// i.e. it's safe to transmute to `RawDeviceId`.
-+/// i.e. it's safe to transmute to `RawType`.
- ///
- /// This requirement is needed so `IdArray::new` can convert `Self` to `RawType` when building
- /// the ID table.
+diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+index 84d3c67269e8..2ac107d8f7b7 100644
+--- a/rust/kernel/dma.rs
++++ b/rust/kernel/dma.rs
+@@ -532,8 +532,6 @@ pub unsafe fn as_slice_mut(&mut self, offset: usize, count: usize) -> Result<&mu
+     ///
+     /// # Safety
+     ///
+-    /// * Callers must ensure that the device does not read/write to/from memory while the returned
+-    ///   slice is live.
+     /// * Callers must ensure that this call does not race with a read or write to the same region
+     ///   that overlaps with this write.
+     ///
 -- 
 2.34.1
 
