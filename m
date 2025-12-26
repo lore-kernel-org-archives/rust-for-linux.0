@@ -1,120 +1,186 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1FE319606
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 11:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9F91D86DC
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 11:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766747521; cv=none; b=Ft8tNDGhsGvbYrLV1QeaB0xUdb1S+uKDRqVoRcgrxfZQVnlokbi654gy+4mRwcKmMtWsUgzXXGvAu97VNN4bAeVDUb2bKhV2l5rJOXLdFfPYPCqEw2vRrODfW/Z2FfNfJ2SJSrLLKaojTA4+wALuR3/qzVdG0d3l1ofVTnJpiH8=
+	t=1766749186; cv=none; b=HFBLVnYw72TFnWCMn1mz04hx7OHAh6Siaal3+2d2N5h873i6vG/eNUZDGd1i/TizEvv+Abw6expsBu33flll9gOyU9s15WTIZB+ChnHV/3VuYVS+ngo6xq/Y3rMlD0MTPgRTOdBbcfIFpKa1ptDdsHHOCDmB4S0CY6I3t9Cgxx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766747521; c=relaxed/simple;
-	bh=GrEryL+CS0vvELyT36eR2JXYpd/5DcbikdcG9E3uqtc=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=dLUGpxSEK1OwRfJJh2746xn4g1zK844339MZG+HiOV09JKHbSb7jW5obLUAKE9KRGOHdBHO9JsLkUe8X+QfuT+xd2tYQLI67XvxqpsJ4JcXRFNm3Mizq/rd4B4J0Rj18rjf2NrQzZbZQ1uePmdj1EDUx5PLyo/+4rYIWMrGqEfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bKXBVGXb; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1766749186; c=relaxed/simple;
+	bh=ejONzTVU0FdmdyDekUr8YEFyQevob5Y9vbn53RBZ8Eo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GdteknZsDlqK4IP7SKsot82zDcITfZHpF56vG7fOv+kIkooeNi/n4tI8TAUfwod+culdCaRBgK6Hqv7Ny/CIKf1B5fx67GgOuy8ZNXoua1fiTvL1XKqICQDSOVl4KSngoNXVVlscKU3voZxZtqeU6uiOQzuAQm7QcJRZ0/IZkNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ICeUjw+w; arc=none smtp.client-ip=209.85.219.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bKXBVGXb"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a1388cdac3so66710105ad.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 03:11:59 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ICeUjw+w"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-8888a444300so78319546d6.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 03:39:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766747519; x=1767352319; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GrEryL+CS0vvELyT36eR2JXYpd/5DcbikdcG9E3uqtc=;
-        b=bKXBVGXb0+jFhCCWBtJoK06x0dX52wc7iXcgg2QaOuJtNNSdY7TWc9oR9ZIYy8LX9X
-         jfAvuVFpd563SG/mlGFuOCj1TwcBSyZ8D0NAz2vkQQXSBb40PuK507PWvGXvboIC5K1n
-         8du7an+mnYiIjP/XhGWxeiqCNXfSGxY0WAt/77MQwkm8dATzSW1lBFvBIeudjPzoCBlo
-         ps3PYX4EujG24kWDIY0CCa68Stw05k0bdvQAoix4f3oNe+t8YhjTlt8+GnkYIJRQh0y8
-         jpsIAGLIrLV+W2p8VVjfQwKumDKQ781OI4Zc/DcNG1bWegPSjPikleTyMB4lzGHwB6Mu
-         1dNQ==
+        d=gmail.com; s=20230601; t=1766749184; x=1767353984; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=tmKT01VlgiVDtYWOF8z6L//YBXMRlOGnlMxAj6FU8N0=;
+        b=ICeUjw+w5OHQskyKx9agrJ3n5nKEj0nAFhrkZVXcZWgyL48hqGQcm4pcvtWjlJThmq
+         8zuT/rHWdvHzuWoWIU8aCFLuXDk8uWvBFwNLxGQH65VcT3dqlYJjhJVFmzTA0GwetecK
+         lgWhjTlP1sU4nP7EFIuQ/OxkxBufyOyiwDe27F+nL9Oz7Zq7nyz2CaxdxQIw8MstYiDm
+         euw1kx6Rl1lQc3oy9Be0mmJ3WcvSdY5ZpRDGdlelsRzRInQAV3XN3z4q3lYVw5qs1ftE
+         mZTW3AwglQ1VP3UBVzffCde64Q6GdiGX9qTbeSJJKsUUVfneSfZvaUhHCHRAiISaVDFk
+         aIIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766747519; x=1767352319;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GrEryL+CS0vvELyT36eR2JXYpd/5DcbikdcG9E3uqtc=;
-        b=qGB5AIiaMfhOZ0fg0NIx7ihU6fkQm1Z41yQ1DoGKa6KknuL9TzEWVB/8NeX/GkoIsy
-         Y5G5FED3xY78yyd2SrrprOQrWob4/kHNr4zKH44nxMRHiUA9PcBWOhdbRPXwtMrD38iI
-         SCyaabWlXvoatIqDovkZDW+3lfzqkcqIk687xbBsDtwt0CY/bhETFG5mTuKHjCVyAVvI
-         ICs2D/eBwiTOZDj9G8eZJg/5PtZeKhDDfxJzP8eTbBSZ16CUkFGgNkm2W5NalCivtIT3
-         WurEAVThVNM4toNITKK3EDjGJeT7BxlWygo+RJrInA/SNOtgXGo0Q5FwAudg7OZWy7Ip
-         5QTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSHJZL6tOz+LLdPEYIKZoWMtVUQ0mXuiBdnWG0oe1C8nb0dXp690U3ZyMPDnE5+2+4uxHC1e2FR5/2BU2nbg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUXgRXTNsby55D/Jue2GU7c6R/evxcr0Yv58eARFr2RE4NtBcB
-	81Gov3kCOCt4gj2cSudxVtcjmEzaI/mHeqyioM2eswtc8X0PIe7dATGu
-X-Gm-Gg: AY/fxX7crpBOglzNdTD11FLQ/28I3L98A3OgATgRPAViScQXa/c+nOWZCzhAQitK3pG
-	u4rHqPrVK2D8j4VmJNeZhZhNLjCOHAMparTlJwAV1hNwE+DRBfHMZaEcrkZhlMsTPjR+313evPy
-	a8sYwViZEDFx5t9QK3BbGYl1lS8zc0ItcjqGaOQcowqs+F6jBycp+tgygWc8VKe3X1irhS9FfM8
-	wp3CTID5H5DngJxpqZG81+nt/e6+VS/b13lwJaw41xMSOYHypyq5gB3RdPd+wW8RnH/MgQADMn9
-	tiTxE7ScA2mPwIQRnwDkQxUE8Wsjj+9pBW+Ys7Vwh/t7KdPBJ+Vy6OwzxCC9Q3rFLCBXrYTvvhS
-	K5ZRfOLGni5x2q8O9+bZ9x/o7K34OEQ/BLoRX4U+X0cPSiDkNFyuVYQec84QshGU5Ns0ertQVyO
-	kOn0vE2dGBe3nLUsHs9L/EKxgz3mzJTqxAutpUqcs9LBtn5E8rbcgf/7GCUQTM7DT3hK8=
-X-Google-Smtp-Source: AGHT+IGGipCbhgaQOoY2a9zGN67p1m3gUlBc7Gwg4kuol771fhfZChu6DYeHJHsL/FtWYs3YsAKz1Q==
-X-Received: by 2002:a17:903:190d:b0:2a0:a09b:7b0 with SMTP id d9443c01a7336-2a2f2c5f2d3mr236489945ad.61.1766747519188;
-        Fri, 26 Dec 2025 03:11:59 -0800 (PST)
-Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c6661esm199723195ad.2.2025.12.26.03.11.54
+        d=1e100.net; s=20230601; t=1766749184; x=1767353984;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=tmKT01VlgiVDtYWOF8z6L//YBXMRlOGnlMxAj6FU8N0=;
+        b=vkkwzuGksNGTaPstmxKQUk9COUK11BPblNLjAsFRIaAztQ8Zp361a2SrlGxcis2CGz
+         JBQmLd6tAcc08vXwf/QOCkJHVuK15xPlNjHrSCgvtAN8w2iZ3xxrUFZP8um66wbjI89q
+         nGdzkRTB1onExpkZReysEfZJwykI4EixwauYJ8MSMzD2MCpcAoXtNPb1JV7ZWP1YnpHF
+         pETmGoqdWjG1cdeoOeI13ZbP8ilEUdlZ52D3NGnl1pYlmMDMB0Br05h41oQiYX3c91z2
+         1yQtmxpE1sSvXbSG5SXQRDW6kmwp13cGHlAhwYT016HO1MTyDxXLByzOnon6AmiyB9FJ
+         /XXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXyWF/gSoye0ge3Xd4aj1MkpIvVQZ2qA+9JraVOzGb8SQBfWFXcMLtA0S562tMJ20/dJw1GMUldjIT1aP2ZPg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlAELrcEzlWbYce+Fh7qEcgIMUwzQ9OO6lcZTptduegJpjxf8R
+	8mJCL5dTiKTQyyPUjG+Shur+uONUczS/bGOTuvZLMJdTvaKSayP+ISGQ
+X-Gm-Gg: AY/fxX5Nb1DEGTDDiPtaEJHWWSuJCc1WTfyR91CsKp7GOx9YDvekSj1SZNU8LKBqUcn
+	PRbddWwzOmIO9jCX3b5rLtnS7/06lMoal9bG/xrWEvTdunZQNFqvGJCvqSjs7iE8ZUnEt/Q+0jl
+	yAyj9qoTnW5OcS8/qwXJ6qBYIHG/b5u6l8cIZhyWxxOmLWiraUQdodPZ3O5EadsPmJRKTRepomT
+	moKO4t+SsDzLpLuBpofNttCFjCqhzFpgttAgJdOn1cbiMspC+SOH/yOTe0evjxqyp+ue6QSVgyX
+	nId3ngk69FLz5wnPG2NswcniMdhCyCDh4z1PmaadczsnylsJR3NOm21f1jo5eFfaGd+3kejwdRS
+	SjFbXPH15i+TsmJzJ1xFp9/fPUyga+p3PU+BTYw0d4M4ykjGmF+57XMpAwf3N9FE4TBbJGx3k17
+	H32iG76KF5Es/H60atuGJNTvT8EePuYGBRPDtZZwFSDk0qzV9Fp46VjyeT8tkGx2eb5FAhLejWU
+	tVLL7Y+bldA4ro=
+X-Google-Smtp-Source: AGHT+IGV8BHHtX/GVo7I0/97UaUQUtAkvaXwseFZpyG4xX7ayE5yjIfCJ/90vxAgzY9uXJbR9su+2A==
+X-Received: by 2002:a05:6214:248b:b0:70f:a4b0:1eb8 with SMTP id 6a1803df08f44-88d8203f029mr371419736d6.13.1766749184014;
+        Fri, 26 Dec 2025 03:39:44 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d96bec1d3sm165930696d6.17.2025.12.26.03.39.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Dec 2025 03:11:57 -0800 (PST)
-Date: Fri, 26 Dec 2025 20:11:42 +0900 (JST)
-Message-Id: <20251226.201142.1049434388098064267.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, miguel.ojeda.sandonis@gmail.com,
- dakr@kernel.org, bhelgaas@google.com, ojeda@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, joelagnelf@nvidia.com,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, buaajxlj@163.com
-Subject: Re: [PATCH] PCI: Provide pci_free_irq_vectors() for CONFIG_PCI=n
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <aU0PnCV69l7lV2aS@tardis-2.local>
-References: <CANiq72n1SX4OGFR4wNzurNX2RQki_ZmD13bBfywxxOEmw6cGZg@mail.gmail.com>
-	<20251225.183631.866118259815088053.fujita.tomonori@gmail.com>
-	<aU0PnCV69l7lV2aS@tardis-2.local>
+        Fri, 26 Dec 2025 03:39:43 -0800 (PST)
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DB8BDF40068;
+	Fri, 26 Dec 2025 06:39:42 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Fri, 26 Dec 2025 06:39:42 -0500
+X-ME-Sender: <xms:_nNOaZz7d5PDPwIEHoTgeLWMoK0trC6INblxeKYyn0mb84Dhg8q4IA>
+    <xme:_nNOaeIgxk7dv9vjr8-6y4IEoF1dMRTkkWrTvz2H4jJrrLyWp7KZ0DXoCbQ0GsLNp
+    HxxSFWjV0q1FTBTttD9YJeKienGATafTF04wtjr2aZrGUihJhbWcA>
+X-ME-Received: <xmr:_nNOab5UiwuM6njQyvoJmfrMZ6X3P47J4zHQX1EYHlCsu5nbGZwzsyjQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeikeefjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfhvghn
+    ghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnh
+    epgeegueekgefhvedukedtveejhefhkeffveeufeduiedvleetledtkeehjefgieevnecu
+    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshho
+    nhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngh
+    eppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddt
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtphhtthho
+    pehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnrdhfvghngh
+    esghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdp
+    rhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtph
+    htthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgu
+    sghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgoh
+    hoghhlvgdrtghomh
+X-ME-Proxy: <xmx:_nNOacwXode_EDdi-iJ4R4d3HemtSSIBt3_7C4tiZqfE2_Vzc5sFIg>
+    <xmx:_nNOad9QHGw-4GCVx7menAHWVyWa_upulO2RWYd9m7AWDl4L3fH8Ww>
+    <xmx:_nNOaQGzvbsYU46FMowqg0-rE1kbngIdm52hyUtT5heCLhVXj4yYVA>
+    <xmx:_nNOaXDW77woyuMzmWjbQOb2dwGkexT6SqPF0SY2ZaYkTqWujGMYLA>
+    <xmx:_nNOaUmEYnwCrT1xfj2QtgmcPSQ1CWghtvtvWxbyVCsULNFOUf1-a9PU>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 26 Dec 2025 06:39:42 -0500 (EST)
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Dirk Behme <dirk.behme@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Liang Jie <liangjie@lixiang.com>,
+	Drew Fustini <fustini@kernel.org>,
+	David Gow <davidgow@google.com>
+Subject: [PATCH v2] PCI: Provide pci_free_irq_vectors() for CONFIG_PCI=n
+Date: Fri, 26 Dec 2025 19:39:38 +0800
+Message-ID: <20251226113938.52145-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-T24gVGh1LCAyNSBEZWMgMjAyNSAxODoxOTowOCArMDgwMA0KQm9xdW4gRmVuZyA8Ym9xdW4uZmVu
-Z0BnbWFpbC5jb20+IHdyb3RlOg0KDQo+IE9uIFRodSwgRGVjIDI1LCAyMDI1IGF0IDA2OjM2OjMx
-UE0gKzA5MDAsIEZVSklUQSBUb21vbm9yaSB3cm90ZToNCj4+IE9uIFRodSwgMjUgRGVjIDIwMjUg
-MTA6MTA6MDQgKzAxMDANCj4+IE1pZ3VlbCBPamVkYSA8bWlndWVsLm9qZWRhLnNhbmRvbmlzQGdt
-YWlsLmNvbT4gd3JvdGU6DQo+PiANCj4+ID4gT24gTW9uLCBEZWMgMTUsIDIwMjUgYXQgMzo1NOKA
-r0FNIEJvcXVuIEZlbmcgPGJvcXVuLmZlbmdAZ21haWwuY29tPiB3cm90ZToNCj4+ID4+DQo+PiA+
-PiBDb21taXQgNDczYjlmMzMxNzE4ICgicnVzdDogcGNpOiBmaXggYnVpbGQgZmFpbHVyZSB3aGVu
-IENPTkZJR19QQ0lfTVNJDQo+PiA+PiBpcyBkaXNhYmxlZCIpIGZpeGVkIGEgYnVpbGQgZXJyb3Ig
-YnkgcHJvdmlkaW5nIHJ1c3QgaGVscGVycyB3aGVuDQo+PiA+PiBDT05GSUdfUENJX01TST1uLiBI
-b3dldmVyIHRoZSBydXN0IGhlbHBlcnMgcmVseSBvbiB0aGUNCj4+ID4+IHBjaV9hbGxvY19pcnFf
-dmVjdG9ycygpIGZ1bmN0aW9uIGlzIGRlZmluZWQsIHdoaWNoIGlzIG5vdCB0cnVlIHdoZW4NCj4+
-ID4+IENPTkZJR19QQ0k9bi4gVGhlcmUgYXJlIG11bHRpcGxlIHdheXMgdG8gZml4IHRoaXMsIGUu
-Zy4gYSBwb3NzaWJsZSBmaXgNCj4+ID4+IGNvdWxkIGJlIGp1c3QgcmVtb3ZlIHRoZSBjYWxsaW5n
-IG9mIHBjaV9hbGxvY19pcnFfdmVjdG9ycygpIHNpbmNlIGl0J3MNCj4+ID4+IGVtcHR5IHdoZW4g
-Q09ORklHX1BDSV9NU0k9biBhbnl3YXkuIEhvd2V2ZXIsIHNpbmNlIFBDSSBpcnEgQVBJcywgc3Vj
-aCBhcw0KPj4gPj4gcGNpX2FsbG9jX2lycV92ZWN0b3JzKCksIGFyZSBhbHJlYWR5IGRlZmluZWQg
-ZXZlbiB3aGVuIENPTkZJR19QQ0k9biwgdGhlDQo+PiA+PiBtb3JlIHJlYXNvbmFibGUgZml4IGlz
-IHRvIGRlZmluZSBwY2lfYWxsb2NfaXJxX3ZlY3RvcnMoKSB3aGVuDQo+PiA+PiBDT05GSUdfUENJ
-PW4gYW5kIHRoaXMgYWxpZ25zIHdpdGggdGhlIHNpdHVhdGlvbnMgb2Ygb3RoZXIgcHJpbWl0aXZl
-cyBhcw0KPj4gPj4gd2VsbC4NCj4+ID4+DQo+PiA+PiBGaXhlczogNDczYjlmMzMxNzE4ICgicnVz
-dDogcGNpOiBmaXggYnVpbGQgZmFpbHVyZSB3aGVuIENPTkZJR19QQ0lfTVNJIGlzIGRpc2FibGVk
-IikNCj4+ID4+IFNpZ25lZC1vZmYtYnk6IEJvcXVuIEZlbmcgPGJvcXVuLmZlbmdAZ21haWwuY29t
-Pg0KPj4gPiANCj4+ID4gUmVsYXRlZDogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcnVzdC1mb3It
-bGludXgvMjAyNTEyMDkwMTQzMTIuNTc1OTQwLTEtZnVqaXRhLnRvbW9ub3JpQGdtYWlsLmNvbS8N
-Cj4+ID4gDQo+PiA+IEkgZ3Vlc3MgaXQgY291bnRzIGFzIGEgcmVwb3J0LCBzbyB3ZSBtYXkgd2Fu
-dCBhIFJlcG9ydGVkLWJ5IChDYydpbmcgVG9tbykuDQo+PiANCj4+IFNpbmNlIHBjaS5ycyBpcyBv
-bmx5IGNvbXBpbGVkIHdoZW4gQ09ORklHX1BDSSBpcyBlbmFibGVkLiBTbyBpdCBzZWVtcw0KPj4g
-Y29uc2lzdGVudCB0byB0cmVhdCB0aGUgUENJIGhlbHBlcnMgdGhlIHNhbWUgd2F5LiBUaGF0IHNh
-aWQsIHRoaXMNCj4+IGFwcHJvYWNoIGlzIGFsc28gZmluZSBieSBtZTogaXQncyBhbHJlYWR5IGlu
-Y29uc2lzdGVudCB0aGF0DQo+PiBwY2lfYWxsb2NfaXJxX3ZlY3RvcnMoKSBoYXMgYSBzdHVmIGRl
-ZmluaXRpb24sIHdoaWxlDQo+PiBwY2lfZnJlZV9pcnFfdmVjdG9ycyBkb2VzIG5vdC4NCj4gDQo+
-IFllcywgSSB0aGluayBwcm92aWRpbmcgYSBzdHViIHBjaV9mcmVlX2lycV92ZWN0b3JzKCkgaXMg
-dGhlIHdheSB0byBnby4NCj4gSWYgeW91IGFyZSBPSyB3aXRoIGl0LCBJIGNvdWxkIHNlbmQgYSB2
-MiB3aXRoIHlvdXIgYW5kIExpYW5nIEppZSdzDQo+IFJlcG9ydGVkLWJ5Lg0KDQpJdCB3b3JrcyBm
-b3IgbWUuIFBsZWFzZSBnbyBhaGVhZC4NCg0K
+Commit 473b9f331718 ("rust: pci: fix build failure when CONFIG_PCI_MSI
+is disabled") fixed a build error by providing rust helpers when
+CONFIG_PCI_MSI=n. However the rust helpers rely on the
+pci_alloc_irq_vectors() function is defined, which is not true when
+CONFIG_PCI=n. There are multiple ways to fix this, e.g. a possible fix
+could be just remove the calling of pci_alloc_irq_vectors() since it's
+empty when CONFIG_PCI_MSI=n anyway. However, since PCI irq APIs, such as
+pci_alloc_irq_vectors(), are already defined even when CONFIG_PCI=n, the
+more reasonable fix is to define pci_alloc_irq_vectors() when
+CONFIG_PCI=n and this aligns with the situations of other primitives as
+well.
+
+Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Closes: https://lore.kernel.org/rust-for-linux/20251209014312.575940-1-fujita.tomonori@gmail.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202512220740.4Kexm4dW-lkp@intel.com/
+Reported-by: Liang Jie <liangjie@lixiang.com>
+Closes: https://lore.kernel.org/rust-for-linux/20251222034415.1384223-1-buaajxlj@163.com/
+Fixes: 473b9f331718 ("rust: pci: fix build failure when CONFIG_PCI_MSI is disabled")
+Reviewed-by: Drew Fustini <fustini@kernel.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+---
+v1 --> v2:
+
+* Add Reported-by from FUJITA Tomonori, kernel test robot and Liang Jie.
+* Add Reviewed-by tags.
+
+Thanks!
+
+Liang Jie, I added you as Reported-by because of [1], if you prefer not
+to have that tag, feel free to let me know, thanks!
+
+[1]: https://lore.kernel.org/rust-for-linux/20251222034415.1384223-1-buaajxlj@163.com/
+
+ include/linux/pci.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 864775651c6f..b5cc0c2b9906 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2210,6 +2210,10 @@ pci_alloc_irq_vectors(struct pci_dev *dev, unsigned int min_vecs,
+ {
+ 	return -ENOSPC;
+ }
++
++static inline void pci_free_irq_vectors(struct pci_dev *dev)
++{
++}
+ #endif /* CONFIG_PCI */
+ 
+ /* Include architecture-dependent settings and functions */
+-- 
+2.51.0
+
