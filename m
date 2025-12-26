@@ -1,88 +1,104 @@
-Received: from out203-205-221-173.mail.qq.com (out203-205-221-173.mail.qq.com [203.205.221.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9583C5464D;
-	Fri, 26 Dec 2025 16:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3744529ACFD;
+	Fri, 26 Dec 2025 17:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766765444; cv=none; b=hvOa7G7HygauEYLZP81uci4vf0MsDQDK2tzI+DzkLoh5o7VMqX/S9kTdYADq8OA+Dstxaq4E3drfqGqqbtmE9JEqZ/yxC6xEsygJ9ke/LqDXi4nMzys0Uoa7MuMcamLau+nrVF7H38YqtpHJGugI0hmlCTtE7nGmNyc/hFmJzBk=
+	t=1766769782; cv=none; b=gLWD9Jk+oVPfFG+O2N1Ljuj3H/24qPWnvY9f4VV9i17EyRs+ZGJ+967gLllMbqHsZDKvxScU/P4/B4KsjfM6X+9wLNDIAP+2o41/RSXUuSLWzBwETzhc+WQjGOFcpAgxl0TiZBQObZoPk8Zc4DGTl00kSpdqbqHmuG4C+QcAaA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766765444; c=relaxed/simple;
-	bh=npVADthl43s8nFfJiLP/573n5rQCJXK8CQ4e7XYY7ZQ=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=gaST4cxrVAJe0CRbh4oshwTdI1WUdlr8quPFjnjhwB7NlcmQCvr/UA8BA4SwH+xALxMhEPmOZhNBzWETQDZWEFTsYJ+1GVt86awXLcYSA77/LzXAZ/cJU43/qP6Kr0zuYMhhq1SexRmOL8TjwWiWZhh6X8yw2s8/EdsnTfxlaNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=MgVpPxOr; arc=none smtp.client-ip=203.205.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1766769782; c=relaxed/simple;
+	bh=4cVn8UL6hNWEcg/YdhbCzOX9yeZWfbignrYfO4IkjYU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uy5vrjgy7NA3Y4EWjmWbBW6IxVrfVTvhb+MrHzLv9R4HGU+Ags/bu6sM/S/cUc660yUL/dvRdZdEW9HANDfcUK5xaGbAwpJhtRzeY4Pz7NEmR/ROxlHh512X+8+reIc+lm563BYJ4ofpiOCm+tXGHVKdo5ZhjWapy205dBsVUyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NppR/zRY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="MgVpPxOr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1766765439; bh=Qjz0v1XIpBCptFDzRlnN/MSpEILFppOzfS9Xb6eODr0=;
-	h=From:To:Cc:Subject:Date;
-	b=MgVpPxOrsnYduPB5+kUXaugZYSi8bAtRWHWnZHQHj5J4qEBpLJfeqpDFBlsRXGWQT
-	 +ZpH+b3fWT2VBNt7uDFLE2EL2Z4WDhzYHHNZp6XV71VA9J8iZm8VQKTVQV6h7mHDAy
-	 RarPNP0LD4q+rkNWcIITa1kGeaGhwq9X7z1/hj5M=
-Received: from xh6010.. ([202.120.234.37])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 2A63EC8A; Sat, 27 Dec 2025 00:10:38 +0800
-X-QQ-mid: xmsmtpt1766765438twsakx3i9
-Message-ID: <tencent_7183098292B42248DA2FAE7C8EA39E3B1A09@qq.com>
-X-QQ-XMAILINFO: MllZffuBkEb5dGRU9c4pcusVbUbUz827diBQv258xL9ZNc0w3475WNdqj5W/EC
-	 aJQQ8JxSiihd8pSvJrX56oOJ/XwpqkMRi/Ng2D0hthT3MT9tztv/fo9Rikvc0UwyGAbpzO6+IhkL
-	 hkYorcCWLc4vcuobuWQaKZfOhd0a65DpvagQzTWC9+ihQq1UqWPQyC43DrA+Mj5KxxdQFl7RCLRs
-	 vYFzsN2gkOzS4IROcx9+wtXF3+lh1fysrlXgR3h5ayMDYYYoRR/ZjxuZ4XfnOGTL0OM1MC6VP0Kc
-	 Te4XQa4yQSsFOJ9bRAJlYAIM0F0enLUZCkAe7OqrMrSkEtbMxziZyRiAbWIZqonVpqNOYcYfEkio
-	 bJCfbFIjdyctY6raSzaV+tJgljteDR71ZjPN3J2sxZ4KZTr3SDribhWL1mZS71mPjOWunYPhzqtW
-	 cGLwv2Aqv3eeJLBVuB0/oMoZBamGouxurnbG3uLN0Nwtak5wFFXZeGOGge7vP6jqKsT41xeM8x3m
-	 tu9gmcB4dIEPN08dSyyqsqU0+nLMpnyESJh6KDxQzjk+WtjQCSnmtPH6G+i2TF/prmTLrPnbztzC
-	 iZUADWVct4c9dXNzB04Dn7Xnow/6E2wvIJscV/2A6BKh2YSt2k330JYNCb/gdDQrww2nx1eZprNK
-	 Gz+JkbCVdr7zuVaOvofBvAVvW2bo6O1ncYt1id6/tEPJu4ZsKQphpd5n/8b5mpvBXSuIR+L57UCR
-	 miu4p6D0yXTx4O/BCHIzHNmt0XuGskIID6Z+vY8O4B0LFNxRGKq4772aDkYvUSMhEOZwY9CFQ2Rb
-	 h7ntE3jQqupz25il94cvMpGRV1Ze7bfEzunbWYoouoTvGejaNWzM0oWPdxZpWFEa7iSd1i8z4zeD
-	 wSegPjk9TyOFGCjQgJuXAR4bh776k42KK2KhDLhG1z1f1ZBlNj7r1TuAeJgNbeyHqLIOouLmgL5+
-	 gbMGaEDnyLI4Y9SLfw0w4hwVu/pvh9tW1YhygeLNTqpcsOf3EBmSZSPxTQKa+JkX1Ipg6mo5PHW+
-	 9YFYsbQPy8WjHxgRluPkTZyUzyxGhXX/+bcBC1kA2F/VkEcnIV8/7pT0ayUe68kfxvJtdma4pns1
-	 Vzl7O3
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Yilin Chen <1479826151@qq.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yilin Chen <1479826151@qq.com>
-Subject: [PATCH] rust: dma: remove incorrect safety documentation
-Date: Sat, 27 Dec 2025 00:10:27 +0800
-X-OQ-MSGID: <20251226161027.1635891-1-1479826151@qq.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NppR/zRY"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E6CD6C4CEF7;
+	Fri, 26 Dec 2025 17:23:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766769782;
+	bh=4cVn8UL6hNWEcg/YdhbCzOX9yeZWfbignrYfO4IkjYU=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=NppR/zRY6hVQHrSy1rvfbiL36FVszbN8T+YBp0QUapzE4D9UYEhWSiH/XFwGfzdx8
+	 vqWQM7WE43LAaep06loLgtDnP88lYHTsJTNZ8myh8Da11zGI5wZCaRSL7mjsa0RuXv
+	 d7qf0c7Wg0BUahRlUDO6jr3T7PFz3H9ZnP9qlitjSyA0J7Of04cXT1z5vaMdH5PpFJ
+	 hJu5cUisEntG7qFAxCe4gJbMufifJj8+cav68aZE3JLg571u9QNFQDVTvJg9jBlAaW
+	 ua1Z9nFWGMdwmJpuXAZ8OhKeCHUtWSEFuiI8XZlHsypZjW3JjFcWZrEnlFXpU3tc8j
+	 bSz+m6dDKnPyA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCDFBE7AD77;
+	Fri, 26 Dec 2025 17:23:01 +0000 (UTC)
+From: Ewan Chorynski via B4 Relay <devnull+ewan.chorynski.ik.me@kernel.org>
+Date: Fri, 26 Dec 2025 18:22:36 +0100
+Subject: [PATCH] rust: drm: Improve safety comment when using
+ `Pin::into_inner_unchecked`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251226-drm-gem-safety-comment-v1-1-5ae56d8194b9@ik.me>
+X-B4-Tracking: v=1; b=H4sIAFvETmkC/x2MMQqAMBAEvyJXe2AOo+BXxEJ0o1ckSiKiiH83y
+ FRTzDyUEBWJuuKhiFOTbiGLKQua1jEsYJ2zk1RijUjDc/S8wHMaHY6bp817hIONsYLathlHOd4
+ jnF7/uB/e9wOI2Z1/aAAAAA==
+To: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Ewan Chorynski <ewan.chorynski@ik.me>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766769780; l=1350;
+ i=ewan.chorynski@ik.me; s=20251226; h=from:subject:message-id;
+ bh=cr9xZXsdzg4gFRm4XD7QgBo5pAiTHyiIcr0OoAXNvbY=;
+ b=QHme9hYoeeJ096eavEfMxvGDXboOP72kgL0MmQOVOXx33RBK6szLkQSKUzNcIeKuHaFxRcIZi
+ jsIytm5GTXxDf0S/2mC8WMFLNWBe7z61mZQe6bTkFCq8FR1FjEYKKYt
+X-Developer-Key: i=ewan.chorynski@ik.me; a=ed25519;
+ pk=Qzaw5giL/U3IFVpYyrZjtONgXMAOpXYyUsXRpiS8hUQ=
+X-Endpoint-Received: by B4 Relay for ewan.chorynski@ik.me/20251226 with
+ auth_id=587
+X-Original-From: Ewan Chorynski <ewan.chorynski@ik.me>
+Reply-To: ewan.chorynski@ik.me
 
-Removes a safety requirement that incorrectly states callers must
-ensure the device does not access memory while the returned slice
-is live, as this method doesn't return a slice.
+From: Ewan Chorynski <ewan.chorynski@ik.me>
 
-Signed-off-by: Yilin <1479826151@qq.com>
+The safety requirements for `Pin::into_inner_unchecked` state that the
+returned pointer must be treated as pinned until it is dropped. Such a
+guarantee is provided by the `ARef` type. This patch improve the safety
+comment to to better reflect this.
+
 ---
- rust/kernel/dma.rs | 2 --
- 1 file changed, 2 deletions(-)
+Signed-off-by: Ewan Chorynski <ewan.chorynski@ik.me>
+---
+ rust/kernel/drm/gem/mod.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 84d3c67269e8..2ac107d8f7b7 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -532,8 +532,6 @@ pub unsafe fn as_slice_mut(&mut self, offset: usize, count: usize) -> Result<&mu
-     ///
-     /// # Safety
-     ///
--    /// * Callers must ensure that the device does not read/write to/from memory while the returned
--    ///   slice is live.
-     /// * Callers must ensure that this call does not race with a read or write to the same region
-     ///   that overlaps with this write.
-     ///
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index a7f682e95c01..ed11d9c0f427 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -210,7 +210,7 @@ pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
+         // SAFETY: The arguments are all valid per the type invariants.
+         to_result(unsafe { bindings::drm_gem_object_init(dev.as_raw(), obj.obj.get(), size) })?;
+ 
+-        // SAFETY: We never move out of `Self`.
++        // SAFETY: We will never move out of `Self` as `ARef<Self>` is always treated as pinned.
+         let ptr = KBox::into_raw(unsafe { Pin::into_inner_unchecked(obj) });
+ 
+         // SAFETY: `ptr` comes from `KBox::into_raw` and hence can't be NULL.
+
+---
+base-commit: 6c8e404891e1059564d1a15a71d3d76070304dde
+change-id: 20251226-drm-gem-safety-comment-1152e457575f
+
+Best regards,
 -- 
-2.34.1
+Ewan Chorynski <ewan.chorynski@ik.me>
+
 
