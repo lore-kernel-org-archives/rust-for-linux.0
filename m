@@ -1,260 +1,140 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C248A269CE6
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 20:27:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766780864; cv=pass; b=KpBzNigPS/au7ZiNwhID/TMD75n7UGB4ZYArzswDWNbMjLjzzSBwH9wca5xwd1VmiNsR5nsn7VllEa9x6mHrcwDO4JYFe4IrE0F7YytcXFaPn8E8H4KqVuJepFIgKnv/CGGidhetOPv2+SAlFzZgIqMnm0w5wE7BtBiEYDOu5Pk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766780864; c=relaxed/simple;
-	bh=/+Y3ElW5XXaT1PF2PMJQNhr472JR1WcnkWfQGF1F2HE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lw2eLaRGQOfviKSFILzHHERCrH5rhFKD8BODdjv0iGopq63ImatGJG8BWc0usBDQROFJAiwGAl+BQ7byHxSjjzLT0woPtWvUt8Em9ONNcgOa5f+XFDhJdVm+wJntsmTPWzTEICupjo7sJp2xUfiHlX2UTLNzYsVlPpSAMogvkKI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rubg6pO/; arc=pass smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745651D5CC9
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 21:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766783317; cv=none; b=hweXDa6fAL2EOriJZqa1DqxqCDtKJtp6wb2s+0relq7SIinWyD/YFoxSGoIkHBIZd2H+gfzUf7ZdnVGHfzgElgQGoYcJ6hv5/lcZ2ZWKVDIxLHUITt93TNgws5MPs8ixTs+NnMBhpnZIHZOj0JD1S7090XM90UtYirZJTGbS5SU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766783317; c=relaxed/simple;
+	bh=JwfCj3crLdEKz5+uIOveDNi4/GKdcOrNFPZMrumwgCs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UrM9BbEW3QKLws3Tw8iwzUSGPPyqa/WzEI/v1cia+QvFWDh5y8qDweWcpjJCkJ4dHi41B8cGs16o7WEkevejOYudGLMj39NWKKO4xO58VjccxGoHbT0TS0FUBqpot4BvdRJoCxR8vLegmZd0Wj3fAqxBaBdcQalQUmXQCgpXFYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LfuEanAQ; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rubg6pO/"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-64b66d427e9so64817a12.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 12:27:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1766780861; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UCBrc0cIbXGZqE4UY/1As2DUlNzFLH6vHe9phtF5O5blu31Yss15Z9M4WJsmNYfNKx
-         H1x84CFsCP0mBx1/5SVCy1QPSYhisxy55w3plgLK/G1a5bhUD9fZE1iynLfWMq5btT4S
-         VvRgcUQDEgtSCI36qoRpOuG2ypHhBb+6ErF2X4bDrfWmnrQ5bIOgqHfJ/cRy/s1YkCOP
-         y3eF9pv5kd+ObwcpwNZEvIHQqJ0XeHtT+HyF1qq2JLiwfGo0m0R6+LI0cmvq2k/IGXMj
-         3w+CldKhILKaxBN/1TLMcpSjg5GLOPjLNoVv1gS4h6YmBQFv1ogTxLiEeyJ87pLvfHqv
-         0YgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xqftiKs3cGrlYanfCXHX3QSMLcBsN2OyPt20ZqDPunY=;
-        fh=+ybK/qA+v1D4SwPpY8qf/DYNpcZXbpImk+pRht/yW7w=;
-        b=M2MWaW6Zq7XV17jd9QuAW3cSltFvFF4+Gluit/xmoavpv8toLstJAPR6lT6nJB3xFg
-         KosGGf8NWzdrwS8q+5ewspr1Nn/TicKMlUoNTPihTuz/DFt4FVagepWT+R2QRvup4YBQ
-         lt3cyBoiIzvB1h+38PhNXCwwPgH6EK8UxJSe/CqMiYAOSj62JRqbZgXZFCBOtfpKn0W6
-         HplbGSfN5F/ODW9Icb1O5s58/sgXCIURA+RwhmmslAH84si5LsvX9rXIl0GMkHqjzauM
-         yHrlyQi8SZgbk5CU6KH34fPPx8xaW1Lp3u8r35JiwVFJj/v/gGXh2d93ShJGxFxOxpkp
-         Gakw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LfuEanAQ"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b630753cc38so12930948a12.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 13:08:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766780861; x=1767385661; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xqftiKs3cGrlYanfCXHX3QSMLcBsN2OyPt20ZqDPunY=;
-        b=Rubg6pO/NZ+xQA7wBPf6ghUWhQw/2DPhzjfrIjbdgmyDWsCDSByVWrOqvv0VQ1xRqf
-         h7CZaPHbv2cBqJ4iZgCQyxSz0ZF2Av8Xim7nlVOK4jzbmfstrg8jrR/2zMauDj0nk6ah
-         zqItl2fs8Uj3dxVRU+EqjvE2g+wxYjtuBbxQ/GZiVB4RjC90LCp+6MZrKQMB0BHiK4Cd
-         zrmxh5aAyHgSAofTiom0SvL2+jWbE2tvJtYzheQqmUU4x57eT3GPjlJnO5oaRtxZcb5O
-         d2bfunJN2rDX7f0YyOiTOrB438ibWAE74BgxadmK8LUoX6Mi4+UTKffYmdo4i9R2FUaN
-         /9ZQ==
+        d=google.com; s=20230601; t=1766783316; x=1767388116; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+Rd9jhnHe4VmFBHBzs/1AstORtibAqAkd58ga0ArJC8=;
+        b=LfuEanAQmrJBQJIjKqwF614OZYA6cfZTx17g1Sc6cv6AnC9N3MhMSK4+I0FNZZZcIp
+         BlOFFLWxJm1kMbE7kNdOt/S8Ec9ykmz4JtAXLXEwU0Mtki/emJEGws/tyQfOWKlt2ryZ
+         JLKqEiPdFJW3t5Dr2o/YabZUQ0yjslglXitHAuieMpls/bA1cbziRaczD8CQEVHs8eS3
+         21vouAKHEfc1Q+GHx+CpkKId+r/Fu6U6Nw/sf3IkcfDwiu8TWgU5TKCEpThDcfNlNFIB
+         WnM2zqVJbK3U+XIaiAfKHsIERE6NXF8IOQsQzg4VH3rmZ7WXdK2ehBVNrpFX0CR8Fldn
+         /vEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766780861; x=1767385661;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xqftiKs3cGrlYanfCXHX3QSMLcBsN2OyPt20ZqDPunY=;
-        b=vKoFJjcNpZkYKnp0ijNfthMmvucbRhKv7qM/2NnoDBXcD7uSbbE/dFaSLgSP18NFby
-         MJsTvaSE/m7sMVIxyFNypIhxSFFcjZqh6Y1Dmo4QxzNZawOgKFjIML51jSvWTV7fcGhC
-         Y9xbQd5lw57ae1WB0LrACGSHRjLDOlsmMk6HA1kdNqIedZKl14g4M5tSx5AaPny+myqR
-         dSqeRyUATZe/yXKdgPvMQYTVNEihtZ/5k6vppFuieFewG2k3dAd3qHsXkU+ldgIh1SyS
-         Au1e+RlNCACZk+qXoPXK0mWM45M/FJpGvdsww5wAbl/Pow88sV55doe+c3PuzvMX2t2j
-         jy9g==
-X-Forwarded-Encrypted: i=1; AJvYcCUSq+RpumZ7VDVmWDlgG61yOWHsijEx4pC9c43pdVhVkHdt9YyjFgHN9vb8Ffjhn2edTVm/wSbz3Md1ZXFXhw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1F3yzFfcRrqJAymjUveodphoykghenJMyg87sKwyHqh+DSRQU
-	nwlPgIYnaFKLWNeSghPYJWAs42lbCMEYOX79AHzoC92YyKXtxJJBX6CYGbgnN9O47YwnAwulrf7
-	t/3+Qf2n8fMaKeYAQEqRWt1RLs8iiqlEZeVNB/n2Q
-X-Gm-Gg: AY/fxX49oxnwfCmro/pEeWBImwNX+SEffHcnOcQFX1uskTLaRmNsLcxr7H/BOsFvE75
-	QkajczXPbgmcMxm1yNMI4r3wphhY/B8jLFTyAVGRDLrCAr5581jFNcmbS/xfv12FqLydpWYGfjX
-	yDxKkUD8UaGuxnMYy3IiVpmqkeKLLydPVC8hAUvdGORGUg8z46V1Bi2J/48jGhul6k3Ov/X76Es
-	+mL9fTLqh8lzadM66J+JL8AJKeJ68NUa+GVC4N1Qmy1We0tf40vtRwCePecGOFtXtVV8epF6rk4
-	iiXWHG7xs84kif5cATSP6+EeweW5AdDlXwCs
-X-Google-Smtp-Source: AGHT+IHmPvz/aAx6qUCnCKjCxP1fu1/EPAI0m5sJqeFQ+lTeLXBFJffVU3ggQXpr6p/OUNlJEAEhXHKRGElA1tWRkqI=
-X-Received: by 2002:a05:6402:5348:10b0:643:bfa:62ce with SMTP id
- 4fb4d7f45d1cf-64ddb92b85amr51963a12.8.1766780860906; Fri, 26 Dec 2025
- 12:27:40 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766783316; x=1767388116;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+Rd9jhnHe4VmFBHBzs/1AstORtibAqAkd58ga0ArJC8=;
+        b=MmRObzLNLq5y0QQ4GipX8HonccZtMtX8S4dVTCif1t1iSxU/flFwNGjnFszyfE6yt/
+         9uU0eAeIoj/Z8z3OxXuF8S4P1MpXPAnUT4Y/QAjkzvz+6QgyS1HIyuQsGkNy7DS5UDxB
+         UzZsrtijpQRszejWL2NfE96Iz5GASnwqA6Qd61DSQaW04zI16ybhVua1Ek2zt6yXR4D0
+         zfwP7N1lbPM5743/qZEfoVhCISxaLO4AJhWEpPx11IIW0cOgYGzjsdhQF/5e2de12c9d
+         zuuNgxNKJ/jP3LYkU0I7HO82hQf5JOty5iBRHokkM3Y2TSztPbrsAO9JmLP38+mXl3By
+         5ezw==
+X-Gm-Message-State: AOJu0YyLDXVq4Ah8qE3q/d1XFAubxHrYnmQ4SKYn+5sDupRRvx8bVmjV
+	Ue0ubqkQnGS0aoUlz7RMqzvZh30R0rqKE8TYmxVu9biij3zUjWh8ptx514UfW510Ai03bivN7LK
+	mB0fNR+s/NA==
+X-Google-Smtp-Source: AGHT+IHNNTj/SF+ZnqUt6ZRYOpOtGRGL8zbARkNKXRHrGf4yGX/7ZaZwyPlqGL7ufSOnyWLFRBWdOxQMDTzv
+X-Received: from dlbca5.prod.google.com ([2002:a05:7022:4405:b0:11b:d4a7:e833])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:62a9:b0:11b:78e6:8323
+ with SMTP id a92af1059eb24-121722fd212mr24063227c88.37.1766783315677; Fri, 26
+ Dec 2025 13:08:35 -0800 (PST)
+Date: Fri, 26 Dec 2025 21:08:19 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251216-transmute-v2-0-b23e5277ad02@google.com>
- <20251216-transmute-v2-1-b23e5277ad02@google.com> <0448F279-3759-423C-86B9-7A92137A28E7@collabora.com>
-In-Reply-To: <0448F279-3759-423C-86B9-7A92137A28E7@collabora.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAEP5TmkC/22MQQ6CMBBFr0Jmbc10CG115T2MiwIjNBFqWmw0h
+ LtbWGHi8v3892aIHBxHOBczBE4uOj9mKA8FNL0dOxauzQyEVEmSJKZgxzi8JhbG1gq10ojWQP4
+ /A9/de2tdb5l7FycfPls6yXX9V0lSoDjVZBhVoyo0l8777sHHxg+wZhLtVbVXKas1lVyR1rZF+ lGXZfkCNfYA0t4AAAA=
+X-Change-Id: 20251212-transmute-8ab6076700a8
+X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766783314; l=2768;
+ i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
+ bh=JwfCj3crLdEKz5+uIOveDNi4/GKdcOrNFPZMrumwgCs=; b=AnjaxwvQOqXrGTHkGhwv3ciX2PyGUTrqxuVSR93m559p7qzDcARp2rEN6EJb8n0pwbnGTkUQB
+ 3zv2YhLQJ7cBy/c49KoYvY/MCa30vaUNEYJA7U8SQxPQ7lDrgY9ASoK
+X-Mailer: b4 0.14.2
+Message-ID: <20251226-transmute-v3-0-c69a81bf8621@google.com>
+Subject: [PATCH v3 0/4] Support more safe `AsBytes`/`FromBytes` usage
 From: Matthew Maurer <mmaurer@google.com>
-Date: Fri, 26 Dec 2025 12:27:29 -0800
-X-Gm-Features: AQt7F2oWQFV9xQGdo3Bu6LvM7EKoooHkQF-BDvOGEY8XX85fQ6ILNYIAd6-6aPU
-Message-ID: <CAGSQo01LXCY2zf6vP5r1yP+FWT9ZKbOARJC=HpHCq=5HY3jajA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] rust: transmute: Support transmuting slices of
- AsBytes/FromBytes types
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>, Daniel Almeida <daniel.almeida@collabora.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Dec 17, 2025 at 8:52=E2=80=AFAM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
->
-> Hi Matthew,
->
-> > On 15 Dec 2025, at 21:44, Matthew Maurer <mmaurer@google.com> wrote:
-> >
-> > Currently, we support either transmuting a byte slice of the exact size
-> > of the target type or a single element from a prefix of a byte slice.
-> >
-> > This adds support for transmuting from a byte slice to a slice of
-> > elements, assuming appropriate traits are implemented.
-> >
-> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> > ---
-> > rust/kernel/transmute.rs | 72 +++++++++++++++++++++++++++++++++++++++++=
-+++++++
-> > 1 file changed, 72 insertions(+)
-> >
-> > diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
-> > index be5dbf3829e25c92f85083cc0f4940f35bb7baec..5cc5f4fde4c31cea3c51ab0=
-78b4d68f3a0a2caa1 100644
-> > --- a/rust/kernel/transmute.rs
-> > +++ b/rust/kernel/transmute.rs
-> > @@ -122,6 +122,78 @@ fn from_bytes_mut_prefix(bytes: &mut [u8]) -> Opti=
-on<(&mut Self, &mut [u8])>
-> >         }
-> >     }
-> >
-> > +    /// Converts a slice of bytes to a slice of `Self`.
-> > +    ///
-> > +    /// Succeeds if the reference is properly aligned, and the size of=
- `bytes` is a multiple of that
-> > +    /// of `Self`.
-> > +    ///
-> > +    /// Otherwise, returns [`None`].
-> > +    fn from_bytes_to_slice(bytes: &[u8]) -> Option<&[Self]>
-> > +    where
-> > +        Self: Sized,
-> > +    {
-> > +        let size =3D size_of::<Self>();
-> > +        if size =3D=3D 0 {
-> > +            return None;
-> > +        }
-> > +        if bytes.len() % size !=3D 0 {
-> > +            return None;
-> > +        }
-> > +        let len =3D bytes.len() / size;
-> > +        let ptr =3D bytes.as_ptr().cast::<Self>();
-> > +
-> > +        #[allow(clippy::incompatible_msrv)]
-> > +        if ptr.is_aligned() {
-> > +            // SAFETY:
-> > +            // - `ptr` is valid for reads of `bytes.len()` bytes, whic=
-h is
-> > +            //   `len * size_of::<Self>()`.
-> > +            // - `ptr` is aligned for `Self`.
-> > +            // - `ptr` points to `len` consecutive properly initialize=
-d values of type `Self`
-> > +            //   because `Self` implements `FromBytes` (any bit patter=
-n is valid).
-> > +            // - The lifetime of the returned slice is bound to the in=
-put `bytes`.
-> > +            unsafe { Some(core::slice::from_raw_parts(ptr, len)) }
-> > +        } else {
-> > +            None
-> > +        }
->
-> Nit: I=E2=80=99d rewrite this as
->
-> if !ptr.is_aligned() {
->  return None;
-> }
->
-> unsafe { Some(core::slice::from_raw_parts(ptr, len)) }
->
-> This saves one indentation level.
->
+Currently:
+* Slices of `AsBytes`/`FromBytes` types cannot be synthesized from
+  bytes slices (without unsafe).
+* Users must use `unsafe impl` to assert that structs are `AsBytes` or
+  `FromBytes` and write appropriate justifications.
+* Bindgen-generated types cannot implement `AsBytes` or `FromBytes`,
+  meaning that casting them to or from bytes involves assumptions in the
+  `unsafe impl` that could easily go out of sync if the underlying
+  header is edited or an assumption is invalid on a platform the author
+  did not consider.
 
-If this code were sizable, or if there were no unsafe, I'd agree with
-you. However:
-1. It makes the path condition for the `unsafe` block clearer - the if
-condition directly guards the unsafe block, which makes it locally
-obvious why it can assume "`ptr` is aligned for `Self`." With the
-"check error and early return" strategy, you need to reason less
-locally about the reachability of the statement.
-2. The guarded code is one line long. If it were significant, then I
-can see the point of using an early-return style in order to avoid
-indentation, especially if the block *itself* had indentation. This is
-one line.
-3. This is coherent with `from_bytes_mut` and `from_bytes` in this
-file, which also use this style.
+This series seeks to address all there of these by:
+1. Adding slice cast functions to `FromBytes`
+2. Adding a derive for `AsBytes` and `FromBytes`, for now restricted to
+   the simple case of structs.
+3. Refactoring the crate structure to move `AsBytes` and `FromBytes` to
+   `ffi` to allow `bindings` and `uapi` to reference them.
+4. Enabling bindgen derivation in `bindings`/`uapi` through `AsBytesFfi`
+   and `FromBytesFfi`.
 
-> > +    }
-> > +
-> > +    /// Converts a mutable slice of bytes to a mutable slice of `Self`=
-.
-> > +    ///
-> > +    /// Succeeds if the reference is properly aligned, and the size of=
- `bytes` is a multiple of that
-> > +    /// of `Self`.
-> > +    ///
-> > +    /// Otherwise, returns [`None`].
-> > +    fn from_bytes_to_mut_slice(bytes: &mut [u8]) -> Option<&mut [Self]=
->
-> > +    where
-> > +        Self: AsBytes + Sized,
-> > +    {
-> > +        let size =3D size_of::<Self>();
-> > +        if size =3D=3D 0 {
-> > +            return None;
-> > +        }
-> > +        if bytes.len() % size !=3D 0 {
-> > +            return None;
-> > +        }
-> > +        let len =3D bytes.len() / size;
-> > +        let ptr =3D bytes.as_mut_ptr().cast::<Self>();
-> > +
-> > +        #[allow(clippy::incompatible_msrv)]
-> > +        if ptr.is_aligned() {
-> > +            // SAFETY:
-> > +            // - `ptr` is valid for reads and writes of `bytes.len()` =
-bytes, which is
-> > +            //   `len * size_of::<Self>()`.
-> > +            // - `ptr` is aligned for `Self`.
-> > +            // - `ptr` points to `len` consecutive properly initialize=
-d values of type `Self`
-> > +            //   because `Self` implements `FromBytes`.
-> > +            // - `AsBytes` guarantees that writing a new `Self` to the=
- resulting slice can safely
-> > +            //   be reflected as bytes in the original slice.
-> > +            // - The lifetime of the returned slice is bound to the in=
-put `bytes`.
-> > +            unsafe { Some(core::slice::from_raw_parts_mut(ptr, len)) }
-> > +        } else {
-> > +            None
-> > +        }
->
-> Same here.
+1+2 can be landed separately if needed, 3 has no purpose without 4, and
+3+4 need 1+2.
 
-Same here :)
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+---
+Changes in v3:
+- Explained the `for<'a>` usage in the where clauses generated by macro.
+- Split bindgen support into two commits, one which does the crate
+  migration and one which enables it.
+- Link to v2: https://lore.kernel.org/r/20251216-transmute-v2-0-b23e5277ad02@google.com
 
->
-> > +    }
-> > +
-> >     /// Creates an owned instance of `Self` by copying `bytes`.
-> >     ///
-> >     /// Unlike [`FromBytes::from_bytes`], which requires aligned input,=
- this method can be used on
-> >
-> > --
-> > 2.52.0.305.g3fc767764a-goog
-> >
-> >
->
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->
+Changes in v2:
+- Reworked to put `transmute` in `ffi` rather than creating a new crate,
+  per Alice's comment on Zulip.
+- Switched to new kernel import style.
+- Link to v1: https://lore.kernel.org/r/20251212-transmute-v1-0-9b28e06c6508@google.com
+
+---
+Matthew Maurer (4):
+      rust: transmute: Support transmuting slices of AsBytes/FromBytes types
+      rust: transmute: Add support for deriving `AsBytes` and `FromBytes`
+      rust: transmute: Migrate AsBytes/FromBytes to ffi crate for bindgen
+      rust: transmute: Support deriving AsBytes/FromBytes on bindgen types
+
+ rust/Makefile                     | 14 ++++---
+ rust/bindgen_parameters           |  8 ++++
+ rust/bindings/lib.rs              |  4 ++
+ rust/{ffi.rs => ffi/lib.rs}       |  5 +++
+ rust/{kernel => ffi}/transmute.rs | 72 +++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs                |  2 +-
+ rust/macros/lib.rs                | 83 +++++++++++++++++++++++++++++++++++++++
+ rust/macros/transmute.rs          | 67 +++++++++++++++++++++++++++++++
+ rust/uapi/lib.rs                  |  4 ++
+ scripts/generate_rust_analyzer.py |  2 +-
+ 10 files changed, 254 insertions(+), 7 deletions(-)
+---
+base-commit: 008d3547aae5bc86fac3eda317489169c3fda112
+change-id: 20251212-transmute-8ab6076700a8
+
+Best regards,
+-- 
+Matthew Maurer <mmaurer@google.com>
+
