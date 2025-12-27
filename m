@@ -1,222 +1,435 @@
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7401C7012
-	for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 03:40:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B67E199E89;
+	Sat, 27 Dec 2025 04:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766806836; cv=none; b=dy7E4QjEhX4MT/cJ8jdGXMVrtu+JB1bNqJRveMoe8Qn0Xsjun9uyw08stjsSMRShLkk8WQrxYSkHA/rShyvkhBpa5RUkyop/9WkLVVUnElKrpTCFfdefP5FfHWeedGfBXWS9DygOkTqw88S7R5hRegLl33ECJzzuEKfzP062DIg=
+	t=1766811433; cv=none; b=Kj0qdBK9CqgrHsPsXXf/0lrvHb0sr7fSXTPeG4y1YwmdLr6SS8Fv6C3CxnEbtnvBWecvzxDKtUYe/VDpjjI3/OJub1bJtWUc4MYsXe5921pKbQ6rILy/sqHfAhNCnvge2W7ZaA1DDkl0fo3O5XqW7HyyCoIjVxbp0csMpl+S+FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766806836; c=relaxed/simple;
-	bh=5trTzWP1lja7QgW2Nbxdt+5FrAQb5B+HqFiJ/tFGn+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O2+1NsB45bSPZXsisPWgVrsMEDjJ0GSHDMYQjutq8qv3IU7/1ovYl739VA1qmvtMCwVdS9JWh5QlswnS180FKuiJx2VBBBbQ9IfZkACSfLznMkkApChEZLOoOlSzfBwYbXLQbtunP4xTma67LWwh1bKljfFmFYmKtkx2/Jt/Lsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2a2ea96930cso87922275ad.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 19:40:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766806834; x=1767411634;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eiGB8oXhegfDuwpDui4+XsxBRPl2FrgBVzFQBSYcUyQ=;
-        b=ub2UJqBx4cjTCpZRlUrXD+aHTGdSStPEn7GlHTFLoLbB8AlyuuVVtip4yEKaxRj6/Q
-         2H4L5QdP6ApO/sQakkG8R5mzMHv4xWIpYbJ8WLhUYpLfaKxwlW3XBfEaQc9aVCzC9+C4
-         yC0MepU90fFIeMhqyoPfasvBwzqpQyBCBsmu6YpVwgMdquG2gvhXQg5G82Y7mO1T/Ug0
-         GH513yuhZhBm06b+heHfQRQK79aL4RzrjOhdyRsRriwrY7wYbF72gbtb//u0zxOq44mA
-         naAxn1fss1QNTZhi2fIBMLdSA2bK7rfDOF0iWTJw9azRLAxNURuq8MgRU43HfCWR4HV4
-         8J1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVhyTq/gX/LWlNVJx4JyUCOknoVrKWuTaNB6a0fkBRBtr4uFUuG7NGChd+BAigp4k/IyCEZm8KIeBndfG26nQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+qo3JuAB/wq02NLYtghoC6APmCEDKT1CCatI068M5vZ95MQBP
-	b4aig70k8nlTO0BFJ4LjkCQa9sVtbtoJniDbs8HUxfbFkfWiX9zk+BjB
-X-Gm-Gg: AY/fxX6sevELNILenVE5IEJnySdNHPVreZ2JOJdfOCUntIXHBFU62WQa/dk155KqJ2R
-	CBxH6L29nCw7JHglpZO5EDNLmeJ0/v7mvYk1QC+S19B1uGyvhMEYSteDpxcw1PBSkjWnn6di2BR
-	sfxzrczEDR8cnWFGm+BFY/5Q1kRIH4dxysUOX2gxp+CKClvCKfNErFbhuNd6BClkfB4bxSjsJb3
-	GboemTVzi/LvjWltW22+l3qOoVPuBvTA3Ean1vxUUHBiHljUFlKHvKnwK1drA73CJ+E/r3jvmCo
-	w692KKbUV2C74o8RoeGEl8LKkOg7Sx+zzBBx+kS6YAzubvVNvFo2UQ/nDfhwXXQ8HtOXRkSYw41
-	/oop/1AWlkJRBPy7OcFZCbtMJfzHHAGHvz6E8sr/uIeBtoeS2jtrYhrwsEY7M7suE6p0ipVF5sL
-	Fzgk6I3RkcE4+4VH84LRMWYBA7lRPv6/xs+pOIi9bLKgplnfO4e95lm785NIZPs/AyqQ==
-X-Google-Smtp-Source: AGHT+IHLxMWKeiuZAHBKsepvtsD0YaXLnpJ2vDDzK3VdBFeDGlkU55ge70MAc1iXDV7XlVNG7FF3Pw==
-X-Received: by 2002:a17:903:234c:b0:2a0:b7d3:eec5 with SMTP id d9443c01a7336-2a2f2736de4mr220241215ad.33.1766806834253;
-        Fri, 26 Dec 2025 19:40:34 -0800 (PST)
-Received: from localhost.localdomain (61-221-120-112.hinet-ip.hinet.net. [61.221.120.112])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c9c0acsm215323135ad.44.2025.12.26.19.40.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Dec 2025 19:40:33 -0800 (PST)
-From: Ke Sun <sunke@kylinos.cn>
-To: Dirk Behme <dirk.behme@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Ke Sun <sk.alvin.x@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH v6 4/4] docs: rust: Add pointer formatting documentation
-Date: Sat, 27 Dec 2025 11:39:55 +0800
-Message-ID: <20251227033958.3713232-5-sunke@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251227033958.3713232-1-sunke@kylinos.cn>
-References: <20251227033958.3713232-1-sunke@kylinos.cn>
+	s=arc-20240116; t=1766811433; c=relaxed/simple;
+	bh=hyLs+cXKH65myVQhUgTa0FFNyWdvkMB9nJFLbtulGLs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=kD58LN3SjkDotdpJLreBH5rZwTW8IwZnq8hbsrxIu1FQjR2PZmoPsetxnDySoMgbs1iTuwKSZpdCBf15zIiGlPUU4br8BfvcL75JvH9axHQtuLezvV53Y4cVKe6cf6/kEZhpM/6IH/w39cK3LfUQtoEb8Sw3h6qQjYRoBnVWxHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCtoQpOt; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCtoQpOt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82600C4CEF1;
+	Sat, 27 Dec 2025 04:57:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766811432;
+	bh=hyLs+cXKH65myVQhUgTa0FFNyWdvkMB9nJFLbtulGLs=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=fCtoQpOtSqG3bw01NqQqZ+/j+4agU7zXH5K/O1p2gUL1EjiBBLTR6XAmgK0Jn8AV+
+	 Yg11PluWE0tOQT4CIMTY+PfFflkC+MsA/9/YBZtUoZNUowHCmC87mOJ12/6A1X/gup
+	 Fi6u35qkaJa1tVPj+dr49OTKtJxaL/Xf/58JR+8CZREEiLJipqYDaguXBhJh2vL4Zs
+	 EOKcofF1yqzlfnhc9HKjcamTsF68FXyAEIYOYdQGo8El+sfh+rZEHDsbW1JQam3LPH
+	 e9OODiCeizE8hWiLFaYzS1MTbs4fpR2JvmASdHRLyf701+MIAMWtkIgkBk68tJSgp+
+	 X3NLfqeeXNWVA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Sat, 27 Dec 2025 05:57:07 +0100
+Message-Id: <DF8QDONK951M.10NYLJ40UNNY1@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
+Subject: Re: [PATCH v4 1/4] rust: macros: add derive macro for `Into`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Jesung Yang" <y.j3ms.n@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20251225-try-from-into-macro-v4-0-4a563d597836@gmail.com>
+ <20251225-try-from-into-macro-v4-1-4a563d597836@gmail.com>
+ <DF7HDE1T2BOS.33WUHP49WWO1M@kernel.org>
+ <CA+tqQ4JPMg7CGq7YiN2EwzzQBC2grRE5OFgRQTws+xh8UbzqEw@mail.gmail.com>
+In-Reply-To: <CA+tqQ4JPMg7CGq7YiN2EwzzQBC2grRE5OFgRQTws+xh8UbzqEw@mail.gmail.com>
 
-Add a brief documentation for Rust pointer wrapper types (HashedPtr,
-RestrictedPtr, RawPtr) that correspond to C kernel's printk format
-specifiers %p, %pK, and %px.
+On Fri Dec 26, 2025 at 10:36 AM CET, Jesung Yang wrote:
+> On Fri, Dec 26, 2025 at 2:40=E2=80=AFAM Benno Lossin <lossin@kernel.org> =
+wrote:
+>> On Thu Dec 25, 2025 at 9:37 AM CET, Jesung Yang via B4 Relay wrote:
+>> > +fn parse_attrs(target: DeriveTarget, attrs: &[Attribute]) -> syn::Res=
+ult<(Vec<ValidTy>, Ident)> {
+>> > +    let helper =3D target.get_helper_name();
+>> > +
+>> > +    let mut repr_ty =3D None;
+>> > +    let mut helper_tys =3D Vec::new();
+>> > +    for attr in attrs {
+>> > +        if attr.path().is_ident("repr") {
+>> > +            attr.parse_nested_meta(|meta| {
+>> > +                let ident =3D meta.path.get_ident();
+>> > +                if ident.is_some_and(is_valid_primitive) {
+>> > +                    repr_ty =3D ident.cloned();
+>> > +                }
+>>
+>> While this works for now, writing `repr(C, {integer})` might become
+>> meaningful in the future, see [1]. We should just accept it now as well.
+>>
+>> [1]: https://github.com/rust-lang/rust/issues/68585
+>
+> I think it's worth noting. I'll add a small comment for this.
 
-The documentation provides:
-- Overview of the three wrapper types
-- Usage examples for each type
-- When to use each type
-- Security considerations
+My suggestion was to just accept `repr(C, {integer})` and make it result
+in the same as `repr({integer})`.
 
-This complements the general pointer formatting documentation in
-Documentation/core-api/printk-formats.rst.
+>> > +                // Delegate `repr` attribute validation to rustc.
+>> > +                Ok(())
+>> > +            })?;
+>> > +        } else if attr.path().is_ident(helper) && helper_tys.is_empty=
+() {
+>> > +            let args =3D attr.parse_args_with(Punctuated::<ValidTy, T=
+oken![,]>::parse_terminated)?;
+>> > +            helper_tys.extend(args);
+>> > +        }
+>> > +    }
+>> > +
+>> > +    // Note on field-less `repr(C)` enums (quote from [1]):
+>> > +    //
+>> > +    //   In C, enums with discriminants that do not all fit into an `=
+int` or all fit into an
+>> > +    //   `unsigned int` are a portability hazard: such enums are only=
+ permitted since C23, and not
+>> > +    //   supported e.g. by MSVC.
+>> > +    //
+>> > +    //   Furthermore, Rust interprets the discriminant values of `rep=
+r(C)` enums as expressions of
+>> > +    //   type `isize`. This makes it impossible to implement the C23 =
+behavior of enums where the
+>> > +    //   enum discriminants have no predefined type and instead the e=
+num uses a type large enough
+>> > +    //   to hold all discriminants.
+>> > +    //
+>> > +    //   Therefore, `repr(C)` enums in Rust require that either all d=
+iscriminants to fit into a C
+>> > +    //   `int` or they all fit into an `unsigned int`.
+>> > +    //
+>> > +    // As such, `isize` is a reasonable representation for `repr(C)` =
+enums, as it covers the range
+>> > +    //  of both `int` and `unsigned int`.
+>> > +    //
+>> > +    // For more information, see:
+>> > +    // - https://github.com/rust-lang/rust/issues/124403
+>> > +    // - https://github.com/rust-lang/rust/pull/147017
+>> > +    // - https://github.com/rust-lang/rust/blob/2ca7bcd03b87b52f7055a=
+59b817443b0ac4a530d/compiler/rustc_lint_defs/src/builtin.rs#L5251-L5263 [1]
+>> > +
+>> > +    // Extract the representation passed by `#[repr(...)]` if present=
+. If nothing is
+>> > +    // specified, the default is `Rust` representation, which uses `i=
+size` for its
+>> > +    // discriminant type.
+>> > +    // See: https://doc.rust-lang.org/reference/items/enumerations.ht=
+ml#r-items.enum.discriminant.repr-rust
+>>
+>> I think we should error when no `#[repr({integer})]` attribute is
+>> specified.
+>
+> Not a blocker but just out of curiosity: are you concerned that the
+> default size might change in the future, leading to silent side
+> effects?
 
-Signed-off-by: Ke Sun <sunke@kylinos.cn>
----
- Documentation/rust/index.rst              |   1 +
- Documentation/rust/pointer-formatting.rst | 101 ++++++++++++++++++++++
- 2 files changed, 102 insertions(+)
- create mode 100644 Documentation/rust/pointer-formatting.rst
+`isize` already changes size when you switch between 64 and 32 bit
+architectures. I think the author of an enum they want to convert into
+integers should think about which size the enum should be.
 
-diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
-index ec62001c7d8c7..4f4f8b393031e 100644
---- a/Documentation/rust/index.rst
-+++ b/Documentation/rust/index.rst
-@@ -55,6 +55,7 @@ more details.
-     coding-guidelines
-     arch-support
-     testing
-+    pointer-formatting
- 
- You can also find learning materials for Rust in its section in
- :doc:`../process/kernel-docs`.
-diff --git a/Documentation/rust/pointer-formatting.rst b/Documentation/rust/pointer-formatting.rst
-new file mode 100644
-index 0000000000000..9407307216c9a
---- /dev/null
-+++ b/Documentation/rust/pointer-formatting.rst
-@@ -0,0 +1,101 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+Pointer Formatting in Rust
-+===========================
-+
-+This document describes how to format kernel pointers safely in Rust code,
-+corresponding to the C kernel's printk format specifiers ``%p``, ``%pK``, and ``%px``.
-+
-+For general information about pointer formatting in the kernel, please refer to
-+:doc:`../core-api/printk-formats`.
-+
-+Overview
-+--------
-+
-+The Rust kernel provides three wrapper types for formatting kernel pointers:
-+
-+- **``HashedPtr``** → ``%p`` (hashed, default)
-+- **``RestrictedPtr``** → ``%pK`` (restricted, respects ``kptr_restrict``)
-+- **``RawPtr``** → ``%px`` (raw address, debug only)
-+
-+When formatting raw pointers (``*const T`` or ``*mut T``) with ``{:p}``,
-+they are automatically wrapped with ``HashedPtr``, providing safe default behavior.
-+
-+HashedPtr (%p)
-+--------------
-+
-+Use ``HashedPtr`` for general kernel logging. Pointers are hashed before printing
-+to prevent leaking information about the kernel memory layout.
-+
-+**Example**::
-+
-+    use kernel::ptr::HashedPtr;
-+
-+    pr_info!("Device pointer: {:p}\n", HashedPtr::from(ptr));
-+
-+RestrictedPtr (%pK)
-+-------------------
-+
-+Use ``RestrictedPtr`` when producing content of a file read by userspace from
-+e.g. procfs or sysfs (using e.g. ``seq_print!()``, not ``pr_info!()``). The behavior
-+depends on the ``kptr_restrict`` sysctl setting.
-+
-+**Example**::
-+
-+    use kernel::ptr::RestrictedPtr;
-+
-+    seq_print!(seq_file, "Pointer: {:p}\n", RestrictedPtr::from(ptr));
-+
-+For more details about ``kptr_restrict``, see :doc:`../admin-guide/sysctl/kernel`.
-+
-+RawPtr (%px)
-+------------
-+
-+**Warning**: This exposes the real kernel address and should **only** be used
-+for debugging purposes.
-+
-+**Example**::
-+
-+    use kernel::ptr::RawPtr;
-+
-+    pr_info!("Debug pointer: {:p}\n", RawPtr::from(ptr));
-+
-+Formatting Options
-+------------------
-+
-+All pointer wrapper types support standard Rust formatting options including
-+width, alignment, and padding characters. These options are preserved through
-+the formatting system.
-+
-+The following examples demonstrate formatting options using ``RawPtr`` for
-+predictable output. The same options work with ``HashedPtr`` and
-+``RestrictedPtr``, though the exact output may vary due to pointer hashing::
-+
-+    use kernel::ptr::RawPtr;
-+
-+    // Basic formatting
-+    pr_info!("Pointer: {:p}\n", RawPtr::from(ptr));
-+
-+    // Minimum width
-+    pr_info!("Pointer: {:30p}\n", RawPtr::from(ptr));
-+
-+    // Right align with zero padding
-+    pr_info!("Pointer: {:0>30p}\n", RawPtr::from(ptr));
-+
-+    // Left align with zero padding
-+    pr_info!("Pointer: {:0<30p}\n", RawPtr::from(ptr));
-+
-+    // Center align with zero padding
-+    pr_info!("Pointer: {:0^30p}\n", RawPtr::from(ptr));
-+
-+    // Right align with space padding (default)
-+    pr_info!("Pointer: {:>30p}\n", RawPtr::from(ptr));
-+
-+    // Center align with custom padding character
-+    pr_info!("Pointer: {:*^30p}\n", RawPtr::from(ptr));
-+
-+See Also
-+--------
-+
-+- :doc:`../core-api/printk-formats` - General pointer formatting documentation
-+- `rust/kernel/ptr.rs <srctree/rust/kernel/ptr.rs>`_ - Implementation
--- 
-2.43.0
+They already can choose `repr(isize)` if that is correct in that case.
+As a default, I would have choosen `i32` (but that conflicts with Rust's
+default, so we can't do it).
 
+>> > +    let repr_ty =3D repr_ty.unwrap_or_else(|| Ident::new("isize", Spa=
+n::call_site()));
+>> > +    Ok((helper_tys, repr_ty))
+>> > +}
+>> > +
+>> > +fn derive_for_enum(
+>> > +    target: DeriveTarget,
+>> > +    enum_ident: &Ident,
+>> > +    variants: &[Ident],
+>> > +    helper_tys: &[ValidTy],
+>> > +    repr_ty: &Ident,
+>> > +) -> TokenStream {
+>> > +    let impl_fn =3D match target {
+>> > +        DeriveTarget::Into =3D> impl_into,
+>> > +    };
+>> > +
+>> > +    let qualified_repr_ty: syn::Path =3D parse_quote! { ::core::primi=
+tive::#repr_ty };
+>> > +
+>> > +    return if helper_tys.is_empty() {
+>> > +        let ty =3D ValidTy::Primitive(repr_ty.clone());
+>> > +        let impls =3D
+>> > +            std::iter::once(ty).map(|ty| impl_fn(enum_ident, variants=
+, &qualified_repr_ty, &ty));
+>> > +        ::quote::quote! { #(#impls)* }
+>> > +    } else {
+>> > +        let impls =3D helper_tys
+>> > +            .iter()
+>> > +            .map(|ty| impl_fn(enum_ident, variants, &qualified_repr_t=
+y, ty));
+>> > +        ::quote::quote! { #(#impls)* }
+>> > +    };
+>>
+>> Let's just do this when we still have the `helper_tys` vector:
+>>
+>>     helper_tys.push(ValidTy::Primitive(repr_ty));
+>
+> The current implementation completely ignores what's in `#[repr(...)]`
+> when the `#[into(...)]` or `#[try_from(...)]` helper attributes are
+> specified. But users might expect, as you did, the macros to generate
+> impls not only for types specified in the helper attributes but also
+> for the one in `repr`. I think I should deduplicate `helper_tys` after
+> the push, but anyway, I'll change this in v5.
+
+Oh yeah I missed this, please do make this change :)
+
+>> > +
+>> > +    fn impl_into(
+>> > +        enum_ident: &Ident,
+>> > +        variants: &[Ident],
+>> > +        repr_ty: &syn::Path,
+>> > +        input_ty: &ValidTy,
+>> > +    ) -> TokenStream {
+>> > +        let param =3D Ident::new("value", Span::call_site());
+>> > +
+>> > +        let overflow_assertion =3D emit_overflow_assert(enum_ident, v=
+ariants, repr_ty, input_ty);
+>> > +        let cast =3D match input_ty {
+>> > +            ValidTy::Bounded(inner) =3D> {
+>> > +                let base_ty =3D inner.emit_qualified_base_ty();
+>> > +                let expr =3D parse_quote! { #param as #base_ty };
+>> > +                // Since the discriminant of `#param`, an enum varian=
+t, is determined
+>> > +                // at compile-time, we can rely on `Bounded::from_exp=
+r()`. It requires
+>> > +                // the provided expression to be verifiable at compil=
+e-time to avoid
+>> > +                // triggering a build error.
+>> > +                inner.emit_from_expr(&expr)
+>> > +            }
+>> > +            ValidTy::Primitive(ident) if ident =3D=3D "bool" =3D> {
+>> > +                ::quote::quote! { (#param as #repr_ty) =3D=3D 1 }
+>> > +            }
+>> > +            qualified @ ValidTy::Primitive(_) =3D> ::quote::quote! { =
+#param as #qualified },
+>> > +        };
+>> > +
+>> > +        ::quote::quote! {
+>> > +            #[automatically_derived]
+>> > +            impl ::core::convert::From<#enum_ident> for #input_ty {
+>> > +                fn from(#param: #enum_ident) -> #input_ty {
+>> > +                    #overflow_assertion
+>> > +
+>> > +                    #cast
+>> > +                }
+>> > +            }
+>> > +        }
+>> > +    }
+>> > +
+>> > +    fn emit_overflow_assert(
+>> > +        enum_ident: &Ident,
+>> > +        variants: &[Ident],
+>> > +        repr_ty: &syn::Path,
+>> > +        input_ty: &ValidTy,
+>> > +    ) -> TokenStream {
+>>
+>> I feel like we should track this via traits rather than using a const
+>> assert. That approach will require & generate much less code.
+>
+> Sorry, but could you elaborate? A small example of what you have in
+> mind would help a lot.
+
+Oh yeah sorry, I had something different in mind compared to what I'll
+describe now, but it achieves the same thing without introducing new
+traits:
+
+We have two options:
+1) We use `<input_ty as TryFrom<repr_ty>>::try_from` instead of writing
+   the `fits` function ourself.
+2) We require `input_ty: From<repr_ty>`.
+
+The first option would still check every variant and should behave the
+same as your current code.
+
+Option 2 allows us to avoid the const altogether, but requires us to
+choose the smallest integer as the representation (and if we want to be
+able to use both `i8` and `u8`, we can't). I missed this before, so
+using option 1 might be the only way to allow conversions of this kind.
+
+>> > +        let qualified_i128: syn::Path =3D parse_quote! { ::core::prim=
+itive::i128 };
+>> > +        let qualified_u128: syn::Path =3D parse_quote! { ::core::prim=
+itive::u128 };
+>> > +
+>> > +        let input_min =3D input_ty.emit_min();
+>> > +        let input_max =3D input_ty.emit_max();
+>> > +
+>> > +        let variant_fits =3D variants.iter().map(|variant| {
+>> > +            let msg =3D format!(
+>> > +                "enum discriminant overflow: \
+>> > +                `{enum_ident}::{variant}` does not fit in `{input_ty}=
+`",
+>> > +            );
+>> > +            ::quote::quote! {
+>> > +                ::core::assert!(fits(#enum_ident::#variant as #repr_t=
+y), #msg);
+>> > +            }
+>> > +        });
+>> > +
+>> > +        ::quote::quote! {
+>> > +            const _: () =3D {
+>> > +                const fn fits(d: #repr_ty) -> ::core::primitive::bool=
+ {
+>> > +                    // For every integer type, its minimum value alwa=
+ys fits in `i128`.
+>> > +                    let dst_min =3D #input_min;
+>> > +                    // For every integer type, its maximum value alwa=
+ys fits in `u128`.
+>> > +                    let dst_max =3D #input_max;
+>> > +
+>> > +                    #[allow(unused_comparisons)]
+>> > +                    let is_src_signed =3D #repr_ty::MIN < 0;
+>> > +                    #[allow(unused_comparisons)]
+>> > +                    let is_dst_signed =3D dst_min < 0;
+>> > +
+>> > +                    if is_src_signed && is_dst_signed {
+>> > +                        // Casting from a signed value to `i128` does=
+ not overflow since
+>> > +                        // `i128` is the largest signed primitive int=
+eger type.
+>> > +                        (d as #qualified_i128) >=3D (dst_min as #qual=
+ified_i128)
+>> > +                            && (d as #qualified_i128) <=3D (dst_max a=
+s #qualified_i128)
+>> > +                    } else if is_src_signed && !is_dst_signed {
+>> > +                        // Casting from a signed value greater than 0=
+ to `u128` does not
+>> > +                        // overflow since `u128::MAX` is greater than=
+ `i128::MAX`.
+>> > +                        d >=3D 0 && (d as #qualified_u128) <=3D (dst_=
+max as #qualified_u128)
+>> > +                    } else {
+>> > +                        // Casting from an unsigned value to `u128` d=
+oes not overflow since
+>> > +                        // `u128` is the largest unsigned primitive i=
+nteger type.
+>> > +                        (d as #qualified_u128) <=3D (dst_max as #qual=
+ified_u128)
+>> > +                    }
+>> > +                }
+>> > +
+>> > +                #(#variant_fits)*
+>> > +            };
+>> > +        }
+>> > +    }
+>> > +}
+>>
+>> > +
+>> > +impl fmt::Display for ValidTy {
+>> > +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+>> > +        match self {
+>> > +            Self::Bounded(inner) =3D> inner.fmt(f),
+>> > +            Self::Primitive(ident) =3D> ident.fmt(f),
+>> > +        }
+>> > +    }
+>> > +}
+>> > +
+>> > +struct Bounded {
+>> > +    name: Ident,
+>> > +    open_angle: Token![<],
+>> > +    base_ty: Ident,
+>>
+>> We should allow a type here from syntax and then emit an error when it
+>> isn't a primitive.
+>
+> Assuming you're talking about `syn::Type`, that seems better. I think I
+> should do the same thing for `ValidTy::Primitive`.
+
+Sounds good!
+
+>> > +    comma: Token![,],
+>> > +    bits: LitInt,
+>> > +    close_angle: Token![>],
+>> > +}
+>>
+>> > diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+>> > index b38002151871a33f6b4efea70be2deb6ddad38e2..02528d7212b75d28788f0c=
+33479edb272fa12e27 100644
+>> > --- a/rust/macros/lib.rs
+>> > +++ b/rust/macros/lib.rs
+>> > @@ -14,6 +14,7 @@
+>> >  #[macro_use]
+>> >  mod quote;
+>> >  mod concat_idents;
+>> > +mod convert;
+>> >  mod export;
+>> >  mod fmt;
+>> >  mod helpers;
+>> > @@ -23,6 +24,10 @@
+>> >  mod vtable;
+>> >
+>> >  use proc_macro::TokenStream;
+>> > +use syn::{
+>> > +    parse_macro_input,
+>> > +    DeriveInput, //
+>> > +};
+>> >
+>> >  /// Declares a kernel module.
+>> >  ///
+>> > @@ -475,3 +480,155 @@ pub fn paste(input: TokenStream) -> TokenStream =
+{
+>> >  pub fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream=
+ {
+>> >      kunit::kunit_tests(attr, ts)
+>> >  }
+>> > +
+>> > +/// A derive macro for providing an implementation of the [`Into`] tr=
+ait.
+>> > +///
+>> > +/// This macro automatically derives the [`Into`] trait for a given e=
+num by generating
+>> > +/// the relevant [`From`] implementation. Currently, it only supports=
+ [unit-only enum]s.
+>> > +///
+>> > +/// [unit-only enum]: https://doc.rust-lang.org/reference/items/enume=
+rations.html#r-items.enum.unit-only
+>> > +///
+>> > +/// # Notes
+>> > +///
+>> > +/// - Unlike its name suggests, the macro actually generates [`From`]=
+ implementations
+>> > +///   which automatically provide corresponding [`Into`] implementati=
+ons.
+>> > +///
+>> > +/// - The macro uses the `into` custom attribute or `repr` attribute =
+to generate [`From`]
+>> > +///   implementations. `into` always takes precedence over `repr`.
+>>
+>> What do you mean by "precedence" here? You always generate it for all
+>> helper_tys and the repr?
+>
+> To quote my reply above:
+>
+>     The current implementation completely ignores what's in
+>     `#[repr(...)]` when the `#[into(...)]` or `#[try_from(...)]` helper
+>     attributes are specified.
+>
+> That's why I used the term "precedence." But as I said, I'll change the
+> logic to generate impls for both.
+
+Oh yeah now it makes sense :)
+
+> Thanks a lot for the time and effort you put into reviewing it!
+
+My pleasure :)
+
+Cheers,
+Benno
