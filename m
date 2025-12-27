@@ -1,127 +1,154 @@
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF437081A
-	for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 15:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A37A59
+	for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 15:47:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766847733; cv=none; b=ZMPiM6FRK+WZ4f+TNOAJSsyvjkgmjEbteEJg+PVuW//oNKLUw990rVhIlGBWlogm1uiNShwcNKTm5UTI2sOcu6QmZYLZKXLcWDWF/PdbnDh3BRKiiqgOJ2t/tvUnQKZjKVlGAEk+qgw3juu1HNgw681T2R63NZ72naYM7r33lcs=
+	t=1766850452; cv=none; b=le98qBCL4HIu9alULO9iWmP4KeWBjPZud/loWT3rhyK2grrb2RKiuf5ZwW7aNTS0UaAhbZ3X9IDrWfzAZXc/f1+eR9n0a5uzUZ5/MNrHNspWjP3UFt7VC9/OD8U4sMgM8F9Wfb4M3h83M9OsUWYVBuNedsKgApTkOWFTxF+Sll4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766847733; c=relaxed/simple;
-	bh=ht+wvN7f+9d6mUzpmtIHsydLwyv3boBQN1ot8fUW548=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ej9GDYN5aGKHdXuo3X0kHnY8pPm6vvPuUb3M9VB+exlbaYg51MrP+QqsMiWKUMPcII/IMI387X3QAJx2qd9CkOI7yYGtV9FlabBmmSmuXAOPc7r7p9z13fUYTlZEd4eRAAl3RNb4pDaaQCz+p3PlvPeDuJzmUHI+sqILwRI0pp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a2Ug8riy; arc=none smtp.client-ip=209.85.210.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766850452; c=relaxed/simple;
+	bh=ugEVu7ukFgEeBForjMwizsSpeYMh8Zpix3Wci8jVNiI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iTB6qZo1JICmOeiOjoHCyY0AWg80TT9WYyNoblKRkyfs8UJ4ysLONFofmVZDM3U96uPcSXxhAwgTd8ezq+ZiOEyRq74SSuQfdbKb1jyoWxY/hDwBAlekR+kox+/ROGqbncct+Xpe1bCnNKnPjtR9/EKkuydq0/4HeLNyOTydi0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SEB/wS+h; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a2Ug8riy"
-Received: by mail-ot1-f66.google.com with SMTP id 46e09a7af769-7c52fa75cd3so8560782a34.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 07:02:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SEB/wS+h"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477563e531cso52703615e9.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 07:47:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766847731; x=1767452531; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pBYlsFK3210OpvEl8PbW73kEKWLAiMby66uW9J0CMnI=;
-        b=a2Ug8riy9hQPF4FujZgpMrBr37KxLL4ZOhdnTji/xbcZE03LRQGfQ0ekLoh1P668ES
-         HdUCRG5TF5VnGOtUu9Y0naB4FWB3Mmm3+Gob0PKOO3kOhGqKl8FSdWqIzTtMUGVwTv5I
-         YVeh6+BP4xvJ+XlepUkHnyRlFFawAoUc8KkK38qauAfXUnZaqWelveca2t72eWp4tze9
-         Ir3yYbSI0W5vwPHqTXAl10xtCRoRHMs+BYdhH5iGpNrFnE1ZOZOlgJHIW+B6IoShFZxE
-         sh5I42HRdsCrMkqP6nHWrsWkmUnUNTf8V5MxSMrdhrd6Gttgoq2VLBc77hYi54P5IB2N
-         LWSw==
+        d=google.com; s=20230601; t=1766850449; x=1767455249; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=N+drOL0+Cvcr1jFf6wD8Nm0/3jquhQQP16UntNjt9bM=;
+        b=SEB/wS+hdq6TzP/Cyh/L6VW9BkJvmIZ7WV41VUMEeGyJodYc4R3L59UdkjqBseIx+z
+         otjq23YIhWwzxcijycrxRKt5kp2N3qqepH3utpVdZgkyCNrhv+9/L2utSMLOKb3GWPAk
+         /mLN9q/LEqdKePlw8f1cyXOMtc/Dxqyw3dpIYEbQGIqHgbOFcaRQ+n6MGjDsYQ40db5W
+         JC7JEwy93vDuwZub2iPyY9SnoYfaBLGtln8kIDV2kke+YtKUOWf3Ji3XzsDHBVVMfYst
+         hBRk2mGtLZHFGsJiHXomGMcEOGUZoT5iK/oIq1Yq50oGw55ZemDNeT3U3925pCBsDIIT
+         MYhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766847731; x=1767452531;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pBYlsFK3210OpvEl8PbW73kEKWLAiMby66uW9J0CMnI=;
-        b=OTW1VWKqF/l5kKYABzfIAslRAjQX4qCl7u6nNP0PsTPzS7gc5aPWObaiiQ765nePsc
-         fdWmSPDCBsxnhfkj06qmiKmcx1r6FrvrYkBEszuZ54gRO6kil8R1X/Bd56EV+WKsvet1
-         Anjle3NGyWOPZxK6E/Z9ml4XCEce4ROXQt0OKOHefg1RJgBGd8wVAq0NCb8DFEx1WGze
-         MUOW/7G+sSpB1KB3xE8YXalepbxDePIvZs71lEuYDhs/lHuAn6M9WSNEtukd0+++7CeY
-         I8DMFsR6fxWQ4sa55USNiyynwnHya9mhK7x/fj6vzNNrQLV/ECVcMHQd72v0UZHy25rV
-         JW4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXJguCiXE06airrcnlTBiq0ihv/MIY+COnGHttyeIWIuY4uLbtfirf7pIcp/ShzyCoOKUuP6tzuEP6DZNs2zg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpgkPHDeY8ymo9zemvajeElNlDHc5OfJpJ7S3vPAxanv9k7Eua
-	QVUdlmFjYY+vbIMEYFYvc2d10h2bdR2JjBMwK3cXlrKGqDESMSCdbD7Qnfan9IbqAYJcAg==
-X-Gm-Gg: AY/fxX6ooZTZSeT38WrMyN+ujHos6+9Cwz4WmeY5BYEQrP1JKPJuZGA5DpNAYdPdxQh
-	g0GNN2s27+UOTmGZf2ampZLpDLIWLI+9KdT3cPKIKrh3yUSzaCxTcIFH5wTmawwBmGWy3EqJsD6
-	tXF6uWO/1N1AAa9SinEdmd6+7zr/buKVbv/PwDaWMP/T9I1wRtlMnDDZIWGtgwuxXE6Taw8EdcP
-	hxhBz4hlUHFWL8GGl88Ll82TOUqgfY/QZy7a5K8IMwrBlqkcuKfgx3WIHqTIfnWtGYygan0UbHA
-	ae/QZO9WRpaPM/Nlnb9W9XpluEb2p/gggN1kI+vM8t+GYN/rWncTU6AbhbbGagfa3Hf69oF61/q
-	msEQrlVNYz/1vBDsjNxkSkM1bq30Fciir49bI95c88P7nTYFDiS7DTLE0X8J65gm7CcI70lAJon
-	IkhHCa9cbUmAo1ajXTPKKgqYEQAX7py6Wr6fOjlEWBDc7QJxsXUz6TD4PqDS2saeMO08s=
-X-Google-Smtp-Source: AGHT+IEzwY3H4Cjmk2RNy1gzfoJoKi7CcHCRt3jXtlnBIkQ9zyhvpnMDHtsSwFS7E5eQ03OxsJVG2g==
-X-Received: by 2002:a05:6830:314e:b0:7ca:c7b0:17eb with SMTP id 46e09a7af769-7cc668b620bmr18177515a34.10.1766847730622;
-        Sat, 27 Dec 2025 07:02:10 -0800 (PST)
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com. [209.85.160.42])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667f9201sm17105908a34.26.2025.12.27.07.02.09
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 27 Dec 2025 07:02:10 -0800 (PST)
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-3e8f418e051so5504643fac.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 07:02:09 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXu630xrEr7ppDVuWLikURJ4qLVSkg90FKlY/H0ngHbVbRS8CQbJEBE5SxHlduQtpr7KC/cbDjCFVxIYcnrAw==@vger.kernel.org
-X-Received: by 2002:a05:6820:831a:b0:659:9a49:9025 with SMTP id
- 006d021491bc7-65d0eb0e47fmr7005944eaf.82.1766847729460; Sat, 27 Dec 2025
- 07:02:09 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766850449; x=1767455249;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N+drOL0+Cvcr1jFf6wD8Nm0/3jquhQQP16UntNjt9bM=;
+        b=YV4P94Du5mSwOHRMoGZd9BypKbF1ZIorcH1pYjk2Vfbpdj723EXqdKJNItbnEp0vbo
+         H2bs3242+/tFgfkdyxlOiZAA4i94kaHrnWaiadaga6RozNMYpcr/zwaC55BukwrhskI1
+         F/4HWEy7HqIJMqbzv6nmoqST2/hhqLkJte9lp4AT7h9SdQbSIxoxDzHQN68HouK2gHqj
+         BfuzC4PbIOEwo1CXKWXV8VzU6cZjAzPF1Dlb2HgQ3zYLCKQmgSQTF7I05eEqUESUhljr
+         5ZM9zKNYMEFG2HeaoKTOuwmAUclb73GEjP4awdsCdKf7dFI7f/2Wm4KPqVCeF2cB2PTK
+         0yLw==
+X-Forwarded-Encrypted: i=1; AJvYcCX1Qu5mQCLix1E9K4bw3mHL1VHQiF9TtW+e6YYa20EkjUr3k4SjH4iUZ3PLMW1OKG7n7g4/rdokJxR8U/zERw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz73rwdQvsUEi2k/s2qD4ZR/RSP60ltQ6Dg/gmExpBM5LWHGDnE
+	of94LuzyJSyiYPs4qGVe6qGN1q/mdRIM3D7U4JkDsvxHUFXYIze2GPOJuDwCf7RvVGX37wqUuf/
+	pZg9erKPXcsf4OYRR+Q==
+X-Google-Smtp-Source: AGHT+IHll0VxKOQ/mpDMRMfORazWLU946K0+iKlu4OUY3tiFT//MR+nHUpC+CXdPlr+xMX88Vcrg1dHIbUPqVsA=
+X-Received: from wmbfc17.prod.google.com ([2002:a05:600c:5251:b0:477:7a96:c9e1])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:35cb:b0:479:3a88:de60 with SMTP id 5b1f17b1804b1-47d1959e061mr285246035e9.37.1766850449271;
+ Sat, 27 Dec 2025 07:47:29 -0800 (PST)
+Date: Sat, 27 Dec 2025 15:47:21 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <tencent_9F74630DC16B92484463BBC055DEB1F17306@qq.com>
-In-Reply-To: <tencent_9F74630DC16B92484463BBC055DEB1F17306@qq.com>
-From: Kari Argillander <kari.argillander@gmail.com>
-Date: Sat, 27 Dec 2025 17:01:58 +0200
-X-Gmail-Original-Message-ID: <CAKBF=puTwJhNVhV=_N5m-dV8CRfkW8DpsAsC6i9zYxVZL_nQjQ@mail.gmail.com>
-X-Gm-Features: AQt7F2p6WKH4peoqypSmflruXyiiN6pJapuKS-RpVSKawPEerob-YZ4IX0nuRys
-Message-ID: <CAKBF=puTwJhNVhV=_N5m-dV8CRfkW8DpsAsC6i9zYxVZL_nQjQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: device_id: replace possible incorrect word in
- safety documentation
-To: Yilin Chen <1479826151@qq.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAIj/T2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDIyNz3ZSizLLUIt2SyoLUYl3TRBOj5CQLI8skc0MloJaCotS0zAqwcdG xtbUAPGV1uV4AAAA=
+X-Change-Id: 20251227-driver-types-5a42cb829b71
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2544; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=ugEVu7ukFgEeBForjMwizsSpeYMh8Zpix3Wci8jVNiI=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpT/+LeH+AawZJTrL/LD8PxwZ8o+ARRZ0bMLSNF
+ HFgZnOYZ3CJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaU//iwAKCRAEWL7uWMY5
+ Ru7GD/wIgfrKI0ZPLHJniMunkl/PfjYAjwesMl5jKtTQ8JWu+wmn8nAN/mRuxbbXfNjI9SebQ1K
+ OmAQrsKD50cUfS3qfVl+TfgUtt27BG+K2MpbLrLfO/CMYB3EAsddyQ93EoHmI8Z3yXLhSikvd0w
+ JwQPM3Afoknl9SItrKkkU9Wh3cl+GY1gn8ye6U+ZjjX0VzOlNVS4eCxceu8P6XuQ/Bz6x1EPK3T
+ fNRUlXE+Emj8EH9D6cupbSFHclqhuhuAh8cmsDSqrMfwzYLZ9qsPcmM6+Q3NDwCpEXAqZXAI0h3
+ IxEsZ8m2L50nvKF57YRJ1SeENTR4U+HPS9Hdl+c9fHrwBgj3Oc1DPrDsYrIZGEaYjAcoYn4WGw9
+ 5oa5+BWExSbhcd+VOC2n5bWxGjhmfMfNowbgF1u4HCBWxHZQobwB9St70vtry1ku88yboNLqAl/
+ I9sv5iynhS/jhUaCs9VGqc+pSsDnHa3ewuCLhCEk/eCbjrsXn+lZQftfObaaZ4K4qtM2fBmMRXk
+ cIaheC2GwkmxarNM12QuzwZcBxHBxo4/KacsAt2cIw7o1xqbsurv426iUtoZWGQcMR+b8ZSEYbV
+ MHVsXapwlUQgyiwhlHs1uvE5mXdHRFsR+JgLcAtBn7sH5fVeOGm2XDHBPzf0SI/UE6YgNF0Il4K w8Dph9JH6oL3qHA==
+X-Mailer: b4 0.14.2
+Message-ID: <20251227-driver-types-v1-1-1916154fbe5e@google.com>
+Subject: [PATCH] rust: driver: fix broken intra-doc links to example driver types
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-Currently subject is
+The `auxiliary` and `pci` modules are conditional on
+`CONFIG_AUXILIARY_BUS` and `CONFIG_PCI` respectively. When these are
+disabled, the intra-doc links to `auxiliary::Driver` and `pci::Driver`
+break, causing rustdoc warnings (or errors with `-D warnings`).
 
-   [PATCH] rust: device_id: replace possible incorrect word in safety
-documentation
+error: unresolved link to `kernel::auxiliary::Driver`
+  --> rust/kernel/driver.rs:82:28
+   |
+82 | //! [`auxiliary::Driver`]: kernel::auxiliary::Driver
+   |                            ^^^^^^^^^^^^^^^^^^^^^^^^^ no item named `auxiliary` in module `kernel`
 
-After this is applied it does not make sense that there read "possible
-incorrect". So just remove "possible" from subject.
+Fix this by making the documentation for these examples conditional on
+the corresponding configuration options.
 
-On Fri, 26 Dec 2025 at 18:09, Yilin Chen <1479826151@qq.com> wrote:
->
-> The safety documentation incorrectly refers to `RawDeviceId` when
-> transmuting to `RawType`. This fixes the documentation to correctly
-> indicate that implementers must ensure layout compatibility with
-> `RawType`, not `RawDeviceId`.
->
-> Signed-off-by: Yilin <1479826151@qq.com>
+Fixes: 970a7c68788e ("driver: rust: expand documentation for driver infrastructure")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/driver.rs | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-I have said in other patches already but just to be clear use real name
-in signed-off-by line.
+diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+index 9beae2e3d57e72d5155419bc16f58896a3fc38d7..649d06468f411ddf80fac5f3be22d9f83fd404df 100644
+--- a/rust/kernel/driver.rs
++++ b/rust/kernel/driver.rs
+@@ -33,7 +33,14 @@
+ //! }
+ //! ```
+ //!
+-//! For specific examples see [`auxiliary::Driver`], [`pci::Driver`] and [`platform::Driver`].
++//! For specific examples see:
++//!
++//! * [`platform::Driver`](kernel::platform::Driver)
++#![cfg_attr(
++    CONFIG_AUXILIARY_BUS,
++    doc = "* [`auxiliary::Driver`](kernel::auxiliary::Driver)"
++)]
++#![cfg_attr(CONFIG_PCI, doc = "* [`pci::Driver`](kernel::pci::Driver)")]
+ //!
+ //! The `probe()` callback should return a `impl PinInit<Self, Error>`, i.e. the driver's private
+ //! data. The bus abstraction should store the pointer in the corresponding bus device. The generic
+@@ -79,7 +86,6 @@
+ //!
+ //! For this purpose the generic infrastructure in [`device_id`] should be used.
+ //!
+-//! [`auxiliary::Driver`]: kernel::auxiliary::Driver
+ //! [`Core`]: device::Core
+ //! [`Device`]: device::Device
+ //! [`Device<Core>`]: device::Device<device::Core>
+@@ -87,8 +93,6 @@
+ //! [`DeviceContext`]: device::DeviceContext
+ //! [`device_id`]: kernel::device_id
+ //! [`module_driver`]: kernel::module_driver
+-//! [`pci::Driver`]: kernel::pci::Driver
+-//! [`platform::Driver`]: kernel::platform::Driver
+ 
+ use crate::error::{Error, Result};
+ use crate::{acpi, device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
 
-> ---
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251227-driver-types-5a42cb829b71
 
-On v2 you will have something like this after "---":
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-Changes in v2:
-- Changed subject (Kari Argillander)
-- Use real name in signed-off-by line (Kari Argillander)
-- Link to v1: https://lore.kernel.org/rust-for-linux/tencent_9F74630DC16B92484463BBC055DEB1F17306@qq.com/
-
-> +++ b/rust/kernel/device_id.rs
-> @@ -15,7 +15,7 @@
->  /// # Safety
->  ///
->  /// Implementers must ensure that `Self` is layout-compatible with [`RawDeviceId::RawType`];
-> -/// i.e. it's safe to transmute to `RawDeviceId`.
-> +/// i.e. it's safe to transmute to `RawType`.
-
-
-    Argillander
