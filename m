@@ -1,435 +1,545 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B67E199E89;
-	Sat, 27 Dec 2025 04:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3D68821
+	for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 05:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766811433; cv=none; b=Kj0qdBK9CqgrHsPsXXf/0lrvHb0sr7fSXTPeG4y1YwmdLr6SS8Fv6C3CxnEbtnvBWecvzxDKtUYe/VDpjjI3/OJub1bJtWUc4MYsXe5921pKbQ6rILy/sqHfAhNCnvge2W7ZaA1DDkl0fo3O5XqW7HyyCoIjVxbp0csMpl+S+FU=
+	t=1766814981; cv=none; b=BNsMC9w0pndSeu1+QgPkL9Sd0YvqJYpLOhsc/6XZRJZJw6KdFKuSDCQxiP0jJLilxvuIkZIv50gzCcpGPMbXLdLlm/SBqshesNnP5/FJPxxnr6RIF9rl8iifPaWw83BpJxIjsgFeEEc0aaDKEijvymGQX7/300by6gfyyST9jog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766811433; c=relaxed/simple;
-	bh=hyLs+cXKH65myVQhUgTa0FFNyWdvkMB9nJFLbtulGLs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=kD58LN3SjkDotdpJLreBH5rZwTW8IwZnq8hbsrxIu1FQjR2PZmoPsetxnDySoMgbs1iTuwKSZpdCBf15zIiGlPUU4br8BfvcL75JvH9axHQtuLezvV53Y4cVKe6cf6/kEZhpM/6IH/w39cK3LfUQtoEb8Sw3h6qQjYRoBnVWxHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCtoQpOt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766814981; c=relaxed/simple;
+	bh=M4SoT+iwGjjUPowjiSOL2xsgu77nkulXNnnVckb5N28=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h0518ZbJnLe+XBMaYnRPihYl4cJvYyhxtk5W0c53knWRrj449omESCNTUqtlLeBETwDJ1MaFxJ+Iwpre9Z864TKg/JCid4XOwWexEf+roTaOvrmEZTqd5Q5WKhMwQ++fXBgSi12dLWrh6O95rJk5+wukyK/HG+h2/bv1MyvsQcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M4sCm9sE; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCtoQpOt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82600C4CEF1;
-	Sat, 27 Dec 2025 04:57:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766811432;
-	bh=hyLs+cXKH65myVQhUgTa0FFNyWdvkMB9nJFLbtulGLs=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=fCtoQpOtSqG3bw01NqQqZ+/j+4agU7zXH5K/O1p2gUL1EjiBBLTR6XAmgK0Jn8AV+
-	 Yg11PluWE0tOQT4CIMTY+PfFflkC+MsA/9/YBZtUoZNUowHCmC87mOJ12/6A1X/gup
-	 Fi6u35qkaJa1tVPj+dr49OTKtJxaL/Xf/58JR+8CZREEiLJipqYDaguXBhJh2vL4Zs
-	 EOKcofF1yqzlfnhc9HKjcamTsF68FXyAEIYOYdQGo8El+sfh+rZEHDsbW1JQam3LPH
-	 e9OODiCeizE8hWiLFaYzS1MTbs4fpR2JvmASdHRLyf701+MIAMWtkIgkBk68tJSgp+
-	 X3NLfqeeXNWVA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M4sCm9sE"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-88a2f2e5445so97556506d6.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Dec 2025 21:56:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766814978; x=1767419778; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BmzwU54Uz/00BopgLF1T4+20o/2kZIolx4V1Or2lvXE=;
+        b=M4sCm9sEg02oyzw98Y3pS1+25zXDlu1OcvvEXI/IYbppnD31tnl2AHR58Zjs2qYwkB
+         7SJ+m2Ul4VyNHAw+PyqhMmMWYvTd9KzSuPTBc3odEbd/rjgPsIcyKdORZOcoXxlxfm66
+         YyJM2bTnNJ8Z+bOapESf/t2Im8XFj8zhlKa1+VJzL/Cg+j9yzq4IcFfBfl/sF1Ht0BhN
+         bjpPSxzhX0GYcEKKbelajG1e8L4eMrPoOubKglAz08+0VMdUDNJBIAurA4Sv98vZYeXH
+         5qVVLlmTsPCaLWFusnXjaPNMXpXPFsTjfB61gMTe5V+OASvIM+r9c9SghPGrlOUHHdfN
+         tMPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766814978; x=1767419778;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BmzwU54Uz/00BopgLF1T4+20o/2kZIolx4V1Or2lvXE=;
+        b=VQWOHQ3QK8X9sC7SOOW84Us0bCalE3YbSF5L8t2Voj7ppelNSStoD3/uSB70bLjzhr
+         BqGgRdi8xyFv4MJRF1RfMiUKHFE4df5Ii1qfLqokixX4vXwePq489pMup5Jt6N4rtobm
+         mlL6LDH3ApfC87aQMCjcr2gKvCyEQLe3FbwNNABTxiJUln1XuB+dqxeSwwbqE2KUEgSe
+         RnLUnVtZ420EXHUD5Kmb94RiiU1oxEciQvuyD0vb3h1LtIWROtOyMREXxAatJZKyCs/n
+         2kxNQP0gY75orFji925VjsPX4oau9ygRBxmHFtpOk9IvIiQY+5ZBDcvaliPMhn/2v7cg
+         AqjA==
+X-Forwarded-Encrypted: i=1; AJvYcCWczG9R/XeNWMqvSckM9LKUBXPSX6eq96s6GtROUN/CoBfXKcLuLN26OI4SJpKgk8/F1ZB2mmGXqy6HTvOrrQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9V4sLcB3zAapSmiw7yXzOJ8iSFDEzxuacT5ymE2RiuKa/Uk9K
+	g6m+z7As9jceJ+r5ySFKLtSCBfj/2hZ/LM5+oxIpopxma03/8kqevMox
+X-Gm-Gg: AY/fxX61Y9aOnI3tNY+v6O7A9so7Dl4pxIy6O6Wjb0Df7wWwDcfrjfwl2T36MrSmfJj
+	MTd69gQ3+x0Bjs+jSGdAvvPEtYzkqGK0sWT/P4aI33NXnZHvGbpzu56z5Jsw06VgFpVoupyS7aZ
+	sCPznJbjJAe1862VVweKwi3zJQac9DQE74yKwQz+UkSaf92FWXcsIFd+hGiQEyjUtyYayVvDjPo
+	PSxZYCT73GI6GxHaxRbmtje01GLycTC+difKBC1z863hwGtH5xZ7WaybrN+XXphqi+kmZGDBur7
+	0xHMX8sFL/Xne1QTbGoTboK/kOWcOaakIWeWl7RAZrfDQ81k2UXYCUnbVUC72e7f3jHfzjuOLWm
+	uJMArUmc77GPi71JgQ+I06Qwcwy3ccCybDli9NJEb8CFWxBl6aX6u6vtMOi0uU0Vwre7XF8Dnr2
+	87X9MEET2BmOUrsxXm3JgVnO8SBLDvhMOk49I2nsHrAPiM2Fqw8rP47honBPUUz8wIq2LfESAnV
+	fb5QeTQYB2BoTw=
+X-Google-Smtp-Source: AGHT+IG9mBEGbCFLPuuUN8lzCPWFdBxoKlfmkNOQg7CtadacORd7E8I3UE156ak6FlVg1n0+cDnv1A==
+X-Received: by 2002:ad4:5bad:0:b0:880:498e:a63e with SMTP id 6a1803df08f44-88d81662839mr501791926d6.2.1766814977606;
+        Fri, 26 Dec 2025 21:56:17 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9a44fe52sm183411256d6.45.2025.12.26.21.56.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Dec 2025 21:56:17 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8A40CF40068;
+	Sat, 27 Dec 2025 00:56:16 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Sat, 27 Dec 2025 00:56:16 -0500
+X-ME-Sender: <xms:AHVPaey2fyJYi96quk7Wpf2tI5QxMpGBR2XZV2x6Ux9mdg_VfmyZVQ>
+    <xme:AHVPaYwoz5emUbDFiPEUSbqs3NlM3P86prsDlkYejgUFoLDYElBhxipFWsMEHG8qk
+    muRfwG95_nkcoKrpJuJwtxPPyvLtlRkv54SG3FPx85RrCeIGrMoxQ>
+X-ME-Received: <xmr:AHVPaXInrgBISKCn1xvjE6pKhIBRO01vdJWOVV8L6G2I0Fhjq7hHFvL8Gov0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdejtdehjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepshhunhhkvgeskhihlhhinhhoshdrtghnpdhrtghpthhtohepughirhhkrdgsvg
+    hhmhgvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepphhmlhgruggvkhesshhushgvrdgtohhmpdhrtghpthhtoheprh
+    hoshhtvgguthesghhoohgumhhishdrohhrghdprhgtphhtthhopehtthgrsghisehnvhhi
+    ughirgdrtghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgr
+    rhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:AHVPaUiDFczhOSzFh1hiLM8Zl5qdnitNSx6LFKIj-_iRXPxAFtBUBw>
+    <xmx:AHVPaYPTen9kjSxhvzK3ahBUg8-GVdvhECR_aesrgGu_9APMzglWcA>
+    <xmx:AHVPaf4-UHTMJtmXGLiJ4YOvis5FREqCbFfpu5bouRRXmUH0Heod0w>
+    <xmx:AHVPafkLmNNI9LwxP6rpuyE2hFUFu9_pIgX4kSgios-HU5_WaLKqUw>
+    <xmx:AHVPafKYjFfq7zX9uz7phjBWomvkYtCnnBjAbOUOltYuaZQ2JO4Qt6qi>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 27 Dec 2025 00:56:15 -0500 (EST)
+Date: Sat, 27 Dec 2025 13:56:11 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Ke Sun <sunke@kylinos.cn>
+Cc: Dirk Behme <dirk.behme@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>, Timur Tabi <ttabi@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@gmail.com>, Ke Sun <sk.alvin.x@gmail.com>,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v6 2/4] rust: kernel: Add pointer wrapper types for safe
+ pointer formatting
+Message-ID: <aU90-0sVL81fJ2ON@tardis-2.local>
+References: <20251227033958.3713232-1-sunke@kylinos.cn>
+ <20251227033958.3713232-3-sunke@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 27 Dec 2025 05:57:07 +0100
-Message-Id: <DF8QDONK951M.10NYLJ40UNNY1@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
-Subject: Re: [PATCH v4 1/4] rust: macros: add derive macro for `Into`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Jesung Yang" <y.j3ms.n@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20251225-try-from-into-macro-v4-0-4a563d597836@gmail.com>
- <20251225-try-from-into-macro-v4-1-4a563d597836@gmail.com>
- <DF7HDE1T2BOS.33WUHP49WWO1M@kernel.org>
- <CA+tqQ4JPMg7CGq7YiN2EwzzQBC2grRE5OFgRQTws+xh8UbzqEw@mail.gmail.com>
-In-Reply-To: <CA+tqQ4JPMg7CGq7YiN2EwzzQBC2grRE5OFgRQTws+xh8UbzqEw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251227033958.3713232-3-sunke@kylinos.cn>
 
-On Fri Dec 26, 2025 at 10:36 AM CET, Jesung Yang wrote:
-> On Fri, Dec 26, 2025 at 2:40=E2=80=AFAM Benno Lossin <lossin@kernel.org> =
-wrote:
->> On Thu Dec 25, 2025 at 9:37 AM CET, Jesung Yang via B4 Relay wrote:
->> > +fn parse_attrs(target: DeriveTarget, attrs: &[Attribute]) -> syn::Res=
-ult<(Vec<ValidTy>, Ident)> {
->> > +    let helper =3D target.get_helper_name();
->> > +
->> > +    let mut repr_ty =3D None;
->> > +    let mut helper_tys =3D Vec::new();
->> > +    for attr in attrs {
->> > +        if attr.path().is_ident("repr") {
->> > +            attr.parse_nested_meta(|meta| {
->> > +                let ident =3D meta.path.get_ident();
->> > +                if ident.is_some_and(is_valid_primitive) {
->> > +                    repr_ty =3D ident.cloned();
->> > +                }
->>
->> While this works for now, writing `repr(C, {integer})` might become
->> meaningful in the future, see [1]. We should just accept it now as well.
->>
->> [1]: https://github.com/rust-lang/rust/issues/68585
->
-> I think it's worth noting. I'll add a small comment for this.
+On Sat, Dec 27, 2025 at 11:39:53AM +0800, Ke Sun wrote:
+> Add three pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr) to
+> rust/kernel/ptr.rs that correspond to C kernel's printk format specifiers
+> %p, %pK, and %px. These types provide type-safe pointer formatting that
+> matches C kernel patterns.
+> 
+> These wrapper types implement core::fmt::Pointer and delegate to the
+> corresponding kernel formatting functions, enabling safe pointer
+> formatting in Rust code that prevents information leaks about kernel
+> memory layout.
+> 
+> Users can explicitly use these types:
+>     pr_info!("{:p}\n", HashedPtr::from(ptr));
+>     pr_info!("{:p}\n", RestrictedPtr::from(ptr));
+>     pr_info!("{:p}\n", RawPtr::from(ptr));
+> 
+> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+> ---
+>  rust/helpers/fmt.c     |  65 +++++++++++
 
-My suggestion was to just accept `repr(C, {integer})` and make it result
-in the same as `repr({integer})`.
+I don't think the new function should be put in rust/helpers/, helpers
+are for macros/inline functions that we cannot directly call via FFI,
+they are basically mapping a Rust bindings call into a C function. So
+the functions defined in rust/helpers/ should be simple, and
+rust_helper_kptr_restrict_value() is not the case. Moreover, seems to me
+that this function basically repeats part of the logic of
+restricted_pointer(), hence it's not a good idea to duplicate this from
+restricted_pointer().
 
->> > +                // Delegate `repr` attribute validation to rustc.
->> > +                Ok(())
->> > +            })?;
->> > +        } else if attr.path().is_ident(helper) && helper_tys.is_empty=
-() {
->> > +            let args =3D attr.parse_args_with(Punctuated::<ValidTy, T=
-oken![,]>::parse_terminated)?;
->> > +            helper_tys.extend(args);
->> > +        }
->> > +    }
->> > +
->> > +    // Note on field-less `repr(C)` enums (quote from [1]):
->> > +    //
->> > +    //   In C, enums with discriminants that do not all fit into an `=
-int` or all fit into an
->> > +    //   `unsigned int` are a portability hazard: such enums are only=
- permitted since C23, and not
->> > +    //   supported e.g. by MSVC.
->> > +    //
->> > +    //   Furthermore, Rust interprets the discriminant values of `rep=
-r(C)` enums as expressions of
->> > +    //   type `isize`. This makes it impossible to implement the C23 =
-behavior of enums where the
->> > +    //   enum discriminants have no predefined type and instead the e=
-num uses a type large enough
->> > +    //   to hold all discriminants.
->> > +    //
->> > +    //   Therefore, `repr(C)` enums in Rust require that either all d=
-iscriminants to fit into a C
->> > +    //   `int` or they all fit into an `unsigned int`.
->> > +    //
->> > +    // As such, `isize` is a reasonable representation for `repr(C)` =
-enums, as it covers the range
->> > +    //  of both `int` and `unsigned int`.
->> > +    //
->> > +    // For more information, see:
->> > +    // - https://github.com/rust-lang/rust/issues/124403
->> > +    // - https://github.com/rust-lang/rust/pull/147017
->> > +    // - https://github.com/rust-lang/rust/blob/2ca7bcd03b87b52f7055a=
-59b817443b0ac4a530d/compiler/rustc_lint_defs/src/builtin.rs#L5251-L5263 [1]
->> > +
->> > +    // Extract the representation passed by `#[repr(...)]` if present=
-. If nothing is
->> > +    // specified, the default is `Rust` representation, which uses `i=
-size` for its
->> > +    // discriminant type.
->> > +    // See: https://doc.rust-lang.org/reference/items/enumerations.ht=
-ml#r-items.enum.discriminant.repr-rust
->>
->> I think we should error when no `#[repr({integer})]` attribute is
->> specified.
->
-> Not a blocker but just out of curiosity: are you concerned that the
-> default size might change in the future, leading to silent side
-> effects?
+I suggest you introduce a kptr_restrict_value() in lib/vsprintf.c and
+make it EXPORT_GPL_SYMBOL, restricted_pointer() can reuse it as well,
+you will probably need to rework kptr_restrict_value() to be something
+like
 
-`isize` already changes size when you switch between 64 and 32 bit
-architectures. I think the author of an enum they want to convert into
-integers should think about which size the enum should be.
+	/*
+	 * Return `kptr_restrict` (0, 1 or 2) if `*pptr` should be used
+	 * for print. Otherwise return -1, which indicates the
+	 * error_string() branch in restricted_pointer().
+	 */
+	int kptr_restrict_value(const void **pptr)
 
-They already can choose `repr(isize)` if that is correct in that case.
-As a default, I would have choosen `i32` (but that conflicts with Rust's
-default, so we can't do it).
+and restricted_pointer() can be:
 
->> > +    let repr_ty =3D repr_ty.unwrap_or_else(|| Ident::new("isize", Spa=
-n::call_site()));
->> > +    Ok((helper_tys, repr_ty))
->> > +}
->> > +
->> > +fn derive_for_enum(
->> > +    target: DeriveTarget,
->> > +    enum_ident: &Ident,
->> > +    variants: &[Ident],
->> > +    helper_tys: &[ValidTy],
->> > +    repr_ty: &Ident,
->> > +) -> TokenStream {
->> > +    let impl_fn =3D match target {
->> > +        DeriveTarget::Into =3D> impl_into,
->> > +    };
->> > +
->> > +    let qualified_repr_ty: syn::Path =3D parse_quote! { ::core::primi=
-tive::#repr_ty };
->> > +
->> > +    return if helper_tys.is_empty() {
->> > +        let ty =3D ValidTy::Primitive(repr_ty.clone());
->> > +        let impls =3D
->> > +            std::iter::once(ty).map(|ty| impl_fn(enum_ident, variants=
-, &qualified_repr_ty, &ty));
->> > +        ::quote::quote! { #(#impls)* }
->> > +    } else {
->> > +        let impls =3D helper_tys
->> > +            .iter()
->> > +            .map(|ty| impl_fn(enum_ident, variants, &qualified_repr_t=
-y, ty));
->> > +        ::quote::quote! { #(#impls)* }
->> > +    };
->>
->> Let's just do this when we still have the `helper_tys` vector:
->>
->>     helper_tys.push(ValidTy::Primitive(repr_ty));
->
-> The current implementation completely ignores what's in `#[repr(...)]`
-> when the `#[into(...)]` or `#[try_from(...)]` helper attributes are
-> specified. But users might expect, as you did, the macros to generate
-> impls not only for types specified in the helper attributes but also
-> for the one in `repr`. I think I should deduplicate `helper_tys` after
-> the push, but anyway, I'll change this in v5.
+	static noinline_for_stack
+	char *restricted_pointer(char *buf, char *end, const void *ptr,
+				 struct printf_spec spec)
+	{
+		int ret = kptr_restrict_value(&ptr);
 
-Oh yeah I missed this, please do make this change :)
+		if (ret < 0) {
+			if (spec.field_width == -1)
+				spec.field_width = 2 * sizeof(ptr);
+			return error_string(buf, end, "pK-error", spec);
+		}
 
->> > +
->> > +    fn impl_into(
->> > +        enum_ident: &Ident,
->> > +        variants: &[Ident],
->> > +        repr_ty: &syn::Path,
->> > +        input_ty: &ValidTy,
->> > +    ) -> TokenStream {
->> > +        let param =3D Ident::new("value", Span::call_site());
->> > +
->> > +        let overflow_assertion =3D emit_overflow_assert(enum_ident, v=
-ariants, repr_ty, input_ty);
->> > +        let cast =3D match input_ty {
->> > +            ValidTy::Bounded(inner) =3D> {
->> > +                let base_ty =3D inner.emit_qualified_base_ty();
->> > +                let expr =3D parse_quote! { #param as #base_ty };
->> > +                // Since the discriminant of `#param`, an enum varian=
-t, is determined
->> > +                // at compile-time, we can rely on `Bounded::from_exp=
-r()`. It requires
->> > +                // the provided expression to be verifiable at compil=
-e-time to avoid
->> > +                // triggering a build error.
->> > +                inner.emit_from_expr(&expr)
->> > +            }
->> > +            ValidTy::Primitive(ident) if ident =3D=3D "bool" =3D> {
->> > +                ::quote::quote! { (#param as #repr_ty) =3D=3D 1 }
->> > +            }
->> > +            qualified @ ValidTy::Primitive(_) =3D> ::quote::quote! { =
-#param as #qualified },
->> > +        };
->> > +
->> > +        ::quote::quote! {
->> > +            #[automatically_derived]
->> > +            impl ::core::convert::From<#enum_ident> for #input_ty {
->> > +                fn from(#param: #enum_ident) -> #input_ty {
->> > +                    #overflow_assertion
->> > +
->> > +                    #cast
->> > +                }
->> > +            }
->> > +        }
->> > +    }
->> > +
->> > +    fn emit_overflow_assert(
->> > +        enum_ident: &Ident,
->> > +        variants: &[Ident],
->> > +        repr_ty: &syn::Path,
->> > +        input_ty: &ValidTy,
->> > +    ) -> TokenStream {
->>
->> I feel like we should track this via traits rather than using a const
->> assert. That approach will require & generate much less code.
->
-> Sorry, but could you elaborate? A small example of what you have in
-> mind would help a lot.
+		if (ret == 0)
+			return default_pointer(buf, end, ptr, spec);
 
-Oh yeah sorry, I had something different in mind compared to what I'll
-describe now, but it achieves the same thing without introducing new
-traits:
+		return pointer_string(buf, end, ptr, spec);
+	}
 
-We have two options:
-1) We use `<input_ty as TryFrom<repr_ty>>::try_from` instead of writing
-   the `fits` function ourself.
-2) We require `input_ty: From<repr_ty>`.
 
-The first option would still check every variant and should behave the
-same as your current code.
+With the new kptr_restrict_value() function, you can also avoid reading
+`kptr_restrict` in `RestrictedPtr::fmt`, which is subject to data race
+if I'm not missing anything.
 
-Option 2 allows us to avoid the const altogether, but requires us to
-choose the smallest integer as the representation (and if we want to be
-able to use both `i8` and `u8`, we can't). I missed this before, so
-using option 1 might be the only way to allow conversions of this kind.
+Regards,
+Boqun
 
->> > +        let qualified_i128: syn::Path =3D parse_quote! { ::core::prim=
-itive::i128 };
->> > +        let qualified_u128: syn::Path =3D parse_quote! { ::core::prim=
-itive::u128 };
->> > +
->> > +        let input_min =3D input_ty.emit_min();
->> > +        let input_max =3D input_ty.emit_max();
->> > +
->> > +        let variant_fits =3D variants.iter().map(|variant| {
->> > +            let msg =3D format!(
->> > +                "enum discriminant overflow: \
->> > +                `{enum_ident}::{variant}` does not fit in `{input_ty}=
-`",
->> > +            );
->> > +            ::quote::quote! {
->> > +                ::core::assert!(fits(#enum_ident::#variant as #repr_t=
-y), #msg);
->> > +            }
->> > +        });
->> > +
->> > +        ::quote::quote! {
->> > +            const _: () =3D {
->> > +                const fn fits(d: #repr_ty) -> ::core::primitive::bool=
- {
->> > +                    // For every integer type, its minimum value alwa=
-ys fits in `i128`.
->> > +                    let dst_min =3D #input_min;
->> > +                    // For every integer type, its maximum value alwa=
-ys fits in `u128`.
->> > +                    let dst_max =3D #input_max;
->> > +
->> > +                    #[allow(unused_comparisons)]
->> > +                    let is_src_signed =3D #repr_ty::MIN < 0;
->> > +                    #[allow(unused_comparisons)]
->> > +                    let is_dst_signed =3D dst_min < 0;
->> > +
->> > +                    if is_src_signed && is_dst_signed {
->> > +                        // Casting from a signed value to `i128` does=
- not overflow since
->> > +                        // `i128` is the largest signed primitive int=
-eger type.
->> > +                        (d as #qualified_i128) >=3D (dst_min as #qual=
-ified_i128)
->> > +                            && (d as #qualified_i128) <=3D (dst_max a=
-s #qualified_i128)
->> > +                    } else if is_src_signed && !is_dst_signed {
->> > +                        // Casting from a signed value greater than 0=
- to `u128` does not
->> > +                        // overflow since `u128::MAX` is greater than=
- `i128::MAX`.
->> > +                        d >=3D 0 && (d as #qualified_u128) <=3D (dst_=
-max as #qualified_u128)
->> > +                    } else {
->> > +                        // Casting from an unsigned value to `u128` d=
-oes not overflow since
->> > +                        // `u128` is the largest unsigned primitive i=
-nteger type.
->> > +                        (d as #qualified_u128) <=3D (dst_max as #qual=
-ified_u128)
->> > +                    }
->> > +                }
->> > +
->> > +                #(#variant_fits)*
->> > +            };
->> > +        }
->> > +    }
->> > +}
->>
->> > +
->> > +impl fmt::Display for ValidTy {
->> > +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
->> > +        match self {
->> > +            Self::Bounded(inner) =3D> inner.fmt(f),
->> > +            Self::Primitive(ident) =3D> ident.fmt(f),
->> > +        }
->> > +    }
->> > +}
->> > +
->> > +struct Bounded {
->> > +    name: Ident,
->> > +    open_angle: Token![<],
->> > +    base_ty: Ident,
->>
->> We should allow a type here from syntax and then emit an error when it
->> isn't a primitive.
->
-> Assuming you're talking about `syn::Type`, that seems better. I think I
-> should do the same thing for `ValidTy::Primitive`.
-
-Sounds good!
-
->> > +    comma: Token![,],
->> > +    bits: LitInt,
->> > +    close_angle: Token![>],
->> > +}
->>
->> > diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
->> > index b38002151871a33f6b4efea70be2deb6ddad38e2..02528d7212b75d28788f0c=
-33479edb272fa12e27 100644
->> > --- a/rust/macros/lib.rs
->> > +++ b/rust/macros/lib.rs
->> > @@ -14,6 +14,7 @@
->> >  #[macro_use]
->> >  mod quote;
->> >  mod concat_idents;
->> > +mod convert;
->> >  mod export;
->> >  mod fmt;
->> >  mod helpers;
->> > @@ -23,6 +24,10 @@
->> >  mod vtable;
->> >
->> >  use proc_macro::TokenStream;
->> > +use syn::{
->> > +    parse_macro_input,
->> > +    DeriveInput, //
->> > +};
->> >
->> >  /// Declares a kernel module.
->> >  ///
->> > @@ -475,3 +480,155 @@ pub fn paste(input: TokenStream) -> TokenStream =
-{
->> >  pub fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream=
- {
->> >      kunit::kunit_tests(attr, ts)
->> >  }
->> > +
->> > +/// A derive macro for providing an implementation of the [`Into`] tr=
-ait.
->> > +///
->> > +/// This macro automatically derives the [`Into`] trait for a given e=
-num by generating
->> > +/// the relevant [`From`] implementation. Currently, it only supports=
- [unit-only enum]s.
->> > +///
->> > +/// [unit-only enum]: https://doc.rust-lang.org/reference/items/enume=
-rations.html#r-items.enum.unit-only
->> > +///
->> > +/// # Notes
->> > +///
->> > +/// - Unlike its name suggests, the macro actually generates [`From`]=
- implementations
->> > +///   which automatically provide corresponding [`Into`] implementati=
-ons.
->> > +///
->> > +/// - The macro uses the `into` custom attribute or `repr` attribute =
-to generate [`From`]
->> > +///   implementations. `into` always takes precedence over `repr`.
->>
->> What do you mean by "precedence" here? You always generate it for all
->> helper_tys and the repr?
->
-> To quote my reply above:
->
->     The current implementation completely ignores what's in
->     `#[repr(...)]` when the `#[into(...)]` or `#[try_from(...)]` helper
->     attributes are specified.
->
-> That's why I used the term "precedence." But as I said, I'll change the
-> logic to generate impls for both.
-
-Oh yeah now it makes sense :)
-
-> Thanks a lot for the time and effort you put into reviewing it!
-
-My pleasure :)
-
-Cheers,
-Benno
+>  rust/helpers/helpers.c |   3 +-
+>  rust/kernel/ptr.rs     | 241 ++++++++++++++++++++++++++++++++++++++++-
+>  3 files changed, 305 insertions(+), 4 deletions(-)
+>  create mode 100644 rust/helpers/fmt.c
+> 
+> diff --git a/rust/helpers/fmt.c b/rust/helpers/fmt.c
+> new file mode 100644
+> index 0000000000000..4ee716bbfe284
+> --- /dev/null
+> +++ b/rust/helpers/fmt.c
+> @@ -0,0 +1,65 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (C) 2018 - 2025 KylinSoft Co., Ltd. All rights reserved.
+> + * Copyright (C) 2018 - 2025 Ke Sun <sunke@kylinos.cn>
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/cred.h>
+> +#include <linux/capability.h>
+> +#include <linux/hardirq.h>
+> +#include <linux/printk.h>
+> +
+> +/*
+> + * Helper function for Rust to format a restricted pointer (%pK).
+> + *
+> + * This function determines what pointer value should be printed based on the
+> + * kptr_restrict sysctl setting:
+> + *
+> + * - kptr_restrict == 0: Returns the original pointer (will be hashed by caller)
+> + * - kptr_restrict == 1: Returns the original pointer if the current process has
+> + *                       CAP_SYSLOG and same euid/egid, NULL otherwise
+> + * - kptr_restrict >= 2: Always returns NULL
+> + *
+> + * Returns:
+> + *   - The original pointer if it should be printed (case 0 or case 1 with permission)
+> + *   - NULL if it should not be printed (no permission, IRQ context, or restrict >= 2)
+> + */
+> +const void *rust_helper_kptr_restrict_value(const void *ptr)
+> +{
+> +	switch (kptr_restrict) {
+> +	case 0:
+> +		/* Handle as %p - return original pointer for hashing */
+> +		return ptr;
+> +	case 1: {
+> +		const struct cred *cred;
+> +
+> +		/*
+> +		 * kptr_restrict==1 cannot be used in IRQ context because the
+> +		 * capability check would be meaningless (no process context).
+> +		 */
+> +		if (in_hardirq() || in_serving_softirq() || in_nmi())
+> +			return NULL;
+> +
+> +		/*
+> +		 * Only return the real pointer value if the current process has
+> +		 * CAP_SYSLOG and is running with the same credentials it started with.
+> +		 * This prevents privilege escalation attacks where a process opens a
+> +		 * file with %pK, then elevates privileges before reading it.
+> +		 */
+> +		cred = current_cred();
+> +		if (!has_capability_noaudit(current, CAP_SYSLOG) ||
+> +		    !uid_eq(cred->euid, cred->uid) ||
+> +		    !gid_eq(cred->egid, cred->gid))
+> +			return NULL;
+> +		break;
+> +	}
+> +	case 2:
+> +	default:
+> +		/* Always hide pointer values when kptr_restrict >= 2 */
+> +		return NULL;
+> +	}
+> +
+> +	return ptr;
+> +}
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 79c72762ad9c4..b6877fe8dafc0 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -27,8 +27,9 @@
+>  #include "dma.c"
+>  #include "drm.c"
+>  #include "err.c"
+> -#include "irq.c"
+> +#include "fmt.c"
+>  #include "fs.c"
+> +#include "irq.c"
+>  #include "io.c"
+>  #include "jump_label.c"
+>  #include "kunit.c"
+> diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
+> index e3893ed04049d..8b58221c2ec4b 100644
+> --- a/rust/kernel/ptr.rs
+> +++ b/rust/kernel/ptr.rs
+> @@ -1,11 +1,22 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  
+>  //! Types and functions to work with pointers and addresses.
+> +//!
+> +//! This module provides wrapper types for formatting kernel pointers that correspond to the
+> +//! C kernel's printk format specifiers `%p`, `%pK`, and `%px`.
+>  
+> -use core::mem::align_of;
+> -use core::num::NonZero;
+> +use core::{
+> +    fmt,
+> +    fmt::Pointer,
+> +    mem::align_of,
+> +    num::NonZero, //
+> +};
+>  
+> -use crate::build_assert;
+> +use crate::{
+> +    bindings,
+> +    build_assert,
+> +    ffi::c_void, //
+> +};
+>  
+>  /// Type representing an alignment, which is always a power of two.
+>  ///
+> @@ -225,3 +236,227 @@ fn align_up(self, alignment: Alignment) -> Option<Self> {
+>  }
+>  
+>  impl_alignable_uint!(u8, u16, u32, u64, usize);
+> +
+> +/// Placeholder string used when pointer hashing is not ready yet.
+> +const PTR_PLACEHOLDER: &str = if core::mem::size_of::<*const c_void>() == 8 {
+> +    "(____ptrval____)"
+> +} else {
+> +    "(ptrval)"
+> +};
+> +
+> +/// Macro to implement common methods for pointer wrapper types.
+> +macro_rules! impl_ptr_wrapper {
+> +    ($($name:ident),* $(,)?) => {
+> +        $(
+> +            impl $name {
+> +                /// Creates a new instance from a raw pointer.
+> +                #[inline]
+> +                pub fn from<T>(ptr: *const T) -> Self {
+> +                    Self(ptr.cast())
+> +                }
+> +
+> +                /// Creates a new instance from a mutable raw pointer.
+> +                #[inline]
+> +                pub fn from_mut<T>(ptr: *mut T) -> Self {
+> +                    Self(ptr.cast())
+> +                }
+> +
+> +                /// Returns the inner raw pointer.
+> +                #[inline]
+> +                pub fn as_ptr(&self) -> *const c_void {
+> +                    self.0
+> +                }
+> +            }
+> +
+> +            impl<T> From<*const T> for $name {
+> +                #[inline]
+> +                fn from(ptr: *const T) -> Self {
+> +                    Self::from(ptr)
+> +                }
+> +            }
+> +
+> +            impl<T> From<*mut T> for $name {
+> +                #[inline]
+> +                fn from(ptr: *mut T) -> Self {
+> +                    Self::from_mut(ptr)
+> +                }
+> +            }
+> +        )*
+> +    };
+> +}
+> +
+> +/// Helper function to hash a pointer and format it.
+> +///
+> +/// Returns `Ok(())` if the hash was successfully computed and formatted,
+> +/// or the placeholder string if hashing is not ready yet.
+> +fn format_hashed_ptr(ptr: *const c_void, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +    let mut hashval: crate::ffi::c_ulong = 0;
+> +    // SAFETY: We're calling the kernel's ptr_to_hashval function which handles
+> +    // hashing. This is safe as long as ptr is a valid pointer value.
+> +    let ret = unsafe { bindings::ptr_to_hashval(ptr, core::ptr::addr_of_mut!(hashval)) };
+> +
+> +    if ret != 0 {
+> +        // Hash not ready yet, print placeholder with formatting options applied
+> +        // Using `pad()` ensures width, alignment, and padding options are respected
+> +        return f.pad(PTR_PLACEHOLDER);
+> +    }
+> +
+> +    // Successfully got hash value, format it using Pointer::fmt to preserve
+> +    // formatting options (width, alignment, padding, etc.)
+> +    Pointer::fmt(&(hashval as *const c_void), f)
+> +}
+> +
+> +/// A pointer that will be hashed when printed (corresponds to `%p`).
+> +///
+> +/// This is the default behavior for kernel pointers - they are hashed to prevent
+> +/// leaking information about the kernel memory layout.
+> +///
+> +/// # Example
+> +///
+> +/// ```
+> +/// use kernel::{
+> +///     prelude::fmt,
+> +///     ptr::HashedPtr,
+> +///     str::CString, //
+> +/// };
+> +///
+> +/// let ptr = HashedPtr::from(0x12345678 as *const u8);
+> +/// pr_info!("Hashed pointer: {:016p}\n", ptr);
+> +///
+> +/// // Width option test
+> +/// let cstr = CString::try_from_fmt(fmt!("{:30p}", ptr))?;
+> +/// let width_30 = cstr.to_str()?;
+> +/// assert_eq!(width_30.len(), 30);
+> +/// # Ok::<(), kernel::error::Error>(())
+> +/// ```
+> +#[repr(transparent)]
+> +#[derive(Copy, Clone, Debug)]
+> +pub struct HashedPtr(*const c_void);
+> +
+> +impl fmt::Pointer for HashedPtr {
+> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +        // Handle NULL pointers - print them directly
+> +        if self.0.is_null() {
+> +            return Pointer::fmt(&self.0, f);
+> +        }
+> +
+> +        format_hashed_ptr(self.0, f)
+> +    }
+> +}
+> +
+> +/// A pointer that will be restricted based on `kptr_restrict` when printed (corresponds to `%pK`).
+> +///
+> +/// This is intended for use in procfs/sysfs files that are read by userspace.
+> +/// The behavior depends on the `kptr_restrict` sysctl setting.
+> +///
+> +/// # Example
+> +///
+> +/// ```
+> +/// use kernel::{
+> +///     prelude::fmt,
+> +///     ptr::RestrictedPtr,
+> +///     str::CString, //
+> +/// };
+> +///
+> +/// let ptr = RestrictedPtr::from(0x12345678 as *const u8);
+> +/// pr_info!("Restricted pointer: {:016p}\n", ptr);
+> +///
+> +/// // Width option test
+> +/// let cstr = CString::try_from_fmt(fmt!("{:30p}", ptr))?;
+> +/// let width_30 = cstr.to_str()?;
+> +/// assert_eq!(width_30.len(), 30);
+> +/// # Ok::<(), kernel::error::Error>(())
+> +/// ```
+> +#[repr(transparent)]
+> +#[derive(Copy, Clone, Debug)]
+> +pub struct RestrictedPtr(*const c_void);
+> +
+> +impl fmt::Pointer for RestrictedPtr {
+> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +        // Handle NULL pointers
+> +        if self.0.is_null() {
+> +            return Pointer::fmt(&self.0, f);
+> +        }
+> +
+> +        // Use kptr_restrict_value to handle all kptr_restrict cases.
+> +        // SAFETY: kptr_restrict_value handles capability checks and IRQ context.
+> +        // - Returns NULL if no permission, IRQ context, or kptr_restrict >= 2
+> +        // - Returns the original pointer if kptr_restrict == 0 (needs hashing)
+> +        // - Returns the original pointer if kptr_restrict == 1 with permission (print raw)
+> +        let restricted_ptr = unsafe { bindings::kptr_restrict_value(self.0) };
+> +
+> +        if restricted_ptr.is_null() {
+> +            // No permission, IRQ context, or kptr_restrict >= 2 - print 0
+> +            return Pointer::fmt(&core::ptr::null::<c_void>(), f);
+> +        }
+> +
+> +        // restricted_ptr is non-null, meaning we should print something.
+> +        // SAFETY: Reading kptr_restrict is safe as it's a kernel variable.
+> +        let restrict = unsafe { bindings::kptr_restrict };
+> +
+> +        if restrict == 0 {
+> +            // kptr_restrict == 0: hash the pointer (same as %p)
+> +            format_hashed_ptr(self.0, f)
+> +        } else {
+> +            // kptr_restrict == 1 with permission: print the raw pointer directly (like %px)
+> +            // This matches C behavior: pointer_string() prints the raw address
+> +            Pointer::fmt(&restricted_ptr, f)
+> +        }
+> +    }
+> +}
+> +
+> +/// A pointer that will be printed as its raw address (corresponds to `%px`).
+> +///
+> +/// **Warning**: This exposes the real kernel address and should only be used
+> +/// for debugging purposes. Consider using [`HashedPtr`] or [`RestrictedPtr`] instead.
+> +///
+> +/// # Example
+> +///
+> +/// ```
+> +/// use kernel::{
+> +///     prelude::fmt,
+> +///     ptr::RawPtr,
+> +///     str::CString, //
+> +/// };
+> +///
+> +/// let ptr = RawPtr::from(0x12345678 as *const u8);
+> +///
+> +/// // Basic formatting
+> +/// let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
+> +/// let formatted = cstr.to_str()?;
+> +/// assert_eq!(formatted, "0x12345678");
+> +///
+> +/// // Right align with zero padding, width 30
+> +/// let cstr = CString::try_from_fmt(fmt!("{:0>30p}", ptr))?;
+> +/// let right_zero = cstr.to_str()?;
+> +/// assert_eq!(right_zero, "000000000000000000000x12345678");
+> +///
+> +/// // Left align with zero padding, width 30
+> +/// let cstr = CString::try_from_fmt(fmt!("{:0<30p}", ptr))?;
+> +/// let left_zero = cstr.to_str()?;
+> +/// assert_eq!(left_zero, "0x1234567800000000000000000000");
+> +///
+> +/// // Center align with zero padding, width 30
+> +/// let cstr = CString::try_from_fmt(fmt!("{:0^30p}", ptr))?;
+> +/// let center_zero = cstr.to_str()?;
+> +/// assert_eq!(center_zero, "00000000000x123456780000000000");
+> +/// # Ok::<(), kernel::error::Error>(())
+> +/// ```
+> +#[repr(transparent)]
+> +#[derive(Copy, Clone, Debug)]
+> +pub struct RawPtr(*const c_void);
+> +
+> +impl fmt::Pointer for RawPtr {
+> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +        // Directly format the raw address - no hashing or restriction.
+> +        // This corresponds to %px behavior.
+> +        Pointer::fmt(&self.0, f)
+> +    }
+> +}
+> +
+> +// Implement common methods for all pointer wrapper types
+> +impl_ptr_wrapper!(
+> +    HashedPtr,
+> +    RawPtr,
+> +    RestrictedPtr, //
+> +);
+> -- 
+> 2.43.0
+> 
