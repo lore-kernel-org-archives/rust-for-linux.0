@@ -1,162 +1,106 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B96E3A1E96
-	for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 18:49:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766861363; cv=pass; b=EVNNyap4BBkRdsc1MYDhBB2yphkbLmipe6//mB4QAhn8jche58J60kbjn4Xm5iQxhK0liFu95VxuN9IzHZS0GM8V6ehvc9ce7X+9foZL1iNouTxLSM7FrFklTFpOFzKJT7ytQoJAYPD9/9SjXRZFyAhto4fpeFNl/N1fN58Qdgw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766861363; c=relaxed/simple;
-	bh=AmDTe6few5OR3BtblpOx3TeIkT4yzyikca9+E2cyh6A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oZ9/G35Oa1PTdYgohr6cYYLhCQPYYTDaZPB9EIhN1/i7hufanyynWY4sZEAbcX/1O/mFiR+AzNUGq7em8mk6ht3dmnGG/Oc93GCskaoURfugReHU386qhEm3JaFOmFu8VHLguX4+eu+aNlvXBtyQ25QAIcpaxosSxNkME52X9mM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3VHU3Rv+; arc=pass smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E96726290;
+	Sat, 27 Dec 2025 22:25:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766874332; cv=none; b=Y3pSKmX9P0pHqQOV+1+vPRvDDCZjYu/OG/Buw87L3L2gipXgORGXIp/zJM2vrL5PN/KGZ9pLs1L3W21Mjp3EPTBiLJcK4MyUmuBdcgrpBMLGLWENQJ6vWGC0a2uvdc31PXGQ2OqkChKDj7o7HKdqdh4v8zSYqj58mYdpEJeGwVw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766874332; c=relaxed/simple;
+	bh=ve418wM/XyEWbfmF9fZaylARcLvP8lDozBBpjRZ5o+8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=ILmPg+dVdHFp4bsEQqrJF2VdLAQ3ERYItp8d3ADFekKogemdNtoCU9xzoiqpjeuNokAEvnHEqBhIZAUYgTLLrKXVYMu0IUCf3P3oA8uYBTsqsOBopMzv3WVO06k1+rqsP1bFkoO/JZnh0tTvtud/6SAyCdpm4qTj6Ypfz/OThwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AyQvmqNv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3VHU3Rv+"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64b5b56d72fso67196a12.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 10:49:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1766861359; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FY0Ya5N+Jlnkw+dpqwzRMx+aA3wMhnEspvNmIT24nulhBESBOtBq+jR3Mxadl/VcBB
-         fBipSBUJM4PUafMe/Zspd3OiN3457MEVcKTvnpBB5gb8MxWKj/iqDKiDrG5I4t+gAfUu
-         22zG3P6NAtZrV62fNMK/fb8UYy0s0QIHFJPsczL+0Xn53kNVqr6MCQifRYsAoGVPq1Gy
-         PbNZMQ3/A3/LGReRvjVCmBzE7ixhnrs9jswm+dDFK6h+Ex/DUZNofcqLK1+6A+ZNj2su
-         QjwIMTiIytIt+STNKWavu+CcP83kr81p98rFu/w+RoPumLR5gWcPAWe37whopprYFvX2
-         YU8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JDsztgYUgjJcmEqac+DYH4C7PlDkvMV1sHquRdLYf0M=;
-        fh=OlVfFyKMBgltZfdS9kMptukMB3J4t0SWWazZSe71XzU=;
-        b=D/qd9aco2NcO2grsULxRKIMEV7NGOwrfVofMGl3rYVcE2G0ctg6R7OuPOXBhHQxIKt
-         VxoqyCqNse12yyJdXWqeHX/B1KejLKDOtWopg0OqFkQ/JVA+g66joRUsvg0ON2dxYt5s
-         hLswTMyNFlzx5WdiQfh3dbmse6krlJqSg0coYPFPpgvSMW7Lbmo/UqNtNVqWKlt7xGUY
-         p8M2HTaMCFuSB9wbTweZBwV9J7cEZ+aGmrtSraBM7Cr+EE6Vjwterk/9h84RJD7t4L9H
-         CscFhLxRbYmlG+6f0q2hd/dbArUQt+qHM9uLQYsC7rVgS4Sr4MXEGl3P81XBQFIBa91x
-         SZ+Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766861359; x=1767466159; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JDsztgYUgjJcmEqac+DYH4C7PlDkvMV1sHquRdLYf0M=;
-        b=3VHU3Rv+YJphCy0JiX7DKetIRBqZIceoDEXTKIbOxvho4PYVD5TMBAb9va6mMZB/EN
-         b238uRSSqfNrs21TcQMddmjT1KBWblbCyG5lSb10D/LwUHo6wpkdhNmefmZWFxg2NWbh
-         H/EpJwqWkWUmHcWSZZHPZd8JC+EbYQLFws8TdQlQK/RTUnVY9nTFGVojkIMazXpIF2t0
-         hlLJbzi2GEjtfWmTKWzXVB8glc/aycSa0o66IP+6n/45jeOhuGMgidZHdBl6ViSMj8Nn
-         +ncHruuHzQdVSAEvFNHAWXJXNYvREKBIW6nwBYCrerxQhoBOEuQNsklPnCjGcN6ZhDBH
-         oPZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766861359; x=1767466159;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JDsztgYUgjJcmEqac+DYH4C7PlDkvMV1sHquRdLYf0M=;
-        b=ariTYkGdjPgBbOta5vvhEwhCmX2ukWanrpOkHWYHE5McSCWzV0HfAvaoGFoQwXwCw1
-         gjGy6GE4b01d8KUdTLRPrVP6rH8Yja0rs6MUOPD+q+buqLZoubrjcXt/RDGAZhBbpg1Y
-         5KWD4l7g1V0hFxlQper2syZsYsw/xerjFOi06TFPzK05RWjXQ+pOqFD3gJ3KA8LbAvfr
-         WP1pLOZq6J/ydfL/k3BneXsXOf0T7HmGOHanC3S7GwrpZkA6dKGWIB3ExctnDHXpmG9J
-         u57kBm8PbolDXFRd6jqLZciZTKhLaTaerb3DIXOGLfzvBB5AiokTChc0MQBCMpsOT8ye
-         oF+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWCsSjHQF9KfIM+0qecWB6clmLud8788+Pu2Tu0rb/J+lbUOUfjIivbGjW6wJuabbf5WhUi1CmcE+SMRjeVgA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVsaXfJvNMGtwMla1x0NYiEvrokbO7SSRfw2+T/rjRAYmIwkVD
-	brtT7usdP43BhRqJpa8z8Pdkho0vvPniAZpKXQSQK586YTs+t9SOpyMmqVTE7zAVdNQHsXWTHj1
-	ko/kORJqfH8caqVYxQ62+J6SKi1FBh6fe5jh8znzT
-X-Gm-Gg: AY/fxX4BosIeO/fs6o22TXcxT8NDzNzBg8FBtzHTP+7Y13cKU8mWAe6uBDsaqS0KB/y
-	6IG67ozQ2ZBVSnBnLxjDP/Jaca+Rrr+6D96I6vy3ftPm0Pn9yy/Zg4iT92+QIMxtJb21LkFwKHE
-	HJ/J5FwNQ8PJvw92xkJootbrnVJtth3mrhKUTHPoNs1FuunnSKAXQSgAyGMzxBv2I8v1cH9wRUb
-	Lf5ZJmneiCa+bdbk3fJiQ48mSmVavHd6S46Ie6wmhHBwG+AplAW+fREUoZ4Q132Aim1KPPn+Wsu
-	w7j7zR1Au9ipeOSivR2JSQpfRP0C
-X-Google-Smtp-Source: AGHT+IHknqEKObpBKwXWuIjVwThSSHANym7/Cti4iDBC2xuxIBsC14RC4RbSlvh6JHADcGy6dF/JTHHPSpPkdNsCGDM=
-X-Received: by 2002:a05:6402:71a:b0:64b:2faa:d4e8 with SMTP id
- 4fb4d7f45d1cf-64de0e5a793mr60151a12.1.1766861359408; Sat, 27 Dec 2025
- 10:49:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AyQvmqNv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A6DC4CEF1;
+	Sat, 27 Dec 2025 22:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766874332;
+	bh=ve418wM/XyEWbfmF9fZaylARcLvP8lDozBBpjRZ5o+8=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=AyQvmqNvp7aFQkxu9SD9KvqD0VPsY4RmdEyFYtNitIJA85tSgEOywKmb0jorw0lxS
+	 IjpVlVP9LPMRay+Sec3vC3A2AkCG8ydTk+EL7v5/Rvbgy92vXOCxmp4AnxnUzsDgcO
+	 Jf3ipoz5wiJvSNAeLP2N8LtwbR9BJHnhNVa7YBuDEXNYGFjtgZzNmQMNNpuIk8XkgL
+	 Vr6b69aJIulzkcnfZIHt2KyLLUyA7pee51MsvXVSXYIskVTmpFlkET4Oo8zsg6feEb
+	 i+ZT0v0mPlqtqFG9/Erz5tLI9V2JGKahlDqs0C3ChjjcutYSaNv+wsN5C6CwRPVFDF
+	 UnjE7r2+m4c8Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251226-soc-bindings-v4-0-2c2fac08f820@google.com>
- <20251226-soc-bindings-v4-3-2c2fac08f820@google.com> <CAKBF=psoOa2S5J2Q6Euf_tDdBJHhGpFA9P4304vo9WgA8y71Fg@mail.gmail.com>
-In-Reply-To: <CAKBF=psoOa2S5J2Q6Euf_tDdBJHhGpFA9P4304vo9WgA8y71Fg@mail.gmail.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Sat, 27 Dec 2025 10:49:05 -0800
-X-Gm-Features: AQt7F2r0uzEQgAcKZB4DrYTLYkjNS3UM3_qM4cWnW43cPPSPvgd-E_545is1Bmw
-Message-ID: <CAGSQo00QVhDg_qMAwq+sW9y+nA0M-Zw+9zyPJpe99kbqrE1B3A@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] rust: Add SoC Driver Sample
-To: Kari Argillander <kari.argillander@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 27 Dec 2025 23:25:27 +0100
+Message-Id: <DF9COCLM7VEQ.11RH8SIO59PMU@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
+Subject: Re: [PATCH v4 1/4] rust: macros: add derive macro for `Into`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Jesung Yang" <y.j3ms.n@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20251225-try-from-into-macro-v4-0-4a563d597836@gmail.com>
+ <20251225-try-from-into-macro-v4-1-4a563d597836@gmail.com>
+ <DF7HDE1T2BOS.33WUHP49WWO1M@kernel.org>
+ <CA+tqQ4JPMg7CGq7YiN2EwzzQBC2grRE5OFgRQTws+xh8UbzqEw@mail.gmail.com>
+ <DF8QDONK951M.10NYLJ40UNNY1@kernel.org>
+ <CA+tqQ4Kyy1re209kjBvtJU037MEcv+jQzEt=E9CMS4d2iuFR5g@mail.gmail.com>
+In-Reply-To: <CA+tqQ4Kyy1re209kjBvtJU037MEcv+jQzEt=E9CMS4d2iuFR5g@mail.gmail.com>
 
-On Sat, Dec 27, 2025 at 7:53=E2=80=AFAM Kari Argillander
-<kari.argillander@gmail.com> wrote:
+On Sat Dec 27, 2025 at 11:45 AM CET, Jesung Yang wrote:
+> On Sat, Dec 27, 2025 at 1:57=E2=80=AFPM Benno Lossin <lossin@kernel.org> =
+wrote:
+>> On Fri Dec 26, 2025 at 10:36 AM CET, Jesung Yang wrote:
+>> > On Fri, Dec 26, 2025 at 2:40=E2=80=AFAM Benno Lossin <lossin@kernel.or=
+g> wrote:
+>> >> On Thu Dec 25, 2025 at 9:37 AM CET, Jesung Yang via B4 Relay wrote:
+>> >> > +    fn emit_overflow_assert(
+>> >> > +        enum_ident: &Ident,
+>> >> > +        variants: &[Ident],
+>> >> > +        repr_ty: &syn::Path,
+>> >> > +        input_ty: &ValidTy,
+>> >> > +    ) -> TokenStream {
+>> >>
+>> >> I feel like we should track this via traits rather than using a const
+>> >> assert. That approach will require & generate much less code.
+>> >
+>> > Sorry, but could you elaborate? A small example of what you have in
+>> > mind would help a lot.
+>>
+>> Oh yeah sorry, I had something different in mind compared to what I'll
+>> describe now, but it achieves the same thing without introducing new
+>> traits:
+>>
+>> We have two options:
+>> 1) We use `<input_ty as TryFrom<repr_ty>>::try_from` instead of writing
+>>    the `fits` function ourself.
+>> 2) We require `input_ty: From<repr_ty>`.
+>>
+>> The first option would still check every variant and should behave the
+>> same as your current code.
+>>
+>> Option 2 allows us to avoid the const altogether, but requires us to
+>> choose the smallest integer as the representation (and if we want to be
+>> able to use both `i8` and `u8`, we can't). I missed this before, so
+>> using option 1 might be the only way to allow conversions of this kind.
 >
-> On Fri, 26 Dec 2025 at 22:18, Matthew Maurer <mmaurer@google.com> wrote:
->
-> > +    fn probe(
-> > +        pdev: &platform::Device<Core>,
-> > +        _info: Option<&Self::IdInfo>,
-> > +    ) -> impl PinInit<Self, Error> {
-> > +        let dev =3D pdev.as_ref();
-> > +
-> > +        dev_dbg!(dev, "Probe Rust SoC driver sample.\n");
-> > +
-> > +        let pdev =3D pdev.into();
-> > +        pin_init_scope(move || {
-> > +            let machine =3D CString::try_from(c"My cool ACME15 dev boa=
-rd")?;
-> > +            let family =3D CString::try_from(c"ACME")?;
-> > +            let revision =3D CString::try_from(c"1.2")?;
-> > +            let serial_number =3D CString::try_from(c"12345")?;
-> > +            let soc_id =3D CString::try_from(c"ACME15")?;
-> > +
-> > +            let attr =3D soc::Attributes {
-> > +                machine: Some(machine),
-> > +                family: Some(family),
-> > +                revision: Some(revision),
-> > +                serial_number: Some(serial_number),
-> > +                soc_id: Some(soc_id),
-> > +            };
->
-> To me it seems little bit awkward that all needs to be CStrings. Maybe so=
-mething
-> like this could be used (basically cow)
->
-> ```rust
-> pub enum AttrStr {
->     Static(&'static CStr),
->     Owned(CString),
->     None,
-> }
-> ```
->
-> This will also take out Option with same time. Then some nice ergonomic w=
-ay
-> to use this. This is suggestion and I have nothing to do with soc layer.
+> AFAIK, `<input_ty as TryFrom<repr_ty>>::try_from` cannot be called in
+> const contexts without `#![feature(const_trait_impl, const_convert)]`.
+> I assume we want to keep this validation at compile-time? If so, we
+> might need to stick with the custom `fits` check for now. Please let me
+> know if I misunderstood you.
 
-IMO something like this should not be a SoC-specific special type.
-Feel free to propose a `CowCStr` in `kernel::str`, or adding the more
-general `Cow` and appropriate trait definitions to `kernel::alloc`,
-and we could modify the API in the future. Basically, this seems like
-a suggestion for a new vocabulary type rather than something for SoC.
+Oh yeah that doesn't work (yet) :(
 
-We could technically also do a many-parameter'd struct and put `:
-Deref<Target=3DCStr>` bounds on everything, but putting 6 type
-parameters on something, which would then need explicit resolution
-when `None` was used, seems potentially worse ergonomically.
+I'll take another look at the function itself then.
 
->
->     Argillander
+Cheers,
+Benno
