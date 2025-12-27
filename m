@@ -1,62 +1,64 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6334E275AFD
-	for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 12:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E7B275AFD
+	for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 12:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766836827; cv=none; b=piqmu7OAHfBi4hTI4+5eqd6WCTRn0rhJsEA+c79PPLxHnRbB0crtIB0GfUOFH7G5/6t7GDlalSBLVnR9OhO5rnoQObZZY1sGRPHkPWJcATaPP+nJaDvEePe3cyxk9QAw/D05N4k4Nbz50BalMpsEFcx7oPgH74TeRR/+6qdGRFI=
+	t=1766836830; cv=none; b=ohlF7V01G8wFgEboHj0UNaxs7EPgFrjgMpMZIIJzNWmR5bApipbe2XZTpBd2biJirGHCpKaLeMp8s6wk8lVy8N/4759W4RBIv733SHlTJpSjqX08DFMFNxv9df2tGlYdupD3uDKw1J29nxyhLJx91YEglZrMLd4cLlc8u0ki3bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766836827; c=relaxed/simple;
-	bh=kQZdT8uUPHSe/dzSYVg9uu1G8iQ4QIfebKVRvfCtR3o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P/BM3EfxTWzRMHhbgQTu27aJaqzdEm5gFH+H9A+jBZSkFyLeMp50IE+PGhANxKIV8VTMwG+cz8Ht9LkMEFxwA/X7IE27jwbMiCRBVjLM1lueW99/cPefTNYegODqoN+8slnSG/GUL3YPVSRWksh0N6Hy2q3IlGwGxnwZawUO6Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hwuPjEhw; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1766836830; c=relaxed/simple;
+	bh=AFWGLbkRWJTV3azRGHJBzfft5t4VYcRGpJrctz2a3CM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TDBVEuWzxfM8pptgErlk07d6lMVoaBhjPu90/lruJBVn8It0NCUjWYpYtKwnnBoKWg42m1C9IWV+ZOxR5Z8EQ3Bhh+P7v48u/JD8J2NKmCZsHQFArBuUMeRlMnzwLKu4SGL1uRAZBezNRUnFgmu188riV1aNB/rOtvTmVzb6ooE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QDVdfMrT; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hwuPjEhw"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29f0f875bc5so114636965ad.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 04:00:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QDVdfMrT"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a0c09bb78cso57493385ad.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 27 Dec 2025 04:00:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766836826; x=1767441626; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GqLeAfU9Xo+cqKfof/vWwBJRWGkSTKrPAXLP8+Y6zB4=;
-        b=hwuPjEhw2K4B7j3nKgh10z2pLI3pZH+0xmJ+DB1SLcbOfj88a/zjKGarQi3Oe72n9s
-         tgp4fnSXlHtsYLH396UOP2TJqmSEFV24s5PbcRdIPvli8w9SNd36Y+pe2iE/AZlpX9Lb
-         NUdobbqg33OCOL4EsDbxWu7s7Pp9RiUwQ4x8OMvWVQXE2i3AolivNYcTE3JswDxkgfvc
-         JdTckNl5/ch7C6KFndwfysAVGcpIETbKMAzE6ClxpnIcJnqK5HFowthZ4kKD5T1dODLG
-         Qwwdo19oBxrnydTYqXcU8p1AcMVKo+OdKZb8Ve1JpDP/Hk0g1T6yeump1Q8/SBjOgm5w
-         uL2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766836826; x=1767441626;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1766836829; x=1767441629; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GqLeAfU9Xo+cqKfof/vWwBJRWGkSTKrPAXLP8+Y6zB4=;
-        b=O+hb5m8QE0vr46BBvv6khPyarSsXhUBjnitbhxDzXGm6LUv5uLshAHJVMUo1usnHhm
-         dj6FXkmYbx9bCoeuAZPVTYXOtCZMFamRG0m0HDUnirXfs8nFzHxUcLJz1KF/zBzl7Yq/
-         60SNIihvzq8nzo//LHQ0RTaYPaSlJha7JvhYGIS4cwGrMlpD7DM68ln2zutuzL4xYP1f
-         SK+8usvZCcRoQqFiO1Ar3YGdb7T5clEp8KVvhgVk92gBT06HyS+CkfaHJlE/N4JvX8ud
-         RE4/OELTB5Jqra/XJT+m7xorbK7bPW0C3ooLx/Nif8IgVcGqeSQTRdmePgUEF7fArkTv
-         XZdA==
-X-Forwarded-Encrypted: i=1; AJvYcCXM38wmde/Mwer2Mg3828890PWzV9UKktZ/aKlcsQgH2yoGF2nGRQFWUQYKYscL92X1vC1urYnqz3/YMwbJpQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5sLNO3Y84tiGY0f1fZFL3wgvLoHfCb1M+7LNCLVdIAbXdwLjq
-	jXhdTPThLI5SzSctUXXVfGmfDVkPY2lyq9uDFGXZ0TZGQ6IkKBVqrI3v
-X-Gm-Gg: AY/fxX7R10w+nWmpXFH2gS/PxHM9Zs/JxxS+lPL9I8wvLLmADSQES0f/nS3yKt0RkRs
-	xMasP9W8rgASSKTiAvaEQp2nsAt/l3/lhQLeu+uBvKgHCqIthfTH45fixENVPV2HkEkxtPHC++T
-	BIX4fkMRc/FeCNE50XwSNxZgKWaY/qPQWeyxKBs+EG33+Rxq7N3FTHxpt5O1Jxr03WO0ZkjnE/+
-	gLCzNZyaDO38LLodQJAyygD39zY3CtfH36Xs+MkVyC/yTs+EiZ3XNT5yJIkv52u2ktzKW9ZPDAJ
-	z7y9IjhKf3WeK+wuioEmxZcKr2N03anlDK1jVP871fxIrO9l4XUbJQygNCVnKvifMCGGrsxAB6L
-	TPK8aub6/3Pwqpw6uEz2a02HbM6G5jMmMxd+a+/ecx/+qx+sZ4PKHquXIO65jfHZosBv4vRhEjB
-	JkR6GoLX/ZPRM3fslItHpSrsvqWYEudlJxAizzD9lNNVMRqNE4fm66Q4TzWij3hQ==
-X-Google-Smtp-Source: AGHT+IFGUTcorGykjnyxafmjxJwRXcwp+7UqaNbZgZ5ZtGZ4+MIvTAbGHFIfiyLgwMxAjhTe0yR1UA==
-X-Received: by 2002:a17:903:2445:b0:2a0:d629:903c with SMTP id d9443c01a7336-2a2f27365edmr265642305ad.30.1766836825413;
-        Sat, 27 Dec 2025 04:00:25 -0800 (PST)
+        bh=vw6SY9UStiOcgMEQgkV7a5z9GXrjOJJZqWGx3Libi+o=;
+        b=QDVdfMrTnpfz9UVO66oTQesaV/KAcDnr/p7vxAiZbqDt+JO5xyV8Ah+NCEq/MnnoSK
+         +j2VWI4RkLwj5QakSZY6iCpCvnC2IgRoxPJ675X6vkVD1+NOWHXTI/7BKjvAMg0tETVj
+         Mn36t8Y8R+HKt1Ec25GphnL+ZwdSNLB7cIGzl167Jg5mIfjmYi8ps1BFIcMu+786qWdE
+         opwaGMGk15MO9N9oo1FLocoCiW7cgqZfNC6N4yaSLl0C2U/CFXoREcrTTuE9YcPtUJga
+         N8jufh8uGuA5Bb32GJLwgpWi48pjCzIjk4ThQAAcpEVulWDlXa/G3fG1AOPRtGF4C+bl
+         NPJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766836829; x=1767441629;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vw6SY9UStiOcgMEQgkV7a5z9GXrjOJJZqWGx3Libi+o=;
+        b=S71sf2qDVIbg8FKmiZBDh/K5q0b4zeY2ZcjxLOH/Tuh2Cg4QutJz54dikWlH1C2vwL
+         lv156HN0+/Qvt/f6HLpmCcIGAef8a1Pesi+Zhc5xKdBq78+M96Xi3gtlevqH0ggEV6OA
+         FiXvHYDet/Hgi0UZPVzw9Dcwt/cOXLrguPxCLIgPoVJtwyG4E3ERjCK68T2XbSAzUtUv
+         Pn6MjuOHD5Yq3ROA1SLJ8I9VAl5BqNY0PmLATkBQtgJR6s5ig3+N/ErhchfuNg/iZk1b
+         cUm/JJB8/nK3U2p846h9qCAk4myGUsq5ba7Y//q0d0GlQtROjifh6AlJXUuWtdK6MnBZ
+         tH3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVu9drhXgFzssqSFfJgdk1SzwAjAAWIRfyY53MGNqU3pniq19nunpx2nr1FNLMK9iYSOhPBZNEUFn/M7Dqaqw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6GRyjo+YBpJbRjuiNMz4A/Vu3B5KZsyh10biFtcdQbq8h12LK
+	qA+O9zJGezXXf8JA9+43AEsPdkucu3YVjmuJ4APccQBPcT/OPPS1vgsl
+X-Gm-Gg: AY/fxX6w9rSfnDKnaOojadFopRdJiEiQSKNWzNXrxWXd0l+dblgANcrlEab7bj5z7cL
+	OOEkgU3cNU2RiB+w8TNsMU16rgrLld4VVLR87WIH04X2uFfMuhsK/ETcDVarmb+/ewQaTUMTiZq
+	0xvx1Ssa120FCijW75d/tYOsXtr7VBOLfl+Y9mcBdiEjkjmbLYL8BpBhcwehvscrbLTrX//jwQv
+	5NBSVQMOjHhUwq31lSzfG4T6UNGtfr0HNGae5OHfZF8RXSg8KezBQ0/aZuTKg3gI3QEIESg0WZG
+	ACjfsXo3rrEpfCHoDoaWHwLqDSWCk82HRxztsA0xsKt2y5vZO+4iOg6xM8DBwZhoipUn1Yfy0xZ
+	LBbRnEsYxaFzvbpABjveQFyuDtKAfF9lTVLydLBL3jFELRRZHWiA+sNv2oSlPw2XCOU9Id9gONQ
+	4OHNTGz/e2vDbT/o8j774s8vExrHvOSOWXKqXGpFua6UebUfYhNHuGffbmdsPRcMpqJrUmNJ92
+X-Google-Smtp-Source: AGHT+IET3e/1gpTZXe2/wzXT9fMbbdgZ0Aaw4yoLIf24Lza1zTnz6HFsZfyl5jtmfvWULJUEe0mNFA==
+X-Received: by 2002:a17:902:f70d:b0:2a0:fb1c:144e with SMTP id d9443c01a7336-2a2caab67afmr304760695ad.7.1766836828577;
+        Sat, 27 Dec 2025 04:00:28 -0800 (PST)
 Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d4cbcfsm231033165ad.50.2025.12.27.04.00.22
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d4cbcfsm231033165ad.50.2025.12.27.04.00.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Dec 2025 04:00:24 -0800 (PST)
+        Sat, 27 Dec 2025 04:00:28 -0800 (PST)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: boqun.feng@gmail.com,
 	ojeda@kernel.org
@@ -70,10 +72,12 @@ Cc: a.hindborg@kernel.org,
 	acourbot@nvidia.com,
 	rust-for-linux@vger.kernel.org,
 	linux-arch@vger.kernel.org
-Subject: [PATCH v1 0/4] rust: Add i8/i16 atomic try_cmpxchg helpers
-Date: Sat, 27 Dec 2025 20:59:47 +0900
-Message-ID: <20251227115951.1424458-1-fujita.tomonori@gmail.com>
+Subject: [PATCH v1 1/4] rust: helpers: Add i8/i16 atomic try_cmpxchg helpers
+Date: Sat, 27 Dec 2025 20:59:48 +0900
+Message-ID: <20251227115951.1424458-2-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251227115951.1424458-1-fujita.tomonori@gmail.com>
+References: <20251227115951.1424458-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -82,34 +86,43 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-This series adds Rust helpers for atomic try_cmpxchg on i8/i16 with
-full, acquire, release, and relaxed orderings in preparation for
-supporting Rust-side cmpxchg on those types.
+Add i8/i16 atomic try_cmpxchg helpers that call raw_try_cmpxchg()
+macro implementing atomic try_cmpxchg using architecture-specific
+instructions.
 
-Rust atomic cmpxchg is implemented on top of the kernel C APIs,
-try_cmpxchg.
+x86_64 implements try_cmpxchg() with full ordering.
 
-On architectures that support Rust today, the kernel already provides
-try_cmpxchg implementations that work for i8/i16, using
-architecture-specific instructions.
+On other architectures, try_cmpxchg() isn't implemented; so calling
+try_cmpxchg() ends up using cmpxchg() implementation.
 
-Tested on QEMU (86_64, arm64, riscv, loongarch, and armv7).
+loongarch, arm64, and riscv implement cmpxchg with full ordering.
 
-Follow-up patches will add Rust users of these helpers.
+arm v7 only supports relaxed-ordering cmpxchg; __atomic_op_fence()
+macro is used to add barriers before and after the relaxed cmpxchg.
 
-Boqun, feel free to drop the ordering-related notes from each patch.
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/helpers/atomic_ext.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-FUJITA Tomonori (4):
-  rust: helpers: Add i8/i16 atomic try_cmpxchg helpers
-  rust: helpers: Add i8/i16 atomic try_cmpxchg_acquire helpers
-  rust: helpers: Add i8/i16 atomic try_cmpxchg_release helpers
-  rust: helpers: Add i8/i16 atomic try_cmpxchg_relaxed helpers
-
- rust/helpers/atomic_ext.c | 40 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
-
-
-base-commit: 30f5de001fb2ffacdb61e82c8626cae2d68b4d03
+diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
+index 089f31bc8de8..9d62f659c8d2 100644
+--- a/rust/helpers/atomic_ext.c
++++ b/rust/helpers/atomic_ext.c
+@@ -90,3 +90,13 @@ __rust_helper s16 rust_helper_atomic_i16_xchg_relaxed(s16 *ptr, s16 new)
+ {
+ 	return raw_xchg_relaxed(ptr, new);
+ }
++
++__rust_helper bool rust_helper_atomic_i8_try_cmpxchg(s8 *ptr, s8 *old, s8 new)
++{
++	return raw_try_cmpxchg(ptr, old, new);
++}
++
++__rust_helper bool rust_helper_atomic_i16_try_cmpxchg(s16 *ptr, s16 *old, s16 new)
++{
++	return raw_try_cmpxchg(ptr, old, new);
++}
 -- 
 2.43.0
 
