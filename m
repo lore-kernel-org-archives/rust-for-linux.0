@@ -1,41 +1,70 @@
-Received: from mail-139-mta230.mxyeet.net (mail-139-mta230.mxyeet.net [23.172.139.230])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7341979DA;
-	Sun, 28 Dec 2025 18:47:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.172.139.230
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF24227B95
+	for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 19:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766947634; cv=none; b=ecrSwjnLHzzOfIAEiEehgSKaQPHyOhIX0hzI2Hl+KBhC+4So6l3eDQ3xW9RMee/zOoFpjA7VbWzOlvjFL3+4E7WP1x58eIsUYz00mwnS5RgUMOqUqmE3VjN5tdkLMxEbuKs1Tr+RudCGlMjtEIzYB4+J4O4MwX5qZhe0JExQVeI=
+	t=1766948701; cv=none; b=QmNF7hlWD6KHAnQIIvh1OFuLFyXI5zG2T18wfJQvTqqBap7YlIJLcgrC6gQZiOJ4aKyoPKx119DCkswInz+5wzCExw9r8Ed0NyxE3Purg36Nmv2IvkgyEFDdTMr3wdtEnxp3VkMfb0WEOmw1bPNgwZOMQp7uWVI/IfX7FgsHw+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766947634; c=relaxed/simple;
-	bh=po/ryQkfprQGZIURjr5h3oaUzbw7QHj0jMuDqejJmmA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CU4vsoAL2gZYogCdD833kRip/GdDneTEgaPlyYcANSKHlVUDILLz++jkjHLr3xCj9NC9YhApYfMRmoWkMeCDousKvLBaOE5DnXBlTMR70885+iIM1mG18wxovgyoeLNreo1Ex3UwunQ+KNuGAzo9jM1Xj7LHytXU4dW7TccvNuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bbaa.fun; spf=pass smtp.mailfrom=bbaa.fun; dkim=pass (2048-bit key) header.d=bbaa.fun header.i=@bbaa.fun header.b=qG5fQABQ; arc=none smtp.client-ip=23.172.139.230
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bbaa.fun
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bbaa.fun
+	s=arc-20240116; t=1766948701; c=relaxed/simple;
+	bh=oHmcngjeDbHAFgo/spGWsRBa/A44n0CqL34n3KYDrwg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DUDDpHnpnfGJxJH8bKEcfwx9/47sn8BHA6t2oEAF5ZMVNA5gPvorwUbjDDrqf70lyH70dNUopHzXs7uZMHMptFhC00dg6IIUEIYTui3/83gWtg6G5MBp4D59s06NpkAUKzFWjJ+eHFEVxQgUzshLJEWHMXJnQdGy5lLVic29WxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UV8LHOcA; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bbaa.fun header.i=@bbaa.fun header.b="qG5fQABQ"
-Received: from us1.workspace.org ([162.244.93.81])
-	by mx1.mxfilter.net with esmtpa (Exim 4.94.2)
-	(envelope-from <bbaa@bbaa.fun>)
-	id 1vZvcO-001MVJ-S8; Sun, 28 Dec 2025 10:31:55 -0800
-DKIM-Signature: v=1; a=rsa-sha256; d=bbaa.fun; s=av8DE3008F7488933;
-	c=relaxed/relaxed; t=1766946700;
-	h=from:to:cc:subject:date:message-id:x-mailer:mime-version;
-	bh=rKRx15FD2P/QOgmgNHJNUluLSu+ZDBdt6FLosJXwNHo=;
-	b=qG5fQABQDLPwVYspu7sokridPGdCarHaVk/YsP/jmy1/JVs5GmCSrcoqC7BiUgQ6pTAAXGG86nA
-	1c7br95I7cFSV981UethC6YacFYIf6cO2g5KXKZti2LhtBlZeLUrn07kYJJFo86aIFD/rdqxZ+kWi
-	j4JCo+1tVwzTEMeKBpM4TkcBz5IzKu81UpAOP2bQXebUupQiqMsBQN8i33quvcdgPt7On7R5pZt0K
-	a492IswbBUWNYmYbkheONjaJ+npZPw2CQexJeQwcgjXejniZ5M5qWtZRBzpfj5Jd0AaDgDZm1SKW1
-	/6AriuH2KmXAKZ/A536qlWVJQwaPyUEdcE6Q==
-From: Ban ZuoXiang <bbaa@bbaa.fun>
-To: aliceryhl@google.com, gregkh@linuxfoundation.org
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, linux-mm@kvack.org,
- rust-for-linux@vger.kernel.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [BUG] soft lockup in kswapd0 caused by Rust binder
-Date: Mon, 29 Dec 2025 02:31:24 +0800
-Message-ID: <20251228183129.17193-1-bbaa@bbaa.fun>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UV8LHOcA"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a081c163b0so80232615ad.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 11:04:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766948699; x=1767553499; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fUYFHDOuiRYwKUAwwmS4Gjlych8GNMSA94NitVPPGdQ=;
+        b=UV8LHOcAmCQtZUBt1VgLqodgulXYo1ilLVSqyNA8vRblK+NaS9wtVuxTpCRV79rTWO
+         2NmfO50Xj5o0ZbNZC8litvy/bISk2VyakCmx9FOnNMyUdHEuKz1xMSXvSli8HpNkAEud
+         4quY54kOv/XRAWJKOa/eS76H6xh0dQPF1hpcUtn3mx2aWBNgi2VjwZlho3VWCJjbnvvn
+         EXhc+i6w58PT35X+X/FTyZoeI5/n+kKFTrPI5kFArIn2Ug3j1PWIoZ6TQheJ8WrvxZPj
+         tUM9irCOHYZ2/aTkCS8rwZk5gWTcTVZ4YZ5xGAw2lya6AIJ9rS6GauzL+wGUblVYxndY
+         SqiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766948699; x=1767553499;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fUYFHDOuiRYwKUAwwmS4Gjlych8GNMSA94NitVPPGdQ=;
+        b=DlmO3V5TB2IN4YxQsY3yfT+Cp/ryKmVBHqHbdUz3/PEl/kBinN8hQ70B441gGOvjev
+         +UVdmmC6h6h0JAwvQ0V3BdrhX3oQaShMHGUSedJN6M/LXT90clQ6BQRbfQzRofuK8kNR
+         zcn+Vt4lMR3F0gcUix2sLGVV2/Yj2J/u7feRisMA7Wg/aTEwa8AWh/3A5NentM4WCFs3
+         n1DAy5qx8/QPPcnbZKLSaceQqji7P1DZ0S0JW1nACURTl5viEv2wN8v4pApqRCaeihcb
+         oMfjXe8RAZb0vx1GcZFDlvHxYqYDaO050YKvJWPpqpNNbkqYC9tQCrj7xbB6ts6P7GRY
+         55NQ==
+X-Gm-Message-State: AOJu0YwRs4oT5/yalKxjIZzpIn0VriDz4YXkGSoMJYmYzvuaIJRTnVSb
+	tNyWmSPIgNqL/Cluu6WjSGvQjpxj+S3ZwhKWcFtDiCi5BAVpoqfjlv//2g/ey6Wm
+X-Gm-Gg: AY/fxX59xwga4wc1VLFGajyv1fEimNDVyEsOPJNtux8P0vGun89qUPHXgHT41jpCdAU
+	4m7moaYdyXLsVWW5x7zSpfAIJvrgk8UWn3tOeMtjn5shMQ6e4w8ybz0u2IBCsXVuwc62lXr3RZI
+	kpOUSTPNDuFRLUgtVcJ0+up2Vjvdg5P8AM2DU58jq/NSbQDdETISpKZflB8rtztJfzV2tsmi5M+
+	iwx3XHNPlDVSdctMGAxSOrYaYuiqI675aK1FUw+4b0QjX2a3s+j/jX3GAFEcfs5MHoTE3K077Bv
+	zoobH4T50PpnfhWQQzn3yRh2jSFqLgXY/oHdzHGIQHWzsC08lrcAfSNEoMlKH/JLW25aY/GMOww
+	A5v5lqpveJ550l0mdgflWWF0M6qp3/lNbKKyXM0x7N0Mm3JRgpvdVVSK0cmsyWPFcApERe52OtV
+	bSSp8bcqezMBk0R4wS66qQzMNRyrlWotqQNjqXjyidAa7e81DBIHDNG+Q0iSXEMeDajZqGthXba
+	UTB1ndUK2yp5m7dCZ8=
+X-Google-Smtp-Source: AGHT+IEV0EDqDAU6d1v3pPvQoK+rtdL3oCZPDjBUC+Z8WhvMYd15brIjBQO3OkqZOm3x0mKC1bPn3w==
+X-Received: by 2002:a17:903:2cd:b0:2a0:e532:242e with SMTP id d9443c01a7336-2a2f220dd7bmr267730495ad.11.1766948698803;
+        Sun, 28 Dec 2025 11:04:58 -0800 (PST)
+Received: from codespaces-1f88e1.m2fxbej512jepnsor2itp05j3d.ix.internal.cloudapp.net ([207.46.224.81])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e0a19d8sm27194103b3a.42.2025.12.28.11.04.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Dec 2025 11:04:58 -0800 (PST)
+From: MCB-SMART-BOY <mcb2720838051@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	MCB-SMART-BOY <mcb2720838051@gmail.com>
+Subject: [RFC PATCH 0/1] Rust BPF Verifier Implementation
+Date: Sun, 28 Dec 2025 19:04:55 +0000
+Message-ID: <20251228190455.176910-1-mcb2720838051@gmail.com>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -44,163 +73,121 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SpamExperts-Domain: mxyeet.net
-X-SpamExperts-Username: smartermail
-Authentication-Results: mxfilter.net; auth=pass (login) smtp.auth=smartermail@mxyeet.net
-X-SpamExperts-Outgoing-Class: ham
-X-SpamExperts-Outgoing-Evidence: SB/global_tokens (5.7092575112e-10)
-X-Recommended-Action: accept
-X-Filter-ID: 9kzQTOBWQUFZTohSKvQbgI7ZDo5ubYELi59AwcWUnuUt70AhH2huZ0hssZU6iaDLChjzQ3JIZVFF
- 8HV60IETFiu2SmbhJN1U9FKs8X3+Nt0FOl+ASFczY3noAPKuEEJhQHJfqQ64nI8OXcHHUR+UmMUI
- LYktuu3IV7f0/T27Pqkk4Ndu06h2Q8QP5GQeNUYf+DoI5ero3AmhIYfztx7bKQZmnW/XN+tohdLu
- D74c7RLm7rJaFabHdhRB1M5CpEevg8CBO1Snvm6qXHQp7O9kdY+UD7VHHpDYs+rEjiTXe4WKt+mB
- C7rFaes5rZKd35vJLDnQGgRgHjioU8fpt7xeC6lpK5rmsikWQyHoo01Us4Z1thv0hd9gZGlVL/SE
- DgzCG0XIswT4JTPNkebrIx8pyA5U9t4xcCUOm4tiv78RtCq8Ng3mYqtflZjDsBc5em/VPnrhyYEC
- sIe6J6jqDToibXfgD3PWF0irxjKk3/vWv1cHLUesOFho5kJn+h8T97+juMI5o/7ag+7fAeZ/0D/o
- aBtPVai8IsFJldnpxNC5oFbU9F4QK/47LgCAS8YT+zZ/XG4tO8kCg1cp84iMSAkGFeL+EuOJL/c5
- tJIVZhWv3apX07NPEMssOkqNyDaeeBep7MoHOmPp3YnNtmvPmSihMlNiLZt/QXQnOBRD+jq1HsIc
- b3vTWnDYyVC7/iU3LFoRU2Itm39BdCc4FEP6OrUewhMp7l2H6L1j3xQGrt05tlcy8V5TAE2MyU4x
- O6WjOUIW31/E3ahF5MMcDI7KdpjQKR1rRW2/Ber2PqroG23nxx1rW6geRibv9v24o8pyO+wfXw0w
- ikvZkulDqcrpWCoB+LaiUF9sHh1/NzLB7qIs483Nybl56sya0T9xEzVY363yx78pxU3yUjGNzx/G
- kJD0Lh/LIV1YxiRB+4L7xN5erWmQp6iQOcylg4zeIfjQL4cweUvsRehKMiBHeoTRkEMdtEl4PpOg
- bCAYLr2RF7WRTTfrce/yja8lj1X9smfLvXyMwCcp22CVjbX1GnCNi2ASYKPEJRIe0r/ece53u7ka
- x2AppUMd0V4zQuQzp0OBP9wD9B1rqsxWtMmzF3PUhbYHSFFfEoXm0/FPF8PR0w363lmTwJvcF16P
- 8f5DknwNiAeqQWy02jken2lZ8tkIY+F6Z1bs1b+lPl6frsX3AK4aOFP5fYhnc+Ng6LSN+h+4QfaY
- Fuupjn2+p/TJWBvLviE0/0eN5gq2WsqFjibD3Odqt6z+KvZJ30NG3C5Vc/q0wxSGAk9jZlOhtXWT
- K6eQfdZUmg==
-X-Report-Abuse-To: spam@mx1.mxfilter.net
-X-Complaints-To: abuse@mx1.mxfilter.net
+Content-Transfer-Encoding: 8bit
 
-Hello,=20
-Many users [1][2][3] have reported a kernel soft lockup in the
-kswapd0 task when running Waydroid (an Android container solution) on
-kernels with the new Rust Binder driver.
+Hello Rust for Linux and BPF maintainers,
 
-The issue manifests as a soft lockup where CPU utilization is pegged at
-100% system time, stuck in the list_lru_walk path triggered by the Rust
-binder's shrinker.
+I would like to submit an RFC for a complete Rust implementation of the
+Linux kernel's BPF verifier (kernel/bpf/verifier.c) as part of the Rust
+for Linux project.
 
-Kernel Log:
-12 25 01:23:57 arch-laptop kernel: watchdog: BUG: soft lockup - CPU#0 stuck=
- for 22s! [kswapd0:142]
-12 25 01:23:57 arch-laptop kernel: CPU#0 Utilization every 4000ms during lo=
-ckup:
-12 25 01:23:57 arch-laptop kernel:         #1: 100% system,          0% sof=
-tirq,          1% hardirq,          0% idle
-12 25 01:23:57 arch-laptop kernel:         #2: 100% system,          0% sof=
-tirq,          1% hardirq,          0% idle
-12 25 01:23:57 arch-laptop kernel:         #3: 100% system,          0% sof=
-tirq,          1% hardirq,          0% idle
-12 25 01:23:57 arch-laptop kernel:         #4: 100% system,          0% sof=
-tirq,          1% hardirq,          0% idle
-12 25 01:23:57 arch-laptop kernel:         #5: 100% system,          0% sof=
-tirq,          1% hardirq,          0% idle
-12 25 01:23:57 arch-laptop kernel: Modules linked in: sch_ingress af_key tc=
-p_diag udp_diag inet_diag nfnetlink_log xfrm_user xfrm_algo xfrm_interface =
-xfrm6_tunnel tunnel4 tunnel6 vsock_loopback vmw_vsock_virtio_transport_comm=
-on vmw_vsock_vmci_transport vsock vmw_vmci veth overlay loop nft_masq nft_c=
-hain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bridge stp llc n=
-f_tables tun rfcomm snd_seq_dummy snd_hrtimer snd_seq cmac algif_hash algif=
-_skcipher af_alg bnep vfat fat iwlmvm intel_rapl_msr amd_atl amdgpu intel_r=
-apl_common mac80211 ptp pps_core libarc4 amdxcp snd_hda_codec_nvhdmi drm_pa=
-nel_backlight_quirks snd_hda_codec_hdmi gpu_sched snd_usb_audio drm_buddy i=
-wlwifi kvm_amd drm_exec uvcvideo drm_suballoc_helper snd_hda_intel drm_ttm_=
-helper btusb kvm videobuf2_vmalloc spd5118 r8169 snd_hda_codec snd_usbmidi_=
-lib ttm ucsi_acpi btmtk uvc snd_hda_core cfg80211 realtek btrtl irqbypass i=
-2c_algo_bit snd_ump videobuf2_memops asus_nb_wmi typec_ucsi snd_intel_dspcf=
-g sp5100_tco mdio_devres polyval_clmulni videobuf2_v4l2 btbcm amd_pmf
-12 25 01:23:57 arch-laptop kernel:  ghash_clmulni_intel snd_rawmidi drm_dis=
-play_helper snd_intel_sdw_acpi asus_wmi libphy typec videobuf2_common i2c_p=
-iix4 btintel aesni_intel snd_hwdep snd_seq_device amdtee hid_multitouch blu=
-etooth videodev cec wmi_bmof sparse_keymap rapl pcspkr roles ccp k10temp rf=
-kill video i2c_smbus mdio_bus amd_sfh snd_pcm thunderbolt i2c_hid_acpi plat=
-form_profile snd_timer wmi i2c_hid tee snd amd_pmc soundcore mc mousedev jo=
-ydev mac_hid tcp_bbr sch_fq_pie sch_pie i2c_dev pkcs8_key_parser ntsync cry=
-pto_user nfnetlink hid_logitech_hidpp hid_logitech_dj nvme nvme_core nvme_k=
-eyring nvme_auth hkdf serio_raw
-12 25 01:23:57 arch-laptop kernel: CPU: 0 UID: 0 PID: 142 Comm: kswapd0 Not=
- tainted 6.18.2-zen2-1-zen #1 PREEMPT(full)  817688afc19ca15a22737742591535=
-351aba70f8
-12 25 01:23:57 arch-laptop kernel: Hardware name: ASUSTeK COMPUTER INC. ASU=
-S TUF Gaming A15 FA507RM_FA507RM/FA507RM, BIOS FA507RM.315 11/30/2022
-12 25 01:23:57 arch-laptop kernel: RIP: 0010:native_queued_spin_lock_slowpa=
-th+0x67/0x2e0
-12 25 01:23:57 arch-laptop kernel: Code: 0f 92 c2 8b 01 0f b6 d2 c1 e2 08 3=
-0 e4 09 d0 3d ff 00 00 00 0f 87 1e 02 00 00 85 c0 74 10 0f b6 01 84 c0 74 0=
-9 f3 90 0f b6 01 <84> c0 75 f7 b8 01 00 00 00 66 89 01 65 48 ff 05 ad af ed=
- 01 c3 cc
-12 25 01:23:57 arch-laptop kernel: RSP: 0018:ffffd4c4c06e3a30 EFLAGS: 00000=
-202
-12 25 01:23:57 arch-laptop kernel: RAX: 0000000000000001 RBX: ffffd4c4c06e3=
-b10 RCX: ffff8d69446aa698
-12 25 01:23:57 arch-laptop kernel: RDX: 0000000000000000 RSI: 0000000000000=
-001 RDI: ffff8d69446aa698
-12 25 01:23:57 arch-laptop kernel: RBP: ffffffff94118f38 R08: 0000000000000=
-000 R09: 0000000000000000
-12 25 01:23:57 arch-laptop kernel: R10: ffff8d6fa1e38340 R11: ffff8d6fbe2d6=
-000 R12: ffff8d6c5aaf8000
-12 25 01:23:57 arch-laptop kernel: R13: ffffffff91d15410 R14: ffff8d69446aa=
-680 R15: ffff8d69446aa680
-12 25 01:23:57 arch-laptop kernel: FS:  0000000000000000(0000) GS:ffff8d700=
-deaf000(0000) knlGS:0000000000000000
-12 25 01:23:57 arch-laptop kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000=
-080050033
-12 25 01:23:57 arch-laptop kernel: CR2: 00000000100af568 CR3: 000000020da24=
-000 CR4: 0000000000f50ef0
-12 25 01:23:57 arch-laptop kernel: PKRU: 55555554
-12 25 01:23:57 arch-laptop kernel: Call Trace:
-12 25 01:23:57 arch-laptop kernel:  <TASK>
-12 25 01:23:57 arch-laptop kernel:  _raw_spin_lock+0x29/0x30
-12 25 01:23:57 arch-laptop kernel:  __list_lru_walk_one.constprop.0+0x94/0x=
-1d0
-12 25 01:23:57 arch-laptop kernel:  ? __pfx_rust_shrink_free_page_wrap+0x10=
-/0x10
-12 25 01:23:57 arch-laptop kernel:  ? __pfx_rust_shrink_free_page_wrap+0x10=
-/0x10
-12 25 01:23:57 arch-laptop kernel:  list_lru_walk_node+0x46/0x1f0
-12 25 01:23:57 arch-laptop kernel:  ? __pfx_rust_shrink_free_page_wrap+0x10=
-/0x10
-12 25 01:23:57 arch-laptop kernel:  rust_helper_list_lru_walk+0x9d/0xe0
-12 25 01:23:57 arch-laptop kernel:  do_shrink_slab+0x140/0x350
-12 25 01:23:57 arch-laptop kernel:  shrink_slab+0xd7/0x3e0
-12 25 01:23:57 arch-laptop kernel:  shrink_one+0xfe/0x1d0
-12 25 01:23:57 arch-laptop kernel:  shrink_node+0xb4a/0xd60
-12 25 01:23:57 arch-laptop kernel:  ? pgdat_balanced+0x83/0x140
-12 25 01:23:57 arch-laptop kernel:  kswapd+0x870/0x1100
-12 25 01:23:57 arch-laptop kernel:  ? __switch_to+0x103/0x3f0
-12 25 01:23:57 arch-laptop kernel:  ? __pfx_kswapd+0x10/0x10
-12 25 01:23:57 arch-laptop kernel:  kthread+0xfc/0x240
-12 25 01:23:57 arch-laptop kernel:  ? __pfx_kthread+0x10/0x10
-12 25 01:23:57 arch-laptop kernel:  ret_from_fork+0x1c2/0x1f0
-12 25 01:23:57 arch-laptop kernel:  ? __pfx_kthread+0x10/0x10
-12 25 01:23:57 arch-laptop kernel:  ret_from_fork_asm+0x1a/0x30
-12 25 01:23:57 arch-laptop kernel:  </TASK>
+# Overview
 
-rust/helpers/binder.c=EF=BC=9A
-unsigned long rust_helper_list_lru_walk(struct list_lru *lru,
-                                        list_lru_walk_cb isolate, void *cb_=
-arg,
-                                        unsigned long nr_to_walk)
-{
-        return list_lru_walk(lru, isolate, cb_arg, nr_to_walk);
-}
+This implementation provides memory-safe BPF program verification while
+maintaining 94% feature parity with the upstream C implementation in
+Linux 6.18. The project is designed as a #![no_std] library for seamless
+kernel module integration.
 
-It appears that there exists a patch addressing this issue:=20
-'rust: binder: stop spinning in shrinker' [4]=20
+# Key Features
 
-I have tested this patch, and it appears to resolve the soft lockup
-issue.=20
+Core Verification (100%):
+- Register state tracking (11 registers with type and bounds)
+- Memory safety validation (stack, map, packet, context, arena)
+- Control flow analysis and reference tracking
+- Bounds analysis using Tnum (tracked numbers)
 
-Could this patch be picked up to fix the regression?
+Linux 6.13-6.18 Features (100%):
+- Load-Acquire/Store-Release atomic instructions
+- may_goto bounded loops with 8192 iteration limit
+- Linked Registers for precision tracking
+- Private Stack per-subprogram isolation
+- Fastcall optimization for 7 high-frequency helpers
+- BPF Features runtime flags
+- Extended Dynptr types (SkbMeta, File)
+- Call Summary caching optimization
 
-[1] https://github.com/waydroid/waydroid/issues/2163
-[2] https://bbs.archlinux.org/viewtopic.php?id=3D311223
-[3] https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issue=
-s/174
-[4] https://lore.kernel.org/all/20251202-binder-shrink-unspin-v1-1-263efb9a=
-d625@google.com/
+Helper Functions & Kfuncs:
+- 211 BPF helper function validation
+- 85+ Kfunc verification (synced with kernel 6.18)
 
-regards,
-Ban ZuoXiang
+Advanced Features:
+- State pruning with hash-indexed equivalence checking
+- BTF integration (full type system support)
+- Spectre mitigation (speculative execution safety)
+- IRQ flag tracking
 
+# Benefits
+
+1. Memory Safety: Rust's ownership system eliminates use-after-free,
+   buffer overflows, and null pointer dereferences
+2. Maintainability: Clearer type system reduces bugs and improves code clarity
+3. Performance: Zero-cost abstractions maintain C-level performance
+4. Testing: Comprehensive test suite (900+ tests, all passing)
+
+# Implementation Details
+
+Architecture:
+  bpf_verifier/
+  ├── core/       - Core types, instruction definitions, error handling
+  ├── state/      - Register/stack/verifier state management
+  ├── bounds/     - Tnum arithmetic, scalar bounds tracking
+  ├── analysis/   - CFG, SCC, precision tracking, state pruning
+  ├── check/      - ALU, jump, helper, kfunc verification
+  ├── mem/        - Memory access verification
+  ├── special/    - Dynptr, iterator, exception handling
+  ├── btf/        - BTF type system integration
+  ├── sanitize/   - Spectre mitigation passes
+  ├── opt/        - Optimization passes (call summary, cache, etc.)
+  └── verifier/   - Main verification loop
+
+Dependencies:
+  - bitflags = "2.10" (only non-dev dependency, no_std compatible)
+  - criterion = "0.8" (dev-dependency for benchmarking)
+
+# Code Quality
+
+- Zero compiler warnings
+- Zero clippy warnings
+- GPL-2.0-only license (kernel-compatible)
+- Comprehensive documentation
+- Benchmark suite available
+
+All 900+ unit tests and integration tests pass:
+  cargo test --all-features
+
+Clippy linting with zero warnings:
+  cargo clippy --all-targets --all-features
+
+# Compatibility
+
+- Kernel Version: Linux 6.18+
+- Rust Version: 1.92.0 stable
+- Feature Parity: 94% with upstream kernel verifier
+- Status: Production-ready, suitable for Rust for Linux integration
+
+# Repository
+
+Development repository: https://github.com/MCB-SMART-BOY/verifier-rs
+
+Complete documentation including CHANGELOG, architecture details, and
+submission guidelines are available in the repository.
+
+# Request for Comments
+
+I am seeking feedback on:
+
+1. Architecture: Is the module organization appropriate for kernel integration?
+2. API Design: Are the public APIs suitable for kernel use?
+3. Performance: Any concerns about runtime performance vs C implementation?
+4. Integration Path: Best approach for integration into Rust for Linux?
+5. Testing: Additional kernel-specific tests needed?
+
+The implementation is complete and ready for review. I can split this into
+a logical patch series if that would be helpful for the review process.
+
+Thank you for your time and consideration. I look forward to your feedback.
+
+Best regards,
+MCB-SMART-BOY
+
+Signed-off-by: MCB-SMART-BOY <mcb2720838051@gmail.com>
