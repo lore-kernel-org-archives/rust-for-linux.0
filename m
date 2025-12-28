@@ -1,93 +1,83 @@
 Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0432C1580
-	for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 09:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4091885A5
+	for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 09:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766914468; cv=none; b=UnK+EwZtLFCW0he2nEWm0RNcD2J/hIeUG5bLbQfyBYxSSUQL8oJB36NKWJYsvjx40U6nvz/OZtjxG+MdCPpiP0k8UWFJn2Wx9Iq9QHZmndWDm06MjS2HH4WGSC0LQbdmf0Ovxc1crfmK2NhZVb+xWJBgNryzromIEwzdWw7eMyI=
+	t=1766914627; cv=none; b=f6n9OQNXV56UrGRi95g014OZ+Amx3nSZp8cv22+G4+3Y5XlQxc/mKXjTZ8GXYv17PdBiuHSy2OiIxS1j8jBIsfB9GycgxPI9yM9O1NaJijI5LUj/tGtsnhYGADL2xVJXfRErghxtt7AdAUB9RFk19VSGgNX26v6s0yOlRHUcggE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766914468; c=relaxed/simple;
-	bh=UpYP+NfbNYb/5cI12lLSJq/hh3cozmfvklcxEUHRuq4=;
+	s=arc-20240116; t=1766914627; c=relaxed/simple;
+	bh=MSq6LbycQU5W2upfVsZcsayr59YiB9medbm/wGrvexQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OUxkUF+krNUUY1c6dvvbggpbp81Zf/drqhR1bHFlKbq7UokLf20ZWl1MjNFIia+S88YDNm6FLPuNNWPZEGXG1h41YWz3QGtDQrDpC/5rkx+cq7qSQEl3QfjDB6r+jCiI/Wqd2KReY2iT8wAHrkVJmeZ4mHi1oRY0SwIfyfN3n9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FjBCnlS1; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=Nntr/XR0bSY3meWinDeCPQitWUBHmqaXMEn1pQilQ6aeAYE1eW+xc7x7Z0jEXikiXU6wSWzDPKQBPTaey7K7vy94jRUQmT3ATLE6Xzn9Z1InpoiFqGENCHtnB9CG4ddlKsYbOx+5wTN6Q85zIJG60G/HVnD719wuIFn3wTZlFyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1rvZbw/Y; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FjBCnlS1"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4775f51ce36so78655755e9.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 01:34:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1rvZbw/Y"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47d3c9b8c56so34881435e9.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 01:37:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766914464; x=1767519264; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1766914624; x=1767519424; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SyDoBKLlFDm6X7YvWEPRli00m3Js5BcrRAsHwDYOeh8=;
-        b=FjBCnlS1PgKawjtdPTXDLtxFTuKlgsv/tmtnob96hWi/5tdr2ibj2SE8Se3kWfvsP6
-         KhEm/EppRKxNPk6Gl/ElVqply8umhXRGGKxGRuZJwpEq7EmmQu7YG6qF/jILsNtXmryz
-         oAdQdZ1IGtNARAmU8YH8fQXlpW3IF1rNjUocAovkS3uQnGECvKTCMOdvqwrk3IIfUX6o
-         WlyeAg7WB8i0pomP/ITz+DNRUMvp2Hvn+xvXGKAGVosCbNICdJBeObJcr8caeLDdLgRr
-         PrA2EkFwMnPX6bAmroQWgg9gStHpn/jG9thCShrKOQ1y/Bvgq99wTlCEDpOJJJHrz0r6
-         GAew==
+        bh=9ERMDcXWUOF83lZ3L7ZeLt6R5vc7OTUYMu1o7eUiM+U=;
+        b=1rvZbw/Yvx2N1MQbw7RANorfEDOjbAemMWZCTv0+cfYv1AEJI3fh0K+IPTtuKGx3F0
+         9f8AsK3LJ0q0ZFd1Gng3QjfO30RaiYLLqmpUjd03yOkLvByxj5RVCcZexT5l+84pfXJa
+         JaYqv5Z2+S6iSREdTvExtdPALBrBhr49Y1R/aYDnz7DVuLdxLOAjeHb+szho1sssHArZ
+         inlTF4HXkZXibbA3RzXX46cBEzHlmZmzhBl1Bl4dlFdSc5grQ0puHBK0KxltoZio/GzK
+         qoinE8EAxLkJpbL+34ghE7nJuAf8hBPK3ZqEz9yn4QsZUsA8iKrukMb8kBk4Mfrsh3Ey
+         0RHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766914464; x=1767519264;
+        d=1e100.net; s=20230601; t=1766914624; x=1767519424;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SyDoBKLlFDm6X7YvWEPRli00m3Js5BcrRAsHwDYOeh8=;
-        b=YDKzLdFhjrpafN5oQBmwf0tx2bE+kBpGIbI3oWEonxXk+Jv7APK4iXAjI9AvYiYwu1
-         xSMdI14zz8I2DM3GDMTcpdzR66dkjUE7I43OND+IW2mMZ+q8mxSp/cNbAl8p8LmxnZAq
-         yJ0o1nO2GNhF9x//n42OirJ2W8vFHsIkSuhguSvSo64+E9hBtgyCw+wJoj6crKKZ8HNj
-         8epnkZFoDGWt4P5syiPaHOmxTrcvBsV8SbDbtdV9fsLALIeDV8rqwTahizperuUmCg89
-         EHuEKfeFXlRV9iyRgVCmWc2Gt5f48bIaPKu2/X3np1SVr8wGi6kWgAc8sgygyjBfzcNH
-         X5EA==
-X-Forwarded-Encrypted: i=1; AJvYcCXImzbKvUbK73hLjxDVQ1nc52HtF10alm6H7RiiN4DSYDOveqmAGjAwneFrzti7c+gCj4yX7IZ4z4pbmqkSXA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxur+V7BYGzTQLgTgSMo3pTE9/k70iqQyxeO3+Pt8FMTiH6XoLd
-	WwY2vc3X4mxDuZodOkRsRYt0OZAfMREd1sSZSoMBdqZm5ovUQDKLAbx0se74DuawnWYd2M5/Stq
-	vU35baTeL2cIuUOq2Sg==
-X-Google-Smtp-Source: AGHT+IHo7pCHMAblDTgfHFeEja9soRj4lOWXPk5g3V/fIQz7xk3TJoKa3VyvAsLqN/oKHDmyKURQ3hBGHwEaI0o=
-X-Received: from wrbgv17.prod.google.com ([2002:a05:6000:4611:b0:430:f5d7:f015])
+        bh=9ERMDcXWUOF83lZ3L7ZeLt6R5vc7OTUYMu1o7eUiM+U=;
+        b=D8W8IhmRFnUqKURyV4mLI3fMdDXDKZ75UbIh+lzug31dyFcM6IFQXPiSgeWF9817Dz
+         S0uxfh1gwuEU1uZIZX73YvBhEOiM3uYizs1meY6oJ7V54sX6TEBdZ4FE2jHCJ9stWRv2
+         lkZL0TkzQb1eGX36wnrOzH2ZkChpcVs8WkyheJNcedRyjYGbBQ7uDWgPtnN7AXHl0EkP
+         jt2gml4VqJ3SdvvOyghN+5akjqcW9owCjvHcVterzN6V/EwOmGUMr8yVKslUW4L6Is1T
+         0eqDrN6TKNZqSFslhJ6GFjgrc+vU7u57BQ+Y5CaLql827zcUJdFZetUuNz/ypIBEVOuQ
+         CFDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUb+WbCiRCk7tBLC44DblomNTNcAd+/o0vWA7zZOXfNcbaSU1bJtdozgcgHpNlejZ+MVRL7dFfhxHSjhQ1HHQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgqVr3IvkT6xNNV6XmJiiNxtz1rnxGSmfCN7r5NJ8EKj4WBaNG
+	sveO1poXx0x8c4FhLBPDYOykVfQAKX0S2y+8tmuqibPdEfAD7f+NEg7rM35YZXjGzXMv/rfYT9Q
+	FOjE72IYWUrM6dJ5ARw==
+X-Google-Smtp-Source: AGHT+IH6rikPMb9sJAVrPq49AEUDgYF6ItrNWYlt9X+UZwnF+aICeCDLZPgALinsT8w3MXTNthN6wtjZr+mlFfA=
+X-Received: from wmsm17.prod.google.com ([2002:a05:600c:3b11:b0:477:55f8:e1ec])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4711:b0:47a:9560:5944 with SMTP id 5b1f17b1804b1-47d195c1a71mr339326945e9.34.1766914464172;
- Sun, 28 Dec 2025 01:34:24 -0800 (PST)
-Date: Sun, 28 Dec 2025 09:34:23 +0000
-In-Reply-To: <20251226-drm-gem-safety-comment-v1-1-5ae56d8194b9@ik.me>
+ 2002:a05:600d:115:b0:46e:37fe:f0e6 with SMTP id 5b1f17b1804b1-47d1997e733mr212659365e9.30.1766914624144;
+ Sun, 28 Dec 2025 01:37:04 -0800 (PST)
+Date: Sun, 28 Dec 2025 09:37:03 +0000
+In-Reply-To: <tencent_7183098292B42248DA2FAE7C8EA39E3B1A09@qq.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251226-drm-gem-safety-comment-v1-1-5ae56d8194b9@ik.me>
-Message-ID: <aVD5n5taYlJuMGKM@google.com>
-Subject: Re: [PATCH] rust: drm: Improve safety comment when using `Pin::into_inner_unchecked`
+References: <tencent_7183098292B42248DA2FAE7C8EA39E3B1A09@qq.com>
+Message-ID: <aVD6P1j5WhZNMTpF@google.com>
+Subject: Re: [PATCH] rust: dma: remove incorrect safety documentation
 From: Alice Ryhl <aliceryhl@google.com>
-To: ewan.chorynski@ik.me
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+To: Yilin Chen <1479826151@qq.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-Thanks for the patch!
-
-On Fri, Dec 26, 2025 at 06:22:36PM +0100, Ewan Chorynski via B4 Relay wrote:
-> From: Ewan Chorynski <ewan.chorynski@ik.me>
+On Sat, Dec 27, 2025 at 12:10:27AM +0800, Yilin Chen wrote:
+> Removes a safety requirement that incorrectly states callers must
+> ensure the device does not access memory while the returned slice
+> is live, as this method doesn't return a slice.
 > 
-> The safety requirements for `Pin::into_inner_unchecked` state that the
-> returned pointer must be treated as pinned until it is dropped. Such a
-> guarantee is provided by the `ARef` type. This patch improve the safety
-> comment to to better reflect this.
+> Signed-off-by: Yilin <1479826151@qq.com>
 
-typo: This patch improves
-typo: word "to" is duplicated twice
+This patch looks good to me, but the Signed-off-by does not match
+your From: line. Please update this to:
 
-> ---
-> Signed-off-by: Ewan Chorynski <ewan.chorynski@ik.me>
+Signed-off-by: Yilin Chen <1479826151@qq.com>
 
-The Signed-off-by needs to go above the --- line. Otherwise it's not
-included in the commit message.
+so that it matches the From: line.
 
 Alice
