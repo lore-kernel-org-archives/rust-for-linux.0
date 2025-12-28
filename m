@@ -1,58 +1,59 @@
-Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
+Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01BE1E834E;
-	Sun, 28 Dec 2025 16:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEEC1F30BB;
+	Sun, 28 Dec 2025 16:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766940901; cv=none; b=rdMc07Fp/KNaZzMpq0+W7eM1dVdvLt3SjhZJF07IWCvgFlOcESvTJebAuckHIDjs9uVvxdO/d8La6xgKMN5PBDO4f4pHWu1ea+2ET+D302izCaJ7RtAigXl7uzAaFJcYS0WzMVV4HOC74rr+R0a+eCjYAn4OLRlrV9aBEOw6vtU=
+	t=1766940958; cv=none; b=j3qJZV32uJ+g9s4FrvGDXqPG9gqdPRR2JbUrCZ+Q/aTkguIYvvWHNLdTR3cULaNYqoIaKVo8D6qf92iHO6QVmKlhiaZHUQvvCN91NbeNOURgRazmIBbBtZNDLxhdGF3GFEHGxqh5UWTJ7PYKDlE2oWerFabELRp2c0qy2TJ/yIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766940901; c=relaxed/simple;
-	bh=N84e0bIrZTbhRqwbCNcLgS0vULctNkvDlw4oOjCD/eA=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=sVPkLoS7RURybPe29fAvDzC48n1ViGvJJ4DEO3Y3LWw784zvOr/aAuVNGgI2htXnvxdhKFmENiG6+HD8NmUjeHLHXDP/EZJC5+EBZkx/2/+lys93pAfUTStAM1MgOk+EMaGURTkJIuG28kMqiCxMYEFop6Gfrll5Jl/CCc/0mS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=TQnl3hNH; arc=none smtp.client-ip=203.205.221.231
+	s=arc-20240116; t=1766940958; c=relaxed/simple;
+	bh=y7LATHLP2gc+oxr5yrjJwMfCqKXYQCbLBffxSP4eQ0I=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=RUDdXRKsAcfC0Chc3otB5zyuIi9DUPeJ5zo2EDCxx+yhWHx/XRvCJFx+m7gVBcnrqxi5Wti8UCZ4c4X4MPvDCI2UqdICCcpM4OTpKltnlnFWjEdjxaPPTBHGE/mc1bgTJN+jq9d+S3aN9RpQDgRrlR8VKjhZMxYAkpC0BDCaImg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=uEcSRCzF; arc=none smtp.client-ip=162.62.57.137
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="TQnl3hNH"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="uEcSRCzF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1766940894; bh=vCjNCmisSg5ou9i6b9QmV+EHLJnsWV52XYCBvSS0gPc=;
+	t=1766940945; bh=7jcyrwhqg13yyHh08xZj37qBGybV8PDUoEvy1fJYSK8=;
 	h=From:To:Cc:Subject:Date;
-	b=TQnl3hNH7gFFOmzBnkW9LvecEbnPbJBrcnBjmxwqcCUwqSWHu45catZFZFOeRdWcH
-	 bzp/jcBHVmo9pih7huOexqNiHmoNLjc+Q5hH4JN/gKods3ZBOSLLP9hcU6xK97W+Ix
-	 /Y3POEhOWDt6+JFhDdqhFbw296b/4E1Dt92XGBSc=
+	b=uEcSRCzFmedKW20bneOPX/DwRkoQnIdNYiy/IxrVmirWDzuHLZ5TbvSMbI5wQ0Ny/
+	 bBKTbD8yUGDdb7HRJr6QkMaa4aDiFprQsMnfZXk5eqrFKNDb1RxUGz6hW1P7LZC1ZE
+	 xnku753kXakSDJq6HVCvqUoehgGAMvwyHa2+c+sQ=
 Received: from xh6010.. ([202.120.234.37])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id DB4364F1; Mon, 29 Dec 2025 00:54:52 +0800
-X-QQ-mid: xmsmtpt1766940892t0ybw5jk1
-Message-ID: <tencent_8FF346E3130160525D84423BE655DBF1F306@qq.com>
-X-QQ-XMAILINFO: M1rD3f8svNzn3XneHcoH9Kb0X2wnpf6JtJCSJISbbc4y8n/erDK+1Y3Dc1qdYF
-	 21nbb0aShT4PGkvA5PaRea+Y2Nu8h6rer90q7vyP3p8bUhi23mGwAyXg/3EkoHgJsm+JSqz56+Pn
-	 GEFKHFugZSJQZDTgnHg8CdzSp+ULgZXyEVybe48nN7j6Lm1JkTpIF73RsCJWBbFU7mk/2LrmGgTa
-	 TDbBTEMDLMiO2/+deWMlijoYo9jTMlBvMw1thMU6mn89nuP8JbxLZIxngZA4nLglmK5/zhXAONjo
-	 2wjxj3JwNMMs16X8v+eMt9ly42So+8+TRudNrkpa8mB7b/3ep8Nhrqw/1i7Z9Zg42W1t+/sCrAk/
-	 NdCa1lix+2vyZT0wsG72Z02bqaa0wYZLffAjOz4mXsgcp/4Cbb/OMnMNNeqz3HbwQ0znkX4FuTnx
-	 pSgFJV5xFd/xpRuDKZeftLQDj9iYhNc41GgB/ceS6lSTP0yV+adjIYFhsHhwLptHswDDlPCfLvzM
-	 nepl9PEqcW5HTeKP5iGpUrHOOeVIM+w2Cz99x+6K/uJZ5HYWFrFzgUKkxnU/3AQMfizSVfzB6dbB
-	 k3XPMCdTevy8+FTJEwHsZKkmEwXMiaOIHQn0p58fdBNm29baFVnnM4RmhkMvZoF57+5JReNrwTc2
-	 Qze4zdxV2lEvbUC4aUbxvq/W+cbOwuPYBR3cBG96fbF9Rx7s/cukQq5+TqMu6b6MjpuQW7pXFBnJ
-	 oPVmVNyQWM9ZZhUzMejCOm8unxOLfRWWNg8IrpGpnCZhUldWtpEUyTrwj5cjGm+c2BBZTqlLnxGI
-	 Ct8etg70YwNcrmN1MF44M8ChyykPRjMZvtKH5p8JbWp7pQki7W0dIR+fC6nslTKFGeYS4Q2g/MRL
-	 xN3rQF+jNxydXhTPzxmWrIMttIuY37zVwOVERa6ZGnPTWQEQBkm8ZGwHHiN04BRqB0ZY/jiteEff
-	 fm9gV6A3f0X+4tCmXoSZAQSuLnUfbzcXXcv1/ha9ntRd2Yel5YOOkD3na9c9t7lgXjgFk8oC5+oA
-	 I+9f1EXKfoufFiudpVZ4Q3IdoMBZlZlFpBQ2wXxMMlkM7OL7+jjkxNbVz1wsTvIqpZCt8FoaljET
-	 A+WRTxCYoA0AFgROjzDTiQOTRK5fZ+pepQVvhc
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+	by newxmesmtplogicsvrszc41-0.qq.com (NewEsmtp) with SMTP
+	id D9D12872; Mon, 29 Dec 2025 00:54:29 +0800
+X-QQ-mid: xmsmtpt1766940869t1f5c4wpk
+Message-ID: <tencent_C18DD5047749311142ED455779C7CCCF3A08@qq.com>
+X-QQ-XMAILINFO: M+6QKz8nsrJQmZSdB9s93IcllevVyfdmj1th4FmxhKAX8lEGrY9VUjjB+Qq5Tw
+	 xAGx8Y3zgdMlPfyo/UcQPFIaXHHqm+TkO2iDkyBSDzszzEAlbi6NVYkLHelyp6IeibXRD2DryOSW
+	 7+wnt25VjrcobIiBuEq5ecwldvrAbmQBByunc9yCgynp7R6BtfTmueXVFFcMdnw86jjmYwYoCNg9
+	 eKaGr2zZmyJET17Ny38ZRz9yHiYhVa6khiBRFai4kU/q5dr9TrNYYcYSsgcvwtMkuMfioZ1Fd36Z
+	 UePpJcW8u9m7eftMjrzUUcuw2896mYFBnlyB9ZD/G3TWcLEL/6XXithQ9mjDB6nLi8x0KzGeTLus
+	 vHH9YuTOZYXiGB4SkyXLZ059z6JkBxc/YFg7JjK+heU+QjQG4m2N7sZ/HY8ne056YYq5w7TNzT2I
+	 6U2lBeqIgz4BBq2XSJCp+Hs/pLESBXvVlCv1TLp7E6iURAPV4CnFddWXb6y65BOo/QfKMD/GP0uj
+	 kNro+L0NkSa3FnBv164p6HKWUBAtxfYVplFRv3B/HiUfuUJWEat2oSmAdOEjnR4ORa+agRPQWG5l
+	 E0tDlOMPyWe2jMWj06Isvp9tKy3cIagkUqC578M6dwbzKsGPlzETEoNDiHReksr2KxTSSimq5s29
+	 t31xj8NPVrjiV4Frkl3C2YuOKMJZXRGTefV6v42VIWtCag2HlLuRKzVLUmHSpUZqusthSoXG2IMr
+	 A/aX6i+Sdh0Ggh6ft+2h4wWIbkjP7ktyAbGyHYdBJBz3kXMC5f9iNdv7QUQawkyAnCTSGsqDz9S1
+	 wcOqsFTf3avjxQvsWnEY6CuGgOV/eGoM4u4y4dKHMy8ikg1juN37gxrvdSZWtgleT4JMKynVXHEm
+	 AYJMDN717r/pfgqPjD9ETFhKhINxCS8/OXv6SGBl1YQsfNbD2/kl0AyYdtwaWG9lnWkmv1Z7RiEF
+	 zP0KOfutvMm4rLZohWYrrODlaFkaZMPE0vrL8ZZM3n8WLT2bwTiJMsdELKXcqauqSsSUKDNImY7I
+	 IRxYklyvA5stluIj5iZEtPrUAxUZMEiNNR2ajFaUPfTKocLbyFHyx/wsbCkZduFurFqh287KUqmA
+	 nE6af3LJZ8uIb7PvY=
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
 From: Yilin Chen <1479826151@qq.com>
-To: Viresh Kumar <viresh.kumar@linaro.org>,
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
+Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yilin Chen <1479826151@qq.com>
-Subject: [PATCH v3] rust: cpumask: rename methods of Cpumask for clarity and consistency
-Date: Mon, 29 Dec 2025 00:54:50 +0800
-X-OQ-MSGID: <20251228165450.1975484-1-1479826151@qq.com>
+Subject: [PATCH v2] rust: device_id: replace incorrect word in safety documentation
+Date: Mon, 29 Dec 2025 00:53:44 +0800
+X-OQ-MSGID: <20251228165344.1974889-1-1479826151@qq.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -62,70 +63,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rename `as_ref` and `as_mut_ref` to `from_raw` and `from_raw_mut` to
-align with the established naming convention for constructing types
-from raw pointers in the kernel's Rust codebase.
+The safety documentation incorrectly refers to `RawDeviceId` when
+transmuting to `RawType`. This fixes the documentation to correctly
+indicate that implementers must ensure layout compatibility with
+`RawType`, not `RawDeviceId`.
 
 Signed-off-by: Yilin Chen <1479826151@qq.com>
 ---
-Changes in v3:
-- Use real name in signed-off-by line (Kari Argillander)
-- Add links to priveous patches:
-- Link to v2: https://lore.kernel.org/rust-for-linux/tencent_58EDE157C8C700CFF88DA204B7492A113508@qq.com/
-
 Changes in v2:
-- Use real name in From line (Kari Argillander)
-- Send this patch individually instead of bundling with others
-- Link to v1: https://lore.kernel.org/rust-for-linux/aUMUA_JWalyGQdAx@google.com/#t
+- Changed subject (Kari Argillander)
+- Use real name in signed-off-by line (Kari Argillander)
+- Link to v1: https://lore.kernel.org/rust-for-linux/tencent_9F74630DC16B92484463BBC055DEB1F17306@qq.com/
 ---
- rust/kernel/cpumask.rs | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ rust/kernel/device_id.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
-index c1d17826ae7b..44bb36636ee3 100644
---- a/rust/kernel/cpumask.rs
-+++ b/rust/kernel/cpumask.rs
-@@ -39,7 +39,7 @@
- /// fn set_clear_cpu(ptr: *mut bindings::cpumask, set_cpu: CpuId, clear_cpu: CpuId) {
- ///     // SAFETY: The `ptr` is valid for writing and remains valid for the lifetime of the
- ///     // returned reference.
--///     let mask = unsafe { Cpumask::as_mut_ref(ptr) };
-+///     let mask = unsafe { Cpumask::from_raw_mut(ptr) };
+diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
+index 62c42da12e9d..8e9721446014 100644
+--- a/rust/kernel/device_id.rs
++++ b/rust/kernel/device_id.rs
+@@ -15,7 +15,7 @@
+ /// # Safety
  ///
- ///     mask.set(set_cpu);
- ///     mask.clear(clear_cpu);
-@@ -49,13 +49,13 @@
- pub struct Cpumask(Opaque<bindings::cpumask>);
- 
- impl Cpumask {
--    /// Creates a mutable reference to an existing `struct cpumask` pointer.
-+    /// Creates a mutable reference from an existing `struct cpumask` pointer.
-     ///
-     /// # Safety
-     ///
-     /// The caller must ensure that `ptr` is valid for writing and remains valid for the lifetime
-     /// of the returned reference.
--    pub unsafe fn as_mut_ref<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
-+    pub unsafe fn from_raw_mut<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
-         // SAFETY: Guaranteed by the safety requirements of the function.
-         //
-         // INVARIANT: The caller ensures that `ptr` is valid for writing and remains valid for the
-@@ -63,13 +63,13 @@ pub unsafe fn as_mut_ref<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
-         unsafe { &mut *ptr.cast() }
-     }
- 
--    /// Creates a reference to an existing `struct cpumask` pointer.
-+    /// Creates a reference from an existing `struct cpumask` pointer.
-     ///
-     /// # Safety
-     ///
-     /// The caller must ensure that `ptr` is valid for reading and remains valid for the lifetime
-     /// of the returned reference.
--    pub unsafe fn as_ref<'a>(ptr: *const bindings::cpumask) -> &'a Self {
-+    pub unsafe fn from_raw<'a>(ptr: *const bindings::cpumask) -> &'a Self {
-         // SAFETY: Guaranteed by the safety requirements of the function.
-         //
-         // INVARIANT: The caller ensures that `ptr` is valid for reading and remains valid for the
+ /// Implementers must ensure that `Self` is layout-compatible with [`RawDeviceId::RawType`];
+-/// i.e. it's safe to transmute to `RawDeviceId`.
++/// i.e. it's safe to transmute to `RawType`.
+ ///
+ /// This requirement is needed so `IdArray::new` can convert `Self` to `RawType` when building
+ /// the ID table.
 -- 
 2.34.1
 
