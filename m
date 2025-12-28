@@ -1,96 +1,93 @@
-Received: from out162-62-57-137.mail.qq.com (out162-62-57-137.mail.qq.com [162.62.57.137])
+Received: from smtp-8fac.mail.infomaniak.ch (smtp-8fac.mail.infomaniak.ch [83.166.143.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEEC1F30BB;
-	Sun, 28 Dec 2025 16:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B1757EA
+	for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 17:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766940958; cv=none; b=j3qJZV32uJ+g9s4FrvGDXqPG9gqdPRR2JbUrCZ+Q/aTkguIYvvWHNLdTR3cULaNYqoIaKVo8D6qf92iHO6QVmKlhiaZHUQvvCN91NbeNOURgRazmIBbBtZNDLxhdGF3GFEHGxqh5UWTJ7PYKDlE2oWerFabELRp2c0qy2TJ/yIo=
+	t=1766944524; cv=none; b=Ip3yP2vYa3cYImiB1YSWaxrCqvsQRYxAXfp7loTh4AqUKT5CQeGS5vLgy+ZXRSp53eMTACeiMFFAGiw8Bmda3cny07gjg6OXKIBukbUwBJ+QnSU8/WO1FGOqRAu4/0iD4AVqisbo5hFcxftCMFAcd2iBeSzjS6i84eIho+RmbKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766940958; c=relaxed/simple;
-	bh=y7LATHLP2gc+oxr5yrjJwMfCqKXYQCbLBffxSP4eQ0I=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=RUDdXRKsAcfC0Chc3otB5zyuIi9DUPeJ5zo2EDCxx+yhWHx/XRvCJFx+m7gVBcnrqxi5Wti8UCZ4c4X4MPvDCI2UqdICCcpM4OTpKltnlnFWjEdjxaPPTBHGE/mc1bgTJN+jq9d+S3aN9RpQDgRrlR8VKjhZMxYAkpC0BDCaImg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=uEcSRCzF; arc=none smtp.client-ip=162.62.57.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1766944524; c=relaxed/simple;
+	bh=pGUmbC0h0mHJ59VnlKkS+L6LRqfOneoHIlhI8SeVWWQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=YWJ4Jn/yTZSwP5PC/UVnMAiWIvLd6rXVv+Yj8Mn/1RD9GDOYAvfNL9m6PB4Nfsjzado9//1R1o1IS7LQCoo02EUDe1P9jDHF9i2TbjSviRi1Nf76CgntUpleCv71mykYlBpNhzCFrhZF8UM6PJPQSyxbw5i+z/XfiYIySUCFLn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me; spf=pass smtp.mailfrom=ik.me; dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b=lEt2ztti; arc=none smtp.client-ip=83.166.143.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ik.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="uEcSRCzF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1766940945; bh=7jcyrwhqg13yyHh08xZj37qBGybV8PDUoEvy1fJYSK8=;
-	h=From:To:Cc:Subject:Date;
-	b=uEcSRCzFmedKW20bneOPX/DwRkoQnIdNYiy/IxrVmirWDzuHLZ5TbvSMbI5wQ0Ny/
-	 bBKTbD8yUGDdb7HRJr6QkMaa4aDiFprQsMnfZXk5eqrFKNDb1RxUGz6hW1P7LZC1ZE
-	 xnku753kXakSDJq6HVCvqUoehgGAMvwyHa2+c+sQ=
-Received: from xh6010.. ([202.120.234.37])
-	by newxmesmtplogicsvrszc41-0.qq.com (NewEsmtp) with SMTP
-	id D9D12872; Mon, 29 Dec 2025 00:54:29 +0800
-X-QQ-mid: xmsmtpt1766940869t1f5c4wpk
-Message-ID: <tencent_C18DD5047749311142ED455779C7CCCF3A08@qq.com>
-X-QQ-XMAILINFO: M+6QKz8nsrJQmZSdB9s93IcllevVyfdmj1th4FmxhKAX8lEGrY9VUjjB+Qq5Tw
-	 xAGx8Y3zgdMlPfyo/UcQPFIaXHHqm+TkO2iDkyBSDzszzEAlbi6NVYkLHelyp6IeibXRD2DryOSW
-	 7+wnt25VjrcobIiBuEq5ecwldvrAbmQBByunc9yCgynp7R6BtfTmueXVFFcMdnw86jjmYwYoCNg9
-	 eKaGr2zZmyJET17Ny38ZRz9yHiYhVa6khiBRFai4kU/q5dr9TrNYYcYSsgcvwtMkuMfioZ1Fd36Z
-	 UePpJcW8u9m7eftMjrzUUcuw2896mYFBnlyB9ZD/G3TWcLEL/6XXithQ9mjDB6nLi8x0KzGeTLus
-	 vHH9YuTOZYXiGB4SkyXLZ059z6JkBxc/YFg7JjK+heU+QjQG4m2N7sZ/HY8ne056YYq5w7TNzT2I
-	 6U2lBeqIgz4BBq2XSJCp+Hs/pLESBXvVlCv1TLp7E6iURAPV4CnFddWXb6y65BOo/QfKMD/GP0uj
-	 kNro+L0NkSa3FnBv164p6HKWUBAtxfYVplFRv3B/HiUfuUJWEat2oSmAdOEjnR4ORa+agRPQWG5l
-	 E0tDlOMPyWe2jMWj06Isvp9tKy3cIagkUqC578M6dwbzKsGPlzETEoNDiHReksr2KxTSSimq5s29
-	 t31xj8NPVrjiV4Frkl3C2YuOKMJZXRGTefV6v42VIWtCag2HlLuRKzVLUmHSpUZqusthSoXG2IMr
-	 A/aX6i+Sdh0Ggh6ft+2h4wWIbkjP7ktyAbGyHYdBJBz3kXMC5f9iNdv7QUQawkyAnCTSGsqDz9S1
-	 wcOqsFTf3avjxQvsWnEY6CuGgOV/eGoM4u4y4dKHMy8ikg1juN37gxrvdSZWtgleT4JMKynVXHEm
-	 AYJMDN717r/pfgqPjD9ETFhKhINxCS8/OXv6SGBl1YQsfNbD2/kl0AyYdtwaWG9lnWkmv1Z7RiEF
-	 zP0KOfutvMm4rLZohWYrrODlaFkaZMPE0vrL8ZZM3n8WLT2bwTiJMsdELKXcqauqSsSUKDNImY7I
-	 IRxYklyvA5stluIj5iZEtPrUAxUZMEiNNR2ajFaUPfTKocLbyFHyx/wsbCkZduFurFqh287KUqmA
-	 nE6af3LJZ8uIb7PvY=
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-From: Yilin Chen <1479826151@qq.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yilin Chen <1479826151@qq.com>
-Subject: [PATCH v2] rust: device_id: replace incorrect word in safety documentation
-Date: Mon, 29 Dec 2025 00:53:44 +0800
-X-OQ-MSGID: <20251228165344.1974889-1-1479826151@qq.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b="lEt2ztti"
+Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4dfRbR40kczVP0;
+	Sun, 28 Dec 2025 18:45:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ik.me; s=20200325;
+	t=1766943955; bh=r42BM5PvPixDLRp4sXlUhKr0FhxwTxRFCpYTPDnxwMs=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=lEt2zttijovlUw1jkQ7vKR1YtKWCTklNXnT8ee4d61fnfV+N/zFfmkaxUHJ/8b/I7
+	 FyTrFOAvO9RlYQdWPQdq5o8qkPuLHqF9LF37iT0xGKiqe1IQ3A6fY7KS+C1HBU+J8W
+	 0nKC/XipY64kilQrxve+k3KVQ/CKvOFnBzIkrARo=
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4dfRbQ5TK7z1Bms;
+	Sun, 28 Dec 2025 18:45:54 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 28 Dec 2025 18:45:54 +0100
+Message-Id: <DFA1CUMND2ME.1D3PAJW641QHM@ik.me>
+Subject: Re: [PATCH v4 00/11] gpu: nova-core: add Turing support
+From: "Ewan Chorynski" <ewan.chorynski@ik.me>
+To: "Timur Tabi" <ttabi@nvidia.com>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20251218032955.979623-1-ttabi@nvidia.com>
+In-Reply-To: <20251218032955.979623-1-ttabi@nvidia.com>
+Feedback-ID: :52330b22a40e583:ham:e74197f626dda86
+X-Infomaniak-Routing: alpha
 
-The safety documentation incorrectly refers to `RawDeviceId` when
-transmuting to `RawType`. This fixes the documentation to correctly
-indicate that implementers must ensure layout compatibility with
-`RawType`, not `RawDeviceId`.
+Hello
 
-Signed-off-by: Yilin Chen <1479826151@qq.com>
----
-Changes in v2:
-- Changed subject (Kari Argillander)
-- Use real name in signed-off-by line (Kari Argillander)
-- Link to v1: https://lore.kernel.org/rust-for-linux/tencent_9F74630DC16B92484463BBC055DEB1F17306@qq.com/
----
- rust/kernel/device_id.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu Dec 18, 2025 at 4:29 AM CET, Timur Tabi wrote:
+> This patch set adds basic support for pre-booting GSP-RM
+> on Turing.
+>
+> There is also partial support for GA100, but it's currently not
+> fully implemented.  GA100 is considered experimental in Nouveau,
+> and so it hasn't been tested with NovaCore either.
+>
+> That latest linux-firmware.git is required because it contains the
+> Generic Bootloader image that has not yet been propogated to
+> distros.
 
-diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
-index 62c42da12e9d..8e9721446014 100644
---- a/rust/kernel/device_id.rs
-+++ b/rust/kernel/device_id.rs
-@@ -15,7 +15,7 @@
- /// # Safety
- ///
- /// Implementers must ensure that `Self` is layout-compatible with [`RawDeviceId::RawType`];
--/// i.e. it's safe to transmute to `RawDeviceId`.
-+/// i.e. it's safe to transmute to `RawType`.
- ///
- /// This requirement is needed so `IdArray::new` can convert `Self` to `RawType` when building
- /// the ID table.
--- 
-2.34.1
+I was curious to see Nova probe on my laptop equipped with a TU117M
+GeForce GTX 1650 Mobile. I compiled with your patchset applied on drm-next
+and downloaded the latest linux-firmware.git.
 
+However, NovaCore fails to probe my device with the following logs :
+
+[    3.497672] NovaCore 0000:01:00.0: FbLayout {
+                   fb: 0x0..0x100000000,
+                   vga_workspace: 0xfff00000..0x100000000,
+                   frts: 0xffe00000..0xfff00000,
+                   boot: 0xffdff000..0xffe00000,
+                   elf: 0xfe2c0000..0xffdf4ea0,
+                   wpr2_heap: 0xf7900000..0xfe200000,
+                   wpr2: 0xf7800000..0xfff00000,
+                   heap: 0xf7700000..0xf7800000,
+                   vf_partition_count: 0x0,
+               }
+[    3.623000] NovaCore 0000:01:00.0: GSP MBOX0: 0xffffe000, MBOX1: 0x0
+[    3.623026] NovaCore 0000:01:00.0: Using SEC2 to load and run the booter=
+_load firmware...
+[    3.626236] NovaCore 0000:01:00.0: SEC2 MBOX0: 0x31, MBOX10x0
+[    3.626265] NovaCore 0000:01:00.0: Booter-load failed with error 0x31
+
+Is this expected to happen ? Here is the full device description from
+lspci :
+
+01:00.0 VGA compatible controller: NVIDIA Corporation TU117M [GeForce GTX 1=
+650 Mobile / Max-Q] (rev a1)
