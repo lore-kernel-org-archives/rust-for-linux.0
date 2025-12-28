@@ -1,97 +1,93 @@
-Received: from outbound.st.icloud.com (p-east2-cluster3-host9-snip4-10.eps.apple.com [57.103.77.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C7723B63F
-	for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 09:13:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.77.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0432C1580
+	for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 09:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766913208; cv=none; b=cjk9YLb7v6FyaPF/w6iLBoxGVvMzzhoQzJrw6BTkWD0fLAfyB4qhgxacOF7kiaB3+IEaNF8D/eXbx5V/opAGJN0S1U+jWHnyqUwdUAmlNgif3jvOXj56BjgyS/J/1/ly9ovsPyChEVMFNXjmeGQPKe56uGeK5a+WdCWL7WC4SWI=
+	t=1766914468; cv=none; b=UnK+EwZtLFCW0he2nEWm0RNcD2J/hIeUG5bLbQfyBYxSSUQL8oJB36NKWJYsvjx40U6nvz/OZtjxG+MdCPpiP0k8UWFJn2Wx9Iq9QHZmndWDm06MjS2HH4WGSC0LQbdmf0Ovxc1crfmK2NhZVb+xWJBgNryzromIEwzdWw7eMyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766913208; c=relaxed/simple;
-	bh=E7gmfdB1oE80QnanP/mD2QbimoDN1ml3JIe60ad4cQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VOrkjMW1YcpU/K9P7wqQERPeFSVe4u7sRREF2zarCr7cjvBUiSftTlZSY0sjZs8FJMpow5tsCuhcoEeIP/UaLn3czO4EtI3c06IYV9u6yciwxbwK8p/SxNz7xyzXKyaJDZkvMmPaoABqAKgTz8srTkI06l5VoU2BauEeBbP2QFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=Eo7M9L5J; arc=none smtp.client-ip=57.103.77.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
+	s=arc-20240116; t=1766914468; c=relaxed/simple;
+	bh=UpYP+NfbNYb/5cI12lLSJq/hh3cozmfvklcxEUHRuq4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OUxkUF+krNUUY1c6dvvbggpbp81Zf/drqhR1bHFlKbq7UokLf20ZWl1MjNFIia+S88YDNm6FLPuNNWPZEGXG1h41YWz3QGtDQrDpC/5rkx+cq7qSQEl3QfjDB6r+jCiI/Wqd2KReY2iT8wAHrkVJmeZ4mHi1oRY0SwIfyfN3n9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FjBCnlS1; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="Eo7M9L5J"
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-12 (Postfix) with ESMTPS id 41A4318001DD;
-	Sun, 28 Dec 2025 09:13:23 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=ZhN+Ut5Ys+u07KrZhDJT23W9qJ90DJOeYTb0t+j8iMk=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=Eo7M9L5J6RWV6aIRvL6oVqp7cHdMCwSobjRFLZTzJo465WihR76IBA8IoH4hc905k9oEMzLKz6S5hPtyfYTeYhq3wW5xSMJNxsPalidstXSzZuqEuenu/erOdofYU2mCiJjumcXk9c6UXZqcRbjiSAgVmTUNgjbaddR5oSFck1P34zNAnG/aEnJX7uy9Y2sbsT2+P8XXVinqXSxDTZ3LG32zmyBricWexGf0XC9NnAR/wxhZ9PHPW0Oktl8RiLDNWGq58bSuc1Rpk4+27exJ64opvz4ub6y7VmQ2hPSxFItujBKsMvr9A0c4CBRCKhTzjoQrXChdcIedY6mn6fQ6Ew==
-mail-alias-created-date: 1746336505199
-Received: from fedora-g16.bne-home.net (unknown [17.42.251.67])
-	by p00-icloudmta-asmtp-us-east-1a-100-percent-12 (Postfix) with ESMTPSA id A1A9E18000A9;
-	Sun, 28 Dec 2025 09:13:18 +0000 (UTC)
-Date: Sun, 28 Dec 2025 19:13:13 +1000
-From: Brendan Shephard <bshephar@bne-home.net>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3] rust: Add support for feeding entropy to randomness
- pool
-Message-ID: <aVD0qcGEaiTZYheF@fedora-g16.bne-home.net>
-References: <20251226-add-entropy-v3-1-a3440823a07d@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FjBCnlS1"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4775f51ce36so78655755e9.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 01:34:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766914464; x=1767519264; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SyDoBKLlFDm6X7YvWEPRli00m3Js5BcrRAsHwDYOeh8=;
+        b=FjBCnlS1PgKawjtdPTXDLtxFTuKlgsv/tmtnob96hWi/5tdr2ibj2SE8Se3kWfvsP6
+         KhEm/EppRKxNPk6Gl/ElVqply8umhXRGGKxGRuZJwpEq7EmmQu7YG6qF/jILsNtXmryz
+         oAdQdZ1IGtNARAmU8YH8fQXlpW3IF1rNjUocAovkS3uQnGECvKTCMOdvqwrk3IIfUX6o
+         WlyeAg7WB8i0pomP/ITz+DNRUMvp2Hvn+xvXGKAGVosCbNICdJBeObJcr8caeLDdLgRr
+         PrA2EkFwMnPX6bAmroQWgg9gStHpn/jG9thCShrKOQ1y/Bvgq99wTlCEDpOJJJHrz0r6
+         GAew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766914464; x=1767519264;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SyDoBKLlFDm6X7YvWEPRli00m3Js5BcrRAsHwDYOeh8=;
+        b=YDKzLdFhjrpafN5oQBmwf0tx2bE+kBpGIbI3oWEonxXk+Jv7APK4iXAjI9AvYiYwu1
+         xSMdI14zz8I2DM3GDMTcpdzR66dkjUE7I43OND+IW2mMZ+q8mxSp/cNbAl8p8LmxnZAq
+         yJ0o1nO2GNhF9x//n42OirJ2W8vFHsIkSuhguSvSo64+E9hBtgyCw+wJoj6crKKZ8HNj
+         8epnkZFoDGWt4P5syiPaHOmxTrcvBsV8SbDbtdV9fsLALIeDV8rqwTahizperuUmCg89
+         EHuEKfeFXlRV9iyRgVCmWc2Gt5f48bIaPKu2/X3np1SVr8wGi6kWgAc8sgygyjBfzcNH
+         X5EA==
+X-Forwarded-Encrypted: i=1; AJvYcCXImzbKvUbK73hLjxDVQ1nc52HtF10alm6H7RiiN4DSYDOveqmAGjAwneFrzti7c+gCj4yX7IZ4z4pbmqkSXA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxur+V7BYGzTQLgTgSMo3pTE9/k70iqQyxeO3+Pt8FMTiH6XoLd
+	WwY2vc3X4mxDuZodOkRsRYt0OZAfMREd1sSZSoMBdqZm5ovUQDKLAbx0se74DuawnWYd2M5/Stq
+	vU35baTeL2cIuUOq2Sg==
+X-Google-Smtp-Source: AGHT+IHo7pCHMAblDTgfHFeEja9soRj4lOWXPk5g3V/fIQz7xk3TJoKa3VyvAsLqN/oKHDmyKURQ3hBGHwEaI0o=
+X-Received: from wrbgv17.prod.google.com ([2002:a05:6000:4611:b0:430:f5d7:f015])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4711:b0:47a:9560:5944 with SMTP id 5b1f17b1804b1-47d195c1a71mr339326945e9.34.1766914464172;
+ Sun, 28 Dec 2025 01:34:24 -0800 (PST)
+Date: Sun, 28 Dec 2025 09:34:23 +0000
+In-Reply-To: <20251226-drm-gem-safety-comment-v1-1-5ae56d8194b9@ik.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251226-add-entropy-v3-1-a3440823a07d@google.com>
-X-Proofpoint-ORIG-GUID: 9RIQ83-G8yXu--MYV20SFRRRWPr6-xg5
-X-Authority-Info: v=2.4 cv=XaSEDY55 c=1 sm=1 tr=0 ts=6950f4b4 cx=c_apl:c_pps
- a=YrL12D//S6tul8v/L+6tKg==:117 a=YrL12D//S6tul8v/L+6tKg==:17
- a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=1XWaLZrsAAAA:8 a=DDQqT1NntRmF_x34F-gA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjI4MDA4NSBTYWx0ZWRfX+NGlfhqj+NPW
- faRhO0JLR2sEgJGBWbrrdRpw3Aglw9Rsi229ZoYEhjo2or1jSpGHPnz+WjHPi+ys0pBWkzWU30N
- tj0wmHbBfPbBPyOUOu81HN7QUmwIfSnH9tV+L/cqk3GRNPIh6k3g9u9dtPfRcOIE9xwA14i4xt7
- 4mtEjz5KrvmlGkEpgBzTs20fhe/7lNrdtkeXXFrxCa693SQ2Xr8c5AEO7zXR4wcddDdrlNS36j0
- 4tErB/rkGwml1NBW+i2d6Szp/HdEu114hjv0q+9MKT8OVC63UINgcYO9ugZYb+JndM+XbE82rBU
- Fa/ekeuyX/7rGx2t+xI
-X-Proofpoint-GUID: 9RIQ83-G8yXu--MYV20SFRRRWPr6-xg5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-28_03,2025-12-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- malwarescore=0 mlxlogscore=923 clxscore=1030 adultscore=0 mlxscore=0
- suspectscore=0 spamscore=0 phishscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512280085
-X-JNJ: AAAAAAABiQYC7p6Y3CEwCHaVhtKWQknv6IycEYWAJnLTL+WqsXl3G+ee4Sg+Sv/K0dO7RIiqfeS/2+/Sk4kALSJ+nR1ujJmcm5EsqTFHQfYugV5EMdguRs0N1PYoXTIQwKbzNf8wd4WzHUayXJOCxOBl1HXHv6ONArNbb8ElqyBb3e6gSZuCViDNckJQjdh8MjE905zX3e15h+q2nK9VtfC4SbTnWX1y4gfRuvXHZYYQh253GHJxR9tIQjzrp3lsXviC8Ql+rxGq4HUZLSNpkJ2hKwTrzqf32ky+0Kw/8z8GtvTHoKdVXVca/RBAwaL1+Y90iGfZw3wJKdC31tch+AjWCTlx33/nDzkL/RYAjBMC2DdPQ77v6Gw0vNyTn9XXmUx/JUPRO6WtkH0YajiiXc8tZodBv39YcuGO0I4phZfl8WdrKymV+JKTe74b2rwzA8AW9/PGiFijNImK7ckaTWeJV4LDiPrL6QvWyUI1P24Jz8KC18m/Ky/yjw1zy4pOnmUICDxXjdXyTER4Idi+tSvQvmeZM2Dfn3oOXLcA2VmWVOhV4Um+HNbwTJdiohIobFWZFVj5nVa3JQ0EjJzpDMmm/1wYMm3F9X21/LgruCfx316t886AJMcXO6T6JhswkomzJ7vk1Vnlusq36LumiDLqxb/7CwvQAn1/cu6FwJT5R1ePm1K9NteFMu11tvYC/PPm17U7VK69XbVChurHnAgeda7dr9jfIn/aqDy9gyI/lUf7hCTK1Y3nTIE29A7i/OstJd1VE80=
+Mime-Version: 1.0
+References: <20251226-drm-gem-safety-comment-v1-1-5ae56d8194b9@ik.me>
+Message-ID: <aVD5n5taYlJuMGKM@google.com>
+Subject: Re: [PATCH] rust: drm: Improve safety comment when using `Pin::into_inner_unchecked`
+From: Alice Ryhl <aliceryhl@google.com>
+To: ewan.chorynski@ik.me
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Dec 26, 2025 at 07:15:10PM +0000, Matthew Maurer wrote:
-> +/// Adds the given buffer to the entropy pool, but does not credit any entropy.
-> +///
-> +/// This is intended for use mixing in data that is likely to differ between devices or boots, but
-Yeah, I agree with Alexandre here. I think this would probably be better
-written as: "This function mixes in data that is likely to differ between
-devices or boots". Or, "add_device_randomness mixes in data that is
-likely to differ between devices or boots." If you would prefer to avoid
-saying "this function".
-> +/// may otherwise be predictable. Examples include MAC addresses or RTC values. This slightly
-> +/// improves randomness in entropy-constrained environments (especially common for embedded
-> +/// devices).
-> +pub fn add_device_randomness(buf: &[u8]) {
-> +    // SAFETY: We just need the pointer to be valid for the length, which a slice provides.
-> +    unsafe { bindings::add_device_randomness(buf.as_ptr().cast::<c_void>(), buf.len()) };
-> +}
+Thanks for the patch!
+
+On Fri, Dec 26, 2025 at 06:22:36PM +0100, Ewan Chorynski via B4 Relay wrote:
+> From: Ewan Chorynski <ewan.chorynski@ik.me>
 > 
+> The safety requirements for `Pin::into_inner_unchecked` state that the
+> returned pointer must be treated as pinned until it is dropped. Such a
+> guarantee is provided by the `ARef` type. This patch improve the safety
+> comment to to better reflect this.
+
+typo: This patch improves
+typo: word "to" is duplicated twice
+
 > ---
-> base-commit: 008d3547aae5bc86fac3eda317489169c3fda112
-> change-id: 20251029-add-entropy-f57e12ebe110
-> 
-> Best regards,
-> -- 
-> Matthew Maurer <mmaurer@google.com>
-> 
-> 
+> Signed-off-by: Ewan Chorynski <ewan.chorynski@ik.me>
+
+The Signed-off-by needs to go above the --- line. Otherwise it's not
+included in the commit message.
+
+Alice
