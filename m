@@ -1,193 +1,101 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-bc0f.mail.infomaniak.ch (smtp-bc0f.mail.infomaniak.ch [45.157.188.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF24227B95
-	for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 19:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFD525A2B4
+	for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 19:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766948701; cv=none; b=QmNF7hlWD6KHAnQIIvh1OFuLFyXI5zG2T18wfJQvTqqBap7YlIJLcgrC6gQZiOJ4aKyoPKx119DCkswInz+5wzCExw9r8Ed0NyxE3Purg36Nmv2IvkgyEFDdTMr3wdtEnxp3VkMfb0WEOmw1bPNgwZOMQp7uWVI/IfX7FgsHw+8=
+	t=1766949315; cv=none; b=JSXTPLv3A78df9HTbRIQkk5D94eb+rB7kapqbQ0xesc1ZQvl1dflSu2+cLPne/xhC7PgA2/4wzHz4wXBcsACS9EqLDebFFq39WX7ESsNN6pniyI4JQimrIlFy6sAiyVrPHdDdyOReFwlw6QaP5lbI9kaXuTeEja0+Eh9x+9u/co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766948701; c=relaxed/simple;
-	bh=oHmcngjeDbHAFgo/spGWsRBa/A44n0CqL34n3KYDrwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DUDDpHnpnfGJxJH8bKEcfwx9/47sn8BHA6t2oEAF5ZMVNA5gPvorwUbjDDrqf70lyH70dNUopHzXs7uZMHMptFhC00dg6IIUEIYTui3/83gWtg6G5MBp4D59s06NpkAUKzFWjJ+eHFEVxQgUzshLJEWHMXJnQdGy5lLVic29WxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UV8LHOcA; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766949315; c=relaxed/simple;
+	bh=lHUeD5MRnJF79g8T5KfNq0B2eM2rTMYIWkpVfK9VRv4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=noIOkeHlKl6CNs1IWC/N6rJeKwXpxMUz2iMLX1IQ1BWeaSjeJcKBGkx502EVG2SbP8NDrGhK9g378J3AMP8n/SZaayPxabEIAlAYnyZXg58rCzkB/yXN3cuOyDFCPV7tQOxr5Lgsnm5R9uWDm3MjHTV8av9c2NUWzGR8PEnGDA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me; spf=pass smtp.mailfrom=ik.me; dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b=ZCXXYdRB; arc=none smtp.client-ip=45.157.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ik.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UV8LHOcA"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a081c163b0so80232615ad.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 11:04:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766948699; x=1767553499; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fUYFHDOuiRYwKUAwwmS4Gjlych8GNMSA94NitVPPGdQ=;
-        b=UV8LHOcAmCQtZUBt1VgLqodgulXYo1ilLVSqyNA8vRblK+NaS9wtVuxTpCRV79rTWO
-         2NmfO50Xj5o0ZbNZC8litvy/bISk2VyakCmx9FOnNMyUdHEuKz1xMSXvSli8HpNkAEud
-         4quY54kOv/XRAWJKOa/eS76H6xh0dQPF1hpcUtn3mx2aWBNgi2VjwZlho3VWCJjbnvvn
-         EXhc+i6w58PT35X+X/FTyZoeI5/n+kKFTrPI5kFArIn2Ug3j1PWIoZ6TQheJ8WrvxZPj
-         tUM9irCOHYZ2/aTkCS8rwZk5gWTcTVZ4YZ5xGAw2lya6AIJ9rS6GauzL+wGUblVYxndY
-         SqiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766948699; x=1767553499;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fUYFHDOuiRYwKUAwwmS4Gjlych8GNMSA94NitVPPGdQ=;
-        b=DlmO3V5TB2IN4YxQsY3yfT+Cp/ryKmVBHqHbdUz3/PEl/kBinN8hQ70B441gGOvjev
-         +UVdmmC6h6h0JAwvQ0V3BdrhX3oQaShMHGUSedJN6M/LXT90clQ6BQRbfQzRofuK8kNR
-         zcn+Vt4lMR3F0gcUix2sLGVV2/Yj2J/u7feRisMA7Wg/aTEwa8AWh/3A5NentM4WCFs3
-         n1DAy5qx8/QPPcnbZKLSaceQqji7P1DZ0S0JW1nACURTl5viEv2wN8v4pApqRCaeihcb
-         oMfjXe8RAZb0vx1GcZFDlvHxYqYDaO050YKvJWPpqpNNbkqYC9tQCrj7xbB6ts6P7GRY
-         55NQ==
-X-Gm-Message-State: AOJu0YwRs4oT5/yalKxjIZzpIn0VriDz4YXkGSoMJYmYzvuaIJRTnVSb
-	tNyWmSPIgNqL/Cluu6WjSGvQjpxj+S3ZwhKWcFtDiCi5BAVpoqfjlv//2g/ey6Wm
-X-Gm-Gg: AY/fxX59xwga4wc1VLFGajyv1fEimNDVyEsOPJNtux8P0vGun89qUPHXgHT41jpCdAU
-	4m7moaYdyXLsVWW5x7zSpfAIJvrgk8UWn3tOeMtjn5shMQ6e4w8ybz0u2IBCsXVuwc62lXr3RZI
-	kpOUSTPNDuFRLUgtVcJ0+up2Vjvdg5P8AM2DU58jq/NSbQDdETISpKZflB8rtztJfzV2tsmi5M+
-	iwx3XHNPlDVSdctMGAxSOrYaYuiqI675aK1FUw+4b0QjX2a3s+j/jX3GAFEcfs5MHoTE3K077Bv
-	zoobH4T50PpnfhWQQzn3yRh2jSFqLgXY/oHdzHGIQHWzsC08lrcAfSNEoMlKH/JLW25aY/GMOww
-	A5v5lqpveJ550l0mdgflWWF0M6qp3/lNbKKyXM0x7N0Mm3JRgpvdVVSK0cmsyWPFcApERe52OtV
-	bSSp8bcqezMBk0R4wS66qQzMNRyrlWotqQNjqXjyidAa7e81DBIHDNG+Q0iSXEMeDajZqGthXba
-	UTB1ndUK2yp5m7dCZ8=
-X-Google-Smtp-Source: AGHT+IEV0EDqDAU6d1v3pPvQoK+rtdL3oCZPDjBUC+Z8WhvMYd15brIjBQO3OkqZOm3x0mKC1bPn3w==
-X-Received: by 2002:a17:903:2cd:b0:2a0:e532:242e with SMTP id d9443c01a7336-2a2f220dd7bmr267730495ad.11.1766948698803;
-        Sun, 28 Dec 2025 11:04:58 -0800 (PST)
-Received: from codespaces-1f88e1.m2fxbej512jepnsor2itp05j3d.ix.internal.cloudapp.net ([207.46.224.81])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e0a19d8sm27194103b3a.42.2025.12.28.11.04.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Dec 2025 11:04:58 -0800 (PST)
-From: MCB-SMART-BOY <mcb2720838051@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	MCB-SMART-BOY <mcb2720838051@gmail.com>
-Subject: [RFC PATCH 0/1] Rust BPF Verifier Implementation
-Date: Sun, 28 Dec 2025 19:04:55 +0000
-Message-ID: <20251228190455.176910-1-mcb2720838051@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b="ZCXXYdRB"
+Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4dfPbQ6qLkzHP;
+	Sun, 28 Dec 2025 17:15:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ik.me; s=20200325;
+	t=1766938546; bh=b/YT5QfITejOLu98359QsjUWwXuK2a2Y3ksGRd/9OBA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=ZCXXYdRBjm+0+ibuqg7IeaH6O8Cam9uRe7lOPAIpFhCms3OGB8cUsvHOxZy6vibZt
+	 57wCH3DjmCKzzkXrNxJXpvJWmMaSSvZbfw29hcDN6+S0KVvlpsSXX2W1Ltb8kVx4Gm
+	 7xnJjyBBo7vRJQGks1awRK8vaGWpUyuTQiSh/wp8=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4dfPbP0sgpzCM6;
+	Sun, 28 Dec 2025 17:15:45 +0100 (CET)
+From: Ewan Chorynski <ewan.chorynski@ik.me>
+Date: Sun, 28 Dec 2025 17:15:23 +0100
+Subject: [PATCH v2] rust: drm: Improve safety comment when using
+ `Pin::into_inner_unchecked`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251228-drm-gem-safety-comment-v2-1-99bb861c3371@ik.me>
+X-B4-Tracking: v=1; b=H4sIAJpXUWkC/4WNQQqDMBBFryKz7pROMLZ21XsUF6lOdChRSUKoS
+ O7e1AuUv3of/vs7BPbCAe7VDp6TBFnmAupUQT+ZeWSUoTCoi9KkVIODdziyw2Asxw37xTmeIxJ
+ pxbW+llgo49Wzlc8hfnaFJwlx8dvxk+jX/lUmQkJtWDfDjdr61T7kfXYMXc75C+sQuJG4AAAA
+To: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Ewan Chorynski <ewan.chorynski@ik.me>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1766938545; l=1495;
+ i=ewan.chorynski@ik.me; s=20251226; h=from:subject:message-id;
+ bh=lHUeD5MRnJF79g8T5KfNq0B2eM2rTMYIWkpVfK9VRv4=;
+ b=CACRqhL3LbN6BYXZKRCNwHJ3X4JOSfmX70iL/CSagyz/MxiCA92XRHEkQzxi0xPAjDmGy/bCF
+ aFO3WUONh7+CNfbyCylDq6HsmmZo+haiqH8DU9q9R4D3iQgFQMhqMYI
+X-Developer-Key: i=ewan.chorynski@ik.me; a=ed25519;
+ pk=Qzaw5giL/U3IFVpYyrZjtONgXMAOpXYyUsXRpiS8hUQ=
+Feedback-ID: :31e4c416764678c:ham:e74197f626dda86
+X-Infomaniak-Routing: alpha
 
-Hello Rust for Linux and BPF maintainers,
+The safety requirements for `Pin::into_inner_unchecked` state that the
+returned pointer must be treated as pinned until it is dropped. Such a
+guarantee is provided by the `ARef` type. This patch improves the safety
+comment to better reflect this.
 
-I would like to submit an RFC for a complete Rust implementation of the
-Linux kernel's BPF verifier (kernel/bpf/verifier.c) as part of the Rust
-for Linux project.
+Signed-off-by: Ewan Chorynski <ewan.chorynski@ik.me>
+---
+Changes in v2:
+- Fix typos
+- Add Signed-off-by
+- Link to v1: https://lore.kernel.org/r/20251226-drm-gem-safety-comment-v1-1-5ae56d8194b9@ik.me
+---
+ rust/kernel/drm/gem/mod.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-# Overview
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index a7f682e95c01..ed11d9c0f427 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -210,7 +210,7 @@ pub fn new(dev: &drm::Device<T::Driver>, size: usize) -> Result<ARef<Self>> {
+         // SAFETY: The arguments are all valid per the type invariants.
+         to_result(unsafe { bindings::drm_gem_object_init(dev.as_raw(), obj.obj.get(), size) })?;
+ 
+-        // SAFETY: We never move out of `Self`.
++        // SAFETY: We will never move out of `Self` as `ARef<Self>` is always treated as pinned.
+         let ptr = KBox::into_raw(unsafe { Pin::into_inner_unchecked(obj) });
+ 
+         // SAFETY: `ptr` comes from `KBox::into_raw` and hence can't be NULL.
 
-This implementation provides memory-safe BPF program verification while
-maintaining 94% feature parity with the upstream C implementation in
-Linux 6.18. The project is designed as a #![no_std] library for seamless
-kernel module integration.
-
-# Key Features
-
-Core Verification (100%):
-- Register state tracking (11 registers with type and bounds)
-- Memory safety validation (stack, map, packet, context, arena)
-- Control flow analysis and reference tracking
-- Bounds analysis using Tnum (tracked numbers)
-
-Linux 6.13-6.18 Features (100%):
-- Load-Acquire/Store-Release atomic instructions
-- may_goto bounded loops with 8192 iteration limit
-- Linked Registers for precision tracking
-- Private Stack per-subprogram isolation
-- Fastcall optimization for 7 high-frequency helpers
-- BPF Features runtime flags
-- Extended Dynptr types (SkbMeta, File)
-- Call Summary caching optimization
-
-Helper Functions & Kfuncs:
-- 211 BPF helper function validation
-- 85+ Kfunc verification (synced with kernel 6.18)
-
-Advanced Features:
-- State pruning with hash-indexed equivalence checking
-- BTF integration (full type system support)
-- Spectre mitigation (speculative execution safety)
-- IRQ flag tracking
-
-# Benefits
-
-1. Memory Safety: Rust's ownership system eliminates use-after-free,
-   buffer overflows, and null pointer dereferences
-2. Maintainability: Clearer type system reduces bugs and improves code clarity
-3. Performance: Zero-cost abstractions maintain C-level performance
-4. Testing: Comprehensive test suite (900+ tests, all passing)
-
-# Implementation Details
-
-Architecture:
-  bpf_verifier/
-  ├── core/       - Core types, instruction definitions, error handling
-  ├── state/      - Register/stack/verifier state management
-  ├── bounds/     - Tnum arithmetic, scalar bounds tracking
-  ├── analysis/   - CFG, SCC, precision tracking, state pruning
-  ├── check/      - ALU, jump, helper, kfunc verification
-  ├── mem/        - Memory access verification
-  ├── special/    - Dynptr, iterator, exception handling
-  ├── btf/        - BTF type system integration
-  ├── sanitize/   - Spectre mitigation passes
-  ├── opt/        - Optimization passes (call summary, cache, etc.)
-  └── verifier/   - Main verification loop
-
-Dependencies:
-  - bitflags = "2.10" (only non-dev dependency, no_std compatible)
-  - criterion = "0.8" (dev-dependency for benchmarking)
-
-# Code Quality
-
-- Zero compiler warnings
-- Zero clippy warnings
-- GPL-2.0-only license (kernel-compatible)
-- Comprehensive documentation
-- Benchmark suite available
-
-All 900+ unit tests and integration tests pass:
-  cargo test --all-features
-
-Clippy linting with zero warnings:
-  cargo clippy --all-targets --all-features
-
-# Compatibility
-
-- Kernel Version: Linux 6.18+
-- Rust Version: 1.92.0 stable
-- Feature Parity: 94% with upstream kernel verifier
-- Status: Production-ready, suitable for Rust for Linux integration
-
-# Repository
-
-Development repository: https://github.com/MCB-SMART-BOY/verifier-rs
-
-Complete documentation including CHANGELOG, architecture details, and
-submission guidelines are available in the repository.
-
-# Request for Comments
-
-I am seeking feedback on:
-
-1. Architecture: Is the module organization appropriate for kernel integration?
-2. API Design: Are the public APIs suitable for kernel use?
-3. Performance: Any concerns about runtime performance vs C implementation?
-4. Integration Path: Best approach for integration into Rust for Linux?
-5. Testing: Additional kernel-specific tests needed?
-
-The implementation is complete and ready for review. I can split this into
-a logical patch series if that would be helpful for the review process.
-
-Thank you for your time and consideration. I look forward to your feedback.
+---
+base-commit: 6c8e404891e1059564d1a15a71d3d76070304dde
+change-id: 20251226-drm-gem-safety-comment-1152e457575f
 
 Best regards,
-MCB-SMART-BOY
+-- 
+Ewan Chorynski <ewan.chorynski@ik.me>
 
-Signed-off-by: MCB-SMART-BOY <mcb2720838051@gmail.com>
