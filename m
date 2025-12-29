@@ -1,184 +1,234 @@
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB74830FC1B
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 12:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D87824BD
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 12:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767011404; cv=none; b=JxeBtIug5CKAp2lhUlykGvFmYrmY5xRW6dezlYUdApPqKol/O0ALOMIJKwsDq5b2Np7PVEgYjRXXAcOZnofbCxHokmHindVoOaFLkvLqro3+w7NQZN57fslnBeFSMVNGGxuESQO1hhwrDPGgruP4FIsJEH9/6LKojCSEX3IXqFw=
+	t=1767011476; cv=none; b=dPhwUbAjUk24vewL2BTT2g6aYI1ZgeZMX2LOZ1nBEmvDE3Okz900Km09ejxrtKwSaFxMFMRPNYuI5Aj4WD7ohieVBz5zoWdcvbzEGXLgVqMSLagMYyQZO+xztL6womGwK/ZeOeaYne47eoefmKpRk05+qTTdU/khfqFxEZ8O6wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767011404; c=relaxed/simple;
-	bh=vrqEsedEviIsFrrIh1wUitiCHhac8EWTFKPLIcSZYPs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VVGV/qaj2n8HxBs9GfH2P1cCEOThiacb2x9UxxVcJ727In3S19ANMPZaMW82K2FRUMQ3q0xwoK/KTTzIs0hcXbhGvkAmrsiOUmQbVRPylMjhHZLGuDzzhYT/ZC/TD64y6FOGGVew97kTDFV34lJ9MInDIkDhHBNkeqYmqkP++ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CVcHFdbA; arc=none smtp.client-ip=209.85.161.48
+	s=arc-20240116; t=1767011476; c=relaxed/simple;
+	bh=xfYI1Yf9yHBXxm2JnHiR2fuXlsRqVTmDRHcJ5hfM9PM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l9rD/vIYukoO/bgko6HG6agHHnTy7HU1xkq3g3LG1UgfHgZsc1LjS8Q1OSQBXlG/xOtujIblCwxcG0WI73dOwM0bdPvsmdsBT+BM+MxebP4UFXB66+MeRgfQgMEZH6YBvVGKAQ4DMgY9jYMr/K87b+30xSh9sSqcbQg4VulPpKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y93KXOi/; arc=none smtp.client-ip=209.85.222.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CVcHFdbA"
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-65cf3d51c95so5120115eaf.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 04:30:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y93KXOi/"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8b2f2c5ec36so1034014685a.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 04:31:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767011401; x=1767616201; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767011473; x=1767616273; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nNlRh+FneH00PSxZ8P4vqxaIgbthTMHFAwc5+WdXwbg=;
-        b=CVcHFdbAXlrs+xsm3/mHidGxXilYmOzPW/4hN/akMR4evDwrPR2WGmb4WYj7t2mUQM
-         nZpy1GfhTypV9aIBOhi22iglQC2zqZr0yAMD14ms+yCpHfv36NOw9tivMwXRkymselpE
-         OzSNayS78uUESDvHCJIYQkRfwtL61cHv+am7iSL5nS8Ws4dRhYltgD+mn/S+gmNGukNX
-         PRiXdiGGLTlyxKF1FS2/aFG/xmrAlo9+AwIvV8iAKh0Y/7R7iv8Jmg1EmeP2wCXb0R4F
-         YAuxiDW0IMNGJWPvu1YocSoa6E3Lb9VToZ5w9OZxI/a/WIMt/l62PiFs+SEx4rEuJXKL
-         WnHA==
+        bh=aOtsyn7aq1K+DNubm31+7aAVKV+SyiiRdi3Irr1KXiY=;
+        b=Y93KXOi/9h6HptKuMLROg9ZSMRItkuYZ7CMYSurRd92NZ6P199U+LSPmx5OI069GU1
+         0tJR5P6744ovJC3vnCZBv10Ud5N/0ljdI1ceuwYgOJafIlLtgJsnTwrpWALV3vZOSIiJ
+         TWf9MKOFjCJN7suefk8s80rL/bUgcF/VQC4YiBJYp8CkmUQ3gA6tJ6EZB2TVPGkUB6IN
+         gb+3Q07Wp9mLXF1OlefnxVAemxVCtV8tnYrjNtovYAJ5Qm53z6Djlh1raVXATfJFD7Tx
+         RpcYhr3/WFMoIy7NtAmyeUREyC1bkdRRPMBzm3mDN9KJ0DqFcqiqXCuttqhrPnj1b7Tu
+         sh7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767011401; x=1767616201;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1767011473; x=1767616273;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=nNlRh+FneH00PSxZ8P4vqxaIgbthTMHFAwc5+WdXwbg=;
-        b=kgya/P5Hrd2EXTlonK9MxZAoCY+5jeTSCqTIWvaRBxx1ZsW14+nYN3rCkEzbudYPJf
-         S6y3l/XbqT29DE4MJnkyrj0vDJdnqfSK6h8cXszs86QZ1QI0cAnlz8aprFmCMG6uKvUq
-         orv6/hWP4tWRJ+vjO0ESMPP7WZADSQfE/xzaMEycVqY/yfqeqmefc3CUojtMs4faNPrO
-         i7IA+5i+/hvW6RAVdgFR6z7yG2eGSTCppSSMN8NZA8nap97LCcUjQVN31/LiOB/v/QJU
-         o/ansFyutK4QzK+aHlgIJUKhwHyrr0k4lHLi07X1s0y8LVKGAuu7ASEP4gb3VefzHUZr
-         Hy5g==
-X-Forwarded-Encrypted: i=1; AJvYcCXw3IZKYjuV7ZeoBJtzzAh6sDDuUfpai2+TmsZXVjAxO8clMrJom+xq+rpdi0oO/D3er7OcKAai4OpJ7dxrAQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxY299xoF8dLUn3Ai4l+8H+qm5TXx4vauWrEXYXNvpexLDiKeh
-	W4awaTHcq4OaUg+Yb2cLeCYzft973a09y4N5MoZ54yETVaJe3s2HEqNpD+OjbXiL9cMkxJfJe27
-	7h0BzRj+IsoeeBtbiX/U/pwXOXZO/DxI=
-X-Gm-Gg: AY/fxX7Zw9buQaoQQqcKzQrUzGKlQjTaWZCJqVsAjAgaeeGGuuPbPcq8V8NF9AOtMMO
-	q4zrfIEhUVNZ35IAbQD2PPNvcKQ5uTAdpYdUblVb/lFj1llbeQRqf5Q8/c+xePaeWVFd+Yxv9fb
-	jzMgAVf/VbyAgJEZrX5Y64A/H/9Bwn63bHUV7FPBP1y3jIf4mvgq9r7pPbeaCf9MPydc9MrXW1Q
-	PXlKINtauYDudKwy2QuJQyaEZytdf6c55GX1AeN8hQLcjN79kgLpcduFFfrlGULqPb2O6k=
-X-Google-Smtp-Source: AGHT+IFv9e/7aJqcQPz+g/ACAA2KWN58Q5VLbp7DW/p83i8XMHNJzhEzH4BHF62jWLN8bcWxLDB36ri/VDXl2M9P27Q=
-X-Received: by 2002:a05:6820:22a6:b0:657:48ac:99f4 with SMTP id
- 006d021491bc7-65d0e94d523mr11981668eaf.1.1767011400613; Mon, 29 Dec 2025
- 04:30:00 -0800 (PST)
+        bh=aOtsyn7aq1K+DNubm31+7aAVKV+SyiiRdi3Irr1KXiY=;
+        b=MrGvwxl/eehQloQMX8kXTpMaJ95olUX07V9pVI8bm/slPR0ZXsn8Ek4FylJ7FdXwis
+         9X0MfmkOP/oR4TusQfCe+c1McP/TINqfsqtlQZK3+KQKyXznPlyZENywHpfnZHpJRtxh
+         GRE89jJr6tzOU6q9npOQ1WLa01ncDyPpeIofEigW7TmOOD1BOtcaC317pMSXNnOcDB3e
+         /VRxU1DZOsGhZL1axl4OCOkGkGeQduDSY+5W06cWYpHomm6mOQEVwtZRnefA6u8tQM0P
+         RSXnGWhm9QHvZXpQ5RYZD9TFWDTQ1OcIQQ3747hlZjhcoxDhU59qb9t4cEfIOjtgZMOJ
+         GESw==
+X-Forwarded-Encrypted: i=1; AJvYcCUByc/wFwBQZrCSP4jAivuLCsRg7kSMvFac5UUXrTvOIn3+/3qK0wZs2fmXvI1VGOrb4Lksg5pul2HDf9uQ7w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjLKfF+JAekKY7YnIluP+c1AOOEcPWuyiKYTkg7Gt75gSqz2aV
+	AAtmjPU78BBjUoheq44fD6Nd8SEvJuGeACd6MZBGx28dUIUrYC/iUoYe
+X-Gm-Gg: AY/fxX6X68GuMEXg+NTlpNaKvFJU/RHB0MTKSmaMiVux0i27H/1H2GJL46PvfyMw5V3
+	1tQobAtwXa1M/Vtao3o2Xc7sYTW+NvoHqeWAGe2+7ZF5o/5QLb+S747+G7VlVSdsS/FgburYqXv
+	Mi0FR0csUCfIzXDPgCK4/wgdYQukV4n97or6IUPD+XVKoltDRgvlEYM9cq1b327QsDukY6ypjlg
+	TjNH6zOpAQz2voPs6VrnZitCHLXtLbU2gqyDYGZaNTVogk2qd/YrCXWaHSmy4CtxItIdBjJtExy
+	/yUFtPIAtEJ5b6q9V059EKyoZWssrtKkyHq79MabV2lP+w4dJB/nBSvEF3khmTyrwKEVY0XARTO
+	ZVVQ4KzhRs9iKYpEyjg+PdnGSLjPUzTIPV3xtogtTMwWpft9RD393RdOQfwfnJRoql+6vZgJTVq
+	lTyi76fsu+CDB5rFJ+Hb1eQETiwURltiQqOQxJDyBCX7K/7XsvOM2e5EI54ssG5JxkV9u0B4JPh
+	VyQjsW/9HyBLKXemuze+8AGbw==
+X-Google-Smtp-Source: AGHT+IEhYjOCkQEzSJqCVdHi1SPZJ12UkCaHTRSn6IVFtQOkm5SJ1Ixn7r9PWJiwfTUDOHlGwZxbxQ==
+X-Received: by 2002:a05:620a:444d:b0:8b2:33f5:fa49 with SMTP id af79cd13be357-8c08f6586camr4370968985a.14.1767011473524;
+        Mon, 29 Dec 2025 04:31:13 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890105c3b34sm54938736d6.48.2025.12.29.04.31.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Dec 2025 04:31:13 -0800 (PST)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CB95EF4006E;
+	Mon, 29 Dec 2025 07:31:12 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Mon, 29 Dec 2025 07:31:12 -0500
+X-ME-Sender: <xms:kHRSaVqidMABfHQUp8uMu423BFTlgR_wh6vj7-B5Hhoqo5MYxCKchw>
+    <xme:kHRSaeKb69cHrVJAzgU3kmY6F26q5brA4FIewpFnacNk_Ii_bKQORrufTxqiiB6az
+    _NVL7kdICDBVvVaVooqw7GiZ7-gcDhAjX-RZCC1fGSj3c7OucPnhis>
+X-ME-Received: <xmr:kHRSaQN2oOZ5mNDhWjOFEHnqA9Mb4_8dnW1-8yf5mE3VIDTYk2dbM7hTug>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdejjeduhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtth
+    hopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhr
+    gheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglh
+    gvrdgtohhmpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgt
+    ohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrg
+    hrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:kHRSaTo9x87c4OzD2dGTcnj_lgLaxZnmEswDXIMRTTqpClSdA-x4Rw>
+    <xmx:kHRSabIQPUPcPxucBLus56yVAq9arnBFwdAolGoSRE-zl75nigzWtg>
+    <xmx:kHRSaS373dvbzxw-4Y0V7UM2brzFPYxr24tGsLv74vMETXQrmtQIIQ>
+    <xmx:kHRSacWtIWiZNPe_ILyjexDszssu7HmUtZ8sCLUGw-fd0bNxovlTbg>
+    <xmx:kHRSaVxCktAo3ol-qKFVb5RQTtgQ9lGMPKBPXVzE4gAeMQIZSuGv61l1>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 29 Dec 2025 07:31:11 -0500 (EST)
+Date: Mon, 29 Dec 2025 20:30:58 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: ojeda@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
+	lossin@kernel.org, tmgross@umich.edu, acourbot@nvidia.com,
+	rust-for-linux@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v1 3/3] rust: sync: atomic: Add i8/i16 xchg and cmpxchg
+ support
+Message-ID: <aVJ0gvxe0nYtOXAO@tardis-2.local>
+References: <20251228120546.1602275-1-fujita.tomonori@gmail.com>
+ <20251228120546.1602275-4-fujita.tomonori@gmail.com>
+ <aVJzlTWx4ybMi1ym@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251225-try-from-into-macro-v4-0-4a563d597836@gmail.com>
- <20251225-try-from-into-macro-v4-1-4a563d597836@gmail.com>
- <DF7HDE1T2BOS.33WUHP49WWO1M@kernel.org> <CA+tqQ4JPMg7CGq7YiN2EwzzQBC2grRE5OFgRQTws+xh8UbzqEw@mail.gmail.com>
- <DF8QDONK951M.10NYLJ40UNNY1@kernel.org>
-In-Reply-To: <DF8QDONK951M.10NYLJ40UNNY1@kernel.org>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Mon, 29 Dec 2025 21:29:49 +0900
-X-Gm-Features: AQt7F2oq3PqcyMSgNLEMYRMylRuI_V-ZWEZMGEC6qCrS17Ex_bVyXrrTY8Xfgh0
-Message-ID: <CA+tqQ4+Xp_Uv+O32JgCyN0vB-AJEaJdUWoWDOx0nTogeiDbj6w@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] rust: macros: add derive macro for `Into`
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aVJzlTWx4ybMi1ym@tardis-2.local>
 
-On Sat, Dec 27, 2025 at 1:57=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
-ote:
-> On Fri Dec 26, 2025 at 10:36 AM CET, Jesung Yang wrote:
-> > On Fri, Dec 26, 2025 at 2:40=E2=80=AFAM Benno Lossin <lossin@kernel.org=
-> wrote:
-> >> On Thu Dec 25, 2025 at 9:37 AM CET, Jesung Yang via B4 Relay wrote:
+On Mon, Dec 29, 2025 at 08:27:01PM +0800, Boqun Feng wrote:
+> On Sun, Dec 28, 2025 at 09:05:46PM +0900, FUJITA Tomonori wrote:
+> > Add atomic xchg and cmpxchg operation support for i8 and i16 types
+> > with tests.
+> > 
+> 
+> I think we also needs the following, otherwise architectures may
+> accidentally enable Rust but don't have the correct atomic
+> implementation for i8 and i16.
+> 
+> diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+> index 248d26555ccf..a4e5bbd45eb2 100644
+> --- a/rust/kernel/sync/atomic/predefine.rs
+> +++ b/rust/kernel/sync/atomic/predefine.rs
+> @@ -5,14 +5,22 @@
+>  use crate::static_assert;
+>  use core::mem::{align_of, size_of};
+> 
+> +// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
+> +// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
+> +//
+>  // SAFETY: `i8` has the same size and alignment with itself, and is round-trip transmutable to
+>  // itself.
+> +#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
+>  unsafe impl super::AtomicType for i8 {
+>      type Repr = i8;
+>  }
+> 
+> +// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
+> +// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
+> +//
+>  // SAFETY: `i16` has the same size and alignment with itself, and is round-trip transmutable to
+>  // itself.
+> +#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
+>  unsafe impl super::AtomicType for i16 {
+>      type Repr = i16;
+>  }
+> 
+> I can fold it into your patch if that works.
+> 
 
-[...]
+OK, the right place should be at AtomicImpl instead of AtomicType:
 
-> >> > +    // Note on field-less `repr(C)` enums (quote from [1]):
-> >> > +    //
-> >> > +    //   In C, enums with discriminants that do not all fit into an=
- `int` or all fit into an
-> >> > +    //   `unsigned int` are a portability hazard: such enums are on=
-ly permitted since C23, and not
-> >> > +    //   supported e.g. by MSVC.
-> >> > +    //
-> >> > +    //   Furthermore, Rust interprets the discriminant values of `r=
-epr(C)` enums as expressions of
-> >> > +    //   type `isize`. This makes it impossible to implement the C2=
-3 behavior of enums where the
-> >> > +    //   enum discriminants have no predefined type and instead the=
- enum uses a type large enough
-> >> > +    //   to hold all discriminants.
-> >> > +    //
-> >> > +    //   Therefore, `repr(C)` enums in Rust require that either all=
- discriminants to fit into a C
-> >> > +    //   `int` or they all fit into an `unsigned int`.
-> >> > +    //
-> >> > +    // As such, `isize` is a reasonable representation for `repr(C)=
-` enums, as it covers the range
-> >> > +    //  of both `int` and `unsigned int`.
-> >> > +    //
-> >> > +    // For more information, see:
-> >> > +    // - https://github.com/rust-lang/rust/issues/124403
-> >> > +    // - https://github.com/rust-lang/rust/pull/147017
-> >> > +    // - https://github.com/rust-lang/rust/blob/2ca7bcd03b87b52f705=
-5a59b817443b0ac4a530d/compiler/rustc_lint_defs/src/builtin.rs#L5251-L5263 [=
-1]
-> >> > +
-> >> > +    // Extract the representation passed by `#[repr(...)]` if prese=
-nt. If nothing is
-> >> > +    // specified, the default is `Rust` representation, which uses =
-`isize` for its
-> >> > +    // discriminant type.
-> >> > +    // See: https://doc.rust-lang.org/reference/items/enumerations.=
-html#r-items.enum.discriminant.repr-rust
-> >>
-> >> I think we should error when no `#[repr({integer})]` attribute is
-> >> specified.
-> >
-> > Not a blocker but just out of curiosity: are you concerned that the
-> > default size might change in the future, leading to silent side
-> > effects?
->
-> `isize` already changes size when you switch between 64 and 32 bit
-> architectures. I think the author of an enum they want to convert into
-> integers should think about which size the enum should be.
->
-> They already can choose `repr(isize)` if that is correct in that case.
-> As a default, I would have choosen `i32` (but that conflicts with Rust's
-> default, so we can't do it).
+diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
+index ac689ce8ee8c..f4760e3a916e 100644
+--- a/rust/kernel/sync/atomic/internal.rs
++++ b/rust/kernel/sync/atomic/internal.rs
+@@ -37,10 +37,16 @@ pub trait AtomicImpl: Sized + Send + Copy + private::Sealed {
+     type Delta;
+ }
 
-On second thought, I've realized that enforcing an error when
-`#[repr({integer})]` is missing would prevent users from deriving
-traits for `#[repr(C)]` enums. This is because rustc currently rejects
-the combined `#[repr(C, {integer})]` syntax. For example, a user might
-want to do this:
++// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
++// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
++#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
+ impl AtomicImpl for i8 {
+     type Delta = Self;
+ }
 
-    #[derive(Into)]
-    #[into(u8)]
-    #[repr(C)]
-    enum Foo {
-        A,
-        B,
-    }
++// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
++// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
++#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
+ impl AtomicImpl for i16 {
+     type Delta = Self;
+ }
 
-In this case, the code wouldn't compile if we strictly require
-`#[repr({integer})]`, even if the user carefully picked `u8`, keeping
-the enum's size (more precisely, the discriminant range) in mind.
+Regards,
+Boqun
 
-Since we already perform a compile-time check to ensure all
-discriminants fit within the types specified in the helper attributes,
-I believe `#[repr({integer})]` isn't strictly required. Even with
-`isize` changing size across architectures, our compile-time check
-remains effective and will catch any overflows.
-
-To sum up, I see three options:
-
-    1. Drop support for `#[repr(C)]` enums entirely.
-    2. Special-case `#[repr(C)]` enums: allow them to default to
-       `isize`, otherwise require `#[repr({integer})]`.
-    3. Permit missing `#[repr({integer})]` generally.
-
-I am personally leaning toward Option 3, since our existing
-compile-time check provides a sufficient safety margin to allow this
-flexibility.
-
-Thoughts on these?
-
-Best regards,
-Jesung
+> Regards,
+> Boqun
+> 
+> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > ---
+> >  rust/kernel/sync/atomic/internal.rs  | 2 +-
+> >  rust/kernel/sync/atomic/predefine.rs | 4 ++--
+> >  2 files changed, 3 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
+> > index 1b2a7933bc14..55a80e22a7a0 100644
+> > --- a/rust/kernel/sync/atomic/internal.rs
+> > +++ b/rust/kernel/sync/atomic/internal.rs
+> > @@ -274,7 +274,7 @@ fn set[release](a: &AtomicRepr<Self>, v: Self) {
+> >  );
+> >  
+> >  declare_and_impl_atomic_methods!(
+> > -    [ i32 => atomic, i64 => atomic64 ]
+> > +    [ i8 => atomic_i8, i16 => atomic_i16, i32 => atomic, i64 => atomic64 ]
+> >      /// Exchange and compare-and-exchange atomic operations
+> >      pub trait AtomicExchangeOps {
+> >          /// Atomic exchange.
+> > diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+> > index 51e9df0cf56e..248d26555ccf 100644
+> > --- a/rust/kernel/sync/atomic/predefine.rs
+> > +++ b/rust/kernel/sync/atomic/predefine.rs
+> > @@ -149,7 +149,7 @@ fn atomic_acquire_release_tests() {
+> >  
+> >      #[test]
+> >      fn atomic_xchg_tests() {
+> > -        for_each_type!(42 in [i32, i64, u32, u64, isize, usize] |v| {
+> > +        for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
+> >              let x = Atomic::new(v);
+> >  
+> >              let old = v;
+> > @@ -162,7 +162,7 @@ fn atomic_xchg_tests() {
+> >  
+> >      #[test]
+> >      fn atomic_cmpxchg_tests() {
+> > -        for_each_type!(42 in [i32, i64, u32, u64, isize, usize] |v| {
+> > +        for_each_type!(42 in [i8, i16, i32, i64, u32, u64, isize, usize] |v| {
+> >              let x = Atomic::new(v);
+> >  
+> >              let old = v;
+> > -- 
+> > 2.43.0
+> > 
