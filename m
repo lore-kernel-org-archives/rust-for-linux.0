@@ -1,49 +1,50 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4D53164C3
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 07:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC23131691C
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 07:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766992930; cv=none; b=Ka/bekNAS2/w2iSf4SMk/ZTVCMow8uYaJdGQfhT2y2FFUaHvxf6PXyuxY9po1U8cW3QjvHDgJkmSLrCPwcoFzf1a7FfB0Khu/wHNUgWn6tGWH/hGMuqT0llfLqF+UXbwbVWka+vhuigdUDziEEKb7ZFWFwpR5lKqFNf/Hjgyg/c=
+	t=1766992935; cv=none; b=OkuKp7wAeypzHQWLKG6cxANe2+87PwH6bAQmhxwuX3kpDha20kIZYQrfZ90XT+yf889xEQnefk0t5jXkoo+NKrvlC3qsG0IQEcFKOc9ObQuFOl7mBi/ZKRj9H+T3qM7tYDo6xWo5koxavf+vEWckcdH0wDUl6sE4OdESFdPPlyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766992930; c=relaxed/simple;
-	bh=+QBBospUccZfmTE6v0wFI2D4DXbxVcfvlJqQa4X44JU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cW8Fc69ZyAHbqZn13XlxZCQh0Q3shv523rzGJT28fz0/PaKHg1iHQXBMsKtrLF6GlSt2+azUChbu7lZVt8rl54+EOHdMcbJMdjABDVjWeuMBIcZzXbPu23E9C6Apfo3wtztZvSwAW3ZP5HzKSGKJbfmVhSz0GAfAXjui82cclrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.176
+	s=arc-20240116; t=1766992935; c=relaxed/simple;
+	bh=ul7Wiujim7+rV2A7ioKw6ImD8nffjLp2m3u9GiVUeeo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B/4zkJJ9LsWNINyrYm+tjID2FcK6dg+wAdSvXMgGk/U6bO819rnja/QyFeBzNR6iT2bRjGTcBYHdzur6H/d3fuUkhcePTcsqQ7wm8ngxFLAuVA0hiE0XXWrjfhbkYGKDh06JqlG4amsnHAZBWvKVOT+Zlg3I2x/MDCrbNFHN368=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7aa9be9f03aso7180322b3a.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 23:22:07 -0800 (PST)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7f121c00dedso11985834b3a.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 23:22:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766992927; x=1767597727;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5qLsJYY7/xaBI6CP6wVdCxOjq3mGLiNZiabgyk3klCs=;
-        b=Z2TkisYLcQA/jrlBXw0+5hQpeSyWUdoxp1nAJWt7KxbDkF0TEVhT4vbc9xOyrKl4db
-         DC34RAEGMYaQCddCR4/rjRelT9b+yWdR8HH2NsdbuO2v1WcPbT+AxAsMlbrH3Rd35gs4
-         TLGwYKeXqBnZLAK+TVCqqUO/xv2+WMwPvjHFNEOeAnfiW5H1orBFdOL7pHqFHL63JmfW
-         /UzWYLru7UVaxxviNOyyB5cteYpiE8IMNqTAVELUxSgk8jeAwwC98ScK4J//Y/JlU1/H
-         hBaPoTG+y2/pqvnaa/cTRdYl2ySFd4gbpBeOHiuDVaDwcfKQJwQkOPgGiniDFZDlZpe/
-         +Tcg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJHYYDRrfORhf4kkdRjZ2B7hICFgtDopmxht6Y2gYeCJ/tGWZqhnLr4VSUkcR63RpAwbYyDEaol1hy9u9cmA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsvCTebqno9myiD5fLh9XW5ahbOLoR3h/6vLHz2qoysH3mqUsV
-	Ge3pqXlITS6WBZ3jSJHvBnSkuv+iqwyF4U4/f/TOM2ggcqjk1JDIrdmf
-X-Gm-Gg: AY/fxX62Te8ghIw3ZNXDRLNPjNFdai19Vmh1WtUIXmsFQGMrlbFrwX1E6zsP8bG+4Gs
-	6lIyH89X1IwJwKO7LgwaqS16KiMXt7sfEO9vo1pUYgMo9e4BCi1td+8kTpdJJ8fhWEJKkkDw09S
-	6RHkXfjfvMGbQnDsmJJ+OSZH3tTjjlqSo4uctHDSK1uuG4lcfMvApObN2i3pnDZn0U3deVeIzNS
-	88Md8D5qFOlPF5YIJ/TFVY/kx5fwNlDIgdg6vAr0whGELvfJONzhhrBg0Qv3SUDSJqIrr3ojYXe
-	S7ggqIiVgIV2QHg1EejADKbLsqcOr1sMiQsVTssmZKFHiQ+0TCN9hIkn3QAwTp2nk1olNd3J2mw
-	F2s5GuFKMlVhCZAqhTougVmSGstyklG1HQ3T50Kpsdua0cFHE+hfKIA3KbnEnT/W3rLEn6MeqRD
-	noP22lMTKq8wRD4lNrKxCvaYpNBEEJjYGhHEgwut7St/K60UceVFe4cRQ=
-X-Google-Smtp-Source: AGHT+IH5EMMPQ3wJR60htE4ZeVfM5tMvoZI5PHJyxvjzm/cm4iZOFBZNemFocQtVSVn6/9FxO4I4aA==
-X-Received: by 2002:a05:6a00:2995:b0:7e8:4471:8c9 with SMTP id d2e1a72fcca58-7ff66279645mr28250788b3a.42.1766992926974;
-        Sun, 28 Dec 2025 23:22:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1766992933; x=1767597733;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=L11gt5PUby6hukuI6bKQO2lIYo88sL7kLpRD3+14nL4=;
+        b=qRWPR07BJKfs9g2GTho7BvDRh+0A63TL/TBRGVliMAtV1WeUMrsP7YovquLY3mmT3U
+         wKqFBjripxnrYFjjx4rzKVEb+DNODIkatxAHBHuOqLe95nzcJBk0bQkbtzT2sRi2xvEN
+         WrySAoOkN40giShgCaQicV6AQJDUW1dGOZiME5rrXzoYT3qZ6QMxjTG13NmWNUlWDeAz
+         TpNmSIZmCaRwGvw/hzb6mI3Dq8xT6Gzo0B0Z1xkTP2AiM5GnN4jpTFN4xe89qJc+R5RX
+         0SO/cQuLeJ6O5Xb0CHTRzHWYfxQMq2R+CAf2haqztJciWxs16alqIRVR5AmJ/kgl2nY3
+         c0XQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqJIJtCdbaVYOHd/Z7NYGuM41tLp0+74c1Dn2Uuebk7pXWmD73NVL7QLVw42Dr7p/s+JaDxF9tYLLIxh5E0A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMPfCqFsfoDRvgACr1W08UA1TSMc0s9Ytk9gEDsNXprSYHu0Hy
+	c1MmT895AT5oE3Pry61sOGC8Y0hS5fzcogEoqyq7pLVpk9pFLvtMnm9S
+X-Gm-Gg: AY/fxX7qAKqkhE7EU3PTbB92ygL/lUlQHswMaS6Fx2voVenbPU292us+gnhaRYheHsA
+	Y4U4+o1kwUqN7Vb2N8thuwWP23OutFBvcQiPkP+Y14f2YW3GCEu7I/53osteRFyaUrVvARnIuLZ
+	MQCxR46qV2EslTY3pM01H7zbVMaHvFK5iV/EW+2fZJtyymUSTTVv9Wdn082Bk/jw1Q8+z8YDABm
+	bS6rRbERS5NoJ3JpG1GUPS+1g/tSrHrPigpPI3W1JGxOKXsu1kR0y9QTtDuLJhZvJc/eoyAHCvF
+	8eOlyhTXmyRPN4dI/oaLhrYBW8OKKQwaFVqxrDC5d/oirY/21D4eUIqFk/sK4rLONcXMboMYYSn
+	9vRORWOsxlvlQsItmxL3PKS2ypGTWWqvjckhhGcWDvtxXzb32Wuc/yiiCzdyPkflRZ7fqrd/k3i
+	OmuSc1R9rCCtKDY4bTInndNxlhLyTW88suejqfsVJnKN0j7ETXgWk7O6I=
+X-Google-Smtp-Source: AGHT+IGjfBZ7nKHDTBoUSuRWX6+j0MbSCh5Aadh2sPaU0eES32179xrR7UzjfaQZyVcEQP4YJ7rGqQ==
+X-Received: by 2002:a05:6a00:e15:b0:7f7:4dc8:55e with SMTP id d2e1a72fcca58-7ff646f9556mr26941764b3a.7.1766992932906;
+        Sun, 28 Dec 2025 23:22:12 -0800 (PST)
 Received: from localhost.localdomain (61-221-120-114.hinet-ip.hinet.net. [61.221.120.114])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cea1sm29021863b3a.45.2025.12.28.23.22.01
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cea1sm29021863b3a.45.2025.12.28.23.22.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Dec 2025 23:22:06 -0800 (PST)
+        Sun, 28 Dec 2025 23:22:12 -0800 (PST)
 From: Ke Sun <sunke@kylinos.cn>
 To: Dirk Behme <dirk.behme@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -66,10 +67,12 @@ Cc: John Ogness <john.ogness@linutronix.de>,
 	Ke Sun <sk.alvin.x@gmail.com>,
 	rust-for-linux@vger.kernel.org,
 	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH v7 0/4] rust: Add safe pointer formatting support
-Date: Mon, 29 Dec 2025 15:21:18 +0800
-Message-ID: <20251229072157.3857053-1-sunke@kylinos.cn>
+Subject: [PATCH v7 1/4] lib/vsprintf: Export functions for Rust pointer formatting support
+Date: Mon, 29 Dec 2025 15:21:19 +0800
+Message-ID: <20251229072157.3857053-2-sunke@kylinos.cn>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251229072157.3857053-1-sunke@kylinos.cn>
+References: <20251229072157.3857053-1-sunke@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -78,75 +81,158 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series adds safe pointer formatting support for Rust kernel code,
-providing three pointer wrapper types (HashedPtr, RawPtr, RestrictedPtr) that
-correspond to C kernel's printk format specifiers %p, %px, and %pK.
+Export ptr_to_hashval() and extract kptr_restrict_value() to enable
+Rust code to use kernel pointer formatting functionality.
 
-The implementation ensures that raw pointers are automatically hashed when
-formatted with {:p}, providing safe default behavior that prevents information
-leaks about kernel memory layout. Users can also explicitly use wrapper types
-when they need specific formatting behavior.
+- Export ptr_to_hashval() with EXPORT_SYMBOL_GPL for pointer hashing.
+  This function is used to hash kernel pointers before printing them,
+  preventing information leaks about kernel memory layout.
 
+- Extract kptr_restrict handling logic from restricted_pointer() into
+  a separate exported function kptr_restrict_value() that can be
+  reused by both restricted_pointer() (for %pK format specifier) and
+  Rust code.
+
+The kptr_restrict_value() function:
+- Returns 0, 1, or 2 to indicate the kptr_restrict sysctl value
+- Returns -1 for error case (IRQ context with kptr_restrict==1)
+- Modifies the pointer value through @pptr parameter when needed
+  (sets to NULL when access should be restricted)
+
+These functions are needed for the HashedPtr and RestrictedPtr wrapper
+types in rust/kernel/ptr.rs to provide safe pointer formatting that
+matches C kernel patterns.
+
+This refactoring:
+- Allows restricted_pointer() to reuse the common logic while
+  maintaining the same behavior
+- Enables Rust code to use the same kptr_restrict handling logic
+- Reduces code duplication
+
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
+Suggested-by: Boqun Feng <boqun.feng@gmail.com>
 ---
-v7:
-- Refactor kptr_restrict handling: extract kptr_restrict_value() from
-  restricted_pointer() in lib/vsprintf.c and export it for Rust use, and
-  improve RestrictedPtr::fmt() implementation to directly handle
-  kptr_restrict_value() return values (0, 1, 2, -1) for better code clarity
-- Remove Debug derive from pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr)
+ include/linux/printk.h | 10 ++++++++
+ lib/vsprintf.c         | 55 ++++++++++++++++++++++++++++++++----------
+ 2 files changed, 52 insertions(+), 13 deletions(-)
 
-v6: https://lore.kernel.org/rust-for-linux/20251227033958.3713232-1-sunke@kylinos.cn/
-- Fix placeholder formatting to use `f.pad()` instead of `f.write_str()` in
-  format_hashed_ptr(), ensuring width, alignment, and padding options are
-  correctly applied to PTR_PLACEHOLDER
-
-v5: https://lore.kernel.org/rust-for-linux/20251226140751.2215563-1-sunke@kylinos.cn/
-- Format use statements in rust/kernel/ptr.rs and rust/kernel/fmt.rs using kernel
-  vertical style with alphabetical ordering
-- Remove unnecessary SAFETY comment in rust/kernel/ptr.rs (addressed Clippy warning)
-- Update type ordering to alphabetical (HashedPtr, RawPtr, RestrictedPtr) in
-  fmt.rs macro invocation
-
-v4: https://lore.kernel.org/rust-for-linux/20251225225709.3944255-1-sunke@kylinos.cn/
-- Use Pointer::fmt() instead of write!(f, "{:p}", ...) to preserve formatting
-  options (width, alignment, padding characters)
-- Improve code structure: reduce unsafe block scope, use early return pattern
-- Add doctests with formatting option tests for all pointer wrapper types
-- Enhance documentation with detailed formatting options section, including
-  examples for width, alignment, and padding
-- Fix RestrictedPtr example to use pr_info! instead of seq_print! in docs
-
-v3: https://lore.kernel.org/rust-for-linux/20251224081315.729684-1-sunke@kylinos.cn/
-- Export ptr_to_hashval() from lib/vsprintf.c for Rust pointer hashing
-- Add three pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr) in
-  rust/kernel/ptr.rs corresponding to %p, %pK, and %px
-- Make raw pointers automatically use HashedPtr when formatted with {:p}
-- Add documentation for pointer wrapper types
-
-v2: https://lore.kernel.org/rust-for-linux/20251223033018.2814732-1-sunke@kylinos.cn/
-- Disabled {:p} raw pointer printing by default to prevent accidental
-  information leaks
-
-v1: https://lore.kernel.org/rust-for-linux/20251218032709.2184890-1-sunke@kylinos.cn/
-- Initial implementation that directly printed raw pointers
----
-
-Ke Sun (4):
-  lib/vsprintf: Export functions for Rust pointer formatting support
-  rust: kernel: Add pointer wrapper types for safe pointer formatting
-  rust: fmt: Default raw pointer formatting to HashedPtr
-  docs: rust: Add pointer formatting documentation
-
- Documentation/rust/index.rst              |   1 +
- Documentation/rust/pointer-formatting.rst | 101 +++++++++
- include/linux/printk.h                    |  10 +
- lib/vsprintf.c                            |  55 +++--
- rust/kernel/fmt.rs                        |  69 +++++-
- rust/kernel/ptr.rs                        | 254 +++++++++++++++++++++-
- 6 files changed, 473 insertions(+), 17 deletions(-)
- create mode 100644 Documentation/rust/pointer-formatting.rst
-
-base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 45c663124c9bd..91380b1eff1a1 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -385,6 +385,16 @@ extern void __printk_cpu_sync_put(void);
+ 
+ extern int kptr_restrict;
+ 
++/**
++ * kptr_restrict_value - Determine what pointer value should be used for %pK
++ * @pptr: Pointer to the pointer value (may be modified)
++ *
++ * Returns:
++ *   - 0, 1, or 2: The kptr_restrict value if pointer should be used
++ *   - -1: Error case (IRQ context with kptr_restrict==1), *pptr unchanged
++ */
++int kptr_restrict_value(const void **pptr);
++
+ /**
+  * pr_fmt - used by the pr_*() macros to generate the printk format string
+  * @fmt: format string passed from a pr_*() macro
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index a3790c43a0aba..29d2e681c6e73 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -811,6 +811,7 @@ int ptr_to_hashval(const void *ptr, unsigned long *hashval_out)
+ {
+ 	return __ptr_to_hashval(ptr, hashval_out);
+ }
++EXPORT_SYMBOL_GPL(ptr_to_hashval);
+ 
+ static char *ptr_to_id(char *buf, char *end, const void *ptr,
+ 		       struct printf_spec spec)
+@@ -857,14 +858,28 @@ static char *default_pointer(char *buf, char *end, const void *ptr,
+ 
+ int kptr_restrict __read_mostly;
+ 
+-static noinline_for_stack
+-char *restricted_pointer(char *buf, char *end, const void *ptr,
+-			 struct printf_spec spec)
++/**
++ * kptr_restrict_value - Determine what pointer value should be used for %pK
++ * @pptr: Pointer to the pointer value (may be modified)
++ *
++ * This function determines what pointer value should be printed based on the
++ * kptr_restrict sysctl setting:
++ *
++ * - kptr_restrict == 0: Return 0 (use original pointer, will be hashed)
++ * - kptr_restrict == 1: Return 1 if current process has CAP_SYSLOG and same
++ *                       euid/egid, otherwise set *pptr to NULL and return 1
++ * - kptr_restrict >= 2: Set *pptr to NULL and return 2
++ *
++ * Returns:
++ *   - 0, 1, or 2: The kptr_restrict value if pointer should be used
++ *   - -1: Error case (IRQ context with kptr_restrict==1), *pptr unchanged
++ */
++int kptr_restrict_value(const void **pptr)
+ {
+ 	switch (kptr_restrict) {
+ 	case 0:
+ 		/* Handle as %p, hash and do _not_ leak addresses. */
+-		return default_pointer(buf, end, ptr, spec);
++		return 0;
+ 	case 1: {
+ 		const struct cred *cred;
+ 
+@@ -872,11 +887,8 @@ char *restricted_pointer(char *buf, char *end, const void *ptr,
+ 		 * kptr_restrict==1 cannot be used in IRQ context
+ 		 * because its test for CAP_SYSLOG would be meaningless.
+ 		 */
+-		if (in_hardirq() || in_serving_softirq() || in_nmi()) {
+-			if (spec.field_width == -1)
+-				spec.field_width = 2 * sizeof(ptr);
+-			return error_string(buf, end, "pK-error", spec);
+-		}
++		if (in_hardirq() || in_serving_softirq() || in_nmi())
++			return -1;
+ 
+ 		/*
+ 		 * Only print the real pointer value if the current
+@@ -891,15 +903,32 @@ char *restricted_pointer(char *buf, char *end, const void *ptr,
+ 		if (!has_capability_noaudit(current, CAP_SYSLOG) ||
+ 		    !uid_eq(cred->euid, cred->uid) ||
+ 		    !gid_eq(cred->egid, cred->gid))
+-			ptr = NULL;
+-		break;
++			*pptr = NULL;
++		return 1;
+ 	}
+ 	case 2:
+ 	default:
+ 		/* Always print 0's for %pK */
+-		ptr = NULL;
+-		break;
++		*pptr = NULL;
++		return 2;
+ 	}
++}
++EXPORT_SYMBOL_GPL(kptr_restrict_value);
++
++static noinline_for_stack
++char *restricted_pointer(char *buf, char *end, const void *ptr,
++			 struct printf_spec spec)
++{
++	int ret = kptr_restrict_value(&ptr);
++
++	if (ret < 0) {
++		if (spec.field_width == -1)
++			spec.field_width = 2 * sizeof(ptr);
++		return error_string(buf, end, "pK-error", spec);
++	}
++
++	if (ret == 0)
++		return default_pointer(buf, end, ptr, spec);
+ 
+ 	return pointer_string(buf, end, ptr, spec);
+ }
 -- 
 2.43.0
 
