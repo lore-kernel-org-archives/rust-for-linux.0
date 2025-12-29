@@ -1,226 +1,287 @@
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F743317709
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 07:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D03238171
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 07:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766992956; cv=none; b=rgrocunDFCmJj+EEoXHOnHEd0wanc4mlOz6CoA5rfGfu/4gc+qZ4VSN89vujyXN7losAAb7Ao5tD/GBrrFZKKBhhc2uIyY68pPBe0RPAVJ1eH6Td7J8bcSmWDOpT+ZrnJsR1gC5nbZgHxc+tZrxijre/n03OzoveSCCAo1xyI4I=
+	t=1766993673; cv=none; b=EsFKVL7HaUvzNmOngUiUM52F9NSyhqCUhQCRxSelKT48us1OhesPJzhdiXYu3u/IdeN18j3RnM4FVkNXDufXVeXLCPP0PKvyo103/4Ahi/ZxHJm42ygHegYpgoGoFuj2H1mgIw24bCkI97s4a1gCMveQF/Btxp9G02jNJ2Y8vB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766992956; c=relaxed/simple;
-	bh=5trTzWP1lja7QgW2Nbxdt+5FrAQb5B+HqFiJ/tFGn+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SV3Zt7Aywv7cR58zAkP5QZ7dOHRmNql6bT9124thcT/hr3lZsD6TGKlVQreszi7uxaquc0b/M6BfA1MHegGBl2JVcUbj80cqEAk1C2IrZUnzPXXK9jNHlpBWOye0vdZ2N1DtsyWKQeFIKZnDdMoUCPpBxR5w9GOWdPg0E+tDqr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+	s=arc-20240116; t=1766993673; c=relaxed/simple;
+	bh=IX353M5a4xfMbhGZICv5YbNyFgrjYeNXaNEWbUJFedQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JE5X1DoWEuHP5SpMQM/bWZYrIMknNAZtuqm3pLl3jYqadQLzRW7jrKC+pHZOCMMdpm+JYV1blBwDxnR5VMt8svtBggiZB+GIP+AiOlVOsBW8BBH5Y84XjcBM4XYRa87HfwOZTE3FioAo6m1nYFhEebEDDgEfTWdU+FHw+Ozryew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DYkNncDI; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-7f121c00dedso11986165b3a.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 23:22:32 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DYkNncDI"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a1388cdac3so82463995ad.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 28 Dec 2025 23:34:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766993667; x=1767598467; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DGeZTK6rslNSwgEZnXUnSUvszvuKUpwVDQazbF2Bzw4=;
+        b=DYkNncDIg01kDkh+G4heXHVQF4ZJoEBp0LfRHlvh0tKUdV51Qz6AgwBLlhvVowR3Fo
+         E2CIqy2w+D8tHyHxeCFPvnBEJdwtv5kPkgY+c/DniG87nJzv1qaN59J6L55jWllsfcSh
+         lSHHQtznlNKVnioa66GL7T5tFBcDsjSaVx6hOgS1HFmH9Ud/uY0+6vyjr35n7w6vWF2J
+         zQxgNJ/7U1Jdf0IxbiFhKGCyRYNv9WvvYHnsvPxt+zp2YTF9lOlqwODr+u+WJButbgdt
+         pcJG4O5NzcdYnHq88njMcu9w7fc0RRnrhBKi0My/l5VqmHNIA0cjQA2z4pSNOMJ6kbfZ
+         iyUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766992952; x=1767597752;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eiGB8oXhegfDuwpDui4+XsxBRPl2FrgBVzFQBSYcUyQ=;
-        b=axpayoO3b+ewM4FExhYmEt1EnKAe0qji246AOidOPD9zahR5RVz34BfZ5mjHSW6OW+
-         Cu5CuNtmgoilzNU0DNgcuJWx+vgA+RFBWt5WgdQHHv5n9sgJp/JuFj/h+kFuviBZfoSM
-         lrwis3vsHi2r8qqsPPj67FeY8kWKLt9eSqNeN9gkyy8lxKiz2uQPC1Xwlk058aYFGzGA
-         Mvk03vjAiR7fZrgY1TYxG4qNP7+wf4SMikq2ate+HYC7ekg7qcJJQQB/EQBJoooQ7AEE
-         q1IWCL5fOlGgRXtZ9BrwjdaGNEH2eUgAix1xDVaVPUdRZzrgiw0/QB18TJampvIaiFjS
-         Lg3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVa4anUruLI3Lc3oSjgwVswqi5G1DXPUfu4R4NxA2WrOdb8aOaF1Ll/ob2TuYVPUl2Hy0jGhwUWxPaZmVJbyA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxlz5xy2CXuck2TDiOt5MK4TfsMxGJbzg4KcEmE0UlhX9gO5Glm
-	59dQHG+M1WKnWyciXTaF9rbhILJcgbjtaee4tPhAzc+NwjdeyIMeWy1x
-X-Gm-Gg: AY/fxX5i6h9HpIbemN1uaEllkp2ZefxFNpntvy0xuipgYfMeWHPx9lRvv4V6hpyGULH
-	ptQOsI0c6VBwrQVzBxV9BYtrX1fM3g31syNfDOF0cRIB09FnU33ptjzGvOw3skWVRn9E+SHhXQl
-	0w+pbYhQXSwVgYH24BN7ZL1yKQAHud9NeR+uBF51SClo3kBV4ZKWpc4L9u9cvM5rpJ9n0s317/+
-	WCVADVoYVq2NJqGIy4q6E5cwWAGU0L7ZQLRubmdkht6asOQXQGNCK4aJaSYPl/KCrbDc+u+Tq0M
-	hkPfUAbiQ9UyYuJ10D2glT58Bb6kto3ffFNakIZVa2t6L/i2r1uK3AFMBVEcDzFIpTHxfPgldta
-	Z06gmoCRK3t4rqxsOiD7wc09xCh3pRQq54rfZQYTVid+0pe+zY6h2A7jlIRnmyexl6Wa1brdr3W
-	5mPHRNbu3xq8hw3Mjnu7MP8RHiqCLKDdyLjIeAVR2gptqqxEjs7BefuJI=
-X-Google-Smtp-Source: AGHT+IEe0nbeA4xO7CnQdROoJ554QGEyv3v2im7lWpUz2rkz/djNymOWd1mq0CSzPTNld7VsOYgHdw==
-X-Received: by 2002:a05:6a00:ad87:b0:7f7:5783:fc6d with SMTP id d2e1a72fcca58-7ff6647bc98mr26132305b3a.41.1766992951638;
-        Sun, 28 Dec 2025 23:22:31 -0800 (PST)
-Received: from localhost.localdomain (61-221-120-114.hinet-ip.hinet.net. [61.221.120.114])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e48cea1sm29021863b3a.45.2025.12.28.23.22.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Dec 2025 23:22:31 -0800 (PST)
-From: Ke Sun <sunke@kylinos.cn>
-To: Dirk Behme <dirk.behme@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>
-Cc: John Ogness <john.ogness@linutronix.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Ke Sun <sk.alvin.x@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH v7 4/4] docs: rust: Add pointer formatting documentation
-Date: Mon, 29 Dec 2025 15:21:22 +0800
-Message-ID: <20251229072157.3857053-5-sunke@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251229072157.3857053-1-sunke@kylinos.cn>
-References: <20251229072157.3857053-1-sunke@kylinos.cn>
+        d=1e100.net; s=20230601; t=1766993667; x=1767598467;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DGeZTK6rslNSwgEZnXUnSUvszvuKUpwVDQazbF2Bzw4=;
+        b=KYXQFCfMNO24C+jrbtRQVWy6mI5hufM8DmcxZq34v3AZg4MeuMo6G0UM56kc7V4cnD
+         4jSuaySWYD1Mhywbm9wkSdRs4PUmlFfoXEsfWZnW2iJiL3XcyGyEiWyDa8yk6P2Sm0Dg
+         l2KAUK20ei8gbGj/7lrlWLzr5PlREI8uYGfkgNUJI6jwaHKo76J1G/XzRg8HGVzdJ9+i
+         WWfgLcxRnarJQgUB7wqt30AOQJ9swF1ZWXD9kU6HeFUOjQ7KNhktg4tOH/1N0/z1FJGD
+         c5tYPTak2uMllh/j3y2ay+mB00VsHSIpUBQRPgJFZmlXPRAQiHeNuA26oZcTEnwbRMo4
+         Q9ig==
+X-Forwarded-Encrypted: i=1; AJvYcCVRgAUBxEfTmUvPa3nkzse2SCxfcMpM95+W29un8amNpd7Ahos2eL4ek5Lfaef2PhgGqKYtYrBk6aPhyZwSGw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzV0P0kL9W00en8HUxQ6ThDM6W+9CGTkSNc7ACNfSCafnLOwfB
+	XHSZQsmW0wFJlEDMVCC9iOuZmmGqMalch6gFoB6qQnsSJDvybs0UjzlT
+X-Gm-Gg: AY/fxX4oipAHvCEJDbvTFP8Jl/kibccfgHLjRMpOPbfbJjRr3q1wZsZCI/i/rlLkUgt
+	BBTQd5iY7eDRp1/UYKeff1YH0nGz9rArZ0eR6l/v7eyPoR77wKPWSJARz28F1kjSOR2BFLPWnZK
+	0CQsoUU/CK7VG0GI/pdruoJg0CyZYK9WorgIIYi5/hJRRmZFkYQoYp/twZiUpy9sLtK8n22oUUq
+	dvis6Di1u3K4mL033KjaPX49bCTSrw7EPoqxVSFohLL20RJZK3lHifcuK0Yhfb6kZ/z/4SaikQO
+	9/J3f3OvQ+LMM75Yw9SSR8X0Kmmm3qyHPVcaT2p7YyL+AY1eSXtTifhrp7lz3uziCPPhAOw9Vii
+	v+IN3GAFN6utx+ejaePkZ1lshh9DWppC8tkxTWRvK9/6HPrmBpmMiKpUroo92Z6QqVaIBiEq92A
+	HIQUFvoQW/L+Cyt1EtPqLDJUkWBc3auDO0sqnkj4FyGANcB+I=
+X-Google-Smtp-Source: AGHT+IGopB9MIMetvzkpgoMB27AzP9u3Ss8dKVxYRaBdPR3A4XRnILJDgX/nztedz7idSjI8mwlc9w==
+X-Received: by 2002:a17:903:2a8e:b0:290:ac36:2ed6 with SMTP id d9443c01a7336-2a2f2426c79mr299745415ad.14.1766993667240;
+        Sun, 28 Dec 2025 23:34:27 -0800 (PST)
+Received: from [10.0.10.3] (210-61-187-174.hinet-ip.hinet.net. [210.61.187.174])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c82a9asm267230995ad.30.2025.12.28.23.34.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 28 Dec 2025 23:34:26 -0800 (PST)
+Message-ID: <97efae81-bde6-4ebe-a650-495676716248@gmail.com>
+Date: Mon, 29 Dec 2025 15:34:19 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/4] rust: kernel: Add pointer wrapper types for safe
+ pointer formatting
+To: Dirk Behme <dirk.behme@gmail.com>, Ke Sun <sunke@kylinos.cn>,
+ Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Timur Tabi <ttabi@nvidia.com>,
+ Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@gmail.com>,
+ rust-for-linux@vger.kernel.org
+References: <20251227033958.3713232-1-sunke@kylinos.cn>
+ <20251227033958.3713232-3-sunke@kylinos.cn>
+ <faeb6601-de91-4c40-af33-9f081d2b7f6a@gmail.com>
+From: Ke Sun <sk.alvin.x@gmail.com>
+In-Reply-To: <faeb6601-de91-4c40-af33-9f081d2b7f6a@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add a brief documentation for Rust pointer wrapper types (HashedPtr,
-RestrictedPtr, RawPtr) that correspond to C kernel's printk format
-specifiers %p, %pK, and %px.
 
-The documentation provides:
-- Overview of the three wrapper types
-- Usage examples for each type
-- When to use each type
-- Security considerations
+On 12/29/25 14:44, Dirk Behme wrote:
+> On 27.12.25 04:39, Ke Sun wrote:
+>> Add three pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr) to
+>> rust/kernel/ptr.rs that correspond to C kernel's printk format specifiers
+>> %p, %pK, and %px. These types provide type-safe pointer formatting that
+>> matches C kernel patterns.
+>>
+>> These wrapper types implement core::fmt::Pointer and delegate to the
+>> corresponding kernel formatting functions, enabling safe pointer
+>> formatting in Rust code that prevents information leaks about kernel
+>> memory layout.
+>>
+>> Users can explicitly use these types:
+>>      pr_info!("{:p}\n", HashedPtr::from(ptr));
+>>      pr_info!("{:p}\n", RestrictedPtr::from(ptr));
+>>      pr_info!("{:p}\n", RawPtr::from(ptr));
+>>
+>> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+>> ---
+>>   rust/helpers/fmt.c     |  65 +++++++++++
+>>   rust/helpers/helpers.c |   3 +-
+>>   rust/kernel/ptr.rs     | 241 ++++++++++++++++++++++++++++++++++++++++-
+>>   3 files changed, 305 insertions(+), 4 deletions(-)
+>>   create mode 100644 rust/helpers/fmt.c
+>>
+> ....
+>> diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
+>> index e3893ed04049d..8b58221c2ec4b 100644
+>> --- a/rust/kernel/ptr.rs
+>> +++ b/rust/kernel/ptr.rs
+> ....
+>> +/// A pointer that will be hashed when printed (corresponds to `%p`).
+>> +///
+>> +/// This is the default behavior for kernel pointers - they are hashed to prevent
+>> +/// leaking information about the kernel memory layout.
+>> +///
+>> +/// # Example
+>> +///
+>> +/// ```
+>> +/// use kernel::{
+>> +///     prelude::fmt,
+>> +///     ptr::HashedPtr,
+>> +///     str::CString, //
+>> +/// };
+>> +///
+>> +/// let ptr = HashedPtr::from(0x12345678 as *const u8);
+>> +/// pr_info!("Hashed pointer: {:016p}\n", ptr);
+>> +///
+>> +/// // Width option test
+>> +/// let cstr = CString::try_from_fmt(fmt!("{:30p}", ptr))?;
+>> +/// let width_30 = cstr.to_str()?;
+>> +/// assert_eq!(width_30.len(), 30);
+>> +/// # Ok::<(), kernel::error::Error>(())
+>> +/// ```
+>> +#[repr(transparent)]
+>> +#[derive(Copy, Clone, Debug)]
+>
+> I wonder if the `Debug` could be used to expose the raw pointer where
+> it shouldn't?
 
-This complements the general pointer formatting documentation in
-Documentation/core-api/printk-formats.rst.
+You're right. If we implement Debug for these pointer wrapper types, 
+using {:?} would expose the
 
-Signed-off-by: Ke Sun <sunke@kylinos.cn>
----
- Documentation/rust/index.rst              |   1 +
- Documentation/rust/pointer-formatting.rst | 101 ++++++++++++++++++++++
- 2 files changed, 102 insertions(+)
- create mode 100644 Documentation/rust/pointer-formatting.rst
+raw pointer address.
 
-diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
-index ec62001c7d8c7..4f4f8b393031e 100644
---- a/Documentation/rust/index.rst
-+++ b/Documentation/rust/index.rst
-@@ -55,6 +55,7 @@ more details.
-     coding-guidelines
-     arch-support
-     testing
-+    pointer-formatting
- 
- You can also find learning materials for Rust in its section in
- :doc:`../process/kernel-docs`.
-diff --git a/Documentation/rust/pointer-formatting.rst b/Documentation/rust/pointer-formatting.rst
-new file mode 100644
-index 0000000000000..9407307216c9a
---- /dev/null
-+++ b/Documentation/rust/pointer-formatting.rst
-@@ -0,0 +1,101 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+Pointer Formatting in Rust
-+===========================
-+
-+This document describes how to format kernel pointers safely in Rust code,
-+corresponding to the C kernel's printk format specifiers ``%p``, ``%pK``, and ``%px``.
-+
-+For general information about pointer formatting in the kernel, please refer to
-+:doc:`../core-api/printk-formats`.
-+
-+Overview
-+--------
-+
-+The Rust kernel provides three wrapper types for formatting kernel pointers:
-+
-+- **``HashedPtr``** → ``%p`` (hashed, default)
-+- **``RestrictedPtr``** → ``%pK`` (restricted, respects ``kptr_restrict``)
-+- **``RawPtr``** → ``%px`` (raw address, debug only)
-+
-+When formatting raw pointers (``*const T`` or ``*mut T``) with ``{:p}``,
-+they are automatically wrapped with ``HashedPtr``, providing safe default behavior.
-+
-+HashedPtr (%p)
-+--------------
-+
-+Use ``HashedPtr`` for general kernel logging. Pointers are hashed before printing
-+to prevent leaking information about the kernel memory layout.
-+
-+**Example**::
-+
-+    use kernel::ptr::HashedPtr;
-+
-+    pr_info!("Device pointer: {:p}\n", HashedPtr::from(ptr));
-+
-+RestrictedPtr (%pK)
-+-------------------
-+
-+Use ``RestrictedPtr`` when producing content of a file read by userspace from
-+e.g. procfs or sysfs (using e.g. ``seq_print!()``, not ``pr_info!()``). The behavior
-+depends on the ``kptr_restrict`` sysctl setting.
-+
-+**Example**::
-+
-+    use kernel::ptr::RestrictedPtr;
-+
-+    seq_print!(seq_file, "Pointer: {:p}\n", RestrictedPtr::from(ptr));
-+
-+For more details about ``kptr_restrict``, see :doc:`../admin-guide/sysctl/kernel`.
-+
-+RawPtr (%px)
-+------------
-+
-+**Warning**: This exposes the real kernel address and should **only** be used
-+for debugging purposes.
-+
-+**Example**::
-+
-+    use kernel::ptr::RawPtr;
-+
-+    pr_info!("Debug pointer: {:p}\n", RawPtr::from(ptr));
-+
-+Formatting Options
-+------------------
-+
-+All pointer wrapper types support standard Rust formatting options including
-+width, alignment, and padding characters. These options are preserved through
-+the formatting system.
-+
-+The following examples demonstrate formatting options using ``RawPtr`` for
-+predictable output. The same options work with ``HashedPtr`` and
-+``RestrictedPtr``, though the exact output may vary due to pointer hashing::
-+
-+    use kernel::ptr::RawPtr;
-+
-+    // Basic formatting
-+    pr_info!("Pointer: {:p}\n", RawPtr::from(ptr));
-+
-+    // Minimum width
-+    pr_info!("Pointer: {:30p}\n", RawPtr::from(ptr));
-+
-+    // Right align with zero padding
-+    pr_info!("Pointer: {:0>30p}\n", RawPtr::from(ptr));
-+
-+    // Left align with zero padding
-+    pr_info!("Pointer: {:0<30p}\n", RawPtr::from(ptr));
-+
-+    // Center align with zero padding
-+    pr_info!("Pointer: {:0^30p}\n", RawPtr::from(ptr));
-+
-+    // Right align with space padding (default)
-+    pr_info!("Pointer: {:>30p}\n", RawPtr::from(ptr));
-+
-+    // Center align with custom padding character
-+    pr_info!("Pointer: {:*^30p}\n", RawPtr::from(ptr));
-+
-+See Also
-+--------
-+
-+- :doc:`../core-api/printk-formats` - General pointer formatting documentation
-+- `rust/kernel/ptr.rs <srctree/rust/kernel/ptr.rs>`_ - Implementation
--- 
-2.43.0
-
+> Dirk
+>
+>
+>> +pub struct HashedPtr(*const c_void);
+>> +
+>> +impl fmt::Pointer for HashedPtr {
+>> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+>> +        // Handle NULL pointers - print them directly
+>> +        if self.0.is_null() {
+>> +            return Pointer::fmt(&self.0, f);
+>> +        }
+>> +
+>> +        format_hashed_ptr(self.0, f)
+>> +    }
+>> +}
+>> +
+>> +/// A pointer that will be restricted based on `kptr_restrict` when printed (corresponds to `%pK`).
+>> +///
+>> +/// This is intended for use in procfs/sysfs files that are read by userspace.
+>> +/// The behavior depends on the `kptr_restrict` sysctl setting.
+>> +///
+>> +/// # Example
+>> +///
+>> +/// ```
+>> +/// use kernel::{
+>> +///     prelude::fmt,
+>> +///     ptr::RestrictedPtr,
+>> +///     str::CString, //
+>> +/// };
+>> +///
+>> +/// let ptr = RestrictedPtr::from(0x12345678 as *const u8);
+>> +/// pr_info!("Restricted pointer: {:016p}\n", ptr);
+>> +///
+>> +/// // Width option test
+>> +/// let cstr = CString::try_from_fmt(fmt!("{:30p}", ptr))?;
+>> +/// let width_30 = cstr.to_str()?;
+>> +/// assert_eq!(width_30.len(), 30);
+>> +/// # Ok::<(), kernel::error::Error>(())
+>> +/// ```
+>> +#[repr(transparent)]
+>> +#[derive(Copy, Clone, Debug)]
+>> +pub struct RestrictedPtr(*const c_void);
+>> +
+>> +impl fmt::Pointer for RestrictedPtr {
+>> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+>> +        // Handle NULL pointers
+>> +        if self.0.is_null() {
+>> +            return Pointer::fmt(&self.0, f);
+>> +        }
+>> +
+>> +        // Use kptr_restrict_value to handle all kptr_restrict cases.
+>> +        // SAFETY: kptr_restrict_value handles capability checks and IRQ context.
+>> +        // - Returns NULL if no permission, IRQ context, or kptr_restrict >= 2
+>> +        // - Returns the original pointer if kptr_restrict == 0 (needs hashing)
+>> +        // - Returns the original pointer if kptr_restrict == 1 with permission (print raw)
+>> +        let restricted_ptr = unsafe { bindings::kptr_restrict_value(self.0) };
+>> +
+>> +        if restricted_ptr.is_null() {
+>> +            // No permission, IRQ context, or kptr_restrict >= 2 - print 0
+>> +            return Pointer::fmt(&core::ptr::null::<c_void>(), f);
+>> +        }
+>> +
+>> +        // restricted_ptr is non-null, meaning we should print something.
+>> +        // SAFETY: Reading kptr_restrict is safe as it's a kernel variable.
+>> +        let restrict = unsafe { bindings::kptr_restrict };
+>> +
+>> +        if restrict == 0 {
+>> +            // kptr_restrict == 0: hash the pointer (same as %p)
+>> +            format_hashed_ptr(self.0, f)
+>> +        } else {
+>> +            // kptr_restrict == 1 with permission: print the raw pointer directly (like %px)
+>> +            // This matches C behavior: pointer_string() prints the raw address
+>> +            Pointer::fmt(&restricted_ptr, f)
+>> +        }
+>> +    }
+>> +}
+>> +
+>> +/// A pointer that will be printed as its raw address (corresponds to `%px`).
+>> +///
+>> +/// **Warning**: This exposes the real kernel address and should only be used
+>> +/// for debugging purposes. Consider using [`HashedPtr`] or [`RestrictedPtr`] instead.
+>> +///
+>> +/// # Example
+>> +///
+>> +/// ```
+>> +/// use kernel::{
+>> +///     prelude::fmt,
+>> +///     ptr::RawPtr,
+>> +///     str::CString, //
+>> +/// };
+>> +///
+>> +/// let ptr = RawPtr::from(0x12345678 as *const u8);
+>> +///
+>> +/// // Basic formatting
+>> +/// let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
+>> +/// let formatted = cstr.to_str()?;
+>> +/// assert_eq!(formatted, "0x12345678");
+>> +///
+>> +/// // Right align with zero padding, width 30
+>> +/// let cstr = CString::try_from_fmt(fmt!("{:0>30p}", ptr))?;
+>> +/// let right_zero = cstr.to_str()?;
+>> +/// assert_eq!(right_zero, "000000000000000000000x12345678");
+>> +///
+>> +/// // Left align with zero padding, width 30
+>> +/// let cstr = CString::try_from_fmt(fmt!("{:0<30p}", ptr))?;
+>> +/// let left_zero = cstr.to_str()?;
+>> +/// assert_eq!(left_zero, "0x1234567800000000000000000000");
+>> +///
+>> +/// // Center align with zero padding, width 30
+>> +/// let cstr = CString::try_from_fmt(fmt!("{:0^30p}", ptr))?;
+>> +/// let center_zero = cstr.to_str()?;
+>> +/// assert_eq!(center_zero, "00000000000x123456780000000000");
+>> +/// # Ok::<(), kernel::error::Error>(())
+>> +/// ```
+>> +#[repr(transparent)]
+>> +#[derive(Copy, Clone, Debug)]
+>> +pub struct RawPtr(*const c_void);
+>> +
+>> +impl fmt::Pointer for RawPtr {
+>> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+>> +        // Directly format the raw address - no hashing or restriction.
+>> +        // This corresponds to %px behavior.
+>> +        Pointer::fmt(&self.0, f)
+>> +    }
+>> +}
+>> +
+>> +// Implement common methods for all pointer wrapper types
+>> +impl_ptr_wrapper!(
+>> +    HashedPtr,
+>> +    RawPtr,
+>> +    RestrictedPtr, //
+>> +);
