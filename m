@@ -1,97 +1,94 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684E3319870
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 14:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885F024A076
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 14:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767017519; cv=none; b=VXnJeA1Z+KiTdu/pnH0FRBKHgdYuGM4ZSuxiD788XuPo+2y1BBvRXlZ1AGwr9G1ndW7MP2wbNnFLV/j2Im3OAI+PnjFMydyxKjvGoV0qBZTzVksNH36sJgsMC3ZZxg3r3U03w8Errasn9ApqnG6Knk5Yn51jEkXCcNypMtA/Vqo=
+	t=1767017520; cv=none; b=rORmcyXUhQOMy/8e8LrR+XbV7Ub0NNYG2zvdcm+YIyIb6fHcemNu2CQoCCxvLjYciNy1nVAvdoUcPEXZzKqm0YLMGfG0jUCrpjqU1dwPwh0H7C+gHqXAFZLVbt3q+dR4kYLymyhhjKK+iz/UOC+TooNFCMkBFlkq6tO7QsxZLy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767017519; c=relaxed/simple;
-	bh=QtKYhPglruFwpVOAQob4BDrgP83PQnYaA7DEA29vnUk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VmWkooOXL8QORSjBNGkKaNaxTc3PCVxeBL8p7eEZKoOrRcrUW9/F6ju4hkmTDcxtVIm1SIwBXoMKkPeCUKAwBhBd0M9K8kiXPhy40e0BoEPJO3YnYy2hotYtp4TDn3EwmNlJCmxoZqqGe3bWQG9W5AsXGHvXeM1gY33Yi6ZUIt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jBfX/lNY; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1767017520; c=relaxed/simple;
+	bh=iAvimqBaFcWKzeQSE5PH5xbnutQbS9Md5v8WfZQk3iY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iIcy36ZRj1zY9eoRpO14nyxdzaX1QZfyrXGuEvon/Zjz8rKzUtucoGVexgjDOweD7HCZudbvz1lYvvmenn4WTzT6+NiYxRzFQvEw5uB2mUgsNZvtymwPhgfbmP0NF4IlFw8qA9Uh24KgadeoQpWur/idch6Lypc+3ThqSNOB00k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UhU5JUW1; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jBfX/lNY"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43246af170aso3877782f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 06:11:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767017516; x=1767622316; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QtKYhPglruFwpVOAQob4BDrgP83PQnYaA7DEA29vnUk=;
-        b=jBfX/lNYIgAwYj7g/OxPN1NSCXutI8iphlW61s3d6aNPIYrcWz/wgTTiYp0ApeuQsH
-         cXeiO3dzS+I/AsNVURbJnPhwYOFqMeviY+0E6nJLg/Zd5U0lnLBQl6DLQbeHsS8/mDuq
-         WH6aImOd+tqN11r1xmijDKLMdo+G2C60i/yYD3QK+AqXePrthB9zIWGOH2FVOpA2ngaF
-         aLrnxIhh/iL9xz0LsfwAaaK3TtkZEsMhVlx/Dkq+E0v3rgHXxYTlEEy1Un951/SNpD7B
-         1YPKQ5/H0I1YJE2TNQgpmyERARAUUm2tb+Cjp2WPQ1cgWUS1+VrYAPDTsJ+liEqmbXcf
-         wWtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767017516; x=1767622316;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QtKYhPglruFwpVOAQob4BDrgP83PQnYaA7DEA29vnUk=;
-        b=qFIVWPnFExGaCyc6EfQpJLw+wwni1zfmi8K6H3sRNiz8LaBssQSic9euRfSBMkgzL8
-         WUFuk23fsCd46BzB1FvO6yvNWLDJzc21nhexYv9zS2uFqbUHgqak6b7xmMWGC/9vIAw+
-         qife25bHsctSho0zjO5LOcT831eiqIXskk4CKMKBUjsCNALQuG5so3X91HiVfSHJPTA3
-         Z3gB9eaIc0G9sQBTaFDvLlRS9llKcpDaYgUgXP3sihk/W8ShdZswQGGwtzq5DYSiAFg2
-         8tKTynXP8YjJJYZE5X2l+FfQYgYEYTSgjj6rqpA9xnRa44WqpKtiUYWa/ZNKQ4nwe6og
-         U1Dg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZf7+faxG03zcqIcby/I0I4TxAfvGwzgMLywThahOpOY6SwxIN/Ctpd/LI3gltpuS2gXtxuOoJmha/DeZwtQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw50hQJFvbcVe1oW4aKvV8spG87oGM8lwDb7/3XDlwUDu4CNnxR
-	ZMJBIf5pIfIUH+0LFOYRLCWFH5YDiXpolEhA+9xgN13xdXmsf1udiqD/HKHJoQb3PIoxfW/SC4e
-	V5lZ/nG0/9QYwZHnGrJ/VOHqQcr2s+ZRYtLh0KnF9
-X-Gm-Gg: AY/fxX6XtQKAmX9FmRQnYYTE/F+/NFbDbN6urBzglHTzHIQMrF//zHL2jsMw0XEvtqj
-	v8+45r46Pq9mBi4pc9mhc2z90nVgkZ3Sbbw44BiQKgsZ0Ty6OYVIbBX0x0UVde7BpWDiOA2i4JS
-	OgpRe/XEfAKBGuP49hCrIsyQrpQIP3LH78sUvScrpRaeqQbe/QqINQLKvRfhOsa/nBw4szBq6s7
-	qdxi4sFLUu1gBNWuNWPWsuw/wh6dCik8OC+x7te9HIaPWqe8Fq4nRsWrz5821+athAj3CXgemmj
-	RaLLpt/6Tf3hzC+Nk6TATo1wea/Q/whAukP3
-X-Google-Smtp-Source: AGHT+IG0owVfuNAuvAb+/ycj4Qy7UTpdIZp++m5YOGeQ/uPMYuo/PE4//xAnhokqft9u4OVQdLY0lxEk/D1GEJIMX9E=
-X-Received: by 2002:a05:6000:607:b0:429:b8c7:1848 with SMTP id
- ffacd0b85a97d-4324e4173c5mr37384772f8f.19.1767017515537; Mon, 29 Dec 2025
- 06:11:55 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UhU5JUW1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767017518; x=1798553518;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iAvimqBaFcWKzeQSE5PH5xbnutQbS9Md5v8WfZQk3iY=;
+  b=UhU5JUW1A+rtRADi8uFIVpMa636sDV911e0BJQSutmDbDaLCraQerILW
+   pqXQRUj9XwpmAM7aXsW3tHAhW+l1/10fxshQAbHrRoLho3/PbfFri/DQ7
+   9M3KkMKsosjSyCdbTYsE6hKDwxiF8tMBUXorRpgOlOboWDfs0yzhLGD2M
+   bSrVv6g+c4fnu3ad6+elab8kYQ+zWo8q7a/rIsterQQkhFaFB4LVHFTq9
+   g9xjFdnvX4vxgtUxsMR2BgIJI6mrLAWBF16tM4mbkpieDl2udqVV5pFnF
+   5WUBqD9IIxlndkMnPXlWX71lqp3n3O/N9hKn0vLfJnC7YCz1W2Smn+mPg
+   g==;
+X-CSE-ConnectionGUID: m8zrfdTnRJiVrFV0P5aPzg==
+X-CSE-MsgGUID: HiIJLQKkR2Wh2riveSb0XA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11656"; a="80076102"
+X-IronPort-AV: E=Sophos;i="6.21,186,1763452800"; 
+   d="scan'208";a="80076102"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2025 06:11:58 -0800
+X-CSE-ConnectionGUID: 5C6gre+fS0+DXeH7bpb//g==
+X-CSE-MsgGUID: YlOXEDAiSOi7z0aWA64dBw==
+X-ExtLoop1: 1
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.31])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2025 06:11:53 -0800
+Date: Mon, 29 Dec 2025 16:11:51 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Ke Sun <sunke@kylinos.cn>
+Cc: Dirk Behme <dirk.behme@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>, Timur Tabi <ttabi@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@gmail.com>, Ke Sun <sk.alvin.x@gmail.com>,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v7 0/4] rust: Add safe pointer formatting support
+Message-ID: <aVKMJ3prJu6cqANm@smile.fi.intel.com>
+References: <20251229072157.3857053-1-sunke@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251223055647.9761-1-bshephar@bne-home.net> <DF5VE17B8HTA.1XSONUJ4XOFCY@kernel.org>
-In-Reply-To: <DF5VE17B8HTA.1XSONUJ4XOFCY@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 29 Dec 2025 15:11:43 +0100
-X-Gm-Features: AQt7F2p3rOPPdli0l2rECynwKB3phap3VRQzq5EkLhjyhTKhJ3U-JnMnopY53fs
-Message-ID: <CAH5fLgihcaERfFUBLqMQm_tK3N06D5cREF=UsY73VnD5QpNY6A@mail.gmail.com>
-Subject: Re: [PATCH v8] rust: Return Option from page_align and ensure no
- usize overflow
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: acourbot@nvidia.com, Brendan Shephard <bshephar@bne-home.net>, 
-	miguel.ojeda.sandonis@gmail.com, daniel.almeida@collabora.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251229072157.3857053-1-sunke@kylinos.cn>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Dec 23, 2025 at 9:14=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> On Tue Dec 23, 2025 at 6:56 AM CET, Brendan Shephard wrote:
-> > Change `page_align()` to return `Option<usize>` to allow validation
-> > of the provided `addr` value. This ensures that any value that is
-> > within one `PAGE_SIZE` of `usize::MAX` will not panic, and instead
-> > returns `None` to indicate overflow.
-> >
-> > Signed-off-by: Brendan Shephard <bshephar@bne-home.net>
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->
-> Alice, unless you have any concerns I'd take this through the drm-rust tr=
-ee, so
-> I can pick up the corresponding nova-drm patch as well.
+On Mon, Dec 29, 2025 at 03:21:18PM +0800, Ke Sun wrote:
+> This patch series adds safe pointer formatting support for Rust kernel code,
+> providing three pointer wrapper types (HashedPtr, RawPtr, RestrictedPtr) that
+> correspond to C kernel's printk format specifiers %p, %px, and %pK.
 
-Sounds good to me.
+I didn't get the motivation behind %pK. Also what's about all the extensions
+we (currently) have?
+
+> The implementation ensures that raw pointers are automatically hashed when
+> formatted with {:p}, providing safe default behavior that prevents information
+> leaks about kernel memory layout. Users can also explicitly use wrapper types
+> when they need specific formatting behavior.
+
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
