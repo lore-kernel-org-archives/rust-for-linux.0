@@ -1,75 +1,74 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380D5329365
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 16:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF6632E6BE
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 16:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767024446; cv=none; b=CQ9g9ZoSet3LLlq1jqHLLMEgrlCC11alenapQXh6rdONznnKSZWlCV2Arx0D5TzNcJFdGO+nI3gykDU5yugsuQDZ60kb85xElDR8uvhlxq0Rv2wKkAmMd7tRjH2KmU1NJF2qCJMTiX3xVHERKeiBV5b32aN8WxMTQ6l8NKGbCx0=
+	t=1767024515; cv=none; b=OMaLoowgldVnhTKmdPdauS9mkB03YORqBpivDxhZJTD/CgTqD7d3J4FJraUbLUasREFYGZ1FZbOtYmerP2ZwRqMoEGqbAAAPZnhOSqCT9zA7MG+SKz4rNCzT0UZIoh/tWqmAMMHy/RzwaTWngopIt9uva5508RMnPwPHrz/vR7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767024446; c=relaxed/simple;
-	bh=4Udc90xKA69CVn7Um/gl7i2XmLh6B6dU+iY38ezM6FA=;
+	s=arc-20240116; t=1767024515; c=relaxed/simple;
+	bh=NJOcAIxmFFBa6EJGBVDNDJBqoF/PQ3DHh+CXe40Cxcc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ORj8gHFoOcQG07fN7hTcmCCq8DNfbWUC0D7qEtmQ9w+ee3QTWMWRQFSFTjaSqtoATX6IHcrtWLqUsnd9CACT70cyVK8MfI8KTVgvCE8vNDU1F6zDyCTEtw220paj+tZIznZSJEXqYKMOn/dA2idgO5vUTQxUG7YPiqfMH72YnSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D1upPGwu; arc=none smtp.client-ip=209.85.208.174
+	 To:Cc:Content-Type; b=DKWAcGmyrBavpOvo2BKNSJpCB1ZZLCYrOgUpqJbkrWTKmjEneBl3pzyANyCt2AYsISKiNFUJdzk3045XR7lJeFjcBy8k6ykHQCC9M9fdLvZUoR15oCc2wmeLTI4KQT6v55m5iFzjAX+UoptKJ5DQY45hSdNXFwIvqVZKRI+H9O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PmoBIQBx; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D1upPGwu"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3825ae23d95so23480621fa.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 08:07:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PmoBIQBx"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-37a2dced861so97447551fa.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 08:08:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767024442; x=1767629242; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767024512; x=1767629312; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4f+VaUREAokeuI/rlnWPh+sE4WF8IbfXbo6+kslGWsM=;
-        b=D1upPGwuiZj4kbGmCxXpO2TjhoPWLXlYB0w78+crylkp/QRhTsPXCgpieSAM/MVSk/
-         S81wBbyZTTwJLpQDcBOjxvSSEsv/7TW3gljX9KDsEmUT+i/7cyC15rVsG0vtNnJ0gpzU
-         ymsS6vztkMYUo29kY9FQBXFwKB9EKfh8vPiqCiuYeB/4kjGj7dFRmgU60FNyBcwf+3+s
-         PXXivRK194KBOHILMLC9/pz6ISwH98KZjlXQm7s5Lkmdaa6EcGImcyaWkH/AEv8axNH7
-         jqwqq75xy+8QQeZkyTcFDP6rTtV3trGOrwOcumo+GsMiWPjsJmes5cAOdo+eXWYK54C8
-         ZOTg==
+        bh=ld1Pgin0D8pdwsBwu5whQB1olwItrUX97UwynrtaKcY=;
+        b=PmoBIQBxgaac4lijPy+Efn1MpQi5gWoZbCCwlhkVo8gAXPdlJipZH2kkiG2Y/Nn19Q
+         0s9UHnxTxhza04+FrHWlsTdhbVrSRm8p4hdOYZ7wCo2ESPoDJLmTCTpGIvkjPelVDFaQ
+         GUV/BXGlD5LR3U5qbrMahvH67voH5XdMW1SQnDQTWW+yxzWHNWVSdCstzJ25NCYRSbMA
+         2dtQdGu2Hpy2Vqg+UaztwedXruirBgdpZoYSbJuEli3u9Z3PcaUwzei7jBfArsQg9Pe/
+         yOg4Y3BCg2l8z6QVIavlHrdilvmjUZYpyYEkX0wmNFr7eBm1y99ZHxZivxR0Z2fucVql
+         v/QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767024442; x=1767629242;
+        d=1e100.net; s=20230601; t=1767024512; x=1767629312;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=4f+VaUREAokeuI/rlnWPh+sE4WF8IbfXbo6+kslGWsM=;
-        b=FFOoN3A+qFb3a3gkKw1eqThl3QaulEPysUcdLHicKtZ0KgUGeB5wyJOBGOx9RYtIQ1
-         p0p5qRQ08Xbz2ybi/EYFekbN+6/cvD9jBSw/zJdTpuX3k2BgN2SzhQVFTxo7dCbi1Vwt
-         0Yro6kfUtk6pLi58ZfzkLhuEWLfDR1i+XBwHxFZei4PzIVBpTuiiW8ne0RxuYY5cypW5
-         QOmBBUpfDFqYphPkvsuofLnXFQwoMr3W4j4PowVEDCBWp8wQ+wMQJBgf8o5XjwSAovBt
-         WESHEopdpqZLAyMtl/jJ1lqr8h1BeR+16B4zogOUmT48Vqhs64jBUPFJLjiRpp4wiF3U
-         lCfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfEijy0ssBv3gOJIvrzaeSb+5IGJC7dFiWrByqab0tF5Tq9Id/YWJAAzzC7d7L4lGOuhy1G6T8hz6e4MFCLw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy843/fUmrkDdRoei+EJl0gVaRMz628GwvqQLHVr5McIjDARNSD
-	KdcA4k2MyZ/p5A5Xrai9ubazuHi+C3zFVjUrmdcfV0vt1v5wcAqiK9DABdhm7oOYDK8ngptyN38
-	THZEnNSJqLsSzLKhyLts4vlwRjYvNfnM=
-X-Gm-Gg: AY/fxX7zG9JsmeN58xwjLlTnZ7vMGjmS5P2YYbnaHmnlJ0btxciZ0LYAzqtwxkZS2+q
-	A919Ia5WXw7M/0yEtpxv0sqlYmzQINWaUV+Kd1xSRCzq9bQ2xeb6xZp/rAWP7WdYlKqByp55T5V
-	i1MsTd9iJU2zDOQEBMWOoHw0iEwwgHFEmsDeQ2LA+6kGT2WMw99tgvM1cHITokVTX5UBO7wpxRk
-	1zeHliD33/3Hubx25dnhvX6cVk7kMf/S+H/9pG2ljp75AbbjgiQDr7UpoG9R70kgrZYLP5/rxag
-	ae6/PYATqkCchjMRu8b8MdWoocGrImWNSnI66iGXq8UfVwxxxXkxAu7XBFVy6J0P+TooFQCY6oq
-	JP4EM31Jx1/pHYavLA6NGOkypCawrHd/w8oLBk4GjPFiLSMWjnV7Y
-X-Google-Smtp-Source: AGHT+IEOZfd9DfAvLFUM1AtaSXPGJmnn7UaGAO/pgm32ZQd8fVSZo+7BSBNhUJVMh0I0CT5JzHyltg4MxjKGTmTtgTM=
-X-Received: by 2002:a2e:a552:0:b0:37f:8d02:4f52 with SMTP id
- 38308e7fff4ca-381216887bemr120117541fa.40.1767024442144; Mon, 29 Dec 2025
- 08:07:22 -0800 (PST)
+        bh=ld1Pgin0D8pdwsBwu5whQB1olwItrUX97UwynrtaKcY=;
+        b=Ri8h3EYbWGIPkxcK81SigxPbUGTylOEgCBdeo9xxrzbqtIqoc8jw3EYWXbOhspWxd0
+         pHdzXaVYkmZj4hy+4oDb+hgAoXycY7bdTVwD5iy5VnxQYiAnff1wJSLsPOGF8CjImFOT
+         cougJApAt6UWQ/AenBPx6kWO9DBqCCekXpS1DpE1ZeUiNxZVVEOfhF5HEocRyltH8gkj
+         Rk72NrexZPR0hSOYQD6yKH6Z015lgwpCTSDU80iulNHvlr6G5w3PB6LxfVBedvEaRIGl
+         GCRC46fG1Jywi/jCCFfXi3JHlxOoUACg3Zb45+RUg5Q25rZIvqEO3Kg3Vkh5uyL4vGV/
+         dd3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVuDlMpW54/LdRNUTGOEQQbm3Q6heLXIsPL9GNJn10PqVoG9bYYGtzd1X6ERh1PsQ4uEPN6YWhPNhYorRxTcg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEO9BonTgG1vGPU1/XvDLyS1gtJgU/qEPcdxhFBTOOc/Txp/Fy
+	1fHc8Gevx1eq8MnKWm0xK3aKUnvs4Y+9OYF9ni6BWjxVqH0OqSfsXoZosY0IwPX30Id8PbJ0rSQ
+	uyXpxL4qtCRTssz/MEiHclyYOwam8ryo=
+X-Gm-Gg: AY/fxX6kCtfiVG6zcBmJOBt5F9Liil2vnYlviycwniQjmZ/scIHkfop8RAZX+QrOLv2
+	83UEM3oJvUdUBbQ4vo8G4DGNQWTA62QqhDnm1tDahm1t+n9z5krAC6fKWAnJxXUrgdNGWYr/lI3
+	cQoNLAh6SVowMCbspNG22ujQFee+B1ybc5H8+dRzItKvlH1VBG1J0zPqbDhKFStZRf0n61UqIJi
+	gx8vW8HtvHblO9Mj8lcibrjX/dDAmP1tOVy5UZTRox10Y7vsoXA0CrQSipnIEo+ArRDxRvIW0L+
+	CZDmv0bCcWJFhqzI+iEk50W9IXOCMZkoHROVqrFg3yyzkCklIgoIzhf5YEuKOidOdvo78QFqCfv
+	qB3E94FBDgHWumGAc50vtlXlINNBGlMLKwg52uIdYgQ==
+X-Google-Smtp-Source: AGHT+IGZaeTU6DO9YE26Fh7x47jFJuoqrGBt7pJAL4seWpEn8v0DY7rIPdFFHN54teHJOxuIBpJn0TUtg292I42ky/M=
+X-Received: by 2002:a2e:bc20:0:b0:378:d020:b6b3 with SMTP id
+ 38308e7fff4ca-381131adf46mr120771601fa.7.1767024512004; Mon, 29 Dec 2025
+ 08:08:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org> <20251203-xarray-entry-send-v1-5-9e5ffd5e3cf0@kernel.org>
-In-Reply-To: <20251203-xarray-entry-send-v1-5-9e5ffd5e3cf0@kernel.org>
+References: <20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org> <20251203-xarray-entry-send-v1-6-9e5ffd5e3cf0@kernel.org>
+In-Reply-To: <20251203-xarray-entry-send-v1-6-9e5ffd5e3cf0@kernel.org>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 29 Dec 2025 11:06:45 -0500
-X-Gm-Features: AQt7F2pRjhjvMxRgEyprBObO2UVkra9wPU9fOZmv15YaWuCOt-tDNqwXPCx9RFg
-Message-ID: <CAJ-ks9mXoTdOO+Zb9F=cpTrwa+XZ2mLb3NDH9pyd_GZhD2TVRQ@mail.gmail.com>
-Subject: Re: [PATCH 05/10] rust: xarray: use `xas_load` instead of `xa_load`
- in `Guard::load`
+Date: Mon, 29 Dec 2025 11:07:56 -0500
+X-Gm-Features: AQt7F2oFn9a_6dlnHNgBK8Jbq3KKJVrc5eK3lnokGZEinG-vD_ruRLa39ud9_Sg
+Message-ID: <CAJ-ks9=VO1nypKFtOaGWxOUqzzJ7-Wb5qLd9pzQuFCSfk8PkZA@mail.gmail.com>
+Subject: Re: [PATCH 06/10] rust: xarray: simplify `Guard::load`
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -83,66 +82,70 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Dec 3, 2025 at 5:27=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
 org> wrote:
 >
-> Replace the call to `xa_load` with `xas_load` in `Guard::load`. The
-> `xa_load` function takes the XArray lock internally, which would cause
-> a double lock since the `Guard` already holds the lock.
+> Simplify the implementation by removing the closure-based API from
+> `Guard::load` in favor of returning `Option<NonNull<c_void>>` directly.
 
-This is not correct. `xa_load` takes and releases the RCU lock only,
-not the XArray lock.
+This is not sound. The returned pointer can now outlive the guard and
+mutation through that pointer is trivial.
 
-> The `xas_load`
-> function operates on XArray state and assumes the lock is already held,
-> which is the correct API to use when holding a `Guard`.
->
-> This change also removes the `#[expect(dead_code)]` annotation from
-> `XArrayState` and its constructor, as they are now in use.
 >
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 > ---
->  rust/kernel/xarray.rs | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  rust/kernel/xarray.rs | 23 +++++++++--------------
+>  1 file changed, 9 insertions(+), 14 deletions(-)
 >
 > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index f6e610b059625..0f69a523b72bf 100644
+> index 0f69a523b72bf..ca97134ba2bd0 100644
 > --- a/rust/kernel/xarray.rs
 > +++ b/rust/kernel/xarray.rs
-> @@ -215,8 +215,10 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U=
->
->      where
->          F: FnOnce(NonNull<c_void>) -> U,
->      {
-> -        // SAFETY: `self.xa.xa` is always valid by the type invariant.
-> -        let ptr =3D unsafe { bindings::xa_load(self.xa.xa.get(), index) =
-};
-> +        let mut state =3D XArrayState::new(self, index);
-> +        // SAFETY: `state.state` is always valid by the type invariant o=
-f
-> +        // `XArrayState`.
-> +        let ptr =3D unsafe { bindings::xas_load(&raw mut state.state) };
-
-Can this be a method on XArrayState?
-
->          let ptr =3D NonNull::new(ptr.cast())?;
->          Some(f(ptr))
->      }
-> @@ -327,7 +329,6 @@ pub fn store(
->  /// # Invariants
->  ///
->  /// - `state` is always a valid `bindings::xa_state`.
-> -#[expect(dead_code)]
->  pub(crate) struct XArrayState<'a, 'b, T: ForeignOwnable> {
->      /// Holds a reference to the lock guard to ensure the lock is not dr=
-opped
->      /// while `Self` is live.
-> @@ -336,7 +337,6 @@ pub(crate) struct XArrayState<'a, 'b, T: ForeignOwnab=
-le> {
+> @@ -211,16 +211,12 @@ fn from(value: StoreError<T>) -> Self {
 >  }
 >
->  impl<'a, 'b, T: ForeignOwnable> XArrayState<'a, 'b, T> {
-> -    #[expect(dead_code)]
->      fn new(access: &'b Guard<'a, T>, index: usize) -> Self {
->          let ptr =3D access.xa.xa.get();
->          // INVARIANT: We initialize `self.state` to a valid value below.
+>  impl<'a, T: ForeignOwnable> Guard<'a, T> {
+> -    fn load<F, U>(&self, index: usize, f: F) -> Option<U>
+> -    where
+> -        F: FnOnce(NonNull<c_void>) -> U,
+> -    {
+> +    fn load(&self, index: usize) -> Option<NonNull<c_void>> {
+>          let mut state =3D XArrayState::new(self, index);
+>          // SAFETY: `state.state` is always valid by the type invariant o=
+f
+>          // `XArrayState`.
+>          let ptr =3D unsafe { bindings::xas_load(&raw mut state.state) };
+> -        let ptr =3D NonNull::new(ptr.cast())?;
+> -        Some(f(ptr))
+> +        NonNull::new(ptr)
+>      }
+>
+>      /// Checks if the XArray contains an element at the specified index.
+> @@ -246,18 +242,17 @@ pub fn contains_index(&self, index: usize) -> bool =
+{
+>
+>      /// Provides a reference to the element at the given index.
+>      pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
+> -        self.load(index, |ptr| {
+> -            // SAFETY: `ptr` came from `T::into_foreign`.
+> -            unsafe { T::borrow(ptr.as_ptr()) }
+> -        })
+> +        let ptr =3D self.load(index)?;
+> +        // SAFETY: `ptr` came from `T::into_foreign`.
+> +        Some(unsafe { T::borrow(ptr.as_ptr()) })
+>      }
+>
+>      /// Provides a mutable reference to the element at the given index.
+>      pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'_>=
+> {
+> -        self.load(index, |ptr| {
+> -            // SAFETY: `ptr` came from `T::into_foreign`.
+> -            unsafe { T::borrow_mut(ptr.as_ptr()) }
+> -        })
+> +        let ptr =3D self.load(index)?;
+> +
+> +        // SAFETY: `ptr` came from `T::into_foreign`.
+> +        Some(unsafe { T::borrow_mut(ptr.as_ptr()) })
+>      }
+>
+>      /// Removes and returns the element at the given index.
 >
 > --
 > 2.51.2
