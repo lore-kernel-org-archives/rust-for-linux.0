@@ -1,211 +1,285 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA2719D065
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 10:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C130296BD3
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 11:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767005064; cv=none; b=k7X6+mvKklK2JWTOrFWx+mTamrpHxUWo5d0EdTw8FJogh3iPRpKWDG6YooH4fbkUZ9g4+4hGNEEee6Mbv2wsYHrQhSWV8WEVIAXuGS9Dgr05jBo9ZvRBAh+4D7MyyLFaUUiPG8RjY3lrCO6ucHAVQ5zYGNUd7fii7RUHPqTbwZ4=
+	t=1767006809; cv=none; b=AYWXJ1kphKJ6wineVcIxkCQtbcH/2sn0qNDr7aM+SQkhbDUYhsy9yvICZhLZUhbx7BAoJn20c+WR/39f+9AQc6sWswW1VBnT48/ZfEavMD+g49G8uRHMj0xW5Ipg6BEmSHfp2eWJ2vaa49+7wIf0PGZply0EjqtaqYmvc/bSiEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767005064; c=relaxed/simple;
-	bh=4D+PsUxFWkTcvyC9E7Dtj6OeWr8p9OjIPkWqRwAkrZ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SPXsU4z393m7peWAaXQ29dWSF8yThoANOakoljzZTfVelPloUMTsU+j63R4gt1ke4ehx1s0/B7fRRuOrelcQLfX3KWX/37nd1o4zLHa2dqIE/AkyBrEI54bRYJ9b8KC46LWO4PpJsRjeb/5TQ1IQGLvKnlzVUW3EEUbRdw+rNvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=deytima1; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1767006809; c=relaxed/simple;
+	bh=942jX0tbSg6HLiQWbLr1U9FRZ+036lwlHUvlXbc+j/o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jzgTD5uThyPPTgw5auPNPlMplrH1IzE1kRFZO0CHA3MwjH7/PtROaQ0XPBhwxaWStbmdj9O/VA+L1hVEz4DuCdOsKTVv4ujvKz3xzbfUsyBFMRiWAFfWzzfDGmg2/3e2coLRru5yBDHcJTlt6/LYltBoFeMTz90VPQu037gGQmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k0GOZdSB; arc=none smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="deytima1"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47bdbc90dcaso55928315e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 02:44:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k0GOZdSB"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-88a379ca088so102560086d6.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 03:13:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767005060; x=1767609860; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PbOTz9it/3RSSwuH/1hgRMq5x8qHT+XuJCLdNHHheyk=;
-        b=deytima16+8I0wAM9p8gCFxkg2RoiMV3Bc1tMnocMY5zsDglpToykAZEzeFAGebgKY
-         LA7Zpqgn46UiHH6MPSp3OZeSn5gZ0Mtixw8iDnPpcsO7dT9YlDQIIEGaNZVxIsHRKvRH
-         ZFLcJC/wayO+MLau+d0+7lpRAHZWRa02NPAYdK0bq6UMKYo/iYWBYsae+tCDtkKmA6bd
-         UdP2wN038iyxLAPNZ8L7nAPzoF4Br9ydem89EDryt+BSkOjSJY9JXCi7IZSwUN/v1WAl
-         cRlYWn6OZyA85WAMyIGe8Lj8IkuPZ/T6BEfw9cFa2pJV5tV2DdBuG/CXtva5KzF97M7k
-         OpTA==
+        d=gmail.com; s=20230601; t=1767006806; x=1767611606; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YMjg66TkUXnvEEpGyV90gswGFrQoaYQK9vJ+BwnyYYo=;
+        b=k0GOZdSByKk7Fijidh2eD6dgeBXp4SmRVSTKIoHqlJXVNEMkm9GNyIB1nhHp/e3An6
+         uzs4OYZdVO96AdDlm4mmOCJqLf2SABRPJ9Ur8K3ZS2QcnacoKlNg/I1Jd772RSazew/d
+         ZhCSb6B8aILAe9vIlPnY5Ido4yzi2s8TZ8HtcnBMqDW/rvRvP02evZpIeJ6TUX+pyzxe
+         oB83AtYTYCNpIJ52LXPGZX3UTmrVL5P+Ns8K4+4ZQOTZiDex/IUmWxN4BAEcg3Kvse8O
+         dwhMN1QmlUpmF7QmBsQkjGLBJ0D1WQ8T9sk9i1xQzhyDPHHlFyI31Ck3PUcKRWMAhkeA
+         lMTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767005060; x=1767609860;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PbOTz9it/3RSSwuH/1hgRMq5x8qHT+XuJCLdNHHheyk=;
-        b=hkiQl91+CWv46GNOqZ1afPf1Uu4UuTRScKbO3LiKHXSLvAo4lAT6KsDF1aC4ZVxDPh
-         uxsbhDUqVjxxgtSRDcDfqWATGISKbyVuaOqobUIBlIkBF7HU7NaUbQJ4i+9bS7flKMh3
-         Phjdql1UOvgyAH528gt0ALb4etM5Pxd4QvypJj+h+Qgzmly84vixGxAiQv3JFgrhMLbr
-         VmeK96rSEWqKZKLmg1LnCiRFQr28Y4S17Z1JNP2jcFjbnaHrBjFB8NesuddFEvO3QHPy
-         AQHvxQtYiKIyHQ2H+bkBlFuhgmok7foTc0kAVQCfC68HT6FRi0BV//gOiV4zaCHzTdXN
-         RGBA==
-X-Forwarded-Encrypted: i=1; AJvYcCV1wGuL2m6mFNZraQzdgfKav0yEbvOh/XIiI0BQvGN2WnfA5GGBJRAPVt9BwipWYM3GBy3zziJzkL9amyuxiA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzI/5VlmTVACH6UiVF3hT4drjpVU71tHKhNdDoqr+002VKrMk40
-	esi8U++d5VJ49P+wT74uL5ffJHAQ6LObvbzjCgB32C9eaou+7PQ0nuE5
-X-Gm-Gg: AY/fxX54FbF4gtZaD5FfAdine4t7FuSUMj8mB+sr3NTTgCNrjWtGwh/lSBwQVMuK76a
-	mDlQiQ3DSN1peVGTFj+s5brHDcZ4tOYQTqF+cWE2V2TQ2ZEbjaKgYYh7gtaKR5aGRlhQYhle8j+
-	R0YTKbIYcFhzAgCc764kUIAjbl0T9M5sIFA4WZfhfIv2qhUcv57d0E5vMNjguNde7tqh6OlB9Jb
-	xcWySbBP2v7N+skgkxcrsPfQqON//tWGQQQk7xZfZewwG8IIqZHx3/hwEqCC+l7q0Xxl7rsuj5b
-	eVDlLAG6XwIIaUp2ltgyjYkrsJMztjI4Z7BmuSj6RFl+y4/mJ60VsiG5v10GShPIcjSRGTsuBUi
-	oTAJCASaNWJrrL/y7c1Q4IDMIDszqOceduofZyfwNBj5OFg8zDe5JQhqXBsD++yGAheMvFM7/5D
-	8R4FVHzoUGEmZHJwZPz5883wDncLSvB5HUquUPePl7LC/nyoQUqjXy+S3Y7cAqZDXURP+9kONQ5
-	kwUllx4X9/ZvFDHtm3Mr/QeFwwxvsRRyrn/670gfEpLNw==
-X-Google-Smtp-Source: AGHT+IH7HH3B/GsPmjphgHFpcA4rkTmQU7ZGYMnFvsOgt8zPH7LWmW5UxprLMs0Sceu5RtVU4OOzfg==
-X-Received: by 2002:a05:600c:c1c8:10b0:47d:403c:e5a0 with SMTP id 5b1f17b1804b1-47d403ce6e0mr137915155e9.12.1767005060287;
-        Mon, 29 Dec 2025 02:44:20 -0800 (PST)
-Received: from ?IPV6:2003:df:bf2d:e300:65c7:1f11:be99:4653? (p200300dfbf2de30065c71f11be994653.dip0.t-ipconnect.de. [2003:df:bf2d:e300:65c7:1f11:be99:4653])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d193522cdsm511479345e9.4.2025.12.29.02.44.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Dec 2025 02:44:19 -0800 (PST)
-Message-ID: <a8a08f6f-dd3b-4498-8fb2-f91934683288@gmail.com>
-Date: Mon, 29 Dec 2025 11:44:17 +0100
+        d=1e100.net; s=20230601; t=1767006806; x=1767611606;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YMjg66TkUXnvEEpGyV90gswGFrQoaYQK9vJ+BwnyYYo=;
+        b=CM5/4Uk9cD3KOJ9v1YUubKRrY26+LGVf1GaAuTONiKOW1Taru0+gSvA3H2RV0wxSGY
+         J5xIkIIay4QvqInP9HJOwis6zX+nCVmeo8XKssJHP/XYZOvxhCziM2a1ydygEzE6Kz9l
+         o6VsF902GuMJj032hMZpDhIdL0s6vbk66VQxlJRZHqf3438s7zhD7MISX7rzvfbVOJY/
+         V85ZmscsUx2UXlRYm/9NRO/STyVWE21dsExPkdYr2SSuaBI56kIkFD5CkRIky9Aivism
+         j3RCbDjlHHOd1qklN//FdRYR4xqborj7fTwsObCc+rsa5WchFdfZYFQEiJRmoZwhAWHx
+         Ncjw==
+X-Forwarded-Encrypted: i=1; AJvYcCVYW/u7Xm8W+dW4wgXSZ5WJ/VwMou2VKA2pQjuYEtE8QJ3QS99OKDn773Yl6BFzb+9e84Xcoa2ZpcaFfZPgsQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7L31HUGpJYrSNZrsaV/eo4N8IFPFDOp280ulxRY2fbBAaHCeW
+	9y21qM8Wj2KzRg9hsX/288T35upYKMLvJqBKBM/W/hJ65m3bQPguQRD4
+X-Gm-Gg: AY/fxX6JaR5V8+nsByBAPwlnp1v4og2Y/mow26FlMex027Q4c6NSUK04LH8YaQSkXHk
+	hXdTKocdLfeaawhD+fVRK9POu1XCtfp3+eLknxLBiRVh368VLfyW8ZPhwR4E1v7HFOmmDg/9mf4
+	6IANVzyE1G1/Ra8NygAfn/AjBulCubiFLecQ5z3JTszwlnGIpWh8tdu3zNarVAht8wvECpCliuH
+	Dr4cWDBndOjs5MZlX/kTbraU0eKWGvoLAfATSQ5QdhiOJXFYOmxTdPF934sIBS+UIsgJhBMZz4o
+	lyNTXixrbpgJD7ThH/C/f15jeGeS9gQ+R8SIpgTllIDiRvDvmgpvxa8zxyzcPwNF4xrHPuXRMmL
+	uCAd95tKV79wSZGsz2pfUV1E1QjeiocM1+Da/k1j6wTNF1mSTvGo9mVQkNOpatkv2nFVF5t9iN8
+	jsdO0y9RMhK+uxLNuoIjMDFqS2vymPgXXOXjExoDB8xwvdO7LPMOr7KpPMVzlygz1NNG3Kvpivk
+	hyGWl8ZEB/A6g8=
+X-Google-Smtp-Source: AGHT+IFuEOKRfSv8uVgWXie4wEwpy8DkFPSl6ov7JV7YZkB4orz9LgbEPoa5npbMxH36uL/UQoyHgw==
+X-Received: by 2002:a05:6214:4603:b0:88e:adfe:89b7 with SMTP id 6a1803df08f44-88eadfe8c7dmr395959166d6.30.1767006806335;
+        Mon, 29 Dec 2025 03:13:26 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9623fe52sm219102866d6.11.2025.12.29.03.13.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Dec 2025 03:13:25 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4DA1EF40074;
+	Mon, 29 Dec 2025 06:13:25 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 29 Dec 2025 06:13:25 -0500
+X-ME-Sender: <xms:VWJSaewov2qo63vhzN7kXgda3bPKRHkTITJUoBcAjRetQ5ESd97rZA>
+    <xme:VWJSaQwUJvlTbKEsYyo5ruLMU23zN2O2b_m02jX8o6a9KlE9fiCqGURBPhl8Flvnr
+    nOLFsdEo_kXGVLRdwZNRrd1GC-o3RDJpfJG7Ru2eXW-QfyYOFmIsA>
+X-ME-Received: <xmr:VWJSaeVbM8cbIC8pSeAahxk7A2BYIvtp_OrLWVXZxK6g2gj9-afn2gt3rA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdejieellecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtth
+    hopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhr
+    gheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglh
+    gvrdgtohhmpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgt
+    ohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrg
+    hrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:VWJSaXQqNFDuQEr9aJbg2Wb2PQl9k9nFuVChKetvqnIOByPlZGhRxA>
+    <xmx:VWJSaWQuODnXPfeG5UD3TJdUL3CmxuSsu2LKqT2abBaK0NFXKe3j4w>
+    <xmx:VWJSafeLj_CtDUGSM28YXYHL7CE15_jJmaxI0Q1uu6qJLC8oCt69Ig>
+    <xmx:VWJSacfPCWY40jWWEX20b2pMuGEUqPw1XNBnE0m09oDKh-EiVG2Nzg>
+    <xmx:VWJSaTaJzpAPhZA8r8alBn73bgXvxjDJtFzblfaEAFUhb6k8_ImMrWsE>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 29 Dec 2025 06:13:24 -0500 (EST)
+Date: Mon, 29 Dec 2025 19:13:11 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: ojeda@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	bjorn3_gh@protonmail.com, dakr@kernel.org, gary@garyguo.net,
+	lossin@kernel.org, tmgross@umich.edu, acourbot@nvidia.com,
+	rust-for-linux@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v1 1/3] rust: sync: atomic: Prepare AtomicOps macros for
+ i8/i16 support
+Message-ID: <aVJiR72gcz_uonoS@tardis-2.local>
+References: <20251228120546.1602275-1-fujita.tomonori@gmail.com>
+ <20251228120546.1602275-2-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/4] lib/vsprintf: Export functions for Rust pointer
- formatting support
-To: Ke Sun <sunke@kylinos.cn>, Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>,
- Steven Rostedt <rostedt@goodmis.org>, Timur Tabi <ttabi@nvidia.com>,
- Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>
-Cc: John Ogness <john.ogness@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Andrew Morton <akpm@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@gmail.com>,
- Ke Sun <sk.alvin.x@gmail.com>, rust-for-linux@vger.kernel.org
-References: <20251229072157.3857053-1-sunke@kylinos.cn>
- <20251229072157.3857053-2-sunke@kylinos.cn>
-Content-Language: de-AT-frami
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20251229072157.3857053-2-sunke@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251228120546.1602275-2-fujita.tomonori@gmail.com>
 
-On 29.12.25 08:21, Ke Sun wrote:
-> Export ptr_to_hashval() and extract kptr_restrict_value() to enable
-> Rust code to use kernel pointer formatting functionality.
+On Sun, Dec 28, 2025 at 09:05:44PM +0900, FUJITA Tomonori wrote:
+> Rework the internal AtomicOps macro plumbing to generate per-type
+> implementations from a mapping list.
 > 
-> - Export ptr_to_hashval() with EXPORT_SYMBOL_GPL for pointer hashing.
->   This function is used to hash kernel pointers before printing them,
->   preventing information leaks about kernel memory layout.
+> Capture the trait definition once and reuse it for both declaration
+> and per-type impl expansion to reduce duplication and keep future
+> extensions simple.
 > 
-> - Extract kptr_restrict handling logic from restricted_pointer() into
->   a separate exported function kptr_restrict_value() that can be
->   reused by both restricted_pointer() (for %pK format specifier) and
->   Rust code.
+> This is a preparatory refactor for enabling i8/i16 atomics cleanly.
 > 
-> The kptr_restrict_value() function:
-> - Returns 0, 1, or 2 to indicate the kptr_restrict sysctl value
-> - Returns -1 for error case (IRQ context with kptr_restrict==1)
-> - Modifies the pointer value through @pptr parameter when needed
->   (sets to NULL when access should be restricted)
-> 
-> These functions are needed for the HashedPtr and RestrictedPtr wrapper
-> types in rust/kernel/ptr.rs to provide safe pointer formatting that
-> matches C kernel patterns.
-> 
-> This refactoring:
-> - Allows restricted_pointer() to reuse the common logic while
->   maintaining the same behavior
-> - Enables Rust code to use the same kptr_restrict handling logic
-> - Reduces code duplication
-> 
-> Signed-off-by: Ke Sun <sunke@kylinos.cn>
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+
+Thanks! I have an idea that uses proc-macro to generate the Atomic*Ops
+impls, e.g.
+
+    #[atomic_ops(i8, i16, i32, i64)]
+    pub trait AtomicBasicOps {
+        #[variant(acquire)]
+        fn read(a: &AtomicRepr<Self>) -> Self {
+	    unsafe { binding_call!(a.as_ptr().cast()) }
+	}
+    }
+
+But I think the current solution in your patch suffices as a temporary
+solution at least.
+
+Regards,
+Boqun
+
 > ---
->  include/linux/printk.h | 10 ++++++++
->  lib/vsprintf.c         | 55 ++++++++++++++++++++++++++++++++----------
->  2 files changed, 52 insertions(+), 13 deletions(-)
+>  rust/kernel/sync/atomic/internal.rs | 85 ++++++++++++++++++++++-------
+>  1 file changed, 66 insertions(+), 19 deletions(-)
 > 
-> diff --git a/include/linux/printk.h b/include/linux/printk.h
-> index 45c663124c9bd..91380b1eff1a1 100644
-> --- a/include/linux/printk.h
-> +++ b/include/linux/printk.h
-> @@ -385,6 +385,16 @@ extern void __printk_cpu_sync_put(void);
->  
->  extern int kptr_restrict;
->  
-> +/**
-> + * kptr_restrict_value - Determine what pointer value should be used for %pK
-> + * @pptr: Pointer to the pointer value (may be modified)
-> + *
-> + * Returns:
-> + *   - 0, 1, or 2: The kptr_restrict value if pointer should be used
-> + *   - -1: Error case (IRQ context with kptr_restrict==1), *pptr unchanged
-> + */
-> +int kptr_restrict_value(const void **pptr);
-> +
->  /**
->   * pr_fmt - used by the pr_*() macros to generate the printk format string
->   * @fmt: format string passed from a pr_*() macro
-> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> index a3790c43a0aba..29d2e681c6e73 100644
-> --- a/lib/vsprintf.c
-> +++ b/lib/vsprintf.c
-> @@ -811,6 +811,7 @@ int ptr_to_hashval(const void *ptr, unsigned long *hashval_out)
->  {
->  	return __ptr_to_hashval(ptr, hashval_out);
+> diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
+> index 51c5750d7986..0634368d10d2 100644
+> --- a/rust/kernel/sync/atomic/internal.rs
+> +++ b/rust/kernel/sync/atomic/internal.rs
+> @@ -169,16 +169,17 @@ fn [< atomic_ $func >]($($arg: $arg_type,)*) $(-> $ret)? {
+>      }
 >  }
-> +EXPORT_SYMBOL_GPL(ptr_to_hashval);
 >  
->  static char *ptr_to_id(char *buf, char *end, const void *ptr,
->  		       struct printf_spec spec)
-> @@ -857,14 +858,28 @@ static char *default_pointer(char *buf, char *end, const void *ptr,
+> -// Delcares $ops trait with methods and implements the trait for `i32` and `i64`.
+> -macro_rules! declare_and_impl_atomic_methods {
+> -    ($(#[$attr:meta])* $pub:vis trait $ops:ident {
+> -        $(
+> -            $(#[doc=$doc:expr])*
+> -            fn $func:ident [$($variant:ident),*]($($arg_sig:tt)*) $( -> $ret:ty)? {
+> -                $unsafe:tt { bindings::#call($($arg:tt)*) }
+> -            }
+> -        )*
+> -    }) => {
+> +macro_rules! declare_atomic_ops_trait {
+> +    (
+> +        $(#[$attr:meta])* $pub:vis trait $ops:ident {
+> +            $(
+> +                $(#[doc=$doc:expr])*
+> +                fn $func:ident [$($variant:ident),*]($($arg_sig:tt)*) $( -> $ret:ty)? {
+> +                    $unsafe:tt { bindings::#call($($arg:tt)*) }
+> +                }
+> +            )*
+> +        }
+> +    ) => {
+>          $(#[$attr])*
+>          $pub trait $ops: AtomicImpl {
+>              $(
+> @@ -188,21 +189,25 @@ fn $func:ident [$($variant:ident),*]($($arg_sig:tt)*) $( -> $ret:ty)? {
+>                  );
+>              )*
+>          }
+> +    }
+> +}
 >  
->  int kptr_restrict __read_mostly;
+> -        impl $ops for i32 {
+> +macro_rules! impl_atomic_ops_for_one {
+> +    (
+> +        $ty:ty => $ctype:ident,
+> +        $(#[$attr:meta])* $pub:vis trait $ops:ident {
+>              $(
+> -                impl_atomic_method!(
+> -                    (atomic) $func[$($variant)*]($($arg_sig)*) $(-> $ret)? {
+> -                        $unsafe { call($($arg)*) }
+> -                    }
+> -                );
+> +                $(#[doc=$doc:expr])*
+> +                fn $func:ident [$($variant:ident),*]($($arg_sig:tt)*) $( -> $ret:ty)? {
+> +                    $unsafe:tt { bindings::#call($($arg:tt)*) }
+> +                }
+>              )*
+>          }
+> -
+> -        impl $ops for i64 {
+> +    ) => {
+> +        impl $ops for $ty {
+>              $(
+>                  impl_atomic_method!(
+> -                    (atomic64) $func[$($variant)*]($($arg_sig)*) $(-> $ret)? {
+> +                    ($ctype) $func[$($variant)*]($($arg_sig)*) $(-> $ret)? {
+>                          $unsafe { call($($arg)*) }
+>                      }
+>                  );
+> @@ -211,7 +216,47 @@ impl $ops for i64 {
+>      }
+>  }
 >  
-> -static noinline_for_stack
-> -char *restricted_pointer(char *buf, char *end, const void *ptr,
-> -			 struct printf_spec spec)
-> +/**
-> + * kptr_restrict_value - Determine what pointer value should be used for %pK
-> + * @pptr: Pointer to the pointer value (may be modified)
-> + *
-> + * This function determines what pointer value should be printed based on the
-> + * kptr_restrict sysctl setting:
-> + *
-> + * - kptr_restrict == 0: Return 0 (use original pointer, will be hashed)
-> + * - kptr_restrict == 1: Return 1 if current process has CAP_SYSLOG and same
-> + *                       euid/egid, otherwise set *pptr to NULL and return 1
-> + * - kptr_restrict >= 2: Set *pptr to NULL and return 2
-> + *
-> + * Returns:
-> + *   - 0, 1, or 2: The kptr_restrict value if pointer should be used
-> + *   - -1: Error case (IRQ context with kptr_restrict==1), *pptr unchanged
-> + */
-> +int kptr_restrict_value(const void **pptr)
-
-Would it be an improvment to not modify the pptr itself? But instead
-to work with some kind of in ptr (not modified) and out_ptr (returned
-to the caller then)?
-
-kptr_restrict_value(const void *ptr, const void **out_ptr)
-
-And an enum for the result? With something like
-
-enum kptr_restict_result {
-  KPTR_RESTICT_ERROR = -1,
-  KPTR_RESTICT_NONE = 0,
-  KPTR_RESTICT_PARTIAL = 1,
-  KPTR_RESTICT_FULL = 2,
-}
-
-What would result in something like
-
-enum kptr_restict_result kptr_restrict_value(const void *ptr, const
-void **out_ptr)
-
-Opinions?
-
-Dirk
+> +// Declares $ops trait with methods and implements the trait.
+> +macro_rules! declare_and_impl_atomic_methods {
+> +    (
+> +        [ $($map:tt)* ]
+> +        $(#[$attr:meta])* $pub:vis trait $ops:ident { $($body:tt)* }
+> +    ) => {
+> +        declare_and_impl_atomic_methods!(
+> +            @with_ops_def
+> +            [ $($map)* ]
+> +            ( $(#[$attr])* $pub trait $ops { $($body)* } )
+> +        );
+> +    };
+> +
+> +    (@with_ops_def [ $($map:tt)* ] ( $($ops_def:tt)* )) => {
+> +        declare_atomic_ops_trait!( $($ops_def)* );
+> +
+> +        declare_and_impl_atomic_methods!(
+> +            @munch
+> +            [ $($map)* ]
+> +            ( $($ops_def)* )
+> +        );
+> +    };
+> +
+> +    (@munch [] ( $($ops_def:tt)* )) => {};
+> +
+> +    (@munch [ $ty:ty => $ctype:ident $(, $($rest:tt)*)? ] ( $($ops_def:tt)* )) => {
+> +        impl_atomic_ops_for_one!(
+> +            $ty => $ctype,
+> +            $($ops_def)*
+> +        );
+> +
+> +        declare_and_impl_atomic_methods!(
+> +            @munch
+> +            [ $($($rest)*)? ]
+> +            ( $($ops_def)* )
+> +        );
+> +    };
+> +}
+> +
+>  declare_and_impl_atomic_methods!(
+> +    [ i32 => atomic, i64 => atomic64 ]
+>      /// Basic atomic operations
+>      pub trait AtomicBasicOps {
+>          /// Atomic read (load).
+> @@ -238,6 +283,7 @@ fn set[release](a: &AtomicRepr<Self>, v: Self) {
+>  // used for now, leaving the existing macros untouched until the overall
+>  // design requirements are settled.
+>  declare_and_impl_atomic_methods!(
+> +    [ i32 => atomic, i64 => atomic64 ]
+>      /// Exchange and compare-and-exchange atomic operations
+>      pub trait AtomicExchangeOps {
+>          /// Atomic exchange.
+> @@ -265,6 +311,7 @@ fn try_cmpxchg[acquire, release, relaxed](
+>  );
+>  
+>  declare_and_impl_atomic_methods!(
+> +    [ i32 => atomic, i64 => atomic64 ]
+>      /// Atomic arithmetic operations
+>      pub trait AtomicArithmeticOps {
+>          /// Atomic add (wrapping).
+> -- 
+> 2.43.0
+> 
