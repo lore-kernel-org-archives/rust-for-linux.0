@@ -1,64 +1,64 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6458E27FD49
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 09:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84F729A9FA
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 09:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767087488; cv=none; b=hSY0UMAM4vS3tD8rYho0l0Rw8Qa3prekzlc2wpLZDOOySb1eHj8kFnLo5WK2inXJ35+NE1hy6gnu5wkMY3pTNeh4cuu8GIADVXWYVdECq8wQU5ZHOgO+KTfppSyoEtMflTMtpCg/E5tECwTSglp/vfnLnifN/rvryfV289jDI1M=
+	t=1767087490; cv=none; b=cTVHo4K2MBsBJmcajiV6ZJgMYVbgjrStMYOlS+UPxCEG5B4Lxlia9c++zj28uoNKQZ5KQiBbrts5XpjCNhgLT4y/n+2a7FNns8F3wolHr6rOzx89x6BYUwyIrtJhMksrGlk3GGqnrbLPc5z0JzfgcPd++gtwdi0+3+LepKPblF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767087488; c=relaxed/simple;
-	bh=13OOPGyQesIt0YZYsNxKVmBfzbJq3xrAI2Eati6oIYw=;
+	s=arc-20240116; t=1767087490; c=relaxed/simple;
+	bh=J/6Z+clAGm9xhqcQdY3gs3ezFeYbzQHcpdEPhPx9Y0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qq8xByMEdnzBWaUibih4UsalOG5Ow6bLQUO1voeyHajjwzukSX6TZamz8qEOdS/imPzDAA9OqdQ6A2FWmPzlVgH+M/0/h48zKan3Aj1eRRPLf+bBdYzV5i+tY9YNs0OLohLusM+KjD4r+4G91rO0u4+3vQ1/Fc85Oue1d8kzBxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dwIojAcM; arc=none smtp.client-ip=209.85.215.173
+	 MIME-Version; b=SRhHmOgZvgBBuIVII5YM3CVQeS6Ysro0fwnB0jQfcMe+Dpc9LSoQzcIOXMqgjsPTRX8zELjydLH6qPyuhgVKbblVAGP5YCNvitFaxNFy2IM2Mx8IemnQRXBUuMrrK/kPmww4jhrVK7eDmxK+YLDEvtteMeTYpqut282k5doB2KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WM/JLHA0; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dwIojAcM"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-bbf2c3eccc9so3597283a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 01:38:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WM/JLHA0"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7e2762ad850so10225789b3a.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 01:38:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767087484; x=1767692284; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767087488; x=1767692288; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5Ekqd71xyK9uXVDJwPsIe1nExAvKQrkA6oo38oCpBiY=;
-        b=dwIojAcMkRMH3nC52p17qO0kdxlnV78OrfXrUM1XISyN/w/BoW6hLcAde89eoORU9X
-         3N7ZjvXLt+T8BTDJwReBA2nC2+4TTPFUXqvPigB6gMXO3BwGui4SV5FdB9I8N/AnWp1y
-         XgCj3AC8/RCN8PT/JQ/X6YsHVSvkWqAQqfLlP66tuDsoIGeJqBwID5hR7I6RsRKr6WAs
-         2boSxIR5z2mqXfYEnyyqNiInR47XxhAJVbWlpr1aSpcJ3wq3y13YDBb8E9e2DbPEhxLu
-         Z1BNYapnKgHrpC3hVHzoJsg0i49zJaJSo8sdGoj6nqokAfHi71MnChoS5aP4vsz3MWsq
-         NpvQ==
+        bh=FClmzE+Gj8uHp32vQP+9qhimjHkP10HuqGxVnwIf6yk=;
+        b=WM/JLHA0zr8gAmxvEflTfKdNFIm/NZOSr7KdkA0zch1X32x02EeKxX7ma+8vsjlTea
+         xA0YlODgbOKTnYpaW0fMGzykGOKkTSEdSSzhtS4g9Ap5i6G/WQRObsD1koWwYkFgOiOE
+         NvD1u38oxYNuQiF/nqZDUh7Nuf/KuLKD0T68mqak/a+ap14qEVPWU5J1jMci4OBv0UOr
+         6zDeDICOni04JCE+K7maU9tyBLtNXHkugI1u+FBDtKoEV4c1y5HtBKN3g8HH0yNEjTPK
+         JCiE+uZYhnj11aGa98p8yhGKFS3btbElHwQMtfFdZMfB0Ip1E+6dMztMnig35BnWwlCB
+         tDdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767087484; x=1767692284;
+        d=1e100.net; s=20230601; t=1767087488; x=1767692288;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=5Ekqd71xyK9uXVDJwPsIe1nExAvKQrkA6oo38oCpBiY=;
-        b=fDfXiKR7qwhQ+4IIeWiI8CmFRb78lVjRLFgvZ6+7JsDS+sUs14hJHQwkLVv6TSgmM6
-         yGmUSazE4opZ+4XZ5y0Sznx2DPOgWCd8hABVLQkByMzBHeS6Ei/m5vgF8//8/Z5A9Yjf
-         1vreh5sS4HDu8UR5+VYpfZ3ycey6uM4/YtS75l0p6ce/RQd9oBjOddXz9qWlht1QSiBY
-         2o3CYSQYpPDhun8Ccau8YBG4hveVHZzgoczXfgvNqDFZ4RsbT1effSWfsmTIL9LNtfWn
-         3M6Ue8TUoNlzFIOyE2tO7Z2hDW02T5zpr7sq8DT/G/ul2W2vQZ3d6E7B1YcBMNLqZOFN
-         96WA==
-X-Forwarded-Encrypted: i=1; AJvYcCX1WrILbFFX0GqIKbuDUzKJV+FKWw3Iwfh40MmMWrEkTTi82Z2yK093cKNyqy8C1NXo77QI1ES+Ff7ieRQM8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgHyYGDKkbJ6A0m99Pkuaq634WBe/IdspI5VDbTaB2g96RhjSN
-	gcIJe+xpdWeSNsnkIYaPzVMtrq7FYiyHf/s9TJZZFgEGDf+ISEegmLAg
-X-Gm-Gg: AY/fxX7MmvIBZjxzdmQ20q/V9ruLxcTzG+v81MRKbVz0a/RiPaALAh6zTv66uw/AyrE
-	zUTOx0Yis8EKSgH9H2VeMc+IoC1Z8xv812tgBDDeZ5wVMBQtqZSNYJWids/kSPdXWM8Ts/h+vbS
-	EGOZnofWkSXE/sUwale5iWLsZZHLCgYaGwHzu8aIj6h0wJa1fF30Yzqo2qOvZNZ4BtkXYvpvqYg
-	9laQ4wJJrwQHD2qUi4i2ZOPPOvd9giryEF3y5UWlA/Dkb9zuNDkIBKuPSUGxKQklkoWlLhj836G
-	9WLJhg0JElgHzn2VEYN51ak50copvf4d9K72B3L7hCKSCflSt0b42rtHJo1gxyj7QT8BSNs8brr
-	u0Q6cyt0N04VKEeTPZR5SNmjhcp2/K1VMnAhwJgvbrlVEknx9Vi/mhkPqnfU4Es6gxCR1rW0ryU
-	4oNaLedRpngUW5mtA+o4EcICJPxZE1B9TEOgWvcy8+2uucCBrXINcHDDyacBg9qHYoFfyCRCCJ
-X-Google-Smtp-Source: AGHT+IG9WAGzkIj+gR2IWmMpEmKuRWTcN3Bn/hL/2BPJkOe8LcD21ZE+HWnF2rEPXVgkxRYMCYmy1g==
-X-Received: by 2002:a17:903:2291:b0:29f:1b1f:784 with SMTP id d9443c01a7336-2a2caa9bdccmr380916705ad.4.1767087484593;
-        Tue, 30 Dec 2025 01:38:04 -0800 (PST)
+        bh=FClmzE+Gj8uHp32vQP+9qhimjHkP10HuqGxVnwIf6yk=;
+        b=Dgo4QPsbqwpclBm4BbZ32d/h0bFcSow4YJxTKMUy5FPmI2/HL1+KuyVB3Bliqj9pmj
+         EnbVtm3YMU2X4u00Lr6WhgORkHZenN8NN+GLWvs6t5f+kjOMRrTudhoWnvFGIMmvK8aG
+         mZaw6CJ5dNXMQ+PuyxjHdsqvuDhSmPj7ek1xuNy41Tx1wblBBbUc9mGP1LRKjKNyGcFW
+         ltpDWdl3y/ln7FDRvFK61R96xusSHTC9tO7sC8ceRyzZbGUGtBlyfCXuysf6aI/LGx8K
+         Ohx0wb5l9z3Jkx/XAIC6ti3F5Cn4QH2fAQ9+6Jh93e9qeSIjS0s2hQrknYdHKfWlro6D
+         DStQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWY/BEq1tlsO40VNSViGl8Dr8jX04Vd+DA81odti47w+IlLEoXIT5/pd+e6flMAeIOSeigU70zQIgG96wOCMg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfx1pXQUO0oYP7u72nv0zxCr3Scand9dCSVKmub+gJcrAZDohv
+	/70fz74b1OKQ8wQQSBqH4rJJ89EkBGwofduA29BWY3Ve7yx6eQFPV/QU
+X-Gm-Gg: AY/fxX7y7ihMN/pxiCm2xFDuWU7Y080J/ZBmv1R0/czUUdkDKmLtJnFYplztVwRUXe2
+	oujp9s5E7Uk5oQoxByS6/AvNpi7c0WXmPktbdoEB3rmhWGNw95G6MbcFft8wi+63Y3ZfLwW5B7A
+	FIlNR8QNZsROQBbv3ZfEnQ9vpHvM2WgB2RQWEXe0SfH8/KuUE4JqDYQ9131qEHB7O7OQeRLlT8t
+	5gcWEWryQinyBsEEc8F69cNej07q0Nv1o6gYJ9EdN4OGouNf1EOrx2m98Vx1N4hB4RURDf+FbX7
+	MRAi5cOLBazELNmvPAfmcN816kw1Xv0Bw06JRr6JbmKj8kRBgupz7zkDazQ1XXOfMh8G4bRTRk3
+	OhWlBxEsFCMTNnofbdY2ej8atiVpdHcCdxRI+WAc5boWIBSnlfPDvBESwTW1yX/0/yyFrY/WTBH
+	UYCIIXw1K1lVCZjwGnSy/+dGvZZEtStRrepEaKak6kwmd5sJhbcUR66LmvbWN5kQ==
+X-Google-Smtp-Source: AGHT+IE6tnjld2NRJ+upYLOivkz+2XzjKFcV2zn2AfbS/tc+0UP9no7fLBBEGvA17SSTUB6bErd6dg==
+X-Received: by 2002:a05:6a20:9151:b0:35d:cc9a:8bbb with SMTP id adf61e73a8af0-376a94cb49cmr29095166637.47.1767087488052;
+        Tue, 30 Dec 2025 01:38:08 -0800 (PST)
 Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e772ac1acsm13378158a91.9.2025.12.30.01.38.01
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e772ac1acsm13378158a91.9.2025.12.30.01.38.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 01:38:04 -0800 (PST)
+        Tue, 30 Dec 2025 01:38:07 -0800 (PST)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: aliceryhl@google.com,
 	arve@android.com,
@@ -75,9 +75,9 @@ Cc: a.hindborg@kernel.org,
 	lossin@kernel.org,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v1 1/3] rust: revocable: Switch to kernel::sync atomic primitives
-Date: Tue, 30 Dec 2025 18:37:16 +0900
-Message-ID: <20251230093718.1852322-2-fujita.tomonori@gmail.com>
+Subject: [PATCH v1 2/3] rust: list: Switch to kernel::sync atomic primitives
+Date: Tue, 30 Dec 2025 18:37:17 +0900
+Message-ID: <20251230093718.1852322-3-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
 References: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
@@ -91,84 +91,75 @@ Content-Transfer-Encoding: 7bit
 
 Convert uses of `AtomicBool` to `Atomic<bool>`.
 
+Note that the compare_exchange migration simplifies to
+`try_cmpxchg()`, since `try_cmpxchg()` provides relaxed ordering on
+failure, making the explicit failure ordering unnecessary.
+
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/kernel/revocable.rs | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ rust/kernel/list/arc.rs | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-index 0f4ae673256d..47cd2b45eada 100644
---- a/rust/kernel/revocable.rs
-+++ b/rust/kernel/revocable.rs
-@@ -7,12 +7,20 @@
+diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
+index d92bcf665c89..2282f33913ee 100644
+--- a/rust/kernel/list/arc.rs
++++ b/rust/kernel/list/arc.rs
+@@ -6,11 +6,11 @@
  
- use pin_init::Wrapper;
+ use crate::alloc::{AllocError, Flags};
+ use crate::prelude::*;
++use crate::sync::atomic::{ordering, Atomic};
+ use crate::sync::{Arc, ArcBorrow, UniqueArc};
+ use core::marker::PhantomPinned;
+ use core::ops::Deref;
+ use core::pin::Pin;
+-use core::sync::atomic::{AtomicBool, Ordering};
  
--use crate::{bindings, prelude::*, sync::rcu, types::Opaque};
-+use crate::{
-+    bindings,
-+    prelude::*,
-+    sync::atomic::{
-+        ordering::Relaxed,
-+        Atomic, //
-+    },
-+    sync::rcu,
-+    types::Opaque, //
-+};
- use core::{
-     marker::PhantomData,
-     ops::Deref,
--    ptr::drop_in_place,
--    sync::atomic::{AtomicBool, Ordering},
-+    ptr::drop_in_place, //
- };
- 
- /// An object that can become inaccessible at runtime.
-@@ -65,7 +73,7 @@
- /// ```
- #[pin_data(PinnedDrop)]
- pub struct Revocable<T> {
--    is_available: AtomicBool,
-+    is_available: Atomic<bool>,
-     #[pin]
-     data: Opaque<T>,
+ /// Declares that this type has some way to ensure that there is exactly one `ListArc` instance for
+ /// this id.
+@@ -469,7 +469,7 @@ impl<T, U, const ID: u64> core::ops::DispatchFromDyn<ListArc<U, ID>> for ListArc
+ /// If the boolean is `false`, then there is no [`ListArc`] for this value.
+ #[repr(transparent)]
+ pub struct AtomicTracker<const ID: u64 = 0> {
+-    inner: AtomicBool,
++    inner: Atomic<bool>,
+     // This value needs to be pinned to justify the INVARIANT: comment in `AtomicTracker::new`.
+     _pin: PhantomPinned,
  }
-@@ -84,7 +92,7 @@ impl<T> Revocable<T> {
-     /// Creates a new revocable instance of the given data.
-     pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E> {
-         try_pin_init!(Self {
--            is_available: AtomicBool::new(true),
-+            is_available: Atomic::new(true),
-             data <- Opaque::pin_init(data),
-         }? E)
+@@ -480,12 +480,12 @@ pub fn new() -> impl PinInit<Self> {
+         // INVARIANT: Pin-init initializers can't be used on an existing `Arc`, so this value will
+         // not be constructed in an `Arc` that already has a `ListArc`.
+         Self {
+-            inner: AtomicBool::new(false),
++            inner: Atomic::new(false),
+             _pin: PhantomPinned,
+         }
      }
-@@ -98,7 +106,7 @@ pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E> {
-     /// because another CPU may be waiting to complete the revocation of this object.
-     pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
-         let guard = rcu::read_lock();
--        if self.is_available.load(Ordering::Relaxed) {
-+        if self.is_available.load(Relaxed) {
-             // Since `self.is_available` is true, data is initialised and has to remain valid
-             // because the RCU read side lock prevents it from being dropped.
-             Some(RevocableGuard::new(self.data.get(), guard))
-@@ -116,7 +124,7 @@ pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
-     /// allowed to sleep because another CPU may be waiting to complete the revocation of this
-     /// object.
-     pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -> Option<&'a T> {
--        if self.is_available.load(Ordering::Relaxed) {
-+        if self.is_available.load(Relaxed) {
-             // SAFETY: Since `self.is_available` is true, data is initialised and has to remain
-             // valid because the RCU read side lock prevents it from being dropped.
-             Some(unsafe { &*self.data.get() })
-@@ -157,7 +165,7 @@ pub unsafe fn access(&self) -> &T {
-     ///
-     /// Callers must ensure that there are no more concurrent users of the revocable object.
-     unsafe fn revoke_internal<const SYNC: bool>(&self) -> bool {
--        let revoke = self.is_available.swap(false, Ordering::Relaxed);
-+        let revoke = self.is_available.xchg(false, Relaxed);
  
-         if revoke {
-             if SYNC {
+-    fn project_inner(self: Pin<&mut Self>) -> &mut AtomicBool {
++    fn project_inner(self: Pin<&mut Self>) -> &mut Atomic<bool> {
+         // SAFETY: The `inner` field is not structurally pinned, so we may obtain a mutable
+         // reference to it even if we only have a pinned reference to `self`.
+         unsafe { &mut Pin::into_inner_unchecked(self).inner }
+@@ -500,7 +500,7 @@ unsafe fn on_create_list_arc_from_unique(self: Pin<&mut Self>) {
+ 
+     unsafe fn on_drop_list_arc(&self) {
+         // INVARIANT: We just dropped a ListArc, so the boolean should be false.
+-        self.inner.store(false, Ordering::Release);
++        self.inner.store(false, ordering::Release);
+     }
+ }
+ 
+@@ -514,8 +514,6 @@ unsafe impl<const ID: u64> TryNewListArc<ID> for AtomicTracker<ID> {
+     fn try_new_list_arc(&self) -> bool {
+         // INVARIANT: If this method returns true, then the boolean used to be false, and is no
+         // longer false, so it is okay for the caller to create a new [`ListArc`].
+-        self.inner
+-            .compare_exchange(false, true, Ordering::Acquire, Ordering::Relaxed)
+-            .is_ok()
++        self.inner.cmpxchg(false, true, ordering::Acquire).is_ok()
+     }
+ }
 -- 
 2.43.0
 
