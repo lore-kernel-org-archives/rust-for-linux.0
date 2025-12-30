@@ -1,62 +1,64 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAD3298CA6
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 09:38:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6458E27FD49
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 09:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767087483; cv=none; b=BYsODhsTfUBO1NOJZPk46CqAgtmFwLXpEiPeoxDzJHKXVTCLnJwiSigvWjvqfOhVmDFiHLTESzbcp86dSnXs8Yvl3+2Xyopi+xblcGh60k4/GNwkOR1yICY+wTAR975vyFoRFd+K3rOIx8h4qkSBcBno/1dphsie8rvmDLt6z0w=
+	t=1767087488; cv=none; b=hSY0UMAM4vS3tD8rYho0l0Rw8Qa3prekzlc2wpLZDOOySb1eHj8kFnLo5WK2inXJ35+NE1hy6gnu5wkMY3pTNeh4cuu8GIADVXWYVdECq8wQU5ZHOgO+KTfppSyoEtMflTMtpCg/E5tECwTSglp/vfnLnifN/rvryfV289jDI1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767087483; c=relaxed/simple;
-	bh=DMgtdWwqWv9x/EblqrMqcsglGq4HJEU/EYiCkh4q8Jc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aLjM6tZ+RAR4K9yrVlB0CMzeCycepqrov8ZRA8AJTVePXz/HWlJV8dyedo4E8FBLbn/SYKCz/zwIYSFPdXxciEuKN9WdQ+wriu4Z+leXxJFiLPMW8Aq+DMedK5iVkVVbuOjEUwy/jbm7/0tXNv5A+Apsc2XXqdM+p+jYV0Yi6uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HF3iOvqm; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1767087488; c=relaxed/simple;
+	bh=13OOPGyQesIt0YZYsNxKVmBfzbJq3xrAI2Eati6oIYw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qq8xByMEdnzBWaUibih4UsalOG5Ow6bLQUO1voeyHajjwzukSX6TZamz8qEOdS/imPzDAA9OqdQ6A2FWmPzlVgH+M/0/h48zKan3Aj1eRRPLf+bBdYzV5i+tY9YNs0OLohLusM+KjD4r+4G91rO0u4+3vQ1/Fc85Oue1d8kzBxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dwIojAcM; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HF3iOvqm"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a0f3f74587so139731465ad.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 01:38:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dwIojAcM"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-bbf2c3eccc9so3597283a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 01:38:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767087481; x=1767692281; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4WtlCaBVFtUkraY3Wyh53AdYOFtcOjjADX0yNxvcWSQ=;
-        b=HF3iOvqmi8/cvFTL4bPKAfOncEXuy1cb8uo1D0+9XVi94Nzb6d5VT5nnj4HO2MBtrl
-         L6VCaCCtaJ1CfjgBJCntAc9k+0MMxXQuJgApsm6cx0xaRT+gEzmRaOpG6aGc8EcrlJ3C
-         rlzZjbrSk3O3lO4S32A0WFTP5M5lXAET2ogPLysOAsmaloRiZsrZljEWSvUA0//BhBEh
-         bvtv2DcyVC95UsvPtduHofX3DRrhKCRwVvC6MWbvA+ThBLY/w/CGtmfSy6MOmE9abBQj
-         5YUydsMy7LRWbmLfM2dd+qUGndcbvHLwNgzRxv8DrdKV8SridfKQIJuE7wbwH2G5kMbr
-         jazg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767087481; x=1767692281;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767087484; x=1767692284; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4WtlCaBVFtUkraY3Wyh53AdYOFtcOjjADX0yNxvcWSQ=;
-        b=TVT8rPipJho51ZFdoo2XNh44oa3SNj/3zizsd9afbISMFmJz4lxU6OJAHvHp+dvGF/
-         zhFGrhyOr9peEHVcGz5A9+x1WjEeSwcwgcRIMd/OpkXlt6XfPUxrIy8ZbXKvqbQmiahR
-         Y8HNfAYO6n6OADlvso2v0TEx//niSmjY8KvugGMdTL5CswjaaxNBFbxumtee1qTY94b7
-         /CeLs6aTZmSXyCigF91t2cwq95dMrrbKTKpivaQ/SxIdHA3axrx9vmeBne/sHRURpVxH
-         o9sQsTn8tcpKzdk9lvC1v4jzieMhjp0+UdZQMPJMeidQCUksYreNCQalCPPwd9jsKZeN
-         d5Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVGT7Lf1FL4KklAmqv2CZGeS1mIECUmv4Dl5MaLqMRNEp5KtEGWU/1qMK7chyyppKIe/xTxDTzMRRp10UYpZA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZJ4uH/QJQZitUVveiSIYBLD5jyx1/Bwk0RISZ/qzS5jSiCWSK
-	5qPW+HaUxoRMGI687l5b/NY1/xmOAQ0uv0pacRcKPsh+oll6+TN1ezlx
-X-Gm-Gg: AY/fxX5bWWLNT98GjQEoXIzX33Rdh++X7VVhm7m5UbGyyBIFdioYqpzEvYeCJcjyEVl
-	+4W0HQHJwpgbOfcNBAf+keeB+j7zTGOUY0TYreIfHYfE1Na7x/UAY8RYcwRPHOUZXqSX1Dbsx/4
-	C1LTMhLYfWVsgjkaIaulVbEj2z6eirElV9DUGLJM5uHcykC8E9I4XDRkmpPCXkhyA4q5kI+OjHt
-	hd2dBiyBh33GhP+/7gEb5z5GPuHcBRcZ89WPyTiOoCAwzslEVY42TP0Qb6BpNZkA4jF7qnGSc3r
-	+zhOdan+DzqjiBpsh+as92PUUeiv5xOCfV3mtaPNd3bsA7JLmG7+bt0PdrqSggJRNyho2/7EuCr
-	2F7qbifqWqw8kScjmg7IY9Evq4FCZXQawcGGTm885cs10ASZfTPtbf2EFLXE9S/qfaRaxZZOiMh
-	24RQYTPmJi1M3RvooKSd5o+W/DKmKEY3uZJ/9eQfeJ2a9f3dWG1I5/m68fMdHGWw==
-X-Google-Smtp-Source: AGHT+IGGAmAXz0d3E0h46djE0ZpymOLsihSS5Q1UOimg395RHkiVaN92oLecMAXdeE/hQnv+Z+Uo2A==
-X-Received: by 2002:a17:902:dac8:b0:2a0:ba6d:d0ff with SMTP id d9443c01a7336-2a2f223177dmr320384105ad.16.1767087480920;
-        Tue, 30 Dec 2025 01:38:00 -0800 (PST)
+        bh=5Ekqd71xyK9uXVDJwPsIe1nExAvKQrkA6oo38oCpBiY=;
+        b=dwIojAcMkRMH3nC52p17qO0kdxlnV78OrfXrUM1XISyN/w/BoW6hLcAde89eoORU9X
+         3N7ZjvXLt+T8BTDJwReBA2nC2+4TTPFUXqvPigB6gMXO3BwGui4SV5FdB9I8N/AnWp1y
+         XgCj3AC8/RCN8PT/JQ/X6YsHVSvkWqAQqfLlP66tuDsoIGeJqBwID5hR7I6RsRKr6WAs
+         2boSxIR5z2mqXfYEnyyqNiInR47XxhAJVbWlpr1aSpcJ3wq3y13YDBb8E9e2DbPEhxLu
+         Z1BNYapnKgHrpC3hVHzoJsg0i49zJaJSo8sdGoj6nqokAfHi71MnChoS5aP4vsz3MWsq
+         NpvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767087484; x=1767692284;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5Ekqd71xyK9uXVDJwPsIe1nExAvKQrkA6oo38oCpBiY=;
+        b=fDfXiKR7qwhQ+4IIeWiI8CmFRb78lVjRLFgvZ6+7JsDS+sUs14hJHQwkLVv6TSgmM6
+         yGmUSazE4opZ+4XZ5y0Sznx2DPOgWCd8hABVLQkByMzBHeS6Ei/m5vgF8//8/Z5A9Yjf
+         1vreh5sS4HDu8UR5+VYpfZ3ycey6uM4/YtS75l0p6ce/RQd9oBjOddXz9qWlht1QSiBY
+         2o3CYSQYpPDhun8Ccau8YBG4hveVHZzgoczXfgvNqDFZ4RsbT1effSWfsmTIL9LNtfWn
+         3M6Ue8TUoNlzFIOyE2tO7Z2hDW02T5zpr7sq8DT/G/ul2W2vQZ3d6E7B1YcBMNLqZOFN
+         96WA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1WrILbFFX0GqIKbuDUzKJV+FKWw3Iwfh40MmMWrEkTTi82Z2yK093cKNyqy8C1NXo77QI1ES+Ff7ieRQM8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgHyYGDKkbJ6A0m99Pkuaq634WBe/IdspI5VDbTaB2g96RhjSN
+	gcIJe+xpdWeSNsnkIYaPzVMtrq7FYiyHf/s9TJZZFgEGDf+ISEegmLAg
+X-Gm-Gg: AY/fxX7MmvIBZjxzdmQ20q/V9ruLxcTzG+v81MRKbVz0a/RiPaALAh6zTv66uw/AyrE
+	zUTOx0Yis8EKSgH9H2VeMc+IoC1Z8xv812tgBDDeZ5wVMBQtqZSNYJWids/kSPdXWM8Ts/h+vbS
+	EGOZnofWkSXE/sUwale5iWLsZZHLCgYaGwHzu8aIj6h0wJa1fF30Yzqo2qOvZNZ4BtkXYvpvqYg
+	9laQ4wJJrwQHD2qUi4i2ZOPPOvd9giryEF3y5UWlA/Dkb9zuNDkIBKuPSUGxKQklkoWlLhj836G
+	9WLJhg0JElgHzn2VEYN51ak50copvf4d9K72B3L7hCKSCflSt0b42rtHJo1gxyj7QT8BSNs8brr
+	u0Q6cyt0N04VKEeTPZR5SNmjhcp2/K1VMnAhwJgvbrlVEknx9Vi/mhkPqnfU4Es6gxCR1rW0ryU
+	4oNaLedRpngUW5mtA+o4EcICJPxZE1B9TEOgWvcy8+2uucCBrXINcHDDyacBg9qHYoFfyCRCCJ
+X-Google-Smtp-Source: AGHT+IG9WAGzkIj+gR2IWmMpEmKuRWTcN3Bn/hL/2BPJkOe8LcD21ZE+HWnF2rEPXVgkxRYMCYmy1g==
+X-Received: by 2002:a17:903:2291:b0:29f:1b1f:784 with SMTP id d9443c01a7336-2a2caa9bdccmr380916705ad.4.1767087484593;
+        Tue, 30 Dec 2025 01:38:04 -0800 (PST)
 Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e772ac1acsm13378158a91.9.2025.12.30.01.37.57
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e772ac1acsm13378158a91.9.2025.12.30.01.38.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 01:38:00 -0800 (PST)
+        Tue, 30 Dec 2025 01:38:04 -0800 (PST)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: aliceryhl@google.com,
 	arve@android.com,
@@ -73,10 +75,12 @@ Cc: a.hindborg@kernel.org,
 	lossin@kernel.org,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v1 0/3] rust: Switch to kernel::sync atomic primitives
-Date: Tue, 30 Dec 2025 18:37:15 +0900
-Message-ID: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
+Subject: [PATCH v1 1/3] rust: revocable: Switch to kernel::sync atomic primitives
+Date: Tue, 30 Dec 2025 18:37:16 +0900
+Message-ID: <20251230093718.1852322-2-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
+References: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -85,29 +89,86 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-Convert uses of core::sync::atomic to Rust LKMM atomics.
+Convert uses of `AtomicBool` to `Atomic<bool>`.
 
-Each patch can be applied independently, but all of them depend on the
-atomic bool series.
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/kernel/revocable.rs | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-https://lore.kernel.org/all/20251230045028.1773445-1-fujita.tomonori@gmail.com/
-
-
-FUJITA Tomonori (3):
-  rust: revocable: Switch to kernel::sync atomic primitives
-  rust: list: Switch to kernel::sync atomic primitives
-  rust_binder: Switch to kernel::sync atomic primitives
-
- drivers/android/binder/rust_binder_main.rs | 20 ++++++++----------
- drivers/android/binder/stats.rs            |  8 ++++----
- drivers/android/binder/thread.rs           | 24 ++++++++++------------
- drivers/android/binder/transaction.rs      | 16 +++++++--------
- rust/kernel/list/arc.rs                    | 14 ++++++-------
- rust/kernel/revocable.rs                   | 24 ++++++++++++++--------
- 6 files changed, 54 insertions(+), 52 deletions(-)
-
-
-base-commit: d4cd35bacb06d53acf39ff248ea2b3eef50573f6
+diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+index 0f4ae673256d..47cd2b45eada 100644
+--- a/rust/kernel/revocable.rs
++++ b/rust/kernel/revocable.rs
+@@ -7,12 +7,20 @@
+ 
+ use pin_init::Wrapper;
+ 
+-use crate::{bindings, prelude::*, sync::rcu, types::Opaque};
++use crate::{
++    bindings,
++    prelude::*,
++    sync::atomic::{
++        ordering::Relaxed,
++        Atomic, //
++    },
++    sync::rcu,
++    types::Opaque, //
++};
+ use core::{
+     marker::PhantomData,
+     ops::Deref,
+-    ptr::drop_in_place,
+-    sync::atomic::{AtomicBool, Ordering},
++    ptr::drop_in_place, //
+ };
+ 
+ /// An object that can become inaccessible at runtime.
+@@ -65,7 +73,7 @@
+ /// ```
+ #[pin_data(PinnedDrop)]
+ pub struct Revocable<T> {
+-    is_available: AtomicBool,
++    is_available: Atomic<bool>,
+     #[pin]
+     data: Opaque<T>,
+ }
+@@ -84,7 +92,7 @@ impl<T> Revocable<T> {
+     /// Creates a new revocable instance of the given data.
+     pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+         try_pin_init!(Self {
+-            is_available: AtomicBool::new(true),
++            is_available: Atomic::new(true),
+             data <- Opaque::pin_init(data),
+         }? E)
+     }
+@@ -98,7 +106,7 @@ pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+     /// because another CPU may be waiting to complete the revocation of this object.
+     pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
+         let guard = rcu::read_lock();
+-        if self.is_available.load(Ordering::Relaxed) {
++        if self.is_available.load(Relaxed) {
+             // Since `self.is_available` is true, data is initialised and has to remain valid
+             // because the RCU read side lock prevents it from being dropped.
+             Some(RevocableGuard::new(self.data.get(), guard))
+@@ -116,7 +124,7 @@ pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
+     /// allowed to sleep because another CPU may be waiting to complete the revocation of this
+     /// object.
+     pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -> Option<&'a T> {
+-        if self.is_available.load(Ordering::Relaxed) {
++        if self.is_available.load(Relaxed) {
+             // SAFETY: Since `self.is_available` is true, data is initialised and has to remain
+             // valid because the RCU read side lock prevents it from being dropped.
+             Some(unsafe { &*self.data.get() })
+@@ -157,7 +165,7 @@ pub unsafe fn access(&self) -> &T {
+     ///
+     /// Callers must ensure that there are no more concurrent users of the revocable object.
+     unsafe fn revoke_internal<const SYNC: bool>(&self) -> bool {
+-        let revoke = self.is_available.swap(false, Ordering::Relaxed);
++        let revoke = self.is_available.xchg(false, Relaxed);
+ 
+         if revoke {
+             if SYNC {
 -- 
 2.43.0
 
