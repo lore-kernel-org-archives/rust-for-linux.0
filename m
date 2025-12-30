@@ -1,97 +1,97 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A7F231C91
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 19:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB0C1C6FEC;
+	Tue, 30 Dec 2025 20:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767123716; cv=none; b=XbH7phI0GXANyVU+7sdFQWamlAabDrGudgcaG9S6dvGCTKUC5hNTS3ScHwM94T4VEIzN2iVeAkZ2g3bLO0Y1oqR36zLzKod1xC8jsc0SlA8B/Tj8hFHsfOkxHePPm89/FN580JsiiUprIzKskn1co5/sYqfYV4V4Q7lpUlwkM4k=
+	t=1767125795; cv=none; b=GKEC8feVCV+889ACpMMQvkbzQ7yjaLmJ9xG61yNn/LG0oIfm4nNMwgEVcWEXOYK1dwVbp3B1oeKtxrRjB8Csn5VNmyeIL+rNgzMGe5+v00BNH0PGkzXDF3ThhN5JsO6xq6QVVAvOmjZVMbx0XaRxPRw7APQAKoWX7U9O01RT5bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767123716; c=relaxed/simple;
-	bh=ytfosga1cFuN6dRFvqF1Wn61vQ4YevEtZdzPUd7vT6k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pnkBCHngn1glj3C9Bx5Ms3CNwFCelXlxqTmg6OkwW9kru6YQ9XuQ9MX9B0NKK7vu+WQWmjI/NQxQPw/AeOSrdU2cDyN3crbURAkUjxvOe6waKLnxuJId0ETuoCN72M5fThnkoY12LfmdS0xv9rkehqM9NTb6oNxed9S898cOJ8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kZw3dO15; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767125795; c=relaxed/simple;
+	bh=TUwC6ldaq7u5mn42TBzJFdIwkCDSm+tFqiDrC4+sIVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l9dgk1fhXgFdnWsIAdBF/V7ywoPLt0WY9ttKFkbuHtAiNlKp3H7DE7OITRyvotNRFFEgItC0xw2MfgLRcGUH+392zn8OWQrD4c5FUFs3JXhuy8D+X43AwvKDgXRa+yJoj7xFbJHDqVVzrbADffDN1wrVxcAOO0AGoRHJzZOKrtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c1UtApr/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kZw3dO15"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a097cc08d5so25436275ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 11:41:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767123714; x=1767728514; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ANHCCeyMi+NPhlCtgSl+3/HAmBGOzX0nby5Ty8LItOc=;
-        b=kZw3dO15C6FZ1RSNsbH+rtwy7I5JxSiAeyYeFfkvhTDeauh5fHZQTDgP1k77C8VBWz
-         slKToAWpCHyBCDguUJXk4/cv0j+OpBO+STMhgGFEGpp9eg1F7UzlXP3rYP5loJGMIkzj
-         GPjz7cO1EzGOiVXztZTqlTkKN+2mewfv60+zUbwh77W095rAGgWslqUBJ1pZeXyDQN2U
-         F0gmQh5hIMNq4fYAwWwYgvo8k6vdsgKuUdRiIO/irhk7hfUT1s3ptKPDaxO+tyFLMQaM
-         1pLvS3S0+eT+xHYj8sWpoFSSvBEkam93x52vls4p3LbbfcXnOFPOXcfXyYphIdw9fibd
-         rxYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767123714; x=1767728514;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ANHCCeyMi+NPhlCtgSl+3/HAmBGOzX0nby5Ty8LItOc=;
-        b=JFDrA8PbjRWYPeH4mv4M892TowJpTVcAGmONmzLG83qazzIDNwhG9XlyZaBHXyfySO
-         4UPVXBTxxSMEKAk46do3qRZSvh4uY5ILmQ8Ss+6gnTb7omfMvu1a8Bv4EzWmSd0grLhL
-         FTT6OIHDoX1Jp/21Xnhs+MpmcJwZ34BTQyYM/5n9QkI8VVRSjNQ46a+MyPbVyHmaLEqJ
-         zcCp5qUBqp3p6A0A07wokDbQtLAK2RT6Khg3NiMA26SyDDOtiVJWppjZAWMMHJEYNY0g
-         XPcCgLAcs/40T83enMqEv8yAcYKg12uz2GEyvZOwii2NEXSlNuxlCil4Tsb0/wnyh2Hi
-         PGhg==
-X-Forwarded-Encrypted: i=1; AJvYcCWr4cH/NykaMJWAQ3a4BOwZ2lVcGoWtNQLcMzWo1ioDyYeXKVHz8D50cpS7LXD46CH5WhBhya2ygXHsspEDbA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyeAdwUqa9qkboQJElNIwozqxJqWfGBYoKNwsTN9O8F1wL/2Wq
-	WcH7YNJzf8iIE5qhX5hERJ7/kX3Yz8CF1NcbR/FjPlvm9cnxO/E0X+WMzJugrtguVjTiGN5EdwS
-	kcgVFE9VPR1fMuvjHsQKhD01uxArMnGU=
-X-Gm-Gg: AY/fxX7fD60CjTrvBbcEs3YT3AwOZ9Y+B7ClEC7VUmgB5TNos7QPBMtRc3Z+/VVGnvO
-	kq+X0eIpPzFmM8ND0YB7k9dNZvkGWLIHqR6V9AgigHIjkzmm50JGszMDOxKzAFas4nRC1W5MiLO
-	nih1yu+X+/fVP1Mj7mVooptijUbsTMg6hBhRhj7qOjRp01PO9FojbGM0yIyRq1r31e6lI2Q0NXx
-	x8BIQJ/AUYHLv1FCIDz26uwrlfQsHZ9Eik2Joh4/qeAy8nNxPOIMKwUOsXglq7lInRQshDJOurF
-	sAEkfjuPhMkSMcGA6HS2JlLeF6uifJ4sVx8W+gBuGnyEYz9d9FSAqeTs/72bwOLN2rG9fSL1Ckz
-	Ks6icJgilatpV
-X-Google-Smtp-Source: AGHT+IEJyJWDrSGpVqGBfUuWi4prAVX3F6tbOOWTv8OHWEOlkbOPp8abJW+FBFy6e/OAD49/fUd1Dr82TKSb4GU1Nk4=
-X-Received: by 2002:a05:7301:192a:b0:2a4:3592:cf8b with SMTP id
- 5a478bee46e88-2b05eb8444bmr13936339eec.2.1767123714421; Tue, 30 Dec 2025
- 11:41:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c1UtApr/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC90C4CEFB;
+	Tue, 30 Dec 2025 20:16:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767125795;
+	bh=TUwC6ldaq7u5mn42TBzJFdIwkCDSm+tFqiDrC4+sIVs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c1UtApr/d1FGerz/3wrAsVlQsAu/HUTdDO1vS4GN8XC/VVT720MIfQ+7GyR3G/GCg
+	 bBbVZoto7Frmy3skTNwfP1JHZE/FdbB6qe7nHLJnyWatbfkxRPgQS/hn1Y31qGb8qb
+	 Dlqe3xRn+tuTEy8K9Tr0xArRa4cCEcVyuHkNZJh1LCl94dowdHBjKFX8E1B+7Vl3Wl
+	 vSe1TkLB6l9SrJ7Gygems66wEpZQbmEJjLDbRMs69phun73NpUyhSOmMbJIObxD0S6
+	 iPooR/L8Z6uAUYjYrIs6l3pZ5AXGsvJ09KXh6DvMCwjkvO3kXPyVvKr5/gED4aZfaB
+	 5Z2JUEfhvBi5g==
+Date: Tue, 30 Dec 2025 13:16:29 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Guillaume Tucker <gtucker@gtucker.io>
+Cc: Miguel Ojeda <ojeda@kernel.org>, David Gow <davidgow@google.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v2 2/2] Documentation: dev-tools: add container.rst page
+Message-ID: <20251230201629.GB4062669@ax162>
+References: <cover.1766061692.git.gtucker@gtucker.io>
+ <ff8da6b9680ef01ee44f6d0cf89e34dd76abb116.1766061692.git.gtucker@gtucker.io>
+ <23c38222-ba4b-4728-8ad6-8bb02c5a2d3a@gtucker.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251230-add-entropy-v4-1-fa9485b6d372@google.com>
-In-Reply-To: <20251230-add-entropy-v4-1-fa9485b6d372@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 30 Dec 2025 20:41:40 +0100
-X-Gm-Features: AQt7F2pkiLy0ughZnh3KoFPtNyas5zAEMCXd_XO_Gn4k1eBQRThgoIChSeXABQ8
-Message-ID: <CANiq72kDuHeJ9-FBV6yFy6OZXeKQTBwhp-7d5uTuBD9C8cxJcQ@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: Add support for feeding entropy to randomness pool
-To: Matthew Maurer <mmaurer@google.com>, "Theodore Ts'o" <tytso@mit.edu>, 
-	"Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <23c38222-ba4b-4728-8ad6-8bb02c5a2d3a@gtucker.io>
 
-On Tue, Dec 30, 2025 at 6:54=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
->  rust/kernel/random.rs | 17 +++++++++++++++++
+Hi Guillaume,
 
-We should add this to either "RANDOM NUMBER DRIVER" or add a new
-`MAINTAINERS` entry (as a sub-entry of that one, or perhaps of the
-Rust one), depending on what the maintainers prefer.
+On Sun, Dec 21, 2025 at 09:13:33PM +0100, Guillaume Tucker wrote:
+> On 18/12/2025 1:49 pm, Guillaume Tucker wrote:
+> > +User IDs
+> > +========
+> > +
+> > +This is an area where the behaviour will vary slightly depending on the
+> > +container runtime.  The goal is to run commands as the user invoking the tool.
+> > +With Podman, a namespace is created to map the current user id to a different
+> > +one in the container (1000 by default).  With Docker, while this is also
+> > +possible with recent versions it requires a special feature to be enabled in
+> > +the daemon so it's not used here for simplicity.  Instead, the container is run
+> > +with the current user id directly.  In both cases, this will provide the same
+> > +file permissions for the kernel source tree mounted as a volume.  The only
+> > +difference is that when using Docker without a namespace, the user id may not
+> > +be the same as the default one set in the image.
+> > +
+> > +Say, we're using an image which sets up a default user with id 1000 and the
+> > +current user calling the ``container`` tool has id 1234.  The kernel source
+> > +tree was checked out by this same user so the files belong to user 1234.  With
+> > +Podman, the container will be running as user id 1000 with a mapping to id 1234
+> > +so that the files from the mounted volume appear to belong to id 1000 inside
+> > +the container.  With Docker and no namespace, the container will be running
+> > +with user id 1234 which can access the files in the volume but not in the user
+> > +1000 home directory.  This shouldn't be an issue when running commands only in
+> > +the kernel tree but it is worth highlighting here as it might matter for
+> > +special corner cases.
+> 
+> This part of the docs explains why things are a bit different between
+> Podman and Docker.  In both cases, it should "just work" from a user
+> point of view - just with some special corner cases.  Let me know if
+> you thing the documentation needs to be improved.
 
-RANDOM NUMBER DRIVER (Ted, Jason) was not Cc'd, so I am doing it here.
+Ah, I had missed that on my skim through of the documentation plus I did
+not have it side by side with the script while I was reviewing it.
 
-Thanks!
+> I may add a runtime check as a follow-up to detect if namespaces are
+> enabled in Docker and if so use them, but to get started I wanted to
+> keep things as simple as possible.
+
+Yeah, I agree with keeping things simple up front.
 
 Cheers,
-Miguel
+Nathan
