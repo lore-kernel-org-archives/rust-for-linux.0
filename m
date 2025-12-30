@@ -1,180 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36882773EC;
-	Tue, 30 Dec 2025 09:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAD3298CA6
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 09:38:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767085796; cv=none; b=qzd2zDvppaelOps8oq46U5zI7DJynlazTFLSj7P6Dau2Dczljwzvzqe+TxiRRNPdKl8pnstxHCvpXGh1ytcVpVo8nzmZyHX3DvE2GYfoFtWTQMpb/kCGqMr3mKbfJYQYp2k81BqnFB5PnuA5SIkIu/v/EPoPD0fPtrGRJo0qZIY=
+	t=1767087483; cv=none; b=BYsODhsTfUBO1NOJZPk46CqAgtmFwLXpEiPeoxDzJHKXVTCLnJwiSigvWjvqfOhVmDFiHLTESzbcp86dSnXs8Yvl3+2Xyopi+xblcGh60k4/GNwkOR1yICY+wTAR975vyFoRFd+K3rOIx8h4qkSBcBno/1dphsie8rvmDLt6z0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767085796; c=relaxed/simple;
-	bh=7KdJALN0K+r9nZo/WfD49aKuvWF+zMNEeTAc2yOuSFc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=J2tDPXuaZUCCG/eNb441QO2g1U+HmTdrIj7ESADMx7ymDl6+FD44p23oYfhwlICeopD/fYiIoOByBv2FA60x8XIDQwmoqF9Fdx1vsZa41KW9Btua/ti4htcWJ63StuOgRqXQhVsAHNIfMh8/vdQm42qbD0EYEux4Go2xkculEDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N1qiO14G; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767087483; c=relaxed/simple;
+	bh=DMgtdWwqWv9x/EblqrMqcsglGq4HJEU/EYiCkh4q8Jc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aLjM6tZ+RAR4K9yrVlB0CMzeCycepqrov8ZRA8AJTVePXz/HWlJV8dyedo4E8FBLbn/SYKCz/zwIYSFPdXxciEuKN9WdQ+wriu4Z+leXxJFiLPMW8Aq+DMedK5iVkVVbuOjEUwy/jbm7/0tXNv5A+Apsc2XXqdM+p+jYV0Yi6uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HF3iOvqm; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N1qiO14G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A59C4CEFB;
-	Tue, 30 Dec 2025 09:09:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767085796;
-	bh=7KdJALN0K+r9nZo/WfD49aKuvWF+zMNEeTAc2yOuSFc=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=N1qiO14Gvf5WrZiBFb39OFVVnCvtMz/+32LHFDuhzVXPUG6COb2/MPRt2/bEVfIWD
-	 StPrjqG5qUQWUAQgU9C81zjcdCxv7XVnEv3TX9Mgj/PR0zc8MiAtazm8eJjPoyB387
-	 vlWGVelYlHyICRkLJgrj9ivtkaovNbOPkOCfUAkE1UIOKCsKC3JArAmyQtQt2gj21Q
-	 q3E7axxwRM+hGGIMKnhr7AKCp2tuuDXqjMlgEpEi2bpKUkeajFz0bSnnWH05F6R3Yo
-	 u+qQ5Vlmon4x6Df3I6Nxs6QdY1LCUxNp59GN+xrqythc+blU6Y5HlwKuf0Y+qLWuac
-	 NazMhPjbeUefg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HF3iOvqm"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a0f3f74587so139731465ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 01:38:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767087481; x=1767692281; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4WtlCaBVFtUkraY3Wyh53AdYOFtcOjjADX0yNxvcWSQ=;
+        b=HF3iOvqmi8/cvFTL4bPKAfOncEXuy1cb8uo1D0+9XVi94Nzb6d5VT5nnj4HO2MBtrl
+         L6VCaCCtaJ1CfjgBJCntAc9k+0MMxXQuJgApsm6cx0xaRT+gEzmRaOpG6aGc8EcrlJ3C
+         rlzZjbrSk3O3lO4S32A0WFTP5M5lXAET2ogPLysOAsmaloRiZsrZljEWSvUA0//BhBEh
+         bvtv2DcyVC95UsvPtduHofX3DRrhKCRwVvC6MWbvA+ThBLY/w/CGtmfSy6MOmE9abBQj
+         5YUydsMy7LRWbmLfM2dd+qUGndcbvHLwNgzRxv8DrdKV8SridfKQIJuE7wbwH2G5kMbr
+         jazg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767087481; x=1767692281;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4WtlCaBVFtUkraY3Wyh53AdYOFtcOjjADX0yNxvcWSQ=;
+        b=TVT8rPipJho51ZFdoo2XNh44oa3SNj/3zizsd9afbISMFmJz4lxU6OJAHvHp+dvGF/
+         zhFGrhyOr9peEHVcGz5A9+x1WjEeSwcwgcRIMd/OpkXlt6XfPUxrIy8ZbXKvqbQmiahR
+         Y8HNfAYO6n6OADlvso2v0TEx//niSmjY8KvugGMdTL5CswjaaxNBFbxumtee1qTY94b7
+         /CeLs6aTZmSXyCigF91t2cwq95dMrrbKTKpivaQ/SxIdHA3axrx9vmeBne/sHRURpVxH
+         o9sQsTn8tcpKzdk9lvC1v4jzieMhjp0+UdZQMPJMeidQCUksYreNCQalCPPwd9jsKZeN
+         d5Uw==
+X-Forwarded-Encrypted: i=1; AJvYcCVGT7Lf1FL4KklAmqv2CZGeS1mIECUmv4Dl5MaLqMRNEp5KtEGWU/1qMK7chyyppKIe/xTxDTzMRRp10UYpZA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZJ4uH/QJQZitUVveiSIYBLD5jyx1/Bwk0RISZ/qzS5jSiCWSK
+	5qPW+HaUxoRMGI687l5b/NY1/xmOAQ0uv0pacRcKPsh+oll6+TN1ezlx
+X-Gm-Gg: AY/fxX5bWWLNT98GjQEoXIzX33Rdh++X7VVhm7m5UbGyyBIFdioYqpzEvYeCJcjyEVl
+	+4W0HQHJwpgbOfcNBAf+keeB+j7zTGOUY0TYreIfHYfE1Na7x/UAY8RYcwRPHOUZXqSX1Dbsx/4
+	C1LTMhLYfWVsgjkaIaulVbEj2z6eirElV9DUGLJM5uHcykC8E9I4XDRkmpPCXkhyA4q5kI+OjHt
+	hd2dBiyBh33GhP+/7gEb5z5GPuHcBRcZ89WPyTiOoCAwzslEVY42TP0Qb6BpNZkA4jF7qnGSc3r
+	+zhOdan+DzqjiBpsh+as92PUUeiv5xOCfV3mtaPNd3bsA7JLmG7+bt0PdrqSggJRNyho2/7EuCr
+	2F7qbifqWqw8kScjmg7IY9Evq4FCZXQawcGGTm885cs10ASZfTPtbf2EFLXE9S/qfaRaxZZOiMh
+	24RQYTPmJi1M3RvooKSd5o+W/DKmKEY3uZJ/9eQfeJ2a9f3dWG1I5/m68fMdHGWw==
+X-Google-Smtp-Source: AGHT+IGGAmAXz0d3E0h46djE0ZpymOLsihSS5Q1UOimg395RHkiVaN92oLecMAXdeE/hQnv+Z+Uo2A==
+X-Received: by 2002:a17:902:dac8:b0:2a0:ba6d:d0ff with SMTP id d9443c01a7336-2a2f223177dmr320384105ad.16.1767087480920;
+        Tue, 30 Dec 2025 01:38:00 -0800 (PST)
+Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34e772ac1acsm13378158a91.9.2025.12.30.01.37.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Dec 2025 01:38:00 -0800 (PST)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: aliceryhl@google.com,
+	arve@android.com,
+	brauner@kernel.org,
+	cmllamas@google.com,
+	gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	tkjos@android.com,
+	boqun.feng@gmail.com
+Cc: a.hindborg@kernel.org,
+	bjorn3_gh@protonmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v1 0/3] rust: Switch to kernel::sync atomic primitives
+Date: Tue, 30 Dec 2025 18:37:15 +0900
+Message-ID: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 30 Dec 2025 10:09:51 +0100
-Message-Id: <DFBFMTS0ZRDB.30O3L4GMYW4XJ@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
-Subject: Re: [PATCH v4 1/4] rust: macros: add derive macro for `Into`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Jesung Yang" <y.j3ms.n@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20251225-try-from-into-macro-v4-0-4a563d597836@gmail.com>
- <20251225-try-from-into-macro-v4-1-4a563d597836@gmail.com>
- <DF7HDE1T2BOS.33WUHP49WWO1M@kernel.org>
- <CA+tqQ4JPMg7CGq7YiN2EwzzQBC2grRE5OFgRQTws+xh8UbzqEw@mail.gmail.com>
- <DF8QDONK951M.10NYLJ40UNNY1@kernel.org>
- <CA+tqQ4+Xp_Uv+O32JgCyN0vB-AJEaJdUWoWDOx0nTogeiDbj6w@mail.gmail.com>
-In-Reply-To: <CA+tqQ4+Xp_Uv+O32JgCyN0vB-AJEaJdUWoWDOx0nTogeiDbj6w@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Mon Dec 29, 2025 at 1:29 PM CET, Jesung Yang wrote:
-> On Sat, Dec 27, 2025 at 1:57=E2=80=AFPM Benno Lossin <lossin@kernel.org> =
-wrote:
->> On Fri Dec 26, 2025 at 10:36 AM CET, Jesung Yang wrote:
->> > On Fri, Dec 26, 2025 at 2:40=E2=80=AFAM Benno Lossin <lossin@kernel.or=
-g> wrote:
->> >> On Thu Dec 25, 2025 at 9:37 AM CET, Jesung Yang via B4 Relay wrote:
->> >> > +    // Note on field-less `repr(C)` enums (quote from [1]):
->> >> > +    //
->> >> > +    //   In C, enums with discriminants that do not all fit into a=
-n `int` or all fit into an
->> >> > +    //   `unsigned int` are a portability hazard: such enums are o=
-nly permitted since C23, and not
->> >> > +    //   supported e.g. by MSVC.
->> >> > +    //
->> >> > +    //   Furthermore, Rust interprets the discriminant values of `=
-repr(C)` enums as expressions of
->> >> > +    //   type `isize`. This makes it impossible to implement the C=
-23 behavior of enums where the
->> >> > +    //   enum discriminants have no predefined type and instead th=
-e enum uses a type large enough
->> >> > +    //   to hold all discriminants.
->> >> > +    //
->> >> > +    //   Therefore, `repr(C)` enums in Rust require that either al=
-l discriminants to fit into a C
->> >> > +    //   `int` or they all fit into an `unsigned int`.
->> >> > +    //
->> >> > +    // As such, `isize` is a reasonable representation for `repr(C=
-)` enums, as it covers the range
->> >> > +    //  of both `int` and `unsigned int`.
->> >> > +    //
->> >> > +    // For more information, see:
->> >> > +    // - https://github.com/rust-lang/rust/issues/124403
->> >> > +    // - https://github.com/rust-lang/rust/pull/147017
->> >> > +    // - https://github.com/rust-lang/rust/blob/2ca7bcd03b87b52f70=
-55a59b817443b0ac4a530d/compiler/rustc_lint_defs/src/builtin.rs#L5251-L5263 =
-[1]
->> >> > +
->> >> > +    // Extract the representation passed by `#[repr(...)]` if pres=
-ent. If nothing is
->> >> > +    // specified, the default is `Rust` representation, which uses=
- `isize` for its
->> >> > +    // discriminant type.
->> >> > +    // See: https://doc.rust-lang.org/reference/items/enumerations=
-.html#r-items.enum.discriminant.repr-rust
->> >>
->> >> I think we should error when no `#[repr({integer})]` attribute is
->> >> specified.
->> >
->> > Not a blocker but just out of curiosity: are you concerned that the
->> > default size might change in the future, leading to silent side
->> > effects?
->>
->> `isize` already changes size when you switch between 64 and 32 bit
->> architectures. I think the author of an enum they want to convert into
->> integers should think about which size the enum should be.
->>
->> They already can choose `repr(isize)` if that is correct in that case.
->> As a default, I would have choosen `i32` (but that conflicts with Rust's
->> default, so we can't do it).
->
-> On second thought, I've realized that enforcing an error when
-> `#[repr({integer})]` is missing would prevent users from deriving
-> traits for `#[repr(C)]` enums. This is because rustc currently rejects
-> the combined `#[repr(C, {integer})]` syntax. For example, a user might
+Convert uses of core::sync::atomic to Rust LKMM atomics.
 
-It's only rejected for field-less enums, but those are what we're
-interested here.
+Each patch can be applied independently, but all of them depend on the
+atomic bool series.
 
-> want to do this:
->
->     #[derive(Into)]
->     #[into(u8)]
->     #[repr(C)]
->     enum Foo {
->         A,
->         B,
->     }
->
-> In this case, the code wouldn't compile if we strictly require
-> `#[repr({integer})]`, even if the user carefully picked `u8`, keeping
-> the enum's size (more precisely, the discriminant range) in mind.
->
-> Since we already perform a compile-time check to ensure all
-> discriminants fit within the types specified in the helper attributes,
-> I believe `#[repr({integer})]` isn't strictly required. Even with
-> `isize` changing size across architectures, our compile-time check
-> remains effective and will catch any overflows.
+https://lore.kernel.org/all/20251230045028.1773445-1-fujita.tomonori@gmail.com/
 
-Hmm that's true.
 
-> To sum up, I see three options:
->
->     1. Drop support for `#[repr(C)]` enums entirely.
->     2. Special-case `#[repr(C)]` enums: allow them to default to
->        `isize`, otherwise require `#[repr({integer})]`.
->     3. Permit missing `#[repr({integer})]` generally.
->
-> I am personally leaning toward Option 3, since our existing
-> compile-time check provides a sufficient safety margin to allow this
-> flexibility.
->
-> Thoughts on these?
+FUJITA Tomonori (3):
+  rust: revocable: Switch to kernel::sync atomic primitives
+  rust: list: Switch to kernel::sync atomic primitives
+  rust_binder: Switch to kernel::sync atomic primitives
 
-Looking at the nomicon documentation [1] again, I found the following:
+ drivers/android/binder/rust_binder_main.rs | 20 ++++++++----------
+ drivers/android/binder/stats.rs            |  8 ++++----
+ drivers/android/binder/thread.rs           | 24 ++++++++++------------
+ drivers/android/binder/transaction.rs      | 16 +++++++--------
+ rust/kernel/list/arc.rs                    | 14 ++++++-------
+ rust/kernel/revocable.rs                   | 24 ++++++++++++++--------
+ 6 files changed, 54 insertions(+), 52 deletions(-)
 
-    repr(C) is equivalent to one of repr(u*) (see the next section) for
-    fieldless enums. The chosen size and sign is the default enum size
-    and sign for the target platform's C application binary interface
-    (ABI). Note that enum representation in C is implementation defined,
-    so this is really a "best guess". In particular, this may be
-    incorrect when the C code of interest is compiled with certain
-    flags.
 
-Which to me reads as "don't use `repr(C)`, if you want to know which
-repr the enum gets". Especially the last part is concerning to me, as
-the kernel uses lots of (bespoke) compiler flags. So I'm thinking we
-should just drop `repr(C)` enum support. Any thoughts from others?
+base-commit: d4cd35bacb06d53acf39ff248ea2b3eef50573f6
+-- 
+2.43.0
 
-[1]: https://doc.rust-lang.org/nomicon/other-reprs.html
-
-Cheers,
-Benno
