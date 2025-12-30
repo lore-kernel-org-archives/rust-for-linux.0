@@ -1,114 +1,113 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED5A134CF
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 00:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99D92D979F
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 01:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767053841; cv=none; b=VOHs6kKTN2pZiAU+4Ay/gCJPZ3vqrjRibnhjaG6z+uT3acLMAdbpwbarraECKtrjiwPo0/xT0U6pta3WVf6QHNORl5jMUkqP6L1tTmqGdPYlOFI/aThsQkye+AA8rotQbnRiwGjVCrK0LNCngVBxJT88E2bNrhu/s4eJ5+z3ZkQ=
+	t=1767057267; cv=none; b=pXbAmsOBOfVmCXllRRXOgtV7w3iyudk4QF7jbV1MK4BeG1KPiiv7p1Z0Gk0IwZR/JXTbu2oeuAigGYl31iBOLEBjkNSImDbzI96YwF9qVxX6QKKR/YySQA3KfuXrbNodNgPhtryt4w6s7nD9+d5Q59/W5llBr6xwN4NZgeXw2qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767053841; c=relaxed/simple;
-	bh=/4DDN/3gIQCM0o5cnOfsf59pP8c4OuQrBPqNlv11YC4=;
+	s=arc-20240116; t=1767057267; c=relaxed/simple;
+	bh=Q8HrMOBevQUpnO/GCmv6B8cLelHI6Acj+1ShFOhXpvI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pSS7/FpMKvXcCpT4DwAXl5Y/FcMuwPzQfUgY63Lhg3+P18sXA/ndX52Hpi5F7s/MkLaSCb7/8N2QzT8pZClPi2O37Myd+hbAUoaOEIXwEYkFjGF/SPb4RpYeMuWU/GeuZBc0McOya2EnAJZB8skhthW5YLWVax92351UB7wYLyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HCI3Hsgw; arc=none smtp.client-ip=209.85.160.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=UcWGLBTfI9pLIhHh7lMZmN8ZVvxvcXTLbexcB9q6xwIfBLeZ8nkm2h9+BqWHV7TR4kW6UU5ySRQWNyezKaK9NfrnOq6mYRCyj2rizte5VJLPV1tzwpdyvJShSOaR/Et26g+2F9iwLf8h10rkrabsZJx57kWV7pVyY+npKRyYdmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IlDfUdA/; arc=none smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HCI3Hsgw"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4f1b212ba25so83613991cf.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 16:17:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IlDfUdA/"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4ee14ba3d9cso105497171cf.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Dec 2025 17:14:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767053839; x=1767658639; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767057264; x=1767662064; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I3W+y9lqoOSloOorX1TW32/410l7bPpqKG/R2mp51Mg=;
-        b=HCI3HsgwL28Aovk81lPv8g9iN3ToSS2bZIwHQcISLclU1BcJViC+/Iv1tf/Airkxhf
-         lqxsPHheKX5+OyNll7EhfTE4NHLTNfJ+h+bnUTmIzRdhRLYwaTXcXAoUwwQDoFr1MfrK
-         lGvgSZGkxS4Fi5J06eNU8GqTejhSy+01sF41Jmg4XCgsiJWaAtniNsiFIlMMXqb+nUs+
-         MOYqbZejE+c3LYDoj8XTBa9ARBbvb1g6CYfUIcDouyqqh9tKGcC3Aty9CY1PXomrwBg4
-         V1NIOO3t0PJkL9uXkIz2DtKpnnrFGbuxSy/xc8WNdeyvavpUUSfUWJuW5whVsp18pFa9
-         KBIA==
+        bh=s0W/EDw4kUB8T6ntkWeZ4jGeLwTy5P5tI2atkfqX3cg=;
+        b=IlDfUdA/ip3vDZMhSzuMQ+l3uB8vjfCqokLFLaRDrkJVKpHvgqrMWB4we4FtTlbE76
+         sS/ob6eW+FDFOU2Ie24Ml4vYaykw81EYzO2JEr5w9MOHiTf5MJhOtiKcBlIWKQExoTRO
+         /r0ZDwPTBLlerbWnK1lxQGbusDXZ3QDfJf/BD9XyBmiSRPebZE1JtmoZwWS83q9xiSR+
+         XafvCPXqt/fBcW2RmLFZzCM70999D02Fokx1U1K91e3ERCvJIhKSlCOK/4TUsx5S/BUA
+         1Hc2CD499hn8MmlAA3rrM8q05wnblJw4G5WA3BsrGYNVmot9+66/aKAQ4+ysmhtTg+0y
+         02aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767053839; x=1767658639;
+        d=1e100.net; s=20230601; t=1767057264; x=1767662064;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=I3W+y9lqoOSloOorX1TW32/410l7bPpqKG/R2mp51Mg=;
-        b=UC0AqWRPip/kQLab3K+i1ihVGqfDATPunhFE31Ll0AvDSYiCHxgqKXlGv6ynEE0Hnr
-         2LbWyfxwRnmCcRAEdiA79fCKQNPuHB0I4oKOzfanTFv0xXR7ZQqJH66Kn283/qhIV8qP
-         t9Nk+6zhr92YwlNLjF3FHA8/owGhjTazQs/XHFbZ3nrxBayIM2c/iiF1k7LtymfnMRgb
-         4biFyrReLarq32oks4mKpipT9BHDT4Qf5scbW6aO8sbP0ZxscZkAP4T9XaLvj9zPqM0U
-         cZsuZPWBULC9VnC7n4+27hYddS7hPLFdMPeTaJ/AFZ3ti3GXE4Dqo0OPO8NEAKU6rPIa
-         EXPg==
-X-Forwarded-Encrypted: i=1; AJvYcCVLv+nxbdnrMqAA6mKW2kZRf89hV1aJ4fje4t6vja+yOM/4YyOjJRySIiQqAiB0+yk8C6TpRojQbKXoHwjHdw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiasqYS85O5nQBjpkPjcKP46YxaJJukTwju/o9iKqPZoy1lLY6
-	pCkUXvMrb6Tf4BUlBtQd6xkrPfZDzFX4zlfXnuahD59E5QNlUj4IXSIL
-X-Gm-Gg: AY/fxX4KBt6vSaDg2oBG5f8WUdl2dUGlgboAyNjYo+BwS5kSjl39H0K17mrhYMH7UEG
-	MWTGOn/eV2Xa2Cfg/+us5ss8YAu3xUGJjB6n4Ps/tk7DRxp2Yq7Mfa0fZWTJEIMajUyZ9Fd8beN
-	2lSUZXAAoj39Mrd3IRFZvkPuK99fP4BV5BHu/i+pDRq2cnmfgeNK6xfdK3Cy/SRljoCkQjMIDE0
-	ZJsEnV37X/sMKD0HQwuBZUcMvlVe2cUUJ8u76Who3saEzll0KVnB17KMrMa9BbM3Ncu6H6UM7HR
-	e3vFme9yXy/jnSbcG1WsY3BuXk3x2hQpyWHxzo/GYfFOM5ELTfoCSxUydTfRSCYxSgiRTmJbyr1
-	74dP0BeikR9UWz4T9Z+r04cnsiqiT87ZJEpNBdIZgH9hQQFhOH/lSXtjeWHndx2rikWvCqZGx3d
-	1Bg+nxYBp7lh32xozrUUXwd3PhVJ4c4XzaWzBXDMaEEKPwcF5/najUCcFH/PkFtY1marL4F+LoX
-	m2pkzmVsEzDZNyqu3VxdROc1Q==
-X-Google-Smtp-Source: AGHT+IGMhISQN0aQ5+CVm+O84FCUsvrfO0PjPvKQRNTJQjKuH52aETix+mqiToBhhZBeLE6evVYvUw==
-X-Received: by 2002:a05:622a:588c:b0:4f3:4c48:8899 with SMTP id d75a77b69052e-4f4abd8c8damr594549821cf.46.1767053838917;
-        Mon, 29 Dec 2025 16:17:18 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac62e1e7sm230890441cf.21.2025.12.29.16.17.18
+        bh=s0W/EDw4kUB8T6ntkWeZ4jGeLwTy5P5tI2atkfqX3cg=;
+        b=mZvDgBiAFU4taPvBymzMKH066n94LILN7NRwCUKD4vxqooKaS2lOrQwjBgTcYtc5Hw
+         UkITW7RgRjU1dM3QcOWWO3hAA72w+Dojl8ow+k+tY6yP5aJqtp3ap4TPTHJIqeaWIFFr
+         imU1bHZHoURXr9/EYTURBYnWLP9BFKWsT3YYud03FmCf65yvBPKJzVZxyuzxBX2KiOe/
+         mbY/IhWiHw3nCRqrdrtKFMNysy4xzAd5AIdEYuHNAdsAdqqPKnrNlbfQx19y6vRsU5CA
+         966FGmAYo9pI9rvoyTG8dc7dHqoIOaB+NyMva/CLD3WjAeaK56UWCrXt6n9cglOAPv+4
+         MHJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUppE5dy3UluPr+zFSGhsMH9IICQ/bnV6tGr1dcWvAyF8NsldkM56RuAHhBb984+d5kQvIsy3B4iomijbWt+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhEocBqWhXPPnRwqKw1Fmxz/spmCHLrs+J+iFRHjgUBroQWTi0
+	biGswn9XtvQzijwElkWp183n7/aYczsWSFBYtfpTzCS0bgCE4aIMkq2X
+X-Gm-Gg: AY/fxX4sGcmWiZoF54XjYVAhGte3lpDL44oEhwCTq3jJpBR1PeZKbWtponaXCtz2EDy
+	XjLLp2qmX6YDvlEehOhdmjoyCAbPhDHgHbdVILIZ/fxE6I/17t65yeV5XssbhzmH26G5GqjwvpI
+	JWi3tUGTKArjNjavKd4u3zPp4L9gmXr2ciu4X2k19Qph0Nwnu/gcmHazJTNEStsmq+nbp0yBf6g
+	tSdRptNjjifItSlOy6lmzLuyDcpMnSvsXAt1dPutIFC3d8gXIuAMYn7JfyIF+Mnc9wGBYbI0hDr
+	R/52GbyGHsQHEf/jrDBga4aHCHWgDBFhBP5r9J9tnlVowfR1Z65YC/4PT9pVIhY1tmJoNTpuq6G
+	GO3weeePfQoyyVVPLNrixdieqpSVQ+v9OhMt/Pe+mjltAa01QSVo5KYZNI/lIWuRj5Nuquvym46
+	uj7B80pe7mHKFgl7+5/R9EUbYl+vjw9hmtOTjAQR+Xa+JMgJeu1aVHDsyMQx4sUfZuF+Hy9xTlr
+	B+ALHelk7+gSxuCEbO8v8W8yA==
+X-Google-Smtp-Source: AGHT+IHpuGdhRZ3CbF3fVzRnkQZfBHeV8M6APgRZyJsGV4w5CuU3pCGiToOutAk3blctjF9cUdIvOA==
+X-Received: by 2002:a05:622a:4c1b:b0:4ee:49b8:fb4f with SMTP id d75a77b69052e-4f4abdb326emr471279661cf.71.1767057264458;
+        Mon, 29 Dec 2025 17:14:24 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d96ce4e23sm274953746d6.19.2025.12.29.17.14.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Dec 2025 16:17:18 -0800 (PST)
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id B5F5CF40068;
-	Mon, 29 Dec 2025 19:17:17 -0500 (EST)
+        Mon, 29 Dec 2025 17:14:24 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8B11EF4006C;
+	Mon, 29 Dec 2025 20:14:23 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Mon, 29 Dec 2025 19:17:17 -0500
-X-ME-Sender: <xms:DRpTaTnQ761mN5xwzJrL8489UjsF9HpV4DmCtA-Ci9y3E2lhQzRwNQ>
-    <xme:DRpTadV9KEz6rM8l8fJwHuWbdB9GqfEmctwG3Omud98YfwlIsmTy3mV9BPQlD1tAi
-    zsWdpkbJ_-VBDsW_qx4ZRboeLKwaqdhs-VjIIxuJbXOTbZAX5_R>
-X-ME-Received: <xmr:DRpTaXr8kB3qNFb2o5BKtuEJsQuTVSKltjm2KRcdtwr7MmbaWprKD2pMb6X->
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdejkeehiecutefuodetggdotefrod
+  by phl-compute-01.internal (MEProxy); Mon, 29 Dec 2025 20:14:23 -0500
+X-ME-Sender: <xms:bydTafcnEpZ4mT23c8rblSiMXUL5zTzXgTDVFiEjksZuBA3Rz4lccw>
+    <xme:bydTabuNxKTCA0EdVX8M8ZSx1vfK6VFAQmhPn7dQi7jpNMAHds2IyV3Y5U50Vknuj
+    KX2GrrAhiwhrZSRAqD_bPHfK2E1NTtDaWomGvwjxpqmbunB5brW-A>
+X-ME-Received: <xmr:bydTaWhlVCrCP9KikMUDCjLvek02lah8MXT3nbM29RUCGKPRiS4OPjAaFGZ9>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdejkeeikecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
     vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepfhhujhhithgrrd
-    htohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghr
-    nhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthht
-    ohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtohepug
-    grkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
-X-ME-Proxy: <xmx:DRpTaeVns3OQ73Nz_y8_yQg9aN-xSbqKrkC4qejvX4fY5uM1e2pU8Q>
-    <xmx:DRpTaYHdxEnJjX3QCncUtxy0rWhW-RkoAQMuBNVMv8522sdndVnokQ>
-    <xmx:DRpTaVAphvbcwSZvHF_9VtCY9lvHO8m61P5wDZjfjPH8BQxWHaeRlQ>
-    <xmx:DRpTaazEdL2lupbLvEGak9BkmFajKU0vB3IxTRuu-xz0HLKV6DhZcg>
-    <xmx:DRpTabeMejqKaYx16bshlGrfNpLjDUZh0yehbCoWaGyKDvVgjhx8jav7>
+    hrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeegvddvhedt
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
+    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohep
+    udefpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonh
+    horhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhn
+    vghtpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprg
+    drhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhih
+    hhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhoth
+    honhhmrghilhdrtghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtmhhgrh
+    hoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:bydTaTvplJKRXWW28iSLhL7bQRiTZ7_FL0cnmoHGJjyw8n3ioYl9Aw>
+    <xmx:bydTaR8zRNlkJHh8FTBu6DAnK0f2I2Xwm0fjqslbXBtRRKyLzUb90g>
+    <xmx:bydTaZaRUWgc_nbvM8EoDyZ8L99rJsIyRfSL0c5d3j-TrZRpHkKO6g>
+    <xmx:bydTaXoOR8XovlLeknsUSKt7Gb5S0aIJy9QE1cXgB9ujlKpBdy3bDw>
+    <xmx:bydTaW0NOyvVzF9E2VwDR_M-4CVivZzClVzxkUppFlsG-WSrJldPNelY>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 29 Dec 2025 19:17:16 -0500 (EST)
-Date: Tue, 30 Dec 2025 08:17:13 +0800
+ 29 Dec 2025 20:14:22 -0500 (EST)
+Date: Tue, 30 Dec 2025 09:14:19 +0800
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, ojeda@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com,
-	bjorn3_gh@protonmail.com, dakr@kernel.org, lossin@kernel.org,
-	tmgross@umich.edu, acourbot@nvidia.com,
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: gary@garyguo.net, ojeda@kernel.org, a.hindborg@kernel.org,
+	aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
+	lossin@kernel.org, tmgross@umich.edu, acourbot@nvidia.com,
 	rust-for-linux@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] rust: sync: atomic: Prepare AtomicOps macros for
- i8/i16 support
-Message-ID: <aVMaCTO1zOAHU6fR@tardis-2.local>
-References: <20251228120546.1602275-1-fujita.tomonori@gmail.com>
- <20251228120546.1602275-2-fujita.tomonori@gmail.com>
- <aVJiR72gcz_uonoS@tardis-2.local>
- <20251229163616.732caffb.gary@garyguo.net>
+Subject: Re: [PATCH v2 0/4] rust: Add i8/i16 atomic xchg helpers
+Message-ID: <aVMna3OX5gIZJKCV@tardis-2.local>
+References: <20251223124639.7771082d.gary@garyguo.net>
+ <20251225.095655.275822477142372376.fujita.tomonori@gmail.com>
+ <aU-JcvYaOYznqD-M@tardis-2.local>
+ <20251227.181717.1843883205283099818.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -117,53 +116,67 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251229163616.732caffb.gary@garyguo.net>
+In-Reply-To: <20251227.181717.1843883205283099818.fujita.tomonori@gmail.com>
 
-On Mon, Dec 29, 2025 at 04:36:16PM +0000, Gary Guo wrote:
-> On Mon, 29 Dec 2025 19:13:11 +0800
+On Sat, Dec 27, 2025 at 06:17:17PM +0900, FUJITA Tomonori wrote:
+> On Sat, 27 Dec 2025 15:23:30 +0800
 > Boqun Feng <boqun.feng@gmail.com> wrote:
 > 
-> > On Sun, Dec 28, 2025 at 09:05:44PM +0900, FUJITA Tomonori wrote:
-> > > Rework the internal AtomicOps macro plumbing to generate per-type
-> > > implementations from a mapping list.
-> > > 
-> > > Capture the trait definition once and reuse it for both declaration
-> > > and per-type impl expansion to reduce duplication and keep future
-> > > extensions simple.
-> > > 
-> > > This is a preparatory refactor for enabling i8/i16 atomics cleanly.
-> > > 
-> > > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>  
+> > On Thu, Dec 25, 2025 at 09:56:55AM +0900, FUJITA Tomonori wrote:
+> > [...]
+> >> >> The architectures supporting Rust, implement atomic xchg families
+> >> >> using architecture-specific instructions. They work for i8/i16 too so
+> >> >> the helpers just call them.
+> >> >> 
+> >> >> Tested on QEMU (86_64, arm64, riscv, loongarch, and armv7).
+> >> >> 
+> >> >> Note the architectures that support Rust handle xchg differently:
+> >> >> 
+> >> >> - arm64 and riscv support xchg with all the orderings.
+> >> >> 
+> >> >> - x86_64 and loongarch support only full-ordering xchg. They calls the
+> >> >>   full-ordering xchg for any orderings.
+> >> > 
+> >> > Maybe it's just that I'm reading this differently, but I think this is a
+> >> > bit confusing, as if there's an optimisation opportunity.
+> >> > 
+> >> > x86 is TSO, so even a relaxed xchg is a full xchg. So in this sense x86
+> >> > has implemented all orderings.
+> >> 
+> >> For x86_64, I agree that the wording is confusing. xchg always implies
+> >> lock so different memory orderings all map to the same full-ordered
+> >> xchg there.
+> >> 
 > > 
-> > Thanks! I have an idea that uses proc-macro to generate the Atomic*Ops
-> > impls, e.g.
-> > 
-> >     #[atomic_ops(i8, i16, i32, i64)]
-> >     pub trait AtomicBasicOps {
-> >         #[variant(acquire)]
-> >         fn read(a: &AtomicRepr<Self>) -> Self {
-> > 	    unsafe { binding_call!(a.as_ptr().cast()) }
-> > 	}
-> >     }
+> > I feel a bit confusing as well about the need of mentioning the exact
+> > ordering of these primitives on each arch. In my opinion, as long as
+> > rust_helper_xchg_X() is mapped to xchg_X() in C, then it's clear that
+> > they have the ordering of the corresponding C APIs. But I keep it as it
+> > is for now, I may remove them from the commit logs later after I
+> > re-think about this.
 > 
-> Unless the proc macro is generally applicable to a wide range of subsystem
-> abstractions, I would still prefer to use declarative macros.
+> Given the current implementation, I agree that the ordering
+> explanation is redundant.
+> 
+> When I started working on this, I initially thought we would need
+> architecture-specific ifdefs to select the appropriate implementation
+> for each ordering, rather than having a straightforward per-ordering
+> mapping like this. That's why I added the explanation about how xchg
+> is handled on each architecture.
 > 
 
-But the tt-muncher style is quite challenging for a boarder audience to
-understand and change (if necessary) the declarative macros. IMO, if we
-can have mod-specific proc macros (i.e. macros that are only usable in
-atomic mod) then it should be fine. Thoughts?
+I will remove those ordering explanation and I will also apply other
+changes to the xchg/cmpxchg helpers: we should use xchg() and
+try_cmpxchg() instead of raw_xchg() and raw_try_cmpxchg() because we
+want to keep the KCSan instrumentation for those helpers.
 
 Regards,
 Boqun
 
-> Best,
-> Gary
 > 
+> > Thank you all! Applied in rust-sync:
 > > 
-> > But I think the current solution in your patch suffices as a temporary
-> > solution at least.
-> > 
-> > Regards,
-> > Boqun
+> > 	https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/ rust-sync
+> 
+> Thanks a lot!
+> 
