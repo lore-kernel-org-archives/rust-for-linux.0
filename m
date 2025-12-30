@@ -1,107 +1,108 @@
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4651286331
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 13:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989A523D2A3;
+	Tue, 30 Dec 2025 16:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767102881; cv=none; b=BD+mjNsZmLlhsubgeUA4QSU2XzWSF0vPgMMhRndTZsztbSn2HJYGuoMaULiOiHtyPm7Xbzz7LiZhoYKxoZGWrqceT9+EJrJGpGNZHzv8xEAyGtqzC/7vHpUPl+GQksomaLSlVo6UL7PZJpStMthgsFrPlAacjebdKP1AEVQt854=
+	t=1767113343; cv=none; b=dELlKj+OeP+vf18xYt9cfwmukrKqBrojuHhKXzRcPS4ubf3fsjd8xveKEGIlEaOxsDqlY+GLjGWaFRQMh3kmffrJPQc12P/m3kfTwRJrd6zwblenkOLaFTauGlmwqMMdTIkbzO2YVt9GY+4f2Vz4L1C70taGcGaJK9ybdieYNKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767102881; c=relaxed/simple;
-	bh=1e0o1pbplB2re7CvWuiqExDqzv4So3D+DzzYf/RsEC0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dtI94ZQjJrWxKX2F7LlgIIgmfjrVZ3NDHpCVkerYUMkaAXGkLy1ofgDtR+MsFUh1Y4ygAS8tkr9MjgaRdj1PY7c5BuRmfa+KA3zyc5ZHSUsb2iIIYz5Fdo7a1ZGyvPFiiBLna8XaJvi7rbzXzXmUOtz79E2Nl1pKCzBA411JLk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C7W0guh8; arc=none smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C7W0guh8"
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-450ac3ed719so6507165b6e.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 05:54:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767102879; x=1767707679; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zz5Tak4TbT/Ijl7QHLyla2deic/NXk15cSQ4Gzqgx5Y=;
-        b=C7W0guh8P39WnuttdNXlIu41/J3BN8qjGP8HVAFTxh0YCrc5I2eRD/UdEy/8VeOTEO
-         ZeK5NEwi1yGh4ddAr2Q4y/RR4Sf8uf08aWg9qhdT+tW+lNhNg+f36NdZ2661ic3shqXC
-         XjL/Q6iXrb8NwGsxhlhD+WkK3QK1SHEFrEV6YvJvzZsyYlkQ2R/DIrBaVeFSjErtYRXU
-         RDCqeTfp8hpTERYaM53oR31HAmjmGPbabDKWmUipmNFFoQ7t0wJTTOwcymfHNP7rrR1a
-         BQWCnYzVN4Wv4y9jJ2h6eJuoYyWtdIBIz2HCizIDfysY4bK7xUos4LEvPs8u7+fmyWGG
-         5e/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767102879; x=1767707679;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zz5Tak4TbT/Ijl7QHLyla2deic/NXk15cSQ4Gzqgx5Y=;
-        b=D9/X0J088ANFuqEsevgKXGO8EETEgx0cx/cFtnnL/pKPwA3I2Sb/z9gOWJea7ydW00
-         dBe/RUnZRMv1peK1O95wBDbOqgJkoIVEzsi0WQAgs97+QmFy0Q9iFsLMfQSA36Uw6pAT
-         HnXaZ6zSRMi/kOvSOttJj7SPKB2yeKrFoXk1OLoHvQtsO4huDyl26MUaGHSkc4dJSkYV
-         KeqVlVorLdSkDkx/FfJ/S2strZzRsDl5CAnlGj6RyQd6YRADZ2r3usFk+N1DV6jNzeNJ
-         cAY5pGsJuA0rnhL4ARClg+iAh4HIOLIqvkQRWcRxEqsjZshIsUE/a6+UNVklfKGoyU9F
-         VsEA==
-X-Forwarded-Encrypted: i=1; AJvYcCXpXeaRI8DIrDqq2f2kP3wEuLk88V1nbhcJnS8LhhTzjGtElQzFsxc29V8xyVJb408Cl7ljCoTQt+otKEWh2A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVdjBekJm0V4d10s7+bYrXHNgLS7Jy2/rf6l81Y2wZhKiLDdlU
-	5IHwekcfD/EuyEzuuozhhAcQmzxBR6XnpBGPTP4XwrjPjnUZsuR3biBAlVA7t9Vh
-X-Gm-Gg: AY/fxX5YydSHV19iAJfOsgoNgfT7BXE7MDR62xSxAUkpwXT9rYOOn4smTZngu4TLYXy
-	VoiJEe4oeMoOwyh5t5hyip1b8ZdoCGJZJlAY7rRAPodlkC5hjvftcZo+HgvL3zysnrOpkR2tTj5
-	EBxkZ0sSVG8LHKGKb+ssZl6nVV+YRhihIHnmMXkQt4uVBtB5c9fRJKY6DpOaL+QBba+n49oYm9X
-	BAprdQmnfsl3lMd6Dw+POcySPETDGo0OdPaP+s8uo2vBItPFaTPrVsjqrNHZG5e0l6jDQ3LTLPb
-	4pv2XXclMCIXlAQCgAdH+ICGgxlVj12mG1k0eRScr/8yVSBh/BXfSbLjsMUZH2WgHSxIzzWLUun
-	HD+Jn1gWlPbtmf9UmWe6KpAlxP0sRgwHWmT5SuzXTFD1cr4d81fuCMrZV2yvyqgnlPKjr2P5jdu
-	Y6uwX2L5wKD3bOfBylz+Pzsy3z1PAOI6q2U/NoC76mcmOaykIb8L8qBfqd
-X-Google-Smtp-Source: AGHT+IEagA4N0//2bMTNT/H5SUllUcR7LWh2GwP+EPztZo1Lb7THQ/FsAXn5cinEWcdoNrkrcVd1Eg==
-X-Received: by 2002:a05:6808:190b:b0:450:1fa0:1447 with SMTP id 5614622812f47-457b2233debmr14326618b6e.39.1767102878950;
-        Tue, 30 Dec 2025 05:54:38 -0800 (PST)
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com. [209.85.161.43])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cc667d7f1dsm22418573a34.15.2025.12.30.05.54.38
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Dec 2025 05:54:38 -0800 (PST)
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-65cff0c342eso6900136eaf.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 05:54:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWsDunZONgbl2qM2uLM+0C2rrM7zJEUhFz93T9x+rMdT+M6XgmqOHAfRGqmL93bz0qYOyU5QL1WVEuOcmf8ug==@vger.kernel.org
-X-Received: by 2002:a05:6820:1626:b0:65d:88b:c00d with SMTP id
- 006d021491bc7-65d0eaddb6bmr13721781eaf.66.1767102878211; Tue, 30 Dec 2025
- 05:54:38 -0800 (PST)
+	s=arc-20240116; t=1767113343; c=relaxed/simple;
+	bh=TUu2Dp2xZxi1yNJqpMQ42nivcbRZIxIELfScEgMADkU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KmasS6xayOtHIJvayimq+FdxkhhV7WstcIu6B7Y31hnefqMad+mgd4gryRz0m8BzmdH4xYyvL91fXZRZLNeYOzdYWYtIoC5IDIGoK1keVwC1aOUFRgBZQBmu0cz758pw8XBxXhRGRH5wIbHrMrGMq9VNJ/M3rWp+p9irXeaHUso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from minun.felixc.at (unknown [65.108.105.71])
+	by APP-05 (Coremail) with SMTP id zQCowAA3yQw8AlRpUjKQAg--.63740S2;
+	Wed, 31 Dec 2025 00:48:08 +0800 (CST)
+From: Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn>
+Subject: [PATCH v6 0/4] RISC-V: re-enable gcc + rust builds
+Date: Tue, 30 Dec 2025 17:47:53 +0100
+Message-Id: <20251230-gcc-rust-v5-v6-0-2ac86ba728c8@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251226-add-entropy-v3-1-a3440823a07d@google.com>
-In-Reply-To: <20251226-add-entropy-v3-1-a3440823a07d@google.com>
-From: Kari Argillander <kari.argillander@gmail.com>
-Date: Tue, 30 Dec 2025 15:54:27 +0200
-X-Gmail-Original-Message-ID: <CAKBF=psstiTNLFOLzfGzkTSCZHoFuBGu9LuP5oB-tOKK+=+kvw@mail.gmail.com>
-X-Gm-Features: AQt7F2oZP2lYSUDiXOmJZPyoVOUUtt_eqBHj5O-ni015FeWlxsRF1dVHw7XXtvQ
-Message-ID: <CAKBF=psstiTNLFOLzfGzkTSCZHoFuBGu9LuP5oB-tOKK+=+kvw@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: Add support for feeding entropy to randomness pool
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADkCVGkC/22MQQrDIBBFrxJmXYuZaChd9R4lC9HRDDSxaCotw
+ bvXZl34m/fhvR0yJaYM126HRIUzx7XBeOrAzmYNJNg1BpSoe5RKBGtFeuVNFC2M8ZYcDT2ZAZr
+ xTOT5fdTuU+OZ8xbT54gX/Xv/d9qkQKc8SncZLapbWAw/zjYuMNVav7H9R8mmAAAA
+X-Change-ID: 20251204-gcc-rust-v5-aafcede31ea3
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Jonathan Corbet <corbet@lwn.net>, Conor Dooley <conor@kernel.org>, 
+ Mingcong Bai <jeffbai@aosc.io>, Han Gao <rabenda.cn@gmail.com>, 
+ Vivian Wang <wangruikang@iscas.ac.cn>, Jason Montleon <jmontleo@redhat.com>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+ linux-riscv@lists.infradead.org, linux-doc@vger.kernel.org, 
+ Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn>
+X-Mailer: b4 0.14.3
+X-CM-TRANSID:zQCowAA3yQw8AlRpUjKQAg--.63740S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZrW8KrWUGF48JF1fuw4UJwb_yoW8Jw4xpa
+	95Cr4fKrWDJFWIgr4fAr48WF45GF1rJrWrJF17t34UJ3y7ur18trnIkr4rJa17ZryvvrWj
+	vr1F9Fy09ryUCwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBKb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4
+	A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxkIecxEwVCI4V
+	WUMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_
+	Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x
+	0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8
+	JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIx
+	AIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7xRAhL0DUUUUU=
+	=
+X-CM-SenderInfo: x0lq233loux21fy6x21ufox2xfdvhtffof0/
 
-On Fri, 26 Dec 2025 at 21:15, Matthew Maurer <mmaurer@google.com> wrote:
-> diff --git a/rust/kernel/rand.rs b/rust/kernel/rand.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..3e0aef2f53af122f510b34c4743a20452aaad9ad
-> --- /dev/null
-> +++ b/rust/kernel/rand.rs
-> @@ -0,0 +1,18 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Randomness.
-> +//!
-> +//! C header: [`include/linux/random.h`](srctree/include/linux/random.h)
+Previous v5 patch:
+https://lore.kernel.org/20251204-gcc-rust-v5-v5-0-2d4f20d86c24@gmail.com
 
-So why rand and not random? If there is good reason to not use random.rs then
-can you add that reason to commit message.
+Changes in v6:
+- Simplified `bindgen-backend-option` Kconfig function by using
+`/dev/null` with clang option `-x c` instead of `touch`ing a new temp
+file.
+- Moved the `BINDGEN_TARGET` check to `rust/Makefile` so it only
+performs the check when Rust is enabled, avoiding breaking targets that
+do not support Rust builds.
+- Updated my git email to the institutional email address.
 
-    Argillander
+Signed-off-by: Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn>
+---
+Asuna Yang (4):
+      rust: export BINDGEN_TARGET from a separate Makefile
+      rust: generate a fatal error if BINDGEN_TARGET is undefined
+      rust: add a Kconfig function to test for support of bindgen options
+      RISC-V: handle extension configs for bindgen, re-enable gcc + rust builds
+
+ Documentation/rust/arch-support.rst |  2 +-
+ Makefile                            |  3 ++-
+ arch/riscv/Kconfig                  | 35 ++++++++++++++++++++++++++++++++++-
+ rust/Makefile                       | 17 ++++++++---------
+ scripts/Kconfig.include             |  5 +++++
+ scripts/Makefile.rust               | 10 ++++++++++
+ 6 files changed, 60 insertions(+), 12 deletions(-)
+---
+base-commit: 8640b74557fc8b4c300030f6ccb8cd078f665ec8
+change-id: 20251204-gcc-rust-v5-aafcede31ea3
+
+Best regards,
+-- 
+Asuna Yang <xinrui.riscv@isrc.iscas.ac.cn>
+
