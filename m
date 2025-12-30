@@ -1,100 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outbound.mr.icloud.com (p-west2-cluster2-host10-snip4-4.eps.apple.com [57.103.68.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69313A1E9A
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 11:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D34276050
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 11:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.68.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767094073; cv=none; b=lleKGa3L4v1XuRjm8JYA7WlkZcI5z//UriOhgf2xWiNCqhyn60d2LjlyQT1kL6nKRUWF+YQDojqvK7hLzofd838F1KW6RyIYEzayH1yAT683CCg4W/8pnQkJEi8/5IRkwC1/hC+4lQdoUCIgxSwoYJuG2DeOgVVmSN3cc1rVOdw=
+	t=1767094829; cv=none; b=ju4MsiJJETeJ7DbFnqMFtbcw77XqYpYXE9b2cX6TuHpkPicua1KkvQ8gSUnkGONT1C6M/yTJjGUhrgXwitOyXYki3zSK2/M+e0eVr+r+0teO+0vY81uvla8dJdJwEpJKMXrJhHvwGN9iVhIfFfAWnCLV98iHdPafoAiV+k2aTGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767094073; c=relaxed/simple;
-	bh=leJjdZs3pviKoCXS0m/3MT3MyFdHZGu1rGnoGL9HVgU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vv2U7ZX/PNLwN81AezpM8NJFT9AVn5/PhNz7kGuPalDDc46BoTRmxcUfjocX31FAIZbT72trZ+TIGGya2Scn7LrJAb8xRGxbxFxOrJr4ImV3WqM8NpAFivTeMvZLOo8Fie/ohJk92yLNgmtQGfgytwZp2OMxFgMDFqzSsbUykTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ti49gbzS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767094829; c=relaxed/simple;
+	bh=uqNF6IYvNjUgPgSVy5pjNK5Ng44+M5+4qebOh4EPh+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WsbzkPSh1UIbXfRLgSUYWxIXpXlOXIaTbMN/XVkQ4gu8zA9Ql4Qrx+wkun+CRKw+XoHNsB4XgJImDhgJbd/hb3rIlXZKNwZlFS7juuG2Bzvpoh9FCVf706ZCMocIyejhTvvlLZmh9uJ8/w0E8iGJOHwVIMUK9hb2tQ8hhtdWL24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net; spf=pass smtp.mailfrom=bne-home.net; dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b=YHn+NP5E; arc=none smtp.client-ip=57.103.68.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bne-home.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bne-home.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ti49gbzS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71561C19425
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 11:27:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767094073;
-	bh=leJjdZs3pviKoCXS0m/3MT3MyFdHZGu1rGnoGL9HVgU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ti49gbzSK+3E1pOw/5IncIrVOsvkDHW2qBjnUsqNvaiKxesjNE0jylbzuEGsEXv11
-	 6jgkCBlOReHf5h/PaK7Ids09+SY5Dcyu27oOF+XoR86c834zfKKF2AttUCIesEbhXg
-	 6j/WUkVD2MMtifQ9xewwF4rtD4YAFbLXSuWutQVQJUzoRVAQKO9msdiHMW5526TKGx
-	 5H+6J+CAQPvDKMqNam1KaR+dPiqZzrCMgBWgh0Uo7sa9CyGgNlzHs5xfMDC2zR6K3T
-	 WmpHy/Khh5JNNKACEQ/icEuKC4I5U6uukDo2dd5NAhNgcJn6Y7hqaQm8NJpZfxH50y
-	 +3t9TmBo2PkBA==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37b9728a353so121067091fa.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 03:27:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVq/Zz31s6VMTI19LFxxx9H+Uv0WpKI3jE2USowIm3ZcVCGf2kGGCXFgwMQy6FL6E1EvI8dHGSnr9+N+UXmfw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9p+F1wbmQHR/E7be0YnlMWvkeh4FhAGLpj+tSyTshIEDc6r++
-	7qzwfPZvdiJy+A4fME09j9FMcsXLZVV6fSgMJsk8fhBjuGRZ26siGToLRwBwip/NC1FN8CDmtqq
-	IqIlU/0sc9peddi0eqs8+XJD1tWO7kzs=
-X-Google-Smtp-Source: AGHT+IHPGzwFVfZohXUlwjkwrktoaQn/snnrlmsIiwWkSfWvcb7/V3Sk+I1nUkYo+gWEKKlylRQqCdNtOtziv7NNOJs=
-X-Received: by 2002:a05:651c:3043:b0:37a:2c50:c437 with SMTP id
- 38308e7fff4ca-3812158e42amr88523171fa.14.1767094072078; Tue, 30 Dec 2025
- 03:27:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bne-home.net header.i=@bne-home.net header.b="YHn+NP5E"
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-5 (Postfix) with ESMTPS id 7487D1800113;
+	Tue, 30 Dec 2025 11:40:25 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bne-home.net; s=sig1; bh=rACcEN+epuIthxdvgF0dC9KzjjSyrOZmhlIZhCJHJrw=; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=YHn+NP5EOqNJNEjV9K8t5iWH5X0sCT3buiKP5yCCKSnUKBWyXZKpZa0y81131XfW/Rpjw2ZfUb9ODnKNA2t4lllX1zgJilf9anOpzsgvWxAcbVeLIv5ll99xbaTK0QKaEMXMGqzRr/ETJQttQRkjHJ1RvoU/S0D8d51YTwwPPXSvqEq6IB5V2d1WRUowkkU0XjA973+bAx8Ae+/ORl5SK9yB9ouNavkp7xgJyOvlCGTY0q4HyvpY/pqYgEmm8yX+u6KnGtCFs3LxWIDTXXUl6TmZfViQbNuiU+myjvrtBRpLm5rdEV7IF3ZkFYKfO4m9crLGYflRcGYUBxu7oEYzXg==
+mail-alias-created-date: 1746336505199
+Received: from fedora-g16.bne-home.net (unknown [17.57.152.38])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-5 (Postfix) with ESMTPSA id 647B51800605;
+	Tue, 30 Dec 2025 11:40:21 +0000 (UTC)
+Date: Tue, 30 Dec 2025 21:40:17 +1000
+From: Brendan Shephard <bshephar@bne-home.net>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: aliceryhl@google.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, ojeda@kernel.org, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: Test page_align usize::MAX boundary edges
+Message-ID: <aVO6ISXoEV-43AY2@fedora-g16.bne-home.net>
+References: <20251230094841.76830-1-bshephar@bne-home.net>
+ <aVOhfWmyJBxD4SUa@fedora-g16.bne-home.net>
+ <CANiq72mdkb6A82oy0DoUWn=jv75-R7EHTNvJRW7o=JeNa3eeHg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251222-cstr-net-v1-0-cd9e30a5467e@gmail.com>
- <20251222-cstr-net-v1-2-cd9e30a5467e@gmail.com> <44fd3760-5a01-43b4-ae68-31e6d3c18dc3@redhat.com>
-In-Reply-To: <44fd3760-5a01-43b4-ae68-31e6d3c18dc3@redhat.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Tue, 30 Dec 2025 06:27:16 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9kQj0bSAA0j0MRhbvSk7OkMqAaFuw+TsS9HMEgjqyW6Cw@mail.gmail.com>
-X-Gm-Features: AQt7F2okjrDKa9fg1wVEDLsM3rjbX7E-R6aE5Wu4ax-TgUelKnLl6vfiY44CrNA
-Message-ID: <CAJ-ks9kQj0bSAA0j0MRhbvSk7OkMqAaFuw+TsS9HMEgjqyW6Cw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] drivers: net: replace `kernel::c_str!` with C-Strings
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mdkb6A82oy0DoUWn=jv75-R7EHTNvJRW7o=JeNa3eeHg@mail.gmail.com>
+X-Authority-Info: v=2.4 cv=SJRPlevH c=1 sm=1 tr=0 ts=6953ba2a cx=c_apl:c_pps
+ a=9OgfyREA4BUYbbCgc0Y0oA==:117 a=9OgfyREA4BUYbbCgc0Y0oA==:17
+ a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=JppZAXPjAAAA:8 a=KjuJQINMKESoCGrhKMMA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=mTXuAFqUwmiQvsSFmwXH:22
+X-Proofpoint-ORIG-GUID: vho5jMJbJ3Iu9FhNZOQDabgr1nQBFRdF
+X-Proofpoint-GUID: vho5jMJbJ3Iu9FhNZOQDabgr1nQBFRdF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjMwMDEwNSBTYWx0ZWRfXz/cVO6yBSkgP
+ FMthBgfTlo3eypm0FD2K6BkCaaSipphS4lPhZiFwqnQ7iJ8vUPRXEB4/e/I1mYez17uAas6Snex
+ yg3qXN534a9n/PRmdZHbYQunNvgGnLpiKXNKU1J2J2mVJ/zbzAMuBJhqlr/DVmoOfyXHrhpBXuo
+ /lcstEfla6rji+80Idiydam7aVI0GqR5IcrbRgDv/JMnZJ8FD6exGPpJqvxLDbzVxLmL67ZJdKQ
+ 3SVzPcaeFGcCdfGfQqeAi86rMH+Y8Rn04eyuvqJjGuXeXZJXpZRRNvOKRjb9V9rj8R/H4kiqh+D
+ WJ3pJ8LM1NtOUI9fEbX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-29_07,2025-12-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxscore=0 phishscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0
+ spamscore=0 clxscore=1030 suspectscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512300105
+X-JNJ: AAAAAAABFWRGzDXrD9N47VQlOiCFXOKL0P79vIoQewS0CJ65F+Rmbp61IVkboV6sGgBUyqjOhE/hsH1Z/wxHqkq9giM+vRpIa7evVxpz+Qd3jCcHAqqT6/SLMRHNLq66VVDQ7HkC7CrBLO8qMMLOKCUp4zHTDfjGIHBJNNzO+kYbGmAeI+x5Rlk3Tw5fLvM7O9uEHoY8RnF7URR2mtw/3522vxdvDiGt8bQLfNEN96+O3xnTW1a4DMwIb22VhGOZtxat20opb7I8ITAH/GUme/UM9/k8/emXZtxcnhlXcxKcEvFAte/YN0vm1lYF+mL+wCceLB7LleMK1Q7SDboWJPMo63bI4+aFyowKTk3DVW1WVV1Ow9Z2Naxq5jDxAFfsY0u8HeW/GOjjtD3FThNc3ntjvWTg/mG9vVUCog9PBvsPLM0AxciRTKOjXApzyGK096yEQEuiQu7Q4UuetxS1xYfCPuCBitcvPDPbSx/nE6QdKtpM0WQYaaIxD8neGjYYflZF0e9xAo2+yoC1jrAr1wV+gK99b5PcUVWR6+Faoca0CTacgbosndliXSG9sGM5cIAtTb73fcbYZE1Mc9YvO0rsJYqEmQYWX2VEpbPJUO7hZelkc4rve0NJ6DCC8oYS79ZvQuSKLBTWGWK2ilP+nguQK68Kg28Yb19eaKf/oVCCggBTaVxCX8/9DKpkEmhSQPSlm7Js/LK/sjbwxluJMtMJ0v8vsXdoBSXz4qqIRG6geaQXUGQt1sUS2WbVdHFATSLlz5oVLPa82gNRgFfQq1g1kEJKdLYC4VnyWAteO2uolRoVsrpk7XkuVkrCXJdSdmYKS+KuXiaVtk1HqQ==
 
-On Tue, Dec 30, 2025 at 5:40=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> On 12/22/25 1:32 PM, Tamir Duberstein wrote:
-> > From: Tamir Duberstein <tamird@gmail.com>
+On Tue, Dec 30, 2025 at 11:14:37AM +0100, Miguel Ojeda wrote:
+> On Tue, Dec 30, 2025 at 10:55 AM Brendan Shephard <bshephar@bne-home.net> wrote:
 > >
-> > C-String literals were added in Rust 1.77. Replace instances of
-> > `kernel::c_str!` with C-String literals where possible.
+> > @miguel, Thanks for the pointers in:
+> > https://lore.kernel.org/all/CANiq72kcMLXz=xyZeKC0=j_e0BzJEY3wGpBTTxfJsc6EZhCnXA@mail.gmail.com/
+> > https://lore.kernel.org/rust-for-linux/CANiq72mLPvB_6Ow3bW5-V4-km=RyA59chQ1g1x9qUt2P-zZweg@mail.gmail.com/
 > >
-> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Reviewed-by: Benno Lossin <lossin@kernel.org>
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > ---
-> >  drivers/net/phy/ax88796b_rust.rs | 7 +++----
-> >  drivers/net/phy/qt2025.rs        | 5 ++---
-> >  2 files changed, 5 insertions(+), 7 deletions(-)
->
-> It's not clear to me if this is targeting the net-next tree. In such case=
-:
->
-> ## Form letter - net-next-closed
->
-> The net-next tree is closed for new drivers, features, code refactoring
-> and optimizations due to the merge window and the winter break. We are
-> currently accepting bug fixes only.
->
-> Please repost when net-next reopens after Jan 2nd.
->
-> RFC patches sent for review only are obviously welcome at any time.
+> > Let me know if this addresses the points you were raising in those.
+> > Maybe you just wanted usize::MAX and then one over? The first test
+> > case might be unnecessary. The last two do a fine job of illustrating the
+> > point I think.
+> 
+> Thanks! Yeah, either way looks good to me. Personally, I tend to like
+> tests that check both edges.
+> 
+> By the way, the original comment mentioned "overflow" explicitly,
+> which was good since it conceptually links to the main docs which also
+> mention it. It also seemed more aligned with the other two comments.
+> Perhaps you changed it since now one of them doesn't return `None`? In
+> that case, I would just remove that bit e.g.
+> 
+>     // Requested address causes overflow.
+> 
+Yeah ok, I agree. I like the explicit mention of overflow, and you are
+indeed correct in your assumption for why I changed it. I'll change it
+back to the original comment.
 
-Yes, this is targeting net-next (unless you folks are OK with it going
-through rust-next, which is also OK with me). Thank you for including
-the date to resend.
+> i.e. I think it is clear that the first case is not the overflow one.
+> But it is not a big deal either way.
+> 
+> By the way, in commit messages, we normally don't use paragraphs like:
+> 
+>     This patch is a follow-up of: "[PATCH v8] rust: Return Option from
+> page_align and ensure no usize overflow"
+> 
+Ack. I'll remove this. I found a similar commit message in the history,
+but it did feel like an awkward way to handle it. Noted for future
+reference.
+> Instead, it is better to provide a lore.kernel.org permalink to the
+> patch or, if the patch was already applied, refer directly to the
+> commit with the hash and title. However, in cases like this where it
+> is not really important for the change itself, I would just move that
+> line below the `---` line so that it is not part of the commit
+> message.
+> 
+> I hope that helps!
+> 
+> Cheers,
+> Miguel
+
+Thanks, I'll send a new revision.
