@@ -1,55 +1,55 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B93F3246EC
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 12:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5635315D36
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 12:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767183765; cv=none; b=SZLM2aioFjNe8bP2npasFdl3P4a85yraGNOqHW1dOV1TkqKUPHOB8knaR1bURoPdUxbyIGTPtlJ2bosRp7DraFWN+II8muzgNN1rl3BLLgIBYq1pCZGAkhIKjAFbeVt7dbqQ319JAPLynGXXF+zxHlq/TjDXeMMESjBKf5JUUrE=
+	t=1767183767; cv=none; b=t8P54gZh7PLGxDX++jP/IBKuB/1ii9kPr1BbWK2xRAWRGtRsV1rXw/Z31GqWY9WHUw/hoAcI42JG/nlAWQKm9+M4lW/YEfWOh6GqQwqwOY+K0fW4QP8k0lwI2nmABf8E9ESbjja6slc26YlKWhob1nAM3FZB77viFPJusdZnog4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767183765; c=relaxed/simple;
-	bh=dWGhxjFk0H0ccZ8Z0LvyX4T5xP2vhqe9w9Pjy9Iy9EA=;
+	s=arc-20240116; t=1767183767; c=relaxed/simple;
+	bh=x48g//vEaovaCGc/+3V+kdS96OVZQrdlR7cVmTcJM3Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UDtLnrnfOKSm6WuMBP9aywqi4Fu/O1F0tDpfX0vKIc6+qtlrfXLO2pc0pZDGxhUSIwjFNRPYupEif2avW8rHI19FlvtYujc6u9n6S1mlemFLBHyF3uCc9pCehgZfpzay7kWaiAp0eafxHi6xUmtLB5g3yjeyKtPzGcRsc3Xl2P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nQCx8LIw; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=g/O67RZRuvHWYWQgExXMuZBK6elFPYXPY9G2loMkXp76ZxNiF4kB2txUcR+OZbC5lF28GZOQ8rS5UoELAkUqkpkPlditDD6/8xY2w6qUlJrpzgvn8gs2OsgdczDNccdHCMA9BnHdHOJyATXcegJdyj7rFrcc4r+UyYTLpvl+29o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rXg+fj/D; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nQCx8LIw"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47d3c9b8c56so59407525e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 04:22:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rXg+fj/D"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-430f8866932so8713405f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 04:22:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767183762; x=1767788562; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767183763; x=1767788563; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IML1ayTIBjLRiL1IISCGMNFG24NcobrFATGIP2DkaPQ=;
-        b=nQCx8LIw+IgysOK/5LWZzN/DCseniEUCOx83/YJLJoYGeRXt2B9W0ViIzG/PLVxErJ
-         aPTCWHKdShoMzrvJLx7VlCbIKxZLE5/lAGpmOemIut2kSAYo5coyRJj2Z1fF/5d3jNKJ
-         b1n7Uu64DCLHSIuSspS9y/ror7OQA/AKG/D2Cwa6CtBd0/elfRROWUYvDZXYfu2LKxuq
-         U3hIl0Ftp6SOzCwb1M4m45VgGeeHVnNZV6iSLdXIt+/Bl3Tlrb9Nv62ydTN4tpcGaPpi
-         VhMZeJLZ5CbMQoIK0g0PgDmWA86RLK3OLOtd4YRc0326TR9OGav+5mpSKb8Hxh0nico3
-         rLqA==
+        bh=EnX+YiWBwSFj03NZe+M6b1I0lykasXzPK5veF6o26Xk=;
+        b=rXg+fj/DzoTvLQUq1C+NqmI1l/Dv9/E+2MpEhMt9Bn2phj0jP+SEVHcy6DFdj25ZWT
+         cUZnz/qO1Qjs6y8pbxud7nGfmNScImOxjXZtq0ysNMkYcUmVxJTMi9HqajRH89WZDJPp
+         D4n08kz2zhlNVxK5fLBL2MbnBu36uVh8B50QgJUpIjy2Ln2ixFUb9wkTubZUR2z5s0tU
+         l6+mFPAmw4nGWooXRhLE3pmb7yHtaNG5Ilo6WykD0NpSojQ5s/1wggb/ZB/NfVTawK/x
+         5DG/FXxuiw4SnZ0HBZkOh4NSj4bScSQfDWK4NLUnyqqdHvOXZ0FrIU8hGYtakERRt/Gv
+         0l1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767183762; x=1767788562;
+        d=1e100.net; s=20230601; t=1767183763; x=1767788563;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IML1ayTIBjLRiL1IISCGMNFG24NcobrFATGIP2DkaPQ=;
-        b=LzS7doDMHIEEnSO5CMALrcyFQBX2bOkh7jHdKRjWMtuw5BOnLQtuyQKqr+B/ozwNbu
-         V0M5xUsg/MLhihDgDsy8wNtq6mD/HjqeTu5RG8cDqTGHEH4Ag4pzh3FJYPzJXE5GiwPd
-         eZfSPkVISgS0UUiyGbvR9ROB6XfhRF52lYKiXMPSGCRY2O20W/b1HpoZegH/2xs+jaV7
-         /sLcu425BaadoUCFjejroi5hFQklUXFdVruofaDdIodoosZ29YetW+vS/fK2yvNcQ7FV
-         StpfJ41+J5yoQ3Zo65OiSTKwYNuUtgER204pktNNSaJz13DUxAAU264gS6GkUWLDzlTb
-         WXjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXGFbdl9RaRktNSrFyfF9S2UZP/SruTHQZMnBfG2/Xn2Lom/zq5hp2QZTfz3vzG93jQ76bCuJZhabfdpDfnjA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvmDBGLD7NIRXlFRkWFzAir2bTiyvZYR2sVy8O8fPN4y/oSZyn
-	pPS3HPmrVVRE74S/2F+iKanDbMIqyTxGpi0HVW+0YjmVix2gOhr9ft98DPfOsbMSIwO4F19fZ8t
-	EbGSx9FnpEoRci2n0xA==
-X-Google-Smtp-Source: AGHT+IEJ0sOB06BtEpr8ZstmrMz9PeNhPmO2C6GqJfhTbjec6TNWZvpmubPfbs7AHp85adb5H0AyCveolppYmsI=
-X-Received: from wmco11.prod.google.com ([2002:a05:600c:a30b:b0:47d:47dc:d5d4])
+        bh=EnX+YiWBwSFj03NZe+M6b1I0lykasXzPK5veF6o26Xk=;
+        b=Nw7ESNF1o3zcR2CGjGv//dFOEVVzRkKxbLam/wkY71yQm06z9jgd7GDDoRMfWmXwLK
+         w6BaaviYc/KB57AX2UOJ5P5tqGKMGkQeENREECp+0GMLVrlzpYrn/72/zZhjFopQloaE
+         z9bTudH181TBLaUl00EGkU2lvEb9NjvvpODBfifW9F2I8uqSKNxQSXFVAnk6FjpIfg5C
+         71nMKQJ07vMVfbhF2yBgE/FLGP4im9ttC1RPwa9Z+2dms7D+2tNiEcF+oqjp+qvyuIAZ
+         2fH18KRWv8IPd0W2o4ITPtZGB4y8g059+e21vxPLb10bvC/Q6GbHrQSqPrC/XPk8uDj6
+         +JmA==
+X-Forwarded-Encrypted: i=1; AJvYcCXguSFgL3dFmVKJzZ8M65vuNx9GYeyjePpOzDV2icyFjgSvTi7fxZmcCd3yUdHt/L+TG2iF7YHoN6zlo9Cb4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVeZUGjtY1uRfGijQuFqjqzvnx8Yven2EPT6koTiLohbhupNjt
+	7/8V9oD75uhZhAkXdyzzsx08usqIdzDztCFd1QN2sZuYj2J1MOMebD39MadDey0vASZGZS+bEsH
+	mThft3C579U1ShHNpEQ==
+X-Google-Smtp-Source: AGHT+IEVvKcXr6CgV/sO/SopdsqbSp5OU9ou7XeJWfmPxsy3aUaKE2cdpBZhPeJYGAC28ivLbvgGuv+puag4k9w=
+X-Received: from wro8.prod.google.com ([2002:a05:6000:41c8:b0:432:5cc6:c7ec])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600d:115:b0:46e:37fe:f0e6 with SMTP id 5b1f17b1804b1-47d1997e733mr293114935e9.30.1767183761820;
- Wed, 31 Dec 2025 04:22:41 -0800 (PST)
-Date: Wed, 31 Dec 2025 12:22:28 +0000
+ 2002:a05:6000:40db:b0:42c:b8fd:21b3 with SMTP id ffacd0b85a97d-4324e70b2c0mr47793415f8f.57.1767183762838;
+ Wed, 31 Dec 2025 04:22:42 -0800 (PST)
+Date: Wed, 31 Dec 2025 12:22:29 +0000
 In-Reply-To: <20251231-rwonce-v1-0-702a10b85278@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251231-rwonce-v1-0-702a10b85278@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1228; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=dWGhxjFk0H0ccZ8Z0LvyX4T5xP2vhqe9w9Pjy9Iy9EA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpVRWLGkM6ekaGvNs/GppoXyA8q6kxlkpqLewuW
- 7WNKhbTKjqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVUViwAKCRAEWL7uWMY5
- RtLUEACKkaSaNK/TcJXYBxaQi+3v3CPDHRjWTgRzkBlZ2cipngBrd+Bwm5aNQr6HLLA2wljr5zB
- sd8yJUc9TZdLiWbispUZaLCxJC+XAMVad9CXiS98PYq5H0Hv98uxbgcFI4T3nuHqM/xrG4OBMqR
- d9jwZii4XhRij0gUrPqQYAqX3+sb174Ah2h6tS1WLllr/7oegCZFedCpoObQ7JF9OwSXtT5VevH
- R2ZDKva3GoKaG0vo428LZXH/UDDFPKUn6o0Y1whhaRXdzIG5we6N/H53PjF2Q+OC2kHDHtqgKea
- xjKnfDl8tJ5TAjd69k/mBPk3xHvVo/vIbXfL35oFTix2yk1n8kcuv1Zx0+Qbv6gF1FSr5sn9Yot
- z3DlseF+Q4w5zWKbGVngm4+kn9Lo6gew72+hoQ8C2n7b9mGKUkCIqmNHamdglZznxgfrHGI8imv
- Lkz8hP73DNqX6vhQblP3+Fxt/SN84uREUef+vAAyVKFAIp7SprtvVzputk+BQAw+YVR+0f8QLLn
- eErdIcXGjyGhtXHOc3Gp79iwy56k9avNJ3qKMHDpuuC1LPYW4FH+9lKwRwkh6qmqJXW5Wd6RnE0
- rUhuFmIzHmZwLTF8u3QbBC9TYTfct5eLCQac3dju/Lnq2VWuei0fDBQanQibHCkKnD/nVST47AS Hq8sRXqSOcbvtBQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1210; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=x48g//vEaovaCGc/+3V+kdS96OVZQrdlR7cVmTcJM3Y=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpVRWLpYz+qsgfDBCA957maLrU5abZ/AV0KNPf2
+ x2dVJo4CRyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVUViwAKCRAEWL7uWMY5
+ RpbRD/0SaSpBYAhj01HuT6p1Sh0F3HjDBRU4CbZou0WZNZ4WriLhGAdf+MIIjlEt+5DLcmae+YX
+ 27BXKetHb+p7wJar0/d6qrTf/TQHUwmCyaL950x8UvyGKZjIVa/TCNx64b/oJobA7VmOtuNtFHr
+ krbCJy/HsPCYdyTfYX7LhHPaeMGMOZDlhS5MWUgWYmbEo0Jx4LgSaNXEzhQpnmDg88F1vPMjjhW
+ no8A0idLJ5umHWtXn0h1OKB0XvRpQTVwo+JZsNk8M/8cFdcvbJQxHrbwuTEGFaIkb01dRY1Ntdf
+ 01rcHfSx1yu4iyuNDwnwXWxKy6Gk0DisKWSz0r+uqQjJIH5yLwLiZ+oKtGUU50CoT+p7D3XX7ee
+ NQYmTAfFErPyMycWpb0rdPLebSye3a2RtXxOO0cCLsGAzKsadQYt9Qyiz/SRaSuGAxprP+2SaA1
+ tYW2y41LKbfKByd3v4AXtcjuXykAoAaaZnFcRcSSFxaaLuuAzS1kB42Gdu92hVpMPWBZ16h/RLM
+ lf/wjXI1jEitSsib4IBK188r4m5IDfIk6q5hlJM5cvNgfzDpsOBNpz0qvCLfTiIP01+JvimWH6n
+ S+0cvXpMJQIc85ahkyeZd7IPV6qu+FHl1qL2ZnTHNJ0ktF6I2ONB+Fvhbz5Z7ky5OYO5MmZfBJO 4eEFKw4YUaLnpqg==
 X-Mailer: b4 0.14.2
-Message-ID: <20251231-rwonce-v1-4-702a10b85278@google.com>
-Subject: [PATCH 4/5] rust: hrtimer: use READ_ONCE instead of read_volatile
+Message-ID: <20251231-rwonce-v1-5-702a10b85278@google.com>
+Subject: [PATCH 5/5] rust: fs: use READ_ONCE instead of read_volatile
 From: Alice Ryhl <aliceryhl@google.com>
 To: Boqun Feng <boqun.feng@gmail.com>, Will Deacon <will@kernel.org>, 
 	Peter Zijlstra <peterz@infradead.org>
@@ -94,32 +94,32 @@ Cc: Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmai
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Using `READ_ONCE` is the correct way to read the `node.expires` field.
+Using `READ_ONCE` is the correct way to read the `f_flags` field.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/time/hrtimer.rs | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ rust/kernel/fs/file.rs | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 856d2d929a00892dc8eaec63cebdf547817953d3..e2b7a26f8aade972356c3eb5f6489bcda3e2e849 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -239,11 +239,9 @@ pub fn expires(&self) -> HrTimerInstant<T>
-         // - Timers cannot have negative ktime_t values as their expiration time.
-         // - There's no actual locking here, a racy read is fine and expected
-         unsafe {
--            Instant::from_ktime(
--                // This `read_volatile` is intended to correspond to a READ_ONCE call.
--                // FIXME(read_once): Replace with `read_once` when available on the Rust side.
--                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
--            )
-+            Instant::from_ktime(kernel::sync::READ_ONCE(
-+                &raw const (*c_timer_ptr).node.expires,
-+            ))
-         }
+diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
+index 23ee689bd2400565223181645157d832a836589f..6b07f08e7012f512e53743266096ce0076d29e1c 100644
+--- a/rust/kernel/fs/file.rs
++++ b/rust/kernel/fs/file.rs
+@@ -335,12 +335,8 @@ pub fn cred(&self) -> &Credential {
+     /// The flags are a combination of the constants in [`flags`].
+     #[inline]
+     pub fn flags(&self) -> u32 {
+-        // This `read_volatile` is intended to correspond to a READ_ONCE call.
+-        //
+-        // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
+-        //
+-        // FIXME(read_once): Replace with `read_once` when available on the Rust side.
+-        unsafe { core::ptr::addr_of!((*self.as_ptr()).f_flags).read_volatile() }
++        // SAFETY: The `f_flags` field of `struct file` is readable with `READ_ONCE`.
++        unsafe { kernel::sync::READ_ONCE(&raw const (*self.as_ptr()).f_flags) }
      }
  }
+ 
 
 -- 
 2.52.0.351.gbe84eed79e-goog
