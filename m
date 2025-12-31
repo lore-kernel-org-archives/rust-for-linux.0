@@ -1,126 +1,101 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5635315D36
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 12:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F8113AD1C;
+	Wed, 31 Dec 2025 12:48:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767183767; cv=none; b=t8P54gZh7PLGxDX++jP/IBKuB/1ii9kPr1BbWK2xRAWRGtRsV1rXw/Z31GqWY9WHUw/hoAcI42JG/nlAWQKm9+M4lW/YEfWOh6GqQwqwOY+K0fW4QP8k0lwI2nmABf8E9ESbjja6slc26YlKWhob1nAM3FZB77viFPJusdZnog4=
+	t=1767185334; cv=none; b=AKjsHCujJLzxEwPC6UGPXTrYutsYVEowxvNUlGN7VAnoq8lwGGT0NlsG0CuGAQvVh/f2OYZ/x1sDuy0gU41Rl2m6qTa7RTfwkS/hFi6HFuMVbyE9ifqBakmSIyVk1TWAIp/MnLaCNPdNR20TsZTfu/zO+Nn3bkevJxS4LhITi4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767183767; c=relaxed/simple;
-	bh=x48g//vEaovaCGc/+3V+kdS96OVZQrdlR7cVmTcJM3Y=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=g/O67RZRuvHWYWQgExXMuZBK6elFPYXPY9G2loMkXp76ZxNiF4kB2txUcR+OZbC5lF28GZOQ8rS5UoELAkUqkpkPlditDD6/8xY2w6qUlJrpzgvn8gs2OsgdczDNccdHCMA9BnHdHOJyATXcegJdyj7rFrcc4r+UyYTLpvl+29o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rXg+fj/D; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1767185334; c=relaxed/simple;
+	bh=kAmceUzTMM35E6AGujw2TTR0JndIkKZiUiVgH+OMHEQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YUEMidIifKNxTQCBi83c6iYkQesVqLo6MJFFj7PnNMM8TgMMS7KJrYnA/p5NcEE/MOwdipLbsPfjMaGFZRa0W+3k17TpxhexVJsD9MdKA7KfCjdPsshB1p9APdMR7nQutTsq5cq5p81KGdJ98BXqdYPwaPNaWc2PK0SsA5nRVzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=nGCT8zdP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rXg+fj/D"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-430f8866932so8713405f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 04:22:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767183763; x=1767788563; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EnX+YiWBwSFj03NZe+M6b1I0lykasXzPK5veF6o26Xk=;
-        b=rXg+fj/DzoTvLQUq1C+NqmI1l/Dv9/E+2MpEhMt9Bn2phj0jP+SEVHcy6DFdj25ZWT
-         cUZnz/qO1Qjs6y8pbxud7nGfmNScImOxjXZtq0ysNMkYcUmVxJTMi9HqajRH89WZDJPp
-         D4n08kz2zhlNVxK5fLBL2MbnBu36uVh8B50QgJUpIjy2Ln2ixFUb9wkTubZUR2z5s0tU
-         l6+mFPAmw4nGWooXRhLE3pmb7yHtaNG5Ilo6WykD0NpSojQ5s/1wggb/ZB/NfVTawK/x
-         5DG/FXxuiw4SnZ0HBZkOh4NSj4bScSQfDWK4NLUnyqqdHvOXZ0FrIU8hGYtakERRt/Gv
-         0l1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767183763; x=1767788563;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EnX+YiWBwSFj03NZe+M6b1I0lykasXzPK5veF6o26Xk=;
-        b=Nw7ESNF1o3zcR2CGjGv//dFOEVVzRkKxbLam/wkY71yQm06z9jgd7GDDoRMfWmXwLK
-         w6BaaviYc/KB57AX2UOJ5P5tqGKMGkQeENREECp+0GMLVrlzpYrn/72/zZhjFopQloaE
-         z9bTudH181TBLaUl00EGkU2lvEb9NjvvpODBfifW9F2I8uqSKNxQSXFVAnk6FjpIfg5C
-         71nMKQJ07vMVfbhF2yBgE/FLGP4im9ttC1RPwa9Z+2dms7D+2tNiEcF+oqjp+qvyuIAZ
-         2fH18KRWv8IPd0W2o4ITPtZGB4y8g059+e21vxPLb10bvC/Q6GbHrQSqPrC/XPk8uDj6
-         +JmA==
-X-Forwarded-Encrypted: i=1; AJvYcCXguSFgL3dFmVKJzZ8M65vuNx9GYeyjePpOzDV2icyFjgSvTi7fxZmcCd3yUdHt/L+TG2iF7YHoN6zlo9Cb4A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVeZUGjtY1uRfGijQuFqjqzvnx8Yven2EPT6koTiLohbhupNjt
-	7/8V9oD75uhZhAkXdyzzsx08usqIdzDztCFd1QN2sZuYj2J1MOMebD39MadDey0vASZGZS+bEsH
-	mThft3C579U1ShHNpEQ==
-X-Google-Smtp-Source: AGHT+IEVvKcXr6CgV/sO/SopdsqbSp5OU9ou7XeJWfmPxsy3aUaKE2cdpBZhPeJYGAC28ivLbvgGuv+puag4k9w=
-X-Received: from wro8.prod.google.com ([2002:a05:6000:41c8:b0:432:5cc6:c7ec])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:40db:b0:42c:b8fd:21b3 with SMTP id ffacd0b85a97d-4324e70b2c0mr47793415f8f.57.1767183762838;
- Wed, 31 Dec 2025 04:22:42 -0800 (PST)
-Date: Wed, 31 Dec 2025 12:22:29 +0000
-In-Reply-To: <20251231-rwonce-v1-0-702a10b85278@google.com>
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="nGCT8zdP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FE3C113D0;
+	Wed, 31 Dec 2025 12:48:52 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="nGCT8zdP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1767185330;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UUB1a8LquPniJzjOqlQW9XTao0JghrzYe9nMKDmTDRg=;
+	b=nGCT8zdPP3U5pheaJYbMMMRmAVtDmYEUrzQhbjGG3XdLSbczt/+i9AhJK3wg9E1ZtBUd/U
+	fC6xOKx0hpAXLme+ptY/w9FYxIO6RBiWOAoAKOIZNdWq3y6bt7SPADM4EIgL5+Nm3MqWYC
+	v0fLJ3XgTFjy1q9sedkbSdD22M10K1Y=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 105f96f3 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Wed, 31 Dec 2025 12:48:49 +0000 (UTC)
+Date: Wed, 31 Dec 2025 13:48:42 +0100
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Alexandre Courbot <acourbot@nvidia.com>, tytso@mit.edu
+Subject: Re: [PATCH v4] rust: Add support for feeding entropy to randomness
+ pool
+Message-ID: <aVUbqo4wS7_47wmt@zx2c4.com>
+References: <20251230-add-entropy-v4-1-fa9485b6d372@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251231-rwonce-v1-0-702a10b85278@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1210; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=x48g//vEaovaCGc/+3V+kdS96OVZQrdlR7cVmTcJM3Y=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpVRWLpYz+qsgfDBCA957maLrU5abZ/AV0KNPf2
- x2dVJo4CRyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVUViwAKCRAEWL7uWMY5
- RpbRD/0SaSpBYAhj01HuT6p1Sh0F3HjDBRU4CbZou0WZNZ4WriLhGAdf+MIIjlEt+5DLcmae+YX
- 27BXKetHb+p7wJar0/d6qrTf/TQHUwmCyaL950x8UvyGKZjIVa/TCNx64b/oJobA7VmOtuNtFHr
- krbCJy/HsPCYdyTfYX7LhHPaeMGMOZDlhS5MWUgWYmbEo0Jx4LgSaNXEzhQpnmDg88F1vPMjjhW
- no8A0idLJ5umHWtXn0h1OKB0XvRpQTVwo+JZsNk8M/8cFdcvbJQxHrbwuTEGFaIkb01dRY1Ntdf
- 01rcHfSx1yu4iyuNDwnwXWxKy6Gk0DisKWSz0r+uqQjJIH5yLwLiZ+oKtGUU50CoT+p7D3XX7ee
- NQYmTAfFErPyMycWpb0rdPLebSye3a2RtXxOO0cCLsGAzKsadQYt9Qyiz/SRaSuGAxprP+2SaA1
- tYW2y41LKbfKByd3v4AXtcjuXykAoAaaZnFcRcSSFxaaLuuAzS1kB42Gdu92hVpMPWBZ16h/RLM
- lf/wjXI1jEitSsib4IBK188r4m5IDfIk6q5hlJM5cvNgfzDpsOBNpz0qvCLfTiIP01+JvimWH6n
- S+0cvXpMJQIc85ahkyeZd7IPV6qu+FHl1qL2ZnTHNJ0ktF6I2ONB+Fvhbz5Z7ky5OYO5MmZfBJO 4eEFKw4YUaLnpqg==
-X-Mailer: b4 0.14.2
-Message-ID: <20251231-rwonce-v1-5-702a10b85278@google.com>
-Subject: [PATCH 5/5] rust: fs: use READ_ONCE instead of read_volatile
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Magnus Lindholm <linmag7@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251230-add-entropy-v4-1-fa9485b6d372@google.com>
 
-Using `READ_ONCE` is the correct way to read the `f_flags` field.
+Hi,
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/fs/file.rs | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Thanks for CCing me Miguel. I find it strange that it was left out on
+apparently 4 revisions of it. Yes, this should be added to the
+MAINTAINER's normal rng section. I'm happy to maintain this.
 
-diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
-index 23ee689bd2400565223181645157d832a836589f..6b07f08e7012f512e53743266096ce0076d29e1c 100644
---- a/rust/kernel/fs/file.rs
-+++ b/rust/kernel/fs/file.rs
-@@ -335,12 +335,8 @@ pub fn cred(&self) -> &Credential {
-     /// The flags are a combination of the constants in [`flags`].
-     #[inline]
-     pub fn flags(&self) -> u32 {
--        // This `read_volatile` is intended to correspond to a READ_ONCE call.
--        //
--        // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
--        //
--        // FIXME(read_once): Replace with `read_once` when available on the Rust side.
--        unsafe { core::ptr::addr_of!((*self.as_ptr()).f_flags).read_volatile() }
-+        // SAFETY: The `f_flags` field of `struct file` is readable with `READ_ONCE`.
-+        unsafe { kernel::sync::READ_ONCE(&raw const (*self.as_ptr()).f_flags) }
-     }
- }
- 
+However...
 
--- 
-2.52.0.351.gbe84eed79e-goog
+On Tue, Dec 30, 2025 at 05:53:57PM +0000, Matthew Maurer wrote:
+> Adds just enough support to allow device drivers to feed entropy to the
+> central pool.
+> [...]
+> +/// This function mixes in data that is likely to differ between devices or boots, but may
+> +/// otherwise be predictable. Examples include MAC addresses or RTC values. This slightly improves
+> +/// randomness in entropy-constrained environments (especially common for embedded devices).
 
+Small nit: There are two existing comments in the C source (one of which
+I know you know about because your text is almost that text). Why not
+just use those verbatim? Or improve those and sync that to here? I'm not
+a big fan of bifurcation.
+
+> +pub fn add_device_randomness(buf: &[u8]) {
+> +    // SAFETY: We just need the pointer to be valid for the length, which a slice provides.
+> +    unsafe { bindings::add_device_randomness(buf.as_ptr().cast::<c_void>(), buf.len()) };
+> +}
+
+Bigger question, perhaps for Miguel: what's the convention for adding
+these bindings? Is it, (A) "this is a useful API surface, so let's add the
+functions so driver writers can use them later" or is it (B) "add useful
+APIs as they're needed by driver writers"?
+
+If (A), then why only add one single function from include/linux/random.h?
+Shouldn't you add them all?
+
+If (B), then shouldn't this patch be in a series alongside code that
+actually calls this one function that is added? Usually the kernel
+doesn't add code "just for the sake of it". APIs need in-tree users.
+
+I think case (B) is closer to what I'm used to seeing, but Rust is a
+brave new world so maybe (A) is desirable for bootstrapping it. However,
+this patch accomplishes neither (A) nor (B).
+
+Jason
