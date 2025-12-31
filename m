@@ -1,76 +1,63 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022075.outbound.protection.outlook.com [52.101.96.75])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021092.outbound.protection.outlook.com [52.101.95.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D531A9F91;
-	Wed, 31 Dec 2025 15:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53141925BC;
+	Wed, 31 Dec 2025 15:34:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.92
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767194741; cv=fail; b=PMDc4H5969nAX6t3jXRf5I3V9sCU/D7lLgC7s6S5JhuqgbB5wJSEg2ljDesXcLtfgi4v/N0oIPViRMQFBJ2LnHlKvQV0YxCY3N8YPIodnrKGluS4C9xKmDysrWZyEv1X3AVcCl/w3/5c2O+3/ZqnPgqm9iWuwg/kVi9HfEu/92g=
+	t=1767195277; cv=fail; b=e1B8cL1Q5tx8MCs/eqfNDZHzY13UyUAZQ2wqXLbOqFE4QRHMGAosFwf+1pCgnM0oLGsJkB6ly1sOrCLGvREhjH8+EFrzI2+MeD9wWd3tCpIPS/uxGYBKi4Q4Zz0A8Ksw4qYFz+TdYytKdrskqznOxd/JatzQmoFGMpgFlFt79mE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767194741; c=relaxed/simple;
-	bh=Xb0/ihmLQMDja0IzKlO7vsyOVlGmO9HqxwHXjzfOAQw=;
+	s=arc-20240116; t=1767195277; c=relaxed/simple;
+	bh=KMsURh0YWZquVv+u0FgDY5jYmZvQGFs8vSKvaKgMMzs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gP9AssFj+G51CbxgX4u/+9IYIrJWGuRdBHiaD1rRCXTDkQjcP9roHBXT6tMebfvoPTEydlsRnhNs3XjdrH7Q4EifR2eo4dKtpnRBnPurKH09Y6NfrfpWS2oxIAsPju7JsF8RHUBy9I2fL0I66RptaCkWx4EIAofkIhantzxFEIk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=wVraxb6M; arc=fail smtp.client-ip=52.101.96.75
+	 Content-Type:MIME-Version; b=fH2ewnLr4GZqZvc7cROKbVMI1P5bbhsJ0/H5QNj5dABDi8/WdZcK2nZhfWwQIZ2vn+UMOmFhv0m4jQJUuRbVG7PDffqNlZzz0VMKJqwGsrik3whczd2sIwotWJXKOOeQ7BSnV0RzD/R7fd6DHM5rhj6tXdwalOjuVqkExw+CEjA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=V4fNyCmW; arc=fail smtp.client-ip=52.101.95.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="wVraxb6M"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="V4fNyCmW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OZUZar6irukVse/cK47oXss2QaqlZgvzG/kSoFF8RN1B+4ht5H4nsmWc1CN20HY2gnATM/EDbltU4svjW48JzUcG2YbuhXEg7FrQ42Bd6Yuo7LfAeT24wkpcmKf1exOpLgoXLGr5jK0zoTBezYH57BLbbVayuz0tFSOWAmcimLKbsY+VUqMadtruf0BrXNNL4kXwMK1vdCtsDmDrKmX1DGsNcTB9jr5cPPG5sr276c2C5bdF8+WrrbieHbcXAuQfc0p2uqCFds8YXObZ8dBQhUPLemGymyVmHXNnHMBNsazu5FItFPBoKSU35IFxyO/JNbNgvIpVpMH9bmq9yNzJYg==
+ b=cPcspIVvHqK4ngOUYDFkrz2UvRg9q068ocoDV4yRnC/loIz9CBPGwEU1KJTnCJ49+V3vdxUWYEGPzW7WH15DfAr8Q4WoG4ViUFbYzdLnoGCM5eztwpHnnFaa+s2hZGJUfJtk+N37GA4YiCj1gEDmNMcYugA2/KSxx5isOcaj8VZfPqz08Vuy07Wt2F3eH2w2YA7omGIE0gmGFHhUBl4XorKEpnGRSEtHZTKfWrymDla0evwKvG/Lbm69aN9sf9Ju8v9VCuUKdHrlCYg3mcp+3PpGCFu4rB1YfQP9Xs+vUFkf5LJThoY/i4ol36rzJSCOBZl7T01Z7IqngYhzOZZrZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UWgUpoyBc42NruFhg6u3xoIJxWT3pGgLhWoSv5dY2/4=;
- b=h8cV0bBWN9n9mQsJPBHfRQjlYXX7NmiPHBhF3DINX9dTWlR8mN08dqZC81ksagRW6OOFY4T6qUy3X2W5DP8Mj8fpATcaejTovGMAsBF/nhUXPPtecVpi2tKNT6QFlnuqek8vqd5Hy1EWz8DlYy06twhv9vMxrPyr1HJCQg3Qo6Yc8jYOHtMzmg0dc841Z4dSdtIiBBMW1RfMkuYQRDPu/B8ZXUIXwT3kNk1m1y+CdFiKghrGLNZEHx2Yspi/7pLZyz+xCm+UE8mIKd994o270MDW90OOBPRAhg6ouaTHW7vqG43g4U7T1Cq4VRJvRt3Npei4/NuFz6LW2RAUpQUbPg==
+ bh=uB4DPyLu3lPUOI25F3TzNbBXhGbA7ETY110qAe87ZqM=;
+ b=QwoA8eQXQd569p9/2fGKwyO+NKtz3EebdgKmIwV+pEYADol53nPdYEOEayyPWv5a+g90e/1K9PYqiMXu3wszy5HWurL3397bjL4HsQo8fUD15hMv3g3ASyS31MAJe/PHdiUOyAfkFeYkupyMz1cEa3tm2s5VztE4SpNIDyvUO/ibiZNNnRD4thSI9Fp88g84dcDhc9YpxYAGYuBtAuAEiiPCJN8yA136HwLgEa/X9AtW8WPofTSjlZYsgOz0oTPRiYuVvQ/2trgstrAPQfrp0aab/Paz4AYuPppugRY84jccj0GKIqX6gMhN0Ujt9zvRCBUMS6KoEbrMd+2K7njV5w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UWgUpoyBc42NruFhg6u3xoIJxWT3pGgLhWoSv5dY2/4=;
- b=wVraxb6MU1Tvms58vkZQY58naMUJXHIVbaQGPbjyRbwBjG60Qaz9XHfxg3X3EyasqjKiEWnyjkLZj3Ma4xUgaFbmAtzz9RP9SPta+724tx6kLXqd8lefKKPuKFT9+4/GyGzntG571HoxP1cZkiHlqe5yXiOEMAqA3NwAS9CDQ34=
+ bh=uB4DPyLu3lPUOI25F3TzNbBXhGbA7ETY110qAe87ZqM=;
+ b=V4fNyCmWE7vq49Z8OvZaxkJT3ZmX784daLZHfC4wH5ruZpkkNtE4ifb8Hqjnpe8nPno4ENKY+IqhmFKiBLPMKH5uA6CV4FQVI4IuUTz1TC087XiYZG5Eed00IY2n7x+KPRLAVIAqPTinrzJQzsv3D3owrWjNQMk5Sw88xh9M1AM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
  by LO2P265MB2784.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:147::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Wed, 31 Dec
- 2025 15:25:36 +0000
+ 2025 15:34:33 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::ea6a:3ec2:375d:1ce0]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::ea6a:3ec2:375d:1ce0%7]) with mapi id 15.20.9478.004; Wed, 31 Dec 2025
- 15:25:36 +0000
-Date: Wed, 31 Dec 2025 15:25:34 +0000
+ 15:34:33 +0000
+Date: Wed, 31 Dec 2025 15:34:31 +0000
 From: Gary Guo <gary@garyguo.net>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Will Deacon <will@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Richard Henderson
- <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, Magnus
- Lindholm <linmag7@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Miguel Ojeda <ojeda@kernel.org>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Mark Rutland <mark.rutland@arm.com>, FUJITA
- Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker
- <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, Thomas Gleixner
- <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, John
- Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Alexander
- Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
- Kara <jack@suse.cz>, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 3/5] rust: sync: support using bool with READ_ONCE
-Message-ID: <20251231152534.14903719.gary@garyguo.net>
-In-Reply-To: <20251231-rwonce-v1-3-702a10b85278@google.com>
-References: <20251231-rwonce-v1-0-702a10b85278@google.com>
-	<20251231-rwonce-v1-3-702a10b85278@google.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: boqun.feng@gmail.com, ojeda@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ lossin@kernel.org, tmgross@umich.edu, acourbot@nvidia.com,
+ rust-for-linux@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v1 0/2] Add atomic bool support
+Message-ID: <20251231153431.4a48816c.gary@garyguo.net>
+In-Reply-To: <20251230045028.1773445-1-fujita.tomonori@gmail.com>
+References: <20251230045028.1773445-1-fujita.tomonori@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0616.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:314::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO2P265CA0243.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:8a::15) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -80,152 +67,120 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB2784:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70f5036d-d32c-4576-ebab-08de4880d8ce
+X-MS-Office365-Filtering-Correlation-Id: cf4a50a1-ed74-4846-bf3a-08de488218fb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|10070799003|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?lb97B2vUOG5LhJj8l1KvoDMEZEQOuBlnSVwAaAfZzQJpiDMbG1cTmesOVaDK?=
- =?us-ascii?Q?87nYrepc3WVNfFNMlCK37e75eEU/oEqzBSLGBlhAQ9awiDpPUpWxIiAw4WsB?=
- =?us-ascii?Q?f15zc7ZvSFqUToxAEfPrgRyyC8r6+uWu3QhE9C7OzC62gFW5q5kVhuQ32975?=
- =?us-ascii?Q?z99I1DcH8N0nTmins/H6XjLmTEKnLMnpAY9wVq4pQN0FJLQjBt09FXgbkoYC?=
- =?us-ascii?Q?2BLC0Fy+FGsr4FMzkjz/oTwUXnUO+IH+hvqCioGOZThRzqGoQYOFyinpiPkD?=
- =?us-ascii?Q?pnIxgZx9vpNhjXm7INHLa+UnDqKrWzlciJ74CmRo++Af33iY99mqLPr3/u6/?=
- =?us-ascii?Q?Mert6NOJ27b906Tpbj/rWMuyK+KzK7igwXpTh4pSL41+6ZGegGwGRksy2wss?=
- =?us-ascii?Q?JPq5lmBZPU88OLaYSiO8bQ0ac0QWU1pZdv7TftzzgxPYwK9kUNHbwE+cOvnh?=
- =?us-ascii?Q?taTlmBQn5bq6qJASpwtPJv5RbGjHq9Qq6MWp9lK1Xh8ffBWTwui7vh1WLC2N?=
- =?us-ascii?Q?0xxXzjmLiwcFMT3ysQspFzamFWgUAsJCEL0EcV2bZLomHOB155N0qYzEYz4N?=
- =?us-ascii?Q?1mzVk7f3WMCbAhk/euHo2z4HBy3JgZ1lRZkbOz3rWY4MpgNq0JYtFZedJS0l?=
- =?us-ascii?Q?/FFGG9ZZqubYQMMSap7PTbtokx9IrfTragCSJAwOtpdt8h9LPQX9711L/PCO?=
- =?us-ascii?Q?JYila1DOonha9jAHzQBWWJNXxlLSO7GchPO8QmfCLGVNiduTomF9TDPYwSjG?=
- =?us-ascii?Q?62BRhd6iZ3yaGbDi1QPvixIUvOr5qPIMsDrXErpyYG3GqGHn0odEyQgOF+yV?=
- =?us-ascii?Q?Mpo7hQQmhcJ0qM+4sTAVFL90wUV7Vq+2+xZbL+bylbwbOgbQ7D5X6D75F94u?=
- =?us-ascii?Q?hX7Qixd6EQQIT2g6RYv8RVMsyVr3w+PO0pl9wRI1y3H8sbVinmJumekxpYaF?=
- =?us-ascii?Q?rwzZtQPJBP9od/zUrlcu42gnXPd1f6+WKTtxYYpuubpIkAYljMrWJ3r9HVqw?=
- =?us-ascii?Q?GpsgBnkywG78/gjrWPTZDcRJj7xCDup51OVdhAyWiSTJFgWJXXX8ntSUwUMS?=
- =?us-ascii?Q?QJg6sAvvjkmdvgqwnlWzLD7qxbXcZ8b5i56wWYSaLl0VNpTIt15uW0fTYmFO?=
- =?us-ascii?Q?NXCY0BeGEUkrARgpslEXaKrgl86C5IGM3Zln9pwYv1pZD5d862Q3NJIlMrzp?=
- =?us-ascii?Q?H6wT08bxZ8FmMOgCRcbomBq9CIM39ukKlhFSW445YAI47rBEzjvnOwFElq25?=
- =?us-ascii?Q?bkZPTBMppaamuth/9rU6JsjhCcf7gTd514A+ckaVnb52rHJ99bhnVLegqC1d?=
- =?us-ascii?Q?IyGty4CqnrfugfLJKt22OkvvWcAxHe0O+PUbaIxXmQD9B6SJ4MJYMJAU4N/l?=
- =?us-ascii?Q?vqHy8wg8nfbf9ZQuqYAOkSvHAiPURalXgWidk2yuX6hrkpchF2Zisv3Hc5lq?=
- =?us-ascii?Q?fqpKYJaKNbNwF/v1GxtjHd5xjp4JTz2p?=
+	=?us-ascii?Q?+WGHD2dq3xomaBjsgrshm+f1dA1TlWPSaAfliM87DyJhpByoODwaCzBtrTc0?=
+ =?us-ascii?Q?IFfWm9Wc2sFXiVE8gOrwDH3Gc6hMRfXkM0Qhfy8h+9EvusQO3lIa0+p24Sr+?=
+ =?us-ascii?Q?cjPGiwtaUkm9f0ABiIqEvsWBn21KiXxGSul+xO41kMwCi9PoT8032oBxoTGP?=
+ =?us-ascii?Q?bOobeAwukhWeo4TjSJb3vDXRwMFRyoF5YvVZF15tQkbNWmVE7AQji4noiWP1?=
+ =?us-ascii?Q?MfvgwKRYBCeXLTgDqYw7Zi5RaT5bGFmsVWMvXfNy0L63Dl9AvO3klbsbyR/L?=
+ =?us-ascii?Q?XrLWpoTTW+zQejDixcsiPLGU5f8TNwn3uJJBVtKg+fHnSsywvh51yTzxnp7d?=
+ =?us-ascii?Q?T8+N5kW3ISNfUERL6UEnsqkUonwVJJgGSNmIvPIDBw8amtuyItnKgUR3IVVJ?=
+ =?us-ascii?Q?SJ2IeZnvw3cMleZMrWqbEpikk/9TA6ZRBrZgI+IU007utQrzinYIyZXRJKzR?=
+ =?us-ascii?Q?mpjL3a7nntsOTCN1HO2cTijpdNkz3bUjThhL9Oz1cY4ErxQxVyZanfTGPus6?=
+ =?us-ascii?Q?NadZUiJRTg+db6JeESeJePlkxwYRm6ft54GOWQQrEw9xayEIqSvPrBSof06J?=
+ =?us-ascii?Q?d4WjTAYD5otDNXqDAW63+Utd18P9qB9oh1u84eXzAf5M4ENzrbuDuYenwfIy?=
+ =?us-ascii?Q?w1+++PBsC51XyF5OZA42msAeFGr+Yju+snmJjY1w4aT2dvCTeJTtuzjtb/I/?=
+ =?us-ascii?Q?9Cb+hXpN7eFsqD5R+YOgxkxm/6xX7cla7zvcL1FQUCqMv8uivaoNSPDmealV?=
+ =?us-ascii?Q?2TeAjuS8/Hqw4n1EzxffBinoynlOqOidfO9e410zIIGSR6ieDwbjMw4asmNN?=
+ =?us-ascii?Q?2Bho/jSbqpNFxnihKXuqAb1RR5s2AStm94bk8skUoHrOsimFEZJmRVlqGutE?=
+ =?us-ascii?Q?fV9yQ65igMQHhOVlzCh3+T0ddvLTdgfIORFh67OPov3US4g+A7a7lI6bOVy+?=
+ =?us-ascii?Q?a7CC904yVKCJLRH5TOMFVXQjpUS0nYZQcUrsOesBGWXCoXcnhwLE+O/9/TFW?=
+ =?us-ascii?Q?pstPtAI9pbBmPmflKXWcetUCDXVibgtZjls4U7joX/0OAAhdanjhic3eEpNR?=
+ =?us-ascii?Q?ifNIqE96/TvkOE95lK4961l8FsKj3UaDw2SJZIS6AXufeHV8+5CZx+a5+SbN?=
+ =?us-ascii?Q?jgU8OwcaSA+xI1b+xOxJ5hs7laWM/zCzEo2JYp59N4xdl2KGLNoeUx6dwq3R?=
+ =?us-ascii?Q?ZeBd6TAoj00gAMsxCVUImyMtdzYGFDh9eXicl8O6ja+i6dN3INU1drc7Az6+?=
+ =?us-ascii?Q?eVYONndsUd2jF16CdlS5698yRtYUeGi+zUFd1gdhy4JE5pUSB2IL9kUv43CF?=
+ =?us-ascii?Q?SCfps8q9QX4fQSTRzTwMutZjPUJ90Ft59CFtNwHsQFNZsaO4JV9CUsDPetrx?=
+ =?us-ascii?Q?I1frHZ3Q9Bj2NzAHI6JTm6lAn0AMrr++5gwzaY8hQLL0JqbBi0SbsKns2SEX?=
+ =?us-ascii?Q?M9Ko3RRIkUhpSUXFN11y681t7LJbkOAd?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(10070799003)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cZ8+568bcJ4ScllyGbSjtiLCTzWvlT+J/n/U1OTUVtfO6K8QROC5vAZ3NI9v?=
- =?us-ascii?Q?JNVnGUicMn+oJtdM2KgFCi6kWSsQzw9vZ0XJBiGHarChkTlEficqMvTxPMWH?=
- =?us-ascii?Q?YIdIn/ZGkee7mYeQajVGzxWYVkv2oPApyJn8mBT6eQHj+lxwRi5qlCPzWERc?=
- =?us-ascii?Q?Gv/FOrzrs4xVeSVahKuL4hE+VzhG5ETlcKz6gdAHtmOVeGKCALlzjM2DAthU?=
- =?us-ascii?Q?zLkf0g25nEwk3wHMC/QHWuEc3vic5GlrXhuAl140lZJQ/WQ/pUnG5iBoXBZy?=
- =?us-ascii?Q?4TlQ1R+LUsU6S7EfBhGIzQrH2D5rjlNzd74q6k8GqRn9XUDK3QA1c4GG+vfV?=
- =?us-ascii?Q?FUECBcV4zQJ60vw88HP9vcqwu2NlpMuduBYinaTXZ28AuyclVm7vR48boarv?=
- =?us-ascii?Q?RdVVk61q1/6zclRdKsBeqYO+46m/vMgGtKfdggxySuVvcEhEsxkA4OeC0XTR?=
- =?us-ascii?Q?aLZPNE7xxL1PNd2Hcfes78IaRmpKAKjuVHGfXEM6UOpcVVQDGDtaS4vc8oT8?=
- =?us-ascii?Q?ZqYyB9uoV+ylp5zYvxPs7KeLNhZnp/6W1E/YiZR4E9V9BBs6kXRfB0V1w5Z9?=
- =?us-ascii?Q?8PspOQ3KJr4lK7+ZxBheZsGRWilxFkl2vL2wiHVxdXHD7ZmtPMUKGwo0avEE?=
- =?us-ascii?Q?r5fRjG3V2sMqG7/twuMBUwgDhd6tfDB+0FuiwUMct3jX5hxRE9ZPlZgWm2ip?=
- =?us-ascii?Q?8zo8KrdgPce1gdELhahURMX65mfFntMHG7VYnbybgMEKWvTxxAO0y2/vmKnT?=
- =?us-ascii?Q?t3O06STsLS9wTvVlw31Cy75q+A1lsG/4RhCUCkjdMZknT2BALvBPL0VOrGwZ?=
- =?us-ascii?Q?youlJedD5sOqY7QvSvkiSdyUNyD2+dDuulxbECld72jySLFC2Hsasi/17/an?=
- =?us-ascii?Q?gL4Nq9agk6BvYPDiGfqgKAe59XeppC533BAYeI5hmMe5rrluUbupuTyttEfE?=
- =?us-ascii?Q?kgx8WJxaZleudl7GsiuZKTPxGJplZk9yDDUBYctl0hb1EEwWjIwE/KkO760O?=
- =?us-ascii?Q?/7uwgmM/otIjHu+T5fiR9YEkoCPL6qxSERCYSHxkuP7q7Lsb1yWir1AwAMRu?=
- =?us-ascii?Q?iVLH8otKqAgVKyt/KUv9GlTnTpbF/+UXBRKFNiI+R3IsFOPmZd4qaV/aZ2Zf?=
- =?us-ascii?Q?LGQS2mM3UOTYWpDOZIt+nHRKwDnIMD94FrmfbOXNlSns2gAmvs4DN999Yrl9?=
- =?us-ascii?Q?+BUzCdC3IAR4FrPbpT9DrQx3UFo2Xwuh6EU68JhIxsaXZwAHFB1ihdOz+phv?=
- =?us-ascii?Q?DtQgY9YRYYpggs7SqPC/DlPKA5mdJ3RqWR/+l/2SnlgjQP9BcDs8tVGLrpFI?=
- =?us-ascii?Q?oYMbChDTBtxTJrebL7BcwaWQeWt+Tv70QD6nNaa4RnZbOKoptW5/MVSN84Hd?=
- =?us-ascii?Q?CanxbowYW9hQJ06ggiKs3d8Y27vT+gpRhmAPdYRDCyI87BdlcSH9hLKZ36uR?=
- =?us-ascii?Q?5qoMMt9qAnCSX5oyJQhvf7gbhavzUUbU+bP27uSneFZw3ex5uA/hi2/3FtJJ?=
- =?us-ascii?Q?uC7OB0hwmyU/S1IZUqE9CC0Q1wTLY+dsfKRqo20wABY6YQJbVPadWD+sHZXf?=
- =?us-ascii?Q?SAy0ayFkbPhuHt6Jbp39XCuipGsKHkFZohGQXGlEp5KTPKKbMd5MpEGdw6Nf?=
- =?us-ascii?Q?o4Bw5SCg5NHS5afj6khJ8x4ZyDUpbamPHvvETDrVeDdBpY9RjNy+llQnSTHl?=
- =?us-ascii?Q?oyHT8cpnvuzHEwrfOAUqCH7CTp7FAj2yrnweq40ph+ptCgI4mWnUhYwSz+35?=
- =?us-ascii?Q?wE0bGzq2tQ=3D=3D?=
+	=?us-ascii?Q?ngsba5uDKcSJhYHfsSt2KGB3V6vyXwrM7pNEpSPmxP4nKsMlq4+G+vIk1VRT?=
+ =?us-ascii?Q?SJwC1oaMcbzSsAcD+cbg8yf6MzI3NU6Hl09DbFoWypkJJFj0pRLFv+psl+sM?=
+ =?us-ascii?Q?QDekt9Spd9NGaL0BWAqSMl5p1v5Hp/5cYJFLXG1hhUS76yYxmUWlBwoPytZY?=
+ =?us-ascii?Q?cZrDr5Jf8ydIHo62m9e4x0BZDg0c4WlJXNVg4/+h8/6gGa0Z0nDl2ClIIYVT?=
+ =?us-ascii?Q?HOGdAa/nuDuWhMmLmpvWE5dlAuJt8RE79UNzlLycWbAHKzgLuV8W9okRFGAB?=
+ =?us-ascii?Q?DswgsnHKOrBw0dZp5YcqpqoA4tzjZoYmmwZ+6ysi2IYavvUZYQUcrcCTWF4Y?=
+ =?us-ascii?Q?RKUOEoxybgVmWc4zU49Nqo3Br+gBHbMKbQTvD1w1hd1u8Id5D2B5ozwsmZZo?=
+ =?us-ascii?Q?Y0PrxeHE02DfC/j1YtWivznDspRbfRqrQFhMIClJRZJAXzx7UfYCpHjJyLEB?=
+ =?us-ascii?Q?8cf5O4PV1bCJBCDZOBrSAquALNvoIJFU8tQFXOSSa8PLN4QUSrcg7nOGoFqT?=
+ =?us-ascii?Q?bVRJtSwJFLqW/UvWWucqjTD94FXBOV/DY/ZAh3Uqu8T3YfVTFD3OCJxV0Ct7?=
+ =?us-ascii?Q?KXAY0g3XpKSy00D9P2RiPivy6IhCl4Adzxq5auyAra8Y2qec2kmln23iXFwx?=
+ =?us-ascii?Q?+qKoMfGiA7Vf+dfwT7ITTZUsGpyo/UqM22ZAbvlGtTLSvFcOctQVciATEYO+?=
+ =?us-ascii?Q?urB1OWmJED7vcP8UJZqWzwOgAkkL7Xp8C7OhZjXuZCgf4zaprvk96LG0+bkU?=
+ =?us-ascii?Q?L5owoOmkMRqXsdcYGrwgA4cSgo19sZZThg8//7NSinCTdWIYSvEE1YNv7u7L?=
+ =?us-ascii?Q?ORiK9Zo3UugiN6qemYmAqPowhgMzSbmP0B0xtxEk8mNjWQQoovNSMt1qgPEU?=
+ =?us-ascii?Q?gCUjs7Adujdq3HFJU1WVYK5bR0A7r6Rb4SutS+8zTBT51QmAv4FNqMgzuBuK?=
+ =?us-ascii?Q?onAOdiJs2RntolFCeLGAv6nvUeEm9Nj7Crxl1FxA7PtuQ0Sn2e2Q6syTsAyR?=
+ =?us-ascii?Q?tdEnuWo95cx00og+TyQkuqJZAz+Jz0PTfNZrEsSQQenHzFvLm5QOvZgpPfoB?=
+ =?us-ascii?Q?1JIVbMYle5EF6LfevufAyL78uCSv2NOG2pQtExWPoExFVFVwPNQ9GWfowrLR?=
+ =?us-ascii?Q?RLZ1arNwlww385D0p+uAej1aeGnGjv/hyClZXhsZPREpjzpMu0Ee4FAEaeqY?=
+ =?us-ascii?Q?QzfS0xgjOnxMNEhEl/cUQekwvIIwYs812ReEIgzUaxIt+4o4cV3q0VgEaNDa?=
+ =?us-ascii?Q?BqhJRTKfyAos8b5jWf02n6sWqZF8/1HRM35g1qwJqQntB+NowdNoDyLZ4g4X?=
+ =?us-ascii?Q?ir7XxwavlpnN3QIQZssa4g3WHff1wnVpkJQ4esGFMSnmPWGj8nomT8Krw/hO?=
+ =?us-ascii?Q?Lr+tSwAd5PMP96sIRemmMmiV25kngC5YXrJZqkKQsF4OdI4GO21ZJ6xUXr/m?=
+ =?us-ascii?Q?CZQJZzSNps6CuY53vD0+HKEd+83iL267Br3n1mSXW4RBceOd/8I7Hd8mFNAt?=
+ =?us-ascii?Q?HNJOFmrfZT97bj+b6f6gf2t02b1uiXdxiz4jSwKO++mJr6TibHnakYMFRv0k?=
+ =?us-ascii?Q?MjCAOjS65OfZJluCG15Y2tjNDx9tJi2eUqDrGSC3C6rQ6Ib5nfBNu6ZbHe7k?=
+ =?us-ascii?Q?XoaEqrUe38R6gCZ84CkOm0cQNt1mea4PEZ/CvEbj4Bwrvx0Ps2D3UtXBg4jZ?=
+ =?us-ascii?Q?IPJm/948vvta83MY2y91LCXFYr9oVL48y3GZ0Hp6GcsfOu7vzil8kTfcFYSw?=
+ =?us-ascii?Q?JhwlRgPC0g=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70f5036d-d32c-4576-ebab-08de4880d8ce
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf4a50a1-ed74-4846-bf3a-08de488218fb
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2025 15:25:36.4648
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2025 15:34:33.6173
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vPspOcjpc8qFF1fdRHXLbi9Q24hFw07Tkm6o0CArKyLO0Q4ggnMeY2vtCKd+4AqrKTWgAllL+XutvryzYKE9Yg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: UBOMWwecjeo2zKsw3L9CP7UpeXqX9Mn1UgN6jIZsT5QFKFkxx+35b34Nn+8XFCfY72EELCgYkCDDAZCkgm8kOw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2784
 
-On Wed, 31 Dec 2025 12:22:27 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Tue, 30 Dec 2025 13:50:26 +0900
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-> Normally it is undefined behavior for a bool to take any value other
-> than 0 or 1. However, in the case of READ_ONCE(some_bool) is used, this
-> UB seems dangerous and unnecessary. I can easily imagine some Rust code
-> that looks like this:
+> This adds `bool` support to the Rust LKMM atomics.
 > 
-> 	if READ_ONCE(&raw const (*my_c_struct).my_bool_field) {
-> 	    ...
-> 	}
+> Rust specifies that `bool` has size 1 and alignment 1 [1], so it can
+> be represented using an `i8` backing type.
 > 
-> And by making an analogy to what the equivalent C code is, anyone
-> writing this probably just meant to treat any non-zero value as true.
+> Since `bool` only permits the bit patterns 0x00 and 0x01, the first
+> patch also documents an additional safety preconditions for unsafe
+> `Atomic::<T>::from_ptr`.
+> 
+> `from_ptr()` exists to operate on C-side storage so I don't think it
+> makes sense for bool. We could restrict from_ptr() via a marker trait.
 
-In C, bool can only hold value `false` and `true`, too, and putting
-any other value there is going to be UB.
+The C-side does have `bool` type, too (`_Bool` has been there since C99 and
+we have typedef'd it to `bool`). User might still want to perform relaxed
+load/store on these C-side bool storage.
 
-The C language provides automatic cast so when you write an integer to it,
-non-zero values will cause `true` to be written. However, you're not
-allowed to cast it into a char ptr and write other values into it.
-
-So I think there shouldn't be any special treatment to boolean type in
-this regard.
+I think it's fine to leave out this line too (given Boqun also points out
+that the additional safety precondition is not needed for `from_ptr).
 
 Best,
 Gary
 
 > 
-> For WRITE_ONCE no special logic is required.
+> [1] https://doc.rust-lang.org/reference/types/boolean.html
 > 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/sync/rwonce.rs | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
 > 
-> diff --git a/rust/kernel/sync/rwonce.rs b/rust/kernel/sync/rwonce.rs
-> index a1660e43c9ef94011812d1816713cf031a73de1d..73477f53131926996614df573b2d50fff98e624f 100644
-> --- a/rust/kernel/sync/rwonce.rs
-> +++ b/rust/kernel/sync/rwonce.rs
-> @@ -163,6 +163,7 @@ unsafe fn write_once(ptr: *mut Self, val: Self) {
->  // sizes, so picking the wrong helper should lead to a build error.
->  
->  impl_rw_once_type! {
-> +    bool, read_once_bool, write_once_1;
->      u8,   read_once_1, write_once_1;
->      i8,   read_once_1, write_once_1;
->      u16,  read_once_2, write_once_2;
-> @@ -186,3 +187,21 @@ unsafe fn write_once(ptr: *mut Self, val: Self) {
->      usize, read_once_8, write_once_8;
->      isize, read_once_8, write_once_8;
->  }
-> +
-> +/// Read an integer as a boolean once.
-> +///
-> +/// Returns `true` if the value behind the pointer is non-zero. Otherwise returns `false`.
-> +///
-> +/// # Safety
-> +///
-> +/// It must be safe to `READ_ONCE` the `ptr` with type `u8`.
-> +#[inline(always)]
-> +#[track_caller]
-> +unsafe fn read_once_bool(ptr: *const bool) -> bool {
-> +    // Implement `read_once_bool` in terms of `read_once_1`. The arch-specific logic is inside
-> +    // of `read_once_1`.
-> +    //
-> +    // SAFETY: It is safe to `READ_ONCE` the `ptr` with type `u8`.
-> +    let byte = unsafe { read_once_1(ptr.cast::<u8>()) };
-> +    byte != 0u8
-> +}
+> FUJITA Tomonori (2):
+>   rust: sync: atomic: Add atomic bool support via i8 representation
+>   rust: sync: atomic: Add atomic bool tests
 > 
+>  rust/kernel/sync/atomic.rs           |  1 +
+>  rust/kernel/sync/atomic/internal.rs  |  8 ++++++++
+>  rust/kernel/sync/atomic/predefine.rs | 27 +++++++++++++++++++++++++++
+>  3 files changed, 36 insertions(+)
+> 
+> base-commit: 13ade169e801a423bc1a5a5c3c6ac680a144a608
 
