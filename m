@@ -1,162 +1,138 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAB83101B0
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 12:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533693168F2
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 12:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767183718; cv=none; b=IabcHlVt1re4bvN18QTCQbzsooIpKkzvaNubU84Sfl2DLO8NT7ixNIAyPG/6K4y9u1qowm4B6fLkm5CVch8zEuwyFSCKzPpNGqNP7F2pLTiS5Rbakz/DjpaajhG3fBy1d21M2J3Wj6zBigQraj4e/y2cbf2v/Ys7WsO5Ygl0rcM=
+	t=1767183761; cv=none; b=rZke0+bdFd19Kop1aF50A9z9z8fu0/PH5c/DnaBVJHl+TIFJBKAZ5F++i5+D1nglPgrICUHfAkvyCJ/1bOy6l2FmFyKtpcYCiqiadfYIbkIfSwCDjL+sVzhaid8rwFrbyo1oMYIqqjxKS51BUhpE3wNUwbazLGeaU3vvBZrzPN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767183718; c=relaxed/simple;
-	bh=vDYEFC/1ZVknYn2H4nn49xNZKvkbj0AVhwkeRtZjduE=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Oj9EjCccMWX8g9vpMesXJydUOZ579Ayna79INc6R1GZ3A5UpezsXkutECBc7DjBfwkuoZyTUcZe7VAwUImPllU5FhStb0/9acxncM2+obfJubcqShkSCyr/mNR781Jplaj6DiUFvsSuwfgLy0k1R/CRkfugPdjp50RvLyEkV1NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NaqYAudL; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767183761; c=relaxed/simple;
+	bh=DgkCDNZwcq8gq47PvBSES/tVZ/480I2oLP6adymLeb4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lnpouVho9jfme8+KyZZvCNYnTXEUnSnjPT/KqUXSVExqZgZsgzm3ZU1vz2R6IheLonODUkX3LbwEdWdwnQyJRqfwrO8i0xCiyehcwUxps7ArjwqgiOW4+otU1IGcX4zOEMcAihJxpD9OLtziiGV5sWUS9BCPilv+vyZ5IBkuYe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H8Xch63Q; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NaqYAudL"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7d26a7e5639so12226028b3a.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 04:21:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H8Xch63Q"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43065ad16a8so5598256f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 04:22:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767183716; x=1767788516; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YiPh9iNHDcZdxkSlmhXO/2HAlh7ZmUw+8qvd0QJAg2I=;
-        b=NaqYAudLUQ2i1WChcDHg/9jIshtGewVU+rraXREV/nvJLlF7W0rhbO4BYq9/IJKQK+
-         fbuRFFLGRKJcWKVlc6zxPyOtcDySIxhHay+4ztaHqR1Gtffok2uhvP1iCjhV+fTgsQtC
-         woeloAIcC6RVwr6kJLXN7R4o65u+KUYDg/CXZaHkAIQr8+9F4+Yy21R+BtF+1joZZksp
-         yg3Q1nkqMAx/fpfb9/QR7vcwlSpSZZMLLdTANt4KTEYzrjSjSyIGsDks+bkG46/7dnC1
-         u86d6zhSRzrA0evDSuqvqGSIARR1+LkNONlwpFg4ZVb3lSZ0LTtMTZUFtqGRMKkYx6RT
-         /QNg==
+        d=google.com; s=20230601; t=1767183757; x=1767788557; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UQVrUosci++sweVUg2oDGu1yrtQHcLYzZp5maq37Uks=;
+        b=H8Xch63QUmjz00EuKOfAHU2PBlIXcud1d+ScTTcNSaDmBEu9Ei2a7wnzQdjTYm8y7C
+         u3hY9xf+p0jsnDW9kCM/ewzNG6T9pCB8oeMObV+0UwPQNv+3qZLMsDsvs/eCvD8vjJlB
+         Nfi7O2pnBN8ViFIeenSkficV9vOdlutn+sGxVBk2nixx7U6zsH2TpY9BLBiqxL3C5YO1
+         eK/oUAmeuqVZoQCrcWI0x5Z88ONGXrHnE6yVvZuWKpsrHBqiHrdJ3EF76WyyfCsBEJzF
+         OxMh8wWJsRQVqaNvGSfHrLTuMCz1OT0tHwz7IYsQ6gWCXnbhy5IVFwmX8QBfXwI3T0Wj
+         VetQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767183716; x=1767788516;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YiPh9iNHDcZdxkSlmhXO/2HAlh7ZmUw+8qvd0QJAg2I=;
-        b=xRyMZrlD2OycgnM7AmVHsiS/Sa+wyvgoJtwQG7KTYHjBjgVijQild1X6gDCRk8DVRU
-         b7N7+qRhtVRG9rolgJ3jI1iCQ45Q7Np2FKxiDJAGKyZrWYgK7gkNGzJg5aLoRVriIjFP
-         Ji4ecK5paDq9PYSzEp/btbouoAB1D4ASREfgKltuFWm0hwumGHAFfBSm4FHbn6kKE2pp
-         X3c5TLHaukWBSGdEP/Ue9x0WpOoIEfslTSW5TD22DiC0ghkFSU1XnzZ+29uSBerZ0al2
-         gwe3yFKQGPPSD2v52NOpQn/GLaS/EaHRw3qnNcXbYi3tjkvq3ON3QVfXksnl8Uqoxy6+
-         h3PA==
-X-Forwarded-Encrypted: i=1; AJvYcCWSziDHRPRTPeIR5unBSh0HMdG/hL876mb1CH9d9j6aPJxNeGWTpRb7P0EQCjO1le9bSe1DqW4rO8dlAURKjQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYx3fCWHKiYAjHl9pJQI5Y8zGmO8Uh9mG/2JW88GLviBAh5oZR
-	vZKzaO2MHO3tVB48489SoLbMwjrB/l8gJXBaevRsjVvhzPw2V6OpUTRi
-X-Gm-Gg: AY/fxX5I7MVzyaQBXJOFDnos8kStpWvNj9Bnkd1YX8fwQklt062EHAye9TCBxly6m3L
-	UtptxKxHKCzysjSHs5yWNWXomrCmWn0So6nKT6Ws6EbBexokgdxNQTZESgPoE+cVpdvtIM6Q4s5
-	0DtRrXNR+sxPfQKVV4u2KWZMe8SefhTTnvxlsxGRRAv5PC3ZAdl//z9QnaUOE4EeMJkzuRMi4ez
-	FPni8CchJ9GVI+Car21OazEI5xIwq3yNpEDD+8sbqGcGLuLmvaj329k162ySTsVB9e6JBcAjgpQ
-	s71kroYIOuf7RHxuWwfZGNIiUIeRmnpqet6GGgXPyVKcJkRT7E0aSZDFLAliBL6WjZsOpVHMsSo
-	W7kKvknk4NapzIOtqw7BF7xZtgmXkumYy0I77vUvFBXkOGT+nagr0wczNbzywuLn9Hb34kJcR3l
-	S9j+NbMbmvq+D6FtScQj25g+7q3+wEA65mjLWPKhuGzCGCWr41eZ0CgtZ5sxVqR0fLhdY=
-X-Google-Smtp-Source: AGHT+IECgioPTsy7O8h4IMn7prBqsQJ/6jdGSCsU2tlyHIbj0RAMCS1DIWe+8/Sx5YpAoA1u+jIUjQ==
-X-Received: by 2002:a05:6a00:140f:b0:807:c2b9:38ec with SMTP id d2e1a72fcca58-807c2b93f63mr16449954b3a.15.1767183715580;
-        Wed, 31 Dec 2025 04:21:55 -0800 (PST)
-Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1e7961c130sm30128093a12.3.2025.12.31.04.21.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Dec 2025 04:21:55 -0800 (PST)
-Date: Wed, 31 Dec 2025 21:21:51 +0900 (JST)
-Message-Id: <20251231.212151.889123388469793161.fujita.tomonori@gmail.com>
-To: boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
- gary@garyguo.net, lossin@kernel.org, tmgross@umich.edu,
- acourbot@nvidia.com, rust-for-linux@vger.kernel.org,
- linux-arch@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] rust: sync: atomic: Add atomic bool support via
- i8 representation
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <aVRWDgb29OkHAGnY@tardis-2.local>
-References: <20251230045028.1773445-1-fujita.tomonori@gmail.com>
-	<20251230045028.1773445-2-fujita.tomonori@gmail.com>
-	<aVRWDgb29OkHAGnY@tardis-2.local>
+        d=1e100.net; s=20230601; t=1767183757; x=1767788557;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UQVrUosci++sweVUg2oDGu1yrtQHcLYzZp5maq37Uks=;
+        b=nqB8SzGAE2WKMAIYTgp2ETsyABdHo7d23qfE+yiDBKt7Pd60mpCvcoVzf+LT1JnsZ6
+         gYJi7uysU6qd/X+zZjaaAUxikVEl8nX0FMGiIyfNsdzrB8fsvNWo/YC3DowPVgeui5ES
+         RTxDohQCoH7ngiROYlxPOqab0tD3miS5+w4h/C072qbh8d7YdT7w6aFWzujBiPMHb4hu
+         eKVwj0bn3MrrX036LaXf9urdykXREL5UnVzx+kKQanZ4nCJBjxpbYtwa3trWEZvTEx5T
+         e7vcVGofDcgMG4iL/6swbpKiYK1mmTmsDNAPdnE58ERn4zVB12C22Gfl97HCZvs30i2E
+         1Nxg==
+X-Forwarded-Encrypted: i=1; AJvYcCUK8NRgG2cRqoHRS6/O6Z30WNUwDSeyU2BhEQT4Bu1TTGkVAEl3V0MLuV6ltBLgFeVurgBoBPZzq+8iLH4R4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuzFOBbFYiB5VCOpsIEJ3oKgsacioIsdK302XDeQ1xvfz40YHV
+	69ckw4PJuDbxIjwmFl7tS6sp1o3WLmd1d8EELqQEbJrrq9d/hOXXQMFF8A0Q19tJisVdgkzLbvs
+	KVhXayXI7dlJNervKiA==
+X-Google-Smtp-Source: AGHT+IFGevL4RjPve8xtRgOLaqwe1KRUGekHJd+lI5/ywPU8CYGMrfT3q1rcsX5yZhQNUWvXrJwartEV+7L+OGI=
+X-Received: from wro20.prod.google.com ([2002:a05:6000:41d4:b0:430:c782:27f3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:609:b0:431:342:ad41 with SMTP id ffacd0b85a97d-4324e6fa1a7mr47643775f8f.61.1767183756634;
+ Wed, 31 Dec 2025 04:22:36 -0800 (PST)
+Date: Wed, 31 Dec 2025 12:22:24 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIAVVWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDI2MD3aLy/LzkVF3DVIsUo9RUg6TkNEsloOKCotS0zAqwQdGxtbUAFXT clFgAAAA=
+X-Change-Id: 20251230-rwonce-1e8d2ee0bcf9
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1686; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=DgkCDNZwcq8gq47PvBSES/tVZ/480I2oLP6adymLeb4=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpVRWGF5bAiUtejlxi6BOwMVDKnGMRxV0brpJMZ
+ 4N76blF6DqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVUVhgAKCRAEWL7uWMY5
+ Rq6PEACahBDOuqhWNRdS7KKKt5/h9IB0Ae0tEIYhZCaGdynMz9p5ZroHJGY3427iEbwD1Xf1sd3
+ krvr6Thhw3P3Xe/n9H8Zv/X9u1c5luZ3Xf4eCUMRH4chFWH9JwzEvBz7jXADexXhLdQpug7K2mb
+ wcyPQj1ud8v+7Di8+fu4PtJLHimoywoMf6ZFhCGnAxPySJWvVweGV7hUrW8LxDszplrE2HZ8tD9
+ RPAbn1uqanDGL40aeAib7oCMvMY0u3Qwpf7JB+7YpeulCoPXBOoLck6sczMbHd7yzidbpiP+RnS
+ 37uYnZopCUQmCd47pDgFlfMgZD27v6IYXqZ8zIryrOl3Sod72AtB9UoCLEW11pV2LQ1AlYpBJL3
+ rU7Ya3QisvjzdEQ6OOLsnzwTh0b25pX6GjpAOkQxz6xI3oeH9Epbm5H/pviAgf3R1wjJrOvIOxj
+ 0GmRhz2x4wq8lHjcbjoljHHRYDgHFXMm0qSjahun8/DqZkoYlfBxzuxT46T2n5gdefNJ8ejq+Dv
+ Sm69I+Q/czN4RKBQIQDvayvG7VhtPNqrAKgOupQ9wDPuDSMURnwra3sFVkMWxmkk6wr8VB86lin
+ 9RO+10zQWOISHeiZ3OkAmQ5U361UXsQx2g45A72GjESpW/kXTosPejSa7Qj5uclYBBvCaLrP0Uj f+YHVZGzb5+fZ7Q==
+X-Mailer: b4 0.14.2
+Message-ID: <20251231-rwonce-v1-0-702a10b85278@google.com>
+Subject: [PATCH 0/5] Add READ_ONCE and WRITE_ONCE to Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun.feng@gmail.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Magnus Lindholm <linmag7@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, 31 Dec 2025 06:45:34 +0800
-Boqun Feng <boqun.feng@gmail.com> wrote:
+There are currently a few places in the kernel where we use volatile
+reads when we really should be using `READ_ONCE`. To make it possible to
+replace these with proper `READ_ONCE` calls, introduce a Rust version of
+`READ_ONCE`.
 
-> On Tue, Dec 30, 2025 at 01:50:27PM +0900, FUJITA Tomonori wrote:
->> Add `bool` support, `Atomic<bool>` by using `i8` as its underlying
->> representation.
->> 
->> Rust specifies that `bool` has size 1 and alignment 1 [1], so it
->> matches `i8` on layout; keep `static_assert!()` checks to enforce this
->> assumption at build time.
->> 
->> Implement `AtomicImpl` for `bool` under
->> `CONFIG_ARCH_SUPPORTS_ATOMIC_RMW`, consistent with the existing
->> `i8/i16` gating.
->> 
->> Document the additional safety requirement for
->> `Atomic::<bool>::from_ptr`: only bit patterns 0 (false) and 1 (true)
->> are valid.
->> 
->> Link: https://doc.rust-lang.org/reference/types/boolean.html [1]
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> ---
->>  rust/kernel/sync/atomic.rs           |  1 +
->>  rust/kernel/sync/atomic/internal.rs  |  8 ++++++++
->>  rust/kernel/sync/atomic/predefine.rs | 11 +++++++++++
->>  3 files changed, 20 insertions(+)
->> 
->> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
->> index 4aebeacb961a..2c998cbd300e 100644
->> --- a/rust/kernel/sync/atomic.rs
->> +++ b/rust/kernel/sync/atomic.rs
->> @@ -158,6 +158,7 @@ pub const fn new(v: T) -> Self {
->>      ///
->>      /// - `ptr` is aligned to `align_of::<T>()`.
->>      /// - `ptr` is valid for reads and writes for `'a`.
->> +    /// - If `T` is `bool`, only the bit patterns 0 (`false`) and 1 (`true`) are valid.
-> 
-> This line is unnecessary, since "`ptr` is valid for ..." means `*ptr`
-> has to have the valid binary representive of `T`.
+A new config option CONFIG_ARCH_USE_CUSTOM_READ_ONCE is introduced so
+that Rust is able to use conditional compilation to implement READ_ONCE
+in terms of either a volatile read, or by calling into a C helper
+function, depending on the architecture.
 
-Understood, I will drop this in v2.
+This series is intended to be merged through ATOMIC INFRASTRUCTURE.
 
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Alice Ryhl (5):
+      arch: add CONFIG_ARCH_USE_CUSTOM_READ_ONCE for arm64/alpha
+      rust: sync: add READ_ONCE and WRITE_ONCE
+      rust: sync: support using bool with READ_ONCE
+      rust: hrtimer: use READ_ONCE instead of read_volatile
+      rust: fs: use READ_ONCE instead of read_volatile
 
->>      /// - For the duration of `'a`, other accesses to `*ptr` must not cause data races (defined
->>      ///   by [`LKMM`]) against atomic operations on the returned reference. Note that if all other
->>      ///   accesses are atomic, then this safety requirement is trivially fulfilled.
->> diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
->> index 0dac58bca2b3..0e12955082e5 100644
->> --- a/rust/kernel/sync/atomic/internal.rs
->> +++ b/rust/kernel/sync/atomic/internal.rs
->> @@ -16,6 +16,7 @@ pub trait Sealed {}
->>  // The C side supports atomic primitives only for `i32` and `i64` (`atomic_t` and `atomic64_t`),
->>  // while the Rust side also layers provides atomic support for `i8` and `i16`
->>  // on top of lower-level C primitives.
->> +impl private::Sealed for bool {}
->>  impl private::Sealed for i8 {}
->>  impl private::Sealed for i16 {}
->>  impl private::Sealed for i32 {}
->> @@ -37,6 +38,13 @@ pub trait AtomicImpl: Sized + Send + Copy + private::Sealed {
->>      type Delta;
->>  }
->>  
->> +// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence the atomicity is only
->> +// guaranteed against read-modify-write operations if the architecture supports native atomic RmW.
->> +#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
->> +impl AtomicImpl for bool {
->> +    type Delta = Self;
->> +}
-> 
-> I don't think you need this impl block.
+ MAINTAINERS                     |   2 +
+ arch/Kconfig                    |  11 +++
+ arch/alpha/Kconfig              |   1 +
+ arch/alpha/include/asm/rwonce.h |   4 +-
+ arch/arm64/Kconfig              |   1 +
+ arch/arm64/include/asm/rwonce.h |   4 +-
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/rwonce.c           |  34 +++++++
+ rust/kernel/fs/file.rs          |   8 +-
+ rust/kernel/sync.rs             |   2 +
+ rust/kernel/sync/rwonce.rs      | 207 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/time/hrtimer.rs     |   8 +-
+ 12 files changed, 268 insertions(+), 15 deletions(-)
+---
+base-commit: f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
+change-id: 20251230-rwonce-1e8d2ee0bcf9
 
-You are right. Only the backing atomic types need to implement this. I
-will drop in v2.
-
-
-Thanks!
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
