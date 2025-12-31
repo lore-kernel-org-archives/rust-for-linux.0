@@ -1,220 +1,220 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979FC1C84DC
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 23:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9538F22A4EB
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 02:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767137366; cv=none; b=Vc4Taa28zLKwJTZJswqLZ54ZDhciXjEBIBP1P+inK2APC0sEmdTIKr9mfiNF+fU8ZMf3gBvj5qgouD3zF4G9Mv387g9Z6dRkz7M0xR1dc2sCUFR7tacFlXW9ChZBFHQBakJtKC2hLAQNAvq4TbARHp5EaCvliDzDU/7Lry+o6WY=
+	t=1767149235; cv=none; b=W9VuXG0VeIW1qlup++RiHlDqwbiPihWUUhVev3hIIYdwT9fItIHN3gOpLGOggEewi3dOR/j0XX5ZN+Cv+4KWEtIJA0n4SToVQOjsIkbe74nenezZEFn8ElmSekkI14ynLKYD2J+8KKk+IVO8bv7NwLGXADBpgIJj2qSVCrhOj6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767137366; c=relaxed/simple;
-	bh=//3KhSIDuKF8cORC5f1soO1VWIwcJyd5LvthvJ4/Izk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WfX75f4wiq5oscU8JNhyAndoP2rrzGbOf2/5meZxokDmwEuKXrcJEUBWxhOxZOXDST4ZOXcw2TKABppTfqQybPVnbxZAlab+nKFHAzwEg9WJKzpjVFPJ18UxHKPhia3jUP6rV2swUVTMIYwmaayWuvap1JnohaUm2kiQlPtnBYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UqHO4i7d; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UqHO4i7d"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8b2f2c5ec36so1202010285a.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 15:29:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767137362; x=1767742162; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=stPkj3CsotlBmKIpyRSfvDMp5yBz1CLwuEpZUEVVAHs=;
-        b=UqHO4i7dE6x3K94QbkYykQwAHiUeszIGPsg0nZ03+GrmWlyCG5i7HEngtB07bT7GVO
-         0FQ3QKantOIIo7tBiXM70LLvbk1kufmQEsFXY9P53pjtwwo3Sgp2KKamKU1GCJauKpTQ
-         jYEW8f9aEOf0ihYRo7okbriD4xuwljfeZb52VBn43DHtAcaES2De4zR79EBxRGvc/TNz
-         qecW2qi+u0ekHvrJyptQg+q8ge0klsn6AjOuUDa4bRc9vH96z/Mwb3KpF1NSTiQS7An8
-         q7hUaQVw2DfE1Cz8MPkEM3IgW2/NJuWBSAfLa9DM4ePENZyqSConyOAcANXoqs0IJMnD
-         rSEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767137362; x=1767742162;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=stPkj3CsotlBmKIpyRSfvDMp5yBz1CLwuEpZUEVVAHs=;
-        b=veazvPE6OfABCFbb6moFuOVtxORbpBDOC9aLqV0mlWripAQ9TuwLZpHkh9ugQ2lfHp
-         OeeqRM6tPNJhXQ4ALeBV7MBeEC7ildOG/2LGdRM3EUN7WZb5+ea9ghPAFTWmYIuNqZgc
-         yymWSBudDrP2hK2g+y3Iji7Wbzf5GAFy9mvDCmoJaU0n+w9/akFxu49v0oabG0uTqfGU
-         SL1ZE7s9h42MHD6I3WEc6lNxZzhZNJXW9XXXsZ53Rns8sF+9C2+vEEZ9SuUIvi/E4gpz
-         ntGu0b63HBoVsf6OjxisIahWD+bx+qGGcDJlMtym3ajllv3N3+4uc0JdByln+rkoqZVV
-         0hvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJaoF5OlAGjullUZbxeIJq0lQAj6zwRGct7/kiBU+PIRP9tvrLhjK7oHT2C0E8mHZ71a5n3rU79xGz6PlijA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yymqt046GcUFLLiLOQe2DXBAuhbZPStPIDgOkYWZUqUWkwSEGZ7
-	ngNTQLqJ4L1BILqRA3dkmajKSbAM8x0KPjtrcZ/6/EZkpEM/4iinOP7s
-X-Gm-Gg: AY/fxX5Chkfir2wusWZ3e07ondo1+gscAXggw7/iW4692ZiNqwDhIRNcaPfNtY5m92l
-	O66tdftv/pVWJv3RZIQBGUym7m8/KJ66vwEybJvSfQNgWenRDyeYGApVwtOJSaL3Zc71xNMKa6l
-	/d7CP6A+Fngcqqh/ppvd0hHegi3gJAspt1eZE7yrgWnR3UEnYPxSYFYrP9OO+YegaK35I6+Iq7O
-	WpruIZ3ABa3DGlsASQgi6C29h0LOIf+/Xs3rC2zzZ1AK8grQeT/x3hdko4nDSjeNrrRysJG27xE
-	r8Ias9cMXqWAN7AYNf7Pppe5nAqE6PTKLejZWtq6NjdtgrL7zp1SUzcr875snA9Rj4OhdylU/2E
-	Tjg1Zjq8B2judvqd4MxuMO66U2q66IgqQiv7YjtGUwVl9jgorspfQcPLGVrxh4ZGiVAJbAmI9DE
-	2PVtVO9E7jSMILD0UH0E4A7H4IUmUGZjYmBr8esEOfOn+kSc3PyOi20TSoEIqaBUPSKNFS5+3M9
-	NEFHa099CHFYOA7HunP6u7tKA==
-X-Google-Smtp-Source: AGHT+IGqneIWBLQvS0c3sU0igfZIsOmEqyqD3kaJsAmqiRD3t/cbyOPhQNRzBk8+aZ6I9LkScbz4GA==
-X-Received: by 2002:a05:620a:3195:b0:8b2:ef2a:e885 with SMTP id af79cd13be357-8c08fbbc8d0mr5022356885a.76.1767137362385;
-        Tue, 30 Dec 2025 15:29:22 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c1a674bcaasm1601794385a.38.2025.12.30.15.29.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Dec 2025 15:29:22 -0800 (PST)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6CAEFF4006E;
-	Tue, 30 Dec 2025 18:29:21 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 30 Dec 2025 18:29:21 -0500
-X-ME-Sender: <xms:UWBUaS-2KPXunQQuaaa7-OyywC-0NC8Zlz-0745BVEF7v8-lqu9-vw>
-    <xme:UWBUaTI_At8fccq9E1mZKEBs3zG5U2JsrnUQH0NYQbYUGqUkfN9rVmq_BAbMPT-34
-    Ws7Ce5X439QogGinXV3xgvOmBRKuLOEjqFGvbjUL6El36JEFsyK>
-X-ME-Received: <xmr:UWBUaXxEt_fLCwh-TZVGzJRE9DE-7UdES5lJZXDnf3lzV_RdYviL9nxGdN2v>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekudefgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepfhhujhhithgrrdhtohhmohhnohhrihesghhmrghilhdrtghomhdprhgtphhtth
-    hopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegrrhhvvges
-    rghnughrohhiugdrtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopegtmhhllhgrmhgrshesghhoohhglhgvrdgtohhmpdhrtghpthht
-    ohepghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
-    epohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhkjhhoshesrghnughr
-    ohhiugdrtghomhdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorh
-    hg
-X-ME-Proxy: <xmx:UWBUaW1gcSGrkOBUCbvgohM0JxatSQNoBf5onsQmXyMaTTq6Qa65kQ>
-    <xmx:UWBUaQ8HD5_6Q9KghLWKzRUwX-9UXOFJu_0eS0sNm2ExHsH00NEfqw>
-    <xmx:UWBUaeTaRHEwVBXL2xp3-aXhSC1IU-wtsCZDNL8EqARWCimMbK2HJw>
-    <xmx:UWBUafmSe61CICWvkAqTkYhgAXwrdSj2M7LD327ynXjrH_TQ6RR6cQ>
-    <xmx:UWBUaRWIuy4BsZVQOa36T_Q2wndkGBc-smNd5p2se_2YoJ1Syo94G8ll>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 30 Dec 2025 18:29:20 -0500 (EST)
-Date: Wed, 31 Dec 2025 07:29:17 +0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, arve@android.com, brauner@kernel.org,
-	cmllamas@google.com, gregkh@linuxfoundation.org, ojeda@kernel.org,
-	tkjos@android.com, a.hindborg@kernel.org, bjorn3_gh@protonmail.com,
-	dakr@kernel.org, gary@garyguo.net, lossin@kernel.org,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] rust: revocable: Switch to kernel::sync atomic
- primitives
-Message-ID: <aVRgTQWhqjKB6xpK@tardis-2.local>
-References: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
- <20251230093718.1852322-2-fujita.tomonori@gmail.com>
+	s=arc-20240116; t=1767149235; c=relaxed/simple;
+	bh=0fVXX+voIpql0I8fCStsqTetGeAiX/bzr8XzjM7IF/g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=afSfQKsGZjuC4l6O7b4oIyaw60ecZShEJF5V5nO0Rilpdkojo2O5pxoK4B2ar66Z7KW8THsC11EFyRNNUrjjP0EFxEoDrCfDzhCaBp9bqE5SQN0643Uk0o69Kbi3KVcdwUlNJ/bjsMUdgTKR678C5WOMHrLVq+KUd3PragFBEVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: f9238646e5f211f0a38c85956e01ac42-20251231
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:63550717-5d66-4b77-b165-1d6a7ea3a299,IP:10,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:5
+X-CID-INFO: VERSION:1.3.6,REQID:63550717-5d66-4b77-b165-1d6a7ea3a299,IP:10,URL
+	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:5
+X-CID-META: VersionHash:a9d874c,CLOUDID:27860da8b105feac730c1764eb2c38ea,BulkI
+	D:251229184428R5P54LA6,BulkQuantity:35,Recheck:0,SF:17|19|38|64|66|78|80|8
+	1|82|83|102|841|898,TC:nil,Content:0|15|50,EDM:-3,IP:1,URL:0,File:nil,RT:n
+	il,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,
+	BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_OBB,
+	TF_CID_SPAM_IBB
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: f9238646e5f211f0a38c85956e01ac42-20251231
+X-User: sunke@kylinos.cn
+Received: from mail-lf1-f47.google.com [(209.85.167.47)] by mailgw.kylinos.cn
+	(envelope-from <sunke@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 171215156; Wed, 31 Dec 2025 10:46:57 +0800
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-59b25acdffbso5713122e87.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 18:46:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU+LYABv35pnTCVZvZi2XUKsjlxEDUovMd3y+IZBioDBxbCee1pvLc11YaCAGjcD1qWGJIDsjzljAWeuurBCA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZArluAaoI5DLgkyEv3xlW0Ja9W9/Geo+zGgaSW8Ko4VdNGGdp
+	ET2Mcms8ZI9yyEAVM2aC4E9MMxLbmzjGRlmuXasJN0JhKO51wSRorcAV8BHapHJnTOK7gDiVhIG
+	6iPMQE4KuaB+/ZobnuzvLP1HtJnoWG4Y=
+X-Google-Smtp-Source: AGHT+IH3wrdobX0/xCUCUxfH/FiqCOvhf8qMGoGUQsAuehn/B7xPFUfGbeGqGzHjq7MxexJCbZ9DCrtvNc7xUQym0i8=
+X-Received: by 2002:a2e:a7ca:0:b0:37b:9b58:dcf7 with SMTP id
+ 38308e7fff4ca-3812162164fmr103283931fa.23.1767149208934; Tue, 30 Dec 2025
+ 18:46:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251230093718.1852322-2-fujita.tomonori@gmail.com>
+References: <20251229072157.3857053-1-sunke@kylinos.cn> <20251229072157.3857053-2-sunke@kylinos.cn>
+ <a8a08f6f-dd3b-4498-8fb2-f91934683288@gmail.com>
+In-Reply-To: <a8a08f6f-dd3b-4498-8fb2-f91934683288@gmail.com>
+Reply-To: sunke@kylinos.cn
+From: Ke Sun <sunke@kylinos.cn>
+Date: Wed, 31 Dec 2025 10:46:37 +0800
+X-Gmail-Original-Message-ID: <CALpAb9MoT20Ch4pe-oMz8kpqaZsvmgNwPk1XSC+faZi7huwQKg@mail.gmail.com>
+X-Gm-Features: AQt7F2pLj8lCGS6GviyIg30WTcnQVaX539gcIYs5itckHgC5Y0RUp29T8MFnqBY
+Message-ID: <CALpAb9MoT20Ch4pe-oMz8kpqaZsvmgNwPk1XSC+faZi7huwQKg@mail.gmail.com>
+Subject: Re: [PATCH v7 1/4] lib/vsprintf: Export functions for Rust pointer
+ formatting support
+To: Dirk Behme <dirk.behme@gmail.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, Timur Tabi <ttabi@nvidia.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	John Ogness <john.ogness@linutronix.de>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Andrew Morton <akpm@linux-foundation.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 30, 2025 at 06:37:16PM +0900, FUJITA Tomonori wrote:
-> Convert uses of `AtomicBool` to `Atomic<bool>`.
-> 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/kernel/revocable.rs | 24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
-> 
-> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-> index 0f4ae673256d..47cd2b45eada 100644
-> --- a/rust/kernel/revocable.rs
-> +++ b/rust/kernel/revocable.rs
-> @@ -7,12 +7,20 @@
->  
->  use pin_init::Wrapper;
->  
-> -use crate::{bindings, prelude::*, sync::rcu, types::Opaque};
-> +use crate::{
-> +    bindings,
-> +    prelude::*,
-> +    sync::atomic::{
-> +        ordering::Relaxed,
-> +        Atomic, //
-> +    },
-> +    sync::rcu,
-> +    types::Opaque, //
-> +};
->  use core::{
->      marker::PhantomData,
->      ops::Deref,
-> -    ptr::drop_in_place,
-> -    sync::atomic::{AtomicBool, Ordering},
-> +    ptr::drop_in_place, //
->  };
->  
->  /// An object that can become inaccessible at runtime.
-> @@ -65,7 +73,7 @@
->  /// ```
->  #[pin_data(PinnedDrop)]
->  pub struct Revocable<T> {
-> -    is_available: AtomicBool,
-> +    is_available: Atomic<bool>,
->      #[pin]
->      data: Opaque<T>,
+On Mon, Dec 29, 2025 at 6:44=E2=80=AFPM Dirk Behme <dirk.behme@gmail.com> w=
+rote:
+>
+> On 29.12.25 08:21, Ke Sun wrote:
+> > Export ptr_to_hashval() and extract kptr_restrict_value() to enable
+> > Rust code to use kernel pointer formatting functionality.
+> >
+> > - Export ptr_to_hashval() with EXPORT_SYMBOL_GPL for pointer hashing.
+> >   This function is used to hash kernel pointers before printing them,
+> >   preventing information leaks about kernel memory layout.
+> >
+> > - Extract kptr_restrict handling logic from restricted_pointer() into
+> >   a separate exported function kptr_restrict_value() that can be
+> >   reused by both restricted_pointer() (for %pK format specifier) and
+> >   Rust code.
+> >
+> > The kptr_restrict_value() function:
+> > - Returns 0, 1, or 2 to indicate the kptr_restrict sysctl value
+> > - Returns -1 for error case (IRQ context with kptr_restrict=3D=3D1)
+> > - Modifies the pointer value through @pptr parameter when needed
+> >   (sets to NULL when access should be restricted)
+> >
+> > These functions are needed for the HashedPtr and RestrictedPtr wrapper
+> > types in rust/kernel/ptr.rs to provide safe pointer formatting that
+> > matches C kernel patterns.
+> >
+> > This refactoring:
+> > - Allows restricted_pointer() to reuse the common logic while
+> >   maintaining the same behavior
+> > - Enables Rust code to use the same kptr_restrict handling logic
+> > - Reduces code duplication
+> >
+> > Signed-off-by: Ke Sun <sunke@kylinos.cn>
+> > Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> > ---
+> >  include/linux/printk.h | 10 ++++++++
+> >  lib/vsprintf.c         | 55 ++++++++++++++++++++++++++++++++----------
+> >  2 files changed, 52 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/include/linux/printk.h b/include/linux/printk.h
+> > index 45c663124c9bd..91380b1eff1a1 100644
+> > --- a/include/linux/printk.h
+> > +++ b/include/linux/printk.h
+> > @@ -385,6 +385,16 @@ extern void __printk_cpu_sync_put(void);
+> >
+> >  extern int kptr_restrict;
+> >
+> > +/**
+> > + * kptr_restrict_value - Determine what pointer value should be used f=
+or %pK
+> > + * @pptr: Pointer to the pointer value (may be modified)
+> > + *
+> > + * Returns:
+> > + *   - 0, 1, or 2: The kptr_restrict value if pointer should be used
+> > + *   - -1: Error case (IRQ context with kptr_restrict=3D=3D1), *pptr u=
+nchanged
+> > + */
+> > +int kptr_restrict_value(const void **pptr);
+> > +
+> >  /**
+> >   * pr_fmt - used by the pr_*() macros to generate the printk format st=
+ring
+> >   * @fmt: format string passed from a pr_*() macro
+> > diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+> > index a3790c43a0aba..29d2e681c6e73 100644
+> > --- a/lib/vsprintf.c
+> > +++ b/lib/vsprintf.c
+> > @@ -811,6 +811,7 @@ int ptr_to_hashval(const void *ptr, unsigned long *=
+hashval_out)
+> >  {
+> >       return __ptr_to_hashval(ptr, hashval_out);
+> >  }
+> > +EXPORT_SYMBOL_GPL(ptr_to_hashval);
+> >
+> >  static char *ptr_to_id(char *buf, char *end, const void *ptr,
+> >                      struct printf_spec spec)
+> > @@ -857,14 +858,28 @@ static char *default_pointer(char *buf, char *end=
+, const void *ptr,
+> >
+> >  int kptr_restrict __read_mostly;
+> >
+> > -static noinline_for_stack
+> > -char *restricted_pointer(char *buf, char *end, const void *ptr,
+> > -                      struct printf_spec spec)
+> > +/**
+> > + * kptr_restrict_value - Determine what pointer value should be used f=
+or %pK
+> > + * @pptr: Pointer to the pointer value (may be modified)
+> > + *
+> > + * This function determines what pointer value should be printed based=
+ on the
+> > + * kptr_restrict sysctl setting:
+> > + *
+> > + * - kptr_restrict =3D=3D 0: Return 0 (use original pointer, will be h=
+ashed)
+> > + * - kptr_restrict =3D=3D 1: Return 1 if current process has CAP_SYSLO=
+G and same
+> > + *                       euid/egid, otherwise set *pptr to NULL and re=
+turn 1
+> > + * - kptr_restrict >=3D 2: Set *pptr to NULL and return 2
+> > + *
+> > + * Returns:
+> > + *   - 0, 1, or 2: The kptr_restrict value if pointer should be used
+> > + *   - -1: Error case (IRQ context with kptr_restrict=3D=3D1), *pptr u=
+nchanged
+> > + */
+> > +int kptr_restrict_value(const void **pptr)
+>
+> Would it be an improvment to not modify the pptr itself? But instead
+> to work with some kind of in ptr (not modified) and out_ptr (returned
+> to the caller then)?
+>
+> kptr_restrict_value(const void *ptr, const void **out_ptr)
+>
+> And an enum for the result? With something like
+>
+> enum kptr_restict_result {
+>   KPTR_RESTICT_ERROR =3D -1,
+>   KPTR_RESTICT_NONE =3D 0,
+>   KPTR_RESTICT_PARTIAL =3D 1,
+>   KPTR_RESTICT_FULL =3D 2,
+> }
+>
+> What would result in something like
+>
+> enum kptr_restict_result kptr_restrict_value(const void *ptr, const
+> void **out_ptr)
+>
+> Opinions?
 
-I actually think we should use Atomic<i32> instead of Atomic<bool> here,
-because in most of the cases `T` is a aligned to at least 4-bytes (e.g.
-Devres uses a Revocable<IoMem>) And in that case, using Atomic<bool>
-doesn't save extra memory but makes the xchg() operation slower on
-architectures that don't support byte-wise RmW instructions (e.g.
-riscv).
+Given that fully implementing all %p format specifier extensions would
+require substantial code changes, we're considering converting Rust's
+Formatter to C format strings at the Rust layer and directly calling
+snprintf. This would allow us to reuse the existing C implementations
+without modifying vsprintf.c.
 
-My rule of thumb for using Atomic<bool> is: when you really care about
-the memory usage, and you can guarantee using Atomic<bool> is saving
-memory. For a general "flag" usage, Atomic<bool> is not strictly better
-than Atomic<i32> in most cases imo.
+What do you think of this approach?
 
-Regards,
-Boqun
-
->  }
-> @@ -84,7 +92,7 @@ impl<T> Revocable<T> {
->      /// Creates a new revocable instance of the given data.
->      pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E> {
->          try_pin_init!(Self {
-> -            is_available: AtomicBool::new(true),
-> +            is_available: Atomic::new(true),
->              data <- Opaque::pin_init(data),
->          }? E)
->      }
-> @@ -98,7 +106,7 @@ pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E> {
->      /// because another CPU may be waiting to complete the revocation of this object.
->      pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
->          let guard = rcu::read_lock();
-> -        if self.is_available.load(Ordering::Relaxed) {
-> +        if self.is_available.load(Relaxed) {
->              // Since `self.is_available` is true, data is initialised and has to remain valid
->              // because the RCU read side lock prevents it from being dropped.
->              Some(RevocableGuard::new(self.data.get(), guard))
-> @@ -116,7 +124,7 @@ pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
->      /// allowed to sleep because another CPU may be waiting to complete the revocation of this
->      /// object.
->      pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -> Option<&'a T> {
-> -        if self.is_available.load(Ordering::Relaxed) {
-> +        if self.is_available.load(Relaxed) {
->              // SAFETY: Since `self.is_available` is true, data is initialised and has to remain
->              // valid because the RCU read side lock prevents it from being dropped.
->              Some(unsafe { &*self.data.get() })
-> @@ -157,7 +165,7 @@ pub unsafe fn access(&self) -> &T {
->      ///
->      /// Callers must ensure that there are no more concurrent users of the revocable object.
->      unsafe fn revoke_internal<const SYNC: bool>(&self) -> bool {
-> -        let revoke = self.is_available.swap(false, Ordering::Relaxed);
-> +        let revoke = self.is_available.xchg(false, Relaxed);
->  
->          if revoke {
->              if SYNC {
-> -- 
-> 2.43.0
-> 
+>
+> Dirk
