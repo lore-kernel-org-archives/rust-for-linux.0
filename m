@@ -1,130 +1,134 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C892318124
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 10:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41FD3128AD
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 10:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767175484; cv=none; b=h/96bMdmmkzeBJdVuRI5LgzzQCYwpJfsERSB/3e1LZ4Bb6eYfaRCGyk1KkYGBOQFvLLqC9eq5Md+4sS02R1niGHulRRixecYZykXMDRTkOFr7Svcyh051zhPwDFvC/QjqkPO3s/KyFnybbscdCEom0WK7xwe6Z+5+PL1gA9HPyY=
+	t=1767175933; cv=none; b=BR5YtwJkneEEPksJIVq6I+OuML1rRTZTPe+ChR84qTazNQWUHQ+p89Yezty0ql86bVORPIcQD/jH0ZzlOtFNu64crzAJY21+0mnX2JjzYHymy6RkJ5PTNaTzSBU6UEIwyKd8fPry6Fzjd6vtaQvxwb34SwhwMnlFyPvMdTYzkpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767175484; c=relaxed/simple;
-	bh=uKVvZJDp5yxDeaDPsVzKvHO3sEuN741fMSc0AEc7iG8=;
+	s=arc-20240116; t=1767175933; c=relaxed/simple;
+	bh=3aQKJU0TBwKw/JymWyNqfA/UgBthI0BjnAw0FWaciKQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=P58++D/DTnBI9xlPSB298VYpubs5eQf8ssuo5SffZpnQ5uWbP78GHiZ7/5Pr0oJ0sOObnMWlfat9Lw5rrKQgT+G0Lybgtke5vHgsjD9cl/OFXn1ecQ6pLM5lM9PxN4Oqw1sL0kfPLyzOKebSHzRdtzo7upDUobdi6MyX+//kQEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1GZ5j0Ms; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=sMZ/FQ55UEQiPovk5/O16ucGFB7VjcGKgi6mvLKs67H44dbHP9IHSh1EveEazWMfmacKIIw8me+rAZ6Qay3m5D5fOwN05CFct75bva82po1tP3oy42VNXKBgt1uzhNHNoGbun4LONc0oU59/IcQYzzFl48z+PVl1qkqzL9ZisBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fZAr5FZY; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1GZ5j0Ms"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477cf2230c8so107909445e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 02:04:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fZAr5FZY"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477bf8c1413so68651695e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 02:12:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767175481; x=1767780281; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767175929; x=1767780729; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qj7PIpF75OzBGXifcwFcI1pliIEIflkHSTgdELda34k=;
-        b=1GZ5j0Ms8R/YR1GbnnpINT2mNhhRZMlSkhAJHQY7sMM6/XBPw7ybEbjLafOyuRx+2R
-         1nCBeXcXmfQvn4GpURryQhvf8XQ0ScASCPzyC5F/TxK9PADWctX19KKqU0HXCr4ttnGH
-         d98pIz6smuSsOJjeM9CFE0YAzRyoK7igEiJvsIVwRGMOpmxaBdPF7Vl9Z/pIeed3+Am1
-         bJP1ZluetrM69dHsg0hD4QKAF2v/H+qQZosMamSBBVx8TCqWtfZHulvxuPeh/kcwSpes
-         fYpf31SroGBDMAcxuteaYyjiFUsBKS0WugDmYwzfZP22d4CIONQIeEHWkmC9JfCl/njm
-         l7Ug==
+        bh=ZtGQZWIk6btmN6Wc/o4tVe9XiJTHY52MW3CNm6gJwpQ=;
+        b=fZAr5FZYfU16wZXgHrfyAFzratRMdf3qIMRkYCJWayx4QHVDYpfiBk2aVi5Gyoz1kV
+         zk8arVkxcyBjqhRymblDwcC4V8GZUuw4ojfx0tfAEW3pN36FRSAHKDlY9WdAiMt1tnkL
+         2GBJ+vx2Ru6TuOAAyL+aNsWTAAuedOV1oW8e/kcxCWv3BgzwHZyPg16WAZYp5dsrxT/r
+         mjlhNRvAUFSb8n7nBYSYHIlybew4BrZDDQ0c+uraBiktpO9Jevb3fyeCvhw1RyF2DlrU
+         YVnYL2y4kmHpWU60Ta68RGdNe1mLajOnNq2licob5xU4iVlTiIw4dtN2mKwGYt7+YxI5
+         /Evw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767175481; x=1767780281;
+        d=1e100.net; s=20230601; t=1767175929; x=1767780729;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qj7PIpF75OzBGXifcwFcI1pliIEIflkHSTgdELda34k=;
-        b=V2JoGU25EKLoih5+7ke/uFOjw2GGJnOmqCVmaBbvseJR8A9vJZRNKVY7S/YwPcClz2
-         gIUqP+j94SFoOjJTRwsx3uAt7O0ioo1XIzA4A3Wb9C6zujWZyydPbyK5rEMFjb9ihzGC
-         gf16M/J3wMdGWEN0FIloo3gE5TVCyHDvJMPMhq3E1ZA7X1R6ERCyHQQOjO8l79t110uw
-         Cyfa9QvKRXlirUU+VV5s4Oc8DJSXvlC4cMhKYvAMbubLLl9BdgnVb3Ws4IiN3dBjVZWS
-         7KV9ZdLe02lYc0s9grS9xKOM9lMox7HCCVdXrUEzcVgmKQtiCVXw4eq8+8juJK4EK3I9
-         TIhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUB/NEacjfiUUsLH/LcoVBCflQsSFBuWFSVf4PF7NpnIiyBOF2l1rpysig/JKETmrXDL833+2e7qXiG50TxTg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwReKDiP7lrq2UVkxokiCOEuonqoiDKCK1pi5BP5y5+rdMbvjoy
-	f4HvSbGTUQO2XJclNNprfJNetlaOMztva/hBP1A0fVexGPcO1hvmTbLD/SWdIjz1BS2a5fMAeKB
-	S4ORYMsAoMXdJYPn8eg==
-X-Google-Smtp-Source: AGHT+IESgiXsWUPRMaHS20OLD6T8m/1d1mjmirIPKXuMlAngrVuJ5ONN4BhR4DUo6LfCY2h5cGgc+0zNO06kKhY=
-X-Received: from wmga6.prod.google.com ([2002:a05:600c:2d46:b0:47a:9a5e:7c36])
+        bh=ZtGQZWIk6btmN6Wc/o4tVe9XiJTHY52MW3CNm6gJwpQ=;
+        b=IrMD61Tv6N+nMVnshl1ZNCqFL+1P3GIBJDQNmX0xfcsw8GwP+1eNz6oIYkeVFOkzEg
+         vxf5KAKU+0tV9i3Xafm3y+60gaPXoVdk+gHZ4wo4qsOQts1OkD1GHdxOsFIjLc7jl+5g
+         uksGETj+FT1PgRMLL1Uj422sMleUC9+m2z19RGU6UmyrLouDVDhMJp7vmvHaax/NrzCd
+         LSCSTAD03Elv29CkixBYDmjRZziEdaldlKtsIvpx1+KTj5LSYa7HMT946yutU82/XdDq
+         gVnKgqdNp3UabJIGu9yIekbGSBYHxrw/8Snw9rlKTeGHch5F7FMsQ1slyaagu+TCNT59
+         dWIw==
+X-Forwarded-Encrypted: i=1; AJvYcCX85orFd3ATDfTYyaqtqRdClimgOvZwU0FPEg83DtZqdALofpE43xwnw4qkV7NSEtF+YpFfcKceA8L0nCHecQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywr3V5STsuq8RYAcKu2cXuGa0EwHigluf1Hsir/d29oi6xXjsCp
+	1eUbiPkXVDn1Nn1/ETSNeLHGqvEhWYlT0GRVizIi27ptMYcN1XcPerhCTF8SLVgFuWNX2HZu3li
+	r0xMRzpC9Dk6Hxa1aNA==
+X-Google-Smtp-Source: AGHT+IGlQ+41oq6YwxLty4A6uiXW50pWPOXJqNSkzcyRWN0uX4EnbXnYuNdtftZDBHyGBdcXQIKX7rJXmvoriN0=
+X-Received: from wrp5.prod.google.com ([2002:a05:6000:41e5:b0:432:84fc:4516])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4447:b0:47a:9560:ec22 with SMTP id 5b1f17b1804b1-47d1954a2fdmr386334975e9.14.1767175480880;
- Wed, 31 Dec 2025 02:04:40 -0800 (PST)
-Date: Wed, 31 Dec 2025 10:04:39 +0000
-In-Reply-To: <aVKN0Q-6bsHGq_Gy@smile.fi.intel.com>
+ 2002:a5d:584e:0:b0:430:f622:8cca with SMTP id ffacd0b85a97d-4324e511553mr47029840f8f.56.1767175928851;
+ Wed, 31 Dec 2025 02:12:08 -0800 (PST)
+Date: Wed, 31 Dec 2025 10:12:07 +0000
+In-Reply-To: <aVRgTQWhqjKB6xpK@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251229072157.3857053-1-sunke@kylinos.cn> <20251229072157.3857053-2-sunke@kylinos.cn>
- <aVKN0Q-6bsHGq_Gy@smile.fi.intel.com>
-Message-ID: <aVT1N1NHQDCe2Dn8@google.com>
-Subject: Re: [PATCH v7 1/4] lib/vsprintf: Export functions for Rust pointer
- formatting support
+References: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
+ <20251230093718.1852322-2-fujita.tomonori@gmail.com> <aVRgTQWhqjKB6xpK@tardis-2.local>
+Message-ID: <aVT296MBoaSzYqAd@google.com>
+Subject: Re: [PATCH v1 1/3] rust: revocable: Switch to kernel::sync atomic primitives
 From: Alice Ryhl <aliceryhl@google.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Ke Sun <sunke@kylinos.cn>, Dirk Behme <dirk.behme@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Timur Tabi <ttabi@nvidia.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	John Ogness <john.ogness@linutronix.de>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Andrew Morton <akpm@linux-foundation.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@gmail.com>, Ke Sun <sk.alvin.x@gmail.com>, 
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, arve@android.com, brauner@kernel.org, 
+	cmllamas@google.com, gregkh@linuxfoundation.org, ojeda@kernel.org, 
+	tkjos@android.com, a.hindborg@kernel.org, bjorn3_gh@protonmail.com, 
+	dakr@kernel.org, gary@garyguo.net, lossin@kernel.org, tmgross@umich.edu, 
 	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Dec 29, 2025 at 04:18:57PM +0200, Andy Shevchenko wrote:
-> On Mon, Dec 29, 2025 at 03:21:19PM +0800, Ke Sun wrote:
-> > Export ptr_to_hashval() and extract kptr_restrict_value() to enable
-> > Rust code to use kernel pointer formatting functionality.
+On Wed, Dec 31, 2025 at 07:29:17AM +0800, Boqun Feng wrote:
+> On Tue, Dec 30, 2025 at 06:37:16PM +0900, FUJITA Tomonori wrote:
+> > Convert uses of `AtomicBool` to `Atomic<bool>`.
 > > 
-> > - Export ptr_to_hashval() with EXPORT_SYMBOL_GPL for pointer hashing.
-> >   This function is used to hash kernel pointers before printing them,
-> >   preventing information leaks about kernel memory layout.
+> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > ---
+> >  rust/kernel/revocable.rs | 24 ++++++++++++++++--------
+> >  1 file changed, 16 insertions(+), 8 deletions(-)
 > > 
-> > - Extract kptr_restrict handling logic from restricted_pointer() into
-> >   a separate exported function kptr_restrict_value() that can be
-> >   reused by both restricted_pointer() (for %pK format specifier) and
-> >   Rust code.
-> > 
-> > The kptr_restrict_value() function:
-> > - Returns 0, 1, or 2 to indicate the kptr_restrict sysctl value
-> > - Returns -1 for error case (IRQ context with kptr_restrict==1)
-> > - Modifies the pointer value through @pptr parameter when needed
-> >   (sets to NULL when access should be restricted)
-> > 
-> > These functions are needed for the HashedPtr and RestrictedPtr wrapper
-> > types in rust/kernel/ptr.rs to provide safe pointer formatting that
-> > matches C kernel patterns.
-> > 
-> > This refactoring:
-> > - Allows restricted_pointer() to reuse the common logic while
-> >   maintaining the same behavior
-> > - Enables Rust code to use the same kptr_restrict handling logic
-> > - Reduces code duplication
+> > diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> > index 0f4ae673256d..47cd2b45eada 100644
+> > --- a/rust/kernel/revocable.rs
+> > +++ b/rust/kernel/revocable.rs
+> > @@ -7,12 +7,20 @@
+> >  
+> >  use pin_init::Wrapper;
+> >  
+> > -use crate::{bindings, prelude::*, sync::rcu, types::Opaque};
+> > +use crate::{
+> > +    bindings,
+> > +    prelude::*,
+> > +    sync::atomic::{
+> > +        ordering::Relaxed,
+> > +        Atomic, //
+> > +    },
+> > +    sync::rcu,
+> > +    types::Opaque, //
+> > +};
+> >  use core::{
+> >      marker::PhantomData,
+> >      ops::Deref,
+> > -    ptr::drop_in_place,
+> > -    sync::atomic::{AtomicBool, Ordering},
+> > +    ptr::drop_in_place, //
+> >  };
+> >  
+> >  /// An object that can become inaccessible at runtime.
+> > @@ -65,7 +73,7 @@
+> >  /// ```
+> >  #[pin_data(PinnedDrop)]
+> >  pub struct Revocable<T> {
+> > -    is_available: AtomicBool,
+> > +    is_available: Atomic<bool>,
+> >      #[pin]
+> >      data: Opaque<T>,
 > 
-> ...
+> I actually think we should use Atomic<i32> instead of Atomic<bool> here,
+> because in most of the cases `T` is a aligned to at least 4-bytes (e.g.
+> Devres uses a Revocable<IoMem>) And in that case, using Atomic<bool>
+> doesn't save extra memory but makes the xchg() operation slower on
+> architectures that don't support byte-wise RmW instructions (e.g.
+> riscv).
 > 
-> > +EXPORT_SYMBOL_GPL(ptr_to_hashval);
-> 
-> I do not like this. At bare minimum we should make sure it's namespaced, so the
-> author of the code deliberately needs to import it (I'm talking about C side).
-> 
-> Ideally we should have something which is Rust specific, like
-> 
-> EXPORT_SYMBOL_FOR_RUST_ONLY(foo);
-> 
-> Can we do that first?
+> My rule of thumb for using Atomic<bool> is: when you really care about
+> the memory usage, and you can guarantee using Atomic<bool> is saving
+> memory. For a general "flag" usage, Atomic<bool> is not strictly better
+> than Atomic<i32> in most cases imo.
 
-We don't have an EXPORT_SYMBOL_FOR_RUST_ONLY(). The closest there is
-would be to place it in rust/helpers/, since such symbols won't be
-available to C modules once we land this:
-
-https://lore.kernel.org/all/20251202-inline-helpers-v1-0-879dae33a66a@google.com/
-
-But since the current file also needs to access this, I don't think it
-will fly.
+In Binder I believe we only use load/store with Atomic<bool>. Does it
+matter in that case?
 
 Alice
