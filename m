@@ -1,220 +1,247 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012008.outbound.protection.outlook.com [52.101.43.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9538F22A4EB
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 02:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767149235; cv=none; b=W9VuXG0VeIW1qlup++RiHlDqwbiPihWUUhVev3hIIYdwT9fItIHN3gOpLGOggEewi3dOR/j0XX5ZN+Cv+4KWEtIJA0n4SToVQOjsIkbe74nenezZEFn8ElmSekkI14ynLKYD2J+8KKk+IVO8bv7NwLGXADBpgIJj2qSVCrhOj6A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767149235; c=relaxed/simple;
-	bh=0fVXX+voIpql0I8fCStsqTetGeAiX/bzr8XzjM7IF/g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=afSfQKsGZjuC4l6O7b4oIyaw60ecZShEJF5V5nO0Rilpdkojo2O5pxoK4B2ar66Z7KW8THsC11EFyRNNUrjjP0EFxEoDrCfDzhCaBp9bqE5SQN0643Uk0o69Kbi3KVcdwUlNJ/bjsMUdgTKR678C5WOMHrLVq+KUd3PragFBEVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f9238646e5f211f0a38c85956e01ac42-20251231
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:63550717-5d66-4b77-b165-1d6a7ea3a299,IP:10,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:5
-X-CID-INFO: VERSION:1.3.6,REQID:63550717-5d66-4b77-b165-1d6a7ea3a299,IP:10,URL
-	:0,TC:0,Content:0,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:5
-X-CID-META: VersionHash:a9d874c,CLOUDID:27860da8b105feac730c1764eb2c38ea,BulkI
-	D:251229184428R5P54LA6,BulkQuantity:35,Recheck:0,SF:17|19|38|64|66|78|80|8
-	1|82|83|102|841|898,TC:nil,Content:0|15|50,EDM:-3,IP:1,URL:0,File:nil,RT:n
-	il,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,
-	BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_OBB,
-	TF_CID_SPAM_IBB
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f9238646e5f211f0a38c85956e01ac42-20251231
-X-User: sunke@kylinos.cn
-Received: from mail-lf1-f47.google.com [(209.85.167.47)] by mailgw.kylinos.cn
-	(envelope-from <sunke@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 171215156; Wed, 31 Dec 2025 10:46:57 +0800
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-59b25acdffbso5713122e87.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Dec 2025 18:46:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU+LYABv35pnTCVZvZi2XUKsjlxEDUovMd3y+IZBioDBxbCee1pvLc11YaCAGjcD1qWGJIDsjzljAWeuurBCA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZArluAaoI5DLgkyEv3xlW0Ja9W9/Geo+zGgaSW8Ko4VdNGGdp
-	ET2Mcms8ZI9yyEAVM2aC4E9MMxLbmzjGRlmuXasJN0JhKO51wSRorcAV8BHapHJnTOK7gDiVhIG
-	6iPMQE4KuaB+/ZobnuzvLP1HtJnoWG4Y=
-X-Google-Smtp-Source: AGHT+IH3wrdobX0/xCUCUxfH/FiqCOvhf8qMGoGUQsAuehn/B7xPFUfGbeGqGzHjq7MxexJCbZ9DCrtvNc7xUQym0i8=
-X-Received: by 2002:a2e:a7ca:0:b0:37b:9b58:dcf7 with SMTP id
- 38308e7fff4ca-3812162164fmr103283931fa.23.1767149208934; Tue, 30 Dec 2025
- 18:46:48 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022822C21F7
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 02:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767149944; cv=fail; b=Pg5NZZlKQPR3shsLNrZaQYdTv906jMGnTHVokwIGPhcVftMt1k/WaHckx90zT2eWaKrmi1WF8RP+U/ijfMOSdPrPTYOyX1Ut8xIobEDX/cVpOn3w3Nhzn2MGxun2etwgZaFR4QvZ6YvR+0OnR3VjPHrGwJhrIQ9LyxGKxiXCxFo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767149944; c=relaxed/simple;
+	bh=VIF9kRE1r5x5XAyy3hT3Qt6NVM7uFe9byEn+HsUpd6k=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ElDE59niVR+sl4DRO2lt5lzNf4JXMFLdccwAE75UHRtFlvS9lP0pV9akOUBbcx0Z5jSJ0MeJKtPaHubuBULdcVfp5LpNB32/Nwh0HBSXavyXx9FHwue0bf/OVol3WoQfAScnxklJDeFrdwDDi98VolgQH2KvgdnVWS6vV+YL0+A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=B/J0udFs; arc=fail smtp.client-ip=52.101.43.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="B/J0udFs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=x7BIjhdV1KzWDzfwTP3aKY0JeP985QiZ9rdAOJC0ykt3bA9gbRnxQT0kTQDomqPHdyL5zWQHysF29X+OczMEf2oC4s5liBx6M1Lvo2ZGsVKj4U6S9P/DN8oESqMauU8kHBBzqZ52q36m7b3IFMxZc6T3D6AO5MCiV5lmdKNK3A1gysat3CjT/EcqKmG7iRRNChZha6uV3hOT7INu6NoTTq+eIp6fCPs1ye81zlnHVuO8iz5tUKr83/3GczsKCoZBzFQHtvaVZpx3xqCWWFnaxgHuMxkFdwNWZkaH1unkOkZWLlP9rxezxvDhNS2hCmUeseFUjcgtqO2CxIuDRBWxrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oAWI5ErDc3oBtzSrebzNfx54mJ1t9hUznTNSojwxYoI=;
+ b=dMiV8Lq6N15sG7iqmzTK0bUNFg+Y6Ag7fWGMfFURNV5lZrPDm5i4DbAKeJZHQh3qqYvFp9MbBA9MjPCVF0ZhyRZHXcvxe98g/+9XAd6PRy2xM6oHZ7sqd/zTp7J+yOcVJn6aN3zWyW3ixh8uLlEbURNnzTbtoUkxmLLJbSXsdts5nOK5Do65xFnCYE5ghixeHx8RLvj42aWHizTIsM5GDNHqVsdNV95MGEfjM2b73oBNGiVVrbkCxzwG/DW6mz97WiklKGAcrzoYzEbVrFG4wGrAGp5DqbbLxEfUcA5iBgBqYgWnDN7JvKavZrussVZalhOvrRqBvLi8ch81/9kQLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oAWI5ErDc3oBtzSrebzNfx54mJ1t9hUznTNSojwxYoI=;
+ b=B/J0udFs5hYhiaJY9OgmHUwZHsauOLqZ2n+cJCrgYTRe95FpLGAUWiIYI+inyNhK1o207WSFa5fUqXmr434Nd9cFDxxnk6Vuhac7RLM1qj8m/UTRxZyQElphPJklm2FkPrFv1e5t99o1gj7oEawH9qXPyTm5SSMLzlXeG2JO60jWkUk/7gQrwS74Q39Y0r6d8DPpdo8vCDC67r8imPk6DTCd+25iPEVW77X5S2U4wIFdFmsSRJjWMhiWu+QcMxF57WtF6ZGLDjS92v4Jq6PAFSodb1bJ7+x2irrtU0s12ljArRjmULjS1z4rWPig5LUAWt9oxb4LKLWDvtRfqJ+Rug==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ MW4PR12MB7016.namprd12.prod.outlook.com (2603:10b6:303:218::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Wed, 31 Dec
+ 2025 02:58:57 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9478.004; Wed, 31 Dec 2025
+ 02:58:57 +0000
+Message-ID: <858af758-e5a8-4c9e-99ed-65ddffef4c31@nvidia.com>
+Date: Tue, 30 Dec 2025 18:58:46 -0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/11] gpu: nova-core: add Turing support
+To: Timur Tabi <ttabi@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, nouveau@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org
+References: <20251218032955.979623-1-ttabi@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20251218032955.979623-1-ttabi@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0225.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f::20) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251229072157.3857053-1-sunke@kylinos.cn> <20251229072157.3857053-2-sunke@kylinos.cn>
- <a8a08f6f-dd3b-4498-8fb2-f91934683288@gmail.com>
-In-Reply-To: <a8a08f6f-dd3b-4498-8fb2-f91934683288@gmail.com>
-Reply-To: sunke@kylinos.cn
-From: Ke Sun <sunke@kylinos.cn>
-Date: Wed, 31 Dec 2025 10:46:37 +0800
-X-Gmail-Original-Message-ID: <CALpAb9MoT20Ch4pe-oMz8kpqaZsvmgNwPk1XSC+faZi7huwQKg@mail.gmail.com>
-X-Gm-Features: AQt7F2pLj8lCGS6GviyIg30WTcnQVaX539gcIYs5itckHgC5Y0RUp29T8MFnqBY
-Message-ID: <CALpAb9MoT20Ch4pe-oMz8kpqaZsvmgNwPk1XSC+faZi7huwQKg@mail.gmail.com>
-Subject: Re: [PATCH v7 1/4] lib/vsprintf: Export functions for Rust pointer
- formatting support
-To: Dirk Behme <dirk.behme@gmail.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, Timur Tabi <ttabi@nvidia.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	John Ogness <john.ogness@linutronix.de>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Andrew Morton <akpm@linux-foundation.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|MW4PR12MB7016:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5510d6e5-a91d-435a-0129-08de48188a7c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?U1lOUEQxajRVWW90MzlVMmtCaG8rOHJuc1BWVEsxT1FtYUJFdmRuYVlsbDZo?=
+ =?utf-8?B?RGNvYlp0cVNzWDJnai91VVJGUjlKTkZWQ1JDejQ2c25EeUtHVzFNUmgyOHEy?=
+ =?utf-8?B?U25ERFJQNCtvd2dqY29zVlAxZTQ4NzFuWkpvMXpRTWRqODE2RTNJbCtFREtQ?=
+ =?utf-8?B?WlozZXd6TzZMRFZhODladXdsVjJ1M2pqSEJzVjd0czBicmtvUzJmZ0FYekhG?=
+ =?utf-8?B?bkRIa2NUSFNQbGtXK0hCclFPcVZ5MmtkdEtjVis1Y1B1ckpQbkpmUmpQUnpL?=
+ =?utf-8?B?SHkxbmtYckJJckM4a3R1ZEYzOEd5ajhqV2k4QzdBSXFjcGlyTVNkNmJWcWtB?=
+ =?utf-8?B?T3hNclo1WDRra0FZUHpIOThBMmpxWG9UUlB5UnlKTldQbkVQS2YzRVRvSUth?=
+ =?utf-8?B?bnB4bkJjZk9BOHpCbjd4VXROZFRTMWpnU2VLeHJweG9EeDcyd3hrTTNMWkNX?=
+ =?utf-8?B?SmoycElnNkRzamxZU1lrVWQzOEVzSUQyelJEVGN0bTFiQ1hIS09Lc2xlUmVm?=
+ =?utf-8?B?STVZNURvelZsTUdFL1ZJejBBTytwUWZqV1ZjbE1lSE1QM3JEUWFLbjdSRXh6?=
+ =?utf-8?B?Wnc5ZFF5ZTJCWG01bG4yRzR3Q3QyRXBlU3dtSjM5SGFydE15MTQ3ZElVaHhk?=
+ =?utf-8?B?ZG85cGpHWm16QVI5TThnOHVaUDA2NWRJSTBhcmoydFArcW1KNW1pYm8rYVRl?=
+ =?utf-8?B?WTVVM21SK2Y5SEFkb2Z5eHlJbFJ4b2R4MXpoVG5sOHZKY3k4ZGJxVU1sRWlK?=
+ =?utf-8?B?RUJkUHRpdnY5c0RlcnU4VkZBSnFDT2E2R2xqZ01Jb3o4N1BUa1lPbXZ4L00v?=
+ =?utf-8?B?VklKR2FuempZUlVhZVdha1ZBWTUrZEVtaTE2SFA5K0kzcFBlcEFxR0hibkxV?=
+ =?utf-8?B?UDY5SmhjSS9OWDYvTVBBNVFFaTZBbjJlc0wwRGNLUk1hZFhqMFcyMUY0UkJS?=
+ =?utf-8?B?a1kyTDVTTkNNL20wQTJCeXJLVGZQSlMyemVyeURBMTlEa01XdDNnbHZZS1da?=
+ =?utf-8?B?OHh6aERJOUxwUDN4WDF1TmJHSEEydWpmcGhaVHc1SEh6b3pDaWx0WXFycGJm?=
+ =?utf-8?B?MHNCL3JCbnVFQWxwbnBlOVpldkI3UHc5OGlVcGg0VXhWMUE5K045Y1pZa0NR?=
+ =?utf-8?B?SlRHZW5yNFVWNFI1dy9RbVJ4TThJK3M4NWpaRkhVc2VqTTV2ak43NFVucnNO?=
+ =?utf-8?B?dU9hc2NBaDQ1YUFKYzQzOFlNaUZ4Qk5PSnh1OVZSZVI2d1RDUGhPcGI1cm9B?=
+ =?utf-8?B?Vko3eGp1cnIwRHN1QWpWcHVYUWVJYXU1OFQrZVFQaXlBYmVRbmh3RlR3NXlE?=
+ =?utf-8?B?Z3FQUGtNZWtmVENtVVAwV24vWlVaUENUdDI5S2tQQnpPdmE0RXczOTFnRDRX?=
+ =?utf-8?B?NkRQN3pFaFNvb2llZnpiL2lsaWkvSzlOazF0K2h4V0h0WmdwL2tSWThWc3FS?=
+ =?utf-8?B?QzB3Q1pLQ0JNQ2RXbjNMUHBQa0t0eE1nWDBEMkdHN3hYcktsREF0aHVEUFlV?=
+ =?utf-8?B?L3NNUVJCeXdwSXJyVHByNWFvTDN1bkxXZlgzK2I4dHBDYXJla3JxQ3RrNFNx?=
+ =?utf-8?B?dEg0eWRhNmR0V2F2Y3UyK3c1T0Q1VHpDc2doaE9HdlFwODZiOCsrSllkWjZZ?=
+ =?utf-8?B?eTY4cWFwcGU2TCtMdUxJZDF5TndJVXlZYkdOMERka2lvSzJQVVNHckM2Z0lx?=
+ =?utf-8?B?azZFZ2ZiY1JpZVhFOUdtMDB5OFJGNDdhUFBsOE5nSGN4dE92NWo4bS9obkt1?=
+ =?utf-8?B?Mm1DSmUrUjQwcDhYSUYyOTdMTkR3aUVRWWdmb1Y4NkxpSTNqZithaDQ2WGkw?=
+ =?utf-8?B?MXlCY09IQkk0WjlaOVJqM2x0a2hWcUJ4OExSNFprdjI0cS9XUGV1bXZtV2Rv?=
+ =?utf-8?B?QkI2ZUlKRWwzUnlYRWphWnBqeFRZNTJ1UkYzVGlKU05uU0lRRUE4VFRzMmFs?=
+ =?utf-8?Q?UKFojTiNtDreFETCGuxl8VRKfCD8r8eg?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?LzIvNEtjWkhPUjErT3FpRGdkOUVlSkY0N1UzVStKT1VjME9FVzNlaEp0d3Fz?=
+ =?utf-8?B?RzNjUHkrUkdGOGpoQS92ZzJlUjZ5ajVORjNhM0ZoaDVIOTJQaWhDSkQ5aHpI?=
+ =?utf-8?B?dmFxdmQyVGN5aGk3YmhqWFUrRHlvdzVVc243eGplSDhQT2JTbDNMM2JNdlM5?=
+ =?utf-8?B?WmpRTXpWUzNLQXZRcnZENjkwSkx3L0VWQWIvRkVZSWxqMHdsdmhvclJITVBX?=
+ =?utf-8?B?K0FsT1d6THBJT2FXUWRTZTZjb25IZmNyWDFESDJIaGE2ZUdSMjhRWmZaQXY0?=
+ =?utf-8?B?TnF5YUVoWER3ckk4OGRHZ3JJOGJqcXJaSEo1RzNuQXZ4cXpIdUJjZndTVjhY?=
+ =?utf-8?B?TDNYL1FYMnMxY21WZWhJemtzWlRxNmhvWHBPWkl4Tlg4ZTV2STRBWVpiV0pu?=
+ =?utf-8?B?eWF5R3BGUkw2cE5wckZGQkV5K1pNV1JrblhicDBZako5eHdWNCtvTHFIQVdN?=
+ =?utf-8?B?OXlaMXM0R2lHSWJ4dlhVSk1qMUMzYW9tU2FLUWQ5V2g1UmE3SER4QlM0UzM5?=
+ =?utf-8?B?WWtScEd0OHJEWXVRYW1mRDVLME1SaGtmSzJvMmFJVUg0NVhUWE9Cck55cHow?=
+ =?utf-8?B?T3R4UGRBOHF0TEJ6NlR5bmRqQSttNGRQbGJaNSt0YnBhMnVqY1U2THA4bkEv?=
+ =?utf-8?B?Y2JHd0FZUFZ4MGJGdHRTQVpaOTdpT21zb1ZjVmdNV3VuMGtHY3hlZGdpUHNW?=
+ =?utf-8?B?RWJyNWlmcmFIcnRYSE5rRDAyRURyU2pkNWYrQ042NHpLL2NTbjUxM3BjekpK?=
+ =?utf-8?B?dWFTUXduV1lCNWcwSnNFa0laeXJjc05QWjRUNjNzWkd4OVVHTmErRHlhMGJs?=
+ =?utf-8?B?TTN0ZWkraDhDNHFhWEJjajZhNGIwL1VMSlJsWTFtcWUyNm5BeXpCMWpWWlJ1?=
+ =?utf-8?B?ZTJQVkVWZlZOUlFiK2Y5aWI3aiswWE1ydHVlR1RxTEorak5tT1lGdWhVU2hn?=
+ =?utf-8?B?VnNFUittaWZpaFFoYzIvZittWitBQlFFZ0JIYWkzQ0lHaXNOcWlWbVVJTE9z?=
+ =?utf-8?B?ZFB0c2F4NnU0UHRHM0h5OWYxZjBQSktoazBiZEs1Sk85bmxtSWl5c0NBdTRw?=
+ =?utf-8?B?bEFsWVl5WDE1VWg1eUhEMXdHSXQySlR1dGRicy9IZ0g2azc3RHJyZjlzOGVB?=
+ =?utf-8?B?VGNWdWNoRE5WVUV5YWQ0MzRsaXdlOGVZYlhDTUtIZDc3L0FKNGNtZHNmeDBm?=
+ =?utf-8?B?c3NBeUtNQXRaNktNWi9vV0dVaU1FbEw4TThKR1c4ciszZmhzSVBkMjBsN0M4?=
+ =?utf-8?B?U3pMVkxic3dqdzFOcG5GbENTVWt4RCt3NnE4amxuY1RNNGNZTGhwNktrdmF2?=
+ =?utf-8?B?UVBxM2Ria3BWNDN5T1d0WXRtZDVjK3hqMmVjZDZpL2RaVjNKU3h3Y0RYcG5U?=
+ =?utf-8?B?d3pCeHVpdXRxelZpdVcwVWZRMzVrem1qTW9LNlFTaEkwVGU4aTJaQVJsVXRE?=
+ =?utf-8?B?T1dTV29FZE9FNWI1QjhUSjkrZjdyVEFObDYxdi9QVVBXRXFrR2tGR042NzZx?=
+ =?utf-8?B?K0RzclBXUTBFeUNmbEtuKytidXZSYmVwd0sySUxzN2cwZ2I5eGcxTzI3Qy9S?=
+ =?utf-8?B?SGUzSGxlN1p3ZXhmQWJxei9rditUSkZuYkh2VUh6NkdSYTNXaUtTSFdsL0li?=
+ =?utf-8?B?U09SamI0TmR6WUlrTUhrWFV3MEszc0JOVVFUSVJnd0xpNGs1Qk1TbFRZMFRo?=
+ =?utf-8?B?UTliV3pmc0ZMdzBsMU16UCtNY2pJL3V6SFRHWkZXR3VVRHZtanBkdTlvM2ph?=
+ =?utf-8?B?VzU1ZWtjcUdLOHdud1EyT0Y1REhsZ2dWbHphZjkvUTQvR3lQYy96azdldzA1?=
+ =?utf-8?B?WVlDYWpNUFhDczNERTBIVTJXbyt2c3BycTUrcE9VdzN2eW5NZzFmYWg5M3ZM?=
+ =?utf-8?B?bU1SRFJjZGxZWEpsVHdqVmJSUjNVcFA0dmZMSzMxMXB6cXdqMVFwT2N4TnlJ?=
+ =?utf-8?B?QVVPdVpjWmZ4cHNEa3NXMnhSK1VUbmFGNHFVVmNpaDl1QittWXdMbE1iMUN2?=
+ =?utf-8?B?OVp3STNCeU91dVNNTlY3eWIwRDVUWUg5M2pkczJzNzFjL0N4TE52MTlxNUJk?=
+ =?utf-8?B?QnVtTU42THYzUWVhT3Q5eFJBdncrS3I0MFN0Vmp1dDZNSWYrUlpCZWtnSlFV?=
+ =?utf-8?B?czRBb2VFczBPMDFyS1lXZkRlNTExQ2l1bFV0d1U1SitPSWkxd3BwUHJQcHhj?=
+ =?utf-8?B?eDlnMDdWT1hROEJQVytEVVk4M3pRclRjUlBzR3NlOWkxQlptUjBvU0ZIMlpk?=
+ =?utf-8?B?Q3JrN2VaNE55dTRKNllMWkQzYko2OXJ4MERZcFh6NXFEd09oMExjQVRBd1Y1?=
+ =?utf-8?B?bVNYT3YxaFBNY2R2enVLK29zdE91Y3BHMnhmZlRST2hidWMvRHk2dz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5510d6e5-a91d-435a-0129-08de48188a7c
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Dec 2025 02:58:57.5152
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: p/SBSoalZuA5gZzE7i9UnCVhghpP/7Zkn1msrAM2O8ufcChNqUF8Wz8XtKITvGaxF7P+AEf/ZbGo5Ir2zXuFqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7016
 
-On Mon, Dec 29, 2025 at 6:44=E2=80=AFPM Dirk Behme <dirk.behme@gmail.com> w=
-rote:
->
-> On 29.12.25 08:21, Ke Sun wrote:
-> > Export ptr_to_hashval() and extract kptr_restrict_value() to enable
-> > Rust code to use kernel pointer formatting functionality.
-> >
-> > - Export ptr_to_hashval() with EXPORT_SYMBOL_GPL for pointer hashing.
-> >   This function is used to hash kernel pointers before printing them,
-> >   preventing information leaks about kernel memory layout.
-> >
-> > - Extract kptr_restrict handling logic from restricted_pointer() into
-> >   a separate exported function kptr_restrict_value() that can be
-> >   reused by both restricted_pointer() (for %pK format specifier) and
-> >   Rust code.
-> >
-> > The kptr_restrict_value() function:
-> > - Returns 0, 1, or 2 to indicate the kptr_restrict sysctl value
-> > - Returns -1 for error case (IRQ context with kptr_restrict=3D=3D1)
-> > - Modifies the pointer value through @pptr parameter when needed
-> >   (sets to NULL when access should be restricted)
-> >
-> > These functions are needed for the HashedPtr and RestrictedPtr wrapper
-> > types in rust/kernel/ptr.rs to provide safe pointer formatting that
-> > matches C kernel patterns.
-> >
-> > This refactoring:
-> > - Allows restricted_pointer() to reuse the common logic while
-> >   maintaining the same behavior
-> > - Enables Rust code to use the same kptr_restrict handling logic
-> > - Reduces code duplication
-> >
-> > Signed-off-by: Ke Sun <sunke@kylinos.cn>
-> > Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> > ---
-> >  include/linux/printk.h | 10 ++++++++
-> >  lib/vsprintf.c         | 55 ++++++++++++++++++++++++++++++++----------
-> >  2 files changed, 52 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/include/linux/printk.h b/include/linux/printk.h
-> > index 45c663124c9bd..91380b1eff1a1 100644
-> > --- a/include/linux/printk.h
-> > +++ b/include/linux/printk.h
-> > @@ -385,6 +385,16 @@ extern void __printk_cpu_sync_put(void);
-> >
-> >  extern int kptr_restrict;
-> >
-> > +/**
-> > + * kptr_restrict_value - Determine what pointer value should be used f=
-or %pK
-> > + * @pptr: Pointer to the pointer value (may be modified)
-> > + *
-> > + * Returns:
-> > + *   - 0, 1, or 2: The kptr_restrict value if pointer should be used
-> > + *   - -1: Error case (IRQ context with kptr_restrict=3D=3D1), *pptr u=
-nchanged
-> > + */
-> > +int kptr_restrict_value(const void **pptr);
-> > +
-> >  /**
-> >   * pr_fmt - used by the pr_*() macros to generate the printk format st=
-ring
-> >   * @fmt: format string passed from a pr_*() macro
-> > diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-> > index a3790c43a0aba..29d2e681c6e73 100644
-> > --- a/lib/vsprintf.c
-> > +++ b/lib/vsprintf.c
-> > @@ -811,6 +811,7 @@ int ptr_to_hashval(const void *ptr, unsigned long *=
-hashval_out)
-> >  {
-> >       return __ptr_to_hashval(ptr, hashval_out);
-> >  }
-> > +EXPORT_SYMBOL_GPL(ptr_to_hashval);
-> >
-> >  static char *ptr_to_id(char *buf, char *end, const void *ptr,
-> >                      struct printf_spec spec)
-> > @@ -857,14 +858,28 @@ static char *default_pointer(char *buf, char *end=
-, const void *ptr,
-> >
-> >  int kptr_restrict __read_mostly;
-> >
-> > -static noinline_for_stack
-> > -char *restricted_pointer(char *buf, char *end, const void *ptr,
-> > -                      struct printf_spec spec)
-> > +/**
-> > + * kptr_restrict_value - Determine what pointer value should be used f=
-or %pK
-> > + * @pptr: Pointer to the pointer value (may be modified)
-> > + *
-> > + * This function determines what pointer value should be printed based=
- on the
-> > + * kptr_restrict sysctl setting:
-> > + *
-> > + * - kptr_restrict =3D=3D 0: Return 0 (use original pointer, will be h=
-ashed)
-> > + * - kptr_restrict =3D=3D 1: Return 1 if current process has CAP_SYSLO=
-G and same
-> > + *                       euid/egid, otherwise set *pptr to NULL and re=
-turn 1
-> > + * - kptr_restrict >=3D 2: Set *pptr to NULL and return 2
-> > + *
-> > + * Returns:
-> > + *   - 0, 1, or 2: The kptr_restrict value if pointer should be used
-> > + *   - -1: Error case (IRQ context with kptr_restrict=3D=3D1), *pptr u=
-nchanged
-> > + */
-> > +int kptr_restrict_value(const void **pptr)
->
-> Would it be an improvment to not modify the pptr itself? But instead
-> to work with some kind of in ptr (not modified) and out_ptr (returned
-> to the caller then)?
->
-> kptr_restrict_value(const void *ptr, const void **out_ptr)
->
-> And an enum for the result? With something like
->
-> enum kptr_restict_result {
->   KPTR_RESTICT_ERROR =3D -1,
->   KPTR_RESTICT_NONE =3D 0,
->   KPTR_RESTICT_PARTIAL =3D 1,
->   KPTR_RESTICT_FULL =3D 2,
-> }
->
-> What would result in something like
->
-> enum kptr_restict_result kptr_restrict_value(const void *ptr, const
-> void **out_ptr)
->
-> Opinions?
+On 12/17/25 7:29 PM, Timur Tabi wrote:
+> This patch set adds basic support for pre-booting GSP-RM
+> on Turing.
 
-Given that fully implementing all %p format specifier extensions would
-require substantial code changes, we're considering converting Rust's
-Formatter to C format strings at the Rust layer and directly calling
-snprintf. This would allow us to reuse the existing C implementations
-without modifying vsprintf.c.
+Hi Timur,
 
-What do you think of this approach?
+I gave this a quick test on TU117, but it is looking for a firmware
+file that is not on disk.
 
->
-> Dirk
+Should I be updating linux-firmware? Or something else is wrong?
+
+NovaCore 0000:01:00.0: Direct firmware load for nvidia/tu117/gsp/gen_bootloader-570.144.bin failed with error -2
+NovaCore 0000:01:00.0: WPR2 region not created after running FWSEC-FRTS
+NovaCore 0000:01:00.0: probe with driver NovaCore failed with error -5
+
+
+thanks,
+-- 
+John Hubbard
+
+> 
+> There is also partial support for GA100, but it's currently not
+> fully implemented.  GA100 is considered experimental in Nouveau,
+> and so it hasn't been tested with NovaCore either.
+> 
+> That latest linux-firmware.git is required because it contains the
+> Generic Bootloader image that has not yet been propogated to
+> distros.
+> 
+> Summary of changes:
+> 
+> 1. Introduce non-secure IMEM support.  For GA102 and later, only secure IMEM
+> is used.
+> 2. Because of non-secure IMEM, Turing booter firmware images need some of
+> the headers parsed differently for stuff like the load target address.
+> 3. Add support the tu10x firmware signature section in the ELF image.
+> 4. Add several new registers used only on Turing.
+> 5. Some functions that were considered generic Falcon operations are
+> actually different on Turing vs GA102+, so they are moved to the HAL.
+> 6. The FRTS FWSEC firmware in VBIOS uses a different version of the
+> descriptor header.
+> 7. On Turing/GA100 LIBOS args struct needs to have its 'size' field
+> aligned to 4KB.  So pad the struct to make it 4K.
+> 8. Turing Falcons do not support DMA, so PIO is used to copy images
+> into IMEM/DMEM.
+> 
+> Changes from v3:
+> 1. Fixed Rust formatting issues
+> 2. Misc style changes as suggested by Alex
+> 3. Merged regs.rs changes into commits that use them
+> 4. Used Zeroable::zeroed()
+> 
+> Timur Tabi (11):
+>   gpu: nova-core: rename Imem to ImemSecure
+>   gpu: nova-core: add ImemNonSecure section infrastructure
+>   gpu: nova-core: support header parsing on Turing/GA100
+>   gpu: nova-core: add support for Turing/GA100 fwsignature
+>   gpu: nova-core: add NV_PFALCON_FALCON_DMATRFCMD::with_falcon_mem()
+>   gpu: nova-core: move some functions into the HAL
+>   gpu: nova-core: Add basic Turing HAL
+>   gpu: nova-core: add Falcon HAL method supports_dma()
+>   gpu: nova-core: add FalconUCodeDescV2 support
+>   gpu: nova-core: align LibosMemoryRegionInitArgument size to page size
+>   gpu: nova-core: add PIO support for loading firmware images
+> 
+>  drivers/gpu/nova-core/falcon.rs           | 246 +++++++++++++++++-----
+>  drivers/gpu/nova-core/falcon/hal.rs       |  17 ++
+>  drivers/gpu/nova-core/falcon/hal/ga102.rs |  47 +++++
+>  drivers/gpu/nova-core/falcon/hal/tu102.rs |  77 +++++++
+>  drivers/gpu/nova-core/firmware.rs         | 181 +++++++++++++++-
+>  drivers/gpu/nova-core/firmware/booter.rs  |  43 +++-
+>  drivers/gpu/nova-core/firmware/fwsec.rs   | 215 ++++++++++++++++---
+>  drivers/gpu/nova-core/firmware/gsp.rs     |   4 +-
+>  drivers/gpu/nova-core/gsp/boot.rs         |  10 +-
+>  drivers/gpu/nova-core/gsp/fw.rs           |  24 ++-
+>  drivers/gpu/nova-core/regs.rs             |  53 +++++
+>  drivers/gpu/nova-core/vbios.rs            |  75 ++++---
+>  12 files changed, 864 insertions(+), 128 deletions(-)
+>  create mode 100644 drivers/gpu/nova-core/falcon/hal/tu102.rs
+> 
+> 
+> base-commit: 60c7398bded2e11f0db40a409a241b8be5910ee2
+> prerequisite-patch-id: a3e23917ec535263604af95194422382f14c2f21
+
+
