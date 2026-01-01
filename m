@@ -1,184 +1,148 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4381E25C704
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Jan 2026 01:13:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983C31A3029
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Jan 2026 01:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767230024; cv=none; b=I2H+yrU1qk47EaSKUP6C692NuJx3VrYhTQcBU4OjXh2/ahYiepIOCWOBWA2z8uRz9boxJb/KMkEPbixg+lYNVWKGVoR9ulA0B178vKzDmRajqoG7xL87Ffiz2wtE20slVLO8fkdl+JYI9T+WycdASvMhr1wK0cjenUuHFRh0nfM=
+	t=1767231821; cv=none; b=nfjOaOXeencilARAXrSKS+VDxZm6qsutIF0a96Bt5syeDAStsvR+5us1YqjroEVvZsfbth0tPRxXHi0xBitkLfjeRZ1uj+S5VCED4hXSngh6KFnR5n6ecEW+vNRptq/AKEWtmXu0FqKj0ifl1gFZruz6MjF823rvH4KH9LbjKLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767230024; c=relaxed/simple;
-	bh=WW9T6v83YpHrdRU6GxDyOasG1bC9q4PJavZbqVhfXcs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qjBnzgoIFutHz1lU6ZMQjTKjPtkk0mLzd9VpE/dYn7AGRTrJnLjvWLi/y+fGGLvQEQnBngiS1P1YOrYykibzC1PVdcx+gco/lK7wTZew9+wqVxaFCejcA9WveB5pQI4WU9UVUMPjtlPgN0As7tSLYk5OVOEHH+Zziv8U1g7I+LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d9cdXSKs; arc=none smtp.client-ip=209.85.160.179
+	s=arc-20240116; t=1767231821; c=relaxed/simple;
+	bh=RMCYmC1Oubx8T9OX4HGP+LuRcopbaCrIKk16O1wTI6c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RdvP+SlhABV/QF3usKzD+SRzHwzk8S1k+5rS9QWLDuIAJtAMofYTLuFagEybyp5wULcr/l1tv2vhH42KkfGsJUHm9nXUakxf5V3Bq2jeaMocOHIjBRfUPmwdRnKQTyajiJsDd7vjUgO4UwVoWF66xK97GwZNXDUZ9Krv5xDWvAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ALPJOAIs; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d9cdXSKs"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4ed9c19248bso95796131cf.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 17:13:43 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ALPJOAIs"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-37a3340391cso89582561fa.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 17:43:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767230022; x=1767834822; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767231818; x=1767836618; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IrjRP9q8c0tglfIoe+XxWLIY8X9nzFBO0FXW5gpQW5g=;
-        b=d9cdXSKsyXys4TH9A/im43O8vTr1JMNwjD3BQoEyqz0w27o2T4KBXY40DPOYIwCnr7
-         xt8hspRhtt7vmhioknSbw8uZhGM5L7P5LC0kj7YoqATfjDG2v8px/0tD8atxQoZvoEaX
-         pF5HlLcoT+bUd9pUruVUtubGGVwtRpKpLHZcD4IoTFcus2WelSOepVom2i8BIG4aELOj
-         uduQAe0tIdPGfaLkGEOkS4JUki2cf98vtAKOT6EB37/I+B5EliUgAxTm8BSX5W17rnBK
-         6aFm0go7pC4qbaYo4ph9GV1luuAfZJzdh4t0MapZSHNB2ncn+NEDh+Am3B5+mAlr08Lu
-         TlGg==
+        bh=gCE7uUSE9sjZ0PtrMGueCDZmvLDiSF0FwCCrGBTq3pU=;
+        b=ALPJOAIs4gHwA0ffxn2Lshc6wcn0mehlrNDpUlf9Aw0R1OwObctqGygkXy3Sy0cIcH
+         2nlbffH3OCdCRa2l6dWV9ydYkXu+vjig4UBqkFbuv+8Q/KH9mfoqItZsVTLebwOxR+rK
+         8J2FfVJxHfekVpG4XB99m4xB3YZ3xh3udla7s6q0mp1+ck5U26+DaNTJVnfcFIh1EOOp
+         h7+EJmxYlJr5R5MyuFVuRFQecO6+AomCd+C6vm5e8ypUJ7jMHKhQZpUuXaiNQBQ6lP6D
+         h4hLgi13JuhLTGcRxxna9vECe15Rf3SdxAqyUoC3lGED5p7ILNb670MLrQxYjMl7LBRy
+         +TCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767230022; x=1767834822;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1767231818; x=1767836618;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=IrjRP9q8c0tglfIoe+XxWLIY8X9nzFBO0FXW5gpQW5g=;
-        b=RYQfIt0n8SsGqklxg+yNJtByyj3JIbzpDSQjBXTR3IBAFld1aqDJrjUUvb2ZkMSO8F
-         ls0MsNYBN9mIuqBVc/AYhHrq6xJs9UnI0EBkJxDY8YBkudNKq8Cn/dJBOFT0jJ6sVjRA
-         ojQghV7MajQlQw5Yijh++CNVlpM/ERCeO/rWgY1w3/16ARlVRf0bSQ5EA3fS5z2Zv96i
-         eVLG1ovTvWE9l8rTbbnKHw9IfQ1A+cqaBp+51FJz5TlnjP8Zxe0tkb8r3MveMEnKxBDI
-         WnKitPdULFnt7Wef87Vj90RHjStE/+JSjjwyJ2fFYNxKjYZRvwtwH4vn071AV+BDkSPy
-         dDAA==
-X-Forwarded-Encrypted: i=1; AJvYcCWEYDQfCDEpZdQzxDHYNF1exPeM87kPLskmj443EH067/PgQ3xSFlymatUlH6AlSnv2805EbF/I8znLvFTXbQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yypn5FvqCn01DR5okvOtfaUX1vAmtXJWzUsDa07COjHPyBGgOVI
-	0hGE1YQw367RNX6VFUm2yO0xo1RnwieDQUvz2ILsXON6BUtmDx0NBppU
-X-Gm-Gg: AY/fxX7kULBd5z0oZP0C2OVjZJuCMRWGUO519J883Mojv6UwFWpdiS3BNchiiCa4LKS
-	MVLIRMH6liBb1sUipeMs4yrr0esQQdoa9QL1d3v8q4J6p6IqLyhhG3lgUSAp4Hxpsui3v5w/YYT
-	+UbCZk/9kbLFrOCN/0sT180Lhvmy4844RbfAWa9fv0PIW1H1OHzA/MG6tdw6jXkN8nNs6rpszMM
-	KVxjLhWwK5+FGhB+I3NocjUwknIPsztlTlYqMSAv2nH+P2bKN6oVbxoPqNWXFb7CoTl7+YVzz1h
-	+EPBEgkCePpY8/RaY9UWlfSoyVqP4yssPgEH4rDXFbUDbd2Jt1z7Uwd+XvdpsYV7xNNNWDLsOpZ
-	oi11Sk99c4mQ6CTLPBxYUvO0CX5xZoLTgwofJ0P+y+JtRj4o1u5DuGHg2SGsErtrhwpcSmXYTyq
-	s/eqPyPLJkBEj3RsVZ++8drRgD8knr3S9+u7Jh7PK3C2qFjHDOxscbp5mjR8XAkxF+snMBeF75Y
-	qXgsylGIsBmshU=
-X-Google-Smtp-Source: AGHT+IGqbWQCQzh9nbyhwAaF7d7/2+0PkqXfRpFE3/XyT4YpnYVUp5bmjdZmquhjJvald9WQ52Pa+Q==
-X-Received: by 2002:a05:622a:4295:b0:4ee:bff:7fbf with SMTP id d75a77b69052e-4f4abcf6ad2mr546707501cf.4.1767230022154;
-        Wed, 31 Dec 2025 17:13:42 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4f4ac65344bsm270256121cf.28.2025.12.31.17.13.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Dec 2025 17:13:41 -0800 (PST)
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E4468F40068;
-	Wed, 31 Dec 2025 20:13:40 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 31 Dec 2025 20:13:40 -0500
-X-ME-Sender: <xms:RMpVadPHBw4HBWMphwZq1pgT5fJC3CPbmHQdu9lumn0k_7tYA_K5Zw>
-    <xme:RMpVaebD7MRte1FUx824DzyNRDhFHHs5jKY1c49B8N_xNeevq0B9BQWiJqISO_B39
-    gw_jYgNYPWjNbzD3VMqTucRL2adjXPXpe_QWRduAlkODRVoIHm-JQ>
-X-ME-Received: <xmr:RMpVae68p8xT8IdkM28rMzPeCmKXgzEK_Fu8NZtRu9S-Y5HsM8UQOPoHTAc0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdekgeegfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopeefvddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepghgrrh
-    ihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtth
-    hopehprghulhhmtghksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrihgthhgrrhgu
-    rdhhvghnuggvrhhsohhnsehlihhnrghrohdrohhrghdprhgtphhtthhopehmrghtthhsth
-    ekkeesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnmhgrghejsehgmhgrihhlrdgt
-    ohhmpdhrtghpthhtoheptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomh
-X-ME-Proxy: <xmx:RMpVaVBbBnEmsQiqDEJQI5Vp0m45h3JWVi6J1Pr1FKmD2fDWfoTQfQ>
-    <xmx:RMpVad6o7wE9nCfGGPHsTn7JE1D5TdpllKBohOy44er65HeDGb9yTw>
-    <xmx:RMpVacLbQ_HpVXpiYbyGWy8IQvxsGN4hN7_-_vbGrAjs-x6Qe3tfAw>
-    <xmx:RMpVaZyYzNE9MuelcekvFHC5-yl3HGyzOTwnMf1gpdHCRpnXK7Rjsw>
-    <xmx:RMpVaUG0QewaINsxwC5mQQPkaOvDexnwM1B5CSPYFOpTguWdmMUW_fdb>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 31 Dec 2025 20:13:39 -0500 (EST)
-Date: Thu, 1 Jan 2026 09:13:35 +0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Gary Guo <gary@garyguo.net>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,	Magnus Lindholm <linmag7@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,	Danilo Krummrich <dakr@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,	Lyude Paul <lyude@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,	rust-for-linux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 0/5] Add READ_ONCE and WRITE_ONCE to Rust
-Message-ID: <aVXKP8vQ6uAxtazT@tardis-2.local>
-References: <20251231-rwonce-v1-0-702a10b85278@google.com>
- <20251231151216.23446b64.gary@garyguo.net>
- <aVXFk0L-FegoVJpC@google.com>
+        bh=gCE7uUSE9sjZ0PtrMGueCDZmvLDiSF0FwCCrGBTq3pU=;
+        b=vuV9qMMcu3wrU5sys6R3/UapL+tkdIGGg0Anl5bWs6Yk+tmuybi2vKmwDe3gbLOoOe
+         D+ZkKGSxT6/le0un6z072QdrF317aqnHnuXZjWz1MGQyBkh6mKFKR6DlvZ3p5bu3PNvB
+         YOrpMxTG0Rexzhitc1O0EVoauNw+IbWDOf/M8fZcj9iJCPRR0IOV7hjsFkDiIoSDoyBe
+         0jGy6Mwkqqpu/kxL8SPoXI0yubXZueygYGMAtpEk5rzg6U2jIEdPgClAnJbJp8nIp8Rr
+         IsEVTgo8tYqn1Ri55pAWCcJoyYKQFl0CRI/FV4xfb8Z0XKFmUi3giRL3jU5yH59DAhjK
+         37bw==
+X-Forwarded-Encrypted: i=1; AJvYcCXXYO1QcvWOuNZPtmhVVaV+JDagNNDHmT2vCeevXcrJAEYuOT6PkvjTRtEOKhjPMfn4EiqHD69yeYvwx9cC3w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwttrF/tQZ185/BRfmGLuNXmYQwxL7cHMp4hFHdIX8lgUycJYqN
+	mlIuImOLsZ6x7I1mH6EYRlRXFhhQgUtpxHG9OrI3gviVMJL3Mj6vTB2rz/KR4QdnXpN7Z45kNxT
+	aGCN7lbpZ7hnHvY5oQ+Z8BCBM6Bninfwcdd0n70yW4RuHbVg=
+X-Gm-Gg: AY/fxX4c5sYuHG6CczfGsEXf/EqnIWGG3tmumYj9S6yTiY9JKfR5ZxRtRNSDpwSk09k
+	K8gEwm1Vsf7zt5QFclRfkhcoOtlu82GtwaE2qqOQ4//Rmll38Txt/+BJEMQXvFy290PO3U52H+H
+	rEG/RRu8ED8FLy12mbWBaINbFTPT2SX1zbVgyJ9vYiLz/MDD72GpSRIBK/bWlc22DN7X+Vtg00F
+	6CwdS1es5URJMUhEb/GrjjHv1WURXwZIIa6bcdWnPI8Xd5qWcsXk43U+icW3aeDXvkixiof
+X-Google-Smtp-Source: AGHT+IEZ3xskbnTcFFXLfNw1WfFC+mUgQkFCAg3Zmqyh/u2exvaTg6y8Rz1515yNWFUPOwaCQ2x7J+8eVnVoEyXmvWs=
+X-Received: by 2002:a2e:ab1b:0:b0:37b:9b28:4282 with SMTP id
+ 38308e7fff4ca-38121561689mr113011721fa.11.1767231817298; Wed, 31 Dec 2025
+ 17:43:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aVXFk0L-FegoVJpC@google.com>
+References: <20251229072157.3857053-1-sunke@kylinos.cn> <20251229072157.3857053-2-sunke@kylinos.cn>
+ <aVKN0Q-6bsHGq_Gy@smile.fi.intel.com> <aVT1N1NHQDCe2Dn8@google.com>
+In-Reply-To: <aVT1N1NHQDCe2Dn8@google.com>
+From: =?UTF-8?B?5a2Z56eR?= <sk.alvin.x@gmail.com>
+Date: Thu, 1 Jan 2026 09:43:25 +0800
+X-Gm-Features: AQt7F2pS0TqvVAQdanc3Bo3EMWR6iCq_CzwU-ee236FPcjRgH_zlGQ05ThiHK84
+Message-ID: <CALpAb9O0cvg+bPy5tD_BbE9kwHyTy99jvgp=xuwNqefTRWFiVg@mail.gmail.com>
+Subject: Re: [PATCH v7 1/4] lib/vsprintf: Export functions for Rust pointer
+ formatting support
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Dirk Behme <dirk.behme@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Timur Tabi <ttabi@nvidia.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	John Ogness <john.ogness@linutronix.de>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Andrew Morton <akpm@linux-foundation.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 01, 2026 at 12:53:39AM +0000, Alice Ryhl wrote:
-> On Wed, Dec 31, 2025 at 03:12:16PM +0000, Gary Guo wrote:
-> > On Wed, 31 Dec 2025 12:22:24 +0000
-> > Alice Ryhl <aliceryhl@google.com> wrote:
-> > 
-> > > There are currently a few places in the kernel where we use volatile
-> > > reads when we really should be using `READ_ONCE`. To make it possible to
-> > > replace these with proper `READ_ONCE` calls, introduce a Rust version of
-> > > `READ_ONCE`.
-> > > 
-> > > A new config option CONFIG_ARCH_USE_CUSTOM_READ_ONCE is introduced so
-> > > that Rust is able to use conditional compilation to implement READ_ONCE
-> > > in terms of either a volatile read, or by calling into a C helper
-> > > function, depending on the architecture.
-> > > 
-> > > This series is intended to be merged through ATOMIC INFRASTRUCTURE.
-> > 
-> > Hi Alice,
-> > 
-> > I would prefer not to expose the READ_ONCE/WRITE_ONCE functions, at
-> > least not with their atomic semantics.
-> > 
-> > Both callsites that you have converted should be using
-> > 
-> > 	Atomic::from_ptr().load(Relaxed)
-> > 
-> > Please refer to the documentation of `Atomic` about this. Fujita has a
-> > series that expand the type to u8/u16 if you need narrower accesses.
-> 
-> Why? If we say that we're using the LKMM, then it seems confusing to not
-> have a READ_ONCE() for cases where we interact with C code, and that C
-> code documents that READ_ONCE() should be used.
-> 
+On Wed, Dec 31, 2025 at 6:04=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> On Mon, Dec 29, 2025 at 04:18:57PM +0200, Andy Shevchenko wrote:
+> > On Mon, Dec 29, 2025 at 03:21:19PM +0800, Ke Sun wrote:
+> > > Export ptr_to_hashval() and extract kptr_restrict_value() to enable
+> > > Rust code to use kernel pointer formatting functionality.
+> > >
+> > > - Export ptr_to_hashval() with EXPORT_SYMBOL_GPL for pointer hashing.
+> > >   This function is used to hash kernel pointers before printing them,
+> > >   preventing information leaks about kernel memory layout.
+> > >
+> > > - Extract kptr_restrict handling logic from restricted_pointer() into
+> > >   a separate exported function kptr_restrict_value() that can be
+> > >   reused by both restricted_pointer() (for %pK format specifier) and
+> > >   Rust code.
+> > >
+> > > The kptr_restrict_value() function:
+> > > - Returns 0, 1, or 2 to indicate the kptr_restrict sysctl value
+> > > - Returns -1 for error case (IRQ context with kptr_restrict=3D=3D1)
+> > > - Modifies the pointer value through @pptr parameter when needed
+> > >   (sets to NULL when access should be restricted)
+> > >
+> > > These functions are needed for the HashedPtr and RestrictedPtr wrappe=
+r
+> > > types in rust/kernel/ptr.rs to provide safe pointer formatting that
+> > > matches C kernel patterns.
+> > >
+> > > This refactoring:
+> > > - Allows restricted_pointer() to reuse the common logic while
+> > >   maintaining the same behavior
+> > > - Enables Rust code to use the same kptr_restrict handling logic
+> > > - Reduces code duplication
+> >
+> > ...
+> >
+> > > +EXPORT_SYMBOL_GPL(ptr_to_hashval);
+> >
+> > I do not like this. At bare minimum we should make sure it's namespaced=
+, so the
+> > author of the code deliberately needs to import it (I'm talking about C=
+ side).
+> >
+> > Ideally we should have something which is Rust specific, like
+> >
+> > EXPORT_SYMBOL_FOR_RUST_ONLY(foo);
+> >
+> > Can we do that first?
+>
+> We don't have an EXPORT_SYMBOL_FOR_RUST_ONLY(). The closest there is
+> would be to place it in rust/helpers/, since such symbols won't be
+> available to C modules once we land this:
+>
+> https://lore.kernel.org/all/20251202-inline-helpers-v1-0-879dae33a66a@goo=
+gle.com/
 
-The problem of READ_ONCE() and WRITE_ONCE() is that the semantics is
-complicated. Sometimes they are used for atomicity, sometimes they are
-used for preventing data race. So yes, we are using LKMM in Rust as
-well, but whenever possible, we need to clarify the intentation of the
-API, using Atomic::from_ptr().load(Relaxed) helps on that front.
+Does the inline helpers feature also support GCC builds, or is it
+limited to Clang only?
 
-IMO, READ_ONCE()/WRITE_ONCE() is like a "band aid" solution to a few
-problems, having it would prevent us from developing a more clear view
-for concurrent programming.
-
-Regards,
-Boqun
-
+>
+> But since the current file also needs to access this, I don't think it
+> will fly.
+>
 > Alice
