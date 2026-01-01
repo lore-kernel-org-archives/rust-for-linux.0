@@ -1,243 +1,114 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012049.outbound.protection.outlook.com [40.93.195.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B36E2405FD;
-	Thu,  1 Jan 2026 00:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767228489; cv=fail; b=h6Yhu88xJdAdi1E1xhRakVXKcVWIkJSvtvWoozc2IFWSE0FQKxFsD3EllpVmQfEnxD6Zj2j1bhiDoEw1WITnMS5CyXWJCJomp47jgcMFcbrVZPrmzRIBs9xvdFdoL2RG2If93qmsAuSVATA0sCl/7rQ6+UwcZlgUV9ZUrDRtL5c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767228489; c=relaxed/simple;
-	bh=Th2+8/gM7dcGbp05odovVVjWC6u+i/dR1A6bz8Tz40E=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=A58GAt1utPQdwIs6JQiLZhp0FCpoUIcDPCwgelNGFMVn6ERkcjbvxJbFqBHjbQ3/GlDk2SlOs5QktgCA1oeByt6bB5TxBcFj1MEnLUwpL+P66VFwCM4PK0muPf2716BGh7q6pJnTr5QROp+OnBVUa2viWNXxEKdFaqUwbarJC3I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kDHXr/eY; arc=fail smtp.client-ip=40.93.195.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FE024469E
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Jan 2026 00:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767228827; cv=none; b=Lmn0S+kE0QOsGEBsQ/MtjAtg+jJdnqgesJTOIl+kdReiytAN6ka9Vek7Shqlw944clf5cno8IVaVw6pG8CasUizKa8IOmnLYVYqeRSTE6BGA7XTYKVwIOg1kIHaE2V/irRx/C6YfanYG6XCASnpY5GQUPvMPzmOVXy0tfVwZNgU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767228827; c=relaxed/simple;
+	bh=FJxmCTvLM25zFfWpcNP5yBD/9nFfmtlGgUOBfBuzQiM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=lo+mIzhp9DcJP6aDWfyDBMp/aelNyJA5kRrvnbpo0vH6bEoQ7/xHDrSepSfvr/ZK93LHMEO9yG9jJrLu0I8cAcvsnjKou22xyJMzjti/n/0CGdTQbeYrR6pphBhO3fdU2u2Y7JGjbhkiMcLgDtcGzrBdTZ4qN9DlpTGI2JZGC6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iJvmc6iA; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kDHXr/eY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iRz8VPhAiNSws3CMXhSmx35GJREdJEtS6Ho7s0vtxptKumwqSHRZmn/iFppc8di3Es5LnN5A4rZtD+uvfgiIiM63xcqP+AcaxCpPg/QTTJLaTDYod1Za2HWAhJyZ6zqgBtzZBYXIVoKtMv7VljnQIFKLIz0a6rpqEyElW5vinKP2invgU+VyQ6MvehzbCy4a/qK0wT410KEZLO4+Y1g55wFDxueUKfI2TedFiOhl5WZ7mNBdW9G28U/Tj1hPI0NRXWLP2DU7Cl3Z68ZodEPEjPPedMZYvcvUyzxpAD0GBUS6KsgsqIyJ9sSShGbIXE7k/YPfe9fBJUvKnfr8B63Y5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5y9jP8/aouI8CDvY0EhiqQDBtb1XUExyVSHQLravSG8=;
- b=bDzxmNF/jCJWCJK2AKH+hLnI3FVYgVYCSD4Z85cxIurfGrJnT4LBbOhnvyuo7NTMuj3LdDPLD2cvalpkA8wjcX5lm+yJcg07xTcDcGUUAsKJO854D6PJup8rLPbyaXqpCiEYe2U2Dww5s2Q8Ic+tarc4HAdoQP+su8jsipo0OtLwvPu92d0p4sch3+g0EYZ98LRYnxrKx+8l3bFZQi7hvBVbgg8mImNgKojEI19lTZ8wZlchFWqA9lmTaY+rS+temswru2yLtIYGzOUnP05P+swjxMw+Oh1Th0Ak21pSbsquHQUkxJHewY9r+NMdm5A8SmpveQtDQ39PgYwjT1HFHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5y9jP8/aouI8CDvY0EhiqQDBtb1XUExyVSHQLravSG8=;
- b=kDHXr/eYup/ggfcNX8lNu9XuA1H5sebS0YRAGlB50EDBWFU9vZhIfhMYzUG49YACwKehXC4lJZMta4DAR1hBih3sqAmN0OpkTCaX/UnlaYnQZwDIorSWHyaoIN6yq95ULSQ6yGnJXqOYoQpR1oPCXr1bNhC64BavS2rmVmhIzCS86lqwYnx3CdeF8OJoNi7Q/kBCuksZf8N8ij35SQaU9ukWh3Fg6rd2DbKVKQ9edw/nZbnGJPO5SkHZbYPOsy0tzSoHFsHxcCJ96yE7irO466bz1agObwoZYJDQhBPd+HYeL3q0PrIa+lptIkUZzz4AdnvDBgqueoA8duG0ZByluw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- CH3PR12MB7546.namprd12.prod.outlook.com (2603:10b6:610:149::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.14; Thu, 1 Jan
- 2026 00:48:02 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9478.004; Thu, 1 Jan 2026
- 00:48:02 +0000
-Message-ID: <e1d4a5ca-d425-42e9-9e05-4dd09980dcc5@nvidia.com>
-Date: Wed, 31 Dec 2025 16:46:59 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gpu: nova-core: bitfield: use &mut self setters instead
- of builder pattern
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Timur Tabi <ttabi@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- "lossin@kernel.org" <lossin@kernel.org>,
- "a.hindborg@kernel.org" <a.hindborg@kernel.org>,
- "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
- "aliceryhl@google.com" <aliceryhl@google.com>, Zhi Wang <zhiw@nvidia.com>,
- "simona@ffwll.ch" <simona@ffwll.ch>,
- "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
- "ojeda@kernel.org" <ojeda@kernel.org>, "tmgross@umich.edu"
- <tmgross@umich.edu>,
- "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
- "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
- Edwin Peer <epeer@nvidia.com>, "airlied@gmail.com" <airlied@gmail.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "gary@garyguo.net" <gary@garyguo.net>, Alistair Popple <apopple@nvidia.com>
-References: <20251231214727.448776-1-jhubbard@nvidia.com>
- <9db27bd6015ccebaa20e51450d8c42eb2864cb2e.camel@nvidia.com>
- <ec3e5da4-f944-4526-a339-3da8286c36d2@nvidia.com>
- <CE6A313F-9DF3-4944-A5AE-F26464D89C17@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <CE6A313F-9DF3-4944-A5AE-F26464D89C17@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BYAPR04CA0023.namprd04.prod.outlook.com
- (2603:10b6:a03:40::36) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iJvmc6iA"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b726a3c3214so906849166b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 16:53:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767228821; x=1767833621; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ALybukQ368MxKZuRBiA6l9FsoHeskqo5LiIi7UTqkwI=;
+        b=iJvmc6iAlq+AGWwQlMfFpUv590zRrBmK9KHqa/L+nel4mOmog6irZk1MSKC7Z2r19y
+         rT8zEbz4u7YdtSJkKJcmltsqALqK+hrSYeB7E48uQM8gugOrXeCxGhousoIe5uyCxnQZ
+         2+YwvXiL1iRtvRt2RBjS3JfLHtn97je52gO5gazY1dQvKNsvphb6H9qD0UKtUnHcGJsQ
+         md1zNznurxGuorqpsB21pNxmyx84nhAiTnDOQcP8TdUkSZN6IZt/RUV2iu0UjrUXB61V
+         DsZYu+AG9Jb4apwuHJa8OznjSivAOVrbOZgEm96FRa1/ptCViI4sdMnn4j9y/3EJyl5o
+         CxRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767228821; x=1767833621;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ALybukQ368MxKZuRBiA6l9FsoHeskqo5LiIi7UTqkwI=;
+        b=R7bQ1ybWESgfV3SIqma8dP6MGj50ZtgODopsLkNs3yhOtorBzsGuzhi2+vlDTqLd+T
+         n1X6v5Ujc9/1MIXHr+xqm+fE+ji7VeHjgREAYhqKHrPF2e6WJjn4ZA4h9LIhbHNWlQVr
+         hbIipd3OhVSjkvg1UHrxHHLPq5dj2HuyhkK4mwk5j9FXSHVn0g8a2Yoy8ZxB00YRQEUv
+         UWLHd+ZJYueC+JCqwxN6VnNDAvhUfPMHbf2ZSKbXYEEWCDdHoxsCuJ8EYvbmZyGouxgo
+         oGknoE/ori/SXKT09JudKx4Mhi2Wjd3Pk8o5pn/0l/Yz1bfln+jnvpIVKRnEeTlf2/NT
+         ybzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0CYHSH5MzAFrnM3J3m+UIjEEWh/NlqKQHmOwGQ7wsFPATKTXHDxZ0h0HUsnyEs060AF5FFuCgYzRJttqN+g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOSdc+G+JwlQUQ6NhkXKcUjjm4kqv26bsl/kb6CYidr6Uv7EB1
+	ilU+AL0Z9Rleb+yKgrwEIeiS05KhHXSk0/nrYkiJUW6QDmjD3LOlahuKZmBtNDpZWtXGTD9rXCF
+	br1cbXYq3O59pbpFGWA==
+X-Google-Smtp-Source: AGHT+IEWmy8RAXCgqnhUehDWXxrrCi36bifjxhWe3kp7T+r3sxEL7vClkSWEcaAst8kVOoT68CYG7PpgofIxyHk=
+X-Received: from ejcul5.prod.google.com ([2002:a17:907:ca85:b0:b7f:fed7:3bc2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:3f23:b0:b76:6020:ed2b with SMTP id a640c23a62f3a-b80371970a2mr3724571266b.45.1767228820647;
+ Wed, 31 Dec 2025 16:53:40 -0800 (PST)
+Date: Thu, 1 Jan 2026 00:53:39 +0000
+In-Reply-To: <20251231151216.23446b64.gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|CH3PR12MB7546:EE_
-X-MS-Office365-Filtering-Correlation-Id: f33ee9a7-24f3-4d63-2f6d-08de48cf6ad9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bGM2NWhEaUJ6QTMrOVRvK0VvbFRsY1dTc3BhYUVUWFVSakZCd01JTTcvRjFJ?=
- =?utf-8?B?UjUrMzMxbHMzamxoUzA0TklRSnhScFlqNGdSSWRQdTU5dzBlUE54ODBsSDNW?=
- =?utf-8?B?RlZQL01vN3g5UWREZW9DYXJOSXk0MFNuSmFUYjJybWxFOFlnSGxYNEZjV3dO?=
- =?utf-8?B?NVhuUFNwM2RDNk56RUNaNm5yQUJWR3VsaUlZQ3BxU2F6V0w5Y1hCM2h6K3dE?=
- =?utf-8?B?RStmWGxtd1NkUkhuVVJPanduWWVuMUZ4Y0dFbEp5L092b05vU0dCcmFsRFFK?=
- =?utf-8?B?MnhMMVFEanl4Y2JtUnlZYVdWOHdSdnB5NHorZkJiWUNaQk1KUDNab2EvM09M?=
- =?utf-8?B?WjZqcHpaWnlsbWQ3cy9jYlpPVzVBbFNkbk1NMEFvVnY5RGFIQXBxWFd0QUcx?=
- =?utf-8?B?UHFkbnRKQU5yOGs1eWEwWjlENkRsbEZORExoN2ttaWd4eC9ldjZQNVptelRi?=
- =?utf-8?B?Vko5dThVVUV2a1BENHdWMVZwcUtSYzl6MG1ZWHVtV1lhWHNMRWVwZVRkY3lD?=
- =?utf-8?B?R0hGcmxJYjREclRPUDBXc05zUlVUdzhwM2oxV1Z3cXdFcFZrRUFWRkpnWDdq?=
- =?utf-8?B?THVZZm5qMmtCLzdDQlBaNXYrQVpFdUtWcnlCSXd2bXI5N0hsWTFUdGhkL2d3?=
- =?utf-8?B?S1FNS3ZYUkc5b0tpQTBHL1BMSE9ZSVhObHBKNHBFaExVb3VpeWYvM0NYUGF3?=
- =?utf-8?B?dFp1Zys4UTJ4UUZ6bitpdk0ra0hpTmVXRTVOV1pjaDEzaGYrd0lpZnF1eEhO?=
- =?utf-8?B?ZnhKU1FCUnl5eHczZit4TjFmVi9seGhwSFRaL21NbVMvUFowSTFkVW9hWHFH?=
- =?utf-8?B?T05ZK3VHUVpnKzVqRTl4MDR2ejlNY0lqNWp2ekxKQnZXWWJTRFJJbEZBaU55?=
- =?utf-8?B?eXA1RjBnUGJzRDlxbDNYTkNIVjA3M2t0b3lQN0JKTDRIWFVrekxRREZOWlRi?=
- =?utf-8?B?eFhUdVN6MTEzK3dFVmNxb3N3eHo0T0VuNGlSbk4wRVhxeXVFdXd3dVQveGl1?=
- =?utf-8?B?RGVGNDUvVU9kQVVudkVtbzBEd2d6ZE5MWnZPZ2htTUY2WjVDTW9vYlpQNlBQ?=
- =?utf-8?B?U1FweXZtN2RGajZpSFJYSUR4TGxkQUpBallvalh5NWo3VnRVVmtxUUJEVUZI?=
- =?utf-8?B?cWJiUkNxWjFWNDNIb2hOU2U4cFd1WGdnb3ZQSkRRZUZ1ZXprYklBeCtwcWN4?=
- =?utf-8?B?Yy9mOXUvaHRMUnE1Ym1kano1a3l3elhCTi92Nzc3TTdjQm1lQlpwUVJ5Q3Vp?=
- =?utf-8?B?b3VLb09tczNnVGE4cFplczh6Q3BobjFrN3RCS3ZHVmF3NHNQaHRkWTd3Zkxu?=
- =?utf-8?B?OVRCVnRBcWhxajJxSlQ3OUEzaklSM2FPM2VRWEJUMjRJTWIvSVhodnUyZkV0?=
- =?utf-8?B?NWR4RzJQSWJrT1pkakd2UE1WY3JSQmZQNUVvQU9UN0pjOE54bHlDakt5cVhx?=
- =?utf-8?B?Vno5TU9vOS9XZ1g4aDZ5WmVtcWpTOEdMeW95SWNUK2FhMVdmbmtIdmNCN0RB?=
- =?utf-8?B?N09leHFTWjZSeGZGNVBZUG0vZEFJWnU3R0xWdXhjY0tQVmZGUmc1RTVFYXN3?=
- =?utf-8?B?R0ZQZDZWclBFVWZGWWFSU2xobnRxUzJoc085cTN5MWdLZDh2WHpaNXdFR1l3?=
- =?utf-8?B?ejFTcm5SZ0EwN3dIeUtadlc1cVJZUEJlTXpYcWhzcDZ1SVA1TWNLNFhrMXhG?=
- =?utf-8?B?RVByWWY5MlV0V1R4NmEwZXd2NXl2SlQ2QzlBaHMwbUdWMit0OU1RNnZhVldJ?=
- =?utf-8?B?TU5zV29ZZThIUHdxeTJycTFROXhoQzFmazUwb1lKSFNzM3pwT1ZydWMrM3VB?=
- =?utf-8?B?amc5L1k2elV0NFpwMzdXTmtyMldMQVA1TzFTOVhtNmFIMk02T2hMY0pYWkx2?=
- =?utf-8?B?cGFHODFRVkUxVUFWeFB6YlVEZjVsQTlHTGZHSkZOMGttUXI2UGRjNnBZbTY4?=
- =?utf-8?Q?Rx5KvJC7eBN5HEXrpMInSwjaFC4avHQU?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Mkw4RFdlMjQ2UXNwcHYvSWppcVgxaWNWWkpRZFF0SVdXZmV6cFVVRkFDM2NC?=
- =?utf-8?B?UVNCdHRXbWtza2Z6a1pNZVFLSXZUYWVsQWdDZmdVdjc5azRUUVRPM2E3UDZB?=
- =?utf-8?B?UmVZcVdVaDNoL0xQUVZpdmJYOFBTSVd5UkhQcC9KaGhQRFRyTnB2L0RNcm1t?=
- =?utf-8?B?c3pVNVVtOXcyZjdlT3RLTk9YekVtVHQweXZaay83cHNuMEVTUnhuZnFtSTVz?=
- =?utf-8?B?WUhxd1Y1TldQeHpldDJ1dXY4NjROd240UzRZdHVaVnp3MmlDTExPTFhJT29k?=
- =?utf-8?B?ZFFNTGJmMjlMNHRPOEUyMXRsT3RqVit6RHNpcjlha2gwT21Ia2g5NVh3RjVY?=
- =?utf-8?B?NTVjVWZubXdvc2Z0Y0F0Vi9DSHJXWUsxNWJsQUwzSER6U3plemRlWWJsMElu?=
- =?utf-8?B?V2xWT2ljaGtjQzJWTUtwV09KRkNsaXcyTW9RcTJuYy9SYVdFQ0JFMzQyN2gw?=
- =?utf-8?B?NWVLRnM0K2loZE93MjNLejJCRlZwNGx3dEJ4Y01zYUFOU0lTT0VrcDFVd3Fs?=
- =?utf-8?B?d014a1JsdEFZVmJ1dzhpaDRHTjQ0MXMxdFhXRElheUVUcHBjdjRjcUtFNUZn?=
- =?utf-8?B?aGFjOE9BclBNeWtKQjN3UGFSSWxuRkJQaHRGY014VG1kZWZoOHZwTlFUL05U?=
- =?utf-8?B?UzNYWnJUWjhSR2g4dTdDREJpWVdyRFUzcDVJRWZEbGV1WHFTZm9BY09oVUgv?=
- =?utf-8?B?UDd6WlhyTy9vNGU0eVNlS3hHVkQxNjVsWlFlaVVLeFBkbUo5SXROQTRQS3dp?=
- =?utf-8?B?bUVOT1BRelE4cVBFUVBRanNUTEU4a3VJazNKUG5DVUR6a2x1bnRWNll2VndR?=
- =?utf-8?B?M0NTbXJTZVdsQzlPWlpXRmFOanVqc1dBQWFrVkpPUC83TGI3UVJJUW5ZeWR1?=
- =?utf-8?B?UVZpamFyNjdqUXRNSkUzWmNCVG44NEFPZWlwZy9RWjAxQmREQUZiVjd1bUhp?=
- =?utf-8?B?UElMRnpSNWtZelBYSkZHRnNWRzdtY0hhVnNmWXJKMjQ3azhjaXkxLzBpMGF6?=
- =?utf-8?B?WVAxdk9JdUJDVnBaSmZJSWkzc0F5Q3U2WTUzZ2tjUkpML3BodnlRTnR5eWh2?=
- =?utf-8?B?b2NOSVNRdFRJVWowNVFNaHBzVzVidzF1VWNCeXlzdXgxc25qTWxxYmNNaFJa?=
- =?utf-8?B?RzNlZ0pkd2xTdDJsb0tUSDd2endxc09KbFdUaC9HTWRVVFh2aC9PemlER01p?=
- =?utf-8?B?clE5SDNYdW1EbDNxVnhzRnp6YUhJZkZlZ0p3MWJ3Yk5KWWZUUzVrMFJVZFg5?=
- =?utf-8?B?YUVrNzFmZU1rbW50VnBoaVhzQjhpZ0lZQjZzQlhCTjZDVWNtOXVucDF2RFg4?=
- =?utf-8?B?K0k4dFBXbWZ3bFpTRlFyM29DVHpJVWQ1YjN6ME16SWx0UTNiN3hydlVHTnZ0?=
- =?utf-8?B?L01MVXp3WldZMm5KbUhhaWxmTjdQQnY3cmp6WGtVWmJNaUVlLzh1NFpnR3dv?=
- =?utf-8?B?eTFUckp3S1UvTkdFREt0YVhvdEsxUGZ0bG5Gb2w4SmVOWmc3ZkF6b1lQZWFS?=
- =?utf-8?B?T0huMmxuM0Q2TUhUcFJnSGdiNmdRT2dhRm5xUWlVM1k4bklTZGFSZDZ0QkZa?=
- =?utf-8?B?Y2h2V0VkTElxZkRlcm5RRGZOMXFncWtHZy84RHkyc3VJUFJiKzNpK1Fwcjls?=
- =?utf-8?B?Wk1CQy9DRXA2R1pZVUVCQWRLeFh1NmNuOXBZenVHeHdnbXFlMW82VkUxYlU3?=
- =?utf-8?B?NitmYkt1THpvbXc2akZsa01CMTdQNFkwTEwwTmZEcDZuZWZlcVVXMDBFVUNW?=
- =?utf-8?B?NGw1akgxSDdLUzN3d1BjY2tqRy8vMXFNd2NhQ0RQbHZrVFNTUW95d1J5SzlE?=
- =?utf-8?B?T3R4cUpDTG85YXdDSUZqN2J4ZUhaNyt0dm5wZGJYVUFSWHhUcDl3QlBKLzJq?=
- =?utf-8?B?Z3FQZ3RLd2p5eGlRbG1PbWszdC9HVVpvOGI1MVFCZUN0OWsvalI0Tm1FZ3ox?=
- =?utf-8?B?Rk5xak9maUQ3eWFuTEFocitSY09pQyttYnV5TXpzVi9FbE5IdS8wQ1RXUHNI?=
- =?utf-8?B?ZWRLUmpVTnFybldZYko0clo4aDN0bjBwOGM5c1U2bGpobkZ5VUI2WUpCTDk0?=
- =?utf-8?B?SDd6OThsY3ZqT1MzbUNJUElDOXFpa3M5SStRcEdnaW9aZ2dRUnlKMi84TERN?=
- =?utf-8?B?dTlNZWFOLzZLTHlkeGUzbTh0YW45VElXK1RaVHJwaXlNMk1XYXdyWjFRaUtq?=
- =?utf-8?B?cE1yVTVOSjdxSzl5REorL2p0WUtrcDl5bzBaTExTTzh3YWRST21wRHVqN0ho?=
- =?utf-8?B?eHJhaGJHVUFrWnc0R3h0VThwOWJIVUUyZ1VlYkdCTnNyZUx3cjlGSDZkWVBS?=
- =?utf-8?B?cGl3UmVIVnRhV2VBbTJtZmxRWDNxTkRVWE16NWNid2ZkNnIrVEFKdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f33ee9a7-24f3-4d63-2f6d-08de48cf6ad9
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jan 2026 00:48:02.3522
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WoSelu6X8ZmG0Ws9uJqWLcZlgBxYyyXsKrG3ziAQdTrUVcXv9g+COTYJxLk9jkkULVReHFn7ZhHlxcooAH4eow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7546
+Mime-Version: 1.0
+References: <20251231-rwonce-v1-0-702a10b85278@google.com> <20251231151216.23446b64.gary@garyguo.net>
+Message-ID: <aVXFk0L-FegoVJpC@google.com>
+Subject: Re: [PATCH 0/5] Add READ_ONCE and WRITE_ONCE to Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Magnus Lindholm <linmag7@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On 12/31/25 4:15 PM, Joel Fernandes wrote:
->> On Dec 31, 2025, at 5:47 PM, John Hubbard <jhubbard@nvidia.com> wrote:
->>
->> ﻿On 12/31/25 2:33 PM, Timur Tabi wrote:
->>>> On Wed, 2025-12-31 at 13:47 -0800, John Hubbard wrote:
->>>> The builder-pattern setters (self -> Self) enabled method chaining like:
->>>>
->>>>     reg.set_foo(x).set_sec(y).write(bar);
->>>>
->>>> This made separate operations appear as a single expression, obscuring
->>>> that each setter is a distinct mutation. 
->>>
->>> So you're concerned about the fact that the compiler is not merging the set_foo(x) and the
->>> set_sec(y) into a single read-modify-write?
->>
->> No, I don't care about that aspect.
->>
->>>
->>>> These setters are infallible,
->>>> so the chaining provides no error-propagation benefit—it just obscures
->>>> what are simple, independent assignments.
->>>>
->>>> Change the bitfield!() macro to generate `&mut self` setters, so each
->>>> operation is a distinct statement:
->>>>
->>>>     reg.set_foo(x);
->>>>     reg.set_sec(y);
->>>>     reg.write(bar);
->>>
->>> Are you sure about this?  It just seems like you're throwing out a neat little feature of Rust and
->>> replacing it with something that's very C-like.  This breaks compatible with all users of the regs
->>> macros.  Seems really disruptive for what seems to me like a cosmetic change.
->>>
->>
->> It's only a neat feature if it *does* something. In this case, it *looks*
->> like a neat Rust feature, but under the covers it really is just handing
->> around copies unnecessarily, when really, it *is* doing the C-like thing
->> in the end.
->>
->> I object to the fake Rust-ness that's being done here. It's like putting
->> hubcabs on a car.
+On Wed, Dec 31, 2025 at 03:12:16PM +0000, Gary Guo wrote:
+> On Wed, 31 Dec 2025 12:22:24 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
 > 
-> But IMO there is only one operation here, the IO write. The setter is just mutations. Builder pattern chaining is idiomatic to Rust.
+> > There are currently a few places in the kernel where we use volatile
+> > reads when we really should be using `READ_ONCE`. To make it possible to
+> > replace these with proper `READ_ONCE` calls, introduce a Rust version of
+> > `READ_ONCE`.
+> > 
+> > A new config option CONFIG_ARCH_USE_CUSTOM_READ_ONCE is introduced so
+> > that Rust is able to use conditional compilation to implement READ_ONCE
+> > in terms of either a volatile read, or by calling into a C helper
+> > function, depending on the architecture.
+> > 
+> > This series is intended to be merged through ATOMIC INFRASTRUCTURE.
 > 
-> I would not call it fake Rustness since it is Rustness in the Rust language. Afair, similar arguments were made before and conclusion was, well, this is Rust.
-
-There is nothing about doing sequential .set_foo() calls that goes against
-Rust idioms.
-
-But this really is fake chaining, because there are no Results involved.
-It's not buying us anything except a bit of indirection and cognitive
-load for the reader.
-
+> Hi Alice,
 > 
-> Regarding the copies, I am intrigued - have you verified that the code generation actually results in copies? I would be surprised if the compiler did not optimize.
+> I would prefer not to expose the READ_ONCE/WRITE_ONCE functions, at
+> least not with their atomic semantics.
+> 
+> Both callsites that you have converted should be using
+> 
+> 	Atomic::from_ptr().load(Relaxed)
+> 
+> Please refer to the documentation of `Atomic` about this. Fujita has a
+> series that expand the type to u8/u16 if you need narrower accesses.
 
+Why? If we say that we're using the LKMM, then it seems confusing to not
+have a READ_ONCE() for cases where we interact with C code, and that C
+code documents that READ_ONCE() should be used.
 
-No no, I just mean conceptually using Copy instead of a mutable Self.
-
-thanks,
--- 
-John Hubbard
-
+Alice
