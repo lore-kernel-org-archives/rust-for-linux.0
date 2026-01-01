@@ -1,185 +1,230 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020109.outbound.protection.outlook.com [52.101.195.109])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160CF134CF
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Jan 2026 04:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.109
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767242101; cv=fail; b=tp73BlGUjgirZdzqDLJruBDBfjZ9NfvmliIJY0PPPx3/NkMSTQ1uo6AVAAg5LoY/RW8xsbgdq8zE9LsccFEZTTnzLADHTPqAJK0Mbg4jS1ZtHS5z9V7QRGrxSoMsxmbD0XtJwHqVgxfWV5CDWKgWvgAZsxS92oyiqYmV67C7Ptg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767242101; c=relaxed/simple;
-	bh=6N27BfS6/mmbSYZvwm39X/lLdHjENwRselzE+iDhpZU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=czgcavjTKMXRtgWQkvFQ2NY901Skq9e3aPMzQ+qseXVxJXJu0QL4y8Id60TQ4fr3Dr9s+odqfG/P5befSRKe94NT2TK1li0YsKeyIloQlSue15AJ5gan2bHsqA9hiMtednTjdpSPPqn/M1terP3c+S4bQSbT83HdCRgK4o0jL0w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=SMZ9b2M9; arc=fail smtp.client-ip=52.101.195.109
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46921AAE28
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Jan 2026 05:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767244890; cv=none; b=ojDCkCzK9yKVYuWGpBbSI1elRi5zNspFk/XmYqde1ZROrZP4dWeix3c6WKnCryXtf8tPTGkJ0/OQtOvDxUFlzj72bkvOhui83Y5P5fQQbHUe8ulLGrB30686lhKZphiM01L/Wdj2e8uwhx0HZnGqKgghZStx5lOLyBagTTlXkLA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767244890; c=relaxed/simple;
+	bh=d750XEbNBh45WZEXvFp98QPRpIEawpP16SYsmo3jXHs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dtPApBxUxu8X/Yy5OWrEO+TZ7qzK6cY+EI3B+5NeQQbeWZhCpNeVzkp1BdTnx7Hy9mznHOi5LQFAcYxsKK5ZmVuXoVWosexK/LyNldHXcE+/ksOS9uBxIZA5FARp1sprBB15YPS7yjXbXfW4WHKHMpPrOtC3OXieJ3oeWCn1/5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yd39Agof; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="SMZ9b2M9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D2+qXOhx3O3uTSGW9b1vwKXdcvDDa1w7Nd8+6Zuf2L+3TmeVLbyWVswFjPT90564h7F853xeTSarpGqbMvfazBbM76gJV/ioLLj1QlcHm4FFdmZktvPFwNGVJoyiAVSIav/OxkPtx0Xho5C6CikSZ8+LV4NS+2nDTbEDY78AWjWJ7RsGhPhrv98VLpszoscJeIYGJFxJ/WOgxbpNDSkYcl93aXxPIwcQRJzgT2yfwpbIyYdiM+D1S6ibMecXvuvoVmOw8RhiLq+sepJa9kFEdMPeR/3U9xhn3fOL2Wwup08vRBWjDoH/QyIiB5aLWtC8WeBlWY+kgL9coZPONd2/vQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OpmLW9LXGqRIb36JEIGe4YNu3y7JA72DGAlq5wG0vJk=;
- b=Q01BGQ80UR9lZTJpl0HEA+VHo+aFW7Ui7QAUmQUbxW74SwTBcfpg1pGrqxhyu+cpTZjvSc8iSZuLTWvGh8eASIRj4Kq4zaRF+144YxkJSMhrNgSUmk/YVbXNlfaLwLpesAyAulgfTtvFG/yeB46v4SxVPNyhqbsE8ofNHXKsf1PV+6q24ssrBS7Tess1aMqSzEnRegwiiFAc54+axz3uldHRAzpCN09cBOyg5N0SWek7tr3tN0x1GaYqIzdieK7pZTMBd51DosGpomxAyOeiyudGfIGOI35D0ahv47vt3Xvd3ozSn6XOHlDTzHB9rFcVndsHh2J4POoSzvoo8cE1OA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OpmLW9LXGqRIb36JEIGe4YNu3y7JA72DGAlq5wG0vJk=;
- b=SMZ9b2M9A701u/IdRRkb+eyqPA+BSfI0+1GHyNW/oJh5/v23f1j+YzWywZLU4ZKpRATqxwD3M4GfwLBXyigTIKl4+dorRNZO7wE+srsYpjG8g2OtMkBWbQhxxUCOIUH/uzWsNGdHTUHCQOn8y1p9js/KDDHvB6iiA+nE9gHvAjI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB2295.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:76::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Thu, 1 Jan
- 2026 04:34:56 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::ea6a:3ec2:375d:1ce0]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::ea6a:3ec2:375d:1ce0%7]) with mapi id 15.20.9478.004; Thu, 1 Jan 2026
- 04:34:56 +0000
-Date: Thu, 1 Jan 2026 04:34:54 +0000
-From: Gary Guo <gary@garyguo.net>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: boqun.feng@gmail.com, aliceryhl@google.com, arve@android.com,
- brauner@kernel.org, cmllamas@google.com, gregkh@linuxfoundation.org,
- ojeda@kernel.org, tkjos@android.com, a.hindborg@kernel.org,
- bjorn3_gh@protonmail.com, dakr@kernel.org, lossin@kernel.org,
- tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] rust: revocable: Switch to kernel::sync atomic
- primitives
-Message-ID: <20260101043454.69dee1c8.gary@garyguo.net>
-In-Reply-To: <20251231.183502.304307662571984456.fujita.tomonori@gmail.com>
-References: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
-	<20251230093718.1852322-2-fujita.tomonori@gmail.com>
-	<aVRgTQWhqjKB6xpK@tardis-2.local>
-	<20251231.183502.304307662571984456.fujita.tomonori@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0274.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:37a::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yd39Agof"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-595819064cdso17720539e87.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 21:21:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767244887; x=1767849687; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TGdE5vkNreRWa+aNq/2mpC1URjTiZenF177VT5Zv0EE=;
+        b=Yd39AgofIXGH/YdYcExZu7uKRrRNq8Hqb2I73dkxdU35M4sazmWa2nvIdmZSpVxg3v
+         hSOhpca6jmoWep3UMYyzApISgWaeITdkxs1o/KuAzCRmglYxgbpcZpRqSga3xkxGX/NA
+         Vbx89xmWMIpvlkMEc1o4yo5r40TazJaisG+0iHpB/FexoX7l9fTswaxGCSpP7FgwyS2e
+         rOk3GEZJ5PJjSEW97pstIU5Eo9hkk5leIlWf8xpKHi1PAiAYXuW/QGgYKvXCvx9n4XO/
+         RAA8a7RJweg9lxA/eeFUEnBAIcEkOpLRK9o5lGbMYPc2RCZUcWbCwkH+uWRvInRmRtDd
+         ga0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767244887; x=1767849687;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TGdE5vkNreRWa+aNq/2mpC1URjTiZenF177VT5Zv0EE=;
+        b=LKG9X3bZD+wOPAX3gQ20xIw25Q9RXMgSTg84HsQEcnAgHw5PJi6Tj8iy6uUnbx8/rR
+         2fo5X8j2U6+NPg34bKaeZJxhfWEXm+BkX+KwNLUIb+UXn9fxPEt7qNZpnurp+EjwRC0w
+         qFAYJZdOfhkZ5/rzYFy05SOffDu3af1Oyhl4kTXdfv5aYHaGXWkYqz5Wxo+Ev7YL7Sj9
+         3ad0xPtMqEuhRa37WWS6kLV43v86+Iz4x9G2iHFZy0/czuVObhRGLnleDGLZb+MeGeFo
+         ivw6RTMDl0CpXC+2/J/9RKZzjp8tW1dhM5KTH8mkskv5b/m0WU1HI4IQQ5jSJFFXGcUE
+         AMfg==
+X-Forwarded-Encrypted: i=1; AJvYcCX33GS1DAvirsJBweRLM07wORLmnAPy3vJxqyExtceg2IMr7MezDTMriEoaU+9iKaV5FJRl28aEb4iLhK02lw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzo4x00z9J7m8RbiX/upZA/mbixqOZxB6jV6k32ZGzt/K3qpOrW
+	+nyI0h1yBIVwvgaaWm8eyr9m/lx2FJRhmYyb9qveSWgegFvTSgQkvohd
+X-Gm-Gg: AY/fxX7pzns7q0ZI1pJDR1TAZrUzClBlnMh4V9tvYF01SvuipJOdS7E9S1BR34O972f
+	8OS0gU+md3DXdX+7JUgNqF3hAeiTHtfoAOkEXjm3gzlePlIQ894JpOwwfAY3t6BSRAzhj9GRbB1
+	vwUE1pwQVbPWNyBzw/LhtkrthO14nGVj7+7jt4TVApwpzHaIDFB8g6sGg2A/HLjRZpKuHe2Q0Jb
+	/WbW1VIdc4IjHg/r6pVWmHQ9DEpYO1S/pc5oio9i6JwX314wguf+TeuVJ3q7QN643C4jtMsufpl
+	LVJnq0zCW8LaDflUO1oQp2vsNtGv0/5+RmnULgUcR6rGQpxXtar6kUvvXVPZuoWryrFKqIWLE3K
+	+FfLHOna0vEdahZnQojoPCRzAeofDI2k1C0pl0vqzCw+kjJoNKOneU2caTtymW2iD7JdCh/qjN8
+	pj/TY8hcLc6UMwuxwVU2NrmnAEfAOODOFWoFPxjWwu/0VBygTdeXhPxxBCOyJ/pYbPVI/WJiBNm
+	/mj9Q==
+X-Google-Smtp-Source: AGHT+IHZriBBr0PXhxXKR/y0BJsmhFkS1LQ/QqrrbeetrOZFLiHUhJOxalDrHlDyEkiA2LnHaYPv7Q==
+X-Received: by 2002:a05:6512:2399:b0:595:83d5:7b47 with SMTP id 2adb3069b0e04-59a124dcbd8mr14238581e87.5.1767244886425;
+        Wed, 31 Dec 2025 21:21:26 -0800 (PST)
+Received: from LT-5CG5341NQ4.nordic.imtech.com (84-253-216-54.bb.dnainternet.fi. [84.253.216.54])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-382861ef4ccsm37064921fa.23.2025.12.31.21.21.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Dec 2025 21:21:24 -0800 (PST)
+From: Kari Argillander <kari.argillander@gmail.com>
+Subject: [PATCH RFC 0/6] rust: Reimplement ThisModule to fix ownership
+ problems
+Date: Thu, 01 Jan 2026 07:20:44 +0200
+Message-Id: <20260101-this_module_fix-v1-0-46ae3e5605a0@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2295:EE_
-X-MS-Office365-Filtering-Correlation-Id: d7ec31ab-6de3-4852-99bb-08de48ef1d70
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?A+KjAHgq4eOZmaM6ow45ILAfKGp31iDfimKiiT3kg9Mkc9W3wgThUsxn1pZo?=
- =?us-ascii?Q?EnH5VIUqDnbM/3L4AjeJIOhVagwEg54NQXQooKGZzthQTW2yhNAnej3anzz+?=
- =?us-ascii?Q?w8+Dt3fh4XGpG0mJBwgzzxyVaLZtz0SOyq85/d/g32qbUtUz7swbZVQgeygZ?=
- =?us-ascii?Q?swTykhj0aGL04aL59OAqUMm0P6pxv1otvrLnQrcfQtNUFuvxb76bxeDGlkwu?=
- =?us-ascii?Q?hnR8uhn2iK55WMBD99LOXaWXSDebM+E/vBdTm7XuioIox9gE841YTV0GudDp?=
- =?us-ascii?Q?UVZIMffbvapAIBjbR1YWeLaR/i4hR0PesaLeK9/snLeKZ3W2wLWDdGMlNdpm?=
- =?us-ascii?Q?8ZJvoupjHMGI9sTrK6whbXjtpl+fRYEdWe+jgvatHKC0CxAB8KkFkDAGiRMo?=
- =?us-ascii?Q?mEmzkG8811H8FSxISjRRbhIkwLteOmHmORncpNKDjvdT899QyBF9mjMtS5Nv?=
- =?us-ascii?Q?r7RuDCw0Tihdupo7bFV3cxxN75myaXX27ES53MtqWMRxgYosSo85xAHpKcZq?=
- =?us-ascii?Q?1FSgKVY6rgFOyUnm54cBFuVPuriLhUuXl7WqXmQhe/ERyxeqpDt2SDqYzkdR?=
- =?us-ascii?Q?pCvgtp23mOQLzeQMpBoRRkPxo7yFxhG9pkJ9ZvmygIJfjW2AwRMq62+oYRge?=
- =?us-ascii?Q?80Rdj67voLNGyQNF7OkjlXK71q+brRr8e/4YLcV7PWG178NSiYUx0FFFztSZ?=
- =?us-ascii?Q?D0XAt7jVHxMq82pDofF2YjpcivlYU1JXCYu9cfbqmUht17NtWqIdqcGj9/aE?=
- =?us-ascii?Q?kpTzFoSdPRRYvAKa3+YovBD3K2gvOql/htocGUBD5OEHzDAjEKrlj6Trg9mQ?=
- =?us-ascii?Q?bRqSvyq2ZmUHSwTSiqQrMMvSa2VVkqWQnwdKYr2x0K3EnwxN39qmOp8D8PHM?=
- =?us-ascii?Q?MlDtvZ/608uPA7/JrUz1Sx2N1h+pQF+4IYIB/xTI2faWjOU6Nq9unNdA8Doi?=
- =?us-ascii?Q?lutLHqc5eGejfriRBPUkCEvPW3/YET10f4C+RIx/zlWQpu538JVY7ZMBgVk1?=
- =?us-ascii?Q?O13wAM+allFvw/psLIn76NJWwdImgol6s6MV1SNPX2TmUzbLjLx04KTh5Cfn?=
- =?us-ascii?Q?k/UhTqiHKZ0XotOQ+GPAmvB3SctLaNoUARR+VqExm/ask6UkDbz33JI4brrU?=
- =?us-ascii?Q?/8ZbyqVW+LOJO7As9pNdOWeyoeSg8zSdxVeYN9yxoWQjOMSNgkJT7uETe0iR?=
- =?us-ascii?Q?DKQ/UkN9ksHZJhD8Su1yRYMiB/doOJILKQZV25IH78b6xzzybjnoh43tk53p?=
- =?us-ascii?Q?0zjBgBfTQbLDy/L967nsKOv+TWHkD8kDXZ6n2RhlKUprx1ZCEzFEuaUrW6oJ?=
- =?us-ascii?Q?NtJSzIw/6+gvzwBJsCUhyoX8HypIA6FC/lvzhJYMFP1TnImwasTlQz7Kf/Sv?=
- =?us-ascii?Q?OYzxuQoWjQfW2PtpbLnV0RVkx0//BhU7XN89ytnd7Ib+xO7VmiOAGfeCHW4M?=
- =?us-ascii?Q?Fyy3R+PmfyQu1JiZn2zKGyo73hONQQyr?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kGkH2ZE68/eG+mthoV6PBgeJMCb/rMcdMuCXkvwA1ynO8zaMYK7A5mfEKalV?=
- =?us-ascii?Q?xnomltXck0TpwCuW/u5hOKA8XOe2Pzh9jCb1u4ER6+D41CMA+LAwFH02PfYm?=
- =?us-ascii?Q?M/d5YfYxAizQjVqsewIpwZ1rCVjv9yerjdXQ3JoHz6Mw+oPc8Euq1bmSyXU4?=
- =?us-ascii?Q?pbruto+IbPF5IAlexTeWDxgmayt5+x1sKrmx/2ae3PvenxLSPRsH4qrNyEOb?=
- =?us-ascii?Q?+MryFiq4MbwMq4NwoIMkhhsLeEXtwkbZ4LX4yJYZHYu1m8cVKZmIIiOjBb/N?=
- =?us-ascii?Q?ypBqjt68fL2fQD9jnu23BT2M0EKpnd8PuoOiAgeQ3uGQfnECiReCo4nSIwSJ?=
- =?us-ascii?Q?e4c2MO5WsTLqA8lOHyKTVs1+Np0KKabuhzQrxbfdNOcLZeNLoy+HfdAyYAbr?=
- =?us-ascii?Q?M88gSP+/RZR0FWvJn5A5qh7hTSYdgpxgS5zghVO8tbyTKea+cN7COFUq+nsr?=
- =?us-ascii?Q?fN5JyejA+eo/4JQz2GnAHSzBm2AJFXpvzZsB9AINPhq7Kuy1tJTo4mIsqSnu?=
- =?us-ascii?Q?ypo1yzqVED1tS+4oY3qq6h8M682kW0tvkvoo+AnZWsANogzV7HFS3zhY8Zad?=
- =?us-ascii?Q?Q8gbiXhrxWECOAr0UgQ4wja1W8jiXwH9xysTAcySOBJH8h/pBZadzCrV8PAs?=
- =?us-ascii?Q?cSnHPAx5l56hH5FQjD/XRFidzF14KPQb9r0ZFKBZBzEcobFQdH1eW25XjjjJ?=
- =?us-ascii?Q?v6a8FEvVfgGIiV3LkPPJfax0BP3J7Pe7Ytml+7IsE9v0Q+Ct2cqJMzXbsKl9?=
- =?us-ascii?Q?QXm8tr4xz/+2wFX6IWu9TIR6Ncb5O8kJ5J3V5jn4jha9D+cQqncTjIwoFcE3?=
- =?us-ascii?Q?VeOveErTrgiVWmzlUL6dEMlanJ2tzbszi86MxQ0DybA+Mc/HenOcQ2ogj7Aj?=
- =?us-ascii?Q?61/OeXQ6+TxNuyMxPtQ7YyE1NM6xO61K8/KrDlpxZCu2/5vjy7h27oabqP9d?=
- =?us-ascii?Q?bj95BqXxZAf5lkpM8/wuVo7KBqBZicN/nwTFPcAIK0MOqVFulOVCISaXUAVU?=
- =?us-ascii?Q?G+cwxu2yG8mg1hEz/ZzjtYBetaHQV160eJFmXLmbBBrpvZOeOOE64viU7fai?=
- =?us-ascii?Q?G75O3c2YED5GV9JqvcAbkaGcY5i7UtDlZQ5YuyvCevgLFxZPGpYKgaR/eBYg?=
- =?us-ascii?Q?5QLSwO+RT5okeOIV0hEc8Yy+6N5xInIEC32PzsvmzpUA23WjSkret3AUTPZB?=
- =?us-ascii?Q?vAr7wdGUs4WvG2QU6oJ8VSoEl4IklQxUnRPZvx/2/+sn+rxQASAh7kti5riG?=
- =?us-ascii?Q?3zrPsXRlMOMvsr4ASUB2l2/CA5xmWcrfctGHyscAuPi3Jy4k1TwGq4gG1KN0?=
- =?us-ascii?Q?9Gx7XnFeIgrIxHhaNV5DGDgWXlIjzsUwPo5bEGWT47h2Fm4vif2zfKwLK5el?=
- =?us-ascii?Q?ovfz4oPy4YAkd0C19ehQha7HwrmbvmKwpdiBp0+YQfevtaSowdGdGpBDI6mT?=
- =?us-ascii?Q?YKZcSZhCJastHWOaTZYYgj2JR/XgxOSxnXi8fhrjdNaMtnK+C5OrDySRlQq4?=
- =?us-ascii?Q?pgB2mWRoCQ15B7wEyDlVxzXvSm8KYXuiHyBzhPYFMlnlmpXUtZkl6GbNicX5?=
- =?us-ascii?Q?3IV7hRDVjVNC8O/BLYpIB6H2qEk2ex8AtSN4gQkDKH1dWoV7nf0Jn0LKRLD0?=
- =?us-ascii?Q?L8mFyaaze/H86SQxbXWWgLnL5hwMwxPWbn2+R1oRN2G16TjfG0Y3E5WeDOUZ?=
- =?us-ascii?Q?/Bf4GkB94ozDFqxGmKzSYy2o2gO16LIPx88GOgQBK2ou+HV+O9mXMrTgKB0p?=
- =?us-ascii?Q?r17KASxgow=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d7ec31ab-6de3-4852-99bb-08de48ef1d70
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jan 2026 04:34:56.2356
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tetkxJAFAWloZC6En1Xjo+kBF7bX80zmtGgxaBoGQkXgqvug1qUb3EA5Jv1mxcPg7ldRTrcVHlhKJNatzjE5yg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2295
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIACwEVmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDI2MD3ZKMzOL43PyU0pzU+LTMCt1EY0uDpLQ0IxMLS3MloK6ColSgMNj
+ EaKUgN2el2NpaABg32XxmAAAA
+X-Change-ID: 20251230-this_module_fix-a390bff24897
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
+ Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
+ Jens Axboe <axboe@kernel.dk>, Kari Argillander <kari.argillander@gmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767244881; l=5943;
+ i=kari.argillander@gmail.com; s=20251219; h=from:subject:message-id;
+ bh=d750XEbNBh45WZEXvFp98QPRpIEawpP16SYsmo3jXHs=;
+ b=bpVBBl8wPyL5ukIFKh5IWfBK/k3UXg02rMEPOWGVp2PgKPwgwaeWsxbbw/lK9S1rPGw8SYbfJ
+ fw3WuPigsHPCPrzKEmOnjAWzGSkzRhSk2KOUxSLERbRynPypr+VDxbk
+X-Developer-Key: i=kari.argillander@gmail.com; a=ed25519;
+ pk=RwSxyhTpE3z4sywdDbIkC3q33ZQLNyhYWxT44iTY6r4=
 
-On Wed, 31 Dec 2025 18:35:02 +0900 (JST)
-FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+This is RFC and just first patch is ready. First I wanna discuss if this
+is right way to go. I also need to implement this so that build does not
+break and do better splitting. There is missing signed-off-by's and
+commit messages so no need to comment those kind of things. Feel free to
+cc more people if needed.
 
-> On Wed, 31 Dec 2025 07:29:17 +0800
-> Boqun Feng <boqun.feng@gmail.com> wrote:
+So currently we have problem that we are not always filling .owner field
+for file_operations. I think we can enable const_refs_to_static already
+as that is in 1.78 and is stable in 1.83. So that fits perfecly for us.
+This also seems to be quite request feature but I did not found that no
+one has ever suggested that we just enable this.
+
+So basic idea is that we will have ThisModule trait which is used kernel
+side. Module side usually just pass this trait forward if needed. Or
+they can use THIS_MODULE impl which is now completly private impl for
+each module and kernel create does not see this. So we can think if we
+wanna pass other module data which have through this. This could also be
+used to give local module storage without using static.
+
+There is also some of github issues for ThisModule handling:
+
+> MiscDevice missing module reference counting causes use-after-free crashes [1].
+
+This will be tested and fixed in this series
+
+> Ensure ThisModule invariants hold
+
+Yeap. Now it would be really hard for kernel create to create this by
+accident. Binder is still using .as_ptr() but that is easily solvable
+and after that we can make .as_ptr() private so it will be nice that
+kernel create can just use .as_ptr() modules can just use.
+
+> Add ThisModule::this_module()
 > 
-> >>  /// An object that can become inaccessible at runtime.
-> >> @@ -65,7 +73,7 @@
-> >>  /// ```
-> >>  #[pin_data(PinnedDrop)]
-> >>  pub struct Revocable<T> {
-> >> -    is_available: AtomicBool,
-> >> +    is_available: Atomic<bool>,
-> >>      #[pin]
-> >>      data: Opaque<T>,  
-> > 
-> > I actually think we should use Atomic<i32> instead of Atomic<bool> here,
-> > because in most of the cases `T` is a aligned to at least 4-bytes (e.g.
-> > Devres uses a Revocable<IoMem>) And in that case, using Atomic<bool>
-> > doesn't save extra memory but makes the xchg() operation slower on
-> > architectures that don't support byte-wise RmW instructions (e.g.
-> > riscv).  
-> 
-> I agree. Recent RISC-V support byte-wise swap instructions so this may
-> not appliy to them. Among the architectures currently supporting Rust,
-> perhaps only loongarch could have this issue.
+> Add a new function ThisModule::this_module() -> &'static ThisModule
+> that is only available when MODULE is set. It should return a static
+> reference to bindings::__this_module. [3]
 
-The narrower atomic instructions are extensions and not part of the base
-ISA. RISC-V arch use alternative mechanisms for this, but using the
-mechanism has an overhead, let alone the hardwares that do not have the
-extensions.
+I do not this is actually good idea. But here we take little bit
+different approx so basically this is done also.
 
-Best,
-Gary
+> Suggested that ThisModule should have name() parameter. [4]
+
+And that was good idea. We can remove whole ModuleMetadata and usage is
+lot nicer. It is also possible that we could have example trait PciModule.
+which THIS_MODULE impl based on type but that is think for another time.
+
+> Initialise the owner field in struct file_operations. [5]
+
+Yeap. After this is totally possible to do everywhere. This series will
+already address most of those.
+
+[1]: https://github.com/Rust-for-Linux/linux/issues/1182
+[2]: https://github.com/Rust-for-Linux/linux/issues/212
+[3]: https://github.com/Rust-for-Linux/linux/issues/1176
+[4]: https://github.com/Rust-for-Linux/linux/issues/720
+[5]: https://github.com/Rust-for-Linux/linux/issues/720
+
+To: Miguel Ojeda <ojeda@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+To: Gary Guo <gary@garyguo.net>
+To: Björn Roy Baron <bjorn3_gh@protonmail.com>
+To: Benno Lossin <lossin@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+To: Trevor Gross <tmgross@umich.edu>
+To: Danilo Krummrich <dakr@kernel.org>
+
+To: Alexandre Courbot <acourbot@nvidia.com>
+
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Daniel Gomez <da.gomez@kernel.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Aaron Tomlin <atomlin@atomlin.com>
+
+Cc: Andreas Hindborg <a.hindborg@samsung.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+
+Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+---
+Kari Argillander (6):
+      rust: Enable const_refs_to_static feature
+      rust: WIP: Introduce ThisModule trait and THIS_MODULE impl
+      rust: WIP: use ThisModule trait for initializing
+      rust: WIP: use ThisModule trait to fix some missing owners
+      rust: debugfs: WIP: Use owner for file_operations
+      rust: WIP: Replace ModuleMetadata with THIS_MODULE
+
+ drivers/android/binder/rust_binder_main.rs |  4 +-
+ drivers/block/rnull/configfs.rs            |  2 +-
+ drivers/block/rnull/rnull.rs               |  3 +-
+ drivers/gpu/drm/nova/driver.rs             |  1 +
+ drivers/gpu/drm/tyr/driver.rs              |  1 +
+ drivers/gpu/nova-core/nova_core.rs         |  2 +-
+ lib/find_bit_benchmark_rust.rs             |  2 +-
+ rust/kernel/auxiliary.rs                   | 15 +++---
+ rust/kernel/block/mq/gen_disk.rs           | 31 ++----------
+ rust/kernel/block/mq/operations.rs         | 12 +++++
+ rust/kernel/configfs.rs                    | 19 ++++---
+ rust/kernel/debugfs.rs                     | 79 ++++++++++++++++--------------
+ rust/kernel/debugfs/file_ops.rs            | 50 ++++++++++++++-----
+ rust/kernel/driver.rs                      | 19 ++-----
+ rust/kernel/drm/device.rs                  |  2 +-
+ rust/kernel/drm/driver.rs                  |  3 ++
+ rust/kernel/drm/gem/mod.rs                 |  4 +-
+ rust/kernel/firmware.rs                    |  2 +-
+ rust/kernel/i2c.rs                         | 10 ++--
+ rust/kernel/lib.rs                         | 78 ++++++++++++++++++-----------
+ rust/kernel/miscdevice.rs                  |  4 ++
+ rust/kernel/net/phy.rs                     | 16 +++---
+ rust/kernel/pci.rs                         | 11 ++---
+ rust/kernel/platform.rs                    | 11 ++---
+ rust/kernel/usb.rs                         | 11 ++---
+ rust/macros/module.rs                      | 43 +++++++++-------
+ samples/rust/rust_configfs.rs              |  2 +-
+ samples/rust/rust_debugfs.rs               |  6 +--
+ samples/rust/rust_driver_auxiliary.rs      |  8 +--
+ samples/rust/rust_driver_faux.rs           |  2 +-
+ samples/rust/rust_minimal.rs               |  2 +-
+ samples/rust/rust_misc_device.rs           |  3 +-
+ samples/rust/rust_print_main.rs            |  2 +-
+ 33 files changed, 245 insertions(+), 215 deletions(-)
+---
+base-commit: cc3aa43b44bdb43dfbac0fcb51c56594a11338a8
+change-id: 20251230-this_module_fix-a390bff24897
+
+Best regards,
+-- 
+Kari Argillander <kari.argillander@gmail.com>
+
