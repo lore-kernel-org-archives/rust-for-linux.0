@@ -1,175 +1,139 @@
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2447CA5A
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Jan 2026 05:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423E8CA5A
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Jan 2026 05:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767246352; cv=none; b=F5rncYqSgJNB9YiTJ1EmLnjgRbRNpukyvM8KHVlLti5vm3sPtQ2HqesK7VQAGqcWoI7kWqqr0iNMc2K5sU1tVcN/OqhnUw4WqD5xUg+iZNCuucQ71GcTRpfDDXL/S6162eQuZVMIuKTIQdbLlEclcZnZhOCfwkIMk0uBSfncEGI=
+	t=1767246455; cv=none; b=fLiTJ1zzmK0MOX6on9mhrNmWF6SWpBlQVdaXQpWgO3hso/IahYzLLfdDwDyBvQNAaTN5p8Xul0/YTcCNjcyB76t/AkPcet5JlYajAIXh4nGSiOMN3PT3H2w9A/DLgtyb/2hJDP6Ei4JmQi98Z10DN6jt4FlqGK2cRouso76PZGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767246352; c=relaxed/simple;
-	bh=zqVpYWQdHro+3wRtiOZg0xhuqehIzGXgU+1aXUuukAg=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=E9f1Ut1QNmGh/eYhifJSkXLz6NWYRMviQ/uT/AYwoz78YxCtBYH8RFqyaZ+D7nU/Sm/8hqgb8uIUbU7fTw9qXAkM2vYvm3ffRDJV664DKHniiRzvCoD74qvNB0zt9XH+STYbnEfsAPQOpdhFYps62YBLtOcA3JrDF8DKYk3ay2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RR66mAti; arc=none smtp.client-ip=209.85.221.169
+	s=arc-20240116; t=1767246455; c=relaxed/simple;
+	bh=U/2E5GAtl0oNkf5HxUW9QvEBIlT1L87ssDSpWmoqdGA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=J68Kgica5I80WjvRGmN3Bv8hAKzWFv7EqtZHkbksu99eDu1lM/aJNk0q7UTT/cBFHeL973BJU4KgyxMLRfQGxHLF+WdjksKs0ER/iiiJDT7Fw59aAEE9fZvIPuKKaZ0kdvyI/aTMeOlicKBXaZo4cDO/uCRgbD9Edt4PMFKl0ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MQjnWYVD; arc=none smtp.client-ip=209.85.217.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RR66mAti"
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-55b22d3b2a6so7119099e0c.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 21:45:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MQjnWYVD"
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-5dfa9e34adbso7993344137.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 21:47:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767246350; x=1767851150; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9ndBc6CJ1CpfHe+6bNbyAqigINCzeTpSLc2ByqKZUc4=;
-        b=RR66mAtidetNqppDWfl9tQkCny3jCXnTUAAfiOpf5/rPuJs45vksspmjHw83qCziuI
-         SKxnbGChCiX6avNItTxjbAI6bWvWusjVECR9eXzf3ofluly8Dp1sIO5dtOP3p5ZlIs4+
-         YN89lD95R70BA6bs59uNTDavacw3kEMfyCOQjw7DGlaNN6Mj2RqEqC2YdJiT4vNq1/2h
-         GZv6G1PKfbvSZqWHOPt6ANE7HAl1CFQWg2k7YeWh/5d2mhqjOTXKp6C4n6Vx6dYvSm+0
-         A1aILTf7pVl4GAbQSHwRuJzozwtPbO7YYuiUUw3jnP0NcbHIdeKDYqn7z++QvACWnNWV
-         NhLg==
+        d=gmail.com; s=20230601; t=1767246453; x=1767851253; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4ZUb8hdR1MjA8tGqWbXzEvPck7ntlz9IljAIWpnnPqY=;
+        b=MQjnWYVDAHSSNzEfaJ3d8QK/E2nZr8+agD6Gy2WzrNAoXvsmk1+byXhmecWHSGf1cn
+         dmkJUOnFXrvUjM6C5CYb0sSQpAIFAY8fndBtRT7FHA42g5VQdgn9UWcr2FmanVW3PQqn
+         GtrfrbemIKYuZnHKlumXDHMT2XuSjA8kyxbyQpyzM+CmT1TwP50VFERo4XrVFvXMhMcx
+         h1ffaAoWOl6cvMDL8rNvT8RQV2OK1KLDw+1aLrG2pjSPD0lpIeDVTCNKHobOQT0j+DrU
+         TaoxUs61YWhu6tPC9CqeO4g1Wsc7isjP/N1Z/oBbXDZ86bYjZw53n79E7Qa118/EmwEB
+         eNgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767246350; x=1767851150;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9ndBc6CJ1CpfHe+6bNbyAqigINCzeTpSLc2ByqKZUc4=;
-        b=jT3GpI3cFhA+QAUTjwYroFRIljOzp9T9QqTWDncnNrjDMBTzszedCc6vqe0pPWxmxg
-         9BZ3KuoCicj84soOXglRMu3sOiPhra3CTOvwTqdLtDxKOL5JO9SWh+H88XrQe5EmoG7f
-         0dwEhsRwkNcSYpcmmDEBjZVdsBmzcKYhMrLKQKdXTWsEb7FVG282t/rQdaYJ1xWaY3q/
-         Pe6DfMeFYoNTF6qtg+DHrtaA7JmEwQD0Yg1uuauF8y1JfQw9bzSsGaSkTo/D6xDyewFB
-         CMbEetPzOiT5ZG7n1irOLZW5b5c/SnWqUVR/5GxAy+prAbW1wmQAQ587KnljNLQRblAi
-         AkXA==
-X-Forwarded-Encrypted: i=1; AJvYcCXKJqSTaByK/7j/6VZkhwTFGPwzGcScXVuO/Nay+eSvbKoxEMROlEiDSuelf9oH9oMThzk3zvFq9wb5cCmpGQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJrTqCdorl+hB2fhHHjcCaFemlcWkazEwVANBhTn6FQ8mkc3vM
-	fHCKWnazJXtq9HfX1HFMrr+ZywHInXY75K7tSCLJB0hFORM/24tXRi2ECUSLmg==
-X-Gm-Gg: AY/fxX5aJbRQC8rVXiqzISmLAtFAIph/9qNPtyyWb8RNGdlrgzk7DjbIe4jD3dngXne
-	4Uz0qCqpsxLBCiLx7o3oyhq//V9yNZSGpQzJceDlrvA2Xi9XsInmOogcPAfRZ9y9+SpmNJiA9Bx
-	R/BXDTqvkoYWs2P1KyyiyRZKr7rvHWu8Fh4T4RbU4X78T/TQiBIf90p25PbZsBOd96k3fvxXPzX
-	igCN1UJ2AprmFykO/HM8MgNOyyqASWyuNiTt5V/sisBpJT2zcWagnOxs7pbgFjNOngl0R3LiJko
-	CBQda7vj3a5yDkUKY//h1RLuAHbtz6E3OT5xQXBvBOR+8czS9bofRN2ygZRKFb+Twj1G6P5/il5
-	IDvlGLXaQdbgFFOgNW37l6CByDevJmMko4m2udyp2Sniy5dFEEHa3WlYJv2y0/9OTrXbP3fxX+Q
-	38JUBtsvibTIlqYZO+J6XTSnSMcaRCTAE36udlg8I5MhVcGn4V4MkNpqjSPa4K2Zf7Ufc=
-X-Google-Smtp-Source: AGHT+IGPae3Q8jZNEse2CMCocxuwZFX5WX9+VfZ7NrPzlgaKICCczFjJjW7e1gwGah3gbqw68yccoA==
-X-Received: by 2002:a17:902:ecc5:b0:2a0:e7e0:1d31 with SMTP id d9443c01a7336-2a2caab9181mr464445655ad.11.1767240030084;
-        Wed, 31 Dec 2025 20:00:30 -0800 (PST)
-Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c65d66sm334482605ad.20.2025.12.31.20.00.24
+        d=1e100.net; s=20230601; t=1767246453; x=1767851253;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4ZUb8hdR1MjA8tGqWbXzEvPck7ntlz9IljAIWpnnPqY=;
+        b=pgZDQhM2sPsWpf0eNRmdV546UzVfzgt0L7MW9jRkSgIKe8fnnhtJdcvjg6FI84HrkT
+         taGCBVRCU+75Z40f9gDlJt1mccra7f9HOqqKUzLtdMJyG6qJxgmlZ2mSd5nzp65PbwbZ
+         xaNJqeEghF48Jr3pYUjlV9Ra42ZZm9s1AugN+R3R5oPv0u42QTwyvNfK/u2FDJ3p5lCf
+         Q7gu3A7kTWMwpOFUFRpHMdeH3uV+a2K0CAHEhFATCFIMVeLWWkEFKM3qozy0DLJsb6lH
+         ZFrVQOK/Odbs9CxVKmoyNIuGiAXWy4Mrn/UGUuG5hG8LZzO1hkV0CuDJ26QnJQzsEIMM
+         J1Qg==
+X-Forwarded-Encrypted: i=1; AJvYcCX5JpwY/Zp/xXRIOwkbwChe8VRvMINRt35Tf5lvsb9CHCq5LgVg/ozZwT8RDNZOF2mVHy1C3KugTZnuLb+xtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwClhedpBn0OsoyhTU7oDF6kG6mWPZDOZybwapJmhYw2S1L1lUv
+	IjwIKYMiQ6LZENFleiNS21hX1tDxDeKxIOLk2fCambzTPRL/ICwWsiDutmWh/w==
+X-Gm-Gg: AY/fxX4h/0EQR7SoZI+otfmSbctBShwxe8SAZwxZc03b54hprNHGI5IbtmH5BakrdGt
+	eMEln+GLDwLoJNRLSsb1DSANpEndtf97OJUTjC82mm0JJVHl7A648Q7Xv/olnv5246j6xHwExYL
+	M0iNZDhtaM7zNTK3gbyIdVX6WpbOQYi2uxQcmbR9jvWwIDziy4tA/KAW42RU5CbG917FQWK7k/7
+	6d0Meu4O5bQQg/ya9kdsaeMWyQo0Dzq61o4eM4zNCsz+GNwxH+dZ0WA4UMwRtLHTEJaQkRZAVST
+	lH5e2RC2ygubUnJkXhOOQQAVa1ypLtT925xWY2UedMr2tBWNqAbOCHWpB037m3nOyT5TnG/839s
+	EbbCmuyCMnzAgkbQyFIuDTGCzE96M2tgR/tjNSua8wpWxCiAHRrRB1NhEBFNyfedebJXK2nuVhh
+	E/+ZuOyFizLoMCD6NC+DbQ7rgqjTez+8Bf25/OpyHX1LUW1QDNfIfEQ3EbLF9KOg==
+X-Google-Smtp-Source: AGHT+IEjXyvhUStbq4NbgwuhfHvz74nxQrKyNxHcNj94GYGjT6NKWEYz062187dzjz2wsor2aKW0LQ==
+X-Received: by 2002:a17:903:22c3:b0:2a0:d05c:7dde with SMTP id d9443c01a7336-2a2f283b5e4mr322433005ad.44.1767239432629;
+        Wed, 31 Dec 2025 19:50:32 -0800 (PST)
+Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c83325sm341874445ad.34.2025.12.31.19.50.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Dec 2025 20:00:29 -0800 (PST)
-Date: Thu, 01 Jan 2026 13:00:12 +0900 (JST)
-Message-Id: <20260101.130012.2122315449079707392.fujita.tomonori@gmail.com>
-To: fujita.tomonori@gmail.com
-Cc: aliceryhl@google.com, lyude@redhat.com, a.hindborg@kernel.org,
- boqun.feng@gmail.com, will@kernel.org, peterz@infradead.org,
- richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com,
- catalin.marinas@arm.com, ojeda@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu,
- dakr@kernel.org, mark.rutland@arm.com, frederic@kernel.org,
- tglx@linutronix.de, anna-maria@linutronix.de, jstultz@google.com,
- sboyd@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
- jack@suse.cz, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 4/5] rust: hrtimer: use READ_ONCE instead of
- read_volatile
+        Wed, 31 Dec 2025 19:50:32 -0800 (PST)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20260101.111123.1233018024195968460.fujita.tomonori@gmail.com>
-References: <20251231-rwonce-v1-0-702a10b85278@google.com>
-	<20251231-rwonce-v1-4-702a10b85278@google.com>
-	<20260101.111123.1233018024195968460.fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com,
+	ojeda@kernel.org
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	tmgross@umich.edu,
+	acourbot@nvidia.com,
+	rust-for-linux@vger.kernel.org,
+	linux-arch@vger.kernel.org
+Subject: [PATCH v2 1/2] rust: sync: atomic: Add atomic bool support via i8 representation
+Date: Thu,  1 Jan 2026 12:49:21 +0900
+Message-ID: <20260101034922.2020334-2-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260101034922.2020334-1-fujita.tomonori@gmail.com>
+References: <20260101034922.2020334-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-On Thu, 01 Jan 2026 11:11:23 +0900 (JST)
-FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+Add `bool` support, `Atomic<bool>` by using `i8` as its underlying
+representation.
 
-> On Wed, 31 Dec 2025 12:22:28 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
-> 
->> Using `READ_ONCE` is the correct way to read the `node.expires` field.
->> 
->> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->> ---
->>  rust/kernel/time/hrtimer.rs | 8 +++-----
->>  1 file changed, 3 insertions(+), 5 deletions(-)
->> 
->> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->> index 856d2d929a00892dc8eaec63cebdf547817953d3..e2b7a26f8aade972356c3eb5f6489bcda3e2e849 100644
->> --- a/rust/kernel/time/hrtimer.rs
->> +++ b/rust/kernel/time/hrtimer.rs
->> @@ -239,11 +239,9 @@ pub fn expires(&self) -> HrTimerInstant<T>
->>          // - Timers cannot have negative ktime_t values as their expiration time.
->>          // - There's no actual locking here, a racy read is fine and expected
->>          unsafe {
->> -            Instant::from_ktime(
->> -                // This `read_volatile` is intended to correspond to a READ_ONCE call.
->> -                // FIXME(read_once): Replace with `read_once` when available on the Rust side.
->> -                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
->> -            )
->> +            Instant::from_ktime(kernel::sync::READ_ONCE(
->> +                &raw const (*c_timer_ptr).node.expires,
->> +            ))
->>          }
-> 
-> Do we actually need READ_ONCE() here? I'm not sure but would it be
-> better to call the C-side API?
-> 
-> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
-> index 67a36ccc3ec4..73162dea2a29 100644
-> --- a/rust/helpers/time.c
-> +++ b/rust/helpers/time.c
-> @@ -2,6 +2,7 @@
->  
->  #include <linux/delay.h>
->  #include <linux/ktime.h>
-> +#include <linux/hrtimer.h>
->  #include <linux/timekeeping.h>
->  
->  void rust_helper_fsleep(unsigned long usecs)
-> @@ -38,3 +39,8 @@ void rust_helper_udelay(unsigned long usec)
->  {
->  	udelay(usec);
->  }
-> +
-> +__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtimer *timer)
-> +{
-> +	return timer->node.expires;
-> +}
+Rust specifies that `bool` has size 1 and alignment 1 [1], so it
+matches `i8` on layout; keep `static_assert!()` checks to enforce this
+assumption at build time.
 
-Sorry, of course this should be:
+Link: https://doc.rust-lang.org/reference/types/boolean.html [1]
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/kernel/sync/atomic/internal.rs  |  1 +
+ rust/kernel/sync/atomic/predefine.rs | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
 
-+__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtimer *timer)
-+{
-+	return hrtimer_get_expires(timer);
+diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
+index 0dac58bca2b3..31ac4c83b1a5 100644
+--- a/rust/kernel/sync/atomic/internal.rs
++++ b/rust/kernel/sync/atomic/internal.rs
+@@ -16,6 +16,7 @@ pub trait Sealed {}
+ // The C side supports atomic primitives only for `i32` and `i64` (`atomic_t` and `atomic64_t`),
+ // while the Rust side also layers provides atomic support for `i8` and `i16`
+ // on top of lower-level C primitives.
++impl private::Sealed for bool {}
+ impl private::Sealed for i8 {}
+ impl private::Sealed for i16 {}
+ impl private::Sealed for i32 {}
+diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
+index 248d26555ccf..3fc99174b086 100644
+--- a/rust/kernel/sync/atomic/predefine.rs
++++ b/rust/kernel/sync/atomic/predefine.rs
+@@ -5,6 +5,17 @@
+ use crate::static_assert;
+ use core::mem::{align_of, size_of};
+ 
++// Ensure size and alignment requirements are checked.
++static_assert!(size_of::<bool>() == size_of::<i8>());
++static_assert!(align_of::<bool>() == align_of::<i8>());
++
++// SAFETY: `bool` has the same size and alignment as `i8`, and Rust guarantees that `bool` has
++// only two valid bit patterns: 0 (false) and 1 (true). Those are valid `i8` values, so `bool` is
++// round-trip transmutable to `i8`.
++unsafe impl super::AtomicType for bool {
++    type Repr = i8;
 +}
++
+ // SAFETY: `i8` has the same size and alignment with itself, and is round-trip transmutable to
+ // itself.
+ unsafe impl super::AtomicType for i8 {
+-- 
+2.43.0
 
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index 856d2d929a00..61e656a65216 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -237,14 +237,7 @@ pub fn expires(&self) -> HrTimerInstant<T>
->  
->          // SAFETY:
->          // - Timers cannot have negative ktime_t values as their expiration time.
-> -        // - There's no actual locking here, a racy read is fine and expected
-> -        unsafe {
-> -            Instant::from_ktime(
-> -                // This `read_volatile` is intended to correspond to a READ_ONCE call.
-> -                // FIXME(read_once): Replace with `read_once` when available on the Rust side.
-> -                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
-> -            )
-> -        }
-> +        unsafe { Instant::from_ktime(bindings::hrtimer_get_expires(c_timer_ptr)) }
->      }
->  }
->  
-> 
