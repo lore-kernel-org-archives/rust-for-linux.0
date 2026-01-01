@@ -1,181 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC123A1DB;
-	Thu,  1 Jan 2026 08:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380F1234984;
+	Thu,  1 Jan 2026 08:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767255743; cv=none; b=jPwS+ply9+iy2QdG9lFhN3LlzxfCZhNvF3IQ81mz37xBYJJJlUc4zIn7z65gPz9lno0g0XRbajDv4QcaUWhiGgD3XTD+GisCOf3dRwiAw4u59KRNlgK6DQVOGqOFd6daZamQUpFJscRQhKlH4PqeYbKEVRD9+E1GPHfIqs2l2V0=
+	t=1767256985; cv=none; b=YJMSDn0tGYkkBBojCotle0uPkMakFi3eiVA1YxFkpsbI4zbEhtC3eUNz3WBajVOV3iPh/6TX0Y43Q+qqnJb9vbzErofkP/qyMv7d3+1wA5T3JZtDF46/i4bCFSVAmWA5tHz1F+qoL7EUz5C9ei5sHJ4FtjSEp73YPmHn0ijtCCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767255743; c=relaxed/simple;
-	bh=Szi00mKmBN44p1iHgaqUbG3cAmIbYSoHC39FX291kGM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uOOl1lY6oEGraEboK307aWcVHEMpiHfL11w7DUC3vSys6WArSzdCZFcLjgIfeLRkztGUXkywle5LICaD70S8w8sYvVRvRmP7H8kzgaOn7VrkFJJAzZfU0wIaoqmh4TnwbqXccbnC1KHCbEY/RBtgX4zadUNXSud1QTSxnwb6D60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X8Dz09yL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767256985; c=relaxed/simple;
+	bh=ieUt7pqL3M0cxqtfDP5HcO19kjSX1X005ga5kEuTXB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IAkVJkIZzLqg0jGjuR78kMdm295CLGvf2fMr7NqbD0BNrhWidTOPNgkli9zQIOhY9frY/ov7NMEM7mXdTCj6G4Xhukfhxb+jyBBt1zhIl+G5K1YTFgP8C7CO9Q4r0UYzRGlzU0tuIqvInQpbOTypoOXbrnHjZEqSAL2N2m7amSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kjy+qP51; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X8Dz09yL"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 112BBC4CEF7;
-	Thu,  1 Jan 2026 08:22:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767255743;
-	bh=Szi00mKmBN44p1iHgaqUbG3cAmIbYSoHC39FX291kGM=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=X8Dz09yLON1aLDN4Zldd2B1eo4CkckePChdwB8fkHK+AldxxfWrJo7mLPiZ/X06uj
-	 u/9kt0/3b+d7nS3hW0Z+0jmLoarYTpilg/XzfFFMhRr94Y/me51MsCuhxP/dwt8lQh
-	 XC2qjGU6xLI5Fb6HrIrfFUbRClXzvuq8Njbxq5VIj0WKZSIiNTNMw6Ur5gR1N/g6PI
-	 j4eJPjHrvofDhD9ROzBwoQgBpc+VNSLk8lZ9XHMniUFlG5V7eTDNRr4JZPQ4BvYQae
-	 UHkh2Q3sj+bi7eWJIpQjeS8qsYszPytGaPebKCBZdWwF4H8HN8/0JeLRAqV6eaEtj/
-	 9S7Z18DYEV1rA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2D93EEB56D;
-	Thu,  1 Jan 2026 08:22:22 +0000 (UTC)
-From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
-Date: Thu, 01 Jan 2026 08:21:24 +0000
-Subject: [PATCH] scripts: generate_rust_analyzer: reduce the output file
- size
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kjy+qP51"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767256983; x=1798792983;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ieUt7pqL3M0cxqtfDP5HcO19kjSX1X005ga5kEuTXB0=;
+  b=kjy+qP51g6/Bv6r9QLVY0zM52JpJftiDmttTPK5GXDToYpCwhKagOwWF
+   jdQfhzwRUTHYeMy/T1P9gE8g8y6v7wQ3EXTet73q263c44YvsCukvp1lt
+   /U6xo6bPHyzdHOKd/u20xxvrXTe2YT+PNSQ4RCVT12QU+bko6wA76gGdb
+   LNjtbopuaC6UECztSUHF/uHCGFcT+l0QtKFI0Aq/mqczmV+w3qgd/UpK6
+   zfOIfxA1ro1RkcWY4bA2sFcdJ4iYdCFXPtdcWg6ivEu0rqPPmYZBThjvF
+   dIXUx5Bwkfr7G9DiYN2t5YTFJ8cB8XB9shHSISJFn4SzQQBkcIpvWxcYV
+   A==;
+X-CSE-ConnectionGUID: lU0/85YlT2CfzDE9/eLr2w==
+X-CSE-MsgGUID: O7tTomKGTe6521wyCzyXEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11658"; a="71375259"
+X-IronPort-AV: E=Sophos;i="6.21,193,1763452800"; 
+   d="scan'208";a="71375259"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2026 00:43:02 -0800
+X-CSE-ConnectionGUID: 09Yz4ukfTiKIlzHoSM7nJw==
+X-CSE-MsgGUID: d3GmED39QPCdGUb8PwZ7gA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,193,1763452800"; 
+   d="scan'208";a="206118660"
+Received: from igk-lkp-server01.igk.intel.com (HELO 92b2e8bd97aa) ([10.211.93.152])
+  by orviesa004.jf.intel.com with ESMTP; 01 Jan 2026 00:42:58 -0800
+Received: from kbuild by 92b2e8bd97aa with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vbEGk-000000000Ej-3qSn;
+	Thu, 01 Jan 2026 08:42:54 +0000
+Date: Thu, 1 Jan 2026 09:42:32 +0100
+From: kernel test robot <lkp@intel.com>
+To: John Hubbard <jhubbard@nvidia.com>, Danilo Krummrich <dakr@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, Alexandre Courbot <acourbot@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+	Edwin Peer <epeer@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Bjorn Helgaas <helgaas@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH] gpu: nova-core: bitfield: use &mut self setters instead
+ of builder pattern
+Message-ID: <202601010949.aupX8V1f-lkp@intel.com>
+References: <20251231214727.448776-1-jhubbard@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260101-rust-project-reduce-size-v1-1-4cd66e9e02d9@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAIMuVmkC/0WNQQ7CMAwEv1LljKU4LU3oVxAH4zhgJCgkbYVA/
- J0AB45jeWeepkhWKWZonibLokXHSwVcNYaPdDkIaKxsnHW9RYuQ5zLBNY8n4QmyxJkFij4EYnA
- b8uRtIDF1fs2S9P5Vb3c/znKba2H6Hf+BofnrCeqqBvSsky4CPuC6SxLQt2lY8GPeUxHg8Vw/h
- iaFtGFMXbTsqe96a8UxteiicHAd2T27hJHM7vV6A129EETuAAAA
-X-Change-ID: 20260101-rust-project-reduce-size-d829a7a708ae
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jesung Yang <y.j3ms.n@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767255742; l=4572;
- i=y.j3ms.n@gmail.com; s=20251225; h=from:subject:message-id;
- bh=fEPh+w8Y+NMyisGvsPgXPjuY6/RbC7wcVePF3f0Ffh4=;
- b=j1VfacoahJifuc3/koMnMMRFojai3MABa61AGcrHSwqIP1QLapT91j9KNXmTo1f3wFpqvrS0C
- EqF4uBC7IXHC1kgoee1PYJ1/a+fYXkYAgSEMk0DiJvYsebQoQuOwQsp
-X-Developer-Key: i=y.j3ms.n@gmail.com; a=ed25519;
- pk=2yVgO1I+y7kkFSF2Dc/Dckj4L2FgRnvmERHFt4bspbI=
-X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/20251225 with
- auth_id=586
-X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
-Reply-To: y.j3ms.n@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251231214727.448776-1-jhubbard@nvidia.com>
 
-From: Jesung Yang <y.j3ms.n@gmail.com>
+Hi John,
 
-Use the `cfg_groups` field to aggregate common configurations into a
-single project-level definition. This avoids repeating identical `cfg`s
-across crates.
+kernel test robot noticed the following build errors:
 
-As a result, the size of the generated `rust-project.json` is reduced
-from 11MiB to 406KiB (about 96% reduction).
+[auto build test ERROR on 7acc70476f14661149774ab88d3fe23d83ba4249]
 
-Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
----
-This patch depends on [1] to ensure it merges cleanly without conflicts.
+url:    https://github.com/intel-lab-lkp/linux/commits/John-Hubbard/gpu-nova-core-bitfield-use-mut-self-setters-instead-of-builder-pattern/20260101-054823
+base:   7acc70476f14661149774ab88d3fe23d83ba4249
+patch link:    https://lore.kernel.org/r/20251231214727.448776-1-jhubbard%40nvidia.com
+patch subject: [PATCH] gpu: nova-core: bitfield: use &mut self setters instead of builder pattern
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260101/202601010949.aupX8V1f-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260101/202601010949.aupX8V1f-lkp@intel.com/reproduce)
 
-[1] https://lore.kernel.org/rust-for-linux/20260101-ra-fix-primitive-v1-1-def809357b4e@gmail.com/
----
- scripts/generate_rust_analyzer.py | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601010949.aupX8V1f-lkp@intel.com/
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 6178a53516ec35f308897e65c5001edd81b0d3dd..2a8578fb784d08b2a5e628bfab935080759d2dce 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -19,15 +19,7 @@ def args_crates_cfgs(cfgs):
- 
-     return crates_cfgs
- 
--def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
--    # Generate the configuration list.
--    cfg = []
--    with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
--        for line in fd:
--            line = line.replace("--cfg=", "")
--            line = line.replace("\n", "")
--            cfg.append(line)
--
-+def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, kernel_cfg_group):
-     # Now fill the crates list -- dependencies need to come first.
-     #
-     # Avoid O(n^2) iterations by keeping a map of indexes.
-@@ -35,7 +27,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-     crates_indexes = {}
-     crates_cfgs = args_crates_cfgs(cfgs)
- 
--    def append_crate(display_name, root_module, deps, cfg=[], crate_attrs=[], is_workspace_member=True, is_proc_macro=False, edition="2021"):
-+    def append_crate(display_name, root_module, deps, cfg=[], cfg_groups=[], crate_attrs=[], is_workspace_member=True, is_proc_macro=False, edition="2021"):
-         crate = {
-             "display_name": display_name,
-             "root_module": str(root_module),
-@@ -48,6 +40,8 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-                 "RUST_MODFILE": "This is only for rust-analyzer"
-             }
-         }
-+        if len(cfg_groups) > 0:
-+            crate["cfg_groups"] = cfg_groups
-         if len(crate_attrs) > 0:
-             crate["crate_attrs"] = crate_attrs
-         if is_proc_macro:
-@@ -134,7 +128,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-             display_name,
-             srctree / "rust"/ display_name / "lib.rs",
-             deps,
--            cfg=cfg,
-+            cfg_groups=[kernel_cfg_group],
-             crate_attrs=crate_attrs,
-         )
-         crates[-1]["env"]["OBJTREE"] = str(objtree.resolve(True))
-@@ -189,7 +183,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-                 name,
-                 path,
-                 ["kernel"],
--                cfg=cfg,
-+                cfg_groups=[kernel_cfg_group],
-                 crate_attrs=["no_std"],
-             )
- 
-@@ -214,10 +208,22 @@ def main():
-     # Making sure that the `sysroot` and `sysroot_src` belong to the same toolchain.
-     assert args.sysroot in args.sysroot_src.parents
- 
-+    # Generate the configuration list.
-+    cfg = []
-+    with open(args.objtree / "include" / "generated" / "rustc_cfg") as fd:
-+        for line in fd:
-+            line = line.replace("--cfg=", "")
-+            line = line.replace("\n", "")
-+            cfg.append(line)
-+    kernel_cfg_group = "kernel"
-+
-     rust_project = {
--        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs),
-+        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs, kernel_cfg_group),
-         "sysroot": str(args.sysroot),
--        "sysroot_src": str(args.sysroot_src)
-+        "sysroot_src": str(args.sysroot_src),
-+        "cfg_groups": {
-+            kernel_cfg_group: cfg,
-+        },
-     }
- 
-     json.dump(rust_project, sys.stdout, sort_keys=True, indent=4)
+All errors (new ones prefixed by >>):
 
----
-base-commit: f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
-change-id: 20260101-rust-project-reduce-size-d829a7a708ae
-prerequisite-change-id: 20260101-ra-fix-primitive-78154fe8173f:v1
-prerequisite-patch-id: 0544fdf5522949047a81c3580960183375574fd3
+   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS= -fno-crash-diagnostics -Wno-error=return-type -Wreturn-type -funsigned-char -Wundef W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
+   make: Entering directory '/kbuild/src/consumer'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in drivers/gpu/nova-core/falcon.rs:413:
+                Delta::from_micros(150),
+            );
+    
+   -        regs::NV_PFALCON_FALCON_ENGINE::update(bar, &E::ID, |v| { v.set_reset(true); });
+   +        regs::NV_PFALCON_FALCON_ENGINE::update(bar, &E::ID, |v| {
+   +            v.set_reset(true);
+   +        });
+    
+            // TIMEOUT: falcon engine should not take more than 10us to reset.
+            fsleep(Delta::from_micros(10));
+   Diff in drivers/gpu/nova-core/falcon.rs:420:
+    
+   -        regs::NV_PFALCON_FALCON_ENGINE::update(bar, &E::ID, |v| { v.set_reset(false); });
+   +        regs::NV_PFALCON_FALCON_ENGINE::update(bar, &E::ID, |v| {
+   +            v.set_reset(false);
+   +        });
+    
+            self.reset_wait_mem_scrubbing(bar)?;
+    
+>> Diff in drivers/gpu/nova-core/falcon.rs:413:
+                Delta::from_micros(150),
+            );
+    
+   -        regs::NV_PFALCON_FALCON_ENGINE::update(bar, &E::ID, |v| { v.set_reset(true); });
+   +        regs::NV_PFALCON_FALCON_ENGINE::update(bar, &E::ID, |v| {
+   +            v.set_reset(true);
+   +        });
+    
+            // TIMEOUT: falcon engine should not take more than 10us to reset.
+            fsleep(Delta::from_micros(10));
+   Diff in drivers/gpu/nova-core/falcon.rs:420:
+    
+   -        regs::NV_PFALCON_FALCON_ENGINE::update(bar, &E::ID, |v| { v.set_reset(false); });
+   +        regs::NV_PFALCON_FALCON_ENGINE::update(bar, &E::ID, |v| {
+   +            v.set_reset(false);
+   +        });
+    
+            self.reset_wait_mem_scrubbing(bar)?;
+    
+   make[2]: *** [Makefile:1871: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src/consumer'
 
-Best regards,
 -- 
-Jesung Yang <y.j3ms.n@gmail.com>
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
