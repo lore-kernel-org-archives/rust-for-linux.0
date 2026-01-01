@@ -1,59 +1,60 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983C31A3029
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Jan 2026 01:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54019FA93
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Jan 2026 01:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767231821; cv=none; b=nfjOaOXeencilARAXrSKS+VDxZm6qsutIF0a96Bt5syeDAStsvR+5us1YqjroEVvZsfbth0tPRxXHi0xBitkLfjeRZ1uj+S5VCED4hXSngh6KFnR5n6ecEW+vNRptq/AKEWtmXu0FqKj0ifl1gFZruz6MjF823rvH4KH9LbjKLQ=
+	t=1767232017; cv=none; b=DXuFcahjOZtMWw8GD85Pd/iW4VIBAzTVH/hZOTdkeRibtAJmAcLL7Cs3zkdgC18pIEg+gflhC3bYkXoOfOgpZZGTJJpxrUu7W2fUZfFan+VI14J0twOxq9iebevmglXDZWHii90bNl2YBodzaqiDetO+6jwm/Ed6BsKje/mDAhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767231821; c=relaxed/simple;
-	bh=RMCYmC1Oubx8T9OX4HGP+LuRcopbaCrIKk16O1wTI6c=;
+	s=arc-20240116; t=1767232017; c=relaxed/simple;
+	bh=OwAEoP6xOTP+zVAos3P25BD8p5EUUy0svN+As5Uvd7c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RdvP+SlhABV/QF3usKzD+SRzHwzk8S1k+5rS9QWLDuIAJtAMofYTLuFagEybyp5wULcr/l1tv2vhH42KkfGsJUHm9nXUakxf5V3Bq2jeaMocOHIjBRfUPmwdRnKQTyajiJsDd7vjUgO4UwVoWF66xK97GwZNXDUZ9Krv5xDWvAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ALPJOAIs; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=G0W21K0C39rMjzWYeWRuiLFbO2qwS2881mifM0GUcf8nNyMIAvS0MLkuTAMLYChdwBQWQKKHLO8sc8yVbxABJIxoY+CSSy3ggxV/vhcS4kzrVZlzy2HNVDzh5iqNWqQmUevJf288DZOgnVZnnBQnEbEtHa9vbzcX0dMIsc8T2iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sv2DQcS8; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ALPJOAIs"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-37a3340391cso89582561fa.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 17:43:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sv2DQcS8"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-477bf34f5f5so81829665e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Dec 2025 17:46:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767231818; x=1767836618; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767232013; x=1767836813; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gCE7uUSE9sjZ0PtrMGueCDZmvLDiSF0FwCCrGBTq3pU=;
-        b=ALPJOAIs4gHwA0ffxn2Lshc6wcn0mehlrNDpUlf9Aw0R1OwObctqGygkXy3Sy0cIcH
-         2nlbffH3OCdCRa2l6dWV9ydYkXu+vjig4UBqkFbuv+8Q/KH9mfoqItZsVTLebwOxR+rK
-         8J2FfVJxHfekVpG4XB99m4xB3YZ3xh3udla7s6q0mp1+ck5U26+DaNTJVnfcFIh1EOOp
-         h7+EJmxYlJr5R5MyuFVuRFQecO6+AomCd+C6vm5e8ypUJ7jMHKhQZpUuXaiNQBQ6lP6D
-         h4hLgi13JuhLTGcRxxna9vECe15Rf3SdxAqyUoC3lGED5p7ILNb670MLrQxYjMl7LBRy
-         +TCQ==
+        bh=JUFQ3r9vRm9PPhHEl5qDSm4YBwEc3b9uWNALfgNAvKA=;
+        b=Sv2DQcS8nrrv7CJ0sJ2J/ZHV4L8bz5yyCZ6QrxfPAS+ZjbA+r2qvyeVyV4acRg1TUR
+         nxcoM7hmYb5X2MHa55LOkiy2ZpI0FP3dUV8JqMkw7pjEL/PTvBy+eXGkRzrSH8VaXd98
+         uW9EohhL2By1qKtsTH4O6hRmNW+2NrDCEuEIuc2IKNc3eFIjO14QBLR+yVunHLr7Oqtj
+         8u/rDh1iKcbsGHohTMLEyt5AKz0HRc6OQl1CpIFQIR2nvgoMQLZns1mU+15rps11yHYJ
+         B7ooNY3V9LJBNlL+vbbuReE43vxlw1AsfvQQc9PJpBwi1nZAOHsYC8UaqUdYJFZhAFK9
+         O1+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767231818; x=1767836618;
+        d=1e100.net; s=20230601; t=1767232013; x=1767836813;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=gCE7uUSE9sjZ0PtrMGueCDZmvLDiSF0FwCCrGBTq3pU=;
-        b=vuV9qMMcu3wrU5sys6R3/UapL+tkdIGGg0Anl5bWs6Yk+tmuybi2vKmwDe3gbLOoOe
-         D+ZkKGSxT6/le0un6z072QdrF317aqnHnuXZjWz1MGQyBkh6mKFKR6DlvZ3p5bu3PNvB
-         YOrpMxTG0Rexzhitc1O0EVoauNw+IbWDOf/M8fZcj9iJCPRR0IOV7hjsFkDiIoSDoyBe
-         0jGy6Mwkqqpu/kxL8SPoXI0yubXZueygYGMAtpEk5rzg6U2jIEdPgClAnJbJp8nIp8Rr
-         IsEVTgo8tYqn1Ri55pAWCcJoyYKQFl0CRI/FV4xfb8Z0XKFmUi3giRL3jU5yH59DAhjK
-         37bw==
-X-Forwarded-Encrypted: i=1; AJvYcCXXYO1QcvWOuNZPtmhVVaV+JDagNNDHmT2vCeevXcrJAEYuOT6PkvjTRtEOKhjPMfn4EiqHD69yeYvwx9cC3w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwttrF/tQZ185/BRfmGLuNXmYQwxL7cHMp4hFHdIX8lgUycJYqN
-	mlIuImOLsZ6x7I1mH6EYRlRXFhhQgUtpxHG9OrI3gviVMJL3Mj6vTB2rz/KR4QdnXpN7Z45kNxT
-	aGCN7lbpZ7hnHvY5oQ+Z8BCBM6Bninfwcdd0n70yW4RuHbVg=
-X-Gm-Gg: AY/fxX4c5sYuHG6CczfGsEXf/EqnIWGG3tmumYj9S6yTiY9JKfR5ZxRtRNSDpwSk09k
-	K8gEwm1Vsf7zt5QFclRfkhcoOtlu82GtwaE2qqOQ4//Rmll38Txt/+BJEMQXvFy290PO3U52H+H
-	rEG/RRu8ED8FLy12mbWBaINbFTPT2SX1zbVgyJ9vYiLz/MDD72GpSRIBK/bWlc22DN7X+Vtg00F
-	6CwdS1es5URJMUhEb/GrjjHv1WURXwZIIa6bcdWnPI8Xd5qWcsXk43U+icW3aeDXvkixiof
-X-Google-Smtp-Source: AGHT+IEZ3xskbnTcFFXLfNw1WfFC+mUgQkFCAg3Zmqyh/u2exvaTg6y8Rz1515yNWFUPOwaCQ2x7J+8eVnVoEyXmvWs=
-X-Received: by 2002:a2e:ab1b:0:b0:37b:9b28:4282 with SMTP id
- 38308e7fff4ca-38121561689mr113011721fa.11.1767231817298; Wed, 31 Dec 2025
- 17:43:37 -0800 (PST)
+        bh=JUFQ3r9vRm9PPhHEl5qDSm4YBwEc3b9uWNALfgNAvKA=;
+        b=XR+Ki9kmr5Jajb0b+KQbfi8HobblW38N76VhIoDoyJUlEipeQy7XGq7i1PtBIJVwQJ
+         XoMnU25Nyf55dnweeZ7bYmhkPTsONL+e/WYt45Et0OCUUPlNsu7w/Gv0Mi0hBGxw9vyA
+         FLU3f71KyrGGgj1e7rQA/m4o4/ODA6Eije4Q2fikeu1BjgxCAQd2D3b8Zx97UpR3i6Ri
+         HPkpn8+Y1s3o1N4si+OqsPmRc7MKbXM32zVhumqa4aJh6gmiN5PKy+srHDUB1/qjvoiD
+         CzskvFA+WLdqt/qny3KJvc18KXPLMM3Ld9ns/xg+4LeC7wwUMRSWmu7Bnt8sxCQpLicL
+         3czg==
+X-Forwarded-Encrypted: i=1; AJvYcCVOsAM9DFyDBfxb9/oZ2iwOxDBHyxT4uBNfdTeXj0hTHj/3KdFAtJrFy2nG51RQdy57Fcz7ufFH1vHjML7T+Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuQoUP9iwDz0ZrBbYyRUlThb0QKBpfC6u+uiSdmgGPznvxGlnO
+	fyW81gnMVyZPf0BAqVdr2MYfUwlpxWJPnxUiDaUc5JAhBHIV7yKJ9IlEqUohfGuoPPiDBuLcf3z
+	1IqHLPOyfUqYO57dw6iHejy4n57AMnPKJR3KRr1kg
+X-Gm-Gg: AY/fxX566iKToSjCUHlErnb9CTjN1iwrEBWfmmd3Pv/S4zJakIPg/ZKphNEbylPE4cS
+	uxCANaiNlQcoTfivMMgC6vLaEtCcr0mVIx1MWebY8n+B945B9+WxKx7e5tKj9OnIRHd1K8KAOYO
+	6RgLuMGHZoBk5LAOa4WJKjhAhmvT5BXVUiwj45ufBBzVQp6QCgrQQh32+JLq/XK7k8C0C9Qse2T
+	WyyR848e8Lm/8lgmmHZ4zq2FgF7UiY6gxX6kkR7OashnKbYMn0IBI6LSm89HT/KuImn6bFVdDyC
+	pfhXOm4bYgQw6ZljWj4CPR2YLIYGmR5yf3N+
+X-Google-Smtp-Source: AGHT+IHaIUqf59ZT3bq9RthuJQlgZIS+ARA2SK1ons6aFQ74dbO6M8n+yd1MlI13mzCUEK6fVSuvOhZRY05it6OgTiI=
+X-Received: by 2002:a05:600c:8b11:b0:477:55ce:f3bc with SMTP id
+ 5b1f17b1804b1-47d2d273515mr423123715e9.19.1767232013375; Wed, 31 Dec 2025
+ 17:46:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,15 +62,15 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20251229072157.3857053-1-sunke@kylinos.cn> <20251229072157.3857053-2-sunke@kylinos.cn>
- <aVKN0Q-6bsHGq_Gy@smile.fi.intel.com> <aVT1N1NHQDCe2Dn8@google.com>
-In-Reply-To: <aVT1N1NHQDCe2Dn8@google.com>
-From: =?UTF-8?B?5a2Z56eR?= <sk.alvin.x@gmail.com>
-Date: Thu, 1 Jan 2026 09:43:25 +0800
-X-Gm-Features: AQt7F2pS0TqvVAQdanc3Bo3EMWR6iCq_CzwU-ee236FPcjRgH_zlGQ05ThiHK84
-Message-ID: <CALpAb9O0cvg+bPy5tD_BbE9kwHyTy99jvgp=xuwNqefTRWFiVg@mail.gmail.com>
+ <aVKN0Q-6bsHGq_Gy@smile.fi.intel.com> <aVT1N1NHQDCe2Dn8@google.com> <CALpAb9O0cvg+bPy5tD_BbE9kwHyTy99jvgp=xuwNqefTRWFiVg@mail.gmail.com>
+In-Reply-To: <CALpAb9O0cvg+bPy5tD_BbE9kwHyTy99jvgp=xuwNqefTRWFiVg@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 1 Jan 2026 02:46:41 +0100
+X-Gm-Features: AQt7F2qObr69EM_AUiJN7ttshzhGZtovvAaLvYJgmC6XsogE5cfYH-EJF2K5Vns
+Message-ID: <CAH5fLgiPG7M7W+LracNLN7xaVQtwBqK-D07MjCrR_0MZdG6MvA@mail.gmail.com>
 Subject: Re: [PATCH v7 1/4] lib/vsprintf: Export functions for Rust pointer
  formatting support
-To: Alice Ryhl <aliceryhl@google.com>
+To: =?UTF-8?B?5a2Z56eR?= <sk.alvin.x@gmail.com>
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Dirk Behme <dirk.behme@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Petr Mladek <pmladek@suse.com>, 
 	Steven Rostedt <rostedt@goodmis.org>, Timur Tabi <ttabi@nvidia.com>, 
@@ -82,67 +83,72 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Dirk Behme <dirk.behme@
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 31, 2025 at 6:04=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Thu, Jan 1, 2026 at 2:43=E2=80=AFAM =E5=AD=99=E7=A7=91 <sk.alvin.x@gmail=
+.com> wrote:
 >
-> On Mon, Dec 29, 2025 at 04:18:57PM +0200, Andy Shevchenko wrote:
-> > On Mon, Dec 29, 2025 at 03:21:19PM +0800, Ke Sun wrote:
-> > > Export ptr_to_hashval() and extract kptr_restrict_value() to enable
-> > > Rust code to use kernel pointer formatting functionality.
+> On Wed, Dec 31, 2025 at 6:04=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > On Mon, Dec 29, 2025 at 04:18:57PM +0200, Andy Shevchenko wrote:
+> > > On Mon, Dec 29, 2025 at 03:21:19PM +0800, Ke Sun wrote:
+> > > > Export ptr_to_hashval() and extract kptr_restrict_value() to enable
+> > > > Rust code to use kernel pointer formatting functionality.
+> > > >
+> > > > - Export ptr_to_hashval() with EXPORT_SYMBOL_GPL for pointer hashin=
+g.
+> > > >   This function is used to hash kernel pointers before printing the=
+m,
+> > > >   preventing information leaks about kernel memory layout.
+> > > >
+> > > > - Extract kptr_restrict handling logic from restricted_pointer() in=
+to
+> > > >   a separate exported function kptr_restrict_value() that can be
+> > > >   reused by both restricted_pointer() (for %pK format specifier) an=
+d
+> > > >   Rust code.
+> > > >
+> > > > The kptr_restrict_value() function:
+> > > > - Returns 0, 1, or 2 to indicate the kptr_restrict sysctl value
+> > > > - Returns -1 for error case (IRQ context with kptr_restrict=3D=3D1)
+> > > > - Modifies the pointer value through @pptr parameter when needed
+> > > >   (sets to NULL when access should be restricted)
+> > > >
+> > > > These functions are needed for the HashedPtr and RestrictedPtr wrap=
+per
+> > > > types in rust/kernel/ptr.rs to provide safe pointer formatting that
+> > > > matches C kernel patterns.
+> > > >
+> > > > This refactoring:
+> > > > - Allows restricted_pointer() to reuse the common logic while
+> > > >   maintaining the same behavior
+> > > > - Enables Rust code to use the same kptr_restrict handling logic
+> > > > - Reduces code duplication
 > > >
-> > > - Export ptr_to_hashval() with EXPORT_SYMBOL_GPL for pointer hashing.
-> > >   This function is used to hash kernel pointers before printing them,
-> > >   preventing information leaks about kernel memory layout.
+> > > ...
 > > >
-> > > - Extract kptr_restrict handling logic from restricted_pointer() into
-> > >   a separate exported function kptr_restrict_value() that can be
-> > >   reused by both restricted_pointer() (for %pK format specifier) and
-> > >   Rust code.
+> > > > +EXPORT_SYMBOL_GPL(ptr_to_hashval);
 > > >
-> > > The kptr_restrict_value() function:
-> > > - Returns 0, 1, or 2 to indicate the kptr_restrict sysctl value
-> > > - Returns -1 for error case (IRQ context with kptr_restrict=3D=3D1)
-> > > - Modifies the pointer value through @pptr parameter when needed
-> > >   (sets to NULL when access should be restricted)
+> > > I do not like this. At bare minimum we should make sure it's namespac=
+ed, so the
+> > > author of the code deliberately needs to import it (I'm talking about=
+ C side).
 > > >
-> > > These functions are needed for the HashedPtr and RestrictedPtr wrappe=
-r
-> > > types in rust/kernel/ptr.rs to provide safe pointer formatting that
-> > > matches C kernel patterns.
+> > > Ideally we should have something which is Rust specific, like
 > > >
-> > > This refactoring:
-> > > - Allows restricted_pointer() to reuse the common logic while
-> > >   maintaining the same behavior
-> > > - Enables Rust code to use the same kptr_restrict handling logic
-> > > - Reduces code duplication
+> > > EXPORT_SYMBOL_FOR_RUST_ONLY(foo);
+> > >
+> > > Can we do that first?
 > >
-> > ...
+> > We don't have an EXPORT_SYMBOL_FOR_RUST_ONLY(). The closest there is
+> > would be to place it in rust/helpers/, since such symbols won't be
+> > available to C modules once we land this:
 > >
-> > > +EXPORT_SYMBOL_GPL(ptr_to_hashval);
-> >
-> > I do not like this. At bare minimum we should make sure it's namespaced=
-, so the
-> > author of the code deliberately needs to import it (I'm talking about C=
- side).
-> >
-> > Ideally we should have something which is Rust specific, like
-> >
-> > EXPORT_SYMBOL_FOR_RUST_ONLY(foo);
-> >
-> > Can we do that first?
+> > https://lore.kernel.org/all/20251202-inline-helpers-v1-0-879dae33a66a@g=
+oogle.com/
 >
-> We don't have an EXPORT_SYMBOL_FOR_RUST_ONLY(). The closest there is
-> would be to place it in rust/helpers/, since such symbols won't be
-> available to C modules once we land this:
->
-> https://lore.kernel.org/all/20251202-inline-helpers-v1-0-879dae33a66a@goo=
-gle.com/
+> Does the inline helpers feature also support GCC builds, or is it
+> limited to Clang only?
 
-Does the inline helpers feature also support GCC builds, or is it
-limited to Clang only?
+Clang only.
 
->
-> But since the current file also needs to access this, I don't think it
-> will fly.
->
-> Alice
+Alice
