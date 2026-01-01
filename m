@@ -1,215 +1,181 @@
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2BD125B2
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Jan 2026 08:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC123A1DB;
+	Thu,  1 Jan 2026 08:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767255406; cv=none; b=AVLLuUcn/MaDhx5i28XgGJiYJeRTlltuhaAHnHbB1wy2PS8eV15InyeMS/IQxr9qMNoj24PdnJF49KkjbobYiv7UhCFxmaqiSweTWrtgcK6+ugY/LfaUBkjBHe/O8dzDcbr6gVrPU2uaz1Egn2ZVKrgST5thFG+iw3qR2BHeBDk=
+	t=1767255743; cv=none; b=jPwS+ply9+iy2QdG9lFhN3LlzxfCZhNvF3IQ81mz37xBYJJJlUc4zIn7z65gPz9lno0g0XRbajDv4QcaUWhiGgD3XTD+GisCOf3dRwiAw4u59KRNlgK6DQVOGqOFd6daZamQUpFJscRQhKlH4PqeYbKEVRD9+E1GPHfIqs2l2V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767255406; c=relaxed/simple;
-	bh=Etm1/olb4y2XkevZ1Z09MJuXjTv8NiegQr28cosJDt4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K4NTymHYdhngIRrcg7dcOygeyU9uiI+c08defB7n1yylXmnG2dnKoZqO7SgW9RVwG5oARIVYpTIeHHuNAoPPL65xTnsERKN/pkbfC9eOsLV8ryycmRGSvPn0rrtG07G3K5FtOZGNXsbItcCENJEVHTyB6DLo71V1C664vNaakzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2a09a3bd9c5so101020355ad.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Jan 2026 00:16:44 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767255404; x=1767860204;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rwNAoBYoQC8m0fneER7REWAaEqFpEl13NstxkPIKG/M=;
-        b=mqRH1Tm9/mVYdvNUEb6wQaFBfR/WWEsrU+y6i9kP2V6ElEkc8mG0YjMlIoKy5n1Mht
-         PCu4ytR0w5sxoLU35ZrkkERrX6jMoIEbRJKLYy3qQ+uL+G6rArkpIhl+KcZF7pH48sch
-         BdSGM0I5yQ/HiS4WYIADgoW0bJ2HU4cNDffSIefTeSgfYrDFjZxlvorpHIal+DIcSqVv
-         JSpKGJCxt4URw8joiFSdk7INbQITaGIvimXA6hSvsKRKvGURfhpHn2Y4zemWY5FFlFSX
-         VecQX8osDTf3Bv7Rku3MxC5eWI8qMl14t4+BRfnQ98kcH0tSFJ7ML2NGlNCng3dNfHVp
-         uQSg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUqqPLcNJu4TZnu4HlVJoMndHkB2kPWdNv3DHHoWtGT3PRe4PrSLyhZOom6goy47LJmYKaenioSzA9EPKWWA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzyomxpo8MKIgbJran3h+isBsJG1PRierwj1WgozyF/jyhkNLpx
-	LKS1lqWJYx1WUa+iZ9QizwCH5O9xI+KG66n0vlVj4AAnoTaB7kMEQ/X+
-X-Gm-Gg: AY/fxX7psCtlsIxdh34SuSJTpPoex1nUGVOP/M2esI5B4kqlGuC7ULKPHuIOmzgDqfd
-	agzfAsAr9pdiGv3pNYX122q+Pk1rnbS0gcCIzTQuqS1VIdz6auOeoLGDCvKOEoeNmht0t2JbP/r
-	uD53PdxQKVlvbsxqGrs8lF8PjdhhxZYvp3bdMK5n68C5Y3ctqZm19lX1fwTs/mDFCqOu13C+Igo
-	Wrt4YfLtKEf1fN1gah5Ww90oJ6dxdjtBQfyzVuV3arHFSQlSpJbb2anJeQsLOQPogl1vX0uoR6d
-	zAek5k3RMVa1+cV+cdsmFXSgyVj5lCl4sHVHRdiAWLzJ8eAf2aqDNonpcxdWJi37S9OYjC+2jGM
-	J9eYAAo2XoCVuKqSDRZQQ9dR6OrMdULtQRS2GAIS1cJrZ19nSm9grAE9lMJ9yUhAsjrBzQigVql
-	AS+GDcWTbXQjz97x3MvjYCniUa9RKfman5mE5yv6Et8yQMWdk0BRDjhgU=
-X-Google-Smtp-Source: AGHT+IHgkUo/2uMCeJGBtl6Cb518QJbt+MYBfmY5Dc00rcS0hxqg6KwUU5UyjFMFi+ZUh9Sc/5Wzbw==
-X-Received: by 2002:a17:903:2345:b0:2a0:d629:9035 with SMTP id d9443c01a7336-2a2f220cebfmr384983865ad.3.1767255403900;
-        Thu, 01 Jan 2026 00:16:43 -0800 (PST)
-Received: from localhost.localdomain (210-61-187-174.hinet-ip.hinet.net. [210.61.187.174])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c666casm342457585ad.3.2026.01.01.00.16.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Jan 2026 00:16:43 -0800 (PST)
-From: Ke Sun <sunke@kylinos.cn>
-To: Dirk Behme <dirk.behme@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: John Ogness <john.ogness@linutronix.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Ke Sun <sk.alvin.x@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	Ke Sun <sunke@kylinos.cn>
-Subject: [PATCH v8 4/4] docs: rust: Add pointer formatting documentation
-Date: Thu,  1 Jan 2026 16:16:04 +0800
-Message-ID: <20260101081605.1300953-5-sunke@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260101081605.1300953-1-sunke@kylinos.cn>
-References: <20260101081605.1300953-1-sunke@kylinos.cn>
+	s=arc-20240116; t=1767255743; c=relaxed/simple;
+	bh=Szi00mKmBN44p1iHgaqUbG3cAmIbYSoHC39FX291kGM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uOOl1lY6oEGraEboK307aWcVHEMpiHfL11w7DUC3vSys6WArSzdCZFcLjgIfeLRkztGUXkywle5LICaD70S8w8sYvVRvRmP7H8kzgaOn7VrkFJJAzZfU0wIaoqmh4TnwbqXccbnC1KHCbEY/RBtgX4zadUNXSud1QTSxnwb6D60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X8Dz09yL; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X8Dz09yL"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 112BBC4CEF7;
+	Thu,  1 Jan 2026 08:22:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767255743;
+	bh=Szi00mKmBN44p1iHgaqUbG3cAmIbYSoHC39FX291kGM=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=X8Dz09yLON1aLDN4Zldd2B1eo4CkckePChdwB8fkHK+AldxxfWrJo7mLPiZ/X06uj
+	 u/9kt0/3b+d7nS3hW0Z+0jmLoarYTpilg/XzfFFMhRr94Y/me51MsCuhxP/dwt8lQh
+	 XC2qjGU6xLI5Fb6HrIrfFUbRClXzvuq8Njbxq5VIj0WKZSIiNTNMw6Ur5gR1N/g6PI
+	 j4eJPjHrvofDhD9ROzBwoQgBpc+VNSLk8lZ9XHMniUFlG5V7eTDNRr4JZPQ4BvYQae
+	 UHkh2Q3sj+bi7eWJIpQjeS8qsYszPytGaPebKCBZdWwF4H8HN8/0JeLRAqV6eaEtj/
+	 9S7Z18DYEV1rA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2D93EEB56D;
+	Thu,  1 Jan 2026 08:22:22 +0000 (UTC)
+From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
+Date: Thu, 01 Jan 2026 08:21:24 +0000
+Subject: [PATCH] scripts: generate_rust_analyzer: reduce the output file
+ size
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260101-rust-project-reduce-size-v1-1-4cd66e9e02d9@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAIMuVmkC/0WNQQ7CMAwEv1LljKU4LU3oVxAH4zhgJCgkbYVA/
+ J0AB45jeWeepkhWKWZonibLokXHSwVcNYaPdDkIaKxsnHW9RYuQ5zLBNY8n4QmyxJkFij4EYnA
+ b8uRtIDF1fs2S9P5Vb3c/znKba2H6Hf+BofnrCeqqBvSsky4CPuC6SxLQt2lY8GPeUxHg8Vw/h
+ iaFtGFMXbTsqe96a8UxteiicHAd2T27hJHM7vV6A129EETuAAAA
+X-Change-ID: 20260101-rust-project-reduce-size-d829a7a708ae
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jesung Yang <y.j3ms.n@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767255742; l=4572;
+ i=y.j3ms.n@gmail.com; s=20251225; h=from:subject:message-id;
+ bh=fEPh+w8Y+NMyisGvsPgXPjuY6/RbC7wcVePF3f0Ffh4=;
+ b=j1VfacoahJifuc3/koMnMMRFojai3MABa61AGcrHSwqIP1QLapT91j9KNXmTo1f3wFpqvrS0C
+ EqF4uBC7IXHC1kgoee1PYJ1/a+fYXkYAgSEMk0DiJvYsebQoQuOwQsp
+X-Developer-Key: i=y.j3ms.n@gmail.com; a=ed25519;
+ pk=2yVgO1I+y7kkFSF2Dc/Dckj4L2FgRnvmERHFt4bspbI=
+X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/20251225 with
+ auth_id=586
+X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
+Reply-To: y.j3ms.n@gmail.com
 
-Add documentation for Rust pointer wrapper types (HashedPtr, RawPtr)
-that correspond to C kernel's printk format specifiers %p and %px.
+From: Jesung Yang <y.j3ms.n@gmail.com>
 
-The documentation provides:
-- Overview of the two wrapper types
-- Usage examples for each type
-- When to use each type
-- Security considerations
-- Formatting options
+Use the `cfg_groups` field to aggregate common configurations into a
+single project-level definition. This avoids repeating identical `cfg`s
+across crates.
 
-This complements the general pointer formatting documentation in
-Documentation/core-api/printk-formats.rst.
+As a result, the size of the generated `rust-project.json` is reduced
+from 11MiB to 406KiB (about 96% reduction).
 
-Signed-off-by: Ke Sun <sunke@kylinos.cn>
+Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
 ---
- Documentation/rust/index.rst              |  1 +
- Documentation/rust/pointer-formatting.rst | 90 +++++++++++++++++++++++
- 2 files changed, 91 insertions(+)
- create mode 100644 Documentation/rust/pointer-formatting.rst
+This patch depends on [1] to ensure it merges cleanly without conflicts.
 
-diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
-index ec62001c7d8c7..4f4f8b393031e 100644
---- a/Documentation/rust/index.rst
-+++ b/Documentation/rust/index.rst
-@@ -55,6 +55,7 @@ more details.
-     coding-guidelines
-     arch-support
-     testing
-+    pointer-formatting
+[1] https://lore.kernel.org/rust-for-linux/20260101-ra-fix-primitive-v1-1-def809357b4e@gmail.com/
+---
+ scripts/generate_rust_analyzer.py | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
+
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 6178a53516ec35f308897e65c5001edd81b0d3dd..2a8578fb784d08b2a5e628bfab935080759d2dce 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -19,15 +19,7 @@ def args_crates_cfgs(cfgs):
  
- You can also find learning materials for Rust in its section in
- :doc:`../process/kernel-docs`.
-diff --git a/Documentation/rust/pointer-formatting.rst b/Documentation/rust/pointer-formatting.rst
-new file mode 100644
-index 0000000000000..5928987f21bb0
---- /dev/null
-+++ b/Documentation/rust/pointer-formatting.rst
-@@ -0,0 +1,90 @@
-+.. SPDX-License-Identifier: GPL-2.0
+     return crates_cfgs
+ 
+-def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+-    # Generate the configuration list.
+-    cfg = []
+-    with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
+-        for line in fd:
+-            line = line.replace("--cfg=", "")
+-            line = line.replace("\n", "")
+-            cfg.append(line)
+-
++def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, kernel_cfg_group):
+     # Now fill the crates list -- dependencies need to come first.
+     #
+     # Avoid O(n^2) iterations by keeping a map of indexes.
+@@ -35,7 +27,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+     crates_indexes = {}
+     crates_cfgs = args_crates_cfgs(cfgs)
+ 
+-    def append_crate(display_name, root_module, deps, cfg=[], crate_attrs=[], is_workspace_member=True, is_proc_macro=False, edition="2021"):
++    def append_crate(display_name, root_module, deps, cfg=[], cfg_groups=[], crate_attrs=[], is_workspace_member=True, is_proc_macro=False, edition="2021"):
+         crate = {
+             "display_name": display_name,
+             "root_module": str(root_module),
+@@ -48,6 +40,8 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+                 "RUST_MODFILE": "This is only for rust-analyzer"
+             }
+         }
++        if len(cfg_groups) > 0:
++            crate["cfg_groups"] = cfg_groups
+         if len(crate_attrs) > 0:
+             crate["crate_attrs"] = crate_attrs
+         if is_proc_macro:
+@@ -134,7 +128,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+             display_name,
+             srctree / "rust"/ display_name / "lib.rs",
+             deps,
+-            cfg=cfg,
++            cfg_groups=[kernel_cfg_group],
+             crate_attrs=crate_attrs,
+         )
+         crates[-1]["env"]["OBJTREE"] = str(objtree.resolve(True))
+@@ -189,7 +183,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+                 name,
+                 path,
+                 ["kernel"],
+-                cfg=cfg,
++                cfg_groups=[kernel_cfg_group],
+                 crate_attrs=["no_std"],
+             )
+ 
+@@ -214,10 +208,22 @@ def main():
+     # Making sure that the `sysroot` and `sysroot_src` belong to the same toolchain.
+     assert args.sysroot in args.sysroot_src.parents
+ 
++    # Generate the configuration list.
++    cfg = []
++    with open(args.objtree / "include" / "generated" / "rustc_cfg") as fd:
++        for line in fd:
++            line = line.replace("--cfg=", "")
++            line = line.replace("\n", "")
++            cfg.append(line)
++    kernel_cfg_group = "kernel"
 +
-+Pointer Formatting in Rust
-+===========================
-+
-+This document describes how to format kernel pointers safely in Rust code,
-+corresponding to the C kernel's printk format specifiers ``%p`` and ``%px``.
-+
-+For general information about pointer formatting in the kernel, please refer to
-+:doc:`../core-api/printk-formats`.
-+
-+Overview
-+--------
-+
-+The Rust kernel provides two wrapper types for formatting kernel pointers:
-+
-+- **``HashedPtr``** → ``%p`` (hashed, default)
-+- **``RawPtr``** → ``%px`` (raw address, debug only)
-+
-+When formatting raw pointers (``*const T`` or ``*mut T``) with ``{:p}``,
-+they are automatically wrapped with ``HashedPtr``, providing safe default behavior.
-+
-+HashedPtr (%p)
-+--------------
-+
-+Use ``HashedPtr`` for general kernel logging. Pointers are hashed before printing
-+to prevent leaking information about the kernel memory layout. This is the default
-+behavior when formatting raw pointers directly.
-+
-+**Example**::
-+
-+    use kernel::ptr::HashedPtr;
-+
-+    // Explicit use of HashedPtr
-+    pr_info!("Pointer: {:p}\n", HashedPtr(ptr));
-+
-+    // Automatic hashing for raw pointers (default behavior)
-+    pr_info!("Pointer: {:p}\n", ptr);
-+
-+RawPtr (%px)
-+------------
-+
-+**Warning**: This exposes the real kernel address and should **only** be used
-+for debugging purposes. Consider using ``HashedPtr`` instead for production code.
-+
-+**Example**::
-+
-+    use kernel::ptr::RawPtr;
-+
-+    pr_info!("Debug pointer: {:p}\n", RawPtr(ptr));
-+
-+Formatting Options
-+------------------
-+
-+All pointer wrapper types support standard Rust formatting options including
-+width, alignment, and padding characters. These options are preserved through
-+the formatting system.
-+
-+The following examples demonstrate formatting options using ``RawPtr`` for
-+predictable output. The same options work with ``HashedPtr``, though the exact
-+output may vary due to pointer hashing::
-+
-+    use kernel::ptr::RawPtr;
-+
-+    // Basic formatting
-+    pr_info!("Pointer: {:p}\n", RawPtr(ptr));
-+
-+    // Minimum width
-+    pr_info!("Pointer: {:30p}\n", RawPtr(ptr));
-+
-+    // Right align with zero padding
-+    pr_info!("Pointer: {:0>30p}\n", RawPtr(ptr));
-+
-+    // Left align with zero padding
-+    pr_info!("Pointer: {:0<30p}\n", RawPtr(ptr));
-+
-+    // Center align with zero padding
-+    pr_info!("Pointer: {:0^30p}\n", RawPtr(ptr));
-+
-+    // Right align with space padding (default)
-+    pr_info!("Pointer: {:>30p}\n", RawPtr(ptr));
-+
-+    // Center align with custom padding character
-+    pr_info!("Pointer: {:*^30p}\n", RawPtr(ptr));
-+
-+See Also
-+--------
-+
-+- :doc:`../core-api/printk-formats` - General pointer formatting documentation
-+- `rust/kernel/ptr.rs <srctree/rust/kernel/ptr.rs>`_ - Implementation
+     rust_project = {
+-        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs),
++        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs, kernel_cfg_group),
+         "sysroot": str(args.sysroot),
+-        "sysroot_src": str(args.sysroot_src)
++        "sysroot_src": str(args.sysroot_src),
++        "cfg_groups": {
++            kernel_cfg_group: cfg,
++        },
+     }
+ 
+     json.dump(rust_project, sys.stdout, sort_keys=True, indent=4)
+
+---
+base-commit: f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
+change-id: 20260101-rust-project-reduce-size-d829a7a708ae
+prerequisite-change-id: 20260101-ra-fix-primitive-78154fe8173f:v1
+prerequisite-patch-id: 0544fdf5522949047a81c3580960183375574fd3
+
+Best regards,
 -- 
-2.43.0
+Jesung Yang <y.j3ms.n@gmail.com>
+
 
