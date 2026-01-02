@@ -1,64 +1,62 @@
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE1D2727FC
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 22:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC1F2749ED
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 22:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767392061; cv=none; b=oQX8AsbdvnYsobaK8Pe/43Tcm5esCmq9zuXS9iv2xKVLLcWUG9sgBNOvpjL8o6BkTUFp0p+T8Mu5XqJ+9MTasZWJC04cdgehqimPsywVhzptQJUwKkPsC4ZdtJCZnjVYhmX0M/oda6ani017oKfpkVASB0tqeARk5BncHY1AvRU=
+	t=1767392630; cv=none; b=XhOd0v2FLRzTdb4/9mjKk9znyTqc7avxrnSBmbWBFf/S/hnQSPmG181IlUKGyM/wdBwMy1bH20S7pCgPUnNi/38HNJA+Hh/fBh8d9OZBKgjHo7+pNdqgi2lAd40vBdSuWDGsOAiGSjuZbCaQdZCUA6MH+t+yIKYJ4W0aW4UhFZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767392061; c=relaxed/simple;
-	bh=BXnDH38sAKTaU6fZXWIje2HtBe6o+6O97pyAsFykX10=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VLUG53vpFAI99Fd5e4xFk2PQBSbL+dcMtGIJKObiT0+X7apsRBHu4r/FCZLbZOyyAIPbu+VIuDkIQ+UhKwNGsHgyPJdDdY3yqbw2S8LgKiuVPScmWkb1jETl+Ri4HL8gRvxwB3JgNbGdWjEQaQ3r2fk0CmxFWzfXrW5p1zUno9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XbmtXJjg; arc=none smtp.client-ip=209.85.221.178
+	s=arc-20240116; t=1767392630; c=relaxed/simple;
+	bh=MuRhEVWL+gOrEEQBfVUVkBgbhbgBur/OirBCzdN8nf8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uNQi1Vj3XmfjuSeaLTzwXe3UJUNyEVDu52QfOVNEorl1+kbtST22cXyqa/TOTteGa1S1j6DGhOLOQH5W2Z76acph8+VhhHLu8frqdh03qm8AwwGhNkMBtDPXElmP3JwfBH1x7wyJqIk+/wEecH+EewfjFz+7x/mctah0e1V0Ndc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IRMs5wSP; arc=none smtp.client-ip=209.85.217.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XbmtXJjg"
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-559748bcf99so10725578e0c.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 14:14:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IRMs5wSP"
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-5dfa9bfa9c7so8603976137.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 14:23:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767392058; x=1767996858; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r6eDZoYciOr2lYVwtxpxq+97yZ/JvKudSVZ9w95niiU=;
-        b=XbmtXJjgDKRUYD0cXSdYAjyC3rIF8IUyKgWYOE/WCDlCxyy/UNCIEWs+N5wby1eLAm
-         VHbjiV0Z18U9DuX7cIJfmM7t9p+ANStGjkd3K3E67SKlP8m6fgDFtDbrD05Yv1+rpjb/
-         /XMK9N8BI2MIaSDABqk1ejKG4LtJLretyGvGxqeP7OiVGQPH8hUeD9x1Kp3UrJpWHlfN
-         n8QxM/wRRPK+ZrrmcieLxHQsU1NLsett/MwKt0FjEXUmg6h9Dsrcwm42RwQIf9Dnxpon
-         fMStvkrVcytGKfxmz/8gGLvP545U6wf+miXfw5NMMa7BOzjFDZmF9A8iMBh9h4IrPTAP
-         hqVA==
+        d=gmail.com; s=20230601; t=1767392627; x=1767997427; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bo0vKrvksMZfjHEDZDUQ3ebKySUpVD/UwIy9xyx7kew=;
+        b=IRMs5wSPxKa1iFuzwYDLCZZv72Mi9Y+ndku6HSLMj++Jnn6v/1IachZBk24+JtCwWL
+         jP3TyTtAmejmYVdMwu8O0nGNEVb9wA+AEWbEHw8Z04cxXgPxy2dcGTu5C5j07GmMTqZs
+         8QlZ0EO1X1ly6UT1zJ99Dvhp7zBL3G75n3AF9dxAEfZ9jcW8S3Ksz1JSK5GEStEj1sHi
+         aq0Y/YUxBCK0NO3uWXK7Onrqm3glVyF28uy33TX88Z6WU+LskiKOxYX/z9WKc3ktVgJ8
+         0btkbDMwlqPxwAqDVzM/WMzO9+xyWL9IF1FBr3Zj3trvpfWaN/NmZ+4wAeN89teLCwEJ
+         ANLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767392058; x=1767996858;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=r6eDZoYciOr2lYVwtxpxq+97yZ/JvKudSVZ9w95niiU=;
-        b=t8z/xKchgGGFAS2UFRj0IcD8kCM4W6c6pB+R4JPBxFKqfGrfAfrxd/EvxBfBYn5Ixh
-         Ic6+V5vmRc7QpGi0U5HGRrWfmZ+lOQ3yMPLm27P3Sjrvozs62/RJMotu1XutlEMkmqDz
-         uNlPzYtOyneH2VAQ+EPbAWgH4UvGHujTi30Qs8KxQ/Yg9rPNArSINdFaHLVtJT/4Uy5T
-         3brT1e2G7yglGMyB9da1fbf2vk4kTK+FWl2W0Rjz/et0z7TiGR9oeiBriDTM4fNil4Np
-         X8xoiPcKdoSmG4JDeUyW0CQrygQYT4YqnCQD+0A98dTVsyMUve0ZGJzi58YOavfernp1
-         0vZw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDFKbQ3ukHJUCrSJp2GBr81519/HziTKKKr/rL+r+akuyDTnl4qZf3M56Jv2PKWc9QxlXUkwtRFNGOlFH20g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQEgg9RSbVb5BC2AWkMhzujKHyq9W5KBN6oTzWBLdWpoY3OBFk
-	A05C9pghdU+FG/RP66MC90ROw9fpqQQdrAl59n8Mv7RwTC03Jmw4mmrqRdRIlw==
-X-Gm-Gg: AY/fxX6mNQZN9Y7RMk/LJJT13OChU2FPAwowfjnOQSHJh+P3D4nqhrbYnvha3Y6vgbr
-	wt3m9F8xiYBWR7yenk+zCpSbzOGSz8g5zWlGaMC8OSoxkXSz8Y9jhWH5ag0m0SGAypfthvY0uLy
-	v4gMnWoz+R99xh8aEAVB1uAWisIHBVb7fQmlIhXRdcMmhFYUySbsBpxZLFUZGlLXvc7kPLCw5Ba
-	oPxlNdUS86EU3KYc7XAMNjZQUkhTsN9vhPWYO5NMgQFVpn4ClruvFbKydyKFtsNN6QlI86qiUrw
-	lph0ATBe4bHpyZ9HaC5o4LpzfrVDyQv2UuhjdUZXR7xei69HUPiYQ+OJzwkrErLz/zGkZPitoAy
-	9O6UZmDTMF8SGB5aCMH0luh0YeB/hzRglNTVPYHjJRgP1Nn+M9TN+i8zF+fLYxibdmjFy/3tcgt
-	Kxdfg6V3DIkEU9bdowhB+Vi8I7TxlHmA==
-X-Google-Smtp-Source: AGHT+IGIsARfCgd5//D4UmLiREc1aDWqV7PK9qWSlWBBWPowHyvTYCk6XncFLI8Z8N2XnWEey2jwoQ==
-X-Received: by 2002:a05:6a00:430a:b0:7a2:7bdd:cbe8 with SMTP id d2e1a72fcca58-7ff655b041bmr34350824b3a.18.1767385706150;
-        Fri, 02 Jan 2026 12:28:26 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767392627; x=1767997427;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bo0vKrvksMZfjHEDZDUQ3ebKySUpVD/UwIy9xyx7kew=;
+        b=REGcsVDLIO7gAbtiTG9TwNL3VqQMOuxFwbUCVURwATdyiZbf6c7z3GH+27mwbk6YaW
+         4GoLMG2L5TdjUTH0MXRShw3YtJLmO/XWQP4dAHfIQXTRx21RpNSk65f9w6SdagcWsxEt
+         Y+nCUwbYvKVm1++AV4Yx45J9nsSUD2CbZaDzDW5Skrrd7bJLSASDt6wDJS881zLtQe7Z
+         IuJ4BPYjeaemrK06tsHdR2Q4v+Y1EW87W3aIDuFZiw0M49BEFjq4ffToKcFzpIHgJsq1
+         EOqdab/YwVoO/0NFP6hzHESJIFIMLEoI9GednmzEP9cX8+1Z6wlRBrzpp4qc6zr2dG5Q
+         bl/g==
+X-Forwarded-Encrypted: i=1; AJvYcCW331WMQpJNt0THWj49Zr16Yk6PbllzuiveUsPQM9uubTW5O8VHJ+EVXBt4AU0EewatEEHCuuvXRj25IqhiOQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywo7pcEhBQaEhKpBd6qdkwCDIpR4LEMmfucycqR0Ct63tsuwSgu
+	zEu/9kDvXvl5rpFDaqgkIAJ6JRso/p8CCTx0BayBWdjfz1LaZFJfhZURD3xO3Q==
+X-Gm-Gg: AY/fxX5K8rktif6cHhUmdcd45tz1+NSv6kKsk9Kbe3lsEXMBVx55DPj7IetFmKGtxv/
+	Jt4UzJoCNcKTsgKBjltZqwmLNRlNW/p3YFXB3ObrYjPzPlMxRTau7z9wIuRaj+s/I3IcLXuza3Y
+	teB265ysbUnooggO6dWvaFLp+Bezu8Jj2OrVkJvSO1gWuAeYS2130a9mzHAkBFa39RoGIZ2o0cX
+	eKcGmAWCr0mVBeoIfQSid/PeFIUNmm0OmCNJOYoxWSfCaRse5FKZLrGuL3PDsp0Yp0XtazqGAaP
+	s80bKqofdcru5r6MCeCqdre9HrLDx+4qbbxcV3w8DXHH1YKDiJEBucsUcITdMeKZnw4dFo59xbL
+	5A6vKLUpXhSWX4cm/J203ABdhQYA9EihuGrHLINLuD7gqGp5HHFAxdl0uSUhZ2znCTCWKjyclGZ
+	P2FRd5BUEaUSe4ktQZBAs2uVXsUYbbxg==
+X-Google-Smtp-Source: AGHT+IHVc5HlpUqLS3aCKM0NNR8DSr6MIhrq1/whlaHDzwyZ+fh4p5PMmYhEx/XvFmeZHF/Dm/g59w==
+X-Received: by 2002:a05:6a00:3021:b0:780:ed4f:e191 with SMTP id d2e1a72fcca58-7ff648edfe0mr37042165b3a.23.1767385662701;
+        Fri, 02 Jan 2026 12:27:42 -0800 (PST)
 Received: from shankari-IdeaPad.. ([2409:40f2:2123:b1fb:b93b:b5b4:2357:c53])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e88cd71sm41163964b3a.64.2026.01.02.12.28.13
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e88cd71sm41163964b3a.64.2026.01.02.12.27.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 12:28:25 -0800 (PST)
+        Fri, 02 Jan 2026 12:27:42 -0800 (PST)
 From: Shankari Anand <shankari.ak0208@gmail.com>
 To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
@@ -93,12 +91,10 @@ Cc: "Boqun Feng" <boqun.feng@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: [PATCH v2 2/4] rust: i2c: Update ARef and AlwaysRefCounted imports to use sync::aref
-Date: Sat,  3 Jan 2026 01:57:12 +0530
-Message-Id: <20260102202714.184223-3-shankari.ak0208@gmail.com>
+Subject: [PATCH v2 0/4] rust: refactor ARef and AlwaysRefCounted imports
+Date: Sat,  3 Jan 2026 01:57:10 +0530
+Message-Id: <20260102202714.184223-1-shankari.ak0208@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260102202714.184223-1-shankari.ak0208@gmail.com>
-References: <20260102202714.184223-1-shankari.ak0208@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -107,64 +103,29 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update call sites in `i2c.rs` to import `ARef` and
-`AlwaysRefCounted` from `sync::aref` instead of `types`.
+Resending the v2 patch series with changes suggested as in the 
+v1 patch series [1].
+Also re-worded the commit titles to refer to the target subsystem.
 
-This aligns with the ongoing effort to move `ARef` and
-`AlwaysRefCounted` to sync.
+Have resent only the patches that haven't been picked up yet in the series.
 
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1173
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-Acked-by: Igor Korotin <igor.korotin.linux@gmail.com>
----
-v1 -> v2:
+Thanks and regards,
+Shankari
 
-Used the direct module name instead of including the path again,
-re-worded the commit title to rust: i2c: and
-carry-forwarded the Acked-by tag.
+[1] https://lore.kernel.org/all/20251123092438.182251-1-shankari.ak0208@gmail.com/
 
-Link of v1: https://lore.kernel.org/all/20251123092438.182251-6-shankari.ak0208@gmail.com/
+Shankari Anand (4):
+  drivers: android: binder: Update ARef imports from sync::aref
+  rust: i2c: Update ARef and AlwaysRefCounted imports to use sync::aref
+  rust: usb: Update AlwaysRefCounted imports to use sync::aref
+  rust: types: remove temporary re-exports of ARef and AlwaysRefCounted
 
----
- rust/kernel/i2c.rs | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index 491e6cc25cf4..9f5f18792916 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -16,10 +16,8 @@
-     error::*,
-     of,
-     prelude::*,
--    types::{
--        AlwaysRefCounted,
--        Opaque, //
--    }, //
-+    sync::aref::AlwaysRefCounted,
-+    types::Opaque, //
- };
- 
- use core::{
-@@ -31,7 +29,7 @@
-     }, //
- };
- 
--use kernel::types::ARef;
-+use kernel::sync::aref::ARef;
- 
- /// An I2C device id table.
- #[repr(transparent)]
-@@ -407,7 +405,7 @@ pub fn get(index: i32) -> Result<ARef<Self>> {
- kernel::impl_device_context_into_aref!(I2cAdapter);
- 
- // SAFETY: Instances of `I2cAdapter` are always reference-counted.
--unsafe impl crate::types::AlwaysRefCounted for I2cAdapter {
-+unsafe impl AlwaysRefCounted for I2cAdapter {
-     fn inc_ref(&self) {
-         // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-         unsafe { bindings::i2c_get_adapter(self.index()) };
+ drivers/android/binder/process.rs      | 2 +-
+ drivers/android/binder/thread.rs       | 3 +--
+ rust/kernel/i2c.rs                     | 10 ++++------
+ rust/kernel/types.rs                   | 2 --
+ rust/kernel/usb.rs                     | 3 ++-
+ 5 files changed, 8 insertions(+), 12 deletions(-)
 
 -- 
 2.34.1
