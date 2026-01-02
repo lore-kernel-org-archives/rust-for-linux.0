@@ -1,109 +1,152 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E068FEEBB
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 18:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767379115; cv=none; b=dixN04qlbp5pC1za42b4SOmUtU68+3Z6esFEE5vJ/NXBMXEqjbF/FovGP1aX7S05a0qYtyzG0nLx98Ye8p8H4a4cNP51ZsC++exK+gcYoeeQPLZFLSJlFVW2OrdzlnimBSLTerj/5fpulgLKDaG5wbQ/RVTdBB60e/kMFJ6Lxo8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767379115; c=relaxed/simple;
-	bh=pUHLWvFkyZ/J1kSrSv+TIBOWe/9sBIuOXE4DWADC3sY=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359584A21
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 18:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767379230; cv=pass; b=ZA60cwxwTnY3kgSuOY8iwZv6tDQwhu2sTwKcBOePRW6q5m2gKt12B2rdwd7pfCbMUSHlNN9Iceh4wPrurF+Vn+0lGxNto+cBZ7u3rAgMLPbQSwP4Rap2bgFAdoQZI4fVahlh254+lCGcPoy7bNQ8J2YKySnUkF7Y7USebdD47n0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767379230; c=relaxed/simple;
+	bh=g5sHQkVrKOsKroO8ZxN4MIgW5nbWecrAIkpz6JGIwjo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qH1PF3RFQ05mJEOdCV/6nRTs/JjI/BrzZbxxgeioEm4fMhiVpu+hJlenDIvgKoUIoLq/JVIXniPw1y7Di7GzyhQmf0I5j73BAXGOfbTSUsrPkEWutmWIqYglJSSO6Z5CS0fIodfIwsdJmXrwG12taUCKv3jrtyH/5GH+2aV8L/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FJGxzqdP; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=bo2e6qm7u3CjDC20Rub8iNU9Mhrwa0DKCjaJUZpatkjnIjn5znEjUj1ky3QzmRw/J2VQPdw4MUTZlpQerin7JIv8jPsNb6pbUNYNWBCzarUCOXpLJVIIk90v/syJih32DTrsT9qqiSMnGdNU/p3ghcg5zPQI0b7mH+piZCGfmoo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hdgZJsYE; arc=pass smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FJGxzqdP"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-37b495ce059so93510371fa.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 10:38:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hdgZJsYE"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64b72793544so539a12.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 10:40:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767379227; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dCq7LsUXwycqzd7aPhOSak4h8HpOo+oL+knTX9Bukf404frin1Eszq9Wn89zWu9C4U
+         JlWj1bcOdq/cK8kDyI+m2+wLS5Q12Fj2X9UTUNUl+rVEYcaK3OHCeeXhqqJdQS07Qfl9
+         gENcI6fxFmKYIw4E4/IXAndEFX/QzVbcxVDYCDn4nGo1i4/cjqeWmVsC7t7c8oOToJuA
+         j4nf+sjpCOf7Ddm+TNey+IJFm/uwXg5ilnWkLkndTHXZPxx/k1XNy6j4MRRpS67g+e0o
+         Pg75Lovd/hJiTpSG0Eutw+U3FONDvw9ItBYgldEfId7EuuXmY3r3yceowXx5BXeuGRT9
+         48dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=g5sHQkVrKOsKroO8ZxN4MIgW5nbWecrAIkpz6JGIwjo=;
+        fh=WFG8XKFOoebevzI1AAJSwx5+RDAfHXn61bmQRUh9vBY=;
+        b=X3KO4q05n+mTsccYo1nQN9hmKS9CrnEM5b4qB7MDEgfYhlH1YjIKACSkYbkxE0L8By
+         uILGT/aRXV0NzyUuIznK1dTx+qAew+381hZMDVp22CSbQTUAEXBBRCHbDR9AHWS53bz2
+         eSEUyTGksLE6Z84YaMH12/c3W2k/n7n+bYwRqYsNLSatCv6217z4qxlXrdixK7XnDD2v
+         Rjy5qzWlLooz6fVbNG750A++QDAymB4xFvNLU3ImuBPKMDrBgf79mI4OW4mptDIQQB/N
+         2uYIeDONfitXgR8tt5jCGP45whhtQ4E3OdMCYZGeqXNLQ1Mi1OZa0eXrnWdH7HPdAG96
+         BaDQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767379112; x=1767983912; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767379227; x=1767984027; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bPH/BJwNH6Kjka+aAFpB6N63kdPW70knn43uWJtwB4Q=;
-        b=FJGxzqdPtdJq0plmHgFo8NZCVFf5tQfv18IF9fJSq8SlALmh3n0y/XOrIRLLlOMDSR
-         XeMWdWagumQWXCSyj3WCJsx+gJVyY5j4gdEqyPnadgRlUJuZbyK3g0qDtMsT6J7ZyLD1
-         akiBg7aT2L4HzH1mAyI4pOVlXB27AGPEmTTpzPnERzR95ZsjEqjjXZGwxMaFj9HDqLIS
-         Ya/0F4FJOLVstpi3BPIVlqNNa48R69jJAfY+F32Bg261sRm8pJuLwQe0fBDX25WAnANO
-         XaiT3V64bFAYgM62SgUYqgeUItQgkDUY5L9Zlmlouve6C84/lokAQFFCXo+bsguACwHb
-         KrlA==
+        bh=g5sHQkVrKOsKroO8ZxN4MIgW5nbWecrAIkpz6JGIwjo=;
+        b=hdgZJsYE2E7NCwu1rFWkeRy05FO3Jznm2PWcWQQY6KLms7Tdvdzwsnmb8e8A94IZmD
+         vOh4+1lGynA0MGBQMz2BIqoLI4nCffUXILo+RfsqNYO0cF1qkl0XyFCWlfS9QiFats3U
+         OqJw19SRnmERj8OEpCGdSykcBmu7Cy8vICjsomLrj68yYDBGFs2xKYyTZrWc6Hn3VEHR
+         R0glNc+mVd0t+z/ORoPjsTZZ7DwIuMFGBsz6ubbuqvDTFVPwwOvTJ5xkCzyeamKSGWvV
+         mmlIVWHEFhDVFGmA/y3wymrk8KZ+uMhFERwgpHVjUtdz+edVoNaT38v3wfsCGGLXaTXk
+         W2Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767379112; x=1767983912;
+        d=1e100.net; s=20230601; t=1767379227; x=1767984027;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bPH/BJwNH6Kjka+aAFpB6N63kdPW70knn43uWJtwB4Q=;
-        b=bZ/wBiLbktIWEJJ3KtxAKKGiO/WxxrhTWlX+Nnfq9oPTpPz3LQqQcmsSiOYX8NRxIm
-         f8TOii1pFhkJhoL2OyhFGUzpTvRZ3NqnNWCLT/aVXwKxapjQHHdplk9TwcMoFtPBrIOC
-         dlupEq+VkftJu3awabpX6QqzkU2gRWCFpIRxe27CLJSURngsUw6mvwTDyicX/S2KtgKQ
-         wiHixvGgzbVKqThDAifXDlvr/sRN/nLyq2kO30/o1T+uJq8d4VNtMRn+qRjYZ0gjMZCU
-         3sT96OnE21bRPuoW8N27p//Ys0acELGJaXtyX4zdib1JdKp+OCdLBusBELGEN+Bibd41
-         DI1w==
-X-Gm-Message-State: AOJu0Yz/Nijx0opHk0cExRndbpf42BeYDBmid9fKkOeOk3eeXX7hEDFu
-	W6K1fFCy2KsBBg3fKzt+zXggRLYATce4oD25+9i+X9LAp0wpoU7MvuqKcjy1aOlOY5dGtZ0GYG0
-	Jj8lIk6bXJDB9kPziAwBVmlm1kVSbR+4=
-X-Gm-Gg: AY/fxX5c1uSJCP98OlDVB2IEE2vndG5s9O1tMu6hHoHuyuMdBJAVIX8/ChSPRv+dJic
-	gBQOtIX4T9W6jPpxP6j7FpZKhbv7IodgBxqS1rfVFVlVBIwGm+1qfIik49nhO3xliwEs9H+JG09
-	8X9wCSVUGYtKrA7cf6Exkl5VVkn2+02/VPlRmwXFmbnR7IQZ5h5LaUQ3+OwfLnJdL0N2c0z3oSY
-	vDXr6WfvlSXKjvJ+mbepjqqcu4etudifv47ylpP5ZgtyVZNEdBxFwNEk6a+XuW+Sx+yv1G8yK+N
-	beDAw0XddQbV7w8NiG55HhpQFIPRZKVGL4ouDApsg0WFXUj+xq/8eDJqQoALSaaO48wOeUa3tZ4
-	kAhUaXb6p1wMRIzgdslntUYlvYkx9gz0AJ9lyS9oEGw==
-X-Google-Smtp-Source: AGHT+IF1cfdYPjqLisMA/O6DKrPs84DgtJWgS9fM3mQ9SCVxtb/2e43pFKDTD8uMHkuRXCzl4ihna/wZEoX243/+vhc=
-X-Received: by 2002:a2e:b88f:0:b0:37f:cd21:6acc with SMTP id
- 38308e7fff4ca-381216059f6mr143206151fa.25.1767379111658; Fri, 02 Jan 2026
- 10:38:31 -0800 (PST)
+        bh=g5sHQkVrKOsKroO8ZxN4MIgW5nbWecrAIkpz6JGIwjo=;
+        b=bAcUoBwIOt8d+ikN85J81sKVQjiVc1vj6dBcouJ5gFYR4KZgJ9IukgNQ4Zqa2mT5eB
+         2JY51h3nVqfyhAGp98Fjaa5PG/T0sHY1X2RYZgzvN15LsqQGz/2bMyb+j5hzif3fr31C
+         R9jP6KGJU2S7uWApQ00jOXRlGchH4BZ57jq8s+2EM95urNa2bclduMXt9A//bOMOIACy
+         WzB7BRci3nQRlF3Op7nNYK4IHz2cBUVHoUZHHQ6vWxdm3F61zhMY1FzATTRhp0X33YZ0
+         5u7OO6WLVmu5kLY1wPBONC6HlnR4RzPP6RVSi8F0fWk95dpOt2mdfHGXwWhGmo+s8SvW
+         e3fg==
+X-Forwarded-Encrypted: i=1; AJvYcCW0AmfAKKggxcOJhQYhfsZqCok/BAMOQOYI19C+mqTp9GzqGpQZEAFLos52TvfS81H5Vc4UtuuXTNSZQxnbcw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YztC0SuhGSSV0F4Jw/HAHlw9qQ/AO+Lmtm258APKZBZMKuv+3Fh
+	Ko/oK44Qh3edIF+q48RoXKdr+U/xu3d2CPAmnLUNXraIviCoiMgZb1Z1uSZvtKMoNrymaMUvPt2
+	RCP7Edir2L7SPKGPb1xrwmjcAJW2ZDDzDK7QkxULS
+X-Gm-Gg: AY/fxX4fRdpAgLIjsxykjp6VQPbaKeQpMmLazCqzi6XTun7TS0h34QXyckMXogef7WH
+	DvG1DTshRVHq5AmYe5LZXDasdFWt6/lONTY5vo/injVY7+rSLONOkFkVW7H66jbzxByQ4CdpEv0
+	l2dUYuKsxtsu3xuykuenMhu4CXwIcEel0kz0oVeFKD/BaOX5XtBnYzTX6iVQ0Pfbrrj1Mur56YI
+	zRAWymm4Onfe5NwsnSdq2DHpFgdqjsiNoCy9z5409XBkLKMDsNBPeUKC//f08xAeonzLENzmvl4
+	1y1cuEjK30GriFxKHr0iJoawSQ==
+X-Google-Smtp-Source: AGHT+IGBt7cDhjrnIqZEjatfwjZ501AgsttwfnxWdmgQoGcR4rtQr8UTgkpD92PT9cLinzIkTLYenNB0EkBn8MPjCPg=
+X-Received: by 2002:a05:6402:5345:20b0:649:9266:5c68 with SMTP id
+ 4fb4d7f45d1cf-64fdab57dc2mr1995a12.4.1767379227335; Fri, 02 Jan 2026 10:40:27
+ -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260102084821.1077864-1-dirk.behme@de.bosch.com>
-In-Reply-To: <20260102084821.1077864-1-dirk.behme@de.bosch.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 2 Jan 2026 13:37:55 -0500
-X-Gm-Features: AQt7F2qnhAEw8HFlhZR8nX5v32l3oca_CnPKIB6mmXSYrobEJ40QDtH2rV7lBSs
-Message-ID: <CAJ-ks9=Q5iwH=f98HcEGfttfxFWogEx7qxJjjDoKb-pPO81zeg@mail.gmail.com>
-Subject: Re: [PATCH] rust: fmt: Fix grammer in Adapter description
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, boqun.feng@gmail.com, 
-	gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com, 
-	dakr@kernel.org
+References: <20251230-add-entropy-v4-1-fa9485b6d372@google.com>
+ <aVUbqo4wS7_47wmt@zx2c4.com> <CANiq72nuK09czKyhZJCy-LLpH5UZ0iB8SBmEMfXDVNu23gybxA@mail.gmail.com>
+In-Reply-To: <CANiq72nuK09czKyhZJCy-LLpH5UZ0iB8SBmEMfXDVNu23gybxA@mail.gmail.com>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Fri, 2 Jan 2026 10:40:16 -0800
+X-Gm-Features: AQt7F2oXRitop1uXNzBFoaRTu2UUqwDiFBKmpa0jSKPshUsRF2utcHIjjnE5uzs
+Message-ID: <CAGSQo00_t12z6rWStV3R0kNKFk-oa=dKWO+iw-2_fBWntvJRHg@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: Add support for feeding entropy to randomness pool
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>, tytso@mit.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 2, 2026 at 3:49=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com>=
- wrote:
+On Wed, Dec 31, 2025 at 7:46=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Add a missing `and` in the description of the `Adapter`.
->
-> Fixes: c5cf01ba8dfe ("rust: support formatting of foreign types")
-> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-> ---
->  rust/kernel/fmt.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
-> index 84d634201d90a..1e8725eb44ed7 100644
-> --- a/rust/kernel/fmt.rs
-> +++ b/rust/kernel/fmt.rs
-> @@ -6,7 +6,7 @@
->
->  pub use core::fmt::{Arguments, Debug, Error, Formatter, Result, Write};
->
-> -/// Internal adapter used to route allow implementations of formatting t=
-raits for foreign types.
-> +/// Internal adapter used to route and allow implementations of formatti=
-ng traits for foreign types.
->  ///
->  /// It is inserted automatically by the [`fmt!`] macro and is not meant =
-to be used directly.
->  ///
-> --
-> 2.48.0
->
+> On Wed, Dec 31, 2025 at 1:48=E2=80=AFPM Jason A. Donenfeld <Jason@zx2c4.c=
+om> wrote:
+> >
+> > Thanks for CCing me Miguel. I find it strange that it was left out on
+> > apparently 4 revisions of it. Yes, this should be added to the
+> > MAINTAINER's normal rng section. I'm happy to maintain this.
 
-Acked-by: Tamir Duberstein <tamird@gmail.com>
+Apologies for that, it's my mistake.
+
+>> Small nit: There are two existing comments in the C source (one of which
+>> I know you know about because your text is almost that text). Why not
+>> just use those verbatim? Or improve those and sync that to here? I'm not
+>> a big fan of bifurcation.
+
+It does not need to be different. I'll use it verbatim in the next revision=
+.
+
+>
+> You're welcome, and thanks for the quick reply!
+>
+> > Bigger question, perhaps for Miguel: what's the convention for adding
+> > these bindings? Is it, (A) "this is a useful API surface, so let's add =
+the
+> > functions so driver writers can use them later" or is it (B) "add usefu=
+l
+> > APIs as they're needed by driver writers"?
+>
+> We follow the usual kernel practice, so (B), though sometimes a user
+> is known to be incoming, so it gets added in a separate series for
+> convenience or similar.
+>
+> But, yeah, in such a case, it should be agreed upon / explained where
+> it is supposed to be used, and the cover letter here should do that
+> (and you are completely right to ask!).
+
+I'll add it to the cover letter in the next revision, but for now, the
+use case is a re-implementation of the qcom-socinfo driver[1] (still
+undergoing significant revision) which uses it to deliver the contents
+of the SoC info buffer (which notably includes the device serial
+number) to the entropy pool.
+
+[1]: https://lore.kernel.org/all/20251213-qcom-socinfo-v1-1-5daa7f5f2a85@go=
+ogle.com/
+
+>
+> Cheers,
+> Miguel
