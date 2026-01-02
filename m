@@ -1,88 +1,84 @@
-Received: from forward502a.mail.yandex.net (forward502a.mail.yandex.net [178.154.239.82])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898C7221578;
-	Fri,  2 Jan 2026 20:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7D926A0DB
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 20:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767386040; cv=none; b=a3Lnc3AFJJkn5kKMXl4r8Wk86cElEj0dLIw8btmUjfD148R9fWELUa4QDB1+OCV7IxELLsAGBPmdQ/OcdGyMBoo+kXEYUIqUYyu8UJgts7ViIG4vGINY1IdFdzX4BhAOmSXCHKwc9CuWeDbthCc/LmsE7abokIu7zjM733bOEEA=
+	t=1767386102; cv=none; b=TKHD/7S6TtA4oA/gjXurZ6PfO4y4czjn4X6B3hM2Q4UWBz8ZfvE16Rsvt7DVTrIl1w5NUhpmrLNXxg9VqAXwQAF0oVjOWlDOSPyHU/CNZPQ5sljH1ZI1jc2NysLrpRdkM0GHC56I7t7nNArIlHZnHNppnbpaukCopg1FNI8tHpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767386040; c=relaxed/simple;
-	bh=SR3W86exwj6qUL05HpZ2kC7v5a9si6bZ3/RWjYayAYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UiyekoewarXL1AzNLax/U3U5SQCxMNVk+sIf+ld84gx+H/xhswdMxIy3I+KTfJsbV2KIpCPsm+hOTvbK6h2M1RmFpWCLpNQg0NtJbVrP63YMHLCE+bVUpxdcOzFlwNft3hC4+KBVfnvbmx7E74QUvxtppvBeiN/iN0rvV6P1LwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=TUgukP3j; arc=none smtp.client-ip=178.154.239.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1767386102; c=relaxed/simple;
+	bh=47uonBl3AsOxR5NEo3R74TfUGho2LZvpY69Tg8Q7Zyw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kHoWiZlDzlPLb2EURhwhcYS8bLPBBXKm4CeBseFMS51Obuk85W3vSeSNzsx/5dKM/KI7ExB1EKL9ELjZzsdUxbMV0/y8L8mE+Pqv4BOsz2OyyHKkw7RFpGVJLc3d6N8wSZ406vm3sLtl9d5gG3SOPRxHSvxFeEkoEt5zQrXwZ0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+4h4wLA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="TUgukP3j"
-Received: from mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:5d94:0:640:92d3:0])
-	by forward502a.mail.yandex.net (Yandex) with ESMTPS id 6867780F6D;
-	Fri, 02 Jan 2026 23:28:01 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id tRs0RWGGqW20-SDd1W7eM;
-	Fri, 02 Jan 2026 23:28:00 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1767385680;
-	bh=k30ReYCRXOETSZ7O8nLjn2JaBppnDs1AxyjN4RHWxFA=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=TUgukP3jWGfYOofFfvfWQOSCsNiPA9g0gIDCp4wEbpgou1NYORmxRCgiHuQcJQLpj
-	 /UBNaZtvkXXde93LsBjKWcGq27Xbkpoev4pG8FuDyj/vZCBD5pF7qSqvqzE9GboQxe
-	 KoYpcIX+jLhakW7RsGvrq5UV4XF3lBF7lDTc6WzU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-74.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Fri, 2 Jan 2026 23:27:53 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: lossin@kernel.org, lyude@redhat.com, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- daniel.almeida@collabora.com, thomas.hellstrom@linux.intel.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 3/7] rust: error: add EDEADLK
-Message-ID: <20260102232753.5b5a8fa1@nimda>
-In-Reply-To: <20260102175302.194435-4-work@onurozkan.dev>
-References: <20260102175302.194435-1-work@onurozkan.dev>
-	<20260102175302.194435-4-work@onurozkan.dev>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+4h4wLA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3790C16AAE
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 20:35:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767386102;
+	bh=47uonBl3AsOxR5NEo3R74TfUGho2LZvpY69Tg8Q7Zyw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=b+4h4wLAL3KVJ0kZJDObfHtzkLrAS5GmSBqapllqsWI7vI1EZu7GwHdnmjbuOD/9v
+	 WABqC1DrCnkZbOU+8/Xb9qpJWa5eibEQKApShDL4fXbltjip8FnLdrKw3vIcHcKG0v
+	 0ST7z6S0RICBRaCjUngt3FHImOwiF8QN/lCzDjw6XimdOrH1NOMn8RY60w7MdxysPO
+	 a3OIl7OAbyGegj+YRzvXH+kl2SCWKallesx6LQa6FMo+HjNK5Ev3CHs9P2oLE9XToh
+	 x2MW2IgD2+08BT4SFiJby54U+fHh2d8XNZ4Q2eGfbrgYNw0JN3yl38pXhd4GASY0gS
+	 hqfWtBVSrxi0g==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-37d275cb96cso114570241fa.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 12:35:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX/gxUoK1RaAvTvXRVmFCA5jqkFcy+BL77J9uiYBkb5/aoueXXsizENcQIoGtoKnEX4qgHuPK/cKGBPWgW8QQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHK2fBR8/dwq/Nhbb1WH9jzJBXJYy9lHN9aT3O2+nRMJCJsv3l
+	Ag6qNyWC0BreUagnzTgtnd0gglO3l9dnb2jMtltXCD3uakcTi/UvcTZ54qMYC3uW68fdTJeF3oI
+	oApwDuBPDDIGNvyI4gTauJ1Kb8ohAsWE=
+X-Google-Smtp-Source: AGHT+IFCh8mYGLC/9hDW/2LMzKkLSmkj1V7tU5WIw94ygxT85pgndBMYDfLbxXIt6zrMUdoF+FQNFf+yYKjzuddoT58=
+X-Received: by 2002:a2e:be10:0:b0:37a:2f61:5f19 with SMTP id
+ 38308e7fff4ca-38121552988mr138513051fa.2.1767386100562; Fri, 02 Jan 2026
+ 12:35:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20250723-rust-analyzer-pin-init-v1-0-3c6956173c78@kernel.org>
+ <CAJ-ks9nJ149Dt2v5Dn0A3+Qw=TnzE84Lm3Ridrfrc=mdhFt-MA@mail.gmail.com> <DFEDG6TK5AY9.1Y9EPEYQLMCMX@kernel.org>
+In-Reply-To: <DFEDG6TK5AY9.1Y9EPEYQLMCMX@kernel.org>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Fri, 2 Jan 2026 15:34:24 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9krE2+K0mVkG-Ao9VAuyDqdAoPbWAK7fHyoVZD6ww=zyg@mail.gmail.com>
+X-Gm-Features: AQt7F2ry0C4BZK5VJSq9MvII_B1DPppjFq8-Ur7cvMW779gfiDUfpBa7u0RGJrI
+Message-ID: <CAJ-ks9krE2+K0mVkG-Ao9VAuyDqdAoPbWAK7fHyoVZD6ww=zyg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] scripts: generate_rust_analyzer: match rust/Makefile
+To: Benno Lossin <lossin@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri,  2 Jan 2026 20:52:58 +0300
-Onur =C3=96zkan <work@onurozkan.dev> wrote:
+On Fri, Jan 2, 2026 at 3:05=E2=80=AFPM Benno Lossin <lossin@kernel.org> wro=
+te:
+>
+> On Fri Jan 2, 2026 at 4:25 PM CET, Tamir Duberstein wrote:
+> > @Benno would you mind having a look at this series?
+>
+> Oh wow this is an old series! Sorry for missing it.
+>
+> I'm not maintaining the build system for pin-init, but from my side the
+> changes look okay. The commit messages are missing some context though:
+> why do we need these dependency edges? etc. If you fix that you can add
+>
+> Acked-by: Benno Lossin <lossin@kernel.org>
+>
+> Also note that this might be different in the new build system.
 
-> This is needed for the ww_mutex implementation so
-> we can handle EDEADLK on lock attempts.
->=20
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-
-I forgot to include
-
-	Reviewed-by: Lyude Paul <lyude@redhat.com>
-	Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
-tags from the v7 series for this file. :(
-
-> ---
->  rust/kernel/error.rs | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 258b12afdcba..c2b95db23abc 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -66,6 +66,7 @@ macro_rules! declare_err {
->      declare_err!(EPIPE, "Broken pipe.");
->      declare_err!(EDOM, "Math argument out of domain of func.");
->      declare_err!(ERANGE, "Math result not representable.");
-> +    declare_err!(EDEADLK, "Resource deadlock avoided.");
->      declare_err!(EOVERFLOW, "Value too large for defined data
-> type."); declare_err!(ETIMEDOUT, "Connection timed out.");
->      declare_err!(ERESTARTSYS, "Restart the system call.");
+Thanks for the review! I think the commits all include answers to
+"why": the first two make RA match the actual build and the final one
+does the same and also fixes navigation in pin_init_internal; before
+this series, go-to-symbol from pin_init_internal to e.g.
+proc_macro::TokenStream doesn't work.
