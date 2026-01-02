@@ -1,64 +1,96 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C055D1885A5
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 19:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767380500; cv=pass; b=r+zu3Rpi4nvi2OstiOWCTbeb4+bCVUyTuQdiFhwBl2CinPTmP7dTySTv9FDUiqlYzZDs0gJ+Pftef/3toSn47rsYonDDLkSVwvv4PKnR4TR/aWZGEbeZMxUW4CNnk9cNoLLox3BkwFUPjAEbroyzisxkkig8BCjdEPt7S0/vP54=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767380500; c=relaxed/simple;
-	bh=7+yNjLtYvu0r8IhyHVVmmvN70S0piHBa9J+BF5I3h+A=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=c2rI7tqvyj92WPQk+4vp5MrRKfVqMH2KNa0AB/m7oLRY3ZIq66P43x9Qf8HSVhNhp4hz91wZxmH5/KNZKueCKafZcYzt9imV+7W5KPncXpiHUYO7VCA1gcIRmM3on3ReKomR4R0OFEF1j3xB7DPoo90/4TWiEkIiQKr3yKfJ6uA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=jIgdvB47; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D347330FC3C;
+	Fri,  2 Jan 2026 20:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767384313; cv=none; b=iRBYQty8WlF1dp+y3opjDl7c2uCzkVRh/nB9ojQSXmlmsC9+5eEu46unD/ynwRBdOugnVxRoHdjVqum5YxT2mmyH7PO+Sx0uHD8lpE4ipQav6jM1nd+tDoltqL7Eo8r3pPtahGVpxq089lWIseUi5DU9Htvoj76iO/fHjj24M8E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767384313; c=relaxed/simple;
+	bh=9H+nDyj3Ryc6j7slQ/ZaapNCcutVRASv47ZdRWQRyaY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=FHKb3uGqvF6EybaqlXzh3wugex75nGrUjYPb7cK76Qu6Uu9A3+08e7MDCNAqdDdw8qCW2fzxoKcFfOnXw09BaaWl832D2P9kipknMQd5JBORJj39VcJUSNGtUeq5fsO7spSXrV5xq24HJpL01i8Y9vbOguItSpu4zTs01EfOVXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0i2AP4K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="jIgdvB47"
-ARC-Seal: i=1; a=rsa-sha256; t=1767380485; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=hSxA2XpMooX/44lxpcIeUdguCzYZoaHQNXi9n0pISkcTsJ5Qfb6yKEDiNtlfOJuRMuIiZWjwQsuQnRI68EFXI7ZJWHD/wZKyG0RKc8PQnVJSjJxAovVFEPaB8M+VeH/o54y4PsvW/fy0DwGLcpc3ZQCR27F3vylzPHDSojHjmv0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1767380485; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=LPxqSwTuY4yokDTiKDufI7d8NHVAOgsI3ijI4PKWqPI=; 
-	b=VQOr37lETPVLFxKfUr4rWRETmhOQVK8OhA3WDZ1hG7yRTUBZ2alkBf+QI1W/UXS5BEKfOV5MMj4mmpUSU50WA0zKkffVg7x/vcJQg5BOjqBXz0ACOGptxXmIAvPWoMNZ1f6f4ZZas7X/6iaA1PfIVJW0W2I7PHovjdOWfN2uEMA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767380484;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Content-Transfer-Encoding:From:From:Mime-Version:Subject:Subject:Date:Date:Message-Id:Message-Id:References:Cc:Cc:In-Reply-To:To:To:Reply-To;
-	bh=LPxqSwTuY4yokDTiKDufI7d8NHVAOgsI3ijI4PKWqPI=;
-	b=jIgdvB47ljzWB+ri4VKfINbvM659Dt97k4WQfr96J30Ui2J8xFnV9nxaeWlmanxX
-	nOgbecaBnWDsXsE4y4PktAODsBrl668hC4ZSxj6LXdniQmgm/Sku0nbK1RXlyYjcM3q
-	VWSmlvSy11KTWi7vefskYmF8g+0AdPmHfEtu9IRg=
-Received: by mx.zohomail.com with SMTPS id 1767380483258410.49842308488564;
-	Fri, 2 Jan 2026 11:01:23 -0800 (PST)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-From: Daniel Almeida <daniel.almeida@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0i2AP4K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B6BC116B1;
+	Fri,  2 Jan 2026 20:05:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767384313;
+	bh=9H+nDyj3Ryc6j7slQ/ZaapNCcutVRASv47ZdRWQRyaY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W0i2AP4KJb3c1ABkmcuhDHjbz8ewNLwrCLUxB1j9Ik/5l8yRE32YPLRQTBqHzWoSm
+	 OZ12+I2x4BpfECDTwme6uOf0a/MLLYtbj+SnBMOW2wIn9PUT4NJrM73TqkxeFUjkAS
+	 tGA93BoRjYL1NrJCSwP8QdSe/5LNy9dU6uVwq/5mx1eX8K8GIYVIl2ctrp7+hlkvyY
+	 TFKUV93IAcUdzCIvC9/NauDGzn4gQQ98F9kz9C5v8fDOInDTYXMAsHExlqRFe1R0gE
+	 tGKYVET/00euCAz7jhdrlTPyPrJ9lYODSL5Mh6lNbt38onQxaHARF0O+ebvtirVgkq
+	 vs0j4rweoEU5Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH] rust: fmt: Fix grammer in Adapter description
-Date: Fri, 2 Jan 2026 16:01:07 -0300
-Message-Id: <2EAAD797-C15F-41BC-B76A-85163DA35A88@collabora.com>
-References: <20260102084821.1077864-1-dirk.behme@de.bosch.com>
-Cc: rust-for-linux@vger.kernel.org, tamird@gmail.com, ojeda@kernel.org,
- boqun.feng@gmail.com, gary@garyguo.net, a.hindborg@kernel.org,
- aliceryhl@google.com, dakr@kernel.org, dirk.behme@de.bosch.com
-In-Reply-To: <20260102084821.1077864-1-dirk.behme@de.bosch.com>
-To: Dirk Behme <dirk.behme@de.bosch.com>
-X-Mailer: iPhone Mail (23C55)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 02 Jan 2026 21:05:09 +0100
+Message-Id: <DFEDG6TK5AY9.1Y9EPEYQLMCMX@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Tamir Duberstein" <tamird@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 0/3] scripts: generate_rust_analyzer: match
+ rust/Makefile
+X-Mailer: aerc 0.21.0
+References: <20250723-rust-analyzer-pin-init-v1-0-3c6956173c78@kernel.org>
+ <CAJ-ks9nJ149Dt2v5Dn0A3+Qw=TnzE84Lm3Ridrfrc=mdhFt-MA@mail.gmail.com>
+In-Reply-To: <CAJ-ks9nJ149Dt2v5Dn0A3+Qw=TnzE84Lm3Ridrfrc=mdhFt-MA@mail.gmail.com>
 
-Hi Dirk, 
+On Fri Jan 2, 2026 at 4:25 PM CET, Tamir Duberstein wrote:
+> @Benno would you mind having a look at this series?
 
-nit: typo: grammer -> grammar
+Oh wow this is an old series! Sorry for missing it.
 
+I'm not maintaining the build system for pin-init, but from my side the
+changes look okay. The commit messages are missing some context though:
+why do we need these dependency edges? etc. If you fix that you can add
 
+Acked-by: Benno Lossin <lossin@kernel.org>
+
+Also note that this might be different in the new build system.
+
+Cheers,
+Benno
+
+> On Wed, Jul 23, 2025 at 11:39=E2=80=AFAM Tamir Duberstein <tamird@kernel.=
+org> wrote:
+>>
+>> Minor fixes in this series. The main one is fixing navigation in
+>> pin_init_internal.
+>>
+>> This is my first series using tamird@kernel.org; please excude any
+>> hiccups.
+>>
+>> Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+>> ---
+>> Tamir Duberstein (3):
+>>       scripts: generate_rust_analyzer: Add compiler_builtins -> core dep
+>>       scripts: generate_rust_analyzer: Add pin_init -> compiler_builtins=
+ dep
+>>       scripts: generate_rust_analyzer: Add pin_init_internal deps
+>>
+>>  scripts/generate_rust_analyzer.py | 6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>> ---
+>> base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
+>> change-id: 20250723-rust-analyzer-pin-init-925467269001
+>>
+>> Best regards,
+>> --
+>> Tamir Duberstein <tamird@kernel.org>
+>>
