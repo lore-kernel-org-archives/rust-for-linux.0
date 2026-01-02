@@ -1,67 +1,68 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC472749DC
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 07:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD281E5018
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 07:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767340332; cv=none; b=gEt3+eZdlo0DyC5LAqK9RaA2PhIaa53tY9rWlSBUaeaRGqXcPkhGsZ2Jm8K4gDIcGeEFjulvdlqvZTehPWJrRlaFGqwWbUAe9d73LlmWBZnVsSw+kiLHHuf8KB0DyBMTyRzWRpVYwh1+kaxlZETgPyYDzlgV9LeTGLErg1Z0zvA=
+	t=1767340334; cv=none; b=ZSSajEQ+ITYH+PedZAmSZ41Ozo/iyLQ//nUkn6Y8TZqZ726RH2FzOSnGqjfTm/KyhiyKvunolki12YB5Uaq5MPdslltRcNakgI33zzTACb2FgX470d5rqHg9BSHOiRhMP2SgbYzXD+LF+AyS6KB+cck+DjyTvNvCVwLwH78lY7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767340332; c=relaxed/simple;
-	bh=PYqFtCJKewiwotOHkWKODCOViU3vbaITARfsgFWgfPk=;
+	s=arc-20240116; t=1767340334; c=relaxed/simple;
+	bh=2WoOtUgVnGngo1opEuioDWIeyb+NETiI002qJthENXc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dOORBI8HSHFEeCralNLtqTDvHuT2qrP5QSviTMKP7oAVmW1a+uT5vZ4kTjdCTAwphCw0wXfU/4boiS1lsdFFr/o+7JS6GUZ0p6BeueCLOBTv63I+9VPa77PnJvWGUy1EcT2i28idNstY+z2SrcKkQqIq+UgJHt/AeJxQy2TOKdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ETdCK1Mo; arc=none smtp.client-ip=209.85.208.180
+	 In-Reply-To:To:Cc; b=B8N816SRz1S9P6NHAofWDU2vmJ3Z4rtaP8MpE8Hvv/IMs/hsdi8/Ja9LKskL1cSl+gpl/J2hszTbLRBAg5WznBX5Xaqyfsmr7DiycfGe+HNxH6mr+Lwcd/i26Hs4gU4RhakDSkX716WCr2n39HG1tsKn6D7x64a52UG5Y5EFRbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OHlwsphG; arc=none smtp.client-ip=209.85.208.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ETdCK1Mo"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3825ae23d95so41326031fa.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Jan 2026 23:52:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OHlwsphG"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37e6dd536b0so113478641fa.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Jan 2026 23:52:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767340327; x=1767945127; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767340330; x=1767945130; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1GrDXAONfhMHnF8PgdBj6M4DUOiVSl4risTQaplS4W0=;
-        b=ETdCK1MoFyeVcTxBTTKYbnMmfcHInxvKFDIbLfRDFMseCeSX9qF3BSoR4dSMgqWCM7
-         gcAJ3L/7fvHK4syoJBl8ZlhNhvhNOvZlTTpgAGQRA5sTgTqJ3eTAVAksHt9s68ZtINBC
-         onhefNY64mJAbfNFbFkA42XL1+GkYTRYqcplte+PeLMGSauoVRu4HFAWWt+UcyQZAfq5
-         auibF6ne0A6AGwBS1bwdgD2xoZgDPEdoZtHlq68mKvNVJrXiiTpfPoGJq+gS8SmAMXQc
-         JzAkLChcxF5gm5s1hShnGA/gOywLNrBeC2squIAPc7hgj2wB93tBycJNnVv9ApyL6Cbj
-         mvRg==
+        bh=1SwB68mV4E4rv2JZ9xhD6eCQLLJ+hlAXbyX47oNAs8k=;
+        b=OHlwsphGqYV1PxIYdVoCkCynRB7t3WNNELyz2GqjUiLfgv9FQ6T/nyUV3LE14ocmtO
+         u/Y3o8HnnkihsztFmnBrALT0Nj6nz5ueuhXH6lVUKravVcL/bhDe9x7W2vqNCSI2KqBQ
+         D1ksbo5hubTwAWjzrhKAuiZdx0WtoAbk+iMrzcF70E+31nhcDXZbMAFvJ9rzidFDBTZ+
+         oew6y144NGV2+etWakBc78BXRjxA0LlPATS7otsUUAgyuFt8hHJ01po5pkBZ3DjcTQmA
+         18uNTF5AYZcB+VYk6fgOAz1MzpsrkEo9dbh9MyU6HL9yyWusAaVkYy9rVN29WyQy3LoF
+         lnZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767340327; x=1767945127;
+        d=1e100.net; s=20230601; t=1767340330; x=1767945130;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=1GrDXAONfhMHnF8PgdBj6M4DUOiVSl4risTQaplS4W0=;
-        b=DOf4+qFMojOVZkYXo0r9sRWiZwiemxvisMd/MAp97ZdJVJ+gCf3C7ljPdGMDmZIqYJ
-         BVgqAjtzffgyAVYllboi4n0EikN2FLPK7u5B6VrQNQg4/bVQ/jKqs8ilZbzb2aLYbzz9
-         /lN/xH263llyH4LwE9ZlEOJkl9E3ZsIfrN3pl1VkB4VNG/u+V1A8dfbZfOMb4fC4ROs9
-         /5UQHRuWo4dYEutynanC3DOffxfZ0KAFIiLGXPnIyvK9lD178YkV4INQ0h9419VX/rD5
-         QpTBAtVJezrHvDOe8BoJgw2s4N2zkx8dz4Hqo4sgn58pz0dE8gltTGf0QRAYVQMouapm
-         Qjig==
-X-Forwarded-Encrypted: i=1; AJvYcCUEjYq32aIXWN1Tkw+qEkeW3+Hm79wHG08qz+SbzHGg2e0XIHUoWbPG1g3N8lNbXjGcpoZhkM6eSgtee3vvrQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6s4bWuk6aKNUIBixAXVNMcCdgx6YUtxls2Exg8xqt4ONmDxCI
-	eiq4nPap9Up0UPogjWEubYiLhgBNiN+tNuBzOtIeG6qzupIuZZF1VgIt
-X-Gm-Gg: AY/fxX7Xc9L7VWPrfGD0dS21mUJBk3e/fxH6sxRh/pwQNBTJoeoi3GYjJxmOqbXXo7Y
-	FV32dFKPCvSboH00g1lJ0ihlJCulhqiZIhrmoL5TJSRhaDO+gJ+IboF/lXS2OjbQSUgzX7q1UTO
-	jmR9jyUlSjVodVZs3klVZtAYniGHjpCZIIhqCS5wpKK9hNHSMlErl1jE1v6YQj2sTM2ZLo2MnGN
-	ueGx/btvYOPYIkdQtbOlFI2JMhMUW/AxifSYJV3WKS9rO4lU9Mk/bdlX6/zz2/VMdFz8uY4jFQi
-	/qHIXl5HTXC8Cs8qYGPvo+9Z13TSU8sAz+4YIKxF5teVk356Xl3wjeVTPFRQoWkEpMONqPJoeXE
-	owMgwr73xNZBZgTpbqXb/U5wDJYaMJ9HUJL2O19fnmBAm7hh7o6tK9wcn+1hSVicIgzY9WCqOrq
-	fM53DgKYFg7xy6pHeqwMLb9Q9is2sXet7r21arn8+czm0vVBZO7OHhkC8=
-X-Google-Smtp-Source: AGHT+IHZBBGt5sKspmgCfNLehnDSWf+0n62iK2Sq8KrVSTfY8+ZnEykfoNZ0znpWjPtd8Ie+jPvN8A==
-X-Received: by 2002:a05:651c:c8a:b0:378:e097:e16e with SMTP id 38308e7fff4ca-3812167c644mr123565041fa.36.1767340326940;
-        Thu, 01 Jan 2026 23:52:06 -0800 (PST)
+        bh=1SwB68mV4E4rv2JZ9xhD6eCQLLJ+hlAXbyX47oNAs8k=;
+        b=vVOkkbe5uLo9OO5m6PJP7nQxqj9moS2pxX6JOUeAPIXmd8crLazllprDuCx45dRQvq
+         suAB37tdHIhRejnmMxM53Vx8Oyf5A+WLgOqOYrbPeQ1Axuarbt+X5AxrVFgZxEk52+oS
+         zBJyJ5vujoQbPQcSqTL2sQ7e7FjL9pR4KcPKlvduri+CX0J8m+9YEYaqp+5uiNbJgbgM
+         x7F9P1rciO2pdYSgOUPtZ9/EpxGDLO+4aYzD1ERJRFzTnu39KF21PWqBjdV6+u1Bsmmq
+         l9nC0FpWxJJ95ssV7BgLsm9Ff4pehNjOkgoQ+q9x7l2dGw1IOvsdf98FoiX61EWvRdFL
+         yNLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW85La1E7Vs7fVccxRyYmnDQnmFcIijHuCqAYk2I5RRX8bCpcTr8uusmr/b/86ztiKwbnuRNPjxw5aZjM4AKg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+QEKD+X0T8LikkTznRPqwOB+IsaErG/+JzI9ZU1jbxnsBFgLZ
+	FDanRXNfy/J3TYaBta7qVXk8CyGjbHvtcKJ0xXPHDxwuVGZzIZajtLGs
+X-Gm-Gg: AY/fxX4XEMvPt7a3IJQcQ/T5NvrchuGL3F8Sr4tUC9L4DDkfXZY4rdgjO0547dpzf7B
+	vBeOUf2iASB8Pc/JrCRd5srsr9X0avz55Iv2+REWOwd8JEVQaCXO3Ka0XuFRA4TlJg+/ni5iuXv
+	l1I9ZsFY4tzLvrkUx5Y+0PahnSfB+fXQ/nW3czkIPqkc4JwC3zCNwjWXrV3V/iuBETqp3YDQ906
+	8KluKpRZpXeOBDwNmQ9/xNZ9XyhzsZhGW8ZDAwvo/KtG0OWkbFNpJ/XiOh13YeN7iKuDbDNNVk0
+	YE008ju0+VU1vdmL9IvunvwxH0vnaeMFIJJE+e7lM9fhhsk5ExHV4gY2ZMxa4ECMIuLiMhnLXGH
+	WDid1dNyAaGhHsOulwjzYZY3HsKjLPtHXHnFa32O5/VvF1Z628mzZ1pjn/gzn9kh1n/L3PesGIh
+	5vNe6R7X0M0zJlUdDp9IPQJnBsexnW35Mxdt02U5mL6XGP
+X-Google-Smtp-Source: AGHT+IHVj5/7lah0TGvVE6zyPu1B58rptjPgdldYkgOcVb9OgWJIwYAaYacpr2ejC9qUvEAECjGVeQ==
+X-Received: by 2002:a2e:ac13:0:b0:37f:cb34:211b with SMTP id 38308e7fff4ca-381215ab664mr112653631fa.18.1767340330304;
+        Thu, 01 Jan 2026 23:52:10 -0800 (PST)
 Received: from LT-5CG5341NQ4.nordic.imtech.com ([83.245.248.13])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-381224de35bsm107688061fa.7.2026.01.01.23.52.05
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-381224de35bsm107688061fa.7.2026.01.01.23.52.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Jan 2026 23:52:05 -0800 (PST)
+        Thu, 01 Jan 2026 23:52:08 -0800 (PST)
 From: Kari Argillander <kari.argillander@gmail.com>
-Date: Fri, 02 Jan 2026 09:51:41 +0200
-Subject: [PATCH v2 1/2] rust: pwm: Fix potential memory leak on init error
+Date: Fri, 02 Jan 2026 09:51:42 +0200
+Subject: [PATCH v2 2/2] rust: pwm: Simplify to_result call sites and unsafe
+ blocks
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,7 +71,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260102-pwm-rust-v2-1-2702ce57d571@gmail.com>
+Message-Id: <20260102-pwm-rust-v2-2-2702ce57d571@gmail.com>
 References: <20260102-pwm-rust-v2-0-2702ce57d571@gmail.com>
 In-Reply-To: <20260102-pwm-rust-v2-0-2702ce57d571@gmail.com>
 To: Michal Wilczynski <m.wilczynski@samsung.com>, 
@@ -84,43 +85,157 @@ To: Michal Wilczynski <m.wilczynski@samsung.com>,
 Cc: linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Kari Argillander <kari.argillander@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767340323; l=1349;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767340323; l=6050;
  i=kari.argillander@gmail.com; s=20251219; h=from:subject:message-id;
- bh=PYqFtCJKewiwotOHkWKODCOViU3vbaITARfsgFWgfPk=;
- b=89gkDf+zZZ6JvqrUEtN9svv3pRzZGZqV8d1YP6ws29DFXx5WFdB/t4HAng0JNcH5B2TDaXUmu
- ki/e0mshDXDCcXPSOYqwQprgpqFr4BYKGEpCkPdJqDen4a9Rbhzk70W
+ bh=2WoOtUgVnGngo1opEuioDWIeyb+NETiI002qJthENXc=;
+ b=LoJkubWyNd2jMjezjwdbWhurEpJkfvtenzsBgKJbTe8DIMR+uSiA5DptNXTjaOJAyJwo1PxMs
+ xWYZn4nKoKNAiVh8RCqCTzJ+4T4f4kRA5jbttOxL7yuEaq68pha+G8Z
 X-Developer-Key: i=kari.argillander@gmail.com; a=ed25519;
  pk=RwSxyhTpE3z4sywdDbIkC3q33ZQLNyhYWxT44iTY6r4=
 
-When initializing a PWM chip using pwmchip_alloc(), the allocated device
-owns an initial reference that must be released on all error paths.
+Remove unnecessary temporary variables around to_result() calls and move
+trailing semicolons outside unsafe blocks to improve readability and
+produce cleaner rustfmt output.
 
-If __pinned_init() were to fail, the allocated pwm_chip would currently
-leak because the error path returns without calling pwmchip_put().
+No functional change intended.
 
-Fixes: 7b3dce814a15 ("rust: pwm: Add Kconfig and basic data structures")
 Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
 ---
- rust/kernel/pwm.rs | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ rust/kernel/pwm.rs | 47 ++++++++++++++---------------------------------
+ 1 file changed, 14 insertions(+), 33 deletions(-)
 
 diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-index 2dd72a39acb5..4f683158fc08 100644
+index 4f683158fc08..6c9d667009ef 100644
 --- a/rust/kernel/pwm.rs
 +++ b/rust/kernel/pwm.rs
-@@ -607,7 +607,11 @@ pub fn new<'a>(
-         let drvdata_ptr = unsafe { bindings::pwmchip_get_drvdata(c_chip_ptr) };
+@@ -129,8 +129,7 @@ pub fn set_waveform(&self, wf: &Waveform, exact: bool) -> Result {
+         // SAFETY: `self.as_raw()` provides a valid `*mut pwm_device` pointer.
+         // `&c_wf` is a valid pointer to a `pwm_waveform` struct. The C function
+         // handles all necessary internal locking.
+-        let ret = unsafe { bindings::pwm_set_waveform_might_sleep(self.as_raw(), &c_wf, exact) };
+-        to_result(ret)
++        to_result(unsafe { bindings::pwm_set_waveform_might_sleep(self.as_raw(), &c_wf, exact) })
+     }
  
-         // SAFETY: We construct the `T` object in-place in the allocated private memory.
--        unsafe { data.__pinned_init(drvdata_ptr.cast())? };
-+        unsafe { data.__pinned_init(drvdata_ptr.cast()) }.inspect_err(|_| {
-+            // SAFETY: It is safe to call `pwmchip_put()` with a valid pointer obtained
-+            // from `pwmchip_alloc()`. We will not use pointer after this.
-+            unsafe { bindings::pwmchip_put(c_chip_ptr) }
-+        })?;
+     /// Queries the hardware for the configuration it would apply for a given
+@@ -160,9 +159,7 @@ pub fn get_waveform(&self) -> Result<Waveform> {
+ 
+         // SAFETY: `self.as_raw()` is a valid pointer. We provide a valid pointer
+         // to a stack-allocated `pwm_waveform` struct for the kernel to fill.
+-        let ret = unsafe { bindings::pwm_get_waveform_might_sleep(self.as_raw(), &mut c_wf) };
+-
+-        to_result(ret)?;
++        to_result(unsafe { bindings::pwm_get_waveform_might_sleep(self.as_raw(), &mut c_wf) })?;
+ 
+         Ok(Waveform::from(c_wf))
+     }
+@@ -263,8 +260,8 @@ unsafe fn serialize_wfhw(wfhw: &T::WfHw, wfhw_ptr: *mut c_void) -> Result {
+                 core::ptr::from_ref::<T::WfHw>(wfhw).cast::<u8>(),
+                 wfhw_ptr.cast::<u8>(),
+                 size,
+-            );
+-        }
++            )
++        };
+ 
+         Ok(())
+     }
+@@ -284,8 +281,8 @@ unsafe fn deserialize_wfhw(wfhw_ptr: *const c_void) -> Result<T::WfHw> {
+                 wfhw_ptr.cast::<u8>(),
+                 core::ptr::from_mut::<T::WfHw>(&mut wfhw).cast::<u8>(),
+                 size,
+-            );
+-        }
++            )
++        };
+ 
+         Ok(wfhw)
+     }
+@@ -311,9 +308,7 @@ unsafe fn deserialize_wfhw(wfhw_ptr: *const c_void) -> Result<T::WfHw> {
+         // Now, call the original release function to free the `pwm_chip` itself.
+         // SAFETY: `dev` is the valid pointer passed into this callback, which is
+         // the expected argument for `pwmchip_release`.
+-        unsafe {
+-            bindings::pwmchip_release(dev);
+-        }
++        unsafe { bindings::pwmchip_release(dev) };
+     }
+ 
+     /// # Safety
+@@ -413,9 +408,7 @@ unsafe fn deserialize_wfhw(wfhw_ptr: *const c_void) -> Result<T::WfHw> {
+         match T::round_waveform_fromhw(chip, pwm, &wfhw, &mut rust_wf) {
+             Ok(()) => {
+                 // SAFETY: `wf_ptr` is guaranteed valid by the C caller.
+-                unsafe {
+-                    *wf_ptr = rust_wf.into();
+-                };
++                unsafe { *wf_ptr = rust_wf.into() };
+                 0
+             }
+             Err(e) => e.to_errno(),
+@@ -614,16 +607,12 @@ pub fn new<'a>(
+         })?;
  
          // SAFETY: `c_chip_ptr` points to a valid chip.
-         unsafe {
+-        unsafe {
+-            (*c_chip_ptr).dev.release = Some(Adapter::<T>::release_callback);
+-        }
++        unsafe { (*c_chip_ptr).dev.release = Some(Adapter::<T>::release_callback) };
+ 
+         // SAFETY: `c_chip_ptr` points to a valid chip.
+         // The `Adapter`'s `VTABLE` has a 'static lifetime, so the pointer
+         // returned by `as_raw()` is always valid.
+-        unsafe {
+-            (*c_chip_ptr).ops = Adapter::<T>::VTABLE.as_raw();
+-        }
++        unsafe { (*c_chip_ptr).ops = Adapter::<T>::VTABLE.as_raw() };
+ 
+         // Cast the `*mut bindings::pwm_chip` to `*mut Chip`. This is valid because
+         // `Chip` is `repr(transparent)` over `Opaque<bindings::pwm_chip>`, and
+@@ -645,9 +634,7 @@ unsafe impl<T: PwmOps> AlwaysRefCounted for Chip<T> {
+     fn inc_ref(&self) {
+         // SAFETY: `self.0.get()` points to a valid `pwm_chip` because `self` exists.
+         // The embedded `dev` is valid. `get_device` increments its refcount.
+-        unsafe {
+-            bindings::get_device(&raw mut (*self.0.get()).dev);
+-        }
++        unsafe { bindings::get_device(&raw mut (*self.0.get()).dev) };
+     }
+ 
+     #[inline]
+@@ -656,9 +643,7 @@ unsafe fn dec_ref(obj: NonNull<Chip<T>>) {
+ 
+         // SAFETY: `obj` is a valid pointer to a `Chip` (and thus `bindings::pwm_chip`)
+         // with a non-zero refcount. `put_device` handles decrement and final release.
+-        unsafe {
+-            bindings::put_device(&raw mut (*c_chip_ptr).dev);
+-        }
++        unsafe { bindings::put_device(&raw mut (*c_chip_ptr).dev) };
+     }
+ }
+ 
+@@ -692,9 +677,7 @@ pub fn register(self) -> Result<ARef<Chip<T>>> {
+ 
+         // SAFETY: `c_chip_ptr` points to a valid chip with its ops initialized.
+         // `__pwmchip_add` is the C function to register the chip with the PWM core.
+-        unsafe {
+-            to_result(bindings::__pwmchip_add(c_chip_ptr, core::ptr::null_mut()))?;
+-        }
++        to_result(unsafe { bindings::__pwmchip_add(c_chip_ptr, core::ptr::null_mut()) })?;
+ 
+         let registration = Registration {
+             chip: ARef::clone(&self.chip),
+@@ -730,9 +713,7 @@ fn drop(&mut self) {
+         // SAFETY: `chip_raw` points to a chip that was successfully registered.
+         // `bindings::pwmchip_remove` is the correct C function to unregister it.
+         // This `drop` implementation is called automatically by `devres` on driver unbind.
+-        unsafe {
+-            bindings::pwmchip_remove(chip_raw);
+-        }
++        unsafe { bindings::pwmchip_remove(chip_raw) };
+     }
+ }
+ 
 
 -- 
 2.43.0
