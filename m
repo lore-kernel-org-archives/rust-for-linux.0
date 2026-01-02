@@ -1,48 +1,48 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020132.outbound.protection.outlook.com [52.101.196.132])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022092.outbound.protection.outlook.com [52.101.101.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995B724728E
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 11:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7CE2D948A
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 11:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.92
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767352405; cv=fail; b=Jpl2OdUzCT+yC44cYcxb5S4FURWQSdJBtdd4INs+j+C18Bt8mrJfusDQYYrY6y78xB+c+0q/+pKULOyNxWjrp1skGi7Rkf36UOvk4B70om9k1DOW1K2XSgsOvmsUN+p6KMvWXHRjKmWu12zyUPtscNLqW3zuHr9NwQzh7AuaNB4=
+	t=1767352639; cv=fail; b=IpbbWyAn6LWk5KpuIXlzfx1ajBHbFaNkXJF9oMlQjVj4UzddgYIlr1uB7ADA4kiLva+319etiHkGo43WgwwfVTNH5VKBSUIJRCdCa5TqJ3IzfdUZvFPAIISo9AJIpoMjheCcHjN1tmik7oMKzEEP6nIreWhuXy+gQgDyD2lLn7o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767352405; c=relaxed/simple;
-	bh=gexIl9h/O5RZicF/DXm3MWoLbkZjiDvguDXjGAFec9s=;
+	s=arc-20240116; t=1767352639; c=relaxed/simple;
+	bh=7dZp2Tx7CcXbk+Pd0aKrwVd43UfCOEmg+1tQdh8hJ9k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B79TcBCYF0x0XoebN3NoNPQOlFjyFT/PHiVk91sxoxWTxD5HeXPioJf5shc+ub5Mu611F6ub5L7Au2rFtkzwny+XjZShkCaHfAPUmzvRw/ME+tm2qi2Z4JxtqLepfmf3ypu/e3+ZE7T9g2sXiseUUVyOpGB256dCoaNulcb/9Gk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=UfrsWp5m; arc=fail smtp.client-ip=52.101.196.132
+	 Content-Type:MIME-Version; b=SOfdEOTQTzGho9UNxrSBu/joukNaz2PLrOGoom/tPmYWofS6aq/YS9wWbQGuIo+ulFz77I2dgeUDHCT0O31qV71NGb+VYmwyjJqGZFD/X9TP4gYlZypB9Foulg5MtK+81E1qMuQtbKx3NMl41eIQCS5XIm8RFdIUl7SRQBo+W7I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=BdhpbR+8; arc=fail smtp.client-ip=52.101.101.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="UfrsWp5m"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="BdhpbR+8"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CGR5M2vaKTsRC0XFOEFfcH6DppEolAQZHEB2QZzzF8XSMwioZoXoaJKUo+mQQRSf2zQxCTI4zlRqKcN4PYFOAFGEwc+vWk9WsBNTJCcXflwFQgTn37VB1HgBSx5AZQGXHTntTG+mX2m6/h3IlpW5vVtkEdZSyTFrMCFLSaJtmXFVnOwjRquz3MNXGcWk1MhTnPeLsT+tkJR3TStAQSBPig+AG4cknTlOSQrPg4iNOxgANm198SDfoE1HvopolUtYO3iYDj2HUYYBRRtW7nLl4mhQ1RaFepjRrWVaxNIWRWZ7VdJmwTZwYQlCk1RpuUi2QVybDehA7Hi2qJQGXRkMCA==
+ b=FEGoSWjMW3/hEXcsg+vZiAWvUfFHQQfLhZQ0kk7UhAZZ/8CfSZb2OavNWAdUMWR9MwKyn33Li9IzmARNeI6oq2xdmG0rSeoEoJSYWE6zMsiUjTib9p7wum8n+M8qegl5sc2EmrYyNLnC4B44H3K6qhydXurb+R8DZFsCBOsbEYNE3cDZiGPjLm+wF8su9A8v0HSZoF5Sxh94gcknTLXvNbMVnsI7NVGlG3wIuyL8euy/0NoP9lgv5t6r28d1OPxNpg5ZoOUJMgs4lcbe165c008eYkDAJCPWm74sg0omKRXG23q8JFya+ExwpCnUlQzISxj5S0jA8Zbo9vOOQBRnMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YYF4bcjgwhBTkdhyuPpJ96cM2IpGhOaOo+nMwFwTn/Y=;
- b=u90TOpMFAa48zTTKkIYX5ytPer8jZN0TTzrQehEoUpyLvOil3pkM3tNVsd0BsxnnRTAxTn+XQ8pdk35iOxoKfKDhi9Rl8Kh8jbcbcS0sx/ZMhtQXbPP2EpT9N2MvuXt6uY6Bkv0FVrmuB3pr856+WXRthg0Dxf1XKuJnJ8RUoaM5weev4EkJPz6S7p4bfkpwG+mv1rcRRIJt7Az1H8eSpPZvsZPa97/SaIOVsWu3R2EXvBng6rS/QXHWCuz9CWK8W2QgrJg6Mu3a06y4BUWj2ixdIXSAodDcGcT/rEF7/YkTu6i2dC76CYc7rkO82CeuQ/sVtU1ya3KKqvxVy7obNw==
+ bh=LTrsQwYjZptkbxCNQeO3Qov1rDnWpWlaLHNAGKwGsB4=;
+ b=asVbdCF6VBTrJu0e7Z49zVJRuNsaDtI5ieLepjKtLzHBmznigW6sO8r9tsF3kK1CtWREdEUgrp58OS0v5n2DCdhnop0BdknFsFReFpb3XtHIPzMQDZ7rXpZvfy86gv8ZwaH7gFiAi2mvxGpdkxmPQLzsZg+VH77ndXSQSH9Por7YeS0W4fMm7d5XGSvtxd9EJQbqrTBAwr+2zqLzxF2neNm1Lmizr1aexoJsdmt0ift8qYN6Nh2rIIIhPAVKIMO0QFwlWqQ5ljqVNW3y0NDiBdw6lZfrzdVXyqhfoDus+cCsSwp8p3aIojZnAB1d6xPJiQdb0BoQNBy1oglm3cb5rg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YYF4bcjgwhBTkdhyuPpJ96cM2IpGhOaOo+nMwFwTn/Y=;
- b=UfrsWp5mgiq7HiuvccInA1957T+DhhLmpacvRj/FqaOP0t9N5U7CJ5y8neaG2B1JY81SjbW0Y+ieba7oM+8KT7tNwCXNou2QIqN01tkKpMGTysPQh6fjtE3czJ9S7LzVnwf07Om7xCfEnSBW8WejZ4WW82kjAS+6xjHB2vivaXI=
+ bh=LTrsQwYjZptkbxCNQeO3Qov1rDnWpWlaLHNAGKwGsB4=;
+ b=BdhpbR+8UJOrUOm+g9aIhXo+zkNiezoN2D8T1ZMHl5ODzC2OdqhqArkMXTw2mMexkWAi/vG2sM6M5GFs+2datoqpuczocRNWWigfA9iEf+ro7nO1SXMUQhTCrkF+yk9wXMqO3RtzhM76OpOzlfGebb0PU/DPVnZzttmdVY0vav8=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOYP265MB2094.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:11a::12) with
+ by LO6P265MB6062.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2a8::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Fri, 2 Jan
- 2026 11:13:16 +0000
+ 2026 11:17:14 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::ea6a:3ec2:375d:1ce0]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::ea6a:3ec2:375d:1ce0%7]) with mapi id 15.20.9478.004; Fri, 2 Jan 2026
- 11:13:16 +0000
-Date: Fri, 2 Jan 2026 11:13:11 +0000
+ 11:17:14 +0000
+Date: Fri, 2 Jan 2026 11:17:11 +0000
 From: Gary Guo <gary@garyguo.net>
 To: Ke Sun <sunke@kylinos.cn>
 Cc: Dirk Behme <dirk.behme@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
@@ -56,17 +56,17 @@ Cc: Dirk Behme <dirk.behme@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
  <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Tamir Duberstein
  <tamird@gmail.com>, Ke Sun <sk.alvin.x@gmail.com>,
  <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v8 2/4] rust: kernel: Add pointer wrapper types for safe
- pointer formatting
-Message-ID: <20260102111311.03eb0b8d.gary@garyguo.net>
-In-Reply-To: <20260101081605.1300953-3-sunke@kylinos.cn>
+Subject: Re: [PATCH v8 3/4] rust: fmt: Default raw pointer formatting to
+ HashedPtr
+Message-ID: <20260102111711.0b2f864e.gary@garyguo.net>
+In-Reply-To: <20260101081605.1300953-4-sunke@kylinos.cn>
 References: <20260101081605.1300953-1-sunke@kylinos.cn>
-	<20260101081605.1300953-3-sunke@kylinos.cn>
+	<20260101081605.1300953-4-sunke@kylinos.cn>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0281.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:195::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO2P265CA0083.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:8::23) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -75,212 +75,191 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOYP265MB2094:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59d6801a-69fb-4698-717e-08de49efed5d
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6062:EE_
+X-MS-Office365-Filtering-Correlation-Id: 026f9747-ca6e-4778-3fbd-08de49f07b80
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|10070799003|7053199007|7142099003;
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?S0FtpJfVi0Wi0WS0k1z6bljVZtB3WRF0P6gXY8ZdBigvgZSPBzVX9agV3sjx?=
- =?us-ascii?Q?2R0whHP8oPrSZ1E7o2bC2YZtK73nHXBAueg/OT1UOeAMK2hr56CbQIf77bnh?=
- =?us-ascii?Q?D5a7CZS7qlgDJsFE1f5VvE3R7Ht0FF05vPm7E1uqELZxiO414LBibI6gOHek?=
- =?us-ascii?Q?YV2OEZrJESjEuPy2o00UwLPwVu3XaxTrLujoa6h/C4pHXAe/uyRlOzich1Xf?=
- =?us-ascii?Q?KUXUSTFv2TN/we5W8e84vpVt1t7K9/OmFaYzwHLfRDcXz4NdWVO3kAwi4LEb?=
- =?us-ascii?Q?R4mBC2RvDEz5fvWH4DfwmH6ZuLBW9mTFpwKafEL61bOze5kmyug6/7V4yZqy?=
- =?us-ascii?Q?5nkgQcqYh+Slff8AT/xaXMH5iMmOkeISZxktlVtWLrB1tdhiMF5fFpq+CPiG?=
- =?us-ascii?Q?tBNvIbqQWoj8KBOpU4/R+DswCguGrwNhwPFX+J85uijaNQS33e29mJDCvTQs?=
- =?us-ascii?Q?LZ6WRBOmXNDxtWkOBjeZqtRfJS7RnpuyvrNumHAajqdL//GyH9RAB/dZRow/?=
- =?us-ascii?Q?7WyYb48duQQjfbm1IBQwKvPH27O8qp0Zw4gdqQNd8+6T42wXZtBpSv1Ex6mD?=
- =?us-ascii?Q?uDzMXtSLYWqrn5K1BI+xW8EUM9IyrgrECkwhoAUdCT6wS9//lmIuo95Yoi46?=
- =?us-ascii?Q?EkskXvrhYgNedfp2zzx2PAij3AvHlvkWNfIvQBu2spNZ4eQUB8DdZ+bLeScp?=
- =?us-ascii?Q?dHcU0jcav9H38Bzex3WFqWAahWEtNVrGrnEY/IOxm08VpL5TfuE/aQUA66RW?=
- =?us-ascii?Q?hUomIZbxdKXCw9fW19IOI5IbpYLdcOtpRGvQEGe4PqdvyGkRFt3z3J0X1eYP?=
- =?us-ascii?Q?SDSHc0MT+URn64zSGhy0ddpLwC3vRZeyTQ2/6ld9SOq9FyhD883NnTW5CN4i?=
- =?us-ascii?Q?FmUKWqurKeYUAOfdtiIc81WS0BD6LAiYm2pQJ58qnP+5wIgBUIWJcZ/rveAL?=
- =?us-ascii?Q?gvfz8dbyjT6OkiDgw7iNQAUaU61v9DbC4U8USAotPZWX9Cax55bufapHOWMb?=
- =?us-ascii?Q?I68NlfYHp8KlnamlLirjJEb+GP8PTmgHnX1+oepffk8jpMrMWo2h2Q2CjrV3?=
- =?us-ascii?Q?WSDiiYiNbrBGCGxuyRx4pbH1QfXpxws2Hgpez90nwYeZnlUizTKWt1NcTLK0?=
- =?us-ascii?Q?GnpBtVPy5jdCwC88B4wiAnG8mG0U8lUzEmGXrDUtI4uU0bo0+8UAZ8xUazbn?=
- =?us-ascii?Q?d9loaQw3L38Y7RePLAfrRIsQSnbf7UNhdRuoCbmZzNGGyStEZdBMh8N+ev7r?=
- =?us-ascii?Q?waDdJjcTAZGIqtMxn+3Nwm8129mfNKIPyf24ZqDskr4ZcAey/wZ5ImlnDlbx?=
- =?us-ascii?Q?qybJt/qC/oXTWzY+ZTn0DMlzEKFT/siUzdp5oVHZ7yabXWvUWfStVysPZnFU?=
- =?us-ascii?Q?qzRLHhxcXpZkM8RpgXmY8yEtPYqoP/87le55T2q+4AH0hVm00Vn2qkoTi8o4?=
- =?us-ascii?Q?PCWgUmzUWq71X5dmPzMv3RwcaGr2s12h?=
+	=?us-ascii?Q?iJEsWoFarzvsq5BGi1Rl/aGXr89j/ONKjQjz2YPwSJLU/P0irrsoIM1XdMSB?=
+ =?us-ascii?Q?3G/NVH/1EHjDL8jaBTPZbBYZq4K7I8InUgQJivDaAbpk7pj7Mgwva/4fNGcP?=
+ =?us-ascii?Q?mi8CkSpDvmdKM3eh+gNAMUlaa+AQOtet8lOmEUMHsq1fJHTLvNTpw2OJdxIy?=
+ =?us-ascii?Q?zuwf9rRxtP4IoOGuq8X0QSYkAkDPbmbuNMIjYyyF+S4B2oeCflt68el2hjeX?=
+ =?us-ascii?Q?EofFvaP5euClPJ743ZIwDmBYUmb1Us07UR5tSwH1XaxGwQs6jZ/PpqIDa5zS?=
+ =?us-ascii?Q?anWbpDA3XTzi3TZxvcycE05zrV6Ofb9TPa5ZrAVRtWfbPm/rZa64YelbmltD?=
+ =?us-ascii?Q?o+c1GE4M3XWju3OA/6PIoC/h3qvlcAWrhpbz8McSIHa6ed0BcQXUOqqjbnef?=
+ =?us-ascii?Q?xTBzvrCdnfpkT5w/Lg+VvSoN3ar/n6CGEuziY7ggVx69Bvxp+XQDs/vHTiFv?=
+ =?us-ascii?Q?1lMfuzeEsJCkARsIWTgbRbR6NKatzhxEsFGruZ3Ne6ymrdSn17eZUE12mmNc?=
+ =?us-ascii?Q?mdg9Jh13I3lSudbkklQncbSOQYjaiLHJ1qOpY/wSOLgBt3ym/sbpdXbNVni7?=
+ =?us-ascii?Q?zH6Nhx8cQnzJzW4XLangI0ORJvNwvHZpxMx9owruPH4TFztdqdK9p/T7iTqX?=
+ =?us-ascii?Q?gR/8rY8Cx+R7G7AmFb04t/+0olk8jJQET2DfVXc2bV8Gf1DMfrZzdhvkhEf5?=
+ =?us-ascii?Q?yH0gLKl0+K0aD/9dCF5AZVHpgTDnQmvAVOHI8Uz48+SfdUMX0Kgazxletx5T?=
+ =?us-ascii?Q?Ro8bkeMm6mAsI9CDI7c68tKMQ+OisMOV7vXr3nkZ8/ION5P6jC2XKDs+Yo1R?=
+ =?us-ascii?Q?Js6XhYgrHqaYGd0NTJ5CMyySPp5g3uNMkGVHxZrprne/bIhNegAAdBTaWa5z?=
+ =?us-ascii?Q?PdoyrB+2LsDfFMdpCkaWCbMOLx/WFLyJ3nijJvZyrC3RAy0sIUnpyPO2Z7R+?=
+ =?us-ascii?Q?oLOs/ujqE6Ljz9fADnvW1dzXaqcfXwOAH1Sr+eA0ycH3RIguOlYJDdiHL5zD?=
+ =?us-ascii?Q?4vPcNgObNkDjbEWkWcHu3r8LQZTERwaQvFBoLkZLPdh8iErPRKfjh9w4jvvs?=
+ =?us-ascii?Q?30IKzE7PVbdhaaC1xrZy8s7NOkwC2WKAbQRBfq0/3jGj6uaQ8dpNHsWG1cwA?=
+ =?us-ascii?Q?mIfJhuJnqS/x6zsYP85G4P+MsIyDU0+mq8tXl0aQsvjGQ4W5ppLy6ozFuOA3?=
+ =?us-ascii?Q?JUmDmd+TZvSJ+JdRXNq+smwsKxr7q831YkdGlEMxcFVpzLcdTrKeCJ4rFjFl?=
+ =?us-ascii?Q?lH0UfboTNY0dikg7CETIsX25/i4tihupkrs/zhtSkUk9U8I5XMe7kRQWMeAd?=
+ =?us-ascii?Q?nFJDDkCcIhwxFsTrtjyfVzm4HFguP4D3FBqUoB3kyq+t2jGOPhm+lEWpX19v?=
+ =?us-ascii?Q?sPecJyBhNWQFvG6Dw98a0HGfH4JC2Qh2NXPJ5fbGiQWGnnNYwyLAHgQTCX81?=
+ =?us-ascii?Q?sYawNfbfl7STs7WB05bVQEUgCpzEetiV?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(10070799003)(7053199007)(7142099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?px8mgPawbg5L/26aIxfBCVFDI6tcTFf33w9tLYAGgeC4QrgEwRNiMRFzQ9QJ?=
- =?us-ascii?Q?RM03SCsBpnUEaJ0chCh+ydB0IuYUOUTKlIR198v6DQDMzTns3SHfOdSlVxbr?=
- =?us-ascii?Q?TdDtvi+aA5ycQ8Ctxerthr8QKZshmO7TLIx0Ueu6d+vTFn/ggVNyM68kfhsz?=
- =?us-ascii?Q?S+2zmisrjKM2jXydHtlPVrOC8wTJTjPDMupyDS2UNouKBvTdVjBg1LqsWZKa?=
- =?us-ascii?Q?C61cTeMpP38ShpCaIV/TwR3NSR8L8S5Wu3c86BLm+uZIcLP58v8Ht4Ja6/8P?=
- =?us-ascii?Q?/Dlpce5nyC9PYY615Zgakt8NEPJtWTgBRSoNh/YvkN8YQBpOg+xijg3Rltly?=
- =?us-ascii?Q?pCXB4FOfco40dzu1OJhGYxZbKSneXUlUahQqMNW2JPEYG029VvQfy3aPDoGK?=
- =?us-ascii?Q?BS/7vSU1hUQtD5HheIQuVvuzBZRoLwDxJDA30a31u3tKETG1GXCwERDgpKQL?=
- =?us-ascii?Q?rG4UGvQUOM+MgWBSEcfG3S58nZ9YpPmkG+pCwL3FPG4QCijkiOylcOhsYQML?=
- =?us-ascii?Q?R0RckvHdgsrpO6OMzsg2HQbOjNjICo1TA9oHcG4fjRTMFOMWiYbrvR5A+8ey?=
- =?us-ascii?Q?VhijGDcyqGehJsNpX4y/qegMTY7tmhDa1YPoUh6jXnDV0NJcVFE8ubz8aewJ?=
- =?us-ascii?Q?V32eiM6PNVu7Qj8wRI5bbHmSNKuLd6qIbLKDjcCLDhTrSsgcKZcaoVgywvWm?=
- =?us-ascii?Q?qm9oT6gJ3a4VsJDonXGIChTc1yBSozHALTzYYDPANyFoEu7srafQN+oooVy3?=
- =?us-ascii?Q?aOdo4ZF8al38QhWqU0/ARkMfBTN2sw6xWV0jL9JTy1l2L8pbB7FTUe/d7oSD?=
- =?us-ascii?Q?HFhemFGEBHV3Wv8nv5GYscMMmVorIWYItRWzPOSFPEmEwZP29tfmno4NP4Ta?=
- =?us-ascii?Q?uXIikRTNkeYezWAuWFzk6Mpt0IZHyzcyXwmxwuMhoug5tQOwhB6/11CwiwyU?=
- =?us-ascii?Q?e4qw5xpErFAVAI+fjsko5GvDcWkJlGd4d40iYrU9FRHoNNZlVNKsmUHU9VK/?=
- =?us-ascii?Q?Z8gLcKPKEw0KhfkMcQgZGfphexsG8JjY0jH+dR7pmCoOzP9U4X4X+3xUjrhE?=
- =?us-ascii?Q?mLWNOCmrgjWnB6MBMvE0V/aE0k5wDS9cgQne/SEWBza39YVEIlK0u67htzoc?=
- =?us-ascii?Q?vAo/hNA4k1tKDCHuRGeyFiJz4FU/2g2Wa4Csv+4i7B2eJ1qJfZvLJBHBvQyW?=
- =?us-ascii?Q?0iN3AI/M22TBN72yGDhAYHB/dsVPWUpifztYLxq3GXGd8AsOn/nG0FD219Ro?=
- =?us-ascii?Q?o/Q2W4KpNdzeOaJ4ptDPd/ZIdQXgA9RFUcAcF4FPPqeWhc6ApNGIhHcRDMiz?=
- =?us-ascii?Q?eCipXvezx0F+oCmGRKaGvmD1SUH8FUtQXJ85D95JwO+6J3PQ8osVTl9BSQQf?=
- =?us-ascii?Q?MxlZCN+NQdJDP3zkbTOkRYyTNsjQ/iQO78k+Uth2Y8G4DWVK8y2kJXVaQ4S5?=
- =?us-ascii?Q?EzVeT0zAkRj+XiktXG0cnUBpZ96E2xQLCgliMgyonNMlOyMpwi10c0Th2bQI?=
- =?us-ascii?Q?zS26t1W2U899l466rGQ4NidtfrWuQ//Q0os0erxO9Z5Vctt/dfEjJFYZ1yJA?=
- =?us-ascii?Q?/86g6r0YVCmwqBi07t+Cr2kB9tYIC8ubVUQ8EzC4YcKB/ALRfK/2NvQCRDBJ?=
- =?us-ascii?Q?eBMrGIOyzHx2PluyVPtYvuQA7WgYihkcWps2kwDDOW4K5Jl2F+/rgvC8kvyI?=
- =?us-ascii?Q?B3S8yg465TqFa/11iYkrBS3b7haX+Wjdc5nUwLh0dn/mrNO/4knbag64yeKX?=
- =?us-ascii?Q?uy7bzZST/A=3D=3D?=
+	=?us-ascii?Q?m011GrJkhRqNqiHb9Wq0Cny4DMxRvnQpMZzkJphoD4kjJfIl3rqEumJyxj8G?=
+ =?us-ascii?Q?Og0L+g6xp/dE9kFyur1xEY77MMUR5Rq4BQUBO2uf+fM6/HUpbHnzzWg8PmGj?=
+ =?us-ascii?Q?oL8uyD9C9QOg/8CaVwcontUu9xYcXjbKgpvl/PZehR0MlnCraNeG/1ZsWd55?=
+ =?us-ascii?Q?nEc93IO3bvd2Wb1wb7Z8sv1QqZL/KqYWctp71Zb+kbljZdNDRiP57I/w2M4N?=
+ =?us-ascii?Q?7SplDLb2w+zTwEupqzrYFop8O/1JIJKrAA2fTRDDGAldx1/HvnO7w9H1euOV?=
+ =?us-ascii?Q?3L1rWLH9oACJ7uERa/XcjNf8a48Yl4/NSPMnoRmcz17Quu+/lc577qD/xwYx?=
+ =?us-ascii?Q?Lf1zIBt+HjdOdoq23lJX+6HwwjfFpaha+DPN635domp9FLbIGM6AazC8NYjn?=
+ =?us-ascii?Q?hP99VfcV8dlZ9Re24ub9Mt9PWFijYi929mHm3UZQQiCmL/bxQExRX7rUX1Tj?=
+ =?us-ascii?Q?kRIPNC+FkoRMZ10iGW/JIbWnCU8hxuRFVE3bFK/TOkVjmQOgXXy2D8r0FKMD?=
+ =?us-ascii?Q?lpGcNp1C9HPWavJUjBL6Dx2n4cvcJDA2ZL49La4DrvmTFP6yjRgZIpd7tvR6?=
+ =?us-ascii?Q?2Yzgfr5Huo3CnRQjj16TXVzcgiVECBOH47iqBOkNg1Ehv7ZkqTl93iNWUWWb?=
+ =?us-ascii?Q?uK4lUCj5WeqhUlGHzx7tKSInyy4HTIwfIdMqexsMfWfbiD7bQNcDBsFc3w47?=
+ =?us-ascii?Q?aHd6dit/jylmN5i2/iE3pZlcqn8iHgzJ6tU/KcVr+wTUGJbYEQaHoNR1ycm/?=
+ =?us-ascii?Q?NEpRBNqtmp/xlgvqGPoiNxkTijBk5TEyqZnzyG0vivg4OnBy3P2DhGkN1od9?=
+ =?us-ascii?Q?iZwBvrUXFdRyeM5+pBQ9LeTSNeDg1gsnzYSEorTTLjqcKy4BEOIfhIJPVwGs?=
+ =?us-ascii?Q?S409QRzKcwn+NUjKCmDA+CmVUAZHDt1UIBwrZbvTTIfN3Q2gHVevnWKqqM3t?=
+ =?us-ascii?Q?4J31oWR9tamAgTguBhh/gmltgfNn+tGsB00pBGYwG9Kd/zfdg3aoqkzKZKBO?=
+ =?us-ascii?Q?S093zSYdx/BJAoKwNuTLn76HRTOx3RlpU+5hFVbS/6Aa8rsTzZN0wBwCraF3?=
+ =?us-ascii?Q?TAHyJ2hRFKqKuYypvvKU3kcC17FAk/T7fMZKPiPEabFkoSN1i14JdF7xeX55?=
+ =?us-ascii?Q?/kDBl6UwbVq72vZUYBzJkRovqmgRM4e+NxU5L7dWyhvnBVPPUcMbKceX0qt1?=
+ =?us-ascii?Q?1S/mWHBxB2ZrqYvXm81iwwInG+GgHqvPityDlOB5RNpQYNMc7qoo5Cr0Ey8P?=
+ =?us-ascii?Q?578846TosT6FMmTc5DECOlCCdQAT++p0hCzSsOsR03OGo2YwuwZPCfbwgEcX?=
+ =?us-ascii?Q?wz4WzmnswmoMty3NofkgwVv/4KOFg2x3chK5TOr6gHXIlFu5gOc/z1xS52FT?=
+ =?us-ascii?Q?K9Z5TfjtmpfMyNt3d6b7DAN1lnuYUHiqwpdNtl8iB8hEpCUemgdJlC3PGLs/?=
+ =?us-ascii?Q?HiDgUVB98n6RKIL9PkzUy2Ur61mLFh6ks2tpfdqIqpAu2DD5MULrmunss4g9?=
+ =?us-ascii?Q?QosffilN574Ru5whRujhtv7+ZclCyNECH5KPjKaUO2ksTtPiucaUtQCYZpCx?=
+ =?us-ascii?Q?wPDOB+TYLzz+kc8fXQHpVq5OnFnLvqk/Pb2NknIijBZLPvo8X+DOuDfUE426?=
+ =?us-ascii?Q?ME90XpMnRzYu1t2t4zpOFznKBSaKJ45uTv0kdVBBA9jGK3NtTJlHopCUl08F?=
+ =?us-ascii?Q?xBC129cF6J1R/s0/duHyykGAo/TZ3Amo2JbBE7NFQTRQ75xlRALAxXkuUxcI?=
+ =?us-ascii?Q?mqARHIh53g=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59d6801a-69fb-4698-717e-08de49efed5d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 026f9747-ca6e-4778-3fbd-08de49f07b80
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2026 11:13:16.2491
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2026 11:17:14.7143
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OzkWK4ULGxcvsdqQpvu86Z2I/dLF4lXOY/Wu7CfRl9rl5ekP0iz6UnxnvOCxa6dJxRv5ui6igVYwvtn2QfzA5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOYP265MB2094
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z5ncxAScDvzvodTUO2GpNS0yoGZdeFciEaQSdQM7/tdmVSnczoco77462EtfewovTvb3kFuAc00dffbhh4hD7A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6062
 
-On Thu, 1 Jan 2026 16:16:02 +0800
+On Thu, 1 Jan 2026 16:16:03 +0800
 Ke Sun <sunke@kylinos.cn> wrote:
 
-> Add two pointer wrapper types (HashedPtr, RawPtr) to rust/kernel/ptr.rs
-> that correspond to C kernel's printk format specifiers %p and %px. These
-> types provide type-safe pointer formatting that matches C kernel patterns.
+> Make raw pointers (*const T, *mut T) automatically use HashedPtr when
+> formatted with {:p}, providing safe default behavior for kernel pointers.
 > 
-> These wrapper types implement core::fmt::Pointer and delegate to the
-> corresponding kernel formatting functions, enabling safe pointer
-> formatting in Rust code that prevents information leaks about kernel
-> memory layout.
+> This allows users to format raw pointers directly:
+>     pr_info!("{:p}\n", ptr);  // Automatically hashed
 > 
-> Users can explicitly use these types:
->     pr_info!("{:p}\n", HashedPtr(ptr));
+> While still allowing explicit use of wrapper types when needed:
 >     pr_info!("{:p}\n", RawPtr(ptr));
 > 
-> HashedPtr uses ptr_to_hashval() to hash pointers before printing,
-> providing the default safe behavior for kernel pointers. RawPtr prints
-> the raw address and should only be used for debugging purposes.
-> 
 > Signed-off-by: Ke Sun <sunke@kylinos.cn>
-> Suggested-by: Dirk Behme <dirk.behme@gmail.com>
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  rust/kernel/ptr.rs | 133 ++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 130 insertions(+), 3 deletions(-)
+>  rust/kernel/fmt.rs | 64 +++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 63 insertions(+), 1 deletion(-)
 > 
-> diff --git a/rust/kernel/ptr.rs b/rust/kernel/ptr.rs
-> index e3893ed04049d..77132eaaef73b 100644
-> --- a/rust/kernel/ptr.rs
-> +++ b/rust/kernel/ptr.rs
-> @@ -1,11 +1,22 @@
->  // SPDX-License-Identifier: GPL-2.0
+> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
+> index 84d634201d90a..8be185d522c01 100644
+> --- a/rust/kernel/fmt.rs
+> +++ b/rust/kernel/fmt.rs
+> @@ -6,6 +6,11 @@
 >  
->  //! Types and functions to work with pointers and addresses.
-> +//!
-> +//! This module provides wrapper types for formatting kernel pointers that correspond to the
-> +//! C kernel's printk format specifiers `%p` and `%px`.
+>  pub use core::fmt::{Arguments, Debug, Error, Formatter, Result, Write};
 >  
-> -use core::mem::align_of;
-> -use core::num::NonZero;
-> +use core::{
-> +    fmt,
-> +    fmt::Pointer,
-> +    mem::align_of,
-> +    num::NonZero, //
+> +use crate::ptr::{
+> +    HashedPtr,
+> +    RawPtr, //
 > +};
->  
-> -use crate::build_assert;
-> +use crate::{
-> +    bindings,
-> +    build_assert,
-> +    prelude::*, //
-> +};
->  
->  /// Type representing an alignment, which is always a power of two.
+> +
+>  /// Internal adapter used to route allow implementations of formatting traits for foreign types.
 >  ///
-> @@ -225,3 +236,119 @@ fn align_up(self, alignment: Alignment) -> Option<Self> {
+>  /// It is inserted automatically by the [`fmt!`] macro and is not meant to be used directly.
+> @@ -28,7 +33,64 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
 >  }
 >  
->  impl_alignable_uint!(u8, u16, u32, u64, usize);
+>  use core::fmt::{Binary, LowerExp, LowerHex, Octal, Pointer, UpperExp, UpperHex};
+> -impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, Pointer, LowerExp, UpperExp);
+> +impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, LowerExp, UpperExp);
 > +
-> +/// Placeholder string used when pointer hashing is not ready yet.
-> +const PTR_PLACEHOLDER: &str = if size_of::<*const c_void>() == 8 {
-> +    "(____ptrval____)"
-> +} else {
-> +    "(ptrval)"
-> +};
-> +
-> +/// Helper function to hash a pointer and format it.
-> +///
-> +/// Returns `Ok(())` if the hash was successfully computed and formatted,
-> +/// or the placeholder string if hashing is not ready yet.
-> +fn format_hashed_ptr(ptr: *const c_void, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +    let mut hashval: crate::ffi::c_ulong = 0;
-> +    // SAFETY: We're calling the kernel's ptr_to_hashval function which handles
-> +    // hashing. This is safe as long as ptr is a valid pointer value.
-> +    let ret = unsafe { bindings::ptr_to_hashval(ptr, &mut hashval) };
-> +
-> +    if ret != 0 {
-> +        // Hash not ready yet, print placeholder with formatting options applied
-> +        // Using `pad()` ensures width, alignment, and padding options are respected
-> +        return f.pad(PTR_PLACEHOLDER);
-> +    }
-> +
-> +    // Successfully got hash value, format it using Pointer::fmt to preserve
-> +    // formatting options (width, alignment, padding, etc.)
-> +    Pointer::fmt(&(hashval as *const c_void), f)
-
-Can you use `core::ptr::without_provenance` here?
-
-> +}
-> +
-
-> +#[repr(transparent)]
-> +#[derive(Copy, Clone)]
-> +pub struct HashedPtr<T>(pub *const T);
-> +
-> +impl<T> fmt::Pointer for HashedPtr<T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        // Handle NULL pointers - print them directly
-> +        let ptr = self.0.cast::<c_void>();
-> +        if ptr.is_null() {
-> +            return Pointer::fmt(&ptr, f);
-> +        }
-> +
-> +        format_hashed_ptr(ptr, f)
+> +// Special handling for Pointer: default to HashedPtr for raw pointers.
+> +// This overrides the default Pointer implementation for raw pointers to use hashing,
+> +// which is the safe default behavior for kernel pointers.
+> +impl<T> Pointer for Adapter<*const T> {
+> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +        let Self(ptr) = self;
+> +        Pointer::fmt(&HashedPtr(*ptr), f)
 > +    }
 > +}
->
-> ...
->
-> +#[repr(transparent)]
-> +#[derive(Copy, Clone)]
-> +pub struct RawPtr<T>(pub *const T);
 > +
-> +impl<T> fmt::Pointer for RawPtr<T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        // Directly format the raw address - no hashing or restriction.
-> +        // This corresponds to %px behavior.
-> +        Pointer::fmt(&self.0.cast::<c_void>(), f)
+> +impl<T> Pointer for Adapter<*mut T> {
+> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +        let Self(ptr) = self;
+> +        Pointer::fmt(&HashedPtr(*ptr), f)
 > +    }
 > +}
+> +
+> +// Handle references to raw pointers (needed when pointers are passed by reference in macros).
+> +impl<T> Pointer for Adapter<&*const T> {
+> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +        let Self(ptr) = self;
+> +        Pointer::fmt(&HashedPtr(**ptr), f)
+> +    }
+> +}
+> +
+> +impl<T> Pointer for Adapter<&*mut T> {
+> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +        let Self(ptr) = self;
+> +        Pointer::fmt(&HashedPtr(**ptr), f)
+> +    }
+> +}
+> +
+> +// For wrapper types that implement Pointer (like HashedPtr, RawPtr),
+> +// forward to their implementation. This allows explicit wrapper types to use their
+> +// own formatting logic instead of being converted to HashedPtr.
+> +macro_rules! impl_pointer_adapter_forward {
+> +    ($($ty:ident),* $(,)?) => {
+> +        $(
+> +            impl<T> Pointer for Adapter<$ty<T>> {
+> +                fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +                    let Self(t) = self;
+> +                    Pointer::fmt(t, f)
+> +                }
+> +            }
+> +
+> +            impl<T> Pointer for Adapter<&$ty<T>> {
+> +                fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+> +                    let Self(t) = self;
+> +                    Pointer::fmt(*t, f)
+> +                }
+> +            }
+> +        )*
+> +    };
+> +}
+> +
+> +impl_pointer_adapter_forward!(HashedPtr, RawPtr);
 
-Given these types are only for printing (and not applicable to general
-operation on pointers, I feel that these should go into `kerne::fmt` to
-stay with other formatting specific utility.
+This implementation means that nobody can implement the `Pointer` trait
+outside the kernel crate.
+
+Should we do something similar to `Display` trait and have a kernel copy
+so people can still have their custom `Pointer` implementation?
 
 Best,
 Gary
+
+>  
+>  /// A copy of [`core::fmt::Display`] that allows us to implement it for foreign types.
+>  ///
 
