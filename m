@@ -1,110 +1,164 @@
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012062.outbound.protection.outlook.com [52.101.66.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349F5EEBB
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 01:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767315861; cv=none; b=SaoWi4RkuZ6KBFO5+IL3JMAJAAHYHDsTFKOHbEjpgyLm4aBT2H7VGQl5TWa9ItfUxm930OV69hinwPQjw6x1zSy5ixSnxagRIhtbN+86PBgdGuR/sYeO9guF+gfvRf0NpWRVSvDqEZaKiOdq5qAnEoG4kohY+ivFNcsgnxCwIgQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767315861; c=relaxed/simple;
-	bh=LxvtmTgExU838dZbu3M8EpSvWJY5HTmGFhE6QKsdeqg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FX707fD9I1EoM++wRLCxQ73BLBp9RVPaFLCovzwCF2yh1PrbLpwSgc7vSI8hVMm03OrxPelmaAsMMW5gs2Fr7VYPApuKgISo4QDMw5afp4RsmG9f8Ldw0k9dptaRIM4QSejF018l+vhycjRWQnOV1VMw7WbH3FhfG+oVeuvKHR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kf6nrkJp; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F4813D53C
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 07:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767340253; cv=fail; b=p6YgsqL6wR3+ImiKu/P3If6spIoBD2UCuJcttMhbSIejp0p3X6kH2Sd74mvwZIoIrbDZZmT6gsJknzyje3Naqatkylv3X3uG0zWcupugL7QYwoMNx9ffMUjR45YyC7n8oLKDLCYiu0P1eOJ+uH7QOUoHzFhcLugIVdUrFTQdLDo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767340253; c=relaxed/simple;
+	bh=IvBzoRqO83btPJJ+G49yRKLeX0f+YxwDzWcQAyOCGRU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=YwR+GIBPH2XqCNJt2KA6jUGRjC5u4a4O03aaIaWx6GHGnWYHd2a7FAnmkzWely9th4HjUmDKis30Wk/3vHoUCSBTV4UAoug0/3jmxb1t6OSuB3NRKlqSw+H4Red0x9HsU1V4TZw6Gmgo4pFGSeu94QPzfMGQjGBZ6lyTvwe+dkA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=QCmOsAuc; arc=fail smtp.client-ip=52.101.66.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kf6nrkJp"
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-65cfbc56a29so7972883eaf.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Jan 2026 17:04:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767315859; x=1767920659; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LxvtmTgExU838dZbu3M8EpSvWJY5HTmGFhE6QKsdeqg=;
-        b=kf6nrkJpWyzYawdUhOeNoWyPbx0xauN2RHok11o/ItMQfAs4sB/yURE2pnxa84Xd7d
-         7x+gSmmwBcoLZqU2/D/2+e4dBQodL6uR1xiYlENJmYH11r/ywu2GUATFoiPysFzHvMEF
-         sfKzzhvuA6n6+d9gZEzQvgZCRlv0IhpKPVqbeN7CezYpq9blkaLgiPdtiP89jMX768qW
-         mRWGxAo2HharBMdKGGHhFtUTawLIVihrEjte+Fc0cbSWmhiUqSCZiXcvs80bziXxcNuV
-         6m73JglnKImbynzAClLN84wGWocqiF0eJMcbtSOcwft5XWQ3rYWd0SrsPJXJYkOOFJbh
-         Jhzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767315859; x=1767920659;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LxvtmTgExU838dZbu3M8EpSvWJY5HTmGFhE6QKsdeqg=;
-        b=c6iLozY+ByRUnsUbDtm7NYaqkNsbj52STs6c05EeE4QDJZ4brJrPXjWzXoxmhW3YL4
-         mevArKhyJ+sMXB7vcwRSV+l0mlLe8YN1TvLM9rhE4ps7bZDhrPc0qlrCVjNI3tZ+HHM1
-         bNw4hPPLZmDTIQfdg3oFR4Fy8YYhnsfISX4mc6Y+ZkssX5Xjg6JcpbVMrfjQiLr5OZfN
-         K1zSn7MdV0YSeM2tnmOuGHUVckC/OGJAcgo7dQPW94258Uyh/Z7nrTmOq/HdtUgzLyK9
-         Ajv2JbZ8PvzAdMdjxJm4OnAOEHoUVwTMcLTJVl7QsXz3q1NM5Lcmlly185R5ayq2d/lg
-         vK5A==
-X-Forwarded-Encrypted: i=1; AJvYcCVcikzKEFojgDp04D6LD6raHm4rHh9ONAchWqrAG5RmnPbwPpwfTxKkwIQUCIvj1oL2lQC8fXybNBX0yKzV0A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwG06wQ7HeveMR6N+SfdXNPsBBb849CZNqlawI7Fgbeen7NLMwW
-	oOul/lenOgrPX647x53h0eSfB8fYZtmAeEAsLWK+G4HCo89INLfwQHw3WuRmlirnHMN98Mf7L2u
-	/vbA+5J1nUGoqjCYjXpI/6jqnu8SUJsE=
-X-Gm-Gg: AY/fxX52K8KzDD/S0nJ0qMby/gE8+zrfL7cLZt/qe2T2Eayhq2qTmTxPz1u9Pbicxtx
-	zc6ULnbGLzke7Qri/FO4sv7cbHBY14kWrbi4VZ4xntt+Kt1HzKZarvNYcBMIHtZxuEJ4w5jbEob
-	g2J9YAZAPF60iDmiM/U/3aDIygDVSfthDoQiIs3VhuPVjqG824Vsz+PEafuXC04snTVgftBVLEj
-	ok51QI6xGxWMZAeRI4A1X8rrU0LRmEhLd3oO/MLmnX3xDZxy4+5EtoylLG9AEt/XD0/A5Q=
-X-Google-Smtp-Source: AGHT+IEXStn+3DV26KfQhODgMqvpdlTgT2wVksyL6lKPpgkd0LgtAlF62/MtHk5q/xiyCl4OKtEQsFjfMSzEHn6AKE4=
-X-Received: by 2002:a05:6820:168c:b0:65b:35fe:4323 with SMTP id
- 006d021491bc7-65d0eae1f60mr18434953eaf.67.1767315859063; Thu, 01 Jan 2026
- 17:04:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="QCmOsAuc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TLqbjcEO0bz2/w4ZFBcCAyDARdzfOTv4w8kOtDaDii34VxRh9uexNyfFD07Vy1apcknfOrvdFl4tLRG22tLfWv29aYLVJmBdW86WKz26WjP3rJWekF8at/SlOkWmD1q1rnZrytnNsllcDgW62Vdq9FherHha5lZ1GU5sl2gRCfbvsIkQjFunexY/2Du2/rCjzqqd0KDVsWkR82VCukdtVzkn7m8sKDb/4y/HAJ9yz4P3eP2NoDLCw2vMZDxoYW3HOg48MCPYvPklzhWgYdSyqvpvi1OBitbbs9klPZZ1V48m04h5ePiTyDWlbj2hEelf5yHmiIkFbHrdL5s4dJ+Nng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kVhpaIj841ghLqkq6Iv5VJblXdvnClYgpV9yFXvYb5s=;
+ b=pq+zhPpE2dFVpR36yL/DnXSzc8mvUwynHBC9hwYFOe2QD8Nn1yvmBxYaB1hY8b/F8aENqw1Kt17Sun1701qUn91jivGFsGweAHc9F7dCjy3BX6Bva95fT31ClzLhUW9d05AxjlqoJjl0uZ3tHSXESJY8tybuCFJWSXH042PoXekyequZhJR0LFq1TjQr/CwQ/hrkNzgg2hxNMDUqMbWjJBKu3Nlu1QcqmciD4AsHilVAr4GCoaXmZ/ZzhE6ql98Eh4O/AWpUrZiSmlQg1BZztTpboymEYyaEU+iEgLZUbChudHWu5EL+s1HVv0Kp1u2yMLjTOUY+T4XjU/lfGN7lGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kVhpaIj841ghLqkq6Iv5VJblXdvnClYgpV9yFXvYb5s=;
+ b=QCmOsAucTFrQTT/MBk5SQW6PMG++AjV8dVZLkxz+9W+2AKEBlamPOYNB1uv+JC5DChiwJ+m1Pi6OKd0jbMvd+yZsVEoAGekZzGEHNnpgjAt+5gKchjY3Z2BM0UzqluTYIb4EL1fn+dWip5ZcqkfcZEjUCyA8uTVMoDrMsLYK2gvxEgrBLmv7MWrZ2YvvE3Kb9V1De1DSASRRb13iKrQYIpcBpzoQWVyQp6791xM/p2L/AB3w2YhvY1C15Q1bk+gxiZKZhdE8UTTQuBQVHPvuYXa1xpu7laxRgS9O61bCWmXtcZ2XRBhDaGBo/eSPzoXyRfAyE6KefXbgNPPa9hHe7Q==
+Received: from DUZPR01CA0240.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b5::8) by GV1PR10MB6148.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:150:97::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.14; Fri, 2 Jan
+ 2026 07:49:30 +0000
+Received: from DB1PEPF000509FA.eurprd03.prod.outlook.com
+ (2603:10a6:10:4b5:cafe::70) by DUZPR01CA0240.outlook.office365.com
+ (2603:10a6:10:4b5::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9478.4 via Frontend Transport; Fri, 2
+ Jan 2026 07:49:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DB1PEPF000509FA.mail.protection.outlook.com (10.167.242.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9478.4 via Frontend Transport; Fri, 2 Jan 2026 07:49:29 +0000
+Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Fri, 2 Jan
+ 2026 08:49:18 +0100
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Fri, 2 Jan
+ 2026 08:49:17 +0100
+Message-ID: <681cca30-70a2-440d-afa6-b20aa3c4405b@de.bosch.com>
+Date: Fri, 2 Jan 2026 08:49:11 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260101-rust-project-reduce-size-v1-1-4cd66e9e02d9@gmail.com> <20260101220903.0c099099.gary@garyguo.net>
-In-Reply-To: <20260101220903.0c099099.gary@garyguo.net>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Fri, 2 Jan 2026 10:04:08 +0900
-X-Gm-Features: AQt7F2qSe0GXFXUOYAJfbZ-_oS5K6WwhDJH5NZyAUkA43PdDaBERUQ6zVq_3wzE
-Message-ID: <CA+tqQ4JF_ZO63U4GiSb6+Ym=m=81kN81xr8Q2q3qypYfYQinxw@mail.gmail.com>
-Subject: Re: [PATCH] scripts: generate_rust_analyzer: reduce the output file size
-To: Gary Guo <gary@garyguo.net>
-Cc: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v1 1/2] rust: dma: fix broken intra-doc links
+To: Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
+	<fujita.tomonori@gmail.com>
+CC: <dirk.behme@gmail.com>, <gregkh@linuxfoundation.org>, <ojeda@kernel.org>,
+	<rafael@kernel.org>, <aliceryhl@google.com>, <a.hindborg@kernel.org>,
+	<abdiel.janulgue@gmail.com>, <bjorn3_gh@protonmail.com>,
+	<boqun.feng@gmail.com>, <daniel.almeida@collabora.com>, <gary@garyguo.net>,
+	<lossin@kernel.org>, <robin.murphy@arm.com>, <tmgross@umich.edu>,
+	<rust-for-linux@vger.kernel.org>
+References: <20251231045728.1912024-1-fujita.tomonori@gmail.com>
+ <2ee56a65-c618-43a5-a050-231a3ebaf3be@gmail.com>
+ <20251231.180738.11732647006485259.fujita.tomonori@gmail.com>
+ <DFCJ9H2RQ63G.1VDGWHYJ4SYVE@kernel.org>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <DFCJ9H2RQ63G.1VDGWHYJ4SYVE@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB1PEPF000509FA:EE_|GV1PR10MB6148:EE_
+X-MS-Office365-Filtering-Correlation-Id: 721e7e08-10a0-47d5-067c-08de49d37602
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cVJUWUtDdjZOL2xOT1dCejdIMGpOQXVKM05KczJpREhhN1VoVS9rbG5YY2Iv?=
+ =?utf-8?B?dFRBamI5NW45MU5vaGZLOVlaRmdsLzBEa2lvSHBzRXY5RThrOTZ4VThNaEg3?=
+ =?utf-8?B?aGJScGs5QzlWejA0dTJTRzZ6cHA1QW1RS2lmdEp5Vzh3YVdGcWhCUXdQMVhO?=
+ =?utf-8?B?aklsdG5Gb3B6cWJZd3FUakRLaGorN2xHbVZsSnZlT0kycW1KVlkzNGVLckVh?=
+ =?utf-8?B?c0NyV0tZK2hpaTFNY1ZGZGswSUx0OUNoTTRPUnBPSzh6ejE2RENXZzViYmpj?=
+ =?utf-8?B?Tk4yVkVhVDJqL3Njb3pKajRYRVRpV3Z3b1dnTENjcGdUUjd2SUVrajVoYVhS?=
+ =?utf-8?B?cldGNHdKOWRpVE5yS09aWWY1anRMY3hyQllxMk9mZW1URy82aGg4ck1vZ2I3?=
+ =?utf-8?B?YWVVVEVxeFVzbXloKzh5djc4eUNwK2RxR2lOUXd2aDVRT3VOb2I1Smlnb3lh?=
+ =?utf-8?B?dXA4VHl0dGRMZ05OUEV3czlxbis4Q3hscTcxNjR5V3ZUdXZCOVVnbzNSWGJW?=
+ =?utf-8?B?WXBYWjZ3QUlTdis2ekdUaEpxMUc0SDYrWXdwT1BiWEs0aHlqRmFaMWp3VTNl?=
+ =?utf-8?B?ODVTTm5QYUtMR21scFdmUlprdWUyckZxZldhRE5YZUFIZUxoaE5PamwyQUda?=
+ =?utf-8?B?c0JFclpRdzFXbXQ5S2hWY2cweTU1YS9jbUY4bzB6SmIwc2kxdGo5b1hPREpv?=
+ =?utf-8?B?NUU0Q21NZGRsNjN3VEJFWFFmSXI1ZldtakpkanllYWhNdk5aNENhUmthNElZ?=
+ =?utf-8?B?c3BScGM5aFFIRGtDVVNZaElDWElXSWRVMlkzNmZESFhXdXQ5VzU0Uktid3l2?=
+ =?utf-8?B?SUhNQUh4b3Vtb1lGS3lkdW1DMWJScDhmV3JyRHFpanYwR0Q3R2grZzV1bXJC?=
+ =?utf-8?B?UFE3dDd5SDhYeG82YzJ1bjVOSk9IZG01SHFsRThZQUd2YmNpSFBmUFd0NXFp?=
+ =?utf-8?B?dUwzTGtyK0o0S1FlTlovbTFCY1JRcDdRU0xMRmNKZlZWOWZ2eEU4KzFqOTRG?=
+ =?utf-8?B?KzdSR2lOSVNWblFFcE50WUN3KzM4YzczMEU0cW5FRXBlYmhINTE3YlgxSzBi?=
+ =?utf-8?B?eFpaTnlpeUtCZk5qZnhMSDl5d2dGYXZaOFlwYmVZbGlBSmUxKzBlTFdLaGJ4?=
+ =?utf-8?B?L01IV3hEaXBKN0FGS09pMnBEcVBqaTJodFcyRWg4OThiczlmeHhnWVNhanUw?=
+ =?utf-8?B?RFJnbVYyS0Jxb2NhY2JraUhrQ2tCQU96b2hFb01Cd0ZtT1YrWS9YN2pEN0xi?=
+ =?utf-8?B?Wkx0eHpFNjU3eXkvNXFKZGx4YTc1c25obXJsZGtoN2ZVbytoSU9LTDVaYmZ0?=
+ =?utf-8?B?Y2EzTjFtT25kOUg3Ykx4RkVKNmJKcXJhN3NVbUVXTkRpWUpGcXByNTZHM1Jq?=
+ =?utf-8?B?M3lxN3BZWUtYcEFqQzRKVHdDWGpRNHMrMzQzZ3dwZzlyQTlobEorcWJIMnZG?=
+ =?utf-8?B?WWFUMlg5d0x1OGpzL2ZKVTJXUmZGYnJWZHZjUEdtakpSbW5hVCs2M3piaEU4?=
+ =?utf-8?B?QXF2OXh1V3lYRUZyaXFIUEpEUlp6V3psNjVzUFVpWTY1SUlDR3dyRVN2UTJB?=
+ =?utf-8?B?L2VFZnlheGFMWnBjV21TVytMS3ZKMFpvNnA4Z2xGcXlDVnpXb2hJUytVd0hM?=
+ =?utf-8?B?V0F6VmZNRm5DbUtmWEFQL2RpRTZMQm9aQTZKTnVHWEVJdkNJU1BYdnNEbFdi?=
+ =?utf-8?B?WTJYUmxsUi9XRllJT3lVOUQ3YUhQdlVtdlpJVnh0ZjZtNFA4cDFrVElUZnFy?=
+ =?utf-8?B?dXNRYmxZVE52MGJJbDR2RDJodzBXMjN0RG1TQTlPekhxbWJhZlZnMms0dVVV?=
+ =?utf-8?B?alk1V1hmMGVLTytqKzB1R3hLc2k4ZjlwdnpYN2Z3ZWwrVElKclVYU3ZWN0lP?=
+ =?utf-8?B?RjQ5dDVvd3pyOXNQY2JFMDlzeEQvYW1Ma09UYTFNN3JzT3pFWlh2L0EzT04z?=
+ =?utf-8?B?WVJkOUhTOVAwKzhHZkN6U0pXWDd5Q3JMTXpBRE9rY0tKakZER1ZOdmRlTHg4?=
+ =?utf-8?B?RnNXQW5rTWJIN2k2Q2pFZWxlUVJNaTlNSHNSYjZFQ2dBOGw5NlNRbHZkVEEv?=
+ =?utf-8?B?TGRVcC92SWM5Z3JJZW80bVo4dCtNWXh5eVY4NWZndFFIOUF3bkFqQm5HNnhu?=
+ =?utf-8?Q?XxMQ=3D?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2026 07:49:29.8895
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 721e7e08-10a0-47d5-067c-08de49d37602
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509FA.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR10MB6148
 
-On Fri, Jan 2, 2026 at 7:09=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
->
-> On Thu, 01 Jan 2026 08:21:24 +0000
-> Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org> wrote:
->
-> > From: Jesung Yang <y.j3ms.n@gmail.com>
-> >
-> > Use the `cfg_groups` field to aggregate common configurations into a
-> > single project-level definition. This avoids repeating identical `cfg`s
-> > across crates.
-> >
-> > As a result, the size of the generated `rust-project.json` is reduced
-> > from 11MiB to 406KiB (about 96% reduction).
->
-> This feature is not available with Rust Analyzer 1.78.
+On 31/12/2025 17:13, Danilo Krummrich wrote:
+> On Wed Dec 31, 2025 at 10:07 AM CET, FUJITA Tomonori wrote:
+>> Danilo, would you prefer that I send a revised patches or will you fix
+>> them when applying?
+> 
+> I can fix it up when applying the patches, no need to resend for this.
 
-I suspect you are referring to the rust-analyzer component shipped via
-rustup when the 1.78 toolchain is active.
+With the typos fixed while applying:
 
-Do we apply our MSRV policy to rust-analyzer as well? The latest
-rust-analyzer release supports older Rust versions, including 1.78. In
-practice, I believe many people who rely on a language server use the
-version provided by their editor extension or IDE, which is usually the
-most recent release. AFAIK, it is actually more difficult to use an old
-release of rust-analyzer, as it often requires extra setup to manually
-downgrade or pin the version.
+Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-By the way, thanks for pointing this out!
+Same for second patch 2/2.
 
-Best regards,
-Jesung
+Thanks!
+
+Dirk
