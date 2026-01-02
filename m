@@ -1,152 +1,183 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359584A21
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 18:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767379230; cv=pass; b=ZA60cwxwTnY3kgSuOY8iwZv6tDQwhu2sTwKcBOePRW6q5m2gKt12B2rdwd7pfCbMUSHlNN9Iceh4wPrurF+Vn+0lGxNto+cBZ7u3rAgMLPbQSwP4Rap2bgFAdoQZI4fVahlh254+lCGcPoy7bNQ8J2YKySnUkF7Y7USebdD47n0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767379230; c=relaxed/simple;
-	bh=g5sHQkVrKOsKroO8ZxN4MIgW5nbWecrAIkpz6JGIwjo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bo2e6qm7u3CjDC20Rub8iNU9Mhrwa0DKCjaJUZpatkjnIjn5znEjUj1ky3QzmRw/J2VQPdw4MUTZlpQerin7JIv8jPsNb6pbUNYNWBCzarUCOXpLJVIIk90v/syJih32DTrsT9qqiSMnGdNU/p3ghcg5zPQI0b7mH+piZCGfmoo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hdgZJsYE; arc=pass smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7EA1EEA49
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 18:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767379828; cv=none; b=dISVxhXZsz8CGjfWwsOVXtdb927TcRGEEKS7OFUF5FsVT8I+9bldUbua+uNplJR/3jYK4EJA+QMPJilu3R6N6/U2AhAvX0BnNmOUyBqaZcOd4FBKjFZg2isNSEqdHF+WetsGXdqVBn7slPl38M+ENHOWyi747bfkeppIOWa8nPQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767379828; c=relaxed/simple;
+	bh=tbXgEu1CGVMELXT+sAY7gYlI9SdfKhqR7p9leaet3xY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qRwdNF0bXnSabcRfbnMCMFHOIAHknPHL4c14ObLZhEwh1OAyI9SCacmk4YmoapK3HbJHr/hYirb6D3uyhHXKz76rUadqlmG3mhq49vC0QEHdjn/Er/OfYfKQn/zMWZ5UDLzIiLFuZeSFqOCUl7DbAHgu6fkZmry0/zQvdl2/tlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cIMS0ghP; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hdgZJsYE"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64b72793544so539a12.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 10:40:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767379227; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dCq7LsUXwycqzd7aPhOSak4h8HpOo+oL+knTX9Bukf404frin1Eszq9Wn89zWu9C4U
-         JlWj1bcOdq/cK8kDyI+m2+wLS5Q12Fj2X9UTUNUl+rVEYcaK3OHCeeXhqqJdQS07Qfl9
-         gENcI6fxFmKYIw4E4/IXAndEFX/QzVbcxVDYCDn4nGo1i4/cjqeWmVsC7t7c8oOToJuA
-         j4nf+sjpCOf7Ddm+TNey+IJFm/uwXg5ilnWkLkndTHXZPxx/k1XNy6j4MRRpS67g+e0o
-         Pg75Lovd/hJiTpSG0Eutw+U3FONDvw9ItBYgldEfId7EuuXmY3r3yceowXx5BXeuGRT9
-         48dg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=g5sHQkVrKOsKroO8ZxN4MIgW5nbWecrAIkpz6JGIwjo=;
-        fh=WFG8XKFOoebevzI1AAJSwx5+RDAfHXn61bmQRUh9vBY=;
-        b=X3KO4q05n+mTsccYo1nQN9hmKS9CrnEM5b4qB7MDEgfYhlH1YjIKACSkYbkxE0L8By
-         uILGT/aRXV0NzyUuIznK1dTx+qAew+381hZMDVp22CSbQTUAEXBBRCHbDR9AHWS53bz2
-         eSEUyTGksLE6Z84YaMH12/c3W2k/n7n+bYwRqYsNLSatCv6217z4qxlXrdixK7XnDD2v
-         Rjy5qzWlLooz6fVbNG750A++QDAymB4xFvNLU3ImuBPKMDrBgf79mI4OW4mptDIQQB/N
-         2uYIeDONfitXgR8tt5jCGP45whhtQ4E3OdMCYZGeqXNLQ1Mi1OZa0eXrnWdH7HPdAG96
-         BaDQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cIMS0ghP"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a13cd9a784so123896735ad.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 10:50:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767379227; x=1767984027; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g5sHQkVrKOsKroO8ZxN4MIgW5nbWecrAIkpz6JGIwjo=;
-        b=hdgZJsYE2E7NCwu1rFWkeRy05FO3Jznm2PWcWQQY6KLms7Tdvdzwsnmb8e8A94IZmD
-         vOh4+1lGynA0MGBQMz2BIqoLI4nCffUXILo+RfsqNYO0cF1qkl0XyFCWlfS9QiFats3U
-         OqJw19SRnmERj8OEpCGdSykcBmu7Cy8vICjsomLrj68yYDBGFs2xKYyTZrWc6Hn3VEHR
-         R0glNc+mVd0t+z/ORoPjsTZZ7DwIuMFGBsz6ubbuqvDTFVPwwOvTJ5xkCzyeamKSGWvV
-         mmlIVWHEFhDVFGmA/y3wymrk8KZ+uMhFERwgpHVjUtdz+edVoNaT38v3wfsCGGLXaTXk
-         W2Lw==
+        d=google.com; s=20230601; t=1767379826; x=1767984626; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AVVgUyYViZy2aFq6HMaA+Bn/NQsNeCTXO3hsv0gF8+k=;
+        b=cIMS0ghPUV4BdyPDHlGg1VgLhB7lt7pNRthFpQOFTn6IFBLnklY6Q9CpLuG3RvsyeQ
+         XxvOlLNKiAxfvmd7W1zMJhFJaLfqJhhaEVlLQdkDJvzTpxpCyWgWCHxGm0JUUE4wDNQK
+         QPZfX0KK5EUAHNY1+Twd3NurcB1Rod6juo8m1Kxt912T1bG+NPshX0wdw1vCNspGuGLg
+         X2ZTn8fu2f/j42WL4OwHqk6LjwRIwKNr0KwFsvitDE9XGwof8wPoTxbv/ta/QjlHseYm
+         qCK23697D85qjotok6wlTGS3YYU0Pa24YdS7RaFew7aQLDF0K6yd572AoTs3tNlxDja1
+         9iNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767379227; x=1767984027;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=g5sHQkVrKOsKroO8ZxN4MIgW5nbWecrAIkpz6JGIwjo=;
-        b=bAcUoBwIOt8d+ikN85J81sKVQjiVc1vj6dBcouJ5gFYR4KZgJ9IukgNQ4Zqa2mT5eB
-         2JY51h3nVqfyhAGp98Fjaa5PG/T0sHY1X2RYZgzvN15LsqQGz/2bMyb+j5hzif3fr31C
-         R9jP6KGJU2S7uWApQ00jOXRlGchH4BZ57jq8s+2EM95urNa2bclduMXt9A//bOMOIACy
-         WzB7BRci3nQRlF3Op7nNYK4IHz2cBUVHoUZHHQ6vWxdm3F61zhMY1FzATTRhp0X33YZ0
-         5u7OO6WLVmu5kLY1wPBONC6HlnR4RzPP6RVSi8F0fWk95dpOt2mdfHGXwWhGmo+s8SvW
-         e3fg==
-X-Forwarded-Encrypted: i=1; AJvYcCW0AmfAKKggxcOJhQYhfsZqCok/BAMOQOYI19C+mqTp9GzqGpQZEAFLos52TvfS81H5Vc4UtuuXTNSZQxnbcw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YztC0SuhGSSV0F4Jw/HAHlw9qQ/AO+Lmtm258APKZBZMKuv+3Fh
-	Ko/oK44Qh3edIF+q48RoXKdr+U/xu3d2CPAmnLUNXraIviCoiMgZb1Z1uSZvtKMoNrymaMUvPt2
-	RCP7Edir2L7SPKGPb1xrwmjcAJW2ZDDzDK7QkxULS
-X-Gm-Gg: AY/fxX4fRdpAgLIjsxykjp6VQPbaKeQpMmLazCqzi6XTun7TS0h34QXyckMXogef7WH
-	DvG1DTshRVHq5AmYe5LZXDasdFWt6/lONTY5vo/injVY7+rSLONOkFkVW7H66jbzxByQ4CdpEv0
-	l2dUYuKsxtsu3xuykuenMhu4CXwIcEel0kz0oVeFKD/BaOX5XtBnYzTX6iVQ0Pfbrrj1Mur56YI
-	zRAWymm4Onfe5NwsnSdq2DHpFgdqjsiNoCy9z5409XBkLKMDsNBPeUKC//f08xAeonzLENzmvl4
-	1y1cuEjK30GriFxKHr0iJoawSQ==
-X-Google-Smtp-Source: AGHT+IGBt7cDhjrnIqZEjatfwjZ501AgsttwfnxWdmgQoGcR4rtQr8UTgkpD92PT9cLinzIkTLYenNB0EkBn8MPjCPg=
-X-Received: by 2002:a05:6402:5345:20b0:649:9266:5c68 with SMTP id
- 4fb4d7f45d1cf-64fdab57dc2mr1995a12.4.1767379227335; Fri, 02 Jan 2026 10:40:27
- -0800 (PST)
+        d=1e100.net; s=20230601; t=1767379826; x=1767984626;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AVVgUyYViZy2aFq6HMaA+Bn/NQsNeCTXO3hsv0gF8+k=;
+        b=i8jzzlTcM/32dDe57wxGfoQejnbViWRjIx+cgc0NiZ3DenXR8GtY49PjaYxpL/9EiE
+         ZnZu+AuWbCEXY+TzipObmvsWLWkUVqOTWZ6IiTt3zLWuPRO8uJwgs+fnNE0qDlJSkXG4
+         8croCghzva/z0Os8gQ35XSiClCsACsruc4P0Xo/hYu+OaQNdZAegaCKF8Wo7gWVHY5Om
+         iyJV0pWmOrnv2TbY9kDtKEFSl1fieU2C4Lre/odLWnP/yj/aA/ZUMdttM6ztCTFwIaq6
+         EHUKHjg/clZhKHAz6xRFWrRasXSl2hXeO+/l018hDLzWr18rHa5RtNWTqwxuP+4/xLmU
+         K8fg==
+X-Forwarded-Encrypted: i=1; AJvYcCXHyrcPx5I6xlWr7Z8VCl4O9B2dHjx4fQDlxM4dQJw3ln8M8A26SWQjjPy0nGm0C9X5t48dJG90wkt+j04SRg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJg2BeVENKNsMWb4PfJ8oBmbdb0fn+oL/Cf8WsngfD8VAlG7ow
+	BQ1zYqVq4BmE/z/yDkyBDgzGA2uorjS1/6IbMGNn8yJL1/Odq/q/+Pi7S8ciBndfn/dgjBja1Ig
+	SjnfEb9mXTQ==
+X-Google-Smtp-Source: AGHT+IFHWICJBMNmkNQEYiRf3vmVdOcqomny8CWyYGlXlrBD58lDkzykSuqsADE5s4aKyS/efRM5JuiSSeb+
+X-Received: from dlbto10.prod.google.com ([2002:a05:7022:3b0a:b0:121:7a50:e97b])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:701b:2714:b0:11d:fc4a:c4f7
+ with SMTP id a92af1059eb24-121721aac57mr29552242c88.4.1767379825882; Fri, 02
+ Jan 2026 10:50:25 -0800 (PST)
+Date: Fri, 02 Jan 2026 18:50:16 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251230-add-entropy-v4-1-fa9485b6d372@google.com>
- <aVUbqo4wS7_47wmt@zx2c4.com> <CANiq72nuK09czKyhZJCy-LLpH5UZ0iB8SBmEMfXDVNu23gybxA@mail.gmail.com>
-In-Reply-To: <CANiq72nuK09czKyhZJCy-LLpH5UZ0iB8SBmEMfXDVNu23gybxA@mail.gmail.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAGcTWGkC/2XMTQ6CMBCG4auYrq3pTP/AlfcwLgodsIlSUgzRE
+ O5u0Q3o8pvJ805soBRoYMfdxBKNYQixy0Pvd6y+uq4lHnzeDAVqEFhy5z2n7pFi/+KNtgRIFQE
+ IlkWfqAnPT+18yfsahkdMr098hOX67SDgpjMCB05WOA9VXdZGn9oY2xsd6nhnS2jENTZbjBkrX xjT5K+y6g/LFcYfLDN2UilRoHTC+j+sVliKLVYZN65Uha6MlxY3eJ7nN2L7YVpeAQAA
+X-Change-Id: 20251029-add-entropy-f57e12ebe110
+X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767379824; l=3997;
+ i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
+ bh=tbXgEu1CGVMELXT+sAY7gYlI9SdfKhqR7p9leaet3xY=; b=cURilOuOWCzC/5mhpulk9XqsD40RZsqg97MFxpZtnJUp1x8c28yyCgJ8aLXAdCF7LMJS/KO1q
+ jfY0soO06ReAj8QmM2DHCtsxTjHmIoVZzmgZkB8b9hkiPPgWKVQayxL
+X-Mailer: b4 0.14.2
+Message-ID: <20260102-add-entropy-v5-1-6b38a7a4a9ee@google.com>
+Subject: [PATCH v5] rust: Add support for feeding entropy to randomness pool
 From: Matthew Maurer <mmaurer@google.com>
-Date: Fri, 2 Jan 2026 10:40:16 -0800
-X-Gm-Features: AQt7F2oXRitop1uXNzBFoaRTu2UUqwDiFBKmpa0jSKPshUsRF2utcHIjjnE5uzs
-Message-ID: <CAGSQo00_t12z6rWStV3R0kNKFk-oa=dKWO+iw-2_fBWntvJRHg@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: Add support for feeding entropy to randomness pool
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>, tytso@mit.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>, 
+	"Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Alexandre Courbot <acourbot@nvidia.com>, Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Dec 31, 2025 at 7:46=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Wed, Dec 31, 2025 at 1:48=E2=80=AFPM Jason A. Donenfeld <Jason@zx2c4.c=
-om> wrote:
-> >
-> > Thanks for CCing me Miguel. I find it strange that it was left out on
-> > apparently 4 revisions of it. Yes, this should be added to the
-> > MAINTAINER's normal rng section. I'm happy to maintain this.
+Adds just enough support to allow device drivers to feed entropy to the
+central pool.
 
-Apologies for that, it's my mistake.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+---
+This adds bindings for `add_device_randomness` to enable the conversion
+of `qcom-socinfo` to Rust [1].
 
->> Small nit: There are two existing comments in the C source (one of which
->> I know you know about because your text is almost that text). Why not
->> just use those verbatim? Or improve those and sync that to here? I'm not
->> a big fan of bifurcation.
+I'm trying to land it separately because it's much simpler and likely
+usable by others. The conversation around this code is also likely to be
+very different than the conversation about the socinfo driver.
 
-It does not need to be different. I'll use it verbatim in the next revision=
-.
+[1]: https://lore.kernel.org/all/20251213-qcom-socinfo-v1-1-5daa7f5f2a85@google.com/
+---
+Changes in v5:
+- Add wrapper to the randomness driver MAINTAINERS section
+- Replace detailed docs with an identical copy of the C code comment.
+  (The short docs remain, and the C comment had the one function name
+  linkified.)
+- Link to v4: https://lore.kernel.org/r/20251230-add-entropy-v4-1-fa9485b6d372@google.com
 
->
-> You're welcome, and thanks for the quick reply!
->
-> > Bigger question, perhaps for Miguel: what's the convention for adding
-> > these bindings? Is it, (A) "this is a useful API surface, so let's add =
-the
-> > functions so driver writers can use them later" or is it (B) "add usefu=
-l
-> > APIs as they're needed by driver writers"?
->
-> We follow the usual kernel practice, so (B), though sometimes a user
-> is known to be incoming, so it gets added in a separate series for
-> convenience or similar.
->
-> But, yeah, in such a case, it should be agreed upon / explained where
-> it is supposed to be used, and the cover letter here should do that
-> (and you are completely right to ask!).
+Changes in v4:
+- Adjusted documentation phrasing.
+- Renamed module from `rand` to `random` to be more in line with the
+  header name.
+- Link to v3: https://lore.kernel.org/r/20251226-add-entropy-v3-1-a3440823a07d@google.com
 
-I'll add it to the cover letter in the next revision, but for now, the
-use case is a re-implementation of the qcom-socinfo driver[1] (still
-undergoing significant revision) which uses it to deliver the contents
-of the SoC info buffer (which notably includes the device serial
-number) to the entropy pool.
+Changes in v3:
+- Fixed doclink to be srctree-based instead of relative.
+- Switched to prelude import instead of fine-grained imports.
+- Link to v2: https://lore.kernel.org/r/20251216-add-entropy-v2-1-4d866f251474@google.com
 
-[1]: https://lore.kernel.org/all/20251213-qcom-socinfo-v1-1-5daa7f5f2a85@go=
-ogle.com/
+Changes in v2:
+- Added more details in the docs about the API, specifically about it
+  not crediting entropy and when it ought to be used.
+- Link to v1: https://lore.kernel.org/r/20251212-add-entropy-v1-1-e70ad1bc9c65@google.com
+---
+ MAINTAINERS           |  1 +
+ rust/kernel/lib.rs    |  1 +
+ rust/kernel/random.rs | 21 +++++++++++++++++++++
+ 3 files changed, 23 insertions(+)
 
->
-> Cheers,
-> Miguel
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c5a7cda26c600e49c7ab0d547306d3281333f672..72b912c0bc068d2a304bc8eb1cd080ba9bcdd9c5 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -21751,6 +21751,7 @@ F:	drivers/char/random.c
+ F:	include/linux/random.h
+ F:	include/uapi/linux/random.h
+ F:	drivers/virt/vmgenid.c
++F:	rust/kernel/random.rs
+ N:	^.*/vdso/[^/]*getrandom[^/]+$
+ 
+ RAPIDIO SUBSYSTEM
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index f812cf12004286962985a068665443dc22c389a2..c82e6747043e2472d6b5e4d9043fa8bc6d3c8434 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -130,6 +130,7 @@
+ pub mod ptr;
+ #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
+ pub mod pwm;
++pub mod random;
+ pub mod rbtree;
+ pub mod regulator;
+ pub mod revocable;
+diff --git a/rust/kernel/random.rs b/rust/kernel/random.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..3bffe07f5837fc5d9ff5b1959247d9028d45fd44
+--- /dev/null
++++ b/rust/kernel/random.rs
+@@ -0,0 +1,21 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Randomness.
++//!
++//! C header: [`include/linux/random.h`](srctree/include/linux/random.h)
++
++use crate::prelude::*;
++
++/// Adds the given buffer to the entropy pool, but does not credit any entropy.
++///
++/// [`add_device_randomness`] adds data to the input pool that
++/// is likely to differ between two devices (or possibly even per boot).
++/// This would be things like MAC addresses or serial numbers, or the
++/// read-out of the RTC. This does *not* credit any actual entropy to
++/// the pool, but it initializes the pool to different values for devices
++/// that might otherwise be identical and have very little entropy
++/// available to them (particularly common in the embedded world).
++pub fn add_device_randomness(buf: &[u8]) {
++    // SAFETY: We just need the pointer to be valid for the length, which a slice provides.
++    unsafe { bindings::add_device_randomness(buf.as_ptr().cast::<c_void>(), buf.len()) };
++}
+
+---
+base-commit: 008d3547aae5bc86fac3eda317489169c3fda112
+change-id: 20251029-add-entropy-f57e12ebe110
+
+Best regards,
+-- 
+Matthew Maurer <mmaurer@google.com>
+
