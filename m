@@ -1,36 +1,37 @@
-Received: from forward206a.mail.yandex.net (forward206a.mail.yandex.net [178.154.239.87])
+Received: from forward205a.mail.yandex.net (forward205a.mail.yandex.net [178.154.239.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C22C1A316E;
-	Fri,  2 Jan 2026 18:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6A442049;
+	Fri,  2 Jan 2026 18:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767376832; cv=none; b=Vec9gNRs3De6y+DW5NCFGfE/NZZsqZaMtANZQvV53SrwHi0Jd6iPgB7DG94cQ5uGLKWiA3w4bOZoF87I5ETNyhskFC9EqVGe45kUQ9V/6iXuquEroaaCgbdespWEh+NtS0oauXUWRV0Z2qNNJFr5F+BMf0/3HQ5wV07+2LdoNlA=
+	t=1767376856; cv=none; b=nqABzmd+HyNkeMwZ+A2Pous61cBx+Awb+88Dg781NBiAvUkVXaTByDLqXDIiM+ebTLAL2VsvC5x0bn4IZTbkTSye/+7bB5s3v09PPiHY/k4aVQeRhYgVgZ1JnEKEfFC9uUU4VA5k0wSeo/NxG0GdwODVy10uG7YJn5D7Te2MNRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767376832; c=relaxed/simple;
-	bh=58tzAmr+tg32D7gg3zm6s9EYb3+Sa/N0mwWKEa3gUKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QD/alsl8QaVVkeSuVFVvcdm5klkB6ONckQJSWfeu6ytesXkHAt55eqU2NJ9vjFp/kLT6ZejmLPN5906HoCnDrG5beBL6u3mgi4OvoCrBco0HbjwPBoPKXQuHpMQeC3d7BrflsluCsDKO5vhG1d/KBG1fGmXz/GYz8QQH3uvYWvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=J6Wkb/wa; arc=none smtp.client-ip=178.154.239.87
+	s=arc-20240116; t=1767376856; c=relaxed/simple;
+	bh=2EVSplVnK7R0RFPqc62S106ZcYBEfbsD9zMBWMzUI8M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CuK2SPhhZePrmSP3IHTQaLXgMFUSUbsppmynjuj91NNrqHwFb0oqUc1d1j+hAMn0gqaNpVbgIZrij5TV3P4Usr3ra5rXLjMxayn5FLa+1duEK0oBynPyg1b3fI6DSkDyq45bnRHPBLYI4JMDDck/odgzTt6TEowRyx54RP6+pm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=cgx4XjcT; arc=none smtp.client-ip=178.154.239.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="J6Wkb/wa"
-Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d102])
-	by forward206a.mail.yandex.net (Yandex) with ESMTPS id 96EF184DCA;
-	Fri, 02 Jan 2026 20:54:56 +0300 (MSK)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="cgx4XjcT"
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d101])
+	by forward205a.mail.yandex.net (Yandex) with ESMTPS id CAEFBC402B;
+	Fri, 02 Jan 2026 20:54:58 +0300 (MSK)
 Received: from mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:582e:0:640:200:0])
-	by forward102a.mail.yandex.net (Yandex) with ESMTPS id 6C5E4C005D;
-	Fri, 02 Jan 2026 20:54:48 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id prp9aJGHE8c0-txeoYpII;
-	Fri, 02 Jan 2026 20:54:47 +0300
+	by forward101a.mail.yandex.net (Yandex) with ESMTPS id 3180B80C31;
+	Fri, 02 Jan 2026 20:54:51 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id prp9aJGHE8c0-WyS3it1X;
+	Fri, 02 Jan 2026 20:54:50 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1767376487;
-	bh=tO39uw26jCvXSLijsajvS2kZxSunKWCJKIvieRyPaeM=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=J6Wkb/war5l4FS3s6sdzmWL32l4qNuG5yKTUzM5RJB4zlSu8iW0g7+NFaiCr9yrgq
-	 cf5hEBmaIzg8SP98LgqRfdHBsF98q6+nXctCPunYPuC2EJM3WZ4AHYl8vqCnkj6QGJ
-	 qqMyZIvKLVe0fKhChnjAmjcblm47Pkx683Ar+TcY=
+	s=mail; t=1767376490;
+	bh=23tOmmBtRzPwCEyTF8gBAW2nUgVB9qSXyEXIMs1Iu8A=;
+	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
+	b=cgx4XjcTRMuFcD6cSmNX+HUXykhhK+M/wtJo0ofwliYy/kxE7jNHnShhnQmyl0JW2
+	 6MAqRM/fIbiuHJw1qwjktfOorl1hxKpCPpWiXzU02Oh8T+Fb3CoOBnjUd86KejaP1Z
+	 O9J13dOGwykXu0dhO/3ntLYQvt9ljKQgND5v+2sw=
 Authentication-Results: mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: rust-for-linux@vger.kernel.org
@@ -54,10 +55,12 @@ Cc: lossin@kernel.org,
 	thomas.hellstrom@linux.intel.com,
 	linux-kernel@vger.kernel.org,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v9 0/7] rust: add ww_mutex support
-Date: Fri,  2 Jan 2026 20:52:55 +0300
-Message-ID: <20260102175302.194435-1-work@onurozkan.dev>
+Subject: [PATCH v9 1/7] rust: add C wrappers for ww_mutex inline functions
+Date: Fri,  2 Jan 2026 20:52:56 +0300
+Message-ID: <20260102175302.194435-2-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260102175302.194435-1-work@onurozkan.dev>
+References: <20260102175302.194435-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,77 +70,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Changes in v9:
-  - Added `__rust_helper` prefixes to `ww_mutex.c`.
-  - Reworked on Class to remove pinned initialization functions
-    and added documentation suggesting its use as a global variable
-    as this is its only usage on the C side.
-  - Added myself as a maintainer of WW Mutex.
-  - Various minor updates (commit description updates, minor code
-    rearrangements, etc.).
+Some of the kernel's `ww_mutex` functions are implemented as
+`static inline`, so they are inaccessible from Rust as bindgen
+can't generate code on them. This patch provides C function wrappers
+around these inline implementations, so bindgen can see them and
+generate the corresponding Rust code.
 
-Changes in v8:
-  - Various minor updates (e.g., doc updates, removing unnecessary
-    lifetime annotations, etc.).
-  - Changed C implementation to always provide ww_class field in
-    ww_mutex and ww_acquire_ctx types so we can access it from Rust
-    easily.
-  - Locking functions are now safe to call.
-  - Added class validation logic to ww_mutex::lock_common.
-
-Changes in v7:
-  - Split Class and AcquireCtx into separate modules.
-  - Removed "Ww" prefixes from type names.
-  - Renamed exec.rs -> lock_set.rs and ExecContext -> LockSet.
-  - Removed transmute logic from LockSet (formerly ExecContext).
-  - Improved various doc-comments.
-  - Marked certain AcquireCtx functions as unsafe.
-  - Added from_raw constructors for Mutex, MutexGuard, AcquireCtx
-    and Class.
-  - LockSet::cleanup_on_deadlock no longer triggers reallocations when
-    reinitializing AcquireCtx.
-  - Incorporated various minor improvements suggested on the v6 series.
-
-Changes in v6:
-  - Added `unpinned_new` constructor for `WwClass` and updated
-    global macros.
-  - Changed all tests (and docs) to use Arc/KBox instead of
-    `stack_pin_init` for `WwMutex` and `WwAcquireCtx`.
-  - Added `LockKind` and `lock_common` helper to unify locking logic.
-  - Added context-based and context-free locking functions for `WwMutex`.
-  - Added `ww_mutex/exec` module, a high-level API with auto `EDEADLK`
-    handling mechanism.
-
-Changes in v5:
-  - Addressed documentation review notes.
-  - Removed `unwrap()`s in examples and KUnit tests.
-
-Onur Özkan (7):
-  rust: add C wrappers for ww_mutex inline functions
-  ww_mutex: add ww_class field unconditionally
-  rust: error: add EDEADLK
-  rust: implement Class for ww_class support
-  rust: ww_mutex: add Mutex, AcquireCtx and MutexGuard
-  rust: ww_mutex: implement LockSet
-  MAINTAINERS: add Onur Özkan as WW MUTEX maintainer
-
- MAINTAINERS                                   |   2 +
- include/linux/ww_mutex.h                      |   8 +-
- rust/helpers/helpers.c                        |   1 +
- rust/helpers/ww_mutex.c                       |  45 ++
- rust/kernel/error.rs                          |   1 +
- rust/kernel/sync/lock.rs                      |   1 +
- rust/kernel/sync/lock/ww_mutex.rs             | 446 ++++++++++++++++++
- rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs | 172 +++++++
- rust/kernel/sync/lock/ww_mutex/class.rs       | 139 ++++++
- rust/kernel/sync/lock/ww_mutex/lock_set.rs    | 370 +++++++++++++++
- 10 files changed, 1179 insertions(+), 6 deletions(-)
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ MAINTAINERS             |  1 +
+ rust/helpers/helpers.c  |  1 +
+ rust/helpers/ww_mutex.c | 45 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 47 insertions(+)
  create mode 100644 rust/helpers/ww_mutex.c
- create mode 100644 rust/kernel/sync/lock/ww_mutex.rs
- create mode 100644 rust/kernel/sync/lock/ww_mutex/acquire_ctx.rs
- create mode 100644 rust/kernel/sync/lock/ww_mutex/class.rs
- create mode 100644 rust/kernel/sync/lock/ww_mutex/lock_set.rs
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 765ad2daa218..d245b7b38b21 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14728,6 +14728,7 @@ F:	kernel/locking/
+ F:	lib/locking*.[ch]
+ F:	rust/helpers/mutex.c
+ F:	rust/helpers/spinlock.c
++F:	rust/helpers/ww_mutex.c
+ F:	rust/kernel/sync/lock.rs
+ F:	rust/kernel/sync/lock/
+ F:	rust/kernel/sync/locked_by.rs
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 79c72762ad9c..a95fb3abaab3 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -61,4 +61,5 @@
+ #include "vmalloc.c"
+ #include "wait.c"
+ #include "workqueue.c"
++#include "ww_mutex.c"
+ #include "xarray.c"
+diff --git a/rust/helpers/ww_mutex.c b/rust/helpers/ww_mutex.c
+new file mode 100644
+index 000000000000..2ea19aafbd4e
+--- /dev/null
++++ b/rust/helpers/ww_mutex.c
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/ww_mutex.h>
++
++__rust_helper
++void rust_helper_ww_mutex_init(struct ww_mutex *lock, struct ww_class *ww_class)
++{
++	ww_mutex_init(lock, ww_class);
++}
++
++__rust_helper
++void rust_helper_ww_acquire_init(struct ww_acquire_ctx *ctx, struct ww_class *ww_class)
++{
++	ww_acquire_init(ctx, ww_class);
++}
++
++__rust_helper
++void rust_helper_ww_acquire_done(struct ww_acquire_ctx *ctx)
++{
++	ww_acquire_done(ctx);
++}
++
++__rust_helper
++void rust_helper_ww_acquire_fini(struct ww_acquire_ctx *ctx)
++{
++	ww_acquire_fini(ctx);
++}
++
++__rust_helper
++void rust_helper_ww_mutex_lock_slow(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
++{
++	ww_mutex_lock_slow(lock, ctx);
++}
++
++__rust_helper
++int rust_helper_ww_mutex_lock_slow_interruptible(struct ww_mutex *lock, struct ww_acquire_ctx *ctx)
++{
++	return ww_mutex_lock_slow_interruptible(lock, ctx);
++}
++
++__rust_helper
++bool rust_helper_ww_mutex_is_locked(struct ww_mutex *lock)
++{
++	return ww_mutex_is_locked(lock);
++}
 -- 
 2.51.2
 
