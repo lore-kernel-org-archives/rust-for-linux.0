@@ -1,84 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7D926A0DB
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 20:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BC13A1E6C
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 22:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767386102; cv=none; b=TKHD/7S6TtA4oA/gjXurZ6PfO4y4czjn4X6B3hM2Q4UWBz8ZfvE16Rsvt7DVTrIl1w5NUhpmrLNXxg9VqAXwQAF0oVjOWlDOSPyHU/CNZPQ5sljH1ZI1jc2NysLrpRdkM0GHC56I7t7nNArIlHZnHNppnbpaukCopg1FNI8tHpA=
+	t=1767391333; cv=none; b=G0DwB3SYsQ5i13bypPB9mMO7szlmIeKUl6mg6Wyq6PpsHdP8QYfbM3orBvTdfZYlLJoE9a8sWgYwJqnIKu9K0Sy7mBgTyD8goCiNwJE1am4IJQKN/QEXt8plxqYL5xwgDSajEzsX20EqRt1sSaJwYNQPkw4jvjTefVVsGRgqA68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767386102; c=relaxed/simple;
-	bh=47uonBl3AsOxR5NEo3R74TfUGho2LZvpY69Tg8Q7Zyw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kHoWiZlDzlPLb2EURhwhcYS8bLPBBXKm4CeBseFMS51Obuk85W3vSeSNzsx/5dKM/KI7ExB1EKL9ELjZzsdUxbMV0/y8L8mE+Pqv4BOsz2OyyHKkw7RFpGVJLc3d6N8wSZ406vm3sLtl9d5gG3SOPRxHSvxFeEkoEt5zQrXwZ0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+4h4wLA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767391333; c=relaxed/simple;
+	bh=HiwJMnq8mr6pQzgKiF+VCQjWYlZRdru5QWhtxuLezo4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=HOjVtB4Csike5jzkbNSrbIG8VG2iJPdqGC93g6COuWNomdnwGiYbg74NEqM9qCKXXRzyGjwwFZSlb+F4t/tc1goLAu+az3v2khitt/tTwfFnFsdVMqPRuTzAEyY7H/gmsW/8y4MLDMJNZZGr5XrDYVDdSiSfHGEFiRGJT/X+2lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AZ/SI8+1; arc=none smtp.client-ip=209.85.217.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+4h4wLA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3790C16AAE
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 20:35:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767386102;
-	bh=47uonBl3AsOxR5NEo3R74TfUGho2LZvpY69Tg8Q7Zyw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=b+4h4wLAL3KVJ0kZJDObfHtzkLrAS5GmSBqapllqsWI7vI1EZu7GwHdnmjbuOD/9v
-	 WABqC1DrCnkZbOU+8/Xb9qpJWa5eibEQKApShDL4fXbltjip8FnLdrKw3vIcHcKG0v
-	 0ST7z6S0RICBRaCjUngt3FHImOwiF8QN/lCzDjw6XimdOrH1NOMn8RY60w7MdxysPO
-	 a3OIl7OAbyGegj+YRzvXH+kl2SCWKallesx6LQa6FMo+HjNK5Ev3CHs9P2oLE9XToh
-	 x2MW2IgD2+08BT4SFiJby54U+fHh2d8XNZ4Q2eGfbrgYNw0JN3yl38pXhd4GASY0gS
-	 hqfWtBVSrxi0g==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-37d275cb96cso114570241fa.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 12:35:01 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX/gxUoK1RaAvTvXRVmFCA5jqkFcy+BL77J9uiYBkb5/aoueXXsizENcQIoGtoKnEX4qgHuPK/cKGBPWgW8QQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHK2fBR8/dwq/Nhbb1WH9jzJBXJYy9lHN9aT3O2+nRMJCJsv3l
-	Ag6qNyWC0BreUagnzTgtnd0gglO3l9dnb2jMtltXCD3uakcTi/UvcTZ54qMYC3uW68fdTJeF3oI
-	oApwDuBPDDIGNvyI4gTauJ1Kb8ohAsWE=
-X-Google-Smtp-Source: AGHT+IFCh8mYGLC/9hDW/2LMzKkLSmkj1V7tU5WIw94ygxT85pgndBMYDfLbxXIt6zrMUdoF+FQNFf+yYKjzuddoT58=
-X-Received: by 2002:a2e:be10:0:b0:37a:2f61:5f19 with SMTP id
- 38308e7fff4ca-38121552988mr138513051fa.2.1767386100562; Fri, 02 Jan 2026
- 12:35:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AZ/SI8+1"
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-5dfaceec8deso187814137.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 14:02:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767391330; x=1767996130; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=00GmlgJ1AaWzlpDrlo1/wDhQO5iplJBPhyzyjHKeuRM=;
+        b=AZ/SI8+110Sf6t/bk7fRPdrqmktmnNflBjk0kSs8G9Xos33PKuIPH4jdTf5CiaYKyN
+         ByRNVVunxQAfSlA+X4jSQmEy5SnOXcTiks471g7qXJtFG4kakZXWsqKtK3XCE5hi6fzR
+         NtrcnaaONfH6WlEnXCAjmbFlpVYpFi5OQDt1b7YyaAdvS+OYXhLAL8CWA9yzkxpIli1w
+         /X8i7/lV4zllmgLD1kVatkGX81l+dm1U9XBXPAiUY9AiDR2A9RC7jwzihlhk8qtBsSez
+         ya3BRUSsQ6RuLkqf+dAZGx5xiW9dYlTaL8mdgfyrWHyF9dQ2KACmCZJFd4hkzxCpy1qf
+         hQAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767391330; x=1767996130;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=00GmlgJ1AaWzlpDrlo1/wDhQO5iplJBPhyzyjHKeuRM=;
+        b=xVeJrl8AhSwHiGm2j2ZIhuxDaMLKHp5d56R3o18k3efCFC1+JYh16klr1I3nhp3bAp
+         cQafNnyv2wSoQGPTwSsoaGozXVMjudjf3shtSDUOc+eXI9uXZIjlS/diUAOy65zeYRkL
+         C+lP82THONkAUQzwuQrL9xmA4bkw9OOnysQMIw9YjwQT9Rzxsqm4H7AjhPjzmdZUx67J
+         4sfNTskcYjdq7MTNKZhQ6vo/OM7/S84DnpoIzKzkhqhzbuWgeZF8iIccdNb2D1YOQE75
+         52GlcP4qbFyOmzVTBNF1BxzPggmnu/PUfkHIEwWiK4KIXDLAk3gQ9hVwCyykfePZ+ioU
+         a6Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCVGHw2M8YqOCpyaWksbUNw9H/eczqSOP3N1IVM0miVJbxyzdSsjn7FVnWBLoJtIjo3PPxTkWbyvwHHaYN3krQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYVhsNktbV3uD19Jeyr35WaSrOLPHdeEgoc9pnNA6RiM3lwvFX
+	oXwuTqmKOswXCKT+vYgvszvLss7p1Xbw3hEiRw2rTw/Vwsa3pDXGDhkTxQQ8vg==
+X-Gm-Gg: AY/fxX4iYOayjEVw8TGKbEt4+sCx+T7D8wN5K1TLJ0QXlgHiXtUtTwA9mMAAS1eSe0R
+	9kWb44P2bNIanUeZpmUMWtxy7EjScXMDSRWMeNzKtHSWxQ5hC6LD18ak5vgu9aX+poLYxA6wjDq
+	MJexmpsTQaiZifpiOP0s6FgJBw2TjhZBXW4dVPNnQLlZLv9fl9j0N8s3+rAaTSSujjxo8zpjkKq
+	h2e05LQ7wCGEew2JtYwXfuxK3M1lB7o/qtmFniCJL9ru8XTQ81Tv00hR9IcfbEE2q/FgmYCg2jS
+	9AF8OoEL6NFGweJ9d/zZjaq6XyTSbx3fN7/pTzthAni3maWLyVqbBd8GThfCkHVh0sOCd6unLZ5
+	5NJOb4bvkPgqIj4q0UgITDi9Z+Llx76z695wAJL+giXOukX3DMyThxjDvYU54sbzueWE+WgzKHz
+	iaMoXpbm21RwJby7fln7gM/e/OxFwwUw==
+X-Google-Smtp-Source: AGHT+IEPMyBJPq9CEUhq+9mYwW8PVJVrcnr0aB/pVVOfrs9LUwZ+gBfHYbBS0sfvzwsICPax6EXltQ==
+X-Received: by 2002:a17:90a:d883:b0:343:747e:2ca4 with SMTP id 98e67ed59e1d1-34f45399a2cmr556499a91.9.1767385730273;
+        Fri, 02 Jan 2026 12:28:50 -0800 (PST)
+Received: from shankari-IdeaPad.. ([2409:40f2:2123:b1fb:b93b:b5b4:2357:c53])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e88cd71sm41163964b3a.64.2026.01.02.12.28.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jan 2026 12:28:49 -0800 (PST)
+From: Shankari Anand <shankari.ak0208@gmail.com>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	"Todd Kjos" <tkjos@android.com>,
+	"Martijn Coenen" <maco@android.com>,
+	"Joel Fernandes" <joelagnelf@nvidia.com>,
+	"Christian Brauner" <brauner@kernel.org>,
+	"Carlos Llamas" <cmllamas@google.com>,
+	"Suren Baghdasaryan" <surenb@google.com>,
+	"Danilo Krummrich" <dakr@kernel.org>,
+	"Alice Ryhl" <aliceryhl@google.com>,
+	"Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+	"Maxime Ripard" <mripard@kernel.org>,
+	"Thomas Zimmermann" <tzimmermann@suse.de>,
+	"David Airlie" <airlied@gmail.com>,
+	"Simona Vetter" <simona@ffwll.ch>,
+	"Alexandre Courbot" <acourbot@nvidia.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	"Miguel Ojeda" <ojeda@kernel.org>,
+	"Alex Gaynor" <alex.gaynor@gmail.com>,
+	"Igor Korotin" <igor.korotin.linux@gmail.com>,
+	"Michal Wilczynski" <m.wilczynski@samsung.com>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>,
+	"Gary Guo" <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	"Benno Lossin" <lossin@kernel.org>,
+	"Andreas Hindborg" <a.hindborg@kernel.org>,
+	"Trevor Gross" <tmgross@umich.edu>,
+	"Daniel Almeida" <daniel.almeida@collabora.com>,
+	"Abdiel Janulgue" <abdiel.janulgue@gmail.com>,
+	"Robin Murphy" <robin.murphy@arm.com>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Shankari Anand <shankari.ak0208@gmail.com>
+Subject: [PATCH v2 3/4] rust: usb: Update AlwaysRefCounted imports to use sync::aref
+Date: Sat,  3 Jan 2026 01:57:13 +0530
+Message-Id: <20260102202714.184223-4-shankari.ak0208@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260102202714.184223-1-shankari.ak0208@gmail.com>
+References: <20260102202714.184223-1-shankari.ak0208@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250723-rust-analyzer-pin-init-v1-0-3c6956173c78@kernel.org>
- <CAJ-ks9nJ149Dt2v5Dn0A3+Qw=TnzE84Lm3Ridrfrc=mdhFt-MA@mail.gmail.com> <DFEDG6TK5AY9.1Y9EPEYQLMCMX@kernel.org>
-In-Reply-To: <DFEDG6TK5AY9.1Y9EPEYQLMCMX@kernel.org>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Fri, 2 Jan 2026 15:34:24 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9krE2+K0mVkG-Ao9VAuyDqdAoPbWAK7fHyoVZD6ww=zyg@mail.gmail.com>
-X-Gm-Features: AQt7F2ry0C4BZK5VJSq9MvII_B1DPppjFq8-Ur7cvMW779gfiDUfpBa7u0RGJrI
-Message-ID: <CAJ-ks9krE2+K0mVkG-Ao9VAuyDqdAoPbWAK7fHyoVZD6ww=zyg@mail.gmail.com>
-Subject: Re: [PATCH 0/3] scripts: generate_rust_analyzer: match rust/Makefile
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 2, 2026 at 3:05=E2=80=AFPM Benno Lossin <lossin@kernel.org> wro=
-te:
->
-> On Fri Jan 2, 2026 at 4:25 PM CET, Tamir Duberstein wrote:
-> > @Benno would you mind having a look at this series?
->
-> Oh wow this is an old series! Sorry for missing it.
->
-> I'm not maintaining the build system for pin-init, but from my side the
-> changes look okay. The commit messages are missing some context though:
-> why do we need these dependency edges? etc. If you fix that you can add
->
-> Acked-by: Benno Lossin <lossin@kernel.org>
->
-> Also note that this might be different in the new build system.
+Update call sites in `usb.rs` to import `AlwaysRefCounted`
+from `sync::aref` instead of `types`.
 
-Thanks for the review! I think the commits all include answers to
-"why": the first two make RA match the actual build and the final one
-does the same and also fixes navigation in pin_init_internal; before
-this series, go-to-symbol from pin_init_internal to e.g.
-proc_macro::TokenStream doesn't work.
+This aligns with the ongoing effort to move `ARef` and
+`AlwaysRefCounted` to sync.
+
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1173
+Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+---
+v1 -> v2:
+
+Re-worded the commit title to rust: usb:
+
+Link of v1: https://lore.kernel.org/all/20251123092438.182251-9-shankari.ak0208@gmail.com/
+
+---
+ rust/kernel/usb.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
+index d10b65e9fb6a..79ff2f881572 100644
+--- a/rust/kernel/usb.rs
++++ b/rust/kernel/usb.rs
+@@ -12,7 +12,8 @@
+     error::{from_result, to_result, Result},
+     prelude::*,
+     str::CStr,
+-    types::{AlwaysRefCounted, Opaque},
++    sync::aref::AlwaysRefCounted,
++    types::Opaque,
+     ThisModule,
+ };
+ use core::{
+-- 
+2.34.1
+
