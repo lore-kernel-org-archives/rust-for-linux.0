@@ -1,95 +1,71 @@
-Received: from forward201a.mail.yandex.net (forward201a.mail.yandex.net [178.154.239.92])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6462F25A357;
-	Fri,  2 Jan 2026 18:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C6120C038
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 18:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767376977; cv=none; b=fX6nnsazFgdn9RUCUJ7jiL474TgsW4E1fEofMgylqdoTJin8E5GVHcDmTvq2oB6vFVxRZ2wTmCBoTuQo/8frlP6l4/mr1HaOGlDxaY3xU0AFyZOejOTbter8f/wFr48tET7P80mm64DhGIYH07cU3I0UPbEugMI620jDsalh55c=
+	t=1767377315; cv=none; b=HWD0zXFUjlPU0hSt+OAXJAmxXril1MXL2FPEo0jtG9UppICigxP1YIxfQ7tKJp2dp13djKLNy7NEZouFYdCzAlbrzmI79Euo+fAjXQNz1VY7Dz8yBD4Qb4qayXKMUmTrmWc72GbwJ2GCs987DnRXqBi1+Ve530lCot/Gfsjfd00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767376977; c=relaxed/simple;
-	bh=vfNKBcpbZfVUaG2HIOhR81QGP7isefAqWuFwxVyXrK8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eD/iU2NxrgdC48YEEjjWcdc3MkuzeLBZcwKEYvYohOYJBm55N7CkUc94sVQuGcnnoUJGNRmuNNIF6LodWNuG/PkrMAgM+JZcdeKZXU09V9+czSnPHQOggZ11zr1LmZEBjbYkYoaygGV54TBRX57NqIpDHRtE0kvcUJiHthfPwkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=XCN8SekX; arc=none smtp.client-ip=178.154.239.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1767377315; c=relaxed/simple;
+	bh=wLoDbSl5FgK/aO3C0KmF2Ek6viRqKszFv5pxKBZuxuA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=hr/dzwPutHN980Xbz6I0Br4BkSC6XwhoJQQBE9wloaIGtxNxskIsQr2oFzEZMYC8cZW1DzZ0HkUMCHzxOrbs6NpwnPH5zEiVEjGX6tlzs9aks/MmWxk3b/NhwX8gmOS2y1sNijAcWn+8JqcD3pJZz1Wuos2w9Bn55gF5/YMzkjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqeR4OOv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="XCN8SekX"
-Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d103])
-	by forward201a.mail.yandex.net (Yandex) with ESMTPS id C2B9883E5A;
-	Fri, 02 Jan 2026 20:55:04 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:582e:0:640:200:0])
-	by forward103a.mail.yandex.net (Yandex) with ESMTPS id A2A08808B2;
-	Fri, 02 Jan 2026 20:54:56 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id prp9aJGHE8c0-54Bf4Wdk;
-	Fri, 02 Jan 2026 20:54:56 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1767376496;
-	bh=a50rz/ne4O3HC3C6Yio58qwQfeOtFy6yA7MhwTMu8KY=;
-	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=XCN8SekXqs32/n93KnjRKwGxjngkqnJskjolZP2dl7ESwmBXf0rM62c0IXhsHktKn
-	 ni9sCKpUZomnHMjA8fLCs3Yp648addK0laMRoSZ5mje11SdFHy7lBqRlVf4k2fmliG
-	 jm5DPkANOZBRaIj/j7wf9Zut6YOJjPlRR0YO+m9E=
-Authentication-Results: mail-nwsmtp-smtp-production-main-55.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: lossin@kernel.org,
-	lyude@redhat.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	longman@redhat.com,
-	felipe_life@live.com,
-	daniel@sedlak.dev,
-	daniel.almeida@collabora.com,
-	thomas.hellstrom@linux.intel.com,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v9 3/7] rust: error: add EDEADLK
-Date: Fri,  2 Jan 2026 20:52:58 +0300
-Message-ID: <20260102175302.194435-4-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260102175302.194435-1-work@onurozkan.dev>
-References: <20260102175302.194435-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqeR4OOv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C57C116B1;
+	Fri,  2 Jan 2026 18:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767377314;
+	bh=wLoDbSl5FgK/aO3C0KmF2Ek6viRqKszFv5pxKBZuxuA=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=iqeR4OOviYRlVslgBhEkOQ0JGbYnm40VMNj7eIpUbTD/O/VdnYY5Q+y6regLxoNeu
+	 tnUj9ZGk3P5fvC/XGAUAk3Wgf8cDMTgrgJBspz7+nvTIUkXL9CgWksYTMQ46OD2oUD
+	 oCt446FlFlGJnzYIEAMISk63M17tjNdTw1wvqvdyheToXlmpakzHlyAHlwb3yLxy+i
+	 jn8Th1YVTyOgPiOlsnjujt6CJFHdGFExYQ+vgzt4Gfl9dW0R0WEpu90Q2agAIghvAN
+	 mrX5CEsi11MCv0QWGr+MkprIW6F1D9N85rhY+v4BL2lQrJjZEkkZTdL5Y+8wO73KbP
+	 mxIJptx0jMgbw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Fri, 02 Jan 2026 19:08:30 +0100
+Message-Id: <DFEAYVOFWITO.PZZWUJNNHX60@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v1 1/2] rust: dma: fix broken intra-doc links
+Cc: <gregkh@linuxfoundation.org>, <ojeda@kernel.org>, <rafael@kernel.org>,
+ <aliceryhl@google.com>, <a.hindborg@kernel.org>,
+ <abdiel.janulgue@gmail.com>, <bjorn3_gh@protonmail.com>,
+ <boqun.feng@gmail.com>, <daniel.almeida@collabora.com>, <gary@garyguo.net>,
+ <lossin@kernel.org>, <robin.murphy@arm.com>, <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+References: <20251231045728.1912024-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20251231045728.1912024-1-fujita.tomonori@gmail.com>
 
-This is needed for the ww_mutex implementation so
-we can handle EDEADLK on lock attempts.
+On Wed Dec 31, 2025 at 5:57 AM CET, FUJITA Tomonori wrote:
+> The `pci` module is conditional on CONFIG_PCI. When it's disabled, the
+> intra-doc like to `pci::Device` cause rustdoc warnings:
+>
+> warning: unresolved link to `::kernel::pci::Device`
+>   --> rust/kernel/dma.rs:30:70
+>    |
+> 30 | /// where the underlying bus is DMA capable, such as [`pci::Device`]=
+(::kernel::pci::Device) or
+>    |                                                                     =
+ ^^^^^^^^^^^^^^^^^^^^^ no item named `pci` in module `kernel`
+>
+> Fix this by making the documentation conditional on CONFIG_PCI.
+>
+> Fixes: d06d5f66f549 ("rust: dma: implement `dma::Device` trait")
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/error.rs | 1 +
- 1 file changed, 1 insertion(+)
+Applied to driver-core-linus, thanks!
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 258b12afdcba..c2b95db23abc 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -66,6 +66,7 @@ macro_rules! declare_err {
-     declare_err!(EPIPE, "Broken pipe.");
-     declare_err!(EDOM, "Math argument out of domain of func.");
-     declare_err!(ERANGE, "Math result not representable.");
-+    declare_err!(EDEADLK, "Resource deadlock avoided.");
-     declare_err!(EOVERFLOW, "Value too large for defined data type.");
-     declare_err!(ETIMEDOUT, "Connection timed out.");
-     declare_err!(ERESTARTSYS, "Restart the system call.");
--- 
-2.51.2
-
+    [ Keep the "such as" part indicating a list of examples; fix typos in
+      commit message. - Danilo ]
