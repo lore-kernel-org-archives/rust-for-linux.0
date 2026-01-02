@@ -1,164 +1,71 @@
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9C62586C2
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Jan 2026 22:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3084C97;
+	Fri,  2 Jan 2026 23:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767392997; cv=none; b=KAS92l6Q0K4503sHgSCiN40d/gxnM2kBdDHjt5If5vf3FMa3iXb3ug2BDF8NUUTlqXxb/ancHAmjOEsVEnKZojU67WrxeJjnKh/d++GHz5pRlCSVQio09Ipz758rxp7xGMq8TNeuYBB6V/+vf3Fofjt7A4McEwClu11znRnB3j0=
+	t=1767397800; cv=none; b=S0soyjKm/ZUOJzOho/9H0UuTyjRjKhaSH9mbtUOgQ8h9DrOMegFG9oktidv1yc1N4btFhY1+MhElIkj0uG+9lYO3c8WGi/T1E1EnIwoHYCsr3321ENWX20WFjxWiwR6a8uDYHYjSPt3QNt6l7wPluMjrGfojGyp+QeBA275LO/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767392997; c=relaxed/simple;
-	bh=P6CLUaoBrZVe2iO8pEgsU/Uckoe2bn/GpAIG7klU3Cg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sG3ypqRFHX+nQdnHG4hV14I6Kr+naFwSPSsPzA+R284HauDwE1a/W/4OYGYwSeHxDnt1dbCw8WYpLbMZANGgrqz29NzOucKwVIOfiEhrFIUJwpwoGa7rVhzrlELJ6aykB6dV71rAAUuA36eIkeoK+27V8G5XWiysp36Et4o00j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b7Wuhd0g; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767397800; c=relaxed/simple;
+	bh=FGZfyLWZwMypD5GTLKJgwo9Of6CnESkoPmxim11w8U4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LshA4PGxB4uTkWFg/qBHgWDIWCAk9MpTFSfN0s15I3DLx0zHWEALzIBeinbTvLQQTvtB4JWh4bf1VfcNtmor7mAQq4lylWy/gLnmtI5zjyWPP9pnZuL0FtpWPDOcGWXp8lsMtSLBAUjt/3AI/43sn4SUjgngBEhrr034jjUS2ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bsLiJ9zc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b7Wuhd0g"
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-55b09f54e98so3588748e0c.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 14:29:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767392995; x=1767997795; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JzPkPBTdxo+DXDsLhg4MqCszafnvLPi7c5YcRPd0+SY=;
-        b=b7Wuhd0gZw1RgwglPVDf90PNspi362ic3cOF8uMaA3f2ngrefCwpC4Pnvy+ctTV+v6
-         0rZXDRS7kW/fD5m6fS5gS4MKGcvgMQhN/ZBMgKdvnfbMm63fzqIh7ruF41huCa6z1F/3
-         9OcZYQCRanEPfFVDab8ebSzPCGt6ymH1Br4ukRsjgVRRof+AeconkliREgoKG5qEUEHf
-         PUj4B47OZc6WmN7yFbEAJS9VAz1+NAx2LI9U09sUmTQeNY0h45TjGs2JG3IctD2urwMp
-         aZeyuBibJvAkMPREwgeJMIkPTsbtfNVlkyb5faPyJtfpEIsI082fd+YaJ2MD5uv5b0tq
-         07Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767392995; x=1767997795;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JzPkPBTdxo+DXDsLhg4MqCszafnvLPi7c5YcRPd0+SY=;
-        b=p7F9H9JufaRCaScdIHVjQxneSyZwiTVuVLR1tBBoT+3hBOmNv/v0A9QMJjxsfna4bv
-         1MIiXLcW6AYY+97V15pG7uxsSZEd5xZ/p9YCo61Fz/cw9JLwcTp6e+3wiqygJzua2bgN
-         BqMA5+g38cBjzrb6S0FePZKZCSKooF5Xpwo7eFshWIWMeUTTp/O+P6A80hj/KQgK50My
-         gjXETA9O3KcaIuA0xMR3HmPzDVzgeoHTVnXKYumHI6bzPsf8Q/GAsZhcQ3kDHJZtspb3
-         5HQf6f5gpyw93zAnaAvh/82c6ddynl9wG/W8Z6mzmOhnHnBYI1MqTX/eDpt35JlMWj1I
-         Pcog==
-X-Forwarded-Encrypted: i=1; AJvYcCWZYb2cOtuiNC2pOw+I3ZsGcgcNkNU7Uv4y/fnELmd0FUYyz3hRxUccVA3CXyRieJa2VnXEG4EdUz3Sc7KKdw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy84foDaV30ePeGCUEu/kB3iA73XLRRZgPtDDpUzdSoSOdSgROG
-	aTXFnNxAMW/JSqv2T1byH+qVh3n62h0PaQkON47KPriwjo212WQO/m6uda7u9w==
-X-Gm-Gg: AY/fxX79JpRD6nfboNw13XK/EuB84z97XrxbJcZO58idnomnXKKimRMMv4TAUl9UUKU
-	Oj8yCGqzCztwmq4qvdDZggW0khe1r58tk0UeUI3V1t4RSKzP0cfkLHmmF04crFTU2ZS9syerP5I
-	okcBoBhVWQWZp9GyhESeBK+mploJCCC3w5zB81HQLquhPJhp1tO7A+JQuQDFq7JsfXhZBKAZTCc
-	LGBS28uVYQVOZadHoFSO+K/W5mn/cU73UEVcRpq6oBtg4COyInEeytmK9xTRyWxy5mfC8SdO3xy
-	klPnKesihHH6TzGDqIrXLS/3mDwBo7tG1xXVTYft38nU+8dp9+EzYfpGCglRdZPuB1z9oeusP3Q
-	OKYjXsiqOlmecHe7eeAMwOtDQIFVvSEiQ/VAA0lNfsAyj98FsaswMOMnAW6wq/8u2HT02OsLnsb
-	5FmyywLAIYKWTKZ9PFf83GP64HK4poXg==
-X-Google-Smtp-Source: AGHT+IF4APWzwwkb10zobyqhGIJZ2eP3tKaurfLiy7XUMDZZ04iDnnZUmDwz0Vjazspcx/YcTYZDag==
-X-Received: by 2002:a05:6a00:a882:b0:7f7:26fe:c92f with SMTP id d2e1a72fcca58-7ff64cd5fcbmr35797857b3a.29.1767385679728;
-        Fri, 02 Jan 2026 12:27:59 -0800 (PST)
-Received: from shankari-IdeaPad.. ([2409:40f2:2123:b1fb:b93b:b5b4:2357:c53])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ff7e88cd71sm41163964b3a.64.2026.01.02.12.27.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 12:27:58 -0800 (PST)
-From: Shankari Anand <shankari.ak0208@gmail.com>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	"Todd Kjos" <tkjos@android.com>,
-	"Martijn Coenen" <maco@android.com>,
-	"Joel Fernandes" <joelagnelf@nvidia.com>,
-	"Christian Brauner" <brauner@kernel.org>,
-	"Carlos Llamas" <cmllamas@google.com>,
-	"Suren Baghdasaryan" <surenb@google.com>,
-	"Danilo Krummrich" <dakr@kernel.org>,
-	"Alice Ryhl" <aliceryhl@google.com>,
-	"Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
-	"Maxime Ripard" <mripard@kernel.org>,
-	"Thomas Zimmermann" <tzimmermann@suse.de>,
-	"David Airlie" <airlied@gmail.com>,
-	"Simona Vetter" <simona@ffwll.ch>,
-	"Alexandre Courbot" <acourbot@nvidia.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	"Miguel Ojeda" <ojeda@kernel.org>,
-	"Alex Gaynor" <alex.gaynor@gmail.com>,
-	"Igor Korotin" <igor.korotin.linux@gmail.com>,
-	"Michal Wilczynski" <m.wilczynski@samsung.com>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>,
-	"Gary Guo" <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	"Benno Lossin" <lossin@kernel.org>,
-	"Andreas Hindborg" <a.hindborg@kernel.org>,
-	"Trevor Gross" <tmgross@umich.edu>,
-	"Daniel Almeida" <daniel.almeida@collabora.com>,
-	"Abdiel Janulgue" <abdiel.janulgue@gmail.com>,
-	"Robin Murphy" <robin.murphy@arm.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: [PATCH v2 1/4] drivers: android: binder: Update ARef imports from sync::aref
-Date: Sat,  3 Jan 2026 01:57:11 +0530
-Message-Id: <20260102202714.184223-2-shankari.ak0208@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260102202714.184223-1-shankari.ak0208@gmail.com>
-References: <20260102202714.184223-1-shankari.ak0208@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bsLiJ9zc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71BCC116B1;
+	Fri,  2 Jan 2026 23:49:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767397799;
+	bh=FGZfyLWZwMypD5GTLKJgwo9Of6CnESkoPmxim11w8U4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bsLiJ9zc8Dvlgy/M788okwA5uF4XOnChFOazuBVSN3CfS5kKE2U1O5RGoADKN4oUP
+	 Ol+nZZsBU+YUlXwZ0p9HWu5cMf9dpyPNN3b41zXtr8OyGOYgr3oMALzQzjS8UtNadt
+	 YKsHsY97sAXfH0LM0enyVxSeb6QuifGqJbZaFhSVtOgCxFsD6qddQHHhOVfpy93da1
+	 sTSKd8M6P71iC9mBXZlAsBPrUrk2xxAIMB8SLXRyfwoMyfxo1v6WKXAKG1SAzyHOgU
+	 Y90RY94D9ydTmbIc1FDK56s8atuEZT+zuKgPg1aIN2scBEa2WUffjqBV4HwiHJTy1y
+	 tDtkInYGcNXXg==
+Date: Fri, 2 Jan 2026 15:49:57 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lauri Jakku <lja@lja.fi>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ rust-for-linux@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [RFC] STCP: secure-by-default transport (kernel-level,
+ experimental)
+Message-ID: <20260102154957.69e86d64@kernel.org>
+In-Reply-To: <aceecca9-61ae-454f-957f-875c740c0686@lja.fi>
+References: <73757a9a-5f03-401f-b529-65c2ab6bcc13@paxsudos.fi>
+	<CANiq72mE5x70dg_pvM-n3oYY0w2mWJixxmpmrjuf_4cv2Xg8OQ@mail.gmail.com>
+	<ac4c2d81-b1fd-4f8f-8ad4-e5083ebc2deb@paxsudos.fi>
+	<22035087-9a3f-4abb-8851-9c66e835b777@paxsudos.fi>
+	<c6cdc094-6714-437b-ba37-e3e62667f4aa@paxsudos.fi>
+	<aceecca9-61ae-454f-957f-875c740c0686@lja.fi>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Update call sites in binder files to import `ARef`
-from `sync::aref` instead of `types`.
+On Mon, 22 Dec 2025 20:13:40 +0200 Lauri Jakku wrote:
+> STCP is an experimental, TCP-like transport protocol that integrates=20
+> encryption and authentication directly into the transport layer, instead=
+=20
+> of layering TLS on top of TCP.
+>=20
+> The motivation is not to replace TCP, TLS, or QUIC for general Internet=20
+> traffic, but to explore whether *security-by-default at the transport=20
+> layer* can simplify certain classes of systems=E2=80=94particularly embed=
+ded,=20
+> industrial, and controlled environments=E2=80=94where TLS configuration,=
+=20
+> certificate management, and user-space complexity are a significant=20
+> operational burden.
 
-This aligns with the ongoing effort to move `ARef` and
-`AlwaysRefCounted` to sync.
-
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1173
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-Acked-by: Alice Ryhl <aliceryhl@google.com>
----
-No change from v1 -> v2. Carry-forwarded the acked-by.
-
-Link of v1: https://lore.kernel.org/all/20251123092438.182251-2-shankari.ak0208@gmail.com/
-
----
- drivers/android/binder/process.rs | 2 +-
- drivers/android/binder/thread.rs  | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 132055b4790f..db25307b5a4a 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -28,11 +28,11 @@
-     seq_print,
-     sync::poll::PollTable,
-     sync::{
-+        aref::ARef,
-         lock::{spinlock::SpinLockBackend, Guard},
-         Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, SpinLock, UniqueArc,
-     },
-     task::Task,
--    types::ARef,
-     uaccess::{UserSlice, UserSliceReader},
-     uapi,
-     workqueue::{self, Work},
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 1a8e6fdc0dc4..6a5c90547844 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -16,9 +16,8 @@
-     seq_file::SeqFile,
-     seq_print,
-     sync::poll::{PollCondVar, PollTable},
--    sync::{Arc, SpinLock},
-+    sync::{aref::ARef, Arc, SpinLock},
-     task::Task,
--    types::ARef,
-     uaccess::UserSlice,
-     uapi,
- };
--- 
-2.34.1
-
+We tend to merge transport crypto protocol support upstream if:
+ - HW integration is needed; or
+ - some network filesystem/block device needs it.
+Otherwise user space is a better place for the implementation.
