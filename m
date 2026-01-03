@@ -1,164 +1,276 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B072F2FDC40
-	for <rust-for-linux@vger.kernel.org>; Sat,  3 Jan 2026 10:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE952110E
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 Jan 2026 12:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767437103; cv=none; b=GsdoU/D4NGPm2KOM6xxI+gwstTeSVJBXltOYjhfNO8xJGCVGb6Yf0rV6+ns52KYdobhet7vUEV6AQ4wzpLxWZYlUJFNitB7e5yPAd6ssGPsMxhfC+xj/FW1WXibYGqmeLboNM+Nq8HNaopvZyw11s7neH2TwobzPkivOLaqRV3U=
+	t=1767444862; cv=none; b=SrBjDBLePL6GXOdWSnLbE5MXxBlhezbTYZN0DGz5ukhVz1a3wdKT4xaKtuhpIGplp9RmehD/pww4CqUFY4vkTKdfaynlGnWQOc6DAnj43TpOYTO1rIMltuBuxUmaDxDNzh4MAkUKJ3j2CYFMaIjMtUkhB1gAcHWxHqkkSdcU6tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767437103; c=relaxed/simple;
-	bh=BQWi1Byg+BB4/cybELFHlvrxZ3qjbr+eBCCMEmKH0Bg=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=oIC+TfrhZBeCiYXq7Pgj95eTUZdG1vy/FbE/uB65y0KpUobu3svm+Q1EjQDWA6ir0RfLF5D3ETWOYsAOmzBzBiuCBNfCwMZ6udOyn7Bb/9698e3/+ukgLUywXiHW7GbHiVuAxo8oDDz0YielHIb9dBwBYWKJ31tYexEwVynpNzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cAvCztPI; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767444862; c=relaxed/simple;
+	bh=oK30coeQKfL/fVgDXIniWhU24jzI0TWms9wqUpCrdLM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dYbYNDlviYhOarsGLLda7ege03NGwHq6rvnlGoM66uI3Z+Uns7dSfxDOmsQ6eBDUzP3KmRSHX1lZYokvGX8clKt7XJBD0/I0B6aIwNbN9IpaNkC0BH6CAh6CeBSuyVz0YspapoMcpVwqlxMfDWtZFcUa+CyKBP5rIooeeTEl7ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D5Vlyitk; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cAvCztPI"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0d5c365ceso168977075ad.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 03 Jan 2026 02:45:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767437100; x=1768041900; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mA+YIWtnv62G+kj8CxQPw0EabsBETW7vVKKZB5YRNvg=;
-        b=cAvCztPI/+6uMGI1GKL4j81IZ1ZtEaDjYy6aB2liag5Pi7OK1lk2gY9D5KCCC4fXS2
-         kxo6ljfnI+rn8olio4BGdC+lUrTWd9prByHpSZX57/uuiRti7Uf23uTMUTmxUcOMQLK2
-         zPbzrnarI5v87IOGd+MpCw2EWr+bmcaM1Fhrws8canrB+4zCdZJbSvLhPmTK3+KHW0vE
-         9G7y/T7vcy79FXjgXqHvtD4FN2Zb+z1is2pBzDSJxN5bF1fuWYMW0v8caaRwC9vKUPWA
-         F5PtdLzxnF0AfXTrgNbiVZJNFG7VvXlT10Qae3vT+n/xNdsoS9IRwCimFOmjI8OpdM0A
-         1vrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767437100; x=1768041900;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mA+YIWtnv62G+kj8CxQPw0EabsBETW7vVKKZB5YRNvg=;
-        b=j98Jg+64ShFkHlvtJ0vMqH8jiDT+H+5aWZ5w9pTJfjVBlGpou7xN5dBPnlW0E3qCdu
-         V6IimT3Nw9QLb2KgPio7aXvaZ2p79GJyBhdxTTf8kEIrh69IyfmvMkLt5pIPG5/Giyud
-         nPHMq0m62J3SoRRbGQYjkX0Z5PmSOy/me/skDY1FCxE7cmUMbzN6lOT5d3La7lXxRLeQ
-         QwVZohnHTOGkHzmx4oaof3UpvQqmJKZ+9Yrydq6PBUW/WmG8HqZnUurNcmZfX2vWpNJ4
-         JzL72MLowiCW8r9ngD0qYEbhzqR6u8MtmuqnjIOX4yM4wMwOtrlU8q7exzpb+8clI1pd
-         Z7kw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0hlqGIFvADVf/NKOMzfpLuAYaXuEN814bsM6nIRAg6CEkhkEb3e5IOWJFzHldXvyy/MtE/XEy0KCp0BtT4Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVQjA+58tz2qcp3JRUVsAn7stvrY1KkXobTvsTJcbC0OuBnWMq
-	Kcs6wSDJn37jEjxy/F4bjGalMqKsoZvGuM5wpiSxTWacjzufS9Z0zn8h
-X-Gm-Gg: AY/fxX7KIJRYt5hYA1/g9mly4XrsyYDQiz/sWaZWL+DZE3Xm5nN7fqgzWWnHx2IJkwF
-	qOgZJ/p6Drq712stKkQp3n1gro30xCybseOF3tWslqkmgp4M+zUoAbhJen44x2+nhtis1eIQs3p
-	LC74XXQXTVn/jEQjD7adKbR5bCrLQEp364fHNhGcznyibfG7xR8eDrKqONQsIHsJdnN4FpE045Y
-	H76BhEbQMHiR7Gh1uF6BJT/7KOM2FyCOE7/S3I5a4Tv5/uLQYqLOAqS7VW2qCPH0fcM9RTED5zz
-	OumsgiIqj4wFGRgd+M8gTLIR6zXvSsowpwsdmPIYXu+RFwsRyDHi5E4wgDcZXsYLoh7TW5a4PX4
-	Tb/q/znunKpHkCPbC3PTnMQf9tvgAma05AcwGeoJyd2OlUmGSfZEFw/qQP8izIfTqkxE5d6TNZM
-	xYtAzHoQ+DkzgACYWrufTW5ZZzl0KiHzCokGAAyNrnuIedI9BzskIRqf837gecHw4URWM=
-X-Google-Smtp-Source: AGHT+IHgRBUiAwedFLEDnGkAppIPgacg0XoNBYjGBwVc+gdL+Ywz2GyJ7W6RtYmgyvONjYhvcy8MuQ==
-X-Received: by 2002:a17:902:e74c:b0:297:f09a:51cd with SMTP id d9443c01a7336-2a2f2214860mr469321205ad.14.1767437099794;
-        Sat, 03 Jan 2026 02:44:59 -0800 (PST)
-Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d5d32dsm400578155ad.70.2026.01.03.02.44.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Jan 2026 02:44:59 -0800 (PST)
-Date: Sat, 03 Jan 2026 19:44:48 +0900 (JST)
-Message-Id: <20260103.194448.560764475765900721.fujita.tomonori@gmail.com>
-To: gary@garyguo.net
-Cc: fujita.tomonori@gmail.com, boqun.feng@gmail.com, ojeda@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, bjorn3_gh@protonmail.com,
- dakr@kernel.org, lossin@kernel.org, tmgross@umich.edu,
- acourbot@nvidia.com, rust-for-linux@vger.kernel.org,
- linux-arch@vger.kernel.org
-Subject: Re: [PATCH v1] rust: sync: atomic: Add i32-backed Flag for atomic
- booleans
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20260101210430.6b210dc6.gary@garyguo.net>
-References: <20260101102718.2073674-1-fujita.tomonori@gmail.com>
-	<20260101210430.6b210dc6.gary@garyguo.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D5Vlyitk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1767444861; x=1798980861;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=oK30coeQKfL/fVgDXIniWhU24jzI0TWms9wqUpCrdLM=;
+  b=D5Vlyitko9D2pLek0Fgzwbqdc7TBGUB3j0DIJowW1NiBjtmxyfnxtpsk
+   2vAl4BSD1bKVGpHJf+GAPuIme2jr8SYmcHG80kKDlaVUlHwnqe83DABue
+   n4xMIIZg6ApaYN6CNfn30mZ/inH/GOq3sUTMWYmdkWDXm+wz1UXGuUGox
+   2EBuiSNdWBeHbVyXTP9va84pYuUObsYvxnfklkSXWsJLI5Mgg8TicRyeH
+   nck81FOID/nu/F69eTLMXEZviq5/mnzUQ7JIl35x6LMO6pcErJM9zalaP
+   8BIjwpTNsknZ5mg26z+Nt1h+j0VNUWMM9agc43hqR9iMuFI7UOEJD8g4y
+   w==;
+X-CSE-ConnectionGUID: 32/wxhQrT0qInD5J7ZjSmw==
+X-CSE-MsgGUID: j0xDzQZbROqUDfhCvgxXhg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="91550618"
+X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
+   d="scan'208";a="91550618"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2026 04:54:20 -0800
+X-CSE-ConnectionGUID: fzJkLddPSuGrlf+nLBTUCQ==
+X-CSE-MsgGUID: 7GpofOlQQ/qWltUQ7b8BMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
+   d="scan'208";a="202956797"
+Received: from igk-lkp-server01.igk.intel.com (HELO 92b2e8bd97aa) ([10.211.93.152])
+  by fmviesa010.fm.intel.com with ESMTP; 03 Jan 2026 04:54:18 -0800
+Received: from kbuild by 92b2e8bd97aa with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vc195-000000000hV-417J;
+	Sat, 03 Jan 2026 12:54:15 +0000
+Date: Sat, 3 Jan 2026 13:53:34 +0100
+From: kernel test robot <lkp@intel.com>
+To: Timur Tabi <ttabi@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>, nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v5 11/11] gpu: nova-core: add PIO support for loading
+ firmware images
+Message-ID: <202601031330.EOufCyjz-lkp@intel.com>
+References: <20260103045934.64521-12-ttabi@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260103045934.64521-12-ttabi@nvidia.com>
 
-On Thu, 1 Jan 2026 21:04:30 +0000
-Gary Guo <gary@garyguo.net> wrote:
+Hi Timur,
 
-> On Thu,  1 Jan 2026 19:27:18 +0900
-> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
-> 
->> Add a new Flag enum (Clear/Set) with #[repr(i32)] and implement
->> AtomicType for it, so users can use Atomic<Flag> for boolean flags.
->> 
->> Document when Atomic<Flag> is generally preferable to Atomic<bool>: in
->> particular, when RMW operations such as xchg()/cmpxchg() may be used
->> and minimizing memory usage is not the top priority. On some
->> architectures without byte-sized RMW instructions, Atomic<bool> can be
->> slower for RMW operations.
->> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> ---
->>  rust/kernel/sync/atomic.rs | 35 +++++++++++++++++++++++++++++++++++
->>  1 file changed, 35 insertions(+)
->> 
->> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
->> index 4aebeacb961a..d98ab51ae4fc 100644
->> --- a/rust/kernel/sync/atomic.rs
->> +++ b/rust/kernel/sync/atomic.rs
->> @@ -560,3 +560,38 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
->>          unsafe { from_repr(ret) }
->>      }
->>  }
->> +
->> +/// An atomic flag type backed by `i32`.
-> 
-> I would recommend that we document that the backing type is the
-> (perf-)optimal type on the target architecure, so arch can decide to use
-> i8 as backing type if they prefer.
+kernel test robot noticed the following build errors:
 
-I'm not sure I fully understand the intent yet.
+[auto build test ERROR on 7acc70476f14661149774ab88d3fe23d83ba4249]
 
-Do you mean we should document Flag as being backed by the
-(perf-)optimal integer type for the target architecture, so that the
-backing type can remain an implementation detail and potentially be
-selected per-arch (e.g. i8 on x86) via cfg?
+url:    https://github.com/intel-lab-lkp/linux/commits/Timur-Tabi/gpu-nova-core-rename-Imem-to-ImemSecure/20260103-130228
+base:   7acc70476f14661149774ab88d3fe23d83ba4249
+patch link:    https://lore.kernel.org/r/20260103045934.64521-12-ttabi%40nvidia.com
+patch subject: [PATCH v5 11/11] gpu: nova-core: add PIO support for loading firmware images
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260103/202601031330.EOufCyjz-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260103/202601031330.EOufCyjz-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601031330.EOufCyjz-lkp@intel.com/
 
->> +/// `Atomic<Flag>` is generally preferable when you need an atomic boolean and you may use
->> +/// read-modify-write operations (e.g. `xchg()`/`cmpxchg()`), and when minimizing memory usage is
->> +/// not the top priority.
->> +///
->> +/// `Atomic<bool>` is backed by `u8`. On some architectures that do not support byte-sized RMW
->> +/// instructions, this can make RMW operations slower.
->> +///
->> +/// If you only use `load()`/`store()`, either `Atomic<bool>` or `Atomic<Flag>` is fine.
->> +///
->> +/// ## Examples
->> +///
->> +/// ```
->> +/// use kernel::sync::atomic::{Atomic, Flag, Relaxed};
->> +/// let flag = Atomic::new(Flag::Clear);
->> +/// assert_eq!(Flag::Clear, flag.load(Relaxed));
->> +/// flag.store(Flag::Set, Relaxed);
->> +/// assert_eq!(Flag::Set, flag.load(Relaxed));
->> +/// ```
->> +#[derive(Clone, Copy, PartialEq, Eq)]
->> +#[repr(i32)]
->> +pub enum Flag {
->> +    /// The flag is clear.
->> +    Clear = 0,
->> +    /// The flag is set.
->> +    Set = 1,
->> +}
-> 
-> Maybe add `From` impls that convert this type to boolean?
+All errors (new ones prefixed by >>):
 
-Yeah, that sounds like a good addition.
+   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS= -fno-crash-diagnostics -Wno-error=return-type -Wreturn-type -funsigned-char -Wundef W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
+   make: Entering directory '/kbuild/src/consumer'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in drivers/gpu/nova-core/falcon/hal/ga102.rs:13:
+    use crate::{
+        driver::Bar0,
+        falcon::{
+   +        hal::LoadMethod,
+            Falcon,
+            FalconBromParams,
+            FalconEngine,
+   Diff in drivers/gpu/nova-core/falcon/hal/ga102.rs:19:
+            FalconModSelAlgo,
+   -        hal::LoadMethod,
+            PeregrineCoreSelect, //
+        },
+        regs,
+>> Diff in drivers/gpu/nova-core/falcon/hal/tu102.rs:12:
+    use crate::{
+        driver::Bar0,
+        falcon::{
+   +        hal::LoadMethod, //
+            Falcon,
+            FalconBromParams,
+            FalconEngine,
+   Diff in drivers/gpu/nova-core/falcon/hal/tu102.rs:18:
+   -        hal::LoadMethod, //
+        },
+        regs, //
+    };
+   Diff in drivers/gpu/nova-core/falcon.rs:674:
+    
+        /// Perform a DMA load into `IMEM` and `DMEM` of `fw`, and prepare the falcon to run it.
+        pub(crate) fn dma_load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F) -> Result {
+   -
+            // The Non-Secure section only exists on firmware used by Turing and GA100, and
+            // those platforms do not use DMA.
+            if fw.imem_ns_load_params().is_some() {
+>> Diff in drivers/gpu/nova-core/firmware/fwsec.rs:516:
+            // console error message on other platforms, only try to load it if it's
+            // supposed to be there.
+            let gbl_fw = if chipset < Chipset::GA102 {
+   -            Some(super::request_firmware(dev, chipset, "gen_bootloader", FIRMWARE_VERSION)?)
+   +            Some(super::request_firmware(
+   +                dev,
+   +                chipset,
+   +                "gen_bootloader",
+   +                FIRMWARE_VERSION,
+   +            )?)
+            } else {
+                None
+            };
+>> Diff in drivers/gpu/nova-core/firmware/fwsec.rs:516:
+            // console error message on other platforms, only try to load it if it's
+            // supposed to be there.
+            let gbl_fw = if chipset < Chipset::GA102 {
+   -            Some(super::request_firmware(dev, chipset, "gen_bootloader", FIRMWARE_VERSION)?)
+   +            Some(super::request_firmware(
+   +                dev,
+   +                chipset,
+   +                "gen_bootloader",
+   +                FIRMWARE_VERSION,
+   +            )?)
+            } else {
+                None
+            };
+>> Diff in drivers/gpu/nova-core/falcon/hal/ga102.rs:13:
+    use crate::{
+        driver::Bar0,
+        falcon::{
+   +        hal::LoadMethod,
+            Falcon,
+            FalconBromParams,
+            FalconEngine,
+   Diff in drivers/gpu/nova-core/falcon/hal/ga102.rs:19:
+            FalconModSelAlgo,
+   -        hal::LoadMethod,
+            PeregrineCoreSelect, //
+        },
+        regs,
+>> Diff in drivers/gpu/nova-core/falcon/hal/tu102.rs:12:
+    use crate::{
+        driver::Bar0,
+        falcon::{
+   +        hal::LoadMethod, //
+            Falcon,
+            FalconBromParams,
+            FalconEngine,
+   Diff in drivers/gpu/nova-core/falcon/hal/tu102.rs:18:
+   -        hal::LoadMethod, //
+        },
+        regs, //
+    };
+   Diff in drivers/gpu/nova-core/falcon.rs:674:
+    
+        /// Perform a DMA load into `IMEM` and `DMEM` of `fw`, and prepare the falcon to run it.
+        pub(crate) fn dma_load<F: FalconFirmware<Target = E>>(&self, bar: &Bar0, fw: &F) -> Result {
+   -
+            // The Non-Secure section only exists on firmware used by Turing and GA100, and
+            // those platforms do not use DMA.
+            if fw.imem_ns_load_params().is_some() {
+>> Diff in drivers/gpu/nova-core/firmware/fwsec.rs:516:
+            // console error message on other platforms, only try to load it if it's
+            // supposed to be there.
+            let gbl_fw = if chipset < Chipset::GA102 {
+   -            Some(super::request_firmware(dev, chipset, "gen_bootloader", FIRMWARE_VERSION)?)
+   +            Some(super::request_firmware(
+   +                dev,
+   +                chipset,
+   +                "gen_bootloader",
+   +                FIRMWARE_VERSION,
+   +            )?)
+            } else {
+                None
+            };
+>> Diff in drivers/gpu/nova-core/falcon/hal/ga102.rs:13:
+    use crate::{
+        driver::Bar0,
+        falcon::{
+   +        hal::LoadMethod,
+            Falcon,
+            FalconBromParams,
+            FalconEngine,
+   Diff in drivers/gpu/nova-core/falcon/hal/ga102.rs:19:
+            FalconModSelAlgo,
+   -        hal::LoadMethod,
+            PeregrineCoreSelect, //
+        },
+        regs,
+>> Diff in drivers/gpu/nova-core/falcon/hal/tu102.rs:12:
+    use crate::{
+        driver::Bar0,
+        falcon::{
+   +        hal::LoadMethod, //
+            Falcon,
+            FalconBromParams,
+            FalconEngine,
+   Diff in drivers/gpu/nova-core/falcon/hal/tu102.rs:18:
+   -        hal::LoadMethod, //
+        },
+        regs, //
+    };
+>> Diff in drivers/gpu/nova-core/falcon/hal/ga102.rs:13:
+    use crate::{
+        driver::Bar0,
+        falcon::{
+   +        hal::LoadMethod,
+            Falcon,
+            FalconBromParams,
+            FalconEngine,
+   Diff in drivers/gpu/nova-core/falcon/hal/ga102.rs:19:
+            FalconModSelAlgo,
+   -        hal::LoadMethod,
+            PeregrineCoreSelect, //
+        },
+        regs,
+>> Diff in drivers/gpu/nova-core/falcon/hal/tu102.rs:12:
+    use crate::{
+        driver::Bar0,
+        falcon::{
+   +        hal::LoadMethod, //
+            Falcon,
+            FalconBromParams,
+            FalconEngine,
+   Diff in drivers/gpu/nova-core/falcon/hal/tu102.rs:18:
+   -        hal::LoadMethod, //
+        },
+        regs, //
+    };
+   make[2]: *** [Makefile:1871: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src/consumer'
 
-+
-+impl From<Flag> for bool {
-+    fn from(f: Flag) -> Self {
-+        f == Flag::Set
-+    }
-+}
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
