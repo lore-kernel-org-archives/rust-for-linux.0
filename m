@@ -1,302 +1,238 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013022.outbound.protection.outlook.com [40.93.196.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BAB1EA65
-	for <rust-for-linux@vger.kernel.org>; Sat,  3 Jan 2026 01:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767402928; cv=none; b=rCuh8KwqCXrTcBho8JbTQDZqUcPKZJUI+9jUjgSSh0oUP31GFoWyYY+iHuocsgF4nAqsegs8TRUf5ya5cQ75j9s5PJnpJoLadaT0YrT5Jk6naTeTwN6cj3aGjah61aI5lwzY6XWSFXao9N5Enxi3HAM84DIgMgfi0fbVKsbMFj4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767402928; c=relaxed/simple;
-	bh=QTARhEJFSTGPsOzXe/OtuPsuhBEhi+O/7Bh3fR3pyUc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HMCFV0xRPPhETF7ceZn1I2+5/bt5wg8lZbzyUOv6rgbPIxmVoB+TmsChlYzA1B1ZMD09GjeNh/vcBX+/OSWqOSnh0lXcyVBQQboGBn8+XlmCsBkSNEZ1jabwTaKMzG9jdkaq7wAQoSMlEbki2nSdZF5Ju3kT5HFKSheQHz5W/oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NtVYMx4q; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6829727453;
+	Sat,  3 Jan 2026 01:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767404088; cv=fail; b=lUz9VC9YRW98PmypKd8P9PDS53YwJ54cL8Veaz81P9tAONCxq72TJGxXlHI7+ZU0cE/BVm0/OHwnVdRMC3M1OTvpyftIArDUrUfYscjyQd7HCr/l87pGl9x4vb3WnCMARVs8uKDEwDW0YpPrb8lCQlI/0DcOd48rg0rc8iYXGYQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767404088; c=relaxed/simple;
+	bh=xhAjBuhbPjMUjdD1McKC4td5ijPlk2ArFKbfs03KjYo=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ecsyqFeC/bAP4zU9OsdLOE1awm/BMSScNqwYGw08WLLQ+AkcxURDHhTtBGf2f9n8OrQSccGN6zwwsHrWfTFTe0qo59nZ+LMEksW7j0+xs3n/3sJgUdx4Vj+gg7q1oJuxHa3W8Yq0WCpDlvZw0vE+p+jlwxJdo1oqqDKSx7mwZ44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KeQ4n+Ze; arc=fail smtp.client-ip=40.93.196.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NtVYMx4q"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34c1d98ba11so13420933a91.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 17:15:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767402926; x=1768007726; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DiIFd69Z/eoWAamcI85TAhCk1Ks8rrGMYMOPHSRq7hU=;
-        b=NtVYMx4qZ70JwqK4YtdyYUe3YVLc4bm1Ya3FeAUnazVwwyG/MJyMHOr1+TFW2znCFk
-         M1U/kRocfNob2IztILbrfBIyTSXHb/SGV5j0nXgQr1eM24eFNRpE1Eq52hzAjNSUxpaE
-         JHLIjigOofn0Qsrs+FUhdN6+WmijNjEIgLj6UcyKM30ZvExFBZW3ytc4HamYHTT3DRxS
-         hGqrPCFOXjmUdasnEjPkaEBgNxy6KQkCeDTr3KJpQyv73F2pVFL4az0mzxxvU75x8TyV
-         YoQOrxzU8CsDH0mDiU5XQ1yJ1xFWGzh32U9ZhZw7Fbf6ezaZuzFormMp+5X6Uef5ZIYr
-         dZCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767402926; x=1768007726;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DiIFd69Z/eoWAamcI85TAhCk1Ks8rrGMYMOPHSRq7hU=;
-        b=MxEHR2IIcDU8ms04kBxQ0GBJcKYxLmsFB/2BKHdRfJLpo9BbLBY6Xf2q+R+VW5VB+w
-         mGIF/K53iiWLP4O404EntxezvTBKuOVgb+VMOKLGJZGeNjp8Uwt/HHR9bGOgmcfIGEpk
-         45+ZuccIoIpli34kU4aKoDxEoH+UStnzu9O4SlWhDqpfjkpm1HZ+rM2NKaWPJi3LU76Z
-         paAW/wzUOJqhOpR9b8VSuKoz1Qmj1o+IkeDEt7WDSkNxPglfCJR7vgRzxvI4cW4Vndab
-         LyMuxcMgi8QyfWCIxlaykXcL6G9iUwA79QKc27LQn9EZGlQCqSKPVrzB0iuXbghO05za
-         ULgw==
-X-Forwarded-Encrypted: i=1; AJvYcCXiMMh6xoDeKV1A/+PXXIo10/TsDlGxf27oepaqwz23UOEcm5ifPocsN5FkUmUlqgnwNdF7k5GYE++MRhMcTg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo/N0aAR/jPHN2LZBmffTyCR6XmtKwe9G3XosbcMLlBLfNtFxQ
-	v5vFx/VKljPGbD08wrWn75FMMqcIvBbavH4p0NAu1x5XMuAozcQT+AOxc+ThGhRnrsHGNvqpeu0
-	Wxomx50oibcM7MkEkXx01BQR6Efe3RFw=
-X-Gm-Gg: AY/fxX5iOBJJkRsib4eWVOtmhbjb3KXZjJ447ap2ESn4RruznnH12rtE3mdsAN/pIoy
-	1xIwWp0j98cn0rWGuRVKQwUELhtZjA61njz6H/Cg1KkMbhIB7fw1prQDTqAcFARVDUS/YIBUMST
-	LvsthB7CPSfWFEyM35+Yq0IJ/5Zu5WbicjlCaUAFx7J/f1gqDqvCVGMmz3EPE0NzRF3CSXDqmyd
-	YX9R6hxwbrJCWyqElO6NSp6x6hnsotDgswjhv6WgOpuB4NqCUCiEw+EI+PhawUJ97J35fx1VnYI
-	CUik7iilpL6qriy1pNurPGLRA0E=
-X-Google-Smtp-Source: AGHT+IGEtM7wos8GvJOVgaGDn17Kk0w8djxpcf3i+mo3RvyJT0CGLPD87eMQpabQjb8cWiTVLyqlTTowmIsaXLH7tK4=
-X-Received: by 2002:a17:90b:5804:b0:34c:a29d:992f with SMTP id
- 98e67ed59e1d1-34e921ce52emr34410010a91.31.1767402925980; Fri, 02 Jan 2026
- 17:15:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KeQ4n+Ze"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=srhtgG62wLMItxog71QJkbkCsSAd2DBIMNZNMZdWpHI++Sx/KhY5aYo96i0RYYXduLK14+l+OjiWV+9G5ajT/ntjqSFTgp7GRcckKJwy1Opx/wBjIZq/iaRZ+Pk+4hGd/o/sdlcIQMql9/c/5DqEiSHz4SazDCk2UGqrG4YOLpCTdLbhW+s1GwqjLTOroA98aJHDj1acs8Itr8rjZbPXZVcxiI2he6vREddzwIZOWEXWeOpdBP8VmcQOMI+cYOV5eHIv9LfUO13IFE7jKVQJhoyW2wIL36dMNGSYVMZ6Z5Aqeq3F0ad9mAdVfjHkM0a484ZZnQNDr03ZoWXvv6W4Rw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oHWI69MIHU9L8l8ZH6NHZLAzLRRoLszQxH+fScFdrik=;
+ b=wsIKspdTjYfllFJpymF5y9R/rSxdJRH7G1h0AJcrUnsIb1zjACWSUJ89Dmg5HDT/C3QYeri2KWQ+iu1Fu3FxC915AMaknE+or7IlaMoCLHBuVEMXHql/oL+t9hDikYDsahN4LxBekkf+Tm1B4MODt6V7zyYmz35E5QVjgHywHhc1dGcXDbdiwr1PLnv/Hxow23iXxRCwXxlhOk0Gd2R1bMGLM1QF5wsUPfGPetiNMRfk/Ha6mJ0M8017imcLNRKonaUm1SSeaqEYz1E2Tn68slwT4oARqmcFTr3MyavKHxSF1MbZh9TSOKxfIsmJuPDRndbw0D4QwUk/Lbf1MQkzRQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oHWI69MIHU9L8l8ZH6NHZLAzLRRoLszQxH+fScFdrik=;
+ b=KeQ4n+ZenvnRdGRzZ+kjNCaDuIgjo4+3L0alKJnbn/RzR3BShvcTXyFr0qUtwcljvyKu2sheC75xpwrc05gl7ySJZ00CM7dl3HsEccm2V5dTovc5WXaUz119lK+FSO2RIuinB2KiYu2LWiOe5+ez5696asaeo1NBeG2qZRaEwVQPlIgfcS+Uoz7SfTXANXi6HULNozIPU53A96dSi9RP0W2q38gIZScVn4Z1X6J3M2+WyNUN9823r6qEMcbtZhno8a4L3MW5lg1AwF6ixr4tWmtaditzXC0szwZ4FNhFSfR18Jv3eKTBq8/QvqYO3DuSfFlYO1thdXkgPvasLIDbfw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ DM4PR12MB7646.namprd12.prod.outlook.com (2603:10b6:8:106::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9456.14; Sat, 3 Jan 2026 01:34:41 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9478.004; Sat, 3 Jan 2026
+ 01:34:41 +0000
+From: John Hubbard <jhubbard@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Edwin Peer <epeer@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	nouveau@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: [PATCH] gpu: nova-core: use CStr::from_bytes_until_nul() and remove util.rs
+Date: Fri,  2 Jan 2026 17:34:38 -0800
+Message-ID: <20260103013438.247759-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.52.0
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR03CA0213.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f::8) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAKBF=pu2RZOKztWHD-1Y-EY0-nQzc6JrwNheP3yA9fmyKS2fpg@mail.gmail.com>
- <E88301E9-6142-491A-ADA2-F3BD8D9B92EA@collabora.com> <CAC=eVgQrDzQmOUFT7Tf-Y=dkohZC4+8w_qisz=p8kU38rgvrsQ@mail.gmail.com>
- <88BAA5DC-6025-45E4-88E8-396113766D32@collabora.com>
-In-Reply-To: <88BAA5DC-6025-45E4-88E8-396113766D32@collabora.com>
-From: Kari Argillander <kari.argillander@gmail.com>
-Date: Sat, 3 Jan 2026 03:15:10 +0200
-X-Gm-Features: AQt7F2qGbJJpMfXMPuNRThfy1shzhQvtXfweIh-u0J40OUhz9pK-_Ix2ZhfkZHo
-Message-ID: <CAC=eVgSKwqxpEPPNv++ipHGJpNE9TxjdWK91N+wDR=L3RibK2A@mail.gmail.com>
-Subject: Re: [PATCH v7] rust: add new macro for common bitmap operations
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Filipe Xavier <felipeaggger@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, felipe_life@live.com, 
-	linux-kernel@vger.kernel.org, Lyude Paul <lyude@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|DM4PR12MB7646:EE_
+X-MS-Office365-Filtering-Correlation-Id: ecc85b38-fc59-4d12-534b-08de4a6843d0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?TNplZCMnPn+gOzsV/adaFLEbdAyli2/cjKrZxjk40JzRacmV2JlCVCR0zcZx?=
+ =?us-ascii?Q?VXT1H1sOSDLb4iJGVfG4u8yU4MQsVxlpV6La7LKjtbkaVtSTbAEHa5xgIVkS?=
+ =?us-ascii?Q?Y5CiHNmxOwODmxzM+my4jkorLI/cTxAQtcrhSVHp+3nzJcXY+ghnuPRMdgr7?=
+ =?us-ascii?Q?TwS6/+C+5knThX7nKApqAMjwSOjuXuePxWUPJpCuSbQSgUXwqXOAHu+iF+LQ?=
+ =?us-ascii?Q?q8H2d2/h6gLY4J3Rhso2QZfg1Mxlzs191LCu4o3WSy76AKj6yGTgd/3e2d8c?=
+ =?us-ascii?Q?uueaf/3ouR4VWnKY8MheToSQdgrOvOHiI0ZB3+uwzqI9wySWejE+xJ9c3TJP?=
+ =?us-ascii?Q?2mhaYv+gl7B2JW12JpzwHnBbnlZYAooM4lt2vsDB11PKiXUzfS/I+CAdyqHo?=
+ =?us-ascii?Q?gi/cf3W8vvnjA2t4+gagrd5i8wpA9PDH6cDmb2HAmWh7OFJq7akfAufKhSij?=
+ =?us-ascii?Q?twGWHwGLILnFd7jrrxUJ9K1Xm/JBrAwwvm+V0W4WRb7Ns6ortgP1So+GQphV?=
+ =?us-ascii?Q?2ZCCeJtkIBiA4CSoLLlyXBYnWinnSQirhHjfwj8qsm8AjqturMcRX2c3MRtO?=
+ =?us-ascii?Q?7GIvSI/QXAE/RcYwqdfP2n9Xq3WKvhWuPsbbDxWRPF3ZGy0FOnZNDvbq02Eb?=
+ =?us-ascii?Q?g8WI1++YdxPzpO9Wj2oP8u3YmMdQEvFC9I29VEzyvt62T7FNFtzat31l0QW8?=
+ =?us-ascii?Q?sl59L9gZxad4V7Mf3DmYpXqickTHVeAGIhvxbcHGVAd5fLVuoCW5C5Yx34tY?=
+ =?us-ascii?Q?l/vS2eJ9MYvkKrQuT65EnCQoG0A57J8DF8KrnNPXpysXCBYFWfSxM8Du+cP+?=
+ =?us-ascii?Q?hDrKTQa4gSjDWZ3//vU/7/Z+JHZuH98TCpuoUhQIkF8St2LIej3t7jlPiL4P?=
+ =?us-ascii?Q?qHp3/GnV3fywhi85grRHG3ywNr7smNQCwQbXDxxPkAMqiLcopAM8TtBCXvfE?=
+ =?us-ascii?Q?AUE8v69FI5xcoQ//5fbfGl1LmFIURAhtVv3TObfhaaRitzAOTr5gjQj15dhz?=
+ =?us-ascii?Q?EltSz1IM/WfV/eB8iyMvbJyTAPBCbiY5P1Z+GaUMxcLJhLaqpA/JJepCnm4l?=
+ =?us-ascii?Q?XiT1vxv6YTNWy29zaDZ66XpMCd6YhJeVHL3oy7uHGy87Wlhqg9Iv4PjtkWyk?=
+ =?us-ascii?Q?Y7zK4rq+Wo0JrBS5rnauAaTDSi0B+yMygwCQD0vzLR13copFhv9HA6qkXxwN?=
+ =?us-ascii?Q?0g/QGKuE6swe9xXgs6Dr+bXxExAntFxEHg0rKs0BWansW+ZRhLTBfc4j4gMJ?=
+ =?us-ascii?Q?kVZ1majRMTKv38EipKunLzTq1UZgd+mEbIEBr1yrUS89YF8NhOkA/Pk/Udfg?=
+ =?us-ascii?Q?Qam3TRXtgmwQYwBidRESukyVVL72/WNK/JAGfo24HBeT77gsBQuohtqC8+0w?=
+ =?us-ascii?Q?uMdZan+jsXCwdE/B45tE4YCqGASLiyalOiEH/0RPTK2bzMPAsPiclTIdX3Ha?=
+ =?us-ascii?Q?zT8u1fCiK7+BgFKhzJoREfPAjqiV+in8?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?aLZ0n16S/90AyBpbghJJvL11X2bBB0fNQ/CRgDjFpynD5ya4Chz9JGiypRJi?=
+ =?us-ascii?Q?7Ry/mW3MbQmaLTQevY/NJ3TfJWYPCjkIykDmQQaC6kT4Q7QjAwxMG3pkLC6B?=
+ =?us-ascii?Q?DFURwePXJKUs/bASF6W89rAx3TuRCKLG5XtGtfUtn/astfQMCMutZMN87+mI?=
+ =?us-ascii?Q?GWy5m5Ql/+oZjsZ/oa+vNS41hvVF5vV62ebhoF5TD57r5qj3I3VKP38zM+J8?=
+ =?us-ascii?Q?e5bMXEMFkJMtBDlRLoy2+psrwWQJiMC2sbj/EmZBO/B6mHSJrqDBOxb7l8K7?=
+ =?us-ascii?Q?p8NPEl5oaPXZXe8PtccVlvnHHFOJubA+tJaqqeJtnpE+0Bt/AXFDGEc/7aK/?=
+ =?us-ascii?Q?fWjyoXmYePWRkrM1T4ETUwxT+8NGuvkn6KSSw/zxkulm7WpR2hndKAPowZqK?=
+ =?us-ascii?Q?rq8mrUkFubq3Q1SPdNmbPqJ4yZ51ezaVFtBNINblYJ1Ehzlk9siXZclsfpGC?=
+ =?us-ascii?Q?m8v7B5mcDMzhdSSNBBotw/GsClZPvT9Uc8lfa1T+YPspqokdbDkYb6dRQo6a?=
+ =?us-ascii?Q?uhB+XXSNUnUZMbbEm7cSxaRMGcxA3aHIXTg+mx1jlhzlX6I2BY4j9sNx3/gV?=
+ =?us-ascii?Q?f0vsurzAHrqhNj0aI2gJNsal3tjNO+ejGlOpVX9yZsV7+cOe1vnKIx0F/WJS?=
+ =?us-ascii?Q?sLrd8f51KEQ9RaP5DgDivyXLmYXnvStow43WPGAHT47O/iU6ol89KTaL3gKK?=
+ =?us-ascii?Q?VT99c62YVOlfb7CKXkjVGB2IGnsDjn3maQ/n0Bf6y9W+Quzk6Yczgsdj++bS?=
+ =?us-ascii?Q?+GAYwBeCQYSgmsHrqUT0sDq+Z7hC+HRyQt1yYcC7Pmd+NBDtIKO5GXo4nJ2R?=
+ =?us-ascii?Q?6RWDs+cMz2TOr2VGuymu9qqWos0aYw1RNYufoxeSvslkyKsM3vhjbFAZNQDm?=
+ =?us-ascii?Q?USBxIrVxst6X6f3k06Q4mYHrSmgiQmTOJvAgtZozxcg/LWszLYTnhqK44CZC?=
+ =?us-ascii?Q?HCtn3zefg66FO88JaS1/9Q3l7hxy8qOQy7ya2XU8uEeQg7+dt5fjdNDEDG/k?=
+ =?us-ascii?Q?giW7eoa1iT/S5lmmJXv1Ag2fhIwvxD+JJJxd8zCNtxAKNyvDjfGrKR9MNrA6?=
+ =?us-ascii?Q?vsFRNCuR/y/luLd7+sXx0mK1UMIesbOyU/5nQQ0EOk7CDoNzAxau1oXkI/5O?=
+ =?us-ascii?Q?lUTXf+hG2IGDYcTyR7XDwscYYKZk9Ljn/Kf5W3gQ9kDXgfuexuSjdplT8cCE?=
+ =?us-ascii?Q?UeABzlacO7ZYOdQRhRVZJf/2UOJHKhMBXPKwFTn3Ha5yy2JRuvhSgl0C/KIO?=
+ =?us-ascii?Q?qxIVvoxYGWg/bXmiMx1ZkyABzSB1otc4ID0Z48wLie8Rbq+Fnt1aS5XZatUz?=
+ =?us-ascii?Q?BsZFSwqL/V90lrAiwd5x61LZmmfDfNrWD26Xj4a6s+f247/oQDZ4RfsARiLo?=
+ =?us-ascii?Q?8xqKXCmastpMIXJn3Bz8pubY0JO2es1gOLYLyGnT6XlduAKIVVpRgNVzrhQq?=
+ =?us-ascii?Q?6POe6SXodVgAihSF5uuJMB4FtqY0NaNhFfv65oVFN37TPOk32gSGaffzwJfC?=
+ =?us-ascii?Q?gSOe0IcFU3MSMKuwFnpRSP8ODETV+lh8z1kwByx5Q2+XKcuY2ZUueSq8oDU0?=
+ =?us-ascii?Q?/LwypnBfe1H1D6T9sCmH3yHX2yJRt6h8noDSXMLTwZe4T2C1E8TkJ4Xa8JPe?=
+ =?us-ascii?Q?ISuvIQDUwiG38C7l9fTGCM/znv7y/FAb5FoF8yE4jby4OoOW8H8A8AM1RHfi?=
+ =?us-ascii?Q?Dn2kfqudc2UdC5tzLBG0I2PK68Wnyz87U9+FY78ZsCmUhB+fqJauQNi7cw4h?=
+ =?us-ascii?Q?qIzu2dF2tQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ecc85b38-fc59-4d12-534b-08de4a6843d0
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2026 01:34:40.9650
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GpCf800jqlK4sji2t2i4Gcgivc/z3/am/WVyPrtW1olj+odbmNV4tGWVsSukPbZPAixgzISICsqFsePyZM6+oA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7646
 
-On 2.1.2026 16.44 Daniel Almeida (daniel.almeida@collabora.com) wrote:
-> > On 1 Jan 2026, at 18:39, Kari Argillander <kari.argillander@gmail.com> =
-wrote:
-> >
-> > to 1.1.2026 klo 22.23 Daniel Almeida (daniel.almeida@collabora.com) kir=
-joitti:
-> >>> On 1 Jan 2026, at 16:14, Kari Argillander <kari.argillander@gmail.com=
-> wrote:
-> >>>
-> >>> =EF=BB=BFOn Thu, 1 Jan 2026 at 20:21, Filipe Xavier <felipeaggger@gma=
-il.com> wrote:
-> >>>
-> >>>> +/// // Combine multiple permissions using operation OR (`|`).
-> >>>> +/// let read_write: Permissions =3D Permission::Read | Permission::=
-Write;
-> >>>> +///
-> >>>> +/// assert!(read_write.contains(Permission::Read));
-> >>>> +/// assert!(read_write.contains(Permission::Write));
-> >>>> +/// assert!(!read_write.contains(Permission::Execute));
-> >>>> +/// assert!(read_write.contains_any(Permission::Read | Permission::=
-Execute));
-> >>>> +/// assert!(read_write.contains_all(Permission::Read | Permission::=
-Write));
-> >>>> +///
-> >>>> +/// // Removing a permission with operation AND (`&`).
-> >>>> +/// let read_only: Permissions =3D read_write & Permission::Read;
-> >>>> +/// assert!(read_only.contains(Permission::Read));
-> >>>> +/// assert!(!read_only.contains(Permission::Write));
-> >>>> +///
-> >>>> +/// // Toggling permissions with XOR (`^`).
-> >>>> +/// let toggled: Permissions =3D read_only ^ Permission::Read;
-> >>>> +/// assert!(!toggled.contains(Permission::Read));
-> >>>> +///
-> >>>> +/// // Inverting permissions with negation (`!`).
-> >>>> +/// let negated =3D !read_only;
-> >>>> +/// assert!(negated.contains(Permission::Write));
-> >>>> +/// assert!(!negated.contains(Permission::Read));
-> >>>
-> >>> I really like the OR (`|`) operator. Personally, I don=E2=80=99t like=
- anything
-> >>> else. When
-> >>> a function or expression gets longer, something like let negated =3D =
-!read_only;
-> >>> already feels strange to read.
-> >>>
-> >>> My suggestion is that everything else should be functions, so we woul=
-d write:
-> >>>
-> >>> ```rust
-> >>>   let xxx =3D Permission::Read | Permission::Write;
-> >>>   xxx.remove(Permission::Write | Permission::Read);
-> >>>   xxx.toggle(Permission::Execute);
-> >>>   xxx.invert();
-> >>> ```
-> >>>
-> >>> This way we avoid expressions like:
-> >>>
-> >>> ```rust
-> >>>   let a =3D !(!xxx | yyy ^ zzz);
-> >>> ```
-> >>>
-> >> =E2=80=9C
-> >>> At that point, no one understands what is really happening anymore. P=
-eople start
-> >>> wondering whether operator precedence or evaluation order matters, an=
-d may even
-> >>> have to go read the source code to figure it out.
->
->
-> Then don=E2=80=99t write convoluted expressions=E2=80=A6it=E2=80=99s not =
-something you can
-> fix at the language level.
+The util.rs module contained a single helper function,
+str_from_null_terminated(), which duplicated functionality that is now
+available in core::ffi::CStr.
 
-I disagree. Rust already fix lot of problems at language level. This sounds
-to me it is the same as "Then don't write memory bugs, it's not something
-you can fix at the language level". And Rust still did it.
+Specifically, CStr::from_bytes_until_nul() is available in the kernel's
+minimum supported Rust version (1.78.0), so it time to stop using this
+custom workaround.
 
-> What=E2=80=99s your take on the boolean operators, by the way?
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+---
+ drivers/gpu/nova-core/gsp/commands.rs |  5 +++--
+ drivers/gpu/nova-core/nova_core.rs    |  1 -
+ drivers/gpu/nova-core/util.rs         | 16 ----------------
+ 3 files changed, 3 insertions(+), 19 deletions(-)
+ delete mode 100644 drivers/gpu/nova-core/util.rs
 
-They are very nice. I do not see how this is relevant.
+diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-core/gsp/commands.rs
+index 0425c65b5d6f..a11fe6018091 100644
+--- a/drivers/gpu/nova-core/gsp/commands.rs
++++ b/drivers/gpu/nova-core/gsp/commands.rs
+@@ -30,7 +30,6 @@
+         },
+     },
+     sbuffer::SBufferIter,
+-    util,
+ };
+ 
+ /// The `GspSetSystemInfo` command.
+@@ -209,7 +208,9 @@ impl GetGspStaticInfoReply {
+     /// Returns the name of the GPU as a string, or `None` if the string given by the GSP was
+     /// invalid.
+     pub(crate) fn gpu_name(&self) -> Option<&str> {
+-        util::str_from_null_terminated(&self.gpu_name)
++        CStr::from_bytes_until_nul(&self.gpu_name)
++            .ok()
++            .and_then(|cstr| cstr.to_str().ok())
+     }
+ }
+ 
+diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+index b98a1c03f13d..c1121e7c64c5 100644
+--- a/drivers/gpu/nova-core/nova_core.rs
++++ b/drivers/gpu/nova-core/nova_core.rs
+@@ -16,7 +16,6 @@
+ mod num;
+ mod regs;
+ mod sbuffer;
+-mod util;
+ mod vbios;
+ 
+ pub(crate) const MODULE_NAME: &kernel::str::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
+diff --git a/drivers/gpu/nova-core/util.rs b/drivers/gpu/nova-core/util.rs
+deleted file mode 100644
+index 4b503249a3ef..000000000000
+--- a/drivers/gpu/nova-core/util.rs
++++ /dev/null
+@@ -1,16 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-
+-/// Converts a null-terminated byte slice to a string, or `None` if the array does not
+-/// contains any null byte or contains invalid characters.
+-///
+-/// Contrary to [`kernel::str::CStr::from_bytes_with_nul`], the null byte can be anywhere in the
+-/// slice, and not only in the last position.
+-pub(crate) fn str_from_null_terminated(bytes: &[u8]) -> Option<&str> {
+-    use kernel::str::CStr;
+-
+-    bytes
+-        .iter()
+-        .position(|&b| b == 0)
+-        .and_then(|null_pos| CStr::from_bytes_with_nul(&bytes[..=null_pos]).ok())
+-        .and_then(|cstr| cstr.to_str().ok())
+-}
 
-> >> I disagree. How would that look like given your suggestion?
-> >>
-> >>>
-> >>> By only supporting OR (|) as an operator and expressing everything el=
-se as
-> >>> explicit function calls, the code becomes much easier to read, review=
-, and
-> >>> maintain.
-> >>>
-> >>>   Argillander
-> >>
-> >> How is A | B readable but not A & B or A ^ B?
-> >
-> > Because that is just a way to express multiple / group of Flags and not=
-hing
-> > more. And thinking of this it could be even & operator. So we only allo=
-w
->
-> So A | B is =E2=80=9Cjust a way to express multiple flags=E2=80=9D instea=
-d of the much
-> more obvious A OR B? Same for A & B .
->
-> > creating / enabling / disabling / toggling for a group of flags. Everyt=
-hing
-> > still needs to be explicit. So we would end up with something like
-> >
-> > ```rust
-> >    Flags::new(A | B);
->
-> This is _much_ more straightforward:
->
-> +/// // Combine multiple permissions using operation OR (`|`).
-> +/// let read_write: Permissions =3D Permission::Read | Permission::Write=
-;
->
-> >    toggle(A | B);
-> >    disable(A | B); // Or remove() (I do not have opinion)
-> >    enable(A | B);
->
-> Now we have to break extremely straightforward operations into multiple
-> function calls. This is not ergonomic.
->
-> >
-> >    // I would even consider & operator here as then you read it quite n=
-icely
-> >    // toggle (A and B)
-> >    toggle(A & B);
-> > ```
->
-> Sorry, I don=E2=80=99t buy this syntax at all. What=E2=80=99s the differe=
-nce between A | B vs
-> A & B in your proposal?
+base-commit: 7acc70476f14661149774ab88d3fe23d83ba4249
+-- 
+2.52.0
 
-Following is a problem in my opinion. Rust use | for OR in match statements=
-.
-So if we do bitflag operations it looks quite strange when we do this:
-
-```
-    const WRITE_READ: Permissions =3D Permission::Write | Permission::Read;
-    match permissions {
-        Permissions::None =3D> println!("None"),
-        Permissions::All =3D> println!("All"),
-        Permission::Write | Permission::Read =3D> println!("Write or read")=
-,
-        WRITE_READ=3D>  println!("Write and read"),
-        _ =3D> {},
-    }
-```
-
-This has actually been documented in rust bitflags [1]. I also think we sho=
-uld
-document this somewhere because this is not very obvious in Rust.
-
-[1]: https://docs.rs/bitflags/latest/bitflags/macro.bitflags_match.html
-
-> >
-> > Most annoying thing with flags is that if you need to enable 8 flags th=
-en some
-> > operator becomes a must. Still using those in everywhere is error prone=
- and
->
-> So you=E2=80=99re proposing both operators and these functions?
->
-> > confusing. So I totally agreed that we need some way to express group o=
-f flags
-> > without always doing something like "t.enable(Flag::A).enable(Flag::B)"
-> >
-> > If this way is used it is really nice that every function get's documen=
-tation.
->
-> We do *not* need documentation for =E2=80=9Ctoggle()=E2=80=9D, =E2=80=9Ci=
-nvert()=E2=80=9D and friends.
->
->
-> > If we only allow | or & there is very little chance that someone mix wh=
-at those
-> > means as it is always documented function call. Using operators too fre=
-ely feels
->
-> No kernel developer is ever going to get confused by basic bitwise operat=
-ions.
-
-Most developers just need to write drivers.
-
-> > very C++ in my opinion. Rust is very explicit language so let's not cha=
-nge that
->
-> How is C++ relevant here? Bitwise ops are used all over the place in C to=
-o.
-
-Sorry for my bad words here. I meant C++ operator overloads, not
-bitwise operations
-themself. Those are used very freely in many places So you actually do
-not know what
-even "+ operators" do anymore.
-
-> > but let's still make it usable for our cases.
->
-> The language specifically allows us to build this API, so I see no proble=
-m with
-> the current approach. Your implementation is, in my humble opinion, a dow=
-ngrade
-> w.r.t to what has been developed so far: it changes a syntax that everyon=
-e
-> understands in order to solve a problem that doesn=E2=80=99t really exist=
-.
-
-bitwise operations are backed in C. In Rust you really have to know
-that now this
-struct supports bitwise operations. That is not so obvious in Rust
-that you can do
-those operations for non-integer types.
-
-But probably there is no point continue discussion as two people has nacked
-my suggestion so fast and I'm totally ok with it. Still thanks for
-taking time on this.
-
-    Argillander
