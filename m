@@ -1,185 +1,130 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656AC1FC8
-	for <rust-for-linux@vger.kernel.org>; Sat,  3 Jan 2026 21:53:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108281A9F87
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 Jan 2026 23:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767477208; cv=none; b=K3iAEbjmyBHcqFGiLrYNWnFmgSDSDC5kA8rbine0rne0eKEuez6KbZSZzKvvSztC55BzVdPHtsnKX0iVt4V6BYONziCRjIyer2fkjp1gBLJf8LIoXIaX9OGhB6q2kfyz/7Pw09hTg3EpkhWCpJByrZqmXWj/Beq/BrxqyiFxg3w=
+	t=1767483115; cv=none; b=ITGtp7el4bvntBa+dYjokvRPg6qbian3XOxTR63gQZOBRzOyXs9Vi3h+5Cf7mUclznHyKWXQHWm+GlgSXi6yN92pvpBs7maEIMOYxnz80IbddfHT0S5gG62GOK0qWeNm7IgyXckM2SM/c8rJHFVNtOd5mJ6RbIav6XdZhX9rCxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767477208; c=relaxed/simple;
-	bh=+a0rZ61BlR4asBFS2IQXtu1dxzG09+n5xc1pwtVYw6g=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=HMCwDJ9AhDKBv0FOpu+BSnxRoL4LqVu92RwBEXSMFnr/BuHNakD7vexRKUptSehNIKDOZg9qvZOvi8FiMNs878O53K6pipDZ9RzRRu4RdqBWUUZqrEaqqWUUKPpg99yMTk/wubBbu0leuqJWMBNuFN4F5bio0jaDccOfN14+DDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B7MeLHpN; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1767483115; c=relaxed/simple;
+	bh=Vh12q3cD2QJIm6KmfxqioNcQYGPmzjrK+YNucEwMH80=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rOBEUv1+aHeq7nYBys5K1uwecvBfAube1mFZTXgs0/9rHqyuagV1hKq9flSxQ1u4T5BRXfPJWv/6ajVvqYfq9jNCFGFHXpLdcv1M+NqHMa4KV0VUTcXQ23XxIovwnDXyvY0Ys1Xd8QruHiqWOyOeN8VszI3oAqFbNoMLGW1YJns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CHLNBdCg; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B7MeLHpN"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-34c708702dfso13804955a91.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 03 Jan 2026 13:53:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CHLNBdCg"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47d6a1f08bbso5565165e9.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 03 Jan 2026 15:31:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767477207; x=1768082007; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YVEPKpy/6ii8Fxn8hb/Lg9OkHV0SZSbCKptj+BZGST0=;
-        b=B7MeLHpNMok4+Dl1/iwvHRxFsvgpe5kTTl99sjk4z4Aha8jMm5TnlIxpEiqtaurq1L
-         e5NzyY1AuN8+56ACDCudlfkMwFkdO3qj1+MtJfI0V3aCaBUyPbgE5baY5Qxh40a1Dxrm
-         IO6LxeB65YAI1/PDm+DpSCs6nNU30BgKlVyH5Qt33lszw0oBfn2QmC/zmwFwNvEbXZkJ
-         0qQ9yVYQi2s0t9LNmhEQswFi8esQ8c4XGmwBDaRF963X7FCPr/25WC54FWlIpy95B0IY
-         DGqmWbKwZ73JQ4LaVyYdpsBaQKOioCPW/PBxtkfW8ZW+M1k5PAoQkp4BtAiilW4Cj+VY
-         3DmA==
+        d=gmail.com; s=20230601; t=1767483112; x=1768087912; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0Fm0LgC0L97g/vZwfPx2HiBkNgQhRuoMKZu6erVzW80=;
+        b=CHLNBdCgxZCbjXssIhaoV4zE1Cw441a4XGFvyo7UDHT//uV4Z4f3+dgmZTOkJ8zpyh
+         q21n1dPL6r2PgCVp6UDpQUpp2uxu5RmxjtjI40Z3c/Zp5AcrDUW9LEcGrV37WvMVKr/C
+         DIV50drEe6uiDYuvpmmnFgIZGqFchUt4EW/VFPOQv2fqwjq4hUeYuZUOShtzDhuY2m4N
+         yZmp9B9GEF1e7bwaXPB/p7FVcys+OQnHCYe6cTrWZmtlD1Ttkv0Ia0ubJ4LWZ6iK8LX/
+         atU4ShI5MxNM6Y2zE4yaly363bfJjdeqSTJxHZuv3NI1GdN7YqltTNb+zFdOfERZdUbZ
+         Al3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767477207; x=1768082007;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YVEPKpy/6ii8Fxn8hb/Lg9OkHV0SZSbCKptj+BZGST0=;
-        b=XjjvCXdo53KAYDLVWWlS5JVsblXJFHEAD4zAzL9DOjvhcmnhFlKU0+r5qRz74I3rRA
-         Z3gfZe9uLic1HLa0iaoDVYYVUekdypv8nQMS8uVT1aVblIeCPPlaCj8fwtjSibetsEL8
-         wpACr8jSnYetg6w/6irq+1oMYKXqSwJgzPxrUagoc/icLOe3Pt+rv9uhMgIWU4EPVsyg
-         IyOmCvH0LVy8D+qqbPcLBNs33UtzCp9yt31Tf6m9EYTBd11Kk4ZRJ8cS89wfYvwDwu9V
-         T/GfzpBnVPhC4bsQlyxlckdZAYv8ToDlCGl1nTLAYINS/6g5/3C1IM8qXbIzLON5ZR54
-         fxKw==
-X-Forwarded-Encrypted: i=1; AJvYcCWK/ziziOXhmYWm1yteHFNtIYBp9XkuqlRPNzz7bjVCGWNo2JVRbPfnpjMmcd8Hr8ItBhWdugcaOAyVtcPazA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/OIJn8XNcBnvg/QaxbqXcGyYIr32gAeaj9oCogY1H7H+j5YI4
-	Vl6G+WmGeJH5F+/CChzBNqtJhArlM/NeJGld995K3p3jSu3slsIPy9rTOnReSQ==
-X-Gm-Gg: AY/fxX76bt+hCH/OS7QXUPD/9hhaJgun6pGqt3xJKVb4EBTUXLs9dQXMwtH44BDrjn7
-	TwCmRtO7vcokSq1Nl50NUFMS/m1u5RPdy3q7SNVpGpaChoo7iTp7IZsLgjVamejAt1wNdYlq3OM
-	3zw7cckGn7NScNNR3UnziOKCeCU9jsTqiD5nFV2wZNG3o6GMBwPoOdhvmLz0idd19GoBrtUyD1D
-	lgv8+WxtzkyBGD8ejVon/p2uhyjIXukamJo7q33IgoxCbrw7uytwHAKSoC00/NT2S2uoYOv+Suf
-	a4A3vq7s4w0SiN9VZVJve2VcN5FPNI+8OG86of2P+O1QcQBLRSOATOAJbn+1HiIux/4xGor4nmw
-	f1ozh8v9sO4RivxP7IzrmdfE1OpqR2twrrJaLc2txX5vdOoDptljgw7is+9LzFd5AYaGnu5wgbv
-	2Z4BUtQMFjXyp2ABn5m5Le9NFW91a6czthHhgsz/yBjt6xsxAZLb9VpK6VRNCa1nqm87mPtpe6N
-	cI19g==
-X-Google-Smtp-Source: AGHT+IGL/W8SoSD2fmGfa2gB+6LIj02HrBGjLwShgzdq0BkitG600i+3wzdiUmWQGf2CnNieEduBeA==
-X-Received: by 2002:a17:90b:2585:b0:340:bb51:17eb with SMTP id 98e67ed59e1d1-34e92131db5mr39951859a91.15.1767477206570;
-        Sat, 03 Jan 2026 13:53:26 -0800 (PST)
-Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f4751d783sm2468879a91.0.2026.01.03.13.53.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Jan 2026 13:53:26 -0800 (PST)
-Date: Sun, 04 Jan 2026 06:53:11 +0900 (JST)
-Message-Id: <20260104.065311.609258219418619592.fujita.tomonori@gmail.com>
-To: gary@garyguo.net, boqun.feng@gmail.com
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
- lossin@kernel.org, tmgross@umich.edu, acourbot@nvidia.com,
- rust-for-linux@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH v1] rust: sync: atomic: Add i32-backed Flag for atomic
- booleans
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20260103190511.2d267164.gary@garyguo.net>
-References: <20260101210430.6b210dc6.gary@garyguo.net>
-	<20260103.194448.560764475765900721.fujita.tomonori@gmail.com>
-	<20260103190511.2d267164.gary@garyguo.net>
+        d=1e100.net; s=20230601; t=1767483112; x=1768087912;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0Fm0LgC0L97g/vZwfPx2HiBkNgQhRuoMKZu6erVzW80=;
+        b=s9rSgp3CWCyUnTS+TCd6mkhUn6GIzJNHR+RX98vIzwYp6YOc8Msp4xPZxOjs75giKx
+         tVzio1fSOwHr84hnXRMzv4Ow6dDRov2d91ix4n3Lcn/xt4XM/Mu0nbD+f6Pss8Bw5Nov
+         ZANxZpZOrRBh2X4JaFxiHg7nxxjHBoNfuyQrZVwEyGT06yqtB8Pi1uapP78tHi8NSxsq
+         iwNj1sqhMZxXNFwH+0aJmI90IdxvSCN5NUuudBbaqOrn+h8s+YKGbxDXwEsDpRATMMT0
+         6JAIGg7t3sQrOo8NiX8XzlyhHb8UClHzkHnTukFSNdbCIGHkUXFxRawRA2lpbA3MtbPR
+         5PIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVTHVkKv4RR2urGNWH5efiJS0lC7GYBjLZEj0pUqjZiv6K0ejcpSc+w17CmsqlQhgxqqM3J9EQiemp98kpgpA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxveDP0hXryECE6xeLgphRR2tlWLIJ+z5+fUjiyd9GTOPPmhIOQ
+	Am5KSb0h3wR46pAZsZxPEGCG0sJ6CIEOkjwzRsLiLqiQPeovFc31Llr9
+X-Gm-Gg: AY/fxX5B3qUhYit2Kx8vT6s7Y4uC8aPiCqzlVfAnCR+wpoX+D/QqOEV4g6w1tULpdP/
+	Eu85kB9j2b/u/4LWr0pB4ng8bjbQn+xFNlEWRNDiGTiQqR2czzxKQujTQqaT88xVHzyqROwHtkz
+	AVXtyM0obQxP5RrLhs4Gc2CZfb8HTf7wF744G6Oor8ayNL9HGx7HGyUo3vrA1xpUVDTEZaiW5lK
+	ReIoZ+lxSVTonEuySlAjx+KxD7/zQ8g25f1l+vRwSevD8kWmTq21s0wsSoNrohVcAK+fTsJYaUm
+	abEdvcPt9ZhABzDzZOnu5IePiyKOoDCJD431OsHEDaGUv2fWtsdShlnn6xOsroK1UYRKZZMd/uA
+	xXQzc78+TsloQWjUmHzUIu5qR+5seGoduyWeLQk9xjtXAj/MikXq9hDfZj6+eOPU3nYTpZi52vr
+	yGNTL/+2JH2w3TRRKSCwi5EcuLjW0F5gxWf62r4GRAt7Z+
+X-Google-Smtp-Source: AGHT+IHAxeIue5mLEwToPPQQOER46GvmyYCyeRLAk7cN+rxVNhyOZ36hKWbjK/N2m708UUrziaVDKw==
+X-Received: by 2002:a05:600c:37ce:b0:477:8a2a:123e with SMTP id 5b1f17b1804b1-47d195911admr564820595e9.33.1767483112191;
+        Sat, 03 Jan 2026 15:31:52 -0800 (PST)
+Received: from [192.168.0.149] ([176.26.203.25])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d6ce21fcdsm65857905e9.0.2026.01.03.15.31.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 03 Jan 2026 15:31:51 -0800 (PST)
+Message-ID: <41d26500-d425-4359-91b4-b738725c0b8b@gmail.com>
+Date: Sat, 3 Jan 2026 23:31:50 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] rust: i2c: Update ARef and AlwaysRefCounted
+ imports to use sync::aref
+To: Danilo Krummrich <dakr@kernel.org>, wsa+renesas@sang-engineering.com
+Cc: Shankari Anand <shankari.ak0208@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>,
+ Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Alice Ryhl <aliceryhl@google.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20260102202714.184223-1-shankari.ak0208@gmail.com>
+ <20260102202714.184223-3-shankari.ak0208@gmail.com>
+ <c7be9f2b-003b-4dca-8296-5cb7a06ded8c@gmail.com>
+ <DFF8D5VJ7RMG.VRLZJ24NT2T3@kernel.org>
+Content-Language: en-US
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+In-Reply-To: <DFF8D5VJ7RMG.VRLZJ24NT2T3@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, 3 Jan 2026 19:05:10 +0000
-Gary Guo <gary@garyguo.net> wrote:
+Hello Danilo
 
-> On Sat, 03 Jan 2026 19:44:48 +0900 (JST)
-> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+On 1/3/2026 8:18 PM, Danilo Krummrich wrote:
+> (Cc: Wolfram)
 > 
->> On Thu, 1 Jan 2026 21:04:30 +0000
->> Gary Guo <gary@garyguo.net> wrote:
->> 
->> > On Thu,  1 Jan 2026 19:27:18 +0900
->> > FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
->> >   
->> >> Add a new Flag enum (Clear/Set) with #[repr(i32)] and implement
->> >> AtomicType for it, so users can use Atomic<Flag> for boolean flags.
->> >> 
->> >> Document when Atomic<Flag> is generally preferable to Atomic<bool>: in
->> >> particular, when RMW operations such as xchg()/cmpxchg() may be used
->> >> and minimizing memory usage is not the top priority. On some
->> >> architectures without byte-sized RMW instructions, Atomic<bool> can be
->> >> slower for RMW operations.
->> >> 
->> >> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> >> ---
->> >>  rust/kernel/sync/atomic.rs | 35 +++++++++++++++++++++++++++++++++++
->> >>  1 file changed, 35 insertions(+)
->> >> 
->> >> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
->> >> index 4aebeacb961a..d98ab51ae4fc 100644
->> >> --- a/rust/kernel/sync/atomic.rs
->> >> +++ b/rust/kernel/sync/atomic.rs
->> >> @@ -560,3 +560,38 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
->> >>          unsafe { from_repr(ret) }
->> >>      }
->> >>  }
->> >> +
->> >> +/// An atomic flag type backed by `i32`.  
->> > 
->> > I would recommend that we document that the backing type is the
->> > (perf-)optimal type on the target architecure, so arch can decide to use
->> > i8 as backing type if they prefer.  
->> 
->> I'm not sure I fully understand the intent yet.
->> 
->> Do you mean we should document Flag as being backed by the
->> (perf-)optimal integer type for the target architecture, so that the
->> backing type can remain an implementation detail and potentially be
->> selected per-arch (e.g. i8 on x86) via cfg?
+> On Sat Jan 3, 2026 at 7:45 PM CET, Igor Korotin wrote:
+>> Acked-by: Igor Korotin <igor.korotin.linux@gmail.com>
+>>
+>> Since I still don’t yet have a public kernel tree, I’d appreciate it if
+>> someone could pick this up through their tree.
 > 
-> Yes, I don't want anyone to rely on it being i32 (at least for now, before
-> a concrete use case of doing so appears).
-
-I see, the following comment works for you?
-
-I thought Boqun had Revocable in mind as the intended use case.
-
-/// An atomic flag type.
-///
-/// This type is a performance-oriented boolean for atomic operations.
-/// The integer type used as the backing representation is an implementation detail, selected to
-/// be (perf-)optimal for the target architecture.
-///
-/// Currently, [`Flag`] uses an `i32` representation. This is because, on some architectures that
-/// do not support byte-sized atomic read-modify-write operations, RMW operations (e.g.
-/// `xchg()`/`cmpxchg()`) on `Atomic<bool>` can be slower than those on `Atomic<Flag>`.
-///
-/// If you only use `load()`/`store()`, either `Atomic<bool>` or `Atomic<Flag>` is fine.
-
->> Yeah, that sounds like a good addition.
->> 
->> +
->> +impl From<Flag> for bool {
->> +    fn from(f: Flag) -> Self {
->> +        f == Flag::Set
->> +    }
->> +}
+> Since I've taken the initial I2C code through the driver-core tree I can pick
+> those patches up as well.
 > 
-> A `#[inline]` is warranted here. Also, it'll be good to have the
-> conversion for the other direction too.
+> However, maybe it's something for Wolfram to just take through his tree?
 
-Of course.
+I see this change more as a Rust infrastructure change rather than 
+something I2C-specific.
 
-+
-+impl From<Flag> for bool {
-+    #[inline(always)]
-+    fn from(f: Flag) -> Self {
-+        f == Flag::Set
-+    }
-+}
-+
-+impl From<bool> for Flag {
-+    #[inline(always)]
-+    fn from(b: bool) -> Self {
-+        if b {
-+            Flag::Set
-+        } else {
-+            Flag::Clear
-+        }
-+    }
-+}
+If it is not a burden for you, I would appreciate it if you could take 
+it through your tree.
 
+Thanks,
+Igor
