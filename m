@@ -1,161 +1,119 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637FE2D9EE3
-	for <rust-for-linux@vger.kernel.org>; Sat,  3 Jan 2026 07:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE2B247280
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 Jan 2026 09:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767426757; cv=none; b=TjjT2qbGeH+ljDzt2XiY/tOD11P27oLF23D6FexaSKzFJ23wWZgRpsa2fmPZW0Gloaox7WLSx2afqMwD/0nIaAuC/JcjyUMedXVqfJRzXp0AVElCduXf8cjmjFNzrG8nC9tT2Xq4WhEr/6JDHhCOszU3lI+JFtw4fJiTrCFpOAE=
+	t=1767433139; cv=none; b=V0JPcAOadgHnXrR0wthOSsrnF/a1n2nKIpOYlCbDyuFxl3bdi4NeSnLOBxJ9chxI5iXt6AQyfdx1uIidgVLisWMydcxYyrbD80i/JgQRNCZwDoaiK4lh7QAI7Eecf1VbpCGya4ZqP2ZifvestsXXlRj/FruY9IRh35igurWZLQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767426757; c=relaxed/simple;
-	bh=OepI/2038pytnntbQ7eE+t9COIVaBah8qJlJ0ntVqJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MFSRC19PU2EV2rqU4PZuD2RsZqltWJgC81S95sueWX1+Lfoo3eKpMdaefStAdJEV5/OL2R5eVRgkUwN3HoVJky7X1Mbgjo7Ixwz8d+w2eSNKd7M3emJjCY6Ohk/NUQxiNjj0sIDlaVF8VZHBQbU1eP5fNgsP2jDrAqqW5PZ8SIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OOKf0f3A; arc=none smtp.client-ip=209.85.219.47
+	s=arc-20240116; t=1767433139; c=relaxed/simple;
+	bh=Dtt4aJ26HXwBmhMnWkq0hwyR+YEk0yHCIxEHQdowN+E=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Yqd7L6aO81nqyZUk9pKkAhzhc7jRpuT3h4vSXk5eM/oLf3crd2DUZVraM81M974EZsV08k/1FTgvrUhYrk6xobDW0saVpB7xnr7AzXOfOZpPaELXB6arem1Pd9OTNaVsZag4otiCC5KmLGrOS5iXosaIYqpAc2NFvYN8z8/i7Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nF76AE3h; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OOKf0f3A"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-88ffcb14e11so94246376d6.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Jan 2026 23:52:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nF76AE3h"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a0bb2f093aso127417795ad.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 03 Jan 2026 01:38:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767426755; x=1768031555; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hUiqiRrm6Mi1XumTouM00ZTDy0NSIsiEbxISr8TIwlk=;
-        b=OOKf0f3Ab/MDHqpX8lvlvZQT+T1D5v5//7gN2uCvCU5fYddZX5BsIdsI9bcGTMEQOQ
-         5JlWTYAVkIPw7n593HjkE7YSo2MdPhASrud8U3CZzxfbsdZBWfROPiy1Sgs+9ZcIhQ6J
-         PHaZvL+OHYYcgoqbvhUEQgZpSl0XmGR/y9RgKn8vP0G7C2nuCTAbuilOLgJBne2fTdaQ
-         2naU+zsapG35sU778RFGf2mCbhHrVdxZSytNVxDCol0g5F9cnpfyJH8/59Z7MjWudgeT
-         ppSTYalxlj5u0ycKCjV1B7AMIIgkoh+jJUm1R1mbOxqXb0SXZNuIxcC2bIY2qvujDh+F
-         ZE+g==
+        d=gmail.com; s=20230601; t=1767433137; x=1768037937; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vnEzSME5ZEreqaDKGDnfwcRFUr116aaSg6xWn/3qmRk=;
+        b=nF76AE3h/AIs2eKzrLwoog0WVqcwbUFPJd+V0CcvuEHxGxW3VNOPwMrMMPy6U1SYN/
+         QiZ2ztHwr1CGBtikIG1Hc9oyZQRVpUmwc8ZF9WVW95pVkVlnebNvP3ayeFmcHT2mHqHR
+         0nw1fPrrYbxCmBkDR5xjcyDn8GNSRuhGcK1M8Z6P6x4+olMwnd2z76WUYYK9YhwwwbLm
+         LNUvv+jF6TswZRG9DgaFQ+bbuT3eWf1KsqlWU3L97qHmWj2lg5QA9WguykHSWELSVmv5
+         ES8GZ6k7XVcUn/lFxHsYLQv6QExBd0Kg2r6eol0ZZ7vtfQtOOgB/Fd6EKISWQzGkPpIr
+         SFAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767426755; x=1768031555;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hUiqiRrm6Mi1XumTouM00ZTDy0NSIsiEbxISr8TIwlk=;
-        b=f8wQRD/prNCqgaPDueqNhdkuZoGv7/q7NEtGVO1soBFHEeEVYHH4AZq3/xMu4aEmLh
-         wZJNO668aIjZ4gwKvfsND5xHFgUFVIgs5cawPoQpryZNlziorKCdbj6isfhhImPHJ8Zt
-         4y+6kdZnMFbYz84oXsifVe3U1F8TWVTZqXs4xbuqVoEIZZyThZM/XvQStp2Be6z+bg1u
-         i2tRHMF9Ae6Ws/xP1baBAhhkrvVmB4LVLPbsqZZ9mR5uQ3LIu4l2eYDMjZ8LpypuyQ5y
-         cyL3NiheAkku0B10GFCf7zZn26YK3fP56ahxK66nwzoKAPyGCN5CwYFTbPnkHfTubDwy
-         eJ+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVMFkD4gJb+3W4a1s8xrhXVgN96jwdL4MWJO6gs6TL7O15LqBkAPqFe/3LIqhlS90ycuBVgoFeausl7J463bQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsFXrG4oCTtV7yXSg1v+W/oR4lBR2d8/AlWrxdZPiit05713P0
-	JrFhXNc0K5bG7pWU3HoHFAQ6tVbJgKv5n0WIt+RTe1DZypKzLdWWb9GR
-X-Gm-Gg: AY/fxX42SeIxaUs8ZpdCIeG+ZfL5klzLcvBSCJ0hGXusvQcfEGnLZVdUsWMDDQQTogy
-	vFipD8S3LiRb9Yn526dSMGsAsUM+sl0RIlgZc60+ZCGyTy6Re6m+YQ6o7NL3bSmO3cqyoZ9/ktt
-	2T5t9wxOQ4iFzWz9NT8qeQPEKI1zErrXkfK6m1Oorq6myRCM324xxJrLjOPb9Eg4pAz3QLhi0Cx
-	X/SFk9faX9Y7UfPRwE19WSoZj0a58qNV/tCeiNaKYzYqlJve6aQWTJmQJb1jAOT7ravy95D0Rn8
-	ybmpORyNzymVPo+IAnuBcfsJpIErcgu9YzUE6AzBVdID9ZZUJFGETdaOF0QD+FbIQpo88FxF0WZ
-	vUxVn/ONSXaD9ZBmSx1VDmFM7ienlFRn1vcga2beHS19oRNDVoakagL0SBAG6sEsHwc8Mdg/vLk
-	AG0XpmG/7eqFbN2HGAN+CeykI3PQ+zgmaxcNPRBQJSg2ttSCygtgezAgPmjYIChaEvUReggag00
-	DHOTb0Rwrjk29Mhtg7SNCFgpQ==
-X-Google-Smtp-Source: AGHT+IEOq/wwkTzOd1NhRjZygxY+EDrhCjN6YqGTDQzerar9HxKd5WEYHfrUIAjR1WtVKfqVdejxuw==
-X-Received: by 2002:a0c:e991:0:b0:888:853c:4f55 with SMTP id 6a1803df08f44-88d844308f5mr576862066d6.70.1767426755336;
-        Fri, 02 Jan 2026 23:52:35 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d997aeff4sm338510706d6.29.2026.01.02.23.52.34
+        d=1e100.net; s=20230601; t=1767433137; x=1768037937;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vnEzSME5ZEreqaDKGDnfwcRFUr116aaSg6xWn/3qmRk=;
+        b=KQ87xUZ5WraUNV6iPHhBsu6+wf/YAAi9xbMIdUvObDr/tlnDbZPd4CeYmJrSRc1s8j
+         w6sMSOHtWe9vbsCJHr72NMnb7n5WpGjyzWQpYMoHMKPZSRVt68OIm9lAT52stQINLZIQ
+         MiycP1EB78axrej4WepKreoHMMkAF72gA22IfJnUv7xsisgQHplIVlZsbpCBY7WWz0mF
+         yQ4dSwIupOunadyM+Qq0zxYh75I/PRbLSCe8ZVc2C8HNZwe5GtTtoBkJDAMRFETRQfQE
+         5WKJhPB37nTXJ7y0huSQxe+Z0nfale4kfz+Y1S2UiJng3+axHJtsZS5Sg5cyAj1hP8CZ
+         VhtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU51iHiqu8sRTJdrVX2uJc9CuSRDzQ9DLsxNT9bgC2auCFV3f+kqCvOOMnm276MxlG3O4jW9n32MKwROdXHxA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwihGQztqfSfqu2zdm9M7GqJuG4z1xNBQBN35YpOp9rt/XWPbQm
+	UFumscG3BS2VLs8R09u1w+ays97gIpnlX0MavVKitwqMgdoqstkdo71X
+X-Gm-Gg: AY/fxX5bo7BLPF7T0+Ujp212gNzU4ryybt1Bv2pOOvw3iYPCu4/0lbT574t54nAyOwu
+	g1RErnzWhWQTDGEfS3kzf+8weh5o7RfxhSaPw78wvdllrAsB0OOuIbpNezyKwV7YSeA9AGP2TeF
+	NIXWgBFEGCl3ov9eBSH6qL2q2YOIZ8azcaaV3iN1wWuWheuSWEhXju2sEq108EzCXk318XxDA5U
+	FCPo8kPHz83hgdy+Yv2IHRDNskxG0L9Uy09Nq4e9gD1D8Ew9cx6wHPJqfROe0EJJJpUG59Q3/pe
+	dOj3b7o/k8k3yQ0vk5PkE3hSQGDGjzazn0BJQVMg9C1vZo7t1TvRIBDP5d9WSJOqAyU1pEkh4Ps
+	SuiGgBmXqQEQPKN8rsAvNifZRHIJQOnc/V1hsR5caesKvrySmT8Pd2WmQ91Wg40XBud5JeIyWqI
+	YwAkoc1x/14r3aUwqR6oKOZzyFYwVhlYas7+Kfmz/6DXD9J4wzHInhq2VBeo9fkMmio9ouFBl1z
+	Uu5Og==
+X-Google-Smtp-Source: AGHT+IFVoj1zaInphfyG61S0FoZSYJbN6U+tvCBtglTz7umstEc8FC7EApMR/z45+p+m8QqhppOdog==
+X-Received: by 2002:a17:902:ef4c:b0:2a0:92a6:955 with SMTP id d9443c01a7336-2a2f2231751mr428866085ad.23.1767433137002;
+        Sat, 03 Jan 2026 01:38:57 -0800 (PST)
+Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3c82858sm395844055ad.29.2026.01.03.01.38.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jan 2026 23:52:34 -0800 (PST)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8DB69F40068;
-	Sat,  3 Jan 2026 02:52:34 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Sat, 03 Jan 2026 02:52:34 -0500
-X-ME-Sender: <xms:wspYaUEa5qjDTjbXIRiFxW-wWRO3Ub3vthbdSDb7H-LuMtgBtGWVew>
-    <xme:wspYaT0z6ZxP1WP4De_eSMfg46Zp3lCy7DptaNzQrsrA8SQVIxo9gcWD-lrn_7CY6
-    nbD3P5TyvDEaJcGxSM_f37qB9YViMhWe9KU7yY5TcjR3mwOD__6>
-X-ME-Received: <xmr:wspYacKpeQ4r-Qcs8973mScAuMemBxXiiRV6Z-aZFtiBpkRMM3xnlbYsUFE5>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeltdellecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdortddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhepvdejleeukeekudfhieegjeduteffkeevleeuieevffefieduuddtveettdeugfdv
-    necuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgpdhkvghrnhgvlhdrohhrghenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
-    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
-    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
-    rghmvgdpnhgspghrtghpthhtohepudefpdhmohguvgepshhmthhpohhuthdprhgtphhtth
-    hopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopehfuhhjihhtrgdrthho
-    mhhonhhorhhisehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhope
-    gsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegurghk
-    rheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
-X-ME-Proxy: <xmx:wspYaY3f00ByQumClIFZAn7JkhhL4frdto6WQYRqgIOIZwmcLt6b8A>
-    <xmx:wspYaQnA-Mpz421Ufo_WzljlmhNGlzLLfy1yV6pK8Cyfr6PefO-wLg>
-    <xmx:wspYaTjNg1x80qt6qJ9vkJ60dMZxjR8SiI9LixBbnnNkvtqESLBQfw>
-    <xmx:wspYaXT-lVXSbTEE7MP-_UMy9yd226C1bELaK9UP5lXd2Io5WmM34w>
-    <xmx:wspYad_W6Y7GJ6R7ooz-HpVctbH__34AjIAdmGAzmHye3xcEwSEbH6nn>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 3 Jan 2026 02:52:32 -0500 (EST)
-Date: Sat, 3 Jan 2026 15:52:30 +0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, ojeda@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com,
-	bjorn3_gh@protonmail.com, dakr@kernel.org, lossin@kernel.org,
-	tmgross@umich.edu, acourbot@nvidia.com,
-	rust-for-linux@vger.kernel.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Add atomic bool support
-Message-ID: <aVjKvpzWbAXxzBlO@tardis-2.local>
+        Sat, 03 Jan 2026 01:38:55 -0800 (PST)
+Date: Sat, 03 Jan 2026 18:38:50 +0900 (JST)
+Message-Id: <20260103.183850.1619235309184362207.fujita.tomonori@gmail.com>
+To: boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ gary@garyguo.net, lossin@kernel.org, tmgross@umich.edu,
+ acourbot@nvidia.com, rust-for-linux@vger.kernel.org,
+ linux-arch@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: sync: atomic: Add atomic bool support via
+ i8 representation
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <aVjKhRKg-05rjnTX@tardis-2.local>
 References: <20260101034922.2020334-1-fujita.tomonori@gmail.com>
- <20260102112000.714ac16d.gary@garyguo.net>
+	<20260101034922.2020334-2-fujita.tomonori@gmail.com>
+	<aVjKhRKg-05rjnTX@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260102112000.714ac16d.gary@garyguo.net>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jan 02, 2026 at 11:20:00AM +0000, Gary Guo wrote:
-> On Thu,  1 Jan 2026 12:49:20 +0900
-> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
-> 
-> > This adds `bool` support to the Rust LKMM atomics.
-> > 
-> > Rust specifies that `bool` has size 1 and alignment 1 [1], so it can
-> > be represented using an `i8` backing type.
-> > 
-> > [1] https://doc.rust-lang.org/reference/types/boolean.html
-> > 
-> > v2:
-> > - remove AtomicImpl
-> > - remove Safety comment about the bit patterns
-> > - remove from_ptr() comment in cover letter
-> > v1: https://lore.kernel.org/rust-for-linux/20251230045028.1773445-1-fujita.tomonori@gmail.com/
-> > 
-> 
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> 
+On Sat, 3 Jan 2026 15:51:33 +0800
+Boqun Feng <boqun.feng@gmail.com> wrote:
 
-Queued with the unnecessary impl AtomicIpml removed, thank you both!
+> On Thu, Jan 01, 2026 at 12:49:21PM +0900, FUJITA Tomonori wrote:
+>> Add `bool` support, `Atomic<bool>` by using `i8` as its underlying
+>> representation.
+>> 
+>> Rust specifies that `bool` has size 1 and alignment 1 [1], so it
+>> matches `i8` on layout; keep `static_assert!()` checks to enforce this
+>> assumption at build time.
+>> 
+>> Link: https://doc.rust-lang.org/reference/types/boolean.html [1]
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> ---
+>>  rust/kernel/sync/atomic/internal.rs  |  1 +
+>>  rust/kernel/sync/atomic/predefine.rs | 11 +++++++++++
+>>  2 files changed, 12 insertions(+)
+>> 
+>> diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomic/internal.rs
+>> index 0dac58bca2b3..31ac4c83b1a5 100644
+>> --- a/rust/kernel/sync/atomic/internal.rs
+>> +++ b/rust/kernel/sync/atomic/internal.rs
+>> @@ -16,6 +16,7 @@ pub trait Sealed {}
+>>  // The C side supports atomic primitives only for `i32` and `i64` (`atomic_t` and `atomic64_t`),
+>>  // while the Rust side also layers provides atomic support for `i8` and `i16`
+>>  // on top of lower-level C primitives.
+>> +impl private::Sealed for bool {}
+> 
+> This line is not needed since bool doesn't need to an AtomicImpl.
 
-Regards,
-Boqun
+Oops, you are right.
 
-> Thanks!
-> 
-> - Gary
-> 
-> > 
-> > FUJITA Tomonori (2):
-> >   rust: sync: atomic: Add atomic bool support via i8 representation
-> >   rust: sync: atomic: Add atomic bool tests
-> > 
-> >  rust/kernel/sync/atomic/internal.rs  |  1 +
-> >  rust/kernel/sync/atomic/predefine.rs | 27 +++++++++++++++++++++++++++
-> >  2 files changed, 28 insertions(+)
-> > 
-> > 
-> > base-commit: dafb6d4cabd044ccd7e49cea29363e8526edc071
-> 
+Thanks!
