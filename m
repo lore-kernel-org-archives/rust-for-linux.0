@@ -1,91 +1,180 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A9D2D192B
-	for <rust-for-linux@vger.kernel.org>; Sat,  3 Jan 2026 14:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAF435975;
+	Sat,  3 Jan 2026 14:38:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767450704; cv=none; b=Ue0NSxH92H/24pMN8GFUP06Vd5WWObm65DCevP2cyBdJ/GPLhpz1s1rRrQY/1YDDRykE2iVywuLJyzQ60qiPPIzO/nZVYJL01esuVfQfdpLivhhBL3HrfBuJrXKLhB3X/0/GH+SVi3Ca/pdbxLC2k7gVPD73V+aUj5zydBSrWV4=
+	t=1767451132; cv=none; b=rKZ779emUjk7o0/V9yN/0kTsOj5/CqNZf9rNcY9AGKGOlF9g9or41Gw9nH4F9oycuF87z7n+d23Zwy1T1d7pH3HkeTzVGclzznM/5PyW4PwVuKweb95HTcawI5RbqVb7umPo3Wj2U4Xa/u+RXvn60DIT7jJ0Z7wdpYt6ZrqoAwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767450704; c=relaxed/simple;
-	bh=Yo9NiJnTxJkwwB8eCcyZ5gF6vklgPfAHnzpS9T2+4BI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BG6O6diSuRpHUnY1KjTE9Y4ealwATxJdoX86SHNERzrceYqm/xLyZHlkmDxc6q90RYQhze5d3QwI/kzd6NlV8KBcbQ5gjlx9q6jC6d5Ntwc2hmDtIHo5cEdxfSKUtFlulJBfPDT60wz47yVW71Y/sGN2jsrO4wyXbQ4qBCBHCoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info; spf=pass smtp.mailfrom=markoturk.info; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=markoturk.info
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b7277324204so1854879566b.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 03 Jan 2026 06:31:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767450701; x=1768055501;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TeXK/uLet5xBMYnQch/F6aurpQjuvhTk9qorMiPAHMo=;
-        b=aQGn3fSXMfxsW/Vy8fxS+zAvLvhzASO4TeRfF5yV7VayelMwMAOHOnQTROd64f7irA
-         RWIsUNTQVxl1KWL36FOHTFGk3UvpQ9iX9AWu25D7ZqH65j5ZCRuhI9xrMnpcBYAwe6OU
-         XiSA6A3JOllay/QqCkHWrsbZs5j2rlzhbn588FM+9986BPih2fa20YQmiRR0UySf+up8
-         vuoiV3Ksgr65NLI7ZsiSMb/hSoKkPEhNPo5t1BbUWCRbfvOZCAi7HBXkIiQ5ArhMGL7H
-         ub92FNtSza+pGOkLLaqHXysnT6kdBr4y6f0N3tblCZ/KHNFJMmiq6ofW5Wz6LZnqrbxU
-         QIsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWoNv8DSso1DkkRmmtjfoUxbg887FtWfhFx6sTOS/lc4CRX4WEHph54p0BjRUnQ986X9rQV9tCTJTpRMi7p2g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQ4ybgqMl0eHW+ts2rYAQhZYq1pxvn9c3UDGxd8YCtmFVrIn1u
-	wQer+8OkjFDSXcJ58T0zNZ+FNWtVLHYPIYt6i/Jm5ifOsBgsM0EUbwn+H/uH3URj8jE=
-X-Gm-Gg: AY/fxX6+fE2KHrSO8TH1nvafJitJolpx4VVTv9EaSrYVPsPb9dwB9F8K/n+WVKENpW1
-	w4K+AbNSh+gAAeyIIn4vO+JTjHK8lNGVvfSumDRpUcv1Dw1yGBGrXvyM/QKvHwOvgW2jqAiounH
-	u1TwIQdzkmnKTiUI1iybKuyt/2OQiGCR2TFxItIQXC0Fxkuqtue1o6rcpH8EhkRdv5fvCVGvi1p
-	0JSK0DtRlMEk3+RS3kNNszBIMhae4BuSiw6b5mN20Ntl40G7cS1X6OvRdhKC6lUooLcmx34dLoP
-	N+0j/ppapYi1RAupWdkIYwezKFK3pt4DMCLe6Zp+M9G48mQjWKhe847xT/euCyuIOuvA22xpe2w
-	PDMuYxhVY1EOftsUFvwstCAmuzYqQeitfgIqEqtzIG3jwjWiQOzmoxXOS/qUoAiHQr8KJk5VWOd
-	IFcCmzg1G5A6w=
-X-Google-Smtp-Source: AGHT+IENJSduuZRD1nBhGtGEJjleRZsqM+PDOV1UaW/DiyfEC1lIDZ+R5/jusjphWj25iRZFPeThfw==
-X-Received: by 2002:a17:906:6a21:b0:b76:3399:457b with SMTP id a640c23a62f3a-b80371d8c90mr4327536266b.37.1767450700331;
-        Sat, 03 Jan 2026 06:31:40 -0800 (PST)
-Received: from vps.markoturk.info ([109.60.4.132])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037f13847sm4772012366b.57.2026.01.03.06.31.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Jan 2026 06:31:39 -0800 (PST)
-Date: Sat, 3 Jan 2026 15:31:38 +0100
-From: Marko Turk <mt@markoturk.info>
-To: dakr@kernel.org, dirk.behme@de.bosch.com, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	mt@markoturk.info
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, Marko Turk <mt@markoturk.info>
-Subject: [PATCH 2/2] rust: pci: fix typo in Bar struct's comment
-Message-ID: <20260103143119.96095-2-mt@markoturk.info>
-References: <20260103143119.96095-1-mt@markoturk.info>
+	s=arc-20240116; t=1767451132; c=relaxed/simple;
+	bh=CAU1ctlAsiL0gt7YXxksyqGWy4qAoIURirgoWRDelos=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bBL7xzIkOtLUFW6taBKQITQTeourUDiwsoX4pmfa+P4pBAu9RHTNl4s94TRQ22Hn6e+R9XGRbSP/nXULjto7+3Nshkrf7H27hjI5duqAL6ZDmXKCQv12VX+W8X6m5Ui4ysE9MWl13hr8Y6LKSpwiXpFn2b4GTiHaVZ4hV6QCVPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ch38Xw0v; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ch38Xw0v"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 56361C113D0;
+	Sat,  3 Jan 2026 14:38:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767451131;
+	bh=CAU1ctlAsiL0gt7YXxksyqGWy4qAoIURirgoWRDelos=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=ch38Xw0voAxFZ7/ud5FhYbEB48/RIswFwgg0HJjr7ctrF6Zhj+8vLFLLJrlDt+WKn
+	 NgInYCFUNKi3BJaT7lyp7UTcRrgfFNNIOU54LlXVQ2thfPBKqPp9ypCUJ152voYYsM
+	 poOcd13asUYTrOYjuWOzVsWfMDr+AG9nrFEmwAS37P/re4+GFzTImbGwOHlrResUgL
+	 AzQC9KsZ3AfXHmhQp4NiB8MTuy4Iq/ePZs74Esxb/UsjaEdri63kPuHdmsEtODNFGE
+	 YCn6qMbR+Q2eVFmAvAaIcKxWTRAGBdPCPh5MfGSldSmtJTIQQPF7CLx0OFBaOtpC7/
+	 /QlvFNh8DbvPw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C233FC6160;
+	Sat,  3 Jan 2026 14:38:51 +0000 (UTC)
+From: SeungJong Ha via B4 Relay <devnull+engineer.jjhama.gmail.com@kernel.org>
+Date: Sat, 03 Jan 2026 14:38:50 +0000
+Subject: [PATCH] rust: pci: add HeaderType enum and header_type() helper
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260103143119.96095-1-mt@markoturk.info>
-X-Mailer: git-send-email 2.51.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260103-add-rust-pci-header-type-v1-1-879b4d74b227@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAPkpWWkC/x3MQQrDIBBG4avIrDugRgLJVUoXon+S2SQypqUle
+ PdKlt/ivYsqVFBpNhcpPlLl2Dvcw1Da4r6CJXeTt360zg4cc2Z915NLEt4QM5TPXwEPYfRhSg7
+ JBep5USzyvdfPV2t/4WGVIGoAAAA=
+To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, SeungJong Ha <engineer.jjhama@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767451130; l=3232;
+ i=engineer.jjhama@gmail.com; s=20260103; h=from:subject:message-id;
+ bh=e2E4FhBSLeClmn+jWVL0WZmHkENN+PUZbPDhQoNtkk4=;
+ b=XWFzV0h3yE2SOPThqJB98GlI0lv2RzQLCSus9cLyUDIbfpwW6sbnzuUnfVt3hJPcFVtwd3Qoi
+ ggPUYgYQ0g6B8vzD2SeROuxPwThziziy+4DSpr9CTbgbN4MspyHoxec
+X-Developer-Key: i=engineer.jjhama@gmail.com; a=ed25519;
+ pk=G5nmjm+RTiWBpyCvc5xjR1b3li/2zipLSMyz+T4fj5E=
+X-Endpoint-Received: by B4 Relay for engineer.jjhama@gmail.com/20260103
+ with auth_id=590
+X-Original-From: SeungJong Ha <engineer.jjhama@gmail.com>
+Reply-To: engineer.jjhama@gmail.com
 
-inststance -> instance
+From: SeungJong Ha <engineer.jjhama@gmail.com>
 
-Signed-off-by: Marko Turk <mt@markoturk.info>
+Add the HeaderType enum to represent PCI configuration space header
+types (Normal and Bridge). Also implement the header_type() method in
+the Device struct to allow Rust PCI drivers to identify the device
+type safely.
+
+This is required for drivers to handle type-specific configuration
+registers correctly.
+
+Signed-off-by: SeungJong Ha <engineer.jjhama@gmail.com>
 ---
- rust/kernel/pci/io.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hello,
 
-diff --git a/rust/kernel/pci/io.rs b/rust/kernel/pci/io.rs
-index 0d55c3139b6f..fba746c4dc5d 100644
---- a/rust/kernel/pci/io.rs
-+++ b/rust/kernel/pci/io.rs
-@@ -20,7 +20,7 @@
- ///
- /// # Invariants
- ///
--/// `Bar` always holds an `IoRaw` inststance that holds a valid pointer to the start of the I/O
-+/// `Bar` always holds an `IoRaw` instance that holds a valid pointer to the start of the I/O
- /// memory mapped PCI BAR and its size.
- pub struct Bar<const SIZE: usize = 0> {
-     pdev: ARef<Device>,
+This is my first patch to the Linux kernel, specifically targeting the 
+Rust PCI subsystem. 
+
+This patch introduces the HeaderType enum to represent PCI configuration 
+space header types (Normal and Bridge) and implements the header_type() 
+method in the Device struct.
+
+I have followed the patch submission checklist, but as this is my first 
+contribution, please let me know if I have missed any conventions or 
+if there are areas for improvement.
+
+Thank you for your time and review!
+
+Best regards,
+SeungJong Ha
+---
+ rust/kernel/pci.rs        | 10 ++++++++++
+ rust/kernel/pci/header.rs | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+)
+
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 82e128431..90a0eb54f 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -31,10 +31,12 @@
+     },
+ };
+ 
++mod header;
+ mod id;
+ mod io;
+ mod irq;
+ 
++pub use self::header::HeaderType;
+ pub use self::id::{
+     Class,
+     ClassMask,
+@@ -373,6 +375,14 @@ pub fn revision_id(&self) -> u8 {
+         unsafe { (*self.as_raw()).revision }
+     }
+ 
++    /// Returns the PCI header type.
++    #[inline]
++    pub fn header_type(&self) -> HeaderType {
++        // SAFETY: By its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`.
++        HeaderType::from(unsafe { (*self.as_raw()).hdr_type })
++    }
++
+     /// Returns the PCI bus device/function.
+     #[inline]
+     pub fn dev_id(&self) -> u16 {
+diff --git a/rust/kernel/pci/header.rs b/rust/kernel/pci/header.rs
+new file mode 100644
+index 000000000..032efeb16
+--- /dev/null
++++ b/rust/kernel/pci/header.rs
+@@ -0,0 +1,31 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! PCI device header type definitions.
++//!
++//! This module contains PCI header type definitions
++
++use kernel::bindings;
++
++/// PCI device header types.
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum HeaderType {
++    /// Normal PCI device header (Type 0)
++    NormalDevice,
++    /// PCI-to-PCI bridge header (Type 1)
++    PciToPciBridge,
++    /// CardBus bridge header (Type 2)
++    CardBusBridge,
++    /// Unknown or unsupported header type
++    Unknown,
++}
++
++impl From<u8> for HeaderType {
++    fn from(value: u8) -> Self {
++        match u32::from(value) & bindings::PCI_HEADER_TYPE_MASK {
++            bindings::PCI_HEADER_TYPE_NORMAL => HeaderType::NormalDevice,
++            bindings::PCI_HEADER_TYPE_BRIDGE => HeaderType::PciToPciBridge,
++            bindings::PCI_HEADER_TYPE_CARDBUS => HeaderType::CardBusBridge,
++            _ => HeaderType::Unknown,
++        }
++    }
++}
+
+---
+base-commit: f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
+change-id: 20260103-add-rust-pci-header-type-346249c1ec14
+
+Best regards,
 -- 
-2.51.0
+SeungJong Ha <engineer.jjhama@gmail.com>
+
 
