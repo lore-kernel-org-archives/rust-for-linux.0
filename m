@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE67121A95D;
-	Sat,  3 Jan 2026 09:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F76126F0A;
+	Sat,  3 Jan 2026 10:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767434344; cv=none; b=ls74A/5hogaZodhHdb2CvS6AgjfA4iaQK7Avgqhua+8K1AVLpVLRJDXCqlbk4x5qlAlqdLQ5VayEwMcmDspOoDAbbS4Uox6/PpSJJsbcvjWpkbGPFsvuC3MWT7Zr+lDhuvpW/ngZcs1cFtZAx2Lc8OlsqBN3jQqRqSPF3Cil0dA=
+	t=1767435301; cv=none; b=PS2ogMSYBeUHXbMFSkxTu4Zw2B59Yijfw2KeVFiqRfbNEa5iuCu7re01O9aIuLguEjOMfsDtHeFSHE0G+bd9i4cwf4wSeATBRfVn3kCK+T3LEhExLlVLYTFtfhJacfCTPpbsXjqXqWh9Ulf+rKwQz1NnM4dw12L+TF9OjTHwgoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767434344; c=relaxed/simple;
-	bh=9cMJn24asddkpwwKVCl2QOsK9R5i64qbxC3xV4KCc50=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=XKQoaGU9nCDtlj6TGHBVFkVDwtNptpl2RpFdJm8wChLzBWeXitoTQgHEyoPyVGHWoZRS0C/WpS1Pc6tXx6jEvCy/wBMXMma/zyEvAQfkUzxbr+akU3PbF+JmgvC5gjH17k2bfyJpQh9JXVNLYX6yICYHbcZPel6xiqY5pPVTrGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ky6TS3cl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767435301; c=relaxed/simple;
+	bh=VJPG6cAxntp719Jx+yOECXPqz1CSvBhPq9ajb2tyTX4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=qwydk5VFiRxyvsZNtKRg623hbdlzG7PzkU274+833W9RlfcwmbuYmLwQMf7PSHzjjaWjFq2co5g45ucbXDvh0g04CKK24Zz0AL7f4dlV2I3IAYCbG74QEYDAsy+adpKhQSO/vzFWATH+0vnnwamV/vBs0/M3mKKW9ioQA9jziaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q8SBg0g4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ky6TS3cl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2ECCC113D0;
-	Sat,  3 Jan 2026 09:59:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q8SBg0g4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D351AC113D0;
+	Sat,  3 Jan 2026 10:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767434343;
-	bh=9cMJn24asddkpwwKVCl2QOsK9R5i64qbxC3xV4KCc50=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Ky6TS3cl4aneh4IjQJ12kCXAlZOO3tYw+ivV93W5pab3nz72Lv+Xx11MZrL3Jrm4i
-	 VI3iUYejVAvjRaLmiph4ub/snoiX9nDTnlbVHgk5mZuJcp4420kL27+4uH4lWDhEoS
-	 xYZx93XTIk7gUAk/flANrXkfRCwLFUV8HWmo8Zw6S39VcWToOv1B4ccg1qfi2Ne/ba
-	 H6Hl+RPKe7Lm1a3ivqvBOV7lRebTs5cFGKNAUsg4EuHxmIyJVyZpmpA+0SqEmB6upS
-	 TysA6FcaRdQbyLyW6GSTzOJdjqp6eJ7N3Wuffr+ZA2j+g65Bx+Y7AVYZufjEKHd5cd
-	 ihwAAmJ5Zrxxw==
+	s=k20201202; t=1767435300;
+	bh=VJPG6cAxntp719Jx+yOECXPqz1CSvBhPq9ajb2tyTX4=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=q8SBg0g495DLKSAVqjx4MtrtLI/KWiCvW4GWkdFlpUw+/KIF7qSVpRVDR62wiZOJp
+	 BlTgbdL/SAc88Bjz+53B3bzv9S+iRBg4Z/K14olgFfTnZ/fV2UWGTQDd7i92+CK9fQ
+	 t4lJxSoqZ1ue0A0dey4+5+O0sc78U4lJ9xNYqE7XoFUkeFknWE2i/MpGoozjoAQU1V
+	 akGoUm+0QeSU2kDSfmyILZx2Vgmmhb3e0AdFzs3hUUAnGxzdbmxhbcPYsL/5SyJUny
+	 g5mW3D9LQzzyWchTzZ2ccldRVzF5yac7YIzjhioffJ2YaAiRu+GVTA6Z2ryXr0cXTY
+	 k7LfN5J1ztzAQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,50 +34,75 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 03 Jan 2026 10:58:58 +0100
-Message-Id: <DFEV6M7ZUBED.D22RP35TL64G@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/3] scripts: generate_rust_analyzer: match
- rust/Makefile
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Tamir Duberstein" <tamird@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20250723-rust-analyzer-pin-init-v1-0-3c6956173c78@kernel.org>
- <CAJ-ks9nJ149Dt2v5Dn0A3+Qw=TnzE84Lm3Ridrfrc=mdhFt-MA@mail.gmail.com>
- <DFEDG6TK5AY9.1Y9EPEYQLMCMX@kernel.org>
- <CAJ-ks9krE2+K0mVkG-Ao9VAuyDqdAoPbWAK7fHyoVZD6ww=zyg@mail.gmail.com>
-In-Reply-To: <CAJ-ks9krE2+K0mVkG-Ao9VAuyDqdAoPbWAK7fHyoVZD6ww=zyg@mail.gmail.com>
+Date: Sat, 03 Jan 2026 11:14:55 +0100
+Message-Id: <DFEVITW4O9DW.P4ITE1PWIDY6@kernel.org>
+Subject: Re: [PATCH v2 09/10] gpu: nova-core: simplify
+ str_from_null_terminated
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Alistair Popple" <apopple@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Edwin Peer"
+ <epeer@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Lyude
+ Paul" <lyude@redhat.com>
+To: "John Hubbard" <jhubbard@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20251216-nova-misc-v2-0-dc7b42586c04@nvidia.com>
+ <20251216-nova-misc-v2-9-dc7b42586c04@nvidia.com>
+ <9c153278-c334-4649-8f73-ec5676ad25b0@nvidia.com>
+In-Reply-To: <9c153278-c334-4649-8f73-ec5676ad25b0@nvidia.com>
 
-On Fri Jan 2, 2026 at 9:34 PM CET, Tamir Duberstein wrote:
-> On Fri, Jan 2, 2026 at 3:05=E2=80=AFPM Benno Lossin <lossin@kernel.org> w=
-rote:
->>
->> On Fri Jan 2, 2026 at 4:25 PM CET, Tamir Duberstein wrote:
->> > @Benno would you mind having a look at this series?
->>
->> Oh wow this is an old series! Sorry for missing it.
->>
->> I'm not maintaining the build system for pin-init, but from my side the
->> changes look okay. The commit messages are missing some context though:
->> why do we need these dependency edges? etc. If you fix that you can add
->>
->> Acked-by: Benno Lossin <lossin@kernel.org>
->>
->> Also note that this might be different in the new build system.
+On Sat Jan 3, 2026 at 4:37 AM CET, John Hubbard wrote:
+> On 12/15/25 8:27 PM, Alexandre Courbot wrote:
+>> The core library's `CStr` has a `from_bytes_until_nul` method that we
+>> can leverage to simplify this function.
+>>=20
+>> Reviewed-by: Lyude Paul <lyude@redhat.com>
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> ---
+>>  drivers/gpu/nova-core/util.rs | 9 ++-------
+>>  1 file changed, 2 insertions(+), 7 deletions(-)
+>>=20
+>> diff --git a/drivers/gpu/nova-core/util.rs b/drivers/gpu/nova-core/util.=
+rs
+>> index 8b2a4b99c55b..2cccbce78c14 100644
+>> --- a/drivers/gpu/nova-core/util.rs
+>> +++ b/drivers/gpu/nova-core/util.rs
+>> @@ -2,15 +2,10 @@
+>> =20
+>>  /// Converts a null-terminated byte slice to a string, or `None` if the=
+ array does not
+>>  /// contains any null byte or contains invalid characters.
+>> -///
+>> -/// Contrary to [`core::ffi::CStr::from_bytes_with_nul`], the null byte=
+ can be anywhere in the
+>> -/// slice, and not only in the last position.
+>>  pub(crate) fn str_from_null_terminated(bytes: &[u8]) -> Option<&str> {
+>>      use core::ffi::CStr;
+>> =20
+>> -    bytes
+>> -        .iter()
+>> -        .position(|&b| b =3D=3D 0)
+>> -        .and_then(|null_pos| CStr::from_bytes_with_nul(&bytes[..=3Dnull=
+_pos]).ok())
+>> +    CStr::from_bytes_until_nul(bytes)
+>> +        .ok()
 >
-> Thanks for the review! I think the commits all include answers to
-> "why": the first two make RA match the actual build and the final one
-> does the same and also fixes navigation in pin_init_internal; before
-> this series, go-to-symbol from pin_init_internal to e.g.
-> proc_macro::TokenStream doesn't work.
+> I guess I should have reviewed this patch, before creating my version of =
+this.
+> I went so far as to delete this file entirely, see if you prefer that, it=
+'s
+> otherwise the same core idea, but with more cleanup. [1]
+>
+> [1] https://lore.kernel.org/20260103013438.247759-1-jhubbard@nvidia.com
 
-Ah I missed the explanation since its so few words.
+Yes, let's remove str_from_null_terminated() entirely.
 
-Cheers,
-Benno
+>>          .and_then(|cstr| cstr.to_str().ok())
+
+Additionally, why do we return an Option here? While an error can only ever=
+ happen if
+the given slice does not contain any NULL byte, I don't see why we discard =
+the
+error code.
