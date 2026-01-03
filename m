@@ -1,68 +1,60 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2A4248F5A;
-	Sat,  3 Jan 2026 14:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A515118BBAE
+	for <rust-for-linux@vger.kernel.org>; Sat,  3 Jan 2026 14:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767450506; cv=none; b=HfoKnwp0uRnDOI+Ms+XVStv6mfcB1nFiKqXyjaH6yQmNauneRksuPN/Jm+2SdAqPRxCMQlZgU99Jcfyst/BiUQWOsO83Z2IhijF4TqDg5wN3+gg7nqUois69mTs4OWtShR8Np+Rxs/W0/3jBgPNhB/TygUEoJy855e9ey/QZCPY=
+	t=1767450696; cv=none; b=gBuY2tPNdZ224zUBZutW5HJS3c4SD35oZVqgjsVDNnC/HR66GvkfHlVY58T5TIUE0KQq4VsvVjRalXIS3lBC9v1r3Z6PMKy3Kw/2AyHRR8nFNWSczQ5sZI2Yn92RQSqwjzy1un5VyLNKvpgY9z15cX1QJrAP6eGU8lyyz01XWsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767450506; c=relaxed/simple;
-	bh=VEXaGo2DCaFhuwJSYRD7mwidNsifYMsc2iWnuMabtz8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ck31qOgqRoB4IxMWYtWk/oMHlVLFHRxtDd1zn3YNC7/oLfqqrYevY8MHj1K8Dtsw40rDA27RcF3Jm+UJ/ISZBLYOBVPSJwejiP28bPcJoA+6wrCH1RcYeBb1mBsA9lIQRv1y1Nj6u0kkJZ3Jk9RCU53gCV/d5W69QMnNV3MX0ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UlWQ5cHS; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UlWQ5cHS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1767450505; x=1798986505;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VEXaGo2DCaFhuwJSYRD7mwidNsifYMsc2iWnuMabtz8=;
-  b=UlWQ5cHS7s3LDYTs1yPqSpcZLZvvh6tlYIw5YRxQlkuHJMb9NMQ7tHEw
-   pNGRjHZFh8mU8gEFIcP1lWvN+gATswUHpneZ0bBHNIUR8f0pDKOlE/lus
-   etbH/zSvMH7BQMW6klZQ0z4H8xs+SKvPgs3haPuxLwhqUX68mQHwg+9T7
-   Cob0zNj/w/wTyj0HY/hhjYv36eKlaL36XgvFhwN2F01kdHDXE88Yc9n83
-   /fOGaDGunhrHQQA3R7HCF+QBH+VxAMzP8i9JuLR6rCM+VLdENnCphN+Eu
-   UBITtIAZokfjCtttbk4/7yKsJSk5AoHhODIjSisNXbUwhbY/Z+kjuQvuL
-   A==;
-X-CSE-ConnectionGUID: JMtii84+TWKj0S39vjfLmw==
-X-CSE-MsgGUID: QuOmlewrS9i9zM7hpXbQaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11659"; a="68809059"
-X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
-   d="scan'208";a="68809059"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2026 06:28:24 -0800
-X-CSE-ConnectionGUID: PHs/u2mNTECGxKh3vTDqAQ==
-X-CSE-MsgGUID: 3U0rgGSfQVisFca1RHWokA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,198,1763452800"; 
-   d="scan'208";a="239467274"
-Received: from igk-lkp-server01.igk.intel.com (HELO 92b2e8bd97aa) ([10.211.93.152])
-  by orviesa001.jf.intel.com with ESMTP; 03 Jan 2026 06:28:19 -0800
-Received: from kbuild by 92b2e8bd97aa with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vc2c4-000000000iL-384z;
-	Sat, 03 Jan 2026 14:28:16 +0000
-Date: Sat, 3 Jan 2026 15:28:13 +0100
-From: kernel test robot <lkp@intel.com>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, lossin@kernel.org, lyude@redhat.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org,
-	mingo@redhat.com, will@kernel.org, longman@redhat.com,
-	felipe_life@live.com, daniel@sedlak.dev,
-	daniel.almeida@collabora.com, thomas.hellstrom@linux.intel.com,
-	linux-kernel@vger.kernel.org,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH v10 6/7] rust: ww_mutex: implement LockSet
-Message-ID: <202601031513.bVzSj6aK-lkp@intel.com>
-References: <20260103073554.34855-7-work@onurozkan.dev>
+	s=arc-20240116; t=1767450696; c=relaxed/simple;
+	bh=OjJEHZbX9DUZYNV7p8GKg1sdBCh5/HJWJkWeJDu+dDM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=tyWQRTaIwvpGc98k2nYjqwg5swUCRjgbEK4rRKbIi82rlRTAB/VHcaf9nHQtJMSzY0Jm1sgodl1hjmrAxI4pkbw0+vEXAGjEv7ytdhT1+FT4Py2WU7irhM66feBpbMOP3sgiWJYTmk80X3NYY38kP9XaWQ9cQcWuFketQSzJeSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info; spf=pass smtp.mailfrom=markoturk.info; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=markoturk.info
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b7eff205947so1795170366b.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 03 Jan 2026 06:31:34 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767450693; x=1768055493;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+AYUNRl9rbLXc2HwT5sVlUQnauM+p95hRATJcoDG+eg=;
+        b=qCxwQJa2qx9FTRmKzusk4n9/KqDtK6AH5dZB6+U+/OdosPIXRtOQSAVADfPPj7xePc
+         8YDfYSLsLvnmFV8Fyh346tihOI+3IWlCMg/dhHg9NAj1Hq4Y+v1eD2v7dNN7fi2ZYLvc
+         EvaAIYjsxEw1OI4UkzVkeFmV4Cy9mKETcYrmg/fG+Fa5oN5dBQcNbAX3lbctkTehnLtR
+         fUFMBgm0/JAbHkGHmD01DZuxAgMPiItV7mKhhiLonN9YswIsiCmJ00cFnluvxvK61pbL
+         cdR/8TK24STrd4jRcT02vnPs1ZOabn0hzomg/PBx9FTLGcFa10FayO43sZMJonNlcNfA
+         qFtg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8DYnNRy49SDZX6UJeEYfMLIpQgxfP9lbf9tFWVS5iTLWnzC7481VVVprxygNRZbInaEEj6xxhWWhDbElyjw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRt+k/CANt2r+fWGSQx6cnIJZKzZ121jQ6e/RINd0WzwC810/g
+	E8+alSVvO8bgUOSQdhB2igb5JBIkX4WTyuOPZmtyhE1zXTnEWChVb8oqWjF3XYAqEYIiVXgP1hf
+	1VWiN
+X-Gm-Gg: AY/fxX736eV6wlK62jMaMD8/EdatVOD/njuPB9ryEL6RWBjK3YcVO0X/xvWKrPvwpxT
+	DWZ4GLa10a055BTm6jAenfK8FHM1biPkPlgEF+zf+MkmbD1fwmfVVKNEmy3KW4eZHeL+D7XN0Cw
+	KEUbj6vKCNsOdZvEOIkrsVywAZ/Bz5hsk81WW3JwplZVnTG9BRGNUOlfET0/M1tPsqPoKGMAwtW
+	kCji3RWMv6wZZ1vHRF6Yt478OqnfoVC7/3b3iB0NcxeeeRu5YM8s4ls1KHDcrBmudW6w/olMBbH
+	babKTWCa8rOL0dEn6et9PIdRGzgDxV32/E5qiwWtOQRPdzUZy0lIZM6SeKg0pPZXD7sILz0EjJO
+	HokL6P/bgUfqi9ASbHi3cv9xU9EDupO6wn00tICNyXHlVy7y5N02iEhTucamCkBswYzuqix2LRq
+	PG1GyqngOOOLIdJWoy7guYYw==
+X-Google-Smtp-Source: AGHT+IEZpVXonSoNsNw9e1t4FvmQEeUM7GlEnGV5J/HtRKd9w8z0N4bgG9lfpaveMKQWaK8M1hT5WA==
+X-Received: by 2002:a17:907:6094:b0:b73:9368:ad5e with SMTP id a640c23a62f3a-b8037051288mr4580991066b.34.1767450692708;
+        Sat, 03 Jan 2026 06:31:32 -0800 (PST)
+Received: from vps.markoturk.info ([109.60.4.132])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8037ad83dasm5130254766b.25.2026.01.03.06.31.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Jan 2026 06:31:32 -0800 (PST)
+Date: Sat, 3 Jan 2026 15:31:30 +0100
+From: Marko Turk <mt@markoturk.info>
+To: dakr@kernel.org, dirk.behme@de.bosch.com, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	mt@markoturk.info
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, Marko Turk <mt@markoturk.info>
+Subject: [PATCH 1/2] rust: io: fix Bar reference in Io struct's comment
+Message-ID: <20260103143119.96095-1-mt@markoturk.info>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -71,69 +63,28 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260103073554.34855-7-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.0
 
-Hi Onur,
+Bar was moved to a separate pci::io module, update the reference to it.
 
-kernel test robot noticed the following build warnings:
+Signed-off-by: Marko Turk <mt@markoturk.info>
+---
+ rust/kernel/io.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[auto build test WARNING on tip/locking/core]
-[also build test WARNING on rust/rust-next linus/master v6.19-rc3 next-20251219]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Onur-zkan/rust-add-C-wrappers-for-ww_mutex-inline-functions/20260103-153912
-base:   tip/locking/core
-patch link:    https://lore.kernel.org/r/20260103073554.34855-7-work%40onurozkan.dev
-patch subject: [PATCH v10 6/7] rust: ww_mutex: implement LockSet
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260103/202601031513.bVzSj6aK-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260103/202601031513.bVzSj6aK-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601031513.bVzSj6aK-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> warning: this let-binding has unit value
-   --> rust/kernel/sync/lock/ww_mutex/lock_set.rs:273:17
-   |
-   273 |                 let _ = lock_set.lock(&mutex1)?;
-   |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: omit the `let` binding: `lock_set.lock(&mutex1)?;`
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#let_unit_value
-   = note: `-W clippy::let-unit-value` implied by `-W clippy::all`
-   = help: to override `-W clippy::all` add `#[allow(clippy::let_unit_value)]`
---
->> warning: matching over `()` is more explicit
-   --> rust/kernel/sync/lock/ww_mutex/lock_set.rs:273:21
-   |
-   273 |                 let _ = lock_set.lock(&mutex1)?;
-   |                     ^ help: use `()` instead of `_`: `()`
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ignored_unit_patterns
-   = note: requested on the command line with `-W clippy::ignored-unit-patterns`
---
->> warning: this let-binding has unit value
-   --> rust/kernel/sync/lock/ww_mutex/lock_set.rs:274:17
-   |
-   274 |                 let _ = lock_set.lock(&mutex2)?;
-   |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: omit the `let` binding: `lock_set.lock(&mutex2)?;`
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#let_unit_value
---
->> warning: matching over `()` is more explicit
-   --> rust/kernel/sync/lock/ww_mutex/lock_set.rs:274:21
-   |
-   274 |                 let _ = lock_set.lock(&mutex2)?;
-   |                     ^ help: use `()` instead of `_`: `()`
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ignored_unit_patterns
-
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index 98e8b84e68d1..08853f32dae6 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -87,7 +87,7 @@ pub fn maxsize(&self) -> usize {
+ /// };
+ /// use core::ops::Deref;
+ ///
+-/// // See also [`pci::Bar`] for a real example.
++/// // See also [`pci::io::Bar`] for a real example.
+ /// struct IoMem<const SIZE: usize>(IoRaw<SIZE>);
+ ///
+ /// impl<const SIZE: usize> IoMem<SIZE> {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.51.0
+
