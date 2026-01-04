@@ -1,195 +1,186 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E252566F7
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Jan 2026 23:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893D6280308
+	for <rust-for-linux@vger.kernel.org>; Sun,  4 Jan 2026 23:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767570217; cv=none; b=Vcv5QgKuv7/UQOiSK19si9YFeY0mHmehchQtmPbk/WIwua31SA3IMI7ePteywVovD6Mi5sGf0EYPICWoq1DtC1Qpr/G5OOdX+ukwEQNPAAIOCzvUEs2mW8EEKJZfP7vTGwETZdOd4hO9ak2dN6ti4c7goAlcshjUlPlNmpfcB78=
+	t=1767570261; cv=none; b=dbftAthjiFYrn6EzFUGlGpR4Wjk/O/YKTfKCoDXe4iUyx0GdOv0v2hjzaEiUw6D5dX7dh44ODd70AJybfj9iNbs6KneBOk2Z9h+lO8PMDkfBwnOek0NyFDxLDY1GnW30pjKU9OBhf8+Zqg5uLEZm0mKri4PW/SdPnFxAckYH0lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767570217; c=relaxed/simple;
-	bh=kAu8A0okyB9sbYwPfvDhpVuyamTl79WrqrtJc7O+YmA=;
+	s=arc-20240116; t=1767570261; c=relaxed/simple;
+	bh=p306LGy9eyHijx4jtMFK/9mzd15/zQrT57WNykUTQAc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j+Qk3L8Cr/CMW74CjWdsSJYn02FbUb+eKnOGz22wkUv0w1AeEMqgdk+4m8BYcmFudV3rnKfkTrCwlwe3CxYE7xIXxz9uN357M6v2cMA8L0WIrsB0QWtW8iW1kcPN40nABPy/0N/xCSwl7lPq5VSW0UJjDfODGm+yAZ9c6nhnZak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mw9KKYqs; arc=none smtp.client-ip=209.85.167.43
+	 To:Cc:Content-Type; b=UeemKmuX4Hnp4ohHuynvFxL5h7lDvSCVtURtukfvS1V7gyV3GbpDvf7tzitPR9vOOmEQQ0PVpVzKUJWSzXoJY4ej4w96YAmrWCQ3X+VrUnJmf2EP+jnlFUZgYGORJ6we5nDDI28MSgpkiAPUp1CwLzfRsKc9oTWvGK5TuF7lJvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AFO5Cso3; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mw9KKYqs"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5957ac0efc2so14377205e87.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jan 2026 15:43:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AFO5Cso3"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-37d275cb96cso126093411fa.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jan 2026 15:44:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767570214; x=1768175014; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767570258; x=1768175058; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kbOOCMg+gybu8FWsopE1tBuCcuJn40dEsRAeRzGkOGg=;
-        b=Mw9KKYqs0v9IXCl0j+uRcQXq7FOXhMD0H1aSLIOherDbSaccZsmTpqBP5OU+814EUk
-         T6j7Mv/nocO7z6XvgYgzfQEYiwt6/wqCSPpRbGO6l1bQSModfRVtGS8CF7w2bZCu3vIj
-         SQKH1Zu8Xs0lj4g+S7cO47YqB9ZlDRcEwWSVekQmsTloToksgSWN3W2upNmwTJBtkkLY
-         QF+19EhSb72xDwHyjkYCmeCKHnwnE43lGpJTZr5mq/ZsGbAA59iqh89Y3DjxN8ev9G4S
-         +dOdPdPS1h+edEvAy+CohkLEjV0svc+kb2QIF47qiYOJ7PF2TmdA7D4clGOckZdE2mvK
-         Ozvw==
+        bh=nwHMhGA+OGxFsPqS+gadiDszFLzctoJHxAFwyBwL5ow=;
+        b=AFO5Cso3xWamk3aAjID4gVgSvat9pX/8+WXVhv0se1w9B36Y4EoNPE6KY4jU+EEEo7
+         OXI4RIAtXninFFy1CMLpTpOEwa8Cc2z2zNlAFN3KBFtOWyFKNk783r94sxwpab/rPw73
+         2cWG42UlUAqNwR/mL3IvShyr/4c92UB24r66agHRDXJz1oU6WtMbLD7Jx2FzvY7pxLx0
+         1EdADw7HKh6S3N4HO59G4sKGYDN2eYGVPPnKLcW+7J8m/Yq+UlVwPIc98/FnPIQ6eRAb
+         kKbvpqRAValZCSXZURTlWwQUxe/Js1S6Is/aOyZsYToKN0/B396+c44jsDOk4JwaIZKG
+         IA/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767570214; x=1768175014;
+        d=1e100.net; s=20230601; t=1767570258; x=1768175058;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kbOOCMg+gybu8FWsopE1tBuCcuJn40dEsRAeRzGkOGg=;
-        b=pFoPKPP4E4b8/YqzEnflbrtiCDKoe9a0lUBolnnO3v+tZ3z7LGwJHobfeWp5nQN8kE
-         HZWalKW2GUlqtdhPKpgMfs57XtR9TxLmlmy5yue3uV2Z3Fmn2N+K8VgEo/NtY2FRUbqH
-         zn9iFaKplGSy/LwLgmta0dQzafz3vPTGoLxhh42Wd7K3IWlDMeDOXgAQpKT/QdGotkeh
-         ZC+cZrffmNzEQjre3qnp90zJ8nKD1OFLuzK7FTkk4mDMJjIwkjl8IVRHveNi9TeJSBTN
-         oxa8wi3Cn8r90ePHrg9tCxDANUNjzBgCCFXtibj91t9GzZh4fpyLA3uwKuk4E0Rp0Jwb
-         vCyg==
-X-Forwarded-Encrypted: i=1; AJvYcCXLzRvsUg8880vMhwbuwu7asyCersw65geCp0vklrqqNN6UCvzq4FjbLXEYWwPw07z74DKSFi8oIBsCTEm3Qg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKxpBZdfXEvpzjGr8iuKfDm6BNts6p5Vs4+apu+i1HnSqFGOaF
-	kFUZhVgFlozQVLZNEhJwzMs/bH35Jpq6O/6YcxGIjsYJXaQetsPxXgsBbU6WorL1y5HQyhl7iQy
-	gBw1RvtBTIuoI7c4IjsFDmsSdZMUlml4=
-X-Gm-Gg: AY/fxX5ogd1CG3qPRbwmrp5EaOl4v/0/k7NpN8sTiUZBuilpJ3Fa0Ye/zSTHGz2XOVZ
-	HoNjrTag1/fJXj7DNFefeD4Ic7Fe5y7CKM8a/dipNrCj95LD5Lmktl+tjB2LafdK/b5B8DCv2sp
-	mn/jQe34CS4blFZt47SY1+1k7bkOBjECGa0YG7CMlU60Rg3jWMIBH4bAwgs4lVwSLmwHW5ODuBR
-	Qy50qTX1gp0Gj0gTGjRWpAD0FifrsQFDXOfj9EBUJr8REHbXZ/+ftIwXAQr6ijX7PO+Zzdvt7Lj
-	TO5eSyEi8A6yW6T2uZnfpVKxtP3OpXSBnohj3y1jAVqRM3v/7sBQYOkecq74F87Ckt1rk4L1Rz4
-	L1jVo59qy0k3K5B9WuXf2u7Ggr9XKIvODS1eBXChSfw==
-X-Google-Smtp-Source: AGHT+IGCCAHdnB+BddizzjSyY/MQLg4auE04K6QBwwcyaI1exBUbRFibFEcX95XaAcAIzV+a03dMC7Rd3DAKUGxxr7Q=
-X-Received: by 2002:a2e:a552:0:b0:37b:9771:4f41 with SMTP id
- 38308e7fff4ca-38121699ac6mr154611501fa.37.1767570213779; Sun, 04 Jan 2026
- 15:43:33 -0800 (PST)
+        bh=nwHMhGA+OGxFsPqS+gadiDszFLzctoJHxAFwyBwL5ow=;
+        b=DMQ/xDHYz6j/YwkPZ9mkBE9HlfLa3jn9LLEukrxCX1F48BW7Q9T9AWqZA3/SQ7Rj2V
+         QFPFgYn8LL/RDBo+ii2/UIxEwetOtShBmVgiXHBB/znvt56jnohwM/9rhystby6BD8s6
+         A0CFJvt/tooCUL4cR9iD6brZnTUUBum3HkZLU1v5vmdR8c3OCkpOqj9qKnPMl+KegQ7l
+         xwRYh4wt43Y404kgDVaoe6Ia6exyh8HghCxDSqVUgJFMAtY79JRx8unuzBwmZugAvD+r
+         9m+Rdr4i5eIFLaTo1Ysc6tI6EhiEc83yQ5Ha7G/5ExRei66ZT0uJCTb0WROOVwRSVxzm
+         pf4A==
+X-Forwarded-Encrypted: i=1; AJvYcCX0gmueFnkww9crYLwvG17ufFK+DgyKFT+zFjv116Ao1KTHEFi/nZWyIwoRnL2HPeOYjKAjz3dMHsTAReAPsA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfTk02TqlCTgAT9miFpznS7FhU11araY54qhejHLEemfGYGd4q
+	OQnd4H0ScdykqODMOINRK8PAsY6BbjJ7ys8ul+MZPfxZaNNln/ac92qUzh6MS1J793emelMFB/e
+	fvfNegzqB45s6se+F0WJq+1i7oQDLRyA=
+X-Gm-Gg: AY/fxX7XZ+AAXFfkh+OHVj4mnx9WTTk2HVDec+modQtjAuCxC/x2xwjiax07Gq57RIy
+	G3vjZWl1ZxHoKaRA15xvowtv80XI4IYE5225XDkz5kf1NPJlVgh/PaF1iVu9fAIbc5Tc83u46qJ
+	ocF7Xne99c4I4IwpW76AalOPIdozLRBhNauDmXOUDZ4eqT6W1XGZhQRnWX3CUTh18DdaJL7mR3X
+	0TB7FWGKblegS8eO40c23bDP1U6HzUbPicVQcsH1YoUZCZXcv3aeRVmod5Y00U2aeTYaz6P2l8n
+	d7iIU/XytFA7R7BE2aZO8XNZRqZP6O1Y1uhhrPmV7/096RqaIjWKVjq+CdQ0JlFGIe+pNkyr3NK
+	snxHCsQn9wvaBGvgFA7juCJcVnyIsWQHrEyIMCnAodSbNgVR3CtXC
+X-Google-Smtp-Source: AGHT+IGuPXba3z676DlVj61wJCekKitKvtqU0BKt1o39uHMbQ3Gl9Z09lZ4ePwCUOEShjHGlrnmGWmO4NBXpCNDJB9w=
+X-Received: by 2002:a2e:8a94:0:b0:37a:29b5:e62c with SMTP id
+ 38308e7fff4ca-38121552fd5mr132780531fa.5.1767570257433; Sun, 04 Jan 2026
+ 15:44:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251211185805.2835633-1-gary@kernel.org> <20251211185805.2835633-11-gary@kernel.org>
-In-Reply-To: <20251211185805.2835633-11-gary@kernel.org>
+References: <20251211185805.2835633-1-gary@kernel.org> <20251211185805.2835633-12-gary@kernel.org>
+In-Reply-To: <20251211185805.2835633-12-gary@kernel.org>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Sun, 4 Jan 2026 18:42:57 -0500
-X-Gm-Features: AQt7F2p-H9uoY922nVLi-SVTwnbDYUAbTyRHx6PRGtm9pOx_F-bU05iScT0JAIk
-Message-ID: <CAJ-ks9m8+XnMpQtp1G3Fqx7fw-BGSu6oZZSEws_iTbO3Ze0KOw@mail.gmail.com>
-Subject: Re: [PATCH 10/11] rust: macros: rearrange `#[doc(hidden)]` in
- `module!` macro
+Date: Sun, 4 Jan 2026 18:43:41 -0500
+X-Gm-Features: AQt7F2paFES2E6TsHfyG09C6nDI2aB8-aBBa0kRt5qNHk6sNb4ZmZsDDv-QPdI8
+Message-ID: <CAJ-ks9nF00Nn1oRFu+5AWi37WbvJUWJcWwHdA24nyc3TyUdiew@mail.gmail.com>
+Subject: Re: [PATCH 11/11] rust: kunit: use `pin_init::zeroed` instead of
+ custom null value
 To: Gary Guo <gary@garyguo.net>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <raemoar63@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 11, 2025 at 2:30=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
+On Thu, Dec 11, 2025 at 2:36=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
 >
 > From: Gary Guo <gary@garyguo.net>
 >
-> This `#[doc(hidden)]` can just be applied on a module to hide anything
-> within.
+> The last null element can be created (constly) using `pin_init::zeroed`,
+> so prefer to use it instead of adding a custom way of building it.
 >
 > Signed-off-by: Gary Guo <gary@garyguo.net>
 
 Reviewed-by: Tamir Duberstein <tamird@gmail.com>
 
 > ---
->  rust/macros/module.rs | 10 +---------
->  1 file changed, 1 insertion(+), 9 deletions(-)
+>  rust/kernel/kunit.rs | 26 +-------------------------
+>  rust/macros/kunit.rs |  4 ++--
+>  2 files changed, 3 insertions(+), 27 deletions(-)
 >
-> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> index d6298d04c86f4..75a4eae5610cd 100644
-> --- a/rust/macros/module.rs
-> +++ b/rust/macros/module.rs
-> @@ -71,7 +71,6 @@ fn emit_base(&mut self, field: &str, content: &str, bui=
-ltin: bool) {
->          );
->          self.ts.extend(quote! {
->              #cfg
-> -            #[doc(hidden)]
->              #[cfg_attr(not(target_os =3D "macos"), link_section =3D ".mo=
-dinfo")]
->              #[used(compiler)]
->              pub static #counter: [u8; #length] =3D *#string;
-> @@ -375,6 +374,7 @@ impl ::kernel::ModuleMetadata for #type_ {
->          }
->
->          // Double nested modules, since then nobody can access the publi=
-c items inside.
-> +        #[doc(hidden)]
->          mod __module_init {
->              mod __module_init {
->                  use pin_init::PinInit;
-> @@ -384,7 +384,6 @@ mod __module_init {
->                  // This may be best done another way later on, e.g. as a=
- new modinfo
->                  // key or a new section. For the moment, keep it simple.
->                  #[cfg(MODULE)]
-> -                #[doc(hidden)]
->                  #[used(compiler)]
->                  static __IS_RUST_MODULE: () =3D ();
->
-> @@ -397,7 +396,6 @@ mod __module_init {
->                  /// This function must not be called after module initia=
-lization, because it may be
->                  /// freed after that completes.
->                  #[cfg(MODULE)]
-> -                #[doc(hidden)]
->                  #[no_mangle]
->                  #[link_section =3D ".init.text"]
->                  pub unsafe extern "C" fn init_module() -> ::kernel::ffi:=
-:c_int {
-> @@ -408,14 +406,12 @@ mod __module_init {
->                  }
->
->                  #[cfg(MODULE)]
-> -                #[doc(hidden)]
->                  #[used(compiler)]
->                  #[link_section =3D ".init.data"]
->                  static __UNIQUE_ID___addressable_init_module: unsafe ext=
-ern "C" fn() -> i32 =3D
->                      init_module;
->
->                  #[cfg(MODULE)]
-> -                #[doc(hidden)]
->                  #[no_mangle]
->                  #[link_section =3D ".exit.text"]
->                  pub extern "C" fn cleanup_module() {
-> @@ -429,7 +425,6 @@ pub extern "C" fn cleanup_module() {
->                  }
->
->                  #[cfg(MODULE)]
-> -                #[doc(hidden)]
->                  #[used(compiler)]
->                  #[link_section =3D ".exit.data"]
->                  static __UNIQUE_ID___addressable_cleanup_module: extern =
-"C" fn() =3D cleanup_module;
-> @@ -438,7 +433,6 @@ pub extern "C" fn cleanup_module() {
->                  // and the identifiers need to be unique.
->                  #[cfg(not(MODULE))]
->                  #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
-> -                #[doc(hidden)]
->                  #[link_section =3D #initcall_section]
->                  #[used(compiler)]
->                  pub static #ident_initcall: extern "C" fn() ->
-> @@ -449,7 +443,6 @@ pub extern "C" fn cleanup_module() {
->                  ::core::arch::global_asm!(#global_asm);
->
->                  #[cfg(not(MODULE))]
-> -                #[doc(hidden)]
->                  #[no_mangle]
->                  pub extern "C" fn #ident_init() -> ::kernel::ffi::c_int =
+> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+> index 79436509dd73d..034158cdaf06b 100644
+> --- a/rust/kernel/kunit.rs
+> +++ b/rust/kernel/kunit.rs
+> @@ -192,9 +192,6 @@ pub fn is_test_result_ok(t: impl TestResult) -> bool =
 {
->                      // SAFETY: This function is inaccessible to the outs=
-ide due to the double
-> @@ -459,7 +452,6 @@ pub extern "C" fn #ident_init() -> ::kernel::ffi::c_i=
-nt {
->                  }
+>  }
 >
->                  #[cfg(not(MODULE))]
-> -                #[doc(hidden)]
->                  #[no_mangle]
->                  pub extern "C" fn #ident_exit() {
->                      // SAFETY:
+>  /// Represents an individual test case.
+> -///
+> -/// The [`kunit_unsafe_test_suite!`] macro expects a NULL-terminated lis=
+t of valid test cases.
+> -/// Use [`kunit_case_null`] to generate such a delimiter.
+>  #[doc(hidden)]
+>  pub const fn kunit_case(
+>      name: &'static kernel::str::CStr,
+> @@ -215,27 +212,6 @@ pub const fn kunit_case(
+>      }
+>  }
+>
+> -/// Represents the NULL test case delimiter.
+> -///
+> -/// The [`kunit_unsafe_test_suite!`] macro expects a NULL-terminated lis=
+t of test cases. This
+> -/// function returns such a delimiter.
+> -#[doc(hidden)]
+> -pub const fn kunit_case_null() -> kernel::bindings::kunit_case {
+> -    kernel::bindings::kunit_case {
+> -        run_case: None,
+> -        name: core::ptr::null_mut(),
+> -        generate_params: None,
+> -        attr: kernel::bindings::kunit_attributes {
+> -            speed: kernel::bindings::kunit_speed_KUNIT_SPEED_NORMAL,
+> -        },
+> -        status: kernel::bindings::kunit_status_KUNIT_SUCCESS,
+> -        module_name: core::ptr::null_mut(),
+> -        log: core::ptr::null_mut(),
+> -        param_init: None,
+> -        param_exit: None,
+> -    }
+> -}
+> -
+>  /// Registers a KUnit test suite.
+>  ///
+>  /// # Safety
+> @@ -254,7 +230,7 @@ pub const fn kunit_case_null() -> kernel::bindings::k=
+unit_case {
+>  ///
+>  /// static mut KUNIT_TEST_CASES: [kernel::bindings::kunit_case; 2] =3D [
+>  ///     kernel::kunit::kunit_case(kernel::c_str!("name"), test_fn),
+> -///     kernel::kunit::kunit_case_null(),
+> +///     pin_init::zeroed(),
+>  /// ];
+>  /// kernel::kunit_unsafe_test_suite!(suite_name, KUNIT_TEST_CASES);
+>  /// ```
+> diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
+> index 516219f5b1356..fd2cfabfaef76 100644
+> --- a/rust/macros/kunit.rs
+> +++ b/rust/macros/kunit.rs
+> @@ -74,7 +74,7 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module=
+: ItemMod) -> Result<Toke
+>      // static mut TEST_CASES: [::kernel::bindings::kunit_case; 3] =3D [
+>      //     ::kernel::kunit::kunit_case(::kernel::c_str!("foo"), kunit_ru=
+st_wrapper_foo),
+>      //     ::kernel::kunit::kunit_case(::kernel::c_str!("bar"), kunit_ru=
+st_wrapper_bar),
+> -    //     ::kernel::kunit::kunit_case_null(),
+> +    //     ::pin_init::zeroed(),
+>      // ];
+>      //
+>      // ::kernel::kunit_unsafe_test_suite!(kunit_test_suit_name, TEST_CAS=
+ES);
+> @@ -159,7 +159,7 @@ macro_rules! assert_eq {
+>      processed_items.push(parse_quote! {
+>          static mut TEST_CASES: [::kernel::bindings::kunit_case; #num_tes=
+ts_plus_1] =3D [
+>              #(#test_cases,)*
+> -            ::kernel::kunit::kunit_case_null(),
+> +            ::pin_init::zeroed(),
+>          ];
+>      });
+>      processed_items.push(parse_quote! {
 > --
 > 2.51.2
+>
 >
