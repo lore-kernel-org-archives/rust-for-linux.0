@@ -1,94 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F838200C2;
-	Sun,  4 Jan 2026 13:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A167E2F9D83;
+	Sun,  4 Jan 2026 13:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767531613; cv=none; b=uk46MrOjpKb5D4NruXansNNX+qVfPLohxkvqtTFRM1EazPkkYcQzDCwXx91ZpPsbw1cUxddJcoKfkoewXVt+y5muDz5d+0TFLdZXcnW8JZtMeKG5ZfbbnL+OZisxSEyWaedCkEQkuhfX8IcBeJ0aVSQInaP/2wULyJdQSWj9UtA=
+	t=1767531632; cv=none; b=cjB6JtVhnEAVeBTrOGM8C1HneESaFomYARg9uJz0r7BISpqgC2ATz1+yECmJMPMnjwhzGc98th/OwsrTWgckCAUj686Krp27ZVrvRGmGc7f8IVXPXlX3v/bgAeF0wLHCn8jAjFypTzeeAe0Bwl5cI5OEbOy9sqa0uC0AA28X9o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767531613; c=relaxed/simple;
-	bh=3ZzLT4bU/cpzzyfz/PbrmNf6fUsTYuIk5I+Pbc3TB6c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=b3zVpd3rWb0u6RqvVloGvYUuGfnVnC8BIZswLugZSv+QTTb4w6GWW2Jn25xSQipYZgy5uJGd7gSeIj9EN2PyZpOIjtPkCfadcYqg43DW03pTdTdFzLSiikwuT5yErAxG1Cx4UihxGMdE9RvtIq2edU40KGq+HhjLDJK67tDeOM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qbaYyay8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767531632; c=relaxed/simple;
+	bh=K+kNsv8o6x0iOPBJRR3v6JMwqc86TQCtbTpDbFBGH+0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FO3ouDcsrgW7AjqpIqbe+D5GFUN8tFrXfqbAJxzJuZIawTWNskCVNGGBkJ/Ic8VdN0Bt2ag4M7jFdyOSZpgfvHaZmSN9GESlTRSCBPvbZBvyTzgelQN5ReZxU1MdTwSylf/6r9q14LXiCll5crLMdTY6+eIDFUTbGQ8YAlMfphw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JszAJsKV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qbaYyay8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2DEC4CEF7;
-	Sun,  4 Jan 2026 13:00:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JszAJsKV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1B4C4CEF7;
+	Sun,  4 Jan 2026 13:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767531612;
-	bh=3ZzLT4bU/cpzzyfz/PbrmNf6fUsTYuIk5I+Pbc3TB6c=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=qbaYyay8x17845wqpttL5ONLiikZb55LDnjYbsAzabI8OBKxGMVoqf2p/PiTrdMhp
-	 J/B8dmwcpUucCmDKYC92zgyuVkNlvzIYtRbTm9faN5KGaAypd87fyqPbvnpmtpl6n5
-	 PjL2dN5Qz7qQ3RLwLbiVQeKJKVBYsay1JYLSOsLU8U73zU8UQvse/R7wbTWjtixiyh
-	 V+zUBkPJHruJ6FyK8f31Q20UZvCbJ4/tr05g/lq6Yy8i6cthphafEX35YrTMg9AROn
-	 wrjLuBMg9g2I4vJ6CbuJd6D9u5ujJ0JOPxCW9t4vpLtCYwItN++5owV8vfjqC+Hm1U
-	 JhnphrvNRFGFA==
+	s=k20201202; t=1767531632;
+	bh=K+kNsv8o6x0iOPBJRR3v6JMwqc86TQCtbTpDbFBGH+0=;
+	h=From:Date:Subject:To:Cc:From;
+	b=JszAJsKVFpGWdpzVfhk1oEW9DGY/NCntfvpncRiUzK5XHyuFLmvGovVMgb90CKj3p
+	 Kknv0hyyZtRgDfXeGuL5HH7FclWEJrTw6uZzfDjmoiK1dsC13ny3oQpSyboWY43CcD
+	 Td61facr9nMHCjRbvLdaxRsACLHHN1Tqm8yWMYLb4aM0yHUHP08k7WJIuV42YKueiE
+	 xEocP02qKihtV5GQx3VcjQNXvMQxLrMdzDlTQz0BpjicfbQYmp5JwBVLMLrffrWq5W
+	 iegbmehf8xq6sfjNxwCuNdii0bmpU8LoP6IYpJeBQDZ74JSBm9f5cT4RZRPfXoTL7f
+	 tGA0VdhDLWxHw==
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Sun, 04 Jan 2026 08:00:27 -0500
+Subject: [PATCH] rust: fix formatting expressions
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 04 Jan 2026 14:00:08 +0100
-Message-Id: <DFFTNV97F57X.J3Z7X4OH2FU8@kernel.org>
-Subject: Re: [RFC PATCH v1 3/4] rust: add RTC core abstractions and data
- structures
-Cc: "Alexandre Belloni" <alexandre.belloni@bootlin.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-rtc@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Alvin Sun" <sk.alvin.x@gmail.com>
-To: "Ke Sun" <sunke@kylinos.cn>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260104060621.3757812-1-sunke@kylinos.cn>
- <20260104060621.3757812-4-sunke@kylinos.cn>
-In-Reply-To: <20260104060621.3757812-4-sunke@kylinos.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260104-fmt-paren-v1-1-6b84bc0da78f@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqEMBAF0atIrw3EEES9yuCizXy1BaMkKgPi3
+ Y3j8kFRJ0UEQaQmOyngkCiLTyjyjNzIfoCSbzIZbUpdaKv6eVMrB3iF2qCrtGXLTKlfA3r5/V+
+ f9nXcuwluewZ0XTdbTHWlbQAAAA==
+X-Change-ID: 20260104-fmt-paren-e92eb804a4aa
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>, Janne Grunau <j@jannau.net>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1767531630; l=1168;
+ i=tamird@gmail.com; h=from:subject:message-id;
+ bh=WY9k2R2e0dpWQ9kNLHGorA9lvENNqS2m8CnGqhmODN8=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QCNz+7cDHCtpGpbCdhsNmTH3p0x5seYvOzhcKz8OuDgKN8zRi8jmEbS0gqjDhzb5qoPEC6apB2x
+ 0xnWmblyUlQU=
+X-Developer-Key: i=tamird@gmail.com; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-On Sun Jan 4, 2026 at 7:06 AM CET, Ke Sun wrote:
-> Add Rust abstractions for RTC (Real-Time Clock) devices, including:
->
-> - Data structures: RtcTime, RtcWkAlrm, RtcParam wrappers for RTC types
-> - RtcDevice: Safe wrapper for struct rtc_device
-> - DriverGeneric trait: Generic RTC driver trait over bus types
-> - RtcOperations trait: VTable for RTC device operations
-> - Bus abstractions: PlatformBus, AmbaBus, I2cBus implementations
+From: Tamir Duberstein <tamird@gmail.com>
 
-This is my main concern with this patch: It bakes bus (device) code (e.g.
-platform AMBA and I2C) into the RTC code, effectively duplicating infrastru=
-cture
-where it does not belong to in the first place and limites on which bus RTC
-devices can be registered artificially.
+Allow usage like `pr_info!("one + 1 = {}", one + 1)` to compile by
+ensuring that a reference is taken to the entire expression.
 
-The driver model has a loosely coupled design between bus and class device =
-code,
-such that class devices can be registered freely from any driver driving a =
-bus
-device. There can also be more complicated topologies considering the auxil=
-iary
-bus, mfd, etc.
+Fixes: c5cf01ba8dfe ("rust: support formatting of foreign types")
+Reported-by: Janne Grunau <j@jannau.net>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/Custom.20formatting/near/566219493
+---
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+ rust/macros/fmt.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please remove the duplicated bus (device) code and helper types and macros,=
- such
-as BusRegistration, impl_bus!, etc. Instead, please have a look at how the =
-PWM
-code works and incorporate the design.
+diff --git a/rust/macros/fmt.rs b/rust/macros/fmt.rs
+index 2f4b9f6e2211..8354abd54502 100644
+--- a/rust/macros/fmt.rs
++++ b/rust/macros/fmt.rs
+@@ -67,7 +67,7 @@ pub(crate) fn fmt(input: TokenStream) -> TokenStream {
+                     }
+                     (None, acc)
+                 })();
+-                args.extend(quote_spanned!(first_span => #lhs #adapter(&#rhs)));
++                args.extend(quote_spanned!(first_span => #lhs #adapter(&(#rhs))));
+             }
+         };
+ 
 
-Additionally, you can utilize the AsBusDevice trait to find the concrete bu=
-s
-device (e.g. AMBA) in your class device callbacks from the generic parent d=
-evice
-of your RTC device.
+---
+base-commit: f8f9c1f4d0c7a64600e2ca312dec824a0bc2f1da
+change-id: 20260104-fmt-paren-e92eb804a4aa
 
-I will take a more thorough look at the code from the driver core side of t=
-hings
-once this has been addressed.
+Best regards,
+--  
+Tamir Duberstein <tamird@gmail.com>
 
-Thanks,
-Danilo
