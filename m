@@ -1,106 +1,231 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DCE2FD1DA
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Jan 2026 12:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B05621CC44;
+	Sun,  4 Jan 2026 12:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767529933; cv=none; b=CWgGEH90sKM5EZc7xAeYBJXHUoG4xyGB7Q/1Zhh/C9UOwBfZgzqD7HylhfygZwhapjYHFhJcAKlSmap2N285VT3+/smW2Yv7p+MEadON2Wn5guOWWS6f6dH2m92S8HBeLFm9JxwIYxr5bOpjF1pBJ3ZoQdOH5W6zSq1qg8MyIA4=
+	t=1767530269; cv=none; b=Ajei/DolnWR8ykkOF8il8E1gkbwbssMDrUO9VQBXQ5WkpuvAcSMXSb/1viParNdA1hvjObiPHhBEAC5u4zByV4ZtPgZy0/vhhIaOnMv4ZDMnL8sucH1paR5dC8VYh+j41FdjOjZYdDIsqyFRqC46psZgG9I+v0If+1NQe27QgdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767529933; c=relaxed/simple;
-	bh=Dy90ydZC3ZdcbNYymaJeHe32ZCOoMbKQWnBxgJoo2dw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y9KsjvPf4IQeQcL6fSYyTK7A4VrmKZjl6JGIMpSjptMsSO4ZBz0BitaOM5g7zhzLMMt3x2PXMtYJzHclVPtc73z1whK/+5mRvD+PQh5n1WuYN5DS4SHNWQgF3Atc0thvy7lkzmhdE9E9v5AhbfMPTIF7NLa+iq52FzOBWmKhb+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XYnrZef5; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767530269; c=relaxed/simple;
+	bh=GofnBp9Gm0p+t98w+nAQ/wFFuASBFnBUVDE1VLoggM8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=dCcI8tQeoofYfjNNA1azFjccjfp3n7L3Zh06BxbwrkU/a0ShSNJv+rh+ZDw+zCBBkTZn0DI4HIVIbrFDW1msGcLBm5lAhvwwo/yL77oIPyWFQnbNB21xSjcuZEyz5DO8SrMm5ieEMUXHgeo9jkC+zUG63ot9SdBodL8+Gp2Bb9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o5fSJLGS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XYnrZef5"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-29f08b909aeso33475445ad.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jan 2026 04:32:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767529932; x=1768134732; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dy90ydZC3ZdcbNYymaJeHe32ZCOoMbKQWnBxgJoo2dw=;
-        b=XYnrZef5SiRjdfVlSjbsm0xKJO6AZR7pKWMjZ+i2nXGx/tYfR9CMwHBro+pcFRI1ds
-         Mun7eJtmiebrfnHlWdTIesSIsmwegkgq/VJiOjnG7RlrduCxzVMTG1Em+Yai+RSLZCCa
-         fyDni8R8m7oz57kJLFSgapQO0u2wpvbwa52Gjo2zZh5dO57N6hC3asbpzIJnDLUTV/TW
-         7Q9EMjDU0JozzTj7IOZmcxIEU4gqnyDQLcXPLHLAlnpqRFr66gW4NmznU5uzwfVMRcrr
-         KjLxkOPTQzEGr5mN0uYvgI3OPRxc+M7fz0neo0ItO+E9VvBJaWaUDD4wgiksdoZc7wOA
-         Eh+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767529932; x=1768134732;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Dy90ydZC3ZdcbNYymaJeHe32ZCOoMbKQWnBxgJoo2dw=;
-        b=elbsWI+yH4qG0pquFWjy1sWOadxnaSTRrdCYIIZlGA90evDE7gbbX4ewj/f/QJL1zA
-         fVnKl9suXipHbCKn8X7GzFqyo2pQcjqIRkHQgz2Ma14AmVEW5fsY2IA8NuVwfT0VJswd
-         vVTBpSQ+Jx15VnjXL6iCllJAHdzTHebu2nFifDLdG6HqUV7/6HW59dLqxY2Pc8lj2ph0
-         fE0dyg7t5d3VhMm7S3E+hg4bnWULFP9iuQ/k1ppDuZaKUhEMwTWXzGYwbd4JvGOCoDpA
-         Dua+Nj7FVn5inci/AEWTFXluCdhfkwyJMxia4iD5pjE/ayKCzxVjW/DrK605b+VjMcuA
-         urgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXNbrvEUzYI5sRmU2GKU5Y3KLu1vx5ZWr/iA3/QV2ysC44T0+hrSofrKmL3PpxGi8yO8SK2F1aen+4Vevt4Fw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8poPDadaclyM5D0MafiZGQ5pfrX4SATiLsTKomEU83r7Qtl5o
-	8ZzLrH1tNtwkv+jEp255ly7Y8JqLDTx1/+1ktybvpcfq5i0o73ypygP3hLTqBZrfnb1UwJXIL4s
-	lJYKLDnVK/sqvCieEmwE52CDHyE59mQA=
-X-Gm-Gg: AY/fxX7eZHow5fu0JXTMKR9eCj2wvu63A5EkmaDjCfXfY75TSxjM59cWmYdg5zHTl51
-	4biPXnIk68gdCPh2GKyaZrlnkZXxeI0Swgqq1NRA4CEw8UKKZucbfSbJm+P3rfqrrQFE/6luA30
-	lghR5Mc5xHac/X4VBrSQBBYVB2edqkq6d4gE4A7gWHub663Smh67FzgG3m1SRvyqoScJiEsy1hJ
-	4qJoJuKcbgA1mhGBH2eys+/16CoEzbls3CrMGXWxhRESRprDdfpcqgqYJdsvpJuiMHRN7ZVYw7q
-	btREgsMcgJi7gH4MAH2xMtXl0nkxSHd31C7QhI95fQ1OGH/t+FZtQH+oLREmWaODpzN16JKyfCG
-	7rQ3eNgPzWKJx
-X-Google-Smtp-Source: AGHT+IHf7KpKpbJjsjinhofN56soZ+FW9sI05KvxZsvyV3VyGs2GMrGDywwEqQ8lvklCE76LNM4JtlcDP8BOPIC6r5o=
-X-Received: by 2002:a05:7300:c695:b0:2ae:5f73:1968 with SMTP id
- 5a478bee46e88-2b05eb7b6d1mr16001886eec.2.1767529931694; Sun, 04 Jan 2026
- 04:32:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o5fSJLGS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338DBC4CEF7;
+	Sun,  4 Jan 2026 12:37:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767530268;
+	bh=GofnBp9Gm0p+t98w+nAQ/wFFuASBFnBUVDE1VLoggM8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=o5fSJLGSOQHI6Fq88P0aJO5LHv/qYuA4Uzepsbu4IJ2wF8QZhDbjFaTInBlsWlQRd
+	 AwGOYMdHYfHsXRlAW1Q5ACqSkwep8rmarNEmVS7s+VHmmCme6J6DikMvg0HPd+k+ao
+	 ca/R7f2ZitLqgwQ0Rh4F3+tHV566aaNZFekWDn+SvFrd6wip/5yHThylIaaNhe7Rkl
+	 hJHqPyEJD2eSmtfTjLN7uR1pPg9tOA+GkpAfjDEGiE8A0JdWi0SwR7HexoR6ok8gBc
+	 7KedP65lYTLZF6lVh+wyLFTbDr1g/zcZilIuQp4Wnmy/uQNLf7gYNFd573W3B4nVhs
+	 R1A09RJQY7QvA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260103-add-rust-pci-header-type-v1-1-879b4d74b227@gmail.com>
- <DFF1Y5LEQ85Q.V2AC0R1EFXNZ@kernel.org> <CAGAB6648kOCF4GZV=wKUxEptzW_91BySPMqFSjE+L-TA3ufH-g@mail.gmail.com>
-In-Reply-To: <CAGAB6648kOCF4GZV=wKUxEptzW_91BySPMqFSjE+L-TA3ufH-g@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 4 Jan 2026 13:31:59 +0100
-X-Gm-Features: AQt7F2qedD660SgLCt10xNgjysXE_wVd0hQW4dUtEw9YoI3cwjDMZMBc39nOS2g
-Message-ID: <CANiq72mAcgoX9RtM1qZCQNeNYRJQ0soy3G6WFa0ELFGDTGRhjw@mail.gmail.com>
-Subject: Re: [PATCH] rust: pci: add HeaderType enum and header_type() helper
-To: =?UTF-8?B?7ZWY7Iq57KKF?= <engineer.jjhama@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, 
-	SeungJong Ha via B4 Relay <devnull+engineer.jjhama.gmail.com@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 04 Jan 2026 13:37:44 +0100
+Message-Id: <DFFT6PR57TZ4.IG4LJVST0X8C@kernel.org>
+Subject: Re: [RFC PATCH v1 1/4] rust: add AMBA bus abstractions
+Cc: "Alexandre Belloni" <alexandre.belloni@bootlin.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <linux-rtc@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "Alvin Sun" <sk.alvin.x@gmail.com>
+To: "Ke Sun" <sunke@kylinos.cn>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260104060621.3757812-1-sunke@kylinos.cn>
+ <20260104060621.3757812-2-sunke@kylinos.cn>
+In-Reply-To: <20260104060621.3757812-2-sunke@kylinos.cn>
 
-On Sat, Jan 3, 2026 at 4:39=E2=80=AFPM =ED=95=98=EC=8A=B9=EC=A2=85 <enginee=
-r.jjhama@gmail.com> wrote:
->
-> Yes, I am currently developing a Rust-based driver for nvme and ixgbe dev=
-ices,
-> which requires identifying the header type to check compatibility on
-> initialization.
-> I sent this patch first as it provides a foundational API for the PCI
-> abstraction.
+On Sun Jan 4, 2026 at 7:06 AM CET, Ke Sun wrote:
+> Add Rust abstractions for the ARM AMBA bus, including:
+> - Device type wrapper for amba_device
+> - DeviceId for device matching
+> - TryFrom implementation for converting device::Device to amba::Device
+> - IRQ and I/O resource management methods
 
-In those cases it is usually a good idea to show the initial user of
-the API, even if as an RFC patch, typically as a final patch in a
-series.
+I don't see any Driver trait or Adapter implementation implementing to regi=
+ster
+and probe an AMBA driver.
 
-Even then, landing the abstractions usually need to wait for the
-concrete user to be ready to land, depending on what Danilo et al.
-decide.
+Since I had a look at your RTC abstractions, I can see the reason why, i.e.=
+ you
+baked that part into the RTC abstractions, but this is not how the device /
+driver model works. I will comment about this in the RTC patch. But for thi=
+s
+one, please implement thing analogous to platform, PCI, etc.
 
-Thanks!
+> +impl DeviceId {
+> +    /// Creates a new device ID from an AMBA device ID and mask.
+> +    ///
+> +    /// A driver binds to a device when `(hardware_device_id & mask) =3D=
+=3D id`.
+> +    #[inline(always)]
+> +    pub const fn new(id: u32, mask: u32) -> Self {
+> +        // SAFETY: FFI type is valid to be zero-initialized.
+> +        let mut amba: bindings::amba_id =3D unsafe { core::mem::zeroed()=
+ };
 
-Cheers,
-Miguel
+Please use pin_init::zeroed() instead.
+
+> +        amba.id =3D id;
+> +        amba.mask =3D mask;
+> +        amba.data =3D core::ptr::null_mut();
+> +
+> +        Self(amba)
+> +    }
+> +
+> +    /// Creates a new device ID with driver-specific data.
+> +    #[inline(always)]
+> +    pub const fn new_with_data(id: u32, mask: u32, data: usize) -> Self =
+{
+> +        // SAFETY: FFI type is valid to be zero-initialized.
+> +        let mut amba: bindings::amba_id =3D unsafe { core::mem::zeroed()=
+ };
+
+Same here.
+
+> +        amba.id =3D id;
+> +        amba.mask =3D mask;
+> +        amba.data =3D data as *mut core::ffi::c_void;
+
+What is this data? The driver specific data is derived from the index store=
+d in
+DRIVER_DATA_OFFSET. This does interfere with each other.
+
+You already get driver specific data per entry from the generic code, you c=
+an
+just drop this.
+
+> +    /// Returns the memory resource.
+> +    pub fn resource(&self) -> Option<&Resource> {
+
+Why does this return an Option if you do not have a None case? Are you sure
+resource can never be NULL?
+
+> +        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct =
+amba_device`.
+> +        let resource =3D unsafe { &raw mut (*self.as_raw()).res };
+> +        // SAFETY: `resource` is a valid pointer to a `struct resource`.
+> +        Some(unsafe { Resource::from_raw(resource) })
+> +    }
+> +}
+> +
+> +impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<C=
+tx> {
+> +    fn as_ref(&self) -> &device::Device<Ctx> {
+> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a=
+ pointer to a
+> +        // valid `struct amba_device`.
+> +        let dev =3D unsafe { &raw mut (*self.as_raw()).dev };
+> +
+> +        // SAFETY: `dev` points to a valid `struct device`.
+> +        unsafe { device::Device::from_raw(dev) }
+> +    }
+> +}
+> +
+> +// SAFETY: `Device` is a transparent wrapper that doesn't depend on its =
+generic
+> +// argument.
+> +crate::impl_device_context_deref!(unsafe { Device });
+> +crate::impl_device_context_into_aref!(Device);
+> +
+> +impl<Ctx: device::DeviceContext> TryFrom<&device::Device<Ctx>> for &Devi=
+ce<Ctx> {
+> +    type Error =3D kernel::error::Error;
+> +
+> +    fn try_from(dev: &device::Device<Ctx>) -> Result<Self, Self::Error> =
+{
+> +        // SAFETY: By the type invariant of `Device`, `dev.as_raw()` is =
+a valid pointer
+> +        // to a `struct device`.
+> +        if !unsafe { bindings::dev_is_amba(dev.as_raw()) } {
+> +            return Err(crate::error::code::EINVAL);
+> +        }
+> +
+> +        // SAFETY: We've just verified that the bus type of `dev` equals
+> +        // `bindings::amba_bustype`, hence `dev` must be embedded in a v=
+alid
+> +        // `struct amba_device` as guaranteed by the corresponding C cod=
+e.
+> +        let adev =3D unsafe { container_of!(dev.as_raw(), bindings::amba=
+_device, dev) };
+> +
+> +        // SAFETY: `adev` is a valid pointer to a `struct amba_device`.
+> +        Ok(unsafe { &*adev.cast() })
+> +    }
+> +}
+
+Please implement the AsBusDevice trait instead, this TryFrom solution you
+probably found in the platform and PCI bus are for very specific cases. For
+instance, if you have a driver that exports and auxiliary device, but is
+supported on two busses.
+
+In your case, you simply want to derive an amba device from a generic devic=
+e in
+a class device abstraction (RTC device), hence please incorporate the
+AsBusDevice trait.
+
+> +impl Device<device::Core> {}
+> +
+> +impl Device<device::Bound> {
+> +    /// Returns an [`IoRequest`] for the memory resource.
+> +    pub fn io_request(&self) -> Option<IoRequest<'_>> {
+> +        self.resource()
+> +            // SAFETY: `resource` is valid for the lifetime of the `IoRe=
+quest`.
+> +            .map(|resource| unsafe { IoRequest::new(self.as_ref(), resou=
+rce) })
+> +    }
+> +
+> +    /// Returns an [`IrqRequest`] for the IRQ at the given index.
+> +    pub fn irq_by_index(&self, index: u32) -> Result<IrqRequest<'_>> {
+> +        if index >=3D bindings::AMBA_NR_IRQS {
+> +            return Err(crate::error::code::EINVAL);
+> +        }
+> +
+> +        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct =
+amba_device`.
+> +        let irq =3D unsafe { (*self.as_raw()).irq[index as usize] };
+> +
+> +        if irq =3D=3D 0 {
+> +            return Err(crate::error::code::ENXIO);
+> +        }
+> +
+> +        // SAFETY: `irq` is guaranteed to be a valid IRQ number for `&se=
+lf`.
+> +        Ok(unsafe { IrqRequest::new(self.as_ref(), irq) })
+> +    }
+> +
+> +    /// Requests an IRQ at the given index and returns a [`irq::Registra=
+tion`].
+> +    pub fn request_irq_by_index<'a, T: irq::Handler + 'static>(
+> +        &'a self,
+> +        flags: irq::Flags,
+> +        index: u32,
+> +        name: &'static CStr,
+> +        handler: impl PinInit<T, Error> + 'a,
+> +    ) -> Result<impl PinInit<irq::Registration<T>, Error> + 'a> {
+
+Please don't return a Result here, the error code is already within the imp=
+l
+PinInit<T, Error>. Please use pin_init::pin_init_scope() instead.
+
+> +        let request =3D self.irq_by_index(index)?;
+> +
+> +        Ok(irq::Registration::<T>::new(request, flags, name, handler))
+> +    }
+> +}
