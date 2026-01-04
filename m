@@ -1,247 +1,497 @@
 Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9311229B38
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Jan 2026 23:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9EA19258E
+	for <rust-for-linux@vger.kernel.org>; Sun,  4 Jan 2026 23:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767568661; cv=none; b=J47qnfX8MC9dO1iOSEK16UCp39tqY4lLmCYxAaFldVmd/kxlNsE96FRQBSLCGUO5PLEDzr8KhKfZ+PuWShmojDIWIkcNV7Kmb2eaLWeerzdIAM1T9/38m6xxmf2snE5WDa26CxY9vcHbTPnd0XZeGVcew+M7Wppvp1DHV+QJNMI=
+	t=1767569973; cv=none; b=krfOXtHr98+bESkKWlDRa80xTHbbEK7SCfUHleqrlQIJ7Hy/l9b6+i5cTjbVuJO3aibu6W2cughNsUK1oP6/3MlVV5HTwxi3DolXKrFbkj6ljY9iM3+VgMR0/6hCZxY1YHhysfqO0gPrXdAj+RZ+H8trXXCxNEPTyJ/lwxZxNJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767568661; c=relaxed/simple;
-	bh=JTWuAqVCda3XcA65aB21SfD1V3R01MSETucYlkXUGZs=;
+	s=arc-20240116; t=1767569973; c=relaxed/simple;
+	bh=qGSGjZV/JsM9T+jR15Tx/ag1IUI1Dc2Eu07/NcdTEks=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T7vr5Lfj442jEkLJek/NqtnJ5ACFUQvXoET+cWDdlXfPFPw1C8RsRloGtEH4GjL89op3mr1Ed34Qlt7FRaROFgV9ZR37MkfrY6smisPNja1hOUD4zQwyWS1Ek9Lou94z89NEg6Oyjq3TPQqClTXvZJExI1WcTqNtHKu6Oiiunxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fQQ7Cpbx; arc=none smtp.client-ip=209.85.208.172
+	 To:Cc:Content-Type; b=lWTkT9lrS2HpOYzVh1Lo2gfTiYV50CaDkIm6hqp6zdOJIMNYgMUmcRLTqnyrjy6ZzjV3KfXInz0AKcJNnv40Vtxxqip+2yhxKJ6nvXSTm+XfuX0eaTXkjsa2+oA4+jV7pqfq53EklMf/Ql8nkmbBFmHkVXbPcUXzl//lvfU6qrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BMY2VIrd; arc=none smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fQQ7Cpbx"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37b9728a353so163438471fa.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jan 2026 15:17:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BMY2VIrd"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37b96cbd875so111297211fa.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jan 2026 15:39:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767568658; x=1768173458; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767569969; x=1768174769; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hmOnzM3O0tacehNp8y1E1jmB4ZOYRsBERU5Q7f5EfeM=;
-        b=fQQ7CpbxdOmeMqhqUbDGWPtVCcGcN9p6FepETLi1N2h2kQCyfLBgT79UR59YYEeXIB
-         gz+jW56rF6hzNNa3Ah+PK5uoXSy78B9qxEYViurcKGygpqJBKMB6/vm4/Ykp03DVK4ex
-         h24Y0/7yM3wqCCIZi+ePfAdbxHZBtfN5jgfz/gbg2lTGi2rdXZPujJB4oNox7xtdFMKM
-         tDsqemoA/0tgsK4ywU0CX0IkWfvpW9G4ueRaW7LRKl6djD5CH8VlqqwYYx4vdcNBr/PX
-         vG3no7oMSj0JNMFfeBPCbu7XVWtITzjyqTXAjkokfFtcvC6xeqBIWy0BDhzLTnvub9iF
-         9FzA==
+        bh=Nuc0gupqqV+4mISzaSB2/rmiN50dZ34TEkP8U/0Qf1I=;
+        b=BMY2VIrdMwgzEIZkD1nk3k5JJ9J9NMcN/xjK6c93QvQs9GdCwhVPMy1bMcq0l7zU50
+         rUk9hyatXdhtChm8iMNsJeYEd5Q3EwcSm3kv4Pu1sa9VT9AX0iKzfjD5uAAaW4PUmV77
+         4MBOmmDJu7aU/W8FvSDFqUhrZoXcdAxa1RHP+9bhphHnfusRCLGOjmIuAK3wzY6oEHQB
+         /ZxoGKR62gVxMhKul0eBHJ4bd5ZK6s9Uudl3kcp+9dWARXItZK2kTC0LQIvM8c6paPxg
+         IYgHrsvQonQrOQy2BSd/QzzKIyvk15l57GLrYRW5uOw6+qug9vsltOsBnH2EmVOuAzBo
+         Vnfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767568658; x=1768173458;
+        d=1e100.net; s=20230601; t=1767569969; x=1768174769;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hmOnzM3O0tacehNp8y1E1jmB4ZOYRsBERU5Q7f5EfeM=;
-        b=vJH+9nB0YqfkVGfoGP/USttmR3SFE9aS+ER7RH7tCosJQ96SL4hz9OzGEXWp3x8LmI
-         vsL094Wp77HE8S0Z82jL1L420cCrCH12oqBeLdovOvuTCTn/A9RU/E8xVhcUFVADmDi9
-         TTFbQQCssqjvUFfRouP8lyJtnDxXF8hd2RwuK9yeDRejPq3jI3Rb5bLRRiGQH0I5vZ3Z
-         8yaL2/Ifk706s+OqMatRoXmISuwvkvDSl90fLpDrkJ6r0ps7E1WfU2y8eavzba7kIIoa
-         UoeI7CFSDNiNOEr1JpN6wXab259jRfoawA7ndExh1rUi8BGITU+9glTKmptDVtvHchuM
-         MBQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCDw7+8K1J4odOOvSKDcl/nOz9u5sB3Qo/wW5GwsA/d1yzAm9O+ePtekbxBGL4fnLYoEezy7xNLIixMhIDBg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YziVaZ8Kd0z3QUUJYWOk0udAH7Dd3VCviSO22VfwL8FAGeEq2LJ
-	3quNjpao0d6Ja9WtJBq2FtGnTJtw84bq270aVKAsex3BY0kpKncHnUvEnEm1Ld0QNUNimGYG16o
-	3MGb/2JeTC6l0BH9+d9g9K5DDFlLuRcA=
-X-Gm-Gg: AY/fxX5rjGpeN+Gnzd5GBVhUEpGwxZR7u2rE74GLwwnI0y1nyDbKKZiWCK1EwBvSdx/
-	UCiUJWGzdDFbTOTVQwmS3K4Xn0QnYYAOXMAeEH64+nSWs+xRTgqL8W8xHMJrg0EqKEr1E6Es6Gt
-	4kShhESDEAHaiD1366U4dkZx9m2IewvAvvDcYK9bbxImib73A1dDBLFDaD5KHsW47CPn7fXk6MS
-	uMyvD8annzlEm2nKLgERKFAYICXzxiIqt1GZOUpe24OSnVMt7PpyH/p8fW/240lAJ96Ey97z4in
-	jvzjLzarI3ldk7d1GwIbDkNsWiPo60eegAukNEL5NraqfqNuFxuJ2TnGOunfIAsljKqTAHL+7xH
-	SzKsH1Rsm2xw5QPgqJXOuiRBoWtQvRLBwL/syBiD+Dw==
-X-Google-Smtp-Source: AGHT+IEnMQI2BZcnxnMuAvPtIAb5hrl4gzRoAhFhoiyy+xQf++LYKrbExvwy952sWnmU9/RRsyHoQBy8g+NcJdcKJB0=
-X-Received: by 2002:a05:651c:1119:b0:37b:9615:e43a with SMTP id
- 38308e7fff4ca-38121568308mr133822001fa.1.1767568657781; Sun, 04 Jan 2026
- 15:17:37 -0800 (PST)
+        bh=Nuc0gupqqV+4mISzaSB2/rmiN50dZ34TEkP8U/0Qf1I=;
+        b=xHJ9aEFp6dVOFdRmCjhUcAtZHor6m0kTpB0EdHYc+Ya0FIdjcarDt12+rylW/oiQQ8
+         +tlu36WXwJofqYWHJ01f0U0/Gzh132DbRs8o+Dq1M2gYY7UF+yKbyTq8o1GZTmV3MIxG
+         B1lMVyjFLko68YeGcJooqj7HFndMs5vR607j2H2Hho+ofoABpCC8gpbgcmQFraSbaRRf
+         zeEg9tDbJrFy6pQZJJ9UDlCPSzuBVvl1hQ5CwO4uud6xgD3gzTVhjfN0/69Bp5aouRiQ
+         wZ0VY+l0iQAWgWsSi6ge1H9aRgRSoy34psWVZxrZRiltLQmM/uk+rMs3CA4MGveSPhE5
+         yetw==
+X-Forwarded-Encrypted: i=1; AJvYcCXtCnXdQQpu21TQmn5uYbA3Aqp+vc4y6nKCYl+tsqa3+hvUg1D4Pwbw8zH+60Y5VW78V2g17ojlNR3dgICFog==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMCulhqCirlYnYH/kIT/ufFvWPdW2ey8z8a5lbn3igvsAU8bYT
+	CiY8NzJT6blteBJuzSRdfUZfjjVMdGpO/YW4t0w8yiu5hvWKDjkmUaMN2C9c3w8D8+okct4VAx0
+	CVST0eq5PR2U7a3XRO2tGKFFJ3OIxckQ=
+X-Gm-Gg: AY/fxX5YWH/9dNPZgaB7QXLZdsd5AOf53T02KaMlty3//pdHSWFLvLKOmRj88qZeHXZ
+	LwoMkRjRUzxTeZtglcjlNFlqn4+Qcmz0n8ApTNhrNKY5NzpjWmnS97YjUnRSBskFzFOzJeVAuoX
+	WaHLShx5DW7851CtirdqN1vz6BeB3wHdv++ZaHk8TiNVhYkznJ5CTVC+Y/ikZEDyiy66E82h05q
+	zC9zrsTlmIoPIplwdGW88ONygAT7O1q2e18LzkhhiALrEhwLd/grjaQgoOLNF++6d2rX+dGjtDi
+	xop/kr00bmmEIVSGGq9e0IknG02ub+N80GhbpxLMwxLJocVug3SwnUkk3HRuPHDL40ZHE7B8usA
+	Onmo/vJXSllDP3h1trnvwcFGninIAr7jUJ63kql6n2W4q8inHcrT2
+X-Google-Smtp-Source: AGHT+IG7ZOuBMhkNngrmxLoUFwwCshK0Bnbo1CEELL9CWRdXTkigXUFNuw9rnBmaemuKgLdxI1wSAFbAIsrfENSV+sc=
+X-Received: by 2002:a05:651c:30ca:b0:382:b559:8335 with SMTP id
+ 38308e7fff4ca-382b5598407mr29470801fa.36.1767569969146; Sun, 04 Jan 2026
+ 15:39:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251124151837.2184382-1-ojeda@kernel.org> <20251124151837.2184382-20-ojeda@kernel.org>
-In-Reply-To: <20251124151837.2184382-20-ojeda@kernel.org>
+References: <20251211185805.2835633-1-gary@kernel.org> <20251211185805.2835633-9-gary@kernel.org>
+In-Reply-To: <20251211185805.2835633-9-gary@kernel.org>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Sun, 4 Jan 2026 18:17:01 -0500
-X-Gm-Features: AQt7F2qWpkSdf1y6pE7KQf8V1fRgZiCJdhji2uwBRomSReIpE82rv7uhwmQMTj8
-Message-ID: <CAJ-ks9kSFp8CpyNr8zSKh6mniuXiYNrZCc8FC-8Z81GdbnaRog@mail.gmail.com>
-Subject: Re: [PATCH v2 19/20] rust: syn: enable support in kbuild
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Sun, 4 Jan 2026 18:38:53 -0500
+X-Gm-Features: AQt7F2qfYIxFnLeXTTu2IMuLhnVfHQnkSUbs3zAbPwTPJpGxvMWIMYJrcC-pGKE
+Message-ID: <CAJ-ks9mCivfa3kL6ep3QHYw_-p56qGeZn0ApLKo7qvsES-0ArQ@mail.gmail.com>
+Subject: Re: [PATCH 08/11] rust: macros: convert `#[kunit_tests]` macro to use `syn`
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev, Jesung Yang <y.j3ms.n@gmail.com>
+	Danilo Krummrich <dakr@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <raemoar63@gmail.com>, 
+	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>, Patrick Miller <paddymills@proton.me>, 
+	=?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 24, 2025 at 10:25=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
+On Thu, Dec 11, 2025 at 2:30=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
 >
-> With all the new files in place and ready from the new crate, enable
-> the support for it in the build system.
+> From: Gary Guo <gary@garyguo.net>
 >
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Tested-by: Gary Guo <gary@garyguo.net>
-> Tested-by: Jesung Yang <y.j3ms.n@gmail.com>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> This allows significant cleanups.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 > ---
->  Makefile                          |  1 +
->  rust/Makefile                     | 37 ++++++++++++++++++++++++++++---
->  scripts/generate_rust_analyzer.py |  7 ++++++
->  3 files changed, 42 insertions(+), 3 deletions(-)
+>  rust/macros/kunit.rs | 274 +++++++++++++++++++------------------------
+>  rust/macros/lib.rs   |   6 +-
+>  2 files changed, 123 insertions(+), 157 deletions(-)
 >
-> diff --git a/Makefile b/Makefile
-> index 85da055e4f00..96ddbaae7e12 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1835,6 +1835,7 @@ rustfmt:
->                 \( \
->                         -path $(srctree)/rust/proc-macro2 \
->                         -o -path $(srctree)/rust/quote \
-> +                       -o -path $(srctree)/rust/syn \
->                 \) -prune -o \
->                 -type f -a -name '*.rs' -a ! -name '*generated*' -print \
->                 | xargs $(RUSTFMT) $(rustfmt_flags)
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 4f4a00594142..8988ecf32531 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -27,7 +27,7 @@ endif
+> diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
+> index 7427c17ee5f5c..516219f5b1356 100644
+> --- a/rust/macros/kunit.rs
+> +++ b/rust/macros/kunit.rs
+> @@ -4,81 +4,50 @@
+>  //!
+>  //! Copyright (c) 2023 Jos=C3=A9 Exp=C3=B3sito <jose.exposito89@gmail.co=
+m>
 >
->  obj-$(CONFIG_RUST) +=3D exports.o
->
-> -always-$(CONFIG_RUST) +=3D libproc_macro2.rlib libquote.rlib
-> +always-$(CONFIG_RUST) +=3D libproc_macro2.rlib libquote.rlib libsyn.rlib
->
->  always-$(CONFIG_RUST_KERNEL_DOCTESTS) +=3D doctests_kernel_generated.rs
->  always-$(CONFIG_RUST_KERNEL_DOCTESTS) +=3D doctests_kernel_generated_kun=
-it.c
-> @@ -101,6 +101,22 @@ quote-flags :=3D \
->      --extern proc_macro2 \
->      $(call cfgs-to-flags,$(quote-cfgs))
->
-> +# `extra-traits`, `fold` and `visit` may be enabled if needed.
-> +syn-cfgs :=3D \
-> +    feature=3D"clone-impls" \
-> +    feature=3D"derive" \
-> +    feature=3D"full" \
-> +    feature=3D"parsing" \
-> +    feature=3D"printing" \
-> +    feature=3D"proc-macro" \
-> +    feature=3D"visit-mut"
+> -use std::collections::HashMap;
+> -use std::fmt::Write;
+> -
+> -use proc_macro2::{Delimiter, Group, TokenStream, TokenTree};
+> -
+> -pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenSt=
+ream {
+> -    let attr =3D attr.to_string();
+> -
+> -    if attr.is_empty() {
+> -        panic!("Missing test name in `#[kunit_tests(test_name)]` macro")
+> -    }
+> -
+> -    if attr.len() > 255 {
+> -        panic!("The test suite name `{attr}` exceeds the maximum length =
+of 255 bytes")
+> +use std::ffi::CString;
 > +
-> +syn-flags :=3D \
-> +    --cap-lints=3Dallow \
-> +    --extern proc_macro2 \
-> +    --extern quote \
-> +    $(call cfgs-to-flags,$(syn-cfgs))
+> +use proc_macro2::TokenStream;
+> +use quote::{
+> +    format_ident,
+> +    quote,
+> +    ToTokens, //
+> +};
+> +use syn::{
+> +    parse_quote,
+> +    Error,
+> +    Ident,
+> +    Item,
+> +    ItemMod,
+> +    LitCStr,
+> +    Result, //
+> +};
 > +
->  # `rustdoc` did not save the target modifiers, thus workaround for
->  # the time being (https://github.com/rust-lang/rust/issues/144521).
->  rustdoc_modifiers_workaround :=3D $(if $(call rustc-min-version,108800),=
--Cunsafe-allow-abi-mismatch=3Dfixed-x18)
-> @@ -161,11 +177,16 @@ rustdoc-quote: private skip_flags =3D $(quote-skip_=
-flags)
->  rustdoc-quote: $(src)/quote/lib.rs rustdoc-clean rustdoc-proc_macro2 FOR=
-CE
->         +$(call if_changed,rustdoc)
+> +pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Res=
+ult<TokenStream> {
+> +    if test_suite.to_string().len() > 255 {
+> +        return Err(Error::new_spanned(
+> +            test_suite,
+> +            "test suite names cannot exceed the maximum length of 255 by=
+tes",
+> +        ));
+>      }
 >
-> +rustdoc-syn: private rustdoc_host =3D yes
-> +rustdoc-syn: private rustc_target_flags =3D $(syn-flags)
-> +rustdoc-syn: $(src)/syn/lib.rs rustdoc-clean rustdoc-quote FORCE
-> +       +$(call if_changed,rustdoc)
-> +
->  rustdoc-macros: private rustdoc_host =3D yes
->  rustdoc-macros: private rustc_target_flags =3D --crate-type proc-macro \
->      --extern proc_macro
->  rustdoc-macros: $(src)/macros/lib.rs rustdoc-clean rustdoc-proc_macro2 \
-> -    rustdoc-quote FORCE
-> +    rustdoc-quote rustdoc-syn FORCE
->         +$(call if_changed,rustdoc)
+> -    let mut tokens: Vec<_> =3D ts.into_iter().collect();
+> -
+> -    // Scan for the `mod` keyword.
+> -    tokens
+> -        .iter()
+> -        .find_map(|token| match token {
+> -            TokenTree::Ident(ident) =3D> match ident.to_string().as_str(=
+) {
+> -                "mod" =3D> Some(true),
+> -                _ =3D> None,
+> -            },
+> -            _ =3D> None,
+> -        })
+> -        .expect("`#[kunit_tests(test_name)]` attribute should only be ap=
+plied to modules");
+> -
+> -    // Retrieve the main body. The main body should be the last token tr=
+ee.
+> -    let body =3D match tokens.pop() {
+> -        Some(TokenTree::Group(group)) if group.delimiter() =3D=3D Delimi=
+ter::Brace =3D> group,
+> -        _ =3D> panic!("Cannot locate main body of module"),
+> +    // We cannot handle modules that defer to another file (e.g. `mod fo=
+o;`).
+> +    let Some((module_brace, module_items)) =3D module.content.take() els=
+e {
+> +        Err(Error::new_spanned(
+> +            module,
+> +            "`#[kunit_tests(test_name)]` attribute should only be applie=
+d to inline modules",
+> +        ))?
+>      };
 >
->  # Starting with Rust 1.82.0, skipping `-Wrustdoc::unescaped_backticks` s=
-hould
-> @@ -231,6 +252,10 @@ rusttestlib-quote: private rustc_target_flags =3D $(=
-quote-flags)
->  rusttestlib-quote: $(src)/quote/lib.rs rusttestlib-proc_macro2 FORCE
->         +$(call if_changed,rustc_test_library)
->
-> +rusttestlib-syn: private rustc_target_flags =3D $(syn-flags)
-> +rusttestlib-syn: $(src)/syn/lib.rs rusttestlib-quote FORCE
-> +       +$(call if_changed,rustc_test_library)
-> +
->  rusttestlib-macros: private rustc_target_flags =3D --extern proc_macro
->  rusttestlib-macros: private rustc_test_library_proc =3D yes
->  rusttestlib-macros: $(src)/macros/lib.rs FORCE
-> @@ -488,6 +513,11 @@ $(obj)/libquote.rlib: private rustc_target_flags =3D=
- $(quote-flags)
->  $(obj)/libquote.rlib: $(src)/quote/lib.rs $(obj)/libproc_macro2.rlib FOR=
-CE
->         +$(call if_changed_dep,rustc_procmacrolibrary)
->
-> +$(obj)/libsyn.rlib: private skip_clippy =3D 1
-> +$(obj)/libsyn.rlib: private rustc_target_flags =3D $(syn-flags)
-> +$(obj)/libsyn.rlib: $(src)/syn/lib.rs $(obj)/libquote.rlib FORCE
-> +       +$(call if_changed_dep,rustc_procmacrolibrary)
-> +
->  quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET) P $@
->        cmd_rustc_procmacro =3D \
->         $(RUSTC_OR_CLIPPY) $(rust_common_flags) $(rustc_target_flags) \
-> @@ -500,7 +530,7 @@ quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET=
-) P $@
->
->  # Procedural macros can only be used with the `rustc` that compiled it.
->  $(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rli=
-b \
-> -    $(obj)/libquote.rlib FORCE
-> +    $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
->         +$(call if_changed_dep,rustc_procmacro)
->
->  $(obj)/$(libpin_init_internal_name): private rustc_target_flags =3D --cf=
-g kernel
-> @@ -525,6 +555,7 @@ rust-analyzer:
->                 --cfgs=3D'core=3D$(core-cfgs)' $(core-edition) \
->                 --cfgs=3D'proc_macro2=3D$(proc_macro2-cfgs)' \
->                 --cfgs=3D'quote=3D$(quote-cfgs)' \
-> +               --cfgs=3D'syn=3D$(syn-cfgs)' \
->                 $(realpath $(srctree)) $(realpath $(objtree)) \
->                 $(rustc_sysroot) $(RUST_LIB_SRC) $(if $(KBUILD_EXTMOD),$(=
-srcroot)) \
->                 > rust-project.json
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
-alyzer.py
-> index 4faf153ed2ee..5b6f7b8d6918 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -100,6 +100,13 @@ def generate_crates(srctree, objtree, sysroot_src, e=
-xternal_src, cfgs, core_edit
->          cfg=3Dcrates_cfgs["quote"],
->      )
->
-> +    append_crate(
-> +        "syn",
-> +        srctree / "rust" / "syn" / "lib.rs",
-> +        ["proc_macro", "proc_macro2", "quote"],
-> +        cfg=3Dcrates_cfgs["syn"],
-> +    )
+> -    // Get the functions set as tests. Search for `[test]` -> `fn`.
+> -    let mut body_it =3D body.stream().into_iter();
+> -    let mut tests =3D Vec::new();
+> -    let mut attributes: HashMap<String, TokenStream> =3D HashMap::new();
+> -    while let Some(token) =3D body_it.next() {
+> -        match token {
+> -            TokenTree::Punct(ref p) if p.as_char() =3D=3D '#' =3D> match=
+ body_it.next() {
+> -                Some(TokenTree::Group(g)) if g.delimiter() =3D=3D Delimi=
+ter::Bracket =3D> {
+> -                    if let Some(TokenTree::Ident(name)) =3D g.stream().i=
+nto_iter().next() {
+> -                        // Collect attributes because we need to find wh=
+ich are tests. We also
+> -                        // need to copy `cfg` attributes so tests can be=
+ conditionally enabled.
+> -                        attributes
+> -                            .entry(name.to_string())
+> -                            .or_default()
+> -                            .extend([token, TokenTree::Group(g)]);
+> -                    }
+> -                    continue;
+> -                }
+> -                _ =3D> (),
+> -            },
+> -            TokenTree::Ident(i) if i.to_string() =3D=3D "fn" && attribut=
+es.contains_key("test") =3D> {
+> -                if let Some(TokenTree::Ident(test_name)) =3D body_it.nex=
+t() {
+> -                    tests.push((test_name, attributes.remove("cfg").unwr=
+ap_or_default()))
+> -                }
+> -            }
+> -
+> -            _ =3D> (),
+> -        }
+> -        attributes.clear();
+> -    }
+> +    // Make the entire module gated behind `CONFIG_KUNIT`.
+> +    module
+> +        .attrs
+> +        .insert(0, parse_quote!(#[cfg(CONFIG_KUNIT=3D"y")]));
 
-I think we need to add "std" here -- without it, navigating to methods
-on e.g. Vec items defined in syn doesn't work (it does work with "std"
-added).
+Does this need to be the first attribute? I think it can just be
+pushed to the end.
+
+
+>
+> -    // Add `#[cfg(CONFIG_KUNIT=3D"y")]` before the module declaration.
+> -    let config_kunit =3D "#[cfg(CONFIG_KUNIT=3D\"y\")]".to_owned().parse=
+().unwrap();
+> -    tokens.insert(
+> -        0,
+> -        TokenTree::Group(Group::new(Delimiter::None, config_kunit)),
+> -    );
+> +    let mut processed_items =3D Vec::new();
+> +    let mut test_cases =3D Vec::new();
+>
+>      // Generate the test KUnit test suite and a test case for each `#[te=
+st]`.
+> +    //
+>      // The code generated for the following test module:
+>      //
+>      // ```
+> @@ -110,98 +79,93 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: Tok=
+enStream) -> TokenStream {
+>      //
+>      // ::kernel::kunit_unsafe_test_suite!(kunit_test_suit_name, TEST_CAS=
+ES);
+>      // ```
+> -    let mut kunit_macros =3D "".to_owned();
+> -    let mut test_cases =3D "".to_owned();
+> -    let mut assert_macros =3D "".to_owned();
+> -    let path =3D crate::helpers::file();
+> -    let num_tests =3D tests.len();
+> -    for (test, cfg_attr) in tests {
+> -        let kunit_wrapper_fn_name =3D format!("kunit_rust_wrapper_{test}=
+");
+> -        // Append any `cfg` attributes the user might have written on th=
+eir tests so we don't
+> -        // attempt to call them when they are `cfg`'d out. An extra `use=
+` is used here to reduce
+> -        // the length of the assert message.
+> -        let kunit_wrapper =3D format!(
+> -            r#"unsafe extern "C" fn {kunit_wrapper_fn_name}(_test: *mut =
+::kernel::bindings::kunit)
+> -            {{
+> -                (*_test).status =3D ::kernel::bindings::kunit_status_KUN=
+IT_SKIPPED;
+> -                {cfg_attr} {{
+> -                    (*_test).status =3D ::kernel::bindings::kunit_status=
+_KUNIT_SUCCESS;
+> -                    use ::kernel::kunit::is_test_result_ok;
+> -                    assert!(is_test_result_ok({test}()));
+> +    //
+> +    // Non-function items (e.g. imports) are preserved.
+> +    for item in module_items {
+> +        let Item::Fn(mut f) =3D item else {
+> +            processed_items.push(item);
+> +            continue;
+> +        };
+> +
+> +        // TODO: Replace below with `extract_if` when MSRV is bumped abo=
+ve 1.85.
+> +        // Remove `#[test]` attributes applied on the function and count=
+ if any.
+
+What does "count if any" mean here?
+
+> +        if !f.attrs.iter().any(|attr| attr.path().is_ident("test")) {
+> +            processed_items.push(Item::Fn(f));
+> +            continue;
+> +        }
+> +        f.attrs.retain(|attr| !attr.path().is_ident("test"));
+
+Can this code be something like this:
+
+        let before =3D f.attrs.len();
+        f.attrs.retain(|attr| !attr.path().is_ident("test"));
+        let after =3D f.attrs.len();
+
+        if after =3D=3D before {
+            processed_items.push(Item::Fn(f));
+            continue;
+        }
 
 > +
->      append_crate(
->          "macros",
->          srctree / "rust" / "macros" / "lib.rs",
+> +        let test =3D f.sig.ident.clone();
+> +
+> +        // Retrieve `#[cfg]` applied on the function which needs to be p=
+resent on derived items too.
+> +        let cfg_attrs: Vec<_> =3D f
+> +            .attrs
+> +            .iter()
+> +            .filter(|attr| attr.path().is_ident("cfg"))
+> +            .cloned()
+> +            .collect();
+> +
+> +        // Before the test, override usual `assert!` and `assert_eq!` ma=
+cros with ones that call
+> +        // KUnit instead.
+> +        let test_str =3D test.to_string();
+> +        let path =3D crate::helpers::file();
+> +        processed_items.push(parse_quote! {
+> +            #[allow(unused)]
+> +            macro_rules! assert {
+> +                ($cond:expr $(,)?) =3D> {{
+> +                    kernel::kunit_assert!(#test_str, #path, 0, $cond);
+> +                }}
+> +            }
+> +        });
+> +        processed_items.push(parse_quote! {
+> +            #[allow(unused)]
+> +            macro_rules! assert_eq {
+> +                ($left:expr, $right:expr $(,)?) =3D> {{
+> +                    kernel::kunit_assert_eq!(#test_str, #path, 0, $left,=
+ $right);
+>                  }}
+> -            }}"#,
+> +            }
+> +        });
+
+Am I reading this right that the macros will be repeatedly redefined
+before each test? Could we put them inside each test body instead?
+
+> +
+> +        // Add back the test item.
+> +        processed_items.push(Item::Fn(f));
+> +
+> +        let kunit_wrapper_fn_name =3D format_ident!("kunit_rust_wrapper_=
+{test}");
+> +        let test_cstr =3D LitCStr::new(
+> +            &CString::new(test_str.as_str()).expect("identifier cannot c=
+ontain NUL"),
+> +            test.span(),
+>          );
+> -        writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
+> -        writeln!(
+> -            test_cases,
+> -            "    ::kernel::kunit::kunit_case(::kernel::c_str!(\"{test}\"=
+), {kunit_wrapper_fn_name}),"
+> -        )
+> -        .unwrap();
+> -        writeln!(
+> -            assert_macros,
+> -            r#"
+> -/// Overrides the usual [`assert!`] macro with one that calls KUnit inst=
+ead.
+> -#[allow(unused)]
+> -macro_rules! assert {{
+> -    ($cond:expr $(,)?) =3D> {{{{
+> -        kernel::kunit_assert!("{test}", "{path}", 0, $cond);
+> -    }}}}
+> -}}
+> -
+> -/// Overrides the usual [`assert_eq!`] macro with one that calls KUnit i=
+nstead.
+> -#[allow(unused)]
+> -macro_rules! assert_eq {{
+> -    ($left:expr, $right:expr $(,)?) =3D> {{{{
+> -        kernel::kunit_assert_eq!("{test}", "{path}", 0, $left, $right);
+> -    }}}}
+> -}}
+> -        "#
+> -        )
+> -        .unwrap();
+> -    }
+> +        processed_items.push(parse_quote! {
+> +            unsafe extern "C" fn #kunit_wrapper_fn_name(_test: *mut ::ke=
+rnel::bindings::kunit) {
+> +                (*_test).status =3D ::kernel::bindings::kunit_status_KUN=
+IT_SKIPPED;
+>
+> -    writeln!(kunit_macros).unwrap();
+> -    writeln!(
+> -        kunit_macros,
+> -        "static mut TEST_CASES: [::kernel::bindings::kunit_case; {}] =3D=
+ [\n{test_cases}    ::kernel::kunit::kunit_case_null(),\n];",
+> -        num_tests + 1
+> -    )
+> -    .unwrap();
+> -
+> -    writeln!(
+> -        kunit_macros,
+> -        "::kernel::kunit_unsafe_test_suite!({attr}, TEST_CASES);"
+> -    )
+> -    .unwrap();
+> -
+> -    // Remove the `#[test]` macros.
+> -    // We do this at a token level, in order to preserve span informatio=
+n.
+> -    let mut new_body =3D vec![];
+> -    let mut body_it =3D body.stream().into_iter();
+> -
+> -    while let Some(token) =3D body_it.next() {
+> -        match token {
+> -            TokenTree::Punct(ref c) if c.as_char() =3D=3D '#' =3D> match=
+ body_it.next() {
+> -                Some(TokenTree::Group(group)) if group.to_string() =3D=
+=3D "[test]" =3D> (),
+> -                Some(next) =3D> {
+> -                    new_body.extend([token, next]);
+> -                }
+> -                _ =3D> {
+> -                    new_body.push(token);
+> +                // Append any `cfg` attributes the user might have writt=
+en on their tests so we
+> +                // don't attempt to call them when they are `cfg`'d out.=
+ An extra `use` is used
+> +                // here to reduce the length of the assert message.
+> +                #(#cfg_attrs)*
+> +                {
+> +                    (*_test).status =3D ::kernel::bindings::kunit_status=
+_KUNIT_SUCCESS;
+> +                    use ::kernel::kunit::is_test_result_ok;
+> +                    assert!(is_test_result_ok(#test()));
+>                  }
+> -            },
+> -            _ =3D> {
+> -                new_body.push(token);
+>              }
+> -        }
+> -    }
+> -
+> -    let mut final_body =3D TokenStream::new();
+> -    final_body.extend::<TokenStream>(assert_macros.parse().unwrap());
+> -    final_body.extend(new_body);
+> -    final_body.extend::<TokenStream>(kunit_macros.parse().unwrap());
+> +        });
+>
+> -    tokens.push(TokenTree::Group(Group::new(Delimiter::Brace, final_body=
+)));
+> +        test_cases.push(quote!(
+> +            ::kernel::kunit::kunit_case(#test_cstr, #kunit_wrapper_fn_na=
+me)
+> +        ));
+> +    }
+>
+> -    tokens.into_iter().collect()
+> +    let num_tests_plus_1 =3D test_cases.len() + 1;
+> +    processed_items.push(parse_quote! {
+> +        static mut TEST_CASES: [::kernel::bindings::kunit_case; #num_tes=
+ts_plus_1] =3D [
+> +            #(#test_cases,)*
+> +            ::kernel::kunit::kunit_case_null(),
+> +        ];
+> +    });
+> +    processed_items.push(parse_quote! {
+> +        ::kernel::kunit_unsafe_test_suite!(#test_suite, TEST_CASES);
+> +    });
+> +
+> +    module.content =3D Some((module_brace, processed_items));
+> +    Ok(module.to_token_stream())
+>  }
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index bb2dfd4a4dafc..9cfac9fce0d36 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -453,6 +453,8 @@ pub fn paste(input: TokenStream) -> TokenStream {
+>  /// }
+>  /// ```
+>  #[proc_macro_attribute]
+> -pub fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
+> -    kunit::kunit_tests(attr.into(), ts.into()).into()
+> +pub fn kunit_tests(attr: TokenStream, input: TokenStream) -> TokenStream=
+ {
+> +    kunit::kunit_tests(parse_macro_input!(attr), parse_macro_input!(inpu=
+t))
+> +        .unwrap_or_else(|e| e.into_compile_error())
+> +        .into()
+>  }
 > --
-> 2.52.0
->
+> 2.51.2
 >
