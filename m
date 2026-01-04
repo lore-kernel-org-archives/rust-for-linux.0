@@ -1,92 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658AE14A4CC;
-	Sun,  4 Jan 2026 14:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7D42066F7
+	for <rust-for-linux@vger.kernel.org>; Sun,  4 Jan 2026 14:11:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767535702; cv=none; b=oWuKJFesKf7VKFMdlHkp2GuvUJJHgYRgeYYN7B1vV3B80ycgENes0ZF/fb/kxZ3YqsyT/BRh07OUQC46DR/bPHw+QMEwvsYh1pVxKHq+lgE28k+BGczRK8+TM9hgg0t7x/VqWkNvxbZipWthQxcBYBGNCZpBsvNECq9G9werkvc=
+	t=1767535888; cv=none; b=PNH8Nha1jP3awZnHPb6CcVFdYnFrGlYcZrO+iHmnqSVqJbWTJgbW8tOzADC2cTHS4lVjE7ZXBC6RcaoHVas4pIPlNvjytJR+Z9j4RmAlURZqB5RSOtVZs4lnp/Oh6WMVp73HPr7JBx0MA5+jrYzLPe+lVYKuEIArMKPZZNt45tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767535702; c=relaxed/simple;
-	bh=7M/pNScVgxaw18c6W7QeMkytNy3thIlhQApd5pkeZnY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=jifw0xTQVLYOHGN92ZuK5Msizflh2TMnLy6TmkvnZiLWuso0I6LQS3NQNOZmVo/jh1llgj5E1tyvfah+6pvepsWvM5UWX540KOeUYmmrul5oFYzHs+2c4UXGN1alBxKu1nhhyniMHA8C2w7Hf9vKEW4BE9Yvh8udTMs5gJsAick=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4HMWNRM; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4HMWNRM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF06C4CEF7;
-	Sun,  4 Jan 2026 14:08:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767535701;
-	bh=7M/pNScVgxaw18c6W7QeMkytNy3thIlhQApd5pkeZnY=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=V4HMWNRMHV1V4yd9NEAUY9e7RKTQrRyr+12YFdbD2HbwkGckjiwGOSbmUWV10cHBQ
-	 f1eYzSH2qyyfPwl1dI9eubiWOoc8KV5yj1YbW9JbCDxKnr3rBsHZQGZCUu4PFh21hN
-	 bZp0ezOTPNoU2IsPV4TJllqr7gG98PKN0R4He2X4TocSEsIvoAz8foeA90CLKON4hg
-	 wRZrkwaWc2+FnkrcPzQSKTAtK9DAncdT40dsNOM6tFvZGIZEi5KHaS+OeyH4I16rXP
-	 CPlyzwt1nmD9gp/5s7X6EBHUE2NmalNUuLcDm/tjwHhaWtzqNiOtz+9GGPOfiD3r2s
-	 0otnCz2aebUGw==
+	s=arc-20240116; t=1767535888; c=relaxed/simple;
+	bh=4z7IJ3RmSvfcskfhQP9WT5iJ3OTPq1YGLLMFHPk+nmc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T3IY+qkGAqL49S/2pNVceHP/2/WISfRoYCm12/P1+DlIC9DYprdxjt1fQL+YjHZvsiAGOGvev6dOusxQigOetDbGe5sP4Gd7PShv3fSiiroGs9Yqf76furfKZO8VXLXsuffTcRTMz96+spknAhZHaPkfyqXj2uBfhVwVHXZFJwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a1388cdac3so121942525ad.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jan 2026 06:11:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767535884; x=1768140684;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fsjc6eK6Ijw3K+PY/ztBzmlLit7pc4QMYQvrU9hkkSo=;
+        b=EnqL77F7O4ofVRHd5wChHjC+8f0YSmvD6vXmtdNrvGUPGO1vh40nd6IbseYTQ7RfKH
+         ijUdQVIQZ4GZp8Cfdlq0PBdnV3r+L/sNO2ucryR7TCkfehOJ50X7eTYYu5qy5MpCG2dM
+         n/uAHR3KvaysmwnbA+AL0zWaeWgkfFeI/bdCv4Yq/zuyOiHufa9omrJU0vnsRjjHkMjr
+         O5gCssfmF71PZT2ezy7ipmJIHc7/nSfKPvVVhnSvHwrixJdSt2KbZQcks1A+xH0pbF5u
+         LOXwp361jrnx24J9o6ITNfRv9mCWgyGuGBGbt1K0nP91qq6tdWA5Z+Y4fPf4V68OKKIS
+         gNig==
+X-Forwarded-Encrypted: i=1; AJvYcCXohZgxRTWNu00bq5DBQ4OLiDb0EiPna90qXkuFiMbTI5SCyBuZnxeyGWA3Jy8fU32L/3U1eJ7eojxZPOPTnQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywqz+A8nRz1j2mj1KO9OnhFXvze2GZK35M/wUEp+u/yj/gpn8yT
+	8B9QZT23SWXNjB2y0oBZl+zhp7ewtmsyhnyYhYFVyHJUFd26ifLUin81
+X-Gm-Gg: AY/fxX4rrSCCfbuvx+KwnyXx5TYRSICChyUIW3+/mQPyPQnAv77/9j6oAtf9gwXJaxV
+	KzKD3QUC4nHwukKzkv7zX/E1WmFORHuW2ih78QtQCPJQmc66JL4lT9vNwflCZVzjBl/rKNag7TT
+	TspYxydNVzykGO9Mr84lI3gsS/l9zaZv4QxWDJDy6S35JpW140yuhCNYssw96XN3+MhhmrDYK6p
+	N1QjvqS5Ow1iNPO9K89YgApVIJavFWdA9QZEpuTjm3ARSYRZClkPPRO99cp+oQdn12i174SQvL2
+	VXNs5gPb2YRdgXLdsLbxhN/jgdb7Kd8hg2p41E7UJ0PJcSj2wxUoODaQCr52TkZHPQVFTiOSjFz
+	i1bCm7HkAdy+ZErMIy/WaCDAOVQZ2mqYFB+MLpBb1dSn/jp7KJVMAGo+2jk/cEdgBrVmz7yK0ld
+	/VHOwMdCTDz6+xkb+PB+tftXhtdLzvXL3neV7eYFBdrJDFBF8=
+X-Google-Smtp-Source: AGHT+IFGroKOmEDYNEfnLyvkzjfTn9DXqKx3c2454IZvQ/Ory7G0MmSBQDeDAQKx7j17tBFCUsxJWQ==
+X-Received: by 2002:a17:903:228f:b0:295:6122:5c42 with SMTP id d9443c01a7336-2a2f2717b3cmr421307585ad.24.1767535883663;
+        Sun, 04 Jan 2026 06:11:23 -0800 (PST)
+Received: from [192.168.200.2] (210-61-187-174.hinet-ip.hinet.net. [210.61.187.174])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d7111fsm418791415ad.85.2026.01.04.06.11.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 Jan 2026 06:11:22 -0800 (PST)
+Message-ID: <746289fd-a222-4f31-b9a1-a3afd4ea6b7d@kylinos.cn>
+Date: Sun, 4 Jan 2026 22:11:12 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 04 Jan 2026 15:08:17 +0100
-Message-Id: <DFFV41VPS2MU.3LHXU4UKITD0U@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 2/2] rust: pci: fix typo in Bar struct's comment
-Cc: "Marko Turk" <mt@markoturk.info>, "Dirk Behme" <dirk.behme@gmail.com>,
- <dirk.behme@de.bosch.com>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <stable@vger.kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
- <gregkh@linuxfoundation.org>, <sashal@kernel.org>
-References: <20260103143119.96095-1-mt@markoturk.info>
- <20260103143119.96095-2-mt@markoturk.info>
- <DFF23OTZRIDS.2PZIV7D8AHWFA@kernel.org>
- <84cc5699-f9ab-42b3-a1ea-15bf9bd80d19@gmail.com>
- <aVmHGBop5OPlVVBa@vps.markoturk.info>
- <CANiq72=t-U8JTH2JZxkQaW7sbYXjWLpkYkuMd_CuzLoJLbEvgQ@mail.gmail.com>
-In-Reply-To: <CANiq72=t-U8JTH2JZxkQaW7sbYXjWLpkYkuMd_CuzLoJLbEvgQ@mail.gmail.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 0/4] rust: Add RTC driver support
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, Alvin Sun <sk.alvin.x@gmail.com>
+References: <20260104060621.3757812-1-sunke@kylinos.cn>
+ <DFFUFRMWKRMO.INAMUGECPSQU@kernel.org>
+From: Ke Sun <sunke@kylinos.cn>
+In-Reply-To: <DFFUFRMWKRMO.INAMUGECPSQU@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-(Cc: Greg, Sasha)
 
-On Sun Jan 4, 2026 at 1:45 PM CET, Miguel Ojeda wrote:
-> On Sat, Jan 3, 2026 at 10:16=E2=80=AFPM Marko Turk <mt@markoturk.info> wr=
-ote:
->>
->> The typo was introduced in the original commit where pci::Bar was added:
->> Fixes: bf9651f84b4e ("rust: pci: implement I/O mappable `pci::Bar`")
->>
->> Should I use that for the Fixes: tag?
->
-> I would add both, since it was added in both and thus different set of
-> stable releases may need to fix it differently (i.e. before and after
-> the move).
+On 1/4/26 21:36, Danilo Krummrich wrote:
+> On Sun Jan 4, 2026 at 7:06 AM CET, Ke Sun wrote:
+>> Ke Sun (4):
+>>    rust: add AMBA bus abstractions
+>>    rust: add device wakeup support
+>>    rust: add RTC core abstractions and data structures
+>>    rust: add PL031 RTC driver
+> May I ask how much of this (if any) has been generated with an LLM? Going
+> through the code I saw quite some patterns that made me curious.
 
-In general I prefer to only add a Fixes: tag for the commit that introduced=
- the
-issue.
+Yes, I used LLM assistance during development—mainly to help understand 
+certain R4L mechanisms. Code comments and some boilerplate were 
+generated with the help of LLM.
 
-> In this case, from a quick look, one is for the current release, so it
-> doesn't need backport, and the other would need a custom one (since
-> this commit wouldn't apply) if someone wants to do Option 3.
 
-I could be wrong, but I think in trivial cases (such as code moves) the sta=
-ble
-team does derive custom commits themselves.
+All code has been reviewed, tested, and verified by me to be correct and 
+compliant with kernel coding standards, under the assumption that my 
+understanding of the mechanisms is accurate.
 
-@Greg, Sasha: Is this something you prefer to do or is it something you jus=
-t do
-because it's easier / quicker than to get back and ask for a custom commit?
 
-Again, I could also remember this wrongly, but I think I just recently revi=
-ewed
-such a commit from Sasha. :)
+Thanks for those. I'll look through your comments on the patch set and 
+address them.
 
->> Should I do that in the same commit?
 
-That seems reasonable in this case, please do so.
