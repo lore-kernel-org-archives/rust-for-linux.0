@@ -1,203 +1,247 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A8E275AFD
-	for <rust-for-linux@vger.kernel.org>; Sun,  4 Jan 2026 23:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9311229B38
+	for <rust-for-linux@vger.kernel.org>; Sun,  4 Jan 2026 23:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767567615; cv=none; b=Go3V7YXDoUGSdbNqNigCjUAJq+q/x+N4BIGnw8F6ExY2iuzOygaTlHah6u8upzDqt5kO248qSn2iM2IyCaj/z0bJSSAbVWkOUR/7fCK/KEI2jv/BwVff1KdABm+jPxc0sxka10XQMv2ZeujTr6I4fNuBBbOstvMjK/08BmgTngs=
+	t=1767568661; cv=none; b=J47qnfX8MC9dO1iOSEK16UCp39tqY4lLmCYxAaFldVmd/kxlNsE96FRQBSLCGUO5PLEDzr8KhKfZ+PuWShmojDIWIkcNV7Kmb2eaLWeerzdIAM1T9/38m6xxmf2snE5WDa26CxY9vcHbTPnd0XZeGVcew+M7Wppvp1DHV+QJNMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767567615; c=relaxed/simple;
-	bh=bkCzYqeHTttXxL9nUrpeRHi96wL44EyjrMbtgZRBRuM=;
+	s=arc-20240116; t=1767568661; c=relaxed/simple;
+	bh=JTWuAqVCda3XcA65aB21SfD1V3R01MSETucYlkXUGZs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KPHfYldetoGxfCmRjDZj8EWsTlC5U0WsZ5ElPSJnUrNHgqj+EgCPmDOeNjmwS/+6/Hne+iSG5puU1CSyCKyvxqNfcW036Ok9dPJTlroNm//7NiLE0zyxyjcehLkSDhjYTyHhP5mBFIJkeFA3LkwLWEZuZRRo9Cxgva/vAbppfNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZuzRTPs; arc=none smtp.client-ip=209.85.208.181
+	 To:Cc:Content-Type; b=T7vr5Lfj442jEkLJek/NqtnJ5ACFUQvXoET+cWDdlXfPFPw1C8RsRloGtEH4GjL89op3mr1Ed34Qlt7FRaROFgV9ZR37MkfrY6smisPNja1hOUD4zQwyWS1Ek9Lou94z89NEg6Oyjq3TPQqClTXvZJExI1WcTqNtHKu6Oiiunxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fQQ7Cpbx; arc=none smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZuzRTPs"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-38107fadda2so101915351fa.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jan 2026 15:00:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fQQ7Cpbx"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37b9728a353so163438471fa.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jan 2026 15:17:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767567612; x=1768172412; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767568658; x=1768173458; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GK/s5wWA1zpo54FOo4McyCtbicqgiFKeN0gzVRY0cVE=;
-        b=eZuzRTPs5DyBPNbu1VGBJZ5LdzHhoV7o2r31aTUWt6okxs9NT6+0XKF3yhjbOF+Jlw
-         XvzzzPwcYK/E7Zasxe61QTanClZnmp6jEGLZaenHh+CE0isgiXZb153tvqNa8CHKEWyj
-         tDCKYQ3sDO5JNmhFRbnSeC8/hiWPi2oIoulC+KjhIbxpgafyldIIVtJwj+7etPF5g+9f
-         pVI2UNASf3ZaHrG2vMlm3D3mySLjwn6kCfEcU7W/KbJZgUtPwoGIgeQjvnf/++4J//ya
-         H6O8298olom92GtUw8CAQro9cnLe2z0bAusATBjbQERI58MxwJ2mLWyZrryIz1F+RgGD
-         bdYA==
+        bh=hmOnzM3O0tacehNp8y1E1jmB4ZOYRsBERU5Q7f5EfeM=;
+        b=fQQ7CpbxdOmeMqhqUbDGWPtVCcGcN9p6FepETLi1N2h2kQCyfLBgT79UR59YYEeXIB
+         gz+jW56rF6hzNNa3Ah+PK5uoXSy78B9qxEYViurcKGygpqJBKMB6/vm4/Ykp03DVK4ex
+         h24Y0/7yM3wqCCIZi+ePfAdbxHZBtfN5jgfz/gbg2lTGi2rdXZPujJB4oNox7xtdFMKM
+         tDsqemoA/0tgsK4ywU0CX0IkWfvpW9G4ueRaW7LRKl6djD5CH8VlqqwYYx4vdcNBr/PX
+         vG3no7oMSj0JNMFfeBPCbu7XVWtITzjyqTXAjkokfFtcvC6xeqBIWy0BDhzLTnvub9iF
+         9FzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767567612; x=1768172412;
+        d=1e100.net; s=20230601; t=1767568658; x=1768173458;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=GK/s5wWA1zpo54FOo4McyCtbicqgiFKeN0gzVRY0cVE=;
-        b=L0Pj755H4Ztzhv+ie7ReEZRjisrakRC7Pp5IxVArvtfXLSXh7DTqNhLnKPOPd6pk/p
-         cQT2eDmXoPYTloDQXJYlkHJORT+zEQFDWXe+51GWxhDHZ4wU7e7Z8J/k1FBtB+ezo20P
-         kSI37NIwcSGluxBYosFPbzglq/E/43oy49mhPD4ICvCoW3nMcQSq/Dj1za9oPqE3Yy4K
-         ZlTN6WpLZJPsqMmMx1wwiwoKJc9cosU2QCWBn4xA0On2sTx8cwjpBP4zfG6tdUXLgFHm
-         WX4oMjjGkrQ0Hrqd+xMpkwH4f9qz6pSBM3z4+PPOnqp2VA5X6Cz81+dctjzowEoq2m1V
-         DH0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVAWDcQPsZkT7+YJebqprEY+X7VX0rndWa9KT2VkZvhJbDUHRXaP8oee/WPjbIF3+WQRhItmvjM8Jg4d5x+VQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzf+cXicbxal/MIUG4siPH5SCH+Di4J90CXQduhZ+WTZS2+ZTuk
-	OngmiOD/obX6XSyTu4xJfNGKFEd7VBZHwmPmy+T5fTbI6EZ8ajrHrlb2fN5QAOJwCOsSrTpWMY5
-	XDme3Eh4+JJzSxXS54wczfR0BeazR6xQ=
-X-Gm-Gg: AY/fxX7huTjVm3ueUSD5k96ILZzFDUaXgOFUdXhOr+4NXQ3GaK+PZy13+G6JpSmlWA5
-	URmqM5b4k6PVZr8FRRhBaks1xc78hKKDZ5BMddiJ9Q/yqAI6ui8qlqR/uoCs+sCFBrwkKDIBzvj
-	ZTKbEtjIX7D3Yfw7OZUtkukuOrdSG3xJw66ZilWTx48Puatqq1LjIAZhOHhvLER6JeOqN31H8Wg
-	KLu7BklQsaG/X99umYy+qFFciq9RuuL1D2lCnu3jvix+sG7UDGfMzmK3lrIPtz8R43MqaokVC5j
-	0cbHrwBQa0JIZrG/2LL+8cdwWPmtn0mKDmRRPm732LV5WgmqVNc14Pk6vM/JpAoo0i1RbIaSgbc
-	3QSDzzFvjLd93IMqxs8FQvLsoSzyFxPxZqC58wbgCmw==
-X-Google-Smtp-Source: AGHT+IG8CmOVNWmlTJszyevIlf/OxC1VSGUfK/r4GMAq/+fACijUR3S9IvNuVYcbtjMAJn2tur5W0ssnC17CdQeZwl8=
-X-Received: by 2002:a05:651c:41c8:b0:380:989:f5eb with SMTP id
- 38308e7fff4ca-381215694fcmr132870771fa.5.1767567611769; Sun, 04 Jan 2026
- 15:00:11 -0800 (PST)
+        bh=hmOnzM3O0tacehNp8y1E1jmB4ZOYRsBERU5Q7f5EfeM=;
+        b=vJH+9nB0YqfkVGfoGP/USttmR3SFE9aS+ER7RH7tCosJQ96SL4hz9OzGEXWp3x8LmI
+         vsL094Wp77HE8S0Z82jL1L420cCrCH12oqBeLdovOvuTCTn/A9RU/E8xVhcUFVADmDi9
+         TTFbQQCssqjvUFfRouP8lyJtnDxXF8hd2RwuK9yeDRejPq3jI3Rb5bLRRiGQH0I5vZ3Z
+         8yaL2/Ifk706s+OqMatRoXmISuwvkvDSl90fLpDrkJ6r0ps7E1WfU2y8eavzba7kIIoa
+         UoeI7CFSDNiNOEr1JpN6wXab259jRfoawA7ndExh1rUi8BGITU+9glTKmptDVtvHchuM
+         MBQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVCDw7+8K1J4odOOvSKDcl/nOz9u5sB3Qo/wW5GwsA/d1yzAm9O+ePtekbxBGL4fnLYoEezy7xNLIixMhIDBg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YziVaZ8Kd0z3QUUJYWOk0udAH7Dd3VCviSO22VfwL8FAGeEq2LJ
+	3quNjpao0d6Ja9WtJBq2FtGnTJtw84bq270aVKAsex3BY0kpKncHnUvEnEm1Ld0QNUNimGYG16o
+	3MGb/2JeTC6l0BH9+d9g9K5DDFlLuRcA=
+X-Gm-Gg: AY/fxX5rjGpeN+Gnzd5GBVhUEpGwxZR7u2rE74GLwwnI0y1nyDbKKZiWCK1EwBvSdx/
+	UCiUJWGzdDFbTOTVQwmS3K4Xn0QnYYAOXMAeEH64+nSWs+xRTgqL8W8xHMJrg0EqKEr1E6Es6Gt
+	4kShhESDEAHaiD1366U4dkZx9m2IewvAvvDcYK9bbxImib73A1dDBLFDaD5KHsW47CPn7fXk6MS
+	uMyvD8annzlEm2nKLgERKFAYICXzxiIqt1GZOUpe24OSnVMt7PpyH/p8fW/240lAJ96Ey97z4in
+	jvzjLzarI3ldk7d1GwIbDkNsWiPo60eegAukNEL5NraqfqNuFxuJ2TnGOunfIAsljKqTAHL+7xH
+	SzKsH1Rsm2xw5QPgqJXOuiRBoWtQvRLBwL/syBiD+Dw==
+X-Google-Smtp-Source: AGHT+IEnMQI2BZcnxnMuAvPtIAb5hrl4gzRoAhFhoiyy+xQf++LYKrbExvwy952sWnmU9/RRsyHoQBy8g+NcJdcKJB0=
+X-Received: by 2002:a05:651c:1119:b0:37b:9615:e43a with SMTP id
+ 38308e7fff4ca-38121568308mr133822001fa.1.1767568657781; Sun, 04 Jan 2026
+ 15:17:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251211185805.2835633-1-gary@kernel.org> <20251211185805.2835633-8-gary@kernel.org>
-In-Reply-To: <20251211185805.2835633-8-gary@kernel.org>
+References: <20251124151837.2184382-1-ojeda@kernel.org> <20251124151837.2184382-20-ojeda@kernel.org>
+In-Reply-To: <20251124151837.2184382-20-ojeda@kernel.org>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Sun, 4 Jan 2026 17:59:35 -0500
-X-Gm-Features: AQt7F2qpVvdhnUt_sQ2OT9TXLAcKoTxcpUCbWBpjzU3wwNq9HPyWanCNhB3JY7w
-Message-ID: <CAJ-ks9=525PETbRGuZn=rv=H9AC=Sjgn47DSGxrKLi=0HxBmfQ@mail.gmail.com>
-Subject: Re: [PATCH 07/11] rust: macros: convert `concat_idents!` to use `syn`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+Date: Sun, 4 Jan 2026 18:17:01 -0500
+X-Gm-Features: AQt7F2qWpkSdf1y6pE7KQf8V1fRgZiCJdhji2uwBRomSReIpE82rv7uhwmQMTj8
+Message-ID: <CAJ-ks9kSFp8CpyNr8zSKh6mniuXiYNrZCc8FC-8Z81GdbnaRog@mail.gmail.com>
+Subject: Re: [PATCH v2 19/20] rust: syn: enable support in kbuild
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
-	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
-	rust-for-linux@vger.kernel.org, David Gow <davidgow@google.com>, 
-	linux-kernel@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev, Jesung Yang <y.j3ms.n@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 11, 2025 at 2:30=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
+On Mon, Nov 24, 2025 at 10:25=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
 >
-> From: Gary Guo <gary@garyguo.net>
+> With all the new files in place and ready from the new crate, enable
+> the support for it in the build system.
 >
-> This eliminates the need for `expect_punct` helper.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Tested-by: Gary Guo <gary@garyguo.net>
+> Tested-by: Jesung Yang <y.j3ms.n@gmail.com>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
->  rust/macros/concat_idents.rs | 39 ++++++++++++++++++++++++------------
->  rust/macros/helpers.rs       | 14 +------------
->  rust/macros/lib.rs           |  4 ++--
->  3 files changed, 29 insertions(+), 28 deletions(-)
+>  Makefile                          |  1 +
+>  rust/Makefile                     | 37 ++++++++++++++++++++++++++++---
+>  scripts/generate_rust_analyzer.py |  7 ++++++
+>  3 files changed, 42 insertions(+), 3 deletions(-)
 >
-> diff --git a/rust/macros/concat_idents.rs b/rust/macros/concat_idents.rs
-> index 12cb231c3d715..47b6add378d2c 100644
-> --- a/rust/macros/concat_idents.rs
-> +++ b/rust/macros/concat_idents.rs
-> @@ -1,23 +1,36 @@
->  // SPDX-License-Identifier: GPL-2.0
+> diff --git a/Makefile b/Makefile
+> index 85da055e4f00..96ddbaae7e12 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1835,6 +1835,7 @@ rustfmt:
+>                 \( \
+>                         -path $(srctree)/rust/proc-macro2 \
+>                         -o -path $(srctree)/rust/quote \
+> +                       -o -path $(srctree)/rust/syn \
+>                 \) -prune -o \
+>                 -type f -a -name '*.rs' -a ! -name '*generated*' -print \
+>                 | xargs $(RUSTFMT) $(rustfmt_flags)
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 4f4a00594142..8988ecf32531 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -27,7 +27,7 @@ endif
 >
-> -use proc_macro2::{token_stream, Ident, TokenStream, TokenTree};
-> +use proc_macro2::{
-> +    Ident,
-> +    TokenStream,
-> +    TokenTree, //
-> +};
-> +use syn::{
-> +    parse::{
-> +        Parse,
-> +        ParseStream, //
-> +    },
-> +    Result,
-> +    Token, //
-> +};
+>  obj-$(CONFIG_RUST) +=3D exports.o
 >
-> -use crate::helpers::expect_punct;
-> +pub(crate) struct Input {
-> +    a: Ident,
-> +    _comma: Token![,],
-> +    b: Ident,
-> +}
+> -always-$(CONFIG_RUST) +=3D libproc_macro2.rlib libquote.rlib
+> +always-$(CONFIG_RUST) +=3D libproc_macro2.rlib libquote.rlib libsyn.rlib
 >
-> -fn expect_ident(it: &mut token_stream::IntoIter) -> Ident {
-> -    if let Some(TokenTree::Ident(ident)) =3D it.next() {
-> -        ident
-> -    } else {
-> -        panic!("Expected Ident")
-> +impl Parse for Input {
-> +    fn parse(input: ParseStream<'_>) -> Result<Self> {
-> +        Ok(Self {
-> +            a: input.parse()?,
-> +            _comma: input.parse()?,
-> +            b: input.parse()?,
-> +        })
->      }
->  }
+>  always-$(CONFIG_RUST_KERNEL_DOCTESTS) +=3D doctests_kernel_generated.rs
+>  always-$(CONFIG_RUST_KERNEL_DOCTESTS) +=3D doctests_kernel_generated_kun=
+it.c
+> @@ -101,6 +101,22 @@ quote-flags :=3D \
+>      --extern proc_macro2 \
+>      $(call cfgs-to-flags,$(quote-cfgs))
 >
-> -pub(crate) fn concat_idents(ts: TokenStream) -> TokenStream {
-> -    let mut it =3D ts.into_iter();
-> -    let a =3D expect_ident(&mut it);
-> -    assert_eq!(expect_punct(&mut it), ',');
-> -    let b =3D expect_ident(&mut it);
-> -    assert!(it.next().is_none(), "only two idents can be concatenated");
-> +pub(crate) fn concat_idents(Input { a, b, .. }: Input) -> TokenStream {
->      let res =3D Ident::new(&format!("{a}{b}"), b.span());
->      TokenStream::from_iter([TokenTree::Ident(res)])
->  }
-> diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
-> index 754c827cc21e1..adfa60d8f42d8 100644
-> --- a/rust/macros/helpers.rs
-> +++ b/rust/macros/helpers.rs
-> @@ -1,10 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
+> +# `extra-traits`, `fold` and `visit` may be enabled if needed.
+> +syn-cfgs :=3D \
+> +    feature=3D"clone-impls" \
+> +    feature=3D"derive" \
+> +    feature=3D"full" \
+> +    feature=3D"parsing" \
+> +    feature=3D"printing" \
+> +    feature=3D"proc-macro" \
+> +    feature=3D"visit-mut"
+> +
+> +syn-flags :=3D \
+> +    --cap-lints=3Dallow \
+> +    --extern proc_macro2 \
+> +    --extern quote \
+> +    $(call cfgs-to-flags,$(syn-cfgs))
+> +
+>  # `rustdoc` did not save the target modifiers, thus workaround for
+>  # the time being (https://github.com/rust-lang/rust/issues/144521).
+>  rustdoc_modifiers_workaround :=3D $(if $(call rustc-min-version,108800),=
+-Cunsafe-allow-abi-mismatch=3Dfixed-x18)
+> @@ -161,11 +177,16 @@ rustdoc-quote: private skip_flags =3D $(quote-skip_=
+flags)
+>  rustdoc-quote: $(src)/quote/lib.rs rustdoc-clean rustdoc-proc_macro2 FOR=
+CE
+>         +$(call if_changed,rustdoc)
 >
-> -use proc_macro2::{
-> -    token_stream,
-> -    TokenStream,
-> -    TokenTree, //
-> -};
-> +use proc_macro2::TokenStream;
->  use quote::ToTokens;
->  use syn::{
->      parse::{
-> @@ -16,14 +12,6 @@
->      Result, //
->  };
+> +rustdoc-syn: private rustdoc_host =3D yes
+> +rustdoc-syn: private rustc_target_flags =3D $(syn-flags)
+> +rustdoc-syn: $(src)/syn/lib.rs rustdoc-clean rustdoc-quote FORCE
+> +       +$(call if_changed,rustdoc)
+> +
+>  rustdoc-macros: private rustdoc_host =3D yes
+>  rustdoc-macros: private rustc_target_flags =3D --crate-type proc-macro \
+>      --extern proc_macro
+>  rustdoc-macros: $(src)/macros/lib.rs rustdoc-clean rustdoc-proc_macro2 \
+> -    rustdoc-quote FORCE
+> +    rustdoc-quote rustdoc-syn FORCE
+>         +$(call if_changed,rustdoc)
 >
-> -pub(crate) fn expect_punct(it: &mut token_stream::IntoIter) -> char {
-> -    if let TokenTree::Punct(punct) =3D it.next().expect("Reached end of =
-token stream for Punct") {
-> -        punct.as_char()
-> -    } else {
-> -        panic!("Expected Punct");
-> -    }
-> -}
-> -
->  /// A string literal that is required to have ASCII value only.
->  pub(crate) struct AsciiLitStr(LitStr);
+>  # Starting with Rust 1.82.0, skipping `-Wrustdoc::unescaped_backticks` s=
+hould
+> @@ -231,6 +252,10 @@ rusttestlib-quote: private rustc_target_flags =3D $(=
+quote-flags)
+>  rusttestlib-quote: $(src)/quote/lib.rs rusttestlib-proc_macro2 FORCE
+>         +$(call if_changed,rustc_test_library)
 >
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index 870a42d41ac91..bb2dfd4a4dafc 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -283,8 +283,8 @@ pub fn fmt(input: TokenStream) -> TokenStream {
->  /// assert_eq!(BR_OK, binder_driver_return_protocol_BR_OK);
->  /// ```
->  #[proc_macro]
-> -pub fn concat_idents(ts: TokenStream) -> TokenStream {
-> -    concat_idents::concat_idents(ts.into()).into()
-> +pub fn concat_idents(input: TokenStream) -> TokenStream {
-> +    concat_idents::concat_idents(parse_macro_input!(input)).into()
->  }
+> +rusttestlib-syn: private rustc_target_flags =3D $(syn-flags)
+> +rusttestlib-syn: $(src)/syn/lib.rs rusttestlib-quote FORCE
+> +       +$(call if_changed,rustc_test_library)
+> +
+>  rusttestlib-macros: private rustc_target_flags =3D --extern proc_macro
+>  rusttestlib-macros: private rustc_test_library_proc =3D yes
+>  rusttestlib-macros: $(src)/macros/lib.rs FORCE
+> @@ -488,6 +513,11 @@ $(obj)/libquote.rlib: private rustc_target_flags =3D=
+ $(quote-flags)
+>  $(obj)/libquote.rlib: $(src)/quote/lib.rs $(obj)/libproc_macro2.rlib FOR=
+CE
+>         +$(call if_changed_dep,rustc_procmacrolibrary)
 >
->  /// Paste identifiers together.
+> +$(obj)/libsyn.rlib: private skip_clippy =3D 1
+> +$(obj)/libsyn.rlib: private rustc_target_flags =3D $(syn-flags)
+> +$(obj)/libsyn.rlib: $(src)/syn/lib.rs $(obj)/libquote.rlib FORCE
+> +       +$(call if_changed_dep,rustc_procmacrolibrary)
+> +
+>  quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET) P $@
+>        cmd_rustc_procmacro =3D \
+>         $(RUSTC_OR_CLIPPY) $(rust_common_flags) $(rustc_target_flags) \
+> @@ -500,7 +530,7 @@ quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET=
+) P $@
+>
+>  # Procedural macros can only be used with the `rustc` that compiled it.
+>  $(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rli=
+b \
+> -    $(obj)/libquote.rlib FORCE
+> +    $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
+>         +$(call if_changed_dep,rustc_procmacro)
+>
+>  $(obj)/$(libpin_init_internal_name): private rustc_target_flags =3D --cf=
+g kernel
+> @@ -525,6 +555,7 @@ rust-analyzer:
+>                 --cfgs=3D'core=3D$(core-cfgs)' $(core-edition) \
+>                 --cfgs=3D'proc_macro2=3D$(proc_macro2-cfgs)' \
+>                 --cfgs=3D'quote=3D$(quote-cfgs)' \
+> +               --cfgs=3D'syn=3D$(syn-cfgs)' \
+>                 $(realpath $(srctree)) $(realpath $(objtree)) \
+>                 $(rustc_sysroot) $(RUST_LIB_SRC) $(if $(KBUILD_EXTMOD),$(=
+srcroot)) \
+>                 > rust-project.json
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
+alyzer.py
+> index 4faf153ed2ee..5b6f7b8d6918 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -100,6 +100,13 @@ def generate_crates(srctree, objtree, sysroot_src, e=
+xternal_src, cfgs, core_edit
+>          cfg=3Dcrates_cfgs["quote"],
+>      )
+>
+> +    append_crate(
+> +        "syn",
+> +        srctree / "rust" / "syn" / "lib.rs",
+> +        ["proc_macro", "proc_macro2", "quote"],
+> +        cfg=3Dcrates_cfgs["syn"],
+> +    )
+
+I think we need to add "std" here -- without it, navigating to methods
+on e.g. Vec items defined in syn doesn't work (it does work with "std"
+added).
+
+> +
+>      append_crate(
+>          "macros",
+>          srctree / "rust" / "macros" / "lib.rs",
 > --
-> 2.51.2
+> 2.52.0
+>
 >
