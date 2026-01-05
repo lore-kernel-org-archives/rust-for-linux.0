@@ -1,173 +1,237 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021079.outbound.protection.outlook.com [52.101.100.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2C223EA87
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 14:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767623113; cv=none; b=XqkKgBfbTmnN/hOe+mHAYeVAsLfKR0RYBHz1le+a8D/r0M0KBmQGRNJwnFTIBA2WnCejol/a/ab7x1vGej0LOQ9SHyV7nL6acXlA3GPpKN3DhM9YhwlaQwsgLbPLsp3rXWpYY1NaD2hUj23NpfFJO55nWGpfIH2cppyVNN26Uhs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767623113; c=relaxed/simple;
-	bh=iAyNgqAGHR3mKYOUMqZv13SqTg4Z3lt2LR74wA+0qy8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gu6p2ODC5oE3RdHEwcc3yGXVcAUamxSOgLmLFK7Zp3nusEuSr162i+7ZF6TQ+ZbSIJB6y6AN45hFWtHtjOsGa7EYkmQmte71MsWGVEEG5mhGk8CHmQrX+nCKIK4ESXEjw2pbwAdcNxFPpII23iUhJeovKX5k4JPogIdomm57IOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=madKqejx; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359941F239B;
+	Mon,  5 Jan 2026 14:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767623266; cv=fail; b=t7l6NlHm86k3CzIa3LHj6026y6l1xr3yjbW9c3prbEJKEGZp8Aad5gIWHKT3TgeQvbWUDy1E8FXci683i+jNONuHxqO7tqBP6D+IcuxJcreQeKofHhmCnKZjtnMBcyYJh8DfKfAzircbxYKYA4nRuxdIKRpryzJ+Vn47AeCjPpM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767623266; c=relaxed/simple;
+	bh=gbylBCDmiopXnx4RIT32hNHSOnvZP3VeD8t0AsnNm2w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ixEzrknpye0AipEbsxIaAxcMDnI+Tt1/9hk03p/g11TonxgJ09ZsACietSfUO05GIPzHDBqM9kLwMj+98cgP4xVWFfCXyeX6nIr08OrM9lNFp/XZJSQRBlmEQWwa4oZGuxHQ17GmLylBt/I73rKzmW+H6GXMb8HfnpbGRSTli7o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=SkTXH5qs; arc=fail smtp.client-ip=52.101.100.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="madKqejx"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4775d110fabso124377155e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 06:25:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767623110; x=1768227910; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SrnIFX9Zo+MxYL8oaw6CZU2TB2DZAwdhXacUrsYzCDk=;
-        b=madKqejxhuegXmO2Q8T6IEzNkVSUS6MMeqlMoBPdoW+OOTct+BtByTeqsUWiGiHTGR
-         Wq2BxNiVOP8qUhWjXWHQyEaUhA3ROjroeUxR3+qHuDK3Mngg6p8Oc+Ec8bj2vbG6Khej
-         yurC+3nUExTa3oReLQcrg/6G+OlMtE3JiGPrAuxs2o0p7H1WXNh8V32AyY3fqmosmGKL
-         hwoUqx84r+3zJtvAaOqjA1UXl4V6kS9uG1IxXSc+xno63G/YgyGvxZlQj/xGSqCWNJCQ
-         zV+xPq1BDtD6PasZ1aQN8jxPE/eSXeB4eppureJVIMIZcgrtZjy8m5eEQ2/74Ar5zfhG
-         88Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767623110; x=1768227910;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SrnIFX9Zo+MxYL8oaw6CZU2TB2DZAwdhXacUrsYzCDk=;
-        b=Tx4cUttU+bJid66XJY4LyKmSwcTDhsQy5qtdGKzCluGMTzveFSsEsY/WIYJlf8PKUc
-         nHUoY/gGrloMrl/TL/tD6VCc8mwp0VdFi/2xCofxBbzcSPyUOOX/FKGrn6pamCBr9sIa
-         jBbmXnhMHnkWxfSqoEVnzZ9nQ5SO4nBEjstD4eIISi05dGWD2iF/Da5M+AGmojIqUQoD
-         qEfYt0bmTRyuskqWqkzSEPa7qAXHav9f1Xm2ONB55suakiqpfv7PAaslnTuTnLAcfrbb
-         RXmYALYQV4VFCR9F8Me42w6CGXAa96Kau9ii4R2pkXK3N+fiSrB6rsuuAMdNtxx9deve
-         5mmg==
-X-Forwarded-Encrypted: i=1; AJvYcCUv+qpYoIGmgXZ7bY4/NER4VjLrECmrRtEimjzF9kF0sbfeY2wB+nlicqnVH77ARL7WQUa3nuUO3Jv2axRGgA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx45tDVNzWiDiKttfmBf4LIfyLMadGbI1z+AQ9EvmTSZxY81xX
-	ZBZ5y/qQP9M6XQBwGmAZqU2dSTmRsvXUkPay6btirzpAfHrAw30umQ3w9TsI0Lv1jYb63yecudg
-	bh7kUhJXbDLM7CtZRpg==
-X-Google-Smtp-Source: AGHT+IGImOr2hD8TqDen33xf9P2W2HhIzAj6VITYdudbzagsR5ihVGYXo/8iCbzleBw0SvzZGxmArAt5NFrM2Jw=
-X-Received: from wmgp3.prod.google.com ([2002:a05:600c:2043:b0:477:98de:d8aa])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e90:b0:46e:3d41:6001 with SMTP id 5b1f17b1804b1-47d1959440dmr653250495e9.34.1767623110293;
- Mon, 05 Jan 2026 06:25:10 -0800 (PST)
-Date: Mon, 05 Jan 2026 14:25:03 +0000
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="SkTXH5qs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yz6nnqts2V7B8T18xcF0LXOZYe2HMkEwExZYiGas4EluA+jyIsmifB6VrkaDSvShRPgfDXxvD1WsDBdlpASX4X3mL1XOhh5NZtW0HXHreMaVyFMQj1FFOTvWxxJPxfsYHBGxu+d9aDxZJAYzYseafZZh7uNcuLm5XksECVlVK2i+HEE+vvfLoS5QcHllsfGJMhmNN3bFljlSx6mwNjLgkIjIHDcO336ehUbbqUwEpI/cUad1yU9AdSQ5h9VepPY+wYPL8+Ui95j/F3JHWcHBtfyCH0lP8bLDpbdXuFi/yQbWgpuZXqXQWsu/fL5w5U6onyyT/0gq911AvOfQ/MOWGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mlz9u49ml907cQaLD0deouQIQqiORf9WgSTHB921coc=;
+ b=b94am77p+rGh/b6Cg245SFgZsbhjOBiYN8gVyYvuv8HwsnflKD78nTRXiUF5V4Y+pS2/h384jvVL0wWp90/h7K6nL+LoE9rnozWDZ9EPPpPFmi1eQ9kowmUL/hI+k/ymFbdKdjmelzJFrLVSkL2Fdb2Cs/GKAqcyYougrHq1hDAmmdWW7qNw52jzkSDTVKQWx8dpqmn/Op+vuRrKEzEDI+zzolq5iM2lhXu8qmTqqNDxzQuh5v7cBf4BB3ufqMLpBqL6EvNzSqkWSb/zt8++K+nbnX57beKYIJWIA9Q5uJy0LSv8QLpSBHNJir7Ed/caeAbyrsx8C9IKub7GC0c8yQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mlz9u49ml907cQaLD0deouQIQqiORf9WgSTHB921coc=;
+ b=SkTXH5qseIwbJfho+X4kieSfUVi8mMkK8LSla9mbute2WEB7Str3VhPty+IryFhicMQXoxA02WE7xLG29dMs39IV0jGWdH+q61mdEHHWy7yFmzKCvnXEsCG3l/DuwOX05uDps+g9ClG4UgXJdhzKTfT8bkeoqUO2vstSitZfUTs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWXP265MB2294.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:7e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Mon, 5 Jan
+ 2026 14:27:39 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::ea6a:3ec2:375d:1ce0]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::ea6a:3ec2:375d:1ce0%7]) with mapi id 15.20.9478.004; Mon, 5 Jan 2026
+ 14:27:39 +0000
+Date: Mon, 5 Jan 2026 14:27:33 +0000
+From: Gary Guo <gary@garyguo.net>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+ =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 03/11] rust: macros: convert `#[vtable]` macro to use
+ `syn`
+Message-ID: <20260105142733.3d4ecfde.gary@garyguo.net>
+In-Reply-To: <CAJ-ks9nTwOvJi=5b7SLZn6ZEd9pPRPQJosnAOScEw6LJ__Un6g@mail.gmail.com>
+References: <20251211185805.2835633-1-gary@kernel.org>
+	<20251211185805.2835633-4-gary@kernel.org>
+	<CAJ-ks9mQXP1mAYOseoUo0jbKD0FrhKOSW7ifgOUKzfrTM4WYeA@mail.gmail.com>
+	<20260105021756.5df32974.gary@garyguo.net>
+	<CAJ-ks9nTwOvJi=5b7SLZn6ZEd9pPRPQJosnAOScEw6LJ__Un6g@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: LO2P123CA0106.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:139::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAL7JW2kC/x2MQQqAIBAAvxJ7TrClhPpKRIRttVAqq0Qg/T3pO
- DAzGSIJU4ShyiB0c2TvCjR1BfZY3E6K18KAGo1udKeEVtrYkbL+CkuaQ5KZvU2nItNufWsQsbN Q+iBFfP73OL3vBz0jO5RrAAAA
-X-Change-Id: 20260105-redefine-compat_ptr_ioctl-e64f9462225c
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3462; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=iAyNgqAGHR3mKYOUMqZv13SqTg4Z3lt2LR74wA+0qy8=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpW8nAbhHIEzEIHBpKSIsFslJ6mFkpu4x4QKg8Y
- i30jirHqIKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVvJwAAKCRAEWL7uWMY5
- Rv2JEACx4zFq5dYTXn9oDxs357zNbU6IUJ3CbydvC/4U0NPeOMhJWt6TvheMx59aFe/UvDICOFh
- faXrrc2iZK2N8EDT/nGg5Dg62wCMkg/+R196tPhuiurwmp6U7+LvOG9fuX1K/IZhReMI36wMwrF
- 14T1Y15JTvIbQ855jH+w/cNaKJtoZ08vogHTNUKf7dAatNFneyD2ami4Do4T8M3HblZqM1ccFOx
- /TrsOJMuWTLY+JjTJduUmvmdCvVZlaWfLJzfdNREsFjiowAp2FFMlmCw1yehACMR8/s/aKy5/JX
- TXgp7MeJzAOasSXbMW8cVHt5VN1QOWunbdgRWmWT/V5o+pp4bcQAFQjuInpoNm6oDDIf3oNk2JL
- R7P55Duq4XnWLOuBasC6mQXTtrnS7YQ17+SjTP/uHNk2WclFXfTEIXHXSGNvUPw/iw6VmZUAHv5
- 9XK07asNELVteETDgebFwQFWmENyvqzUWYPkrUO5pTvUkbJRgbFmMoD3BCl/mhDH3pSjkqoarMl
- luo805FfjgTPHfolk0/6Ut3ZpxqFgO93mj4m/XYP4X22/QKw+I2VvgPa+s61FdTS2C/cAO9BjmR
- FMNmTEUmOc4ha1W4oTW7zjGVSXHQji4wjqjrvSZ1Iko5xbd7dGoIFAP64q7DZUVifcOr+IyNEXk 19jM4sdVY/Jl3lQ==
-X-Mailer: b4 0.14.2
-Message-ID: <20260105-redefine-compat_ptr_ioctl-v1-1-25edb3d91acc@google.com>
-Subject: [PATCH] rust: redefine `bindings::compat_ptr_ioctl` in Rust
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2294:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3209c75-acf0-45fc-4803-08de4c66944d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SFZDMWpGZXZCWlpHU2xjL1I4d2FOT3YzbWZ0amV6QWdPUXN5WG9hU1A4RENY?=
+ =?utf-8?B?aHYwTUxNdS8zMUtsY2pRL0JnUjJDUGZ3TXBMamhwaU9HajNDRzJiK1NqU0tT?=
+ =?utf-8?B?MDdvVE1mUTNBTFdxM3o3Y29NOTBlZTRiT3VkYmwrT0hFRjRUY2ZVbjRiSWN2?=
+ =?utf-8?B?SmY0Q1lhVmU3UW5QMCtKSmNGaEtNY3NLcE9mMzh1clJNNGJ3RjF4cHdzSWt6?=
+ =?utf-8?B?TVJPakZoM0R0ZmRvaDdsTDllRWhWRkhmdHRKT2NzcldSK3U2NVhJd0JNa253?=
+ =?utf-8?B?QXpyNmRrWmVtaG0zeFlqRXgzU1E0SXNVQ1FJNkhoSE9TR2lBQk5PU0czL24r?=
+ =?utf-8?B?RGJETGtac05TYmo0TWp6ek81M09WRFB4L3dyUXZBUi85MUs3Qk9xUUZnVVRn?=
+ =?utf-8?B?eFhvV0EzVzNPc1JXcEowWHpLSkJLWFBRRkhIZEQrbVQvMSt2eThWdGt6Nk02?=
+ =?utf-8?B?UXpsek4xN1ZONlFMVXJHRTVFZndqalBVRjhxVWZrR2xWWlJhUERQc0pGbExv?=
+ =?utf-8?B?WUdlNVd4QUtDZDZkaDE0cytSRlZrbG05YUIvbTdYaS9CRkd0VWF0d1lPd2FR?=
+ =?utf-8?B?R2grMTRzYVk0RFFuRW9yNDQ0bUg1S2wzMDV2eFJqcDUxbTRBWDJ3cW5KV3lz?=
+ =?utf-8?B?WGxHS291ekR2R1drWVRCWU9RWTNWQ1Q1OWhXc1BlNDVmZkZBL3JENGpnVGww?=
+ =?utf-8?B?SVRCMXNDdjlDMzUyUkNGb2VlQmtDYjRnZFZHWVNjYjBZbUVEeDFuYTZMZjh2?=
+ =?utf-8?B?VFZxQ00yK1l6bmdVckwvbE0ybnA3Mm8zeG83RG1qZE1yRFJ0TDRBRkZhMVU5?=
+ =?utf-8?B?a1JEcTZlSHZmWi9EMHNFYzZpRVVxd29pUHd4ekFDNUJZeFF2ZHhrUGp0TzZh?=
+ =?utf-8?B?eWdqWEVsWklyeFFpSW1iMnhRSGdpTzdGMjdadjBaVEM4cDRJMVNwcDdSdkV2?=
+ =?utf-8?B?WEdnRDVKelpSTW9kUmY4azRxRTkzYmEvcmxBRGNxRFJIaVdjWG5wZ0RMb0Qw?=
+ =?utf-8?B?c0VOdzE4azNhSTVQM0E1a3VBQU8xU0V2K3JXOE4vSk1ES1hhRHdHU2xJNXND?=
+ =?utf-8?B?Vzc4VjN1RUtkRFRXOG1JQmpFaW5zenBmSks3MFhNZUM2MjNabm5UbDR3dE9a?=
+ =?utf-8?B?aU9xQmx6aVNGc2NTbzRXNDJxejZqVHlDckFja09hOS84V01BN0F5cjFjOWtn?=
+ =?utf-8?B?dWl2MGQ3Y3kwOHR6SHc5bWF6ZStOL3RRQzdLMUNTUndTY2JNZyt5TEtxQW1x?=
+ =?utf-8?B?UGlnQWkzclAram9ndGtOaXpYbTJqQUkyUzBqM0xPeEc4eHE5WTI4ejAwNTBP?=
+ =?utf-8?B?Nzg0U3ZWQThmc2g0QUVYSzFyamNsdFp0UmpsVlJnZktxVm5SRFFESXVoNUgx?=
+ =?utf-8?B?ajk0K051dVlMaEFLZkZvQk1VY1Qxb21qVlVlamxsWVN5VEpkclhRWEd6aGxU?=
+ =?utf-8?B?OXFrbW1ibU5sRVR3UHliNFQrTTEvZk5JSDlvUWxIcXNDUVBab0xrbUhRbFJp?=
+ =?utf-8?B?KytaSlRGZjBjV2VrNE5sb3FxSklKdGE3Si9OeE1EK2xjWW9meUNta3BoN0pL?=
+ =?utf-8?B?RE9zN09MUnVrNm92Z0dFbGxzVkVBWUZiaVRsMUhwRDIvdkZVejhISkpWM09H?=
+ =?utf-8?B?dnorcjEza21NU3pZRzNGcGNXaGpwRGdLdWJuK0w5Qy9ERTVsdkJhU3NRQTNU?=
+ =?utf-8?B?YnBYZitDejltNzZFZ1dQditNdW1HekJ4WTBxZzJTQUhhTHJLYVNMMzFob1F1?=
+ =?utf-8?B?Sm52NXpIK1pMNXNBNkRIUUJLNytIQzZsRHc3Z3VCN0w1NFV3ODFuNTh4RmRM?=
+ =?utf-8?B?bXh2NDBrZmxZQ0QrU1NJTElEWURFRGltZVdoTmhwMmZ4TUt2MnphSjdXK2NZ?=
+ =?utf-8?B?UDZUMzN1QmRiaUsyalAyNjNnY1h1N2pyMzlYZWF2dVcvb2ZVQXpGMzg3OHpq?=
+ =?utf-8?Q?q/zIy6Mqq8b5WkMVoz3sBvoBJIrB3qRE?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VjJlaGVxMFJZeW53T3FiUUt1d3VMeFo0REtocjdpclQvT0J1ZDhvN1FBa201?=
+ =?utf-8?B?dW4xdlMxczY3bEhXR2F5ZDRjdk1mbVBpS2ROYisreXlTWGp6ZkdEQXBtelJP?=
+ =?utf-8?B?NHRBZkhFU1hKNGlQTTkwZVprV2UrR0U2ZWJCLzFnam9kVXZiTlliU09vZXpl?=
+ =?utf-8?B?bC9CWEgyYVNCSkRWclhhWlFpSEdtN2lKaDBpdFRRaDNhNVNyTVpGRDg2S0pj?=
+ =?utf-8?B?L2R0TW13LzV0b3JpZ3VRbVIweE50YWZ2YS9hbE9iaGR4RloydHJ6cHFxRUl2?=
+ =?utf-8?B?VEI0UTFqY1NVYzV3L1c0T1hZQWZRbnBBMGt4cFNVcjJIWC9VT01DOVVaWDg5?=
+ =?utf-8?B?VktYN3VOZWFTYjQvUlBqL1pSVTJ6bUIrMnpZUlVuT01MM2JYMFNiemFYZUJo?=
+ =?utf-8?B?OXloZUVkcHVGMEVLeDMyUWo3cjVMYzFJSWJMaEtxNngxVHhidnNSOUZrUVBD?=
+ =?utf-8?B?dTc3c3Z0RU5aU2ZNSVhlM3o2TERZUE5xa3h5THZ4S2tGeGtvSE5KU2wzWFVC?=
+ =?utf-8?B?UE42QllRVzBJTXNseVNVZmlNN2FLVEE5SWFlOG5VazFOc2JPdXlJSU1rd1Rh?=
+ =?utf-8?B?YTk4RU02SGZCeUsxTHo5Y0xJSGxSTnZWak52ZHl3bjBMZ1RpbkE4Z2FVcjIx?=
+ =?utf-8?B?SlEvaTlBL1I2ZW8wSDVpOThoWDlDWlRISXBuWG1IbnR3cHF2MjVJaWJsdHVq?=
+ =?utf-8?B?TUpSaG40dExvSDNsdFcwYkZWZmZoZEZHSHNXZWN2VHFXYUh6Lzg4eEFUWEtu?=
+ =?utf-8?B?K21JVUJjVWtOZHVuNlhJMURSNXc4SzdvTXplWVRjMmdjU0hiaktxUVJvdGpQ?=
+ =?utf-8?B?SVE5US9kQmFPeWlUR0V1bU1wbURyUkhta3pqM0pLVVJoMDgySk4vdC9QV1pZ?=
+ =?utf-8?B?WUJKSFJCRWNUM0JrTmtVS01nSmV2Zk5XWUJSdGRjbWlKaXoxR1ZLVnNlb205?=
+ =?utf-8?B?MENyQ1hzaWwrT1JqbW9rNG1iV2pibmVaZ3JvQXpmTTg2WmpJU1NQckpuakF5?=
+ =?utf-8?B?WGRZTEQyMDFQZVNWUGJ0bkhMSDFjVjRyWDY0VitOWTFFU0FsNHlxVFBqNWhp?=
+ =?utf-8?B?MjIzTkpVY2RPUzkwRE5xK0l3ZG5ldmpUZjZsMEFqbUVoYThxS1R3Q2ZJcVpo?=
+ =?utf-8?B?QlRGMkZFY3YrS0xFaityejJzeklIbzRlRm5aS0lQbFE4dGxPMmY1dkRJcThE?=
+ =?utf-8?B?Y2dBeURTUVd6NWRKbEsrS1piZjExY05haDl1SXhpRy91UEdBemJSbzh0NUtU?=
+ =?utf-8?B?UXdLeXhrQkp4bzRyRDRDTW1WSjkxVGJ6MTdLWHNxTXVMYXhNVVAvVGZqdTEv?=
+ =?utf-8?B?bEtqdG5xd0NBMVgzSmFmSjJQN0hQanNkTHlOQ3JOc2NzM2dtdW42Uk1HNkJE?=
+ =?utf-8?B?VHZoQW5YdHNjQTcvZzMzOUxrTnVsakJ2RlB6Q2VjQ0ZVaVRtTFhFajJ5TGZN?=
+ =?utf-8?B?UmgxbE5nc1Z6bDJRdFM4emsvYU9BU2hnUjE1UXFBazAzc3UvT1NaT1IwNDJh?=
+ =?utf-8?B?bmpEMzNXcTh4TjVEdnJ6QWNJK0hLcGFkRm1LMkxHMmJOaVBtYmVhRTNIUmdy?=
+ =?utf-8?B?Z1MwWi9XYVk0SHVjQUs2SVFLNWpGSWhVVnhjTWtMakJNRks0RmFLU1lPSWN5?=
+ =?utf-8?B?V2w2Mk01NGhBMWtyNVNmUVJHcERBTXRPQVF0Z3FFVEVQOE5qdmpYd2ZxZWNy?=
+ =?utf-8?B?elR2YUxaVzJDbUNJQlFVS0VKVk11U3ExYmVkL2g0VzNvcDhzRDRxaGFIc2hJ?=
+ =?utf-8?B?a3VWZ1JWMGF5YVRSSFUxK1F5UThjVGoyUENSRlA1VDYzd3FTdkVQS0hQVXF2?=
+ =?utf-8?B?bnBJQlM2eUxpaVZub3dwS2Yra2w4UEQwNW5Ed1ltTEluTkU1ZER3OUYrMUlx?=
+ =?utf-8?B?MGxNK1NJUDVtV09FY1NGR200RTJHREZodEppNkhHV0Q5QlBZeGNZNlgrZlZW?=
+ =?utf-8?B?MFFqSHVjdk40aFY1SEE0SUw4NVRXMXdSckd5T3Jjdk9TMS82SElsdmRoMDdY?=
+ =?utf-8?B?N0tWVHJzdjVlTXRMMjJOUGFnVi9uU3JzSERGejRiVWdJUGlDYkpNbDYxZ1Fr?=
+ =?utf-8?B?aG5kUUhhUGRGQm9DaGN3YlRoR0JpRGtveUhtQUk5VXVBRmpNVTRtdEd2bkk2?=
+ =?utf-8?B?K2VYRmpxYlhCenNkbkNyU1o2WEVYMlNsN1JWTWdzVlZrVHNOa0hUcUdzSU4r?=
+ =?utf-8?B?NS9aOXgyQ1IybWxkdWd2TmJJaStPdXRtOWErTkVKVE1ld09FQzNtV3c5aXRH?=
+ =?utf-8?B?V3psaG9ETEtQMDYxY1lBQ2FyUVFmTitvQkRSOElIZThjUUdQZnBXa0ZxS2ZI?=
+ =?utf-8?B?T0ZmYk9Za2pJaTZiQlZ4czBEeVVsRVlOS2lSdHM3R1cwTEVzUEF0dz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3209c75-acf0-45fc-4803-08de4c66944d
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jan 2026 14:27:39.2666
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VdjQX5RcfNslgCtDO+QimjC4vCcvDNzNk1fClWuTOA/9NAk/ERon4MS43f38HMy9lbEODXDXIydoOTxqArTfOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2294
 
-There is currently an inconsistency between C and Rust, which is that
-when Rust requires cfg(CONFIG_COMPAT) on compat_ioctl when using the
-compat_ptr_ioctl symbol because '#define compat_ptr_ioctl NULL' does not
-get translated to anything by bindgen.
+On Mon, 5 Jan 2026 06:02:35 -0500
+Tamir Duberstein <tamird@gmail.com> wrote:
 
-But it's not *just* a matter of translating the '#define' into Rust when
-CONFIG_COMPAT=n. This is because when CONFIG_COMPAT=y, the type of
-compat_ptr_ioctl is a non-nullable function pointer, and to seamlessly
-use it regardless of the config, we need a nullable function pointer.
+> On Sun, Jan 4, 2026 at 9:18=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+> >
+> > On Sun, 4 Jan 2026 18:44:43 -0500
+> > Tamir Duberstein <tamird@gmail.com> wrote:
+> > =20
+> > > On Thu, Dec 11, 2025 at 2:29=E2=80=AFPM Gary Guo <gary@kernel.org> wr=
+ote: =20
+> > > >
+> > > > From: Gary Guo <gary@garyguo.net>
+> > > >
+> > > > `#[vtable]` is converted to use syn. This is more robust than the
+> > > > previous heuristic-based searching of defined methods and functions=
+.
+> > > >
+> > > > When doing so, the trait and impl are split into two code paths as =
+the
+> > > > types are distinct when parsed by `syn`.
+> > > >
+> > > > Signed-off-by: Gary Guo <gary@garyguo.net> =20
+> > >
+> > > Logic looks correct, but the duplication between handle_trait and
+> > > handle_impl is unfortunate. I golfed on this a bit, see if you like
+> > > it: https://github.com/tamird/linux/commit/8354c5a48769f5e1e52963d19c=
+a57c31e5926b08. =20
+> >
+> > I very much prefer the code to be separate. The trait and impl *should*
+> > be different. It's just that they *look* similar.
+> >
+> > Defining
+> >
+> >         const HAS_FOO: bool =3D false;
+> >
+> > in trait is defining a new contract while providing *default* value,
+> > while
+> >
+> >         const HAS_FOO: bool =3D true;
+> >
+> > is implementing such contract with a specific value. They look the
+> > same but I think the way `syn` treats them differently is justified. =20
+>=20
+> Yes, the similarity is perhaps superficial, but the duplication in the
+> current patch goes a good bit further because all the surrounding
+> ceremony is also duplicated.
 
-I think it's important to do something about this; I've seen the mistake
-of accidentally forgetting '#[cfg(CONFIG_COMPAT)]' when compat_ptr_ioctl
-is used multiple times now.
+What do you mean? The only code that is really duplicated is the gathering
+of names from items (which have to be duplicate due to type difference
+anyway, and they're still duplicate in your linked commit above.
 
-This explicitly declares 'bindings::compat_ptr_ioctl' as an Option that
-is always defined but might be None. This matches C, but isn't ideal:
-it modifies the bindings crate. But I'm not sure if there's a better way
-to do it. If we just redefine in kernel/, then people may still use the
-one in bindings::, since that is where you would normally find it. I am
-open to suggestions.
+>=20
+> >
+> > I think the fact that existing code has a boolean and do different
+> > things based on it is a good enough supporting reason to handle
+> > different code path.
+> >
+> > For some new `vtable` features that I am working on would require quite
+> > different impl between the two. =20
+>=20
+> It seems unusual to justify current changes with future changes.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/rust_binder_main.rs |  3 +--
- rust/bindings/lib.rs                       | 13 +++++++++++++
- rust/kernel/miscdevice.rs                  |  2 +-
- 3 files changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index d84c3c360be0ee79e4dab22d613bc927a70895a7..30e4517f90a3c5c2cf83c91530a6dfcca7316bd6 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -322,8 +322,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
-         owner: THIS_MODULE.as_ptr(),
-         poll: Some(rust_binder_poll),
-         unlocked_ioctl: Some(rust_binder_ioctl),
--        #[cfg(CONFIG_COMPAT)]
--        compat_ioctl: Some(bindings::compat_ptr_ioctl),
-+        compat_ioctl: bindings::compat_ptr_ioctl,
-         mmap: Some(rust_binder_mmap),
-         open: Some(rust_binder_open),
-         release: Some(rust_binder_release),
-diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
-index 0c57cf9b4004f176997c59ecc58a9a9ac76163d9..19f57c5b2fa2a343c4250063e9d5ce1067e6b6ff 100644
---- a/rust/bindings/lib.rs
-+++ b/rust/bindings/lib.rs
-@@ -67,3 +67,16 @@ mod bindings_helper {
- }
- 
- pub use bindings_raw::*;
-+
-+pub const compat_ptr_ioctl: Option<
-+    unsafe extern "C" fn(*mut file, ffi::c_uint, ffi::c_ulong) -> ffi::c_long,
-+> = {
-+    #[cfg(CONFIG_COMPAT)]
-+    {
-+        Some(bindings_raw::compat_ptr_ioctl)
-+    }
-+    #[cfg(not(CONFIG_COMPAT))]
-+    {
-+        None
-+    }
-+};
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index ba64c8a858f0d74ae54789d1f16a39479fd54b96..c3c2052c92069f6e64b7bb68d6d888c6aca01373 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -410,7 +410,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-         compat_ioctl: if T::HAS_COMPAT_IOCTL {
-             Some(Self::compat_ioctl)
-         } else if T::HAS_IOCTL {
--            Some(bindings::compat_ptr_ioctl)
-+            bindings::compat_ptr_ioctl
-         } else {
-             None
-         },
-
----
-base-commit: 8314d2c28d3369bc879af8e848f810292b16d0af
-change-id: 20260105-redefine-compat_ptr_ioctl-e64f9462225c
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+I gave both reasons that why I think it should be distinct code path today
+and also why I prefer it to be it for the future. I did not justify the
+current change with future changes.
 
