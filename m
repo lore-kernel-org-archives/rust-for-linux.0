@@ -1,55 +1,55 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F6A33A014
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 12:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF3033A03A
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 12:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767616980; cv=none; b=PV7EKIfQ/ZRyykv7Ow81rMFEnZH4gVNvODf+ggrO+Y/e7z8gFZPX3JZxElalD2eRwjn6Vs2sPj3ZjS346N8iwk5aEyTY7esDcoAYCwLu6N8E0Wr8S4Ps5vZ60YEmUPnKdE4PIHviyz6iF45Fxd/AoWMWE7fPv8l6muv1p9gGcOA=
+	t=1767616981; cv=none; b=NC6289Y047ZeXCwed50gH+zlQyu2HpnEutF+XLLGnzYRLOEHvymWLAs8xHxx+Ykuh0FGir0Kt3mZGgpyARHUCn90xgoG16xLfL+CCkimYG/e3QKIi9+aP6zG4nyrpohDtxEKOicr2B6oQusZspCSmHD7UYDOL5wWMCeWd4+XwjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767616980; c=relaxed/simple;
-	bh=BX4PuegKU7oLOCE5wiFJA5na7yprV+fKJdv3rgt7tFE=;
+	s=arc-20240116; t=1767616981; c=relaxed/simple;
+	bh=UzGlplN9hMJBDEgRgsBJzDppIssf1wZDo7F7rlGIARA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=reaLgYmTyRioKhk/vMSf7+HAYQlM+ENQ8ilyT+Cjhk+cy3jScukL7HgdaEp83ihNPoacaozlQpLhMi8b8LoydJ1yuZT/AmcF6gvhJVY9ferKzR36QjJDe5CpcddFo0OZCPtrYspFU0oS5gW81nNu9tIwV+rWs5Dx1e0354GdqVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jXFTePM4; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=ce6rZVKBQH6YNTeysziHkeOKqvRAfyPUuRWo0BeQqotM9SVJof6gb6deoLwd/gJ2USGseOBWJNhKhtTQwSa5fbcAPEyEaSt7vEAZ3FuIA22fUYTQa++1kjfVL0zACLGEMvd+WeITmuJj5swqqTxTIiNCYw/kyZERPvz3g0PZd+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PijM/cFk; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jXFTePM4"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-64cfbb4c464so12106278a12.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 04:42:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PijM/cFk"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47d5bd981c8so38093625e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 04:42:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767616977; x=1768221777; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767616978; x=1768221778; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/gJDodFkXOSNkvELLtuxSLcrrcD288q4L1KbsVQUEqA=;
-        b=jXFTePM4Zr7recY58WwB0bgDeEoEctp7XFC4DlB5IiM25f9PnOEJr9VbcmYxafeVtN
-         bITl9GQEB2SnYiJsC08763YxZo4NeeqLU3hnH5Yho6v2n/Xf2Mc8g8Vqf9Hr75flk8Up
-         i9s0FheIufunddbQrwj6QvA+Vgw/B7c+og7QsKZH3KjZjWfsY/o3W8SbIlRZIkyo77Ly
-         Owwfp49+JXFzZ2zJqklWaBrtyIPjqI+rAkw0w/S8a8pmp32jha9A2gENlggKBG3SB0/k
-         12qh6M+YGZTQKumvI89Btx9JuAmQtolsOf1GSMDTsF3HCwgSA2sKM2YFtgaaH7a1+6nZ
-         e6zg==
+        bh=aU5hvVbSIZ+0CKzUQKGtwRWDP0tIUkA5YvtKwL6kBRY=;
+        b=PijM/cFk5KEV6LXxJQ5vkiy+4oYB0AYL4llqaAC6RF5qIYCZ74o6hilM3RhfB7qg69
+         b/AH8zoHHbnALSw4sk6rLRPmdkuKuznm4GI6o5yJUzKl3eQ41Nd17i8ZTkIWm6HBvhNw
+         fAzayed3FGr+q3zIL2HBPmz2VtC5jP3onR/aMU9qXR2ERtph9uJNrLF5Sr225o2P3xeU
+         Iwpnsn9vuxd1FVUFJ/nXdy2a+lBxKmPWNrXnf8/DGYhCRGtGvUa7UQ7DtiZTguyhStg4
+         MUbWh2j4rjHESR/q2ccrx2GSOKAGgzB6E7T+PHitIme33uPpZTPLSDQAxVX+8052gUiB
+         pb+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767616977; x=1768221777;
+        d=1e100.net; s=20230601; t=1767616978; x=1768221778;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/gJDodFkXOSNkvELLtuxSLcrrcD288q4L1KbsVQUEqA=;
-        b=Tum9DGV2o57tzhNKfVpYiIywzUc6b4aAmTdzoAYjXf3Vw+EVD14NPB5Xr6iO9sX9D4
-         sDHAtOHRmoSwzG5bH1n2LWfajQlww8QS4RkCC9BEa3RHNEP3RrQAceI93SOdSqok5ftR
-         PEneTx4rhwftrlq9SaB1QJMw501e/zVvWCtJo8Q6Vsq89zhuU/jJNn1nlRyqM4AihGO0
-         gE6GkFQrT2nbUYu1PqZGM9ANkdtL2zlLRd97OqX5DUwasoLPaltXEAzUzuyEf2n/uHo6
-         b0asEb7beWanwhepXK8e4zOt1il37SYzowDnV+G/rydjTcRG+Sd/hq6AqVYndiHsmEF8
-         PwAQ==
-X-Gm-Message-State: AOJu0YzcSQS1mreqIW/1qnVSdp8ot/5QyTSxv5r1iBrVJ98rgAuOFs+u
-	PUk86855sR2ZTT5MUyi58rnuTfSKkQ++VNUYYiWZFyn2C1J1WwBLXKTPJunksvhjuKZk1ZfihlD
-	6Ew/gKWs34HPwQkqLYiiPap4PXJs6fNivtJ0FBQUx8Y4S4Lf0FgEIbp9iRaYggQ8wyvvTMhVCyA
-	i32wHNM1wfwYGkqSdjhSwiQouSZhj8EMqbyPAruoyazYlxpECB9zwn/Zq4Q6LXX6c=
-X-Google-Smtp-Source: AGHT+IH4+W1m7K9R6UQhNUgwUvJkQDSz0PygCwrolhpsUaAev3FcK4oxV0VVJvwHjfLaVQQ/0GriFGCKTgZ8LwQ=
-X-Received: from edbcf5.prod.google.com ([2002:a05:6402:b85:b0:64b:a72d:4712])
+        bh=aU5hvVbSIZ+0CKzUQKGtwRWDP0tIUkA5YvtKwL6kBRY=;
+        b=ekuJzSu1iW8FGJsIRIP23cmO/43esnK0VDQEtBmewlIkQNCTewz4AVnEXrCyfja0MI
+         c8omgn/yNOmuXyvIQOB50ku/q+yL83OYtuH0LyIbGSbbhwvoHpVROmJKMiRxLi2Dh+Bv
+         aTV7nWSRNvLIcWa2fVGyfs3lxeOaa0FucDLl0y7eTbCFd9k7aaVegSUIqWUKFfAiUzDK
+         ZNmjhc3I885Lv5bC/ft/bm12Lm2evyK/5WjPmrPzpYbBXbHoTNbsLTbVI9ZdrofoAV4K
+         3LE3Y8gmhjBHSrPDeZWopLKEq+YFzC7XGGmEBLFgJjsb0nmZ3Le7Caw4WuNMJxOeXCVW
+         8sBg==
+X-Gm-Message-State: AOJu0YxWn6AR+wqwgZfI+7rh2+Tg9r8PWLb67EK0mSfggLG1xwWehpsN
+	8867z9yo6rFxPmnQC7gqpkDAkMQQ+XFz3cguOMOOuQYjOxcBYsUyccRKMAFUkdJMe2l6W6nacco
+	dsPzLsoRCF7vJ8MGzrXazA4V60XWugVkoBAcotQu2zaKVR2eohEaPO3W+yaY8Knr3Av6cQTjdme
+	jLmVV89A/d6yTlgjWtF5Hkfo4tLDH8dEjBaAtiXQObMT/cyXyj61yFWTAHxNa754s=
+X-Google-Smtp-Source: AGHT+IGC6w/pncYw2GA0wKwKDg6s/d5lSicuB0c/4Zy4kh1qNN8MAXi3s6OoIeFHVOEuj0zDz1NwdbhAfJULML4=
+X-Received: from wrd29.prod.google.com ([2002:a05:6000:4a1d:b0:432:8535:4e3f])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:3491:b0:649:9159:2432 with SMTP id 4fb4d7f45d1cf-64b8e94767emr49619947a12.3.1767616976717;
- Mon, 05 Jan 2026 04:42:56 -0800 (PST)
-Date: Mon, 05 Jan 2026 12:42:26 +0000
+ 2002:a05:6000:220c:b0:430:f58d:40cf with SMTP id ffacd0b85a97d-4324e4c9692mr55748817f8f.16.1767616977864;
+ Mon, 05 Jan 2026 04:42:57 -0800 (PST)
+Date: Mon, 05 Jan 2026 12:42:27 +0000
 In-Reply-To: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,56 +59,62 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=900; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=BX4PuegKU7oLOCE5wiFJA5na7yprV+fKJdv3rgt7tFE=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpW7G8N/MMfWAQUaRb8EzZ55j27dutUYuOmUAb6
- GvYbt/CmqqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVuxvAAKCRAEWL7uWMY5
- RlBZEACsG6FlA0XqF7HUX38QJ5IYTeXqRGHu++9MeEutwMAfufvXK8p8wNeFNxX7jBQGmJSAkFd
- PpvFm9Zv9NfLsVmdPjOdn6cZi2NXLjtYfMLi+L42tnB4LNGYiiqnoP4Y9QqO4xkB2j4pRd0i5am
- mQsseIbMp/6pijq3k+MjuGsDGW4BhL51B1VtUOElN1lS0UegX+ZI1vj+z8ElWDHzEk4ONRMfjKD
- BRUBWfq6mzeyzWQbOevXThJxTztRuiLErlSofbsJVL5PVbac4MKK5EtC1zXKfYKaNbQAdO+dnIL
- tidtModsJVIQKREVsd0p8bDkgN/OjfMDZFx4ty0lIrZ5mfoJ7DwqFLywaA8N5+ujzxKnV+II2bK
- nISwnxyjYkNpIZd4vRSNKd48dmgxAb7Vb7rkjhaRyAHHi2WeLhKoq0sPuRUimaiFHBnlej+JAMr
- 2ZiRs3fSVgO1N2Nu1v9Otfl8PrOuJp8ATqUUwo5d+55EGbsm0u/++nTy5Ym9HExk+XnYvlTBE9/
- qV2xOWUw/Upc4dC/nNEz6nSVBSUvaMtgnzM5IavuRbou27A5LY7L62QaV4FaMFGdaMtU7gXtELO
- pB0e0kt0Kc4w0FfBrWBE6zJt9LU0NaUTTlDHcEKnbz6xzpED6TIVylBvhJRmEgzD/ejZaiHn5jI JhEMofYl0WUz+hA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1169; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=UzGlplN9hMJBDEgRgsBJzDppIssf1wZDo7F7rlGIARA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpW7G8QUtoW9VTGtC8eS0Sh3JgTU5tkbqVimYdW
+ 8eVSeCqjBSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVuxvAAKCRAEWL7uWMY5
+ Rg/tD/0Z8OiEdzydRZ/PQ+I7jFTjKmnYOtrj4ImZ0SJPK0WxCFQJR2irDOZfKhcYqanOp1ppg10
+ TYeYoS0TiXAHOUxsrgcg5aHgog3owE/bGdmY94UXz6s8mpVhh+TSDowlnKEWUhBIRZgU5A4zHqn
+ aZNQYU/eG67r55/yJCVYHpPPPAvhACbAUYIm1JrsuKyTfOk35tVrJFZ3l94+zANiAqPaWPxHA/t
+ WeyOd0XWPLRPQInzYEGAQ15YBzMvXYXmHjrhZwy9JPbtuGb02xu0hNxYNbs4MDt1OUOGRogNvS+
+ 7uwLByBgwluySmLE1SmIa3mYianWs0JJHBfhHZr9swyXnj0NlJLrZb+4GxNFSOfhpE5HpLku/m/
+ +18cJR0Uu4iL2G8yctT3guJ8Q+xQ6PKN9P7Zx5KdyP6vnT7D87He2HbDxTLtoOoOowDz7dfGElB
+ vDO+dWPNff+p0FUPtIrP+d6KjQLSrQNjVQV3fpvwUBgjndvk2ir21zEqyn0ObTNYrtyjg6hPQAE
+ KHe0QiQdO4tWt+DaZG7Th4LwOIsIn78TUeDNKRhZBkHQ9T+TQhiSzv0ISkfvQ4v5J0m4WCjgbsN
+ S8V2ygd9v0uljg+4lQNzrckqb9Aa7277ijkiXW8aCtL9JON+ZX6gYnOFNCfKrMahLnKbzh7VC4i lPFfo6Y+k1Szhfg==
 X-Mailer: b4 0.14.2
-Message-ID: <20260105-define-rust-helper-v2-13-51da5f454a67@google.com>
-Subject: [PATCH v2 13/27] rust: processor: add __rust_helper to helpers
+Message-ID: <20260105-define-rust-helper-v2-14-51da5f454a67@google.com>
+Subject: [PATCH v2 14/27] rust: pwm: add __rust_helper to helpers
 From: Alice Ryhl <aliceryhl@google.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>
+	Michal Wilczynski <m.wilczynski@samsung.com>, linux-pwm@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
 This is needed to inline these helpers into Rust code.
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: linux-pwm@vger.kernel.org
 ---
- rust/helpers/processor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/helpers/pwm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/rust/helpers/processor.c b/rust/helpers/processor.c
-index d41355e14d6eb593beb018b5709118afe855c852..76fadbb647c5592db4526569fb1ed6b04ed17e87 100644
---- a/rust/helpers/processor.c
-+++ b/rust/helpers/processor.c
-@@ -2,7 +2,7 @@
+diff --git a/rust/helpers/pwm.c b/rust/helpers/pwm.c
+index d75c588863685d3990b525bb1b84aa4bc35ac397..eb24d2ea8e748364f3e17dccbb6a92fd7f2514c0 100644
+--- a/rust/helpers/pwm.c
++++ b/rust/helpers/pwm.c
+@@ -4,17 +4,17 @@
  
- #include <linux/processor.h>
+ #include <linux/pwm.h>
  
--void rust_helper_cpu_relax(void)
-+__rust_helper void rust_helper_cpu_relax(void)
+-struct device *rust_helper_pwmchip_parent(const struct pwm_chip *chip)
++__rust_helper struct device *rust_helper_pwmchip_parent(const struct pwm_chip *chip)
  {
- 	cpu_relax();
+ 	return pwmchip_parent(chip);
+ }
+ 
+-void *rust_helper_pwmchip_get_drvdata(struct pwm_chip *chip)
++__rust_helper void *rust_helper_pwmchip_get_drvdata(struct pwm_chip *chip)
+ {
+ 	return pwmchip_get_drvdata(chip);
+ }
+ 
+-void rust_helper_pwmchip_set_drvdata(struct pwm_chip *chip, void *data)
++__rust_helper void rust_helper_pwmchip_set_drvdata(struct pwm_chip *chip, void *data)
+ {
+ 	pwmchip_set_drvdata(chip, data);
  }
 
 -- 
