@@ -1,117 +1,103 @@
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com [209.85.210.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF96731B82B
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 04:31:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AB430DD21
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 05:01:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767587524; cv=none; b=mT0dUNQe4TJ446UdoF6IhGiDfMFNZ8HV8XbVGTbYA3RxVWSI2DxxafGXmWOlvwQ2ChTClEzva1egfnm39WA7NvlCt7H6vFcP7EsXXQaadB40guG7tLi9NmsoFBTplE/zSEdVepgfGHoFZEpqMTY8cJOnOCz75t1goL3OymevAC4=
+	t=1767589301; cv=none; b=QqsqLCsqsU/qnpEc4sgXDUjQ1ew2/krUXoEjdTmf53ozhFdgYxweA0B4pgbDp55KNJDb8pKnC5HcVVWWW6WDr8U7U3kwNeq2VDVmA+Ep7sIypBanAK6g+QG66+x3sjI76Z2XzNkDqSHYohQu29Ps4NpPL7KvaQkDP1wDMjGjZDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767587524; c=relaxed/simple;
-	bh=e4mNUTVMd3pbP2gaHBEUKskV1yFr7MQyVaNr9q7Kg0Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G560jfoGl+b34MF5/HDshEEXtGxkHqQIjR4tqPlhw6uZGJlvo0LuWSLU1JVx9k5jdjGg4Zybt2yVlxlhO8oals67uqx5NGqFqZ0T3IQUw1DAt5wnPaAza5+3l1cF0w1vVoiVuG14M1Z5m2rbG7tqFzIfU2PPsUwh4pGvl9uPMi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNVa2boE; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767589301; c=relaxed/simple;
+	bh=bOgzM3bvThcr/PL1q+HHJz7YTcppqCfwWatkCNSbNko=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VD5vs9hxjJ8igYPBU/2EXTpOVl3qC2ZzvsRZxKHb9vo96qbQqpq7ia2iuTNjor0f3Gr4yBsK79Kn2VncumRu44W3LNnz5Xv1cJ0937vNMWarD3J9ukKG0LA3mxXhB7zsW+VHVjnP6MYQLGBLCJRZ2EAf+DVYRCkeKepPETOq+8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LpocV50H; arc=none smtp.client-ip=209.85.210.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNVa2boE"
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-65749fe614bso3687221eaf.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jan 2026 20:31:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LpocV50H"
+Received: by mail-pf1-f194.google.com with SMTP id d2e1a72fcca58-7b9215e55e6so8308268b3a.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 04 Jan 2026 21:01:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767587508; x=1768192308; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=saUVAgEsyurYO5XeH99MQT53kwNGQ/V15cZ9Ga2UQbo=;
-        b=XNVa2boEaVyUfuLdYZQSQoFnchNF8CXd9Hj64k7vvgQUFghYKAz8viM0i1Leq3/1wT
-         mW3Xq9KmhI5JKBqx5+RI+iy/7tcuauIgImJvyzxNUfNPg8hKctEcQ4JIsavLE8Btqd8q
-         oLSGZjzoZNjP1Pud9PgSHTMukEFRFiqODVMKJ869XR9wpPqhnhwF7aMcbGRssOKZQpfj
-         fcJKZU4dsCFQ1lYrDlwtaonJdUC1QQcz31ZBj2J7Bxfoq9uRSjrXeUwHjqSDXLtWgwQK
-         LGFOyEekChQAc7sRPdGHgJXVH/hUTtE7SyftSDPwkaMSGJJh70z9UQURtnO56imk2WTG
-         BcYg==
+        d=linaro.org; s=google; t=1767589298; x=1768194098; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aZKO0eB3ugHv1XJFcKwPh1TEGqr93QeMnjxj+W7yaoY=;
+        b=LpocV50HToVX1UqIqzGzoojy0jKyFSmnJwDn+4qd9bIUUOJjtQqBZS776rm5IMFRkT
+         Cmbxk1oeFTUGWn1Xmk7xIzcq0TsRd9x1YmcrUYGuM+axC3+V1RruXTQoSBENuSR8D6qu
+         j7PZj6u3jHj6sCDF9S9UgHN1CP50PYzMNoHWYvx8tKzWxjEVRXS+1RomcDx8NeycWYlr
+         /jhbYTzbK49y/EL+42NLLhnHThICbwPYIShvceeKKOTDus7YBev8l1aea/momv0Zp8kE
+         nj029jIR3ZMiTZhCc/U4RChmgz6RLa5sZbWxpfCtXdr0f1p7iRb7zPThM2QRjRZ/9Ae8
+         C8UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767587509; x=1768192309;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=saUVAgEsyurYO5XeH99MQT53kwNGQ/V15cZ9Ga2UQbo=;
-        b=BXf0ZJTd78srbHDdqcfstFQSibNh51lOlxsQE3Mq24UPrVgRWGUItxM3F7Pyefe0DQ
-         TtxOtTtksbOVukCacj/3VtzPZHd086A76fsc29J3lIiOwhurmxoq2LhDoR49hgZgVXjF
-         KTnFhl6BPfv10XeMnnhHpyJ4Jff6XdEVEkKrWuL3/wVnuCU2kHDFciAgGROeUPbYYa4j
-         3wmuwWlDWwYXeP75yO1fTcaxgmWj1AYNWsShgRCDq/mwnVay2iHfZaCYrwhwngl6Kp86
-         jrRVmHZT7fQkNoolBI5GW7D7dGul//hyT0H8TxEBBYjqnAZlW3WouWjHlSNx9CiUF87h
-         WoUg==
-X-Forwarded-Encrypted: i=1; AJvYcCXCueFE0S/KHKb+tRoxjfLokxa1+0S/qwgfeLdL9FUwbpxFcIlttULtKTqbPSbioEH0syPViqmTBskIePZVVw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxf1Wwo2V0ICkGyT5Pb+BnAA+x1xB8eEGFAqYNFFBndVzOnbckA
-	Z+6RFnWAVDU/GqXVfYB4EbtlSlYUwAfDhY4cc7OJgXpKEJ+B864NKulOsO/2bVHQrpyIkxKSlMA
-	VWZat41vbmw/VTKULlwTqMwkfpe8P3Rw=
-X-Gm-Gg: AY/fxX5rGr2WwFwvMJ4HKLR4KrC1wK+yaNnrOrY+gHAaFdkot7K0mOkMotZdzby/VwS
-	maiXoE8H+HRjnTOO+7kim9mex+nKB8dKo/nA/DJI9Lra15RioBb6uaLNFM4HEc5p5a0CSGrRKjk
-	9vxcK80OUm44v82igxnjbWJXU1Ic8YVWs947TLg/UJplZSHels5f8vqo/PzXDw5Ls7z82cBqKyf
-	RQPer0Q65y9ULVYnonifyuLlhuBMyREpauzVilXp3TKb+DAxkQVYoyroqPCBFba0o8Zpnk=
-X-Google-Smtp-Source: AGHT+IEBOFNjMVIcp+sMlVXjYpjBEZMMFX7+jPvUPM5+krXxGK7by8/Odk0UZPWbo60zUg8SgiWi2xJdtgeEwAt0Zqo=
-X-Received: by 2002:a4a:b789:0:b0:659:9a49:8e58 with SMTP id
- 006d021491bc7-65d0eaa85cfmr13980797eaf.40.1767587508671; Sun, 04 Jan 2026
- 20:31:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767589298; x=1768194098;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aZKO0eB3ugHv1XJFcKwPh1TEGqr93QeMnjxj+W7yaoY=;
+        b=QqzisSaUz3fVvYY7Y0gKK+YrSNfUljqlD1RoY0I4KJpcLyjCGAB1+M9cVJrIPOAMXl
+         yr35dsuoWkv8zpfUxTltpL7NxWMMteCrZIa2Igdo1tr9/oqnjuDI3X//bU/PmYMydVXq
+         1xxbAlMGfrhDtegIdkmc0XMlKB5YJQmyeUl+WkdyTdaeVFF8/ec/qHw9uukfosxX/b3o
+         ZEBbxELPra23GNp/Q/iLqch4COe8IHCD8Ve7KrnBHWXiZ3MI6D9rJ9sP3ZEvqnlm8I4m
+         V7C0Yvfr549fNuDBhRZG3hHJz0wStDM1ayVITQbx4NEx7Oqm8hHLCk8iO/S3YDyPuNV1
+         /ZTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKOQDEq+ESFdWUGtMdx2l+8jW+qeWkG8X3i+SDY5T45KXn0e/YWwSLqUsTOLaxa7bDfzfEuYQF0LNd43z48A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDEjwUgjbv0ltU30cHWXxJBOdDxZ7LNeayou5sY2uDLbVm9YXu
+	+ciN+aQlf35aqtMQ3DG48E3MtfmpfOI026ayIVRKLwP+dJw4J2jn+wmvyUTnAradDJs=
+X-Gm-Gg: AY/fxX5ZV6J/A/+NDFG/qE5211qkU4/BNuehGznMlpHKwfnvlaXjtr2dR++WHvZQR6Y
+	099PqyDt82kA3JRHgqsBOtVcNCXV1BTXvTkL9QF9zBXipjCH6F+8oLq79P0YFXntZ/3JKi45gcx
+	N2JqmdbztamRsgjuGjxCjeMD8XYx2T22+WdBOv2+2NZtYtgnOZwNf6iGXbVoRHOgZNtrMa3b0OS
+	yE3ovMmXxT/64iXoMnYcZS1VlFCkrQX9tO35sEMlhM/UbvBlfoc30KvwV3BfK4xU11ScL8fAZBG
+	KK1rCXXTFgYQn1TBmdurjYecopH4VbNhC8ZVswtBwNuERRlS1T5aexcexa0BgAv9KQVD5K6zAW6
+	c0Aj41zdCCztaK1oyZGgDEEojvhTWj+iT+7moOkA/v+XgoMKSJ33vA0Jni8jRHoNtlDgghzepyF
+	MbdRmMnCi9Pr4=
+X-Google-Smtp-Source: AGHT+IERB4/fG8UikeszTNDBmlG8rNFg2rlgQaYzzWQKOuSq+0vtIqjVkr9KgjSkflu3ZWHVKiRaDA==
+X-Received: by 2002:a05:6a20:4325:b0:35e:5bcd:8310 with SMTP id adf61e73a8af0-376a7fe52f8mr41359422637.32.1767589297954;
+        Sun, 04 Jan 2026 21:01:37 -0800 (PST)
+Received: from localhost ([122.172.80.63])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f476ec31dsm4911064a91.3.2026.01.04.21.01.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Jan 2026 21:01:37 -0800 (PST)
+Date: Mon, 5 Jan 2026 10:31:33 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Tamir Duberstein <tamird@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] rust: cpufreq: replace `kernel::c_str!` with C-Strings
+Message-ID: <62mbftgf5cvvaelbtnwjclimyzi7lpmxxlu5uqfzqrkzja3efn@fgijwgonqsp3>
+References: <20251222-cstr-cpufreq-v1-1-2d99dfc88cbb@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251124151837.2184382-1-ojeda@kernel.org> <20251124151837.2184382-20-ojeda@kernel.org>
- <CAJ-ks9kSFp8CpyNr8zSKh6mniuXiYNrZCc8FC-8Z81GdbnaRog@mail.gmail.com>
-In-Reply-To: <CAJ-ks9kSFp8CpyNr8zSKh6mniuXiYNrZCc8FC-8Z81GdbnaRog@mail.gmail.com>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Mon, 5 Jan 2026 13:31:37 +0900
-X-Gm-Features: AQt7F2qrKlVRmg6Qt0U99y98HY5qajxFqWZs4J8w3JjjhlpBLoCv1Y_qfJM799o
-Message-ID: <CA+tqQ4Kiypr8hZ8d9zRgjkoTDaXcszEm6U3k_OoJL=mhGd_kgw@mail.gmail.com>
-Subject: Re: [PATCH v2 19/20] rust: syn: enable support in kbuild
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251222-cstr-cpufreq-v1-1-2d99dfc88cbb@gmail.com>
 
-On Mon, Jan 5, 2026 at 8:17=E2=80=AFAM Tamir Duberstein <tamird@gmail.com> =
-wrote:
-> On Mon, Nov 24, 2025 at 10:25=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> =
-wrote:
-[...]
-> > diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_=
-analyzer.py
-> > index 4faf153ed2ee..5b6f7b8d6918 100755
-> > --- a/scripts/generate_rust_analyzer.py
-> > +++ b/scripts/generate_rust_analyzer.py
-> > @@ -100,6 +100,13 @@ def generate_crates(srctree, objtree, sysroot_src,=
- external_src, cfgs, core_edit
-> >          cfg=3Dcrates_cfgs["quote"],
-> >      )
-> >
-> > +    append_crate(
-> > +        "syn",
-> > +        srctree / "rust" / "syn" / "lib.rs",
-> > +        ["proc_macro", "proc_macro2", "quote"],
-> > +        cfg=3Dcrates_cfgs["syn"],
-> > +    )
->
-> I think we need to add "std" here -- without it, navigating to methods
-> on e.g. Vec items defined in syn doesn't work (it does work with "std"
-> added).
+On 22-12-25, 13:29, Tamir Duberstein wrote:
+> From: Tamir Duberstein <tamird@gmail.com>
+> 
+> C-String literals were added in Rust 1.77. Replace instances of
+> `kernel::c_str!` with C-String literals where possible.
+> 
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+>  drivers/cpufreq/rcpufreq_dt.rs | 5 ++---
+>  rust/kernel/cpufreq.rs         | 3 +--
+>  2 files changed, 3 insertions(+), 5 deletions(-)
 
-This was handled in [1], but hasn't landed yet, probably due to lack of
-Reviewed-by or Tested-by tags. If anyone has a moment to take a look
-and provide some tags, it would be appreciated!
+Applied. Thanks.
 
-[1] https://lore.kernel.org/rust-for-linux/6dbdf6e1c1639ae381ca9ab7041f8472=
-8ffa2267.1764062688.git.y.j3ms.n@gmail.com/
-
-Best regards,
-Jesung
+-- 
+viresh
