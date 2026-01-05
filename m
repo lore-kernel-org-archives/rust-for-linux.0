@@ -1,151 +1,106 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501EB33CE88
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 13:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767620100; cv=none; b=FZHkof/d64pBbSHMLqgunj8OU8C5sqEcw6Nw4K8hsNnwG9vXygyxCqlpH9sU7f6hc+yqcX2HOj8n2wwGTfrfdR9gURPa6FEh3U6m1dRIt6+9DhQtEVeEB720mMLDTWK8LVaE8vzyQwzuUClsLIgIb9OZ+nCNGOMqVrZP50norKg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767620100; c=relaxed/simple;
-	bh=rrR2WtOY8HjiH1VpM1Nq22MDxOD9d2hpf6jf42ZdIVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ohROJ5asILHQNECqbiLjSEfpnGWE7e5iMh+RX5qcFRO7u9dX1WdLFryHdCRXieP3VLij3q0gUz2Zj2poC/z/OUR1haUWKASv+XRXKo6bscNqcP4xYd3oSG93skNJ6/eTJsA0nrQrAQBExRMpAOCjvhi9c7RQrhy2/WtESOxlEjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kpK6JLPg; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03206340DB2;
+	Mon,  5 Jan 2026 13:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767620430; cv=pass; b=FzsKPb4WkrHITxeV+v54ZIzB5VqtyYfY0T7HGnE7U8QGI6yjXucyiQf8GkEy+BI+jWQ5EQ9o9dQIlvozw7JaWLaJ9hmdGzmX7I/9s4B0rIrx55l80flz7lr0lYXvV0v8Hir2FN6yVCFHatfOFLd+zHYuWu4hRIC8CVTB2IO8z/g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767620430; c=relaxed/simple;
+	bh=bVBizW76SECHShuv+DZh5Mbhrg8dkvmw9aI4M5tHzYs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=diiBIoIXA0lJJ3pACIPyRD4H+Ut6bFUvD1w6mF/rDTuVSgARXEM3CBZLlz+SoYm3gNccD1bD4LoTvZy70GylUUhJvzrUfF/3GzZEMvwKjJcjGDB7l8SpFKBuMwyft+yKPMOKlDzf7SAtHv1mIT4tpmnUOa69Tatwmvfi4BeUrl8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=bhIi7bCv; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kpK6JLPg"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8b25ed53fcbso1962751985a.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 05:34:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767620098; x=1768224898; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PVm96cP476o+ZZwHsOQePN4PBw8ktqLj2E565p4JvY4=;
-        b=kpK6JLPguWYRyXi8SmGMzM+XGtfpd2ekWSyz2u1mhHxdWJH4cEOFP86Cq8dct8Y6IY
-         gb7e251/181NjgLJtPcVML1RDjSgAZgNF5rnRj33kAO+Ob/i/tLB4/91GLDjzLZK7U7+
-         Oclmh7bG1OnMepFmQw5KmoREBqti1ilEMARf5slejT0mH1n+rAIzBG6OO0vGnqlo1o2c
-         aPIwhj4eqE5h2yLUYOu0B3rl9QnKTjjcED+879GrDfOgq1GXaC/JSBBD47WW94kPU4u+
-         PualKI3SxRmZkG684QsvZAwP1PH3zuID55gUyZWe9CaZr+1n+tDOswdGu9/tnJA+egnH
-         1jAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767620098; x=1768224898;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PVm96cP476o+ZZwHsOQePN4PBw8ktqLj2E565p4JvY4=;
-        b=bHmQRKNwjYPgiAOp3ncDlOvKz5A4fBSe3tFFyRVwxQbNpHk6LfMzL9OQ4GF4SAtsAs
-         zSX4fnYYXRu38DVrZIoSB/IYqpYA+1Q72n9lgUEYcFtl3TmqJoHBaT1RubshsmgbzDTS
-         +II/dEpCVlB5UkqMtQlRjydIVyUeSR3Xf3IqdP2uVVLe5WG4x8u/9aj5MdjbLFELNyRK
-         wuKYQyUME7LlLJvuqZfcbK4JaAVxRpSfzZRMTGLhTXdK2tnHra7175GGRtrSkl+l3BSM
-         tkmKhRIfu/KYj9/xfeguOP9URwa0nMpCUI+VjfO+oPr6sdMdhz6G27jrx/Fb5tQxBV2G
-         c88g==
-X-Forwarded-Encrypted: i=1; AJvYcCWklQ/2gKkBIL5LAN/C70QeMKm7gjOPcQc2mpNFCeM7uQrdD+XkGwCI36jZf2rcZmHMvdLwQpaCQ2dqlXJnEA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx+u/8QGuToOVMDVQz75umHqwcea1V/S21RLMM6UlmYxCPXu6t
-	bBo6NsjXN18LQxel9k9J36BLseiriwxVRaTp8MYWN/v6sJQMdlx2Poz3
-X-Gm-Gg: AY/fxX4i2JDXUkCa7TDoQWZNmmkLNyH2nAHvrsJA/pYx/zYBa8TssOcyBjexV43qVGv
-	4TUAcQc9JW+Q1TOXw4chALPaAgqi0UkF2tgy6S9tGk6C/i7QFOG1h34ZSwgyisSBCt4bxBMrW2Z
-	GF0z71hB8XgTi3o04l+0bmHWDQKYRhM9U7hPY5at34VEhEK3WvJghbOE00tI0rH89x+JIpGPFtO
-	QeewEETYovTYDLWnB1w1G1bclfvE7vI0T9FqkaKfMjfj/dmv7GyO7cX8DOUNIjGgaDOTo6l63nV
-	mS/RcrNoNs5abg9YSttWOFHH4jAtpoc5t8+5AUygA3OTcZ8JP5PyJPmZpIg1UREkZA6+zQwHU5z
-	LteeV8XwHsqu2FxGmgp8IhNlNV/vA+b05iUdveXPbduIq0SpwV/RYngRwVZCwNtOkVt7zU4BCt3
-	EzeXCXaZnyqg+tePBjrpVDduxDrv2/HgFgDYaedg9z0CQ6/GeuxuMB2BwaiAta75z19CkUfx9MY
-	mLqw/nquhGj9ug=
-X-Google-Smtp-Source: AGHT+IEvRACtO1qCkDG7j4VbDrLl9sucKkWA1Rt2QO4Q3/IPxYE1zHOnBayimmNV4J+V5lfYWpNQ/w==
-X-Received: by 2002:a05:620a:469f:b0:84a:5f9d:a30c with SMTP id af79cd13be357-8c08fab86b1mr7945462285a.63.1767620098171;
-        Mon, 05 Jan 2026 05:34:58 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c096783a81sm3714000785a.9.2026.01.05.05.34.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 05:34:57 -0800 (PST)
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 07FACF40068;
-	Mon,  5 Jan 2026 08:34:57 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Mon, 05 Jan 2026 08:34:57 -0500
-X-ME-Sender: <xms:AL5baUEoQAQgHrqsMygWX8MwyPni98xdglgJDDWtEgahE7DPIMhaIQ>
-    <xme:AL5badz8ESHoyDOik7eGyVidtGi7MJLKZgn2z7hwlr3o7eYPBlJTvx12V8U6ChDnC
-    gU5Smu8UihzvkEHlfTiJbx5nD-essX34IB1RlBcO-fOv3woOn44hQ>
-X-ME-Received: <xmr:AL5bad7BiYGQKjfG6BETbihPyExJeUel6ZCaAeHO9TIEal26UrwVPtPP>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeljeegfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeegvddvhedt
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
-    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohep
-    udeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonh
-    horhhisehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhg
-    lhgvrdgtohhmpdhrtghpthhtoheprghrvhgvsegrnhgurhhoihgurdgtohhmpdhrtghpth
-    htohepsghrrghunhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheptghmlhhlrghm
-    rghssehgohhoghhlvgdrtghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfoh
-    hunhgurghtihhonhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehtkhhjohhssegrnhgurhhoihgurdgtohhmpdhrtghpthhtoheprg
-    drhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:AL5baSfPDn9_rDYiZ31L5dY_HjHKYrIlFz8i9Cbf3NJdgyTeiUvyqg>
-    <xmx:AL5baUFICkyY2f28w_jtDIZC3-UHnUMrbkn6xzdAMErIA0WV9CkO2g>
-    <xmx:AL5baS6J6kr1mTCPaws3TGKFl5jF4NVeP1OaLbT2m_An9wAtUsIFWA>
-    <xmx:AL5baXtE1Qthv9KLrGc065PdLTvzoGZVQFpeUuGDWOVcHk5wrPfEYQ>
-    <xmx:Ab5baW_oPlB7dlg4UswnthkpvVwjUyvhVbx0h7RMVFeNroXq31QeaSTa>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 5 Jan 2026 08:34:56 -0500 (EST)
-Date: Mon, 5 Jan 2026 21:34:54 +0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, arve@android.com, brauner@kernel.org,
-	cmllamas@google.com, gregkh@linuxfoundation.org, ojeda@kernel.org,
-	tkjos@android.com, a.hindborg@kernel.org, bjorn3_gh@protonmail.com,
-	dakr@kernel.org, gary@garyguo.net, lossin@kernel.org,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v1 0/3] rust: Switch to kernel::sync atomic primitives
-Message-ID: <aVu9_lOWO6pWgqLy@tardis-2.local>
-References: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="bhIi7bCv"
+ARC-Seal: i=1; a=rsa-sha256; t=1767620420; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=X0vHW3vGku20OakSmzaXWNsB4NoCa/lF11yE7FHKaRnYRe9RAqbUypyDE0g1TQWOKbwyS1c9I+qwmmqbOcHEtvDp6oPrP7Jar/t4Fic3CzPdIizg3UUB08X+vGnwRQH2rcC5v2IJnyVhJVtArdvCP2B1JTkG30YpVGTvtHZgNxQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1767620420; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=bVBizW76SECHShuv+DZh5Mbhrg8dkvmw9aI4M5tHzYs=; 
+	b=UOxzpLBp3GLnHAENZmCHvU89agIxAxksPmq+v0H8IFevumDOdt3CNSjjRWHCpuoHvs7ggKOUcGbEqcPrO1eWYcLHkED7x8RPOsee9+yTJOkx2pPvbXcPZal3Xx/B2r+XRjgbmNR3L4uyUsOkLc4knocfPIr+mlvB9IXQOatLTlg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767620420;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=bVBizW76SECHShuv+DZh5Mbhrg8dkvmw9aI4M5tHzYs=;
+	b=bhIi7bCvoChEdbJpCXWdAyEXbDK2GR6S51wclz7XKUZY+l4ZeI/impofs99k3UwT
+	4C6EhxtSVu8cg+nf292MrDY64FHJD7j5h7dty3lQTlZ4f11c7uGM/2cRX3E8BSac2Oz
+	u88ldmMZL+qlM0WLYrlMvMDZjYMdDBLR7UVyfluQ=
+Received: by mx.zohomail.com with SMTPS id 1767620418499859.6597161259574;
+	Mon, 5 Jan 2026 05:40:18 -0800 (PST)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251230093718.1852322-1-fujita.tomonori@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 24/27] rust: usb: add __rust_helper to helpers
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260105-define-rust-helper-v2-24-51da5f454a67@google.com>
+Date: Mon, 5 Jan 2026 10:40:04 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-usb@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C2DE044A-4CC6-4C4E-BC26-ADF46055940F@collabora.com>
+References: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
+ <20260105-define-rust-helper-v2-24-51da5f454a67@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, Dec 30, 2025 at 06:37:15PM +0900, FUJITA Tomonori wrote:
-> Convert uses of core::sync::atomic to Rust LKMM atomics.
-> 
-> Each patch can be applied independently, but all of them depend on the
-> atomic bool series.
-> 
-> https://lore.kernel.org/all/20251230045028.1773445-1-fujita.tomonori@gmail.com/
-> 
-> 
-> FUJITA Tomonori (3):
->   rust: revocable: Switch to kernel::sync atomic primitives
->   rust: list: Switch to kernel::sync atomic primitives
->   rust_binder: Switch to kernel::sync atomic primitives
-> 
 
-I queued patch #2 and #3 with tags from Alice, thanks!
 
-Regards,
-Boqun
+> On 5 Jan 2026, at 09:42, Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> This is needed to inline these helpers into Rust code.
+>=20
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: linux-usb@vger.kernel.org
+> Cc: Daniel Almeida <daniel.almeida@collabora.com>
+> ---
+> rust/helpers/usb.c | 3 ++-
+> 1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/rust/helpers/usb.c b/rust/helpers/usb.c
+> index =
+fb2aad0cbf4d26ac7fb1a3f176ee7a1d30800f92..eff1cf7be3c2d10b7e9248252d354eb8=
+a4fd4c94 100644
+> --- a/rust/helpers/usb.c
+> +++ b/rust/helpers/usb.c
+> @@ -2,7 +2,8 @@
+>=20
+> #include <linux/usb.h>
+>=20
+> -struct usb_device *rust_helper_interface_to_usbdev(struct =
+usb_interface *intf)
+> +__rust_helper struct usb_device *
+> +rust_helper_interface_to_usbdev(struct usb_interface *intf)
+> {
+> return interface_to_usbdev(intf);
+> }
+>=20
+> --=20
+> 2.52.0.351.gbe84eed79e-goog
+>=20
+>=20
 
->  drivers/android/binder/rust_binder_main.rs | 20 ++++++++----------
->  drivers/android/binder/stats.rs            |  8 ++++----
->  drivers/android/binder/thread.rs           | 24 ++++++++++------------
->  drivers/android/binder/transaction.rs      | 16 +++++++--------
->  rust/kernel/list/arc.rs                    | 14 ++++++-------
->  rust/kernel/revocable.rs                   | 24 ++++++++++++++--------
->  6 files changed, 54 insertions(+), 52 deletions(-)
-> 
-> 
-> base-commit: d4cd35bacb06d53acf39ff248ea2b3eef50573f6
-> -- 
-> 2.43.0
-> 
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
