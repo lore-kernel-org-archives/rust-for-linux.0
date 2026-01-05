@@ -1,55 +1,55 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F98033A709
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 12:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40A433AD83
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 12:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767616982; cv=none; b=kXP16/jqSM/3ZVizWkNopay08ZCW7EAe+K35gGAIj8DQLYAONqRakLMy5vdMbtSwXu7FCHD8E39mYqK3XnopBZhv1pr1xzZmwrC3amgs5Fx8QHkVFEE2mx2P6f/KmV6V0eWAyvVj+naA1erIDNCnw7L3nghTfy0lG1/9l7atUXo=
+	t=1767616984; cv=none; b=qpQRaQ6nbl0qS02i4dD0mPTX7LkOPV18XMeh5n0Z+/vZalBSM4XI+ZJf0n0MsACZCE614u8HtylECecmmzYL0iO7oFQx6jFxlytF7ZljBDv0BXIiwB2xBvHyk0W8l8LSZG8fFzgnVFjUdYp3AEX5VC4/CjpueIxIsD41HFyYr2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767616982; c=relaxed/simple;
-	bh=znz1eMkO+eoWuuPORIL751u0DpDjzRrKVphFIAoNV6U=;
+	s=arc-20240116; t=1767616984; c=relaxed/simple;
+	bh=FGf5TitsuCIz8KGi2Bpi+wkc295BjgenmyozEMleR4o=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rQ29hV4CXELihXDqT2APfhzWnYvNjXO8BfZjQgNiyyc/jybiYi7HQciJZ3u/V4cY5oJRjc83qtw5mTsnYN8kux0/kLhmJXlDSqqYvrpgPkNtSkGnUTmwWTrgu1HDbLZasfpYDhu0jo9vxEiVT6UNqH66iP7T42DhtkrImyjIgD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hBqR7+4f; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=GV1r/FDoblIkv4EBpR0e/Cp54VZ4DMFBpWpZ4PM8mbsHrFdAu3ivsIskhsB+55xFBMxQXXEf0peNf4S9T55p79DAO6XwneU5SlBWqNziR79GtUKQcmSLdKwk15YYPlcWmo8AiY3l9GofB75dQjaWm1Nf5IOmyf4J7nYrwjvNM7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FnKdnMVc; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hBqR7+4f"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-477964c22e0so16229795e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 04:43:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FnKdnMVc"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d28e7960fso91984355e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 04:43:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767616979; x=1768221779; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767616980; x=1768221780; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zDIgzvnX05pjgA4uq+hdSDSDYKaxyTKYQJRYJ/KEb64=;
-        b=hBqR7+4f2RCGqx9gYMXxIBOz7Uo3qFxpRsb6ouU1nWKXh3i3g/mhMSJkWd63zbr5Z6
-         lpEd/+/0D0OgGWnXXjexecHz6zSeQHj7X1BVlUSSTA9I8RuZ8ZJ/YqkRVMKejgBnOsDj
-         xmttP2x5z9b3NSyuZrVIxeRINbGhjM0NI3nxHpSHJpSdiKoX3RLe0dBkSIzVpvqKxADQ
-         RefVhj4L4/A8PfyMCoRb7WBUk3VrsimHWSCNrlMuX4EN1eoBOOIy++SP5+MAvTCXzeH+
-         N86ud9Zvfv69PJ/YqwOp8clhQOry7U6HtCz5D8P4RdCOBmCMXyeFbxwWUD6JjAdPsN/1
-         +8sg==
+        bh=7t7KDHljyK/sic72GXX7lUQ+DJiATraWRrWBCTnABgo=;
+        b=FnKdnMVcP8Tb4CPr1urWFTvA/kobCDM8eeMUozL3Y0rTbWmE9PkPeJhxRY6I0WAS67
+         sVnAtBxxzm/T2pXf084azttlfaBXEDffN13zKz6qCUaHWrzYs3imlNgYo66nkI4UBrU/
+         xu38070Gk6YtDG4Ci6Vj3ANHqLb3Z4uLqcDQdmlK4GfgDYK8UACyc3m++hkpCYQtTnvu
+         OPc+AwvyN5yEtwCHgY2QsUcZ1ukRwH2eZRRu7gO+L7pjWvWsAG+DXjLtUB3eMuzZFk/1
+         +SoKg4AH+bSI2AHCq5JTm42sH6Kbdw4hWEc1zHMEoztIz9a0q2EghQyxnIpMKhN1Y1un
+         L41w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767616979; x=1768221779;
+        d=1e100.net; s=20230601; t=1767616980; x=1768221780;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zDIgzvnX05pjgA4uq+hdSDSDYKaxyTKYQJRYJ/KEb64=;
-        b=myGg9fZsTflCR2akKIoYmto2/yp/lLisW6v/9s+sUQBafFymtBGNKdB14FvqKMK9u+
-         9S+lgTIxtvokO4TTSC7QSqU8MBFLxqJ8KpAN8jEZEcRTt7fE70rxzHQfFwShrl+retFW
-         I2RX+HHAk/Kuci8cW5pesCZhYY37vToTsuBtzJoNXa+nKMalJYkdAMxLS7L5C46Ler9I
-         mCNG3J3+FV/VEJlGh/QBt+Xi53jyve/jaMWbXJY1MJa6/REbkUfcz2KacLaSxjqLycrT
-         vqtoOJYCuldpA0nZSzwL6jiJXN6cVq3730/vhqfUlceGmE62nF9BYEiYqnGhYwHH0ePy
-         okWg==
-X-Gm-Message-State: AOJu0YydEC3BPMDxYyVQr7nb/Ye/njlJ8WgGR/oK7bj8yvu8orNatnM/
-	TZm2PGSZ/j5aTbIRuDcEq6Wnp/T4J5k02kcO/viTnAJG3YDXv/Ny8z+cKa5ugpWH65v7SD7KhbC
-	FTnhf95NE5d4jVsRNp/m92s2TCPdYDSc3o7y3oSo6p6PF/Lrc5VZeu3CEpnsU9mGAYfmcyqrjUK
-	xF2aj//NTKZ4smHaR/a7rk0UZgwkztT0bY4/kLt88kgGs4K6jaGKdVP9RsBrl9tYY=
-X-Google-Smtp-Source: AGHT+IGOwQBnJbDKjMATxuhzOSNzV+/iWdd/3aDXm+gozWAlA/94Aw3WV2rp6v5FPDzX0gBFUzEmxvQ94WXnC3k=
-X-Received: from wmxb6-n2.prod.google.com ([2002:a05:600d:8446:20b0:47a:9289:c5d8])
+        bh=7t7KDHljyK/sic72GXX7lUQ+DJiATraWRrWBCTnABgo=;
+        b=a48Zyf+Ddq0syMh9tKSsBrmSKAA6iXP+5Qe9YCuhiLDt2MB/m9RwI0DPxq6hj1EBVk
+         YxFrob7IP5G/qAZ2eU7SCFvaGJapnQ62JGmhmz0BMAmHv0GIwhBN9ghVgsLS5jGzqTik
+         hde9kFnkvmsTYNcwYiy4bKyekQVX8Rqeg4SvrjsC8W7KuacnE0H/1jKW/IJmwHRTjwGv
+         GfG08TWlO/3JxWW5hROJ+gnn/hXvqAOAJm2GDl9rK3NcbY5q4dm4oABOnx4nZxxDMMvi
+         Li8LJQ4Jm0jMUpm+6hsE66Vp+Pilcn2YBkQKZZXHhqesGwP+TfQK5AjgI2oXGjqX9pjg
+         4KRg==
+X-Gm-Message-State: AOJu0YzzhMkCAeC/xUq+gFsYPFAdt8XlmMm6rMqetjJsDCIQZh/T1Zwh
+	wi7NplhaZ7z9mXV8Ptj5ZOeETwp38Ak1kYL2s0J3Ku9gsapsKXEi0CjDKuY6+IIcpC1lZRtckJ/
+	yGUhtAa4ZoQi6nORhplagoLnPeeyb9V8KsePJfB3MNhOvSOiQFtiGwBwMMdcQvtu2Yn6G1/bbH5
+	IGZFAL8q/5RCJx6GpvRpIkInmvHSQn279WbJLXp5IR6LOLWURUuhU6AVT4GBbQY24=
+X-Google-Smtp-Source: AGHT+IHg1tiBcOrQitMvHuwpbRsE/0LlTWdft24XBVdcCbUxxz09Y9eVB5o0o5seEbWotyhUbJHrsxbsjq9sd5E=
+X-Received: from wmbjh12.prod.google.com ([2002:a05:600c:a08c:b0:47a:9505:f0b6])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4704:b0:46f:a2ba:581f with SMTP id 5b1f17b1804b1-47d6ba8900dmr109295785e9.16.1767616978968;
- Mon, 05 Jan 2026 04:42:58 -0800 (PST)
-Date: Mon, 05 Jan 2026 12:42:28 +0000
+ 2002:a05:600c:a413:b0:46e:53cb:9e7f with SMTP id 5b1f17b1804b1-47d1cec8f39mr473625575e9.18.1767616980283;
+ Mon, 05 Jan 2026 04:43:00 -0800 (PST)
+Date: Mon, 05 Jan 2026 12:42:29 +0000
 In-Reply-To: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,26 +59,27 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1267; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=znz1eMkO+eoWuuPORIL751u0DpDjzRrKVphFIAoNV6U=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpW7G8QRsbM7ZhqTwDhncizZbgJxK3vCc4GcAap
- SCLty/325+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVuxvAAKCRAEWL7uWMY5
- RhrDD/9STi/WPvoVN78zQ4124zylngHDLdegU73W2SNzf3eFvoSj7IusULeNgcADl/S7gh+Lez7
- 3Ome2LWRqz2nJvG4OqJ4N19FUMK8HKnps3LfZbliwOCzFm/5xgYSFMICNpl4SCj62YyzR8ATwBn
- I2pZhUqpM7pzIuDDUyj6/I4gpFPHeV2Remdq443hFeNzZUITCGuuxGlPhvYt9GxWQvbsWYIDZ9M
- 26/dqCigRL1zOaY/sv0W0BjUDhfvcYnP4GrXlFfntetsWK48Caoi9LdxW7IlqCl3ppxVIaPS4Ba
- n9qDQaaq3jxUDnyzEr+3mNeeWKhXCBznETAiZU90hWkh5UFj7fkFE5pNh9vaauVAFyQpjL4FmSG
- CI0RUrNsA3/R81XH/R/mZhbDQy5kfWEOPI++kXxKG695iqiing9SfzWGkP+luwu4Bc9HsaA4RTo
- 7dc1K/bMsV7Dvj1paYTvIn08dTdc/+0CfshuLsGJhxod45mnbWTC75Hx7Fsij/sk5Z+RN2qVcBy
- redYGydHbx6gElpRDtlk+66wicgPmLid4gHLcIzkia5CBuElfYJKgmAwLtrDqfHK1qbcoHV5EDp
- RGTfw7AznBtCtk6WZE58lLIWGEk+mMBSdd+JCH0qHuFIvquyuwTO0Fte7flaNa300b5w36WjMZm dxpL6c2ozOuoUdg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=942; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=FGf5TitsuCIz8KGi2Bpi+wkc295BjgenmyozEMleR4o=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpW7G8PwK1nwyas6YUKFOxu1jkaetUmUBtBEZSw
+ kTitvWLiNKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaVuxvAAKCRAEWL7uWMY5
+ RjHQD/9lu43fZv1LfUsKMyBz5ryvjEbdSWL2DdQYVvE0XT2iJx7lAu2p21xL67N4HSr5sOle91K
+ czNFieyrGUqA5GLcU3r9sqskvrlqpaU0N1pwxMWn/EoKwkc6NZ6cnAaugdI+TZYM8KciNdZ1EtB
+ Ehzukt34Hmpk3fejH0t4fY7r9qgSq8KYrLOgudCCF1FkkY/QOF6pxLlzctTEn6jPWRKOn11EQQN
+ /wpCsAzkbVueWiRIS0oXAPS7yWk3OQ3fLi3mV7He8Eqa9GzFl3Xbe7rCHRN3eFYnw4M8ONDit+a
+ PGc/ALrc0QZeJ97FRlY7rhRSm9FSqDqmlQ2rR7TdU3HYibS5Xh0vc6SFTI4g6eVs5eqvf3EE1ZT
+ 8yNwwo/IQKdcr+3e5om6/8K8CGRssZAHTcUfwMcAffCx3fIpKlYeyYteKPUkYMSCjIjZwQmhXS4
+ XNPHCzjZF16fUypUsbxt0vgI8SvHlRvrwr+Cd5y7JKTXPsjOMBvgD3cbtAsXem1L6xuToQbvLBz
+ VkVvPv1oGORAPKCBP73AbEQPVvvCXxhnrq5BvNJaumv/broTWinmGg5wZcSOdC9WiqDqWdjYMQN
+ HiOkbb8aXMQANo+lqWXJxrAPXII+CxDU7WjD6vsmy0kUXPav5pK6j2Gie0eL+LAfnN/qHbSQu68 /FVKWm0f8Ors5WA==
 X-Mailer: b4 0.14.2
-Message-ID: <20260105-define-rust-helper-v2-15-51da5f454a67@google.com>
-Subject: [PATCH v2 15/27] rust: rbtree: add __rust_helper to helpers
+Message-ID: <20260105-define-rust-helper-v2-16-51da5f454a67@google.com>
+Subject: [PATCH v2 16/27] rust: rcu: add __rust_helper to helpers
 From: Alice Ryhl <aliceryhl@google.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, rcu@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
 This is needed to inline these helpers into Rust code.
@@ -87,36 +88,31 @@ Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/helpers/rbtree.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: rcu@vger.kernel.org
+---
+ rust/helpers/rcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/helpers/rbtree.c b/rust/helpers/rbtree.c
-index 2a0eabbb41603b0200e051ac5c091a870bd7346c..a85defb22ff7c6d5104a503f4456294bfc2b4756 100644
---- a/rust/helpers/rbtree.c
-+++ b/rust/helpers/rbtree.c
-@@ -2,18 +2,19 @@
+diff --git a/rust/helpers/rcu.c b/rust/helpers/rcu.c
+index f1cec6583513497e996f74835ca2c6c3f4a8c954..481274c058577276e20093a1014fc49f4a40421b 100644
+--- a/rust/helpers/rcu.c
++++ b/rust/helpers/rcu.c
+@@ -2,12 +2,12 @@
  
- #include <linux/rbtree.h>
+ #include <linux/rcupdate.h>
  
--void rust_helper_rb_link_node(struct rb_node *node, struct rb_node *parent,
--			      struct rb_node **rb_link)
-+__rust_helper void rust_helper_rb_link_node(struct rb_node *node,
-+					    struct rb_node *parent,
-+					    struct rb_node **rb_link)
+-void rust_helper_rcu_read_lock(void)
++__rust_helper void rust_helper_rcu_read_lock(void)
  {
- 	rb_link_node(node, parent, rb_link);
+ 	rcu_read_lock();
  }
  
--struct rb_node *rust_helper_rb_first(const struct rb_root *root)
-+__rust_helper struct rb_node *rust_helper_rb_first(const struct rb_root *root)
+-void rust_helper_rcu_read_unlock(void)
++__rust_helper void rust_helper_rcu_read_unlock(void)
  {
- 	return rb_first(root);
- }
- 
--struct rb_node *rust_helper_rb_last(const struct rb_root *root)
-+__rust_helper struct rb_node *rust_helper_rb_last(const struct rb_root *root)
- {
- 	return rb_last(root);
+ 	rcu_read_unlock();
  }
 
 -- 
