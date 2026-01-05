@@ -1,60 +1,60 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023A03101C6
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 21:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B1430E83F
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 21:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767649068; cv=none; b=HQy39lzyM7dwVkMzxgEXsnBtwHC3Grr4eJyqf//KW/iY+RYPex60g6rtzRNrijkIh2PBBx+6fufNHDKVi/R0nA2L6rNV8bcRrFZflEetVhaN5/l4sbZb4/MZY70MM6tRApMjSkwmuHCbInjViU0ZKGOMbUNpT05c1zupSASlgzk=
+	t=1767649082; cv=none; b=la9+pVqPr8ea0Fy3g/CV94pxSMtujzBpMAvUJkb3W7qispC/O+a2l7ncNEC33veoHMIYgByTzsH721KYYjKPRlIdvZemsODvqffX17nFW3NaSVpX+E2PaKhanBRFTQNWuoai9jmDYAIvJjtHy1E02Y8Ab5C3Fm1rGSBdOpZgXtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767649068; c=relaxed/simple;
-	bh=5p0sIy50n1r3V3HYFDfPF8gjbX8rGZsROgs5AwmRn+I=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=n3ivdVS4mdZsf3qRiIYLuL0MlBPgSE9YRH5hiMZehhxSKDtfVJHpODAODtdTQOS7X0z5QxCjkTqwP8SU/yR5nHtqjM0vKxIBmiRgga8kjW0fXjkHHOAzyDWFW2A+6JsH7EUv0/YLpNwEKjJsa3vYPYApYMKtFyd/DeQitY/P6c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info; spf=pass smtp.mailfrom=markoturk.info; arc=none smtp.client-ip=209.85.218.53
+	s=arc-20240116; t=1767649082; c=relaxed/simple;
+	bh=3VvKwjncE+fi9dt3jmAeaAVa0VgbTIvjNM+szL3TTHo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tLAaAGna8n44DtVGu072ZDK8yghjya4MsCpFkSb4P4n45YWvNK8hrOnC1Ca97nnRezs2eghXtSUDa5FdIBbweRxOot8y1n7zDc80+p+s0V4YYY7Y70ex6T6jvWaDC/gPlfnjSp8Qh3csKtSZfm+cQ66JY+42oa8Qgg5VvYwbj60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info; spf=pass smtp.mailfrom=markoturk.info; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=markoturk.info
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b8010b8f078so72911566b.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 13:37:46 -0800 (PST)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64baaa754c6so450725a12.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 13:38:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767649065; x=1768253865;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CTD9LmkSSsC1Jd4T87qsHfQjMoBI0N5S+52DkRXb/UQ=;
-        b=redxZEYpCdLoMnML6RpUUpj/cY11EzGp4yuDf169vw0PUxbUe/AsOISiGAikKifO7t
-         GA8oZU/EIulrX5lsqH/WqiwxKrHJgpYVv/lqUDuNclgSOLdzQkJQ4gMNNOyicKk35Vu/
-         NmXicZNjOr5ulGHfXEmfpq3dgtSo60nza/36WfJynh2DpGG8YwbYE7dO/kdCXNZ7RCn+
-         BG0BsDNgnbQj+EphIn7uE9G6dgZEUaXPNAEyNtwzsBm7mD9nx6FlwkGBrtMwCmUL7kVZ
-         p1ezkzD5CLqkJaljT6N9J8MyTF3bOF68F8r8seDu9M268Gx0a9XEMzVG3ugsnJ9nPGZa
-         79lA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeGaGL+Wn5KtrRRFeLI1s5vGIhUeNSV7J4mcPplo818MzwkpWrOzNouD07/Wu/s424DLT6e2z3Cu8DKw3X2Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydyPylINxkstGG5QxVsXKL2aqZmyw9pisLBEjHD0IetPwu6lT4
-	z4c6oeehkgrO73zI/OGQxd1rAn2jjfIQb0HnVAQrujndWncH2vMTCl2XPJ6Z6aIeRBE=
-X-Gm-Gg: AY/fxX7VvCsCIyy92r462zkF8yT20WL7R8lJLZARFbJRk4VEoYGG/GKbFDajboPGfXw
-	mArcrMCwrJB43Xp6QWpdrZJpE6+hIFz0kcLm89bBpoDUbzBSaTMcluF72SmIXYJTveivcqaAJYR
-	9/QpGKSupHpwwnu5XXILbUhnpDddNbFsIdV3EfZoqKcDPE3Q9CzMAVaXR0l8QJHsfqLxd+r+E9k
-	KIe7b5N0RsS7Lt/DzQ1MfRsZW2pP1XCwddnIGJ9ck75NJighlUNCuh0bgAfbSTWBPlhJIbXWdml
-	bFnW3OcqXUKvtuAZopeLOrlJ52ipt+GVzkTH8NPYarycCvNd2DXIXzsT9Vh6JyeT5kEAbNAxXxZ
-	cw/u753LLn0mW3jls8CZ3MDsYfCCsOp3vMiwFQLLTZpNphv4y+/cZRhRUQeANWgUd3d+78d8s4I
-	H99GCnXoRTTy19rlf42Agl0g==
-X-Google-Smtp-Source: AGHT+IHnjMXaedyKs5tXcCQlJHrztbXwb0K0kypHqcfqy0iQzQ81Ohfv+2XU9rwJA6GN7fm0XXCGUQ==
-X-Received: by 2002:a17:907:724e:b0:b76:7f64:77a5 with SMTP id a640c23a62f3a-b8426a6869dmr125033466b.20.1767649064977;
-        Mon, 05 Jan 2026 13:37:44 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767649079; x=1768253879;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jVGhBLas13Sdkp9EBZQEtNUtaw958v3jSwy9njwz9xM=;
+        b=k/Ap8OqGiIJWSRuR0yrctC0Yl/dYB5ZzHfHGBQH73Y/hZPbg1Yav1BgXbD3m/OqkA5
+         S9q7CvXHgyY5hIRTbOodd6Jr+uze/V8f9NvCrKy6yN4TfM2LchAvylxk5uj9RrFGNXh2
+         6n4WRPgfAc5jDnPsV1owhvFGgHWhFbMgD2VCIrCwk/MA990FgJT97uCwse5M06lZFEWm
+         yUrUqsV9Es+eqIFoQqS6gcxGooRNiOxeb0tKVgR+w1kOQeHpgHBapwPfV/HkRTHCR969
+         L69wr3Cim7rtcqXvQvq08EY98Bp3ch11WACukNZzu7uXLpPBCvr+8xsbQ/cgoUtN3yPz
+         4epQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUq7jEb0kffIGU1udpgoTjYMuBuqWtSFms+uHr1smSy+S2marqBG7ozjx75SKhDMkAV9LClKbBWnJu5nRSCEw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyA0MAuCRQl/nMCf17o6oadNWrV+gVybkDMaLB8HxkAVYY39VpC
+	GY21hZcrzA4P4r8XOB8RPE1Mo1MJyD9tz5S/T1j8VpH4SFkTQzBrrkF9ds+we2GSr10=
+X-Gm-Gg: AY/fxX5m2joht1YayEUOzS6HwsgZvKDnRvfqc6FS4LYMbH8HliJG1mjkI96cTo+QxGR
+	YvHAgoc1i+YneA2H17iXvbR78ls4yxqC9IXyL//tG6/fhBpqHjBCPnlHjR+NVGPu/f/LUD4T8RZ
+	YOGmWNcjbJ3Q7RuVozQ6YL6Fwx84pb+0En1YPDNcAMKHj1uhRoCR9RCtGkkNWFdplrC/bi8X0xz
+	hmfOJ1R9KJB3Ly0VOqC2EmTAw/1fYiDrjRSRIz3TOhQ2nDiygSjb7cYYC54tDzZNybzEIpeNQ7w
+	tAXkK1AzEIM/ZMbocHpWDeR4tHhQcMWRPZRF9Xwyjq4+7r66py0JQu2YKB+mgKkNhDTwdEXjy5y
+	IS4E9BSgIro5Wc6R+494bw7Pt9M4Bw6TVKD2+BHEDpOOgEg7SrZ+9tTwzxPs8wEukLx9FOFGgpw
+	/CUotLWw3Z8cg=
+X-Google-Smtp-Source: AGHT+IE7l7WtiE+uRHtEnaDDT+H8lvK5cKT1MXIQsQUNDiS4uD4MKy8ZfA8QmvMTwSezMWz92pqwZg==
+X-Received: by 2002:a17:906:c143:b0:b73:5e4d:fae0 with SMTP id a640c23a62f3a-b8426a7fa3bmr94121466b.23.1767649078733;
+        Mon, 05 Jan 2026 13:37:58 -0800 (PST)
 Received: from vps.markoturk.info ([109.60.4.132])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a230db0sm35636866b.2.2026.01.05.13.37.43
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a4d3831sm35034466b.44.2026.01.05.13.37.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 13:37:44 -0800 (PST)
-Date: Mon, 5 Jan 2026 22:37:42 +0100
+        Mon, 05 Jan 2026 13:37:58 -0800 (PST)
+Date: Mon, 5 Jan 2026 22:37:57 +0100
 From: Marko Turk <mt@markoturk.info>
 To: dakr@kernel.org, dirk.behme@de.bosch.com, linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	mt@markoturk.info
 Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, Marko Turk <mt@markoturk.info>
-Subject: [PATCH v2 1/2] rust: io: remove square brackets from pci::Bar
- reference
-Message-ID: <20260105213726.73000-1-mt@markoturk.info>
+Subject: [PATCH v2 2/2] rust: pci: fix typos in Bar struct's comments
+Message-ID: <20260105213726.73000-2-mt@markoturk.info>
+References: <20260105213726.73000-1-mt@markoturk.info>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,37 +63,52 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20260105213726.73000-1-mt@markoturk.info>
 X-Mailer: git-send-email 2.51.0
 
-Remove square brackets since this section is not a part of doc-comment
-so the reference will not be converted to a link in the generated docs.
+Fix a typo in the doc-comment of the Bar structure: 'inststance ->
+instance'.
 
-Fixes: ce30d94e6855 ("rust: add `io::{Io, IoRaw}` base types")
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Add also 'is' to the comment inside Bar's `new()` function (suggested
+by Dirk):
+// `pdev` is valid by the invariants of `Device`.
+
+Fixes: bf9651f84b4e ("rust: pci: implement I/O mappable `pci::Bar`")
+Suggested-by: Dirk Behme <dirk.behme@de.bosch.com>
 Signed-off-by: Marko Turk <mt@markoturk.info>
 ---
 Changes since v1:
- - pci::Bar is re-exported so no need to change this to pci::io::Bar
- - instead removed the square brackets as suggested by Danilo
+  - updated commit msg
+  - added Fixes: tag
+  - fixed another typo as suggested by Dirk
 
 Link to v1: https://lore.kernel.org/lkml/20260103143119.96095-1-mt@markoturk.info/
 
- rust/kernel/io.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/pci/io.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 98e8b84e68d1..a97eb44a9a87 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -87,7 +87,7 @@ pub fn maxsize(&self) -> usize {
- /// };
- /// use core::ops::Deref;
+diff --git a/rust/kernel/pci/io.rs b/rust/kernel/pci/io.rs
+index 0d55c3139b6f..82a4f1eba2f5 100644
+--- a/rust/kernel/pci/io.rs
++++ b/rust/kernel/pci/io.rs
+@@ -20,7 +20,7 @@
  ///
--/// // See also [`pci::Bar`] for a real example.
-+/// // See also `pci::Bar` for a real example.
- /// struct IoMem<const SIZE: usize>(IoRaw<SIZE>);
+ /// # Invariants
  ///
- /// impl<const SIZE: usize> IoMem<SIZE> {
+-/// `Bar` always holds an `IoRaw` inststance that holds a valid pointer to the start of the I/O
++/// `Bar` always holds an `IoRaw` instance that holds a valid pointer to the start of the I/O
+ /// memory mapped PCI BAR and its size.
+ pub struct Bar<const SIZE: usize = 0> {
+     pdev: ARef<Device>,
+@@ -54,7 +54,7 @@ pub(super) fn new(pdev: &Device, num: u32, name: &CStr) -> Result<Self> {
+         let ioptr: usize = unsafe { bindings::pci_iomap(pdev.as_raw(), num, 0) } as usize;
+         if ioptr == 0 {
+             // SAFETY:
+-            // `pdev` valid by the invariants of `Device`.
++            // `pdev` is valid by the invariants of `Device`.
+             // `num` is checked for validity by a previous call to `Device::resource_len`.
+             unsafe { bindings::pci_release_region(pdev.as_raw(), num) };
+             return Err(ENOMEM);
 -- 
 2.51.0
 
