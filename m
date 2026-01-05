@@ -1,64 +1,143 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6BC14B96E;
-	Mon,  5 Jan 2026 15:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A854346FA5;
+	Mon,  5 Jan 2026 15:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767625246; cv=none; b=FTkgshMqiyJIUNl1oSbanRo3Ge/WJnL1qxCv7XvKDFV6RJuaAwPOOqcpx+BetoiZf4xtYVBicIFMhKoxl42WvfQX/uW9v0LSOUcHZ49ifcru8wYGJM8MXQhnBvQ49Ohvd1NsicwcczzLYgwux1SjEfAdNNOyfNm8BLQlEGrJ80o=
+	t=1767625277; cv=none; b=ISFA8fnc6GnapBNkL4c1KEIu2k4iWGj3wwry6aZ5o5aRUyOWpuQs3CcfJhK626moBCQ/FbsNTBx9zwgWb+38mDbl2wrP4lCfLeUyDZsCFBqmQuClF1CY23IWnjVuROhUV0NOjtoGhq4/5Ul5yX/HBSCaB8p1R44TncUnxY8pogE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767625246; c=relaxed/simple;
-	bh=7gg5z6C6yw3HptKGw75TFDN4ZG/aBRLGLWwhqPAD4qw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=EjNsFwUDHwRgg5F2ztip7Af0d9Lfu2ghkqeEpaSyb8fMxLQRvHc15VLvgkUEKWvN0Tzpm9hTjrW07BHXBxJ+Em7hCi+jIrLCQa5OL7d8b1VvMUxgay9ilMKXX7gKBHIOm65Dp4L4xKVqeHSiFRSdndzWmHQGaLdaK8MovD+6OtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ceyc/DIZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767625277; c=relaxed/simple;
+	bh=YLMKOZuVzDuqeOTYIfEGrkR0nqoifKRHFSqLGuFhapk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MxpBBJ+WWNI9SrEGNKHPduPr8Oc0HYxwfApC53LIasi9HHzuzphq6s/SZs3aWwc8kdlKVrGngJfFN62qmuDQ8/l+wi4cPqSCYUxxmHQjqMrYs2JdJoicTgo57M3Lg6g9vUiRlxmWqke/c9tEQK5o/fypB+YM1M2pNDY5Cmerv2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRAWNi1k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ceyc/DIZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B3FC116D0;
-	Mon,  5 Jan 2026 15:00:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRAWNi1k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B1AC116D0;
+	Mon,  5 Jan 2026 15:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767625245;
-	bh=7gg5z6C6yw3HptKGw75TFDN4ZG/aBRLGLWwhqPAD4qw=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=ceyc/DIZR5YXAjppuoL6w7w7HZopdRIgz+s2KWeiw3t7KHB9OFNAVY4pZ4dxaSoo1
-	 kUsakpsv5hoTZ3+Ie91bdF3XP2T8Vo/flO6OrNdaKiVErMuZ87PO7BTpZI0KBLLPMH
-	 r9C5NlQ07vUxlDFsnnqt4sPO6MI3vUzvKjXuN/lDRlq3VpdGb7ykydjji/fSNZmsZF
-	 68jWpqQgPEkLF5X+zTwxfKnaMjS2xPAK94YBG1Mhm9OB8oL2I26UlAgTBQjO4Vu6D+
-	 TywOtM9aHaAfGHmHAFi1/79K2ZEGQxj9xSzRd1/gauR/C2eACXh+sEOgWfgfscm1Vh
-	 T6BvRfh9vMEUQ==
+	s=k20201202; t=1767625276;
+	bh=YLMKOZuVzDuqeOTYIfEGrkR0nqoifKRHFSqLGuFhapk=;
+	h=From:To:Cc:Subject:Date:Reply-To:From;
+	b=jRAWNi1kwqtS0MLuVIZiBHGKkOf/BJGcPYUpxF9YIgaGbLwytRM3q1qIqpY4oZ0lz
+	 rMK61sovOa9ZVhD9lQ7e9Q/B3oLd+d7qN7ShbybXyV7k4JMmmsp0hEuyYrXT3dHgsf
+	 PlGwwZNTek40g+NCoo+iP1VEm/NthQH6ROj5469/wAwZZOpFL3+Ib8JKt6ikGT3TG/
+	 L+M96ABWz016ftyZVH4gsbwnK7qxJjXKIm0VF614tAhP3UVyxb658IY43En5demMwA
+	 DCxQmjnabz3KE0AO9Uv2qWJo7J5ngHDSE0GS3A0nK1mSnyYsKT+6tcXeTrTYxDaM0P
+	 jrNFxSSSPukpQ==
+From: Gary Guo <gary@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v2] perf symbol: remove Rust symbol workarounds
+Date: Mon,  5 Jan 2026 15:00:57 +0000
+Message-ID: <20260105150106.567830-1-gary@kernel.org>
+X-Mailer: git-send-email 2.51.2
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 05 Jan 2026 16:00:41 +0100
-Message-Id: <DFGQUPHJVF5M.3EZ2KL4XIMDJH@kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: macros: Add derive Display for enums
-Cc: "Maurice Hieronymus" <mhi@mailbox.org>, <aliceryhl@google.com>,
- <acourbot@nvidia.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <ojeda@kernel.org>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260104200733.190494-1-mhi@mailbox.org>
- <20260104200733.190494-2-mhi@mailbox.org>
- <DFGJ8UBULO54.NRW84R2DTHIK@kernel.org>
- <DFGL2QTNH7FE.93EN71L7BXFM@kernel.org>
- <DFGQH1FOS007.3IG8XIBOBWTZI@kernel.org>
-In-Reply-To: <DFGQH1FOS007.3IG8XIBOBWTZI@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon Jan 5, 2026 at 3:42 PM CET, Benno Lossin wrote:
-> I'm still skeptical about having a derive macro for `Display`. What
-> about adding & deriving the following trait instead:
->
->     pub trait EnumVariantName {
->         fn variant_name(&self) -> &'static str;
->     }
+From: Gary Guo <gary@garyguo.net>
 
-With a derive macro for this trait, that sounds absolutely reasonable -- a
-corresponding Display implementation becomes trivial with this.
+Due to an off-by-one error introduced in commit 73bbb94466fd ("kallsyms:
+support "big" kernel symbols"), long symbols (which are currently only
+produced by Rust) can have their symbol type being wrongly parsed by
+kernel/kallsyms.c.
+
+This has been fixed in commit f3f9f42232dee5 ("kallsyms: Fix wrong "big"
+kernel symbol type read from procfs"), and these symbols are now
+reported correctly.
+
+Drop the workaround in perf symbol that filter out these symbol types.
+
+Specifically, '1' and 'l' can never be generated by nm -- 'u' does
+indicate GNU unique, however such symbols are only generated by G++ for
+C++ templates, and are never generated by LLVM (LLVM generates weak
+symbols in such cases instead). 'N' can appear if symbols exist inside
+debug sections, and 'n' may appear for symbols inside note sections,
+however these sections do not typically have symbol (and they're
+explicitly filtered out by kallsyms).
+
+Therefore, the previous occurrence of these symbols types must be due to
+the off-by-one error and can be safely removed.
+
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+v2:
+- Removed the "__" change as suggested by Miguel
+- Expanded the commit message to mention why "N" and "n" cannot appear
+- Link to v1: https://lore.kernel.org/rust-for-linux/20251223175216.1353814-1-gary@kernel.org/#t
+---
+ tools/perf/util/symbol.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
+
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index 814f960fa8f8d..8662001e1e25b 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -104,21 +104,10 @@ static enum dso_binary_type binary_type_symtab[] = {
+ 
+ #define DSO_BINARY_TYPE__SYMTAB_CNT ARRAY_SIZE(binary_type_symtab)
+ 
+-static bool symbol_type__filter(char __symbol_type)
+-{
+-	// Since 'U' == undefined and 'u' == unique global symbol, we can't use toupper there
+-	// 'N' is for debugging symbols, 'n' is a non-data, non-code, non-debug read-only section.
+-	// According to 'man nm'.
+-	// 'N' first seen in:
+-	// ffffffff9b35d130 N __pfx__RNCINvNtNtNtCsbDUBuN8AbD4_4core4iter8adapters3map12map_try_foldjNtCs6vVzKs5jPr6_12drm_panic_qr7VersionuINtNtNtBa_3ops12control_flow11ControlFlowB10_ENcB10_0NCINvNvNtNtNtB8_6traits8iterator8Iterator4find5checkB10_NCNvMB12_B10_13from_segments0E0E0B12_
+-	// a seemingly Rust mangled name
+-	// Ditto for '1':
+-	// root@x1:~# grep ' 1 ' /proc/kallsyms
+-	// ffffffffb098bc00 1 __pfx__RNCINvNtNtNtCsfwaGRd4cjqE_4core4iter8adapters3map12map_try_foldjNtCskFudTml27HW_12drm_panic_qr7VersionuINtNtNtBa_3ops12control_flow11ControlFlowB10_ENcB10_0NCINvNvNtNtNtB8_6traits8iterator8Iterator4find5checkB10_NCNvMB12_B10_13from_segments0E0E0B12_
+-	// ffffffffb098bc10 1 _RNCINvNtNtNtCsfwaGRd4cjqE_4core4iter8adapters3map12map_try_foldjNtCskFudTml27HW_12drm_panic_qr7VersionuINtNtNtBa_3ops12control_flow11ControlFlowB10_ENcB10_0NCINvNvNtNtNtB8_6traits8iterator8Iterator4find5checkB10_NCNvMB12_B10_13from_segments0E0E0B12_
+-	char symbol_type = toupper(__symbol_type);
+-	return symbol_type == 'T' || symbol_type == 'W' || symbol_type == 'D' || symbol_type == 'B' ||
+-	       __symbol_type == 'u' || __symbol_type == 'l' || __symbol_type == 'N' || __symbol_type == '1';
++static bool symbol_type__filter(char symbol_type)
++{
++	symbol_type = toupper(symbol_type);
++	return symbol_type == 'T' || symbol_type == 'W' || symbol_type == 'D' || symbol_type == 'B';
+ }
+ 
+ static int prefix_underscores_count(const char *str)
+
+base-commit: 3609fa95fb0f2c1b099e69e56634edb8fc03f87c
+-- 
+2.51.2
+
