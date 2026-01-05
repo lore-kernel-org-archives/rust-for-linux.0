@@ -1,160 +1,99 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8652DD5F6;
-	Mon,  5 Jan 2026 21:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023A03101C6
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 21:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767647519; cv=none; b=aFbEKZsP0R+o85UewdJX6xVJDPWd3ZwInuNOAyDvbzf379c5WdoU+dROQ0J9Kk1WVRsBW76DokW/7GoJaCxXHKchk1/k2gx0zilDenxSD7bw/45joO1habRlpKFsOxQrrkDs2bykSlxFunhPqswb1bEO2eela7mMjDP3FzA0YC4=
+	t=1767649068; cv=none; b=HQy39lzyM7dwVkMzxgEXsnBtwHC3Grr4eJyqf//KW/iY+RYPex60g6rtzRNrijkIh2PBBx+6fufNHDKVi/R0nA2L6rNV8bcRrFZflEetVhaN5/l4sbZb4/MZY70MM6tRApMjSkwmuHCbInjViU0ZKGOMbUNpT05c1zupSASlgzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767647519; c=relaxed/simple;
-	bh=2HI5WpvrjxWjcJrI6UBSQlk6VzP6z9tGQtFytnWsSSk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mCdkymtIoaUuE3aGsvmU0Jb1oPEWt/eGU/7AmDyXyxbkfvn8E6eRhucu3pzpVgzsufjRcWymGXlkEL/VrXWyDMn+DS37tupv/1CXu9FXaCB/lZaGiUX7x6qv8rEYXi512lP/G2r7Jehkd6oKCc6KA3iricSNkEMEeCgsYvXnGdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=tefjr99v; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=q0o2Nukg; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="tefjr99v";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="q0o2Nukg"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4dlRnJ5WwYz9t7s;
-	Mon,  5 Jan 2026 22:11:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1767647508;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2HI5WpvrjxWjcJrI6UBSQlk6VzP6z9tGQtFytnWsSSk=;
-	b=tefjr99vbWPESve1qc6HX83gNPDv/eemhfdaqSE0vbiJHdTXP1rehD4Ez8BX3Gpq1ZsDOg
-	/QNC+mU8WDZwoInNaJu39AqlK7kHQNtfP4DdFy5+zUea7xhzkUnU58HSe5yYZ3Qoq8+q+l
-	5Ub1J6wOpc2LLMg/uZgrW8LtzCXKTf5+yS8oimrRcnHHI81JsGaPsa+WrwL1YLWAwqjcAl
-	Iy3ZQ7R26v25bKgUIpe+Vmn2XYpeIdd4qH33apqiSg41193SjSorekqEME92L6S7m6w4m8
-	4E4/mOK7rPZr/lILHVwSUUCswAzy07bH1uMD4gG8NErtQ/2fQFHimtRXVvLZ3w==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=q0o2Nukg;
-	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=mhi@mailbox.org
-Message-ID: <cd9d7dd56e8191eb2d61dce1c3fd88ccffcff690.camel@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1767647506;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2HI5WpvrjxWjcJrI6UBSQlk6VzP6z9tGQtFytnWsSSk=;
-	b=q0o2Nukg4efahLioZYLQvszxK/JkIcaoVvsr6SjQEj8aND8mNdSH4xd1dyoCFKg64V4ibs
-	X/nmgIx0S1kEG6oLjulz1NNvOwZN3FAKziywRssqf6ulEPMqVPJxTGUJRq5YGD264b10e6
-	NMLb9NjyApQL11U+RLFD7wz22KpB1OOqYzzJVUXdAnuEsZmPSMXjVLvL5G3HhDVfIOaXSf
-	QOU1JVvSUsOcI3vxXvAxbbaTzLxDFQJhMxv2/5J1o5/+QpbqeShzXUHho8hYMLwRAfyhCN
-	BY8L+YbY7dZt5KD4xS6o15vPY/h9epkM6RilQyXzODqbnB0dK4qfdjBOss+EoA==
-Subject: Re: [PATCH v2 1/2] rust: macros: Add derive Display for enums
-From: Maurice Hieronymus <mhi@mailbox.org>
-To: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, Benno
- Lossin <lossin@kernel.org>
-Cc: mhi@mailbox.org, aliceryhl@google.com, acourbot@nvidia.com,
- airlied@gmail.com, 	simona@ffwll.ch, nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, 	linux-kernel@vger.kernel.org,
- ojeda@kernel.org, boqun.feng@gmail.com, 	bjorn3_gh@protonmail.com,
- a.hindborg@kernel.org, tmgross@umich.edu, 	rust-for-linux@vger.kernel.org
-Date: Mon, 05 Jan 2026 22:11:40 +0100
-In-Reply-To: <20260105161110.5d1ab548.gary@garyguo.net>
-References: <20260104200733.190494-1-mhi@mailbox.org>
-		<20260104200733.190494-2-mhi@mailbox.org>
-		<DFGJ8UBULO54.NRW84R2DTHIK@kernel.org>
-		<DFGL2QTNH7FE.93EN71L7BXFM@kernel.org>
-	 <20260105161110.5d1ab548.gary@garyguo.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1767649068; c=relaxed/simple;
+	bh=5p0sIy50n1r3V3HYFDfPF8gjbX8rGZsROgs5AwmRn+I=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=n3ivdVS4mdZsf3qRiIYLuL0MlBPgSE9YRH5hiMZehhxSKDtfVJHpODAODtdTQOS7X0z5QxCjkTqwP8SU/yR5nHtqjM0vKxIBmiRgga8kjW0fXjkHHOAzyDWFW2A+6JsH7EUv0/YLpNwEKjJsa3vYPYApYMKtFyd/DeQitY/P6c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info; spf=pass smtp.mailfrom=markoturk.info; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=markoturk.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=markoturk.info
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b8010b8f078so72911566b.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 13:37:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767649065; x=1768253865;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CTD9LmkSSsC1Jd4T87qsHfQjMoBI0N5S+52DkRXb/UQ=;
+        b=redxZEYpCdLoMnML6RpUUpj/cY11EzGp4yuDf169vw0PUxbUe/AsOISiGAikKifO7t
+         GA8oZU/EIulrX5lsqH/WqiwxKrHJgpYVv/lqUDuNclgSOLdzQkJQ4gMNNOyicKk35Vu/
+         NmXicZNjOr5ulGHfXEmfpq3dgtSo60nza/36WfJynh2DpGG8YwbYE7dO/kdCXNZ7RCn+
+         BG0BsDNgnbQj+EphIn7uE9G6dgZEUaXPNAEyNtwzsBm7mD9nx6FlwkGBrtMwCmUL7kVZ
+         p1ezkzD5CLqkJaljT6N9J8MyTF3bOF68F8r8seDu9M268Gx0a9XEMzVG3ugsnJ9nPGZa
+         79lA==
+X-Forwarded-Encrypted: i=1; AJvYcCUeGaGL+Wn5KtrRRFeLI1s5vGIhUeNSV7J4mcPplo818MzwkpWrOzNouD07/Wu/s424DLT6e2z3Cu8DKw3X2Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YydyPylINxkstGG5QxVsXKL2aqZmyw9pisLBEjHD0IetPwu6lT4
+	z4c6oeehkgrO73zI/OGQxd1rAn2jjfIQb0HnVAQrujndWncH2vMTCl2XPJ6Z6aIeRBE=
+X-Gm-Gg: AY/fxX7VvCsCIyy92r462zkF8yT20WL7R8lJLZARFbJRk4VEoYGG/GKbFDajboPGfXw
+	mArcrMCwrJB43Xp6QWpdrZJpE6+hIFz0kcLm89bBpoDUbzBSaTMcluF72SmIXYJTveivcqaAJYR
+	9/QpGKSupHpwwnu5XXILbUhnpDddNbFsIdV3EfZoqKcDPE3Q9CzMAVaXR0l8QJHsfqLxd+r+E9k
+	KIe7b5N0RsS7Lt/DzQ1MfRsZW2pP1XCwddnIGJ9ck75NJighlUNCuh0bgAfbSTWBPlhJIbXWdml
+	bFnW3OcqXUKvtuAZopeLOrlJ52ipt+GVzkTH8NPYarycCvNd2DXIXzsT9Vh6JyeT5kEAbNAxXxZ
+	cw/u753LLn0mW3jls8CZ3MDsYfCCsOp3vMiwFQLLTZpNphv4y+/cZRhRUQeANWgUd3d+78d8s4I
+	H99GCnXoRTTy19rlf42Agl0g==
+X-Google-Smtp-Source: AGHT+IHnjMXaedyKs5tXcCQlJHrztbXwb0K0kypHqcfqy0iQzQ81Ohfv+2XU9rwJA6GN7fm0XXCGUQ==
+X-Received: by 2002:a17:907:724e:b0:b76:7f64:77a5 with SMTP id a640c23a62f3a-b8426a6869dmr125033466b.20.1767649064977;
+        Mon, 05 Jan 2026 13:37:44 -0800 (PST)
+Received: from vps.markoturk.info ([109.60.4.132])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b842a230db0sm35636866b.2.2026.01.05.13.37.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 13:37:44 -0800 (PST)
+Date: Mon, 5 Jan 2026 22:37:42 +0100
+From: Marko Turk <mt@markoturk.info>
+To: dakr@kernel.org, dirk.behme@de.bosch.com, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	mt@markoturk.info
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, Marko Turk <mt@markoturk.info>
+Subject: [PATCH v2 1/2] rust: io: remove square brackets from pci::Bar
+ reference
+Message-ID: <20260105213726.73000-1-mt@markoturk.info>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: e3b37c8d848180c9f6d
-X-MBO-RS-META: q5k68eeri1785xog9na8rjnqh9reutb7
-X-Rspamd-Queue-Id: 4dlRnJ5WwYz9t7s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.51.0
 
-On Mon, 2026-01-05 at 16:11 +0000, Gary Guo wrote:
-> On Mon, 05 Jan 2026 11:29:04 +0100
-> "Danilo Krummrich" <dakr@kernel.org> wrote:
->=20
-> > On Mon Jan 5, 2026 at 10:02 AM CET, Benno Lossin wrote:
-> > > On Sun Jan 4, 2026 at 9:07 PM CET, Maurice Hieronymus wrote:=C2=A0=
-=20
-> > > > Add a derive macro that implements kernel::fmt::Display for
-> > > > enums.
-> > > > The macro outputs the exact variant name as written, preserving
-> > > > case.
-> > > >=20
-> > > > This supports all enum variant types: unit, tuple, and struct
-> > > > variants.
-> > > > For variants with data, only the variant name is displayed.=C2=A0=
-=20
-> > >=20
-> > > I don't think we should be adding this. Display is designed for
-> > > user-facing output and so it should always be carefully designed
-> > > and no
-> > > automation should exist for it.=C2=A0=20
-> >=20
-> > In general I agree, but simple stringification of an enum variant
-> > for a Display
-> > implementation is a very common use-case and it seems pretty
-> > unfortunate to have
-> > to fall back to either do the below (especially if there are a lot
-> > of enum
-> > variants) or having to go the declarative path of doing something
-> > as in [1].
-> >=20
-> > Especially in combination with things like FromPrimitive and
-> > ToPrimitive it gets
-> > us rid of the cases where we need such declarative macro mess.
-> >=20
-> > Eventually, drivers will most likely implement their own proc macro
-> > for this or
-> > repeat the declarative macro pattern over and over again.
-> >=20
-> > Maybe we should just pick a more specific name for such a derive
-> > macro than
-> > macros::Display.
-> >=20
-> > Maybe something along the lines of macros::EnumVariantDisplay? We
-> > could also
-> > have an optional argument indicating whether it should be converted
-> > to lower /
-> > upper case.
->=20
-> I think the proposal is reasonable.
-> Being able to print enum name is very common and this is why crates
-> like
-> `strum` exist.
->=20
-Before I start implementing, I want to reach common ground.
+Remove square brackets since this section is not a part of doc-comment
+so the reference will not be converted to a link in the generated docs.
 
-In my opinion a derive macro which implements Display would be
-perfectly fine, as long as the name suggests what it does. So for
-example #[derive(DisplayEnumVariant)]. This would communicate the
-intent clearly to the user.
+Fixes: ce30d94e6855 ("rust: add `io::{Io, IoRaw}` base types")
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Marko Turk <mt@markoturk.info>
+---
+Changes since v1:
+ - pci::Bar is re-exported so no need to change this to pci::io::Bar
+ - instead removed the square brackets as suggested by Danilo
 
-Benno, would you be okay with that? If not, Gary and Danilo, are you
-fine with the proposed trait implementation (e.g. the variant_name
-function)?
-> Perhaps if we want to make user having a thought about what names to
-> expose to users, we can have the case conversion argument be
-> mandatory, so
-> they are forced to make a choice rather than blindly stuck
-> `#[derive(Display)]` onto their enum.
->=20
-Are there any common use-cases where one wants to change the case of
-the enum variants? If not, I would not implement an argument and rather
-name the macro accordingly, so the intent is clear.
+Link to v1: https://lore.kernel.org/lkml/20260103143119.96095-1-mt@markoturk.info/
 
-Thanks,
+ rust/kernel/io.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Maurice
-> Best,
-> Gary
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index 98e8b84e68d1..a97eb44a9a87 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -87,7 +87,7 @@ pub fn maxsize(&self) -> usize {
+ /// };
+ /// use core::ops::Deref;
+ ///
+-/// // See also [`pci::Bar`] for a real example.
++/// // See also `pci::Bar` for a real example.
+ /// struct IoMem<const SIZE: usize>(IoRaw<SIZE>);
+ ///
+ /// impl<const SIZE: usize> IoMem<SIZE> {
+-- 
+2.51.0
+
