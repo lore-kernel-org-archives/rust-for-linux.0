@@ -1,81 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4515F1E885A;
-	Mon,  5 Jan 2026 22:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951CC3A1E6D;
+	Mon,  5 Jan 2026 23:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767650619; cv=none; b=TXOAouGXzKHZaso/dW2WZY0AT/S7Zew7jBhMHu9TtDfRaWS0MgC+viv3Mv+SERNhgD7oJ35aYwiW1X5mYRunwLw3iKZf3wMjGt7Tx38889x8mAIwChajJYfrh+65JK6FXJKC9fO3jgtsvDLSxFUu9T1cLtqDVjYHyP40Oc+LIf8=
+	t=1767654208; cv=none; b=qF11ITASeM8BfdLCbZ7wgnlLckk5dlY9aVMTOqpVs1iYaUUHlGgzcoMNibw66OO1px0dhsFvP604Bjz06H+QcUDHvq1jcly338MoZ/Gqekfxcyh1aShGkIKXnDfMA3bN+CGStiBcRjP91q9A8Hb5QU+3QvFJmPZUuUXjVnyhhpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767650619; c=relaxed/simple;
-	bh=7PqAJNnSTmCk03me6D9R2IOLB0vM1Dp+lacjBF0xU3U=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=pJshLBwXSa+XHtZQudAlIrXnzApkcqsAHF0eoE8INkMYgMfH7x1gVmTFLKkuqwkzRB+xR+N8N6SYiVo1ndYuE9WiWm7Px9PWsubash58JtP+s1atgG378sJ748n/DxF7kuNlvNAPh7LAon2wJt5K4LSXYw02xU3nXu7N9vb7Rdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JWdksuDW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767654208; c=relaxed/simple;
+	bh=xMpoAjOMiDQD0DfTNUYeG05v1tNz9/4y1VvJcgXMxf4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tDnAD9Y4YjkN5wE3QZT+VX7G5pxl60/TjdSctnuz4yXoft1ToHYJ4ScXRSMpTHbgrEc6rprJTo2nDWZaMPqHOZNjyG2IVa+wIsSWQ4a2lMtiQjCjgQwMvqf3uy1oXx4JmMmB8wJfGfjq1X9R3o+EKuKLg08YCuLKXSBuDxYUQeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LDEuDAkw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JWdksuDW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B23C116D0;
-	Mon,  5 Jan 2026 22:03:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LDEuDAkw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA0BC116D0;
+	Mon,  5 Jan 2026 23:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767650618;
-	bh=7PqAJNnSTmCk03me6D9R2IOLB0vM1Dp+lacjBF0xU3U=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=JWdksuDWGXu86n/msSKQajKTXlcCIaPzTVtGBLeKXtl4BcdHqCX3jjxlHNHR+CWbs
-	 LJnqYpYTDlMx7icZlJkPClijMT5YJ09v6llgjKiW0bEfesfSq8WxAp+zeBrEH6RauV
-	 WvIlqjip9NRNgy0TEsPIyqsVrmFp/DFYiTo5AkfD11G91+4+quIWX6nNAtcRiGbixq
-	 MLy+p2g+5J2h87d4/+aiApyI/MSJzEkgTmwLnNlq83U6fCql4Qt0I1aLTa2euZ6v8U
-	 jKdH5KX6+wRupUv29QMfUbeLtlfAlPNnw62Pla8LMdD+BdXdA+IrzJxvRLvj1RLIKK
-	 ZXg0Mwy/JH7aw==
+	s=k20201202; t=1767654208;
+	bh=xMpoAjOMiDQD0DfTNUYeG05v1tNz9/4y1VvJcgXMxf4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LDEuDAkwdNtHJo0bsAkb1kq//l7nlma7NpMmPFsPAvSuQr2+ULCqLQKhf6dBKpzHy
+	 qt3BAnz9ZUNuGkz4c5FlVYPxJKMT7bsZEHfy6gaB1DH1Nuv6fTkBM2/g0J/qvYwGUR
+	 jqhNR/zr9MUmPMuHZmYOtCCF5uZtYoULCRIDWl0o9z99KakGyyWrZOreeVFFcenCfR
+	 tYFmtTNdgqVNT4M5NpvXf1JYItFIgCfOUtCdW4w6Sq5BpDLN08SGNUOyHlzPAOLxK0
+	 ikRMDFWE0OrutVVaRtblgciEUEg7c/M48AVNclFVP7TYnBEJoMds1IKvYetKwWxayC
+	 Yab4rcXbjF7fQ==
+Date: Mon, 5 Jan 2026 16:03:22 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Siddhesh Poyarekar <siddhesh@gotplt.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	stable@vger.kernel.org,
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+	clang-built-linux <llvm@lists.linux.dev>
+Subject: Re: [PATCH v2] rust: Add -fdiagnostics-show-context to
+ bindgen_skip_c_flags
+Message-ID: <20260105230322.GA1276749@ax162>
+References: <20251217150010.665153-1-siddhesh@gotplt.org>
+ <20251217224050.1186896-1-siddhesh@gotplt.org>
+ <CANiq72n0BtCxAsXOaNnSMWC-aW2bNTPzN=4VGb+ic8YA6jhsAw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 05 Jan 2026 23:03:33 +0100
-Message-Id: <DFGZUHLJ3ALF.EZDC85ZEFJA9@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: macros: Add derive Display for enums
-Cc: "Gary Guo" <gary@garyguo.net>, "Benno Lossin" <lossin@kernel.org>,
- <aliceryhl@google.com>, <acourbot@nvidia.com>, <airlied@gmail.com>,
- <simona@ffwll.ch>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <ojeda@kernel.org>, <boqun.feng@gmail.com>, <bjorn3_gh@protonmail.com>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>
-To: "Maurice Hieronymus" <mhi@mailbox.org>
-References: <20260104200733.190494-1-mhi@mailbox.org>
- <20260104200733.190494-2-mhi@mailbox.org>
- <DFGJ8UBULO54.NRW84R2DTHIK@kernel.org>
- <DFGL2QTNH7FE.93EN71L7BXFM@kernel.org>
- <20260105161110.5d1ab548.gary@garyguo.net>
- <cd9d7dd56e8191eb2d61dce1c3fd88ccffcff690.camel@mailbox.org>
-In-Reply-To: <cd9d7dd56e8191eb2d61dce1c3fd88ccffcff690.camel@mailbox.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72n0BtCxAsXOaNnSMWC-aW2bNTPzN=4VGb+ic8YA6jhsAw@mail.gmail.com>
 
-On Mon Jan 5, 2026 at 10:11 PM CET, Maurice Hieronymus wrote:
-> Before I start implementing, I want to reach common ground.
->
-> In my opinion a derive macro which implements Display would be
-> perfectly fine, as long as the name suggests what it does. So for
-> example #[derive(DisplayEnumVariant)]. This would communicate the
-> intent clearly to the user.
->
-> Benno, would you be okay with that? If not, Gary and Danilo, are you
-> fine with the proposed trait implementation (e.g. the variant_name
-> function)?
+On Sun, Jan 04, 2026 at 09:53:25PM +0100, Miguel Ojeda wrote:
+> On Wed, Dec 17, 2025 at 11:41 PM Siddhesh Poyarekar <siddhesh@gotplt.org> wrote:
+> >
+> > but clang does not have this option, so avoid passing it to bindgen.
+> 
+> This looks indeed correct, although it is not yet in a released GCC
+> (testing quickly in Compiler Explorer, GCC 15.2 doesn't have it, but
+> GCC trunk has).
+> 
+> I will apply it -- Cc'ing ClangBuiltLinux and Kbuild so that they are aware.
 
-Actually, it might even be reasonable to have both. In the Nova driver we h=
-ave
-the case that we want to print the enum variant exactly as it is defined in=
- the
-code and a lowercase version of the enum variant.
+Right, this does look correct, as this option is specific to GCC for the
+purpose of exposing more information from GCC internals to the user for
+understanding diagnostics better.
 
-> Are there any common use-cases where one wants to change the case of
-> the enum variants? If not, I would not implement an argument and rather
-> name the macro accordingly, so the intent is clear.
+I will say if this makes 6.19, the stable tag is not necessary since
+7454048db27d6 landed in 6.19-rc1 and I would not expect it to get
+backported (but even if it did via AUTOSEL or something, the Fixes tag
+should ensure it gets included).
 
-As mentioned above, we do have a case in Nova where we also want a lowercas=
-e
-representation to construct a firmware path with.
+Cheers,
+Nathan
