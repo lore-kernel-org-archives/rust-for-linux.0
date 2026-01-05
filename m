@@ -1,218 +1,92 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5911FE44A
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 17:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31B9306D26
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Jan 2026 17:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767632613; cv=none; b=aQlxeL8i/B38H/q1chriamuydITviKaI5E4yWrICXCr6Uy78nyXr0UyrJexVRkKAeP1HMw4ZGjSTmLRYXqbjWVdKLJailEano2+hx3FahxXxPtwfe3CFz0xH+2Cg7ItF2z3JeHVU4Z/CtRS/+TrfqeTmPzqNJIP5eFaI6ljEN9Q=
+	t=1767632661; cv=none; b=C0+MZJbFAtlSycLa4bVdQ2Jus5O8JZ49E5tgTW7MoRY6TJe/m8T1N1p3eW/hu9U2gj7iqpDT/VG2GPUwQgGptTM2b6TfiGuljFGPjxc5TlKMhKiw5v+rsV8KA+26+Cizz0NlJiJhAwaharDc2tRAYZl1m0d1lsc8HlMi98gukUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767632613; c=relaxed/simple;
-	bh=N14dZVc9vTLW0oh1eKAbE1UDroXlvYied7zrMk/D+UY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oHReFr5ZFGKQSWvfYzUNf4d4imsr+CNnpBkS6M9W91nBFDFlGruD6BlJQZu8Jx/yHDG7Vv1zvc9hosXSVss4c3q30Ttme8PCLbZjczvj2wEXZC01nOXniT2iYJizZPMqmdRODjOL0M5yBVxauMZwDkfbUC3wlsIrX34niy+w0P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OAjryMcf; arc=none smtp.client-ip=209.85.128.173
+	s=arc-20240116; t=1767632661; c=relaxed/simple;
+	bh=ilLwR16RMLSpu+h/CI9vg5l2EA0Q6YCa+cnEWqn8Qp8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ClQxjIPgt6IGx1MqSyD165GtGcdlKBBXaCDnu6gnXpfGspPBhtjIY85t0cnStj3/6SABgOJyORZa/2joCKM0R3lNlLN931RkJs2in4DMFrDT4ydqE7n5isMoaNq4CBNrppiBUaIZrJzRzWhz9D3jjADu+y1bSkjcQNsm9uztWHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S/5uca7T; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OAjryMcf"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-79045634f45so2214467b3.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 09:03:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S/5uca7T"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a110548f10so275515ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 09:04:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767632608; x=1768237408; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rVdUSzzxHV8dZysVvdcW5SugnSBaNdFEMUgp6qzC8gU=;
-        b=OAjryMcfOaoPOdTTIjcBidpPNScC681+Y/D6ehtb7EGbqOfJ0lRNcHXln4KtE+gZXi
-         Hq0tK43fVTIHrevWf8JFs1g8hzVjVzNO1jDO6MQydhOs8uOl+oTCbdzaYAPS09Jq9vRU
-         hh1KKYGI/MF3lTLSusyFthQhbPuGHa5t077JC+EQ/j8lVwcIbGatiAykPvTD8731nHJ7
-         gLrSzww+hqv166I2ilnwWYj1b1mwWnPvNLW+mIAs1dKxRYqmtkjfJMRyFA3OaZO+HTfL
-         USG2TS8/DWvhKfR16UuwZY9t8B4pu/8pWvFM7SjL9LCeuHqTB8mk6A1ekFUD8JjxuifC
-         PSdw==
+        d=gmail.com; s=20230601; t=1767632657; x=1768237457; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ilLwR16RMLSpu+h/CI9vg5l2EA0Q6YCa+cnEWqn8Qp8=;
+        b=S/5uca7TRCn5naAQkriEBsthVGQ21CQHyWgrSmHlUtdU4R0BQ1hipfI/JEpot1MGkr
+         8/3Bfkcy5xRsAxSpEreYvnWfC6IRh5Dbt8kEIXBQ+VFAYGIHZGVLjkRofukT9f1KK71G
+         XGJV3L3HGETcduISSK6bHnL1mhiD0ahMQKyDQewEbDmaVzLlGANWgXKJmJr8RIHUiYhz
+         5friONdRHG3pZdNQdH1NxxRwjRjPIhfef1i7iRA+24oocyXH+G1snsOxhJttxLYSZyQJ
+         3RPtcYJiePuZqN5+0y2T6kMPkbnZm0v+9/YFrQ01zUBdHcdoLFjv4ch0vzEU+IxZnGic
+         w5Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767632608; x=1768237408;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rVdUSzzxHV8dZysVvdcW5SugnSBaNdFEMUgp6qzC8gU=;
-        b=lZ+LgPr2e63kfy9CJjbNwVXofyiHxWSIN7nGtASFirODRdSUZoH+5vss7IMs3F9qjg
-         pcdGqzwv1I++zIWXqGhhaZ/r3zBUfiAQy6ma4jnZ378F51S5XQ0XXYpiUqYBFrFEFZqg
-         P3qN3NxNEH+qhIIcOxMA9xDu2aBjN3FW9zcGPBdbM6q7OWoY5f1GCzbXDQVratxDUh+d
-         3vxe6ia6y5TB8q0UVJ7EG4za1LyF2wfWqscHmvmW1vb846TppqupWgEhWR1CjV2f1w90
-         adDA4+a90PYXhTJgn0NcgsBj7QyFaPQd7q1VJeH53hEweGPAmw1UygZiGKcapjVjh3gs
-         z99A==
-X-Forwarded-Encrypted: i=1; AJvYcCUDJnhKZ0vBK0YFkbyums+sXwQmDe9QYBrnf/xT9V64fPJ3+gE00AuQfapxyEvYdbLRcdUaRQSkCwAqsqBJOg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHLKU+9NmiBlWifQXQ588LCQsAdiJ3ehxLHyerzKnK388bYDAR
-	HBS8Je3x/kKSbIuadusJNNDeSelF/tNq2LTuwXst0xtnB0qKhy3F2f9R
-X-Gm-Gg: AY/fxX4qrQT3z2U+dXnZCbfMqmJyZJXbC3eu9kqV8ZMoPNEn88GXW7iYJha7Ui76sRB
-	d1kmz59gruyyl353kAmgtvUKmJclrKqUfDC0xt3KtM3FSmTXXS26PDobKrO12kENpi5pki57a1T
-	8TzMDDYnRAcW8x6zb3HlLHY6YHy1x7FAHzJVGsoqmiH95pBE2tGBVFn2G5lUg/gxEIz468ttrEF
-	nUjYfS1WfA8lyCysn7SZa9Ab8/IpV8QCrtWmjHwlOtEOp17FYts34i2xJLHyeZs303Gq9dKX0mf
-	YT965CgO6xN0j1d0tEsNcjGambWVywnVDIlLba1Ef72xHyzaRgBEbEww2CFUTZIoWq0nemXvB0z
-	iOhh4YZhaXIMp37qyqpTSCjND5OeXLuQH5smiuYxAHhJFsC4AZJGo4bu+sjcVRi1aPxSWxl2p+t
-	NpJczFMS0=
-X-Google-Smtp-Source: AGHT+IFwZusyd0qviV3+UDmgZyv+kp9rf3jSujTbP0tJ/F8xB6jJMvw66Eng5dzCVjwg6hrobpRNAw==
-X-Received: by 2002:a05:690c:3746:b0:787:f793:b573 with SMTP id 00721157ae682-790a8a87dc8mr2403767b3.29.1767632608366;
-        Mon, 05 Jan 2026 09:03:28 -0800 (PST)
-Received: from localhost ([2601:346:0:79bd:830c:9f83:df41:3e7d])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-790a88ed5e6sm765547b3.55.2026.01.05.09.03.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 09:03:28 -0800 (PST)
-Date: Mon, 5 Jan 2026 12:03:27 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Burak Emir <bqe@google.com>, Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] rust: bitops: fix missing _find_* functions on 32-bit
- ARM
-Message-ID: <aVvu3zF2rYKR3XC0@yury>
-References: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
+        d=1e100.net; s=20230601; t=1767632657; x=1768237457;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ilLwR16RMLSpu+h/CI9vg5l2EA0Q6YCa+cnEWqn8Qp8=;
+        b=bdTSFpWbZ9YMeLbTGEgDhqibSi9bZ7f+T4w7skl0+QYZRczew6ungKe5Rmy51xSzau
+         WHCIFsUm0rXHV9rY34zaCSxJVP7w81p9/36eP4L8aPtp4w0w2olFIFokVfJg58Y21Lsm
+         BX5n5FZLic65Ep/L/xgUldW4vXX6YvPE6UgZ/onlJYpdHpnlnlQMyWhcxW5aiKqq2h0L
+         QAtasnWfDcFEyHGywAqhmkZiAyWfxs/gn/NLDyYIbelRToLjBzgd4J9XsOloOco8+Qrx
+         +UpXFJNeufuWITrBMQeHPWWYo5BpXYy4TbxaLWMV07tuwQTsso+lNj+BGGmGJVcJEXaR
+         ROLw==
+X-Forwarded-Encrypted: i=1; AJvYcCXXGWt0DtXjMoYNmckqDsoVlODb80vg0MqB+mZ2mWGMWkt8dQ04tv/S1QvXHnhFAwP5jRllj95m6VZMUE7R9w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YywlAInSY99Qbgq5r1a4jD0M4JCriftPosolfWm5n4ZBnQscwe8
+	CEs2MKe838NNGItyPClcus8H0ghb0nONXKqQiUqEzD9Kpq3cfEp5cq/q4CJHl2jfJexPLsmagFc
+	ECEas9WVu6ebxBlN2tL3IzZkqXTPywHM=
+X-Gm-Gg: AY/fxX6A+DFigLrlpYMdbibuLDuZd8dQeki8aodcUYqfKOtYhRWtmsAENeZowb6owwJ
+	skcIAzIigk0cJnPdMA7Amno7W+KhbdPGjjf9AP1tLjvW0+mYKDRyQNCugtTMfPNxrTEBwOo6DTt
+	l3a6d1de19MhhlPJ5LlPrp42P/SDsEHU5E30aiXpwpvm1REWcZRtxftQxICpVX05U6cy25Y0342
+	idlsZW6jEgnqyJiDiVxMrHF4j97J4OvsAhPjKE1VsZ7u4UZqbNCZGMp4gzwUv64WLRcjeB6thlb
+	U8IYCa5PPqM9NKLWlD7sXMkCwxmvj/8CpH97YvOyemAlwwzJ8eOKjsubG60/iWFlS6AaHZ2A+i+
+	kgWviUcwz3RR1
+X-Google-Smtp-Source: AGHT+IF18Z2ptclTHFuI5wsbeS3aaHGQ6ACz7o81OJDeTHsMyGFuplXxLtKI31ZXLGQCJf+ikc4XnEbwioyMwcGjjFo=
+X-Received: by 2002:a05:7300:fc13:b0:2ae:5b8c:324a with SMTP id
+ 5a478bee46e88-2b05ec3dc45mr18785092eec.4.1767632657369; Mon, 05 Jan 2026
+ 09:04:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
+References: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
+ <20260105-define-rust-helper-v2-19-51da5f454a67@google.com>
+ <DFGO7BGCVJF8.3K3G547RK3SVN@kernel.org> <aVu3RJ7wyuRU1RAc@google.com>
+In-Reply-To: <aVu3RJ7wyuRU1RAc@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 5 Jan 2026 18:04:05 +0100
+X-Gm-Features: AQt7F2p1pwTPcxm_Hg8Ccr7lNXQNC7lZD6XvJArrbZANtdzkwLBFOBqNVk9KPrU
+Message-ID: <CANiq72mYt0xPNH2976OJ-9u1qUdzEAmXvzhZ_vuxrsXXf-m6jg@mail.gmail.com>
+Subject: Re: [PATCH v2 19/27] rust: slab: add __rust_helper to helpers
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Vitaly Wool <vitaly.wool@konsulko.se>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 05, 2026 at 10:44:06AM +0000, Alice Ryhl wrote:
-> atus: O
-> Content-Length: 4697
-> Lines: 121
-> 
-> On 32-bit ARM, you may encounter linker errors such as this one:
-> 
-> 	ld.lld: error: undefined symbol: _find_next_zero_bit
-> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
-> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
-> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
-> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
-> 
-> This error occurs because even though the functions are declared by
-> include/linux/find.h, the definition is #ifdef'd out on 32-bit ARM. This
-> is because arch/arm/include/asm/bitops.h contains:
-> 
-> 	#define find_first_zero_bit(p,sz)	_find_first_zero_bit_le(p,sz)
-> 	#define find_next_zero_bit(p,sz,off)	_find_next_zero_bit_le(p,sz,off)
-> 	#define find_first_bit(p,sz)		_find_first_bit_le(p,sz)
-> 	#define find_next_bit(p,sz,off)		_find_next_bit_le(p,sz,off)
-> 
-> And the underscore-prefixed function is conditional on #ifndef of the
-> non-underscore-prefixed name, but the declaration in find.h is *not*
-> conditional on that #ifndef.
-> 
-> To fix the linker error, we ensure that the symbols in question exist
-> when compiling Rust code. We do this by definining them in rust/helpers/
-> whenever the normal definition is #ifndef'd out.
-> 
-> Note that these helpers are somewhat unusual in that they do not have
-> the rust_helper_ prefix that most helpers have. Adding the rust_helper_
-> prefix does not compile, as 'bindings::_find_next_zero_bit()' will
-> result in a call to a symbol called _find_next_zero_bit as defined by
-> include/linux/find.h rather than a symbol with the rust_helper_ prefix.
-> This is because when a symbol is present in both include/ and
-> rust/helpers/, the one from include/ wins under the assumption that the
-> current configuration is one where that helper is unnecessary. This
-> heuristic fails for _find_next_zero_bit() because the header file always
-> declares it even if the symbol does not exist.
-> 
-> The functions still use the __rust_helper annotation. This lets the
-> wrapper function be inlined into Rust code even if full kernel LTO is
-> not used once the patch series for that feature lands.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 6cf93a9ed39e ("rust: add bindings for bitops.h")
-> Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/561677301
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Mon, Jan 5, 2026 at 2:06=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+>
+> Sounds good to me. There is also mm and maple_tree for Andrew Morton.
 
-Which means, you're running active testing, which in turn means that
-Rust is in a good shape indeed. Thanks to you and Andreas for the work.
+Either way sounds good for me -- anyway I will have to pick the `bug`
+and `err` at least.
 
-Before I merge it, can you also test m68k build? Arm and m68k are the
-only arches implementing custom API there.
-
-Thanks,
-Yury
-
-> ---
-> Changes in v2:
-> - Remove rust_helper_ prefix from helpers.
-> - Improve commit message.
-> - The set of functions for which a helper is added is changed so that it
->   matches arch/arm/include/asm/bitops.h
-> - Link to v1: https://lore.kernel.org/r/20251203-bitops-find-helper-v1-1-5193deb57766@google.com
-> ---
->  rust/helpers/bitops.c | 42 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
-> 
-> diff --git a/rust/helpers/bitops.c b/rust/helpers/bitops.c
-> index 5d0861d29d3f0d705a014ae4601685828405f33b..e79ef9e6d98f969e2a0a2a6f62d9fcec3ef0fd72 100644
-> --- a/rust/helpers/bitops.c
-> +++ b/rust/helpers/bitops.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  
->  #include <linux/bitops.h>
-> +#include <linux/find.h>
->  
->  void rust_helper___set_bit(unsigned long nr, unsigned long *addr)
->  {
-> @@ -21,3 +22,44 @@ void rust_helper_clear_bit(unsigned long nr, volatile unsigned long *addr)
->  {
->  	clear_bit(nr, addr);
->  }
-> +
-> +/*
-> + * The rust_helper_ prefix is intentionally omitted below so that the
-> + * declarations in include/linux/find.h are compatible with these helpers.
-> + *
-> + * Note that the below #ifdefs mean that the helper is only created if C does
-> + * not provide a definition.
-> + */
-> +#ifdef find_first_zero_bit
-> +__rust_helper
-> +unsigned long _find_first_zero_bit(const unsigned long *p, unsigned long size)
-> +{
-> +	return find_first_zero_bit(p, size);
-> +}
-> +#endif /* find_first_zero_bit */
-> +
-> +#ifdef find_next_zero_bit
-> +__rust_helper
-> +unsigned long _find_next_zero_bit(const unsigned long *addr,
-> +				  unsigned long size, unsigned long offset)
-> +{
-> +	return find_next_zero_bit(addr, size, offset);
-> +}
-> +#endif /* find_next_zero_bit */
-> +
-> +#ifdef find_first_bit
-> +__rust_helper
-> +unsigned long _find_first_bit(const unsigned long *addr, unsigned long size)
-> +{
-> +	return find_first_bit(addr, size);
-> +}
-> +#endif /* find_first_bit */
-> +
-> +#ifdef find_next_bit
-> +__rust_helper
-> +unsigned long _find_next_bit(const unsigned long *addr, unsigned long size,
-> +			     unsigned long offset)
-> +{
-> +	return find_next_bit(addr, size, offset);
-> +}
-> +#endif /* find_next_bit */
-> 
-> ---
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20251203-bitops-find-helper-25ed1bbae700
-> 
-> Best regard
+Cheers,
+Miguel
