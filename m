@@ -1,111 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997211EC01B;
-	Tue,  6 Jan 2026 10:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAC63254AE
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 12:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767696453; cv=none; b=dxxiEnf4OnmmDPlCWREsaN3bCtlBWFPZA274FMubaWMC1v2UW6SDH9jBF6G1PuddMFp+fUB5iZZK2/DaZPHwdgmNsBcahbgZN06G/GbyaRKLrT74Wlbf5nh5JYX4GOOp1a6mPqbcK5IFzX/cAz7Ky32143LiiLWT4ccBKQbpVVA=
+	t=1767700818; cv=none; b=abh+VSdhoD5Yh2aZrkDU8/5uv1/HM4cnvf2hiGZ+TxmMrTQIoyf+MDJE/S0qls4M5FLcQ1l8uKGsUKatJ0CGtTBOJIcqsMKVfdZS4n85VdG2bALUUwHFUKZZ0HUPsMAI5XFs5AvO/S/mQY1zLovZHEfl4GFE+NQcPIMdWyGFsMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767696453; c=relaxed/simple;
-	bh=D415Vmm+d7Elv3P0DFSqcEe/eMe/7OE6ElIPBbXSSfI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=pBt8QAUwTfhupL3wAShi1qGnVvZR461ejv2v1KQHWarClfPvWaAqq8Ev/ZZ3B6ToBpANmacJkGMISHvR87XYxscWMyEVcBSAYKW8QNjoj6A3uHpng/ztulwD7VpEEwbjYfFD//+JLKopYNKapuN6Jk32m7/UsSJNkr3scrQXqHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bresA0Tt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767700818; c=relaxed/simple;
+	bh=uYpvdWk5ETKA6OxvesVMY219NjtdAsBNxujuYeXF/ZM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=raF2pQ0mmbNhO9ZuGYrClTAOYkWBOdxEnRxADml+yrbsp//4EKux4N4nvEq1XMOp5Lnf2sPnzZdRUkn9FRsLoj2dP/kM8lpW4bYmxUoHM4Xt4mhVrfjbzHhX2oWDNMUw6pDXO11oV91oHnHrPUXMlxCE5QfRkf1Pt1N1HZAOrAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d7DtGHTj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bresA0Tt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7607EC116C6;
-	Tue,  6 Jan 2026 10:47:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d7DtGHTj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3428C16AAE;
+	Tue,  6 Jan 2026 12:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767696453;
-	bh=D415Vmm+d7Elv3P0DFSqcEe/eMe/7OE6ElIPBbXSSfI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=bresA0TtwrDDsfi20uxaFi1g/hC2bT71h6bAPetD244H8uA900Nuyb+YyGpVa8KRI
-	 jzuxpTXRyxpr381jJDPrlVm6Ux3NhPo/8FaxAHzcPXvEEGaue4KZiH+BJ5faoU6Bh+
-	 XNAs7GazfhALw4H9HUqypAtt8F4RxMRxGdO4GhEJ3slMKUWVNp8rjgHrjEK3znQ+0B
-	 Bb1vvKy1Zpx9Oxykbxug7Pr/0Xn7ZwEs2QCaOV5VzdSXqPKkf9lVXcEe/Ai7xp0S58
-	 jGedEAhaHTMgExsX9khP3sLRgOKotRgyvJOVYzQHt9L7A41W9jtXBqMEvDNkt39jmV
-	 V3aJsZ69tcf7Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>, Yury Norov <yury.norov@gmail.com>,
- Burak Emir <bqe@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Alice Ryhl
- <aliceryhl@google.com>
-Subject: Re: [PATCH v2] rust: bitops: fix missing _find_* functions on
- 32-bit ARM
-In-Reply-To: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
-References: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
-Date: Tue, 06 Jan 2026 11:47:19 +0100
-Message-ID: <87secjhvbc.fsf@t14s.mail-host-address-is-not-set>
+	s=k20201202; t=1767700818;
+	bh=uYpvdWk5ETKA6OxvesVMY219NjtdAsBNxujuYeXF/ZM=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=d7DtGHTjveFBBMwX2Z1M98QB9LSHc+9BU3W9flVT2UtxDF4yFGJIPYGEIYgPEp3kk
+	 FV4v2RPhnluffuGBjPLs/1MYS8AfPMfdUU86sA/uBKTudUBjktXDfkbwgQ8LEHlBGj
+	 tTMzv7UykuV2EXphKxaFGmi7B+rIqHKqw9NjaMKs1qlsV7uBjZTHfSDPEHf5U9bS3W
+	 30ocgevA43eYjiYd3azg1yh0a1E60o6ZUqp+ES1TGzQcnkeg0jQbvh7Hi6BEyARwAi
+	 Vwi6HH+V581nt5l8t+Bd5OKPeOQW41/knqgrbeVbpEjd/MI/S395AW9SFTKkcbLtDw
+	 oX1cc8Ai+uL8Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 06 Jan 2026 13:00:13 +0100
+Message-Id: <DFHHN31J8VVY.3009MJJNDZE5Q@kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v1] rust: device: Remove explicit import of CStrExt
+Cc: <gregkh@linuxfoundation.org>, <ojeda@kernel.org>, <rafael@kernel.org>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <lossin@kernel.org>, <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>
+References: <20260106000320.2593800-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20260106000320.2593800-1-fujita.tomonori@gmail.com>
 
-Alice Ryhl <aliceryhl@google.com> writes:
-
-> On 32-bit ARM, you may encounter linker errors such as this one:
+On Tue Jan 6, 2026 at 1:03 AM CET, FUJITA Tomonori wrote:
+> Remove the explicit import of CStrExt. When CONFIG_PRINTK is disabled
+> this import causes a build error:
 >
-> 	ld.lld: error: undefined symbol: _find_next_zero_bit
-> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
-> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
-> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
-> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
+> error: unused import: `crate::str::CStrExt`
+>   --> rust/kernel/device.rs:17:5
+>    |
+> 17 | use crate::str::CStrExt as _;
+>    |     ^^^^^^^^^^^^^^^^^^^
+>    |
+>    =3D note: `-D unused-imports` implied by `-D warnings`
+>    =3D help: to override `-D warnings` add `#[allow(unused_imports)]`
 >
-> This error occurs because even though the functions are declared by
-> include/linux/find.h, the definition is #ifdef'd out on 32-bit ARM. This
-> is because arch/arm/include/asm/bitops.h contains:
+> error: aborting due to 1 previous error
 >
-> 	#define find_first_zero_bit(p,sz)	_find_first_zero_bit_le(p,sz)
-> 	#define find_next_zero_bit(p,sz,off)	_find_next_zero_bit_le(p,sz,off)
-> 	#define find_first_bit(p,sz)		_find_first_bit_le(p,sz)
-> 	#define find_next_bit(p,sz,off)		_find_next_bit_le(p,sz,off)
+> CStrExt is covered by prelude::* so the explicit import is redundant.
 >
-> And the underscore-prefixed function is conditional on #ifndef of the
-> non-underscore-prefixed name, but the declaration in find.h is *not*
-> conditional on that #ifndef.
->
-> To fix the linker error, we ensure that the symbols in question exist
-> when compiling Rust code. We do this by definining them in rust/helpers/
-> whenever the normal definition is #ifndef'd out.
->
-> Note that these helpers are somewhat unusual in that they do not have
-> the rust_helper_ prefix that most helpers have. Adding the rust_helper_
-> prefix does not compile, as 'bindings::_find_next_zero_bit()' will
-> result in a call to a symbol called _find_next_zero_bit as defined by
-> include/linux/find.h rather than a symbol with the rust_helper_ prefix.
-> This is because when a symbol is present in both include/ and
-> rust/helpers/, the one from include/ wins under the assumption that the
-> current configuration is one where that helper is unnecessary. This
-> heuristic fails for _find_next_zero_bit() because the header file always
-> declares it even if the symbol does not exist.
->
-> The functions still use the __rust_helper annotation. This lets the
-> wrapper function be inlined into Rust code even if full kernel LTO is
-> not used once the patch series for that feature lands.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 6cf93a9ed39e ("rust: add bindings for bitops.h")
-> Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/561677301
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Built tested for arm32 with bindgen 0.72.1 with rustc-1.78.0 and
-rustc-1.88.0.
+Fixes: 3b83f5d5e78a ("rust: replace `CStr` with `core::ffi::CStr`")
 
-Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+Will pick it up later on, thanks!
