@@ -1,110 +1,114 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C87F32E13A
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 12:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2E9219A8E;
+	Tue,  6 Jan 2026 12:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767703916; cv=none; b=SKqyqEtjwmZAsHVrAVaoa2WEpz2roayqC4kks9VyAcho1s76PRywuvFw0KjvRBgS3A9FaRhs0WbrwRrAcbSUyeYHZCtS2fhmYFLSx3GRX+CdEiKGh9AMTdUUSgnTRcZDs0e5oA4tZIulg4f/WVBhiz8y8fR0uzaK3LkxASAg2hY=
+	t=1767704174; cv=none; b=SKQ4WpdNoSniVGbdHNUKZoFM8UjGHFFIrpRzr3PC3vEkt4m13+kX6T96fed5CfZjfjCVpl9BuCdO6siR0FLvawzgg/jwLWJ1I6/zxMqZz8Fg3E9FwzejWROwDfxiF2DPPXLidRqVX8DalymSkYcRn7DdGhzNk8vxgLxrbRzfX+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767703916; c=relaxed/simple;
-	bh=prs8gjC2tzQBgqWci4QgTu9k1r1bYO7lE9IU/Kn/OR8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=f5axI8rGZlkq7NBY03xfyagHVY3p2VgZgcTAW5W46I0lzLb/Q2LWwQVHsYVgseOU9WRA1qP/cycs49z17Ka5Nj0LFkIPzxspOZjkZZgGl+SqWDi2XDHmqNI8K3LS7//z/LVDm1PGGj9CXRXfGA6N+BySknALOh0ZziWghep6i4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fizkw4Tf; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1767704174; c=relaxed/simple;
+	bh=sWtryoRLOPWT/n5m9Ko/0M389f3WZbdEwizETVLZoPU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=H/V97YkTgtH243bn0teWx7R6ZgyMK5d5Str2kZwzZNX60WcsF/XpO5lTB25xPfKmSDvBj0KzwR8ez2zMq4eJKcr2wDimILqX9Qn8IsDSIjM/FjuyiT/HMy4nZz1416YKM1c9ASghG8qJvpeV8ZaHxgeU6bZsR9czTptNBI9MOBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFxA1Exw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fizkw4Tf"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477964c22e0so9490155e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 04:51:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767703913; x=1768308713; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xsT4usbspAuLjRoX9Zvkc98UvH2b0yQkPaftYv84D4o=;
-        b=Fizkw4TfO8DkUgXaEy5Z44XrUthoVvTzG3bEkW2urFvzIRT5voN1trNEVcSr0eArr9
-         Pyp4JaaEyqA9TI+LAQHkJbJ9SqfKDvh7E+WucKOMldj4lyRZ/g3nfEvn4AiSqWaIOpV9
-         L5dTnTZ17P8AGyAJpibdSTYcuD5b2F3ZPTiWV88aZuUtQaWiXs1SEJimXw4jQ6xy4yX0
-         /hejb+6SyLO2wItJwZjtgYcsAZFXi3fzQ9DLmxrLa6+uWaVo7g3FdjeYQS40wTX42yv8
-         F6HOCFEyjTuFFm5zC1MNzR2CJcf6iapL+wcF8x5ExbGfnol1UKpyBOkO/f4733jBshHQ
-         JeSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767703913; x=1768308713;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xsT4usbspAuLjRoX9Zvkc98UvH2b0yQkPaftYv84D4o=;
-        b=HE7rYW39rz0AMfHab3PKW5C7k9kzx85udXWO2JexSvRiAdZ/O5pKUq9+if72s/VEuK
-         /nM95548nOURxZqXVpqyfJm8d0Ucg74rUGh7UTrXxn00QkzMScsCCOTs2z/lAy2df0rV
-         k2EUrD9mwQp9NCD4yqrwFtBqe7ULouwKDjRLeRE83kjL+K8d/ljCQ72FWalnGS0YiwHi
-         pkYKqoOhHayiEYM6fTjrOSlOJSE9el/DqxYrB/wRco8xzsdpklbkdqnY2SD+kGTVFLXo
-         bg83vbCWUzzsgsrhe9Ht4gQWiKXA5xMQPxPa5g2y3YFgysdLZPNOIKuyEnss+3tuA3JR
-         767g==
-X-Forwarded-Encrypted: i=1; AJvYcCWmB7Gl3xIaEiiKsf60Cn2zBPsspLOctED3+NeHOAJoNwwDqizkfS4efhkfKmbtplN5y87oDtOMFMW9JGxGHw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/O1VFalRoIMH40ICMGLrjOJfTlJf+RcrcWV4bkVsJh+fy40Ms
-	InGd+QP32igZQUrDZaHCw/Kfb8vn/f2RH6pnlAAwuwNWCkcQv/o4l6uFmYTe4ZAdZb5ySyqdl+T
-	j6tgzjrMNPvDO2YV1Pg==
-X-Google-Smtp-Source: AGHT+IG3HimmS8tgW4GY2wron0bO12GBXSVrxQ4BKNHos90Wwn9m7SbT5K/3H7Ao0w4qXUIF0pRAaTdapSCG7vU=
-X-Received: from wmv18.prod.google.com ([2002:a05:600c:26d2:b0:475:dadb:c8f2])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:81ca:b0:471:5c0:94fc with SMTP id 5b1f17b1804b1-47d7f41069bmr28735145e9.6.1767703913011;
- Tue, 06 Jan 2026 04:51:53 -0800 (PST)
-Date: Tue, 6 Jan 2026 12:51:52 +0000
-In-Reply-To: <20260106124326.GY3707891@noisy.programming.kicks-ass.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFxA1Exw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF333C116C6;
+	Tue,  6 Jan 2026 12:56:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767704174;
+	bh=sWtryoRLOPWT/n5m9Ko/0M389f3WZbdEwizETVLZoPU=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=kFxA1ExwcPNw3IMSn2w193OfntXYYyMSr0GwCLycNwWYfb5vqfHqWQ5QjMAGJjR+5
+	 u2GooWBFoCibpcmx4lU24poJSS/skuiTv37yCrFLPgXjg6o9X3ApdLj85lkVowjOKE
+	 Zr9ti6o9kJUbI4AnBpIrVmhNfX2QrmUPLXdXLVwoH8V8hZdu4S9rez6jl1kYSUl+4J
+	 wBWhOQ3vksXlfCcF+onw60g78azpOLAl1CP/Rb/dgTwO7WqYjkluCfGGKdU06KIQw5
+	 sO4caRN+tnDbTk7N84CRz+48nLyitpZdpu9qbQBM+xTgDe8MFdmcbTbsBJMbHwJl6l
+	 eXI//XxsrhCbg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251231-rwonce-v1-0-702a10b85278@google.com> <20251231-rwonce-v1-3-702a10b85278@google.com>
- <20260106124326.GY3707891@noisy.programming.kicks-ass.net>
-Message-ID: <aV0FaEjA7fe3NPAX@google.com>
-Subject: Re: [PATCH 3/5] rust: sync: support using bool with READ_ONCE
-From: Alice Ryhl <aliceryhl@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Will Deacon <will@kernel.org>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Magnus Lindholm <linmag7@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 06 Jan 2026 13:56:09 +0100
+Message-Id: <DFHITWGSEB4E.QV5DTPS816XI@kernel.org>
+Cc: "Gary Guo" <gary@garyguo.net>, <aliceryhl@google.com>,
+ <acourbot@nvidia.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <ojeda@kernel.org>, <boqun.feng@gmail.com>,
+ <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] rust: macros: Add derive Display for enums
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Maurice Hieronymus" <mhi@mailbox.org>, "Danilo Krummrich"
+ <dakr@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260104200733.190494-1-mhi@mailbox.org>
+ <20260104200733.190494-2-mhi@mailbox.org>
+ <DFGJ8UBULO54.NRW84R2DTHIK@kernel.org>
+ <DFGL2QTNH7FE.93EN71L7BXFM@kernel.org>
+ <20260105161110.5d1ab548.gary@garyguo.net>
+ <cd9d7dd56e8191eb2d61dce1c3fd88ccffcff690.camel@mailbox.org>
+ <DFGZUHLJ3ALF.EZDC85ZEFJA9@kernel.org>
+ <90fac786f019f06765edb7c362e96f1a19801f26.camel@mailbox.org>
+In-Reply-To: <90fac786f019f06765edb7c362e96f1a19801f26.camel@mailbox.org>
 
-On Tue, Jan 06, 2026 at 01:43:26PM +0100, Peter Zijlstra wrote:
-> On Wed, Dec 31, 2025 at 12:22:27PM +0000, Alice Ryhl wrote:
-> > +/// Read an integer as a boolean once.
-> > +///
-> > +/// Returns `true` if the value behind the pointer is non-zero. Otherwise returns `false`.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// It must be safe to `READ_ONCE` the `ptr` with type `u8`.
-> > +#[inline(always)]
-> > +#[track_caller]
-> > +unsafe fn read_once_bool(ptr: *const bool) -> bool {
-> > +    // Implement `read_once_bool` in terms of `read_once_1`. The arch-specific logic is inside
-> > +    // of `read_once_1`.
-> > +    //
-> > +    // SAFETY: It is safe to `READ_ONCE` the `ptr` with type `u8`.
-> > +    let byte = unsafe { read_once_1(ptr.cast::<u8>()) };
-> > +    byte != 0u8
-> > +}
-> 
-> Does this hardcode that sizeof(_Bool) == 1? There are ABIs where this is
-> not the case.
+On Tue Jan 6, 2026 at 6:56 AM CET, Maurice Hieronymus wrote:
+> On Mon, 2026-01-05 at 23:03 +0100, Danilo Krummrich wrote:
+>> On Mon Jan 5, 2026 at 10:11 PM CET, Maurice Hieronymus wrote:
+>> > Before I start implementing, I want to reach common ground.
+>> >=20
+>> > In my opinion a derive macro which implements Display would be
+>> > perfectly fine, as long as the name suggests what it does. So for
+>> > example #[derive(DisplayEnumVariant)]. This would communicate the
+>> > intent clearly to the user.
+>> >=20
+>> > Benno, would you be okay with that? If not, Gary and Danilo, are
 
-Hm, it hardcodes that the Rust type called bool is sizeof(_) == 1.
-Presumably bindgen will not translate _Bool to bool when it appears in C
-types on such platforms. But I don't really know - I have not looked
-into this case.
+I'd prefer if we stay a bit more cautious about directly deriving
+`Display`. The trait with the variant name sounds like a very sensible
+idea.
 
-Alice
+We can talk about this in the team in our weekly meeting, they might
+change my mind :)
+
+>> > you
+>> > fine with the proposed trait implementation (e.g. the variant_name
+>> > function)?
+>>=20
+>> Actually, it might even be reasonable to have both. In the Nova
+>> driver we have
+>> the case that we want to print the enum variant exactly as it is
+>> defined in the
+>> code and a lowercase version of the enum variant.
+>>=20
+>> > Are there any common use-cases where one wants to change the case
+>> > of
+>> > the enum variants? If not, I would not implement an argument and
+>> > rather
+>> > name the macro accordingly, so the intent is clear.
+>>=20
+>> As mentioned above, we do have a case in Nova where we also want a
+>> lowercase
+>> representation to construct a firmware path with.
+>
+> So there would be the need to have two derive macros:
+>
+> 1. #[derive(DisplayEnumVariant)]
+> Implements Display for all enum variants as they are (original case).
+>
+> 2. #[derive(ImplementVariantName(Case::Lowercase))]
+> Implements the mentioned trait. Case could be an Enum where one could
+> choose between Case::Lowercase and Case::Original.
+
+You'll need to use a helper attribute, something like:
+
+    #[derive(VariantName)]
+    #[variant_name(case =3D "lowercase")]
+
+Cheers,
+Benno
