@@ -1,66 +1,66 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDD922172C
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 02:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0022A8287E
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 03:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767667920; cv=none; b=aGntdYHbL54MzsvNlNbFhbqSNdDD3rU26/QnfgaiZEhWKE8r/5kTkgFH4vCSJP1qfDs+yxiRSrm8WS8zxZpoAqW0AA3URPyESgxHvTOMz4ie1VGyujsKAJbNTwEJavR2BVkUy6Cp8ogfR/TyKFzYUGM00tCSZTKYeaZ1zs8BTFQ=
+	t=1767668785; cv=none; b=mSmv3j/0LLKvjCbWJ2YxuNrLD+f6gF8YrDfO5PmDFd4252WI08rFeY0dI79+47QFag/ia3sgjCq5Ytovsj3wHLjNJH+iUlxbVPLYqeRsUFZHowyopoH9ASoy1tWSzuJBn5mtBtVJdp34Q8upmvCP43XNtLKy/5asji3fIGSu29Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767667920; c=relaxed/simple;
-	bh=DTnPdAGyi9zw8bhtutufgjwIgPG14oeBvECc9opM0Xw=;
+	s=arc-20240116; t=1767668785; c=relaxed/simple;
+	bh=wn1g4XjONCFKaiC0D0EZEwINX7zi+3dPfDRTFwBWR/w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QgWjtzYLEZniMcGIfLIOOejgH2z+cEJnyuVGrY2wg+Z6N1swfyYy5IqMe8T/+HZH1OKPZh0F8clGAPMwUl5XJHKvcJZfPjmrMAF40Pa4wTooHeDTrQlZOgy9m91XQzhNu+3V+0W7vhIhBSZkTseCD/M4KEvpuj3fu6v6q8+rCIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EM+E4s6t; arc=none smtp.client-ip=209.85.214.176
+	 In-Reply-To:Content-Type; b=cOQX+yLZXasHo0tkOFzGYCEXJMbXS8cwZ3Zoxrezc10gZcpv67040pCeOkuAJoxdRHAwMtY4KPlvqzxPFfa9Ot61bJGuLiD0QBgqJhORCSBp3AxN3qHm/44dzIHNj3bjkPyB17BpLllzKw/JjSHsZQ/qG0fF36pL/r0vTOemfj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=InE9L/Ln; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EM+E4s6t"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a0bb2f093aso5241625ad.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 18:51:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="InE9L/Ln"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a07f8dd9cdso5014725ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 19:06:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767667918; x=1768272718; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767668782; x=1768273582; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mME2FgNliNdUv4IE4C+D69aNELo1Zoi17RlupLlFIdI=;
-        b=EM+E4s6tHTuD8oPJKcMbwjgHxByIJ2cgPsI/NjTaWcJDjO6SyYvaQvR8zIBsUusykA
-         j0qT+gympn70ywL9SGHw9A2V00Dr0mGEV2UlVaU0QQQr3L1j7amT9t2TyKpoUe33Vi0m
-         BMZ0pzVIwOEfNQ69SQTEIoBgY49p2IZyG7tnv0FghRM/kd11oPiBjvvhUONRkySAcbLU
-         7h/RRX5wjkVdxHAf1rzFVaHE175hMy47yTwPVgHdZjmN4Hnb/Y64oLaK+ik569mwGpmw
-         d6BJrecoOh93dpL9iG0/t4fjcCoppHkT1pF2UVDfLTyXsbFkio6pS4cY0+kdHT9YzMpT
-         caXw==
+        bh=Fk4CJTn7SedTBZRn6a98xWNtGUOFV9KcxBU3nfRsR98=;
+        b=InE9L/LncKXTto1AvMm2c2u0kkX+vGJA+ghQaIeahbZBUxRNScPl1+iIYfwbrPtfcl
+         jzI9TLF+miFypDDEavVrLt6UhVEMFMlGgz9YsgfaJYh2mrEhTrIt4hDzWsJ5wRRoFjJ/
+         WfTd9fhiBVBEuAQIfau+Va53/dyfmbkftwKjA3rOwTOfD24rf91Gqd8IAhh/71RSzS7J
+         qycZozEQKFPHqYUhuV4u5zMCeYZFrHKbxPVAPOyrNfMSGZzVdjsde1HV31Rh5aACVXvE
+         LXBiHHEqEmWz1DM7ePxkOJstuO+Ri4wVBeATsvjPxeBgov0yjaI0KvcZAEiTAM8J968l
+         GjVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767667918; x=1768272718;
+        d=1e100.net; s=20230601; t=1767668782; x=1768273582;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
          :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=mME2FgNliNdUv4IE4C+D69aNELo1Zoi17RlupLlFIdI=;
-        b=qK4GuOk3GZEDT1DXh1cxfg7p6+bLW79tDO/9VSMv70bqtXYRHOpTFPTaZk0jFs5O2E
-         hmNOgyC8Pn5SiHZSRg8cHWi+AtOWUeta8QpZTi26IN39nAcog2Pv0iMKjeEeGa7H/jkL
-         SAZ+68jvv2Lf2u7HZWB86xDpfAtR+y3sxo4grYTB4+0L6E0dUm8m1bsgwvErK0Mo6zCH
-         sBkhjFNnnP+XEzbgicF2PrJb4m8QkHctSYsy2pCwbqAT3M2oDRTqT0ZEB/QIDumN/j+s
-         MAsJZQG+R+ylt8Ef6Gj697aAstrQ8mda4eHyEKl5kF+drCMvKIo3qQTiFAFchmLrvZhV
-         K+lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWH2JKe9USyD4oEoZGNHCJUZBCeFCqULui0//cEtNSt6seuA8JRbJJxv73ocMAQkixuqUYrGGmDeF2phqu8jg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpmUp17L806/pOb0ZHM7I+9/3K5Dhu9beuvfVzFVSy/8h6IGH0
-	mLPgfO+TWyEagl5wclRpwDBKj7dfx3fZTr9QF2Bs/dPq73JQbIsAGnXP
-X-Gm-Gg: AY/fxX6D4HOG3dOuklgb36FDMJyHH44O3WsZ2IMWCcA+Z3lM/sr/R6e8/gY35qc/uxr
-	9kUMdHZvq7fRvWO3jkNo6E231fW5/Gdh/j/5dkwmj4E4WFFHB6qiR4sqXCy6+EENTbW94eahxDn
-	jPP2on3/zVCGmX4k9Wjagmw0wtD9M/yMSgcAcACGfNPqxf47Rnvb8hjar8JPrJOnbMVHVpo7Ars
-	Drodpct8EPUmS5yALmPljDtI8xxk9Wc3phJGxYCie/TEnDUNOiyqJGmwKyVvi71Ye9Gu8Mc6MRO
-	glWayVyXd2JjskkL6y7Q/TlOvmnuG/rnFzyL3DkQsROxVQbyRwdvfYvADLMapYFpjfPiAWPDk3z
-	JJSdYabSYvA2WRPHnA0hJ04jqqvxMNeGcTE3ZsX6xVFP1JWlo+hBApN9YIIS+Dg8EFNR7HWs8Ud
-	5KYARyyw/tpekgPwGVhHPEdlhefg7gePH/nahVy+4+yiDzbjo=
-X-Google-Smtp-Source: AGHT+IHqDO50RFlN1sWCZ9F0YlFD48YZv72A+9RcYtax3wH7I4/iNbpOrvyJmtS60ORtcEiq31M6bQ==
-X-Received: by 2002:a17:903:1108:b0:29e:9387:f2b9 with SMTP id d9443c01a7336-2a3e2cb23b0mr13186195ad.24.1767667917935;
-        Mon, 05 Jan 2026 18:51:57 -0800 (PST)
-Received: from [10.0.10.3] (210-61-187-173.hinet-ip.hinet.net. [210.61.187.173])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cc8d81sm5284825ad.81.2026.01.05.18.51.53
+        bh=Fk4CJTn7SedTBZRn6a98xWNtGUOFV9KcxBU3nfRsR98=;
+        b=Ds0x5/VCa+Hh/z+RsFCdeeAEC3QjEhfRYB7MHn49fTPZ3GmBVkrpJCN6kSKUmyI2mJ
+         pgkof8GY2DIHxQztMwldfm45/2YdH7LCSIYryOOj3Lz+bzxzsJ/3wVyPYmTDRgzPS32l
+         /kQ6MDrYYYpUG5kkRDHcCkeqmyW+QlmJJeyboYWAUKHuSQxLOUSZt9JaEfAX0tJHQymc
+         9uOArcrVrKcVIbYE62aYj5Wfbvj/f80PPdus0ixJDuNCAHG3Q1oRmxxot65AROcwz80g
+         ZjrlDBesZcLQZMccSYRDbMuRjQJrHFLrNellFp1Aaay4GPFklf1PEEaZQdLDE3C5Zo84
+         cyeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWr2lSUxBSDUrSnKamhIiyNgyeJ2A4gb0KnvrmWIf6Dz93J4g2Awf9NSVZGG9zfwUmbzyXO5FlVFuRMrFpxOQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9f+KaKwUFqNnvhhaVEUvt0CPFImMSJwowH746s6dgIVIx796C
+	CJP9MB8vc/2pj6OfM/pe3wfzRqFM88dsD0hV5XFVnZi6WNCk3X8ormBr
+X-Gm-Gg: AY/fxX5OP1OAskAHSRZklUvF7HrHgcZ2oJLCpFWA9BTwBOHjB0VaHgzQwIic6wSHE/T
+	XEkjFlbOqTwl1Y31rBihXBb+7APqTNWDIeepEjod5vFRCDD99jg4cU8VR/8nALWifyBlCQ0ViNt
+	ax5EVCllpvK158yFBPRDCoc9D1jG07MddLQXABHiEIXd4W/u1wajdhRGA4MEjO/SceG8QmcUyLZ
+	YXPFxHMITqIyRxL3Xku66jy7L88fVs2xMsDzHKRAjo+5xjPE+Rqqj+gERu927NWMWW7xnNCfLJ6
+	91gouC05Rjsd00zGPmrx/8v+A19eNLcwD1aV4QK08/tcOK2nvMzMSwNgIV2PAWx8SgtUaLkmcId
+	E8JVjAaSAoHUvRnZYvNgwGNCth2s59UJoZguajhrmDviGuxlTvFkG7VrZ/eBz5EeQj/zGO1QoMY
+	HzuMmcBtMTpDE=
+X-Google-Smtp-Source: AGHT+IHxJ/Uk/6XAkUY7puP6o0CG4BSvFMFmP0IPZMfqgmJ56D3xnk+Yy96xcoi65RKVSCCOx/pqYQ==
+X-Received: by 2002:a17:902:e74b:b0:2a1:3cd8:d2dc with SMTP id d9443c01a7336-2a3e2d44154mr15985825ad.57.1767668782115;
+        Mon, 05 Jan 2026 19:06:22 -0800 (PST)
+Received: from [10.0.10.3] ([195.245.219.12])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cc793fsm5580975ad.72.2026.01.05.19.06.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Jan 2026 18:51:57 -0800 (PST)
-Message-ID: <88b1a3dd-e646-4583-bc41-07ff7e9422a7@gmail.com>
-Date: Tue, 6 Jan 2026 10:51:50 +0800
+        Mon, 05 Jan 2026 19:06:21 -0800 (PST)
+Message-ID: <d35cafb6-c3ca-4641-bc49-863afb101d66@gmail.com>
+Date: Tue, 6 Jan 2026 11:06:13 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,169 +68,108 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 4/4] rust: add PL031 RTC driver
-To: Danilo Krummrich <dakr@kernel.org>, Ke Sun <sunke@kylinos.cn>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20260104060621.3757812-1-sunke@kylinos.cn>
- <20260104060621.3757812-5-sunke@kylinos.cn>
- <DFFTVRMAFF3S.13N6WCNAVVR6I@kernel.org>
+Subject: Re: [PATCH v8 3/4] rust: fmt: Default raw pointer formatting to
+ HashedPtr
+To: Alice Ryhl <aliceryhl@google.com>, Petr Mladek <pmladek@suse.com>
+Cc: Dirk Behme <dirk.behme@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Timur Tabi <ttabi@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
+ Benno Lossin <lossin@kernel.org>, John Ogness <john.ogness@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Andrew Morton <akpm@linux-foundation.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
+References: <20260101081605.1300953-1-sunke@kylinos.cn>
+ <20260101081605.1300953-4-sunke@kylinos.cn>
+ <aVgC1qXp1La6E9p0@pathway.suse.cz> <aVt0JYbbXLeuqFBt@google.com>
 From: Ke Sun <sk.alvin.x@gmail.com>
-In-Reply-To: <DFFTVRMAFF3S.13N6WCNAVVR6I@kernel.org>
+In-Reply-To: <aVt0JYbbXLeuqFBt@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
-On 1/4/26 21:10, Danilo Krummrich wrote:
-> On Sun Jan 4, 2026 at 7:06 AM CET, Ke Sun wrote:
->> +/// PL031 RTC driver private data.
->> +#[pin_data(PinnedDrop)]
->> +struct Pl031DrvData {
->> +    #[pin]
->> +    base: Devres<IoMem<0>>,
-> Please do not use 0 as generic argument, this should likely be RTC_YLR + 0x4
-> (assuming that this register has a width of 32 bit).
+On 1/5/26 16:19, Alice Ryhl wrote:
+> On Fri, Jan 02, 2026 at 06:39:34PM +0100, Petr Mladek wrote:
+>> On Thu 2026-01-01 16:16:03, Ke Sun wrote:
+>>> Make raw pointers (*const T, *mut T) automatically use HashedPtr when
+>>> formatted with {:p}, providing safe default behavior for kernel pointers.
+>>>
+>>> This allows users to format raw pointers directly:
+>>>      pr_info!("{:p}\n", ptr);  // Automatically hashed
+>> It should check no_hash_pointers variable, see default_pointer() in
+>> lib/vsprintf.c.  See also "no_hash_pointers" and "hash_pointers=never"
+>> kernel command line options.
+>>
+>> Hashed pointers prevent leaking information but are not good for
+>> debugging. The "no_hash_pointers" variable allows to print
+>> raw pointers without changing the code.
+>>
+>> I am not sure how this should be implemented in Rust. If you need
+>> to keep HashPtr then it should become an implementation detail
+>> and should not get exported. Nobody wants always hashed pointers.
+>>
+>> I hope that we could find a better solution which would allow
+>> to reduce the code duplication.
+>>
+>> For example, I wonder what would be needed to allow calling
+>> snprintf() from Rust code. The fn fmt() might call
+>> it with "%p" format...  It would make it easier to get
+>> also other "%p?" formats.
+>>
+>> It seems that something similar has been discussed at
+>> https://lore.kernel.org/rust-for-linux/CALpAb9MoT20Ch4pe-oMz8kpqaZsvmgNwPk1XSC+faZi7huwQKg@mail.gmail.com/
+>> And it was said that it would need bigger changes.
+>>
+>> Maybe, we could create C wrappers which would allow to call
+>> snprintf() with some specific format, e.g.
+>>
+>> int scnprintf_p(char *buf, int size, const void *p)
+>> {
+>> 	return scnprintf(buf, size, "%p", p);
+>> }
+>> EXPORT_SYMBOL_NS_GPL(scnprintf_p, "RUST_INTERNAL");
+>>
+>> And use the same approach for any other %p? format, e.g. for %pU:
+>>
+>> int scnprintf_pU(char *buf, int size, const u8 *addr)
+>> {
+>> 	return scnprintf(buf, size, "%pU", addr);
+>> }
+>> EXPORT_SYMBOL_NS_GPL(scnprintf_pU, "RUST_INTERNAL");
+>>
+>> Best Regards,
+>> Petr
+>>
+>> PS: I suggest to wait longer before sending a new version. It would
+>>      allow to get feedback from more people who might see it from
+>>      different angles.
+> I think there are two approaches we could take:
 >
-> It allows you to perform register accesses until RTC_YLR + 0x4 with infallible
-> accessors, since the call to IoMem::new() will validate that the memory region
-> has at least a size of RTC_YLR + 0x4.
+> 1. Have the C side provide a method that returns the correct integer
+>     address to print.
+> 2. Have the C side provide a method that returns the correct string
+>     to print.
 >
->> +    variant: VendorVariant,
->> +    /// RTC device reference for interrupt handler.
->> +    ///
->> +    /// Set in `init_rtcdevice` and remains valid for the driver's lifetime
->> +    /// because the RTC device is managed by devres.
->> +    rtc_device: Option<ARef<RtcDevice>>,
-> I don't see a reason for a separate init_rtcdevice() method. Creating the RTC
-> device should happen in probe(), which also gets you rid of this odd Option.
+> In general, for cases where the output is an integer formatted in some
+> standard way (e.g. hex), I think the first option is stronger because
+> the Rust formatting machinery lets you specify different modifiers such
+> as "prefix with zeroes or spaces" or "how many zeroes/spaces to prefix
+> with" or "hex uppercase or lowercase" or "hex vs octal vs base10" etc.
+> By having the C side pass an integer back to Rust, these modifiers are
+> taken into account automatically.
 >
-Hi Danilo,
+> Now, just using scnprintf to write the resulting string to a buffer and
+> passing that string into the Rust formatting machinery is also an option
+> of course. Especially for modifiers such as %pF that prints something
+> like versatile_init+0x0/0x110.
+Thank you for the suggestion. I'm exploring this approach.
 
-I encountered an issue while refactoring the RTC abstraction.
+I previously implemented a version using snprintf, but found that C's %p 
+format specifier
+doesn't integrate well with Rust's formatting infrastructure.
 
-Following the platform driver implementation, the AMBA driver stores its 
-drvdata in amba_device->dev. However,
-the RTC driver also stores its drvdata in the parent device (which is 
-also amba_device->dev), causing a conflict.
-This was already encountered in v1, which is why the design was awkward.
-
-Do you have any suggestions on how to address this?
-
-Here is part of the code:
-
-  // rust/kernel/amba.rs
-impl<T: Driver + 'static> Adapter<T> {
-     extern "C" fn probe_callback(
-         adev: *mut bindings::amba_device,
-         id: *const bindings::amba_id,
-     ) -> kernel::ffi::c_int {
-         let adev_internal = unsafe { 
-&*adev.cast::<Device<device::CoreInternal>>() };
-         let info = Self::amba_id_info(adev_internal, id);
-
-         from_result(|| {
-             let data = T::probe(adev_internal, info);
-
-             // Referring to the implementation in platform.rs, here 
-`dev_set_drvdata(&adev->dev, data)`
-             // will clobber the value that has already been set in 
-`amba::Driver::probe`.
-             adev_internal.as_ref().set_drvdata(data)?;
-             Ok(0)
-         })
-   }
-}
-
-// rust/kernel/rtc.rs
-impl<T: RtcOps> Adapter<T> {
-     unsafe extern "C" fn read_time(
-         dev: *mut bindings::device,      // **pointer to the `struct 
-device` embedded in  a `struct amba_device`
-         tm: *mut bindings::rtc_time,
-     ) -> c_int {
-         let bound_dev = unsafe { 
-device::Device::<device::Bound>::from_raw(dev) };
-         let rtc_tm = unsafe { &mut *tm.cast::<RtcTime>() };
-
-         match T::read_time(bound_dev, rtc_tm) {
-             Ok(()) => 0,
-             Err(err) => err.to_errno(),
-         }
-   }
-}
-
-// drivers/rtc/rtc_pl031_rust.rs
-impl amba::Driver for Pl031AmbaDriver {
-     ...
-     fn probe(
-         adev: &amba::Device<Core>,
-         id_info: Option<&Self::IdInfo>,
-     ) -> impl PinInit<Self, Error> {
-         let dev = adev.as_ref();
-         let io_request = adev.io_request().ok_or(ENODEV)?;
-         ...
-         // Allocate RTC device.
-         let rtcdev = RtcDevice::new::<Pl031DrvData>(dev)?;
-         let rtcdev_clone = rtcdev.clone();
-
-         // Set driver data with RTC device reference.
-         rtcdev.set_drvdata(try_pin_init!(Pl031DrvData {
-             base <- IoMem::new(io_request),
-             variant,
-             rtcdev: rtcdev_clone,
-         }))?;
-         ...
-         // Register RTC device.
-         // **If CONFIG_RTC_HCTOSYS is enabled and the device is rtc0, 
-rtc_read_time will be
-         // called during the registration process. This requires 
-drvdata to be set up before registration.
-         Registration::register(dev, rtcdev)?;
-
-         Ok(Pl031AmbaDriver)
-     }
-}
-
-Best regards,
+Best Regards,
 Ke Sun
-
->> +}
->> +
->> +// SAFETY: `Pl031DrvData` contains only `Send`/`Sync` types: `Devres` (Send+Sync),
->> +// `VendorVariant` (Copy), and `Option<ARef<RtcDevice>>` (Send+Sync because `RtcDevice` is
->> +// Send+Sync).
->> +unsafe impl Send for Pl031DrvData {}
->> +// SAFETY: `Pl031DrvData` contains only `Send`/`Sync` types: `Devres` (Send+Sync),
->> +// `VendorVariant` (Copy), and `Option<ARef<RtcDevice>>` (Send+Sync because `RtcDevice` is
->> +// Send+Sync).
->> +unsafe impl Sync for Pl031DrvData {}
-> Why not implement Send + Sync for RtcDevice then?
->
->> +// Use AMBA device table for matching
->> +kernel::amba_device_table!(
->> +    ID_TABLE,
->> +    MODULE_ID_TABLE,
->> +    <Pl031DrvData as rtc::DriverGeneric<rtc::AmbaBus>>::IdInfo,
->> +    [
->> +        (
->> +            amba::DeviceId::new_with_data(0x00041031, 0x000fffff, Pl031Variant::ARM.to_usize()),
->> +            Pl031Variant::ARM
->> +        ),
->> +        (
->> +            amba::DeviceId::new_with_data(0x00180031, 0x00ffffff, Pl031Variant::STV1.to_usize()),
->> +            Pl031Variant::STV1
->> +        ),
->> +        (
->> +            amba::DeviceId::new_with_data(0x00280031, 0x00ffffff, Pl031Variant::STV2.to_usize()),
-> Why a constructor new_with_data() if you already store data through the generic
-> device ID mechanism right below?
->
->> +            Pl031Variant::STV2
->> +        ),
->> +    ]
->> +);
+> Alice
