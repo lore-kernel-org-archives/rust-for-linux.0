@@ -1,48 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A364314A6C;
-	Tue,  6 Jan 2026 14:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3373203B5;
+	Tue,  6 Jan 2026 14:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767710685; cv=none; b=Y4K8qg6zA41sKFuqfZjfgkRSekBOJVL8sDwbkNgf7DrdigbE8m1KxtkE7+jBKjgo5UHl/4qdcKcMt38IYOQkMD/GhRvAOazAjzy3eNgH4k9TlCyvDUEjPqDfiD+dbKyLVEeRw+ZCVmnevRnGoazI/v2s+yC1V81/FCr2g+u4BeI=
+	t=1767711396; cv=none; b=jCG0jlZmBDV+JJfvZ1N5geWQ5H4wh9PnvlyPUfQ3TeuniEKGpaVVW6Ks9iwrNvJQUz6h4gPCFi9HPKPRFhROwhcfmC8Lc9mwhbKapLrKkd4fxESC7trFCg60wFeTyaxF2XQpV96QiqNGOlgE4WiNvo0g1Rl2EaowcfNaLqyE728=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767710685; c=relaxed/simple;
-	bh=yvhMKOt2Eiw/v4wYqhtOzyHT/Ud468bQitPGH/3eqvI=;
+	s=arc-20240116; t=1767711396; c=relaxed/simple;
+	bh=F++X+waLmj9d+5eJ7s+Pnye5YZ3oIpFoEnARYztMaTU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZAZ2sBx1l7MCkXhxoJJ0+YIj0PTWSNezSNcn/1rH08BiTnMPzfhdJZAXkAA/hov4Fs02e7iIKsYHyAqEQTTLgg8Jco/nkPS53vFwzKyIxzc8saH/K3GI2izbKE/JVtidJEMMalEsdST2dOpsTwgLCBeD4MFWo3fy5opNFKnPnYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oziM8SXl; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AvPSIQwmkY6CcDJ+O8MkuhrOfoKYoBgbgswyNjUaNkfURE2oT4rw3j1jyTScYIEqQZKDGPqDFdO7M6wquqqVBNPn4Ce0LKeeMeXXM/o/9bcIAZmhPHeWArxmWCxhLc3/F1534lgUKJniTP8xMz7oqltkI7w0w+2wWTfojzpAA0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bjHvd4Ac; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oziM8SXl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54073C116C6;
-	Tue,  6 Jan 2026 14:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767710684;
-	bh=yvhMKOt2Eiw/v4wYqhtOzyHT/Ud468bQitPGH/3eqvI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oziM8SXlVncr1yfjcx7kQfipzGEnqXjlOxbaVXU8OsegIUgfjr3K2VFPyJNWDcDIY
-	 tQb3eZoWiBXNIplzCOfkBpQhKtuEKpKELqvbb74Y+3Ew1YTUfs0MoCG3WFwqJfUCoV
-	 aPnHGS2zOa34zv+iD+1IzRcpxgO1QvLGGHNssvHk=
-Date: Tue, 6 Jan 2026 15:44:41 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Ke Sun <sk.alvin.x@gmail.com>, Ke Sun <sunke@kylinos.cn>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bjHvd4Ac"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=F++X+waLmj9d+5eJ7s+Pnye5YZ3oIpFoEnARYztMaTU=; b=bjHvd4AchX4OX8btHy3c3ti0E5
+	XWujH7TztZmJyVjlONn5y71LDgfkcktFr0sinUGsypZwk/GUVna+Y7uMEwBz9AuqYd3k8AuJAf9hn
+	NvLtdAGw5LES1uKJxpe/fNY0O5h9yBc2ToLxQa3pR8vtdS+F9l2IeqnOpHrBD2iKOWIwJQB1BBrx4
+	b7KTF5tOfUEONpp8MsqyTKoLhfDnU5nuE8REZm1bugTHwhKvawElhw4q/x5HKbeDnvcqTHipyia+t
+	Uo8yDnf4EThWU4Ge3KcULO3c0bMFvzkKzc199VwrTVJc/4uiyRjj1g3NUb8wtIxm99vaBZVe56v/7
+	UCHPmwCg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vd8Tv-00000009uwx-2Ndu;
+	Tue, 06 Jan 2026 14:56:23 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 15B0030056B; Tue, 06 Jan 2026 15:56:22 +0100 (CET)
+Date: Tue, 6 Jan 2026 15:56:22 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>,
+	Will Deacon <will@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-rtc@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v1 4/4] rust: add PL031 RTC driver
-Message-ID: <2026010631-verbally-probably-3ec2@gregkh>
-References: <20260104060621.3757812-1-sunke@kylinos.cn>
- <20260104060621.3757812-5-sunke@kylinos.cn>
- <DFFTVRMAFF3S.13N6WCNAVVR6I@kernel.org>
- <88b1a3dd-e646-4583-bc41-07ff7e9422a7@gmail.com>
- <DFHJM2HAG7Q3.1HGZ3P7H55FD2@kernel.org>
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 0/5] Add READ_ONCE and WRITE_ONCE to Rust
+Message-ID: <20260106145622.GB3707837@noisy.programming.kicks-ass.net>
+References: <20251231-rwonce-v1-0-702a10b85278@google.com>
+ <20251231151216.23446b64.gary@garyguo.net>
+ <aVXFk0L-FegoVJpC@google.com>
+ <OFUIwAYmy6idQxDq-A3A_s2zDlhfKE9JmkSgcK40K8okU1OE_noL1rN6nUZD03AX6ixo4Xgfhi5C4XLl5RJlfA==@protonmail.internalid>
+ <aVXKP8vQ6uAxtazT@tardis-2.local>
+ <87fr8ij4le.fsf@t14s.mail-host-address-is-not-set>
+ <aV0JkZdrZn97-d7d@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,21 +75,18 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DFHJM2HAG7Q3.1HGZ3P7H55FD2@kernel.org>
+In-Reply-To: <aV0JkZdrZn97-d7d@tardis-2.local>
 
-On Tue, Jan 06, 2026 at 02:32:56PM +0100, Danilo Krummrich wrote:
-> (Cc: Greg, Rafael)
-> 
-> On Tue Jan 6, 2026 at 3:51 AM CET, Ke Sun wrote:
-> > Following the platform driver implementation, the AMBA driver stores its 
-> > drvdata in amba_device->dev. However,
-> > the RTC driver also stores its drvdata in the parent device (which is 
-> > also amba_device->dev), causing a conflict.
+On Tue, Jan 06, 2026 at 09:09:37PM +0800, Boqun Feng wrote:
 
-Wait, what?  That's broken in the C implementation, please, let's fix
-that up now first.  drvdata is ONLY for the specific device that driver
-is attached to, it can not be used by anyone else.
+> Some C code believes a plain write to a properly aligned location is
+> atomic (see KCSAN_ASSUME_PLAIN_WRITES_ATOMIC, and no, this doesn't mean
+> it's recommended to assume such), and I guess that's the case for
+> hrtimer, if it's not much a trouble you can replace the plain write with
+> WRITE_ONCE() on C side ;-)
 
-thanks,
+GCC used to provide this guarantee, some of the older code was written
+on that. GCC no longer provides that guarantee (there are known cases
+where it breaks and all that) and newer code should not rely on this.
 
-greg k-h
+All such places *SHOULD* be updated to use READ_ONCE/WRITE_ONCE.
