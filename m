@@ -1,142 +1,174 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013032.outbound.protection.outlook.com [52.101.83.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E3430ACE6
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 07:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767685321; cv=none; b=Nod/zHNB3yICZYCCSWY3hf/QgKguGo3VlS52MR0Xg1aOnU/b6QWDSQmRb6b67/XLAqHRG4ilchVA++lcpLYzf9BGLU3T1bVsjjEuSYNwwfvyuUfXhAS6jntGp2p0Am/YMaV2fkTnAwWC5vV/dgTafH6NKRy+nug0FRHf6SokMjY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767685321; c=relaxed/simple;
-	bh=Hphfbtc2MHIAmRuXaqvQIxip8ijKFhRE+MI9ASMBHDo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SJlzNrWoIWmrCFFhTFOI1W0bgHOLdSTMiaUTrB5/Vaps9yYOUQba4TAHadbvPj5R2HlBWGUChlcVG4ge8DnPwGD3aZSUrN5ki3Zj3jQ8BPD/7IT/G2qvm4X/0LVefsPAFKhhg8wGEdi4XRReApzqx8lbE8OAgJ154v3W6fBi804=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f6J6gd3I; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A810D277C96;
+	Tue,  6 Jan 2026 08:48:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767689337; cv=fail; b=QXtRhBoPy+K3yysIILe24xzBiNDCkzohYv08XHCSS8DDsalQ5WRdtorxj3ldj/F8NigcionJMpw8Zq1+9UmlzDFu7V8yXoo0RCjwbiFvkY7GDTj+2wz9b3DgDmffc7KpTkMtrEroSdaGUZeuF5ByGVIH20Ik7c4Ki77S6o7dL+Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767689337; c=relaxed/simple;
+	bh=bPXdw5NEBH+jadp3rJUVufa6rnvUTzi0GSCWoSapPWY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=djQABVW50US4k2xfniepc/K1eS5F7OcuiP9w2twixH4fIsSMxbIGMPXj7Gi1ocU2/ANSyOroek4kKxYgzhLn9p36INLgC4hCmROpdVPPzNoaAU0VDNBc2eFjn043ODswkV3tU3LizeyUdNdnI8LOTxA4HdKhqwKZJozwgmACtVM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=Vrhj2GoN; arc=fail smtp.client-ip=52.101.83.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f6J6gd3I"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7c7aee74dceso327828a34.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 23:41:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767685314; x=1768290114; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pwfwDhqpeGk19TmwTm6HhHDgzhA/lFQ/uiV0WkdPuR4=;
-        b=f6J6gd3IVMLuNtEfvZgLfWpBXoxJM8pqE+JzfER1kur9P7Pqnn2/DHjwsH+zWpNvcQ
-         jU44scW1jiL68nCmUj9ffDZ6J6umlWnys6OUtgRmpBLyTSCHoYEirsHKB4fsR4FgBJmF
-         i9BKYaXIF5o5ubZeVqitrYcGYpUWTGQL9mD/9itJ9N7pC368tQv2SPBN42ixM/dPoYaj
-         oaxxqjU7yhjOo2K49oRG4aVCW5SAtK1OpEl+qFHKh3oO4rx1nqEKlIXz4eNMOIWfIa8z
-         eWac/hiY5vGIiBWGFnV1lfii1TWRpy+Jk0x2f50mqYs3sm4NcVz9P5m5JoiOUKfqirn1
-         QwGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767685314; x=1768290114;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pwfwDhqpeGk19TmwTm6HhHDgzhA/lFQ/uiV0WkdPuR4=;
-        b=RsiwdAGY194BF9Ul+jsxFwLX5kkTB/yf7YoJWrMXjBQjV2nFdKAUdJevPPELAhXBKp
-         LWv6VeUTTpxL+R4ron004FCijjcTCm6awd6uEz4T9BhWTvzIJw/okRvH8OTnATxBjEDt
-         F95VxcULIgIL11WLfj1MyTl3deZ3/6pTZYSTDaRhtGHo7zzkofd0ccf6UBkAXIYkx8R2
-         EDupNnWQgGtAeFKl6w+GWkLXpo3ELOU5AUVrr1bpc7N3tI5MP4JNwJRd9iL6GLQh5vWM
-         wky87o4Db0CMdnbqj756I6oAFgIIowhoruV5Nh2A2VjLyRpCG4OE7+h9C3nXVbh2faSI
-         gnDw==
-X-Forwarded-Encrypted: i=1; AJvYcCXl1yKb12ofwnbqPlDilykulLDU6GMY3KnY9ZrT3v8BpBepaCb+jbM573Rk+dyuJ5MQWGVWcfJd/EoZKpoG0g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxedFp2eRqHqeTXXY/PQCiaOFVQh6vLgewcKtbHWOrkX4ZHJcCd
-	Uobxfefa99/2y6SuOIrmFn44riE1FrN17SjeW1S+dd7UeGyS2SBYum4SfIZksHTe
-X-Gm-Gg: AY/fxX5e+StwQqVU0AXRIu/XNdEvkDXfS2Y2ROHUxar01IkkIIBAO2aYXGw8yyRtPFc
-	ESUR4cNR1BxlGryOVfrJ2wrElaNsQcS0dzBczN97Iz2M8Sm1It8EBQkvNZjp80M1odQFRUhKAZs
-	4p0dpyIWxEDfpJ6Kv9Xp3+KpNO0dALZYO+6pYtQyNqG+aYVlDIaODFpaeRthFJOzjJNhpBKhF8D
-	joustkuiahfFRkrBSFe3S9kX/SYIAuskD83lsVZk+OMzmcTgB+Swlljjw3llGBBe8SnzSru8Z89
-	1wB2XMW+b/5S6Nmd8j+VvcKP8261SNpH38TnLKW3W0oABARknihTRydFgudxbESoaxIc0cUx9p0
-	+eI7oCvVz4dr8LbFuLPjjuB8TsC5qQiN8cf7b2K0nm0MZzrKKcuATdPw+sazMxlk5Izs6qtN9bJ
-	/i1Yhv4IMNc3kQ1TyBy65uBnqk267e2auzwV1O4NjcZkbrNAopZp7dcXDK
-X-Google-Smtp-Source: AGHT+IGf9X4pR6oyuy0u03RRMpC6H16q2I3einUJMh5KqMpOwoa7jq135LkN8n+YtJkha1wFxLDmSg==
-X-Received: by 2002:a05:6830:4522:b0:7cb:1309:5b64 with SMTP id 46e09a7af769-7ce4674865emr950662a34.36.1767685314406;
-        Mon, 05 Jan 2026 23:41:54 -0800 (PST)
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com. [209.85.210.48])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ce478ee668sm999150a34.29.2026.01.05.23.41.52
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Jan 2026 23:41:53 -0800 (PST)
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7c75fc222c3so417559a34.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 23:41:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXHLX7dEEXe+KCnHLHdX2BitOm6Hoiuj9Kn9U/PwfE5cxQJIospqrrTF9F+KMv90a7jiYaXdITmzhGWeKb07g==@vger.kernel.org
-X-Received: by 2002:a05:6820:518c:b0:659:9a49:8e58 with SMTP id
- 006d021491bc7-65f47a16bdcmr911392eaf.40.1767685312559; Mon, 05 Jan 2026
- 23:41:52 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="Vrhj2GoN"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RV7nDIPNlKcHYlbOBPN9qdldDwP8C0nagUvsugm99ysmHEes9Lt2x7sf0u2LZyth0xAb6lkNdsMRYavhn7ROfV0yd0LBQeIC8doPZlM9qMEI09XsRgsD7UX+nP2D5K3+uLLOTtVXd3OcltE1iizOk1se55cAF95WEM/sW+CLVC3HkNK4nq8G9FZNSMcLL0SUu2XhgXTRN5bVA/Bja4ZTIoRyEZxlYoxV4+OckcK3bGLbV/MfWbW+1X7GgwykhtLFEZs9ZJ9T1r2datHl3N3o+y7KpOahCyPOBMbsd043ZV1CrKg5ftYm8dJqAsKu/sjKGHZTPs6i7oVb7TbHlE8cDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/cVx83CiqR6uLx2NiAYQmE/psbX07IM0FEyMC1VlDHs=;
+ b=vLCAXPC9mXJdXpkwBaeSOm7SaAtwEoCzRz6UK28xDsBOdrjEVDOTF01602RllOB1HmPczAx558pxKMI8FDlt4ECg9waL0gHCRQCVRoyQUZ6X3/hbtGCLB6YmmrzgftJkldMZORco2bFzxOIjQO2f1syP8if9Qt8nhCAcCk/GV+sr+eAnXDzhMlUBgfrmaMcM6ew+/FwPHPapocbLnkPwcxI/LhZegUs7oH5gG3BfKZLyyr5i9emlKZ9+D3JUTWcrcUftXWiSTjGk+FWwGK3euFa8X5GZS60L1WypfuKjikbU4EXkwCcHKtyMh+5XW5I4yEON2wGj4ayIcnYFadDUxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=google.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/cVx83CiqR6uLx2NiAYQmE/psbX07IM0FEyMC1VlDHs=;
+ b=Vrhj2GoNn9lzivntACtwK4EaXb+6fKp0a07o+sU5NZgnv5IEiWQMHn/C4qNEBe04plxPXpilElmA0htGuQnlu4pB8JXzoVeHTLg4YOWJun5ik8RFgG8ZP+Y6SCapKYiAoMxZWY2Q6Smi5a02NiNdjPX5qygSHA+8VpStEohtFSno/M+vyezAMdyxF++9bmOsTLU9/w/7WtFVEEq45gAYJVIeG//HFwQsvnBTnH7j/nJDOUGQuGmfMoG3Kh+Xp7xXD50BfAIpW8V2luDrCg0Clc6+aqHvnbO2gpbNBLiA62+cWaiyaoNe/CGBmyxwj5vUCKw+pqcMSWcw3BI88w+wkA==
+Received: from AM6P191CA0101.EURP191.PROD.OUTLOOK.COM (2603:10a6:209:8a::42)
+ by AM0PR10MB3714.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:154::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Tue, 6 Jan
+ 2026 08:48:48 +0000
+Received: from AM3PEPF00009BA1.eurprd04.prod.outlook.com
+ (2603:10a6:209:8a:cafe::25) by AM6P191CA0101.outlook.office365.com
+ (2603:10a6:209:8a::42) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9478.5 via Frontend Transport; Tue, 6
+ Jan 2026 08:48:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ AM3PEPF00009BA1.mail.protection.outlook.com (10.167.16.26) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9499.1 via Frontend Transport; Tue, 6 Jan 2026 08:48:47 +0000
+Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 6 Jan
+ 2026 09:48:35 +0100
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 6 Jan
+ 2026 09:48:35 +0100
+Message-ID: <d4fc5d93-d147-4263-a672-4b6016957327@de.bosch.com>
+Date: Tue, 6 Jan 2026 09:48:25 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260104060621.3757812-1-sunke@kylinos.cn>
-In-Reply-To: <20260104060621.3757812-1-sunke@kylinos.cn>
-From: Kari Argillander <kari.argillander@gmail.com>
-Date: Tue, 6 Jan 2026 09:41:41 +0200
-X-Gmail-Original-Message-ID: <CAKBF=puv6tXX-CfsM68Q8C1oU4WkcGZvaFCW21rNn-yGSt=1Jg@mail.gmail.com>
-X-Gm-Features: AQt7F2o7oyWmJKdfg4043_cIdEZu2Obid0oDdM3mINzPMEpcdBXgB3IFLJ3SZIU
-Message-ID: <CAKBF=puv6tXX-CfsM68Q8C1oU4WkcGZvaFCW21rNn-yGSt=1Jg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 0/4] rust: Add RTC driver support
-To: Ke Sun <sunke@kylinos.cn>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-rtc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Alvin Sun <sk.alvin.x@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2] rust: bitops: fix missing _find_* functions on 32-bit
+ ARM
+To: Alice Ryhl <aliceryhl@google.com>, Yury Norov <yury.norov@gmail.com>,
+	Burak Emir <bqe@google.com>, Andreas Hindborg <a.hindborg@kernel.org>
+CC: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+	<tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+	<rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF00009BA1:EE_|AM0PR10MB3714:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0571a298-e95d-4126-a96a-08de4d006857
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QTRyb0R5ektBREpueFMvbFhDTHpjNUpSYXFMQmpjWWlDd3BIY1ZEZmFxbUZs?=
+ =?utf-8?B?aGNCTHhyZW81RitPeHcxNERiajgwRE1Jd2VBUkR6VVgyWlp6UGpWTUVkSGFL?=
+ =?utf-8?B?NlgybXlvTmVaYm1GQlFMdXc2bHVGSWFidnJ3T1hSUnlQNEdDTnlFSEpyZ05m?=
+ =?utf-8?B?WVN0UHArS1ZUUUtlZ1FwU0dHMmd3SVp2a01jMEVMS0RBODI1TVRXR1NKQytH?=
+ =?utf-8?B?THhKNEpRejRYV000YmREQmpzNllSSkdFcVJjaGdyQlpINFQ4OVQxb3I3U2k4?=
+ =?utf-8?B?Vm56VnUzM1dXOXBqVlgxK0wwMWc0TFlMemMxUnU4alNTUmdWTDhlWDY2VGI5?=
+ =?utf-8?B?Y2Q0ZVRMYXQwWk1aQ2dEbk5QYVhaaDRGRFlXZW9INEUzZkRpUENtd0N4QStB?=
+ =?utf-8?B?QWZFbE05TEp5RVg4d25UZ29mSEJYQzd1UmZSaFR3RjQ4TkpOZVdWNU54QXFK?=
+ =?utf-8?B?WndtMzhIOWcvS0hDRHBTblFodWNPdXR1aHh5alJldktUSE5QTFZEME93eTlo?=
+ =?utf-8?B?Qk1NbXRseGxxR2s0U1J6VDA5YTVTdFBZNDBneHZoSk1MbTFuRFVsekp4Vm4r?=
+ =?utf-8?B?d1ltaVZwYWJZVDg0b1M3YThkRHl6dE16RjdnU1lhc2J2cUtOTXF6UUZKM1Qr?=
+ =?utf-8?B?UVFZeCtPTDRINFQ4R0liK281aTIyY3B0Mmw3bVVzUHhNTzlJSU5SNmdNTjFh?=
+ =?utf-8?B?UjV1d1pIbnFlKy9XQ1VqMGxhaEw4WllzWnNYRE5BcUwrWVY1aHlWU1V3bzhv?=
+ =?utf-8?B?aWxBSk5NOWxwQ1JFSFFHdUQxTk54ZEpQSFVEQTBpYnpMYlMySEFiYlpWMnhw?=
+ =?utf-8?B?aThHVnJtYzlZVVpMOWN5TzJ2ZXYreTNzc3UrZ1lYQnNzQzMrb1lxeWZEa2pG?=
+ =?utf-8?B?ZURJbUs4dW5kRENwT2dqQjBkQy96U2hJczBIaUxQMEFrNERXSU9lblorU1A0?=
+ =?utf-8?B?cVZQRlhkYncvbytlaWxvZWJDNDcwckJhOUNwZ2ZhNldqSkdSRkhLZTFyQlZ5?=
+ =?utf-8?B?ci9hL2VEVmJLWmczVkNUYnorZ1hsMkJscmpCKzBkcGhUUzR1Zy9hTXVJL3Rt?=
+ =?utf-8?B?SWI1cUZrUGlGUHNaMlhsT1UvTUQ1LzR6VjZKMU53c0hUUlVxTC9ucVlhVmJq?=
+ =?utf-8?B?Z1oxZ3hJT2hQMlV4LzZ5ZGszckY4MnZiNDhKSmdRRlIyOExMUWZzbVlUUVpU?=
+ =?utf-8?B?d09rYnlWWDJINlFxUU0vMzAvaFUrMXpVbmJEdGtTcElSaWFURy9Ob1ZZZENH?=
+ =?utf-8?B?elZkdlVMeTI1NWJjMWtWQmxiTnRRL0krTHdpRDd3UEp4VGsxNGMvQk9hZDVk?=
+ =?utf-8?B?Z2R6cUYwL1R0RGQ3QlhBWFZ4dDRIcCtRcjJOZkRtYUgzOEpmK2FRVFduS1U1?=
+ =?utf-8?B?L3Vlb1A5S1NOZHJrL0V5cE5OUEt3ME9EQmtHQS9ldUN4cUd1UWd2QXV1NEhT?=
+ =?utf-8?B?UmxaaDV5bkg1eGQ2VTdteHhjcG1YRHVOREJmckt2RWZLUlpYT3RPZ1k2Rndt?=
+ =?utf-8?B?UzBPRk9oS0VzdERmNXdKekdZSGIrUHBNbUo2eTF0NG5Ub2gyYzZQZk9hNVVH?=
+ =?utf-8?B?a2luREJ1ZVkzSzVyVHV5aC9rbHRUS2t1cWNqeUlWYS9vKzE4b3ZOajNIdGt6?=
+ =?utf-8?B?MWNHMmpKdVZia1kvZE9QMmNCb2F0MnNwSmFkYldCdFpUNzBNVmcwN24zdDIr?=
+ =?utf-8?B?NktTcjZ2QWZWMGNyQlV5ZTdEL0VnQzhPM1MzUEp0UmlQb0dZMDJPR2ZDc2po?=
+ =?utf-8?B?cFphblJ4amh1QlJ2eFJCNWhZeUVuVm5SVks2TTlNNzN6S2dHQkNsMVJ1YmNY?=
+ =?utf-8?B?bFJtSnFSdERhaUxsWVFUL1pHSWI0RnVxSW1KWTQ3QWtPbTlGRFRSOWV5TzlO?=
+ =?utf-8?B?SThBQ3JYMHl4RCsydUVBRzNFVHZBN01XSVZCS2xCTW1icU4wSnZLaTNETVJF?=
+ =?utf-8?B?M0d6MStodkhtUkhpQ3c1ZGlKc0ZhTDhsSkhPMEk0WU8zbjBxUGNzendRaENp?=
+ =?utf-8?B?K2gyVFBwc3I2RzZscjdqTitEUlZXdWQ0eUErNkw5SW45T0dGQ0lPK3ZwUnlx?=
+ =?utf-8?B?VDN5MDZMV1Y4ei9TSEl0OTUyY1lRNjN5R2VyY0tpVjVxemdUeHNlUTk3T2V5?=
+ =?utf-8?Q?2zgc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2026 08:48:47.8341
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0571a298-e95d-4126-a96a-08de4d006857
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF00009BA1.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB3714
 
-On Sun, 4 Jan 2026 at 08:06, Ke Sun <sunke@kylinos.cn> wrote:
->
-> This patch series adds RTC (Real-Time Clock) driver support for the Rust
-> kernel, including the necessary infrastructure and a complete driver implementation
-> for the ARM AMBA PrimeCell 031 RTC.
->
-> The implementation provides a generic RTC framework supporting multiple bus types
-> (Platform, AMBA, I2C) and demonstrates its usage with a complete PL031 RTC driver.
->
-> ---
-> v1:
-> - Add AMBA bus abstractions
-> - Add device wakeup support
-> - Add RTC core framework with multi-bus support
-> - Add PL031 RTC driver
-> ---
->
-> Ke Sun (4):
->   rust: add AMBA bus abstractions
->   rust: add device wakeup support
->   rust: add RTC core abstractions and data structures
->   rust: add PL031 RTC driver
->
->  drivers/rtc/Kconfig             |   11 +
->  drivers/rtc/Makefile            |    1 +
->  drivers/rtc/rtc_pl031_rust.rs   |  529 ++++++++++
->  rust/bindings/bindings_helper.h |    3 +
->  rust/helpers/device.c           |    7 +
->  rust/helpers/helpers.c          |    1 +
->  rust/helpers/rtc.c              |    9 +
->  rust/kernel/amba.rs             |  234 +++++
->  rust/kernel/device.rs           |   35 +
->  rust/kernel/lib.rs              |    4 +
->  rust/kernel/rtc.rs              | 1710 +++++++++++++++++++++++++++++++
->  11 files changed, 2544 insertions(+)
->  create mode 100644 drivers/rtc/rtc_pl031_rust.rs
->  create mode 100644 rust/helpers/rtc.c
->  create mode 100644 rust/kernel/amba.rs
->  create mode 100644 rust/kernel/rtc.rs
+Am 1/5/2026 um 11:44 AM schrieb Alice Ryhl:
+> On 32-bit ARM, you may encounter linker errors such as this one:
+> 
+> 	ld.lld: error: undefined symbol: _find_next_zero_bit
+> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
+> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
+> 	>>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
+> 	>>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
+> 
+> This error occurs because even though the functions are declared by
+> include/linux/find.h, the definition is #ifdef'd out on 32-bit ARM. This
+> is because arch/arm/include/asm/bitops.h contains:
+> 
+> 	#define find_first_zero_bit(p,sz)	_find_first_zero_bit_le(p,sz)
+> 	#define find_next_zero_bit(p,sz,off)	_find_next_zero_bit_le(p,sz,off)
+> 	#define find_first_bit(p,sz)		_find_first_bit_le(p,sz)
+> 	#define find_next_bit(p,sz,off)		_find_next_bit_le(p,sz,off)
+> 
+> And the underscore-prefixed function is conditional on #ifndef of the
+> non-underscore-prefixed name, but the declaration in find.h is *not*
+> conditional on that #ifndef.
+> 
+> To fix the linker error, we ensure that the symbols in question exist
+> when compiling Rust code. We do this by definining them in rust/helpers/
 
-These files needs `MAINTAINERS` entry. It depends on maintainers do they prefer
-that these are added current ones, made sub-entries or make new [RUST] one.
+Just a quite minor nit: typo: definining -> defining
 
-Probably easiest is just add to current ones and then it easier to discuss about
-this in PR reviews. Then at least `MAINTAINERS` entry is not forgotten.
-
-> base-commit: 805f9a061372164d43ddef771d7cd63e3ba6d845
-> --
-> 2.43.0
->
->
+Dirk
