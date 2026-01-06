@@ -1,236 +1,260 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD98D1FECCD
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 09:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2611308F35
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 09:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767691705; cv=none; b=RNA9B9eDb4I6sF3Sk9CvF0R16zv5l2datTLwvfI3PpJ0EVE6q/lDB5S+iWc3evIo0mQq1DSIu5Y0DgA62WnM8eZjM/DdqgjnN7SzXI1SWAl4gk3UjogxVkoFbMCLN0iiHFS4DGqobS78hW1zFReIGH2hN2PA6Wwg+gaHLdBV1nw=
+	t=1767692786; cv=none; b=Ev7NlvmrY7xAMvZfOFBkcFHq082JaU4rHDdqlD3D+seab2z6Cg8hhLLv60Ub49kroQZUp0OQ0M5Htjl5bOunK7UgGwjn0v9xxjkANbPKI31ePo7vedwkUaggD6tyMEo6e2EYd1vTS749OfEOt6t4ZknzPss6qSwV7SZ/QS8NAK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767691705; c=relaxed/simple;
-	bh=B5QgLzXytJTBwF4m/Wq4TMPG+2aauBnYhfvjMCFyPBU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lveI5KVAEBGhmDJRnFq9VCsWul9qo0aYsoLID9H3LTOPdKWn5qKnS49HD5JSvQ+nBf+BbDoCtpAUZCExhRivhhdVi/Hrlpor+JNkUWdbn3PugTOaKNa0/rKIH3y037PabqFnfBnyNjW71HArw7aWJ76SBrqh3zD1DYIx7ZRE9nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dyNQPAq4; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1767692786; c=relaxed/simple;
+	bh=a4pCkGrO8NHaFUsy0JV7PE7ELAOTbmXkWYg7O8l4NKc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BtYmmgebo+DPaoasxS90/CPWPtEcr7X4k2KDOYFCZwQrdWDUKBLHiyecTYaHXIs1t+43OF21jRVHswP8A884pmItnqnjvkiwmHlq/chXMjxUt/Lw58Gl9rFaS1rQf99fFX8dmAgiwh7sTvf/igiccRA49pNZZMXu7nAK3MZq4wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eOb8HqVQ; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dyNQPAq4"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d3c4468d8so4116935e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 01:28:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eOb8HqVQ"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a31d7107faso1089245ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 01:46:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767691702; x=1768296502; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6RjpJ0KDmu6ECR8rL0wc7ojCWim0me85ZoK7bVZx8Nw=;
-        b=dyNQPAq4y2bsCLwmjHpfyqWS/ZNraJSkw0J4uk7pS6fq3v+6XqETRKgtapPzSyRuYA
-         tMrLVRt5UnM9/G49mdq/w/abJAge2OgDbtddsydV2ho0Wm+bAQ2cemtI8uA0TZJiH89d
-         +YwCM+lYsAxZmaxJMCIOY4PJO3UNlX6+GPFAyXHNpKi2cwxJGQtu6Lasbw/x70CU7SrW
-         Sgc9/y9E/OhzDFKVfLzvH02lavINECBWLBsYifhgKhwbb/y6hw7q4h6tgCNCUiYQrh8a
-         3JAicGo7QmJYCe/KOWt7aFP0E71cKXZwuQFHl92JRHBhO6u3aQFkXM2ChBNR+0yQQazg
-         Ebeg==
+        d=gmail.com; s=20230601; t=1767692784; x=1768297584; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IWHtzRLOB0gsaHyHpcyCg2Z+qiKJnnvo9pUwckRF/cQ=;
+        b=eOb8HqVQexclzZz3rvMC63jw/mtLov0C95+3SolyT7EapALVTj+Sd9UQqT1o3n/k/i
+         woMhLOzmOe07UUpxLISz5fCxeHMfgw9U5CsTRS/5dV7RhTgHLIvCPE1V9ZAhFpKWfjxv
+         CVj3Mppteioh1Jg34D+IBMvN91jVnmzm3mUeV+khZlmTKGwf1ZnfVnrBww4MsnZRcBkX
+         uBlwgVzO5fwOxthuRQOHpK7J3HuFjNK7YOIJsiq+CdjXIXE9uD9Yp1lbdiFZ+/85jMdL
+         ByHQuBCaHRArta/MC66LDL9WJA1ORCL4hH5jAn90RZl9KBJjrDVm3II5AsoXGuXCBUIj
+         YCAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767691702; x=1768296502;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6RjpJ0KDmu6ECR8rL0wc7ojCWim0me85ZoK7bVZx8Nw=;
-        b=vzvcjNDEdTy6tpHh7wWe7iOJF0XBkReqWLL1tXCOYfcqEcbVrYoB+uqs8DMQlUL6Va
-         DxW1ADwjGTyuYmsO7Q1BR0Hl8t9DnJe/SeCaFtJLM2dfqiHHE5CUFZ0YtfSQqbThfdf5
-         zA8md8xTTFhfZNwgaDjPffxivNAYpyL7RO1ApSuCz8x4a+RFJemYwSFsNJQEebuNwU7V
-         tSsHBIZRl8+UTOdiyDgw3LXOMSJUg3y0S5a6zG+uyTOFEcnX6scuh2F1lpTXkCRwxZ3F
-         T1cZvWf/oO73ecUialXWEdbthCXiAkS96W6KYjtv7sNvphTXL62/65s0XW6tPyNH6A5h
-         5o+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWw5PT95CKR5LwiJcfLF/AjVhF77E5ugwixTh6kbNVIYS411HcU50K89yt8VN/wZJN46xoZf7hsRZsIM+208Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBu0YlZ2gGtyM0szwV1yzt80VPBOiY1kz4iNP6JEF7oKpvSa6Y
-	Giwm4Ax7znH6t3SMF51Zf+wrY678VeTakfferIpXdHOGH/En3RiWRN+UoG+RWUCH5Qcknf2/wiW
-	fcDfmcMltIyHrMTVbxw==
-X-Google-Smtp-Source: AGHT+IHNW8cnVGr4FrI4JSUTQ4MhjlhNsVpoauV6Ax0QEt6OpkLERWQ91EuorShFPTBR+aL8Z2pePHC4+iiUcQY=
-X-Received: from wmoo8-n2.prod.google.com ([2002:a05:600d:108:20b0:47b:daaa:51cf])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b43:b0:477:afc5:fb02 with SMTP id 5b1f17b1804b1-47d7f09b89emr24896975e9.21.1767691702185;
- Tue, 06 Jan 2026 01:28:22 -0800 (PST)
-Date: Tue, 6 Jan 2026 09:28:21 +0000
-In-Reply-To: <CAGSQo00Vz54=3tgw8z3DtEqtXZGbk3SbJoautuD2pCgw4aswLA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1767692784; x=1768297584;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IWHtzRLOB0gsaHyHpcyCg2Z+qiKJnnvo9pUwckRF/cQ=;
+        b=A/1CKTgeHCt3DCQcOhVNWhOyN2SNNGDoRhIRN+AvgVsATRz7FpQw2cqP37grN8KWQ4
+         s2MBjQgtBG79w/zoV0mUwQidm9Re0gC2+Ebc9n4nU0r7viJCS6XxWIn4UJdGVLgS6TZJ
+         QTbAFaaSvN9HAQ7gCAtw0eQfiyZaJSZekXfv482dd8V70v+aaH0kf5brqcZzqoxaS4f0
+         MiEtDxW75EJA8HpFBlXdtTPDs1SREM7F17PEA7fAbPmDjg7av3oRo6nLfSdh+T8vQd/+
+         giPY5hP3NssB+dPZ7cN7VDBZbRgJ8AAydcvt78i7wq74wYnRfAP/sHDEKVNri+ZXH+Bo
+         AhRA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgzF10FfGtwFLh2Hzqs0StDlC6exwfEY1IAi5N5X7UZ8hBuUaY780KweRu2/xme8n//IU3VXvr2n9A13/2Vg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyecijhQ2G6BJGDZXb2FrZkXFENkRj71PLU7z6vDpeF2nH2T+r9
+	5oPxQAfi5NKO9qFPOJOobiweeiqd0zZQ2bwnqoBxBjPCky+TsZ+wka6+iB/vxnfG+uu9ES06brT
+	gvp0ZrDgjRppdPaCZuZb4bga0ToBHiOQ=
+X-Gm-Gg: AY/fxX5OXGC227hcPAPar8Ilc4imLR13h2R5QD030rqoevff3S82v4PmX/YtsfJCtby
+	eAIq8+sy0xE1n4YVIroYMwB+EwVkocdsPANgyG0lx/AKn0ddCA/oqUwsUckSrJGNKDVsgXIwS1x
+	SJJk+XrINGIW/ANofTnWmHR1IMaiZNNR2ylgUPVOcxgEGjMRmcQSPVOv0pg17VX9YXQepnZKb8b
+	gekeOoEN8kVtbqnHnVpKgyrJeyOyIPnSgIwRy+LuWlte/HluWANKV/koGLsgnBc+WrTkZMj4Lol
+	I1/cSmXCKhiMO0WO4hZUecELQRy/iO3vl/XIDw+G/aMeCnrsoO2xdCZHVhgC/akk17HYv4hOrD1
+	sYUYTXz36wkyuTtMBjhpNhUc=
+X-Google-Smtp-Source: AGHT+IGZErVvI2lseGufu+xoWWNjTS0IFbizNSmxMqu9oLAFKR3RnErmOEmLfl72C07T7Y1HDw+wgqib0Cgql4LAiO8=
+X-Received: by 2002:a05:7301:168d:b0:2ae:5a24:249 with SMTP id
+ 5a478bee46e88-2b16f6f82c7mr1043614eec.0.1767692783667; Tue, 06 Jan 2026
+ 01:46:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260105-cfi-lru-status-v1-1-0b2401f7c5b2@google.com> <CAGSQo00Vz54=3tgw8z3DtEqtXZGbk3SbJoautuD2pCgw4aswLA@mail.gmail.com>
-Message-ID: <aVzVtS8c4MMEdcZe@google.com>
-Subject: Re: [PATCH] rust: declare cfi_encoding for lru_status
-From: Alice Ryhl <aliceryhl@google.com>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Ramon de C Valle <rcvalle@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20251201000949.1626363-1-ojeda@kernel.org> <aS3seTNRum3ZXMom@yury>
+ <CANiq72=1ipov2pV9pSQwGh9WMA4NvQRV_cBCO0hhChVg=c-Njw@mail.gmail.com>
+ <aS7aHIJbi3DlaUcc@google.com> <aS8w4FHhIVQUFTEY@yury>
+In-Reply-To: <aS8w4FHhIVQUFTEY@yury>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 6 Jan 2026 10:46:11 +0100
+X-Gm-Features: AQt7F2psBYaPyhcfhcRa6tt3cVf1oYBAyJ1lA0eLnUOSmBK-lRIafwteRgzLfLI
+Message-ID: <CANiq72m9fQ=W4yjrAQWE5j+eBpPY7xetPjsHRdXfjYmmohj8FQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: id_pool: fix example
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Burak Emir <bqe@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 05, 2026 at 09:19:53AM -0800, Matthew Maurer wrote:
-> On Mon, Jan 5, 2026 at 8:12=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
-> >
-> > By default bindgen will convert 'enum lru_status' into a typedef for an
-> > integer, but this leads to the wrong cfi type. It's supposed to be a
-> > type called "lru_status" rather than the underlying native integer type=
+On Tue, Dec 2, 2025 at 7:33=E2=80=AFPM Yury Norov <yury.norov@gmail.com> wr=
+ote:
+>
+> No. Maintainers are not handy testers at your convenience.
+
+It definitely is your responsibility to test your tree. This is basic stuff=
 .
-> >
-> > To fix this, tell bindgen to generate a newtype and set the CFI type
-> > explicitly. Note that we need to set the CFI attribute explicitly as
-> > bindgen is using repr(transparent), which is otherwise identical to the
-> > inner type for ABI purposes.
-> >
-> > This allows us to remove the page range helper C function in Binder
-> > without risking a CFI failure when list_lru_walk calls the provided
-> > function pointer.
-> >
-> > This requires bindgen v0.71 or greater.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  drivers/android/binder/Makefile            |  3 +--
-> >  drivers/android/binder/page_range.rs       |  6 +++---
-> >  drivers/android/binder/page_range_helper.c | 24 ----------------------=
---
-> >  drivers/android/binder/page_range_helper.h | 15 ---------------
-> >  rust/bindgen_parameters                    |  4 ++++
-> >  rust/bindings/bindings_helper.h            |  1 -
-> >  rust/bindings/lib.rs                       |  1 +
-> >  rust/uapi/lib.rs                           |  1 +
-> >  8 files changed, 10 insertions(+), 45 deletions(-)
-> >
-> > diff --git a/drivers/android/binder/Makefile b/drivers/android/binder/M=
-akefile
-> > index 09eabb527fa092b659559367705fd3667db6cb2c..7e0cd9782a8b24db598034e=
-15e5a36eca91b3fa9 100644
-> > --- a/drivers/android/binder/Makefile
-> > +++ b/drivers/android/binder/Makefile
-> > @@ -5,5 +5,4 @@ obj-$(CONFIG_ANDROID_BINDER_IPC_RUST) +=3D rust_binder.=
-o
-> >  rust_binder-y :=3D \
-> >         rust_binder_main.o      \
-> >         rust_binderfs.o         \
-> > -       rust_binder_events.o    \
-> > -       page_range_helper.o
-> > +       rust_binder_events.o
-> > diff --git a/drivers/android/binder/page_range.rs b/drivers/android/bin=
-der/page_range.rs
-> > index 9379038f61f513c51ebed6c7e7b6fde32e5b8d06..eb738e169525839a199132d=
-d71e69e0b9cc69053 100644
-> > --- a/drivers/android/binder/page_range.rs
-> > +++ b/drivers/android/binder/page_range.rs
-> > @@ -642,15 +642,15 @@ fn drop(self: Pin<&mut Self>) {
-> >      unsafe {
-> >          bindings::list_lru_walk(
-> >              list_lru,
-> > -            Some(bindings::rust_shrink_free_page_wrap),
-> > +            Some(rust_shrink_free_page),
-> >              ptr::null_mut(),
-> >              nr_to_scan,
-> >          )
-> >      }
-> >  }
-> >
-> > -const LRU_SKIP: bindings::lru_status =3D bindings::lru_status_LRU_SKIP=
-;
-> > -const LRU_REMOVED_ENTRY: bindings::lru_status =3D bindings::lru_status=
-_LRU_REMOVED_RETRY;
-> > +const LRU_SKIP: bindings::lru_status =3D bindings::lru_status::LRU_SKI=
-P;
-> > +const LRU_REMOVED_ENTRY: bindings::lru_status =3D bindings::lru_status=
-::LRU_REMOVED_RETRY;
-> >
-> >  /// # Safety
-> >  /// Called by the shrinker.
-> > diff --git a/drivers/android/binder/page_range_helper.c b/drivers/andro=
-id/binder/page_range_helper.c
-> > deleted file mode 100644
-> > index 496887723ee003e910d6ce67dbadd8c5286e39d1..00000000000000000000000=
-00000000000000000
-> > --- a/drivers/android/binder/page_range_helper.c
-> > +++ /dev/null
-> > @@ -1,24 +0,0 @@
-> > -// SPDX-License-Identifier: GPL-2.0
-> > -
-> > -/* C helper for page_range.rs to work around a CFI violation.
-> > - *
-> > - * Bindgen currently pretends that `enum lru_status` is the same as an=
- integer.
-> > - * This assumption is fine ABI-wise, but once you add CFI to the mix, =
-it
-> > - * triggers a CFI violation because `enum lru_status` gets a different=
- CFI tag.
-> > - *
-> > - * This file contains a workaround until bindgen can be fixed.
-> > - *
-> > - * Copyright (C) 2025 Google LLC.
-> > - */
-> > -#include "page_range_helper.h"
-> > -
-> > -unsigned int rust_shrink_free_page(struct list_head *item,
-> > -                                  struct list_lru_one *list,
-> > -                                  void *cb_arg);
-> > -
-> > -enum lru_status
-> > -rust_shrink_free_page_wrap(struct list_head *item, struct list_lru_one=
- *list,
-> > -                          void *cb_arg)
-> > -{
-> > -       return rust_shrink_free_page(item, list, cb_arg);
-> > -}
-> > diff --git a/drivers/android/binder/page_range_helper.h b/drivers/andro=
-id/binder/page_range_helper.h
-> > deleted file mode 100644
-> > index 18dd2dd117b253fcbac735b48032b8f2d53d11fe..00000000000000000000000=
-00000000000000000
-> > --- a/drivers/android/binder/page_range_helper.h
-> > +++ /dev/null
-> > @@ -1,15 +0,0 @@
-> > -/* SPDX-License-Identifier: GPL-2.0 */
-> > -/*
-> > - * Copyright (C) 2025 Google, Inc.
-> > - */
-> > -
-> > -#ifndef _LINUX_PAGE_RANGE_HELPER_H
-> > -#define _LINUX_PAGE_RANGE_HELPER_H
-> > -
-> > -#include <linux/list_lru.h>
-> > -
-> > -enum lru_status
-> > -rust_shrink_free_page_wrap(struct list_head *item, struct list_lru_one=
- *list,
-> > -                          void *cb_arg);
-> > -
-> > -#endif /* _LINUX_PAGE_RANGE_HELPER_H */
-> > diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-> > index fd2fd1c3cb9a51ea46fcd721907783b457aa1378..1358f3348ffdd31f9bef6c0=
-4ee9577d0f6a0c5a6 100644
-> > --- a/rust/bindgen_parameters
-> > +++ b/rust/bindgen_parameters
-> > @@ -23,6 +23,10 @@
-> >  # warning. We don't need to peek into it anyway.
-> >  --opaque-type spinlock
-> >
-> > +# enums that appear in indirect function calls should specify a cfi ty=
-pe
-> > +--newtype-enum lru_status
-> > +--with-attribute-custom-enum=3Dlru_status=3D'#[cfi_encoding=3D"lru_sta=
-tus"]'
->=20
-> I think this may need to be `#[cfi_encoding=3D"10lru_status"]`
 
-Ah, I did have some trouble testing this.
+And I am not sure what you are trying to imply here with your words in
+your reply, but I personally find your message and its tone borderline
+unacceptable. I was actually trying to help you, so it is doubly
+annoying to get such a reply, to be honest.
 
-Is there an easy way to test that I got the cfi enconding right? I guess
-I can always add a kunit test that makes a dynamic function call...
+I will reply to a few things below to keep the record straight now
+that LPC is over and I had the chance to talk about this to a few
+people.
 
-Alice
+> Don't be sorry, it's not your fault. The problem is that bearing
+> tests smeared among comments is a terrible idea, and now you reap
+> the benefits of someone else's bad design.
+>
+> (Did I warn about it? Yes I did.)
+
+They are not comments: they are _documentation_, which is different,
+not just conceptually, but also technically. From that idea, the rest
+follows quite easily.
+
+They are also not tests in the sense of "we write tests like this" --
+they are primarily *examples*,  which are a fundamental part of the
+documentation. They are not supposed to replace tests.
+
+And it is important to understand that those examples would be there
+*anyway* whether we compiled them or not. The fact that we actually
+can not just build but runtime test them within KUnit is a very good
+thing, because it ensures that the examples that developers wrote are
+actually true *and remain true* even across refactoring/time.
+
+That is, the examples will always reflect the reality of the API, the
+asserts will always represent the true return values of the API, there
+will be no typos of all kinds when typing the examples, and so on and
+so forth.
+
+Regardless of all that, other (non-Rust) maintainers do want to have doctes=
+ts.
+
+So, no, doctests are staying, and we are writing more of them, not
+less. In fact, new APIs should come with examples unless there is a
+good reason not to.
+
+> The other problem is that Miguel replied in great details about how
+> well rust process is designed,
+
+The point was not to tell you about how "well designed" anything is
+"in great detail", and I am not sure if you are sarcastically saying
+this.
+
+I simply gave you a link to our docs and suggested you could have a
+similar field in the `MAINTAINERS` file, because in my experience
+(which you can easily check in the mailing list) people actually do
+write and test doctests.
+
+As I said, I was just trying to help.
+
+> and even attached an external link,
+> but didn't answer my question: how to enable rustdoc by default?
+
+I *did* answer your question, and pretty directly:
+
+  1) I explained it was not a `rustdoc` target issue.
+
+  2) I explained the Kconfig should not be enabled by default.
+
+Now, it is clear that you are still quite confused about what failed
+and that you didn't take the time to read into the link I provided, or
+the docs, or the Kconfig option I mentioned.
+
+So from your point of view, since you thought this was a different
+topic, I guess you could have thought "Miguel is talking to me about
+unrelated things". That is fine, but you can always say it politely,
+and I would have tried to clear the confusion again.
+
+> I followed this link by the way. It doesn't mention that rustdoc step
+> is mandatory. It doesn't provide steps for careful testing.
+
+It does (both) and I quote:
+
+    When submitting changes to tests, including #[test]s, Kselftests
+and examples inside Rust code documentation (i.e. "doctests", which
+are transformed into KUnit tests), please test them.
+
+You are just confusing the issue. This is about *testing*, not about
+`rustdoc`, as I already explained in my previous message, so you read
+the wrong bullet point.
+
+It even clarifies what doctests are and even links to the "Testing" in
+the kernel tree which is a page dedicated to explain this.
+
+Even if you missed that, I even explicitly told you in my previous
+message the Kconfig option you had to enable.
+
+Even if the docs were wrong or may be improved, your message is just
+not a productive way to engage.
+
+> Does it sound like:
+>
+>         Rustdoc is a MANDATORY step! You MUST run rustdoc every single
+>         time, otherwise the build will get BROKEN. Even if you don't
+>         touch comments!
+
+Yes, it does very explicitly explain the mandatory steps. No, they are
+not comments. No, this is not about the `rustdoc` target. See above
+for the quotes.
+
+> No, it does not. So, I wasted an hour just to find nothing. But there
+
+Yes, it does. And you didn't have to "find" anything. I *explicitly
+told you* the Kconfig you needed in my previous message.
+
+> It's good that I started receiving such a traffic at all. But it's
+> especially good because I was on my way to submit a PR to Linus, and
+> that hour saved me a broken request. Andrew Morton on the previous
+> cycle wasn't that lucky, didn't he?
+
+What do you mean? Where do you want to go with this? Please speak
+clearly here -- veiled comments aren't useful nor polite.
+
+> 2. I will stop taking any rust patches unless the author explicitly
+>    mentions that he ran rustdoc on them.
+
+Submitters are definitely supposed to test their code, just like for
+any other code. And as a maintainer you are the one that decides what
+is "good enough" etc.
+
+But everyone misses things from time to time, sometimes authors are
+newcomers, sometimes they may not have their full testing setup
+nearby, etc., so you as a maintainer still need to test it anyway.
+
+That is the point -- both submitters and maintainers are supposed to
+work in tandem and double-check the other side, since anyone can miss
+things.
+
+To me, it sounds like just because you don't like doctests, you are
+going to ask *everyone else* to do the testing for you, which
+personally doesn't sound acceptable to me, to be honest.
+
+I also find it a bit amusing, because you told me "Maintainers are not
+handy testers at your convenience": To me, it sounds like *you* are
+the one asking others to test your branch for you.
+
+> 3. I encourage rust community to spend this cycle on reviewing the
+>    development and submitting process. You guys decided to sprinkle
+>    compilable code across the comments, and you advocate it. Now
+>    please find a way for everyone to compile your comments (huh)
+>    during a routine development. And please make that knowledge
+>    very sound.
+
+No. You don't get to blame others here. I am always happy to "review
+the process" to improve it, but this issue has nothing to do with
+that.
+
+The process is quite clear, has been documented/followed/discussed for
+a long time, and other subsystems and maintainers take advantage of
+the feature and use it extensively.
+
+It is obviously fine to not know about something (nobody can read
+everything), but that doesn't mean you get to pass the buck and to
+change how it all works just because you don't like doctests unless
+you convince everyone using the feature that they shouldn't use it
+anymore.
+
+And it seems you also ignored from my message why the doctests are not
+built in every config (which is very much done on purpose), and
+instead keep pushing for it, which is not useful and is not going to
+go anywhere.
+
+Cheers,
+Miguel
