@@ -1,114 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2E9219A8E;
-	Tue,  6 Jan 2026 12:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275CA1E868;
+	Tue,  6 Jan 2026 13:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767704174; cv=none; b=SKQ4WpdNoSniVGbdHNUKZoFM8UjGHFFIrpRzr3PC3vEkt4m13+kX6T96fed5CfZjfjCVpl9BuCdO6siR0FLvawzgg/jwLWJ1I6/zxMqZz8Fg3E9FwzejWROwDfxiF2DPPXLidRqVX8DalymSkYcRn7DdGhzNk8vxgLxrbRzfX+A=
+	t=1767704627; cv=none; b=eylk4LmmIuSi5qCvbHTptPuRAB7d7Io/5bjj2boRiWxs1DfPd8jkiStM4HVvj4XK5SPD8JTN1XOMaVTACC+hxAkvweNSiR7+VjMjJ+Do/2CvqD/qUDY3EXFgOGNWhUdhpDo2GEtvZdaVgQ5uoBe4un7tujiMQZi+CU+fBepO5L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767704174; c=relaxed/simple;
-	bh=sWtryoRLOPWT/n5m9Ko/0M389f3WZbdEwizETVLZoPU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=H/V97YkTgtH243bn0teWx7R6ZgyMK5d5Str2kZwzZNX60WcsF/XpO5lTB25xPfKmSDvBj0KzwR8ez2zMq4eJKcr2wDimILqX9Qn8IsDSIjM/FjuyiT/HMy4nZz1416YKM1c9ASghG8qJvpeV8ZaHxgeU6bZsR9czTptNBI9MOBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFxA1Exw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767704627; c=relaxed/simple;
+	bh=G1ENUbpw7ERc93thDSpYrQx7X7lw43ebLSgAnTOACjU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GJ32IlyevFrtrY7rWCiqdP9pFj4KgSSMHthjpy6OdJU/7rbf7i6tF6+VNv+oQw2f+9UA8nlNs7ePG6pXCYbsLwO+wIx667naRhg2OdqLzjeznOzJ9g4/7k4PqT4XWk1dbUoFf2JX+5/lgTgzCLkaSqumxTQfRwGBqoiG7eH5uo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g4dWGLt7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFxA1Exw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF333C116C6;
-	Tue,  6 Jan 2026 12:56:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g4dWGLt7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422ECC116C6;
+	Tue,  6 Jan 2026 13:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767704174;
-	bh=sWtryoRLOPWT/n5m9Ko/0M389f3WZbdEwizETVLZoPU=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=kFxA1ExwcPNw3IMSn2w193OfntXYYyMSr0GwCLycNwWYfb5vqfHqWQ5QjMAGJjR+5
-	 u2GooWBFoCibpcmx4lU24poJSS/skuiTv37yCrFLPgXjg6o9X3ApdLj85lkVowjOKE
-	 Zr9ti6o9kJUbI4AnBpIrVmhNfX2QrmUPLXdXLVwoH8V8hZdu4S9rez6jl1kYSUl+4J
-	 wBWhOQ3vksXlfCcF+onw60g78azpOLAl1CP/Rb/dgTwO7WqYjkluCfGGKdU06KIQw5
-	 sO4caRN+tnDbTk7N84CRz+48nLyitpZdpu9qbQBM+xTgDe8MFdmcbTbsBJMbHwJl6l
-	 eXI//XxsrhCbg==
+	s=k20201202; t=1767704626;
+	bh=G1ENUbpw7ERc93thDSpYrQx7X7lw43ebLSgAnTOACjU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=g4dWGLt7m4E0SQ9mCzeaUxVahU58dRj5+yK1M0Yi0vcArWGi7BQzL9SNMWUv1FSDj
+	 ONUuHss2z35npwgqgbVoKhrcSdjM4c8W6z4sjplOeai6ksuXJsqKxNEXsqlWaK96vD
+	 b/2mDe7idva+VdeoIPeAS8YA/k1iKmtqdNk0VCnmTwVNH8DQU15b/VL+4XCHlYEG28
+	 fZZ57XcWR6RufesthzzKLMyfKj08QizH2NtOEp8hdcpnAhfbeA+WZA1I0rHcjdtN+y
+	 w9aTuteJPU3SP8IQWa4LAcxxdPGQVrtJwLksSMmg/n9megtSVhdYwdjN2kD73VvL16
+	 WTCHY3/uG6rbQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: Gary Guo <gary@garyguo.net>, Will Deacon <will@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>, Matt Turner
+ <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, Catalin
+ Marinas <catalin.marinas@arm.com>, Miguel Ojeda <ojeda@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Mark
+ Rutland <mark.rutland@arm.com>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
+ <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>, linux-kernel@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 0/5] Add READ_ONCE and WRITE_ONCE to Rust
+In-Reply-To: <aVXKP8vQ6uAxtazT@tardis-2.local>
+References: <20251231-rwonce-v1-0-702a10b85278@google.com>
+ <20251231151216.23446b64.gary@garyguo.net> <aVXFk0L-FegoVJpC@google.com>
+ <OFUIwAYmy6idQxDq-A3A_s2zDlhfKE9JmkSgcK40K8okU1OE_noL1rN6nUZD03AX6ixo4Xgfhi5C4XLl5RJlfA==@protonmail.internalid>
+ <aVXKP8vQ6uAxtazT@tardis-2.local>
+Date: Tue, 06 Jan 2026 13:41:33 +0100
+Message-ID: <87fr8ij4le.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 06 Jan 2026 13:56:09 +0100
-Message-Id: <DFHITWGSEB4E.QV5DTPS816XI@kernel.org>
-Cc: "Gary Guo" <gary@garyguo.net>, <aliceryhl@google.com>,
- <acourbot@nvidia.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <ojeda@kernel.org>, <boqun.feng@gmail.com>,
- <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: macros: Add derive Display for enums
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Maurice Hieronymus" <mhi@mailbox.org>, "Danilo Krummrich"
- <dakr@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260104200733.190494-1-mhi@mailbox.org>
- <20260104200733.190494-2-mhi@mailbox.org>
- <DFGJ8UBULO54.NRW84R2DTHIK@kernel.org>
- <DFGL2QTNH7FE.93EN71L7BXFM@kernel.org>
- <20260105161110.5d1ab548.gary@garyguo.net>
- <cd9d7dd56e8191eb2d61dce1c3fd88ccffcff690.camel@mailbox.org>
- <DFGZUHLJ3ALF.EZDC85ZEFJA9@kernel.org>
- <90fac786f019f06765edb7c362e96f1a19801f26.camel@mailbox.org>
-In-Reply-To: <90fac786f019f06765edb7c362e96f1a19801f26.camel@mailbox.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Tue Jan 6, 2026 at 6:56 AM CET, Maurice Hieronymus wrote:
-> On Mon, 2026-01-05 at 23:03 +0100, Danilo Krummrich wrote:
->> On Mon Jan 5, 2026 at 10:11 PM CET, Maurice Hieronymus wrote:
->> > Before I start implementing, I want to reach common ground.
->> >=20
->> > In my opinion a derive macro which implements Display would be
->> > perfectly fine, as long as the name suggests what it does. So for
->> > example #[derive(DisplayEnumVariant)]. This would communicate the
->> > intent clearly to the user.
->> >=20
->> > Benno, would you be okay with that? If not, Gary and Danilo, are
+"Boqun Feng" <boqun.feng@gmail.com> writes:
 
-I'd prefer if we stay a bit more cautious about directly deriving
-`Display`. The trait with the variant name sounds like a very sensible
-idea.
-
-We can talk about this in the team in our weekly meeting, they might
-change my mind :)
-
->> > you
->> > fine with the proposed trait implementation (e.g. the variant_name
->> > function)?
->>=20
->> Actually, it might even be reasonable to have both. In the Nova
->> driver we have
->> the case that we want to print the enum variant exactly as it is
->> defined in the
->> code and a lowercase version of the enum variant.
->>=20
->> > Are there any common use-cases where one wants to change the case
->> > of
->> > the enum variants? If not, I would not implement an argument and
->> > rather
->> > name the macro accordingly, so the intent is clear.
->>=20
->> As mentioned above, we do have a case in Nova where we also want a
->> lowercase
->> representation to construct a firmware path with.
+> On Thu, Jan 01, 2026 at 12:53:39AM +0000, Alice Ryhl wrote:
+>> On Wed, Dec 31, 2025 at 03:12:16PM +0000, Gary Guo wrote:
+>> > On Wed, 31 Dec 2025 12:22:24 +0000
+>> > Alice Ryhl <aliceryhl@google.com> wrote:
+>> >
+>> > > There are currently a few places in the kernel where we use volatile
+>> > > reads when we really should be using `READ_ONCE`. To make it possible to
+>> > > replace these with proper `READ_ONCE` calls, introduce a Rust version of
+>> > > `READ_ONCE`.
+>> > >
+>> > > A new config option CONFIG_ARCH_USE_CUSTOM_READ_ONCE is introduced so
+>> > > that Rust is able to use conditional compilation to implement READ_ONCE
+>> > > in terms of either a volatile read, or by calling into a C helper
+>> > > function, depending on the architecture.
+>> > >
+>> > > This series is intended to be merged through ATOMIC INFRASTRUCTURE.
+>> >
+>> > Hi Alice,
+>> >
+>> > I would prefer not to expose the READ_ONCE/WRITE_ONCE functions, at
+>> > least not with their atomic semantics.
+>> >
+>> > Both callsites that you have converted should be using
+>> >
+>> > 	Atomic::from_ptr().load(Relaxed)
+>> >
+>> > Please refer to the documentation of `Atomic` about this. Fujita has a
+>> > series that expand the type to u8/u16 if you need narrower accesses.
+>>
+>> Why? If we say that we're using the LKMM, then it seems confusing to not
+>> have a READ_ONCE() for cases where we interact with C code, and that C
+>> code documents that READ_ONCE() should be used.
+>>
 >
-> So there would be the need to have two derive macros:
+> The problem of READ_ONCE() and WRITE_ONCE() is that the semantics is
+> complicated. Sometimes they are used for atomicity, sometimes they are
+> used for preventing data race. So yes, we are using LKMM in Rust as
+> well, but whenever possible, we need to clarify the intentation of the
+> API, using Atomic::from_ptr().load(Relaxed) helps on that front.
 >
-> 1. #[derive(DisplayEnumVariant)]
-> Implements Display for all enum variants as they are (original case).
->
-> 2. #[derive(ImplementVariantName(Case::Lowercase))]
-> Implements the mentioned trait. Case could be an Enum where one could
-> choose between Case::Lowercase and Case::Original.
+> IMO, READ_ONCE()/WRITE_ONCE() is like a "band aid" solution to a few
+> problems, having it would prevent us from developing a more clear view
+> for concurrent programming.
 
-You'll need to use a helper attribute, something like:
+What is the semantics of a non-atomic write in C code under lock racing
+with a READ_ONCE/atomic relaxed read in Rust? That is the hrtimer case.
 
-    #[derive(VariantName)]
-    #[variant_name(case =3D "lowercase")]
 
-Cheers,
-Benno
+Best regards,
+Andreas Hindborg
+
+
+
