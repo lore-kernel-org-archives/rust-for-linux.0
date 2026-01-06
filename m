@@ -1,108 +1,164 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FFE2C11EF
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 20:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767729693; cv=none; b=UzxPiaL1XEJQZI00w1r3YaCfkx9Ssx3s/IN1deH7ic1R/2JoiPvId0uOehupLnACUwYddpK7k6avL+GnssOBIEq7S+xu768ufisOZ5Y9eg1w+SqZce3s51+PfnQZ9ouhOv6BXQ+OuVLeOV+Ub7UJE8ZUu5EgOmrCYh337w9j2GY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767729693; c=relaxed/simple;
-	bh=Dt549mrUZstAPsKfNJENULJYrTj+LZJNEJkKzB4AD+I=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642A12D595D
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 20:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767730737; cv=pass; b=rn3km0Dq8ZOz/XvXnrtobtnXG0RsS5C0DGq9b8G8llCR0y5uXrQSINSZTA96hg0c+GM5XRv7VKBbZY+PfdfM6b9r0h8is4GawIn9m4pUB28RQy35fr/Hxilzu9OrpSF2YDGhZeao7QQITj+vrZeOmzC2TNvqXw758syjkhlCz2s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767730737; c=relaxed/simple;
+	bh=mJK7tEWaEaayBdll/gB1qp/cEoE2uWlT5/NoPth/who=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jZJtb4LJL1TwcVS4E/cybbgPEWaxcemdgX9Jh34ugB5CcTcf6YrcGCgTQyjkS9RnIBXfEWfCR0TZWxI5jYmT58IEe3sQS9b5X580OdGSNmab2kDBeNPKJjwYtkYKCq4kqH8BSkycB9v73LTIX9EtiJLtusSGATjLN6HU956NVGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=arhZVoBL; arc=none smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=PFKzG+yVIF31LM4UdPOOjWW4aFkVQ17/GTmQOTpctvOY0BElMdqGzXkHKMgn6uQ0EHp1uauoeg/2jLk4KLzWrmPXbcSnMTYBO1xTT26hNgPf7iaTs90DxIZyJ+MNBoFoockJKXfM1L1lyCmIqTVjStltuEK5usZj4jgjLoPHir4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zNUhjPV5; arc=pass smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="arhZVoBL"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-121a15dacd1so70492c88.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 12:01:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zNUhjPV5"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6505d147ce4so2215a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 12:18:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767730734; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fYJejqTH1zfBY5VQHVHR+EgHFae6sYRuWWRCD6Qox1qcXu84ovdMxE/1MGOjUgCL+p
+         f2Q8SKWUog5SwxaJvEq9il1VGYNMvW/6jV+jR3VqRhWMG8uNzf5n6+zpW5MGLp8uIrD/
+         ufATGqAIbthsPt6YUnrXXezmGGh3g9/HVpH3VRsDcuSl+s+V7gqf6MyvjXlmbxxaOpYA
+         C1C+epmejKBW8SvGJiH1grGNMoRMaYhHCHAR5nh4Xd4sjvMt4qFnQaARdQPSkvbSX98o
+         Zg2woQhlURtTWABsb5C1J+MceUFH/I5RjnNPm4//0KZfpwHKozM04VC67sHMRcRToqkG
+         6ZGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mJK7tEWaEaayBdll/gB1qp/cEoE2uWlT5/NoPth/who=;
+        fh=azFXAwfYihhCLyHwxonXQ/ObEOYQBIrcSfBZdSET9gk=;
+        b=TtkX16uFcl71uIoqvBggpKgoBwSoJDy84yPCVOGFFXqUiY2lgLfiS8EaidMr6L1WFY
+         MnW0f8gFqW+om/T0zQzHa5I/cowDLhVioxTDEeQuhihJ600N9Kqk/ckNkEPQQQr1pUKK
+         SgZ6gY/d59b324amjXxWCZ37de3zm+sOBzU6uWvFc7Gdo/gcQD28ldMtl3eOTwK6+uwf
+         toXY+zs9051tn9ekJdR12ML+t0MZjn22mE56MqereU/0Tw9G6RVmYpecYYxZm6EOrNp2
+         6l1VYXn3w3ntha0XsRRqVMcTmONR1gDnZrbImjW0ef9abNLhKGpmlY7BN2bIO/56TMWa
+         SEug==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767729691; x=1768334491; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1767730734; x=1768335534; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BGV7wWt6S7LagMiDdKmY0Z14bkvoMGG1QHstzp9zIvU=;
-        b=arhZVoBLSHgyTGMK9QVm2AQCIZwQD4vy5cAY098wwqKgp/q0F8MWG2fKjT14dRo545
-         2FMF8jsH2lHa4S4HB2iQVCXaD5s1FAfZemt1Fh5lPipLJnSduqsNLFHetw3I6hh0uHXP
-         jc+KMaKG5RztFIzYHjn1d+zCqyyUSf19LSY4iNjjgYEq13VokekR3wirv9lQ98QLHRcn
-         iQ+4AaokPEewUD3xyAelv/bs3PPdos7PXcfHk967D9Af3CYkeGYXrIpeTAwXjZE4vAb+
-         tytceeMmm3IYAfF4QVeeYJ4yraQD19QMUz8vxir3RJpQ8+iUi7CYiqjWlu2vXcPRmeLz
-         BVXA==
+        bh=mJK7tEWaEaayBdll/gB1qp/cEoE2uWlT5/NoPth/who=;
+        b=zNUhjPV5s2imQ911T0uYm9O4FeQviAmT8sOLp2tQm0W5pbN+5pvSTQz9d8HGr26DpC
+         71xcRQvwF4Dk9lYEzIhfXMbJtBI1FclSfOCtu8IVZz/waUkN6jG6YkZ0vATchftxO5CF
+         qPracSKs6pASijBNy4dCmjYeK9Sr4JeHhZVQB3sVsCoinDUe8FPMTrxVVl99MopcqHjX
+         Ll3kYnr9hu4hIP3UDPsqKpJ1FL6qpjiYglhy4SHdo4EXp7+I9/UiQgdmSYOg1VT4iUX8
+         lxqw7SqXxomm29pvyaviTTwF9FCzt6hZTWKR3fF25AOX9oFS5lK+sWthiM9Y5+ekteFC
+         FCtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767729691; x=1768334491;
+        d=1e100.net; s=20230601; t=1767730734; x=1768335534;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=BGV7wWt6S7LagMiDdKmY0Z14bkvoMGG1QHstzp9zIvU=;
-        b=WuYYvrvgKJJ2qeAtI1MMJiH+n2Xnt2Hgmv8eWCZQDdbtQYzjaFVKYhC06LOn3PksC6
-         y7sttEt++yX5OLab+NxhIrXI2B5XZMnqXNd34YxK4izz/GqHQfqI46/JW+TyXt6HHcw4
-         wqhA1lfug7/jJsZM7pVeJud8nbowP9riWg4vYU6AUrFr71752FMh4d8d4YrNh+vv3xkf
-         g0K6DlwJphr6mBGmtZfgsgw7wClv9a1u5lqu8X0sq5BB19liu1ZYsGqRaitFOADdIckv
-         StBIxYnDaJP3RZ54qPJHKfRfxkMj/1dDRgW3mG98RpARs8fgFhdJgKGJtcdXrHiE0saq
-         Kheg==
-X-Gm-Message-State: AOJu0YzS4PaqazcZkFsnDX9wNxIO4NzlGg6Dus6e6c4qGenQJw9YiSHC
-	VFnFRbBmptCcCx+/NhXgVs5pKIpcvgo5ZN46sY3A3i/2DyaSIm4s34iMCfx6tKBLximKV7+Nr7x
-	UVyDrABNSeOEtXOu+9qHA6ajedY7uAh5IQFrO
-X-Gm-Gg: AY/fxX5FyqfP/msJKbU5lNhD5whLlW4YUEMIiBf+u59ysqTvV0g+Ghewa9kylYfXCr/
-	ZMZUIZYGP0H2niWp31RLiEjabyTzj/IjYpZlm0ishX8zMcEpPHs+HtI3Md5SGbhBENg43M4JJHK
-	4gSOeC1c/eX8tThWDZ55O2HzNpU64zvBBDitVpK4GgzBcg0uooXMQd7c/xPjild/Cht5xKiZmOX
-	QU1+dgQcxuKrOhV0jy1rap5szQq5r1CCzP2ekUnfrvZRLW5lZgGtUc/0awqaJ7ljd2lDLa8CVmP
-	AS2N/GFYfN2BFuPpDEYHyHyFQ7isvBHy1iMV5aM4yxDaC6U1KdsczQL8Y5qyHMS27AXTf+Rh5d7
-	cWln+OxvUyQWW6v1BRTDynjo=
-X-Google-Smtp-Source: AGHT+IFSOhN+iUfgS/YG/37q1BSianexajuG7E+qe0vvmDLBMRpeuPTZXEk52DW7Gun6xTN8IE9bafugRgUlxEyPQ/Y=
-X-Received: by 2002:a05:7300:33a4:b0:2b0:4e90:7755 with SMTP id
- 5a478bee46e88-2b17d336a74mr28976eec.8.1767729690670; Tue, 06 Jan 2026
- 12:01:30 -0800 (PST)
+        bh=mJK7tEWaEaayBdll/gB1qp/cEoE2uWlT5/NoPth/who=;
+        b=u5iLOzLC9fgEyvx4Q9/Ni42qSazd+IrvtABOGcP2iByywLcFgSfxVNFpZEPaErA1V0
+         HLbQ8cIdpJmxiOCeBlclFUiXGKivJ9e9oOPLrdkeNUTK8K1C6xNWpsxL6OP+FhZS0BF2
+         TFc22xOTN0G/403/PAkUvJ1LV3f5flnYmCBnSrsvC8acvo5hIBgsqdab2NjAbCoLtp4S
+         E6LHOzsnFhoYmszQ6r8SWZG/h61bLwzmj4ixEVY0bZCxkayhMHaaN1xh2EQNIN0u6tv6
+         3r2Zyi/WKO4EfZ76mf3h21HZTDMHs3FvkW6EiO1z2ESiHC091Nc9xsgK+mX9Jm9rrxjt
+         Ovig==
+X-Forwarded-Encrypted: i=1; AJvYcCUBmjfrP+XwB+3BSPIcS4+DMK15d5FWrIY2NZ2RJ/DPZIm/Nvkfu58lUmiRuvE4rF95FGiDPTRJdYaQkN7k2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTd0vETpg+OYCiFDv2cFTg9aUk5rNgK+IKJBRg1IY4BOZ6PAUh
+	0sNNQiCDyEjaObI7zT4rbCOZ4YKwbpxWMUD4/ydze2j0gBPW/wT7LWF+B9Ri6dpB62O+HsTtEKM
+	nTL/l7a+lBt0jtLabNgK0SnmuX62d/JW8VUJYxdkW
+X-Gm-Gg: AY/fxX7af0GH4+iYl/QLOQz5gloOJvOJ1el9dgC3/BcryEzoaBLBLfSh7BaPrpdQf46
+	FVHYrhjzhXumf8xm78fG7DReI0SCoF/tzj8msF4UNyBAeK79Yom/t9HAATOxWscNfHSTzpx+Df4
+	KA2f9bXU1sOyLnFtG3VZzu+4NCB3JbQVTkDmiZD00wMdf2UG4lcOJ2Fsq+vZlfThiJBZpRzwmt1
+	cu3FOwHAxwcs/PtJ0ZnLxVUkyTCs/bv+EmN1NgPB9p9juR9c9D+jCCHkOgfv/axQN6ptg9LT4qy
+	8j8wNvfOigMTdzFV/dBgaD9hgg==
+X-Received: by 2002:aa7:d592:0:b0:643:bfa:62ca with SMTP id
+ 4fb4d7f45d1cf-65097c02ddfmr5462a12.8.1767730733466; Tue, 06 Jan 2026 12:18:53
+ -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251217150010.665153-1-siddhesh@gotplt.org> <20251217224050.1186896-1-siddhesh@gotplt.org>
-In-Reply-To: <20251217224050.1186896-1-siddhesh@gotplt.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 6 Jan 2026 21:01:17 +0100
-X-Gm-Features: AQt7F2rm2cIt5lvkOzP2EUWMGIAmjTpl6PyZUhg_r_Bxlk8y9aFK7bw2z4d2xAg
-Message-ID: <CANiq72kGFOHOUjjAmjO7Wn2phcqKiwFG2UdXDu+uwoxJAggTGA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: Add -fdiagnostics-show-context to bindgen_skip_c_flags
-To: Siddhesh Poyarekar <siddhesh@gotplt.org>
-Cc: rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, stable@vger.kernel.org
+References: <20260105-cfi-lru-status-v1-1-0b2401f7c5b2@google.com> <202601061201.2CFE0303CB@keescook>
+In-Reply-To: <202601061201.2CFE0303CB@keescook>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Tue, 6 Jan 2026 12:18:41 -0800
+X-Gm-Features: AQt7F2pgAjPKmZWd5vfjF0iM3tJfeFfEXyVrED-mDk1znELbOf9gP0jZaRVjTis
+Message-ID: <CAGSQo000gN5-33yQnuXw08v3+4ZNDbDH780-P+mHmGmtSz9=mw@mail.gmail.com>
+Subject: Re: [PATCH] rust: declare cfi_encoding for lru_status
+To: Kees Cook <kees@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Ramon de C Valle <rcvalle@google.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 17, 2025 at 11:41=E2=80=AFPM Siddhesh Poyarekar <siddhesh@gotpl=
-t.org> wrote:
+On Tue, Jan 6, 2026 at 12:01=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
 >
-> This got added with:
+> On Mon, Jan 05, 2026 at 04:12:47PM +0000, Alice Ryhl wrote:
+> > By default bindgen will convert 'enum lru_status' into a typedef for an
+> > integer, but this leads to the wrong cfi type. It's supposed to be a
+> > type called "lru_status" rather than the underlying native integer type=
+.
 >
->   7454048db27d6 ("kbuild: Enable GCC diagnostic context for value-trackin=
-g warnings")
+> Is this a bug in bindgen?
+
+Kind of, kind of not. The things that are interacting here:
+
+Rust assumes that enums have all their variants defined in its
+codegen. This means that if the Rust definition for an integer enum
+has variants A=3D0, B=3D1, and C=3D2, and we get sent `0xffff` from C,
+undefined behavior occurs. To mitigate that, `bindgen` usually (unless
+explicitly told otherwise) *does not* represent C enums as Rust enums.
+There are several ways to do this. The default, usually used in the
+kernel, is to represent them as integers of the correct size with a
+set of constants available to compare them against. Alice has added an
+exception for this type which switches it to use
+`#[repr(transparent)]` struct lru_status(int_of_appropriate_width)` as
+the type.
+
+The Rust CFI implementation assumes:
+
+1. `#[repr(C)] struct MyStruct {` should have an encoding equivalent
+to a C type named `MyStruct` in the root namespace, similar to using
+`extern "C" {` in C++.
+2. `#[repr(transparent)] struct Foo {` uses an encoding equivalent to
+that of its only non-zero-sized field. This is done because the usual
+reason for `#[repr(transparent)]` is to guarantee that the layout is
+identical to that field so you can safely transmute between the struct
+and its field in certain scenarios. There are several places in
+commonly used Rust libraries where CFI will report if
+`#[repr(transparent)] struct Foo { bar: Bar }` is not encoded
+equivalently to `Bar` as a result.
+
+If `bindgen` output `#[repr(C)] struct
+lru_status(int_of_appropriate_width)`, it would just work, since that
+encodes as a C struct named `lru_status`, which happens to be the same
+as a C enum named `lru_status`. However, outside the scope of CFI,
+labeling this as `#[repr(C)]` rather than `#[repr(transparent)]` makes
+no sense.
+
+What Alice is doing would create a struct with `#[cfi_encoding =3D
+"myencoding"] #[repr(transparent)] struct lru_status(i32);`, which
+would get treated as a transparent struct, but have the provided
+encoding.
+
+The possible fixes in bindgen would be to provide
+yet-another-enum-generation-mode which causes `#[repr(C)] struct
+lru_status(` to be generated (easiest) or to automatically attach
+`#[cfi_encoding =3D "correctencoding"]` for all declared types, possibly
+by querying clang first. This latter approach could theoretically come
+with an error to emit if CFI encodings were being generated but a type
+that would need one is using a raw integer (which can't have a CFI
+encoding attached).
+
 >
-> but clang does not have this option, so avoid passing it to bindgen.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 7454048db27d6 ("kbuild: Enable GCC diagnostic context for value-tr=
-acking warnings")
-> Signed-off-by: Siddhesh Poyarekar <siddhesh@gotplt.org>
-
-Applied to `rust-fixes` -- thanks everyone!
-
-    [ Details about what the option does are in the commit above. Nathan
-      also expands on this:
-
-        Right, this does look correct, as this option is specific to GCC
-        for the purpose of exposing more information from GCC internals to
-        the user for understanding diagnostics better.
-
-      I checked that in Compiler Explorer GCC 15.2 doesn't have it, but GCC
-      trunk indeed has. - Miguel ]
-
-    [ Removed Cc: stable. Added title prefix. - Miguel ]
-
-Cheers,
-Miguel
+> --
+> Kees Cook
