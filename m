@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAC63254AE
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 12:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585C0327C19;
+	Tue,  6 Jan 2026 12:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767700818; cv=none; b=abh+VSdhoD5Yh2aZrkDU8/5uv1/HM4cnvf2hiGZ+TxmMrTQIoyf+MDJE/S0qls4M5FLcQ1l8uKGsUKatJ0CGtTBOJIcqsMKVfdZS4n85VdG2bALUUwHFUKZZ0HUPsMAI5XFs5AvO/S/mQY1zLovZHEfl4GFE+NQcPIMdWyGFsMg=
+	t=1767700978; cv=none; b=OsV0f94szgntKdBD9pFzCznsk4vJoffuR8LigBpRHmHBnOvNsvXv0loMQylOHq/SgEuXCcS0R8C0MUE/p1PkB9HlznxyJWb4reIzNX+HP2mzSBwIG9gFtOrm8u49yYp+vEB7p+UAGswwD8Yql+ODOtCwtZz3F1G9VDB06MVVhGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767700818; c=relaxed/simple;
-	bh=uYpvdWk5ETKA6OxvesVMY219NjtdAsBNxujuYeXF/ZM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=raF2pQ0mmbNhO9ZuGYrClTAOYkWBOdxEnRxADml+yrbsp//4EKux4N4nvEq1XMOp5Lnf2sPnzZdRUkn9FRsLoj2dP/kM8lpW4bYmxUoHM4Xt4mhVrfjbzHhX2oWDNMUw6pDXO11oV91oHnHrPUXMlxCE5QfRkf1Pt1N1HZAOrAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d7DtGHTj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767700978; c=relaxed/simple;
+	bh=RuR20ntLSihU7i4U/Z71FOOJsBvzHsUKXpYAf9QNo5k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=LgcPeMru7I5D3dG+2PmCRWW3J5VLWYt3CbLmSS4JZkJWC8qQce3kqmjwHl5LzSm4/fcTNZTiTLgOoKXIPkODqhdKtu9YDpRNnGWg2tZpcgP7YfxBVtDUOrTS3bhez0R+nM8sOdEPGYkL5KEVTSFthsA86rqHX6t6YJCuFPMHXC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dT5UdRQg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d7DtGHTj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3428C16AAE;
-	Tue,  6 Jan 2026 12:00:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dT5UdRQg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8139FC116C6;
+	Tue,  6 Jan 2026 12:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767700818;
-	bh=uYpvdWk5ETKA6OxvesVMY219NjtdAsBNxujuYeXF/ZM=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=d7DtGHTjveFBBMwX2Z1M98QB9LSHc+9BU3W9flVT2UtxDF4yFGJIPYGEIYgPEp3kk
-	 FV4v2RPhnluffuGBjPLs/1MYS8AfPMfdUU86sA/uBKTudUBjktXDfkbwgQ8LEHlBGj
-	 tTMzv7UykuV2EXphKxaFGmi7B+rIqHKqw9NjaMKs1qlsV7uBjZTHfSDPEHf5U9bS3W
-	 30ocgevA43eYjiYd3azg1yh0a1E60o6ZUqp+ES1TGzQcnkeg0jQbvh7Hi6BEyARwAi
-	 Vwi6HH+V581nt5l8t+Bd5OKPeOQW41/knqgrbeVbpEjd/MI/S395AW9SFTKkcbLtDw
-	 oX1cc8Ai+uL8Q==
+	s=k20201202; t=1767700977;
+	bh=RuR20ntLSihU7i4U/Z71FOOJsBvzHsUKXpYAf9QNo5k=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=dT5UdRQgmJpc3yEWySg1nUr+5EtLuryqgJyy9pbNyBaLQpno0fhxEhdzeIt4pN/ML
+	 w9ZF8E7JLB0/JB9yEcXOkRobNbwpKwhw6k03fNG93N5lDTUSTY/fnHMPU/hDPaq4DI
+	 nVc+pOhH+F935WDEJgQ3gFrYl7VTMrTEPC8vqXSZ6JkE8I/7elG78/psjuEqKFikBE
+	 DRE70jAe3Kwa2HXf4OnCFnsW6x3JPbKHOMnDljTV1jWYkI/EOABWLfo94LI+so71CV
+	 +j4dPogSIz/7hU0VXC/a574quUxWu0gAiPNgX1YjKDA4mvy6xsi6gx1gknsLaHtpNQ
+	 GmsJby6TeLrXA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,37 +34,41 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 06 Jan 2026 13:00:13 +0100
-Message-Id: <DFHHN31J8VVY.3009MJJNDZE5Q@kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+Date: Tue, 06 Jan 2026 13:02:51 +0100
+Message-Id: <DFHHP3LVYW43.247TW37BCGYHE@kernel.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v1] rust: device: Remove explicit import of CStrExt
-Cc: <gregkh@linuxfoundation.org>, <ojeda@kernel.org>, <rafael@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <lossin@kernel.org>, <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>
-References: <20260106000320.2593800-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20260106000320.2593800-1-fujita.tomonori@gmail.com>
+Subject: Re: [PATCH] gpu: nova-core: use CStr::from_bytes_until_nul() and
+ remove util.rs
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+To: "John Hubbard" <jhubbard@nvidia.com>
+References: <20260103013438.247759-1-jhubbard@nvidia.com>
+In-Reply-To: <20260103013438.247759-1-jhubbard@nvidia.com>
 
-On Tue Jan 6, 2026 at 1:03 AM CET, FUJITA Tomonori wrote:
-> Remove the explicit import of CStrExt. When CONFIG_PRINTK is disabled
-> this import causes a build error:
->
-> error: unused import: `crate::str::CStrExt`
->   --> rust/kernel/device.rs:17:5
->    |
-> 17 | use crate::str::CStrExt as _;
->    |     ^^^^^^^^^^^^^^^^^^^
->    |
->    =3D note: `-D unused-imports` implied by `-D warnings`
->    =3D help: to override `-D warnings` add `#[allow(unused_imports)]`
->
-> error: aborting due to 1 previous error
->
-> CStrExt is covered by prelude::* so the explicit import is redundant.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Sat Jan 3, 2026 at 2:34 AM CET, John Hubbard wrote:
+> @@ -209,7 +208,9 @@ impl GetGspStaticInfoReply {
+>      /// Returns the name of the GPU as a string, or `None` if the string=
+ given by the GSP was
+>      /// invalid.
+>      pub(crate) fn gpu_name(&self) -> Option<&str> {
+> -        util::str_from_null_terminated(&self.gpu_name)
+> +        CStr::from_bytes_until_nul(&self.gpu_name)
+> +            .ok()
+> +            .and_then(|cstr| cstr.to_str().ok())
+>      }
+>  }
 
-Fixes: 3b83f5d5e78a ("rust: replace `CStr` with `core::ffi::CStr`")
+Did you see my reply in [1]? The question is orthogonal to this change, but
+perhaps it can be addressed with a subsequent patch?
 
-Will pick it up later on, thanks!
+[1] https://lore.kernel.org/lkml/DFEVITW4O9DW.P4ITE1PWIDY6@kernel.org/
