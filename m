@@ -1,277 +1,236 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011004.outbound.protection.outlook.com [52.101.52.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8971414A60C;
-	Tue,  6 Jan 2026 02:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767666579; cv=fail; b=CN5zOfXR3jHNTiqIdpJ/jnjBT3K8d5OOyyonyVg3eBz1VDfVFAIvlNrIj2PT7Dww88QDf+iw6+cAExSogDFaXLK8zbwQGOrB0JcnriGednTER37BJ7KgueYYuNKel65cIQgdO4Nk/EzReEcdCqquz9SrxXVeNjSG+3IKc3QFrOk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767666579; c=relaxed/simple;
-	bh=HOn2UR0yFkAGpnxeTRaZPymS1v7ORpEn4ZNmid5unQU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Jxx8qBJBuSH2C8XF8MW5RQichEHeHcfO6rPZaHa8XTwFwq9dIQ58GmvD6FfRi+9JBXVyjEFemNrWNsYXWxWytOiQDV9/G6APM3GZhi/W0YDEp6ULJoyybnAOst3vTYAz+M0GNxg5rjwUrt5ld8MrlfXT3vIfcd0F6N5S9YvHjDA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QToTr8kx; arc=fail smtp.client-ip=52.101.52.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDD922172C
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 02:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767667920; cv=none; b=aGntdYHbL54MzsvNlNbFhbqSNdDD3rU26/QnfgaiZEhWKE8r/5kTkgFH4vCSJP1qfDs+yxiRSrm8WS8zxZpoAqW0AA3URPyESgxHvTOMz4ie1VGyujsKAJbNTwEJavR2BVkUy6Cp8ogfR/TyKFzYUGM00tCSZTKYeaZ1zs8BTFQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767667920; c=relaxed/simple;
+	bh=DTnPdAGyi9zw8bhtutufgjwIgPG14oeBvECc9opM0Xw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QgWjtzYLEZniMcGIfLIOOejgH2z+cEJnyuVGrY2wg+Z6N1swfyYy5IqMe8T/+HZH1OKPZh0F8clGAPMwUl5XJHKvcJZfPjmrMAF40Pa4wTooHeDTrQlZOgy9m91XQzhNu+3V+0W7vhIhBSZkTseCD/M4KEvpuj3fu6v6q8+rCIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EM+E4s6t; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QToTr8kx"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yHqZVPsK6A696t8PvUT0RXUDM5E6avj1PiQ56lkHKA3h+MngIsNbpJ9+VX+V+RSE0U9px/Y4EqmAl2ZFL/RvkWVxkCxKKTHLGFOAk34FY1Qt4FtQL5NceheRi+Tc2UufU51cw2GFZmvlmlKFEkBxCuLCtNVdu6VpTOJkbCrCrDT4P3ZLl/U1RBmjyiRur4W3TKN5Itb1S0IkZyNhgCGAJrWo4FynYfY0x1iw4a5qjSp048t4z4oSiSL9baVXn/vDLGSYa3dOhANOraPOu4HGnFZe76xjOAaJKDg6sZu+v2fO5ytD7xqpsiQz89QKgI8vcsBrvzZ653JapEzwyx7SUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=myuE3zTI7qflLob/dXs8nAL2PTXHA78y5czJHM2VVQI=;
- b=X1xQiOiDwHoJzuNDUx4bSCjpFi0KH6emJnTbnKwDyuV5hhPvZHzy6wN7RWrmuue15Db36QbWP/P1DsxAcq6nBx/5xJouE9GMUVxCz7msp07YJ5crZr4c2MZROMYD9wcJaKfqpjGc7rNT5fupRlWrMfilsYfGLnQA43yD5xVQ04bUPMP6P4SvqSmfMrwwTEAU3rolYrGFla9cVlMsPjK/IIS1+QfKIWyiobQlS2PeMXuD150krs4dWsOPeWsJVe/RnrpntnG79x90RuQCFE0871WxggvqLBf0XwOAVZEv/qsnE5qCYaCIGI4KsKXNEyaD4mbhzTjBYtew58Qc5YbIUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=myuE3zTI7qflLob/dXs8nAL2PTXHA78y5czJHM2VVQI=;
- b=QToTr8kxG1Cn/IUZy3uwe1hZT5WcrsWctFYUD8VRXC5g2cO3d2PX/wTNzrMyfVAoJFgdpYa6irFSIjdCmx241Rr/Gxe+Mtsc7l3UiRosZWSFhcwBX6FaxRd09y91g9Bo6nGczgfylSVl4avNbHpi7gHdMtMM9JLKG/FyIgB728hIcI7zEIFUhL+HJaEU93hf1c7Y0it5kB3C2W6NUD4Xe0XoxZ8FJuZkO3k0KOwdfs/LUUfzA64kIGF2sgygPPkHzTqQjlw6k2oFLUN/ad7NgpzrqCc/t9lR7wk137Mj82tNPRGkTOjJcC9Fb6UI6M8gmJa7TCk59jzE40XOmPkZVw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- LV8PR12MB9183.namprd12.prod.outlook.com (2603:10b6:408:193::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.5; Tue, 6 Jan
- 2026 02:29:31 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9478.004; Tue, 6 Jan 2026
- 02:29:31 +0000
-Message-ID: <ff80714c-cb9f-417f-8d3b-13c41826134e@nvidia.com>
-Date: Mon, 5 Jan 2026 18:29:05 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gpu: nova-core: use CStr::from_bytes_until_nul() and
- remove util.rs
-To: Joel Fernandes <joelagnelf@nvidia.com>, Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
- Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-References: <20260103013438.247759-1-jhubbard@nvidia.com>
- <4b589c75-c6d1-4733-80b1-a9a454445fb9@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <4b589c75-c6d1-4733-80b1-a9a454445fb9@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0068.namprd05.prod.outlook.com
- (2603:10b6:a03:332::13) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EM+E4s6t"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a0bb2f093aso5241625ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Jan 2026 18:51:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767667918; x=1768272718; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mME2FgNliNdUv4IE4C+D69aNELo1Zoi17RlupLlFIdI=;
+        b=EM+E4s6tHTuD8oPJKcMbwjgHxByIJ2cgPsI/NjTaWcJDjO6SyYvaQvR8zIBsUusykA
+         j0qT+gympn70ywL9SGHw9A2V00Dr0mGEV2UlVaU0QQQr3L1j7amT9t2TyKpoUe33Vi0m
+         BMZ0pzVIwOEfNQ69SQTEIoBgY49p2IZyG7tnv0FghRM/kd11oPiBjvvhUONRkySAcbLU
+         7h/RRX5wjkVdxHAf1rzFVaHE175hMy47yTwPVgHdZjmN4Hnb/Y64oLaK+ik569mwGpmw
+         d6BJrecoOh93dpL9iG0/t4fjcCoppHkT1pF2UVDfLTyXsbFkio6pS4cY0+kdHT9YzMpT
+         caXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767667918; x=1768272718;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mME2FgNliNdUv4IE4C+D69aNELo1Zoi17RlupLlFIdI=;
+        b=qK4GuOk3GZEDT1DXh1cxfg7p6+bLW79tDO/9VSMv70bqtXYRHOpTFPTaZk0jFs5O2E
+         hmNOgyC8Pn5SiHZSRg8cHWi+AtOWUeta8QpZTi26IN39nAcog2Pv0iMKjeEeGa7H/jkL
+         SAZ+68jvv2Lf2u7HZWB86xDpfAtR+y3sxo4grYTB4+0L6E0dUm8m1bsgwvErK0Mo6zCH
+         sBkhjFNnnP+XEzbgicF2PrJb4m8QkHctSYsy2pCwbqAT3M2oDRTqT0ZEB/QIDumN/j+s
+         MAsJZQG+R+ylt8Ef6Gj697aAstrQ8mda4eHyEKl5kF+drCMvKIo3qQTiFAFchmLrvZhV
+         K+lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWH2JKe9USyD4oEoZGNHCJUZBCeFCqULui0//cEtNSt6seuA8JRbJJxv73ocMAQkixuqUYrGGmDeF2phqu8jg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpmUp17L806/pOb0ZHM7I+9/3K5Dhu9beuvfVzFVSy/8h6IGH0
+	mLPgfO+TWyEagl5wclRpwDBKj7dfx3fZTr9QF2Bs/dPq73JQbIsAGnXP
+X-Gm-Gg: AY/fxX6D4HOG3dOuklgb36FDMJyHH44O3WsZ2IMWCcA+Z3lM/sr/R6e8/gY35qc/uxr
+	9kUMdHZvq7fRvWO3jkNo6E231fW5/Gdh/j/5dkwmj4E4WFFHB6qiR4sqXCy6+EENTbW94eahxDn
+	jPP2on3/zVCGmX4k9Wjagmw0wtD9M/yMSgcAcACGfNPqxf47Rnvb8hjar8JPrJOnbMVHVpo7Ars
+	Drodpct8EPUmS5yALmPljDtI8xxk9Wc3phJGxYCie/TEnDUNOiyqJGmwKyVvi71Ye9Gu8Mc6MRO
+	glWayVyXd2JjskkL6y7Q/TlOvmnuG/rnFzyL3DkQsROxVQbyRwdvfYvADLMapYFpjfPiAWPDk3z
+	JJSdYabSYvA2WRPHnA0hJ04jqqvxMNeGcTE3ZsX6xVFP1JWlo+hBApN9YIIS+Dg8EFNR7HWs8Ud
+	5KYARyyw/tpekgPwGVhHPEdlhefg7gePH/nahVy+4+yiDzbjo=
+X-Google-Smtp-Source: AGHT+IHqDO50RFlN1sWCZ9F0YlFD48YZv72A+9RcYtax3wH7I4/iNbpOrvyJmtS60ORtcEiq31M6bQ==
+X-Received: by 2002:a17:903:1108:b0:29e:9387:f2b9 with SMTP id d9443c01a7336-2a3e2cb23b0mr13186195ad.24.1767667917935;
+        Mon, 05 Jan 2026 18:51:57 -0800 (PST)
+Received: from [10.0.10.3] (210-61-187-173.hinet-ip.hinet.net. [210.61.187.173])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cc8d81sm5284825ad.81.2026.01.05.18.51.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Jan 2026 18:51:57 -0800 (PST)
+Message-ID: <88b1a3dd-e646-4583-bc41-07ff7e9422a7@gmail.com>
+Date: Tue, 6 Jan 2026 10:51:50 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|LV8PR12MB9183:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e4d0493-2aee-45d5-b070-08de4ccb6c1a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Ry8rQ2d2KysrNHFVNkFsYWdVQVZZR3YyTXdnd3dURWl2TzZhVVdIRVVhSHpH?=
- =?utf-8?B?d2pKbjN6ZVR0dlNnWks5TEJId3RGUGlZZnQ4c0tDSFRxNjBMWnNFQUx0TFgw?=
- =?utf-8?B?eEF0QXlWa0tqc2JXOVc3YjdTb09KZitEenAwUTJrL21SbGFPb3pKMWhESnoy?=
- =?utf-8?B?dWM0WEhCdXpSVkFuV1dQR2k3NGFjNllUbFN3c2hPN1RzNy9RT1V3VjhZelp1?=
- =?utf-8?B?MkZ0bHhDYm1LNk5UV0VoaDR3ejNITGlQdFVwcTBjMDQwcHlNSGhzY1NlSzJH?=
- =?utf-8?B?UGtscUJTdDl0MVoyNXlJTXRYcmQ4OEplM2Q4R0NOUDBGTysvZ3dPczRLajVD?=
- =?utf-8?B?WDI5RVo5UjQrMEl5blNJVjlOb2JKSW1EcWFQanFRelZ5c3ZuV0ZSWTFOczcv?=
- =?utf-8?B?MGZZK3BmOTZpdGxJaEJZOGRUTG1kbVhZRkFUMDVqOUxjd1VoeDUxNDExai9w?=
- =?utf-8?B?cVNDcXF4STU0bTlWdHlXZ0ZWbWVMRmpSdExQRFkrZ3JwaklML2pTN2JVcm9p?=
- =?utf-8?B?QVBBOTI4eGxyUUF5Tkl4R3dBdVEvNlpuMVdKQ1NUTDZZT2ZPMWF5N0g2eTg3?=
- =?utf-8?B?d0tUWlRXRHBmQ3V1S0RwTnIzYlJJTEsrVkRFUUFRV2hmdlBObUZDajd0Z0ti?=
- =?utf-8?B?NkV3Y1ZGajdhT3UwdjVNeTc0STFBVHYzSGN3NitsZEwzbGJwMm9wclFjQUVM?=
- =?utf-8?B?UzJRMzJWaGZRc3RSK0ZYYVBQc3AyUFZadEdGMWpYczJQWHdkM1BVcW5HS0d6?=
- =?utf-8?B?aW1BUXdEZEJHdmRLN1ZsOE54UTJ3OHo3a2ZqSEd6Umt2OHBLT2MrQ1ZUMkly?=
- =?utf-8?B?aXQxREdaWVVId2ZRdHVzaVBvajdSdUY2U21SL1VBU0xLUzRiY1NjRWErQ3F3?=
- =?utf-8?B?SDV3Qlljc01HNXUyR3ZxWnBlTnh0dGVXdk9CTmYvMUpKUm01RHV4VVRUbG9v?=
- =?utf-8?B?S3Y3Z0FIQnN3OHRNV1RRNnBIR0F1UXVHOWZyVkFuR1dwY1plazFDTTdNVjND?=
- =?utf-8?B?UFV3SW9TOC9oalY1NElVWnhva0NZMDFva3lGWmdhc3BxUGF4MEhXYS83T3FZ?=
- =?utf-8?B?SnMydml6Q3FLYk9IeDV0UjlMYy8wMUtQYUhGY0RvVzFEK1h5WlhvMlNQbnB5?=
- =?utf-8?B?M1NzWDhRMEM1WVJSMEJnR3htUzNmMDdKNnMvUERTSFBxUXdLN0NjVEU2WTdm?=
- =?utf-8?B?OFd0QkVpQXh2eDZHZGpDSU9VN0lCNlErV0N0QkJVQjBxZXlCUUFwNGN3ZFFJ?=
- =?utf-8?B?QlNqSm1QUzNYOXZzaUVCRjhQcURTcXNSTHV3d05ZU3p3SHc0aDFVMUdLNzAw?=
- =?utf-8?B?M3ptSnBUb2VQM3JqT25IWGhQTWV1cEZ4V0owWFhFMWtNNHllcEMva2J0dHVQ?=
- =?utf-8?B?TTJLaUxUYmpPYUxFMHJ0NGtUQVJFQUdVcFRScVpoNnhEaGJhOW5uUExzR29s?=
- =?utf-8?B?RDZxd1RaR1dpNUR4aU5UY1NtaTBCMUZQVWpmYkZRbWtUWDNnY2hoZGFta1Fi?=
- =?utf-8?B?aHBsSUVxckpXVy94aDhzSnp5TEhHOHJxOUM4NXZHR2o4YkErYUs2YmhaVWxC?=
- =?utf-8?B?L1J0VXM4dXBJMXBjYk4vZk9hcGVrYldCcWNDcGVuNTJsMTM5N2xBRUVUVGN6?=
- =?utf-8?B?cXJvTnE0eGVRanVLL0xMTGg4ZzhGQTB3czFvNkk2L0dmYng0WVhQRjJKSnBJ?=
- =?utf-8?B?aXp5K0FjbVFzaThEUXgyRXYyYUpRd1dDb2YyTjBuWmtRYmZEUmJHd1NDYm9N?=
- =?utf-8?B?VTZrTXpQNER5bnVsTEszbnBVYkpFeDZic1RYbFl1NitFcSt1bEZVdVpBVVVF?=
- =?utf-8?B?WE1zRWpYUE5PWDg0VHlNc3BONGdqS29PSy9HOEhlSU9pZWxmczUzU1dDeU9O?=
- =?utf-8?B?aTZPa2lZU3FIeEc4bFNwMmlMNFdZSUU2YVpPUWZOd1dWNGNjSVB3Y3JyUmNP?=
- =?utf-8?Q?c/Qrq2smq6JjiXiHfFFmJU0E0yPDjU+s?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VzNlcitqU242K0UvVkd3ckhFUDY3R0lWbjFIWTJyby9kYjE0VFpMenA4UkZm?=
- =?utf-8?B?R0d6QjBkM3E4Q0RqWXpYZ0ZldVl4UlZ5c3o0RW9od2MzUVo0UHlIcDJ3SHFO?=
- =?utf-8?B?bEpyYThIZytGaTMyRWRzb2loSnBXSTFjLzNLZjB0SlhnTk0vZWg2RFhOL21n?=
- =?utf-8?B?T0duWGo4RHFpa1pZQmFESnZycHlKMGpjamh6QnBFRW85d0lRa0sxc25Oc2Mz?=
- =?utf-8?B?ZXJZN0ZBcVFQSGRYZlVRREFKNkpaTWdWUXl2WDZWd21CU2l5WmY0M1VkcXZ5?=
- =?utf-8?B?WGFuMmFGZFozdHFQQzFpeU9sTSt6YW9JSEpxT2R6c2xmNXNYMEpOS3g1RzQ0?=
- =?utf-8?B?Vnp0QmQxdzdaSnV0bHI4SEs5Sk1DZC9KZ2gzUGRNUnhmczl6Ni9tSnlMZEhC?=
- =?utf-8?B?RVV5Y2hiSHR1QktZcG9OOWpER2habGdYMXUxaVJaWkdEVUJ1R2FvQXR4MlJZ?=
- =?utf-8?B?RU5ZOHlETllTNGlueWVZcEUxeE1HZGJEY1ZVYlQwY1VRY0E4ZTNUeHhZMHA5?=
- =?utf-8?B?YkR1REgramlRdjVnbHlHR0VZaUhaQ05FMm42WHNVTjNWQW16RG0zWVhjaUIv?=
- =?utf-8?B?dGhuYUJWQnAxYm50bXAxemZ3ampGeFEvNGNuTExhSzRMTnhMWHpUYmlhelFV?=
- =?utf-8?B?QVRCTDJ1bUl2STZCMExNQlFMSHRrZmh6UUJRVUFjRzdrdkQrM3NaNHhNY0pZ?=
- =?utf-8?B?ZG9wVi9vSGNNR21LL2lNeFRjWGhsWFBYUmo3dDlkVmRpWldNR1kxNzVFVWRh?=
- =?utf-8?B?c3lubVVheWUvamJyRjVvTFZVakowUTVsNzRwMkpXSXFwaUR4RXhCdzJVYnJT?=
- =?utf-8?B?VzU1VTlWVnVCK285Y3pOTTVVYlRuMjdtcW9MU0JJRXZrb2t3bStUTk9pZUNu?=
- =?utf-8?B?SXhPdGtHcXlqYXFnY291Zm82WDU2V3M5NGxzcHdLUnJZa1lKRkxDSlpveFQ1?=
- =?utf-8?B?bDh3TTB0T2ltanBtcmhLUUt4M212WHhqR0FNUVhzbUtUdEZYY1F6SVNGT1Zl?=
- =?utf-8?B?VW54SEdBdWl4Vkc3c3VKM1kwTjF5RkZ3d3BocE52TVJqdFc2OWRYWE5mb3Ji?=
- =?utf-8?B?SzhOU01KTHBMNERkdlVpbisrYXJlbWRCTnl2NC9wVkxVTWk1SFBZbVlsWDNy?=
- =?utf-8?B?c3hlYTNvUUZqQ2dGNjQ4Q1FMWmdldHRPTUJPSmZGUkJRanBtZFM5R1llUkVP?=
- =?utf-8?B?b2UyUHZCNHlzVWdxODZId2VmaGhxZ0tZcmw0WnBsUUlyek11QlRMWmU3TUFq?=
- =?utf-8?B?dkdNUGhnKzJTOFFUWmdYMmVwK3RzQ1FYL2pKbFhyOVkxYXZHYUVhaFlzRHVK?=
- =?utf-8?B?QkxPVEFlbnE2OHNvKzljanVBN3BWR3RNOVd6QVloYnBIVG5pakQ5cXRXQkxC?=
- =?utf-8?B?TWc1Y0h1TlhRbVpyZkVxRVpvdWtaRFI4Nnd4cnlVMWRLeWVoU0hVbXZDYmps?=
- =?utf-8?B?T09aT0ZFSG9PM2Q4YTFPeXhUSXhvY1JhOWJRaGlzREg4SlBQbFU2Sy9WQUd5?=
- =?utf-8?B?MWQ1d2ErZDNJWktvNHZZRzZuTFNkUGU2dlMrdW1ITDl0ZXdlb1VYY1I1VjVn?=
- =?utf-8?B?bkxvZnUvbXd0Wm1HaE51WWszVTl6ZFRZSkhVYytIWW5GejUvV0xnbFlDN2hJ?=
- =?utf-8?B?ZVBqd2FBWXhPRjVBWlF6czV3YlF6VDdVVFlGcjNUMmRZaHVZb1pEZW9Sc3RC?=
- =?utf-8?B?L0svT2tWUEU5RE9RT0MrNWJjQlFZakxDQzlrd1I2czVZQnFUai82ZVdPejlm?=
- =?utf-8?B?NWl1eitNRkRCWldTZStGckYvNFdjMUJQS3JlWFJuejlUNnlLVDZHakp4SDRa?=
- =?utf-8?B?S0t0YUtkdmg3S3BlaGw4bzZTMHh0UVZ2aEZQVE0yVUswTFN4RkZYaEdXQjVK?=
- =?utf-8?B?Z2VXK1NMUHk4ajB6dmRHbk53cS9qMzNHdmJ6NitOVktMdXJOcFc5NnJLVnJ6?=
- =?utf-8?B?N1YzUzI3RVc5OTVlTU1nMnJaaTErcmdNNjBFcTZQMDM2QjdSSjBIRXBNSk5w?=
- =?utf-8?B?b0lScllNbU5vYTJkRUxnSE1QSFR6ZFV6QVpnZFhicUQ3WGpiWGhML21KSGdP?=
- =?utf-8?B?VTBHeHhYbkRWdVFOUkFDSldwVjd6NnZDYTRHZlVBbHJmb0lRaWRVaWtCOEZE?=
- =?utf-8?B?QXRydGR6OTZVNFdCTGZYb1AxdWZJNWg2RzVVZVVwTDllZkVZd2Urd0tsZEx2?=
- =?utf-8?B?YUNpSHJ6VWtaMTlZVHBIY3hHdFdNOURWbW82L21Yb0JXZHJJVTR2OWdXVFFn?=
- =?utf-8?B?NDdndlZqRTh3SVZIdlpzd01IT290SURoeW93M1dLU2UxTG1pZDhJVkhNU2RN?=
- =?utf-8?B?TVhtdDVFeVcwWVJEb2RvT1ZTVm1lYUI5bWcxTWlqdm5pcEhCV0JHZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e4d0493-2aee-45d5-b070-08de4ccb6c1a
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2026 02:29:31.0629
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RK6qu17tALxK4opxp3Yn/e+TNd1MS5B2qqcm4EDd0oZqAXzWmniVkuhtvOIdk7rnBQdDA4mjQOz+R0Y8zNOMSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9183
-
-On 1/3/26 1:21 PM, Joel Fernandes wrote:
-> 
-> 
-> On 1/2/2026 8:34 PM, John Hubbard wrote:
->> The util.rs module contained a single helper function,
->> str_from_null_terminated(), which duplicated functionality that is now
->> available in core::ffi::CStr.
->>
->> Specifically, CStr::from_bytes_until_nul() is available in the kernel's
->> minimum supported Rust version (1.78.0), so it time to stop using this
->> custom workaround.
->>
->> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-> 
-> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-
-Thanks for the review!
-
-> 
-> Probably elf64_section() should also use CStr::from_bytes_until_nul() in gsp.rs?
-> 
-> Right now it does:
->          elf.get(name_idx..)
->              .and_then(|nstr| nstr.get(0..=nstr.iter().position(|b| *b == 0)?))
->              .and_then(|nstr| CStr::from_bytes_with_nul(nstr).ok())
-> 
-
-Yes, absolutely! Thanks for spotting that. I'll re-send this out as
-a two-patch series that includes that change too.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 4/4] rust: add PL031 RTC driver
+To: Danilo Krummrich <dakr@kernel.org>, Ke Sun <sunke@kylinos.cn>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20260104060621.3757812-1-sunke@kylinos.cn>
+ <20260104060621.3757812-5-sunke@kylinos.cn>
+ <DFFTVRMAFF3S.13N6WCNAVVR6I@kernel.org>
+From: Ke Sun <sk.alvin.x@gmail.com>
+In-Reply-To: <DFFTVRMAFF3S.13N6WCNAVVR6I@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-thanks,
--- 
-John Hubbard
+On 1/4/26 21:10, Danilo Krummrich wrote:
+> On Sun Jan 4, 2026 at 7:06 AM CET, Ke Sun wrote:
+>> +/// PL031 RTC driver private data.
+>> +#[pin_data(PinnedDrop)]
+>> +struct Pl031DrvData {
+>> +    #[pin]
+>> +    base: Devres<IoMem<0>>,
+> Please do not use 0 as generic argument, this should likely be RTC_YLR + 0x4
+> (assuming that this register has a width of 32 bit).
+>
+> It allows you to perform register accesses until RTC_YLR + 0x4 with infallible
+> accessors, since the call to IoMem::new() will validate that the memory region
+> has at least a size of RTC_YLR + 0x4.
+>
+>> +    variant: VendorVariant,
+>> +    /// RTC device reference for interrupt handler.
+>> +    ///
+>> +    /// Set in `init_rtcdevice` and remains valid for the driver's lifetime
+>> +    /// because the RTC device is managed by devres.
+>> +    rtc_device: Option<ARef<RtcDevice>>,
+> I don't see a reason for a separate init_rtcdevice() method. Creating the RTC
+> device should happen in probe(), which also gets you rid of this odd Option.
+>
+Hi Danilo,
 
-> 
->> ---
->>  drivers/gpu/nova-core/gsp/commands.rs |  5 +++--
->>  drivers/gpu/nova-core/nova_core.rs    |  1 -
->>  drivers/gpu/nova-core/util.rs         | 16 ----------------
->>  3 files changed, 3 insertions(+), 19 deletions(-)
->>  delete mode 100644 drivers/gpu/nova-core/util.rs
->>
->> diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-core/gsp/commands.rs
->> index 0425c65b5d6f..a11fe6018091 100644
->> --- a/drivers/gpu/nova-core/gsp/commands.rs
->> +++ b/drivers/gpu/nova-core/gsp/commands.rs
->> @@ -30,7 +30,6 @@
->>          },
->>      },
->>      sbuffer::SBufferIter,
->> -    util,
->>  };
->>  
->>  /// The `GspSetSystemInfo` command.
->> @@ -209,7 +208,9 @@ impl GetGspStaticInfoReply {
->>      /// Returns the name of the GPU as a string, or `None` if the string given by the GSP was
->>      /// invalid.
->>      pub(crate) fn gpu_name(&self) -> Option<&str> {
->> -        util::str_from_null_terminated(&self.gpu_name)
->> +        CStr::from_bytes_until_nul(&self.gpu_name)
->> +            .ok()
->> +            .and_then(|cstr| cstr.to_str().ok())
->>      }
->>  }
->>  
->> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
->> index b98a1c03f13d..c1121e7c64c5 100644
->> --- a/drivers/gpu/nova-core/nova_core.rs
->> +++ b/drivers/gpu/nova-core/nova_core.rs
->> @@ -16,7 +16,6 @@
->>  mod num;
->>  mod regs;
->>  mod sbuffer;
->> -mod util;
->>  mod vbios;
->>  
->>  pub(crate) const MODULE_NAME: &kernel::str::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
->> diff --git a/drivers/gpu/nova-core/util.rs b/drivers/gpu/nova-core/util.rs
->> deleted file mode 100644
->> index 4b503249a3ef..000000000000
->> --- a/drivers/gpu/nova-core/util.rs
->> +++ /dev/null
->> @@ -1,16 +0,0 @@
->> -// SPDX-License-Identifier: GPL-2.0
->> -
->> -/// Converts a null-terminated byte slice to a string, or `None` if the array does not
->> -/// contains any null byte or contains invalid characters.
->> -///
->> -/// Contrary to [`kernel::str::CStr::from_bytes_with_nul`], the null byte can be anywhere in the
->> -/// slice, and not only in the last position.
->> -pub(crate) fn str_from_null_terminated(bytes: &[u8]) -> Option<&str> {
->> -    use kernel::str::CStr;
->> -
->> -    bytes
->> -        .iter()
->> -        .position(|&b| b == 0)
->> -        .and_then(|null_pos| CStr::from_bytes_with_nul(&bytes[..=null_pos]).ok())
->> -        .and_then(|cstr| cstr.to_str().ok())
->> -}
->>
->> base-commit: 7acc70476f14661149774ab88d3fe23d83ba4249
-> 
+I encountered an issue while refactoring the RTC abstraction.
 
+Following the platform driver implementation, the AMBA driver stores its 
+drvdata in amba_device->dev. However,
+the RTC driver also stores its drvdata in the parent device (which is 
+also amba_device->dev), causing a conflict.
+This was already encountered in v1, which is why the design was awkward.
 
+Do you have any suggestions on how to address this?
+
+Here is part of the code:
+
+  // rust/kernel/amba.rs
+impl<T: Driver + 'static> Adapter<T> {
+     extern "C" fn probe_callback(
+         adev: *mut bindings::amba_device,
+         id: *const bindings::amba_id,
+     ) -> kernel::ffi::c_int {
+         let adev_internal = unsafe { 
+&*adev.cast::<Device<device::CoreInternal>>() };
+         let info = Self::amba_id_info(adev_internal, id);
+
+         from_result(|| {
+             let data = T::probe(adev_internal, info);
+
+             // Referring to the implementation in platform.rs, here 
+`dev_set_drvdata(&adev->dev, data)`
+             // will clobber the value that has already been set in 
+`amba::Driver::probe`.
+             adev_internal.as_ref().set_drvdata(data)?;
+             Ok(0)
+         })
+   }
+}
+
+// rust/kernel/rtc.rs
+impl<T: RtcOps> Adapter<T> {
+     unsafe extern "C" fn read_time(
+         dev: *mut bindings::device,      // **pointer to the `struct 
+device` embedded in  a `struct amba_device`
+         tm: *mut bindings::rtc_time,
+     ) -> c_int {
+         let bound_dev = unsafe { 
+device::Device::<device::Bound>::from_raw(dev) };
+         let rtc_tm = unsafe { &mut *tm.cast::<RtcTime>() };
+
+         match T::read_time(bound_dev, rtc_tm) {
+             Ok(()) => 0,
+             Err(err) => err.to_errno(),
+         }
+   }
+}
+
+// drivers/rtc/rtc_pl031_rust.rs
+impl amba::Driver for Pl031AmbaDriver {
+     ...
+     fn probe(
+         adev: &amba::Device<Core>,
+         id_info: Option<&Self::IdInfo>,
+     ) -> impl PinInit<Self, Error> {
+         let dev = adev.as_ref();
+         let io_request = adev.io_request().ok_or(ENODEV)?;
+         ...
+         // Allocate RTC device.
+         let rtcdev = RtcDevice::new::<Pl031DrvData>(dev)?;
+         let rtcdev_clone = rtcdev.clone();
+
+         // Set driver data with RTC device reference.
+         rtcdev.set_drvdata(try_pin_init!(Pl031DrvData {
+             base <- IoMem::new(io_request),
+             variant,
+             rtcdev: rtcdev_clone,
+         }))?;
+         ...
+         // Register RTC device.
+         // **If CONFIG_RTC_HCTOSYS is enabled and the device is rtc0, 
+rtc_read_time will be
+         // called during the registration process. This requires 
+drvdata to be set up before registration.
+         Registration::register(dev, rtcdev)?;
+
+         Ok(Pl031AmbaDriver)
+     }
+}
+
+Best regards,
+Ke Sun
+
+>> +}
+>> +
+>> +// SAFETY: `Pl031DrvData` contains only `Send`/`Sync` types: `Devres` (Send+Sync),
+>> +// `VendorVariant` (Copy), and `Option<ARef<RtcDevice>>` (Send+Sync because `RtcDevice` is
+>> +// Send+Sync).
+>> +unsafe impl Send for Pl031DrvData {}
+>> +// SAFETY: `Pl031DrvData` contains only `Send`/`Sync` types: `Devres` (Send+Sync),
+>> +// `VendorVariant` (Copy), and `Option<ARef<RtcDevice>>` (Send+Sync because `RtcDevice` is
+>> +// Send+Sync).
+>> +unsafe impl Sync for Pl031DrvData {}
+> Why not implement Send + Sync for RtcDevice then?
+>
+>> +// Use AMBA device table for matching
+>> +kernel::amba_device_table!(
+>> +    ID_TABLE,
+>> +    MODULE_ID_TABLE,
+>> +    <Pl031DrvData as rtc::DriverGeneric<rtc::AmbaBus>>::IdInfo,
+>> +    [
+>> +        (
+>> +            amba::DeviceId::new_with_data(0x00041031, 0x000fffff, Pl031Variant::ARM.to_usize()),
+>> +            Pl031Variant::ARM
+>> +        ),
+>> +        (
+>> +            amba::DeviceId::new_with_data(0x00180031, 0x00ffffff, Pl031Variant::STV1.to_usize()),
+>> +            Pl031Variant::STV1
+>> +        ),
+>> +        (
+>> +            amba::DeviceId::new_with_data(0x00280031, 0x00ffffff, Pl031Variant::STV2.to_usize()),
+> Why a constructor new_with_data() if you already store data through the generic
+> device ID mechanism right below?
+>
+>> +            Pl031Variant::STV2
+>> +        ),
+>> +    ]
+>> +);
