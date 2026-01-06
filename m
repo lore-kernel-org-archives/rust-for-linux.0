@@ -1,147 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631FF33A714;
-	Tue,  6 Jan 2026 13:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4893126CD;
+	Tue,  6 Jan 2026 14:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767706381; cv=none; b=lekT/gP+jORFYbI37Xu6+GvCqKB7cMURmcMh8/gyin5l3Bm8cbQxmyfccsc164rPjfeD3GeVk+QNUqXm/lfIES+7H4iog3Kt+nfC9Vf2KCE/EocvPkPT79KvhYMcT3vlqRg8Q+2vEHpsTN4veX8KAKIDDIMiqWpRUtQPJgIIpys=
+	t=1767709651; cv=none; b=qHjTSGlygz+RoVBae8SI49c9u60JEekJPNIhSoGlD+B7uaehoAqYlotbFXVY9sANtgqSnR/fxBHZEWrIthKCdqc26yrgLyGaaqhXH27Pf2qgCvZKiwenT8rfybVpXdXdBch9PV2aEnikDYLBCGA91Ge9CG8NLC44016ycwiEUII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767706381; c=relaxed/simple;
-	bh=9sq5ACv/SxacQbu8HCx4EhgIvWo56sdX1yGcs5nJRFk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=CQHPh913Iue31X9FY5vpr8lcSnysaE9MBi+x2F7HJk3D3DBVNBak81euoBInxBB8GwcVcWiiu5cEILObdvDYCg++adjwX6RodKYltVjff+HUbD2knSV/A2YNbT8IfghjosZFXxo+SJn03K75wzvb/j5TmiVhLbGQlVcoA7CIGxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QhwZ0vfx; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QhwZ0vfx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17657C116C6;
-	Tue,  6 Jan 2026 13:32:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767706381;
-	bh=9sq5ACv/SxacQbu8HCx4EhgIvWo56sdX1yGcs5nJRFk=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=QhwZ0vfxDaEzXZGscsJB9jJBYblMpoen0OVVTJyPlPLwaLbY7lu4OTvjoFcgFqyDk
-	 pENFx4Ph9t+C6NZ+1CoB97mZVCTYZCAqy1m6UcCZ2ykZyg9MsRI7lrFi4B5EXMPkd9
-	 aEwFrvtGhp4hsQ2B+3Hn/7t1jrPS8TziI7UE3D/J1yAf9csNaCTQPSL5pVHl1YxbgO
-	 P+PcdJ4QiuXmSngSSMynuhab/sOniBsb5gBJnRS0WoEDCbgGP48tTXbzU5iZK1ySks
-	 Kh1a2smAP1DWvaJT3YOYFvrvO2Hm/b/h1kAlrkPVi7bUlcObeX046Q4cUgWUl1tRpq
-	 TOaxa0pt5rsMQ==
+	s=arc-20240116; t=1767709651; c=relaxed/simple;
+	bh=yRizhhNfGDPf+obLvJF1oJPLNKdk3U2GKiBJdz/rTRY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=jQSLue78Mn65Qz5F+Du/zD3rrhmSS9kzdqmJjZ5gobkFTw4gqOZONXc0qBW8yRQHnhftP0JXdJMSdoWTcq2YUD5wILbXVPe1CN+p7SRlqUOix0weQHPD+k3V0tLcJ0ftMRmsDy0B70YRmfDVN2MKSmW5G/3FR0VNgvST5yGLrP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 54EBF2B03EC;
+	Tue,  6 Jan 2026 15:20:45 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id duGiDergfFXx; Tue,  6 Jan 2026 15:20:43 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id C3F3A2ABFDC;
+	Tue,  6 Jan 2026 15:20:43 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id yRMMhCJ3y2FK; Tue,  6 Jan 2026 15:20:43 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 8CC6C99FB4;
+	Tue,  6 Jan 2026 15:20:43 +0100 (CET)
+Date: Tue, 6 Jan 2026 15:20:43 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: linux-um <linux-um@lists.infradead.org>, x86 <x86@kernel.org>, 
+	anton ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, tglx <tglx@linutronix.de>, 
+	mingo <mingo@redhat.com>, bp <bp@alien8.de>, 
+	dave hansen <dave.hansen@linux.intel.com>, hpa <hpa@zytor.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	dakr <dakr@kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>, 
+	Rust for Linux Kernel <rust-for-linux@vger.kernel.org>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Message-ID: <1064740857.79527.1767709243348.JavaMail.zimbra@nod.at>
+In-Reply-To: <20260106034034.60074-1-boqun.feng@gmail.com>
+References: <aVxcAZe6AEXEfx3G@tardis-2.local> <20260106034034.60074-1-boqun.feng@gmail.com>
+Subject: Re: [PATCH] arch: um/x86: Select ARCH_SUPPORTS_ATOMIC_RMW for
+ UML_X86
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 06 Jan 2026 14:32:56 +0100
-Message-Id: <DFHJM2HAG7Q3.1HGZ3P7H55FD2@kernel.org>
-Subject: Re: [RFC PATCH v1 4/4] rust: add PL031 RTC driver
-Cc: "Ke Sun" <sunke@kylinos.cn>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Alexandre Belloni" <alexandre.belloni@bootlin.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-rtc@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Ke Sun" <sk.alvin.x@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260104060621.3757812-1-sunke@kylinos.cn>
- <20260104060621.3757812-5-sunke@kylinos.cn>
- <DFFTVRMAFF3S.13N6WCNAVVR6I@kernel.org>
- <88b1a3dd-e646-4583-bc41-07ff7e9422a7@gmail.com>
-In-Reply-To: <88b1a3dd-e646-4583-bc41-07ff7e9422a7@gmail.com>
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF144 (Linux)/8.8.12_GA_3809)
+Thread-Topic: arch: um/x86: Select ARCH_SUPPORTS_ATOMIC_RMW for UML_X86
+Thread-Index: sJnRvj0jz0HhSO1GSUr6a5CWkGpv6Q==
 
-(Cc: Greg, Rafael)
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Boqun Feng" <boqun.feng@gmail.com>
+> An: "linux-um" <linux-um@lists.infradead.org>, "x86" <x86@kernel.org>
+> CC: "richard" <richard@nod.at>, "anton ivanov" <anton.ivanov@cambridgegre=
+ys.com>, "Johannes Berg"
+> <johannes@sipsolutions.net>, "tglx" <tglx@linutronix.de>, "mingo" <mingo@=
+redhat.com>, "bp" <bp@alien8.de>, "dave
+> hansen" <dave.hansen@linux.intel.com>, "hpa" <hpa@zytor.com>, "Miguel Oje=
+da" <ojeda@kernel.org>, "Boqun Feng"
+> <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bj=C3=B6rn Roy Ba=
+ron" <bjorn3_gh@protonmail.com>, "Benno Lossin"
+> <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice R=
+yhl" <aliceryhl@google.com>, "Trevor Gross"
+> <tmgross@umich.edu>, "dakr" <dakr@kernel.org>, "linux-kernel" <linux-kern=
+el@vger.kernel.org>, "Rust for Linux Kernel"
+> <rust-for-linux@vger.kernel.org>, "FUJITA Tomonori" <fujita.tomonori@gmai=
+l.com>
+> Gesendet: Dienstag, 6. Januar 2026 04:40:34
+> Betreff: [PATCH] arch: um/x86: Select ARCH_SUPPORTS_ATOMIC_RMW for UML_X8=
+6
 
-On Tue Jan 6, 2026 at 3:51 AM CET, Ke Sun wrote:
-> Following the platform driver implementation, the AMBA driver stores its=
-=20
-> drvdata in amba_device->dev. However,
-> the RTC driver also stores its drvdata in the parent device (which is=20
-> also amba_device->dev), causing a conflict.
+> x86 atomic instructions are used for um on UML_X86, therefore atomics
+> on UML_X86 support native atomic RmW as x86 does, hence select
+> ARCH_SUPPORTS_ATOMIC_RMW.
+>=20
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> ---
+> UM & x86 maintainers,
+>=20
+> I need this to avoid a build error for Rust atomics since Rust currently
+> only support Atomic<i8/i16> on ARCH_SUPPORTS_ATOMIC_RMW archs. I will
+> add it to my upcoming PR if I get some Acked-by, thanks!
+>=20
+> arch/x86/um/Kconfig | 1 +
+> 1 file changed, 1 insertion(+)
 
-A simple driver usually has two devices to deal with:
+Acked-by: Richard Weinberger <richard@nod.at>
 
-  (1) The bus device, which represents the actual physical device sitting o=
-n
-      some bus, e.g. PCI or platform.
-
-  (2) A class device, which represents the higher level functionality - i.e=
-. the
-      class the device belongs to - to the upper layers, e.g. RTC, DRM, PWM=
-,
-      etc.
-
-The bus device does not belong to the driver per se, it only gets bound to =
-a
-driver.  This relationship remains until the driver itself is unregistered,=
- the
-physical device falls off the bus or they are manually unbound from each ot=
-her.
-
-The driver's bus device private data only lives as long as the two are boun=
-d and
-the lifetime is managed by the bus abstraction, e.g. platform or AMBA.
-
-The class device is created by the driver to represent its functionality to=
- the
-upper layers; its lifetime is defined by the driver.
-
-Other than the bus device private data, the class device private data typic=
-ally
-lives as long as the class device itself.
-
-In the relationship between the two, the bus device becomes the parent devi=
-ce of
-the class device.
-
-If the class device implementation guarantees that it is unregistered when =
-the
-parent (bus) device is unbound (which is the most common case), i.e. no mor=
-e
-class device callbacks happen afterwards, the abstraction can treat the par=
-ent
-device as &Device<Bound>, which allows drivers to directly access device
-resources from the parent device without further synchronization.
-
-The short answer for your question is, store the class device private data
-within the class device itself, not within the parent device.
-
-Alternatively, if the class device implementation does guarantee that in al=
-l its
-callbacks the parent device is bound, i.e. you have a &Device<Bound>, you c=
-an
-also access the bus device private data with Device<Bound>::drvdata().
-
-In this case you can technically also omit having separate private data for=
- the
-class device at all.
-
-However, while this is actually been done in quite some C drivers, I do not
-recommend this:
-
-  - At least in C this can become pretty error prone, given that bus device
-    resources are only valid to access as long as the device is bound to th=
-e
-    driver; in Rust we do protect against device resource accesses after dr=
-iver
-    unbind though.
-
-  - Separating the private data properly encourages driver authors to actua=
-lly
-    think about ownership and lifetime of objects, eventually leading to be=
-tter
-    driver design.
-
-A common pattern you will see in drivers is that the data relevant for the =
-class
-device goes into the class device private data and the class device itself =
-is
-stored within the bus device private data.
-
-I hope this helps!
-
-- Danilo
+Thanks,
+//richard
