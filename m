@@ -1,168 +1,163 @@
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1D734AAE6
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 19:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C3227FD59
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 19:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767727761; cv=none; b=aO4JpCQflRhdEkJji/O4aFa1mNEjTBJV7wxRv6hpS3VqQ/2unp055wftMgvbI33oAV1tJMH0N8kSJfUreosjbDsADcYrG0ktmDJ+LY8Cwmd/ylTj9PZiK+821HMVPHXlKoM5H964zWMXNxmh3aanql+6+IZh+2yizalWscnniz4=
+	t=1767727818; cv=none; b=Ltr5lTkOaGcEdHgrYqoMKZMBT2wZOh2CiqNJY7W3mqVIgLMtt49jGwbWNl94zTjlth9XG4NMlSu2XgFoLNbHI9lhgfQftEA6uXlkdRH7ytiNQMzdMpYcfvs6GCPwmK9/r6s4w9THZkfiC6y8SKhAePLN7higrf+nE+yxZZlMa1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767727761; c=relaxed/simple;
-	bh=uKZhJrrDxZ2O667E2POc5W6fPGmhpIxg+TUJPzHN/Nw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i0iDJyNSuY8YQnwsecW220BKF5sN4WY9RoOzKhRlo2mlIXVwm2W9hNQjC/KhYTOEeYqSjVd/iePWZ9/wotaQnIH70qgEmfyWkItF6Af4LZSwFvnlrWanjGIFhVQQdTAdtvf3N2gCYQF9D6dWn5XKjtgSi/Sq09Y7gWdacHgS6Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DdVd2RVi; arc=none smtp.client-ip=74.125.82.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1767727818; c=relaxed/simple;
+	bh=6PEsWTJf0Vop6Q+1C1+DQ9N0VfM6GSa6BS4JsqEp9/k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tszPQH+EWHUyJ1dfnf+0bMRGGsiAK3zew14BCjzTgiTQ0GLGfCiyRIhvNZKaSitQ98uiS58GP8tdD00aCC++1jFd6bR2nTdCxLFVUaXGhixFM2y5gO/ecwIXwCUQm28JuEI4SsJlSEqk2NIXebPRq5BANEoxWKGVeqiHVKXU64k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BXhRQfOy; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DdVd2RVi"
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-11f42e97340so779506c88.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 11:29:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BXhRQfOy"
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-3e7f68df436so113947fac.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 11:30:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767727758; x=1768332558; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=h+fw2uOH7rfXDKHv296LmegV1D5QyXRSiBc8OZxA9qs=;
-        b=DdVd2RViVBiw91LbThfocB/P8RNuE+Dx3pt+rprMhGk+WK686kDbdCstnXu9JeeubA
-         F99qu94LzkyQO0EvUdR7Jq+Pqx94Z00/97ewQbmd9rDmvAFgmKmXxCxwJ/exXDgUK9JG
-         2Cr2m8WgNwOq0kWuiA2FH6c7d3zg5Q1ESmq7QGDQROhXUiGQwFnvA40P7y0fLCpJtpLJ
-         0knLmwV+3lZuFeBgci4+OMJAplFJxYrH1Vrdt4NWVAoui702JSieCQ71tQX7izrZMUux
-         pYwKRxaC83QMXQS8/Pqub1c0VgAJID06qwcWPnJqo8nIsm/dps9Uyz5VkU8LUZYEglQo
-         FSlQ==
+        d=gmail.com; s=20230601; t=1767727815; x=1768332615; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ovwe6jVk+HZeAM9NHqCv6Ojkd+cynp9coM0xfvK8awk=;
+        b=BXhRQfOylGTfPBHj4tgZEL6jTu3rKpt1axeH70JrZ3gXvAK4mSijwkje2j9VVUA93g
+         5drr12eIRL3u56hrlYGtex6eS1tuKvseklcEssjC9u+SGjujL53jd1uheUlPc4hHmSit
+         mNZXJ66sZztxrIYp5yUtjTx96ghOfW+Divv8i7a3vyZp2fBjoHnO93ud2ybor71A95cj
+         xxsb49meuyrdjPUD7VrUoGJXqJ2fn3SpLvtHHZkGqQhXawS8AULJFcxft2cf/dgj9hjQ
+         T31VZXTg3WRYTo4dkMK5G+52Q6rS6lWUsahq4k1zhVxzKUXDkeWhIqXGSykQYFON1rtz
+         QVgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767727758; x=1768332558;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h+fw2uOH7rfXDKHv296LmegV1D5QyXRSiBc8OZxA9qs=;
-        b=jGNIiw3vJyT6SZ5k0dbK/6nl9MpAAWcQ66wcVryIciEHDflVhT4TQYpkIlAROwhMs9
-         5FQsvkFcFS9RTA1GfnpbMP4O7nhKxfNRBEXNOXOxbmieOulyzFZoIByxhOnlhYvedYYu
-         3o/oCo5NhLdHuzij4eMdlJxHgK/fCRGIvU25DnM3CtB8AEXmEdiZv+cp7q3qg+WSbwE6
-         QdGAtaXbAxjgCUg0A7dQPglQleH+Z6FIjFzbnTmoOJeo4PekuU9qr5ctj+lRq0/0mjFN
-         DXdTdvy0ZkT3NmbtaImCPc3VMWwdHO+YXgAkZ2kk+4mQMXwLUZ9e65jWsMYwZceWGeKe
-         3lSg==
-X-Forwarded-Encrypted: i=1; AJvYcCU9/uGf+Uw+rYy83D7F1fij7DtDwmqVV7b4O6NkXufw88ngmc9C2vDM7x2Xth9JrB/21xpHLkkYBfHFxoAD2g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyZUt0L+CaJ3DG2pFbmcb+DlRBdCXt3rgEXjw5qO4+07vNK9ST
-	+BU8VP723dbcRlteie+fLt9p4X+g+HPPmAjXu4vJWoEELhHhcUhnHZaO3mWh69aPTw41URKcu0M
-	+1kbq5aoSEdWX+dKce7MywGOv+fm9IzF7W/4Drpug
-X-Gm-Gg: AY/fxX7Yl1U2oxiNIHrs3lXBCAlZxojjTVlLL6Z+TYTUW6PNSBzJ3W1JF1anKS906bk
-	3+KDwAkv9eWip++B/1FbnfTwdpFm6PkGRJZYK+7nsfPI4yyjMTwFwW6fyT6godj+GYG+TEMk/QD
-	RUE16R9/i6QzpHZcGU6kN//kTfqhM0wq2A+wiuyP5NTER5WZHNcuM9UACGUHYcHQahKYiYcDOa/
-	Ad0ijTmRYD0gBijywA6gISwXc/hTDJ1Q/GtVeGlKWbFq5wE1SZsuHTd4s9qn/vEwG8vNsu1F5wt
-	TMCBZ2X7oABip9kUTVLM8oKdfc4=
-X-Google-Smtp-Source: AGHT+IFiRHskLlnG7qWHcNDWY2mzjvXiWOgQovcFApO+FbQQhWbtyFRZOSXWqcX9YSAeO4iVY5BbmjGIzs+tTyqeQvA=
-X-Received: by 2002:a05:7022:4199:b0:11b:ca88:c4f7 with SMTP id
- a92af1059eb24-121f8b67cc0mr18897c88.40.1767727757907; Tue, 06 Jan 2026
- 11:29:17 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767727815; x=1768332615;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ovwe6jVk+HZeAM9NHqCv6Ojkd+cynp9coM0xfvK8awk=;
+        b=PRKNyKxjPZ75UVkrp83TFixu9EUaO6g3LUYWN2B6fpiEdrzw4RlbrHQz2P8qTKJK5Q
+         Y7hfahOYtwFeT7BTyWQGrQYbE9evW7PY7eJoJPXuChZMPDMoUrz3eQUaK048xT7aeG6Q
+         BhL0C/WQbuMvRnlbGhM52T8DMWAknxsEkGICJvwo6BiY3GKuliUmj/FDbfUQbuH/I5NS
+         AyCxVxWDFz+q596Wo8sgWDoqswWZasQ//2suDsPqwoJfFx4kap+OBxtlIFKRXOIlsHds
+         WHDQcgPa4uLbgbfAc0BNspD/77M5c8kXrCLVETokb11Y7h4MpZ2OM6G7dldgnE5PT7/o
+         6t3w==
+X-Forwarded-Encrypted: i=1; AJvYcCXTFvDdWZp9AEEyt3FI2UGWPYWRd+vIN83mW+zecEZzoVxqFKc6YIVY5vcy8YcDi/bBgcOzjke4j74bn4YKXg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ7/rEJLR6YKzXHt93tKty2mtIAlWJNvjcvjwjHjjuJvXENlo5
+	5tKDbMT019Npgtd83xkVuVYyIZsKMUdIzIfCk3vFG9G4WRvhDYfvjdi2FS0c9Q==
+X-Gm-Gg: AY/fxX5+Z/DZd/SKLeAe2Wc9CZz1TKEjw2a8x8QZjTriAJ7LiCoGIVp9tSck4jNZMeO
+	Z3v7xDT2Mx62nzDceXCfCA4MuaQK/zBY96hKaLETdVNTXScBpl2W89E66i5cZCDkdLlVpPjBlGg
+	f5hmhrXl2GEcmn7F6icdqV9/WWI3vSBthn+bldLKsKPIfrEctTjzixWTyGEL1qncwvKj84Zsw7n
+	O7MxMtMmAKQGkW96yxj5oDccokjOhdDMJicJfehfOdm7sfn19whbKelY2YmnLXA+Y0UMOucc+hd
+	ijWE1wzqz/Y3O1BgANh0Xp3G2yu0qCWI9gPoWrzAZE/0HDmUeRTIy+nVoXVr1qh0UaW0vMymsKa
+	2BS6swPjY9q2e3NwJSX60zraXNgtQqJmaFxy9U938MA7C8pIGhldMi2DNauqHGQQ8SmL9gtxIf7
+	ML3IQA49o=
+X-Google-Smtp-Source: AGHT+IEbARtwYBCflrCWKTw53xNWRQrwwKMztLSlcqOR+PG0C4vOryHl1746rHcmK2MtQJpFKJixLQ==
+X-Received: by 2002:a05:690c:ed5:b0:787:a126:5619 with SMTP id 00721157ae682-790a962f54emr28940977b3.11.1767721117146;
+        Tue, 06 Jan 2026 09:38:37 -0800 (PST)
+Received: from localhost ([2601:346:0:79bd:6398:4432:5113:2b75])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-790ae603282sm5749857b3.13.2026.01.06.09.38.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 09:38:36 -0800 (PST)
+Date: Tue, 6 Jan 2026 12:38:36 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Burak Emir <bqe@google.com>, Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] rust: bitops: fix missing _find_* functions on 32-bit
+ ARM
+Message-ID: <aV1InE2bnTLYnMAC@yury>
+References: <20260105-bitops-find-helper-v2-1-ae70b4fc9ecc@google.com>
+ <aVvu3zF2rYKR3XC0@yury>
+ <CAH5fLgjtXHH40Pcw=ZoOKPzvJzDA8fohNtC6W6DsfkcE-6vtrQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251231-rwonce-v1-0-702a10b85278@google.com> <20251231151216.23446b64.gary@garyguo.net>
- <aVXFk0L-FegoVJpC@google.com> <OFUIwAYmy6idQxDq-A3A_s2zDlhfKE9JmkSgcK40K8okU1OE_noL1rN6nUZD03AX6ixo4Xgfhi5C4XLl5RJlfA==@protonmail.internalid>
- <aVXKP8vQ6uAxtazT@tardis-2.local> <87fr8ij4le.fsf@t14s.mail-host-address-is-not-set>
- <aV0JkZdrZn97-d7d@tardis-2.local> <20260106145622.GB3707837@noisy.programming.kicks-ass.net>
- <7fa2c07e-acf9-4f9a-b056-4d4254ea61e5@paulmck-laptop>
-In-Reply-To: <7fa2c07e-acf9-4f9a-b056-4d4254ea61e5@paulmck-laptop>
-From: Marco Elver <elver@google.com>
-Date: Tue, 6 Jan 2026 20:28:41 +0100
-X-Gm-Features: AQt7F2pduEl0iy3ZX0HLxlaIYaHR9bRxCAH-5viQta6DXK6OToIwGPr_JhTocFA
-Message-ID: <CANpmjNPdnuCNTfo=q5VPxAfdvpeAt8DhesQu0jy+9ZpH3DcUnQ@mail.gmail.com>
-Subject: Re: [PATCH 0/5] Add READ_ONCE and WRITE_ONCE to Rust
-To: paulmck@kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Gary Guo <gary@garyguo.net>, Will Deacon <will@kernel.org>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Magnus Lindholm <linmag7@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	kasan-dev@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgjtXHH40Pcw=ZoOKPzvJzDA8fohNtC6W6DsfkcE-6vtrQ@mail.gmail.com>
 
-On Tue, 6 Jan 2026 at 19:18, 'Paul E. McKenney' via kasan-dev
-<kasan-dev@googlegroups.com> wrote:
-> On Tue, Jan 06, 2026 at 03:56:22PM +0100, Peter Zijlstra wrote:
-> > On Tue, Jan 06, 2026 at 09:09:37PM +0800, Boqun Feng wrote:
+On Tue, Jan 06, 2026 at 10:03:10AM +0100, Alice Ryhl wrote:
+> On Mon, Jan 5, 2026 at 6:03 PM Yury Norov <yury.norov@gmail.com> wrote:
 > >
-> > > Some C code believes a plain write to a properly aligned location is
-> > > atomic (see KCSAN_ASSUME_PLAIN_WRITES_ATOMIC, and no, this doesn't mean
-> > > it's recommended to assume such), and I guess that's the case for
-> > > hrtimer, if it's not much a trouble you can replace the plain write with
-> > > WRITE_ONCE() on C side ;-)
+> > On Mon, Jan 05, 2026 at 10:44:06AM +0000, Alice Ryhl wrote:
+> > > atus: O
+> > > Content-Length: 4697
+> > > Lines: 121
+> > >
+> > > On 32-bit ARM, you may encounter linker errors such as this one:
+> > >
+> > >       ld.lld: error: undefined symbol: _find_next_zero_bit
+> > >       >>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
+> > >       >>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
+> > >       >>> referenced by rust_binder_main.43196037ba7bcee1-cgu.0
+> > >       >>>               drivers/android/binder/rust_binder_main.o:(<rust_binder_main::process::Process>::insert_or_update_handle) in archive vmlinux.a
+> > >
+> > > This error occurs because even though the functions are declared by
+> > > include/linux/find.h, the definition is #ifdef'd out on 32-bit ARM. This
+> > > is because arch/arm/include/asm/bitops.h contains:
+> > >
+> > >       #define find_first_zero_bit(p,sz)       _find_first_zero_bit_le(p,sz)
+> > >       #define find_next_zero_bit(p,sz,off)    _find_next_zero_bit_le(p,sz,off)
+> > >       #define find_first_bit(p,sz)            _find_first_bit_le(p,sz)
+> > >       #define find_next_bit(p,sz,off)         _find_next_bit_le(p,sz,off)
+> > >
+> > > And the underscore-prefixed function is conditional on #ifndef of the
+> > > non-underscore-prefixed name, but the declaration in find.h is *not*
+> > > conditional on that #ifndef.
+> > >
+> > > To fix the linker error, we ensure that the symbols in question exist
+> > > when compiling Rust code. We do this by definining them in rust/helpers/
+> > > whenever the normal definition is #ifndef'd out.
+> > >
+> > > Note that these helpers are somewhat unusual in that they do not have
+> > > the rust_helper_ prefix that most helpers have. Adding the rust_helper_
+> > > prefix does not compile, as 'bindings::_find_next_zero_bit()' will
+> > > result in a call to a symbol called _find_next_zero_bit as defined by
+> > > include/linux/find.h rather than a symbol with the rust_helper_ prefix.
+> > > This is because when a symbol is present in both include/ and
+> > > rust/helpers/, the one from include/ wins under the assumption that the
+> > > current configuration is one where that helper is unnecessary. This
+> > > heuristic fails for _find_next_zero_bit() because the header file always
+> > > declares it even if the symbol does not exist.
+> > >
+> > > The functions still use the __rust_helper annotation. This lets the
+> > > wrapper function be inlined into Rust code even if full kernel LTO is
+> > > not used once the patch series for that feature lands.
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 6cf93a9ed39e ("rust: add bindings for bitops.h")
+> > > Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
+> > > Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/x/topic/x/near/561677301
+> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > >
-> > GCC used to provide this guarantee, some of the older code was written
-> > on that. GCC no longer provides that guarantee (there are known cases
-> > where it breaks and all that) and newer code should not rely on this.
-> >
-> > All such places *SHOULD* be updated to use READ_ONCE/WRITE_ONCE.
->
-> Agreed!
->
-> In that vein, any objections to the patch shown below?
+> > Which means, you're running active testing, which in turn means that
+> > Rust is in a good shape indeed. Thanks to you and Andreas for the work.
+> 
+> I've put together this collection of GitHub actions jobs that build
+> and test a few common configurations, which I used to test this:
+> https://github.com/Darksonn/linux
+> 
+> > Before I merge it, can you also test m68k build? Arm and m68k are the
+> > only arches implementing custom API there.
+> 
+> I ran a gcc build for m68k with these patches applied and it built
+> successfully for me.
 
-I'd be in favor, as that's what we did in the very initial version of
-KCSAN (we started strict and then loosened things up).
+Thanks, Alice! Added in -next for testing. I'm going to send PR with the
+next -rc as it's a real build fix.
 
-However, the fallout will be even more perceived "noise", despite
-being legitimate data races. These config knobs were added after much
-discussion in 2019/2020, somewhere around this discussion (I think
-that's the one that spawned KCSAN_REPORT_VALUE_CHANGE_ONLY, can't find
-the source for KCSAN_ASSUME_PLAIN_WRITES_ATOMIC):
-https://lore.kernel.org/all/CAHk-=wgu-QXU83ai4XBnh7JJUo2NBW41XhLWf=7wrydR4=ZP0g@mail.gmail.com/
-
-While the situation has gotten better since 2020, we still have latent
-data races that need some thought (given papering over things blindly
-with *ONCE is not right either). My recommendation these days is to
-just set CONFIG_KCSAN_STRICT=y for those who care (although I'd wish
-everyone cared the same amount :-)).
-
-Should you feel the below change is appropriate for 2026, feel free to
-carry it (consider this my Ack).
-
-However, I wasn't thinking of tightening the screws until the current
-set of known data races has gotten to a manageable amount (say below
-50)
-https://syzkaller.appspot.com/upstream?manager=ci2-upstream-kcsan-gce
-Then again, on syzbot the config can remain unchanged.
+Dirk and everyone, please send your tags before the end of the week, if
+you want.
 
 Thanks,
--- Marco
-
->                                                         Thanx, Paul
->
-> ------------------------------------------------------------------------
->
-> diff --git a/lib/Kconfig.kcsan b/lib/Kconfig.kcsan
-> index 4ce4b0c0109cb..e827e24ab5d42 100644
-> --- a/lib/Kconfig.kcsan
-> +++ b/lib/Kconfig.kcsan
-> @@ -199,7 +199,7 @@ config KCSAN_WEAK_MEMORY
->
->  config KCSAN_REPORT_VALUE_CHANGE_ONLY
->         bool "Only report races where watcher observed a data value change"
-> -       default y
-> +       default n
->         depends on !KCSAN_STRICT
->         help
->           If enabled and a conflicting write is observed via a watchpoint, but
-> @@ -208,7 +208,7 @@ config KCSAN_REPORT_VALUE_CHANGE_ONLY
->
->  config KCSAN_ASSUME_PLAIN_WRITES_ATOMIC
->         bool "Assume that plain aligned writes up to word size are atomic"
-> -       default y
-> +       default n
->         depends on !KCSAN_STRICT
->         help
->           Assume that plain aligned writes up to word size are atomic by
->
+Yury
