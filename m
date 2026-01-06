@@ -1,69 +1,68 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C692E7F25
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 16:13:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E479533A6FE
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 16:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767716009; cv=none; b=PrxDEtKBE2qC3hPMKmcldp/GQ9wX9C8xEZ42XGxb2gEoThtkKqqgg/Xk19cAv9grQU04XhimSAo2ahulzsxnVOCaMg6FULHNx4Ne8hkYr8eKtuaI7m6etLr1gMliIg7LGbgB7S4SfMU3/KlkTg8fbE0ebDJMOJ5lFsw4cAgm7M8=
+	t=1767716011; cv=none; b=UiaeSDO+KFbUlXsxzGy1mSnBB5INu2tSQ0x9pSq33jxo7QKdVV6H5Yg04usSuudPf5yW/PYk/bnZWwNyf/lQEOF5eyelBWYbxE0IErkT2Qx6P/e7E1trP3/b+i0RIGmmZZvZCELaUlf6L8eWL2B+sLyiFccNMqouRTNhpY3xvf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767716009; c=relaxed/simple;
-	bh=ux96t37i0o+XQz9rwL1Xsqa9o9j/lFq1tZiPHrrgcfg=;
+	s=arc-20240116; t=1767716011; c=relaxed/simple;
+	bh=31K3z/TeTL27blPoZfDSHOqEMPWwg63C71FzL1KNDBY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TJc95pOO78BjaSPafBBEzPMxyf0VfKyFyvYlibcKImEGL0l8h0xm66OxB8Tms8kJQCxaVScCwUxwA4WwHxsQ466Uk0bn/sDskhbdXmxEd/qRpIUHQV55ioMhP75mv3rXwTTBuaCkfvefoM146k4Cjjn3yE4y+U2iUCQNpXnu7UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eh/guTD+; arc=none smtp.client-ip=209.85.208.174
+	 In-Reply-To:To:Cc; b=htXQSg876POiTGIO1ov6u1acP2nPMAcDHS2MOe9RnwxJVK7zccwHCEkMiYJAeTPo1xYJpYhqUBW8WnzUzw9SnDWQ0+y75ykDhIKIdEldwRVM63PbnOawJVkRGYaEPdTK72C7JxHn74yiNrevw2DLt082/dcEY3WoLUEhDIn2jKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=js9H5iCD; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eh/guTD+"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-37d056f5703so9472651fa.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 08:13:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="js9H5iCD"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59b685d2b79so719118e87.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 08:13:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767716005; x=1768320805; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767716007; x=1768320807; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=w/r3EYPU9S+RKnAFCMdSg0qTpeqQzdmOVqZdf6MJWDc=;
-        b=eh/guTD+R/aW9TmdqdN+G0xMr3EUdjtMAMnFOUQAH7peyukSZ9mh4WdV5bTMytjsWy
-         IiT9jafeNhcRsajEdIG/igU7fugiIzm23MwAg/RRiG/rpf6lYFiIc1xFon8fM+GevNR1
-         FvyH88Zy31lmVIW/tl3Fjo8vfjI7RSJxhC2c33dJ88R3FugEmUfpbn2PxdsD8w/E8ciP
-         09D1sL3mXlDoP2kuh1R7eEuIsuYny+vugRCJJWoQy81WSG5Er3loWOCSlTlU/LNTFiSt
-         CHQAnAW5cpGCXrLrpI+xhWU1UmN4DOIlbIhCVFh8hncwwYNbVT9PPCHp41j7SOyVbrsE
-         ZAuw==
+        bh=Rzq6sT7GcMk+zrj1ACCJmSl03CZtKzXScBbEctCNtgE=;
+        b=js9H5iCDT1xuYoBwfMQoX8HBM4fQF7ARMJuPtWMXdN/SRJqmJ8Am75E2rITcGr4lev
+         UQvHdP7wDWL1e9hb/I05KwrWlQyoWRxVFEyQN24shW2lOTNJgavuFdAi+b9jxd7KoHwI
+         drlhKUUVeWtBLXnvuJnuWGIFbMCCvYmzYhVIROeyAhClVX8diUQdEZC6iIqU06gvNCwA
+         V/5xHrhFbEig4JJK9SZLTo3bv8Tqr5rHjSoTZKKDfPNAhx7AJs0qdRwGLOm4/JuQaSQi
+         Fu+CQN/+YayRAjQKJxIW9RjPVf1bXvmUr0S7IrJJKqIfaE6mpbg0uUy3OTtCbvPp9Fub
+         16sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767716005; x=1768320805;
+        d=1e100.net; s=20230601; t=1767716007; x=1768320807;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=w/r3EYPU9S+RKnAFCMdSg0qTpeqQzdmOVqZdf6MJWDc=;
-        b=nG0otQwYbZg3lhWYUIgrItgNsE2AZGpSv3byf2I7xGAtF6X71wGyMtQSyxTcmn279z
-         EFy4EVx+MqoQFNnXOTeLQQYNnNZCp46RVPPpAnRKY6s8iDBtsILpgxJInqq9HnywCuSW
-         2p0uItDhR2QrJXAFJ/BUu448K7Y4j9TDnQhiMItlGj0oPe31LblNM1Nh1TVbJcuroD+d
-         XZE+6+c3clL7NeMuXGAyCk/96QEoB2CvY/VRtXfbFM9HnfFrvPpjFft/omWjr7uFr1cQ
-         u2XNTVR5yKLHU6p+7zlV1Z5pll6yFkee1WanOTJoDQeApeNd+HyQZCD9sK5uL5x0WbDf
-         ln/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUv/FSGtK+cT543wIIK+cCwuQ3ApI9v7XVQUDPsDyg4ktmWTrtccG0JlepPhp599IQM8fATlNlf6PgRiBhOSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGF0Ohosinnr4Wtn8oRUfDLe6i5wWq2V+LBIUwlAKkaKEg4ash
-	UcfXn436+ErFqjRYceIyEvQjBoTNDqtcRdrc1AK2oJNfYKDpxHkAyqMR
-X-Gm-Gg: AY/fxX4Evb2XMh5HDhkIGZEuMYjDmPN/IhpnrKoagVw7eukq4hKkzrIPO+6HidpkJFU
-	gQC9qXDKeEQhv07zS0jsSK/JcVqs63COQJ0A5e/gDnyZQU3nDUawniRCqXcaqWQcT6kmKHtG7yk
-	okumin39LAZnRALWxDj+nhV4YVgz1shUPAnq/1Dfg0JSeuN7bKZhjBQMAfSjMQUoV9oiOT+Iob+
-	cs8zLDFFr9gsZt8G7w8BHrh+LxknK93eCXGggF/zsD6Qfnv5lxHKkopzYH3X/a2LK31EZAK/n6P
-	bbF2eAR6Omevlx+NT/c2z8jhrasnHo9lwjIv8HpPDwkJ/0lhQ8hjGcCp+Bk01s9Sh8+Ora8J4PE
-	MCsWHJ+xE+gRP2MTBfYcGbaifxHJlzw+DhksCvVIjbCVpzqrt5u3F96qr84zpk9inxZn3y9zsbr
-	HYoE1cxd85fjF9yKOyAr1BazUwE1V7XSM3ujViCoE1pCqm0fRuLJYA1l+ujTc78lsw6y6/SSqpR
-	Lt9k182fYgcLa2j
-X-Google-Smtp-Source: AGHT+IGYZWam7DBChjxOUl3CONwCvShE1fvapEpMsDYCfGaWU3TWsq5laWGyI8gsXTyWYvUHcv79Mg==
-X-Received: by 2002:a05:651c:221a:b0:37a:30c5:af1f with SMTP id 38308e7fff4ca-382eaadb376mr11103641fa.40.1767716004648;
-        Tue, 06 Jan 2026 08:13:24 -0800 (PST)
+        bh=Rzq6sT7GcMk+zrj1ACCJmSl03CZtKzXScBbEctCNtgE=;
+        b=HIt1MDhNNTEqPd83p7YDCB7uqT+jgUorY8l/bMJrHZ1+U0PiWMalqlQUXHU3c/rJbU
+         UiPIpI4P9fL3P2OXAJoQAhN/e2nNELG9rC8wcUmsc2U8J9ogNhjbyjH7FMn9Vqp4aaT0
+         FomF2wERp/r2iFvEyxAYjkrubf3ySyXSwtjegqH9FQBeZLYAST0GquFVM7/yox7bAqef
+         KdeOO+h/QoRv6JvyHZYZl8SpiUmBLrSSoavBBwdJyay5OcFPGG3qN1YXO9wYjmOzSbUC
+         IDgaNtaVC7x/l5n/Rxz63FbUgoLOwznElsIQAxOSvlC0A1v32AWMbZQ0IQTt2olkrczL
+         DLwg==
+X-Forwarded-Encrypted: i=1; AJvYcCUzAeqffSGoZDJ8dC2asA81fs2YrvrQp3jr6OOgDGXKhFdXxqJv9ppF+Iofrlipho+lGwTFD2qMK2EiknEVdQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIuUr237iDh80c5rKwbgrz3gxbocWoKn2B34tAmHi2RCP/jq3T
+	EsZtAebRGAprlYuHfo2hxEw2m+BRj96IuOh56zgyRx1SU9V6t+BYCWgS
+X-Gm-Gg: AY/fxX7uxXuJao37J5KBVLXy9i/rMy2xpEVgfXy2UlVGKE2HqkYqd0r9euJCvf/js8n
+	qI8Nxd00OzgmtGS69aWCzIG2cioSXv9iLcoIP6aIIB+SyBgkrEgI7UiqS7Fd4HU17cBYaDROLzz
+	TgutziDZ5pb1yCGfZfpb/nTXewS5LDqaco3VWIXt6vE6K6yGfDkqI3KNGftH3/oF+0m+l4mPaaK
+	QbScnV5/sEYpSCH35padOGE75cUX3x7+O6WjTrgy0cvh1WoES/NoiEVtXL3pL86pG1SlfKhjVoq
+	BUxByYfngnALQP3cuYr06idYftPsJ3UDNZM154FDmQ95DPawjOXXFC3nK7yCwy+DkJHrer5WX0q
+	I3WaOhQa8stkVbnK97v9h3qOvI8WYdExg5MRyf2Nx3tr0yY9y8/shzUnzZrCk6NNlhsF7Bccu7K
+	uLJq3DrnJPGqGXZsaSXb6J7pMEYU+6TjpmD6oQegHkFqZqUXO0NXGt5pvdVAxOGw0AHVe4m8Hdz
+	d5Exw==
+X-Google-Smtp-Source: AGHT+IEP/ySDqe0fUbCPgt5iLWx19W1TWyDR8oFVojZghcOpc//7QvyUeu7CEG1drmNLRunieI+/Uw==
+X-Received: by 2002:a05:6512:10c5:b0:594:2f1a:6ff0 with SMTP id 2adb3069b0e04-59b6520ebe3mr1228667e87.9.1767716006851;
+        Tue, 06 Jan 2026 08:13:26 -0800 (PST)
 Received: from LT-5CG5341NQ4.nordic.imtech.com (37-33-180-149.bb.dnainternet.fi. [37.33.180.149])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-382eb91dfbdsm5256091fa.44.2026.01.06.08.13.22
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-382eb91dfbdsm5256091fa.44.2026.01.06.08.13.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 08:13:24 -0800 (PST)
+        Tue, 06 Jan 2026 08:13:26 -0800 (PST)
 From: Kari Argillander <kari.argillander@gmail.com>
-Date: Tue, 06 Jan 2026 18:11:47 +0200
-Subject: [PATCH RFC v2 09/11] rust: remove module argument from
- InPlaceModule::init()
+Date: Tue, 06 Jan 2026 18:11:48 +0200
+Subject: [PATCH RFC v2 10/11] rust: remove kernel::ModuleMetadata
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -72,7 +71,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-this_module_fix-v2-9-842ac026f00b@gmail.com>
+Message-Id: <20260106-this_module_fix-v2-10-842ac026f00b@gmail.com>
 References: <20260106-this_module_fix-v2-0-842ac026f00b@gmail.com>
 In-Reply-To: <20260106-this_module_fix-v2-0-842ac026f00b@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -86,335 +85,103 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
  Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
  Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
- Kari Argillander <kari.argillander@gmail.com>, 
- Yuheng Su <gipsyh.icu@gmail.com>
+ Kari Argillander <kari.argillander@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767715983; l=13585;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767715983; l=3446;
  i=kari.argillander@gmail.com; s=20251219; h=from:subject:message-id;
- bh=ux96t37i0o+XQz9rwL1Xsqa9o9j/lFq1tZiPHrrgcfg=;
- b=rRmm6X7wAsFkyggSVE85WlCCByCGyW2Uik6XNWiq6PaAnJGJIKLtaD+udyDf5v2FSjJoAgZ2i
- VBkL++c3BLZBdhAJJP5v/pWpv3oxK1lhXckuofLLPSz1HXQM5ZA9M3q
+ bh=31K3z/TeTL27blPoZfDSHOqEMPWwg63C71FzL1KNDBY=;
+ b=aYpSyfVvVzRtx2jZBA0uzYh2qT6PaE4SsBkyhK757T6LX63SFZ5UAGbmaYOT6qU//VGxRLdbb
+ ZCWh1rldZrwA3wKCYGu9+ZCmt5Du50a7ox3x1R5Wt+7hiG44za8CUbs
 X-Developer-Key: i=kari.argillander@gmail.com; a=ed25519;
  pk=RwSxyhTpE3z4sywdDbIkC3q33ZQLNyhYWxT44iTY6r4=
 
-InPlaceModule::init() has ThisModule argument. However modules always
-have THIS_MODULE made by module! macro. So it is unnecessary to pass
-same information through this function. End goal is to make idea of
-THIS_MODULE simpler. Driver getting this THIS_MODULE from multiple
-places is confusing. So let's just stick with THIS_MODULE as that also
-works in const context very easily.
+We have all information available also in THIS_MODULE. Use that instead.
+This way we do not need to do ugly casts from driver struct.
 
-Reported-by: Yuheng Su <gipsyh.icu@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/720
 Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
 ---
- drivers/android/binder/rust_binder_main.rs | 2 +-
- drivers/block/rnull/rnull.rs               | 2 +-
- lib/find_bit_benchmark_rust.rs             | 3 +--
- rust/kernel/configfs.rs                    | 3 +--
- rust/kernel/driver.rs                      | 4 +---
- rust/kernel/firmware.rs                    | 2 +-
- rust/kernel/lib.rs                         | 8 ++++----
- rust/kernel/net/phy.rs                     | 2 +-
- rust/kernel/sync/lock/global.rs            | 4 ++--
- rust/macros/lib.rs                         | 4 ++--
- rust/macros/module.rs                      | 2 +-
- samples/rust/rust_configfs.rs              | 2 +-
- samples/rust/rust_debugfs_scoped.rs        | 2 +-
- samples/rust/rust_driver_auxiliary.rs      | 2 +-
- samples/rust/rust_driver_faux.rs           | 2 +-
- samples/rust/rust_minimal.rs               | 2 +-
- samples/rust/rust_misc_device.rs           | 2 +-
- samples/rust/rust_print_main.rs            | 2 +-
- 18 files changed, 23 insertions(+), 27 deletions(-)
+ drivers/gpu/nova-core/nova_core.rs    | 2 +-
+ rust/kernel/firmware.rs               | 2 +-
+ rust/kernel/lib.rs                    | 6 ------
+ rust/macros/module.rs                 | 8 --------
+ samples/rust/rust_driver_auxiliary.rs | 2 +-
+ 5 files changed, 3 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index fc921c0e1116..8b865112e60c 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -291,7 +291,7 @@ fn ptr_align(value: usize) -> Option<usize> {
- struct BinderModule {}
+diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+index b98a1c03f13d..fbfbcc9446c0 100644
+--- a/drivers/gpu/nova-core/nova_core.rs
++++ b/drivers/gpu/nova-core/nova_core.rs
+@@ -19,7 +19,7 @@
+ mod util;
+ mod vbios;
  
- impl kernel::Module for BinderModule {
--    fn init(_module: &'static kernel::ThisModule) -> Result<Self> {
-+    fn init() -> Result<Self> {
-         // SAFETY: The module initializer never runs twice, so we only call this once.
-         unsafe { crate::context::CONTEXTS.init() };
+-pub(crate) const MODULE_NAME: &kernel::str::CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
++pub(crate) const MODULE_NAME: &kernel::str::CStr = THIS_MODULE::name();
  
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 862369ab9b5c..a9be1b2187f4 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -36,7 +36,7 @@ struct NullBlkModule {
- }
- 
- impl kernel::InPlaceModule for NullBlkModule {
--    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-+    fn init() -> impl PinInit<Self, Error> {
-         pr_info!("Rust null_blk loaded\n");
- 
-         try_pin_init!(Self {
-diff --git a/lib/find_bit_benchmark_rust.rs b/lib/find_bit_benchmark_rust.rs
-index 6bdc51de2f30..5c231569d887 100644
---- a/lib/find_bit_benchmark_rust.rs
-+++ b/lib/find_bit_benchmark_rust.rs
-@@ -7,7 +7,6 @@
- use kernel::error::{code, Result};
- use kernel::prelude::module;
- use kernel::time::{Instant, Monotonic};
--use kernel::ThisModule;
- use kernel::{pr_cont, pr_err};
- 
- const BITMAP_LEN: usize = 4096 * 8 * 10;
-@@ -88,7 +87,7 @@ fn find_bit_test() {
- }
- 
- impl kernel::Module for Benchmark {
--    fn init(_module: &'static ThisModule) -> Result<Self> {
-+    fn init() -> Result<Self> {
-         find_bit_test();
-         // Return error so test module can be inserted again without rmmod.
-         Err(code::EINVAL)
-diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
-index 908cb98d404f..2af63f7daef2 100644
---- a/rust/kernel/configfs.rs
-+++ b/rust/kernel/configfs.rs
-@@ -27,7 +27,6 @@
- //! use kernel::new_mutex;
- //! use kernel::page::PAGE_SIZE;
- //! use kernel::sync::Mutex;
--//! use kernel::ThisModule;
- //!
- //! #[pin_data]
- //! struct RustConfigfs {
-@@ -36,7 +35,7 @@
- //! }
- //!
- //! impl kernel::InPlaceModule for RustConfigfs {
--//!     fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-+//!     fn init() -> impl PinInit<Self, Error> {
- //!         pr_info!("Rust configfs sample (init)\n");
- //!
- //!         let item_type = configfs_attrs! {
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index dc7522c4ebda..de77f95d7fe0 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -201,9 +201,7 @@ struct DriverModule {
-         }
- 
-         impl $crate::InPlaceModule for DriverModule {
--            fn init(
--                _module: &'static $crate::ThisModule
--            ) -> impl ::pin_init::PinInit<Self, $crate::error::Error> {
-+            fn init() -> impl ::pin_init::PinInit<Self, $crate::error::Error> {
-                 $crate::try_pin_init!(Self {
-                     _driver <- $crate::driver::Registration::new::<crate::THIS_MODULE>(),
-                 })
+ kernel::module_pci_driver! {
+     type: driver::NovaCore,
 diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-index 71168d8004e2..11372a8f7be4 100644
+index 11372a8f7be4..42bae71f6af1 100644
 --- a/rust/kernel/firmware.rs
 +++ b/rust/kernel/firmware.rs
-@@ -157,7 +157,7 @@ unsafe impl Sync for Firmware {}
- /// # struct MyModule;
- /// #
- /// # impl kernel::Module for MyModule {
--/// #     fn init(_module: &'static ThisModule) -> Result<Self> {
-+/// #     fn init() -> Result<Self> {
- /// #         Ok(Self)
- /// #     }
- /// # }
+@@ -206,7 +206,7 @@ macro_rules! module_firmware {
+             const __MODULE_FIRMWARE_PREFIX: &'static $crate::str::CStr = if cfg!(MODULE) {
+                 c""
+             } else {
+-                <LocalModule as $crate::ModuleMetadata>::NAME
++                crate::THIS_MODULE::name()
+             };
+ 
+             #[link_section = ".modinfo"]
 diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 2ccd75f68f03..e7bc52a6ad42 100644
+index e7bc52a6ad42..dec1d05ebe7b 100644
 --- a/rust/kernel/lib.rs
 +++ b/rust/kernel/lib.rs
-@@ -175,7 +175,7 @@ pub trait Module: Sized + Sync + Send {
-     /// should do.
-     ///
-     /// Equivalent to the `module_init` macro in the C API.
--    fn init(module: &'static ThisModule) -> error::Result<Self>;
-+    fn init() -> error::Result<Self>;
+@@ -201,12 +201,6 @@ fn init() -> impl pin_init::PinInit<Self, error::Error> {
+     }
  }
  
- /// A module that is pinned and initialised in-place.
-@@ -183,13 +183,13 @@ pub trait InPlaceModule: Sync + Send {
-     /// Creates an initialiser for the module.
-     ///
-     /// It is called when the module is loaded.
--    fn init(module: &'static ThisModule) -> impl pin_init::PinInit<Self, error::Error>;
-+    fn init() -> impl pin_init::PinInit<Self, error::Error>;
- }
- 
- impl<T: Module> InPlaceModule for T {
--    fn init(module: &'static ThisModule) -> impl pin_init::PinInit<Self, error::Error> {
-+    fn init() -> impl pin_init::PinInit<Self, error::Error> {
-         let initer = move |slot: *mut Self| {
--            let m = <Self as Module>::init(module)?;
-+            let m = <Self as Module>::init()?;
- 
-             // SAFETY: `slot` is valid for write per the contract with `pin_init_from_closure`.
-             unsafe { slot.write(m) };
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index b6c99bf7e97b..7d467d42e951 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -901,7 +901,7 @@ struct Module {
-                 [$($crate::net::phy::create_phy_driver::<$driver>()),+];
- 
-             impl $crate::Module for Module {
--                fn init(_module: &'static $crate::ThisModule) -> Result<Self> {
-+                fn init() -> Result<Self> {
-                     // SAFETY: The anonymous constant guarantees that nobody else can access
-                     // the `DRIVERS` static. The array is used only in the C side.
-                     let drivers = unsafe { &mut DRIVERS };
-diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
-index eab48108a4ae..7fde464462d1 100644
---- a/rust/kernel/sync/lock/global.rs
-+++ b/rust/kernel/sync/lock/global.rs
-@@ -203,7 +203,7 @@ pub fn get_mut(&mut self) -> &mut T {
- /// }
+-/// Metadata attached to a [`Module`] or [`InPlaceModule`].
+-pub trait ModuleMetadata {
+-    /// The name of the module as specified in the `module!` macro.
+-    const NAME: &'static crate::str::CStr;
+-}
+-
+ /// Equivalent to `THIS_MODULE` in the C API.
  ///
- /// impl kernel::Module for MyModule {
--///     fn init(_module: &'static ThisModule) -> Result<Self> {
-+///     fn init() -> Result<Self> {
- ///         // SAFETY: Called exactly once.
- ///         unsafe { MY_COUNTER.init() };
- ///
-@@ -243,7 +243,7 @@ pub fn get_mut(&mut self) -> &mut T {
- /// }
- ///
- /// impl kernel::Module for MyModule {
--///     fn init(_module: &'static ThisModule) -> Result<Self> {
-+///     fn init() -> Result<Self> {
- ///         // SAFETY: Called exactly once.
- ///         unsafe { MY_MUTEX.init() };
- ///
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index b38002151871..d22a93696209 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -80,7 +80,7 @@
- /// struct MyModule(i32);
- ///
- /// impl kernel::Module for MyModule {
--///     fn init(_module: &'static ThisModule) -> Result<Self> {
-+///     fn init() -> Result<Self> {
- ///         let foo: i32 = 42;
- ///         pr_info!("I contain:  {}\n", foo);
- ///         pr_info!("i32 param is:  {}\n", module_parameters::my_parameter.read());
-@@ -114,7 +114,7 @@
- /// struct MyDeviceDriverModule;
- ///
- /// impl kernel::Module for MyDeviceDriverModule {
--///     fn init(_module: &'static ThisModule) -> Result<Self> {
-+///     fn init() -> Result<Self> {
- ///         Ok(Self)
- ///     }
- /// }
+ /// C header: [`include/linux/init.h`](srctree/include/linux/init.h)
 diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 1bcd703735fe..7473a377a3bd 100644
+index 7473a377a3bd..97635aed1598 100644
 --- a/rust/macros/module.rs
 +++ b/rust/macros/module.rs
-@@ -490,7 +490,7 @@ mod __module_init {{
-                     /// This function must only be called once.
-                     unsafe fn __init() -> ::kernel::ffi::c_int {{
-                         let initer =
--                            <{type_} as ::kernel::InPlaceModule>::init(&super::super::THIS_MODULE.as_ref());
-+                            <{type_} as ::kernel::InPlaceModule>::init();
-                         // SAFETY: No data race, since `__MOD` can only be accessed by this module
-                         // and there only `__init` and `__exit` access it. These functions are only
-                         // called once and `__exit` cannot be called before or during `__init`.
-diff --git a/samples/rust/rust_configfs.rs b/samples/rust/rust_configfs.rs
-index 0ccc7553ef39..f34260793677 100644
---- a/samples/rust/rust_configfs.rs
-+++ b/samples/rust/rust_configfs.rs
-@@ -42,7 +42,7 @@ fn new() -> impl PinInit<Self, Error> {
- }
+@@ -374,14 +374,6 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+             ::kernel::create_this_module!(\"{name}\");
  
- impl kernel::InPlaceModule for RustConfigfs {
--    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-+    fn init() -> impl PinInit<Self, Error> {
-         pr_info!("Rust configfs sample (init)\n");
  
-         // Define a subsystem with the data type `Configuration`, two
-diff --git a/samples/rust/rust_debugfs_scoped.rs b/samples/rust/rust_debugfs_scoped.rs
-index 6a575a15a2c2..75897e02766b 100644
---- a/samples/rust/rust_debugfs_scoped.rs
-+++ b/samples/rust/rust_debugfs_scoped.rs
-@@ -134,7 +134,7 @@ fn init_control(base_dir: &Dir, dyn_dirs: Dir) -> impl PinInit<Scope<ModuleData>
- }
- 
- impl kernel::Module for RustScopedDebugFs {
--    fn init(_module: &'static kernel::ThisModule) -> Result<Self> {
-+    fn init() -> Result<Self> {
-         let base_dir = Dir::new(c"rust_scoped_debugfs");
-         let dyn_dirs = base_dir.subdir(c"dynamic");
-         Ok(Self {
+-            /// The `LocalModule` type is the type of the module created by `module!`,
+-            /// `module_pci_driver!`, `module_platform_driver!`, etc.
+-            type LocalModule = {type_};
+-
+-            impl ::kernel::ModuleMetadata for {type_} {{
+-                const NAME: &'static ::kernel::str::CStr = c\"{name}\";
+-            }}
+-
+             // Double nested modules, since then nobody can access the public items inside.
+             mod __module_init {{
+                 mod __module_init {{
 diff --git a/samples/rust/rust_driver_auxiliary.rs b/samples/rust/rust_driver_auxiliary.rs
-index 28a25e540298..7b729687811d 100644
+index 7b729687811d..528866b953aa 100644
 --- a/samples/rust/rust_driver_auxiliary.rs
 +++ b/samples/rust/rust_driver_auxiliary.rs
-@@ -111,7 +111,7 @@ struct SampleModule {
- }
+@@ -18,7 +18,7 @@
+ use core::any::TypeId;
+ use pin_init::PinInit;
  
- impl InPlaceModule for SampleModule {
--    fn init(_module: &'static kernel::ThisModule) -> impl PinInit<Self, Error> {
-+    fn init() -> impl PinInit<Self, Error> {
-         try_pin_init!(Self {
-             _pci_driver <- driver::Registration::new::<THIS_MODULE>(),
-             _aux_driver <- driver::Registration::new::<THIS_MODULE>(),
-diff --git a/samples/rust/rust_driver_faux.rs b/samples/rust/rust_driver_faux.rs
-index 5330b77ea986..2653b2ec3338 100644
---- a/samples/rust/rust_driver_faux.rs
-+++ b/samples/rust/rust_driver_faux.rs
-@@ -21,7 +21,7 @@ struct SampleModule {
- }
+-const MODULE_NAME: &CStr = <LocalModule as kernel::ModuleMetadata>::NAME;
++const MODULE_NAME: &CStr = THIS_MODULE::name();
+ const AUXILIARY_NAME: &CStr = c"auxiliary";
  
- impl Module for SampleModule {
--    fn init(_module: &'static ThisModule) -> Result<Self> {
-+    fn init() -> Result<Self> {
-         pr_info!("Initialising Rust Faux Device Sample\n");
- 
-         let reg = faux::Registration::new(c"rust-faux-sample-device", None)?;
-diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
-index 8eb9583571d7..c024f8083499 100644
---- a/samples/rust/rust_minimal.rs
-+++ b/samples/rust/rust_minimal.rs
-@@ -23,7 +23,7 @@ struct RustMinimal {
- }
- 
- impl kernel::Module for RustMinimal {
--    fn init(_module: &'static ThisModule) -> Result<Self> {
-+    fn init() -> Result<Self> {
-         pr_info!("Rust minimal sample (init)\n");
-         pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
-         pr_info!(
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index 464e3026e6e3..709adf4a6026 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -128,7 +128,7 @@ struct RustMiscDeviceModule {
- }
- 
- impl kernel::InPlaceModule for RustMiscDeviceModule {
--    fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-+    fn init() -> impl PinInit<Self, Error> {
-         pr_info!("Initialising Rust Misc Device Sample\n");
- 
-         let options = MiscDeviceOptions {
-diff --git a/samples/rust/rust_print_main.rs b/samples/rust/rust_print_main.rs
-index 4095c72afeab..de1bf7b80153 100644
---- a/samples/rust/rust_print_main.rs
-+++ b/samples/rust/rust_print_main.rs
-@@ -59,7 +59,7 @@ fn arc_dyn_print(arc: &Arc<dyn Display>) {
- }
- 
- impl kernel::Module for RustPrint {
--    fn init(_module: &'static ThisModule) -> Result<Self> {
-+    fn init() -> Result<Self> {
-         pr_info!("Rust printing macros sample (init)\n");
- 
-         pr_emerg!("Emergency message (level 0) without args\n");
+ struct AuxiliaryDriver;
 
 -- 
 2.43.0
