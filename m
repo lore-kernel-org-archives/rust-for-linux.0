@@ -1,195 +1,236 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011036.outbound.protection.outlook.com [40.107.130.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE211E520A;
-	Tue,  6 Jan 2026 09:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767691645; cv=fail; b=ZJ4dg0zrhbhFsBolXR2RHrwogEEMJ39+i4qwtIh1XR4Nt3kOBV1Z5YFwXle6yD93XCfc/nmINfba1ZAhl8x8vF2tj3286uSt4uwB/Q4prL30JTx4wOP42UfgXVp6wZ25R7dTOtSMHvgm7hK+xadmw2Mw890OdsW0YLogJKEeNog=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767691645; c=relaxed/simple;
-	bh=7jEBxVgKN5GiTftU8mJ44gGlw7dKCc4HDPW5jsuwAkg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=GohJZXrdxczXZRPIDlA9nQO4ti1kDzau5HntuwMCfyKtnSjc3SJO3P7l4M9UVxhtTyqCsm0zcUDqVIcjbmW3XtbPts+Nhftf1Wrx5QU8MRVWH4k2PkmTPGYtznt9Qn/jCOCkjrGEfWoUvyc60xBMnR7jClju+DI55A+6GYNULuM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=DPD/OxEv; arc=fail smtp.client-ip=40.107.130.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD98D1FECCD
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 09:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767691705; cv=none; b=RNA9B9eDb4I6sF3Sk9CvF0R16zv5l2datTLwvfI3PpJ0EVE6q/lDB5S+iWc3evIo0mQq1DSIu5Y0DgA62WnM8eZjM/DdqgjnN7SzXI1SWAl4gk3UjogxVkoFbMCLN0iiHFS4DGqobS78hW1zFReIGH2hN2PA6Wwg+gaHLdBV1nw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767691705; c=relaxed/simple;
+	bh=B5QgLzXytJTBwF4m/Wq4TMPG+2aauBnYhfvjMCFyPBU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=lveI5KVAEBGhmDJRnFq9VCsWul9qo0aYsoLID9H3LTOPdKWn5qKnS49HD5JSvQ+nBf+BbDoCtpAUZCExhRivhhdVi/Hrlpor+JNkUWdbn3PugTOaKNa0/rKIH3y037PabqFnfBnyNjW71HArw7aWJ76SBrqh3zD1DYIx7ZRE9nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dyNQPAq4; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="DPD/OxEv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JzHGdBD2pPfWePE3PBXydIED4U79aGPx5tmwxwgbIdBMuGvu7/na4KF1C99Qi35umW7pRWLplxoRV7tdjbu8gdt3TERc0fdFiKMwaHVfVQQc98MHQSh+mSabZlcS5le+oY5JvnKSsZRrxIHwMyYZAakglMipu16a4y6pGCLucIO+BC8eQbM6BfaX05DqM9MSzC9GVAvWqadnIqOTYYMA2Qfzz+WxegCbDR0akeghh4tbvljhyXZMeTQQmB9TUGTCYnPjNQWSUdKLl3lTjUyDEdHmnm7TBjySvSAjf0IfIG37n7sjxmsZ2Yl5NZkvYWXUwyX0YjauVeZmKdMC/2/63A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hmEH1yZRZJXk/91oUg+npQSU/Smil41iqO+LJGaEwaY=;
- b=KidXnGPrUF17SRKlCDrDwrkKzu337jRkzQIudlxrxCX7I6ljAS3IcLo6ndXIFAGD5SiUWnX2w/MGv4bTpzIIqictI2TNVvFGxT5rJwF6NE9tdwoC3QLR9AHgq8+uS3nshxfhOyWY8fJxU5tGDeNF7M+d0cN4h4FgQJkm/1r/nWYc+3K3nLg1AAPPC2nu/+ZJT3cAZhiWl9LLro+QGVrFmmIYOT5Gr+wmLtflTEVBD7s/+/L+rLDKDkAjb5KXTvd4ot1kia7VIAc8yaOCfbF9bTht5q0+aH9Hp5QfVIW65JSP/wsOPGXNPETiqz6YstpICy3vQd82Y/I4cD09u8QyaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=markoturk.info smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hmEH1yZRZJXk/91oUg+npQSU/Smil41iqO+LJGaEwaY=;
- b=DPD/OxEv8sbbabzaW/aqD4+BknLeShBK5fQaf3VS7T4/2hhtbNme9BQ51NNJf3sZQ85jBcTSPmDLIDUysN5vW+AsUDn+tTfMIOERh3BUkg25YtQskrx9xNcqEsz0HNgjFKbqUa4ql5F6f339nwh5mY7/7PZ8UUuWBVWmtYW4fCdDfuf1j/9M40eZ9L2bNg+scmvqwrJSSb3ljuUOtZnGFV1UsrOklbsELjkorVFkstl/z2vrqVH6aAMCKqzjmO0w/bYKVmny/cWdTwwLYirR+aIySyR/N1eQjyMSn+dI/Pp6N8Wvalz+kDXegdLdPNoJRhk2IYZ5ybDDhvVqvf1Y1Q==
-Received: from AS4P190CA0054.EURP190.PROD.OUTLOOK.COM (2603:10a6:20b:656::18)
- by DU0PR10MB6702.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:402::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Tue, 6 Jan
- 2026 09:27:18 +0000
-Received: from AMS0EPF000001B6.eurprd05.prod.outlook.com
- (2603:10a6:20b:656:cafe::26) by AS4P190CA0054.outlook.office365.com
- (2603:10a6:20b:656::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9478.5 via Frontend Transport; Tue, 6
- Jan 2026 09:27:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- AMS0EPF000001B6.mail.protection.outlook.com (10.167.16.170) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.1 via Frontend Transport; Tue, 6 Jan 2026 09:27:17 +0000
-Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 6 Jan
- 2026 10:27:17 +0100
-Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
- (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 6 Jan
- 2026 10:27:17 +0100
-Message-ID: <86b8f2fc-ffe4-40f3-acf9-547e5a5a579d@de.bosch.com>
-Date: Tue, 6 Jan 2026 10:27:17 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dyNQPAq4"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d3c4468d8so4116935e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 01:28:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767691702; x=1768296502; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6RjpJ0KDmu6ECR8rL0wc7ojCWim0me85ZoK7bVZx8Nw=;
+        b=dyNQPAq4y2bsCLwmjHpfyqWS/ZNraJSkw0J4uk7pS6fq3v+6XqETRKgtapPzSyRuYA
+         tMrLVRt5UnM9/G49mdq/w/abJAge2OgDbtddsydV2ho0Wm+bAQ2cemtI8uA0TZJiH89d
+         +YwCM+lYsAxZmaxJMCIOY4PJO3UNlX6+GPFAyXHNpKi2cwxJGQtu6Lasbw/x70CU7SrW
+         Sgc9/y9E/OhzDFKVfLzvH02lavINECBWLBsYifhgKhwbb/y6hw7q4h6tgCNCUiYQrh8a
+         3JAicGo7QmJYCe/KOWt7aFP0E71cKXZwuQFHl92JRHBhO6u3aQFkXM2ChBNR+0yQQazg
+         Ebeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767691702; x=1768296502;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6RjpJ0KDmu6ECR8rL0wc7ojCWim0me85ZoK7bVZx8Nw=;
+        b=vzvcjNDEdTy6tpHh7wWe7iOJF0XBkReqWLL1tXCOYfcqEcbVrYoB+uqs8DMQlUL6Va
+         DxW1ADwjGTyuYmsO7Q1BR0Hl8t9DnJe/SeCaFtJLM2dfqiHHE5CUFZ0YtfSQqbThfdf5
+         zA8md8xTTFhfZNwgaDjPffxivNAYpyL7RO1ApSuCz8x4a+RFJemYwSFsNJQEebuNwU7V
+         tSsHBIZRl8+UTOdiyDgw3LXOMSJUg3y0S5a6zG+uyTOFEcnX6scuh2F1lpTXkCRwxZ3F
+         T1cZvWf/oO73ecUialXWEdbthCXiAkS96W6KYjtv7sNvphTXL62/65s0XW6tPyNH6A5h
+         5o+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWw5PT95CKR5LwiJcfLF/AjVhF77E5ugwixTh6kbNVIYS411HcU50K89yt8VN/wZJN46xoZf7hsRZsIM+208Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBu0YlZ2gGtyM0szwV1yzt80VPBOiY1kz4iNP6JEF7oKpvSa6Y
+	Giwm4Ax7znH6t3SMF51Zf+wrY678VeTakfferIpXdHOGH/En3RiWRN+UoG+RWUCH5Qcknf2/wiW
+	fcDfmcMltIyHrMTVbxw==
+X-Google-Smtp-Source: AGHT+IHNW8cnVGr4FrI4JSUTQ4MhjlhNsVpoauV6Ax0QEt6OpkLERWQ91EuorShFPTBR+aL8Z2pePHC4+iiUcQY=
+X-Received: from wmoo8-n2.prod.google.com ([2002:a05:600d:108:20b0:47b:daaa:51cf])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8b43:b0:477:afc5:fb02 with SMTP id 5b1f17b1804b1-47d7f09b89emr24896975e9.21.1767691702185;
+ Tue, 06 Jan 2026 01:28:22 -0800 (PST)
+Date: Tue, 6 Jan 2026 09:28:21 +0000
+In-Reply-To: <CAGSQo00Vz54=3tgw8z3DtEqtXZGbk3SbJoautuD2pCgw4aswLA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v2 2/2] rust: pci: fix typos in Bar struct's comments
-To: Marko Turk <mt@markoturk.info>, <dakr@kernel.org>,
-	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<rust-for-linux@vger.kernel.org>
-References: <20260105213726.73000-1-mt@markoturk.info>
- <20260105213726.73000-2-mt@markoturk.info>
-Content-Language: en-GB
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20260105213726.73000-2-mt@markoturk.info>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS0EPF000001B6:EE_|DU0PR10MB6702:EE_
-X-MS-Office365-Filtering-Correlation-Id: fad1e925-0148-42f2-9b0b-08de4d05c948
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RDRBakU1d096cG11MmErVWNvYkVYa203M0JKdGFibGVWbExMQVJSNmNaU1ZP?=
- =?utf-8?B?QXpoUmdqWDJKbE5HZFF2Y2QrVlhFQXlGR0FoSllMK1YvOTJocjE2NktaelpY?=
- =?utf-8?B?ZEFUT29UZ3FZMFJCUFRyNi9KbmJXbm85RDlZMDhrQThWRTNodVFjenVXTm9G?=
- =?utf-8?B?cStHK1Y2RVBGUTdaVWUzRVhYK3ZjVHpCaW85blJYeFNCY3U1Z1ZZdUZrak81?=
- =?utf-8?B?cVFmMjB5VTBWYyswNUU5UlFEbUFzblJ5YVlFUEtqa29rbm9JRVRwdlg1YTZl?=
- =?utf-8?B?eUl5ZFJBTTdSZDhBajBkZm9VaTc3cXFyWFZVQzZuMEJ4L0RvZFFlTGp4aHhl?=
- =?utf-8?B?MkxBWTlldGFGLytMUXhQdE1UdHhBazdxS3hGZjkxTWRUQVJwT2owUkFSeTYz?=
- =?utf-8?B?Q2tkd25OOFBSVG16blp6eDlZdC8zOFRSWTYvWDEvV1lpNjNJdzdVSnRnYThL?=
- =?utf-8?B?NTV2RUR5ZHNrV0MwMDVxSS9tU0cvTUI0SmxrVTE5OExaK2IzZVhxTlIxSTF2?=
- =?utf-8?B?b2tzV1I5VkdUZlNHQ0ExK3RnWjNXTUxTdTVUTk5iSlA5RTdncTIyZU5MRkYr?=
- =?utf-8?B?dHJTTmM2anh2czlld09DNUJwZGJPRC9UY3lLNjV5dytIem1mYlBUK2Jabjc4?=
- =?utf-8?B?c0RNdVlVRXpNVW8rcFJOa1k2NnFPN3kyakZWU0RueEpKUTBQQzcrUkgvbGov?=
- =?utf-8?B?YkxFdTkzMzRjMmMwa29yU015MUZTUXFLZlVmaDQvdktMSExxZk1lWU95OXcx?=
- =?utf-8?B?N0Z4cHhRUHR1aU1jSkhSU1ExaU9vVzZDRkxhbnU0MnZKZmVkY2M2QjZncjZr?=
- =?utf-8?B?VXBGZEdSME1XcDVtVGpWOVcrNm9tZzlsM2UwNXZ2NnNSU2xPbzZPc0JGcDU4?=
- =?utf-8?B?NS9MRnA0SmJmb0RzdzlvWDZhakhZb1NZOEQyKzg2V3ZHem5MalUwdG1zVDdz?=
- =?utf-8?B?cldSeHNCVzBlMi9sNngyY0UxcVRLTExWTUo1d3JhNkg5Q0JVeThNMjY5a2Mx?=
- =?utf-8?B?d2NHQ2F1TTVOaXhuMG04aUxBOHNEdHBaREVMQzZyYzhMY0k1N0grRzJua3lL?=
- =?utf-8?B?QTNrSkU1Qm9oV3JkelpHdmJxZFBESU1hbmpEYmYrSDJERTQ0dS9JM29xbGRX?=
- =?utf-8?B?TktqNjl3VWNIdG1SL1lacTUxdkhCTzJ0Q2R1UWsrSGJPVGlVUVIycGpkKytQ?=
- =?utf-8?B?TzZFb2JiZVFPeGNMWlMzWjlKWjlsOXV3V3JzejBleU8vdHhsUkYyR09aSEhD?=
- =?utf-8?B?YzM3cnM4L1F2ZmJKNngwQmxZSGlkaFNYempLa0hJY05Fc1VBUm05QXdHVkRq?=
- =?utf-8?B?Z0JRS0RMeFY4bXk4UTgrUDBodmI5TkNSU1VqRm5od1RtNTlzWElQRGJLYXo0?=
- =?utf-8?B?Sk11TzI3M1hXU1pGamlteE5BTUJVcUtvTEFNT3BmZHBPU0xVTkFaZmFob0tQ?=
- =?utf-8?B?K2wvWEhGcDh5anJwbUhWVU1kUkgvRW96d0NJVTE0SUZPZzZMODREM1NBbTBO?=
- =?utf-8?B?VERTUzJabXhVRjYzU0RCL3N0QVl4VDFJSy9KSDR0NDJxd1krdHQyVVVoeitZ?=
- =?utf-8?B?U3BBSEF4S1Z2ZWovK3JCa1pFd0hxYlo0b09XNEZYK242ZFcwQW9PdGkrMnBk?=
- =?utf-8?B?TGhXS1dBTWtNak0wQ1RiUEZQUTR6OEJMTU1CNndtaENHVEJzNjJFNXcrTjQy?=
- =?utf-8?B?bGxQZjBab2ZDb2dPMXBxSmk4RnpnV3ZlekU2MG9FTURrbVRVS3VLWVpGV1U5?=
- =?utf-8?B?Z3FBaGY0MTd0NTFkRUF4L2kxU2ZudHE0ajdubWFSNldRT1daY0w4YWlhRDVr?=
- =?utf-8?B?bHdaY0JpcUJISWFzcWZDR0JtNjBkSHdSUnROazRwU0hoM00xcWFodVBJYldk?=
- =?utf-8?B?YzdUZitIMnc3T0hKVmdMTnM1Qkd0RVhyUk00azBVNHA3emxCRnhoMlc3K2l1?=
- =?utf-8?B?UThMUVkrYW02ZmxOVmJQVkZtdFFJdzZGV0pSZ3BoNXVsMmZZSXpEM0J3RjB1?=
- =?utf-8?B?RmNrZjd5eUxjM2J3WS9maExDblc5TDc5a3hhbnRVM3ptcG5naXF4VS8zdmJ0?=
- =?utf-8?B?RWFheHZhN251eDlJSHRtSkpoMmJtVVZmYWllOHAxWGUwSmFyeVZHRWUxdjlO?=
- =?utf-8?Q?squs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2026 09:27:17.9569
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fad1e925-0148-42f2-9b0b-08de4d05c948
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS0EPF000001B6.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB6702
+Mime-Version: 1.0
+References: <20260105-cfi-lru-status-v1-1-0b2401f7c5b2@google.com> <CAGSQo00Vz54=3tgw8z3DtEqtXZGbk3SbJoautuD2pCgw4aswLA@mail.gmail.com>
+Message-ID: <aVzVtS8c4MMEdcZe@google.com>
+Subject: Re: [PATCH] rust: declare cfi_encoding for lru_status
+From: Alice Ryhl <aliceryhl@google.com>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Ramon de C Valle <rcvalle@google.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am 1/5/2026 um 10:37 PM schrieb Marko Turk:
-> Fix a typo in the doc-comment of the Bar structure: 'inststance ->
-> instance'.
-> 
-> Add also 'is' to the comment inside Bar's `new()` function (suggested
-> by Dirk):
-> // `pdev` is valid by the invariants of `Device`.
-> 
-> Fixes: bf9651f84b4e ("rust: pci: implement I/O mappable `pci::Bar`")
-> Suggested-by: Dirk Behme <dirk.behme@de.bosch.com>
-> Signed-off-by: Marko Turk <mt@markoturk.info>
+On Mon, Jan 05, 2026 at 09:19:53AM -0800, Matthew Maurer wrote:
+> On Mon, Jan 5, 2026 at 8:12=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+> >
+> > By default bindgen will convert 'enum lru_status' into a typedef for an
+> > integer, but this leads to the wrong cfi type. It's supposed to be a
+> > type called "lru_status" rather than the underlying native integer type=
+.
+> >
+> > To fix this, tell bindgen to generate a newtype and set the CFI type
+> > explicitly. Note that we need to set the CFI attribute explicitly as
+> > bindgen is using repr(transparent), which is otherwise identical to the
+> > inner type for ABI purposes.
+> >
+> > This allows us to remove the page range helper C function in Binder
+> > without risking a CFI failure when list_lru_walk calls the provided
+> > function pointer.
+> >
+> > This requires bindgen v0.71 or greater.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  drivers/android/binder/Makefile            |  3 +--
+> >  drivers/android/binder/page_range.rs       |  6 +++---
+> >  drivers/android/binder/page_range_helper.c | 24 ----------------------=
+--
+> >  drivers/android/binder/page_range_helper.h | 15 ---------------
+> >  rust/bindgen_parameters                    |  4 ++++
+> >  rust/bindings/bindings_helper.h            |  1 -
+> >  rust/bindings/lib.rs                       |  1 +
+> >  rust/uapi/lib.rs                           |  1 +
+> >  8 files changed, 10 insertions(+), 45 deletions(-)
+> >
+> > diff --git a/drivers/android/binder/Makefile b/drivers/android/binder/M=
+akefile
+> > index 09eabb527fa092b659559367705fd3667db6cb2c..7e0cd9782a8b24db598034e=
+15e5a36eca91b3fa9 100644
+> > --- a/drivers/android/binder/Makefile
+> > +++ b/drivers/android/binder/Makefile
+> > @@ -5,5 +5,4 @@ obj-$(CONFIG_ANDROID_BINDER_IPC_RUST) +=3D rust_binder.=
+o
+> >  rust_binder-y :=3D \
+> >         rust_binder_main.o      \
+> >         rust_binderfs.o         \
+> > -       rust_binder_events.o    \
+> > -       page_range_helper.o
+> > +       rust_binder_events.o
+> > diff --git a/drivers/android/binder/page_range.rs b/drivers/android/bin=
+der/page_range.rs
+> > index 9379038f61f513c51ebed6c7e7b6fde32e5b8d06..eb738e169525839a199132d=
+d71e69e0b9cc69053 100644
+> > --- a/drivers/android/binder/page_range.rs
+> > +++ b/drivers/android/binder/page_range.rs
+> > @@ -642,15 +642,15 @@ fn drop(self: Pin<&mut Self>) {
+> >      unsafe {
+> >          bindings::list_lru_walk(
+> >              list_lru,
+> > -            Some(bindings::rust_shrink_free_page_wrap),
+> > +            Some(rust_shrink_free_page),
+> >              ptr::null_mut(),
+> >              nr_to_scan,
+> >          )
+> >      }
+> >  }
+> >
+> > -const LRU_SKIP: bindings::lru_status =3D bindings::lru_status_LRU_SKIP=
+;
+> > -const LRU_REMOVED_ENTRY: bindings::lru_status =3D bindings::lru_status=
+_LRU_REMOVED_RETRY;
+> > +const LRU_SKIP: bindings::lru_status =3D bindings::lru_status::LRU_SKI=
+P;
+> > +const LRU_REMOVED_ENTRY: bindings::lru_status =3D bindings::lru_status=
+::LRU_REMOVED_RETRY;
+> >
+> >  /// # Safety
+> >  /// Called by the shrinker.
+> > diff --git a/drivers/android/binder/page_range_helper.c b/drivers/andro=
+id/binder/page_range_helper.c
+> > deleted file mode 100644
+> > index 496887723ee003e910d6ce67dbadd8c5286e39d1..00000000000000000000000=
+00000000000000000
+> > --- a/drivers/android/binder/page_range_helper.c
+> > +++ /dev/null
+> > @@ -1,24 +0,0 @@
+> > -// SPDX-License-Identifier: GPL-2.0
+> > -
+> > -/* C helper for page_range.rs to work around a CFI violation.
+> > - *
+> > - * Bindgen currently pretends that `enum lru_status` is the same as an=
+ integer.
+> > - * This assumption is fine ABI-wise, but once you add CFI to the mix, =
+it
+> > - * triggers a CFI violation because `enum lru_status` gets a different=
+ CFI tag.
+> > - *
+> > - * This file contains a workaround until bindgen can be fixed.
+> > - *
+> > - * Copyright (C) 2025 Google LLC.
+> > - */
+> > -#include "page_range_helper.h"
+> > -
+> > -unsigned int rust_shrink_free_page(struct list_head *item,
+> > -                                  struct list_lru_one *list,
+> > -                                  void *cb_arg);
+> > -
+> > -enum lru_status
+> > -rust_shrink_free_page_wrap(struct list_head *item, struct list_lru_one=
+ *list,
+> > -                          void *cb_arg)
+> > -{
+> > -       return rust_shrink_free_page(item, list, cb_arg);
+> > -}
+> > diff --git a/drivers/android/binder/page_range_helper.h b/drivers/andro=
+id/binder/page_range_helper.h
+> > deleted file mode 100644
+> > index 18dd2dd117b253fcbac735b48032b8f2d53d11fe..00000000000000000000000=
+00000000000000000
+> > --- a/drivers/android/binder/page_range_helper.h
+> > +++ /dev/null
+> > @@ -1,15 +0,0 @@
+> > -/* SPDX-License-Identifier: GPL-2.0 */
+> > -/*
+> > - * Copyright (C) 2025 Google, Inc.
+> > - */
+> > -
+> > -#ifndef _LINUX_PAGE_RANGE_HELPER_H
+> > -#define _LINUX_PAGE_RANGE_HELPER_H
+> > -
+> > -#include <linux/list_lru.h>
+> > -
+> > -enum lru_status
+> > -rust_shrink_free_page_wrap(struct list_head *item, struct list_lru_one=
+ *list,
+> > -                          void *cb_arg);
+> > -
+> > -#endif /* _LINUX_PAGE_RANGE_HELPER_H */
+> > diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
+> > index fd2fd1c3cb9a51ea46fcd721907783b457aa1378..1358f3348ffdd31f9bef6c0=
+4ee9577d0f6a0c5a6 100644
+> > --- a/rust/bindgen_parameters
+> > +++ b/rust/bindgen_parameters
+> > @@ -23,6 +23,10 @@
+> >  # warning. We don't need to peek into it anyway.
+> >  --opaque-type spinlock
+> >
+> > +# enums that appear in indirect function calls should specify a cfi ty=
+pe
+> > +--newtype-enum lru_status
+> > +--with-attribute-custom-enum=3Dlru_status=3D'#[cfi_encoding=3D"lru_sta=
+tus"]'
+>=20
+> I think this may need to be `#[cfi_encoding=3D"10lru_status"]`
 
-Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+Ah, I did have some trouble testing this.
 
-Same for patch 1/2.
+Is there an easy way to test that I got the cfi enconding right? I guess
+I can always add a kunit test that makes a dynamic function call...
 
-Thanks!
-
-Dirk
-
-> ---
-> Changes since v1:
->    - updated commit msg
->    - added Fixes: tag
->    - fixed another typo as suggested by Dirk
-> 
-> Link to v1: https://lore.kernel.org/lkml/20260103143119.96095-1-mt@markoturk.info/
-> 
->   rust/kernel/pci/io.rs | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/rust/kernel/pci/io.rs b/rust/kernel/pci/io.rs
-> index 0d55c3139b6f..82a4f1eba2f5 100644
-> --- a/rust/kernel/pci/io.rs
-> +++ b/rust/kernel/pci/io.rs
-> @@ -20,7 +20,7 @@
->   ///
->   /// # Invariants
->   ///
-> -/// `Bar` always holds an `IoRaw` inststance that holds a valid pointer to the start of the I/O
-> +/// `Bar` always holds an `IoRaw` instance that holds a valid pointer to the start of the I/O
->   /// memory mapped PCI BAR and its size.
->   pub struct Bar<const SIZE: usize = 0> {
->       pdev: ARef<Device>,
-> @@ -54,7 +54,7 @@ pub(super) fn new(pdev: &Device, num: u32, name: &CStr) -> Result<Self> {
->           let ioptr: usize = unsafe { bindings::pci_iomap(pdev.as_raw(), num, 0) } as usize;
->           if ioptr == 0 {
->               // SAFETY:
-> -            // `pdev` valid by the invariants of `Device`.
-> +            // `pdev` is valid by the invariants of `Device`.
->               // `num` is checked for validity by a previous call to `Device::resource_len`.
->               unsafe { bindings::pci_release_region(pdev.as_raw(), num) };
->               return Err(ENOMEM);
-
+Alice
