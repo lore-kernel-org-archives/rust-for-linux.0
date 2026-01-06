@@ -1,120 +1,109 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3441357A46
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 18:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D083359FA3
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 18:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767723627; cv=none; b=DOSgh5fQV31B9CKpijLBd3nldahm4znFNJ7s2/iaEDFxfJp8589pn2RBd758l/h+rQt93qPFQJ0zRVHDeP5Vlpay5bA3F1GeAcRApoHPaoDWP1e1TSBApYFwXXNq+zdrgMCck6jOF97IIfQR/oiLC9oVlfSJAWtuF7/zSh7hC6g=
+	t=1767725002; cv=none; b=TPBnEGRNJup9wI3Ly6G81IlOCoLVcmwj3maiqpjM4K5X4nzE5tG86cmruYnb/3EgAFLAc1lF8wFkl/wWwJrl6KwH3tcFwRSt4SQWY13kr3YV5QRiSV/2jT+F8sx1v91wBnI1xfBD4YyTO4xccuDUntmjcXNRbJG+jptSUjCxYFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767723627; c=relaxed/simple;
-	bh=LvrOXBIyJ+56pkklnl0rMcgxqybJWbL6RDGcsfnkXjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iDmz6xr6mVjFCZoSIICeZeL/iRoiqKi33+dRKhjkfgkm09AjUHnVc8eQqQlj+Ru9pdP8yyDThSBp4PWR1Te0F3DbiOS3FM7Nhqt5Da6KcwtOzZAkL25MHW/jDPTa+Iw6ixn+Y65LnE03pODwgbZZIlKUJXB9qjhY/VDp8y5JMEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Lp3ghFpq; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1767725002; c=relaxed/simple;
+	bh=+hgXtvwaG0Luhj+7jS4/1WIg+U754WDTLyVGK0ofmHI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=n+naF6tBF6T99mh4Hlewx0o8Ab7SnfY02xQrfmRXzp+1xUSUOEctjx22h2oJf3Yubux8lCtxazBgJRGQUolT0ExYN0cRgFt7f3AWniKR9sIQnjqTerHWkvV/UvEI4p+j4px/Y2ayMSp0WKtpasscqyRA1dLRNiJMzZYV9x/8k+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DTAW00IT; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Lp3ghFpq"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-29f02651fccso5505ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 10:20:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DTAW00IT"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430fcb6b2ebso700798f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 10:43:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767723625; x=1768328425; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+vFX3VuATVVY47kRmsI5fzfA4Hdj1OU59q5MkyZA5nU=;
-        b=Lp3ghFpqv42Aj9QTG+TA0vMf/03DWIfM1VNEIXobMAmM44XI7TGNRhJmEvuhJRIP1P
-         h5ehTclUADIp3yd9IfswxS7I4QSWgcil/J7JsqwJTCZaQfRVxreYXp0ZihACifqfnq1C
-         1gTBu7raJSojS2QGFgE7NNDxZThfMv8/gdyU0XnaXZ31tJKvJoxJrDkRJjmiXEGFOmmZ
-         AbvAWANIrJ0941A/2mbPUG10f0RHMvM7jJwQF1J+pQrueuYeNJFGEThAPNqg8cyZMQHJ
-         GPgRgGLVayFm6KzmJPBvyZ/lo/FgpQRzz7+uxJV1xx9s+2smWSAhpaETNMOyCNlB2crA
-         IBVA==
+        d=google.com; s=20230601; t=1767724999; x=1768329799; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=q9kRQb6TCp9mLA5G8uSGQS65VbTtuKHR0kMxDo1y8mc=;
+        b=DTAW00ITyLnbQBDYcYCXFcRZynF4aeOlu+aqSYI1ZlSN8pbLHPgWhxDG8x8+EsDmMa
+         tPLgi8Dr32r6zqGhu9e2reA9E15x3hoIPZ+36dqdkLW0qqhFRN9tN8fbA9/hImJHN/lB
+         CcUsBxWb9LGttwhgctmyJojNxCOnh9cbmriPxOU/r1SXEAxgtftYweLor07za++DCiLE
+         h6H/sOICzWwklw2vJlipcY6oq2OgW+SYWpogwTrM4yC2D4sNxP5QTmOl85PyC4u0yEQ4
+         AuU8fwSYYv9FpGa5CHSPGZ1uJRw8UmeButZnD31CP9XmwUuR3+41a+B8pmneGY0flVhi
+         vKzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767723625; x=1768328425;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+vFX3VuATVVY47kRmsI5fzfA4Hdj1OU59q5MkyZA5nU=;
-        b=L2rju010dPa7mPyZWrpuSNxIqky3Vo6woT91CQNkOj6wIWnNaHlkk9H92HakePyaUA
-         LCAgkHPSPeJZepecRHPUyUyKee7VHw9SUXbfNHdNC4tXLkHWL+C+izVmPU99nEAbuDjj
-         OtSvTW0a4GZwR+57mA8tEIii751hUtvOAtm2mDCs7zplP/+EEwkTzplHDOB/WiEjAzjY
-         tw9jnkH9xeVO+ldor/O97mgd3N8AfvoddATXzQKBcjA2NHiI8uPcT43+0lIgiLmCnG4k
-         4GmkaxMVVi8XvrWta/rM2BOGcD9KCKGK1AYQVOTJQtPJ+e87MaZ1trQ5syfEqc/K3nD/
-         tP/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVEMdOHyh2FvqGPQY65OZMl2ZI4t1Wevmeie5+wj9dRvhfNhyiQqAaySRJh1IjgsA0vZVWGewJR0U47l4k5jQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/y8WrludGwYXP09x+Yj1/WE1yEuvhIRdCPSdG4kx0aLAuzST/
-	Us+mQBkRHGHpA2kNe7i5tcSY8EXPI3q+x3JXahE+Ey+WZ+OYzGdVSL6zh0WsymVG5g==
-X-Gm-Gg: AY/fxX4NcD4iSidIcAGUaHxjQLs22+KpQyRSvtahrlkhNlnce5Apv7JFg/6zpPeeDR9
-	z1pHjcJpAKu2kjScJABvQJJ/8Cp4XVEJ63tYw+VLEbebc5L+sRQCGBoIvGdBrRzvaIVhqTQ658R
-	lpGIsPCCJdjIMfxRjvedlw35zdLiu3dSgAsmuq7gxqy1pqNZVseAz29/OXXhErYX7W4pjYzftCY
-	sBNhPxpluHolKwNrBSuLB1xz7G4S3Z2IH2Pr55Fl0xk0lxj0nJ286NOpeBUV0mKfhzvyZ3pUIWc
-	Kk/j6IeX3ZW+ZeEPNQfBdwtXd7R0ZzQaZN0jLhykOQYSyXRcpq9epsenVNUF/8XUikjG9TVKUsk
-	yh8x3oItn0xxSA5AYw521ZoxOFa511pR+foJTkq4NFtGQg2bqFoWmVkleeURD5ukoSuA+iSgVEZ
-	A+/2jb8LJENBZ70FKSJdMgEQWFco4VuhqrZLtjiigK9f9urBz2Cgw=
-X-Received: by 2002:a17:902:e54e:b0:29f:2563:7772 with SMTP id d9443c01a7336-2a3edb4e78amr88525ad.8.1767723624752;
-        Tue, 06 Jan 2026 10:20:24 -0800 (PST)
-Received: from google.com (210.53.125.34.bc.googleusercontent.com. [34.125.53.210])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819c5edcd90sm2755546b3a.66.2026.01.06.10.20.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 10:20:24 -0800 (PST)
-Date: Tue, 6 Jan 2026 18:20:18 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org,
-	DeepChirp <DeepChirp@outlook.com>
-Subject: Re: [PATCH] rust_binder: correctly handle FDA objects of length zero
-Message-ID: <aV1SYnssUrstzd7B@google.com>
-References: <20251229-fda-zero-v1-1-58a41cb0e7ec@google.com>
+        d=1e100.net; s=20230601; t=1767724999; x=1768329799;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q9kRQb6TCp9mLA5G8uSGQS65VbTtuKHR0kMxDo1y8mc=;
+        b=TXM/BIcJH4q6eOFZR5OxQ2vGqyZGw47vTFIC6hyXsP4sDeI/p121mQLwgiEr3aceu4
+         U1l93t06549sqGzmzZeD+Y02ta5ZTuP/ZBOdD+Cvz5/RW+euNu72oH8cZjfoEo1oyMBX
+         bamRXlWbvn7QFpIgL4nymPmlW4uooN1x07Q0u0Lz4ipIu/a6juhWGfhlN31PyotlJXjv
+         OQjSl3PPE5a1Eh9Sf1LXhAUwcZVXUMvVx0YT/zldvltdE69UdHEmoxcwEU6hFIRoZSpE
+         0bMMeLSUWx9h3r1SBJVaBW1V+MokpVpuNOhxn0uMyQYhfM4mHeLROubse7uqHQbpO9z4
+         FNlw==
+X-Forwarded-Encrypted: i=1; AJvYcCXrgj6Tf3lZHRNX7WY5itgMydXDfmtzdd6c3i83wDMyD7P4zbJXX4wslP6uzg7l9CjTzVax390ASpavypR5sQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHKQfDUfAfhE5f3/CflZewmoqlvndaTlGAW0jRicJjfVX7/N89
+	xue1QFX4AZhZ+bAUJO56Y9N2fN0lzO27XVh3iL5qGi3ga5hlz0g5lIE+uGxxbpCTr5hgR5h4JIU
+	Hmueuvc9olQtICYjTNg==
+X-Google-Smtp-Source: AGHT+IGVcCDObMivGZ6ItRLBNbRjswIjQ3SNYuJmmzi0+OqW9p2tg/ybCzvxMsorncSHo3wGn72koB3zTO666Zo=
+X-Received: from wrbgv17.prod.google.com ([2002:a05:6000:4611:b0:430:f5d7:f015])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2c0e:b0:431:752:671e with SMTP id ffacd0b85a97d-432c363280fmr199767f8f.15.1767724998951;
+ Tue, 06 Jan 2026 10:43:18 -0800 (PST)
+Date: Tue, 6 Jan 2026 18:43:17 +0000
+In-Reply-To: <20260106152300.7fec3847.gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251229-fda-zero-v1-1-58a41cb0e7ec@google.com>
+Mime-Version: 1.0
+References: <20251231-rwonce-v1-0-702a10b85278@google.com> <20251231-rwonce-v1-4-702a10b85278@google.com>
+ <20260101.111123.1233018024195968460.fujita.tomonori@gmail.com>
+ <L2dmGLLYJbusZn9axfRubM0hIOSTuny2cW3uyUhOVGvck7lQxTzDe0Xxf8Hw2cLxICT8kdmNAE74e-LV7YrReg==@protonmail.internalid>
+ <20260101.130012.2122315449079707392.fujita.tomonori@gmail.com>
+ <87ikdej4s1.fsf@t14s.mail-host-address-is-not-set> <20260106152300.7fec3847.gary@garyguo.net>
+Message-ID: <aV1XxWbXwkdM_AdA@google.com>
+Subject: Re: [PATCH 4/5] rust: hrtimer: use READ_ONCE instead of read_volatile
+From: Alice Ryhl <aliceryhl@google.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, lyude@redhat.com, 
+	boqun.feng@gmail.com, will@kernel.org, peterz@infradead.org, 
+	richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com, 
+	catalin.marinas@arm.com, ojeda@kernel.org, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, tmgross@umich.edu, dakr@kernel.org, mark.rutland@arm.com, 
+	frederic@kernel.org, tglx@linutronix.de, anna-maria@linutronix.de, 
+	jstultz@google.com, sboyd@kernel.org, viro@zeniv.linux.org.uk, 
+	brauner@kernel.org, jack@suse.cz, linux-kernel@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Dec 29, 2025 at 03:38:14PM +0000, Alice Ryhl wrote:
-> Fix a bug where an empty FDA (fd array) object with 0 fds would cause an
-> out-of-bounds error. The previous implementation used `skip == 0` to
-> mean "this is a pointer fixup", but 0 is also the correct skip length
-> for an empty FDA. If the FDA is at the end of the buffer, then this
-> results in an attempt to write 8-bytes out of bounds. This is caught and
-> results in an EINVAL error being returned to userspace.
+On Tue, Jan 06, 2026 at 03:23:00PM +0000, Gary Guo wrote:
+> On Tue, 06 Jan 2026 13:37:34 +0100
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
 > 
-> The pattern of using `skip == 0` as a special value originates from the
-> C-implementation of Binder. As part of fixing this bug, this pattern is
-> replaced with a Rust enum.
+> > "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+> > >
+> > > Sorry, of course this should be:
+> > >
+> > > +__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtimer *timer)
+> > > +{
+> > > +	return hrtimer_get_expires(timer);
+> > > +}
+> > >  
+> > 
+> > This is a potentially racy read. As far as I recall, we determined that
+> > using read_once is the proper way to handle the situation.
+> > 
+> > I do not think it makes a difference that the read is done by C code.
 > 
-> I considered the alternate option of not pushing a fixup when the length
-> is zero, but I think it's cleaner to just get rid of the zero-is-special
-> stuff.
-> 
-> The root cause of this bug was diagnosed by Gemini CLI on first try. I
-> used the following prompt:
-> 
-> > There appears to be a bug in @drivers/android/binder/thread.rs where
-> > the Fixups oob bug is triggered with 316 304 316 324. This implies
-> > that we somehow ended up with a fixup where buffer A has a pointer to
-> > buffer B, but the pointer is located at an index in buffer A that is
-> > out of bounds. Please investigate the code to find the bug. You may
-> > compare with @drivers/android/binder.c that implements this correctly.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: DeepChirp <DeepChirp@outlook.com>
-> Closes: https://github.com/waydroid/waydroid/issues/2157
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Tested-by: DeepChirp <DeepChirp@outlook.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+> If that's the case I think the C code should be fixed by inserting the
+> READ_ONCE?
 
-Acked-by: Carlos Llamas <cmllamas@google.com>
+I maintain my position that if this is what you recommend C code does,
+it's confusing to not make the same recommendation for Rust abstractions
+to the same thing.
+
+After all, nothing is stopping you from calling atomic_read() in C too.
+
+Alice
