@@ -1,69 +1,69 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377C9328B49
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 16:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A54724503C
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Jan 2026 16:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767716002; cv=none; b=G3yK/18SFcvmX+h8yerX/Uun2PEtBGRcVYyRFIhjwnVVoxfu837ISEFOtXnguU8p7OHHwC6o9JK+BgjXIu0YcRb5yrPVvkZhMqFEexJndslkDyhmLrdaAEpvo7unCw9rjrBQ4MJCuhYMgw8W4IP6oxtXyiNce94/MWUm7Z+L2DU=
+	t=1767716004; cv=none; b=GloglGFf+xoWpzY3UeXs8uHtaYqcJ+E3pq6oe6qZnc6f5vkZB4LdFQpLbY8vDnYtUcN3Xr8CO2qYYaxq5V75ivUMHqiXFuohmVkGdui9TeWEq1KlyOyE1f8+l9LHAUELoFAROxytzarhEhrzpM/uQcE8zvLo/8uvXYQtEGZkzpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767716002; c=relaxed/simple;
-	bh=Iq8dwvKf4qpl9g//ZJHlBlX2MQk95xnztRt44GtTqZg=;
+	s=arc-20240116; t=1767716004; c=relaxed/simple;
+	bh=UTNOeFwTGihFmlxHJgeXPwIlyRNHZuCVFbumdp1zOoM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=i1T0n0lIPrWdQBocGstrMUa7ftahQcqQ9hlJbDNyNS24j93uNEQVKi+C2VwA920xG1rZwmQtyjvTxR3HgFxqg08nv5sRbp56xA+0P8GXih/OiAD2ujUw8Cp+/ySNaFjG8J3dTHirfoOve07uMSe8lv75kp0pS3FGDlr7p+HAJk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W06Xvs/s; arc=none smtp.client-ip=209.85.208.176
+	 In-Reply-To:To:Cc; b=g6M0tDgxWouMKebR9GbojXUfUan1XDsDwsdezJ8arelJMTGloptULgftAzMYAumh3Mh5fpGvM9cREj+RNeXo/E1V3ULAb5yiD1IQOhe74AzREOo2Reqvnb2yk21Qzq7b+O1OY51676viyIUI1KJ6ipxODDDkA2AzmXGQntH1SqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sps4K1JO; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W06Xvs/s"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-37b9d8122fdso8852981fa.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 08:13:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sps4K1JO"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5959105629bso1143269e87.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Jan 2026 08:13:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767715997; x=1768320797; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767715999; x=1768320799; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HWUZeCU4mb7jx94MzKj81ED9AcODZrS6l0/OTITjt+k=;
-        b=W06Xvs/sf/v+MZNPC+Y34MesjNreiOnIZCuM0rBRzxZIehHqfUNE0pfFsPF/dMAtUx
-         M6JDSa01em3odFwnyE45Wl0blFhAY8eljTlhjpTqr/PcLV9EJD3X4LZyAR1qKIFK75/v
-         hdgLdu2T9+6aCku+uvqmPu9tarNc6Wv2u6/cRxsdWEwFOsvcgT4RKPb2NX581EVhm9pl
-         LDb4lGOtHQEb26qUbfdctfyhZq/jkvTXAKLXVn2t7f3vKiJX7tgT3cLCB8a1OxFqS2Nh
-         phPfF+mWUgyWdRVw6mZ4bOlNFO3maMwLOJahu5HMT740RLciGj8N+Uw9q7REJiWfFtE5
-         If0g==
+        bh=cO44XyCgtGl8WrKQeDHWNuLpTRXz0AQwF9LfwT0N9ro=;
+        b=Sps4K1JOXzurYrdGsz9xKP7qdhBTfLSFRUQfmBKgdAg/LV+IWHa34XRXKLKZaGAJWL
+         BM6DDhAgOkwLiLV2yx90OFTeV/p4vHfITfwecDySaBT/m+e1TxlKrqTTJqSweR0tSu8/
+         vrmwh22/PvdyaHN9wwR/LKNID4CZpvrVT/t7eJ6sea9Y+wgYU2bJBTYQs7g5nbkPcNeR
+         Cpf+ziz+t1r59wbYLpnqDO62hyqWhkqgFdE41yDiAOozzVUGT8GCvbgLltAZ7okyN81A
+         ILdUofKKVgTGA2q5iMmXgVVJmxKts9SNEPEDkg4d7t7/ZuDdoCS7HgCsQaIsMbIu04Dg
+         XKkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767715997; x=1768320797;
+        d=1e100.net; s=20230601; t=1767715999; x=1768320799;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=HWUZeCU4mb7jx94MzKj81ED9AcODZrS6l0/OTITjt+k=;
-        b=izMmGf8DqsSLV7E1JtZBOddlRiyZ1iD7FI5XDjKAqoGqkvBoJac36ClDdHmj0qUXJE
-         uVW5nOT8PWEupTstI+3AKsicxKI1ZLvU/m4lRwMngVcrNhGPZWJDr+lZgI+rtpck0v3W
-         dPbxDtBpSw3BjOvfu1FXTvVdJW9IfvfjYcSJQa7rcb3rmmHU+ZklxaMDkbOF/XVYrNkO
-         +QVYAF3kS9V2AJ5VvkUhslt7luJrNtJJGEo/6l6OFVbvHKB6LDJrDXTX54swxmUd6/uh
-         rDHi/ripmsAw9muQirDR/AUfpe3M/RicPoSC1DAB6S2wBGtevmNey6iI+WZh5IEC6bH/
-         SsiA==
-X-Forwarded-Encrypted: i=1; AJvYcCXdhCveRIaS7hsHauIJV1qBWm6boOjzkTHVuiJjRhfWHRWinV4SKjW+Owahk/ggjcd0UJoHusDL/wkH+lVaEw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDHWgIXaRjBN7galwFJMrfDOp/0SQrqkl4lD2+NoGL3qIcaULf
-	cFBr+/6MCShEog8uBDgEsbADWMzIZkx32Bpb/E48STyUCJGjv1ljPq9U
-X-Gm-Gg: AY/fxX7LYDcUmy17sb/ll1vvl/J+ptDRxM85lhMm4rxLK1ugEywUhyzkX/lk0pTv+Oj
-	l8GucHbTfrO+6E7EZMjTQJMYGZ5YRESaElYgOxM8NtDtgoEYnKHVg/tzt61AHOFMsCYpeRwiF44
-	bRI0uNT4pTSg+GJ9BKBqbWcHZOen6rQyn/pskTkqWTjzbdxQE+dbPMeTlvRzGwBtVV8+Lx/uiGq
-	DQdl9wae7W1SVJFWg37nqpRoLIPtL6FBXwHLzV+2lvKzJQEHZFUcpisc64/RBZrrtTdw+EDowkD
-	GMNhsosb3DeT+AFttu+KXxGKQCGlgCZf7Q0LzC2OyRBoN4GytvTbUSO/0iZHnHGBKa/qniHIcbi
-	Y6OGgHHUGUyLAbtoCnMaVtdux1GWDE67MbOWQqOd2zCZubYqwrskKLUTXNHdh5dd+W7BrKD35Ge
-	8MRkDuCDdJ3+Kjaip5vNVQi5N8YFYskXPizREihrBgF3CncYA4QmFZkLR8Jfcmc85fdO0BDWthk
-	g0D+E7MIffoaN5N
-X-Google-Smtp-Source: AGHT+IFU5y7W4r3vtwvNrwDt2AEQu7aHNHiFMmS0kmAFCGGtvAOwYmDUlbx4za8//rQD3V+f7QSnfQ==
-X-Received: by 2002:a2e:a88a:0:b0:37a:47a4:d5cb with SMTP id 38308e7fff4ca-382eaa05509mr11025441fa.11.1767715996847;
-        Tue, 06 Jan 2026 08:13:16 -0800 (PST)
+        bh=cO44XyCgtGl8WrKQeDHWNuLpTRXz0AQwF9LfwT0N9ro=;
+        b=Mz+mrZ4Nae+qjee4RU7lf1ZXS+V+YX08s1veH/buC5MvJquq0uJuI4li4cGxNaejdq
+         OaYYCcOA1x72r6ibUQwb6lYoQfaKQmFRKntNm/NRhNhck0krnqhSzNxeA0ElCAVXcW1f
+         v/9XI85q3fSBNLDh99X5EyKYzqOPZi/qLSzmzXGRNtq9ScwFmVDRo7NvFCaCM6RbPpA0
+         zEcE06/X5qlI2pQffH0VRy+vCPzuwuxhCMbnsoR8mxkDrHjp2CdCoirTau83bXcIrDFy
+         ClT6cCUtnLjqv+cJuBCNjjw+mCrjYIOIz9eJ/K0uqbhRcsEh9/XSdIlLj8f/jsIywIUw
+         dKVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/wa/b+Li6RV6ODMnSGqkgLMyMbopx7XFV/9ym/MY1e/8U6BqaIyqDDlDX/GovjO6esh8EO8AP41/LhHFjkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxLw64zBqMF5B0KlagZXSJSzwxhqOgSYN/Jae+f6x2O5NN6vH+
+	+wX1aGbbXYqcpI7fdGXhD/3Uy1hC3Fwqkiz+fLAaVhY2Jqd1N/A/Ayq/
+X-Gm-Gg: AY/fxX4oH81yLZdkhZm53fq8BtsVPDE9coJYsXLc3yAFf1JEhirSSdYyxYNl7uzfbV5
+	/9Hu1WUK9VwG0UGTMvtY99UjVOtCiwuPL8J4smcO6IgAao3VlG2Hniy0Z1NXx9epKQPegJWtuSD
+	nLqVAvTnMLAVZMuahYryon0Up9dOT+nk+ZJPAjExIrxkGW4p7usivGK2bevUTLS9mNWwev6Lddg
+	GG0BISnhbgYHOEb7Sm5CmQ63JcMFkwsZndUu6rZP/saMiKNKJfy42cs+zDxNPcwlFnB6kaWXt+/
+	FMWrakI3t6NJCBXrLdgISgv0lffcildLPHwpWRrE55ZFLl9pAfRtdAoyEoG9vtmDmalB8I3ZLFL
+	ksrq5OJ2+XS0WqWDZ1FuTSoBJ+hUObK2qtpwKvPcGzQBuhVXHRokacHqIUGHfigxMGtNKxB2qda
+	6TN0b0jNGr47ikR2MZfa++a9kvziEjJKQwDYabaElLdzyjN1KHehPE20vu8oVwy0oTAH2VjZF5u
+	0jmIS5jUkj3Icfy
+X-Google-Smtp-Source: AGHT+IHZLlib1FdNp6Mz3hTD00GnfYsdeklIwQwb155sldQfNtXmxDGwSdPNh/AFDq9/FqP+wutAPw==
+X-Received: by 2002:a05:6512:4016:b0:59a:108a:3215 with SMTP id 2adb3069b0e04-59b65292ccdmr1193890e87.23.1767715998955;
+        Tue, 06 Jan 2026 08:13:18 -0800 (PST)
 Received: from LT-5CG5341NQ4.nordic.imtech.com (37-33-180-149.bb.dnainternet.fi. [37.33.180.149])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-382eb91dfbdsm5256091fa.44.2026.01.06.08.13.13
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-382eb91dfbdsm5256091fa.44.2026.01.06.08.13.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jan 2026 08:13:15 -0800 (PST)
+        Tue, 06 Jan 2026 08:13:18 -0800 (PST)
 From: Kari Argillander <kari.argillander@gmail.com>
-Date: Tue, 06 Jan 2026 18:11:43 +0200
-Subject: [PATCH RFC v2 05/11] rust: drm: fix missing owner in
- file_operations
+Date: Tue, 06 Jan 2026 18:11:44 +0200
+Subject: [PATCH RFC v2 06/11] rust: driver: make
+ RegistrationOps::register() to use new ThisModule
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -72,7 +72,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260106-this_module_fix-v2-5-842ac026f00b@gmail.com>
+Message-Id: <20260106-this_module_fix-v2-6-842ac026f00b@gmail.com>
 References: <20260106-this_module_fix-v2-0-842ac026f00b@gmail.com>
 In-Reply-To: <20260106-this_module_fix-v2-0-842ac026f00b@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -88,130 +88,332 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
  Kari Argillander <kari.argillander@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767715983; l=4164;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767715983; l=12781;
  i=kari.argillander@gmail.com; s=20251219; h=from:subject:message-id;
- bh=Iq8dwvKf4qpl9g//ZJHlBlX2MQk95xnztRt44GtTqZg=;
- b=4PHWmJPXGk2AFwwIRcqeacJX2YPoIRKK6cosxTWftT0EnsRQWaboWc7UTcbG/a5B+Htm208HV
- CyfU+LVXIKuDZ6vKwGOJZZNDvgiPCkSjNODmdz0MFTOv3nPt31QejWD
+ bh=UTNOeFwTGihFmlxHJgeXPwIlyRNHZuCVFbumdp1zOoM=;
+ b=DGUQmoqLCaQuejFYSYafK1smRUP3ShGq814VX89TAFuGO/2cknLNDFFelQnPhYq88scSSs2rx
+ oNXoB+ngwz9Cdpu5utUuDtc8cd23TTWpFyJxHKbLJA/LfIe4C221/rk
 X-Developer-Key: i=kari.argillander@gmail.com; a=ed25519;
  pk=RwSxyhTpE3z4sywdDbIkC3q33ZQLNyhYWxT44iTY6r4=
 
-Fix missing .owner field in file_operations. This has been previosly
-left out because Rust feature `const_refs_to_static` has not been
-enabled. Now that it is we can make define owner even in const context.
-
-This should probably fix use-after-free problems in situations where
-file is opened and module driver is unloaded during that.
+New version of ThisModule is trait which can be passed in const context.
+To have unified way to pass THIS_MODULE to abstactions have const
+parameter which can be used to get owner and name.
 
 Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
 ---
- drivers/gpu/drm/nova/driver.rs | 2 ++
- drivers/gpu/drm/tyr/driver.rs  | 2 ++
- rust/kernel/drm/device.rs      | 2 +-
- rust/kernel/drm/driver.rs      | 4 ++++
- rust/kernel/drm/gem/mod.rs     | 5 +++--
- 5 files changed, 12 insertions(+), 3 deletions(-)
+ rust/kernel/auxiliary.rs              | 16 ++++++++--------
+ rust/kernel/driver.rs                 | 29 +++++++++++++----------------
+ rust/kernel/i2c.rs                    | 11 ++++-------
+ rust/kernel/pci.rs                    | 15 +++++----------
+ rust/kernel/platform.rs               | 12 ++++--------
+ rust/kernel/usb.rs                    | 13 ++++---------
+ samples/rust/rust_driver_auxiliary.rs |  6 +++---
+ 7 files changed, 41 insertions(+), 61 deletions(-)
 
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-index b1af0a099551..7ce505802716 100644
---- a/drivers/gpu/drm/nova/driver.rs
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -14,6 +14,7 @@
- 
- use crate::file::File;
- use crate::gem::NovaObject;
-+use crate::THIS_MODULE;
- 
- pub(crate) struct NovaDriver {
-     #[expect(unused)]
-@@ -65,6 +66,7 @@ fn probe(adev: &auxiliary::Device<Core>, _info: &Self::IdInfo) -> impl PinInit<S
- 
- #[vtable]
- impl drm::Driver for NovaDriver {
-+    type ThisModule = THIS_MODULE;
-     type Data = NovaData;
-     type File = File;
-     type Object = gem::Object<NovaObject>;
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index f0da58932702..11932d3f03ff 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -25,6 +25,7 @@
- use crate::gpu;
- use crate::gpu::GpuInfo;
- use crate::regs;
-+use crate::THIS_MODULE;
- 
- pub(crate) type IoMem = kernel::io::mem::IoMem<SZ_2M>;
- 
-@@ -179,6 +180,7 @@ fn drop(self: Pin<&mut Self>) {
- 
- #[vtable]
- impl drm::Driver for TyrDriver {
-+    type ThisModule = THIS_MODULE;
-     type Data = TyrData;
-     type File = File;
-     type Object = drm::gem::Object<TyrObject>;
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index 3ce8f62a0056..a740c87933d0 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -92,7 +92,7 @@ impl<T: drm::Driver> Device<T> {
-         fops: &Self::GEM_FOPS,
-     };
- 
--    const GEM_FOPS: bindings::file_operations = drm::gem::create_fops();
-+    const GEM_FOPS: bindings::file_operations = drm::gem::create_fops::<T::ThisModule>();
- 
-     /// Create a new `drm::Device` for a `drm::Driver`.
-     pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<ARef<Self>> {
-diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
-index f30ee4c6245c..a157db2ea02b 100644
---- a/rust/kernel/drm/driver.rs
-+++ b/rust/kernel/drm/driver.rs
-@@ -9,6 +9,7 @@
-     error::{to_result, Result},
+diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
+index 56f3c180e8f6..102b0349af16 100644
+--- a/rust/kernel/auxiliary.rs
++++ b/rust/kernel/auxiliary.rs
+@@ -11,8 +11,8 @@
+     driver,
+     error::{from_result, to_result, Result},
      prelude::*,
-     sync::aref::ARef,
-+    this_module::ThisModule,
- };
- use macros::vtable;
- 
-@@ -99,6 +100,9 @@ pub trait AllocImpl: super::private::Sealed + drm::gem::IntoGEMObject {
- /// drm_driver` to be registered in the DRM subsystem.
- #[vtable]
- pub trait Driver {
-+    /// Module ownership for this device, provided via `THIS_MODULE`.
-+    type ThisModule: ThisModule;
-+
-     /// Context data associated with the DRM driver
-     type Data: Sync + Send;
- 
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index bdaac839dacc..9980cebec96b 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -11,6 +11,7 @@
-     error::{to_result, Result},
-     prelude::*,
-     sync::aref::{ARef, AlwaysRefCounted},
 +    this_module::ThisModule,
      types::Opaque,
+-    ThisModule,
  };
- use core::{ops::Deref, ptr::NonNull};
-@@ -292,10 +293,10 @@ impl<T: DriverObject> AllocImpl for Object<T> {
-     };
+ use core::{
+     marker::PhantomData,
+@@ -28,14 +28,10 @@
+ unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+     type RegType = bindings::auxiliary_driver;
+ 
+-    unsafe fn register(
+-        adrv: &Opaque<Self::RegType>,
+-        name: &'static CStr,
+-        module: &'static ThisModule,
+-    ) -> Result {
++    unsafe fn register<TM: ThisModule>(adrv: &Opaque<Self::RegType>) -> Result {
+         // SAFETY: It's safe to set the fields of `struct auxiliary_driver` on initialization.
+         unsafe {
+-            (*adrv.get()).name = name.as_char_ptr();
++            (*adrv.get()).name = TM::NAME.as_char_ptr();
+             (*adrv.get()).probe = Some(Self::probe_callback);
+             (*adrv.get()).remove = Some(Self::remove_callback);
+             (*adrv.get()).id_table = T::ID_TABLE.as_ptr();
+@@ -43,7 +39,11 @@ unsafe fn register(
+ 
+         // SAFETY: `adrv` is guaranteed to be a valid `RegType`.
+         to_result(unsafe {
+-            bindings::__auxiliary_driver_register(adrv.get(), module.0, name.as_char_ptr())
++            bindings::__auxiliary_driver_register(
++                adrv.get(),
++                TM::OWNER.as_ptr(),
++                TM::NAME.as_char_ptr(),
++            )
+         })
+     }
+ 
+diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+index 649d06468f41..dc7522c4ebda 100644
+--- a/rust/kernel/driver.rs
++++ b/rust/kernel/driver.rs
+@@ -94,10 +94,14 @@
+ //! [`device_id`]: kernel::device_id
+ //! [`module_driver`]: kernel::module_driver
+ 
+-use crate::error::{Error, Result};
+-use crate::{acpi, device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
+-use core::pin::Pin;
+-use pin_init::{pin_data, pinned_drop, PinInit};
++use crate::{
++    acpi,
++    device,
++    of,
++    prelude::*,
++    this_module::ThisModule,
++    types::Opaque, //
++};
+ 
+ /// The [`RegistrationOps`] trait serves as generic interface for subsystems (e.g., PCI, Platform,
+ /// Amba, etc.) to provide the corresponding subsystem specific implementation to register /
+@@ -122,11 +126,7 @@ pub unsafe trait RegistrationOps {
+     ///
+     /// On success, `reg` must remain pinned and valid until the matching call to
+     /// [`RegistrationOps::unregister`].
+-    unsafe fn register(
+-        reg: &Opaque<Self::RegType>,
+-        name: &'static CStr,
+-        module: &'static ThisModule,
+-    ) -> Result;
++    unsafe fn register<TM: ThisModule>(reg: &Opaque<Self::RegType>) -> Result;
+ 
+     /// Unregisters a driver previously registered with [`RegistrationOps::register`].
+     ///
+@@ -159,7 +159,7 @@ unsafe impl<T: RegistrationOps> Send for Registration<T> {}
+ 
+ impl<T: RegistrationOps> Registration<T> {
+     /// Creates a new instance of the registration object.
+-    pub fn new(name: &'static CStr, module: &'static ThisModule) -> impl PinInit<Self, Error> {
++    pub fn new<TM: ThisModule>() -> impl PinInit<Self, Error> {
+         try_pin_init!(Self {
+             reg <- Opaque::try_ffi_init(|ptr: *mut T::RegType| {
+                 // SAFETY: `try_ffi_init` guarantees that `ptr` is valid for write.
+@@ -170,7 +170,7 @@ pub fn new(name: &'static CStr, module: &'static ThisModule) -> impl PinInit<Sel
+                 let drv = unsafe { &*(ptr as *const Opaque<T::RegType>) };
+ 
+                 // SAFETY: `drv` is guaranteed to be pinned until `T::unregister`.
+-                unsafe { T::register(drv, name, module) }
++                unsafe { T::register::<TM>(drv) }
+             }),
+         })
+     }
+@@ -202,13 +202,10 @@ struct DriverModule {
+ 
+         impl $crate::InPlaceModule for DriverModule {
+             fn init(
+-                module: &'static $crate::ThisModule
++                _module: &'static $crate::ThisModule
+             ) -> impl ::pin_init::PinInit<Self, $crate::error::Error> {
+                 $crate::try_pin_init!(Self {
+-                    _driver <- $crate::driver::Registration::new(
+-                        <Self as $crate::ModuleMetadata>::NAME,
+-                        module,
+-                    ),
++                    _driver <- $crate::driver::Registration::new::<crate::THIS_MODULE>(),
+                 })
+             }
+         }
+diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+index 491e6cc25cf4..b23a26a445cd 100644
+--- a/rust/kernel/i2c.rs
++++ b/rust/kernel/i2c.rs
+@@ -16,6 +16,7 @@
+     error::*,
+     of,
+     prelude::*,
++    this_module::ThisModule,
+     types::{
+         AlwaysRefCounted,
+         Opaque, //
+@@ -97,11 +98,7 @@ macro_rules! i2c_device_table {
+ unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+     type RegType = bindings::i2c_driver;
+ 
+-    unsafe fn register(
+-        idrv: &Opaque<Self::RegType>,
+-        name: &'static CStr,
+-        module: &'static ThisModule,
+-    ) -> Result {
++    unsafe fn register<TM: ThisModule>(idrv: &Opaque<Self::RegType>) -> Result {
+         build_assert!(
+             T::ACPI_ID_TABLE.is_some() || T::OF_ID_TABLE.is_some() || T::I2C_ID_TABLE.is_some(),
+             "At least one of ACPI/OF/Legacy tables must be present when registering an i2c driver"
+@@ -124,7 +121,7 @@ unsafe fn register(
+ 
+         // SAFETY: It's safe to set the fields of `struct i2c_client` on initialization.
+         unsafe {
+-            (*idrv.get()).driver.name = name.as_char_ptr();
++            (*idrv.get()).driver.name = TM::NAME.as_char_ptr();
+             (*idrv.get()).probe = Some(Self::probe_callback);
+             (*idrv.get()).remove = Some(Self::remove_callback);
+             (*idrv.get()).shutdown = Some(Self::shutdown_callback);
+@@ -134,7 +131,7 @@ unsafe fn register(
+         }
+ 
+         // SAFETY: `idrv` is guaranteed to be a valid `RegType`.
+-        to_result(unsafe { bindings::i2c_register_driver(module.0, idrv.get()) })
++        to_result(unsafe { bindings::i2c_register_driver(TM::OWNER.as_ptr(), idrv.get()) })
+     }
+ 
+     unsafe fn unregister(idrv: &Opaque<Self::RegType>) {
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 82e128431f08..88a5416fb44b 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -18,9 +18,8 @@
+         to_result, //
+     },
+     prelude::*,
+-    str::CStr,
+-    types::Opaque,
+-    ThisModule, //
++    this_module::ThisModule,
++    types::Opaque, //
+ };
+ use core::{
+     marker::PhantomData,
+@@ -55,14 +54,10 @@
+ unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+     type RegType = bindings::pci_driver;
+ 
+-    unsafe fn register(
+-        pdrv: &Opaque<Self::RegType>,
+-        name: &'static CStr,
+-        module: &'static ThisModule,
+-    ) -> Result {
++    unsafe fn register<TM: ThisModule>(pdrv: &Opaque<Self::RegType>) -> Result {
+         // SAFETY: It's safe to set the fields of `struct pci_driver` on initialization.
+         unsafe {
+-            (*pdrv.get()).name = name.as_char_ptr();
++            (*pdrv.get()).name = TM::NAME.as_char_ptr();
+             (*pdrv.get()).probe = Some(Self::probe_callback);
+             (*pdrv.get()).remove = Some(Self::remove_callback);
+             (*pdrv.get()).id_table = T::ID_TABLE.as_ptr();
+@@ -70,7 +65,7 @@ unsafe fn register(
+ 
+         // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+         to_result(unsafe {
+-            bindings::__pci_register_driver(pdrv.get(), module.0, name.as_char_ptr())
++            bindings::__pci_register_driver(pdrv.get(), TM::OWNER.as_ptr(), TM::NAME.as_char_ptr())
+         })
+     }
+ 
+diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+index bddb593cee7b..a4678af3b891 100644
+--- a/rust/kernel/platform.rs
++++ b/rust/kernel/platform.rs
+@@ -13,8 +13,8 @@
+     irq::{self, IrqRequest},
+     of,
+     prelude::*,
++    this_module::ThisModule,
+     types::Opaque,
+-    ThisModule,
+ };
+ 
+ use core::{
+@@ -31,11 +31,7 @@
+ unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+     type RegType = bindings::platform_driver;
+ 
+-    unsafe fn register(
+-        pdrv: &Opaque<Self::RegType>,
+-        name: &'static CStr,
+-        module: &'static ThisModule,
+-    ) -> Result {
++    unsafe fn register<TM: ThisModule>(pdrv: &Opaque<Self::RegType>) -> Result {
+         let of_table = match T::OF_ID_TABLE {
+             Some(table) => table.as_ptr(),
+             None => core::ptr::null(),
+@@ -48,7 +44,7 @@ unsafe fn register(
+ 
+         // SAFETY: It's safe to set the fields of `struct platform_driver` on initialization.
+         unsafe {
+-            (*pdrv.get()).driver.name = name.as_char_ptr();
++            (*pdrv.get()).driver.name = TM::NAME.as_char_ptr();
+             (*pdrv.get()).probe = Some(Self::probe_callback);
+             (*pdrv.get()).remove = Some(Self::remove_callback);
+             (*pdrv.get()).driver.of_match_table = of_table;
+@@ -56,7 +52,7 @@ unsafe fn register(
+         }
+ 
+         // SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
+-        to_result(unsafe { bindings::__platform_driver_register(pdrv.get(), module.0) })
++        to_result(unsafe { bindings::__platform_driver_register(pdrv.get(), TM::OWNER.as_ptr()) })
+     }
+ 
+     unsafe fn unregister(pdrv: &Opaque<Self::RegType>) {
+diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
+index d10b65e9fb6a..e7e07360f953 100644
+--- a/rust/kernel/usb.rs
++++ b/rust/kernel/usb.rs
+@@ -11,9 +11,8 @@
+     driver,
+     error::{from_result, to_result, Result},
+     prelude::*,
+-    str::CStr,
++    this_module::ThisModule,
+     types::{AlwaysRefCounted, Opaque},
+-    ThisModule,
+ };
+ use core::{
+     marker::PhantomData,
+@@ -32,14 +31,10 @@
+ unsafe impl<T: Driver + 'static> driver::RegistrationOps for Adapter<T> {
+     type RegType = bindings::usb_driver;
+ 
+-    unsafe fn register(
+-        udrv: &Opaque<Self::RegType>,
+-        name: &'static CStr,
+-        module: &'static ThisModule,
+-    ) -> Result {
++    unsafe fn register<TM: ThisModule>(udrv: &Opaque<Self::RegType>) -> Result {
+         // SAFETY: It's safe to set the fields of `struct usb_driver` on initialization.
+         unsafe {
+-            (*udrv.get()).name = name.as_char_ptr();
++            (*udrv.get()).name = TM::NAME.as_char_ptr();
+             (*udrv.get()).probe = Some(Self::probe_callback);
+             (*udrv.get()).disconnect = Some(Self::disconnect_callback);
+             (*udrv.get()).id_table = T::ID_TABLE.as_ptr();
+@@ -47,7 +42,7 @@ unsafe fn register(
+ 
+         // SAFETY: `udrv` is guaranteed to be a valid `RegType`.
+         to_result(unsafe {
+-            bindings::usb_register_driver(udrv.get(), module.0, name.as_char_ptr())
++            bindings::usb_register_driver(udrv.get(), TM::OWNER.as_ptr(), TM::NAME.as_char_ptr())
+         })
+     }
+ 
+diff --git a/samples/rust/rust_driver_auxiliary.rs b/samples/rust/rust_driver_auxiliary.rs
+index 1e4fb23cfcb0..28a25e540298 100644
+--- a/samples/rust/rust_driver_auxiliary.rs
++++ b/samples/rust/rust_driver_auxiliary.rs
+@@ -111,10 +111,10 @@ struct SampleModule {
  }
  
--pub(super) const fn create_fops() -> bindings::file_operations {
-+pub(super) const fn create_fops<M: ThisModule>() -> bindings::file_operations {
-     let mut fops: bindings::file_operations = pin_init::zeroed();
- 
--    fops.owner = core::ptr::null_mut();
-+    fops.owner = M::OWNER.as_ptr();
-     fops.open = Some(bindings::drm_open);
-     fops.release = Some(bindings::drm_release);
-     fops.unlocked_ioctl = Some(bindings::drm_ioctl);
+ impl InPlaceModule for SampleModule {
+-    fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, Error> {
++    fn init(_module: &'static kernel::ThisModule) -> impl PinInit<Self, Error> {
+         try_pin_init!(Self {
+-            _pci_driver <- driver::Registration::new(MODULE_NAME, module),
+-            _aux_driver <- driver::Registration::new(MODULE_NAME, module),
++            _pci_driver <- driver::Registration::new::<THIS_MODULE>(),
++            _aux_driver <- driver::Registration::new::<THIS_MODULE>(),
+         })
+     }
+ }
 
 -- 
 2.43.0
