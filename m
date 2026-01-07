@@ -1,89 +1,158 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130F51E376C;
-	Wed,  7 Jan 2026 14:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCA533A014
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 14:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767794488; cv=none; b=Y/NjC3N8Q9uqW6RUNA35rnhrJ/9bP2S7IRRQWuI6+dFO4W3N7ner0In6DgeGqoGbqlYc65W9cx8463+qrUFEHNXVyVo4tRcAblu5/jW+nvY7eejX5BveCi3Q0ySuoqvXjIDe3dP5QKiHBjE9L8iPPR4FNC7NbpoIE2bvKMGzJwA=
+	t=1767795267; cv=none; b=dPYbi9KsWHGie2asDN7NSdBEV4KBh8cgjW/BFQqnBWIHCvsK8ZnDXY9cMyXvn051IEqYuB/UGu23lLyEmYFsIraW2PiwUOSMi2qnsVXYRrEAomJR9TpJMjSpZEu8z5J6BUJpeSOPBtZ0NzjZD023a3jAomYt8APju0t5EiONx5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767794488; c=relaxed/simple;
-	bh=jBG4aNk5ZWi1L4CNOgmaFLu3BODBNt1dP7Ozcg8ij/Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tDSg78eoCftRy0PlE/AaMAT+qg2r3HZfBsi0cnnV/ySZNK6bRlrMRHiGfyNgitmBjsLI+0V0F8INdHPvcg+B7QQd55GLz+h/wojjoUF6YusW0sRHcpZpssAOCpr24lIKrKkI/M5hMyECxLPBOdKa9qeBOYaHNHGYxwyV1uYH83k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=LC6hXQnM; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1767795267; c=relaxed/simple;
+	bh=qIIDxwU+gRN0J9Y/XOJnAtu6bIjjcyMHsSeCwy1O+Ho=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=c2fijydi3n96sK1exnbys0aQGGOZ59+lGdgkOp02evUnevwVPFPSslBw4IpymBPPY3BHnFWzO7coNKKwTr+fX0gHKkptw6qa2cTq264sVTDsH45rkJfTg7w8cUr3jasZam2HU8JwYgKg1Ou00qX5Mg2sWtCEget6dYTSJZhy1s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kc2tkUqy; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LC6hXQnM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=jBG4aNk5ZWi1L4CNOgmaFLu3BODBNt1dP7Ozcg8ij/Y=; b=LC6hXQnMU/NjNO36FOTRtHoc0b
-	/R9ICMbhCZtTHkS35bxXgX721Q6i3pKjMA60pANzb9P4UBUCYzR4bjTJrOFBImGAhb8rVbKgyDlI0
-	fyQPiaIyjfN8SJ2QwfTKIRlPROAPEg3zkFuMjX0Ycm0wkAjRZejgQI72gS6yb8OMfoenRm6B8eNUX
-	4csrD5Y2QACSnClhFglmySG3XsFDrvWSdXc5HsaLQXQs0FPAGnftGE5h0N9BFd9tugFDLAqVmol/l
-	CrsnNeldt1O06d10lUU3N0XPkxb6sYRiAKq/7dtmFgKjLPhzaJPct/a4ZCNqTSThZy/KIG3b3NtYW
-	87+tua7Q==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdU68-0000000DSbv-27M6;
-	Wed, 07 Jan 2026 14:01:16 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 70AB730057E; Wed, 07 Jan 2026 15:01:15 +0100 (CET)
-Date: Wed, 7 Jan 2026 15:01:15 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
-	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH 0/4] Inline helpers into Rust without full LTO
-Message-ID: <20260107140115.GE3707837@noisy.programming.kicks-ass.net>
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
- <87y0m9har9.fsf@t14s.mail-host-address-is-not-set>
- <QViERQV7XT0BjTfSSyP6vzQc4AYxosyF5TEZ5kRu8AVWjmGCP_5n5V2AV2hjqVza8-jvzyquH3JLJA1zvbRD9w==@protonmail.internalid>
- <20260107123528.GF2393663@noisy.programming.kicks-ass.net>
- <87sechh8id.fsf@t14s.mail-host-address-is-not-set>
- <un386uEr3TEFzLpGCdZg_Tzm63zO7Ze6IZN16Cz79EfWmEI_hZXbBvhG2enZmUXJ6DUnCMNm7QIz-agEYIDr9A==@protonmail.internalid>
- <20260107131822.GD3707837@noisy.programming.kicks-ass.net>
- <87pl7lh77v.fsf@t14s.mail-host-address-is-not-set>
- <CAH5fLgjmjjroRf-eU+4UrTPeq3HJ7QoWoCimBW-Occf_f22ARw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kc2tkUqy"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477c49f273fso21857335e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 06:14:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767795261; x=1768400061; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SP4x8oSAn3OalDjXoKfMn5MKf18OIomQl5FEfbN6xrE=;
+        b=kc2tkUqyV7F0zYY+o7qn/Psnw8iUuDQQbZLD2/xdKEUwQW8ya5oMIEUy0Agm0F1WNt
+         8ln9SUpNmwO+34h3vaE9JC8qN2eW9M2udbd66sFEzAhlZTo7lqSyvL3pHxbXnHlVzNw7
+         HTpk/QaIW2H8+FzNJiaWWI7KUO+Vy5kIx4upnLHtbuVflIERgyTkArGAJiccxOc4DJR9
+         s4dOyhtz3slmiBpmTA3rH65llVmLXn3AIS6WA3cTc1cFOlp8G+jo/It1kIPF0GXNMT+v
+         Fl2YkI2+tJ5tQCr0XlETLUJb4DYx/NFHgLrIefmsxXvNW56239Le+x5hJAXUYDPcsNns
+         cESQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767795261; x=1768400061;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SP4x8oSAn3OalDjXoKfMn5MKf18OIomQl5FEfbN6xrE=;
+        b=SYYx9JB918jgj5hEfRlAvNyfE3nkQbn/kk/tujxoucGQQMhZ9np7oMbd831Geg1BYQ
+         YYoHuDJC2nhCajZV3F93sNq1jQq53rx/QZcaz5Ev0EowuNOfTWrCDnHlc6CZrnO+7WTn
+         V3RJmD6r90lCYpGPwrh5HaDVFSMeSVUNHxTLObQ0QD7sFWk3sU+Dl6z0nBvUQN4qmxIC
+         MV2SYlem5tveT3YLIDX2YdfS8T8aWAO31wjrlFBS/JtJZD2Yt0tVknEDd66RnoVrTjKj
+         WS4FFQe3pZrAiVeqAMcl7kf1WQxHGl3Hw9Arr629N1WjkfWNtTmCDL7EC8H2Ia/MyTpx
+         i0sA==
+X-Forwarded-Encrypted: i=1; AJvYcCWm35dSvpQqFgPETRe0qJQxuGSyUvpZ+6PJvvHhz7l/dd62+sKI/j21GEj2kzrxwDYStRCH5rTw17EFqV99vg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJlfx2oeptXE6Z7NUeGjDDLeVhv7gzQ553HdCp7pkLdKFqiV1W
+	2DoD6E/qNOXFjX1gU86OtojC02qdYjLZdXMQjy6MC8lrQWpzbh7F8Z46jDPqtYB1KEaBC1EtxD2
+	ylBeEPCuvdfb1xtshXQ==
+X-Google-Smtp-Source: AGHT+IFonxD1C10LsACIOJKgTPD2ahlXYMddlN1ztjE4qBDwoRr1FvilHq5PsdSKjgB7A2IBkJvhjsfCzg89C4k=
+X-Received: from wmaw7.prod.google.com ([2002:a05:600c:6d47:b0:475:df4b:95a9])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:630f:b0:477:7a87:48d1 with SMTP id 5b1f17b1804b1-47d84b3b4d7mr29441295e9.30.1767795261667;
+ Wed, 07 Jan 2026 06:14:21 -0800 (PST)
+Date: Wed, 07 Jan 2026 14:14:13 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAH5fLgjmjjroRf-eU+4UrTPeq3HJ7QoWoCimBW-Occf_f22ARw@mail.gmail.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIADRqXmkC/x2MUQqEMBDFriLz7UCtoOBVlmXR9lUHtMp0FUG8u
+ 8XPBJKLElSQqCsuUhySZI0ZqrIgN/VxBIvPTNbYxlSm5WU9wLqn/2/CvEHZI0gENzW8C4MdQqg p15tmf77nz/e+H8xe2XxpAAAA
+X-Change-Id: 20260107-move-rust_helper-define-63edcfb2bff3
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2330; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=qIIDxwU+gRN0J9Y/XOJnAtu6bIjjcyMHsSeCwy1O+Ho=;
+ b=owEBbAKT/ZANAwAKAQRYvu5YxjlGAcsmYgBpXmo3uziZjcnpjLG8GJ6Xh+Q54kGb7EQZrTonG
+ mQzlaZSxM6JAjIEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaV5qNwAKCRAEWL7uWMY5
+ RsHQD/jvrEkqhQ4MPaVqT91h86Ml3X9W1+UqsiwXDPk1Jed50skKfqVG854RTyGYBZjIvlRi2so
+ mqY3Ua6a3/skytuTadesTxajFD17ycxwyU3U7Niod30H9x7PRe7wHU/IUEK3d/hPZTGhlEe1dgh
+ X71LbAi7PuYcSy8Q5ELyu+QgsD31ZxMNoBsY666d8hyrk24Co21dAvir6xjQ/K4jauAk7cKgiph
+ 1evYKf1iUfUwEhjzDOXdQ1R8fwrH3X5n8oR1y+iRQRDK7XK2k1DHivqWo/iBlXsm7vWuBX/6sGo
+ Z4cp9+zgLRGcDRhE6znxwssuYRa6ixq6PvNpLOJ4vsutMQ1OcG454Cwj99TawHHMA4P/v1Jjc5I
+ Mb7NnWR5HzQ3P7//XXFRzitszOVRZzx4OA/Xz93HHB8flvhghRbKyjZfHc1MoTIarvFNXphkXIZ
+ iCGXzJqYyy1L95JcFW9Y9RZ1uK7QcLQZMYlM4Bu07RXBCcGCtmDXTnAvleZ2f/kgz9dN3BSXBSD
+ DBxLZgLlZOcJSgL5Ii4C7a4vSFCnc/QoV6tCzphTW2VEmXfT2DzL+bKQiErCPEnT2Hu9OI1eYEy
+ JW7nIYn+80r0a+tQeILPa4Q9Dd5c7Jm7Bw3NhGXLT5oqKMR9cR4y1fJ+MyZdch2+Obxn+i4lwDR KyQYj/Mv6r8Ht
+X-Mailer: b4 0.14.2
+Message-ID: <20260107-move-rust_helper-define-v1-1-4109d58ef275@google.com>
+Subject: [PATCH] rust: move #define __rust_helper out of atomic.c
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Mark Rutland <mark.rutland@arm.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jan 07, 2026 at 02:42:25PM +0100, Alice Ryhl wrote:
+We were lucky that atomic.c is the first file in helpers.c so that we
+may use the define from it in the follow-up headers [1], but this is
+fragile. Thus, move it to helpers.c.
 
-> With this option, helpers.bc gets linked into every Rust object file
-> separately (and symbols are internalized). We might want a separate
-> .bc file depending on whether the Rust object files is part of the
-> core kernel or a .ko file.
+Link: https://lore.kernel.org/r/20260105-define-rust-helper-v2-0-51da5f454a67@google.com [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+When I send the next version of [PATCH 0/4] Inline helpers into Rust
+without full LTO, it will be based on top of this patch. Regardless of
+the timelines for the other series, I think it would be good to merge
+this patch soon.
+---
+ rust/helpers/atomic.c                     | 5 -----
+ rust/helpers/helpers.c                    | 2 ++
+ scripts/atomic/gen-rust-atomic-helpers.sh | 5 -----
+ 3 files changed, 2 insertions(+), 10 deletions(-)
 
-Right, building it twice, once with and once with -DMODULE owuldn't be
-the end of the world I suppose :-)
+diff --git a/rust/helpers/atomic.c b/rust/helpers/atomic.c
+index cf06b7ef9a1c559e8d7bdfc2bcd2aeb8951c29d1..a48605628ed73ac32aae2e6280481407a670e88f 100644
+--- a/rust/helpers/atomic.c
++++ b/rust/helpers/atomic.c
+@@ -11,11 +11,6 @@
+ 
+ #include <linux/atomic.h>
+ 
+-// TODO: Remove this after INLINE_HELPERS support is added.
+-#ifndef __rust_helper
+-#define __rust_helper
+-#endif
+-
+ __rust_helper int
+ rust_helper_atomic_read(const atomic_t *v)
+ {
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 79c72762ad9c4b473971e6210c9577860d2e2b08..a86fab743d1dc951373e5ff05278c6c7872ef491 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -7,6 +7,8 @@
+  * Sorted alphabetically.
+  */
+ 
++#define __rust_helper
++
+ #include "atomic.c"
+ #include "auxiliary.c"
+ #include "barrier.c"
+diff --git a/scripts/atomic/gen-rust-atomic-helpers.sh b/scripts/atomic/gen-rust-atomic-helpers.sh
+index 45b1e100ed7c63108ee6cb07e48a17668f860d47..a3732153af29f415e397e17cab6e75cb5d7efafc 100755
+--- a/scripts/atomic/gen-rust-atomic-helpers.sh
++++ b/scripts/atomic/gen-rust-atomic-helpers.sh
+@@ -47,11 +47,6 @@ cat << EOF
+ 
+ #include <linux/atomic.h>
+ 
+-// TODO: Remove this after INLINE_HELPERS support is added.
+-#ifndef __rust_helper
+-#define __rust_helper
+-#endif
+-
+ EOF
+ 
+ grep '^[a-z]' "$1" | while read name meta args; do
 
-Also, I ran across Eurydice during the x-mas break, would it not be
-possible to compile all the .rs muck to C using that and then building
-the whole lot like 'normal'?
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20260107-move-rust_helper-define-63edcfb2bff3
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
