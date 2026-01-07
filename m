@@ -1,138 +1,108 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A90314D2A
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 12:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32337328628;
+	Wed,  7 Jan 2026 12:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767788582; cv=none; b=qp35vnW/TPfrMfPU32zCOk+l09ljPUF26JzSgCm9u2Q1egGymJDzWkVX0ljnpI2WFkYs/fAb1ZLXJNuSq0NH0mBtWTFgQ1kDSzaS4Gj1kbXNfJOS4URaymzbuN21wzwx/BSKaWrJ3KaSJGGGjTt5/lKWjbp9PnJ/hcZ7kMVM31s=
+	t=1767788637; cv=none; b=HpH2IziFUJykzjK/UR+GW6lHgN81inP3Wl5ud9JQsTTyTvVua+b5+lbpYxYhKCq8FyP5ud6Hd733h2TOqeuiZo0EAxF6LK+5rVAYtQcP0Dbl/g9dhiIkidJrxNQIps0UmKUGIV3mPPrfr1stl4g2ff3/DCqObOiX9Yc4KcLpT+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767788582; c=relaxed/simple;
-	bh=ldznM2VFkJHtjo6dOdJXJZFjWo96wSvSHo0WgO2i9RU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=dJ+DxxEG0KVlV2n+HXeRbmeRXy3ZCx6gqAVZK3KDY5G+lvq34N+4zb2i/gUHz82zFDJCL3koy+w131MPuPAX4V063MZHVgCTtZt/T1kmQ/qLPS5k4vmTL02JH1J8pEIbjb4qu4TmW2nejn73wjTPzJDmN+HFLp6Mz3M9EBOPYYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0kGr0r4c; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1767788637; c=relaxed/simple;
+	bh=mZtM1KRXrNZPIjs0BP4nXfJn9/N+qtrTbb5tiAYIPzg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=oPpXQRZWQPxcr0R4JGTvH5gWsQQ2P1gEd+wtjbSt2XhfTIU8T8YscKNy7NAJ+nC9WNdmpdNOXcTPDTXUn6S+ge0esBJTL4PNQsI6unpGZYxRLtt1uKuu4khiM0zU28SUkSORV43v2gVXWsbQWwh/Le1XQwbC1VC0LvLhlR3Bpzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsilMsD9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0kGr0r4c"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d62cc05daso12315925e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 04:23:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767788579; x=1768393379; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zJouJeDS0QkHiQfTNtIoyh+wTKtfWBn+hoMdv0mRUlY=;
-        b=0kGr0r4cGkg8hfq8qsKjBdhmc5pCPQy7sERYtq0MHtvgikvlHdu/QV90GNLjnobH7D
-         GvsVqeAEDMcwi4w3nIXOjB23fpCiQsGHxNm4mLuD0saa/UXc6DuVLUUYIsuY/xXBvGsH
-         4cgfsHhklM7yfAgMX6VBfKoYwePsBY1I/3vfhuPD9rQIoioXVJdNtEqLilPRXYHniHrR
-         g+9EvUal143I/u9vtTgI0Dj4Dg6iRoglIfkKs3UW5AAOQNAKbZU5xovfNz98QsGkbcLC
-         ER+cfh7ULK2b+Au9xUfOA6kWsakm9tzdI/IeFDXgedEN4xim6T0jshOv8viRxdOY8rDz
-         Aj2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767788579; x=1768393379;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zJouJeDS0QkHiQfTNtIoyh+wTKtfWBn+hoMdv0mRUlY=;
-        b=rZ1oLpFNv39ZUyXT6IO5jbB+uetvzDcCK+O/rK0LO78G5MkYHBF74AmLCE32niqdFt
-         BCdBp23wTAoPaYFFc6ZBl3HfdB7MsHV9dW7Ijtjj5Dmmr2iZZANRn+Jw4wuEuvuZ4I+Z
-         9+acBUxKmVJmkLk1NcBlpsdYcfAWGafUTT/q8hjOsr1w5VwMiEgh0G6JOdyfQjCJ3sGl
-         AHqx+Sdf1wrgdf1ppXrRI+p3CBs5yuYznNqUAUwOrexmLBdzcoxhPwGuUktzJD3X7SWV
-         SwPt5tizDYi1KiEL8IGWLoywc+mfmpeHxGJZMhceGBmwjNv2mJOUdihYaaprjz71TAtq
-         SWtw==
-X-Forwarded-Encrypted: i=1; AJvYcCXG+hV7FO/2owOcXBJH+mH7t6r+z4WxOzRmRLpSvUCchLeXYr7w/Ka6CT3cGhm+gG5+WObLAqXqr6t1vPmEkQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnfX36Hm0z53yY4SvWxpVy8jPlveHXnOLgmxa+MlnId3de7691
-	/rilve8B22hX+JHdsYWXY7oJVKUXxV3B8Pa2hvYedbNHhOctRs/KHWrGkIfAnHUJlwtsjMNcFA2
-	ZhKfFfGPS2hYB7AoK0w==
-X-Google-Smtp-Source: AGHT+IGd72TAvN52ZdOcLv5w5NFynTZ6/3FbD1p1RmwNMK1B3tXDzrlLFoNK1CQAj2A8DAY2TV7PI7tFtQAmVhU=
-X-Received: from wmbh26.prod.google.com ([2002:a05:600c:a11a:b0:477:103e:8e30])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:83c7:b0:479:3a86:dc1c with SMTP id 5b1f17b1804b1-47d84b52e31mr25359035e9.36.1767788579088;
- Wed, 07 Jan 2026 04:22:59 -0800 (PST)
-Date: Wed, 07 Jan 2026 12:22:50 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsilMsD9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0535EC16AAE;
+	Wed,  7 Jan 2026 12:23:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767788637;
+	bh=mZtM1KRXrNZPIjs0BP4nXfJn9/N+qtrTbb5tiAYIPzg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=jsilMsD9MU5vYOo+CLDlCD4K1PG/wWHtloGE+yTehzPOpuQxbC4VkaA5SDbLGwG+8
+	 NoGTAZRmkN3B/N39tcHxDRacYTzE26znGZWG6DK9P1a24yxnyGqNw0NGTEOhL1cCDn
+	 dVkYCJTcJdvV3AnC31ROUCNjK4WzEK0Rk0A3pfxYacTnTIJob6V5LNMiBdaFubd085
+	 h58fmGlG/jR4aWt0H5ONm3dEZ3oYNYGVyM2DPPqpSr3sUsMbKs8GEZ9tdE6s4vMFND
+	 iGZ/LYsMAQDMLzqD2kCZmCnwKYXfvcW8VkBSm798XIEDL42GwbPYWgMt8mfXEV8FTI
+	 M5SK7HdQJxaaw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Mark Rutland
+ <mark.rutland@arm.com>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Nicolas Schier
+ <nicolas.schier@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
+ nouveau@lists.freedesktop.org, Alice Ryhl <aliceryhl@google.com>, Matthew
+ Maurer <mmaurer@google.com>
+Subject: Re: [PATCH 0/4] Inline helpers into Rust without full LTO
+In-Reply-To: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
+Date: Wed, 07 Jan 2026 13:23:38 +0100
+Message-ID: <87y0m9har9.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIABpQXmkC/x3MwQqDMAyA4VeRnBdIi1j0VcYOVbMtop0kVgTx3
- S07/Ifv8p9grMIGXXWC8i4mv1TgHhUM35g+jDIWgyffkKOAU15WnGPPM2q2DZcoaSuxGrpANbW t5zD2UA6r8luO//35uq4bqAWVmG0AAAA=
-X-Change-Id: 20260107-jump-label-rust-maintainers-17040992e7db
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1794; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=ldznM2VFkJHtjo6dOdJXJZFjWo96wSvSHo0WgO2i9RU=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpXlAd25HnrIno8iw6ydeeNq7fNAf/kHfCp7llW
- fa7bTYj5JKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaV5QHQAKCRAEWL7uWMY5
- RqplD/0S3XKDvD8RMX/E5ztwpVoFj9YV7M33OhWMIoUQ5IeMDP7kIslAN75YnLnvRVdNZ/e44bD
- DVk/1wpVh8DMr1b/YAqqiK9lbOHMCEU4egBa/1OAmr1eX51kbVsDB1Z8VUz3zqaiHvXiRC9iu7m
- zkdprMm+RLdFT+bt8r9i9tnYvzfVUo/g7pe+5g0lzdVXLMqG2ahzjKBuwtTLTC815AfUP7Y2Vpf
- CkNiETbOJBaMajeiCjZ+7IJBAb4XRpp5C6nQzk1sW28IAJXZHv8IMCbpxcF5tE4u47ssYQKj680
- I4B56RYmA8Y078/WA9Y3vt6lTDg+xQGX5BmGzJA5BN5iCag2Nz9P/7jWVUilZuAPpI/azLoSV4d
- vZECin7DI1Y6n4AUBCod5rLBDPH/8FL4r8xl6q4VXJajzlpfiSXoniDMq0rmrVmRNJv0vR51C6N
- P4ZD275d/LJ65k2ppNwc96kXrAoqRNKyboNno2s6oob0w4a2hxAfyqflPHBDHzPb0qGVpFm2fik
- R+rnFZ+Zi5nkRt/jHzzdQ8HGcuowhCYuR1xtWemxgHcQNVtJzywJAPaiWk0+hC9H2x6wTO0cj0A
- wcCXrgzbtTkq0StYW0AFfQ3O4wZ3X171gFu7tNZtoi7pvUHXCyiP2/cQ23SHkc3nuLKSN+5zToB 6W8SjamGR02mnGA==
-X-Mailer: b4 0.14.2
-Message-ID: <20260107-jump-label-rust-maintainers-v1-1-702b03482f2e@google.com>
-Subject: [PATCH] MAINTAINERS: add Rust files to STATIC BRANCH/CALL and TRACING
-From: Alice Ryhl <aliceryhl@google.com>
-To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
-	Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-I realized that these files were never listed in MAINTAINERS when they
-were added in commit ad37bcd965fd ("rust: add tracepoint support").
+Hi Alice,
 
-I'm proposing to include them under the existing entries, as that seems
-like the most obvious place to include them. However, there are multiple
-ways to do this. If you prefer to have them elsewhere, I would also be
-happy to create a new entry with me as maintaining them, or I'm also
-willing to be listed as R: under the entry. Regardless of how we list
-them in MAINTAINERS, I will be around if anything comes up. Let me know
-what you all prefer.
+Alice Ryhl <aliceryhl@google.com> writes:
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-Based on v6.19-rc1.
+> Currently the only way for Rust code to call a static inline function is
+> to go through a helper in rust/helpers/. This introduces performance
+> costs due to additional function calls and also clutters backtraces and
+> flame graphs with helper symbols.
+>
+> To get rid of these helper symbols, provide functionality to inline
+> helpers into Rust using llvm-link. This option complements full LTO, by
+> being much cheaper and avoiding incompatibility with BTF.
+>
+> I ran a microbenchmark showing the benefit of this. All the benchmark
+> does is call refcount_inc() in a loop. This was chosen since refcounting
+> is quite hot in Binder. The results are that Rust spends 6.35 ns per
+> call vs 5.73 ns per call in C. When enabling this option, the two
+> languages become equally fast, and disassembly confirms the exact same
+> machine code is used (in particular there is no call to
+> rust_helper_refcount_inc). Benchmarking Binder also results in an
+> improvement from this change.
+>
+> This patch is complementary to:
+> https://lore.kernel.org/all/20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com/
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-I noticed it due to this patch:
-https://patch.msgid.link/20260105-define-rust-helper-v2-9-51da5f454a67@google.com
----
- MAINTAINERS | 4 ++++
- 1 file changed, 4 insertions(+)
+I get the following modpost errors when building with this applied on top
+of v6.19-rc4:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b11839cba9de1e9e43f63787578edd8c429ca39..14eafd3fb428483cfd3f0a86f52d0c62ba7436e5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25017,6 +25017,9 @@ F:	include/linux/jump_label*.h
- F:	include/linux/static_call*.h
- F:	kernel/jump_label.c
- F:	kernel/static_call*.c
-+F:	rust/helpers/jump_label.c
-+F:	rust/kernel/generated_arch_static_branch_asm.rs.S
-+F:	rust/kernel/jump_label.rs
- 
- STI AUDIO (ASoC) DRIVERS
- M:	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-@@ -26470,6 +26473,7 @@ F:	include/linux/trace*.h
- F:	include/trace/
- F:	kernel/trace/
- F:	kernel/tracepoint.c
-+F:	rust/kernel/tracepoint.rs
- F:	scripts/tracing/
- F:	scripts/tracepoint-update.c
- F:	tools/testing/selftests/ftrace/
+ERROR: modpost: "__SCK__WARN_trap" [drivers/gpu/drm/nova/nova.ko] undefined!
+ERROR: modpost: "__SCK__WARN_trap" [drivers/gpu/nova-core/nova_core.ko] undefined!
+ERROR: modpost: "__SCK__WARN_trap" [drivers/block/rnull/rnull_mod.ko] undefined!
+ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_minimal.ko] undefined!
+ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_misc_device.ko] undefined!
+ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_print.ko] undefined!
+ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_dma.ko] undefined!
+ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_pci.ko] undefined!
+ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_platform.ko] undefined!
+ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_faux.ko] undefined!
 
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20260107-jump-label-rust-maintainers-17040992e7db
+I also applied the series adding the inline macro [1].
+
 
 Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+Andreas Hindborg
+
+
+[1] https://lore.kernel.org/rust-for-linux/20260105-define-rust-helper-v2-0-51da5f454a67@google.com/
 
