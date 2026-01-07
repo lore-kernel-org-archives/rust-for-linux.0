@@ -1,134 +1,185 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7607F2F5A09
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 10:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767781339; cv=pass; b=ZmL1qExwzEi/hZu9y8kYeQNeDEQfB7KUAmgkvyGClnSZMBjR6ifacXxn/u+oAPTyAlFH6lT9CfyD74vdU21cvMhCUwdKGeDo8thtp0TqyDmxsKHX47/OwsKzKuew8yjaFFPHePEN3mDdEJYbJ3FVg0Umy7iuWIPEhIY1ErGD3QA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767781339; c=relaxed/simple;
-	bh=4SrWBuwr6RrSnRbpQSMJqUyxQWsz4NCVaKwPApe+uug=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=skxatzDC6eFuS87ooPMhXOmoiv+Etc30iWTdE1zQ/WyL2dbr2kVVTR2wx57ZsktBgNizadIseo+F8Nh6bbMrv8RJUOCzmu1t0IasjXpgWfxOxMTZ3H1XRLiCBAKnCsLfiLc3o7/V99zv1guCpjmtVN3wDrfQXl7inGJPspTy96g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dPiLOpx5; arc=pass smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5D11E515;
+	Wed,  7 Jan 2026 10:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767782128; cv=none; b=j4WZT0baVxkfnDDCa3mvJw7W4TL0MNRUBQhx6JfVcqyte4UZotUVIBGyCjS4C4y0E8gfPo1Xkn8aBJY9JOXQbTgS3sIcWgTxgesP+WzwQP7gLak+lAxrIkwgoFqQNTaYH+Jy2JyZmO6g1dFEami2/HD4bw2UbnIuU6SncA5RO8Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767782128; c=relaxed/simple;
+	bh=93NBu9Ie2cQSxpAnoUF9DHmMJwQipXp+6hJve9Q6jKc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fYZFlRo7DZLOcJIICyUh6qEWvM7niItv13W2Fv/ieBs4gSCcbuXnmmqrsENqmJjZ2dW9AKc/kJTU+m94askiGGkZOhZaJ7/XWtAPZLqMU4erlCiOGQd2oi0ONUu11kQEWs64Nj1S2hXu9qCGSlCuS4oOzJBkjnFW3wnjMysUisg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TNm7vErs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPiLOpx5"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-11f1cb6cefeso104076c88.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 02:22:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767781337; cv=none;
-        d=google.com; s=arc-20240605;
-        b=O2vu2biwfflljwZHGe0qDudARMJHV7oocExxvp4VAsvVGPXlDWUmsB2hNiv+PmxhMB
-         +YtfVRAEvlI4P0xcY8/telbf1tR35y9Dg0pWpEJA2xJAwPT9+ZEbnxJqV8QaqTcysTxv
-         p/nuoZECRiq1BE/ymjoVUF/aqtI8A4iwN3TmvXRlq04+GVXir/59+Iu2/WM3E+uywJbS
-         HHSSfht7bTOmxYLnFvy5VeaQoQbpCvL4dmSD908YXOR+UKE6/fzeV49+KNAEfCJcp9Pp
-         F6hg9vm3eexhmJCizvHNUr0AazpvDV2NZzSAmp8eB68VJ3OaUwXY/KiuNXpZgH6pIPJ0
-         NqWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NAsA24DaFgUjgLMfDun/Bw7ykH7z+xp7ZKXZOf4463M=;
-        fh=xo0+dmeMc+o2boakpkhFm5dn2CpZm9p2RWhLXRJ2e9k=;
-        b=aL8Yg/U/kGLiYHhimDb4/2ZIVUm73CgBXK5LRvi6dyWQ/RfySrhiP9Oxq/v72KHKML
-         PNQA97n31zk323YmjGReiM2Dyd2qvZkHQlCFwq/xVP/7Nby8KPVG+TrB8iIH5cj3kTWf
-         RqDoctghWXS7rCZk+wVsjSZnkHpcq1dw//dxIg9pxvlKCU1qJljv6E7KYe/gKI6ZGu0w
-         orHx6PeUEPA3KsrLMqtC6/EUKjIJRCokpeJWmI69sQIyeYXlU0L5Pde2admaCacEtxSJ
-         0g/3GfdoEapJUB/dcPGdXggYGFfZHHcbrqtAUo/Ns3Iyic0AyxxKDGzuAFKFdKFrn2z9
-         Rw/A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767781337; x=1768386137; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NAsA24DaFgUjgLMfDun/Bw7ykH7z+xp7ZKXZOf4463M=;
-        b=dPiLOpx5pCd+tjxXVcu2k+HT/aj0lghARFoFtIJFJxPsXPD9X52VaHYSFSMgS43Ex8
-         e8UXK4c2kV0o2cp73/pix5m8G9DPOmyZ+faS3+3pv+/Y/Q2Dy0ViZPUJQhMe3UbkS5uN
-         Nla2XAxE1HyYQvBhVhv7Qt1P8MqSTc6EZ7Ip4RkCgQPI23kbu38b8hgR86Gd4KnViy9M
-         gpLwMF1zoctUsLr915uM2oI0AzttgPPTKq+OFQlFKB2ltFijkbJt+NXPlXUJzD2PXQsY
-         LiWNQkaxgZAGhrUGOC1Z75ET/VvCubVsbKaISpvtZ82ED9+iIoorv3hfTFbAtYzCo/GU
-         TRjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767781337; x=1768386137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NAsA24DaFgUjgLMfDun/Bw7ykH7z+xp7ZKXZOf4463M=;
-        b=W79AQjx0cUjGEl2vXvYBcGY663Owszx6ErQbGvoR1e+9mF7iNBqDp3W+FV/rsG6VgY
-         02EhIpp8jp8hpnMFATpyTBc8iHpNo9Q3yzmRZiE3oIBU/yJ8PD3b1mSTfW+hAtFc0nHB
-         XpKzf6ZJ4i+d2MIva0e0QIHnsh/8TCeHP0JyqF0XSRibKIrdpv0PvUGDZ2MpT+5FsgDX
-         mWxEWoFXsS6Zu8jw+zdAp6kjt2CqokoNHvA2O/KjPURo011MMd7jVP6oHico4JX5dq2F
-         bw1RSll3bde83wFzYhLrvsb5/qLAcVKuPjgnU6d0uz781kdh8LZDo7dJtzmAj4jijyN1
-         bm/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVd5Ef01R4wr+zQOfJoAq/52AeYz0v85KMg1ycN5h0nsINNxWyQG/zauoko1rSwIT6OaCckgTXbkkPNQrtGdw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyjtv4AUL46WzYxEU10fOhmgCbQ9vgZKDfysQT8FaHWHqhnuxAS
-	rEXy0dg6x2MSpDmQuZnBPU4ZhWQGrqbtLRllK+46WbwgXnMlcZFBl6kPcDNA9Jf/SPTrG4hH5lN
-	0Tl+qjt3HEiIeNMqmdtojvLFI1IWS46A=
-X-Gm-Gg: AY/fxX5Kr1WBlvlowTTvflVA/aaB+SWAnsNO8u7fSf7qEZutgN1DEC0pt9bZ/4zQ1mD
-	IKpSua8khUIuafNpa7DjkVl+8OIehlgH/6WzT4WgOher9cLq66Kzz2ziLclM9iSI2GQ3K9ChFsv
-	hQa6IFVsqBBga67uVybmnhQnku10atPaR1/iHBAVIWftgTmfv22lUaePDK6iR/zgwuKWOFKKKD6
-	uUF+GRnOedMkmWVkuGxIZlE8taLWoC5qhBO1OkW+XQuVe1cCqrPA8TTYP8QgM8u5OBYzf16VftZ
-	7F06bNuvjzU5aet2fywZ8apnJW79m48H2jmuBctsTev0ovZ7UKxrvWRKW6DZbQVbhpg7yuYrf7T
-	oX30s7LHyd2G+
-X-Google-Smtp-Source: AGHT+IHfFeGKwpSxoEw7wvWXxXuhPqYFWR2DZ4U1jG2+RFCEMUW5WfmNqx+EbqNMnb2jRGTfm9cGxkYPIXaNkpSitnk=
-X-Received: by 2002:a05:7300:e9c5:20b0:2a4:3593:5fc6 with SMTP id
- 5a478bee46e88-2b17d06e857mr568526eec.0.1767781337368; Wed, 07 Jan 2026
- 02:22:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TNm7vErs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24AEC4CEF7;
+	Wed,  7 Jan 2026 10:35:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767782127;
+	bh=93NBu9Ie2cQSxpAnoUF9DHmMJwQipXp+6hJve9Q6jKc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TNm7vErsjgUbbnWwmEiffmYrzZqF00d4icrsv/kQ0dCYPP6gLO6HkGqy5q5+6mggN
+	 OSF+IOv1l7YgJLjro4MwfvtACcib3MZoLCl8GfgwNpSuaHdbjEJarcbVboNR9+A75y
+	 WSEOJEESwmWL9EiLx4HpJ+9+MwfFQRsNlXjfVCIYKopD7aD0lzIFpU1IqoUH4Tp0oS
+	 KUi2PejnxAd7FwCBRv2hmvUAM8NvBstaQZ5Zy97Q645/3nA9BJu8jQ80HzXK8ICd3Q
+	 DfBbSsB/4xMfrCG7dXf27bsC0kpSsXqyaZd/koft9dYNG71PPhRNUfTJBmM/RcJkIA
+	 izP7skvYeuPzg==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	igor.korotin.linux@gmail.com,
+	ojeda@kernel.org,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	david.m.ertman@intel.com,
+	ira.weiny@intel.com,
+	leon@kernel.org,
+	bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	wsa+renesas@sang-engineering.com
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 0/6] Address race condition with Device::drvdata()
+Date: Wed,  7 Jan 2026 11:34:59 +0100
+Message-ID: <20260107103511.570525-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107012414.2429246-1-ttabi@nvidia.com> <20260107012414.2429246-2-ttabi@nvidia.com>
- <1d8c517b-1e25-406f-876e-dac4e8b8ae78@nvidia.com> <38a599e8cebb7209cd8e86135794f1d8755d7a7b.camel@nvidia.com>
- <f4d26971-bf10-4370-8994-13ad962becfd@nvidia.com>
-In-Reply-To: <f4d26971-bf10-4370-8994-13ad962becfd@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 7 Jan 2026 11:22:05 +0100
-X-Gm-Features: AQt7F2qX0fRX-1cI1u2SPHWZHP47yPTczxbJZU6ADBL-ZnLG8wR6-v9o-mgeA-o
-Message-ID: <CANiq72nTWoAPzqyqQNegxznSg64Cd+2b-Fb89fmOxKOjMHBu+Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] gpu: nova-core: add missing newlines to several print strings
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Timur Tabi <ttabi@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, 
-	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	"dakr@kernel.org" <dakr@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "ojeda@kernel.org" <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 7, 2026 at 3:39=E2=80=AFAM John Hubbard <jhubbard@nvidia.com> w=
-rote:
->
-> samples/rust (pr_*!)               29             6          83%
+Currently, the driver's device private data is allocated and initialized
+from driver core code called from bus abstractions after the driver's
+probe() callback returned the corresponding initializer.
 
-2 of these 6 are expected, 4 aren't (`cont` level follows).
+Similarly, the driver's device private data is dropped within the
+remove() callback of bus abstractions after calling the remove()
+callback of the corresponding driver.
 
-I have had a good first issue for these:
+However, commit 6f61a2637abe ("rust: device: introduce
+Device::drvdata()") introduced an accessor for the driver's device
+private data for a Device<Bound>, i.e. a device that is currently bound
+to a driver.
 
-    https://github.com/Rust-for-Linux/linux/issues/1139
+Obviously, this is in conflict with dropping the driver's device private
+data in remove(), since a device can not be considered to be fully
+unbound after remove() has finished:
 
-I just added a few more pointers to see if it helps people
-contributing, and also a link to your table since it is a recent
-search.
+We also have to consider registrations guarded by devres - such as IRQ
+or class device registrations - which are torn down after remove() in
+devres_release_all().
 
-I also linked our other issue about having a `checkpatch` warning for
-this, since most (but not all) should be finished in `\n`:
+Thus, it can happen that, for instance, a class device or IRQ callback
+still calls Device::drvdata(), which then runs concurrently to remove()
+(which sets dev->driver_data to NULL and drops the driver's device
+private data), before devres_release_all() started to tear down the
+corresponding registration. This is because devres guarded registrations
+can, as expected, access the corresponding Device<Bound> that defines
+their scope.
 
-    https://github.com/Rust-for-Linux/linux/issues/1140
+In C it simply is the driver's responsibility to ensure that its device
+private data is freed after e.g. an IRQ registration is unregistered.
 
-and the patch that would be nice to review/test/revive to see if we
-can manage to land it:
+Typically, C drivers achieve this by allocating their device private data
+with e.g. devm_kzalloc() before doing anything else, i.e. before e.g.
+registering an IRQ with devm_request_threaded_irq(), relying on the
+reverse order cleanup of devres [1].
 
-    https://lore.kernel.org/rust-for-linux/20250207-checkpatch-newline2-v4-=
-1-26d8e80d0059@invicto.ai/
+Technically, we could do something similar in Rust. However, the
+resulting code would be pretty messy:
 
-(Or we do something like our past ksquirrel bot which is probably just
-easier, to be honest)
+In Rust we have to differentiate between allocated but uninitialized
+memory and initialized memory in the type system. Thus, we would need to
+somehow keep track of whether the driver's device private data object
+has been initialized (i.e. probe() was successful and returned a valid
+initializer for this memory) and conditionally call the destructor of
+the corresponding object when it is freed.
 
-Cheers,
-Miguel
+This is because we'd need to allocate and register the memory of the
+driver's device private data *before* it is initialized by the
+initializer returned by the driver's probe() callback, because the
+driver could already register devres guarded registrations within
+probe() outside of the driver's device private data initializer.
+
+Luckily there is a much simpler solution: Instead of dropping the
+driver's device private data at the end of remove(), we just drop it
+after the device has been fully unbound, i.e. after all devres callbacks
+have been processed.
+
+For this, we introduce a new post_unbind() callback private to the
+driver-core, i.e. the callback is neither exposed to drivers, nor to bus
+abstractions.
+
+This way, the driver-core code can simply continue to conditionally
+allocate the memory for the driver's device private data when the
+driver's initializer is returned from probe() - no change needed - and
+drop it when the driver-core code receives the post_unbind() callback.
+
+--
+
+Dependency wise we need a common Driver trait that describes the layout of a
+specific driver structure, such as struct pci_driver or struct platform_driver.
+Additional to this specific driver type (which was previously the associated
+type RegType of the RegistrationOps) it provides the offset to the embedded
+struct device_driver and the type of the driver's device private data.
+
+This patch series contains two additional dependencies:
+
+  (1) A fix for i2c::Driver::shutdown() to not free the driver's device
+      private data at all, which otherwise causes the exact same bug, and
+      is not necessary in the first place anyways.
+
+  (2) Add the auxiliary::Driver::unbind() callback. Strictly speaking,
+      this is not a dependency, but without this patch the main fix of this
+      series leaves the remove() callback of the auxiliary bus
+      abstraction with either dead code or quite some code removed;
+      code that we would otherwise add back immediately afterwards.
+
+--
+
+[1] In fact, the cleanup ordering of devres is a separate challenge in
+    Rust, since it is technically unsound to rely on the driver to pick
+    the correct order. I am already working on a solution for this;
+    luckily this also has some synergies with optimizing the required
+    synchronize_rcu() calls required by the Rust Devres container
+    structure down to exactly one per driver unbind.
+
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=driver/post_unbind
+
+Danilo Krummrich (6):
+  rust: i2c: do not drop device private data on shutdown()
+  rust: auxiliary: add Driver::unbind() callback
+  rust: driver: introduce a common Driver trait
+  rust: driver: add DEVICE_DRIVER_OFFSET to the Driver trait
+  rust: driver: add DriverData type to the generic Driver trait
+  rust: driver: drop device private data post unbind
+
+ drivers/base/dd.c             |  4 ++
+ include/linux/device/driver.h | 11 +++++
+ rust/kernel/auxiliary.rs      | 41 +++++++++++++----
+ rust/kernel/device.rs         | 20 ++++----
+ rust/kernel/driver.rs         | 86 ++++++++++++++++++++++++++++-------
+ rust/kernel/i2c.rs            | 31 ++++++++-----
+ rust/kernel/pci.rs            | 27 +++++++----
+ rust/kernel/platform.rs       | 27 +++++++----
+ rust/kernel/usb.rs            | 27 +++++++----
+ 9 files changed, 203 insertions(+), 71 deletions(-)
+
+
+base-commit: 8510ef5e3cfbd7d59a16845f85cd0194a8689761
+-- 
+2.52.0
+
