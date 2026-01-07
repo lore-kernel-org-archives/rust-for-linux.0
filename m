@@ -1,288 +1,147 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899111624C5
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 00:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9251E3DF2
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 00:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767831857; cv=none; b=DgJqAhAiJiXubRNky2P3ycs3x/LZCd9Yg1cqZKOuHGlcNhKpKF3UrryvXsvjdfwQBiiGOqDXaAPlwNJFWJ10X8UrXHzn1V4vbTz6qZo3M2uubtWu0Hmg5ObhCb306RioHIhA8e0oOmXcAHZ2AmlbNTO8wenPjqcBqPW8pRl06CM=
+	t=1767833770; cv=none; b=rxjF+WOeHL9zGZ+QSYAv2+z7VAG1nd/SFv1iWykdIItEYAqjb0bKI7Lx8BY+DBVwlESPMabcfoUfxt57BccdhPxjiuJbi5kC4KDcPgC+3ZHDJ7x2BOpzUr2eVvlH3EaHul34WnnaKqxWXLRAa6fwe2g7UzJNlQnEQoWmnGCue38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767831857; c=relaxed/simple;
-	bh=vnNBnVxkXn6VzaWqzHNi1xAKgiymBmwdCou/RsfPKaQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kK/+H3YarpYph6k2crnJmWfTf1cpuDyFSNpBquFcr5d9QCETMqYCF1LBlve+WLdb4h2NKcaq/o6So+Dr2GzSzdJtswn5u443zSWQcrdJpSXk+Ec7pHH/tMwkpB6vwE1OHe2BQmn2/CMowj8IdbEDvZYyExEB3LU63eQADNMvnmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z5VPIThq; arc=none smtp.client-ip=209.85.215.177
+	s=arc-20240116; t=1767833770; c=relaxed/simple;
+	bh=YwYFk2Qx+js9gbhXOBYT/PL0EMA9IaaTTXp8tsgIuMo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r//oH5pnlHhs5XEeWmM2/twneZu3iWWoOO1MsAKtbOyxKA1g7ZNq1AhjTEnCQPHogRj/Z7XQGRiZjm/qADT9hgL6hucD5sVoKPP9Bi8a8uRuPmJPDCo1iPkzkLVQt3s5k/PAEm0KcEpkfD7mIOTkH2ZiwKTLRqMT0Gmt+ZgVRqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QO6rh/u6; arc=none smtp.client-ip=74.125.82.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z5VPIThq"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c06cb8004e8so1220177a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 16:24:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QO6rh/u6"
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-121a0bcd376so693751c88.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 16:56:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767831852; x=1768436652; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1767833765; x=1768438565; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U1b5aiphjonM+qh2P3cyELeGq9iN5aWlHACCA3+HSGU=;
-        b=Z5VPIThqlRGB3101yKItxIRlVWdMdBnt3skvZopFIfcV56L6I6Numqz7/JKZ/5ry7M
-         FvC9Bdyiyhz8hIyvDMjqBfkv/irNFbSP+JrI5rm8yMqGWnJ1xEsLgfFP9Lk6Qgui3IzF
-         x8uhKDM9O9sqwr68kVW+ECcqohfiMJpnSI5qHWv8UY+Mu03DOHBOWeGgp9dCe2QAGqXa
-         SwEW1RR43qRY7uVWhWvNHzo4fLZNGcxQHX/5hRGrf+apQWHEYb2cpC1rgYQwKz4b1WwF
-         +G/kPTZw92O9BRDPYu5JIBtLzrI91MUc4484UP2CToTK2WvOeSgPAmkptq1CNWM5jaq4
-         Vg4g==
+        bh=oG5BFbOLzzfCmy3i7IH0OAHPZrkRaMAHq+KjKb1KniM=;
+        b=QO6rh/u6LhQDBbz+1vGzzFX6DjBPB6P91w8CwMHsQETte+mEvq8ruPGLKQWhLdlwGW
+         r7qCGilZ/cNG5vRjyQvQGT7ri1NiPsumt9bu7peQ6wizYZKtOloKZGmdUcBwas5HoCiC
+         liHEbR+5AOxxFIuvRL4smVwlTr4NEFyQ/CuuhfWP79LHqNRYeSun1Rw+p98TrmGisZY2
+         dQLuHC9GZDIeC1rDK3r9XJmCGI89tI5wrz77tlWxNlH7H3q/ItQEVYGLTb1Dq4xxfVpK
+         WMLS6Xtob6HGr58nQc4krdiwbvDutIAFq6+fC1S+yv4wDrMk3KlqQbQ0O5vBGvkECadf
+         hWHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767831852; x=1768436652;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=U1b5aiphjonM+qh2P3cyELeGq9iN5aWlHACCA3+HSGU=;
-        b=QHwO/3EznEIhiF3dHA3O/Y1mYs1GreyCi6kDZSvIK12Qgq9Nepe2W1JsiwHR24iRuP
-         V+p4QE29ykwuStO0TGVgd3I1JOC7gRKMcO2nAT2LsUy8uM1vEFY9V93oUzkyslOAA3lx
-         O/B0JmSReIl5rfxVDsB3oAZ6vjSekXf6WZQW3uY8Nbvt8yTy8c0B8pGRmgJKqEK7pDvn
-         pmXRKlwxAEPaq4CwtLCe21U/6gtKTdlAD7PH8h/Ax2L2V+T6pmPkE88ACpqd40AAHiU+
-         SCTCdDX4ADpgfKpR2b/qYsHYE9gFJnMpHYbeuFsakZXk4d5XvbZF3HjlI1n3ay1PRo4X
-         ZqHg==
-X-Forwarded-Encrypted: i=1; AJvYcCXYMCr585q3VK79S7kjVN1Y9kK/qO4otiZpoi4vj4OlwSxUlti8GYwvrlNGsOuyHcrsyaCO9TTRzmiWLPEx6w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuaQWxRKxFaU5D5D8UqGgbTECjHqrsAikAVQsBi47JufHH0zEj
-	GLJuCX7UrsmOZNNawJeE59jV126Fdng1wYorWmzeQGEz+wbIvKiJ1YNT
-X-Gm-Gg: AY/fxX7ybxcGJk9Wz8RcIPiGnqBcwcGTez8Q/gryxIVDZ1vageXiF+MSbJ8IC8o+rst
-	JZFMbu1pNvKImXx9EeXnLCOHxLfD+ol2eIA0yMARX5oVIL+tXk4s05EJLEVFrwlnqefKHOlgl6r
-	/++yFStcqXa2CJE0OsdMopMap0DjGJywWvWesEuLZhhYP/dvRcabhDerSQtXxbXFq9EcqmpOswX
-	hZbM6H3bR7wGzaBlbCigXmyVEUqPGWZVOBBONRvqTU0hgj7UdkUEvyT8b+GyioJmuWh+lgAV7gZ
-	lfN9iaJ8NdwrkW8SN/0bF686gUuXwhrF44xq/O2Mn1Yidkv4JVi/mji50CpZCVwtVx6KvUSSK7r
-	YgeX/g/OQEi8KQ7UQs+0Jg8bHKrqMZmVAzUkrshe9pzmxqCrjyN9oNDCpP42dVHnFrO5qIXSKSb
-	nlidsAFj60NT9dqFRNq2BcNl0=
-X-Google-Smtp-Source: AGHT+IGvkXlTJq6lMcaJY57WxczJsbf/PgFJYc6JY/5UG6S7bsezDgecMYdVjyfD3o8XKmdhSTaYDA==
-X-Received: by 2002:a17:90b:57f0:b0:341:2b78:61b8 with SMTP id 98e67ed59e1d1-34f68ca4536mr3588914a91.20.1767831851534;
-        Wed, 07 Jan 2026 16:24:11 -0800 (PST)
-Received: from [10.0.10.3] ([45.142.165.250])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34f5f7b1cc1sm6049760a91.2.2026.01.07.16.24.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jan 2026 16:24:11 -0800 (PST)
-Message-ID: <66e517b1-bc83-4c73-b2ea-73a31757ab44@gmail.com>
-Date: Thu, 8 Jan 2026 08:24:03 +0800
+        d=1e100.net; s=20230601; t=1767833765; x=1768438565;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oG5BFbOLzzfCmy3i7IH0OAHPZrkRaMAHq+KjKb1KniM=;
+        b=BFdY5wXkFfK8rJ18KhBM+P3+QInzeFlyZS0uWtSfWGrU6tpHMR9nziZYSSMWhCYKzU
+         SCVoIE0lyhS06CWTJ44nbt7UcjTlc+CcekSUqgwDgreS9v4z2gB7ArMGVXcoJZDAsgjp
+         rTJAuerqD0e42sOH54sozC3c5ux+kOes3kw+fXrxe6wypFFGXfAJQYtHLQmlV60PX6Aw
+         7MJCgJBpcWtLnm0B408p4Zmr6U0uXaRrS7jMrywmHOrMc4Q5WLCNdEvSs+ZI0jqVUczY
+         RXjgzSEhnSj2Fm8oGkspridVdeLJq+rVCGbdrY7I4XXG+4LXVRFPifl3VmvwDPSq+7xR
+         gjkw==
+X-Forwarded-Encrypted: i=1; AJvYcCVxMCWjAC4HenoORMLp+Tuh0EXvRoFH6gKjLmkheddDJcdXskwYv7iE9ZCVMYfLzVoEufGsPP3f8EXamY5yqQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhdNmM64angocKMWd8C3kW994yQRCwGJj0AaJHadVxZigU+WSj
+	VssL6x5F/DHZo4Idc/KO4clMypoq0V5rCn3vWpwjf5lj6PEuuUCxPe0BLM1XoYtI
+X-Gm-Gg: AY/fxX6Xp15hwmNTjtznMpxrIKabY+L2O1XsKtd8m9p8yVOhTERA+bTo9pKUs103zLk
+	5KU0c3Mf7k4jfh+Fi8VC5Ni0a+9I0V+8i3IVGdFQ1nd2irKQcyRAfdXbd6wBHsU8vp7eGWvn+wW
+	djy6MLQ21Rnowao5/bsYy556LyNkbovhWRrt/I9Cne0yI4FZREWqlVlWDQb26ukBcw5zcO7YvKc
+	KMLzEzcmDgVzBFchl7uOuL/Etjg+tEgna1RNyESekPiil9UTRI8FeGmUA6GLAvd7yYnrhXlc1JC
+	WD0eIIi34Fwh1fm9x6u2MHoXdzH4oGJdaX+/G4DdDl+7zW/VP2MZPREUD7ipyfpQkyT+bW/SjDr
+	Nw7KwziCfrqRgiaI7tfTDtMeNjrkoztIs/EkTwEtWEWkwmK4VxOWlPd6kGYraeU609gFqdmwOXo
+	LUbVwSsy1YWOYMmz1akEOIolwyuENK4VFZnFeSgxfv8mjocjDmFO1fZTZDQhqYYGoSogIbX7joX
+	2tTG8xstBTxuTkRu4IVtJKkaw==
+X-Google-Smtp-Source: AGHT+IGIT0eYr8Gbwd/QQudTYQgriqF4Hv1aOqCZKTB6uNL4p+UUE718Oq8T33nlodImpPSbreHPXg==
+X-Received: by 2002:a05:620a:2a09:b0:8b2:e5cd:fa42 with SMTP id af79cd13be357-8c3891b060cmr560895085a.0.1767827439197;
+        Wed, 07 Jan 2026 15:10:39 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f51cdcesm464558185a.26.2026.01.07.15.10.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 15:10:38 -0800 (PST)
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 63DD8F40068;
+	Wed,  7 Jan 2026 18:10:38 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Wed, 07 Jan 2026 18:10:38 -0500
+X-ME-Sender: <xms:7udeaVKzdJMPbU4Mg3W-QXRhLL4JDv2FlHGMHqIcKeFCObfm8VPhFg>
+    <xme:7udeabgamZQz5glQPb3hJ8vzTpBBc6dxyoZR_22akKjslCMEqOz9cBEieH9yP3hzP
+    RSbePhjIHlB4OvQzuy-P_b2C0_MMFp3l5SIcDkV_XLUWCD0CSwVdg>
+X-ME-Received: <xmr:7udeaT1QmLEC-rwOO9X1h6CfcLhFotBgoE6-FretLwWU83HO2WJKZmpM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdegfeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeelffdvhedvheeiuefgleejjedtteeileekgeekueffffegheeuledvkeejjeeh
+    udenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdduledqrhgtuddrqdhlihhnkhenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
+    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
+    rghmvgdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehpvghtvghr
+    iiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohep
+    lhhonhhgmhgrnhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghp
+    thhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoh
+    eplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:7udeaRgclG-yansGgQdLo3XFcsyoi01V0mv-E73P97Yer7z17x5aUQ>
+    <xmx:7udeaU-LmN1lhNwEHeVqE2Hgvl2GgK-R5xQhUPRq3gT0cwCyRzlpAg>
+    <xmx:7udeadK9monSxNQpauKJOIPNTfOOyeC9qB-rcf8cPAbJN5XH10RBxQ>
+    <xmx:7udeaZzu6Bd-o2_AgUzPiETqp_DY-j5BkwvhpbcJb_lJR6uwUBWuyQ>
+    <xmx:7udeaQ2Q7wpJdYHjy2myb3byMjIF8PEbFJIxrOeT1ymWobnHtnNY8_Mb>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 7 Jan 2026 18:10:37 -0500 (EST)
+Date: Thu, 8 Jan 2026 07:10:35 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Waiman Long <longman@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2] rust: sync: inline various lock related methods
+Message-ID: <aV7n66KP_AeBzVBK@tardis-2.local>
+References: <20251218-inline-lock-unlock-v2-1-fbadac8bd61b@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/5] rtc: migrate driver data to RTC device
-To: Ke Sun <sunke@kylinos.cn>, Greg KH <gregkh@linuxfoundation.org>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- linux-rtc@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20260107143738.3021892-1-sunke@kylinos.cn>
- <20260107143738.3021892-2-sunke@kylinos.cn>
- <2026010757-fester-unissued-6e5f@gregkh>
- <a95aff4b-5dbf-4def-803a-d5aea84113a5@kylinos.cn>
-From: Ke Sun <sk.alvin.x@gmail.com>
-In-Reply-To: <a95aff4b-5dbf-4def-803a-d5aea84113a5@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251218-inline-lock-unlock-v2-1-fbadac8bd61b@google.com>
 
+On Thu, Dec 18, 2025 at 12:10:23PM +0000, Alice Ryhl wrote:
+> While debugging a different issue [1], I inspected a rust_binder.ko file
+> and noticed the following relocation:
+> 
+> 	R_AARCH64_CALL26	_RNvXNtNtNtCsdfZWD8DztAw_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend6unlock
+> 
+> This relocation (and a similar one for lock) occurred many times
+> throughout the module. That is not really useful because all this
+> function does is call spin_unlock(), so what we actually want here is
+> that a call to spin_unlock() dirctly is generated in favor of this
+> wrapper method.
+> 
+> Thus, mark these methods inline.
+> 
+> Link: https://lore.kernel.org/p/20251111-binder-fix-list-remove-v1-0-8ed14a0da63d@google.com
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Changes in v2:
+> - Rebased on v6.19-rc1.
+> - Link to v1: https://lore.kernel.org/r/20251113-inline-lock-unlock-v1-1-1b6e8c323bcf@google.com
 
-On 1/8/26 07:18, Ke Sun wrote:
->
-> On 1/8/26 00:12, Greg KH wrote:
->> On Wed, Jan 07, 2026 at 10:37:33PM +0800, Ke Sun wrote:
->>> Unify RTC driver interface by storing driver data on the RTC device
->>> instead of the parent device. Update RTC ops callbacks to pass the RTC
->>> device itself rather than its parent. This change enables better
->>> support for Rust RTC drivers that store data on the RTC device.
->>>
->>> Signed-off-by: Ke Sun <sunke@kylinos.cn>
->>> ---
->>>   drivers/rtc/dev.c       |  4 ++--
->>>   drivers/rtc/interface.c | 18 +++++++++---------
->>>   drivers/rtc/rtc-pl031.c |  9 ++-------
->>>   3 files changed, 13 insertions(+), 18 deletions(-)
->>>
->>> diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
->>> index baf1a8ca8b2b1..0f62ba9342e3e 100644
->>> --- a/drivers/rtc/dev.c
->>> +++ b/drivers/rtc/dev.c
->>> @@ -410,7 +410,7 @@ static long rtc_dev_ioctl(struct file *file,
->>>           }
->>>           default:
->>>               if (rtc->ops->param_get)
->>> -                err = rtc->ops->param_get(rtc->dev.parent, &param);
->>> +                err = rtc->ops->param_get(&rtc->dev, &param);
->>>               else
->>>                   err = -EINVAL;
->>>           }
->>> @@ -440,7 +440,7 @@ static long rtc_dev_ioctl(struct file *file,
->>>             default:
->>>               if (rtc->ops->param_set)
->>> -                err = rtc->ops->param_set(rtc->dev.parent, &param);
->>> +                err = rtc->ops->param_set(&rtc->dev, &param);
->>>               else
->>>                   err = -EINVAL;
->>>           }
->>> diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
->>> index b8b298efd9a9c..783a3ec3bb93d 100644
->>> --- a/drivers/rtc/interface.c
->>> +++ b/drivers/rtc/interface.c
->>> @@ -91,7 +91,7 @@ static int __rtc_read_time(struct rtc_device *rtc, 
->>> struct rtc_time *tm)
->>>           err = -EINVAL;
->>>       } else {
->>>           memset(tm, 0, sizeof(struct rtc_time));
->>> -        err = rtc->ops->read_time(rtc->dev.parent, tm);
->>> +        err = rtc->ops->read_time(&rtc->dev, tm);
->>>           if (err < 0) {
->>>               dev_dbg(&rtc->dev, "read_time: fail to read: %d\n",
->>>                   err);
->>> @@ -155,7 +155,7 @@ int rtc_set_time(struct rtc_device *rtc, struct 
->>> rtc_time *tm)
->>>       if (!rtc->ops)
->>>           err = -ENODEV;
->>>       else if (rtc->ops->set_time)
->>> -        err = rtc->ops->set_time(rtc->dev.parent, tm);
->>> +        err = rtc->ops->set_time(&rtc->dev, tm);
->>>       else
->>>           err = -EINVAL;
->>>   @@ -200,7 +200,7 @@ static int rtc_read_alarm_internal(struct 
->>> rtc_device *rtc,
->>>           alarm->time.tm_wday = -1;
->>>           alarm->time.tm_yday = -1;
->>>           alarm->time.tm_isdst = -1;
->>> -        err = rtc->ops->read_alarm(rtc->dev.parent, alarm);
->>> +        err = rtc->ops->read_alarm(&rtc->dev, alarm);
->>>       }
->>>         mutex_unlock(&rtc->ops_lock);
->>> @@ -441,7 +441,7 @@ static int __rtc_set_alarm(struct rtc_device 
->>> *rtc, struct rtc_wkalrm *alarm)
->>>       else if (!test_bit(RTC_FEATURE_ALARM, rtc->features))
->>>           err = -EINVAL;
->>>       else
->>> -        err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
->>> +        err = rtc->ops->set_alarm(&rtc->dev, alarm);
->>>         /*
->>>        * Check for potential race described above. If the waiting 
->>> for next
->>> @@ -568,7 +568,7 @@ int rtc_alarm_irq_enable(struct rtc_device *rtc, 
->>> unsigned int enabled)
->>>       else if (!test_bit(RTC_FEATURE_ALARM, rtc->features) || 
->>> !rtc->ops->alarm_irq_enable)
->>>           err = -EINVAL;
->>>       else
->>> -        err = rtc->ops->alarm_irq_enable(rtc->dev.parent, enabled);
->>> +        err = rtc->ops->alarm_irq_enable(&rtc->dev, enabled);
->>>         mutex_unlock(&rtc->ops_lock);
->>>   @@ -618,7 +618,7 @@ int rtc_update_irq_enable(struct rtc_device 
->>> *rtc, unsigned int enabled)
->>>           rtc->uie_rtctimer.period = ktime_set(1, 0);
->>>           err = rtc_timer_enqueue(rtc, &rtc->uie_rtctimer);
->>>           if (!err && rtc->ops && rtc->ops->alarm_irq_enable)
->>> -            err = rtc->ops->alarm_irq_enable(rtc->dev.parent, 1);
->>> +            err = rtc->ops->alarm_irq_enable(&rtc->dev, 1);
->>>           if (err)
->>>               goto out;
->>>       } else {
->>> @@ -874,7 +874,7 @@ static void rtc_alarm_disable(struct rtc_device 
->>> *rtc)
->>>       if (!rtc->ops || !test_bit(RTC_FEATURE_ALARM, rtc->features) 
->>> || !rtc->ops->alarm_irq_enable)
->>>           return;
->>>   -    rtc->ops->alarm_irq_enable(rtc->dev.parent, false);
->>> +    rtc->ops->alarm_irq_enable(&rtc->dev, false);
->>>       trace_rtc_alarm_irq_enable(0, 0);
->>>   }
->>>   @@ -1076,7 +1076,7 @@ int rtc_read_offset(struct rtc_device *rtc, 
->>> long *offset)
->>>           return -EINVAL;
->>>         mutex_lock(&rtc->ops_lock);
->>> -    ret = rtc->ops->read_offset(rtc->dev.parent, offset);
->>> +    ret = rtc->ops->read_offset(&rtc->dev, offset);
->>>       mutex_unlock(&rtc->ops_lock);
->>>         trace_rtc_read_offset(*offset, ret);
->>> @@ -1111,7 +1111,7 @@ int rtc_set_offset(struct rtc_device *rtc, 
->>> long offset)
->>>           return -EINVAL;
->>>         mutex_lock(&rtc->ops_lock);
->>> -    ret = rtc->ops->set_offset(rtc->dev.parent, offset);
->>> +    ret = rtc->ops->set_offset(&rtc->dev, offset);
->>>       mutex_unlock(&rtc->ops_lock);
->>>         trace_rtc_set_offset(offset, ret);
->>> diff --git a/drivers/rtc/rtc-pl031.c b/drivers/rtc/rtc-pl031.c
->>> index eab39dfa4e5fe..a605034d44cb7 100644
->>> --- a/drivers/rtc/rtc-pl031.c
->>> +++ b/drivers/rtc/rtc-pl031.c
->>> @@ -284,10 +284,6 @@ static int pl031_set_alarm(struct device *dev, 
->>> struct rtc_wkalrm *alarm)
->>>     static void pl031_remove(struct amba_device *adev)
->>>   {
->>> -    struct pl031_local *ldata = dev_get_drvdata(&adev->dev);
->>> -
->>> -    if (adev->irq[0])
->>> -        free_irq(adev->irq[0], ldata);
->>>       amba_release_regions(adev);
->>>   }
->>>   @@ -320,8 +316,6 @@ static int pl031_probe(struct amba_device 
->>> *adev, const struct amba_id *id)
->>>           goto out;
->>>       }
->>>   -    amba_set_drvdata(adev, ldata);
->>> -
->>>       dev_dbg(&adev->dev, "designer ID = 0x%02x\n", amba_manf(adev));
->>>       dev_dbg(&adev->dev, "revision = 0x%01x\n", amba_rev(adev));
->>>   @@ -356,6 +350,7 @@ static int pl031_probe(struct amba_device 
->>> *adev, const struct amba_id *id)
->>>           ret = PTR_ERR(ldata->rtc);
->>>           goto out;
->>>       }
->>> +    dev_set_drvdata(&ldata->rtc->dev, ldata);
->>>         if (!adev->irq[0])
->>>           clear_bit(RTC_FEATURE_ALARM, ldata->rtc->features);
->>> @@ -369,7 +364,7 @@ static int pl031_probe(struct amba_device *adev, 
->>> const struct amba_id *id)
->>>           goto out;
->>>         if (adev->irq[0]) {
->>> -        ret = request_irq(adev->irq[0], pl031_interrupt,
->>> +        ret = devm_request_irq(&adev->dev, adev->irq[0], 
->>> pl031_interrupt,
->>>                     vendor->irqflags, "rtc-pl031", ldata);
->> Are you _SURE_ you can use devm for this?  it is a functional change,
->
-> Since ldata's lifecycle is now tied to the RTC device (stored via
-> dev_set_drvdata(&ldata->rtc->dev, ldata)), and the RTC device's lifecycle
-> is tied to the amba_device (via devm_rtc_allocate_device(&adev->dev)),
-> using devm_request_irq(&adev->dev, ...) allows us to remove the manual 
-> IRQ
-> release in pl031_remove, as the IRQ will be automatically released along
-> with the amba_device lifecycle.
->
->
-> Is this reasoning correct, or should I handle this differently?
+Queued, thanks you!
 
-Correction: Should use devm_request_irq(&ldata->rtc->dev, ...) instead
-
-of devm_request_irq(&adev->dev, ...).
-
-
-While a lifecycle chain exists (ldata -> rtc -> amba_device), the IRQ 
-should
-
-be bound to the device that uses it (the RTC device), matching where driver
-
-data is stored, to avoid UAF.
-
->
->
-> thanks,
->
-> Ke Sun
->
->> one that trips lots of people up.  I wouldn't make this change without
->> at least saying why you are doing so in the changelog text, which I
->> didn't see at all here.
->>
->> thanks,
->>
->> greg k-h
+Regards,
+Boqun
