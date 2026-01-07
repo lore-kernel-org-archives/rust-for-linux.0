@@ -1,318 +1,86 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013025.outbound.protection.outlook.com [40.107.201.25])
+Received: from m.foxido.dev (m.foxido.dev [81.177.217.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E57F337BB5
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 20:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767817219; cv=fail; b=ADJexASbkmXjqE1zU1bLAu80jLtr+LXJlcJTgVwKp/P3vpVfQF5zdK3bbh5EJNOiqHFlW/IKVcbkG0XJkaoGeFvcgKsof9r/VZEjvpEdxcs5qslxRFkBEf1S6J1hOOxtqUkkME0VxoTHhlEqYg1GRD+ss7X43I83A1vb/OseDJA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767817219; c=relaxed/simple;
-	bh=Mf/A2amW9sx++CH96UFLcalMZ6P1TnD1IRiLrxQaWoA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QhQyr3Ec8Ui6eDEDpkxZ7Z3O3HFCNU7qZnJ2PhIu1wzS3Uk9psNOMLu7FmXgPl3Ac4oywS13vOgynYOa8A+Tw+UWxkmLnLqK5QgndYrgkKikdOPTGJhNH4b1EE+vDdAXPn29hORBMmFtZhRxtSrjc0NCiUf+2IgTqtLZwb3mTZ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=r4gWM4yS; arc=fail smtp.client-ip=40.107.201.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E262D063A;
+	Wed,  7 Jan 2026 20:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.177.217.87
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767818199; cv=none; b=TOs/246nSmst9YZdPQDg5b6rgZI5EIGdIOA0T9o13guYuymTRYKZTqtnMHwfnqs/7K5FgRQD2EcVwG+m3elPDOfXUShgZkeyXPMFwnSI1I+W5fDan3ZiJKuoMZJo+Zj091TY9Vjq1ijbvZb8HRb4141vj9HwKyK+txULvgd3dRk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767818199; c=relaxed/simple;
+	bh=i8W7YKX8S0kQo5L7YSzvXf0CToGzPt6PjLFHgHRkQ0k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=swDhvMfeMODMg+iHAeMTT8LIX1GVfc8FcO1YtR8AIFBn/RJiKa5HXR5/w1kDwcXMEDXQuT+npP1uopCUXLm0jWovOM+fFCbxX708qX+tPFo8k/ktQnlw3VrfkNjikqVZ6tQDv+hE1mubBX+YqFnbQLtdD8RB+qIyR3SfKmwwqd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev; spf=pass smtp.mailfrom=foxido.dev; dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=JovUzSHT; dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=ufY0KSjF; arc=none smtp.client-ip=81.177.217.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxido.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="r4gWM4yS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F+XT06YvvmNz2/qj4fV95UW14QvRJNAtzhPIJQAMy6+KW23PV/0iE7LIyWYmqHUY6fd2CCwnOjSHta0Wufd10CupjJeScNaUB7NgIyTZJKqPdmMfVrlK4/mowws4/aQ4BK/nQE26V49ZPGsRBY15QKVz6YqW/JJxJD54uNvXBsm9CPwIhFw+Xs5M1L8nPIDyu598jOFjQK4dzqoNdZSXGTG6fNC5u3Uck2oJhkypqjrmbB25av5i4jeQDAWbU2agleudRXQV7HvNYyYFJ9wOoUnFuFAsrM9M8qeSWCgvEhk8IBDahkFY5x3xvqNds1SMeOrKpQe8GQ4Y60PBbs4AdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YQP5JZifAsCOlylAvGu++Q5VLeGlFwy3MqW5QbWmFSE=;
- b=fYX1ENZeY8ardrZCekIav9/B+zUNo67FbeKq/EdgwiKdbpHoLeJymmiDSVPABe3MUmOo/HlW8Qk/P6ZfEcFHZignmvpVPhhPKDOWJ0Ab99Dpu7LLOCKkQsYkxiRj0AzQRaJA3QJRmE9vERbU4hIPF6bnVj76xAjPI1A3g4aIE4rou04wBiGpSMqiz3frlHgUhbAiaq6kEj63B8KHcg4k4bivgOSBhFabx6ot1RsmXLN+rtUCyAC/VqF/V45PXx5pKbSQ6b192y2dD5jJ7UF7XifWFw78shvW9JSTmiBobBdjdGSgXDJdX9GPKvzPgP9gKhTCSgGpdnPUOydHBYZwiA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YQP5JZifAsCOlylAvGu++Q5VLeGlFwy3MqW5QbWmFSE=;
- b=r4gWM4ySCiuUCOqVjP+t/ZebPAq6bMDTA9HUyolZVyjxmoqoBNb0HcRT0t15gd/GstNTHrS1E/4wyQ1VFKwLygZki8Mp0Kpzwn6AcbfuzKpGzUpNzGI7iSOsOyIJUmOhBWEYTLiMXvV2dBpxxtr+PCAUeJ5RZSYBy++UwiL/j/Gl+E/GORUuq5YfokuNf2tHqSiAT9QKVi3C3NrvKDYXemxnyJ3HvVvmccgBK4j+332hT2qliU9/3I8Wdt2S5mdQZ/aCjlqh3VBs2FYFeNlGsLSrtOWNGbHQHGPxQUKO1vdp9tkec0xm2BhPd6m8tAv3gUDbNPtAj6xC4vleutcgbg==
-Received: from BYAPR05CA0046.namprd05.prod.outlook.com (2603:10b6:a03:74::23)
- by IA1PR12MB9531.namprd12.prod.outlook.com (2603:10b6:208:596::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
- 2026 20:20:10 +0000
-Received: from SJ1PEPF00002322.namprd03.prod.outlook.com
- (2603:10b6:a03:74:cafe::71) by BYAPR05CA0046.outlook.office365.com
- (2603:10b6:a03:74::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.2 via Frontend Transport; Wed, 7
- Jan 2026 20:20:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF00002322.mail.protection.outlook.com (10.167.242.84) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.1 via Frontend Transport; Wed, 7 Jan 2026 20:20:10 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 7 Jan
- 2026 12:19:54 -0800
-Received: from ttabi.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 7 Jan
- 2026 12:19:53 -0800
-From: Timur Tabi <ttabi@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot
-	<acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard
-	<jhubbard@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
-	<nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-Subject: [PATCH v2 2/2] gpu: nova-core: add missing newlines to several print strings
-Date: Wed, 7 Jan 2026 14:16:47 -0600
-Message-ID: <20260107201647.2490140-2-ttabi@nvidia.com>
+	dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="JovUzSHT";
+	dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="ufY0KSjF"
+DKIM-Signature: v=1; a=rsa-sha256; s=202508r; d=foxido.dev; c=relaxed/relaxed;
+	h=Message-ID:Date:Subject:To:From; t=1767818172; bh=7WV1mwAtbFEAdoyjirC636K
+	yJEP0FvI3MsKwDZMOxUQ=; b=JovUzSHTor4A6K9fchP3H84v3bsB+YfkMqIVyxyBESFSmQFOxc
+	DayNl9MUj5c1v8XTEVxRFsUR+Irl/hEXTptUbmjWwP0yfpQ9Kv0C2IjowwYzruVAxwMsppF8ojL
+	3sR2no7iiAmaKUr1egEf1PPCaalR3/JMrbo5/ubLJDwAC7rbNx37huPnNyYgoUPPEn0ftfsgdGt
+	lBafW+ZQc+SuTdqx7bnPvxsvgd2FYJ3gf4tDqnmalj+qtForz23xsPzKz7ax4wEGud0BKaBa1Ej
+	TdnHP47ZoE5hyx6S5lpUtfNEoFtydZUgzpgRyHd3HUUXlPjbU9s+TfAZOaX+03uwJig==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202508e; d=foxido.dev; c=relaxed/relaxed;
+	h=Message-ID:Date:Subject:To:From; t=1767818172; bh=7WV1mwAtbFEAdoyjirC636K
+	yJEP0FvI3MsKwDZMOxUQ=; b=ufY0KSjF+r38GC7lncOoHtX0dBMIkCQ8/lrE7y2g1of3r67sSm
+	A28mQFchmrCa1e/Frb53YidjCILt4vO4qYBQ==;
+From: Gladyshev Ilya <foxido@foxido.dev>
+To: "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <lenb@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Gladyshev Ilya <foxido@foxido.dev>
+Subject: [PATCH 1/3] rust: enable const_intrinsic_copy feature
+Date: Wed,  7 Jan 2026 23:35:31 +0300
+Message-ID: <a2c01b2d2649d48cb194e011e0643be1af151b42.1767818037.git.foxido@foxido.dev>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260107201647.2490140-1-ttabi@nvidia.com>
-References: <20260107201647.2490140-1-ttabi@nvidia.com>
+In-Reply-To: <cover.1767818037.git.foxido@foxido.dev>
+References: <cover.1767818037.git.foxido@foxido.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002322:EE_|IA1PR12MB9531:EE_
-X-MS-Office365-Filtering-Correlation-Id: 753e8f24-79b5-4072-e458-08de4e2a2818
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024|7142099003;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TG/CLnKWPQHCvGWj64fBbrBbi5+ZZYDcAt2gv28v+mNFnBrjLLwDYOKO6dIO?=
- =?us-ascii?Q?hEt+9i6W6iOWCT7ffi7B/1JeoFqrzKapx0z14yfn4FQt8TdZmqKO+lC8PoM4?=
- =?us-ascii?Q?qjf+xdJNC8CpYo6vKme1q9y0oTpi39F0allu83p1w+T4GoekpdbCAnFCwxGt?=
- =?us-ascii?Q?DOjgL/CQu/slBpQHk+JcwI7zTz/h3oQaw1W/96c1bmw0l2jkxtR8FLa7fUwR?=
- =?us-ascii?Q?LecgLKHEqsA/SZtRAQT6QY8qNjdz2VWchIQetecJX+IkExMWcAq5X33WW9JI?=
- =?us-ascii?Q?55ufQD8Cf1+lqbXd/qeMiRbx5ISpKd3TNH2QZ0oq5sD/2BlaelORfqZYfxei?=
- =?us-ascii?Q?QpFgcCfop8ZR8DJ7Os7ydAC4FbolioEpq/xFeDEXNwWjmVak+D7KphfZRaBD?=
- =?us-ascii?Q?H+0gk/tPeOxgK8QmJtNnmLG1h/+SZU9LzN+6nHttAklNpcZu9gaCDszeirhZ?=
- =?us-ascii?Q?KU5VXrOOrPOVfDJPUGzj+P3i0wALPTzloI6fWsKJZphYzI3CBOa1cdCWejtA?=
- =?us-ascii?Q?cR1hbPrP7cHhHWvt2nrf1J2o7O3AHvQ1TuNO2jLW64slptRet0NIPNgxOFax?=
- =?us-ascii?Q?SrxuWf4Gp8yqS9XWzvskGXwCg5THhKktxxC07LT63ze/29yhb8gSNcD3Lgx8?=
- =?us-ascii?Q?DQZDHZjrqGxRew0yHx3GtdJSjNwdolGC2lQ7ShUhCiRQbxDGeV5Hx60v3D7v?=
- =?us-ascii?Q?hTnUADOtZjWS1iB2LKkIIu6Gn+3DjHpy2PZ/nantFueJx5G5wIY4kzB04rfV?=
- =?us-ascii?Q?OKSJ92cfQq2eJs1maCRbchzcyAB5jnnSXOr+n1eIl1iVHpc3m4f7C2GiTSlN?=
- =?us-ascii?Q?aA4vOa8ZHP3og32CxGhcokIqj3p1IFBdxczZAX454xzb3qnwzyieN0HZCZr+?=
- =?us-ascii?Q?n6GQjPa1riB557fiSOr7f9WXPX1csbKwACmg1soEmBCzeuDA533M258Ayvk4?=
- =?us-ascii?Q?OPleX3xQNo/s57VOXVN+HXahs09V3ZvzeWsys1MhJAr2/osza98hqajN0XXO?=
- =?us-ascii?Q?E4M/ZX5NxoQDQ/MjNyQsezTl9vKKnYRyzLwPGzlDhuxVRzmHVWg2FJLmlqrE?=
- =?us-ascii?Q?XwCtyEEeqbFINbLRyUuFqWMMYIM0pDGUcqXLzXkH2gS+A3RdvL3+LYBPhN7B?=
- =?us-ascii?Q?w2gAdEKcT6w/LMqgzktIWIMk09aIgaH735YP2bDQc66wGGwlXTkDuSj8MW5l?=
- =?us-ascii?Q?p8q7XfImqrb250XITvtYZJKRIC5prvF70iZ6r8WU444FEf8l8lLhXJADXWgl?=
- =?us-ascii?Q?8BtY9nFBwVoUtzdTXN1g/UfqfdCKDjnVFIaRpJ/naGXTP+gUkXCf5QAtEWR7?=
- =?us-ascii?Q?0MDF4gAssEPllLSWRakeR1LoSqnHfS44PGU0gxi7uMTKYeKzihewhB7UI64K?=
- =?us-ascii?Q?GgyMzCVoVsaL4CqncdhlmEgigtZVMzg9L+c9zafcPHCNy3ungubmzJ590/6X?=
- =?us-ascii?Q?1YSzjKYP7qTp5tmVeYQYYTL6KQUmktJEQcrcg1fKZi+Zy3RSvYhgaAhQZIxu?=
- =?us-ascii?Q?VRZ+vXYaR4hjqsnj8qbvOAwM4yHqC3xiLIzh3Qo/jt2VaDd8TrueuZdKOmyG?=
- =?us-ascii?Q?7ABPnYC/sm+b4ZsWug8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024)(7142099003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 20:20:10.0106
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 753e8f24-79b5-4072-e458-08de4e2a2818
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002322.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9531
 
-Although the dev_xx!() macro calls do not technically require terminating
-newlines for the format strings, they should be added anyway to maintain
-consistency, both within Rust code and with the C versions.
+Since Rust 1.83.0 the `const_intrinsic_copy` feature is stable.
+It allows usage of `ptr::copy` and `ptr::copy_nonoverlapping` in const
+context.
 
-Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+Signed-off-by: Gladyshev Ilya <foxido@foxido.dev>
 ---
-v2: added some more strings that were missed
+ rust/kernel/lib.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/gpu/nova-core/falcon.rs           |  6 +++---
- drivers/gpu/nova-core/falcon/hal/ga102.rs |  4 ++--
- drivers/gpu/nova-core/fb.rs               |  2 +-
- drivers/gpu/nova-core/gpu.rs              |  2 +-
- drivers/gpu/nova-core/gsp/boot.rs         |  2 +-
- drivers/gpu/nova-core/gsp/cmdq.rs         |  2 +-
- drivers/gpu/nova-core/gsp/sequencer.rs    | 10 +++++-----
- drivers/gpu/nova-core/vbios.rs            |  2 +-
- 8 files changed, 15 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
-index 6ae0490caffa..4e1da0b9cf4f 100644
---- a/drivers/gpu/nova-core/falcon.rs
-+++ b/drivers/gpu/nova-core/falcon.rs
-@@ -466,7 +466,7 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
-         if dma_start % DmaAddress::from(DMA_LEN) > 0 {
-             dev_err!(
-                 self.dev,
--                "DMA transfer start addresses must be a multiple of {}",
-+                "DMA transfer start addresses must be a multiple of {}\n",
-                 DMA_LEN
-             );
-             return Err(EINVAL);
-@@ -489,11 +489,11 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
-             .and_then(|size| size.checked_add(load_offsets.src_start))
-         {
-             None => {
--                dev_err!(self.dev, "DMA transfer length overflow");
-+                dev_err!(self.dev, "DMA transfer length overflow\n");
-                 return Err(EOVERFLOW);
-             }
-             Some(upper_bound) if usize::from_safe_cast(upper_bound) > fw.size() => {
--                dev_err!(self.dev, "DMA transfer goes beyond range of DMA object");
-+                dev_err!(self.dev, "DMA transfer goes beyond range of DMA object\n");
-                 return Err(EINVAL);
-             }
-             Some(_) => (),
-diff --git a/drivers/gpu/nova-core/falcon/hal/ga102.rs b/drivers/gpu/nova-core/falcon/hal/ga102.rs
-index 69a7a95cac16..0bdfe45a2d03 100644
---- a/drivers/gpu/nova-core/falcon/hal/ga102.rs
-+++ b/drivers/gpu/nova-core/falcon/hal/ga102.rs
-@@ -52,7 +52,7 @@ fn signature_reg_fuse_version_ga102(
-     let ucode_idx = match usize::from(ucode_id) {
-         ucode_id @ 1..=regs::NV_FUSE_OPT_FPF_SIZE => ucode_id - 1,
-         _ => {
--            dev_err!(dev, "invalid ucode id {:#x}", ucode_id);
-+            dev_err!(dev, "invalid ucode id {:#x}\n", ucode_id);
-             return Err(EINVAL);
-         }
-     };
-@@ -66,7 +66,7 @@ fn signature_reg_fuse_version_ga102(
-     } else if engine_id_mask & 0x0400 != 0 {
-         regs::NV_FUSE_OPT_FPF_GSP_UCODE1_VERSION::read(bar, ucode_idx).data()
-     } else {
--        dev_err!(dev, "unexpected engine_id_mask {:#x}", engine_id_mask);
-+        dev_err!(dev, "unexpected engine_id_mask {:#x}\n", engine_id_mask);
-         return Err(EINVAL);
-     };
- 
-diff --git a/drivers/gpu/nova-core/fb.rs b/drivers/gpu/nova-core/fb.rs
-index 3c9cf151786c..c62abcaed547 100644
---- a/drivers/gpu/nova-core/fb.rs
-+++ b/drivers/gpu/nova-core/fb.rs
-@@ -80,7 +80,7 @@ pub(crate) fn unregister(&self, bar: &Bar0) {
-             let _ = hal.write_sysmem_flush_page(bar, 0).inspect_err(|e| {
-                 dev_warn!(
-                     &self.device,
--                    "failed to unregister sysmem flush page: {:?}",
-+                    "failed to unregister sysmem flush page: {:?}\n",
-                     e
-                 )
-             });
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index 50d76092fbdd..9b042ef1a308 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -268,7 +268,7 @@ pub(crate) fn new<'a>(
-             // We must wait for GFW_BOOT completion before doing any significant setup on the GPU.
-             _: {
-                 gfw::wait_gfw_boot_completion(bar)
--                    .inspect_err(|_| dev_err!(pdev.as_ref(), "GFW boot did not complete"))?;
-+                    .inspect_err(|_| dev_err!(pdev.as_ref(), "GFW boot did not complete\n"))?;
-             },
- 
-             sysmem_flush: SysmemFlush::register(pdev.as_ref(), bar, spec.chipset)?,
-diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
-index a53d80620468..da21447be663 100644
---- a/drivers/gpu/nova-core/gsp/boot.rs
-+++ b/drivers/gpu/nova-core/gsp/boot.rs
-@@ -82,7 +82,7 @@ fn run_fwsec_frts(
-         if frts_status != 0 {
-             dev_err!(
-                 dev,
--                "FWSEC-FRTS returned with error code {:#x}",
-+                "FWSEC-FRTS returned with error code {:#x}\n",
-                 frts_status
-             );
- 
-diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gsp/cmdq.rs
-index 6f946d14868a..3c01fc6e6b6a 100644
---- a/drivers/gpu/nova-core/gsp/cmdq.rs
-+++ b/drivers/gpu/nova-core/gsp/cmdq.rs
-@@ -615,7 +615,7 @@ fn wait_for_msg(&self, timeout: Delta) -> Result<GspMessage<'_>> {
-         {
-             dev_err!(
-                 self.dev,
--                "GSP RPC: receive: Call {} - bad checksum",
-+                "GSP RPC: receive: Call {} - bad checksum\n",
-                 header.sequence()
-             );
-             return Err(EIO);
-diff --git a/drivers/gpu/nova-core/gsp/sequencer.rs b/drivers/gpu/nova-core/gsp/sequencer.rs
-index d78a30fbb70f..d6c489c39092 100644
---- a/drivers/gpu/nova-core/gsp/sequencer.rs
-+++ b/drivers/gpu/nova-core/gsp/sequencer.rs
-@@ -121,7 +121,7 @@ pub(crate) fn new(data: &[u8], dev: &device::Device) -> Result<(Self, usize)> {
-         };
- 
-         if data.len() < size {
--            dev_err!(dev, "Data is not enough for command");
-+            dev_err!(dev, "Data is not enough for command\n");
-             return Err(EINVAL);
-         }
- 
-@@ -320,7 +320,7 @@ fn next(&mut self) -> Option<Self::Item> {
- 
-         cmd_result.map_or_else(
-             |_err| {
--                dev_err!(self.dev, "Error parsing command at offset {}", offset);
-+                dev_err!(self.dev, "Error parsing command at offset {}\n", offset);
-                 None
-             },
-             |(cmd, size)| {
-@@ -382,7 +382,7 @@ pub(crate) fn run(cmdq: &mut Cmdq, params: GspSequencerParams<'a>) -> Result {
-             dev: params.dev,
-         };
- 
--        dev_dbg!(sequencer.dev, "Running CPU Sequencer commands");
-+        dev_dbg!(sequencer.dev, "Running CPU Sequencer commands\n");
- 
-         for cmd_result in sequencer.iter() {
-             match cmd_result {
-@@ -390,7 +390,7 @@ pub(crate) fn run(cmdq: &mut Cmdq, params: GspSequencerParams<'a>) -> Result {
-                 Err(e) => {
-                     dev_err!(
-                         sequencer.dev,
--                        "Error running command at index {}",
-+                        "Error running command at index {}\n",
-                         sequencer.seq_info.cmd_index
-                     );
-                     return Err(e);
-@@ -400,7 +400,7 @@ pub(crate) fn run(cmdq: &mut Cmdq, params: GspSequencerParams<'a>) -> Result {
- 
-         dev_dbg!(
-             sequencer.dev,
--            "CPU Sequencer commands completed successfully"
-+            "CPU Sequencer commands completed successfully\n"
-         );
-         Ok(())
-     }
-diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-index 7c26e4a2d61c..e4eae9385f47 100644
---- a/drivers/gpu/nova-core/vbios.rs
-+++ b/drivers/gpu/nova-core/vbios.rs
-@@ -790,7 +790,7 @@ fn falcon_data_ptr(&self) -> Result<u32> {
-         // read the 4 bytes at the offset specified in the token
-         let offset = usize::from(token.data_offset);
-         let bytes: [u8; 4] = self.base.data[offset..offset + 4].try_into().map_err(|_| {
--            dev_err!(self.base.dev, "Failed to convert data slice to array");
-+            dev_err!(self.base.dev, "Failed to convert data slice to array\n");
-             EINVAL
-         })?;
- 
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index f812cf120042..a6eccdba50b5 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -36,6 +36,7 @@
+ #![feature(const_option)]
+ #![feature(const_ptr_write)]
+ #![feature(const_refs_to_cell)]
++#![feature(const_intrinsic_copy)]
+ //
+ // Expected to become stable.
+ #![feature(arbitrary_self_types)]
 -- 
 2.52.0
 
