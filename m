@@ -1,45 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88111FCFEF;
-	Wed,  7 Jan 2026 14:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE0435C1B2;
+	Wed,  7 Jan 2026 14:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767797677; cv=none; b=RhNUpq51iKnsdcgk9BdkDP2WZZP7qUw2y55dUqLOcn7Lg52Y1R7mg5O4JFK1EfJnw9vMmQ6OgWwfS6R6ywlxhLnCXCOkoGTQofhlu8Whz9ICXvSPRXd1nnyHNRt5L+VHrTPpx+flFH8LOYutPJ0JBLL9pamAc5M+R9v134pApFA=
+	t=1767797834; cv=none; b=ZngN7WBvwzlQXCVD01siozDzPts83VBttqY+4rIxegP5ovhoCvT8yA/6PtGqBDJTtk1WhITs7VEkIFLK3ikMbc4stXLGBL4ZufS4dzbQFnWvym8ogx71p0RpyyEI77t+Zhh9SGWqUmhgiAPRBK68dg7NVgB+QmflCR+1ZG0bfj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767797677; c=relaxed/simple;
-	bh=La1Ofz75igES1mD4H+w4Olr6hpKXBWajprRoIocdnKk=;
+	s=arc-20240116; t=1767797834; c=relaxed/simple;
+	bh=Xb4gIqjE1CeH7E7RF8QP9eK56jjy/3EJ/nYeYdZswmo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tnKOD1YkT6tVf2b2WC8hGNftyfhlQK3/bXKsqOpuJ4K1T4CvPf6j6rQWfxpLXejTAqMyjSYkA/d8c+RcnhAv2hKkhsqHWD368y9q0yxk4rkUVyqZfZDtqFzDmQaEFOB73rUryEPQNb6PRKrTI9u8EiolGLlu+Q4l55hRGD9HjtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5kagVQs; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=UI6seb9XsnPoSfCmYi8M5bkvWGMA8AYE43oZNXxuJkmBdj8HeatFlOdylRIB8Efgo9Lbnei4Ccs8pg39t05sj2EA2u5aO5eyVBT+Atq/ECe8Tus+gkHv2ze8kXkfXzoToHwZQkhTf4x/12WokE+m/lsUoeW7XGZD24OopYjag/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=H9QVyw70; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=zz7jvGms; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5kagVQs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63B0C4CEF1;
-	Wed,  7 Jan 2026 14:54:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767797676;
-	bh=La1Ofz75igES1mD4H+w4Olr6hpKXBWajprRoIocdnKk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A5kagVQsfQjktM2jOxow627RsQCMrT7nPXX4PljEpkJUSVZ0wCLUWZENM4TtQDBwK
-	 Ux//WNT61PGrW9GHyzRtszEAPCCrb6TDJYZ0cg6RKLSj1bG5Lcy4lcUAuGAlMQpeVd
-	 z35yBK2xyu0o/3FC0Ff9sS1amSiPTYpOUGbJztS4=
-Date: Wed, 7 Jan 2026 15:54:33 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rafael@kernel.org, igor.korotin.linux@gmail.com, ojeda@kernel.org,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com,
-	leon@kernel.org, bhelgaas@google.com, kwilczynski@kernel.org,
-	wsa+renesas@sang-engineering.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-i2c@vger.kernel.org
-Subject: Re: [PATCH 6/6] rust: driver: drop device private data post unbind
-Message-ID: <2026010701-rearview-retriever-3268@gregkh>
-References: <20260107103511.570525-1-dakr@kernel.org>
- <20260107103511.570525-7-dakr@kernel.org>
- <2026010741-wiry-trophy-46ec@gregkh>
- <DFIDCAL68R7N.8SYKSAF0JO4C@kernel.org>
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="H9QVyw70";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="zz7jvGms"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 161F97A0052;
+	Wed,  7 Jan 2026 09:57:10 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Wed, 07 Jan 2026 09:57:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1767797829; x=1767884229; bh=WB2OwvfMoL
+	Jw1R0SIQJrGtw8yKhbBALMJyWUYN89M2o=; b=H9QVyw70FfrcaAp2g/BeyIrP41
+	LNB/wHhKuyC4pcPQvRSJcgR0P0I+KvLjAq5iPLcv+eAEVRFVZfm2IbYXit01f/hR
+	CIBcFflfGx1TtpK0kZez+2AEqdKbA3mUiQ4yjaP8Mm+4+lxhXL9dBrp5HXtkvmgh
+	onlDthwB93vl1UKdTtUGAIJGT9/mMzMYMkrtU+ZoLvOonLUYWtTkr1tvi5eDm0hW
+	RwMeDVYbGIoZHqHnmO4OhNf2vEpMEAJLhb+O0fmeznb3D2A2Qh7ybvenFh4+bLtd
+	3ajp+Oo6oJTjmvWYLQlw1Zaf5ZW3iA7av+D596oKfn9AmYq6zPjtwnV6MAVA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1767797829; x=1767884229; bh=WB2OwvfMoLJw1R0SIQJrGtw8yKhbBALMJyW
+	UYN89M2o=; b=zz7jvGms08o3eT4xq4xeqJBxCs1x2KTAEWho1CdDupxoccrzFBA
+	8ST06PWhWY9/lKRhimLzk1U9xxg4XORKRNQOl30QUXortJQIdkGVrvrdngNYk7Pn
+	zfJ50MUai8Nw1YLw2WLrrco7eRlrfVNZNLJaFR3kiaA9tKVz6J6/HTYDAnUUW9H9
+	jI4CaQc5pWixYGfYMClbzpZ5VEbM41L//YfxlQoBLXVx9g1msZ4O8cuF7+uxi9Py
+	SsIK/QwmuxkiPz18RWPsv+bTo3M35iiFEnG6zQKvHDRSx5uMfgOlPHxFDH2re9Yd
+	ei7ZktCo71oJ0xRBU6TYi6VbX6dI5CqT31w==
+X-ME-Sender: <xms:RXReaU7cVScyk3KzD_LdZFP-WxdOiFckiX16GuzSQOrWJyjXVAp9fg>
+    <xme:RXReadY4XFeEL3gypCm4BfYCkg406rdUzZSr5Gxl_7XMMZQsYKujLfR2odG0ZAV-6
+    e3CB8Wr111EVkdwMhz4rTcChEGNH5CurmooOGVJEQH4tOwbOQ>
+X-ME-Received: <xmr:RXReaZiNQJB6yJhBvHMjFcZ2Yc4X1tcziuGlsWpDNACZmGtJVlIVFvGNeIC1WK9UrM_n94XutrnVJhuugh0raZLEW-zjCScgdHpKPg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdeffeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
+    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
+    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
+    gtohhmpdhnsggprhgtphhtthhopedvkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepshhunhhkvgeskhihlhhinhhoshdrtghnpdhrtghpthhtoheprghlvgigrghnughrvg
+    drsggvlhhlohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopehojhgvuggrsehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtg
+    homhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegs
+    jhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhssh
+    hinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:RXReaXPjgxJOtFZgzKenUX8jTd9YtU7ZFohofVaHCXwNCSgGSUIQew>
+    <xmx:RXReaTMLM8YuX1ZfnG-JQfuoBVSnyxm74h2QAg8lqauQUBQttUHlGQ>
+    <xmx:RXReafLp8gkT8TW_OqyNR5-MPM0jZtoHNP2MlHTYlz_jECs-o8eLlg>
+    <xmx:RXReaSvyb-aNZUG9GtE71yRAOHvlpVdHMKryH-lRca_TIHR8BHSRLw>
+    <xmx:RXReaURwhUJt7ap3m5QMxdNdQOf6to_pkAR-TaFyKlcaT3HItm4tNncl>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 7 Jan 2026 09:57:08 -0500 (EST)
+Date: Wed, 7 Jan 2026 15:57:05 +0100
+From: Greg KH <greg@kroah.com>
+To: Ke Sun <sunke@kylinos.cn>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-rtc@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, Alvin Sun <sk.alvin.x@gmail.com>
+Subject: Re: [RFC PATCH v2 3/5] rust: add device wakeup capability support
+Message-ID: <2026010701-rendering-upheaval-e056@gregkh>
+References: <20260107143738.3021892-1-sunke@kylinos.cn>
+ <20260107143738.3021892-4-sunke@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,79 +95,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DFIDCAL68R7N.8SYKSAF0JO4C@kernel.org>
+In-Reply-To: <20260107143738.3021892-4-sunke@kylinos.cn>
 
-On Wed, Jan 07, 2026 at 01:50:43PM +0100, Danilo Krummrich wrote:
-> On Wed Jan 7, 2026 at 1:22 PM CET, Greg KH wrote:
-> > On Wed, Jan 07, 2026 at 11:35:05AM +0100, Danilo Krummrich wrote:
-> >> @@ -548,6 +548,10 @@ static DEVICE_ATTR_RW(state_synced);
-> >>  static void device_unbind_cleanup(struct device *dev)
-> >>  {
-> >>  	devres_release_all(dev);
-> >> +#ifdef CONFIG_RUST
-> >
-> > Nit, let's not put #ifdef in .c files, the overhead of an empty pointer
-> > for all drivers is not a big deal.
+On Wed, Jan 07, 2026 at 10:37:35PM +0800, Ke Sun wrote:
+> Add Rust bindings and wrappers for device wakeup functionality,
+> including devm_device_init_wakeup() and dev_pm_set_wake_irq().
 > 
-> I agree, I mainly did it to make it clear that, as by now, this is only used by
-> Rust driver-core code. However, ...
+> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+> ---
+>  rust/bindings/bindings_helper.h |  2 ++
+>  rust/helpers/device.c           |  7 +++++++
+>  rust/kernel/device.rs           | 17 ++++++++++++++++-
+>  rust/kernel/irq/request.rs      |  7 +++++++
+>  4 files changed, 32 insertions(+), 1 deletion(-)
 > 
-> >> +	if (dev->driver->p_cb.post_unbind)
-> >> +		dev->driver->p_cb.post_unbind(dev);
-> >> +#endif
-> 
-> <snip>
-> 
-> >> +	struct {
-> >> +		/*
-> >> +		 * Called after remove() and after all devres entries have been
-> >> +		 * processed.
-> >> +		 */
-> >> +		void (*post_unbind)(struct device *dev);
-> >
-> > post_unbind_rust_only()?
-> 
-> ...this works as well. We can always rename it, in case we start using it in C
-> too.
-> 
-> So, I'm fine with either. :)
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index fa697287cf71b..d6c2b06ac4107 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -88,6 +88,8 @@
+>  #include <linux/workqueue.h>
+>  #include <linux/xarray.h>
+>  #include <trace/events/rust_sample.h>
+> +#include <linux/pm_wakeup.h>
+> +#include <linux/pm_wakeirq.h>
 
-I say name it with "rust_" and take out the #ifdef, that makes it
-simpler/easier to understand.
+Aren't these sorted?
 
-> >> -impl<T: RegistrationOps> Registration<T> {
-> >> +impl<T: RegistrationOps + 'static> Registration<T> {
-> >> +    extern "C" fn post_unbind_callback(dev: *mut bindings::device) {
-> >> +        // SAFETY: The driver core only ever calls the post unbind callback with a valid pointer to
-> >> +        // a `struct device`.
-> >> +        //
-> >> +        // INVARIANT: `dev` is valid for the duration of the `post_unbind_callback()`.
-> >> +        let dev = unsafe { &*dev.cast::<device::Device<device::CoreInternal>>() };
-> >> +
-> >> +        // `remove()` and all devres callbacks have been completed at this point, hence drop the
-> >> +        // driver's device private data.
-> >> +        //
-> >> +        // SAFETY: By the safety requirements of the `Driver` trait, `T::DriverData` is the
-> >> +        // driver's device private data.
-> >> +        drop(unsafe { dev.drvdata_obtain::<T::DriverData>() });
-> >
-> > I don't mind this, but why don't we also do this for all C drivers?
-> 
-> What exactly do you mean? Manage the lifetime of the device private data
-> commonly in driver-core code?
-> 
-> > Just null out the pointer at this point in time so that no one can touch
-> > it, just like you are doing here (in a way.)
-> 
-> I think device_unbind_cleanup() already calls dev_set_drvdata(dev, NULL) [1], so
-> technically we do not have to do it necessarily in Device::drvdata_obtain() as
-> well.
-> 
-> However, with Device::drvdata_obtain() we take back ownership of the
-> Pin<KBox<T>> stored in dev->driver_data, so it makes sense to null out the
-> pointer at exactly this point in time.
+>  /*
+>   * The driver-core Rust code needs to know about some C driver-core private
+> diff --git a/rust/helpers/device.c b/rust/helpers/device.c
+> index 9a4316bafedfb..cae26edd83696 100644
+> --- a/rust/helpers/device.c
+> +++ b/rust/helpers/device.c
+> @@ -1,6 +1,8 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  
+>  #include <linux/device.h>
+> +#include <linux/pm_wakeup.h>
+> +#include <linux/pm_wakeirq.h>
 
-Ok, no objection from me.
+Why are both of these needed for just one function call?
 
 thanks,
 
