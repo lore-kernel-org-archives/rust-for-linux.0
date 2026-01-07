@@ -1,352 +1,258 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021128.outbound.protection.outlook.com [52.101.95.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C2F34FF53
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 16:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767804561; cv=none; b=mAz7tR09c1I7qxAUqYfknbJUp+iVXyFsr+j04hywLtAXkRBqT8yMoWIzKHX5xlidZADv7XkrjCRpw4KscgSWY+qKn+Ve978pCGRGXaf2clittfsbVwBH50mHNgaAeBhE2GlVoW7u7PR+lnB9Z8WZaGN9QjxF2TjEz2guLkJE5+k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767804561; c=relaxed/simple;
-	bh=nzMZLd7DYe3QhnOHvdnkNGc+Y6dYcMw2cEitohNwd0o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KTcSNXlmHN4NGWm4330SLOHDjFxj4A9qBxe4F0D8uekon2PkkRdh3KYZBOOBgCiBxaqiBQumK1dqyJGyKdSybBIuRl11j6QCzOEjiyhuINKAWku9TQaVbfyvneVThkAKEgdoNA09efOYPcnEsXBkNRjI9QZv8xW8oV5Z7YuAobc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TlRsE4n4; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208A135C1AD
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 16:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.128
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767804842; cv=fail; b=gHC5X5N1EY11FNC8ve2q2SUJ6JAVZYb+lPa/jFnIePZVpDKWaPg+0mCe5FR8zv/H9musKWz4TduEiVplYKgvkGg12Le++mf89ULg54SkIy+yI5fShmUzqvxNj2va6WPLjD5n+A4lusAAIeQ7M9TRLQqZ+6kBgFujcK/qRhHsouk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767804842; c=relaxed/simple;
+	bh=XE1P6f9x1YZKQZg9H5J/a9KYcoshOFqzhidbVWGrfIg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qA+bpLToYPKkAKzjYCdxHtTqUI/MeZd8FC06U60bqG8bN1XtW4fOBrRXnchenvHL4ekUTIIzuNyH2ioJb4D7t1Jq5xlrMUVCpExvbRz50TSyL0WAOqqhEqpeKfuRsbzNlPkFwveD10YPR1PfczIVetAcVe9k+ffzNh1KudUFiWc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=X5xcAOPE; arc=fail smtp.client-ip=52.101.95.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TlRsE4n4"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37b9d8122fdso18110621fa.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 08:49:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767804546; x=1768409346; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vlnRgJDcWdfDa3MBgMxnCLKRP9RXgf/tHvo3szvi1wo=;
-        b=TlRsE4n4Jww1aIJet/iMMDfh+EUkfTUvHhGcwcWJMfjMBDP5X8TrcE4x158DOEOfY1
-         n2uQuadZ76RHtiqCBF4H2+zDHi1KHO/5slI9HIGHrZqxsQbe6YSjODgUn87mezgaHS+k
-         rqJ8K4XeQbiE+9wt7zEhCnCnqoUyChkOo7BUamuQS1JqkzgZkxh7hl63R3u9qtBJSSXy
-         mFFxwsSf6NnQw+kvqlvS2i0lXFyw13/5+uEZI7ChoKn26TVIJm1obzAi8sL1ZObiHMl+
-         DQK70GWx50SY2q/0+JFIrf7nw3N6/g8+hAdiCsoBeWvC+/g0apfnYS7ppiCtjTkToYWO
-         j6gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767804546; x=1768409346;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vlnRgJDcWdfDa3MBgMxnCLKRP9RXgf/tHvo3szvi1wo=;
-        b=Fs9qKp9VaWZBErrJwDiSMT7HK1GwbaIFr5Sy5k8B07+FdTjApv+wo1U7h0+7EkyuBz
-         AtC4D2lU0NXCjpxarWWGyu3TC9AK8hT2zhi8EpXrXGSIutjUw4JICjPiQHIBJQGy0fCg
-         QhN+TmynmbsJpVZqXuWsPpEp4FF13lnhbUCLv522fCCF6mMIt2wComzsnXKdXrkHPU5q
-         fAjEPU8e2zf0x/IsTdSOuITPYIRNCbynEPN3dHFDJ9nk1Ujd6QM04uNAmhRwnljlH2K5
-         ObenaO90KfhAHA8E7Cq+L84KCm6gjKh2yBvZHfcMkoqWw1JwH0fniGXzFujnI7QngW/n
-         T6JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfTyAwgZKcYhZT7gIq2EiFWfUVbkse+I8zanJhNYAQqqnxHE8UYs8geHkN0GIfHhAsTyXl/VqYXPx/EmlczQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ2gTs+j0zGkMD3cKGxLKra2X/Rd0mNaKVpPn7cmQButbfRZwZ
-	DDETr8EuHnAuaMxn4xWD1hQHMYmBERht9z4yFKk+YkYNFoVG7IjiZGcngGsqVI33dZaUhneCCoA
-	v+0Bpz/+BLkuhM5z9deouj6mIVOdaszY=
-X-Gm-Gg: AY/fxX6mN/NsWVbaJjRYQKQT+14uVq9yVlMt3FL05oYKN9Dr16+NYY5H+Uvtst/Pvz7
-	e480E6brRF88/zKVcl2gFG8wIdqkNY6A05cvtBHTzr0ixCpmaDd1Qpain2G4FalrS5Osknc0zcy
-	yQhPhe4u12DHxLl7ovTaKyK1BEA5iR1rFJisCxDAgGyCSxxnDB4QNG1EvaRXChq8zxNefhgAubv
-	Qt++XYXsmNQQakP0p643uxSLzNhe29FW99LN9sVJwjCPmW2W5Tyrh0JCh/b0SW8eeEF9ZqPWBTB
-	2NHN9R7+AOPeKN/K3xoOjQYnuykhxOi6ivuYmCPYkDJKrqyDeyhc12Fb3v2XsGid9bMqm24qVAc
-	58M/KFg==
-X-Google-Smtp-Source: AGHT+IGIkl1boqiuQgeOAS1ADOM/E0y5nNjRRCJ8rxLbAvYy6HTQkDJfRAc5XtV+PIdG7gyzNIhQlEC9TuBX6FpbqR0=
-X-Received: by 2002:a05:651c:552:b0:37b:9a67:bb66 with SMTP id
- 38308e7fff4ca-382ff80bbaemr9151761fa.38.1767804545489; Wed, 07 Jan 2026
- 08:49:05 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="X5xcAOPE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t8Ie+flSthtobHWM0lThNnr5V56HQMwbcM7dVK8wSgi3SbnIGBO/o34XlF6W4iOLudfu0lpyd6vqyJrukLQxW5Z3PHe18R3IZBfG5OVj2CqJePia5+fdZU2LnMbPJnD/Ig1PlohNfgX+MhMr/lMIMC/pLTeb25xNcIxoa+2bO/eSnZybdebu65MhEnLtp3+eAwHyjK6p4JEXt1+QS9W8wp/9Gm+iPyo+31jTvIJ21uy3viDgNpCPhD4oQPs6+LPtw+BJk1y7JvWBX8szVztNb2gbZFY6QVtBC/bpv3369eVO3YJ+p66JAoGV8plyHUjGr+Tox8KibEtzdE3dfdZDiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RaBgoKOfeIOJX1zkxg7yehS/8uJffbCY4jWQM7lW0rQ=;
+ b=ru+EhvqIPnwgeWq1QKVk1cUHALyLjh32hI0NLrRsHPMOqJH5NF23OUu3vNydC1QXXgFxIz759UOrMvqW11Mn6ENAvBrjOePe8v65Qf5hBtn9W1wRZBSK2Xo3JsnolzRfYA2KAcxeiF3sxUsNJo/CxLh+s7FmYflVZnndWeR59pzhiUIun7QMXSsaGcibCy05FZK63U0jRB1LR8BELpP8Od5WTm0gMInwMl1KqvjN+TdjaUOJGUWzr91Y0krvgNokbc6HbjJfvpZE9QGInVYdgE/HFC5qwUkwMsy64CnhEv01Vsh6CcHX9BnlkqPrvmNE6hdjXIfT4kWdStMT7T60hw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RaBgoKOfeIOJX1zkxg7yehS/8uJffbCY4jWQM7lW0rQ=;
+ b=X5xcAOPEpIVOdWP4HrONv/xtR6kWmi9v5UjnGCGymvghXANCzEo6FZJo0k6Nu7bRI9yykGtH9H2h9KJG/vvTK5sl3tpYurscE1piGM3k1WYD6bK2yzSRuhUyLUW9w/wi/JdXClhUf390lLGbj0AZ4SoiyJecFiA6SlPHg1vo3oo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LNXP265MB2441.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:134::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
+ 2026 16:53:51 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9499.002; Wed, 7 Jan 2026
+ 16:53:51 +0000
+Date: Wed, 7 Jan 2026 16:53:44 +0000
+From: Gary Guo <gary@garyguo.net>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: ojeda@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
+ lossin@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH v1] rust: bug: Support DEBUG_BUGVERBOSE_DETAILED option
+Message-ID: <20260107165344.4e928ab4.gary@garyguo.net>
+In-Reply-To: <20251204223405.454920-1-fujita.tomonori@gmail.com>
+References: <20251204223405.454920-1-fujita.tomonori@gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0374.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18e::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107161729.3855851-1-gary@kernel.org> <20260107161729.3855851-4-gary@kernel.org>
-In-Reply-To: <20260107161729.3855851-4-gary@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 7 Jan 2026 11:48:28 -0500
-X-Gm-Features: AQt7F2pBER6MdxX7RuoQIS7Ib92c_VrmiOIHCj_g3S-epyapkjxLn784jRVZh50
-Message-ID: <CAJ-ks9nbPTQojM-QcHPKv+NdUHwaRbBRVqzJ3CwgQTJTuD=bRQ@mail.gmail.com>
-Subject: Re: [PATCH v2 03/11] rust: macros: convert `#[vtable]` macro to use `syn`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>, 
-	=?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LNXP265MB2441:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9cf43baf-eaa0-419e-b0ce-08de4e0d5598
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Xd+BVeLq4PBotBBV98KZR3nrU2S47NrsY+43jvB/lBBWjusESuV63h1WCNHn?=
+ =?us-ascii?Q?4MZ/FCTF4jiDzs0ekHdxA1RpJVRr/FmXv5ztEsJSEcO5+IYutFD6lvqTcwL3?=
+ =?us-ascii?Q?uIyvTP8GTeHU+orQRPzV11A8Yy1tx8Yj+veHk0lwv4/1ge6ADzORugdmveNW?=
+ =?us-ascii?Q?U9Lj5yk7G93LQ5MldQiJEJYSh37ulNqr3O+xlZ95j6synBaPUYajCgsbxJIJ?=
+ =?us-ascii?Q?ryVl7bzn2/z+rXmncnUDb9ttPSmn+b8LikrHq7yTJxyuVJmQvnzb5CIUzgvD?=
+ =?us-ascii?Q?RWM26ViPgp/8UE7Mush7B3hZ9RtPldpmGLHXN6bIAui8h1RBZCvpgXmAJXYi?=
+ =?us-ascii?Q?52aJ5/8GwVbgVo6Os3/EqTDk1ubiZydY1yJaGai3YbmPwGVyCSSeMxA8o1R0?=
+ =?us-ascii?Q?OR8iohdH3Q/5CzKwUNW3L03iWV7SOeWeFQVZMSxvgTPjCZ3mEjEiTaVuqKfZ?=
+ =?us-ascii?Q?sjAwcHivpvRQ6y67DE3ZTk8DaC3cdGlHr9v7Aw+WMpGmsmdZLUsn/o8SLG2q?=
+ =?us-ascii?Q?AIkIBSJyTI7ncMKCNbESnmMlSDnxxX40uIMGw58NaIixSpcXgYR7O5bcQk6w?=
+ =?us-ascii?Q?cs0iNN3aKB39BAlbD0ZpM2sfVQJ8/Xf5uGEujuXN0ZF6N+ex/Zxk6el0VHCV?=
+ =?us-ascii?Q?/ERIUsFEQv5Of2cdudweEXN2lK0T7CjRtIEoCy9L6aFaqXfYnRWQ9qtXfxgw?=
+ =?us-ascii?Q?HNyedUNzenmq1uSZHxcV8ZXUaHe19xgCUB4XRRmkh7+S34zNspCndEYdks8l?=
+ =?us-ascii?Q?SDfCPaJ8E0w1wSz6twVxNv7liU79rUOeBOoiar33FGwgEFVge9I+EuD5YvSG?=
+ =?us-ascii?Q?SRse2sD1SVg0h9jr8W+BqoMRaqr0+eodi1vx8sO3rRHMUL8eljS7dJDFWUEq?=
+ =?us-ascii?Q?oSM+g6aVdQpkxlwLZ2zGodFCqSSJD2QU8BVQNxjplHLb44iMcilCYxF30zSd?=
+ =?us-ascii?Q?R2WJdTyg/suTWRPBtrXs0WgyD1YF6trgjahZY0RUiqX0J1hOcN/rmKxPwoHF?=
+ =?us-ascii?Q?kh/j5lAJO//wgRvT96P2Gab+/XLwYWYbepo7rBqOq66961eluXxMEWoQI2Or?=
+ =?us-ascii?Q?chJlXdoXfOQFHe6HZ8t4LTYeU72XXt+o7aCA0BJjDEJE70rX4vSrAvcU/ZvT?=
+ =?us-ascii?Q?KY5rWtxaq46D0udifTFkk6U2lLghWM6/tNQEVGDflHgmfZ1p+XQYysTzclUU?=
+ =?us-ascii?Q?C5VGI9LJsSN02VzDSytuKtTGowBKjVw6gPS/349BfU7krOlLU3kR/5UErLfG?=
+ =?us-ascii?Q?mT4mf1QqWTF2fse2Dug9G7EG63uUus6oBhZ2bb+U5Sa4qHUQD79Mx176hEmg?=
+ =?us-ascii?Q?5kE38YN44PemGLbaImzawoWWD5ifwcufV5YeXLILRNAwz6F1XurGNAKOhFEn?=
+ =?us-ascii?Q?z/D41Fd4cY/9RfZjDWgH74dG+7+UGae0h+VZmtY/gnPxI4zx87w+z1DP37vE?=
+ =?us-ascii?Q?fakMdxtpA+MhIoB7Yjt52mPGX9u4/A8V?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(7416014)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ap+tuTxBH686aQUtLAOoNEg0LqT5yV/1sK77NNsLx/hfL9CMuLpQewdHKTsD?=
+ =?us-ascii?Q?VLl10eUWSpKZtfk8ge4AhTY4ad/iGTAPulASX5J1Ft34Y4ZREAMVrB3+bSHP?=
+ =?us-ascii?Q?GbCnU5LrYJBDEpdXwqddhSAyucEt+WuNrR01LEVZFze9F0VAKyNJazFDA/qS?=
+ =?us-ascii?Q?Zml4Y1dUBZz+Ol3XFUeI34pz3PCurKVUNnj70c/lPqLbmehp69mD184kBT0N?=
+ =?us-ascii?Q?wgZ+Wscegu1XZkRNj2zqiswVm3RZQCgIppduQ0bqoC1tWspkQuF8/ISsXY5G?=
+ =?us-ascii?Q?j6qQ2/Piq2+rm6YZQeE83SlgAbln4WugHrsUHBeVaeyvqlRRe2ZwVaT0fbQI?=
+ =?us-ascii?Q?BDJ94rvc57ZyZ61BiDpFQh9x5fvTa5R0Cz0oJ8SUcY8C1oDx5fuCiz1+8zsv?=
+ =?us-ascii?Q?z6dnRc543Z9jCncEiArmpKtN6lJNRSfOAouTv624O38e3PVOjIAIz2s6LVW4?=
+ =?us-ascii?Q?8g/+AZFIeDMDpbYO5zoNQSF5iJacnc08H001VtcBbWjTmdS420xTF7MOZbKa?=
+ =?us-ascii?Q?OzsrSWEutwhLQZ4OkHVNVVaTkBGz5AHfzbKgYGNoqqc9eJYZ5EnuoB51q/VW?=
+ =?us-ascii?Q?2Rj+dckv3kV+a5eeogpSgHDIVcvIqHAvfj/TIqMpAQYrkuqtpOx9GuuzSGvl?=
+ =?us-ascii?Q?gIxSMjdK7TZ247bP0lkA1klJpjMzszJ9HHjM0Jm5wgfHzAiOZ+1qBBmQQI8X?=
+ =?us-ascii?Q?i14sJurHPR2L6z3tkAMLjEXh2Q12TaZfULfMMlbNChKOEXGfCZjVY64qjD/x?=
+ =?us-ascii?Q?fSekUYjZ88Y8kokZOGo9jkr59wwevmFQ9V4GwbbMn/Un4nSPvV949d4C3Hn7?=
+ =?us-ascii?Q?MZqoo0V4E1DWkObm4UscxkEFEZD2mvd4rNP2LmOaqR3zalg5VSjnlQBxIaEf?=
+ =?us-ascii?Q?HiKJPsKnO4+cdK91gvt7RAt5GazOi4ACxX4HFF+BS4uKdd+iFOqsjV9Umn3K?=
+ =?us-ascii?Q?UcL1rUVqyfnX2JRYggx7s3nfmon4agv2Q8rZVu1h0zpeJ8Gl5Q1oCcA6jnHo?=
+ =?us-ascii?Q?qnPYpP4/tf418ON5QcOtkQ0oKcn2wuhVH+Q+yITJEg+1e0V2qd4rm+R3u2+Y?=
+ =?us-ascii?Q?H08Nx6RVYcCD4cp6JCuSIotbKJ4pqBlM3Kju1nOByGgxVapnYcJpfDnuc25G?=
+ =?us-ascii?Q?hTW30XlfpwdoF/iS+S/Ss7U0NDUd6XezabBGedBRmemqzHq3xztcS8oxFYW1?=
+ =?us-ascii?Q?o3r8rtec9e5ywxaaziToOZKLpclRI4FRlyljC7fRky+nf45njM/1QSeGw3KV?=
+ =?us-ascii?Q?9PTyZLwoDDAaNJZy4X0L1nCTPTuCagv1oIOQIdtJa3ftj6iYzxNH+w8DiOzu?=
+ =?us-ascii?Q?lHkiF08mXJAdBS1xuHanWwp6mYT/Ck8PaelnCG98777I3vLaDoYqh5Cv0fqK?=
+ =?us-ascii?Q?UtPkwxnb1qferLwweLDiwFJUjh4rGmrS3HcfRHwZ4pvWo/35yUJ2yab821Wg?=
+ =?us-ascii?Q?JuI2zdxBCgkchp/grJe8zKcWwzJKuP++xjkyCSAYevkDotmx+qPnfYNzXlkP?=
+ =?us-ascii?Q?3LkLQR5lNG+5HkCsM/HzfbA+1olTId+2xfsBg5G23Cp4Q2S8Glt22vjbEbDk?=
+ =?us-ascii?Q?mVFxpqmqflS4Hh15rgHGkyHC6sSunM568fi6cmQ6+MI6GuJn11mdus0axCnw?=
+ =?us-ascii?Q?UOmZcUCvFdQSOynUeIGU29gCbaPIq5m11vMoEl1TYbacNSzt92UoPoZkM6Mu?=
+ =?us-ascii?Q?AdwApX2LS0wRB0aqg0zru3VRmbM7rGm09sbEhtuIp/n8KP8JtRGOZk1VUvhd?=
+ =?us-ascii?Q?hTzaAwNoKQ=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9cf43baf-eaa0-419e-b0ce-08de4e0d5598
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 16:53:51.1881
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: j6Ke7l12mE7nEUrGepAsRCmo+VyDmM18euNcCIt31nVBhfcvdwmH3RiU8Om6BRh6zCJr0lEHw+oat33al3xjlg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LNXP265MB2441
 
-On Wed, Jan 7, 2026 at 11:30=E2=80=AFAM Gary Guo <gary@kernel.org> wrote:
->
-> From: Gary Guo <gary@garyguo.net>
->
-> `#[vtable]` is converted to use syn. This is more robust than the
-> previous heuristic-based searching of defined methods and functions.
->
-> When doing so, the trait and impl are split into two code paths as the
-> types are distinct when parsed by `syn`.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+On Fri,  5 Dec 2025 07:34:05 +0900
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-
+> Make warn_on() support DEBUG_BUGVERBOSE_DETAILED option, which was
+> introduced by the commit aec58b48517c ("bugs/core: Extend
+> __WARN_FLAGS() with the 'cond_str' parameter").
+> 
+> When the option is enabled, WARN splats now show the evaluated
+> warn_on() condition alongside the file path, e.g.:
+> 
+> ------------[ cut here ]------------
+> WARNING: [val == 1] /linux/samples/rust/rust_minimal.rs:27 at _RNvXCsk7t4azzUqHP_12rust_minimalNtB2_11RustMinimalNtCs8pcx3n4
+> Modules linked in: rust_minimal(+)
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 > ---
->  rust/macros/lib.rs    |   9 ++-
->  rust/macros/vtable.rs | 163 ++++++++++++++++++++++--------------------
->  2 files changed, 93 insertions(+), 79 deletions(-)
->
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index 945982c21f703..9955c04dbaae3 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -22,6 +22,8 @@
->
->  use proc_macro::TokenStream;
->
-> +use syn::parse_macro_input;
-> +
->  /// Declares a kernel module.
->  ///
->  /// The `type` argument should be a type which implements the [`Module`]
-> @@ -204,8 +206,11 @@ pub fn module(ts: TokenStream) -> TokenStream {
->  ///
->  /// [`kernel::error::VTABLE_DEFAULT_ERROR`]: ../kernel/error/constant.VT=
-ABLE_DEFAULT_ERROR.html
->  #[proc_macro_attribute]
-> -pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
-> -    vtable::vtable(attr.into(), ts.into()).into()
-> +pub fn vtable(attr: TokenStream, input: TokenStream) -> TokenStream {
-> +    parse_macro_input!(attr as syn::parse::Nothing);
-> +    vtable::vtable(parse_macro_input!(input))
-> +        .unwrap_or_else(|e| e.into_compile_error())
-> +        .into()
->  }
->
->  /// Export a function so that C code can call it via a header file.
-> diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
-> index a67d1cc81a2d3..a39bedb703973 100644
-> --- a/rust/macros/vtable.rs
-> +++ b/rust/macros/vtable.rs
-> @@ -1,97 +1,106 @@
->  // SPDX-License-Identifier: GPL-2.0
->
->  use std::collections::HashSet;
-> -use std::fmt::Write;
->
-> -use proc_macro2::{Delimiter, Group, TokenStream, TokenTree};
-> +use proc_macro2::{
-> +    Ident,
-> +    TokenStream, //
-> +};
-> +use quote::ToTokens;
-> +use syn::{
-> +    parse_quote,
-> +    Error,
-> +    ImplItem,
-> +    Item,
-> +    ItemImpl,
-> +    ItemTrait,
-> +    Result,
-> +    TraitItem, //
-> +};
->
-> -pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream=
- {
-> -    let mut tokens: Vec<_> =3D ts.into_iter().collect();
-> +fn handle_trait(mut item: ItemTrait) -> Result<ItemTrait> {
-> +    let mut functions =3D Vec::new();
+>  rust/kernel/bug.rs | 27 ++++++++++++++++-----------
+>  1 file changed, 16 insertions(+), 11 deletions(-)
+> 
+> diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+> index 36aef43e5ebe..a60db1ef4b48 100644
+> --- a/rust/kernel/bug.rs
+> +++ b/rust/kernel/bug.rs
+> @@ -11,15 +11,14 @@
+>  #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
+>  #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
+>  macro_rules! warn_flags {
+> -    ($flags:expr) => {
+> +    ($file:expr, $flags:expr) => {
+>          const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+> -        const _FILE: &[u8] = file!().as_bytes();
 
-Would be easier to propagate `#[cfg]`(as in your FIXME below) if you
-collect the generated constants into this vector instead -- then you
-can do all the code generation in the `for item in &item.items` loop
-where you have all the attributes.
+I think it'll be good to still keep
 
-> +    for item in &item.items {
-> +        if let TraitItem::Fn(fn_item) =3D item {
-> +            functions.push(fn_item.sig.ident.clone());
-> +        }
-> +    }
-> +
-> +    item.items.push(parse_quote! {
-> +         /// A marker to prevent implementors from forgetting to use [`#=
-[vtable]`](vtable)
-> +         /// attribute when implementing this trait.
-> +         const USE_VTABLE_ATTR: ();
-> +    });
->
-> -    // Scan for the `trait` or `impl` keyword.
-> -    let is_trait =3D tokens
-> -        .iter()
-> -        .find_map(|token| match token {
-> -            TokenTree::Ident(ident) =3D> match ident.to_string().as_str(=
-) {
-> -                "trait" =3D> Some(true),
-> -                "impl" =3D> Some(false),
-> -                _ =3D> None,
-> -            },
-> -            _ =3D> None,
-> -        })
-> -        .expect("#[vtable] attribute should only be applied to trait or =
-impl block");
-> +    let mut consts =3D HashSet::new();
-> +    for name in functions {
-> +        let gen_const_name =3D Ident::new(
-> +            &format!("HAS_{}", name.to_string().to_uppercase()),
-> +            name.span(),
-> +        );
-> +        // Skip if it's declared already -- this can happen if `#[cfg]` =
-is used to selectively
-> +        // define functions.
-> +        // FIXME: `#[cfg]` should be copied and propagated to the genera=
-ted consts.
-> +        if consts.contains(&gen_const_name) {
-> +            continue;
-> +        }
-> +        // We don't know on the implementation-site whether a method is =
-required or provided
-> +        // so we have to generate a const for all methods.
-> +        let comment =3D format!("Indicates if the `{name}` method is ove=
-rridden by the implementor.");
+	const _FILE: &[u8] = $file.as_bytes();
 
-We're already quasi-quoting below, does putting the comment there work?
 
-> +        item.items.push(parse_quote! {
-> +            #[doc =3D #comment]
-> +            const #gen_const_name: bool =3D false;
-> +        });
-> +        consts.insert(gen_const_name);
-> +    }
->
-> -    // Retrieve the main body. The main body should be the last token tr=
-ee.
-> -    let body =3D match tokens.pop() {
-> -        Some(TokenTree::Group(group)) if group.delimiter() =3D=3D Delimi=
-ter::Brace =3D> group,
-> -        _ =3D> panic!("cannot locate main body of trait or impl block"),
-> -    };
-> +    Ok(item)
-> +}
->
-> -    let mut body_it =3D body.stream().into_iter();
-> +fn handle_impl(mut item: ItemImpl) -> Result<ItemImpl> {
->      let mut functions =3D Vec::new();
->      let mut consts =3D HashSet::new();
-> -    while let Some(token) =3D body_it.next() {
-> -        match token {
-> -            TokenTree::Ident(ident) if ident =3D=3D "fn" =3D> {
-> -                let fn_name =3D match body_it.next() {
-> -                    Some(TokenTree::Ident(ident)) =3D> ident.to_string()=
-,
-> -                    // Possibly we've encountered a fn pointer type inst=
-ead.
-> -                    _ =3D> continue,
-> -                };
-> -                functions.push(fn_name);
-> +    for item in &item.items {
-> +        match item {
-> +            ImplItem::Fn(fn_item) =3D> {
-> +                functions.push(fn_item.sig.ident.clone());
+and have the caller just pass in `file!()` or `concat!(...)`. At least the
+concat macro doesn't have to expanded multiple times in below.
+
+Best,
+Gary
+
+>          // Plus one for null-terminator.
+> -        static FILE: [u8; _FILE.len() + 1] = {
+> -            let mut bytes = [0; _FILE.len() + 1];
+> +        static FILE: [u8; $file.len() + 1] = {
+> +            let mut bytes = [0; $file.len() + 1];
+>              let mut i = 0;
+> -            while i < _FILE.len() {
+> -                bytes[i] = _FILE[i];
+> +            while i < $file.len() {
+> +                bytes[i] = $file[i];
+>                  i += 1;
 >              }
-> -            TokenTree::Ident(ident) if ident =3D=3D "const" =3D> {
-> -                let const_name =3D match body_it.next() {
-> -                    Some(TokenTree::Ident(ident)) =3D> ident.to_string()=
-,
-> -                    // Possibly we've encountered an inline const block =
-instead.
-> -                    _ =3D> continue,
-> -                };
-> -                consts.insert(const_name);
-> +            ImplItem::Const(const_item) =3D> {
-> +                consts.insert(const_item.ident.clone());
->              }
-> -            _ =3D> (),
-> +            _ =3D> {}
->          }
->      }
->
-> -    let mut const_items;
-> -    if is_trait {
-> -        const_items =3D "
-> -                /// A marker to prevent implementors from forgetting to =
-use [`#[vtable]`](vtable)
-> -                /// attribute when implementing this trait.
-> -                const USE_VTABLE_ATTR: ();
-> -        "
-> -        .to_owned();
-> +    item.items.push(parse_quote! {
-> +         const USE_VTABLE_ATTR: () =3D ();
-> +    });
->
-> -        for f in functions {
-> -            let gen_const_name =3D format!("HAS_{}", f.to_uppercase());
-> -            // Skip if it's declared already -- this allows user overrid=
-e.
-> -            if consts.contains(&gen_const_name) {
-> -                continue;
-> -            }
-> -            // We don't know on the implementation-site whether a method=
- is required or provided
-> -            // so we have to generate a const for all methods.
-> -            write!(
-> -                const_items,
-> -                "/// Indicates if the `{f}` method is overridden by the =
-implementor.
-> -                const {gen_const_name}: bool =3D false;",
-> -            )
-> -            .unwrap();
-> -            consts.insert(gen_const_name);
-> -        }
-> -    } else {
-> -        const_items =3D "const USE_VTABLE_ATTR: () =3D ();".to_owned();
-> -
-> -        for f in functions {
-> -            let gen_const_name =3D format!("HAS_{}", f.to_uppercase());
-> -            if consts.contains(&gen_const_name) {
-> -                continue;
-> -            }
-> -            write!(const_items, "const {gen_const_name}: bool =3D true;"=
-).unwrap();
-> +    for name in functions {
-> +        let gen_const_name =3D Ident::new(
-> +            &format!("HAS_{}", name.to_string().to_uppercase()),
-> +            name.span(),
-> +        );
-> +        // Skip if it's declared already -- this allows user override.
-> +        if consts.contains(&gen_const_name) {
-> +            continue;
->          }
-> +        item.items.push(parse_quote! {
-> +            const #gen_const_name: bool =3D true;
-> +        });
-> +        consts.insert(gen_const_name);
->      }
->
-> -    let new_body =3D vec![const_items.parse().unwrap(), body.stream()]
-> -        .into_iter()
-> -        .collect();
-> -    tokens.push(TokenTree::Group(Group::new(Delimiter::Brace, new_body))=
-);
-> -    tokens.into_iter().collect()
-> +    Ok(item)
-> +}
-> +
-> +pub(crate) fn vtable(input: Item) -> Result<TokenStream> {
-> +    match input {
-> +        Item::Trait(item) =3D> Ok(handle_trait(item)?.into_token_stream(=
-)),
-> +        Item::Impl(item) =3D> Ok(handle_impl(item)?.into_token_stream())=
-,
-> +        _ =3D> Err(Error::new_spanned(
-> +            input,
-> +            "`#[vtable]` attribute should only be applied to trait or im=
-pl block",
-> +        ))?,
-> +    }
+>              bytes
+> @@ -50,7 +49,7 @@ macro_rules! warn_flags {
+>  #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
+>  #[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
+>  macro_rules! warn_flags {
+> -    ($flags:expr) => {
+> +    ($file:expr, $flags:expr) => {
+>          const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+>  
+>          // SAFETY:
+> @@ -75,7 +74,7 @@ macro_rules! warn_flags {
+>  #[doc(hidden)]
+>  #[cfg(all(CONFIG_BUG, CONFIG_UML))]
+>  macro_rules! warn_flags {
+> -    ($flags:expr) => {
+> +    ($file:expr, $flags:expr) => {
+>          // SAFETY: It is always safe to call `warn_slowpath_fmt()`
+>          // with a valid null-terminated string.
+>          unsafe {
+> @@ -93,7 +92,7 @@ macro_rules! warn_flags {
+>  #[doc(hidden)]
+>  #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
+>  macro_rules! warn_flags {
+> -    ($flags:expr) => {
+> +    ($file:expr, $flags:expr) => {
+>          // SAFETY: It is always safe to call `WARN_ON()`.
+>          unsafe { $crate::bindings::WARN_ON(true) }
+>      };
+> @@ -103,7 +102,7 @@ macro_rules! warn_flags {
+>  #[doc(hidden)]
+>  #[cfg(not(CONFIG_BUG))]
+>  macro_rules! warn_flags {
+> -    ($flags:expr) => {};
+> +    ($file:expr, $flags:expr) => {};
 >  }
-> --
-> 2.51.2
->
+>  
+>  #[doc(hidden)]
+> @@ -116,10 +115,16 @@ pub const fn bugflag_taint(value: u32) -> u32 {
+>  macro_rules! warn_on {
+>      ($cond:expr) => {{
+>          let cond = $cond;
+> +
+> +        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
+> +        const _COND_STR: &[u8] = concat!("[", stringify!($cond), "] ", file!()).as_bytes();
+> +        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
+> +        const _COND_STR: &[u8] = file!().as_bytes();
+> +
+>          if cond {
+>              const WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
+>  
+> -            $crate::warn_flags!(WARN_ON_FLAGS);
+> +            $crate::warn_flags!(_COND_STR, WARN_ON_FLAGS);
+>          }
+>          cond
+>      }};
+> 
+> base-commit: 500920fa76819b4909a32081e153bce80ce74824
+
