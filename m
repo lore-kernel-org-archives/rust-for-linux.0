@@ -1,96 +1,169 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5981833C539;
-	Wed,  7 Jan 2026 18:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FEEAD24;
+	Wed,  7 Jan 2026 18:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767809901; cv=none; b=J63BONA9eKKbV4z1lhP0CzhOERf4GIz/xExp7b7EQq7kiLBI/lxBfxghDFtB1TSaEQK5WEpH54vq2hHRHXyTsYa0yn9v5oF0HO54D5Jt8Oi+2987PjFKSBiSJCKM8v2ndAVjiwygwHsbdgyCDHh6q345Xjo9vycoUw0eRRP4nRE=
+	t=1767810084; cv=none; b=s0O9clfFiMPRcnxABXmINQVDBoNezpwREK/P8djPIwLxW3vl7WY7pqKw7Fj/4wPsuA0aB9V5RwPAXRrqeFDbhSOl7+beL3yY2/Na9AyQRHCwaSjJazhL8Hr2qJdf2zYfEHFj0w7ijFk4HyOvv4f/a6r5dHugmlSHzc7MW6zsw5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767809901; c=relaxed/simple;
-	bh=s27ccQFbApbt2q5ImZlGXA0T8FPFBDdt+ES6BeIF8vU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MRHV6gymMItjNkAzBM72iegxxTgre26OKPdzIJdTPNKA787LfCscwXnLJ6kImru6p4dQ5aSdsTuHo61Y+diwD3hMzXfXCzWvzIP1zwIN1JKUBb7X4Ga0oQ4P7Q1M9Ht4UtCJ855w4JtRPMxz9wqxA+B8BahdOuvl10ITFrB7AVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o0mG8/Nw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767810084; c=relaxed/simple;
+	bh=K0mOaK6BrY9bp5EA2JCjimH1+UowvkU5HtroT5tTmeY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BuK9Cja5gvSnCsBRpiOQB8sIwqv6wkQFXGqSJHHmWIexaUZyRoVR6nSqELJdMO8FK7plpUEL9mjs7yP7mJThptZRhjdfAc9TqR/jSeRd0mp8DsyLViccmREyTKzSsXn9dKsOqGtSAIzPWN8soocexwiYNeOgP9WipdPZvRtPpJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fnpYcOAF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o0mG8/Nw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED219C4CEF1;
-	Wed,  7 Jan 2026 18:18:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fnpYcOAF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18DF4C4CEF1;
+	Wed,  7 Jan 2026 18:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767809901;
-	bh=s27ccQFbApbt2q5ImZlGXA0T8FPFBDdt+ES6BeIF8vU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o0mG8/Nwy67GgnHYsqslR0XuIgiZ/l7XbXDcrCMMJP/NISmz953u12IaiV4MpF3Yk
-	 gmI5BGxdDGoXFnwJL1BDu4y2aOtUOY1IyRgU3/PcHPzuAYvWQE74srH1Oka/P4B8Ea
-	 bpCJuidzFFbYgXZWxrHPCjHi/yhj6r4P/zUeP+smtBhDxutrJJehNzP20oo9FHg71Z
-	 fD0QcwqMkUfLOTwfTp2gopqqYn/P+fSaSbuHX6voiThV7kVS4SQLjtvZFs85M5ahz4
-	 9YJs7fBOIFK+sQXYC1Y0+IIL2sUllKIXaBNBYMatDDV1NAZOivAPPe93d4h19wcRE4
-	 gDX6AtB8sl7hg==
-Date: Wed, 7 Jan 2026 10:18:17 -0800
-From: Namhyung Kim <namhyung@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Andi Kleen <ak@linux.intel.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2] perf symbol: remove Rust symbol workarounds
-Message-ID: <aV6jaaBftvR0Dl0b@google.com>
-References: <20260105150106.567830-1-gary@kernel.org>
- <aVvdt90YmhJz3i5i@x1>
- <aV4TkNE_hAyByISq@google.com>
- <aV5h4I5rRl61vFFu@x1>
+	s=k20201202; t=1767810083;
+	bh=K0mOaK6BrY9bp5EA2JCjimH1+UowvkU5HtroT5tTmeY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=fnpYcOAFd1CAyjEFU/csaLKLhUVevIiWnhmwJZdEFp/zvUygqh33qZniJxvJBCYZJ
+	 o+7xlLYJQdysc7eSo0234crmyas7izpzLskgTCEvsHSAlrDUSsCGj8TM/j1wVgaLZC
+	 y8mWqukCK5fBsMvUd6I6TFl2XbYUsJZSCr30mJbUyJc6VedZ7BerKwt/L/KVdCkKPW
+	 o6lIl6RBWc9+2qn2gkAsD7eqki0gO83LROGjROrlch9UcNlTVoIOngROYYfOMSQKQ4
+	 Qp17m52Yq+or7B7UeMBUpKdETNeWLgfDHm7JBb9HnSR90pe9JZ1hs88oDq5XpiDHKz
+	 zlCVkqCm6V7sg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com, lyude@redhat.com,
+ boqun.feng@gmail.com, will@kernel.org, peterz@infradead.org,
+ richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com,
+ catalin.marinas@arm.com, ojeda@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu,
+ dakr@kernel.org, mark.rutland@arm.com, frederic@kernel.org,
+ tglx@linutronix.de, anna-maria@linutronix.de, jstultz@google.com,
+ sboyd@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
+ jack@suse.cz, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 4/5] rust: hrtimer: use READ_ONCE instead of read_volatile
+In-Reply-To: <20260107.202245.559061117523678561.fujita.tomonori@gmail.com>
+References: <87ikdej4s1.fsf@t14s.mail-host-address-is-not-set>
+ <20260106.222826.2155269977755242640.fujita.tomonori@gmail.com>
+ <87cy3livfk.fsf@t14s.mail-host-address-is-not-set>
+ <WXFPsf9COQPV_obKoZg2bYwPL3k9TT0oBL3uxNppUFaIj5hxEX9UokzS_DJ5Kg5kXDzLrZ9ihALTZcf6ehljGw==@protonmail.internalid>
+ <20260107.202245.559061117523678561.fujita.tomonori@gmail.com>
+Date: Wed, 07 Jan 2026 19:21:11 +0100
+Message-ID: <87ms2pgu7c.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aV5h4I5rRl61vFFu@x1>
+Content-Type: text/plain
 
-On Wed, Jan 07, 2026 at 10:38:40AM -0300, Arnaldo Carvalho de Melo wrote:
-> On Wed, Jan 07, 2026 at 12:04:32AM -0800, Namhyung Kim wrote:
-> > On Mon, Jan 05, 2026 at 12:50:15PM -0300, Arnaldo Carvalho de Melo wrote:
-> > > On Mon, Jan 05, 2026 at 03:00:57PM +0000, Gary Guo wrote:
-> > > > Due to an off-by-one error introduced in commit 73bbb94466fd ("kallsyms:
-> > > > support "big" kernel symbols"), long symbols (which are currently only
-> > > > produced by Rust) can have their symbol type being wrongly parsed by
-> > > > kernel/kallsyms.c.
->  
-> > > Looks sane, applied to perf-tools-next,
->    
-> > I'm afraid there may be some outdated kernels which don't have the fix
-> > yet.  Maybe make sense to wait some more time for them to disappear?
-> 
-> Right, I took it more as it seems to be just a blip in time, something
-> that came and went quickly and that most likely will not cause problems,
-> i.e. just a handful of extra symbols in the lookup data structures in
-> those particular kernels and a new 'perf test' tool with these reverts,
-> if run on those particular kernels would then fail for that particular
-> test case, for a known reason.
-> 
-> So with the above rationale you still feel strongly about having it
-> applied?
+"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
 
-No, it's good to go.  Thanks for the explanation!
+> On Wed, 07 Jan 2026 11:11:43 +0100
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>
+>> FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
+>>
+>>> On Tue, 06 Jan 2026 13:37:34 +0100
+>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>
+>>>> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+>>>>
+>>>>> On Thu, 01 Jan 2026 11:11:23 +0900 (JST)
+>>>>> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+>>>>>
+>>>>>> On Wed, 31 Dec 2025 12:22:28 +0000
+>>>>>> Alice Ryhl <aliceryhl@google.com> wrote:
+>>>>>>
+>>>>>>> Using `READ_ONCE` is the correct way to read the `node.expires` field.
+>>>>>>>
+>>>>>>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>>>>>>> ---
+>>>>>>>  rust/kernel/time/hrtimer.rs | 8 +++-----
+>>>>>>>  1 file changed, 3 insertions(+), 5 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+>>>>>>> index 856d2d929a00892dc8eaec63cebdf547817953d3..e2b7a26f8aade972356c3eb5f6489bcda3e2e849 100644
+>>>>>>> --- a/rust/kernel/time/hrtimer.rs
+>>>>>>> +++ b/rust/kernel/time/hrtimer.rs
+>>>>>>> @@ -239,11 +239,9 @@ pub fn expires(&self) -> HrTimerInstant<T>
+>>>>>>>          // - Timers cannot have negative ktime_t values as their expiration time.
+>>>>>>>          // - There's no actual locking here, a racy read is fine and expected
+>>>>>>>          unsafe {
+>>>>>>> -            Instant::from_ktime(
+>>>>>>> -                // This `read_volatile` is intended to correspond to a READ_ONCE call.
+>>>>>>> -                // FIXME(read_once): Replace with `read_once` when available on the Rust side.
+>>>>>>> -                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
+>>>>>>> -            )
+>>>>>>> +            Instant::from_ktime(kernel::sync::READ_ONCE(
+>>>>>>> +                &raw const (*c_timer_ptr).node.expires,
+>>>>>>> +            ))
+>>>>>>>          }
+>>>>>>
+>>>>>> Do we actually need READ_ONCE() here? I'm not sure but would it be
+>>>>>> better to call the C-side API?
+>>>>>>
+>>>>>> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
+>>>>>> index 67a36ccc3ec4..73162dea2a29 100644
+>>>>>> --- a/rust/helpers/time.c
+>>>>>> +++ b/rust/helpers/time.c
+>>>>>> @@ -2,6 +2,7 @@
+>>>>>>
+>>>>>>  #include <linux/delay.h>
+>>>>>>  #include <linux/ktime.h>
+>>>>>> +#include <linux/hrtimer.h>
+>>>>>>  #include <linux/timekeeping.h>
+>>>>>>
+>>>>>>  void rust_helper_fsleep(unsigned long usecs)
+>>>>>> @@ -38,3 +39,8 @@ void rust_helper_udelay(unsigned long usec)
+>>>>>>  {
+>>>>>>  	udelay(usec);
+>>>>>>  }
+>>>>>> +
+>>>>>> +__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtimer *timer)
+>>>>>> +{
+>>>>>> +	return timer->node.expires;
+>>>>>> +}
+>>>>>
+>>>>> Sorry, of course this should be:
+>>>>>
+>>>>> +__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtimer *timer)
+>>>>> +{
+>>>>> +	return hrtimer_get_expires(timer);
+>>>>> +}
+>>>>>
+>>>>
+>>>> This is a potentially racy read. As far as I recall, we determined that
+>>>> using read_once is the proper way to handle the situation.
+>>>>
+>>>> I do not think it makes a difference that the read is done by C code.
+>>>
+>>> What does "racy read" mean here?
+>>>
+>>> The C side doesn't use WRITE_ONCE() or READ_ONCE for node.expires. How
+>>> would using READ_ONCE() on the Rust side make a difference?
+>>
+>> Data races like this are UB in Rust. As far as I understand, using this
+>> READ_ONCE implementation or a relaxed atomic read would make the read
+>> well defined. I am not aware if this is only the case if all writes to
+>> the location from C also use atomic operations or WRITE_ONCE. @Boqun?
+>
+> The C side updates node.expires without WRITE_ONCE()/atomics so a
+> Rust-side READ_ONCE() can still observe a torn value; I think that
+> this is still a data race / UB from Rust's perspective.
+>
+> And since expires is 64-bit, WRITE_ONCE() on 32-bit architectures does
+> not inherently guarantee tear-free stores either.
+>
+> I think that the expires() method should follow the same safety
+> requirements as raw_forward(): it should only be considered safe when
+> holding exclusive access to hrtimer or within the context of the timer
+> callback. Under those conditions, it would be fine to call C's
+> hrtimer_get_expires().
 
-Namhyung
+We can make it safe, please see my comment here [1].
+
+Best regards,
+Andreas Hindborg
+
+[1] https://lore.kernel.org/r/87v7hdh9m4.fsf@t14s.mail-host-address-is-not-set
 
