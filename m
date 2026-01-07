@@ -1,97 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646ED303CB6;
-	Wed,  7 Jan 2026 10:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550BB2A1BF;
+	Wed,  7 Jan 2026 10:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767780933; cv=none; b=UKvMOsMSkOcDHlF0gMDFnUWX3xwiOo5HVszMomT6elqDxWPT2op6VJDmeXMWgWD2seuUdV4aMaTtnxKFd7oUbMAs7nZBrXjQ11KSthIWae3+JI2i58ftaflIjeLpzhGSK9bFOXnyEwLKk2GWhIAtHkR0TG2r1yQR5O4stApKmqo=
+	t=1767781232; cv=none; b=MGTPkRzF1gX5WoZzrIlZzK+DYcippjkLksN5iDJaCiPbxI3ldasntxewDroSDNAio9D3E9aqq/kv1xcD/L45m51QaU4w1zv7V1E6a91Fsa8js/QlEB/cBr7Baz6fxfY243hgPqe5JQuxp6pWIsfYs3KcNy9GFIsPghXzl+YbWN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767780933; c=relaxed/simple;
-	bh=aVjDuxw+m/OKIp8HwlkT/FN6fEwgIaJ/J5IwQVA4wAo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=dB6lNHds2QnhKnYyW4BAMQIcUu1eHJmMWGEoRjoJwURpa0YXVfzZWr1MXP7lRvkLWVebg1iYXkQyt2bAoKEXAPmWI9JDHynfcdtNHkdh7VWrnKzFDxxla/7UNDyntnHK1uKzPOMOrCKo+tan8WS7RUSvnh7a7wIz49IrIAJkb+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8CryfLg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767781232; c=relaxed/simple;
+	bh=ypPZHliCFbdwvmK0nWDp9/A/bjNjBDrGQz8E3u6yHAw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=auCHWqAmUSaI6pwwSCO+xHUucjOJRomTjgR6d+jJiy+DNKEnBIw2ffTLDrYRBw333wUJ3luGo6IL1+0/7Rh6SPotxOA/xiQYn6yhLMh+lMxj50SahIFr2QlRKD3KrFLZgKTS1fZWSvqEP1GjrgW68q3foeIxWpwe7WCwxcYO10w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TPCtYDfS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8CryfLg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14AFC4CEF7;
-	Wed,  7 Jan 2026 10:15:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TPCtYDfS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B798DC16AAE;
+	Wed,  7 Jan 2026 10:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767780932;
-	bh=aVjDuxw+m/OKIp8HwlkT/FN6fEwgIaJ/J5IwQVA4wAo=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=b8CryfLgMPv4sG0YXMXoRv3sKzPBmPNaO9xTsRIJWaER9f/M08p8x/uaosP2+Al0i
-	 /urn0bouMm+u1a7QE14nuz7K0gEX7gSNEVJY37oQZ7R0i4wvaB32nmnZJD18gqBYQm
-	 dyVF+bf+Jxxz8oeZmxT0Gc1Jhgt/691AgdLhDGvnAg/nghj/6DSx6+cXSihQdY2KjD
-	 lsFyTo7ldYLdOXNIlaIQkYrkxo3w8iR9XLoOBJdsN7urpPzpAty5tlltmLwel3UweO
-	 L3zF0UFPE4AglqD2Uz3dqmHEJCOvppF0le/llZPsai0yV4eGwGYhgx3o044o1fzFqw
-	 aSupd3LkPjXcA==
+	s=k20201202; t=1767781231;
+	bh=ypPZHliCFbdwvmK0nWDp9/A/bjNjBDrGQz8E3u6yHAw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TPCtYDfS6gtOcf57QcNV8pz2gS9xdRVza+rnJCg9DHzym/5kJpDKwR57RCNuftp/8
+	 fKfgvF3XwD5aDFE74SKPc2RbD+AIa0LT/5LOZviMDj3KYHYl1zMl6JcH/blnGDKMQi
+	 pS+c0GamFcKJS+zstothaU/k7RTfa4St2vH7wIxyuZYsdr0LEDxkJ7tmEM68t7tyGk
+	 zmAt8L2WNbcOcJQwYNdLn9eGEkG/Vp/PyYISve+0YpNNUpvaxY62oKhrbxS2Kr3Hwc
+	 1xMTIEBhsTfD8baHdNfChNUXauDau4eU9R1XlifpSk754Z3M2ZCUJ7f9xo/1tFiS5P
+	 /SCrp/3mWSReA==
+Message-ID: <9693961b-efe4-4b4c-bbe5-fdadc45a75e6@kernel.org>
+Date: Wed, 7 Jan 2026 11:20:25 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] gpu: nova-core: use CStr::from_bytes_until_nul() and
+ remove util.rs
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, Edwin Peer <epeer@nvidia.com>,
+ Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20260103013438.247759-1-jhubbard@nvidia.com>
+ <DFHHP3LVYW43.247TW37BCGYHE@kernel.org>
+ <09e0454c-222b-41e6-a8e5-6d6240b20479@nvidia.com>
+ <9a8f8500-aa1e-4145-b84d-7ce424ead644@kernel.org>
+ <70a8a73e-2dad-4bad-83bb-a245b83afe5d@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <70a8a73e-2dad-4bad-83bb-a245b83afe5d@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 07 Jan 2026 11:15:28 +0100
-Message-Id: <DFIA1F2LOTGS.X74JYB8BB0HE@kernel.org>
-To: "Dirk Behme" <dirk.behme@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [RFC PATCH v1 4/4] rust: add PL031 RTC driver
-Cc: "Ke Sun" <sunke@kylinos.cn>, "Alexandre Belloni"
- <alexandre.belloni@bootlin.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-rtc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Alvin Sun"
- <sk.alvin.x@gmail.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>
-References: <20260104060621.3757812-1-sunke@kylinos.cn>
- <20260104060621.3757812-5-sunke@kylinos.cn>
- <48d23334-b167-48a5-a645-28276eb85b00@gmail.com>
-In-Reply-To: <48d23334-b167-48a5-a645-28276eb85b00@gmail.com>
+Content-Transfer-Encoding: 7bit
 
-On Sun Jan 4, 2026 at 10:02 AM CET, Dirk Behme wrote:
+On 1/7/26 1:24 AM, John Hubbard wrote:
+> $  dmesg -t --level=info|grep NovaCore
+> NovaCore 0000:e1:00.0: NVIDIA (Chipset: GA104, Architecture: Ampere, Revision: a.1)
+> NovaCore 0000:e1:00.0: GPU name: NVIDIA RTX A4000
+> [drm] Initialized nova 0.0.0 for NovaCore.nova-drm.0 on minor 0
+> 
+> So I'd love to leave the GPU name at info level, if you agree that
+> this is about right.
 
-> Do we want a common register access style in Rust drivers and want to
-> encourge using the register macro for that? Or do we take what we have
-> at the moment (like here) and eventually convert later to the register
-> macro? Or not? Opinions?
-
-Yes, the idea is that drivers use the register!() macro for definitions (th=
-is
-has been what I am looking for since proposing it in [1]).
-
-Please also see [2] for some more rationale and design considerations.
-
-Ideally, we land the patch series moving the register!() macro from nova-co=
-re
-(which we used as a playground for development and to proof the concept) to
-common infrastructure this cycle.
-
-This way drivers targeting next cycle or later can start using it right awa=
-y.
-
-Should we not make it in this cycle, we can also consider a feature branch =
-to
-share with upcoming drivers, but let's see how it goes first.
-
-> I know that it is not ready yet and still in development, but what's
-> about the register!() macro [1] [2]?
-
-As mentioned above, it's not that it is not ready. We are actively using it=
- in
-nova-core for quite a while now, but we now have to move it to common
-infrastructure.
-
-It probably would have been better to do the move first and then extract ge=
-neric
-bitfield code afterwards, but we should be on track now. :)
-
-- Danilo
-
-[1] https://docs.kernel.org/gpu/nova/core/todo.html#generic-register-abstra=
-ction-rega
-[2] https://lore.kernel.org/all/DD15H63RK1KJ.1J584C1QC4L28@kernel.org/
+Since it adds additional information about the specific board, which is not
+covered by the chipset information already I think it's fine.
