@@ -1,214 +1,190 @@
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DA0285419;
-	Wed,  7 Jan 2026 08:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BCD286405
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 08:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767773700; cv=none; b=AjjW3iutfmevm9nRaVUNI6QKa42g/qwyegDuJ1o1UCj6vsnIdUYSdKDyi7pXhd3UkZIwNdjYWTFLTf1wtQvPtp0mBiINORu1CyFmdor7uazXl2JM/9MYOMtDBEtBRpgPIyvCoIh8x8fbTQi84hskqy3aVh+HJUjiyvASOf8nJnk=
+	t=1767774541; cv=none; b=udfd9I32JeJ6yD+ooE09UYmDsTq0RdnGqUjHRI+pWhvkJ93wLnNy6f8oLQgGGdyuxpZjyG1BxBAYbpgW9Oks449Dgylb+P2k+pFdgJlPdVO6x7m67iikLDiuOofNDxO/ErvHoEW/xI6wn4kMN7TRYZ4Djaw39rT+c01w2vi6PJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767773700; c=relaxed/simple;
-	bh=iAJnb9/rwV2jTlmCQSFf3nva6unTGQNGBsbITfZ85Hc=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=og8aqA11IUp1JJFaK9alNIvFd32tQyCGyqWYxoguAJfmoLZ9N/CrqcjhDiDdstoaKPTOyOxaz57Lcaj9lS6PSmq5BIMvzXbZA6b+Qee/pz/j/FZi/MNm0oMBde8hJbm6HcApDQSYJuC/ziA4jeq1teKp4oaaSAFQMaPi78n/iTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=UEN+Od4k; arc=none smtp.client-ip=43.163.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1767774541; c=relaxed/simple;
+	bh=i43UTuxPGA+uPunskL9vqTNqipNuBn7cdlDOEX/aJ7I=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ilaI/4CROYHj4a/2TD5hiaAGMFp1BB2jdSBvOahXsJVvjjE8VFo/5fJJP8vHLYrUClkiJNoPCOCos0MS0FtepQmsltjStqSh8CUmg8NYbvFm8a3NuZWHtKfj3rsH1TFVFQRq73ZUc74+OR7Zg8UPkcBWPLv5A7WL0ZxNgDIkWM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QuLDsI8x; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="UEN+Od4k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1767773684; bh=YbRjhLpesLlZkgyVBDQ+2GNJl793w9sZpCAaFBN8/do=;
-	h=From:To:Cc:Subject:Date;
-	b=UEN+Od4kYwhKI+kkU0Bz4ad7nwkIgQPt5uRiqoOB1mpJz3WKJdQa9D9HYwDMQFmTI
-	 q89FTnd3a7uvMCc5sUE5yKSDOtGapqVXzuUx8WETSSGvoTcyudk617fUnRz6UTDKSS
-	 VkJNOvFrsrKqIMHSiA9LPDENQckcaE+mhGtVjFK0=
-Received: from localhost.localdomain ([116.128.244.169])
-	by newxmesmtplogicsvrsza56-0.qq.com (NewEsmtp) with SMTP
-	id 3A989295; Wed, 07 Jan 2026 16:14:41 +0800
-X-QQ-mid: xmsmtpt1767773681tdmzi2xe5
-Message-ID: <tencent_63DD850B43CC086844717B73C574B8358F05@qq.com>
-X-QQ-XMAILINFO: OATpkVjS499u1b/FTGUJDMtH0GWq6+Yu2oNB+ox+6f4fDCh2fkkqAi115ZAaR4
-	 Ab5F9nxuhZPGmDRczpw5eX11rUE49XnV9sl/ti1H9PR9kd22yncsSDqsdL89W7KlJ2ETBautzSAk
-	 xFlYPva76ZqURIWXbZf6se/irIuFR9xcr8Mv0wzwJnDKMHMWZ5Ek0uv7aZy18dlxMs3l+OoAtK5l
-	 gt0mWCk8HkyQ16/GqcRcDweuJdvl1N4h+5sM4Kf9+eUL6KzU9jbcV1HESTYqvAJY8MfxWKeWUE/E
-	 jzKmT0U3F/mf+GmjNSdqXrsiadTFfCl1+65fGb+XxrC2CyeNt+7MRwrySAfHKxUwVxRq5SOhNnqL
-	 cxRgYPvbS6CpInVMHGennTxji48lOcYG8ZDdqj6Z7Fb2YFvY80cZB6yoTSbJui+Pwqi5OT4ILdKa
-	 OOlkPdtpvAW6KQuHgYJUAXLbqM0YY8LtIaZf1Taeh1UqGweWRAstgU3+Xmxpv0DeFTSwt7LwYvz+
-	 7c6rD9qg1FOei1hg/qLx2ABj/cXYJ1D0CBpVC0IMmb2YHY5SY8ObAjCZ71dB6TpFqDTZidQb708B
-	 zUM3Wd8snGDaJbNqMwT7iqZ55EDXQU8SKRFHIrIrNCwhq9q9oOffL9QDypX5gPk+mMubTA6kVvTN
-	 VorNOIE7LVcylpfzUDRgtH90QFWb7L/ldJp2B8fiThRRhie/TACNNRkVRSMtKAqTsluUEtb+vQER
-	 Gz2mY1nFMjXXb7QoxJY6EaxIapDWm/ANEWTKaCIQJUWB2XmKkPbZZlyWnMIL+YiYjTLgeCe5k2fi
-	 R8YtsCUK2i/X4LwOEX0XAHl+k3jh64bFVS2nqiK5tD4kesATj5O85Ex0RxfXdSVFHaxHgC533xPG
-	 6hToYDLlUBT1ZR4pwqGGE+NihoVcbRNyYyxANf4/VNWUuywfPvmXIV1B9Wb3SZzb1csv6N4yc/WV
-	 5hFHZaTjQzYvPEpqjt+waOjMKw8k2pgYTXU8cu+AdIuuSdM2dnPwQpiFKvCidWjMGaaXCr8p7h2r
-	 dI9PlQxQLKMdd/9Ft7l91woO2ISZo=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-From: 1064094935@qq.com
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	pengfuyuan <pengfuyuan@kylinos.cn>
-Subject: [PATCH] rust: io: mem: add ioremap_wc support
-Date: Wed,  7 Jan 2026 16:14:40 +0800
-X-OQ-MSGID: <20260107081440.173112-1-1064094935@qq.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QuLDsI8x"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b802843b0bbso198598166b.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 00:28:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767774538; x=1768379338; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ykR1GboNgwnEMIKRL/1Y0EAnwg+24L8gNnjuc/K5lGk=;
+        b=QuLDsI8x8Dp/Lxqw8CniBxpCPQlqjCgFn+BUXLk2yy70laCv4rvKAaa4O5jeH3mwc+
+         4+QOIgkpB9ZqiTPClqvSOckkm5Jn1GVUvl8YTok67noz7LU8UAVLO5Aj5FGly5zWvH3k
+         LiNQ35X2tlGxQXZUggM6GTOFDp2Q4kA+GTBxdTWUvBeYgejw+q8qwQM23y2hvR8rtx/Q
+         pPBdzVBJy+N9FOIgIcwylCKqoHf6KGOH+J4bo7DeNSUbAkRty91jmAljLKPmUAdi0OHf
+         OKtjPR2kZA6VNUI+eOG4V4Uuytj1h/+qaxHVCUWvAEL/U49dDZbL7ycGyk3FlBiT8GnA
+         ks7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767774538; x=1768379338;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ykR1GboNgwnEMIKRL/1Y0EAnwg+24L8gNnjuc/K5lGk=;
+        b=wvtRXAzpqTfB9RVc+WQynNwK1USlKftg0qF8MbIcb/qHOUHZvczb4N78RLVghNAMJL
+         IpwvO+4n64arjl/fBeoW/9okBpmFg2fJLh05UmkrrtYUQaMdK7dU8cARBkprAJPyJvtn
+         sISv9hYSlbio3lmmpRXMX1p/GLNlVsu3N4J1T3b+X0UwXSirEUUbyCPQ8BN7Tgc3r3Ra
+         dvrmzeUWfe/ivDnL/2iMa7H2aS6tR2ZZ9J2orO2FmPESaHR8r7t+wV9ll0YNVS/awfwi
+         2ezPWSpIIwcCAAAT7lNPcf3ilPHYf2weBImdKSvT/W9f3JwmPZR9+EnEp/6QTG/2YxWj
+         SUhw==
+X-Forwarded-Encrypted: i=1; AJvYcCV9XgehbotnGT2urNltsOjl+eWnPTh6onZ27tkld+nAe/q9VPuP16j70Qj2b0RGPXc/MDvv9RqCHP9wreLUwg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvDEz18aUh9InfKjE/YozkK51eylCN+kbqFYCfkAb7SoAxZ1rz
+	i8ZRHe0trutzCh5Cz+mQ9rilwzwi3oJ69F7aJuNrOEhQz8hPLN93ypNkwR7y9koGHrSbpBeeqGn
+	3Hg16e+E5Jv/Ek3Ka5w==
+X-Google-Smtp-Source: AGHT+IHgTcljIXElO3Qhde2aZBgeDKkhzG9PcR4IzSIACuSEXLi+nYVOGX6mp6olHxoGUz0TdJjmOYbe3O425co=
+X-Received: from ejctz13.prod.google.com ([2002:a17:907:c78d:b0:b7f:ece0:4438])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:1c94:b0:b73:70db:4994 with SMTP id a640c23a62f3a-b844535ec0fmr168003266b.34.1767774538076;
+ Wed, 07 Jan 2026 00:28:58 -0800 (PST)
+Date: Wed, 07 Jan 2026 08:28:46 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAD0ZXmkC/32NQQ6CMBBFr0Jm7RimRUFW3sOwqO1QGpGSFhsN4
+ e5WDuDyveS/v0Lk4DhCW6wQOLno/JRBHArQg5osozOZQZTiRIIaXFR8oA3+NePIynBAVdNFkmZ
+ zriTk3Ry4d++9eesyDy4uPnz2i0Q/+6+WCAmr/l6zNpVuZHm13tuRj9o/odu27QtB63tGswAAA A==
+X-Change-Id: 20251218-task-group-leader-a71931ced643
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4613; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=i43UTuxPGA+uPunskL9vqTNqipNuBn7cdlDOEX/aJ7I=;
+ b=kA0DAAoBBFi+7ljGOUYByyZiAGleGUSjABbot8qDXUEI8ODRubW83VKPl0eymapHnZRJWHQdd
+ IkCMwQAAQoAHRYhBIOSopRNZAcK8Ui9sgRYvu5YxjlGBQJpXhlEAAoJEARYvu5YxjlGyRgQAKxn
+ ojjOyMkrCXzRvRYP1zrd59l10I0k1zwwvnTwtJfN30/RZWK2o2wL8pVE3ohgMQ2UhfWlBk0nkZY
+ ZGpsubEYIJVICdEElPhbWjSHAr3rC4tIRCwsn5ZhenpDnTmeJVeba3WxT0Risijql10oUPbpLBl
+ cDsjjO+VC2QvQMVN9q2Q163GQJHOJAvbeGE1VNnPkVfDT0xN9VMyzx9WMwjrBu9ltWOSTTGUC+a
+ U7L8Q+FS335lIbCgphzJQK5XerhH/JfqHqeF/Jj5YPA7p1jBxxivXtFLA0rjF00VniSyawRrEmC
+ s9l4biqnrHeK7cc4GWF+8pwUdIVSG9ZUBqOgc5Kfv3Cb2hJD26SKG4+3bE7yI0T/kPn7edxQBAt
+ UrW7VnJho1Efq6zRAsxzzy1KEkjfW/vttEi7wT0q1xxKRGBEMQ91zPdUMBnFbL8XUhad39nA/du
+ 7XBjLBAOo7+fIeGjIYGFDl18uk4f3msTcFxMbItYRFE9OEmfImup05tuemeqKWTkH0t2g8QOg/4
+ 9Y/wOO0xCCEtdKCIv+Do8MmjpzxtH47w2h5YS7CUJrp0fB6O0Qb2bNrl/2qY8Gzod8qf06x96zv
+ M8syMC4lFWcnVwcTK87oltVCTRQzKXnLjtUi33RUAYk4AjZS2yja2SyCHPsmIA0elu07rmtizuj 3n0Qs
+X-Mailer: b4 0.14.2
+Message-ID: <20260107-task-group-leader-v2-1-8fbf816f2a2f@google.com>
+Subject: [PATCH v2] rust: task: restrict Task::group_leader() to current
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Christian Brauner <brauner@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-From: pengfuyuan <pengfuyuan@kylinos.cn>
+The Task::group_leader() method currently allows you to access the
+group_leader() of any task, for example one you hold a refcount to. But
+this is not safe in general since the group leader could change when a
+task exits. See for example commit a15f37a40145c ("kernel/sys.c: fix the
+racy usage of task_lock(tsk->group_leader) in sys_prlimit64() paths").
 
-Add write-combining memory mapping support to the Rust iomem abstraction.
-This extends the existing IoMem and IoRequest abstractions to support
-write-combining cache policy, which is essential for framebuffer memory
-and other memory regions that benefit from write-combining semantics.
+All existing users of Task::group_leader() call this method on current,
+which is guaranteed running, so there's not an actual issue in Rust code
+today. But to prevent code in the future from making this mistake,
+restrict Task::group_leader() so that it can only be called on current.
 
-The implementation follows the same pattern as the existing ioremap and
-ioremap_np support:
-- Add rust_helper_ioremap_wc() in rust/helpers/io.c to wrap the C API
-- Add IoMem::ioremap_wc() to perform the actual mapping with write-combining
-- Add IoMem::new_wc() to create IoMem instances with write-combining policy
-- Add IoRequest::iomap_wc_sized() and IoRequest::iomap_wc() methods
-  for compile-time and runtime-sized mappings respectively
+There are some other cases where accessing task->group_leader is okay.
+For example it can be safe if you hold tasklist_lock or rcu_read_lock().
+However, only supporting current->group_leader is sufficient for all
+in-tree Rust users of group_leader right now. Safe Rust functionality
+for accessing it under rcu or while holding tasklist_lock may be added
+in the future if required by any future Rust module.
 
-This enables Rust drivers, such as framebuffer drivers, to properly map
-memory regions with write-combining semantics.
+This patch is a bugfix in that it prevents users of this API from
+writing incorrect code. It doesn't change behavior of correct code.
 
-The API design is consistent with the existing iomap() methods, providing
-both sized and unsized variants to match the pattern established by the
-generic iomem abstraction.
-
-Signed-off-by: pengfuyuan <pengfuyuan@kylinos.cn>
+Reported-by: Oleg Nesterov <oleg@redhat.com>
+Closes: https://lore.kernel.org/all/aTLnV-5jlgfk1aRK@redhat.com/
+Fixes: 313c4281bc9d ("rust: add basic `Task`")
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/helpers/io.c     |  5 +++
- rust/kernel/io/mem.rs | 71 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 76 insertions(+)
+The rust/kernel/task.rs file has had changes land through a few
+different trees:
 
-diff --git a/rust/helpers/io.c b/rust/helpers/io.c
-index c475913c69e6..6c9edf7f2233 100644
---- a/rust/helpers/io.c
-+++ b/rust/helpers/io.c
-@@ -13,6 +13,11 @@ void __iomem *rust_helper_ioremap_np(phys_addr_t offset, size_t size)
- 	return ioremap_np(offset, size);
- }
- 
-+void __iomem *rust_helper_ioremap_wc(phys_addr_t offset, size_t size)
-+{
-+	return ioremap_wc(offset, size);
-+}
-+
- void rust_helper_iounmap(void __iomem *addr)
- {
- 	iounmap(addr);
-diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-index b03b82cd531b..94403d899bbd 100644
---- a/rust/kernel/io/mem.rs
-+++ b/rust/kernel/io/mem.rs
-@@ -149,6 +149,41 @@ pub fn iomap(self) -> impl PinInit<Devres<IoMem<0>>, Error> + 'a {
-     pub fn iomap_exclusive(self) -> impl PinInit<Devres<ExclusiveIoMem<0>>, Error> + 'a {
-         Self::iomap_exclusive_sized::<0>(self)
-     }
-+
-+    /// Maps an [`IoRequest`] with write-combining cache policy where the size
-+    /// is known at compile time.
-+    ///
-+    /// This uses the [`ioremap_wc()`] C API, which provides write-combining
-+    /// semantics. This is useful for framebuffer memory and other memory
-+    /// regions that benefit from write-combining, where multiple writes can
-+    /// be combined and reordered for better performance.
-+    ///
-+    /// Unlike [`Self::iomap`], this method explicitly uses write-combining
-+    /// mapping, which is typically needed for video framebuffers.
-+    ///
-+    /// [`ioremap_wc()`]: https://docs.kernel.org/driver-api/device-io.html#getting-access-to-the-device
-+    pub fn iomap_wc_sized<const SIZE: usize>(
-+        self,
-+    ) -> impl PinInit<Devres<IoMem<SIZE>>, Error> + 'a {
-+        IoMem::new_wc(self)
-+    }
-+
-+    /// Maps an [`IoRequest`] with write-combining cache policy where the size
-+    /// is not known at compile time.
-+    ///
-+    /// This uses the [`ioremap_wc()`] C API, which provides write-combining
-+    /// semantics. This is useful for framebuffer memory and other memory
-+    /// regions that benefit from write-combining.
-+    ///
-+    /// Unlike [`Self::iomap_wc_sized`], here the size of the memory region
-+    /// is not known at compile time, so only the `try_read*` and `try_write*`
-+    /// family of functions should be used, leading to runtime checks on every
-+    /// access.
-+    ///
-+    /// [`ioremap_wc()`]: https://docs.kernel.org/driver-api/device-io.html#getting-access-to-the-device
-+    pub fn iomap_wc(self) -> impl PinInit<Devres<IoMem<0>>, Error> + 'a {
-+        Self::iomap_wc_sized::<0>(self)
-+    }
- }
- 
- /// An exclusive memory-mapped IO region.
-@@ -261,6 +296,33 @@ fn ioremap(resource: &Resource) -> Result<Self> {
-         Ok(io)
+* Originally task.rs landed through Christian's tree together with
+  file.rs and pid_namespace.rs
+* The change to add CurrentTask landed through Andrew Morton's tree
+  together with mm.rs
+* There was a patch to mark some methods #[inline] that landed through
+  tip via Boqun.
+
+I don't think there's a clear owner for this file, so to break ambiguity
+I'm doing to declare that this patch is intended for Andrew Morton's
+tree. Please let me know if you think a different tree is appropriate.
+---
+Changes in v2:
+- Update commit message re: bugfix
+- Pick up Reviewed-by.
+- Reword current.group_leader to current->group_leader in comment.
+- Link to v1: https://lore.kernel.org/r/20251218-task-group-leader-v1-1-4fb7ecd4c830@google.com
+---
+ rust/kernel/task.rs | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 49fad6de06740a9b9ad80b2f4b430cc28cd134fa..cc907fb531bceea6e8dc1175d9350bd24780a3d5 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -204,18 +204,6 @@ pub fn as_ptr(&self) -> *mut bindings::task_struct {
+         self.0.get()
      }
  
-+    fn ioremap_wc(resource: &Resource) -> Result<Self> {
-+        // Note: Some ioremap() implementations use types that depend on the CPU
-+        // word width rather than the bus address width.
-+        //
-+        // TODO: Properly address this in the C code to avoid this `try_into`.
-+        let size = resource.size().try_into()?;
-+        if size == 0 {
-+            return Err(EINVAL);
-+        }
-+
-+        let res_start = resource.start();
-+
-+        // SAFETY:
-+        // - `res_start` and `size` are read from a presumably valid `struct resource`.
-+        // - `size` is known not to be zero at this point.
-+        let addr = unsafe { bindings::ioremap_wc(res_start, size) };
-+
-+        if addr.is_null() {
-+            return Err(ENOMEM);
-+        }
-+
-+        let io = IoRaw::new(addr as usize, size)?;
-+        let io = IoMem { io };
-+
-+        Ok(io)
-+    }
-+
-     /// Creates a new `IoMem` instance from a previously acquired [`IoRequest`].
-     pub fn new<'a>(io_request: IoRequest<'a>) -> impl PinInit<Devres<Self>, Error> + 'a {
-         let dev = io_request.device;
-@@ -268,6 +330,15 @@ pub fn new<'a>(io_request: IoRequest<'a>) -> impl PinInit<Devres<Self>, Error> +
- 
-         Devres::new(dev, Self::ioremap(res))
+-    /// Returns the group leader of the given task.
+-    pub fn group_leader(&self) -> &Task {
+-        // SAFETY: The group leader of a task never changes after initialization, so reading this
+-        // field is not a data race.
+-        let ptr = unsafe { *ptr::addr_of!((*self.as_ptr()).group_leader) };
+-
+-        // SAFETY: The lifetime of the returned task reference is tied to the lifetime of `self`,
+-        // and given that a task has a reference to its group leader, we know it must be valid for
+-        // the lifetime of the returned task reference.
+-        unsafe { &*ptr.cast() }
+-    }
+-
+     /// Returns the PID of the given task.
+     pub fn pid(&self) -> Pid {
+         // SAFETY: The pid of a task never changes after initialization, so reading this field is
+@@ -345,6 +333,18 @@ pub fn active_pid_ns(&self) -> Option<&PidNamespace> {
+         // `release_task()` call.
+         Some(unsafe { PidNamespace::from_ptr(active_ns) })
      }
 +
-+    /// Creates a new `IoMem` instance with write-combining cache policy from
-+    /// a previously acquired [`IoRequest`].
-+    pub fn new_wc<'a>(io_request: IoRequest<'a>) -> impl PinInit<Devres<Self>, Error> + 'a {
-+        let dev = io_request.device;
-+        let res = io_request.resource;
++    /// Returns the group leader of the current task.
++    pub fn group_leader(&self) -> &Task {
++        // SAFETY: The group leader of a task never changes while the task is running, and `self`
++        // is the current task, which is guaranteed running.
++        let ptr = unsafe { (*self.as_ptr()).group_leader };
 +
-+        Devres::new(dev, Self::ioremap_wc(res))
++        // SAFETY: `current->group_leader` stays valid for at least the duration in which `current`
++        // is running, and the signature of this function ensures that the returned `&Task` can
++        // only be used while `current` is still valid, thus still running.
++        unsafe { &*ptr.cast() }
 +    }
  }
  
- impl<const SIZE: usize> Drop for IoMem<SIZE> {
+ // SAFETY: The type invariants guarantee that `Task` is always refcounted.
+
+---
+base-commit: 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
+change-id: 20251218-task-group-leader-a71931ced643
+
+Best regards,
 -- 
-2.25.1
+Alice Ryhl <aliceryhl@google.com>
 
