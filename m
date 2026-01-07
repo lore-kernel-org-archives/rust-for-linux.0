@@ -1,119 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121AF31A56C;
-	Wed,  7 Jan 2026 12:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A90314D2A
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 12:23:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767788568; cv=none; b=DnW2PwONgROR4X7uvuScJvmp8CMXUv1tdaB/3UTGclQlfjn0awJUtX/g+sAqONayrs7dWLvKql2ICCdD9Hh6OReW4Di7IxyhBXiThOp868IkM8lT/g4uOkaTwBJVLyAlx/hXnNcbA8Cx1eDFCNn9skDJBqv0UZ+UgIhTQRkjknU=
+	t=1767788582; cv=none; b=qp35vnW/TPfrMfPU32zCOk+l09ljPUF26JzSgCm9u2Q1egGymJDzWkVX0ljnpI2WFkYs/fAb1ZLXJNuSq0NH0mBtWTFgQ1kDSzaS4Gj1kbXNfJOS4URaymzbuN21wzwx/BSKaWrJ3KaSJGGGjTt5/lKWjbp9PnJ/hcZ7kMVM31s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767788568; c=relaxed/simple;
-	bh=2wz8cf8crD1UXOpgkNkds4yjzWyJDvxV9FNfHAZ7L/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TSVoQpXDNc4R17e/yCD0Q59/xz+Qh3YSvir1qk2D8MZZiTAjCu4Le7AeHYMcQgWwfCtaz9dNnDd45fa7ZW8D/JgRjoPAjVX+ZrEI6Q1StTv0f9eZH++7ashph+70geQo3ZW5W7MvAteWAXyFJmZjmWuIsxrifBh9IvwCredd6NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/eEQEIk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767788582; c=relaxed/simple;
+	bh=ldznM2VFkJHtjo6dOdJXJZFjWo96wSvSHo0WgO2i9RU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=dJ+DxxEG0KVlV2n+HXeRbmeRXy3ZCx6gqAVZK3KDY5G+lvq34N+4zb2i/gUHz82zFDJCL3koy+w131MPuPAX4V063MZHVgCTtZt/T1kmQ/qLPS5k4vmTL02JH1J8pEIbjb4qu4TmW2nejn73wjTPzJDmN+HFLp6Mz3M9EBOPYYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0kGr0r4c; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/eEQEIk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0F8C4CEF7;
-	Wed,  7 Jan 2026 12:22:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767788567;
-	bh=2wz8cf8crD1UXOpgkNkds4yjzWyJDvxV9FNfHAZ7L/I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m/eEQEIkgULSHDPhdH3kgjBcjWc3w1ilYx/3tnhazTYE9GO+ICCseTorTbXgE9/o7
-	 EE6TKPEe57iUWaPqb5sZfQV/v5Fr6sMuAC0wn6cobdNm2RWJprWOQN1WGVXZAGmUZ6
-	 jOT6A6qj/I0rsJFqqeKIih+hfj+SI736FM5AfISI=
-Date: Wed, 7 Jan 2026 13:22:44 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rafael@kernel.org, igor.korotin.linux@gmail.com, ojeda@kernel.org,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com,
-	leon@kernel.org, bhelgaas@google.com, kwilczynski@kernel.org,
-	wsa+renesas@sang-engineering.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-i2c@vger.kernel.org
-Subject: Re: [PATCH 6/6] rust: driver: drop device private data post unbind
-Message-ID: <2026010741-wiry-trophy-46ec@gregkh>
-References: <20260107103511.570525-1-dakr@kernel.org>
- <20260107103511.570525-7-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0kGr0r4c"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47d62cc05daso12315925e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 04:23:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767788579; x=1768393379; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zJouJeDS0QkHiQfTNtIoyh+wTKtfWBn+hoMdv0mRUlY=;
+        b=0kGr0r4cGkg8hfq8qsKjBdhmc5pCPQy7sERYtq0MHtvgikvlHdu/QV90GNLjnobH7D
+         GvsVqeAEDMcwi4w3nIXOjB23fpCiQsGHxNm4mLuD0saa/UXc6DuVLUUYIsuY/xXBvGsH
+         4cgfsHhklM7yfAgMX6VBfKoYwePsBY1I/3vfhuPD9rQIoioXVJdNtEqLilPRXYHniHrR
+         g+9EvUal143I/u9vtTgI0Dj4Dg6iRoglIfkKs3UW5AAOQNAKbZU5xovfNz98QsGkbcLC
+         ER+cfh7ULK2b+Au9xUfOA6kWsakm9tzdI/IeFDXgedEN4xim6T0jshOv8viRxdOY8rDz
+         Aj2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767788579; x=1768393379;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zJouJeDS0QkHiQfTNtIoyh+wTKtfWBn+hoMdv0mRUlY=;
+        b=rZ1oLpFNv39ZUyXT6IO5jbB+uetvzDcCK+O/rK0LO78G5MkYHBF74AmLCE32niqdFt
+         BCdBp23wTAoPaYFFc6ZBl3HfdB7MsHV9dW7Ijtjj5Dmmr2iZZANRn+Jw4wuEuvuZ4I+Z
+         9+acBUxKmVJmkLk1NcBlpsdYcfAWGafUTT/q8hjOsr1w5VwMiEgh0G6JOdyfQjCJ3sGl
+         AHqx+Sdf1wrgdf1ppXrRI+p3CBs5yuYznNqUAUwOrexmLBdzcoxhPwGuUktzJD3X7SWV
+         SwPt5tizDYi1KiEL8IGWLoywc+mfmpeHxGJZMhceGBmwjNv2mJOUdihYaaprjz71TAtq
+         SWtw==
+X-Forwarded-Encrypted: i=1; AJvYcCXG+hV7FO/2owOcXBJH+mH7t6r+z4WxOzRmRLpSvUCchLeXYr7w/Ka6CT3cGhm+gG5+WObLAqXqr6t1vPmEkQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnfX36Hm0z53yY4SvWxpVy8jPlveHXnOLgmxa+MlnId3de7691
+	/rilve8B22hX+JHdsYWXY7oJVKUXxV3B8Pa2hvYedbNHhOctRs/KHWrGkIfAnHUJlwtsjMNcFA2
+	ZhKfFfGPS2hYB7AoK0w==
+X-Google-Smtp-Source: AGHT+IGd72TAvN52ZdOcLv5w5NFynTZ6/3FbD1p1RmwNMK1B3tXDzrlLFoNK1CQAj2A8DAY2TV7PI7tFtQAmVhU=
+X-Received: from wmbh26.prod.google.com ([2002:a05:600c:a11a:b0:477:103e:8e30])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:83c7:b0:479:3a86:dc1c with SMTP id 5b1f17b1804b1-47d84b52e31mr25359035e9.36.1767788579088;
+ Wed, 07 Jan 2026 04:22:59 -0800 (PST)
+Date: Wed, 07 Jan 2026 12:22:50 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107103511.570525-7-dakr@kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIABpQXmkC/x3MwQqDMAyA4VeRnBdIi1j0VcYOVbMtop0kVgTx3
+ S07/Ifv8p9grMIGXXWC8i4mv1TgHhUM35g+jDIWgyffkKOAU15WnGPPM2q2DZcoaSuxGrpANbW t5zD2UA6r8luO//35uq4bqAWVmG0AAAA=
+X-Change-Id: 20260107-jump-label-rust-maintainers-17040992e7db
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1794; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=ldznM2VFkJHtjo6dOdJXJZFjWo96wSvSHo0WgO2i9RU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpXlAd25HnrIno8iw6ydeeNq7fNAf/kHfCp7llW
+ fa7bTYj5JKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaV5QHQAKCRAEWL7uWMY5
+ RqplD/0S3XKDvD8RMX/E5ztwpVoFj9YV7M33OhWMIoUQ5IeMDP7kIslAN75YnLnvRVdNZ/e44bD
+ DVk/1wpVh8DMr1b/YAqqiK9lbOHMCEU4egBa/1OAmr1eX51kbVsDB1Z8VUz3zqaiHvXiRC9iu7m
+ zkdprMm+RLdFT+bt8r9i9tnYvzfVUo/g7pe+5g0lzdVXLMqG2ahzjKBuwtTLTC815AfUP7Y2Vpf
+ CkNiETbOJBaMajeiCjZ+7IJBAb4XRpp5C6nQzk1sW28IAJXZHv8IMCbpxcF5tE4u47ssYQKj680
+ I4B56RYmA8Y078/WA9Y3vt6lTDg+xQGX5BmGzJA5BN5iCag2Nz9P/7jWVUilZuAPpI/azLoSV4d
+ vZECin7DI1Y6n4AUBCod5rLBDPH/8FL4r8xl6q4VXJajzlpfiSXoniDMq0rmrVmRNJv0vR51C6N
+ P4ZD275d/LJ65k2ppNwc96kXrAoqRNKyboNno2s6oob0w4a2hxAfyqflPHBDHzPb0qGVpFm2fik
+ R+rnFZ+Zi5nkRt/jHzzdQ8HGcuowhCYuR1xtWemxgHcQNVtJzywJAPaiWk0+hC9H2x6wTO0cj0A
+ wcCXrgzbtTkq0StYW0AFfQ3O4wZ3X171gFu7tNZtoi7pvUHXCyiP2/cQ23SHkc3nuLKSN+5zToB 6W8SjamGR02mnGA==
+X-Mailer: b4 0.14.2
+Message-ID: <20260107-jump-label-rust-maintainers-v1-1-702b03482f2e@google.com>
+Subject: [PATCH] MAINTAINERS: add Rust files to STATIC BRANCH/CALL and TRACING
+From: Alice Ryhl <aliceryhl@google.com>
+To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
+	Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jan 07, 2026 at 11:35:05AM +0100, Danilo Krummrich wrote:
-> @@ -548,6 +548,10 @@ static DEVICE_ATTR_RW(state_synced);
->  static void device_unbind_cleanup(struct device *dev)
->  {
->  	devres_release_all(dev);
-> +#ifdef CONFIG_RUST
+I realized that these files were never listed in MAINTAINERS when they
+were added in commit ad37bcd965fd ("rust: add tracepoint support").
 
-Nit, let's not put #ifdef in .c files, the overhead of an empty pointer
-for all drivers is not a big deal.
+I'm proposing to include them under the existing entries, as that seems
+like the most obvious place to include them. However, there are multiple
+ways to do this. If you prefer to have them elsewhere, I would also be
+happy to create a new entry with me as maintaining them, or I'm also
+willing to be listed as R: under the entry. Regardless of how we list
+them in MAINTAINERS, I will be around if anything comes up. Let me know
+what you all prefer.
 
-> +	if (dev->driver->p_cb.post_unbind)
-> +		dev->driver->p_cb.post_unbind(dev);
-> +#endif
->  	arch_teardown_dma_ops(dev);
->  	kfree(dev->dma_range_map);
->  	dev->dma_range_map = NULL;
-> diff --git a/include/linux/device/driver.h b/include/linux/device/driver.h
-> index cd8e0f0a634b..51a9ebdd8a2d 100644
-> --- a/include/linux/device/driver.h
-> +++ b/include/linux/device/driver.h
-> @@ -85,6 +85,8 @@ enum probe_type {
->   *		uevent.
->   * @p:		Driver core's private data, no one other than the driver
->   *		core can touch this.
-> + * @p_cb:	Callbacks private to the driver core; no one other than the
-> + *		driver core is allowed to touch this.
->   *
->   * The device driver-model tracks all of the drivers known to the system.
->   * The main reason for this tracking is to enable the driver core to match
-> @@ -119,6 +121,15 @@ struct device_driver {
->  	void (*coredump) (struct device *dev);
->  
->  	struct driver_private *p;
-> +#ifdef CONFIG_RUST
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Based on v6.19-rc1.
 
-Again, no #ifdef.
+I noticed it due to this patch:
+https://patch.msgid.link/20260105-define-rust-helper-v2-9-51da5f454a67@google.com
+---
+ MAINTAINERS | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> +	struct {
-> +		/*
-> +		 * Called after remove() and after all devres entries have been
-> +		 * processed.
-> +		 */
-> +		void (*post_unbind)(struct device *dev);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5b11839cba9de1e9e43f63787578edd8c429ca39..14eafd3fb428483cfd3f0a86f52d0c62ba7436e5 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -25017,6 +25017,9 @@ F:	include/linux/jump_label*.h
+ F:	include/linux/static_call*.h
+ F:	kernel/jump_label.c
+ F:	kernel/static_call*.c
++F:	rust/helpers/jump_label.c
++F:	rust/kernel/generated_arch_static_branch_asm.rs.S
++F:	rust/kernel/jump_label.rs
+ 
+ STI AUDIO (ASoC) DRIVERS
+ M:	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+@@ -26470,6 +26473,7 @@ F:	include/linux/trace*.h
+ F:	include/trace/
+ F:	kernel/trace/
+ F:	kernel/tracepoint.c
++F:	rust/kernel/tracepoint.rs
+ F:	scripts/tracing/
+ F:	scripts/tracepoint-update.c
+ F:	tools/testing/selftests/ftrace/
 
-post_unbind_rust_only()?
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20260107-jump-label-rust-maintainers-17040992e7db
 
-> -impl<T: RegistrationOps> Registration<T> {
-> +impl<T: RegistrationOps + 'static> Registration<T> {
-> +    extern "C" fn post_unbind_callback(dev: *mut bindings::device) {
-> +        // SAFETY: The driver core only ever calls the post unbind callback with a valid pointer to
-> +        // a `struct device`.
-> +        //
-> +        // INVARIANT: `dev` is valid for the duration of the `post_unbind_callback()`.
-> +        let dev = unsafe { &*dev.cast::<device::Device<device::CoreInternal>>() };
-> +
-> +        // `remove()` and all devres callbacks have been completed at this point, hence drop the
-> +        // driver's device private data.
-> +        //
-> +        // SAFETY: By the safety requirements of the `Driver` trait, `T::DriverData` is the
-> +        // driver's device private data.
-> +        drop(unsafe { dev.drvdata_obtain::<T::DriverData>() });
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-I don't mind this, but why don't we also do this for all C drivers?
-Just null out the pointer at this point in time so that no one can touch
-it, just like you are doing here (in a way.)
-
-thanks,
-
-greg k-h
