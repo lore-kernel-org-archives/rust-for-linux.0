@@ -1,133 +1,375 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663343A0B08;
-	Wed,  7 Jan 2026 16:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF4534DCF9
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 16:40:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767804028; cv=none; b=kPEJHBKt37hRI6/C79A5/VI9XvSNYHo8SvT81NFpIVt+zPpj+eqo4/wgmkd5esS1bwQ/KYQL5HBFjG8ZvG8e8RlWvfC0scUtEoRdJsCMMs2cZMgNH4YpTNykUa1e3kp1U3qpbrVtfAZl1hMWt1PLL0vRcusTWPSYvhbgou2oZBk=
+	t=1767804065; cv=none; b=CRKPJWl/os+KkLqXG0FVNbLyLlPOvjyPZblKnxgNaWiZN1VXQyFKePCwvleGPfA3Jx4CD6CowGec9ElGO0204kqgyBdVRIsHzAStGtDHsUgGfViZoDOAJg2e9WeDb9TTh6MQJlAmRBDNtf82j6FFCaifxEOiYBH5nSK5OK0JuPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767804028; c=relaxed/simple;
-	bh=z3POv5J4x+meLVYbsQCf7mB/6gWPZ96vXCB8Job/Vvs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=axs/PjgMijKadLf9YG8M733ZFbJO7ro6viyxvbIiZfGtXbWNO+Dxo+M3gLpSoD7FvrxrzLOdGz5HiVrlCqra6wDgLZ8n6OkMwZXxuOvGBJQPpts+XmgxcfhQFaH7IlGMBPsh6AzGPztHLIEB4LVe7+yVyi98OxNQMGA5OYJ230o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eWRXAf6v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767804065; c=relaxed/simple;
+	bh=ENoTIjD/x23fGH0u6bMcEaWjG8qijc1wbw5GCWFq7hk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rVHlMOhDkv+i7cvmcTkdzapCnykjlBY8+InFJ5FF5RDGBWJWQPB681fOmyzo0H3iGHO7GgkitWOt6y3y4Iw66beY4OFIpplSbD2TCElOJqEoWKp+BMZh8j4o640xiT4lhiqHfi+CsQhqx0b3R7z8StKTddGXHzC0cFIY3gFOu68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LlJ2mMGy; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eWRXAf6v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99E7C4CEF1;
-	Wed,  7 Jan 2026 16:40:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767804026;
-	bh=z3POv5J4x+meLVYbsQCf7mB/6gWPZ96vXCB8Job/Vvs=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=eWRXAf6v4PEvZFPNQ9MSIq4mhg/lKsxd/ojHLmtL2/9VcVDlrbVbiA6snO1GiXnbT
-	 /iNW0LDo1Dz0qk+FFbvfyzNtvX+elFdZITVNrrTvhKVyf/LVuWfqkhsfVQnnYPtiU0
-	 Vnb4F482tZaEa6J/nyNruw4kS+S4lRntIo1DLkfvW7STpDVoBqQARyTGc7zWnmdrb1
-	 o7+QJUM2BvERsQ9+vZbgeOxEiE1VL1Uyg3meBjb3sebKBGMokS+eLWqd2MIVUC4D0C
-	 r/1djN+F3ERXtW3oDP2zqj/ApnebxGZ4HqbnDJX7zrf/gMIL7w8/WtL7SVbyuy07tb
-	 ptDO8D4095e0A==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LlJ2mMGy"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-37b99da107cso19735081fa.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 08:40:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767804054; x=1768408854; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m8fsPi0fe9I/9nL9CMiauOcK+tWnheCchaXOeua707Y=;
+        b=LlJ2mMGyH960YZ9pZn0CQLxkg+VG/OtzMcEdN296wwzMotyCy/YciYbwLokzcsKbiz
+         RtOhTwAYdSVujFx6K3Bzb/0C3J/W+i7gVHx2iipts8TVNzc8oMwXIpvOhZcmnJQGsprK
+         3iBcJKFkHDjtwwPzbRIx9wMegyrZtTCxE/Inxp6SglFeUz2gjaxQ8dZUvCtyAoXYDKi5
+         cuFW2yi5743TBjIZnrQ5DK6gMvPFN1rNdb5n1acWSszzxXmJmucjxo/iO8reNLp3JFP1
+         AnN/71chjxBLpTi1LIhlWSBas3vjOX2q9KkrWzgTrg9fEu+PDHSR8+m4QJ2wOy0zN2SC
+         LeCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767804054; x=1768408854;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=m8fsPi0fe9I/9nL9CMiauOcK+tWnheCchaXOeua707Y=;
+        b=q8KXe9OA8WpUlUXhxOtcucBLGozlcZzU1DWH9hKgXRCzOD105Q+iOxK/0TedNR8yav
+         voVI8KtVqBXakvXpksR2fK3OFoMrPV8dx6BBHdhII1BuUm1R/+MWkjz4AWQU/0/SDGLO
+         o/07DUDhH/6q6gP74K+/WcwB5cvJkfgSYZdE8+Zo81tFKQvjCNdy+DR+5ftTUBZ/k+IK
+         u5SAMPNwlEMQRWtXDp4bhUWw7M35fnMXGq/HKKoHSOTo/1/aezLDGL66x3Dm4Mkaq9vP
+         wOG9evONLpdSUhKSGfBUwn+Hamg6RiluRLBQLZzSCll7EsYA0ZvChCvs1CvgbqPg7f5I
+         fbzw==
+X-Forwarded-Encrypted: i=1; AJvYcCVuFDBlre1O1RE0bhfLs6ZY0QVsyUfUwk2dbsXp3Xo0N3e/a1ybGxytyNYus/9xiGAUEN1dILoHIozliHQmow==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxtp/TUaSY828j3gBbCQ1Wx4D+75mLr6IczY3Hg66pzOaHend5T
+	CpqiMQc3F0XUqfjsED0m6qbfWMQg2UIfbqkdZSN0SjW7vGeOTS3iSX9LCdKQ6WsBhWxcKsj1GeR
+	3k80XwtSrG1MI2hSeVdyX+mSMlnGPeE4=
+X-Gm-Gg: AY/fxX6WQcLSMGiHaXMLwhlGxFp1dwtIffGJkbXpJabD/lQ/MLl6VcGFLidN3bu8xeO
+	HNBuL5n7k+FPharnOh43xPWn5/9VT/OnnIjczFPMuR5yJqoZBhcEGHJccHq+kj45PhYNDcIfphh
+	hayfVQeD67sMy7rRTVdobPfK0PoPzm7+OKlG2q2ebjzXDJeiGmrJs5YlV0h1AdJ4Rq5UFmil31L
+	x4Wja8RTjiwrDV+nFRK8KTldXi7hw1wXRpcIANj27nlorQU/ri2KFttd2W1iqEbi9raEUG0D4GW
+	ObEVqdOE1iHWAiK0McLKeFB7K4jHnI5dWc6mGps9jn40DTeuGv6FnjKp/b+C7MLjBcdSBMN/KwW
+	7hJZ2uA==
+X-Google-Smtp-Source: AGHT+IFO3HTbnMSbkrRWMjNjmy23bIcyTv04ZZlpl9CQZXrfoq5iBaAHCqTg1Tiu4kfd0NUiH7kO1HhF+gcpW0lYFD4=
+X-Received: by 2002:a05:651c:1548:b0:336:df0e:f4ac with SMTP id
+ 38308e7fff4ca-382ff80b322mr8840211fa.25.1767804053340; Wed, 07 Jan 2026
+ 08:40:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260107161729.3855851-1-gary@kernel.org> <20260107161729.3855851-2-gary@kernel.org>
+In-Reply-To: <20260107161729.3855851-2-gary@kernel.org>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 7 Jan 2026 11:40:17 -0500
+X-Gm-Features: AQt7F2pHVC2LJPZIJP1DjUvg01pgaIjaKF8tLUmeYdku5UXhTM2UhzSF_1POhuc
+Message-ID: <CAJ-ks9m8nfQoDp3ymF7Yhvp076t+55bZzJ7wCQqXhu6sjGBUNg@mail.gmail.com>
+Subject: Re: [PATCH v2 01/11] rust: pin-init: internal: remove proc-macro[2]
+ and quote workarounds
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, rust-for-linux@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 07 Jan 2026 17:40:20 +0100
-Message-Id: <DFII83QY76O0.2PKZ73WCTVGPR@kernel.org>
-Subject: Re: [PATCH 0/6] Address race condition with Device::drvdata()
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <igor.korotin.linux@gmail.com>, <ojeda@kernel.org>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <david.m.ertman@intel.com>,
- <ira.weiny@intel.com>, <leon@kernel.org>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <wsa+renesas@sang-engineering.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <linux-i2c@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260107103511.570525-1-dakr@kernel.org>
- <aV6BHw-Liv0SVAwO@google.com>
-In-Reply-To: <aV6BHw-Liv0SVAwO@google.com>
 
-On Wed Jan 7, 2026 at 4:51 PM CET, Alice Ryhl wrote:
-> If a &Device<Bound> lets you access a given value, then we must not
-> destroy that value until after the last &Device<Bound> has expired.
+On Wed, Jan 7, 2026 at 11:29=E2=80=AFAM Gary Guo <gary@kernel.org> wrote:
 >
-> A &Device<Bound> lets you access the driver private data. And a
-> &Device<Bound> lets you access the contents of a Devres<T>.
+> From: Benno Lossin <lossin@kernel.org>
 >
-> Thus, the last &Device<Bound> must expire before we destroy driver
-> private data or values inside of Devres<T>. Etc.
+> The kernel only had the `proc-macro` library available, whereas the
+> user-space version also used `proc-macro2` and `quote`. Now both are
+> available to the kernel, making it possible to remove the workarounds.
+>
+> Clippy complains about unnecessary `.to_string()` as `proc-macro2`
+> provides additional `PartialEq` impl, so they are removed.
+>
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-Yes, the last &Device<Bound> must expire before we destroy the device priva=
-te
-data. This is exactly what is achieved by this patch. The device private da=
-ta is
-destroyed after all devres callbacks have been processed, which guarantees =
-that
-there can't be any contexts left that provide a &Device<Bound>.
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
 
-As for the values inside of a Devres<T>, this is exactly what I refer to in=
- my
-paragraph above talking about the unsoundness of the devres cleanup orderin=
-g in
-Rust.
-
-I also mention that I'm already working on a solution and it is in fact pre=
-tty
-close to the solution you propose below, i.e. a generic mechanism to suppor=
-t
-multiple devres domains (which I also see advantages for in C code).
-
-As mentioned, this will also help with getting the required synchronize_rcu=
-()
-calls down to exactly one per device unbind.
-
-Technically, we could utilize such a devres domain for dropping the device
-private data, but there is no need to have a separate domain just for this,=
- we
-already have a distinct place for dropping and freeing the device private d=
-ata
-after the device has been fully unbound, which is much simpler than a separ=
-ate
-devres domain.
-
-Now, you may argue we don't need a separate devres domain, and that we coul=
-d use
-the non-early devres domain. However, this would have the following implica=
-tion:
-
-In the destructor of the device private data, drivers could still try to us=
-e
-device resources stored in the device private data through try_access(), wh=
-ich
-may or may not succeed depending on whether the corresponding Devres<T>
-containers are part of the device private data initializer or whether they =
-have
-been allocated separately.
-
-Or in other words it would leave room for drivers to abuse this behavior.
-
-Therefore, the desired order is:
-
-  1. Driver::unbind() (A place for drivers to tear down the device;
-     registrations are up - unless explicitly revoked by the driver (this i=
-s a
-     semantic choice) - and device resources are accessible.)
-
-  2. devm_early_* (Drop all devres guarded registrations.)
-
-  3. No more &Device<Bound> left.
-
-  4. devm_* (Drop all device resources.)
-
-  5. No more device resources left.
-
-  6. Drop and free device private data. (try_access() will never succeed in=
- the
-     destructor of the device private data.
-
-- Danilo
+> ---
+>  rust/Makefile                             | 16 ++++++++++------
+>  rust/pin-init/internal/src/helpers.rs     |  7 ++-----
+>  rust/pin-init/internal/src/lib.rs         | 16 ----------------
+>  rust/pin-init/internal/src/pin_data.rs    | 18 ++++++------------
+>  rust/pin-init/internal/src/pinned_drop.rs | 10 ++++------
+>  rust/pin-init/internal/src/zeroable.rs    |  6 ++----
+>  scripts/generate_rust_analyzer.py         |  2 +-
+>  7 files changed, 25 insertions(+), 50 deletions(-)
+>
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 5d357dce1704d..96f0ac53ec0e8 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -212,9 +212,10 @@ rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
+>
+>  rustdoc-pin_init_internal: private rustdoc_host =3D yes
+>  rustdoc-pin_init_internal: private rustc_target_flags =3D --cfg kernel \
+> -    --extern proc_macro --crate-type proc-macro
+> +    --extern proc_macro --extern proc_macro2 --extern quote --extern syn=
+ \
+> +    --crate-type proc-macro
+>  rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
+> -    rustdoc-clean FORCE
+> +    rustdoc-clean rustdoc-proc_macro2 rustdoc-quote rustdoc-syn FORCE
+>         +$(call if_changed,rustdoc)
+>
+>  rustdoc-pin_init: private rustdoc_host =3D yes
+> @@ -273,9 +274,10 @@ rusttestlib-macros: $(src)/macros/lib.rs \
+>         +$(call if_changed,rustc_test_library)
+>
+>  rusttestlib-pin_init_internal: private rustc_target_flags =3D --cfg kern=
+el \
+> -    --extern proc_macro
+> +    --extern proc_macro --extern proc_macro2 --extern quote --extern syn
+>  rusttestlib-pin_init_internal: private rustc_test_library_proc =3D yes
+> -rusttestlib-pin_init_internal: $(src)/pin-init/internal/src/lib.rs FORCE
+> +rusttestlib-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
+> +    rusttestlib-proc_macro2 rusttestlib-quote rusttestlib-syn FORCE
+>         +$(call if_changed,rustc_test_library)
+>
+>  rusttestlib-pin_init: private rustc_target_flags =3D --extern pin_init_i=
+nternal \
+> @@ -547,8 +549,10 @@ $(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj=
+)/libproc_macro2.rlib \
+>      $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
+>         +$(call if_changed_dep,rustc_procmacro)
+>
+> -$(obj)/$(libpin_init_internal_name): private rustc_target_flags =3D --cf=
+g kernel
+> -$(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs=
+ FORCE
+> +$(obj)/$(libpin_init_internal_name): private rustc_target_flags =3D --cf=
+g kernel \
+> +    --extern proc_macro2 --extern quote --extern syn
+> +$(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs=
+ \
+> +       $(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rli=
+b FORCE
+>         +$(call if_changed_dep,rustc_procmacro)
+>
+>  quiet_cmd_rustc_library =3D $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_=
+QUIET)) L $@
+> diff --git a/rust/pin-init/internal/src/helpers.rs b/rust/pin-init/intern=
+al/src/helpers.rs
+> index 236f989a50f2f..90f85eaa41231 100644
+> --- a/rust/pin-init/internal/src/helpers.rs
+> +++ b/rust/pin-init/internal/src/helpers.rs
+> @@ -1,9 +1,6 @@
+>  // SPDX-License-Identifier: Apache-2.0 OR MIT
+>
+> -#[cfg(not(kernel))]
+> -use proc_macro2 as proc_macro;
+> -
+> -use proc_macro::{TokenStream, TokenTree};
+> +use proc_macro2::{TokenStream, TokenTree};
+>
+>  /// Parsed generics.
+>  ///
+> @@ -101,7 +98,7 @@ pub(crate) fn parse_generics(input: TokenStream) -> (G=
+enerics, Vec<TokenTree>) {
+>                      1 =3D> {
+>                          // Here depending on the token, it might be a ge=
+neric variable name.
+>                          match tt.clone() {
+> -                            TokenTree::Ident(i) if at_start && i.to_stri=
+ng() =3D=3D "const" =3D> {
+> +                            TokenTree::Ident(i) if at_start && i =3D=3D =
+"const" =3D> {
+>                                  let Some(name) =3D toks.next() else {
+>                                      // Parsing error.
+>                                      break;
+> diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/s=
+rc/lib.rs
+> index 297b0129a5bfd..4c4dc639ce823 100644
+> --- a/rust/pin-init/internal/src/lib.rs
+> +++ b/rust/pin-init/internal/src/lib.rs
+> @@ -7,27 +7,11 @@
+>  //! `pin-init` proc macros.
+>
+>  #![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
+> -// Allow `.into()` to convert
+> -// - `proc_macro2::TokenStream` into `proc_macro::TokenStream` in the us=
+er-space version.
+> -// - `proc_macro::TokenStream` into `proc_macro::TokenStream` in the ker=
+nel version.
+> -//   Clippy warns on this conversion, but it's required by the user-spac=
+e version.
+> -//
+> -// Remove once we have `proc_macro2` in the kernel.
+> -#![allow(clippy::useless_conversion)]
+>  // Documentation is done in the pin-init crate instead.
+>  #![allow(missing_docs)]
+>
+>  use proc_macro::TokenStream;
+>
+> -#[cfg(kernel)]
+> -#[path =3D "../../../macros/quote.rs"]
+> -#[macro_use]
+> -#[cfg_attr(not(kernel), rustfmt::skip)]
+> -mod quote;
+> -#[cfg(not(kernel))]
+> -#[macro_use]
+> -extern crate quote;
+> -
+>  mod helpers;
+>  mod pin_data;
+>  mod pinned_drop;
+> diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/inter=
+nal/src/pin_data.rs
+> index 87d4a7eb1d35e..86a53b37cc660 100644
+> --- a/rust/pin-init/internal/src/pin_data.rs
+> +++ b/rust/pin-init/internal/src/pin_data.rs
+> @@ -1,10 +1,8 @@
+>  // SPDX-License-Identifier: Apache-2.0 OR MIT
+>
+> -#[cfg(not(kernel))]
+> -use proc_macro2 as proc_macro;
+> -
+>  use crate::helpers::{parse_generics, Generics};
+> -use proc_macro::{Group, Punct, Spacing, TokenStream, TokenTree};
+> +use proc_macro2::{Group, Punct, Spacing, TokenStream, TokenTree};
+> +use quote::quote;
+>
+>  pub(crate) fn pin_data(args: TokenStream, input: TokenStream) -> TokenSt=
+ream {
+>      // This proc-macro only does some pre-parsing and then delegates the=
+ actual parsing to
+> @@ -28,7 +26,7 @@ pub(crate) fn pin_data(args: TokenStream, input: TokenS=
+tream) -> TokenStream {
+>      // The name of the struct with ty_generics.
+>      let struct_name =3D rest
+>          .iter()
+> -        .skip_while(|tt| !matches!(tt, TokenTree::Ident(i) if i.to_strin=
+g() =3D=3D "struct"))
+> +        .skip_while(|tt| !matches!(tt, TokenTree::Ident(i) if i =3D=3D "=
+struct"))
+>          .nth(1)
+>          .and_then(|tt| match tt {
+>              TokenTree::Ident(_) =3D> {
+> @@ -65,7 +63,7 @@ pub(crate) fn pin_data(args: TokenStream, input: TokenS=
+tream) -> TokenStream {
+>          .into_iter()
+>          .flat_map(|tt| {
+>              // We ignore top level `struct` tokens, since they would emi=
+t a compile error.
+> -            if matches!(&tt, TokenTree::Ident(i) if i.to_string() =3D=3D=
+ "struct") {
+> +            if matches!(&tt, TokenTree::Ident(i) if i =3D=3D "struct") {
+>                  vec![tt]
+>              } else {
+>                  replace_self_and_deny_type_defs(&struct_name, tt, &mut e=
+rrs)
+> @@ -98,11 +96,7 @@ fn replace_self_and_deny_type_defs(
+>  ) -> Vec<TokenTree> {
+>      match tt {
+>          TokenTree::Ident(ref i)
+> -            if i.to_string() =3D=3D "enum"
+> -                || i.to_string() =3D=3D "trait"
+> -                || i.to_string() =3D=3D "struct"
+> -                || i.to_string() =3D=3D "union"
+> -                || i.to_string() =3D=3D "impl" =3D>
+> +            if i =3D=3D "enum" || i =3D=3D "trait" || i =3D=3D "struct" =
+|| i =3D=3D "union" || i =3D=3D "impl" =3D>
+>          {
+>              errs.extend(
+>                  format!(
+> @@ -119,7 +113,7 @@ fn replace_self_and_deny_type_defs(
+>              );
+>              vec![tt]
+>          }
+> -        TokenTree::Ident(i) if i.to_string() =3D=3D "Self" =3D> struct_n=
+ame.clone(),
+> +        TokenTree::Ident(i) if i =3D=3D "Self" =3D> struct_name.clone(),
+>          TokenTree::Literal(_) | TokenTree::Punct(_) | TokenTree::Ident(_=
+) =3D> vec![tt],
+>          TokenTree::Group(g) =3D> vec![TokenTree::Group(Group::new(
+>              g.delimiter(),
+> diff --git a/rust/pin-init/internal/src/pinned_drop.rs b/rust/pin-init/in=
+ternal/src/pinned_drop.rs
+> index c4ca7a70b726a..cf8cd1c429849 100644
+> --- a/rust/pin-init/internal/src/pinned_drop.rs
+> +++ b/rust/pin-init/internal/src/pinned_drop.rs
+> @@ -1,15 +1,13 @@
+>  // SPDX-License-Identifier: Apache-2.0 OR MIT
+>
+> -#[cfg(not(kernel))]
+> -use proc_macro2 as proc_macro;
+> -
+> -use proc_macro::{TokenStream, TokenTree};
+> +use proc_macro2::{TokenStream, TokenTree};
+> +use quote::quote;
+>
+>  pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> Tok=
+enStream {
+>      let mut toks =3D input.into_iter().collect::<Vec<_>>();
+>      assert!(!toks.is_empty());
+>      // Ensure that we have an `impl` item.
+> -    assert!(matches!(&toks[0], TokenTree::Ident(i) if i.to_string() =3D=
+=3D "impl"));
+> +    assert!(matches!(&toks[0], TokenTree::Ident(i) if i =3D=3D "impl"));
+>      // Ensure that we are implementing `PinnedDrop`.
+>      let mut nesting: usize =3D 0;
+>      let mut pinned_drop_idx =3D None;
+> @@ -27,7 +25,7 @@ pub(crate) fn pinned_drop(_args: TokenStream, input: To=
+kenStream) -> TokenStream
+>          if i >=3D 1 && nesting =3D=3D 0 {
+>              // Found the end of the generics, this should be `PinnedDrop=
+`.
+>              assert!(
+> -                matches!(tt, TokenTree::Ident(i) if i.to_string() =3D=3D=
+ "PinnedDrop"),
+> +                matches!(tt, TokenTree::Ident(i) if i =3D=3D "PinnedDrop=
+"),
+>                  "expected 'PinnedDrop', found: '{tt:?}'"
+>              );
+>              pinned_drop_idx =3D Some(i);
+> diff --git a/rust/pin-init/internal/src/zeroable.rs b/rust/pin-init/inter=
+nal/src/zeroable.rs
+> index e0ed3998445cf..d8a5ef3883f4b 100644
+> --- a/rust/pin-init/internal/src/zeroable.rs
+> +++ b/rust/pin-init/internal/src/zeroable.rs
+> @@ -1,10 +1,8 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>
+> -#[cfg(not(kernel))]
+> -use proc_macro2 as proc_macro;
+> -
+>  use crate::helpers::{parse_generics, Generics};
+> -use proc_macro::{TokenStream, TokenTree};
+> +use proc_macro2::{TokenStream, TokenTree};
+> +use quote::quote;
+>
+>  pub(crate) fn parse_zeroable_derive_input(
+>      input: TokenStream,
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
+alyzer.py
+> index 147d0cc940681..d31d938886589 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -123,7 +123,7 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
+ternal_src, cfgs, core_edit
+>      append_crate(
+>          "pin_init_internal",
+>          srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
+> -        [],
+> +        ["std", "proc_macro", "proc_macro2", "quote", "syn"],
+>          cfg=3D["kernel"],
+>          is_proc_macro=3DTrue,
+>      )
+>
+> base-commit: 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
+> --
+> 2.51.2
+>
