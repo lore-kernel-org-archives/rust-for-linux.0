@@ -1,61 +1,61 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BE030B514
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 20:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333A5334C1B
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 20:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767816456; cv=none; b=QyHJFzn2RF339k87CFKoOz+NpGwE3J+YpJ8id3t4y9VtoeBGB9vzrpHMxIj0QZD9urSKWgwAbMJ1u374Y7a5YjfGrfpvDdTAzlVDB0iMFPmr4rKbqr3GKbuh843Y+a2VwzzE2hlPkhAkkH5r8uPbdpUA0sMG2O316akQY+8H0Go=
+	t=1767816522; cv=none; b=QxR5df1Pj3CUQn6pt1itGYfj5E8nHf87o+Q9FwS8PH7dxnhP5HS+hBduQBFUQ53V9U2vxdXD267CgOAe/sdvPguMOWIGFaocwMkqGrO8ZsLYQsS26kFZd2TVme5iJufWS51b64+HYsKGYsP8LZSIfoyFyM5OJI2Jbk5V2uQAycs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767816456; c=relaxed/simple;
-	bh=k7H8QMrM69p65+VoyiSQ+8BS3shQ8c0+7skkRap8nGo=;
+	s=arc-20240116; t=1767816522; c=relaxed/simple;
+	bh=ok7Ydb1TgqsVfQxq41TJL5sgd3VP1MyynPlhuBIvS8Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nHC86QLEyO4cVz1h+AALE2LyJnAVEgVpWPt66HRrySZ+R//s0JRSMQOwMRGYUfqAEvsTp2vsAiVt9xr1NEaluGhpEaVWuAjm2TmEpQ7NoRnpBWrLQuWqw3mQqQowjsnD+Zv5+Kb4SOAybzfeDvitUV2dpKOcYla2a68xgitNxuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gW3drZXr; arc=none smtp.client-ip=209.85.208.174
+	 To:Cc:Content-Type; b=XHunCSFGit/V/FC8tURySA1bWMSPfjQRKYQwXay6wRfgOg6r2liAjL+sBaLwjqorrGY2lmAOd0iWrtmICdPQKyKf1J0DoYfByRl2f7ziZp1JRZjdBkFcq9B+Gt2pJ8WAPXqqiiCN77GMc2+F1y5za3eucxhttzZt2MM7umHhB1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ifL7SSqI; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gW3drZXr"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-382fb275271so13012671fa.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 12:07:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ifL7SSqI"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-382fea4a160so10926081fa.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 12:08:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767816451; x=1768421251; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767816517; x=1768421317; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=q2ryc+mQqltUGMEZzZot1094pRezfUf2ubOijkgkexE=;
-        b=gW3drZXrJNzA3lB9A5MJ41WfpsghvdUyv8QeChqs62hJ5ZDuHOSrDrQsCu3Y4r9GIq
-         XWhJAMQzpTEH78JCsZ0kcRpcN/jXMuabWxNT3PjuiYfEjRNnOJdSgBeBCA16XI0TSZuL
-         2bNL5rSjfQTg9YBvqfy5nbkFm2xryGAFpRNQFPavi5Re8C4txBZec2cP3aWn0UKjMtiD
-         eFMp8oFYcBvscMpCErNL7TFRbDAOyMdtGSDu3iuFDIqY85i4AXt7qZEb9flS49UERmXf
-         G+GeoHHTD86CTmNA8jZ1A56A0vXA7/M+Yd/ZyrOxuvND9r3SGbIP4nBT1M/kVYvX8+wd
-         pZVQ==
+        bh=ok7Ydb1TgqsVfQxq41TJL5sgd3VP1MyynPlhuBIvS8Q=;
+        b=ifL7SSqIpNtY0pbPLvsSQF/r2Qkvs18rXznYij3dg6rZvYDvHc/bWpxm4jhyI8jcf2
+         XmpJgKQhXJunrd2O2P3XuTNOMqN+HnlN2miYk0R7ee4k+lfkGAr6UBIwAK7Xz3HjmghX
+         l/jqM/szcUJrajarWvbQKEQYRPGPl5JQNq2w6GjthX1XNjoJDAJMIioDm1pWKHGaJoRo
+         uwZXlA9olhSTnP4CHGdAbHl3v9/0O1qk72PAUZ43j/2NXiw+xEC5N/68+tS9W/VOkmHH
+         8+xKh7JKnjoLzdFEjlruJXynNat/fwJbPZ10X3I/Xzz2dXt0lhh4jbp8rTB1pZha7ELH
+         JsEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767816451; x=1768421251;
+        d=1e100.net; s=20230601; t=1767816517; x=1768421317;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=q2ryc+mQqltUGMEZzZot1094pRezfUf2ubOijkgkexE=;
-        b=hvs9RWi3jClw7s59vavFHY/mAsvl2aFgAHgyunZfVz+ybJqfbJ3cUB/OP7zbPOwNtN
-         ++GuFx54wWlxw0s/dZWivEIczIR5zFysZulHWSSDSfr5BABMg2fabR6Ei4qn81sp5oNc
-         zRO1+cv2YhUB5Cw5vm6HBTuAcvg2N7lSMDJmW1PyGW9ObV6REPXjGz6UXBJfEnn8NK+B
-         9Db/LHDLfo03d1qRc9wftdMvVslB2Efmrq3iQpyH/ieDf7mopm5j6x04u9jxawWKNPav
-         9m27BLV24GNusCgbxAB5Z1t+ExayUeMGN9+HERKZwn1CzeOogM1am4kkR894CFHpYSkK
-         EMUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUTBXG44GhP6fuN3guUK2hZuj2C35GmfLnPfJ37fKEDr427feECLTUKrqMUuTp/ozoaDOkalMWn2Mn6nmgSJQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw50kPLSM8tlUkP8cLB8/I4gu6XkcIfr23vDj1cofY3M++RIUOX
-	LNq8oZfdrK80UayEyoNVyGnlv8H3ay+ukFHRCBMQ9NVwkjSWN3vPjI5wdHdS+X8Pd9LrNXwerc9
-	UCa1cla4DZLt/MJCKp6BlC/uMk6Sl9TVCdYWI
-X-Gm-Gg: AY/fxX5iUbQItAKcI7sf4ZiXxInq6mL8zNhVkRRKOgoY6jo6rBTh6iQYAE0WSrRsMLR
-	mdHvF5HcHPhj7LWzORzj5b8z4viN6gqLzXYiIqU0lo8EiuMbekGNvTIXNk6R4aOVP7LuzLOBbZq
-	GwYJGTQ3W/5ckZPkL4q+zjCR6ZyvhCO9Tz9Ju2B+fwU8MblTutzVLIfdx8Dpi8qznayl1Vg0pGp
-	nONIZagybC/GG20mBVQ8H/YzD5JdmI8E1qOZOm2YrbiDxaMcMiZutvpZSWVp8xtmRbVo1L4Yvcm
-	CnMC39Oix9s71ac/jK6RBsYuKnXSRH3E3yv+mrwNVXhZdy2B6lQl9Fhk9wIX1ixR4FCuhh/3QDM
-	o1rydVQ==
-X-Google-Smtp-Source: AGHT+IEOxiHM50FEJ1pRQhP8BL/NSXCE6s/5MD5UBWSV18YfV+kOjI4Wrm0s1IfyjG07/q4Akv+Q4CS37pA+f7pzzag=
-X-Received: by 2002:a05:651c:1b08:b0:37b:a395:fd68 with SMTP id
- 38308e7fff4ca-382ff678b13mr10352491fa.10.1767816450714; Wed, 07 Jan 2026
- 12:07:30 -0800 (PST)
+        bh=ok7Ydb1TgqsVfQxq41TJL5sgd3VP1MyynPlhuBIvS8Q=;
+        b=riLjYdhKamnfg4GrIohJCfjnie+8JRbpKQCFvXWFYKG08GVr7lPj9Lt7/K0gvS7J0M
+         IEsAkZwxJsKyGaoi2K7+pQ86ci0U9J+8zZiVy49R21hsmQl4xcCAICvlebqHZjtaCLd3
+         cAcAKvW0N7QNU7Whhaypb0Mx80jZD7r0+6tulHuqjnM7P/vWtY7sDwTeuHcPUBM52ukw
+         L1BGVqKWQMO2RHQw0N9WjP62moq1hLCKMJYnoGJR1b8TXAN0o500gyismCTjXU2Yqedk
+         d5iR9fcOxtHKQopq3td0RvO/lD9V4bQM+qqqbOM0cfAxnR96FKcz7J/FDrPH4D294Q/V
+         BBVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXgg2IPSVLnuLkUjU7nwHojG3UTJELD/zJFJfLH2/Fr1C7eBhTIOl7iiAHrche8gIVkUGD7oKWaGkljwC+Yow==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywp3c4+gTP3zL3arqFeBjFFfsz3OR94H1GAl8XNrMqsgZk5IC9N
+	BpeQl2QLVTf0KasnvuFaaZ6QFS05oKQAhtBxH/ujXnt5gkgnfCAkXRntoInv84EXRqPsQWfb9gs
+	yX8glQdc5zIeNS448X8sL0mXdWhqUpJe4WCvJ
+X-Gm-Gg: AY/fxX4Faa1hFpoFKETyokp2yqupW8vRoqAIuS/Wj+d4y1v3wbadv3K7danbpRcvJhT
+	0SZrmljHL1oQ9DXKMwCn0x7D8a/U0P/c6oLhUqpLYqGsXKsp3KavwoU7Ox5cdkQL8biK4g4KDgN
+	XJmugRIak75eDFxZT/sMcGebiNi9o2W4594xk6L1QRxgj5Sa5UX/aY4tgqoaaJUpl17vomxXd8o
+	rwbDREkX5o+TyEkimJIOIrqMVHwz00ilK3V7Ze4jlZXylgA3yCgqaeK6iBsqn81xUXi/h/u2fVY
+	W1psUU4APwt9cOsrsqp/RImXSTdJiKHOyyQtqfk0KAf/3RGfzaIu+b3qmaYPUTe32G+Y2odhLvR
+	qDP3SSOWPReVZNFXY
+X-Google-Smtp-Source: AGHT+IGJHOpLOIetCkELKOkBMr5VyQDz410u9pPHhJmYuiYJ2ONaLvItl9rtGLos7frmyXFeBZvZFnWQNVhfLh0RiG4=
+X-Received: by 2002:a2e:bc29:0:b0:37b:9bfb:90a6 with SMTP id
+ 38308e7fff4ca-382ff676c6fmr9224511fa.10.1767816517065; Wed, 07 Jan 2026
+ 12:08:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,15 +63,14 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org>
- <20251203-xarray-entry-send-v1-5-9e5ffd5e3cf0@kernel.org> <CAJ-ks9mXoTdOO+Zb9F=cpTrwa+XZ2mLb3NDH9pyd_GZhD2TVRQ@mail.gmail.com>
- <87eco1grin.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87eco1grin.fsf@t14s.mail-host-address-is-not-set>
+ <20251203-xarray-entry-send-v1-6-9e5ffd5e3cf0@kernel.org> <CAJ-ks9=VO1nypKFtOaGWxOUqzzJ7-Wb5qLd9pzQuFCSfk8PkZA@mail.gmail.com>
+ <87bjj5gr7h.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87bjj5gr7h.fsf@t14s.mail-host-address-is-not-set>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 7 Jan 2026 15:06:54 -0500
-X-Gm-Features: AQt7F2p3Rp3M-mvDwJLJ_3J-bExRbvUa0hohuftFlb3TOgS-ZWZkqfMOTKYqXcY
-Message-ID: <CAJ-ks9nBRfYpQKkzuM84TWsXSEccUXxxwQNUPxZHZZxrnXUbCQ@mail.gmail.com>
-Subject: Re: [PATCH 05/10] rust: xarray: use `xas_load` instead of `xa_load`
- in `Guard::load`
+Date: Wed, 7 Jan 2026 15:08:00 -0500
+X-Gm-Features: AQt7F2pFFvGNXoPmr9VIx3k6Cgm6ITdkbC1Gw9syQWiYVr3MYyA8xgr7O5YfV1s
+Message-ID: <CAJ-ks9m6Pv85Y-Dfxgf7HxpKdrXsgY4jdpkFX+oYfrLevvd3hg@mail.gmail.com>
+Subject: Re: [PATCH 06/10] rust: xarray: simplify `Guard::load`
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -90,60 +89,20 @@ org> wrote:
 > > On Wed, Dec 3, 2025 at 5:27=E2=80=AFPM Andreas Hindborg <a.hindborg@ker=
 nel.org> wrote:
 > >>
-> >> Replace the call to `xa_load` with `xas_load` in `Guard::load`. The
-> >> `xa_load` function takes the XArray lock internally, which would cause
-> >> a double lock since the `Guard` already holds the lock.
-> >
-> > This is not correct. `xa_load` takes and releases the RCU lock only,
-> > not the XArray lock.
->
-> You are right. However, we do not need to take the RCU lock either in
-> this case, right?
-
-Seems reasonable, but the language mentioning double locking should be
-removed please.
-
->
-> >
-> >> The `xas_load`
-> >> function operates on XArray state and assumes the lock is already held=
-,
-> >> which is the correct API to use when holding a `Guard`.
-> >>
-> >> This change also removes the `#[expect(dead_code)]` annotation from
-> >> `XArrayState` and its constructor, as they are now in use.
-> >>
-> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> >> ---
-> >>  rust/kernel/xarray.rs | 8 ++++----
-> >>  1 file changed, 4 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> >> index f6e610b059625..0f69a523b72bf 100644
-> >> --- a/rust/kernel/xarray.rs
-> >> +++ b/rust/kernel/xarray.rs
-> >> @@ -215,8 +215,10 @@ fn load<F, U>(&self, index: usize, f: F) -> Optio=
-n<U>
-> >>      where
-> >>          F: FnOnce(NonNull<c_void>) -> U,
-> >>      {
-> >> -        // SAFETY: `self.xa.xa` is always valid by the type invariant=
+> >> Simplify the implementation by removing the closure-based API from
+> >> `Guard::load` in favor of returning `Option<NonNull<c_void>>` directly=
 .
-> >> -        let ptr =3D unsafe { bindings::xa_load(self.xa.xa.get(), inde=
-x) };
-> >> +        let mut state =3D XArrayState::new(self, index);
-> >> +        // SAFETY: `state.state` is always valid by the type invarian=
-t of
-> >> +        // `XArrayState`.
-> >> +        let ptr =3D unsafe { bindings::xas_load(&raw mut state.state)=
- };
 > >
-> > Can this be a method on XArrayState?
+> > This is not sound. The returned pointer can now outlive the guard and
+> > mutation through that pointer is trivial.
 >
-> OK.
->
->
+> I don't think this is unsound. If we returned a reference instead, it
+> would be, but we are returning a raw pointer. Dereferencing the pointer
+> is unsafe and requires proper safety comments.
+
+You may be right, strictly speaking, but it is most definitely a
+footgun. This is a special pointer that requires more careful handling
+than other raw pointers.
+
 > Best regards,
 > Andreas Hindborg
->
->
