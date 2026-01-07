@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D435A318BBD;
-	Wed,  7 Jan 2026 19:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DC1255E43;
+	Wed,  7 Jan 2026 19:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767814672; cv=none; b=NvCkrPEF4M0mSRXb74JkgiMPIjIm2cOVKC33l27gY9/6hEcSLp9KayhcLU3Ljs48kHmShOePZCSlmqXg84FvB0sQUNg6X/gm/Mdh0uSdhFk1YHSVIZFF6/UuHgAUc3cFp3fuEMGOZQNmiorOPU6CamsOUNhHI7vR2FweAgQmHog=
+	t=1767814675; cv=none; b=i/bGMG0M5rA54Un+2Jt6rRjOZrXQDCf30i2qEGR+LYzkuCdIvP598c94HZG6k78isNSqw2sWXsdS1HWMFAyy4IG5ex+kdq2EaMfN1lEFfDpQ7EqsepeBKt2Umea5wq805y43a8A2iDLd9jJoCU9q3RnUlDAcc8iNlOYGDQu4UC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767814672; c=relaxed/simple;
-	bh=Ty0mH08R8taOYZWVj1//RGqLayt25IiEHIrs6er8LnE=;
+	s=arc-20240116; t=1767814675; c=relaxed/simple;
+	bh=24akQf0JztA2i4HZi6sMEr+JoX2lJj84FkhUxIm1Hxg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rTl49VbNsF8KFVR0Id8x1srN/3dCyX17roNJo9mHhEquNWACl9lfubyAiI6DeKOjw+/YuTjMSad7vYAeAVW7bR4FC9EQ6ebTo3rXc36RJMrHDGDrrvjdfZqNHPVK5Kmj+Zsk80SnsxMpLVFqwYHd3sOzomwuo+RwAnXzlM+ACPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wzbgpvcs; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=uyiBej3U2y+VtDgxZoHhdRt0A3sXu8GZP8lJVLH9c3vwDWrIf3bqRt0Y4IueP8FLVXeaul+DKLHB0dw5RAyCh30OnctKjG9ZjPhDIohDsPvvDJKy47FdhpXVPAuNt5cXa8lbb0XRKeECNCIX9NzFdCYwvfsVa/HobDXm86JR8cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qSltvVNB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wzbgpvcs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D97C16AAE;
-	Wed,  7 Jan 2026 19:37:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qSltvVNB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50658C4CEF1;
+	Wed,  7 Jan 2026 19:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767814669;
-	bh=Ty0mH08R8taOYZWVj1//RGqLayt25IiEHIrs6er8LnE=;
+	s=k20201202; t=1767814672;
+	bh=24akQf0JztA2i4HZi6sMEr+JoX2lJj84FkhUxIm1Hxg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Wzbgpvcsi6WSn3iRWsArHPsGRzouIyJ/R8VADB5ER+VYIMP+OcfHTsCcfxkCNvWYI
-	 nemONCq63S5Ysu3QpZJAXMvqJxQGLPjVP9tA/3jV/tHqmcHBUvObK3hM236W4dYUVE
-	 O8wuwMms5gM9hkJB3hrlL0FWels5bqhIjskWN+FmLCanqOgeHzTfUvw7+5wuTYDhxf
-	 KSvR9TfYZK6WlHSAg+7wcxBc2qQyXfgcIhuGVNjtXZ/cKZwm8xojWZzFHNKsoK4wDK
-	 FIu/QgY4gs+fsF8P7vdWezLUaqGiLXKj2fmk5nm3HHUWgPQJeIXTO8LD5f5zU3yoo3
-	 KnSziHdW9PmPA==
+	b=qSltvVNBS3JFiBR/w7VO4aObeLGZN3gpFYkg6OLKpXB2iA1sCb06g5QcuBAiirmJ2
+	 trMqs201ozkJa8ihf+6YuBLH91t/VxNPCOIFEAZahUz1fqBALdcjAYGaRNS0b2+o3W
+	 zTpjOqUV0jkC/cqVoOr8Of9aZwMlCYl5fpb3RfzOtK8OmTh0DH+wbcGGiaeL6ZEg8j
+	 o1/P//CHfkoRYq8F8x1DcTpCBRRBcwb9QvSu42MJ12b5F8fHU9a7Jl7lCvk/CRF8bw
+	 sgzrdkfIEZbmokrprNwqz7dD8By+jVeMbXUIEIMqbjj6xv/by9EneSVwfMPgCnl00m
+	 uCk3v7Wi0+bwQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Tamir Duberstein <tamird@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -35,14 +35,13 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
  Krummrich <dakr@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/10] rust: xarray: use `xas_load` instead of `xa_load`
- in `Guard::load`
-In-Reply-To: <CAJ-ks9mXoTdOO+Zb9F=cpTrwa+XZ2mLb3NDH9pyd_GZhD2TVRQ@mail.gmail.com>
+Subject: Re: [PATCH 07/10] rust: xarray: add `find_next` and `find_next_mut`
+In-Reply-To: <CAJ-ks9=gx=Qea4NYSLwTfZtQkwgV-WOjR_A_d2US=ZCNP9jxCQ@mail.gmail.com>
 References: <20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org>
- <20251203-xarray-entry-send-v1-5-9e5ffd5e3cf0@kernel.org>
- <CAJ-ks9mXoTdOO+Zb9F=cpTrwa+XZ2mLb3NDH9pyd_GZhD2TVRQ@mail.gmail.com>
-Date: Wed, 07 Jan 2026 20:19:12 +0100
-Message-ID: <87eco1grin.fsf@t14s.mail-host-address-is-not-set>
+ <20251203-xarray-entry-send-v1-7-9e5ffd5e3cf0@kernel.org>
+ <CAJ-ks9=gx=Qea4NYSLwTfZtQkwgV-WOjR_A_d2US=ZCNP9jxCQ@mail.gmail.com>
+Date: Wed, 07 Jan 2026 20:29:18 +0100
+Message-ID: <878qe9gr1t.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,53 +56,55 @@ Tamir Duberstein <tamird@gmail.com> writes:
 > On Wed, Dec 3, 2025 at 5:27=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
 l.org> wrote:
 >>
->> Replace the call to `xa_load` with `xas_load` in `Guard::load`. The
->> `xa_load` function takes the XArray lock internally, which would cause
->> a double lock since the `Guard` already holds the lock.
->
-> This is not correct. `xa_load` takes and releases the RCU lock only,
-> not the XArray lock.
-
-You are right. However, we do not need to take the RCU lock either in
-this case, right?
-
->
->> The `xas_load`
->> function operates on XArray state and assumes the lock is already held,
->> which is the correct API to use when holding a `Guard`.
+>> Add methods to find the next element in an XArray starting from a
+>> given index. The methods return a tuple containing the index where the
+>> element was found and a reference to the element.
 >>
->> This change also removes the `#[expect(dead_code)]` annotation from
->> `XArrayState` and its constructor, as they are now in use.
+>> The implementation uses the XArray state API via `xas_find` to avoid tak=
+ing
+>> the xarray lock that is already held by `Guard`.
+>
+> Similarly to the commit message introducing the use of `xas_load`,
+> this is not correct because `xa_find` takes and release the RCU lock
+> only, not the XArray lock.
+
+Right, thanks for pointing that out.
+
+>
 >>
 >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 >> ---
->>  rust/kernel/xarray.rs | 8 ++++----
->>  1 file changed, 4 insertions(+), 4 deletions(-)
+>>  rust/kernel/xarray.rs | 65 ++++++++++++++++++++++++++++++++++++++++++++=
++++++++
+>>  1 file changed, 65 insertions(+)
 >>
 >> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
->> index f6e610b059625..0f69a523b72bf 100644
+>> index ca97134ba2bd0..9d4589979fd1d 100644
 >> --- a/rust/kernel/xarray.rs
 >> +++ b/rust/kernel/xarray.rs
->> @@ -215,8 +215,10 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<=
-U>
->>      where
->>          F: FnOnce(NonNull<c_void>) -> U,
->>      {
->> -        // SAFETY: `self.xa.xa` is always valid by the type invariant.
->> -        let ptr =3D unsafe { bindings::xa_load(self.xa.xa.get(), index)=
- };
+>> @@ -255,6 +255,71 @@ pub fn get_mut(&mut self, index: usize) -> Option<T=
+::BorrowedMut<'_>> {
+>>          Some(unsafe { T::borrow_mut(ptr.as_ptr()) })
+>>      }
+>>
+>> +    fn load_next(&self, index: usize) -> Option<(usize, NonNull<c_void>=
+)> {
 >> +        let mut state =3D XArrayState::new(self, index);
 >> +        // SAFETY: `state.state` is always valid by the type invariant =
 of
->> +        // `XArrayState`.
->> +        let ptr =3D unsafe { bindings::xas_load(&raw mut state.state) };
+>> +        // `XArrayState` and the caller holds the lock.
+>> +        let ptr =3D unsafe { bindings::xas_find(&raw mut state.state, u=
+size::MAX) };
+>> +        NonNull::new(ptr).map(|ptr| (state.state.xa_index, ptr))
+>> +    }
 >
-> Can this be a method on XArrayState?
+> Can this be a method on XArrayState? It seems odd to document a remote
+> type's invariant here when we could put that justification on the type
+> itself.
 
-OK.
+Good idea, I'll move it.
 
 
 Best regards,
 Andreas Hindborg
-
 
