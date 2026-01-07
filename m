@@ -1,226 +1,219 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B31D396D11
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 15:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48D5318EDB;
+	Wed,  7 Jan 2026 16:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767801134; cv=none; b=FMGQzeW7et8wFZrOkUDZHi4ccvnW9Cv5dqgeZNXWctc6Dp5vQm8czciV3E8AWlJuykNWBEyTd5qyCg1NtuL5MWr8kZihAI4PBzP8pdY3zavrXP3rzEo9CzwENfBOTzd8NJOe2Fbm3B+tR333I2+UgnEtxNZ7YY4rqwithNB67yg=
+	t=1767802345; cv=none; b=g6ATx51wJeMBP9Hy+1qTsXaV6ZbJnouoaHCcIV1L+y0+jpGTQMmyw16kLKXDUh53Go+L14syWBFWm+vgdGTK472CoojaZsApDS8S3QcPDW6CHytUL9aHxnfgNFlvs2DcXdNcfUFo+Hy94nHiSvPodZurW59UcpQmrLnFreSjw9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767801134; c=relaxed/simple;
-	bh=WXZMe4HP3vNPReOPTMwzVrsjCdvjsyH5VjpRkjOfyhU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nFVQda8zGFkZBG1mvpKrafmmDgBP/cnYuERHmTdvMvdLwUEBHsYPPgyF2RCD8IcRQCgv8c2sHn0f4kQtpYJG/LX3TgaCsafdhRVNyBvSqfBY4+V78pv/h+KDkDYaFzE9atVriWlyAhiwM5FioNXydN8ynN/yqjZO6Qw8jKKQE4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sVG+Gvxz; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1767802345; c=relaxed/simple;
+	bh=aTyUr+aLeUhdKOatcQ9dwhCwrXMqLPH5zbcHr5OAc2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PDxFg4ChwPU+A47/dYk34Fzllkh1TJDYmvNhEspaoT/KrIkMhd2+2XPoVr7zURJ9Gb0wAOsx5ooDsadhGu7ehAywW7dCAmsVDCdsLiN8Pd827Xun09g2oAb/4rSeYAfFdM8h5ljnD9qNA5Ta9a7aMD6xmBqrhmSYavERz3wjixE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v59mAY+F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sVG+Gvxz"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4779edba8f3so20832835e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 07:52:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767801120; x=1768405920; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KzJooJr2ofQffqYH6J44S/NyT0tH1jNqXbKY2GqyAaM=;
-        b=sVG+GvxzA/bIWQCZReXPeS1jCtipHwLFJ8H3+TTr7IHjtw9oscdftuiV7uHVLznSrt
-         ZzbtUYvJiZ03Mf2u/b2ceb9RzILJgjR+prkpzAViQCrI25G/PNz9zCUZLE18eE+KTBl1
-         NjBQDCD8M6YFO7oPZIsM4A++l3HnCICPOZ8DlgwUkjALAlVXlN71d4lm3VwGY7lfSKIw
-         KvSemEGGw8aFqsvdu0U1ml42nsIUGG3Azl4CCSARJLj6rUzdXQrw92zFIe3AhqpukNi8
-         LsShOMI+p8mAfOkMtMqHFEdBRngLc0FWko5NYzAg8WQn2jW9kRVKlJeljJsvRgJsafDZ
-         Yb+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767801120; x=1768405920;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KzJooJr2ofQffqYH6J44S/NyT0tH1jNqXbKY2GqyAaM=;
-        b=xVAEAkTu/D+x6XhkZAJtoHBHQoYJJkIXF59n+hKb9dHMNn+KHuZUEtwiP5VujEBIfx
-         lIhBxwg4ZqrmK49Xo5XMqXhATuP+GLEdTZObq9hRbo2UhKxT1B85X9vG2xz6FUYFNKXe
-         Tim8m+Ayn+ErqSBNWlWfExb3KkvOQLA5Hz2cSN0yLoyCZpYaWkYljUPpydI46//XLkrk
-         Ihb8Hf+28OAdGMl1Cj5EqnYPkEKp2rtWCeiVKZkXHNWP20GrS47Tkf5FtLhwQlzFI24G
-         UuN32ViUDfLTtC6AZEWREISvXAbMSd/UW8U+qVASh5HSw/dwOZVYmtnqKIkXmFbd6VJb
-         vkOw==
-X-Forwarded-Encrypted: i=1; AJvYcCVZOasdpnEJoukbKqkkvovXcT3RqJBQZe6iXEggdLfr0vDMf1rhsFzLfT3ACYkGqAsiwDuUQYroQT+59mMIdg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQY+EfqZ7HpVmXzNdXmxWQvU42KUqw5sYVIHXPQYgJlS9iQOFP
-	es4h3Mi5FxZnv8V4QXX30oii31zny8UtSxz/kqe9WYdUR84r4Kd3Ih9aKoEe32RtYWqPEl5liAt
-	XkxjWn+gtHXExhU4NIQ==
-X-Google-Smtp-Source: AGHT+IGf7S57fwqtaG/Y63VwksZsm6MPDrdn5BaGxjtMY+WZa3f+qrbuzEydbLZth9rk78JW5kkgVrJK4VKyKM0=
-X-Received: from wmbz13.prod.google.com ([2002:a05:600c:c08d:b0:479:3624:3472])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:82c3:b0:477:9392:8557 with SMTP id 5b1f17b1804b1-47d84b3463fmr32388425e9.18.1767801120462;
- Wed, 07 Jan 2026 07:52:00 -0800 (PST)
-Date: Wed, 7 Jan 2026 15:51:59 +0000
-In-Reply-To: <20260107103511.570525-1-dakr@kernel.org>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v59mAY+F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0CAC4CEF1;
+	Wed,  7 Jan 2026 16:12:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767802343;
+	bh=aTyUr+aLeUhdKOatcQ9dwhCwrXMqLPH5zbcHr5OAc2I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=v59mAY+FXkP9eAkCNLKT0VjmLTFdSgTLnJqR8wxAOTXKihT3jq7gxoe0oXbUT9lih
+	 O7emFYUNDVqsghy2xqll/uvToJHNOPlll5sWdWgFLPl3GneX2QcuI8NYJwKyzOuaoU
+	 x4uLkaM2y/gm9FrvsMkQ1b1ErJA+KhPKGTZVz/BE=
+Date: Wed, 7 Jan 2026 17:12:19 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ke Sun <sunke@kylinos.cn>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-rtc@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, Alvin Sun <sk.alvin.x@gmail.com>
+Subject: Re: [RFC PATCH v2 1/5] rtc: migrate driver data to RTC device
+Message-ID: <2026010757-fester-unissued-6e5f@gregkh>
+References: <20260107143738.3021892-1-sunke@kylinos.cn>
+ <20260107143738.3021892-2-sunke@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260107103511.570525-1-dakr@kernel.org>
-Message-ID: <aV6BHw-Liv0SVAwO@google.com>
-Subject: Re: [PATCH 0/6] Address race condition with Device::drvdata()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, 
-	igor.korotin.linux@gmail.com, ojeda@kernel.org, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, david.m.ertman@intel.com, 
-	ira.weiny@intel.com, leon@kernel.org, bhelgaas@google.com, 
-	kwilczynski@kernel.org, wsa+renesas@sang-engineering.com, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-i2c@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260107143738.3021892-2-sunke@kylinos.cn>
 
-On Wed, Jan 07, 2026 at 11:34:59AM +0100, Danilo Krummrich wrote:
-> Currently, the driver's device private data is allocated and initialized
-> from driver core code called from bus abstractions after the driver's
-> probe() callback returned the corresponding initializer.
+On Wed, Jan 07, 2026 at 10:37:33PM +0800, Ke Sun wrote:
+> Unify RTC driver interface by storing driver data on the RTC device
+> instead of the parent device. Update RTC ops callbacks to pass the RTC
+> device itself rather than its parent. This change enables better
+> support for Rust RTC drivers that store data on the RTC device.
 > 
-> Similarly, the driver's device private data is dropped within the
-> remove() callback of bus abstractions after calling the remove()
-> callback of the corresponding driver.
+> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+> ---
+>  drivers/rtc/dev.c       |  4 ++--
+>  drivers/rtc/interface.c | 18 +++++++++---------
+>  drivers/rtc/rtc-pl031.c |  9 ++-------
+>  3 files changed, 13 insertions(+), 18 deletions(-)
 > 
-> However, commit 6f61a2637abe ("rust: device: introduce
-> Device::drvdata()") introduced an accessor for the driver's device
-> private data for a Device<Bound>, i.e. a device that is currently bound
-> to a driver.
-> 
-> Obviously, this is in conflict with dropping the driver's device private
-> data in remove(), since a device can not be considered to be fully
-> unbound after remove() has finished:
-> 
-> We also have to consider registrations guarded by devres - such as IRQ
-> or class device registrations - which are torn down after remove() in
-> devres_release_all().
-> 
-> Thus, it can happen that, for instance, a class device or IRQ callback
-> still calls Device::drvdata(), which then runs concurrently to remove()
-> (which sets dev->driver_data to NULL and drops the driver's device
-> private data), before devres_release_all() started to tear down the
-> corresponding registration. This is because devres guarded registrations
-> can, as expected, access the corresponding Device<Bound> that defines
-> their scope.
-> 
-> In C it simply is the driver's responsibility to ensure that its device
-> private data is freed after e.g. an IRQ registration is unregistered.
-> 
-> Typically, C drivers achieve this by allocating their device private data
-> with e.g. devm_kzalloc() before doing anything else, i.e. before e.g.
-> registering an IRQ with devm_request_threaded_irq(), relying on the
-> reverse order cleanup of devres [1].
-> 
-> Technically, we could do something similar in Rust. However, the
-> resulting code would be pretty messy:
-> 
-> In Rust we have to differentiate between allocated but uninitialized
-> memory and initialized memory in the type system. Thus, we would need to
-> somehow keep track of whether the driver's device private data object
-> has been initialized (i.e. probe() was successful and returned a valid
-> initializer for this memory) and conditionally call the destructor of
-> the corresponding object when it is freed.
-> 
-> This is because we'd need to allocate and register the memory of the
-> driver's device private data *before* it is initialized by the
-> initializer returned by the driver's probe() callback, because the
-> driver could already register devres guarded registrations within
-> probe() outside of the driver's device private data initializer.
-> 
-> Luckily there is a much simpler solution: Instead of dropping the
-> driver's device private data at the end of remove(), we just drop it
-> after the device has been fully unbound, i.e. after all devres callbacks
-> have been processed.
-> 
-> For this, we introduce a new post_unbind() callback private to the
-> driver-core, i.e. the callback is neither exposed to drivers, nor to bus
-> abstractions.
-> 
-> This way, the driver-core code can simply continue to conditionally
-> allocate the memory for the driver's device private data when the
-> driver's initializer is returned from probe() - no change needed - and
-> drop it when the driver-core code receives the post_unbind() callback.
-> 
-> --
-> 
-> Dependency wise we need a common Driver trait that describes the layout of a
-> specific driver structure, such as struct pci_driver or struct platform_driver.
-> Additional to this specific driver type (which was previously the associated
-> type RegType of the RegistrationOps) it provides the offset to the embedded
-> struct device_driver and the type of the driver's device private data.
-> 
-> This patch series contains two additional dependencies:
-> 
->   (1) A fix for i2c::Driver::shutdown() to not free the driver's device
->       private data at all, which otherwise causes the exact same bug, and
->       is not necessary in the first place anyways.
-> 
->   (2) Add the auxiliary::Driver::unbind() callback. Strictly speaking,
->       this is not a dependency, but without this patch the main fix of this
->       series leaves the remove() callback of the auxiliary bus
->       abstraction with either dead code or quite some code removed;
->       code that we would otherwise add back immediately afterwards.
-> 
-> --
-> 
-> [1] In fact, the cleanup ordering of devres is a separate challenge in
->     Rust, since it is technically unsound to rely on the driver to pick
->     the correct order. I am already working on a solution for this;
->     luckily this also has some synergies with optimizing the required
->     synchronize_rcu() calls required by the Rust Devres container
->     structure down to exactly one per driver unbind.
+> diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
+> index baf1a8ca8b2b1..0f62ba9342e3e 100644
+> --- a/drivers/rtc/dev.c
+> +++ b/drivers/rtc/dev.c
+> @@ -410,7 +410,7 @@ static long rtc_dev_ioctl(struct file *file,
+>  		}
+>  		default:
+>  			if (rtc->ops->param_get)
+> -				err = rtc->ops->param_get(rtc->dev.parent, &param);
+> +				err = rtc->ops->param_get(&rtc->dev, &param);
+>  			else
+>  				err = -EINVAL;
+>  		}
+> @@ -440,7 +440,7 @@ static long rtc_dev_ioctl(struct file *file,
+>  
+>  		default:
+>  			if (rtc->ops->param_set)
+> -				err = rtc->ops->param_set(rtc->dev.parent, &param);
+> +				err = rtc->ops->param_set(&rtc->dev, &param);
+>  			else
+>  				err = -EINVAL;
+>  		}
+> diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
+> index b8b298efd9a9c..783a3ec3bb93d 100644
+> --- a/drivers/rtc/interface.c
+> +++ b/drivers/rtc/interface.c
+> @@ -91,7 +91,7 @@ static int __rtc_read_time(struct rtc_device *rtc, struct rtc_time *tm)
+>  		err = -EINVAL;
+>  	} else {
+>  		memset(tm, 0, sizeof(struct rtc_time));
+> -		err = rtc->ops->read_time(rtc->dev.parent, tm);
+> +		err = rtc->ops->read_time(&rtc->dev, tm);
+>  		if (err < 0) {
+>  			dev_dbg(&rtc->dev, "read_time: fail to read: %d\n",
+>  				err);
+> @@ -155,7 +155,7 @@ int rtc_set_time(struct rtc_device *rtc, struct rtc_time *tm)
+>  	if (!rtc->ops)
+>  		err = -ENODEV;
+>  	else if (rtc->ops->set_time)
+> -		err = rtc->ops->set_time(rtc->dev.parent, tm);
+> +		err = rtc->ops->set_time(&rtc->dev, tm);
+>  	else
+>  		err = -EINVAL;
+>  
+> @@ -200,7 +200,7 @@ static int rtc_read_alarm_internal(struct rtc_device *rtc,
+>  		alarm->time.tm_wday = -1;
+>  		alarm->time.tm_yday = -1;
+>  		alarm->time.tm_isdst = -1;
+> -		err = rtc->ops->read_alarm(rtc->dev.parent, alarm);
+> +		err = rtc->ops->read_alarm(&rtc->dev, alarm);
+>  	}
+>  
+>  	mutex_unlock(&rtc->ops_lock);
+> @@ -441,7 +441,7 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
+>  	else if (!test_bit(RTC_FEATURE_ALARM, rtc->features))
+>  		err = -EINVAL;
+>  	else
+> -		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
+> +		err = rtc->ops->set_alarm(&rtc->dev, alarm);
+>  
+>  	/*
+>  	 * Check for potential race described above. If the waiting for next
+> @@ -568,7 +568,7 @@ int rtc_alarm_irq_enable(struct rtc_device *rtc, unsigned int enabled)
+>  	else if (!test_bit(RTC_FEATURE_ALARM, rtc->features) || !rtc->ops->alarm_irq_enable)
+>  		err = -EINVAL;
+>  	else
+> -		err = rtc->ops->alarm_irq_enable(rtc->dev.parent, enabled);
+> +		err = rtc->ops->alarm_irq_enable(&rtc->dev, enabled);
+>  
+>  	mutex_unlock(&rtc->ops_lock);
+>  
+> @@ -618,7 +618,7 @@ int rtc_update_irq_enable(struct rtc_device *rtc, unsigned int enabled)
+>  		rtc->uie_rtctimer.period = ktime_set(1, 0);
+>  		err = rtc_timer_enqueue(rtc, &rtc->uie_rtctimer);
+>  		if (!err && rtc->ops && rtc->ops->alarm_irq_enable)
+> -			err = rtc->ops->alarm_irq_enable(rtc->dev.parent, 1);
+> +			err = rtc->ops->alarm_irq_enable(&rtc->dev, 1);
+>  		if (err)
+>  			goto out;
+>  	} else {
+> @@ -874,7 +874,7 @@ static void rtc_alarm_disable(struct rtc_device *rtc)
+>  	if (!rtc->ops || !test_bit(RTC_FEATURE_ALARM, rtc->features) || !rtc->ops->alarm_irq_enable)
+>  		return;
+>  
+> -	rtc->ops->alarm_irq_enable(rtc->dev.parent, false);
+> +	rtc->ops->alarm_irq_enable(&rtc->dev, false);
+>  	trace_rtc_alarm_irq_enable(0, 0);
+>  }
+>  
+> @@ -1076,7 +1076,7 @@ int rtc_read_offset(struct rtc_device *rtc, long *offset)
+>  		return -EINVAL;
+>  
+>  	mutex_lock(&rtc->ops_lock);
+> -	ret = rtc->ops->read_offset(rtc->dev.parent, offset);
+> +	ret = rtc->ops->read_offset(&rtc->dev, offset);
+>  	mutex_unlock(&rtc->ops_lock);
+>  
+>  	trace_rtc_read_offset(*offset, ret);
+> @@ -1111,7 +1111,7 @@ int rtc_set_offset(struct rtc_device *rtc, long offset)
+>  		return -EINVAL;
+>  
+>  	mutex_lock(&rtc->ops_lock);
+> -	ret = rtc->ops->set_offset(rtc->dev.parent, offset);
+> +	ret = rtc->ops->set_offset(&rtc->dev, offset);
+>  	mutex_unlock(&rtc->ops_lock);
+>  
+>  	trace_rtc_set_offset(offset, ret);
+> diff --git a/drivers/rtc/rtc-pl031.c b/drivers/rtc/rtc-pl031.c
+> index eab39dfa4e5fe..a605034d44cb7 100644
+> --- a/drivers/rtc/rtc-pl031.c
+> +++ b/drivers/rtc/rtc-pl031.c
+> @@ -284,10 +284,6 @@ static int pl031_set_alarm(struct device *dev, struct rtc_wkalrm *alarm)
+>  
+>  static void pl031_remove(struct amba_device *adev)
+>  {
+> -	struct pl031_local *ldata = dev_get_drvdata(&adev->dev);
+> -
+> -	if (adev->irq[0])
+> -		free_irq(adev->irq[0], ldata);
+>  	amba_release_regions(adev);
+>  }
+>  
+> @@ -320,8 +316,6 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
+>  		goto out;
+>  	}
+>  
+> -	amba_set_drvdata(adev, ldata);
+> -
+>  	dev_dbg(&adev->dev, "designer ID = 0x%02x\n", amba_manf(adev));
+>  	dev_dbg(&adev->dev, "revision = 0x%01x\n", amba_rev(adev));
+>  
+> @@ -356,6 +350,7 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
+>  		ret = PTR_ERR(ldata->rtc);
+>  		goto out;
+>  	}
+> +	dev_set_drvdata(&ldata->rtc->dev, ldata);
+>  
+>  	if (!adev->irq[0])
+>  		clear_bit(RTC_FEATURE_ALARM, ldata->rtc->features);
+> @@ -369,7 +364,7 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
+>  		goto out;
+>  
+>  	if (adev->irq[0]) {
+> -		ret = request_irq(adev->irq[0], pl031_interrupt,
+> +		ret = devm_request_irq(&adev->dev, adev->irq[0], pl031_interrupt,
+>  				  vendor->irqflags, "rtc-pl031", ldata);
 
-I don't think these are really separate problems. And I think this may
-be the wrong fix.
+Are you _SURE_ you can use devm for this?  it is a functional change,
+one that trips lots of people up.  I wouldn't make this change without
+at least saying why you are doing so in the changelog text, which I
+didn't see at all here.
 
-If a &Device<Bound> lets you access a given value, then we must not
-destroy that value until after the last &Device<Bound> has expired.
+thanks,
 
-A &Device<Bound> lets you access the driver private data. And a
-&Device<Bound> lets you access the contents of a Devres<T>.
-
-Thus, the last &Device<Bound> must expire before we destroy driver
-private data or values inside of Devres<T>. Etc.
-
-What are sources of &Device<Bound> today?
-
-* Most driver callbacks.
-* IRQ callbacks.
-* Workqueue callbacks. (In the future.)
-* I think that's it ...?
-
-Thus, we must call free_irq() before we destroy *the first* Devres<T>
-resource or the driver private data.
-
-Thus, we must ensure that driver callbacks are somehow synchronized to
-exit before we destroy *the first* Devres<T> resource or the driver
-private data.
-
-One thing is that this means that using a Devres<_> container and
-callback as the mechanism for calling free_irq() is not possible.
-
-I'm thinking that we may need two domains of callbacks:
-
-1. devm_early_*
-2. DEVICE IS NOW CONSIDERED UNBOUND - there must no longer be any &Device<Bound> left
-3. free driver private data
-4. devm_*
-
-And devm_early_*() would be a new set of callbacks where we can run
-things such as free_irq(). It would use a separate DevresEarly<_>
-container, for which &Device<Bound> does *not* let you peek inside. And
-the usual Devres<_> is cleaned up in step 4, where it is legal to peek
-inside given a &Device<Bound>.
-
-We could potentially revoke Devres<_> containers during devm_early_*,
-but actually destroy their contents in devm_*. This gives you a clean
-mechanism to replace the per-Devres<_> synchronize_rcu() calls with a
-single one. (By declaring step 2 must last at least one rcu grace
-period.)
-
-Not sure whether remove() should run before or after step (2). If it
-runs before, then it does not need to be synchronized with other device
-callbacks and can free the driver private data. If it runs after (2),
-then we can't destroy driver private data in remove().
-
-Alice
+greg k-h
