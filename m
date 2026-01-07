@@ -1,44 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48D5318EDB;
-	Wed,  7 Jan 2026 16:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C42C36AB66
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 16:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767802345; cv=none; b=g6ATx51wJeMBP9Hy+1qTsXaV6ZbJnouoaHCcIV1L+y0+jpGTQMmyw16kLKXDUh53Go+L14syWBFWm+vgdGTK472CoojaZsApDS8S3QcPDW6CHytUL9aHxnfgNFlvs2DcXdNcfUFo+Hy94nHiSvPodZurW59UcpQmrLnFreSjw9w=
+	t=1767802909; cv=none; b=l9kTKbl8MbvXWvPWVTOKPjPeDDyTjcnFo1P5tPNzhAajiD5T7fyCIjsA4Q1LaHVqK9bMbZdVB5v9hC/+m80U/aUCFvkLWKnxM7zZMRMzijtWczFAyHr0gi6tiyqhhqtl/nJ6RXFTfZTJJmzuD7fDRNaThZrw1L/KqTknYo2Dtik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767802345; c=relaxed/simple;
-	bh=aTyUr+aLeUhdKOatcQ9dwhCwrXMqLPH5zbcHr5OAc2I=;
+	s=arc-20240116; t=1767802909; c=relaxed/simple;
+	bh=LdWHcolCrHxpHVadV8iCe5wJ6t01NEAX/ncvOB+5z9k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PDxFg4ChwPU+A47/dYk34Fzllkh1TJDYmvNhEspaoT/KrIkMhd2+2XPoVr7zURJ9Gb0wAOsx5ooDsadhGu7ehAywW7dCAmsVDCdsLiN8Pd827Xun09g2oAb/4rSeYAfFdM8h5ljnD9qNA5Ta9a7aMD6xmBqrhmSYavERz3wjixE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v59mAY+F; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VxoswGHL6EVoRqmEJltcJPW92o/8j6shWFzdFP4ARckslUc7DhXw2Wqx0l74j+HSQL9wSa4dNlVE6XcSLcbHtUG4y+GfDIMgVkhOA4Xrj1Xlu5++0w9ez9VQ3ZUWdkmsUophD1wFAgdWgCb6P41k3N/SNxqidQgCHkR02+FHAWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i59x5kRf; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v59mAY+F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0CAC4CEF1;
-	Wed,  7 Jan 2026 16:12:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767802343;
-	bh=aTyUr+aLeUhdKOatcQ9dwhCwrXMqLPH5zbcHr5OAc2I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=v59mAY+FXkP9eAkCNLKT0VjmLTFdSgTLnJqR8wxAOTXKihT3jq7gxoe0oXbUT9lih
-	 O7emFYUNDVqsghy2xqll/uvToJHNOPlll5sWdWgFLPl3GneX2QcuI8NYJwKyzOuaoU
-	 x4uLkaM2y/gm9FrvsMkQ1b1ErJA+KhPKGTZVz/BE=
-Date: Wed, 7 Jan 2026 17:12:19 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ke Sun <sunke@kylinos.cn>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i59x5kRf"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ed82ee9e57so28080111cf.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 08:21:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767802891; x=1768407691; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qZr81RrhDU/EmN47aRYnauj1Iguo4qhRxtPs1Zlz7rQ=;
+        b=i59x5kRfO5WQCvD7i33BdEuwn88skITSIWAsfKZnj/i51oUWR6LnCDfg98eX2TzT4t
+         A8oojclYVSE02cozcobdDmUB5ixGFvdd9D9Nju0PkxRSTGrBbsH071tYnfoMAIPHHexZ
+         w+ozaPoEckhm+CZVmjCNzWJR976qFgMRcKQ/Dtrkk//REM65HiqcgoS4cA7Zg97h07nl
+         zv/AY9Q7DWrCpeq0I0Q7mQcXGILORGx7BUQaXN732iAS1aS3SVHgZlQBftQhqWRF8c7W
+         MuLg1oC6zBM1XHdGgEdLWsC2oHa3xTPepKzxcf8x8BI1B9u18NSVUViBWU2N4+WvyvZR
+         xD9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767802891; x=1768407691;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qZr81RrhDU/EmN47aRYnauj1Iguo4qhRxtPs1Zlz7rQ=;
+        b=P5hdvbRzp4Fp8fa8sva4yn3AwFy6P8g0PWZwc7R0F00QgIox2ExV4BK+gS5GLuyLbH
+         MISJM5IQ3u7go0a51/30kP/9mzyGnkvKPGnjZ2X14c74Zpo4/FZiZwdrDOoxAlkjtaL9
+         LiqlAdiggsuX9QuwK/TqFeOUQgSBNBSdFoZmHOjEE9El3boKBlId9qIC6kZJtczM4zYK
+         Ns1AqUcL73bITCSDO3bsibCETwU4A2sjjS/t95E98/BMmpcUUMnnrLlr/MafOg1nYqSR
+         GLP+w3sOt/rd4toecqtMT+Hi+ddVX/spZ3Adi+1oagAILHQasUKDcwSxRbYcvl3cmuW6
+         0B7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXoMt/lOoNL+gz3yh23e8BNGBiG1N02E62uu2LMhwwO5SHCIZC/k0+All2d/Nk5ZrD6AHalA2J5yU1l2avG6A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywb9KvZWMeQWk2CKCdF20Esk769ByYZiclavDOM3iZ8xRMnG+t9
+	IcL1ecNwqe1HWbrfc/yjgIejmiDPKAfJE644P01Vptiq8JkXJcglsJgw
+X-Gm-Gg: AY/fxX6NH4aYmrLK9SDdBycp7caAY5CzZ64XAYXyXsEE9XpniUbV1/tZz1eRC3TNH3j
+	swndUSDr04Mq8y5k0yUPwieMWJ71oFtNGsDBROfvmTmxYKaXDJA9kJ7bzxCH/L8v0LKkjzEJSyp
+	dLyM25kYD08zPym02Jcs7Y/RZdinvNAxymyBWZDPsPjYm+AihGP4b7Ghqs2ISSM4GzHK9Fi+HOw
+	gLplgvL+Vd+4uj1K5sQ8ohleNXLWQQi1MN3tRBzjQXULQXdZ82UFlydstshiehXucTggYLbKW2N
+	9EnrHXBegnQDCP79KvvN0EEZmR7lOvUgRki8bIxNSoWQT8Ihd5AzzyvcNQKXRplCrFgMQ6DRqAX
+	GwOY0d3sMrVNS39N/+Yq14t5XNXBZwWn0Q+xOgqV+M04oQsZvCpxnpqXLLuHuZltNr0fDEXP9Ak
+	XkQZp+hPwOcU1H3Ncxr56XJHAriny0Ww1bGsRnLqm3z0yw72gvztxcrgP9gn+I8DtrRxQc3dhs9
+	f6IPfhcgIG5uGI=
+X-Google-Smtp-Source: AGHT+IE4reJRN3+W2D6hKzt1hGCqifi4pTDYQZH2Y2C9sX1Cq7RkI2HE70OwnNRsWLelNxZART6OuA==
+X-Received: by 2002:ad4:4eaa:0:b0:88f:e9f0:77b9 with SMTP id 6a1803df08f44-890842b2851mr34841636d6.58.1767796678362;
+        Wed, 07 Jan 2026 06:37:58 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8e61a33sm29950971cf.29.2026.01.07.06.37.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jan 2026 06:37:57 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8FBD3F40068;
+	Wed,  7 Jan 2026 09:37:57 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 07 Jan 2026 09:37:57 -0500
+X-ME-Sender: <xms:xW9eaRNnd0cYZ7Ful53T0y-LOnvweD7YY9naArJEebmT8UVSA4CtTw>
+    <xme:xW9eaZI8dmTVwZOc7q6quZSCrqAFpQv_6E-HV7-pJQog79mZvkKo6COvaeUhijV5X
+    KfO9QMyIXAmd1UDCzT-LWIpE3IX-y3-oyxvPMTam9hgO0YGAWq0>
+X-ME-Received: <xmr:xW9eaTp-xZJUHpfwNMpt4_8p3l_pisW_OoQ3YDYp_yMMvO2-MxMOWwUV>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdeffeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedvvdeh
+    tdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
+    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
+    pedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihgtvghrhihhlhesgh
+    hoohhglhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnh
+    efpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuhdprhgtphhtthho
+    pegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:xW9eadMZFTU8Z184lS8gX3XTNBJa_PExNRWFXs5MmmrX3xCnGfL57A>
+    <xmx:xW9eaUgkLzrQyZY6AkT0Z6fz40vO9rhobok5c1MR9omCL1a3XMEs5g>
+    <xmx:xW9eaZai60PKZGnww2R97cZTt-fwYN0URFsTwY_1jJcbfNcbdqkt6Q>
+    <xmx:xW9eaQiPathGsM7bw9LyGjd7Yg1xfTGWc_rnk6GBJgxl8ySldU5WJQ>
+    <xmx:xW9eaTYrdTQ7S7oLnxVGNTUPt4jvezcix0IcHnM3-gUHBfG4ECHLu47F>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 7 Jan 2026 09:37:56 -0500 (EST)
+Date: Wed, 7 Jan 2026 22:37:52 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-rtc@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, Alvin Sun <sk.alvin.x@gmail.com>
-Subject: Re: [RFC PATCH v2 1/5] rtc: migrate driver data to RTC device
-Message-ID: <2026010757-fester-unissued-6e5f@gregkh>
-References: <20260107143738.3021892-1-sunke@kylinos.cn>
- <20260107143738.3021892-2-sunke@kylinos.cn>
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: move #define __rust_helper out of atomic.c
+Message-ID: <aV5vwMe_AiyQ8ePB@tardis-2.local>
+References: <20260107-move-rust_helper-define-v1-1-4109d58ef275@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,173 +118,109 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260107143738.3021892-2-sunke@kylinos.cn>
+In-Reply-To: <20260107-move-rust_helper-define-v1-1-4109d58ef275@google.com>
 
-On Wed, Jan 07, 2026 at 10:37:33PM +0800, Ke Sun wrote:
-> Unify RTC driver interface by storing driver data on the RTC device
-> instead of the parent device. Update RTC ops callbacks to pass the RTC
-> device itself rather than its parent. This change enables better
-> support for Rust RTC drivers that store data on the RTC device.
+On Wed, Jan 07, 2026 at 02:14:13PM +0000, Alice Ryhl wrote:
+> We were lucky that atomic.c is the first file in helpers.c so that we
+> may use the define from it in the follow-up headers [1], but this is
+> fragile. Thus, move it to helpers.c.
 > 
-> Signed-off-by: Ke Sun <sunke@kylinos.cn>
+
+I reword a bit to make it clear that we need this changes for inline
+helpers:
+
+	In order to support inline helpers [1], we need to have __rust_helper
+	defined for all helper files. Current we are lucky that atomic.c is the
+	first file in helpers.c, but this is fragile. Thus, move it to
+	helpers.c.
+
+Let me know if you have futher suggestion.
+
+> Link: https://lore.kernel.org/r/20260105-define-rust-helper-v2-0-51da5f454a67@google.com [1]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  drivers/rtc/dev.c       |  4 ++--
->  drivers/rtc/interface.c | 18 +++++++++---------
->  drivers/rtc/rtc-pl031.c |  9 ++-------
->  3 files changed, 13 insertions(+), 18 deletions(-)
+> When I send the next version of [PATCH 0/4] Inline helpers into Rust
+> without full LTO, it will be based on top of this patch. Regardless of
+> the timelines for the other series, I think it would be good to merge
+> this patch soon.
+> ---
+>  rust/helpers/atomic.c                     | 5 -----
+>  rust/helpers/helpers.c                    | 2 ++
+>  scripts/atomic/gen-rust-atomic-helpers.sh | 5 -----
+>  3 files changed, 2 insertions(+), 10 deletions(-)
 > 
-> diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
-> index baf1a8ca8b2b1..0f62ba9342e3e 100644
-> --- a/drivers/rtc/dev.c
-> +++ b/drivers/rtc/dev.c
-> @@ -410,7 +410,7 @@ static long rtc_dev_ioctl(struct file *file,
->  		}
->  		default:
->  			if (rtc->ops->param_get)
-> -				err = rtc->ops->param_get(rtc->dev.parent, &param);
-> +				err = rtc->ops->param_get(&rtc->dev, &param);
->  			else
->  				err = -EINVAL;
->  		}
-> @@ -440,7 +440,7 @@ static long rtc_dev_ioctl(struct file *file,
+> diff --git a/rust/helpers/atomic.c b/rust/helpers/atomic.c
+> index cf06b7ef9a1c559e8d7bdfc2bcd2aeb8951c29d1..a48605628ed73ac32aae2e6280481407a670e88f 100644
+> --- a/rust/helpers/atomic.c
+> +++ b/rust/helpers/atomic.c
+> @@ -11,11 +11,6 @@
 >  
->  		default:
->  			if (rtc->ops->param_set)
-> -				err = rtc->ops->param_set(rtc->dev.parent, &param);
-> +				err = rtc->ops->param_set(&rtc->dev, &param);
->  			else
->  				err = -EINVAL;
->  		}
-> diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-> index b8b298efd9a9c..783a3ec3bb93d 100644
-> --- a/drivers/rtc/interface.c
-> +++ b/drivers/rtc/interface.c
-> @@ -91,7 +91,7 @@ static int __rtc_read_time(struct rtc_device *rtc, struct rtc_time *tm)
->  		err = -EINVAL;
->  	} else {
->  		memset(tm, 0, sizeof(struct rtc_time));
-> -		err = rtc->ops->read_time(rtc->dev.parent, tm);
-> +		err = rtc->ops->read_time(&rtc->dev, tm);
->  		if (err < 0) {
->  			dev_dbg(&rtc->dev, "read_time: fail to read: %d\n",
->  				err);
-> @@ -155,7 +155,7 @@ int rtc_set_time(struct rtc_device *rtc, struct rtc_time *tm)
->  	if (!rtc->ops)
->  		err = -ENODEV;
->  	else if (rtc->ops->set_time)
-> -		err = rtc->ops->set_time(rtc->dev.parent, tm);
-> +		err = rtc->ops->set_time(&rtc->dev, tm);
->  	else
->  		err = -EINVAL;
+>  #include <linux/atomic.h>
 >  
-> @@ -200,7 +200,7 @@ static int rtc_read_alarm_internal(struct rtc_device *rtc,
->  		alarm->time.tm_wday = -1;
->  		alarm->time.tm_yday = -1;
->  		alarm->time.tm_isdst = -1;
-> -		err = rtc->ops->read_alarm(rtc->dev.parent, alarm);
-> +		err = rtc->ops->read_alarm(&rtc->dev, alarm);
->  	}
->  
->  	mutex_unlock(&rtc->ops_lock);
-> @@ -441,7 +441,7 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
->  	else if (!test_bit(RTC_FEATURE_ALARM, rtc->features))
->  		err = -EINVAL;
->  	else
-> -		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
-> +		err = rtc->ops->set_alarm(&rtc->dev, alarm);
->  
->  	/*
->  	 * Check for potential race described above. If the waiting for next
-> @@ -568,7 +568,7 @@ int rtc_alarm_irq_enable(struct rtc_device *rtc, unsigned int enabled)
->  	else if (!test_bit(RTC_FEATURE_ALARM, rtc->features) || !rtc->ops->alarm_irq_enable)
->  		err = -EINVAL;
->  	else
-> -		err = rtc->ops->alarm_irq_enable(rtc->dev.parent, enabled);
-> +		err = rtc->ops->alarm_irq_enable(&rtc->dev, enabled);
->  
->  	mutex_unlock(&rtc->ops_lock);
->  
-> @@ -618,7 +618,7 @@ int rtc_update_irq_enable(struct rtc_device *rtc, unsigned int enabled)
->  		rtc->uie_rtctimer.period = ktime_set(1, 0);
->  		err = rtc_timer_enqueue(rtc, &rtc->uie_rtctimer);
->  		if (!err && rtc->ops && rtc->ops->alarm_irq_enable)
-> -			err = rtc->ops->alarm_irq_enable(rtc->dev.parent, 1);
-> +			err = rtc->ops->alarm_irq_enable(&rtc->dev, 1);
->  		if (err)
->  			goto out;
->  	} else {
-> @@ -874,7 +874,7 @@ static void rtc_alarm_disable(struct rtc_device *rtc)
->  	if (!rtc->ops || !test_bit(RTC_FEATURE_ALARM, rtc->features) || !rtc->ops->alarm_irq_enable)
->  		return;
->  
-> -	rtc->ops->alarm_irq_enable(rtc->dev.parent, false);
-> +	rtc->ops->alarm_irq_enable(&rtc->dev, false);
->  	trace_rtc_alarm_irq_enable(0, 0);
->  }
->  
-> @@ -1076,7 +1076,7 @@ int rtc_read_offset(struct rtc_device *rtc, long *offset)
->  		return -EINVAL;
->  
->  	mutex_lock(&rtc->ops_lock);
-> -	ret = rtc->ops->read_offset(rtc->dev.parent, offset);
-> +	ret = rtc->ops->read_offset(&rtc->dev, offset);
->  	mutex_unlock(&rtc->ops_lock);
->  
->  	trace_rtc_read_offset(*offset, ret);
-> @@ -1111,7 +1111,7 @@ int rtc_set_offset(struct rtc_device *rtc, long offset)
->  		return -EINVAL;
->  
->  	mutex_lock(&rtc->ops_lock);
-> -	ret = rtc->ops->set_offset(rtc->dev.parent, offset);
-> +	ret = rtc->ops->set_offset(&rtc->dev, offset);
->  	mutex_unlock(&rtc->ops_lock);
->  
->  	trace_rtc_set_offset(offset, ret);
-> diff --git a/drivers/rtc/rtc-pl031.c b/drivers/rtc/rtc-pl031.c
-> index eab39dfa4e5fe..a605034d44cb7 100644
-> --- a/drivers/rtc/rtc-pl031.c
-> +++ b/drivers/rtc/rtc-pl031.c
-> @@ -284,10 +284,6 @@ static int pl031_set_alarm(struct device *dev, struct rtc_wkalrm *alarm)
->  
->  static void pl031_remove(struct amba_device *adev)
+> -// TODO: Remove this after INLINE_HELPERS support is added.
+> -#ifndef __rust_helper
+> -#define __rust_helper
+> -#endif
+> -
+>  __rust_helper int
+>  rust_helper_atomic_read(const atomic_t *v)
 >  {
-> -	struct pl031_local *ldata = dev_get_drvdata(&adev->dev);
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 79c72762ad9c4b473971e6210c9577860d2e2b08..a86fab743d1dc951373e5ff05278c6c7872ef491 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -7,6 +7,8 @@
+>   * Sorted alphabetically.
+>   */
+>  
+> +#define __rust_helper
+> +
+>  #include "atomic.c"
+>  #include "auxiliary.c"
+>  #include "barrier.c"
+> diff --git a/scripts/atomic/gen-rust-atomic-helpers.sh b/scripts/atomic/gen-rust-atomic-helpers.sh
+> index 45b1e100ed7c63108ee6cb07e48a17668f860d47..a3732153af29f415e397e17cab6e75cb5d7efafc 100755
+> --- a/scripts/atomic/gen-rust-atomic-helpers.sh
+> +++ b/scripts/atomic/gen-rust-atomic-helpers.sh
+
+whenever we changed scripts/atomic/* we need to rerun
+scripts/atomic/gen-atomics.sh to calculate a new hash value of the
+generated files, so we are missing this:
+
+diff --git a/rust/helpers/atomic.c b/rust/helpers/atomic.c
+index a48605628ed7..4b24eceef5fc 100644
+--- a/rust/helpers/atomic.c
++++ b/rust/helpers/atomic.c
+@@ -1032,4 +1032,4 @@ rust_helper_atomic64_dec_if_positive(atomic64_t *v)
+ }
+
+ #endif /* _RUST_ATOMIC_API_H */
+-// 615a0e0c98b5973a47fe4fa65e92935051ca00ed
++// e4edb6174dd42a265284958f00a7cea7ddb464b1
+
+I queued with this change for the rust-sync PR of 7.0, thanks!
+
+Regards,
+Boqun
+
+> @@ -47,11 +47,6 @@ cat << EOF
+>  
+>  #include <linux/atomic.h>
+>  
+> -// TODO: Remove this after INLINE_HELPERS support is added.
+> -#ifndef __rust_helper
+> -#define __rust_helper
+> -#endif
 > -
-> -	if (adev->irq[0])
-> -		free_irq(adev->irq[0], ldata);
->  	amba_release_regions(adev);
->  }
+>  EOF
 >  
-> @@ -320,8 +316,6 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
->  		goto out;
->  	}
->  
-> -	amba_set_drvdata(adev, ldata);
-> -
->  	dev_dbg(&adev->dev, "designer ID = 0x%02x\n", amba_manf(adev));
->  	dev_dbg(&adev->dev, "revision = 0x%01x\n", amba_rev(adev));
->  
-> @@ -356,6 +350,7 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
->  		ret = PTR_ERR(ldata->rtc);
->  		goto out;
->  	}
-> +	dev_set_drvdata(&ldata->rtc->dev, ldata);
->  
->  	if (!adev->irq[0])
->  		clear_bit(RTC_FEATURE_ALARM, ldata->rtc->features);
-> @@ -369,7 +364,7 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
->  		goto out;
->  
->  	if (adev->irq[0]) {
-> -		ret = request_irq(adev->irq[0], pl031_interrupt,
-> +		ret = devm_request_irq(&adev->dev, adev->irq[0], pl031_interrupt,
->  				  vendor->irqflags, "rtc-pl031", ldata);
-
-Are you _SURE_ you can use devm for this?  it is a functional change,
-one that trips lots of people up.  I wouldn't make this change without
-at least saying why you are doing so in the changelog text, which I
-didn't see at all here.
-
-thanks,
-
-greg k-h
+>  grep '^[a-z]' "$1" | while read name meta args; do
+> 
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20260107-move-rust_helper-define-63edcfb2bff3
+> 
+> Best regards,
+> -- 
+> Alice Ryhl <aliceryhl@google.com>
+> 
