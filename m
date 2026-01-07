@@ -1,149 +1,214 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B90F18859B;
-	Wed,  7 Jan 2026 08:04:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DA0285419;
+	Wed,  7 Jan 2026 08:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767773075; cv=none; b=arFPcADMS7Pw4tKtxmwMkBleraxglzVBDSJoYSlikipgyi1j6o1Ub/y83e0ntKe5NJlS2aZXVt17pwhQfbY01RegGSbAG4/I7G2hj4ljtkuYsEqkMZHw9IKRxq/Ynv/K50rIrhi0R+i4edmC1U1acHNFYCUMRrb4OlgOLAkLWz4=
+	t=1767773700; cv=none; b=AjjW3iutfmevm9nRaVUNI6QKa42g/qwyegDuJ1o1UCj6vsnIdUYSdKDyi7pXhd3UkZIwNdjYWTFLTf1wtQvPtp0mBiINORu1CyFmdor7uazXl2JM/9MYOMtDBEtBRpgPIyvCoIh8x8fbTQi84hskqy3aVh+HJUjiyvASOf8nJnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767773075; c=relaxed/simple;
-	bh=KNSQ4jS+uaz7zUizkEDbdTh1ukeuADvTY5T7Q3SBezQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dfh3fVltUIZ+FuQdqT5hd91KK5McCR8ZYxnS1qq2JZcs3tcCuBO89qJUX6o7fue3igOsddoH1rO2jn8CfAhDgYQ4OduX2Jr/JmhHdAlH5/MBVxAtYkm6w/i7YCRCM0cr5/FIEoXn3dHnbY/hrXa8mkouRI1v0oX4EXyEzkadkb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCNZYBKJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767773700; c=relaxed/simple;
+	bh=iAJnb9/rwV2jTlmCQSFf3nva6unTGQNGBsbITfZ85Hc=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=og8aqA11IUp1JJFaK9alNIvFd32tQyCGyqWYxoguAJfmoLZ9N/CrqcjhDiDdstoaKPTOyOxaz57Lcaj9lS6PSmq5BIMvzXbZA6b+Qee/pz/j/FZi/MNm0oMBde8hJbm6HcApDQSYJuC/ziA4jeq1teKp4oaaSAFQMaPi78n/iTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=UEN+Od4k; arc=none smtp.client-ip=43.163.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCNZYBKJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE61AC4CEF7;
-	Wed,  7 Jan 2026 08:04:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767773074;
-	bh=KNSQ4jS+uaz7zUizkEDbdTh1ukeuADvTY5T7Q3SBezQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RCNZYBKJHLsUtJtomJjDt4QgQQ9nTe3ry74SElBoEH28iVwd5Bxj4EOrfBqfEnHjV
-	 YBwiLPKjxXvn+JzXOpM1RQ83g2wG0oKykt6t3KZPgt9B+Uvl97IDDlJ9scT8nKGxra
-	 xm+mhkSli5V9P8zOVueHTiqEtCs4CLp1IyO3OGTkUkx1EMWHPEppnL19kf7qX+YKGe
-	 JM9sRpU6tqypwTueA/MTlvYV+FUClsZIiIW2bdyRya9SVCHMWrQ9Sa3IUOYsWc+Y2N
-	 zZChHCPoA3uVzgRyFw7nHK3lTzRnKkGSfF19WKjNWTszpBVJ68Ug+lxghtSD8sAllB
-	 +/26YgBkm94ZQ==
-Date: Wed, 7 Jan 2026 00:04:32 -0800
-From: Namhyung Kim <namhyung@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="UEN+Od4k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1767773684; bh=YbRjhLpesLlZkgyVBDQ+2GNJl793w9sZpCAaFBN8/do=;
+	h=From:To:Cc:Subject:Date;
+	b=UEN+Od4kYwhKI+kkU0Bz4ad7nwkIgQPt5uRiqoOB1mpJz3WKJdQa9D9HYwDMQFmTI
+	 q89FTnd3a7uvMCc5sUE5yKSDOtGapqVXzuUx8WETSSGvoTcyudk617fUnRz6UTDKSS
+	 VkJNOvFrsrKqIMHSiA9LPDENQckcaE+mhGtVjFK0=
+Received: from localhost.localdomain ([116.128.244.169])
+	by newxmesmtplogicsvrsza56-0.qq.com (NewEsmtp) with SMTP
+	id 3A989295; Wed, 07 Jan 2026 16:14:41 +0800
+X-QQ-mid: xmsmtpt1767773681tdmzi2xe5
+Message-ID: <tencent_63DD850B43CC086844717B73C574B8358F05@qq.com>
+X-QQ-XMAILINFO: OATpkVjS499u1b/FTGUJDMtH0GWq6+Yu2oNB+ox+6f4fDCh2fkkqAi115ZAaR4
+	 Ab5F9nxuhZPGmDRczpw5eX11rUE49XnV9sl/ti1H9PR9kd22yncsSDqsdL89W7KlJ2ETBautzSAk
+	 xFlYPva76ZqURIWXbZf6se/irIuFR9xcr8Mv0wzwJnDKMHMWZ5Ek0uv7aZy18dlxMs3l+OoAtK5l
+	 gt0mWCk8HkyQ16/GqcRcDweuJdvl1N4h+5sM4Kf9+eUL6KzU9jbcV1HESTYqvAJY8MfxWKeWUE/E
+	 jzKmT0U3F/mf+GmjNSdqXrsiadTFfCl1+65fGb+XxrC2CyeNt+7MRwrySAfHKxUwVxRq5SOhNnqL
+	 cxRgYPvbS6CpInVMHGennTxji48lOcYG8ZDdqj6Z7Fb2YFvY80cZB6yoTSbJui+Pwqi5OT4ILdKa
+	 OOlkPdtpvAW6KQuHgYJUAXLbqM0YY8LtIaZf1Taeh1UqGweWRAstgU3+Xmxpv0DeFTSwt7LwYvz+
+	 7c6rD9qg1FOei1hg/qLx2ABj/cXYJ1D0CBpVC0IMmb2YHY5SY8ObAjCZ71dB6TpFqDTZidQb708B
+	 zUM3Wd8snGDaJbNqMwT7iqZ55EDXQU8SKRFHIrIrNCwhq9q9oOffL9QDypX5gPk+mMubTA6kVvTN
+	 VorNOIE7LVcylpfzUDRgtH90QFWb7L/ldJp2B8fiThRRhie/TACNNRkVRSMtKAqTsluUEtb+vQER
+	 Gz2mY1nFMjXXb7QoxJY6EaxIapDWm/ANEWTKaCIQJUWB2XmKkPbZZlyWnMIL+YiYjTLgeCe5k2fi
+	 R8YtsCUK2i/X4LwOEX0XAHl+k3jh64bFVS2nqiK5tD4kesATj5O85Ex0RxfXdSVFHaxHgC533xPG
+	 6hToYDLlUBT1ZR4pwqGGE+NihoVcbRNyYyxANf4/VNWUuywfPvmXIV1B9Wb3SZzb1csv6N4yc/WV
+	 5hFHZaTjQzYvPEpqjt+waOjMKw8k2pgYTXU8cu+AdIuuSdM2dnPwQpiFKvCidWjMGaaXCr8p7h2r
+	 dI9PlQxQLKMdd/9Ft7l91woO2ISZo=
+X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+From: 1064094935@qq.com
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Andi Kleen <ak@linux.intel.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2] perf symbol: remove Rust symbol workarounds
-Message-ID: <aV4TkNE_hAyByISq@google.com>
-References: <20260105150106.567830-1-gary@kernel.org>
- <aVvdt90YmhJz3i5i@x1>
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pengfuyuan <pengfuyuan@kylinos.cn>
+Subject: [PATCH] rust: io: mem: add ioremap_wc support
+Date: Wed,  7 Jan 2026 16:14:40 +0800
+X-OQ-MSGID: <20260107081440.173112-1-1064094935@qq.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aVvdt90YmhJz3i5i@x1>
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: pengfuyuan <pengfuyuan@kylinos.cn>
 
-On Mon, Jan 05, 2026 at 12:50:15PM -0300, Arnaldo Carvalho de Melo wrote:
-> On Mon, Jan 05, 2026 at 03:00:57PM +0000, Gary Guo wrote:
-> > From: Gary Guo <gary@garyguo.net>
-> > 
-> > Due to an off-by-one error introduced in commit 73bbb94466fd ("kallsyms:
-> > support "big" kernel symbols"), long symbols (which are currently only
-> > produced by Rust) can have their symbol type being wrongly parsed by
-> > kernel/kallsyms.c.
-> 
-> Looks sane, applied to perf-tools-next,
-  
-I'm afraid there may be some outdated kernels which don't have the fix
-yet.  Maybe make sense to wait some more time for them to disappear?
+Add write-combining memory mapping support to the Rust iomem abstraction.
+This extends the existing IoMem and IoRequest abstractions to support
+write-combining cache policy, which is essential for framebuffer memory
+and other memory regions that benefit from write-combining semantics.
 
-Thanks,
-Namhyung
+The implementation follows the same pattern as the existing ioremap and
+ioremap_np support:
+- Add rust_helper_ioremap_wc() in rust/helpers/io.c to wrap the C API
+- Add IoMem::ioremap_wc() to perform the actual mapping with write-combining
+- Add IoMem::new_wc() to create IoMem instances with write-combining policy
+- Add IoRequest::iomap_wc_sized() and IoRequest::iomap_wc() methods
+  for compile-time and runtime-sized mappings respectively
 
+This enables Rust drivers, such as framebuffer drivers, to properly map
+memory regions with write-combining semantics.
 
-> > This has been fixed in commit f3f9f42232dee5 ("kallsyms: Fix wrong "big"
-> > kernel symbol type read from procfs"), and these symbols are now
-> > reported correctly.
-> > 
-> > Drop the workaround in perf symbol that filter out these symbol types.
-> > 
-> > Specifically, '1' and 'l' can never be generated by nm -- 'u' does
-> > indicate GNU unique, however such symbols are only generated by G++ for
-> > C++ templates, and are never generated by LLVM (LLVM generates weak
-> > symbols in such cases instead). 'N' can appear if symbols exist inside
-> > debug sections, and 'n' may appear for symbols inside note sections,
-> > however these sections do not typically have symbol (and they're
-> > explicitly filtered out by kallsyms).
-> > 
-> > Therefore, the previous occurrence of these symbols types must be due to
-> > the off-by-one error and can be safely removed.
-> > 
-> > Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
-> > Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> > Signed-off-by: Gary Guo <gary@garyguo.net>
-> > ---
-> > v2:
-> > - Removed the "__" change as suggested by Miguel
-> > - Expanded the commit message to mention why "N" and "n" cannot appear
-> > - Link to v1: https://lore.kernel.org/rust-for-linux/20251223175216.1353814-1-gary@kernel.org/#t
-> > ---
-> >  tools/perf/util/symbol.c | 19 ++++---------------
-> >  1 file changed, 4 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-> > index 814f960fa8f8d..8662001e1e25b 100644
-> > --- a/tools/perf/util/symbol.c
-> > +++ b/tools/perf/util/symbol.c
-> > @@ -104,21 +104,10 @@ static enum dso_binary_type binary_type_symtab[] = {
-> >  
-> >  #define DSO_BINARY_TYPE__SYMTAB_CNT ARRAY_SIZE(binary_type_symtab)
-> >  
-> > -static bool symbol_type__filter(char __symbol_type)
-> > -{
-> > -	// Since 'U' == undefined and 'u' == unique global symbol, we can't use toupper there
-> > -	// 'N' is for debugging symbols, 'n' is a non-data, non-code, non-debug read-only section.
-> > -	// According to 'man nm'.
-> > -	// 'N' first seen in:
-> > -	// ffffffff9b35d130 N __pfx__RNCINvNtNtNtCsbDUBuN8AbD4_4core4iter8adapters3map12map_try_foldjNtCs6vVzKs5jPr6_12drm_panic_qr7VersionuINtNtNtBa_3ops12control_flow11ControlFlowB10_ENcB10_0NCINvNvNtNtNtB8_6traits8iterator8Iterator4find5checkB10_NCNvMB12_B10_13from_segments0E0E0B12_
-> > -	// a seemingly Rust mangled name
-> > -	// Ditto for '1':
-> > -	// root@x1:~# grep ' 1 ' /proc/kallsyms
-> > -	// ffffffffb098bc00 1 __pfx__RNCINvNtNtNtCsfwaGRd4cjqE_4core4iter8adapters3map12map_try_foldjNtCskFudTml27HW_12drm_panic_qr7VersionuINtNtNtBa_3ops12control_flow11ControlFlowB10_ENcB10_0NCINvNvNtNtNtB8_6traits8iterator8Iterator4find5checkB10_NCNvMB12_B10_13from_segments0E0E0B12_
-> > -	// ffffffffb098bc10 1 _RNCINvNtNtNtCsfwaGRd4cjqE_4core4iter8adapters3map12map_try_foldjNtCskFudTml27HW_12drm_panic_qr7VersionuINtNtNtBa_3ops12control_flow11ControlFlowB10_ENcB10_0NCINvNvNtNtNtB8_6traits8iterator8Iterator4find5checkB10_NCNvMB12_B10_13from_segments0E0E0B12_
-> > -	char symbol_type = toupper(__symbol_type);
-> > -	return symbol_type == 'T' || symbol_type == 'W' || symbol_type == 'D' || symbol_type == 'B' ||
-> > -	       __symbol_type == 'u' || __symbol_type == 'l' || __symbol_type == 'N' || __symbol_type == '1';
-> > +static bool symbol_type__filter(char symbol_type)
-> > +{
-> > +	symbol_type = toupper(symbol_type);
-> > +	return symbol_type == 'T' || symbol_type == 'W' || symbol_type == 'D' || symbol_type == 'B';
-> >  }
-> >  
-> >  static int prefix_underscores_count(const char *str)
-> > 
-> > base-commit: 3609fa95fb0f2c1b099e69e56634edb8fc03f87c
-> > -- 
-> > 2.51.2
+The API design is consistent with the existing iomap() methods, providing
+both sized and unsized variants to match the pattern established by the
+generic iomem abstraction.
+
+Signed-off-by: pengfuyuan <pengfuyuan@kylinos.cn>
+---
+ rust/helpers/io.c     |  5 +++
+ rust/kernel/io/mem.rs | 71 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 76 insertions(+)
+
+diff --git a/rust/helpers/io.c b/rust/helpers/io.c
+index c475913c69e6..6c9edf7f2233 100644
+--- a/rust/helpers/io.c
++++ b/rust/helpers/io.c
+@@ -13,6 +13,11 @@ void __iomem *rust_helper_ioremap_np(phys_addr_t offset, size_t size)
+ 	return ioremap_np(offset, size);
+ }
+ 
++void __iomem *rust_helper_ioremap_wc(phys_addr_t offset, size_t size)
++{
++	return ioremap_wc(offset, size);
++}
++
+ void rust_helper_iounmap(void __iomem *addr)
+ {
+ 	iounmap(addr);
+diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+index b03b82cd531b..94403d899bbd 100644
+--- a/rust/kernel/io/mem.rs
++++ b/rust/kernel/io/mem.rs
+@@ -149,6 +149,41 @@ pub fn iomap(self) -> impl PinInit<Devres<IoMem<0>>, Error> + 'a {
+     pub fn iomap_exclusive(self) -> impl PinInit<Devres<ExclusiveIoMem<0>>, Error> + 'a {
+         Self::iomap_exclusive_sized::<0>(self)
+     }
++
++    /// Maps an [`IoRequest`] with write-combining cache policy where the size
++    /// is known at compile time.
++    ///
++    /// This uses the [`ioremap_wc()`] C API, which provides write-combining
++    /// semantics. This is useful for framebuffer memory and other memory
++    /// regions that benefit from write-combining, where multiple writes can
++    /// be combined and reordered for better performance.
++    ///
++    /// Unlike [`Self::iomap`], this method explicitly uses write-combining
++    /// mapping, which is typically needed for video framebuffers.
++    ///
++    /// [`ioremap_wc()`]: https://docs.kernel.org/driver-api/device-io.html#getting-access-to-the-device
++    pub fn iomap_wc_sized<const SIZE: usize>(
++        self,
++    ) -> impl PinInit<Devres<IoMem<SIZE>>, Error> + 'a {
++        IoMem::new_wc(self)
++    }
++
++    /// Maps an [`IoRequest`] with write-combining cache policy where the size
++    /// is not known at compile time.
++    ///
++    /// This uses the [`ioremap_wc()`] C API, which provides write-combining
++    /// semantics. This is useful for framebuffer memory and other memory
++    /// regions that benefit from write-combining.
++    ///
++    /// Unlike [`Self::iomap_wc_sized`], here the size of the memory region
++    /// is not known at compile time, so only the `try_read*` and `try_write*`
++    /// family of functions should be used, leading to runtime checks on every
++    /// access.
++    ///
++    /// [`ioremap_wc()`]: https://docs.kernel.org/driver-api/device-io.html#getting-access-to-the-device
++    pub fn iomap_wc(self) -> impl PinInit<Devres<IoMem<0>>, Error> + 'a {
++        Self::iomap_wc_sized::<0>(self)
++    }
+ }
+ 
+ /// An exclusive memory-mapped IO region.
+@@ -261,6 +296,33 @@ fn ioremap(resource: &Resource) -> Result<Self> {
+         Ok(io)
+     }
+ 
++    fn ioremap_wc(resource: &Resource) -> Result<Self> {
++        // Note: Some ioremap() implementations use types that depend on the CPU
++        // word width rather than the bus address width.
++        //
++        // TODO: Properly address this in the C code to avoid this `try_into`.
++        let size = resource.size().try_into()?;
++        if size == 0 {
++            return Err(EINVAL);
++        }
++
++        let res_start = resource.start();
++
++        // SAFETY:
++        // - `res_start` and `size` are read from a presumably valid `struct resource`.
++        // - `size` is known not to be zero at this point.
++        let addr = unsafe { bindings::ioremap_wc(res_start, size) };
++
++        if addr.is_null() {
++            return Err(ENOMEM);
++        }
++
++        let io = IoRaw::new(addr as usize, size)?;
++        let io = IoMem { io };
++
++        Ok(io)
++    }
++
+     /// Creates a new `IoMem` instance from a previously acquired [`IoRequest`].
+     pub fn new<'a>(io_request: IoRequest<'a>) -> impl PinInit<Devres<Self>, Error> + 'a {
+         let dev = io_request.device;
+@@ -268,6 +330,15 @@ pub fn new<'a>(io_request: IoRequest<'a>) -> impl PinInit<Devres<Self>, Error> +
+ 
+         Devres::new(dev, Self::ioremap(res))
+     }
++
++    /// Creates a new `IoMem` instance with write-combining cache policy from
++    /// a previously acquired [`IoRequest`].
++    pub fn new_wc<'a>(io_request: IoRequest<'a>) -> impl PinInit<Devres<Self>, Error> + 'a {
++        let dev = io_request.device;
++        let res = io_request.resource;
++
++        Devres::new(dev, Self::ioremap_wc(res))
++    }
+ }
+ 
+ impl<const SIZE: usize> Drop for IoMem<SIZE> {
+-- 
+2.25.1
+
