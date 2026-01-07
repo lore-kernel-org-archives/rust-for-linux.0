@@ -1,112 +1,112 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA703320A20;
-	Wed,  7 Jan 2026 12:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767789343; cv=none; b=SspAORJfJujGITBJpPPEpRqdlw+dWMZ/a3wY9rtTEHRJl0a83HMMHOqEUkRMtV6sQ8z4OoMzJIQCRHLrXcw9umyLaHU4D778TN1lGd4AsC0SaNe506dFPECBGqNk1fTOSEbjv5F4R9krwo4VsOtA5S4E782XooYbJleR5v8iBE0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767789343; c=relaxed/simple;
-	bh=p/YWmssrwbeecBjO5ZcaZ3Uk7qz8/VaZYyMoOdf4igc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LAQAsguenf+Gpl9OPPGiGen67SjIjdsS85Og7zNHkOXXzOBPHz1Npaq9FQalnLDKKs6bDQIhmZm2wW8Tg2Fqf47hkXXROVImlcmz0h0dXzOuXeCyHvMq06nFX0IGBkogpeHQxKS+Ji0N8Kz2e9j4dNzhcKCD5FbjIiQz7Er2AY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bPHmS0my; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0B530BF68
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Jan 2026 12:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767789993; cv=pass; b=gii3NIZZRvXvkmD5avX2nJvYuQ/VuBIOEcg2WFR4RdbQyiKiRP+X11n5jRgrAP/EUI01j9bYe8qIIQIS7sKplS+8M/yP15LdHF7tSGJ5GiS4s0xfFRSYxNTTlc6h3yzE40xvx8wh088OtScFd4kZDFJs8/XO+AF6u4d2mAfoGZo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767789993; c=relaxed/simple;
+	bh=diRXR2Re1+OHdUMzqSTY3/4W/RblejFu9jTBjKLGYAo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hAQ34ReZZnTNLdY0xFDPhS74rrMLYRYb1c3N3BM/t+CXyLGutX3fOqXleMcTCDKwKaiNuyM0Up6mq4sxIHdvB3vwHVm7sctnGJwfSI2tbGzUWduyI6NkBug2Oja0CCe+UPdbmGjqgZDwlIqeGT1On8JNCHgeaXx6zmWig53RPJQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TUg7YZRS; arc=pass smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bPHmS0my"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=BHE+uM9pFMpvKUfJm0PMn7/MMiQJxjBUC4G6rc0+7ag=; b=bPHmS0my5zMc0KSgtrhRkA+vTW
-	z8Eu7Wmq0eIbQNU2yC3YNgs0VuCTEbqJENgYB5FVcWwB5xwARLzeYZH94XMypln1xuFyKtHAZOdRz
-	U4DAYDjYtqvbV6j0Sec+25E7rEGo/SUgkLRmhxcbMCyZb7AjHJlcusIr4Tk92i0yg492BC81/Tesj
-	AiTOKmQi0EGinvOrsYZFIEQncVw27tFLtGb7tp0dfjEkGXjAU6UBVFcLbi0Zl0Y6qIsUU8erEvD9x
-	f6nDRT3WQSJ3x2tfxW7/ueyOM5M6w23aN2hHLiS+8REmD7MykBJLvthi0BeLLp1Z7md5pKs0S/pSe
-	IG6ePcKQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vdSl8-0000000BKHb-0vmp;
-	Wed, 07 Jan 2026 12:35:30 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 1B43E30057E; Wed, 07 Jan 2026 13:35:29 +0100 (CET)
-Date: Wed, 7 Jan 2026 13:35:28 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
-	nouveau@lists.freedesktop.org, Matthew Maurer <mmaurer@google.com>
-Subject: Re: [PATCH 0/4] Inline helpers into Rust without full LTO
-Message-ID: <20260107123528.GF2393663@noisy.programming.kicks-ass.net>
-References: <20251202-inline-helpers-v1-0-879dae33a66a@google.com>
- <87y0m9har9.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TUg7YZRS"
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-11b7bd9e6e5so123269c88.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 04:46:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1767789991; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IFeMJyaU9NZfgKOKBFZ1u3BrjSfN2QqvkmVT5skQMcTSeKmtsgSeoppGmVdpgI7/Vl
+         9MGJKYZqAox4YbQw/qTsB36fhPVSFoAy+t6uJqz3VoNgolcdaTj0SYJSAE+H1nM84QCr
+         u5cF7B+WWpIDYy9Wa0AaU8uaTNC+qAb+KsL1e8+Dt6FHA1NIxyKRSFpiRrJ25x8+XwXH
+         uJmwf3+Pk1npm0OpPwqjLZARI67IPNUTcJTYWYJWEJQSu5BTELpiPyyI3VzKtvCyWILP
+         Tu7yEeYwAfl8/CkozArEvbNR/sbB5B4vrmhBWe7F//b2ERLb9isZmwh6Tmf154e5FVxp
+         507w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=diRXR2Re1+OHdUMzqSTY3/4W/RblejFu9jTBjKLGYAo=;
+        fh=6DVKRNOaRdyD2hQkd3lWUlEaX4pt4APnqTbEI5VUOhg=;
+        b=YQJnxNQZtOdCtvMfLZT5UzI2tzH82amySLZbffWmz25Hs6l3gwbQ7ml+nyL/YI6sEC
+         3gUa5SFLR89RdaYZY1/FbszSjE/iYtb+aEbzic8zZ7HGBMAWDRxKzrs1QahKrzggS94i
+         yaniWIXHC72dKEJdmhJ8Rjd6/QN6818wh6clrbNOSiHcMAU7D6uZvDO3BxyREBobD1Na
+         N+KvfM20pamEiXPrVTV/ANisgPdcSfd7lOn357ei5yTcYkDZOWYmanEvtDlAHEssATgR
+         W9W9Bsq9EwiNVbo5O0RIM6XBcXba4tV4RmpyFetu5OmqKniqbFRa/jPRebyJm+JsyFlY
+         VcGA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767789991; x=1768394791; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=diRXR2Re1+OHdUMzqSTY3/4W/RblejFu9jTBjKLGYAo=;
+        b=TUg7YZRSLBYwBtmyyyih02fLI1qyky3/MpMAu57IzXkhrhgAmGQXZesxA4OlU+TGJz
+         Q33tvU0kF7I4Yv7vzrtBDtOKPGGandesFPRcn4KRIy39F/9SoQ75MJ410t+GG4BOOMIK
+         7HFVoViM1u5DT878uY1FzLmDr77tsx52bqefT8y7LZT6vA1FEr3ykUvLlixNngF8PVq+
+         PM4V9TIp2nYRr6ASLxFF3zOpr9ZamHlCQOJ7pzqIsgHNMQRlF7tFByzmmhSLRi3IQKU8
+         U+A0weVqV1hYLHJ5vTEcdmufGqLkpHNWHGS+FnLriN5uMtYOLZtgAyjl2HBsuiBXhcxn
+         Wefg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767789991; x=1768394791;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=diRXR2Re1+OHdUMzqSTY3/4W/RblejFu9jTBjKLGYAo=;
+        b=DUjX2M3Jvxbbs3Xr76Q8WnAHyGWQ1w1CtbQ/4uyjjbMgRAsFKA4Q9LWesEvrOS3GEM
+         0CDQpgJigWPU7i5oCSubK7eMD+NsLlArEOnCD8cwLc3tV/uPxla7egjuFDh5ZusPFBN+
+         r1FUFHm14uZYeIzDLv4CZtixceztYhtgmmA5biR8BzSdXUqCIOBW9SsjwSAuLE8gg1B/
+         UVK/ZmSlT6ulGP9ZOouSoKTTxCU9+yocvuFAwQ0EnnkL0ygAW/1k6DmDZPrE2RmV+wy8
+         bqdRsZuWsKCXt+tPHeV3nzqmRWtscO0n0s9fwLt1pzGP9EcYm1F7szVTmV3E03nfULRD
+         eGmw==
+X-Forwarded-Encrypted: i=1; AJvYcCXf00OI6Qp2gAV3NUyruWT2ZnZ0zTB/RSt4xU16yqej981QcFLJfnL2NQPCwLOkQGnbDTZ4nYYcgeqm3LGVVA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyj/Dd66bxVZVJlAXF8eH9HPUaIdP4Z8Tp3Pdbg10mVCzJLqBdE
+	11yUvst8eZt6u+b0fnlRI2OlQdv0rRRD5F/+CjEsTBuuj/3u2m9euaNWO7aCDN5tK9KYUnG8pU6
+	Im8cYZOZ/SqoKsg3aiaAC+Qi2XKn0v38=
+X-Gm-Gg: AY/fxX6KgotT99zDimDhEzxoJnSxU/Y6Ka1d2UqAbZFDqYLaISt50+kWxHk7Fif/H0J
+	xcxfxK1Mev/48t14RjBqrWG5Cf3mTcG4wR4SYdf4fNW7gttO37CJ70ur3qbyov1+XwmGsMGYGTp
+	7Lf5/msV/nUpG1PorZA3NHdh4ShYGgZyKhheR0m+YoBTdIyc9g2SLfmW6bIL/+RZoZX7d8QFjk/
+	gegS38OZljTv0awpLou+a/VWBOvPHTIajvi1DW86ikZvC7C1azLPdmuLvI169S5/LrSF45K4PQx
+	glRSwVoxDcnZbFxRMbNS5gZFvupmV51ZZbflO6y6LhxaATFrGrmXq5uGqAQjJ5ZcB7drIBPKt7D
+	SmEZugwZWWXRb/z22WlB52wg=
+X-Google-Smtp-Source: AGHT+IHBFO+bAPP6V9b03rrjN1+f1r7uZEP39oWoXoE9m/s7w6G4H7XkX2N2kHMKJjrXVBAD8G3GKTzc0IzPpMR3ns0=
+X-Received: by 2002:a05:7300:ad08:b0:2ae:593b:2163 with SMTP id
+ 5a478bee46e88-2b17d2b80d2mr977198eec.4.1767789990606; Wed, 07 Jan 2026
+ 04:46:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87y0m9har9.fsf@t14s.mail-host-address-is-not-set>
+References: <c5c5c0a4-249f-41b0-b5f1-87a58514b120@nvidia.com> <8822A0A5-CD4C-403A-A001-F4E7A351D81B@joelfernandes.org>
+In-Reply-To: <8822A0A5-CD4C-403A-A001-F4E7A351D81B@joelfernandes.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 7 Jan 2026 13:46:18 +0100
+X-Gm-Features: AQt7F2oY3rJVLUAzPCfQNldNx5mLoh9iddgjtwFpYIBSLt204r2ybXXsoi4kwrU
+Message-ID: <CANiq72mUCGL3f=GAYSZfMV1=NXpOjz4vsV7B3Pd-=EG8tmWC_A@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: Update email address for Joel Fernandes
+To: Joel Fernandes <joel@joelfernandes.org>
+Cc: John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org, rcu@vger.kernel.org, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, nouveau@lists.freedesktop.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Paul E McKenney <paulmck@kernel.org>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Steven Rostedt <rostedt@goodmis.org>, rostedt@google.com, 
+	Yury Norov <yury.norov@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 07, 2026 at 01:23:38PM +0100, Andreas Hindborg wrote:
-> Hi Alice,
-> 
-> Alice Ryhl <aliceryhl@google.com> writes:
-> 
-> > Currently the only way for Rust code to call a static inline function is
-> > to go through a helper in rust/helpers/. This introduces performance
-> > costs due to additional function calls and also clutters backtraces and
-> > flame graphs with helper symbols.
-> >
-> > To get rid of these helper symbols, provide functionality to inline
-> > helpers into Rust using llvm-link. This option complements full LTO, by
-> > being much cheaper and avoiding incompatibility with BTF.
-> >
-> > I ran a microbenchmark showing the benefit of this. All the benchmark
-> > does is call refcount_inc() in a loop. This was chosen since refcounting
-> > is quite hot in Binder. The results are that Rust spends 6.35 ns per
-> > call vs 5.73 ns per call in C. When enabling this option, the two
-> > languages become equally fast, and disassembly confirms the exact same
-> > machine code is used (in particular there is no call to
-> > rust_helper_refcount_inc). Benchmarking Binder also results in an
-> > improvement from this change.
-> >
-> > This patch is complementary to:
-> > https://lore.kernel.org/all/20251202-define-rust-helper-v1-0-a2e13cbc17a6@google.com/
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> I get the following modpost errors when building with this applied on top
-> of v6.19-rc4:
-> 
-> ERROR: modpost: "__SCK__WARN_trap" [drivers/gpu/drm/nova/nova.ko] undefined!
-> ERROR: modpost: "__SCK__WARN_trap" [drivers/gpu/nova-core/nova_core.ko] undefined!
-> ERROR: modpost: "__SCK__WARN_trap" [drivers/block/rnull/rnull_mod.ko] undefined!
-> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_minimal.ko] undefined!
-> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_misc_device.ko] undefined!
-> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_print.ko] undefined!
-> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_dma.ko] undefined!
-> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_pci.ko] undefined!
-> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_platform.ko] undefined!
-> ERROR: modpost: "__SCK__WARN_trap" [samples/rust/rust_driver_faux.ko] undefined!
+On Tue, Jan 6, 2026 at 11:56=E2=80=AFAM Joel Fernandes <joel@joelfernandes.=
+org> wrote:
+>
+> It is more important that mailing list traffic does not have issues which=
+ unfortunately us and other company domains have experienced. I have been u=
+sing my domain for a long time without incident.
 
-Looks like it used the wrong static_call_mod() version, was MODULE
-defined?
+You could consider a kernel.org one too!
+
+Cheers,
+Miguel
