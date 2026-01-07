@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2313A35B159;
-	Wed,  7 Jan 2026 15:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3687335F8A6;
+	Wed,  7 Jan 2026 15:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767798559; cv=none; b=DFYoH+PcXT4ol9FHY54VHMhSDIDeVPZpJRmNPgUbIj82CDEFDPHxK1IPMqUqBy8XQEBDARKI7sZa39P0MK2Sd88f2mifjwjYofRPOE5Jde11K2nCdfUdthUO8EHQ0kof5vwSGC2bfWtwxds1J4nAgpy+Ti1+rnS3V5XAPRm/52Q=
+	t=1767798569; cv=none; b=FwxaKx4wspB6lxGLQwkb40UUMfK4mdVTAH9cxHVZHTVl5q0VJRea6AQIDZM65QiBFxHin9wXL/1MVGfjD1VGYUypweSdwrVT19xfETVJx9JsdN0YVR70R4NwW2YrIxrBDjVfz3RDWn0+AdfzEbeNwCSBk5T0Ua/s2vpX7bSTHIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767798559; c=relaxed/simple;
-	bh=PpsW+euC7M6ZozyWvwTJ3UgWNQyzkWKrZPR+j+zZxGY=;
+	s=arc-20240116; t=1767798569; c=relaxed/simple;
+	bh=R7dfa7Jo2aqE5IAC7RTt9oluIXiX6KZLg6IluUq7y6E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VQWcOIKKN8JIFN58ikovWRC+8sAKmjvrzUVO4NAFMaXl9NRWZ/UP0eCT1qGUwUVK1D62nQNwNrunlgL+6SHUKsH39WIoKujbWE7RlmIcexVScuUxKVHfcmZ9ZVINOuAqSpSeZ38/G/eUOV6FQ2SF9GPyBwtZDFtLXbmPy3B+ko0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUBJdvKp; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VZNVNQ+IWdSjYxOx6VMWE231PFXv3k792xXMSp63aac4H38L5CvXnudiB5XmDjUGxzQvVL+QK0/cj4sJ87rDLkbE/hfMDy25px3/tUahNLuCXUZGMZg9rpbLi1/462aEbJPTLoSmj+xb5L6GoNxNeeCn85yltG8dJ8YuExuuwS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhB2eXJI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUBJdvKp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59DDC4CEF1;
-	Wed,  7 Jan 2026 15:09:17 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhB2eXJI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE6DC19422;
+	Wed,  7 Jan 2026 15:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767798558;
-	bh=PpsW+euC7M6ZozyWvwTJ3UgWNQyzkWKrZPR+j+zZxGY=;
+	s=korg; t=1767798569;
+	bh=R7dfa7Jo2aqE5IAC7RTt9oluIXiX6KZLg6IluUq7y6E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZUBJdvKpErgdkPaDFdy+Xw0Zt38czXyvyNq62S9VFPWbgnZmWzK5K1EtVjbWnSkLF
-	 TxxKqdRsgYbx6icl2eLgXGLdfqdUaNGEAAD+PCAgSqxjBmG3thdBSzjHgyh0C6N0d/
-	 JVXgFV2a7VA5jf7x56H4b5RuF+oxmVei7yiOnKtI=
-Date: Wed, 7 Jan 2026 16:09:15 +0100
+	b=DhB2eXJIUy22tXUmlhuKzKoKqKOlHW+QL7KWoUOM9zjUCRS3L59C5TBMH5SXDR0oI
+	 Zp/BAh5K0cGaWKJN1psjDJqRKN41cu31tDBpzb/u+27y6Qo7drzWVYFUOMUS0X9Azi
+	 biloH00XIGDjHkOC74fZWe2y7X9djUQwcZi7hI6o=
+Date: Wed, 7 Jan 2026 16:09:26 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: rafael@kernel.org, ojeda@kernel.org, boqun.feng@gmail.com,
@@ -32,10 +32,11 @@ Cc: rafael@kernel.org, ojeda@kernel.org, boqun.feng@gmail.com,
 	david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-usb@vger.kernel.org
-Subject: Re: [PATCH 1/5] rust: auxiliary: use "kernel vertical" style for
- imports
-Message-ID: <2026010707-riverbank-grape-6ba3@gregkh>
+Subject: Re: [PATCH 4/5] rust: usb: use "kernel vertical" style for imports
+Message-ID: <2026010718-ensnare-epidermal-19ff@gregkh>
 References: <20260105142123.95030-1-dakr@kernel.org>
+ <20260105142123.95030-4-dakr@kernel.org>
+ <DFHR4WMDV5U7.KFFXHIYXI6M3@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,21 +45,25 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260105142123.95030-1-dakr@kernel.org>
+In-Reply-To: <DFHR4WMDV5U7.KFFXHIYXI6M3@kernel.org>
 
-On Mon, Jan 05, 2026 at 03:19:42PM +0100, Danilo Krummrich wrote:
-> Convert all imports to use "kernel vertical" style.
+On Tue, Jan 06, 2026 at 08:26:40PM +0100, Danilo Krummrich wrote:
+> On Mon Jan 5, 2026 at 3:19 PM CET, Danilo Krummrich wrote:
+> > Convert all imports to use "kernel vertical" style.
+> >
+> > With this, subsequent patches neither introduce unrelated changes nor
+> > leave an inconsistent import pattern.
+> >
+> > While at it, drop unnecessary imports covered by prelude::*.
+> >
+> > Link: https://docs.kernel.org/rust/coding-guidelines.html#imports
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> > @Greg: If you agree I will take this through the driver-core tree. I will have
+> > driver-core patches building on top of this.
 > 
-> With this, subsequent patches neither introduce unrelated changes nor
-> leave an inconsistent import pattern.
-> 
-> While at it, drop unnecessary imports covered by prelude::*.
-> 
-> Link: https://docs.kernel.org/rust/coding-guidelines.html#imports
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/auxiliary.rs              | 21 ++++++++++++++++-----
->  samples/rust/rust_driver_auxiliary.rs |  8 +++++---
->  2 files changed, 21 insertions(+), 8 deletions(-)
+> Nevermind, I don't need it in the driver-core tree after all. :)
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Ok, I'll take it through the usb one now, thanks.
+
+greg k-h
