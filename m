@@ -1,109 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D104D77C6;
-	Thu,  8 Jan 2026 14:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5472D38B7BD
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 14:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767881211; cv=none; b=Mbn4tJ9k5icGeD0SYCVCUH9l7RxZ0BDxG8c6DdaMzziC9F1yeLP76wUBdqsnOEimj0bkvsJrinkf170gbKqC2s4kUkmTNOpSDdcC2zceIT1SDElJr+Y8Dx36jqTlaBIQEH5lehb3PMVKr6kQ2xTIaaWKr3NdOh4Wz3d0fnDvgLU=
+	t=1767881248; cv=none; b=XhH9PFwUN2tvNsHEWJPrqr1AdbWwgjXOK0kbdJ2nYaF/TXpm4fqGp3sON48oLfleoxtbhG6Hkdl2Ia4c5d0NN9iS98zeqgSMujmFFCKZHmY2rzthBdEk9v04oNf+MFSdC+Kt9IEmkG3LkgGidbMoZmbocy/fpeEHCbW3N6OBjqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767881211; c=relaxed/simple;
-	bh=8Fj+jMvl5Qep2ruZOm2X+2K93FiFxbkY2nCx7B0QOZw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=Klsrz0E9l2JrFvsVuCIESxDljd906aHkvca4UeENaN5nGecG8kG3HQV9A6hdn4z2C7OhC1FIXgI+NnmDqJcisdQoO/2oaeIRFHkVjMdNuATlp0mVKg15uSnqGyHM1cjIiWi+EFoVUMDcz64f5lPhI4ETFesmQeNs/nZ1XKSmNWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PFhhw6t0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767881248; c=relaxed/simple;
+	bh=jY7usSNT4rTyKQgdFHMP8USgm6QByHELxYUKyGll5EQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W0RQ/zAfSnsgHbIda+ydTmi+ZpUzz/SXwRrPxCQ1LDNiAXbd3MI6jJ0bPCwr0lDTOAVy21gr3nZvMq6jOp6pnsFu4sJfk4ESqO1UVagpCnFoNsgg+pjORDdrR06rzkUe5poYQbOfbMbsqlBT+kv+lryIDCH3Q6OEYgP1mgZqMh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=y+oHFgWJ; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PFhhw6t0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF0BC116C6;
-	Thu,  8 Jan 2026 14:06:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767881210;
-	bh=8Fj+jMvl5Qep2ruZOm2X+2K93FiFxbkY2nCx7B0QOZw=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=PFhhw6t0DiUZOBWfzAg+zPPt8OdNBDSTTTOUsganHGBSJB5I2CJNlUPIGfM/Y5CCv
-	 vU7/NJnuq9oNHWotAgCQWJKDcfMpLOIWRm0QIxWK6HiopNDpQdG/Va49Gvjax7wskv
-	 HwjpG4kcYxhOLeqXe02Y1saulwRYhRkjCJrIG8ujzYI/NVQgYccjXBVhmi+ntARuWx
-	 Q4ZXMnbWTt6H/YdbN0yDOYbrCfqTCEH7kMe0F+OLqajP+ZazDjQSnO4pYd0BUE7uKR
-	 usouP7d356jiBXRQR3C7M5K9NniHDElrzdr441Wnnfl6QPdRgOV7b617i4aORK3dJk
-	 FzkGFMchVhwmA==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="y+oHFgWJ"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4775ae5684fso15375095e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 06:07:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1767881243; x=1768486043; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jY7usSNT4rTyKQgdFHMP8USgm6QByHELxYUKyGll5EQ=;
+        b=y+oHFgWJSFAk+Rl8Fk3DhgMKxaZxafAKrnIhyD29e0Tl+kcrDfNL2gFLrNPWt/imXN
+         EY6db6meTD6uqMNq9WFZ6fRA/KxUwEYIYUXFbp3UOYBr64oYkMCc4mcYbvqh5Zvgl86M
+         J0RQIUTlpYvxx1xLu+agHDSXSbWEugb4pBN3gNZYuhsHT7TtWvBAw6sbaqBrtQ4Fjp2t
+         gwb4RG8U7vnVGDgT7fN42NBxaV+9Kyr2IQ1lGfMJNImL5iuxk3Ub0T9cUPtp9R0xWeDt
+         zc6Dqi7sG0L2l1XFyNSsw01CyxM4ub3rbsA0mgIzO6SQqTKgF+4WfetSGmew/b6wdmHs
+         kRTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767881243; x=1768486043;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jY7usSNT4rTyKQgdFHMP8USgm6QByHELxYUKyGll5EQ=;
+        b=DX6BsJ6d0CcmVIOhUOU/huVlxAj9aHImHBis8UsEQomLv/CIQJd+36jiOwUSz6Bo2H
+         +Qevl+5lSU52N4CGbNsgHFxX2dvomOwtjeA4lBqd2Ool4k7AWOdoadbc8NBz3UDbHG6E
+         zNAc4H6BSgeA/qr7Af5zv/E4sgCszQcluKkFZ4AjezXBUMR9gma1m8fMdmKKSU5/w7mG
+         vR30DBDhImD7rhH4lcz0Uam4tWyLP1DeZ+3vjRGnPbNxwc08tEKR+svcAyC9e0IO2k4k
+         q0QFoczA405KYc2juOg2ET+MDluE0YkCUiS/a/iN5EKJ7LGtOw0tPALXKMhIhzVWCtZO
+         bEaA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0Zk/PRuK1wYXpG0oo9TntdLz5+ebCrxLbBiQZtuKSUARGn2CQsfVfSFg86kzp9uw65alfGEy0L33DHc0uwg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUkXNrpqYKNCNn6E7awRiNGz8k3grejQrI0iw6Mpt5ozRIu+ls
+	IisPt7BLck3zbLqYE2XJoquFZ1MjMSrdW1Hr2907ovwj14DiFVgvqD1NrWknzXxIpAWq/jzv86l
+	LJRWpfelwRrZQbfLUXlsMrdNHDey8zaf3T7yT930d
+X-Gm-Gg: AY/fxX7LX5b7JzdU0hrjc+sLZVcxi+BT2jEtgamOriVO2z/OB0yX1VZD3AaN882B6gp
+	CO+p2Bl6B7yUEuGgUhiNGtuXE/KFyJxQfYYxGdg3uwQqInQAtDeSHDFDkkFSOMqfhJmSe/llf8c
+	jE/s+ZH7RknycySKIZisjaxgQn4lPAyiHdupY27ZYcWUfKRnOcY6+qkk+st3+mySn8VBmEnxpzr
+	knBgordByBT1IFLaU3aSzN3uSuP2EOTPW1wvAv489aIK6AsGt8PD4scENjcg7uwBHl8BGv5h4nU
+	2UjPQFRLULuRU2GOhxDBHeLMn/ziTUeVIyEiVhbub6HTXkpdriVwJnGoYA==
+X-Google-Smtp-Source: AGHT+IF1237WYc38p9/B3qh2Aqyfcy/bNYXZ3uChDeYed9WMB0aAYkPIHqxXqRrs+vItXWmGNjDcidgrfb9Q9nJNXg4=
+X-Received: by 2002:a05:600c:3114:b0:46e:1a5e:211 with SMTP id
+ 5b1f17b1804b1-47d84b32f3fmr78790375e9.21.1767881243403; Thu, 08 Jan 2026
+ 06:07:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251201155210.22710-1-atharvd440@gmail.com> <CAJZ5v0hvD9T1y2uGq1MtFafQTRUJf2oeKEj11hAZ8gv5J5OM1w@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hvD9T1y2uGq1MtFafQTRUJf2oeKEj11hAZ8gv5J5OM1w@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 8 Jan 2026 15:07:11 +0100
+X-Gm-Features: AQt7F2qJ2qTAy-Nl-YM9N51CbNtXzqrY-DauEClktNVvNl_fSY8CekNAAtqqceQ
+Message-ID: <CAH5fLgg1zP50iTZpOHkObq5HLQt9y+OU_=3+aaxCK4XX5HqbCA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: acpi: replace manual zero-initialization with `pin_init::zeroed()`
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Atharv Dubey <atharvd440@gmail.com>, Len Brown <lenb@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 08 Jan 2026 15:06:46 +0100
-Message-Id: <DFJ9L2GPU6WT.1RYEWZJ1V75DE@kernel.org>
-To: "Alexandre Belloni" <alexandre.belloni@bootlin.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [RFC PATCH v2 1/5] rtc: migrate driver data to RTC device
-Cc: "Ke Sun" <sunke@kylinos.cn>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-rtc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Alvin Sun"
- <sk.alvin.x@gmail.com>
-References: <20260107143738.3021892-1-sunke@kylinos.cn>
- <20260107143738.3021892-2-sunke@kylinos.cn>
- <DFJ5VOQOFLJO.1YI2NXC3B8P7L@kernel.org>
- <c834ef20-2d4b-46aa-94ed-310c077a4495@kylinos.cn>
- <DFJ99UZAU51H.JP1VEERVR81W@kernel.org> <202601081401239bbfff9d@mail.local>
-In-Reply-To: <202601081401239bbfff9d@mail.local>
 
-On Thu Jan 8, 2026 at 3:01 PM CET, Alexandre Belloni wrote:
-> On 08/01/2026 14:52:08+0100, Danilo Krummrich wrote:
->> On Thu Jan 8, 2026 at 2:45 PM CET, Ke Sun wrote:
->> >
->> > On 1/8/26 19:12, Danilo Krummrich wrote:
->> >> On Wed Jan 7, 2026 at 3:37 PM CET, Ke Sun wrote:
->> >>> diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
->> >>> index baf1a8ca8b2b1..0f62ba9342e3e 100644
->> >>> --- a/drivers/rtc/dev.c
->> >>> +++ b/drivers/rtc/dev.c
->> >>> @@ -410,7 +410,7 @@ static long rtc_dev_ioctl(struct file *file,
->> >>>   		}
->> >>>   		default:
->> >>>   			if (rtc->ops->param_get)
->> >>> -				err =3D rtc->ops->param_get(rtc->dev.parent, &param);
->> >>> +				err =3D rtc->ops->param_get(&rtc->dev, &param);
->> >> It would make more sense to just pass a struct rtc_device than the em=
-bedded
->> >> struct device in the RTC callbacks.
->> > I considered passing struct rtc_device directly, but chose &rtc->dev
->> > to minimize changes to existing drivers, since most callbacks use
->> > dev_get_drvdata() on the device parameter.
->>=20
->> No, you should not expose the embedded base device. For accessing the pr=
-ivate
->> data you should add helpers like rtc_get_drvdata(). This is what other
->> subsystems do as well, e.g. [1].
->>=20
->> [1] https://elixir.bootlin.com/linux/v6.18.3/source/include/linux/i2c.h#=
-L371
+On Thu, Jan 8, 2026 at 3:00=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.org=
+> wrote:
 >
-> This is not a correct example as i2c is a bus, just like amba is...
+> On Mon, Dec 1, 2025 at 4:52=E2=80=AFPM Atharv Dubey <atharvd440@gmail.com=
+> wrote:
+> >
+> > Use `pin_init::zeroed()` instead of `core::mem::zeroed()` for initializ=
+ing
+> > `acpi_device_id`. This removes an explicit unsafe block and aligns ACPI
+> > initialization with the pin-init conversion used across the Rust tree.
+> >
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1189
+> > Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
+>
+> A Rust-side ACK or equivalent would be welcome.
 
-Yes, struct i2c_client is indeed a bus device. However, the core struct dev=
-ice
-is what holds the device private data commonly in the same way, regardless =
-of
-whether it is embedded in a bus or class device.
-
-If you look for a class device example, here's PWM [2] and input [3].
-
-[2] https://elixir.bootlin.com/linux/v6.18.3/source/include/linux/pwm.h#L38=
-2
-[3] https://elixir.bootlin.com/linux/v6.18.3/source/include/linux/input.h#L=
-388
-
-> Actually, I don't think the rework is necessary at all or this would
-> mean we need to rewor most of our existing subsystems.
-
-That's not true, subsystems do not pass the parent device (i.e. the bus dev=
-ice)
-through their class device callbacks exclusively.
-
-- Danilo
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
