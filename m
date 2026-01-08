@@ -1,129 +1,177 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A391D88AC
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 01:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5345C757EA
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 01:34:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767835342; cv=none; b=uTbltVokXRXRM3PPr2QVd0fNkYdzjtNTeGTlKum5aRUebkOkGxeZw9bpbja7O1zZe62C2gY2EeQ98kh7IADJnEcySJkhoo5rk721QzQGpd9yHeoeUkmTCz6TOMbLj/Njyy7ZPN0YggQvOVDyL93u/JDQ9W2QxVJsyZSf/lf23Oo=
+	t=1767836076; cv=none; b=aJG/SMXlX6ihqvjPOWI0Yg0durGqGMSB0EWxm3mzJpPQs+XmdIXjqEznvzOTAflaqY6ITSpHvct/BiIDWz1haBEA4TO6N/ckiJpX5NtAeAGhJP6kbj3C9SZfKbK8HuZ8fuyEAvgdPaIbqx9zJPixzUFA7fJIF3nLiiJXUWdnZug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767835342; c=relaxed/simple;
-	bh=sFbBuRguTeRh3qlDBGfOFT8VWHoGyXLge18MokiSpQE=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=X8LlE9pGbn0IWnIeCT4ddFMHS/AUt2MAUAVBM04XlUqHMC80THk09hfHvrMWxfhyNnEiSij9txVfZ3RutzOi2ZOv64oEuM8hT90NeTUHgR8NutjlGMqF/ArGswrFCKkpjH8ecSP+0H5k+xeoZA4SccyKo5+H4e6JqmMrrr/ai4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RDoNn6S3; arc=none smtp.client-ip=209.85.215.171
+	s=arc-20240116; t=1767836076; c=relaxed/simple;
+	bh=IxAH2v6B1ZoFcW6Mz3a/u8xBWMEfF9uosZ7PA6GEdzo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PEaT3PuADLM1MwB6lplbLXOUlRO18C3TWmgX/L3/tx24o3apLZsGbq58h0zfC7ORdSariHIAI42CkLTOrqiri8M7l/7I6enD6RaKXQWoJ7pnoPfM9+97p2m216sde72GoSWd4Wmkr0b3D8xZAq/GXB/1E9Dj0LQCOqpSOESZYHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MCJL7gdx; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RDoNn6S3"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c227206e6dcso1812948a12.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 17:22:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MCJL7gdx"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a09d981507so11770555ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Jan 2026 17:34:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767835341; x=1768440141; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3P2mCYmVDIn49ItX5arh42Q+PT7tFbLbjhV4GtXIZbE=;
-        b=RDoNn6S3iweB8RH0xi5NqVvl9DKsp5CUI8qkzuwx+M3Kt2tYwHNnmKldfMpJT18dcB
-         HLlFk8IvLNqnzP9sMHW0sX7GqUFRBQOBp0+AJJIW67hUcBpUjlOl+8SgmrXN9EqPXuFY
-         kx3kQ6lbcSzgpfO87bQBt4ziEIoL80upzRDnuO25hKcKFR/0CmpxKGuxSWk8RRoGBdqh
-         6RSnSjZ3GR8dJuRON5eWBfpAKy1Izmj4AzAg4qoc6fewkmA571jINrK+7czhVcLlQZ8h
-         qx16IpVjEc2t6//jy7YdCm0ITg8BS9QVHVihcOvbGAuVTs141ctj0G+j8HPIgYqI56DF
-         7n5A==
+        d=gmail.com; s=20230601; t=1767836074; x=1768440874; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+fI6Q8zGsqR2d61/DSNy+MNmPUvZPSqvj5cbqbjP84Q=;
+        b=MCJL7gdx5qmJUHuwtsW1aXt0ePLxNVLi8t5DEQfIfG87tdtgiHZnOcsmRkRPmFI8IU
+         U7iK8nHGufdSR1yh0GNJezgugR5fcoA8QqOS6MuOVJc1UHxqHpQSWRgcdKCSK8v3i8bP
+         lJWSLYx1k3TJWT8tGzYFYfk88v/e2Nt1ZMRLy0uxmwzSz3gJ+B71bIVvnkSDotuPj9JX
+         KerVpXiVZDyCGPTf7wZmemrjOpf9gIcxw6SD2HHcXNCwY1f8IdtbUCvdQMiz3yAbuo5a
+         RUCqLvfuo/b8sAPbdm1mzmIgAvhsBst4ykPZvdxVlLTKYwwxFiU4GivxCCUfoAIi3UBD
+         Ua0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767835341; x=1768440141;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3P2mCYmVDIn49ItX5arh42Q+PT7tFbLbjhV4GtXIZbE=;
-        b=n8xrgSEtbso/y+XZFAIZ97qofai6LmyPvimXJ3upzHvaHBHLsIP/X01HeXk0s/eX2I
-         3HoYoz9FQpfieCOwfGjOKBR+QiJpEu4KIaOm6mCqoPpkiBKwjh6iJomDAPgymRhkg4Iq
-         e6lQ05DgcYM/IHiSGgI2X9LbEu2fwktvt4Pds96J4UVsAMudZK8t/shotTEfUCR6U9Tu
-         oWc29Gq9hlhkKBnytxTgdoA/L/JppdOgFwkhyX76s/R+x9w55B5F1Sza44+6+yBuzrJB
-         HdZL6pUsdm7x5ZjB1cSU09Cv+BA/geOnAhar4xiDbqUb521rV9q5ZLRDMSpt4WiryMH4
-         fRLA==
-X-Forwarded-Encrypted: i=1; AJvYcCVmPThgj6kFVNXMtq6YRxDYgAwnaJoFl92cCL6y++Gs/OR5dVpG+3hRz5ThKBrUXJC4bJWNnxqQ05vX2CsPWQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0O7fHiEpVfZTmdUmTRazhv6ck7hWGqKBYwdAgMFK2H+eS1OI9
-	CXQOiCfWhLC9XhhAcpdmVRxXy0nujKzezEZ04t4TMg4qPmJyn5Q+m4ZZ
-X-Gm-Gg: AY/fxX5C8ep8uePMXtpTgNO6srsaP18PnBkU2grvDJHi8MyXkXH3YYS0AD3eYY5eOS3
-	ZVCfukA3ClUohCIiRpW816tVyGyiim6NfENNutDgF8gI05Lg/f1QauiFHlao/YW/XKNdNqrq6gK
-	Q72dRZ2QFCYP2ANnbJIrZDEWqdm9RIhy6kJajfYQA44mBwJUWjMhKLqir4WFo28WDyiV5WwFy6r
-	BOn0MF65pZ7qnhrLNf+WxvX9Ic/1A38GJa7mfghXxrAPkDqMQZy6aNbnHmcU7pYmXu9h9FMcC6/
-	ww7EL5vw2TFRvQFQa/nHD3Aa1Awl/LynWxkFSOqP6yvZt6ZKkmd54IKeIfV/JhBROP2cC19YjRo
-	NY/gGgI8vTMQG0ESWDmqQTJZf6q28+zhMnd1oCwVHfC1Eft9Xa6su2ZUuzfAZZxl0c3R/Siw4gv
-	gIorW3LrDa8Mmiz9RMLmC1FeiZIXXve9Loe69KZH27wJ77O/v2kxyRPHiDC7JM/r0X1ZQRW+ase
-	L0ynQ==
-X-Google-Smtp-Source: AGHT+IEo0jCrfFf22bDeLL2Qy2cQq8OwVAFryvOiNgW50k827smzZRBnlizhOwPbkv17SpDjKQoXRw==
-X-Received: by 2002:a05:6a21:6da4:b0:375:4426:e78b with SMTP id adf61e73a8af0-3898f9f0e9dmr4046437637.71.1767835340780;
-        Wed, 07 Jan 2026 17:22:20 -0800 (PST)
-Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c47221sm60600665ad.23.2026.01.07.17.22.18
+        d=1e100.net; s=20230601; t=1767836074; x=1768440874;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+fI6Q8zGsqR2d61/DSNy+MNmPUvZPSqvj5cbqbjP84Q=;
+        b=QbCiStgCkiU8TCvHLmtvqdidmc+RAxLyhzHrSqIGEESCOS4X2Oq4O7PZrnLlPtV82U
+         aXufCIN7uEEUWUEHx7qvNrhuYnzaf+Hnnu6reAGjP6XO3QoiDy1+zzNNLdiO4ZJSCCu8
+         JG8oTm82Lg2ltDR/POu7sjozmmjiELZ+elWvBH5EA19s1p4Yn7+n4o2rMXhlhhlps+sl
+         1bznUDeWOgzdusYlMYHIuv2IxNNPhMSqjve5DqoO3g1M5eTs3d/ycSvd5vdvf9y91r7g
+         m0vt6RU2zr6bzKCm7/zYjjREPjeUWRYiqp33FXT2TpaX8doE5fYixhxv7I2BWfRT6iXz
+         6QvA==
+X-Forwarded-Encrypted: i=1; AJvYcCWt78wUJGHpj/ojzBA6ce7kwstqUHrqyyf4DrIqIZptIshwReyzc1m3AgsKLGoGQcAHhAp9yCJrafEz/5M9Qg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz56Sfjrt3Qm9xG6KqxpO/7/uoFlsbWYcN6jcZ+HpE3xSMkU7yf
+	GhegEx/MssmqvmWw3xYLQoidUAOP0vibAbmCTLUcjxXLYmkn+EixW/fY
+X-Gm-Gg: AY/fxX4TVuXczgOkizAQmW3rR9KlrFy8T1Nr0pUuX0eBARZfDjZGI4oMo2SDzqBBI0b
+	0o91KPWx1BGIn/mkjlDH3gOtyDWVTsg6McOoEutqkBBSJW4rOpcMhLzIjWmU4hW+Hefxe/3PuZm
+	1rGioDcpYRGhVV4ODgPvC9kpnCLK6uGwLZ5ZFlxSpFcxEUnmWf9StcXoFtS/VtJn+Y9WcV/pWK8
+	ggYYmV9mY/vFifqlwnZd+SLf3cVTNhZ+pUoHiULTUUcmrjGjmWWT6reoCitX3thJTJ0dKAa9dpy
+	hVfeDrwaFLo+8+i6Jb7iFcGMtIb+UeE1tCwj8/1EHkFmjUgo0dvOcZu3+0ci9F17SQFMS5hxP3g
+	2Xn9UqZGfWbux8n+GACjhv2GHu9H3bTPsc8+6A6rNI0exLGunxOObmjdM9RPcpIXZWfJp9fbReL
+	K5cT2VzdqTVa8WE3W8Kli6YyJz1EvcIvaLa3B4QyAbWeJFNQohZnlwZpqgWkmdhQ==
+X-Google-Smtp-Source: AGHT+IEmbvtBizdz/cTSY/Fu9PlFmnmG0oIqRB5lMr3DSL8SHcM50gGQ4//BCrqd+Wy5N5ThkBlakw==
+X-Received: by 2002:a17:902:ec85:b0:2a0:a05d:d4a2 with SMTP id d9443c01a7336-2a3e39e5c4amr75845365ad.23.1767836074451;
+        Wed, 07 Jan 2026 17:34:34 -0800 (PST)
+Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cc88c2sm60957665ad.79.2026.01.07.17.34.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jan 2026 17:22:20 -0800 (PST)
-Date: Thu, 08 Jan 2026 10:22:16 +0900 (JST)
-Message-Id: <20260108.102216.1671347375459653445.fujita.tomonori@gmail.com>
-To: gary@garyguo.net
-Cc: fujita.tomonori@gmail.com, ojeda@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- dakr@kernel.org, lossin@kernel.org, rust-for-linux@vger.kernel.org,
- tmgross@umich.edu
-Subject: Re: [PATCH v1] rust: bug: Support DEBUG_BUGVERBOSE_DETAILED option
+        Wed, 07 Jan 2026 17:34:34 -0800 (PST)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20260107165344.4e928ab4.gary@garyguo.net>
-References: <20251204223405.454920-1-fujita.tomonori@gmail.com>
-	<20260107165344.4e928ab4.gary@garyguo.net>
+To: ojeda@kernel.org
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2] rust: bug: Support DEBUG_BUGVERBOSE_DETAILED option
+Date: Thu,  8 Jan 2026 10:33:50 +0900
+Message-ID: <20260108013350.2880613-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-On Wed, 7 Jan 2026 16:53:44 +0000
-Gary Guo <gary@garyguo.net> wrote:
+Make warn_on() support DEBUG_BUGVERBOSE_DETAILED option, which was
+introduced by the commit aec58b48517c ("bugs/core: Extend
+__WARN_FLAGS() with the 'cond_str' parameter").
 
-> On Fri,  5 Dec 2025 07:34:05 +0900
-> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
-> 
->> Make warn_on() support DEBUG_BUGVERBOSE_DETAILED option, which was
->> introduced by the commit aec58b48517c ("bugs/core: Extend
->> __WARN_FLAGS() with the 'cond_str' parameter").
->> 
->> When the option is enabled, WARN splats now show the evaluated
->> warn_on() condition alongside the file path, e.g.:
->> 
->> ------------[ cut here ]------------
->> WARNING: [val == 1] /linux/samples/rust/rust_minimal.rs:27 at _RNvXCsk7t4azzUqHP_12rust_minimalNtB2_11RustMinimalNtCs8pcx3n4
->> Modules linked in: rust_minimal(+)
->> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> ---
->>  rust/kernel/bug.rs | 27 ++++++++++++++++-----------
->>  1 file changed, 16 insertions(+), 11 deletions(-)
->> 
->> diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
->> index 36aef43e5ebe..a60db1ef4b48 100644
->> --- a/rust/kernel/bug.rs
->> +++ b/rust/kernel/bug.rs
->> @@ -11,15 +11,14 @@
->>  #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
->>  #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
->>  macro_rules! warn_flags {
->> -    ($flags:expr) => {
->> +    ($file:expr, $flags:expr) => {
->>          const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
->> -        const _FILE: &[u8] = file!().as_bytes();
-> 
-> I think it'll be good to still keep
-> 
-> 	const _FILE: &[u8] = $file.as_bytes();
-> 
-> 
-> and have the caller just pass in `file!()` or `concat!(...)`. At least the
-> concat macro doesn't have to expanded multiple times in below.
+When the option is enabled, WARN splats now show the evaluated
+warn_on() condition alongside the file path, e.g.:
 
-Good point; I'll update v2 accordingly.
+------------[ cut here ]------------
+WARNING: [val == 1] linux/samples/rust/rust_minimal.rs:27 at _RNvXCsk7t4azzUqHP_12rust_minimalNtB2_11RustMinimalNtCs8pcx3n4
+Modules linked in: rust_minimal(+)
 
-Thanks for the review!
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+v2:
+- make warn_flags! convert the passed file string to bytes
+v1: https://lore.kernel.org/rust-for-linux/20251204223405.454920-1-fujita.tomonori@gmail.com/
+
+ rust/kernel/bug.rs | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
+
+diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+index 36aef43e5ebe..ed943960f851 100644
+--- a/rust/kernel/bug.rs
++++ b/rust/kernel/bug.rs
+@@ -11,9 +11,9 @@
+ #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
+ #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
+ macro_rules! warn_flags {
+-    ($flags:expr) => {
++    ($file:expr, $flags:expr) => {
+         const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+-        const _FILE: &[u8] = file!().as_bytes();
++        const _FILE: &[u8] = $file.as_bytes();
+         // Plus one for null-terminator.
+         static FILE: [u8; _FILE.len() + 1] = {
+             let mut bytes = [0; _FILE.len() + 1];
+@@ -50,7 +50,7 @@ macro_rules! warn_flags {
+ #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
+ #[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
+ macro_rules! warn_flags {
+-    ($flags:expr) => {
++    ($file:expr, $flags:expr) => {
+         const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+ 
+         // SAFETY:
+@@ -75,7 +75,7 @@ macro_rules! warn_flags {
+ #[doc(hidden)]
+ #[cfg(all(CONFIG_BUG, CONFIG_UML))]
+ macro_rules! warn_flags {
+-    ($flags:expr) => {
++    ($file:expr, $flags:expr) => {
+         // SAFETY: It is always safe to call `warn_slowpath_fmt()`
+         // with a valid null-terminated string.
+         unsafe {
+@@ -93,7 +93,7 @@ macro_rules! warn_flags {
+ #[doc(hidden)]
+ #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
+ macro_rules! warn_flags {
+-    ($flags:expr) => {
++    ($file:expr, $flags:expr) => {
+         // SAFETY: It is always safe to call `WARN_ON()`.
+         unsafe { $crate::bindings::WARN_ON(true) }
+     };
+@@ -103,7 +103,7 @@ macro_rules! warn_flags {
+ #[doc(hidden)]
+ #[cfg(not(CONFIG_BUG))]
+ macro_rules! warn_flags {
+-    ($flags:expr) => {};
++    ($file:expr, $flags:expr) => {};
+ }
+ 
+ #[doc(hidden)]
+@@ -116,10 +116,16 @@ pub const fn bugflag_taint(value: u32) -> u32 {
+ macro_rules! warn_on {
+     ($cond:expr) => {{
+         let cond = $cond;
++
++        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
++        const _COND_STR: &str = concat!("[", stringify!($cond), "] ", file!());
++        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
++        const _COND_STR: &str = file!();
++
+         if cond {
+             const WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
+ 
+-            $crate::warn_flags!(WARN_ON_FLAGS);
++            $crate::warn_flags!(_COND_STR, WARN_ON_FLAGS);
+         }
+         cond
+     }};
+
+base-commit: 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
+-- 
+2.43.0
+
