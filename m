@@ -1,69 +1,62 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022115.outbound.protection.outlook.com [52.101.101.115])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022118.outbound.protection.outlook.com [52.101.101.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6583643F481;
-	Thu,  8 Jan 2026 12:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D170465D09
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 12:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.118
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767876108; cv=fail; b=V8J2EjAhgDOz2RCEfaNt1jvhs41yUYLnRplxh+SdgaQUCSN/CO3oy7amLLz/RhEDnl5IBzgrm8eyzdzCvGPjvCTWKdnOBWdzUQdexrNW21sKS124R/qntJ5FuP3Ax8Uy60oOYBcdmkllW6oWq+lFVnCYnmHVd9sPnbqBhzI0cDo=
+	t=1767876168; cv=fail; b=HVdUtR6h5d9wyz4QyrWUIkjDXMrJmLrZ8tum3zXS7b3NGN6w43OnLA6LS80ytINzUYcMzSE2vUOxu44wNp2QI34EuIlIl2/37aykJ6m0MO+X7h0NGYriDeSrqS0lkc/zNacaK5iR58I1qtxW5R6iPj3lblxKxIYKjsIL1AtTa0w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767876108; c=relaxed/simple;
-	bh=jXznZgn8nTWLPS3i31u2RdEL39PCA9IwI+zCkepoGmk=;
+	s=arc-20240116; t=1767876168; c=relaxed/simple;
+	bh=3vec/zupEnZV74EfBrhjG21psWOL9ne0V2vPyMKMDak=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WtkNPjN7gN/RXeCNpnNOU2DhsbbO3uvHZZkQHYXU/iGOcQVxrHXs0biZbEfGx/TiUGfFAmvbWJpWGYRfThniymJHNS88kV187XLa7JaxXwE2ctOYzdjt8e8XaYbwxEmNgO/Klz2iZuHy14rZis0IcliZmKdGzMAIWdXfOfTfLGk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=R5Shc3r1; arc=fail smtp.client-ip=52.101.101.115
+	 Content-Type:MIME-Version; b=f/EaJyEtiL1d5HNEA+iRZjbhbdA+2qNMSGSNCIY0wQKYbEw1lTW+ZtfHetWP98j5K43HjbOsUCVp2ujr1k0b6xV7THQ+e4yxBKxRasnc7cKdGB60tc/C0y7BNon6+Hq/mQHh9ZaIYvpTlcRaZLMn3fXONs6N0186MU/kdqUAMo8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=NI+Ey2Ty; arc=fail smtp.client-ip=52.101.101.118
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="R5Shc3r1"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="NI+Ey2Ty"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yvBmOzkHKqATu11jFiOINBiM39afjCPEa82A8Pq9nSMeFfKc9FWVFcuomVwHS1IfSZSS9DYNtEfnZZlMkzW5J0X6PGFOQWJ0ua0DLe58UvXTlXCYXlXupcC7fhzRlRrsntZT0wZlS7in1WIvxmOu/ofe4Yi3PWiH11yIst9Ck7L80Mq5Y+XnN9+H+9i5aIUNylLCPPIJYg7knPUpOg9FrqRQ7O5aYQXOkZIlJha89mzgUt9Un4OJDQik3ixQpt2YjyAf/7bwBIqUs/F2F/vVTO1PJw5iDY5G4HwgV0aCcittqy4GMxqnmImSXBiJ3vM01XJ41CDx9vGo4U4V8D1lRQ==
+ b=ju4W89jpZIQ3Qy/aiBClwkOxrkc1WQN+ztFnkXc3GULTU4K3X7k/jwuXKvLr9C12Vb9LCn2OhrnWnWry1qVt1V0AL1bulsu4hSqgnGoBxMJmFy7hENBGfcBniKLd1BrTd9OdnlhWZHVMuBGU6O2577CsJ4jKe/0IXikOHqlQXutm0tUuKGndbPdU5AVZTyRURaphz0zj97okdIaIjJA+SNdXmseQvUEQWUc8nz3yf8r3S5gFm0v7HeglD+BNLIodb8tlDNPbo3bgtKL4fWstw6eaJ242fQ4FALOh+8+XMFex0h2Qz1ERoJg6C+06LTtZn02qkehbJvU0eY1t31nhpQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fcr0sE0bSdZksxXCVPpCCTqdw+/5nWewbsiSIwnaPt4=;
- b=r4hI7n38CdonEEABlbrxMFeuXR8g2rlZiuMxqC+3RO8vFSf+YVog5PQDoUwf0/mBhbYFyFdbfdvZlbPszBygZaHiTNpu9/XMZ1Qf9ISlvtj39yAfr3nTQz3PFQVDejUaAGClVdUmDRYoO4v0QnsbMkxubqilaYH75Jl8XEfdcup8a1vzh2uVWCjdBP+ckP5bYItl6MD0bvWvSwo5J0juT9wK6RMloln11up2GtWAxSiqODD/nGR2OgN8GMdgtkuHDJGL58nmfai7kV8ODk7CL1Q4PC9z25ce8RX5bUk1+199YZnAqlhNCyTtQ2nfphgoPZhPWnQkx+CcTCJQox1lsA==
+ bh=JCCtZaL+L3efGJFfQnYSnYFFZS/CTWnmH82R9jUzT44=;
+ b=H6qJyYdUWspwWU4PUSgB+arEH/BWTHkHY5o7P58IC1vmCxEtdwgmdzBGTYoA9ZjPQdS1p6MMV2ZbWqagZJxiuEFOEU4ulgu7OUJztL3724O8yYfeLgaToCgBVwxl5hL3tsB6O4GfEkoX1kBqoLVvhtH6GX4iCGkT7EK9/3BbPhJAf23pp9yYxAahUqnagyZjZ1pgbgpbtUB7Y1wCtJjYfuVvRenzw8UvxQ+gddWh6ccy+DuC8/Th/wuT6/EO8swE5AVVOO6bAgcfvEr9x1O1JdGnlCLDoiEaPRpbKMq1A1AEsJnoUcPbw83UOU9Lq3BtFinJJMwiO4K2gL+JK0XlZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fcr0sE0bSdZksxXCVPpCCTqdw+/5nWewbsiSIwnaPt4=;
- b=R5Shc3r1yj+feqHyG2ju4n6gzXfHQHZ6tp6+agXNNWbCnXZdcmYQY+yiZGlhR9fX7LOnTjlnHlT1bCvreRGI6xcfyIwx1/IoL5raYtdt0LPjw4fp9gyPhnrDad00R+BPAz+Bd/69aN3ztQ6XV5Ie35CGw6IwT9R2ObJ41YU6c5Q=
+ bh=JCCtZaL+L3efGJFfQnYSnYFFZS/CTWnmH82R9jUzT44=;
+ b=NI+Ey2TygW92iFdDjxze8YRUtYE6EZh41424vrUC06Xi2PuPOq5FdOhW7w+brBsD8xmlUB4ACiUlK6uiv4g28YlYQBWOHeOsErtIQCRiCkpRH7lYE9hYxQ0yyIRhC0S9Ggx43xQYZS5Vdgne0H39QJ6sObFSOxt4xQYzjesbqzU=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB7076.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ee::7) with
+ by LO2P265MB2462.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:12a::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Thu, 8 Jan
- 2026 12:41:42 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.4; Thu, 8 Jan
+ 2026 12:42:42 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9499.003; Thu, 8 Jan 2026
- 12:41:41 +0000
-Date: Thu, 8 Jan 2026 12:41:37 +0000
+ 12:42:42 +0000
+Date: Thu, 8 Jan 2026 12:42:40 +0000
 From: Gary Guo <gary@garyguo.net>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>,
- =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 03/11] rust: macros: convert `#[vtable]` macro to use
- `syn`
-Message-ID: <20260108124137.22c32313.gary@garyguo.net>
-In-Reply-To: <CAJ-ks9nbPTQojM-QcHPKv+NdUHwaRbBRVqzJ3CwgQTJTuD=bRQ@mail.gmail.com>
-References: <20260107161729.3855851-1-gary@kernel.org>
-	<20260107161729.3855851-4-gary@kernel.org>
-	<CAJ-ks9nbPTQojM-QcHPKv+NdUHwaRbBRVqzJ3CwgQTJTuD=bRQ@mail.gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: ojeda@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
+ lossin@kernel.org, tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2] rust: bug: Support DEBUG_BUGVERBOSE_DETAILED option
+Message-ID: <20260108124240.239a5338.gary@garyguo.net>
+In-Reply-To: <20260108013350.2880613-1-fujita.tomonori@gmail.com>
+References: <20260108013350.2880613-1-fujita.tomonori@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: LO4P265CA0130.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c6::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0122.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:192::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -72,228 +65,180 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB7076:EE_
-X-MS-Office365-Filtering-Correlation-Id: c3fa2a5f-d360-4a1f-0da7-08de4eb34615
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB2462:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcd85baa-c0dd-4d42-2e92-08de4eb36a7f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7416014|7142099003|7053199007;
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|10070799003|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TlZFTkh1b0FyVUg4b0JPWVgvRXB2M00xQXVDSXhnYk5FN3krNm02VFpZY2lH?=
- =?utf-8?B?SnF5ZWFTT01JSEVpem1KSk03by9sRWZ0Tk5WZ3ZKNFZjb2VTZ2tKV1h2RThm?=
- =?utf-8?B?V204bTh5bWtPcmhNTkVnZUUxbnM5R3daSWU1Z01RSGt6NTJZV0svcUw2clNZ?=
- =?utf-8?B?NWhiTFkxbWEvNlEvaUcxTFZFMjFBNUc1bDhnNGJTekViUDhxbmkrTUtTdzFh?=
- =?utf-8?B?THhCckNKejJrMVQwSXhZZVA0NWxpMzVORW8wdUVLMHoySEgzbndnZEt6ZDJK?=
- =?utf-8?B?dDlOZmZKdU1LdDBPTjdYRi9EQk16MDlLbjlFL2xpdTNVMmRvVC9heVlnVUNZ?=
- =?utf-8?B?b2dSMnBCVWV1WWV2VWhadjFFdVZWSCt3R2VObUZTQ3JnT29ia0lPTHUrR2k1?=
- =?utf-8?B?Sm5xZU14UUxDcW8vZW5XekFrU0ROQjFEb0d3MXFQQkhoUTlwVno1eVhjNnc5?=
- =?utf-8?B?TEtzTVpXaFUyK3NhWjRzUXIwb0ZnbVRROHlhclRsSGE4bDgzcEhCMGZEd0Vr?=
- =?utf-8?B?c1ZaR1dUQkRRTmNFTUNHOGpOQjVRcW5xaVcxQWdKbyt5SDhrdFVtdVNGbU5h?=
- =?utf-8?B?K0xheVJQK2ZERDVZSGkvSXZUK21id1ZLNHF1ZVBvUTBHTEhad3pPbk9hNnVz?=
- =?utf-8?B?M0NrcFdhMUdUYmhUQnFTajdJczFCMjJJVXhqbkU1WVZFcUVnWTliR3VnZW1i?=
- =?utf-8?B?T05Dd3U5dUtkMVdWOHBkL1pjUEs2anN2Z3hVTkV5SGMrNnI3ZGxjb2owSTEy?=
- =?utf-8?B?M0h6NCt2Qm5jYUw2M1VaaEI3T25tdnpMNWxqYnNEb2xURXlFeDRPMnJQekRh?=
- =?utf-8?B?UG1KejhZMDNpckJKRWROdTNNMTQ3MDdTd2laMURqWXJoZWhSL2ZzUFNPL0py?=
- =?utf-8?B?VEMwb3RsSElFMW54NEhDQmw0YVFSTURwMEpadVRacHpNcjJjdjhwcjlyZkY2?=
- =?utf-8?B?ZzFGTzZKSGtuV0NCcncxVjhzN2FpWWZhS0VyU2E4MXp6dmdZUmllMzhOcDNI?=
- =?utf-8?B?OUVQdURSbjVBcDUxVk5QT3gxUS9jYlMvbEEwb0tOenJ2MCtUQjZsUmFWYW5W?=
- =?utf-8?B?bVpqM28weG1iRm02emkxRnFxYkJzN0UxWFZ1dkpXdGFhUVd3U0ZhZmZTYlpB?=
- =?utf-8?B?TUVBZSt0UVhML3pxV2NKWm1NM2ZhM1ByQmFCeUwrSlBJUFhNY1lINE56OThG?=
- =?utf-8?B?ekE1TXFYOVlnY0RmNDFNSzNDWHFRNzAvaWpzUEVTV3Y4ZWs3T2tZY1ZrTHRW?=
- =?utf-8?B?QlZSTWNaZmNvVlIxWTNOVUZGRnV2K21IeW5STlhGMHF1dWNBNUhvVDlHdjNL?=
- =?utf-8?B?Mko0Vmo5VHVueEcxMXBQa1NJOElvdkdaL1RLd0tpN0d2T24wRitNeGFBandC?=
- =?utf-8?B?UE5ENWdldG1OT0dYcVN0ZldPWWRqdGhCdG9hZGFjS3k3N0FJR1Yxemg1bXVI?=
- =?utf-8?B?NmpEd2xSbVh3SWltbGpjdkRqN3RyZ1h2ZWdCcDhqcnBwY3BBdDRHSkZLanI4?=
- =?utf-8?B?RFFFeXhNK1A4RCtPd29OeHdsV0R5Zk56QjdlMitOZFhPdjZrZURqcDhoNUVn?=
- =?utf-8?B?U0NlRmZtRm16WVphMzdrWklRWmcxSEJoTnZJblEya3JSR0diems4WTd4Q3Ix?=
- =?utf-8?B?bm5yTHN1Sk5ySFc0WUdBL2VOcy9HYXlMNk92Uk5JOXZtc3VtVUYzRkFSY293?=
- =?utf-8?B?MVFPTStRaGVFTUk2Tk1yT2Jxc0NEVjZkRnhPRE9ha0xKSlltdGlPSVhyNlNh?=
- =?utf-8?B?R0N6U1hUc1hPRjByc01CNlA2bGlZYVYxdGFKNEVXQnpWbjRsbWpicmhxL3pB?=
- =?utf-8?B?QTA2YUEvckpoRmN0cktLUHZEZ0U4VG1POVhpT2s3bGg3MXF3azFOSFdST0R1?=
- =?utf-8?B?amtVTWFtYjJYaUhBT2hsVUczUTNBRXduUmRIdDhQaTRUNC9FN25VeDhubW40?=
- =?utf-8?Q?5zu89IOR81c7pl5VTypGlH9jJuOanFfF?=
+	=?us-ascii?Q?R+fpvmvyxlkP5BeEgDalgbWCEVajPibkDy3mFqNdhL8eEKw+ehq3txyBxf5u?=
+ =?us-ascii?Q?8Q4+hHxKdfn57qZWwdfhhFWETrrpXj9BqYTM9Vqkcthg40mqtltKxKR8AChl?=
+ =?us-ascii?Q?q8SLeXNAGCL8SHQJ3wUfjW5jAzK2jlrcktS6FbKCdx+phUpvkWLh33YU2ohj?=
+ =?us-ascii?Q?J952RNZyNG+Ma2/W9aUJPDakx3YjCgUS3Emwinm2y60+rD1eXZUL5Jy1orUG?=
+ =?us-ascii?Q?R4wP1LQQOk9IaIVB34o42AV5FZ1DZwm7SuXusZkryLCBJiJcYxTniCs1NLPc?=
+ =?us-ascii?Q?P3U7nKW2quMJNpf6jhV+4eNju+Q/ht7RkJD1U1/pEYR/JpMJJhmt4+ZlNUiZ?=
+ =?us-ascii?Q?VVhSmP2OY9gcE2J4xAogRU9OcfuFak3O8NOfBdB01KDS+E/gimL/FsFZTD9E?=
+ =?us-ascii?Q?RZ/PpFFcUXzCHuSGxt0So7p1wkgq9tqdGY8Bg8usgSTCPT/cS+GC/D1v8Lib?=
+ =?us-ascii?Q?vkXCA45HHEKdO2Q1JmZRwgOYPKghgdrib/tWMjG7ulOQup4f4AIS0VglBYAP?=
+ =?us-ascii?Q?obK7evrfQTYKfMOZGm3FVSKp3aVodtDgtb2qg9l0mOirVLh+foE+LYxar0ph?=
+ =?us-ascii?Q?prAfRvLmxLdHehozOlunERlKSdBi46DIQzeO1UP63FEmWCX8Fptb5HHcra3l?=
+ =?us-ascii?Q?FbhSWo1d8WwLfbZkLNneGBKVvgd2fPfmBhRLGuDwVMmZyikw7gCu0q9gPQPX?=
+ =?us-ascii?Q?NWXoWahaIJ7gU3WJXKZVepslu+RRwoKaD213CpmjgsDjXhy7SvMyoM/pQkw2?=
+ =?us-ascii?Q?YyrGCKpyQmheJjXvfAJom0mU9YW5vxGSzhoFDrKyobtwumS3BC/AsMY3DYFn?=
+ =?us-ascii?Q?biP+hch7Wgb9Kvb8TK6s9UOWp2DWpIohNPcB45PV195QJFIUPqQpCa/Y1+wD?=
+ =?us-ascii?Q?UFTKJAXGQzI4Qy3FLj/f8LLPPi6YWBpigomFm0R4HB8fi4AqyByF90nm4UR5?=
+ =?us-ascii?Q?hED7Mf31SPR5LZO1SGETM3IJmAlaz6neBMroN1eBaRfG4r9qQmUHqLPKmHT6?=
+ =?us-ascii?Q?3L0NBAhzKoE9Z1yLVdAetClvTDZ731hvKnxtoxX8TfGwAAnYXe4OTx7HbVog?=
+ =?us-ascii?Q?QSJTEPr51YKbJHvfJkJVD6MsheRi7M51idxOD4nEJITRiDsu8PVwBdGSR+eO?=
+ =?us-ascii?Q?BoygGR/1iC7OwBJBHoxCDskfY0HGPOqHhdFwyqOqM4CSHZpSKGKeJ15xvsNm?=
+ =?us-ascii?Q?5jkKTPhMi+Ebd4S3uKgWr3Wb1VRdRJeNEbYwwGfD0/rPKZgef3x1I7+7y1tE?=
+ =?us-ascii?Q?mA5DuptSr2RZ4+ibc9PQpdWq+d2zekxsyBuqWxIuLegVxpXlEviJrdovA2G8?=
+ =?us-ascii?Q?Lx8cAzLvFWQnVQaFH/ahoIxJcL8tAAbb2KV1LtHupKOQitlAo+tZ/AXMSEq1?=
+ =?us-ascii?Q?vGxVQB4mxhAU8NoGeoxB5f0bymtuUkg9TxtBAgx7m2rcomHji/LYIHiCeWKo?=
+ =?us-ascii?Q?cViYUMcoi/0Rtdpebun4maO2zcVqyh/X7Lj8qRIT1BmFdsTy/8bklA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7416014)(7142099003)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(10070799003)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WExlTWkyanl2Q0xLQWFXMUR5cEo1by8wWjN5d2JuUkMzOVFnV3MrZUtveXFB?=
- =?utf-8?B?ZkJEMWZ2bHo5aE14aVRTN0JaY0NDZTZjcWhSUzNsZnp4MDRUejUvQ3ZKSG52?=
- =?utf-8?B?Z3hvUUpBZGZVbjRkcTFTeWtDaElOQkxhcHNXU2pyK1FCOGFpdVY3c2J6OEx2?=
- =?utf-8?B?c1QzaVNSMzFpUU9hUE9tTUlVVmJLZjV1TW5mSHg2bktGSHJSTHlvdnFXa1Ur?=
- =?utf-8?B?SHlYMGxzVGdNc212UHozazNJaVh4cFRVZG96WlArS1V3azhXN2FQUXBFS21H?=
- =?utf-8?B?bFZFeUMvZ2JGeFR1UTFFZ3pDZFVrOWIzbHMzZGwrYnY3ZmtjMDRpNGtUWnds?=
- =?utf-8?B?S1pXZFVDMWVFVWNxTzNkTkRLaU12aDI5MXdPT3ZSa0pFK29XWHB3Z3JpQ1FD?=
- =?utf-8?B?emNGRVc3L0FRcVZHeTVJVVBzS0JLeUp4QmV3TjlxZ2NCNFpPaDZTWEcrd0c1?=
- =?utf-8?B?NTF5UWptVWI1b29xSkdzWE5Pa2xONE1TMzB5NEhFcGl2SmJ3N3dzSnNILzRt?=
- =?utf-8?B?TFFIQ3kxaDRHdFVHSVdpUEp6alBEMzZNSlMzb2pocVFKK0s2RGdrWVhyZVpn?=
- =?utf-8?B?U05SNVVmcVRPelh6aUxnKzZsdGswbzRaMXVLbmdVUEJCb1dNUkFqSllsdU82?=
- =?utf-8?B?RHBMaWZKWDVkdUpSSmUwUDlOMFBBQmJRZFVkREk3VUxHT2Z6NDljMnlOeERp?=
- =?utf-8?B?MGI4K21VYzdxV09VWlVYYzdPYmRvbDJ5L2w4UjUvamttSVE2ZzRpZlora3hv?=
- =?utf-8?B?MjV4eXB5ZmtxY3dyZVYvMExHa1UvNEN4d0RQeWRaL0RtZFdHUk1odHRLVGlr?=
- =?utf-8?B?RzQ2anEzWTMxajhVZWlsYlJvcUp0aDNDMmp0bmFORWZPbGdSQnBYenY3U3Nq?=
- =?utf-8?B?U1dEZUtlL2cyczE3V0Z6WHpTekxRL3VGaEpPSUdzWTluTEd3Y3Z1S2Ric0ti?=
- =?utf-8?B?aTNreHdMMzFXaGV2dlphMWxFMzBkcVUydFpYSVFUUjIvdzFReU1hcE9xYTI0?=
- =?utf-8?B?YWIzY3ZEU21FVG1LVnNLM2hnWlQ1eFZ2Wi9rU1VwazdvVjZXdEhhQTJVVkRl?=
- =?utf-8?B?Qy9abTU1QjhTN2pkaVJabHovL2M2SFhnVUhycmVIY2UzZHNNeWdud1YyTDBn?=
- =?utf-8?B?U2YrdThHTHhnTXphTVd5cmNRYnAzMXBPMS96QWh0eXJqSmh0Nko5ZnFMdDNE?=
- =?utf-8?B?Rlh5b2hiWFhNOUZlbEJQc1FUd05QSFduVEgzeElpR3BvbVN3UmtSa0pNajBE?=
- =?utf-8?B?enBKQzdqc0VTa1hnY2paUU0vUVJ4RjhiTzlGUVRwS2tWL05CR2s1V2ZvNjBV?=
- =?utf-8?B?ZG81WEc5Mktwb1BneXpZQ0R3STV6NVEvcC9TTWZoenlnUzRFdHM1ZjRzZ3Fv?=
- =?utf-8?B?Ykt2bXpXeXhmRTFpRjBJbWFZZVBESlFPdURqTTVvSEllOTRUTmJYVjhuZ0w5?=
- =?utf-8?B?YmZITG4rTE0yemlhTFo3aGFvd2NUcUZic2NOYkYwSWgvS0pwb2taWHRiRWMx?=
- =?utf-8?B?UUc1ZHlaVktpR3NQd1RUc2ZEYkIyYTV6Wjg2RzVLWFJRa3JiaTlHMXYvM0Vw?=
- =?utf-8?B?OGVDOVNYalR3NWtZbUdzTmJvRUVERVJOTXVGaUZIMzBJNEdNeEdBTkxXTWJj?=
- =?utf-8?B?cjdINnhGS0pDdUovL294VXJWNFRZU3I4dksrbGJxaThTQ2x5ZEVGcnRkcHlF?=
- =?utf-8?B?dHF4Z3gvMGdXVTBTZkkrM0lNUzZzei81RXBOdzM0MmhCS3RGSXhNWmZnMDlG?=
- =?utf-8?B?a0tqR1AvYXRQckY5ZzZIVGlnOHl2c1lJNHZHL3gvZUozaWNIYktSbC9iWkpM?=
- =?utf-8?B?Wnc4ejNJMTNwMXB0VnJ4Qld2RTJxTGg0TmEwc3FrbFNDSXJrYkxFa2lJZTdw?=
- =?utf-8?B?MlVsRUptbnZUYUlhblIwUW5yY1FOT1FGcnhLbllPL01RbTVOQzJFVVUwWnMr?=
- =?utf-8?B?L1Z1L0swMlFodjc5dFZHaE1nOXFRQlBMNXpBZThyTXF2SG80VUdiYmtJaE4x?=
- =?utf-8?B?ZXB1TndwTHFDVWNQS1lLUzZCcGtQSGkxemlCd0RYZlZJekdlY0lZcUMvcWVX?=
- =?utf-8?B?TGdlbXM1cmpNUlVLQkFweGM5clJPSUcxQnUvRGZ5TlVwMklFaDNCa0xsR0Jh?=
- =?utf-8?B?akhYSFhsaGxtYlhUVmZCeFUyL0ZFMXNjOEZ3Q00wWFY2QllsWnNhRzdZWkF6?=
- =?utf-8?B?RDVzdFFoTGt2djZhUGRCMWVTMHAyS1NnRTd1Nmxpa1MrUVNKNTNISmR4aFNh?=
- =?utf-8?B?QmVtMGRMb091YWZ1Sjc1eW1KZElUQnpqeVNHL3RPOXVVTW5EMm11ZFVieHo4?=
- =?utf-8?B?SFRIR2ZhUHhIOWx6ODRFa2RucE9jQU5hV0tEaVNYNWF5M2V6ek9RQT09?=
+	=?us-ascii?Q?8PzJ3/Gd7sqOnvLQ7ZQCpiWjMHtJbyaegrE1g2wkPBX/Y6vn2qFx2AaTopRi?=
+ =?us-ascii?Q?c/uIdP97QCDzbVTm73IWD6WX16zdvBVBUYCm30JiAv55o4vBYuGq0vdb/kYl?=
+ =?us-ascii?Q?nlcw175l77oWuE61MxuYSje8Rn9rag2gNJVX+RKuFDpnh9GWNLeJaZms4JjQ?=
+ =?us-ascii?Q?p+pYEVl4qKH7LhQeCKwuY7usMdnHr0nAhdS2OHwVJ+o7J5f6ZmEbiLsSl+1y?=
+ =?us-ascii?Q?KfZnEA6YYePiXmnd40u1wwiSuHIjWRroFYXG4Js73hOlPh5fmIXdxFbXhjmC?=
+ =?us-ascii?Q?bTB1VM5EQMesR/YgNLmMVv10g5BdfibePj97Qqvi+wN0zHcv7Et/m2c6HXiu?=
+ =?us-ascii?Q?J7zJmtI4XH1WSOXnQvqzstYiApVGDrD4vmBDR9x9kra+gFzrWMJkl9tMCajG?=
+ =?us-ascii?Q?4OliOhFVVRvFYNA+6v9tE0rwKsCrfaLWftng2M0sAp2kuRjLD7oESfdSr5QV?=
+ =?us-ascii?Q?Jzi4JzfBjFF3O/jQUyBRSjTODNrFn5G0FRkpf4j/lExH4nKpsOG+Z7Tdxntu?=
+ =?us-ascii?Q?87d7gJHvX/LlXWiRSgIAA/N9W5VIvz7R5n7n6oIztT525RXhfWrKHRMX1KnR?=
+ =?us-ascii?Q?e2luMGeUVZ797Cktw/KEu+N8sWnbs0+U3W5loRSmJBWbpMCQsrnsfLgfy+cq?=
+ =?us-ascii?Q?QaRcw11ztiYwlXGfY+r6VSxiVFgpqUCXWTexclq9G4pjINLzsBCYHnHFiNwU?=
+ =?us-ascii?Q?QOcBwz8Vnc9fwV7B4jZROueNkx95B9LE66hx3um9JcqT3Wgn05BD4ER0Go4O?=
+ =?us-ascii?Q?AroRjKsVTkh2lmMQyYjdBIu5YvF3k1T9zhCVfC8tbKhAv0ALpZl/bainf3iT?=
+ =?us-ascii?Q?hSARaQ8/lv/NZZOKh17gK8RjmDfhd00d5WzkDnPeCPTPZUhkBHB/3R67DTf/?=
+ =?us-ascii?Q?k/i5brRcn2J+zFyFJ+M6ngpYyfR6lthUiat0SqkcVmh4KS9SIwwqjd2bI+VK?=
+ =?us-ascii?Q?s8Hr0yQjrJP8/Lgej68lfrnJ/O1fPM+b3WshP268IdUzs+8RqtCSwwQ+adeT?=
+ =?us-ascii?Q?Ok6J8M36ZaFsSO9o8Wa2OGfN3kogujVLtSm/rmNos2XqHL+MBm9HzSmApLl5?=
+ =?us-ascii?Q?t380wxit6nB7KUm0pSIW+52lFZeuVtZ0gkb8PS76zKEpLluE97tMKvrcVdPz?=
+ =?us-ascii?Q?QZk9CggRzS+5WrHBhcIOYcGHAlDD+laDGIs5jRcb5QD5uvDZbaSjxRdMNgwi?=
+ =?us-ascii?Q?AwvvrmPWcRfI5TiOK7Lfdk0FVnhT2diqJriXaU3mW/nrAanwslfMdAgo0+Od?=
+ =?us-ascii?Q?00rN/aaYPTx1XQVkckO4auZqaHwcZxWKXNv8xef0h0GYILBEPoGYC9Ay0w7/?=
+ =?us-ascii?Q?W8PKGZXwhMVRIitRYXWZ7TaKhy+XpJaEBF/zZ7K68lPZ58Ebo0bA/MhT5Oga?=
+ =?us-ascii?Q?LSbXJBdslXT7d5wyEqt3oysY/LkuD2zbAkfYAY0GqqYlCcqY3bD3+jdDXoTl?=
+ =?us-ascii?Q?klwHiLUXrM/fXqKmLwd+qegD772dvPh7/Un1hicV+ZTxGzr+Yo1KIcB3HEBI?=
+ =?us-ascii?Q?Cl7+voj7ANWaZ0otUUiIqI/mkKat+fAK0K2G/CHi4VzcNN0nVZRPVhjZtkvP?=
+ =?us-ascii?Q?mvSnWmGhQ6GVwvyzDWHEGSCb9feqRgn5DH4DiTy90swUopNOg+K+EIjd/iDK?=
+ =?us-ascii?Q?WXH1vSv86uUdCWFatUiA5pnVbixDBwaBP6uPBgZK3QzDl3CQWOZdHEbYuJjK?=
+ =?us-ascii?Q?WFlopE/4xyhwy8QgLNvJGEnvOsmYdUm9RU+f+YTOOed//sQFlbh8ybLJI0KP?=
+ =?us-ascii?Q?DLZA6QcFgA=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3fa2a5f-d360-4a1f-0da7-08de4eb34615
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcd85baa-c0dd-4d42-2e92-08de4eb36a7f
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 12:41:41.6421
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 12:42:42.6953
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5LeJ/pj8nmIfgWPj1RVfoyZWkZDbC7njIYs+3Jp2FFTGcK5CrRoGrUtHDC51x4taLHcbOg4nC7RbFwCuLTfsvQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB7076
+X-MS-Exchange-CrossTenant-UserPrincipalName: OBESnD0039jfwuPN0v/Ot3Y5EViaO1n37dfIHl1MkeRXSRCSiDoShizD9KKisRUt9aTF5hat1xFnwe4k5u31fw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2462
 
-On Wed, 7 Jan 2026 11:48:28 -0500
-Tamir Duberstein <tamird@gmail.com> wrote:
+On Thu,  8 Jan 2026 10:33:50 +0900
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-> On Wed, Jan 7, 2026 at 11:30=E2=80=AFAM Gary Guo <gary@kernel.org> wrote:
-> >
-> > From: Gary Guo <gary@garyguo.net>
-> >
-> > `#[vtable]` is converted to use syn. This is more robust than the
-> > previous heuristic-based searching of defined methods and functions.
-> >
-> > When doing so, the trait and impl are split into two code paths as the
-> > types are distinct when parsed by `syn`.
-> >
-> > Signed-off-by: Gary Guo <gary@garyguo.net> =20
->=20
-> Reviewed-by: Tamir Duberstein <tamird@gmail.com>
->=20
-> > ---
-> >  rust/macros/lib.rs    |   9 ++-
-> >  rust/macros/vtable.rs | 163 ++++++++++++++++++++++--------------------
-> >  2 files changed, 93 insertions(+), 79 deletions(-)
-> >
-> > diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
-> > index a67d1cc81a2d3..a39bedb703973 100644
-> > --- a/rust/macros/vtable.rs
-> > +++ b/rust/macros/vtable.rs
-> > @@ -1,97 +1,106 @@
-> >  // SPDX-License-Identifier: GPL-2.0
-> >
-> >  use std::collections::HashSet;
-> > -use std::fmt::Write;
-> >
-> > -use proc_macro2::{Delimiter, Group, TokenStream, TokenTree};
-> > +use proc_macro2::{
-> > +    Ident,
-> > +    TokenStream, //
-> > +};
-> > +use quote::ToTokens;
-> > +use syn::{
-> > +    parse_quote,
-> > +    Error,
-> > +    ImplItem,
-> > +    Item,
-> > +    ItemImpl,
-> > +    ItemTrait,
-> > +    Result,
-> > +    TraitItem, //
-> > +};
-> >
-> > -pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStre=
-am {
-> > -    let mut tokens: Vec<_> =3D ts.into_iter().collect();
-> > +fn handle_trait(mut item: ItemTrait) -> Result<ItemTrait> {
-> > +    let mut functions =3D Vec::new(); =20
->=20
-> Would be easier to propagate `#[cfg]`(as in your FIXME below) if you
-> collect the generated constants into this vector instead -- then you
-> can do all the code generation in the `for item in &item.items` loop
-> where you have all the attributes.
+> Make warn_on() support DEBUG_BUGVERBOSE_DETAILED option, which was
+> introduced by the commit aec58b48517c ("bugs/core: Extend
+> __WARN_FLAGS() with the 'cond_str' parameter").
+> 
+> When the option is enabled, WARN splats now show the evaluated
+> warn_on() condition alongside the file path, e.g.:
+> 
+> ------------[ cut here ]------------
+> WARNING: [val == 1] linux/samples/rust/rust_minimal.rs:27 at _RNvXCsk7t4azzUqHP_12rust_minimalNtB2_11RustMinimalNtCs8pcx3n4
+> Modules linked in: rust_minimal(+)
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-This is a very good suggestion. I tried it out and the code is much
-cleaner. After making the change the `#[cfg]` change is just a few lines
-too -- I'll include the cfg change in a new commit in the next version.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
->=20
-> > +    for item in &item.items {
-> > +        if let TraitItem::Fn(fn_item) =3D item {
-> > +            functions.push(fn_item.sig.ident.clone());
-> > +        }
-> > +    }
-> > +
-> > +    item.items.push(parse_quote! {
-> > +         /// A marker to prevent implementors from forgetting to use [=
-`#[vtable]`](vtable)
-> > +         /// attribute when implementing this trait.
-> > +         const USE_VTABLE_ATTR: ();
-> > +    });
-> >
-> > -    // Scan for the `trait` or `impl` keyword.
-> > -    let is_trait =3D tokens
-> > -        .iter()
-> > -        .find_map(|token| match token {
-> > -            TokenTree::Ident(ident) =3D> match ident.to_string().as_st=
-r() {
-> > -                "trait" =3D> Some(true),
-> > -                "impl" =3D> Some(false),
-> > -                _ =3D> None,
-> > -            },
-> > -            _ =3D> None,
-> > -        })
-> > -        .expect("#[vtable] attribute should only be applied to trait o=
-r impl block");
-> > +    let mut consts =3D HashSet::new();
-> > +    for name in functions {
-> > +        let gen_const_name =3D Ident::new(
-> > +            &format!("HAS_{}", name.to_string().to_uppercase()),
-> > +            name.span(),
-> > +        );
-> > +        // Skip if it's declared already -- this can happen if `#[cfg]=
-` is used to selectively
-> > +        // define functions.
-> > +        // FIXME: `#[cfg]` should be copied and propagated to the gene=
-rated consts.
-> > +        if consts.contains(&gen_const_name) {
-> > +            continue;
-> > +        }
-> > +        // We don't know on the implementation-site whether a method i=
-s required or provided
-> > +        // so we have to generate a const for all methods.
-> > +        let comment =3D format!("Indicates if the `{name}` method is o=
-verridden by the implementor."); =20
->=20
-> We're already quasi-quoting below, does putting the comment there work?
+> ---
+> v2:
+> - make warn_flags! convert the passed file string to bytes
+> v1: https://lore.kernel.org/rust-for-linux/20251204223405.454920-1-fujita.tomonori@gmail.com/
+> 
+>  rust/kernel/bug.rs | 20 +++++++++++++-------
+>  1 file changed, 13 insertions(+), 7 deletions(-)
+> 
+> diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+> index 36aef43e5ebe..ed943960f851 100644
+> --- a/rust/kernel/bug.rs
+> +++ b/rust/kernel/bug.rs
+> @@ -11,9 +11,9 @@
+>  #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
+>  #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
+>  macro_rules! warn_flags {
+> -    ($flags:expr) => {
+> +    ($file:expr, $flags:expr) => {
+>          const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+> -        const _FILE: &[u8] = file!().as_bytes();
+> +        const _FILE: &[u8] = $file.as_bytes();
+>          // Plus one for null-terminator.
+>          static FILE: [u8; _FILE.len() + 1] = {
+>              let mut bytes = [0; _FILE.len() + 1];
+> @@ -50,7 +50,7 @@ macro_rules! warn_flags {
+>  #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
+>  #[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
+>  macro_rules! warn_flags {
+> -    ($flags:expr) => {
+> +    ($file:expr, $flags:expr) => {
+>          const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+>  
+>          // SAFETY:
+> @@ -75,7 +75,7 @@ macro_rules! warn_flags {
+>  #[doc(hidden)]
+>  #[cfg(all(CONFIG_BUG, CONFIG_UML))]
+>  macro_rules! warn_flags {
+> -    ($flags:expr) => {
+> +    ($file:expr, $flags:expr) => {
+>          // SAFETY: It is always safe to call `warn_slowpath_fmt()`
+>          // with a valid null-terminated string.
+>          unsafe {
+> @@ -93,7 +93,7 @@ macro_rules! warn_flags {
+>  #[doc(hidden)]
+>  #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
+>  macro_rules! warn_flags {
+> -    ($flags:expr) => {
+> +    ($file:expr, $flags:expr) => {
+>          // SAFETY: It is always safe to call `WARN_ON()`.
+>          unsafe { $crate::bindings::WARN_ON(true) }
+>      };
+> @@ -103,7 +103,7 @@ macro_rules! warn_flags {
+>  #[doc(hidden)]
+>  #[cfg(not(CONFIG_BUG))]
+>  macro_rules! warn_flags {
+> -    ($flags:expr) => {};
+> +    ($file:expr, $flags:expr) => {};
+>  }
+>  
+>  #[doc(hidden)]
+> @@ -116,10 +116,16 @@ pub const fn bugflag_taint(value: u32) -> u32 {
+>  macro_rules! warn_on {
+>      ($cond:expr) => {{
+>          let cond = $cond;
+> +
+> +        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
+> +        const _COND_STR: &str = concat!("[", stringify!($cond), "] ", file!());
+> +        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
+> +        const _COND_STR: &str = file!();
+> +
+>          if cond {
+>              const WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
+>  
+> -            $crate::warn_flags!(WARN_ON_FLAGS);
+> +            $crate::warn_flags!(_COND_STR, WARN_ON_FLAGS);
+>          }
+>          cond
+>      }};
+> 
+> base-commit: 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
 
-The comment has `{name}` interpolation and you cannot just use `quote!`
-for it.
-
-You could do
-
-	#[doc =3D concat!("...", stringify!(...), "...")]
-
-But I think it's cleaner to just use `format!`.
-
->=20
-> > +        item.items.push(parse_quote! {
-> > +            #[doc =3D #comment]
-> > +            const #gen_const_name: bool =3D false;
-> > +        });
-> > +        consts.insert(gen_const_name);
-> > +    }
