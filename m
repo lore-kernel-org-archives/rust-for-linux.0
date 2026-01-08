@@ -1,149 +1,120 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3FB48C8B4
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 13:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B1D4D1252
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 13:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767879753; cv=none; b=E4JJQkHeaFU+1pTkBjExWLwyVkHhbzfT5Z7KzSZzznzJMZu5qwxWXvyz63RxIlO/HgpcKrEKb6rIfJj64qWFxMjGgkddZNIbqj59t9IV/08lGM3d2etZaaOePB9MkkAQRIm6a6k6tN+plyd6hcwwAZgkLH7gJX2zKL28bi4bUoI=
+	t=1767879942; cv=none; b=fTUn+BggH7L5oci445Ic5jDP3VqK0HgAx09tEVe1JASsVPtbgfLatNRP2SXgVZSZg9ntkIRs2aaxyV0QuOWW6DVtBFwx/4yMD/0MKqN3eQ7RXh/31q+zwj6CZnVAczpIamtXQHBDrW5RT4wnecNLoo73m5Ix6HFkCmu4co93bM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767879753; c=relaxed/simple;
-	bh=1S+tu422wuis6/tZ2vSKuKD2LhSbT2f/mAsA8AgVywY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G8Uxe2lQndpLfhDHtkyoQ/laqaSkOeWpVzJdl/1memnzJTDJ7KsRrxETpuJ5wpc5Ekav6gg+SArJrg3JlkMoZ7MCsVU6nktzm3Xa85Aj9osuuxn4VKjL059p0FjnLy8K1rCD5WslFetppdVsKNS/Es3NWf9TP4hfP8DY4Geurko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gKHkeIIa; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gKHkeIIa"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43246af170aso1088739f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 05:42:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767879750; x=1768484550; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DuB8LeaUuU12NZRvbDwmqGr7VISKQiEng/u87ABnUmg=;
-        b=gKHkeIIa6+qR1L0CepHW3phrEtMpcExH5QG2TKbVwmeyJVr90IoEf2tGTjUDG0yaOj
-         RFEYIzlTO3DeM1wdypzppbbm7SEVolT/32BCgiX/5ZkOX4V48dEClUHk0veVvCbPi1VC
-         bF/MjRVTEsDMwCQh5WmKj9sUan3W3NutSzZl9SpXQ+K8rTYx2IPFE4aZQdK/CuvEF2+I
-         755dpOKQKxe7n8xqXna9pcln932Wfh3YTYu9n/JO5IQrVppdIu5eLiEMufsDrRXI0iDy
-         p0h7kYyxkXba2QM8R/jlsTuYefxU5hucSywkOVIo8hjQmqTPTrT4fr7tzVlw7IABRNid
-         ZtoQ==
+	s=arc-20240116; t=1767879942; c=relaxed/simple;
+	bh=GrmvpqiziF56Q0Dk05a0FV54bdVuh4XlxV7dyFtow+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hwxepPUrInOHYPn4YnWB5O7g4dDTyLqCIjT8/dA0wWKzim2fSQXSRMEQdiWVQ1A5fUMPQ+B7q4eU4cXtS8BHiTCK/gidfIPYavJq7P0j4AuntS5s8j/r0qR0sGQ4y2zSP5//5sXElk4FiWHlCkzdYFuivs4yFXTJ2NXDEOd27j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7aab7623f42so2788070b3a.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 05:45:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767879750; x=1768484550;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DuB8LeaUuU12NZRvbDwmqGr7VISKQiEng/u87ABnUmg=;
-        b=d8I52Vt72kLUsbTGmYGSN9C4Wbq90aAponfnRB+ufbpyZM5ULiptgwW4/9kkyJU+cS
-         eFYaqMI3uSlwPVZ0FPNUcapNaiw6n1nON5lHv7g/8Tc/hIWFkUC1RwAWKzRYwWbKod2d
-         XBN0GJFVwmzGTpeS1o3i9JlJNbSYC64+k+eYriHEfuaLkx5WQCTOvrcH4goCp068hfZK
-         y9UKhD8t/BF6sSj+rBI6cL/ohAdjVUeIdzchhW/Vr3sZC/26D/4PfuwSZ1ib8KLvy8qb
-         WDOvP9KK0LG7fhCO8ePcvVZMkKU6M6+MrwkUJhOFnuPunUIParnB9RF23nN3faGhfh6x
-         1F3A==
-X-Forwarded-Encrypted: i=1; AJvYcCVd1BEvS5rQKV6W4V7AI46bWq0G0C/eTvQ6g/y9uRyrXCl5qdiSiJXxqK3braoefAb5zJtzpw5XJC2KeVSBlQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywlesl1xbsey94Qja3vkHNFs6vs0SxWHEVWnl1dKQngxZ3zyCsf
-	wJsCHrLC4U2eyL6davtbliHC6X8IdoGBR0/db3TpX8qCNInAIbOStjHM8R5Pijf+gVTYYsJg0i8
-	22ebq4nr9BVXcs2OgYt/72Em55jIMfLELefMleMvn
-X-Gm-Gg: AY/fxX73vJJCUHQDMVZLQ9gfdAzfqxmMIV9vJdyrrON4CdeAVmhs2I0SvsgaN/4AGmo
-	rWqI/7MhIXOFq8r+7kmZRIWUjqnWbMvl9vvf1dQ1efKIdc/GfT5NOdqJivlcVuLgEpptP5EpMDR
-	CEkn425Fcr+Gh8+WxKaouXP/qPfZQKvtwg51V8BtHzYes3vUEMm3SzX13ABG5q6ffbCxaRaTQAK
-	9VcVcwxupxpRihS3lSClYMO88YdGktbPxGcnFYb7TsS5h1GfflNH6dEXOJcnFoK94ZuwdMPabXF
-	GVf3ixGFPL4H9yB5p7QkKyyCyotRYRDj+0nUWjyKylae2Izh6e27nFkeWw==
-X-Google-Smtp-Source: AGHT+IExWOEkyCLKUgDRVthn2SZknPs0kVAfglSywEbSBNIbCWLLC6QfR3LyA9uswU60dLniHiZXbHB2t4WQ0/bzApM=
-X-Received: by 2002:a05:6000:238a:b0:432:c17c:3094 with SMTP id
- ffacd0b85a97d-432c17c349emr9810039f8f.3.1767879749526; Thu, 08 Jan 2026
- 05:42:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767879937; x=1768484737;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1e5OPUc4ALFm6BKAa3GGC2+rxUwWfa6AC5HZABAAJgY=;
+        b=bE4pnvOsDdNnkjLFQTimopuaRAqZmJaV1EjuO4JDWyDsPdroyNppEdhJYMLA2urohl
+         WSLqHlX1pAvRrJ84aroYc2bRGtXM6+3YWLxNEHf6ZZQklWIoVkSFJmh6kCSFfu7ptZd0
+         rM9ZuAJ4MmXq3m6yoBXfq7Bxj6XZiiq9BXrqIKaQJZsNSy6zo9ABISXgTI1JSz4Gt93K
+         hFf6FKjAk3ZiGcZ+N/oRJRLQWOqlrw3h0KvtARhSKMcqdtLukyUz32+r39JGdWjIQvFy
+         GriTF5lYW7+LGqBYdQt+PJyL2oJaysM7BKB6KOoqy7j4ZQbj6tmQLo/vIJeXrNPZ+DJs
+         GlCg==
+X-Forwarded-Encrypted: i=1; AJvYcCVNm+TxZKTO2QD6BFs5PsZYLhgn3jdmmfXZVt1byJ+ZCylY3m3Lydl3Kbio7tockKRIAJfqLGH1vANy4zBCgg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8HuKDTspqeeoELXZXptCgUd6K5y+ftayvpF+hFCjsRcjRX1PL
+	85BDNhLfIwzhR9TROyjVg9iOA1LiYhc248ptTbvaZjBrDg3Zbwn872aB
+X-Gm-Gg: AY/fxX652o0YZHblI3M4pRiqf7GnGhwa/Zzo/knW9M2JVNza4o79vZiWV14DLK9X1XT
+	r0WB1o0GfWqWUNQVcrMguHykEFxc3Csn3Hrh+81JUxUcxf/3MvalIPlgJmrievEBuGbE4npc5su
+	rZ6mEQHoY3MX1GVvz6778NPKq32AK83IASr1O87WTMmR6fgCB6mrynxMLLnhib5QR76S87lM3vh
+	k4yNg2B/w5oiagE4N2CylnZIZiYA+A0A6DDsX/EZnIKj0R2cQen5eLckqJy6hZ/6sjmQsWiUUDG
+	sYmWRDdUGc+OR1IGwhGkbgLwjHBrYijY2n3VqUZ+iB0iOirttgXnjicVCApa7GzYIxuB8rK5hWo
+	iv5nscpHti7z+9r0ewgJD1udiPzUmdu5FUoZ0wIOHeLH5X0xj0k1C8Pay+2OO+giEai1i/ptbnS
+	8DFsg7wJQ/VadiZWdvmHNmyEaF8pq5WMMuoK3vhKSa/+p81i0=
+X-Google-Smtp-Source: AGHT+IErqk5YtJqJoDcrNKDl/R4uJ3+oA5O9puPvRka960BgDpPlxRbK+hoKFRMiLIiXbpB3Oaqj5A==
+X-Received: by 2002:a05:6a00:801b:b0:7ff:9f67:d47b with SMTP id d2e1a72fcca58-81b7d95cfb7mr6092802b3a.8.1767879936835;
+        Thu, 08 Jan 2026 05:45:36 -0800 (PST)
+Received: from [192.168.200.2] (61-221-120-114.hinet-ip.hinet.net. [61.221.120.114])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-819ab137711sm7938637b3a.0.2026.01.08.05.45.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Jan 2026 05:45:36 -0800 (PST)
+Message-ID: <c834ef20-2d4b-46aa-94ed-310c077a4495@kylinos.cn>
+Date: Thu, 8 Jan 2026 21:45:30 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107012414.2429246-1-ttabi@nvidia.com> <20260107012414.2429246-2-ttabi@nvidia.com>
- <1d8c517b-1e25-406f-876e-dac4e8b8ae78@nvidia.com> <CANiq72mKUxGh8cdZW0fXPCg20zoL19HY0GxRSDSYCj68Mp04vw@mail.gmail.com>
- <20260108125523.5c7810ae.gary@garyguo.net> <DFJ8XRR2T22T.3R4FQHF50B4P4@kernel.org>
-In-Reply-To: <DFJ8XRR2T22T.3R4FQHF50B4P4@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 8 Jan 2026 14:42:17 +0100
-X-Gm-Features: AQt7F2rpElxPKiqi8TNKEVozc5izmbhmGdSTR-9ZUc-Fg8J90AnYRHvNjmoDqyw
-Message-ID: <CAH5fLgjjAO6n4EvWT-Q4+GmhL9v-gFw1PTzss5Ni3jWdNXqKmA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] gpu: nova-core: add missing newlines to several print strings
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 1/5] rtc: migrate driver data to RTC device
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, Alvin Sun <sk.alvin.x@gmail.com>
+References: <20260107143738.3021892-1-sunke@kylinos.cn>
+ <20260107143738.3021892-2-sunke@kylinos.cn>
+ <DFJ5VOQOFLJO.1YI2NXC3B8P7L@kernel.org>
+From: Ke Sun <sunke@kylinos.cn>
+In-Reply-To: <DFJ5VOQOFLJO.1YI2NXC3B8P7L@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 8, 2026 at 2:36=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> (Cc: Greg, Rafael)
->
-> On Thu Jan 8, 2026 at 1:55 PM CET, Gary Guo wrote:
-> > In very early days (before RfL is upstreamed), I had a prototype print
-> > macro that is designed like this:
-> >
-> >       info!("foo"); // pr_info("foo\n");
-> >       info!(target: dev, "foo"); // dev_info(dev, "foo\n");
-> >       info!(target: dev, once, "foo"); // dev_info_once(dev, "foo\n");
-> >       info!(target: dev, ratelimited, "foo"); // dev_info_ratelimited(d=
-ev, "foo\n");
-> >
-> > There's a trait that is implemented for anything that can be used as a
-> > printing target.
-> >
-> > I still think this is superior than just having our macro mimicking the=
- C
-> > side (and as a result, having a lot of macros rather than just one for
-> > each level).
->
-> Why do you think this syntax is superior?
->
-> One disadvantage for maintainers and reviewers would be that it is less
-> convinient to grep for pr_*() vs dev_*(), which is something that people
-> regularly get wrong. I.e. it regularly happens that people use pr_*() whe=
-re they
-> actually print in the context of a specific device.
->
-> > I think with Rust printing machinary, `pr_cont` is rarely useful, inste=
-ad
-> > of calling `pr_info` followed by multiple `pr_cont`, you can just have =
-a
-> > custom `Display` implementation and print it in one go. This is also fr=
-ee
-> > from racing against another print and have your lines broken into two
-> > parts.
->
-> This I fully agree with.
->
-> > I would be much in favour of vouching deleteing `pr_cont` entirely from
-> > Rust codebase and always have newlines automatically added.
->
-> I don't think it is a good idea to always add newlines. It might be fine =
-if you
-> only do C code or only do Rust code, but if you are switching back and fo=
-rth, it
-> is a horrible inconsistency for muscle memory.
->
-> I'm pretty sure that this would turn into a generator for trivial fixup p=
-atches
-> either removing or adding the trailing '\n'. :)
 
-What about triggering a build failure if you forget the newline?
+On 1/8/26 19:12, Danilo Krummrich wrote:
+> On Wed Jan 7, 2026 at 3:37 PM CET, Ke Sun wrote:
+>> diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
+>> index baf1a8ca8b2b1..0f62ba9342e3e 100644
+>> --- a/drivers/rtc/dev.c
+>> +++ b/drivers/rtc/dev.c
+>> @@ -410,7 +410,7 @@ static long rtc_dev_ioctl(struct file *file,
+>>   		}
+>>   		default:
+>>   			if (rtc->ops->param_get)
+>> -				err = rtc->ops->param_get(rtc->dev.parent, &param);
+>> +				err = rtc->ops->param_get(&rtc->dev, &param);
+> It would make more sense to just pass a struct rtc_device than the embedded
+> struct device in the RTC callbacks.
+I considered passing struct rtc_device directly, but chose &rtc->dev
+to minimize changes to existing drivers, since most callbacks use
+dev_get_drvdata() on the device parameter.
+>
+>> @@ -369,7 +364,7 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
+>>   		goto out;
+>>   
+>>   	if (adev->irq[0]) {
+>> -		ret = request_irq(adev->irq[0], pl031_interrupt,
+>> +		ret = devm_request_irq(&adev->dev, adev->irq[0], pl031_interrupt,
+>>   				  vendor->irqflags, "rtc-pl031", ldata);
+> As Greg already mentioned that change should be a separate patch.
+>
+> You also have to be careful with the devres order when using devm_request_irq().
+>
+> In your case, you pass ldata, so you have to ensure that ldata (and its
+> contents) remain valid until the devres callback frees the IRQ request.
 
-For cases where the \n is intentionally omitted for use with pr_cont!,
-we can add separate syntax for making this explicit:
+I'll only start modifying other RTC drivers after I have a clear
 
-pr_info!("hello! thi", cont);
-pr_cont!("s tring is split\n");
+understanding of all the details, and I'll minimize any functional
 
-This way, you can't forget the newline, but you can still omit it if
-you really want to use pr_cont.
+changes.
 
-Alice
+
+These C RTC refactoring patches will be sent as a new patch series
+
+to the RTC mailing list.
+
+
+Best regards,
+Ke Sun
