@@ -1,132 +1,337 @@
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B3B461DC9
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 13:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52D81EDA0F
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 13:17:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767877749; cv=none; b=qzA0pbItgpMzMBnNlHmPeAUIYx2z6z/LUQ+ppcMUYEPNJihri+rxDXGQHt/ufTRu9QL+6ufukBZNAcWhWKfS+l+4cNKwJqK6UUldxhquZZnxW2JTjMCBGZpwuromMixmV+BiGtyuxUDvVkX9ZHSw1H52/qDLrF3huwoGfx1LCQ0=
+	t=1767878273; cv=none; b=PPJFXMXGOCyTQFb3O7OdZb1Nd1e00mBzMbm+EdcmMsWnAWfEeUh18da6ua+7mNjzy6mQMQMfYs6ywCZfPEvvwSe2wzoilF8kr1+AV8aPbvFtEuuNjjIFW9k6JeFNqOyXjjhRcfzp7DYhsWycrIqg9pYlQbzZNmfGSwEVP6oBT00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767877749; c=relaxed/simple;
-	bh=SjDPOVEjjCLO/yuHAGOFLwCO2B82uxwIcKaPRHAXz5c=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lNY/nt25FkH+ta66Fe2tAe27RItUL08s5Abaat8iLstGPiA7WvQ1F9XaG3+K5EB1QOdQpY/MdmkIdsSGTqf1h5o4ytPtRMEj0CpDVWcORqy4CxCw8+TnACPDnoVoEZQluL3XjufX8UumvIBnZwvL6XN6OcFbWfIn7RxxNyIlJS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u7OCQpqH; arc=none smtp.client-ip=209.85.218.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u7OCQpqH"
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b7d28772a67so278041966b.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 05:09:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767877744; x=1768482544; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=V5L4ahVUczpc7clktpgg6OANueJ6aYGxQVrrvy65a+s=;
-        b=u7OCQpqH6yIRHnsOChTAmkTS6klZfmLJGJmYS0N4yyfDKfPVS+eEx5KtBqacXzGNEV
-         POpvJDwYGQXMtdfq09cJpxJ4uW5EV4+9d3af091YNl8iFM8V1kmrUYnl5daCfICCsteZ
-         NnROaLQT7HIKXFbFb63z1SHLaqfUR647mUfBE1c2l5yofXhfdkzCVSoa6MW+OWsiMnxV
-         pjp6/83Be6PAHf50gyma6ZYKS9yCVU8cKdjt9hOT/eGfUNBLlcym0YUFjNyr/k5MBy4w
-         Obf//CrGODaILcLd8MOsNehcm2BDBCn25emtLx5UwkoikaARbM6+VyITEbLn+sx3KI5x
-         giPw==
+	s=arc-20240116; t=1767878273; c=relaxed/simple;
+	bh=dtWa+YGtzddfNIUwkFmFlIOlV9VWXlUrri3DNFVZWpA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D7fSy8sWfZ7A+Wa463xDdczcxccybM4avTTnU3UrABIWiZx/58oL8tQ6dfy5z6HxrTWWRpnpn23JGJQNWL6Lnqa5doW8UXB/psCF5FtE9HZWmXqhFQqZPwkLaUcBMU1GF0BrE8y8RZlRTpyCwsPKrYbfw00RdWOoGMTGXVuJVjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a0d6f647e2so34885085ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 05:17:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767877744; x=1768482544;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+        d=1e100.net; s=20230601; t=1767878269; x=1768483069;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=V5L4ahVUczpc7clktpgg6OANueJ6aYGxQVrrvy65a+s=;
-        b=J8rJXlPX054uKNOeJYj1Nd7AHsauF2X51uFUkLPizFyyoub2pmopZdjtX5pQGW1N8u
-         SuUX3FXc2PEvFWEyprvI8Vim8j1MRtfzhKHa9TA1NEBbbKXCyCd6kMaYNPDrdY/sI8B4
-         kTFyfQmyl9NuDgw2/ymDe8w3rnv8PDo2Kj/QWasHigO1AX0EE3b71TR0T+qgGUkxvirt
-         dIbjt1bbjfOE82Cg1wNPSO0ga8kqNtTh/S4R18BUjf3ABWcJszY36fRMu0xZfS2w3lbB
-         oVp6V6i8kfGaAIovlCgMZzyNIv5WB2Nm80c1MYFCmNgUSZjzNCvtsjJcDBKaaUoHd3+i
-         ZHiA==
-X-Forwarded-Encrypted: i=1; AJvYcCULAisH9HPKy45YkFnemY1C+IzkzWjgneYUwoFHvvIlovCZEYV/q0+bpipVTKF8nWfOa6HgOeWBmpTdRH6RxQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCeIz+VJdNbaWy2wfdHLZeV3y0/8HsICVQx8JqvI7qppOIS0av
-	CBAU9Luh93CX0TB2VsgLDt9HXHsXUdUE0W48Ucd1mNXdWPk2fdRAF/+pLI2ONRxH5umaxSIGqiR
-	gzTqyyRz0g61/U4KjhQ==
-X-Google-Smtp-Source: AGHT+IGsFQIIOhmBJKafXO+70oCUxDC9cwQyqltNHoTwh/Pr2P0gHKWoS6/lfN74T2Q+UgNGyV7mmaOISSj/cfc=
-X-Received: from ejctp6.prod.google.com ([2002:a17:907:c486:b0:b84:5092:9ce9])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:7b8c:b0:b73:6dbc:39fc with SMTP id a640c23a62f3a-b8444f6f783mr642771366b.30.1767877744588;
- Thu, 08 Jan 2026 05:09:04 -0800 (PST)
-Date: Thu, 08 Jan 2026 13:08:57 +0000
+        bh=zmEjhzYCxeCjE/oSSYNX31iUbZURZ9YpqT93kz8/CW8=;
+        b=mkpKauc3yup3KusFfaL4yEx6PzUzrlfo7xVcXGQ7bR2pdbHRHKEn9vYp3WuM1rU1JF
+         +z0F7yj8H14eNAUM6yCBeBIoTdSbC2MPcagATU5GrdyRqzW3Sbd+AvjzmUwx/4v//Bc0
+         mdOPvAX1dz57nNkkiLIRLtvGAVgZkHz2gUgg/MJBsXn/EB2MOhAX943EkemD7Uhc95As
+         buTAxAY+PXIr5Jjb2LdcG8gJp7Mif6yJOYpXTBxCqR0K4/xMuT/ASNgS/F3U/gsclXYx
+         P/XTxwShdiqEtYBD0xfDrHe7s4AS/tdrPNz0LkxxWnnPLinoehZdW5VWlD5eu3qc5yE8
+         IdaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXyqvX+FumTxQefCuQTXOq/t0ydVuYx2MT8Yuz24EdimCySUBFeUykyJbES87ChT8rbH2qbu1lbZmZyC4XTuQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq5LaSnBeJkPLpXrgmGUcVxsjj91noiY73cr0MLzVCfqBp1wvb
+	ZqjTUQT0C8e859+f2Y+sATlt34wnsCMvXaPMLGg/0sIeN9j6IrD58yrp
+X-Gm-Gg: AY/fxX6yG7p+4yDFc/fu1pb5whc5M5xzuA5ATgxx/xTZdLaPIn2IJwTBzwN8sMRs6r1
+	u9aFLbPVMzryFgcXm+7Dw7Nsh/eczwSdN9/Xo6TYyIAIFSs20CEF5cmyBzg2+Q7oDak0/s6siPe
+	3apxeGJXPbfLOerZG7p4joFbmPvEkvZaO8ByYJfekcaO9c6RcSwAZ7V2wjmNJXfPpvgYRU7uXDQ
+	w1TAZ2dU/gywLJ5x5wowbGN8scgMBYmXW8eyfMnp6Nl5bJCl+yaMyCsWv0R/lbrEMjAIY29SIAM
+	C7M2GxKGmgd5LORgjuIbCstRel53W0+4JWrzfWEJoz9MQTkYPaNkDs3JFIj2Zdz4c1/1RqxjaqW
+	GWAi3ffNiwbsjWL9vTR8yQgKqp4XQ5gxuaHWDL0cULIxaadlVhyYDn+lbF7XUnAShTzaQYFrDeu
+	cKuf9nFAFdQ8FOJPJTKkjs+pU=
+X-Google-Smtp-Source: AGHT+IEObFGUSFZADO3xkr1oXwRAkd6d18XHZKIq6Q9weG1w6TkFFMBEPsdYdjbgida6bF4M6xEeOw==
+X-Received: by 2002:a17:903:1250:b0:24c:da3b:7376 with SMTP id d9443c01a7336-2a3ee43a15fmr56497845ad.26.1767878268870;
+        Thu, 08 Jan 2026 05:17:48 -0800 (PST)
+Received: from [192.168.200.2] ([45.142.165.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c3a4fcsm80637585ad.12.2026.01.08.05.17.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Jan 2026 05:17:48 -0800 (PST)
+Message-ID: <b69749e0-e66d-425f-9d95-2d1bd4104e19@kylinos.cn>
+Date: Thu, 8 Jan 2026 21:17:41 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAGisX2kC/x3MwQqDMAwA0F+RnBdotSvTXxketEtrYFZJ3BDEf
- 7d4fJd3gJIwKXTVAUJ/Vl5ygX1UEKYhJ0L+FENtam+seWGijPLTDYdtmTngRN+VRHHWhE3rGue td884QhlWocj7vb/787wARxNGqW0AAAA=
-X-Change-Id: 20260108-gen-rust-atomic-helpers-msg-3943461645fb
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1586; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=SjDPOVEjjCLO/yuHAGOFLwCO2B82uxwIcKaPRHAXz5c=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpX6xr+rp7ZzNLr5ZskuKa0qlkoOYsbnph7mcG+
- ElljRjCp+qJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaV+sawAKCRAEWL7uWMY5
- RvA+EACWHRuZeNLJbzT7I05Ifb4Vi2xpEmD3UIsHQSVpcyPstTsg/WOTV8Lph4jdqO6Phei2OYo
- MkGwEtSvcQSznt27iyj/+ECUMaYgNJuTCQZKpx5/E/nUp7WAq16VZmO9Sa8SD4Ya4Uak8Aa02kt
- PRzehu6LzQuz9cnmXH8tAX5vdt7+XnwX1Z3aW9kTlNgxlGGx+XstVfiixnBQrI06rK+NFCJvWcL
- 0ss90V595XWvbpuD5cjCrmPyxk5rOXt1D5hu5Uat9fIXLhjn1b3X5fGw7x7ZR1qo+gYZ/YgLG0L
- kLIu3HjiZ/Mp5WfIWmtc2NHLIE/o9p2gqN+/zpS7FXT1mAGw5Gyf5/1RS7GWz0gCVYWo0Sxo5YY
- CNMaAKbqnMjZjC7p2nhrEX6KDoFex+c9O8WovL9QfQHfS40mI6T8e12VYwOuj/0oe1pkQmU/O37
- mkZirphIKe7lcsbB6bljYM6Kbc5o/ObI/RWUF+KNepspix1ZkfxyNnRWowZptTltGH6ILvz1IVi
- DTwTLRBYyxs45tDDsx0o+78jvJ147FkdMk10ewSJj3THTS4255mL/zLTpr5l/5bDvb+0KNhVJXW
- hArYSQM0If3JTl1OmaP7xaqo9eCdVgIdR6J8UkDSGcOgb7oBoixp2KfVHSG0ld9igNwD3glHdF5 eSQJPQCxUxoBVRA==
-X-Mailer: b4 0.14.2
-Message-ID: <20260108-gen-rust-atomic-helpers-msg-v1-1-d895a9667148@google.com>
-Subject: [PATCH] scripts: atomic: check for argument in gen-rust-atomic-helpers.sh
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 4/5] rust: add RTC core abstractions and data
+ structures
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-rtc@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, Alvin Sun <sk.alvin.x@gmail.com>
+References: <20260107143738.3021892-1-sunke@kylinos.cn>
+ <20260107143738.3021892-5-sunke@kylinos.cn>
+ <DFJ6P0ITWD1O.2PAYKPU63UFFC@kernel.org>
+From: Ke Sun <sunke@kylinos.cn>
+In-Reply-To: <DFJ6P0ITWD1O.2PAYKPU63UFFC@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Currently, running `scripts/atomic/gen-rust-atomic-helpers.sh` without
-arguments results in a broken header file and grep errors:
 
-    $ scripts/atomic/gen-rust-atomic-helpers.sh
-    grep: : No such file or directory
-    grep: : No such file or directory
+On 1/8/26 19:50, Danilo Krummrich wrote:
+> On Wed Jan 7, 2026 at 3:37 PM CET, Ke Sun wrote:
+>> +/// A Rust wrapper for the C `struct rtc_device`.
+>> +///
+>> +/// This type provides safe access to RTC device operations. The underlying `rtc_device`
+>> +/// is managed by the kernel and remains valid for the lifetime of the `RtcDevice`.
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// A [`RtcDevice`] instance holds a pointer to a valid [`struct rtc_device`] that is
+>> +/// registered and managed by the kernel.
+>> +///
+>> +/// # Examples
+>> +///
+>> +/// ```rust
+>> +/// # use kernel::{
+>> +/// #     prelude::*,
+>> +/// #     rtc::RtcDevice, //
+>> +/// # };
+>> +/// // Example: Set the time range for the RTC device
+>> +/// // rtc.set_range_min(0);
+>> +/// // rtc.set_range_max(u64::MAX);
+>> +/// //     Ok(())
+>> +/// // }
+> This example looks pretty odd, and I don't think it does compile. Did you test
+> with CONFIG_RUST_KERNEL_DOCTESTS=y?
+Yes. Dirk suggested doctest in another patch series, which I enabled. I also
 
-The user may do this to re-generate the Rust helpers, not realizing that
-they called the wrong script [1]. In this scenario, point the user to
-`scripts/atomic/gen-atomics.sh` instead of failing in a cryptic way.
+run clippy checks and QEMU tests for every change.
 
-    $ scripts/atomic/gen-rust-atomic-helpers.sh
-    call scripts/atomic/gen-atomics.sh instead
 
-Link: https://lore.kernel.org/r/CAH5fLghgm2pPdKen2rv6MeSXAYG_j_eCqvM0b=VbTbUM9eswKg@mail.gmail.com
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- scripts/atomic/gen-rust-atomic-helpers.sh | 5 +++++
- 1 file changed, 5 insertions(+)
+❯ cat .config| grep DOCTEST
+CONFIG_RUST_KERNEL_DOCTESTS=y
+❯ make Image CLIPPY=1
+   CALL    scripts/checksyscalls.sh
 
-diff --git a/scripts/atomic/gen-rust-atomic-helpers.sh b/scripts/atomic/gen-rust-atomic-helpers.sh
-index 45b1e100ed7c63108ee6cb07e48a17668f860d47..1c76f8ae731de9ac069d489469b0383f256b1539 100755
---- a/scripts/atomic/gen-rust-atomic-helpers.sh
-+++ b/scripts/atomic/gen-rust-atomic-helpers.sh
-@@ -5,6 +5,11 @@ ATOMICDIR=$(dirname $0)
- 
- . ${ATOMICDIR}/atomic-tbl.sh
- 
-+if [ -z "$1" ]; then
-+	echo "call scripts/atomic/gen-atomics.sh instead" >&2
-+	exit 1
-+fi
-+
- #gen_proto_order_variant(meta, pfx, name, sfx, order, atomic, int, arg...)
- gen_proto_order_variant()
- {
+>
+>> +/// ```
+>> +///
+>> +/// [`struct rtc_device`]: https://docs.kernel.org/driver-api/rtc.html
+>> +#[repr(transparent)]
+>> +pub struct RtcDevice<T: 'static = ()>(Opaque<bindings::rtc_device>, PhantomData<T>);
+>> +
+>> +impl<T: 'static> RtcDevice<T> {
+>> +    /// Obtain the raw [`struct rtc_device`] pointer.
+>> +    #[inline]
+>> +    pub fn as_raw(&self) -> *mut bindings::rtc_device {
+>> +        self.0.get()
+>> +    }
+>> +
+>> +    /// Set the minimum time range for the RTC device.
+>> +    #[inline]
+>> +    pub fn set_range_min(&self, min: i64) {
+>> +        // SAFETY: By the type invariants, self.as_raw() is a valid pointer to a
+>> +        // `struct rtc_device`, and we're only writing to the `range_min` field.
+>> +        unsafe {
+>> +            (*self.as_raw()).range_min = min;
+>> +        }
+>> +    }
+>> +
+>> +    /// Set the maximum time range for the RTC device.
+>> +    #[inline]
+>> +    pub fn set_range_max(&self, max: u64) {
+>> +        // SAFETY: By the type invariants, self.as_raw() is a valid pointer to a
+>> +        // `struct rtc_device`, and we're only writing to the `range_max` field.
+>> +        unsafe {
+>> +            (*self.as_raw()).range_max = max;
+>> +        }
+>> +    }
+>> +
+>> +    /// Get the minimum time range for the RTC device.
+>> +    #[inline]
+>> +    pub fn range_min(&self) -> i64 {
+>> +        // SAFETY: By the type invariants, self.as_raw() is a valid pointer to a
+>> +        // `struct rtc_device`, and we're only reading the `range_min` field.
+>> +        unsafe { (*self.as_raw()).range_min }
+>> +    }
+>> +
+>> +    /// Get the maximum time range for the RTC device.
+>> +    #[inline]
+>> +    pub fn range_max(&self) -> u64 {
+>> +        // SAFETY: By the type invariants, self.as_raw() is a valid pointer to a
+>> +        // `struct rtc_device`, and we're only reading the `range_max` field.
+>> +        unsafe { (*self.as_raw()).range_max }
+>> +    }
+>> +
+>> +    /// Notify the RTC framework that an interrupt has occurred.
+>> +    ///
+>> +    /// Should be called from interrupt handlers. Schedules work to handle the interrupt
+>> +    /// in process context.
+>> +    #[inline]
+>> +    pub fn update_irq(&self, num: usize, events: usize) {
+>> +        // SAFETY: By the type invariants, self.as_raw() is a valid pointer to a
+>> +        // `struct rtc_device`. The rtc_update_irq function handles NULL/ERR checks internally.
+>> +        unsafe {
+>> +            bindings::rtc_update_irq(self.as_raw(), num, events);
+>> +        }
+>> +    }
+>> +
+>> +    /// Clear a feature bit in the RTC device.
+>> +    #[inline]
+>> +    pub fn clear_feature(&self, feature: u32) {
+>> +        // SAFETY: By the type invariants, self.as_raw() is a valid pointer to a
+>> +        // `struct rtc_device`, and features is a valid bitmap array with RTC_FEATURE_CNT bits.
+>> +        let features_bitmap = unsafe {
+>> +            Bitmap::from_raw_mut(
+>> +                (*self.as_raw()).features.as_mut_ptr().cast::<usize>(),
+>> +                bindings::RTC_FEATURE_CNT as usize,
+>> +            )
+>> +        };
+>> +        features_bitmap.clear_bit(feature as usize);
+>> +    }
+>> +}
+>> +
+>> +impl<T: 'static, Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for RtcDevice<T> {
+> This should just be
+>
+> 	impl<T: 'static> AsRef<device::Device> for RtcDevice<T>
+>
+> as class devices do not have a device context.
+>
+>> +    fn as_ref(&self) -> &device::Device<Ctx> {
+>> +        let raw = self.as_raw();
+>> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
+>> +        // `struct rtc_device`.
+>> +        let dev = unsafe { &raw mut (*raw).dev };
+>> +
+>> +        // SAFETY: `dev` points to a valid `struct device`.
+>> +        unsafe { device::Device::from_raw(dev) }
+>> +    }
+>> +}
+>> +
+>> +// SAFETY: `RtcDevice` is a transparent wrapper of `struct rtc_device`.
+>> +// The offset is guaranteed to point to a valid device field inside `RtcDevice`.
+>> +unsafe impl<T: 'static, Ctx: device::DeviceContext> device::AsBusDevice<Ctx> for RtcDevice<T> {
+>> +    const OFFSET: usize = core::mem::offset_of!(bindings::rtc_device, dev);
+>> +}
+> Please do not abuse this trait as container_of!(), as the name implies, it is
+> only for bus devices (hence also the device context generic). RTC devices are
+> class devices.
+>
+>> +impl<T: RtcOps> RtcDevice<T> {
+>> +    /// Allocates a new RTC device managed by devres.
+>> +    ///
+>> +    /// This function allocates an RTC device and sets the driver data. The device will be
+>> +    /// automatically freed when the parent device is removed.
+>> +    pub fn new(
+>> +        parent_dev: &device::Device,
+> This must be a &Device<Bound>, otherwise you are not allowed to pass it to
+> devm_rtc_allocate_device().
+>
+>> +        init: impl PinInit<T, Error>,
+>> +    ) -> Result<ARef<Self>> {
+>> +        // SAFETY: `Device<Bound>` and `Device<CoreInternal>` have the same layout.
+>> +        let dev_internal: &device::Device<device::CoreInternal> =
+>> +            unsafe { &*core::ptr::from_ref(parent_dev).cast() };
+>> +
+>> +        // Allocate RTC device.
+>> +        // SAFETY: `devm_rtc_allocate_device` returns a pointer to a devm-managed rtc_device.
+>> +        // We use `dev_internal.as_raw()` which is `pub(crate)`, but we can access it through
+>> +        // the same device pointer.
+>> +        let rtc: *mut bindings::rtc_device =
+>> +            unsafe { bindings::devm_rtc_allocate_device(dev_internal.as_raw()) };
+>> +        if rtc.is_null() {
+>> +            return Err(ENOMEM);
+>> +        }
+>> +
+>> +        // Set the RTC device ops.
+>> +        // SAFETY: We just allocated the RTC device, so it's safe to set the ops.
+>> +        unsafe {
+>> +            (*rtc).ops = Adapter::<T>::VTABLE.as_raw();
+>> +        }
+>> +
+>> +        // SAFETY: `rtc` is a valid pointer to a newly allocated rtc_device.
+>> +        // `RtcDevice` is `#[repr(transparent)]` over `Opaque<rtc_device>`, so we can safely cast.
+>> +        let rtc_device = unsafe { ARef::from_raw(NonNull::new_unchecked(rtc.cast::<Self>())) };
+>> +        rtc_device.set_drvdata(init)?;
+>> +        Ok(rtc_device)
+>> +    }
+>> +
+>> +    /// Store a pointer to the bound driver's private data.
+>> +    pub fn set_drvdata(&self, data: impl PinInit<T, Error>) -> Result {
+> This should not be public, as you should only use it in RtcDevice::new().
+>
+>> +        let data = KBox::pin_init(data, GFP_KERNEL)?;
+>> +        let dev: &device::Device<device::Bound> = self.as_ref();
+>> +
+>> +        // SAFETY: `self.as_raw()` is a valid pointer to a `struct rtc_device`.
+>> +        unsafe { bindings::dev_set_drvdata(dev.as_raw(), data.into_foreign().cast()) };
+>> +        Ok(())
+>> +    }
+> <snip>
+>
+>> +/// A resource guard that ensures the RTC device is properly registered.
+>> +///
+>> +/// This struct is intended to be managed by the `devres` framework by transferring its ownership
+>> +/// via [`devres::register`]. This ties the lifetime of the RTC device registration
+>> +/// to the lifetime of the underlying device.
+>> +pub struct Registration<T: 'static> {
+>> +    #[allow(dead_code)]
+>> +    rtc_device: ARef<RtcDevice<T>>,
+>> +}
+>> +
+>> +impl<T: 'static> Registration<T> {
+>> +    /// Registers an RTC device with the RTC subsystem.
+>> +    ///
+>> +    /// Transfers its ownership to the `devres` framework, which ties its lifetime
+>> +    /// to the parent device.
+>> +    /// On unbind of the parent device, the `devres` entry will be dropped, automatically
+>> +    /// cleaning up the RTC device. This function should be called from the driver's `probe`.
+>> +    pub fn register(dev: &device::Device<device::Bound>, rtc_device: ARef<RtcDevice<T>>) -> Result {
+>> +        let rtc_dev: &device::Device = rtc_device.as_ref();
+>> +        let rtc_parent = rtc_dev.parent().ok_or(EINVAL)?;
+>> +        if dev.as_raw() != rtc_parent.as_raw() {
+>> +            return Err(EINVAL);
+>> +        }
+>> +
+>> +        // Registers an RTC device with the RTC subsystem.
+>> +        // SAFETY: The device will be automatically unregistered when the parent device
+>> +        // is removed (devm cleanup). The helper function uses `THIS_MODULE` internally.
+>> +        let err = unsafe { bindings::devm_rtc_register_device(rtc_device.as_raw()) };
+>> +        if err != 0 {
+>> +            return Err(Error::from_errno(err));
+>> +        }
+>> +
+>> +        let registration = Registration { rtc_device };
+>> +
+>> +        devres::register(dev, registration, GFP_KERNEL)
+> You are using devm_rtc_register_device() above already, hence you neither need
+> an instance of Registration, nor do you need to manage this Registration with
+> devres through devres::register().
+>
+>> +    }
+>> +}
+>> +
+>> +/// Options for creating an RTC device.
+>> +#[derive(Copy, Clone)]
+>> +pub struct RtcDeviceOptions {
+>> +    /// The name of the RTC device.
+>> +    pub name: &'static CStr,
+>> +}
+>> +
+>> +/// Trait implemented by RTC device operations.
+>> +///
+>> +/// This trait defines the operations that an RTC device driver must implement.
+>> +/// Most methods are optional and have default implementations that return an error.
+>> +#[vtable]
+>> +pub trait RtcOps: Sized + 'static {
+> Please utilize the AsBusDevice trait to be able to provide the parent device of
+> the RTC device as &Device<Bound>, similarly to what is done in [1].
+>
+> [1] https://lore.kernel.org/all/20260106-rust_leds-v10-1-e0a1564884f9@posteo.de/
+Some code was implemented by mimicking existing patterns without fully
+understanding the rationale behind them.
 
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20260108-gen-rust-atomic-helpers-msg-3943461645fb
+
+Thanks for the detailed review. I'll carefully go through your comments.
+
 
 Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
 
+Ke Sun
