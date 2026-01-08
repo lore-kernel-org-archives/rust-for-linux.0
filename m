@@ -1,110 +1,149 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24ACE1EE7C6
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 13:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3FB48C8B4
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 13:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767879399; cv=none; b=uXJ8QFFvPx3SF63WIiRxV5y64sLwwbpGhKgDtZxnnG3wHNvE/NQE10YFWYdLMeSNrdNHwynoFshK6o7u3Z1hJ8nbKbV5ozMI1d1oO/8A0BEiivz69TaPlOJQHl7u7pkl8rin7CGEjMBmX30DnwLXxx5UU5Wdfd1OLz/dSQw92/4=
+	t=1767879753; cv=none; b=E4JJQkHeaFU+1pTkBjExWLwyVkHhbzfT5Z7KzSZzznzJMZu5qwxWXvyz63RxIlO/HgpcKrEKb6rIfJj64qWFxMjGgkddZNIbqj59t9IV/08lGM3d2etZaaOePB9MkkAQRIm6a6k6tN+plyd6hcwwAZgkLH7gJX2zKL28bi4bUoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767879399; c=relaxed/simple;
-	bh=hYZzk/qulSxWaTC/5mYyqc84xO+e/vN/svymz2EFLgk=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=qmktVYEN9lAsTmWfSmSmRAmfuVI0qXpHMToq4gFzkict6P1t+2HiYpcvlqjCdU1e7jnFLUh1UcpD/VFDs4Ekj0Zey9HMGjkm0hp4tx6o+lyffR2nKy4DZpCEWcX5C8Ltfd4vxnzFOnow95VYKtzo/pC41om/ic0/6Eca7Ab40pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dETA1Yp2; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1767879753; c=relaxed/simple;
+	bh=1S+tu422wuis6/tZ2vSKuKD2LhSbT2f/mAsA8AgVywY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G8Uxe2lQndpLfhDHtkyoQ/laqaSkOeWpVzJdl/1memnzJTDJ7KsRrxETpuJ5wpc5Ekav6gg+SArJrg3JlkMoZ7MCsVU6nktzm3Xa85Aj9osuuxn4VKjL059p0FjnLy8K1rCD5WslFetppdVsKNS/Es3NWf9TP4hfP8DY4Geurko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gKHkeIIa; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dETA1Yp2"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-47775fb6cb4so18154745e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 05:36:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gKHkeIIa"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43246af170aso1088739f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 05:42:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767879396; x=1768484196; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1767879750; x=1768484550; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hYZzk/qulSxWaTC/5mYyqc84xO+e/vN/svymz2EFLgk=;
-        b=dETA1Yp24tO7FZ+tQZBsTLTtlWn3aQhQyeEJXWv3yhgOYiuW7EuoWizZKB0337Feqh
-         GvMih9FsqLhapq5ER+tqri/lmBmwGwsohkuoQZSqdCfz55elp5syHn7iuVvpgN+F6qhn
-         PcdpWFG4S/MdjIIGaGgtJwb6lPHuImHV3QerrWixlksBUpjjghPlLSdrARELPrDgVBo6
-         D7R3wFi56AAv+COeGGkPfu5gtm39BLCCsvbhT4/0UT2y3d3PJ+/PmZ7SpCUaab7/EoSF
-         Ht9JaEP8Me6Zld16GdxzPN8EjTVj9ZeIsUlrl7FBvNa+jYW2bmCg+RAq8S62/Cc0aq8m
-         aZhw==
+        bh=DuB8LeaUuU12NZRvbDwmqGr7VISKQiEng/u87ABnUmg=;
+        b=gKHkeIIa6+qR1L0CepHW3phrEtMpcExH5QG2TKbVwmeyJVr90IoEf2tGTjUDG0yaOj
+         RFEYIzlTO3DeM1wdypzppbbm7SEVolT/32BCgiX/5ZkOX4V48dEClUHk0veVvCbPi1VC
+         bF/MjRVTEsDMwCQh5WmKj9sUan3W3NutSzZl9SpXQ+K8rTYx2IPFE4aZQdK/CuvEF2+I
+         755dpOKQKxe7n8xqXna9pcln932Wfh3YTYu9n/JO5IQrVppdIu5eLiEMufsDrRXI0iDy
+         p0h7kYyxkXba2QM8R/jlsTuYefxU5hucSywkOVIo8hjQmqTPTrT4fr7tzVlw7IABRNid
+         ZtoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767879396; x=1768484196;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hYZzk/qulSxWaTC/5mYyqc84xO+e/vN/svymz2EFLgk=;
-        b=GaPy3qlEx3XB6s9PgDKx4xdVMYK3C+kCJIm89IzPGC+cu9PxejfSgc38YutnqAVZv4
-         Yj5U5IdTRGN/3uf3S7fGmu8pCG6MaXJ96+/0lcH8OMC6/mr9/P4NdZD33KpQy8H6gg3P
-         PWlAYJPi0QmScRSCxM2V8clmMtPG/Do/piOEAczWN53bcewBMGDQtbwXOJy7Yl+Hhuoj
-         IbrR3o9MAm6f9FlpBqvj1uF5zPKzXirI/Ka1jT/JwtQ1GKkMVVR+HCfvSlmRgXT6LwO8
-         kyX6YEh0sQcihEh51+EWymip/jDGxfuZHLAAAe1TeQ01KYbgSpyXCA6CFHB3SBKQiMHH
-         Hl0w==
-X-Forwarded-Encrypted: i=1; AJvYcCW4hkh4QK6DgUxfmXl3B2Y52SmXugPnhrkFuhe4MKCkfFGJ0EDkz1Ha3DZqc38g+ID9xKnokzDo3Ay2kGmpNQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBe1q2l+25/Krz6AH/vrd8qVRHyiqU9/9j9NOD2pUarAu7TVWs
-	WPFf5r0HzuowFCvEmWW8FtkmvtxiUxJr8pj56AjCHITpMADZBP+7Yteg
-X-Gm-Gg: AY/fxX7m5AzPVbt5Z9pTMOypg8lOymxDoGQz11zCpYGmOiyuWOU3aMTeEal7IyrEe1A
-	DSxdxz1z71tU4462bv69giDm2I/6trsCVc8QL8s8HML5W/hVbZdIKjfQUji/DYMCzKc5tfjgV+6
-	gLWDjvuYIaknaVbkfZaTM1W01Eikv3Jo7xtHFEzxdJVy9uoIGSKo+lBTTNc6YRm3ycjiyeoA/ud
-	ws8/XWPpyBQFiK5O0qIThZEYXYQp3QWgdOqyDi2TkP0/d9YV4IksKuGhYPn3rtNenzq9KVShfE3
-	cfg02h7ik/yNRxPVRNVUe4pgyUNgqdSog41j15k2OUkbafA/rlvHoK0rBAFqeKrdlAj2B7sPbKv
-	xRgl9AD82CcHmZM+MrRF8NUNEkhRG9rHKOULHE2EUqv10PBKD95l9VMN0M97rHMq8HdJJ0o5vbp
-	s3hOOO/ZGAyzm6Xmo9fNtvjrM=
-X-Google-Smtp-Source: AGHT+IFWeaxPAh92AZovsHbT7JsUtzZUFDtHgT/y7wVHzwcDS3qRKtyeBQwoY59pYZMTc3gCAicTOw==
-X-Received: by 2002:a05:600c:8b6d:b0:47a:814c:eea1 with SMTP id 5b1f17b1804b1-47d84b4a7b4mr75576915e9.35.1767879396259;
-        Thu, 08 Jan 2026 05:36:36 -0800 (PST)
-Received: from [192.168.1.121] ([176.206.93.222])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d870c73c0sm39516805e9.3.2026.01.08.05.36.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jan 2026 05:36:35 -0800 (PST)
-Message-ID: <3e36262d-8eed-443c-afdd-beef2f8be5e9@gmail.com>
-Date: Thu, 8 Jan 2026 14:36:35 +0100
+        d=1e100.net; s=20230601; t=1767879750; x=1768484550;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DuB8LeaUuU12NZRvbDwmqGr7VISKQiEng/u87ABnUmg=;
+        b=d8I52Vt72kLUsbTGmYGSN9C4Wbq90aAponfnRB+ufbpyZM5ULiptgwW4/9kkyJU+cS
+         eFYaqMI3uSlwPVZ0FPNUcapNaiw6n1nON5lHv7g/8Tc/hIWFkUC1RwAWKzRYwWbKod2d
+         XBN0GJFVwmzGTpeS1o3i9JlJNbSYC64+k+eYriHEfuaLkx5WQCTOvrcH4goCp068hfZK
+         y9UKhD8t/BF6sSj+rBI6cL/ohAdjVUeIdzchhW/Vr3sZC/26D/4PfuwSZ1ib8KLvy8qb
+         WDOvP9KK0LG7fhCO8ePcvVZMkKU6M6+MrwkUJhOFnuPunUIParnB9RF23nN3faGhfh6x
+         1F3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVd1BEvS5rQKV6W4V7AI46bWq0G0C/eTvQ6g/y9uRyrXCl5qdiSiJXxqK3braoefAb5zJtzpw5XJC2KeVSBlQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywlesl1xbsey94Qja3vkHNFs6vs0SxWHEVWnl1dKQngxZ3zyCsf
+	wJsCHrLC4U2eyL6davtbliHC6X8IdoGBR0/db3TpX8qCNInAIbOStjHM8R5Pijf+gVTYYsJg0i8
+	22ebq4nr9BVXcs2OgYt/72Em55jIMfLELefMleMvn
+X-Gm-Gg: AY/fxX73vJJCUHQDMVZLQ9gfdAzfqxmMIV9vJdyrrON4CdeAVmhs2I0SvsgaN/4AGmo
+	rWqI/7MhIXOFq8r+7kmZRIWUjqnWbMvl9vvf1dQ1efKIdc/GfT5NOdqJivlcVuLgEpptP5EpMDR
+	CEkn425Fcr+Gh8+WxKaouXP/qPfZQKvtwg51V8BtHzYes3vUEMm3SzX13ABG5q6ffbCxaRaTQAK
+	9VcVcwxupxpRihS3lSClYMO88YdGktbPxGcnFYb7TsS5h1GfflNH6dEXOJcnFoK94ZuwdMPabXF
+	GVf3ixGFPL4H9yB5p7QkKyyCyotRYRDj+0nUWjyKylae2Izh6e27nFkeWw==
+X-Google-Smtp-Source: AGHT+IExWOEkyCLKUgDRVthn2SZknPs0kVAfglSywEbSBNIbCWLLC6QfR3LyA9uswU60dLniHiZXbHB2t4WQ0/bzApM=
+X-Received: by 2002:a05:6000:238a:b0:432:c17c:3094 with SMTP id
+ ffacd0b85a97d-432c17c349emr9810039f8f.3.1767879749526; Thu, 08 Jan 2026
+ 05:42:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US, it-IT, en-US-large
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>, linux-input@vger.kernel.org,
- Denis Benato <denis.benato@linux.dev>, rust-for-linux@vger.kernel.org
-From: Denis Benato <benato.denis96@gmail.com>
-Subject: hid-asus: integration of some rust code
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260107012414.2429246-1-ttabi@nvidia.com> <20260107012414.2429246-2-ttabi@nvidia.com>
+ <1d8c517b-1e25-406f-876e-dac4e8b8ae78@nvidia.com> <CANiq72mKUxGh8cdZW0fXPCg20zoL19HY0GxRSDSYCj68Mp04vw@mail.gmail.com>
+ <20260108125523.5c7810ae.gary@garyguo.net> <DFJ8XRR2T22T.3R4FQHF50B4P4@kernel.org>
+In-Reply-To: <DFJ8XRR2T22T.3R4FQHF50B4P4@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 8 Jan 2026 14:42:17 +0100
+X-Gm-Features: AQt7F2rpElxPKiqi8TNKEVozc5izmbhmGdSTR-9ZUc-Fg8J90AnYRHvNjmoDqyw
+Message-ID: <CAH5fLgjjAO6n4EvWT-Q4+GmhL9v-gFw1PTzss5Ni3jWdNXqKmA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] gpu: nova-core: add missing newlines to several print strings
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+On Thu, Jan 8, 2026 at 2:36=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> (Cc: Greg, Rafael)
+>
+> On Thu Jan 8, 2026 at 1:55 PM CET, Gary Guo wrote:
+> > In very early days (before RfL is upstreamed), I had a prototype print
+> > macro that is designed like this:
+> >
+> >       info!("foo"); // pr_info("foo\n");
+> >       info!(target: dev, "foo"); // dev_info(dev, "foo\n");
+> >       info!(target: dev, once, "foo"); // dev_info_once(dev, "foo\n");
+> >       info!(target: dev, ratelimited, "foo"); // dev_info_ratelimited(d=
+ev, "foo\n");
+> >
+> > There's a trait that is implemented for anything that can be used as a
+> > printing target.
+> >
+> > I still think this is superior than just having our macro mimicking the=
+ C
+> > side (and as a result, having a lot of macros rather than just one for
+> > each level).
+>
+> Why do you think this syntax is superior?
+>
+> One disadvantage for maintainers and reviewers would be that it is less
+> convinient to grep for pr_*() vs dev_*(), which is something that people
+> regularly get wrong. I.e. it regularly happens that people use pr_*() whe=
+re they
+> actually print in the context of a specific device.
+>
+> > I think with Rust printing machinary, `pr_cont` is rarely useful, inste=
+ad
+> > of calling `pr_info` followed by multiple `pr_cont`, you can just have =
+a
+> > custom `Display` implementation and print it in one go. This is also fr=
+ee
+> > from racing against another print and have your lines broken into two
+> > parts.
+>
+> This I fully agree with.
+>
+> > I would be much in favour of vouching deleteing `pr_cont` entirely from
+> > Rust codebase and always have newlines automatically added.
+>
+> I don't think it is a good idea to always add newlines. It might be fine =
+if you
+> only do C code or only do Rust code, but if you are switching back and fo=
+rth, it
+> is a horrible inconsistency for muscle memory.
+>
+> I'm pretty sure that this would turn into a generator for trivial fixup p=
+atches
+> either removing or adding the trailing '\n'. :)
 
-These past months I have been considering moving some userspace code to the kernel.
+What about triggering a build failure if you forget the newline?
 
-The userspace code is past of asusd and manages a feature of ASUS laptop called anime matrix:
-a series of leds forming a display on the back.
+For cases where the \n is intentionally omitted for use with pr_cont!,
+we can add separate syntax for making this explicit:
 
-The code in question was written by the previous maintainer of that application when
-the kernel was not accepting any rust code, and now that it does I think it's about time
-to port this well-tested feature where it belongs since it's talking directly to the hardware.
+pr_info!("hello! thi", cont);
+pr_cont!("s tring is split\n");
 
+This way, you can't forget the newline, but you can still omit it if
+you really want to use pr_cont.
 
-For context hid-asus must remain loaded and attached to the device as this new code
-needs to manage just a subset of what is supported by the device, using the same hid_device*.
-
-My (main) questions are the following:
-- is this something that is acceptable?
-- is this possible, and if yes what is the best way?
-- is a mixed C/rust driver something that is accepted or does it break some rule?
-- technically is this something that today the kernel has infrastructure for?
-
-Specifically to Jiri: since you are the maintainer of hid-asus do you have any
-objections in doing this?
-
-Thanks to everyone who will respond and help me out.
-
-Please feel free to add more considerations and answers questions I haven't
-made since I'm sure there will be more anyway once I start working to this.
-
-Best regards,
-Denis B.
-
+Alice
