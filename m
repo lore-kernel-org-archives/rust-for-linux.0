@@ -1,128 +1,67 @@
-Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1E9364E98;
-	Thu,  8 Jan 2026 07:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F1E38A9C1;
+	Thu,  8 Jan 2026 07:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767858192; cv=none; b=ha1GKaZdqZtEcVCucvHtV3OAGBuPDL7IRSaVAenopXkt0DTVj8ia/gKGAMyjSrPxmerQHHuc/v7HxVdBkn69F4LuLt581BKamVYVn8Icz7JNCqE8eDtCzkT8Fd6UOEw28mqmaIvTPwtrTwVuaVgfRXt0exicE5YZgIwJbcV9BZw=
+	t=1767858808; cv=none; b=ZIVxtx7D8Wa9oXG8BgLpjN3P06Af4paE65E5b7RuNM4kfNOE8h1WSe36F6mhIVUJd0I0+0fLIPJE9EXEb+Ta0JcowzvAcTWmulMf3fIm9cuGdwNrSgaygeipeAf9xERKuf0hEDG2R7c1kKzo+UHfEl4cHeHlRE/kMlJtPshQpY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767858192; c=relaxed/simple;
-	bh=cMqjwUiYmqqDMaoEyq5ukbLry8LcVc+yfvHUzdgrlsE=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=VtmSgZIJ326t4DROk/rU/z90mCxNhVE3WCx1MER+leuUlazIGbe2hf7msmtvuKRHuIkQZGXtTW2SoJOGoTy7KSORMff2pvfJCFaaBUE4ZPKoMXe083P9vsE+iPIS6q+WQKi6dQtCxiCchsJ5Xy8egliI0/8VmOwqxfIclWoemXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=kCwmlEs9; arc=none smtp.client-ip=162.62.58.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1767858808; c=relaxed/simple;
+	bh=nDXnKNmAJw0ktNPTmlWu+Kn+sJ7O1F/SsAeUoE2v82g=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=kZSEGH8AkJP6VU7PH3RQICCxJ+NzP/ZGjIi5mqDYpY+Q8rBs0A8u4IwZe5PxrHXBte2wvgctkUuXw0W8AoxW2ewxiFsfoByesqhBVSf9jx+j42VVqWCi4v8l3Rz/WBYAsgZCSWdPuFRpv0nDfS+QfJ1jpAyxYUM7ZgjY8fr77Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OlN06fkJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="kCwmlEs9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1767858177; bh=RjUBuqYVGimPY4HLnHqTraxdWTF07cojlX+YGvRWO3o=;
-	h=From:To:Cc:Subject:Date;
-	b=kCwmlEs9OJcTCxxyNlItP9HLtB2V4O22TSQZHe4MYoqwldUqSQvXjEVgwq/Q3tATv
-	 w4PaPLEXnFQgnmg4RCXdf4ZDpU0szJIuwqFGXxVjvvkyRAv8iYp7Hp3MAdP3ELR4dQ
-	 ZY734m4UNiBB3t14oGZ20/ghBEN9lR7vnItuztmc=
-Received: from localhost.localdomain ([116.128.244.169])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id AB635816; Thu, 08 Jan 2026 15:42:54 +0800
-X-QQ-mid: xmsmtpt1767858174tyozoxj7g
-Message-ID: <tencent_C135881D822B4C6C12E841516893C774A805@qq.com>
-X-QQ-XMAILINFO: NHWsITUsYMGe6JREiQnneaxZIzQovSLNYtTvh13LYOpaRs/syTh9J6/ZC4Jg5j
-	 H1TxPitpbivsgs6CBfoy2ArNRUCTdxqntdLnbvipN0a0fmBo12TV35g1/o46ysuHjcrloqOy97kE
-	 qTeQkHGCgd/i8OAt2M0JM+JDhRA/1uBsbnM2cx7+Sb1gBPyKPPtvj92POvs0IDRxjlo//h3+nfbS
-	 doMa7H6jlcCJiP1aIFYekWa6f4eUKrmeK1ia/8dqJOctswi044uLWkTaQjhCa+FZGYQPiZVnbvEc
-	 ruF6PTCN7BgAGGN9tng4cBUHtuI5wJe2F1vpJdMXZIKSYFkdunxu2svBZC8q3l8JL9nDXndCHfI3
-	 CclewLFNMyl6+4YLfdNbz6Ld60ZUWpuM/fTCcHFp48Elt7Lf0NkL/yDMrxCssXK5KAY6TygUe3ks
-	 1TqPFXLwgBTZV3PZZn9xUK4aVF7AFKKY3d9MjexjU+geJmH26WUo/LAo4McHaPCTd4f5U/sAXZ8c
-	 jn4aKpV8T2rntDLYNaiM+dcnPEbYDDyC9NmZkkVI8cuN4OQ8nE93LDdBgfFT3WP41eMoH8RLF5+e
-	 bVoKbJzfT1ruwhXxFU4cfZ5a2hmtCgQu5WHdgMhj3xIr9rffgkg9/5cUvFPw/d+FwHVrNfBOG23o
-	 Qn9MZELDfhOqu6jk4JjhvRXRPQzdBlxeRbq9miM7PDP83GEO06tLSk0rJ8/1Ijq2LNnYw61wsvJm
-	 4AAl/rCvP7uJwPS5UoGKBH3WcAI+69AzC4btvj3ulPErna2A9Vc6MFncKpBu7PqThzWQkA/RpbkL
-	 GmV9qkVOExhYgwogk8qmLXse5kvwYMCLKKj+w1cwNNSUUd6yOpBnSYACL2dUKIUCNATje5GTlhNj
-	 xNcL3ooQJWK/J/N6Z+efZr5voUlqhHoPKLd9S8Ie65fLp5IX2Gyp+SLljl8f+NdfzSpT8UV0gXh8
-	 KBvZqFChF8xYS5l0Ok/FDrZgxaa99JmNE847sS2pnslituZpnGbMxgeDnyj/AZ
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: 1064094935@qq.com
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	pengfuyuan <pengfuyuan@kylinos.cn>
-Subject: [PATCH] rust: device: add platdata accessors
-Date: Thu,  8 Jan 2026 15:42:51 +0800
-X-OQ-MSGID: <20260108074251.323790-1-1064094935@qq.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OlN06fkJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA84C116C6;
+	Thu,  8 Jan 2026 07:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767858807;
+	bh=nDXnKNmAJw0ktNPTmlWu+Kn+sJ7O1F/SsAeUoE2v82g=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
+	b=OlN06fkJI0hxv93SXzC+CYpIP/kFOQcISMk2RWljUBx/d0ktBFoLB7U2Ba2WHU3AT
+	 7xbOdIou+i8HnYwGPBLJxcKDDQfqyCK6jNuXRtrQTvVV8o6tlNvxCKEbX1Zsvk2w4e
+	 t0BlUPrRHZSGiIH/xFeq1I7tWleZ01Vbtz3Q/L51bmRbIfR5p2Mj+D2yFFzQeH589f
+	 cBNIM5g/4pyh2Yzbuy7yVwPQwRiXUm8RA9UipWoy8T+6vOC2i1D9qEaigqw5pqPsZ8
+	 O/cQsxG/rnZKhGOtG45dyrVXFNITrxin/pU4T1VDYCulX2npFOb4zizxLsgkNFWXzt
+	 bV6gZ5IN8YoEw==
+Message-ID: <8bc73ccedec95c7054fb6e38e72d865a@kernel.org>
+Date: Thu, 08 Jan 2026 07:53:22 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v3 3/3] rust: clk: use 'kernel vertical style' for
+ imports
+In-Reply-To: <20260107-clk-type-state-v3-3-77d3e3ee59c2@collabora.com>
+References: <20260107-clk-type-state-v3-3-77d3e3ee59c2@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org, rust-for-linux@vger.kernel.org, "Alice
+ Ryhl" <aliceryhl@google.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Benno
+ Lossin" <lossin@kernel.org>, =?utf-8?b?QmrDtnJuIFJveSBCYXJvbg==?= <bjorn3_gh@protonmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Danilo Krummrich" <dakr@kernel.org>, "David
+ Airlie" <airlied@gmail.com>, "Drew Fustini" <fustini@kernel.org>, "Fu Wei" <wefu@redhat.com>, "Gary
+ Guo" <gary@garyguo.net>, "Guo Ren" <guoren@kernel.org>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime
+ Ripard" <mripard@kernel.org>, "Michael Turquette" <mturquette@baylibre.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "\"\\\"\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"Rafael
+ J. Wysocki\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\"\\\\\\\"\\\"\"" <rafael@kernel.org>, "Simona
+ Vetter" <simona@ffwll.ch>, "Stephen Boyd" <sboyd@kernel.org>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "Trevor Gross" <tmgross@umich.edu>,
+ =?utf-8?b?VXdlIEtsZWluZS1Lw7ZuaWc=?= <ukleinek@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: pengfuyuan <pengfuyuan@kylinos.cn>
+On Wed, 7 Jan 2026 12:09:54 -0300, Daniel Almeida wrote:
+> Convert all imports to use the new import style. This will make it easier
+> to land new changes in the future.
+>=20
+> No change of functionality implied.
+>=20
+>=20
+> [ ... ]
 
-Implement generic accessors for the platform data of a device.
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
 
-Platform data is typically set by platform code when creating the device
-and points to platform-specific data structures. The accessor provides
-type-safe access to this data without requiring unsafe code at the call
-site.
-
-The accessor is implemented for Device<Bound>, allowing drivers to access
-platform data during probe() and other device lifecycle callbacks. Unlike
-drvdata, platform data is managed by platform code and has a lifetime
-tied to the device itself.
-
-Signed-off-by: pengfuyuan <pengfuyuan@kylinos.cn>
----
- rust/kernel/device.rs | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index c79be2e2bfe3..e16f8eaa52e0 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -325,6 +325,31 @@ pub fn drvdata<T: 'static>(&self) -> Result<Pin<&T>> {
-         // - We've just checked that the type of the driver's private data is in fact `T`.
-         Ok(unsafe { self.drvdata_unchecked() })
-     }
-+
-+    /// Access the platform data for this device.
-+    ///
-+    /// The lifetime of the platform data is tied to the device's lifetime.
-+    /// Returns a reference to the platform data of type `T`, or [`ENOENT`] if no platform data
-+    /// is set.
-+    ///
-+    /// # Type Safety
-+    ///
-+    /// This function does not perform runtime type checking. The caller must ensure that the
-+    /// platform data structure actually matches the type `T` for the specific platform device.
-+    /// Incorrect type usage will result in undefined behavior.
-+    pub fn platdata<T>(&self) -> Result<&T> {
-+        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
-+        let ptr = unsafe { (*self.as_raw()).platform_data };
-+
-+        if ptr.is_null() {
-+            return Err(ENOENT);
-+        }
-+
-+        // SAFETY:
-+        // - `ptr` is not null, so it points to valid memory.
-+        // - The caller must ensure that the platform data structure matches type `T`.
-+        Ok(unsafe { &*ptr.cast::<T>() })
-+    }
- }
- 
- impl<Ctx: DeviceContext> Device<Ctx> {
--- 
-2.25.1
-
+Thanks!
+Maxime
