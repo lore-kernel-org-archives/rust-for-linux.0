@@ -1,223 +1,154 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021136.outbound.protection.outlook.com [52.101.100.136])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949484C82AB
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 14:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634C022DFA4;
+	Thu,  8 Jan 2026 14:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767881599; cv=fail; b=bqjBEG0PnuFUGi4EBpiDRztV8zgGcQ/AXsJNv2LXUvfnPwcKn5szjDIQJsVaxumMPe9FjANpHqtIMAJz2wH+IatTgAFvt+Pf/39ldbSqn+Yq+2CqiTVnYgzS+1A41OKn9ggWuCOxWRuDk9c0N5cbrz3BLr24IyEB8a3sCzXGErs=
+	t=1767881727; cv=pass; b=ay/KttEVOWmSjtgJ5eHk8HN6bAM+R6EcMeI5bnRUWmBLj9gZh8BD11Wa3iHjqTMWuaZ6W8CexMnBz+QAA62hFpBhKsaRVTZ7n3PVH4XLXrVSxHzqwbprReig0h+SA1AD5G4g7pxF8pkV5xhRxO8zyGTyh50+2TLW5yKzElOouns=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767881599; c=relaxed/simple;
-	bh=1ZCA1InD4xSyDc23fxtQoYhZ+sn0M6ISwqQMc/RkpgM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bZB1mAX0Ecm/nro/QMDAsknsSCs5fpqNajs2uSuM42n7av/FHtHgfKULfUydHmPTf8/Wg7Tzbg5UlyuAaKv6JalG9+YfGAY77Mwaqs0UFhcBQFuRexWbufKiorc+WDVd+03I4FTonuWVB79XI9ZNVnoxn0RpG850azgfis46YME=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=sobhcryA; arc=fail smtp.client-ip=52.101.100.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1767881727; c=relaxed/simple;
+	bh=qnqk1qDKIPyztJlbwkch2lqWywczfss1xdxkb6sAUsI=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=LttOdEmCWMbkNjPliMsedCfaF9x8COgv5LzOx7ce/o8sgyTyH3E7fK1mfjd74qesJB1Wr+wNTZNh85suq2DmPMZpskknUDS3HtKrEPmQvTegsFttVA04AyF/H5VhimqGUvbBhOHH+5EaAwXWZ6yykoXoB8vN5rOmpy4HBlQolFU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Q33QbIuW; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="sobhcryA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UqRXiAiv7fkD0JcWXn2j3OgLfPK3bghl2v5macWxNJitv7rzIG0nMSHafLqqG9Vs36p6pMCbNJXaD9cmknADjvjTQiiQhDTYhbn8X5L1rv2mN5K7wJANTIYOA2FSGbcY3zMvFF/i6Mo0P9j38gb986IF1CMTCWaD3QUODCVmOqU2eHWrYGcCmO9FTQdHz0ZegrmEmLY5W823ZX6nMIO/WHa1OqJi0ZTs2en6mEN+ymGZADtKSP7jkoGpnXhyjEFBBIQj7ey9G6cl1iNx1mHV/V5oGwXvaPhhEZTfNQ54LiJp14udBI4UOQRRpjXpe9W+kuXiEpem5yFZoRmDSA42+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oAY9tT8eJhmBBuB/pALjsirq5MjDRqqbDPftc5yERJQ=;
- b=Mge5EawRB3TIy3f3gxwM8G1frHI2HLHt++QUBfa/wJL1kA3NVB3Qaux9AmnTvj/cF53FfV8BkXc/RrInyADw9KAsHR1KrRrhdO/gceW3saYqHpDtoFQ4e5foRxXHbAU/LbFdKn7lNyA3R/NbwNjqsULv8YyH6mzq7FKEmezjjrry//pOhOHLqg//eBvj3p/3ZXqLqs9uGqaEp+gfpH4clgRk2RrxRvihh3eDdBPiCDtBrBhXfhv0ad3DjDegLd9EaFLr0kBQ2RT75lw45EZZrDhB7GLETAGTEqjJ13vjViJSbL55flJUBtUDZHlpZcIIzjGRNQHWhiaBWohcAM/RXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oAY9tT8eJhmBBuB/pALjsirq5MjDRqqbDPftc5yERJQ=;
- b=sobhcryAVCUxknPhvGV01+HnPzy/XsNyUl2RJWM2vurP7KT0FLlsmw1ysZNEC+CmVLiNFynvmT506Lc+d/VvH8esF1IqMyngfKMT+696ZPzPEWNUEpBocnE3cnHeEzydceDkN9kfmkQYWLXUgOQg7NfpDU077ejhmJGazzwkImg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO4P265MB3661.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:1bf::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Thu, 8 Jan
- 2026 14:13:14 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9499.003; Thu, 8 Jan 2026
- 14:13:14 +0000
-Date: Thu, 8 Jan 2026 14:13:11 +0000
-From: Gary Guo <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "John Hubbard"
- <jhubbard@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>
-Subject: Re: [PATCH 2/2] gpu: nova-core: add missing newlines to several
- print strings
-Message-ID: <20260108141311.4c9b07c7.gary@garyguo.net>
-In-Reply-To: <DFJ8XRR2T22T.3R4FQHF50B4P4@kernel.org>
-References: <20260107012414.2429246-1-ttabi@nvidia.com>
-	<20260107012414.2429246-2-ttabi@nvidia.com>
-	<1d8c517b-1e25-406f-876e-dac4e8b8ae78@nvidia.com>
-	<CANiq72mKUxGh8cdZW0fXPCg20zoL19HY0GxRSDSYCj68Mp04vw@mail.gmail.com>
-	<20260108125523.5c7810ae.gary@garyguo.net>
-	<DFJ8XRR2T22T.3R4FQHF50B4P4@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0358.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18d::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Q33QbIuW"
+ARC-Seal: i=1; a=rsa-sha256; t=1767881700; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=OgOvL1Aj2mnVcSiCXZanKA1S2JdaXAst4uy2XsutDQ64qK5oFfGqRgArHiHCtndDXzUHyUglqp4e1p9rkbhB2n49oY4Xfilsi2M9jg0wFw1h2CRYWss+qp68deHhYUG46wLfl8tTD7BDelMwiu6JEoSGy0hvabtZfkM9wXLv74Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1767881700; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=8UM2EJGpOoTDr6b1jkTnYeu3NfhCiVAeZ2kTc9yJTiU=; 
+	b=AD5CegN4htv3QyoMFvZpDT+YdBJBhdtnI7h9fdWt0CNf3Izg69j1OZnXioURgb+4WkvTzWkSbMmW7QPbxTodVhnJXQagYghw/9JcQ8PrcphqG+/Tmst1UUoB5hWWtBOEWMdKByYbnEv8G0oldS5fSqSFFVJuBj77WLlnPU0rrPo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1767881700;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=8UM2EJGpOoTDr6b1jkTnYeu3NfhCiVAeZ2kTc9yJTiU=;
+	b=Q33QbIuWQqMUSKdgziXZxyPQwxnQgEqOfTPTd/jfY10/4wxZfV95J4iBJSGVD4i0
+	W0gRtPHqTzxUelPNlZg39Mx3gLKNHuSuAKKDRmWAmfORaK8B4uzbpKMtLhttQNVN+oW
+	OhlEFTn4MRJkMinkcQUfSZM4U61Wh3EQ7djT+4qg=
+Received: by mx.zohomail.com with SMTPS id 1767881698439518.0714680558849;
+	Thu, 8 Jan 2026 06:14:58 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB3661:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd9fa492-0dbf-44e5-5389-08de4ec00fce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|10070799003|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?yC4NLY/0GKi99xXpQBXZdOyXg1pbq8BC5WC69f5J7sCctfhZjJ1US5Ms1ceV?=
- =?us-ascii?Q?7VEz/KXBPsOBRsv09B8Q0kBt+RqrtfBBtYAeD614ugM4s+cop79Hf4yfY/rc?=
- =?us-ascii?Q?eZ/o0WA9xTWLejsv3awsuif1xHwP3yC4sLE4p7U4eAcNGb7CPKgRNyIc96BY?=
- =?us-ascii?Q?IhwXpMR50wbHUUoZ03SvKCrAYNqoRWMVOGgWdzWPJ5FuSz7zN6txo5PNxdX1?=
- =?us-ascii?Q?aTCSHMFcMyMwVO4/CRvAdhIYyuBS2wAmq77mndhp1BjnwRqjVuDRAA+g+pAA?=
- =?us-ascii?Q?65ucy1zbEL8t34DTmcTb/zNA6mUpUzHUjQeV7fZd91nsS6rPpwkRWP5mLP7J?=
- =?us-ascii?Q?6379BKvsA3QOCuqn6L3/+WyQva/0PmDuQYw3DLV2eInZ1Ahp6f23twQ+h+lD?=
- =?us-ascii?Q?XTmlnRjQ2jvw/9Aw+JDpc5DH/mcZnxI9bd8+xW5KRvku3nX40Oq76z9PBkmE?=
- =?us-ascii?Q?Dgx/83+TnzJdh4ebfvj48jHKax2MMgOgSIc1qyK4eRS7Bn5mGZ+n8tKqV07O?=
- =?us-ascii?Q?6AhZNIXtFEng6Ke/IwLOeForEa+NjqY/+8DdhezyvhHQHx6f1tkp6gwYGglf?=
- =?us-ascii?Q?jFOZS6SXNm9e0K9wRPjpxx+CZjkJa4G+SB960kvHkjF8SoEhz0voNm4UYl9c?=
- =?us-ascii?Q?9U/ztRIcxA73POP/AUD0Jq/wf1MB8kNhWkYGku5qo+hMs3ETZ1mON/bLrB+f?=
- =?us-ascii?Q?ne91KA/k4Z/aq/oE0sCEZPL/JfQ5B7GIxxZO6pbRYvJ27/dhQEtHkqnTHjlO?=
- =?us-ascii?Q?n9ehx9sm1IRSQf46PP19MVX9Y20q7QVOEJigSHU+6e+YzKnq92gOdeGC2qCv?=
- =?us-ascii?Q?SNaka/XoIIUh3NZQ9un1YIePWQ0k0rOyaUIO0PxNnsfW1BLn9vMB9bh2S0OH?=
- =?us-ascii?Q?43mNEv6u552ZW1uP0pRpX+X2QRDFbV2Z23sC5zdqLCN0Jw/YAGWzz/ePLsiJ?=
- =?us-ascii?Q?bk8E4i7KI73ZEV6ZkrmN/6EsjbDi0TosY2mcZ9jS0qPWi9GjKRuEsMQjmxuC?=
- =?us-ascii?Q?UpSNFWS3eu5lhcfApbABfsovQ9OZkYFdS49JMArGrkBw6RHZ9GVzjgHzOjgC?=
- =?us-ascii?Q?mrnleI+A+40dV5wO+pzmePPIQNGqNsgD1iUkl8g8lPChPzNgRBfEYcPktfZP?=
- =?us-ascii?Q?FcxIkNDZnWa7KGFC8g+C5jwK2vOTjzn0H2rFGaQYu42CtPDfPZd5yfIr4E8o?=
- =?us-ascii?Q?ipVz5YXsXjf7h+QVatHtpMXU7FC6GWOcJ2cOLgtcGjOXzohBDDQkM5g9MAJQ?=
- =?us-ascii?Q?6jAFuo5k8O0YaZXc5W7u0MmUVigihrWlKuA1jQTgZK6Ibva3LlYWo3GQV/aJ?=
- =?us-ascii?Q?t6BINIe9HK1JGiv2kw0Y27wXF7WumUEFLWY47bLknF8hLBG2+LBZpdsMIoP9?=
- =?us-ascii?Q?3p79OGbVNIW6joZqaqHR5e1InEyZ8RuUyBKePmK87jerQVUGR+z6cz3r+VNe?=
- =?us-ascii?Q?lNMXVOffYbWV/7/tWRfRX+CHErJzwOZN?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?XT6WIjzdMxUzKP6gEV+3QD6QZqovwpN+oOpbnDAXRmWt1QXHu3P5ZoY7ku3g?=
- =?us-ascii?Q?CWlpwncVFvpk5EtbYZz7pBuRn/ouJ/WykNDPVSG2d3BoBQaYPxjtjFwNtVg9?=
- =?us-ascii?Q?npb+hUZGdogOkJoHIBFmBSZN3vhXjwK3v658ZStqjE+7CiQSLf0lAYHMYj47?=
- =?us-ascii?Q?aSjVp/JgU98yHzNa/3a0DhqPXuuYQxD9/zEv/A8cVtq+cxAPtGynAtCNKiry?=
- =?us-ascii?Q?IAr4Gx4lBKFliMH9o6MjwqjVd7rNsl09J2QvUAbhCl2Sv27qIa0+ThEON075?=
- =?us-ascii?Q?37MkdgI0v0AgmmssKYEAuzvFn5soXIMslENLg7ZElDVXxLxREnZ2LAMsUcxp?=
- =?us-ascii?Q?Gnx0XUVgi96rnVYz/+/3K4Q9759hwAFRG1PYU5PMtqz8rG4OUgWGiJI7YGm4?=
- =?us-ascii?Q?rPkc8c8ZqiOTwGWYUOtUWZsjSneDqojSIsQeP6+npcCK3E2U2M4t6JHgitqA?=
- =?us-ascii?Q?EYdv+eMU9JBC1kvjU1MQes9pFUmSk15zmBo5iOcRXHu60YarcqUEnvh8c94w?=
- =?us-ascii?Q?6B64aR3vjbsxUXTp3SLnGP2O7KARg4k9S7U46pC8UstLhkOBofX79C/4Vk+Y?=
- =?us-ascii?Q?y6c+jAmJO3grctoJn7oVJViLpAk0eW+qxtyQ2bs86OLcxRqqJVEeeN61SF91?=
- =?us-ascii?Q?q1lCOO6Oj5NeG9zXl/sbCy4ndgx9vycm096y86HRR0Hl2wySU5XsjL1oprqe?=
- =?us-ascii?Q?x4nKu+M/Sx900cKY3rplRl4Njt2j1fmVSP7Qmc4yOW3COytakGNEebju2quG?=
- =?us-ascii?Q?hXjPwcHYQ68J6s4lxMo2BdmjrF1jCRiXsd7A/16pR/UGEIWR7nC73I6jY9zV?=
- =?us-ascii?Q?wLtr632IWS2iZyJWj86MZKbAfeTdluyyBhxc9JNGsDJ1TTZEWElmtUfbwS5v?=
- =?us-ascii?Q?EHFRuk4HhXkI6ATDtHcBWA8d7U4iohPnuuuEf6tNoYjCiVbpGAuPxYefErh9?=
- =?us-ascii?Q?0MHDkzWaMcCYXI93EvLsVkx1zeveOHzvWQu5ogCeAnGKkGs69BiUTyTHlw/W?=
- =?us-ascii?Q?CvMBHBT05ekn0+TGrn/rwQY5laSHmsul4D+Za35x2W2YOaQVT767rZAf9Jyt?=
- =?us-ascii?Q?p+yow1AIKX+6RBYtAee8D/CsR5gaKIUs0XxmDBwUcQBtrqAEE6qsW2hZUSea?=
- =?us-ascii?Q?bbf4Eho+aQbhm5ROHR0bB1+Db3bnu6zNlTSnowUCU+ZrJmuCmth3jAbCkLpT?=
- =?us-ascii?Q?yWUOPp3IUzQIyF31kviamStFIPc30IarNwULTR8zMvWQPlVdGS4Cz0+QvWlz?=
- =?us-ascii?Q?en1Al41w5p+ayZ57kxO2M/YaA0YFJgY4P/XPpsXwlySTViW0k5pJ6C+o2k4V?=
- =?us-ascii?Q?F4ZM/xizvgYQ0JbnRiqf6eJbqUK54rKg+2mOzNP3QAeqxMboN5o8mYlii7TU?=
- =?us-ascii?Q?nIJHSk/3J+VisBf0tw0nhJTix7fWRyc/qef8J5y7rIHq8QDQMtMlZZKSzwko?=
- =?us-ascii?Q?7vI18U1qvM7o+tdxAhB4uP6aaail2o7jsHZibRWYSH7qXauidVdHJeHETZaJ?=
- =?us-ascii?Q?OkRhjXBAoLcRCf3+0YsKkUZdBoaTdc4pEFp/5Ev5qz/WDWe+3PGiqJ3KZ0j0?=
- =?us-ascii?Q?D3oLqeRWl0Bzswrz7E8dgfKsd92640IXhdBrGC73WBx1PufEMjgisSPrk6YA?=
- =?us-ascii?Q?6Zvq4Qj+Lrl2A8qGkdfFqdOUVM/BbiNTbikiqauhWJdIpluCHF8GQDzu6MpR?=
- =?us-ascii?Q?gDTVBRPEDrKjxn+xkvoPGZz3Os+KlTni6cxf4gjGcPID01Lozs37KdEsmwBj?=
- =?us-ascii?Q?1X2xTyNjNQ=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd9fa492-0dbf-44e5-5389-08de4ec00fce
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 14:13:14.0207
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Bs5SKu0QAc6KpV1gRmky5Zv+kuwn6foJqFKpps4wW1u3ucpGG3U0DVyTbni/m8xumJVpOgSyuzA9NP7uCqLevA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB3661
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260108-delectable-fennec-of-sunshine-ffca19@houat>
+Date: Thu, 8 Jan 2026 11:14:37 -0300
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Drew Fustini <fustini@kernel.org>,
+ Guo Ren <guoren@kernel.org>,
+ Fu Wei <wefu@redhat.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ linux-riscv@lists.infradead.org,
+ linux-pwm@vger.kernel.org,
+ linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <98CD0BF6-3350-40B9-B8A9-F569AE3E3220@collabora.com>
+References: <20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com>
+ <20260107-clk-type-state-v3-1-77d3e3ee59c2@collabora.com>
+ <20260108-delectable-fennec-of-sunshine-ffca19@houat>
+To: Maxime Ripard <mripard@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Thu, 08 Jan 2026 14:36:21 +0100
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+Hi Maxime :)
 
-> (Cc: Greg, Rafael)
-> 
-> On Thu Jan 8, 2026 at 1:55 PM CET, Gary Guo wrote:
-> > In very early days (before RfL is upstreamed), I had a prototype print
-> > macro that is designed like this:
-> >
-> > 	info!("foo"); // pr_info("foo\n");
-> > 	info!(target: dev, "foo"); // dev_info(dev, "foo\n");
-> > 	info!(target: dev, once, "foo"); // dev_info_once(dev, "foo\n");
-> > 	info!(target: dev, ratelimited, "foo"); // dev_info_ratelimited(dev, "foo\n");
-> >
-> > There's a trait that is implemented for anything that can be used as a
-> > printing target.
-> >
-> > I still think this is superior than just having our macro mimicking the C
-> > side (and as a result, having a lot of macros rather than just one for
-> > each level).  
-> 
-> Why do you think this syntax is superior?
-> 
-> One disadvantage for maintainers and reviewers would be that it is less
-> convinient to grep for pr_*() vs dev_*(), which is something that people
-> regularly get wrong. I.e. it regularly happens that people use pr_*() where they
-> actually print in the context of a specific device.
-> 
+>=20
+> I don't know the typestate pattern that well, but I wonder if we don't
+> paint ourselves into a corner by introducing it.
+>=20
+> While it's pretty common to get your clock from the get go into a =
+state,
+> and then don't modify it (like what devm_clk_get_enabled provides for
+> example), and the typestate pattern indeed works great for those, we
 
-One solution is perhaps to always ask people to specify a device so they
-won't mix things up?
+Minor correction, devm_clk_get_enabled is not handled by the typestate
+pattern. The next patch does include this function for convenience, but
+you get a Result<()>. The typestate pattern is used when you want more
+control.
 
-If they want to print without device then they can refer to `()` or
-perhaps another marker type `info!(NoDevice, "...")`.
+> also have a significant number of drivers that will have a =
+finer-grained
+> control over the clock enablement for PM.
+>=20
+> For example, it's quite typical to have (at least) one clock for the =
+bus
+> interface that drives the register, and one that drives the main
+> component logic. The former needs to be enabled only when you're
+> accessing the registers (and can be abstracted with
+> regmap_mmio_attach_clk for example), and the latter needs to be =
+enabled
+> only when the device actually starts operating.
+>=20
+> You have a similar thing for the prepare vs enable thing. The =
+difference
+> between the two is that enable can be called into atomic context but
+> prepare can't.
+>=20
+> So for drivers that would care about this, you would create your =
+device
+> with an unprepared clock, and then at various times during the driver
+> lifetime, you would mutate that state.
+>=20
+> AFAIU, encoding the state of the clock into the Clk type (and thus
+> forcing the structure that holds it) prevents that mutation. If not, =
+we
+> should make it clearer (by expanding the doc maybe?) how such a =
+pattern
+> can be supported.
+>=20
+> Maxime
 
-> > I think with Rust printing machinary, `pr_cont` is rarely useful, instead
-> > of calling `pr_info` followed by multiple `pr_cont`, you can just have a
-> > custom `Display` implementation and print it in one go. This is also free
-> > from racing against another print and have your lines broken into two
-> > parts.  
-> 
-> This I fully agree with.
-> 
-> > I would be much in favour of vouching deleteing `pr_cont` entirely from
-> > Rust codebase and always have newlines automatically added.  
-> 
-> I don't think it is a good idea to always add newlines. It might be fine if you
-> only do C code or only do Rust code, but if you are switching back and forth, it
-> is a horrible inconsistency for muscle memory.
-> 
-> I'm pretty sure that this would turn into a generator for trivial fixup patches
-> either removing or adding the trailing '\n'. :)
+IIUC, your main point seems to be about mutating the state at runtime? =
+This is
+possible with this code. You can just have an enum, for example:
 
-Well, we've seen that people will forget either way. :)
+enum MyClocks {
+	Unprepared(Clk<Unprepared>),
+        Prepared(Clk<Prepared>),
+	Enabled(Clk<Enabled>),=20
+}
 
-More seriously, printk actually strips out your newline. The new line at
-the end of print gets turned into a flag on whether that log record is
-continuable.
+In fact, I specifically wanted to ensure that this was possible when =
+writing
+these patches, as it=E2=80=99s needed by drivers. If you want to, I can =
+cover that in
+the examples, no worries.
 
-If we say "pr_cont" is not used in Rust, then it does not make sense to
-leave any log entries continuable -- I would imagine in the future we
-might even want to bypass all va-args machinary and just push the record
-to the printk ringbuffer. Adding a newline just to have it stripped
-doesn't sound ideal.
+Same for Regulator<T>, by the way.
 
-Best,
-Gary
-
+=E2=80=94 Daniel=
