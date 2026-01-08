@@ -1,185 +1,228 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23DA270ED7
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 15:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BAC2DB781
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 15:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767885046; cv=none; b=Yyo4rGQA6j91iF2Ombh7LDRYPmshXSkUHBTO3N2EtpfMcekNwlxXcIY18BA/2OzPnCdzieVDuZr56sR8Q8urs9g/Ivzsornx0gW/93WwS0TpbeH2eC1QzsjgKJTLTd/mRF8z0ukKIafN+JYxCIkDTTGJH4DtbFczFVSSrMSesY4=
+	t=1767885063; cv=none; b=qB8l+t2GDTTBxRpNEBgucbgq2ctk6dpA24SaD/W0hFWw9XLVDW7kWrK7Q3hICF7f1ENNkuF+hMXAvN9HY8EhIiu/GWw6vRphjUUys46b9GeSUgpgke6hyPK9j3P28AS0svqDZaBWLfd1u2tsUe3k5ch9klJb/ZyDaDzocyK6noY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767885046; c=relaxed/simple;
-	bh=C64R9vkxaI9K5ONeC3tgaLirXTXcWSDMfLRS3TxDK8s=;
+	s=arc-20240116; t=1767885063; c=relaxed/simple;
+	bh=XqxsxRMhR0XxyPzQwRQbixcTNh2KM6o98F4WqQCK1+k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eQwCX/O0/9rW/c2erISQiOqApb9eTf3q4RKEPhZerujbirQWEMbePkjTdSb6RXoKby9c9TZHW9GbC2NzU4zSMEQSDAW7rSnWvgdCb7McQSpkzDwtNjNlsgn1UWiZkfpQTNhPDSF4a31C/CAh9rxpDRu5jYefUSE67SvsoOBM0P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=IV37lyqx; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	 To:Cc:Content-Type; b=UCGhqy0punn+JxkcfJtyqv0zq+Bwkk6xemo4SuyfSPFaMV82unVKprGlDtf+MXEns9LRMpe0Xyr3ANBfivLLvI4gQhFUhwA+bUxVfJSnH9G8nDZgoff7MzpyFK72I25edY58+Y/LR42TFi2mL0LoyS4IPLQLY+UaaSN/jikYV8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KH47y/ZG; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="IV37lyqx"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-7904a401d5cso36314107b3.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 07:10:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KH47y/ZG"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-382f087e6c9so14553251fa.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 07:11:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1767885044; x=1768489844; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767885060; x=1768489860; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QTkbey9LWC4b27P/G+EnN+lFuImbI+lYFoSxJEGXtiI=;
-        b=IV37lyqxJep/5ajHTExa7SHZy3vjwyq5ntmGicmKUKgrvygjZPpOn2bfiTpIWobWhk
-         IWs5pUbC+vQCl/WCppd2iPEavLxoStqCg1xP3I1GgBoXqPKor7JCgshPYAdU9lXAGTgA
-         vePeN6LzMXucEhQSHr1yFtRPsGsOyh+v/LFWE36UZhiLzNicZ1kEoWIS6OJqBWdUuLJi
-         b5n5wKdDmy6KfFs0me7P6uevmyaIc8qi1eGUTrl299YgHA7fjZdTwIueqmsYQ/1puMWR
-         YMHg1IY6SlhUiHKl1Ie570K96HL/H3BWRDBs4R0tFjoVmdwoasS+Q0koJ/pwpZfQ+FBe
-         tR/Q==
+        bh=WqcWiJbImDzgNca7o3j5sP0z9TyzNxbDydl/krMoTrM=;
+        b=KH47y/ZGOi3eys9g3HIasRZFpwMttfoCP071J7VhYy2ybavUeT0pETxqd6jynh7H7t
+         MC29evZIsUvc9sBy2qHOg1ttwxz9Pq1KTyjsQQmeT0AS43u8f5erbiI+RFWbYXO5WQOp
+         VN/85XD6lFqyQ7E83yAPHHVUZq/aapklwCN86sWI9Lt/m7rp7xYfUCpKOnLXDM3IGDhB
+         sHn0I3mP+3hTdzzuzJCz/N0tswo9LCsYjgR51W2D0aG1RHGba6c82SU4hv+9jAnUVPR7
+         qmHJ2yfXxSnv1XBVDQ1C5t0qZsSd77aBnHFUE6yu2ndJgwLqoeXCJkLMEd5Y3GNvWv0e
+         TXyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767885044; x=1768489844;
+        d=1e100.net; s=20230601; t=1767885060; x=1768489860;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=QTkbey9LWC4b27P/G+EnN+lFuImbI+lYFoSxJEGXtiI=;
-        b=l8qexUg54iXWSoU8iu9UG6FmH9uUdOc9hVgoFABwJYzwL3kGeLtthoGkpUlW0I4HX1
-         W+PPxjfg12Vh37NWYM1eiol+kSwte6VjEMH0Wzq/3WZ+KOQB2mB08xSexOJlA8vw2wAp
-         FAL3Ef3+9XiZVClucc1LPdbLyy4uh/kSqppNdaxLVySHAD+wFJUmYSrY99g+5cPllpxN
-         c3fXNjqh+sqmgBTbGha8GX6EOYa6fClSQnnTtXURBXHtG8EsGmNI5wrm2PHJtXpuZtT7
-         +qp+ieWTahUdjzp3clFS55V2eo3HKd7WNJ6prpFb8BHShj4gmTnhN1tYShGxauIHFC9g
-         NDEA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7w97/nw9Qyf568epIPSETxG99iX3gNHn9/pgzuAqvzeaBuAbiKBrjoJU0ekYCColHeWCEx2M+Y7AC0mDBzw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YykpFqfXCstP2MJBsDYN5ObNcz7JWW+Wg9FIieY34MkJbVHqjSI
-	UGK2xNhmR/eUlvGLztPY3iCp1J2D8DiPGRmC9Ds3ejbObt8AtHHtPnVi8L+l0w4+g+eQhn63XjA
-	FrlhHweu11nFw6FXqJc3RQuoNE+cNcFD5RQZcz2DXEA==
-X-Gm-Gg: AY/fxX4Wylqs8ESxenltpCKbe5qOaP3k8kDQnB1jojIaLul6xwk8G5RH2P/CsiBqZvl
-	eSsaZYNm1rdx7RZZkFGv4AOI555KSBZg+0naelof29/0XSqGTUTf2txtWHbuBzteatm546wU/Fa
-	cA+nMgSYVXbmc/SHgB6sjNRLSF+4QhfgzRNy/0foGWZwC+CF9iOODMaC6H/79T4QCxVwAbqdCC3
-	Hif9TCubcSoBViV64c4xsjlRWNjF+8NFNKHIKuszIFShAhSjZrKz+a57YOohUe+jy3K/Q==
-X-Google-Smtp-Source: AGHT+IHwlV11mJiZRvrc0ba9gyUKkJLs3Ivv5ZO/Sp66Caj6iICdWSs+vjcbtX7JeT7w+lz4Sr6DicIt8PKx9jaUzQk=
-X-Received: by 2002:a05:690e:b88:b0:644:6ad4:fdfd with SMTP id
- 956f58d0204a3-64716c14086mr5723963d50.71.1767885043558; Thu, 08 Jan 2026
- 07:10:43 -0800 (PST)
+        bh=WqcWiJbImDzgNca7o3j5sP0z9TyzNxbDydl/krMoTrM=;
+        b=pDpu2JF7HbmIlnnaWN6+87wh5CuQY7UyDAOp9HvxCUjATb5hk6RGAyshBdzSBIKQKS
+         xfKkxigiOwc+zfXamkJ6rxxw7hhPVZs2ZbuQKaCAGgNpjjx1gD1nZQkn3KWFInn6LvH6
+         ZdOY0Lq/BLibp/F1h1y/4j6YXWxFHA+NP8ExslYXDJkU01QTny24BRt7MSdjvaXxU+pj
+         FJDBYOUfWepBFGjeFweQ4Qba9HjrpRgUQHF15wwbAWUG/6Xgv28au/mVPAX9G+wNhcpM
+         Y+Pc10QZeItWCJCHOZHlp/EaqXYIqbbPTyP9pWko3ZN5UZ1ROcgp87uqe+hpyrXHc1AU
+         B5IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUimnz/mEHr+sdu8dL2TDtOB6wwvN8/XrKrhtPzupW0+ioKR1pqT3h7FjLH71HBmdizVIa9/0l13YFq/c+1jQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/kahnEw/Ncwv5Vqb98SfpW6q3J+KdLEDRNYARZBiJKhOrrBqz
+	Jp63S3QXzWPyMupklY4N/HjD4PuWrMI2yXR89I04kMJfp5LbM9Ew/U+pfABXaGPRcYgN+RDnvgH
+	lvhr8bT1HX/lCYS5ODV6MPfKh+hLsqZA=
+X-Gm-Gg: AY/fxX6dT+FSpCG3pk1G/3ceBWOvJRPZ7iSHEd73Tc/lNWqN7p+SL7wdeOlzS1pLWlo
+	ab7fylQXmmb5N90Anr2tgDN4BmVt71sBgABQlI1nsl9bD4bPMOhfYwvs7EuahgPDbqlakN/839J
+	c5WEHqTUJvqTMsgV/6lymxC5LrAINPnrvkz0c3gy0el7iZVKyzLvtG1qnsEvY5xj2a+3PLnsjEc
+	p+UHMVX5ig3CPGEcHrjaoKb5FsfLu9gRIpRB0UUhQvX4lGeqRWnWvrn6H/OfiFvNZmXCh38Z63A
+	mLxPDDT7TFow05RX/aJYXRQoThUuZV7S8yirRI7rP1nZ5vg+POoscszf7NujifGZhf+2y+4NjvD
+	w8yVnsg==
+X-Google-Smtp-Source: AGHT+IEJVy9TtnqMRt/ZDw7RE8bOHuFRrAC78A1LbngH4+nTSuCrWRqho7FYxG/wpatCSdkTvuyR80unRCWRKC4ft2U=
+X-Received: by 2002:a05:651c:2104:b0:383:1565:628f with SMTP id
+ 38308e7fff4ca-38315656874mr5254081fa.16.1767885059926; Thu, 08 Jan 2026
+ 07:10:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com>
- <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org> <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
-In-Reply-To: <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com>
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Thu, 8 Jan 2026 07:10:32 -0800
-X-Gm-Features: AQt7F2r-MFLse9aM2Y-9SmWOvFLm93MsLbBkGvYnQc0D6QLcC_Q6_utP6Kihh0s
-Message-ID: <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
-Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
-To: Paul Walmsley <pjw@kernel.org>
-Cc: x86@kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, 
-	Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com, charlie@rivosinc.com, 
-	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
-	alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
-	Zong Li <zong.li@sifive.com>, Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
-	Valentin Haudiquet <valentin.haudiquet@canonical.com>, Charles Mirabile <cmirabil@redhat.com>, 
-	Jesse Huang <jesse.huang@sifive.com>
+References: <20260107161729.3855851-1-gary@kernel.org> <20260107161729.3855851-4-gary@kernel.org>
+ <CAJ-ks9nbPTQojM-QcHPKv+NdUHwaRbBRVqzJ3CwgQTJTuD=bRQ@mail.gmail.com> <20260108124137.22c32313.gary@garyguo.net>
+In-Reply-To: <20260108124137.22c32313.gary@garyguo.net>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Thu, 8 Jan 2026 10:10:23 -0500
+X-Gm-Features: AQt7F2ok02EU4dNNpsKENHmmhtY4NEieXFoVU9xZYTKyzGaJlzYm7NdEOnboXlo
+Message-ID: <CAJ-ks9=N+1YU6jBn6KcGWXHhggimuWRKDb9rM=0TwtST6s8dUA@mail.gmail.com>
+Subject: Re: [PATCH v2 03/11] rust: macros: convert `#[vtable]` macro to use `syn`
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>, 
+	=?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Paul,
-
-I have a bugfix for a bug reported by Jesse Huang (thanks Jesse) in riscv
-implementation of `map_shadow_stack`.
-
-Should I send a new series or only the bugfix-patch for implementation
-of `map_shadow_stack`
-
-Let me know. Thanks.
-
--Deepak
-
--Deepak
-
-
-
-On Fri, Dec 12, 2025 at 10:33=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> =
-wrote:
+On Thu, Jan 8, 2026 at 7:41=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
 >
-> On Fri, Dec 12, 2025 at 01:30:29AM -0700, Paul Walmsley wrote:
-> >On Thu, 11 Dec 2025, Deepak Gupta via B4 Relay wrote:
+> On Wed, 7 Jan 2026 11:48:28 -0500
+> Tamir Duberstein <tamird@gmail.com> wrote:
+>
+> > On Wed, Jan 7, 2026 at 11:30=E2=80=AFAM Gary Guo <gary@kernel.org> wrot=
+e:
+> > >
+> > > From: Gary Guo <gary@garyguo.net>
+> > >
+> > > `#[vtable]` is converted to use syn. This is more robust than the
+> > > previous heuristic-based searching of defined methods and functions.
+> > >
+> > > When doing so, the trait and impl are split into two code paths as th=
+e
+> > > types are distinct when parsed by `syn`.
+> > >
+> > > Signed-off-by: Gary Guo <gary@garyguo.net>
 > >
-> >> v26: CONFIG_RISCV_USER_CFI depends on CONFIG_MMU (dependency of shadow=
- stack
-> >> on MMU). Used b4 to pick tags, apparantly it messed up some tag picks.=
- Fixing it
+> > Reviewed-by: Tamir Duberstein <tamird@gmail.com>
 > >
-> >Deepak: I'm now (at least) the third person to tell you to stop resendin=
-g
-> >this entire series over and over again.
+> > > ---
+> > >  rust/macros/lib.rs    |   9 ++-
+> > >  rust/macros/vtable.rs | 163 ++++++++++++++++++++++------------------=
+--
+> > >  2 files changed, 93 insertions(+), 79 deletions(-)
+> > >
+> > > diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
+> > > index a67d1cc81a2d3..a39bedb703973 100644
+> > > --- a/rust/macros/vtable.rs
+> > > +++ b/rust/macros/vtable.rs
+> > > @@ -1,97 +1,106 @@
+> > >  // SPDX-License-Identifier: GPL-2.0
+> > >
+> > >  use std::collections::HashSet;
+> > > -use std::fmt::Write;
+> > >
+> > > -use proc_macro2::{Delimiter, Group, TokenStream, TokenTree};
+> > > +use proc_macro2::{
+> > > +    Ident,
+> > > +    TokenStream, //
+> > > +};
+> > > +use quote::ToTokens;
+> > > +use syn::{
+> > > +    parse_quote,
+> > > +    Error,
+> > > +    ImplItem,
+> > > +    Item,
+> > > +    ItemImpl,
+> > > +    ItemTrait,
+> > > +    Result,
+> > > +    TraitItem, //
+> > > +};
+> > >
+> > > -pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenSt=
+ream {
+> > > -    let mut tokens: Vec<_> =3D ts.into_iter().collect();
+> > > +fn handle_trait(mut item: ItemTrait) -> Result<ItemTrait> {
+> > > +    let mut functions =3D Vec::new();
+> >
+> > Would be easier to propagate `#[cfg]`(as in your FIXME below) if you
+> > collect the generated constants into this vector instead -- then you
+> > can do all the code generation in the `for item in &item.items` loop
+> > where you have all the attributes.
 >
-> To be very honest I also feel very bad doing and DOSing the lists. Sorry =
-to you
-> and everyone else.
+> This is a very good suggestion. I tried it out and the code is much
+> cleaner. After making the change the `#[cfg]` change is just a few lines
+> too -- I'll include the cfg change in a new commit in the next version.
+
+Great.
+
+> >
+> > > +    for item in &item.items {
+> > > +        if let TraitItem::Fn(fn_item) =3D item {
+> > > +            functions.push(fn_item.sig.ident.clone());
+> > > +        }
+> > > +    }
+> > > +
+> > > +    item.items.push(parse_quote! {
+> > > +         /// A marker to prevent implementors from forgetting to use=
+ [`#[vtable]`](vtable)
+> > > +         /// attribute when implementing this trait.
+> > > +         const USE_VTABLE_ATTR: ();
+> > > +    });
+> > >
+> > > -    // Scan for the `trait` or `impl` keyword.
+> > > -    let is_trait =3D tokens
+> > > -        .iter()
+> > > -        .find_map(|token| match token {
+> > > -            TokenTree::Ident(ident) =3D> match ident.to_string().as_=
+str() {
+> > > -                "trait" =3D> Some(true),
+> > > -                "impl" =3D> Some(false),
+> > > -                _ =3D> None,
+> > > -            },
+> > > -            _ =3D> None,
+> > > -        })
+> > > -        .expect("#[vtable] attribute should only be applied to trait=
+ or impl block");
+> > > +    let mut consts =3D HashSet::new();
+> > > +    for name in functions {
+> > > +        let gen_const_name =3D Ident::new(
+> > > +            &format!("HAS_{}", name.to_string().to_uppercase()),
+> > > +            name.span(),
+> > > +        );
+> > > +        // Skip if it's declared already -- this can happen if `#[cf=
+g]` is used to selectively
+> > > +        // define functions.
+> > > +        // FIXME: `#[cfg]` should be copied and propagated to the ge=
+nerated consts.
+> > > +        if consts.contains(&gen_const_name) {
+> > > +            continue;
+> > > +        }
+> > > +        // We don't know on the implementation-site whether a method=
+ is required or provided
+> > > +        // so we have to generate a const for all methods.
+> > > +        let comment =3D format!("Indicates if the `{name}` method is=
+ overridden by the implementor.");
+> >
+> > We're already quasi-quoting below, does putting the comment there work?
 >
-> But I have been sitting on this patch series for last 3-4 merge windows w=
-ith
-> patches being exactly same/similar. So I have been a little more than des=
-perate
-> to get it in.
+> The comment has `{name}` interpolation and you cannot just use `quote!`
+> for it.
 >
-> I really haven't had any meaningful feedback on patch series except stall=
-ing
-> just before each merge window for reasons which really shouldn't stall it=
-s
-> merge. Sure that's the nature of open source development and it's maintai=
-ner's
-> call at the end of the day. And I am new to this. I'll improve.
+> You could do
+>
+>         #[doc =3D concat!("...", stringify!(...), "...")]
+>
+> But I think it's cleaner to just use `format!`.
+
+Ack, though I think it would be:
+
+#[doc =3D concat!("Indicates if the `", #name, "` method is overridden
+by the implementor.")]
+
+i.e. no need for `stringify`.
+
 >
 > >
-> >First, a modified version of the CFI v23 series was ALREADY SITTING IN
-> >LINUX-NEXT.  So there's no reason you should be resending the entire
-> >series, UNLESS your intention for me is to drop the entire existing seri=
-es
-> >and wait for another merge window.
-> >
-> >Second: when someone asks you questions about an individual patch, and y=
-ou
-> >want to answer those questions, it's NOT GOOD for you to resend the enti=
-re
-> >28 series as the response!  You are DDOSing a bunch of lists and E-mail
-> >inboxes.  Just answer the question in a single E-mail.  If you want to
-> >update a single patch, just send that one patch.
->
-> Noted. I wasn't sure about it. I'll explicitly ask next time if you want =
-me to
-> send another one.
->
-> >
-> >If you don't start paying attention to these rules then people are going
-> >to start ignoring you -- at best! -- and it's going to give the entire
-> >community a bad reputation.
->
-> Even before this, this patch series has been ignored largely. I don't kno=
-w
-> how to get attention. All I wanted was either feedback or get it in. And =
-as I
-> said I've been desparate to get it in. Also as I said, I'll improve.
->
-> >
-> >Please acknowledge that you understand this,
->
-> ACKed.
->
-> >
-> >
-> >- Paul
+> > > +        item.items.push(parse_quote! {
+> > > +            #[doc =3D #comment]
+> > > +            const #gen_const_name: bool =3D false;
+> > > +        });
+> > > +        consts.insert(gen_const_name);
+> > > +    }
