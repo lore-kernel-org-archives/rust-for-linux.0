@@ -1,228 +1,198 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021124.outbound.protection.outlook.com [52.101.95.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BAC2DB781
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 15:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767885063; cv=none; b=qB8l+t2GDTTBxRpNEBgucbgq2ctk6dpA24SaD/W0hFWw9XLVDW7kWrK7Q3hICF7f1ENNkuF+hMXAvN9HY8EhIiu/GWw6vRphjUUys46b9GeSUgpgke6hyPK9j3P28AS0svqDZaBWLfd1u2tsUe3k5ch9klJb/ZyDaDzocyK6noY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767885063; c=relaxed/simple;
-	bh=XqxsxRMhR0XxyPzQwRQbixcTNh2KM6o98F4WqQCK1+k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UCGhqy0punn+JxkcfJtyqv0zq+Bwkk6xemo4SuyfSPFaMV82unVKprGlDtf+MXEns9LRMpe0Xyr3ANBfivLLvI4gQhFUhwA+bUxVfJSnH9G8nDZgoff7MzpyFK72I25edY58+Y/LR42TFi2mL0LoyS4IPLQLY+UaaSN/jikYV8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KH47y/ZG; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A16248F47;
+	Thu,  8 Jan 2026 15:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767885855; cv=fail; b=AFb1RaQLbEMUFrfV1Rf1Vf2go1hznCdhFxHiCuH3a81U8uWgrBxtO4mS1c5f1jRBjRG6qcHejiBAakyGc1kKq822KnoW4g2Csv6ozuArRyhXef1zo5MhUW5fJQa9u9BfZznVUwkWLgkpLyUeuk+knQjnR4B2Clx460SBSGCzGlg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767885855; c=relaxed/simple;
+	bh=pLRTRJ9mdrT6XDBPaKmcMFSrohq+H0xiDqMiLKdd/0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=me/597tGzl8Q+pmGCIrD3Ba3QApj+qJj+aghYv5itH3zHcbyJI3gXuOPld0qPAfDsdbHZnecfiqRz/aEkVy6Q1Y8k+nuVnbpBYnQKToEXNWJrt/DGEDpiraWRKYtDcu6HOwFeeMTgui2R+eUBUodTo8KSxexezDwxaDxWQRKcDI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Sr3rdv3t; arc=fail smtp.client-ip=52.101.95.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KH47y/ZG"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-382f087e6c9so14553251fa.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 07:11:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767885060; x=1768489860; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WqcWiJbImDzgNca7o3j5sP0z9TyzNxbDydl/krMoTrM=;
-        b=KH47y/ZGOi3eys9g3HIasRZFpwMttfoCP071J7VhYy2ybavUeT0pETxqd6jynh7H7t
-         MC29evZIsUvc9sBy2qHOg1ttwxz9Pq1KTyjsQQmeT0AS43u8f5erbiI+RFWbYXO5WQOp
-         VN/85XD6lFqyQ7E83yAPHHVUZq/aapklwCN86sWI9Lt/m7rp7xYfUCpKOnLXDM3IGDhB
-         sHn0I3mP+3hTdzzuzJCz/N0tswo9LCsYjgR51W2D0aG1RHGba6c82SU4hv+9jAnUVPR7
-         qmHJ2yfXxSnv1XBVDQ1C5t0qZsSd77aBnHFUE6yu2ndJgwLqoeXCJkLMEd5Y3GNvWv0e
-         TXyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767885060; x=1768489860;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WqcWiJbImDzgNca7o3j5sP0z9TyzNxbDydl/krMoTrM=;
-        b=pDpu2JF7HbmIlnnaWN6+87wh5CuQY7UyDAOp9HvxCUjATb5hk6RGAyshBdzSBIKQKS
-         xfKkxigiOwc+zfXamkJ6rxxw7hhPVZs2ZbuQKaCAGgNpjjx1gD1nZQkn3KWFInn6LvH6
-         ZdOY0Lq/BLibp/F1h1y/4j6YXWxFHA+NP8ExslYXDJkU01QTny24BRt7MSdjvaXxU+pj
-         FJDBYOUfWepBFGjeFweQ4Qba9HjrpRgUQHF15wwbAWUG/6Xgv28au/mVPAX9G+wNhcpM
-         Y+Pc10QZeItWCJCHOZHlp/EaqXYIqbbPTyP9pWko3ZN5UZ1ROcgp87uqe+hpyrXHc1AU
-         B5IQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUimnz/mEHr+sdu8dL2TDtOB6wwvN8/XrKrhtPzupW0+ioKR1pqT3h7FjLH71HBmdizVIa9/0l13YFq/c+1jQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/kahnEw/Ncwv5Vqb98SfpW6q3J+KdLEDRNYARZBiJKhOrrBqz
-	Jp63S3QXzWPyMupklY4N/HjD4PuWrMI2yXR89I04kMJfp5LbM9Ew/U+pfABXaGPRcYgN+RDnvgH
-	lvhr8bT1HX/lCYS5ODV6MPfKh+hLsqZA=
-X-Gm-Gg: AY/fxX6dT+FSpCG3pk1G/3ceBWOvJRPZ7iSHEd73Tc/lNWqN7p+SL7wdeOlzS1pLWlo
-	ab7fylQXmmb5N90Anr2tgDN4BmVt71sBgABQlI1nsl9bD4bPMOhfYwvs7EuahgPDbqlakN/839J
-	c5WEHqTUJvqTMsgV/6lymxC5LrAINPnrvkz0c3gy0el7iZVKyzLvtG1qnsEvY5xj2a+3PLnsjEc
-	p+UHMVX5ig3CPGEcHrjaoKb5FsfLu9gRIpRB0UUhQvX4lGeqRWnWvrn6H/OfiFvNZmXCh38Z63A
-	mLxPDDT7TFow05RX/aJYXRQoThUuZV7S8yirRI7rP1nZ5vg+POoscszf7NujifGZhf+2y+4NjvD
-	w8yVnsg==
-X-Google-Smtp-Source: AGHT+IEJVy9TtnqMRt/ZDw7RE8bOHuFRrAC78A1LbngH4+nTSuCrWRqho7FYxG/wpatCSdkTvuyR80unRCWRKC4ft2U=
-X-Received: by 2002:a05:651c:2104:b0:383:1565:628f with SMTP id
- 38308e7fff4ca-38315656874mr5254081fa.16.1767885059926; Thu, 08 Jan 2026
- 07:10:59 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Sr3rdv3t"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=l1Zj44OCCJdvseHTk1KiA6CDaOK481WvsDQyaPH3QWu4Bw0gWAPsNdPJR1cILnFg9ZHYSYlmic+R/tH/BGkycjhIl2moBNyZIxTSCBSzs+zOqJ0LFDolvoR3k/837g5G4+kvde0hmKttZ6G2TC5/+D54Rbt06qKUc6D/AkF+1/fYwK1Twxf58U1yrDrRkiZ44OKNra7c6OPVQ68Yg3j/02PfTqZSKANj3jMr97QmNWEGfEy7kJRMOqyDAPYEkFfn5cgbyFHqUnWzaoWu1i2UsL+ttNF5SzcIP5zcnUJTRkmprD4OznH/HiHVp1JwHl1INx8dwQR/0B6VrP4ALJ3msg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=koPGzBNcM6OBV2kCo7kQnp1K0hjRr/g/NCB7becc/Xc=;
+ b=mCW1GlvVcjs5RB6JTgOh3pdgwKdaf95mkE47sv6TReeAvYIWQFg44DIil6dmNUeh2CC5r7GEUEbrERgFTn5dbZvmG4r3KF8uQwZ92WFVEFiJKc5fQyiPcbbsCUvf7sZB7IWndX6Y9285AV73hOp0hb1lwWJpHWSA61ocX2YqyAV4rbK9EY0vVRnLLyPKwO7MSk/GCW7mnIqPwwfirXEb+fxlLcu3evbrJ6LC0VRFAWXUg8dZ0YjfnoL/T/1xjR6jx5RBfQap3juvq4uTyPTi1z1c11ZoEw3LqO/jXbbnkSQ7KdyzmvoSxWtfKadkiQmr7kvDFrHvTrukurMsWT8hDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=koPGzBNcM6OBV2kCo7kQnp1K0hjRr/g/NCB7becc/Xc=;
+ b=Sr3rdv3tXkrErfIPehTJXONdpxaw+nUt90RG7OqAbs7DWwbZnyVl6iJrTvsLjgoTn+zGpyIklK1m8BLF1rhNpD3gNwOOizbVHom6iwGOsTNthwXoQjiE1BH/NslxSPjG9kCaxfmDv9Q3pq5urJEb3P/yKEzp7hWm/Zv9PRwyWt0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO6P265MB5950.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2a9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Thu, 8 Jan
+ 2026 15:24:10 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9499.003; Thu, 8 Jan 2026
+ 15:24:10 +0000
+Date: Thu, 8 Jan 2026 15:24:08 +0000
+From: Gary Guo <gary@garyguo.net>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>,
+ =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 03/11] rust: macros: convert `#[vtable]` macro to use
+ `syn`
+Message-ID: <20260108152408.2aeb10f7.gary@garyguo.net>
+In-Reply-To: <CAJ-ks9=N+1YU6jBn6KcGWXHhggimuWRKDb9rM=0TwtST6s8dUA@mail.gmail.com>
+References: <20260107161729.3855851-1-gary@kernel.org>
+	<20260107161729.3855851-4-gary@kernel.org>
+	<CAJ-ks9nbPTQojM-QcHPKv+NdUHwaRbBRVqzJ3CwgQTJTuD=bRQ@mail.gmail.com>
+	<20260108124137.22c32313.gary@garyguo.net>
+	<CAJ-ks9=N+1YU6jBn6KcGWXHhggimuWRKDb9rM=0TwtST6s8dUA@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0358.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18d::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107161729.3855851-1-gary@kernel.org> <20260107161729.3855851-4-gary@kernel.org>
- <CAJ-ks9nbPTQojM-QcHPKv+NdUHwaRbBRVqzJ3CwgQTJTuD=bRQ@mail.gmail.com> <20260108124137.22c32313.gary@garyguo.net>
-In-Reply-To: <20260108124137.22c32313.gary@garyguo.net>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 8 Jan 2026 10:10:23 -0500
-X-Gm-Features: AQt7F2ok02EU4dNNpsKENHmmhtY4NEieXFoVU9xZYTKyzGaJlzYm7NdEOnboXlo
-Message-ID: <CAJ-ks9=N+1YU6jBn6KcGWXHhggimuWRKDb9rM=0TwtST6s8dUA@mail.gmail.com>
-Subject: Re: [PATCH v2 03/11] rust: macros: convert `#[vtable]` macro to use `syn`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>, 
-	=?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB5950:EE_
+X-MS-Office365-Filtering-Correlation-Id: bb1f68d9-9e1f-46e5-185a-08de4ec9f8ae
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|10070799003|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?j5CLeCMjRQSRoKgiozCjwfSE6kEFuKkeLto/qu1JaniHc+AAPxKvMZa/4z3d?=
+ =?us-ascii?Q?D9cbLc1gi1zt5ug1ToOmY+lUIV6dJOKDwy/yNu7XbHOMsKDbTBQHSdNwRLRo?=
+ =?us-ascii?Q?CH9WKrFTW1ybXmXaiQMCK5GfM6J64AbAIiNXyRXbWbnHeuhDfH56NbAlClsW?=
+ =?us-ascii?Q?jGt4dS1a2QZH+QnpH7gHycaeN59eiBAildgCBCxWso9UkHAITZKt3BL1y1Hg?=
+ =?us-ascii?Q?9uu4HKiHJGOazbsag0HjYIECfYTqZ0ONXOVWCZgFKy27n2QWfqRLTjqnoUga?=
+ =?us-ascii?Q?vAq9zXyNqBvRR+J7yxyoVCZ6YkbVrzsNBG5/alBqJyUvaR49OFHcG3IQhLKV?=
+ =?us-ascii?Q?GdW4/IPOTJ9bKDoqSLmCkPdDPOHPIJqYk3VgsSmdKHjtVjBraHvBa3zqXahU?=
+ =?us-ascii?Q?YHWLqCF+KLuXdTMFX+LexFfhZfZ92kW8sy8F4+uoDHDemZUIx6nEPixBf4eH?=
+ =?us-ascii?Q?3LRjUjZUSKJN36Cq6gT8SZXoLwVSfInActAlfEBqvDoBoSWm2Rxe60FJtTdn?=
+ =?us-ascii?Q?7/zZ5b5SNs9KcpVtvx5UwK7LYTir372pyuQ5OAN7xR5iQslT6BSrowZbHIIL?=
+ =?us-ascii?Q?l1cN54JqpBWbCEegXS4l6nzDlIQ4sJ/qmY+7PxFDtMPe/pwJAivu8U5JYlyj?=
+ =?us-ascii?Q?CMf7VA8s97aV9RQKCdogpeQSciPfRjJsmIUOb7aFy6Ihs1mCNuk0fJm6pGj6?=
+ =?us-ascii?Q?qbyUAGPSKCZV3Fdn2ylUdODqw8ZiQFRHF8o6ViZZsqAiTcKxssNq7SSr7w+s?=
+ =?us-ascii?Q?dM9QzmLaVoQM14MvJR3hXwwC1SShVLAdNuu321WoTsVygsHO3XNN6etbh5c+?=
+ =?us-ascii?Q?l50GK7eR/WBW4CqthvqUSnPF7SJa5O6/LGwuLzephpXrtmvdHvsXYXALpACv?=
+ =?us-ascii?Q?CLyM9BsKtmrzqlgHowDnw3CDHqDucq73LSIBnIaxXyOtuKndi3HO2PWt7k3N?=
+ =?us-ascii?Q?ga2tGzhc1j1w9Jaqbc6NZ/X2bhFb9gSjfLgtOaITf2co9rz0rp1jlhvG+A3V?=
+ =?us-ascii?Q?+7M4Fwb0vqWickSRE1gOKJl2VQKZuN8gLu0AIN66wYHHZAnM6arvvcq3Mn7B?=
+ =?us-ascii?Q?7KKG3KLPVI5X94XIrTy6h8Js0h3+rxVXQm+Mh3apWI9zu585BxcHWnGmn1Yo?=
+ =?us-ascii?Q?CYxecZuqlna1Q+sLtd9LaUwIBuuKyNKjh+R9BILYBCJn+b4J3AGE2gXCCjBp?=
+ =?us-ascii?Q?nhDvI+jLwU33BmtD59IXt2TIQHln0HFOFvDUGdrjCf7PpUO6U+SAkCNk2DS8?=
+ =?us-ascii?Q?9F8YNP2Kec6zZqo8AmMIHbmr/XsuVRbBL666IEgvV27nG7ggHPIM09HAuYI9?=
+ =?us-ascii?Q?RbatVskT2jbxBznnKAq65n5yNyi+q48oW66Vsu+xUB1AtDJUamk7XAOJBLlj?=
+ =?us-ascii?Q?Qh5UN0n1TvACL0t/RbtnUz4LxwoIo799vgSKUKDNC0z9ZpZNNds2k9SbgXZR?=
+ =?us-ascii?Q?i5fdneOkJmmdJ6OVHEOJhkmYBFSB7qcV?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(10070799003)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7TPTa8dzi4zhkgLEChxsYBvddKu97i0Vy1kThCzbSwDiDNkCNXeF6rID8i0N?=
+ =?us-ascii?Q?pCE5vGO1IrMoXiD7UxG7bdXfjtpOYky/tEzSAzP3G64qfchp+WK3WfNNfOQH?=
+ =?us-ascii?Q?3Vj/oTP9hZgLCku0DE55r5XgNb9+rvPN/fb7wrYKV1NdF3+ZTiPwnhtGbfCA?=
+ =?us-ascii?Q?btdGUClTmG+v2FySbUwX1wnRM47JGiJ8SNIL8xw7Js5D485yqaCI6dGVqm4w?=
+ =?us-ascii?Q?exk+TwKCtcpUqpdanxfo5dTe37zfetmXwhyQ2b4aKQ7ZNaWNvilDH36FA4sw?=
+ =?us-ascii?Q?pnfvZPDnaL2nJE3vkKSI9DelEJSjETqESk0q2pJQIrv4+yD8oewRgrJukjvl?=
+ =?us-ascii?Q?/FrWS1g6FFIHR418eK6Zb6NhjbIyylqiedHwpv+eCTFGWq0xeXxv2mLhxuMt?=
+ =?us-ascii?Q?ZzG/Ub+wkMy8/ZLW7Gv33piHmDysD0afILNL5ixGhwRsit1Pz1AS4kU4J85z?=
+ =?us-ascii?Q?lGttpK49mLne6fioqv4D+4TimBLaNpl40i3kCvAk0lo/nSFg1P47dLuglov7?=
+ =?us-ascii?Q?ItloDmPJNfwVTSgdxM6XxS65wLogB7C2KvfH1dA8HSUPhzeLb3ejb9AZoo9t?=
+ =?us-ascii?Q?FGwNr7erUKRMZ3SF3C8mbbvOOsHJweP2jhvowHKiJij79Ti9y3s0M1+/TUYR?=
+ =?us-ascii?Q?+9kmw/XEFsReDvmDh3/nTsaQYuKy5FgPAbccujcHEfjvzz/bn6/3q6oBSTPm?=
+ =?us-ascii?Q?t76UNDoSfIR820BHzf7EOmmx3Zto0huVXZ1e5eZDZ5LOhBnFoz3e5p3mUhEJ?=
+ =?us-ascii?Q?OoUDA9etZ3Cc1TLhyaA3abVMmSDhVkXnWVRIc3tlFoM/Ou0oUUGuMI9+Cxtq?=
+ =?us-ascii?Q?dF+COT9P4HKVC7duRcf7FZmi50Acyj+GmjEyQJf2+Qk3x04HUwWv0axZucUX?=
+ =?us-ascii?Q?98kauIhb/qpI0G+l5lP6apAdhqKrVtAXtr2X/a1/k564uDvDKO0hBPkfWkLe?=
+ =?us-ascii?Q?wiZ0XzhczR+btQGru5uHgNEZoxPrMmZZtwIzD4G9GjQWX6SNPEJXO0Ld6duD?=
+ =?us-ascii?Q?nAcFRjTg2Wb8apeHHAyTW1XgcV4Idd7ba5b7H1fxHfD+/cq8zndKh+MsThbu?=
+ =?us-ascii?Q?+dS7gHJBffqmb0VEs79HeN+3YDu8dvmISBgLmjKhXxFz6Tct2SpnnKuKdDRe?=
+ =?us-ascii?Q?UEC35DYhToNgMda1cnHAHvig2Z06Fdahii5Q82Cqjuy/KnuZYVtSrjumhjE1?=
+ =?us-ascii?Q?l0x/ymBLhJtjTnS95Z+NGH2z0SRuainndtaWFSraktv7tZAvD8WpipXL3Wx5?=
+ =?us-ascii?Q?QAOLFyon0qupD49/UhS+AmM680mN1stQE18ZLFSWuMI+axts/XrHNs7N9CXw?=
+ =?us-ascii?Q?4r+uB/wRiUyMRj/xWqxIJVgK+/qSsgTgZOcN+JjmpznX6bAtFR3YKFj7Z6dX?=
+ =?us-ascii?Q?kHDuvznie5ODVINzMnuGDVCDdLqVyhJbAQq76EILBmUqOTNczV7hQN28YQ0n?=
+ =?us-ascii?Q?hPvsnceBCbqxs33UweRp11WZVpFzaEX/cjXWgiF3HIiFjCpY3jQzjdXEBgcr?=
+ =?us-ascii?Q?rgYOJzZKHytc5ZvIeWdOuoRP4mBjYnAPax5kEddza4OVoe4+ClJefJD/9RMu?=
+ =?us-ascii?Q?Iz3B/7cUfCnohyxbA9nvvz5ddWNE78mLEEguBxReF8xfrSuVn33DB4pzTeAD?=
+ =?us-ascii?Q?oy7EmiJAmMuTYtVC3pXNKjLffoLbRewkTcT5U2Cr4mQaha5f5QOOFF0KbYy1?=
+ =?us-ascii?Q?NY28blkuMyRmMlKveVs9E5yNGpAN2mSZpH1f+y4sbDiex2gEYKwZ+m8mTIQm?=
+ =?us-ascii?Q?dwTltQcTcA=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb1f68d9-9e1f-46e5-185a-08de4ec9f8ae
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 15:24:10.2046
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mjHnTepolSYo87Y2m8tXl/fuA28W0d/czIj/Pdhkc4cVy6yv404enx49G9mI3Z/1GS4ww6pQ2RtY3EzNH3NW6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB5950
 
-On Thu, Jan 8, 2026 at 7:41=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
->
-> On Wed, 7 Jan 2026 11:48:28 -0500
-> Tamir Duberstein <tamird@gmail.com> wrote:
->
-> > On Wed, Jan 7, 2026 at 11:30=E2=80=AFAM Gary Guo <gary@kernel.org> wrot=
-e:
+On Thu, 8 Jan 2026 10:10:23 -0500
+Tamir Duberstein <tamird@gmail.com> wrote:
+
+> > > > +    let mut consts = HashSet::new();
+> > > > +    for name in functions {
+> > > > +        let gen_const_name = Ident::new(
+> > > > +            &format!("HAS_{}", name.to_string().to_uppercase()),
+> > > > +            name.span(),
+> > > > +        );
+> > > > +        // Skip if it's declared already -- this can happen if `#[cfg]` is used to selectively
+> > > > +        // define functions.
+> > > > +        // FIXME: `#[cfg]` should be copied and propagated to the generated consts.
+> > > > +        if consts.contains(&gen_const_name) {
+> > > > +            continue;
+> > > > +        }
+> > > > +        // We don't know on the implementation-site whether a method is required or provided
+> > > > +        // so we have to generate a const for all methods.
+> > > > +        let comment = format!("Indicates if the `{name}` method is overridden by the implementor.");  
 > > >
-> > > From: Gary Guo <gary@garyguo.net>
-> > >
-> > > `#[vtable]` is converted to use syn. This is more robust than the
-> > > previous heuristic-based searching of defined methods and functions.
-> > >
-> > > When doing so, the trait and impl are split into two code paths as th=
-e
-> > > types are distinct when parsed by `syn`.
-> > >
-> > > Signed-off-by: Gary Guo <gary@garyguo.net>
+> > > We're already quasi-quoting below, does putting the comment there work?  
 > >
-> > Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+> > The comment has `{name}` interpolation and you cannot just use `quote!`
+> > for it.
 > >
-> > > ---
-> > >  rust/macros/lib.rs    |   9 ++-
-> > >  rust/macros/vtable.rs | 163 ++++++++++++++++++++++------------------=
---
-> > >  2 files changed, 93 insertions(+), 79 deletions(-)
-> > >
-> > > diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
-> > > index a67d1cc81a2d3..a39bedb703973 100644
-> > > --- a/rust/macros/vtable.rs
-> > > +++ b/rust/macros/vtable.rs
-> > > @@ -1,97 +1,106 @@
-> > >  // SPDX-License-Identifier: GPL-2.0
-> > >
-> > >  use std::collections::HashSet;
-> > > -use std::fmt::Write;
-> > >
-> > > -use proc_macro2::{Delimiter, Group, TokenStream, TokenTree};
-> > > +use proc_macro2::{
-> > > +    Ident,
-> > > +    TokenStream, //
-> > > +};
-> > > +use quote::ToTokens;
-> > > +use syn::{
-> > > +    parse_quote,
-> > > +    Error,
-> > > +    ImplItem,
-> > > +    Item,
-> > > +    ItemImpl,
-> > > +    ItemTrait,
-> > > +    Result,
-> > > +    TraitItem, //
-> > > +};
-> > >
-> > > -pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenSt=
-ream {
-> > > -    let mut tokens: Vec<_> =3D ts.into_iter().collect();
-> > > +fn handle_trait(mut item: ItemTrait) -> Result<ItemTrait> {
-> > > +    let mut functions =3D Vec::new();
+> > You could do
 > >
-> > Would be easier to propagate `#[cfg]`(as in your FIXME below) if you
-> > collect the generated constants into this vector instead -- then you
-> > can do all the code generation in the `for item in &item.items` loop
-> > where you have all the attributes.
->
-> This is a very good suggestion. I tried it out and the code is much
-> cleaner. After making the change the `#[cfg]` change is just a few lines
-> too -- I'll include the cfg change in a new commit in the next version.
-
-Great.
-
+> >         #[doc = concat!("...", stringify!(...), "...")]
 > >
-> > > +    for item in &item.items {
-> > > +        if let TraitItem::Fn(fn_item) =3D item {
-> > > +            functions.push(fn_item.sig.ident.clone());
-> > > +        }
-> > > +    }
-> > > +
-> > > +    item.items.push(parse_quote! {
-> > > +         /// A marker to prevent implementors from forgetting to use=
- [`#[vtable]`](vtable)
-> > > +         /// attribute when implementing this trait.
-> > > +         const USE_VTABLE_ATTR: ();
-> > > +    });
-> > >
-> > > -    // Scan for the `trait` or `impl` keyword.
-> > > -    let is_trait =3D tokens
-> > > -        .iter()
-> > > -        .find_map(|token| match token {
-> > > -            TokenTree::Ident(ident) =3D> match ident.to_string().as_=
-str() {
-> > > -                "trait" =3D> Some(true),
-> > > -                "impl" =3D> Some(false),
-> > > -                _ =3D> None,
-> > > -            },
-> > > -            _ =3D> None,
-> > > -        })
-> > > -        .expect("#[vtable] attribute should only be applied to trait=
- or impl block");
-> > > +    let mut consts =3D HashSet::new();
-> > > +    for name in functions {
-> > > +        let gen_const_name =3D Ident::new(
-> > > +            &format!("HAS_{}", name.to_string().to_uppercase()),
-> > > +            name.span(),
-> > > +        );
-> > > +        // Skip if it's declared already -- this can happen if `#[cf=
-g]` is used to selectively
-> > > +        // define functions.
-> > > +        // FIXME: `#[cfg]` should be copied and propagated to the ge=
-nerated consts.
-> > > +        if consts.contains(&gen_const_name) {
-> > > +            continue;
-> > > +        }
-> > > +        // We don't know on the implementation-site whether a method=
- is required or provided
-> > > +        // so we have to generate a const for all methods.
-> > > +        let comment =3D format!("Indicates if the `{name}` method is=
- overridden by the implementor.");
-> >
-> > We're already quasi-quoting below, does putting the comment there work?
->
-> The comment has `{name}` interpolation and you cannot just use `quote!`
-> for it.
->
-> You could do
->
->         #[doc =3D concat!("...", stringify!(...), "...")]
->
-> But I think it's cleaner to just use `format!`.
+> > But I think it's cleaner to just use `format!`.  
+> 
+> Ack, though I think it would be:
+> 
+> #[doc = concat!("Indicates if the `", #name, "` method is overridden
+> by the implementor.")]
+> 
+> i.e. no need for `stringify`.
 
-Ack, though I think it would be:
+Note `name` here is an `Ident`, which gets turned into an identifer, not a
+string, so if `concat!` is used stringify is still necessary.
 
-#[doc =3D concat!("Indicates if the `", #name, "` method is overridden
-by the implementor.")]
+Anyway, I'm going to keep `format!` in the new version.
 
-i.e. no need for `stringify`.
-
->
-> >
-> > > +        item.items.push(parse_quote! {
-> > > +            #[doc =3D #comment]
-> > > +            const #gen_const_name: bool =3D false;
-> > > +        });
-> > > +        consts.insert(gen_const_name);
-> > > +    }
+Best,
+Gary
