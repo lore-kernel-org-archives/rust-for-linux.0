@@ -1,131 +1,100 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6231440FD9C
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 13:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767880693; cv=pass; b=VT/5AtnQRnySiE7QuiGOwbMmEiN9E9+7nzL/iWPk8odrdQzyMPowjTSlULtzQ/kcwpShstIk+2NyfSAxctDbnTGMBtiV/eJkU7BNTm4tqeJzj2GFvVJTAVqTsVP6MccWM4nkBnGJy/pRB/Hlcb08LGaR2putXvY7SayYxul7jbI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767880693; c=relaxed/simple;
-	bh=0jKmPkTdOWtk+ML1oyRZShyn9g+7S4FBzcZeJc6y38Q=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543F344104F
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 14:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767880836; cv=none; b=RSU2RvOlw5s4ZdZAjqW2AdSnVmJrDE9N0Rt6wt2Kn3T4ao04OsH/eCcZ62KDy0+hS6UOOJGKTtHH62LS9+ZlQnL2kKk+Bh/UvqZb70aP0OR+2SUT9jssJBgqCmeEivkryneBqsxw/+5oJO7PjWX05xBW5jeyw/mcnlTRxqJmIq0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767880836; c=relaxed/simple;
+	bh=hKfOSUfvuMQ5SepCQVYqi1D2A5CzKVBvwUGoWoBFvbk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o4D7MXiKQnj5VF01T+CsMV+F4ZBoryTpTa1XVsOLbdhSxY+2OrDDKGfdNvGJ74Uu7jgu0fRnkIIQTFW2KU9Rp5/WHP2E9o2a2Nys5DdfPic4lUK0KvJ4ocMoOzbhLBHwsPco6EA4fkb8f6w7rnH+3XlLCVQylzXb2b5xEHUpiI0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ilfcfo9l; arc=pass smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=jAHGjy9Lsi82oHTfYwKHNZYIuldc1gJ/M94QzDis57SzIR1j1yUDsUHYWIdW5Nr8xrj8KnTch+oWEtnw22Ve25OSh3o6zdEYTlwF7VpkUlZ6vn7VO6KO4DPZk4v2eqvoVKo1SU2D2UHpYsyVVkadFghPnGTD3Bhtr+V5SzChHm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6eE8CFu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ilfcfo9l"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2b04a1f495fso58742eec.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 05:58:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1767880690; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BMOEDImsKssrbLtYbtghgRzayK055sqAdlwaWnFosxOXx73ZKXka4Tuu8v3CF69Bg6
-         ubCMavmjM8tu/pRN3na5Dmsp1iOFGLXhQgwi5o65CEAHPomi5ja9V6v3fu6w5Ls7U+W4
-         O8VPM2KZRUFUG/kVPEbGZID4wxXAvjxecURFg7k/94XaT3RVKnZ2TtFT83mH1Z7v9VSC
-         f2X4SSwOuLst5R1yNCEOCGI6YYY78oJWrlpP4ujyROHPwbQvu/n1dN/hor1tRKky0k4Z
-         2dk6uXXINTIRSDg2BUQIz/prfRS8sW1aaOO8UL8gr5P/5bLu8VZNRwbANZRwAJNGLAPs
-         kypg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0jKmPkTdOWtk+ML1oyRZShyn9g+7S4FBzcZeJc6y38Q=;
-        fh=xzozd/zC1YdJjt5m76lRJhGbnwDBN6t79AyT0ReifzM=;
-        b=M/3EfXjOYECqbqUDroRlwcwbEhQ7bJReBOumhjTqrRLJJZrnLw0u6PjFjE/gOJY4uM
-         DzrFIvCza5oR6AQiXhi99V8cml1tN8YvV9HVcD9TPfhj0/ANPiXCcA4J1OU0FCNZ+GNw
-         f7REPYVCrisCPUFMG8H6tHa1DVLg4UrHCoEhruw5sa8Ejl3hKCCPUkthLQfHL8kHtEc7
-         /nb8ZdRpBd589WWZhmxiOS8Btxcm1fdG0XTB7gOBzOCEe8mv+AZrwl9nF9Kgab2LwnDt
-         3UL/ToD3lkpq2AS6fC2Dz0WFtpBTJGO0IwyZRfE+fdI6UQAsnWnMT9nH0vhKd4AYBbAD
-         iVyQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767880690; x=1768485490; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0jKmPkTdOWtk+ML1oyRZShyn9g+7S4FBzcZeJc6y38Q=;
-        b=Ilfcfo9lhPbFoRwXYyeWTa35Ybnj14xI7aJp+J3RZeWzb1Y58ehXAKXbI2lCRWxjri
-         9l1F8djK2AftPQ4aVHsRmcLERuPatxSLv0s7oGJrs4iVgh+Q3nBRw6By6yAt7TQoZun5
-         3DOZnFeI1gL3oNBsmeZNRVGzoE+JoBHHr/hDfRJyQNVVuwSXuAHKy4BE5mzSQfcanEsE
-         5Sd3iX50T/MSSzc+jdmaBFXlOVQgRzo3CCMFo5QBBWs6wM/lcBJpDS02fshclj7GWE5+
-         mP7J+FTxRVOdCYbKDJyhFh3MSSuveyxcPSvMCTlpDu0Yw3hsQS5ezi1MiJrQ9lUieQ+t
-         2RJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767880690; x=1768485490;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0jKmPkTdOWtk+ML1oyRZShyn9g+7S4FBzcZeJc6y38Q=;
-        b=YiGuecqqbO3+Uo9lSaja+XUmAAjIA3RaTkqXzKLxy8zX3LG4l8f6A84IATGL/7dl2X
-         nRXil7Yec4E/FzCDuTe8U7GFcVJJvYyzPAqvoQ5P7OIXRBXvtj1tz/YMVlAGRYhhpzR8
-         JgvHa4SxVoithc8PGJ8T+c2VAHlhEP/beX7xi7PLWlsUaOw+pjnlKO9DgfrlI/DAnVqx
-         5DAtQ+hUw1MebB4+iNWkRVruWLh3jghlmDpySt158LHqCMVQRg+uNu5mUenBFOb9Ydzw
-         KBBgGOh7d96xQeRIEuy9ge82svj1brSrykHMxBB+Kv3NLbFylc5IVAAROUFUOoo37ROg
-         c3Lw==
-X-Forwarded-Encrypted: i=1; AJvYcCX/I9ilDdE1QH4AZ8/PGc5bUnpzP7SvPqHxsT/XP0Rtm3ylAlJkqT/EsqDA86J3mkmgwdycULnnjJS2jqBlGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4F69LEAsXRd2CG+ESHqgsszb5xqNkGyNiMpnw64f1uckH4QQY
-	Pv8Niy3akFSlv7pcHVyYWgtfGDslmdjfAdvMpjLmBlNioqJoHhr8HjIAV51emExzBXx1iNfe/TK
-	t+WQPJJrwTM14JxtbcSsgF8gpNii37Zc=
-X-Gm-Gg: AY/fxX75EN5I5chuu3gjyMJ7uMRXOO+mpjS38nx1ZZqx+9x3+Y5KCJSFPuOPChZaw3h
-	61xcv6hnijGwslsuSLBcty7hg4jj0xMcdPFF9ssv0CQrGSTZwlhUFAWjHqNuCZbNGzo04jMGHY+
-	wutmgx5fAK4gLi6I8AzBXeXDmOKdbkS2rOT3DLb7Sm1VkeIdsOauNORjk8ZYxQzHkqzKXRqJVTE
-	2HuhPirgFHc90DOqmFgwZwfMWYxsg6BbAgVnLIIGIN9FMGv1jGUe+SRuSZHNIQkBwSQSVK1ACI9
-	VEay3c0w9v4ej38w2mZhpC3iAVYZ0txfSS0mYj/4lnYfasEdyt5hdhdbjihCZi1CHTQDQxV6ANP
-	69f2DixfF2vjUarNgM1nGXmk=
-X-Google-Smtp-Source: AGHT+IHlnNhSjE3fiGAFdHKCvng7Zuc8n9ttJNcOcaKfOXOHrvEYhA907pjuVU71kxGKClIXln7ajb5XI4DP4iSFO60=
-X-Received: by 2002:a05:7301:10c4:b0:2b0:502d:c27c with SMTP id
- 5a478bee46e88-2b17d2b80c6mr2509787eec.5.1767880690160; Thu, 08 Jan 2026
- 05:58:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6eE8CFu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E911EC4AF09
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Jan 2026 14:00:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767880835;
+	bh=hKfOSUfvuMQ5SepCQVYqi1D2A5CzKVBvwUGoWoBFvbk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=D6eE8CFuDWgzYLvzzZzZFvWc4uHTmOwT7/1sr5w5jLRYSTwtMDBWIomDvJQlSE4zQ
+	 q9dPEYdraFvs9i9vojQBD7NxymfCe8PXiIq3cS29p8vT0SaaI25XwGpOa8OUGVP1mX
+	 CxsKJhMd4mox2mT+nF1VZl42NegGCwLq5XRjJ7vjpAFWMkYJeHV4CiebXQemXKc3H6
+	 IwOa6xipiqp7mi7gdngnBDgBD0L96ztuhoGJopEzMcF64huI7DWSmG5L+A01Yt/3rQ
+	 xGDmz+w/lDU9/WW69TqLCdnwBGTXfI+4Mt9CS6+ZnIvdMw5k0PzpxPOq0S+S2ocovd
+	 z1JMiD6YPkSIQ==
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-3e0f19a38d0so2257469fac.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 06:00:35 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVxrbzkyfwYf2PBfTJwc3Ak4geYS6tuepvbYw5gu7vUV5Z6hN5I9jdYPGkpR7zrhFB6kA1a3hczOMKkAko4hw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKxquudrsZc+5wenM4Kx82Z0hnunbilmS4DNLvBtXl+ayfJlJ9
+	Ue5pXtf9IAXj88nr+4AYch3Ft438/kMVfjjaSRbXr/mPJKbMeoomhIMLrji3vYdAYH4lHrpsjzy
+	GGwyMp6mHNzvlq9W/GWVIawhpCLCnk0M=
+X-Google-Smtp-Source: AGHT+IHuzwZG3RIztOFnuuSoi7na5S1md2vPW146MeXMTjxsZNNp6LzsuVGQ2sdodCQAUOnAPWd72ubFAH6Bdw8ntCo=
+X-Received: by 2002:a05:6871:61c2:b0:3ae:f15:5dfa with SMTP id
+ 586e51a60fabf-3ffc0b69478mr2757787fac.28.1767880834939; Thu, 08 Jan 2026
+ 06:00:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260107-clk-type-state-v3-0-77d3e3ee59c2@collabora.com>
- <20260107-clk-type-state-v3-1-77d3e3ee59c2@collabora.com> <20260108-delectable-fennec-of-sunshine-ffca19@houat>
-In-Reply-To: <20260108-delectable-fennec-of-sunshine-ffca19@houat>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 8 Jan 2026 14:57:56 +0100
-X-Gm-Features: AQt7F2rtmhmzWGc_DLT6cTXt2EVzqLjQhI34cDZ6wkg42nM_UD7cfFl6t1r9_zk
-Message-ID: <CANiq72=38RO9PGAMDtnTK8wj-yRSmg9UOfq7D6af7AwAKwn=DA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] rust: clk: use the type-state pattern
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Drew Fustini <fustini@kernel.org>, 
-	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20251201155210.22710-1-atharvd440@gmail.com>
+In-Reply-To: <20251201155210.22710-1-atharvd440@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 8 Jan 2026 15:00:23 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0hvD9T1y2uGq1MtFafQTRUJf2oeKEj11hAZ8gv5J5OM1w@mail.gmail.com>
+X-Gm-Features: AQt7F2qXpUZysSL4zT5EKAuSZWtHQtiZRI4zJXetOPRTabYdOiR2W9ifaSip4aA
+Message-ID: <CAJZ5v0hvD9T1y2uGq1MtFafQTRUJf2oeKEj11hAZ8gv5J5OM1w@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: acpi: replace manual zero-initialization with `pin_init::zeroed()`
+To: Atharv Dubey <atharvd440@gmail.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org, 
-	linux-pwm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-acpi@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 8, 2026 at 9:07=E2=80=AFAM Maxime Ripard <mripard@kernel.org> w=
-rote:
+On Mon, Dec 1, 2025 at 4:52=E2=80=AFPM Atharv Dubey <atharvd440@gmail.com> =
+wrote:
 >
-> AFAIU, encoding the state of the clock into the Clk type (and thus
-> forcing the structure that holds it) prevents that mutation. If not, we
-> should make it clearer (by expanding the doc maybe?) how such a pattern
-> can be supported.
+> Use `pin_init::zeroed()` instead of `core::mem::zeroed()` for initializin=
+g
+> `acpi_device_id`. This removes an explicit unsafe block and aligns ACPI
+> initialization with the pin-init conversion used across the Rust tree.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1189
+> Signed-off-by: Atharv Dubey <atharvd440@gmail.com>
 
-One possibility to consider in cases like this is whether supporting
-both cases differently makes sense, i.e. one for that covers
-easily/safely/... the usual "80%" of cases, and another "advanced" one
-(possibly unsafe etc.) for the rest.
+A Rust-side ACK or equivalent would be welcome.
 
-While it may be a bit more to maintain, it may pay itself off by
-making it easier to review the easy ones if the majority only need
-that etc.
-
-Cheers,
-Miguel
+> ---
+>  rust/kernel/acpi.rs | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
+> index 37e1161c1298..cc98b36b90a0 100644
+> --- a/rust/kernel/acpi.rs
+> +++ b/rust/kernel/acpi.rs
+> @@ -40,8 +40,7 @@ pub const fn new(id: &'static CStr) -> Self {
+>          let src =3D id.to_bytes_with_nul();
+>          build_assert!(src.len() <=3D Self::ACPI_ID_LEN, "ID exceeds 16 b=
+ytes");
+>          // Replace with `bindings::acpi_device_id::default()` once stabi=
+lized for `const`.
+> -        // SAFETY: FFI type is valid to be zero-initialized.
+> -        let mut acpi: bindings::acpi_device_id =3D unsafe { core::mem::z=
+eroed() };
+> +        let mut acpi: bindings::acpi_device_id =3D pin_init::zeroed();
+>          let mut i =3D 0;
+>          while i < src.len() {
+>              acpi.id[i] =3D src[i];
+> --
+> 2.43.0
+>
