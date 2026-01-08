@@ -1,233 +1,766 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6598A407573;
-	Thu,  8 Jan 2026 09:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF6943AD4C;
+	Thu,  8 Jan 2026 09:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767863450; cv=none; b=e8GVMtfSpVSXvblqF8vu+mFVUQXlGQNGXN9OTOEMrp0sJsAs17JN8L14GjBJ84Vn2c75RUIj3+Q3YhfqtgQ9ZEKFAYIwh6TklkbX9h1wXuZBmIETnx75dDD/89Dt78cRL/kfd7ryPrbqh8VMOuNKHj2a/T5xG4v6JWW71tE2asM=
+	t=1767864312; cv=none; b=lN0wmmcVsmSUkFE5MaSKSGQoGv1y8w7Lcf4+Fy7d8XbF9Fjl8pENkmQIJTsWAcy/hPXPqCa56NaCv9mC9buwJ8nmSobPmctc2XSnK0d9wtOKFi1YWVsMFS5vBG7GK3ylO/3znhkDHx9gdwwbZ52Nc1+IiwwkRtMCCAKMr6gcx50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767863450; c=relaxed/simple;
-	bh=hhET6mDMHrSY+CqxEpKT+XEr4GDspWczVNH5VPN5cR8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ODjVkoCjqr0d0gCO1A/zCqEJzpzQpBi63b2cakFYAjcwbVIVkyKKppS53fbslQKaxsHWOr5v8TFSz8DC6gGrpqRqwJ1rl85YuDSxDu6A5rz1gFqp7c9BYH1o97QILCvQk/nJNOv3ppZ/6AMoENJwm+HWTHteWzbfTJYFbA0962w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJaLFTZp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767864312; c=relaxed/simple;
+	bh=Ho9QgxO3WBQbpjGPLcGgOoGNyoHbqZAsFhwf2DaFVdo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=X13u2z+1OrR/yTGNJ9z+wt9FZUIFNi55bWGSbrs9PO6TwtEAKMPdhdNSgBdoSHksGKtMmRGsT4yof4QW131oJL0jn1lBzYjYxN9wl4GnH0u2x9/1qxmuCYdE2YRW8SZfevrAg1HbTr91mhfe2p/fd1uZWsxsVmzx/W2nkWLZPow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EmmJTFtM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJaLFTZp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8641EC116C6;
-	Thu,  8 Jan 2026 09:10:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767863448;
-	bh=hhET6mDMHrSY+CqxEpKT+XEr4GDspWczVNH5VPN5cR8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vJaLFTZplapv2gcNYaBYZrDU1gB7N9cK5UvdlNQouGoE6P7XxOZ8nwHmxMFrRllSz
-	 HYrFj7aYsVv2yEda1sJErS8NnNQysCHlqkPTJfMF9LiUeHaO8Pk1/H8QTbHcAiUgHQ
-	 UQfoE1oo1oFkXYHMeOJJ5vG26trUVHnjfPSdRPHo=
-Date: Thu, 8 Jan 2026 10:10:45 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ke Sun <sunke@kylinos.cn>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-rtc@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, Alvin Sun <sk.alvin.x@gmail.com>
-Subject: Re: [RFC PATCH v2 1/5] rtc: migrate driver data to RTC device
-Message-ID: <2026010809-citable-frequent-10b5@gregkh>
-References: <20260107143738.3021892-1-sunke@kylinos.cn>
- <20260107143738.3021892-2-sunke@kylinos.cn>
- <2026010757-fester-unissued-6e5f@gregkh>
- <a95aff4b-5dbf-4def-803a-d5aea84113a5@kylinos.cn>
- <2026010841-accuracy-skimmed-9f0b@gregkh>
- <7c6af8a1-9c5e-46b1-8c17-8ffd443fa6aa@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EmmJTFtM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45327C116C6;
+	Thu,  8 Jan 2026 09:25:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767864311;
+	bh=Ho9QgxO3WBQbpjGPLcGgOoGNyoHbqZAsFhwf2DaFVdo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=EmmJTFtMzczv6lNIwl7uM7rwVQqJsv0AdrdxEFgwqWOn6ZSKnZc4+3JED+3WcvwLz
+	 bqHzZEAj+YrSd7aMzAWSVt0V4LLUPQ+Ni5nfOb33hoVXye84bEeSsZQJBeIi1b1mHZ
+	 2ptFw37gphXjMqieVwvhNTBExd81pOtv+Foa/IOm788+TKChAHTn31EYJ/rMxvEp2T
+	 LlfZc1RM2eQfVSXKbuyoMA9wgVO7o11USxPNAze7Zt/nLyiWaWfRtXK96oRjcOwyYI
+	 6w49aZrbl9BttDr7htPOpr0qcNQut7qep76Re59iIHTpOs7bSPxKa9uQhOvJ/Hjxw6
+	 9WtYmKbdllzDg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 08/10] rust: xarray: add entry API
+In-Reply-To: <CAJ-ks9kYoxpPnB9amA-11SRNHbqUbp_D51qVCNDdvBZSo2gsTQ@mail.gmail.com>
+References: <20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org>
+ <20251203-xarray-entry-send-v1-8-9e5ffd5e3cf0@kernel.org>
+ <CAJ-ks9kYoxpPnB9amA-11SRNHbqUbp_D51qVCNDdvBZSo2gsTQ@mail.gmail.com>
+Date: Thu, 08 Jan 2026 10:25:01 +0100
+Message-ID: <875x9ch2xe.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7c6af8a1-9c5e-46b1-8c17-8ffd443fa6aa@kylinos.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 08, 2026 at 05:02:30PM +0800, Ke Sun wrote:
-> 
-> On 1/8/26 13:46, Greg KH wrote:
-> > On Thu, Jan 08, 2026 at 07:18:30AM +0800, Ke Sun wrote:
-> > > On 1/8/26 00:12, Greg KH wrote:
-> > > > On Wed, Jan 07, 2026 at 10:37:33PM +0800, Ke Sun wrote:
-> > > > > Unify RTC driver interface by storing driver data on the RTC device
-> > > > > instead of the parent device. Update RTC ops callbacks to pass the RTC
-> > > > > device itself rather than its parent. This change enables better
-> > > > > support for Rust RTC drivers that store data on the RTC device.
-> > > > > 
-> > > > > Signed-off-by: Ke Sun <sunke@kylinos.cn>
-> > > > > ---
-> > > > >    drivers/rtc/dev.c       |  4 ++--
-> > > > >    drivers/rtc/interface.c | 18 +++++++++---------
-> > > > >    drivers/rtc/rtc-pl031.c |  9 ++-------
-> > > > >    3 files changed, 13 insertions(+), 18 deletions(-)
-> > > > > 
-> > > > > diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
-> > > > > index baf1a8ca8b2b1..0f62ba9342e3e 100644
-> > > > > --- a/drivers/rtc/dev.c
-> > > > > +++ b/drivers/rtc/dev.c
-> > > > > @@ -410,7 +410,7 @@ static long rtc_dev_ioctl(struct file *file,
-> > > > >    		}
-> > > > >    		default:
-> > > > >    			if (rtc->ops->param_get)
-> > > > > -				err = rtc->ops->param_get(rtc->dev.parent, &param);
-> > > > > +				err = rtc->ops->param_get(&rtc->dev, &param);
-> > > > >    			else
-> > > > >    				err = -EINVAL;
-> > > > >    		}
-> > > > > @@ -440,7 +440,7 @@ static long rtc_dev_ioctl(struct file *file,
-> > > > >    		default:
-> > > > >    			if (rtc->ops->param_set)
-> > > > > -				err = rtc->ops->param_set(rtc->dev.parent, &param);
-> > > > > +				err = rtc->ops->param_set(&rtc->dev, &param);
-> > > > >    			else
-> > > > >    				err = -EINVAL;
-> > > > >    		}
-> > > > > diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-> > > > > index b8b298efd9a9c..783a3ec3bb93d 100644
-> > > > > --- a/drivers/rtc/interface.c
-> > > > > +++ b/drivers/rtc/interface.c
-> > > > > @@ -91,7 +91,7 @@ static int __rtc_read_time(struct rtc_device *rtc, struct rtc_time *tm)
-> > > > >    		err = -EINVAL;
-> > > > >    	} else {
-> > > > >    		memset(tm, 0, sizeof(struct rtc_time));
-> > > > > -		err = rtc->ops->read_time(rtc->dev.parent, tm);
-> > > > > +		err = rtc->ops->read_time(&rtc->dev, tm);
-> > > > >    		if (err < 0) {
-> > > > >    			dev_dbg(&rtc->dev, "read_time: fail to read: %d\n",
-> > > > >    				err);
-> > > > > @@ -155,7 +155,7 @@ int rtc_set_time(struct rtc_device *rtc, struct rtc_time *tm)
-> > > > >    	if (!rtc->ops)
-> > > > >    		err = -ENODEV;
-> > > > >    	else if (rtc->ops->set_time)
-> > > > > -		err = rtc->ops->set_time(rtc->dev.parent, tm);
-> > > > > +		err = rtc->ops->set_time(&rtc->dev, tm);
-> > > > >    	else
-> > > > >    		err = -EINVAL;
-> > > > > @@ -200,7 +200,7 @@ static int rtc_read_alarm_internal(struct rtc_device *rtc,
-> > > > >    		alarm->time.tm_wday = -1;
-> > > > >    		alarm->time.tm_yday = -1;
-> > > > >    		alarm->time.tm_isdst = -1;
-> > > > > -		err = rtc->ops->read_alarm(rtc->dev.parent, alarm);
-> > > > > +		err = rtc->ops->read_alarm(&rtc->dev, alarm);
-> > > > >    	}
-> > > > >    	mutex_unlock(&rtc->ops_lock);
-> > > > > @@ -441,7 +441,7 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
-> > > > >    	else if (!test_bit(RTC_FEATURE_ALARM, rtc->features))
-> > > > >    		err = -EINVAL;
-> > > > >    	else
-> > > > > -		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
-> > > > > +		err = rtc->ops->set_alarm(&rtc->dev, alarm);
-> > > > >    	/*
-> > > > >    	 * Check for potential race described above. If the waiting for next
-> > > > > @@ -568,7 +568,7 @@ int rtc_alarm_irq_enable(struct rtc_device *rtc, unsigned int enabled)
-> > > > >    	else if (!test_bit(RTC_FEATURE_ALARM, rtc->features) || !rtc->ops->alarm_irq_enable)
-> > > > >    		err = -EINVAL;
-> > > > >    	else
-> > > > > -		err = rtc->ops->alarm_irq_enable(rtc->dev.parent, enabled);
-> > > > > +		err = rtc->ops->alarm_irq_enable(&rtc->dev, enabled);
-> > > > >    	mutex_unlock(&rtc->ops_lock);
-> > > > > @@ -618,7 +618,7 @@ int rtc_update_irq_enable(struct rtc_device *rtc, unsigned int enabled)
-> > > > >    		rtc->uie_rtctimer.period = ktime_set(1, 0);
-> > > > >    		err = rtc_timer_enqueue(rtc, &rtc->uie_rtctimer);
-> > > > >    		if (!err && rtc->ops && rtc->ops->alarm_irq_enable)
-> > > > > -			err = rtc->ops->alarm_irq_enable(rtc->dev.parent, 1);
-> > > > > +			err = rtc->ops->alarm_irq_enable(&rtc->dev, 1);
-> > > > >    		if (err)
-> > > > >    			goto out;
-> > > > >    	} else {
-> > > > > @@ -874,7 +874,7 @@ static void rtc_alarm_disable(struct rtc_device *rtc)
-> > > > >    	if (!rtc->ops || !test_bit(RTC_FEATURE_ALARM, rtc->features) || !rtc->ops->alarm_irq_enable)
-> > > > >    		return;
-> > > > > -	rtc->ops->alarm_irq_enable(rtc->dev.parent, false);
-> > > > > +	rtc->ops->alarm_irq_enable(&rtc->dev, false);
-> > > > >    	trace_rtc_alarm_irq_enable(0, 0);
-> > > > >    }
-> > > > > @@ -1076,7 +1076,7 @@ int rtc_read_offset(struct rtc_device *rtc, long *offset)
-> > > > >    		return -EINVAL;
-> > > > >    	mutex_lock(&rtc->ops_lock);
-> > > > > -	ret = rtc->ops->read_offset(rtc->dev.parent, offset);
-> > > > > +	ret = rtc->ops->read_offset(&rtc->dev, offset);
-> > > > >    	mutex_unlock(&rtc->ops_lock);
-> > > > >    	trace_rtc_read_offset(*offset, ret);
-> > > > > @@ -1111,7 +1111,7 @@ int rtc_set_offset(struct rtc_device *rtc, long offset)
-> > > > >    		return -EINVAL;
-> > > > >    	mutex_lock(&rtc->ops_lock);
-> > > > > -	ret = rtc->ops->set_offset(rtc->dev.parent, offset);
-> > > > > +	ret = rtc->ops->set_offset(&rtc->dev, offset);
-> > > > >    	mutex_unlock(&rtc->ops_lock);
-> > > > >    	trace_rtc_set_offset(offset, ret);
-> > > > > diff --git a/drivers/rtc/rtc-pl031.c b/drivers/rtc/rtc-pl031.c
-> > > > > index eab39dfa4e5fe..a605034d44cb7 100644
-> > > > > --- a/drivers/rtc/rtc-pl031.c
-> > > > > +++ b/drivers/rtc/rtc-pl031.c
-> > > > > @@ -284,10 +284,6 @@ static int pl031_set_alarm(struct device *dev, struct rtc_wkalrm *alarm)
-> > > > >    static void pl031_remove(struct amba_device *adev)
-> > > > >    {
-> > > > > -	struct pl031_local *ldata = dev_get_drvdata(&adev->dev);
-> > > > > -
-> > > > > -	if (adev->irq[0])
-> > > > > -		free_irq(adev->irq[0], ldata);
-> > > > >    	amba_release_regions(adev);
-> > > > >    }
-> > > > > @@ -320,8 +316,6 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
-> > > > >    		goto out;
-> > > > >    	}
-> > > > > -	amba_set_drvdata(adev, ldata);
-> > > > > -
-> > > > >    	dev_dbg(&adev->dev, "designer ID = 0x%02x\n", amba_manf(adev));
-> > > > >    	dev_dbg(&adev->dev, "revision = 0x%01x\n", amba_rev(adev));
-> > > > > @@ -356,6 +350,7 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
-> > > > >    		ret = PTR_ERR(ldata->rtc);
-> > > > >    		goto out;
-> > > > >    	}
-> > > > > +	dev_set_drvdata(&ldata->rtc->dev, ldata);
-> > > > >    	if (!adev->irq[0])
-> > > > >    		clear_bit(RTC_FEATURE_ALARM, ldata->rtc->features);
-> > > > > @@ -369,7 +364,7 @@ static int pl031_probe(struct amba_device *adev, const struct amba_id *id)
-> > > > >    		goto out;
-> > > > >    	if (adev->irq[0]) {
-> > > > > -		ret = request_irq(adev->irq[0], pl031_interrupt,
-> > > > > +		ret = devm_request_irq(&adev->dev, adev->irq[0], pl031_interrupt,
-> > > > >    				  vendor->irqflags, "rtc-pl031", ldata);
-> > > > Are you _SURE_ you can use devm for this?  it is a functional change,
-> > > Since ldata's lifecycle is now tied to the RTC device (stored via
-> > > dev_set_drvdata(&ldata->rtc->dev, ldata)), and the RTC device's lifecycle
-> > > is tied to the amba_device (via devm_rtc_allocate_device(&adev->dev)),
-> > > using devm_request_irq(&adev->dev, ...) allows us to remove the manual IRQ
-> > > release in pl031_remove, as the IRQ will be automatically released along
-> > > with the amba_device lifecycle.
-> > Please test this.  There are loads of race conditions that can happen
-> > when irqs are bound to devm lifecycles.  You are changing the behavior
-> > here, so be very careful.
-> 
-> Yes, I'm testing this with pl031 (qemu), ds3231, rk808, and other devices.
-> 
-> Using rtcwake and hwclock for concurrent access, while continuously
-> 
-> unbinding/binding devices.
+Tamir Duberstein <tamird@gmail.com> writes:
 
-Ok, great, but again, make this a separate patch.
+> On Wed, Dec 3, 2025 at 5:27=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
+>>
+>> Add an Entry API for XArray that provides ergonomic access to array
+>> slots that may be vacant or occupied. The API follows the pattern of
+>> Rust's standard library HashMap entry API, allowing efficient
+>> conditional insertion and modification of entries.
+>>
+>> The implementation uses the XArray state API (`xas_*` functions) for
+>> efficient operations without requiring multiple lookups. Helper
+>> functions are added to rust/helpers/xarray.c to wrap C macros that are
+>> not directly accessible from Rust.
+>>
+>> Also update MAINTAINERS to cover the new rust files.
+>>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  MAINTAINERS                 |   1 +
+>>  rust/helpers/xarray.c       |  17 ++
+>>  rust/kernel/xarray.rs       | 112 +++++++++++++
+>>  rust/kernel/xarray/entry.rs | 376 +++++++++++++++++++++++++++++++++++++=
++++++++
+>>  4 files changed, 506 insertions(+)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index e8f06145fb54c..79d4c9c9b2b63 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -27909,6 +27909,7 @@ B:      https://github.com/Rust-for-Linux/linux/=
+issues
+>>  C:     https://rust-for-linux.zulipchat.com
+>>  T:     git https://github.com/Rust-for-Linux/linux.git xarray-next
+>>  F:     rust/kernel/xarray.rs
+>> +F:     rust/kernel/xarray/
+>>
+>>  XBOX DVD IR REMOTE
+>>  M:     Benjamin Valentin <benpicco@googlemail.com>
+>> diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
+>> index 60b299f11451d..425a6cc494734 100644
+>> --- a/rust/helpers/xarray.c
+>> +++ b/rust/helpers/xarray.c
+>> @@ -26,3 +26,20 @@ void rust_helper_xa_unlock(struct xarray *xa)
+>>  {
+>>         return xa_unlock(xa);
+>>  }
+>> +
+>> +void *rust_helper_xas_result(struct xa_state *xas, void *curr)
+>> +{
+>> +       if (xa_err(xas->xa_node))
+>> +               curr =3D xas->xa_node;
+>> +       return curr;
+>> +}
+>
+> Instead of this duplication, can we expose `xas_result` from the header?
 
-> > And again, this is a change that was not documented in the changelog,
-> > and should not be part of this patch, it should be stand-alone.
-> 
-> Regarding the RTC C refactoring that affects 182 files, should I put all
-> 
-> changes in one patch, or create separate patches for each file?
+`xas_result` is not currently exported. I'd rather not change that.
 
-Don't know, whatever you find easier.  What would you want to review if
-you were on the recieving end of it?
+>
+>> +
+>> +void *rust_helper_xa_zero_to_null(void *entry)
+>> +{
+>> +       return xa_is_zero(entry) ? NULL : entry;
+>> +}
+>> +
+>> +int rust_helper_xas_error(const struct xa_state *xas)
+>> +{
+>> +       return xas_error(xas);
+>> +}
+>> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+>> index 9d4589979fd1d..2b8d56c81e36b 100644
+>> --- a/rust/kernel/xarray.rs
+>> +++ b/rust/kernel/xarray.rs
+>> @@ -13,11 +13,17 @@
+>>          NonNull, //
+>>      },
+>>  };
+>> +pub use entry::{
+>> +    Entry,
+>> +    OccupiedEntry,
+>> +    VacantEntry, //
+>> +};
+>>  use kernel::{
+>>      alloc,
+>>      bindings,
+>>      build_assert, //
+>>      error::{
+>> +        to_result,
+>>          Error,
+>>          Result, //
+>>      },
+>> @@ -255,6 +261,35 @@ pub fn get_mut(&mut self, index: usize) -> Option<T=
+::BorrowedMut<'_>> {
+>>          Some(unsafe { T::borrow_mut(ptr.as_ptr()) })
+>>      }
+>>
+>> +    /// Gets an entry for the specified index, which can be vacant or o=
+ccupied.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// assert_eq!(guard.contains_index(42), false);
+>> +    ///
+>> +    /// match guard.get_entry(42) {
+>> +    ///     Entry::Vacant(entry) =3D> {
+>> +    ///         entry.insert(KBox::new(0x1337u32, GFP_KERNEL)?)?;
+>> +    ///     }
+>> +    ///     Entry::Occupied(_) =3D> unreachable!("We did not insert an =
+entry yet"),
+>> +    /// }
+>> +    ///
+>> +    /// assert_eq!(guard.get(42), Some(&0x1337));
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn get_entry<'b>(&'b mut self, index: usize) -> Entry<'a, 'b, T=
+> {
+>> +        match self.load(index) {
+>> +            None =3D> Entry::Vacant(VacantEntry::new(self, index)),
+>> +            Some(ptr) =3D> Entry::Occupied(OccupiedEntry::new(self, ind=
+ex, ptr)),
+>> +        }
+>> +    }
+>
+> Why not "entry" like the stdlib collections?
 
-thanks,
+Right, it has to be `entry`, so says the API naming guidelines.
 
-greg k-h
+>
+>> +
+>>      fn load_next(&self, index: usize) -> Option<(usize, NonNull<c_void>=
+)> {
+>>          let mut state =3D XArrayState::new(self, index);
+>>          // SAFETY: `state.state` is always valid by the type invariant =
+of
+>> @@ -320,6 +355,76 @@ pub fn find_next_mut(&mut self, index: usize) -> Op=
+tion<(usize, T::BorrowedMut<'
+>>              .map(move |(index, ptr)| (index, unsafe { T::borrow_mut(ptr=
+as_ptr()) }))
+>>      }
+>>
+>> +    /// Finds the next occupied entry starting from the given index.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// guard.store(10, KBox::new(10u32, GFP_KERNEL)?, GFP_KERNEL)?;
+>> +    /// guard.store(20, KBox::new(20u32, GFP_KERNEL)?, GFP_KERNEL)?;
+>> +    ///
+>> +    /// if let Some(entry) =3D guard.find_next_entry(5) {
+>> +    ///     assert_eq!(entry.index(), 10);
+>> +    ///     let value =3D entry.remove();
+>> +    ///     assert_eq!(*value, 10);
+>> +    /// }
+>> +    ///
+>> +    /// assert_eq!(guard.get(10), None);
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn find_next_entry<'b>(&'b mut self, index: usize) -> Option<Oc=
+cupiedEntry<'a, 'b, T>> {
+>> +        let mut state =3D XArrayState::new(self, index);
+>> +
+>> +        // SAFETY: `state.state` is properly initialized by XArrayState=
+::new and the caller holds
+>> +        // the lock.
+>> +        let ptr =3D NonNull::new(unsafe { bindings::xas_find(&mut state=
+state, usize::MAX) })?;
+>> +
+>> +        Some(OccupiedEntry { state, ptr })
+>> +    }
+>
+> I'm surprised this doesn't share code with find_next_mut. Can it?
+> Again, I'd have expected the bulk of the logic to be on XArrayState.
+
+I'll try to move the logic and reuse `load_next`.
+
+>
+>> +
+>> +    /// Finds the next occupied entry starting at the given index, wrap=
+ping around.
+>> +    ///
+>> +    /// Searches for an entry starting at `index` up to the maximum ind=
+ex. If no entry
+>> +    /// is found, wraps around and searches from index 0 up to `index`.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// guard.store(100, KBox::new(42u32, GFP_KERNEL)?, GFP_KERNEL)?;
+>> +    /// let entry =3D guard.find_next_entry_circular(101);
+>> +    /// assert_eq!(entry.map(|e| e.index()), Some(100));
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn find_next_entry_circular<'b>(
+>> +        &'b mut self,
+>> +        index: usize,
+>> +    ) -> Option<OccupiedEntry<'a, 'b, T>> {
+>> +        let mut state =3D XArrayState::new(self, index);
+>> +
+>> +        // SAFETY: `state.state` is properly initialized by XArrayState=
+::new and the caller holds
+>> +        // the lock.
+>> +        let ptr =3D NonNull::new(unsafe { bindings::xas_find(&mut state=
+state, usize::MAX) })
+>> +            .or_else(|| {
+>> +                state.state.xa_node =3D bindings::XAS_RESTART as *mut b=
+indings::xa_node;
+>> +                state.state.xa_index =3D 0;
+>> +                // SAFETY: `state.state` is properly initialized and by=
+ type invariant, we hold the
+>> +                // xarray lock.
+>> +                NonNull::new(unsafe { bindings::xas_find(&mut state.sta=
+te, index) })
+>> +            })?;
+>> +
+>> +        Some(OccupiedEntry { state, ptr })
+>> +    }
+>
+> Instead of this function, can find_next_entry take a Range? Then it
+> would be simple for the caller to wrap if they want, without bloating
+> this API.
+
+We could do that, but I am not sure if it is idiomatic? The range syntax
+a..b is considered empty if b<a. But it still produces a valid
+`core::ops::Range` that we could use.
+
+>
+>> +
+>>      /// Removes and returns the element at the given index.
+>>      pub fn remove(&mut self, index: usize) -> Option<T> {
+>>          // SAFETY:
+>> @@ -416,8 +521,15 @@ fn new(access: &'b Guard<'a, T>, index: usize) -> S=
+elf {
+>>              },
+>>          }
+>>      }
+>> +
+>> +    fn status(&self) -> Result {
+>> +        // SAFETY: `self.state` is properly initialized and valid.
+>> +        to_result(unsafe { bindings::xas_error(&self.state) })
+>> +    }
+>>  }
+>>
+>> +mod entry;
+>> +
+>>  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff =
+`T` is `Send`.
+>>  unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
+>>
+>> diff --git a/rust/kernel/xarray/entry.rs b/rust/kernel/xarray/entry.rs
+>> new file mode 100644
+>> index 0000000000000..1268dc35bac58
+>> --- /dev/null
+>> +++ b/rust/kernel/xarray/entry.rs
+>> @@ -0,0 +1,376 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +use super::{
+>> +    Guard,
+>> +    StoreError,
+>> +    XArrayState, //
+>> +};
+>> +use core::ptr::NonNull;
+>> +use kernel::{
+>> +    prelude::*,
+>> +    types::ForeignOwnable, //
+>> +};
+>> +
+>> +/// Represents either a vacant or occupied entry in an XArray.
+>> +pub enum Entry<'a, 'b, T: ForeignOwnable> {
+>> +    /// A vacant entry that can have a value inserted.
+>> +    Vacant(VacantEntry<'a, 'b, T>),
+>> +    /// An occupied entry containing a value.
+>> +    Occupied(OccupiedEntry<'a, 'b, T>),
+>> +}
+>> +
+>> +impl<T: ForeignOwnable> Entry<'_, '_, T> {
+>> +    /// Returns true if this entry is occupied.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    ///
+>> +    /// let entry =3D guard.get_entry(42);
+>> +    /// assert_eq!(entry.is_occupied(), false);
+>> +    ///
+>> +    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
+>> +    /// let entry =3D guard.get_entry(42);
+>> +    /// assert_eq!(entry.is_occupied(), true);
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn is_occupied(&self) -> bool {
+>> +        matches!(self, Entry::Occupied(_))
+>> +    }
+>
+> Do we need this? IMO less is more, and even stdlib doesn't have this.
+
+Similar to `contains_index`, it de-clutters at call sites. I like
+
+if entry.is_occupied() {...}
+
+better than
+
+if matches!(entry, Entry::Occupied(_)) {...}
+
+>
+>> +}
+>> +
+>> +/// A view into a vacant entry in an XArray.
+>> +pub struct VacantEntry<'a, 'b, T: ForeignOwnable> {
+>> +    state: XArrayState<'a, 'b, T>,
+>> +}
+>> +
+>> +impl<'a, 'b, T> VacantEntry<'a, 'b, T>
+>> +where
+>> +    T: ForeignOwnable,
+>> +{
+>> +    pub(crate) fn new(guard: &'b mut Guard<'a, T>, index: usize) -> Sel=
+f {
+>> +        Self {
+>> +            state: XArrayState::new(guard, index),
+>> +        }
+>> +    }
+>> +
+>> +    fn insert_internal(&mut self, value: T) -> Result<*mut c_void, Stor=
+eError<T>> {
+>> +        let new =3D T::into_foreign(value).cast();
+>> +
+>> +        // SAFETY: `self.state.state` is properly initialized and `new`=
+ came from `T::into_foreign`.
+>> +        // We hold the xarray lock.
+>> +        unsafe { bindings::xas_store(&mut self.state.state, new) };
+>
+> Can this please be on XArray?
+
+OK.
+
+>
+>> +
+>> +        self.state.status().map(|()| new).map_err(|error| {
+>> +            // SAFETY: `new` came from `T::into_foreign` and `xas_store=
+` does not take ownership of
+>> +            // the value on error.
+>> +            let value =3D unsafe { T::from_foreign(new) };
+>> +            StoreError { value, error }
+>> +        })
+>> +    }
+>> +
+>> +    /// Inserts a value into this vacant entry.
+>> +    ///
+>> +    /// Returns a reference to the newly inserted value.
+>> +    ///
+>> +    /// - This method will fail if the nodes on the path to the index
+>> +    ///   represented by this entry are not present in the XArray.
+>> +    /// - This method will not drop the XArray lock.
+>> +    ///
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// assert_eq!(guard.get(42), None);
+>> +    ///
+>> +    /// if let Entry::Vacant(entry) =3D guard.get_entry(42) {
+>> +    ///     let value =3D KBox::new(0x1337u32, GFP_KERNEL)?;
+>> +    ///     let borrowed =3D entry.insert(value)?;
+>> +    ///     assert_eq!(*borrowed, 0x1337);
+>> +    /// }
+>> +    ///
+>> +    /// assert_eq!(guard.get(42).copied(), Some(0x1337));
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn insert(mut self, value: T) -> Result<T::BorrowedMut<'b>, Sto=
+reError<T>> {
+>> +        let new =3D self.insert_internal(value)?;
+>> +
+>> +        // SAFETY: `new` came from `T::into_foreign`.The entry has excl=
+usive
+>
+> This is knowledge at a distance. There's no comment anywhere that
+> promises that insert_internal called T::into_foreign.
+
+How would you handle this? Add documentation to `insert_internal`?
+
+>
+>> +        // ownership of `new` as it holds a mutable reference to `Guard=
+`.
+>> +        Ok(unsafe { T::borrow_mut(new) })
+>> +    }
+>> +
+>> +    /// Inserts a value and returns an occupied entry representing the =
+newly inserted value.
+>> +    ///
+>> +    /// - This method will fail if the nodes on the path to the index
+>> +    ///   represented by this entry are not present in the XArray.
+>> +    /// - This method will not drop the XArray lock.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// assert_eq!(guard.get(42), None);
+>> +    ///
+>> +    /// if let Entry::Vacant(entry) =3D guard.get_entry(42) {
+>> +    ///     let value =3D KBox::new(0x1337u32, GFP_KERNEL)?;
+>> +    ///     let occupied =3D entry.insert_entry(value)?;
+>> +    ///     assert_eq!(occupied.index(), 42);
+>> +    /// }
+>> +    ///
+>> +    /// assert_eq!(guard.get(42).copied(), Some(0x1337));
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn insert_entry(mut self, value: T) -> Result<OccupiedEntry<'a,=
+ 'b, T>, StoreError<T>> {
+>> +        let new =3D self.insert_internal(value)?;
+>> +
+>> +        Ok(OccupiedEntry::<'a, 'b, T> {
+>> +            state: self.state,
+>> +            // SAFETY: `new` came from `T::into_foreign` and is guarant=
+eed non-null.
+>
+> Same.
+>
+>> +            ptr: unsafe { core::ptr::NonNull::new_unchecked(new) },
+>> +        })
+>> +    }
+>> +
+>> +    /// Returns the index of this vacant entry.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// assert_eq!(guard.get(42), None);
+>> +    ///
+>> +    /// if let Entry::Vacant(entry) =3D guard.get_entry(42) {
+>> +    ///     assert_eq!(entry.index(), 42);
+>> +    /// }
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn index(&self) -> usize {
+>> +        self.state.state.xa_index
+>> +    }
+>> +}
+>> +
+>> +/// A view into an occupied entry in an XArray.
+>> +pub struct OccupiedEntry<'a, 'b, T: ForeignOwnable> {
+>> +    pub(crate) state: XArrayState<'a, 'b, T>,
+>> +    pub(crate) ptr: NonNull<c_void>,
+>> +}
+>> +
+>> +impl<'a, 'b, T> OccupiedEntry<'a, 'b, T>
+>> +where
+>> +    T: ForeignOwnable,
+>> +{
+>> +    pub(crate) fn new(guard: &'b mut Guard<'a, T>, index: usize, ptr: N=
+onNull<c_void>) -> Self {
+>> +        Self {
+>> +            state: XArrayState::new(guard, index),
+>> +            ptr,
+>> +        }
+>> +    }
+>> +
+>> +    /// Removes the value from this occupied entry and returns it, cons=
+uming the entry.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
+>> +    /// assert_eq!(guard.get(42).copied(), Some(0x1337));
+>> +    ///
+>> +    /// if let Entry::Occupied(entry) =3D guard.get_entry(42) {
+>> +    ///     let value =3D entry.remove();
+>> +    ///     assert_eq!(*value, 0x1337);
+>> +    /// }
+>> +    ///
+>> +    /// assert_eq!(guard.get(42), None);
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn remove(mut self) -> T {
+>> +        // NOTE: Storing NULL to an occupied slot never fails.
+>
+> Shouldn't this be on the debug assert below? Also, is there a citation?
+
+I'll move it.
+
+I don't think I have a citation for that. This is a consequence of the
+data structure design. If the slot is occupied, the node has already
+been allocated, and allocation error is the only failure mode for this path.
+
+>
+>> +        // SAFETY: `self.state.state` is properly initialized and valid=
+ for XAS operations.
+>> +        let ptr =3D unsafe {
+>> +            bindings::xas_result(
+>> +                &mut self.state.state,
+>> +                bindings::xa_zero_to_null(bindings::xas_store(
+>> +                    &mut self.state.state,
+>> +                    core::ptr::null_mut(),
+>> +                )),
+>> +            )
+>> +        };
+>> +
+>> +        // SAFETY: `ptr` is a valid return value from xas_result.
+>> +        let errno =3D unsafe { bindings::xa_err(ptr) };
+>> +        debug_assert!(errno =3D=3D 0);
+>> +
+>> +        // SAFETY:
+>> +        // - `ptr` came from `T::into_foreign`.
+>> +        // - As this method takes self by value, the lifetimes of any [=
+`T::Borrowed`] and
+>> +        //   [`T::BorrowedMut`] we have created must have ended.
+>> +        unsafe { T::from_foreign(ptr.cast()) }
+>> +    }
+>> +
+>> +    /// Returns the index of this occupied entry.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
+>> +    ///
+>> +    /// if let Entry::Occupied(entry) =3D guard.get_entry(42) {
+>> +    ///     assert_eq!(entry.index(), 42);
+>> +    /// }
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn index(&self) -> usize {
+>> +        self.state.state.xa_index
+>> +    }
+>> +
+>> +    /// Replaces the value in this occupied entry and returns the old v=
+alue.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
+>> +    ///
+>> +    /// if let Entry::Occupied(mut entry) =3D guard.get_entry(42) {
+>> +    ///     let new_value =3D KBox::new(0x9999u32, GFP_KERNEL)?;
+>> +    ///     let old_value =3D entry.insert(new_value);
+>> +    ///     assert_eq!(*old_value, 0x1337);
+>> +    /// }
+>> +    ///
+>> +    /// assert_eq!(guard.get(42).copied(), Some(0x9999));
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn insert(&mut self, value: T) -> T {
+>> +        // NOTE: Storing to an occupied slot never fails.
+>
+> Citation?
+>
+>> +        let new =3D T::into_foreign(value).cast();
+>> +        // SAFETY: `new` came from `T::into_foreign` and is guaranteed =
+non-null.
+>> +        self.ptr =3D unsafe { NonNull::new_unchecked(new) };
+>> +
+>> +        // SAFETY: `self.state.state` is properly initialized and valid=
+ for XAS operations.
+>> +        let old =3D unsafe {
+>> +            bindings::xas_result(
+>> +                &mut self.state.state,
+>> +                bindings::xa_zero_to_null(bindings::xas_store(&mut self=
+state.state, new)),
+>> +            )
+>> +        };
+>> +
+>> +        // SAFETY: `old` is a valid return value from xas_result.
+>> +        let errno =3D unsafe { bindings::xa_err(old) };
+>> +        debug_assert!(errno =3D=3D 0);
+>> +
+>> +        // SAFETY:
+>> +        // - `ptr` came from `T::into_foreign`.
+>> +        // - As this method takes self by value, the lifetimes of any [=
+`T::Borrowed`] and
+>> +        //   [`T::BorrowedMut`] we have created must have ended.
+>> +        unsafe { T::from_foreign(old) }
+>> +    }
+>> +
+>> +    /// Converts this occupied entry into a mutable reference to the va=
+lue in the slot represented
+>> +    /// by the entry.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
+>> +    ///
+>> +    /// if let Entry::Occupied(entry) =3D guard.get_entry(42) {
+>> +    ///     let value_ref =3D entry.into_mut();
+>> +    ///     *value_ref =3D 0x9999;
+>> +    /// }
+>> +    ///
+>> +    /// assert_eq!(guard.get(42).copied(), Some(0x9999));
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn into_mut(self) -> T::BorrowedMut<'b> {
+>> +        // SAFETY: `ptr` came from `T::into_foreign`.
+>> +        unsafe { T::borrow_mut(self.ptr.as_ptr()) }
+>> +    }
+>> +
+>> +    /// Swaps the value in this entry with the provided value.
+>> +    ///
+>> +    /// Returns the old value that was in the entry.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
+>> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(AllocKin=
+d::Alloc), GFP_KERNEL)?;
+>> +    /// let mut guard =3D xa.lock();
+>> +    ///
+>> +    /// guard.store(42, KBox::new(100u32, GFP_KERNEL)?, GFP_KERNEL)?;
+>> +    ///
+>> +    /// if let Entry::Occupied(mut entry) =3D guard.get_entry(42) {
+>> +    ///     let old_value =3D entry.swap(200u32);
+>> +    ///     assert_eq!(old_value, 100);
+>> +    ///     assert_eq!(*entry, 200);
+>> +    /// }
+>> +    ///
+>> +    /// # Ok::<(), kernel::error::Error>(())
+>> +    /// ```
+>> +    pub fn swap<U>(&mut self, mut other: U) -> U
+>> +    where
+>> +        T: for<'c> ForeignOwnable<Borrowed<'c> =3D &'c U, BorrowedMut<'=
+c> =3D &'c mut U>,
+>> +    {
+>> +        use core::ops::DerefMut;
+>> +        core::mem::swap(self.deref_mut(), &mut other);
+>> +        other
+>> +    }
+>> +}
+>
+> Does this need to return anything?
+
+We probably should take `other` by mutable reference to align with
+`core::mem::swap`.
+
+Thanks for the comments!
+
+
+Best regards,
+Andreas Hindborg
+
+
+
