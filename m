@@ -1,89 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m.foxido.dev (m.foxido.dev [81.177.217.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF79923C8A0;
-	Thu,  8 Jan 2026 16:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3901F243956;
+	Thu,  8 Jan 2026 17:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.177.217.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767889560; cv=none; b=EOzkhaFWAtt5CDH3boXsSFpgFIofuKHu3GycfitPqwDnoI8T9PNw0wMR+WfPwZFA+3j48VmAFzClN3g0GSHBbt65V2iByCYGrKoBgPNWRa03e2VxjxaS0DxYihl+ivsrCXxGw528WgMkupLFWoY/sh9btHh4rhrOOH4JX/S2hY0=
+	t=1767892286; cv=none; b=Umt7B+tKwRdcb/Uz/d2RcgPGGKSomNGMcmIjLCO56ov6q0mUbUk+X4Wjbbq2EUWTa5xGxCmHXQrsp78HkIcHQWBlbcr1KAHqQ9W7Qky1Zi6vL9mxd9IBUAPXZAETkLhttkZZM9UCNMRaq1AxS6LiQSVyjUP8iO6jsNrTVmylk48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767889560; c=relaxed/simple;
-	bh=OQxDuNgfE6e5tF4qpwq4v6IWP64NBvnqK3wmGYcyRBU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=nHRUeJRWbqFIj2phBtiWj9KjQydmQRiP3khS2H9TBvGPY+kTB+iHIJiVknEiKwROSK1YEWTiRNiKyS5jCa5VxK0IeRL7Jl9NN4862BD+mt9HS1+soF02CY2GTGUmL096cj24KCttyiOmXA4tHKgaxSxc9/uDAIBxFu1HbAhHud4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XrjTyWmG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767892286; c=relaxed/simple;
+	bh=Akv787Em/pe7IzE4s1CATqBmfi6oKnAkOOTNlpLWtBw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gsAIny1Ko2dAaXU/C7QaaOscytkiWTguvsi7gW87Gd/ENH0V/2w/4hgMwyF5zS89WE2kXoCLIijBlQbpQX8fO4P/Gq0ffTyAQeIHZPGSbCsUxDRJ23yjQNQjVUyD4TtznbP91Gccq3L//8Uw2kVf2z0cga6bl5uvo5fZ3JguH+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev; spf=pass smtp.mailfrom=foxido.dev; dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=mU80jD2T; dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=3bak54Om; arc=none smtp.client-ip=81.177.217.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxido.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XrjTyWmG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1C6C116C6;
-	Thu,  8 Jan 2026 16:25:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767889560;
-	bh=OQxDuNgfE6e5tF4qpwq4v6IWP64NBvnqK3wmGYcyRBU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=XrjTyWmGlM9ynS+kE26WK4jWibbKKPLMLH4CBpcdhpleY8DPE45SA/UTzeXmERy24
-	 mJ+bBrcHNSnuJqBMo+ZxKOtxxbkobRs0QELFpHk2Z7U3owKAcH3fcdtz0syeOcU61U
-	 z6dikvGvgVC7qTCzSXkLBy2Gjmac25yXoX7s7Y79wP8niEBFgC87wv5ceryJMxvtbQ
-	 PbUU9O8SUola85nvSNQju0ZcS+8OELA8AVILAo1bGJJHXBHP7pwHVwU5R7IuZVsKeG
-	 5NT85m/20ljCZqQrzL3XnjHB59ocPhq3OMPbh0ThCl2b812NDixOgLf0NFWIUrBAwy
-	 ijChpFvHraCQQ==
-Date: Thu, 8 Jan 2026 09:25:53 -0700 (MST)
-From: Paul Walmsley <pjw@kernel.org>
-To: Deepak Gupta <debug@rivosinc.com>
-cc: Paul Walmsley <pjw@kernel.org>, x86@kernel.org, 
-    Paul Walmsley <paul.walmsley@sifive.com>, 
-    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
-    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
-    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-    Andreas Hindborg <a.hindborg@kernel.org>, 
-    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-    richard.henderson@linaro.org, jim.shu@sifive.com, 
-    Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com, 
-    charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
-    cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
-    broonie@kernel.org, rick.p.edgecombe@intel.com, 
-    rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>, 
-    Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
-    Valentin Haudiquet <valentin.haudiquet@canonical.com>, 
-    Charles Mirabile <cmirabil@redhat.com>, 
-    Jesse Huang <jesse.huang@sifive.com>
-Subject: Re: [PATCH v26 00/28] riscv control-flow integrity for usermode
-In-Reply-To: <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
-Message-ID: <30f969d2-794f-937f-53b7-3af3f2b88ef7@kernel.org>
-References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com> <e052745b-6bf0-c2a3-21b2-5ecd8b04ec70@kernel.org> <aTxf7IGlkGLgHgI2@debug.ba.rivosinc.com> <CAKC1njQ-hS+kUJ0C_v0oqZW1EZw2zAXMp-SnnA-ZXh_H-SoVdQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="mU80jD2T";
+	dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="3bak54Om"
+DKIM-Signature: v=1; a=rsa-sha256; s=202508r; d=foxido.dev; c=relaxed/relaxed;
+	h=From:To:Subject:Date:Message-ID; t=1767892279; bh=SE5cRd2n+bVSUXioZiMtPFw
+	s1O8pgkqLqca0frq41Rg=; b=mU80jD2TaESazqllqPokk4Q9ZPJq4Nf1SOk3f6fz7g4x1Y+YXH
+	y7A6GLexyvVA5dWhmUiDB54HfcKwr45HccnLFL2S4hkMG51WGUggFbfQXbFLvgwijcntzdJA+23
+	OqHOiijf2bUjbg2GFUwtNRnroPbloxJ51v5mGZ/3Tc90wteqQOhYXUury2YteepGHZ2iFTVtmC/
+	Z7xW706YxSIx5iEOYnnH2XpTI7GTsmW+F2xso+VL4T7dM23w/qems8++zYefPeg+yR9xHAOHsv1
+	89Vx+D454omfLHEGARIwUW6goinQ/nj4BeDeUp17HIPK/mDqjHx6zx+62oUdyD0Toxw==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202508e; d=foxido.dev; c=relaxed/relaxed;
+	h=From:To:Subject:Date:Message-ID; t=1767892279; bh=SE5cRd2n+bVSUXioZiMtPFw
+	s1O8pgkqLqca0frq41Rg=; b=3bak54Om7VR6bKckKc4iHCWxCKtgKQOSoxHixRQEtealMl0ipS
+	djYMZOrKLsrVlzMY7V9EqfrPWr78uyBReoAg==;
+Message-ID: <7b8130de-8096-4fcb-be84-c13209638b25@foxido.dev>
+Date: Thu, 8 Jan 2026 20:11:19 +0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] rust: implement wrapper for acpi_object
+To: Gary Guo <gary@garyguo.net>
+Cc: "foxido @ foxido . dev-cc= Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@gmail.com>, Armin Wolf <W_Armin@gmx.de>,
+ platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <cover.1767818037.git.foxido@foxido.dev>
+ <05261e88ac8503e2af59d703389d94cc15f4450d.1767818037.git.foxido@foxido.dev>
+ <20260108132141.6cce4827.gary@garyguo.net>
+Content-Language: en-US
+From: Gladyshev Ilya <foxido@foxido.dev>
+In-Reply-To: <20260108132141.6cce4827.gary@garyguo.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Deepak,
-On Thu, 8 Jan 2026, Deepak Gupta wrote:
-
-> I have a bugfix for a bug reported by Jesse Huang (thanks Jesse) in riscv
-> implementation of `map_shadow_stack`.
+On 1/8/26 16:21, Gary Guo wrote:
+> On Wed,  7 Jan 2026 23:35:32 +0300
+> Gladyshev Ilya <foxido@foxido.dev> wrote:
 > 
-> Should I send a new series or only the bugfix-patch for implementation
-> of `map_shadow_stack`
+>> ACPI Object is represented via union on C-side. On Rust side, this union
+>> is transparently wrapped for each ACPI Type, with individual methods and
+>> Defer implementation to represented type (integer, string, buffer, etc).
+>>
+>> Signed-off-by: Gladyshev Ilya <foxido@foxido.dev>
+> 
+> 
+> Hi Gladyshev,
+> 
+> I've checked the `acpi_object` implementation on the C side and it appears
+> that the buffer is not owned by the object (however managed externally,
+> could either be resting in ACPI tables directly or be allocated).
+Hm, I looked through ACPI_FREE() call sites and acpi_evaluate_object() 
+implementation, and it seems to me that the acpi_object's lifetime is 
+the same as its internal buffer. Overall, it is indeed managed 
+externally, but acpi_object and acpi_object::buffer->pointer live 
+together. I’m not an ACPI expert, though, so maybe I’m missing something.
 
-If you just send the bugfix patch, I'll roll it in to the patches that I'm 
-applying.
+Anyway, the current Rust setup seems fine for now:
+0. AcpiObject validity is guaranteed by whoever constructed/passed it (C 
+side for WMI abstractions, for example)
+1. You can only convert &AcpiObject to &AcpiSubType (reference to 
+reference), so AcpiSubType can't outlive AcpiObject
+2. You can't steal the data pointer from &AcpiSubType either, because 
+the Deref impl is "logically safe" and only gives you a reference to the 
+inner data, which can't outlive AcpiSubType's reference -> can't outlive 
+AcpiObject.
 
-Thanks for asking and happy new year,
+So for now until AcpiObject lives _less_ than it's inner data, 
+everything is OK.
 
+> Therefore, you might want to carry a lifetime to represent the lifetime of
+> underlying buffers?
+>> ---
+>>   rust/kernel/acpi.rs | 91 +++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 91 insertions(+)
+>>
+>> diff --git a/rust/kernel/acpi.rs b/rust/kernel/acpi.rs
+>> index 9b8efa623130..ac1a9f305f6c 100644
+>> --- a/rust/kernel/acpi.rs
+>> +++ b/rust/kernel/acpi.rs
+>> @@ -2,6 +2,8 @@
+>>   
+>>   //! Advanced Configuration and Power Interface abstractions.
+>>   
+>> +use core::ops::Deref;
+>> +
+>>   use crate::{
+>>       bindings,
+>>       device_id::{RawDeviceId, RawDeviceIdIndex},
+>> @@ -63,3 +65,92 @@ macro_rules! acpi_device_table {
+>>           $crate::module_device_table!("acpi", $module_table_name, $table_name);
+>>       };
+>>   }
+>> +
+>> +/// An ACPI object.
+>> +///
+>> +/// This structure represents the Rust abstraction for a C [`struct acpi_object`].
+>> +/// You probably want to convert it into actual object type (e.g [`AcpiBuffer`]).
+>> +///
+>> +/// # Example
+>> +/// ```
+>> +/// # use kernel::prelude::*;
+>> +/// use kernel::acpi::{AcpiObject, AcpiBuffer};
+>> +///
+>> +/// fn read_first_acpi_byte(obj: &AcpiObject) -> Result<u8> {
+>> +///     let buf: &AcpiBuffer = obj.try_into()?;
+>> +///
+>> +///     Ok(buf[0])
+>> +/// }
+>> +/// ```
+>> +///
+>> +/// [`struct acpi_object`]: srctree/include/acpi/actypes.h
+>> +#[repr(transparent)]
+>> +pub struct AcpiObject(bindings::acpi_object);
+>> +
+>> +impl AcpiObject {
+>> +    /// Returns object type id (see [`actypes.h`](srctree/include/acpi/actypes.h)).
+>> +    pub fn type_id(&self) -> u32 {
+>> +        // SAFETY: `type` field is valid in all union variants.
+>> +        unsafe { self.0.type_ }
+>> +    }
+> 
+> This should probably be an enum instead of just integer.
 
-- Paul
+Using an enum would require keeping Rust's enum synced with the C side, 
+as well as implementing some simple but non-trivial checks that the 
+`type_` field is a valid enum value (and the valid range isn't 
+continuous). I think that keeping it as an integer is simpler and better 
+matches C side.
+
+>> +}
+>> +
+>> +/// Generate wrapper type for AcpiObject subtype.
+>> +///
+>> +/// For given subtype implements
+>> +/// - `#[repr(transparent)]` type wrapper,
+>> +/// - `TryFrom<&AcpiObject> for &SubType` trait,
+>> +/// - unsafe from_unchecked() for 'trusted' conversion.
+>> +macro_rules! acpi_object_subtype {
+>> +    ($subtype_name:ident <- ($acpi_type:ident, $field_name:ident, $union_type:ty)) => {
+>> +        /// Wraps `acpi_object` subtype.
+>> +        #[repr(transparent)]
+>> +        pub struct $subtype_name($union_type);
+> 
+> Instead of wrapping the bindgen-generated subtypes, I would rather this to
+> be a transparent wrapper of `acpi_object`, with an invariant that the
+> specific union field is active.
+> 
+> This way you do not have to name the bindgen-generated names.
+
+Sounds reasonable, thanks!
+
+>> +
+>> +        impl<'a> TryFrom<&'a AcpiObject> for &'a $subtype_name {
+>> +            type Error = Error;
+>> +
+>> +            fn try_from(value: &'a AcpiObject) -> core::result::Result<Self, Self::Error> {
+>> +                if (value.type_id() != $subtype_name::ACPI_TYPE) {
+>> +                    return Err(EINVAL);
+>> +                }
+>> +
+>> +                // SAFETY: Requested cast is valid because we validated type_id
+>> +                Ok(unsafe { $subtype_name::from_unchecked(&value) })
+>> +            }
+>> +        }
+> 
+> It feels like this can be better implemented by having a sealed trait for
+> all possible ACPI object types?
+
+I don’t see any particular benefit except moving the `impl TryFrom` out 
+of macro-generated code, but you’re probably right -- I’ll try 
+implementing it this way.
+
+(will rustdoc show TryFrom on the AcpiSubType's page if it's implemented 
+via sealed trait?)
+
+>> +
+>> +        impl $subtype_name {
+>> +            /// Int value, representing this ACPI type (see [`acpitypes.h`]).
+>> +            ///
+>> +            /// [`acpitypes.h`]: srctree/include/linux/acpitypes.h
+>> +            pub const ACPI_TYPE: u32 = bindings::$acpi_type;
+>> +
+>> +            /// Converts opaque AcpiObject reference into exact ACPI type reference.
+>> +            ///
+>> +            /// # Safety
+>> +            ///
+>> +            /// - Requested cast should be valid (value.type_id() is `Self::ACPI_TYPE`).
+>> +            pub unsafe fn from_unchecked(value: &AcpiObject) -> &Self {
+>> +                // SAFETY:
+>> +                // - $field_name is currently active union's field due to external safety contract,
+>> +                // - Transmuting to `repr(transparent)` wrapper is safe.
+>> +                unsafe {
+>> +                    ::core::mem::transmute::<&$union_type, &$subtype_name>(&value.0.$field_name)
+>> +                }
+>> +            }
+>> +        }
+>> +    };
+>> +}
+>> +
+>> +acpi_object_subtype!(AcpiBuffer
+>> +    <- (ACPI_TYPE_BUFFER, buffer, bindings::acpi_object__bindgen_ty_3));
+>> +
+>> +impl Deref for AcpiBuffer {
+>> +    type Target = [u8];
+>> +
+>> +    fn deref(&self) -> &Self::Target {
+>> +        // SAFETY: (pointer, length) indeed represents byte slice.
+>> +        unsafe { ::core::slice::from_raw_parts(self.0.pointer, self.0.length as usize) }
+>> +    }
+>> +}
+> 
+
