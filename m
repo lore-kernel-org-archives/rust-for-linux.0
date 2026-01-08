@@ -1,112 +1,109 @@
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444C54EDD7D;
-	Thu,  8 Jan 2026 14:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D104D77C6;
+	Thu,  8 Jan 2026 14:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767881094; cv=none; b=SDYC7DPZd39+uJQFwjh4M+4rpiCRmwBe5PuoPezjNvfLA2qGsFex51KCOzsuIJjK6LGxUZis4mOAr0GjSFUFgHJXyPGqjLpw28kvDsDjLu0bEL/b46SDVYPBiV8J4QmoG5UwzfmqoEaFFehOufn500tZG1mUhD0k9TV3wifSo3o=
+	t=1767881211; cv=none; b=Mbn4tJ9k5icGeD0SYCVCUH9l7RxZ0BDxG8c6DdaMzziC9F1yeLP76wUBdqsnOEimj0bkvsJrinkf170gbKqC2s4kUkmTNOpSDdcC2zceIT1SDElJr+Y8Dx36jqTlaBIQEH5lehb3PMVKr6kQ2xTIaaWKr3NdOh4Wz3d0fnDvgLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767881094; c=relaxed/simple;
-	bh=utmwlFXqyEv1hXTpYLd0w4Ku9GwrVsNL0pg8+VpDlkk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M7SnawF4qUulaeSDTmz/Uu2/1b4ghjc4JdevbikD9FJl5ok0qzN1onClFREepsul2zKp3sO6+cUqKqTynBwzDjGdmnmzMCbTPQoF0QQf8OcVPw2zSF2wSIaWVjxPuNCLf6WcGzRaIADS7kSrwUKGInYyvydTAxywR+m6YfqTPys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=fRzKcHa+; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1767881211; c=relaxed/simple;
+	bh=8Fj+jMvl5Qep2ruZOm2X+2K93FiFxbkY2nCx7B0QOZw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=Klsrz0E9l2JrFvsVuCIESxDljd906aHkvca4UeENaN5nGecG8kG3HQV9A6hdn4z2C7OhC1FIXgI+NnmDqJcisdQoO/2oaeIRFHkVjMdNuATlp0mVKg15uSnqGyHM1cjIiWi+EFoVUMDcz64f5lPhI4ETFesmQeNs/nZ1XKSmNWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PFhhw6t0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="fRzKcHa+"
-Received: from mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:4c9f:0:640:5657:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id 257E580AA5;
-	Thu, 08 Jan 2026 16:55:06 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id tsOZjXGG7Cg0-YSMBrny0;
-	Thu, 08 Jan 2026 16:55:05 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1767880505;
-	bh=+R0zZF94KWeQC5VeLUPax9jkdKWz8l2bNUh9KHMr3Ao=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=fRzKcHa+oyPQ6pdPwfejuXAblXTF9l9NP3J9PePq1dezOvW9gMMWaSEFruDuuNDf7
-	 afX/lWt2On7wYZ0iy87FeWc4sUVpdYhAZokZb73yoVdUvWLNfO4eL9lkijKU3qlU6P
-	 ylmolQzAwkkRKN5SvOtq48tqTKb4qNNlKCDrhgpU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Thu, 8 Jan 2026 16:54:53 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Will Deacon <will@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Gary
- Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, "=?UTF-8?B?Qmo=?=
- =?UTF-8?B?w7Zybg==?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] scripts: atomic: check for argument in
- gen-rust-atomic-helpers.sh
-Message-ID: <20260108165453.54679b9a@nimda>
-In-Reply-To: <20260108-gen-rust-atomic-helpers-msg-v1-1-d895a9667148@google.com>
-References: <20260108-gen-rust-atomic-helpers-msg-v1-1-d895a9667148@google.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PFhhw6t0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF0BC116C6;
+	Thu,  8 Jan 2026 14:06:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767881210;
+	bh=8Fj+jMvl5Qep2ruZOm2X+2K93FiFxbkY2nCx7B0QOZw=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=PFhhw6t0DiUZOBWfzAg+zPPt8OdNBDSTTTOUsganHGBSJB5I2CJNlUPIGfM/Y5CCv
+	 vU7/NJnuq9oNHWotAgCQWJKDcfMpLOIWRm0QIxWK6HiopNDpQdG/Va49Gvjax7wskv
+	 HwjpG4kcYxhOLeqXe02Y1saulwRYhRkjCJrIG8ujzYI/NVQgYccjXBVhmi+ntARuWx
+	 Q4ZXMnbWTt6H/YdbN0yDOYbrCfqTCEH7kMe0F+OLqajP+ZazDjQSnO4pYd0BUE7uKR
+	 usouP7d356jiBXRQR3C7M5K9NniHDElrzdr441Wnnfl6QPdRgOV7b617i4aORK3dJk
+	 FzkGFMchVhwmA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 08 Jan 2026 15:06:46 +0100
+Message-Id: <DFJ9L2GPU6WT.1RYEWZJ1V75DE@kernel.org>
+To: "Alexandre Belloni" <alexandre.belloni@bootlin.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [RFC PATCH v2 1/5] rtc: migrate driver data to RTC device
+Cc: "Ke Sun" <sunke@kylinos.cn>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-rtc@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Alvin Sun"
+ <sk.alvin.x@gmail.com>
+References: <20260107143738.3021892-1-sunke@kylinos.cn>
+ <20260107143738.3021892-2-sunke@kylinos.cn>
+ <DFJ5VOQOFLJO.1YI2NXC3B8P7L@kernel.org>
+ <c834ef20-2d4b-46aa-94ed-310c077a4495@kylinos.cn>
+ <DFJ99UZAU51H.JP1VEERVR81W@kernel.org> <202601081401239bbfff9d@mail.local>
+In-Reply-To: <202601081401239bbfff9d@mail.local>
 
-On Thu, 08 Jan 2026 13:08:57 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Thu Jan 8, 2026 at 3:01 PM CET, Alexandre Belloni wrote:
+> On 08/01/2026 14:52:08+0100, Danilo Krummrich wrote:
+>> On Thu Jan 8, 2026 at 2:45 PM CET, Ke Sun wrote:
+>> >
+>> > On 1/8/26 19:12, Danilo Krummrich wrote:
+>> >> On Wed Jan 7, 2026 at 3:37 PM CET, Ke Sun wrote:
+>> >>> diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
+>> >>> index baf1a8ca8b2b1..0f62ba9342e3e 100644
+>> >>> --- a/drivers/rtc/dev.c
+>> >>> +++ b/drivers/rtc/dev.c
+>> >>> @@ -410,7 +410,7 @@ static long rtc_dev_ioctl(struct file *file,
+>> >>>   		}
+>> >>>   		default:
+>> >>>   			if (rtc->ops->param_get)
+>> >>> -				err =3D rtc->ops->param_get(rtc->dev.parent, &param);
+>> >>> +				err =3D rtc->ops->param_get(&rtc->dev, &param);
+>> >> It would make more sense to just pass a struct rtc_device than the em=
+bedded
+>> >> struct device in the RTC callbacks.
+>> > I considered passing struct rtc_device directly, but chose &rtc->dev
+>> > to minimize changes to existing drivers, since most callbacks use
+>> > dev_get_drvdata() on the device parameter.
+>>=20
+>> No, you should not expose the embedded base device. For accessing the pr=
+ivate
+>> data you should add helpers like rtc_get_drvdata(). This is what other
+>> subsystems do as well, e.g. [1].
+>>=20
+>> [1] https://elixir.bootlin.com/linux/v6.18.3/source/include/linux/i2c.h#=
+L371
+>
+> This is not a correct example as i2c is a bus, just like amba is...
 
-> Currently, running `scripts/atomic/gen-rust-atomic-helpers.sh` without
-> arguments results in a broken header file and grep errors:
->=20
->     $ scripts/atomic/gen-rust-atomic-helpers.sh
->     grep: : No such file or directory
->     grep: : No such file or directory
->=20
-> The user may do this to re-generate the Rust helpers, not realizing
-> that they called the wrong script [1]. In this scenario, point the
-> user to `scripts/atomic/gen-atomics.sh` instead of failing in a
-> cryptic way.
->=20
->     $ scripts/atomic/gen-rust-atomic-helpers.sh
->     call scripts/atomic/gen-atomics.sh instead
->=20
-> Link:
-> https://lore.kernel.org/r/CAH5fLghgm2pPdKen2rv6MeSXAYG_j_eCqvM0b=3DVbTbUM=
-9eswKg@mail.gmail.com
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com> ---
->  scripts/atomic/gen-rust-atomic-helpers.sh | 5 +++++
->  1 file changed, 5 insertions(+)
->=20
-> diff --git a/scripts/atomic/gen-rust-atomic-helpers.sh
-> b/scripts/atomic/gen-rust-atomic-helpers.sh index
-> 45b1e100ed7c63108ee6cb07e48a17668f860d47..1c76f8ae731de9ac069d489469b0383=
-f256b1539
-> 100755 --- a/scripts/atomic/gen-rust-atomic-helpers.sh +++
-> b/scripts/atomic/gen-rust-atomic-helpers.sh @@ -5,6 +5,11 @@
-> ATOMICDIR=3D$(dirname $0)=20
->  . ${ATOMICDIR}/atomic-tbl.sh
-> =20
-> +if [ -z "$1" ]; then
-> +	echo "call scripts/atomic/gen-atomics.sh instead" >&2
-> +	exit 1
-> +fi
-> +
->  #gen_proto_order_variant(meta, pfx, name, sfx, order, atomic, int,
-> arg...) gen_proto_order_variant()
->  {
->=20
-> ---
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20260108-gen-rust-atomic-helpers-msg-3943461645fb
->=20
-> Best regards,
+Yes, struct i2c_client is indeed a bus device. However, the core struct dev=
+ice
+is what holds the device private data commonly in the same way, regardless =
+of
+whether it is embedded in a bus or class device.
 
-Makes sense.
+If you look for a class device example, here's PWM [2] and input [3].
 
-Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>
+[2] https://elixir.bootlin.com/linux/v6.18.3/source/include/linux/pwm.h#L38=
+2
+[3] https://elixir.bootlin.com/linux/v6.18.3/source/include/linux/input.h#L=
+388
 
-thanks,
-Onur
+> Actually, I don't think the rework is necessary at all or this would
+> mean we need to rewor most of our existing subsystems.
+
+That's not true, subsystems do not pass the parent device (i.e. the bus dev=
+ice)
+through their class device callbacks exclusively.
+
+- Danilo
