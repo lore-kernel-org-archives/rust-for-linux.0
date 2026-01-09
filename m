@@ -1,61 +1,61 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB0E314D0D
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Jan 2026 15:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9722777F3
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Jan 2026 16:01:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767974389; cv=none; b=evYyD5FNn5qvDCeB+zcw+QNF7iDucKeXxwt4x7sEwQreldOSk4INpfPgx44xtDuiLpXLPgmbCSkfpDG0EW4oZVwerTDw+YiyKQMAdSb+9vgM9evYeBBDbH5vuIaB7qZuZXALjisrXrRl4+wWY94EjImes64xLJXNt9CTo5C1biU=
+	t=1767974500; cv=none; b=ScHMRYuhF5JVRaUAQWxUc80CyQWLL4FHSk6EpBodqc/VmG3d6e8ei8x2ygMAw6XwzPgyM1pjeEnTYUc/ZjL7jQaVU8YD3HSxdn0nhXOXH29LToYF+xXepIWJy5JvjgYI7AQLrocewcJ5IHPesd9c0tEMalbMaXjZ1uMjL8vGk+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767974389; c=relaxed/simple;
-	bh=ZjxeDp9YGaFUK+W3fDzn81jroMGVuiAGgNX64MJODx0=;
+	s=arc-20240116; t=1767974500; c=relaxed/simple;
+	bh=J6cJjsCRN1IpiSaCVa815VV8yeaLxUUuzo34+Pfs+rg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z2SNj8BrOLdzVsZnUWAvWYd16cqym+x/4nSeXcfVISFmpRFK6b3v5zo1PF4cLBJH2ly8gvF+KaQAmN7xBsPl8YG5COQmVUBYzoW2pVaU7JoCuBwqWEE1EG3nFmTGW5bsBf9vz9EVxVYZGrPxlNd4LqJ7vcNNztD/ClWanhkpQ/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wb72dMnm; arc=none smtp.client-ip=209.85.208.176
+	 To:Cc:Content-Type; b=c4//8Sk7RkX4JmXIFNtN8KSFj+kXYbca99Rr1K7jaaPjElngO/Saijv9sDUI1q9XrrNU5DErnyBiMKw2OFMirfBIDhAYIqc4teu/BrfHWBUdEGF+OUoeCHdiHzZJc87fueAZxCLhRSOREu1oHNa4GM86JZhzahRWGxSZngs+MB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QMphu/le; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wb72dMnm"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-38307233c98so22725331fa.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Jan 2026 07:59:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QMphu/le"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59b679cff1fso3342339e87.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Jan 2026 08:01:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767974383; x=1768579183; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1767974497; x=1768579297; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7qDnJQ6hNmXepuNggB2SnhuDzeGOIEIzjhTyoPuwQjQ=;
-        b=Wb72dMnmcvqXg6hcppGfjL1p3lJLVjWmYmsA6KIwxrmNx5CAxmV3E5yMdD7vdll9Qn
-         UC1dbCSoT398o+jrz+XsEFRtHYFut9Lyr0KErZwbNnHrVG2X0haiYgGY2/BaQQNM6BZT
-         +Qhc3RhvDLwFwFvh85a7XxaqFKKFGe2Pzy7nZw89syIGOz9zVddIts+GHjXmklTxn/YK
-         2xOJ5YgV1wkmXA1fEHu4E4GvUgN0A3Vz++ctyVbXIV6D6pHU0dapzKRvjHQo2SYSvYdl
-         qwu6TlRFs/IH4HTn64MPh8Z5zdbo0bJiGSwjbV1NEQ++oF9hmva3pteYzx0sFsRwBAtn
-         kxfA==
+        bh=VxM+4jHs11xdcor7IEmxLKA7/eufwcVQAeFlthVnZYk=;
+        b=QMphu/leeFSfL82gst6wL6No1t+y+pxcsuiNrODD/t9kXVzjOo3vDnL0LPinSEXpiO
+         HTvUbqwryCvfB/mKp/xJ4Jv8U5LYqc8tbwRCbkLYCpZ5eibivyTFHBCz0aJkVLBKg8O/
+         0K/YUmWJg7Xw44o8kjf1OkBxoPdLWx7pEg6kFa9h3fNU/xSQeMhdTKu4sQkWDMTa3zv9
+         c9yiB1S4Nj7xITcw8qM1aPbkue2iwMWkB+PcbQSHrDnl8TxHWnYtuAg2YPVA7kCzyi50
+         lN6AK/DBjfMBzKPngxnUMnmBJgqrSuwcx3rfez+bYszaSnXGB5zUyjsr3db8lViBdxm0
+         2IDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767974383; x=1768579183;
+        d=1e100.net; s=20230601; t=1767974497; x=1768579297;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7qDnJQ6hNmXepuNggB2SnhuDzeGOIEIzjhTyoPuwQjQ=;
-        b=XJ0IbuWVIBr0Sm2OcEUnEtyhWQeynKdL0iCbR5c/SHWvZgAzb7KvfVtq+8M7t7gAmp
-         g8z9qTqrXH5hqmBgOvgG6ogFAyaOM0ebQ8EO37bSdfKceLtfvX6lvGbcgZBL4R7eXh4w
-         2u//qISMY+aC3W1t8rK8xftIuFGKyIsmyleYusNoiIfZ1bBlzbovDXBywOcz9T6icZ4L
-         r+P322edaZBK/2oksRyLGohWG5Td9Qp//7RdGt7gUw98liBf+tjRqXPG3zpEyj0IpxGP
-         gO3BQNO7YGaUGdQhVJFfFuylKrKiBQpjHM5WWY+XKamRInWgu+EhiJZV12fyVkcTRRD5
-         oDcw==
-X-Forwarded-Encrypted: i=1; AJvYcCVqb5WbL53BjRXEFvldW+994VYWboajK7dwSwlBjzngG3PLugOEj3JcBS61ney8ZbUP6FOiqX8PdQYKkxdyyg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yygd4NoAQnm8wBpKSKHFVyhUpFDRhTmDv0xgNT7gC1wnF+X7rja
-	2T0gSuAkx9MB94FIvF4kNmPiPaRjf6tSi10dpeeyxB3mBmkMr9ONBgQi25sn8iEEFW3b7QMfnMu
-	fRqnAvdIwO9WX5G17PiianEARYW3+zns=
-X-Gm-Gg: AY/fxX4oLzEG9MMwYhlieMAPJGDgmIOd0kvEtb1zfRbTW2SyXL45ukmi2ZV0wokujy7
-	sLPu6vZs7y7GjTb3VyOlftM82r0s+9pBeCib1+N0GZkAv7AH46CojElkhU+yxmMH8kizWxmZyRX
-	e1jbABH2v/5egsfvdiVdEBY2SY+zUy1dl4u8qMvYi+D8gYkO+FuDq6vurxcVXZ2Vbb7BNcRNDSq
-	nTAtJ8QPeb/vjvRXn9xO/So4UhpOfbv4S8xd3A3AMAeEQCXu0qldNmqZe1Xq8c+rjX8e9s9xuz8
-	Jupm3sC/YdY7wGMnOoV/UBxSXZMFjWpkG03uL/1CF7rWWZxAntgIJNtYO/1yb7g5bPk2AQIxBsW
-	LF3CxgPxzBLxrLisy2loTbRvPKAx/fqT4p+m+SmXo1A==
-X-Google-Smtp-Source: AGHT+IHPp232XllFfNGqvWRSlzfTXxOenL9EieU2A3dAmkdssI2RtV81Ww/M8icJi++0Dp1+XBQbPV4cz5Wq9lNAIK8=
-X-Received: by 2002:a2e:be0b:0:b0:383:5ea:e9c1 with SMTP id
- 38308e7fff4ca-38305eaec72mr27962681fa.2.1767974383234; Fri, 09 Jan 2026
- 07:59:43 -0800 (PST)
+        bh=VxM+4jHs11xdcor7IEmxLKA7/eufwcVQAeFlthVnZYk=;
+        b=LFNGoMs8bz7Lgru2IvvZvyv0ipUhRfemhq78dHKYitOLya4xE/UKDJ/sP00nsB6Uz0
+         uLYSlSWT8BCxO2mqv8PhF3aS0OBDiFAoKac6fthBMGOyRYfOob7W2vncK78OjjJlLC1g
+         3w85KdsMm7Nx+Ef9no//k/gjEmro7DysAHTR0O+8BbM2QSDGRhPnwRQiayWaHh5t8+RD
+         rw8elJj4jJQhqYGPZXFwYc9c4wXiBWC0qCiekcwvhMddO44gDMRfA5WMjkS6HFyMBO3v
+         zglMnJB6RBvDzEiYr8iofqLlhJEGv4C1A7clgLUxZIerv90sgCXqGmsXeKCEHcHFSEjD
+         9KhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUFSZSrj388Dghhabit+MDztf9cTjDdgl2TEGqjTLJrasGQ80+kaADv/QDll+NzEH06oVX3OpMPzuhJ3pNxrg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw97A+INldM+rMT9d83uS2QzGIUb5fsBqQal/ku8Kph4CMYLUwz
+	ibSL5DuySRdPAAltn8Y54RxpeWzbvL/8xd4VuWaj2eNti9hmmmOnRp2RZYdoFUj+ZJyh/8MmXO8
+	jszQLbqA6o+0p/tjgZKSn4EqFvFlPfFQ=
+X-Gm-Gg: AY/fxX4S2H7etqx49NjYLvCroBR4i8a9NBbewDIetjLZjlTh0e+JDziYK431q3BoLW0
+	pFq3WvWhfNO6EnRljuwRjfyEYyYB6E4p1FQTiIe6R0mKIp6hr/JsdaGSRvNU3WO2ZuXtXgwgwYu
+	3M4WD8ZawmEPjhLH0yhFHJUxnezk5wWjBZAxnupL9jDMDePJvRRbEpuUd6h0rbQLvFuQVL37xHh
+	2jxCTqaiEV1m8rIfCy1OMRx0fH9NIDKSAFHilWZQ0vPaqRSdCDkWAog4go9Y5UxOJ0CNsl8DbQR
+	Sj9hpoVODKTkln88I9/FnWE8iQlpxYA80civAIlRoTvTM0yxnPTG6wi8No3tRR6GzLt780aOkSM
+	wlIi8VVPXnJm8dcxF21dSKTpb7gIrHhpaW65P0QZDFw==
+X-Google-Smtp-Source: AGHT+IGZ796tYaymVeM48pnZgtDnhjmw0zfBflkhpYLaiOlYHUanHiCUN6yEzV1Uo7Oo3FS9TkQBjIAHSKCDCtFNi+M=
+X-Received: by 2002:a05:6512:4010:b0:59b:7e2b:33db with SMTP id
+ 2adb3069b0e04-59b7e2b4a4dmr1040344e87.28.1767974496170; Fri, 09 Jan 2026
+ 08:01:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,16 +63,15 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org>
- <20251203-xarray-entry-send-v1-3-9e5ffd5e3cf0@kernel.org> <CAJ-ks9mqwaWMc0MTGOk+rKSM8W8spRmwiLGCkEjcSvF+d7QW7g@mail.gmail.com>
- <87jyxtgtlc.fsf@t14s.mail-host-address-is-not-set> <CAJ-ks9kYk7cuQFOK89OwUx+k8p+_kANjB12rZLO+dzfSd=BpdQ@mail.gmail.com>
- <87344gh2pk.fsf@t14s.mail-host-address-is-not-set> <2PUnbrv1SBqe3PHKeFqFI7zge1N89qpwH_FF_pXszbaA9-ocBueRJHb0KcuW9EyPNiZFCaCc1vgmTjXP_u_oPQ==@protonmail.internalid>
- <CAJ-ks9=JJ6S6U-Bq0WC1PfJ0P9G3PvugfDdE2q9Q516M-QpsoA@mail.gmail.com> <87o6n3f4uz.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87o6n3f4uz.fsf@t14s.mail-host-address-is-not-set>
+ <20251203-xarray-entry-send-v1-8-9e5ffd5e3cf0@kernel.org> <CAJ-ks9kYoxpPnB9amA-11SRNHbqUbp_D51qVCNDdvBZSo2gsTQ@mail.gmail.com>
+ <875x9ch2xe.fsf@t14s.mail-host-address-is-not-set> <Ju4-5XXEy30j3L6c6jxvcJYkTSRjVww9x2MSKbNNKLFstWNFqEwSLHt1eiVMSeGBzLuo4klzhmhcQZU_tbNt_w==@protonmail.internalid>
+ <CAJ-ks9=Gu8u==m_1SncFBNwzvhwmMXO-v3TG7Wxd0cRsTzkTtA@mail.gmail.com> <87qzrzf4ya.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87qzrzf4ya.fsf@t14s.mail-host-address-is-not-set>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 9 Jan 2026 10:59:06 -0500
-X-Gm-Features: AZwV_QiRIQEJkShwl9ClmVFCHVW5gLmu_BJ9jBrOhEMcM4NHpw3EFHHez5-uWFE
-Message-ID: <CAJ-ks9neiwxL6WhK1i0qPtZCGjfEFsXA6J-yVHKmZcwZ8RS06A@mail.gmail.com>
-Subject: Re: [PATCH 03/10] rust: xarray: add `contains_index` method
+Date: Fri, 9 Jan 2026 11:00:59 -0500
+X-Gm-Features: AZwV_QgyRfymzHogS8VBon0CmkJoHGshxtLmJXX18UlS2M6zozgoO4ZbbNCiyzQ
+Message-ID: <CAJ-ks9kfsrNzBU5fL=rxhc_vRvoz+R0o=1DsWzo+k+BF5-xbSg@mail.gmail.com>
+Subject: Re: [PATCH 08/10] rust: xarray: add entry API
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -88,91 +87,382 @@ org> wrote:
 >
 > "Tamir Duberstein" <tamird@gmail.com> writes:
 >
-> > On Thu, Jan 8, 2026 at 4:38=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
+> > On Thu, Jan 8, 2026 at 4:25=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
 nel.org> wrote:
 > >>
 > >> Tamir Duberstein <tamird@gmail.com> writes:
 > >>
-> >> > On Wed, Jan 7, 2026 at 1:34=E2=80=AFPM Andreas Hindborg <a.hindborg@=
+> >> > On Wed, Dec 3, 2025 at 5:27=E2=80=AFPM Andreas Hindborg <a.hindborg@=
 kernel.org> wrote:
 > >> >>
-> >> >> Tamir Duberstein <tamird@gmail.com> writes:
+> >> >> Add an Entry API for XArray that provides ergonomic access to array
+> >> >> slots that may be vacant or occupied. The API follows the pattern o=
+f
+> >> >> Rust's standard library HashMap entry API, allowing efficient
+> >> >> conditional insertion and modification of entries.
 > >> >>
-> >> >> > On Wed, Dec 3, 2025 at 5:27=E2=80=AFPM Andreas Hindborg <a.hindbo=
-rg@kernel.org> wrote:
-> >> >> >>
-> >> >> >> Add a convenience method `contains_index` to check whether an el=
-ement
-> >> >> >> exists at a given index in the XArray. This method provides a mo=
-re
-> >> >> >> ergonomic API compared to calling `get` and checking for `Some`.
-> >> >> >
-> >> >> > It isn't clear when you'd want this API, and neither this nor the
-> >> >> > example are particularly motivating.
+> >> >> The implementation uses the XArray state API (`xas_*` functions) fo=
+r
+> >> >> efficient operations without requiring multiple lookups. Helper
+> >> >> functions are added to rust/helpers/xarray.c to wrap C macros that =
+are
+> >> >> not directly accessible from Rust.
 > >> >>
-> >> >> I added this when I had a line reading `if xa.get(index).is_none()
-> >> >> {...}`. I think it reads better as `if !xa.contains_index(index) {.=
-..}`.
+> >> >> Also update MAINTAINERS to cover the new rust files.
+> >> >>
+> >> >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> >> >> ---
+> >> >>  MAINTAINERS                 |   1 +
+> >> >>  rust/helpers/xarray.c       |  17 ++
+> >> >>  rust/kernel/xarray.rs       | 112 +++++++++++++
+> >> >>  rust/kernel/xarray/entry.rs | 376 ++++++++++++++++++++++++++++++++=
+++++++++++++
+> >> >>  4 files changed, 506 insertions(+)
+> >> >>
+> >> >> diff --git a/MAINTAINERS b/MAINTAINERS
+> >> >> index e8f06145fb54c..79d4c9c9b2b63 100644
+> >> >> --- a/MAINTAINERS
+> >> >> +++ b/MAINTAINERS
+> >> >> @@ -27909,6 +27909,7 @@ B:      https://github.com/Rust-for-Linux/l=
+inux/issues
+> >> >>  C:     https://rust-for-linux.zulipchat.com
+> >> >>  T:     git https://github.com/Rust-for-Linux/linux.git xarray-next
+> >> >>  F:     rust/kernel/xarray.rs
+> >> >> +F:     rust/kernel/xarray/
+> >> >>
+> >> >>  XBOX DVD IR REMOTE
+> >> >>  M:     Benjamin Valentin <benpicco@googlemail.com>
+> >> >> diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
+> >> >> index 60b299f11451d..425a6cc494734 100644
+> >> >> --- a/rust/helpers/xarray.c
+> >> >> +++ b/rust/helpers/xarray.c
+> >> >> @@ -26,3 +26,20 @@ void rust_helper_xa_unlock(struct xarray *xa)
+> >> >>  {
+> >> >>         return xa_unlock(xa);
+> >> >>  }
+> >> >> +
+> >> >> +void *rust_helper_xas_result(struct xa_state *xas, void *curr)
+> >> >> +{
+> >> >> +       if (xa_err(xas->xa_node))
+> >> >> +               curr =3D xas->xa_node;
+> >> >> +       return curr;
+> >> >> +}
 > >> >
-> >> > What was the code surrounding it?
-> >> >
-> >> >> Do you have an idea of how to improve the motivational factor of th=
-e
-> >> >> example? Writing motivating examples is not my top skill.
-> >> >
-> >> > IMO writing a better example is not the issue; rather it would be go=
-od
-> >> > to understand why you need it. In my experience `Option::is_none` is=
- a
-> >> > smell, but hard to say without seeing the surrounding code.
+> >> > Instead of this duplication, can we expose `xas_result` from the hea=
+der?
 > >>
-> >>     fn get_cache_page(&mut self, sector: u64) -> Result<&mut NullBlock=
-Page> {
-> >>         let index =3D Self::to_index(sector);
-> >>
-> >>         if self.cache_guard.contains_index(index) {
-> >>             Ok(self.cache_guard.get_mut(index).expect("Index is presen=
-t"))
-> >>         } else {
-> >>             let page =3D if self.disk_storage.cache_size_used.load(ord=
-ering::Relaxed)
-> >>                 < self.disk_storage.cache_size
-> >>             {
-> >>                 self.hw_data_guard
-> >>                     .page
-> >>                     .take()
-> >>                     .expect("Expected to have a page available")
-> >>             } else {
-> >>                 self.extract_cache_page()?
-> >>             };
-> >>             Ok(self
-> >>                 .cache_guard
-> >>                 .insert_entry(index, page, Some(&mut self.hw_data_guar=
-d.preload))
-> >>                 .expect("Should be able to insert")
-> >>                 .into_mut())
-> >>         }
-> >>     }
-> >>
-> >> For lifetime reasons, I cannot borrow `self` in the taken arm.
+> >> `xas_result` is not currently exported. I'd rather not change that.
 > >
-> > That's surprising. Couldn't you destructure Self so that all the
-> > references derive from the single mutable reference &mut self?
+> > Why?
 >
-> I don't think so, because I still need `&mut self` around to do the call
-> to `extract_cache_page`.
+> Because it requires patching the C code, which has a very long turn
+> around time. I also assume that the function is private for a reason.
+> Exposing it in the header file would make it available to the entire kern=
+el.
 
-Hmm, I must have missed it before, but can't this all be fixed with an
-early return?
+Why assume that? It was probably never needed before. As for
+turnaround time - I can empathize, but I don't think this is a strong
+argument for duplication.
 
-         if let Some(page) =3D self.cache_guard.get_mut(index) {
-             return Ok(page);
-         }
+>
+> <cut>
+>
+> >> >> +
+> >> >> +    /// Finds the next occupied entry starting at the given index,=
+ wrapping around.
+> >> >> +    ///
+> >> >> +    /// Searches for an entry starting at `index` up to the maximu=
+m index. If no entry
+> >> >> +    /// is found, wraps around and searches from index 0 up to `in=
+dex`.
+> >> >> +    ///
+> >> >> +    /// # Examples
+> >> >> +    ///
+> >> >> +    /// ```
+> >> >> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
+> >> >> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(All=
+ocKind::Alloc), GFP_KERNEL)?;
+> >> >> +    /// let mut guard =3D xa.lock();
+> >> >> +    ///
+> >> >> +    /// guard.store(100, KBox::new(42u32, GFP_KERNEL)?, GFP_KERNEL=
+)?;
+> >> >> +    /// let entry =3D guard.find_next_entry_circular(101);
+> >> >> +    /// assert_eq!(entry.map(|e| e.index()), Some(100));
+> >> >> +    ///
+> >> >> +    /// # Ok::<(), kernel::error::Error>(())
+> >> >> +    /// ```
+> >> >> +    pub fn find_next_entry_circular<'b>(
+> >> >> +        &'b mut self,
+> >> >> +        index: usize,
+> >> >> +    ) -> Option<OccupiedEntry<'a, 'b, T>> {
+> >> >> +        let mut state =3D XArrayState::new(self, index);
+> >> >> +
+> >> >> +        // SAFETY: `state.state` is properly initialized by XArray=
+State::new and the caller holds
+> >> >> +        // the lock.
+> >> >> +        let ptr =3D NonNull::new(unsafe { bindings::xas_find(&mut =
+statestate, usize::MAX) })
+> >> >> +            .or_else(|| {
+> >> >> +                state.state.xa_node =3D bindings::XAS_RESTART as *=
+mut bindings::xa_node;
+> >> >> +                state.state.xa_index =3D 0;
+> >> >> +                // SAFETY: `state.state` is properly initialized a=
+nd by type invariant, we hold the
+> >> >> +                // xarray lock.
+> >> >> +                NonNull::new(unsafe { bindings::xas_find(&mut stat=
+e.state, index) })
+> >> >> +            })?;
+> >> >> +
+> >> >> +        Some(OccupiedEntry { state, ptr })
+> >> >> +    }
+> >> >
+> >> > Instead of this function, can find_next_entry take a Range? Then it
+> >> > would be simple for the caller to wrap if they want, without bloatin=
+g
+> >> > this API.
+> >>
+> >> We could do that, but I am not sure if it is idiomatic? The range synt=
+ax
+> >> a..b is considered empty if b<a. But it still produces a valid
+> >> `core::ops::Range` that we could use.
+> >
+> > Can you clearly state your objection?
+>
+>  - Reverse ranges are considered empty.
+>  - I am unsure if the approach is idiomatic.
+>
+> >
+> >>
+> >> >
+> >> >> +
+> >> >>      /// Removes and returns the element at the given index.
+> >> >>      pub fn remove(&mut self, index: usize) -> Option<T> {
+> >> >>          // SAFETY:
+> >> >> @@ -416,8 +521,15 @@ fn new(access: &'b Guard<'a, T>, index: usize)=
+ -> Self {
+> >> >>              },
+> >> >>          }
+> >> >>      }
+> >> >> +
+> >> >> +    fn status(&self) -> Result {
+> >> >> +        // SAFETY: `self.state` is properly initialized and valid.
+> >> >> +        to_result(unsafe { bindings::xas_error(&self.state) })
+> >> >> +    }
+> >> >>  }
+> >> >>
+> >> >> +mod entry;
+> >> >> +
+> >> >>  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send`=
+ iff `T` is `Send`.
+> >> >>  unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
+> >> >>
+> >> >> diff --git a/rust/kernel/xarray/entry.rs b/rust/kernel/xarray/entry=
+.rs
+> >> >> new file mode 100644
+> >> >> index 0000000000000..1268dc35bac58
+> >> >> --- /dev/null
+> >> >> +++ b/rust/kernel/xarray/entry.rs
+> >> >> @@ -0,0 +1,376 @@
+> >> >> +// SPDX-License-Identifier: GPL-2.0
+> >> >> +
+> >> >> +use super::{
+> >> >> +    Guard,
+> >> >> +    StoreError,
+> >> >> +    XArrayState, //
+> >> >> +};
+> >> >> +use core::ptr::NonNull;
+> >> >> +use kernel::{
+> >> >> +    prelude::*,
+> >> >> +    types::ForeignOwnable, //
+> >> >> +};
+> >> >> +
+> >> >> +/// Represents either a vacant or occupied entry in an XArray.
+> >> >> +pub enum Entry<'a, 'b, T: ForeignOwnable> {
+> >> >> +    /// A vacant entry that can have a value inserted.
+> >> >> +    Vacant(VacantEntry<'a, 'b, T>),
+> >> >> +    /// An occupied entry containing a value.
+> >> >> +    Occupied(OccupiedEntry<'a, 'b, T>),
+> >> >> +}
+> >> >> +
+> >> >> +impl<T: ForeignOwnable> Entry<'_, '_, T> {
+> >> >> +    /// Returns true if this entry is occupied.
+> >> >> +    ///
+> >> >> +    /// # Examples
+> >> >> +    ///
+> >> >> +    /// ```
+> >> >> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Ent=
+ry}};
+> >> >> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(All=
+ocKind::Alloc), GFP_KERNEL)?;
+> >> >> +    /// let mut guard =3D xa.lock();
+> >> >> +    ///
+> >> >> +    ///
+> >> >> +    /// let entry =3D guard.get_entry(42);
+> >> >> +    /// assert_eq!(entry.is_occupied(), false);
+> >> >> +    ///
+> >> >> +    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KER=
+NEL)?;
+> >> >> +    /// let entry =3D guard.get_entry(42);
+> >> >> +    /// assert_eq!(entry.is_occupied(), true);
+> >> >> +    ///
+> >> >> +    /// # Ok::<(), kernel::error::Error>(())
+> >> >> +    /// ```
+> >> >> +    pub fn is_occupied(&self) -> bool {
+> >> >> +        matches!(self, Entry::Occupied(_))
+> >> >> +    }
+> >> >
+> >> > Do we need this? IMO less is more, and even stdlib doesn't have this=
+.
+> >>
+> >> Similar to `contains_index`, it de-clutters at call sites. I like
+> >>
+> >> if entry.is_occupied() {...}
+> >>
+> >> better than
+> >>
+> >> if matches!(entry, Entry::Occupied(_)) {...}
+> >
+> > Similar to the discussion on `contains_index` -- discarding
+> > information in this way seems to be a smell, but I can't say without
+> > seeing more code. My suggestion is not to add this until there's a
+> > usage that we can see in the same series.
+>
+> I don't have a user for this one at the moment. I guess I can drop it.
+>
+> <cut>
+>
+> >> >> +
+> >> >> +        self.state.status().map(|()| new).map_err(|error| {
+> >> >> +            // SAFETY: `new` came from `T::into_foreign` and `xas_=
+store` does not take ownership of
+> >> >> +            // the value on error.
+> >> >> +            let value =3D unsafe { T::from_foreign(new) };
+> >> >> +            StoreError { value, error }
+> >> >> +        })
+> >> >> +    }
+> >> >> +
+> >> >> +    /// Inserts a value into this vacant entry.
+> >> >> +    ///
+> >> >> +    /// Returns a reference to the newly inserted value.
+> >> >> +    ///
+> >> >> +    /// - This method will fail if the nodes on the path to the in=
+dex
+> >> >> +    ///   represented by this entry are not present in the XArray.
+> >> >> +    /// - This method will not drop the XArray lock.
+> >> >> +    ///
+> >> >> +    ///
+> >> >> +    /// # Examples
+> >> >> +    ///
+> >> >> +    /// ```
+> >> >> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Ent=
+ry}};
+> >> >> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(All=
+ocKind::Alloc), GFP_KERNEL)?;
+> >> >> +    /// let mut guard =3D xa.lock();
+> >> >> +    ///
+> >> >> +    /// assert_eq!(guard.get(42), None);
+> >> >> +    ///
+> >> >> +    /// if let Entry::Vacant(entry) =3D guard.get_entry(42) {
+> >> >> +    ///     let value =3D KBox::new(0x1337u32, GFP_KERNEL)?;
+> >> >> +    ///     let borrowed =3D entry.insert(value)?;
+> >> >> +    ///     assert_eq!(*borrowed, 0x1337);
+> >> >> +    /// }
+> >> >> +    ///
+> >> >> +    /// assert_eq!(guard.get(42).copied(), Some(0x1337));
+> >> >> +    ///
+> >> >> +    /// # Ok::<(), kernel::error::Error>(())
+> >> >> +    /// ```
+> >> >> +    pub fn insert(mut self, value: T) -> Result<T::BorrowedMut<'b>=
+, StoreError<T>> {
+> >> >> +        let new =3D self.insert_internal(value)?;
+> >> >> +
+> >> >> +        // SAFETY: `new` came from `T::into_foreign`.The entry has=
+ exclusive
+> >> >
+> >> > This is knowledge at a distance. There's no comment anywhere that
+> >> > promises that insert_internal called T::into_foreign.
+> >>
+> >> How would you handle this? Add documentation to `insert_internal`?
+> >
+> > I think `insert_internal` can return a reference, which would be
+> > cleaner (i.e. call T::borrow_mut *there*).
+>
+> This does not compose well with the implementation of `insert_entry`,
+> which needs the void pointer type. `T::BorrowedMut<_>` cannot be turned
+> back into a pointer, because we do not set any bounds on it.
 
+I confess that this discussion exceeds what I can do in an email. I'll
+take a look at this again in the next version and if I can suggest a
+refactor, I will.
+
+>
+> <cut>
+>
+> >> >> +/// A view into an occupied entry in an XArray.
+> >> >> +pub struct OccupiedEntry<'a, 'b, T: ForeignOwnable> {
+> >> >> +    pub(crate) state: XArrayState<'a, 'b, T>,
+> >> >> +    pub(crate) ptr: NonNull<c_void>,
+> >> >> +}
+> >> >> +
+> >> >> +impl<'a, 'b, T> OccupiedEntry<'a, 'b, T>
+> >> >> +where
+> >> >> +    T: ForeignOwnable,
+> >> >> +{
+> >> >> +    pub(crate) fn new(guard: &'b mut Guard<'a, T>, index: usize, p=
+tr: NonNull<c_void>) -> Self {
+> >> >> +        Self {
+> >> >> +            state: XArrayState::new(guard, index),
+> >> >> +            ptr,
+> >> >> +        }
+> >> >> +    }
+> >> >> +
+> >> >> +    /// Removes the value from this occupied entry and returns it,=
+ consuming the entry.
+> >> >> +    ///
+> >> >> +    /// # Examples
+> >> >> +    ///
+> >> >> +    /// ```
+> >> >> +    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Ent=
+ry}};
+> >> >> +    /// let mut xa =3D KBox::pin_init(XArray::<KBox<u32>>::new(All=
+ocKind::Alloc), GFP_KERNEL)?;
+> >> >> +    /// let mut guard =3D xa.lock();
+> >> >> +    ///
+> >> >> +    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KER=
+NEL)?;
+> >> >> +    /// assert_eq!(guard.get(42).copied(), Some(0x1337));
+> >> >> +    ///
+> >> >> +    /// if let Entry::Occupied(entry) =3D guard.get_entry(42) {
+> >> >> +    ///     let value =3D entry.remove();
+> >> >> +    ///     assert_eq!(*value, 0x1337);
+> >> >> +    /// }
+> >> >> +    ///
+> >> >> +    /// assert_eq!(guard.get(42), None);
+> >> >> +    ///
+> >> >> +    /// # Ok::<(), kernel::error::Error>(())
+> >> >> +    /// ```
+> >> >> +    pub fn remove(mut self) -> T {
+> >> >> +        // NOTE: Storing NULL to an occupied slot never fails.
+> >> >
+> >> > Shouldn't this be on the debug assert below? Also, is there a citati=
+on?
+> >>
+> >> I'll move it.
+> >>
+> >> I don't think I have a citation for that. This is a consequence of the
+> >> data structure design. If the slot is occupied, the node has already
+> >> been allocated, and allocation error is the only failure mode for this=
+ path.
+> >
+> > OK, if there's no citation, then you've got to document your reasoning
+> > for this conclusion, I think.
+>
+> Ok, I'll expand the NOTE.
 >
 >
 > Best regards,
 > Andreas Hindborg
 >
 >
->
+
+Thanks!
