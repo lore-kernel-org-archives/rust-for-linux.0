@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BBF28313D;
-	Fri,  9 Jan 2026 18:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542CE3659E3;
+	Fri,  9 Jan 2026 18:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767981783; cv=none; b=q02rE1WLcn4n1LN7mEQT7O3qaSDd/X+0GjccZKL+qZ8C8RyxECKoVyiYA2QVyDvaTj9k4NRz1B4pYLiXFiCHo0U4tCW6IHCJxtvguULwH7fgPHjDHNAVroa+Exnf4QMe5sfJUgLqf6/TgEgnJ2Q4rQ+OaBjI8ka6XIlaZRs08DE=
+	t=1767981845; cv=none; b=axYWHKmeOgi242V+vYHdSkmtdNwObUzl+6xJcpGSeR5JeylnPGoM6OO25UQCmVp6dZjTIvfgHc64c7a2pPdQ7J+HPWJqv3gLmdNsTl8lc+5qqTPI8s2Gu8RYliH+1enLtruFE9S7KVSIDBk7HykerymrFwjKph2G+Lgn+govKzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767981783; c=relaxed/simple;
-	bh=r7+uys9qxbAX5b8ZmaXfPwKPr4MTkJbsTReSeB7LAIQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=dMOnV6f4Y6x/4EZhDfssl14RCtXlpbbuiZ8Uc9PsDfjFeX+FvAifZN2KVV/jbKxF3n0jSsIX+X6TIbVpftIxn+VXIhlWNTPQMybqZrVeT5dYwdUYJHBIWJO4qpMmms4qBW7gCg3Szz2WbZGZTYwcRr+AeIADePD257HA3nmuYyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tJYP0MNq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767981845; c=relaxed/simple;
+	bh=uXDLUs02Wtlz0E22SH8dPAjI8OL8B29ZNOjL6GWrzSY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=E2nVDuSlLpryf7+KjDwpm+XPBqMBUULTKPpwXWiBORlke4C6pFqQjqb1HM2/7i4jyToJghOjWtfjvBbANRI0BZC4zh7ju9+/i5xVLqzAmsjt4F+0WO1tOwCRyZ1vznS2mLHB7Ngy5w6+mIVKTmjyFJW2W0l1QEw5REoJgnLH9pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KD2HyRXA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJYP0MNq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7567AC4CEF1;
-	Fri,  9 Jan 2026 18:03:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KD2HyRXA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F24DC4CEF1;
+	Fri,  9 Jan 2026 18:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767981783;
-	bh=r7+uys9qxbAX5b8ZmaXfPwKPr4MTkJbsTReSeB7LAIQ=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=tJYP0MNqGL1tC7kT4ZZresVixgS9Ap9qAIQY6hxwZdOF7U+iCumDTd0w6fWrcJHyc
-	 Yp2vhiARe9takGRT9i4TIUulIXoEX/C4xpqh7NTSVwkJiSYbQhWJxCfmXJThnjexQ3
-	 BId9gB6h984c9V1xI1W7Yk8rCVMjORjnbbsNdIjMz5gf74rITTUbdC57nmSZaa0mG1
-	 oxqb8x/Rw4bIShpw+dEmAhJ+Y5hzz2jPwkfHnED+W1oWoDwXTEvsnbUwdQPztpryXn
-	 VbDeSqxAIqPMQnDr9D9p8TqF6ejJKadu9Mj0zL6SfVER66e3gpjlRQzE1/TveQ5K76
-	 H0IKtq7KtQXYQ==
+	s=k20201202; t=1767981844;
+	bh=uXDLUs02Wtlz0E22SH8dPAjI8OL8B29ZNOjL6GWrzSY=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=KD2HyRXA5nsqeQYov2qmxFPKt1Sl4DfNeIqdpccCHManYSzd7CYyAcrcZYETn7sS3
+	 AlT19ToJBrgM59ckFN2+G/ODyAOZMPfkl8Gn7HVUYXT7ROrQHGlzvbAlASOfa92N91
+	 2kYZhPrOLODfxje2ylVDSUu7TSOJm+hyAK+XrGTmzHi+uhRZeuN8hoG7jqgISZSnYU
+	 biwzqB29XkGOUTfXGDdjIHzF+FSceAam3xL/DkgoyJJ37l+0no74YN7yzJ3ef02N+y
+	 HyHdNm0oUsQ63KLibzSyfoPjkRdXQ17FzK+SP/CvmlfFDUtVFSOpcQ+J3ezLvxjqGi
+	 9RGApbCqSpf8g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,54 +34,79 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 09 Jan 2026 19:02:59 +0100
-Message-Id: <DFK98H2AC9OD.3TKEHOTK5CKE1@kernel.org>
-Subject: Re: [PATCH 11/12] rust: pin-init: internal: init: add support for
- attributes on initializer fields
+Date: Fri, 09 Jan 2026 19:04:00 +0100
+Message-Id: <DFK9990IPWNR.33A9FA4GSKZU0@kernel.org>
+Cc: "Janne Grunau" <j@jannau.net>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 12/12] rust: pin-init: internal: init: add escape hatch
+ for referencing initialized fields
 From: "Benno Lossin" <lossin@kernel.org>
 To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
  Feng" <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
  "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
  "Danilo Krummrich" <dakr@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.21.0
 References: <20260108135127.3153925-1-lossin@kernel.org>
- <20260108135127.3153925-12-lossin@kernel.org>
- <DFK3Z9K6SMVA.1XCWR3Y3WK7OI@garyguo.net>
-In-Reply-To: <DFK3Z9K6SMVA.1XCWR3Y3WK7OI@garyguo.net>
+ <20260108135127.3153925-13-lossin@kernel.org>
+ <DFK4173K583S.DFF6M0ZYY6RC@garyguo.net>
+In-Reply-To: <DFK4173K583S.DFF6M0ZYY6RC@garyguo.net>
 
-On Fri Jan 9, 2026 at 2:55 PM CET, Gary Guo wrote:
+On Fri Jan 9, 2026 at 2:58 PM CET, Gary Guo wrote:
 > On Thu Jan 8, 2026 at 1:50 PM GMT, Benno Lossin wrote:
->> -        if let Some(ident) =3D field.ident() {
->> +        if let Some(ident) =3D kind.ident() {
->>              // `mixed_site` ensures that the guard is not accessible to=
- the user-controlled code.
->>              let guard =3D format_ident!("__{ident}_guard", span =3D Spa=
-n::mixed_site());
->> -            guards.push(guard.clone());
->>              res.extend(quote! {
->> +                #(#attrs)*
->>                  // Create the drop guard:
->>                  //
->>                  // We rely on macro hygiene to make it impossible for u=
-sers to access this local
->> @@ -316,13 +332,18 @@ fn init_fields(
->>                      )
->>                  };
->>              });
->> +            guards.push(guard);
->> +            guard_attrs.push(attrs);
+>> The initializer macro emits mutable references for already initialized
+>> fields, which allows modifying or accessing them later in code blocks or
+>> when initializing other fields. This behavior results in compiler errors
+>> when combining with packed structs, since those do not permit creating
+>> references to misaligned fields. For example:
+>>
+>>     #[repr(C, packed)]
+>>     struct Foo {
+>>         a: i8,
+>>         b: i32,
+>>     }
+>>
+>>     fn main() {
+>>         let _ =3D init!(Foo { a: -42, b: 42 });
+>>     }
+>>
+>> This will lead to an error like this:
+>>
+>>     error[E0793]: reference to field of packed struct is unaligned
+>>       --> tests/ui/compile-fail/init/packed_struct.rs:10:13
+>>        |
+>>     10 |     let _ =3D init!(Foo { a: -42, b: 42 });
+>>        |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>        |
+>>        =3D note: this struct is 1-byte aligned, but the type of this fie=
+ld may require higher alignment
+>>        =3D note: creating a misaligned reference is undefined behavior (=
+even if that reference is never dereferenced)
+>>        =3D help: copy the field contents to a local variable, or replace=
+ the reference with a raw pointer and use `read_unaligned`/`write_unaligned=
+` (loads and stores via `*p` must be properly aligned even when using raw p=
+ointers)
+>>        =3D note: this error originates in the macro `init` (in Nightly b=
+uilds, run with -Z macro-backtrace for more info)
+>>
+>> This was requested by Janne Grunau [1] and will most certainly be used
+>> by the kernel when we eventually end up with trying to initialize packed
+>> structs.
+>>
+>> Thus add an initializer attribute `#[disable_initialized_field_access]`
+>> that does what the name suggests: do not generate references to already
+>> initialized fields.
+>>
+>> There is space for future work: add yet another attribute which can be
+>> applied on fields of initializers that ask for said field to be made
+>> accessible. We can add that when the need arises.
 >
-> I think guard_attrs should just get the cfg ones, not including lint leve=
-ls.
-> Otherwise, `#[expect]` would be broken?
+> An alternative might be checking if the specific field is actually used l=
+ater
+> and only generate references if so. Although, that might be "too much mag=
+ic"?
 
-Oh yeah that is probably right. I do not yet have extensive attribute
-tests due to lack of time.
-
-Do you also think that only cfg ones should be included in the
-`#(#attrs)*` in the `quote!` above?
+Sounds like a good idea, I'll consider for a future series.
 
 Cheers,
 Benno
