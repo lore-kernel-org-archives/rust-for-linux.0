@@ -1,68 +1,66 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021117.outbound.protection.outlook.com [52.101.95.117])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020111.outbound.protection.outlook.com [52.101.196.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACF035BDBA;
-	Fri,  9 Jan 2026 13:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD5F328B47;
+	Fri,  9 Jan 2026 13:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.111
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767966319; cv=fail; b=haia+LZjr6R/HBToTcYLLC/zFpJEIVW2setaJTsv+kHOJsRxfTiAtRKuk4rUJaVmqrC7pzailDGtcx0By2kXfBvwmcchz6G+bpXYgnqkH9juMtFa/bz6Coe9aOXgxgQYvcUtBYfxPsllXlgDMN9I/bya7GZSewoMc/lPdVuKCvw=
+	t=1767966753; cv=fail; b=q/sZYf3/Ud12hRHySpNwt2nM2ESh3rsG/QWInWg9ij96uxRgCilOg503X8ETq8y1b8iZLtTVTuxJ3lykAVNVVGbVR+8ZkIL4GMUbMX5m6CbsjrzG04G4DQzzw5j0dBD9RNJCsEiZIaoazYTFXEDp+MzRj9M6yxgND/HO6Lid9j4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767966319; c=relaxed/simple;
-	bh=yFBvG41TmElG80PHUlc/AN8y3MwlqoKy5kvLjepjQm4=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=jTaQ3V/BxyGdZfLNB5TN1sZ7/1vYJ2KRZ4oAdp/fZaD6+JFNBuMcIAiZSZ7rhygKUFgdXr6p9AKZP1E72tDBNDXQwOEXPQIAkZg+xVVZgbjMDNKaHmnolEEVY/IUhx20UQjYNfv4QvAdgJJkNQegelOku6ek7Ssph77+7430XE8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Yr0dpfpn; arc=fail smtp.client-ip=52.101.95.117
+	s=arc-20240116; t=1767966753; c=relaxed/simple;
+	bh=9g8yd0Z6SDk+O42gtMpGZkITjAgLBLR1I+iDBUwxf9o=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Hqdm2Vak0Af+4xUHXbbIlBxhOCpn2pnriuGN8PQQbviwx2b0rvKmurq4Yx5gS4SOZZsaFSf7deY3pkF4ar6V/3GVRK37IyObY+LWkyJc76f/A01S4gQD9PZ4tGBU+QszMVxBH26Xp8FJb55HG7NYhp9HhnyJTUn8DxylZihs3UA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ElD0Ao6x; arc=fail smtp.client-ip=52.101.196.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Yr0dpfpn"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ElD0Ao6x"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j/t5rlPj4E1ZyWMkNX3sZT4PMtHY1ErHT0nIuVAS5DGgGFft4DY/KA+VPzUbVioVQX4eCY4R5ChBI1gUpstYeqtEmnTUII9je6CuP21eh1bpJgauAKtoNjSErSikC5D++u8m3oUFh+J5wjvd0tVld3aZUCYHioSpdyUn1710Gv8qdizck3O01zEL925/DbCj2y0Y5iIY6zInKQFl8XHzq0+W8kZ0fF/keI7CRVSRbqVArEPi4xIyMHkQgZdNr5KZ8wiD0TrHgW/KNWnKEi5rzU9RitD02SKDlRO4+QyAkgjh50BvY3wOGM8CMWV4dvWfzTB+/vX1tEyh6xms6WgMpQ==
+ b=oOWcX1SJLaaIjCux4mqbRZUrbzZbNoduTgWR310uk5YwZkP6zHxFk53YixxttRFKE17ORF2YnaT7axh0q4390qfwEsNKbVc5oqKNSWdJIKayzs0LbtPswMRjLZtyp/OR5sCxdFZKR/+pGieDxAK9Xr/632l8hI1Q4hPka/pBmofFn94RX7Vfqtas3gF1LOSD5tZZTOhEhuj7S9d9+4Q7H6tgU3wLZXUnGNJE1bc6leXm3G7fpslTh60oJiiSGPaJiaxV8Xh0LxVmjwgJZLHHUqtEhvw7K6QAhSuWEKRXPC/I9y0mw7HFEhE4jw3U+bdM43ZfDWKeSymVl+5eB63pRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SpW/43OJ9HreiEZmmR9R/mV3O98xPBBWR/cO0ngwiOg=;
- b=miwZ62sG8j8N3TVRNqLK5HW9/Wa8wlLTsv9drOhi/XSa/Ntmvci/iGHvE9OPiXJmVs1cXZH08OGAyfAGnup6Ji8tAyUhclLtDRrHxcalLSzGWP7vHiStCSJPUNtxOoLPwiy2VfL+OACeVs4iFA7VOgDNT3LW7hF25bYtbDnIExPkz9BuG/6/zp3IXFgioilnSNe6HrruVkZ9/AmVL5YVsVoJq2waG/AW/s/31zVagqGerROJ0TTOAdG7lSS76pAV+1XlR8snZ1B+My3VB1/ZCeJWB9v+b2E8NgSIwA53Y0WMgC4yBKhC7OZJVyh+aRd+8uviqg7f8GWFNTraAW46PA==
+ bh=gvu4zqRLdXQm2PJyJy8CWJnMY3ugoBmO/x7KLRhA84s=;
+ b=r6y+d4v1z7qiKKLUncXbG3QdDuAxBzoaxXmzedQCE/n1TnMxRcTWqSeL98Ar2OMCDxT60gsOLP/oaYnIRUoZFHN4PkKFeiDCUF2Cdyei+fyVQHzwDyYWKRBbZH2PMppVkOSi+1l7hwN56ZXXtv7pdMCA8+rsl1TYHu3ly/2O7gYvBRnE8wnva4HWrn3GDExqtYPnIL7dN3fMfwdv/xyPvqbWsFOf8zBrv2xxvqOB/VALamSeNcAVWiJZvDX0RvTNQd+B0OMaILHn0ux0LTbO/Owhl77qF3HQZmhoHnT8QLpkgD2qYBvdRarvpE83y34U+dDCp7UHAiKlBbm+fcLlbA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SpW/43OJ9HreiEZmmR9R/mV3O98xPBBWR/cO0ngwiOg=;
- b=Yr0dpfpnlVIJ20dis5XqzKr72xIalgWTX+nqlX4z6ej4PPnP1xwryX1VLryNRhkFaCbXwG5SlHqkCVk/qWnYU8h1SN/aHvAhZ2zR04bc/pSVMoBF00FbDamQtrXyKtP4DjWAcQtnEOznAidH25IymQ5i7QV7kgJELsP1Nbfe29o=
+ bh=gvu4zqRLdXQm2PJyJy8CWJnMY3ugoBmO/x7KLRhA84s=;
+ b=ElD0Ao6xjD4F/FDRIfxNOG8C+NWqTXo55TabBWgAiveGJhIKw+9IIqmaaxJyfgLZTD1uG13fdV7WIDlAg4QwI4g8oLX81OxouHzmRWzVRtDSwsuyHzbxHN1GRZUp6wACYYb6DcGm6JaF7T/cJLt4yewd1pIzRy0RJuhMgKNQ52s=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB7070.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1fb::5) with
+ by CWXP265MB3160.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:b2::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.5; Fri, 9 Jan
- 2026 13:45:11 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Fri, 9 Jan
+ 2026 13:52:28 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9499.003; Fri, 9 Jan 2026
- 13:45:11 +0000
+ 13:52:28 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 09 Jan 2026 13:45:10 +0000
-Message-Id: <DFK3R2EK1JGL.FFW73JGUSGP5@garyguo.net>
-Subject: Re: [PATCH 08/12] rust: pin-init: rewrite the initializer macros
- using `syn`
+Date: Fri, 09 Jan 2026 13:52:27 +0000
+Message-Id: <DFK3WN80DXEF.28VZXRATOJ4A8@garyguo.net>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 09/12] rust: pin-init: add `#[default_error(<type>)]`
+ attribute to initializer macros
 From: "Gary Guo" <gary@garyguo.net>
 To: "Benno Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>,
  "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
  Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Fiona Behrens" <me@kloenk.dev>, "Christian Schrefl"
- <chrisi.schrefl@gmail.com>, "Alban Kurti" <kurti@invicto.ai>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
 X-Mailer: aerc 0.21.0
 References: <20260108135127.3153925-1-lossin@kernel.org>
- <20260108135127.3153925-9-lossin@kernel.org>
-In-Reply-To: <20260108135127.3153925-9-lossin@kernel.org>
-X-ClientProxiedBy: LO0P265CA0011.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:355::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ <20260108135127.3153925-10-lossin@kernel.org>
+In-Reply-To: <20260108135127.3153925-10-lossin@kernel.org>
+X-ClientProxiedBy: LNXP123CA0018.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:d2::30) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -71,715 +69,246 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB7070:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4b8d981-a60f-4833-fc96-08de4f854ef8
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB3160:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64e85ffb-d6e6-43e0-156b-08de4f8653ad
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|376014|366016|7416014|921020|7142099003;
+	BCL:0;ARA:13230040|376014|10070799003|366016|7416014|1800799024|7053199007|7142099003;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RDVlUDdsWThyclNEWmd5T3puNEJXREtOZU1HVFBrYmZ5eHR1NEZzUE0xUkdG?=
- =?utf-8?B?MktPZ0E4QzZ1TlRPekdkcWpSS2hFOFg4aWVNaFJjTmlRZWN0K0RRNFpLa2ps?=
- =?utf-8?B?Z3VTYXR0UDd5elN6SWJZK3VhOXRNUnRQeHFvTGlGQXFNSEFtZGkrQXV4TUsy?=
- =?utf-8?B?aVZNMldKQWM5ZGZaazBJeHB5OGNNMWZhMm9xcGluYlNZT0lkQ2NKakp4bU9S?=
- =?utf-8?B?TnlWQWRERlJMeHBYZG4reXhiR1JXKytQd0xKYjlOSkNjN1RPMXc2ZHZpQ0h2?=
- =?utf-8?B?ZlNFZW56cG5MYWdXbFVKSzlkY0NaVUdwYzA0Y0xYSWxXbzZ0Nm1vM3BkN1RJ?=
- =?utf-8?B?YzRKc1ZITktwMnlucG9zNVFidWtQV0kxaW9uSXFRNEgrK01aditOOSt3WXpE?=
- =?utf-8?B?T0dreDVxQ0l2TFhvb0xiaTZzMWtvbFlhVHRwUkFoTWoxT3AwY3FIb3RmeU43?=
- =?utf-8?B?ampERWlqSFZSSmJFWTJubFo2ZHhZRndNUmNyakFtR1h0U2VYVzk1aGNEclcy?=
- =?utf-8?B?dlJ1VGNZdkVwKzIzQTFTbnpZTmpiUDl3aGovYWZTdkdtS0pjUDVibGNHbUJm?=
- =?utf-8?B?M3VNaGdJSHRKT3Ryc1pDeDQ0akEvNURKektvbW4raVZNTVROYVhiYnphdHJK?=
- =?utf-8?B?aDN4T2JBOUl2NGVlaElUaVhJeGxzbFVKdzRwbGJxWERoZHNwSTg1NHhCV0dP?=
- =?utf-8?B?ajdTV09KcFRDRHdNZHhWN21wNlBEaUlwOXRpNUNVZ2d3ZHFic1RnZHJjd3dP?=
- =?utf-8?B?RGNkaDArZkpzQWtRTTcvZkhmMU1JMUpJdGRUSEdJcUJHTTFsMWNlakxQdllX?=
- =?utf-8?B?WkthT2orSHUyN2N3UlFCbXh3bHdWZTIweHZYdXlFNklBTk5MZUtQYkh1Y0JL?=
- =?utf-8?B?cmF3WG9ibU4ya08zMldHdlg5TzJ5ek9aRXc1Y0ZvbkFMcmxkTElWYmo0bkc1?=
- =?utf-8?B?bTNLQmIzcHozbGNPRnVqOUtEWnEzSHU2akUxK2N1b0FsTk5Zem9TMGZCTUsy?=
- =?utf-8?B?TnExdHhNRGJodUF4cmJBUmdVMFl6QWN0d0MwWWc2UXkreVJhMndxTFY5eEto?=
- =?utf-8?B?blNydzhWL0NVeU9DbmlMcEYyUCtkZUUyck9RSGNDNnBIdDJJRnVGakw0SGRP?=
- =?utf-8?B?WjBZZVhZQ3lYeEdGbXcvQmp1UzJCVG4vYWhCbHpBNlF0TTJ1K3NtVE5kazds?=
- =?utf-8?B?VEhaQ2RxUUROalNZdGNVK2I0V1c2bzlHbzJYdlhUcHNnMmEwalhSSy9idEpP?=
- =?utf-8?B?TW5IOGpaWCtSbUt1NlJqRFluZzBVanhQYjhwaVllQ0xwZ3Rld1RUdFIyZ0Rp?=
- =?utf-8?B?V0doUGRPOVlwY2YybHI0TDd0Y0lIcy9IZXNhRVozdys1c2lOTTJmRHlLK1ZQ?=
- =?utf-8?B?SlVTU2pqZ0RWNWRRWVFaS1FSMDFaQ0dJWTlZRVB4cVgwbGpTTGFMcExZbklO?=
- =?utf-8?B?STcyNWNjVFdKbmpTZkNLUHhyZVArZVdQNGNEU0VLelhQSTVGbk9UWmwva1BT?=
- =?utf-8?B?UnJTZmVtVmtOVXk4U0c4YzZLU2tESTlRNHYrcjFsOVUxejQxSnZ4OFFZV1Fm?=
- =?utf-8?B?MnhmcTA2NzdCazlXeE5MSkN1SXoyZjJ1QTQyNUZsMU5ib0lZNDVYMUVZeHpL?=
- =?utf-8?B?ajJHOURTQ2tnKzRlNENIQkYweXRyYWcwUHVVM0h2OEc5dTI3ZGc0QldFeklo?=
- =?utf-8?B?Q29aTkhVczUzbmlkWUtKb1kvL0tMMmNqNlhRZEhRbnlkL2R1cUJuSVh2OEZT?=
- =?utf-8?B?SkhUbnc1NHJoSE03Y3J1clg0eGJTb2hFRFFWb1pvOHl6bjhIN05PYkdPMjh5?=
- =?utf-8?B?dGhsSFpkOUcvaXQvam81K25SSjhzc0dQWDV2U2t6YXljb1RWbUJ5NzZKZVlD?=
- =?utf-8?B?OUZWWTRTeXptQ2Mzd3RORHFNR0FQdmdOV213MFVMNFlrZnRJdHpXRDEyMUJH?=
- =?utf-8?B?eFYxUmxKRkRIMUx5WVpVYmtCQ2VieVNOdW5yZ2VqSTFSdjFEZ0pWeWRJRkFw?=
- =?utf-8?Q?MEC78u6fFCqXzIyjKfVRCLj4R+fu/s=3D?=
+	=?utf-8?B?bkZRby9tc3U0S21jYk8yNFYrdUFjTE10UUo4U084cHhORlVKYmpNY0pCK3I0?=
+ =?utf-8?B?ektod1VsQTlJWVVXZm9pdjM5ajJMWGRpRDRSaE54RWgvOFZ2ME1SblNDREhN?=
+ =?utf-8?B?OXFON3pidlhYV0J3b3BCQTZhYVJ1RzRqN2U1cG5Ka3VsdmRRU1M1K2Q1d1pX?=
+ =?utf-8?B?eUE0a2J2eDRld3p3NllOdU9oNkhhbDNmTWRlaTQyai9VTytZOVZsa3crd0Jj?=
+ =?utf-8?B?Z0tNVjZDZ1I4TjF4VnZzZitGR2xKRFBFd0prKytvQllWcUV2UDhRdVdLNStE?=
+ =?utf-8?B?NlVOcitEUFBOU2o1V3ZmazRyUXc0WGRDOGdIZ1RWcDA1bEZWd2ZZZGI1S0pT?=
+ =?utf-8?B?VUszV0V4Mm8wbStXTkZITnMxNG5Gc3lnQnR5aG1xWUtieEU1R2JQdlJ1am1u?=
+ =?utf-8?B?LzUrT1ArS0hxTnJiUHNnNzNlK004a1Nyd0VJT21pbzVyL202WStvWmJpeDRy?=
+ =?utf-8?B?QmRXclZzR2FJWkp6MkhId1NLdXlCUFVVaXpHU2FUK3NQWUFDWUtOVjN6Y0Fx?=
+ =?utf-8?B?OHBsdkVOUUhkNlF0L0YwYVZaQitjc0NYaGUxdnJmOTIrMFcyNTVzbXhxd2Rv?=
+ =?utf-8?B?RUFIN0JTMFROejZaSzA5aUN4S0tRdzY4S3RHMmZwWkVEWWhid3VaQkJBN3Jz?=
+ =?utf-8?B?QlY3L0g1K1pMVVlncnpreGxGWWdlNUhjNGlCMzMranphall1a3NMVklSbUls?=
+ =?utf-8?B?LytScEVBNEh4Z3QxTmFRS0VLTFlvYm1GK2VIazJzQWV5YkdJWE1oc0w0Qk94?=
+ =?utf-8?B?ZEdyMjBvS1UvM3lQWjcxTVd4ZkFqdlBMdzhleTg1MHFpaGdiaUpjaFNmaldN?=
+ =?utf-8?B?eEVqS0ZxRmFWQWJVSzJyS25mTjFlYjBrT1lRRTFKWERJVTdYYU03NGF6S1gz?=
+ =?utf-8?B?K3UvQWJjYTFYdnQrTTBPTHZRUE1SOGd6S3gvTzFSK2g1N1hqZnVOY1M1dEY2?=
+ =?utf-8?B?U3BaWnpRQ3M4eDVqcTFYN3hhN1NhRWdxM1B0MlFMUnhydVdKcDRlaG5sb05m?=
+ =?utf-8?B?UWV6aHIzdTFzT013Z1lya3h3ZGVtclhwOXhDNjZxNzl0Q3VLQ2ttUzl4N0Zi?=
+ =?utf-8?B?V0hHSkR3MUM0TmxTbnowcDdGUkJUbngxOVlKR2pKSEdZR0xJVDlFYTEyWUFi?=
+ =?utf-8?B?L1RsZ0FWeG1BRzV2bm1pb0ppMzZkUHliMWlxNFF6NFZXZ0QyNkhhUFo3UWtU?=
+ =?utf-8?B?clVCN25VNEZVd2JHM0l6SE5EZWJVYWtlUUdGUHh4VWZIa1czMDNHV3VKclp2?=
+ =?utf-8?B?SUR4cGlYc3hlRUNtZnI0OVJ6Z016amd0cTAwRG8zTUdPOC9aUC9RRGtoYndD?=
+ =?utf-8?B?dkdKZm5SMnNQdTVIQ29LTGVJUmZOMGs2WCswZUY3MFdRS1ROd1ZWV3N4MzlE?=
+ =?utf-8?B?ck0vOHB2c3ZRMUVtS29oOGdRVEltZUJKNm5KK2t4WWFiK2RreFZ5ODlqWDR2?=
+ =?utf-8?B?SlhGeDJiRTNyUnJMRFFDeUljenRpeWYxc01HMXBhWTRpaFMwVHZpMG9PL3pa?=
+ =?utf-8?B?K0d2QytBWHdwS0hBRHJqZk41ZUo5OE5QdDV5emM1cno3OWxuSEZLTldEaWRE?=
+ =?utf-8?B?VzIyRm1IakVsWXZ1bFFmSXhhLzFVR1c1SmVRdVdGLy9jWXUzSGpuUU1VTlJX?=
+ =?utf-8?B?NEw5OWd2dHhIMVA3Z2xMNkZkQWd6VEhmUDM3a3BtOWxybURtcEhKMktCSVlE?=
+ =?utf-8?B?bGx4dVF0dEE3cG5LMlJTU2kxZHBxVnh2K1N6Z1VrSlBGVURvU3pTdnlwVGhl?=
+ =?utf-8?B?LzFrL2tVQUtMTElpNXEyQXZLTWFBRi96U0RPK3lJUUxOV1hXcHRRWDhScEpK?=
+ =?utf-8?B?RFp2b1hock50V1lwQWJjNnFCb0pjMTN2Q2wwYVJmV2NySUs2MGUyNVlxWDFn?=
+ =?utf-8?B?RGhYVDE3U3QwdFRPemk4WS9CdHRubzZsaFVaMll2cVF6aERLc1VYMDVhL3F6?=
+ =?utf-8?Q?0DeQnR//a8hHWiaHnNpTh3jRVrXmJBMz?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(366016)(7416014)(921020)(7142099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(366016)(7416014)(1800799024)(7053199007)(7142099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?K1Q3SUVIcHFlbGFESWdaUUhwL3dNV2tTckpsRk5zbndpQTFiVW45bUptNm1D?=
- =?utf-8?B?UFNvOXY2dEc1WW11QkthSDlzUnFTSjRKQlVvME0yQ3IzSmR0WkdTMDl4dTho?=
- =?utf-8?B?czU5Qi92emVpK0Q4RnRtbWVKd05oTkxvSng1ZDR6SHVxZS9rTStDOFpQRjZ6?=
- =?utf-8?B?am1tajRNeFMvTCtlbHJhOURKTEljdko0NmlsV2JVcUkyaHVxenJJejBXZ2dI?=
- =?utf-8?B?RGRxT3NiQW1vbUlzTlp4MWJSMzJaeXhVSVErc0dmNEJ2MzQ0cERKenBJZUlQ?=
- =?utf-8?B?MjlmajQzWkNnWnNYbExmK2gvSEJ2TnN1eG5LWVJJWmdBVlpRbUZyTStBU2w3?=
- =?utf-8?B?WnpoRGtYQmRBaFlmeGVMNmZqcTNJeVNiLzIyU2tvWjJSUzFWVVg1L2I4eHRh?=
- =?utf-8?B?MmFOdkhVbGpNditCejZMTld1ck0wbW9HZTVBWTUrSWRqeVI4dDBtNmxuU2dC?=
- =?utf-8?B?SjV5citpN0lrV1g3RFpZZ25ZaUR6Ym4yTjV2VVE0Rmd2aWlBMFJ4clowN2du?=
- =?utf-8?B?N3RlYjMxUEE4dDlGUEJSTUpxV2ppdzQ0N1lUcnA2WmNQK1Y0WkRNL1Zvbld1?=
- =?utf-8?B?ZWdjSEJOaXhTbzluNUcrZzJQUXp3Y2ZvRTYzcko1OVh1SnpibUhDL1RjTnRm?=
- =?utf-8?B?NjI2OS9xYmhSbG1mZ1dxZEZhK2VUUHNuYkNncnNYamJPQnBUYVZoR0xwL3pN?=
- =?utf-8?B?d1JFaHVFTlJPbWZTM2NRZU95MHF0TG5QNmRzY3BFRHFWVVo4bmRhVytkMkZn?=
- =?utf-8?B?TXlUcmwvTHJNUnZHZVlhZGcrZVRnejFmbjExVUFCbjdtRWRGNDVPNzRpN1li?=
- =?utf-8?B?akVUYkQ5aU9LbGFxUWJEWlBiSGtWM1dMTlQyZDIvdkdBWnhFQ2YvU2YrN2dh?=
- =?utf-8?B?dEk4ZFZFbmI1aXpOZFY4aTUwelNucGNOSThna1VFa3NxaTFTdFZrWUc0ZWhD?=
- =?utf-8?B?K0lnOTJpMyttOWhpeGowTVhkTnVYYllPMzE2N0ZBRWMrR0NSSFFXUXRnM05o?=
- =?utf-8?B?cDQzUk1CUUdhbTVYVDlXMXEyK05rVXoyYzFCcS9oUEdrcTNpM0wxWVZqZDZ3?=
- =?utf-8?B?S1QyYmNvOERNWHI0NVJ0ODJKRVpDb05mYkVFWWtEUm9SSEwwTVZmd0dhQnl4?=
- =?utf-8?B?SEZOejkxR1hmU2VjaDgyWUtra2hyUmxRYzJZTldwM1pjZkhMUm9ZUUpJRDgz?=
- =?utf-8?B?RjIvejdRcEVBQjFDWjdBNVBsRnJIdUdBOVpwNkV4OVY2TmxvczhkeUsyanBk?=
- =?utf-8?B?cmFRVmw4SzZKeGR6czFyUS9JSGMraXpqUEdtMDNQTlFtSnAwKzhVajd5L0FW?=
- =?utf-8?B?SHMxN3U3VStnSi9rbFZ0OGpYaFBRbE9GTHd4Rk8rZk5VNjB2VjRrWXVEU1R3?=
- =?utf-8?B?WHlOazdiNkx2UkxnbU9HTWU4UGVBL3I4aDlIV1N6a01Qb2Q1KzRwdXVUa21L?=
- =?utf-8?B?REpOaVNVZ1duTkFhVlZic29paTJZdTZvQWlGVmFJcnpIcjlmOW00ME45eDMy?=
- =?utf-8?B?Z0kyTERvNjFyRjR6S0JIQmREcUFmc2YrZnpOWGZDMUJxTWRFVGVzUXRjczdB?=
- =?utf-8?B?RTBHREtBMHdJMnJERDZHMHM2YjBoQ0d4cDlDVVQrazJwRCsxeXZ2cGlIUU1w?=
- =?utf-8?B?TWl2bm5ZMlNYYVROc0lQcTZSd3lkcEFjWXA5cmMyTkk0T05UVGNJcFVYL0RB?=
- =?utf-8?B?dGFxVTRpSUVIYit1MmxqMXkrd3RubmxNekpYUHVKWFBDMmp0MjRDV3IyMjVJ?=
- =?utf-8?B?TEYxNUVCMzNSTXEzRlVhdFpvK2VDeGFlN2JqT0d6bEczQWNIMkZ2MmVpajFo?=
- =?utf-8?B?Zyt3WTlKSFMwaDR5dzk3YVBkaFZ4bnRDVjhJalpQOG9QZ1M3MjlUbXppV0xV?=
- =?utf-8?B?QkZHTU5ubmUzZGpHU1ZMNmo4ZC94Mm1TbUxvZWY1WmpSbWs4ejVqaklxYWNw?=
- =?utf-8?B?VTg4NktrRlJGbHM5bFNIWkRwaG9rRDZ2b0xpQTRnTlFld1lJajZuL3lXVDFH?=
- =?utf-8?B?enp3YmFQWHUyeE96VTI3T3JEVVJybkhvMFRheERyVFhMZkx3bHExaFFJMjM3?=
- =?utf-8?B?SEdSVS8valNVRVJONXpTSkhObUZLSC9KWmJQcVRiVlQ2QVJxZjhZd3ZJSUhZ?=
- =?utf-8?B?OWd1T2g4cThzYU5Lc1ZpRExTbE9DMlkyMWZZMGtReDU5MkFyZWMralBmSHNP?=
- =?utf-8?B?R0cxZDd3RzFJd2lUMDNQQWRzckR5QStWbXJualNmZGtZOWF2Q0kwUFNHZU50?=
- =?utf-8?B?M0FpUzVJdHZaM0hrejNzZUJENnZ2UkFEYnhyUzBEQ0t1OWs5ZklMUzlnNjk4?=
- =?utf-8?B?eGlXMGxpaS8wdTFKUUFCMTJIOTRpYysvMWtka2UySkUrMENYdG9YZz09?=
+	=?utf-8?B?U25IMnd1Ym5WMXdNUVBNL0Q2RjI0MHpRNEFDRVZCajNteUtsU21CeDVIZEVU?=
+ =?utf-8?B?eWVhWE9PZG5YNDY3bExwSUUxZUVRZUErNkYxMEZNemV0c0k1YkRVNDUrTHFD?=
+ =?utf-8?B?aHVnUEJzNFJ5YjM0YlUyNWZOSUVxM3kyZXdvc1JJVjBmd1FmRUZWa0ttdzZI?=
+ =?utf-8?B?V2FkRmMvZEdLbXVBZzQ2WUN5aDNvV254NVl5VEdUdjBFOFY4NFkrUEhZdWV3?=
+ =?utf-8?B?bWFoMVlHcnJzSUhkU1RVZG5PZ2Jwc0wrKzdjdkhqUG5EMUd3alVoMlMxYkhZ?=
+ =?utf-8?B?a1U2SDZhL0ZweFMzTERNYnRVZitnaU4yT003eEpUdjQ4c1VRc3g0K0JrK3I5?=
+ =?utf-8?B?Z3NvU3QwVDg0MVZKaXhudmx6VEcxM1BRTGR5WTl0Z0VUY3J0R1dpa29KbUE3?=
+ =?utf-8?B?NDdGdkN0QU9XRGcwSEVUT1NLRVZkZzd6ZjNzTkdzQ0pLb1hWK05jSDZmNmVN?=
+ =?utf-8?B?UlQrUTRQbWJZOU12bXpiejd2ZlhnQXUrelM5WmVaWDlTa0FqK1pESzBWSW80?=
+ =?utf-8?B?OVJNSkZrVnZPMTdSQ0Y0U3B5YTg1dXRpZjlKVlZ6REQxaTZRS1ZBUTI0Mlcy?=
+ =?utf-8?B?eG5ESzl1N1g3NmdYVjdsVzVnMnFCbytmMXl6Sk9lcEp5ZjNhaW5zcFVON3dh?=
+ =?utf-8?B?UnlXaHo4bEhjUXVSb210TmdBYnJtMjFDRVRQd0dlRm5NcmIxMjZwbm9VbzUr?=
+ =?utf-8?B?b0ZxQkNwelAwZWpNMzF1TXJ1YnFscCtMZkkvRHBlZGM4S29yU2FNTS9lV1My?=
+ =?utf-8?B?TlV2TUVDZ0s0bktKT3NWSDhiMFZaKzRMOWd3M1BVYlcvOGRrK1VWQzN3Mk5W?=
+ =?utf-8?B?RWZHemEvaWpKMGJyMGJaYU56aldOdTFpOWVGYVE3d2paVmMrdlY2VlZXUzVx?=
+ =?utf-8?B?ZnEyazFWb2RxZEtTMzFQcjNnekFrOFVYVmxmalp6MFVkWlB4L2ZSbGtCOE0w?=
+ =?utf-8?B?LyswUHMzM2xrc0VhbDh1OEN3Y1prTzd5NzJWYWlZWVZPbWpVRXMvWEZCVE1t?=
+ =?utf-8?B?ZFI4WnYyR0JVdUgxNlQzUVVQVTB6STZSUDlGVlFnNVlaWi80OHIybVBNU0N0?=
+ =?utf-8?B?WDFEKzJMMFpIWklMRFBGTTk5Y0pGRjBLR3owQ1ZSL2MrUEFvRUtjdUV5eVh1?=
+ =?utf-8?B?U2VCWWdUTWpjSTRLTm11cGM4bUVWVzFIUXdBbVlJWlNRckRjYkI2WjdTZ1Bx?=
+ =?utf-8?B?L1BoeHJ0dllCblUwZHJTbUlmRlJaVDhYakdrL3NjZTlYM1Q5L3ZLaDRwTTdQ?=
+ =?utf-8?B?M2ZZai9BTjNNY1Btc3EvVUFrWlNIalNYZlNOL3BmZWVkVHpua1BCSVd5MHlL?=
+ =?utf-8?B?T1VORGJSMGFWMGovaXNndi8wMW14a3F2Ymg2OCtvTHB1dXliT0U2RnZiVXFu?=
+ =?utf-8?B?cGdvdkhJd1gxa1VmcjlWemNlWGwxU0xWcVhieHRJb3lLM3RVblBXa0V3T2RU?=
+ =?utf-8?B?ZndWaTkvcEZpVDdQSGZjMXhRdE5HNXJkczVUdThjM1pzUXo2UitGcEIwMnN0?=
+ =?utf-8?B?THVJWlgzeFhUQWZXMFp3UVd2bjQ3N2JOU3BEZ1pTQ0pFZHp4Sk9sTzRqSy9Q?=
+ =?utf-8?B?YkdlMWowUXV1R2FoT09EcjhsODBraU5mUk0wczZlYVZzUlVVTVRPMkVmcFNv?=
+ =?utf-8?B?YjVvZkJnSEYzOGQzTW9pL1ZSLzk1NlVFR3JKOUVtMzdvTnBkMTZLZnZjQWJJ?=
+ =?utf-8?B?c0FyR1FROE1tMWc3ZHVkZnJqbE9CZE9aVEp4Nm5WTWZyT2xBMjZFUXNqRmxW?=
+ =?utf-8?B?RmMwVVJtSEVoN2FpZVNFYWFKTExZMGxhVEE2ckhiK1dXNzVFaHRqbHZ0ZEVk?=
+ =?utf-8?B?U0RqaE9zSTlvcFl1M0hjMWVQZnBuWU9SY2NSSjA0Q1Q2VTcxY25GaUxkNVNY?=
+ =?utf-8?B?Qi9SRWpxMmVXWmoycmNxTUVBMzRzeWxMZDJ5Rm9oV1kxT3QzSTlCTXA2VUdI?=
+ =?utf-8?B?dHFibENzWVJQSjgreDFKZ0NybE9DQjBEd1VrWWxGQmpHTy9YN1FuWU9SalFZ?=
+ =?utf-8?B?OENHY05vMVdSM1VaVUFzb0x4SERsc2Npd3hYeExjQUxqUWFMMjBlM0NlTHVY?=
+ =?utf-8?B?cXdkVWl4OGRTd2ZxN1MzTFdaWXpkSG5aSi9lUmY2YXlrbHZiRUVxOWJNSWNY?=
+ =?utf-8?B?M0FQenBKSjgzaTRxSG1TNm1CRStIdC9HTUxVMGg3dEZjck9aVklPdENFc0Fl?=
+ =?utf-8?B?TFRJckRsRFlzTWpueEY0LysrUGtpb0syeFZZdExocU1ObEI0OE9BMWJVZTdD?=
+ =?utf-8?B?ZnVJWElPTHdCMENvQ3gzZ0grUGxhZ0kzT1p6L3E1dmgzU0JPRWZsT3d1bjgz?=
+ =?utf-8?B?NzNVYjNDM1hxNDNCSVVIVjQxR1p0ekFtaFFNL0lmTVVSZWRQZ0luUT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4b8d981-a60f-4833-fc96-08de4f854ef8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64e85ffb-d6e6-43e0-156b-08de4f8653ad
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 13:45:10.8390
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 13:52:28.1943
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4VX6lB8BinJPcpDzKki/v/uhQ5bMovBhXmJO+TyBmOaUCw+vTwuN4Jq7NEcasdXjLu78UQROsFHPeo3IXbRj9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7070
+X-MS-Exchange-CrossTenant-UserPrincipalName: y2oRsxQ1sehFyaysdn4D6ba0vDkbCd5f9d2ckaNLPToa0AACz1lPrtwwVxCQDDrdQAYMl+wVGg9EZWwzVPKZsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3160
 
 On Thu Jan 8, 2026 at 1:50 PM GMT, Benno Lossin wrote:
-> Rewrite the initializer macros `[pin_]init!` using `syn`. No functional
-> changes intended aside from improved error messages on syntactic and
-> semantical errors. For example if one forgets to use `<-` with an
-> initializer (and instead uses `:`):
+> The `#[default_error(<type>)]` attribute can be used to supply a default
+> type as the error used for the `[pin_]init!` macros. This way one can
+> easily define custom `try_[pin_]init!` variants that default to your
+> project specific error type. Just write the following declarative macro:
 >
->     impl Bar {
->         fn new() -> impl PinInit<Self> { ... }
->     }
->
->     impl Foo {
->         fn new() -> impl PinInit<Self> {
->             pin_init!(Self { bar: Bar::new() })
+>     macro_rules! try_init {
+>         ($($args:tt)*) =3D> {
+>             ::pin_init::init!(
+>                 #[default_error(YourCustomErrorType)]
+>                 $($args)*
+>             )
 >         }
 >     }
 >
-> Then the declarative macro would report:
->
->     error[E0308]: mismatched types
->       --> tests/ui/compile-fail/init/colon_instead_of_arrow.rs:21:9
->        |
->     14 |     fn new() -> impl PinInit<Self> {
->        |                 ------------------ the found opaque type
->     ...
->     21 |         pin_init!(Self { bar: Bar::new() })
->        |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->        |         |
->        |         expected `Bar`, found opaque type
->        |         arguments to this function are incorrect
->        |
->        =3D note:   expected struct `Bar`
->                found opaque type `impl pin_init::PinInit<Bar>`
->     note: function defined here
->       --> $RUST/core/src/ptr/mod.rs
->        |
->        | pub const unsafe fn write<T>(dst: *mut T, src: T) {
->        |                     ^^^^^
->        =3D note: this error originates in the macro `$crate::__init_inter=
-nal` which comes from the expansion of the macro `pin_init` (in Nightly bui=
-lds, run with -Z macro-backtrace for more info)
->
-> And the new error is:
->
->     error[E0308]: mismatched types
->       --> tests/ui/compile-fail/init/colon_instead_of_arrow.rs:21:31
->        |
->     14 |     fn new() -> impl PinInit<Self> {
->        |                 ------------------ the found opaque type
->     ...
->     21 |         pin_init!(Self { bar: Bar::new() })
->        |                          ---  ^^^^^^^^^^ expected `Bar`, found o=
-paque type
->        |                          |
->        |                          arguments to this function are incorrec=
-t
->        |
->        =3D note:   expected struct `Bar`
->                found opaque type `impl pin_init::PinInit<Bar>`
->     note: function defined here
->       --> $RUST/core/src/ptr/mod.rs
->        |
->        | pub const unsafe fn write<T>(dst: *mut T, src: T) {
->        |                     ^^^^^
->
-> Importantly, this error gives much more accurate span locations,
-> pointing to the offending field, rather than the entire macro
-> invocation.
->
 > Signed-off-by: Benno Lossin <lossin@kernel.org>
 > ---
->  rust/pin-init/internal/src/init.rs | 437 +++++++++++++
->  rust/pin-init/internal/src/lib.rs  |  21 +
->  rust/pin-init/src/lib.rs           |  56 +-
->  rust/pin-init/src/macros.rs        | 951 -----------------------------
->  4 files changed, 460 insertions(+), 1005 deletions(-)
->  create mode 100644 rust/pin-init/internal/src/init.rs
->  delete mode 100644 rust/pin-init/src/macros.rs
+>  rust/pin-init/internal/src/init.rs | 53 +++++++++++++++++++++++++++---
+>  1 file changed, 49 insertions(+), 4 deletions(-)
 >
 > diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/=
 src/init.rs
-> new file mode 100644
-> index 000000000000..c02a99692980
-> --- /dev/null
+> index c02a99692980..e14bacc88f41 100644
+> --- a/rust/pin-init/internal/src/init.rs
 > +++ b/rust/pin-init/internal/src/init.rs
-> @@ -0,0 +1,437 @@
-> +use proc_macro2::{Span, TokenStream};
-> +use quote::{format_ident, quote, quote_spanned};
-> +use syn::{
-> +    braced,
-> +    parse::{End, Parse},
-> +    parse_quote,
-> +    punctuated::Punctuated,
-> +    spanned::Spanned,
-> +    token, Block, Expr, ExprCall, ExprPath, Ident, Path, Token, Type,
-> +};
-> +
-> +pub struct Initializer {
-> +    this: Option<This>,
-> +    path: Path,
-> +    brace_token: token::Brace,
-> +    fields: Punctuated<InitializerField, Token![,]>,
-> +    rest: Option<(Token![..], Expr)>,
-> +    error: Option<(Token![?], Type)>,
+> @@ -6,10 +6,11 @@
+>      parse_quote,
+>      punctuated::Punctuated,
+>      spanned::Spanned,
+> -    token, Block, Expr, ExprCall, ExprPath, Ident, Path, Token, Type,
+> +    token, Attribute, Block, Expr, ExprCall, ExprPath, Ident, Path, Toke=
+n, Type,
+>  };
+> =20
+>  pub struct Initializer {
+> +    attrs: Vec<InitializerAttribute>,
+>      this: Option<This>,
+>      path: Path,
+>      brace_token: token::Brace,
+> @@ -50,23 +51,44 @@ fn ident(&self) -> Option<&Ident> {
+>      }
+>  }
+> =20
+> +enum InitializerAttribute {
+> +    DefaultError(DefaultErrorAttribute),
 > +}
 > +
-> +struct This {
-> +    _and_token: Token![&],
-> +    ident: Ident,
-> +    _in_token: Token![in],
+> +struct DefaultErrorAttribute {
+> +    ty: Type,
 > +}
 > +
-> +enum InitializerField {
-> +    Value {
-> +        ident: Ident,
-> +        value: Option<(Token![:], Expr)>,
-> +    },
-> +    Init {
-> +        ident: Ident,
-> +        _left_arrow_token: Token![<-],
-> +        value: Expr,
-> +    },
-> +    Code {
-> +        _underscore_token: Token![_],
-> +        _colon_token: Token![:],
-> +        block: Block,
-> +    },
-> +}
-> +
-> +impl InitializerField {
-> +    fn ident(&self) -> Option<&Ident> {
-> +        match self {
-> +            Self::Value { ident, .. } | Self::Init { ident, .. } =3D> So=
-me(ident),
-> +            Self::Code { .. } =3D> None,
+>  pub(crate) fn expand(
+>      Initializer {
+> +        attrs,
+>          this,
+>          path,
+>          brace_token,
+>          fields,
+>          rest,
+> -        mut error,
+> +        error,
+>      }: Initializer,
+>      default_error: Option<&'static str>,
+>      pinned: bool,
+>  ) -> TokenStream {
+>      let mut errors =3D TokenStream::new();
+> +    let mut error =3D error.map(|(_, err)| err);
+> +    if let Some(default_error) =3D attrs.iter().fold(None, |acc, attr| {
+> +        #[expect(irrefutable_let_patterns)]
+> +        if let InitializerAttribute::DefaultError(DefaultErrorAttribute =
+{ ty }) =3D attr {
+> +            Some(ty.clone())
+> +        } else {
+> +            acc
 > +        }
+> +    }) {
+> +        error.get_or_insert(default_error);
 > +    }
-> +}
-> +
-> +pub(crate) fn expand(
-> +    Initializer {
-> +        this,
-> +        path,
-> +        brace_token,
-> +        fields,
-> +        rest,
-> +        mut error,
-> +    }: Initializer,
-> +    default_error: Option<&'static str>,
-> +    pinned: bool,
-> +) -> TokenStream {
-> +    let mut errors =3D TokenStream::new();
-
-Use Vec<syn::Error> perhaps?
-
-> +    if let Some(default_error) =3D default_error {
-> +        error.get_or_insert((Default::default(), syn::parse_str(default_=
+>      if let Some(default_error) =3D default_error {
+> -        error.get_or_insert((Default::default(), syn::parse_str(default_=
 error).unwrap()));
-> +    }
-> +    let error =3D error.map(|(_, err)| err).unwrap_or_else(|| {
-> +        errors.extend(quote_spanned!(brace_token.span.close()=3D>
-> +            ::core::compile_error!("expected `? <type>` after `}`");
-> +        ));
-> +        parse_quote!(::core::convert::Infallible)
-> +    });
-
-How about
-
-    let error =3D error.map_or_else(|(_, err)| err, || {
-        if let Some(default_error) =3D default_error {
-            syn::parse_str(default_err).unwrap()
-        } else {
-            errors.push(Error::new_spanned(brace_token.span.close(),
-                "error type must be explicitly specified with `? <type>` af=
-ter `}`"
-            );
-            parse_quote!(::core::convert::Infallible)
-        }
-    }));
-
-> +    let slot =3D format_ident!("slot");
-> +    let (has_data_trait, data_trait, get_data, init_from_closure) =3D if=
- pinned {
-> +        (
-> +            format_ident!("HasPinData"),
-> +            format_ident!("PinData"),
-> +            format_ident!("__pin_data"),
-> +            format_ident!("pin_init_from_closure"),
-> +        )
-> +    } else {
-> +        (
-> +            format_ident!("HasInitData"),
-> +            format_ident!("InitData"),
-> +            format_ident!("__init_data"),
-> +            format_ident!("init_from_closure"),
-> +        )
-> +    };
-> +    let init_kind =3D get_init_kind(rest, &mut errors);
-> +    let zeroable_check =3D match init_kind {
-> +        InitKind::Normal =3D> quote!(),
-> +        InitKind::Zeroing =3D> quote! {
-> +            // The user specified `..Zeroable::zeroed()` at the end of t=
-he list of fields.
-> +            // Therefore we check if the struct implements `Zeroable` an=
-d then zero the memory.
-> +            // This allows us to also remove the check that all fields a=
-re present (since we
-> +            // already set the memory to zero and that is a valid bit pa=
-ttern).
-> +            fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
-> +            where T: ::pin_init::Zeroable
-> +            {}
-> +            // Ensure that the struct is indeed `Zeroable`.
-> +            assert_zeroable(#slot);
-> +            // SAFETY: The type implements `Zeroable` by the check above=
-.
-> +            unsafe { ::core::ptr::write_bytes(#slot, 0, 1) };
-
-Can this be `#slot.write(::pin_init::zeroed())`?
-
-> +        },
-> +    };
-> +    let this =3D match this {
-> +        None =3D> quote!(),
-> +        Some(This { ident, .. }) =3D> quote! {
-> +            // Create the `this` so it can be referenced by the user ins=
-ide of the
-> +            // expressions creating the individual fields.
-> +            let #ident =3D unsafe { ::core::ptr::NonNull::new_unchecked(=
-slot) };
-> +        },
-> +    };
-> +    // `mixed_site` ensures that the data is not accessible to the user-=
-controlled code.
-> +    let data =3D format_ident!("__data", span =3D Span::mixed_site());
-
-Looks like this can just be using `Ident` constructor.
-
-> +    let init_fields =3D init_fields(&fields, pinned, &data, &slot);
-> +    let field_check =3D make_field_check(&fields, init_kind, &path);
-> +    quote! {{
-> +        // We do not want to allow arbitrary returns, so we declare this=
- type as the `Ok` return
-> +        // type and shadow it later when we insert the arbitrary user co=
-de. That way there will be
-> +        // no possibility of returning without `unsafe`.
-> +        struct __InitOk;
+> +        error.get_or_insert(syn::parse_str(default_error).unwrap());
+>      }
+> -    let error =3D error.map(|(_, err)| err).unwrap_or_else(|| {
 > +
-> +        // Get the data about fields from the supplied type.
-> +        // SAFETY: TODO
-> +        let #data =3D unsafe {
-> +            use ::pin_init::__internal::#has_data_trait;
-> +            // Can't use `<#path as #has_data_trait>::#get_data`, since =
-the user is able to omit
-> +            // generics (which need to be present with that syntax).
-> +            #path::#get_data()
-> +        };
-> +        // Ensure that `#data` really is of type `#data` and help with t=
-ype inference:
-> +        let init =3D ::pin_init::__internal::#data_trait::make_closure::=
-<_, __InitOk, #error>(
-> +            #data,
-> +            move |slot| {
-> +                {
-> +                    // Shadow the structure so it cannot be used to retu=
-rn early.
-> +                    struct __InitOk;
-> +                    #zeroable_check
-> +                    #this
-> +                    #init_fields
-> +                    #field_check
-> +                }
-> +                Ok(__InitOk)
-> +            }
-> +        );
-> +        let init =3D move |slot| -> ::core::result::Result<(), #error> {
-> +            init(slot).map(|__InitOk| ())
-> +        };
-> +        // SAFETY: TODO
-> +        let init =3D unsafe { ::pin_init::#init_from_closure::<_, #error=
->(init) };
-> +        init
-> +    }}
-> +}
-> +
-> +enum InitKind {
-> +    Normal,
-> +    Zeroing,
-> +}
-> +
-> +fn get_init_kind(rest: Option<(Token![..], Expr)>, errors: &mut TokenStr=
-eam) -> InitKind {
-> +    let Some((dotdot, expr)) =3D rest else {
-> +        return InitKind::Normal;
-> +    };
-> +    match &expr {
-> +        Expr::Call(ExprCall { func, args, .. }) if args.is_empty() =3D> =
-match &**func {
-> +            Expr::Path(ExprPath {
-> +                attrs,
-> +                qself: None,
-> +                path:
-> +                    Path {
-> +                        leading_colon: None,
-> +                        segments,
-> +                    },
-> +            }) if attrs.is_empty()
-> +                && segments.len() =3D=3D 2
-> +                && segments[0].ident =3D=3D "Zeroable"
-> +                && segments[0].arguments.is_none()
-> +                && segments[1].ident =3D=3D "init_zeroed"
-> +                && segments[1].arguments.is_none() =3D>
-> +            {
-> +                return InitKind::Zeroing;
-> +            }
-> +            _ =3D> {}
-> +        },
-> +        _ =3D> {}
-> +    }
-> +    let span =3D quote!(#dotdot #expr).span();
-> +    errors.extend(quote_spanned!(span=3D>
-> +        ::core::compile_error!("expected nothing or `..Zeroable::init_ze=
-roed()`.");
-> +    ));
-> +    InitKind::Normal
-> +}
-> +
-> +/// Generate the code that initializes the fields of the struct using th=
-e initializers in `field`.
-> +fn init_fields(
-> +    fields: &Punctuated<InitializerField, Token![,]>,
-> +    pinned: bool,
-> +    data: &Ident,
-> +    slot: &Ident,
-> +) -> TokenStream {
-> +    let mut guards =3D vec![];
-> +    let mut res =3D TokenStream::new();
-> +    for field in fields {
-> +        let init =3D match field {
-> +            InitializerField::Value { ident, value } =3D> {
-> +                let mut value_ident =3D ident.clone();
-> +                let value_prep =3D value.as_ref().map(|value| &value.1).=
-map(|value| {
-> +                    // Setting the span of `value_ident` to `value`'s sp=
-an improves error messages
-> +                    // when the type of `value` is wrong.
-> +                    value_ident.set_span(value.span());
-> +                    quote!(let #value_ident =3D #value;)
-> +                });
-> +                // Again span for better diagnostics
-> +                let write =3D quote_spanned!(ident.span()=3D> ::core::pt=
-r::write);
-> +                let accessor =3D if pinned {
-> +                    let project_ident =3D format_ident!("__project_{iden=
-t}");
-> +                    quote! {
-> +                        // SAFETY: TODO
-> +                        unsafe { #data.#project_ident(&mut (*#slot).#ide=
-nt) }
-> +                    }
+> +    let error =3D error.unwrap_or_else(|| {
+>          errors.extend(quote_spanned!(brace_token.span.close()=3D>
+>              ::core::compile_error!("expected `? <type>` after `}`");
+>          ));
+> @@ -350,6 +372,7 @@ fn make_field_check(
+> =20
+>  impl Parse for Initializer {
+>      fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+> +        let attrs =3D input.call(Attribute::parse_outer)?;
+>          let this =3D input.peek(Token![&]).then(|| input.parse()).transp=
+ose()?;
+>          let path =3D input.parse()?;
+>          let content;
+> @@ -381,7 +404,19 @@ fn parse(input: syn::parse::ParseStream) -> syn::Res=
+ult<Self> {
+>              .peek(Token![?])
+>              .then(|| Ok::<_, syn::Error>((input.parse()?, input.parse()?=
+)))
+>              .transpose()?;
+> +        let attrs =3D attrs
+> +            .into_iter()
+> +            .map(|a| {
+> +                if a.path().is_ident("default_error") {
+> +                    a.parse_args::<DefaultErrorAttribute>()
+> +                        .map(InitializerAttribute::DefaultError)
 > +                } else {
-> +                    quote! {
-> +                        // SAFETY: TODO
-> +                        unsafe { &mut (*#slot).#ident }
-> +                    }
-> +                };
-> +                quote! {
-> +                    {
-> +                        #value_prep
-> +                        // SAFETY: TODO
-> +                        unsafe { #write(::core::ptr::addr_of_mut!((*#slo=
-t).#ident), #value_ident) };
-
-This should be `&raw mut` now?
-
-> +                    }
-> +                    #[allow(unused_variables)]
-> +                    let #ident =3D #accessor;
+> +                    Err(syn::Error::new_spanned(a, "unknown initializer =
+attribute"))
 > +                }
-> +            }
-> +            InitializerField::Init { ident, value, .. } =3D> {
-> +                // Again span for better diagnostics
-> +                let init =3D format_ident!("init", span =3D value.span()=
-);
-> +                if pinned {
-> +                    let project_ident =3D format_ident!("__project_{iden=
-t}");
-> +                    quote! {
-> +                        {
-> +                            let #init =3D #value;
-> +                            // SAFETY:
-> +                            // - `slot` is valid, because we are inside =
-of an initializer closure, we
-> +                            //   return when an error/panic occurs.
-> +                            // - We also use `#data` to require the corr=
-ect trait (`Init` or `PinInit`)
-> +                            //   for `#ident`.
-> +                            unsafe { #data.#ident(::core::ptr::addr_of_m=
-ut!((*#slot).#ident), #init)? };
-> +                        }
-> +                        // SAFETY: TODO
-> +                        #[allow(unused_variables)]
-> +                        let #ident =3D unsafe { #data.#project_ident(&mu=
-t (*#slot).#ident) };
-> +                    }
-> +                } else {
-> +                    quote! {
-> +                        {
-> +                            let #init =3D #value;
-> +                            // SAFETY: `slot` is valid, because we are i=
-nside of an initializer
-> +                            // closure, we return when an error/panic oc=
-curs.
-> +                            unsafe {
-> +                                ::pin_init::Init::__init(
-> +                                    #init,
-> +                                    ::core::ptr::addr_of_mut!((*#slot).#=
-ident),
-> +                                )?
-> +                            };
-> +                        }
-> +                        // SAFETY: TODO
-> +                        #[allow(unused_variables)]
-> +                        let #ident =3D unsafe { &mut (*#slot).#ident };
-> +                    }
-> +                }
-> +            }
-> +            InitializerField::Code { block: value, .. } =3D> quote!(#[al=
-low(unused_braces)] #value),
-> +        };
-> +        res.extend(init);
-> +        if let Some(ident) =3D field.ident() {
-> +            // `mixed_site` ensures that the guard is not accessible to =
-the user-controlled code.
-> +            let guard =3D format_ident!("__{ident}_guard", span =3D Span=
-::mixed_site());
-> +            guards.push(guard.clone());
-> +            res.extend(quote! {
-> +                // Create the drop guard:
-> +                //
-> +                // We rely on macro hygiene to make it impossible for us=
-ers to access this local
-> +                // variable.
-> +                // SAFETY: We forget the guard later when initialization=
- has succeeded.
-> +                let #guard =3D unsafe {
-> +                    ::pin_init::__internal::DropGuard::new(
-> +                        ::core::ptr::addr_of_mut!((*slot).#ident)
-> +                    )
-> +                };
-> +            });
+> +            })
+> +            .collect::<Result<Vec<_>, _>>()?;
+>          Ok(Self {
+> +            attrs,
+>              this,
+>              path,
+>              brace_token,
+> @@ -392,6 +427,16 @@ fn parse(input: syn::parse::ParseStream) -> syn::Res=
+ult<Self> {
+>      }
+>  }
+> =20
+> +impl Parse for DefaultErrorAttribute {
+> +    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+> +        let ty =3D input.parse()?;
+> +        if !input.peek(End) {
+> +            return Err(input.error("expected end of input"));
 > +        }
-> +    }
-> +    quote! {
-> +        #res
-> +        // If execution reaches this point, all fields have been initial=
-ized. Therefore we can now
-> +        // dismiss the guards by forgetting them.
-> +        #(::core::mem::forget(#guards);)*
-> +    }
-> +}
-> +
-> +/// Generate the check for ensuring that every field has been initialize=
-d.
-> +fn make_field_check(
-> +    fields: &Punctuated<InitializerField, Token![,]>,
-> +    init_kind: InitKind,
-> +    path: &Path,
-> +) -> TokenStream {
-> +    let fields =3D fields.iter().filter_map(|f| f.ident());
-> +    match init_kind {
-> +        InitKind::Normal =3D> quote! {
-> +            // We use unreachable code to ensure that all fields have be=
-en mentioned exactly once,
-> +            // this struct initializer will still be type-checked and co=
-mplain with a very natural
-> +            // error message if a field is forgotten/mentioned more than=
- once.
-> +            #[allow(unreachable_code, clippy::diverging_sub_expression)]
-> +            // SAFETY: this code is never executed.
-> +            let _ =3D || unsafe {
-> +                ::core::ptr::write(slot, #path {
-> +                    #(
-> +                        #fields: ::core::panic!(),
-> +                    )*
-> +                })
-> +            };
-> +        },
-> +        InitKind::Zeroing =3D> quote! {
-> +            // We use unreachable code to ensure that all fields have be=
-en mentioned at most once.
-> +            // Since the user specified `..Zeroable::zeroed()` at the en=
-d, all missing fields will
-> +            // be zeroed. This struct initializer will still be type-che=
-cked and complain with a
-> +            // very natural error message if a field is mentioned more t=
-han once, or doesn't exist.
-> +            #[allow(unreachable_code, clippy::diverging_sub_expression, =
-unused_assignments)]
-> +            // SAFETY: this code is never executed.
-> +            let _ =3D || unsafe {
-> +                let mut zeroed =3D ::core::mem::zeroed();
-> +                ::core::ptr::write(slot, zeroed);
 
-Looks like the comment explaining why this is done gets missed.
-
-> +                zeroed =3D ::core::mem::zeroed();
-> +                ::core::ptr::write(slot, #path {
-> +                    #(
-> +                        #fields: ::core::panic!(),
-> +                    )*
-> +                    ..zeroed
-
-Would just ::core::mem::zeroed() here work or does it have same inference i=
-ssue?
-IIUC the type inference should work here as ..Default::default() works.
+I don't think you need to handle end of input explicitly. Most of `syn` wil=
+l
+complain if a stream has token left unparsed.
 
 Best,
 Gary
 
-> +                })
-> +            };
-> +        },
+> +        Ok(Self { ty })
 > +    }
 > +}
 > +
-> +impl Parse for Initializer {
-> +    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-> +        let this =3D input.peek(Token![&]).then(|| input.parse()).transp=
-ose()?;
-> +        let path =3D input.parse()?;
-> +        let content;
-> +        let brace_token =3D braced!(content in input);
-> +        let mut fields =3D Punctuated::new();
-> +        loop {
-> +            let lh =3D content.lookahead1();
-> +            if lh.peek(End) || lh.peek(Token![..]) {
-> +                break;
-> +            } else if lh.peek(Ident) || lh.peek(Token![_]) {
-> +                fields.push_value(content.parse()?);
-> +                let lh =3D content.lookahead1();
-> +                if lh.peek(End) {
-> +                    break;
-> +                } else if lh.peek(Token![,]) {
-> +                    fields.push_punct(content.parse()?);
-> +                } else {
-> +                    return Err(lh.error());
-> +                }
-> +            } else {
-> +                return Err(lh.error());
-> +            }
-> +        }
-> +        let rest =3D content
-> +            .peek(Token![..])
-> +            .then(|| Ok::<_, syn::Error>((content.parse()?, content.pars=
-e()?)))
-> +            .transpose()?;
-> +        let error =3D input
-> +            .peek(Token![?])
-> +            .then(|| Ok::<_, syn::Error>((input.parse()?, input.parse()?=
-)))
-> +            .transpose()?;
-> +        Ok(Self {
-> +            this,
-> +            path,
-> +            brace_token,
-> +            fields,
-> +            rest,
-> +            error,
-> +        })
-> +    }
-> +}
-> +
-> +impl Parse for This {
-> +    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-> +        Ok(Self {
-> +            _and_token: input.parse()?,
-> +            ident: input.parse()?,
-> +            _in_token: input.parse()?,
-> +        })
-> +    }
-> +}
-> +
-> +impl Parse for InitializerField {
-> +    fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
-> +        let lh =3D input.lookahead1();
-> +        if lh.peek(Token![_]) {
-> +            Ok(Self::Code {
-> +                _underscore_token: input.parse()?,
-> +                _colon_token: input.parse()?,
-> +                block: input.parse()?,
+>  impl Parse for This {
+>      fn parse(input: syn::parse::ParseStream) -> syn::Result<Self> {
+>          Ok(Self {
 
-> +            })
-> +        } else if lh.peek(Ident) {
-> +            let ident =3D input.parse()?;
-> +            let lh =3D input.lookahead1();
-> +            if lh.peek(Token![<-]) {
-> +                Ok(Self::Init {
-> +                    ident,
-> +                    _left_arrow_token: input.parse()?,
-> +                    value: input.parse()?,
-> +                })
-> +            } else if lh.peek(Token![:]) {
-> +                Ok(Self::Value {
-> +                    ident,
-> +                    value: Some((input.parse()?, input.parse()?)),
-> +                })
-> +            } else if lh.peek(Token![,]) || lh.peek(End) {
-> +                Ok(Self::Value { ident, value: None })
-> +            } else {
-> +                Err(lh.error())
-> +            }
-> +        } else {
-> +            Err(lh.error())
-> +        }
-> +    }
-> +}
