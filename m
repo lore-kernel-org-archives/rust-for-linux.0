@@ -1,111 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B542874FB;
-	Fri,  9 Jan 2026 15:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB0E314D0D
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Jan 2026 15:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767972861; cv=none; b=NQ61UANHeylasQEOBxHah+AJgCfgvxSI4YErrxataJzvWjz1GGrMKwx4dwLwRzlxaszXn6WnBktaZK/fmDsczY/HvtSlKoQk8lZF97cbrLJleqyxRqXFm10/J93LB9TOtSlkovz+wgugn5gLo6GBLtvtxtX1XEOhPCcWdrUOtnY=
+	t=1767974389; cv=none; b=evYyD5FNn5qvDCeB+zcw+QNF7iDucKeXxwt4x7sEwQreldOSk4INpfPgx44xtDuiLpXLPgmbCSkfpDG0EW4oZVwerTDw+YiyKQMAdSb+9vgM9evYeBBDbH5vuIaB7qZuZXALjisrXrRl4+wWY94EjImes64xLJXNt9CTo5C1biU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767972861; c=relaxed/simple;
-	bh=M4a0SEBe0kOn2kcj0FWverBIYNoDyLiU5W4XtaQaDbU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=tUGhZiIe4nP4sEHN/jRGdHZchFmmAMmXEH8EUhURKG30Q0n5iPKH91Mahj8PGSU/1c4ijx5Y3WqFTe3e+9vRqk0ZGKwEvR7t74XhDER47PkGQkx+o3ujm53OoxIB+b1Okfmb8L4uDs9gd11z8BrPmIzEOkHRXqzI+AbtTn4Rzy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6BdV9gt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767974389; c=relaxed/simple;
+	bh=ZjxeDp9YGaFUK+W3fDzn81jroMGVuiAGgNX64MJODx0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z2SNj8BrOLdzVsZnUWAvWYd16cqym+x/4nSeXcfVISFmpRFK6b3v5zo1PF4cLBJH2ly8gvF+KaQAmN7xBsPl8YG5COQmVUBYzoW2pVaU7JoCuBwqWEE1EG3nFmTGW5bsBf9vz9EVxVYZGrPxlNd4LqJ7vcNNztD/ClWanhkpQ/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wb72dMnm; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6BdV9gt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D70C4CEF1;
-	Fri,  9 Jan 2026 15:34:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767972861;
-	bh=M4a0SEBe0kOn2kcj0FWverBIYNoDyLiU5W4XtaQaDbU=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=T6BdV9gtsGFqZEx0dODjpE3uKAhx9/EVwYu9T3XYiLliWhZGIemIGU9ZixzivlCXQ
-	 E7WJWLTU+kLDuqT9Od/kITe51BF7z2lXNCjKWRAuPTGYd885qoPYdvUoyQQ3ZTiCqp
-	 Va8hSeeimqWGtxi/p0tc52fhuk4EiiObCURqAn49YanQPltwopo+XI2CkCvU8UxUy8
-	 mCAt82dLesW+LE+neaZlx8yr6bg0lvPM5LzaAmsjFUknvf954Nb5e3rUpOGDalduVl
-	 V2r+qYTpS7vwt20aSg6bwD297dQgnmnvI9G14h/oMKYb14LXBYqzZQ0+jVI46ALQUf
-	 2hJLENshs0AAQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wb72dMnm"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-38307233c98so22725331fa.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Jan 2026 07:59:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767974383; x=1768579183; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7qDnJQ6hNmXepuNggB2SnhuDzeGOIEIzjhTyoPuwQjQ=;
+        b=Wb72dMnmcvqXg6hcppGfjL1p3lJLVjWmYmsA6KIwxrmNx5CAxmV3E5yMdD7vdll9Qn
+         UC1dbCSoT398o+jrz+XsEFRtHYFut9Lyr0KErZwbNnHrVG2X0haiYgGY2/BaQQNM6BZT
+         +Qhc3RhvDLwFwFvh85a7XxaqFKKFGe2Pzy7nZw89syIGOz9zVddIts+GHjXmklTxn/YK
+         2xOJ5YgV1wkmXA1fEHu4E4GvUgN0A3Vz++ctyVbXIV6D6pHU0dapzKRvjHQo2SYSvYdl
+         qwu6TlRFs/IH4HTn64MPh8Z5zdbo0bJiGSwjbV1NEQ++oF9hmva3pteYzx0sFsRwBAtn
+         kxfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767974383; x=1768579183;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7qDnJQ6hNmXepuNggB2SnhuDzeGOIEIzjhTyoPuwQjQ=;
+        b=XJ0IbuWVIBr0Sm2OcEUnEtyhWQeynKdL0iCbR5c/SHWvZgAzb7KvfVtq+8M7t7gAmp
+         g8z9qTqrXH5hqmBgOvgG6ogFAyaOM0ebQ8EO37bSdfKceLtfvX6lvGbcgZBL4R7eXh4w
+         2u//qISMY+aC3W1t8rK8xftIuFGKyIsmyleYusNoiIfZ1bBlzbovDXBywOcz9T6icZ4L
+         r+P322edaZBK/2oksRyLGohWG5Td9Qp//7RdGt7gUw98liBf+tjRqXPG3zpEyj0IpxGP
+         gO3BQNO7YGaUGdQhVJFfFuylKrKiBQpjHM5WWY+XKamRInWgu+EhiJZV12fyVkcTRRD5
+         oDcw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqb5WbL53BjRXEFvldW+994VYWboajK7dwSwlBjzngG3PLugOEj3JcBS61ney8ZbUP6FOiqX8PdQYKkxdyyg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yygd4NoAQnm8wBpKSKHFVyhUpFDRhTmDv0xgNT7gC1wnF+X7rja
+	2T0gSuAkx9MB94FIvF4kNmPiPaRjf6tSi10dpeeyxB3mBmkMr9ONBgQi25sn8iEEFW3b7QMfnMu
+	fRqnAvdIwO9WX5G17PiianEARYW3+zns=
+X-Gm-Gg: AY/fxX4oLzEG9MMwYhlieMAPJGDgmIOd0kvEtb1zfRbTW2SyXL45ukmi2ZV0wokujy7
+	sLPu6vZs7y7GjTb3VyOlftM82r0s+9pBeCib1+N0GZkAv7AH46CojElkhU+yxmMH8kizWxmZyRX
+	e1jbABH2v/5egsfvdiVdEBY2SY+zUy1dl4u8qMvYi+D8gYkO+FuDq6vurxcVXZ2Vbb7BNcRNDSq
+	nTAtJ8QPeb/vjvRXn9xO/So4UhpOfbv4S8xd3A3AMAeEQCXu0qldNmqZe1Xq8c+rjX8e9s9xuz8
+	Jupm3sC/YdY7wGMnOoV/UBxSXZMFjWpkG03uL/1CF7rWWZxAntgIJNtYO/1yb7g5bPk2AQIxBsW
+	LF3CxgPxzBLxrLisy2loTbRvPKAx/fqT4p+m+SmXo1A==
+X-Google-Smtp-Source: AGHT+IHPp232XllFfNGqvWRSlzfTXxOenL9EieU2A3dAmkdssI2RtV81Ww/M8icJi++0Dp1+XBQbPV4cz5Wq9lNAIK8=
+X-Received: by 2002:a2e:be0b:0:b0:383:5ea:e9c1 with SMTP id
+ 38308e7fff4ca-38305eaec72mr27962681fa.2.1767974383234; Fri, 09 Jan 2026
+ 07:59:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org>
+ <20251203-xarray-entry-send-v1-3-9e5ffd5e3cf0@kernel.org> <CAJ-ks9mqwaWMc0MTGOk+rKSM8W8spRmwiLGCkEjcSvF+d7QW7g@mail.gmail.com>
+ <87jyxtgtlc.fsf@t14s.mail-host-address-is-not-set> <CAJ-ks9kYk7cuQFOK89OwUx+k8p+_kANjB12rZLO+dzfSd=BpdQ@mail.gmail.com>
+ <87344gh2pk.fsf@t14s.mail-host-address-is-not-set> <2PUnbrv1SBqe3PHKeFqFI7zge1N89qpwH_FF_pXszbaA9-ocBueRJHb0KcuW9EyPNiZFCaCc1vgmTjXP_u_oPQ==@protonmail.internalid>
+ <CAJ-ks9=JJ6S6U-Bq0WC1PfJ0P9G3PvugfDdE2q9Q516M-QpsoA@mail.gmail.com> <87o6n3f4uz.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87o6n3f4uz.fsf@t14s.mail-host-address-is-not-set>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 9 Jan 2026 10:59:06 -0500
+X-Gm-Features: AZwV_QiRIQEJkShwl9ClmVFCHVW5gLmu_BJ9jBrOhEMcM4NHpw3EFHHez5-uWFE
+Message-ID: <CAJ-ks9neiwxL6WhK1i0qPtZCGjfEFsXA6J-yVHKmZcwZ8RS06A@mail.gmail.com>
+Subject: Re: [PATCH 03/10] rust: xarray: add `contains_index` method
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 09 Jan 2026 16:34:15 +0100
-Message-Id: <DFK62LHP35VZ.2HKVXST2SEI39@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 05/12] rust: pin-init: rewrite the `#[pinned_drop]`
- attribute macro using `syn`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@kloenk.dev>,
- "Tamir Duberstein" <tamird@gmail.com>, "Alban Kurti" <kurti@invicto.ai>
-X-Mailer: aerc 0.21.0
-References: <20260108135127.3153925-1-lossin@kernel.org>
- <20260108135127.3153925-6-lossin@kernel.org>
- <DFK1RR7HGFKN.XM2V8C9D0PR1@garyguo.net>
-In-Reply-To: <DFK1RR7HGFKN.XM2V8C9D0PR1@garyguo.net>
 
-On Fri Jan 9, 2026 at 1:12 PM CET, Gary Guo wrote:
-> On Thu Jan 8, 2026 at 1:50 PM GMT, Benno Lossin wrote:
->> diff --git a/rust/pin-init/internal/src/pinned_drop.rs b/rust/pin-init/i=
-nternal/src/pinned_drop.rs
->> index cf8cd1c42984..4df2cb9959fb 100644
->> --- a/rust/pin-init/internal/src/pinned_drop.rs
->> +++ b/rust/pin-init/internal/src/pinned_drop.rs
->> @@ -1,49 +1,56 @@
->>  // SPDX-License-Identifier: Apache-2.0 OR MIT
->> =20
->> -use proc_macro2::{TokenStream, TokenTree};
->> -use quote::quote;
->> +use proc_macro2::TokenStream;
->> +use quote::{quote, quote_spanned};
->> +use syn::{parse::Nothing, parse_quote, spanned::Spanned, ImplItem, Item=
-Impl, Token};
->> =20
->> -pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> To=
-kenStream {
->> -    let mut toks =3D input.into_iter().collect::<Vec<_>>();
->> -    assert!(!toks.is_empty());
->> -    // Ensure that we have an `impl` item.
->> -    assert!(matches!(&toks[0], TokenTree::Ident(i) if i =3D=3D "impl"))=
-;
->> -    // Ensure that we are implementing `PinnedDrop`.
->> -    let mut nesting: usize =3D 0;
->> -    let mut pinned_drop_idx =3D None;
->> -    for (i, tt) in toks.iter().enumerate() {
->> -        match tt {
->> -            TokenTree::Punct(p) if p.as_char() =3D=3D '<' =3D> {
->> -                nesting +=3D 1;
->> +pub(crate) fn pinned_drop(_args: Nothing, mut input: ItemImpl) -> Token=
-Stream {
->> +    let mut errors =3D vec![];
+On Fri, Jan 9, 2026 at 5:38=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
 >
-> Any reason to not make this `Vec<Error>` and use `syn::Error::combine`?
+> "Tamir Duberstein" <tamird@gmail.com> writes:
+>
+> > On Thu, Jan 8, 2026 at 4:38=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
+nel.org> wrote:
+> >>
+> >> Tamir Duberstein <tamird@gmail.com> writes:
+> >>
+> >> > On Wed, Jan 7, 2026 at 1:34=E2=80=AFPM Andreas Hindborg <a.hindborg@=
+kernel.org> wrote:
+> >> >>
+> >> >> Tamir Duberstein <tamird@gmail.com> writes:
+> >> >>
+> >> >> > On Wed, Dec 3, 2025 at 5:27=E2=80=AFPM Andreas Hindborg <a.hindbo=
+rg@kernel.org> wrote:
+> >> >> >>
+> >> >> >> Add a convenience method `contains_index` to check whether an el=
+ement
+> >> >> >> exists at a given index in the XArray. This method provides a mo=
+re
+> >> >> >> ergonomic API compared to calling `get` and checking for `Some`.
+> >> >> >
+> >> >> > It isn't clear when you'd want this API, and neither this nor the
+> >> >> > example are particularly motivating.
+> >> >>
+> >> >> I added this when I had a line reading `if xa.get(index).is_none()
+> >> >> {...}`. I think it reads better as `if !xa.contains_index(index) {.=
+..}`.
+> >> >
+> >> > What was the code surrounding it?
+> >> >
+> >> >> Do you have an idea of how to improve the motivational factor of th=
+e
+> >> >> example? Writing motivating examples is not my top skill.
+> >> >
+> >> > IMO writing a better example is not the issue; rather it would be go=
+od
+> >> > to understand why you need it. In my experience `Option::is_none` is=
+ a
+> >> > smell, but hard to say without seeing the surrounding code.
+> >>
+> >>     fn get_cache_page(&mut self, sector: u64) -> Result<&mut NullBlock=
+Page> {
+> >>         let index =3D Self::to_index(sector);
+> >>
+> >>         if self.cache_guard.contains_index(index) {
+> >>             Ok(self.cache_guard.get_mut(index).expect("Index is presen=
+t"))
+> >>         } else {
+> >>             let page =3D if self.disk_storage.cache_size_used.load(ord=
+ering::Relaxed)
+> >>                 < self.disk_storage.cache_size
+> >>             {
+> >>                 self.hw_data_guard
+> >>                     .page
+> >>                     .take()
+> >>                     .expect("Expected to have a page available")
+> >>             } else {
+> >>                 self.extract_cache_page()?
+> >>             };
+> >>             Ok(self
+> >>                 .cache_guard
+> >>                 .insert_entry(index, page, Some(&mut self.hw_data_guar=
+d.preload))
+> >>                 .expect("Should be able to insert")
+> >>                 .into_mut())
+> >>         }
+> >>     }
+> >>
+> >> For lifetime reasons, I cannot borrow `self` in the taken arm.
+> >
+> > That's surprising. Couldn't you destructure Self so that all the
+> > references derive from the single mutable reference &mut self?
+>
+> I don't think so, because I still need `&mut self` around to do the call
+> to `extract_cache_page`.
 
-Is there a way to have an "empty" error? I dislike using `Option<Error>`
-here... If not I'll just create my own helper type instead.
+Hmm, I must have missed it before, but can't this all be fixed with an
+early return?
 
-Cheers,
-Benno
+         if let Some(page) =3D self.cache_guard.get_mut(index) {
+             return Ok(page);
+         }
 
->> +    if let Some(unsafety) =3D input.unsafety {
->> +        errors.push(quote_spanned! {unsafety.span=3D>
->> +            ::core::compile_error!("implementing `PinnedDrop` is safe")=
-;
->> +        });
->> +    }
->> +    input.unsafety =3D Some(Token![unsafe](input.impl_token.span));
->> +    match &mut input.trait_ {
->> +        Some((not, path, _for)) =3D> {
->> +            if let Some(not) =3D not {
->> +                errors.push(quote_spanned! {not.span=3D>
->> +                    ::core::compile_error!("cannot implement `!PinnedDr=
-op`");
->> +                });
+>
+>
+> Best regards,
+> Andreas Hindborg
+>
+>
+>
