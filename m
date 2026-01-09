@@ -1,406 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E823002D8;
-	Fri,  9 Jan 2026 22:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E19E2FE563
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Jan 2026 22:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767996620; cv=none; b=JPXze441ta+4pSm/uFK6i3KVwilZjFHoAC3v8jXL7a+19yNNCK3uCnanhZcE+Xy039qTFp0/yTHVKjDbWaFfW17lrE05Lm0n/bNdJv/w6s7enshBB14qv0FJs6Ej05V2m8qg6Aj9MOIj/99RXUnWwmJO+Q0ZrdUWRAcQMP2t2DE=
+	t=1767997096; cv=none; b=iPeX+f2O5P9YmbA6EtTvML4BwD4NU/NLojozKQNvJShFcHSAjfax99Zyqh4iviSGnLNgrcy9DRWtN4/hCg+rFfR9DGLKx7WnxHIcglFdByI2p4KWfDqywfGm1Ris+UN/FjpIwj7IeA16yTikhByGfDmu65nwoUGTHDbz677HhsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767996620; c=relaxed/simple;
-	bh=6p5MA3d89Sg5gZpEe7ephACF026Y6huVVMrgpV+spfI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oub4x580ISEhwa8pidGJGSOCbT7OOelxouJgTjeFFbTYEYMf+QAKeeNJhT0YQ/824CATqX8xWj5qaqnNsyv2+zoZVH6uFHpDmashkPXgyJLMRHBhKlr5IsxCpwptycJ3zaxSxChZRQQoDFYwnPAgnLe3FN+tLxVhcsWAurcdMc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jBpdDiqv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767997096; c=relaxed/simple;
+	bh=yE2tH8TsnVy6RQHSkQW113xmGBSt8FNg+XD3GUtJ2EI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kDmKPLiGyKXCrlObkkHqkpMbTy3cJEUaLLF8knW68cX1i2qKuYg28bvlLIxw3XYc4nTJvPjPseuPH9Ew2IjwfCHVsAsO97888OZY9I7y1cmjBcPYr88tpKCCRj+orBUVNIFil8RDIMtp6U74Aiu4TDIFk4kWUZq0nNNjb3P/XPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=We+RhK3E; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jBpdDiqv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BA7CAC16AAE;
-	Fri,  9 Jan 2026 22:10:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767996619;
-	bh=6p5MA3d89Sg5gZpEe7ephACF026Y6huVVMrgpV+spfI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jBpdDiqvlLg45DTPvquuJAK9n5v59+4E5kKJD9XAKiuX9XgPXRi1Emtx6XSK4LhLJ
-	 Fv0O/S6qDcF0AdoG8wZwD4m6vlIyGKb+DtBf6HqdHixgak/8y6xWIP/C1+IjgGP+z3
-	 SPazzYHLMT0yLg5jgEf0vXXbkv/tnexgZvrF0JY4dRd2ZTtoAGUycXdjYIU4UAnUaM
-	 Q3JCHvxEdKmsXi84vSNRMef7lS+1Z5Zgb5czR+zE6jlioWswZCEZJ5LOvhYpIMoivj
-	 xzeNCkIuTz6EJpKfyZUP/domKEIh1MnbeW1muhO/fqZv9gCE7jNm4ct9M66LmkPOpA
-	 WxqjllkjD5g0Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AAD1BD26D9B;
-	Fri,  9 Jan 2026 22:10:19 +0000 (UTC)
-From: Jesung Yang via B4 Relay <devnull+y.j3ms.n.gmail.com@kernel.org>
-Date: Fri, 09 Jan 2026 22:09:00 +0000
-Subject: [PATCH v2 1/2] scripts: generate_rust_analyzer: add versioning
- infrastructure
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="We+RhK3E"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38305d006faso25610061fa.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Jan 2026 14:18:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767997094; x=1768601894; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yE2tH8TsnVy6RQHSkQW113xmGBSt8FNg+XD3GUtJ2EI=;
+        b=We+RhK3Evs69OyHskAEc9H36PsWpkZM2jnYw0KzK4X+uzKOpS5TJ0jIbhVOEaLuyIf
+         gn7rgkUe2owxYMgcW0dp07vgyzAlDH0D2b+VCWaDMD2qW6BqV4C8pOmlCn4/CqxrRBei
+         T4i5sMJJagidb+2JF0AdeLEv8ba9huH9/MOIxKNrZ27/GF8A0Le28v1kBbOFRADCUCWM
+         9YzWW+yoLGofBgapv2iXs2qJdCWlFpOIxlShj5FPZDnYN9+c7N05eUvAbAI+TLi3+cOn
+         qkum36zn7WAEIY+z47BKhhk3QXvWVvhqrMcqOz5HtC47hUiocF8TePzPpCAAMQr8nmyH
+         32NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767997094; x=1768601894;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yE2tH8TsnVy6RQHSkQW113xmGBSt8FNg+XD3GUtJ2EI=;
+        b=TwmRv0yGw9HM0+hUSJBpX7ESUJ0BnQoT4pChQaP8IcfNAPe3IhJ1wXm62JDfLYlzoo
+         8nVu46kA/s1f8m/ChVR9/pVZAp8HRCpI98wfw1vFGgLXt0WJDKdBac98xYqXJgZT4F6Q
+         4g2QHUf2BMfGoNW3EK6zSaQX6jpg4TU0GWuEs4cEbB348lCS1lQ7M/F9/h9i1gYNI6fA
+         DjKWpO/Hb3Lm0rRiXWDJvsbR9NlpDdzCV0xvCtKuIsNymmJRLiwTGhsYyO//yujZRSXA
+         WKgP9ywVFUw/i3YzQcZlLMmeEfqS+1elxXkoNcXp4NIfyGVhh18cffemLKHCCk7ETAMY
+         YLGg==
+X-Forwarded-Encrypted: i=1; AJvYcCXGIDvLmNozf7AojNgvYo85IIiZrk/uu12qeScLRT51KCepbawc7/GRL5i74BcdGOuK/K/R2yq1L19xmzNTrA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YykBiQ1kK53ssB58cAgCJDmXBO4cRVlcr5Vw+CcdSDxH1RweFsX
+	jWm8YM39l8t/HPBO1bcT41MH/9AVj9AzB75jPlrNTe5j2o5bjzWFAKhbaoIHqUyh+EW81VKZw4X
+	5p6lqxohjqPVnT5DAJCyLdHTc1p4UVdQ=
+X-Gm-Gg: AY/fxX5p5cSTXPun3tPTcOvUpIob6PHsocv31a3gYFybkbFs5DTV+gJDJBhQ/PF5VbB
+	XC7PgrwIGce+6zgdKm8+r+1W93SwvXDQZbt3e5ukikNORYqwwvGJ3jhg23yyI+Dryou3Owk2i44
+	wDIeaLefeMsi/J6ex+zfU++qHaY3W0W32dMMxy3vtodaxmQxBgjeltC3dmGMXDNXY21SqkIwAei
+	LCj5t1SKbDLRQKHqDYOfxWTez7PBJ3Z9Qhmobp19FtU+wf4hkFjueoMHTbFfvH2GjyiPN92BZKz
+	1OT/ppwJPNe5aEsxNnfa7aIKZ8fO/ksijDwXC8vK3ykQI54lsEcXmhA3eD6lTCY/uSkpxBm08VL
+	UHM+egCK5dw5CcJ7g8brS5LN+ohc4I64iDKFdHy+TVw==
+X-Google-Smtp-Source: AGHT+IEDNK9xGdVMnrYjfkntzd2OXPWE/KqXynDcKpelhSCpu/2Oqgg9dND+zNy86LRSPcmPtYZLDwFA2YWnS6ZA04I=
+X-Received: by 2002:a05:651c:b10:b0:383:3e5:2379 with SMTP id
+ 38308e7fff4ca-38303e525fdmr32703681fa.27.1767997093297; Fri, 09 Jan 2026
+ 14:18:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-ra-fix-primitive-v2-1-249852a4145a@gmail.com>
-References: <20260109-ra-fix-primitive-v2-0-249852a4145a@gmail.com>
-In-Reply-To: <20260109-ra-fix-primitive-v2-0-249852a4145a@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jesung Yang <y.j3ms.n@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767996618; l=12537;
- i=y.j3ms.n@gmail.com; s=20251225; h=from:subject:message-id;
- bh=JWm8UAfLC1ns7QSTpKBpu5bO5YwhtDcjTNcOdRHiGqo=;
- b=HM3QI/KHxq8ZehXyGmdn5mv0OuBo3uPpmwbcxYy2lLpkXlkmGzY/GcHAu0j011w+/+tGc3S3j
- dD4JblSEHvVAZpz9eygoUoqhNmV8jKi4pEAs9MgDtdUNTCZRDs8AaUr
-X-Developer-Key: i=y.j3ms.n@gmail.com; a=ed25519;
- pk=2yVgO1I+y7kkFSF2Dc/Dckj4L2FgRnvmERHFt4bspbI=
-X-Endpoint-Received: by B4 Relay for y.j3ms.n@gmail.com/20251225 with
- auth_id=586
-X-Original-From: Jesung Yang <y.j3ms.n@gmail.com>
-Reply-To: y.j3ms.n@gmail.com
+References: <6dbdf6e1c1639ae381ca9ab7041f84728ffa2267.1764062688.git.y.j3ms.n@gmail.com>
+ <cef76fc1105481d219953c8552eb5eb07dac707a.1764062688.git.y.j3ms.n@gmail.com>
+ <CAJ-ks9nWbu53Fhmz0Wcb4jHxwr3D-sc=BqW=gHLjw34dAxRKYQ@mail.gmail.com>
+ <CA+tqQ4L1j=oy87e0DC-m9YA9wJ6fR+PKtVBcnWH9iitNsVqG0A@mail.gmail.com>
+ <CANiq72kezzBVKUyqGwSuJ5ct86a1ZoGJdh7xt3=3TG4+B+Vq4Q@mail.gmail.com>
+ <CA+tqQ4KNPeyAkUbrhzbd1bGSCFSRjOYGNiAjHi+6F1OzBgQRUA@mail.gmail.com> <CA+tqQ4+kGwvT80j4TvFq+Dy9ztm+yu5nTT9TLAznG0OQ9F28ug@mail.gmail.com>
+In-Reply-To: <CA+tqQ4+kGwvT80j4TvFq+Dy9ztm+yu5nTT9TLAznG0OQ9F28ug@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 9 Jan 2026 17:17:36 -0500
+X-Gm-Features: AZwV_QgoUIDT_kitWemdlV010WSlwNU4137hi7xaSFeJWtnn7j3woOVar1h6XGc
+Message-ID: <CAJ-ks9nJhRxto-cAgz_JL=__fOrsMqC_W2Z7Ob_EA6sY_xPpCQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: quote: make rust-analyzer treat `core` and
+ `std` as dependencies
+To: Jesung Yang <y.j3ms.n@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jesung Yang <y.j3ms.n@gmail.com>
+On Fri, Jan 9, 2026 at 4:47=E2=80=AFPM Jesung Yang <y.j3ms.n@gmail.com> wro=
+te:
+>
+> On Tue, Jan 6, 2026 at 12:30=E2=80=AFAM Jesung Yang <y.j3ms.n@gmail.com> =
+wrote:
+> >
+> > I think applying this series as-is and revisiting the `std` removal
+> > when we eventually upgrade `syn` (so that the PR effectively lands in
+> > our vendored `syn`) is also an option. If there's no upcoming upgrade
+> > planned for the near future, I would personally prefer this approach.
+>
+> Ok, [1] has been merged to the upstream...
+>
+> I don't have a strong opinion, but I still think it is more natural to
+> drop the `std` dependency when we actually bump our vendored `syn` to a
+> version that includes the merged changes.
+>
+> Miguel, Tamir, what do you think?
+>
+> [1] https://github.com/dtolnay/quote/pull/318
+>
+> Best regards,
+> Jesung
 
-Introduce multi-version support for rust-analyzer. The script now
-executes `rust-analyzer --version` to query the version string and
-generates a `rust-project.json` file compatible with the detected
-version.
-
-This is a preparatory patch to address inherent method resolution
-failures for primitive types occurring in rust-analyzer v0.3.2693
-(2025-11-24) or later when used with our current `rust-project.json`
-generation logic. Since the actual fix requires a feature only available
-in rust-analyzer v0.3.2727 (2025-12-22) or later, this infrastructure is
-necessary to avoid breaking compatibility with rust-analyzer v0.3.1940
-(2024-04-29), which corresponds to our MSRV of 1.78.
-
-Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
----
- scripts/generate_rust_analyzer.py | 181 +++++++++++++++++++++++++++++++++-----
- 1 file changed, 157 insertions(+), 24 deletions(-)
-
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 147d0cc940681426771db865bc2462e7029a6d7d..32b0da99f17549ecc83e9a68911373310a2c9617 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -4,10 +4,13 @@
- """
- 
- import argparse
-+from datetime import datetime
-+import enum
- import json
- import logging
- import os
- import pathlib
-+import re
- import subprocess
- import sys
- 
-@@ -19,7 +22,7 @@ def args_crates_cfgs(cfgs):
- 
-     return crates_cfgs
- 
--def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edition):
-+def generate_crates(ctx, srctree, objtree, sysroot_src, external_src, cfgs, core_edition):
-     # Generate the configuration list.
-     cfg = []
-     with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
-@@ -35,7 +38,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-     crates_indexes = {}
-     crates_cfgs = args_crates_cfgs(cfgs)
- 
--    def append_crate(display_name, root_module, deps, cfg=[], is_workspace_member=True, is_proc_macro=False, edition="2021"):
-+    def append_crate(display_name, root_module, deps, cfg=[], crate_attrs=[], is_workspace_member=True, is_proc_macro=False, edition="2021"):
-         crate = {
-             "display_name": display_name,
-             "root_module": str(root_module),
-@@ -48,6 +51,8 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-                 "RUST_MODFILE": "This is only for rust-analyzer"
-             }
-         }
-+        if ctx["use_crate_attrs"] and len(crate_attrs) > 0:
-+            crate["crate_attrs"] = crate_attrs
-         if is_proc_macro:
-             proc_macro_dylib_name = subprocess.check_output(
-                 [os.environ["RUSTC"], "--print", "file-names", "--crate-name", display_name, "--crate-type", "proc-macro", "-"],
-@@ -72,52 +77,58 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-             edition=edition,
-         )
- 
--    # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
--    # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
--    # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
--    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []), edition=core_edition)
--    append_sysroot_crate("alloc", ["core"])
--    append_sysroot_crate("std", ["alloc", "core"])
--    append_sysroot_crate("proc_macro", ["core", "std"])
-+    def sysroot_deps(*deps):
-+        return list(deps) if ctx["add_sysroot_crates"] else []
-+
-+    if ctx["add_sysroot_crates"]:
-+        # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
-+        # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
-+        # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
-+        append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []), edition=core_edition)
-+        append_sysroot_crate("alloc", ["core"])
-+        append_sysroot_crate("std", ["alloc", "core"])
-+        append_sysroot_crate("proc_macro", ["core", "std"])
- 
-     append_crate(
-         "compiler_builtins",
-         srctree / "rust" / "compiler_builtins.rs",
-         [],
-+        crate_attrs=["no_std"],
-     )
- 
-     append_crate(
-         "proc_macro2",
-         srctree / "rust" / "proc-macro2" / "lib.rs",
--        ["core", "alloc", "std", "proc_macro"],
-+        sysroot_deps("core", "alloc", "std", "proc_macro"),
-         cfg=crates_cfgs["proc_macro2"],
-     )
- 
-     append_crate(
-         "quote",
-         srctree / "rust" / "quote" / "lib.rs",
--        ["alloc", "proc_macro", "proc_macro2"],
-+        sysroot_deps("alloc", "proc_macro") + ["proc_macro2"],
-         cfg=crates_cfgs["quote"],
-     )
- 
-     append_crate(
-         "syn",
-         srctree / "rust" / "syn" / "lib.rs",
--        ["proc_macro", "proc_macro2", "quote"],
-+        sysroot_deps("proc_macro") + ["proc_macro2", "quote"],
-         cfg=crates_cfgs["syn"],
-     )
- 
-     append_crate(
-         "macros",
-         srctree / "rust" / "macros" / "lib.rs",
--        ["std", "proc_macro", "proc_macro2", "quote", "syn"],
-+        sysroot_deps("std", "proc_macro") + ["proc_macro2", "quote", "syn"],
-         is_proc_macro=True,
-     )
- 
-     append_crate(
-         "build_error",
-         srctree / "rust" / "build_error.rs",
--        ["core", "compiler_builtins"],
-+        sysroot_deps("core") + ["compiler_builtins"],
-+        crate_attrs=["no_std"],
-     )
- 
-     append_crate(
-@@ -125,31 +136,36 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-         srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
-         [],
-         cfg=["kernel"],
-+        crate_attrs=["no_std"],
-         is_proc_macro=True,
-     )
- 
-     append_crate(
-         "pin_init",
-         srctree / "rust" / "pin-init" / "src" / "lib.rs",
--        ["core", "pin_init_internal", "macros"],
-+        sysroot_deps("core") + ["pin_init_internal", "macros"],
-         cfg=["kernel"],
-+        crate_attrs=["no_std"],
-     )
- 
-     append_crate(
-         "ffi",
-         srctree / "rust" / "ffi.rs",
--        ["core", "compiler_builtins"],
-+        sysroot_deps("core") + ["compiler_builtins"],
-+        crate_attrs=["no_std"],
-     )
- 
-     def append_crate_with_generated(
-         display_name,
-         deps,
-+        crate_attrs=[]
-     ):
-         append_crate(
-             display_name,
-             srctree / "rust"/ display_name / "lib.rs",
-             deps,
-             cfg=cfg,
-+            crate_attrs=crate_attrs
-         )
-         crates[-1]["env"]["OBJTREE"] = str(objtree.resolve(True))
-         crates[-1]["source"] = {
-@@ -160,9 +176,21 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-             "exclude_dirs": [],
-         }
- 
--    append_crate_with_generated("bindings", ["core", "ffi", "pin_init"])
--    append_crate_with_generated("uapi", ["core", "ffi", "pin_init"])
--    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
-+    append_crate_with_generated(
-+        "bindings",
-+        sysroot_deps("core") + ["ffi", "pin_init"],
-+        crate_attrs=["no_std"],
-+    )
-+    append_crate_with_generated(
-+        "uapi",
-+        sysroot_deps("core") + ["ffi", "pin_init"],
-+        crate_attrs=["no_std"],
-+    )
-+    append_crate_with_generated(
-+        "kernel",
-+        sysroot_deps("core") + ["macros", "build_error", "pin_init", "ffi", "bindings", "uapi"],
-+        crate_attrs=["no_std"],
-+    )
- 
-     def is_root_crate(build_file, target):
-         try:
-@@ -190,12 +218,103 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-             append_crate(
-                 name,
-                 path,
--                ["core", "kernel"],
-+                sysroot_deps("core") + ["kernel"],
-                 cfg=cfg,
-+                crate_attrs=["no_std"]
-             )
- 
-     return crates
- 
-+@enum.unique
-+class RaVersion(enum.Enum):
-+    """
-+    Represents rust-analyzer compatibility baselines. Concrete versions are mapped to the most
-+    recent baseline they have reached. Must be in release order.
-+    """
-+
-+    # v0.3.1940, released on 2024-04-29; bundled with the rustup 1.78 toolchain.
-+    V20240429 = 0
-+
-+    @staticmethod
-+    def baselines():
-+        assert len(RaVersion) == 1, "Exhaustiveness check: update baseline list!"
-+
-+        return [
-+            (datetime.strptime("2024-04-29", "%Y-%m-%d"), (0, 3, 1940), RaVersion.V20240429),
-+        ]
-+
-+    @staticmethod
-+    def default():
-+        # The default is the 2024-04-29 release, aligning with our MSRV policy.
-+        return RaVersion.V20240429
-+
-+    def __str__(self):
-+        assert len(RaVersion) == 1, "Exhaustiveness check: update if branches!"
-+
-+        if self == RaVersion.V20240429:
-+            return "v0.3.1940 (2024-04-29)"
-+        else:
-+            assert False, "Unreachable"
-+
-+def generate_rust_project(
-+    ra_version,
-+    srctree,
-+    objtree,
-+    sysroot,
-+    sysroot_src,
-+    external_src,
-+    cfgs,
-+    core_edition
-+):
-+    assert len(RaVersion) == 1, "Exhaustiveness check: update if branches!"
-+
-+    if ra_version == RaVersion.V20240429:
-+        ctx = {
-+            "use_crate_attrs": False,
-+            "add_sysroot_crates": True,
-+        }
-+        return {
-+            "crates": generate_crates(ctx, srctree, objtree, sysroot_src, external_src, cfgs, core_edition),
-+            "sysroot": str(sysroot),
-+        }
-+    else:
-+        assert False, "Unreachable"
-+
-+def query_ra_version():
-+    try:
-+        # Use the rust-analyzer binary found in $PATH.
-+        ra_version_output = subprocess.check_output(
-+            ["rust-analyzer", "--version"],
-+            stdin=subprocess.DEVNULL,
-+        ).decode('utf-8').strip()
-+        return ra_version_output
-+    except FileNotFoundError:
-+        logging.warning("Failed to find rust-analyzer in $PATH")
-+        return None
-+
-+def map_ra_version_baseline(ra_version_output):
-+    checkpoints = reversed(RaVersion.baselines())
-+
-+    # First, attempt to resolve to our known checkpoint using the release date.
-+    # This covers patterns like "rust-analyzer 1.78.0 (9b00956e 2024-04-29)".
-+    date_match = re.search(r"\d{4}-\d{2}-\d{2}", ra_version_output)
-+    if date_match:
-+        found_date = datetime.strptime(date_match.group(), "%Y-%m-%d")
-+        for date, ver, enum in checkpoints:
-+            if found_date >= date:
-+                return enum
-+
-+    # Otherwise, attempt to resolve to our known checkpoint using the rust-analyzer version.
-+    # This covers patterns like "rust-analyzer 0.3.2743-standalone".
-+    version_match = re.search(r"\d+\.\d+\.\d+", ra_version_output)
-+    if version_match:
-+        found_version = tuple(map(int, version_match.group().split(".")))
-+        for date, ver, enum in checkpoints:
-+            if found_version >= ver:
-+                return enum
-+
-+    return RaVersion.default()
-+
- def main():
-     parser = argparse.ArgumentParser()
-     parser.add_argument('--verbose', '-v', action='store_true')
-@@ -216,10 +335,24 @@ def main():
-     # Making sure that the `sysroot` and `sysroot_src` belong to the same toolchain.
-     assert args.sysroot in args.sysroot_src.parents
- 
--    rust_project = {
--        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs, args.core_edition),
--        "sysroot": str(args.sysroot),
--    }
-+    output = query_ra_version()
-+    if output:
-+        compatible_ra_version = map_ra_version_baseline(output)
-+    else:
-+        default = RaVersion.default()
-+        logging.warning("Falling back to `rust-project.json` for rust-analyzer %s", default)
-+        compatible_ra_version = default
-+
-+    rust_project = generate_rust_project(
-+        compatible_ra_version,
-+        args.srctree,
-+        args.objtree,
-+        args.sysroot,
-+        args.sysroot_src,
-+        args.exttree,
-+        args.cfgs,
-+        args.core_edition,
-+    )
- 
-     json.dump(rust_project, sys.stdout, sort_keys=True, indent=4)
- 
-
--- 
-2.47.3
-
-
+We have to keep the std dep -- see
+https://github.com/dtolnay/quote/commit/009af09c8252bf687e7f49e281fc47bc7d3=
+c0749.
