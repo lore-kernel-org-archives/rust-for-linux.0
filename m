@@ -1,96 +1,116 @@
-Received: from m.foxido.dev (m.foxido.dev [81.177.217.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4B533B6FE;
-	Fri,  9 Jan 2026 11:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.177.217.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8929333AD9D;
+	Fri,  9 Jan 2026 11:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767956507; cv=none; b=IIBV0+9U2yfU1lp5nj8bzYFEoykzoYlDL5LE3hdbTHLvcGazOks8sHYlyV7Me0WUp6u8ntAQbAD1cKb+yBcpWIj6yuJIjglKdSU3vboPSr7MBMe24u/bAA6Al8Kqfx3x2QaLCTR2ehOUuGxO9M9UPGywQVD09b8pvQBdHt1p5UM=
+	t=1767956888; cv=none; b=Zb3KhlWlHHNgVulyL45GMH8/reki6QsB0EDfbrwZqpL6SWIMhaKzHA2TTOfHvTRc4nYgl0Th7aB/oHxqw+NxDfnHiBf4fl7LVQWyLQlTkKkQc2/JO6QDPB7EkComS94cfA6Td3LUwKUhqfkBASiMzMMf3kbjX6PICRk5OjMdikk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767956507; c=relaxed/simple;
-	bh=MgdDRhOX289Jvru5sc60n2UQcHf+WqOnCsD6DPlUQfw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pylGT8/GJtFLj3qiIGjXg/5D/Q7kIvvKcU7VRjGgz12L8ue7ZQ7mqWaM77BQTesw63x590dw2w5DeF//hTq9oeu7aOZtoEKrDavo+0D2NUy1eeBX8HX4c0Og62BEKIfXfI3ol+Mr9nq7/7og1GpB2XUekG0+akpg4x4OuFuxd2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev; spf=pass smtp.mailfrom=foxido.dev; dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=pOwUdcUs; dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b=z0zefi5V; arc=none smtp.client-ip=81.177.217.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=foxido.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxido.dev
+	s=arc-20240116; t=1767956888; c=relaxed/simple;
+	bh=knge/EuHAbJu3q76L96YCOWN/hwlYu+ewbLHVeVnCEo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o5dBXNy2mySnYo+UlBLtWrotFpH0UlrBW7eDTWpKtpclK79kjqW+20J3eAR5wNDVBrV0OB8BxHT+WbYjxZaQ512sx3qH7BGSmKK+aW3gFYB4MJewo4AdjWXpzmfHBvrs4KgHRRY2omGR76zMGYCAfKWUSAdQsdSruptX/muhIGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Am778XmW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="pOwUdcUs";
-	dkim=permerror (0-bit key) header.d=foxido.dev header.i=@foxido.dev header.b="z0zefi5V"
-DKIM-Signature: v=1; a=rsa-sha256; s=202508r; d=foxido.dev; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1767956480; bh=gI6MZQ7/iz2bg3zwj8e+wkv
-	2PcH8IyIJieSl0rYYyFQ=; b=pOwUdcUs6C68jl4kbnH827ZBTPO4EK9IBCcBxcDi5XHh6ZAcau
-	6RTNgNPNjxLrgpzJvu1JuOX53kYPEO/8TLPhQVUyU3BMBe35tOxKzglVENPg8uhE0ELDHOP++V3
-	YgDbre9kr8duMrkVdc+czxipK/W4/Loz4EPklX+BK35tl7Gd4aSFfCq51kgOxtOLTP58AxQlxWh
-	iXlHItsuUs9OR5SF+Hl6qtArD0CW/N92FjfyXPd4+9bL/mBpQbr9dUpTpdL1bhMJAw3lJMfv9RR
-	/CPUVSUtaiYjl8m2WcB4EuwwwBXWXfXqxlkpj0titm6xVVCV8juToDbHerr59r9Lb4w==;
-DKIM-Signature: v=1; a=ed25519-sha256; s=202508e; d=foxido.dev; c=relaxed/relaxed;
-	h=From:To:Subject:Date:Message-ID; t=1767956480; bh=gI6MZQ7/iz2bg3zwj8e+wkv
-	2PcH8IyIJieSl0rYYyFQ=; b=z0zefi5V/vZmm5UV/oZOBZYDs09wdumVf7FPBpV1oi4SDgQJU9
-	tAklbcqp3sWqho1v9bNZE9iJx7kpBl22VDBA==;
-Message-ID: <670cab36-3d32-4769-8a3c-a5d3e1bdd74a@foxido.dev>
-Date: Fri, 9 Jan 2026 14:01:16 +0300
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Am778XmW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D396C19422;
+	Fri,  9 Jan 2026 11:08:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767956888;
+	bh=knge/EuHAbJu3q76L96YCOWN/hwlYu+ewbLHVeVnCEo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Am778XmWrXN+odZvq3T+03uhsg7EcB5UePXonzTgHPJc5GeqpdKZ3nfRl0lU356Bc
+	 1k1XIIb5k+dn6u2oPb7s7QUmOkhinCy3/b0LU2LwB1kk/QWfgS8UtLaXsuXVh5ius/
+	 2AviOQNyFfo6SVxX4oPbWfN1ItJlxhbRjo0Haxfs=
+Date: Fri, 9 Jan 2026 12:08:05 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: pengfuyuan <pengfuyuan@kylinos.cn>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 v2 1/1] rust: device: add platdata accessors
+Message-ID: <2026010941-giddy-economic-d786@gregkh>
+References: <DFJ5ICRD3YFF.XCSV3CJCDORA@kernel.org>
+ <20260109080528.478731-1-pengfuyuan@kylinos.cn>
+ <20260109080528.478731-2-pengfuyuan@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] rust: add WMI abstractions
-To: Kari Argillander <kari.argillander@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Tamir Duberstein <tamird@gmail.com>, Armin Wolf <W_Armin@gmx.de>,
- platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org, foxido@foxido.dev
-References: <cover.1767818037.git.foxido@foxido.dev>
- <a119094f2e248587c541daf7c5b65bf4398b281b.1767818037.git.foxido@foxido.dev>
- <CAKBF=psOiiakGigJj0Kee3Z5rym41eksSZTgzsO3H1gzUP6DjA@mail.gmail.com>
-Content-Language: en-US
-From: Gladyshev Ilya <foxido@foxido.dev>
-In-Reply-To: <CAKBF=psOiiakGigJj0Kee3Z5rym41eksSZTgzsO3H1gzUP6DjA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260109080528.478731-2-pengfuyuan@kylinos.cn>
 
-On 1/8/26 23:48, Kari Argillander wrote:
-> On Wed, 7 Jan 2026 at 22:56, Gladyshev Ilya <foxido@foxido.dev> wrote:
-> <snip>
+On Fri, Jan 09, 2026 at 04:05:28PM +0800, pengfuyuan wrote:
+> Implement generic accessors for the platform data of a device.
+
+There is only one "accessor" being added here.
+
+> Platform data is typically set by platform code when creating the device (e.g.
+> via `platform_device_add_data()`). Drivers may use it to obtain per-device,
+> platform-provided configuration.
+
+No rust binding to set this?  Who would be setting this data but not
+reading it?  Or can you already call platform_device_add_data() from a
+rust driver?
+
+> The accessor is `unsafe` because the caller must ensure that the chosen `T`
+> matches the actual object referenced by `platform_data`.
 > 
->> +impl DeviceId {
->> +    /// Constructs new DeviceId from GUID string.
->> +    pub const fn new(guid: &[u8; bindings::UUID_STRING_LEN as usize]) -> Self {
->> +        // SAFETY: FFI type is valid to be zero-initialized.
->> +        let mut inner: bindings::wmi_device_id = unsafe { MaybeUninit::zeroed().assume_init() };
->> +
->> +        build_assert!(inner.guid_string.len() == bindings::UUID_STRING_LEN as usize + 1);
->> +
->> +        // SAFETY: It's safe to copy UUID_STRING_LEN, because we validated lengths.
->> +        // Also we leave last byte zeroed, so guid_string is valid C string.
->> +        unsafe {
->> +            ::core::ptr::copy_nonoverlapping(
->> +                guid.as_ptr(),
->> +                &raw mut inner.guid_string[0],
->> +                bindings::UUID_STRING_LEN as usize,
->> +            );
->> +        }
+> Platform data is generally a C type, so the method returns `&Opaque<T>` to
+> avoid creating a Rust reference to potentially uninitialised or otherwise
+> invalid C data. Drivers can then perform the FFI dereference behind an explicit
+> `unsafe` block.
 > 
-> Just use while here so no unsafe is needed at all. Then probably patch
-> 1/3 is not needed.
+> The method is implemented for `Device<Ctx>` so it is available in all device
+> states. If no platform data is present, `-ENOENT` is returned.
+> 
+> Signed-off-by: pengfuyuan <pengfuyuan@kylinos.cn>
+> ---
+>  rust/kernel/device.rs | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index c79be2e2bfe3..90ccc433dfe7 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -483,6 +483,37 @@ pub fn fwnode(&self) -> Option<&property::FwNode> {
+>          // defined as a `#[repr(transparent)]` wrapper around `fwnode_handle`.
+>          Some(unsafe { &*fwnode_handle.cast() })
+>      }
+> +
+> +    /// Access the platform data for this device.
+> +    ///
+> +    /// Platform data is typically set by platform code when creating the device and is expected
+> +    /// to remain valid while the device is alive.
+> +    ///
+> +    /// Returns a reference to the opaque platform data, or [`ENOENT`] if no platform data
+> +    /// is set.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that:
+> +    /// - If platform data is set (i.e., `platform_data` is not null), the pointer points to valid,
+> +    ///   properly aligned storage for `T` and remains valid for the lifetime of the returned
+> +    ///   reference.
+> +    /// - The type `T` matches the type of the platform data structure set by platform code.
+> +    pub unsafe fn platdata<T>(&self) -> Result<&Opaque<T>> {
+> +        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
+> +        let ptr = unsafe { (*self.as_raw()).platform_data };
 
-Overall this operation is still unsafe because we are constructing C 
-string in FFI object. So for me avoiding `unsafe` via less readable 
-(imo) loop will just mask unsafe operation without any real benefits.
+Why isn't dev_get_platdata() being used here?
 
-Ideally this function should receive c string and just validate it's 
-length, but IIRC I had troubles with build-time validation of C string 
-length
+Also, we still need to see a user of this before we can properly review
+it.
 
->> +
->> +        Self(inner)
->> +    }
->> +}
+thanks,
 
+greg k-h
