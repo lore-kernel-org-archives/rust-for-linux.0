@@ -1,272 +1,209 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010014.outbound.protection.outlook.com [52.101.85.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99722224B1E
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Jan 2026 03:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767928516; cv=fail; b=Sm0keb3hClFZKFjiuBIP04FB3LcCO5nQD0t77ap7iayAC+jIT9+veOz1VsPWriG1v8bOwTuFu27PNLKNHDoCf/c+tMsJRueCTXllGmdzVQOsxqMsYNL5+ija6eTfRmYvHD3THsUgh6hd9Y+gEWPSoKIokI+c2QdbUOYXtcH+IoI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767928516; c=relaxed/simple;
-	bh=XRadM3DqD1OHQbKGvqC5l7Efm6Zsf54Jz5i7GOpgt3M=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=t4UYN5RoXopLc1+Slg/6tb+GNZPStBzunYcm60CchrKW01+EuVTAS6Bi1DKSqMSUSxN0PSvfopVyVLimU3oiHQuFcbDzsogVzNjBQAUUxgA/l2sJe+M4L4RjIkGFLx2BEk5HndwGOG2rrfnrRUl/3gamEdmGKYTLiSNFN3HaQzI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uow5H0EP; arc=fail smtp.client-ip=52.101.85.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED46500960
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Jan 2026 04:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767931237; cv=none; b=DvCwPCshX7e02gE9dz0H4t9Nj8AvArJhflMa28rX38hWgQidOnTqwGtjfXlhJZIJKQZRHr8/kNDNKGTUIhTYf/T+5K3fse1MaFgVDVUO0NIdzRMLP0edBKdgnPqjfj7Vt+DeXxxa0vZk0xQcK3T6L0cXxBijCJ1fdkvoQG5GWDw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767931237; c=relaxed/simple;
+	bh=4c8s/kx+oV/K2IKZou1YM6lkPttwcBvPrkfVDikA/4U=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=dfJiHdiXeWwiDZXkM+6Wt9CuvO2cqfQrwjwPJNqW59CWzuJS7vSMnb8ubQVPOODRlBb0MKegI2b5UdqDK9M3HmX6Y5QS17DSx2yThSH/egb17+ZxETBtuUyiAvxA6KoiOMAGrDPhEHM3L+v7ocpiNUO426l1TFDrwhGrqX6Grlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EBVmR8tH; arc=none smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uow5H0EP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B6tvJ/3NDgLb4xqQFUBoPd7jzpyneLkEuyVY1itA1hmtRSpX2lPTkyrfOOQbx6HEdRCX6m9hudj5hgKC10ZxEKSq9F3FvUW38+Ev8EVsMZh1bI2XnSFU26ciEdkQTjTxXyn4uXBVQDn+Gej7pYwd/mgcUGsD/JcN91syINCac+iK4rSrNFpiOnjvHaj4zDwqc6iE6LA84xZIQdPggiyMTwwUiPg7hcdLjTqbKMP6ZATMkBmnfaMFPD57tb1kBbVE5H/VxWtVnWWSfGLvJEqaJ4crj+vnKKI4BFvf79NUm5J0jsbnxkbGeFJ9rA/0WnuX9+fDsXlOTZKhfPj4jDSM4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IuYNlTscofLsGR2OI+fEDAM0/33bvrncXAc6zBtC3DQ=;
- b=ADw4wbFJ0nte5ac+A+pfztyYe0Pgu5jLQelVAfmEwTtM925WyaQlANrIWa1oPDUd2kQ1eKQcsGBPnqSFR1KovCrbQS5ucO4cmOkTlMF+7OUwYtVataJrN/Gu5SsYi325BnTKAvyqOn21Q9Ia7q27VlB7dQ2d1ojOYw8YVNvH+QLfq/Y8q4r7mAOMHe4Wa0PQlSipW4o6J6iEBJivpxo4SEfOgBXiQubY9djlYX+CLh6r8kAgqxHcv2gQqsW8DfeKf0D4ytHTHlCt+aR7dj1ViWg5Pg2m1hbn5zftUU0j3ncyZ3oJAYwdASR/qdSmkc6IchHpWXRhBGNINkMbgSRVkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IuYNlTscofLsGR2OI+fEDAM0/33bvrncXAc6zBtC3DQ=;
- b=uow5H0EPD/6Ma/m9g3ooq3sEJCA35rdc4to+r/eSEG14XebM8eMwq8vF7TUb5jyiCYRdfFYJulVtNOIBtPRrVC6RvgzJ1oYcRy1VbziAiXupabKV9coUHOB61hcoh/R6aQu8s7t8BWNk3n3xmPKO/dzp4t5U/zNbJhOXZWcgE89agJqs/pLaXc7w3YIJck2ME1wIh559eJs060f5yFZDL8k3V+vdx8klaQG6KocCyc+nsGm5ETV1gLCNuW7mJZJtWxabeYrTlylNDkRS2kapKCbwNuiftbrYUKOt7m/TMpRlWKn9EKoROjVhVTq0OLmsypAmNSaKdP7M3sqyR9LH8Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- CH2PR12MB4295.namprd12.prod.outlook.com (2603:10b6:610:a7::20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.4; Fri, 9 Jan 2026 03:15:12 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9499.003; Fri, 9 Jan 2026
- 03:15:12 +0000
-Message-ID: <264c8361-1962-47ad-accf-6fe5e1cc9283@nvidia.com>
-Date: Thu, 8 Jan 2026 19:15:10 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/11] gpu: nova-core: align
- LibosMemoryRegionInitArgument size to page size
-To: Timur Tabi <ttabi@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, nouveau@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org
-References: <20260103045934.64521-1-ttabi@nvidia.com>
- <20260103045934.64521-11-ttabi@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20260103045934.64521-11-ttabi@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY5PR16CA0034.namprd16.prod.outlook.com
- (2603:10b6:a03:1a0::47) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EBVmR8tH"
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5634feea416so1626711e0c.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Jan 2026 20:00:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767931234; x=1768536034; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p9T2BPf5beEn8hyeDIg1uadDWypr2H9Q3xF9+zmP6OE=;
+        b=EBVmR8tHU5xtDz03vCb2DkiELtBYqZoYOKnvCQFJORtrvWnkAOUoFXiFw2WgVrLTY5
+         meK2umysp0nZ7ofUfdfsq8bVXZK7RUX9zC3zkNsE4zfS6Z+pB8+4Elnyb8LCQ8q0GiSp
+         ClYMbaQ8KJUondU+LtWX8GOX9rNR21b6ARqqltqFjfGC/FMgLnSH1nJYFnBeq6PlFCvv
+         o2wLxaaqmkwDmtst+BUX2Tga76V2eLaQxthTMvApGZPjzHgFQRPrLQ54poJqat/z/eFK
+         lUfCHcKHRwVL2gC0xgg8Ks5mtQEct41aEMJFI/U/O/XpI8Hnxl9GzMhul4Zn7PI+4/5a
+         MT1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767931234; x=1768536034;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p9T2BPf5beEn8hyeDIg1uadDWypr2H9Q3xF9+zmP6OE=;
+        b=K0zDi4CdAh0965c53aWlEbjgmF16DAUQ7T+xXLT/9h9Qqm9Nzz1EHkQKHwZwXWWpzR
+         TeviR9St8VZwkxm2Lr8B+VBTc0ZRH+Ec/cTfdAwEnd9zoWaEJIdwH0GOed76llkHxDVh
+         lgSNstj+UOsNkCScOqU/j/mFWR3l/F280024vnHEzakjiPp9q9OpT9MsUjVI4njzGcHv
+         cEkuIb3q+cNi22BfY36xTvxnP4XVwrPQJvx81aGXfZzeO7kwFRX0AVZ4p8uDccIwZc+C
+         A448tV7PhFkYdbRJfOFgD0dppZI55dGNFUDO4p3mFZrWSxgz12e/y+4HzTcAfaMB143r
+         Ny9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX00X1cYLWq1qP/KO2CHmf2oc96oyMXIS2cnCurw4XFAyVUfzbwdTWz6zSQsUPUjJyNOxkWRYL/ndBBz1jxoA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzWDHWlGHSdD6+MArJO7MksTlDq8aDlBRjf0qZqTs5icLP8LwJ
+	gK/N9ODvRk4qt8QH8cjRT8lOpSlcklhS0iAISVd0hcHkBMEH50fFj9wTt2Kjog==
+X-Gm-Gg: AY/fxX7Lk984VtkinUES6Q69DPHdvXavTRrgau5diOt1waxEHSrX0R3pH5B84agn3Fp
+	ZpBNs9JpmoCGBCgvVFo9GfinY+0Ld1FEEnFnq8T3o8nOFc8kLvsHknPnx4MV1A2N2ynNzaifuE3
+	MPXe5Ku4S9YVYIQi5PGimFvukStbHkW3cniU23nCcGciF/y2PICxZk3tdjjtOvbKoKel480GrT6
+	Wmj+lAgspGC1FYrUhYfGc9FnWBSl1PACi99kcaUfQgwoBMXsrUuUKP0nzZ4i5RiUGMKx+2Xg8oR
+	mYZR3F36cFnSHRM5v5nNrvs7fVlb3tBNEz9glp3DKzyuyF/kCgoTKXIUGLzHtDv4N/xG/mLHx4r
+	yi27p+v9Sjon+hq+kUtKJa2eSefSAdxEllFMP6OYyXhoAgK6e//8rXMAYkrZtrbjy22NotGP2rO
+	cj9m6Q9wEHg/XF/XnkaGBQ4yQ/sSlFMJ7s5ZV0HAk1z7I0IdO8ScUro18vxTOxDE55nYM=
+X-Google-Smtp-Source: AGHT+IHt+NS7u00xGrZ+95pdtQ5VgNDPq0qsP5mcbgbJ7rn8y9GOzh3GzuRv2Bv72b17iorfv7DOuQ==
+X-Received: by 2002:a17:902:c406:b0:2a0:9923:6954 with SMTP id d9443c01a7336-2a3ee48fbf3mr72625155ad.27.1767924633614;
+        Thu, 08 Jan 2026 18:10:33 -0800 (PST)
+Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c3a4f1sm87799265ad.8.2026.01.08.18.10.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jan 2026 18:10:33 -0800 (PST)
+Date: Fri, 09 Jan 2026 11:10:25 +0900 (JST)
+Message-Id: <20260109.111025.1944772328156797586.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com, lyude@redhat.com,
+ boqun.feng@gmail.com, will@kernel.org, peterz@infradead.org,
+ richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com,
+ catalin.marinas@arm.com, ojeda@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu,
+ dakr@kernel.org, mark.rutland@arm.com, frederic@kernel.org,
+ tglx@linutronix.de, anna-maria@linutronix.de, jstultz@google.com,
+ sboyd@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
+ jack@suse.cz, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 4/5] rust: hrtimer: use READ_ONCE instead of
+ read_volatile
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <87ms2pgu7c.fsf@t14s.mail-host-address-is-not-set>
+References: <WXFPsf9COQPV_obKoZg2bYwPL3k9TT0oBL3uxNppUFaIj5hxEX9UokzS_DJ5Kg5kXDzLrZ9ihALTZcf6ehljGw==@protonmail.internalid>
+	<20260107.202245.559061117523678561.fujita.tomonori@gmail.com>
+	<87ms2pgu7c.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|CH2PR12MB4295:EE_
-X-MS-Office365-Filtering-Correlation-Id: c55bb3a4-795f-4f28-1574-08de4f2d4d3a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?M2htOUtVazJMRFBBWFljUVd3dXB5aTZHS1VBMFU3SnpISTV4MXBJQnAyQit3?=
- =?utf-8?B?TndCUUQ1MWNWek56Qi9wM2kzd3k4NDVhN05YYW0xS2V4WldZaDlURVlzT3l2?=
- =?utf-8?B?VUJZMWNNVDgvOThEZ3NSU0laMHViaEJaMUdReGxCMWxDM1NQOGRHM2t1dDEy?=
- =?utf-8?B?aEoxdmtiTVJLZlRrY3A4aXlxV2lGUiswN2VreXhFQmlzMlIyb3JnZWxtUXFN?=
- =?utf-8?B?Qjk4UmlnZGd6NGFpZVljVE9PUXNwL08xS0E2dllmQkFoeTVhRW9VNkVWQ204?=
- =?utf-8?B?L0VOUS9BYk9KZWhoNVdwOVQvV25LQUIxK0lNSkVGcWsyQ3dxUFo1VC9IbmRB?=
- =?utf-8?B?UStoblp4eURrMDE0dG0vUVcwVWNYSnJYTkRaVEVMT3VPZy85Q3dDaVI5N3I0?=
- =?utf-8?B?L0lUWGRVZ0VLRHdGazNMdHF0NEtGUlUxbU9sNzdDRXg4elM4TTFXWG1HcldN?=
- =?utf-8?B?cUY1RUJvdnloY3l3TEhITlE4SGdVbVdyR0lwYUlvNHV0ZnlKR2VDQUlaMDF4?=
- =?utf-8?B?OVhIWDhXeHVHN0ZhWitYRnRnZ0hLUFoyVVlhOENpSjdxWmhxQVFQN3pCdWdN?=
- =?utf-8?B?eEFWWkhwb0pMRFFEVGFOM1pwWjlLcUtmVnJINmFkMUM3b1RoL2E3V21Ca3J1?=
- =?utf-8?B?dlM0dU9wS0xpeElsME5sODJsNWJvQlhDSVh5NFRHRFh1eHREWHltT2hEOUgx?=
- =?utf-8?B?c1hYTlJrNWdmeTlndFd6WFkxeVp0djFRY2hSM25LbjZKTmZPRkJFNkhCWG1X?=
- =?utf-8?B?aFl4VFZ3aXlBdkFnSXVIUnBnU2VFQ2tmNG8ySnkyWDNvUjdqazhaNHR3YlR5?=
- =?utf-8?B?emhuTGY2TWNEcmNTckVhaENNeWVXN29KL2dSUlZJdlJQbHZPUkNuU2NBZk81?=
- =?utf-8?B?V2h1eWxmbjZwZXQzM0R1UGZKbzBzSVhUZjMxSkYyTm5jSkduMFFKNGVMazR2?=
- =?utf-8?B?bnhiOHFxUWtDN3U2Um16VjBXR0xEMkt3NGxsTHZQZXpJTmJwbzNObVEva3JW?=
- =?utf-8?B?NHEzdUhMZjV1Y25SUjBTeFhKVWxYaDQyOE90bmdHNE4zdWkzbWJHWDJZQ2Jm?=
- =?utf-8?B?cU0rT1BYVUtaUENxUjMxdXE0TjFnejBjT2RxU2Z4VmZPZFlVSDNyYzloSjFU?=
- =?utf-8?B?bWt4TU1qSTZFSWRCVnduY3R4eGk5U3BLaURYbUlKREtIVytnK1VSYU5GTTBw?=
- =?utf-8?B?ZThNNzkzYmZjdTlyUE9tZFRmaDJtUXFCK3RRcERqZjlaZ0tDRkhZNG82TnJN?=
- =?utf-8?B?OTJuYnFRMW9oZllZN293MEFhRG8vZkpkTzRUaWFWR0xhbEdRWWlBVE9tSS9C?=
- =?utf-8?B?RmdQb2FjczdpNk5ma05lRjEvMjA1ckpQWHpKb1V2NUdNcFJ4VHI3cklVYjVy?=
- =?utf-8?B?Rk9YZXRzaFFwblFBazBJelY3N1g0OHRBSDdVUlYwYkMzakpZMzU3REU0eWpx?=
- =?utf-8?B?R2l4OG04cy9ncmcxY2NYR0lXZW1KTXlJODU3UE44cDdURjZ2aG1udWlhRFlm?=
- =?utf-8?B?T0hVV1hVZFUzQk40RDNoS0ozM3JnUmhxZU1kUXBVbDZGUzk3elJWU0FGV3U2?=
- =?utf-8?B?MWJiMDZMdEx5amFJcit3TlQ4UWYzKy8wWmxteFk1Q3pwNnpnV1ZvN2piNWF3?=
- =?utf-8?B?ZUlLVGRWbnRkT1IwZjhkQWFWc0N3ZHl2Zk1JN2VJZFRFdVdGTnZ5MUNVR0xu?=
- =?utf-8?B?K2ZDdmF1b1ZzSjVnc1RJOXZGNlRxMUFRWE8rbURyM29HWkQwWUdtbGlpOWFG?=
- =?utf-8?B?UnJQckx1ZWYwdFhPcmxsL29vNHloeVlncHdWRWF0ZktYU094Z1lzTlJZUjg4?=
- =?utf-8?B?eGJxZ1QrZGVhYXZUU3VBWEo0UTJRcmZJcDI4RTRLWGpBQnRjVmJtLzg3K0hQ?=
- =?utf-8?B?Nm02a1dmbWprb0R5YzlMTGpuYnlGL3hUUzdHSnJrRWJOT1hPakpMUE9QUzJJ?=
- =?utf-8?Q?INpUO5S6g0Mu+wKb2qR90Ye/01o7TWQk?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?enVBTDIvU1RSL2JSSm5tWWJYNkhJVlI4cXpOSmZ1Ym1JVVNSZ1BBZjBaVklK?=
- =?utf-8?B?NUVrUHZud1NjQzFWbGlYcnI2TWRSemtsOHhwTWU0QTZzcTFtWlZUUmprS1A5?=
- =?utf-8?B?Q055TGg4QUovN1l2ZFJ4aDBtVkpCWHY3VC8wUFdJWnB1OUcyL211VVRhSTNU?=
- =?utf-8?B?QVVnOFJvUXVteFRPTXdGSmhHUXRTeXMydUdLM2pMV2ZTM3VHd2pjRU1kL05v?=
- =?utf-8?B?ektjeVNRZTVEeTBpZThKUmxOWjF0T21CdjV1RE9iNXNlUXNwMmh1eVZZOGRv?=
- =?utf-8?B?VXFSZ01sOVhIbVBEOHU1c1JUNnhrYUttUXJCck9YNVk3OHA2SVkxc3J5MnFK?=
- =?utf-8?B?QmQ2aVFpYy9TYXdvc1ZOUEkxR29pUmtQRXRoVFRnS0VBcU5aSjNVZXJ4TmdI?=
- =?utf-8?B?S0YrMklEMlVTSjFobjdEc21nTkF3a0ZPYWU3em9NUmpIaGU2WkgxWm1ETDZY?=
- =?utf-8?B?MTlENWFRc0hub2dwQzFhS1BqZnAzYktnOTdZUS96NjZXOTV4VS9kaEpGdm9k?=
- =?utf-8?B?MjkyMDk5Q2h4R1I5ZjMybkhsalJjYU5wWWduYlIwZThYSERpNUFnTHBSL3A2?=
- =?utf-8?B?YjNmRzVWc2RMWHlGWk9keUFPc090b0JoRVRiSTZranNjbmJ0VUtZLzVmRE5D?=
- =?utf-8?B?QWh2OFMzaXBBdU1UVXo5ZTM1QnBtS28xbllxSDA3VEdxdkU1b09WakhlZ2dy?=
- =?utf-8?B?RkVjaGVhalhTNVMzYWIyTFpwWm1YQ1YzMVFHaTVrMkZEdzYrb3FZYi9xVGk5?=
- =?utf-8?B?NDRhaVUxUlo1alducXdERU12ZWdyV0dTVFZSN29rTzlrcEpnc2hmZTlqWDdE?=
- =?utf-8?B?bmI2NWFXSk0yeUJZQlZXbGl3UzAzMGRTbXR5Q2Q0VHU5L0Eza3BVZWE3Uks0?=
- =?utf-8?B?UTIyZnpxUVk5aG9Fdlh6blgvQWxKUWl0WUZPdWJ5TUhGVGpSM3lxVjlNQjBp?=
- =?utf-8?B?cW10UU5rR3prRnBKYzF0cVZ3YWJBNjk5MGRuMXNLNVBvVXdLaURGVTNxQVVh?=
- =?utf-8?B?UGVFRXF4SDVBUUtSdGZqN0xFaHhVeWkzMktSTGZmWjdJOVZOMXd4RUZ2M3A2?=
- =?utf-8?B?cGYwMlowTEFPbDBpWXNzTE5raVU0WnYvd1pwbmF3c1QrNTBuWWxONHV0aU9E?=
- =?utf-8?B?bHFJQXVoaUVycTh6TVB6SCs1d1hia0dicmh1Y2JCd2xTNmxoTERDTVJ0SlR6?=
- =?utf-8?B?dXo3LzZLeVhRYnk1VW9QQVd5RXRaZi9YbGhoMzZmUTQrb2FFRTRobVhrRzVM?=
- =?utf-8?B?OXZBR1kvTGt1dXZXMjZBS3NndWptS3NqdmM3WWluekM4VDZxMkVIMm9qa05i?=
- =?utf-8?B?ZHFtQ0JHaHViMWY1WlFsZWY4aU9WZDdNTllBb08wMWVnUFAxeVNpc0p1UHZP?=
- =?utf-8?B?U1B4SFNScFJSN2ZWKzBpZE1RaVhOVXpKODJSN2t3dCswRW9JN2xTNEs4YmY2?=
- =?utf-8?B?SHQ3T0J5SThBWXAwNllJSmgzR2RlZ05ZTE9IcUpnVlVjQ29BcUthTHdFU1hU?=
- =?utf-8?B?MW5MajlEVTVVcnZpemQ2bEZiNll3aXVrblRxRlRIbUY1dlVDYnkzSTB2OUlK?=
- =?utf-8?B?K2RXMlF2K1loeHY0M24waXYvKzduMTNNNzVnaHpDMlBKWTVKOXRIdHRqb2Jw?=
- =?utf-8?B?QlA2cndRYXVXUlBWV1R2SXdwWWhaTmh2NHZrYXFXS3phUnpjL0pFemhUOE9h?=
- =?utf-8?B?MllQWkJaMWpDSnQ3S05tRUYxNjBoRE51WDNaUkNWaCtGSmVHdnNDZUlVMWo2?=
- =?utf-8?B?RWNwSW1OOVU2b1Fka3F6YmZPSzZ3UDFjNjhQNGlyOHh2b0paa1NWRktxSmVU?=
- =?utf-8?B?RXIwbEZWM3VBaFBJT2h0WmFzV3duM0dYUkhKU0RyT1dQc0ZyRFVYUnBNV3dZ?=
- =?utf-8?B?Wk8rdm5LOE55elE2RFN1TzFlTWNwSXpqVmVOZHZsTzlwYXJhb3RLQTR5YUVM?=
- =?utf-8?B?UGdmYkRYem11WG00YjNUck05a1Urb2xsYkVieTh4Y2dLNWtYa2xKL2dqbGcr?=
- =?utf-8?B?eXdYTnNkNWRMVjNrR3dLK000bFVaZUVLRUtJcEU4YW5rdWdNS2hrSGJDNHBu?=
- =?utf-8?B?b1pNTEgzMHUzbm1JS2QwV01UQzBMeEFLMzlWNzNpMmd6UlVlcmkySGtaQUpW?=
- =?utf-8?B?a2VWR2VSeW55cU1kZWd0b2VVZ1ZYUmlUV3JqS01OK2pSaWNGMGhPN09keWxM?=
- =?utf-8?B?dHlrbXZvbDZrcWU0bVUrajlPR0JKdUloT0kyenArQUVaY3Y0b3ZtMmc2bTFR?=
- =?utf-8?B?M3Z2cGlNZEdRSHVycTNWb1lMeGZIYWNoVEYxbGpSSjBIT21lWVZVckVaM1NC?=
- =?utf-8?B?bkVrbDZWRk1xdFlQeTNkNGJzS25udWR4ejlJL0xkbzBuTVltSm5rZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c55bb3a4-795f-4f28-1574-08de4f2d4d3a
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 03:15:12.2449
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wWiO2hPG7X4vDhUv5cYCKl77qCSvIoXDSrR33ptwVQjfiyigj5nMZ7VOqXeTkCSpDvewVdZgGKxDSI0QAsNV4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4295
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On 1/2/26 8:59 PM, Timur Tabi wrote:
-> From: Alexandre Courbot <acourbot@nvidia.com>
+On Wed, 07 Jan 2026 19:21:11 +0100
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
+
+> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
 > 
-> On Turing and GA100 (i.e. the versions that use Libos v2), GSP-RM insists
-> that the 'size' parameter of the LibosMemoryRegionInitArgument struct be
-> aligned to 4KB.  The logging buffers are already aligned to that size, so
-> only the GSP_ARGUMENTS_CACHED struct needs to be adjusted.  Make that
-> adjustment by adding padding to the end of the struct.
+>> On Wed, 07 Jan 2026 11:11:43 +0100
+>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>
+>>> FUJITA Tomonori <fujita.tomonori@gmail.com> writes:
+>>>
+>>>> On Tue, 06 Jan 2026 13:37:34 +0100
+>>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>>
+>>>>> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+>>>>>
+>>>>>> On Thu, 01 Jan 2026 11:11:23 +0900 (JST)
+>>>>>> FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
+>>>>>>
+>>>>>>> On Wed, 31 Dec 2025 12:22:28 +0000
+>>>>>>> Alice Ryhl <aliceryhl@google.com> wrote:
+>>>>>>>
+>>>>>>>> Using `READ_ONCE` is the correct way to read the `node.expires` field.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>>>>>>>> ---
+>>>>>>>>  rust/kernel/time/hrtimer.rs | 8 +++-----
+>>>>>>>>  1 file changed, 3 insertions(+), 5 deletions(-)
+>>>>>>>>
+>>>>>>>> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
+>>>>>>>> index 856d2d929a00892dc8eaec63cebdf547817953d3..e2b7a26f8aade972356c3eb5f6489bcda3e2e849 100644
+>>>>>>>> --- a/rust/kernel/time/hrtimer.rs
+>>>>>>>> +++ b/rust/kernel/time/hrtimer.rs
+>>>>>>>> @@ -239,11 +239,9 @@ pub fn expires(&self) -> HrTimerInstant<T>
+>>>>>>>>          // - Timers cannot have negative ktime_t values as their expiration time.
+>>>>>>>>          // - There's no actual locking here, a racy read is fine and expected
+>>>>>>>>          unsafe {
+>>>>>>>> -            Instant::from_ktime(
+>>>>>>>> -                // This `read_volatile` is intended to correspond to a READ_ONCE call.
+>>>>>>>> -                // FIXME(read_once): Replace with `read_once` when available on the Rust side.
+>>>>>>>> -                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
+>>>>>>>> -            )
+>>>>>>>> +            Instant::from_ktime(kernel::sync::READ_ONCE(
+>>>>>>>> +                &raw const (*c_timer_ptr).node.expires,
+>>>>>>>> +            ))
+>>>>>>>>          }
+>>>>>>>
+>>>>>>> Do we actually need READ_ONCE() here? I'm not sure but would it be
+>>>>>>> better to call the C-side API?
+>>>>>>>
+>>>>>>> diff --git a/rust/helpers/time.c b/rust/helpers/time.c
+>>>>>>> index 67a36ccc3ec4..73162dea2a29 100644
+>>>>>>> --- a/rust/helpers/time.c
+>>>>>>> +++ b/rust/helpers/time.c
+>>>>>>> @@ -2,6 +2,7 @@
+>>>>>>>
+>>>>>>>  #include <linux/delay.h>
+>>>>>>>  #include <linux/ktime.h>
+>>>>>>> +#include <linux/hrtimer.h>
+>>>>>>>  #include <linux/timekeeping.h>
+>>>>>>>
+>>>>>>>  void rust_helper_fsleep(unsigned long usecs)
+>>>>>>> @@ -38,3 +39,8 @@ void rust_helper_udelay(unsigned long usec)
+>>>>>>>  {
+>>>>>>>  	udelay(usec);
+>>>>>>>  }
+>>>>>>> +
+>>>>>>> +__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtimer *timer)
+>>>>>>> +{
+>>>>>>> +	return timer->node.expires;
+>>>>>>> +}
+>>>>>>
+>>>>>> Sorry, of course this should be:
+>>>>>>
+>>>>>> +__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtimer *timer)
+>>>>>> +{
+>>>>>> +	return hrtimer_get_expires(timer);
+>>>>>> +}
+>>>>>>
+>>>>>
+>>>>> This is a potentially racy read. As far as I recall, we determined that
+>>>>> using read_once is the proper way to handle the situation.
+>>>>>
+>>>>> I do not think it makes a difference that the read is done by C code.
+>>>>
+>>>> What does "racy read" mean here?
+>>>>
+>>>> The C side doesn't use WRITE_ONCE() or READ_ONCE for node.expires. How
+>>>> would using READ_ONCE() on the Rust side make a difference?
+>>>
+>>> Data races like this are UB in Rust. As far as I understand, using this
+>>> READ_ONCE implementation or a relaxed atomic read would make the read
+>>> well defined. I am not aware if this is only the case if all writes to
+>>> the location from C also use atomic operations or WRITE_ONCE. @Boqun?
+>>
+>> The C side updates node.expires without WRITE_ONCE()/atomics so a
+>> Rust-side READ_ONCE() can still observe a torn value; I think that
+>> this is still a data race / UB from Rust's perspective.
+>>
+>> And since expires is 64-bit, WRITE_ONCE() on 32-bit architectures does
+>> not inherently guarantee tear-free stores either.
+>>
+>> I think that the expires() method should follow the same safety
+>> requirements as raw_forward(): it should only be considered safe when
+>> holding exclusive access to hrtimer or within the context of the timer
+>> callback. Under those conditions, it would be fine to call C's
+>> hrtimer_get_expires().
 > 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> ---
->  drivers/gpu/nova-core/firmware/fwsec.rs |  2 +-
->  drivers/gpu/nova-core/gsp.rs            |  8 ++++----
->  drivers/gpu/nova-core/gsp/fw.rs         | 14 +++++++++++++-
->  3 files changed, 18 insertions(+), 6 deletions(-)
+> We can make it safe, please see my comment here [1].
 > 
-> diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
-> index 1c1dcdacf5f5..5d2323b07241 100644
-> --- a/drivers/gpu/nova-core/firmware/fwsec.rs
-> +++ b/drivers/gpu/nova-core/firmware/fwsec.rs
-> @@ -433,7 +433,7 @@ pub(crate) fn new(
->          };
->  
->          Ok(FwsecFirmware {
-> -            desc: desc,
-> +            desc,
->              ucode: ucode_signed,
->          })
->      }
-> diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
-> index 766fd9905358..bcf6ce18a4a1 100644
-> --- a/drivers/gpu/nova-core/gsp.rs
-> +++ b/drivers/gpu/nova-core/gsp.rs
-> @@ -27,7 +27,7 @@
->  use crate::{
->      gsp::cmdq::Cmdq,
->      gsp::fw::{
-> -        GspArgumentsCached,
-> +        GspArgumentsAligned,
->          LibosMemoryRegionInitArgument, //
->      },
->      num,
-> @@ -114,7 +114,7 @@ pub(crate) struct Gsp {
->      /// Command queue.
->      pub(crate) cmdq: Cmdq,
->      /// RM arguments.
-> -    rmargs: CoherentAllocation<GspArgumentsCached>,
-> +    rmargs: CoherentAllocation<GspArgumentsAligned>,
->  }
->  
->  impl Gsp {
-> @@ -133,7 +133,7 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>) -> impl PinInit<Self, Error
->                  logintr: LogBuffer::new(dev)?,
->                  logrm: LogBuffer::new(dev)?,
->                  cmdq: Cmdq::new(dev)?,
-> -                rmargs: CoherentAllocation::<GspArgumentsCached>::alloc_coherent(
-> +                rmargs: CoherentAllocation::<GspArgumentsAligned>::alloc_coherent(
->                      dev,
->                      1,
->                      GFP_KERNEL | __GFP_ZERO,
-> @@ -149,7 +149,7 @@ pub(crate) fn new(pdev: &pci::Device<device::Bound>) -> impl PinInit<Self, Error
->                          libos[1] = LibosMemoryRegionInitArgument::new("LOGINTR", &logintr.0)
->                      )?;
->                      dma_write!(libos[2] = LibosMemoryRegionInitArgument::new("LOGRM", &logrm.0))?;
-> -                    dma_write!(rmargs[0] = fw::GspArgumentsCached::new(cmdq))?;
-> +                    dma_write!(rmargs[0].inner = fw::GspArgumentsCached::new(cmdq))?;
->                      dma_write!(libos[3] = LibosMemoryRegionInitArgument::new("RMARGS", rmargs))?;
->                  },
->              }))
-> diff --git a/drivers/gpu/nova-core/gsp/fw.rs b/drivers/gpu/nova-core/gsp/fw.rs
-> index abffd6beec65..15ca9c183ae1 100644
-> --- a/drivers/gpu/nova-core/gsp/fw.rs
-> +++ b/drivers/gpu/nova-core/gsp/fw.rs
-> @@ -906,9 +906,21 @@ pub(crate) fn new(cmdq: &Cmdq) -> Self {
->  // SAFETY: Padding is explicit and will not contain uninitialized data.
->  unsafe impl AsBytes for GspArgumentsCached {}
->  
-> +/// On Turing and GA100, the entries in the `LibosMemoryRegionInitArgument`
-> +/// must all be a multiple of GSP_PAGE_SIZE in size, so add padding to force it
-> +/// to that size.
-> +#[repr(C)]
-> +pub(crate) struct GspArgumentsAligned {
-> +    pub(crate) inner: GspArgumentsCached,
-> +    _padding: [u8; GSP_PAGE_SIZE - core::mem::size_of::<bindings::GSP_ARGUMENTS_CACHED>()],
-> +}
-> +
-> +// SAFETY: Padding is explicit and will not contain uninitialized data.
+> Best regards,
+> Andreas Hindborg
+> 
+> [1] https://lore.kernel.org/r/87v7hdh9m4.fsf@t14s.mail-host-address-is-not-set
 
-Sort of a pre-existing problem, but "Padding is explicit" seems meaningless
-here. And if we're going to write anything here, maybe we should say *why*
-we know that the padding can't or won't contain uninitialized data?
-
-Otherwise it all looks good.
-
-> +unsafe impl AsBytes for GspArgumentsAligned {}
-> +
->  // SAFETY: This struct only contains integer types for which all bit patterns
->  // are valid.
-> -unsafe impl FromBytes for GspArgumentsCached {}
-> +unsafe impl FromBytes for GspArgumentsAligned {}
->  
->  /// Init arguments for the message queue.
->  #[repr(transparent)]
-
-thanks,
--- 
-John Hubbard
+I agree. My point was that expire() can be safe only under the same
+constraints as forward()/forward_now() so the API should require
+Pin<&mut Self> and expose it on HrTimerCallbackContext.
 
