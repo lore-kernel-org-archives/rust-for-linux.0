@@ -1,130 +1,89 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D92635C180
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Jan 2026 16:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106388F49;
+	Fri,  9 Jan 2026 16:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767976358; cv=none; b=LgxQtozASV12ujV+NYZmCKNJUIDIoZNF2R+qs6PPrQ56yJticSsMbkgzIP0/Oy0EdRvKMsngoqKZ3FzBamNk6FZprE/p03fVCEZGTFTC2Gbp4Z9KRbL1e/2tt+PYMQThSWvmdBN9tYM76uQD6LR31T7WxC3YvFHpR6w8nqsv5Wg=
+	t=1767976754; cv=none; b=YYMc4GTA77sBnyNOal4XqNIP6iH6gk+VNc0J4tPQJetabn7d8Bxd/p/XP/wxMrlHpdyLadMmvHNAx9FDtSzA2rvPAVcL8mVGU9dbmzHzSvN2lquX6+6a+0n7hXPoyReRHWyzD5QbhDJF+Pi6QS0iiTjxNpq4ZE65uInD+v+DTuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767976358; c=relaxed/simple;
-	bh=mBM77ElaCw1c59Rik979SGALeGmrcBRpXTTQH02UHWs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RdphKYkgYJQ9o0Y/3RfCeShhCYs+L8b8t258YMs8ahAJt929xfAbgB32NAYmhHLQoL8zSHDxz8N28iFxWKKfQgDS3X8dehUWM5gYWIshkwhPf+Bb7JVYYt1sQucU+NZDU2nJvutbOoZAtLUEy45IE8y8VwkHtySzMRq/J7wJ/bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=deaMfxZc; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1767976754; c=relaxed/simple;
+	bh=YaBDdkupNRStfAvOaRvS/NP9WCcD6+/+bW2LKA0Nfok=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=NRdmxeNexnoQdILb/Yn6wlwJxIC1zMCWQhi+4mMx4zcvXIq4EQPdWDxe/zP5vVld3SQXGR2oF5aVPCnM6gkBV63sUyhD6K0LHGHd+/WvH5eMwIWC80kmC0R4pIlreBMnmtqPfptgZiqWtkp5S6CcTkk62xw25OHN8Q/MJbLG6To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHWJG9Qr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="deaMfxZc"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-382f9211cbfso41880281fa.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Jan 2026 08:32:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767976355; x=1768581155; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IO802JtVxlBikj/CyNBa6zuERK0iteWeDBc4R9CqjCo=;
-        b=deaMfxZcWlcISyd59Fzmhc9ypXZGbY9g8Wv0JRXlbJ4BcJUpBf6t5Zy7S1RPu6Dxr5
-         H2xetH4rD1FDwoFaOSKHP7qvRaxWsQTuBX5Akn3W7za9lV3siqQwr6qzDxEBGNA04D/H
-         eUkOAPlRXA+vzDSneirUTtL/Ojbs7PBWwPzPh2zdhJmwaIdufPUxd7u+0MlSDxme0/ad
-         NsjLlCbO1J0tKxfRTzYjbazHqvS/cNrg6oRrcDmuGKzkFJoQqrrpXxArY6l9iH4aCGU2
-         8fsbjxMzBjXphkZ3cJJaRpgOXRWz2xiphmv+zzoiAKQSvNkJjezwnsYJFYxyU2PwZIza
-         swrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767976355; x=1768581155;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IO802JtVxlBikj/CyNBa6zuERK0iteWeDBc4R9CqjCo=;
-        b=UzAg5AT2KgRHw0Qlj34dWGVV44We8bHdYPb3BuYeqo+jxYaDq/BV8wZgqMJpuqa3of
-         ZLM8P+kM2y6z/SP1KCdyDZcF2J3WTsJAsYk5fjaKaJquou3AN+3JUnEFzbANoEduGTBo
-         7SMjZXAjUBE/KGfwcFVl2J0K9ypuFyfvRQZDq0AiOpXC2uI5wOs/Rf2PVJP98OClFmMe
-         ttIKcFshwWUCO3ftbFDobux/3KenNUC3UgV6ifGoHiPfbdvN2L/2qzQzY/0fXe/IPQfA
-         tmGMYbpQAxbWRocILyMNB9iih1FB+eROmfIUFs8K2TuXrm129iUx5rtxM0v6F3wTQtBr
-         oavw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1jzKQZVitgZd2unPAA4HVzEuTjkok+us0Scb5oXERRybl+YKASiPYS11dDldrww9EJqneCGNsETibEbrRbQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUnM/ntTDVIEysT8Tr59v92KzxB21JucZOcv8nR10kH1FIAF9w
-	wCEvbvkrZKOaSaSr1VzKU3OsJh3WXIJ8mS+FfyjiGs/afAAVe8nzsUarMiKeZXJsQeVIYDx6SAf
-	HoC3w/icZESXvWst/fdL5uGEip5M1tYr5iAEg5PgWsQ==
-X-Gm-Gg: AY/fxX5XvU2rbij36U3LUlwrBYeEKMC0h+icJ4xLLszg7qsUX5SFCVTsh7xw4sAV41N
-	d+hbO0L6Es2otjRimFmRs02FB4AzBRjA1WffBOt5cAiaqDVAGbcdrU7DVdYUHGYlbNDTEqzMote
-	JLyNKt3Mwb1MGu7t9lYYP6wf/vwXT1R/8Gb5Luwf4WU6KDqt+SO4kls5JQ99gPzq/YH1Xsywcuh
-	46rC+T6QAqxQ5LMEeDMpIRjmFCKzDnl2kduy+IP1Qod7f9d0pPf/5L+KQ/PRGuAURnhqHEnFfVn
-	FEpeVuTVw0/8utESjZzLi5P6kAGB
-X-Google-Smtp-Source: AGHT+IGYVm6ICDYwv+xm6omc/pxEUKxFcOrBUkJo1AtSOvqgZRKJ3q1hdRaH3AYtCnm1hDIpAF0rGE1sB1VPNE3mG3c=
-X-Received: by 2002:a05:6512:3f08:b0:598:edd4:d4a with SMTP id
- 2adb3069b0e04-59b6f04e75fmr3596656e87.44.1767976355347; Fri, 09 Jan 2026
- 08:32:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHWJG9Qr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17544C4CEF7;
+	Fri,  9 Jan 2026 16:39:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767976753;
+	bh=YaBDdkupNRStfAvOaRvS/NP9WCcD6+/+bW2LKA0Nfok=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=jHWJG9Qr4MPsD/Pjkw2AtobOIlfHsSnP8M5kfJgmJV5tIorjfFcfLkzj8t6+CaDkQ
+	 5bQPAxF/cjHuSxJKZ2P4WMLbFURf7z5qTZpy5zlNkE+T5elbyRDc/PQ40+tkUma4LJ
+	 W67pEbjR+n45KaJa1JTycI+Wd+75LN8cClfPDY9KjGrhaRYwmeYrfW1JfuD+JjzEcU
+	 NDcTDb6LUnleDrUPWIsGizmygx3vtRZUAvrTCt1VoXlqadyPeuG9m0CnEgp2AJ2uQK
+	 r76jM2AMQHV0YLIoOeyllNkmNVdfMVne8Mi+EtTC9g43BPoenl/vPHPsIAPmKlpLUt
+	 tSXKQRSBOGWgg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251008151554.340806-1-marco.crivellari@suse.com>
- <20251008151554.340806-3-marco.crivellari@suse.com> <aOaJlHEPzHcAdcUx@tardis-2.local>
- <aOeZ3ho6SHjmaw_2@google.com>
-In-Reply-To: <aOeZ3ho6SHjmaw_2@google.com>
-From: Marco Crivellari <marco.crivellari@suse.com>
-Date: Fri, 9 Jan 2026 17:32:23 +0100
-X-Gm-Features: AZwV_QhK1lY82eqtzww9Qb-tX8GSUybUSCzsvBfai6mOLTDoQJ8D3G6FD7RTN9Y
-Message-ID: <CAAofZF76TADGfF36gMV7qpZCHpXUYY+aOi_mFwrE6UrnkkQKXg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: add system_percpu() around the new system_percpu_wq
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Tejun Heo <tj@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 09 Jan 2026 17:39:09 +0100
+Message-Id: <DFK7GA22REIQ.1YSKLW77KQAWH@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 06/12] rust: pin-init: rewrite `#[pin_data]` using `syn`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun.feng@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@Kloenk.dev>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Alban Kurti"
+ <kurti@invicto.ai>
+X-Mailer: aerc 0.21.0
+References: <20260108135127.3153925-1-lossin@kernel.org>
+ <20260108135127.3153925-7-lossin@kernel.org>
+ <DFK2IZSN3G5Y.2ESC7WN213SYD@garyguo.net>
+In-Reply-To: <DFK2IZSN3G5Y.2ESC7WN213SYD@garyguo.net>
 
-On Thu, Oct 9, 2025 at 1:17=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
-> [...]
-> > If we were to expose the system_percpu_wq to Rust, then we should also
-> > add queue_work_on() API to Rust, otherwise it's kinda pointless IMO.
-> >
-> > PS. We can use the CpuId abstraction:
-> >
-> >       http://rust.docs.kernel.org/kernel/cpu/struct.CpuId.html
-> >
-> > and have an API like:
-> >
-> >     ipml Queue {
-> >         pub fn queue_on(&self, cpu: CpuId, w: W) -> W::EqueueOutput
-> >     }
-> >
-> > or maybe a different new type `PerCpuQueue`?
-> >
-> > Regards,
-> > Boqun
+On Fri Jan 9, 2026 at 1:47 PM CET, Gary Guo wrote:
+> On Thu Jan 8, 2026 at 1:50 PM GMT, Benno Lossin wrote:
+>> +impl Parse for Args {
+>> +    fn parse(input: syn::parse::ParseStream) -> Result<Self> {
+>> +        let lh =3D input.lookahead1();
+>> +        if lh.peek(End) {
+>> +            input.parse().map(Self::Nothing)
 >
-> How is it ... can we cleanly separate queues into those where you must
-> specify the cpuid, and those where you shouldn't?
+> How about make this `impl Parse for Option<Args>` and remove the nothing
+> variant? It looks a bit weird.
 
-Hi,
+`Option` is not fundamental, so I can't change the impl. Parse doesn't
+have a blanket impl on `Option`. Maybe I'm not fully understanding the
+change you're proposing.
 
-Sorry to come back to you so late. I still had many other subsystems patche=
-s,
-now there are way less, many of them are accepted.
+>> +fn strip_pin_annotations(struct_: &mut syn::ItemStruct) {
+>> +    for field in &mut struct_.fields {
+>> +        field.attrs.retain(|a| !a.path().is_ident("pin"));
+>> +    }
+>> +}
+>
+> Multiple places have similar things for stripping annotations and checkin=
+g if
+> structurally pinned. Would it make sense to do this at the very beginning=
+, and
+> build a `HashSet` of structurally pinned fields, and use that as canonica=
+l
+> source for all generate_ functions?
 
-Can I have some guidance about this? I am new to Rust.
-What's the best way in order to expose the workqueues?
+There is https://github.com/Rust-for-Linux/pin-init/pull/94, and I don't
+want to take away their work. I'll contact them and see if we can fold
+it into this commit/series.
 
-If I understand correctly, the Idea is extends the functionalities of:
-
-https://rust.docs.kernel.org/kernel/workqueue/struct.Queue.html
-
-adding the "queue_on" function.
-
-Creating a new type like "PerCpuQueue" I guess it means... wraps always
-the workqueue_struct structure and defines what's appropriate, like the
-new per-cpu workqueue.
-
-Many thanks in advance!
-
---=20
-
-Marco Crivellari
-
-L3 Support Engineer
+Cheers,
+Benno
