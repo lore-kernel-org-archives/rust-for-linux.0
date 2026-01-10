@@ -1,161 +1,229 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969BE340274
-	for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 14:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB3443ABC
+	for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 15:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768054736; cv=none; b=etMtUutc9UH1PwaMW1drx7BFVE6mIICY5imZ9FmOhZmrN/2jmfztLzDZ5bzoVE2tc/CxGs8zdnzVZmO8rI5lk8EWnCJM2LWUotOf58fv8ZGIz/xPJoEcNeH3E4ROe9BadP7Jtt6A9V/ZLvrC7lar5jrLjDFYBpeC+QMFV9w1qzo=
+	t=1768057750; cv=none; b=OKvgSfNifSVpOuRTPxIk9jElJ5qa/HGSdRn9jfbCYj+48cS5rSVk3FNAHuLEo0Vf5etY9mjDwc1Wkvx85vBtFdBpECOZOMf7jHFhPU9xo6Hudja7uhR/zucTFzx9EukQZGAWpZJoeW0TWKaGlrLAKU/+uTn2MlW16Ak6fIZi+Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768054736; c=relaxed/simple;
-	bh=kRY0JqaEJXv5qQbOo+PQf0MAXQr5jcaazM3whYofwxI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PueIlKWbp8OgnVsrlN0APdwleTfmMG0rA8PORpa1Ie9z+zwgiUDtKd31iA0GHDhdHSpQSQNrs1RKAjYqfU3XrA0XdWBAwYOZ8rtkZqaaVtF7BLuGNbfEDYgOWUBKXiMG1EOesUveTwsk6X9o/miM4zGNVq7/LHcgJkfRBtyeBeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pnz88Ei2; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1768057750; c=relaxed/simple;
+	bh=milihCyZOaiisfuddbX3OZNgmGSzhaVbWWujvDyXWCE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TMR6niohej1xrwFHVYkon5Tv11sadZOJmHf7hu03eYcXUyVeknTB2YznhFCv3at5FfLCadn2mELsvfe+EKcy0WeTFAVRgy8cVHBxh4fFK9AGNwWXTZ/4aT2LzXuJszd58+8m1jCjKQC13+a70Zq6oN0bGHYhGZYonpkitwpL1WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b/Xokmua; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pnz88Ei2"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42fb6ce71c7so4193382f8f.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 06:18:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b/Xokmua"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-59b672f8e40so5491031e87.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 07:09:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768054733; x=1768659533; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P30oa28eaoIPl8AwLjzFvZMrpwraSTVXtEjRXijkH0I=;
-        b=pnz88Ei2PKvd5E+1cHqKt+md8YVzGsfmqga3oLk+2p48HgLyfpYfUjPZK0Mba0Av3w
-         1Erk2k0ryVhkRXu+Xd6bu/UM4woJiX+vhgzt6l/6KhsVo3eUDVh/XAjQLiICk+wYHBoi
-         IBBE8p3JL/VPWIH8RwBNrVJpKcozBi/zFMwGOdGjmAWbIA1IR4cvnUO/ytZ6WdPR2vWj
-         DhXwv0Sv7xK7FPpmeCLcArhTTMFlEGVhoPDBSs+SlfgoWNSB7uC88J5r2TwNHH/TkRzs
-         58UCWtYCvDsjBVz+mZfRgv13HJNYhKYORK2dswpXqoj9uZhkguAtkwug5INcxl5qrJMy
-         tjVQ==
+        d=gmail.com; s=20230601; t=1768057747; x=1768662547; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CxL5IuhpQtN9jFUBPezGQaM3/k6Xw/1auJRUm1niSP4=;
+        b=b/XokmuaBQaXEa6NFXENuIdccsuZefa+CveDimOHEzlfuJfKkJI0eMJZoUYy9L/Wbc
+         Ib2RhBeaf1NifktBmo/CwTsaRpNLvqsCwH2Boo/Y96GNTEohn9z0/jMaNgs24VmhzmQY
+         03/JSTYwVKlCeVff32OrbDCxCa0QEZKcJ0mcaKYj1t5A7GkOtrx9b47xYITeeKbff3/Q
+         a9brIDnTdDgBEGp5l/L4cQZsmKjJkKN0azvpA/K3fxwz1CnoIopgp3JhlnJFmChoX5xl
+         KcAXANawlaFlnkiSvne+r04xty9cWEfvZZ0RVNEiT6GrQbHhez9YGCY/z3MzK7JpiQsW
+         tQXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768054733; x=1768659533;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=P30oa28eaoIPl8AwLjzFvZMrpwraSTVXtEjRXijkH0I=;
-        b=JXlWtr0cpBbUHPBsnIQoIniGoavG9J14h2MZQPQgVyabTVPygfH4CoXLSVVRMc+JGC
-         tjSa8rn/g32xcD/fJpHW3BPBI7d/SrBkz/Rl2LAUI3i8+N+G+UTp8rgtMBi1ZSLcQLqi
-         0dXAYfLHm8m1LT87tagGCwEAdacKl7o4EMkL+M6Am+rqDTLQwAYLHjxnz9+nMXv+dWMR
-         SeJFBBNv0NdZtM+THrb5Nvix4b37KQ3CPMQ872UNORHlQ+Uba7B8WfzDW3jzbFuQoyUu
-         xHheiOFK7ufMC0cqtZN7+2+Lk4ml7RLMZKfOreAcvKUCTOAZKOfcZBn91MGbkpIrf/Rn
-         YpIw==
-X-Forwarded-Encrypted: i=1; AJvYcCWy87cvV2NPQl+MZa/iGuZ0RypKjH7kTuMK6gbS3cn+2tw6DlmAOcAoDTPnOGCPl0FrI/RyrAC7eY+nY+RXcw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYZnOfpXnvyebzJrq6uX4AqTpk+3pI+GtZIslibHkoonSoToAh
-	LK2RlduCIWaBJPZsPsDz5iiRgve5Ze37/e2bxI2jrMR8qDjZ2eguTTr/Msg76N1T3em7CdgNXG8
-	IS27jk4hwWYZk+aFtjCGBrkuHEmmkeDG0C3m4tvlB
-X-Gm-Gg: AY/fxX6T0XxjpstbCFN29MNK61bQXXH7iNAe0KSb3/F2ZRFoaT9MC1DBQX26FZ5D8FL
-	vbuK6FBfNvXaHwQA82/pJ0yaVauwTt+bPOWpsYWv7WjobU2QzGHryByZw/PFzcUBDtWvpAhydM1
-	mAf0PL/2yr+TkNMNTJlNCAq3hiJ55c2RiM0Qm2dzqhr8ZWdHRKyrIbRr6b+x09kgPZx3a01fDn9
-	Uv5UiY75NoJfhcmMACTR9thhhVU4iG07VOnFkmFxmC3LL4lifSfh0/Gns9zueJ8QF5A7j2fUIY9
-	qfzPXJGE5ldrBt8wNqRtpfDHUQ==
-X-Google-Smtp-Source: AGHT+IFglpBqZsftOEMBSk7GyoKYSiMG04MSMuJsSbVHeFpfdrYZ86aazWoXfBSw/e0KbyZ0G4EVfbsmY2hdXiL5WZ0=
-X-Received: by 2002:a05:6000:2508:b0:430:fbe1:382a with SMTP id
- ffacd0b85a97d-432c37d36e3mr17276338f8f.54.1768054732845; Sat, 10 Jan 2026
- 06:18:52 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768057747; x=1768662547;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CxL5IuhpQtN9jFUBPezGQaM3/k6Xw/1auJRUm1niSP4=;
+        b=GyhD5WB0pZ5tEcNgN+ML8mJwIRXU79FmCOv/3MSySdU9v5amtwd6mRnfQfUncLFUur
+         qnxMqjBXSDomD04BWROgKxLp13mxZfRKKcTYVaiA9QhcsYJMJQ6Mx4SDLbt00dklltlk
+         WfDYEoWGKogNnxzTkHBqI2TUdT5eiPTpj/rV/PPQugyDeJFbkq9EfYwebGymsOU2+kR1
+         kJ4sDGoK+nyp5/iu6MDQWCYo8B62DKs5Dgnp7dZDcCXJhyaETDLhexhf9xP7GQNKU1JZ
+         83JDFUmHyI7ab0mz2SbVYSdNNxPGV68a60F3hkCQUwvwJirKq0Fh+INSKWK4try9nd0H
+         AKuw==
+X-Forwarded-Encrypted: i=1; AJvYcCVwGxlQuWaGbsNb/9T6wO6Yf5SHzGKrYYbjN/3dW/KWJvHeW8VONcoCwtcQpNhb+b+DvFrZxA8lp92Y3S9evQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8Dd3EU/tQ6GY8U1p6ncHQhhq/GGVCFrHZzoytNhUSleHiZjHS
+	VGIMymq9LBSYde5hmE12c445PEjfkncCNUiFS9IZbY4fY+Oc0lMxmORT
+X-Gm-Gg: AY/fxX5qlu0aURqeftdN0e1VUvNNHV7OnEqHlvrWKB2PCcfK0pU2sJWsMutatnF3vTr
+	Z82RhHHskuzYIV5YO0aGKuRndyy26y18RzyWOfZDzLZa+3jj+HHPUae821HH1R3BydbUh6FxoY4
+	naRQSjzDcn2Fd5ABn/eBbOdr8gZnwQFHPaLqVwvMqBfnpBvmpjXNHGMrvBd44mBrGTbgvEwNtt1
+	6KwCnAxclYC11pj2DVN+Dh4MidW9DuePUTCDGXKDHPPw8MOOLP2MN6N+3521kT9xGEREkM/jsCh
+	YwpGVWp/pW+FZr4AQvC9Or7bxk7CpPTxseqf16OEbYLseCNa730OaOAVVzWeuyxz9ZYofG8bsxq
+	ogLisVmEQg9x/Kdvk1EhppG/m1PwLPIm5XdgDR9oPjzp2RI4Pm0Kd84Iu+Yof3aZqpwD8hWJ0rm
+	D2JbPppySfaY09IHYx+gwsCY953NK7P1PZ0UVVDEfQ7mP6BgoEsBzB8LW56izYPOXXqMa2fW1j
+X-Google-Smtp-Source: AGHT+IH/WwZoA2CxA4VxBxbrefwgxBZqHrUgqZ26I2AYCzlpb1zuTNY/zU9OQhb8dPBMZsxXkuyJKg==
+X-Received: by 2002:a05:6512:b01:b0:59b:8483:8d97 with SMTP id 2adb3069b0e04-59b84838e5amr1204437e87.13.1768057746120;
+        Sat, 10 Jan 2026 07:09:06 -0800 (PST)
+Received: from LT-5CG5341NQ4.nordic.imtech.com (37-33-148-7.bb.dnainternet.fi. [37.33.148.7])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b75543a64sm2137059e87.49.2026.01.10.07.09.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Jan 2026 07:09:05 -0800 (PST)
+From: Kari Argillander <kari.argillander@gmail.com>
+Subject: [PATCH RFC v3 00/15] rust: Reimplement ThisModule to fix ownership
+ problems
+Date: Sat, 10 Jan 2026 17:07:58 +0200
+Message-Id: <20260110-this_module_fix-v3-0-97a3d9c14e8b@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAH5fLgj5UsFqXpT_RMhsYeKZkA+KgXBDw89q-HQEozQKLwNhXQ@mail.gmail.com>
- <20260109.093641.1161098806794561807.fujita.tomonori@gmail.com>
- <aWC66BAmhDgyqpfJ@google.com> <20260110.214825.1069367234137458141.fujita.tomonori@gmail.com>
-In-Reply-To: <20260110.214825.1069367234137458141.fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sat, 10 Jan 2026 15:18:41 +0100
-X-Gm-Features: AZwV_Qir2ktlGD2Z_ADJ-HahCFZ6-IT1GbpNjYAeVtUEuN0HAG43-8xLyU2jAh8
-Message-ID: <CAH5fLgjtL4PdPOmsORBe=JmfsJuSbZmrU+R7zyjhPxRnYqET7Q@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: sync: atomic: Add i32-backed Flag for atomic booleans
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: boqun.feng@gmail.com, ojeda@kernel.org, peterz@infradead.org, 
-	will@kernel.org, a.hindborg@kernel.org, bjorn3_gh@protonmail.com, 
-	dakr@kernel.org, gary@garyguo.net, lossin@kernel.org, mark.rutland@arm.com, 
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAE5rYmkC/2WNQQqDMBBFryJZN2WSaGq7KhR6gG5LkaiJBtSUx
+ IYW8e4dshJc/j//vVlI0N7qQC7ZQryONlg3YRCHjDS9mjpNbYuZcOAF4wLo3NtQja79DLoy9ku
+ VOENtDM/L84kg9fYa62R8ksf9Rl5YIjM7/0tfIksnFEpgwHbCyCjQXCotdCGhUHDtRmWHY+PG5
+ Ip8y8s9z5Evc64aXBiAesuv6/oHyOKcHvMAAAA=
+X-Change-ID: 20251230-this_module_fix-a390bff24897
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
+ Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
+ Kari Argillander <kari.argillander@gmail.com>, 
+ Youseok Yang <ileixe@gmail.com>, Yuheng Su <gipsyh.icu@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768057742; l=5834;
+ i=kari.argillander@gmail.com; s=20251219; h=from:subject:message-id;
+ bh=milihCyZOaiisfuddbX3OZNgmGSzhaVbWWujvDyXWCE=;
+ b=Y8FCzxMIiC1XW2mn7gG0wXCHVE9jRhKI/yUpFy8xUQFQuP0bdciNY1GXHVCc1G8NlYAr8UKKW
+ 2S2sQrqh+igBhWIltd/VPZHvZql8YSyqArivNQ2JFGndZ2dRrM3kTjU
+X-Developer-Key: i=kari.argillander@gmail.com; a=ed25519;
+ pk=RwSxyhTpE3z4sywdDbIkC3q33ZQLNyhYWxT44iTY6r4=
 
-On Sat, Jan 10, 2026 at 1:48=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> On Fri, 9 Jan 2026 08:23:04 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
->
-> > On Fri, Jan 09, 2026 at 09:36:41AM +0900, FUJITA Tomonori wrote:
-> >> On Thu, 8 Jan 2026 13:54:58 +0100
-> >> Alice Ryhl <aliceryhl@google.com> wrote:
-> >>
-> >> > On Thu, Jan 8, 2026 at 1:50=E2=80=AFPM FUJITA Tomonori
-> >> > <fujita.tomonori@gmail.com> wrote:
-> >> >>
-> >> >> Add a new Flag enum (Clear/Set) and implement AtomicType for it, so
-> >> >> users can use Atomic<Flag> for boolean flags.
-> >> >>
-> >> >> The backing integer type is an implementation detail; it is current=
-ly
-> >> >> i32 but may change in the future.
-> >> >>
-> >> >> Document when Atomic<Flag> is generally preferable to Atomic<bool>:=
- in
-> >> >> particular, when RMW operations such as xchg()/cmpxchg() may be use=
-d
-> >> >> and minimizing memory usage is not the top priority. On some
-> >> >> architectures without byte-sized RMW instructions, Atomic<bool> can=
- be
-> >> >> slower for RMW operations.
-> >> >>
-> >> >> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> >> >
-> >> > Can we have a `struct AtomicFlag(Atomic<Flag>)` here whose load() /
-> >> > store() methods use real booleans? Otherwise this seems inconvenient
-> >> > to use.
-> >>
-> >> Do you mean something along these lines?
-> >>
-> >> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> >> index 473d3c07e234..19750be1a239 100644
-> >> --- a/rust/kernel/sync/atomic.rs
-> >> +++ b/rust/kernel/sync/atomic.rs
-> >> @@ -622,3 +622,29 @@ fn from(b: bool) -> Self {
-> >>          }
-> >>      }
-> >>  }
-> >> +
-> >> +/// A convenience wrapper around [`Atomic<Flag>`] that exposes a `boo=
-l` API.
-> >> +pub struct AtomicFlag(Atomic<Flag>);
-> >> +
-> >> +impl AtomicFlag {
-> >> +    /// Creates a new atomic flag.
-> >> +    pub const fn new(b: bool) -> Self {
-> >> +        if b {
-> >> +            AtomicFlag(Atomic::new(Flag::Set))
-> >> +        } else {
-> >> +            AtomicFlag(Atomic::new(Flag::Clear))
-> >> +        }
-> >> +    }
-> >> +
-> >> +    /// Loads the value from the atomic flag.
-> >> +    #[inline(always)]
-> >> +    pub fn load<Ordering: ordering::AcquireOrRelaxed>(&self, o: Order=
-ing) -> bool {
-> >> +        self.0.load(o).into()
-> >> +    }
-> >> +
-> >> +    /// Stores a value to the atomic flag.
-> >> +    #[inline(always)]
-> >> +    pub fn store<Ordering: ordering::ReleaseOrRelaxed>(&self, b: bool=
-, o: Ordering) {
-> >> +        self.0.store(b.into(), o)
-> >> +    }
-> >> +}
-> >
-> > Yes, that's what I meant.
->
-> Thanks for confirming. I'll add in v3.
+Still RFC. Not all people for each subsystems are not included yet as
+this touch quite lot of things. I would like to get feed back is this
+resonable seperation and how we will land this. I have tried my best so
+that it can be applied in multiple staged if needed. I have not receive
+any feedback on this series and that is little bit worrying.
 
-I guess another good use-case could be `AtomicTracker` in
-rust/kernel/list/arc.rs
+Introduce new ThisModule trait and THIS_MODULE impl.
+
+So currently we have problem that we are not always filling .owner field
+example for file_operations. I think we can enable const_refs_to_static
+already as that is in 1.78 and is stable in 1.83. So that fits perfecly
+for us.  This also seems to be quite request feature but I did not found
+that no one has ever suggested that we just enable this.
+
+So basic idea is that we will have ThisModule trait which is used kernel
+side. Module side we will always use THIS_MODULE. That is completly
+private for modules and kernel crate cannot use it. Currently we have
+THIS_MODULE, LocalModule and
+
+  module: &' static ThisModule
+
+on init functions. As we anyway need THIS_MODULE just use that for all
+of these things.
+
+Patches 1-2 introduce THIS_MODULE and ThisModule trait.
+Patches 3-12 can be applied any order after 1-2.
+Patch 13 depends on patches 11-12.
+Patches 14-15 are clean up patches and depends 1-13.
+
+    Argillander
+
+To: Miguel Ojeda <ojeda@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+To: Gary Guo <gary@garyguo.net>
+To: Björn Roy Baron <bjorn3_gh@protonmail.com>
+To: Benno Lossin <lossin@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+To: Trevor Gross <tmgross@umich.edu>
+To: Danilo Krummrich <dakr@kernel.org>
+
+To: Alexandre Courbot <acourbot@nvidia.com>
+
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Daniel Gomez <da.gomez@kernel.org>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: Aaron Tomlin <atomlin@atomlin.com>
+
+Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
+---
+Changes in v3:
+- Edit cover.
+- Seperate module name changes to seperate patches.
+- Rebase top of next 20260109
+- Seperate configfs changes to own commit.
+- Fix one place still used M over TM for ThisModule.
+- Link to v2: https://lore.kernel.org/r/20260106-this_module_fix-v2-0-842ac026f00b@gmail.com
+
+Changes in v2:
+- Patches are now sepereted properly.
+- Removed debugfs changes as that is not so clear to me.
+- Remove module parameter and just used THIS_MODULE everywhere.
+- Made macro to make THIS_MODULE.
+- Doc tests also have THIS_MODULE.
+- Link to v1: https://lore.kernel.org/r/20260101-this_module_fix-v1-0-46ae3e5605a0@gmail.com
+
+---
+Kari Argillander (15):
+      rust: enable const_refs_to_static feature
+      rust: add new ThisModule trait and THIS_MODULE impl
+      rust: miscdevice: fix use after free because missing .owner
+      rust: block: fix missing owner field in block_device_operations
+      rust: drm: fix missing owner in file_operations
+      rust: configfs: use new THIS_MODULE
+      rust: binder: use new THIS_MODULE
+      rust: firmware: use THIS_MODULE over LocalModule for name
+      gpu: nova-core: use THIS_MODULE over LocalModule for name
+      samples: rust: auxiliary: use THIS_MODULE over LocalModule for name
+      rust: driver: make RegistrationOps::register() to use new ThisModule
+      rust: phy: make Registration::register() use new ThisModule
+      rust: remove module argument from InPlaceModule::init()
+      rust: remove kernel::ModuleMetadata
+      rust: remove old version of ThisModule
+
+ drivers/android/binder/rust_binder_main.rs |   5 +-
+ drivers/block/rnull/configfs.rs            |   2 +-
+ drivers/block/rnull/rnull.rs               |   3 +-
+ drivers/gpu/drm/nova/driver.rs             |   2 +
+ drivers/gpu/drm/tyr/driver.rs              |   2 +
+ drivers/gpu/nova-core/nova_core.rs         |   2 +-
+ lib/find_bit_benchmark_rust.rs             |   3 +-
+ rust/kernel/auxiliary.rs                   |  16 +--
+ rust/kernel/block/mq.rs                    |   1 +
+ rust/kernel/block/mq/gen_disk.rs           |  30 +-----
+ rust/kernel/block/mq/operations.rs         |  30 ++++++
+ rust/kernel/configfs.rs                    |  49 ++++-----
+ rust/kernel/driver.rs                      |  31 +++---
+ rust/kernel/drm/device.rs                  |   2 +-
+ rust/kernel/drm/driver.rs                  |   4 +
+ rust/kernel/drm/gem/mod.rs                 |   5 +-
+ rust/kernel/firmware.rs                    |   4 +-
+ rust/kernel/i2c.rs                         |  11 +-
+ rust/kernel/lib.rs                         | 161 ++++++++++++++++++++++++-----
+ rust/kernel/miscdevice.rs                  |   5 +
+ rust/kernel/net/phy.rs                     |  29 ++++--
+ rust/kernel/pci.rs                         |  15 +--
+ rust/kernel/platform.rs                    |  12 +--
+ rust/kernel/prelude.rs                     |   2 +-
+ rust/kernel/sync/lock/global.rs            |   4 +-
+ rust/kernel/usb.rs                         |  13 +--
+ rust/macros/lib.rs                         |   4 +-
+ rust/macros/module.rs                      |  24 +----
+ samples/rust/rust_configfs.rs              |   2 +-
+ samples/rust/rust_debugfs_scoped.rs        |   2 +-
+ samples/rust/rust_driver_auxiliary.rs      |   8 +-
+ samples/rust/rust_driver_faux.rs           |   2 +-
+ samples/rust/rust_minimal.rs               |   2 +-
+ samples/rust/rust_misc_device.rs           |   3 +-
+ samples/rust/rust_print_main.rs            |   2 +-
+ scripts/rustdoc_test_gen.rs                |   2 +
+ 36 files changed, 298 insertions(+), 196 deletions(-)
+---
+base-commit: f417b7ffcbef7d76b0d8860518f50dae0e7e5eda
+change-id: 20251230-this_module_fix-a390bff24897
+
+Best regards,
+-- 
+Kari Argillander <kari.argillander@gmail.com>
+
