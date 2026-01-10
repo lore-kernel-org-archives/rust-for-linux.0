@@ -1,68 +1,68 @@
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98764347BB4
-	for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 15:09:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF205347BC7
+	for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 15:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768057755; cv=none; b=PXraW9ASGSylwNxy4oxhgAyIYB8oXJVmfTQ2Zw5sSkBCgpHXCe6Qgk2hV+7EjzswZsCS/aZk8MqeHdZPSDFX/7aYqSnkRnBo8p+8uXBt0L8pQLJSvQXj06P03iaR6ffexY8nfgg1ZQzzYeiKVKB/wHOOYAeRPZx6npN/AvdgOkI=
+	t=1768057757; cv=none; b=uyYCtKzSXYCGPMqItGk5VzcyROTva9Iq6JFCfxZNgngIadHpYm+aXhZLWpeEcAS0uTto1UGlz5vwZnZKvEKa43PlfvfPDYHDFy0yppTOs2iqN3sVZuqzKBZoxb98/Qya/ONB1JeoupF/34xRaL9dh/DcU5NmqLnZ7pyu/z39peY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768057755; c=relaxed/simple;
-	bh=qllvw0idDXOnIB0CGwSIi/5rAB72aSN88B6VHNRb1ac=;
+	s=arc-20240116; t=1768057757; c=relaxed/simple;
+	bh=891dg5NeMMgINCtxfUx5z2GhTLzUtO+bREujFmK9Vxo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ActlfiRsKhb1C1IE5hCVi2iHATTXEneUgl1Bq+rhsj+wtykyq/svqmV0umoMhtfmEfWzYfJNf6PomJcTnfkV+GykNePD5XsVNTsTb5sxgs4m5dWcDrnf6PYUG8U53L+u2HvdA67tRtQbZ911L8xK0tt2HWOmzMoxiFKKz+oBu0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nL/Z8wuP; arc=none smtp.client-ip=209.85.167.47
+	 In-Reply-To:To:Cc; b=WtboTbnVQXVaeYmuHB9QrnOWDzHcLdwVGblDzTnSubGOlYHZrVcYP2dJNu4yY5wyo+Fs0T6MWx3dApJTziwPae0p3PtgVdBv/7NfCDE/nvr4QCgJULnypMytDRUwogtn+2Ti2bDvKNopN+CjT/+vrcTG83+NZdWYPDH1mILNWO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ns6wyTsC; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nL/Z8wuP"
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-59b7c2614f7so2052381e87.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 07:09:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ns6wyTsC"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-59b79f700a1so2331005e87.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 07:09:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768057752; x=1768662552; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768057754; x=1768662554; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fykazAZF3HAYQpCFJz/nzZleds7CiXZwx2GOEkEsWOA=;
-        b=nL/Z8wuP5dV9cd2rzWHMj8Vl+Jw2Oq1KWSIFAnCNG4QGPxyd4bCy46qxgkJHfy1hXS
-         iu8Zww88lerMDmAjbmJAhSgqJ6eyANiF5/Nie9lDIzZ76TqvvRfNOh022hlidJ8FSbwp
-         bjHW1IG5ikP4rGUuKFFfsTQovqaYWrD5A2SLIRm7QNtUN4PAq1LXX3D+lfdgZVRbo2ui
-         WwRvN015LkB6cn0iUQm9RJV+tLuGqU2vnX5xdhUQfbW7blKA1uMLeq01HSabjN0PNwh/
-         BykeTBuSbeEvr6jBFcP8aOCzkX2FObXYatT3javxbpkyApbZ6lyJg0kYKjOhveimSea1
-         gMCw==
+        bh=SI0sZ7uVNTRnuO/8Ld3c5O3KKGDZMWG55LzxmtwZszI=;
+        b=Ns6wyTsCKAFNVbWzJ1CxIRn0XdsOkvf17b5zSed5MgBzEiMnkcrXMA6BDndyqA6AEK
+         rIdJdkVRWlrr+uTu1cSGgeKkHGLCIj7qEjch6uhDNx6c7TE/M2JwqEBUWVMEk6HNelyf
+         +De+i8BprT9w7faeWuqv2MVPlgr10CskI3Ysb0jJSiBPA129fdDgpKRhKWysOc1NJ9YR
+         s6nFrN96bXeWIMmZyUy7b+Zlj3wcKZ/ERZMHNkhnPRSWCeAV5Jyybq8xyRl13tL7g1aV
+         dXzr/+W48k3r8QETM+e2v6OV5WgfXG0BC9v8GUfVIbgCDtGQ5xa9+/B6I0/6ofX9duB4
+         HloQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768057752; x=1768662552;
+        d=1e100.net; s=20230601; t=1768057754; x=1768662554;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=fykazAZF3HAYQpCFJz/nzZleds7CiXZwx2GOEkEsWOA=;
-        b=SYjRD9/L3OQ0oZXhOvKr/upMZFA0R8yw7hCOtyLwvTC7P/Low37jTcbqAkxFerF7ED
-         sVOZ5X9sX8ntSyfyV2cDiNwD904uVThV52ewriIigbHBM/2i/bKigYz2S4pkOhgs8cwy
-         YxPsq8u67ZlfOuKAUts1Wkf6AsGdKss3V49DMfAGCBtuqnfQ0Uvu2Jpt7Z74GkgfFjAv
-         NWAZsYQcUht+eBRV0c7OAe3miBM3BpMf4/il90w0xLoT5Lsobr2yMeV1DPlKmfV8p8g+
-         NAqpXtRA9eLiTFPBiVDH6pgdHf1XR8tLIbBfhWA10UXok4VGfwc1UjUowzImcBbtayjB
-         M3Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCVEbAQHDmWSSxCqQh37BhEQtBnMEGCDNC+xP3aAsHmxw96LHb5KDMvhs9DjOY9NGUYzStSJKGY4QbtERK2huw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMhejFYnJuZ5LDdeJLzdIcdyM2yw/g1KJE+Y2X+GE0D+Ga1zKp
-	yIkG+R9Q5BIDLowEtDx4Ddkb81giX3NFJKVPRUIIcyeJEylmXsM7t6vo
-X-Gm-Gg: AY/fxX5ak4Arfu9wvklGDAUeEEOqup+8g7XcMWxd76j/7jV/qgGVyoA2/j+DZxcszvR
-	hbIt4wA1m6ASH6rExFW4JUNykBb0bgrYyk0CWpk4Z0bvwtepNiJM4CEo0/N0HmDz5L1HLOG4PTT
-	oBs1Y9T1pm0zPTpfEzslfPRcCnysUipB2IOiNh05CBrlrSukHCYoJlFoxMwSIyrE+NZm5zepQlm
-	J6uFzSmI/lUfPvwV94+35KKLsihg5xaa0BCTWGEMJ7UuC2OEBl+QdN+UkRQlyelCd0npYROeHeF
-	LjmtXic8ArV6Uk4oOVt5lvcE+8TIQYra8CM9RjXuWnf1yYAn5gPdPe6fS7n0iVaSBEmsxk50TLP
-	uSxXS2XLkPaQ0nFpcWBHj7QGYEEJ1Tfo/VQQCm3ixMeLA9jqM8YdX8O+o0eoBXsEi50iRjEygQA
-	otuymzesmfROAz5tzpktpoIlGhakCse/O3PN8MZNKS0jwrQ48DS3T7hJV6NYzp9iXcuWT/fdwL
-X-Google-Smtp-Source: AGHT+IEa9C+0IkOnrnHmgn3qNoR/RdYiVg8QdC2LkRqOYQv6fDShjbGBuOp8BKFt8hTS3edZ7zPsIA==
-X-Received: by 2002:a05:6512:1109:b0:597:ddd8:cce9 with SMTP id 2adb3069b0e04-59b6f02b24amr4151383e87.25.1768057751330;
-        Sat, 10 Jan 2026 07:09:11 -0800 (PST)
+        bh=SI0sZ7uVNTRnuO/8Ld3c5O3KKGDZMWG55LzxmtwZszI=;
+        b=aLz68XDDaKVBbbygmAEIzzUcNOZesesOpXkx9K+A/WLfj1pGbbc/HCZYi+pX5i/C3L
+         I4zBPUmNG/tuSJE/QZ2Kfqo454PEW1GY36uS3w5uB8RfVcQKKj1mZdv0SVUrhMGaoCca
+         00Y0zXjYquOh8V6GfRL2ar5Bv00MorWVWY6fVheR7//wkVyEkWYZO/BfnduuJzxExdTs
+         1CKVOdkzwyR2DJQXcMX0rGH2QnyyD+gUDO1xZVcGeKqfxf05NwDMSnnV0Z5fJLgYae1v
+         VUH13LKtjMkA/8D+MVVxOnnOtb6CzDAk7LH7hKftO3scKCVb7ootPyOeOB2efDjefqXa
+         C6XA==
+X-Forwarded-Encrypted: i=1; AJvYcCWmxkXgbxpTkKJK06GNJV02g6pmcW0sm+lq9tEdjX1HASbSGLgBVx17Mo9wFtgcSWxYqZjEbCq9ehRKwajOQQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YztSPXh4zAcgFZNtRLSLezuiJBMcFXyBgdY7IlWyqTdUVuMR/Wn
+	03INs3i9x51aR8UX6hPqV/nY7hmSHX+N6xGIrJFYe143tciKBJ3qBdAT
+X-Gm-Gg: AY/fxX7Z0fyQBfpj7NhP9qNIb0U8y3IRG9eFJ7QXBOhvitljOLywXZIb2TJYSq+28EU
+	qe+rjCpdeyLVkP2MCsVRleIoVzasSLsETs2V1gFHoe6l4RKzkBakhKQazWwWOhnqo57l7ECHkr2
+	4h1H3OpGJtcItg1CnDaefDrV1eBveCiMEQWFXEYag0Jdb48tLKj8JkI4yW4OXMc4vY6zHg85Knh
+	bOTG6gpeAAgMS+IK3qhijqW6jLSFWeTkmBFbPgRXoc6JE31lKZvhvyqvdo7Qa7WLwkqVeLJKIeD
+	8d04JfuBW2C2uZJ/EEzil3bFhkNsjy7RQTHfJwOo3aRVXpKHNhlmGHomCcqMCGEm8bvtqi8RyQ+
+	uN1tHexeaxoJeT66BELGaFs5xuXm23HaxMFj67aMSlI42c+bka4dU7aFuvIWMHf9g8SN69a/Bg5
+	Ze4FIhcxRLNB5jemIaJD51+EgahMQt2xQz9sP2sJ/PVnZzLQX0qExVlMJbifnUTQVM+Q3eVfpq
+X-Google-Smtp-Source: AGHT+IF15/eRGuTu7+wp+QYULK4KR7oRPF4/q3DNB7vZeYJShFYAC050bMH9rb7Ur2PCPfBPy+O9hw==
+X-Received: by 2002:a05:6512:33cb:b0:59b:73b9:1f49 with SMTP id 2adb3069b0e04-59b73b921e7mr3815567e87.26.1768057753607;
+        Sat, 10 Jan 2026 07:09:13 -0800 (PST)
 Received: from LT-5CG5341NQ4.nordic.imtech.com (37-33-148-7.bb.dnainternet.fi. [37.33.148.7])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b75543a64sm2137059e87.49.2026.01.10.07.09.08
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b75543a64sm2137059e87.49.2026.01.10.07.09.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jan 2026 07:09:10 -0800 (PST)
+        Sat, 10 Jan 2026 07:09:13 -0800 (PST)
 From: Kari Argillander <kari.argillander@gmail.com>
-Date: Sat, 10 Jan 2026 17:08:00 +0200
-Subject: [PATCH RFC v3 02/15] rust: add new ThisModule trait and
- THIS_MODULE impl
+Date: Sat, 10 Jan 2026 17:08:01 +0200
+Subject: [PATCH RFC v3 03/15] rust: miscdevice: fix use after free because
+ missing .owner
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,8 +70,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260110-this_module_fix-v3-2-97a3d9c14e8b@gmail.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260110-this_module_fix-v3-3-97a3d9c14e8b@gmail.com>
 References: <20260110-this_module_fix-v3-0-97a3d9c14e8b@gmail.com>
 In-Reply-To: <20260110-this_module_fix-v3-0-97a3d9c14e8b@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -85,291 +85,79 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  linux-modules@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, 
  Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
  Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
- Kari Argillander <kari.argillander@gmail.com>
+ Kari Argillander <kari.argillander@gmail.com>, 
+ Youseok Yang <ileixe@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768057742; l=11964;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768057742; l=2370;
  i=kari.argillander@gmail.com; s=20251219; h=from:subject:message-id;
- bh=qllvw0idDXOnIB0CGwSIi/5rAB72aSN88B6VHNRb1ac=;
- b=3cDQVG93FqvGZl8dIN85pb9TVrWhh87GXa5i5JbwoqpeZ+oywsG1SWiCNte6DIiDqSNB+eFmU
- Fj3hdrardI0AL1Bfn0oUlBY+78DlYj094tzdD/gZ88mnWXomTrAZ/UI
+ bh=891dg5NeMMgINCtxfUx5z2GhTLzUtO+bREujFmK9Vxo=;
+ b=YGFU2Mudpv6wmls6LVSS+C3zLULqJaxqGgs9hMIwnNZn79Pd9ugTIDLVe52c0ThqhL7w/+wS0
+ cBq/kCyOWf4B6laeNZScBjMawlstvNU/8l4e7/MRGSL/nd1oFpEZQDf
 X-Developer-Key: i=kari.argillander@gmail.com; a=ed25519;
  pk=RwSxyhTpE3z4sywdDbIkC3q33ZQLNyhYWxT44iTY6r4=
 
-To make clear separation between module crates and kernel crate we
-introduce ThisModule trait which is meant to be used by kernel space.
-THIS_MODULE is meant to be used by modules. So kernel create will be
-unable to even accidentally use THIS_MODULE.
+Currently if miscdevice driver is compiled as module it can cause use
+after free when unloading. To reproduce problem with Rust sample driver
+we can do:
 
-As ThisModule is trait we can pass that around in const context. This is
-needed so that we can read ownership information in const context when
-we create example file_operations structs for modules.
+    tail -f /dev/rust-misc-device
+    # And same time as device is open
+    sudo rmmod rust_misc_device_module
 
-New ThisModule will also eventually replace kernel::ModuleMetadata trait
-and for this reason it also have NAME field.
+This will crash system. Fix is to have .owner field filled with module
+information. We pass this owner information through vtable.
 
-To make transition smooth use mod this_module so we can have two
-ThisModule same time. Also some functionality is added to THIS_MODULE
-temporarily so that we do not have to change everything at once.
-
-Also docs examples will need THIS_MODULE so also define that in docs.
-
+Reported-by: Youseok Yang <ileixe@gmail.com>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1182
+Fixes: f893691e7426 ("rust: miscdevice: add base miscdevice abstraction")
 Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
 ---
- rust/kernel/configfs.rs     |   6 +-
- rust/kernel/lib.rs          | 159 ++++++++++++++++++++++++++++++++++++++++++++
- rust/macros/module.rs       |  16 +----
- scripts/rustdoc_test_gen.rs |   2 +
- 4 files changed, 166 insertions(+), 17 deletions(-)
+ rust/kernel/miscdevice.rs        | 5 +++++
+ samples/rust/rust_misc_device.rs | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
-index 466fb7f40762..fe80439ab21f 100644
---- a/rust/kernel/configfs.rs
-+++ b/rust/kernel/configfs.rs
-@@ -876,7 +876,7 @@ fn as_ptr(&self) -> *const bindings::config_item_type {
- ///                 configfs::Subsystem<Configuration>,
- ///                 Configuration
- ///                 >::new_with_child_ctor::<N,Child>(
--///             &THIS_MODULE,
-+///             THIS_MODULE.as_ref(),
- ///             &CONFIGURATION_ATTRS
- ///         );
- ///
-@@ -1020,7 +1020,7 @@ macro_rules! configfs_attrs {
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index ba64c8a858f0..d4b0c35c4b60 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -18,6 +18,7 @@
+     mm::virt::VmaNew,
+     prelude::*,
+     seq_file::SeqFile,
++    this_module::ThisModule,
+     types::{ForeignOwnable, Opaque},
+ };
+ use core::{marker::PhantomData, pin::Pin};
+@@ -112,6 +113,9 @@ fn drop(self: Pin<&mut Self>) {
+ /// Trait implemented by the private data of an open misc device.
+ #[vtable]
+ pub trait MiscDevice: Sized {
++    /// Module ownership for this device, provided via `THIS_MODULE`.
++    type ThisModule: ThisModule;
++
+     /// What kind of pointer should `Self` be wrapped in.
+     type Ptr: ForeignOwnable + Send + Sync;
  
-                     static [< $data:upper _TPE >] : $crate::configfs::ItemType<$container, $data>  =
-                         $crate::configfs::ItemType::<$container, $data>::new::<N>(
--                            &THIS_MODULE, &[<$ data:upper _ATTRS >]
-+                            THIS_MODULE.as_ref(), &[<$ data:upper _ATTRS >]
-                         );
-                 )?
- 
-@@ -1029,7 +1029,7 @@ macro_rules! configfs_attrs {
-                         $crate::configfs::ItemType<$container, $data>  =
-                             $crate::configfs::ItemType::<$container, $data>::
-                             new_with_child_ctor::<N, $child>(
--                                &THIS_MODULE, &[<$ data:upper _ATTRS >]
-+                                THIS_MODULE.as_ref(), &[<$ data:upper _ATTRS >]
-                             );
-                 )?
- 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 510d4bfc7c2b..4b899f75e56d 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -233,6 +233,165 @@ pub const fn as_ptr(&self) -> *mut bindings::module {
+@@ -388,6 +392,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
      }
- }
  
-+pub mod this_module {
-+    //! Access to the module identity and ownership information.
-+    //!
-+    //! This module provides the Rust equivalent of the kernel’s `THIS_MODULE`
-+    //! symbol from the [C API](srctree/include/linux/init.h).
-+    //!
-+    //! # For driver creators
-+    //!
-+    //! If you see ThisModule you need to pass THIS_NODULE for it so it can
-+    //! track module ownership.
-+    //!
-+    //! Each Rust module defines its own `THIS_MODULE` using the
-+    //! [`create_this_module`] macro. The generated `THIS_MODULE` identifies the
-+    //! owning kernel module and expose some metadata about it.
-+    //!
-+    //! # For abstraction creators
-+    //!
-+    //! Many times C-apis expect a `struct module *` pointer so they can
-+    //! increase the module reference count. This is because module could be
-+    //! unloaded while example file operations are in progress. Many times
-+    //! structs which needs owner fields should also be const. For this reason
-+    //! ThisModule is usually passes as a type parameter `TM` to abstractions
-+    //! which need to know the module owner. In vtables ThisModule is usually
-+    //! used as name.
-+    //!
-+    //! ## Example
-+    //!
-+    //! ```
-+    //! # use kernel::{bindings, this_module::ThisModule};
-+    //! # use core::marker::PhantomData;
-+    //!
-+    //! // Example function signature which needs ThisModule.
-+    //! pub fn create_device<TM: ThisModule>() {}
-+    //!
-+    //! // Example of a vtable which uses ThisModule.
-+    //! #[vtable]
-+    //! pub trait MyStruct {
-+    //!     type ThisModule: ThisModule;
-+    //! }
-+    //!
-+    //! pub(crate) struct MyStructVTable<T: MyStruct>(PhantomData<T>);
-+    //!
-+    //! impl<T: MyStruct> MyStructVTable<T> {
-+    //!     const FOPS: bindings::file_operations = bindings::file_operations {
-+    //!         owner: T::ThisModule::OWNER.as_ptr(),
-+    //!         ..pin_init::zeroed()
-+    //!     };
-+    //! }
-+    //! ```
-+
-+    /// See [`this_module`]
-+    pub trait ThisModule {
-+        /// Wrapper around the owning `struct module` pointer.
-+        ///
-+        /// This is null for built-in code and non-null for loadable modules.
-+        const OWNER: ModuleWrapper;
-+        /// Name of the module.
-+        const NAME: &'static kernel::str::CStr;
-+    }
-+
-+    /// Wrapper around a pointer to `struct module`.
-+    ///
-+    /// This type exists as a workaround for the lack of `const fn` methods in
-+    /// traits. It allows the module pointer to be stored as an associated
-+    /// constant while still providing a `const` accessor.
-+    pub struct ModuleWrapper {
-+        ptr: *mut bindings::module,
-+    }
-+
-+    impl ModuleWrapper {
-+        /// Get the raw pointer to the underlying `struct module`.
-+        ///
-+        /// TODO: Should be only available for kernel create.
-+        pub const fn as_ptr(&self) -> *mut bindings::module {
-+            self.ptr
-+        }
-+
-+        /// Only meant to be used from [`create_this_module`].
-+        ///
-+        /// # Safety
-+        ///
-+        /// - Only modules are allowed to create non null `ModuleWrapper`s.
-+        /// - The non null pointer must point to a valid `struct module`
-+        ///   provided by the kernel.
-+        #[doc(hidden)]
-+        pub const unsafe fn from_ptr(ptr: *mut bindings::module) -> Self {
-+            ModuleWrapper { ptr }
-+        }
-+    }
-+
-+    /// Creates the `THIS_MODULE` definition for a Rust module.
-+    ///
-+    /// This macro is an internal building block and is not intended to be used
-+    /// directly by module authors. It is invoked by [`macros::module::module`]
-+    /// and by kernel doctests.
-+    ///
-+    /// A macro is required so that `cfg(MODULE)` is evaluated in the context of
-+    /// the consuming crate, and to prevent accidental use of THIS_MODULE from
-+    /// within the kernel crate itself.
-+    #[macro_export]
-+    #[doc(hidden)]
-+    macro_rules! create_this_module {
-+        ($name:literal) => {
-+            /// THIS_MODULE for module `{name}`. See [`kernel::this_module`].
-+            #[allow(non_camel_case_types)]
-+            pub struct THIS_MODULE;
-+
-+            impl ::kernel::this_module::ThisModule for THIS_MODULE {
-+                #[cfg(not(MODULE))]
-+                /// SAFETY: TODO
-+                const OWNER: ::kernel::this_module::ModuleWrapper = unsafe {
-+                    ::kernel::this_module::ModuleWrapper::from_ptr(::core::ptr::null_mut())
-+                };
-+
-+                #[cfg(MODULE)]
-+                // SAFETY:
-+                // - `__this_module` is constructed by the kernel at module load time.
-+                const OWNER: ::kernel::this_module::ModuleWrapper = unsafe {
-+                    extern "C" {
-+                        static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
-+                    }
-+
-+                    ::kernel::this_module::ModuleWrapper::from_ptr(__this_module.get())
-+                };
-+
-+                const NAME: &'static ::kernel::str::CStr = $crate::c_str!($name);
-+            }
-+
-+            impl THIS_MODULE {
-+                /// Returns the name of this module.
-+                pub const fn name() -> &'static ::kernel::str::CStr {
-+                    $crate::c_str!($name)
-+                }
-+
-+                // TODO: Temporary to provide functionality old `THIS_MODULE` provided.
-+                // SAFETY: `__this_module` is constructed by the kernel at load time and
-+                // will not be freed until the module is unloaded.
-+                const ThisModule: ::kernel::ThisModule = unsafe {{
-+                    ::kernel::ThisModule::from_ptr(
-+                        <Self as ::kernel::this_module::ThisModule>::OWNER.as_ptr()
-+                    )
-+                }};
-+
-+                /// Gets a pointer to the underlying `struct module`.
-+                // TODO: Temporary to provide functionality old `THIS_MODULE` provided.
-+                pub const fn as_ptr(&self) -> *mut ::kernel::bindings::module {{
-+                    Self::ThisModule.as_ptr()
-+                }}
-+
-+                /// Gets a reference to the underlying `ThisModule`.
-+                /// TODO: Temporary to provide functionality old `THIS_MODULE` provided.
-+                pub const fn as_ref(&self) -> &'static ::kernel::ThisModule {{
-+                    &Self::ThisModule
-+                }}
-+            }
-+        };
-+    }
-+}
-+
- #[cfg(not(testlib))]
- #[panic_handler]
- fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 80cb9b16f5aa..1bcd703735fe 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -371,20 +371,8 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-             /// Used by the printing macros, e.g. [`info!`].
-             const __LOG_PREFIX: &[u8] = b\"{name}\\0\";
+     const VTABLE: bindings::file_operations = bindings::file_operations {
++        owner: T::ThisModule::OWNER.as_ptr(),
+         open: Some(Self::open),
+         release: Some(Self::release),
+         mmap: if T::HAS_MMAP { Some(Self::mmap) } else { None },
+diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+index 49dd5814e1ab..464e3026e6e3 100644
+--- a/samples/rust/rust_misc_device.rs
++++ b/samples/rust/rust_misc_device.rs
+@@ -155,6 +155,7 @@ struct RustMiscDevice {
  
--            // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
--            // freed until the module is unloaded.
--            #[cfg(MODULE)]
--            static THIS_MODULE: ::kernel::ThisModule = unsafe {{
--                extern \"C\" {{
--                    static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
--                }}
-+            ::kernel::create_this_module!(\"{name}\");
+ #[vtable]
+ impl MiscDevice for RustMiscDevice {
++    type ThisModule = THIS_MODULE;
+     type Ptr = Pin<KBox<Self>>;
  
--                ::kernel::ThisModule::from_ptr(__this_module.get())
--            }};
--            #[cfg(not(MODULE))]
--            static THIS_MODULE: ::kernel::ThisModule = unsafe {{
--                ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
--            }};
- 
-             /// The `LocalModule` type is the type of the module created by `module!`,
-             /// `module_pci_driver!`, `module_platform_driver!`, etc.
-@@ -502,7 +490,7 @@ mod __module_init {{
-                     /// This function must only be called once.
-                     unsafe fn __init() -> ::kernel::ffi::c_int {{
-                         let initer =
--                            <{type_} as ::kernel::InPlaceModule>::init(&super::super::THIS_MODULE);
-+                            <{type_} as ::kernel::InPlaceModule>::init(&super::super::THIS_MODULE.as_ref());
-                         // SAFETY: No data race, since `__MOD` can only be accessed by this module
-                         // and there only `__init` and `__exit` access it. These functions are only
-                         // called once and `__exit` cannot be called before or during `__init`.
-diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
-index 6fd9f5c84e2e..089e38b49cdd 100644
---- a/scripts/rustdoc_test_gen.rs
-+++ b/scripts/rustdoc_test_gen.rs
-@@ -232,6 +232,8 @@ macro_rules! assert_eq {{
- 
- const __LOG_PREFIX: &[u8] = b"rust_doctests_kernel\0";
- 
-+::kernel::create_this_module!("rust_doctests_kernel");
-+
- {rust_tests}
- "#
-     )
+     fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Self>>> {
 
 -- 
 2.43.0
