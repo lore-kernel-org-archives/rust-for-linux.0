@@ -1,67 +1,67 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE746347BBB
-	for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 15:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD80346E62
+	for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 15:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768057765; cv=none; b=LhkePcX9/Kt5P7QJO2xiwd8s0ZFxsth1Fi3cH7GfnJGgsg3ZqEGUKLb8CoM8tjaIBO+2RYkjgL5eQGI5f5LzJVl8nBkXnj+1vrbhgcyt5POf/DSOMWVsK5BC2KnDho/UOd3foPQpeQ76mqS8wr3EH86JaXVoGEOsEd4A2EcVRXo=
+	t=1768057769; cv=none; b=M0gG4o6imJig0RipUGdbkyN1/y7xmXBMyLdHgP5KcLVAfG6ZIhubH+vnwUsG0J2xgw34nUWbSnYDwwUdzxSS4CmjGlAbhStYbbcFTicKFH0CDrLxtfk20wQjuGN6MH/2o7LqB6A/q4XH6/R5JiPxnrnykIS/V0xtYEmnDWlWqXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768057765; c=relaxed/simple;
-	bh=1FB+uT1pALfUGFef4CiqxjN0XjuunSUgAxAx5cQ/hwo=;
+	s=arc-20240116; t=1768057769; c=relaxed/simple;
+	bh=HXsmrNNEr+H1R93npODROo6Md8lvxfZavxKoxrx9XrE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CE/+ns63yDhB1B0Kom01+XaZU1rSEaaRojdjVwMPxtvmKQ2arget6OwgaWEm9bZ8cQ5oJc/x1fHAaod+x7bq2Io4kV3tO/kiYlgBRqwcMzKWbYMkMAjux6JusbJ9duNqqwOWnKGnyeB+d321sREikLhOBRK8DGw3ULoYKVDNMlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CKMMlPNv; arc=none smtp.client-ip=209.85.167.51
+	 In-Reply-To:To:Cc; b=O/3O5k6YToi0lP2BpNDScZClgAdmF9XWGD3YKRDm3yiv/pPN9bfQR0yUtJ6L6cUK3/0PilQewwmZ3UApQAeb6eEmakYguYMemBWPqJvEyComkWIyLr5u8dvIwXSa3zc4JECZJ1ZMKFQCu/Ib4Co7FlBMCY/F2Fj7vfcWUCXZGRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LtrT728O; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CKMMlPNv"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59b7c2614f7so2052488e87.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 07:09:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LtrT728O"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59b7073f61dso4877302e87.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 07:09:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768057762; x=1768662562; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768057766; x=1768662566; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Vqf7LCg+sg6Hx5J5qs/p3xtmlckbxwDqMrE5j+qRjSY=;
-        b=CKMMlPNvXpMm1GvHDNAatxWV55AUHOZ/PGrn124XPDPrWuSgUdhRqbmUHGlZ82BJht
-         nDTSTcpsiNo844EQgZ3vRE3LIbgC2L/2tCwAtw57a3RBAnCAc2tBunEZLSzTXwO5hQkt
-         Z6vfxBO1KrdwOGWMk6hMWGHp8ITA2UxQYbDFMEIXcT7HorZ26Y+U1wUNBI6rCV+MhRN7
-         6Qm5OtL+PKlAL5O0Rg5NGEdDiGmuEuq1/VCWt+EHHMOm/h44SEkzvDM36OYNJFCPt0e8
-         6umbr6gRTqplzwwdwSbSJP1AGItO/gbdTOcIr0y3MJztwvAHEDHcJhdPsODc4nqFxxog
-         6WVQ==
+        bh=jA4SPNhuMX5XCZ5OBbakMPi2P9GAq2DqeqD/xi+6gT8=;
+        b=LtrT728O3amQSkF69AUmkAC7v5yMmQ1cauMk5K8evmhDhZBiizof39/SelMtMizRde
+         sn4JS5sENOCa3XDLCe5bwrpe7aX/r6cRKm8Qe7K/ZaPfuajn6AcKa44VE+UvHNHcdjIo
+         1PDLMasQtZa7hMUD1sHrphJHnSuvBVohEzeb03piE6Wp5JcrdZ5KgwYAFYTpspvyI5wR
+         /oq9yNUKVUxCgxQwfy7QVv409/9bmX2xDJhMvKXJ0vNsUnHXp6p6IMN1IQBsaF7Hm/yo
+         g5n3bQF0xCjHkdQ4TtBSejYFFF3anz27BK5YxqDE5EgBRvVq2LaDYDzIr+s7El9QzAcL
+         Deig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768057762; x=1768662562;
+        d=1e100.net; s=20230601; t=1768057766; x=1768662566;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Vqf7LCg+sg6Hx5J5qs/p3xtmlckbxwDqMrE5j+qRjSY=;
-        b=Jc37SmhN9+ipSvUYld6NpI7JP55ekn35l0P0Cshyox/5zdg9sJmNE1kOS/X9tqT1zf
-         hx/UalhbjvPPtAq+1BSmwg9YnMNoTTlgDPc5uhbh+Get85q4gB7iXyGGIY7d92B2nmbY
-         FLZ+BATPyziHqruxfgSz9bDZHUtiuYu0xi2n5lm7KMWKBu1ukrwlphaUyyFKhY2ogc/1
-         mmYqBfayUNd8hllUcCrmC7ERavAtr8d7k6b2AJ+aKKc+7yU6R1E/ZFKoDfYVrdjgA4Kf
-         lGmVcTVJO/ZolhsRZ5oZ3MRNHtdZcd8mgwtfdkMAUuo2Ok+IWv7ArAcpFJ8vz2RY4LUn
-         eqaw==
-X-Forwarded-Encrypted: i=1; AJvYcCWUnT4eVTBNw1AyzuorOKsJEc1iRNTcqFr3zPkMJqBRQBkuF+5uPLwkEHUNfAnG7hFvZDOl5UE4Im+WFb2cKA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfbKCNUeRMCYSFargZ9DH9jqZn/3G1bxrwh23yfbNSfTWf70+c
-	w3D6hr+lpmxXd5FzmYCcXAobSYx8vmfdIkSOyDENGdJ6PHAdAn6ger28
-X-Gm-Gg: AY/fxX4IiYh2z1EKhunJ1SVDKnMxzpQqNTTnBE0DiNqFS5x/RnJyGo8rXqJbnDZy7RX
-	0B2RxoXVQX0vBe4KOqoBCcp6wnnREjPUoOyNDBaO/fXiUapfKhenZ6ulR82KTYIH+g2Db5z1pCi
-	1SZVvNaJVCaq3ALVr/dvtwkFOC0F7y/o4nD3AalhWttp1VIwp3pJD/xCPBq/740fFiGiSiG30VR
-	pr7uWshnpLwhRZYSKNyaYmRJUUXFNA537KhOlgPglzBK15rVYhOefMY90l1GFOufVaM7CO8SB9x
-	nK1MynD6rCfiFxAd9KZMcyL/F/m04bu4lQfox8l3gsGwkMCUoWSE4RJA4MM7Hve/BA4myVOnYzF
-	0E3cCiU3msqPAFzy+chG4U3BOXt08NP3SMJBTFvwjZSdIIBE5yy+48dIuaYdj2EWlEWH1HOlbtu
-	vn1SK2+Y0O4Vb9fOlrjYbekkFQxjFerSshH74zKHTzkw8PQ+h9T11RmF+GuEvNKrkjl6FBWwSy
-X-Google-Smtp-Source: AGHT+IHEE1TGipeoD2/6eyBBIsojGiNqm7JwcbPiYjVFBwHDR5nwSai8es4nGi6I/fgjxe+bGdX/zQ==
-X-Received: by 2002:a05:6512:b01:b0:59b:8483:8d97 with SMTP id 2adb3069b0e04-59b84838e5amr1204577e87.13.1768057761899;
-        Sat, 10 Jan 2026 07:09:21 -0800 (PST)
+        bh=jA4SPNhuMX5XCZ5OBbakMPi2P9GAq2DqeqD/xi+6gT8=;
+        b=i0SOf1OPMu8De01hPr/wgSkP6sq5KQjYpakMk503jdNoTXX5ivyAcl+jA7h+rsg3ra
+         bWgSv7VsF2kwwMo3pND/6ITczXYv3dmKX4wctoyKeXb9R1XIA/dGhz6Tz7DWUV6PsRkM
+         QlOBHmqrroNjf0jmRevH1ZpCTytm03/ZdHEwtoE9ANyFwi4jRRND0zqETAb0ZpIehgG3
+         xBabzGWQwVq/buXqNCHluUP9NDJIID++FGDmkfLdJ2GKRwUx0b8AbXGXIx+H+o++E726
+         de8P9iAfzfsc/INH1xnOwUZrzIYs9Y2Qns6kChmhOzFH+Q52FWMKC9EieAOOXwlZYi6r
+         9k6w==
+X-Forwarded-Encrypted: i=1; AJvYcCUWRA2a9yvROpmTtOnMc2odrG/yGkMMJWhCwOhe+zsIPJnghlA92fm6tkX2imUq9pFAfPsf/Kx9watWaWa8cQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuWnvM3LbB3w6rsK5xFsP52RePo1XlFO2ma8cofqsHLNeCUGTc
+	EqHuwk6Iq9EZ3+7cHJavUYuncWYx0Mg3O/6cqutg5822qswk3Vc/P6eN
+X-Gm-Gg: AY/fxX68VqNEaV4sbQx1OXOTlE5CLMqrl7y/mHoXdHis7wnelstvRRB4CEBPS3eoCRW
+	FBqAHOAzCg7u1TnY2sz/zFvQILuf/zsxPBrBoe4A1VkCAFejuXClLIbm4NxOy8YwmFlb1hfouh6
+	QVcPGehKtrjKv/8VerX/gRyRiLtczQH67H6uQ/KBSROJ4BQy0GHKYe6A7fNel9IcBCt7Fpv8dsB
+	7BTJxjQwkv0qNwKMfiXW4ZCzopweH+MhvpmDqJ67tSmAwYqHJExJXgFFiTBo+CD3CfmeSUexxUF
+	0d3pUAb+BysL8iy+WMuIWnWtomftso/z87KedeGR+KYjoEMJ3eXWPdGBqvYyLnenGJkwPzouH2l
+	1lkLxrR+RD5/xGj46sk3uVbSkikdUbTYf1z6mG31W4EdUFQ4KdHLEA4kaoVBHeSlNibY0HzBPbW
+	7ZT7rGwO2CxDijsum36+lqu9Wr27kjkPNVmVCV5G32ixtK5I0pGGi+jHY/P3I1157SW4ukUoHW
+X-Google-Smtp-Source: AGHT+IF5pkNobwqDdpJnVvMJj9HNo5dFu/TJZ8O4ycgXj/UHfAc8hmVO6+l9QbYPw5ZRrk2F06noMQ==
+X-Received: by 2002:a05:6512:3d04:b0:59b:7fe7:eed1 with SMTP id 2adb3069b0e04-59b7fe7ef14mr1809283e87.28.1768057765447;
+        Sat, 10 Jan 2026 07:09:25 -0800 (PST)
 Received: from LT-5CG5341NQ4.nordic.imtech.com (37-33-148-7.bb.dnainternet.fi. [37.33.148.7])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b75543a64sm2137059e87.49.2026.01.10.07.09.18
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b75543a64sm2137059e87.49.2026.01.10.07.09.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jan 2026 07:09:21 -0800 (PST)
+        Sat, 10 Jan 2026 07:09:24 -0800 (PST)
 From: Kari Argillander <kari.argillander@gmail.com>
-Date: Sat, 10 Jan 2026 17:08:04 +0200
-Subject: [PATCH RFC v3 06/15] rust: configfs: use new THIS_MODULE
+Date: Sat, 10 Jan 2026 17:08:05 +0200
+Subject: [PATCH RFC v3 07/15] rust: binder: use new THIS_MODULE
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260110-this_module_fix-v3-6-97a3d9c14e8b@gmail.com>
+Message-Id: <20260110-this_module_fix-v3-7-97a3d9c14e8b@gmail.com>
 References: <20260110-this_module_fix-v3-0-97a3d9c14e8b@gmail.com>
 In-Reply-To: <20260110-this_module_fix-v3-0-97a3d9c14e8b@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -86,138 +86,44 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
  Kari Argillander <kari.argillander@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768057742; l=5277;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768057742; l=1238;
  i=kari.argillander@gmail.com; s=20251219; h=from:subject:message-id;
- bh=1FB+uT1pALfUGFef4CiqxjN0XjuunSUgAxAx5cQ/hwo=;
- b=KTu6JmsvpKxaB1JzW8EXhr264WUGMX9sqMRbv98Urte4QvFUB+KimYWM6CyVbNCSLfejIngg3
- 769ilDyNnBwDbNGyi+QKw7almLRAojJtFeFDvsqYuTex4HO29lmm4rN
+ bh=HXsmrNNEr+H1R93npODROo6Md8lvxfZavxKoxrx9XrE=;
+ b=R0q/X1ltJqeYVBP9SobLKfHgM075ElagNogpcGU3GkRvQ1n9qSEzsNfW83i0UdVRRa/JUGwAU
+ bxs1cBNamQBD2YNOSaU1QhJ7S2BuCHBpPzzaT5E05h1XEXN8E9VD7v+
 X-Developer-Key: i=kari.argillander@gmail.com; a=ed25519;
  pk=RwSxyhTpE3z4sywdDbIkC3q33ZQLNyhYWxT44iTY6r4=
 
-We have new THIS_MODULE and ThisModule is now trait. Pass THIS_MODULE as
-generic type parameter which is current convention.
+We have new THIS_MODULE. ThisModule is now crate. This is ugly for
+reason that drivers should not use as_ptr() directly. Currently binder
+still needs it so ugly cast is totally ok.
 
 Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
 ---
- drivers/block/rnull/configfs.rs |  2 +-
- rust/kernel/configfs.rs         | 46 +++++++++++++++++++++--------------------
- 2 files changed, 25 insertions(+), 23 deletions(-)
+ drivers/android/binder/rust_binder_main.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 2f5a7da03af5..7223ee7c3032 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use super::{NullBlkDevice, THIS_MODULE};
-+use super::NullBlkDevice;
- use kernel::{
-     block::mq::gen_disk::{GenDisk, GenDiskBuilder},
-     c_str,
-diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
-index fe80439ab21f..908cb98d404f 100644
---- a/rust/kernel/configfs.rs
-+++ b/rust/kernel/configfs.rs
-@@ -110,16 +110,21 @@
- //! [C documentation]: srctree/Documentation/filesystems/configfs.rst
- //! [`rust_configfs.rs`]: srctree/samples/rust/rust_configfs.rs
- 
--use crate::alloc::flags;
--use crate::container_of;
--use crate::page::PAGE_SIZE;
--use crate::prelude::*;
--use crate::str::CString;
--use crate::sync::Arc;
--use crate::sync::ArcBorrow;
--use crate::types::Opaque;
--use core::cell::UnsafeCell;
--use core::marker::PhantomData;
-+use crate::{
-+    alloc::flags,
-+    container_of,
-+    page::PAGE_SIZE,
-+    prelude::*,
-+    str::CString,
-+    sync::Arc,
-+    sync::ArcBorrow,
+diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
+index d84c3c360be0..fc921c0e1116 100644
+--- a/drivers/android/binder/rust_binder_main.rs
++++ b/drivers/android/binder/rust_binder_main.rs
+@@ -21,6 +21,7 @@
+     sync::poll::PollTable,
+     sync::Arc,
+     task::Pid,
 +    this_module::ThisModule,
-+    types::Opaque, //
-+};
-+use core::{
-+    cell::UnsafeCell,
-+    marker::PhantomData, //
-+};
+     transmute::AsBytes,
+     types::ForeignOwnable,
+     uaccess::UserSliceWriter,
+@@ -319,7 +320,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
+     let zeroed_ops = unsafe { core::mem::MaybeUninit::zeroed().assume_init() };
  
- /// A configfs subsystem.
- ///
-@@ -744,8 +749,7 @@ macro_rules! impl_item_type {
-     ($tpe:ty) => {
-         impl<Data> ItemType<$tpe, Data> {
-             #[doc(hidden)]
--            pub const fn new_with_child_ctor<const N: usize, Child>(
--                owner: &'static ThisModule,
-+            pub const fn new_with_child_ctor<const N: usize, Child, TM: ThisModule>(
-                 attributes: &'static AttributeList<N, Data>,
-             ) -> Self
-             where
-@@ -754,7 +758,7 @@ pub const fn new_with_child_ctor<const N: usize, Child>(
-             {
-                 Self {
-                     item_type: Opaque::new(bindings::config_item_type {
--                        ct_owner: owner.as_ptr(),
-+                        ct_owner: TM::OWNER.as_ptr(),
-                         ct_group_ops: GroupOperationsVTable::<Data, Child>::vtable_ptr().cast_mut(),
-                         ct_item_ops: ItemOperationsVTable::<$tpe, Data>::vtable_ptr().cast_mut(),
-                         ct_attrs: core::ptr::from_ref(attributes).cast_mut().cast(),
-@@ -765,13 +769,12 @@ pub const fn new_with_child_ctor<const N: usize, Child>(
-             }
- 
-             #[doc(hidden)]
--            pub const fn new<const N: usize>(
--                owner: &'static ThisModule,
-+            pub const fn new<const N: usize, TM: ThisModule>(
-                 attributes: &'static AttributeList<N, Data>,
-             ) -> Self {
-                 Self {
-                     item_type: Opaque::new(bindings::config_item_type {
--                        ct_owner: owner.as_ptr(),
-+                        ct_owner: TM::OWNER.as_ptr(),
-                         ct_group_ops: core::ptr::null_mut(),
-                         ct_item_ops: ItemOperationsVTable::<$tpe, Data>::vtable_ptr().cast_mut(),
-                         ct_attrs: core::ptr::from_ref(attributes).cast_mut().cast(),
-@@ -875,8 +878,7 @@ fn as_ptr(&self) -> *const bindings::config_item_type {
- ///         = kernel::configfs::ItemType::<
- ///                 configfs::Subsystem<Configuration>,
- ///                 Configuration
--///                 >::new_with_child_ctor::<N,Child>(
--///             THIS_MODULE.as_ref(),
-+///                 >::new_with_child_ctor::<N, Child, crate::THIS_MODULE>(
- ///             &CONFIGURATION_ATTRS
- ///         );
- ///
-@@ -1019,8 +1021,8 @@ macro_rules! configfs_attrs {
-                     const [<$no_child:upper>]: bool = true;
- 
-                     static [< $data:upper _TPE >] : $crate::configfs::ItemType<$container, $data>  =
--                        $crate::configfs::ItemType::<$container, $data>::new::<N>(
--                            THIS_MODULE.as_ref(), &[<$ data:upper _ATTRS >]
-+                        $crate::configfs::ItemType::<$container, $data>::new::<N, crate::THIS_MODULE>(
-+                            &[<$ data:upper _ATTRS >]
-                         );
-                 )?
- 
-@@ -1028,8 +1030,8 @@ macro_rules! configfs_attrs {
-                     static [< $data:upper _TPE >]:
-                         $crate::configfs::ItemType<$container, $data>  =
-                             $crate::configfs::ItemType::<$container, $data>::
--                            new_with_child_ctor::<N, $child>(
--                                THIS_MODULE.as_ref(), &[<$ data:upper _ATTRS >]
-+                            new_with_child_ctor::<N, $child, crate::THIS_MODULE>(
-+                                &[<$ data:upper _ATTRS >]
-                             );
-                 )?
- 
+     let ops = kernel::bindings::file_operations {
+-        owner: THIS_MODULE.as_ptr(),
++        owner: <THIS_MODULE as ThisModule>::OWNER.as_ptr(),
+         poll: Some(rust_binder_poll),
+         unlocked_ioctl: Some(rust_binder_ioctl),
+         #[cfg(CONFIG_COMPAT)]
 
 -- 
 2.43.0
