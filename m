@@ -1,68 +1,67 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AB034887B
-	for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 15:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184C6346FAE
+	for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 15:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768057788; cv=none; b=G7nLjTVuHgcqMl9Ehnc6ngwO5PnnDvX29wmGlhwUEnucKvv8ejA3immVPGafyqw1ENm0QsMWs0L2/ijS43Ofpj9SSdfkJWLXloDmqqBjf64uH5b8uf8WtgZXxrx5RXQrVu2w8uX2qIMA18YnqK8HDPt2eff9vWSogrlm2llqhaE=
+	t=1768057795; cv=none; b=hCbpeB4xj/zZqCbRJydTGxQOO1s7gYSvyK15s0Q6zwwr1Yeb8Z7n/eQ723+M2xVGcR3CnjH32lwQiWXTRXJkAiEmhQyQjSNMOwW+hg07WPGcmIqumXrWe0xyGRhbPzSpJNxMhjooLg8nsAyrGyYq5lHJUwKQK1qmRMRbGhVxano=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768057788; c=relaxed/simple;
-	bh=RPwYcsbO6FvGujOyqzQn4sJnbXGyGs4NpzWn8HY+yNY=;
+	s=arc-20240116; t=1768057795; c=relaxed/simple;
+	bh=evAHr1gD6EfPZW8LvM5pPL6GuIcZSSelhlqgoHK4/G4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=llP8finnwS16qjmFxlDZAvB/Xvjpnyrg3vpeDnSRxGqwIhtgQRL2kkBCGpO9+BP8ZokgtOccGJsWZ0ZRU9kebEIa75UCW4Y9Pr8Is/IXP/Nkb+9iXWMEz2HIHFJJDXyn7gnmOsiRrMbYfAyPSkcqDssCXcwWC9E1utF+dXdTLpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iMjyDMUP; arc=none smtp.client-ip=209.85.167.54
+	 In-Reply-To:To:Cc; b=pTSnGrR1xRYxLOlRdHwXR/2REE6/Jk1Y8FmtZTJBlW1T7lSpWBLE51ZsCs4NR3rkp7U1Obh0vEvxMpjBE1cQ+snht21ZjzWpvazAIjSYyBN+4kaYROiIZPeeFvqekljnHkSsl7tP2NQXdgu9OAv5xXgLxf80469IZcqQcEEK8oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jprEPOu0; arc=none smtp.client-ip=209.85.167.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iMjyDMUP"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-59b8466b4a8so869949e87.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 07:09:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jprEPOu0"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59b6df3d6b4so4853312e87.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 07:09:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768057780; x=1768662580; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768057787; x=1768662587; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TJZFqk7vh2YSe9SFh94/y7TJPpOJJYaVuu6o0W+r2E0=;
-        b=iMjyDMUPSEY8Lmq3R0FAa3quZjmWCFnzj0ccxNiTn8rYW7WDyI0Zy1DMSxJqXW3bzx
-         +P7cmQGSiY6AJ09TTWqJrN9NN5gsp+USi011s0g/poVghoANObGOmlrdwhioBkvc4eKe
-         wgBk1NtkzuYjILvPgOuWXEKNMTsfhSd/MHRGwf3+zmmYDnDFJXiT6x+IHJAEYLdg0edC
-         kj/yXGQc1l6pImih45hk/lGhJHapUXVSd7LaPVpYX0U8daR2qqpKaQpTnzD7ViL50OxR
-         G71kYh5mUcCq9pIuyl3n+6ag8HtO7stfVCaR9nGRACS41OnKZamqmy27MoJ6+hWmtXvm
-         pCSg==
+        bh=csZdrKP5V1PNFMXR8xX+/RBApYgeOuQXpn5FzbDjqFQ=;
+        b=jprEPOu0JzVzUqPgkTNFG82LEhmBmd8CMiU24akxRrZ81ucHFywlnF2Hxl3iuD+zs8
+         ivkU4jY33zar8xxSnocmAIgMNQRMiXOG8xUTVoNOzUIz/5ehNP8Wg2YeGTJ/yJNzXzD2
+         LWWTGI/TqEDtS1wxmM7z5IG1KvC7Z5FbCM7BKeGlvwoT5l11RSh5utFkRdvEIMlJwlDI
+         jD3nV2IBfdaBJ8IEeTfDsTx5/3cnJsZ/Ftb39BWQuEhdPu1MPXevjtLbOSXy0SfNt8HF
+         JDL6NQNEooW+V4RvzzCFw1S1/zeQFpwB+Cp61bgtT9a/4DzZkL4sM2lpKexJ/Sc1bxGM
+         Odzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768057780; x=1768662580;
+        d=1e100.net; s=20230601; t=1768057787; x=1768662587;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=TJZFqk7vh2YSe9SFh94/y7TJPpOJJYaVuu6o0W+r2E0=;
-        b=RpYzddCLBIo6xWKKjsVtk4Hi6vyb3MbVkcPmMJ8KPWO9m/vOaAFRsnHV+jm0Ui4M3z
-         Iz/It37wiAqPijNeKWQfq/RoJKkBZC74VAq69VLRCfRPBad4WhAbZsAH/eFYX51uqO67
-         xzOfVpuLV/R2xqJHzWcHJe8swW6itC3anvwA+wxrJhQcYSjyw+WyUbzm0YVpbjNFtY1t
-         ln1WyxZcsPa0St0ZSseeQbM5D31zOZjJlmiqxIuZ4Hcf70xDYLs/ToILQ8V9ala6M2Sq
-         ca1ZmSqf733Ht8btJpWpHG3Mu1JrdX2D1J2nQPra7PLliP5nTAUDJjtutKXClnDa6OC4
-         Rq9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVJq9vndZKxoDN5+jqtm9yxnH/ljGl9rdDu8RyEllntu/jbdON/PASJeCx13WhdDVixy5olEW2a/6yBbkDjLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIEGR9ld3QufKUajP4YkAWVni1v3AP5HlPccqp+x5ZByveqcRw
-	WIvVbmr03HwyjBspe+sK05nfEglU1Rv8i0DxeBMuGF/19kxaGfGIrBtl
-X-Gm-Gg: AY/fxX7NlZQOJz8eWF2l7hvJKZKqJH+UE/ZBbAzNEFeBAlOTPxmsnmwdf8/BhCQud0s
-	pB8JWBPLLmLHfhTA0JKQbYLjwY93pi0StUBSbY/l5C49/RoX0hey5HB6LJ/W/uo1ady4fkbARkH
-	iyTBFKTAJAIyLeXOgM3j6ZUiCCTLgIRCDVmh3iACb9BuRWzDPEKP9qw/ny+Rx7F0+A5j4g3CTBC
-	6xRHPyYOq3UWFuuqw3zbsjvE2fmpfSRtMAlLwHI52q/mo6wQQrUQfth7PXbjOivHx/33Nj/D6QF
-	3xb3bLMqnfbi/Ujoax+v17lEipduTJoPhb2QoRsMzI0ZYp0a6m+WUkFy8ma+uXkcN8NkGp2Uqic
-	jLMY81f3vJoJIuD9wc6UUIdy5N2Eo9ajRvq5mpXB4dbZNnmCaKaHJ4A8dsxVP8uYcC/EkZs9hAW
-	Bznx8jE8HP/dny3B+lDcXe21HMGqyPb8nGhVKwYwuNud3q5LrUwOpLOVd1TpGzDJICTAmt5A0m
-X-Google-Smtp-Source: AGHT+IGrXaDwrVcPD7nQyKOzD7OZoH3I9M3zAJdjB+Pw3+clRX2CyUU8JcGUGqOgg81EpbJqhGCXjg==
-X-Received: by 2002:a05:6512:3b92:b0:598:efe3:42d9 with SMTP id 2adb3069b0e04-59b6ef23c6cmr4461411e87.5.1768057779866;
-        Sat, 10 Jan 2026 07:09:39 -0800 (PST)
+        bh=csZdrKP5V1PNFMXR8xX+/RBApYgeOuQXpn5FzbDjqFQ=;
+        b=ENbEJSSAZS8ckPr8duhTtbg1OLZikUZsFiwTA/vSoAwgqUy8HWJs9KOkYG8s1DixnE
+         TATDkKQaKMDHVddsalxMpwCRSlnd//RI0F84qJaK/jUIy57DCfAjy9IbFluO+ZAY9APK
+         Edt4BQYHz0SUYK9+x9zkEk4Bjjbv4YwLJ4Qk3L9TEzwmaDSq+cWrD7eeMoyBSWbZqXwD
+         VkIbnRCHJngB8czS0iBC9z7CQvfp42S1jmGcXffk1QbSLoPYxP7RWllImsSaZUBlwbrm
+         d+InFsrDk/0znXba1d84pdvimg7ikK+q1v0FIhR5yES4Z2zimfYKQGShhOAbNDhYbfuo
+         1Vfw==
+X-Forwarded-Encrypted: i=1; AJvYcCXQN2Y78fXRvdiuqbXf2WOhO6N0gURA6eGimK2mvqvfBBz1h2o/hRvKZl8JxcXKfMbsA3lMRCCQRjAxPUYMmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YywvcsHj26PvXA7QIWwQX7xvu18ztWge32otBSatnGqROC6oFGW
+	TkqGTT/FoHnWLKf62u+KizHDs65td+uMPZO3FHlHm6vfbFDxqkcqFlLQ
+X-Gm-Gg: AY/fxX4wAuLKD4XtMCQLKZeUVZFb9+d5VVOSiWC7e0QSNnd6chsf63sr7LaX0lsxMKZ
+	Afk2v4KF6536d6PnME+QZrQ2giyedr+1yzNE0iyGtloJ4EzwJ1+uGgFVVwlqkWuUjjbNHEqzjqY
+	nMyp1YpAZ+I2MAweeTscjQCmr05k+ByUIUzFT2jMkCEooJBX1LSDN5EwGK3Sbc2QNKJv8jmwjiZ
+	tsVVKDd1YnewxQJuXYTpk3xpUyaXLDeRAUbR6tOJ/a0NYOPVk2VonZs73z0wzCUSlSdYQXeobiP
+	Uz5JMHsp4Llg0O0PaX7PePeQRA1BeiJ1dtJ0uhKvnoQYKlQU3Awq87qzTmLABGe4omaHpgMdWe2
+	0/7c1Tt/bxXbf+9/EmbbM6dKXmOB4x58kfIVUqZYsRM9qSmoHfs+2ZSrLn1jwmnu884GIpWWEQI
+	bnuAlV/zo99oxa7jl523vAG+9YlTEMYyMZz5L2WVgw9L7lw9yvDhW9Ne4ryE5KWhCcdjX9vs/4
+X-Google-Smtp-Source: AGHT+IFBX48hY3Q9PVP8SQO8XCpmSVoMleJSOwz7zkGOzjVdL6fPS2OSYcR91pM3G3FgTl60Yxo2Rg==
+X-Received: by 2002:a05:6512:3da7:b0:594:253c:209f with SMTP id 2adb3069b0e04-59b6f03520dmr4616760e87.39.1768057786509;
+        Sat, 10 Jan 2026 07:09:46 -0800 (PST)
 Received: from LT-5CG5341NQ4.nordic.imtech.com (37-33-148-7.bb.dnainternet.fi. [37.33.148.7])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b75543a64sm2137059e87.49.2026.01.10.07.09.37
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b75543a64sm2137059e87.49.2026.01.10.07.09.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jan 2026 07:09:39 -0800 (PST)
+        Sat, 10 Jan 2026 07:09:45 -0800 (PST)
 From: Kari Argillander <kari.argillander@gmail.com>
-Date: Sat, 10 Jan 2026 17:08:10 +0200
-Subject: [PATCH RFC v3 12/15] rust: phy: make Registration::register() use
- new ThisModule
+Date: Sat, 10 Jan 2026 17:08:13 +0200
+Subject: [PATCH RFC v3 15/15] rust: remove old version of ThisModule
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -71,7 +70,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260110-this_module_fix-v3-12-97a3d9c14e8b@gmail.com>
+Message-Id: <20260110-this_module_fix-v3-15-97a3d9c14e8b@gmail.com>
 References: <20260110-this_module_fix-v3-0-97a3d9c14e8b@gmail.com>
 In-Reply-To: <20260110-this_module_fix-v3-0-97a3d9c14e8b@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -87,94 +86,105 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
  Kari Argillander <kari.argillander@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768057742; l=3371;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768057742; l=3438;
  i=kari.argillander@gmail.com; s=20251219; h=from:subject:message-id;
- bh=RPwYcsbO6FvGujOyqzQn4sJnbXGyGs4NpzWn8HY+yNY=;
- b=eOz1FkieCkXNv0LbzaUrw6lJv8jXnr2v2Ev87tDvYXN97UoTGaEAUQ7gOBLgSrC/C9PzjTfOI
- uNR/UatFeLaAqdfhARe65M84rWjJrWC14lZyJdS7QY5ojhJUns9YC/1
+ bh=evAHr1gD6EfPZW8LvM5pPL6GuIcZSSelhlqgoHK4/G4=;
+ b=PFKAsdYOgAKKCPm1WVwlkXpmaaN/dpAj9cbBEmgQyEeJJ4usBhD6p46VpXhsFr7jQVDIR8GLy
+ nz5qXpoXcCEDRCygmv7YowFfq5KDSq1Gvbqm9IS5/ewHkyP6TQswkse
 X-Developer-Key: i=kari.argillander@gmail.com; a=ed25519;
  pk=RwSxyhTpE3z4sywdDbIkC3q33ZQLNyhYWxT44iTY6r4=
 
-Switch `Registration::register()` to take the owning module via the
-`ThisModule` abstraction instead of an explicit module parameter.
+There are now users anymore which use old ThisModule. Also new
+ThisModule did have couple quirks which where there only to probide
+fucntionality what old ThisModule provided. Those also are not needed
+anymore.
 
-The function is now generic over `TM: ThisModule`, allowing the module
-owner to be resolved at compile time through `TM::OWNER`. This unifies
-the way `THIS_MODULE` is passed to Rust abstractions and avoids
-threading module pointers manually through the API.
-
-This also removes redundant parameters and prevents accidental
-mismatches between the registered drivers and their owning module.
-
+Closes: https://github.com/Rust-for-Linux/linux/issues/212
+Closes: https://github.com/Rust-for-Linux/linux/issues/1176
 Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
 ---
- rust/kernel/net/phy.rs | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ rust/kernel/lib.rs     | 47 -----------------------------------------------
+ rust/kernel/prelude.rs |  2 +-
+ 2 files changed, 1 insertion(+), 48 deletions(-)
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 3ca99db5cccf..ef9c4be4f1ad 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -6,8 +6,17 @@
- //!
- //! C headers: [`include/linux/phy.h`](srctree/include/linux/phy.h).
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 3acc60a83b09..e709f85ec4b5 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -201,32 +201,6 @@ fn init() -> impl pin_init::PinInit<Self, error::Error> {
+     }
+ }
  
--use crate::{device_id::RawDeviceId, error::*, prelude::*, types::Opaque};
--use core::{marker::PhantomData, ptr::addr_of_mut};
-+use crate::{
-+    device_id::RawDeviceId,
-+    error::*,
-+    prelude::*,
-+    this_module::ThisModule,
-+    types::Opaque, //
-+};
-+use core::{
-+    marker::PhantomData,
-+    ptr::addr_of_mut, //
-+};
+-/// Equivalent to `THIS_MODULE` in the C API.
+-///
+-/// C header: [`include/linux/init.h`](srctree/include/linux/init.h)
+-pub struct ThisModule(*mut bindings::module);
+-
+-// SAFETY: `THIS_MODULE` may be used from all threads within a module.
+-unsafe impl Sync for ThisModule {}
+-
+-impl ThisModule {
+-    /// Creates a [`ThisModule`] given the `THIS_MODULE` pointer.
+-    ///
+-    /// # Safety
+-    ///
+-    /// The pointer must be equal to the right `THIS_MODULE`.
+-    pub const unsafe fn from_ptr(ptr: *mut bindings::module) -> ThisModule {
+-        ThisModule(ptr)
+-    }
+-
+-    /// Access the raw pointer for this module.
+-    ///
+-    /// It is up to the user to use it correctly.
+-    pub const fn as_ptr(&self) -> *mut bindings::module {
+-        self.0
+-    }
+-}
+-
+ pub mod this_module {
+     //! Access to the module identity and ownership information.
+     //!
+@@ -360,27 +334,6 @@ impl THIS_MODULE {
+                 pub const fn name() -> &'static ::kernel::str::CStr {
+                     $crate::c_str!($name)
+                 }
+-
+-                // TODO: Temporary to provide functionality old `THIS_MODULE` provided.
+-                // SAFETY: `__this_module` is constructed by the kernel at load time and
+-                // will not be freed until the module is unloaded.
+-                const ThisModule: ::kernel::ThisModule = unsafe {{
+-                    ::kernel::ThisModule::from_ptr(
+-                        <Self as ::kernel::this_module::ThisModule>::OWNER.as_ptr()
+-                    )
+-                }};
+-
+-                /// Gets a pointer to the underlying `struct module`.
+-                // TODO: Temporary to provide functionality old `THIS_MODULE` provided.
+-                pub const fn as_ptr(&self) -> *mut ::kernel::bindings::module {{
+-                    Self::ThisModule.as_ptr()
+-                }}
+-
+-                /// Gets a reference to the underlying `ThisModule`.
+-                /// TODO: Temporary to provide functionality old `THIS_MODULE` provided.
+-                pub const fn as_ref(&self) -> &'static ::kernel::ThisModule {{
+-                    &Self::ThisModule
+-                }}
+             }
+         };
+     }
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index 2877e3f7b6d3..66974ec20ef4 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -43,7 +43,7 @@
  
- pub mod reg;
+ pub use super::error::{code::*, Error, Result};
  
-@@ -648,10 +657,7 @@ unsafe impl Send for Registration {}
+-pub use super::{str::CStrExt as _, ThisModule};
++pub use super::str::CStrExt as _;
  
- impl Registration {
-     /// Registers a PHY driver.
--    pub fn register(
--        module: &'static crate::ThisModule,
--        drivers: Pin<&'static mut [DriverVTable]>,
--    ) -> Result<Self> {
-+    pub fn register<TM: ThisModule>(drivers: Pin<&'static mut [DriverVTable]>) -> Result<Self> {
-         if drivers.is_empty() {
-             return Err(code::EINVAL);
-         }
-@@ -659,7 +665,11 @@ pub fn register(
-         // the `drivers` slice are initialized properly. `drivers` will not be moved.
-         // So it's just an FFI call.
-         to_result(unsafe {
--            bindings::phy_drivers_register(drivers[0].0.get(), drivers.len().try_into()?, module.0)
-+            bindings::phy_drivers_register(
-+                drivers[0].0.get(),
-+                drivers.len().try_into()?,
-+                TM::OWNER.as_ptr(),
-+            )
-         })?;
-         // INVARIANT: The `drivers` slice is successfully registered to the kernel via `phy_drivers_register`.
-         Ok(Registration { drivers })
-@@ -889,12 +899,11 @@ struct Module {
-                 [$($crate::net::phy::create_phy_driver::<$driver>()),+];
+ pub use super::init::InPlaceInit;
  
-             impl $crate::Module for Module {
--                fn init(module: &'static $crate::ThisModule) -> Result<Self> {
-+                fn init(_module: &'static $crate::ThisModule) -> Result<Self> {
-                     // SAFETY: The anonymous constant guarantees that nobody else can access
-                     // the `DRIVERS` static. The array is used only in the C side.
-                     let drivers = unsafe { &mut DRIVERS };
--                    let mut reg = $crate::net::phy::Registration::register(
--                        module,
-+                    let mut reg = $crate::net::phy::Registration::register::<crate::THIS_MODULE>(
-                         ::core::pin::Pin::static_mut(drivers),
-                     )?;
-                     Ok(Module { _reg: reg })
 
 -- 
 2.43.0
