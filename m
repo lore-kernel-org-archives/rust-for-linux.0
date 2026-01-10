@@ -1,67 +1,68 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD80346E62
-	for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 15:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9692346FAA
+	for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 15:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768057769; cv=none; b=M0gG4o6imJig0RipUGdbkyN1/y7xmXBMyLdHgP5KcLVAfG6ZIhubH+vnwUsG0J2xgw34nUWbSnYDwwUdzxSS4CmjGlAbhStYbbcFTicKFH0CDrLxtfk20wQjuGN6MH/2o7LqB6A/q4XH6/R5JiPxnrnykIS/V0xtYEmnDWlWqXY=
+	t=1768057771; cv=none; b=HXv0LkZpWdZq5nM+zDdqqu5cnMrJuyNEeL6jHPxykUCDOjGdp7/4oehzKHPas7EsyqzJ25smeIsaBYcf9JwKwvXbjiMlUkaOyIDy5qYUNTvHD+ZImRKyfhNFT0YvywuMQVE8hOPQt+dsZ0plwll29dYeQCqhRSilnEVVkc4Tg2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768057769; c=relaxed/simple;
-	bh=HXsmrNNEr+H1R93npODROo6Md8lvxfZavxKoxrx9XrE=;
+	s=arc-20240116; t=1768057771; c=relaxed/simple;
+	bh=W71manYc49CiWAv2i0/k3IAXEeJXVcWy8Fdli+uPecw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=O/3O5k6YToi0lP2BpNDScZClgAdmF9XWGD3YKRDm3yiv/pPN9bfQR0yUtJ6L6cUK3/0PilQewwmZ3UApQAeb6eEmakYguYMemBWPqJvEyComkWIyLr5u8dvIwXSa3zc4JECZJ1ZMKFQCu/Ib4Co7FlBMCY/F2Fj7vfcWUCXZGRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LtrT728O; arc=none smtp.client-ip=209.85.167.45
+	 In-Reply-To:To:Cc; b=SNifQVWGRjekqNAttX7aVBBipavynfIQOB+CTRexgTBiCNpsbT60VOVFhXKL3DzPsM6OIn8wvfYcqUg9fIXoWlYJdwggz+dqIJ70CWPKBe+maGJ/5nCmU9QIUfTYxO85CrRK/6HkzeUik6MEY2f0zXBltNRxB95xFWAFauASvDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OYKGo33d; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LtrT728O"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59b7073f61dso4877302e87.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 07:09:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OYKGo33d"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59b7be7496dso3001606e87.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 07:09:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768057766; x=1768662566; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768057768; x=1768662568; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jA4SPNhuMX5XCZ5OBbakMPi2P9GAq2DqeqD/xi+6gT8=;
-        b=LtrT728O3amQSkF69AUmkAC7v5yMmQ1cauMk5K8evmhDhZBiizof39/SelMtMizRde
-         sn4JS5sENOCa3XDLCe5bwrpe7aX/r6cRKm8Qe7K/ZaPfuajn6AcKa44VE+UvHNHcdjIo
-         1PDLMasQtZa7hMUD1sHrphJHnSuvBVohEzeb03piE6Wp5JcrdZ5KgwYAFYTpspvyI5wR
-         /oq9yNUKVUxCgxQwfy7QVv409/9bmX2xDJhMvKXJ0vNsUnHXp6p6IMN1IQBsaF7Hm/yo
-         g5n3bQF0xCjHkdQ4TtBSejYFFF3anz27BK5YxqDE5EgBRvVq2LaDYDzIr+s7El9QzAcL
-         Deig==
+        bh=c7uhurcFR9DbDTq+yEkMv+ps4y/ZlCrnBHcpx9/LZbw=;
+        b=OYKGo33dtgLdkgKac80pkbkYmnbrFzqEO1eS/KWpZ4yFjK32T2d2xTreoU50aGtuzW
+         WU+wcNxprqAvr15C2z04ol6rrhdEVOwOCWUwQSmud/iG4OQ9lSPZKgvGA6ngiprcp9Xz
+         8l5B5loCR9LAykT2P06D50TacVt79ajwTvZGjVXi+PmzEj8Cop77Oz5zSvh1C44IJuWg
+         QNWbOB334llV5Qxc0ir2AeDRZcV6t/gap1mjkbTJn1VNDGOpBLq49kgf3NoPEi6WCcXM
+         OObSJNYt83hW4JShSY13ywOzNotM34DF5/dVGS6jRYxpCxY++CkMys3moz9fr+R9HikS
+         +71Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768057766; x=1768662566;
+        d=1e100.net; s=20230601; t=1768057768; x=1768662568;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=jA4SPNhuMX5XCZ5OBbakMPi2P9GAq2DqeqD/xi+6gT8=;
-        b=i0SOf1OPMu8De01hPr/wgSkP6sq5KQjYpakMk503jdNoTXX5ivyAcl+jA7h+rsg3ra
-         bWgSv7VsF2kwwMo3pND/6ITczXYv3dmKX4wctoyKeXb9R1XIA/dGhz6Tz7DWUV6PsRkM
-         QlOBHmqrroNjf0jmRevH1ZpCTytm03/ZdHEwtoE9ANyFwi4jRRND0zqETAb0ZpIehgG3
-         xBabzGWQwVq/buXqNCHluUP9NDJIID++FGDmkfLdJ2GKRwUx0b8AbXGXIx+H+o++E726
-         de8P9iAfzfsc/INH1xnOwUZrzIYs9Y2Qns6kChmhOzFH+Q52FWMKC9EieAOOXwlZYi6r
-         9k6w==
-X-Forwarded-Encrypted: i=1; AJvYcCUWRA2a9yvROpmTtOnMc2odrG/yGkMMJWhCwOhe+zsIPJnghlA92fm6tkX2imUq9pFAfPsf/Kx9watWaWa8cQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuWnvM3LbB3w6rsK5xFsP52RePo1XlFO2ma8cofqsHLNeCUGTc
-	EqHuwk6Iq9EZ3+7cHJavUYuncWYx0Mg3O/6cqutg5822qswk3Vc/P6eN
-X-Gm-Gg: AY/fxX68VqNEaV4sbQx1OXOTlE5CLMqrl7y/mHoXdHis7wnelstvRRB4CEBPS3eoCRW
-	FBqAHOAzCg7u1TnY2sz/zFvQILuf/zsxPBrBoe4A1VkCAFejuXClLIbm4NxOy8YwmFlb1hfouh6
-	QVcPGehKtrjKv/8VerX/gRyRiLtczQH67H6uQ/KBSROJ4BQy0GHKYe6A7fNel9IcBCt7Fpv8dsB
-	7BTJxjQwkv0qNwKMfiXW4ZCzopweH+MhvpmDqJ67tSmAwYqHJExJXgFFiTBo+CD3CfmeSUexxUF
-	0d3pUAb+BysL8iy+WMuIWnWtomftso/z87KedeGR+KYjoEMJ3eXWPdGBqvYyLnenGJkwPzouH2l
-	1lkLxrR+RD5/xGj46sk3uVbSkikdUbTYf1z6mG31W4EdUFQ4KdHLEA4kaoVBHeSlNibY0HzBPbW
-	7ZT7rGwO2CxDijsum36+lqu9Wr27kjkPNVmVCV5G32ixtK5I0pGGi+jHY/P3I1157SW4ukUoHW
-X-Google-Smtp-Source: AGHT+IF5pkNobwqDdpJnVvMJj9HNo5dFu/TJZ8O4ycgXj/UHfAc8hmVO6+l9QbYPw5ZRrk2F06noMQ==
-X-Received: by 2002:a05:6512:3d04:b0:59b:7fe7:eed1 with SMTP id 2adb3069b0e04-59b7fe7ef14mr1809283e87.28.1768057765447;
-        Sat, 10 Jan 2026 07:09:25 -0800 (PST)
+        bh=c7uhurcFR9DbDTq+yEkMv+ps4y/ZlCrnBHcpx9/LZbw=;
+        b=OQoUw1UuN5iNf8yYoKMdrlaVCaRq0FYWZQAmmNNv46UUC1j1gfGtyPwIzCbCm20JQy
+         xYnSKqnmlEyQsB56aTu8q3VHPlfq5W8DDTBVtj4niuIb4UdNl5H8sI4OvGd5iVCq7Feu
+         U0ElVI5EeQyadYPlRlMYQY226Uajq6ljBZ/qUh3NteGjg/uwnKs7fGYh/njI+xBX1ut5
+         Jwww6Bigh3cUxpTcZRGiFswzYXJKQ4jPYuds5MhxSM9ZTkw/xK2NaYrXT2A/QJMlHqEu
+         I5ByS+4aVze03Xw6gmY+x+op0Hq9wBxuCKqPYJ4gymuswEvLb0lPR16chsjDJBEym11f
+         7N7w==
+X-Forwarded-Encrypted: i=1; AJvYcCUKlTbWcW09+u4ydRaaTk8QLwEOgYHfQxqJMOYiOMUjLuSyzdwXO9XDeFsEYthRYrBSzKOJ8jg06TsPZm47aw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBD8KHPuUbZexnNqKFrkDHuwxQMxHFCbHvlm/WSm0hfWLBrLPh
+	jsIfgP+S7AMdGxBD73ZKODvY3UA2qtO4fAEcgtKfQrqad4m2fLatSH9a
+X-Gm-Gg: AY/fxX7ZsjAXP/I11z3XnpfTxlH7jvjUmnrw2mkkMJBJ5C4hhcMUNJTBY6sRqdIixwA
+	ujtNJy9YjC020HTm7S+7DxDK/MHLglbN7zyYyuiPugp7xJAwYutqgDVgs5licY4hFapRKc4JJ3h
+	eYqRNWaX4y/P6l6nLP71lf977XCk9f7RLySqjLKFcWeKUdNxsUrCDNBGMT72/JUdbnbfgX6U2Fz
+	oy121dZ9Im+MfbeSVQmkHXVFKDdIZ7h7eD2WZAdsZ19CNU+Zr1NTpWdayEp7oonBWVgDWDXwsSe
+	LKjdcy/4J9xJ1cLbED0N235NvdftrGfiyWu5n/OqrvTBTuAJ01nnqZXCPoM7HXbXF+X3MUpG4t6
+	QCGMY+Qgm/Gf8QG6SP/cCUCrF+Qu8W8WGlIHiPhBpyQrkwHzMEB7Jg3VNazDkexcQNr/4bVERlC
+	7mVs/cHJ1AFwnf267OwCV/igxgf2z3HWQfnqs+1jpb+uXX/y7tf3bUfVaGDzqoCdV6VFw4ozvq
+X-Google-Smtp-Source: AGHT+IEb5d+vaUkZpyBGq+p43WuUE9Ufr+umE708zZAN3Ro/I3sh2nhVyXVGVrxWTqDPfClDb90idA==
+X-Received: by 2002:ac2:443b:0:b0:59b:70e7:4128 with SMTP id 2adb3069b0e04-59b70e74285mr2359072e87.53.1768057767898;
+        Sat, 10 Jan 2026 07:09:27 -0800 (PST)
 Received: from LT-5CG5341NQ4.nordic.imtech.com (37-33-148-7.bb.dnainternet.fi. [37.33.148.7])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b75543a64sm2137059e87.49.2026.01.10.07.09.22
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59b75543a64sm2137059e87.49.2026.01.10.07.09.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jan 2026 07:09:24 -0800 (PST)
+        Sat, 10 Jan 2026 07:09:26 -0800 (PST)
 From: Kari Argillander <kari.argillander@gmail.com>
-Date: Sat, 10 Jan 2026 17:08:05 +0200
-Subject: [PATCH RFC v3 07/15] rust: binder: use new THIS_MODULE
+Date: Sat, 10 Jan 2026 17:08:06 +0200
+Subject: [PATCH RFC v3 08/15] rust: firmware: use THIS_MODULE over
+ LocalModule for name
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,7 +71,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260110-this_module_fix-v3-7-97a3d9c14e8b@gmail.com>
+Message-Id: <20260110-this_module_fix-v3-8-97a3d9c14e8b@gmail.com>
 References: <20260110-this_module_fix-v3-0-97a3d9c14e8b@gmail.com>
 In-Reply-To: <20260110-this_module_fix-v3-0-97a3d9c14e8b@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -86,44 +87,35 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
  Kari Argillander <kari.argillander@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768057742; l=1238;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768057742; l=820;
  i=kari.argillander@gmail.com; s=20251219; h=from:subject:message-id;
- bh=HXsmrNNEr+H1R93npODROo6Md8lvxfZavxKoxrx9XrE=;
- b=R0q/X1ltJqeYVBP9SobLKfHgM075ElagNogpcGU3GkRvQ1n9qSEzsNfW83i0UdVRRa/JUGwAU
- bxs1cBNamQBD2YNOSaU1QhJ7S2BuCHBpPzzaT5E05h1XEXN8E9VD7v+
+ bh=W71manYc49CiWAv2i0/k3IAXEeJXVcWy8Fdli+uPecw=;
+ b=TI2FZYAl41BCzRj1MSNDkzQDfQwog9xX66xfNZZ1pkWkh8jNuIQdCerLykM46eYcWqAczB9aJ
+ vKnPExldgPFCeNcqUBG3nc2rFIsDDwEfn0QDI1LdCeaw7ubXjJM3bIL
 X-Developer-Key: i=kari.argillander@gmail.com; a=ed25519;
  pk=RwSxyhTpE3z4sywdDbIkC3q33ZQLNyhYWxT44iTY6r4=
 
-We have new THIS_MODULE. ThisModule is now crate. This is ugly for
-reason that drivers should not use as_ptr() directly. Currently binder
-still needs it so ugly cast is totally ok.
+THIS_MODULE now contains also name so there is no need to use
+LocalModule anymore. LocalModule will be removed in future.
 
 Signed-off-by: Kari Argillander <kari.argillander@gmail.com>
 ---
- drivers/android/binder/rust_binder_main.rs | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ rust/kernel/firmware.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index d84c3c360be0..fc921c0e1116 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -21,6 +21,7 @@
-     sync::poll::PollTable,
-     sync::Arc,
-     task::Pid,
-+    this_module::ThisModule,
-     transmute::AsBytes,
-     types::ForeignOwnable,
-     uaccess::UserSliceWriter,
-@@ -319,7 +320,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
-     let zeroed_ops = unsafe { core::mem::MaybeUninit::zeroed().assume_init() };
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index 71168d8004e2..2702f01c0403 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -206,7 +206,7 @@ macro_rules! module_firmware {
+             const __MODULE_FIRMWARE_PREFIX: &'static $crate::str::CStr = if cfg!(MODULE) {
+                 c""
+             } else {
+-                <LocalModule as $crate::ModuleMetadata>::NAME
++                crate::THIS_MODULE::name()
+             };
  
-     let ops = kernel::bindings::file_operations {
--        owner: THIS_MODULE.as_ptr(),
-+        owner: <THIS_MODULE as ThisModule>::OWNER.as_ptr(),
-         poll: Some(rust_binder_poll),
-         unlocked_ioctl: Some(rust_binder_ioctl),
-         #[cfg(CONFIG_COMPAT)]
+             #[link_section = ".modinfo"]
 
 -- 
 2.43.0
