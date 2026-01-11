@@ -1,84 +1,84 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D940343D83
-	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 12:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD53A344033
+	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 12:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768133012; cv=none; b=lBNdElvridnxbls3jcji6LswiS4JWFB1XQW+59YJ/yCKRe+tQxUzosxl+ELkUXO37fp+wVb6cjrLGCIAICoesrHV97eK8aQjf761uLjI4JcvJzYDa8jOIJboimfNMbgiW0mrf4akF6VECWByjEl/0rNo83xGfvsX2mMXLm3M1bU=
+	t=1768133015; cv=none; b=VxUBJuR9XS/dQXNHO58AATDBgidWMWVGjGCAsZD8FmHMnezi0GkZvfPTB+k1pjGStt70LRWPKX8m2+sHR/wAr1WnlV3Tm621zv3qbyfPLLJBD7f81wES7qOjpZiQixsWdNXfv+MLkMK+TxKFJ4m2uBmelBtBb5dHpWYtohab/sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768133012; c=relaxed/simple;
-	bh=zFvlNiWsGFavWqUF5eO/ewZONYVI7BPPZ6bd9UR237U=;
+	s=arc-20240116; t=1768133015; c=relaxed/simple;
+	bh=gCbR3GFtX7U/M5ncjDF9ACLc9ETQz4PEL09PH8zUK2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3pHx5VmhPXCF9yM8Gd37mNRvni77rZtpSBozfRqD77nXWTP7yFCA/34JcDLPAjdKzvFlyAIA7hAnmisGXSLuO3USflH0GqAJXPEldWXoTkmCdo7sfoA8ecKo3y022wOymbc00PeGmaTCke4tQ8hRb95f72A8x+89BKK4nKASSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MUQISKEB; arc=none smtp.client-ip=209.85.222.172
+	 MIME-Version; b=eQ02ClWdWoRlkr7OTsVWOo+tJgOUceZdUmWapUY1+JAB7bL+BD9Fou1mZHblspnVWzktwMPD5TrqjLttUZBm7WOPgluDLvCs4qI6X0OqiGDl1i/SQV3G+o1938JydJCIs3D1VI9IAjQAmXV/bEVI4701UUmMHE0pKU2WpgkIKNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NUbfw5Ib; arc=none smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MUQISKEB"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8c15e8b2f1aso576801585a.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 04:03:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NUbfw5Ib"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ee158187aaso60615991cf.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 04:03:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768133010; x=1768737810; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768133013; x=1768737813; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=uGQh0Ci4qHJuenJQS4UY5CJSqOW5cHeWXPgPxWzhXc4=;
-        b=MUQISKEBSTrW6JS3IqAkdkks9LccN4C96kzqo9Xff0MXC+6Wj64vkmIv7SLLR2yHW6
-         h5K9m43su+1NEH62GqGD5rkAfBVe31xwobO4kzUmr0VxlqG+XaYk2ObaANKclerNmCyF
-         xswAZevpibz1XDTLqB1WFDl6hxWRUNyl7SqaYQoS9EpAZ+ni8cUFRVM9nu/wI4QnUdNn
-         mZhVZbZIqCWRLSJRVP1JLR5K+RSKX0oHrWU88BAGDjgZwTgRuLxK1OeI9mSnqvC2jlMs
-         RvRjJfUEwt4qKHQRsQUZX8mry2Qtg/M3Bd8jgRBiklWR4lqaw8TDroZ/zrZdS855RUo3
-         DN9w==
+        bh=g99DEBLQaLBX/pyNsC2hBNpYdw8rRcB79zbmvUgRaxI=;
+        b=NUbfw5Ib1zglKMCSPYNw4c5+KSvFN5+HGXNJ1KBQ4PcJNmLF9Vi8BPYylhhsezLBLs
+         yeMUJSokfZwa1MM6jUGeyTZA9RrADyKM6BCAkGf7Y34AzaTdRJLG2MLCyOWdCbu/jeji
+         OPEFwkk4lavfLuPZ20vpZpSrj5XqIu4WZJO4QLLvAFiLn1Zp+AOvReD8se2jFvHRWIln
+         OMzQIMKuhdJSNX/0+h7cGJvrDXGW+kd/JNucvkLQZkQS+3qkv/7I9PeiUs16A1gCwQoi
+         FcR5Bqzx7uYXz/W2Qe5Wd/WPkh1jJr+PnUtQ0gKVEFw53WzLz0Bq5pkw8FI1QjaCl5hE
+         relA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768133010; x=1768737810;
+        d=1e100.net; s=20230601; t=1768133013; x=1768737813;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uGQh0Ci4qHJuenJQS4UY5CJSqOW5cHeWXPgPxWzhXc4=;
-        b=PXTj9+fLE/BwO2EIdRrzZwvnJt0zpYlPQ8/qQwROYNfJte2wuSJrnR4DYKBuxFkzGr
-         gq5J1Idwhg9WNRO+mECcgEl20Mke/cT374UwFa43CDGjwlbUsqDlEEINZlN7R6QT5fMu
-         2jgi1cPR02UInqEnwYmhHTccq0+MpqjBQ98BKvgwoIxnyKMYpmT7HOpa1VTUC/cd1Vvq
-         6TTAMkhglSs+JW+0V7UMXxLX6kGlO9ZPJB1RD+3Ivukk9sGTFef5ORSTc/aT6dU+7wRK
-         vU9c1AeHYE0OtqZp2b2xd4ugaqTgisSVrHnp55iluAXSJ5X9P/D7dL9oRH1M1JWsuvaC
-         /naA==
-X-Gm-Message-State: AOJu0YxqYpzGvw3TSj+aeCsRdIJyQzed8mJgM/NX3JjJ7wHkP5qzKAK/
-	ulzTDa5XyIeMSo+I2k0zHSqm+IRqE7tnfeWDQ4n6OaWOser/C68Y6uHf
-X-Gm-Gg: AY/fxX5U58P11hw//AFmmmBETD9Al35fIKYMLqII1Q2aJkkochbL7tg0udTK8KILsxb
-	XIMZDmenUoOaUFnuOK50vfr5qrbwILJAIdOTas9zrDdEa8J1MwDrVSYWc5Cgg6Niu9FfO81iNZ0
-	bZavqeXXouWRg3lcVYJWHp19agbDFxF5IILmyZj7b8It69p7SqCiNOViIqNAUVeaH3A9o+xw+2p
-	uWPWE6CzvkdRomS4AaDM+N3NXVDr7pFDxFfqSe60YzvTSgknxk7c1Yoh64S6+3za/8uIWNeJjDb
-	BF7pJshytduh7xsCTR6OJG1LXdh8KJDV6zev2rgMfZD+AWJtU0uZzu793LX0P0M2L8XG5z7kL3r
-	/zjlzqVymFTLW+2/VG7R0DJjvjUHeNKEI000/I9NkWa3XaDxSWDhIt2+/+RfJxWX9H/boVFAYBy
-	bFZbWETJWC5Uc01iH0+1KoNtqukwazodGyyI52n55F12+/21jia77kRhXXOc41qvEGptlk9SdwO
-	dQbaWJsLzqz6copCE/l8NSOZQ==
-X-Google-Smtp-Source: AGHT+IFekaKlXQCbYtbG2TPV2v7cy9K3Jwy+nEC8iysUZGVYcU9b5XnQVxnZfaTiVcM29v0TIzTN3A==
-X-Received: by 2002:a05:620a:290c:b0:8b2:ef70:64e9 with SMTP id af79cd13be357-8c38940915emr2129278385a.51.1768133010053;
-        Sun, 11 Jan 2026 04:03:30 -0800 (PST)
+        bh=g99DEBLQaLBX/pyNsC2hBNpYdw8rRcB79zbmvUgRaxI=;
+        b=HlSlSbGRragifg878h+t2QeEn0PddwYsZd/vG4ocXHzoycJPqtcW4QTKdvcJH6cTja
+         5NV9Sa8YFsopRhGz+dT6J9y0ObhlF2AOmu41eC7Ygqkvq29QFdXCeHuDnbfqaJXrFLqs
+         fpILD95Y8piKCtsrrzp40fsRJu9ilzQZbnoMSlz7FrV4W1KknbKK6vMoOY6E2JCi/oLL
+         L0PpzCG33Rjjt+RYU1vXUJIYoToX41tyzbrowfWIDfq1crXU9SiSPQ4VFSN5XehIhygw
+         pOrXc+Xaw96PpIqAQ8F1q6EPfJY22ic2jJFXXSaoku9LHaeCvPJELMGbEx7UaHjAzNo/
+         Fojw==
+X-Gm-Message-State: AOJu0YzzYUAgnLk2qWs5Eu/TsdTfNSqlA5gsDRfYWmOICBN4yIziIlnS
+	x2NtOI/jHsi79VWQYHamlcjBSP6fUnHTetihKQf5Rz1iOQzeEP+m0V97
+X-Gm-Gg: AY/fxX6CFgwlE9A1jR7TjvpJXDdWduqIF+YY4yhu+aKyPfwN3LYlj0Guvibfnm3oIUj
+	q72W0o4jrbYN/g2tqnUAd07NbqdnPv+2oQ1arNP7My845ZvmJTFee2O+36ZKYXVNLOIi5gEbRgp
+	+vz9T9nsEbf0xfrvyzhJQ91/NzHhglAatqu1Zf2z6Ak5zhumCmyFegJqhi5CdaxUldaVUSGbH1z
+	cQQRwkrL8N0cfPlRkAc9mmWWh2+N2sOesOZcEFuLHFGAayWZmd0uyAi+p1UheTtRjcAenHWwioz
+	+ldh7H9+UuXr4ys5p9w7su/L+A5E2e4WXmj6pe2lXQp3PrtIjNN8lzE1SVQcqnCCDt2KUWE8xOm
+	xR4ajJTlvauTIBDmEwPHtIssv8X9se+IcAoKLs0Aq/vpDxJ3DMs2qhrB0jgqfskb0nH6dj5t4vA
+	mRRgYx8ODiaiIaihPt8B9Hcc1byi4gxxwrTR/4lF+DP/3hffnO6QKeKClzqp0WxuVu5Rrtpv+jl
+	Ot8J0iUOIJhYUn1x19RI7RBjw==
+X-Google-Smtp-Source: AGHT+IENmmCoSHNLUi9LhJHOEfhYsdVuZs7pKTYg3a610T5MZ0xFd0ga/mDpUfrsri7jyu6u7QfYGw==
+X-Received: by 2002:ac8:584c:0:b0:4ff:b18a:104b with SMTP id d75a77b69052e-4ffb4958e3cmr206452491cf.23.1768133012890;
+        Sun, 11 Jan 2026 04:03:32 -0800 (PST)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4b9373sm1259953985a.15.2026.01.11.04.03.29
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffb813ffb8sm84359251cf.20.2026.01.11.04.03.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jan 2026 04:03:29 -0800 (PST)
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 266F1F40068;
-	Sun, 11 Jan 2026 07:03:29 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Sun, 11 Jan 2026 07:03:29 -0500
-X-ME-Sender: <xms:kZFjaQUmGGZg_SB9zvJvzyKHvveHO6yhH4mzbrI6EPms195jTe2weA>
-    <xme:kZFjae_CQRSafhdZXqPYgT35THTesQF6ggK2Kng7pfBHmLVIKRRPyngcAvF0UaOus
-    YQlnU8339F37h9LeUAepM_42T5cD6SB6sSjWdKVLm-0EdLAWqMi-w>
-X-ME-Received: <xmr:kZFjaahZPVg83kuQMPa8GQiYLGWeYESHwsDISuFVUEGRa7NfG4itkADq>
+        Sun, 11 Jan 2026 04:03:32 -0800 (PST)
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id EE1B4F40068;
+	Sun, 11 Jan 2026 07:03:31 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Sun, 11 Jan 2026 07:03:31 -0500
+X-ME-Sender: <xms:k5Fjadab1PLC2oxYFGjzveq2xsUoEBWNdcsgbbwRJNZQYblXYLQJUQ>
+    <xme:k5FjaZnlUNaAkghLxjV5B9kKETcFJrzmtyfCUqZ_L-flGCLNA2HKBYV9Xf7PPHEzD
+    7B0UeU5lyyNmsdXmAqmhuLrAYbPimW4aW4IBIAUps6_6bIo6cwBzQ>
+X-ME-Received: <xmr:k5FjaTXAL2Xi4ruW55yCgX5O0mNdMMHcVkB0mHtKu_Dxx7RoorRE8Mjc>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudeghedvucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
     hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
     gvrhhnpedvveekvddtffelffelfedvudefffeuheejgeeivedufffgledvgeduveffueeh
-    leenucffohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgepvd
+    leenucffohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgepfe
     enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
     rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
     gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
-    peduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgvthgvrhiisehinhhfrh
+    pedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgvthgvrhiisehinhhfrh
     gruggvrggurdhorhhgpdhrtghpthhtohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhr
     tghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorh
     hgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdho
@@ -86,14 +86,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudeghedvucetufdote
     hrkhdrrhhuthhlrghnugesrghrmhdrtghomhdprhgtphhtthhopehtghhlgieslhhinhhu
     thhrohhnihigrdguvgdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprh
     gtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:kZFjaadA8yJHgD1bgtXdbu1b5G3gxMSI_hRP6s_Qd8w7BIEr5lLB_Q>
-    <xmx:kZFjaTKWx23L4NKtK73oxK_TOcJvJoUKwsHWRvtrlz2BeLNDchMmdw>
-    <xmx:kZFjaXlSrhSrozgDRk01UMBz9lvGMz5RJl6y4smcq7a1VCwm0M8DcQ>
-    <xmx:kZFjabdDwcKn2DEzNN42V5WSnjaeRpKugGzZavMUOQ5-b0WDuG-1BA>
-    <xmx:kZFjaYwOZgRB62Uq9HtFX516pC-cxIO2MK60fYHfXmzcGK7iDZPMWeoV>
+X-ME-Proxy: <xmx:k5FjabKz_sDBYY7LydOBi7NdqcC0NzF2BGyFvSa0DCdnNn1g3XF_nw>
+    <xmx:k5FjaTsCeOik70HqxlhJgnrXFEQevu4FOxYJUNWs-x2WMYzU8NpUnw>
+    <xmx:k5FjaQ11XkbanLI9nOX2POPd2XggajZ8PDnYK29WVAYCUgZIZoxJPg>
+    <xmx:k5FjabMVGURpYPzfquzqMR4nuw5Jh4PQ8N3BbntE9UdMnPm-Ddo2gw>
+    <xmx:k5FjaQUkZkpzaW4eObC3ydSLQzMO4OT2vNSHvkAQhw0Gji-f2EKf1Dev>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 11 Jan 2026 07:03:28 -0500 (EST)
+ 11 Jan 2026 07:03:31 -0500 (EST)
 From: Boqun Feng <boqun.feng@gmail.com>
 To: "Peter Zijlstra" <peterz@infradead.org>,
 	"Ingo Molnar" <mingo@kernel.org>
@@ -108,11 +108,10 @@ Cc: rust-for-linux@vger.kernel.org,
 	"Andreas Hindborg" <a.hindborg@kernel.org>,
 	"Benno Lossin" <lossin@kernel.org>,
 	"Danilo Krummrich" <dakr@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	"Joel Fernandes (NVIDIA)" <joel@joelfernandes.org>
-Subject: [PATCH 29/36] rust: rcu: Add __rust_helper to helpers
-Date: Sun, 11 Jan 2026 20:02:02 +0800
-Message-ID: <20260111120209.6133-27-boqun.feng@gmail.com>
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: [PATCH 30/36] rust: refcount: Add __rust_helper to helpers
+Date: Sun, 11 Jan 2026 20:02:03 +0800
+Message-ID: <20260111120209.6133-28-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260111120209.6133-1-boqun.feng@gmail.com>
 References: <20260111115808.5702-1-boqun.feng@gmail.com>
@@ -132,31 +131,48 @@ This is needed to inline these helpers into Rust code.
 Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Joel Fernandes (NVIDIA) <joel@joelfernandes.org>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20260105-define-rust-helper-v2-16-51da5f454a67@google.com
+Link: https://patch.msgid.link/20260105-define-rust-helper-v2-17-51da5f454a67@google.com
 ---
- rust/helpers/rcu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/helpers/refcount.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/rust/helpers/rcu.c b/rust/helpers/rcu.c
-index f1cec6583513..481274c05857 100644
---- a/rust/helpers/rcu.c
-+++ b/rust/helpers/rcu.c
-@@ -2,12 +2,12 @@
+diff --git a/rust/helpers/refcount.c b/rust/helpers/refcount.c
+index d175898ad7b8..36334a674ee4 100644
+--- a/rust/helpers/refcount.c
++++ b/rust/helpers/refcount.c
+@@ -2,27 +2,27 @@
  
- #include <linux/rcupdate.h>
+ #include <linux/refcount.h>
  
--void rust_helper_rcu_read_lock(void)
-+__rust_helper void rust_helper_rcu_read_lock(void)
+-refcount_t rust_helper_REFCOUNT_INIT(int n)
++__rust_helper refcount_t rust_helper_REFCOUNT_INIT(int n)
  {
- 	rcu_read_lock();
+ 	return (refcount_t)REFCOUNT_INIT(n);
  }
  
--void rust_helper_rcu_read_unlock(void)
-+__rust_helper void rust_helper_rcu_read_unlock(void)
+-void rust_helper_refcount_set(refcount_t *r, int n)
++__rust_helper void rust_helper_refcount_set(refcount_t *r, int n)
  {
- 	rcu_read_unlock();
+ 	refcount_set(r, n);
+ }
+ 
+-void rust_helper_refcount_inc(refcount_t *r)
++__rust_helper void rust_helper_refcount_inc(refcount_t *r)
+ {
+ 	refcount_inc(r);
+ }
+ 
+-void rust_helper_refcount_dec(refcount_t *r)
++__rust_helper void rust_helper_refcount_dec(refcount_t *r)
+ {
+ 	refcount_dec(r);
+ }
+ 
+-bool rust_helper_refcount_dec_and_test(refcount_t *r)
++__rust_helper bool rust_helper_refcount_dec_and_test(refcount_t *r)
+ {
+ 	return refcount_dec_and_test(r);
  }
 -- 
 2.51.0
