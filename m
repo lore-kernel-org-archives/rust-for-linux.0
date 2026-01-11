@@ -1,46 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73B833C1B0;
-	Sun, 11 Jan 2026 12:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0329433B970;
+	Sun, 11 Jan 2026 12:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768134475; cv=none; b=ueRBJUkKIQIN1kw1o2VAeqfgF+ccdRBNkzl37MHPwDo4JQRLrRwc0UZhkTFSqvxLrdJ/GAkezcl+wKnNkpCEO8+vO35yXgSVtOXMW/LTiQuwNwZlsEKTDeXofrQGqxG0H83C6Jmr8f7GjVWbtdKAzarFO1d8TXGxb5U9OfH2wWw=
+	t=1768134478; cv=none; b=dGzKDzHBp0bRNoeIoTfwPK5YLYiNxQYmhsTnmPmMirYFKgKHCVIyF8gQ0f40jEWNWs8uIDcRmqFuyZjk1YjdWj7as92mCcYPgxpq8sjeltQyea9ykZ8poJAvZGdUPe5it14pEpyEStJdqficDf2UP0fEl6SC0RI5sM2vqI8v1Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768134475; c=relaxed/simple;
-	bh=Bzn61yiWjjYUzn5UTax2wd+MrTVTJPya5IR9zeUBdxI=;
+	s=arc-20240116; t=1768134478; c=relaxed/simple;
+	bh=JTG9j7UbHh0Y+ADlMmQmtrNQM7/JMCXJsDMy+wO7ra0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcnGazdzvdQax+7AA6BfP5oL5olFeZpspZR+6w1ry2pfjMgtmr/h+1dsdMLMrnrP28FhVfR6sskkmDbgns36O/FTdDy1olXJv5qfHERA38bwm4AHa3sdDtXJFY1u8F8ic/eIn5Y0d4sBK4dO4wzGUBD4elaX8UcM2Q3rlVAa7dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZolVx5s; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=qGZxAXtWkuLHAaz2rJTopiXI1IlmWUibnzHaQ5At5TTfGqt2w4mQa9Egyubae9wI7PZPirHrx8812458xcziUUkDXnjnfWR9jkSc3Oiysjp5hdsuRSWQNFcvhoompGUrKubBcGZBzavCzVwggZaRAJNpgTA+rleQiblYa0z8/jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUkFa80K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZolVx5s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABDDC19423;
-	Sun, 11 Jan 2026 12:27:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUkFa80K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B575C19422;
+	Sun, 11 Jan 2026 12:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768134474;
-	bh=Bzn61yiWjjYUzn5UTax2wd+MrTVTJPya5IR9zeUBdxI=;
+	s=k20201202; t=1768134477;
+	bh=JTG9j7UbHh0Y+ADlMmQmtrNQM7/JMCXJsDMy+wO7ra0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZolVx5sdCDztq93fmFsJpHYn/NyQYOT0VmOC13jCms964VnSm1Pr3N6dnQiPRe3k
-	 Fq1O3AUnBJ1XWia3hLPMKX9gwuxDVaTaSKzvoiZa7M4SJE2AKot8KoG1nNMDCyw0Jg
-	 b+OC8DE+2HDLyDLloJCnX5+WGuOrjIaQfccCUT6H5mOSCC6XdYmBG/25B1TC1Nsq8Q
-	 jS4XGFd6zwW3aypKzdh7RK3sdPmZiniF5PlclSrNEFT3irSdb+t1g1YYhxfjYMF0Xq
-	 Vwje9weRggdi5eApWbNKNt5zPMQHXdlUOSO/DuVvrE0ggkPgzmnoTRWBTXlu9BA0bM
-	 ZpSe8tYHI6lkw==
+	b=aUkFa80KIaPyadSvT6hIwv1jL+fRSYIJ8jX8D4EH6qeLzA/jMKZBqTo/3SWrm0epZ
+	 2kmWeky8pAHpjXstBXqWgvcYiYzpepXyCpMfNEyRG5tJ/2h4GhgPzR7K2NtoNBNMFL
+	 9GCzeS3Nh2fMZGDtluo/ISekrjW4PoleTkPl+XCo5ppIyxBouzSnW/kv4FZjrq/8zC
+	 mqQqsNO2E8PCwTqRnI9mQPnYzpU+ChYe+hqpHMQHcQMW7yUVpAYFgkBMSlBKwW+CCa
+	 M58JGwKhrrw5zD13wGlKdx0cDcizRa0zUHRd+317hUI+SRRstFOUJYFsW+wqRCY4Qk
+	 he2l8krUZsqWA==
 From: Benno Lossin <lossin@kernel.org>
-To: Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
+To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 14/15] rust: pin-init: internal: init: simplify Zeroable safety check
-Date: Sun, 11 Jan 2026 13:25:12 +0100
-Message-ID: <20260111122554.2662175-15-lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 15/15] MAINTAINERS: add Gary Guo to pin-init
+Date: Sun, 11 Jan 2026 13:25:13 +0100
+Message-ID: <20260111122554.2662175-16-lossin@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260111122554.2662175-1-lossin@kernel.org>
 References: <20260111122554.2662175-1-lossin@kernel.org>
@@ -52,41 +52,31 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The `Zeroable` type check uses a small dance with a raw pointer to aid
-type inference. It turns out that this is not necessary and type
-inference is powerful enough to resolve any ambiguity. Thus remove it.
+Gary has been involved in pin-init since the very beginning. He created
+his own version before I even joined Rust-for-Linux, contributed ideas
+to my solution, and reviewed it. With the removal of the declarative
+macro mess, he is also going to be a maintainer of pin-init.
 
-Suggested-by: Gary Guo <gary@garyguo.net>
+Acked-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
-Changes in v2: added this patch
+Changes in v2: none
 ---
- rust/pin-init/internal/src/init.rs | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index 40df01635a3a..17ae7b2e4f70 100644
---- a/rust/pin-init/internal/src/init.rs
-+++ b/rust/pin-init/internal/src/init.rs
-@@ -415,17 +415,12 @@ fn make_field_check(
-             #[allow(unreachable_code, clippy::diverging_sub_expression, unused_assignments)]
-             // SAFETY: this code is never executed.
-             let _ = || unsafe {
--                let mut zeroed = ::core::mem::zeroed();
--                // We have to use type inference here to make zeroed have the correct type. This
--                // does not get executed, so it has no effect.
--                ::core::ptr::write(slot, zeroed);
--                zeroed = ::core::mem::zeroed();
-                 ::core::ptr::write(slot, #path {
-                     #(
-                         #(#field_attrs)*
-                         #field_name: ::core::panic!(),
-                     )*
--                    ..zeroed
-+                    ..::core::mem::zeroed()
-                 })
-             };
-         },
+diff --git a/MAINTAINERS b/MAINTAINERS
+index dc731d37c8fe..fb6534339b75 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -22916,6 +22916,7 @@ F:	rust/kernel/num/
+ 
+ RUST [PIN-INIT]
+ M:	Benno Lossin <lossin@kernel.org>
++M:	Gary Guo <gary@garyguo.net>
+ L:	rust-for-linux@vger.kernel.org
+ S:	Maintained
+ W:	https://rust-for-linux.com/pin-init
 -- 
 2.52.0
 
