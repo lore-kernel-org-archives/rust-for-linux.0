@@ -1,123 +1,46 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BF03469F3
-	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 12:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E781EEE6;
+	Sun, 11 Jan 2026 12:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768133032; cv=none; b=dpcAc8i0oTHfeHetnOj5P51CaMpIRcEwtHqYA64wLJYLl/HXgCGIcSArtfXyONT592K+KN/k7YAxB210P5K9jpYxO4ahFDVB05EYa20eeMFofgyiiqvd43lHfY5Fv7BBtt6aDLr6HGdhMZSdDrACzOIoR/0u2NNLpU7DAC99u1s=
+	t=1768134389; cv=none; b=iev0dxjWrRX+rIIBCBLwJ385+AmIjm8GHNAM1kQGExMM7uXwSoauUW98N1KjzcHSwQxCYty4UDDonIYaQJWq9e11kdtfHfWIJ2n/pc3G7Iar0iPyb/x27gdwu9bx/Wfvp4BDlQmIOZjWmEPokc0POQHUYz6P8+XYXSlu1cOmQww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768133032; c=relaxed/simple;
-	bh=s8N4ZiJ/NTw5nCFolZ2qL520EQTDevyDNLvKPYHhOxI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UamS1URTT5TAHRNYTIq43su5Uh2bryoHm0EW6MJoscQ0/DCmd3QXPF+tqaFRZ0PXwoxo0RargYUzQpgSaH/rr8AJsi1IfRue4iO1InMfCVQZFGos0LKqS8GAFSD+FNN/IPuACK1nbOsX6n0oW+4+4KOJVOnJoktEW1sCOCw44Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dNavHVJV; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768134389; c=relaxed/simple;
+	bh=nWP87qmqwRnegjfNao8z7tYBDe1oyo/pG1Ybd96xx6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CoTV9SFZtV79ygg658W5aNYEYGkLVcfgltmvC1UF+offdqxH+gaGD3QjSY15pts+akXiXKmftsZTHlt2vRj55gHnVfNu2+JgIwVIceUmR12UYJ4Chx4my66PLU1NDFs+qMkb5FUdmun7bCPJKqFfbYVdXsBuVmbJh/GZUIbrN3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GhfeLZJl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNavHVJV"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8b2ea2b9631so645578285a.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 04:03:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768133029; x=1768737829; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=k0bZMcMbWrQBQFSEmsod610ePoTMj3P6f+YOc7ODi3w=;
-        b=dNavHVJVcngTrU9Rp6M1PS976z3Sm6tbOmkYahLCANi1B99yV2/10+qnNLrXkjSRtp
-         7Y31VbD80e5cbDIfJZz+UCx4XtObamuaXExu2GjGLuNAgwV9BX9P1Dr17WYI5jW9SHFv
-         xsAs194diH/4P5tWmNeZhqIANNA5ZlADok/Hj+zX4JXarNGzP0YglF/P2uDhMjEYoqk0
-         PbLShEUIDCkt+sBaY7iwbPUKQXixZ893wpm4NriU/VWxr8q8wCxRGUVUsf0yW7uxxHDK
-         elv9DVosJ/mnQUTC1+dYsx1dA12z/mZ+30GPu2poEYskT/ZJ3x7SqAnQpG5LgzRBiW4B
-         FWrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768133029; x=1768737829;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k0bZMcMbWrQBQFSEmsod610ePoTMj3P6f+YOc7ODi3w=;
-        b=B8RE1Qa1vHsLYNVIP43ijCSxzgaSXQJ0yjLaxdeeJEySzhxZPEhDf3tqBD7mrzuTUN
-         uLPSjf3QwkSCSoV7z454Dtnm5/IElTOYpeBd4bOzd8Jb4tn3R16Gc3k9y0ysMgRWX/vd
-         rR2Ak9ZFG5w0YniEHcif73xL+jj3qzyNsX/v4DdYYkq0nQXS+tyI4hIwwnzPWgmKL2iy
-         W9oj0m2Rm1KyUJ3aE0PJOlY/4t32vJLfh7lIGgRFvU08pKCyptuMfnAraks+Whq46E0J
-         HXrSnW7mAmIbqTSNCTHVGATwuyVfF0jn6QCn1x+qOgOWXJjXVesWKOS0JiVlqyKELwgx
-         5Dyw==
-X-Gm-Message-State: AOJu0YwX08TY9mgXH3mmJ4D/XAo7uX5JglcIty8i+DteHrT9bGlLillz
-	kOq0Fk8lFJHypvXqRrIh2A5+/R9/4GwzUhkQvAMqayk7memLEc0H2dZ3
-X-Gm-Gg: AY/fxX5eZDhG8p28Z/qagGUyJqf2DZ4HNk+hTmryXkGGi9N5n9h2fLPlJEN8qK6I9Hh
-	d0sjKYPd2LA8DAbi/xA0WwbBTH4kYnIFILqYyywAydMPKLJCFTJ/vGMRhdQOWkwtIZ0P6z6g4f3
-	+Gl++odtQ17ndk4uFLsozW8Vjdi25uXCzciEAf0tWXLJEZPtywjxwfiQN4WE1HZ5aK9VX74bvkR
-	fiReIzK8hAxIAMCd2vwstTmzIZdx1Drp/FksAFDHUGdgbKfOuedzhY4zKg6y50Lbu53OkPH1GD9
-	etcGvmbk0oDw0l1MT57m2dpH+Kp2LGgtIwrx5KinmprKTG1evohnyaXWDRpdEciZWyJqu5LPjWG
-	B4ExoU7nI1ZTM/2vIPQkxI8uIs8CQw1YS90HHC+aqOruVF6Sw2OWbNPu7E5ODEJPsSsSASf6Ssc
-	Nl2AnZ5H7NENyCCIz1OGitcAUQn9PFazaMaT/77irLCJQNdgWvl/xBeXmgO4Fb0miCTyiNctVKP
-	8BsQedrBIH7CH0=
-X-Google-Smtp-Source: AGHT+IF5ftE08RXjLlbNoPp+Az1KvVdU3HySJevvvDjzTv59UekS/JjztS89lqrMGGkkDvv/jcfZIQ==
-X-Received: by 2002:a05:620a:410d:b0:892:ca0f:fc21 with SMTP id af79cd13be357-8c38939cf58mr2050163385a.40.1768133028929;
-        Sun, 11 Jan 2026 04:03:48 -0800 (PST)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a63acsm1284207385a.6.2026.01.11.04.03.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jan 2026 04:03:48 -0800 (PST)
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2693FF40068;
-	Sun, 11 Jan 2026 07:03:48 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Sun, 11 Jan 2026 07:03:48 -0500
-X-ME-Sender: <xms:pJFjaW70x19L_F7GVbp_heqfbVMxGszRKchf4SdaOBqYtTZXeJYkTQ>
-    <xme:pJFjaaT7Wq5i50KgW2qSFZmr6-HmMfO-7CD32HYX9yDttQskb4RaeubgLbd0Q_hb6
-    6Fa0uugV0ZAizFZdykZZY1HyrO-QRX5YzK7zSToWEuVNhffHU0IYQ>
-X-ME-Received: <xmr:pJFjabkcydouqE4cx5WDHtmaNaxFuQIe2KzB0bm376SF1rOUCztRzYab>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudeghedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeeugeeiffevuedvvddvfeejffekfedtvdevieehteehjeefkedtgfelvdelfefg
-    ieenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhmshhgihgurdhlihhnkhdplhhotg
-    hkrdgurghtrgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
-    ohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvge
-    ehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhm
-    sehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpoh
-    huthdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphht
-    thhopehmihhnghhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorh
-    dqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
-    qdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeifihhllh
-    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrrhhkrdhruhhtlhgrnhgusegrrhhm
-    rdgtohhmpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggvpdhrtghpth
-    htohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghr
-    hihguhhordhnvght
-X-ME-Proxy: <xmx:pJFjaeSUYtuUpCgLBiDjNBA2_sislQ1BdtJH_KW8W1So8x-t_xFXwg>
-    <xmx:pJFjaStCGYk2wuwCYV9lj8VGEM7D7tso2Ub65LxfptwlO3J0EM1Fhg>
-    <xmx:pJFjaX5Bgo7p8EKmFvwvzRMAakkI0WCx9BgYyy5fZCQWkMEK_gWGnQ>
-    <xmx:pJFjadiGWLmLEq8MV95wuj7EfW1F6ePw-YRLAHfxRTPwaQw3WvmmKA>
-    <xmx:pJFjaZlJiWmVwE1bmP4AIY0lc1ojuSaF9oP5c-Mnhd7phhiSN2igxZmz>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 11 Jan 2026 07:03:47 -0500 (EST)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: "Peter Zijlstra" <peterz@infradead.org>,
-	"Ingo Molnar" <mingo@kernel.org>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Will Deacon" <will@kernel.org>,
-	"Mark Rutland" <mark.rutland@arm.com>,
-	"Thomas Gleixner" <tglx@linutronix.de>,
-	"Miguel Ojeda" <ojeda@kernel.org>,
-	"Gary Guo" <gary@garyguo.net>,
-	"Alice Ryhl" <aliceryhl@google.com>,
-	"Andreas Hindborg" <a.hindborg@kernel.org>,
-	"Benno Lossin" <lossin@kernel.org>,
-	"Danilo Krummrich" <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 36/36] rust: sync: Inline various lock related methods
-Date: Sun, 11 Jan 2026 20:02:09 +0800
-Message-ID: <20260111120209.6133-34-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260111120209.6133-1-boqun.feng@gmail.com>
-References: <20260111115808.5702-1-boqun.feng@gmail.com>
- <20260111120209.6133-1-boqun.feng@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GhfeLZJl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F24C4CEF7;
+	Sun, 11 Jan 2026 12:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768134388;
+	bh=nWP87qmqwRnegjfNao8z7tYBDe1oyo/pG1Ybd96xx6M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GhfeLZJlGGQrJjvVwrNxtuXzQpyIqy8Ft9nBEa9zHq0Q3vviSkLF+4DEBB3Xuqig1
+	 MmdkHa5Z3Pc0YfUBQZGaiBxZpdKpznrdr38jNde4HCLXf+Loa8CXpWPJcyapwGz/8D
+	 KTQqOsjakMCn3IN5BeAKYOeCZEFJpkBhtYSk4z4S1sIFsvrMiH09a7UcN63Y/3aUEr
+	 MrEbG7muQmH8CO0GwrgWcsqSUHr9GAGhjaTCFBthEx8nIAiqfJW38HG64M35lt7rEG
+	 NyHB4su21Eu4cPm+my5xHyU9lOo5LlSDFdJ+WkCJFZ3MTQGze6O8Rn4Ydk1emUWcDO
+	 UvXi4KkTwToMA==
+From: Benno Lossin <lossin@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 00/15] `syn` rewrite of pin-init
+Date: Sun, 11 Jan 2026 13:24:58 +0100
+Message-ID: <20260111122554.2662175-1-lossin@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -126,200 +49,123 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alice Ryhl <aliceryhl@google.com>
+Rewrite the proc-macros of pin-init by using the `syn` crate for Rust
+syntax parsing. This series has been a long way coming. At the very
+start of pin-init, I initially implemented everything using syn, since
+parsing is so much easier with it. Now after several years it is finally
+time to remove the dreaded 1600 lines of declarative macros required to
+parse and expand the initializer syntax.
 
-While debugging a different issue [1], the following relocation was
-noticed in the rust_binder.ko file:
+The move to syn is not only a blessing for the maintenance work, but
+also improves the implementation of new features. This series includes
+many such improvements.
 
-	R_AARCH64_CALL26	_RNvXNtNtNtCsdfZWD8DztAw_6kernel4sync4lock8spinlockNtB2_15SpinLockBackendNtB4_7Backend6unlock
+* Patch 1, 2, 3 and 4 prepare for the rewrite. The first removes the
+  superfluous `try_` variants of the initializer macros from pin-init.
+  Note that the kernel defines its own, so no code changes in the kernel
+  are required. The second patch allows using `::pin_init` in the
+  pin-init crate. The third adds the syn dependency and cleans up some
+  old workarounds and new clippy warnings. The fourth adds better error
+  handling on top of `syn`.
+* Patch 5, 6, 7, and 9 rewrite the derive macros for Zeroable,
+  `#[pinned_drop]` attribute macro, `#[pin_data]` attribute macro, and
+  the initializer macros respectively using `syn`.
+* Patch 8 ensures soundness in the future by fixing generic bounds in
+  generated code by `#[pin_data]`.
+* Patch 10 adds the `#[default_error(type)]` attribute to initializer
+  macros allowing them to specify a default error that is used when no
+  error is manually specified.
+* Patch 11 uses `#[default_error(type)]` in the definition of the
+  kernel's `try_` variants of the initializer macros (which defaults to
+  the kernel's `Error` type).
+* Patch 12 allows putting attributes on fields in initializer macros
+  (for example `cfg` attributes).
+* Patch 13 adds `#[disable_initialized_field_access]` to support packed
+  structs.
+* Patch 14 simplifies the code generated by the initializer macros.
+* Patch 15 adds Gary as a maintainer.
 
-This relocation (and a similar one for lock) occurred many times
-throughout the module. That is not really useful because all this
-function does is call spin_unlock(), so what we actually want here is
-that a call to spin_unlock() dirctly is generated in favor of this
-wrapper method.
+In addition to the new features, using syn results in much cleaner error
+messages and more accurate span information. The code is much easier to
+read as well and hopefully easier to understand as well.
 
-Thus, mark these methods inline.
+As always, tests that ensure the correctness of the macro output are
+included and updated in the upstream pin-init repository. Take a look at
+the pull request on GitHub for the diff in the test output:
 
-[boqun: Reword the commit message a bit]
+    https://github.com/Rust-for-Linux/pin-init/pull/89
 
-Link: https://lore.kernel.org/p/20251111-binder-fix-list-remove-v1-0-8ed14a0da63d@google.com
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20251218-inline-lock-unlock-v2-1-fbadac8bd61b@google.com
----
- rust/kernel/sync/lock.rs          | 7 +++++++
- rust/kernel/sync/lock/global.rs   | 2 ++
- rust/kernel/sync/lock/mutex.rs    | 5 +++++
- rust/kernel/sync/lock/spinlock.rs | 5 +++++
- 4 files changed, 19 insertions(+)
+I would greatly appreciate Tested-by's from people actively using
+pin-init weather in the kernel or outside.
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 46a57d1fc309..10b6b5e9b024 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -156,6 +156,7 @@ impl<B: Backend> Lock<(), B> {
-     /// the whole lifetime of `'a`.
-     ///
-     /// [`State`]: Backend::State
-+    #[inline]
-     pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a Self {
-         // SAFETY:
-         // - By the safety contract `ptr` must point to a valid initialised instance of `B::State`
-@@ -169,6 +170,7 @@ pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a Self {
- 
- impl<T: ?Sized, B: Backend> Lock<T, B> {
-     /// Acquires the lock and gives the caller access to the data protected by it.
-+    #[inline]
-     pub fn lock(&self) -> Guard<'_, T, B> {
-         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
-         // that `init` was called.
-@@ -182,6 +184,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
-     /// Returns a guard that can be used to access the data protected by the lock if successful.
-     // `Option<T>` is not `#[must_use]` even if `T` is, thus the attribute is needed here.
-     #[must_use = "if unused, the lock will be immediately unlocked"]
-+    #[inline]
-     pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
-         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
-         // that `init` was called.
-@@ -275,6 +278,7 @@ pub fn as_mut(&mut self) -> Pin<&mut T> {
- impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
-     type Target = T;
- 
-+    #[inline]
-     fn deref(&self) -> &Self::Target {
-         // SAFETY: The caller owns the lock, so it is safe to deref the protected data.
-         unsafe { &*self.lock.data.get() }
-@@ -285,6 +289,7 @@ impl<T: ?Sized, B: Backend> core::ops::DerefMut for Guard<'_, T, B>
- where
-     T: Unpin,
- {
-+    #[inline]
-     fn deref_mut(&mut self) -> &mut Self::Target {
-         // SAFETY: The caller owns the lock, so it is safe to deref the protected data.
-         unsafe { &mut *self.lock.data.get() }
-@@ -292,6 +297,7 @@ fn deref_mut(&mut self) -> &mut Self::Target {
- }
- 
- impl<T: ?Sized, B: Backend> Drop for Guard<'_, T, B> {
-+    #[inline]
-     fn drop(&mut self) {
-         // SAFETY: The caller owns the lock, so it is safe to unlock it.
-         unsafe { B::unlock(self.lock.state.get(), &self.state) };
-@@ -304,6 +310,7 @@ impl<'a, T: ?Sized, B: Backend> Guard<'a, T, B> {
-     /// # Safety
-     ///
-     /// The caller must ensure that it owns the lock.
-+    #[inline]
-     pub unsafe fn new(lock: &'a Lock<T, B>, state: B::GuardState) -> Self {
-         // SAFETY: The caller can only hold the lock if `Backend::init` has already been called.
-         unsafe { B::assert_is_held(lock.state.get()) };
-diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
-index eab48108a4ae..aecbdc34738f 100644
---- a/rust/kernel/sync/lock/global.rs
-+++ b/rust/kernel/sync/lock/global.rs
-@@ -77,6 +77,7 @@ pub unsafe fn init(&'static self) {
-     }
- 
-     /// Lock this global lock.
-+    #[inline]
-     pub fn lock(&'static self) -> GlobalGuard<B> {
-         GlobalGuard {
-             inner: self.inner.lock(),
-@@ -84,6 +85,7 @@ pub fn lock(&'static self) -> GlobalGuard<B> {
-     }
- 
-     /// Try to lock this global lock.
-+    #[inline]
-     pub fn try_lock(&'static self) -> Option<GlobalGuard<B>> {
-         Some(GlobalGuard {
-             inner: self.inner.try_lock()?,
-diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
-index 581cee7ab842..cda0203efefb 100644
---- a/rust/kernel/sync/lock/mutex.rs
-+++ b/rust/kernel/sync/lock/mutex.rs
-@@ -102,6 +102,7 @@ unsafe impl super::Backend for MutexBackend {
-     type State = bindings::mutex;
-     type GuardState = ();
- 
-+    #[inline]
-     unsafe fn init(
-         ptr: *mut Self::State,
-         name: *const crate::ffi::c_char,
-@@ -112,18 +113,21 @@ unsafe fn init(
-         unsafe { bindings::__mutex_init(ptr, name, key) }
-     }
- 
-+    #[inline]
-     unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
-         // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
-         // memory, and that it has been initialised before.
-         unsafe { bindings::mutex_lock(ptr) };
-     }
- 
-+    #[inline]
-     unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
-         // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
-         // caller is the owner of the mutex.
-         unsafe { bindings::mutex_unlock(ptr) };
-     }
- 
-+    #[inline]
-     unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
-         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
-         let result = unsafe { bindings::mutex_trylock(ptr) };
-@@ -135,6 +139,7 @@ unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
-         }
-     }
- 
-+    #[inline]
-     unsafe fn assert_is_held(ptr: *mut Self::State) {
-         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
-         unsafe { bindings::mutex_assert_is_held(ptr) }
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index d7be38ccbdc7..ef76fa07ca3a 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -101,6 +101,7 @@ unsafe impl super::Backend for SpinLockBackend {
-     type State = bindings::spinlock_t;
-     type GuardState = ();
- 
-+    #[inline]
-     unsafe fn init(
-         ptr: *mut Self::State,
-         name: *const crate::ffi::c_char,
-@@ -111,18 +112,21 @@ unsafe fn init(
-         unsafe { bindings::__spin_lock_init(ptr, name, key) }
-     }
- 
-+    #[inline]
-     unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
-         // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
-         // memory, and that it has been initialised before.
-         unsafe { bindings::spin_lock(ptr) }
-     }
- 
-+    #[inline]
-     unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
-         // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
-         // caller is the owner of the spinlock.
-         unsafe { bindings::spin_unlock(ptr) }
-     }
- 
-+    #[inline]
-     unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
-         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
-         let result = unsafe { bindings::spin_trylock(ptr) };
-@@ -134,6 +138,7 @@ unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
-         }
-     }
- 
-+    #[inline]
-     unsafe fn assert_is_held(ptr: *mut Self::State) {
-         // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
-         unsafe { bindings::spin_assert_is_held(ptr) }
+One thing I forgot to mention last time: the commit adding syn support
+to pin-init is also used by Gary's series to rewrite the `macros` crate
+using `syn`:
+
+    https://lore.kernel.org/all/20260107161729.3855851-1-gary@kernel.org
+
+My series can be found at:
+
+    https://github.com/BennoLossin/linux/commits/pin-init/sync
+
+The rust-dev branch in the RfL repository will be updated to contain
+both patch series for ease of use & testing.
+
+Link to v1:
+
+    https://lore.kernel.org/all/20260108135127.3153925-1-lossin@kernel.org
+
+Cheers,
+Benno
+
+
+
+Benno Lossin (15):
+  rust: pin-init: remove `try_` versions of the initializer macros
+  rust: pin-init: allow the crate to refer to itself as `pin-init` in
+    doc tests
+  rust: pin-init: add `syn` dependency and remove `proc-macro[2]` and
+    `quote` workarounds
+  rust: pin-init: internal: add utility API for syn error handling
+  rust: pin-init: rewrite `derive(Zeroable)` and `derive(MaybeZeroable)`
+    using `syn`
+  rust: pin-init: rewrite the `#[pinned_drop]` attribute macro using
+    `syn`
+  rust: pin-init: rewrite `#[pin_data]` using `syn`
+  rust: pin-init: add `?Sized` bounds to traits in `#[pin_data]` macro
+  rust: pin-init: rewrite the initializer macros using `syn`
+  rust: pin-init: add `#[default_error(<type>)]` attribute to
+    initializer macros
+  rust: init: use `#[default_error(err)]` for the initializer macros
+  rust: pin-init: internal: init: add support for attributes on
+    initializer fields
+  rust: pin-init: internal: init: add escape hatch for referencing
+    initialized fields
+  rust: pin-init: internal: init: simplify Zeroable safety check
+  MAINTAINERS: add Gary Guo to pin-init
+
+ MAINTAINERS                               |    1 +
+ rust/Makefile                             |   16 +-
+ rust/kernel/init.rs                       |   40 +-
+ rust/pin-init/README.md                   |    2 +-
+ rust/pin-init/examples/linked_list.rs     |   19 +-
+ rust/pin-init/examples/pthread_mutex.rs   |   10 +-
+ rust/pin-init/internal/src/helpers.rs     |  152 --
+ rust/pin-init/internal/src/init.rs        |  549 +++++++
+ rust/pin-init/internal/src/lib.rs         |   93 +-
+ rust/pin-init/internal/src/pin_data.rs    |  634 ++++++--
+ rust/pin-init/internal/src/pinned_drop.rs |   93 +-
+ rust/pin-init/internal/src/zeroable.rs    |  157 +-
+ rust/pin-init/src/lib.rs                  |  173 +--
+ rust/pin-init/src/macros.rs               | 1677 ---------------------
+ scripts/generate_rust_analyzer.py         |    2 +-
+ 15 files changed, 1314 insertions(+), 2304 deletions(-)
+ delete mode 100644 rust/pin-init/internal/src/helpers.rs
+ create mode 100644 rust/pin-init/internal/src/init.rs
+ delete mode 100644 rust/pin-init/src/macros.rs
+
+
+base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
 -- 
-2.51.0
+2.52.0
 
