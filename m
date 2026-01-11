@@ -1,100 +1,99 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D12F33F363
-	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 12:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C0A33F8C3
+	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 12:03:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768132988; cv=none; b=RMAO8I/ho6RFUMm5Nau+y3Jbay8h7Q5O//uNoU1cKDVthHeiKXwbVhA59IwRjBBap44kx8BhIb4bVgEOWAXOWrd6p3edsHa4MFC4GWcDbECdSHfmWEX9xE/At81TIuqa7+6ieu+OaxaDe8ypPjVEcLdX1cqcu9Jc25VcdzaEuGM=
+	t=1768132991; cv=none; b=FV/25DJLVxhY7EZ61xtiDZ47nKnF2bAUm8BbtCRjwgLZqauiBfOSE9IwImJKwIgnFxQZvKoGOKKCyghCBiFiEvmnhSoI4NhsS8Bgtj76L5s/tU9ClYA7mtVatPQyrHUjPnthN9pmq9y26WZUHv4ETzAln11jZYO7BG9T9oz7Kh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768132988; c=relaxed/simple;
-	bh=0EiOCad/0iahZFXGit6viqNibJ8cZwA7aNvJK+JqCvQ=;
+	s=arc-20240116; t=1768132991; c=relaxed/simple;
+	bh=BDC8AOdWqqcuLIOelJrHtOQe577vQAXyf5d5PzPD2zM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mngv2YKydcc90NTPa6Y1a+iq3SBlQqRQloc1En0eQqLA8z7E5uQ0dtmK6Ws/Ei5JmHsHRb0dSk0cPJfd6Hp9lFDkiW0GH651+LLlfpjGGyRji1JMkvxspqRwMhWgCmEs39C8iTP4p6T0lc3ekuR/eHzefFQSjPu1ehtpW5GnACQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mV+QNWC6; arc=none smtp.client-ip=209.85.222.179
+	 MIME-Version; b=eEh4AZrtPDs2lIgrS/mhRJeXkTat8d4cdHSAhKlZ0ZCE7DCBB0PQzje2h/oOhirx9DtAxydJ+6nJMd8Ug0g3kLxFHcU70Je4qC0qR4072NUa2ABQrEfjAZTO5TvxSarVfAoY5mdw6ULuSVz1YJY67iGNXSmzmcrlswNNGAVooa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M65nQE4w; arc=none smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mV+QNWC6"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8ba0d6c68a8so653048785a.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 04:03:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M65nQE4w"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ed9c19248bso53229031cf.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 04:03:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768132986; x=1768737786; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768132989; x=1768737789; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=9SQRus9N1l0oW/BlsGyuY8NlkMtk38CZlHP1cvkuZa4=;
-        b=mV+QNWC6NF210P///h9YoX86o1haIfaxjW3s+PD8wgKNoAkcKZZ7FORcwNbNuX+eNy
-         KU3mRKcT5sAn0IrRIDrxxnEbfnfnbADZeIB/t6U/n47+HrK9OB77h0Q0B7i8+F2ksKKK
-         5WfEzJAHnBzMC3uOGVlZJOT8PaR8gqaqO8EfMEDAmu3/ws25BvtzIfCFhBVfGtx59eWD
-         Z3EXso6Z1PzktMIHedXZpewHqEQzvfzZEIHikhoX3iwkK5xMnbq437/cSUL5FLsLH+wC
-         0sbiBSPf3bEYUKgat0ffn0CHCqjpvdqmfTuPkHot4NUP20mypa+B/S4BJLcxnUqIctM9
-         1NGA==
+        bh=i+6hhz/HFKCcnTJguFfRSwBZSluDpxz5F1nf4LEn25A=;
+        b=M65nQE4wgtaj0moaIV1kcmtFXTvPKuVKxqrqwK5MhLm5sAbpxd/bs6XnuUkrJMzffK
+         oDGUuTIkJSPzFN6a43a1lhWdne/y+y/jRU0Y+FytiWmiNIlqvw44imn4ndDdr/yacWVa
+         wZSXIntXxXkiOEm5nk14bHRCMwntvPEzP5DRWC6H6oPP83R0VZBl8N4nMiZjIkpyrPxz
+         TeFlrp4HsCBmtVQ1jqSibTIHGEXMAc3ALfGVfVOfQu2XIgJVDLpPqcDBB6h5iwvmD9xQ
+         K+gPijcQ3jieQpRj47wbJUo11ggdXOuov7MOQ4i7V6iIjkAUxNpzliExvVBjLpIBLzWC
+         0SUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768132986; x=1768737786;
+        d=1e100.net; s=20230601; t=1768132989; x=1768737789;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9SQRus9N1l0oW/BlsGyuY8NlkMtk38CZlHP1cvkuZa4=;
-        b=vo3z+IItaYGIyJiWpIhza80KEwHuf4mdrC+R85kGUZ2s2qUmBNu8qs81DkMDN5LCPl
-         eVubQnp+Ovhfuycf9axiLC3zGaLnHFBd3cc1jeOazKB2weGHO6HTaQx3Vfjpc/GipIWT
-         bcRRBqdARrVup3BDYpIYMA5FUeUMvdPjX3vyn6/lSTl3rnSl1Nry5sezCO/EcI7iSkMd
-         fg8ZYICD4fuh6HL8KZd+6utdGvOW+ZkwrOfbMZb+jq1lrT7JVkGbIUyDCVYFB2yQDFv4
-         p9boVs/H+1nrDhMqHWsqsZKoUh7gX0VUpA5X26VMeu/ZUOBWqK6hlS6DrtrNaADD8nkV
-         Pk5Q==
-X-Gm-Message-State: AOJu0YzkFW9N/b7cnryymI8TVVyLDMSre4brE49jHTobO/RqC5yg5QdP
-	kMdC1+RV0quSswolSfwsK4sywseorkOGfSGaon8LKXasV1dMWf1zb00K
-X-Gm-Gg: AY/fxX5eERvHuurbF7nAQDuMEx597+cpZukhUEaD0e2TEjJJOtxTJ8l3wprHFI+AAnI
-	flZJJYOyxy2B9UmCV4umiF1/tTD9ATv0Kx1+JgGBaKI5S12Erbcpi5jQYELDeXY02JP9lMQFBCD
-	8uPUs80bhw0mguGM2VtVE8sECKEKJlJ8ComBmF5IdVoMhocj/7SpuUUPRNnaW9K6Nx8VA6gGmhy
-	bhox8sujNBJfFakWa7a3a+/gGzEePyYeoOIXqdAIVq4QkcVtCzcaNIxMszPUdnlym40tL0k5CEa
-	9txakswvndeLlAAqCi+SElJlW8qdwKJnZLtc3MLO9Ceqccj1HbYB6/vumDlRK6V1aPJtmrQIQom
-	cXETG613XN0GqoYC7UASe7MixTsQ64xsKNf6Qao+Xuij49Szc+BatmXeqXguq/Sh6tz6olMVrIn
-	5wY9PleEE3nUNOnRrBuppKWVr2mCJrprgeWO7YymcBeg64rj50NPZwmJhIUD0PZljGheeXLwvGY
-	vSg0y7QjRrhTKg=
-X-Google-Smtp-Source: AGHT+IHYjlfZKHNU/myT685ElnK3JaqQ/8BKEX6HmUbVaxkdS9niIT1tXnyhq8UzFKoHNHOrrVWgeA==
-X-Received: by 2002:a05:622a:2c3:b0:4ec:f56c:afa5 with SMTP id d75a77b69052e-4ffb4825cbbmr224410431cf.22.1768132986188;
-        Sun, 11 Jan 2026 04:03:06 -0800 (PST)
+        bh=i+6hhz/HFKCcnTJguFfRSwBZSluDpxz5F1nf4LEn25A=;
+        b=Bwms2Sfk8j7VdSocqhDA7zb31HZqsixvZbY6ph3RHmBu9VDn//zcfoRrXFpx3SHb4w
+         9o1VT5rTMgAbeF0a6Qb6ptmMMaJtA2HlJN2lDn5s4m4jBxZ7QNMzdipCIHDSMI1usa7X
+         eqUi0cFFCGE7Z5kS58+WXMdvSLmbmU4DFHJap6XOwrRVZ5sw4F32FeiyO0Hv9jBITb2x
+         I8kLoxbzbANH5KcX22oI9MQ5xsrWp5FAo8sVwPaGiGfI2z/Y29LY9N73HAXgGjuJU6ic
+         CHlqUHE4l8cAFspc7cVFRnQyIa7FwNKhQ9QFEB8wSi8IznM+rPw/beuDtT/5I6izDneI
+         CsDg==
+X-Gm-Message-State: AOJu0Yx3tIv0KoVPAXoMpN8j/8q6wRqBlfNyE3debImOP0X6J9qAbs0k
+	4IDoZMtB8pQrTiOfzf/h2kqEh/shmvqjQ+AzzSrQXzpBFvutVoB7nzZU
+X-Gm-Gg: AY/fxX6J0vHxlaiQEkx98MGY69l6MxHHIaPCa2Ul9zI66dh33D3HfD5Ijwt+N2Trjf/
+	zlzWZ5eeDyCv+L/xOQIO+/eXlgcI6KkSs4H7GRVBae7+UEBjaNTxDoQ9mVkWzwIB6etKvK/94jd
+	v1CO38TnxkdXhctbz6RT+JzdxKMbJd8MhCLABh709/scfn+S9I3TpXlic62Z22hudcxws6IwKCR
+	anMsXy2wtfDZJHEyMaNhEHRQ+x1f4vTpf5MP+qkWR2fUuCinawxIhzqWW+fW+vtz+O2RderLCsZ
+	/kRH9iSY+aYjIsSeiCIwTB3LxrM1v6cfgX9UybTPgT1dJNRRCvVhI3nqP2kQH+Hz9KfmoWOwcWn
+	mjpck85k+rgWZwr24GQ3Wq+eGXyxnzAQ4QxspFMELcZCG953CmXNd3jUPcJxCSZVnROiQKpCcYI
+	0MKHvoS31LhL+mY7vz+Z8qcA+lCXQGMXP+zMxibp56/nVXBXdnkZa0UrHD6xK0VCf80HwfGQSex
+	an1W2KCaG4ehOo=
+X-Google-Smtp-Source: AGHT+IEtTXZP7wkof0OE1OSUQv8de7u/By0ZJvvROTOjgFc7QkpQEP2vTxsSM9IvYsS2Xa75tyN0dw==
+X-Received: by 2002:ac8:59d6:0:b0:500:f02d:1c55 with SMTP id d75a77b69052e-500f02d1d60mr87784751cf.57.1768132988994;
+        Sun, 11 Jan 2026 04:03:08 -0800 (PST)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8907710632asm115216876d6.24.2026.01.11.04.03.05
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89077267b9esm123826336d6.48.2026.01.11.04.03.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jan 2026 04:03:05 -0800 (PST)
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 591BDF40068;
-	Sun, 11 Jan 2026 07:03:05 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Sun, 11 Jan 2026 07:03:05 -0500
-X-ME-Sender: <xms:eZFjaZh38q_N-WJss10OoSwfOPIZd5IO1UCtEwOnrTJbsWS6Dh61dw>
-    <xme:eZFjaYaQBFkrvpk7Spv5xfyAf5mvq45lVG9DK5dwakiaOdPrpkYa2YdowMq06YhnR
-    guBEWzet8oTGUZ6qBdlkMOQJ3HpyqxvtFo8-PNEhlPoOlmzh3Ue>
-X-ME-Received: <xmr:eZFjafOMGB10oZulKDsPeJYXSZ1UNhEyCtlGqIA7KEFGN79RkGUdur4I>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudegheduucetufdoteggodetrf
+        Sun, 11 Jan 2026 04:03:08 -0800 (PST)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 1C692F40068;
+	Sun, 11 Jan 2026 07:03:08 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Sun, 11 Jan 2026 07:03:08 -0500
+X-ME-Sender: <xms:fJFjafzD1omhOxQ2LLEVWov6nNoZ3pmQTkqiWNnLpFuUyldT4BLfNA>
+    <xme:fJFjaRrvCmBwpfSQ-_MBzF8XgQOv9xGzFCE4Gtk4sTa98PksmtlMk4dF-UGVV4JU7
+    Zivj_3zZr5ImRpooIPF57Rqxgp-O2uBYBTGMbbadM2v1zbnzLignA>
+X-ME-Received: <xmr:fJFjaffJN1zlDP9EDDW3HldWXGlXdbPwA3d4f5XCr42wd61xg1jDqDnT>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudeghedvucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
     hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeejgeeitefgtdeuieefudefhefhhfdtvdejhedvveduvdehgeehuefhgfeiteff
-    vdenucffohhmrghinheprhhushhtqdhlrghnghdrohhrghdpmhhsghhiugdrlhhinhhkne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmhhinhhg
-    oheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghl
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehmrghrkhdrrhhuthhlrghnugesrghrmhdrtghomhdprhgt
-    phhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehojhgvug
-    grsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgv
-    th
-X-ME-Proxy: <xmx:eZFjaZZ5gTfpF6BYZ3bY1DKkxnot6vOIYp38gynskeDzGGNWgbfjrw>
-    <xmx:eZFjafWN0LPNP9Lm8DZCe1UImVQ9obvBVrs1DKXTkP2xaCAUFckHBQ>
-    <xmx:eZFjaYAC3XbqrWabeU5IWsrp8SclJnEHO7yhApp9M-Jbo5vc-eF2Xw>
-    <xmx:eZFjabKAPNtXsuUhcmBpeuGpfDXWg-4zvQaAMdwWn9hMIVncwNl32w>
-    <xmx:eZFjaWuHDAuyPjUDisBmwtlRkIKAgTn2fAN9CBpAulDiQq2Ui3_qq5eV>
+    gvrhhnpedvveekvddtffelffelfedvudefffeuheejgeeivedufffgledvgeduveffueeh
+    leenucffohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgepvd
+    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
+    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
+    peduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgvthgvrhiisehinhhfrh
+    gruggvrggurdhorhhgpdhrtghpthhtohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrg
+    hrkhdrrhhuthhlrghnugesrghrmhdrtghomhdprhgtphhtthhopehtghhlgieslhhinhhu
+    thhrohhnihigrdguvgdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:fJFjaUoMUOAzxTEO3agqXGHXcEKAUiiiVAJFPfvrYOWkX3kBFyzeSQ>
+    <xmx:fJFjaZm8goHEbhPXBGGDeQM8YwmAKai7-MvJH39lQBO_C8slj9bCiA>
+    <xmx:fJFjaVQ20lg1VP1dMq5XsNTMdc8TTv2QDvvWLOqQQTmYmc1GU50R6A>
+    <xmx:fJFjafYJpPwRR3i3uOfZB5xQTP8pQC4yTOrUUo5ZatN4n_jSK_LiCw>
+    <xmx:fJFjaV8RJcxF366xq7MtFTlmECsUuYnrhs-ulNP3UEDOhqmM8AUNsYK_>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 11 Jan 2026 07:03:04 -0500 (EST)
+ 11 Jan 2026 07:03:07 -0500 (EST)
 From: Boqun Feng <boqun.feng@gmail.com>
 To: "Peter Zijlstra" <peterz@infradead.org>,
 	"Ingo Molnar" <mingo@kernel.org>
@@ -111,9 +110,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	"Danilo Krummrich" <dakr@kernel.org>,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 20/36] rust: sync: atomic: Add atomic bool support via i8 representation
-Date: Sun, 11 Jan 2026 20:01:53 +0800
-Message-ID: <20260111120209.6133-18-boqun.feng@gmail.com>
+Subject: [PATCH 21/36] rust: sync: atomic: Add atomic bool tests
+Date: Sun, 11 Jan 2026 20:01:54 +0800
+Message-ID: <20260111120209.6133-19-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260111120209.6133-1-boqun.feng@gmail.com>
 References: <20260111115808.5702-1-boqun.feng@gmail.com>
@@ -128,46 +127,44 @@ Content-Transfer-Encoding: 8bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Add `bool` support, `Atomic<bool>` by using `i8` as its underlying
-representation.
+Add tests for Atomic<bool> operations.
 
-Rust specifies that `bool` has size 1 and alignment 1 [1], so it
-matches `i8` on layout; keep `static_assert!()` checks to enforce this
-assumption at build time.
+Atomic<bool> does not fit into the existing u8/16/32/64 tests so
+introduce a dedicated test for it.
 
-[boqun: Remove the unnecessary impl AtomicImpl for bool]
-
-Link: https://doc.rust-lang.org/reference/types/boolean.html [1]
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20260101034922.2020334-2-fujita.tomonori@gmail.com
+Link: https://patch.msgid.link/20260101034922.2020334-3-fujita.tomonori@gmail.com
 ---
- rust/kernel/sync/atomic/predefine.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ rust/kernel/sync/atomic/predefine.rs | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/predefine.rs
-index 248d26555ccf..3fc99174b086 100644
+index 3fc99174b086..42067c6a266c 100644
 --- a/rust/kernel/sync/atomic/predefine.rs
 +++ b/rust/kernel/sync/atomic/predefine.rs
-@@ -5,6 +5,17 @@
- use crate::static_assert;
- use core::mem::{align_of, size_of};
- 
-+// Ensure size and alignment requirements are checked.
-+static_assert!(size_of::<bool>() == size_of::<i8>());
-+static_assert!(align_of::<bool>() == align_of::<i8>());
+@@ -199,4 +199,20 @@ fn atomic_arithmetic_tests() {
+             assert_eq!(v + 25, x.load(Relaxed));
+         });
+     }
 +
-+// SAFETY: `bool` has the same size and alignment as `i8`, and Rust guarantees that `bool` has
-+// only two valid bit patterns: 0 (false) and 1 (true). Those are valid `i8` values, so `bool` is
-+// round-trip transmutable to `i8`.
-+unsafe impl super::AtomicType for bool {
-+    type Repr = i8;
-+}
++    #[test]
++    fn atomic_bool_tests() {
++        let x = Atomic::new(false);
 +
- // SAFETY: `i8` has the same size and alignment with itself, and is round-trip transmutable to
- // itself.
- unsafe impl super::AtomicType for i8 {
++        assert_eq!(false, x.load(Relaxed));
++        x.store(true, Relaxed);
++        assert_eq!(true, x.load(Relaxed));
++
++        assert_eq!(true, x.xchg(false, Relaxed));
++        assert_eq!(false, x.load(Relaxed));
++
++        assert_eq!(Err(false), x.cmpxchg(true, true, Relaxed));
++        assert_eq!(false, x.load(Relaxed));
++        assert_eq!(Ok(false), x.cmpxchg(false, true, Full));
++    }
+ }
 -- 
 2.51.0
 
