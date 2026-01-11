@@ -1,80 +1,80 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B783382D8
-	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 12:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E268D33ADBA
+	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 12:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768132950; cv=none; b=Vv0v4VKee8CnH44q9VvQJ1Nlzbc1z9iTerTjEYUx632L6cmbgfBvPwUeerBPvxs8goHcHlAJX+PVjtRNIBDo26A9UpN26bUL4qGAzg4/w7AIiq5RAy+Z/qx1zVBS3ZPQJ+NOhVfUnBCuPM2upjdA3ZiFcf9qwXhqM7MzehYYUyc=
+	t=1768132950; cv=none; b=OsNEzit5JMA1mMghoQ2gSyYpQ3qr2IZ9Mve7sxpEAiR5HZUaT8SmdJaqxZm5BMLhILqVb16jz9bovuftJj82805RrluvpWMwVABWswb6TDulDSaKnYvXt1y+KeV1PcsGb0XLZqzv9T5PyxUhNZX7T1FQuXMdb904Ap0VzSiB1ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768132950; c=relaxed/simple;
-	bh=gX7Iy759WYxoMCv7ndNoCCuupIybm1v0rA7xgwJ/b9g=;
+	bh=tA8WSnFev3PqsJMCN28WcDg8n5GCieuM0ZLEg+l/zQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyLxcDkhprMjg3AEQsUSv1mvvWxhOZXebedLHyfE7ylG8dwjuPgfgbkSvwj4VO/dm2RNMj4b+tLYsuF1E8rWAh4YPUeIMVPfXSRqZ0nzOKPHdevNOQBMoMOezzdMSY5P/Kc2Y+D4iAHT9TqzfyqcrwsM6CB8Eo5RdVkF/KZX11k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NBugysQl; arc=none smtp.client-ip=209.85.222.176
+	 MIME-Version; b=FFIbpyT/IU8o3g6KnfS7zFh4uCSMl/mGpu68nr7NSbBlUDJyuyPMEiBTxEo+mUXMocMZosMxYL7CNoIvqBExSNVFJEuzeamAygPHXO+7DHBEdtTgOs5J0yqjFO8XyICP6zNOyjsdofmEEOCbfMu8kxv+3RspXO8OqbB4/8dUNuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=krrqhczq; arc=none smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NBugysQl"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8b25dd7ab33so420695285a.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 04:02:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="krrqhczq"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-88a2d21427dso57568286d6.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 04:02:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768132942; x=1768737742; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768132948; x=1768737748; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=BMIKXAXniZuvKRl633D19ynJhJpEhy1emvggU7dsEJs=;
-        b=NBugysQlTklEOPlIsaBrcYysyfdVeEEMqPwbDPRmfvFO08+LZwzBNrER5PLxfwDKrk
-         tkuDbT4fZw8i35mg2/tIfjlSJKwwDj7SvvkLpTmd06eR4XgWsqs+4DtOgSt7OCZJFEA8
-         426LR5V1k5MEfQMMJO7a5XDjZKSIralRAU6+iHLnUSLmzu8/VjAaZoaZF7VrtOAleDOa
-         oHimFyFhxL3FL9I6I+JCJhYQlpZo19Hcs75+oh5CDEqJxVY/1gQ65yF8a+Vc/IeOPiaa
-         OED8UpsJrTduemjp4TChsBsWCz2JXARlmuuEvY0xx9rsIJrVVcusfbrJYZ4d42H23LeK
-         C66g==
+        bh=Fbl+ZOYOSkLBAoxkQYcc6P4fQm3wpIW6+HUNF874534=;
+        b=krrqhczqRrFr5J3aXn7oSRIUFO6QFWDYhvW8j92klE++O8FXu6LSKq6hMagBav24tD
+         L9Ii4/OKGRkIDCKgRufJaMNqz6oZpP0pAJu5GWeb37ZOLpqg9r5/YG+4fYLDA0AszlkC
+         5kIQMyEjUcTZq7Ly5KMeDsjxVz7B9Z19EZdDNvRM091bHvPvVT8x/l5Y1e5MxzkCbHwk
+         JkxxE+EJb2erGP/wvQ0N75dPoW1Vrg2XmIl68hSqMNr8okcBga0JpJ/UblLICTFHfde4
+         J8fHHmydVuXbhGsDQTje81khh16sajyVr2vF2uSl+QTEQppXN98nRbkNMDQbarM4kKhf
+         bP0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768132942; x=1768737742;
+        d=1e100.net; s=20230601; t=1768132948; x=1768737748;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BMIKXAXniZuvKRl633D19ynJhJpEhy1emvggU7dsEJs=;
-        b=onzR4R9HtRFQwFklM0R2Q4BmkDWsgH2EKW9BG5s6cWIsl6q44TPB1h+U2q/0QShxyM
-         iw8eiNDJlMqAqr9AHzhKUC/mvmTLxIPREw00xN+oZFrlkBulTDAhbDTgnQdw2SVtI12U
-         GEOeLnweXZ4anotDwLqvaTmHNksg9wYkxRewdRRB9T9lZ54UBpG76fRIEq0T6O5PXmSO
-         IJEkJAFwbEtrM/VGGT7h6GYDVmLdJXbOKx1M/2HEP3wTSqPmuo6ykow6zJ89K273b9az
-         POpBcDgifsmrXnxRQ2DxiIDaoONeYMxxVcdpONJX3+XM8llb9p4bjAam4tHjsFcE/ytX
-         YbNg==
-X-Gm-Message-State: AOJu0YzRwloDGqo+EzNA1MbdWMAjv7Zb01lBMQA80Jl83YK+6wESztBh
-	lMcM203RKYAZJ7Q7jM4kgxPxj8tNjEhcfp1pCw5/d9Rdw9nVD+9JwpfV
-X-Gm-Gg: AY/fxX7by6dOHOcX7flNoszS/Qaov/KhOLNb2GVcyNZBe4cE6BYzOWKAuuXAP5TZ+hP
-	gkvnmRKmKipLe4E0350mXu3FfJPvLCo5MagJNbev96kYJVganQkjUackJgOch6PH73lg838vzrW
-	Q+v19VHUHYnLoMWt9pd/3Zo8QilJCzf6H+X0wZcw+5Cy2xyzxZfCdciqqK46FTYlP+CVGFdBai2
-	jZRU98L+WgkuUZNxezISCPvfz4RsV/Mbn4t/7iPTzpBTqekTznt/3mgx/6fHbfPzztMToCJisjG
-	qOm/zd4SNIrfE4TxmiP9gNzaQxgRW8So+e3zdBrioqalhsuQDXjt0GLr8BzAdAgbYi4guftAtxH
-	QUIaWHwdibvma98EUknXrBN3Rkmp3zbV990whonU6IYVPaZ7xlEP658OVl3AEJM4wiqfeCQX1wd
-	t6cDIhXNIYC9+MF20twnr0VThpLjce4KTXuelaVz9dUMhceGkkLtfletVs3Z9d9FSXMCVaGDdEZ
-	vT/KAGKRizfq54=
-X-Google-Smtp-Source: AGHT+IHBMClMCNeu/ARCCCNlUxAJJXoFR6QM6EukP5+kwlGhsB9OzLFpbW9xsW6hrd6erv8mPvUUXg==
-X-Received: by 2002:a05:620a:191d:b0:8b2:1568:82e8 with SMTP id af79cd13be357-8c38936f0a2mr2164480885a.35.1768132941885;
-        Sun, 11 Jan 2026 04:02:21 -0800 (PST)
+        bh=Fbl+ZOYOSkLBAoxkQYcc6P4fQm3wpIW6+HUNF874534=;
+        b=AdPog7EdoTzKAvt0N4idTw163KOnEcvb6xwPijpDW2t5bbRNB3ZnnLhtT6knsFPbIY
+         v4psjNvbwQBvXMeV1f1U1ycIRxpVqUyxjKQXsCZztbVz60ehM0epic3HbODLNr+JkXNX
+         U+3nYO0hKhUcwgKD3taXvMdEYeQhvMmAlxRBNZj2FUXT5BpkBvXQcWXymKYwQaGvv7f6
+         UcL+izSsjGY/+SqYupdKBhBXsMtaqotFDafhex/JkKzBRHFwNVdueGcI/mnzEhSXI6jL
+         GE+DeH6Apfz1WXrySwW0OEGMmHg0aY/WapjnVSmLtEN4xdV0df685v8md66rSEHFUSye
+         x9Jw==
+X-Gm-Message-State: AOJu0YzCcygFNlioTI32PKcDAn2KFDCzCOff6n2xJ5TV70jTU2cri/LJ
+	UW8+tKD8MiQMcsX5LERQ3NQ7KvSZIqyi41s0DEfDmdf5X9nozUUWeIFt
+X-Gm-Gg: AY/fxX52XnRyvPhOmlMfE4axouH7B7CKDDH6Xxcat1Oipsllgm5JQ7UX2zAHVYH7k7A
+	xi0Xp5ZL/2syRbYwCdKI5M8PDreMSisqzCA9TVRc3peUXJwsvukqyq1LHh3YoNA/QNl9u+HI6Mz
+	HNOHuwD1WhwEmJ/UDaqN5+qRkSuRZS/xvX3lFNyFz+T8CQCq15TBumUKSPXyXF/Us1E6yrEbzgr
+	4NhoxUffI7++qNuCbtnQ1wlhWpcq+hgQ7YWqZFhEPjUB3cBE39caqevNbKG8z8C8DxpSqmvQUmZ
+	XibnAAncnzKMgKQyFD+TPAMWIHRN2OPkgoqLPukzY+jxfzwcEs19UFij2TUBr0TW7pCGfItpgR8
+	GRsyC+hvCD43SWUF80H6PGVFKqDxZ8ltQ+h12+uzJDFg4y9oqnJIoL+3xAZ3OCqf5A/nw2/eqgJ
+	aWpbYpxQGvgPg0GXEZRRE8vG+5gwQbwnt9IoMh4RCMK0dc6lBpVnBZVoB0LBbhmDJhEkJ4yDDEH
+	bTfyouIrYzhnu8=
+X-Google-Smtp-Source: AGHT+IHkzElXUUJuscQ/wDDpK92Hh4txXMepRXC/UngYSNhWXXGPfBZwtZ5jPxjFCa5XmtTe+6dw+g==
+X-Received: by 2002:a05:6214:492:b0:890:60f:f8ed with SMTP id 6a1803df08f44-8908418eefemr221418256d6.19.1768132947658;
+        Sun, 11 Jan 2026 04:02:27 -0800 (PST)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f530a1asm1234173085a.38.2026.01.11.04.02.21
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8907724ef14sm116797236d6.38.2026.01.11.04.02.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jan 2026 04:02:21 -0800 (PST)
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E344AF40068;
-	Sun, 11 Jan 2026 07:02:20 -0500 (EST)
+        Sun, 11 Jan 2026 04:02:27 -0800 (PST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B1D3AF40068;
+	Sun, 11 Jan 2026 07:02:26 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Sun, 11 Jan 2026 07:02:20 -0500
-X-ME-Sender: <xms:TJFjaaszubS_TV3yy0Fccl1SIjt3XsaujGiTlQwsgXqy3OhM1JfaAg>
-    <xme:TJFjaXBxfJlNFxQhUq15qHLrwJLyz_LUdvGJvbDE7TFN5MkecaTBs0OeQjcMgsZ6k
-    RB5amQzVdqMZROthFqGNVXRffqQp2Cqsa1njZFRXnuzYfjh_mDaFGE>
-X-ME-Received: <xmr:TJFjaVb30fWeO5qVmRGnjF1i7xTaedXtMPHIg-zhU1SWKPNAMhK_sH3C>
+  by phl-compute-05.internal (MEProxy); Sun, 11 Jan 2026 07:02:26 -0500
+X-ME-Sender: <xms:UpFjaRm6YFmfDK0UFedM-7wBGgtWqsV2rz-RtGCtGfOqrS94y5FdFQ>
+    <xme:UpFjaUu9GE0OnNxEqDnrGy0GVArC5DqCZYMqBTsye7FWCXOEvay4A0GNaW603owtB
+    TGvWHYUHGqzhu8_1WrqkQFLBwKxWHwIFXtxtaLLHliL8K-Mwnao>
+X-ME-Received: <xmr:UpFjaXBacUwYDHaAds4cy65qg-SCIAcLjh8Oj7hIAZc0rftJT6gN57F8>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudeghedvucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
     hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
     gvrhhnpedvveekvddtffelffelfedvudefffeuheejgeeivedufffgledvgeduveffueeh
-    leenucffohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgeptd
+    leenucffohhmrghinhepmhhsghhiugdrlhhinhhknecuvehluhhsthgvrhfuihiivgepud
     enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
     rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
     gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
@@ -86,14 +86,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudeghedvucetufdote
     hrkhdrrhhuthhlrghnugesrghrmhdrtghomhdprhgtphhtthhopehtghhlgieslhhinhhu
     thhrohhnihigrdguvgdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprh
     gtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:TJFjaR_zmJk70yegpOeu_O2BfS7NV8nSFNdOhyJyYnOlvdCIqNhTIQ>
-    <xmx:TJFjaRjmcuddYQHa76ou6DK5XkC6zTrKqKRKhfoFrIh0Lhs15kkfNw>
-    <xmx:TJFjaUjGS5Qy1GJyfknmaRDH6CjMATMavwsdZyp3s034-BzggD16fg>
-    <xmx:TJFjaX44xOh3VVGgYmmAop_45a3bGWfmi5rfg1ERTOlP6bz1_t1GWg>
-    <xmx:TJFjaWSN248zGrb1VrJhmJDo5EnehITJaFqYYK-7lOHyC8823TerKBo6>
+X-ME-Proxy: <xmx:UpFjaZWpFfdb3r2gZ0ybVOqKRZI2tC6PCha8SkeE1YJT3rw877Itbw>
+    <xmx:UpFjaYFQdxVplOz8gFXixRHm8kCqUGdzEeo8FKDv1FH1aoPdGRLhEA>
+    <xmx:UpFjacNICeEswx6n7IQGdoROEHJYotIoBmlhWWO8CjhnL8kfqR5GnQ>
+    <xmx:UpFjacV4fSeO6NZK9ZSdfgu4ISz2sufcH_Xx1yJoWGoanp3WCuOi2Q>
+    <xmx:UpFjabyniIaj8B9oXpqN7IoQ-e6B7ysEoiDYecUAcI-3KCGgUOpm1bPI>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 11 Jan 2026 07:02:20 -0500 (EST)
+ 11 Jan 2026 07:02:26 -0500 (EST)
 From: Boqun Feng <boqun.feng@gmail.com>
 To: "Peter Zijlstra" <peterz@infradead.org>,
 	"Ingo Molnar" <mingo@kernel.org>
@@ -108,12 +108,12 @@ Cc: rust-for-linux@vger.kernel.org,
 	"Andreas Hindborg" <a.hindborg@kernel.org>,
 	"Benno Lossin" <lossin@kernel.org>,
 	"Danilo Krummrich" <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
 	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 04/36] rust: sync: Implement Unpin for ARef
-Date: Sun, 11 Jan 2026 20:01:37 +0800
-Message-ID: <20260111120209.6133-2-boqun.feng@gmail.com>
+Subject: [PATCH 06/36] rust: helpers: Add i8/i16 relaxed atomic helpers
+Date: Sun, 11 Jan 2026 20:01:39 +0800
+Message-ID: <20260111120209.6133-4-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260111120209.6133-1-boqun.feng@gmail.com>
 References: <20260111115808.5702-1-boqun.feng@gmail.com>
@@ -126,40 +126,81 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-The default implementation of Unpin for ARef<T> is conditional on T
-being Unpin due to its PhantomData<T> field. However, this is overly
-strict as pointers to T are legal to move even if T itself cannot move.
+Add READ_ONCE/WRITE_ONCE based helpers for i8 and i16 types to support
+relaxed atomic operations in Rust.
 
-Since commit 66f1ea83d9f8 ("rust: lock: Add a Pin<&mut T> accessor")
-this causes build failures when combined with a Mutex that contains an
-field ARef<T>, because almost any type that ARef is used with is !Unpin.
+While relaxed operations could be implemented purely in Rust using
+read_volatile() and write_volatile(), using C's READ_ONCE() and
+WRITE_ONCE() macros ensures complete consistency with the kernel
+memory model.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+These helpers expose different symbol names than their C counterparts
+so they are split into atomic_ext.c instead of atomic.c. The symbol
+names; the names make the interface Rust/C clear, consistent with
+i32/i64.
+
+[boqun: Rename the functions from {load,store} to {read,set} to avoid
+future adjustment]
+
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20251218-unpin-for-aref-v2-1-30d77129cbc6@google.com
+Link: https://patch.msgid.link/20251211113826.1299077-3-fujita.tomonori@gmail.com
 ---
- rust/kernel/sync/aref.rs | 3 +++
- 1 file changed, 3 insertions(+)
+ rust/helpers/atomic_ext.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-index 0d24a0432015..0616c0353c2b 100644
---- a/rust/kernel/sync/aref.rs
-+++ b/rust/kernel/sync/aref.rs
-@@ -83,6 +83,9 @@ unsafe impl<T: AlwaysRefCounted + Sync + Send> Send for ARef<T> {}
- // example, when the reference count reaches zero and `T` is dropped.
- unsafe impl<T: AlwaysRefCounted + Sync + Send> Sync for ARef<T> {}
+diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
+index 1fb624147aa4..02e05b4246ae 100644
+--- a/rust/helpers/atomic_ext.c
++++ b/rust/helpers/atomic_ext.c
+@@ -1,22 +1,43 @@
+ // SPDX-License-Identifier: GPL-2.0
  
-+// Even if `T` is pinned, pointers to `T` can still move.
-+impl<T: AlwaysRefCounted> Unpin for ARef<T> {}
+ #include <asm/barrier.h>
++#include <asm/rwonce.h>
 +
- impl<T: AlwaysRefCounted> ARef<T> {
-     /// Creates a new instance of [`ARef`].
-     ///
++__rust_helper s8 rust_helper_atomic_i8_read(s8 *ptr)
++{
++	return READ_ONCE(*ptr);
++}
+ 
+ __rust_helper s8 rust_helper_atomic_i8_read_acquire(s8 *ptr)
+ {
+ 	return smp_load_acquire(ptr);
+ }
+ 
++__rust_helper s16 rust_helper_atomic_i16_read(s16 *ptr)
++{
++	return READ_ONCE(*ptr);
++}
++
+ __rust_helper s16 rust_helper_atomic_i16_read_acquire(s16 *ptr)
+ {
+ 	return smp_load_acquire(ptr);
+ }
+ 
++__rust_helper void rust_helper_atomic_i8_set(s8 *ptr, s8 val)
++{
++	WRITE_ONCE(*ptr, val);
++}
++
+ __rust_helper void rust_helper_atomic_i8_set_release(s8 *ptr, s8 val)
+ {
+ 	smp_store_release(ptr, val);
+ }
+ 
++__rust_helper void rust_helper_atomic_i16_set(s16 *ptr, s16 val)
++{
++	WRITE_ONCE(*ptr, val);
++}
++
+ __rust_helper void rust_helper_atomic_i16_set_release(s16 *ptr, s16 val)
+ {
+ 	smp_store_release(ptr, val);
 -- 
 2.51.0
 
