@@ -1,140 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E08500963;
-	Sun, 11 Jan 2026 17:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7361E5B7A
+	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 17:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768151199; cv=none; b=qW8ZRHZGhFCoXtnoYAttdnv42mzu1D/LUJFAMT0eXTac7WyGvDJdlaDdgcegbOI6fvm0SZA5VJ1RLytmogIqDjmS2otrypx3Y3G2V9Cr5KCmi1Le30U8OCJg1YaXIkI42HMMHpp7MWsNeiWSFIVhvvdblGII4eQ/nBE7u+d6hK0=
+	t=1768154260; cv=none; b=aO0uBL/OuadY4gj3cXnSGWcJty2JOOGmsMnstFCDAxbpDFZ/2gcGpkM/2rPGCiCZUhmm2EiBpnp0Eg3bVz0cBZpNAuWM+Gur/QuRiU06Kv4P9EapEqXnJKZUdLNdVpOgjDpX2UNHw0RbgFrYLUtQIEUwnorMph4RQRm19tfhhYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768151199; c=relaxed/simple;
-	bh=/NMtZisAP9xrOC8AIvPH0lhzDe1OgxI6w+qhe2D9s9M=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=OMxRyfZoq7v1/5M3mgGPD+mj2eQZXTh8gswUGRvE2QbSTLb1y7R0ox8DVvvRVQKLh03CsVMpf7Jo4DQkSinbOFFbw9s3rOaiHoAqTTo8qwPDdWdd41rOhiOF4A04tNk4j1ti8LCS7r2reP1qwUufQi95/EOY4R95tZlze1mqIsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXtqTD3Y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768154260; c=relaxed/simple;
+	bh=fbJK7xOI/xq6Tar8qezI6hVv8dspBtPq2Jhl4huh3nY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jcbtxslvo3zoLZGEoVeBcp/TNd+TTts1MULo4jxJVwbXEdBiWoZ18ip3shPBHgocOUMcpbd87fDsCPxDWYzBocRpQAEZeDv3biwqWdjRN09C5tnqZzkM7S9Zy5Fx3a28h9ENsA96yuemmttzyIw6DsFM2Mk4ZbvUzZMRaxLNjr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mxuE3rHf; arc=none smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXtqTD3Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63795C4CEF7;
-	Sun, 11 Jan 2026 17:06:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768151199;
-	bh=/NMtZisAP9xrOC8AIvPH0lhzDe1OgxI6w+qhe2D9s9M=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=NXtqTD3Y5Q6kSI1qnrUOjgz5EV+XDqN9b21VF2fkExkeJiu2/JrmFdsjMkcfnka6U
-	 cIlDvByA0HQQXUKwjgvYZyxaCvQ+ll6ydZJds+pJLQwf6fTBhlyEQq0nXsvD1oJrck
-	 8ls123Vqxb6UtnX2Y+Upztzuz+B4ue69DutXOI1KjLkmRhtRuEkM+xbk6Q8XvcMnsm
-	 Vt/7vkk2fcH4/lDjdS1uqrYZisyreqMaPA8UNPKoE1zROmPTf8Gqb0GzrnVbSIolw0
-	 SoPiIBZrLxU3ksMaKuGggA7BnqMeSe7iB61IRVwAFdEQuMLGMdHC4Y4NOsGWUSY9zr
-	 /XS2q5K3j+VEQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mxuE3rHf"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2b176db6de5so124609eec.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 09:57:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768154258; x=1768759058; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fbJK7xOI/xq6Tar8qezI6hVv8dspBtPq2Jhl4huh3nY=;
+        b=mxuE3rHf/Gdpqbss+uKujK4jg/ftTr7Aw1KdFKgW5ryvOT9GdvcAR5rqHFoIt43CtJ
+         QZe23wYie35xSFIXf/ds91Fn0KUyOiIwMALy+Ifpgu1k7QTz3yGgpYbf+vqZJzlpk1TJ
+         e/lp1LWqtmnxMfGH0VHJLea6Ou230ZRKqlZwM7si+ltca/1TwgPJpZvoupYycrkDm3XH
+         XmpIqD4rRe7AFTm7khy48+Sl9PHaUQF4/Sxzj8JJX+qhQNozDttPbJ+r2c+I3FG/YWuM
+         jQKaPM/iXzh0ZbQt6kA/czIwi/y0OREq91O2rbjloGOg+o0arJo5F2Y03u2gP6yac6uv
+         5y8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768154258; x=1768759058;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fbJK7xOI/xq6Tar8qezI6hVv8dspBtPq2Jhl4huh3nY=;
+        b=s4GqYTLtme9VF1t8dHt6gjnCdYmaVuGAOZmb138UUp18YUZWURfGobUqRzJJSRZ3wB
+         6E4UePcCuDfWQlZucQ3hfCQWwwa7q8bI40LNQ7KSmZ5kByvtuIx++INLhBQIn8bBXVOK
+         DoTbH0rEbPKX5TWXBKj3iyuohKbjLzx1ffveeqdyJb4Nn2x6eRFBlN/YzniukgigX/g0
+         UDMUct4EBPOsLnXmmET7QOqCSPbPRfLGRJ9nXBTtbdinaNEl8HvO5ie2wOgnINK+6Npu
+         lis0+2GoQK3jaQM5hnMjkDXEvBtbunJ0nYOg2aIaCXmcj050IPL6d6JFZ9qA8CRmaT+c
+         Zphg==
+X-Forwarded-Encrypted: i=1; AJvYcCW2b47j4ksalAB+AbTH3GjyOK9mV7BmDZo/VpqpmxzgjOKYVZe2QiIysYBSC2unxLSiq6BBWEcNM/ZCrWFU8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7xxMGa7zFYyz10VudvxIVAuUchU4+g9Je4AjhQnd3ZwSoul09
+	HbEh0pFxBLF5eWIA/Llt/m27kqBiUlKBavDt2ONuFsg9hy6Yf+tLQMHlUOlPn69EV2mPmDcTH05
+	gO/10FVwu5a8VFNaMkzX575/Q3EeOHCo=
+X-Gm-Gg: AY/fxX4m0G9bP6aNkudJMbo83JToevIgYaNNvsgaiOAl65DSHOXRNbw27Lw8idYE23H
+	KjJAP7OhFl0DR5JMkGncSTN1YNqomBz7/YwsL23XvsTRURy0nG+iqM7qS88evtW0vh41wO9AntV
+	GubeZi0T3zQECNF9kC49LpDSTcQWqc0clAhAqQIIJ9KipzOAKIwGtdHefIfSnfpuQjLrQCSW3YS
+	I2CkaRw3XvoT2vJ0tRn3g4HYlHutlIve4xFGQNzoyICNe7TWZCk10N+2yiSx183BJLxjIuDevd9
+	qSz79Bcd5Bs7songXaN6J0u6xMgqTsQteD0sMfUqvXX7AXq5WuJ05vtnzF2F2ZwUA71TzawzUbs
+	IYXwRra1MN5UM
+X-Google-Smtp-Source: AGHT+IHsUNDTkZWXPnDKsokQQfGSgLB5pLSBd31BRF2afyEHDMLGxpLMw7U1an74C6nf4v5M3uxlrayIC4FhizbbcvI=
+X-Received: by 2002:a05:7301:fa0f:b0:2a4:3592:cf8b with SMTP id
+ 5a478bee46e88-2b17d23fd01mr8560661eec.2.1768154257822; Sun, 11 Jan 2026
+ 09:57:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <cover.1767818037.git.foxido@foxido.dev> <05261e88ac8503e2af59d703389d94cc15f4450d.1767818037.git.foxido@foxido.dev>
+ <20260108132141.6cce4827.gary@garyguo.net> <7b8130de-8096-4fcb-be84-c13209638b25@foxido.dev>
+ <CANiq72=TAXwjjxFiKiiwh9m_rRK_yUVS4b+2st=QJWErz5qTpQ@mail.gmail.com> <b8e2c3ed-7db1-48ca-8dc8-64dfa437c595@foxido.dev>
+In-Reply-To: <b8e2c3ed-7db1-48ca-8dc8-64dfa437c595@foxido.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 11 Jan 2026 18:57:24 +0100
+X-Gm-Features: AZwV_QjkEeEeUhKFkM_68O4DnxLwqPiN_AxlqeD2e8VEqMZVrLimsVfRWFtZI4Q
+Message-ID: <CANiq72n27gF0e3r_pZ_6ZD7EBhwCLghFkQtLwfApEGCQo6gcnQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: implement wrapper for acpi_object
+To: Gladyshev Ilya <foxido@foxido.dev>
+Cc: Gary Guo <gary@garyguo.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein <tamird@gmail.com>, Armin Wolf <W_Armin@gmx.de>, 
+	platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 11 Jan 2026 18:06:34 +0100
-Message-Id: <DFLXAD7L0MYF.39C9FW4KL917D@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@kloenk.dev>,
- "Alban Kurti" <kurti@invicto.ai>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <asahi@lists.linux.dev>
-Subject: Re: [PATCH] rust: pin-init: add references to previously
- initialized fields
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Janne Grunau" <j@jannau.net>
-X-Mailer: aerc 0.21.0
-References: <20250905140047.3325945-1-lossin@kernel.org>
- <20251203220516.GA592465@robin.jannau.net>
- <DEQZLZ9AVCZE.380X3OF521Y5L@kernel.org>
- <20251206170214.GE1097212@robin.jannau.net>
-In-Reply-To: <20251206170214.GE1097212@robin.jannau.net>
 
-On Sat Dec 6, 2025 at 6:02 PM CET, Janne Grunau wrote:
-> On Sat, Dec 06, 2025 at 09:23:08AM +0100, Benno Lossin wrote:
->> On Wed Dec 3, 2025 at 11:05 PM CET, Janne Grunau wrote:
->> > On Fri, Sep 05, 2025 at 04:00:46PM +0200, Benno Lossin wrote:
->> >> After initializing a field in an initializer macro, create a variable
->> >> holding a reference that points at that field. The type is either
->> >> `Pin<&mut T>` or `&mut T` depending on the field's structural pinning
->> >> kind.
->> >
->> > just as a heads up: creating references broke part of the agx firmware
->> > init structs which uses a `#[repr(C, packed)]` struct as field in
->> > another struct. This fails with
->> >
->> > | error[E0793]: reference to packed field is unaligned
->> > |    --> ../drivers/gpu/drm/asahi/initdata.rs:722:28
->> > |     |
->> > | 722 |                       sub <- try_init!(raw::GlobalsSub::ver {
->> > |     |  ____________________________^
->> > | 723 | |                         unk_54: cfg.global_unk_54,
->> > | 724 | |                         unk_56: 40,
->> > | 725 | |                         unk_58: 0xffff,
->> > | ...   |
->> > | 731 | |                         ..Zeroable::init_zeroed()
->> > | 732 | |                     }),
->> > |     | |______________________^
->> > |     |
->> > |     =3D note: packed structs are only aligned by one byte, and many =
-modern architectures penalize unaligned field accesses
->> > |     =3D note: creating a misaligned reference is undefined behavior =
-(even if that reference is never dereferenced)
->> > |     =3D help: copy the field contents to a local variable, or replac=
-e the reference with a raw pointer and use `read_unaligned`/`write_unaligne=
-d` (loads and stores via `*p` must be properly aligned even when using raw =
-pointers)
->> > |     =3D note: this error originates in the macro `$crate::__init_int=
-ernal` which comes from the expansion of the macro `try_init` (in Nightly b=
-uilds, run with -Z macro-backtrace for more info)
->> >
->> > This was easy enough to work around, I don't see how this embedding of=
- a
->> > `#[repr(C, packed)]` struct was necessary or at least helpful. The cod=
-e
->> > is not expected to be included in the upstream driver so it no worth
->> > spending effort on this.
->> >
->> > I don't think it's likely that anyone else will run into this but I
->> > thought I mention it at least.
->> >
->> > The asahi driver also ran into the discussed variable shadowing issue =
-(a
->> > variable was used to initialize a field of the same name and was later
->> > used to initialize another field). This was trivially fixed by renamin=
-g
->> > the variable.
->>=20
->> Thanks for the report, I expected the latter kind of error, but was not
->> aware of the packed struct issue. If anyone needs a proper workaround
->> from pin-init, let me know.
+On Fri, Jan 9, 2026 at 11:57=E2=80=AFAM Gladyshev Ilya <foxido@foxido.dev> =
+wrote:
 >
-> I spoke too soon. The packed struct issue is also present in the capture
-> driver for Macbook microphones (aop_audio). Working around this issue
-> there is less obvious and more effort. I think it might be enough to use
-> unaligned u32 / u64 types already present in asahi [1].
+> If I understand correctly, acpi_object is something untrusted in general
+> and broken hardware can provide arbitrary _type value. So ergonomics of
+> enum solution would be kinda strange:
 >
-> I'm not sure how prevalent packed structs are outside of Apple's
-> firmware interfaces. I was surprised running into the same issue in a
-> second driver but I shouldn't have been. There are plans for another
-> driver where this isssue will be present.
+> ```
+> type_id() -> Result<Enum> // Result because it can be invalid
 >
-> A workaround on pin-init side would be appreciated. Due to the nature of
-> these packed structs I do not see a need to have access to previously
-> initialized fields. An optional way to supress the references would be
-> good enough for the cases I'm aware off.
+> // ...
+>
+> // '?' here makes it look like non-trivial operation
+> if x.type_id()? =3D=3D Enum::Buffer
+> ```
 
-FYI, I am merging a workaround this cycle, see [1]. Gary had a good idea
-for a future patch series which I am tracking in [2].
+Yeah, I was mentioning the `bindgen` bit because returning
+`Result<Enum>` is essentially what we asked for the generated code,
+i.e. we generate a panicking `From` impl, a fallible `TryFrom` impl
+and an unsafe conversion method too.
+
+Whether that may add overhead or not, it depends, of course. Sometimes
+the result (i.e. the enum) may need to be used later on in several
+places, and knowing statically that the value is in-bounds means there
+is no need to recheck anymore for that reason.
+
+That can actually mean reducing overhead (e.g. if checks exist in
+several APIs, possibly defensively) or at least reduce the mistakes
+that may be made tracking whether the value is valid or not.
+
+But, of course, if the value is not used for anything on the Rust
+side, and is just passed along, and the consumer of the value in the C
+side do not have UB if it is out of range, and you generally don't
+expect that to change, then checking validity upfront may indeed not
+add much value like you say. From what you say (I don't know), it
+seems that is the case and thus a newtype may be simpler and best.
+
+But if those conditions change, e.g. you later start to want to
+manipulate the value on the Rust side for any reason, then it will
+likely be a different story. In such a case, then we shouldn't be
+scared of the ergonomics of conversions, i.e. it is fine and expected
+to have to do that, which is why we want to generate all that
+boilerplate in `bindgen` eventually.
+
+Or perhaps you may need both options, i.e. the newtype, and the other
+one, depending on what you are doing with the value.
+
+Regarding `ACPI_TYPE_INVALID`, yeah, it would depend on what is used
+for. If nobody should be calling a given API with such a value, then
+that API should return `Err`. But if it gets used as a useful marker
+value somewhere, then it may need to be a valid value and thus return
+`Ok`. If both cases are true, then perhaps again two ways may be
+needed to model those.
 
 Cheers,
-Benno
-
-[1]: https://lore.kernel.org/all/20260111122554.2662175-14-lossin@kernel.or=
-g
-[2]: https://github.com/Rust-for-Linux/pin-init/issues/98
+Miguel
