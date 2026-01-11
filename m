@@ -1,64 +1,64 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B62C125A0
-	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 05:06:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40F4125A0
+	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 05:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768107986; cv=none; b=tArBWbv/Sj18ESAjf6Tkq5Bl6Wwx+PPYX1ifr3ex53SALaUruDxU9uAZc2M0/8eCObXIs5ZMmOXbfcP9JLPR0RWdtvsySUm/LhghTS0+tdRwzOKRhYsMsX/PPHoTOXLDgxV+ps3WvN8vL2sw6oWGgwFgdaaVlDwcKAj8QYLBTu4=
+	t=1768107989; cv=none; b=Ugubz3vXhZ6oBLTWaWGhZoBk/IWIA1Uhhj+R4PLhhJpVPwSs1ZKZFhrMYFZEwOpJUo9npWtsg8lHLfPYbYlINMix+H9jncMYnGuqDEAgde58MylxTwt/y0EvV3X0s7yk4zdxENB4+gW7kb2ELgxOdOAOlIy3Zazd+4220i7s5aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768107986; c=relaxed/simple;
-	bh=v+M/uW59AWv/yaEWe0VYABooA6xQng4suoSBLli1NMY=;
+	s=arc-20240116; t=1768107989; c=relaxed/simple;
+	bh=0JpDXafG3NNA59juLK1L6oa1axVrwXdvRwIGL5ERXPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qkr+JZzYYJHIoVqQDxw1EM64/C/5zdRF82xMKwfj4QK54v3Zzh9iEFo9N6QzgE8LoSUoQnA8YMgWMa+9ZhraNFewHnip9NExT4hb3fRB+iYrtD5lPhNFIzp3dSJ/epeiK4LdntMmuLdtpWaZsHgWQ74ATqZzagrtYtOfuhOBTI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LPx/06O+; arc=none smtp.client-ip=209.85.216.43
+	 MIME-Version; b=g6SIyE3O0UnEp3E9wLsjB6JLHMkOsNmmOxIDY4rbvZB9pFsfoQvMRotSBAcFgtKpOJX/GulHGNGxHp743gCxCTO8kX8gJjN2oa3+x2h3/wXSJD54VVltuCf8QJ6kyspx+Iirrcf8rPahW3nFlCRo8T5+Z2AdfbvlMUDTRL1g6OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PP6ZIVbE; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LPx/06O+"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-34cf1e31f85so3325739a91.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 21:06:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PP6ZIVbE"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a102494058so18724015ad.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 10 Jan 2026 21:06:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768107985; x=1768712785; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768107988; x=1768712788; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ttDempTehocJF2rqTCXez1Irk9tZiQz/uNJNhaEV/6U=;
-        b=LPx/06O+E6e0ViitUY4zQajBJYbATb5UlqebkFmZBmNxvrSUds6BrVw/+cI5vMVffF
-         S9MTGbOvbQeT+OMJ0sKTMGxQK+d+uJz1gFd9WBVlhOla1o/NDfjLFQ3dEiLj/0istXwq
-         cJ5eBORSucpWW7b11mDSyNjds6fKKLtNQa+BFT2gPTPKQfMag9Wz2nCJ51nEwMYdtiHf
-         v1z5JCieZFSI4K8hsYfpaxHT4axJ4BVSy/iZ6Oad19wsGqnRrTcErUjY22GP9JXSiJwk
-         He03vnjOJLCpvszgmE+qqNp8dmb/3gj98BEAG8UMWbJU8pXS6SMcHVw7JxBJRJcCE/Af
-         yqQg==
+        bh=ya0JdCtBs6OKPJj1ghPaGL5+Y7h2c4nB58k3IMd8+nY=;
+        b=PP6ZIVbEyGQ1c0zNzKQAWIHbCdHvtqKRisfkJBVNuWxHQnNAB7vNj8550PMBTX8r+O
+         aTl6z0DiT/KUrVLRPLtN56BQ8EYiNMZ21Cpxk2haRbYiNjYOmZcoyCDdQg6leGEAXbFx
+         2ADmY2i4o2Kd802TJlEUXwrCSWTL9C8X+SCKVtAInuhMfoJCMg0k0culDWUmsoWZaUs4
+         Gb+J2rSHEepUjxWjZxuns5mn5hUcZ2xj3AyEA9vlqlME9wHpl4nTRiozOR+d2fD1gKrS
+         3r3MILRQ9+NHc1MRwcZ0J7z0shcoZoWyrPkvVik7Y/9CyN5Aa20JulexH2rXvOliNk1D
+         e4JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768107985; x=1768712785;
+        d=1e100.net; s=20230601; t=1768107988; x=1768712788;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ttDempTehocJF2rqTCXez1Irk9tZiQz/uNJNhaEV/6U=;
-        b=AAlHo1LsvP21PeRZhMF1TxymRZ42RdUuXaGjBuMyIxvMQmD0O9VNjQbFr06o9g7fwu
-         GCp4RhOApr3tbQPxvDUOjvmhov4vQKNgpZ8EthgU0r/h5850mBzhOaV/s/DRPEnk4zJ1
-         8EY7Aqn+pTb8NeTztfFQ2YnlvSNqy+zxjdqwLWV+1gqqNi0k1cLKnlKKR2OyKK81+7wX
-         BDzogdOKKz6dV613RVU5DYvAOILpm8e+NtXOuWVglStEm5SQZ8bisWbh8R55tHiVcDYU
-         09fTmSLVWyvEGx0WqAGQ4FDzTJhEwNNM8PucUrIAK5mKDRzF3JuQCWCXJBp2rUdr6XIO
-         wXdg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHVfdT7j/LS57qnY4gd7OGryYpDn/YsfRFJXjD4gx8MywnR54txYGueDEMs32YUKrSWmfYKsvR/Qz5UUmODQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJxiIKUt0oEMhkUr9GC2We9pQOUkAs60a+zBXD0UVO/6akjbo1
-	tjjLwydXVT84qU3kef0UxqP2U2yr2VvEaaohknw0vJR2B7qyJQQP6ESJ
-X-Gm-Gg: AY/fxX6deoskd8FrtbJn8WWNQRD26pdcEWZv6eoN1XByYfNXNxy9KxtUD6b3HZMg7lA
-	dreXugpsvR/I1QzzkMTvtMxVwfturBWoEoTdf5kbLR53bfb8SuYxQA9uK8Bg0vMyMUdaKKE74hX
-	VxSfvBdAbnBqlzMjtkRVAet+MkxJEq8Qhnd1op9MP8G/bYRXXbNTVpFRmJUHJEnsSJdlovsUX4E
-	06PEFiPm5nBDX7ugdb8yLxZK4umsIOYUd7mS7DeixEvPPc3KebW8LPLAlb74sKfDmbRKgQ+KQD6
-	vqpqKO+qbnCp5iykDrl5C26vZ9BfWwWIl7so6gTZmhnGm9IVWLmmZBvRk1q4E4AGYwomdrOVoJq
-	Diu0yl00TIyWZlfQDJvS88pW9gDv+swTUriuLC6g3CWmDaRvzsFQeKYA3yx1reeV0NtLyy0Tf92
-	RgmZyp8EclaliFVjZVTAvT8Z+82XIQfdps4FMZkJ07LjzGlqm/vi/ZAtQh7bkiRw==
-X-Google-Smtp-Source: AGHT+IFZoqqGr83nppR3MOccf1CW1cx1DdEjj5iV3+zcW3E52XvckybEW0zOfPADm9AaOofQnY7txQ==
-X-Received: by 2002:a17:90a:5c86:b0:34c:6108:bf32 with SMTP id 98e67ed59e1d1-34f68c47f7bmr9354348a91.34.1768107984567;
-        Sat, 10 Jan 2026 21:06:24 -0800 (PST)
+        bh=ya0JdCtBs6OKPJj1ghPaGL5+Y7h2c4nB58k3IMd8+nY=;
+        b=pSEWFf99mUHMcyV9m+4Ba8Ve+rhNVXoqAcUWmsWA//upyYazm93b8/sJheb933OJ5Q
+         F2aZf9e+Q31LHhmYRX4e0JnNBblwAaEP/hOUfCDFhJ2cqi7my1BJI2bJMrUAwpsUyCPq
+         /K6UQTb2YRx0sL4d1rpZRf3rbai9eg6Jqp2CpfTr5jjChFeZ6OkruhttDFeBl369ALYk
+         AuZW0f4SbU2wSyYfxWEtJKAcg26rsd2vwGzYdSBHfp3rVyprsf6evz2JqkZIrFOFFSQT
+         juaSGQXOqxNtJiLBJRyKdEfb0Feo9yf10hnud1JcEkW1TGeulsFKr6k2pANufOpJ2nz6
+         af/A==
+X-Forwarded-Encrypted: i=1; AJvYcCXc+jBBouUG0PCF/LT0tt0IdRp8QbEuEg2o6b9ms3g20PmIQKJy2dxelzX75GDWeMSHdIdCqj7VTi/PUHEwMQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+1ADPHUeJwPFSTZh0GrqqdGHjCPhK4vzSedmcEgFP6PSXX8tl
+	fydlzfs8mXvMmPZQy3kw3T7zovGyQbziL+3PhrPEkvPXvZmQmxZ0JKXE
+X-Gm-Gg: AY/fxX62s2EXboFz1GAgh8hxxlwr+GZAdq3ortc6o88gAsnAVkmGCPS9CUX1CFTEUss
+	ALGzKydrQ5qGPRfeCzUA7qwIKRF0yFGkH9RGymjEw78AkZaNaYIM/Ck5z+/VqnY+uh2k8Pxwvbt
+	iRMkyXQ+DpwIGIompWuZ5BmllTgo7GnSVq0oou5AkANPsKf5TQDCQ4gx2k7G3HsooVLgctMMapp
+	5bB1VYSDOaLi1HE10uW2bqLowFWwWD1GZTdTGSroZPiSLBRPmk/Z4Cq5lkzIWiAmKxnKwHdGExt
+	llvMyjcukcz8AIu7L7Teme4RxvG0HSk9xU1A2eiSDfC6sPohkEAdeQFQmKwnCsIWk3O2RK4BKTk
+	iGiiZGXemFzAd2WRScseDZQx0/rBbvsqoo5oHpiTxQknWjitZplsxtMraRhvT4ai6REu5M9gYYe
+	w+oHmlHEFF/X9yGqZvOHXR/cr4w+Nr3fV3XAaPFMZ0xias9ZIbx0ep5d7B7XnePVXv5iXdQhvd
+X-Google-Smtp-Source: AGHT+IHxMmWBFeXFeF0YTDX+9TwtJ9U8sBlfR5M3uwADKAQkpK7c3mkL2mMgByyPkT6Xt0EfIqVZww==
+X-Received: by 2002:a17:902:ec85:b0:2a0:a05d:d4a2 with SMTP id d9443c01a7336-2a3e39e5c4amr172035905ad.23.1768107987828;
+        Sat, 10 Jan 2026 21:06:27 -0800 (PST)
 Received: from bee.. (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cbfd27953sm13965818a12.11.2026.01.10.21.06.21
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c4cbfd27953sm13965818a12.11.2026.01.10.21.06.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jan 2026 21:06:24 -0800 (PST)
+        Sat, 10 Jan 2026 21:06:27 -0800 (PST)
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 To: boqun.feng@gmail.com,
 	ojeda@kernel.org,
@@ -73,9 +73,9 @@ Cc: a.hindborg@kernel.org,
 	mark.rutland@arm.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 1/2] rust: sync: atomic: Add i32-backed Flag for atomic booleans
-Date: Sun, 11 Jan 2026 14:05:57 +0900
-Message-ID: <20260111050558.3147975-2-fujita.tomonori@gmail.com>
+Subject: [PATCH v3 2/2] rust: sync: atomic: Add AtomicFlag bool wrapper for easier use
+Date: Sun, 11 Jan 2026 14:05:58 +0900
+Message-ID: <20260111050558.3147975-3-fujita.tomonori@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260111050558.3147975-1-fujita.tomonori@gmail.com>
 References: <20260111050558.3147975-1-fujita.tomonori@gmail.com>
@@ -87,84 +87,66 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-Add a new Flag enum (Clear/Set) and implement AtomicType for it, so
-users can use Atomic<Flag> for boolean flags.
-
-The backing integer type is an implementation detail; it is currently
-i32 but may change in the future.
-
-Document when Atomic<Flag> is generally preferable to Atomic<bool>: in
-particular, when RMW operations such as xchg()/cmpxchg() may be used
-and minimizing memory usage is not the top priority. On some
-architectures without byte-sized RMW instructions, Atomic<bool> can be
-slower for RMW operations.
+Provide AtomicFlag as a thin wrapper around Atomic<Flag> so users can
+work with a simple bool API for load/store/xchg while keeping ordering
+controls.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/kernel/sync/atomic.rs | 56 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ rust/kernel/sync/atomic.rs | 46 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
 diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-index ca9cab77abf0..473d3c07e234 100644
+index 473d3c07e234..c3039289b989 100644
 --- a/rust/kernel/sync/atomic.rs
 +++ b/rust/kernel/sync/atomic.rs
-@@ -566,3 +566,59 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
-         unsafe { from_repr(ret) }
+@@ -622,3 +622,49 @@ fn from(b: bool) -> Self {
+         }
      }
  }
 +
-+/// An atomic flag type intended to be backed by a performance-optimal integer type.
-+///
-+/// The backing integer type is an implementation detail; it is currently [`i32`] but may change
-+/// in the future.
-+///
-+/// [`Atomic<Flag>`] is generally preferable to [`Atomic<bool>`] when you need read-modify-write
-+/// (RMW) operations (e.g. [`Atomic::xchg()`]/[`Atomic::cmpxchg()`]) or when [`Atomic<bool>`] does
-+/// not save memory due to padding. On some architectures that do not support byte-sized atomic
-+/// RMW operations, RMW operations on [`Atomic<bool>`] are slower.
-+///
-+/// If you only use [`Atomic::load()`]/[`Atomic::store()`], either [`Atomic<bool>`] or
-+/// [`Atomic<Flag>`] is fine.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::sync::atomic::{Atomic, Flag, Relaxed};
-+///
-+/// let flag = Atomic::new(Flag::Clear);
-+/// assert_eq!(Flag::Clear, flag.load(Relaxed));
-+/// flag.store(Flag::Set, Relaxed);
-+/// assert_eq!(Flag::Set, flag.load(Relaxed));
-+/// ```
-+#[derive(Clone, Copy, PartialEq, Eq)]
-+#[repr(i32)]
-+pub enum Flag {
-+    /// The flag is clear.
-+    Clear = 0,
-+    /// The flag is set.
-+    Set = 1,
-+}
++/// A convenience wrapper around [`Atomic<Flag>`] that exposes a [`bool`] API.
++pub struct AtomicFlag(Atomic<Flag>);
 +
-+// SAFETY: `Flag` and `i32` have the same size and alignment, and it is round-trip
-+// transmutable to `i32`.
-+unsafe impl AtomicType for Flag {
-+    type Repr = i32;
-+}
-+
-+impl From<Flag> for bool {
-+    #[inline(always)]
-+    fn from(f: Flag) -> Self {
-+        f == Flag::Set
-+    }
-+}
-+
-+impl From<bool> for Flag {
-+    #[inline(always)]
-+    fn from(b: bool) -> Self {
++impl AtomicFlag {
++    /// Creates a new atomic flag.
++    pub const fn new(b: bool) -> Self {
 +        if b {
-+            Flag::Set
++            AtomicFlag(Atomic::new(Flag::Set))
 +        } else {
-+            Flag::Clear
++            AtomicFlag(Atomic::new(Flag::Clear))
++        }
++    }
++
++    /// Loads the value from the atomic flag.
++    #[inline(always)]
++    pub fn load<Ordering: ordering::AcquireOrRelaxed>(&self, o: Ordering) -> bool {
++        self.0.load(o).into()
++    }
++
++    /// Stores a value to the atomic flag.
++    #[inline(always)]
++    pub fn store<Ordering: ordering::ReleaseOrRelaxed>(&self, b: bool, o: Ordering) {
++        self.0.store(b.into(), o)
++    }
++
++    /// Stores a value to the atomic flag and returns the previous value.
++    #[inline(always)]
++    pub fn xchg<Ordering: ordering::Ordering>(&self, b: bool, o: Ordering) -> bool {
++        self.0.xchg(b.into(), o).into()
++    }
++
++    /// Store a value to the atomic flag if the current value is equal to `old`.
++    #[inline(always)]
++    pub fn cmpxchg<Ordering: ordering::Ordering>(
++        &self,
++        old: bool,
++        new: bool,
++        o: Ordering,
++    ) -> Result<bool, bool> {
++        match self.0.cmpxchg(old.into(), new.into(), o) {
++            Ok(v) => Ok(v.into()),
++            Err(v) => Err(v.into()),
 +        }
 +    }
 +}
