@@ -1,73 +1,73 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8271330642
-	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 12:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B783382D8
+	for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 12:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768132947; cv=none; b=H1hDNufcxzRWDLo1mNRIzKLKoC3ifH1N79Jr3F13u5/wPDJQlGaiE74LTVGnMuI8SU3SqfPH0tc8LalWHZmApamAms2dsZQAa24MoTA8o1X2hl7Y/uHkLNlZQKuWRFLJQkkP+mlMYn9WrEl5tgAi5GA0kUDZVqT3DN3JUbS/9ZI=
+	t=1768132950; cv=none; b=Vv0v4VKee8CnH44q9VvQJ1Nlzbc1z9iTerTjEYUx632L6cmbgfBvPwUeerBPvxs8goHcHlAJX+PVjtRNIBDo26A9UpN26bUL4qGAzg4/w7AIiq5RAy+Z/qx1zVBS3ZPQJ+NOhVfUnBCuPM2upjdA3ZiFcf9qwXhqM7MzehYYUyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768132947; c=relaxed/simple;
-	bh=9on4ayuVv7+XTrtlfAIj7SsuIWOQRo1Z2nZVwpdRs4w=;
+	s=arc-20240116; t=1768132950; c=relaxed/simple;
+	bh=gX7Iy759WYxoMCv7ndNoCCuupIybm1v0rA7xgwJ/b9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEyqomvz6X+9RNwh/UWx9JgLfuB+4wXcd1dn2KIFYcTJQ6uat2qD2a4JO9f7akiEUzplF7wIS2H4wJ2G0PkG3mJwms2af1fmu96Ntb/1VnKjcIt4NrIXGrrA1klgofeUgaq7q32gekKb93LN1dw8/f7dUM8Vvos91yaNZIhfhBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z3xhJbCf; arc=none smtp.client-ip=209.85.222.173
+	 MIME-Version; b=GyLxcDkhprMjg3AEQsUSv1mvvWxhOZXebedLHyfE7ylG8dwjuPgfgbkSvwj4VO/dm2RNMj4b+tLYsuF1E8rWAh4YPUeIMVPfXSRqZ0nzOKPHdevNOQBMoMOezzdMSY5P/Kc2Y+D4iAHT9TqzfyqcrwsM6CB8Eo5RdVkF/KZX11k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NBugysQl; arc=none smtp.client-ip=209.85.222.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z3xhJbCf"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8c2f74ffd81so577126085a.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 04:02:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NBugysQl"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8b25dd7ab33so420695285a.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 11 Jan 2026 04:02:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768132945; x=1768737745; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768132942; x=1768737742; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=2gvqM6cgcNCPewaPlNPRQwapucK6C50wAJVV0/11pk8=;
-        b=Z3xhJbCf07pUy/Fex1tI7B4Whp8wSEn4NlDLaGBLnnr6jjDc9Pvtp4PYC5JcEJ3fPP
-         jbo2kpCieUJgcuW1nOnkp+E3qxuFmJu7y10imc9iTuNAlswZZfmPrCgBSUytHuEeFAwl
-         GK99MLM+3YhIN0RKSqS0OuVswpAZ34isjrIRKYud5qhlJ/RbId9JiOijfiJ5J2xTwzes
-         4JCiPuOXj1w5easPqRX9J6pFWYGu+n7ma7N0aca45QNpScuO1bhMOQSu8z93/XhqVZLV
-         KdofGdVaEGsHLg+dH8ijjw36ht2+L8l4aem+QH1BIizrzJvUz7npnVFpLhbVNZqupmm/
-         jhog==
+        bh=BMIKXAXniZuvKRl633D19ynJhJpEhy1emvggU7dsEJs=;
+        b=NBugysQlTklEOPlIsaBrcYysyfdVeEEMqPwbDPRmfvFO08+LZwzBNrER5PLxfwDKrk
+         tkuDbT4fZw8i35mg2/tIfjlSJKwwDj7SvvkLpTmd06eR4XgWsqs+4DtOgSt7OCZJFEA8
+         426LR5V1k5MEfQMMJO7a5XDjZKSIralRAU6+iHLnUSLmzu8/VjAaZoaZF7VrtOAleDOa
+         oHimFyFhxL3FL9I6I+JCJhYQlpZo19Hcs75+oh5CDEqJxVY/1gQ65yF8a+Vc/IeOPiaa
+         OED8UpsJrTduemjp4TChsBsWCz2JXARlmuuEvY0xx9rsIJrVVcusfbrJYZ4d42H23LeK
+         C66g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768132945; x=1768737745;
+        d=1e100.net; s=20230601; t=1768132942; x=1768737742;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:feedback-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2gvqM6cgcNCPewaPlNPRQwapucK6C50wAJVV0/11pk8=;
-        b=NFLJaaQvKr6fu/hTTTdzIa/ZP+3oVQ8brugUkGtkgVJDpTkjEJiZsAIVUmb0Y3C1ow
-         hA5vhNm9J5DMYg0NCxrcWiZqCjJAMpMMYBBy/FHIWkHGZAXH9TwX0lkKB2+5m6SvtV6P
-         tfMbDgRebDrKUZ8hPBkx3MFxAZOJ6pcAx+qY1hG9b2V0OF4ZA/zTl5Jxzi9twOi9sz7t
-         7oEDo+hE0vTw/Wd0R21EN+YPZN1oGZxQrvgG+GN0keqQl4UN8VXPMFIFYrYtrFpKFGAv
-         R3eMEbVHmDcJ36Oi7KmkwYAcM7VQjhuYZ/MEcxqkurbpAex1F1fOnLICRk0jfi/M6luQ
-         n8eQ==
-X-Gm-Message-State: AOJu0YzoM1WxzdKVvnmfwlodMdYeYf39sATq2JxcWn5a9fYAVbOyc2jv
-	uWjmgw09lE9RrzLDyaj/lhPT70+mLoBmlhXYMc+9oS6IgFNSSzRiBsqz
-X-Gm-Gg: AY/fxX4NoNj2LbKKzeDJBlgLg/ksQpqDEGtPMdkHujG4VxtRliB1cF02ZOTpmlKvQqF
-	/Ow7kD+cE2B6Z1yydhHSP4atDFFtM6dTEptX8ySeE/RhGcFos/vupk4EWMqplSljytZKdJO/YGl
-	/uhxw7nwbeR3+74dMLBFBBsZsetNHXfdyMpYgxgtVSTiBh6VRB68O00wBXYJfiXs9J9zUXc21BJ
-	NZvQqs3Hdm1QT5T9gCnsiQ+togb+sM/6zo+fY38B0sQ4jH4tw9vVjKu/KhU4C3pRvMWgLbDQPll
-	p2sjl8ROSbYvadQqod/oevtrecQf9TeEUFFPF+ZS/8561jPeHcJ8paPfqOgS5Cmk2L4jZ8hionw
-	z4O7XrHOlO3VhU43AFu7BBRmdQHCecN4VoXtHLlTWY7zY3nDesQ2ELGWyP+2og32NCVxfbAcUvo
-	YIYO5zEfm273+HZgytraZLmKVcWQrQQKzVmUS7Z3p3HwjW2mWGPqTytHRA8eXBYgy13f7Z9FSGK
-	9YXEHCZM0FTkUU=
-X-Google-Smtp-Source: AGHT+IEDnQUa9zSfL2lUv/4JtoHHxHSNyYruL2hbGDAes18H/X2//8OIQtWXrH+u0RfG3XMQujCiuw==
-X-Received: by 2002:a05:620a:298c:b0:8a6:e160:9b1e with SMTP id af79cd13be357-8c389368b07mr2071391385a.17.1768132944566;
-        Sun, 11 Jan 2026 04:02:24 -0800 (PST)
+        bh=BMIKXAXniZuvKRl633D19ynJhJpEhy1emvggU7dsEJs=;
+        b=onzR4R9HtRFQwFklM0R2Q4BmkDWsgH2EKW9BG5s6cWIsl6q44TPB1h+U2q/0QShxyM
+         iw8eiNDJlMqAqr9AHzhKUC/mvmTLxIPREw00xN+oZFrlkBulTDAhbDTgnQdw2SVtI12U
+         GEOeLnweXZ4anotDwLqvaTmHNksg9wYkxRewdRRB9T9lZ54UBpG76fRIEq0T6O5PXmSO
+         IJEkJAFwbEtrM/VGGT7h6GYDVmLdJXbOKx1M/2HEP3wTSqPmuo6ykow6zJ89K273b9az
+         POpBcDgifsmrXnxRQ2DxiIDaoONeYMxxVcdpONJX3+XM8llb9p4bjAam4tHjsFcE/ytX
+         YbNg==
+X-Gm-Message-State: AOJu0YzRwloDGqo+EzNA1MbdWMAjv7Zb01lBMQA80Jl83YK+6wESztBh
+	lMcM203RKYAZJ7Q7jM4kgxPxj8tNjEhcfp1pCw5/d9Rdw9nVD+9JwpfV
+X-Gm-Gg: AY/fxX7by6dOHOcX7flNoszS/Qaov/KhOLNb2GVcyNZBe4cE6BYzOWKAuuXAP5TZ+hP
+	gkvnmRKmKipLe4E0350mXu3FfJPvLCo5MagJNbev96kYJVganQkjUackJgOch6PH73lg838vzrW
+	Q+v19VHUHYnLoMWt9pd/3Zo8QilJCzf6H+X0wZcw+5Cy2xyzxZfCdciqqK46FTYlP+CVGFdBai2
+	jZRU98L+WgkuUZNxezISCPvfz4RsV/Mbn4t/7iPTzpBTqekTznt/3mgx/6fHbfPzztMToCJisjG
+	qOm/zd4SNIrfE4TxmiP9gNzaQxgRW8So+e3zdBrioqalhsuQDXjt0GLr8BzAdAgbYi4guftAtxH
+	QUIaWHwdibvma98EUknXrBN3Rkmp3zbV990whonU6IYVPaZ7xlEP658OVl3AEJM4wiqfeCQX1wd
+	t6cDIhXNIYC9+MF20twnr0VThpLjce4KTXuelaVz9dUMhceGkkLtfletVs3Z9d9FSXMCVaGDdEZ
+	vT/KAGKRizfq54=
+X-Google-Smtp-Source: AGHT+IHBMClMCNeu/ARCCCNlUxAJJXoFR6QM6EukP5+kwlGhsB9OzLFpbW9xsW6hrd6erv8mPvUUXg==
+X-Received: by 2002:a05:620a:191d:b0:8b2:1568:82e8 with SMTP id af79cd13be357-8c38936f0a2mr2164480885a.35.1768132941885;
+        Sun, 11 Jan 2026 04:02:21 -0800 (PST)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a794bsm1304424785a.9.2026.01.11.04.02.23
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f530a1asm1234173085a.38.2026.01.11.04.02.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jan 2026 04:02:24 -0800 (PST)
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C0773F40068;
-	Sun, 11 Jan 2026 07:02:23 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Sun, 11 Jan 2026 07:02:23 -0500
-X-ME-Sender: <xms:T5FjaSPYY5QlUuMPny6Rlo6fHd1cHh2nRJ_er8Aje3KvhjVTkmgy3A>
-    <xme:T5FjaYhIiNOi4Ho_WLS7Nv1qK_-maOqkkZPGHUm7zGUpEnoLP-4WWxDWfAXnDkSCD
-    _t-Z6l2akhoI_lvJfhjMto1DOfYfDzojSqBH4G9Rfut-7iZvogGqg>
-X-ME-Received: <xmr:T5FjaY4cPGp_lDjAdwdRMnGHR68_ARMdmONhk192k1HUorH6-E1I9OKS>
+        Sun, 11 Jan 2026 04:02:21 -0800 (PST)
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E344AF40068;
+	Sun, 11 Jan 2026 07:02:20 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Sun, 11 Jan 2026 07:02:20 -0500
+X-ME-Sender: <xms:TJFjaaszubS_TV3yy0Fccl1SIjt3XsaujGiTlQwsgXqy3OhM1JfaAg>
+    <xme:TJFjaXBxfJlNFxQhUq15qHLrwJLyz_LUdvGJvbDE7TFN5MkecaTBs0OeQjcMgsZ6k
+    RB5amQzVdqMZROthFqGNVXRffqQp2Cqsa1njZFRXnuzYfjh_mDaFGE>
+X-ME-Received: <xmr:TJFjaVb30fWeO5qVmRGnjF1i7xTaedXtMPHIg-zhU1SWKPNAMhK_sH3C>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudeghedvucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
@@ -86,14 +86,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudeghedvucetufdote
     hrkhdrrhhuthhlrghnugesrghrmhdrtghomhdprhgtphhtthhopehtghhlgieslhhinhhu
     thhrohhnihigrdguvgdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprh
     gtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:T5Fjafcb22d466PvIccM01GqPurZ_bCNqiVV_gNz1vWSrSeDtMEtIw>
-    <xmx:T5FjaRBacCHXqMr4i0sDDs572XNNLDTg36mEdjG0kKil-D4jkw2Q0w>
-    <xmx:T5FjaeD2BvRrYFiFAToNoXWBz-Br-veNICEkkC2eZWB_kUmddiGB4w>
-    <xmx:T5FjaTZ5QHV9J8pmKlt5AJwM8yzMvvNg1RAM-dPdFpevyM7AGVL0KQ>
-    <xmx:T5FjabxriDyRDfQBgvA8Gb4hjs2c_7jUAYrAX82yyP9wW2VagEX_z_rL>
+X-ME-Proxy: <xmx:TJFjaR_zmJk70yegpOeu_O2BfS7NV8nSFNdOhyJyYnOlvdCIqNhTIQ>
+    <xmx:TJFjaRjmcuddYQHa76ou6DK5XkC6zTrKqKRKhfoFrIh0Lhs15kkfNw>
+    <xmx:TJFjaUjGS5Qy1GJyfknmaRDH6CjMATMavwsdZyp3s034-BzggD16fg>
+    <xmx:TJFjaX44xOh3VVGgYmmAop_45a3bGWfmi5rfg1ERTOlP6bz1_t1GWg>
+    <xmx:TJFjaWSN248zGrb1VrJhmJDo5EnehITJaFqYYK-7lOHyC8823TerKBo6>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 11 Jan 2026 07:02:23 -0500 (EST)
+ 11 Jan 2026 07:02:20 -0500 (EST)
 From: Boqun Feng <boqun.feng@gmail.com>
 To: "Peter Zijlstra" <peterz@infradead.org>,
 	"Ingo Molnar" <mingo@kernel.org>
@@ -108,12 +108,12 @@ Cc: rust-for-linux@vger.kernel.org,
 	"Andreas Hindborg" <a.hindborg@kernel.org>,
 	"Benno Lossin" <lossin@kernel.org>,
 	"Danilo Krummrich" <dakr@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
 	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 05/36] rust: helpers: Add i8/i16 atomic_read_acquire/atomic_set_release helpers
-Date: Sun, 11 Jan 2026 20:01:38 +0800
-Message-ID: <20260111120209.6133-3-boqun.feng@gmail.com>
+Subject: [PATCH 04/36] rust: sync: Implement Unpin for ARef
+Date: Sun, 11 Jan 2026 20:01:37 +0800
+Message-ID: <20260111120209.6133-2-boqun.feng@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260111120209.6133-1-boqun.feng@gmail.com>
 References: <20260111115808.5702-1-boqun.feng@gmail.com>
@@ -126,80 +126,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-Add helper functions to expose smp_load_acquire() and
-smp_store_release() for i8 and i16 types.
+The default implementation of Unpin for ARef<T> is conditional on T
+being Unpin due to its PhantomData<T> field. However, this is overly
+strict as pointers to T are legal to move even if T itself cannot move.
 
-The smp_load_acquire() and smp_store_release() macros require type
-information (sizeof) to generate appropriate architecture-specific
-memory ordering instructions. Therefore, separate helper functions are
-needed for each type size.
+Since commit 66f1ea83d9f8 ("rust: lock: Add a Pin<&mut T> accessor")
+this causes build failures when combined with a Mutex that contains an
+field ARef<T>, because almost any type that ARef is used with is !Unpin.
 
-These helpers expose different symbol names than their C counterparts
-so they are split into atomic_ext.c instead of atomic.c. The symbol
-names; atomic_[i8|i16]_read_acquire and atomic_[i8|i16]_set_release
-makes the interface Rust/C clear, consistent with i32/i64.
-
-These helpers will be used by the upcoming Atomic<i8> and Atomic<i16>
-implementation to provide proper Acquire/Release semantics across all
-architectures.
-
-[boqun: Rename the functions from {load,store} to {read,set} to avoid
-future adjustment]
-
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20251211113826.1299077-2-fujita.tomonori@gmail.com
+Link: https://patch.msgid.link/20251218-unpin-for-aref-v2-1-30d77129cbc6@google.com
 ---
- rust/helpers/atomic_ext.c | 23 +++++++++++++++++++++++
- rust/helpers/helpers.c    |  1 +
- 2 files changed, 24 insertions(+)
- create mode 100644 rust/helpers/atomic_ext.c
+ rust/kernel/sync/aref.rs | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
-new file mode 100644
-index 000000000000..1fb624147aa4
---- /dev/null
-+++ b/rust/helpers/atomic_ext.c
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <asm/barrier.h>
-+
-+__rust_helper s8 rust_helper_atomic_i8_read_acquire(s8 *ptr)
-+{
-+	return smp_load_acquire(ptr);
-+}
-+
-+__rust_helper s16 rust_helper_atomic_i16_read_acquire(s16 *ptr)
-+{
-+	return smp_load_acquire(ptr);
-+}
-+
-+__rust_helper void rust_helper_atomic_i8_set_release(s8 *ptr, s8 val)
-+{
-+	smp_store_release(ptr, val);
-+}
-+
-+__rust_helper void rust_helper_atomic_i16_set_release(s16 *ptr, s16 val)
-+{
-+	smp_store_release(ptr, val);
-+}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 79c72762ad9c..15d75578f459 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -8,6 +8,7 @@
-  */
+diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+index 0d24a0432015..0616c0353c2b 100644
+--- a/rust/kernel/sync/aref.rs
++++ b/rust/kernel/sync/aref.rs
+@@ -83,6 +83,9 @@ unsafe impl<T: AlwaysRefCounted + Sync + Send> Send for ARef<T> {}
+ // example, when the reference count reaches zero and `T` is dropped.
+ unsafe impl<T: AlwaysRefCounted + Sync + Send> Sync for ARef<T> {}
  
- #include "atomic.c"
-+#include "atomic_ext.c"
- #include "auxiliary.c"
- #include "barrier.c"
- #include "binder.c"
++// Even if `T` is pinned, pointers to `T` can still move.
++impl<T: AlwaysRefCounted> Unpin for ARef<T> {}
++
+ impl<T: AlwaysRefCounted> ARef<T> {
+     /// Creates a new instance of [`ARef`].
+     ///
 -- 
 2.51.0
 
