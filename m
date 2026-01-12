@@ -1,95 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AE524A07C;
-	Mon, 12 Jan 2026 16:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB20E2FDC5C;
+	Mon, 12 Jan 2026 16:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768235422; cv=none; b=CoinrwUhEUMYdub9akHWlpGsX8YJxwkHgIjWa/KT1kz6nn3g5biCC7hyXHwzutSGxZlP3tKRtFYUhzVzf5AfE81ub098Xsya/5ZnUzRW3gziJ7cCPCeM3/tMakFNkDSUIlzO5rbuDUnVWAyKzVBvObT7zh5se9mX79wN5H9IHDg=
+	t=1768236895; cv=none; b=UHzasv9Vlz/00q4C93mP1tbP8Vc2KsVX2zi0FxpFGiznLddcOi6kwhMLmoDVDLTOU3+Z3TfKaB67d0TrR+z+W7hyD903BgDFgOj8Qm4L8dnj/oyhGKOm1nhFwjBAmjDYj2p/t7+WiXnoojl1KriyR/cJ3zTfFRffz/FolF9pwWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768235422; c=relaxed/simple;
-	bh=D5FW8AgSUopXzALYEw+ZPNzXsyiuugZWfH+sRTMD5e0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=iCOky33dYnz0Lq/vGIRwjhuUaNmS4a6knAMqUH64ePzS9vCDKtnd/ia3PngaPXL54upbZOmTgwQmerULvxCx1fgRHZAGnMWGHN61txXcEDXPAaHU7v5QgW16/+9loLmNUDnwMRg9H/0E4T6leFSShF6V/qgEwErzVwWi9HTmpvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTvsvVQN; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTvsvVQN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED24C116D0;
-	Mon, 12 Jan 2026 16:30:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768235422;
-	bh=D5FW8AgSUopXzALYEw+ZPNzXsyiuugZWfH+sRTMD5e0=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=dTvsvVQNZHYA37f+XKLYgIeYOhjH0fmOW2mu4XspUOMDo2/7DpxUR45xt6MTUlz5B
-	 FnayInfdfpA+uzL9Mq90zfReWacroF8Nz2TP5SmC01Z4QIy8/GPeju/6Tjmaz4ZNK+
-	 JhxgSy4/2rr7oOovpvIk6LLgrPIn+Z7wEhabcZG97oj3RIs6cy65IHYKt26yVjYPtq
-	 zRqJGMkius2NX0RZ0rB1NraEGe8UQWlRkhVJUWE5cyc/XJly4y1vWfWdk90EmaZlb1
-	 bKjGy3sNgE/fX249OuHxaBrG8fjfdeodFDiexE0WToN+E8XAzqUPFn7HUqvQBqVtua
-	 hb1cvLAGP0BTQ==
+	s=arc-20240116; t=1768236895; c=relaxed/simple;
+	bh=jwnYMhEKwVu0vR7ZQgYLXhidRyb6PMIcJlUy+4WgWc4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iTOB09BKrdtBTeOYHZBKKnugVLFhMFfUypn13My9AyAr4tbAblxoZ5Rl+o1jdN5g8phEVB6yI39pf7hfFeonLL4P1W4I0RUSdIKUNUtMjf3PhpNulUnlOZzXQulb/zADTkwEEa3zRO7ecpkDxjORyspMYxcLgLlJEBNtgDZgcjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9DDFD1607C0;
+	Mon, 12 Jan 2026 16:54:51 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf18.hostedemail.com (Postfix) with ESMTPA id 5996638;
+	Mon, 12 Jan 2026 16:54:49 +0000 (UTC)
+Date: Mon, 12 Jan 2026 11:54:52 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, Ard Biesheuvel
+ <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: add Rust files to STATIC BRANCH/CALL and
+ TRACING
+Message-ID: <20260112115452.3e0f63ef@gandalf.local.home>
+In-Reply-To: <CANiq72nY2xUj0aG4q7YOKxt0EV29Jwos_kjAPD89eE3_irsr0g@mail.gmail.com>
+References: <20260107-jump-label-rust-maintainers-v1-1-702b03482f2e@google.com>
+	<CANiq72nV0Z_UjdAwT=41TjjfmKnT6WL4hVNcxg_QCe7TAEYK_Q@mail.gmail.com>
+	<20260112100006.7db6d31d@gandalf.local.home>
+	<CANiq72nY2xUj0aG4q7YOKxt0EV29Jwos_kjAPD89eE3_irsr0g@mail.gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 12 Jan 2026 17:30:16 +0100
-Message-Id: <DFMR5480EBNW.2TGBZVU4XZ8U7@kernel.org>
-To: "Bjorn Helgaas" <bhelgaas@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2] PCI: Provide pci_free_irq_vectors() for CONFIG_PCI=n
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Dirk
- Behme" <dirk.behme@gmail.com>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>, "kernel test robot" <lkp@intel.com>, "Liang
- Jie" <liangjie@lixiang.com>, "Drew Fustini" <fustini@kernel.org>, "David
- Gow" <davidgow@google.com>
-References: <20251226113938.52145-1-boqun.feng@gmail.com>
-In-Reply-To: <20251226113938.52145-1-boqun.feng@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4q5j8bueff6pnxbmnhg6njdhqeg6roy7
+X-Rspamd-Server: rspamout04
+X-Rspamd-Queue-Id: 5996638
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/xqfRlb6I/2a36Z2SJRgyMvdbEDafFbTE=
+X-HE-Tag: 1768236889-694394
+X-HE-Meta: U2FsdGVkX19qWfTHJ2XXWhhB/EIyMdyPSb5uPGk5R5CB6/liUJ7vEi5wSeztjz931bytiEc8XNliZYbVowBhvFn5dhzJaEZnOP5FjK3gLO5x6FMt/9qjPVz2oZ3s82jWziSVyyKXryY5De4MGWloL61wB87H6UsDQvHWzVVWumCuBdeJ+Or+260xsmH29MDsfiH6ojSEt6SJPBjbl+cU6zI0+mM21m2gKtWW0PQMHaqEdlNLm2AMOTssoMO44SJgQ66f9ns4npJYPXPbqXzzdwBG458JWLXQDCsgnrgmtdpXvo/QmhXzithsgse/XP2ZblnHZIh8z8MfFBQRNwiYutEMJX0YRFOq
 
-On Fri Dec 26, 2025 at 12:39 PM CET, Boqun Feng wrote:
-> Commit 473b9f331718 ("rust: pci: fix build failure when CONFIG_PCI_MSI
-> is disabled") fixed a build error by providing rust helpers when
-> CONFIG_PCI_MSI=3Dn. However the rust helpers rely on the
-> pci_alloc_irq_vectors() function is defined, which is not true when
-> CONFIG_PCI=3Dn. There are multiple ways to fix this, e.g. a possible fix
-> could be just remove the calling of pci_alloc_irq_vectors() since it's
-> empty when CONFIG_PCI_MSI=3Dn anyway. However, since PCI irq APIs, such a=
-s
-> pci_alloc_irq_vectors(), are already defined even when CONFIG_PCI=3Dn, th=
-e
-> more reasonable fix is to define pci_alloc_irq_vectors() when
-> CONFIG_PCI=3Dn and this aligns with the situations of other primitives as
-> well.
->
-> Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Closes: https://lore.kernel.org/rust-for-linux/20251209014312.575940-1-fu=
-jita.tomonori@gmail.com/
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202512220740.4Kexm4dW-lkp@i=
-ntel.com/
-> Reported-by: Liang Jie <liangjie@lixiang.com>
-> Closes: https://lore.kernel.org/rust-for-linux/20251222034415.1384223-1-b=
-uaajxlj@163.com/
-> Fixes: 473b9f331718 ("rust: pci: fix build failure when CONFIG_PCI_MSI is=
- disabled")
-> Reviewed-by: Drew Fustini <fustini@kernel.org>
-> Reviewed-by: David Gow <davidgow@google.com>
-> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+On Mon, 12 Jan 2026 16:11:40 +0100
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-Bjorn, I just received another bug report due to this issue. Can you please=
- pick
-this up for the next -rc?
+> There are several ways subsystems have gone about it:
+> 
+>   - Sometimes they may just add the people to the existing entry.
+> 
+>   - Sometimes they create sub-entries like you suggest (usually with
+> square brackets like " [RUST]" but there is also a " - RUST" used),
+> e.g.
+> 
+>         BLOCK LAYER DEVICE DRIVER API [RUST]
+>         MEMORY MANAGEMENT - RUST
+> 
+>   - Sometimes they add them into the existing entry but with an added
+> "(RUST)" after their names, e.g. Boqun in LOCKING PRIMITIVES:
+> 
+>         M:    Boqun Feng <boqun.feng@gmail.com> (LOCKDEP & RUST)
 
-If you don't have anything else to send, I can pick it up as well. :)
+OK, add "[RUST]" instead ;-)
 
-Thanks,
-Danilo
+-- Steve
