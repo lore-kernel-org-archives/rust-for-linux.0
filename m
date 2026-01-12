@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AD3238C0F;
-	Mon, 12 Jan 2026 17:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D31352F97;
+	Mon, 12 Jan 2026 17:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768237866; cv=none; b=uTCmPGfh15rVjOrInGpBr7n4VK6dbBbogD+R0+3bekr8My3ZraTyAoBvmt2Sb5COg+V8fCKL1h/rKdOjMiIihs1HptR9HsMN3ytNskrBzKlQ0dg+fRQ2j8qzHaSERJYRhoX8l/dshyQjUNSdl5e/MV8YB6S4niYaCiV6cVXi0HM=
+	t=1768237874; cv=none; b=iL/qTVYky5azZfDeMP6hb8MPJfOn5idu9P59V6+Cif2Ki+mcioBPEa9BeKHmkCBttjj7RfjczZ3L+gESQWmnQQ8SRBBTopBgh2pugPz25hDTZQGCbRrpK47cC10YiJqxJkGXKey2LDm+K2JqDEe+J7RhhtDZcIVOOxD3FA+1Dj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768237866; c=relaxed/simple;
-	bh=g1xdWybaHzatWpQm2xyOQnEhqq5D9ySHbjOF55t+a0s=;
+	s=arc-20240116; t=1768237874; c=relaxed/simple;
+	bh=P/Pv4yF229DHekzlsNrpfZoIEIo6I1ml0CKVA3f3cKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KSoHHHiBkHx8JHRMZV7VyweJeNJ5eZl3Zk5DCjj9J1B4g1yaWNjkkaZl+JG0u+3iopntV6mD/sr5PEWXAaXRI8fG7HJGknfvK568VqZyFmKxll8sxXzZJyYiJHzMscMtHak8HkFjiH3/dZnX/YusMYtsAIGkaxN3jetJh6Rb1fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cT1vmmf/; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=imcaGW8ON1Eo00lzxPXpZ/zzQ/KQjY0y7SVduX1S2BqTEbNFGWwTW2V32nSPlEmGEynapCu4d70YwN28+NWkCRp5Wkv3Onqdf4mLgAVJmaXhXmxs/1ECGYaplTsMp14FCbYq72RlYc6S8m7/4foMMIUYLxW+3MSH/SweO4FMTNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uvYRoINe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cT1vmmf/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0221C116D0;
-	Mon, 12 Jan 2026 17:11:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uvYRoINe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB46C16AAE;
+	Mon, 12 Jan 2026 17:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768237866;
-	bh=g1xdWybaHzatWpQm2xyOQnEhqq5D9ySHbjOF55t+a0s=;
+	s=k20201202; t=1768237873;
+	bh=P/Pv4yF229DHekzlsNrpfZoIEIo6I1ml0CKVA3f3cKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
-	b=cT1vmmf/AckyVNtvt0kcsCq8JwiqS6MEwdFvpNjoYDy0++yrxJ1eH/G6B4nFG4I8Q
-	 na/cZrwHtuiKdkxMwLjEVlsa53EMTuuRcTkSAqH9lKOeUJDVz3hWaDP+NA88zuQnpH
-	 Kw7eHC4xqiiPLHPmdImqEYxDk+PbUodVuRVQKFvLa1hbrO3xW6q8GekjR/phqvZLRZ
-	 8VEwpBRrqBt6/a9CuKtHxUlI4dB3q4RGgUMgkubkHYV6JwNk6sb4p8c1Fg4uzhp8s3
-	 IhTwtBET3JfAhsiUrpPrIqG4XVW2pGTToiop0d5onRF10Q8x0sS8yjCJohKHOBGBLj
-	 UeSmsOHEN2UdA==
+	b=uvYRoINeTD3En4ammtnOLUJBZ9KsepsJAL/yDzvAjp1S9n1C1plIUhfsKQYbg9+sO
+	 azZU8QmHydMK0irL7x72P6zAhGXxNE4Hz6fulcU10L32Na8pKJLGl3xr/i5ipMsOv2
+	 LItBxxtHSSaqIYrc/HTpRlRAgQ/PS+aGkezcuHWQWWUKPGU6CiLzKNT6mhke6wdWiC
+	 7N7Ya8ZVsDetwezDtn+mJ5YaZGCxjbpIqiV1tGjiEC7TE2HvZu3noEOovPTZaHuiim
+	 UOseoexNiX+efTbtT05nbRHvXjHuh0h72A6YZON4OjalTj/SucVAfycNOsTa2zGsDb
+	 6/mvw7YQGEGnQ==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -36,25 +36,14 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Rae Moar <raemoar63@gmail.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>,
 	Tamir Duberstein <tamird@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>
 Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	linux-modules@vger.kernel.org
-Subject: [PATCH v3 02/12] rust: macros: use `quote!` from vendored crate
-Date: Mon, 12 Jan 2026 17:07:13 +0000
-Message-ID: <20260112170919.1888584-3-gary@kernel.org>
+	Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 03/12] rust: macros: convert `#[vtable]` macro to use `syn`
+Date: Mon, 12 Jan 2026 17:07:14 +0000
+Message-ID: <20260112170919.1888584-4-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260112170919.1888584-1-gary@kernel.org>
 References: <20260112170919.1888584-1-gary@kernel.org>
@@ -65,459 +54,243 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-With `quote` crate now vendored in the kernel, we can remove our custom
-`quote!` macro implementation and just rely on that crate instead.
+`#[vtable]` is converted to use syn. This is more robust than the
+previous heuristic-based searching of defined methods and functions.
 
-The `quote` crate uses types from the `proc-macro2` library so we also
-update to use that, and perform conversion in the top-level lib.rs.
-
-Clippy complains about unnecessary `.to_string()` as `proc-macro2`
-provides additional `PartialEq` impl, so they are removed.
+When doing so, the trait and impl are split into two code paths as the
+types are distinct when parsed by `syn`.
 
 Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-Reviewed-by: Benno Lossin <lossin@kernel.org>
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/macros/concat_idents.rs |   2 +-
- rust/macros/export.rs        |   4 +-
- rust/macros/fmt.rs           |   4 +-
- rust/macros/helpers.rs       |   4 +-
- rust/macros/kunit.rs         |   5 +-
- rust/macros/lib.rs           |  21 ++--
- rust/macros/module.rs        |   6 +-
- rust/macros/paste.rs         |   2 +-
- rust/macros/quote.rs         | 182 -----------------------------------
- rust/macros/vtable.rs        |   7 +-
- 10 files changed, 32 insertions(+), 205 deletions(-)
- delete mode 100644 rust/macros/quote.rs
+ rust/macros/lib.rs    |   9 ++-
+ rust/macros/vtable.rs | 169 +++++++++++++++++++++++-------------------
+ 2 files changed, 98 insertions(+), 80 deletions(-)
 
-diff --git a/rust/macros/concat_idents.rs b/rust/macros/concat_idents.rs
-index 7e4b450f3a507..12cb231c3d715 100644
---- a/rust/macros/concat_idents.rs
-+++ b/rust/macros/concat_idents.rs
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use proc_macro::{token_stream, Ident, TokenStream, TokenTree};
-+use proc_macro2::{token_stream, Ident, TokenStream, TokenTree};
- 
- use crate::helpers::expect_punct;
- 
-diff --git a/rust/macros/export.rs b/rust/macros/export.rs
-index a08f6337d5c8d..92d9b30971929 100644
---- a/rust/macros/export.rs
-+++ b/rust/macros/export.rs
-@@ -1,7 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+use proc_macro2::TokenStream;
-+use quote::quote;
-+
- use crate::helpers::function_name;
--use proc_macro::TokenStream;
- 
- /// Please see [`crate::export`] for documentation.
- pub(crate) fn export(_attr: TokenStream, ts: TokenStream) -> TokenStream {
-diff --git a/rust/macros/fmt.rs b/rust/macros/fmt.rs
-index 2f4b9f6e22110..19f709262552b 100644
---- a/rust/macros/fmt.rs
-+++ b/rust/macros/fmt.rs
-@@ -1,8 +1,10 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use proc_macro::{Ident, TokenStream, TokenTree};
- use std::collections::BTreeSet;
- 
-+use proc_macro2::{Ident, TokenStream, TokenTree};
-+use quote::quote_spanned;
-+
- /// Please see [`crate::fmt`] for documentation.
- pub(crate) fn fmt(input: TokenStream) -> TokenStream {
-     let mut input = input.into_iter();
-diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
-index 365d7eb499c08..13fafaba12261 100644
---- a/rust/macros/helpers.rs
-+++ b/rust/macros/helpers.rs
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use proc_macro::{token_stream, Group, Ident, TokenStream, TokenTree};
-+use proc_macro2::{token_stream, Group, Ident, TokenStream, TokenTree};
- 
- pub(crate) fn try_ident(it: &mut token_stream::IntoIter) -> Option<String> {
-     if let Some(TokenTree::Ident(ident)) = it.next() {
-@@ -86,7 +86,7 @@ pub(crate) fn function_name(input: TokenStream) -> Option<Ident> {
-     let mut input = input.into_iter();
-     while let Some(token) = input.next() {
-         match token {
--            TokenTree::Ident(i) if i.to_string() == "fn" => {
-+            TokenTree::Ident(i) if i == "fn" => {
-                 if let Some(TokenTree::Ident(i)) = input.next() {
-                     return Some(i);
-                 }
-diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-index b395bb0536959..5cd6aa5eef07d 100644
---- a/rust/macros/kunit.rs
-+++ b/rust/macros/kunit.rs
-@@ -4,10 +4,11 @@
- //!
- //! Copyright (c) 2023 José Expósito <jose.exposito89@gmail.com>
- 
--use proc_macro::{Delimiter, Group, TokenStream, TokenTree};
- use std::collections::HashMap;
- use std::fmt::Write;
- 
-+use proc_macro2::{Delimiter, Group, TokenStream, TokenTree};
-+
- pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     let attr = attr.to_string();
- 
-@@ -59,7 +60,7 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-                 }
-                 _ => (),
-             },
--            TokenTree::Ident(i) if i.to_string() == "fn" && attributes.contains_key("test") => {
-+            TokenTree::Ident(i) if i == "fn" && attributes.contains_key("test") => {
-                 if let Some(TokenTree::Ident(test_name)) = body_it.next() {
-                     tests.push((test_name, attributes.remove("cfg").unwrap_or_default()))
-                 }
 diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index b38002151871a..945982c21f703 100644
+index 945982c21f703..9955c04dbaae3 100644
 --- a/rust/macros/lib.rs
 +++ b/rust/macros/lib.rs
-@@ -11,8 +11,6 @@
- // to avoid depending on the full `proc_macro_span` on Rust >= 1.88.0.
- #![cfg_attr(not(CONFIG_RUSTC_HAS_SPAN_FILE), feature(proc_macro_span))]
+@@ -22,6 +22,8 @@
  
--#[macro_use]
--mod quote;
- mod concat_idents;
- mod export;
- mod fmt;
-@@ -132,7 +130,7 @@
- ///     the kernel module.
- #[proc_macro]
- pub fn module(ts: TokenStream) -> TokenStream {
--    module::module(ts)
-+    module::module(ts.into()).into()
- }
+ use proc_macro::TokenStream;
  
- /// Declares or implements a vtable trait.
-@@ -207,7 +205,7 @@ pub fn module(ts: TokenStream) -> TokenStream {
++use syn::parse_macro_input;
++
+ /// Declares a kernel module.
+ ///
+ /// The `type` argument should be a type which implements the [`Module`]
+@@ -204,8 +206,11 @@ pub fn module(ts: TokenStream) -> TokenStream {
+ ///
  /// [`kernel::error::VTABLE_DEFAULT_ERROR`]: ../kernel/error/constant.VTABLE_DEFAULT_ERROR.html
  #[proc_macro_attribute]
- pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
--    vtable::vtable(attr, ts)
-+    vtable::vtable(attr.into(), ts.into()).into()
- }
- 
- /// Export a function so that C code can call it via a header file.
-@@ -230,7 +228,7 @@ pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
- /// automatically exported with `EXPORT_SYMBOL_GPL`.
- #[proc_macro_attribute]
- pub fn export(attr: TokenStream, ts: TokenStream) -> TokenStream {
--    export::export(attr, ts)
-+    export::export(attr.into(), ts.into()).into()
- }
- 
- /// Like [`core::format_args!`], but automatically wraps arguments in [`kernel::fmt::Adapter`].
-@@ -248,7 +246,7 @@ pub fn export(attr: TokenStream, ts: TokenStream) -> TokenStream {
- /// [`pr_info!`]: ../kernel/macro.pr_info.html
- #[proc_macro]
- pub fn fmt(input: TokenStream) -> TokenStream {
--    fmt::fmt(input)
-+    fmt::fmt(input.into()).into()
- }
- 
- /// Concatenate two identifiers.
-@@ -306,7 +304,7 @@ pub fn fmt(input: TokenStream) -> TokenStream {
- /// ```
- #[proc_macro]
- pub fn concat_idents(ts: TokenStream) -> TokenStream {
--    concat_idents::concat_idents(ts)
-+    concat_idents::concat_idents(ts.into()).into()
- }
- 
- /// Paste identifiers together.
-@@ -444,9 +442,12 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
- /// [`paste`]: https://docs.rs/paste/
- #[proc_macro]
- pub fn paste(input: TokenStream) -> TokenStream {
--    let mut tokens = input.into_iter().collect();
-+    let mut tokens = proc_macro2::TokenStream::from(input).into_iter().collect();
-     paste::expand(&mut tokens);
--    tokens.into_iter().collect()
-+    tokens
-+        .into_iter()
-+        .collect::<proc_macro2::TokenStream>()
+-pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
+-    vtable::vtable(attr.into(), ts.into()).into()
++pub fn vtable(attr: TokenStream, input: TokenStream) -> TokenStream {
++    parse_macro_input!(attr as syn::parse::Nothing);
++    vtable::vtable(parse_macro_input!(input))
++        .unwrap_or_else(|e| e.into_compile_error())
 +        .into()
  }
  
- /// Registers a KUnit test suite and its test cases using a user-space like syntax.
-@@ -473,5 +474,5 @@ pub fn paste(input: TokenStream) -> TokenStream {
- /// ```
- #[proc_macro_attribute]
- pub fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
--    kunit::kunit_tests(attr, ts)
-+    kunit::kunit_tests(attr.into(), ts.into()).into()
- }
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 80cb9b16f5aaf..b855a2b586e18 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -1,9 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use crate::helpers::*;
--use proc_macro::{token_stream, Delimiter, Literal, TokenStream, TokenTree};
- use std::fmt::Write;
- 
-+use proc_macro2::{token_stream, Delimiter, Literal, TokenStream, TokenTree};
-+
-+use crate::helpers::*;
-+
- fn expect_string_array(it: &mut token_stream::IntoIter) -> Vec<String> {
-     let group = expect_group(it);
-     assert_eq!(group.delimiter(), Delimiter::Bracket);
-diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
-index cce712d19855b..2181e312a7d32 100644
---- a/rust/macros/paste.rs
-+++ b/rust/macros/paste.rs
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use proc_macro::{Delimiter, Group, Ident, Spacing, Span, TokenTree};
-+use proc_macro2::{Delimiter, Group, Ident, Spacing, Span, TokenTree};
- 
- fn concat_helper(tokens: &[TokenTree]) -> Vec<(String, Span)> {
-     let mut tokens = tokens.iter();
-diff --git a/rust/macros/quote.rs b/rust/macros/quote.rs
-deleted file mode 100644
-index ddfc21577539c..0000000000000
---- a/rust/macros/quote.rs
-+++ /dev/null
-@@ -1,182 +0,0 @@
--// SPDX-License-Identifier: Apache-2.0 OR MIT
--
--use proc_macro::{TokenStream, TokenTree};
--
--pub(crate) trait ToTokens {
--    fn to_tokens(&self, tokens: &mut TokenStream);
--}
--
--impl<T: ToTokens> ToTokens for Option<T> {
--    fn to_tokens(&self, tokens: &mut TokenStream) {
--        if let Some(v) = self {
--            v.to_tokens(tokens);
--        }
--    }
--}
--
--impl ToTokens for proc_macro::Group {
--    fn to_tokens(&self, tokens: &mut TokenStream) {
--        tokens.extend([TokenTree::from(self.clone())]);
--    }
--}
--
--impl ToTokens for proc_macro::Ident {
--    fn to_tokens(&self, tokens: &mut TokenStream) {
--        tokens.extend([TokenTree::from(self.clone())]);
--    }
--}
--
--impl ToTokens for TokenTree {
--    fn to_tokens(&self, tokens: &mut TokenStream) {
--        tokens.extend([self.clone()]);
--    }
--}
--
--impl ToTokens for TokenStream {
--    fn to_tokens(&self, tokens: &mut TokenStream) {
--        tokens.extend(self.clone());
--    }
--}
--
--/// Converts tokens into [`proc_macro::TokenStream`] and performs variable interpolations with
--/// the given span.
--///
--/// This is a similar to the
--/// [`quote_spanned!`](https://docs.rs/quote/latest/quote/macro.quote_spanned.html) macro from the
--/// `quote` crate but provides only just enough functionality needed by the current `macros` crate.
--macro_rules! quote_spanned {
--    ($span:expr => $($tt:tt)*) => {{
--        let mut tokens = ::proc_macro::TokenStream::new();
--        {
--            #[allow(unused_variables)]
--            let span = $span;
--            quote_spanned!(@proc tokens span $($tt)*);
--        }
--        tokens
--    }};
--    (@proc $v:ident $span:ident) => {};
--    (@proc $v:ident $span:ident #$id:ident $($tt:tt)*) => {
--        $crate::quote::ToTokens::to_tokens(&$id, &mut $v);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident #(#$id:ident)* $($tt:tt)*) => {
--        for token in $id {
--            $crate::quote::ToTokens::to_tokens(&token, &mut $v);
--        }
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident ( $($inner:tt)* ) $($tt:tt)*) => {
--        #[allow(unused_mut)]
--        let mut tokens = ::proc_macro::TokenStream::new();
--        quote_spanned!(@proc tokens $span $($inner)*);
--        $v.extend([::proc_macro::TokenTree::Group(::proc_macro::Group::new(
--            ::proc_macro::Delimiter::Parenthesis,
--            tokens,
--        ))]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident [ $($inner:tt)* ] $($tt:tt)*) => {
--        let mut tokens = ::proc_macro::TokenStream::new();
--        quote_spanned!(@proc tokens $span $($inner)*);
--        $v.extend([::proc_macro::TokenTree::Group(::proc_macro::Group::new(
--            ::proc_macro::Delimiter::Bracket,
--            tokens,
--        ))]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident { $($inner:tt)* } $($tt:tt)*) => {
--        let mut tokens = ::proc_macro::TokenStream::new();
--        quote_spanned!(@proc tokens $span $($inner)*);
--        $v.extend([::proc_macro::TokenTree::Group(::proc_macro::Group::new(
--            ::proc_macro::Delimiter::Brace,
--            tokens,
--        ))]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident :: $($tt:tt)*) => {
--        $v.extend([::proc_macro::Spacing::Joint, ::proc_macro::Spacing::Alone].map(|spacing| {
--            ::proc_macro::TokenTree::Punct(::proc_macro::Punct::new(':', spacing))
--        }));
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident : $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Punct(
--            ::proc_macro::Punct::new(':', ::proc_macro::Spacing::Alone),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident , $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Punct(
--            ::proc_macro::Punct::new(',', ::proc_macro::Spacing::Alone),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident @ $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Punct(
--            ::proc_macro::Punct::new('@', ::proc_macro::Spacing::Alone),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident ! $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Punct(
--            ::proc_macro::Punct::new('!', ::proc_macro::Spacing::Alone),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident ; $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Punct(
--            ::proc_macro::Punct::new(';', ::proc_macro::Spacing::Alone),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident + $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Punct(
--            ::proc_macro::Punct::new('+', ::proc_macro::Spacing::Alone),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident = $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Punct(
--            ::proc_macro::Punct::new('=', ::proc_macro::Spacing::Alone),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident # $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Punct(
--            ::proc_macro::Punct::new('#', ::proc_macro::Spacing::Alone),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident & $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Punct(
--            ::proc_macro::Punct::new('&', ::proc_macro::Spacing::Alone),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident _ $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Ident(
--            ::proc_macro::Ident::new("_", $span),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--    (@proc $v:ident $span:ident $id:ident $($tt:tt)*) => {
--        $v.extend([::proc_macro::TokenTree::Ident(
--            ::proc_macro::Ident::new(stringify!($id), $span),
--        )]);
--        quote_spanned!(@proc $v $span $($tt)*);
--    };
--}
--
--/// Converts tokens into [`proc_macro::TokenStream`] and performs variable interpolations with
--/// mixed site span ([`Span::mixed_site()`]).
--///
--/// This is a similar to the [`quote!`](https://docs.rs/quote/latest/quote/macro.quote.html) macro
--/// from the `quote` crate but provides only just enough functionality needed by the current
--/// `macros` crate.
--///
--/// [`Span::mixed_site()`]: https://doc.rust-lang.org/proc_macro/struct.Span.html#method.mixed_site
--macro_rules! quote {
--    ($($tt:tt)*) => {
--        quote_spanned!(::proc_macro::Span::mixed_site() => $($tt)*)
--    }
--}
+ /// Export a function so that C code can call it via a header file.
 diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
-index ee06044fcd4f3..a67d1cc81a2d3 100644
+index a67d1cc81a2d3..72ae0a1816a04 100644
 --- a/rust/macros/vtable.rs
 +++ b/rust/macros/vtable.rs
-@@ -1,9 +1,10 @@
+@@ -1,97 +1,110 @@
  // SPDX-License-Identifier: GPL-2.0
  
--use proc_macro::{Delimiter, Group, TokenStream, TokenTree};
- use std::collections::HashSet;
- use std::fmt::Write;
+-use std::collections::HashSet;
+-use std::fmt::Write;
++use std::{
++    collections::HashSet,
++    iter::Extend, //
++};
  
-+use proc_macro2::{Delimiter, Group, TokenStream, TokenTree};
-+
- pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
-     let mut tokens: Vec<_> = ts.into_iter().collect();
+-use proc_macro2::{Delimiter, Group, TokenStream, TokenTree};
++use proc_macro2::{
++    Ident,
++    TokenStream, //
++};
++use quote::ToTokens;
++use syn::{
++    parse_quote,
++    Error,
++    ImplItem,
++    Item,
++    ItemImpl,
++    ItemTrait,
++    Result,
++    TraitItem, //
++};
  
-@@ -31,7 +32,7 @@ pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
-     let mut consts = HashSet::new();
-     while let Some(token) = body_it.next() {
-         match token {
--            TokenTree::Ident(ident) if ident.to_string() == "fn" => {
-+            TokenTree::Ident(ident) if ident == "fn" => {
-                 let fn_name = match body_it.next() {
-                     Some(TokenTree::Ident(ident)) => ident.to_string(),
-                     // Possibly we've encountered a fn pointer type instead.
-@@ -39,7 +40,7 @@ pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
-                 };
-                 functions.push(fn_name);
+-pub(crate) fn vtable(_attr: TokenStream, ts: TokenStream) -> TokenStream {
+-    let mut tokens: Vec<_> = ts.into_iter().collect();
++fn handle_trait(mut item: ItemTrait) -> Result<ItemTrait> {
++    let mut gen_items = Vec::new();
++    let mut gen_consts = HashSet::new();
+ 
+-    // Scan for the `trait` or `impl` keyword.
+-    let is_trait = tokens
+-        .iter()
+-        .find_map(|token| match token {
+-            TokenTree::Ident(ident) => match ident.to_string().as_str() {
+-                "trait" => Some(true),
+-                "impl" => Some(false),
+-                _ => None,
+-            },
+-            _ => None,
+-        })
+-        .expect("#[vtable] attribute should only be applied to trait or impl block");
++    gen_items.push(parse_quote! {
++         /// A marker to prevent implementors from forgetting to use [`#[vtable]`](vtable)
++         /// attribute when implementing this trait.
++         const USE_VTABLE_ATTR: ();
++    });
+ 
+-    // Retrieve the main body. The main body should be the last token tree.
+-    let body = match tokens.pop() {
+-        Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Brace => group,
+-        _ => panic!("cannot locate main body of trait or impl block"),
+-    };
+-
+-    let mut body_it = body.stream().into_iter();
+-    let mut functions = Vec::new();
+-    let mut consts = HashSet::new();
+-    while let Some(token) = body_it.next() {
+-        match token {
+-            TokenTree::Ident(ident) if ident == "fn" => {
+-                let fn_name = match body_it.next() {
+-                    Some(TokenTree::Ident(ident)) => ident.to_string(),
+-                    // Possibly we've encountered a fn pointer type instead.
+-                    _ => continue,
+-                };
+-                functions.push(fn_name);
+-            }
+-            TokenTree::Ident(ident) if ident == "const" => {
+-                let const_name = match body_it.next() {
+-                    Some(TokenTree::Ident(ident)) => ident.to_string(),
+-                    // Possibly we've encountered an inline const block instead.
+-                    _ => continue,
+-                };
+-                consts.insert(const_name);
++    for item in &item.items {
++        if let TraitItem::Fn(fn_item) = item {
++            let name = &fn_item.sig.ident;
++            let gen_const_name = Ident::new(
++                &format!("HAS_{}", name.to_string().to_uppercase()),
++                name.span(),
++            );
++            // Skip if it's declared already -- this can happen if `#[cfg]` is used to selectively
++            // define functions.
++            // FIXME: `#[cfg]` should be copied and propagated to the generated consts.
++            if gen_consts.contains(&gen_const_name) {
++                continue;
              }
--            TokenTree::Ident(ident) if ident.to_string() == "const" => {
-+            TokenTree::Ident(ident) if ident == "const" => {
-                 let const_name = match body_it.next() {
-                     Some(TokenTree::Ident(ident)) => ident.to_string(),
-                     // Possibly we've encountered an inline const block instead.
+-            _ => (),
++
++            // We don't know on the implementation-site whether a method is required or provided
++            // so we have to generate a const for all methods.
++            let comment =
++                format!("Indicates if the `{name}` method is overridden by the implementor.");
++            gen_items.push(parse_quote! {
++                #[doc = #comment]
++                const #gen_const_name: bool = false;
++            });
++            gen_consts.insert(gen_const_name);
+         }
+     }
+ 
+-    let mut const_items;
+-    if is_trait {
+-        const_items = "
+-                /// A marker to prevent implementors from forgetting to use [`#[vtable]`](vtable)
+-                /// attribute when implementing this trait.
+-                const USE_VTABLE_ATTR: ();
+-        "
+-        .to_owned();
++    item.items.extend(gen_items);
++    Ok(item)
++}
+ 
+-        for f in functions {
+-            let gen_const_name = format!("HAS_{}", f.to_uppercase());
+-            // Skip if it's declared already -- this allows user override.
+-            if consts.contains(&gen_const_name) {
+-                continue;
+-            }
+-            // We don't know on the implementation-site whether a method is required or provided
+-            // so we have to generate a const for all methods.
+-            write!(
+-                const_items,
+-                "/// Indicates if the `{f}` method is overridden by the implementor.
+-                const {gen_const_name}: bool = false;",
+-            )
+-            .unwrap();
+-            consts.insert(gen_const_name);
++fn handle_impl(mut item: ItemImpl) -> Result<ItemImpl> {
++    let mut gen_items = Vec::new();
++    let mut defined_consts = HashSet::new();
++
++    // Iterate over all user-defined constants to gather any possible explicit overrides.
++    for item in &item.items {
++        if let ImplItem::Const(const_item) = item {
++            defined_consts.insert(const_item.ident.clone());
+         }
+-    } else {
+-        const_items = "const USE_VTABLE_ATTR: () = ();".to_owned();
++    }
++
++    gen_items.push(parse_quote! {
++        const USE_VTABLE_ATTR: () = ();
++    });
+ 
+-        for f in functions {
+-            let gen_const_name = format!("HAS_{}", f.to_uppercase());
+-            if consts.contains(&gen_const_name) {
++    for item in &item.items {
++        if let ImplItem::Fn(fn_item) = item {
++            let name = &fn_item.sig.ident;
++            let gen_const_name = Ident::new(
++                &format!("HAS_{}", name.to_string().to_uppercase()),
++                name.span(),
++            );
++            // Skip if it's declared already -- this allows user override.
++            if defined_consts.contains(&gen_const_name) {
+                 continue;
+             }
+-            write!(const_items, "const {gen_const_name}: bool = true;").unwrap();
++            gen_items.push(parse_quote! {
++                const #gen_const_name: bool = true;
++            });
++            defined_consts.insert(gen_const_name);
+         }
+     }
+ 
+-    let new_body = vec![const_items.parse().unwrap(), body.stream()]
+-        .into_iter()
+-        .collect();
+-    tokens.push(TokenTree::Group(Group::new(Delimiter::Brace, new_body)));
+-    tokens.into_iter().collect()
++    item.items.extend(gen_items);
++    Ok(item)
++}
++
++pub(crate) fn vtable(input: Item) -> Result<TokenStream> {
++    match input {
++        Item::Trait(item) => Ok(handle_trait(item)?.into_token_stream()),
++        Item::Impl(item) => Ok(handle_impl(item)?.into_token_stream()),
++        _ => Err(Error::new_spanned(
++            input,
++            "`#[vtable]` attribute should only be applied to trait or impl block",
++        ))?,
++    }
+ }
 -- 
 2.51.2
 
