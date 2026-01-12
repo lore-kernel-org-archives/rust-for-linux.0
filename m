@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760EB3587A1
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Jan 2026 14:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338C52E2DF2;
+	Mon, 12 Jan 2026 14:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768227304; cv=none; b=kle/FSTfGi7Y20C+3HJHyTp5+cUqg0CyXdhO2q16oGaevJfZToZHKR2JoxzL9vgUewApKx4CKqm0XPE9ZzAe0f4CbJEhwg/Yko2desSl/jWr8md3iC0dkZC+/q8v+36fgCPeomoZY6JSH0Q4F/Uj9NLSUgvSuWHNHueH9X2CRz8=
+	t=1768228034; cv=none; b=d1wN5WaNe6zPYyA6gRCmCAx/y/ul0eLMv+p3Vcy504gE/kfEyxyl3GNHe4Qdm/Z+RY3x6ccpOrNG8nEaIlfRQIdDw/x+v3Rr034XFd7tyRJkKqjqnkKOcdlJrAUW0EzJmu7cV2VbQ+ROmzbJRyurZot0sXWhPqrrxI7JGaKpgcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768227304; c=relaxed/simple;
-	bh=beVLzk1VDgl0P03C9xNa2Zxpee4MTkpoN+wLVNVXSgk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=R7S27670RjPnSFagBaXMdUa6MlG6dgUSGRuI2zGn7bG57exAij8g7dezXdSWNMDPT8zAmWohAkX0yosyjhq7u1GyHQB13vV9Et/t9J3ZQfABScyC4TULG0BJPrj5aCAkmNOj4SA4QJcSN3Jtfd55JHekmMAIRZKaXaW8r751A/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJ9Tc0pR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768228034; c=relaxed/simple;
+	bh=ZGnxsgK/5Z1p93I0FWNkfWilUaIajuvcnQz79Vyaozk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=OrR7F7gibO57QVbxRMXgmQXv1yzdVQPJkXj5T9C2CCtZgiVpwN5qsQIDxMZ1hAey9hVPn98njksQs8tIT1OWk4cErBvTSDidxp34tFn8dRbbIdDCehURRUs8UrNJIoyTIAbV3HtCMC9MxfdmMtmizGnqg1kTOjsVCn1muB7hllY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I8d/wXMz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJ9Tc0pR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9981FC16AAE;
-	Mon, 12 Jan 2026 14:15:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I8d/wXMz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B80C16AAE;
+	Mon, 12 Jan 2026 14:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768227304;
-	bh=beVLzk1VDgl0P03C9xNa2Zxpee4MTkpoN+wLVNVXSgk=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=LJ9Tc0pRp71clQLbDENEklDKaT7K9u+5NSWlnoMeTdp2rVk+DU3QXfWErd382nHph
-	 Ns6pmBE7BvmFbSP6OLfSOxyEwJy30nY20BGSchOGzZCECHLS3bEBHYySzSPnExDAhj
-	 692UafkkioyDrB6Eyq4Oob5Jpa+fucVnUMOCnx01olsCFWGDpcTAXlZUQ1L9Qnkbvf
-	 8GeX784zS5LU4ZMXcAwWpcoJm+y4SuXAxLbd7ufa4341N6v/z/TGCMM0uINSKxr7qS
-	 E06XZ0SW9N0ocp//GhV4Z9XvKqUFVTdisqAYhei7v2hXw0Px6lu8lpjJR3xLraU9t4
-	 4KIzoK0dYZ2ew==
+	s=k20201202; t=1768228034;
+	bh=ZGnxsgK/5Z1p93I0FWNkfWilUaIajuvcnQz79Vyaozk=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=I8d/wXMz6YIIxsvkh75J33zs9/A2zJU+9qS3WnskjVYZEQ9Oo+4iIXUgwyzB7usNE
+	 sESlh8fPLukij1AER+4U/zVnjKcdv3D/gMpOUBKtvjpG5xMqQ2Ekx3L+waCocpYBMe
+	 WNPC4uSU3DUdAaAJMhHJqvdnxAnLFybkpOPMpwcsIVrkWNpCyaGuhRX5Xke5k8fkxv
+	 /brdcSMV7AVVP9t18c+SwEUkjS5X8mMNvNiKww8CB9HjG6TXqdaFPc7ruWgAvu6993
+	 xvh/uMx4KRc/vRVdyFWFejQTRz7LyJ+yEq/uTlawVchsfNlGHvBOg2MMp8Iy2C9AQ2
+	 W8wKJQC8GJbyA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,28 +34,82 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 12 Jan 2026 15:15:00 +0100
-Message-Id: <DFMO9JVLR5FA.3DNRZH9NDE6X3@kernel.org>
+Date: Mon, 12 Jan 2026 15:27:08 +0100
+Message-Id: <DFMOIU3FC48L.17P3TCF92CEZZ@kernel.org>
+To: "Greg KH" <gregkh@linuxfoundation.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 2/2] gpu: nova-core: add missing newlines to several
- print strings
-Cc: "Timur Tabi" <ttabi@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Miguel
- Ojeda" <ojeda@kernel.org>, <nouveau@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>
-To: "John Hubbard" <jhubbard@nvidia.com>
-References: <20260107201647.2490140-1-ttabi@nvidia.com>
- <20260107201647.2490140-2-ttabi@nvidia.com>
- <49a83146-f292-44c3-8ca4-d62cbdc6a438@nvidia.com>
- <7d2b8106-993a-420a-bb4d-1fd8900e360f@nvidia.com>
- <e15f1221-c146-4fe1-832b-201979b943ed@kernel.org>
-In-Reply-To: <e15f1221-c146-4fe1-832b-201979b943ed@kernel.org>
+Subject: Re: [PATCH 6/6] rust: driver: drop device private data post unbind
+Cc: <rafael@kernel.org>, <igor.korotin.linux@gmail.com>, <ojeda@kernel.org>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <david.m.ertman@intel.com>, <ira.weiny@intel.com>,
+ <leon@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+ <wsa+renesas@sang-engineering.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-usb@vger.kernel.org>, <linux-i2c@vger.kernel.org>
+References: <20260107103511.570525-1-dakr@kernel.org>
+ <20260107103511.570525-7-dakr@kernel.org>
+ <2026010741-wiry-trophy-46ec@gregkh> <DFIDCAL68R7N.8SYKSAF0JO4C@kernel.org>
+ <2026010701-rearview-retriever-3268@gregkh>
+In-Reply-To: <2026010701-rearview-retriever-3268@gregkh>
 
-On Fri Jan 9, 2026 at 12:22 AM CET, Danilo Krummrich wrote:
-> On 1/9/26 12:12 AM, John Hubbard wrote:
->> Are you comfortable merging these two patches to drm-rust-next? I think
->> they are ready to go at this point.
->
-> Yes, they are already on my apply list.
+On Wed Jan 7, 2026 at 3:54 PM CET, Greg KH wrote:
+> I say name it with "rust_" and take out the #ifdef, that makes it
+> simpler/easier to understand.
 
-Applied to drm-rust-next, thanks!
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index 2d9871503614..bea8da5f8a3a 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -548,10 +548,8 @@ static DEVICE_ATTR_RW(state_synced);
+ static void device_unbind_cleanup(struct device *dev)
+ {
+        devres_release_all(dev);
+-#ifdef CONFIG_RUST
+-       if (dev->driver->p_cb.post_unbind)
+-               dev->driver->p_cb.post_unbind(dev);
+-#endif
++       if (dev->driver->p_cb.post_unbind_rust)
++               dev->driver->p_cb.post_unbind_rust(dev);
+        arch_teardown_dma_ops(dev);
+        kfree(dev->dma_range_map);
+        dev->dma_range_map =3D NULL;
+diff --git a/include/linux/device/driver.h b/include/linux/device/driver.h
+index 51a9ebdd8a2d..bbc67ec513ed 100644
+--- a/include/linux/device/driver.h
++++ b/include/linux/device/driver.h
+@@ -121,15 +121,13 @@ struct device_driver {
+        void (*coredump) (struct device *dev);
+
+        struct driver_private *p;
+-#ifdef CONFIG_RUST
+        struct {
+                /*
+                 * Called after remove() and after all devres entries have =
+been
+-                * processed.
++                * processed. This is a Rust only callback.
+                 */
+-               void (*post_unbind)(struct device *dev);
++               void (*post_unbind_rust)(struct device *dev);
+        } p_cb;
+-#endif
+ };
+
+
+diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+index 6e32376d4c7c..26095d7bd0d9 100644
+--- a/rust/kernel/driver.rs
++++ b/rust/kernel/driver.rs
+@@ -207,7 +207,7 @@ fn callbacks_attach(drv: &Opaque<T::DriverType>) {
+         let base =3D base.cast::<bindings::device_driver>();
+
+         // SAFETY: It is safe to set the fields of `struct device_driver` =
+on initialization.
+-        unsafe { (*base).p_cb.post_unbind =3D Some(Self::post_unbind_callb=
+ack) };
++        unsafe { (*base).p_cb.post_unbind_rust =3D Some(Self::post_unbind_=
+callback) };
+     }
+
+     /// Creates a new instance of the registration object.
