@@ -1,130 +1,155 @@
-Received: from out203-205-221-164.mail.qq.com (out203-205-221-164.mail.qq.com [203.205.221.164])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFFE333C503;
-	Mon, 12 Jan 2026 08:01:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5163730BF60
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Jan 2026 09:05:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768204889; cv=none; b=s0MeZMShkX+ON04qhGXzCmtV1T1nEm7dR8/JFfGfMERHmiLunYyzrSRYTEX8VLMre2K6S34auN7ZJEpL8Wn296LS1s028WF3Ga6S/PLQrrFoiJQSYTTN3x084eCJscQBRftXqhmo3wHNd3hbxk8Ah4S4mC/ewbTJLYEHrt16rzg=
+	t=1768208742; cv=none; b=CYCEsCDLxrLoa6EwFUHTMC3z+HYkA3O731qaTWKVhPhZvSuTKAgG7rJqk+MPUdomqRP+bkMnE4lO0viMpV/FrXsH9zCJl3YiJEylW4x3wgqS29aYoEm909EHTk1TwrQ2xYzKSy/5h3Fzce6R7EUeMmk5MVMUSi/5NKZXKwAnI5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768204889; c=relaxed/simple;
-	bh=q89ToZ+ldcaIM5RDhT5olib99YIPaQEeEpQB7ymKeN0=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=k5crrDqhF/fNsiulw3MloFTAy4k6Pin0Jh9pTwGqmA+OjfspDoR+lB/0A53NqCDjOOaWpC9nYUyNTAlmlc5A0mYd1d4k5j8GmIklTq129K/EMcgMFSv57jgYYqdBywbuvv5bDT0betLPzTyH7EUyrkc4udvuuYwk/WLHUcZBO/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=wk0TRSie; arc=none smtp.client-ip=203.205.221.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1768208742; c=relaxed/simple;
+	bh=y3ZqgF1sQAVQrh4PpD7bEcindq/cQQy+iaqc0sgx8c8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qVCufNlmJ6qFLZgtr9UTJdrzMuDW8UXrpMHVeXI6YiuAgo91Fh1wcYzY6SFW4il3W7BDNivRWOO4q3z95gqUHpAAU0vR4bsGwvdhIVy/TLEg+0aXKuT8Iz6H5m00HonH6nAxEjfS64E6L846U2pMzk0IAiKeH+zNJIYVn7sQ/BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jZaDl4/x; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="wk0TRSie"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1768204876; bh=T7OUsW6vowP3FKY+kbnsy67vVWLq1UvDnvGCt5xJL6o=;
-	h=From:To:Cc:Subject:Date;
-	b=wk0TRSieNIXt738Ty00UhMSbCRzm+9PVrR7VlZ7UK/O8kNQU+BpT3ejhmnx2vpZvc
-	 mMigK7O7+7rQZuZuat9TjVfmjIe1XpTklj5EWHVsWHqKjTdQm62Lffts7tyiayH603
-	 SM8HfvBAtuVUxlFqP8Z56TCjV3Sl4Y9+/oxWiWzM=
-Received: from xh6010.. ([202.120.234.37])
-	by newxmesmtplogicsvrszc41-0.qq.com (NewEsmtp) with SMTP
-	id 4F1CAB3; Mon, 12 Jan 2026 16:01:15 +0800
-X-QQ-mid: xmsmtpt1768204875talmgsr9o
-Message-ID: <tencent_38DB4FAEAA8E319F0F1BFF098A922623AA09@qq.com>
-X-QQ-XMAILINFO: NhKbcYr69dwuT1alD/XobShkANNtEgaIjxcrGrLdO5cs72ZrErKuHcq8fn2kEl
-	 SUSI2AAyNO/veH/dQaxeEFHwwZDnfnQ5z59Fyd5AVaJGCOIcZmdjRdPPb3nC6cYeAVjEfSoQQvQ9
-	 y2Nrl8mMQ96+eo8CKtnITxBfg4kLeSw8DmKUOmAxyqSUX1RCleUrlCc8DiDyfbsN76hafGob+gmV
-	 bUhsrqdXrOrYi59+l6/KGNWtz/YmA2MDwpqK383kqC2rPKC6CBSHojbZg2IXrvpIzjOWlpiJpTnw
-	 uM9SDESaI7Qponqoj5nTdUTxe8SC5GMdJAoFygLx/JZB+TWu87gxEeWsg3bXbsXj0AS4yX0jtXk5
-	 /2Gv9Vj3DKbEwi9Qx4FRKKQEKdcYUTQEZ1RoMOwIlt+SDwIHw1e4BNcqCW9MFmbN2wQ66XXa4Ms6
-	 zST1yGgAOo5liQjtBo+yMtpWJ0dtfTIPi3soIjUXWkSvhVZhP5TKY7qqT2CjJfEIB9dMgZzuoQNa
-	 3OyLgUnQojRcu22JZA8mveg4yaAjHAdMvKgW5/S5sA+5TYAsMG5VzLYDPPMfvLNVvttZ8R976PSd
-	 1mQB4gEhKgIKfNqaw6y0hrGzr1zQBhjwvLjaAinPS9Z4y6b2xi3TLFAC379beNsVcg+22HQnvPQj
-	 dk4GiDbsjBKBeZgPw4tM+uNRRyrcNeXbtgCabo8CZ6DmwwvccNlwvPxQ+5pT14AI7zIZjZjxM6MY
-	 FhSjoY3hwF9FVbxQz/Q50i3aO4S5gUUVnQOTVQ+tQ5H7Mk5PzmLZV0fuQQ1vJMV/ettTJ5+G9/yb
-	 9qesnwMxTy0/gs96NWU+5ehKZokWa5e/sAlEIJGw6nX5J3OV03eeeOJ54u+8Ersg2gdW0kviAbH1
-	 otUPRXUb6y3n6ELP5S5rqVrBxqertQ4dfTTDz82A5wubfevBuitaJYGJZ3H8m632G00/SER/3Ksy
-	 oQZPXg7KfaLcgwItFAXksGIy7EOJwvexYzFZfpBnpkwOnFv+njKRvzY6BXkyhiQwm3xSOgc3gcYl
-	 X20S/AS/6L0/9+SYJUifphSH+EI4GWxSPg02LuUR9yVQYsweMek7NPWMzH0LoBtwjXUQBeeA==
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-From: Yilin Chen <1479826151@qq.com>
-To: Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yilin Chen <1479826151@qq.com>
-Subject: [PATCH v3 RESEND] rust: cpumask: rename methods of Cpumask for clarity and consistency
-Date: Mon, 12 Jan 2026 16:00:47 +0800
-X-OQ-MSGID: <20260112080047.1495278-1-1479826151@qq.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jZaDl4/x"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-430fcf10280so4461538f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Jan 2026 01:05:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768208739; x=1768813539; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SzORT/k3ipGubgBn9Q9n+ixZdkO5pikUavXtfHFdUSg=;
+        b=jZaDl4/xvMm6G0Ce9l6z4GPyLLe74Bznr9twVo4gK4T/iMziR+9QZyAzsS9eGT+FZQ
+         c2N3Gk1M6n8HyBnbgF5qGdkJImbZjymhAACIdzsO4oYWzNxqubiLtQZ8GJFpZ/28f9fN
+         6+G/tvRLM4xIZsO12Rnulbgx7awwM2NkI8pg6FcLs7tZxpVlZRfHC5VQiBvuXl4WXeuY
+         iE9iFGUwuB31j11hCBorr2s7ekfNhHWo0jcLNRWRHKU0bVcJScYb013oO3AUOnJg8vAR
+         SNLhuMpRAYMHOPnIkHuVpCobPKpNdie6FgPc1Euw3Mi4lG7S/GEi7GJSENs2f6shlw4/
+         lVsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768208739; x=1768813539;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SzORT/k3ipGubgBn9Q9n+ixZdkO5pikUavXtfHFdUSg=;
+        b=Qfq1c2lO7h1JSNJnW8ZwAdp/wvxF2u3Y/caVfXUVtdkt8dL416G6poyp0eTS0KuIZH
+         kWhWmXYo1dVIA39eWgiicX/b9iJLO9ZAFt0jSrxHsyrNI5TA+RufAVQj+0u+M3eg4K8d
+         xZSZ83Dxnfc4TUToDz2gAWHizi8cygWGJ2AAw9Zf7BAQZcCMGGsz3U+oRRBquJKCvJL8
+         j8cJ+asokl/fTbg1uMxKGJdIW4LhrHue/ShXawjOAyc13utY8s6cUGklAcxFVF/meNYY
+         C9UyhEelKdpib/9Xd0nJ05t2QStDthyEY5iLZP+O1+euxqvzffJ8OIzp2+Jd9Fg8evEh
+         MnWg==
+X-Forwarded-Encrypted: i=1; AJvYcCX6MrHIWH306OeWQJx+roogUsWvOovvJwZEIBDgwEMz9yR8VcsETzf3y2ZV/AtMLSm9Swd/0phC04zmky2qUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCzEkQGF0dKWKnakc8iw+7AYjzij8M54pdBcNI73wsn0dZh/vG
+	JFBYVggaiRNxjzuSdUVNrPrE7XCSAUm7mx53EslM9ZwgSXY9JTpGoLfOE46yJxxSJbC/SRXC7oX
+	WP9vXPobMl8vk9Q0H3A==
+X-Google-Smtp-Source: AGHT+IGOJRXfdn4em6HL0Onpde9GGteqaO9fJCUa27BqZN+63xCLbGxcAW9PUxWk98ipz5bhZqrhfl2AZc+TZmA=
+X-Received: from wmcn3-n1.prod.google.com ([2002:a05:600c:c0c3:10b0:477:aa9e:db24])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:190e:b0:475:dd7f:f6cd with SMTP id 5b1f17b1804b1-47d84b3f21fmr206172495e9.35.1768208739714;
+ Mon, 12 Jan 2026 01:05:39 -0800 (PST)
+Date: Mon, 12 Jan 2026 09:05:38 +0000
+In-Reply-To: <CAAofZF76TADGfF36gMV7qpZCHpXUYY+aOi_mFwrE6UrnkkQKXg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20251008151554.340806-1-marco.crivellari@suse.com>
+ <20251008151554.340806-3-marco.crivellari@suse.com> <aOaJlHEPzHcAdcUx@tardis-2.local>
+ <aOeZ3ho6SHjmaw_2@google.com> <CAAofZF76TADGfF36gMV7qpZCHpXUYY+aOi_mFwrE6UrnkkQKXg@mail.gmail.com>
+Message-ID: <aWS5Yg9xScOR51Q1@google.com>
+Subject: Re: [PATCH v3 2/2] rust: add system_percpu() around the new system_percpu_wq
+From: Alice Ryhl <aliceryhl@google.com>
+To: Marco Crivellari <marco.crivellari@suse.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Tejun Heo <tj@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Rename `as_ref` and `as_mut_ref` to `from_raw` and `from_raw_mut` to
-align with the established naming convention for constructing types
-from raw pointers in the kernel's Rust codebase.
+On Fri, Jan 09, 2026 at 05:32:23PM +0100, Marco Crivellari wrote:
+> On Thu, Oct 9, 2025 at 1:17=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+> > [...]
+> > > If we were to expose the system_percpu_wq to Rust, then we should als=
+o
+> > > add queue_work_on() API to Rust, otherwise it's kinda pointless IMO.
+> > >
+> > > PS. We can use the CpuId abstraction:
+> > >
+> > >       http://rust.docs.kernel.org/kernel/cpu/struct.CpuId.html
+> > >
+> > > and have an API like:
+> > >
+> > >     ipml Queue {
+> > >         pub fn queue_on(&self, cpu: CpuId, w: W) -> W::EqueueOutput
+> > >     }
+> > >
+> > > or maybe a different new type `PerCpuQueue`?
+> > >
+> > > Regards,
+> > > Boqun
+> >
+> > How is it ... can we cleanly separate queues into those where you must
+> > specify the cpuid, and those where you shouldn't?
+>=20
+> Hi,
+>=20
+> Sorry to come back to you so late. I still had many other subsystems patc=
+hes,
+> now there are way less, many of them are accepted.
+>=20
+> Can I have some guidance about this? I am new to Rust.
+> What's the best way in order to expose the workqueues?
+>=20
+> If I understand correctly, the Idea is extends the functionalities of:
+>=20
+> https://rust.docs.kernel.org/kernel/workqueue/struct.Queue.html
+>=20
+> adding the "queue_on" function.
+>=20
+> Creating a new type like "PerCpuQueue" I guess it means... wraps always
+> the workqueue_struct structure and defines what's appropriate, like the
+> new per-cpu workqueue.
+>=20
+> Many thanks in advance!
 
-Signed-off-by: Yilin Chen <1479826151@qq.com>
----
-Changes in v3:
-- Use real name in signed-off-by line (Kari Argillander)
-- Add links to priveous patches:
-- Link to v2: https://lore.kernel.org/rust-for-linux/tencent_58EDE157C8C700CFF88DA204B7492A113508@qq.com/
+Yes, we can provide a new `struct PerCpuQueue` with same contents as
+`Queue`, where the `enqueue` and `enqueue_delayed` methods take a cpu id
+parameter.
 
-Changes in v2:
-- Use real name in From line (Alice Ryhl)
-- Send this patch individually instead of bundling with others
-- Link to v1: https://lore.kernel.org/rust-for-linux/aUMUA_JWalyGQdAx@google.com/#t
----
- rust/kernel/cpumask.rs | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Then, all of the functions for obtaining queues at the bottom of the
+file are updated to return &PerCpuQueue instead of &Queue when a cpu id
+sone option here is tohould be provided to spawn on that queue.
 
-diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
-index c1d17826ae7b..44bb36636ee3 100644
---- a/rust/kernel/cpumask.rs
-+++ b/rust/kernel/cpumask.rs
-@@ -39,7 +39,7 @@
- /// fn set_clear_cpu(ptr: *mut bindings::cpumask, set_cpu: CpuId, clear_cpu: CpuId) {
- ///     // SAFETY: The `ptr` is valid for writing and remains valid for the lifetime of the
- ///     // returned reference.
--///     let mask = unsafe { Cpumask::as_mut_ref(ptr) };
-+///     let mask = unsafe { Cpumask::from_raw_mut(ptr) };
- ///
- ///     mask.set(set_cpu);
- ///     mask.clear(clear_cpu);
-@@ -49,13 +49,13 @@
- pub struct Cpumask(Opaque<bindings::cpumask>);
- 
- impl Cpumask {
--    /// Creates a mutable reference to an existing `struct cpumask` pointer.
-+    /// Creates a mutable reference from an existing `struct cpumask` pointer.
-     ///
-     /// # Safety
-     ///
-     /// The caller must ensure that `ptr` is valid for writing and remains valid for the lifetime
-     /// of the returned reference.
--    pub unsafe fn as_mut_ref<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
-+    pub unsafe fn from_raw_mut<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
-         // SAFETY: Guaranteed by the safety requirements of the function.
-         //
-         // INVARIANT: The caller ensures that `ptr` is valid for writing and remains valid for the
-@@ -63,13 +63,13 @@ pub unsafe fn as_mut_ref<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
-         unsafe { &mut *ptr.cast() }
-     }
- 
--    /// Creates a reference to an existing `struct cpumask` pointer.
-+    /// Creates a reference from an existing `struct cpumask` pointer.
-     ///
-     /// # Safety
-     ///
-     /// The caller must ensure that `ptr` is valid for reading and remains valid for the lifetime
-     /// of the returned reference.
--    pub unsafe fn as_ref<'a>(ptr: *const bindings::cpumask) -> &'a Self {
-+    pub unsafe fn from_raw<'a>(ptr: *const bindings::cpumask) -> &'a Self {
-         // SAFETY: Guaranteed by the safety requirements of the function.
-         //
-         // INVARIANT: The caller ensures that `ptr` is valid for reading and remains valid for the
--- 
-2.34.1
+This way, you write:
 
+	workqueue::system().enqueue(my_work_item)
+
+or you write:
+
+	workqueue::system_percpu().enqueue(my_work_item, cpu_id)
+
+This way you must supply cpu id with system_percpu_wq() but not with
+system().
+
+--
+
+Another approach is to add a new `enqueue_cpu` to the existing `Queue`
+struct. In that case, all of these four combinations become legal:
+
+	workqueue::system().enqueue(my_work_item)
+	workqueue::system().enqueue_cpu(my_work_item, cpu_id)
+	workqueue::system_percpu().enqueue(my_work_item)
+	workqueue::system_percpu().enqueue_cpu(my_work_item, cpu_id)
+
+which approach is best depends on whether you want all four combinations
+to be legal or not.
+
+Alice
