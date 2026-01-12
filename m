@@ -1,124 +1,116 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00282DF144
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Jan 2026 15:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35CA2D8DD4
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Jan 2026 15:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768230635; cv=none; b=mHwrXD1Vj1dIIVHuLyv3sZKMy15OvrVvhBrlLTT8KTkN1ZDBMMuDRFWE1fZyUTo737oZ8NLJDHjryKtdYEKffQCLsPx3ce2yk6Xzg0FvBfKIPtdgSNB+4MXeHZVRPWbUgU85Ltn+U6qouWy0PB5fAF15PCIq+HjjZJeWUs3w0nA=
+	t=1768230715; cv=none; b=S1wQhQ7bPwmjZFauXXEOEi/smtHYANfVvYgvMbzH8VE9yGxhpQWCvg6XHQ3TWoii/VyRjC0jjdNQ5tnzkiXOPx0sPvUyJ5S+nMUv3xCYJnFJPwUV4zSCoZw/O2Q1W8F6Y0liMNhHpHPg0feva/voz8lLvNtnNQ6raagcUH/X68o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768230635; c=relaxed/simple;
-	bh=9NUqM5b21sxF1PziYILnoCort1qm2uhWw1f7uLYHvso=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=U1mvsSfRXcL82n88uK/RpEptEa3SltByT+dWdOLL8bDXjZA4ANjIAqm9+fnnq7nBpeMsP9xyNYjwEPUvwxiS4UUAaos376ucgKOvGCzCQhFWYByidD6Y1Ec79OXrSQhJvwM6RPZUvKfretgJ7XNuVsOLum2YiNqf9nXPdx0cf2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G1AvpeGY; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1768230715; c=relaxed/simple;
+	bh=hbVdS31AjGbxiM4REiWfB3EQ5mxh8v0ze3TE0QbCrro=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hNDMA68EP3dXCcm43TDLtRvv99SnnAt+lAtKCrmwlHbICvsjGv6wyKz1sOccAUT5XbDQI5Q3Ej3UW7RmxNg34bdZci9eD3RWLYT5qIEoFONLLXttGdUBOhsyLqeXLfHuCktQ4WonDPU256fNccWaYVVSTFjsnlMhmZUIU6vs6Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KoUzoaXB; arc=none smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G1AvpeGY"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-430fc153d50so4809623f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Jan 2026 07:10:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KoUzoaXB"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2b175c4bb64so368966eec.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Jan 2026 07:11:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768230632; x=1768835432; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Vhih4XJnELjtkgQ3duMqEwlwKDdojSV9tRqodltB+mQ=;
-        b=G1AvpeGYVq1v08Zz4biGtTE5FtyT02CUHGSP4YGCz5htvdZw4RjvCAxtmwOqYFJcLH
-         s0931VlE3OIkPBWPUyEYZthUUF90yPeGzT7YVYJEXSoyLSEeYPgVkP1npqUyZgz0OOvq
-         0q7HOhmof+SdutJ/TlfAQBAEPW4QPQlCsITtiefLD5cT3aRtU5T3DkD6e9PfgkEiRqI0
-         DFJv9y0eciMXlPh1uEEJdHp9f9Z3odlAndk0Z7D+xrhgkNDl7g+9jGL/gfRlerKlTiVI
-         9e+K8xbXrzNvdw5sytleOtNkv6+ra/LSl//StrUm/Xz7ont8mP6AaGCPzwgd1wMbxv+T
-         PCLQ==
+        d=gmail.com; s=20230601; t=1768230713; x=1768835513; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lPNUpExGPZ0eP2PL8HPQ+bLbS1S2GR59K/pZ0qOKnYA=;
+        b=KoUzoaXBRYbZftvo2Qcuv9vFmxlgSd3VdHgKlsroMvRAk9dzp/X1TH7QufvLELI6wF
+         H9cDObAwbTuC2Uug8RjQgRaBojeYP6g5ITal6cdJugOzN9QmeTeJ252N1BZRgl4PdOBD
+         8hSVQBjrP4ohSQBz57kp9Bc6fLQQRH65HMC0KRNpp5Z93fBUqTcGy2JdH4tB5AylnNtV
+         Uiib2A1Aw9Y8N9nfkHcwTnKovV6qjfestkBup6iowR77bZX2CE4r3nzYoU7N8z8cpun8
+         nI12vdcv89PY9/GMiF3pR0TwbMOgvyG4gUoi5xrYqiDEhJ5hbYI5fpE7ZXsA83tBdjQu
+         G+rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768230632; x=1768835432;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Vhih4XJnELjtkgQ3duMqEwlwKDdojSV9tRqodltB+mQ=;
-        b=EsOhbOwj6MDp2ltfff3p1EzTNpfN9Dtj48B/3wO/bT8NH4riKjd1Rw+29cLPxMKO3+
-         jRRGcTaTCIlHpJv/71qwYAjYTeAjNMgr4xhEBvH7FI24AahID9+SBTTdStCO8NK0zHLe
-         usvnqBqEBnI1B8Zye4lsXc+eg++J9T/K49PaqdyX9UURf7MJz2ntt0zaKH768d17i1vW
-         XT/+pc7n+wc7kjHNHfbaS3IP55pilxio5KeTQsJNCkjzxGyAUYVfQdb+4oKvXPxfuHqp
-         IGYwg+UGMWCfx6o18QmwvYkIZyOcYAlvflwWxqORGNsCv80gG2EvtMd77tho3VPl+EEo
-         Ldzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUsscEbeJSEnjR9oS/YllmLSPvkPSqaOAcEfnxwJZo/eL1WL3nyKajRiXlttYHm/UagyMP9czIjfOHdD+f6Mw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx31r9lLsPsPNVzTn6UdYSeZagQPdznfnB7aVDt9tYCGfPjPvSw
-	HVpoNpJTmXPHgGkHq7tQxpmN/Q2ppjHZnFNDyEKeqcuWwWxeTdK3ZNJt4WlIKcjZ4iA+odkGPpl
-	rbMSkSXlFOFytye2+yg==
-X-Google-Smtp-Source: AGHT+IGeZoNL0yQiMZ90U5o8lcflOypSTwRZPpqtxftd3sSEDJ85xDSVUTdnNYjYjqTY9tScqpn36+QQnDatLZo=
-X-Received: from wmjs4.prod.google.com ([2002:a7b:c384:0:b0:477:9945:466d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f13:b0:477:6e02:54a5 with SMTP id 5b1f17b1804b1-47d84b3baaemr180870045e9.18.1768230632137;
- Mon, 12 Jan 2026 07:10:32 -0800 (PST)
-Date: Mon, 12 Jan 2026 15:10:31 +0000
-In-Reply-To: <20260112100006.7db6d31d@gandalf.local.home>
+        d=1e100.net; s=20230601; t=1768230713; x=1768835513;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lPNUpExGPZ0eP2PL8HPQ+bLbS1S2GR59K/pZ0qOKnYA=;
+        b=e73sc4r1s6EyMhvadqFuPxTne5AHS36IwZ3h+iT5uZLVO2U9ICguS/cpNgKHRpsREp
+         oDOio4n8SSV/i4AnjD/L2bueSkVRNaevfCsBzH8w0KO/Qyj05/fCQSz8HYZG8aetKHeF
+         fZCjItyCOpeOuNUQRkfMQLnIlUGSN4qDiqYtscMj2dS0TBcpUORHveRgw4y+1Sne3sC8
+         N4z4Rb+xj35Gnrsvplxd0BaQQJIMYIALF3d13a0rqecV582X4Z8Wt93ridnlOgSsDKIR
+         Pj2G1fr5VqDqumQ9XWn2c/wAEYFPZhk6yIxo21ZxjkVs8WZl9bOVNszRZq7VaBNbknln
+         f5RA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPrO32SnWCmKbU5KwhwKBmJCr43VcVvM2XfShfMiVfNH7DcmPcFm6S2OrV/qJKwx2ZbeBat0tt7BCkHAf0Mg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGJCp2mn7FBTK5OokXW0bmQq9jYSMgkm8XO3j0gJRPJ4qY/Fo0
+	7ScKTaJ7cQ8rqZ9ex+GJNj/VhMOp+BzZCiuYx2ysXc1K+5Z6jtK65uaxXeT23Mk4o8mmipnxYTK
+	WFjONN8m1KxcliX6npMaDuKuEoeJ8dpo=
+X-Gm-Gg: AY/fxX7GGdJZwP2QyfTmCxWj+ey/GTj+lDd+HTtFD+aeIKKv6VpzUrda2Xm/TkB8PHn
+	A/Gdx1wwGIS3iyktWva2z32RE/lAPhW580pRHFi2bNeQgMB41ALfX6rGw+aRYtZV/ojmaZ5lh3P
+	9RYZZfJNGftrTxVzhjbEKy6iLihHSfJjkk3vcdzV3O5NDVxYWOiVzcZTLEpJsX5wAjBZ5nGS8uF
+	gi9JM7seG4sjwV+PAcxYzArYjH6CBKq5eBw1vT6RH5D5VAb14uJ0P7FC0bcj6q2uBWbRdWzTLTD
+	0gIuGhPwKrHtDk0XfdJGEhIKOIUw71x3k22srccSndi3LRYhUaDleSX63p4BpR48CBsu0oC9x7O
+	+7gpMsdFNqp9v
+X-Google-Smtp-Source: AGHT+IE2JSir18sRr+yPNaQngfQaMGaAN7gWIs8BQSI0z2/mMFjuJJRFlyAYimBq8J0DGl6BL9+5OvXrK6zDhUChif0=
+X-Received: by 2002:a05:7300:8244:b0:2ae:5f73:1968 with SMTP id
+ 5a478bee46e88-2b17d24286amr6565850eec.2.1768230713100; Mon, 12 Jan 2026
+ 07:11:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20260107-jump-label-rust-maintainers-v1-1-702b03482f2e@google.com>
  <CANiq72nV0Z_UjdAwT=41TjjfmKnT6WL4hVNcxg_QCe7TAEYK_Q@mail.gmail.com> <20260112100006.7db6d31d@gandalf.local.home>
-Message-ID: <aWUO59edshSRit-Y@google.com>
+In-Reply-To: <20260112100006.7db6d31d@gandalf.local.home>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 12 Jan 2026 16:11:40 +0100
+X-Gm-Features: AZwV_Qhbvsj27jGvnxGNOxIBWj7t_7rzsFvwEcJvm8EWQBeKdpII1fMvWchJec4
+Message-ID: <CANiq72nY2xUj0aG4q7YOKxt0EV29Jwos_kjAPD89eE3_irsr0g@mail.gmail.com>
 Subject: Re: [PATCH] MAINTAINERS: add Rust files to STATIC BRANCH/CALL and TRACING
-From: Alice Ryhl <aliceryhl@google.com>
 To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+Cc: Alice Ryhl <aliceryhl@google.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
 	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
 	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 12, 2026 at 10:00:06AM -0500, Steven Rostedt wrote:
-> On Sun, 11 Jan 2026 19:36:29 +0100
-> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
->=20
-> > On Wed, Jan 7, 2026 at 1:32=E2=80=AFPM Alice Ryhl <aliceryhl@google.com=
+On Mon, Jan 12, 2026 at 4:00=E2=80=AFPM Steven Rostedt <rostedt@goodmis.org=
 > wrote:
-> > >
-> > > I'm proposing to include them under the existing entries, as that see=
-ms
-> > > like the most obvious place to include them. However, there are multi=
-ple
-> > > ways to do this. If you prefer to have them elsewhere, I would also b=
-e
-> > > happy to create a new entry with me as maintaining them, or I'm also
-> > > willing to be listed as R: under the entry. Regardless of how we list
-> > > them in MAINTAINERS, I will be around if anything comes up. Let me kn=
-ow
-> > > what you all prefer. =20
-> >=20
-> > I think this was meant to go after the `---`?
-> >=20
-> > Whatever Steven et al. are happy with, this looks fine, thanks!
-> >=20
-> > Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> >=20
->=20
+>
 > I guess the question is are those with expertise on the list of people to
 > Cc?
-
-I would be on cc either way as RUST includes F: rust/.
-
+>
 > I think it may be better to have a separate section for RUST so that the
 > rust maintainers can be included in the M: part too. Perhaps:
->=20
+>
 > STATIC BRANCH/CALL (RUST)
->=20
+>
 >   and
->=20
+>
 > TRACING (RUST)
->=20
+>
 > And have the M of the other sections be R here?
 
-Sure, we can do that.
+There are several ways subsystems have gone about it:
 
-Are you still willing to pick up the patches? I think that is simpler in
-case there are any series that touch both the C and Rust parts. (Such as
-the initial tracepoint series did.)
+  - Sometimes they may just add the people to the existing entry.
 
-Alice
+  - Sometimes they create sub-entries like you suggest (usually with
+square brackets like " [RUST]" but there is also a " - RUST" used),
+e.g.
+
+        BLOCK LAYER DEVICE DRIVER API [RUST]
+        MEMORY MANAGEMENT - RUST
+
+  - Sometimes they add them into the existing entry but with an added
+"(RUST)" after their names, e.g. Boqun in LOCKING PRIMITIVES:
+
+        M:    Boqun Feng <boqun.feng@gmail.com> (LOCKDEP & RUST)
+
+Cheers,
+Miguel
