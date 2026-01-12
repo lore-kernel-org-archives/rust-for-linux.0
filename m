@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BA52DE718
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Jan 2026 17:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE3B17B505;
+	Mon, 12 Jan 2026 17:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768237816; cv=none; b=fJybf5a3BTMRPSMfX9y8pH6ogdMVvufonXWLKcht4YGpqkBBtc5DFesWXfv7NRWlURPW88pGtqFAfW9zEfN62NGBCJlVLM0Vup/tfdYkEw7Ze3WIKjpGCZV6MICV+61dY148NjMpURVDxY9XossncF9nOKpKNnhfL64Zr6NdvAA=
+	t=1768237837; cv=none; b=aiTHe9iPDrLEuo47N4Hux7Uxg+Ep8E87yl4k8wwPK0ZJM/ws/8uJSgS85dVurbY1y2ZbqSwdb2lluRAf8bPTKnHx00W4OA/R8t4Bx4A0DmWCrpQvze7uD3y8RgrP236rTUJnAOQJeJL/K1/8S/r4adoRnV5aotvNe/KGo0wV6FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768237816; c=relaxed/simple;
-	bh=9jfODIflsyphgju+pZreLOohPvlC35Yb0w7fSEp51aA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uzHa7pICRNU+z/fyxe47f7O8SNTeaPhPNCsS8aAVygWqaVBAwXP7cJtEA8cglA5UyGCDvB2xm6KAJ4Jg0Du1MsQ3ni2G2589f4KmDaEm59FDUdWk49pNIh3AQhrjPqKUXiwlVa/bGwh3A9lfQuy5i/LKn4XziKRqHPLZGR0yqZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DjCUXJK0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768237837; c=relaxed/simple;
+	bh=Ah+S0s63tjpec1+l0gFy/UjYxtYko1/OsFDFVakLlPU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LPmY88MpuZbQxdHgUImjRPb91gQ5pwiC+BODlgiUU6rM7cRuy/xMphZpm/BdYBqk5h9a2lNVqK3fxnuFcxw5sTB5XOcyFS3kEwbL5W6/HNUz4PgwROxLJRBk1ZRMfP9BnCmtfflBeyFhTq0pLpHugSoZKWEr6+F2D7iD/fSfCaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KvyVx10d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DjCUXJK0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23986C116D0;
-	Mon, 12 Jan 2026 17:10:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KvyVx10d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED85AC16AAE;
+	Mon, 12 Jan 2026 17:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768237816;
-	bh=9jfODIflsyphgju+pZreLOohPvlC35Yb0w7fSEp51aA=;
-	h=From:To:Cc:Subject:Date:Reply-To:From;
-	b=DjCUXJK0pVE06XXMr4AaroaZRcsnOKNwmVHFO7BR7woaH8+t3jixOmpv/xsotC2kd
-	 msiXKyhA8+ZWVTI1SVFBHa0aigdhAM++CVBjyk6VYQNdUCMjO/fFNd1hcxfrIeRikQ
-	 0Ci3RV2BFQ3U2lUcL+w3Ch5EQaxDEd3A/56pJhxaPellwwUdcz1xl8iB5CNMuhr5sf
-	 SudcBugN3sVeqIKb/LR83B2rJeYudDqbHKegC7AU108x1KElBQI8FU9RL6CAoy6bIC
-	 v6NVuhJ7Ay5r8v0g746VGgpFpLsw1+KxYGMwDhVpyJQdAGEnXk5WElxcaj11RSnybw
-	 6Jz1egfOHM5+w==
+	s=k20201202; t=1768237837;
+	bh=Ah+S0s63tjpec1+l0gFy/UjYxtYko1/OsFDFVakLlPU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:Reply-To:From;
+	b=KvyVx10dGYDTVQ3el+HczIGwwJDGJ/FKfrIcmMYli1ivgfJIJ9RzNlB7zkzM9HCr1
+	 GXoJu8jsF4thTJUN1E7R9VwwVh1tfiBwMhdYqBc+ORu2DwW80Bab/dPM3n/UI5pnga
+	 YeWsishg/lES7wReIahTH3pMpT0upJPIe123s5o/kRHwIZ0kDviJMvqG6WQ29VAclc
+	 +544GGhL/HAhgk0zDOYsfVzEX11hL8woGWmk3XgcTPvTKJfC/MxgR3cyPZOGt5oV7F
+	 vVXye/tm/+cJTK4dJRcm0fJ5BL95DPpzP4eiQF/bvmbuB3qTEuNIa9SISkGYcNg30P
+	 YQdZADav4YlQQ==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun.feng@gmail.com>,
@@ -34,12 +35,17 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 00/12] refactor Rust proc macros with `syn`
-Date: Mon, 12 Jan 2026 17:07:11 +0000
-Message-ID: <20260112170919.1888584-1-gary@kernel.org>
+	Danilo Krummrich <dakr@kernel.org>,
+	Fiona Behrens <me@Kloenk.dev>,
+	Tamir Duberstein <tamird@gmail.com>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 01/12] rust: pin-init: internal: remove proc-macro[2] and quote workarounds
+Date: Mon, 12 Jan 2026 17:07:12 +0000
+Message-ID: <20260112170919.1888584-2-gary@kernel.org>
 X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260112170919.1888584-1-gary@kernel.org>
+References: <20260112170919.1888584-1-gary@kernel.org>
 Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -49,90 +55,247 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Gary Guo <gary@garyguo.net>
+From: Benno Lossin <lossin@kernel.org>
 
-This series convert Rust proc macros that we have with `syn`, and replace the
-custom `quote!` macro that we have with the vendored `quote!` macro. The
-`pin-init` macros are not converted `syn` yet; Benno has a work in progress in
-converting them. They're however converted to use `quote` and `proc-macro2`
-crate so our custom `quote!` macro can be removed.
+The kernel only had the `proc-macro` library available, whereas the
+user-space version also used `proc-macro2` and `quote`. Now both are
+available to the kernel, making it possible to remove the workarounds.
 
-Overall this improves the robustness of the macros as we have precise parsing of
-the AST rather than relying on heuristics to extract needed information from
-there. This is also a quality-of-life improvement to those using language
-servers (e.g. Rust analyzer) as the span information of the proc macros are now
-preserved which allows the "jump-to-definition" feature to work, even when used
-on completely custom macros such as `module!`.
+Clippy complains about unnecessary `.to_string()` as `proc-macro2`
+provides additional `PartialEq` impl, so they are removed.
 
-Miguel gave a very good explaination on why `syn` is a good idea in the patch
-series that introduced it [1], which I shall not repeat here.
+Signed-off-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+Co-developed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/Makefile                             | 16 ++++++++++------
+ rust/pin-init/internal/src/helpers.rs     |  7 ++-----
+ rust/pin-init/internal/src/lib.rs         | 16 ----------------
+ rust/pin-init/internal/src/pin_data.rs    | 18 ++++++------------
+ rust/pin-init/internal/src/pinned_drop.rs | 10 ++++------
+ rust/pin-init/internal/src/zeroable.rs    |  6 ++----
+ scripts/generate_rust_analyzer.py         |  2 +-
+ 7 files changed, 25 insertions(+), 50 deletions(-)
 
-Link: https://lore.kernel.org/rust-for-linux/20251124151837.2184382-1-ojeda@kernel.org/ [1]
-
-Changes since v2:
-- Changes are limited to `#[vtable]` and `module!` macros.
-- `#[vtable]` macro is reworked per Tamir's suggestion. This makes it easy
-  to support `#[cfg]` properly, and hence a new patch is added to do that.
-- Avoided variable renames related to `param_name`/`param_type` between
-  patches in `module!` macro
-- `CString` is now interpolated directly without adding extra
-  `Literal::c_string`.
-- Fixed an typo that affects only `CONFIG_HAVE_ARCH_PREL32_RELOCATIONS`
-  builds.
-- Link to v2: https://lore.kernel.org/rust-for-linux/20260107161729.3855851-1-gary@kernel.org/
-
-Changes since v1:
-- Fixed clippy warnings when moving from `proc-macro` to `proc-macro2`
-  (extra trait impl in `proc-macro2` causes some `.to_string()` to be
-  unnecessary).
-- A Makefile change to pin-init-internal that is mistakenly included in
-  patch 5/11 is moved to the correct patch 1/11.
-- `module!` parsing has been completely reworked to support `imports_ns`
-  and `params`. As there're two structs that need to parse ordered fields
-  (`ModuleInfo` and `Parameter`), a `parse_ordered_field` macro is added
-  and it is used to implement the parsing instead of `ModInfoField` and
-  custom keywords.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20251211185805.2835633-1-gary@kernel.org/
-
-Benno Lossin (1):
-  rust: pin-init: internal: remove proc-macro[2] and quote workarounds
-
-Gary Guo (11):
-  rust: macros: use `quote!` from vendored crate
-  rust: macros: convert `#[vtable]` macro to use `syn`
-  rust: macros: use `syn` to parse `module!` macro
-  rust: macros: use `quote!` for `module!` macro
-  rust: macros: convert `#[export]` to use `syn`
-  rust: macros: convert `concat_idents!` to use `syn`
-  rust: macros: convert `#[kunit_tests]` macro to use `syn`
-  rust: macros: allow arbitrary types to be used in `module!` macro
-  rust: macros: rearrange `#[doc(hidden)]` in `module!` macro
-  rust: kunit: use `pin_init::zeroed` instead of custom null value
-  rust: macros: support `#[cfg]` properly in `#[vtable]` macro.
-
- rust/Makefile                             |  16 +-
- rust/kernel/kunit.rs                      |  26 +-
- rust/macros/concat_idents.rs              |  39 +-
- rust/macros/export.rs                     |  26 +-
- rust/macros/fmt.rs                        |   4 +-
- rust/macros/helpers.rs                    | 130 +---
- rust/macros/kunit.rs                      | 275 +++----
- rust/macros/lib.rs                        |  41 +-
- rust/macros/module.rs                     | 907 ++++++++++++----------
- rust/macros/paste.rs                      |   2 +-
- rust/macros/quote.rs                      | 182 -----
- rust/macros/vtable.rs                     | 165 ++--
- rust/pin-init/internal/src/helpers.rs     |   7 +-
- rust/pin-init/internal/src/lib.rs         |  16 -
- rust/pin-init/internal/src/pin_data.rs    |  18 +-
- rust/pin-init/internal/src/pinned_drop.rs |  10 +-
- rust/pin-init/internal/src/zeroable.rs    |   6 +-
- scripts/generate_rust_analyzer.py         |   2 +-
- 18 files changed, 842 insertions(+), 1030 deletions(-)
- delete mode 100644 rust/macros/quote.rs
-
-
-base-commit: 9ace4753a5202b02191d54e9fdf7f9e3d02b85eb
+diff --git a/rust/Makefile b/rust/Makefile
+index 5d357dce1704d..96f0ac53ec0e8 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -212,9 +212,10 @@ rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
+ 
+ rustdoc-pin_init_internal: private rustdoc_host = yes
+ rustdoc-pin_init_internal: private rustc_target_flags = --cfg kernel \
+-    --extern proc_macro --crate-type proc-macro
++    --extern proc_macro --extern proc_macro2 --extern quote --extern syn \
++    --crate-type proc-macro
+ rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
+-    rustdoc-clean FORCE
++    rustdoc-clean rustdoc-proc_macro2 rustdoc-quote rustdoc-syn FORCE
+ 	+$(call if_changed,rustdoc)
+ 
+ rustdoc-pin_init: private rustdoc_host = yes
+@@ -273,9 +274,10 @@ rusttestlib-macros: $(src)/macros/lib.rs \
+ 	+$(call if_changed,rustc_test_library)
+ 
+ rusttestlib-pin_init_internal: private rustc_target_flags = --cfg kernel \
+-    --extern proc_macro
++    --extern proc_macro --extern proc_macro2 --extern quote --extern syn
+ rusttestlib-pin_init_internal: private rustc_test_library_proc = yes
+-rusttestlib-pin_init_internal: $(src)/pin-init/internal/src/lib.rs FORCE
++rusttestlib-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
++    rusttestlib-proc_macro2 rusttestlib-quote rusttestlib-syn FORCE
+ 	+$(call if_changed,rustc_test_library)
+ 
+ rusttestlib-pin_init: private rustc_target_flags = --extern pin_init_internal \
+@@ -547,8 +549,10 @@ $(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rlib \
+     $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
+ 	+$(call if_changed_dep,rustc_procmacro)
+ 
+-$(obj)/$(libpin_init_internal_name): private rustc_target_flags = --cfg kernel
+-$(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs FORCE
++$(obj)/$(libpin_init_internal_name): private rustc_target_flags = --cfg kernel \
++    --extern proc_macro2 --extern quote --extern syn
++$(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs \
++	$(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
+ 	+$(call if_changed_dep,rustc_procmacro)
+ 
+ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L $@
+diff --git a/rust/pin-init/internal/src/helpers.rs b/rust/pin-init/internal/src/helpers.rs
+index 236f989a50f2f..90f85eaa41231 100644
+--- a/rust/pin-init/internal/src/helpers.rs
++++ b/rust/pin-init/internal/src/helpers.rs
+@@ -1,9 +1,6 @@
+ // SPDX-License-Identifier: Apache-2.0 OR MIT
+ 
+-#[cfg(not(kernel))]
+-use proc_macro2 as proc_macro;
+-
+-use proc_macro::{TokenStream, TokenTree};
++use proc_macro2::{TokenStream, TokenTree};
+ 
+ /// Parsed generics.
+ ///
+@@ -101,7 +98,7 @@ pub(crate) fn parse_generics(input: TokenStream) -> (Generics, Vec<TokenTree>) {
+                     1 => {
+                         // Here depending on the token, it might be a generic variable name.
+                         match tt.clone() {
+-                            TokenTree::Ident(i) if at_start && i.to_string() == "const" => {
++                            TokenTree::Ident(i) if at_start && i == "const" => {
+                                 let Some(name) = toks.next() else {
+                                     // Parsing error.
+                                     break;
+diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src/lib.rs
+index 297b0129a5bfd..4c4dc639ce823 100644
+--- a/rust/pin-init/internal/src/lib.rs
++++ b/rust/pin-init/internal/src/lib.rs
+@@ -7,27 +7,11 @@
+ //! `pin-init` proc macros.
+ 
+ #![cfg_attr(not(RUSTC_LINT_REASONS_IS_STABLE), feature(lint_reasons))]
+-// Allow `.into()` to convert
+-// - `proc_macro2::TokenStream` into `proc_macro::TokenStream` in the user-space version.
+-// - `proc_macro::TokenStream` into `proc_macro::TokenStream` in the kernel version.
+-//   Clippy warns on this conversion, but it's required by the user-space version.
+-//
+-// Remove once we have `proc_macro2` in the kernel.
+-#![allow(clippy::useless_conversion)]
+ // Documentation is done in the pin-init crate instead.
+ #![allow(missing_docs)]
+ 
+ use proc_macro::TokenStream;
+ 
+-#[cfg(kernel)]
+-#[path = "../../../macros/quote.rs"]
+-#[macro_use]
+-#[cfg_attr(not(kernel), rustfmt::skip)]
+-mod quote;
+-#[cfg(not(kernel))]
+-#[macro_use]
+-extern crate quote;
+-
+ mod helpers;
+ mod pin_data;
+ mod pinned_drop;
+diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
+index 87d4a7eb1d35e..86a53b37cc660 100644
+--- a/rust/pin-init/internal/src/pin_data.rs
++++ b/rust/pin-init/internal/src/pin_data.rs
+@@ -1,10 +1,8 @@
+ // SPDX-License-Identifier: Apache-2.0 OR MIT
+ 
+-#[cfg(not(kernel))]
+-use proc_macro2 as proc_macro;
+-
+ use crate::helpers::{parse_generics, Generics};
+-use proc_macro::{Group, Punct, Spacing, TokenStream, TokenTree};
++use proc_macro2::{Group, Punct, Spacing, TokenStream, TokenTree};
++use quote::quote;
+ 
+ pub(crate) fn pin_data(args: TokenStream, input: TokenStream) -> TokenStream {
+     // This proc-macro only does some pre-parsing and then delegates the actual parsing to
+@@ -28,7 +26,7 @@ pub(crate) fn pin_data(args: TokenStream, input: TokenStream) -> TokenStream {
+     // The name of the struct with ty_generics.
+     let struct_name = rest
+         .iter()
+-        .skip_while(|tt| !matches!(tt, TokenTree::Ident(i) if i.to_string() == "struct"))
++        .skip_while(|tt| !matches!(tt, TokenTree::Ident(i) if i == "struct"))
+         .nth(1)
+         .and_then(|tt| match tt {
+             TokenTree::Ident(_) => {
+@@ -65,7 +63,7 @@ pub(crate) fn pin_data(args: TokenStream, input: TokenStream) -> TokenStream {
+         .into_iter()
+         .flat_map(|tt| {
+             // We ignore top level `struct` tokens, since they would emit a compile error.
+-            if matches!(&tt, TokenTree::Ident(i) if i.to_string() == "struct") {
++            if matches!(&tt, TokenTree::Ident(i) if i == "struct") {
+                 vec![tt]
+             } else {
+                 replace_self_and_deny_type_defs(&struct_name, tt, &mut errs)
+@@ -98,11 +96,7 @@ fn replace_self_and_deny_type_defs(
+ ) -> Vec<TokenTree> {
+     match tt {
+         TokenTree::Ident(ref i)
+-            if i.to_string() == "enum"
+-                || i.to_string() == "trait"
+-                || i.to_string() == "struct"
+-                || i.to_string() == "union"
+-                || i.to_string() == "impl" =>
++            if i == "enum" || i == "trait" || i == "struct" || i == "union" || i == "impl" =>
+         {
+             errs.extend(
+                 format!(
+@@ -119,7 +113,7 @@ fn replace_self_and_deny_type_defs(
+             );
+             vec![tt]
+         }
+-        TokenTree::Ident(i) if i.to_string() == "Self" => struct_name.clone(),
++        TokenTree::Ident(i) if i == "Self" => struct_name.clone(),
+         TokenTree::Literal(_) | TokenTree::Punct(_) | TokenTree::Ident(_) => vec![tt],
+         TokenTree::Group(g) => vec![TokenTree::Group(Group::new(
+             g.delimiter(),
+diff --git a/rust/pin-init/internal/src/pinned_drop.rs b/rust/pin-init/internal/src/pinned_drop.rs
+index c4ca7a70b726a..cf8cd1c429849 100644
+--- a/rust/pin-init/internal/src/pinned_drop.rs
++++ b/rust/pin-init/internal/src/pinned_drop.rs
+@@ -1,15 +1,13 @@
+ // SPDX-License-Identifier: Apache-2.0 OR MIT
+ 
+-#[cfg(not(kernel))]
+-use proc_macro2 as proc_macro;
+-
+-use proc_macro::{TokenStream, TokenTree};
++use proc_macro2::{TokenStream, TokenTree};
++use quote::quote;
+ 
+ pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream {
+     let mut toks = input.into_iter().collect::<Vec<_>>();
+     assert!(!toks.is_empty());
+     // Ensure that we have an `impl` item.
+-    assert!(matches!(&toks[0], TokenTree::Ident(i) if i.to_string() == "impl"));
++    assert!(matches!(&toks[0], TokenTree::Ident(i) if i == "impl"));
+     // Ensure that we are implementing `PinnedDrop`.
+     let mut nesting: usize = 0;
+     let mut pinned_drop_idx = None;
+@@ -27,7 +25,7 @@ pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream
+         if i >= 1 && nesting == 0 {
+             // Found the end of the generics, this should be `PinnedDrop`.
+             assert!(
+-                matches!(tt, TokenTree::Ident(i) if i.to_string() == "PinnedDrop"),
++                matches!(tt, TokenTree::Ident(i) if i == "PinnedDrop"),
+                 "expected 'PinnedDrop', found: '{tt:?}'"
+             );
+             pinned_drop_idx = Some(i);
+diff --git a/rust/pin-init/internal/src/zeroable.rs b/rust/pin-init/internal/src/zeroable.rs
+index e0ed3998445cf..d8a5ef3883f4b 100644
+--- a/rust/pin-init/internal/src/zeroable.rs
++++ b/rust/pin-init/internal/src/zeroable.rs
+@@ -1,10 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+-#[cfg(not(kernel))]
+-use proc_macro2 as proc_macro;
+-
+ use crate::helpers::{parse_generics, Generics};
+-use proc_macro::{TokenStream, TokenTree};
++use proc_macro2::{TokenStream, TokenTree};
++use quote::quote;
+ 
+ pub(crate) fn parse_zeroable_derive_input(
+     input: TokenStream,
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 147d0cc940681..d31d938886589 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -123,7 +123,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+     append_crate(
+         "pin_init_internal",
+         srctree / "rust" / "pin-init" / "internal" / "src" / "lib.rs",
+-        [],
++        ["std", "proc_macro", "proc_macro2", "quote", "syn"],
+         cfg=["kernel"],
+         is_proc_macro=True,
+     )
 -- 
 2.51.2
 
