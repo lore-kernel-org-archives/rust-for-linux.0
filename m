@@ -1,62 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F340306B12;
-	Mon, 12 Jan 2026 16:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AE524A07C;
+	Mon, 12 Jan 2026 16:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768235219; cv=none; b=TkMKzsINhl4EzcMVJhh3I3oTwd3MmQW3BWckBLKV2FhNc6wNwEAMWGuhDpcdQpOMeSv0g6WrqXQA5kotCI95yjCCzs0RjgplImoE7yV/dRFMAEFdNBxqHY9Y1iCF7+FM4GHUZ/ELPlefIj4WilNe8wuieQcRC2PGDPhZN7tSNKo=
+	t=1768235422; cv=none; b=CoinrwUhEUMYdub9akHWlpGsX8YJxwkHgIjWa/KT1kz6nn3g5biCC7hyXHwzutSGxZlP3tKRtFYUhzVzf5AfE81ub098Xsya/5ZnUzRW3gziJ7cCPCeM3/tMakFNkDSUIlzO5rbuDUnVWAyKzVBvObT7zh5se9mX79wN5H9IHDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768235219; c=relaxed/simple;
-	bh=iOQ3LQzj61QetNGlfpImMH40+LMPO+8jS6s7vMtHAJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XgOdes2xQaUWGXGjsr7j1ACyw5NNkp12ND2u89yJTPGcvRzBjmh7xUH7QBaZSCHwClyKsSg+690d4BHHC9gYthOKcuJFYkv58qqTAcuRSGlVfOddwx56GZrjAteshZoV3FIwXqcYnTvPr77dGvUekVxhVCd+IbJCZNxsPPmTh08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qetD9cI3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768235422; c=relaxed/simple;
+	bh=D5FW8AgSUopXzALYEw+ZPNzXsyiuugZWfH+sRTMD5e0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=iCOky33dYnz0Lq/vGIRwjhuUaNmS4a6knAMqUH64ePzS9vCDKtnd/ia3PngaPXL54upbZOmTgwQmerULvxCx1fgRHZAGnMWGHN61txXcEDXPAaHU7v5QgW16/+9loLmNUDnwMRg9H/0E4T6leFSShF6V/qgEwErzVwWi9HTmpvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTvsvVQN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qetD9cI3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9717C116D0;
-	Mon, 12 Jan 2026 16:26:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTvsvVQN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED24C116D0;
+	Mon, 12 Jan 2026 16:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768235218;
-	bh=iOQ3LQzj61QetNGlfpImMH40+LMPO+8jS6s7vMtHAJQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qetD9cI38v4HBH8WY0GQNe4eZ07JHWSiCKPGsql56eshbyxYi8vqaBPM8Mx+izci9
-	 ZtWtrkKCgkpnmeOYm07icpKRsJu/gQfDueanJ6ytm1ArZa4mfD7Ax/fp6jVLUVQOp3
-	 4f0nSbBRbcBB1Wc9Tp8k45aqQjV9DM9VhXX7Hp3rgMh6olXn1R+CBhIukhG0jcSW7X
-	 i5oa+ZyCAtG2aOOELwrWJUx+XkNTHaO5kkWOzwZKT5c1GyFsF+JNUqpcH+iiYq0078
-	 uQYm42YWA+WKAa60uwdkuYRjc5pDDNUlY+FWDwROS4h/5HrjrE60mThCgaZJN8lFC0
-	 Fah9qt8gH/urQ==
-Date: Mon, 12 Jan 2026 10:26:58 -0600
-From: Rob Herring <robh@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 12/27] rust: of: add __rust_helper to helpers
-Message-ID: <20260112162658.GA472608-robh@kernel.org>
-References: <20260105-define-rust-helper-v2-0-51da5f454a67@google.com>
- <20260105-define-rust-helper-v2-12-51da5f454a67@google.com>
+	s=k20201202; t=1768235422;
+	bh=D5FW8AgSUopXzALYEw+ZPNzXsyiuugZWfH+sRTMD5e0=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=dTvsvVQNZHYA37f+XKLYgIeYOhjH0fmOW2mu4XspUOMDo2/7DpxUR45xt6MTUlz5B
+	 FnayInfdfpA+uzL9Mq90zfReWacroF8Nz2TP5SmC01Z4QIy8/GPeju/6Tjmaz4ZNK+
+	 JhxgSy4/2rr7oOovpvIk6LLgrPIn+Z7wEhabcZG97oj3RIs6cy65IHYKt26yVjYPtq
+	 zRqJGMkius2NX0RZ0rB1NraEGe8UQWlRkhVJUWE5cyc/XJly4y1vWfWdk90EmaZlb1
+	 bKjGy3sNgE/fX249OuHxaBrG8fjfdeodFDiexE0WToN+E8XAzqUPFn7HUqvQBqVtua
+	 hb1cvLAGP0BTQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260105-define-rust-helper-v2-12-51da5f454a67@google.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 12 Jan 2026 17:30:16 +0100
+Message-Id: <DFMR5480EBNW.2TGBZVU4XZ8U7@kernel.org>
+To: "Bjorn Helgaas" <bhelgaas@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2] PCI: Provide pci_free_irq_vectors() for CONFIG_PCI=n
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, <linux-pci@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Dirk
+ Behme" <dirk.behme@gmail.com>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>, "kernel test robot" <lkp@intel.com>, "Liang
+ Jie" <liangjie@lixiang.com>, "Drew Fustini" <fustini@kernel.org>, "David
+ Gow" <davidgow@google.com>
+References: <20251226113938.52145-1-boqun.feng@gmail.com>
+In-Reply-To: <20251226113938.52145-1-boqun.feng@gmail.com>
 
-On Mon, Jan 05, 2026 at 12:42:25PM +0000, Alice Ryhl wrote:
-> This is needed to inline these helpers into Rust code.
-> 
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> ---
->  rust/helpers/of.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri Dec 26, 2025 at 12:39 PM CET, Boqun Feng wrote:
+> Commit 473b9f331718 ("rust: pci: fix build failure when CONFIG_PCI_MSI
+> is disabled") fixed a build error by providing rust helpers when
+> CONFIG_PCI_MSI=3Dn. However the rust helpers rely on the
+> pci_alloc_irq_vectors() function is defined, which is not true when
+> CONFIG_PCI=3Dn. There are multiple ways to fix this, e.g. a possible fix
+> could be just remove the calling of pci_alloc_irq_vectors() since it's
+> empty when CONFIG_PCI_MSI=3Dn anyway. However, since PCI irq APIs, such a=
+s
+> pci_alloc_irq_vectors(), are already defined even when CONFIG_PCI=3Dn, th=
+e
+> more reasonable fix is to define pci_alloc_irq_vectors() when
+> CONFIG_PCI=3Dn and this aligns with the situations of other primitives as
+> well.
+>
+> Reported-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Closes: https://lore.kernel.org/rust-for-linux/20251209014312.575940-1-fu=
+jita.tomonori@gmail.com/
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202512220740.4Kexm4dW-lkp@i=
+ntel.com/
+> Reported-by: Liang Jie <liangjie@lixiang.com>
+> Closes: https://lore.kernel.org/rust-for-linux/20251222034415.1384223-1-b=
+uaajxlj@163.com/
+> Fixes: 473b9f331718 ("rust: pci: fix build failure when CONFIG_PCI_MSI is=
+ disabled")
+> Reviewed-by: Drew Fustini <fustini@kernel.org>
+> Reviewed-by: David Gow <davidgow@google.com>
+> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Bjorn, I just received another bug report due to this issue. Can you please=
+ pick
+this up for the next -rc?
+
+If you don't have anything else to send, I can pick it up as well. :)
+
+Thanks,
+Danilo
