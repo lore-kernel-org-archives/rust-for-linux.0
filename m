@@ -1,115 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338C52E2DF2;
-	Mon, 12 Jan 2026 14:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9272E7BB6;
+	Mon, 12 Jan 2026 15:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768228034; cv=none; b=d1wN5WaNe6zPYyA6gRCmCAx/y/ul0eLMv+p3Vcy504gE/kfEyxyl3GNHe4Qdm/Z+RY3x6ccpOrNG8nEaIlfRQIdDw/x+v3Rr034XFd7tyRJkKqjqnkKOcdlJrAUW0EzJmu7cV2VbQ+ROmzbJRyurZot0sXWhPqrrxI7JGaKpgcs=
+	t=1768230015; cv=none; b=Z5hEeZga+ZYfQFBd6SPLv7e3A+acvSPKRYdXxsVPE6m5feUKE+if1Qn67av8bOpDONDQSjN0ASCn3FR54c7zu9Cik+sqIoiORioCs4SZZK/lzGNDpiZkvp0R3zf62Bfhn38zI/fsygul4xwCzMf/dgZZ0UxLRcpwlj0wQvdIcNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768228034; c=relaxed/simple;
-	bh=ZGnxsgK/5Z1p93I0FWNkfWilUaIajuvcnQz79Vyaozk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=OrR7F7gibO57QVbxRMXgmQXv1yzdVQPJkXj5T9C2CCtZgiVpwN5qsQIDxMZ1hAey9hVPn98njksQs8tIT1OWk4cErBvTSDidxp34tFn8dRbbIdDCehURRUs8UrNJIoyTIAbV3HtCMC9MxfdmMtmizGnqg1kTOjsVCn1muB7hllY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I8d/wXMz; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I8d/wXMz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B80C16AAE;
-	Mon, 12 Jan 2026 14:27:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768228034;
-	bh=ZGnxsgK/5Z1p93I0FWNkfWilUaIajuvcnQz79Vyaozk=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=I8d/wXMz6YIIxsvkh75J33zs9/A2zJU+9qS3WnskjVYZEQ9Oo+4iIXUgwyzB7usNE
-	 sESlh8fPLukij1AER+4U/zVnjKcdv3D/gMpOUBKtvjpG5xMqQ2Ekx3L+waCocpYBMe
-	 WNPC4uSU3DUdAaAJMhHJqvdnxAnLFybkpOPMpwcsIVrkWNpCyaGuhRX5Xke5k8fkxv
-	 /brdcSMV7AVVP9t18c+SwEUkjS5X8mMNvNiKww8CB9HjG6TXqdaFPc7ruWgAvu6993
-	 xvh/uMx4KRc/vRVdyFWFejQTRz7LyJ+yEq/uTlawVchsfNlGHvBOg2MMp8Iy2C9AQ2
-	 W8wKJQC8GJbyA==
+	s=arc-20240116; t=1768230015; c=relaxed/simple;
+	bh=n3OmhokaXcnbKVPaNRZjRHznxsmdjil5NMb6DYOcl0Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=o+0W7PCgORqvZP6XZBIqrHOE+x8bBM/ptXG9La4f59MI0R4sGlvawBIQthSuxYAhhZepofYdjk/Up6L6+mA63a0KdQ8KNF4a7qURsyL7ekjVH2OEOazwW086vsEhWZyuVr/voYSTqnxlSqsLRO4W1rpaptPJw+MeS9Rd5q3UJM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C973A58EC5;
+	Mon, 12 Jan 2026 15:00:06 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf12.hostedemail.com (Postfix) with ESMTPA id 4DBC518;
+	Mon, 12 Jan 2026 15:00:04 +0000 (UTC)
+Date: Mon, 12 Jan 2026 10:00:06 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, Ard Biesheuvel
+ <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: add Rust files to STATIC BRANCH/CALL and
+ TRACING
+Message-ID: <20260112100006.7db6d31d@gandalf.local.home>
+In-Reply-To: <CANiq72nV0Z_UjdAwT=41TjjfmKnT6WL4hVNcxg_QCe7TAEYK_Q@mail.gmail.com>
+References: <20260107-jump-label-rust-maintainers-v1-1-702b03482f2e@google.com>
+	<CANiq72nV0Z_UjdAwT=41TjjfmKnT6WL4hVNcxg_QCe7TAEYK_Q@mail.gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 12 Jan 2026 15:27:08 +0100
-Message-Id: <DFMOIU3FC48L.17P3TCF92CEZZ@kernel.org>
-To: "Greg KH" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 6/6] rust: driver: drop device private data post unbind
-Cc: <rafael@kernel.org>, <igor.korotin.linux@gmail.com>, <ojeda@kernel.org>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <david.m.ertman@intel.com>, <ira.weiny@intel.com>,
- <leon@kernel.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <wsa+renesas@sang-engineering.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-usb@vger.kernel.org>, <linux-i2c@vger.kernel.org>
-References: <20260107103511.570525-1-dakr@kernel.org>
- <20260107103511.570525-7-dakr@kernel.org>
- <2026010741-wiry-trophy-46ec@gregkh> <DFIDCAL68R7N.8SYKSAF0JO4C@kernel.org>
- <2026010701-rearview-retriever-3268@gregkh>
-In-Reply-To: <2026010701-rearview-retriever-3268@gregkh>
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 4DBC518
+X-Stat-Signature: jb1e3yf7kkrpgpbip3bmfuu3kfwtgijh
+X-Rspamd-Server: rspamout08
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19XOgIFERO/UOUCL6mEFtsjAuJQxe8NDlo=
+X-HE-Tag: 1768230004-959698
+X-HE-Meta: U2FsdGVkX18EurLyHhKuKMPSKkWqTYSfOcdD2VG4amLAWGGwwH/Jkxh0e0sycHwYnlTL8VWJvQ9/NMXUE6ANVPe9J5W12hFtuOk8qhtvsg70rjBUI0uLQsCDfG+jICkQI0JsC4L30NJqQuTAQQLez967ad+es9O6pSHFj48OY5mJwCInMPey5hB2q+4iuG8vZ4vk+Rervbkw3Pl5g3NewAa/S7xGnYWaskrBPHA5KCAq2YPLmx31JQe/FYCh7nX/jZnjtNZ1p4nJqTI6UOejdD+ndhRBgm3HywAx9sxnx1fZ1eUBqVKztYk5sGBoatxyk5vUPhTJ14AUZD0CXVUvJBgIg6Q4quXCDAJc/OVCdfLqD7+0hFp1GA6aMBEv7nif3yKFiB6lJXk=
 
-On Wed Jan 7, 2026 at 3:54 PM CET, Greg KH wrote:
-> I say name it with "rust_" and take out the #ifdef, that makes it
-> simpler/easier to understand.
+On Sun, 11 Jan 2026 19:36:29 +0100
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index 2d9871503614..bea8da5f8a3a 100644
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -548,10 +548,8 @@ static DEVICE_ATTR_RW(state_synced);
- static void device_unbind_cleanup(struct device *dev)
- {
-        devres_release_all(dev);
--#ifdef CONFIG_RUST
--       if (dev->driver->p_cb.post_unbind)
--               dev->driver->p_cb.post_unbind(dev);
--#endif
-+       if (dev->driver->p_cb.post_unbind_rust)
-+               dev->driver->p_cb.post_unbind_rust(dev);
-        arch_teardown_dma_ops(dev);
-        kfree(dev->dma_range_map);
-        dev->dma_range_map =3D NULL;
-diff --git a/include/linux/device/driver.h b/include/linux/device/driver.h
-index 51a9ebdd8a2d..bbc67ec513ed 100644
---- a/include/linux/device/driver.h
-+++ b/include/linux/device/driver.h
-@@ -121,15 +121,13 @@ struct device_driver {
-        void (*coredump) (struct device *dev);
+> On Wed, Jan 7, 2026 at 1:32=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+> >
+> > I'm proposing to include them under the existing entries, as that seems
+> > like the most obvious place to include them. However, there are multiple
+> > ways to do this. If you prefer to have them elsewhere, I would also be
+> > happy to create a new entry with me as maintaining them, or I'm also
+> > willing to be listed as R: under the entry. Regardless of how we list
+> > them in MAINTAINERS, I will be around if anything comes up. Let me know
+> > what you all prefer. =20
+>=20
+> I think this was meant to go after the `---`?
+>=20
+> Whatever Steven et al. are happy with, this looks fine, thanks!
+>=20
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+>=20
 
-        struct driver_private *p;
--#ifdef CONFIG_RUST
-        struct {
-                /*
-                 * Called after remove() and after all devres entries have =
-been
--                * processed.
-+                * processed. This is a Rust only callback.
-                 */
--               void (*post_unbind)(struct device *dev);
-+               void (*post_unbind_rust)(struct device *dev);
-        } p_cb;
--#endif
- };
+I guess the question is are those with expertise on the list of people to
+Cc?
 
+I think it may be better to have a separate section for RUST so that the
+rust maintainers can be included in the M: part too. Perhaps:
 
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index 6e32376d4c7c..26095d7bd0d9 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -207,7 +207,7 @@ fn callbacks_attach(drv: &Opaque<T::DriverType>) {
-         let base =3D base.cast::<bindings::device_driver>();
+STATIC BRANCH/CALL (RUST)
 
-         // SAFETY: It is safe to set the fields of `struct device_driver` =
-on initialization.
--        unsafe { (*base).p_cb.post_unbind =3D Some(Self::post_unbind_callb=
-ack) };
-+        unsafe { (*base).p_cb.post_unbind_rust =3D Some(Self::post_unbind_=
-callback) };
-     }
+  and
 
-     /// Creates a new instance of the registration object.
+TRACING (RUST)
+
+And have the M of the other sections be R here?
+
+-- Steve
