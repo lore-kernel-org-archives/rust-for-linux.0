@@ -1,98 +1,114 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E5E3033FC;
-	Tue, 13 Jan 2026 21:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D472FCC0E
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Jan 2026 22:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768341082; cv=pass; b=K8fp4xHfD4mhn1aULLRal4OHsvRutM41w5dSRBkHFALJp0pNz/s6y5MlGTN/v25DC3gOaxlVmxKBFbeLJEmiI1jo1I+sBGr4wCwbXoDBzVjTVDmwo3De7Hg04UqofZdwuweVkgV+mLCuUn5O8/9Ni6LFsUDsEcSq4iQ2VW5tT4s=
+	t=1768343209; cv=pass; b=QN7H84imtgmlBrrzTMEaycgpUUsF4B/7+alurj/I4P1Y95hQe2Ra7d0wBmh2MAApH6ERF3C9kqkWFMbydjH9vVlQlnylXJG77MHjy4J+EAv107ddtMpxtnNOXMhgfF65SM6QTD2OZln9ED+DHGxpMG6yj6R/yTalkr0XJcAyI14=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768341082; c=relaxed/simple;
-	bh=ekAUez4+2plL4pdPm5f1N1qqBlyBPKjY8j6Kb8XqgmI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C1ddwvT+HVqr+7qR9ZRnGMaLKt889mPMaBiICu4IHD1MjAH/kXtuWNWbz9WIDfGTz9bMKcS7Dg1s3g5MH6w3bFb1IVE94arWtlIx7sSiXzdGm0qcVn9J5TOzYWZNKADG0uHKmNiAoYgDox3HlfkhY0zFYJ26DX4IWbRr0cawgAA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=IbYU7DmI; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1768343209; c=relaxed/simple;
+	bh=LuS0+qcCgqfC+GOn507Jux8Z8zklMcMRt3X5fmJ0Fyc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aRE3ez0t+LFLxhp85e34G1RxggEiqR6Zkv46LaGs7fICGz4bi28mGWkRmhW6j+8jo9XZfb8wPQFiawYrlFCmWtcIWb5Dr9ChmZOExVCzfJjLk1v+TqpMBLTVmO7GivxooSf3w+MGuFgpHplZPInOY8EiTHhw3Z7kGBHfRlGcIkY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bgne1TWO; arc=pass smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="IbYU7DmI"
-ARC-Seal: i=1; a=rsa-sha256; t=1768341035; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=hVhzh7AUHTdxJu6JvU4kLmFazeYoDzKotMzv/D0+4u5XOphxRjl7dZTbxQS4N5Mkz3d/eIx3IvpTS931MdBemgUkwZATmz3d1Ag1d/KfBBEFCXSBOzAQteKzUS97haUtC+K3Yy4IKG078ZDvzWmTWcDVJfiJQXhFJCr6MYk2V+8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768341035; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=DPLmlARrAcdXGkqRjXYNOZR541qNKastiV4OAPsNBiI=; 
-	b=EZj3yMH0q9j4X6ixHTZ3mt+M3ALvq0gNqc/kJlCT0VrQ1bkUJakxrFuUkyq0bfXRm0HedxzFGlGbfWhmUmmrQEfzXdtzULlZGQyzhNAN5eTtKTJlsIQMu1PLT0lJk258gPp7GviAR61IDWtfUXBAJFf5FuTibTMiQ6H/IjvQHzs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768341035;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=DPLmlARrAcdXGkqRjXYNOZR541qNKastiV4OAPsNBiI=;
-	b=IbYU7DmIuRb+kX+hMyLBkx3DFwew+5h+AoOpYREVU3b0zeTRpjIkL+MS1wX0zerY
-	v+XtqpaEwvaanAklDZfQVtzj6ZSmfxod8CenGAi8MzmDUF9SUmZGBREfF+kkkP2/kby
-	bX2qewW7GYMa40KjmoW4SN+/T0+lwxaZgfBkpE7E=
-Received: by mx.zohomail.com with SMTPS id 1768341034234779.9306294454532;
-	Tue, 13 Jan 2026 13:50:34 -0800 (PST)
-Date: Tue, 13 Jan 2026 13:50:33 -0800
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	iommu@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v5] io: add io_pgtable abstraction
-Message-ID: <aWa-KVC8CVvn8GGs@um790>
-References: <20260113-io-pgtable-v5-1-7ed771bc3d8d@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bgne1TWO"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2ae60d8a05dso213188eec.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 13 Jan 2026 14:26:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768343207; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PDvYu515S62oOvIRqQaivP7CwZRumOXq20Rn/a4SYe8WHHUY5G0MTNxRAmtM5OG7lC
+         N2p2zD5xMHDHygpay3J8G+/4k6Ymjws2BGqOJFGsbwdwkgVPM3BTW4oCYsAX7vaDGVER
+         WUFrJzaG/B41OFNrn7W9jgJwWLHHacBANI8A6FL6pBLLNAlZz7E13jBX6c7LkvHtc7Fp
+         EionUBLldtoCBwunbe8jP5k1GDbIhdAzyIFe7rq/Eu/81YQjz3UZF1bc8PrAtGIT/R19
+         xQSfadwT1OnCNxF4mjYy8G9O/DX3rAipbpZ683FQ4FqZcqALm3KvFv48wrTOwCLZAI1Z
+         1V6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LuS0+qcCgqfC+GOn507Jux8Z8zklMcMRt3X5fmJ0Fyc=;
+        fh=vcNEVNGSk5gSrIeKExYdtyCKePp7C6UX+gxJM0W4z80=;
+        b=APEB88sW/tM6tzqpaOsI0EdVW8jMml6tm2vsPg0AIQ27RvyF0lrMumonQ2nogYG3KC
+         1+e1tD7nl6/y86KwR1lhmunLuL1R29ndtovSa/ZVM0vAT3rROTqT/OOEwHgQDbCZkzXD
+         u2yPYHjGYrOMAzWm15ek2aJN3Tgbw/l8YYXgKdFEmFT4ODKpzLu7OLNV0WOxAitvi/Fj
+         RJlZ9AtPpq2kWcd+xWfIX+mnl2hcivX73uT11kfvlVxk3CNakJFDHXGiYlYluPsjQ9iY
+         LXKWRrMtAjNh84t9zaU7pYRQqKhGxPJu/X0ZQypoGsDX8R28M7qhJGHT7HBwEU9ull4K
+         fUOg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768343207; x=1768948007; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LuS0+qcCgqfC+GOn507Jux8Z8zklMcMRt3X5fmJ0Fyc=;
+        b=bgne1TWOiE78edgMWryFB3RwkpjRcGaX28nWlE/Te9HzDYRqrThnlINF98ADu/rlpB
+         dAhkC2W4PX2Vs+2FkVJuvcX/ec/Eauf18mE1Git3KE+E529zCTgkD+Aaf2U4VqI/eaDM
+         Ug6KzxC3u3b51s+NQThGSxQUp3o105ONTtDr7x69bLkQ6BJsYVr0dBPRnoAhZvDUk74i
+         K3tR61Z9Bq8YKBQqFVP+Iqhr7Ak75BhX5fb9iaXcqtm05ZwqPxEMv38NUlXoF11SydkM
+         +6v9nK/spZmLKa1FKEAz1l+wUJpqS1NC2cKHlI+iAqaqlPwMSENAsPT75heikBGVgmJr
+         BTrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768343207; x=1768948007;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LuS0+qcCgqfC+GOn507Jux8Z8zklMcMRt3X5fmJ0Fyc=;
+        b=qvoRUPhIdD2Lud2IxwqIpkVE7i+AR9521hCdRrxOz4VK3Vdzrdlb/x55GG+YFFWC3U
+         Qw088JXqwQNcnXPL47P3s/PKQ9BMZgU5sirCMbFHg86SvRN0Mm2oJ5QaBP2RR6B2qg6C
+         n4fCNaMi5aHTQ47VX3swjQqtHt638Mft4AOWy8eGcrphZop6ZOuZMBGnr7keqwP8YRk4
+         QpXKhfvyHqDxoGR/LeZjvrhL3h0/5mjSdKTuOTTCnFyN1iKjiFwGRWp6Dk1xMnmELTiI
+         l70zF1nwQo9JOxCPZczOu+Cyqv9GKwgc8rym2VBJEoIqxgpsRFnJKnuVeKN1+aBdNRHf
+         dyVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUh8ML6TRXh6Ub/C07uwbmU8TqaY9qyTckHssupq9eHAHkAdkbqfVrEjO0mAsaME+MSDMG8eHOSHAabJAWA7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5DbausNuIX/3Gx3xF7EVAFiUzMmcIzONG8jueRmhEC7qj/j4s
+	QhGBsVxB1V9z+nXycslFWYjtMgQ0qAhaouEjwr8esQKWu1+dHU8wFSf9gH7q22+Hp3+FHG6L3Jx
+	C7OOBq6kJBjhhHwybnMYcSdXIq+ZD/hE=
+X-Gm-Gg: AY/fxX4FMttcqGsX49gVWYOyl851sBx3OH39V47bYzrhe7wvTC0tGqD/5dc6X3tqKWv
+	q9avCpfAycJ+bJo1TPRr3B6HMzgPFQst1ROJeOSMF7/p0K+/4vuzRIyI+FHPP3zskloFuw0Etov
+	GWw39ywMbAqWW1+JjBriDVABLHUgIxc8CsIC1JAw7Hwf8KxVPj10bWSl/3pPs1YKpPZUQWxHoKF
+	xeaa5j64wNiEwh1DhJPbHyYhL8OQf4HfCFt3OZjtHql3Oow5iWO96KUpI27s+8ubzfV37Wd82zI
+	JsAmtvi58dEOdtwvsRU0m0bbbZYO2v7+QhXtndd8MahVKK9RY6m7fSGsm5o0q/r9v4tHb9Ke9Ho
+	h5I3Eo7jANldU
+X-Received: by 2002:a05:7300:3b1a:b0:2b0:4f9a:724b with SMTP id
+ 5a478bee46e88-2b4871e9771mr337897eec.6.1768343206975; Tue, 13 Jan 2026
+ 14:26:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260113-io-pgtable-v5-1-7ed771bc3d8d@google.com>
+References: <20260113202138.565332-1-foster.ryan.r@gmail.com> <bfb5bee02f2e69ce1eb8c526dd4cfb82de326226.camel@perches.com>
+In-Reply-To: <bfb5bee02f2e69ce1eb8c526dd4cfb82de326226.camel@perches.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 13 Jan 2026 23:26:34 +0100
+X-Gm-Features: AZwV_QiviXtSAVj4u5AziZIrO1CT6xW4aq1lygI4yLxR0Y44fJoeg-pd-VOvq10
+Message-ID: <CANiq72kb-uiBug5OgMz7pM_MJBSzwAvjCjnH=y=LFse1zVHg8Q@mail.gmail.com>
+Subject: Re: [PATCH] checkpatch: warn on Rust comments with rustdoc links
+ above items
+To: Joe Perches <joe@perches.com>, Ryan Foster <foster.ryan.r@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	ojeda@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 13, 2026 at 08:49:27AM +0000, Alice Ryhl wrote:
-> From: Asahi Lina <lina+kernel@asahilina.net>
-> 
-> This will be used by the Tyr driver to create and modify the page table
-> of each address space on the GPU. Each time a mapping gets created or
-> removed by userspace, Tyr will call into GPUVM, which will figure out
-> which calls to map_pages and unmap_pages are required to map the data in
-> question in the page table so that the GPU may access those pages when
-> using that address space.
-> 
-> The Rust type wraps the struct using a raw pointer rather than the usual
-> Opaque+ARef approach because Opaque+ARef requires the target type to be
-> refcounted.
-> 
-> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-> Acked-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+On Tue, Jan 13, 2026 at 9:57=E2=80=AFPM Joe Perches <joe@perches.com> wrote=
+:
 >
+> Random grep results:
+>
+> Note: seems to be used as well
+> What about NB: and INVARIANTS ?
 
-As part of the wip for booting Tyr firmware, I have been using this
-io_pgtable abstraction including v5.
+Thanks Joe, it is very appreciated that you review checkpatch patches.
 
-Built and tested on arm64 with rustc 1.91.0 and bindgen 0.72.1.
+INVARIANTS should have been INVARIANT (or the other way around, but
+since we mostly use INVARIANT, I guess it is better to stick with it
+now).
 
-Tested-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-
+Cheers,
+Miguel
