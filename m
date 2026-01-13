@@ -1,78 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113B338E127;
-	Tue, 13 Jan 2026 11:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A202BE7D6
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Jan 2026 12:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768304804; cv=none; b=eULrnalfMmea/GIm6pDJB4X6MD0LGb0sjNgyvgNMq5eDKD3pE/wgT+43mswaG26JaB9WXnMzZRrmFdOpu+9oxu+Xc9YKXMYYgK4H5FyPJpmQ7TykvxITJ4hBh9MAu7QXjb3Uf1eJ0rmd/rbFJzBp0MN0nOqBxc44poaOm9SdfGk=
+	t=1768306147; cv=none; b=IRO/T3T4S7zomOQ1lcZqyRmbLtoTrJCIrtPjfK7jA6JhU1QjPhJaqLKapuHUURcI7f97qPRrQ6iKYCy7ImopxlROzyaMMFsuCtYXHJiF+Z6+7NNnffSoO5ZDRR+2/vJU9/TtoDkIotyH/br6r8DZga9QlpDVG9dBWxTObgZTEfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768304804; c=relaxed/simple;
-	bh=QBvEjggRtfBWW+wFoMsPP+V5V4/wuLjkk0gzonL5Dhs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QormMiwhjWbZhYEBqFvGn5x0Ee/md233R2kH5hg+RtoWqpXE0I4mLxQzJbzydQLyQSh+cVBPD10PyjVpYW+V6W7ZQpTBSR9lU0XY5RmVAIFwh7ESlsMYfU32nnS3D2vSNTybpbLMw4a2fV1PdpZgDu85qc3BWDUJydJ5P3pWAtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T0AV2JbL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768306147; c=relaxed/simple;
+	bh=S+5F1iVMqZnkDT0cVdGZIEJMnWOmXSfP/2sZFwJ4AfU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=SIAqSSxUXkzLGSkMwUmRW/hjmXF/lUuC/4zehfRqyqRpkMAGJNprMuF37dMaMMPCWNsckVNPn7DqN8xYkSx1VCey4IJOPy5FLrf82s4ypdScQZQy5iYA0kVotMzp6ZEdqGXiPRL5z6jq0O+lhLVSxKiREwKudv0c7QTMvt47DG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4sz16xs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T0AV2JbL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B238AC116C6;
-	Tue, 13 Jan 2026 11:46:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4sz16xs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6FDC116C6;
+	Tue, 13 Jan 2026 12:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768304803;
-	bh=QBvEjggRtfBWW+wFoMsPP+V5V4/wuLjkk0gzonL5Dhs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0AV2JbLHdR0uY1BGGkx3jnerLW4YUk8M9uFfmoXDD+YiKRUoKDT48KWILGPwObhg
-	 fiLLCq/6wihMNvqP6TFhKlkt+LlgovaR1Vk3JUo8FR+Jw6XVnmIhHpGKlvslBRig7p
-	 E26K38ELH3H9/CUW3q2za6sLxWeDCqsQp9fLGiNWBMTIK/WP2zW7Hc6UFW7TkO3G4j
-	 bJSCXVo2HDHG3SJAAqcL3G16iSm+OUlgFYVIcsvBcxF/v5jV8Z1IBlbQXNo0CoCVTf
-	 7/1884ejIbCljAZMMD7rOgVSAa4seYOtCyi9oQKaLz6CEJMzn+4Is5ANsFt94TtHzp
-	 6CLNJvxMYJeJg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>,
-	ojeda@kernel.org
-Cc: linux-doc@vger.kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu
-Subject: Re: [PATCH] rust: conclude the Rust experiment
-Date: Tue, 13 Jan 2026 12:46:23 +0100
-Message-ID: <20260113114623.114117-1-ojeda@kernel.org>
-In-Reply-To: <20251213000042.23072-1-ojeda@kernel.org>
-References: <20251213000042.23072-1-ojeda@kernel.org>
+	s=k20201202; t=1768306146;
+	bh=S+5F1iVMqZnkDT0cVdGZIEJMnWOmXSfP/2sZFwJ4AfU=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=I4sz16xsVpyIKXdGLRc0qdPXTl5y3LobV0P0TKap6V/GvaF0VGfLHZv8x7EXGkoSM
+	 Gjox70lpoaEnOgwX+IDUfGiNjRg5Zbe1OCNwytfkzTdOfcDtaDbOYwVp2Ky0K533iv
+	 vbp/K9maPKDAaqCX/yprz8UJBWV17nIxY5q5b/BGIxwsQ08B/QQkJ1CaA2eMXsY5q3
+	 0a7+7J94PR+hco+UXTe7RE0EWXVtygy8kvLMSXL75tp1TDArkURfASyVbjysBu6FgB
+	 W3TCn8bJMmZOOikoUQ86rcg94Rf7iPDAvb1SFcFWkuj02mvPR8AAqVXX9GwgBnOfvP
+	 HH/CWa2RXThKg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 13 Jan 2026 13:09:02 +0100
+Message-Id: <DFNG7N43H664.4YY2IKBCAD94@kernel.org>
+Subject: Re: [PATCH] rust: platform: fix remove_callback invariant comment
+Cc: <rafael@kernel.org>, <tmgross@umich.edu>, <aliceryhl@google.com>,
+ <a.hindborg@kernel.org>, <lossin@kernel.org>, <bjorn3_gh@protonmail.com>,
+ <gary@garyguo.net>, <boqun.feng@gmail.com>, <ojeda@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+ <alok.a.tiwarilinux@gmail.com>
+To: "Alok Tiwari" <alok.a.tiwari@oracle.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260110115159.2313116-1-alok.a.tiwari@oracle.com>
+In-Reply-To: <20260110115159.2313116-1-alok.a.tiwari@oracle.com>
 
-On Sat, 13 Dec 2025 01:00:42 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
+On Sat Jan 10, 2026 at 12:51 PM CET, Alok Tiwari wrote:
+> Correct copy-paste errors where remove_callback safety invariants
+> incorrectly referenced probe_callback().
 >
->  Documentation/rust/index.rst | 18 ------------------
+> Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-When I apply the patch soon I will also remove this one as well which
-I recalled we had (Cc docs/Jon):
-
-diff --git a/Documentation/process/programming-language.rst b/Documentation/process/programming-language.rst
-index bc56dee6d0bc..f39d1d3dd9ce 100644
---- a/Documentation/process/programming-language.rst
-+++ b/Documentation/process/programming-language.rst
-@@ -34,7 +34,7 @@ Please refer to ``include/linux/compiler_attributes.h`` for more information.
- Rust
- ----
-
--The kernel has experimental support for the Rust programming language
-+The kernel has support for the Rust programming language
- [rust-language]_ under ``CONFIG_RUST``. It is compiled with ``rustc`` [rustc]_
- under ``--edition=2021`` [rust-editions]_. Editions are a way to introduce
- small changes to the language that are not backwards compatible.
-
-Cheers,
-Miguel
+Applied to driver-core-testing, thanks!
