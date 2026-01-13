@@ -1,67 +1,78 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2043428314C;
-	Tue, 13 Jan 2026 10:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113B338E127;
+	Tue, 13 Jan 2026 11:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768301041; cv=none; b=dZHYqBgA5De9nUUy4te+v3UW433+yv6gwjY/NU2NmNja2MxG04Iz0JRQ7Hd+Tgx4fE6j9ZQj+IMBlWoz3Wbdc9clY+aLp68UI4m6VC/ZsYSdtgi6JSEJIZxMki5b+Ifi36VwerNG7BkzJp9SsU42ZWuJd+8Aeg7wo9ytACMSCtg=
+	t=1768304804; cv=none; b=eULrnalfMmea/GIm6pDJB4X6MD0LGb0sjNgyvgNMq5eDKD3pE/wgT+43mswaG26JaB9WXnMzZRrmFdOpu+9oxu+Xc9YKXMYYgK4H5FyPJpmQ7TykvxITJ4hBh9MAu7QXjb3Uf1eJ0rmd/rbFJzBp0MN0nOqBxc44poaOm9SdfGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768301041; c=relaxed/simple;
-	bh=X28kvLJg1xnkxvUOQH4eyDV6osoA4D+yaYT9AjDK1zY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J8cWY16dWDVp2B5IioKSE98eIj1hL1dbybZRCG34TzhSfubGY3qKYSiDj8QNp5V9LoebtbITcLG+STJGdB1sJUpUBz5WpXyBTYY7khqsRdmQjr8kIWPezgg5hDS/bLyYaieJQPfbYB3H1T/QIlRxhiASLlMs/JIb0SAVlCulad4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cVcV4q5S; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1768304804; c=relaxed/simple;
+	bh=QBvEjggRtfBWW+wFoMsPP+V5V4/wuLjkk0gzonL5Dhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QormMiwhjWbZhYEBqFvGn5x0Ee/md233R2kH5hg+RtoWqpXE0I4mLxQzJbzydQLyQSh+cVBPD10PyjVpYW+V6W7ZQpTBSR9lU0XY5RmVAIFwh7ESlsMYfU32nnS3D2vSNTybpbLMw4a2fV1PdpZgDu85qc3BWDUJydJ5P3pWAtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T0AV2JbL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cVcV4q5S"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Rs0t6lm7/P+aWY+UTo7NoiZhO5+1kT9ox6xFFUmlQFY=; b=cVcV4q5SvC0Jhwj/AEDh8wp/u7
-	mWhJXcsaSXUcVkSTEnYgIaUjC5incDfXtrAL4jNuCwV/j40m2Q1pD1xKY6Q/bMbRANncgEXpUHvz9
-	wURurazL1sh6Das06lryNIZEvMuo8wc7C7CP5qMk5dZ0zb7EaTkiZBXRR/qaf/dfTCBt0efGhI78r
-	8VTgXrjX7i8ydyTFuJ+Zd1GVQtSbKQzQdwyBJsfJOLx1KGmRZ+wKZZS9+l5680ats93ENHSr63j9h
-	FMIbILEVCs4WIn6lhnR/1m68kgBvZevA6vWJC8m6DQhcyXBflfIjG2ymkgAabjnCPCncta6edaZVE
-	IV9IqUDw==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vfbsL-00000004auT-3ffI;
-	Tue, 13 Jan 2026 10:43:49 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id BF285301C77; Tue, 13 Jan 2026 11:43:48 +0100 (CET)
-Date: Tue, 13 Jan 2026 11:43:48 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Ingo Molnar <mingo@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [GIT PULL][PATCH 00/36] Rust synchronization changes for v7.0
-Message-ID: <20260113104348.GC830229@noisy.programming.kicks-ass.net>
-References: <20260111115808.5702-1-boqun.feng@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T0AV2JbL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B238AC116C6;
+	Tue, 13 Jan 2026 11:46:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768304803;
+	bh=QBvEjggRtfBWW+wFoMsPP+V5V4/wuLjkk0gzonL5Dhs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T0AV2JbLHdR0uY1BGGkx3jnerLW4YUk8M9uFfmoXDD+YiKRUoKDT48KWILGPwObhg
+	 fiLLCq/6wihMNvqP6TFhKlkt+LlgovaR1Vk3JUo8FR+Jw6XVnmIhHpGKlvslBRig7p
+	 E26K38ELH3H9/CUW3q2za6sLxWeDCqsQp9fLGiNWBMTIK/WP2zW7Hc6UFW7TkO3G4j
+	 bJSCXVo2HDHG3SJAAqcL3G16iSm+OUlgFYVIcsvBcxF/v5jV8Z1IBlbQXNo0CoCVTf
+	 7/1884ejIbCljAZMMD7rOgVSAa4seYOtCyi9oQKaLz6CEJMzn+4Is5ANsFt94TtHzp
+	 6CLNJvxMYJeJg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>,
+	ojeda@kernel.org
+Cc: linux-doc@vger.kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu
+Subject: Re: [PATCH] rust: conclude the Rust experiment
+Date: Tue, 13 Jan 2026 12:46:23 +0100
+Message-ID: <20260113114623.114117-1-ojeda@kernel.org>
+In-Reply-To: <20251213000042.23072-1-ojeda@kernel.org>
+References: <20251213000042.23072-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260111115808.5702-1-boqun.feng@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jan 11, 2026 at 07:57:32PM +0800, Boqun Feng wrote:
-> Peter,
-> 
-> Please pull the following changes of Rust synchronization for 7.0 into
-> tip/locking/core, you can find the details of the changes in the git tag
-> message below.
+On Sat, 13 Dec 2025 01:00:42 +0100 Miguel Ojeda <ojeda@kernel.org> wrote:
+>
+>  Documentation/rust/index.rst | 18 ------------------
 
-Done!, Thanks!
+When I apply the patch soon I will also remove this one as well which
+I recalled we had (Cc docs/Jon):
+
+diff --git a/Documentation/process/programming-language.rst b/Documentation/process/programming-language.rst
+index bc56dee6d0bc..f39d1d3dd9ce 100644
+--- a/Documentation/process/programming-language.rst
++++ b/Documentation/process/programming-language.rst
+@@ -34,7 +34,7 @@ Please refer to ``include/linux/compiler_attributes.h`` for more information.
+ Rust
+ ----
+
+-The kernel has experimental support for the Rust programming language
++The kernel has support for the Rust programming language
+ [rust-language]_ under ``CONFIG_RUST``. It is compiled with ``rustc`` [rustc]_
+ under ``--edition=2021`` [rust-editions]_. Editions are a way to introduce
+ small changes to the language that are not backwards compatible.
+
+Cheers,
+Miguel
