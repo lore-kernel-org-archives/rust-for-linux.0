@@ -1,155 +1,158 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F70E23C4FA
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Jan 2026 01:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A602921579F
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Jan 2026 01:45:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768268351; cv=none; b=ACwdtN5M/GUiUgKlRpDS4hh6RNanXOo6fO6II7MBla3Qcrg23ow9b0HnaV975RuqbXZau+SUVeVteQnqjUUpOEnq7dHI76HwlwY9hnJi0P69ezWfDXXWxXWgTfVWLQevLz7m7MtrbPk3A9E4Mw/eFgdVwpKubOuo6+K6srPPf7M=
+	t=1768268728; cv=none; b=Va8pz4GJFS3MVpCclBJQ2cqa0GQTB1xYQUYQhNvqgs9tg5SIm8jKWhWYBUSAY8xUiSJ1kcIHDXnZeYhYN1bzGS93RQkqPczIuI+66Ir6XM8t6rj6i8406vXXwYFIXe0+iQlmD453UjyM+LPF+Wqk45XoIzBnk7695SNcktSSYWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768268351; c=relaxed/simple;
-	bh=NS3x+3uL6ysGvCZR84jG/XsOHzLhTxn5Mimn/9n8TZ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U72IajNVSmw4C6NHY/bAyKNTlJQXVAWfyclOpZ4wGRlnrKFfhDaim5oEXrQ+/uRGQj4h8WqWjbWjAmu2tpUIZTBjt6xeUo4W4cBGoMLznRhwgAR2C9n7XnyblxTO302q7+lLlNPXlGs38TkNNqZR0otjvshIhetzCauR9CsjkRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c67cqJPN; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1768268728; c=relaxed/simple;
+	bh=Uobo9SLBU0DwNcaFkYaXmUMdi1ZmqSzr4kmCUz9cAnk=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=fcqF67HnGxL8ZQgZVG6NRrTW4KRwHX1SKwOsh4yyI8/dhGxWVLhyI4Zszwa5z8Ull7ayyDSzcUO01NXq1QXX7hbEvJdRoYuUlJBx0zSYWYLFgIKFhv/PRHNmiy4g/H6OehSKE/iVhVnWSPZ9n+htPUMSFQyl9uvvpNyS/BLkAHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PGeP0XZJ; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c67cqJPN"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c2af7d09533so4501160a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Jan 2026 17:39:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PGeP0XZJ"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a3e89aa5d0so54592335ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Jan 2026 17:45:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1768268349; x=1768873149; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5jnnF25VCkg0T2SybZ7yCUZ9VpuY5q1ByUf+LCHdaPI=;
-        b=c67cqJPNweTCdA1tCJ2A2dA5wsnuS15M2erybASfGfo4Iyqi7R2ZaI+7lm1IJoZdGg
-         hnUTvkOc/lTIETC+y9YysA6RcVNZFvGd01TWzh4Zc3qDUWKdSJBayNpIyUEjgwn2tpfG
-         2XMsGyimOHsdQYZCydbh0vArJ5k3XVZkmVj8NpDRjuJ3bnDNiI+b8Esj6vmcfzFIlkM5
-         69xgUv0IlCEKOo3Y1y1Pw3SV3VisMpsysjL8rw2JdjkzJh2hI5TgWREP+aL0txMJqsNY
-         TXo8O3QZgXFwAG0MKX+fcpsiSze2ietqZp8UGKgvedPqQXgE5w+S2kaCHJdbb9d8kMh/
-         oCcg==
+        d=gmail.com; s=20230601; t=1768268727; x=1768873527; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Rq8mSmnBZ2KK6Xak0ZjIpBvEWHBPUXPoEpVhrF7RtPY=;
+        b=PGeP0XZJSbdVOQGd5J2I6SPTIwjBDZp1itAXkH35VOqkoeJhulZpiQ7YzhFslVWSDM
+         vYOsprefp4XzItNPf85SlXF1o7fJ4lZqFe8GFVA/E6KtjfCx1JK0/INx2cZyGcOxxwsF
+         YTgkhbMbHjR+OdU/fwWbCDS+VaJANoHqvaw+bPf4CdSVv8hYyQmaqSj9wbzySXjSU1qZ
+         TR/Sbp9Lmxv2YH6zntWcwGJWAy5OoxMIAxZN09qkOWhYy8ONBxVztxmhm4zlo+waEIE3
+         H/KfIQ1IpxqoKkd/wEZqO7HkYwHhp1cskoKr79m7lmOGImF0/UW119F9fIy/nfeCxNsY
+         0gig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768268349; x=1768873149;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1768268727; x=1768873527;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5jnnF25VCkg0T2SybZ7yCUZ9VpuY5q1ByUf+LCHdaPI=;
-        b=lBkFgOCQFnvLMIKdp4u3d5aThcm2a5AM1vBMOa2DT+WfgrKVSbmC7xLyfWxc5a7/qz
-         1/kXQNTWvwhX8OEEGcryz/Ywn5ByqHeFZa0pCf17nJFrkmCQ7UhP0i3PPLatHwY7fh2p
-         1sJP6gSNGQPKMB4NBaBw/9t9i8ZMxdp/7KOJ1BeXFORkFEPCw5J7JC1sKLDnamwJ8FgX
-         sGRupnM7WkU70fi17xOFgMt/21cuf5s/MnKvX9onPKoIfb9FzKDyqjoDmWwa8dleAOLo
-         dAPTfsnMy9LQi0zuqtdA647XBOUmP60/ISfiENqsb/3SzK8sWXLGzbBtwLaKdn0QjRIC
-         +LGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXtEb7jZmmZPNDfAfR5GFoYnFZoMtkukP4M1knaZ9bwawtyERKNsGBcyfdcrVUdtWyA521QcbvOjeuMsoDnVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeV6Hbnb+zNY2ycxQ/39nZsneAR5p1K8wLVVa4wNDVQ2t/YL5J
-	dnC9Fwv69zTQBIXzi/pstSdmE5RcP7Fepk2V9whCyUSV47VvI+trdWMEw9qEjbix2bE=
-X-Gm-Gg: AY/fxX42i8oXdqTAqKY69FX37AG4cVzvNUZaEOnY6COPzRrq6RJWtReeAi2qE8arbqR
-	EsyxEDwd59EQe/XeBH7OmAE+DIrabByae2C4fWZGoLxzCoUZL5+kFOWYM4Pf67Fl7g7K2oulkTe
-	f0jjLSpKp5VpHK4JtNVTdzboGnnknjn6t1b9MRV11CLfLKVwsD5HFn/fsjUFqRqtfAsgwaecnXH
-	cgJYDgr/er3RqGOHdijCcJI4iCnFED12sOMIKIef0THVvhJnAIfSyxuSWj7I0o2TxA63QkppPvi
-	p16nmNANdFqpKOVzaZWUuvO6m4SqSqUNYYaQMIV+jeY/5zFAZB27zLWgo/sRTeN4ylbEKvzvH5e
-	gJcwD5eoFtCZ4SwoHXu4rpUbJsapwHlRXfGBNjlt+9EiTbrmJZaTyjxqHYGhGGDxhg7I1uMPDgy
-	Ig2+CeMUb7sPQ=
-X-Google-Smtp-Source: AGHT+IE+8ODXdgONlaPfMReyPaErVGpU2QlslXQuDgOl+fISaHx/HgOObknC4HoLwe/gX+WeDJkx6Q==
-X-Received: by 2002:a17:902:e949:b0:29e:a615:f509 with SMTP id d9443c01a7336-2a3ee42bc2fmr216894745ad.17.1768268349214;
-        Mon, 12 Jan 2026 17:39:09 -0800 (PST)
-Received: from localhost ([122.172.80.63])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c4795fsm187713755ad.33.2026.01.12.17.39.07
+        bh=Rq8mSmnBZ2KK6Xak0ZjIpBvEWHBPUXPoEpVhrF7RtPY=;
+        b=C7Bv/CPjpyggHmX4gas8QWf2drpGgqFMm9qnOmrhR4IPOFwaishCDzR2UHoRiSjCcG
+         OByyWKjvMWEcpd65HTR+M/YshAZ3R2UOih+68tucVh+MoBsZ7uyHBfaiPt+huS4DZ0j1
+         +RsjM6MQfdZmerLAygHiZhvolpKz1kJdkdchUMOvpOrCwvFcS9gUv9Vlf2vWITGg/exJ
+         w9rmj0jKzzD5qDFEy5BgO8mCknVi9SejyjJhGWJ1XEi3In01oNsIiRAq01MTjWMUTXWA
+         zqT9XDQYzG42lJx13WiQyNMPBesPg6VNNvRqM+5qK8g1/bF3SbU9OMCyJ7nHNZIU2nZp
+         zxag==
+X-Forwarded-Encrypted: i=1; AJvYcCXTNa6TTLq6JzMIHEOmMZYB41PcCbqFMU9lNwiisILX1T85KVdI8aGOA1tJ+U0x0cLMTdFYXVLU5JSX9R3uQw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yye/5WCxOLYx5soCewiKLUQNpRmmdtG7Aucszo3z1Zdb8Vmm2vT
+	dGoU+ph7BgdTTP0xQ6CD8W4vt/TCM/SxifxpYcpl8MDow9/M4lJxKgsF
+X-Gm-Gg: AY/fxX6pK/OqA7w+HAOG8S7ZtkuBSncs9KQ7ul+COo3F/2eip4x1yIZfp/1D3pR+NkD
+	osHmvjzKjJi2lQIMBmJsKTGGClw9OshDnNZSeLtTjjy9t3qOsBaG89Z/UZ6r5/c8KiuAqeU/pFR
+	EkYRYF/Hn/JN8QWZYt+0d5/Iz1jWtIxbEubYT0EK4HKnOtOSlpvGBCr7WipCnms5NKMmo+EpQIE
+	vOFjbsizhL8ZBNk7Tp0yF3PctnkvAY3DSIj/odg44sUXMEeMkznVjLZb0spBvps2qyKiJw8IXyy
+	6JUSjJEaUKXEEgRYo1iRcA9hg+jiv/aUlxQf6eU5eG6Tqm89/yFNVy99MdEnyBd2KKIbTSCAhan
+	dcdBj1WqpWAaiWcVaAhmiowh90Os+Gzys3418yM5mtkCJ3py3BZH2EQn4XAsQNLeqja3kJD7+Md
+	JSxt+YpUUmEsHKNlcO2GXWODNdkFDSW9zFttd6nkFrF+N9eShDyPvm7Wco+/1X/8vym5+XbxaPL
+	PPHKQ==
+X-Google-Smtp-Source: AGHT+IFji2bFZ+ftmYNANnzm0k9xkLq7awR2lzzeHETSVnckhPTfpfcQcv0/XxTfVTHNw2a9g//3Xg==
+X-Received: by 2002:a17:903:3d0b:b0:2a0:d527:4d08 with SMTP id d9443c01a7336-2a3ee49e03cmr202278035ad.41.1768268726909;
+        Mon, 12 Jan 2026 17:45:26 -0800 (PST)
+Received: from localhost (p5342157-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.39.242.157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cc88d8sm183839435ad.80.2026.01.12.17.45.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 17:39:08 -0800 (PST)
-Date: Tue, 13 Jan 2026 07:09:05 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Yilin Chen <1479826151@qq.com>, 
-	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 RESEND] rust: cpumask: rename methods of Cpumask for
- clarity and consistency
-Message-ID: <77y2t5fsroqn6ogczr7jadbuf3k2qvuea526d3diup5ek6aq74@eu3m3yns2jwb>
-References: <tencent_38DB4FAEAA8E319F0F1BFF098A922623AA09@qq.com>
+        Mon, 12 Jan 2026 17:45:26 -0800 (PST)
+Date: Tue, 13 Jan 2026 10:45:22 +0900 (JST)
+Message-Id: <20260113.104522.664001916919689669.fujita.tomonori@gmail.com>
+To: gary@garyguo.net
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com, boqun.feng@gmail.com,
+ ojeda@kernel.org, peterz@infradead.org, will@kernel.org,
+ a.hindborg@kernel.org, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ lossin@kernel.org, mark.rutland@arm.com, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] rust: sync: atomic: Add i32-backed Flag for
+ atomic booleans
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <DFN28YJ5LQ3K.LEWE16Z5EXYF@garyguo.net>
+References: <aWS8aPuBRTKIjTZu@google.com>
+	<20260113.073003.1666900745205693004.fujita.tomonori@gmail.com>
+	<DFN28YJ5LQ3K.LEWE16Z5EXYF@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_38DB4FAEAA8E319F0F1BFF098A922623AA09@qq.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-+ Yury.
+On Tue, 13 Jan 2026 01:12:29 +0000
+"Gary Guo" <gary@garyguo.net> wrote:
 
-Yilin, please use scripts/get_maintainer.pl in future to get the list
-of all relevant people.
-
-On 12-01-26, 16:00, Yilin Chen wrote:
-> Rename `as_ref` and `as_mut_ref` to `from_raw` and `from_raw_mut` to
-> align with the established naming convention for constructing types
-> from raw pointers in the kernel's Rust codebase.
+> On Mon Jan 12, 2026 at 10:30 PM GMT, FUJITA Tomonori wrote:
+>> On Mon, 12 Jan 2026 09:18:32 +0000
+>> Alice Ryhl <aliceryhl@google.com> wrote:
+>>
+>>> On Sun, Jan 11, 2026 at 02:05:57PM +0900, FUJITA Tomonori wrote:
+>>>> Add a new Flag enum (Clear/Set) and implement AtomicType for it, so
+>>>> users can use Atomic<Flag> for boolean flags.
+>>>> 
+>>>> The backing integer type is an implementation detail; it is currently
+>>>> i32 but may change in the future.
+>>>> 
+>>>> Document when Atomic<Flag> is generally preferable to Atomic<bool>: in
+>>>> particular, when RMW operations such as xchg()/cmpxchg() may be used
+>>>> and minimizing memory usage is not the top priority. On some
+>>>> architectures without byte-sized RMW instructions, Atomic<bool> can be
+>>>> slower for RMW operations.
+>>>> 
+>>>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>>> ---
+>>>>  rust/kernel/sync/atomic.rs | 56 ++++++++++++++++++++++++++++++++++++++
+>>>>  1 file changed, 56 insertions(+)
+>>>> 
+>>>> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+>>>> index ca9cab77abf0..473d3c07e234 100644
+>>>> --- a/rust/kernel/sync/atomic.rs
+>>>> +++ b/rust/kernel/sync/atomic.rs
+>>>> @@ -566,3 +566,59 @@ pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Ordering)
+>>>>          unsafe { from_repr(ret) }
+>>>>      }
+>>>>  }
+>>>> +
+>>>> +/// An atomic flag type intended to be backed by a performance-optimal integer type.
+>>>> +///
+>>>> +/// The backing integer type is an implementation detail; it is currently [`i32`] but may change
+>>>> +/// in the future.
+>>> 
+>>> How is it, could we make it u8 on some architectures without penalty,
+>>> and have it be i32 on others? Or is i32 better always.
+>>
+>> Does the following look reasonable?
+>>
+>> #[derive(Clone, Copy, PartialEq, Eq)]
+>> #[cfg_attr(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64), repr(i8))]
+>> #[cfg_attr(
+>>     not(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64)),
+>>     repr(i32)
+>> )]
 > 
-> Signed-off-by: Yilin Chen <1479826151@qq.com>
-> ---
-> Changes in v3:
-> - Use real name in signed-off-by line (Kari Argillander)
-> - Add links to priveous patches:
-> - Link to v2: https://lore.kernel.org/rust-for-linux/tencent_58EDE157C8C700CFF88DA204B7492A113508@qq.com/
-> 
-> Changes in v2:
-> - Use real name in From line (Alice Ryhl)
-> - Send this patch individually instead of bundling with others
-> - Link to v1: https://lore.kernel.org/rust-for-linux/aUMUA_JWalyGQdAx@google.com/#t
-> ---
->  rust/kernel/cpumask.rs | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
-> index c1d17826ae7b..44bb36636ee3 100644
-> --- a/rust/kernel/cpumask.rs
-> +++ b/rust/kernel/cpumask.rs
-> @@ -39,7 +39,7 @@
->  /// fn set_clear_cpu(ptr: *mut bindings::cpumask, set_cpu: CpuId, clear_cpu: CpuId) {
->  ///     // SAFETY: The `ptr` is valid for writing and remains valid for the lifetime of the
->  ///     // returned reference.
-> -///     let mask = unsafe { Cpumask::as_mut_ref(ptr) };
-> +///     let mask = unsafe { Cpumask::from_raw_mut(ptr) };
->  ///
->  ///     mask.set(set_cpu);
->  ///     mask.clear(clear_cpu);
-> @@ -49,13 +49,13 @@
->  pub struct Cpumask(Opaque<bindings::cpumask>);
->  
->  impl Cpumask {
-> -    /// Creates a mutable reference to an existing `struct cpumask` pointer.
-> +    /// Creates a mutable reference from an existing `struct cpumask` pointer.
->      ///
->      /// # Safety
->      ///
->      /// The caller must ensure that `ptr` is valid for writing and remains valid for the lifetime
->      /// of the returned reference.
-> -    pub unsafe fn as_mut_ref<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
-> +    pub unsafe fn from_raw_mut<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
->          // SAFETY: Guaranteed by the safety requirements of the function.
->          //
->          // INVARIANT: The caller ensures that `ptr` is valid for writing and remains valid for the
-> @@ -63,13 +63,13 @@ pub unsafe fn as_mut_ref<'a>(ptr: *mut bindings::cpumask) -> &'a mut Self {
->          unsafe { &mut *ptr.cast() }
->      }
->  
-> -    /// Creates a reference to an existing `struct cpumask` pointer.
-> +    /// Creates a reference from an existing `struct cpumask` pointer.
->      ///
->      /// # Safety
->      ///
->      /// The caller must ensure that `ptr` is valid for reading and remains valid for the lifetime
->      /// of the returned reference.
-> -    pub unsafe fn as_ref<'a>(ptr: *const bindings::cpumask) -> &'a Self {
-> +    pub unsafe fn from_raw<'a>(ptr: *const bindings::cpumask) -> &'a Self {
->          // SAFETY: Guaranteed by the safety requirements of the function.
->          //
->          // INVARIANT: The caller ensures that `ptr` is valid for reading and remains valid for the
+> The arch list looks correct to me.
 
-Applied. Thanks.
+Thanks for confirming.
 
--- 
-viresh
+>> pub enum Flag {
+>>     /// The flag is clear.
+>>     Clear = 0,
+>>     /// The flag is set.
+>>     Set = 1,
+>> }
+>>
+>> #[cfg(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64))]
+>> type FlagRepr = i8;
+>> #[cfg(not(any(CONFIG_X86_64, CONFIG_UML, CONFIG_ARM, CONFIG_ARM64)))]
+>> type FlagRepr = i32;
+> 
+> This doesn't need an extra typedef. You can just put `#[cfg]` on the associate
+> item below.
+
+Got it. I thought the type alias was cleaner, but I'll drop it and put
+the #[cfg] on the associated type.
