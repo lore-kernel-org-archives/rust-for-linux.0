@@ -1,72 +1,73 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012055.outbound.protection.outlook.com [40.107.209.55])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012068.outbound.protection.outlook.com [40.107.209.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6B934A797
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98DC34E74B
 	for <rust-for-linux@vger.kernel.org>; Tue, 13 Jan 2026 22:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.55
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768344882; cv=fail; b=l10H9bjCMuSPR5XFySorEvu1qr+tGTcdyY1nRkF+2W2hUWDsAAF8mUEPIN6nWcjCIWmxY0iO/tpYjs3iHwgvvrB9ASf8f4eJS/xCytA3PEGWm7InFoMC6v51yA16n9oKp9Ob6yIlAid6Y+in85DmCgH/lhQy6ckA5bbkIXQ9buI=
+	t=1768344883; cv=fail; b=AOifKVJHRdKJ3bteVzPq5Y5fLOr67ibBDaBWWf/P4xrLYGVDIM6JDRcFM/0NGmgymvpTS/oxiOIn5cEnUmKEUv8Kk6rynrKcpWoB2M4vOTlLfqw0kUAnSCsw7W0fKaINk0ZKCgD9i8fIz9ZS6DVUYQ6MafXdbe04FVRpwD3GZG0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768344882; c=relaxed/simple;
-	bh=8XixqUfwpx5imdSmQi0d6ZE8SzSw5QwYn/jkbOggbKE=;
+	s=arc-20240116; t=1768344883; c=relaxed/simple;
+	bh=g2k8z/tctcRxL9fxkSbBNQQH2NZfqm9rUoGSszrqztM=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bypGm5VHglCj0Cvdgqx/JSymKhCEr6F223mFJodrjX27rP5c/04alOJ+S9LU+DdQDYCPS0j+2eCp7MKUCUJbGzBdnrBhAeiKla2XuQM4MAcsFLAkHKem4NXyy2TdXwJxhRIaxcyr5LG018nt08tPg2BQBTrrTuzUufcdUPTQ9zY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eLmXlfKu; arc=fail smtp.client-ip=40.107.209.55
+	 MIME-Version:Content-Type; b=G1Hrv2+96/7K5Z2+pDXlhSGkyQlpp7i+seKDVNf5K/E2XeC6FIKnvqnB8aDC8MB3YyE9GjZRhkAKnLCBoq5jxRhNA+ONM0NxMFPbRHch5kTEgGdsfZgOcZ+bKMqSEyHzyzSaLuj0ZnTpBdFo7KQi6fsFBQv2lTWUFENvRm9YpZ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ljgp4kpA; arc=fail smtp.client-ip=40.107.209.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eLmXlfKu"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ljgp4kpA"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rIXicqlQzJslfPBziwFlSEArj6PMtTYKJMAnNO3Z8tjK4FBz6nGsOqVEJT+S05Rr1+vBwweZ8b/3OwhtPBeC3AZhGWp7aP5Ytl+zDVdv51p0NShJxan3iJg9b7fW1Gp05LYbsqqi0l5An/BnA76FxxOegGfuFaZfxtFuAqzanm4ss4Te2/SvFYUpVr/2pI8oyYR4IfRCi4pfe6u5EtrurkSQuKQ25nyZIYOT9qWcU27AP3dSyfCqqiFBrCvWRs0QUeXchM3EZMB+1s4ybdhfcAocpQQNAES9AQplAYRNLpMjeM7r3hwrkKDsTNSWbTKByvvU1fuL3O8e+DyGsY6t7A==
+ b=we/Y+loTBdiHq1azvfR35Ew8EtFSzSgylYdskoKZX5SFtMmcW0FzlDweEGg3qp1gIN9eTx1QpGzmpZBP0yjH+I1H5E8/gQE4KSI/q5pYq9CJd78hgGfLbqGE8dW4tD5cifkG2yzBjrNp8X4qMrS6N9qAsaMaRdi7wsIgdCaWCkwZluRHu4oxVI0rj4szrCGvEdZ8gebIzUFfI6w9JEDvNmu9lg2so8xuHyV9LAfUutdmfLawayYbivswKCAHiIVqpDPCvbUz/PQJTadtAMQfEimiGlewGRNBoyI++7/0UTimICAyvq8JS2PzEgrnBgGVo6t4bbhqtO+59pPC2fbPGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+C6S4z2BekgHs6vS0lcUxP1c0g2pxCXTMXp1eQQ3PS8=;
- b=WdhNELVFsNZMvOJJ/m8M3l84GI1CQ81nFHk4Ka+6Vkbe+5ZsD07izqWGxYHRpaDjZsIM5PgF4f6GUkO2piplWRiRXS5EfKfnwCoLOA6UI9g7QJb99lSh9R7CwyrdjVI5CeNylTd+DZnRm0r5DwbiEOfAe31hMFEs7daLmqh1bVfUjJ2iLXJkdGrPxVaaNFBiR9TjocL4O+UECHyvaYXTfq/TToCVsFqxVTk2+3S2qcFe9s2+sAh26mtBX8ZHjPS4K0ZKEcWij+4megVZSDt4Ec3gye72E2WtFkuq6yip6WVAAkCoRG9NVMm8XimAGSU/XNIIMZWHRiDIG0uaOHZddQ==
+ bh=SEDW7ybNwr30MVNHfS0phheGrV0cXYsDACG5oPWT39k=;
+ b=xjyYyJ6gxfe2Ko6TBpiELa9oV7Wzkk9abyaCGrKykfmgopMvwbvVxxDmA3DUtd2wg3WW7CPj7hGd2pF5Nnr99OjobRpO0xpcNP7IehqcZ5W8Jd2ArZOsXpW0TtY2zuTGMMPSVnMbeiXdRZUUBnaU0P+ZzCLIsWYfUetoLp3m37FLZGL3gFWc6e0CeN9o9luGFGVOoZKDZ/tWf7A/Vx9Dfnggrm3zaJZmqwasYVEfY/FlCe45sbFrI3MVnVfhO4TW/QZNsG7B3P11e5A6LfvjbFDCdGEbfCTGQInK71++309HP8s1Us6g6vh7McMwrw/SqDrjy4CQ71ns3jfOEWmgAQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+C6S4z2BekgHs6vS0lcUxP1c0g2pxCXTMXp1eQQ3PS8=;
- b=eLmXlfKu24R01JGLd2npqPQn/zMCPfjQOHguvT4BPlyDK1iI65s9BG3vBxlErS9He4B8t3PzmZQPQJz5VL1HIKKeKpoFUxVVTXTldeswF+OPFGyf1B0c8jZTbggglJCb4xrjYg+F8lobtj5CDMQRHKbVkFKCSVJrcqZNDkwR4DQIlnnBRezui7PiKtLMiYu5y5LMAAtHufgNTgSppKGQHjtUUuYDvrNRmQWENNb2harhH17aRiAttwV5DeOAjTMuIQN33I26xkGPYJxEPa+PcJWMVhkpNRJe6iNzOa+gvb81utKDwadud9/HmSkdY+xGVx9w2kB0rtIQ/tzIiqWb/Q==
-Received: from DS7P222CA0008.NAMP222.PROD.OUTLOOK.COM (2603:10b6:8:2e::29) by
- CH2PR12MB4312.namprd12.prod.outlook.com (2603:10b6:610:af::14) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.7; Tue, 13 Jan 2026 22:54:38 +0000
-Received: from CY4PEPF0000FCC5.namprd03.prod.outlook.com
- (2603:10b6:8:2e:cafe::8) by DS7P222CA0008.outlook.office365.com
- (2603:10b6:8:2e::29) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.7 via Frontend Transport; Tue,
+ bh=SEDW7ybNwr30MVNHfS0phheGrV0cXYsDACG5oPWT39k=;
+ b=ljgp4kpAapyJnzPLI/gqojfme8ne8Al09XqaeLebKEjezDekN7FI00oWFCaIqnXEGBhdnVrBGdRnC4rN9Tg6roEPApRjP1dD/5pzOz8XiaewLeuPWXddrms99n1sjcOP7KLrt552fSMF9lam8XfsXiVN78LUeIGd0oic/2sqePr0X7lbkx/G9uV+Szn8Sq9kgq/PQ/bIuDr8va3iwMNpxqEM0UK9V/Qjky/H8lWjFycSNKmFWMA+XpafrXaBkgdezXfPxSgRbCBIjwU5MnP1AzIIEZKk+Ut0tasR4T/pvSJua/xizNN+G7LEMIOYOkXbXSl7I9sKnBalhAuGL0uBvw==
+Received: from MN0P220CA0004.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:52e::15)
+ by SA3PR12MB9092.namprd12.prod.outlook.com (2603:10b6:806:37f::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Tue, 13 Jan
+ 2026 22:54:38 +0000
+Received: from BL6PEPF0001AB77.namprd02.prod.outlook.com
+ (2603:10b6:208:52e:cafe::4b) by MN0P220CA0004.outlook.office365.com
+ (2603:10b6:208:52e::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.4 via Frontend Transport; Tue,
  13 Jan 2026 22:54:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000FCC5.mail.protection.outlook.com (10.167.242.107) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL6PEPF0001AB77.mail.protection.outlook.com (10.167.242.170) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Tue, 13 Jan 2026 22:54:37 +0000
+ 15.20.9520.1 via Frontend Transport; Tue, 13 Jan 2026 22:54:38 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 13 Jan
- 2026 14:54:23 -0800
+ 2026 14:54:22 -0800
 Received: from ttabi.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 13 Jan
- 2026 14:54:22 -0800
+ 2026 14:54:21 -0800
 From: Timur Tabi <ttabi@nvidia.com>
 To: Matthew Maurer <mmaurer@google.com>, Danilo Krummrich <dakr@kernel.org>,
 	Gary Guo <gary@garyguo.net>, John Hubbard <jhubbard@nvidia.com>, "Joel
  Fernandes" <joelagnelf@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>,
 	<rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>
-Subject: [PATCH v4 6/9] rust: debugfs: wrap Entry in an enum to prep for LookupDir
-Date: Tue, 13 Jan 2026 16:54:05 -0600
-Message-ID: <20260113225408.671252-7-ttabi@nvidia.com>
+Subject: [PATCH v4 5/9] rust: debugfs: implement Directory trait for Dir
+Date: Tue, 13 Jan 2026 16:54:04 -0600
+Message-ID: <20260113225408.671252-6-ttabi@nvidia.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260113225408.671252-1-ttabi@nvidia.com>
 References: <20260113225408.671252-1-ttabi@nvidia.com>
@@ -83,110 +84,119 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC5:EE_|CH2PR12MB4312:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e6da5bd-97fa-405a-47c9-08de52f6baa1
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB77:EE_|SA3PR12MB9092:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81c3ecc7-8eb4-4f18-c859-08de52f6bad9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014;
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?v7e9KbTZji56+UiKswLdHL0lJWAsvbbtraJvY84F12arGWx3q6CXi2CFj5Mm?=
- =?us-ascii?Q?TIf2FLPvN7FA+nUKdqd4TrS94BBB7hhRu632jfqUFxfz6ESKf3YwZwslhHoU?=
- =?us-ascii?Q?n5qmzC4/Jjo0sRrnHYH+e/D9tO0l9B5V+AwrGAMzpExY96ra/OfH/q4hpnn0?=
- =?us-ascii?Q?sqDjs8cZZzcopSd3Bic7hJlOPqVLFgY/HwBvyJW2ml77QwfH1aJePQ9O5PyH?=
- =?us-ascii?Q?m8WS6TIAv/odOZuHwt7RfKDQNuxlqbSnLmlwtGN8oh46lq9OQsC1qQJh5Hjv?=
- =?us-ascii?Q?Uanhq8LTE8mGUx3SPBXGb5AQ7sL1VbTCC0v7ExBdALEnLSpKmRGWdlrsb30B?=
- =?us-ascii?Q?utClOmK1nYJuyDQ5HSQFTMfiUdKJZvCH1F5IWZ8nQ7EUJcjsYXDrrX9MiNL/?=
- =?us-ascii?Q?IxvkYW1kq7OMbBPqzAMhyxeZqBl2Acvm5kI02sgCq4OoW3UCs47Wcgr2lBYd?=
- =?us-ascii?Q?LBFVHcj5/T4cqHQRGOcmeG/I63CSNh9+I07hUk9ksPNNqbbx31A98N49srXL?=
- =?us-ascii?Q?njPtS+ZHg2/a21VbdIOE5KzHyy6v9hGZr9ReTuBT8cPOi53LhP7hQWTHNo1D?=
- =?us-ascii?Q?jfzwzwnp3mOQsUfkEbw4Rjfjx83zptQWv7yGDnGWpOZhJgRwIz84X+LoP7Yd?=
- =?us-ascii?Q?p7a0IMJifgICfgZBcAQuqorZYKvdk3xus5oQhrnwU1pu4YrFLKhiJ1lBMkBg?=
- =?us-ascii?Q?sVNzROCo09i4Xt6mwOg1bzY9+ogEs7wa6vbfUNbiiw3VOug+H+lBmeWBTiSw?=
- =?us-ascii?Q?zU5Cp3BrYygBavYfE2nI7/R/hpLRRFJOUJqKZ9VjRAul2TAEu2akLaDznmcm?=
- =?us-ascii?Q?W1zJO3ar4lPulSNgy97S0Dsj4utWiugg4chf+QAuLwaee9WEbdj2pMpmkjWX?=
- =?us-ascii?Q?uhFICN9tF/tQMW/h4f8QozXPgaOOoVu6kY8Tb5S66pfmlVw3BEeUfFnmRu2E?=
- =?us-ascii?Q?uvOLk51P34OD5jYYr2sR/+KkM6UoyexPvqtbqjrfMm7ZQBrxFZh1beXKSPa8?=
- =?us-ascii?Q?N3xHHCwQnjz0bG+fDn1DkMxXRvAYCIhOyZe8xy8iB1rid2poB49VRVgpQBpG?=
- =?us-ascii?Q?XyKli8FFMB0ua2/KegHdClbDoCLcIoYY5A40WaHnT4DjGtn0n2JAAQrvDZc9?=
- =?us-ascii?Q?6XZcf8mphkwH2eLxJEV0GxYekoK0+YrMEjhNdq1JwKTmbg+qByEjGDh7I0n/?=
- =?us-ascii?Q?U2yJhHBdy/qN/svJcrrTROC/z+HV6/fNiDAx9NLWfeUffmPQ0Vd1HZU76UbO?=
- =?us-ascii?Q?0Cz57pjYqJultXVHEJ/qWC3Sv+rfNoy4Dh6VtgNTWsBT93SUD0Mre7W//T26?=
- =?us-ascii?Q?Rd5ychBa3vq1oOCl3kZrSg7fBOY4r4K7+qzjmjJymLna/E+ceTqGj3vC1wiU?=
- =?us-ascii?Q?KtuABj5sX6Z+UVbDAqeCtiWjTk5gFYTeM5MgO2KEAVRc/FxF7eY87xYlj4yY?=
- =?us-ascii?Q?f6KmH65a+ITexazUwZHg7aE17e9V+bz9AKReSWZTSH3A7pLChGLiC93ukXmB?=
- =?us-ascii?Q?8vYgANVn+s54yPf/8LcGyj0HaB59bMZAm6H6XGDe9dUcH3GF3tWZbqOWzcwQ?=
- =?us-ascii?Q?98WVxPXEGKQzonXHNho=3D?=
+	=?us-ascii?Q?ZRI9AoaATqXtMI76gu58aZeuseE7oqs1sp3gN2EKUwSQpfANK0JI3lXdJdsT?=
+ =?us-ascii?Q?SZP7sp3c7K/VRHH4GkDB7SPufJ+L+gonffJydkah5lh6PE77t3HQHwHicL6P?=
+ =?us-ascii?Q?Y1LCQUCcR8MsEFPLO8U6zDuo0xWNMMhEs7R6xfsoHjkbggM7OB6ypHVXC9WD?=
+ =?us-ascii?Q?hin4W3Pm37Y4KWdjxvBokBVXIRVyBeDAX+w9v8M0IQYw3zdRDH0F5XY02KXZ?=
+ =?us-ascii?Q?xWgcimutBiq795zcgNe13lq9aGxjuQh5Wu+P81bZzvKzYQiLZ5ZGsfEA9WTT?=
+ =?us-ascii?Q?V2/Pkq2dJq1ATmfvXRoSVk1s74sAJ27PPMIw7PTLzkTeQ0VJgtao4RWLNiYU?=
+ =?us-ascii?Q?zPTCPRzXubhI/jR9kSJv/Zwz11f03P86gG91cGrqVj2gza2DbJd5qkuWTeRN?=
+ =?us-ascii?Q?gscG6s1JmwaS/Yq29G87uo+lyC3aAD14ZYnyrHWR2sDPwkwVbs4RqkAZQGAn?=
+ =?us-ascii?Q?vR4S+UQoRem9haD2OnFoYkOisZANBocT8cO9hS/ITUMmw++qM87uDqdfnIt3?=
+ =?us-ascii?Q?1FSGgTMA95tohGjgVd0rPSW08uqyiipl45flQJY1/+wmiMQUwABRmiT4QXw3?=
+ =?us-ascii?Q?RRZMzxqAh3+n3XPYmbMCiPwSvTE+lcP7RmrJDP6DTkB2pnpM3xXYLF3N1Sl3?=
+ =?us-ascii?Q?+4RwhTI1q9YmdSyoPYNSnZ3XqevPm6EuwiHlIyhcZcNVdfcUumqxGkPFKgQU?=
+ =?us-ascii?Q?rtxyzxqkPOVsoCcqQQb7jwPb1FkgHeD5CHLsq/Ol2nw0Kx5Qap+KEJE25Wgj?=
+ =?us-ascii?Q?dNh1cMFKRM7jI/ciFKApyLOjXx8HtKAMvwttxcICVp0Awl+fZSRIuuhBlEDQ?=
+ =?us-ascii?Q?bH1/Z3ZBLBI/yXy7dDpMS/aCyIKpHyH1QeiWMG+zg4OT/Dr9eTAojvuOLG67?=
+ =?us-ascii?Q?cpZNqPveFuLN6CYOFXgo7C83ihmMYgGrj18ytGp5OYsOAa8ZLr0QYGK4MqtM?=
+ =?us-ascii?Q?eXLIcmVHWZxyWLGoIc2ZgrDXYn7hjYji8Fnh/3z1rB3h29vjjKSsrH5twt0k?=
+ =?us-ascii?Q?0PbohN8Sl9Q6dBngPb5u2U6THuofRdSVTBy1598kU4RA9+Oa84BwPPs5Q8OR?=
+ =?us-ascii?Q?ZYV/dxDJGkYzyKhhNG8iGPtEgnOOZI+HK5e5ixgDe6fDy7tlyGMdh2V7PsaO?=
+ =?us-ascii?Q?cQs14Zbx5x18Oz/T6PMzXt1NHJMUzr0iDNqffo4jwCJtRqrpzqZy2YkEKigN?=
+ =?us-ascii?Q?dKdRgDrtZ22wz3ZZbTJOAAqwXo9rxCKpCH+d14ndOwggreNiba7cA4uWZGAO?=
+ =?us-ascii?Q?EUXEbbyppkJYUgdhlpGy78jxUvsyKeicXINp2h0/c13vSgC06pg9JIjPnJ6w?=
+ =?us-ascii?Q?FZPLR83L48fwPnp9mldaaYNIP5pe+uQ3soC9HahU1Caf1eBm1dghUWHnEWWn?=
+ =?us-ascii?Q?aToefDsQOm2MlzRKRNbFhcohNWTfbWE1OLNkmwCLdb8y0PXWRracpU9NiKFs?=
+ =?us-ascii?Q?jHK3R/dIVl5zf9jzQw7D9oy5W3/M+1ZeO2yhAEoZ+F5OYIWeRduaQ99YJPRS?=
+ =?us-ascii?Q?JYcxfkEEh0wUoHD+HqtdToyPp4uitjwbmH1xU/rffL0o13ghW9GRkWq2ZQSS?=
+ =?us-ascii?Q?+mwhoF2rywIC6z9Vo+E=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 22:54:37.8617
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 22:54:38.1544
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e6da5bd-97fa-405a-47c9-08de52f6baa1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81c3ecc7-8eb4-4f18-c859-08de52f6bad9
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCC5.namprd03.prod.outlook.com
+	BL6PEPF0001AB77.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4312
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9092
 
-To prepare the Entry struct for adding support for LookupDir, create a
-wrapper enum DynParent.  For now, it only holds an Arc<Entry>.
+Instead of having an inherent implementation for struct Dir, create a
+Directory trait for it.  This is needed for when we add the LookupDir
+struct.
 
 Signed-off-by: Timur Tabi <ttabi@nvidia.com>
 ---
- rust/kernel/debugfs/entry.rs | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ rust/kernel/debugfs.rs | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/rust/kernel/debugfs/entry.rs b/rust/kernel/debugfs/entry.rs
-index 706cb7f73d6c..3152e4f96219 100644
---- a/rust/kernel/debugfs/entry.rs
-+++ b/rust/kernel/debugfs/entry.rs
-@@ -7,6 +7,16 @@
- use crate::sync::Arc;
- use core::marker::PhantomData;
+diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
+index facad81e8290..ed740eb90fc9 100644
+--- a/rust/kernel/debugfs.rs
++++ b/rust/kernel/debugfs.rs
+@@ -35,6 +35,18 @@
+ #[cfg(CONFIG_DEBUG_FS)]
+ use entry::Entry;
  
-+/// Type-erased parent that keeps either an `Entry` or `LookupEntry` alive.
++/// Trait for DebugFS directory operations.
 +///
-+/// This allows an `Entry` to have either type of parent while maintaining proper
-+/// lifetime management. The parent is kept alive via `Arc` reference counting.
-+#[allow(dead_code)]
-+pub(crate) enum DynParent {
-+    /// Parent is an owned `Entry` (will be removed on drop).
-+    Entry(Arc<Entry<'static>>),
++/// This trait abstracts the core operations that can be performed on a DebugFS directory,
++/// allowing for alternative implementations (e.g., for testing).
++pub trait Directory: Clone + Sized {
++    /// Create a new directory at the DebugFS root.
++    fn new(name: &CStr) -> Self;
++
++    /// Creates a subdirectory within this directory.
++    fn subdir(&self, name: &CStr) -> Self;
 +}
 +
- /// Owning handle to a DebugFS entry.
+ /// Owning handle to a DebugFS directory.
  ///
- /// # Invariants
-@@ -15,7 +25,7 @@
- pub(crate) struct Entry<'a> {
-     entry: *mut bindings::dentry,
-     // If we were created with an owning parent, this is the keep-alive
--    _parent: Option<Arc<Entry<'static>>>,
-+    _parent: Option<DynParent>,
-     // If we were created with a non-owning parent, this prevents us from outliving it
-     _phantom: PhantomData<&'a ()>,
- }
-@@ -41,7 +51,7 @@ pub(crate) fn dynamic_dir(name: &CStr, parent: Option<Arc<Self>>) -> Self {
- 
-         Entry {
-             entry,
--            _parent: parent,
-+            _parent: parent.map(DynParent::Entry),
-             _phantom: PhantomData,
+ /// The directory in the filesystem represented by [`Dir`] will be removed when handle has been
+@@ -96,7 +108,9 @@ fn create_file<'a, T, E: 'a>(
+             } ? E
          }
      }
-@@ -74,7 +84,7 @@ pub(crate) unsafe fn dynamic_file<T>(
++}
  
-         Entry {
-             entry,
--            _parent: Some(parent),
-+            _parent: Some(DynParent::Entry(parent)),
-             _phantom: PhantomData,
-         }
++impl Directory for Dir {
+     /// Create a new directory in DebugFS at the root.
+     ///
+     /// # Examples
+@@ -106,7 +120,7 @@ fn create_file<'a, T, E: 'a>(
+     /// # use kernel::debugfs::Dir;
+     /// let debugfs = Dir::new(c_str!("parent"));
+     /// ```
+-    pub fn new(name: &CStr) -> Self {
++    fn new(name: &CStr) -> Self {
+         Dir::create(name, None)
      }
+ 
+@@ -120,9 +134,12 @@ pub fn new(name: &CStr) -> Self {
+     /// let parent = Dir::new(c_str!("parent"));
+     /// let child = parent.subdir(c_str!("child"));
+     /// ```
+-    pub fn subdir(&self, name: &CStr) -> Self {
++    fn subdir(&self, name: &CStr) -> Self {
+         Dir::create(name, Some(self))
+     }
++}
++
++impl Dir {
+ 
+     /// Creates a read-only file in this directory.
+     ///
 -- 
 2.52.0
 
