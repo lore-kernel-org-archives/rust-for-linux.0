@@ -1,124 +1,344 @@
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022092.outbound.protection.outlook.com [52.101.96.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847C518B0A
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Jan 2026 13:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7B838B7B5;
+	Tue, 13 Jan 2026 13:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.92
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768311743; cv=pass; b=pBfTTI8O/qBui/VXyISBLLtO4k9jYpJhk/3PtgiwkKteXSpogZgFPzFumrvByaqVU3viZJkAwwVHVvPMHx/0hNxbNylL4fBbZkzxFf0DQZ6pFjIuABgcnUNnC0KhpTJl3q+KvY1sQxWuB3J9EA4BGWQQ0o0OHLZPoNnb/JzIYFI=
+	t=1768311823; cv=fail; b=Nrk9mEsvz6G4NQab7xtEbj4qFLce252SwfOv2m2IgTSO3k5ZH35SY2uBCJwbcVKxVEJF1wGE/bQIEbT4hKlzfnLOwdMl/NvuLlEkX7VPUBVZehgz5WPbbmfj/IaQzHJdwiB/dAoBvrLvxKzX6T8I5heY09HUJqotj73RjMtmHHs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768311743; c=relaxed/simple;
-	bh=4tW/Arq7fPhucDDsPWu8tE3xJvIh8SqGDtBsEYdx9Jk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V5tFig0CZ8fmeTX/DjKA5+PBPdfpQr0QZomlt0MHdBBVEkuXaCiPB3umtqkN7a/hP0tL9kIjOjp/anX3kVGmk7pxtL290DrWw6ed/I7+Y1x/1V7cDxTxn9eVbObLq69CWGYdigaTLb70I+fIbyPIPs8HsDUBAeSccKL7/wHiSkI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ju4fkBF6; arc=pass smtp.client-ip=74.125.82.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768311823; c=relaxed/simple;
+	bh=4K/M8sMqBvdOcPFOUJalFWF9aWCnj+uhJl1616hGuDc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=mH97z5Ly+f1Fyl9C3ym4O/JUr7v5ySSBGraeNZUUh58LChciQo48uXaNNqMLXvj7qGi+CN9foAaNTFTkUMlK5AQnmovOARNEdebYnNuifT74ZpZ1EDO+hUGTeFabPJbLCp+mXIZHhfx9980rUqi6pHSZea1BPDEuEurxJIcTcUY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ClszXmZ2; arc=fail smtp.client-ip=52.101.96.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ju4fkBF6"
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-11f42e9724bso558174c88.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 13 Jan 2026 05:42:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768311742; cv=none;
-        d=google.com; s=arc-20240605;
-        b=J/LsMEdylrgwO0lmq1jlqxsDPalt5qDPOYqNFypSDaYLah9P2YbmcHaozOIwzD8SrT
-         g3tvtFWuAWiJ3Zkil9keANL+p8fGz+oilHS152YJj275NdrF710maFrOpVn2Rna3+BkK
-         cCZQXNpE9kMrOgIKagqJr7m8IsUQ6FcYORwTVQCrrtmI3gjL2iglrTFS9p5Qgo+hiyYc
-         bjt6dQMsnMIPggDLKHdWCJU+TDrKDYNkmvdyoSgEwr3S9CnDVL1748R4FgjdRY/SLOJN
-         jqCltTxtlKqfnoOdrv4WAOpgVF5rvtKYhHaogJA4fC4curH1MZeNaweBOjF4oczs+tIU
-         UOIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4tW/Arq7fPhucDDsPWu8tE3xJvIh8SqGDtBsEYdx9Jk=;
-        fh=akGEjWgGhWr3RnD5UZ+VCFzpCu9ZNl+X87wDuYMUINE=;
-        b=HMXsqECE+Dr1ITu+fBR/7O6AFyUg/bF/KA0vp1QvwiGS/Ou4cWbhV2sAtrkZj7hNqx
-         CqaF4yYAzHyYpKfN4rK+2L1aXIauCQXosLqu8izrCmdxEiQ7U8vOTU/geb8d7mEKvhDP
-         LnVJovfBC+WwXaHlcJ+TwJdpp9u7JVKAY6U3OG+HSzHtPtJI5maLVpXU5a9vGbqTdy2t
-         4QgPwhXNPMxanZOm2PUzYZowNQEnUXh/Q8Ans9wqLdKvszudQoAtqfRyQHorsk8FqAx3
-         z9UtMUWHOBL9iQvaDySN16EnyuatD0G2XJysFephuu6/ZIAMZn/cTwh+76BCRZcGO1hz
-         x78A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768311742; x=1768916542; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4tW/Arq7fPhucDDsPWu8tE3xJvIh8SqGDtBsEYdx9Jk=;
-        b=ju4fkBF6Z86+eRUjn9fpBiUxSyhw4pU/6SGFfLyVPx3FAv3lA6WdXmE1CkmzlHSsl0
-         2zrQSiyi1kETOb94fx1dV2/TGOM7Er2CfhvCMiGRJiKPsQEvoSTPKN8Ht18pWpl5eYYF
-         5tQnvwd5W3cU3d4zPCa5iL8SN6nj9zNu5xt6Ir0xmRs09uPrV2pUTs2suJj075uXZFqG
-         rp1twqB3sA8/UQ8J/sGDEWxU9P6B/Rs4gnl/XsxncSNAOTxJ2SW1C8ofPaTI17RT2HYU
-         PwNo5Q/e5uKFA9gOE+ucD2qUNyNvbQFb9SCg4Wv29iw7bCchUAnFVTb9/G27hg7aXJC5
-         nEXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768311742; x=1768916542;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4tW/Arq7fPhucDDsPWu8tE3xJvIh8SqGDtBsEYdx9Jk=;
-        b=oXDMYyz0j6QPAz32qCAdY3SohPbCJqFunYIuPqqzCQ3eQhlsTtp2qEIdDaF6k+PoC7
-         zpgtxF1maynGudvBeNSYCjA4SfEwsKR7QogWIKWW5d0o/PR5PVI/QZdmtpJbrwPjXFqO
-         CjcCsYuOKaSPPrK2FncsNh2O5D83bhhUucGf/017TJFu9XJwqy2178szEsH3UwzdDlXL
-         WkXhroGoWmmjmztFlq1aOy9yQ6Q9xRlWNVv0s+QyvuRErIZOTO6msChGKu03bbYuxHEb
-         uaIk+X/KS96I/DIJU/jklPgKvlLX3LXPVBq8hi94jjDsjr0KUrCuyLr+EM6Q9HGiWhMs
-         BS8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVKlSZDb2OtgFjB3+WiYrB/In5xVFsP3mmVg/c9mwiBDB+meqr0m2kHuSDT4KznkXtbzdQ9c5JKnZVnxV+VPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHZZO78b0j3B1/aQBwBCf/njgnknrV7NsXypqxOFB/g2j8Oaea
-	yD/SRDAYDoga6CbFMzDstN4CPWB4Pm9BXV2VLcn8Z08ZF4XeccAESJlslsb6xXsGVOVCIymPTE5
-	ivCGpTmnX5HUws139lqppF41eakQRXBY=
-X-Gm-Gg: AY/fxX66TE4ZfcDe4LJBfPXyh6cpWWCzKysceoxf3RY8Od9RT2gOHk8Xog3zN/3RrK8
-	QgEI/2dlB7SNOne/mu2kamqO/s+HcETO3998n0TKsdtELUDBjV/SYolotZt18uccs3P7XJ3biyU
-	qTumEocrdyt6byfl8AmxPBpd1ESi2QDOaMM/fdiDtbAgkbA7qhrEVvBrEED8R9X4KnS4M1dSI9x
-	V+M7pBCaUwEUKsR2QXl9QoidDhfg2kyMUt3f+F/xJ+HBjPwqK/XyVV82lIfhDdsrv2QTf5snePr
-	7LDmPB7cnKUc9HD9s+gwPGPnvgd8Q4Sb+Rf3F8tAcCebOuIHgMWFll9nGfGHFRjqIrmGHOMJTmC
-	KL/3QHYKJN6fj
-X-Google-Smtp-Source: AGHT+IEajQnCdX5ZisGRdExe0O1ic9/ebxlyg84D2VDprur2Zw4fiWmbUwhJr67eqmLmFEEJ70U1FbHIhLJwseAJBuc=
-X-Received: by 2002:a05:7301:2990:b0:2ae:5abf:ecff with SMTP id
- 5a478bee46e88-2b17d31bf67mr8215846eec.7.1768311741413; Tue, 13 Jan 2026
- 05:42:21 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ClszXmZ2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uglK4Oq4npj9mlt64uNug1sVJ4fKvry8il6CFIwuyDJXxyJfbuy4BzR3RpUvkL4seN5yHD+NKeYap9Ebz4TmQ4p1XkN1a4ugZ1zCPEaoyb8bJRY8braB7DKbjN18Id77TwywDzragDWLahCN4ibn/LWDUQ1KiiDPHDLVb57hCb7abRzE8K1nUcD7TDg0zbISejNsgWtkdbhQ0ts+sKsVMygpQlG9iFLHrtqTxqQlxFe1k1UuaIL5HPYdzJeX4a7btXWz4jq6tLG1KkwniP3jB561NqVdi/Evs1JCbalKFdJP5oH74JS615Q8J4sw5mvRZatFXy6rCFdWtW4ugffmng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A4TNe6j421Yo4W1jEO1CpDCEJiVJFSRg/kFKK5o7QQQ=;
+ b=ZSCaYL2q9ZcDUgZ3XaCcYpd+mo0ZWl/8yGxaGng8bc18FGNSIBqFDjxfZAmuRYgMLUnFlMQV8sUZbXagiH6X7Q6q8UGM8ByX2/zFKYoz1a/tDWw/Iq+zS7t2KyvN6/NvF0RLKS3BOxUMRvRJR6mabhteSIpgZQr2TzqWhqj56PrabmnkfaWktcTF9eNyIH6Vh6yhXw8qQKfFlwtGQTnPcXV9ZSShH6r+iAsVsr8d6MtSW36vyxNAWem4oOobOs4TD5KKkORGZhKeZsmhxk11lp62iHG2BqKzlv0Qu7ZTkFzp/+yc+aughrePnFOS47jkdo+YabLnXeT7uckRgbBleA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A4TNe6j421Yo4W1jEO1CpDCEJiVJFSRg/kFKK5o7QQQ=;
+ b=ClszXmZ2vB50CgchMoKPWnsYR1f6HKC5p9cYrcStRrTQ5hbIUiuLwULIGTko7vmOXUMbe55RwjpCbUdAeVVhXU5mn7Higo2qNIXcQgmPRtw8atSp5masT5Yh2uI/vSsvfZ14IdR8RlYMJPpkEOvwLzQHj+uwHQSDdWsfnHR4RpU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO2P265MB3593.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:1a2::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Tue, 13 Jan
+ 2026 13:43:38 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
+ 13:43:38 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 13 Jan 2026 13:43:37 +0000
+Message-Id: <DFNI82AQBBUV.1I49DFIO8072F@garyguo.net>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Edwin Peer" <epeer@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 07/31] gpu: nova-core: set DMA mask width based on GPU
+ architecture
+From: "Gary Guo" <gary@garyguo.net>
+To: "John Hubbard" <jhubbard@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20251203055923.1247681-1-jhubbard@nvidia.com>
+ <20251203055923.1247681-8-jhubbard@nvidia.com>
+In-Reply-To: <20251203055923.1247681-8-jhubbard@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0236.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a7::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251203055923.1247681-1-jhubbard@nvidia.com> <20251203055923.1247681-2-jhubbard@nvidia.com>
- <DFNHWA9PXH5X.5HWPO3GQPX6R@garyguo.net>
-In-Reply-To: <DFNHWA9PXH5X.5HWPO3GQPX6R@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 13 Jan 2026 14:42:08 +0100
-X-Gm-Features: AZwV_QjSJgThpHi1P_7JHl1wPop2X8OFeuu5lrHMB3m7CgKzXv3yTd1NXMxwV_g
-Message-ID: <CANiq72njAx78DMdfB-hai73YW6_DTgayyR024rUpPfbDbTbqhA@mail.gmail.com>
-Subject: Re: [PATCH 01/31] gpu: nova-core: print FB sizes, along with ranges
-To: Gary Guo <gary@garyguo.net>
-Cc: John Hubbard <jhubbard@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Edwin Peer <epeer@nvidia.com>, 
-	Zhi Wang <zhiw@nvidia.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, nouveau@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB3593:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0d7eab26-bab2-4cd6-4066-08de52a9c176
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|376014|7416014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?V3o0cWFZWVE4Q241eHFyYzAxc0owN20zR3VwcE1PNzB4elBmSjVhV0RTeFlI?=
+ =?utf-8?B?eEJ3R3AxK3dVKys1YXIwNG8vMXNibUNISU03bDFPNDhKdVhxUzA1Znc2Lzh4?=
+ =?utf-8?B?U21kK1B5QTRWNk8ySzIwV0QvaEFQajR3QmpwazNYdTM1SE1EaS8wZGEzRFpB?=
+ =?utf-8?B?Yk5qejVlZ2paVDF2SkEzSTBqOUpZcVlMVkJTeGxBNWFMQVBYVGpQdU5qbUZ4?=
+ =?utf-8?B?NC94am1aTm9aMXpuYnJubi9RVnEzSUVDYitWblNHSFFVb1libUFLWEVycU44?=
+ =?utf-8?B?OXluTkV3WExjeHluMHlOTEJzcjkxRS8vMXpTMzdjQXExNmYxYXJOR1V3N0VR?=
+ =?utf-8?B?SDJBLzJDTk5ndXZBK0tZbVZEbkpPNmVveTFIdnlLY3YxZHd0TTY4VnNxbjBy?=
+ =?utf-8?B?b0JTb09QN2VNbjJZK3kwYm02K0NYblVOREZkNVkrYXpnT2hGdktNVlBtanll?=
+ =?utf-8?B?MldBc1NmczFneGtsdEFETzIyNytBYUdFeTkwYjVpTVJHenFlVXNjbjMwb3lr?=
+ =?utf-8?B?T3YxLytIaW1mNW1GMmk4M283Z1VJOTJJbnZpWEsvL2tUWEpPaWxEVmg2VEtm?=
+ =?utf-8?B?dE94V2d5dWhnMG5sSVhaS3c1Njg1dmZPRGduUEluUWpzZE0zd1gvNERTZk1v?=
+ =?utf-8?B?QVN1aU96Q1FjeEF6bVRzM2o5NVB4blF1Yk1tWkIrbXdmaXRlczBxcldFbzhU?=
+ =?utf-8?B?TGg0T3lWOFpiT2w0MExqT041ZzBWcVNvc0s4RytHWUg3a252c092Y2x1T0Vw?=
+ =?utf-8?B?TXcwZkhEbXdGRDhGL2xxUnRpcmR0bFlIQjJBTGFLUW9uQ3NBdFFFMVdPMVdt?=
+ =?utf-8?B?UURpams3YXV6MWFBSE1keGpFVm55OHdXK2hMV2xJY0pDNXVmQk5rUU5zYUcw?=
+ =?utf-8?B?d2tlbWhBZUNaT1hnOTMrZE9sWTc5M3V6NE1rMGtNZi9KQlhmVFFVenNGVExj?=
+ =?utf-8?B?bVF1RkVzalV0QXdiY3A1ak5OdGpzbzljZjV5cnptMXdiTFd5U0Z4R2FlLzBH?=
+ =?utf-8?B?NHp1QmhCeEVWVWxjdlpwMnRmYzdaNWdZdmRiUDhZVER0SXEwK0lNNDFDMk5q?=
+ =?utf-8?B?NWlOMXQ4S3dtTmU5WXhrc215bUEyR0kvNE9MVDZGYWU5MEpSSlFDVjFWcURK?=
+ =?utf-8?B?UTA4ZzZyYlYyeDNTWWNTMi9RYzV4elR4Q2RiQm1QVVByYmJyRy85YzNOa0VE?=
+ =?utf-8?B?K0U1Q3FyVTg2SzZaTE9tcDhxeWV4K2RuVmVSVUNHcEpHQ3FxV01JZXpHZEpK?=
+ =?utf-8?B?WTlXWVdYb1F5TCs1YmVCcm5DeXRGTGxGQzBpZnFvK0RuRExlcDNhYk9sMHlQ?=
+ =?utf-8?B?OGVjV3RSaGVscFZ6Q0IzRnh5M2lzRXJzL1JFenlteVhHcDR3dDhtaEN0RjNS?=
+ =?utf-8?B?VG03czNnZG5xYkdlS1Y5d0FsM2thOUp1cXdtbFhDakY4cnF4MUFrTXdDRThy?=
+ =?utf-8?B?aEpFU2FvcmJoKzdpQ1YreHdiQXFpUG9FSStVM0JwcENJczdULzY5cU9NV0lo?=
+ =?utf-8?B?MW0rQVdmUWQyNERTNGdZYlQ0aks5MHFNQndDYjV4UFE4WmF3dUNJTEZ0R2Z3?=
+ =?utf-8?B?RW5hSDFsYUN1YUN4OFRQUWd1TTRXNFkvYTZNY2lJQTQ3ZEFtTFdSUVlOeXV2?=
+ =?utf-8?B?L2Vtb1FGR3ZvU3JTTnZ4MHlzckZZdmJoN2F0dlpBbmZUV2xsVzRSa1F2NTdr?=
+ =?utf-8?B?WFczZ0VoNVNlekFxMUp3cDExem1NWjJ3eGxheHNxaU5WTVZQa1dNZVh4dkpL?=
+ =?utf-8?B?bVU2aWNqdU92My9LSWRCeGhGaWt3NktKY2E5UzNZYnA0bHlMRExKMDQrVDVo?=
+ =?utf-8?B?bkFZZ3hiaUZkTVBUUkNiNUxLUlFjZzZCdk5seHFaVmYxemIwaHNFdzRLMWRX?=
+ =?utf-8?B?bnBtZ3UxK3FENjM0WWVDblNrSTA2eE5ENFVGb0xsaUtENUltck1hdU5XbkJQ?=
+ =?utf-8?Q?IPArG0nucxGXfXX/ktlgYhRy/uhSDF7U?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q2F6Zm80WVF2bGFpWGdLSXRMZ0lRb0kxT2Jsa2pMSVpTV0phQmdkVVJSU1Ri?=
+ =?utf-8?B?RzVHMWloVWJzc0lJSWlsMk02bEVZT0pGVDdwdHlwQzU0MHRIVVEzL1o2bW1B?=
+ =?utf-8?B?YlZGcTRIaGQyQmFRcXhFNEdJdEFBYmsvMkIxc1A4SnpRdjhiRVdNTG02dldp?=
+ =?utf-8?B?UkRaMmdyM0l3cnIwN0NoZjJLZ2E2ZzhDR2lzYXN1c1dBVE5qZE5VYms5ZzBE?=
+ =?utf-8?B?TkwwaVpUby9OczlBWkIvMUlTZTYra0E5VDFnWGNFYWxhbnlHSmMyTEsyZHBs?=
+ =?utf-8?B?WW1ibmxJZzc5Tll3WnVzZEdlcnkreU9SZzYyNHo3MVpEdTJsTms3Nmx2T0xy?=
+ =?utf-8?B?OFFCbUlRSFVoOTB0TWlGVi9PdGxmNmM3d2QxLzdPbThlaEZleFZ5NXM2Vmtn?=
+ =?utf-8?B?YzhycEFHQTJYQm50MkxsRGpiS01qVXNvc0tjWE91NW1Cdy9iTzNFTkcycmRW?=
+ =?utf-8?B?Y1hTSVEram0wY1NKRHFHZzR3RjBwTTFodmhXNWtnWklJN2g0UFIxRTdURkJ4?=
+ =?utf-8?B?L1pyVTRJc3E4UFM3S2p6NXhxck02K0FGYmJXZExOaCs1THo3dFREc3RpQ3lu?=
+ =?utf-8?B?d0p2K2JNaTlPdHJ6SVBYSHZOejZPSHN5UEVQYjZicGFkNm5IdGRVUG1XM1Iw?=
+ =?utf-8?B?eGhXRkFKcHJGdlZDODFtakpqRk9MU3ZZV2ZUTzUvZ0hiUmFyMHErUDQwQUNx?=
+ =?utf-8?B?R1hPVEhBdTQ0UE95VyswVVFjVmtMOVgxTXo4OHNFUXZsdFk2bE82UjdiZzJL?=
+ =?utf-8?B?Zmd2WXVCbXhzK0RoWSs5Ykh5eW5YUGtxRUloRWpxOWFxM1dKV3ZnWnBiQjho?=
+ =?utf-8?B?dmVSc2hHN3l6dW00ZVFGVGxJenJkNUNjZ0Z5dkc2Q29FTXNCNnZ0WkgvZ2lo?=
+ =?utf-8?B?c3N2WlRsVjRnRUJSK2ZJejU0WmpGUGE5RnFMbUYvWXVscXl1NHhwSU5VdzF0?=
+ =?utf-8?B?bjNOTGJHYXh0ZFl1NThtMVRvUm5CUElDSVl5NG91L3JNZjZxd2tJT2tKekVy?=
+ =?utf-8?B?ZXFCWlNoOUFGM05ERmM3NTM0TTBaWkxIeDQ1VFNxQkplUDByK0xrK0ppakY5?=
+ =?utf-8?B?Zm1EZ1VuL2c2Q2VnRlA0UjFGKzlvT0dJejMxckxXVDJUREdLMXRFcU14RjNm?=
+ =?utf-8?B?ejNWeVJ0ZGwvMlF6OS9JT1VjaFJTWG1xT0tOeWNxcFo3S3hGYk0yTy9NYktT?=
+ =?utf-8?B?QUREWmlnY3lmTVBOSzAya0orbmU1NkwrVXhFbXZBSnp5cVFzdnBUVmlDVlgx?=
+ =?utf-8?B?cUpFOXljTmZURVBQZ1pLZ2IzK0J1UG9uTmtva0VaWVRiTFJRU1pZdXk1b2cy?=
+ =?utf-8?B?TEhrWWwrbTBJaWYrWjZHR256VUlEOWNBYXdwb090R3hEdEpmZThsSjhtWUZt?=
+ =?utf-8?B?eDRyNUNqRGZxYnUvSmZhWUJLcWVITHNYS2p0b3B5cEk3d0t5ZGlKRHZYcDY3?=
+ =?utf-8?B?OGRDcnZKWWkvOXVZSDRhd2NFNzlneU5tMU9EUkRSZFpXbFY1UHdZZW9sMk1D?=
+ =?utf-8?B?ZU5GMHU4SDJWYW1yME1uNkYvLzAxQXdsaXljWnQzbHlXUThRU1JDYUsrakJr?=
+ =?utf-8?B?SThLMFJxeTBNdHYzRG1ucmZYa2JPeVFxdTRlaUE3bzVjYUt5SklQMWt5NGw2?=
+ =?utf-8?B?MU8za211WWJua3cxVGExaHZlZHRUVGJ0Z0FLM2JkZER4K3JRNTg5aU1nVEQ3?=
+ =?utf-8?B?ZG04WDI0U05qWFBhK3E2RTZjeGQ1aTdpWm9LUFZEMnJFQTJzYmpxZExOdlhU?=
+ =?utf-8?B?R0QrOVIreUJ0VlFsclRObytOMzQ0TUtqYmtRS2RiZDhoR3FwNmJ1aFlWWXF1?=
+ =?utf-8?B?RWVVQ3U5MTNpbW4xLzB1NHM4VVhPMG5IMXpZQnc3K1EyMDRqQkxBa01MR3BS?=
+ =?utf-8?B?a1pBNnduNUhjWDE5ZWdzN0w5OUdJZTJDWElQRGtpVEhTYjMyS3M0VmdhdXpl?=
+ =?utf-8?B?Tmp4NkNheVg5bjlBQml1QkJCVHhvT083cjF1ei9zR01UZ2Z0Z0ZUZHU3UXNx?=
+ =?utf-8?B?cWlYNmVOcHBJTGJWUE9YUURXL0dubTU4UEo5Sm5MLzlxRU02QVNCNzQyZnY4?=
+ =?utf-8?B?U2VBeEcrUG5LTGVCWlc4MGZTeEZxNG1qa3BhdUlZZXFMVHNLTExRY1ppZnNm?=
+ =?utf-8?B?SVpyWFAzZzBvQU1nODdqNDQrVy9RSGZFd3ZCcC82YlltUUVmZURHUHRBbnIr?=
+ =?utf-8?B?dU9YNGtNWVN3Q1NjRGlkZy9FWEhBQkJ0anZ6em1XZzZhK2F0MnZVbm42Rm5h?=
+ =?utf-8?B?VzEyN3ppRjJYM3cxaVEwb2FQem5acjNPcjZnU01zM0E2N05ZK21ScFpWRG5E?=
+ =?utf-8?B?VTByNFFSSXQxWGowZHVmTTZOY21IWkszTUYrUkNoRWo3YWQzaVNQUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d7eab26-bab2-4cd6-4066-08de52a9c176
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 13:43:38.2494
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EDzhr/ymC0xIma8opXduJgSuXV5EPh64CfKzZ/2O8DL4ho+CA0qCkNcvbRewQvQuOgt2Mm3sFsMNdpnGuhQnTA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3593
 
-On Tue, Jan 13, 2026 at 2:28=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Wed Dec 3, 2025 at 5:58 AM GMT, John Hubbard wrote:
+> This removes a "TODO" item in the code, which was hardcoded to work on
+> Ampere and Ada GPUs. Hopper/Blackwell+ have a larger width, so do an
+> early read of boot42, in order to pick the correct value.
 >
-> How useful do you think this is in general? Would it make sense to have a
-> dedicated PhysAddrRange type in kernel crate that provides this feature?
+> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/driver.rs | 33 +++++++++++++++++----------------
+>  drivers/gpu/nova-core/gpu.rs    | 29 ++++++++++++++++++++++++++++-
+>  2 files changed, 45 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driv=
+er.rs
+> index d91bbc50cde7..3179a4d47af4 100644
+> --- a/drivers/gpu/nova-core/driver.rs
+> +++ b/drivers/gpu/nova-core/driver.rs
+> @@ -4,8 +4,10 @@
+>      auxiliary,
+>      c_str,
+>      device::Core,
+> -    dma::Device,
+> -    dma::DmaMask,
+> +    dma::{
+> +        Device,
+> +        DmaMask, //
+> +    },
+>      pci,
+>      pci::{
+>          Class,
+> @@ -17,7 +19,10 @@
+>      sync::Arc, //
+>  };
+> =20
+> -use crate::gpu::Gpu;
+> +use crate::gpu::{
+> +    read_architecture,
+> +    Gpu, //
+> +};
+> =20
+>  #[pin_data]
+>  pub(crate) struct NovaCore {
+> @@ -28,14 +33,6 @@ pub(crate) struct NovaCore {
+> =20
+>  const BAR0_SIZE: usize =3D SZ_16M;
+> =20
+> -// For now we only support Ampere which can use up to 47-bit DMA address=
+es.
+> -//
+> -// TODO: Add an abstraction for this to support newer GPUs which may sup=
+port
+> -// larger DMA addresses. Limiting these GPUs to smaller address widths w=
+on't
+> -// have any adverse affects, unless installed on systems which require l=
+arger
+> -// DMA addresses. These systems should be quite rare.
+> -const GPU_DMA_BITS: u32 =3D 47;
+> -
+>  pub(crate) type Bar0 =3D pci::Bar<BAR0_SIZE>;
+> =20
+>  kernel::pci_device_table!(
+> @@ -73,11 +70,6 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInf=
+o) -> Result<Pin<KBox<Self
+>          pdev.enable_device_mem()?;
+>          pdev.set_master();
+> =20
+> -        // SAFETY: No concurrent DMA allocations or mappings can be made=
+ because
+> -        // the device is still being probed and therefore isn't being us=
+ed by
+> -        // other threads of execution.
+> -        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::new::<GPU_DMA_B=
+ITS>())? };
+> -
+>          let devres_bar =3D Arc::pin_init(
+>              pdev.iomap_region_sized::<BAR0_SIZE>(0, c_str!("nova-core/ba=
+r0")),
+>              GFP_KERNEL,
+> @@ -88,6 +80,15 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInf=
+o) -> Result<Pin<KBox<Self
+>          let bar_clone =3D Arc::clone(&devres_bar);
+>          let bar =3D bar_clone.access(pdev.as_ref())?;
+> =20
+> +        // Read the GPU architecture early to determine the correct DMA =
+address width.
+> +        // Hopper/Blackwell+ support 52-bit DMA addresses, earlier archi=
+tectures use 47-bit.
+> +        let arch =3D read_architecture(bar)?;
+> +
+> +        // SAFETY: No concurrent DMA allocations or mappings can be made=
+ because
+> +        // the device is still being probed and therefore isn't being us=
+ed by
+> +        // other threads of execution.
+> +        unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(arch.dm=
+a_addr_bits())?)? };
+> +
+>          let this =3D KBox::pin_init(
+>              try_pin_init!(Self {
+>                  gpu <- Gpu::new(pdev, devres_bar, bar),
+> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+> index c21ce91924f5..624bbc2a54e8 100644
+> --- a/drivers/gpu/nova-core/gpu.rs
+> +++ b/drivers/gpu/nova-core/gpu.rs
+> @@ -102,7 +102,7 @@ fn try_from(value: u32) -> Result<Self, Self::Error> =
+{
+>  });
+> =20
+>  impl Chipset {
+> -    pub(crate) fn arch(&self) -> Architecture {
+> +    pub(crate) const fn arch(&self) -> Architecture {
+>          match self {
+>              Self::TU102 | Self::TU104 | Self::TU106 | Self::TU117 | Self=
+::TU116 =3D> {
+>                  Architecture::Turing
+> @@ -155,6 +155,19 @@ pub(crate) enum Architecture {
+>      Blackwell =3D 0x1b,
+>  }
+> =20
+> +impl Architecture {
+> +    /// Returns the number of DMA address bits supported by this archite=
+cture.
+> +    ///
+> +    /// Hopper and Blackwell support 52-bit DMA addresses, while earlier=
+ architectures
+> +    /// (Turing, Ampere, Ada) support 47-bit DMA addresses.
+> +    pub(crate) const fn dma_addr_bits(&self) -> u32 {
 
-Related / to shine some light into this patch:
-https://lore.kernel.org/rust-for-linux/20251122055256.264180-1-binakugent@g=
-mail.com/
-and https://github.com/Rust-for-Linux/linux/issues/1204
+How about just return `DmaMask` from here? This get rids of the fallible
+constructor call of `DmaMask`.
 
-> I would either just use IEC prefix "MiB"
+> +        match self {
+> +            Self::Turing | Self::Ampere | Self::Ada =3D> 47,
+> +            Self::Hopper | Self::Blackwell =3D> 52,
+> +        }
+> +    }
+> +}
+> +
+>  impl TryFrom<u8> for Architecture {
+>      type Error =3D Error;
+> =20
+> @@ -203,6 +216,20 @@ pub(crate) struct Spec {
+>      revision: Revision,
+>  }
+> =20
+> +/// Reads the GPU architecture from BAR0 registers.
+> +///
+> +/// This is a lightweight check used early in probe to determine the cor=
+rect DMA address width
+> +/// before the full [`Spec`] is constructed.
+> +pub(crate) fn read_architecture(bar: &Bar0) -> Result<Architecture> {
+> +    let boot0 =3D regs::NV_PMC_BOOT_0::read(bar);
+> +
+> +    if boot0.is_older_than_fermi() {
+> +        return Err(ENODEV);
+> +    }
+> +
+> +    regs::NV_PMC_BOOT_42::read(bar).architecture()
 
-It doesn't seem very common yet in the kernel sources, but personally
-I would like that.
+Can this just be `Spec::new`?
 
-Cheers,
-Miguel
+Best,
+Gary
+
+> +}
+> +
+>  impl Spec {
+>      fn new(dev: &device::Device, bar: &Bar0) -> Result<Spec> {
+>          // Some brief notes about boot0 and boot42, in chronological ord=
+er:
+
