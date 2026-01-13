@@ -1,479 +1,267 @@
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012044.outbound.protection.outlook.com [52.101.48.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFE5326D70
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Jan 2026 08:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768294182; cv=none; b=K+ZuXxgQQ1JqkUN0EOU+g/q6NKZQ1iX/hwz1ArdAE3TQV7WH2GmUr9Gb84MS9nNJCtJDqp71ye8rgcmMToH7szuG7IndIUkzDy62YHUN74X9CfYHfRfgardVgmZYCt3Ym6P4HttMBYjIccrsH5qDJ1yDTH7V7U9lF4I50DGO/Hk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768294182; c=relaxed/simple;
-	bh=g1WAfHw3fhA18eizkTxdt4KfTRTng4SZoErFuKuDg64=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=njAEOoMgGGZCqj7EmyU9lO82PkCnkQT+tCIn6Y1Wmy8xfVN/IlzAy3HoQKNVHT4Putw4fAMmkjSy7U5Gg+NeVpTyb5OQLlWnXqM0v3RrGtTKVnnAWWT1bn4qA6XI8AmCcG3Bf7L/HHUPnE3RJUIaQqWEELdpA9ppUrO3xsbw+Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Dzpx2/BL; arc=none smtp.client-ip=209.85.218.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482DA389440;
+	Tue, 13 Jan 2026 09:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768296211; cv=fail; b=N1iRaLesfXff6xdI2F7tlcywus7eTXPW3X+7azLeywugAZrUukvRv4oVBQybr0i7f8CS5HS+QWA2pWl3tPPXgra635aKrUNMHJGqZ1AGnpYz+xWSQAcu+ATn+11B4c1+fZulIuZDqVnDEhrFPDZSuGxxndjrO7PAYKyos12zfAw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768296211; c=relaxed/simple;
+	bh=nzQsK9QClVGmZJJvF3QRR8xy7br+ECQrkmY4FSeiLVE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JZDESYUkOdi2c0mUAw6e1Q8QU0UGozXeZNPruaHlpGoyfiA2ZiTVCCdMbSj0w4DD1Vz3PnhNNpHeDfzr6JB3WH+eIl/m/5m6RX9t4FYngQtNH3m67XOlwtgeZiXGQ2uKZVz77g57iEZgmP5fJQT7ojHPBoptMdUvkzJg0TuVJIo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=N3Qlwnp/; arc=fail smtp.client-ip=52.101.48.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Dzpx2/BL"
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b872c88d115so153140166b.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 13 Jan 2026 00:49:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768294178; x=1768898978; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jw+Q9e+3qzYdGDM4/rhL4Cf9PitNjxQFTtoPvumkEKw=;
-        b=Dzpx2/BLw+XCHTAnwfhSbhbPXonNltyEFHmXozCD7iochxd8GKISsND/fDhhSfwims
-         7vsCI/01Bl2IDls/h5BOBT1d1Dd1DPAj6dQewIaMPrhgc0rbtDIYyRn7OTnd83WD/SgB
-         kRknWiSmrimkvknmQsYFO7zMXB9uj8CX1xybzSnml0pAzL5uOHaGGz+lfgaUtc6GfrY0
-         gesJI1kaIats3FfwwUJRHivGkgIl8nuEMWYlZxlEg470m/5mcuxdTsPaWlo8zJ9UHmEV
-         nOXlQZyZtzh+YRZAsfcnYH8EvBbdlXOQ2Bsr2fKy+6hRUTv4X9nzji+bG9sp3WKcRU4N
-         elag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768294178; x=1768898978;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jw+Q9e+3qzYdGDM4/rhL4Cf9PitNjxQFTtoPvumkEKw=;
-        b=l+1PY+GDgKsmf00WPdvFxelDRb6fRNrIWKldTci2vK8CP5muppfWjDFYFa7h8q7Liy
-         3+fAiX9GZpk2DKBKtgQ2BrN5K9KKwc08aBFgDTny0dKJMBJ+lGVrdR+fHeSIxLk2rDEj
-         iz/d87kn367b+iZwpwN4mesdAQZGh98kq0j6MmOsKXAiL58piAY0JcApDKKbTQ5kQgnS
-         ZV6wEw64GWm0IK1g9R0DRpDjry7eN/KCia5IH3RVoghu8CJSSOYURvZDH4rMqXFm73C8
-         zKgeHI837qGlPoZJ6+2AeiYVldyZG9QWu2r2s074rsl5+clDDxI1vH8tT9P+/vlJnAzC
-         y3Ew==
-X-Forwarded-Encrypted: i=1; AJvYcCXu2dlIFBGo29USWCURfe5tZTUxB/PthUvJy0yp/c+NhuLcA1zBNQZU+la22QOZf1EoCqBJHOFX6z3CBMHFcA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJevzoeq5ueKWW3Ti8QvWA7Qgct5uNki/Va2m2cNLMPzRoOEzo
-	fz8ouri/9h19ho80AYBtGiu+ZtwuB9R61ss986U6Xwg2BO+VhK5mtM+S68A7WR1QGiTAcoGGhEw
-	p3tCLrr6UPFqFjz0NGg==
-X-Google-Smtp-Source: AGHT+IG+jeDT8il/eAqSDA5cuGkJbkzksYOdO7Mos9jGlhqfPY9NZ1sG85DVTJeq24oXIQZmCGGLmrtiUEe7nb4=
-X-Received: from edwn23.prod.google.com ([2002:a05:6402:4d7:b0:649:8456:d4bf])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:98d:b0:b73:7b97:5bfb with SMTP id a640c23a62f3a-b8444f4f7d3mr2145464866b.33.1768294178675;
- Tue, 13 Jan 2026 00:49:38 -0800 (PST)
-Date: Tue, 13 Jan 2026 08:49:27 +0000
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="N3Qlwnp/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kvCNCHwC1nrcIpb+IFuA7Hth6r1B8sYj20H6otF4a7bAx7q89QhGXkmxBtGBh0LjnGdojIgaoFLccDXPBVQkP/Sj0hxANtDUREaXVTfcWHkSWTT5cQjUfyH4tbKtfYvz3iwSMg0f3HHoLNGdajmNbkDlqUkErR7H2dDGwF7rWtFMxIeAwrReQvTjV+z7C41ltbju+GZ7dCes05W24x8EV+kQS1PFLUzkVqNaYq/HgekAYnX2lBv8ItKNdzBuGMyHCSRULa9Fe6hTvJlPS51+aVi0b/dq9VYYyv01RKjy5KD1zNRt4V8NNGdQiKFzFdaT3pxRgS/SpUnu48mrgm4/uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6zCP3Go0v53jtsRGCguknsHi5NIvhzuKpmEuKuLxQu8=;
+ b=adacQBhAxBV3mW7adI5JNMrKsmPSzdmNu5+vCtfQTmTVsH3K9dqtqzHeTd3zKduHVwdJzEZB0astE8icOlpGR7mJvuBwWr0soPUDgObKwcdExWuMGcpobVtpJ92OyFMP55iZUG3Ex8vPukLb8CyDUfrE+sIIV6ui/Qko02NznmsrXEl8vmZou66WzS0JcaJBSVX+JdoDsfDlXNQkCCd9c74ef1HoF11FHPib8cqfIRuPc6nejwU/8vsy0qQo+PsFEbmPjvCDv1Rq0hnJE26plv0wrzel6RE1WeMwfxnMJdUPhyRd+9xJr1+WBDhT0tvGQ0IoZnbNtoBNXJvbyak+tQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6zCP3Go0v53jtsRGCguknsHi5NIvhzuKpmEuKuLxQu8=;
+ b=N3Qlwnp/zOooKqO5IIvXEc7gZ8fTMHKniFJVBDwwrPN8Ngnocv7EfC5hSwf6yTrVYJuPUhspk68ptycBrfEfvII737Jxis5hcXbtj7xgbBfNSeup+LqVkoLIQQNDhKlfLDCwxiiXKXNiDJ4x68cnpEHPB+UR4ormI+vGvRnLWwL/E65QN909JlsbjDSK39u0/47GfNAFhy//RYWNgaOK/G9dQPTLiZyckJwTAlGfmCIGmXqkTyC7KE/f+vZodKgykIrf68KBQLg0roy2vgqRy6ue467Bg9ijV4Gwzeq4ZxAira+jQUxBjddlL7GM9TXivzQuglFj7YHnuUJ9AxS3eQ==
+Received: from SJ2PR07CA0008.namprd07.prod.outlook.com (2603:10b6:a03:505::8)
+ by DS0PR12MB8217.namprd12.prod.outlook.com (2603:10b6:8:f1::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
+ 2026 09:23:22 +0000
+Received: from CO1PEPF000044F1.namprd05.prod.outlook.com
+ (2603:10b6:a03:505:cafe::6a) by SJ2PR07CA0008.outlook.office365.com
+ (2603:10b6:a03:505::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.7 via Frontend Transport; Tue,
+ 13 Jan 2026 09:23:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CO1PEPF000044F1.mail.protection.outlook.com (10.167.241.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9520.1 via Frontend Transport; Tue, 13 Jan 2026 09:23:21 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 13 Jan
+ 2026 01:23:02 -0800
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 13 Jan
+ 2026 01:23:02 -0800
+Received: from inno-vm-xubuntu (10.127.8.13) by mail.nvidia.com (10.129.68.7)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Tue, 13
+ Jan 2026 01:22:56 -0800
+From: Zhi Wang <zhiw@nvidia.com>
+To: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <dakr@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
+	<kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+	<lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+	<markus.probst@posteo.de>, <helgaas@kernel.org>, <cjia@nvidia.com>,
+	<smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+	<kwankhede@nvidia.com>, <targupta@nvidia.com>, <acourbot@nvidia.com>,
+	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>, "Zhi
+ Wang" <zhiw@nvidia.com>
+Subject: [PATCH v8 0/5] rust: pci: add config space read/write support
+Date: Tue, 13 Jan 2026 11:22:47 +0200
+Message-ID: <20260113092253.220346-1-zhiw@nvidia.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIABYHZmkC/1WOyw6DIBBFf8WwLgbwUXXV/2i6AByRRMWCJW2M/
- 16KTWpndyf3nJkVObAaHGqSFVnw2mkzhVCcEiR7PinAug0ZMcIKGgZrg2e1cDEA7oBUjIkcRNu
- iAMwWOv2Msuttzxbuj+Bc9iUS3AGWZhz10iS+TGmNraToU+61W4x9xUd8Ftvfm+x402eYYkGIZ FCKuqD8ooxRA6TBGj0+/7Es+I9sHtiy4pyfeU6yivyx27a9ASqjSmoOAQAA
-X-Change-Id: 20251111-io-pgtable-fe0822b4ebdd
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14368; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=CQgadvNGkklTMvPBwYDBqTFwljHbuM9uho1jUasw/lM=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpZgcc3/3HGgCiJsPygaovp4f3h+AB0KdYAq11m
- 5FzkkiCvA2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaWYHHAAKCRAEWL7uWMY5
- RgL+D/0a+pQIZUSNKsrmV5XA53l45frfdrOhnIHn+PezUeJf5A+z3ZTbU5NNPjIMQXcY03qXV3l
- YnhjZJMkxQpSc8umBABPcoCc9Alw3jfNreF4HzUkGhNmxp/qQpPghe7n32sziiaU3x8C6TOEw62
- 6a6SRILNrpQT8SBtOl24yKXmFrIyowpTqadpuNQTFmrwm6dH91Q6W+ROK9wlSZsr9MV1PSBdhV5
- vnQ9ofm+eeB8CvSH2gk6oSG6O2rlJvcdxDnJ3OU1AkxttFCyUQwVF2vroQlahnM6KWQZl3N92Lj
- iESRzhiEqOKqpyWF1nri52uJeX71hHawRNDBcp1PqhsaFgYWof6D90te0Chh4k+S3YtW30C4aW+
- 0FvRmwgv/0+vGcvYK77dNB3zFhUmEbcZfl6f03zReMUY9dWh6H46pbejU9Rr4b1kKgm2K94D2Rb
- 2BKmSNwhw1j1VV9/B3ZJO3zrfj6AB7Tiy60TmRn/ytuBFhrCCK9706lLec4K/B+aqBZg8KciG/U
- Njfk1WZ4BpayNs+l6xoEYTdUZBNlnDV7moTY7iOg4GNpFtJp66HDAXQVNpeggjea4JJmH6qPUDc
- bLRGxKWKXVzx94+kKIZjohcovwCw5+NZvwwXrGr8wJq+sQlZzWpv+D7/WerSDJswiPhxedNJmQT XRxd3mMyhBFRxdg==
-X-Mailer: b4 0.14.2
-Message-ID: <20260113-io-pgtable-v5-1-7ed771bc3d8d@google.com>
-Subject: [PATCH v5] io: add io_pgtable abstraction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Will Deacon <will@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Asahi Lina <lina+kernel@asahilina.net>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F1:EE_|DS0PR12MB8217:EE_
+X-MS-Office365-Filtering-Correlation-Id: babe093a-7be0-4402-71f9-08de52856511
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|7416014|376014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?lmhCdcMPdZ11Y6+s2oveqyNCSx8lnQ+9+WJvMpvQowrKPIxD55auM3uixZp+?=
+ =?us-ascii?Q?CQ5hPbPTQ+H4GDQbYvjPOeYwNOUo2wstna+ovtO3r4iG4tjFVvRtV20CzrwG?=
+ =?us-ascii?Q?BF77rTfY3SwRdkqkk4XjqfWtglsvKYi+mrMYSAOzZ4/uNqwItN9JU9P6P3Bz?=
+ =?us-ascii?Q?XUW11zkRPg6HaciZsKT+xGAT9Hy1J8ZJLbmT6j+wf1Z10EXzbf9gKZ+gEjAm?=
+ =?us-ascii?Q?vUh66PWBrITbzgdbYLEuylb0ihY9xyjemaAeu4QH26/tatbeAesUb6UhzQM8?=
+ =?us-ascii?Q?ADRX4AgPsy5oCuWwOnUqIhRFv17Z+OGJA4wtpvyEKmSL13948xOVffMwIjKc?=
+ =?us-ascii?Q?OTZItM7cPoQVpuziXlm9KX+RY95h24cJBVtgcSrhrQlHxt/p03hx06aek8os?=
+ =?us-ascii?Q?iCYdEgrR2k1w3B0i52cvnCLc3xXfd9MllTItLKzcg5+qCkXSPCJHg1YpJkaz?=
+ =?us-ascii?Q?RzlQ76sz9LIjlGo/qzFpRyyTxtdECEt5NlpFP5CbcNF7eMnM/VdWIdCv+BYi?=
+ =?us-ascii?Q?XXJ+Www8yi2F7OKXCenZD6lSkfGnsYLksBYZlGpmBK9fIDcL3LiVjwl+C7R7?=
+ =?us-ascii?Q?gyXwB2zw3tpAngjtCoYdwcquovEd4HbxFapQbnl6/3vrGHlhgYOSxT/fmUtT?=
+ =?us-ascii?Q?U9SLcR1cw2UQgWNTzXBQt5xFZkBxr4X3SnOzDHh1AWRFNW38kiXYe/jt8M/a?=
+ =?us-ascii?Q?Gko6z4JUH1DfBel+eqCHoZZtln26+jAzqWrgEgF4TTlrxKtGNzrcXps6Ny+V?=
+ =?us-ascii?Q?kwxICtMqf2lIllYG8jW7NYWBJlzha/uk8IzHcKWWMV5ojD8MX8s65a7LXxK+?=
+ =?us-ascii?Q?WpFSlgWBjSzeckU0/dawwfzzUIYhdGN729Xft/Qskydy4Bj1V7Xcf5/oyiqg?=
+ =?us-ascii?Q?zpOP316+TR+AESn26TrkOBZobcDDgvRW4pVRstHM/9IAb3HKlydfRZ6GVlwf?=
+ =?us-ascii?Q?06tIiW5m2CqO5j3X6VsvI/GeJVnG8/NIeZY8dwNU1Xoo6wXYfRYNZjxte55i?=
+ =?us-ascii?Q?nldMKSVk9FD1DfkLhIsbQO8UkkFoqKDAnhspTCKe7v5yLbCheL5gENVbgx+a?=
+ =?us-ascii?Q?m3XkJoQuggWNbQ1QvRhoT2blKeNAZM5AjVJ0SAnA1+t09UvJIXfQJj8y9n06?=
+ =?us-ascii?Q?B6AEopem5tYfUigQmjbMJvKxj5deSf88VCUU15HvZooKcDs4glajkowWL2k6?=
+ =?us-ascii?Q?S5eLUoMgF9kzTSO1iEDHo2jJhKK9qoIwDvI22heBcBgcopaW8wjXUvuleNbH?=
+ =?us-ascii?Q?TjxUcDJvZUDBzm6qX0QWonV4x95Z2HwlhWjBpZNJSo39SX9bBcVQXBCtN3dP?=
+ =?us-ascii?Q?4RmNGnNkWJavikMJ6DQwcrwAi7XFHt5iC5NkNoCb03Qi0amhTNlhgN855HxF?=
+ =?us-ascii?Q?1q4QqC8TzSUzVPomPBh0FiWEdOGAycgdLodG4O7MybmnSJCH61JZ7SvRUxkd?=
+ =?us-ascii?Q?YmGUJ6IrSCQn1E54auUdjaME16SS5fQJJZ+auP7udpySjKrCj8BZ8SQOdFa1?=
+ =?us-ascii?Q?OtAS83XqD/KU74v9nm5HgQ7W3rr44Dh8+2kz1Ium35SimGNiIJAjIzfD0Pg3?=
+ =?us-ascii?Q?eL+DRSf3YsiadpUdPgs=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(7416014)(376014)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 09:23:21.1524
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: babe093a-7be0-4402-71f9-08de52856511
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000044F1.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8217
 
-From: Asahi Lina <lina+kernel@asahilina.net>
+In the NVIDIA vGPU RFC [1], the PCI configuration space access is
+required in nova-core for preparing gspVFInfo when vGPU support is
+enabled. This series is the following up of the discussion with Danilo
+for how to introduce support of PCI configuration space access in Rust
+PCI abstractions. Alice/Alex/I had a discussion of the next steps of
+this patch series in LPC 2025. We agreed that first introducing the
+functionality before the BoundedInteger work and other refinement is
+settled. [2]
 
-This will be used by the Tyr driver to create and modify the page table
-of each address space on the GPU. Each time a mapping gets created or
-removed by userspace, Tyr will call into GPUVM, which will figure out
-which calls to map_pages and unmap_pages are required to map the data in
-question in the page table so that the GPU may access those pages when
-using that address space.
+The repo with the patches can be found at [3].
 
-The Rust type wraps the struct using a raw pointer rather than the usual
-Opaque+ARef approach because Opaque+ARef requires the target type to be
-refcounted.
+v8:
 
-Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
-Acked-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-We did not discuss where this should go in the MAINTAINERS file yet. As
-an initial suggestion I added it under IOMMU SUBSYSTEM, but please let
-me know what you prefer. There is also a DEVICE I/O & IRQ [RUST]
-subsystem that it could fall under.
----
-Changes in v5:
-- Fix warning by removing #[must_use] from `map_pages`.
-- Reword comment on NOOP_FLUSH_OPS
-- Add blank line after `alloc_io_pgtable_ops`
-- Reword safety comment in Drop to refer ttbr method
-- List in MAINTAINERS
-- Pick up Reviewed-by: Daniel
-- Link to v4: https://lore.kernel.org/r/20251219-io-pgtable-v4-1-68aaa7a40380@google.com
+- Rebase to latest driver-core-testing branch.
+- Refinement of traits name and hierarchy: (Alice)
+  * Rename IoInfallible trait to IoKnownSize trait.
+  * Keep Infallible helpers in Io trait.
 
-Changes in v4:
-- Rename prot::PRIV to prot::PRIVILEGED
-- Adjust map_pages to return the length even on error.
-- Explain return value in docs of map_pages and unmap_pages.
-- Explain in map_pages that the caller must explicitly flush the TLB
-  before accessing the resulting mapping.
-- Add a safety requirement that access to a given range is required to
-  be exclusive.
-- Reword comment on NOOP_FLUSH_OPS.
-- Rebase on v6.19-rc1 and pick up tags.
-- Link to v3: https://lore.kernel.org/r/20251112-io-pgtable-v3-1-b00c2e6b951a@google.com
+v7:
 
-Changes in v3:
-- Almost entirely rewritten from scratch.
-- Link to v2: https://lore.kernel.org/all/20250623-io_pgtable-v2-1-fd72daac75f1@collabora.com/
----
- MAINTAINERS                     |   1 +
- rust/bindings/bindings_helper.h |   3 +-
- rust/kernel/io.rs               |   1 +
- rust/kernel/io/pgtable.rs       | 276 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 280 insertions(+), 1 deletion(-)
+- Rebase to latest driver-core-testing branch.
+- Introduce Io64 trait. (Alice)
+- Add docs for call_{mmio, config}_{read, write}() macros. (Alex)
+- Improve the define_{read, write} macros. (Alex)
+- Add SAFETY/CAST in call_config_{read, write}. (Joel)
+- Fix typo of method name. (Alex/Joel)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b11839cba9de1e9e43f63787578edd8c429ca39..eccdb937762a7545fcd5db0194ab7c1b6dfdfde6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13241,6 +13241,7 @@ F:	drivers/iommu/
- F:	include/linux/iommu.h
- F:	include/linux/iova.h
- F:	include/linux/of_iommu.h
-+F:	rust/kernel/io/pgtable.rs
- 
- IOMMUFD
- M:	Jason Gunthorpe <jgg@nvidia.com>
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index a067038b4b422b4256f4a2b75fe644d47e6e82c8..1b05a5e4cfb4780fdc27813d708a8f1a6a2d9913 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -56,9 +56,10 @@
- #include <linux/fdtable.h>
- #include <linux/file.h>
- #include <linux/firmware.h>
--#include <linux/interrupt.h>
- #include <linux/fs.h>
- #include <linux/i2c.h>
-+#include <linux/interrupt.h>
-+#include <linux/io-pgtable.h>
- #include <linux/ioport.h>
- #include <linux/jiffies.h>
- #include <linux/jump_label.h>
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 98e8b84e68d11ef74b2026d8c3d847a127f4672d..88253158448cbf493ca200a87ef9ba958255e761 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -10,6 +10,7 @@
- };
- 
- pub mod mem;
-+pub mod pgtable;
- pub mod poll;
- pub mod resource;
- 
-diff --git a/rust/kernel/io/pgtable.rs b/rust/kernel/io/pgtable.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..001b1d197563728881e995c90395bf167d29dfe9
---- /dev/null
-+++ b/rust/kernel/io/pgtable.rs
-@@ -0,0 +1,276 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! IOMMU page table management.
-+//!
-+//! C header: [`include/io-pgtable.h`](srctree/include/io-pgtable.h)
-+
-+use core::{
-+    marker::PhantomData,
-+    ptr::NonNull, //
-+};
-+
-+use crate::{
-+    alloc,
-+    bindings,
-+    device::{Bound, Device},
-+    devres::Devres,
-+    error::to_result,
-+    io::PhysAddr,
-+    prelude::*, //
-+};
-+
-+use bindings::io_pgtable_fmt;
-+
-+/// Protection flags used with IOMMU mappings.
-+pub mod prot {
-+    /// Read access.
-+    pub const READ: u32 = bindings::IOMMU_READ;
-+    /// Write access.
-+    pub const WRITE: u32 = bindings::IOMMU_WRITE;
-+    /// Request cache coherency.
-+    pub const CACHE: u32 = bindings::IOMMU_CACHE;
-+    /// Request no-execute permission.
-+    pub const NOEXEC: u32 = bindings::IOMMU_NOEXEC;
-+    /// MMIO peripheral mapping.
-+    pub const MMIO: u32 = bindings::IOMMU_MMIO;
-+    /// Privileged mapping.
-+    pub const PRIVILEGED: u32 = bindings::IOMMU_PRIV;
-+}
-+
-+/// Represents a requested `io_pgtable` configuration.
-+pub struct Config {
-+    /// Quirk bitmask (type-specific).
-+    pub quirks: usize,
-+    /// Valid page sizes, as a bitmask of powers of two.
-+    pub pgsize_bitmap: usize,
-+    /// Input address space size in bits.
-+    pub ias: u32,
-+    /// Output address space size in bits.
-+    pub oas: u32,
-+    /// IOMMU uses coherent accesses for page table walks.
-+    pub coherent_walk: bool,
-+}
-+
-+/// An io page table using a specific format.
-+///
-+/// # Invariants
-+///
-+/// The pointer references a valid io page table.
-+pub struct IoPageTable<F: IoPageTableFmt> {
-+    ptr: NonNull<bindings::io_pgtable_ops>,
-+    _marker: PhantomData<F>,
-+}
-+
-+// SAFETY: `struct io_pgtable_ops` is not restricted to a single thread.
-+unsafe impl<F: IoPageTableFmt> Send for IoPageTable<F> {}
-+// SAFETY: `struct io_pgtable_ops` may be accessed concurrently.
-+unsafe impl<F: IoPageTableFmt> Sync for IoPageTable<F> {}
-+
-+/// The format used by this page table.
-+pub trait IoPageTableFmt: 'static {
-+    /// The value representing this format.
-+    const FORMAT: io_pgtable_fmt;
-+}
-+
-+impl<F: IoPageTableFmt> IoPageTable<F> {
-+    /// Create a new `IoPageTable` as a device resource.
-+    #[inline]
-+    pub fn new(
-+        dev: &Device<Bound>,
-+        config: Config,
-+    ) -> impl PinInit<Devres<IoPageTable<F>>, Error> + '_ {
-+        // SAFETY: Devres ensures that the value is dropped during device unbind.
-+        Devres::new(dev, unsafe { Self::new_raw(dev, config) })
-+    }
-+
-+    /// Create a new `IoPageTable`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// If successful, then the returned `IoPageTable` must be dropped before the device is
-+    /// unbound.
-+    #[inline]
-+    pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> Result<IoPageTable<F>> {
-+        let mut raw_cfg = bindings::io_pgtable_cfg {
-+            quirks: config.quirks,
-+            pgsize_bitmap: config.pgsize_bitmap,
-+            ias: config.ias,
-+            oas: config.oas,
-+            coherent_walk: config.coherent_walk,
-+            tlb: &raw const NOOP_FLUSH_OPS,
-+            iommu_dev: dev.as_raw(),
-+            // SAFETY: All zeroes is a valid value for `struct io_pgtable_cfg`.
-+            ..unsafe { core::mem::zeroed() }
-+        };
-+
-+        // SAFETY:
-+        // * The raw_cfg pointer is valid for the duration of this call.
-+        // * The provided `FLUSH_OPS` contains valid function pointers that accept a null pointer
-+        //   as cookie.
-+        // * The caller ensures that the io pgtable does not outlive the device.
-+        let ops = unsafe {
-+            bindings::alloc_io_pgtable_ops(F::FORMAT, &mut raw_cfg, core::ptr::null_mut())
-+        };
-+
-+        // INVARIANT: We successfully created a valid page table.
-+        Ok(IoPageTable {
-+            ptr: NonNull::new(ops).ok_or(ENOMEM)?,
-+            _marker: PhantomData,
-+        })
-+    }
-+
-+    /// Obtain a raw pointer to the underlying `struct io_pgtable_ops`.
-+    #[inline]
-+    pub fn raw_ops(&self) -> *mut bindings::io_pgtable_ops {
-+        self.ptr.as_ptr()
-+    }
-+
-+    /// Obtain a raw pointer to the underlying `struct io_pgtable`.
-+    #[inline]
-+    pub fn raw_pgtable(&self) -> *mut bindings::io_pgtable {
-+        // SAFETY: The io_pgtable_ops of an io-pgtable is always the ops field of a io_pgtable.
-+        unsafe { kernel::container_of!(self.raw_ops(), bindings::io_pgtable, ops) }
-+    }
-+
-+    /// Obtain a raw pointer to the underlying `struct io_pgtable_cfg`.
-+    #[inline]
-+    pub fn raw_cfg(&self) -> *mut bindings::io_pgtable_cfg {
-+        // SAFETY: The `raw_pgtable()` method returns a valid pointer.
-+        unsafe { &raw mut (*self.raw_pgtable()).cfg }
-+    }
-+
-+    /// Map a physically contiguous range of pages of the same size.
-+    ///
-+    /// Even if successful, this operation may not map the entire range. In that case, only a
-+    /// prefix of the range is mapped, and the returned integer indicates its length in bytes. In
-+    /// this case, the caller will usually call `map_pages` again for the remaining range.
-+    ///
-+    /// The returned [`Result`] indicates whether an error was encountered while mapping pages.
-+    /// Note that this may return a non-zero length even if an error was encountered. The caller
-+    /// will usually [unmap the relevant pages](Self::unmap_pages) on error.
-+    ///
-+    /// The caller must flush the TLB before using the pgtable to access the newly created mapping.
-+    ///
-+    /// # Safety
-+    ///
-+    /// * No other io-pgtable operation may access the range `iova .. iova+pgsize*pgcount` while
-+    ///   this `map_pages` operation executes.
-+    /// * This page table must not contain any mapping that overlaps with the mapping created by
-+    ///   this call.
-+    /// * If this page table is live, then the caller must ensure that it's okay to access the
-+    ///   physical address being mapped for the duration in which it is mapped.
-+    #[inline]
-+    pub unsafe fn map_pages(
-+        &self,
-+        iova: usize,
-+        paddr: PhysAddr,
-+        pgsize: usize,
-+        pgcount: usize,
-+        prot: u32,
-+        flags: alloc::Flags,
-+    ) -> (usize, Result) {
-+        let mut mapped: usize = 0;
-+
-+        // SAFETY: The `map_pages` function in `io_pgtable_ops` is never null.
-+        let map_pages = unsafe { (*self.raw_ops()).map_pages.unwrap_unchecked() };
-+
-+        // SAFETY: The safety requirements of this method are sufficient to call `map_pages`.
-+        let ret = to_result(unsafe {
-+            (map_pages)(
-+                self.raw_ops(),
-+                iova,
-+                paddr,
-+                pgsize,
-+                pgcount,
-+                prot as i32,
-+                flags.as_raw(),
-+                &mut mapped,
-+            )
-+        });
-+
-+        (mapped, ret)
-+    }
-+
-+    /// Unmap a range of virtually contiguous pages of the same size.
-+    ///
-+    /// This may not unmap the entire range, and returns the length of the unmapped prefix in
-+    /// bytes.
-+    ///
-+    /// # Safety
-+    ///
-+    /// * No other io-pgtable operation may access the range `iova .. iova+pgsize*pgcount` while
-+    ///   this `unmap_pages` operation executes.
-+    /// * This page table must contain one or more consecutive mappings starting at `iova` whose
-+    ///   total size is `pgcount * pgsize`.
-+    #[inline]
-+    #[must_use]
-+    pub unsafe fn unmap_pages(&self, iova: usize, pgsize: usize, pgcount: usize) -> usize {
-+        // SAFETY: The `unmap_pages` function in `io_pgtable_ops` is never null.
-+        let unmap_pages = unsafe { (*self.raw_ops()).unmap_pages.unwrap_unchecked() };
-+
-+        // SAFETY: The safety requirements of this method are sufficient to call `unmap_pages`.
-+        unsafe { (unmap_pages)(self.raw_ops(), iova, pgsize, pgcount, core::ptr::null_mut()) }
-+    }
-+}
-+
-+// For the initial users of these rust bindings, the GPU FW is managing the IOTLB and performs all
-+// required invalidations using a range. There is no need for it get ARM style invalidation
-+// instructions from the page table code.
-+//
-+// Support for flushing the TLB with ARM style invalidation instructions may be added in the
-+// future.
-+static NOOP_FLUSH_OPS: bindings::iommu_flush_ops = bindings::iommu_flush_ops {
-+    tlb_flush_all: Some(rust_tlb_flush_all_noop),
-+    tlb_flush_walk: Some(rust_tlb_flush_walk_noop),
-+    tlb_add_page: None,
-+};
-+
-+#[no_mangle]
-+extern "C" fn rust_tlb_flush_all_noop(_cookie: *mut core::ffi::c_void) {}
-+
-+#[no_mangle]
-+extern "C" fn rust_tlb_flush_walk_noop(
-+    _iova: usize,
-+    _size: usize,
-+    _granule: usize,
-+    _cookie: *mut core::ffi::c_void,
-+) {
-+}
-+
-+impl<F: IoPageTableFmt> Drop for IoPageTable<F> {
-+    fn drop(&mut self) {
-+        // SAFETY: The caller of `Self::ttbr()` promised that the page table is not live when this
-+        // destructor runs.
-+        unsafe { bindings::free_io_pgtable_ops(self.raw_ops()) };
-+    }
-+}
-+
-+/// The `ARM_64_LPAE_S1` page table format.
-+pub enum ARM64LPAES1 {}
-+
-+impl IoPageTableFmt for ARM64LPAES1 {
-+    const FORMAT: io_pgtable_fmt = bindings::io_pgtable_fmt_ARM_64_LPAE_S1 as io_pgtable_fmt;
-+}
-+
-+impl IoPageTable<ARM64LPAES1> {
-+    /// Access the `ttbr` field of the configuration.
-+    ///
-+    /// This is the physical address of the page table, which may be passed to the device that
-+    /// needs to use it.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that the device stops using the page table before dropping it.
-+    #[inline]
-+    pub unsafe fn ttbr(&self) -> u64 {
-+        // SAFETY: `arm_lpae_s1_cfg` is the right cfg type for `ARM64LPAES1`.
-+        unsafe { (*self.raw_cfg()).__bindgen_anon_1.arm_lpae_s1_cfg.ttbr }
-+    }
-+
-+    /// Access the `mair` field of the configuration.
-+    #[inline]
-+    pub fn mair(&self) -> u64 {
-+        // SAFETY: `arm_lpae_s1_cfg` is the right cfg type for `ARM64LPAES1`.
-+        unsafe { (*self.raw_cfg()).__bindgen_anon_1.arm_lpae_s1_cfg.mair }
-+    }
-+}
+v6:
 
----
-base-commit: 3e7f562e20ee87a25e104ef4fce557d39d62fa85
-change-id: 20251111-io-pgtable-fe0822b4ebdd
+- Implement config_space() and config_space_extended() in device::Bound
+  lifecycle. (Danilo)
+- Fix the "use" in the comment for generating proper rust docs, verify
+  the output of rustdoc. (Miguel)
+- Improve the comments of PCI configuration space when checking the
+  output of rustdoc.
 
-Best regards,
+v5:
+
+- Remove fallible accessors of PCI configuration space. (Danilo)
+- Add #[repr(usize)] for enum ConfigSpace. (Danilo)
+- Refine the handling of return value in read accessors. (Danilo)
+- Add debug_assert!() in pdev::cfg_size(). (Danilo)
+- Add ConfigSpace.as_raw() for extracting the raw value. (Danilo)
+- Rebase the patches on top of driver-core-testing branch.
+- Convert imports touched by this series to vertical style.
+
+v4:
+
+- Refactor the SIZE constant to be an associated constant. (Alice)
+- Remove the default method implementations in the Io trait. (Alice)
+- Make cfg_size() private. (Danilo/Bjorn)
+- Implement the infallible accessors of ConfigSpace. (Danilo)
+- Create a new Io64 trait specifically for 64-bit accessors. (Danilo)
+- Provide two separate methods for driver: config_space() and
+  config_space_extended(). (Danilo)
+- Update the sample driver to test the infallible accessors. (Danilo)
+
+v3:
+
+- Turn offset_valid() into a private function of kernel::io:Io. (Alex)
+- Separate try and non-try variants. (Danilo)
+- Move all the {try_}{read,write}{8,16,32,64} accessors to the I/O trait.
+  (Danilo)
+- Replace the hardcoded MMIO type constraint with a generic trait bound
+  so that register! macro can be used in other places. (Danilo)
+- Fix doctest. (John)
+- Add an enum for PCI configuration space size. (Danilo)
+- Refine the patch comments. (Bjorn)
+
+v2:
+
+- Factor out common trait as 'Io' and keep the rest routines in original
+  'Io' as 'Mmio'. (Danilo)
+- Rename 'IoRaw' to 'MmioRaw'. Update the bus MMIO implementation to use
+  'MmioRaw'.
+- Introduce pci::Device<Bound>::config_space(). (Danilo)
+- Implement both infallible and fallible read/write routines, the device
+  driver decicdes which version should be used.
+
+This ideas of this series are:
+
+- Factor out common traits for other accessors to share the same
+  compiling/runtime check like before.
+
+- Factor the MMIO read/write macros from the define_read! and
+  define_write! macros. Thus, define_{read, write}! can be used in other
+  backends.
+
+  In detail:
+
+  * Introduce `call_mmio_read!` and `call_mmio_write!` helper macros
+    to encapsulate the unsafe FFI calls.
+  * Update `define_read!` and `define_write!` macros to delegate to
+    the call macros.
+  * Export `define_read` and `define_write` so they can be reused
+    for other I/O backends (e.g. PCI config space).
+
+- Implement the PCI configuration space access backend in PCI
+  abstractions.
+
+- Add tests for config space routines in rust PCI sample driver.
+
+[1] https://lore.kernel.org/all/20250903221111.3866249-1-zhiw@nvidia.com/
+[2] https://lore.kernel.org/all/DEOMBKIRDXH6.2CF2MR2RB2W2C@nvidia.com/
+[3] https://github.com/zhiwang-nvidia/nova-core/tree/rust-for-linux/pci-configuration-space-v8
+
+Zhi Wang (5):
+  rust: devres: style for imports
+  rust: io: factor common I/O helpers into Io trait
+  rust: io: factor out MMIO read/write macros
+  rust: pci: add config space read/write support
+  sample: rust: pci: add tests for config space routines
+
+ drivers/gpu/nova-core/gsp/sequencer.rs |   5 +-
+ drivers/gpu/nova-core/regs/macros.rs   |  90 ++++---
+ drivers/gpu/nova-core/vbios.rs         |   1 +
+ rust/kernel/devres.rs                  |  30 ++-
+ rust/kernel/io.rs                      | 354 +++++++++++++++++++------
+ rust/kernel/io/mem.rs                  |  16 +-
+ rust/kernel/io/poll.rs                 |   8 +-
+ rust/kernel/pci.rs                     |  43 ++-
+ rust/kernel/pci/io.rs                  | 130 ++++++++-
+ samples/rust/rust_driver_pci.rs        |  29 ++
+ 10 files changed, 558 insertions(+), 148 deletions(-)
+
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.51.0
 
