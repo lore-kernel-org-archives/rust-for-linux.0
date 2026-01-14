@@ -1,69 +1,66 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021128.outbound.protection.outlook.com [52.101.100.128])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021080.outbound.protection.outlook.com [52.101.100.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D872D5C7A;
-	Wed, 14 Jan 2026 18:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475C62FD1CA;
+	Wed, 14 Jan 2026 18:53:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.80
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768416711; cv=fail; b=lZtAbrHaqE6I1ZaqJ+UWgzxxOjXgdbLBl/3W+uFd+Ghk00nC7dHRhMQ46VlB1HzCAK9XAQ5YvDDgvlCAp1wXWPo5oouTi/X2UdDcxZpI9heBOP++8qe8tLvnueIbn/J7mwO8K5NCCWNcSMGWyrxLepSJ3TCe67QxZlOOI5O0m/M=
+	t=1768416819; cv=fail; b=sZ0ypL54gvIHIs3IcbEx0ZKPLlJxC2013c5+TBhhwFSsnvWvAYHU4WTUmTIJFWP9DGWnMSriMHyrg0VshgFNddoBQDS7kqUWeIzjxREpDCt2sbyIzMpsFJ3YXjIJyLe0z9l2lcYhMgn+/WtfNwePB9vsPjZcm4g1/m5kIthqd2k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768416711; c=relaxed/simple;
-	bh=RRjWM2fHij9ZQ+rA8KLZWL+JjzBdcO6yTcaDQP/ROTs=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=al7PfjhjjtJbQK9Mq7WpiqRAghy5UwfUrqevzRErVNrud7XydVLghku0keCkjjySM+SCnzD3CVJZnO42e4nvDvagEAZX8gUJM/b6y7QFflPO1Mv53dVje9U/amWWEj9hKxwMvLbqcnwzprPlMitt5FwWvQjwjpFSeeWPZTdQZdQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=dYg/X3y2; arc=fail smtp.client-ip=52.101.100.128
+	s=arc-20240116; t=1768416819; c=relaxed/simple;
+	bh=RjcBoMMFNh6aFx/FJnEY/tg384qEAlgBbotqDRLbCkU=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=fmY8F2ZdOtjDBOgVRZWOr1C4Uue7+kg2ioD+f1pvXdoFLp3OXFYTfC/A9musH5DUMg0xGlE1wFzx0VYVV6454+yD42EfrFi7v7BQQmWHwIiWwkc51ZbqxQc41O5xPaqkWFwZ+gDzi3dNRjFI6J/L9+++E3RgFg3fv5v6XwpZ/Fc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=yUFlcmAp; arc=fail smtp.client-ip=52.101.100.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="dYg/X3y2"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="yUFlcmAp"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DuWu9s93psq6jG/0BYQzwklyFmFzHuAybnfvi3TwXpJ+z8pyhNuTTWp/wrDcncSN6KelMTh6HlMvzAkb1j83MDA4ZwuZQ7QpyBq8ruZdnOE3jczp6jd3kct3xHq4Kwxsaxs4oKDtfW+g3M5ZtdMr3WxFTs0wqPrvKcik3GauglRNr5x16+bWwtxgnAjsUTeTPhmHoecBOoTzfPkfVW9f/i8xbHmdOYU1ds3PzMhEgOmsqH+HDhJO+QxOI3g2u0gsvSpMHZTYfDBIHdPjvgkNlCQNlTJIP5WcfCmbCVnrVRwjTLoBYUluv3rXLyNGXS9t4WkMrQF/8eyz2r0bMRDuIA==
+ b=ckesFUxYTUCB2DDoS+0+Rb+snGvXfMLHUAVbHqBeI2hQMIonLQCpSpfTPtF3qjzAeXsXRgGfnK0X+DVv9s+Z9Ly1C8YYMezAb8vy85y6cMVUs1PyRxECy1XSfEf+QEU+FxvRc1rrq4Yabmx8ZXL+L21HNCMPloDQCcXBJ3gt1c3JW1B94pba8OScyXaoB3PvY76tyduzX+CY+/T8CSLRS7Gj037f+mq5VD3im9Ez37RXtWDVWmv+gTKzAEUwEi/CY+QyzgNcMwz/f7FnZP0JBiCZ4U7X66Z551g9UEd7pkkWBrxxL7ICP3k0KQh8of+IGhrJm5Z2mOkvgMViYBULxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EgDgKuKJOeOkfW0fCOJHt5EcYA0ByDls4CDDbq0a2gc=;
- b=JKZyzFTzsIwJftPkGYAU0+Yu5CSwgPFXn7dRWFLjyM+E53qWhM5Y4MNKuASKxgkIYWbXMDsXi9IJcxhwfLMy6Km8DTdIOPy5hDw+dW6NdvV9MRhXNiEEpJjo0usd0081VNfKp7kmitA3vfAyIU+SiaBk2MxbAlbi2Oe2KKN1jtm12R9YIZvv6C+7uk0bSIoeSOiJthOynKey45ErDxWOk7H/I1b3y2EdQ0cBuCYvQB+5eyI6+YakdUWZP+ACrF7mclstG5Yo9suqrQqT7q37V8nZ4BMRBpsz2UEjDZGBWswp0kOG3dJOQAxjWCVASaURU0WcVaGXP0I18cOCr1ZJmg==
+ bh=drYTpAXfO5NsD555gUiMzSJgMv9caczaApFuwjr4Euo=;
+ b=r4YWRKaPFgbdcyJNX6RLGclGGYegg+rXx5L5WIdhymKKoiWY9KSVze33jfSYoOxs0fKpyHNTHNPhhPO5iiRMpoCW8pSCcTPAmN2gq9SOjCRe5fenCfZZ9ObC+QMPABMYb0ejB3YAal0F0rVTJZWSD5bsaJ6m0yeODBPXebbHiOIKLuxwZH6dsekMOtjXQK2ZU30uEqJJs6F2ZrSleQsMtK9kzfEtne60fFzyLkT96wTxhAL+sTECSOIrMIHO+NhPNYfhtSKAEJvY7NOyZJD7o0vpueLOa81xCDrmqbs8Iu2dfUz9LMhBPLJK1IcRJgHMWN1/5UeKdf8TrYP+ARk7AA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EgDgKuKJOeOkfW0fCOJHt5EcYA0ByDls4CDDbq0a2gc=;
- b=dYg/X3y2BmoJMcVGr2S+MJjXBvajQ1POQxSgnKQkV8F4aeUhpAyr5Y855zftjZvfphnPxKJuSfHCeiU0IqcB6dDzMbiSkJ4+ygAnxQeCUFYUMQ330hkEpZOC12t4HzRVxoRPIXGUPfvOhksu1LIiCAwpBtb3+tfNkhjrR00vH3E=
+ bh=drYTpAXfO5NsD555gUiMzSJgMv9caczaApFuwjr4Euo=;
+ b=yUFlcmAp8a5nk6t0qIgPL0H1APqmW2eXTN1IAYJMFR5o7CFURvkqJSbCuz4VK4fnW+jkEJ+RmEDVLsDo9wGW/wRBNcXgPe01jxS7B4dSEjmPkYheJ8PSnKBE6Zu2G+STp77sQkIWQ9rS53c2ba7wu9a3uHdB1b2Th1I1SwTUC8c=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
  by LOCP265MB8612.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4b6::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Wed, 14 Jan
- 2026 18:51:47 +0000
+ 2026 18:53:36 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.005; Wed, 14 Jan 2026
- 18:51:47 +0000
+ 18:53:36 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 14 Jan 2026 18:51:46 +0000
-Message-Id: <DFOJEJJNB870.273KZQUUZGYP7@garyguo.net>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 09/15] rust: pin-init: rewrite the initializer macros
- using `syn`
+Date: Wed, 14 Jan 2026 18:53:35 +0000
+Message-Id: <DFOJFXOFPXAJ.S2X6PE9EMAG3@garyguo.net>
+Subject: Re: [PATCH v3 10/15] rust: pin-init: add `#[default_error(<type>)]`
+ attribute to initializer macros
 From: "Gary Guo" <gary@garyguo.net>
 To: "Benno Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>,
  "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
  Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Fiona Behrens" <me@kloenk.dev>, "Tamir Duberstein" <tamird@gmail.com>,
- "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Alban Kurti"
- <kurti@invicto.ai>
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.21.0
 References: <20260114181934.1782470-1-lossin@kernel.org>
- <20260114181934.1782470-10-lossin@kernel.org>
-In-Reply-To: <20260114181934.1782470-10-lossin@kernel.org>
-X-ClientProxiedBy: LO4P123CA0023.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:151::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ <20260114181934.1782470-11-lossin@kernel.org>
+In-Reply-To: <20260114181934.1782470-11-lossin@kernel.org>
+X-ClientProxiedBy: LO4P123CA0146.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:188::7) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -73,136 +70,241 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOCP265MB8612:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ac6cc1f-cc17-4477-8601-08de539df803
+X-MS-Office365-Filtering-Correlation-Id: ff4e82e1-c693-4a17-e358-08de539e3904
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|10070799003|921020|7053199007;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|10070799003|7053199007|7142099003;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NFJ1eHo4VVdldzFRL2MzQlpxWCt4RG10eXp6QzlTTTM1ODg4VnJHNmdyT2xk?=
- =?utf-8?B?Nkh1RjNtRjV0WUtIS3dyM3A1WWdlVTgrUWtzd3RVYnZ1dTYzVk0vSEwvWFhZ?=
- =?utf-8?B?WmdRcW9JaG5zSWYyTGxwVE1ETkN5UmM2U3VySmEvblFsV3RVWnYydFd6WHlo?=
- =?utf-8?B?K3g1a0tGUHpUTDl0bSt5am1NQVhuQUJjcEh0L3IzeXlQRHZKMXZYQTFuVFRZ?=
- =?utf-8?B?K1pBVnNENHBuRGdaMmZxWTRzZ0lDa0oreDZxMkx2OGc4YVhjMjJWdWFPa0Nz?=
- =?utf-8?B?T3NuRG9KYTU3cG9aWC9FOGxpMzF2Rlp5enRDM21yWXREYldGU3cxOTM3Y1ZF?=
- =?utf-8?B?Z2hZMStLS3FTdjg1S3NCZ1lhRE9vZExWeFJ5Z2t1VkQzcityWDdXeDlwSW9v?=
- =?utf-8?B?MDVVcWxjU2pSSHlRRktPNHRjdzFZUXFqTmQ5ZUNpSE1tYThUczJXM00wV3dl?=
- =?utf-8?B?N0ppekNPL3M3bWdRU3pZS0gyNTRxQjI5cVA4WHBwWDFybm4rMVp3S2I4SEY4?=
- =?utf-8?B?c3NWSi9admEyS1VELyt3eDRqLzJ5Yk50M3g1WTNMRlMxaTZHNDJFNlgwOVhO?=
- =?utf-8?B?cWJIZmpHRTI3VXFMRk9uYzU2disxUi8wVFJ1UE9zYVlVOE9ZRkY2NThCczJU?=
- =?utf-8?B?NGNiNFRkUjAzMzZUZUhGMkFVVFV1bEtnVU9LeG9iNHlmSjk5VnI5NVk5SnBu?=
- =?utf-8?B?eGdKMis5RnpZZjZSakl3eVEvRUhEODJ3VWsrd1hmM0crOUNYeVBjbmJ1OHhS?=
- =?utf-8?B?Z1lmOEJVYlpiOTgzVXJOdXhQUWE2bWYvYW1pSkpKZGJHM1RGVmxOUm9MRmhn?=
- =?utf-8?B?OGxpTGswSDhJWDJrYWtsNUxabWdVUGhlQXZBbHdqcTc5UUtodnZmcjNSQ0li?=
- =?utf-8?B?bTRubHEzMmZzZUNaM2cweTlWQUVPbFMxbjFDSGpoNmRqYjV4NTRUUWRqRjFw?=
- =?utf-8?B?N0FUOGcrMnZjQU1JbGhDY1ZnVnQvbjJaMFc1ekdRd3BRcGhzWGhyVmpNUHNI?=
- =?utf-8?B?UDR1cFpKRi91ZDd2eEVlNG5xVEhIOXFJZDhGemNaRFhKdGFjbXpXNXVMOTFJ?=
- =?utf-8?B?V0tIZ3pkd3lLNXdiTmxGYU91VUJ2RFZ6TjNkeHFEZG5EU1RaTnJYRjM5UHdu?=
- =?utf-8?B?dVE5NmdORmFQMTZvdXhqS2lyc2gwWGIybWYxSzZqZkc2ZTcyeEllUG5xUTg2?=
- =?utf-8?B?Q2hJNXlWNXpEWi9YRGpKdHovM3lCWVFCajltdktnWFVXRlZmVEFZQ1ZEcHhs?=
- =?utf-8?B?bG5OQkE0VVQvQUhkRDdRRHptTWNOWFlVQkVLUlp0SEJhc05ZWFZxOWNZTkQ4?=
- =?utf-8?B?SUR2dkNrUVpzY2xFSXRPZUVqZWxoWXVFZ1hsaDZxdVY0aEw5YVY2L2dsRFI0?=
- =?utf-8?B?VDlBdk1mMlh1cFBIMkYxTC9RUklETmhBckVhNXkwa2laT1I4WVBIbGFaUlE2?=
- =?utf-8?B?UWRwRXVvQTRsOVBiU0FaeDYvMEZUb0pocmxRYXBaU2VKdFFkY1lMdlgxb29V?=
- =?utf-8?B?OWdRdS82Y2pqZmFTYW1CZkVNbExHTDlxVjE3UW8rTDV1MDNDZng5anBRbmhu?=
- =?utf-8?B?OG9iam1HL2VrOExyYTB5TStuTkJZaEEvb3FtbTFnZjdOaXhqMDE4UGhaYTFp?=
- =?utf-8?B?V2pIVVAxb2dnMFhPemxjeUNZSi9nUXlWOXNlOGUxZWZmYXYxOVNMTDM5bGxh?=
- =?utf-8?B?VDB0MCtBTHR5Zkhsb1pMOGV6QWk2ZjhGdmhxYVRFeUtySlRFQ2pWRFoxRC91?=
- =?utf-8?B?YXg3MzlSYTFJSE1BVVRZUGxqNXJaUUtxTkJOMnFsak9NM01CdWd1MG1CQmY4?=
- =?utf-8?B?QlNFM29idjVTTG8yMUJwL2RCd3hZajQzSjhvc04vRFVIRWFXYlNpekFnbmVo?=
- =?utf-8?B?ODVJOGlYM1NCbEFld3BYT2RjSE11WEhDRzlzSjYyWWpPUUEyZGc1OGZPbW9H?=
- =?utf-8?B?K21VN21lRWsvSkdzLzl5dmE3UmtUV0VsNUZRMkJjRHkyVHNUQndhZCsxanpj?=
- =?utf-8?B?VlMvc3RvQm9hVGZOenRMckFRWmRzeno3Sks1cWhhczEzZ3VTSjhpcDlaVW1M?=
- =?utf-8?B?WlRMcE5mZ0s4R0cvbThkVkJTd1JRaXRHQzRvUUFwZzVBMnF1K0IwQmxrSC8y?=
- =?utf-8?B?T0lQWGNmTlpsaU5lNmhHc3M3TDAwcTJnbVFtTmVQbkh4dXhDYXBSclVWYmFB?=
- =?utf-8?B?NkE9PQ==?=
+	=?utf-8?B?eVgvdlF1SURiN2xNNWgrUUZZdHVCM3BERFRxQ0FSSkljcFFZMm9YTEJJa1RO?=
+ =?utf-8?B?NlBZNHJ6aWt3WVhnRFpBQ0NCeXFOcjJJNHVzWDQ0M2xad0pHcWhHU2N0VGJO?=
+ =?utf-8?B?ZTJXWFQ4dnZLajFSVlRUSnYyUmtsRzRXWlhpcHdyb0lkUGtDcGNhc0M2blpz?=
+ =?utf-8?B?T2F1ZzR1dnhTTllUVjJ0MzZhcGN6bXZpRGlYWjdJbDVRY1VRdlVEd0czbnV1?=
+ =?utf-8?B?Q2tEM1ROS0ZCekprSXRZYVN2WHFDd1VHcmlPd2g0MDBSS0Zxdkd5dW1GVzJL?=
+ =?utf-8?B?b1RjdityWDhwZlNhbWs1NzNqMkt0Qkp1dzNvRFJLNWdkQ0lSdmdoMmNUNUYr?=
+ =?utf-8?B?czBFMk5ZdkVzaVppODN0VmlRbUJIY0RIZXloQWhDUisrUFdIcnYwZG93aVVp?=
+ =?utf-8?B?cXhjRVBCWnVFbllQcUp3ZkxKTDl1WWsxNm4zemZ3NlFoS3lZcVRLVUpMalVI?=
+ =?utf-8?B?TkZxR2VxbUluMHlzTlc2K2VpbzV6cHFLaHBuVWFCVnkyNUI2TzdjbHlvMno0?=
+ =?utf-8?B?Nm9NNXhJSjhveXVvZFlZUVpjd25GUG9wQjJrb05ZeUNoeTl2NFFLMjNjR2lH?=
+ =?utf-8?B?LzRiRGJPais3dDNOdmRyRjZHSTA0cllZSHl3V0RYSUNqV1BMVnlZOU80TXNO?=
+ =?utf-8?B?d2FjeW9KSWEzNmlIcFNUWlR2Q01sSzZrOThoNlo3MnNUczBTc0dSQWtWSzEr?=
+ =?utf-8?B?TVo4UisxbkRmbjZQaDBnWWVYc1NvV3JJc2tnZU9EdHdYZXA2c05mcWRnYmU3?=
+ =?utf-8?B?SjZxZDloR25ibUdKVkJNeHYrcEJtZlBsRENhV240NU1wMGVzd2Q0VzJSWWx1?=
+ =?utf-8?B?d3BwekpHZGVlUitvNGFjRTFBblZWUWpmY0N6Y29lZGhUMzN1aml6VWRVTm1r?=
+ =?utf-8?B?a0RlZ2ppNFplbU1YblFvMHU3WHNSbGhNN1hyeFR6ZGR0MXpYNHM2d3NNVTEw?=
+ =?utf-8?B?aW4xZWI1c1ZnZGpFemlXVXdiUzJEVHhXdThkUW0rT2V3TUlpVGUwS3RTU09K?=
+ =?utf-8?B?U2xsUjRaVjNUV29QYTY4RVRSbG1lbG1mOTBrUzVldmhFNnBYOHU4Q2o0NDYy?=
+ =?utf-8?B?UGdrcEZxa0FDTngxRElkTHhnZWQrT2VVZC9vMGZsQkJ5aHF2NjQzWjNiNWti?=
+ =?utf-8?B?Nm00THBSRzZleEFsWkhWVWtnWitVTzlFZ0k3T3Rwb3JZWXI5SDZsT3V5RzlS?=
+ =?utf-8?B?SGZoYmtRQUp6YWtINVdjYUNmRkx6OHJ2dU4vdHl0YzNQaCtwbUdkYzBLMzVx?=
+ =?utf-8?B?TE1JeXpmOXdxc3FnU1psVllGdC9MQlBscExrUUFqTDYzRTJHQ08zc0ltL2dh?=
+ =?utf-8?B?Ulh6eVlWSVVuTjFpNU01M044LzJuNW5IT2p4eFJZREFmeWVYRStaVElzZHR6?=
+ =?utf-8?B?eUJCZStUa1IvTWtmV0pLM1NzVURsL2VSVTJ1MWI0OEcxU1FCKzdzQU1UTlpD?=
+ =?utf-8?B?RE1HOGdNeXhxamhWQ250bUZuZHNxS1d2MlBNb1BYQTBXT1dWRGtDd1E4YVdH?=
+ =?utf-8?B?ZHRERml1YVludXRVYnhhWUQxMUd1S3JaWEtmT3UybGs5U2M2TjVaMnA2ZEd1?=
+ =?utf-8?B?Qkk2ZEc3SDAxb2RNK21pUzR1UHhOVEhCdjRaeGJ3UWsyM0tpc05IUVN1MXhP?=
+ =?utf-8?B?VkNFSGx3NjFOQkJIUWg2MTN0WHhHOFJmSnNjMnMxbVZrYmJoQ09MK1FSNUhB?=
+ =?utf-8?B?TE56SDhJcllsSEwrRnFidmN6QlVtaXYzcnA1cEczSURGQkh6aXBvU2pZVzl1?=
+ =?utf-8?B?UHA3REZuT3grYkE3Mlo3UjIwYkZnZ3hmNjhVbVJRMmhxb3BzeUZsZWNIR2ln?=
+ =?utf-8?B?ZG15MkwzbkExa01Ed01KOUNiSVpCUDd6ejk4S01XbWlBZkEvenN1L1RhMG9p?=
+ =?utf-8?B?QTV5aENjYXJGWVRReWNpVWhnb3p0RXF4OENPMkVZYnRPVVJsYThsZHU4ZFBK?=
+ =?utf-8?B?NVhob0hoeEc0Qm5yZlNWM05xZncvNTdVZGdhc2Z4cUtBTWg1Q0RINFJJa1g4?=
+ =?utf-8?B?ZmgvbEh0RitSS1Izb3dWSEw0b1ZjUjFWSXZLSGFlYVd1TEhjY3YrNittVVB2?=
+ =?utf-8?B?TUZ2QWc2dzdoOG4xUTdacTAwMHk3STIycXdYaFh2QW44Nkw5OEVPNlRzWjZm?=
+ =?utf-8?Q?cLyI=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(10070799003)(921020)(7053199007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(10070799003)(7053199007)(7142099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?N2J4R0JaUUFsVTQ5S1hvaU4weklzYitlU0l3dnF1d0YxS0RlVkh6TUt3MUFo?=
- =?utf-8?B?eUNrdVlCVmJMS2tYclRyb0xsVkU4clZwZVJBTk52eEFndUZWT2gyY0NUWjMy?=
- =?utf-8?B?bEFUZDMxaHBNbkhJQTBxdVdLclZRR2ZtZVBMWm9leTg3dWdHM1dsSW5GeEN5?=
- =?utf-8?B?MGxEeitVdDNsMDJQLzBBb25qVEJWOVFLM2pyS0M1bGprOGxQN3kyWjFwWms2?=
- =?utf-8?B?ZWFqSmpSTXg3WmZzenI1amtQRk9xQ1ZUMC90NDZ0aGtDRE1SN3pwckR0MG4y?=
- =?utf-8?B?cmpkREFHRTQreEIzWDZkUUVzUGxwV3BZU2JGbHlKVkJvcUZLV1BzcXdjUGFk?=
- =?utf-8?B?dmNnU2Y2Rm0ydFBsLy9wOVBRTXBwMHl6S25icFJKMUF6eGNUb0Vtc21GcTBD?=
- =?utf-8?B?czlxVFFaa3Y5WjBvTTNYd3FURjVxdVVQd1VUMW5pRzZNblFvV0JRRzhvbVVr?=
- =?utf-8?B?QmthZ2JsUENQWFJTQjlDQXQyZUVmQVgyVE5WK2pJQUt4M0VwZ1pkczIxUnpq?=
- =?utf-8?B?Ulc5Z3hKT3ljQ2poSytWRVFObE5paGtQY2JMOTBEOE5BSUJnVVZ4eUhJUGh2?=
- =?utf-8?B?clZSaXFsWVdBMG92MWx6MnpheGM3VXVlbEdDOEh6aXdxYnl6SHlRNmh2dEpN?=
- =?utf-8?B?M3lmc1dMSHA0K2x4R3FmbW5uUEU1c1RNTk1zSGF6ajNtN2lvVmw3OE85Nzdn?=
- =?utf-8?B?dkUwUkpkYkJMdit1YlEwZDY1Zk5ZcFdoSHJtL1U0dDhJOFUwSmpkeFo3Tld6?=
- =?utf-8?B?VFBLdjk1YUZrNk9kZUpaQzE1YUk4djhuWTFyT3hBSlNkTzZqU2ZvTkoxM1o1?=
- =?utf-8?B?UU9nZndjUFBwUWNOY1VNZGJubWwrbENQMUFZU2lndFFGdUoreDdFQmwrenV1?=
- =?utf-8?B?U2ZkaWR4alh1Wk1vd1hmOEd3ZVNBVlVRNWRiTmFwUHc3bEZoSHVlYnRTSjZO?=
- =?utf-8?B?REVaaExSVkdoSWc0SFJUM09HaUJkTEZCSWpLWnp4aGNPSzY1SGFIc3hZVUFp?=
- =?utf-8?B?ckd1OGxRTlZ5VnZRNGx1S2Z3dlc3T1JPU3pjYmFIbFJhODE3MXBNY2JYa21R?=
- =?utf-8?B?TjUvNW9mb1FOSTh2V2xrQU56S294MnI5ZVZiTHdadG9jS1hIYTM0ajFzdUlw?=
- =?utf-8?B?YmlVdXp3ZnFidnorZmpNcnYvYkFDdkt0VCswU1k1MlFCOC9vUWJZWFdVV01a?=
- =?utf-8?B?U3J6bVJ4YTJac044OFpnSjg1SUJUZlpyOG1kYmp1dU5yVG01dkxBOTJmMTYw?=
- =?utf-8?B?K3ZLblp6ODBvWnZzbTJwVjF1Tit0Nyt4ZmZDNjNjRHFzanlDOTUrS1ZuLzdt?=
- =?utf-8?B?ZW9YTW9Cd1cvR3p2dDZkOEx0Vk5lY2NMek53NGkrTnNwWlhLZDhlL0JnUXR1?=
- =?utf-8?B?MlJiNDg3RFVlYVFhMW8rNzZpUllOaXFEMUFpUDdoeE1jWTVDV3p6V3VHMmg0?=
- =?utf-8?B?ZmxXUmJDMmZWL2tEU25lQmtDdzdZOWUrSHg2aGlET0d0UG5qd2JMS3ozclAx?=
- =?utf-8?B?S000b0xmL2FRVFppeVl3eVJwcXdkT1RvbGVLcUFNUXNENkV6T0lFc2lLYkIw?=
- =?utf-8?B?M003YTlMZHVGWmlsR3d5UlpEVmtTUm4wVEZUS05Gc3YweWpmUUkrVURRWXVP?=
- =?utf-8?B?ekJTRTZVODFXSVMxakxkZ3RRL2RNZkx1NHZYMWtRYnFKWEJYUjVBVUsrMHFv?=
- =?utf-8?B?UlNLRnVSQ0p5eUs4OEJpb2VyaHlPdnFkT2pHRWdnaEZXYWFSb0pMY0dsOGNW?=
- =?utf-8?B?MTlvY044QURuamZ0WDFqL2VnNlVYdXBXSy9wcmRKTk5KdmpLMEtrWmpLSmtn?=
- =?utf-8?B?M29vKzkyN3pVcmlhVjNoL1JXWkhub2ZpbEtvK3dIUmVXNVRqRndEMHJJTUtO?=
- =?utf-8?B?aGtXUkRmMEhOaE1DVFMyK2VSenpxNG91bG1wL3FRT250dXpDd1F1U3QwRlpF?=
- =?utf-8?B?ZFljUUtMWWJlM1BlSUlkOWdMeGpsU1ZSR1E5cFJURHpUVEp5MTloenR6Q1hL?=
- =?utf-8?B?YUtvODNLWm8yUWtQTVl6MW1oQUsxNlZ4bTBDZENaT2NVOVJBOXJLaGc5elpZ?=
- =?utf-8?B?QWV0cFJXdm1PNDgxem8wM0ttQ3VUMjR3bUR0ZEljUlphSWlWSTJXU3dGdUJp?=
- =?utf-8?B?M2ltZWVoMGsxK1JHVDN0WUIvU1BybXAyaUIyTTBqR1BvRjdJTUR3engzQzdW?=
- =?utf-8?B?N3kwdTFqdkM5UFd6eUQ5OEhMajQ5UFhYU1cvMGZJTjBMVCswaEgxT3Z2WDNx?=
- =?utf-8?B?Tk5ZQTVadFFTaVpTeUExZVViZnNONWYyTGF5NExnd3B1a2VmMzNidTljQ2RI?=
- =?utf-8?B?b0hWTVdDZFhKZlF3R1QrYlBGZ3QvaUwwd1dOQUtQMzFWYWo4T1hSUT09?=
+	=?utf-8?B?OTk0UlJ2ZjZ1S0dXanpXaXhwN2FJdGlXN1JlQ3ZZR20yN09HRHZWNFErWmMz?=
+ =?utf-8?B?MTQ5d0N1OENLUmdIZ2huNDRQQXh2TGwyWlptb2hkU2JhdW9ZYzcycllvLytO?=
+ =?utf-8?B?YWt3MHAwUW4yU2RiT2h5ZUpvM3l4Qk9QVkp3SCtqT1NXa0d1c1ZuUlh3N1BD?=
+ =?utf-8?B?VUVxUTVEL3JjTldxUEpWcTUxb2V0cHRUbnlpTzc4UUNSbTRUMjNwQ0xIUmox?=
+ =?utf-8?B?eE5ZTWdicWpsRk9KdlFEWjFRbVBvOEp3eUtvWHZ4eXF5Q3ZKUGxUTUU1NDlX?=
+ =?utf-8?B?dE1PaWo4OCs0N05lK2wzS0hhcm5kRk9CWVFBTHc5TGxIK2xNTjNyTVVDYXg5?=
+ =?utf-8?B?dTZTb1AwaUJWcXlSallnNkRjSlE5cFZRTlJTYWRvdXI4c2plK2xOOUhlV3NP?=
+ =?utf-8?B?RFRHY2ZlQ1FmZGhXK3NGY2MzcFBnN1lnN0plV1JNbkJaOWRuWC8xQWtrYlZo?=
+ =?utf-8?B?a01oaHhydDZkdlYveXQ5aHJqR3hPUG5nWDVrNEVwTDRqUVdYVDVFVnJSVklF?=
+ =?utf-8?B?c0FxeHh4MURNNGFUVEh5STZFOVMxNFcydkdhOXNlamx4OG9mdEN6aGxmdlZ2?=
+ =?utf-8?B?dmpVU01NTEd5RWMxM1lRenZ6VGdza1NrVTVyakREVDBxQzZDMFVFQWlZOWE4?=
+ =?utf-8?B?Y0J4UHArZ3NDMjJVb2Vrdm1BcUhzNlRhKzFiek1NQko5elNmK0NKUnN6WVFF?=
+ =?utf-8?B?dlg0VVpjc0V6Z0kyVDdXT0Q0SGJJS0xFWE8rdDVZaEZkKytSQVEwaDd2Z1dJ?=
+ =?utf-8?B?RHI3Z0xrQUxQNks3N0JiN1o3Z2VYdHcvbWc1SDg1NEtyQXBoUGZaQjJzRE1P?=
+ =?utf-8?B?Z21vcWhvVkQ4Vno4QUc0UEExK1FkYWhhckdOR3BoS3FpSU5tZWV2eG5sa0sw?=
+ =?utf-8?B?QTFGOWxWeEVoWU5sS3J2aFZvNDFVMVp1MHoxeEJRSmJBUzJNRFNJbXV6Q0ZX?=
+ =?utf-8?B?RzF4Ky9obGVrS2tEZUhCWkxuQlprZkk3bEpPNjNaUzZIY3RKbWtHUjEybW5P?=
+ =?utf-8?B?eEpOVS9PaDlzZEVQV0dXc05OQjJIa0FNU3hrRFkxNUdibm5RQW54dk40b0Zz?=
+ =?utf-8?B?TnB3OUNUUkkxWFl0NVdmMHRMaEMvZVUzSDdJeG14aGFpZ3A3bFp3Zk1EcnlV?=
+ =?utf-8?B?QkR4T0RLZ2d0NUJCS0syNDc3MDhmRGM5ZFIyUEVYYzl5N09ZdWVzZnRMbFJV?=
+ =?utf-8?B?bFF1MElCdXVBdEFETnJBOGhzcUQyMHhSdlFxQ1BEVFVGN2h2blBWdC9uZ2p0?=
+ =?utf-8?B?N3F4QjJXVXh1c3dRcHpaUkNZZzExWm5aKzBuWEx4YjFyblRrZDlCZ0xsRUZX?=
+ =?utf-8?B?REdTZi9ZY1pRR3A4cmJOd2t0bHRuR21SZERaN3EvbXhPRzhLTVZFSDZwd1BT?=
+ =?utf-8?B?Ym9CZ1JXOFNVL0hXTG9lQVRDaDEzMDQ3SDRueEZVb013MlRQZ2JEU2FJQith?=
+ =?utf-8?B?OXZzOVZORzE2eTY0Q1lMdW0zUUlGMEhUUnFDbEk1REJNZXJ0STBxRlNVNjBH?=
+ =?utf-8?B?M2NRSGN1VzhTK3VXR2ovUUUwV2RySEtBZ0JVYzRUTytZOVFiOENHZXVYVWht?=
+ =?utf-8?B?dTEyTlByS09WYUdmbWpVNGJKSlhZaHJObytpMDRXR2ZwUm8vSzY2VTlmNWd0?=
+ =?utf-8?B?TTB3SFhUTXF1T0FQTzJLMnd1SENTQTdiSWJyWE9WTVNOMk9EL0RQei9aaTYy?=
+ =?utf-8?B?UmJ0cFZ4UXRORzd4d2JSYnI3YVRnbUcyZnBOK3ZuY25EUitldXVrY2FhMUFa?=
+ =?utf-8?B?Y0paTnpSY014bGdEK2svZkc3R2gyeFVQNEU1VXNCcldMUUhwL2pxc2VLUFha?=
+ =?utf-8?B?OWlKcm1TaW5OS2NybmRlQktvOTBMM2JwRnVFczVPaVpxNU14L09WWE5IQUZz?=
+ =?utf-8?B?M2dEMkpHaThEQWg0emdRUkpHNTRvTGRHODMvNkRpZ0pTSG1YeUFkYWNyRmoy?=
+ =?utf-8?B?YzAzVHNXRnJhK1F2djFTMlVQdmlvNTdra1V6QzRCVU0zWTY3QlZTWHM3cEp3?=
+ =?utf-8?B?c0wrT0tERXVXWFFEY05NcDFlYms0bDN2TngzcjE4cml5Q2VCSU8wRzZuWCtL?=
+ =?utf-8?B?RWV4QXJFbHAwSmZLMTJ0VGdPS2hXMzA3d2laODlJaFdBK25HZkJMNWhkd2M3?=
+ =?utf-8?B?RUhwS2J3ZXBmQjN3bFFuSUViTFZQeS85NGloM3ZJVkp2TXFHRTJMdFZENVlK?=
+ =?utf-8?B?QkhWVEI3cWJDNXBpMWc5cWtZU3JrVEt4aW96SURTZkljeXJBWmxRdFhWOHhz?=
+ =?utf-8?B?cDVVR1R1RnlZSit4S2xqRnlCMHNVMzdsbm9iL0NKNEdNVDhYUVVXSElPdU5E?=
+ =?utf-8?B?ME41SGwvV3JCNWpHbXBvd1RVVlJ4cUk3SENMV1ZiOVo1OUJwZ2VlQT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ac6cc1f-cc17-4477-8601-08de539df803
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff4e82e1-c693-4a17-e358-08de539e3904
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 18:51:46.9831
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 18:53:36.0334
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q8pKs8SMDuj/Fa58zju1KqqoHNRpoIZeATdJA8i/qFUl2z23iojF23fADWYFk1tSCVo6Nfa9IpJ6yD5EmtSwMA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Pl3vdDeS1Qzd+CUQTjcuSGWnHx6ddUCZ6jthjhTIO7oJxd6ybc2L4exCQR5lkAXpRmSjdpigRwZ+athOof3g0Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOCP265MB8612
 
 On Wed Jan 14, 2026 at 6:18 PM GMT, Benno Lossin wrote:
-> Rewrite the initializer macros `[pin_]init!` using `syn`. No functional
-> changes intended aside from improved error messages on syntactic and
-> semantical errors. For example if one forgets to use `<-` with an
-> initializer (and instead uses `:`):
+> The `#[default_error(<type>)]` attribute can be used to supply a default
+> type as the error used for the `[pin_]init!` macros. This way one can
+> easily define custom `try_[pin_]init!` variants that default to your
+> project specific error type. Just write the following declarative macro:
 >
-> <snip>
+>     macro_rules! try_init {
+>         ($($args:tt)*) =3D> {
+>             ::pin_init::init!(
+>                 #[default_error(YourCustomErrorType)]
+>                 $($args)*
+>             )
+>         }
+>     }
 >
-> Importantly, this error gives much more accurate span locations,
-> pointing to the offending field, rather than the entire macro
-> invocation.
->=20
 > Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 > Signed-off-by: Benno Lossin <lossin@kernel.org>
+> ---
+> Changes in v3: none
+> Changes in v2:
+> * improve error handling
+> * improve parsing and default error evaluation
+> ---
+>  rust/pin-init/internal/src/init.rs | 42 ++++++++++++++++++++++++++++--
+>  1 file changed, 40 insertions(+), 2 deletions(-)
+>
+> diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/=
+src/init.rs
+> index b0eb66224341..5a66016bdf33 100644
+> --- a/rust/pin-init/internal/src/init.rs
+> +++ b/rust/pin-init/internal/src/init.rs
+> @@ -8,12 +8,13 @@
+>      parse_quote,
+>      punctuated::Punctuated,
+>      spanned::Spanned,
+> -    token, Block, Expr, ExprCall, ExprPath, Ident, Path, Token, Type,
+> +    token, Attribute, Block, Expr, ExprCall, ExprPath, Ident, Path, Toke=
+n, Type,
+>  };
+> =20
+>  use crate::diagnostics::{DiagCtxt, ErrorGuaranteed};
+> =20
+>  pub(crate) struct Initializer {
+> +    attrs: Vec<InitializerAttribute>,
+>      this: Option<This>,
+>      path: Path,
+>      brace_token: token::Brace,
+> @@ -54,8 +55,17 @@ fn ident(&self) -> Option<&Ident> {
+>      }
+>  }
+> =20
+> +enum InitializerAttribute {
+> +    DefaultError(DefaultErrorAttribute),
+> +}
+> +
+> +struct DefaultErrorAttribute {
+> +    ty: Type,
+> +}
+
+Given the size of the struct, I would actually just make this `Box<Type>`
+instead of suppressing the clippy warning in the last patch.
+
+Otherwise this looks good to me.
 
 Reviewed-by: Gary Guo <gary@garyguo.net>
 
-> ---
-> Changes in v3:
-> * use DiagCtxt error handling
-> Changes in v2:
-> * fix clippy error
-> * add missing SPDX-License-Identifier
-> * improve error handling
-> * improve default error evaluation
-> * added missing comment from pre-rewrite code
-> ---
->  rust/pin-init/internal/src/init.rs | 445 ++++++++++++++
->  rust/pin-init/internal/src/lib.rs  |  13 +
->  rust/pin-init/src/lib.rs           |  56 +-
->  rust/pin-init/src/macros.rs        | 951 -----------------------------
->  4 files changed, 460 insertions(+), 1005 deletions(-)
->  create mode 100644 rust/pin-init/internal/src/init.rs
->  delete mode 100644 rust/pin-init/src/macros.rs
+> +
+>  pub(crate) fn expand(
+>      Initializer {
+> +        attrs,
+>          this,
+>          path,
+>          brace_token,
+> @@ -69,7 +79,16 @@ pub(crate) fn expand(
+>  ) -> Result<TokenStream, ErrorGuaranteed> {
+>      let error =3D error.map_or_else(
+>          || {
+> -            if let Some(default_error) =3D default_error {
+> +            if let Some(default_error) =3D attrs.iter().fold(None, |acc,=
+ attr| {
+> +                #[expect(irrefutable_let_patterns)]
+> +                if let InitializerAttribute::DefaultError(DefaultErrorAt=
+tribute { ty }) =3D attr {
+> +                    Some(ty.clone())
+> +                } else {
+> +                    acc
+> +                }
+> +            }) {
+> +                default_error
+> +            } else if let Some(default_error) =3D default_error {
+>                  syn::parse_str(default_error).unwrap()
+>              } else {
+>                  dcx.error(brace_token.span.close(), "expected `? <type>`=
+ after `}`");
+> @@ -358,6 +377,7 @@ fn make_field_check(
+> =20
+>  impl Parse for Initializer {
+>      fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
+> +        let attrs =3D input.call(Attribute::parse_outer)?;
+>          let this =3D input.peek(Token![&]).then(|| input.parse()).transp=
+ose()?;
+>          let path =3D input.parse()?;
+>          let content;
+> @@ -389,7 +409,19 @@ fn parse(input: syn::parse::ParseStream<'_>) -> syn:=
+:Result<Self> {
+>              .peek(Token![?])
+>              .then(|| Ok::<_, syn::Error>((input.parse()?, input.parse()?=
+)))
+>              .transpose()?;
+> +        let attrs =3D attrs
+> +            .into_iter()
+> +            .map(|a| {
+> +                if a.path().is_ident("default_error") {
+> +                    a.parse_args::<DefaultErrorAttribute>()
+> +                        .map(InitializerAttribute::DefaultError)
+> +                } else {
+> +                    Err(syn::Error::new_spanned(a, "unknown initializer =
+attribute"))
+> +                }
+> +            })
+> +            .collect::<Result<Vec<_>, _>>()?;
+>          Ok(Self {
+> +            attrs,
+>              this,
+>              path,
+>              brace_token,
+> @@ -400,6 +432,12 @@ fn parse(input: syn::parse::ParseStream<'_>) -> syn:=
+:Result<Self> {
+>      }
+>  }
+> =20
+> +impl Parse for DefaultErrorAttribute {
+> +    fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
+> +        Ok(Self { ty: input.parse()? })
+> +    }
+> +}
+> +
+>  impl Parse for This {
+>      fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
+>          Ok(Self {
 
