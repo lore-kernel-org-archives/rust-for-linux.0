@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4781733121B;
-	Wed, 14 Jan 2026 18:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123B52ECE9E;
+	Wed, 14 Jan 2026 18:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768414818; cv=none; b=QfGyakBjqWqe7uzNpC7FQP632332on3n5rchfklSRsa+vY5I0IjXSzp0BUZv2FH/iP2CCn9k+SqZNb8DdjukHAVw573IHU7wEZYNo6LByRKF4kMekNpaQuLwR5AStLzxRcgKjBLBCbj1YELrbBMUxfuypqf6R4wAgj29CBXsyHI=
+	t=1768414824; cv=none; b=OTQxlatLxQIFaXH/ukoE59GRLKdaEFbZ6/4y6Lut7AKshxKO5zhRy3iwK8U6SHZV0FLzrbUgkINHZE2f06Fy60REiyNin7uBWDTFnG4vt5oZ3VCDDspVow3jtp9hOPZ8iUABwmPG6DpR6N3huK53PuXW2rNkU0YSlk2ldAM7XDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768414818; c=relaxed/simple;
-	bh=mcn7eaBNUpTGifqdNl28RWv8NaVEIjCDIBvRIMh8xMo=;
+	s=arc-20240116; t=1768414824; c=relaxed/simple;
+	bh=WLtVHcUKuQYTQVp/1j8RGkZhBADSW/oQGsJyLiHkHMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WhZUQICiknmIv6hYLE8XIyJjYDvzynmaEnyecs+zqqEcWfyNWCifdF3J8GWeCGt/HSByzboPekyK/74MGXZmKLr8kDxMZ14aGK+/2PQkOY1mxu1od5OpoAP0rC5oQ1igpAq+jzFY7wZ72xcw3jSYkj6m44AUiwtL4lqcPOIhwQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OQlBWWVv; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=eEcucD9yed64eYS9yEhnw1kV64zKrE30n3tPNR1w3ommCXfgq/uuUyA5isNgaTSPAtQsjTGeQIqwA+gnYYbekdl/Z5wbaa76t084lL4nA87OwWDXKf+AsRpfkIoTh+dnHm0vQi0ls9dppRpjjlBtmXhcwPVcf47NuE2bSFHGMNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkxE9kpg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OQlBWWVv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08FFC4CEF7;
-	Wed, 14 Jan 2026 18:20:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QkxE9kpg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF45EC19422;
+	Wed, 14 Jan 2026 18:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768414817;
-	bh=mcn7eaBNUpTGifqdNl28RWv8NaVEIjCDIBvRIMh8xMo=;
+	s=k20201202; t=1768414823;
+	bh=WLtVHcUKuQYTQVp/1j8RGkZhBADSW/oQGsJyLiHkHMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQlBWWVvPFGxrFZsp67Od4q7aYiA+0OZeHWykUkPSypuKo0SJyB5bWba9cwSYwox9
-	 YV2kkwhMKQQ0cnRdjDGz0B2RMaR+Eh3HPvYEhMk85j8/tV1zoLYykoJ0RxPRIcR7Nj
-	 wWF2C2t9zTXU/48SWbc8gDmdSTIz5ljWy1eKXx15SlW0S7VlFtl6N7fsQnTD/FHls4
-	 yJ5VPf+vQE0+/ajRu0x2eBFTY8hXuC/XmhR5lStErHpPUI0IUkwwkDszOeIyyLlLlw
-	 X3h9kUiJCnVpE+0/CNRzw8Azw1KmnnM1CeL45yj/zfY30xtiQFsO5LmsrMno1DPMgk
-	 qRpMAHLmbllLg==
+	b=QkxE9kpgJa8Fyxcyg5u50huZ+E19rgVPGp84JhQT9kYHwcqzo7XKquMsPxJOU9Qe5
+	 SahpKVdeA2vom0e19drpBDw0L2GHyLJDyDtIz/Sod2k9Ha/Z1YewEqLqvst6IybFpn
+	 nzQlwOnxsS4NUtVnuklX9v8BXcsw4O1uoWuh9HsETV39LnxO7JfOAQuy2fLuKBnZ8d
+	 feIljf4dkSsdx2xpbZokN0OSDDAyVQalglmbIRK/Xr/GpSOBJDZHSzS2yH3NxqaPKE
+	 cR39JHDKKqwYl9OX2UnpFuamSYcVvHyjtlaAJgJo1AIMe9QraVt2uwypbp24go99il
+	 Za9m31KYffGPQ==
 From: Benno Lossin <lossin@kernel.org>
 To: Benno Lossin <lossin@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -41,9 +41,9 @@ To: Benno Lossin <lossin@kernel.org>,
 	Alban Kurti <kurti@invicto.ai>
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 05/15] rust: pin-init: rewrite `derive(Zeroable)` and `derive(MaybeZeroable)` using `syn`
-Date: Wed, 14 Jan 2026 19:18:40 +0100
-Message-ID: <20260114181934.1782470-6-lossin@kernel.org>
+Subject: [PATCH v3 06/15] rust: pin-init: rewrite the `#[pinned_drop]` attribute macro using `syn`
+Date: Wed, 14 Jan 2026 19:18:41 +0100
+Message-ID: <20260114181934.1782470-7-lossin@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260114181934.1782470-1-lossin@kernel.org>
 References: <20260114181934.1782470-1-lossin@kernel.org>
@@ -55,43 +55,35 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rewrite the two derive macros for `Zeroable` using `syn`. One positive
-side effect of this change is that tuple structs are now supported by
-them. Additionally, syntax errors and the error emitted when trying to
-use one of the derive macros on an `enum` are improved. Otherwise no
-functional changes intended.
+Rewrite the attribute macro for implementing `PinnedDrop` using `syn`.
+Otherwise no functional changes intended aside from improved error
+messages on syntactic and semantical errors. For example:
 
-For example:
+When missing the `drop` function in the implementation, the old error
+was:
 
-    #[derive(Zeroable)]
-    enum Num {
-        A(u32),
-        B(i32),
-    }
-
-Produced this error before this commit:
-
-    error: no rules expected keyword `enum`
-     --> tests/ui/compile-fail/zeroable/enum.rs:5:1
+    error: no rules expected `)`
+     --> tests/ui/compile-fail/pinned_drop/no_fn.rs:6:1
       |
-    5 | enum Num {
-      | ^^^^ no rules expected this token in macro call
+    6 | #[pinned_drop]
+      | ^^^^^^^^^^^^^^ no rules expected this token in macro call
       |
-    note: while trying to match keyword `struct`
+    note: while trying to match keyword `fn`
      --> src/macros.rs
       |
-      |             $vis:vis struct $name:ident
-      |                      ^^^^^^
+      |             fn drop($($sig:tt)*) {
+      |             ^^
+      = note: this error originates in the attribute macro `pinned_drop` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-Now the error is:
+And the new one is:
 
-    error: cannot derive `Zeroable` for an enum
-     --> tests/ui/compile-fail/zeroable/enum.rs:5:1
+    error[E0046]: not all trait items implemented, missing: `drop`
+     --> tests/ui/compile-fail/pinned_drop/no_fn.rs:7:1
       |
-    5 | enum Num {
-      | ^^^^
-
-    error: cannot derive `Zeroable` for an enum
+    7 | impl PinnedDrop for Foo {}
+      | ^^^^^^^^^^^^^^^^^^^^^^^ missing `drop` in implementation
+      |
+      = help: implement the missing item: `fn drop(self: Pin<&mut Self>, _: OnlyCallFromDrop) { todo!() }`
 
 Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 Signed-off-by: Benno Lossin <lossin@kernel.org>
@@ -100,364 +92,170 @@ Changes in v3:
 * use DiagCtxt error handling
 Changes in v2:
 * improved error handling
+* improved error span
 ---
- rust/pin-init/internal/src/diagnostics.rs |   2 -
- rust/pin-init/internal/src/lib.rs         |   9 +-
- rust/pin-init/internal/src/zeroable.rs    | 155 ++++++++++------------
- rust/pin-init/src/macros.rs               | 124 -----------------
- 4 files changed, 74 insertions(+), 216 deletions(-)
+ rust/pin-init/internal/src/lib.rs         |  4 +-
+ rust/pin-init/internal/src/pinned_drop.rs | 86 +++++++++++++----------
+ rust/pin-init/src/macros.rs               | 28 --------
+ 3 files changed, 52 insertions(+), 66 deletions(-)
 
-diff --git a/rust/pin-init/internal/src/diagnostics.rs b/rust/pin-init/internal/src/diagnostics.rs
-index 555876c01bab..3bdb477c2f2b 100644
---- a/rust/pin-init/internal/src/diagnostics.rs
-+++ b/rust/pin-init/internal/src/diagnostics.rs
-@@ -9,14 +9,12 @@
- pub(crate) struct ErrorGuaranteed(());
- 
- impl DiagCtxt {
--    #[expect(dead_code)]
-     pub(crate) fn error(&mut self, span: impl Spanned, msg: impl Display) -> ErrorGuaranteed {
-         let error = Error::new(span.span(), msg);
-         self.0.extend(error.into_compile_error());
-         ErrorGuaranteed(())
-     }
- 
--    #[expect(dead_code)]
-     pub(crate) fn with(
-         fun: impl FnOnce(&mut DiagCtxt) -> Result<TokenStream, ErrorGuaranteed>,
-     ) -> TokenStream {
 diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src/lib.rs
-index 0e1a4724549d..4cc9b7b0cda1 100644
+index 4cc9b7b0cda1..a75b99b58189 100644
 --- a/rust/pin-init/internal/src/lib.rs
 +++ b/rust/pin-init/internal/src/lib.rs
-@@ -11,6 +11,9 @@
- #![allow(missing_docs)]
+@@ -28,7 +28,9 @@ pub fn pin_data(inner: TokenStream, item: TokenStream) -> TokenStream {
  
- use proc_macro::TokenStream;
-+use syn::parse_macro_input;
-+
-+use crate::diagnostics::DiagCtxt;
- 
- mod diagnostics;
- mod helpers;
-@@ -30,10 +33,12 @@ pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
+ #[proc_macro_attribute]
+ pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
+-    pinned_drop::pinned_drop(args.into(), input.into()).into()
++    let args = parse_macro_input!(args);
++    let input = parse_macro_input!(input);
++    DiagCtxt::with(|dcx| pinned_drop::pinned_drop(args, input, dcx)).into()
+ }
  
  #[proc_macro_derive(Zeroable)]
- pub fn derive_zeroable(input: TokenStream) -> TokenStream {
--    zeroable::derive(input.into()).into()
-+    let input = parse_macro_input!(input);
-+    DiagCtxt::with(|dcx| zeroable::derive(input, dcx)).into()
- }
+diff --git a/rust/pin-init/internal/src/pinned_drop.rs b/rust/pin-init/internal/src/pinned_drop.rs
+index cf8cd1c42984..a20ac314ca82 100644
+--- a/rust/pin-init/internal/src/pinned_drop.rs
++++ b/rust/pin-init/internal/src/pinned_drop.rs
+@@ -1,49 +1,61 @@
+ // SPDX-License-Identifier: Apache-2.0 OR MIT
  
- #[proc_macro_derive(MaybeZeroable)]
- pub fn maybe_derive_zeroable(input: TokenStream) -> TokenStream {
--    zeroable::maybe_derive(input.into()).into()
-+    let input = parse_macro_input!(input);
-+    DiagCtxt::with(|dcx| zeroable::maybe_derive(input, dcx)).into()
- }
-diff --git a/rust/pin-init/internal/src/zeroable.rs b/rust/pin-init/internal/src/zeroable.rs
-index d8a5ef3883f4..05683319b0f7 100644
---- a/rust/pin-init/internal/src/zeroable.rs
-+++ b/rust/pin-init/internal/src/zeroable.rs
-@@ -1,99 +1,78 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use crate::helpers::{parse_generics, Generics};
 -use proc_macro2::{TokenStream, TokenTree};
 +use proc_macro2::TokenStream;
  use quote::quote;
-+use syn::{parse_quote, Data, DeriveInput, Field, Fields};
++use syn::{parse::Nothing, parse_quote, spanned::Spanned, ImplItem, ItemImpl, Token};
  
--pub(crate) fn parse_zeroable_derive_input(
--    input: TokenStream,
--) -> (
--    Vec<TokenTree>,
--    Vec<TokenTree>,
--    Vec<TokenTree>,
--    Option<TokenTree>,
--) {
--    let (
--        Generics {
--            impl_generics,
--            decl_generics: _,
--            ty_generics,
--        },
--        mut rest,
--    ) = parse_generics(input);
--    // This should be the body of the struct `{...}`.
--    let last = rest.pop();
--    // Now we insert `Zeroable` as a bound for every generic parameter in `impl_generics`.
--    let mut new_impl_generics = Vec::with_capacity(impl_generics.len());
--    // Are we inside of a generic where we want to add `Zeroable`?
--    let mut in_generic = !impl_generics.is_empty();
--    // Have we already inserted `Zeroable`?
--    let mut inserted = false;
--    // Level of `<>` nestings.
--    let mut nested = 0;
--    for tt in impl_generics {
--        match &tt {
--            // If we find a `,`, then we have finished a generic/constant/lifetime parameter.
--            TokenTree::Punct(p) if nested == 0 && p.as_char() == ',' => {
--                if in_generic && !inserted {
--                    new_impl_generics.extend(quote! { : ::pin_init::Zeroable });
--                }
--                in_generic = true;
--                inserted = false;
--                new_impl_generics.push(tt);
--            }
--            // If we find `'`, then we are entering a lifetime.
--            TokenTree::Punct(p) if nested == 0 && p.as_char() == '\'' => {
--                in_generic = false;
--                new_impl_generics.push(tt);
--            }
--            TokenTree::Punct(p) if nested == 0 && p.as_char() == ':' => {
--                new_impl_generics.push(tt);
--                if in_generic {
--                    new_impl_generics.extend(quote! { ::pin_init::Zeroable + });
--                    inserted = true;
--                }
--            }
+-pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream {
+-    let mut toks = input.into_iter().collect::<Vec<_>>();
+-    assert!(!toks.is_empty());
+-    // Ensure that we have an `impl` item.
+-    assert!(matches!(&toks[0], TokenTree::Ident(i) if i == "impl"));
+-    // Ensure that we are implementing `PinnedDrop`.
+-    let mut nesting: usize = 0;
+-    let mut pinned_drop_idx = None;
+-    for (i, tt) in toks.iter().enumerate() {
+-        match tt {
 -            TokenTree::Punct(p) if p.as_char() == '<' => {
--                nested += 1;
--                new_impl_generics.push(tt);
--            }
--            TokenTree::Punct(p) if p.as_char() == '>' => {
--                assert!(nested > 0);
--                nested -= 1;
--                new_impl_generics.push(tt);
--            }
--            _ => new_impl_generics.push(tt),
-+use crate::{diagnostics::ErrorGuaranteed, DiagCtxt};
+-                nesting += 1;
++use crate::diagnostics::{DiagCtxt, ErrorGuaranteed};
 +
-+pub(crate) fn derive(
-+    input: DeriveInput,
++pub(crate) fn pinned_drop(
++    _args: Nothing,
++    mut input: ItemImpl,
 +    dcx: &mut DiagCtxt,
 +) -> Result<TokenStream, ErrorGuaranteed> {
-+    let fields = match input.data {
-+        Data::Struct(data_struct) => data_struct.fields,
-+        Data::Union(data_union) => Fields::Named(data_union.fields),
-+        Data::Enum(data_enum) => {
-+            return Err(dcx.error(data_enum.enum_token, "cannot derive `Zeroable` for an enum"));
-         }
-+    };
-+    let name = input.ident;
-+    let mut generics = input.generics;
-+    for param in generics.type_params_mut() {
-+        param.bounds.insert(0, parse_quote!(::pin_init::Zeroable));
-     }
--    assert_eq!(nested, 0);
--    if in_generic && !inserted {
--        new_impl_generics.extend(quote! { : ::pin_init::Zeroable });
--    }
--    (rest, new_impl_generics, ty_generics, last)
-+    let (impl_gen, ty_gen, whr) = generics.split_for_impl();
-+    let field_type = fields.iter().map(|field| &field.ty);
-+    Ok(quote! {
-+        // SAFETY: Every field type implements `Zeroable` and padding bytes may be zero.
-+        #[automatically_derived]
-+        unsafe impl #impl_gen ::pin_init::Zeroable for #name #ty_gen
-+            #whr
-+        {}
-+        const _: () = {
-+            fn assert_zeroable<T: ?::core::marker::Sized + ::pin_init::Zeroable>() {}
-+            fn ensure_zeroable #impl_gen ()
-+                #whr
++    if let Some(unsafety) = input.unsafety {
++        dcx.error(unsafety, "implementing `PinnedDrop` is safe");
++    }
++    input.unsafety = Some(Token![unsafe](input.impl_token.span));
++    match &mut input.trait_ {
++        Some((not, path, _for)) => {
++            if let Some(not) = not {
++                dcx.error(not, "cannot implement `!PinnedDrop`");
+             }
+-            TokenTree::Punct(p) if p.as_char() == '>' => {
+-                nesting = nesting.checked_sub(1).unwrap();
+-                continue;
++            for (seg, expected) in path
++                .segments
++                .iter()
++                .rev()
++                .zip(["PinnedDrop", "pin_init", ""])
 +            {
-+                #(
-+                    assert_zeroable::<#field_type>();
-+                )*
++                if expected.is_empty() || seg.ident != expected {
++                    dcx.error(seg, "bad import path for `PinnedDrop`");
++                }
++                if !seg.arguments.is_none() {
++                    dcx.error(&seg.arguments, "unexpected arguments for `PinnedDrop` path");
++                }
+             }
+-            _ => {}
++            *path = parse_quote!(::pin_init::PinnedDrop);
+         }
+-        if i >= 1 && nesting == 0 {
+-            // Found the end of the generics, this should be `PinnedDrop`.
+-            assert!(
+-                matches!(tt, TokenTree::Ident(i) if i == "PinnedDrop"),
+-                "expected 'PinnedDrop', found: '{tt:?}'"
++        None => {
++            let span = input
++                .impl_token
++                .span
++                .join(input.self_ty.span())
++                .unwrap_or(input.impl_token.span);
++            dcx.error(
++                span,
++                "expected `impl ... PinnedDrop for ...`, got inherent impl",
+             );
+-            pinned_drop_idx = Some(i);
+-            break;
+         }
+     }
+-    let idx = pinned_drop_idx
+-        .unwrap_or_else(|| panic!("Expected an `impl` block implementing `PinnedDrop`."));
+-    // Fully qualify the `PinnedDrop`, as to avoid any tampering.
+-    toks.splice(idx..idx, quote!(::pin_init::));
+-    // Take the `{}` body and call the declarative macro.
+-    if let Some(TokenTree::Group(last)) = toks.pop() {
+-        let last = last.stream();
+-        quote!(::pin_init::__pinned_drop! {
+-            @impl_sig(#(#toks)*),
+-            @impl_body(#last),
+-        })
+-    } else {
+-        TokenStream::from_iter(toks)
++    for item in &mut input.items {
++        if let ImplItem::Fn(fn_item) = item {
++            if fn_item.sig.ident == "drop" {
++                fn_item
++                    .sig
++                    .inputs
++                    .push(parse_quote!(_: ::pin_init::__internal::OnlyCallFromDrop));
 +            }
-+        };
-+    })
- }
- 
--pub(crate) fn derive(input: TokenStream) -> TokenStream {
--    let (rest, new_impl_generics, ty_generics, last) = parse_zeroable_derive_input(input);
--    quote! {
--        ::pin_init::__derive_zeroable!(
--            parse_input:
--                @sig(#(#rest)*),
--                @impl_generics(#(#new_impl_generics)*),
--                @ty_generics(#(#ty_generics)*),
--                @body(#last),
--        );
-+pub(crate) fn maybe_derive(
-+    input: DeriveInput,
-+    dcx: &mut DiagCtxt,
-+) -> Result<TokenStream, ErrorGuaranteed> {
-+    let fields = match input.data {
-+        Data::Struct(data_struct) => data_struct.fields,
-+        Data::Union(data_union) => Fields::Named(data_union.fields),
-+        Data::Enum(data_enum) => {
-+            return Err(dcx.error(data_enum.enum_token, "cannot derive `Zeroable` for an enum"));
 +        }
-+    };
-+    let name = input.ident;
-+    let mut generics = input.generics;
-+    for param in generics.type_params_mut() {
-+        param.bounds.insert(0, parse_quote!(::pin_init::Zeroable));
      }
--}
--
--pub(crate) fn maybe_derive(input: TokenStream) -> TokenStream {
--    let (rest, new_impl_generics, ty_generics, last) = parse_zeroable_derive_input(input);
--    quote! {
--        ::pin_init::__maybe_derive_zeroable!(
--            parse_input:
--                @sig(#(#rest)*),
--                @impl_generics(#(#new_impl_generics)*),
--                @ty_generics(#(#ty_generics)*),
--                @body(#last),
--        );
-+    for Field { ty, .. } in fields {
-+        generics
-+            .make_where_clause()
-+            .predicates
-+            // the `for<'__dummy>` HRTB makes this not error without the `trivial_bounds`
-+            // feature <https://github.com/rust-lang/rust/issues/48214#issuecomment-2557829956>.
-+            .push(parse_quote!(#ty: for<'__dummy> ::pin_init::Zeroable));
-     }
-+    let (impl_gen, ty_gen, whr) = generics.split_for_impl();
-+    Ok(quote! {
-+        // SAFETY: Every field type implements `Zeroable` and padding bytes may be zero.
-+        #[automatically_derived]
-+        unsafe impl #impl_gen ::pin_init::Zeroable for #name #ty_gen
-+            #whr
-+        {}
-+    })
++    Ok(quote!(#input))
  }
 diff --git a/rust/pin-init/src/macros.rs b/rust/pin-init/src/macros.rs
-index 682c61a587a0..53ed5ce860fc 100644
+index 53ed5ce860fc..b80c95612fd6 100644
 --- a/rust/pin-init/src/macros.rs
 +++ b/rust/pin-init/src/macros.rs
-@@ -1551,127 +1551,3 @@ fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
-         );
-     };
- }
--
+@@ -503,34 +503,6 @@
+ #[cfg(not(kernel))]
+ pub use ::paste::paste;
+ 
+-/// Creates a `unsafe impl<...> PinnedDrop for $type` block.
+-///
+-/// See [`PinnedDrop`] for more information.
+-///
+-/// [`PinnedDrop`]: crate::PinnedDrop
 -#[doc(hidden)]
 -#[macro_export]
--macro_rules! __derive_zeroable {
--    (parse_input:
--        @sig(
--            $(#[$($struct_attr:tt)*])*
--            $vis:vis struct $name:ident
--            $(where $($whr:tt)*)?
--        ),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @body({
--            $(
--                $(#[$($field_attr:tt)*])*
--                $field_vis:vis $field:ident : $field_ty:ty
--            ),* $(,)?
--        }),
--    ) => {
--        // SAFETY: Every field type implements `Zeroable` and padding bytes may be zero.
--        #[automatically_derived]
--        unsafe impl<$($impl_generics)*> $crate::Zeroable for $name<$($ty_generics)*>
--        where
--            $($($whr)*)?
--        {}
--        const _: () = {
--            fn assert_zeroable<T: ?::core::marker::Sized + $crate::Zeroable>() {}
--            fn ensure_zeroable<$($impl_generics)*>()
--                where $($($whr)*)?
--            {
--                $(assert_zeroable::<$field_ty>();)*
+-macro_rules! __pinned_drop {
+-    (
+-        @impl_sig($($impl_sig:tt)*),
+-        @impl_body(
+-            $(#[$($attr:tt)*])*
+-            fn drop($($sig:tt)*) {
+-                $($inner:tt)*
 -            }
--        };
--    };
--    (parse_input:
--        @sig(
--            $(#[$($struct_attr:tt)*])*
--            $vis:vis union $name:ident
--            $(where $($whr:tt)*)?
 -        ),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @body({
--            $(
--                $(#[$($field_attr:tt)*])*
--                $field_vis:vis $field:ident : $field_ty:ty
--            ),* $(,)?
--        }),
 -    ) => {
--        // SAFETY: Every field type implements `Zeroable` and padding bytes may be zero.
--        #[automatically_derived]
--        unsafe impl<$($impl_generics)*> $crate::Zeroable for $name<$($ty_generics)*>
--        where
--            $($($whr)*)?
--        {}
--        const _: () = {
--            fn assert_zeroable<T: ?::core::marker::Sized + $crate::Zeroable>() {}
--            fn ensure_zeroable<$($impl_generics)*>()
--                where $($($whr)*)?
--            {
--                $(assert_zeroable::<$field_ty>();)*
+-        // SAFETY: TODO.
+-        unsafe $($impl_sig)* {
+-            // Inherit all attributes and the type/ident tokens for the signature.
+-            $(#[$($attr)*])*
+-            fn drop($($sig)*, _: $crate::__internal::OnlyCallFromDrop) {
+-                $($inner)*
 -            }
--        };
--    };
+-        }
+-    }
 -}
 -
--#[doc(hidden)]
--#[macro_export]
--macro_rules! __maybe_derive_zeroable {
--    (parse_input:
--        @sig(
--            $(#[$($struct_attr:tt)*])*
--            $vis:vis struct $name:ident
--            $(where $($whr:tt)*)?
--        ),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @body({
--            $(
--                $(#[$($field_attr:tt)*])*
--                $field_vis:vis $field:ident : $field_ty:ty
--            ),* $(,)?
--        }),
--    ) => {
--        // SAFETY: Every field type implements `Zeroable` and padding bytes may be zero.
--        #[automatically_derived]
--        unsafe impl<$($impl_generics)*> $crate::Zeroable for $name<$($ty_generics)*>
--        where
--            $(
--                // the `for<'__dummy>` HRTB makes this not error without the `trivial_bounds`
--                // feature <https://github.com/rust-lang/rust/issues/48214#issuecomment-2557829956>.
--                $field_ty: for<'__dummy> $crate::Zeroable,
--            )*
--            $($($whr)*)?
--        {}
--    };
--    (parse_input:
--        @sig(
--            $(#[$($struct_attr:tt)*])*
--            $vis:vis union $name:ident
--            $(where $($whr:tt)*)?
--        ),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @body({
--            $(
--                $(#[$($field_attr:tt)*])*
--                $field_vis:vis $field:ident : $field_ty:ty
--            ),* $(,)?
--        }),
--    ) => {
--        // SAFETY: Every field type implements `Zeroable` and padding bytes may be zero.
--        #[automatically_derived]
--        unsafe impl<$($impl_generics)*> $crate::Zeroable for $name<$($ty_generics)*>
--        where
--            $(
--                // the `for<'__dummy>` HRTB makes this not error without the `trivial_bounds`
--                // feature <https://github.com/rust-lang/rust/issues/48214#issuecomment-2557829956>.
--                $field_ty: for<'__dummy> $crate::Zeroable,
--            )*
--            $($($whr)*)?
--        {}
--    };
--}
+ /// This macro first parses the struct definition such that it separates pinned and not pinned
+ /// fields. Afterwards it declares the struct and implement the `PinData` trait safely.
+ #[doc(hidden)]
 -- 
 2.52.0
 
