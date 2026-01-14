@@ -1,102 +1,122 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27E037F75E
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 Jan 2026 08:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6CB37E31A
+	for <rust-for-linux@vger.kernel.org>; Wed, 14 Jan 2026 09:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768380158; cv=none; b=mp9ESfM0Oot9F1oI0sImelqFjGiDZTGUVf3xpxlf9+e386kHBq6TXD2+DqpVMq72sIk33EbJFuxOJ7v86ugKqTDP68/8SGDtNOxpjnmJoT00Cajdb05yaiYcj/Di3hwtIVlwjsq+JeWtQEaN7ZdZ/vCGae1OmK+rfjLoSVaNb0I=
+	t=1768382468; cv=none; b=DlVqe74Ia+/sMkPOyVcTUNdTa1nuwgHSQAkllHbRPht79KTb+5AEhTEuUWhwfgjCnJG8NueScLrhcOVYDg2dKeJwy6wc25zeUubXN0YD7EJeAclpBJhTEKKOFW5bdUkYuczS8ej8jiRCVWcfsUjg55yWzyz2xdQZiynWP7bENOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768380158; c=relaxed/simple;
-	bh=IylMYC1rn3qdbtBA1+7QdATVBJ9fBDdBhG86YMJLkF8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XmwqDLSVDDudTCzZNEDFokNGPVgj8rMZVvh5HsVXKmhvEt1bthEkZ823qj2ZskltRkpZW/78d4SOs2ueDB+usxaKhaSle1Lqa6A2s7aM0qMfz8qu67o70JUXui8XexWNl7IarwK99o/F38MeBMuU8IhzWE+dy3KAnKVrIrhM/cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q2J4omnq; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1768382468; c=relaxed/simple;
+	bh=jwV2uwGZ2M7YDB/QJwCc2wGu+28PNLAEYK2ClK5aG8o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=b4HfzaEP0P7QLWWrSzxjqmctAcNyKEZoYv2oB4sQjLyPW0cKNtSERw2Rr75CvHANu9+mrbstWO0zHF00fyehbagf1MghASFNTE9P0Y0bQkksFLp4wR/8zPWGwfpyjRfrKh+3GFo+kshnsLqYlurmCsGUSw6mi4zvU7RcccOzcL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PgrYcrSc; arc=none smtp.client-ip=209.85.210.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q2J4omnq"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47ee0291921so8947935e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jan 2026 00:42:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PgrYcrSc"
+Received: by mail-pf1-f195.google.com with SMTP id d2e1a72fcca58-81f4dfa82edso1671028b3a.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jan 2026 01:21:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768380149; x=1768984949; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768382466; x=1768987266; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SGIbMoIGukZwgQ04tnO6SPLAePwxVHW3krCKo+yvDZs=;
-        b=Q2J4omnqvjJMYaAqpJSMiYIqYxz4Uc2VwWjeFHv1SDD8ssIdK/qKvA14TOWqRVvMd/
-         g3sMeXRtf/3W/TeJr2A4vADnkzSINwqZkJFemRXOZrrT8C7yGVfG2iuO1JXqJO8JcrH4
-         aEjPn/nKOQpbAZ/3qgxtekxxPjrsBnKVa2I2w4E22ZcgobjfdaX654pzytt0j3K2tFt+
-         i8qBLSiQW80z2ANcrNXZ9S4bWzkDeQ7IPGbap8MHw0vWQIRIRkAM69qVRL+Sp02hR2Wm
-         IBTGHj/HwVpE967A3PZjElf2wh2ZF4Khr21TfEbjJFTkqn02LoXZwLru/g/txBidCjkP
-         b2pw==
+        bh=TjYtLMftWK7eLfK1LYtQ3c0qZ26EPLj9TyyoeMxwCOE=;
+        b=PgrYcrScsVLJcPacyth5FKOYqq9W0pfWkEAcYJoTGEq2sSk/7vcR69nem61kskTwMV
+         1DhV94dma0W/OfkXV0XYcs+ruSVDwXfE2f6OWWw1Ziemql6wTSjPiN31bf51bK/jKq3N
+         98nxWaadmsza1oQqYT5eQ/U0OaE+iENbhnQuLJMfswCKMvjrZQpu4C/Nr7mCT/XkORWp
+         2QV+9P5AdlAOGZ/RU3iEw/LSrFwHOk3yM5XZZ27WRGPYvE/ClZ2bpSYekuzSH76day1Y
+         GlDnL//qG2DqQP9JF8lg+qt9wGFKnD/WlIj9petCgTMV8h6v3gR4674byiYmd/rjG2gh
+         gWDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768380149; x=1768984949;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SGIbMoIGukZwgQ04tnO6SPLAePwxVHW3krCKo+yvDZs=;
-        b=IAFmejTOuO02aWeidxbaSrSS7uDnRdz5Tv5FbImSjG04fSSWsu9OLYAq+W0ziNKjqK
-         dyNsOd4DhITXyfu575Au/zo2zhQH6Ob1XpjdUesuD1r0rosojdhnA1118AShkf924OFz
-         43uA6Dar+0h2J+5A21imWsODqDyKV/J66IHM1ub2sZgtV/7sdDpE2F2nLXulXkQKQTVq
-         OHJheti6am16gYpeR5I5Ix4URQ5ssguu3h1+kAc72/bqoGJAMvIVeQapaxmpXKukCRhu
-         l3+sJAWhCNKz661jERv1ZPvrTSxlykuyNeKhgmFC+1eRd2vh3T8pntAS6nOekuIXeMgv
-         p2PA==
-X-Gm-Message-State: AOJu0Yx9lI1zt9hB/RysVjCmAPpRe4VPfMUbe7z6mtHWxjnGXlMjJzyj
-	0A/alLdzRge2WenIjdeXjeF6vMVZl2vzhrVNP0TleiU8dpXaW6dqFiohPPK4US1woYd8OwaEUvp
-	MRqEKtxUTLuBEnskj/Sjs9cODbFybfL0KCPjr++a0BqiXdow5/0K8WCGx
-X-Gm-Gg: AY/fxX7+rdyEBNKShEWbUJ6hRMD5RnBzKEmcniE6KVgu91mZLm1ENwfS2npiGktwpVc
-	2WLkNGL9LNM6f9y4LIWidD9RQZQl6qFS5nInMDfHLf8OcUimd3hPwUiXFwRMd7dWqt3HyIyQ0pi
-	Tq9BrDO2LIUgQIdDi3fE+ktxplcY/u9PZcQ5uPznZ1NHFkMjDGNFqKQqOUF2D39EAFe7xlIJvNw
-	+f6M1LLnVoN9ettrCiqZ3AlQHmaFJAaA5ioZQ2TR03ZxUeIy0YXDZb09XVGsrrHrrYjRK90hzzB
-	Q7CGKyDNfx+IvRK/v03rVQAU/3ELPaPdWRhbkx5Xa2oJExaT9fzOZJs0pJVRVVcDVks=
-X-Received: by 2002:a05:6000:1a8b:b0:430:fd60:93fb with SMTP id
- ffacd0b85a97d-4342c549ad8mr1860429f8f.32.1768380149026; Wed, 14 Jan 2026
- 00:42:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768382466; x=1768987266;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TjYtLMftWK7eLfK1LYtQ3c0qZ26EPLj9TyyoeMxwCOE=;
+        b=Jhg0sZO3V0CFBm/nBnOWI7yvAgrNh4iG3HBL7bgap6IviwVReSBWc93cPi5ta9/bEg
+         VuKqobVnHoR5ykq+2tYqdKebJHsS8PwK+TGcyzKGuHIPxfvPvgjMLGa9mT6w1N43VcFT
+         2/En337ToERmwoOHlsvrfm5LMPTtO5BIH1x4B7r4KSMCdHYbI6mobSnmm1aCCNWSw2iI
+         BufwY4+v4z7l52aXnM+n0WefbXG03WCaJOzPJBWFZkccZKLbh5ZBcCh/q8jI+FkS5qdh
+         1it5PiXw60rZkxUau7v6uZF+1fPW7flIFr5lAihdXwEvymeoBlpCQmDkZiT3r46QyaYK
+         FUjQ==
+X-Gm-Message-State: AOJu0YzBo7x8afZ/Aq73MntmTBOajFO7axtx7pefbTjDDzcL5QwItUeu
+	Ja3IYcJtRplPsVCdH0t8yAiTir5BRbPbg0r2zh30T9ZBbbcj6XE+cclK
+X-Gm-Gg: AY/fxX57G8ZBkVdb0KtKPa/ZT8dh+79z8NlMJUYHQdlig9WRJWLvYNdxQKhq0eEFYI5
+	8XhAVK7Wi4Aze/7KcVrKydy+hqQejeTg2CByU0P9n6cqTr9OZz8grkAH5DKqvLUKoRFNrmZ5gzQ
+	Hrs1C+ZxCN1s7AKWoGxEj+wZ5BB+6PHkdpnqLRRdwG9frRD0UJjPQn8gz8eDyxJ8LB/PiueazFr
+	C4WFFQkO3EjV1Hcf9NhaPl33CcIFRjCwwveC/nLtGhZhewTLOBQZdCIEuESPHhQ7RRbD7j+atnQ
+	Q1UmPuM+eItjv8nJgjSciHURJv6SnXv7/hgGikdCH1SnojG8aujLRsUdugflcx/WrXbHDGQo0Xp
+	PO5RXNx0mpaAjTTp9IviInggjE2+VvyYVtGxbdIWQz4u/hr2BBNwxT5XLANMVQiuM5M5JM0DKtg
+	Y/eVX7yA==
+X-Received: by 2002:a05:6a00:448b:b0:81f:4dff:336 with SMTP id d2e1a72fcca58-81f81f969a6mr1655695b3a.52.1768382466183;
+        Wed, 14 Jan 2026 01:21:06 -0800 (PST)
+Received: from localhost ([112.149.32.52])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81efe4a95c7sm12448712b3a.37.2026.01.14.01.21.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Jan 2026 01:21:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251113144547.502-1-work@onurozkan.dev>
-In-Reply-To: <20251113144547.502-1-work@onurozkan.dev>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 14 Jan 2026 09:42:15 +0100
-X-Gm-Features: AZwV_QhKo8wY7uneGgPO5KPVq9W49NFaMHaciQXss5mFI5jyoY8s4OeqXhfF3jM
-Message-ID: <CAH5fLgi_1H2otP-Ha2OZO+h7_7c0kHfF49aWi8fNZLb0q5FSYQ@mail.gmail.com>
-Subject: Re: [PATCH v1] rbtree: reduce unsafe blocks on pointer derefs
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
-	yutaro.ono.418@gmail.com, charmitro@posteo.net, borys.tyran@protonmail.com, 
-	daniel@sedlak.dev, tamird@gmail.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 14 Jan 2026 18:20:59 +0900
+Message-Id: <DFO79IRELYPB.2V1XQTCGJL5DB@gmail.com>
+Subject: Re: [PATCH 1/3] scripts: generate_rust_analyzer: Add
+ compiler_builtins -> core dep
+From: "Jesung Yang" <y.j3ms.n@gmail.com>
+To: "Tamir Duberstein" <tamird@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20250723-rust-analyzer-pin-init-v1-0-3c6956173c78@kernel.org>
+ <20250723-rust-analyzer-pin-init-v1-1-3c6956173c78@kernel.org>
+In-Reply-To: <20250723-rust-analyzer-pin-init-v1-1-3c6956173c78@kernel.org>
 
-On Thu, Nov 13, 2025 at 3:46=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.dev=
-> wrote:
+On Thu Jul 24, 2025 at 12:39 AM KST, Tamir Duberstein wrote:
+> Add a dependency edge from `compiler_builtins` to `core` to
+> `scripts/generate_rust_analyzer.py` to match `rust/Makefile`. This has
+> been incorrect since commit 8c4555ccc55c ("scripts: add
+> `generate_rust_analyzer.py`")
 >
-> Refactors parts of the get() and cursor_lower_bound()
-> traversal logic to minimize the scope of unsafe blocks
-> and avoid duplicating same safety comments.
+> Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+> ---
+>  scripts/generate_rust_analyzer.py | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> One of the removed comments was also misleading:
->
->     // SAFETY: `node` is a non-null node...
->     Ordering::Equal =3D> return Some(unsafe { &(*this).value }),
->
-> as `node` should have been `this`.
->
-> No functional changes intended; this is purely a safety
-> improvement that reduces the amount of unsafe blocks
-> while keeping all invariants intact.
->
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
+alyzer.py
+> index 7c3ea2b55041..4639a756a932 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -83,7 +83,7 @@ def generate_crates(srctree, objtree, sysroot_src, exte=
+rnal_src, cfgs, core_edit
+>      append_crate(
+>          "compiler_builtins",
+>          srctree / "rust" / "compiler_builtins.rs",
+> -        [],
+> +        ["core"],
+>      )
+> =20
+>      append_crate(
 
-One consequence of creating a &_ to the bindings::rb_node struct means
-that we assert immutability for the entire struct and not just the
-rb_left/rb_right fields, but I have verified that this is ok.
+This looks good, but I think
+`Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")` and
+`Cc: stable` tags should be specified.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+For the change itself,
+
+Reviewed-by: Jesung Yang <y.j3ms.n@gmail.com>
+
+Best regards,
+Jesung
