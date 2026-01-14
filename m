@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8793933372D;
-	Wed, 14 Jan 2026 18:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1462F39D7;
+	Wed, 14 Jan 2026 18:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768414861; cv=none; b=Qvo6yGwktyXj6q0OkjF3KVscOe7nb54m30MM60A7ffSbuofktRlGH+YpfcQ8AZy2TUXFlsUCuBvlzL/wfdwSXRo/j5ZFrOhts2/+rQdQBL2qDCoTSdDo/nS9iMEh90+XWefHiOI1wFYoUfS14tDpGioyKLHHloFpr4o9u2A0GRM=
+	t=1768414867; cv=none; b=dXVkD+JLOJ3w/ojNFEENYlq3U7w8PAVlH/nJCyd4pMtxJwB0A4k9MCxfkqmkPV2eVOv1eXsY0FU2dItsPc63mMLpbeI/k/GA33F4lQe3/BYHUUbq4PAAPBjpWPL9ma0Co0L8NW8jaGzBnNCf19csTWr1gLU83FEeZabig3fozxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768414861; c=relaxed/simple;
-	bh=ne8hsW52o93ApaNg9q/wTj9otcPADA2EsvLyWLPQg1A=;
+	s=arc-20240116; t=1768414867; c=relaxed/simple;
+	bh=zg49DIsZb4lDUqOOALIeYuMxvDONFIdQWYQlm198Ajk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQ6VO8eUuXPm+SeDYJFAP/3BrSeOhV2zUaGt8oJb9162SUo2LL7d4OJLr76HW75uafaAnQijnKnSusjXM24fE3aKeV/tEJ+/Sd5rcKpwfXVqaUT4hK712KfXPF/WgW8EGqJnWBQGDopPGb+CYH3y42ajsF199/7wUcwgcCEXaIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E64mGwjf; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=sEbIOh0kDoICo2mKTkhf2TMegvZ/w67iS9Egn2zLeTjDDqsjj+k1GvO2B2Nbq2lmztJBrCc9ZExpsuklqN3d8mBLuxInjPkGAKrQEnfW8BhvytV4zrNMVCmpR0OsHs4Cg2YMq08CDQyPByNz9jREtULZ9/h1R/TiZr5NY/y3qKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jphK5+lV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E64mGwjf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068DAC19422;
-	Wed, 14 Jan 2026 18:20:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jphK5+lV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4547C19422;
+	Wed, 14 Jan 2026 18:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768414861;
-	bh=ne8hsW52o93ApaNg9q/wTj9otcPADA2EsvLyWLPQg1A=;
+	s=k20201202; t=1768414867;
+	bh=zg49DIsZb4lDUqOOALIeYuMxvDONFIdQWYQlm198Ajk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E64mGwjfWMcXaWeTuzZB06bs7pLxEjvXWWsdGFNygjgg9dVJeQHlAvOWGgQ77zIrw
-	 fg0df3DLGuD4qOhPoVx3NWTJ3xw5H8SwU1eOYSrQatXIknfDXCn8v+r6F50d22CN59
-	 dKbE5VBBotl1xNT0HXgCIOveizq+oUOySuXbPTmMI8saC3DxWLfssuLt5nVIPZEvza
-	 sVwD6vcD5IxNoh3NKqqfG8cF4ApHc4KINgdkTz1xAHDdG06sRr2ZyoKDZTMCFW7sYr
-	 0ZUY4bzEm6owCe7z1xsUpKLmh/xM/QLvX7o3b8r+VshzZypP+brIKWBKSRA6YRn04d
-	 GfunqXPp59u9w==
+	b=jphK5+lVwVHYc3TpeJzdYDqaSCO48Qv0zrQ+FQD0qtGQQsbFWY16YKbTlS1XEv55w
+	 33dVZE+dI/NmJfgaNp65xbux18OiBpyibb7rOmLPW5Lo0ZYW5NIr3ldnhaiY+K05Jx
+	 o4v9UiczAyDi6OvTEymPZf8fxMOxF1Vih80fLk7VSF3vp1cgudrUQoJypEDQc3Jbtt
+	 f4Ih3aVYazdwmDakkXCLJm4DIGAoHQL5fsxYY9mnl4vZFPlUFwVeyGu1q48ojJCF7C
+	 C5WqP0uOviuqjuIiMb+oBUwfPayvvuhae9emBeigSC3KdKWnoLBkAbmQX4HnL7TTBX
+	 tk1t/fi/Kc7Jw==
 From: Benno Lossin <lossin@kernel.org>
 To: Benno Lossin <lossin@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -36,11 +36,12 @@ To: Benno Lossin <lossin@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org,
+Cc: Janne Grunau <j@jannau.net>,
+	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 12/15] rust: pin-init: internal: init: add support for attributes on initializer fields
-Date: Wed, 14 Jan 2026 19:18:47 +0100
-Message-ID: <20260114181934.1782470-13-lossin@kernel.org>
+Subject: [PATCH v3 13/15] rust: pin-init: internal: init: add escape hatch for referencing initialized fields
+Date: Wed, 14 Jan 2026 19:18:48 +0100
+Message-ID: <20260114181934.1782470-14-lossin@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260114181934.1782470-1-lossin@kernel.org>
 References: <20260114181934.1782470-1-lossin@kernel.org>
@@ -52,216 +53,213 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Initializer fields ought to support the same attributes that are allowed
-in struct initializers on fields. For example, `cfg` or lint levels such
-as `expect`, `allow` etc. Add parsing support for these attributes using
-syn to initializer fields and adjust the macro expansion accordingly.
+The initializer macro emits mutable references for already initialized
+fields, which allows modifying or accessing them later in code blocks or
+when initializing other fields. This behavior results in compiler errors
+when combining with packed structs, since those do not permit creating
+references to misaligned fields. For example:
 
+    #[repr(C, packed)]
+    struct Foo {
+        a: i8,
+        b: i32,
+    }
+
+    fn main() {
+        let _ = init!(Foo { a: -42, b: 42 });
+    }
+
+This will lead to an error like this:
+
+    error[E0793]: reference to field of packed struct is unaligned
+      --> tests/ui/compile-fail/init/packed_struct.rs:10:13
+       |
+    10 |     let _ = init!(Foo { a: -42, b: 42 });
+       |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+       |
+       = note: this struct is 1-byte aligned, but the type of this field may require higher alignment
+       = note: creating a misaligned reference is undefined behavior (even if that reference is never dereferenced)
+       = help: copy the field contents to a local variable, or replace the reference with a raw pointer and use `read_unaligned`/`write_unaligned` (loads and stores via `*p` must be properly aligned even when using raw pointers)
+       = note: this error originates in the macro `init` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+This was requested by Janne Grunau [1] and will most certainly be used
+by the kernel when we eventually end up with trying to initialize packed
+structs.
+
+Thus add an initializer attribute `#[disable_initialized_field_access]`
+that does what the name suggests: do not generate references to already
+initialized fields.
+
+There is space for future work: add yet another attribute which can be
+applied on fields of initializers that ask for said field to be made
+accessible. We can add that when the need arises.
+
+Requested-by: Janne Grunau <j@jannau.net>
+Link: https://lore.kernel.org/all/20251206170214.GE1097212@robin.jannau.net [1]
 Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
 Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
 Changes in v3: none
 Changes in v2:
-* only attach cfg attributes to non-user controlled code for fields
+* silence clippy warning
 ---
- rust/pin-init/internal/src/init.rs | 69 ++++++++++++++++++++++++------
- 1 file changed, 55 insertions(+), 14 deletions(-)
+ rust/pin-init/internal/src/init.rs | 76 +++++++++++++++++++++---------
+ 1 file changed, 53 insertions(+), 23 deletions(-)
 
 diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index 5a66016bdf33..0eb21ed9c8bc 100644
+index 0eb21ed9c8bc..523741e62bd7 100644
 --- a/rust/pin-init/internal/src/init.rs
 +++ b/rust/pin-init/internal/src/init.rs
-@@ -29,7 +29,12 @@ struct This {
-     _in_token: Token![in],
+@@ -60,8 +60,10 @@ fn ident(&self) -> Option<&Ident> {
+     }
  }
  
--enum InitializerField {
-+struct InitializerField {
-+    attrs: Vec<Attribute>,
-+    kind: InitializerKind,
-+}
-+
-+enum InitializerKind {
-     Value {
-         ident: Ident,
-         value: Option<(Token![:], Expr)>,
-@@ -46,7 +51,7 @@ enum InitializerField {
-     },
++#[expect(clippy::large_enum_variant)]
+ enum InitializerAttribute {
+     DefaultError(DefaultErrorAttribute),
++    DisableInitializedFieldAccess,
  }
  
--impl InitializerField {
-+impl InitializerKind {
-     fn ident(&self) -> Option<&Ident> {
-         match self {
-             Self::Value { ident, .. } | Self::Init { ident, .. } => Some(ident),
-@@ -227,10 +232,16 @@ fn init_fields(
+ struct DefaultErrorAttribute {
+@@ -85,7 +87,6 @@ pub(crate) fn expand(
+     let error = error.map_or_else(
+         || {
+             if let Some(default_error) = attrs.iter().fold(None, |acc, attr| {
+-                #[expect(irrefutable_let_patterns)]
+                 if let InitializerAttribute::DefaultError(DefaultErrorAttribute { ty }) = attr {
+                     Some(ty.clone())
+                 } else {
+@@ -145,7 +146,15 @@ fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
+     };
+     // `mixed_site` ensures that the data is not accessible to the user-controlled code.
+     let data = Ident::new("__data", Span::mixed_site());
+-    let init_fields = init_fields(&fields, pinned, &data, &slot);
++    let init_fields = init_fields(
++        &fields,
++        pinned,
++        !attrs
++            .iter()
++            .any(|attr| matches!(attr, InitializerAttribute::DisableInitializedFieldAccess)),
++        &data,
++        &slot,
++    );
+     let field_check = make_field_check(&fields, init_kind, &path);
+     Ok(quote! {{
+         // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
+@@ -228,6 +237,7 @@ fn get_init_kind(rest: Option<(Token![..], Expr)>, dcx: &mut DiagCtxt) -> InitKi
+ fn init_fields(
+     fields: &Punctuated<InitializerField, Token![,]>,
+     pinned: bool,
++    generate_initialized_accessors: bool,
+     data: &Ident,
      slot: &Ident,
  ) -> TokenStream {
-     let mut guards = vec![];
-+    let mut guard_attrs = vec![];
-     let mut res = TokenStream::new();
--    for field in fields {
--        let init = match field {
--            InitializerField::Value { ident, value } => {
-+    for InitializerField { attrs, kind } in fields {
-+        let cfgs = {
-+            let mut cfgs = attrs.clone();
-+            cfgs.retain(|attr| attr.path().is_ident("cfg") || attr.path().is_ident("cfg_attr"));
-+            cfgs
-+        };
-+        let init = match kind {
-+            InitializerKind::Value { ident, value } => {
-                 let mut value_ident = ident.clone();
-                 let value_prep = value.as_ref().map(|value| &value.1).map(|value| {
-                     // Setting the span of `value_ident` to `value`'s span improves error messages
-@@ -253,21 +264,24 @@ fn init_fields(
+@@ -263,6 +273,13 @@ fn init_fields(
+                         unsafe { &mut (*#slot).#ident }
                      }
                  };
++                let accessor = generate_initialized_accessors.then(|| {
++                    quote! {
++                        #(#cfgs)*
++                        #[allow(unused_variables)]
++                        let #ident = #accessor;
++                    }
++                });
                  quote! {
-+                    #(#attrs)*
+                     #(#attrs)*
                      {
-                         #value_prep
+@@ -270,37 +287,31 @@ fn init_fields(
                          // SAFETY: TODO
                          unsafe { #write(::core::ptr::addr_of_mut!((*#slot).#ident), #value_ident) };
                      }
-+                    #(#cfgs)*
-                     #[allow(unused_variables)]
-                     let #ident = #accessor;
+-                    #(#cfgs)*
+-                    #[allow(unused_variables)]
+-                    let #ident = #accessor;
++                    #accessor
                  }
              }
--            InitializerField::Init { ident, value, .. } => {
-+            InitializerKind::Init { ident, value, .. } => {
+             InitializerKind::Init { ident, value, .. } => {
                  // Again span for better diagnostics
                  let init = format_ident!("init", span = value.span());
-                 if pinned {
+-                if pinned {
++                let (value_init, accessor) = if pinned {
                      let project_ident = format_ident!("__project_{ident}");
-                     quote! {
-+                        #(#attrs)*
-                         {
-                             let #init = #value;
+-                    quote! {
+-                        #(#attrs)*
+-                        {
+-                            let #init = #value;
++                    (
++                        quote! {
                              // SAFETY:
-@@ -277,12 +291,14 @@ fn init_fields(
+                             // - `slot` is valid, because we are inside of an initializer closure, we
+                             //   return when an error/panic occurs.
+                             // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
                              //   for `#ident`.
                              unsafe { #data.#ident(::core::ptr::addr_of_mut!((*#slot).#ident), #init)? };
-                         }
-+                        #(#cfgs)*
-                         // SAFETY: TODO
-                         #[allow(unused_variables)]
-                         let #ident = unsafe { #data.#project_ident(&mut (*#slot).#ident) };
-                     }
+-                        }
+-                        #(#cfgs)*
+-                        // SAFETY: TODO
+-                        #[allow(unused_variables)]
+-                        let #ident = unsafe { #data.#project_ident(&mut (*#slot).#ident) };
+-                    }
++                        },
++                        quote! {
++                            // SAFETY: TODO
++                            unsafe { #data.#project_ident(&mut (*#slot).#ident) }
++                        },
++                    )
                  } else {
-                     quote! {
-+                        #(#attrs)*
-                         {
-                             let #init = #value;
+-                    quote! {
+-                        #(#attrs)*
+-                        {
+-                            let #init = #value;
++                    (
++                        quote! {
                              // SAFETY: `slot` is valid, because we are inside of an initializer
-@@ -294,20 +310,25 @@ fn init_fields(
+                             // closure, we return when an error/panic occurs.
+                             unsafe {
+@@ -309,12 +320,27 @@ fn init_fields(
+                                     ::core::ptr::addr_of_mut!((*#slot).#ident),
                                  )?
                              };
-                         }
-+                        #(#cfgs)*
-                         // SAFETY: TODO
+-                        }
++                        },
++                        quote! {
++                            // SAFETY: TODO
++                            unsafe { &mut (*#slot).#ident }
++                        },
++                    )
++                };
++                let accessor = generate_initialized_accessors.then(|| {
++                    quote! {
+                         #(#cfgs)*
+-                        // SAFETY: TODO
                          #[allow(unused_variables)]
-                         let #ident = unsafe { &mut (*#slot).#ident };
+-                        let #ident = unsafe { &mut (*#slot).#ident };
++                        let #ident = #accessor;
++                    }
++                });
++                quote! {
++                    #(#attrs)*
++                    {
++                        let #init = #value;
++                        #value_init
                      }
++                    #accessor
                  }
              }
--            InitializerField::Code { block: value, .. } => quote!(#[allow(unused_braces)] #value),
-+            InitializerKind::Code { block: value, .. } => quote! {
-+                #(#attrs)*
-+                #[allow(unused_braces)]
-+                #value
-+            },
-         };
-         res.extend(init);
--        if let Some(ident) = field.ident() {
-+        if let Some(ident) = kind.ident() {
-             // `mixed_site` ensures that the guard is not accessible to the user-controlled code.
-             let guard = format_ident!("__{ident}_guard", span = Span::mixed_site());
--            guards.push(guard.clone());
-             res.extend(quote! {
-+                #(#cfgs)*
-                 // Create the drop guard:
-                 //
-                 // We rely on macro hygiene to make it impossible for users to access this local
-@@ -319,13 +340,18 @@ fn init_fields(
-                     )
-                 };
-             });
-+            guards.push(guard);
-+            guard_attrs.push(cfgs);
-         }
-     }
-     quote! {
-         #res
-         // If execution reaches this point, all fields have been initialized. Therefore we can now
-         // dismiss the guards by forgetting them.
--        #(::core::mem::forget(#guards);)*
-+        #(
-+            #(#guard_attrs)*
-+            ::core::mem::forget(#guards);
-+        )*
-     }
- }
- 
-@@ -335,7 +361,10 @@ fn make_field_check(
-     init_kind: InitKind,
-     path: &Path,
- ) -> TokenStream {
--    let fields = fields.iter().filter_map(|f| f.ident());
-+    let field_attrs = fields
-+        .iter()
-+        .filter_map(|f| f.kind.ident().map(|_| &f.attrs));
-+    let field_name = fields.iter().filter_map(|f| f.kind.ident());
-     match init_kind {
-         InitKind::Normal => quote! {
-             // We use unreachable code to ensure that all fields have been mentioned exactly once,
-@@ -346,7 +375,8 @@ fn make_field_check(
-             let _ = || unsafe {
-                 ::core::ptr::write(slot, #path {
-                     #(
--                        #fields: ::core::panic!(),
-+                        #(#field_attrs)*
-+                        #field_name: ::core::panic!(),
-                     )*
-                 })
-             };
-@@ -366,7 +396,8 @@ fn make_field_check(
-                 zeroed = ::core::mem::zeroed();
-                 ::core::ptr::write(slot, #path {
-                     #(
--                        #fields: ::core::panic!(),
-+                        #(#field_attrs)*
-+                        #field_name: ::core::panic!(),
-                     )*
-                     ..zeroed
-                 })
-@@ -387,7 +418,7 @@ fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-             let lh = content.lookahead1();
-             if lh.peek(End) || lh.peek(Token![..]) {
-                 break;
--            } else if lh.peek(Ident) || lh.peek(Token![_]) {
-+            } else if lh.peek(Ident) || lh.peek(Token![_]) || lh.peek(Token![#]) {
-                 fields.push_value(content.parse()?);
-                 let lh = content.lookahead1();
-                 if lh.peek(End) {
-@@ -449,6 +480,16 @@ fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
- }
- 
- impl Parse for InitializerField {
-+    fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-+        let attrs = input.call(Attribute::parse_outer)?;
-+        Ok(Self {
-+            attrs,
-+            kind: input.parse()?,
-+        })
-+    }
-+}
-+
-+impl Parse for InitializerKind {
-     fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-         let lh = input.lookahead1();
-         if lh.peek(Token![_]) {
+             InitializerKind::Code { block: value, .. } => quote! {
+@@ -446,6 +472,10 @@ fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
+                 if a.path().is_ident("default_error") {
+                     a.parse_args::<DefaultErrorAttribute>()
+                         .map(InitializerAttribute::DefaultError)
++                } else if a.path().is_ident("disable_initialized_field_access") {
++                    a.meta
++                        .require_path_only()
++                        .map(|_| InitializerAttribute::DisableInitializedFieldAccess)
+                 } else {
+                     Err(syn::Error::new_spanned(a, "unknown initializer attribute"))
+                 }
 -- 
 2.52.0
 
