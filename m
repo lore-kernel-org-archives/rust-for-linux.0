@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2884335098;
-	Wed, 14 Jan 2026 18:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293EB334C35;
+	Wed, 14 Jan 2026 18:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768414852; cv=none; b=piYR4VmaDtHvTHqh70iIP694GZ/ymZ9NKBi5Cy1OmztQ/af+TOxigaCljOU8/bz2wuavPPPsywtzXwip1mIg6FuBz8avhJVW6N1C3pBvE+RloUJGNDSfM/PQNlXwTb2GzUlnZHZBv++uha1aaqZMnFeH/qgNqo7zEHjD15SZrF0=
+	t=1768414856; cv=none; b=ZszX9Uy+tVE0GEjBXTdY05qN3AFFSek1FIqekwRotCyMl2N9/VszHQ8R5o6GUEwleJBy0sEdagkDuYXFpfE/HJMOrtQHMyjVQlF+lCkDsyoiFH/U7f5zj1G2O+/iv4yWMXu82BaObUxZ+zi7aQXb763dGetwpUwY0It3BNwSF7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768414852; c=relaxed/simple;
-	bh=gO/f+n6bxctI9TpFgKPzkstQvLvIbWAHwyepVBKbGrw=;
+	s=arc-20240116; t=1768414856; c=relaxed/simple;
+	bh=N29VLrs5JWWRZs0nN5HPuD0AAZOUUJHTX25VIPRCG+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWmJGD3f/9W6Tz6zzh1/Oj2W4nuq2d8nQv6MBIkKAQ7ysd38nQJj3u6ctShxcZfWra+K7hX6HiCEaSnheTNGgmla5/vciFfkKKrueB/QmRl9vh34i4YZb9QlfH/QKQtpV4JPVm93PxqbRNkyhO0iutijLnti3M74wErZexbrqHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cnt6SXs+; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=UP41HgCQ4/YFoiDbcLAmo2GJ4PWE3pZi9ytdEK6JDaWaUYE2HcqnUACCPk4sWkeiBHO9wT2PiLm8dynsghwtw8d4qYSZt0A3uBsCm99hb16gb5xkNz7BZPnRmp3zO70Kp6/RuVVvbj7VN87KXqkrm9y76QUA350tWH7OxnCLlcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u6qY8Wq1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cnt6SXs+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2749EC4CEF7;
-	Wed, 14 Jan 2026 18:20:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u6qY8Wq1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41041C19422;
+	Wed, 14 Jan 2026 18:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768414852;
-	bh=gO/f+n6bxctI9TpFgKPzkstQvLvIbWAHwyepVBKbGrw=;
+	s=k20201202; t=1768414855;
+	bh=N29VLrs5JWWRZs0nN5HPuD0AAZOUUJHTX25VIPRCG+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cnt6SXs+ASo3isiv7C6/sC3459tn9OJBXrYXeqOCZQZL6XbYTY5m+v0ptn8eU4Elh
-	 aAT67XAEPOcORvprkATtOcH4VS2UDk8MtuMjylpbk83127xBqIBGbQ5OA/5+K852zR
-	 8dvDVWRFhIS++5MO1t9uDVMXQm+i+LfXc+MkxFRXV7R3EzxGFpXUIVH04n5yf/fGOV
-	 H+edjRwMs1t7KFV4hnSb2R1Vpdv4HGTVw6diWQopEC5UyCivivoGRMcZ2rHFdL6SAQ
-	 JHIneVj4zsazpRzfRM6ld7ohkzLebrsf+LXul4OmDsLl8l4laSzRJpx1/iwdFNJP+G
-	 H4WG33D9j5JUA==
+	b=u6qY8Wq1ukAuiPetT/Xti+R21nx8pDNFOe+B75QwKwByNaMRfVZ2PfhytESmL7d9n
+	 IBwGOV+2k52U8CViMz+EgHIv9wfkB613nAObSXX9JuhKaQC7DrQUiP1l6dRGt2ox8U
+	 h3a133DF4zFYNm73FWUKA1iOVr7m8dXhNacJAODJ6sBWymPOkytxvE5/jmCPMhIIW/
+	 Z0ZmiNew5vEsTFKj4ylm/vgQl0TSYg6Nm/sIE34oHtWETA8TMnvoOashLwxMUzfqxR
+	 VJ5qrItLp3zyWmLc4+btCiZHhIwYtCT9a7eET4wZ/b1wiJk22BtVorHXRtYSYyCKSR
+	 oYcXlzTznBr8g==
 From: Benno Lossin <lossin@kernel.org>
 To: Benno Lossin <lossin@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -38,9 +38,9 @@ To: Benno Lossin <lossin@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 10/15] rust: pin-init: add `#[default_error(<type>)]` attribute to initializer macros
-Date: Wed, 14 Jan 2026 19:18:45 +0100
-Message-ID: <20260114181934.1782470-11-lossin@kernel.org>
+Subject: [PATCH v3 11/15] rust: init: use `#[default_error(err)]` for the initializer macros
+Date: Wed, 14 Jan 2026 19:18:46 +0100
+Message-ID: <20260114181934.1782470-12-lossin@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260114181934.1782470-1-lossin@kernel.org>
 References: <20260114181934.1782470-1-lossin@kernel.org>
@@ -52,127 +52,77 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The `#[default_error(<type>)]` attribute can be used to supply a default
-type as the error used for the `[pin_]init!` macros. This way one can
-easily define custom `try_[pin_]init!` variants that default to your
-project specific error type. Just write the following declarative macro:
+Initializer macros should use this attribute instead of manually parsing
+the macro's input. This is because the syntax is now parsed using `syn`,
+which permits more complex constructs to be parsed. In addition, this
+ensures that the kernel's initializer marcos will have the exact same
+syntax as the ones from pin-init.
 
-    macro_rules! try_init {
-        ($($args:tt)*) => {
-            ::pin_init::init!(
-                #[default_error(YourCustomErrorType)]
-                $($args)*
-            )
-        }
-    }
-
-Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
 Changes in v3: none
-Changes in v2:
-* improve error handling
-* improve parsing and default error evaluation
+Changes in v2: none
 ---
- rust/pin-init/internal/src/init.rs | 42 ++++++++++++++++++++++++++++--
- 1 file changed, 40 insertions(+), 2 deletions(-)
+ rust/kernel/init.rs | 40 ++++++++++++----------------------------
+ 1 file changed, 12 insertions(+), 28 deletions(-)
 
-diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
-index b0eb66224341..5a66016bdf33 100644
---- a/rust/pin-init/internal/src/init.rs
-+++ b/rust/pin-init/internal/src/init.rs
-@@ -8,12 +8,13 @@
-     parse_quote,
-     punctuated::Punctuated,
-     spanned::Spanned,
--    token, Block, Expr, ExprCall, ExprPath, Ident, Path, Token, Type,
-+    token, Attribute, Block, Expr, ExprCall, ExprPath, Ident, Path, Token, Type,
- };
- 
- use crate::diagnostics::{DiagCtxt, ErrorGuaranteed};
- 
- pub(crate) struct Initializer {
-+    attrs: Vec<InitializerAttribute>,
-     this: Option<This>,
-     path: Path,
-     brace_token: token::Brace,
-@@ -54,8 +55,17 @@ fn ident(&self) -> Option<&Ident> {
-     }
- }
- 
-+enum InitializerAttribute {
-+    DefaultError(DefaultErrorAttribute),
-+}
-+
-+struct DefaultErrorAttribute {
-+    ty: Type,
-+}
-+
- pub(crate) fn expand(
-     Initializer {
-+        attrs,
-         this,
-         path,
-         brace_token,
-@@ -69,7 +79,16 @@ pub(crate) fn expand(
- ) -> Result<TokenStream, ErrorGuaranteed> {
-     let error = error.map_or_else(
-         || {
--            if let Some(default_error) = default_error {
-+            if let Some(default_error) = attrs.iter().fold(None, |acc, attr| {
-+                #[expect(irrefutable_let_patterns)]
-+                if let InitializerAttribute::DefaultError(DefaultErrorAttribute { ty }) = attr {
-+                    Some(ty.clone())
-+                } else {
-+                    acc
-+                }
-+            }) {
-+                default_error
-+            } else if let Some(default_error) = default_error {
-                 syn::parse_str(default_error).unwrap()
-             } else {
-                 dcx.error(brace_token.span.close(), "expected `? <type>` after `}`");
-@@ -358,6 +377,7 @@ fn make_field_check(
- 
- impl Parse for Initializer {
-     fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-+        let attrs = input.call(Attribute::parse_outer)?;
-         let this = input.peek(Token![&]).then(|| input.parse()).transpose()?;
-         let path = input.parse()?;
-         let content;
-@@ -389,7 +409,19 @@ fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-             .peek(Token![?])
-             .then(|| Ok::<_, syn::Error>((input.parse()?, input.parse()?)))
-             .transpose()?;
-+        let attrs = attrs
-+            .into_iter()
-+            .map(|a| {
-+                if a.path().is_ident("default_error") {
-+                    a.parse_args::<DefaultErrorAttribute>()
-+                        .map(InitializerAttribute::DefaultError)
-+                } else {
-+                    Err(syn::Error::new_spanned(a, "unknown initializer attribute"))
-+                }
-+            })
-+            .collect::<Result<Vec<_>, _>>()?;
-         Ok(Self {
-+            attrs,
-             this,
-             path,
-             brace_token,
-@@ -400,6 +432,12 @@ fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-     }
- }
- 
-+impl Parse for DefaultErrorAttribute {
-+    fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-+        Ok(Self { ty: input.parse()? })
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 917f7ef001fd..7a0d4559d7b5 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -219,20 +219,12 @@ fn init<E>(init: impl Init<T, E>, flags: Flags) -> error::Result<Self>
+ /// [`Error`]: crate::error::Error
+ #[macro_export]
+ macro_rules! try_init {
+-    ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
+-        $($fields:tt)*
+-    }) => {
+-        ::pin_init::init!($(&$this in)? $t $(::<$($generics),*>)? {
+-            $($fields)*
+-        }? $crate::error::Error)
+-    };
+-    ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
+-        $($fields:tt)*
+-    }? $err:ty) => {
+-        ::pin_init::init!($(&$this in)? $t $(::<$($generics),*>)? {
+-            $($fields)*
+-        }? $err)
+-    };
++    ($($args:tt)*) => {
++        ::pin_init::init!(
++            #[default_error($crate::error::Error)]
++            $($args)*
++        )
 +    }
-+}
-+
- impl Parse for This {
-     fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
-         Ok(Self {
+ }
+ 
+ /// Construct an in-place, fallible pinned initializer for `struct`s.
+@@ -279,18 +271,10 @@ macro_rules! try_init {
+ /// [`Error`]: crate::error::Error
+ #[macro_export]
+ macro_rules! try_pin_init {
+-    ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
+-        $($fields:tt)*
+-    }) => {
+-        ::pin_init::pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
+-            $($fields)*
+-        }? $crate::error::Error)
+-    };
+-    ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
+-        $($fields:tt)*
+-    }? $err:ty) => {
+-        ::pin_init::pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
+-            $($fields)*
+-        }? $err)
+-    };
++    ($($args:tt)*) => {
++        ::pin_init::pin_init!(
++            #[default_error($crate::error::Error)]
++            $($args)*
++        )
++    }
+ }
 -- 
 2.52.0
 
