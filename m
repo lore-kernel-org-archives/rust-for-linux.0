@@ -1,169 +1,123 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B079732573C
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 19:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4E2325732
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 21:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768505946; cv=pass; b=YPBkKDH2+TmS5V1YaVg2S/QGgETuExryKhD3RX60LOAEFnro6n0M47W/xvckjVNGDXlgaDFvKFNPst8mdW6etdA6uG7dsXpIpGAVIb6jE+nS0Zjc5J6MyKN+Iyv3hA4sGbl7pAQVIMp+yhswxBHDxsFJfB64kyYx8boNveSz8k8=
+	t=1768511568; cv=pass; b=Umng2pRdjdTysklKzoSm5LqpxYQjUHBmPXLcOXfK4X4D2Ms8r6ZjirNyvGm+fihctDGYgEJ0WMu/d7QZiPJ4Y2FlCeUmwj9qgtd8buvUHcdC+6YAZ+IVpFlWwxnLl2RnAo3Rb1nMo6Z8LRZqjgUftGnTfj6fMfTF7fTYrRVYNhk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768505946; c=relaxed/simple;
-	bh=Yse7kV//Ak55wW7EWNRb31DB65CCgekj+Ux91cBqyy4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XARycUJM6JAZBpM5qvD1/keQd7H6DW22miMsQcsWAT/mR3Awh5BSAVA70V9C5I7kLZ+az9ixCoT5NwA7nup1726flvkx1SXBrVgSoc1DmZzZFOLjzzSUTd6Fw9icG2sPa+4gngnw0M01BpWvlBuQpmYASZMwpoKm4j3Zb4+fXbM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=OMYAhn5C; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1768511568; c=relaxed/simple;
+	bh=eWp2kr5mDcUCWr42I05pJmfkg2nITrvdljuMGPPIAVo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aI8DzQxfR+OuUrU3+64fwK/QycXvl0jjQcnICBAwmjenqDbYcKz9BEnh4LrZLRGm4Dlu2xbRNM2mXzjWXJFWHh1HNGnrpYUTkxgoTchmqD1qFabccR2yyAKveIKND6GOHPlomTlOopSOnjQkN8I6HcX1BB3VsqQESgaBYN2Y3Nk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XE2wCFq4; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="OMYAhn5C"
-ARC-Seal: i=1; a=rsa-sha256; t=1768505937; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=S8eFQ8AdCVE19WEaWoeP8b8ai7AXgHctKy54h/Vxg+JcN0vuEuE5FRY0g9MCHDtSSkkdUBAO6Fkc1PKokz1HKSgWcKnjHh+1s6loFmDcQUn4cqxIczYKgK3D7lw4t65akvgXtUWsxjpXrZfJRh+/+0+7jGZGRPMudIZDs2Yvylg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768505937; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=SUZBeWhLHhcWfnVHN1bwgWdcEMSetAkrwgb+5GfC+yQ=; 
-	b=JmqkorZqn0azyUgLaX4Cf6emGeaFqteJe0LiSv0WrbgCjFWOO8HX6i/+JMghaoAbeNV4GmU1vXsAYAOv91Japz3g2Rj2iiGRYH4geYJ3GKeKC6YGdU2DpFUrQ6dIBWprmFVHfgQUg4gHQhgrfNKDb1RLA79kRs55tTlPTzq6M/c=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768505937;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=SUZBeWhLHhcWfnVHN1bwgWdcEMSetAkrwgb+5GfC+yQ=;
-	b=OMYAhn5CMV4KOwLp/jxVWB5f2dBKOwHy3JoZ/eqyrUhSkk72+Zi8maa2WbJiCmB+
-	DcizIM8p8xYsJyiB6EqTdgpUrNjhr7Q3RdcmmNGmKPX3QExey0Em0w7gR1neqo4VFA1
-	AZRhCm83jC6BhTj+tN6EnMahEC1Alp8TDhzYQtVI=
-Received: by mx.zohomail.com with SMTPS id 1768505934597190.801920558147;
-	Thu, 15 Jan 2026 11:38:54 -0800 (PST)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Cc: daniel.almeida@collabora.com,
-	aliceryhl@google.com,
-	boris.brezillon@collabora.com,
-	Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH v2] rust: drm: tyr: use generated bindings for GpuInfo
-Date: Thu, 15 Jan 2026 11:38:43 -0800
-Message-ID: <20260115193843.34878-1-deborah.brouwer@collabora.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XE2wCFq4"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2ac370cf8c0so136278eec.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 13:12:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768511566; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EybNhgmA94E4ms03Y0HPP2jXrCYUI1kJxAlDq2roT0DSaT59DwmVQfl7yyLhamZLDO
+         q4QF4FWR7mGSMD6MSkSwybKK/AMbQq2qnI4UohiVmpTIGlY4CzLTXTWeg9U1Sl2R/uB0
+         2MOuW/BlXgTbYgolOoIYR7ySvjlPhmlSKHnyYocgEF498juRmWwfFRm4O6FNqeYeN3nz
+         PD3shHUlnS9qON+f66onSend8u9s674CPvrHABT+b13Ew7H6d8tG1siJXcqsHmL7z4Dz
+         miCrWDI+jbukHAe4E3KkRhg8N9oM9H9x7AGcEc8HwlImLB5zHWK/CnHCR3mcYWzm9rol
+         4rHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eWp2kr5mDcUCWr42I05pJmfkg2nITrvdljuMGPPIAVo=;
+        fh=Exuffta99R4GJ6w9DC61RbTc1AfbU8gXF2AzGcy8e2Y=;
+        b=AtemRtXg1VdQcBEONMPgvB4YeCbOnwN3wq1XqeOZUcaASczgBLRGturi19xD+MdcPl
+         ysMcMder5dgwm16kERvbEMeKjcx3oa8pGY/kPggb2JuIBvLExV8WL/Wtcz5q+jA2wwF4
+         x2/VHq1dDrN9Va9DHRAjVB3bvTsvQqtPY5dCdSpyHWlTIhnvdLAdla7teiQDUE0ae4/G
+         unv39Acupt2b4pEISuLDCwDtCqaSOsI9MtRNdFP/p5kZ9orZh5oBUyJ8pWIh3R8IbYK0
+         PiUQ3005FmHQPKnwELwtJPcayXFb4PNqeywEBsko8OCTHxSuPjcRvVfXfUb9rEgqSOC3
+         jt3Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768511566; x=1769116366; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eWp2kr5mDcUCWr42I05pJmfkg2nITrvdljuMGPPIAVo=;
+        b=XE2wCFq4G75Ui9snd1KyQlMY0Ec406W74mRt/LHgPn3DstOJeptUsXRC08JvuedrTw
+         tiyrPwPfwQeZ0CHaCDghFNvkyRHmYWzcy0M2VdrEVbZsXINqH2/u068puphw+RucvUOj
+         aXeYMXnbjhnLm8ucP8XviNXKpuJYG2YhFV+xqFzBng3z3yNh4Qv0WC5VayBquKLOk/c0
+         8XZNUBsjLm5Kzfjzw6KLVsqRRlsRU4gvmt+pebK9Rs8Nn8o1+uC0d6Yt1GZ1n+9YI/Ka
+         TjMtp6A2/cTWOkFl2wIw7aTDu84/hKpqjR2M6qwwgCKdUK9Bz4gaq26Mr7f9wWIwNNJM
+         FSVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768511566; x=1769116366;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=eWp2kr5mDcUCWr42I05pJmfkg2nITrvdljuMGPPIAVo=;
+        b=xPykbe9rGrsYO776wGrLl8Cqtan2hYDItUHNhtZyiXRrXZ+CQn36ZhzfagNEvJ3GcG
+         8Uk1LuahfGfugHZm1bBSOWssH7Z2AM1ih0YQm0xNLf2pELJOruga1SVoONRpMHSH3F/+
+         nRS0JtW24vhNrIpwBTbv5dMXwOEfPn0h5+MaBV7IApZu0OakN9Ob5sL9fIt1w+oXEqFS
+         uqmX2A3NhW4yeKtFsCmfj5TNmbNwrWpTeNS+MMfISLZQblU9xUozZ/hzAA92h6G+b927
+         jTzv0Imt1jieyUFsNrNF2WxT0877eIOWewSsuifsTBNSSgsd4ewz472rEhO12+USRD1q
+         xr3A==
+X-Forwarded-Encrypted: i=1; AJvYcCXV5uymHNyJM7W3JY6+GRijcYVQh/2vta4FZtfXrJwRYlf7W5MReePI+2WQewNhOF0QVVFlJLAAM6lOSsh8KA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwA/sF8udHR2vT92U7qOuS3PMy8AetwkTjkPRcAW2xnpszGDbTW
+	nkPswUuXW3/dnXArL7pOcBOY2jBtC/AZkEtLKXzHCP1tbczMBiie/zvhG9XaZ6Lc3Cf0a6CPlJJ
+	3lxwYK06zmeqxCbf+WVazyRfN08TAENs=
+X-Gm-Gg: AY/fxX7/lHe49xt/BfBU0bzzW1u8ZWN+2P9/zaEhlqLf71TbUtNL4SCmYcS9OeAPp9A
+	P4Jl+bS5dvE1Gfs0OnlUi2OdReYe2S4g76DoksXcNGwKp7SRYTEuUMUMaIS4qJy8gqwVvIfRIb0
+	0MTvUWpqfP8K3NF7hx7uE3HqXxwiB9WjNRLxBNf/6BCDAUCAJ4yNq4NGhUz3ROdFm6P1SnD+2OG
+	zT+/5rNS0N/zDbUYJI0iWC7ym3L9HjTCQF0fBBYIuifdxVa1udSrRLGXeS3LwbqpobZE118kjMW
+	0xGa1/IcZrdtFccn+FFuQy75EoTRVKamUmKmty+D4YBJpaFp3+IM6MkJ3cJPuVnra7y+f5JpYnl
+	CaOFwdYn2+Oo4s3CzWEqi0HI=
+X-Received: by 2002:a05:7300:2211:b0:2b0:4e90:7755 with SMTP id
+ 5a478bee46e88-2b6b41219a4mr443036eec.8.1768511565770; Thu, 15 Jan 2026
+ 13:12:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250517085600.2857460-1-gary@garyguo.net> <CANiq72neLdtGORQ=GMsJ-mVgWscrAw4CB+_2cfbR4gtju4+azw@mail.gmail.com>
+ <CAJ-ks9n2pXZWUePZVNbR_dtvtdjZ0uW2NknkA69UsFeUiCV_gQ@mail.gmail.com>
+In-Reply-To: <CAJ-ks9n2pXZWUePZVNbR_dtvtdjZ0uW2NknkA69UsFeUiCV_gQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 15 Jan 2026 22:12:32 +0100
+X-Gm-Features: AZwV_QgpY9NOETAmWNodXN4EHE24mi60VbXv3TD46aMHdmcI3MGPIvhsDDShtIw
+Message-ID: <CANiq72k_=37BXwgkBjj31N48njMSJBB7aT=JT9GV06dVA5OB8g@mail.gmail.com>
+Subject: Re: [PATCH] rust: compile libcore with edition 2024 for 1.87+
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, est31@protonmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently Tyr's struct GpuInfo is manually copied and updated from
-include/uapi/drm/panthor_drm.h. But an auto generated struct is available,
-so use that instead to avoid copy/paste errors and to stay up-to-date with
-the panthor uapi.
+On Thu, Jan 15, 2026 at 4:51=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> Hey Miguel, regarding the rust-analyzer changes:
+>
+> I see only core was changed to use `core_edition`, but other sysroot
+> crates (alloc, std, and proc_macro) still compile with edition 2021
+> despite all having been updated in the same upstream PR. Was this
+> intentional, or just an omission?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+Hmm... I guess we overfocused on `core` here given it was about fixing
+that for the main build, and I applied the change of the edition for
+`rust-analyzer` too, but then we didn't update the others, but hard to
+say.
 
----
-Changes in v2:
-- Picked up Reviewed-by: Alice Ryhl <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>
-- Link to v1: https://lore.kernel.org/rust-for-linux/20251127211843.46258-1-deborah.brouwer@collabora.com/
+I see you replied in the linked Zulip and sent the patches -- thanks
+for taking a look!
 
- drivers/gpu/drm/tyr/gpu.rs | 48 ++++++++++++++++++--------------------
- 1 file changed, 23 insertions(+), 25 deletions(-)
-
-diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-index 6c582910dd5d..3072562e36e5 100644
---- a/drivers/gpu/drm/tyr/gpu.rs
-+++ b/drivers/gpu/drm/tyr/gpu.rs
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 or MIT
- 
-+use core::ops::Deref;
-+use core::ops::DerefMut;
- use kernel::bits::genmask_u32;
- use kernel::device::Bound;
- use kernel::device::Device;
-@@ -8,6 +10,7 @@
- use kernel::prelude::*;
- use kernel::time;
- use kernel::transmute::AsBytes;
-+use kernel::uapi;
- 
- use crate::driver::IoMem;
- use crate::regs;
-@@ -18,29 +21,9 @@
- /// # Invariants
- ///
- /// - The layout of this struct identical to the C `struct drm_panthor_gpu_info`.
--#[repr(C)]
--pub(crate) struct GpuInfo {
--    pub(crate) gpu_id: u32,
--    pub(crate) gpu_rev: u32,
--    pub(crate) csf_id: u32,
--    pub(crate) l2_features: u32,
--    pub(crate) tiler_features: u32,
--    pub(crate) mem_features: u32,
--    pub(crate) mmu_features: u32,
--    pub(crate) thread_features: u32,
--    pub(crate) max_threads: u32,
--    pub(crate) thread_max_workgroup_size: u32,
--    pub(crate) thread_max_barrier_size: u32,
--    pub(crate) coherency_features: u32,
--    pub(crate) texture_features: [u32; 4],
--    pub(crate) as_present: u32,
--    pub(crate) pad0: u32,
--    pub(crate) shader_present: u64,
--    pub(crate) l2_present: u64,
--    pub(crate) tiler_present: u64,
--    pub(crate) core_features: u32,
--    pub(crate) pad: u32,
--}
-+#[repr(transparent)]
-+#[derive(Clone, Copy)]
-+pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
- 
- impl GpuInfo {
-     pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
-@@ -73,7 +56,7 @@ pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
-         let l2_present = u64::from(regs::GPU_L2_PRESENT_LO.read(dev, iomem)?);
-         let l2_present = l2_present | u64::from(regs::GPU_L2_PRESENT_HI.read(dev, iomem)?) << 32;
- 
--        Ok(Self {
-+        Ok(Self(uapi::drm_panthor_gpu_info {
-             gpu_id,
-             gpu_rev,
-             csf_id,
-@@ -95,7 +78,8 @@ pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
-             tiler_present,
-             core_features,
-             pad: 0,
--        })
-+            gpu_features: 0,
-+        }))
-     }
- 
-     pub(crate) fn log(&self, pdev: &platform::Device) {
-@@ -154,6 +138,20 @@ pub(crate) fn pa_bits(&self) -> u32 {
-     }
- }
- 
-+impl Deref for GpuInfo {
-+    type Target = uapi::drm_panthor_gpu_info;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.0
-+    }
-+}
-+
-+impl DerefMut for GpuInfo {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        &mut self.0
-+    }
-+}
-+
- // SAFETY: `GpuInfo`'s invariant guarantees that it is the same type that is
- // already exposed to userspace by the C driver. This implies that it fulfills
- // the requirements for `AsBytes`.
--- 
-2.52.0
-
+Cheers,
+Miguel
