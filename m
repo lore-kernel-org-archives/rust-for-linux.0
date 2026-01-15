@@ -1,161 +1,71 @@
-Received: from mail-qk1-f193.google.com (mail-qk1-f193.google.com [209.85.222.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBF533B949
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 08:40:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EA633A710;
+	Thu, 15 Jan 2026 08:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768466441; cv=none; b=YjJ7dapntJ2Nj+LgcoKUgfBexK6/nUNC4OrNvR+JMOt/FSpXnS3rNkmcEFFm82rkRof4kfMz/W/2wmuJrtVjW8Ov1984DDkPubp6N5v/kjTs1g50XGuyjzWUAIscRygF3uAUBfeXcHPQRr2LfySmJZqowLRKkI4JRYZNVnjvE+E=
+	t=1768466973; cv=none; b=NzF4z9afCxkE78dNZXNGSrY42RLmbqzq60L716qBKCQdM4HUKwWdOoVhjGN+rppCbG706nGb4W1LcPf3CwjnRc7JRo+ycmbbzsmSXYBCk1vp0va+l/zwq8ZkeD1NludfwwV4LLmxfvGuW7OrNjrK6+jSgd/7gOgGlK+/ywA8/bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768466441; c=relaxed/simple;
-	bh=kGAjDZzXN4M/Us+cwgsQzxcZ0zrYKWPTy1HSPmM0J2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gjvTIubJRSE6+9v9/kyIkwjyGINgtGAggUhUHjH4Oh96AAAltFe8lSkj99A5UYT3+7AY3Wvv3bkmLsfsWYy30HaqYmAw1/B3fF/NRcc/PDPE8RRMk6EKEchhJnexYAlPxghwnTD0tjYS83pvjN8MmdiaVkG4crbvBjBm9cvQ1BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CTsFDnHu; arc=none smtp.client-ip=209.85.222.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768466973; c=relaxed/simple;
+	bh=uTf3pK36JfJCDGheiLu3xtoJTUAqL6+1C2OLNfM2PIg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=SsNmQumkhoL/dYx7bFgTWm1OeJ3WSHb8tr9PdD7y0UePv4b7bqVRg/Xn21qL1ckc8ahBVocmoiL+IPrmAqnWGCzcqBKz12EpFa9lPGAYwO3F/ARszmG5r25UfuI2b40UMWKDg65JTK0Tmw+q4WD5xNhDBqtFWjXaMKt5H2X4vPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cvn8sKmR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CTsFDnHu"
-Received: by mail-qk1-f193.google.com with SMTP id af79cd13be357-8b2ec756de0so75483385a.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 00:40:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768466439; x=1769071239; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=MMFj9gQvn0V+NVRRKsqf5Eg6BpjQZxX0IqjKremmDdc=;
-        b=CTsFDnHuyto/ZUtIPByPVikfRnCgoSMcygMfyk440aMVgUruAYRaebcg9VIzs0VaJ0
-         BEKAkeJ1r53tgallMAqw7TBzCsqDDT8GJZF9vSrGBXzfvVdl1L3begTZWi4rjilDjyYO
-         n5byGXGhbSD7lWLW67rTWVfEVH/MotjGmAExAV30OJ5/IeWeY8pruzIuoOZ20RNsSY9T
-         wH48ppJTVODK0rU3cXeo6Bj9fPqApwDaxW6sVaNKGGtDfZk1Xr7Wma42vpit7CnhVDEz
-         dNQZsLjuabACw/aggfcEz1sLm3hoRYvuvXusF+Eud37tJ4P8lkVZKZOuDhil3+RtKw84
-         gHDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768466439; x=1769071239;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MMFj9gQvn0V+NVRRKsqf5Eg6BpjQZxX0IqjKremmDdc=;
-        b=s3q01s1LgyAXWaSsXZzsMnlXZOmQVL2hKb5IehEHQvXC1uT9PxbgMXGMl6HWQCd1Fu
-         dOwGTJGthMAO+2UZn64TGx32mI9E6WOabwGczS3eQrG3p5yGcIq1EDUiimcJtvp/O437
-         l0b9MqpkakorCwk5YVaU3KOFFYl27tlBhPaC6TFzovdUyj3Uwnm0BWjkJen+mLvb3Pub
-         KDC1Mjib090/cZM+6g0a8mRwFJl4bfBlQ/mY6mPT/OuEqKaVgbF7Sy89RcPEoQm4mkXX
-         5owa5uqMimm1z18YzJQTOidiInHPF0N+A3FcXBpv3UKe0TSHjjx1V+tE03eUFdbMslRW
-         HgCA==
-X-Forwarded-Encrypted: i=1; AJvYcCWswpjebr88IHWtM6xp9Hf+7bcNHMzV6IFfGQbpbF4gdKpL5frEo4FNvSF0XDP5w6sGTWTLremF4l1mdRfFjg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyXe1VnY06tIn8Oj40QsWE9ZcnuqlZFYj/zHr1UOxr0QB/0PmC
-	/ZHZGwTPyfwfN56l3V5z0WJPiw6nr4+3OnDNHDr2VY4elclMZYpNly/d
-X-Gm-Gg: AY/fxX7eDouNhU6ZAPmf0LhM9CPc5qMHyeh5VM5xS2ruexN3qNJYye1zDPqq3GDsiG/
-	xEynYUrgbUMXhm5A7josAxFe7jMDF83fkGXOD8GeMGVBN9/VkRst4l3o4Fd0IRErYdjxkg04urD
-	v80FiRt/fMt4S4Vl1hBFjzTL3YwRgqQsPGcVbRNKBkz3S0MXqvcexExFKmfnlGCIdccOI5QQbzs
-	YLUP8Pb9XbtXQyztCOn4yujhe5mnJzCFcJ2e5qPcQ1xJRTXyMhupHp2ll25pbe9dEKitot2uhn+
-	yYGL4jOQGUvhI0cHRbISelekFoDPZ6DonI7cGK4GWBxWUUpKlGSIdAs3CvOOtmJsXpDDWnhHITU
-	lHDdsYBMXHQzL5EeyfSkrZleXF2cKztvtKODqKgSFRE3sa1CvEbt+Y9bDVQbRalS5DV/VIR6o0R
-	u2mZUyxH7yH3YEgG36TCM/f+vuEWQaLs3+TXYIdQGZ6WQV55lPvckY5Tt5sDJxv75I1n2PXt4cR
-	Z5Jdbcs29oYud4=
-X-Received: by 2002:a05:620a:45a8:b0:8c5:2032:3766 with SMTP id af79cd13be357-8c52fb26dd6mr717196885a.35.1768466438971;
-        Thu, 15 Jan 2026 00:40:38 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c530aab8f1sm343318785a.23.2026.01.15.00.40.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jan 2026 00:40:38 -0800 (PST)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D1B16F40068;
-	Thu, 15 Jan 2026 03:40:37 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 15 Jan 2026 03:40:37 -0500
-X-ME-Sender: <xms:BahoaXVof-Jyw7Z6RITyRBaIkZ5XlAX1C9SPLmFn5Es3DNK4JVtNFA>
-    <xme:Bahoaf9LA3THVNmine0aE8aflwQlZ3_uLKjR2R2kzsd4gPzs2NdIY3rG1BaiwX-fc
-    -lmtZgzkpuKH2PD9gETd8EIy2VhNjcYN1wVbr35UcoirbE5R4Hg8w>
-X-ME-Received: <xmr:BahoaUiDfAs4aSlYtB_QAPiqUKlJxJe_8pTiE0RWs2r18mToudumnOyj>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdehiedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfhgfehgeekkeeigfdukefhgfeg
-    leefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
-    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
-    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
-    hmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmhhtphhouhhtpdhr
-    tghpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrghnughonhhishesghhmrghilhdrtg
-    homhdprhgtphhtthhopegrtghouhhrsghothesnhhvihguihgrrdgtohhmpdhrtghpthht
-    ohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlse
-    hgohhoghhlvgdrtghomhdprhgtphhtthhopegurghnihgvlhdrrghlmhgvihgurgestgho
-    lhhlrggsohhrrgdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhho
-    rhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinh
-    eskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:BahoaeVGKNaYGqbaDEfjcF7V3emi7UAZMjkIRbsJRCByuXZd5Gtzlw>
-    <xmx:BahoaQvyIuuAifADi7UrBTdfqCJux7tGe3R64zvjrjG0bQMSgb_Ebg>
-    <xmx:BahoaX-YNtrf8GLDNJtUy7zSy3jrSeXp0gslTd8GgCVCQ5GJi_n04Q>
-    <xmx:BahoaYulevMC2AFGaIIvQL1TcHWAYBPwsGl3Dttai3j8AT1MNXZGHA>
-    <xmx:BahoaV4lhB06B0R1fxVkyF9e_GlHDU0OyeqB1eYzoSCmzNJH_DlvT0P7>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Jan 2026 03:40:37 -0500 (EST)
-Date: Thu, 15 Jan 2026 16:40:35 +0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 5/7] rust: sync: refcount: always inline functions
- using build_assert with arguments
-Message-ID: <aWinBMASjagM8gNQ@tardis-2.local>
-References: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
- <20251208-io-build-assert-v3-5-98aded02c1ea@nvidia.com>
- <CANiq72=U93ceCxLH_HYesCvCywpCsou98kM2Z53x=cx=iVXm0Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cvn8sKmR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D36C19421;
+	Thu, 15 Jan 2026 08:49:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768466973;
+	bh=uTf3pK36JfJCDGheiLu3xtoJTUAqL6+1C2OLNfM2PIg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=cvn8sKmRpuVPD1frlgeFT1p4++BlbRMKQDHG5FbPR5lNCQ9E/jKUfYydPjs4NMkpr
+	 je3OPcKQpJO9ocW3BPRkrPMI7N7l92WYIwdCH6rlSuCH3mPGDT/9YBHVEKn+N7X1zh
+	 yK3ejuGI3oXEKObL3rg+U5EqJhOWlorba7f56oLKArl3sfUbTnwkP3yXp8jgUpm7Dz
+	 AccGGGJMPAmjel1+gk6ZA1fBJtS9nxq34LXple3nuS/Ks42YBBfw6StQZu/KychAzs
+	 TC+fPbPVvB2ejpjjoqVyB8Sj8+d8gSixbbT6cwdX1quVe+T221jxq2tQOhZEHLOpdV
+	 4kIchOarFeHkA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Tamir Duberstein <tamird@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In-Reply-To: <20251222-cstr-configfs-v1-1-cc1665c51c43@gmail.com>
+References: <20251222-cstr-configfs-v1-1-cc1665c51c43@gmail.com>
+Subject: Re: [PATCH] rust: configfs: replace `kernel::c_str!` with
+ C-Strings
+Message-Id: <176846695540.721717.140222019430623094.b4-ty@kernel.org>
+Date: Thu, 15 Jan 2026 09:49:15 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=U93ceCxLH_HYesCvCywpCsou98kM2Z53x=cx=iVXm0Q@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev
 
-On Thu, Jan 15, 2026 at 08:49:05AM +0100, Miguel Ojeda wrote:
-> On Mon, Dec 8, 2025 at 3:47 AM Alexandre Courbot <acourbot@nvidia.com> wrote:
-> >
-> > `build_assert` relies on the compiler to optimize out its error path.
-> > Functions using it with its arguments must thus always be inlined,
-> > otherwise the error path of `build_assert` might not be optimized out,
-> > triggering a build error.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: bb38f35b35f9 ("rust: implement `kernel::sync::Refcount`")
-> > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+
+On Mon, 22 Dec 2025 13:12:20 +0100, Tamir Duberstein wrote:
+> C-String literals were added in Rust 1.77. Replace instances of
+> `kernel::c_str!` with C-String literals where possible.
 > 
-> Boqun et al.: do you want to pick this one or should I take it with
-> your Acked-by?
 > 
 
-Acked-by: Boqun Feng <boqun.feng@gmail.com>
+Applied, thanks!
 
-Going via rust-next seems more appropriate to me, thanks!
+[1/1] rust: configfs: replace `kernel::c_str!` with C-Strings
+      commit: 1d40cb05e077bb294f128c6a52630b93e452a8ed
 
-Regards,
-Boqun
+Best regards,
+-- 
+Andreas Hindborg <a.hindborg@kernel.org>
 
-> Thanks!
-> 
-> Cheers,
-> Miguel
+
