@@ -1,93 +1,125 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D0A2874FA
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 06:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768459280; cv=none; b=kUtWYHmwgFjUcArxDa3hsDi2+F2HZmLeHrz+GxWzR9J2hvD2M8Xrdhz+XwMGlG2x+aZBFGf7ub8g9NtiCzwYNqhTg5Mt2DU+MKacoXcnwsLMqIefpEyGN0wdpEfYRmtZb4L+Hscp0SDxXYFcimSIGcR4gvHuEiOFfucsS3bQSWc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768459280; c=relaxed/simple;
-	bh=bwsi1+IVSk9Ct1Bn387JTRchuwD/HUyKHMHzSG8RdH4=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E903B327797
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 07:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768463360; cv=pass; b=VtQdq6Oh+eClrOmA9hfe3MvmmFDAgOxJbFwyhImdA4dvSYVKUrstTYqT8k8jYPLkraIeHSOh6dVnu/xz3wSFxTYOxlgHFvR8K7tXMaAtSsEq/Wdkb01r3DVluHpPHDocVG6aYbPqcZcEBUHDB+9CtLAv/5fRX6dEww8S4UTlfeE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768463360; c=relaxed/simple;
+	bh=nOQz0muhgLoELpd5FN9SYvUUu2wnEMl9sQ0vYgazaxk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HUo+IKEf1iDLw77rym7BFkzM5wT7u0hqdDok1hX1denTFfaSTyU4GLMzxMq82OZT/rhPXQwAb71SC4cJcDCSr24s9ugpv13+I4NgGYfhqefYEAE8Z6eXtrs9Y2povbvn6KNjemvSOKFVJJzDQ3EI+VTlXrjImvFNlsNaSxpVf4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tS3/Rv2h; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=pQY+NJpHVmb0c6YyEBBMTTlXQeREhedyg99eckyyb8Z8eS2h+PZ+UA3GCKgd8YDaYBG7AKL0/JAiHPbS5at8qO1rQnqxpnqmQwPAagVPxQg1T1kGxQ+sVKpPbo1rvG0nPSByayovAfUhOCrqgZguTnvYFW2hnjapz1C+0Poeiy0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NKW+Q6pD; arc=pass smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tS3/Rv2h"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43284ed32a0so290469f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jan 2026 22:41:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NKW+Q6pD"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b1769fda0eso78189eec.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Jan 2026 23:49:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768463358; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ogh8HvteKnbofz1cQHkrMqHWUAlCDSrjZW2psq1WytqSfCZTMzJMDjkRxqfjAi5qF6
+         60l+iDcrtiZoAPkJb/0whrgFkOWJ2i5xzTPkk13IS8TKEF5Wp6sGYpZenbMPNsK0C0iD
+         g0gCTzRazcwsvFUFjUrizF53nc+AVtik7E50BS3gAweaC7PSksz6bLBFnH/sYRg3lVDV
+         lrtu09fF1Mbj07i0Np6k4WU+fWu/03N/UKBLmTFG4n6FPI8DefzujRHkp6RQoiox1mNJ
+         nTXUf7KuurxVHix7sOf6lkpk4mG3y5YInmRRutOk2FKnZdHO32/K6GISFvKaH7RDuR2H
+         5xAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nOQz0muhgLoELpd5FN9SYvUUu2wnEMl9sQ0vYgazaxk=;
+        fh=2pPQhFAHTe5MIEzgSOUkQflXc4mcQ9hVav7P7rmJ3UU=;
+        b=OOSTozOmYkQ4cwJwpOycdpWmPPq6CVMmnRe3g8Lov24cZEIQVjmKujiGDcdDpfigr6
+         sNIUlLqKIjTf1KPly0vE2LvDLRkBCpLbPH/r8crcuNGpjzx7jLwlyxd3TawjOfnQfFr/
+         UnANyfz/o7WZtL6Yaa7i8AIGmsEIE4vHPTMHsaoQmy/lJd06n5wCyqxp6DLF4nJEBxdA
+         Da9IIZlEDgnupBjK+In+rKw+HIWT1R9dv2VT3otWRkVFWdlfvOVq/+sx37lK/WxMQpf7
+         TbJFDMPs5+6b0ztPdfBa2wuv/Hqs7lcXm74zQzz62CqVLqmWhidg7uklpiTpIBG1TYRG
+         7nzw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768459277; x=1769064077; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768463358; x=1769068158; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bwsi1+IVSk9Ct1Bn387JTRchuwD/HUyKHMHzSG8RdH4=;
-        b=tS3/Rv2hR3Ka81XE95S3lGFgsnZJWCoGUbv9YScloRUy9dC0coRiuKJGNfNwkpMYgF
-         s48zXThi2y/0RUEdoZ3BzMjLGdo2cgbm2uVTnZpsWBa6vpLO0CxN/P2f9y0HfbfLK5EO
-         TDdgdBB+6ACRBuNxGq4QNCZzTOXuxpxW06LENoVYoZ0AYwjXriUltjHr4Gg61CZm+lHW
-         f+fDx2MVeQq/yDahV1phV15wWSg7JTC78+fpZeqbmEGQP0Rgv96CjDIW56BB4BWIbXag
-         qK9615T3rYtNyWzZzxr5aKsv8uFyxHSj5swgc+IPxiNqJuvpkxf/WD2mmNrXl6JQXRsA
-         QjaA==
+        bh=nOQz0muhgLoELpd5FN9SYvUUu2wnEMl9sQ0vYgazaxk=;
+        b=NKW+Q6pDTwy+lHxrW9/jbrOIO2fXs60xw4O5+ZA6cc1ofr7oQC0w2PymPmrXox+n2A
+         mOOETmZ2Gy4by/WtC8f4JQvihVyboi3HVD10A4iwW0jZ1p83k1jbFzYl4BpFOjcZ+cIf
+         11XP0Opfoax+3yI3nqfvI28QTT5bXbUC+PM4lkmTc2aBuMmYClYmlj4pVlJuoQ2qlPIB
+         NBW7slOfbR7kgeDErZ8DM+usaM1ZgU2YGqvbDn6wtoj/JfEAxvNSyidZ4TkkqqqW86Sl
+         nF2T2/EF+UD9zQZ7lhMgDse7xQ/fPe8YmtL59cANi2eNhzDyuzwv0irID7dzWJ88+D81
+         83JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768459277; x=1769064077;
+        d=1e100.net; s=20230601; t=1768463358; x=1769068158;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bwsi1+IVSk9Ct1Bn387JTRchuwD/HUyKHMHzSG8RdH4=;
-        b=ZlJnBrvl1ZaJ+vHeyeT+TMwroMEfLvprxxv7FrwpRAJ4cGZ0yv+Z523Z6mB2URaQo6
-         JU2DsFOoR5edS6i7movpd7FUYu8HgU91qk4i30e/S2M4rPF6KT4U9VrKtR2VdugLxFx8
-         o5QcsLgD5qk98v5zfb9ck6dNW2pn0OA3DCjyBxy9MOEnh+Ul6J+HJkTgx/MKBj8j9o/s
-         LucUeHJiTs3ibyJHyDswY20r1AlRuoFZxFIu9zuK7zKGkW4IyzLWfYw22xHyfqM2bDQ/
-         tNxO2pYPIDYjx/DCl3d33m9My7ik3H9PqGUD/X2zjOETU2DIpIIX9Fq1CJ1BIaxC0Elt
-         uMYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXBHKvBtjdQdBi/x2jTyQnuGDPzm85P1tUkyhnMvnrpM38b3Oz5oqR9yWytrNgL5sCmL8qdobM2fa5PHLebhg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2FOMo0zxwkk6gOdtyEOcIrjFiN+8UDcSx1OT25GSC9Kd5opO5
-	lj2ZoOC6ktLoxTrhvgIyihHduqPzJ+43byOC7hPn5FivyBmFyum+6i+ukqwWPRiJcuM3Gnkht7S
-	GTC1OpsD3WcnknGzml3gLHRZYYSCuBmRNM03qesQ4
-X-Gm-Gg: AY/fxX67ev15B3O0BNkzLcOJzDrpr4Lrv0KbvEZC1QYdFSUmLADiK/kw4cyvb4RfXX3
-	81Vw7PfXnGTTFltGA/JnB8RBR3jKs1kOIJNVT0vdkj8f9cjqlSwMIABzfr5k2N8lPLZbqs69IOl
-	LTQtbkYoGQ98RIC92qhPy/FzohpF5C5MjWCJDZA2AVGOW+EPhmAAltypIKT6JWuEDFpuuPz4h6f
-	WiMw0WW7xpQ+Mxvm8feR1koOZPqRkh/TCbKRosIvqJJelVzLjSbSAoMTcBHYTpjNQESPjsNMW6X
-	4Qt/dI4ufLfERMdnex2IbyhCGw==
-X-Received: by 2002:a05:6000:1867:b0:432:dfea:1fb8 with SMTP id
- ffacd0b85a97d-4342d5bea92mr5861031f8f.27.1768459277345; Wed, 14 Jan 2026
- 22:41:17 -0800 (PST)
+        bh=nOQz0muhgLoELpd5FN9SYvUUu2wnEMl9sQ0vYgazaxk=;
+        b=RulyiStIaTnlK1zeZ6tEBbvqZufUuSO5owIf7ZzK/ETgTOA4t6Ymrfqu9FYFN7KyY9
+         rUyo4wQ4gZ3ycsk8ejoS3Vxhyr+DTPcp+4OkYD99nwwL4w74QNAZ52Py1Fo4x77G4gFO
+         tK6pSOx329T08OK7APqWgmhCztdklQa7jqCBncaLCx5XAkqGLOW+j40D7BEbA6nhRj2A
+         Vdrv8za+VAMCVrD+eiPx/M3fw/TDzx60laTAFBN3IQLHh+i72ecjykW5XzIRF6iEabo8
+         Qi0iSakldeONo+7itiZZEm1euFR5DRYTWHIdoj8HYITZc2kW2z04tDhmz6LAIYsz8YJ5
+         7ieg==
+X-Forwarded-Encrypted: i=1; AJvYcCUa4+UO5URsqyoko9wvw8ctuUBB1E282fHULmCtqbOD1xyvmKTeK6spU7VymZk4hU8zJtFQos2yTWmODoNGjw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhTYS4t2+lRGORLHFTrEg+JQBOEO9m9bcJ1noivXi6n94sXOGH
+	3EmYfH5XCfS51+alFrW4wIzzL7pdHX3N4cPlO+qDCkLpaI3xksWjrWD7Pu+KDqMgtvooJMQ1snm
+	HtP0j1gYwQqkSpHqmL2d0cVCGBRnj1F4=
+X-Gm-Gg: AY/fxX69PGjaddavx9k+350B27yM9NZMmNCYCVl7KVlWbtJ4lGQAPgxCpEeeSVjGYNy
+	G8zKCuojLc+9NHUEqoNEhOkkYnDf5awxpQU8jrN7BF+8V8vN8B9mEVTcxiT89LeGE/SsKFL+X9M
+	dzVqkZRLPXU+rXpnxM0IA5z0cbqa5FYHkYoNjLOxFVfwLXuaRSEtQcIdPeoYeJO3hw+qS60U48i
+	BDXNKIN8H6RKU2ixhnP1IL4S2Jbx4VwWry7o8PkOK3ns1tgXO/uuRLrEt5HgXd+EXU5DGMVKLbs
+	oCjkyKdMbvS/bpODBe8QGoan7/IgpRQLHEXYkYLhmxTKLRYpIbpVqYm+kVM7qKNHuVgbjMpibny
+	+MMxcP7etZpW1
+X-Received: by 2002:a05:7300:3b1a:b0:2b0:4f9a:724b with SMTP id
+ 5a478bee46e88-2b4871e9771mr3815587eec.6.1768463357956; Wed, 14 Jan 2026
+ 23:49:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115021230.3297420-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20260115021230.3297420-1-fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 15 Jan 2026 07:41:04 +0100
-X-Gm-Features: AZwV_Qhz-3gDqDB7ejCRhiAEBErLd7381fzWzW7VpCYl0MYW7fi93w-7ejCQR5I
-Message-ID: <CAH5fLgi+kvMUyJPMtGr6e7t5UzaV7Gcc1okEQoDfRUqAKCK0tA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] rust: sync: atomic flag helpers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: boqun.feng@gmail.com, ojeda@kernel.org, peterz@infradead.org, 
-	will@kernel.org, a.hindborg@kernel.org, bjorn3_gh@protonmail.com, 
-	dakr@kernel.org, gary@garyguo.net, lossin@kernel.org, mark.rutland@arm.com, 
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+References: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com> <20251208-io-build-assert-v3-5-98aded02c1ea@nvidia.com>
+In-Reply-To: <20251208-io-build-assert-v3-5-98aded02c1ea@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 15 Jan 2026 08:49:05 +0100
+X-Gm-Features: AZwV_Qh28YVcYO6VVyfidVd7hc-EBw_qgwEmENRAhtkTb9yLXtecSM5NN0ft-tA
+Message-ID: <CANiq72=U93ceCxLH_HYesCvCywpCsou98kM2Z53x=cx=iVXm0Q@mail.gmail.com>
+Subject: Re: [PATCH v3 5/7] rust: sync: refcount: always inline functions
+ using build_assert with arguments
+To: Alexandre Courbot <acourbot@nvidia.com>, Boqun Feng <boqun.feng@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 15, 2026 at 3:13=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Mon, Dec 8, 2025 at 3:47=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
 >
-> This series improves the Rust atomic-boolean support.
+> `build_assert` relies on the compiler to optimize out its error path.
+> Functions using it with its arguments must thus always be inlined,
+> otherwise the error path of `build_assert` might not be optimized out,
+> triggering a build error.
 >
-> The first patch adds a Flag enum (Clear/Set) and implements AtomicType
-> for it, so Atomic<Flag> can be used when RMW operations (xchg/cmpxchg)
-> are needed and byte-sized RMWs may be inefficient.
->
-> The second patch adds AtomicFlag as a thin wrapper around Atomic<Flag>
-> to provide a simple bool-based load/store/xchg API.
+> Cc: stable@vger.kernel.org
+> Fixes: bb38f35b35f9 ("rust: implement `kernel::sync::Refcount`")
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-You don't have to do it, but a nice follow-up would be to use this for
-the AtomicTracker in rust/kernel/list.
+Boqun et al.: do you want to pick this one or should I take it with
+your Acked-by?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Thanks!
+
+Cheers,
+Miguel
