@@ -1,192 +1,113 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DC43C1970
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 17:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCA13BFE25;
+	Thu, 15 Jan 2026 18:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498117; cv=none; b=FjIM0GcpRMcnFnt30FMdfH1jVRtD5wbZiUUGeTmjy7eYTQ+ck4m0LS7rGHBbbXVWmbtdK8qEG+ZZNMTn3eRaFroUXV6Gh+i9b2fBfQTIyaSRcFYHbncoc/DSNIW/lsthgbp+nvIMAwlwhNCMl9G4uWRHg7BIY6pFsAO7ymgfnb4=
+	t=1768502333; cv=none; b=E6j1fWEnC9OCIDjW8fYMJ1XtrWig2G2Aw53IXqRIUldDEg8NTle/k6chiX2ds3QnNlbVUSnOjPE7rHAUDW4Yd4BnVXc62cVZHrFjtXR+ybiciTNv98oQOgK6g5d6+PmoLe+xvs0LK40VA1Io/AcxSrKczNPjzjBfsA8Ex2qJYYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498117; c=relaxed/simple;
-	bh=P6LyHnXwl97jHbEhU+1xZ3S5rlbWeSwOLxVdj5CzHFQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iZbz6uQ+9rfhY6W/jwhgThDlubk3FSKjDadnLDP4re6Nte8OGI1EBY6GwJXLu0zFPrZg3gQfVP4FvlwTju5OKHoG3Q8CZDNV5F8HbsE+eimpo3soiK2gx3EpL4jYI9pi6svy0ivfazTwJ2t7ilevUmeVUh+pXWcurQ7EtoY5JVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DiXoyk4b; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768502333; c=relaxed/simple;
+	bh=7S5r6qZkhx5y+DfF1z743TKT2hep7ZzGxgnEnl90z94=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QR3V3nAVCVqvi3zq1qJq8GsOdrjbWnksp6U+Hw+aTeiCILNeJHJZRp14lJG0hphMkXuQPsboVwEryLLqpO2qWIfXCIXoU9a8ovdwNkI8I1a3ELrgmPSRcgRq5soyRCtHiLS36SHRCqChLkoF1YUlfxgalwsvaVPGT7v8ZdPSoBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b0WQ54ov; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DiXoyk4b"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768498116; x=1800034116;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=P6LyHnXwl97jHbEhU+1xZ3S5rlbWeSwOLxVdj5CzHFQ=;
-  b=DiXoyk4bOVFRjs+gDFYAe0nG/YPxO+/dcCWmlJ6N2L1te5YsbBnrgtLv
-   qB1XEPpisfbQclP+tAAflsB3nAY0JaKzVNKGGkZ5AyWjhGr/2ziJcx+Ah
-   UxIuyXiuYFaWUhFVaO0TOhsLTMIR9DM7rzqxYK1xvdvFWIb8NSHo49lVb
-   0CBvgIwUDnDFyHGosjRdBdG2eTbdcg/Oeodh1Cjif0ikwwf2JakUvmZUw
-   XjzDTS2SIpfWIwfnSTMFRNyIGWOeUZoOnpjmtMflsKPFaF+5izjb6WwVO
-   LSshghub35U+NxEraIhWU5jxmo5tEcttzYeCasp8egQyVA9O9LYRt45KT
-   Q==;
-X-CSE-ConnectionGUID: qptuub6cTmiHpPIvGqpg3Q==
-X-CSE-MsgGUID: fXFKLyTtTwqQ+hK4EN3M3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="69709537"
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
-   d="scan'208";a="69709537"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 09:28:35 -0800
-X-CSE-ConnectionGUID: 3exdOicFSFCvGWvaJ+T6tw==
-X-CSE-MsgGUID: eCD674mvQpeeHyeVfRGR8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
-   d="scan'208";a="204897663"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 15 Jan 2026 09:28:32 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vgR94-00000000IlM-0fbh;
-	Thu, 15 Jan 2026 17:28:30 +0000
-Date: Fri, 16 Jan 2026 01:27:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Timur Tabi <ttabi@nvidia.com>, Matthew Maurer <mmaurer@google.com>,
-	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v4 5/9] rust: debugfs: implement Directory trait for Dir
-Message-ID: <202601160158.7mf9LG1y-lkp@intel.com>
-References: <20260113225408.671252-6-ttabi@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b0WQ54ov"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB36EC116D0;
+	Thu, 15 Jan 2026 18:38:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768502332;
+	bh=7S5r6qZkhx5y+DfF1z743TKT2hep7ZzGxgnEnl90z94=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b0WQ54ovxPyCPGmMpcCdfFqqfNd+sA6WAcvucBqhXOhMlMdmNEwMUkeN39D08cdJi
+	 pPOvb573LNFZSZE+nNiYnWR0LWxG9qTWhrowtJKv6EBYB6VQxZVNiS3cSSsMgXw1bi
+	 ml9zjCfB0gDYHHrqctSFvlVlBCpMfQL+FJO26JN4oeVGXCmcLRNDiU133FetV0UTrC
+	 7EWdrWv7yJmXd6fisXCKJRTyrmBnhTRJ6brbQlSAOC/U/WQYU2u07V8WaXYfeEK1fV
+	 cLqOY4kQnuarBofizJ+l/b4bJz3yIswIUt7I3LbqVfJTZB+cxy2fjuDB3L4KKBdYib
+	 oYTSJ7M4DoLug==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] rust: kbuild: give `--config-path` to `rustfmt` in `.rsi` target
+Date: Thu, 15 Jan 2026 19:38:32 +0100
+Message-ID: <20260115183832.46595-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260113225408.671252-6-ttabi@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Timur,
+`rustfmt` is configured via the `.rustfmt.toml` file in the source tree,
+and we apply `rustfmt` to the macro expanded sources generated by the
+`.rsi` target.
 
-kernel test robot noticed the following build errors:
+However, under an `O=` pointing to an external folder (i.e. not just
+a subdir), `rustfmt` will not find the file when checking the parent
+folders. Since the edition is configured in this file, this can lead to
+errors when it encounters newer syntax, e.g.
 
-[auto build test ERROR on 654826aa4a8f25cf825ad9254f37e6cb5092098f]
+    error: expected one of `!`, `.`, `::`, `;`, `?`, `where`, `{`, or an operator, found `"rust_minimal"`
+      --> samples/rust/rust_minimal.rsi:29:49
+       |
+    28 | impl ::kernel::ModuleMetadata for RustMinimal {
+       |                                               - while parsing this item list starting here
+    29 |     const NAME: &'static ::kernel::str::CStr = c"rust_minimal";
+       |                                                 ^^^^^^^^^^^^^^ expected one of 8 possible tokens
+    30 | }
+       | - the item list ends here
+       |
+       = note: you may be trying to write a c-string literal
+       = note: c-string literals require Rust 2021 or later
+       = help: pass `--edition 2024` to `rustc`
+       = note: for more on editions, read https://doc.rust-lang.org/edition-guide
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Timur-Tabi/rust-pci-add-PCI-device-name-method/20260114-065717
-base:   654826aa4a8f25cf825ad9254f37e6cb5092098f
-patch link:    https://lore.kernel.org/r/20260113225408.671252-6-ttabi%40nvidia.com
-patch subject: [PATCH v4 5/9] rust: debugfs: implement Directory trait for Dir
-config: x86_64-randconfig-122-20260114 (https://download.01.org/0day-ci/archive/20260116/202601160158.7mf9LG1y-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260116/202601160158.7mf9LG1y-lkp@intel.com/reproduce)
+A workaround is to use `RUSTFMT=n`, which is documented in the `Makefile`
+help for cases where macro expanded source may happen to break `rustfmt`
+for other reasons, but this is not one of those cases.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601160158.7mf9LG1y-lkp@intel.com/
+One solution would be to pass `--edition`, but we want `rustfmt` to
+use the entire configuration, even if currently we essentially use the
+default configuration.
 
-All errors (new ones prefixed by >>):
+Thus explicitly give the path to the config file to `rustfmt` instead.
 
->> error[E0599]: no function or associated item named `new` found for struct `Dir` in the current scope
-   --> rust/doctests_kernel_generated.rs:4085:16
-   |
-   4085 | let dir = Dir::new(c_str!("my_debugfs_dir"));
-   |                ^^^ function or associated item not found in `Dir`
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Directory` which provides `new` is implemented but not in scope; perhaps you want to import it
-   |
-   3    + use crate::rust_doctest_kernel_alloc_allocator_rs_0::kernel::debugfs::Directory;
-   |
---
->> error[E0599]: no function or associated item named `new` found for struct `Dir` in the current scope
-   --> rust/doctests_kernel_generated.rs:4145:16
-   |
-   4145 | let dir = Dir::new(c_str!("my_debugfs_dir"));
-   |                ^^^ function or associated item not found in `Dir`
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Directory` which provides `new` is implemented but not in scope; perhaps you want to import it
-   |
-   3    + use crate::rust_doctest_kernel_alloc_allocator_rs_0::kernel::debugfs::Directory;
-   |
---
->> error[E0599]: no function or associated item named `new` found for struct `Dir` in the current scope
-   --> rust/doctests_kernel_generated.rs:4204:16
-   |
-   4204 | let dir = Dir::new(c_str!("foo"));
-   |                ^^^ function or associated item not found in `Dir`
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Directory` which provides `new` is implemented but not in scope; perhaps you want to import it
-   |
-   3    + use crate::rust_doctest_kernel_alloc_allocator_rs_0::kernel::debugfs::Directory;
-   |
---
->> error[E0599]: no function or associated item named `new` found for struct `Dir` in the current scope
-   --> rust/doctests_kernel_generated.rs:3973:20
-   |
-   3973 | let debugfs = Dir::new(c_str!("parent"));
-   |                    ^^^ function or associated item not found in `Dir`
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Directory` which provides `new` is implemented but not in scope; perhaps you want to import it
-   |
-   3    + use crate::rust_doctest_kernel_alloc_allocator_rs_0::kernel::debugfs::Directory;
-   |
---
->> error[E0599]: no function or associated item named `new` found for struct `Dir` in the current scope
-   --> rust/doctests_kernel_generated.rs:4028:19
-   |
-   4028 | let parent = Dir::new(c_str!("parent"));
-   |                   ^^^ function or associated item not found in `Dir`
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Directory` which provides `new` is implemented but not in scope; perhaps you want to import it
-   |
-   3    + use crate::rust_doctest_kernel_alloc_allocator_rs_0::kernel::debugfs::Directory;
-   |
---
->> error[E0599]: no function or associated item named `new` found for struct `Dir` in the current scope
-   --> rust/doctests_kernel_generated.rs:11462:20
-   |
-   11462 |     let dir = Dir::new(pdev.name());
-   |                    ^^^ function or associated item not found in `Dir`
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Directory` which provides `new` is implemented but not in scope; perhaps you want to import it
-   |
-   3     + use crate::rust_doctest_kernel_alloc_allocator_rs_0::kernel::debugfs::Directory;
-   |
---
->> error[E0599]: no function or associated item named `new` found for struct `Dir` in the current scope
-   --> samples/rust/rust_debugfs.rs:136:28
-   |
-   136 |         let debugfs = Dir::new(c_str!("sample_debugfs"));
-   |                            ^^^ function or associated item not found in `Dir`
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Directory` which provides `new` is implemented but not in scope; perhaps you want to import it
-   |
-   34  + use kernel::debugfs::Directory;
-   |
---
->> error[E0599]: no function or associated item named `new` found for struct `Dir` in the current scope
-   --> samples/rust/rust_debugfs_scoped.rs:134:29
-   |
-   134 |         let base_dir = Dir::new(c_str!("rust_scoped_debugfs"));
-   |                             ^^^ function or associated item not found in `Dir`
-   |
-   = help: items from traits can only be used if the trait is in scope
-   help: trait `Directory` which provides `new` is implemented but not in scope; perhaps you want to import it
-   |
-   9   + use kernel::debugfs::Directory;
-   |
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ scripts/Makefile.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 5037f4715d74..0c838c467c76 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -356,7 +356,7 @@ $(obj)/%.o: $(obj)/%.rs FORCE
+ quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
+       cmd_rustc_rsi_rs = \
+ 	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
+-	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) $@
++	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) --config-path $(srctree)/.rustfmt.toml $@
+ 
+ $(obj)/%.rsi: $(obj)/%.rs FORCE
+ 	+$(call if_changed_dep,rustc_rsi_rs)
+
+base-commit: 74e15ac34b098934895fd27655d098971d2b43d9
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.52.0
+
