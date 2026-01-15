@@ -1,166 +1,175 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6973B8BA3
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 15:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768492293; cv=pass; b=uZQ62ONvH55Lce87pyoBZTimsS5w21RppJ29qX+VJyY3TdeYlDDwQMbakcJW71wy4VzwY9jopbmXup3qRbjJIeMDGiZLwuzh+ZeeZ8G4ChIkaSaiMgiYUz6OkzgXgBzQEtHoyeiXYEYnPMkswFluVYiIH6vIDltmgFiHTpvnVRM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768492293; c=relaxed/simple;
-	bh=5jZOHI7cz/tFkCcOhP8OROvIBT3DGTiFcQeywBuUSmM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aJAx1wDEdq0jWBotLjq4j+N5RvOWQFmdWEwTSBfr39BiTbxhwhzIIo6+KRo2NKJVsJHRdwHxmevyAENI6KlOR0mJh0Ryrtvn8nZZQwPtuq++OxAfT3AImXwTQpAUqEo2s7TqUJweJhyovg76K52Gk5eDRE7nzrPB4Bia1KfPvQ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=On7bqg4n; arc=pass smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAE52C0282;
+	Thu, 15 Jan 2026 16:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768494954; cv=none; b=EtEt5HW4VX35GeJa/Id+Rp133Ru9VgEDfoLmrOuM0Svia6jCk+7QhYKn6rq0uywzu52pVkADyZZ+m/J4sLg1lcHJY7mAciw9wwiAcLdQlO1EclHt/K03cP5gHcOAcaVZ1oeDaI33TaXoXq4Nb+WvagSCiGRaju9teOYMqX368Kk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768494954; c=relaxed/simple;
+	bh=8m21RhxED4tma+8uuYKNSOWq2lTjk2yHg3/sNJE9toU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=snRsNeRA/bVDSyZNbsXD//eQjanYj/493ZC2j7g8nGQRHzrc0qanT2VQEunD9gqZxnrMi5g5XJmBTAyWYee+QXkGTxqUiGr6G9I7sZBiRQTOtEWBU0JzOqiihqIMbz4sZMmdEKspedyaJOrp/hiTdc6t/avBFoEcAtLOeRw5INU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rVmqjQdy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="On7bqg4n"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59b672f8ec4so1253447e87.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 07:51:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768492289; cv=none;
-        d=google.com; s=arc-20240605;
-        b=UgEY1Wtwpeu7dmbRw5fCXH9BcyxPSlbhG6CIOTcolV9oYKI6tbKkW6V2lYhXm7jr+z
-         lWwrx3rFmscltQW0f/ZBMkA3sz/9DyL71mfm6gbCuC0a8SxVH5ZDTvjFDfZVq50xzmF3
-         fpbeBtH5zspeHLuojvBb7SVz62MD+In4isF9msCH1ib0alTF9EHCmsgNejSAk91wsfNL
-         W0ugdNf2CQW8Nh4hZjeTU0STOCbm0X5BZdtYm5SCLnnA61EQI+0Cnq3cl3hauSlFqwTU
-         bamP+3DXqLstYctf258Qp5Ox0fUsNXEDiR4PvZzDxl5Ky+Jf7pR/FKFBzwDPSDXc4C2y
-         fxJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BLbV8wG5kDIJ8frOLw6GPwE++FJ1Hb8KJgZ7vb66YeM=;
-        fh=NCxnxvLnMvLP/OMkNtabubwX8+S5gKg5mC0HPT68OvQ=;
-        b=WVd8gqAkb+ZAo2uRuWs0K+F9QCUToYbarKrNO1q3aaPWBRc7/7fObViVX+FnPNMkC5
-         rcmeiC+N+vt8J4v0YUk5qKJa5K/mGI2M5VYigST6YA/NQTSRN89OkY4tdqwf3nuhfIJs
-         //p16HTW5OY2x/CakdJBI2NA5rEHb2MJ0p+2yg14ssPRpBPObaqPcd9zqxYILUqO17KS
-         hZ05iEB6ckJ699BzHswLlfUC7XYsCVAM/Q6Dw1fhIf5X+8tq8c3/39uySCtsIQkvPV1J
-         MfuoL1/w2nylnciOei+t7cRZmPBDjUNZD8rGPB2D3aO/5m6FCA2vsc2hLgeuiZ9fyshD
-         J+hA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768492289; x=1769097089; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BLbV8wG5kDIJ8frOLw6GPwE++FJ1Hb8KJgZ7vb66YeM=;
-        b=On7bqg4nFaVRC5n/YT04mltNUNXUk7sqOTpnl1nmKxvoQAC+/+WR7ZP1ejzWOyKVQv
-         XQc770ejj2kvZvXmhHT3Yg+uFnkOurB+gKxr3Mhdh7itkQXDrDWeNhcLmFhMw+RnHyQD
-         3oc42JoWdt3F0ZZ6KQnZmwgyElLZ2urdRplcIyOITA3188grVNJw1qOK4o/a57ERnpDT
-         Ulh/qfq68D9G2uE68UGt5M8Wixenjj77ai/fmaWm2E2PzAop0lAKW/LBfncTJ//1xIo/
-         mTHkqOIsQlCU+TlHHHvih09VRxFZTxwyOnw8NO0qLni0RGYCTnWHApuuSeZSdnKYb1wI
-         20lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768492289; x=1769097089;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BLbV8wG5kDIJ8frOLw6GPwE++FJ1Hb8KJgZ7vb66YeM=;
-        b=ukiQnk2YeNgkRchaabx32+qD/wNP+4vDp6r3duZY0Vq8FvJCEYSGm3rgG65TSbvA7p
-         a7RM5/kvRetpDis2L55DG0Pu3ybRQtBQn30BFDD/z6M41TE0XpTOA6cEeN2MgDO3vPbe
-         8yDMeEEy+eJ4aK+o4VX+KLhs/McTSmU2LiVn8jpyqqYZ/t4yzMldth/kTia1teQzgwbx
-         kYgs/7t4HXAsJ4XGhKGfRpMzbHUHkloSgVrTah3Dr/bfutgQp6cMQ8EPnxZUIXM13SsE
-         XS4qRIe+SFwEuKKDfhyR4sskP1+eLwDL9Rav79d2eHAdHmT2e50VUgcv+g7pvGkQmFgy
-         klCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW8QBLwd2iwvZuRR3R4VUZuk1Vl9Fkh9BNt/hLDIfkvVqKkImsWKIxWmFxadyDvG/KjqDAdG4i4fU5ZDSxYAg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmaNA4Z3VXB2GsCPTUsDkywmbSG8+Itkr7Yhn+IpsIeXw3vv1o
-	4TPzbPIWcIag3RRFYm2LHozq5yzu7ODmH7Ql04wVsYvo2woQOEacvWMhbGvGGEH+3VygrKt5AW9
-	osKq2aLd+m9NI9cH0rdQORqDVpOsrb3k=
-X-Gm-Gg: AY/fxX4/4bDnCGoMb0pzNoTdH/usbZ1GDjHPxUdN/lgt/Z5XNmQYuWMH+ceHxZmuOzA
-	lhQKuiWzcSQxMkCj0c5qdyZ0OmmlfSGMZi+S2s2p+XoPSudRFSZMJJy5cGfUII9hzFl7xxpc0yE
-	4TO/73aMxGJtILQ7r1eGRqP98JTyb8npoMjzcoVdWseNhFSVDFs3+xZ/SOALvkLgqjQjp/k5e2R
-	hyJDruS0/QaNvKycS28SWIUgLzwvNYm4LQKe4NjVqf+QcEoWWKx6ZnTJo10g4XMiVINMueJHwaj
-	X9NAGUH2WHdq6bcJk5/5JsPVy9PE8rOygN27e06j/HorL/z8oxGABaBXm2kOZ8Cc+Q/wLig2NYh
-	saQoWeg==
-X-Received: by 2002:a2e:b8c8:0:b0:383:5a4f:2603 with SMTP id
- 38308e7fff4ca-383841a426dmr659501fa.10.1768492288482; Thu, 15 Jan 2026
- 07:51:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rVmqjQdy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A83EC16AAE;
+	Thu, 15 Jan 2026 16:35:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768494954;
+	bh=8m21RhxED4tma+8uuYKNSOWq2lTjk2yHg3/sNJE9toU=;
+	h=From:Date:Subject:To:Cc:From;
+	b=rVmqjQdyhde0j0DCyy4n4Huk+MApSoyOCbcKHvxVTglmfo1xQ8zCp7erBA1STYEYH
+	 WZRY4n+SPk0yEp2LmCDsLhbworJlubo6qGQ5aOTq7gAsPVYnN+gq1UKqMYJS3O4k2m
+	 GF7Oj5I1yYSKFL9m2r29+jHSItbg0AD/g+lfidQ1HyWBK5aacbR6rYjKK2mUcCc/8y
+	 akMQ01fpYULojsc6StrgO1GEx1y0PdLlnXqyT5Lcp1s5IHXIj+ZwIQBEslFGmKEpch
+	 VXEvYt5PTGrxSAqhlZmIb+yT6NlM4uhgV6BnlCxPmc1iwMRBJA6PLMm9g1cU0rumPO
+	 nTopo7phBoGBg==
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Thu, 15 Jan 2026 11:35:50 -0500
+Subject: [PATCH] scripts: generate_rust_analyzer: compile sysroot with
+ correct edition
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250517085600.2857460-1-gary@garyguo.net> <CANiq72neLdtGORQ=GMsJ-mVgWscrAw4CB+_2cfbR4gtju4+azw@mail.gmail.com>
-In-Reply-To: <CANiq72neLdtGORQ=GMsJ-mVgWscrAw4CB+_2cfbR4gtju4+azw@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260115-rust-analyzer-sysroot-v1-1-4de831df234a@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMAyA4VchPduELZkBX8V4KFCkhGymHUYkv
+ LtTj9/h/3cwVmGDS7WD8lNMUixwpwr6ieKdUYZi8LU/184F1NUyUqRle7OibaYpZQxj1waitgm
+ Dh9I+lEd5/b7X29+2djP3+TuD4/gAVdA5i3kAAAA=
+X-Change-ID: 20260115-rust-analyzer-sysroot-5fb95aa985d2
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1768494952; l=4499;
+ i=tamird@gmail.com; h=from:subject:message-id;
+ bh=QMZLLcC9z1PSg3WG4NSojUsLOMEDhxKz1flbQyzB+8k=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QO+rnkM5eGBqnd4xO8EHJLc0k92WKZ9QcZ9QOS96vppoiCDPSruMc3/EBHwI+feNEPkC2CNhMmR
+ 2cRKKukaHuQ8=
+X-Developer-Key: i=tamird@gmail.com; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 15 Jan 2026 10:50:52 -0500
-X-Gm-Features: AZwV_QgmS5MREKIO5CYv0cuexmqdXCEp7abbRQSIGNVpHXpWKf3VbWEU7Y4RQYE
-Message-ID: <CAJ-ks9n2pXZWUePZVNbR_dtvtdjZ0uW2NknkA69UsFeUiCV_gQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: compile libcore with edition 2024 for 1.87+
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, est31@protonmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 25, 2025 at 5:26=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Sat, May 17, 2025 at 10:56=E2=80=AFAM Gary Guo <gary@garyguo.net> wrot=
-e:
-> >
-> > Rust 1.87 (released on 2025-05-15) compiles core library with edition
-> > 2024 instead of 2021 [1]. Ensure that the edition matches libcore's
-> > expectation to avoid potential breakage.
-> >
-> > Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned=
- in older LTSs).
-> > Link: https://github.com/rust-lang/rust/pull/138162 [1]
-> > Closes: https://github.com/Rust-for-Linux/linux/issues/1163
-> > Signed-off-by: Gary Guo <gary@garyguo.net>
->
-> Applied to `rust-next` -- thanks everyone!
->
-> (I actually applied a couple days ago in advance of Monday's -next,
-> which explains the following report)
->
->     [ J3m3 reported in Zulip [2] that the `rust-analyzer` target was
->       broken after this patch -- indeed, we need to avoid `core-cfgs`
->       since those are passed to the `rust-analyzer` target.
->
->       So, instead, I tweaked the patch to create a new `core-edition`
->       variable and explicitly mention the `--edition` flag instead of
->       reusing `core-cfg`s.
->
->       In addition, pass a new argument using this new variable to
->       `generate_rust_analyzer.py` so that we set the right edition there.
->
->       By the way, for future reference: the `filter-out` change is needed
->       for Rust < 1.87, since otherwise we would skip the `--edition=3D202=
-1`
->       we just added, ending up with no edition flag, and thus the compile=
-r
->       would default to the 2015 one.
->
->       [2] https://rust-for-linux.zulipchat.com/#narrow/channel/291565/top=
-ic/x/near/520206547
->
->         - Miguel ]
->
-> I also added:
->
->     Reported-by: est31 <est31@protonmail.com>
->
-> since est31 told Gary in RustWeek, and we discussed the patch there.
->
-> @Gary: I hope the changes are OK with you (I can put the
-> `generate_rust_analyzer` ones in a different commit if you prefer).
-> Thanks!
->
-> Cheers,
-> Miguel
->
+Rename `core-edition` to `sysroot-edition` to align with the naming used
+to refer to standard library crates in `generate_rust_analyzer.py` and
+apply it to all standard library crates rather than just core.
 
-Hey Miguel, regarding the rust-analyzer changes:
+Note that backporting this will conflict unless commit 46e58a9637ec ("rust:
+kbuild: introduce `core-flags` and `core-skip_flags`") is also backported.
 
-I see only core was changed to use `core_edition`, but other sysroot
-crates (alloc, std, and proc_macro) still compile with edition 2021
-despite all having been updated in the same upstream PR. Was this
-intentional, or just an omission?
+Fixes: f4daa80d6be7 ("rust: compile libcore with edition 2024 for 1.87+")
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+ rust/Makefile                     |  7 ++++---
+ scripts/generate_rust_analyzer.py | 11 +++++------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/rust/Makefile b/rust/Makefile
+index 4dcc2eff51cb..a8ded6c07255 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -67,7 +67,7 @@ cfgs-to-flags = $(patsubst %,--cfg='%',$1)
+ core-cfgs := \
+     no_fp_fmt_parse
+ 
+-core-edition := $(if $(call rustc-min-version,108700),2024,2021)
++sysroot_edition := $(if $(call rustc-min-version,108700),2024,2021)
+ 
+ core-skip_flags := \
+     --edition=2021 \
+@@ -75,7 +75,7 @@ core-skip_flags := \
+     -Wrustdoc::unescaped_backticks
+ 
+ core-flags := \
+-    --edition=$(core-edition) \
++    --edition=$(sysroot_edition) \
+     $(call cfgs-to-flags,$(core-cfgs))
+ 
+ proc_macro2-cfgs := \
+@@ -567,7 +567,8 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
+ 
+ rust-analyzer:
+ 	$(Q)MAKEFLAGS= $(srctree)/scripts/generate_rust_analyzer.py \
+-		--cfgs='core=$(core-cfgs)' $(core-edition) \
++		$(sysroot_edition) \
++		--cfgs='core=$(core-cfgs)' \
+ 		--cfgs='proc_macro2=$(proc_macro2-cfgs)' \
+ 		--cfgs='quote=$(quote-cfgs)' \
+ 		--cfgs='syn=$(syn-cfgs)' \
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 6061bd6e2ebd..47e49f8dacbc 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -19,7 +19,7 @@ def args_crates_cfgs(cfgs):
+ 
+     return crates_cfgs
+ 
+-def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edition):
++def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, sysroot_edition):
+     # Generate the configuration list.
+     cfg = []
+     with open(objtree / "include" / "generated" / "rustc_cfg") as fd:
+@@ -61,7 +61,6 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+         display_name,
+         deps,
+         cfg=[],
+-        edition="2021",
+     ):
+         append_crate(
+             display_name,
+@@ -69,13 +68,13 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+             deps,
+             cfg,
+             is_workspace_member=False,
+-            edition=edition,
++            edition=sysroot_edition,
+         )
+ 
+     # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
+     # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
+     # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
+-    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []), edition=core_edition)
++    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
+     append_sysroot_crate("alloc", ["core"])
+     append_sysroot_crate("std", ["alloc", "core"])
+     append_sysroot_crate("proc_macro", ["core", "std"])
+@@ -200,7 +199,7 @@ def main():
+     parser = argparse.ArgumentParser()
+     parser.add_argument('--verbose', '-v', action='store_true')
+     parser.add_argument('--cfgs', action='append', default=[])
+-    parser.add_argument("core_edition")
++    parser.add_argument("sysroot_edition")
+     parser.add_argument("srctree", type=pathlib.Path)
+     parser.add_argument("objtree", type=pathlib.Path)
+     parser.add_argument("sysroot", type=pathlib.Path)
+@@ -217,7 +216,7 @@ def main():
+     assert args.sysroot in args.sysroot_src.parents
+ 
+     rust_project = {
+-        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs, args.core_edition),
++        "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs, args.sysroot_edition),
+         "sysroot": str(args.sysroot),
+     }
+ 
+
+---
+base-commit: 74e15ac34b098934895fd27655d098971d2b43d9
+change-id: 20260115-rust-analyzer-sysroot-5fb95aa985d2
+
+Best regards,
+--  
+Tamir Duberstein <tamird@gmail.com>
+
