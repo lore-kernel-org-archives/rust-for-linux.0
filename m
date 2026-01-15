@@ -1,164 +1,126 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795E911CAF;
-	Thu, 15 Jan 2026 13:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768484756; cv=pass; b=Z+NGg818k6UELswktUbGimne9FsndHDKONTL4d4q6oAluwC3zoVJZYlKpHOQDA2TWec8Tot9IcgIt9PhPlB83BquC1m8PQoPUAGDErYUVyGm4exmlYsbE20LZNh7XECXqTU2t918542AHX35u0rACh6By+4KYHldRD4+ucKpavo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768484756; c=relaxed/simple;
-	bh=ErKIL7JzFOjrhSsN1FrGcqLLx8sMj2MrWv9UlVb++48=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=XMeMoZuNr1bIgTGb4YH8O2nWyAENZvY3IlyTKPskrLf084ZJK05Io1a50ZlfTUcZ3ByZ6fNH9yFvMwYDS0Av8eKU6yBxRWozepv9C5DbjmOUzTHBMdJLch8AS3rc4aMN5/hBCBJe03R7ipZ2ROBoRgopplQwZ/3D0Y7sVeIbpWI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=F9Y+e2Wo; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D7C286412
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 15:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768491367; cv=none; b=kVoJUB9THgRiJV6umuVKOCQfZP99jYafNmQGh/kMXpflvVywXvFhVthnEUNEdHK5EdNDiDsIIiUtIOWCbX3sW7IuOSkIt0dRML/Sv1EnkxfxwsajEvw6exwLi7sW/XAhYNhsM2CZVGSovngV5Eli1LLDXIxaGAJqvbgZhtgaSyk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768491367; c=relaxed/simple;
+	bh=IMPdZb+1ZCG+wavZREKs/rl4zWIhCOC4m7kBGgWWZbU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mW23yitNKZn3VDlxpbJ+gbsRQaWpV7KFUqTHZ4vXhhfuoQrPEG+FwLYjsnX4nSj/SBUeSHbn3s2namJYmOs/NbyUUkGTwj9T/lR95D/3g8AXHnWRtX5e/PeluOfYVEFGfsFsWVI6HOhgdkKdoS62bTKRaOeox+SvmqFNHUsLKOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KlLDbl3y; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="F9Y+e2Wo"
-ARC-Seal: i=1; a=rsa-sha256; t=1768484731; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=eRrepVzMXSubwG6GRD6Oj673PKXTv07BhcbvBR5W9RVZbeJWfYrOgdMbu5TVWc76L/B13BUzJzYPu+ImuxCAC3QUc+wIxPG3SeCtoxmholS8r+ZqIvY8QxLULsERGtuT94QaiX0pAlxyWqk+OFcy5lHdsa2m/K2+PtEhCf68XNg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768484731; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=LTAQS963k6YD1owOZlUeNB8le+icQtXREoLhPwXEkWs=; 
-	b=NPWBVC7nhWNzGGc5kiY+86orz7ypo+suIkLtStcVqMHHOJ9NDSfdAytyOUrTgAxtqOP4fawl3c6RgWOybfiFs3ma/nLsHmd6+qF5ZiN+HBsm55TMCntRhijqU7Tv7KrGoZTBwZ6Wgsh1MNVsxXDM9/KFKwjl6Uw291OmNRXnkeQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768484731;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=LTAQS963k6YD1owOZlUeNB8le+icQtXREoLhPwXEkWs=;
-	b=F9Y+e2Wo3g8COkUa5XG0MICC+J+wXv9AuI7K79Dc0a17lQPWNTx72kK7+mywb0qA
-	lydvDB1Rv87Ni1OohYsgyh9gMfrRsu6zqu8eokwqdmHILrp/9UNuPvhQEqJLvIJs8eC
-	lxTOxRLMwDRMUu2D22kaAEoJKMUKaR34daCjaP2Y=
-Received: by mx.zohomail.com with SMTPS id 1768484730106981.135897043117;
-	Thu, 15 Jan 2026 05:45:30 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KlLDbl3y"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4325b81081aso880591f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Jan 2026 07:36:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768491364; x=1769096164; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GLaVRn2FkZUkVWgzT/uBjf8v0R07DMhycI5J8JYhxFU=;
+        b=KlLDbl3yCyPbKZ2YaxVa5tTpDAypMRMTNZDPcC6j4pZ+kboZRwYqqPKXyxGQTOYyK5
+         Gdx+orHdEvdJZs+od6fQxg91FbdyBNS4cSmiU5O9ZYP2NOLr5oD5kdigsB28niOXdcYQ
+         Vc2QD8bSp/ZZkUXrNcy+Fhr8mQmNF7hcxWZ6cISA9mZPvwBJcMu3SCv/V0NdvKxKDi6P
+         X0asHhtCtRAui+RRh1ijWF7kxYI17Et++4/+WQTKADIQP3Ln0FxvJGmg6HwzmM3ar2tD
+         kZgIZ19qUwBSda6F7lJvj1PYjsOlLh2H85f2HqRBmYT7QSSZFWCDaKGYxn0IQN1Dtiag
+         Ks0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768491364; x=1769096164;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GLaVRn2FkZUkVWgzT/uBjf8v0R07DMhycI5J8JYhxFU=;
+        b=PQxCHY6abrHz6W6jDl0O9WwlAjPJv9pyuGqkbjZRekvW2VNqHkeNOeqGsNVIZUVRLH
+         NHg6rDeIuwHBvqdADZ0H17KASGXGZd49Q7FskVHfNulUCgOR6HMgazRNoZwcQBRBiRNh
+         vU0WG+q09c1J5iAgYen7EDxnwkzb+7KRY5GHIrOdrUNSppM8q80Pm1iJGN9czYqC6FHL
+         bUNJzGYBzkev+OIdIw2z9EyOiEFLxmkmpsL0/ZmdqqjpPmaKxDrfbCma+gI5MOtpb3Yo
+         l8viFSCqzGf9pVqKX2WAQ9jz2SHnGAy1y5AkgNlUHRdGVcvaVAzDVZVp3qDH7PA8OmO3
+         WWgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqH9ziA3NbwMWxQjLLgGA+KciQixE+nd8KZn7f85yrVTUErbKC6uOuUUn0YWRi9wg1m7eUGhw6ccxIN311ng==@vger.kernel.org
+X-Gm-Message-State: AOJu0YznkkNt5AdRJZ/OmsuiGBB9TA4hg21Fuo0FECjU1+Eh+rsKymqj
+	2spPoZPRNhKmnLmnyWZzOa0mlzNcGkihBn78TALPEhrX51/dqNADhR7HjLNBhf/rt8FJlMKPX3A
+	vsh5eiCbfpa/aphsvGg==
+X-Received: from wrbei5.prod.google.com ([2002:a05:6000:4185:b0:430:f681:413d])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:5d89:0:b0:42b:4267:83e9 with SMTP id ffacd0b85a97d-4342c4f4cdemr7491225f8f.2.1768491364318;
+ Thu, 15 Jan 2026 07:36:04 -0800 (PST)
+Date: Thu, 15 Jan 2026 15:36:03 +0000
+In-Reply-To: <DFOP5BY09539.AFY5L5FV1HNV@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v8] rust: add new macro for common bitflag operations
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DFP6YJB8C5IG.3G4CMUM6YN45S@garyguo.net>
-Date: Thu, 15 Jan 2026 10:45:14 -0300
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
- Filipe Xavier <felipeaggger@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- rust-for-linux@vger.kernel.org,
- felipe_life@live.com,
- linux-kernel@vger.kernel.org,
- Lyude Paul <lyude@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FD404241-143B-4B24-B8BF-3D121073F4A9@collabora.com>
-References: <2JpjX5S1c2QLiHUftMzVViS7xatVGkJperCPqxJU8ZQ_Opyo4KPge5jcRCPb0Gcgyxb4yeFhm6Y-1X8q3pbNaw==@protonmail.internalid>
- <20260111-feat-add-bitmask-macro-v8-1-3bc0a558ede0@gmail.com>
- <87jyxjf56j.fsf@kernel.org> <87h5snf4yb.fsf@kernel.org>
- <DFP6YJB8C5IG.3G4CMUM6YN45S@garyguo.net>
-To: Gary Guo <gary@garyguo.net>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+References: <20251202220924.520644-1-lyude@redhat.com> <20251202220924.520644-8-lyude@redhat.com>
+ <DFOP5BY09539.AFY5L5FV1HNV@kernel.org>
+Message-ID: <aWkJYyNds5zWpgYE@google.com>
+Subject: Re: [PATCH v6 7/8] rust: Introduce iosys_map bindings
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, Daniel Almeida <daniel.almeida@collabora.com>, 
+	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Krishna Ketan Rai <prafulrai522@gmail.com>, 
+	Tamir Duberstein <tamird@gmail.com>, Xiangfei Ding <dingxiangfei2009@gmail.com>, 
+	Zhi Wang <zhiw@nvidia.com>, Matthew Maurer <mmaurer@google.com>, 
+	Alexandre Courbot <acourbot@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
 
+On Thu, Jan 15, 2026 at 12:21:51AM +0100, Danilo Krummrich wrote:
+> (Cc: Zhi, Matt, Alex)
+> 
+> On Tue Dec 2, 2025 at 11:03 PM CET, Lyude Paul wrote:
+> > This introduces a set of bindings for working with iosys_map in rust code.
+> > The design of this is heavily based off the design for both the io and
+> > dma_map bindings for Rust.
+> 
+> I already had a chat with Lyude about this, but also want to post it here. I
+> have mainly two comment on this:
+> 
+>   (1) The backing memory of iosys_map may be a device resource and hence has to
+>       be protected against (bus) device / driver unbind.
+> 
+>   (2) The idea for the generic I/O infrastructure is to support arbitrary I/O
+>       backends rather than only MMIO. For instance, this can also be PCI
+>       configuration space, I2C, SPI, etc., but also DMA, VRAM, system memory,
+>       etc.
+> 
+>       For this, there is a patch series from Zhi [1] splitting up the current
+>       I/O structures into traits that we will land soon.
+> 
+>       We will also have macros analogous to dma_read!() and dma_write!() for the
+>       generic I/O infrastructure, which Matt also works on for his QC SoC
+>       driver.
+> 
+>       This will allow us to unify all kinds of I/O operations into a single
+>       interface, supporting the read!() and write!() accessors for values, the
+>       register!() macro and raw accessors, such as e.g. read32().
+> 
+>       With this we will have something that is way more powerful than iosys_map
+>       and makes this abstraction obsolete.
 
+The trait approach generally requires knowing the target type at
+compile-time or paying dynamic function calls, but my understanding is
+that iosys exists because you might not know which variant you want at
+compile-time.
 
-> On 15 Jan 2026, at 10:19, Gary Guo <gary@garyguo.net> wrote:
->=20
-> On Thu Jan 15, 2026 at 12:14 PM GMT, Andreas Hindborg wrote:
->> Andreas Hindborg <a.hindborg@kernel.org> writes:
->>=20
->>> "Filipe Xavier" <felipeaggger@gmail.com> writes:
->>>=20
->>>> We have seen a proliferation of mod_whatever::foo::Flags
->>>> being defined with essentially the same implementation
->>>> for BitAnd, BitOr, contains and etc.
->>>>=20
->>>> This macro aims to bring a solution for this,
->>>> allowing to generate these methods for user-defined structs.
->>>> With some use cases in KMS and upcoming GPU drivers.
->>>>=20
->>>> Link: =
-https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/=
-We.20really.20need.20a.20common.20.60Flags.60.20type
->>>> Suggested-by: Daniel Almeida <daniel.almeida@collabora.com>
->>>> Suggested-by: Lyude Paul <lyude@redhat.com>
->>>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
->>>> Reviewed-by: Lyude Paul <lyude@redhat.com>
->>>> Signed-off-by: Filipe Xavier <felipeaggger@gmail.com>
->>>=20
->>> Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
->>>=20
->>>=20
->>> I think it would be useful to add:
->>>=20
->>> impl Flags {
->>>     unsafe from_raw(value: Repr) -> {
->>>     ...
->>>     }
->>> }
->>>=20
->>> impl TryFrom<Repr> for Flag {
->>>     // Succeed if `value` is a valid `Flag` enum bit pattern.
->>> }
->>>=20
->>> impl TryFrom<Repr> for Flags {
->>>     // Succeed if `value` is the logical OR of valid enum bit =
-patterns.
->>> }
->>=20
->> Also bitwise operations on the underlying type such as
->>=20
->>  impl BitOrAssign<Flag> for u32 {
->>  ...
->>  }
->>=20
->> Not sure if that is possible with the orphan rule, but it would be =
-nice.
->> I was trying to
->>=20
->>  lim.features |=3D request::Feature::Rotational;
->=20
-> This is allowed by orphan rules, in a similar way that you can =
-implement
-> `From<Local> for Foreign`.
->=20
-> However I don't think this is desirable feature? Why can't a =
-conversion be used
-> if you're using raw reprs?
->=20
-> I think we should discourage the use of raw integers when bitflags can =
-be used,
-> adding that (or even `TryFrom`) can be a negative incentive.
+Perhaps we need an
 
+	enum Iosys {
+	    SystemMemory(...),
+	    DmaMemory(...),
+	}
 
-The flags may be in your uapi or they may otherwise come from C. In that =
-case
-you=E2=80=99re stuck with a Try=46rom or a manual conversion.
+and implement Io for Iosys in terms of the inner types.
 
-I think a generated Try=46rom shouldn't hurt. Just my 0.02c.
-
->=20
-> Best,
-> Gary
->=20
->>=20
->> where `lim: bindings::queue_limits`.
->>=20
->>=20
->> Best regards,
->> Andreas Hindborg
-
-
+Alice
