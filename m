@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06371E991B;
-	Fri, 16 Jan 2026 15:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA58298CAF;
+	Fri, 16 Jan 2026 15:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768577126; cv=none; b=SceLeg8KdX/q7ERPYMb/aAMX8ndZEaT2xUPnMTUX+Pm3DDyi0n1cOCxMJ3loMKZiVjH303HYcTqhlI21JMwcAnOafMcEll1Vq2iPKI8dOFUTwRmGs0essgUkO2I0xvkshcPCiz6LzDqcQOXQ+507hVWO2yzjO1GYLpJDF/0p6N8=
+	t=1768577255; cv=none; b=Eg/mkdYl8YIkNplVftJr+QvP/r28nmsJxPkh5WbfoJNC+ZFyAdT8P+KXmxOHxhd5KUh0TPuH7Btc7N+An/7/FuKp/tW4d02fEvjFziPhYKvmSd0cw+/GHzo427FfA5wYmvLnLEu/IfqsHdJNH+cogmsIQR47qXfjHFjvchRFYLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768577126; c=relaxed/simple;
-	bh=KafYf1PDmObWFHpL7ROG48MgsO+5ZgP9jpmdINXl6ZQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=kUHsGhXdb0iIwZtnxc2Dsb7ZkM/DwWTVf135ibD+kzMOohL6c+NPPIidnS4HRrRwDNGdFLlsVUDd8uTVue4Rq3tAy08DXfT2cLCIHMkBEX+sR+930qp7RdiVo6WBckBrW7qrDzC4tn7oYgh46QrckxJjkud8scEy9LcLplI3nYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DAJ56O0v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768577255; c=relaxed/simple;
+	bh=TXRaMd6yK91g0ToFsaqHL/VMAkwOLt4e/nQgm9PwaIw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=pWHTwvBw6BSn10Qwew2jCjYZE1AR3Cg5GOv1o43Lqpqwq0YD2zvzFraQJLNfmCjuP7vtu7mjnjObjPYsvp47XQ09YN5AS90cLFUW4l7JmopAiLbOoInmjndxKAG4uOFs5kwGIvTKo+qRXriEhaqZCcVU+EL3oeOBhOetQ3j0vic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UsGUOk1J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DAJ56O0v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250A2C116C6;
-	Fri, 16 Jan 2026 15:25:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UsGUOk1J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804E3C19421;
+	Fri, 16 Jan 2026 15:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768577126;
-	bh=KafYf1PDmObWFHpL7ROG48MgsO+5ZgP9jpmdINXl6ZQ=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=DAJ56O0v3utoQWm1BkySC+Jr4/demiIF+A74YyLHapmRa4VeC+CqztOihc/pI2oQb
-	 R21AgILlKi4wJAuW5HsxOQGYxp8TLfD7af/94HGngLE3FZcumFMvIlYiufRK5HZZEd
-	 10RE6nxwmCr2wDa9NxJ8CGep+51QbcyIngrMD5e8AxVwsOehMOOlQsVynQrAGGiklr
-	 C2+3Xu8gUl6ZFrJtqt7uDY/SEUM/NAJwn9+OD6PWKZDk4iKRjSGcaaXjQ4vac5syEJ
-	 dcrfQMjZAITPlBCSBO4dqGMn/yinpiSG2OJpX81cw7TEDdSYWHtrLlxJtISs3ZzNGg
-	 bxbmEZIyWCfmg==
+	s=k20201202; t=1768577255;
+	bh=TXRaMd6yK91g0ToFsaqHL/VMAkwOLt4e/nQgm9PwaIw=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=UsGUOk1Jf5gEUiPKBiFlViVdLgYU3KeL7CL/4/d107LH3lcwecOMHw2ynZg6LCdGZ
+	 J1xZ8dKL81i4kJ5+F94bvkbIp4pCJ+OaqH9unDBb3nouUGHCJISeF01Ea2BzxEhAkb
+	 eBLHejQyEqVdunwTRP+BnKq9apBW6/SVTyz4F9hmzKzpJUse/t37iESQiBY9EkLqQz
+	 ipvDs6BQh2/HZpbFT/9+eEDQqC3ecVNSQUCSVbb5OekyXjpl9HWqdYs39VV0gYAbR9
+	 62vXsdg8w86/2x0ZpBlWYOEW4t1kSTFuMtGmDSGTtc+n2CcbuhdnVD+dIyhDABwEd0
+	 0N0eT8Vz86aPw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,33 +34,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 16 Jan 2026 16:25:20 +0100
-Message-Id: <DFQ49KSXC7WG.W2HA9JUGJZ4R@kernel.org>
-Subject: Re: [PATCH] rust/drm: tyr: Convert to the register!() macro
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Dirk Behme"
- <Dirk.Behme@de.bosch.com>, "Dirk Behme" <dirk.behme@gmail.com>, "Alice
- Ryhl" <aliceryhl@google.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Steven Price" <steven.price@arm.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
+Date: Fri, 16 Jan 2026 16:27:27 +0100
+Message-Id: <DFQ4B7CJR5EW.TMEE2YAES7O2@kernel.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
+ <helgaas@kernel.org>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+ <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
+ <targupta@nvidia.com>, <acourbot@nvidia.com>, <joelagnelf@nvidia.com>,
+ <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
+ <daniel.almeida@collabora.com>, <markus.probst@posteo.de>
+To: "Gary Guo" <gary@garyguo.net>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260114-tyr-register-v1-1-7deb1b33627a@collabora.com>
- <f7ff8b11-b1a5-4537-9227-e42a3a40aa96@gmail.com>
- <fdc39008-ba4a-4170-b7ce-cca2deda5652@de.bosch.com>
- <1EF6A3B7-216F-47C3-8631-25C38994BAC1@collabora.com>
- <DFQ45GSQLR55.1GRM6DSYTG01D@nvidia.com>
-In-Reply-To: <DFQ45GSQLR55.1GRM6DSYTG01D@nvidia.com>
+Subject: Re: [PATCH v9 2/5] rust: io: factor common I/O helpers into Io
+ trait
+References: <20260115212657.399231-1-zhiw@nvidia.com>
+ <20260115212657.399231-3-zhiw@nvidia.com> <aWoWntMxyhBc9Unx@google.com>
+ <DFQ481S2NI1S.3HMMZMYEQ9QP8@garyguo.net>
+In-Reply-To: <DFQ481S2NI1S.3HMMZMYEQ9QP8@garyguo.net>
 
-On Fri Jan 16, 2026 at 4:19 PM CET, Alexandre Courbot wrote:
-> This means that fields won't need to have an explicit integer type
-> anymore (they will automatically use the corresponding `BoundedInt`
-> instead).
+(Cc: Markus)
 
-Oh right, I forgot about this for a second.
+On Fri Jan 16, 2026 at 4:23 PM CET, Gary Guo wrote:
+> I wonder if we can keep all methods on `Io` trait. And then have marker t=
+rait to
+> represent capability on performing Io access.
+>
+> Something like:
+>
+> trait IoCapable<T> {}
+>
+> trait Io {
+>      fn read8(&self, offset: usize) -> u8 where Self: IoCapable<u8>;
+>      fn read16(&self, offset: usize) -> u16 where Self: IoCapable<u16>;
+>      fn read32(&self, offset: usize) -> u32 where Self: IoCapable<u32>;
+>      fn read64(&self, offset: usize) -> u64 where Self: IoCapable<u64>;
+> }
+>
+> Then you have a single (non-marker) trait and not a hierachy of them.
+
+I think that is a great idea. I think it will also help with supporting I/O
+backends based on regmap.
