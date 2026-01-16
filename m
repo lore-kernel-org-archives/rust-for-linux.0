@@ -1,178 +1,119 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138E2224AF7
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 15:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768578033; cv=pass; b=R8OD+XUlrR19Xe2SlJS8KlNiJgTQP7aXurqNuCN6rnBgs9DVu/ulNyk1zwPgZTHvcLZKLjiVBCtLxxtcSLAtnmyA62/p9Qk6sygPXZ9+A3YBWEpSq/eF5rojyUgC7eB6SmpNeaqHVDPcdY7wbV1Fe74KhyFCGoFMfsqQH8JUizE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768578033; c=relaxed/simple;
-	bh=zz5B9GzA4K5YTReLf3hudrxQz7bzvHDgzJa/PZXCjPU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ekyEiDyaH3aUUp2biPoDchWZKLMUo0MfivDFGCb8XlK7pLVClheR1PFtpaTTEgMC+UYGyEIsKiXAVsPCDTElFefDxo1KuqDam9pd8Ake1hI7i2ZF3aVk22q850fW9USH4RLRrnMUDEn9miayXqF8pR08g/yRn0JIHHx4gJKgQS4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DkvNG7HK; arc=pass smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A1630DECE
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 15:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768578410; cv=none; b=BdWgzrrWlxMPeL7uAJhDo+oJv7BQCOqzRSPRHPWeNtElUBBvXoIyr7eIp35TpHBf6LRgsSAsc3bOqx/gwlt6Smq19fIL1F/q+1oahykJmwO7ceXqpqfWR6ZzPkfjAdabco8JKbhYU18tz8mvuKEjc1J78yw2CpUfhPCn4qGNQFk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768578410; c=relaxed/simple;
+	bh=Iz940EgkLfNNoe9mfYJ7T2Zz0bFCqg1e5P7kXk7aajQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=fx4TGKZcQLcJJRRgqPmJoPrgomHjon1BykNykRgovCyZrdq787Z2zmDwuHEPq+kCrHHPNOvuW3pYIzs46FICU+XsuKJ4Sl1XYyfuXttbjBYO+XVNRA3f/1PItnOmnvwDRcz8FhLmiYmwhvBQ4NbIJnDfkJotIgbOAdK2zajlf+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T2up+iVs; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DkvNG7HK"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37fd6e91990so20698861fa.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 07:40:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768578030; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Pcicq0YNDv21nQeopOBmGWtf6jWS99+81HGmNx+emvfB0hkuTDKbqlmaGtzqYRUyXh
-         C2/ZZHlPQi60+j72QPjOPeQZooVuf2NAdidMa6asxzVW4Br5H3sMdZNUlWZbvxAYvmQ9
-         cmuoM4JU+7svVZmQ8HEE4jF0kPMB8S30Y+GDnV1qst1Amw9bKBPb8q3voT9T8Xr7CTeQ
-         jEA4hmUUD9PTn4rOn80aLGDTWGIZlGy21KinHGiXy0kKTbRu7YtjUY0j0TtfCzp+uEHJ
-         MINaMyx+DXB3O0RRCAJ0JyfnYVZwMCC19xVqYB0OXFnGvugaaxVpcXJaZGeHlWyYHSL2
-         SGJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Hrfd7PsHzChMkZbg+owAnrPTBdwgV29QmhT/KXd5Quc=;
-        fh=Erxs8aDJHyuE/6es9Ui65CmnHQ3FLhLz60NP6yzA1uU=;
-        b=PbywC3NsevC+DCxpWvTY3DVj4qZNAfTGiVBSzFlFndlJ8TV3CulYbhyCliBMqMgls+
-         dcWebJOGTZ7+b06k4KdnQMANozjHGtMKzhfSmBvP4e8Z+HgNLwznB1MIW6OFfecLG/PF
-         PayY0JdrWq3w3Ez3k1sNuhkn1s2mY7yEDigwDqYcFgOY8z1l+WQPEqbE9JtEpp/kc7HB
-         +ON8WFoUG2uw9yH01slrRsrrydLAMXoyOu6D9Kkie0RSpH0H4HHg7Ibnt7BmjxfWHrRK
-         NjDqWSQ2+324H4YMKlONae97hBbh3ovP9uPfGJq4kd+FPmEYI6Xe0DnpHL+oDCVNR59t
-         p0HA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T2up+iVs"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-43009df5ab3so1692559f8f.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 07:46:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768578030; x=1769182830; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hrfd7PsHzChMkZbg+owAnrPTBdwgV29QmhT/KXd5Quc=;
-        b=DkvNG7HK3gh9ZRP2n3DpvzVsABnvrs2NjO8YcBQuSHV8Zr7Pv7lhcBn/3CGDl71CRe
-         BCcVfFAkqkS3JbQNf3AzpTmJ8b8VPjdy7fbO5bkO4SDQVdoZD0VS6FqJ0lYALDeM2PwF
-         5/3cQuSvyXbPrHQjI/4cXrSA88YsSFGMiJqW8JU6qt9y81BoE1BRX/uhxW6/3CFC9ROk
-         6Jog/aQ7XFwZbr2twB4IIQ8SikOFzX37/IG5Qi5PsGuzFulCvMEwybOeiGu2FLTxjUPm
-         Bvbdybr+q1sWCmirpJy4gRzlgGg23xHp/FcMehKvReQBm0V124i6zws7ujvpTIh/igFn
-         IhsA==
+        d=google.com; s=20230601; t=1768578407; x=1769183207; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=C7r39NKpBQyuKnGQ/TDPTBGIStYQI+zyUw1P+bFsh1Q=;
+        b=T2up+iVsAPH/GMQhnlKrOurAjqhI6eevUakVlf7d16ZDJsoKr/Vdis1n0EwZxEE3NV
+         zO3A1bfxnu4CEwJ8RDtrhxrsrIwK9riFVIbrx/+3hscvQtfUVudEzHNwr7HVGPiJjfPZ
+         TtY1phTIWcuDvl6NJJDeSptizowVH2pVgwsjNAhD/0fPXCdLDkGQpy8UuKLnxxpFTws1
+         kRjg8Y+T4DTRk+ErprVtsppC5zTPtU4mXC3OcBlhiBQKLkhJIhiuIJ0AklyBHHqv4j+h
+         5GPlrrcbhI01MDbIwkqYzRPDj/fia01f53p2d56Pidup0FvxQlYsMOnU5H0sDtGZuqCc
+         yuzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768578030; x=1769182830;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Hrfd7PsHzChMkZbg+owAnrPTBdwgV29QmhT/KXd5Quc=;
-        b=ck2eqsoAYCx+/aF0r7YMsL+1froRMcvkSyekO8jBDRnuNdUdeoLWZUkYu3BvvPALdP
-         I91qeZW7jhZJ0fhfZI0snOL4ZC5ANAeMgnPOlotc5akU1TwQ6nmGXXDlDu7WbmW4/g6z
-         XfLnco/8ALeWf4mQuR48Vj114cDgTEi+9pRAG/rla9xacMVfeU2Z1MsCm+rxcSmGI/DB
-         K8nEG5kOVKDiRaQzjGFc+QoBkI16aZQCYkIR89dOp+S3bHGYUroUJHOvFLgd/QGjeEQi
-         9C4seClAd/5tzu4yXdSWf+fNtWuL4jPaUXQ3c22CUyXEh3Gy6VEEynuMWMVtuLKHQzre
-         wAfg==
-X-Forwarded-Encrypted: i=1; AJvYcCWmxBgkFz3+CjdT0RI7ET7xk1AxQSZAsgAYSQFgIKC1sa18Y0cAJ1xaX9tqbjpkgeYCBFMQRh8BUEe/RPRQig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdK0KZaHmq1tQFs8FgOYfpPTFD4YPSCMbrCTy7fgepVu8fPM1Q
-	aW1+FcwazaEekTsiaZvstEME/ECu08YCmGtf4slwZG0vBMet9lG/LI+hOwyyi5bEAfGoye15cfJ
-	iCT8QaejwmxmtP9cwFg5zbptAh4KtwOI=
-X-Gm-Gg: AY/fxX4Rx7sKrj6OeVLXElalIwjr2DS+51RCDPeJCgCH4N9JBCrvS4HhF3vrD5M0hmC
-	6b6zUyc5t7A9iE57Ee+BspXtGHOHgQ0HNwtcBU8iTEfwT+QeLzgUSa+JwqP6Ecb8iA7yFLl2Lgn
-	VBN3jEghCGW6aOqOiGJL972W8eRpnBN6+U6Z8gKexe5ZmYQYN8jLGT+DYA/uSsBiS9PGZeH48s4
-	ZkMFBVGU/S3H7x1VKxn+1Jxmk0VskpcZ6k+MePTmCq9ubNuq1JhZqL7+UU1e9V+4Fd/2JyR1ZlD
-	RSGm9HzRdfYlTN9WULIcueK7Y+7s7iZ9PTw/FIGqGiVXdVgqNrRN/Hh7Vh34mOTm2QaEnQ/kj5W
-	bRsFmxYWRHUc+LIG6bJqqgCS/zwTyQC7V2BFGM297Rw==
-X-Received: by 2002:a05:651c:f16:b0:383:1aba:bbb4 with SMTP id
- 38308e7fff4ca-38386c4f724mr8943211fa.30.1768578029799; Fri, 16 Jan 2026
- 07:40:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768578407; x=1769183207;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=C7r39NKpBQyuKnGQ/TDPTBGIStYQI+zyUw1P+bFsh1Q=;
+        b=cZCNiEW56Mpci4LwiJe5rEYLheiv4MXWMoAkNt6W65Eajh6eAQrYBRheG+OzNc+hBR
+         zo8vo43TCDVUMXJr5xyU8G7DAimz9ri3JYC9d958WFsFSDHhRb9rJ0Y4tPzQuyZcGRpz
+         b6EsUkb6CiuOnkubBt76ZsuyqS/dZ6rRZkobskOwoUHgNqlLLAZdrwJou0cOgvliPBjI
+         gzBv/bPmfken+/hkRqqla9GYBwX5qWUZVcj4IxNDAGTu7PKlCLYpnNxvsxaQbTojouNI
+         M3mNm8uLEuLg7+ELESZWxId/Xrx5kAMYASWDcre3a8eixDRstECVpiiB1UZGl5AO1vHf
+         TCDw==
+X-Forwarded-Encrypted: i=1; AJvYcCVS0nA/PTUHqgETASgjfbvwrp5TMv7K1PZEEc7pftcRR7QfFo/chxQzYFguIRjAM8XZUN6/CfJDEye+ClFbjg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzpz/ADrYmtrO8pB/DbZfVt4budde+4fSnOqfdNptHaoWC1QyRI
+	VDWkzwTx/HKK5VYV+zfW1vMwDeZi/URNpRiu/3BDZkG3+DwfZNG7Y155zKmUR9khFzEQww+/HBV
+	lLkH5U3G8D2mEuNGiSQ==
+X-Received: from wrbeh5.prod.google.com ([2002:a05:6000:4105:b0:430:f9ec:6c09])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:24c6:b0:42b:3062:c647 with SMTP id ffacd0b85a97d-43569994133mr3828887f8f.21.1768578407156;
+ Fri, 16 Jan 2026 07:46:47 -0800 (PST)
+Date: Fri, 16 Jan 2026 15:46:35 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260114181934.1782470-1-lossin@kernel.org> <20260114181934.1782470-10-lossin@kernel.org>
- <CAJ-ks9=kvTBHLzepFUqtYn_FOroP3CU0QhyNwBRyH_tHF4p50A@mail.gmail.com>
- <DFPIYDMDHC6V.3CT62XJBRQJOD@kernel.org> <CAJ-ks9m-nsn5KTAvSJfu=1kOiKmoadC1X0=zp0GphkX8ZCF53w@mail.gmail.com>
- <DFPWOMZOX6CI.27JJBKSO6IONE@kernel.org>
-In-Reply-To: <DFPWOMZOX6CI.27JJBKSO6IONE@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 16 Jan 2026 10:39:53 -0500
-X-Gm-Features: AZwV_QjU5AkYbbE9aDzkJq8pNLlf1PJL7P6ll74-1eIbVoJ4sId3t_F8j8dk6og
-Message-ID: <CAJ-ks9mcwoSfRwBhvZTDkQk=Rt+YPWtfK_6rDqnkSb2mi7Ok-g@mail.gmail.com>
-Subject: Re: [PATCH v3 09/15] rust: pin-init: rewrite the initializer macros
- using `syn`
-To: Benno Lossin <lossin@kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFxdamkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDQ0Mz3aLkUt2k/Apd80SLVJNkyzQjQwsDJaDqgqLUtMwKsEnRSkFuzkq xtbUA7/6RsF4AAAA=
+X-Change-Id: 20260116-rcu-box-7a8e4c9f2180
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=942; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Iz940EgkLfNNoe9mfYJ7T2Zz0bFCqg1e5P7kXk7aajQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpal1hu1HSF3Q+msN6rGImAxNE3it2AkIevWXWZ
+ /iru81gV6+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaWpdYQAKCRAEWL7uWMY5
+ Rjj4D/9SMN0PJKBXhY8oL4Xia0Ru5guIiPAURyKUMkoBD/KRxn9D5YQ+be/2XdYHMfTdOrtDtP+
+ AxfbKxlp41W0cnQFpIDdduf95OJNQMb0K7gfKQkAp+oF0oBn4GJQ8/6xHXaj0/w79PAH3P/5klR
+ k+aYv52qWF22mgn+zodlQM/pRfLHk4nsrlM4M1o9YpX/aBNZn4GXcSLVVPsmHILAYmiPNPZGk94
+ /od1Vx47vl2EBogv3K1VOK+K7n8jB8ZdwdX7y8tOfgCLfB+zYUueMMtyCiTWIVRb5yxtoXsWckG
+ G1u0rRrm64ruZohLrcbj6nQPkVb1pxshdopXezmTCHXOWYudESr70W87vOkH36oLSwuSkGNn89C
+ LDgf5wKklUE6+AumNylI4Z19jTQqIdmDqI/KFwwf8HKlgxvh95z6JHd8gcpNZzlWM2l0CF2p2Xi
+ K0uNL7zpHTpIATk5FWxXkBzU2PZO9aajB9LmwBI1h0aHxvjm7acX6ZtfslcL3SuEApheQCqavd8
+ 4PY1Kd60fil4uvVvlq+Tie7M5mb5b3kWRAGtl/ka85tN0dOne7Vk55ruq1G+VHCEPZYkVR18cf6
+ GNJHSt/DDAlcxyO4DT4+zSXzv8P8ZcLB9JJb7Wg7k3754lbpvY4FK/C1f5IQkYOa5CPgKfVD7bU PCC2U9FYULLdvxQ==
+X-Mailer: b4 0.14.2
+Message-ID: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
+Subject: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Paul E. McKenney" <paulmck@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
 Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
-	Christian Schrefl <chrisi.schrefl@gmail.com>, Alban Kurti <kurti@invicto.ai>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
+	Andrew Ballance <andrewjballance@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Jan 16, 2026 at 4:28=E2=80=AFAM Benno Lossin <lossin@kernel.org> wr=
-ote:
->
-> On Fri Jan 16, 2026 at 1:19 AM CET, Tamir Duberstein wrote:
-> > On Thu, Jan 15, 2026 at 5:43=E2=80=AFPM Benno Lossin <lossin@kernel.org=
-> wrote:
-> >>
-> >> On Thu Jan 15, 2026 at 10:45 PM CET, Tamir Duberstein wrote:
-> >> > On Wed, Jan 14, 2026 at 1:20=E2=80=AFPM Benno Lossin <lossin@kernel.=
-org> wrote:
-> >> >>
-> >> >> Rewrite the initializer macros `[pin_]init!` using `syn`. No functi=
-onal
-> >> >> changes intended aside from improved error messages on syntactic an=
-d
-> >> >> semantical errors. For example if one forgets to use `<-` with an
-> >> >> initializer (and instead uses `:`):
-> >> >>
-> >> >> <snip>
-> >> >>
-> >> >> Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
-> >> >> Signed-off-by: Benno Lossin <lossin@kernel.org>
-> >> >> ---
-> >> >>
-> >> >> <snip>
-> >> >>
-> >> >> -#[cfg(kernel)]
-> >> >> -pub use ::macros::paste;
-> >> >> -#[cfg(not(kernel))]
-> >> >> -pub use ::paste::paste;
-> >> >
-> >> > Now that `cfg(kernel)` is gone, can we also remove it from `rust/Mak=
-efile`
-> >> > and `scripts/generate_rust_analyzer.py`? That is already done for
-> >> > pin-init in patch 3 of this series:
-> >> > https://lore.kernel.org/all/20260114181934.1782470-4-lossin@kernel.o=
-rg/.
-> >>
-> >> I'm still using `cfg(kernel)` in `src/lib.rs` for linking to the std
-> >> Box and Arc types.
-> >
-> > Are you sure? I'm not seeing it. It looks like the crate is no_std
-> > unless the std feature is activated and no features are activated in
-> > the kernel.
->
-> Yes:
->
->     $ rg 'cfg.*kernel'
->
->     src/lib.rs
->     260:#![cfg_attr(not(kernel), doc =3D "[`Arc<T>`]: alloc::alloc::sync:=
-:Arc")]
->     261:#![cfg_attr(not(kernel), doc =3D "[`Box<T>`]: alloc::alloc::boxed=
-::Box")]
->     921:#[cfg_attr(not(kernel), doc =3D "[`Arc<T>`]: alloc::alloc::sync::=
-Arc")]
->     922:#[cfg_attr(not(kernel), doc =3D "[`Box<T>`]: alloc::alloc::boxed:=
-:Box")]
->     1020:#[cfg_attr(not(kernel), doc =3D "[`Arc<T>`]: alloc::alloc::sync:=
-:Arc")]
->     1021:#[cfg_attr(not(kernel), doc =3D "[`Box<T>`]: alloc::alloc::boxed=
-::Box")]
->
-> >> Also I don't want to have to reintroduce all that infrastructure when =
-I
-> >> inevitably have to add new kernel workarounds.
-> >
-> > Then why remove it for pin-init?
->
-> I don't understand, what is removed where? In patch 3 the `--cfg kernel`
-> is kept in all locations.
+I'm sending this RFC to share an experiment I'm looking at. This may let
+us replace the range allocator in Rust Binder with a maple tree.
 
-You're right, I must've misread. It's fine to keep & sorry for the noise.
+An RcuBox is like a Box except that it lets you obtain a &T that
+outlives the box by a grace period. It does not allow mutable access to
+the inner value (Binder would probably use LockedBy for inner values).
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Alice Ryhl (2):
+      rust: rcu: add RcuBox type
+      rust: maple_tree: add load_rcu()
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/maple_tree.rs       |  52 ++++++++++++++
+ rust/kernel/sync/rcu.rs         |  31 ++++++++-
+ rust/kernel/sync/rcu/rcu_box.rs | 145 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 228 insertions(+), 1 deletion(-)
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20260116-rcu-box-7a8e4c9f2180
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
