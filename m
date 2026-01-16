@@ -1,128 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5621925A655;
-	Fri, 16 Jan 2026 13:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768569802; cv=none; b=qipVS+OJEY0q85piad0Uf+c4qbyHkZ6KYkynUfJ+yWZppTanOoKqrj4nKxib7521Wmy23CVMXbCqZ0jwUSxCw8/jCqQkXqnMkkDKC/WTKw8IG9vkNzyKrAE1KZHtNdgWZvmotsdLvXm/WNrnzhoRkj4tGzIyrSFHSPRrdzCdDc8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768569802; c=relaxed/simple;
-	bh=WIiyV233cxPXH/AULzFgkZOCAmADaTTIQl8AfEzSeEQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=HaEd5VApooNVuY4bIZ7sgac09LBzNrQNYosSnHFQY8+A1EsQsDZgQEBm/mCAxHtQBpl4e7weg4ZT8AA4zHSSc++u4xbmu+pfMqR6O4w9CYFBPqGYLEhjxUVuSa5Rk3Ua3PTNCSPmSCjjpoZ/LCmDUpS5oMscbiPmWbuUpu7LBTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNRx9eIP; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C82A202F65;
+	Fri, 16 Jan 2026 13:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768570747; cv=pass; b=I9DbGI4zSiTwhLD3pDpAM6hJJmqQio1bkCjOeAcpcTgxuHwrfw1G1gnn/icZVH0nSdq11PKVXBq3bbvSlE6fOsGEmagvFehlGpnNm/DHUte07mZZgPz4hhY5lnzFK2j9u9xJPDgOhmQTlz7gEqNVkeLkG6kPt1jNslkEBGt4W2s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768570747; c=relaxed/simple;
+	bh=enPjwzl5bnC2GLEGcSl4XbJTUWzDnyudvVwrQkvmoU8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=nz/3sQBns6kJBz8Nnr6c7Gj3Xw2nD4cKFOjSfWICD7VE9Zgv5r/CTHtUSdQHGf70BS376GIubdPgiZH7BimJ/yQ8Pyak8UUECSbw62yhI9e6tkilO7b1Dzaot5/LFyef+C3SyOV5GyjptyXKjZ2j1OBZh3w6PMGFmrP6UKvrUY8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=WmnL5hd5; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNRx9eIP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B273FC116C6;
-	Fri, 16 Jan 2026 13:23:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768569800;
-	bh=WIiyV233cxPXH/AULzFgkZOCAmADaTTIQl8AfEzSeEQ=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=fNRx9eIP/rBOXYBa2IPvuKveoBGsy3MFos1NH+PbIwR7IOm9RcOOBavI5xqn+cZQV
-	 6AXwGWNYJaNGEL7viyO7Lh+wBMYM6C4x8pCxG/FsizYkwl9jDOcRrwNl9okv+S5N49
-	 M+L1lB7VzLVO81Wcts9Hp55vtjbxJFwovW3U8F1vgPDSnWbfMwyUi9zOExayiOk+hm
-	 lRzTSdal96rgOqvc2HQLAVXfMKlghX/rNSA3ss0HmYg+XnNdulpptJWEsjEbmG7LY2
-	 lF/PFl+LnSh2vWIthW67AN2s4TTl+jv9HopjQD//lSecSHpGPwNk0ImN4TgFcGNJna
-	 6xXAL5tEWV4rA==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="WmnL5hd5"
+ARC-Seal: i=1; a=rsa-sha256; t=1768570727; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=IrHRJsfrKhqu8fGDVtYj6phtF5yN8hV1zx6BRI48BhQnYJyF/MXJ2xM0zPqKKjRekhWLA1oXLi0VbvKiiP3eXKV+5FDlh79UPN0LkIPugXHfNmnWV0WjzIkRhHRDPHffooVRovDqutasw0lK2dC/uT2n2ib9/GWKwykTmPy18no=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1768570727; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=enPjwzl5bnC2GLEGcSl4XbJTUWzDnyudvVwrQkvmoU8=; 
+	b=cezAtbdKDouguX+YSN+6AdKU3pqWe885k10GLc/CB/x4R1YEoP1kTecb+rsJa/g2OjnPUrYHTh6MXxyHxQNYCDLx5Dt+iGgY3wUxw+jK1FZpxyJICCX13MvuYBaf8O1TLkHmPnONoC1aLucjEpfJGeb0QIdKm705keShqH3D2xk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768570727;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=enPjwzl5bnC2GLEGcSl4XbJTUWzDnyudvVwrQkvmoU8=;
+	b=WmnL5hd5C6EOsdm9nQYo1UqOZdpGZUF46/CReJjXrsPI1u/weqz3qmOfYDtoKPkl
+	UzXyg+HV/iOT8WsbuMSaIkrvYZGxICsFxY+eF49GP8BB71yikoJ+/Ks4zBi9m503Wtk
+	ZHYhT8xyG1XTGEYft4IiQbYkeUOImevJE3YEGK7c=
+Received: by mx.zohomail.com with SMTPS id 1768570725196465.4311800451652;
+	Fri, 16 Jan 2026 05:38:45 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH] rust/drm: tyr: Convert to the register!() macro
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DFQ16QS1RAEL.1Z0ESXE0MBA7G@garyguo.net>
+Date: Fri, 16 Jan 2026 10:38:28 -0300
+Cc: Dirk Behme <dirk.behme@gmail.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Steven Price <steven.price@arm.com>,
+ dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 16 Jan 2026 14:23:12 +0100
-Message-Id: <DFQ1O2M9YEDC.3HOIZKNM4HDVF@kernel.org>
-Subject: Re: [PATCH v9 2/5] rust: io: factor common I/O helpers into Io
- trait
-Cc: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <markus.probst@posteo.de>, <helgaas@kernel.org>,
- <cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
- <aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
- <acourbot@nvidia.com>, <joelagnelf@nvidia.com>, <jhubbard@nvidia.com>,
- <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260115212657.399231-1-zhiw@nvidia.com>
- <20260115212657.399231-3-zhiw@nvidia.com> <aWoWntMxyhBc9Unx@google.com>
-In-Reply-To: <aWoWntMxyhBc9Unx@google.com>
+Message-Id: <25EE982E-B03D-4C50-B973-34AC4FFA96B6@collabora.com>
+References: <20260114-tyr-register-v1-1-7deb1b33627a@collabora.com>
+ <f7ff8b11-b1a5-4537-9227-e42a3a40aa96@gmail.com>
+ <A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com>
+ <DFQ16QS1RAEL.1Z0ESXE0MBA7G@garyguo.net>
+To: Gary Guo <gary@garyguo.net>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Fri Jan 16, 2026 at 11:44 AM CET, Alice Ryhl wrote:
-> On Thu, Jan 15, 2026 at 11:26:46PM +0200, Zhi Wang wrote:
->> +pub trait IoBase {
->> +pub trait IoKnownSize: IoBase {
->> +pub trait Io: IoBase {
->> +pub trait IoKnownSize64: IoKnownSize {
->> +pub trait Io64: Io {
->
-> The following combinations are possible:
->
-> 1. IoBase
-> 2. IoBase + Io
-> 3. IoBase + IoKnownSize
-> 4. IoBase + Io + IoKnownSize
-> 5. IoBase + Io + Io64
-> 6. IoBase + Io + Io64 + IoKnownSize
-> 7. IoBase + IoKnownSize + IoKnownSize64
-> 8. IoBase + Io + IoKnownSize + IoKnownSize64
-> 9. IoBase + Io + IoKnownSize + Io64 + IoKnownSize64
->
-> I'm not sure all of them make sense. I can't see a scenario where I
-> would pick 1, 3, 6, 7, or 8.
 
-I think for the PCI configuration space backend we can get away with 3
-(which implies that the others have to exist as well).
+>>>=20
+>>> Is there any reason why you replace the UPPERCASE register names =
+with
+>>> CamelCase ones?
+>>>=20
+>>> I was under the impression that we want to use UPPERCASE for =
+register
+>>> names. Like in nova
+>>>=20
+>>> =
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
+ivers/gpu/nova-core/regs.rs
+>>=20
+>> Not really. UPPERCASE for non-const items will trigger the linter. =
+The Nova
+>> people chose to #[allow] this to align with OpenRM and, IIRC from the =
+LPC
+>> discussions, their registers are automatically generated from some =
+internal
+>> docs.
+>>=20
+>> We have only a few, we can simply convert them to CamelCase.
+>=20
+> Frankly, register names do look nicer in UPPER_CASE, especially that =
+they're in
+> many cases, packed with acronyms.
+>=20
+> Best,
+> Gary
+>=20
 
-However - and I think I already mentioned this in previous reply a while ag=
-o - I
-am not insisting to make this split for this reason, as it is an exception
-rather than the rule.
+I don=E2=80=99t have an opinion here, to be honest. I think CamelCase =
+does make it
+easier on the eyes since our register names look quite simple, specially =
+when
+compared to Nova. However, I can switch to UPPER_CASE and add an
+#![allow(non_camel_case_types)] if more people chime in.
 
-However, note that the only really odd one is 1. All other ones could exist=
- when
-there is simply no user for certain accessors, i.e. they would be dead code=
-.
-
-Having that said, I think both have rather minor advantages and disadvantes=
-, so
-I'm fine with either. If you feel strongly about this, let's go with your
-proposal below.
-
-> How about this trait hierachy? I believe I suggested something along
-> these lines before.
->
-> pub trait Io {
-> pub trait Io64: Io {
-> pub trait IoKnownSize: Io {
->
-> With these traits, these scenarios are possible:
->
-> 1. Io
-> 2. Io + Io64
-> 3. Io + IoKnownSize
-> 4. Io + Io64 + IoKnownSize
->
-> which seems to be the actual set of cases we care about.
->
-> Note that IoKnownSize can have methods that only apply when Io64 is
-> implemented:
->
-> trait IoKnownSize: Io {
->     /// Infallible 8-bit read with compile-time bounds check.
->     fn read8(&self, offset: usize) -> u8;
->
->     /// Infallible 64-bit read with compile-time bounds check.
->     fn read64(&self, offset: usize) -> u64
->     where
->     	Self: Io64;
-> }
->
-> Alice
 
