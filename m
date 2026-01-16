@@ -1,147 +1,173 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A475C361674
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 10:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D062129ACC0;
+	Fri, 16 Jan 2026 10:55:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768560293; cv=none; b=k959lQuMGQwPUaoGCb8eopLYKE+4PnyE1s/8M6m1QenvoN2HVCd9Iyljl/GUfK+PJ7N4QZWUoO7mBEb86gMOoptGPRlkCGnRW4MziKkurp9GsXNHyMVDuDHiwh3BvzspdpvCSWiEYMC3SCwNZ2lLtp5JacLW32MokZ1QtlIkddI=
+	t=1768560944; cv=none; b=A6Pg3nx+F8vaH1qXqrrfeY0jFQBUk9xuCMsk6TB8WClv8Wak9n4Jd1GLXk/7caDGl5wmnvPIDwxQ+F3ZOYzzksP5trteJWkZ3R+nwaPrFHBag3kVw6xXK/9eVkn5RNpwcoRSr/42njsaf4hLO3NM7AO/nEW35r+SPPOLuEgTUD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768560293; c=relaxed/simple;
-	bh=b7fb2kg9k9dh+/1ZB4RW0gIF9ob0dRm04urz98QiGjM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UoRasm9dpSr2P3RmrfgVW+5SHLlIx0s93RlFRUeWbe5ujX1+wYLwwrsz+RZlRzf4+sauDp1KoSu6IT7EB+5JCeAm9MpGPDV1IYxUIALkn+ZBesUJT+Jn2YZBXwuFf8mkXcGJ5aSBCLSvjdRfEWvxiEij82HmapsoVrqRT28cAv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=npVRRZMb; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1768560944; c=relaxed/simple;
+	bh=zb6p+JRKngYXEhpCIBJlNRaZ+u/IJn/FGxOaJVYZJgA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ln7fbdRXTn71yxpB75UC4KxfkY0PL+FxE/6nlMBWG2iF5JRFIVN/U7tWqgCs84DbHURypRzDZX0YpH1U5EshlafdPjUBKmCUY4la79+CDV1V74FYQSfKH0/cnKxCWyNdFs6PFPTkKFhUbFndai6SX8dZr/ArZelh+A9MNs/HlNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jl8RFZ/6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="npVRRZMb"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4801c105717so14829075e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 02:44:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768560290; x=1769165090; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lUX7IRgIyUPb4V4ApOigl/qbJl9m0SFY99Aj6A7demw=;
-        b=npVRRZMb1dp8pb4o5o1xfiNBcJfCavVVdZmQBJ8rvljYhOMRDl/VI5txkcmO4pBZ3I
-         /KVSF9or2D4DhzYq9sIEHwG0UyMy/8rEuTg6Cq1vWUOMeFNuWk4onwEJC6Cyg31siZmC
-         lkEqijfwO2WYaiARXRyN4eYrKVfSo3KUX0T60gdnmkh7w38ByzeOzCnTFn27yhMOrsIg
-         HzJaYT0fFq/r1XNy+1RSDgZFGrZWv9uevLPV31blKloPeWEsDbpc3XzRa7npuep1Cf9e
-         BejEez2DCN4LWOmXxSg8oRJFJbVAruLQH0itn99PPdlKowcScGojok4LrH2dS+7PFaod
-         gLmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768560290; x=1769165090;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lUX7IRgIyUPb4V4ApOigl/qbJl9m0SFY99Aj6A7demw=;
-        b=myy1QdHyzFfZeFCJD5nG1sa4JHWE2BsO04TES47zLBPc2R6+ET19kpHlUUNXetbvBs
-         6ByBNMq8TsGoQjlMbEtORtmVuyb4J+kklVbpY4UaXhB0ZUtC1xPidRfT+gMMZdMknSTf
-         1YrKxJ0g46BFkV8KyQMuoQuV7ng+eV9X5ub0R7xfKvFsQ0Wz44KST8flDa5suSyAGdQw
-         D23uWt2Y9MMUEf2HM/ALKNGX8YQg4ROHbSbhmch/lx6qjN777/vrcG+DrUVSlWeK5HQ8
-         TiAmSe8dPF9zC8OeNKp2uBd2jB7liHkBv94cz4z/8xmMEALM1LvZ1dZF6D29KXa/EWED
-         Cjlg==
-X-Gm-Message-State: AOJu0YyWaFiiLGN7IfLS+1CBGxXWlp0YSXXuJbQSgkAcrIGdmF+jkJNP
-	E/OOeo0C2cY+1Ty4Dzd9Yf73qI4JNb73HAGOSzQ6QUsqU1+sedbIaKxdhMBWfB7f/2/GXQo3U2O
-	RjeSoustsIksrXfd7Vg==
-X-Received: from wmaq10.prod.google.com ([2002:a05:600c:6c8a:b0:47e:d9ed:20f0])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c16a:b0:47e:e20e:bbbe with SMTP id 5b1f17b1804b1-4801e33c332mr30124455e9.25.1768560290048;
- Fri, 16 Jan 2026 02:44:50 -0800 (PST)
-Date: Fri, 16 Jan 2026 10:44:46 +0000
-In-Reply-To: <20260115212657.399231-3-zhiw@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jl8RFZ/6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0D3C116C6;
+	Fri, 16 Jan 2026 10:55:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768560944;
+	bh=zb6p+JRKngYXEhpCIBJlNRaZ+u/IJn/FGxOaJVYZJgA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Jl8RFZ/6N0+umwhrWyUbDfc96gnSppCJ+O4UgGO+WxJ0K/yUawHMnkCnO+Z9zl7ds
+	 919OLISfZcoSERAH9tgqBraNS6SODVg9VHP0CdoA5tJ2Nx7XDtbGKmg9H8e4y1XGkB
+	 edYKPZUUfdm2T+KfoMEaISWR+ldPDHkzCw0xHNDeTnDrCqOEK0N6YQ3aZ8pyrmWgk6
+	 mwBECULIhYu2z3UzvmcFukx3N30sbuyxqviBZRvLuYI/MZBzgxT0ODRIWtPaRdazaO
+	 iIIJma1XtOxBlHJszN7W5iF/ba3szoiB8MuY/GS7fewnLFgs64gKOtn5raHaPMIqwT
+	 BhfQqQujnAmIg==
+From: Benno Lossin <lossin@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v4 00/15] `syn` rewrite of pin-init
+Date: Fri, 16 Jan 2026 11:54:15 +0100
+Message-ID: <20260116105514.3794384-1-lossin@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260115212657.399231-1-zhiw@nvidia.com> <20260115212657.399231-3-zhiw@nvidia.com>
-Message-ID: <aWoWntMxyhBc9Unx@google.com>
-Subject: Re: [PATCH v9 2/5] rust: io: factor common I/O helpers into Io trait
-From: Alice Ryhl <aliceryhl@google.com>
-To: Zhi Wang <zhiw@nvidia.com>
-Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dakr@kernel.org, bhelgaas@google.com, 
-	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	markus.probst@posteo.de, helgaas@kernel.org, cjia@nvidia.com, 
-	smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
-	kwankhede@nvidia.com, targupta@nvidia.com, acourbot@nvidia.com, 
-	joelagnelf@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org, 
-	daniel.almeida@collabora.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 15, 2026 at 11:26:46PM +0200, Zhi Wang wrote:
-> The previous Io<SIZE> type combined both the generic I/O access helpers
-> and MMIO implementation details in a single struct.
-> 
-> To establish a cleaner layering between the I/O interface and its concrete
-> backends, paving the way for supporting additional I/O mechanisms in the
-> future, Io<SIZE> need to be factored.
-> 
-> Factor the common helpers into new {Io, Io64} traits, and move the
-> MMIO-specific logic into a dedicated Mmio<SIZE> type implementing that
-> trait. Rename the IoRaw to MmioRaw and update the bus MMIO implementations
-> to use MmioRaw.
-> 
-> No functional change intended.
-> 
-> Cc: Alexandre Courbot <acourbot@nvidia.com>
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Bjorn Helgaas <helgaas@kernel.org>
-> Cc: Danilo Krummrich <dakr@kernel.org>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+Rewrite the proc-macros of pin-init by using the `syn` crate for Rust
+syntax parsing. This series has been a long way coming. At the very
+start of pin-init, I initially implemented everything using syn, since
+parsing is so much easier with it. Now after several years it is finally
+time to remove the dreaded 1600 lines of declarative macros required to
+parse and expand the initializer syntax.
 
-> +pub trait IoBase {
-> +pub trait IoKnownSize: IoBase {
-> +pub trait Io: IoBase {
-> +pub trait IoKnownSize64: IoKnownSize {
-> +pub trait Io64: Io {
+The move to syn is not only a blessing for the maintenance work, but
+also improves the implementation of new features. This series includes
+many such improvements.
 
-The following combinations are possible:
+* Patch 1, 2, 3 and 4 prepare for the rewrite. The first removes the
+  superfluous `try_` variants of the initializer macros from pin-init.
+  Note that the kernel defines its own, so no code changes in the kernel
+  are required. The second patch allows using `::pin_init` in the
+  pin-init crate. The third adds the syn dependency and cleans up some
+  old workarounds and new clippy warnings. The fourth adds better error
+  handling on top of `syn`.
+* Patch 5, 6, 7, and 9 rewrite the derive macros for Zeroable,
+  `#[pinned_drop]` attribute macro, `#[pin_data]` attribute macro, and
+  the initializer macros respectively using `syn`.
+* Patch 8 ensures soundness in the future by fixing generic bounds in
+  generated code by `#[pin_data]`.
+* Patch 10 adds the `#[default_error(type)]` attribute to initializer
+  macros allowing them to specify a default error that is used when no
+  error is manually specified.
+* Patch 11 uses `#[default_error(type)]` in the definition of the
+  kernel's `try_` variants of the initializer macros (which defaults to
+  the kernel's `Error` type).
+* Patch 12 allows putting attributes on fields in initializer macros
+  (for example `cfg` attributes).
+* Patch 13 adds `#[disable_initialized_field_access]` to support packed
+  structs.
+* Patch 14 simplifies the code generated by the initializer macros.
+* Patch 15 adds Gary as a maintainer.
 
-1. IoBase
-2. IoBase + Io
-3. IoBase + IoKnownSize
-4. IoBase + Io + IoKnownSize
-5. IoBase + Io + Io64
-6. IoBase + Io + Io64 + IoKnownSize
-7. IoBase + IoKnownSize + IoKnownSize64
-8. IoBase + Io + IoKnownSize + IoKnownSize64
-9. IoBase + Io + IoKnownSize + Io64 + IoKnownSize64
+In addition to the new features, using syn results in much cleaner error
+messages and more accurate span information. The code is much easier to
+read as well and hopefully easier to understand as well.
 
-I'm not sure all of them make sense. I can't see a scenario where I
-would pick 1, 3, 6, 7, or 8.
+As always, tests that ensure the correctness of the macro output are
+included and updated in the upstream pin-init repository. Take a look at
+the pull request on GitHub for the diff in the test output:
 
-How about this trait hierachy? I believe I suggested something along
-these lines before.
+    https://github.com/Rust-for-Linux/pin-init/pull/89
 
-pub trait Io {
-pub trait Io64: Io {
-pub trait IoKnownSize: Io {
+I would greatly appreciate Tested-by's from people actively using
+pin-init weather in the kernel or outside.
 
-With these traits, these scenarios are possible:
+The commit adding syn support to pin-init is also used by Gary's series
+to rewrite the `macros` crate using `syn`:
 
-1. Io
-2. Io + Io64
-3. Io + IoKnownSize
-4. Io + Io64 + IoKnownSize
+    https://lore.kernel.org/all/20260112170919.1888584-1-gary@kernel.org
 
-which seems to be the actual set of cases we care about.
+My series can be found at:
 
-Note that IoKnownSize can have methods that only apply when Io64 is
-implemented:
+    https://github.com/BennoLossin/linux/commits/pin-init/sync
 
-trait IoKnownSize: Io {
-    /// Infallible 8-bit read with compile-time bounds check.
-    fn read8(&self, offset: usize) -> u8;
+The rust-dev branch in the RfL repository will be updated to contain
+both patch series for ease of use & testing.
 
-    /// Infallible 64-bit read with compile-time bounds check.
-    fn read64(&self, offset: usize) -> u64
-    where
-    	Self: Io64;
-}
+Link to previous versions:
 
-Alice
+- v3: https://lore.kernel.org/all/20260114181934.1782470-1-lossin@kernel.org
+- v2: https://lore.kernel.org/all/20260111122554.2662175-1-lossin@kernel.org
+- v1: https://lore.kernel.org/all/20260108135127.3153925-1-lossin@kernel.org
+
+Cheers,
+Benno
+
+
+Benno Lossin (15):
+  rust: pin-init: remove `try_` versions of the initializer macros
+  rust: pin-init: allow the crate to refer to itself as `pin-init` in
+    doc tests
+  rust: pin-init: add `syn` dependency and remove `proc-macro[2]` and
+    `quote` workarounds
+  rust: pin-init: internal: add utility API for syn error handling
+  rust: pin-init: rewrite `derive(Zeroable)` and `derive(MaybeZeroable)`
+    using `syn`
+  rust: pin-init: rewrite the `#[pinned_drop]` attribute macro using
+    `syn`
+  rust: pin-init: rewrite `#[pin_data]` using `syn`
+  rust: pin-init: add `?Sized` bounds to traits in `#[pin_data]` macro
+  rust: pin-init: rewrite the initializer macros using `syn`
+  rust: pin-init: add `#[default_error(<type>)]` attribute to
+    initializer macros
+  rust: init: use `#[default_error(err)]` for the initializer macros
+  rust: pin-init: internal: init: add support for attributes on
+    initializer fields
+  rust: pin-init: internal: init: add escape hatch for referencing
+    initialized fields
+  rust: pin-init: internal: init: simplify Zeroable safety check
+  MAINTAINERS: add Gary Guo to pin-init
+
+ MAINTAINERS                               |    1 +
+ rust/Makefile                             |   16 +-
+ rust/kernel/init.rs                       |   40 +-
+ rust/pin-init/README.md                   |    2 +-
+ rust/pin-init/examples/linked_list.rs     |   19 +-
+ rust/pin-init/examples/pthread_mutex.rs   |   10 +-
+ rust/pin-init/internal/src/diagnostics.rs |   30 +
+ rust/pin-init/internal/src/helpers.rs     |  152 --
+ rust/pin-init/internal/src/init.rs        |  548 +++++++
+ rust/pin-init/internal/src/lib.rs         |   48 +-
+ rust/pin-init/internal/src/pin_data.rs    |  615 ++++++--
+ rust/pin-init/internal/src/pinned_drop.rs |   88 +-
+ rust/pin-init/internal/src/zeroable.rs    |  157 +-
+ rust/pin-init/src/lib.rs                  |  173 +--
+ rust/pin-init/src/macros.rs               | 1677 ---------------------
+ scripts/generate_rust_analyzer.py         |    2 +-
+ 16 files changed, 1278 insertions(+), 2300 deletions(-)
+ create mode 100644 rust/pin-init/internal/src/diagnostics.rs
+ delete mode 100644 rust/pin-init/internal/src/helpers.rs
+ create mode 100644 rust/pin-init/internal/src/init.rs
+ delete mode 100644 rust/pin-init/src/macros.rs
+
+
+base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
+-- 
+2.52.0
+
