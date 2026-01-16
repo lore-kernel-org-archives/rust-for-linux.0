@@ -1,83 +1,147 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F377F30AAD4;
-	Fri, 16 Jan 2026 10:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A475C361674
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 10:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768559316; cv=none; b=Ny36VlKF9qv2QJVOpAW98/CgABqmOUtBUU+pJ05oEuvzZoPOa2Q9VnhIWZFSJndvkDFvZyezu1O3Bbjig71jpztJyXimxBJyJS+Ev6Oxuz0EC+eHddCmS1ibhQQIxH1pAng2JpEnZrIIyQxNTNVDzyiTBp1yGYGjXnAAoo8dXcs=
+	t=1768560293; cv=none; b=k959lQuMGQwPUaoGCb8eopLYKE+4PnyE1s/8M6m1QenvoN2HVCd9Iyljl/GUfK+PJ7N4QZWUoO7mBEb86gMOoptGPRlkCGnRW4MziKkurp9GsXNHyMVDuDHiwh3BvzspdpvCSWiEYMC3SCwNZ2lLtp5JacLW32MokZ1QtlIkddI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768559316; c=relaxed/simple;
-	bh=NWT4fqaPSR5Wbi/YaVXMhA5Y+CY1AeO2zyoYubCyZE8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TLYv61YHUBsJu8DTwWW1rYzVVdOphusaLX/muAXiDSYK++UshAWifmNOxdHIEDQECnpFLLI/PJnutJ0rX0IFdPf6JNyW6vFC/Is177DYbQYQf7quQOUMd1L675BMAoZvttCJBYS/lLsf4Rlw5NfdRXJWXjy0gAQ2/MzB0jutYyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=pNVv8tH2; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1768560293; c=relaxed/simple;
+	bh=b7fb2kg9k9dh+/1ZB4RW0gIF9ob0dRm04urz98QiGjM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UoRasm9dpSr2P3RmrfgVW+5SHLlIx0s93RlFRUeWbe5ujX1+wYLwwrsz+RZlRzf4+sauDp1KoSu6IT7EB+5JCeAm9MpGPDV1IYxUIALkn+ZBesUJT+Jn2YZBXwuFf8mkXcGJ5aSBCLSvjdRfEWvxiEij82HmapsoVrqRT28cAv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=npVRRZMb; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="pNVv8tH2"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4D00D41B45;
-	Fri, 16 Jan 2026 10:28:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1768559305;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cnn7+UeGMO3uyCCwAt6CdNrflwgCUAjAPq/d3MXPX6I=;
-	b=pNVv8tH2IFjZ+C4gx75aHX7J0nXZ0ewyT/Veh990MkXMykC2GJmVbJJhr/cklEDslBwapx
-	AIvo1GtNjAjUIvcgVvPjYPHStrlUMk9ZoefM+88iavOWvD/EdQab/p31EP7+OVhZYHloZY
-	msvmdHhTFNbqVNn8exUEiShFI3BPrGwq3DVdKkcNuqK+GNAu16H3dr3RruA9R3UjxmJyc9
-	AjHJ7n6v7DsDoZE+BGiIF8HNvOWT/aCmxvcNQPbf8VoCzCnLb67RqOV6cRZcYk/olqeAKt
-	6E/K0GbWcuByAa8u368Jaww8Ihwj7vHkiX18C26zwXm5yKqOIL/eP2eq7dSjFw==
-Message-ID: <6af4b4cb-cf0a-4647-bdb8-0b2b1cb03b76@gtucker.io>
-Date: Fri, 16 Jan 2026 11:28:24 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="npVRRZMb"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4801c105717so14829075e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 02:44:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768560290; x=1769165090; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lUX7IRgIyUPb4V4ApOigl/qbJl9m0SFY99Aj6A7demw=;
+        b=npVRRZMb1dp8pb4o5o1xfiNBcJfCavVVdZmQBJ8rvljYhOMRDl/VI5txkcmO4pBZ3I
+         /KVSF9or2D4DhzYq9sIEHwG0UyMy/8rEuTg6Cq1vWUOMeFNuWk4onwEJC6Cyg31siZmC
+         lkEqijfwO2WYaiARXRyN4eYrKVfSo3KUX0T60gdnmkh7w38ByzeOzCnTFn27yhMOrsIg
+         HzJaYT0fFq/r1XNy+1RSDgZFGrZWv9uevLPV31blKloPeWEsDbpc3XzRa7npuep1Cf9e
+         BejEez2DCN4LWOmXxSg8oRJFJbVAruLQH0itn99PPdlKowcScGojok4LrH2dS+7PFaod
+         gLmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768560290; x=1769165090;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lUX7IRgIyUPb4V4ApOigl/qbJl9m0SFY99Aj6A7demw=;
+        b=myy1QdHyzFfZeFCJD5nG1sa4JHWE2BsO04TES47zLBPc2R6+ET19kpHlUUNXetbvBs
+         6ByBNMq8TsGoQjlMbEtORtmVuyb4J+kklVbpY4UaXhB0ZUtC1xPidRfT+gMMZdMknSTf
+         1YrKxJ0g46BFkV8KyQMuoQuV7ng+eV9X5ub0R7xfKvFsQ0Wz44KST8flDa5suSyAGdQw
+         D23uWt2Y9MMUEf2HM/ALKNGX8YQg4ROHbSbhmch/lx6qjN777/vrcG+DrUVSlWeK5HQ8
+         TiAmSe8dPF9zC8OeNKp2uBd2jB7liHkBv94cz4z/8xmMEALM1LvZ1dZF6D29KXa/EWED
+         Cjlg==
+X-Gm-Message-State: AOJu0YyWaFiiLGN7IfLS+1CBGxXWlp0YSXXuJbQSgkAcrIGdmF+jkJNP
+	E/OOeo0C2cY+1Ty4Dzd9Yf73qI4JNb73HAGOSzQ6QUsqU1+sedbIaKxdhMBWfB7f/2/GXQo3U2O
+	RjeSoustsIksrXfd7Vg==
+X-Received: from wmaq10.prod.google.com ([2002:a05:600c:6c8a:b0:47e:d9ed:20f0])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:c16a:b0:47e:e20e:bbbe with SMTP id 5b1f17b1804b1-4801e33c332mr30124455e9.25.1768560290048;
+ Fri, 16 Jan 2026 02:44:50 -0800 (PST)
+Date: Fri, 16 Jan 2026 10:44:46 +0000
+In-Reply-To: <20260115212657.399231-3-zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] scripts: introduce containerized builds
-To: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- David Gow <davidgow@google.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
- automated-testing@lists.yoctoproject.org, workflows@vger.kernel.org,
- llvm@lists.linux.dev
-References: <cover.1767199119.git.gtucker@gtucker.io>
-Content-Language: en-GB
-From: Guillaume Tucker <gtucker@gtucker.io>
-Organization: gtucker.io
-In-Reply-To: <cover.1767199119.git.gtucker@gtucker.io>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduvdekjedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhohgjtgfgsehtjeertddtvdejnecuhfhrohhmpefiuhhilhhlrghumhgvucfvuhgtkhgvrhcuoehgthhutghkvghrsehgthhutghkvghrrdhioheqnecuggftrfgrthhtvghrnhepfeegvdfgveethfffhedvfffgfeefveetkeegudduvdefleejgfdtveeuiedufeeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddttddumeekiedumeegrgegtdemkeeivddtmegtvggvsgemfhehvdemkegtvgejmegtvgdutgenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvtddtudemkeeiudemgegrgedtmeekiedvtdemtggvvggsmehfhedvmeektggvjeemtggvudgtpdhhvghloheplgfkrfggieemvddttddumeekiedumeegrgegtdemkeeivddtmegtvggvsgemfhehvdemkegtvgejmegtvgdutggnpdhmrghilhhfrhhomhepghhtuhgtkhgvrhesghhtuhgtkhgvrhdrihhopdhqihgupeegffdttdffgeduueeghedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopeduuddprhgtphhtthhopehnrghthhgrnheskhgvrhhnvghlrdhorhhgpdhrtghpt
- hhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrvhhiughgohifsehgohhoghhlvgdrtghomhdprhgtphhtthhopeifohhrkhesohhnuhhrohiikhgrnhdruggvvhdprhgtphhtthhopegrrhhnugesrghrnhgusgdruggvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-GND-State: clean
+Mime-Version: 1.0
+References: <20260115212657.399231-1-zhiw@nvidia.com> <20260115212657.399231-3-zhiw@nvidia.com>
+Message-ID: <aWoWntMxyhBc9Unx@google.com>
+Subject: Re: [PATCH v9 2/5] rust: io: factor common I/O helpers into Io trait
+From: Alice Ryhl <aliceryhl@google.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dakr@kernel.org, bhelgaas@google.com, 
+	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	markus.probst@posteo.de, helgaas@kernel.org, cjia@nvidia.com, 
+	smitra@nvidia.com, ankita@nvidia.com, aniketa@nvidia.com, 
+	kwankhede@nvidia.com, targupta@nvidia.com, acourbot@nvidia.com, 
+	joelagnelf@nvidia.com, jhubbard@nvidia.com, zhiwang@kernel.org, 
+	daniel.almeida@collabora.com
+Content-Type: text/plain; charset="utf-8"
 
-Hello,
+On Thu, Jan 15, 2026 at 11:26:46PM +0200, Zhi Wang wrote:
+> The previous Io<SIZE> type combined both the generic I/O access helpers
+> and MMIO implementation details in a single struct.
+> 
+> To establish a cleaner layering between the I/O interface and its concrete
+> backends, paving the way for supporting additional I/O mechanisms in the
+> future, Io<SIZE> need to be factored.
+> 
+> Factor the common helpers into new {Io, Io64} traits, and move the
+> MMIO-specific logic into a dedicated Mmio<SIZE> type implementing that
+> trait. Rename the IoRaw to MmioRaw and update the bus MMIO implementations
+> to use MmioRaw.
+> 
+> No functional change intended.
+> 
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: Bjorn Helgaas <helgaas@kernel.org>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
 
-On 31/12/2025 17:51, Guillaume Tucker wrote:
-> Changes in v3:
-> - Refactor common code for Docker and Podman
-> - Add docs.kernel.org URL in help message
-> - Use pathlib Python package
-> - Handle signals in parent process by default
-> - Add --shell option to use an interactive shell
-> - Tweak debug messages in verbose mode
-> - Specify Python 3.10 as minimum version in the docs
-> - Provide an example env file in the docs
-> - Update docs regarding interactive shell usage
+> +pub trait IoBase {
+> +pub trait IoKnownSize: IoBase {
+> +pub trait Io: IoBase {
+> +pub trait IoKnownSize64: IoKnownSize {
+> +pub trait Io64: Io {
 
-I'm sure you're all busy landing commits ahead of the next merge
-window.  Could you please take a look at this v3 when you have a
-moment?  I believe I've addressed everything from previous reviews.
+The following combinations are possible:
 
-Thanks,
-Guillaume
+1. IoBase
+2. IoBase + Io
+3. IoBase + IoKnownSize
+4. IoBase + Io + IoKnownSize
+5. IoBase + Io + Io64
+6. IoBase + Io + Io64 + IoKnownSize
+7. IoBase + IoKnownSize + IoKnownSize64
+8. IoBase + Io + IoKnownSize + IoKnownSize64
+9. IoBase + Io + IoKnownSize + Io64 + IoKnownSize64
 
+I'm not sure all of them make sense. I can't see a scenario where I
+would pick 1, 3, 6, 7, or 8.
+
+How about this trait hierachy? I believe I suggested something along
+these lines before.
+
+pub trait Io {
+pub trait Io64: Io {
+pub trait IoKnownSize: Io {
+
+With these traits, these scenarios are possible:
+
+1. Io
+2. Io + Io64
+3. Io + IoKnownSize
+4. Io + Io64 + IoKnownSize
+
+which seems to be the actual set of cases we care about.
+
+Note that IoKnownSize can have methods that only apply when Io64 is
+implemented:
+
+trait IoKnownSize: Io {
+    /// Infallible 8-bit read with compile-time bounds check.
+    fn read8(&self, offset: usize) -> u8;
+
+    /// Infallible 64-bit read with compile-time bounds check.
+    fn read64(&self, offset: usize) -> u64
+    where
+    	Self: Io64;
+}
+
+Alice
