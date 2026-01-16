@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3F5363C75;
-	Fri, 16 Jan 2026 10:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8472D356A22;
+	Fri, 16 Jan 2026 10:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768560992; cv=none; b=cWAmhZSh9Acp8vrWhk5X7EymHMr1iuHg7ydaGyYrCD/ldzn6CaNEAoXNj3EFCnnFHRwtBXK9vXT5pbZNkld9h5IP9Nwvo9pukLI8YGmJ3cqaGvwogcLx8PvG1hQlCqMYDm1sruZQ0wrzvuYWDSQcnvNTsH48g/yqloURhglK9aA=
+	t=1768561007; cv=none; b=M6KNx6QXFmvTwe8cNAOVgdClWZzWYVG6c3P0ZMW+LWL0GwHAZUPUMFfCidlFw8jhGUUKvlGG8vosoxUYgfg+rgQejZr4+9vvVPUqQiBGAgyEKTW7xq1nY6qqYlhosvtGpXa89eXHwgWgM4yXDR6zAQBo0X+G/iGQiNaeW8O96lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768560992; c=relaxed/simple;
-	bh=Qq6ym4PksmlC1gTodlqs15cBEbaF64qrEE5E9Vnq1Ck=;
+	s=arc-20240116; t=1768561007; c=relaxed/simple;
+	bh=RTVfkVpaGEoRe6Eplbt+LOygCQp8HaWcl0LdAj9dFv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rPdpQc4hfbYnLdK3nsYjHjHNEG3FYu3K1Q5tNj3m49UFixe1f3+hZmgE5ftoiuD8YTipqb4kR4HGl5vVBRX9GT1i0xNrsrS/kubx2HP207auZmOIkVl7a5aWnSKdylaHIUn0r7sbhK+a23SXuNFXJPyhFeP6PgrozdQk86RNfII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJCKdt+P; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=AZw1BKLOHEf4G/AFKWf2FujSoKmxjohYZksezcdMdCU003XtCc3Obpju1+MaDXrSkVXxyVu3CbWx2nigNld7LhhqRWYf5ABWHSRK49GAHOtRvJbJrXyALnWOuO4wiuAZQiFqncMGLOy+ASn6FvJcFgfAfAkoAzRVFt0FSXNpXWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=txmmAqjX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJCKdt+P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C83CC116C6;
-	Fri, 16 Jan 2026 10:56:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="txmmAqjX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFEEC116C6;
+	Fri, 16 Jan 2026 10:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768560991;
-	bh=Qq6ym4PksmlC1gTodlqs15cBEbaF64qrEE5E9Vnq1Ck=;
+	s=k20201202; t=1768561005;
+	bh=RTVfkVpaGEoRe6Eplbt+LOygCQp8HaWcl0LdAj9dFv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJCKdt+PnZqxYYMCyizwWOoABQzWgjmYklRuBQ4VO7P49+teeP3gkpAl9sQN+jY5G
-	 oHIPZutLDQM0ZqHxKyGeDQUdenefYN7iwKBtBrreVItFwSgXv+UfdQaLrzicC4bnxD
-	 7XCjEWwMtrmM3DyVGHrRPnlIYfy1FEBNoMhf0bDtJnc++D09lSuELDqCcayydKXoB5
-	 I2yyWzpcciZJgsuaB9mRdQCaChz2dSha2m1v7gp8VfVIdZur2u09tG4p7NSvrbIt0P
-	 Lg1nqM420Y+DF8wnV5Wxh+UGRU6CV/ZLOaZAZlt1lj3IRFFeqLLaWUklUERarh9tX/
-	 mEKRezXrHLjfg==
+	b=txmmAqjXqXkyv7SAzuRWzDcNVqyZ7v4lrvZ1DUxUxojXeVgc85TGptiS3gHpuZLGO
+	 AcYx+IronWpFsYOcAS9tA/P57qFicCZqvVBdvP3d1spO1oOcyPacCMI6gU/ZG+bSOV
+	 LPlqDjAApgNcSJdWp64rneasCktYbreIqoTGOS1HBfZ7ynOaMaR81kPdeHc0VFobCl
+	 RSh4YUxZAV8COnxQPrWeo0/+eLD2QOh1UFn8LsdKHTnrbX1LVKguYQwICONjvtS2Fk
+	 R8WoTFyPFdWrM3m6nOytk+uZCAOoHHrUtAVq3oIPXWwsC06cKSy49wzE7RwkvhPdor
+	 uP3mR2P4p9Hww==
 From: Benno Lossin <lossin@kernel.org>
 To: Benno Lossin <lossin@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -36,14 +36,14 @@ To: Benno Lossin <lossin@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Fiona Behrens <me@Kloenk.dev>,
-	Tamir Duberstein <tamird@gmail.com>,
+	Fiona Behrens <me@kloenk.dev>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>,
 	Alban Kurti <kurti@invicto.ai>
 Cc: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v4 07/15] rust: pin-init: rewrite `#[pin_data]` using `syn`
-Date: Fri, 16 Jan 2026 11:54:22 +0100
-Message-ID: <20260116105514.3794384-8-lossin@kernel.org>
+Subject: [PATCH v4 09/15] rust: pin-init: rewrite the initializer macros using `syn`
+Date: Fri, 16 Jan 2026 11:54:24 +0100
+Message-ID: <20260116105514.3794384-10-lossin@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116105514.3794384-1-lossin@kernel.org>
 References: <20260116105514.3794384-1-lossin@kernel.org>
@@ -55,1464 +55,1608 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rewrite the attribute macro `#[pin_data]` using `syn`. No functional
+Rewrite the initializer macros `[pin_]init!` using `syn`. No functional
 changes intended aside from improved error messages on syntactic and
-semantical errors. For example if one forgets a comma at the end of a
-field:
+semantical errors. For example if one forgets to use `<-` with an
+initializer (and instead uses `:`):
 
-    #[pin_data]
-    struct Foo {
-        a: Box<Foo>
-        b: Box<Foo>
+    impl Bar {
+        fn new() -> impl PinInit<Self> { ... }
     }
 
-The declarative macro reports the following errors:
+    impl Foo {
+        fn new() -> impl PinInit<Self> {
+            pin_init!(Self { bar: Bar::new() })
+        }
+    }
 
-    error: expected `,`, or `}`, found `b`
-     --> tests/ui/compile-fail/pin_data/missing_comma.rs:5:16
-      |
-    5 |     a: Box<Foo>
-      |                ^ help: try adding a comma: `,`
+Then the declarative macro would report:
 
-    error: recursion limit reached while expanding `$crate::__pin_data!`
-     --> tests/ui/compile-fail/pin_data/missing_comma.rs:3:1
-      |
-    3 | #[pin_data]
-      | ^^^^^^^^^^^
-      |
-      = help: consider increasing the recursion limit by adding a `#![recursion_limit = "256"]` attribute to your crate (`$CRATE`)
-      = note: this error originates in the macro `$crate::__pin_data` which comes from the expansion of the attribute macro `pin_data` (in Nightly builds, run with -Z macro-backtrace for more info)
+    error[E0308]: mismatched types
+      --> tests/ui/compile-fail/init/colon_instead_of_arrow.rs:21:9
+       |
+    14 |     fn new() -> impl PinInit<Self> {
+       |                 ------------------ the found opaque type
+    ...
+    21 |         pin_init!(Self { bar: Bar::new() })
+       |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+       |         |
+       |         expected `Bar`, found opaque type
+       |         arguments to this function are incorrect
+       |
+       = note:   expected struct `Bar`
+               found opaque type `impl pin_init::PinInit<Bar>`
+    note: function defined here
+      --> $RUST/core/src/ptr/mod.rs
+       |
+       | pub const unsafe fn write<T>(dst: *mut T, src: T) {
+       |                     ^^^^^
+       = note: this error originates in the macro `$crate::__init_internal` which comes from the expansion of the macro `pin_init` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-The new `syn` version reports:
+And the new error is:
 
-    error: expected `,`, or `}`, found `b`
-     --> tests/ui/compile-fail/pin_data/missing_comma.rs:5:16
-      |
-    5 |     a: Box<Foo>
-      |                ^ help: try adding a comma: `,`
+    error[E0308]: mismatched types
+      --> tests/ui/compile-fail/init/colon_instead_of_arrow.rs:21:31
+       |
+    14 |     fn new() -> impl PinInit<Self> {
+       |                 ------------------ the found opaque type
+    ...
+    21 |         pin_init!(Self { bar: Bar::new() })
+       |                          ---  ^^^^^^^^^^ expected `Bar`, found opaque type
+       |                          |
+       |                          arguments to this function are incorrect
+       |
+       = note:   expected struct `Bar`
+               found opaque type `impl pin_init::PinInit<Bar>`
+    note: function defined here
+      --> $RUST/core/src/ptr/mod.rs
+       |
+       | pub const unsafe fn write<T>(dst: *mut T, src: T) {
+       |                     ^^^^^
 
-    error: expected `,`
-     --> tests/ui/compile-fail/pin_data/missing_comma.rs:6:5
-      |
-    6 |     b: Box<Foo>
-      |     ^
+Importantly, this error gives much more accurate span locations,
+pointing to the offending field, rather than the entire macro
+invocation.
 
 Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Benno Lossin <lossin@kernel.org>
 ---
-Changes in v4:
-* improve parsing
-* consolidate generics handling
-* improve handling of `#[pin]` attributes
+Changes in v4: none
 Changes in v3:
 * use DiagCtxt error handling
 Changes in v2:
-* improved error handling
-* fix clippy warnings
-* fix typos and variable names
-* collect the information about the pinned/not pinned fields only once
-  at the beginning
+* fix clippy error
+* add missing SPDX-License-Identifier
+* improve error handling
+* improve default error evaluation
+* added missing comment from pre-rewrite code
 ---
- rust/pin-init/internal/src/helpers.rs  | 149 ------
- rust/pin-init/internal/src/lib.rs      |   7 +-
- rust/pin-init/internal/src/pin_data.rs | 611 ++++++++++++++++++++-----
- rust/pin-init/src/macros.rs            | 574 -----------------------
- 4 files changed, 503 insertions(+), 838 deletions(-)
- delete mode 100644 rust/pin-init/internal/src/helpers.rs
+ rust/pin-init/internal/src/init.rs | 445 ++++++++++++++
+ rust/pin-init/internal/src/lib.rs  |  13 +
+ rust/pin-init/src/lib.rs           |  56 +-
+ rust/pin-init/src/macros.rs        | 951 -----------------------------
+ 4 files changed, 460 insertions(+), 1005 deletions(-)
+ create mode 100644 rust/pin-init/internal/src/init.rs
+ delete mode 100644 rust/pin-init/src/macros.rs
 
-diff --git a/rust/pin-init/internal/src/helpers.rs b/rust/pin-init/internal/src/helpers.rs
-deleted file mode 100644
-index 90f85eaa4123..000000000000
---- a/rust/pin-init/internal/src/helpers.rs
-+++ /dev/null
-@@ -1,149 +0,0 @@
--// SPDX-License-Identifier: Apache-2.0 OR MIT
--
--use proc_macro2::{TokenStream, TokenTree};
--
--/// Parsed generics.
--///
--/// See the field documentation for an explanation what each of the fields represents.
--///
--/// # Examples
--///
--/// ```rust,ignore
--/// # let input = todo!();
--/// let (Generics { decl_generics, impl_generics, ty_generics }, rest) = parse_generics(input);
--/// quote! {
--///     struct Foo<$($decl_generics)*> {
--///         // ...
--///     }
--///
--///     impl<$impl_generics> Foo<$ty_generics> {
--///         fn foo() {
--///             // ...
--///         }
--///     }
--/// }
--/// ```
--pub(crate) struct Generics {
--    /// The generics with bounds and default values (e.g. `T: Clone, const N: usize = 0`).
--    ///
--    /// Use this on type definitions e.g. `struct Foo<$decl_generics> ...` (or `union`/`enum`).
--    pub(crate) decl_generics: Vec<TokenTree>,
--    /// The generics with bounds (e.g. `T: Clone, const N: usize`).
--    ///
--    /// Use this on `impl` blocks e.g. `impl<$impl_generics> Trait for ...`.
--    pub(crate) impl_generics: Vec<TokenTree>,
--    /// The generics without bounds and without default values (e.g. `T, N`).
--    ///
--    /// Use this when you use the type that is declared with these generics e.g.
--    /// `Foo<$ty_generics>`.
--    pub(crate) ty_generics: Vec<TokenTree>,
--}
--
--/// Parses the given `TokenStream` into `Generics` and the rest.
--///
--/// The generics are not present in the rest, but a where clause might remain.
--pub(crate) fn parse_generics(input: TokenStream) -> (Generics, Vec<TokenTree>) {
--    // The generics with bounds and default values.
--    let mut decl_generics = vec![];
--    // `impl_generics`, the declared generics with their bounds.
--    let mut impl_generics = vec![];
--    // Only the names of the generics, without any bounds.
--    let mut ty_generics = vec![];
--    // Tokens not related to the generics e.g. the `where` token and definition.
--    let mut rest = vec![];
--    // The current level of `<`.
--    let mut nesting = 0;
--    let mut toks = input.into_iter();
--    // If we are at the beginning of a generic parameter.
--    let mut at_start = true;
--    let mut skip_until_comma = false;
--    while let Some(tt) = toks.next() {
--        if nesting == 1 && matches!(&tt, TokenTree::Punct(p) if p.as_char() == '>') {
--            // Found the end of the generics.
--            break;
--        } else if nesting >= 1 {
--            decl_generics.push(tt.clone());
--        }
--        match tt.clone() {
--            TokenTree::Punct(p) if p.as_char() == '<' => {
--                if nesting >= 1 && !skip_until_comma {
--                    // This is inside of the generics and part of some bound.
--                    impl_generics.push(tt);
--                }
--                nesting += 1;
--            }
--            TokenTree::Punct(p) if p.as_char() == '>' => {
--                // This is a parsing error, so we just end it here.
--                if nesting == 0 {
--                    break;
--                } else {
--                    nesting -= 1;
--                    if nesting >= 1 && !skip_until_comma {
--                        // We are still inside of the generics and part of some bound.
--                        impl_generics.push(tt);
--                    }
--                }
--            }
--            TokenTree::Punct(p) if skip_until_comma && p.as_char() == ',' => {
--                if nesting == 1 {
--                    impl_generics.push(tt.clone());
--                    impl_generics.push(tt);
--                    skip_until_comma = false;
--                }
--            }
--            _ if !skip_until_comma => {
--                match nesting {
--                    // If we haven't entered the generics yet, we still want to keep these tokens.
--                    0 => rest.push(tt),
--                    1 => {
--                        // Here depending on the token, it might be a generic variable name.
--                        match tt.clone() {
--                            TokenTree::Ident(i) if at_start && i == "const" => {
--                                let Some(name) = toks.next() else {
--                                    // Parsing error.
--                                    break;
--                                };
--                                impl_generics.push(tt);
--                                impl_generics.push(name.clone());
--                                ty_generics.push(name.clone());
--                                decl_generics.push(name);
--                                at_start = false;
--                            }
--                            TokenTree::Ident(_) if at_start => {
--                                impl_generics.push(tt.clone());
--                                ty_generics.push(tt);
--                                at_start = false;
--                            }
--                            TokenTree::Punct(p) if p.as_char() == ',' => {
--                                impl_generics.push(tt.clone());
--                                ty_generics.push(tt);
--                                at_start = true;
--                            }
--                            // Lifetimes begin with `'`.
--                            TokenTree::Punct(p) if p.as_char() == '\'' && at_start => {
--                                impl_generics.push(tt.clone());
--                                ty_generics.push(tt);
--                            }
--                            // Generics can have default values, we skip these.
--                            TokenTree::Punct(p) if p.as_char() == '=' => {
--                                skip_until_comma = true;
--                            }
--                            _ => impl_generics.push(tt),
--                        }
--                    }
--                    _ => impl_generics.push(tt),
--                }
--            }
--            _ => {}
--        }
--    }
--    rest.extend(toks);
--    (
--        Generics {
--            impl_generics,
--            decl_generics,
--            ty_generics,
--        },
--        rest,
--    )
--}
-diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src/lib.rs
-index a75b99b58189..56dc306e04a9 100644
---- a/rust/pin-init/internal/src/lib.rs
-+++ b/rust/pin-init/internal/src/lib.rs
-@@ -16,14 +16,15 @@
- use crate::diagnostics::DiagCtxt;
- 
- mod diagnostics;
--mod helpers;
- mod pin_data;
- mod pinned_drop;
- mod zeroable;
- 
- #[proc_macro_attribute]
--pub fn pin_data(inner: TokenStream, item: TokenStream) -> TokenStream {
--    pin_data::pin_data(inner.into(), item.into()).into()
-+pub fn pin_data(args: TokenStream, input: TokenStream) -> TokenStream {
-+    let args = parse_macro_input!(args);
-+    let input = parse_macro_input!(input);
-+    DiagCtxt::with(|dcx| pin_data::pin_data(args, input, dcx)).into()
- }
- 
- #[proc_macro_attribute]
-diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-index 86a53b37cc66..11ea3f8d8a1b 100644
---- a/rust/pin-init/internal/src/pin_data.rs
-+++ b/rust/pin-init/internal/src/pin_data.rs
-@@ -1,126 +1,513 @@
- // SPDX-License-Identifier: Apache-2.0 OR MIT
- 
--use crate::helpers::{parse_generics, Generics};
--use proc_macro2::{Group, Punct, Spacing, TokenStream, TokenTree};
--use quote::quote;
-+use proc_macro2::TokenStream;
-+use quote::{format_ident, quote};
+diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
+new file mode 100644
+index 000000000000..b0eb66224341
+--- /dev/null
++++ b/rust/pin-init/internal/src/init.rs
+@@ -0,0 +1,445 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
++
++use proc_macro2::{Span, TokenStream};
++use quote::{format_ident, quote, quote_spanned};
 +use syn::{
-+    parse::{End, Nothing, Parse},
-+    parse_quote, parse_quote_spanned,
++    braced,
++    parse::{End, Parse},
++    parse_quote,
++    punctuated::Punctuated,
 +    spanned::Spanned,
-+    visit_mut::VisitMut,
-+    Field, Generics, Ident, Item, PathSegment, Type, TypePath, Visibility, WhereClause,
++    token, Block, Expr, ExprCall, ExprPath, Ident, Path, Token, Type,
 +};
- 
--pub(crate) fn pin_data(args: TokenStream, input: TokenStream) -> TokenStream {
--    // This proc-macro only does some pre-parsing and then delegates the actual parsing to
--    // `pin_init::__pin_data!`.
++
 +use crate::diagnostics::{DiagCtxt, ErrorGuaranteed};
- 
-+pub(crate) mod kw {
-+    syn::custom_keyword!(PinnedDrop);
++
++pub(crate) struct Initializer {
++    this: Option<This>,
++    path: Path,
++    brace_token: token::Brace,
++    fields: Punctuated<InitializerField, Token![,]>,
++    rest: Option<(Token![..], Expr)>,
++    error: Option<(Token![?], Type)>,
 +}
 +
-+pub(crate) enum Args {
-+    Nothing(Nothing),
-+    #[allow(dead_code)]
-+    PinnedDrop(kw::PinnedDrop),
++struct This {
++    _and_token: Token![&],
++    ident: Ident,
++    _in_token: Token![in],
 +}
 +
-+impl Parse for Args {
++enum InitializerField {
++    Value {
++        ident: Ident,
++        value: Option<(Token![:], Expr)>,
++    },
++    Init {
++        ident: Ident,
++        _left_arrow_token: Token![<-],
++        value: Expr,
++    },
++    Code {
++        _underscore_token: Token![_],
++        _colon_token: Token![:],
++        block: Block,
++    },
++}
++
++impl InitializerField {
++    fn ident(&self) -> Option<&Ident> {
++        match self {
++            Self::Value { ident, .. } | Self::Init { ident, .. } => Some(ident),
++            Self::Code { .. } => None,
++        }
++    }
++}
++
++pub(crate) fn expand(
++    Initializer {
++        this,
++        path,
++        brace_token,
++        fields,
++        rest,
++        error,
++    }: Initializer,
++    default_error: Option<&'static str>,
++    pinned: bool,
++    dcx: &mut DiagCtxt,
++) -> Result<TokenStream, ErrorGuaranteed> {
++    let error = error.map_or_else(
++        || {
++            if let Some(default_error) = default_error {
++                syn::parse_str(default_error).unwrap()
++            } else {
++                dcx.error(brace_token.span.close(), "expected `? <type>` after `}`");
++                parse_quote!(::core::convert::Infallible)
++            }
++        },
++        |(_, err)| err,
++    );
++    let slot = format_ident!("slot");
++    let (has_data_trait, data_trait, get_data, init_from_closure) = if pinned {
++        (
++            format_ident!("HasPinData"),
++            format_ident!("PinData"),
++            format_ident!("__pin_data"),
++            format_ident!("pin_init_from_closure"),
++        )
++    } else {
++        (
++            format_ident!("HasInitData"),
++            format_ident!("InitData"),
++            format_ident!("__init_data"),
++            format_ident!("init_from_closure"),
++        )
++    };
++    let init_kind = get_init_kind(rest, dcx);
++    let zeroable_check = match init_kind {
++        InitKind::Normal => quote!(),
++        InitKind::Zeroing => quote! {
++            // The user specified `..Zeroable::zeroed()` at the end of the list of fields.
++            // Therefore we check if the struct implements `Zeroable` and then zero the memory.
++            // This allows us to also remove the check that all fields are present (since we
++            // already set the memory to zero and that is a valid bit pattern).
++            fn assert_zeroable<T: ?::core::marker::Sized>(_: *mut T)
++            where T: ::pin_init::Zeroable
++            {}
++            // Ensure that the struct is indeed `Zeroable`.
++            assert_zeroable(#slot);
++            // SAFETY: The type implements `Zeroable` by the check above.
++            unsafe { ::core::ptr::write_bytes(#slot, 0, 1) };
++        },
++    };
++    let this = match this {
++        None => quote!(),
++        Some(This { ident, .. }) => quote! {
++            // Create the `this` so it can be referenced by the user inside of the
++            // expressions creating the individual fields.
++            let #ident = unsafe { ::core::ptr::NonNull::new_unchecked(slot) };
++        },
++    };
++    // `mixed_site` ensures that the data is not accessible to the user-controlled code.
++    let data = Ident::new("__data", Span::mixed_site());
++    let init_fields = init_fields(&fields, pinned, &data, &slot);
++    let field_check = make_field_check(&fields, init_kind, &path);
++    Ok(quote! {{
++        // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
++        // type and shadow it later when we insert the arbitrary user code. That way there will be
++        // no possibility of returning without `unsafe`.
++        struct __InitOk;
++
++        // Get the data about fields from the supplied type.
++        // SAFETY: TODO
++        let #data = unsafe {
++            use ::pin_init::__internal::#has_data_trait;
++            // Can't use `<#path as #has_data_trait>::#get_data`, since the user is able to omit
++            // generics (which need to be present with that syntax).
++            #path::#get_data()
++        };
++        // Ensure that `#data` really is of type `#data` and help with type inference:
++        let init = ::pin_init::__internal::#data_trait::make_closure::<_, __InitOk, #error>(
++            #data,
++            move |slot| {
++                {
++                    // Shadow the structure so it cannot be used to return early.
++                    struct __InitOk;
++                    #zeroable_check
++                    #this
++                    #init_fields
++                    #field_check
++                }
++                Ok(__InitOk)
++            }
++        );
++        let init = move |slot| -> ::core::result::Result<(), #error> {
++            init(slot).map(|__InitOk| ())
++        };
++        // SAFETY: TODO
++        let init = unsafe { ::pin_init::#init_from_closure::<_, #error>(init) };
++        init
++    }})
++}
++
++enum InitKind {
++    Normal,
++    Zeroing,
++}
++
++fn get_init_kind(rest: Option<(Token![..], Expr)>, dcx: &mut DiagCtxt) -> InitKind {
++    let Some((dotdot, expr)) = rest else {
++        return InitKind::Normal;
++    };
++    match &expr {
++        Expr::Call(ExprCall { func, args, .. }) if args.is_empty() => match &**func {
++            Expr::Path(ExprPath {
++                attrs,
++                qself: None,
++                path:
++                    Path {
++                        leading_colon: None,
++                        segments,
++                    },
++            }) if attrs.is_empty()
++                && segments.len() == 2
++                && segments[0].ident == "Zeroable"
++                && segments[0].arguments.is_none()
++                && segments[1].ident == "init_zeroed"
++                && segments[1].arguments.is_none() =>
++            {
++                return InitKind::Zeroing;
++            }
++            _ => {}
++        },
++        _ => {}
++    }
++    dcx.error(
++        dotdot.span().join(expr.span()).unwrap_or(expr.span()),
++        "expected nothing or `..Zeroable::init_zeroed()`.",
++    );
++    InitKind::Normal
++}
++
++/// Generate the code that initializes the fields of the struct using the initializers in `field`.
++fn init_fields(
++    fields: &Punctuated<InitializerField, Token![,]>,
++    pinned: bool,
++    data: &Ident,
++    slot: &Ident,
++) -> TokenStream {
++    let mut guards = vec![];
++    let mut res = TokenStream::new();
++    for field in fields {
++        let init = match field {
++            InitializerField::Value { ident, value } => {
++                let mut value_ident = ident.clone();
++                let value_prep = value.as_ref().map(|value| &value.1).map(|value| {
++                    // Setting the span of `value_ident` to `value`'s span improves error messages
++                    // when the type of `value` is wrong.
++                    value_ident.set_span(value.span());
++                    quote!(let #value_ident = #value;)
++                });
++                // Again span for better diagnostics
++                let write = quote_spanned!(ident.span()=> ::core::ptr::write);
++                let accessor = if pinned {
++                    let project_ident = format_ident!("__project_{ident}");
++                    quote! {
++                        // SAFETY: TODO
++                        unsafe { #data.#project_ident(&mut (*#slot).#ident) }
++                    }
++                } else {
++                    quote! {
++                        // SAFETY: TODO
++                        unsafe { &mut (*#slot).#ident }
++                    }
++                };
++                quote! {
++                    {
++                        #value_prep
++                        // SAFETY: TODO
++                        unsafe { #write(::core::ptr::addr_of_mut!((*#slot).#ident), #value_ident) };
++                    }
++                    #[allow(unused_variables)]
++                    let #ident = #accessor;
++                }
++            }
++            InitializerField::Init { ident, value, .. } => {
++                // Again span for better diagnostics
++                let init = format_ident!("init", span = value.span());
++                if pinned {
++                    let project_ident = format_ident!("__project_{ident}");
++                    quote! {
++                        {
++                            let #init = #value;
++                            // SAFETY:
++                            // - `slot` is valid, because we are inside of an initializer closure, we
++                            //   return when an error/panic occurs.
++                            // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
++                            //   for `#ident`.
++                            unsafe { #data.#ident(::core::ptr::addr_of_mut!((*#slot).#ident), #init)? };
++                        }
++                        // SAFETY: TODO
++                        #[allow(unused_variables)]
++                        let #ident = unsafe { #data.#project_ident(&mut (*#slot).#ident) };
++                    }
++                } else {
++                    quote! {
++                        {
++                            let #init = #value;
++                            // SAFETY: `slot` is valid, because we are inside of an initializer
++                            // closure, we return when an error/panic occurs.
++                            unsafe {
++                                ::pin_init::Init::__init(
++                                    #init,
++                                    ::core::ptr::addr_of_mut!((*#slot).#ident),
++                                )?
++                            };
++                        }
++                        // SAFETY: TODO
++                        #[allow(unused_variables)]
++                        let #ident = unsafe { &mut (*#slot).#ident };
++                    }
++                }
++            }
++            InitializerField::Code { block: value, .. } => quote!(#[allow(unused_braces)] #value),
++        };
++        res.extend(init);
++        if let Some(ident) = field.ident() {
++            // `mixed_site` ensures that the guard is not accessible to the user-controlled code.
++            let guard = format_ident!("__{ident}_guard", span = Span::mixed_site());
++            guards.push(guard.clone());
++            res.extend(quote! {
++                // Create the drop guard:
++                //
++                // We rely on macro hygiene to make it impossible for users to access this local
++                // variable.
++                // SAFETY: We forget the guard later when initialization has succeeded.
++                let #guard = unsafe {
++                    ::pin_init::__internal::DropGuard::new(
++                        ::core::ptr::addr_of_mut!((*slot).#ident)
++                    )
++                };
++            });
++        }
++    }
++    quote! {
++        #res
++        // If execution reaches this point, all fields have been initialized. Therefore we can now
++        // dismiss the guards by forgetting them.
++        #(::core::mem::forget(#guards);)*
++    }
++}
++
++/// Generate the check for ensuring that every field has been initialized.
++fn make_field_check(
++    fields: &Punctuated<InitializerField, Token![,]>,
++    init_kind: InitKind,
++    path: &Path,
++) -> TokenStream {
++    let fields = fields.iter().filter_map(|f| f.ident());
++    match init_kind {
++        InitKind::Normal => quote! {
++            // We use unreachable code to ensure that all fields have been mentioned exactly once,
++            // this struct initializer will still be type-checked and complain with a very natural
++            // error message if a field is forgotten/mentioned more than once.
++            #[allow(unreachable_code, clippy::diverging_sub_expression)]
++            // SAFETY: this code is never executed.
++            let _ = || unsafe {
++                ::core::ptr::write(slot, #path {
++                    #(
++                        #fields: ::core::panic!(),
++                    )*
++                })
++            };
++        },
++        InitKind::Zeroing => quote! {
++            // We use unreachable code to ensure that all fields have been mentioned at most once.
++            // Since the user specified `..Zeroable::zeroed()` at the end, all missing fields will
++            // be zeroed. This struct initializer will still be type-checked and complain with a
++            // very natural error message if a field is mentioned more than once, or doesn't exist.
++            #[allow(unreachable_code, clippy::diverging_sub_expression, unused_assignments)]
++            // SAFETY: this code is never executed.
++            let _ = || unsafe {
++                let mut zeroed = ::core::mem::zeroed();
++                // We have to use type inference here to make zeroed have the correct type. This
++                // does not get executed, so it has no effect.
++                ::core::ptr::write(slot, zeroed);
++                zeroed = ::core::mem::zeroed();
++                ::core::ptr::write(slot, #path {
++                    #(
++                        #fields: ::core::panic!(),
++                    )*
++                    ..zeroed
++                })
++            };
++        },
++    }
++}
++
++impl Parse for Initializer {
++    fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
++        let this = input.peek(Token![&]).then(|| input.parse()).transpose()?;
++        let path = input.parse()?;
++        let content;
++        let brace_token = braced!(content in input);
++        let mut fields = Punctuated::new();
++        loop {
++            let lh = content.lookahead1();
++            if lh.peek(End) || lh.peek(Token![..]) {
++                break;
++            } else if lh.peek(Ident) || lh.peek(Token![_]) {
++                fields.push_value(content.parse()?);
++                let lh = content.lookahead1();
++                if lh.peek(End) {
++                    break;
++                } else if lh.peek(Token![,]) {
++                    fields.push_punct(content.parse()?);
++                } else {
++                    return Err(lh.error());
++                }
++            } else {
++                return Err(lh.error());
++            }
++        }
++        let rest = content
++            .peek(Token![..])
++            .then(|| Ok::<_, syn::Error>((content.parse()?, content.parse()?)))
++            .transpose()?;
++        let error = input
++            .peek(Token![?])
++            .then(|| Ok::<_, syn::Error>((input.parse()?, input.parse()?)))
++            .transpose()?;
++        Ok(Self {
++            this,
++            path,
++            brace_token,
++            fields,
++            rest,
++            error,
++        })
++    }
++}
++
++impl Parse for This {
++    fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
++        Ok(Self {
++            _and_token: input.parse()?,
++            ident: input.parse()?,
++            _in_token: input.parse()?,
++        })
++    }
++}
++
++impl Parse for InitializerField {
 +    fn parse(input: syn::parse::ParseStream<'_>) -> syn::Result<Self> {
 +        let lh = input.lookahead1();
-+        if lh.peek(End) {
-+            input.parse().map(Self::Nothing)
-+        } else if lh.peek(kw::PinnedDrop) {
-+            input.parse().map(Self::PinnedDrop)
++        if lh.peek(Token![_]) {
++            Ok(Self::Code {
++                _underscore_token: input.parse()?,
++                _colon_token: input.parse()?,
++                block: input.parse()?,
++            })
++        } else if lh.peek(Ident) {
++            let ident = input.parse()?;
++            let lh = input.lookahead1();
++            if lh.peek(Token![<-]) {
++                Ok(Self::Init {
++                    ident,
++                    _left_arrow_token: input.parse()?,
++                    value: input.parse()?,
++                })
++            } else if lh.peek(Token![:]) {
++                Ok(Self::Value {
++                    ident,
++                    value: Some((input.parse()?, input.parse()?)),
++                })
++            } else if lh.peek(Token![,]) || lh.peek(End) {
++                Ok(Self::Value { ident, value: None })
++            } else {
++                Err(lh.error())
++            }
 +        } else {
 +            Err(lh.error())
 +        }
 +    }
 +}
-+
-+pub(crate) fn pin_data(
-+    args: Args,
-+    input: Item,
-+    dcx: &mut DiagCtxt,
-+) -> Result<TokenStream, ErrorGuaranteed> {
-+    let mut struct_ = match input {
-+        Item::Struct(struct_) => struct_,
-+        Item::Enum(enum_) => {
-+            return Err(dcx.error(
-+                enum_.enum_token,
-+                "`#[pin_data]` only supports structs for now",
-+            ));
-+        }
-+        Item::Union(union) => {
-+            return Err(dcx.error(
-+                union.union_token,
-+                "`#[pin_data]` only supports structs for now",
-+            ));
-+        }
-+        rest => {
-+            return Err(dcx.error(
-+                rest,
-+                "`#[pin_data]` can only be applied to struct, enum and union definitions",
-+            ));
-+        }
-+    };
-+
-+    // The generics might contain the `Self` type. Since this macro will define a new type with the
-+    // same generics and bounds, this poses a problem: `Self` will refer to the new type as opposed
-+    // to this struct definition. Therefore we have to replace `Self` with the concrete name.
-+    let mut replacer = {
-+        let name = &struct_.ident;
-+        let (_, ty_generics, _) = struct_.generics.split_for_impl();
-+        SelfReplacer(parse_quote!(#name #ty_generics))
-+    };
-+    replacer.visit_generics_mut(&mut struct_.generics);
-+    replacer.visit_fields_mut(&mut struct_.fields);
-+
-+    let fields: Vec<(bool, &Field)> = struct_
-+        .fields
-+        .iter_mut()
-+        .map(|field| {
-+            let len = field.attrs.len();
-+            field.attrs.retain(|a| !a.path().is_ident("pin"));
-+            (len != field.attrs.len(), &*field)
-+        })
-+        .collect();
-+
-+    for (pinned, field) in &fields {
-+        if !pinned && is_phantom_pinned(&field.ty) {
-+            dcx.error(
-+                field,
-+                format!(
-+                    "The field `{}` of type `PhantomPinned` only has an effect \
-+                    if it has the `#[pin]` attribute",
-+                    field.ident.as_ref().unwrap(),
-+                ),
-+            );
-+        }
-+    }
-+
-+    let unpin_impl = generate_unpin_impl(&struct_.ident, &struct_.generics, &fields);
-+    let drop_impl = generate_drop_impl(&struct_.ident, &struct_.generics, args);
-+    let projections =
-+        generate_projections(&struct_.vis, &struct_.ident, &struct_.generics, &fields);
-+    let the_pin_data =
-+        generate_the_pin_data(&struct_.vis, &struct_.ident, &struct_.generics, &fields);
-+
-+    Ok(quote! {
-+        #struct_
-+        #projections
-+        // We put the rest into this const item, because it then will not be accessible to anything
-+        // outside.
-+        const _: () = {
-+            #the_pin_data
-+            #unpin_impl
-+            #drop_impl
-+        };
-+    })
-+}
-+
-+fn is_phantom_pinned(ty: &Type) -> bool {
-+    match ty {
-+        Type::Path(TypePath { qself: None, path }) => {
-+            // Cannot possibly refer to `PhantomPinned` (except alias, but that's on the user).
-+            if path.segments.len() > 3 {
-+                return false;
-+            }
-+            // If there is a `::`, then the path needs to be `::core::marker::PhantomPinned` or
-+            // `::std::marker::PhantomPinned`.
-+            if path.leading_colon.is_some() && path.segments.len() != 3 {
-+                return false;
-+            }
-+            let expected: Vec<&[&str]> = vec![&["PhantomPinned"], &["marker"], &["core", "std"]];
-+            for (actual, expected) in path.segments.iter().rev().zip(expected) {
-+                if !actual.arguments.is_empty() || expected.iter().all(|e| actual.ident != e) {
-+                    return false;
-+                }
-+            }
-+            true
-+        }
-+        _ => false,
-+    }
-+}
-+
-+fn generate_unpin_impl(
-+    ident: &Ident,
-+    generics: &Generics,
-+    fields: &[(bool, &Field)],
-+) -> TokenStream {
-+    let (_, ty_generics, _) = generics.split_for_impl();
-+    let mut generics_with_pin_lt = generics.clone();
-+    generics_with_pin_lt.params.insert(0, parse_quote!('__pin));
-+    generics_with_pin_lt.make_where_clause();
-     let (
--        Generics {
--            impl_generics,
--            decl_generics,
--            ty_generics,
--        },
--        rest,
--    ) = parse_generics(input);
--    // The struct definition might contain the `Self` type. Since `__pin_data!` will define a new
--    // type with the same generics and bounds, this poses a problem, since `Self` will refer to the
--    // new type as opposed to this struct definition. Therefore we have to replace `Self` with the
--    // concrete name.
--
--    // Errors that occur when replacing `Self` with `struct_name`.
--    let mut errs = TokenStream::new();
--    // The name of the struct with ty_generics.
--    let struct_name = rest
--        .iter()
--        .skip_while(|tt| !matches!(tt, TokenTree::Ident(i) if i == "struct"))
--        .nth(1)
--        .and_then(|tt| match tt {
--            TokenTree::Ident(_) => {
--                let tt = tt.clone();
--                let mut res = vec![tt];
--                if !ty_generics.is_empty() {
--                    // We add this, so it is maximally compatible with e.g. `Self::CONST` which
--                    // will be replaced by `StructName::<$generics>::CONST`.
--                    res.push(TokenTree::Punct(Punct::new(':', Spacing::Joint)));
--                    res.push(TokenTree::Punct(Punct::new(':', Spacing::Alone)));
--                    res.push(TokenTree::Punct(Punct::new('<', Spacing::Alone)));
--                    res.extend(ty_generics.iter().cloned());
--                    res.push(TokenTree::Punct(Punct::new('>', Spacing::Alone)));
-+        impl_generics_with_pin_lt,
-+        ty_generics_with_pin_lt,
-+        Some(WhereClause {
-+            where_token,
-+            predicates,
-+        }),
-+    ) = generics_with_pin_lt.split_for_impl()
-+    else {
-+        unreachable!()
-+    };
-+    let pinned_fields = fields.iter().filter_map(|(b, f)| b.then_some(f));
-+    quote! {
-+        // This struct will be used for the unpin analysis. It is needed, because only structurally
-+        // pinned fields are relevant whether the struct should implement `Unpin`.
-+        #[allow(dead_code)] // The fields below are never used.
-+        struct __Unpin #generics_with_pin_lt
-+        #where_token
-+            #predicates
-+        {
-+            __phantom_pin: ::core::marker::PhantomData<fn(&'__pin ()) -> &'__pin ()>,
-+            __phantom: ::core::marker::PhantomData<
-+                fn(#ident #ty_generics) -> #ident #ty_generics
-+            >,
-+            #(#pinned_fields),*
-+        }
-+
-+        #[doc(hidden)]
-+        impl #impl_generics_with_pin_lt ::core::marker::Unpin for #ident #ty_generics
-+        #where_token
-+            __Unpin #ty_generics_with_pin_lt: ::core::marker::Unpin,
-+            #predicates
-+        {}
-+    }
-+}
-+
-+fn generate_drop_impl(ident: &Ident, generics: &Generics, args: Args) -> TokenStream {
-+    let (impl_generics, ty_generics, whr) = generics.split_for_impl();
-+    let has_pinned_drop = matches!(args, Args::PinnedDrop(_));
-+    // We need to disallow normal `Drop` implementation, the exact behavior depends on whether
-+    // `PinnedDrop` was specified in `args`.
-+    if has_pinned_drop {
-+        // When `PinnedDrop` was specified we just implement `Drop` and delegate.
-+        quote! {
-+            impl #impl_generics ::core::ops::Drop for #ident #ty_generics
-+                #whr
-+            {
-+                fn drop(&mut self) {
-+                    // SAFETY: Since this is a destructor, `self` will not move after this function
-+                    // terminates, since it is inaccessible.
-+                    let pinned = unsafe { ::core::pin::Pin::new_unchecked(self) };
-+                    // SAFETY: Since this is a drop function, we can create this token to call the
-+                    // pinned destructor of this type.
-+                    let token = unsafe { ::pin_init::__internal::OnlyCallFromDrop::new() };
-+                    ::pin_init::PinnedDrop::drop(pinned, token);
-                 }
--                Some(res)
-             }
--            _ => None,
--        })
--        .unwrap_or_else(|| {
--            // If we did not find the name of the struct then we will use `Self` as the replacement
--            // and add a compile error to ensure it does not compile.
--            errs.extend(
--                "::core::compile_error!(\"Could not locate type name.\");"
--                    .parse::<TokenStream>()
--                    .unwrap(),
--            );
--            "Self".parse::<TokenStream>().unwrap().into_iter().collect()
--        });
--    let impl_generics = impl_generics
--        .into_iter()
--        .flat_map(|tt| replace_self_and_deny_type_defs(&struct_name, tt, &mut errs))
--        .collect::<Vec<_>>();
--    let mut rest = rest
--        .into_iter()
--        .flat_map(|tt| {
--            // We ignore top level `struct` tokens, since they would emit a compile error.
--            if matches!(&tt, TokenTree::Ident(i) if i == "struct") {
--                vec![tt]
-+        }
-+    } else {
-+        // When no `PinnedDrop` was specified, then we have to prevent implementing drop.
-+        quote! {
-+            // We prevent this by creating a trait that will be implemented for all types implementing
-+            // `Drop`. Additionally we will implement this trait for the struct leading to a conflict,
-+            // if it also implements `Drop`
-+            trait MustNotImplDrop {}
-+            #[expect(drop_bounds)]
-+            impl<T: ::core::ops::Drop> MustNotImplDrop for T {}
-+            impl #impl_generics MustNotImplDrop for #ident #ty_generics
-+                #whr
-+            {}
-+            // We also take care to prevent users from writing a useless `PinnedDrop` implementation.
-+            // They might implement `PinnedDrop` correctly for the struct, but forget to give
-+            // `PinnedDrop` as the parameter to `#[pin_data]`.
-+            #[expect(non_camel_case_types)]
-+            trait UselessPinnedDropImpl_you_need_to_specify_PinnedDrop {}
-+            impl<T: ::pin_init::PinnedDrop>
-+                UselessPinnedDropImpl_you_need_to_specify_PinnedDrop for T {}
-+            impl #impl_generics
-+                UselessPinnedDropImpl_you_need_to_specify_PinnedDrop for #ident #ty_generics
-+                #whr
-+            {}
-+        }
-+    }
-+}
-+
-+fn generate_projections(
-+    vis: &Visibility,
-+    ident: &Ident,
-+    generics: &Generics,
-+    fields: &[(bool, &Field)],
-+) -> TokenStream {
-+    let (impl_generics, ty_generics, _) = generics.split_for_impl();
-+    let mut generics_with_pin_lt = generics.clone();
-+    generics_with_pin_lt.params.insert(0, parse_quote!('__pin));
-+    let (_, ty_generics_with_pin_lt, whr) = generics_with_pin_lt.split_for_impl();
-+    let projection = format_ident!("{ident}Projection");
-+    let this = format_ident!("this");
-+
-+    let (fields_decl, fields_proj) = collect_tuple(fields.iter().map(
-+        |(
-+            pinned,
-+            Field {
-+                vis,
-+                ident,
-+                ty,
-+                attrs,
-+                ..
-+            },
-+        )| {
-+            let mut attrs = attrs.clone();
-+            attrs.retain(|a| !a.path().is_ident("pin"));
-+            let mut no_doc_attrs = attrs.clone();
-+            no_doc_attrs.retain(|a| !a.path().is_ident("doc"));
-+            let ident = ident
-+                .as_ref()
-+                .expect("only structs with named fields are supported");
-+            if *pinned {
-+                (
-+                    quote!(
-+                        #(#attrs)*
-+                        #vis #ident: ::core::pin::Pin<&'__pin mut #ty>,
-+                    ),
-+                    quote!(
-+                        #(#no_doc_attrs)*
-+                        // SAFETY: this field is structurally pinned.
-+                        #ident: unsafe { ::core::pin::Pin::new_unchecked(&mut #this.#ident) },
-+                    ),
-+                )
-             } else {
--                replace_self_and_deny_type_defs(&struct_name, tt, &mut errs)
-+                (
-+                    quote!(
-+                        #(#attrs)*
-+                        #vis #ident: &'__pin mut #ty,
-+                    ),
-+                    quote!(
-+                        #(#no_doc_attrs)*
-+                        #ident: &mut #this.#ident,
-+                    ),
-+                )
-             }
--        })
--        .collect::<Vec<_>>();
--    // This should be the body of the struct `{...}`.
--    let last = rest.pop();
--    let mut quoted = quote!(::pin_init::__pin_data! {
--        parse_input:
--        @args(#args),
--        @sig(#(#rest)*),
--        @impl_generics(#(#impl_generics)*),
--        @ty_generics(#(#ty_generics)*),
--        @decl_generics(#(#decl_generics)*),
--        @body(#last),
--    });
--    quoted.extend(errs);
--    quoted
-+        },
-+    ));
-+    let structurally_pinned_fields_docs = fields
-+        .iter()
-+        .filter_map(|(pinned, field)| pinned.then_some(field))
-+        .map(|Field { ident, .. }| format!(" - `{}`", ident.as_ref().unwrap()));
-+    let not_structurally_pinned_fields_docs = fields
-+        .iter()
-+        .filter_map(|(pinned, field)| (!pinned).then_some(field))
-+        .map(|Field { ident, .. }| format!(" - `{}`", ident.as_ref().unwrap()));
-+    let docs = format!(" Pin-projections of [`{ident}`]");
-+    quote! {
-+        #[doc = #docs]
-+        #[allow(dead_code)]
-+        #[doc(hidden)]
-+        #vis struct #projection #generics_with_pin_lt {
-+            #(#fields_decl)*
-+            ___pin_phantom_data: ::core::marker::PhantomData<&'__pin mut ()>,
-+        }
-+
-+        impl #impl_generics #ident #ty_generics
-+            #whr
-+        {
-+            /// Pin-projects all fields of `Self`.
-+            ///
-+            /// These fields are structurally pinned:
-+            #(#[doc = #structurally_pinned_fields_docs])*
-+            ///
-+            /// These fields are **not** structurally pinned:
-+            #(#[doc = #not_structurally_pinned_fields_docs])*
-+            #[inline]
-+            #vis fn project<'__pin>(
-+                self: ::core::pin::Pin<&'__pin mut Self>,
-+            ) -> #projection #ty_generics_with_pin_lt {
-+                // SAFETY: we only give access to `&mut` for fields not structurally pinned.
-+                let #this = unsafe { ::core::pin::Pin::get_unchecked_mut(self) };
-+                #projection {
-+                    #(#fields_proj)*
-+                    ___pin_phantom_data: ::core::marker::PhantomData,
-+                }
-+            }
-+        }
-+    }
- }
+diff --git a/rust/pin-init/internal/src/lib.rs b/rust/pin-init/internal/src/lib.rs
+index 56dc306e04a9..08372c8f65f0 100644
+--- a/rust/pin-init/internal/src/lib.rs
++++ b/rust/pin-init/internal/src/lib.rs
+@@ -16,6 +16,7 @@
+ use crate::diagnostics::DiagCtxt;
  
--/// Replaces `Self` with `struct_name` and errors on `enum`, `trait`, `struct` `union` and `impl`
--/// keywords.
--///
--/// The error is appended to `errs` to allow normal parsing to continue.
--fn replace_self_and_deny_type_defs(
--    struct_name: &Vec<TokenTree>,
--    tt: TokenTree,
--    errs: &mut TokenStream,
--) -> Vec<TokenTree> {
--    match tt {
--        TokenTree::Ident(ref i)
--            if i == "enum" || i == "trait" || i == "struct" || i == "union" || i == "impl" =>
-+fn generate_the_pin_data(
-+    vis: &Visibility,
-+    ident: &Ident,
-+    generics: &Generics,
-+    fields: &[(bool, &Field)],
-+) -> TokenStream {
-+    let (impl_generics, ty_generics, whr) = generics.split_for_impl();
-+
-+    // For every field, we create an initializing projection function according to its projection
-+    // type. If a field is structurally pinned, then it must be initialized via `PinInit`, if it is
-+    // not structurally pinned, then it can be initialized via `Init`.
-+    //
-+    // The functions are `unsafe` to prevent accidentally calling them.
-+    fn handle_field(
-+        Field {
-+            vis,
-+            ident,
-+            ty,
-+            attrs,
-+            ..
-+        }: &Field,
-+        struct_ident: &Ident,
-+        pinned: bool,
-+    ) -> TokenStream {
-+        let mut attrs = attrs.clone();
-+        attrs.retain(|a| !a.path().is_ident("pin"));
-+        let ident = ident
-+            .as_ref()
-+            .expect("only structs with named fields are supported");
-+        let project_ident = format_ident!("__project_{ident}");
-+        let (init_ty, init_fn, project_ty, project_body, pin_safety) = if pinned {
-+            (
-+                quote!(PinInit),
-+                quote!(__pinned_init),
-+                quote!(::core::pin::Pin<&'__slot mut #ty>),
-+                // SAFETY: this field is structurally pinned.
-+                quote!(unsafe { ::core::pin::Pin::new_unchecked(slot) }),
-+                quote!(
-+                    /// - `slot` will not move until it is dropped, i.e. it will be pinned.
-+                ),
-+            )
-+        } else {
-+            (
-+                quote!(Init),
-+                quote!(__init),
-+                quote!(&'__slot mut #ty),
-+                quote!(slot),
-+                quote!(),
-+            )
-+        };
-+        let slot_safety = format!(
-+            " `slot` points at the field `{ident}` inside of `{struct_ident}`, which is pinned.",
-+        );
-+        quote! {
-+            /// # Safety
-+            ///
-+            /// - `slot` is a valid pointer to uninitialized memory.
-+            /// - the caller does not touch `slot` when `Err` is returned, they are only permitted
-+            ///   to deallocate.
-+            #pin_safety
-+            #(#attrs)*
-+            #vis unsafe fn #ident<E>(
-+                self,
-+                slot: *mut #ty,
-+                init: impl ::pin_init::#init_ty<#ty, E>,
-+            ) -> ::core::result::Result<(), E> {
-+                // SAFETY: this function has the same safety requirements as the __init function
-+                // called below.
-+                unsafe { ::pin_init::#init_ty::#init_fn(init, slot) }
-+            }
-+
-+            /// # Safety
-+            ///
-+            #[doc = #slot_safety]
-+            #(#attrs)*
-+            #vis unsafe fn #project_ident<'__slot>(
-+                self,
-+                slot: &'__slot mut #ty,
-+            ) -> #project_ty {
-+                #project_body
-+            }
-+        }
-+    }
-+
-+    let field_accessors = fields
-+        .iter()
-+        .map(|(pinned, field)| handle_field(field, ident, *pinned))
-+        .collect::<TokenStream>();
-+    quote! {
-+        // We declare this struct which will host all of the projection function for our type. It
-+        // will be invariant over all generic parameters which are inherited from the struct.
-+        #[doc(hidden)]
-+        #vis struct __ThePinData #generics
-+            #whr
-         {
--            errs.extend(
--                format!(
--                    "::core::compile_error!(\"Cannot use `{i}` inside of struct definition with \
--                        `#[pin_data]`.\");"
--                )
--                .parse::<TokenStream>()
--                .unwrap()
--                .into_iter()
--                .map(|mut tok| {
--                    tok.set_span(tt.span());
--                    tok
--                }),
--            );
--            vec![tt]
--        }
--        TokenTree::Ident(i) if i == "Self" => struct_name.clone(),
--        TokenTree::Literal(_) | TokenTree::Punct(_) | TokenTree::Ident(_) => vec![tt],
--        TokenTree::Group(g) => vec![TokenTree::Group(Group::new(
--            g.delimiter(),
--            g.stream()
--                .into_iter()
--                .flat_map(|tt| replace_self_and_deny_type_defs(struct_name, tt, errs))
--                .collect(),
--        ))],
-+            __phantom: ::core::marker::PhantomData<
-+                fn(#ident #ty_generics) -> #ident #ty_generics
-+            >,
-+        }
-+
-+        impl #impl_generics ::core::clone::Clone for __ThePinData #ty_generics
-+            #whr
-+        {
-+            fn clone(&self) -> Self { *self }
-+        }
-+
-+        impl #impl_generics ::core::marker::Copy for __ThePinData #ty_generics
-+            #whr
-+        {}
-+
-+        #[allow(dead_code)] // Some functions might never be used and private.
-+        #[expect(clippy::missing_safety_doc)]
-+        impl #impl_generics __ThePinData #ty_generics
-+            #whr
-+        {
-+            #field_accessors
-+        }
-+
-+        // SAFETY: We have added the correct projection functions above to `__ThePinData` and
-+        // we also use the least restrictive generics possible.
-+        unsafe impl #impl_generics ::pin_init::__internal::HasPinData for #ident #ty_generics
-+            #whr
-+        {
-+            type PinData = __ThePinData #ty_generics;
-+
-+            unsafe fn __pin_data() -> Self::PinData {
-+                __ThePinData { __phantom: ::core::marker::PhantomData }
-+            }
-+        }
-+
-+        // SAFETY: TODO
-+        unsafe impl #impl_generics ::pin_init::__internal::PinData for __ThePinData #ty_generics
-+            #whr
-+        {
-+            type Datee = #ident #ty_generics;
-+        }
-+    }
-+}
-+
-+struct SelfReplacer(PathSegment);
-+
-+impl VisitMut for SelfReplacer {
-+    fn visit_path_mut(&mut self, i: &mut syn::Path) {
-+        if i.is_ident("Self") {
-+            let span = i.span();
-+            let seg = &self.0;
-+            *i = parse_quote_spanned!(span=> #seg);
-+        } else {
-+            syn::visit_mut::visit_path_mut(self, i);
-+        }
-+    }
-+
-+    fn visit_path_segment_mut(&mut self, seg: &mut PathSegment) {
-+        if seg.ident == "Self" {
-+            let span = seg.span();
-+            let this = &self.0;
-+            *seg = parse_quote_spanned!(span=> #this);
-+        } else {
-+            syn::visit_mut::visit_path_segment_mut(self, seg);
-+        }
-+    }
-+
-+    fn visit_item_mut(&mut self, _: &mut Item) {
-+        // Do not descend into items, since items reset/change what `Self` refers to.
-+    }
-+}
-+
-+// replace with `.collect()` once MSRV is above 1.79
-+fn collect_tuple<A, B>(iter: impl Iterator<Item = (A, B)>) -> (Vec<A>, Vec<B>) {
-+    let mut res_a = vec![];
-+    let mut res_b = vec![];
-+    for (a, b) in iter {
-+        res_a.push(a);
-+        res_b.push(b);
-     }
-+    (res_a, res_b)
+ mod diagnostics;
++mod init;
+ mod pin_data;
+ mod pinned_drop;
+ mod zeroable;
+@@ -45,3 +46,15 @@ pub fn maybe_derive_zeroable(input: TokenStream) -> TokenStream {
+     let input = parse_macro_input!(input);
+     DiagCtxt::with(|dcx| zeroable::maybe_derive(input, dcx)).into()
  }
++#[proc_macro]
++pub fn init(input: TokenStream) -> TokenStream {
++    let input = parse_macro_input!(input);
++    DiagCtxt::with(|dcx| init::expand(input, Some("::core::convert::Infallible"), false, dcx))
++        .into()
++}
++
++#[proc_macro]
++pub fn pin_init(input: TokenStream) -> TokenStream {
++    let input = parse_macro_input!(input);
++    DiagCtxt::with(|dcx| init::expand(input, Some("::core::convert::Infallible"), true, dcx)).into()
++}
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 0e707f00061f..780b4fead22d 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -297,8 +297,6 @@
+ 
+ #[doc(hidden)]
+ pub mod __internal;
+-#[doc(hidden)]
+-pub mod macros;
+ 
+ #[cfg(any(feature = "std", feature = "alloc"))]
+ mod alloc;
+@@ -781,32 +779,7 @@ macro_rules! stack_try_pin_init {
+ /// ```
+ ///
+ /// [`NonNull<Self>`]: core::ptr::NonNull
+-// For a detailed example of how this macro works, see the module documentation of the hidden
+-// module `macros` inside of `macros.rs`.
+-#[macro_export]
+-macro_rules! pin_init {
+-    ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
+-        $($fields:tt)*
+-    }) => {
+-        $crate::pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
+-            $($fields)*
+-        }? ::core::convert::Infallible)
+-    };
+-    ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
+-        $($fields:tt)*
+-    }? $err:ty) => {
+-        $crate::__init_internal!(
+-            @this($($this)?),
+-            @typ($t $(::<$($generics),*>)? ),
+-            @fields($($fields)*),
+-            @error($err),
+-            @data(PinData, use_data),
+-            @has_data(HasPinData, __pin_data),
+-            @construct_closure(pin_init_from_closure),
+-            @munch_fields($($fields)*),
+-        )
+-    }
+-}
++pub use pin_init_internal::pin_init;
+ 
+ /// Construct an in-place, fallible initializer for `struct`s.
+ ///
+@@ -844,32 +817,7 @@ macro_rules! pin_init {
+ /// }
+ /// # let _ = Box::init(BigBuf::new());
+ /// ```
+-// For a detailed example of how this macro works, see the module documentation of the hidden
+-// module `macros` inside of `macros.rs`.
+-#[macro_export]
+-macro_rules! init {
+-    ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
+-        $($fields:tt)*
+-    }) => {
+-        $crate::init!($(&$this in)? $t $(::<$($generics),*>)? {
+-            $($fields)*
+-        }? ::core::convert::Infallible)
+-    };
+-    ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
+-        $($fields:tt)*
+-    }? $err:ty) => {
+-        $crate::__init_internal!(
+-            @this($($this)?),
+-            @typ($t $(::<$($generics),*>)?),
+-            @fields($($fields)*),
+-            @error($err),
+-            @data(InitData, /*no use_data*/),
+-            @has_data(HasInitData, __init_data),
+-            @construct_closure(init_from_closure),
+-            @munch_fields($($fields)*),
+-        )
+-    }
+-}
++pub use pin_init_internal::init;
+ 
+ /// Asserts that a field on a struct using `#[pin_data]` is marked with `#[pin]` ie. that it is
+ /// structurally pinned.
 diff --git a/rust/pin-init/src/macros.rs b/rust/pin-init/src/macros.rs
-index b80c95612fd6..eea8adc5c7ad 100644
+deleted file mode 100644
+index eea8adc5c7ad..000000000000
 --- a/rust/pin-init/src/macros.rs
-+++ b/rust/pin-init/src/macros.rs
-@@ -503,580 +503,6 @@
- #[cfg(not(kernel))]
- pub use ::paste::paste;
- 
--/// This macro first parses the struct definition such that it separates pinned and not pinned
--/// fields. Afterwards it declares the struct and implement the `PinData` trait safely.
++++ /dev/null
+@@ -1,951 +0,0 @@
+-// SPDX-License-Identifier: Apache-2.0 OR MIT
+-
+-//! This module provides the macros that actually implement the proc-macros `pin_data` and
+-//! `pinned_drop`. It also contains `__init_internal`, the implementation of the
+-//! `{try_}{pin_}init!` macros.
+-//!
+-//! These macros should never be called directly, since they expect their input to be
+-//! in a certain format which is internal. If used incorrectly, these macros can lead to UB even in
+-//! safe code! Use the public facing macros instead.
+-//!
+-//! This architecture has been chosen because the kernel does not yet have access to `syn` which
+-//! would make matters a lot easier for implementing these as proc-macros.
+-//!
+-//! Since this library and the kernel implementation should diverge as little as possible, the same
+-//! approach has been taken here.
+-//!
+-//! # Macro expansion example
+-//!
+-//! This section is intended for readers trying to understand the macros in this module and the
+-//! `[try_][pin_]init!` macros from `lib.rs`.
+-//!
+-//! We will look at the following example:
+-//!
+-//! ```rust,ignore
+-//! #[pin_data]
+-//! #[repr(C)]
+-//! struct Bar<T> {
+-//!     #[pin]
+-//!     t: T,
+-//!     pub x: usize,
+-//! }
+-//!
+-//! impl<T> Bar<T> {
+-//!     fn new(t: T) -> impl PinInit<Self> {
+-//!         pin_init!(Self { t, x: 0 })
+-//!     }
+-//! }
+-//!
+-//! #[pin_data(PinnedDrop)]
+-//! struct Foo {
+-//!     a: usize,
+-//!     #[pin]
+-//!     b: Bar<u32>,
+-//! }
+-//!
+-//! #[pinned_drop]
+-//! impl PinnedDrop for Foo {
+-//!     fn drop(self: Pin<&mut Self>) {
+-//!         println!("{self:p} is getting dropped.");
+-//!     }
+-//! }
+-//!
+-//! let a = 42;
+-//! let initializer = pin_init!(Foo {
+-//!     a,
+-//!     b <- Bar::new(36),
+-//! });
+-//! ```
+-//!
+-//! This example includes the most common and important features of the pin-init API.
+-//!
+-//! Below you can find individual section about the different macro invocations. Here are some
+-//! general things we need to take into account when designing macros:
+-//! - use global paths, similarly to file paths, these start with the separator: `::core::panic!()`
+-//!   this ensures that the correct item is used, since users could define their own `mod core {}`
+-//!   and then their own `panic!` inside to execute arbitrary code inside of our macro.
+-//! - macro `unsafe` hygiene: we need to ensure that we do not expand arbitrary, user-supplied
+-//!   expressions inside of an `unsafe` block in the macro, because this would allow users to do
+-//!   `unsafe` operations without an associated `unsafe` block.
+-//!
+-//! ## `#[pin_data]` on `Bar`
+-//!
+-//! This macro is used to specify which fields are structurally pinned and which fields are not. It
+-//! is placed on the struct definition and allows `#[pin]` to be placed on the fields.
+-//!
+-//! Here is the definition of `Bar` from our example:
+-//!
+-//! ```rust,ignore
+-//! #[pin_data]
+-//! #[repr(C)]
+-//! struct Bar<T> {
+-//!     #[pin]
+-//!     t: T,
+-//!     pub x: usize,
+-//! }
+-//! ```
+-//!
+-//! This expands to the following code:
+-//!
+-//! ```rust,ignore
+-//! // Firstly the normal definition of the struct, attributes are preserved:
+-//! #[repr(C)]
+-//! struct Bar<T> {
+-//!     t: T,
+-//!     pub x: usize,
+-//! }
+-//! // Then an anonymous constant is defined, this is because we do not want any code to access the
+-//! // types that we define inside:
+-//! const _: () = {
+-//!     // We define the pin-data carrying struct, it is a ZST and needs to have the same generics,
+-//!     // since we need to implement access functions for each field and thus need to know its
+-//!     // type.
+-//!     struct __ThePinData<T> {
+-//!         __phantom: ::core::marker::PhantomData<fn(Bar<T>) -> Bar<T>>,
+-//!     }
+-//!     // We implement `Copy` for the pin-data struct, since all functions it defines will take
+-//!     // `self` by value.
+-//!     impl<T> ::core::clone::Clone for __ThePinData<T> {
+-//!         fn clone(&self) -> Self {
+-//!             *self
+-//!         }
+-//!     }
+-//!     impl<T> ::core::marker::Copy for __ThePinData<T> {}
+-//!     // For every field of `Bar`, the pin-data struct will define a function with the same name
+-//!     // and accessor (`pub` or `pub(crate)` etc.). This function will take a pointer to the
+-//!     // field (`slot`) and a `PinInit` or `Init` depending on the projection kind of the field
+-//!     // (if pinning is structural for the field, then `PinInit` otherwise `Init`).
+-//!     #[allow(dead_code)]
+-//!     impl<T> __ThePinData<T> {
+-//!         unsafe fn t<E>(
+-//!             self,
+-//!             slot: *mut T,
+-//!             // Since `t` is `#[pin]`, this is `PinInit`.
+-//!             init: impl ::pin_init::PinInit<T, E>,
+-//!         ) -> ::core::result::Result<(), E> {
+-//!             unsafe { ::pin_init::PinInit::__pinned_init(init, slot) }
+-//!         }
+-//!         pub unsafe fn x<E>(
+-//!             self,
+-//!             slot: *mut usize,
+-//!             // Since `x` is not `#[pin]`, this is `Init`.
+-//!             init: impl ::pin_init::Init<usize, E>,
+-//!         ) -> ::core::result::Result<(), E> {
+-//!             unsafe { ::pin_init::Init::__init(init, slot) }
+-//!         }
+-//!     }
+-//!     // Implement the internal `HasPinData` trait that associates `Bar` with the pin-data struct
+-//!     // that we constructed above.
+-//!     unsafe impl<T> ::pin_init::__internal::HasPinData for Bar<T> {
+-//!         type PinData = __ThePinData<T>;
+-//!         unsafe fn __pin_data() -> Self::PinData {
+-//!             __ThePinData {
+-//!                 __phantom: ::core::marker::PhantomData,
+-//!             }
+-//!         }
+-//!     }
+-//!     // Implement the internal `PinData` trait that marks the pin-data struct as a pin-data
+-//!     // struct. This is important to ensure that no user can implement a rogue `__pin_data`
+-//!     // function without using `unsafe`.
+-//!     unsafe impl<T> ::pin_init::__internal::PinData for __ThePinData<T> {
+-//!         type Datee = Bar<T>;
+-//!     }
+-//!     // Now we only want to implement `Unpin` for `Bar` when every structurally pinned field is
+-//!     // `Unpin`. In other words, whether `Bar` is `Unpin` only depends on structurally pinned
+-//!     // fields (those marked with `#[pin]`). These fields will be listed in this struct, in our
+-//!     // case no such fields exist, hence this is almost empty. The two phantomdata fields exist
+-//!     // for two reasons:
+-//!     // - `__phantom`: every generic must be used, since we cannot really know which generics
+-//!     //   are used, we declare all and then use everything here once.
+-//!     // - `__phantom_pin`: uses the `'__pin` lifetime and ensures that this struct is invariant
+-//!     //   over it. The lifetime is needed to work around the limitation that trait bounds must
+-//!     //   not be trivial, e.g. the user has a `#[pin] PhantomPinned` field -- this is
+-//!     //   unconditionally `!Unpin` and results in an error. The lifetime tricks the compiler
+-//!     //   into accepting these bounds regardless.
+-//!     #[allow(dead_code)]
+-//!     struct __Unpin<'__pin, T> {
+-//!         __phantom_pin: ::core::marker::PhantomData<fn(&'__pin ()) -> &'__pin ()>,
+-//!         __phantom: ::core::marker::PhantomData<fn(Bar<T>) -> Bar<T>>,
+-//!         // Our only `#[pin]` field is `t`.
+-//!         t: T,
+-//!     }
+-//!     #[doc(hidden)]
+-//!     impl<'__pin, T> ::core::marker::Unpin for Bar<T>
+-//!     where
+-//!         __Unpin<'__pin, T>: ::core::marker::Unpin,
+-//!     {}
+-//!     // Now we need to ensure that `Bar` does not implement `Drop`, since that would give users
+-//!     // access to `&mut self` inside of `drop` even if the struct was pinned. This could lead to
+-//!     // UB with only safe code, so we disallow this by giving a trait implementation error using
+-//!     // a direct impl and a blanket implementation.
+-//!     trait MustNotImplDrop {}
+-//!     // Normally `Drop` bounds do not have the correct semantics, but for this purpose they do
+-//!     // (normally people want to know if a type has any kind of drop glue at all, here we want
+-//!     // to know if it has any kind of custom drop glue, which is exactly what this bound does).
+-//!     #[expect(drop_bounds)]
+-//!     impl<T: ::core::ops::Drop> MustNotImplDrop for T {}
+-//!     impl<T> MustNotImplDrop for Bar<T> {}
+-//!     // Here comes a convenience check, if one implemented `PinnedDrop`, but forgot to add it to
+-//!     // `#[pin_data]`, then this will error with the same mechanic as above, this is not needed
+-//!     // for safety, but a good sanity check, since no normal code calls `PinnedDrop::drop`.
+-//!     #[expect(non_camel_case_types)]
+-//!     trait UselessPinnedDropImpl_you_need_to_specify_PinnedDrop {}
+-//!     impl<
+-//!         T: ::pin_init::PinnedDrop,
+-//!     > UselessPinnedDropImpl_you_need_to_specify_PinnedDrop for T {}
+-//!     impl<T> UselessPinnedDropImpl_you_need_to_specify_PinnedDrop for Bar<T> {}
+-//! };
+-//! ```
+-//!
+-//! ## `pin_init!` in `impl Bar`
+-//!
+-//! This macro creates an pin-initializer for the given struct. It requires that the struct is
+-//! annotated by `#[pin_data]`.
+-//!
+-//! Here is the impl on `Bar` defining the new function:
+-//!
+-//! ```rust,ignore
+-//! impl<T> Bar<T> {
+-//!     fn new(t: T) -> impl PinInit<Self> {
+-//!         pin_init!(Self { t, x: 0 })
+-//!     }
+-//! }
+-//! ```
+-//!
+-//! This expands to the following code:
+-//!
+-//! ```rust,ignore
+-//! impl<T> Bar<T> {
+-//!     fn new(t: T) -> impl PinInit<Self> {
+-//!         {
+-//!             // We do not want to allow arbitrary returns, so we declare this type as the `Ok`
+-//!             // return type and shadow it later when we insert the arbitrary user code. That way
+-//!             // there will be no possibility of returning without `unsafe`.
+-//!             struct __InitOk;
+-//!             // Get the data about fields from the supplied type.
+-//!             // - the function is unsafe, hence the unsafe block
+-//!             // - we `use` the `HasPinData` trait in the block, it is only available in that
+-//!             //   scope.
+-//!             let data = unsafe {
+-//!                 use ::pin_init::__internal::HasPinData;
+-//!                 Self::__pin_data()
+-//!             };
+-//!             // Ensure that `data` really is of type `PinData` and help with type inference:
+-//!             let init = ::pin_init::__internal::PinData::make_closure::<
+-//!                 _,
+-//!                 __InitOk,
+-//!                 ::core::convert::Infallible,
+-//!             >(data, move |slot| {
+-//!                 {
+-//!                     // Shadow the structure so it cannot be used to return early. If a user
+-//!                     // tries to write `return Ok(__InitOk)`, then they get a type error,
+-//!                     // since that will refer to this struct instead of the one defined
+-//!                     // above.
+-//!                     struct __InitOk;
+-//!                     // This is the expansion of `t,`, which is syntactic sugar for `t: t,`.
+-//!                     {
+-//!                         unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).t), t) };
+-//!                     }
+-//!                     // Since initialization could fail later (not in this case, since the
+-//!                     // error type is `Infallible`) we will need to drop this field if there
+-//!                     // is an error later. This `DropGuard` will drop the field when it gets
+-//!                     // dropped and has not yet been forgotten.
+-//!                     let __t_guard = unsafe {
+-//!                         ::pin_init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).t))
+-//!                     };
+-//!                     // Expansion of `x: 0,`:
+-//!                     // Since this can be an arbitrary expression we cannot place it inside
+-//!                     // of the `unsafe` block, so we bind it here.
+-//!                     {
+-//!                         let x = 0;
+-//!                         unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).x), x) };
+-//!                     }
+-//!                     // We again create a `DropGuard`.
+-//!                     let __x_guard = unsafe {
+-//!                         ::pin_init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).x))
+-//!                     };
+-//!                     // Since initialization has successfully completed, we can now forget
+-//!                     // the guards. This is not `mem::forget`, since we only have
+-//!                     // `&DropGuard`.
+-//!                     ::core::mem::forget(__x_guard);
+-//!                     ::core::mem::forget(__t_guard);
+-//!                     // Here we use the type checker to ensure that every field has been
+-//!                     // initialized exactly once, since this is `if false` it will never get
+-//!                     // executed, but still type-checked.
+-//!                     // Additionally we abuse `slot` to automatically infer the correct type
+-//!                     // for the struct. This is also another check that every field is
+-//!                     // accessible from this scope.
+-//!                     #[allow(unreachable_code, clippy::diverging_sub_expression)]
+-//!                     let _ = || {
+-//!                         unsafe {
+-//!                             ::core::ptr::write(
+-//!                                 slot,
+-//!                                 Self {
+-//!                                     // We only care about typecheck finding every field
+-//!                                     // here, the expression does not matter, just conjure
+-//!                                     // one using `panic!()`:
+-//!                                     t: ::core::panic!(),
+-//!                                     x: ::core::panic!(),
+-//!                                 },
+-//!                             );
+-//!                         };
+-//!                     };
+-//!                 }
+-//!                 // We leave the scope above and gain access to the previously shadowed
+-//!                 // `__InitOk` that we need to return.
+-//!                 Ok(__InitOk)
+-//!             });
+-//!             // Change the return type from `__InitOk` to `()`.
+-//!             let init = move |
+-//!                 slot,
+-//!             | -> ::core::result::Result<(), ::core::convert::Infallible> {
+-//!                 init(slot).map(|__InitOk| ())
+-//!             };
+-//!             // Construct the initializer.
+-//!             let init = unsafe {
+-//!                 ::pin_init::pin_init_from_closure::<
+-//!                     _,
+-//!                     ::core::convert::Infallible,
+-//!                 >(init)
+-//!             };
+-//!             init
+-//!         }
+-//!     }
+-//! }
+-//! ```
+-//!
+-//! ## `#[pin_data]` on `Foo`
+-//!
+-//! Since we already took a look at `#[pin_data]` on `Bar`, this section will only explain the
+-//! differences/new things in the expansion of the `Foo` definition:
+-//!
+-//! ```rust,ignore
+-//! #[pin_data(PinnedDrop)]
+-//! struct Foo {
+-//!     a: usize,
+-//!     #[pin]
+-//!     b: Bar<u32>,
+-//! }
+-//! ```
+-//!
+-//! This expands to the following code:
+-//!
+-//! ```rust,ignore
+-//! struct Foo {
+-//!     a: usize,
+-//!     b: Bar<u32>,
+-//! }
+-//! const _: () = {
+-//!     struct __ThePinData {
+-//!         __phantom: ::core::marker::PhantomData<fn(Foo) -> Foo>,
+-//!     }
+-//!     impl ::core::clone::Clone for __ThePinData {
+-//!         fn clone(&self) -> Self {
+-//!             *self
+-//!         }
+-//!     }
+-//!     impl ::core::marker::Copy for __ThePinData {}
+-//!     #[allow(dead_code)]
+-//!     impl __ThePinData {
+-//!         unsafe fn b<E>(
+-//!             self,
+-//!             slot: *mut Bar<u32>,
+-//!             init: impl ::pin_init::PinInit<Bar<u32>, E>,
+-//!         ) -> ::core::result::Result<(), E> {
+-//!             unsafe { ::pin_init::PinInit::__pinned_init(init, slot) }
+-//!         }
+-//!         unsafe fn a<E>(
+-//!             self,
+-//!             slot: *mut usize,
+-//!             init: impl ::pin_init::Init<usize, E>,
+-//!         ) -> ::core::result::Result<(), E> {
+-//!             unsafe { ::pin_init::Init::__init(init, slot) }
+-//!         }
+-//!     }
+-//!     unsafe impl ::pin_init::__internal::HasPinData for Foo {
+-//!         type PinData = __ThePinData;
+-//!         unsafe fn __pin_data() -> Self::PinData {
+-//!             __ThePinData {
+-//!                 __phantom: ::core::marker::PhantomData,
+-//!             }
+-//!         }
+-//!     }
+-//!     unsafe impl ::pin_init::__internal::PinData for __ThePinData {
+-//!         type Datee = Foo;
+-//!     }
+-//!     #[allow(dead_code)]
+-//!     struct __Unpin<'__pin> {
+-//!         __phantom_pin: ::core::marker::PhantomData<fn(&'__pin ()) -> &'__pin ()>,
+-//!         __phantom: ::core::marker::PhantomData<fn(Foo) -> Foo>,
+-//!         b: Bar<u32>,
+-//!     }
+-//!     #[doc(hidden)]
+-//!     impl<'__pin> ::core::marker::Unpin for Foo
+-//!     where
+-//!         __Unpin<'__pin>: ::core::marker::Unpin,
+-//!     {}
+-//!     // Since we specified `PinnedDrop` as the argument to `#[pin_data]`, we expect `Foo` to
+-//!     // implement `PinnedDrop`. Thus we do not need to prevent `Drop` implementations like
+-//!     // before, instead we implement `Drop` here and delegate to `PinnedDrop`.
+-//!     impl ::core::ops::Drop for Foo {
+-//!         fn drop(&mut self) {
+-//!             // Since we are getting dropped, no one else has a reference to `self` and thus we
+-//!             // can assume that we never move.
+-//!             let pinned = unsafe { ::core::pin::Pin::new_unchecked(self) };
+-//!             // Create the unsafe token that proves that we are inside of a destructor, this
+-//!             // type is only allowed to be created in a destructor.
+-//!             let token = unsafe { ::pin_init::__internal::OnlyCallFromDrop::new() };
+-//!             ::pin_init::PinnedDrop::drop(pinned, token);
+-//!         }
+-//!     }
+-//! };
+-//! ```
+-//!
+-//! ## `#[pinned_drop]` on `impl PinnedDrop for Foo`
+-//!
+-//! This macro is used to implement the `PinnedDrop` trait, since that trait is `unsafe` and has an
+-//! extra parameter that should not be used at all. The macro hides that parameter.
+-//!
+-//! Here is the `PinnedDrop` impl for `Foo`:
+-//!
+-//! ```rust,ignore
+-//! #[pinned_drop]
+-//! impl PinnedDrop for Foo {
+-//!     fn drop(self: Pin<&mut Self>) {
+-//!         println!("{self:p} is getting dropped.");
+-//!     }
+-//! }
+-//! ```
+-//!
+-//! This expands to the following code:
+-//!
+-//! ```rust,ignore
+-//! // `unsafe`, full path and the token parameter are added, everything else stays the same.
+-//! unsafe impl ::pin_init::PinnedDrop for Foo {
+-//!     fn drop(self: Pin<&mut Self>, _: ::pin_init::__internal::OnlyCallFromDrop) {
+-//!         println!("{self:p} is getting dropped.");
+-//!     }
+-//! }
+-//! ```
+-//!
+-//! ## `pin_init!` on `Foo`
+-//!
+-//! Since we already took a look at `pin_init!` on `Bar`, this section will only show the expansion
+-//! of `pin_init!` on `Foo`:
+-//!
+-//! ```rust,ignore
+-//! let a = 42;
+-//! let initializer = pin_init!(Foo {
+-//!     a,
+-//!     b <- Bar::new(36),
+-//! });
+-//! ```
+-//!
+-//! This expands to the following code:
+-//!
+-//! ```rust,ignore
+-//! let a = 42;
+-//! let initializer = {
+-//!     struct __InitOk;
+-//!     let data = unsafe {
+-//!         use ::pin_init::__internal::HasPinData;
+-//!         Foo::__pin_data()
+-//!     };
+-//!     let init = ::pin_init::__internal::PinData::make_closure::<
+-//!         _,
+-//!         __InitOk,
+-//!         ::core::convert::Infallible,
+-//!     >(data, move |slot| {
+-//!         {
+-//!             struct __InitOk;
+-//!             {
+-//!                 unsafe { ::core::ptr::write(::core::addr_of_mut!((*slot).a), a) };
+-//!             }
+-//!             let __a_guard = unsafe {
+-//!                 ::pin_init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).a))
+-//!             };
+-//!             let init = Bar::new(36);
+-//!             unsafe { data.b(::core::addr_of_mut!((*slot).b), b)? };
+-//!             let __b_guard = unsafe {
+-//!                 ::pin_init::__internal::DropGuard::new(::core::addr_of_mut!((*slot).b))
+-//!             };
+-//!             ::core::mem::forget(__b_guard);
+-//!             ::core::mem::forget(__a_guard);
+-//!             #[allow(unreachable_code, clippy::diverging_sub_expression)]
+-//!             let _ = || {
+-//!                 unsafe {
+-//!                     ::core::ptr::write(
+-//!                         slot,
+-//!                         Foo {
+-//!                             a: ::core::panic!(),
+-//!                             b: ::core::panic!(),
+-//!                         },
+-//!                     );
+-//!                 };
+-//!             };
+-//!         }
+-//!         Ok(__InitOk)
+-//!     });
+-//!     let init = move |
+-//!         slot,
+-//!     | -> ::core::result::Result<(), ::core::convert::Infallible> {
+-//!         init(slot).map(|__InitOk| ())
+-//!     };
+-//!     let init = unsafe {
+-//!         ::pin_init::pin_init_from_closure::<_, ::core::convert::Infallible>(init)
+-//!     };
+-//!     init
+-//! };
+-//! ```
+-
+-#[cfg(kernel)]
+-pub use ::macros::paste;
+-#[cfg(not(kernel))]
+-pub use ::paste::paste;
+-
+-/// The internal init macro. Do not call manually!
+-///
+-/// This is called by the `{try_}{pin_}init!` macros with various inputs.
+-///
+-/// This macro has multiple internal call configurations, these are always the very first ident:
+-/// - nothing: this is the base case and called by the `{try_}{pin_}init!` macros.
+-/// - `with_update_parsed`: when the `..Zeroable::init_zeroed()` syntax has been handled.
+-/// - `init_slot`: recursively creates the code that initializes all fields in `slot`.
+-/// - `make_initializer`: recursively create the struct initializer that guarantees that every
+-///   field has been initialized exactly once.
 -#[doc(hidden)]
 -#[macro_export]
--macro_rules! __pin_data {
--    // Proc-macro entry point, this is supplied by the proc-macro pre-parsing.
--    (parse_input:
--        @args($($pinned_drop:ident)?),
--        @sig(
--            $(#[$($struct_attr:tt)*])*
--            $vis:vis struct $name:ident
--            $(where $($whr:tt)*)?
--        ),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @decl_generics($($decl_generics:tt)*),
--        @body({ $($fields:tt)* }),
+-macro_rules! __init_internal {
+-    (
+-        @this($($this:ident)?),
+-        @typ($t:path),
+-        @fields($($fields:tt)*),
+-        @error($err:ty),
+-        // Either `PinData` or `InitData`, `$use_data` should only be present in the `PinData`
+-        // case.
+-        @data($data:ident, $($use_data:ident)?),
+-        // `HasPinData` or `HasInitData`.
+-        @has_data($has_data:ident, $get_data:ident),
+-        // `pin_init_from_closure` or `init_from_closure`.
+-        @construct_closure($construct_closure:ident),
+-        @munch_fields(),
 -    ) => {
--        // We now use token munching to iterate through all of the fields. While doing this we
--        // identify fields marked with `#[pin]`, these fields are the 'pinned fields'. The user
--        // wants these to be structurally pinned. The rest of the fields are the
--        // 'not pinned fields'. Additionally we collect all fields, since we need them in the right
--        // order to declare the struct.
+-        $crate::__init_internal!(with_update_parsed:
+-            @this($($this)?),
+-            @typ($t),
+-            @fields($($fields)*),
+-            @error($err),
+-            @data($data, $($use_data)?),
+-            @has_data($has_data, $get_data),
+-            @construct_closure($construct_closure),
+-            @init_zeroed(), // Nothing means default behavior.
+-        )
+-    };
+-    (
+-        @this($($this:ident)?),
+-        @typ($t:path),
+-        @fields($($fields:tt)*),
+-        @error($err:ty),
+-        // Either `PinData` or `InitData`, `$use_data` should only be present in the `PinData`
+-        // case.
+-        @data($data:ident, $($use_data:ident)?),
+-        // `HasPinData` or `HasInitData`.
+-        @has_data($has_data:ident, $get_data:ident),
+-        // `pin_init_from_closure` or `init_from_closure`.
+-        @construct_closure($construct_closure:ident),
+-        @munch_fields(..Zeroable::init_zeroed()),
+-    ) => {
+-        $crate::__init_internal!(with_update_parsed:
+-            @this($($this)?),
+-            @typ($t),
+-            @fields($($fields)*),
+-            @error($err),
+-            @data($data, $($use_data)?),
+-            @has_data($has_data, $get_data),
+-            @construct_closure($construct_closure),
+-            @init_zeroed(()), // `()` means zero all fields not mentioned.
+-        )
+-    };
+-    (
+-        @this($($this:ident)?),
+-        @typ($t:path),
+-        @fields($($fields:tt)*),
+-        @error($err:ty),
+-        // Either `PinData` or `InitData`, `$use_data` should only be present in the `PinData`
+-        // case.
+-        @data($data:ident, $($use_data:ident)?),
+-        // `HasPinData` or `HasInitData`.
+-        @has_data($has_data:ident, $get_data:ident),
+-        // `pin_init_from_closure` or `init_from_closure`.
+-        @construct_closure($construct_closure:ident),
+-        @munch_fields($ignore:tt $($rest:tt)*),
+-    ) => {
+-        $crate::__init_internal!(
+-            @this($($this)?),
+-            @typ($t),
+-            @fields($($fields)*),
+-            @error($err),
+-            @data($data, $($use_data)?),
+-            @has_data($has_data, $get_data),
+-            @construct_closure($construct_closure),
+-            @munch_fields($($rest)*),
+-        )
+-    };
+-    (with_update_parsed:
+-        @this($($this:ident)?),
+-        @typ($t:path),
+-        @fields($($fields:tt)*),
+-        @error($err:ty),
+-        // Either `PinData` or `InitData`, `$use_data` should only be present in the `PinData`
+-        // case.
+-        @data($data:ident, $($use_data:ident)?),
+-        // `HasPinData` or `HasInitData`.
+-        @has_data($has_data:ident, $get_data:ident),
+-        // `pin_init_from_closure` or `init_from_closure`.
+-        @construct_closure($construct_closure:ident),
+-        @init_zeroed($($init_zeroed:expr)?),
+-    ) => {{
+-        // We do not want to allow arbitrary returns, so we declare this type as the `Ok` return
+-        // type and shadow it later when we insert the arbitrary user code. That way there will be
+-        // no possibility of returning without `unsafe`.
+-        struct __InitOk;
+-        // Get the data about fields from the supplied type.
 -        //
--        // In this call we also put some explaining comments for the parameters.
--        $crate::__pin_data!(find_pinned_fields:
--            // Attributes on the struct itself, these will just be propagated to be put onto the
--            // struct definition.
--            @struct_attrs($(#[$($struct_attr)*])*),
--            // The visibility of the struct.
--            @vis($vis),
--            // The name of the struct.
--            @name($name),
--            // The 'impl generics', the generics that will need to be specified on the struct inside
--            // of an `impl<$ty_generics>` block.
--            @impl_generics($($impl_generics)*),
--            // The 'ty generics', the generics that will need to be specified on the impl blocks.
--            @ty_generics($($ty_generics)*),
--            // The 'decl generics', the generics that need to be specified on the struct
--            // definition.
--            @decl_generics($($decl_generics)*),
--            // The where clause of any impl block and the declaration.
--            @where($($($whr)*)?),
--            // The remaining fields tokens that need to be processed.
--            // We add a `,` at the end to ensure correct parsing.
--            @fields_munch($($fields)* ,),
--            // The pinned fields.
--            @pinned(),
--            // The not pinned fields.
--            @not_pinned(),
--            // All fields.
--            @fields(),
--            // The accumulator containing all attributes already parsed.
--            @accum(),
--            // Contains `yes` or `` to indicate if `#[pin]` was found on the current field.
--            @is_pinned(),
--            // The proc-macro argument, this should be `PinnedDrop` or ``.
--            @pinned_drop($($pinned_drop)?),
--        );
--    };
--    (find_pinned_fields:
--        @struct_attrs($($struct_attrs:tt)*),
--        @vis($vis:vis),
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @decl_generics($($decl_generics:tt)*),
--        @where($($whr:tt)*),
--        // We found a PhantomPinned field, this should generally be pinned!
--        @fields_munch($field:ident : $($($(::)?core::)?marker::)?PhantomPinned, $($rest:tt)*),
--        @pinned($($pinned:tt)*),
--        @not_pinned($($not_pinned:tt)*),
--        @fields($($fields:tt)*),
--        @accum($($accum:tt)*),
--        // This field is not pinned.
--        @is_pinned(),
--        @pinned_drop($($pinned_drop:ident)?),
--    ) => {
--        ::core::compile_error!(concat!(
--            "The field `",
--            stringify!($field),
--            "` of type `PhantomPinned` only has an effect, if it has the `#[pin]` attribute.",
--        ));
--        $crate::__pin_data!(find_pinned_fields:
--            @struct_attrs($($struct_attrs)*),
--            @vis($vis),
--            @name($name),
--            @impl_generics($($impl_generics)*),
--            @ty_generics($($ty_generics)*),
--            @decl_generics($($decl_generics)*),
--            @where($($whr)*),
--            @fields_munch($($rest)*),
--            @pinned($($pinned)* $($accum)* $field: ::core::marker::PhantomPinned,),
--            @not_pinned($($not_pinned)*),
--            @fields($($fields)* $($accum)* $field: ::core::marker::PhantomPinned,),
--            @accum(),
--            @is_pinned(),
--            @pinned_drop($($pinned_drop)?),
--        );
--    };
--    (find_pinned_fields:
--        @struct_attrs($($struct_attrs:tt)*),
--        @vis($vis:vis),
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @decl_generics($($decl_generics:tt)*),
--        @where($($whr:tt)*),
--        // We reached the field declaration.
--        @fields_munch($field:ident : $type:ty, $($rest:tt)*),
--        @pinned($($pinned:tt)*),
--        @not_pinned($($not_pinned:tt)*),
--        @fields($($fields:tt)*),
--        @accum($($accum:tt)*),
--        // This field is pinned.
--        @is_pinned(yes),
--        @pinned_drop($($pinned_drop:ident)?),
--    ) => {
--        $crate::__pin_data!(find_pinned_fields:
--            @struct_attrs($($struct_attrs)*),
--            @vis($vis),
--            @name($name),
--            @impl_generics($($impl_generics)*),
--            @ty_generics($($ty_generics)*),
--            @decl_generics($($decl_generics)*),
--            @where($($whr)*),
--            @fields_munch($($rest)*),
--            @pinned($($pinned)* $($accum)* $field: $type,),
--            @not_pinned($($not_pinned)*),
--            @fields($($fields)* $($accum)* $field: $type,),
--            @accum(),
--            @is_pinned(),
--            @pinned_drop($($pinned_drop)?),
--        );
--    };
--    (find_pinned_fields:
--        @struct_attrs($($struct_attrs:tt)*),
--        @vis($vis:vis),
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @decl_generics($($decl_generics:tt)*),
--        @where($($whr:tt)*),
--        // We reached the field declaration.
--        @fields_munch($field:ident : $type:ty, $($rest:tt)*),
--        @pinned($($pinned:tt)*),
--        @not_pinned($($not_pinned:tt)*),
--        @fields($($fields:tt)*),
--        @accum($($accum:tt)*),
--        // This field is not pinned.
--        @is_pinned(),
--        @pinned_drop($($pinned_drop:ident)?),
--    ) => {
--        $crate::__pin_data!(find_pinned_fields:
--            @struct_attrs($($struct_attrs)*),
--            @vis($vis),
--            @name($name),
--            @impl_generics($($impl_generics)*),
--            @ty_generics($($ty_generics)*),
--            @decl_generics($($decl_generics)*),
--            @where($($whr)*),
--            @fields_munch($($rest)*),
--            @pinned($($pinned)*),
--            @not_pinned($($not_pinned)* $($accum)* $field: $type,),
--            @fields($($fields)* $($accum)* $field: $type,),
--            @accum(),
--            @is_pinned(),
--            @pinned_drop($($pinned_drop)?),
--        );
--    };
--    (find_pinned_fields:
--        @struct_attrs($($struct_attrs:tt)*),
--        @vis($vis:vis),
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @decl_generics($($decl_generics:tt)*),
--        @where($($whr:tt)*),
--        // We found the `#[pin]` attr.
--        @fields_munch(#[pin] $($rest:tt)*),
--        @pinned($($pinned:tt)*),
--        @not_pinned($($not_pinned:tt)*),
--        @fields($($fields:tt)*),
--        @accum($($accum:tt)*),
--        @is_pinned($($is_pinned:ident)?),
--        @pinned_drop($($pinned_drop:ident)?),
--    ) => {
--        $crate::__pin_data!(find_pinned_fields:
--            @struct_attrs($($struct_attrs)*),
--            @vis($vis),
--            @name($name),
--            @impl_generics($($impl_generics)*),
--            @ty_generics($($ty_generics)*),
--            @decl_generics($($decl_generics)*),
--            @where($($whr)*),
--            @fields_munch($($rest)*),
--            // We do not include `#[pin]` in the list of attributes, since it is not actually an
--            // attribute that is defined somewhere.
--            @pinned($($pinned)*),
--            @not_pinned($($not_pinned)*),
--            @fields($($fields)*),
--            @accum($($accum)*),
--            // Set this to `yes`.
--            @is_pinned(yes),
--            @pinned_drop($($pinned_drop)?),
--        );
--    };
--    (find_pinned_fields:
--        @struct_attrs($($struct_attrs:tt)*),
--        @vis($vis:vis),
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @decl_generics($($decl_generics:tt)*),
--        @where($($whr:tt)*),
--        // We reached the field declaration with visibility, for simplicity we only munch the
--        // visibility and put it into `$accum`.
--        @fields_munch($fvis:vis $field:ident $($rest:tt)*),
--        @pinned($($pinned:tt)*),
--        @not_pinned($($not_pinned:tt)*),
--        @fields($($fields:tt)*),
--        @accum($($accum:tt)*),
--        @is_pinned($($is_pinned:ident)?),
--        @pinned_drop($($pinned_drop:ident)?),
--    ) => {
--        $crate::__pin_data!(find_pinned_fields:
--            @struct_attrs($($struct_attrs)*),
--            @vis($vis),
--            @name($name),
--            @impl_generics($($impl_generics)*),
--            @ty_generics($($ty_generics)*),
--            @decl_generics($($decl_generics)*),
--            @where($($whr)*),
--            @fields_munch($field $($rest)*),
--            @pinned($($pinned)*),
--            @not_pinned($($not_pinned)*),
--            @fields($($fields)*),
--            @accum($($accum)* $fvis),
--            @is_pinned($($is_pinned)?),
--            @pinned_drop($($pinned_drop)?),
--        );
--    };
--    (find_pinned_fields:
--        @struct_attrs($($struct_attrs:tt)*),
--        @vis($vis:vis),
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @decl_generics($($decl_generics:tt)*),
--        @where($($whr:tt)*),
--        // Some other attribute, just put it into `$accum`.
--        @fields_munch(#[$($attr:tt)*] $($rest:tt)*),
--        @pinned($($pinned:tt)*),
--        @not_pinned($($not_pinned:tt)*),
--        @fields($($fields:tt)*),
--        @accum($($accum:tt)*),
--        @is_pinned($($is_pinned:ident)?),
--        @pinned_drop($($pinned_drop:ident)?),
--    ) => {
--        $crate::__pin_data!(find_pinned_fields:
--            @struct_attrs($($struct_attrs)*),
--            @vis($vis),
--            @name($name),
--            @impl_generics($($impl_generics)*),
--            @ty_generics($($ty_generics)*),
--            @decl_generics($($decl_generics)*),
--            @where($($whr)*),
--            @fields_munch($($rest)*),
--            @pinned($($pinned)*),
--            @not_pinned($($not_pinned)*),
--            @fields($($fields)*),
--            @accum($($accum)* #[$($attr)*]),
--            @is_pinned($($is_pinned)?),
--            @pinned_drop($($pinned_drop)?),
--        );
--    };
--    (find_pinned_fields:
--        @struct_attrs($($struct_attrs:tt)*),
--        @vis($vis:vis),
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @decl_generics($($decl_generics:tt)*),
--        @where($($whr:tt)*),
--        // We reached the end of the fields, plus an optional additional comma, since we added one
--        // before and the user is also allowed to put a trailing comma.
--        @fields_munch($(,)?),
--        @pinned($($pinned:tt)*),
--        @not_pinned($($not_pinned:tt)*),
--        @fields($($fields:tt)*),
--        @accum(),
--        @is_pinned(),
--        @pinned_drop($($pinned_drop:ident)?),
--    ) => {
--        // Declare the struct with all fields in the correct order.
--        $($struct_attrs)*
--        $vis struct $name <$($decl_generics)*>
--        where $($whr)*
--        {
--            $($fields)*
--        }
--
--        $crate::__pin_data!(make_pin_projections:
--            @vis($vis),
--            @name($name),
--            @impl_generics($($impl_generics)*),
--            @ty_generics($($ty_generics)*),
--            @decl_generics($($decl_generics)*),
--            @where($($whr)*),
--            @pinned($($pinned)*),
--            @not_pinned($($not_pinned)*),
--        );
--
--        // We put the rest into this const item, because it then will not be accessible to anything
--        // outside.
--        const _: () = {
--            // We declare this struct which will host all of the projection function for our type.
--            // it will be invariant over all generic parameters which are inherited from the
--            // struct.
--            $vis struct __ThePinData<$($impl_generics)*>
--            where $($whr)*
--            {
--                __phantom: ::core::marker::PhantomData<
--                    fn($name<$($ty_generics)*>) -> $name<$($ty_generics)*>
--                >,
--            }
--
--            impl<$($impl_generics)*> ::core::clone::Clone for __ThePinData<$($ty_generics)*>
--            where $($whr)*
--            {
--                fn clone(&self) -> Self { *self }
--            }
--
--            impl<$($impl_generics)*> ::core::marker::Copy for __ThePinData<$($ty_generics)*>
--            where $($whr)*
--            {}
--
--            // Make all projection functions.
--            $crate::__pin_data!(make_pin_data:
--                @pin_data(__ThePinData),
--                @impl_generics($($impl_generics)*),
--                @ty_generics($($ty_generics)*),
--                @where($($whr)*),
--                @pinned($($pinned)*),
--                @not_pinned($($not_pinned)*),
--            );
--
--            // SAFETY: We have added the correct projection functions above to `__ThePinData` and
--            // we also use the least restrictive generics possible.
--            unsafe impl<$($impl_generics)*>
--                $crate::__internal::HasPinData for $name<$($ty_generics)*>
--            where $($whr)*
--            {
--                type PinData = __ThePinData<$($ty_generics)*>;
--
--                unsafe fn __pin_data() -> Self::PinData {
--                    __ThePinData { __phantom: ::core::marker::PhantomData }
--                }
--            }
--
--            // SAFETY: TODO.
--            unsafe impl<$($impl_generics)*>
--                $crate::__internal::PinData for __ThePinData<$($ty_generics)*>
--            where $($whr)*
--            {
--                type Datee = $name<$($ty_generics)*>;
--            }
--
--            // This struct will be used for the unpin analysis. Since only structurally pinned
--            // fields are relevant whether the struct should implement `Unpin`.
--            #[allow(dead_code)]
--            struct __Unpin <'__pin, $($impl_generics)*>
--            where $($whr)*
--            {
--                __phantom_pin: ::core::marker::PhantomData<fn(&'__pin ()) -> &'__pin ()>,
--                __phantom: ::core::marker::PhantomData<
--                    fn($name<$($ty_generics)*>) -> $name<$($ty_generics)*>
--                >,
--                // Only the pinned fields.
--                $($pinned)*
--            }
--
--            #[doc(hidden)]
--            impl<'__pin, $($impl_generics)*> ::core::marker::Unpin for $name<$($ty_generics)*>
--            where
--                __Unpin<'__pin, $($ty_generics)*>: ::core::marker::Unpin,
--                $($whr)*
--            {}
--
--            // We need to disallow normal `Drop` implementation, the exact behavior depends on
--            // whether `PinnedDrop` was specified as the parameter.
--            $crate::__pin_data!(drop_prevention:
--                @name($name),
--                @impl_generics($($impl_generics)*),
--                @ty_generics($($ty_generics)*),
--                @where($($whr)*),
--                @pinned_drop($($pinned_drop)?),
--            );
+-        // SAFETY: TODO.
+-        let data = unsafe {
+-            use $crate::__internal::$has_data;
+-            // Here we abuse `paste!` to retokenize `$t`. Declarative macros have some internal
+-            // information that is associated to already parsed fragments, so a path fragment
+-            // cannot be used in this position. Doing the retokenization results in valid rust
+-            // code.
+-            $crate::macros::paste!($t::$get_data())
 -        };
--    };
--    // When no `PinnedDrop` was specified, then we have to prevent implementing drop.
--    (drop_prevention:
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @where($($whr:tt)*),
--        @pinned_drop(),
--    ) => {
--        // We prevent this by creating a trait that will be implemented for all types implementing
--        // `Drop`. Additionally we will implement this trait for the struct leading to a conflict,
--        // if it also implements `Drop`
--        trait MustNotImplDrop {}
--        #[expect(drop_bounds)]
--        impl<T: ::core::ops::Drop> MustNotImplDrop for T {}
--        impl<$($impl_generics)*> MustNotImplDrop for $name<$($ty_generics)*>
--        where $($whr)* {}
--        // We also take care to prevent users from writing a useless `PinnedDrop` implementation.
--        // They might implement `PinnedDrop` correctly for the struct, but forget to give
--        // `PinnedDrop` as the parameter to `#[pin_data]`.
--        #[expect(non_camel_case_types)]
--        trait UselessPinnedDropImpl_you_need_to_specify_PinnedDrop {}
--        impl<T: $crate::PinnedDrop>
--            UselessPinnedDropImpl_you_need_to_specify_PinnedDrop for T {}
--        impl<$($impl_generics)*>
--            UselessPinnedDropImpl_you_need_to_specify_PinnedDrop for $name<$($ty_generics)*>
--        where $($whr)* {}
--    };
--    // When `PinnedDrop` was specified we just implement `Drop` and delegate.
--    (drop_prevention:
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @where($($whr:tt)*),
--        @pinned_drop(PinnedDrop),
--    ) => {
--        impl<$($impl_generics)*> ::core::ops::Drop for $name<$($ty_generics)*>
--        where $($whr)*
--        {
--            fn drop(&mut self) {
--                // SAFETY: Since this is a destructor, `self` will not move after this function
--                // terminates, since it is inaccessible.
--                let pinned = unsafe { ::core::pin::Pin::new_unchecked(self) };
--                // SAFETY: Since this is a drop function, we can create this token to call the
--                // pinned destructor of this type.
--                let token = unsafe { $crate::__internal::OnlyCallFromDrop::new() };
--                $crate::PinnedDrop::drop(pinned, token);
+-        // Ensure that `data` really is of type `$data` and help with type inference:
+-        let init = $crate::__internal::$data::make_closure::<_, __InitOk, $err>(
+-            data,
+-            move |slot| {
+-                {
+-                    // Shadow the structure so it cannot be used to return early.
+-                    struct __InitOk;
+-                    // If `$init_zeroed` is present we should zero the slot now and not emit an
+-                    // error when fields are missing (since they will be zeroed). We also have to
+-                    // check that the type actually implements `Zeroable`.
+-                    $({
+-                        fn assert_zeroable<T: $crate::Zeroable>(_: *mut T) {}
+-                        // Ensure that the struct is indeed `Zeroable`.
+-                        assert_zeroable(slot);
+-                        // SAFETY: The type implements `Zeroable` by the check above.
+-                        unsafe { ::core::ptr::write_bytes(slot, 0, 1) };
+-                        $init_zeroed // This will be `()` if set.
+-                    })?
+-                    // Create the `this` so it can be referenced by the user inside of the
+-                    // expressions creating the individual fields.
+-                    $(let $this = unsafe { ::core::ptr::NonNull::new_unchecked(slot) };)?
+-                    // Initialize every field.
+-                    $crate::__init_internal!(init_slot($($use_data)?):
+-                        @data(data),
+-                        @slot(slot),
+-                        @guards(),
+-                        @munch_fields($($fields)*,),
+-                    );
+-                    // We use unreachable code to ensure that all fields have been mentioned exactly
+-                    // once, this struct initializer will still be type-checked and complain with a
+-                    // very natural error message if a field is forgotten/mentioned more than once.
+-                    #[allow(unreachable_code, clippy::diverging_sub_expression)]
+-                    let _ = || {
+-                        $crate::__init_internal!(make_initializer:
+-                            @slot(slot),
+-                            @type_name($t),
+-                            @munch_fields($($fields)*,),
+-                            @acc(),
+-                        );
+-                    };
+-                }
+-                Ok(__InitOk)
 -            }
--        }
--    };
--    // If some other parameter was specified, we emit a readable error.
--    (drop_prevention:
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @where($($whr:tt)*),
--        @pinned_drop($($rest:tt)*),
+-        );
+-        let init = move |slot| -> ::core::result::Result<(), $err> {
+-            init(slot).map(|__InitOk| ())
+-        };
+-        // SAFETY: TODO.
+-        let init = unsafe { $crate::$construct_closure::<_, $err>(init) };
+-        init
+-    }};
+-    (init_slot($($use_data:ident)?):
+-        @data($data:ident),
+-        @slot($slot:ident),
+-        @guards($($guards:ident,)*),
+-        @munch_fields($(..Zeroable::init_zeroed())? $(,)?),
 -    ) => {
--        compile_error!(
--            "Wrong parameters to `#[pin_data]`, expected nothing or `PinnedDrop`, got '{}'.",
--            stringify!($($rest)*),
+-        // Endpoint of munching, no fields are left. If execution reaches this point, all fields
+-        // have been initialized. Therefore we can now dismiss the guards by forgetting them.
+-        $(::core::mem::forget($guards);)*
+-    };
+-    (init_slot($($use_data:ident)?):
+-        @data($data:ident),
+-        @slot($slot:ident),
+-        @guards($($guards:ident,)*),
+-        // arbitrary code block
+-        @munch_fields(_: { $($code:tt)* }, $($rest:tt)*),
+-    ) => {
+-        { $($code)* }
+-        $crate::__init_internal!(init_slot($($use_data)?):
+-            @data($data),
+-            @slot($slot),
+-            @guards($($guards,)*),
+-            @munch_fields($($rest)*),
 -        );
 -    };
--    (make_pin_projections:
--        @vis($vis:vis),
--        @name($name:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @decl_generics($($decl_generics:tt)*),
--        @where($($whr:tt)*),
--        @pinned($($(#[$($p_attr:tt)*])* $pvis:vis $p_field:ident : $p_type:ty),* $(,)?),
--        @not_pinned($($(#[$($attr:tt)*])* $fvis:vis $field:ident : $type:ty),* $(,)?),
+-    (init_slot($use_data:ident): // `use_data` is present, so we use the `data` to init fields.
+-        @data($data:ident),
+-        @slot($slot:ident),
+-        @guards($($guards:ident,)*),
+-        // In-place initialization syntax.
+-        @munch_fields($field:ident <- $val:expr, $($rest:tt)*),
 -    ) => {
--        $crate::macros::paste! {
--            #[doc(hidden)]
--            $vis struct [< $name Projection >] <'__pin, $($decl_generics)*> {
--                $($(#[$($p_attr)*])* $pvis $p_field : ::core::pin::Pin<&'__pin mut $p_type>,)*
--                $($(#[$($attr)*])* $fvis $field : &'__pin mut $type,)*
--                ___pin_phantom_data: ::core::marker::PhantomData<&'__pin mut ()>,
--            }
+-        let init = $val;
+-        // Call the initializer.
+-        //
+-        // SAFETY: `slot` is valid, because we are inside of an initializer closure, we
+-        // return when an error/panic occurs.
+-        // We also use the `data` to require the correct trait (`Init` or `PinInit`) for `$field`.
+-        unsafe { $data.$field(::core::ptr::addr_of_mut!((*$slot).$field), init)? };
+-        // SAFETY:
+-        // - the project function does the correct field projection,
+-        // - the field has been initialized,
+-        // - the reference is only valid until the end of the initializer.
+-        #[allow(unused_variables)]
+-        let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
 -
--            impl<$($impl_generics)*> $name<$($ty_generics)*>
--            where $($whr)*
--            {
--                /// Pin-projects all fields of `Self`.
--                ///
--                /// These fields are structurally pinned:
--                $(#[doc = ::core::concat!(" - `", ::core::stringify!($p_field), "`")])*
--                ///
--                /// These fields are **not** structurally pinned:
--                $(#[doc = ::core::concat!(" - `", ::core::stringify!($field), "`")])*
--                #[inline]
--                $vis fn project<'__pin>(
--                    self: ::core::pin::Pin<&'__pin mut Self>,
--                ) -> [< $name Projection >] <'__pin, $($ty_generics)*> {
--                    // SAFETY: we only give access to `&mut` for fields not structurally pinned.
--                    let this = unsafe { ::core::pin::Pin::get_unchecked_mut(self) };
--                    [< $name Projection >] {
--                        $(
--                            // SAFETY: `$p_field` is structurally pinned.
--                            $(#[$($p_attr)*])*
--                            $p_field : unsafe { ::core::pin::Pin::new_unchecked(&mut this.$p_field) },
--                        )*
--                        $(
--                            $(#[$($attr)*])*
--                            $field : &mut this.$field,
--                        )*
--                        ___pin_phantom_data: ::core::marker::PhantomData,
--                    }
--                }
--            }
+-        // Create the drop guard:
+-        //
+-        // We rely on macro hygiene to make it impossible for users to access this local variable.
+-        // We use `paste!` to create new hygiene for `$field`.
+-        $crate::macros::paste! {
+-            // SAFETY: We forget the guard later when initialization has succeeded.
+-            let [< __ $field _guard >] = unsafe {
+-                $crate::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
+-            };
+-
+-            $crate::__init_internal!(init_slot($use_data):
+-                @data($data),
+-                @slot($slot),
+-                @guards([< __ $field _guard >], $($guards,)*),
+-                @munch_fields($($rest)*),
+-            );
 -        }
 -    };
--    (make_pin_data:
--        @pin_data($pin_data:ident),
--        @impl_generics($($impl_generics:tt)*),
--        @ty_generics($($ty_generics:tt)*),
--        @where($($whr:tt)*),
--        @pinned($($(#[$($p_attr:tt)*])* $pvis:vis $p_field:ident : $p_type:ty),* $(,)?),
--        @not_pinned($($(#[$($attr:tt)*])* $fvis:vis $field:ident : $type:ty),* $(,)?),
+-    (init_slot(): // No `use_data`, so we use `Init::__init` directly.
+-        @data($data:ident),
+-        @slot($slot:ident),
+-        @guards($($guards:ident,)*),
+-        // In-place initialization syntax.
+-        @munch_fields($field:ident <- $val:expr, $($rest:tt)*),
 -    ) => {
+-        let init = $val;
+-        // Call the initializer.
+-        //
+-        // SAFETY: `slot` is valid, because we are inside of an initializer closure, we
+-        // return when an error/panic occurs.
+-        unsafe { $crate::Init::__init(init, ::core::ptr::addr_of_mut!((*$slot).$field))? };
+-
+-        // SAFETY:
+-        // - the field is not structurally pinned, since the line above must compile,
+-        // - the field has been initialized,
+-        // - the reference is only valid until the end of the initializer.
+-        #[allow(unused_variables)]
+-        let $field = unsafe { &mut (*$slot).$field };
+-
+-        // Create the drop guard:
+-        //
+-        // We rely on macro hygiene to make it impossible for users to access this local variable.
+-        // We use `paste!` to create new hygiene for `$field`.
 -        $crate::macros::paste! {
--            // For every field, we create a projection function according to its projection type. If a
--            // field is structurally pinned, then it must be initialized via `PinInit`, if it is not
--            // structurally pinned, then it can be initialized via `Init`.
--            //
--            // The functions are `unsafe` to prevent accidentally calling them.
--            #[allow(dead_code)]
--            #[expect(clippy::missing_safety_doc)]
--            impl<$($impl_generics)*> $pin_data<$($ty_generics)*>
--            where $($whr)*
--            {
--                $(
--                    $(#[$($p_attr)*])*
--                    $pvis unsafe fn $p_field<E>(
--                        self,
--                        slot: *mut $p_type,
--                        init: impl $crate::PinInit<$p_type, E>,
--                    ) -> ::core::result::Result<(), E> {
--                        // SAFETY: TODO.
--                        unsafe { $crate::PinInit::__pinned_init(init, slot) }
--                    }
+-            // SAFETY: We forget the guard later when initialization has succeeded.
+-            let [< __ $field _guard >] = unsafe {
+-                $crate::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
+-            };
 -
--                    $(#[$($p_attr)*])*
--                    $pvis unsafe fn [<__project_ $p_field>]<'__slot>(
--                        self,
--                        slot: &'__slot mut $p_type,
--                    ) -> ::core::pin::Pin<&'__slot mut $p_type> {
--                        ::core::pin::Pin::new_unchecked(slot)
--                    }
--                )*
--                $(
--                    $(#[$($attr)*])*
--                    $fvis unsafe fn $field<E>(
--                        self,
--                        slot: *mut $type,
--                        init: impl $crate::Init<$type, E>,
--                    ) -> ::core::result::Result<(), E> {
--                        // SAFETY: TODO.
--                        unsafe { $crate::Init::__init(init, slot) }
--                    }
--
--                    $(#[$($attr)*])*
--                    $fvis unsafe fn [<__project_ $field>]<'__slot>(
--                        self,
--                        slot: &'__slot mut $type,
--                    ) -> &'__slot mut $type {
--                        slot
--                    }
--                )*
--            }
+-            $crate::__init_internal!(init_slot():
+-                @data($data),
+-                @slot($slot),
+-                @guards([< __ $field _guard >], $($guards,)*),
+-                @munch_fields($($rest)*),
+-            );
 -        }
+-    };
+-    (init_slot(): // No `use_data`, so all fields are not structurally pinned
+-        @data($data:ident),
+-        @slot($slot:ident),
+-        @guards($($guards:ident,)*),
+-        // Init by-value.
+-        @munch_fields($field:ident $(: $val:expr)?, $($rest:tt)*),
+-    ) => {
+-        {
+-            $(let $field = $val;)?
+-            // Initialize the field.
+-            //
+-            // SAFETY: The memory at `slot` is uninitialized.
+-            unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
+-        }
+-
+-        #[allow(unused_variables)]
+-        // SAFETY:
+-        // - the field is not structurally pinned, since no `use_data` was required to create this
+-        //   initializer,
+-        // - the field has been initialized,
+-        // - the reference is only valid until the end of the initializer.
+-        let $field = unsafe { &mut (*$slot).$field };
+-
+-        // Create the drop guard:
+-        //
+-        // We rely on macro hygiene to make it impossible for users to access this local variable.
+-        // We use `paste!` to create new hygiene for `$field`.
+-        $crate::macros::paste! {
+-            // SAFETY: We forget the guard later when initialization has succeeded.
+-            let [< __ $field _guard >] = unsafe {
+-                $crate::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
+-            };
+-
+-            $crate::__init_internal!(init_slot():
+-                @data($data),
+-                @slot($slot),
+-                @guards([< __ $field _guard >], $($guards,)*),
+-                @munch_fields($($rest)*),
+-            );
+-        }
+-    };
+-    (init_slot($use_data:ident):
+-        @data($data:ident),
+-        @slot($slot:ident),
+-        @guards($($guards:ident,)*),
+-        // Init by-value.
+-        @munch_fields($field:ident $(: $val:expr)?, $($rest:tt)*),
+-    ) => {
+-        {
+-            $(let $field = $val;)?
+-            // Initialize the field.
+-            //
+-            // SAFETY: The memory at `slot` is uninitialized.
+-            unsafe { ::core::ptr::write(::core::ptr::addr_of_mut!((*$slot).$field), $field) };
+-        }
+-        // SAFETY:
+-        // - the project function does the correct field projection,
+-        // - the field has been initialized,
+-        // - the reference is only valid until the end of the initializer.
+-        #[allow(unused_variables)]
+-        let $field = $crate::macros::paste!(unsafe { $data.[< __project_ $field >](&mut (*$slot).$field) });
+-
+-        // Create the drop guard:
+-        //
+-        // We rely on macro hygiene to make it impossible for users to access this local variable.
+-        // We use `paste!` to create new hygiene for `$field`.
+-        $crate::macros::paste! {
+-            // SAFETY: We forget the guard later when initialization has succeeded.
+-            let [< __ $field _guard >] = unsafe {
+-                $crate::__internal::DropGuard::new(::core::ptr::addr_of_mut!((*$slot).$field))
+-            };
+-
+-            $crate::__init_internal!(init_slot($use_data):
+-                @data($data),
+-                @slot($slot),
+-                @guards([< __ $field _guard >], $($guards,)*),
+-                @munch_fields($($rest)*),
+-            );
+-        }
+-    };
+-    (make_initializer:
+-        @slot($slot:ident),
+-        @type_name($t:path),
+-        @munch_fields(_: { $($code:tt)* }, $($rest:tt)*),
+-        @acc($($acc:tt)*),
+-    ) => {
+-        // code blocks are ignored for the initializer check
+-        $crate::__init_internal!(make_initializer:
+-            @slot($slot),
+-            @type_name($t),
+-            @munch_fields($($rest)*),
+-            @acc($($acc)*),
+-        );
+-    };
+-    (make_initializer:
+-        @slot($slot:ident),
+-        @type_name($t:path),
+-        @munch_fields(..Zeroable::init_zeroed() $(,)?),
+-        @acc($($acc:tt)*),
+-    ) => {
+-        // Endpoint, nothing more to munch, create the initializer. Since the users specified
+-        // `..Zeroable::init_zeroed()`, the slot will already have been zeroed and all field that have
+-        // not been overwritten are thus zero and initialized. We still check that all fields are
+-        // actually accessible by using the struct update syntax ourselves.
+-        // We are inside of a closure that is never executed and thus we can abuse `slot` to
+-        // get the correct type inference here:
+-        #[allow(unused_assignments)]
+-        unsafe {
+-            let mut zeroed = ::core::mem::zeroed();
+-            // We have to use type inference here to make zeroed have the correct type. This does
+-            // not get executed, so it has no effect.
+-            ::core::ptr::write($slot, zeroed);
+-            zeroed = ::core::mem::zeroed();
+-            // Here we abuse `paste!` to retokenize `$t`. Declarative macros have some internal
+-            // information that is associated to already parsed fragments, so a path fragment
+-            // cannot be used in this position. Doing the retokenization results in valid rust
+-            // code.
+-            $crate::macros::paste!(
+-                ::core::ptr::write($slot, $t {
+-                    $($acc)*
+-                    ..zeroed
+-                });
+-            );
+-        }
+-    };
+-    (make_initializer:
+-        @slot($slot:ident),
+-        @type_name($t:path),
+-        @munch_fields($(,)?),
+-        @acc($($acc:tt)*),
+-    ) => {
+-        // Endpoint, nothing more to munch, create the initializer.
+-        // Since we are in the closure that is never called, this will never get executed.
+-        // We abuse `slot` to get the correct type inference here:
+-        //
+-        // SAFETY: TODO.
+-        unsafe {
+-            // Here we abuse `paste!` to retokenize `$t`. Declarative macros have some internal
+-            // information that is associated to already parsed fragments, so a path fragment
+-            // cannot be used in this position. Doing the retokenization results in valid rust
+-            // code.
+-            $crate::macros::paste!(
+-                ::core::ptr::write($slot, $t {
+-                    $($acc)*
+-                });
+-            );
+-        }
+-    };
+-    (make_initializer:
+-        @slot($slot:ident),
+-        @type_name($t:path),
+-        @munch_fields($field:ident <- $val:expr, $($rest:tt)*),
+-        @acc($($acc:tt)*),
+-    ) => {
+-        $crate::__init_internal!(make_initializer:
+-            @slot($slot),
+-            @type_name($t),
+-            @munch_fields($($rest)*),
+-            @acc($($acc)* $field: ::core::panic!(),),
+-        );
+-    };
+-    (make_initializer:
+-        @slot($slot:ident),
+-        @type_name($t:path),
+-        @munch_fields($field:ident $(: $val:expr)?, $($rest:tt)*),
+-        @acc($($acc:tt)*),
+-    ) => {
+-        $crate::__init_internal!(make_initializer:
+-            @slot($slot),
+-            @type_name($t),
+-            @munch_fields($($rest)*),
+-            @acc($($acc)* $field: ::core::panic!(),),
+-        );
 -    };
 -}
--
- /// The internal init macro. Do not call manually!
- ///
- /// This is called by the `{try_}{pin_}init!` macros with various inputs.
 -- 
 2.52.0
 
