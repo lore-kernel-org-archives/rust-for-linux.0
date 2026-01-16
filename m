@@ -1,98 +1,299 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB59128DB49
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 21:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836F226CE3F
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 21:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768597296; cv=none; b=dfR0XK2oBw7MYarXi6Z82eF998L+ZyOFzr7D+Nve+T7gG/HdhhNlrKrcJ6VCCM5gjD91ElXKw2yavZCyELr/8yZHhBqSyvA1F0/KfsPUVwRSWUx/NVTWrXABF/VoFwBaiRmtPVQnvHuyvNA/oXeSCHcctU8kKfauRpwKQ2NmKT8=
+	t=1768597522; cv=none; b=klDMhbbnU8t2Z8tEUTdP3amRqCmohHDHHQOhsixMOzhg4NCVQvM8IXe873ljjY78Fcgu+e01art05UV+lPKO0fXoUbRIPGHuEfdwd4hQAHx6CJRtaE+sZsa3Kx81UGoN7yoyhdlUJ6dpoBX0bmFYd9s7jIEMsgKltkmurzHb8Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768597296; c=relaxed/simple;
-	bh=J0lJBA34IyECQmfgD92fGI60ptA7n2oNGGMd+JT3TvY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aO5OWKKB9EnsXSzr4fPPrZWmhyF2VAdWnpp7iP/f2+6LyT90FCZfTFnaG8T50DWYjgCNz3iWxFqh6olliTo6gvHG38aTEA0uk6t/R4kxmKFJnKfFV2pNyy7tb4CY3IVe47ogoUbVtGDeQ2+tcrc/JLKoA8ujLlt39/klwIksscM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ms+nqqtq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768597522; c=relaxed/simple;
+	bh=OTWhNuwoA0ri1yi3waHmvj+OiuXWNzz5QrW5RdAqKB8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=co2VZ8ZmjiXx2VXulvqhSt9g0JsvLD248iKBSqmqQyAMzeIXxU24NN5TnPLC9+QW4QNklfXAl3L3hjB1DarMlaiJRx6IB/sPKTPyhaPZk4K5Y2EL7TSmvFEKGVmmCt2ICLHwJ/UivkYi1KOWb+VkpkZyN+lH1XnYH8HtyTN5ubM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CZ5VmA+z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ms+nqqtq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74ABCC19424
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 21:01:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CZ5VmA+z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CB7C116C6;
+	Fri, 16 Jan 2026 21:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768597296;
-	bh=J0lJBA34IyECQmfgD92fGI60ptA7n2oNGGMd+JT3TvY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ms+nqqtqWziS37esdp6Sa2S0Lai+i0peH1IAicZOHCxG3DU0pBJk+qLSwBu1Ivv4k
-	 ygC3b+wjz/vbqFwTdAQtPBxAWOBvaWFlTnvs5j2+Z8K6hvIe05M9E6A17i/areFnXl
-	 JsWj3Jzsl7gkR4+v1i2+6Lm21is56fZI3U8Dbf2pJue3Zyo8SxkXhV9/8NQ8O9vpQH
-	 8WIs3OC1h+xpkqX3bfnd8hTdD3CaYFEpr/+E5ox9Wc/COrEZ3VcGuVn87/DJ2MfoTf
-	 Z3Glc/62I/KwHF9bhBVj8fLtwKlzhxEfzUExO7HFXwuj8rsMjqLjcd11niUa9CLJtk
-	 iIJcjjHYOOxTg==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3831c18b23bso19707931fa.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 13:01:36 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWIvKClYwNC2ds8KRQQq/1SCGHQfjUXDYv9Nlo0jDP84/SIH1JxQQaoVsa+u15vfJwDCu+K0y81+TktGkwPzQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTUNuVNawiCkZvqmCQAIz0odeV3pdleoNdKlqqYsr2Gm5JN2+J
-	vzMDFicNE6hnylo2CFvCV1TuEbQokfefvD+8FXumxw3mbh0QxE6WbgtISmqWOdukxqLf2OE5/ps
-	sYJHWZwnPElJ4tTzv3aenYOme8DKDqmo=
-X-Received: by 2002:a05:6512:ba9:b0:59b:7e26:2fc4 with SMTP id
- 2adb3069b0e04-59baef0176cmr1369404e87.53.1768597295104; Fri, 16 Jan 2026
- 13:01:35 -0800 (PST)
+	s=k20201202; t=1768597522;
+	bh=OTWhNuwoA0ri1yi3waHmvj+OiuXWNzz5QrW5RdAqKB8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=CZ5VmA+zS+KDi4Zg7zVZy4vtW1XXa9PrcY/JqR8FJ7DHZjlHyxMiCBMUx3RsJPzqa
+	 bx/ubZh+xu2ZLamEBHQLSqkExLgiaf5DxUGwIrWWbuJqOYMtym7HLnn/2ZlHWJbX0F
+	 lY+yB2tqU/sSeXxPt5LHRDrvralffRkV0N7z18y/CyV/Ws0uyOdFTF7hsp6GGSwqZm
+	 OvZznf0x4+TDznXCczzz8Zxf2t4mlrg1MFpMzlpPlqcBE0ggHIbrMEPF3De3VIBguM
+	 /wyM3yNnSFUI5cZKHpl9qO5LKnXWhfcdlS6/UUfxJK0gluRKzzw84Q4hCU4yUiGlS6
+	 f2no8R1V0VirQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260116-rust-analyzer-pin-init-duplication-v1-1-5e85c5824a02@kernel.org>
- <CANiq72=O-+UTxP-eATh1yMAzX6B-O8h7v8FYVG7F-Ym0rA6F_A@mail.gmail.com>
-In-Reply-To: <CANiq72=O-+UTxP-eATh1yMAzX6B-O8h7v8FYVG7F-Ym0rA6F_A@mail.gmail.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Fri, 16 Jan 2026 16:00:59 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9nz+mbT1Po+mu4LeuZ-+aff9dTjP2aamX-Zpzt1YtTmBA@mail.gmail.com>
-X-Gm-Features: AZwV_QjIY5Hf7e6fJmOvQvKFXksRAdhvfCwkh4qHdNw23CZZoJXggGYpYK4Mgq0
-Message-ID: <CAJ-ks9nz+mbT1Po+mu4LeuZ-+aff9dTjP2aamX-Zpzt1YtTmBA@mail.gmail.com>
-Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: reduce cfg plumbing
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nsc@kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 16 Jan 2026 22:05:19 +0100
+Message-Id: <DFQBHVTTHZY8.13ASLCJ3FJP81@kernel.org>
+Subject: Re: [PATCH v6 11/11] gpu: nova-core: add PIO support for loading
+ firmware images
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
+To: "Timur Tabi" <ttabi@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260114192950.1143002-1-ttabi@nvidia.com>
+ <20260114192950.1143002-12-ttabi@nvidia.com>
+In-Reply-To: <20260114192950.1143002-12-ttabi@nvidia.com>
 
-On Fri, Jan 16, 2026 at 2:42=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Fri, Jan 16, 2026 at 5:11=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
-rg> wrote:
-> >
-> > Plumb `pin-init{,-internal}` cfgs from Makefile to rust-analyzer and
-> > automatically interpret `--cfg <crate>=3D<cfg>` as applying to <crate>.
->
-> So I guess the goal is to simplify things and avoid duplicate
-> information, which is good, but in general commits should explain why
-> the change is done (i.e. not just what is done), even if it may seem
-> obvious (for patches you receive, then you should ask the same to
-> submitters! :).
->
-> In addition, for the `rust/Makefile` ones, I try to mark those as
-> "rust: kbuild:" where possible/reasonable -- for instance, this could
-> be split into two patches. The first one would be the "rust: kbuild:"
-> factoring out the flags into the new variables and the second would
-> then be the rust-analyzer one that only would need the extra two
-> arguments in `rust/Makefile`.
+On Wed Jan 14, 2026 at 8:29 PM CET, Timur Tabi wrote:
+> +    /// Write a byte array to Falcon memory using programmed I/O (PIO).
+> +    ///
+> +    /// Writes `img` to the specified `target_mem` (IMEM or DMEM) starti=
+ng at `mem_base`.
+> +    /// For IMEM writes, tags are set for each 256-byte block starting f=
+rom `tag`.
+> +    ///
+> +    /// Returns `EINVAL` if `img.len()` is not a multiple of 4.
+> +    fn pio_wr_bytes(
+> +        &self,
+> +        bar: &Bar0,
+> +        img: &[u8],
+> +        mem_base: u16,
+> +        target_mem: FalconMem,
+> +        port: u8,
 
-Sounds good, will send as two patches in v2.
+This looks like we should use the Bounded type instead.
 
-> The changes themselves seem fine.
->
-> Cc'ing Kbuild as well (there is no major change here, but still, I do
-> it out of habit).
->
-> Thanks!
->
-> Cheers,
-> Miguel
+> +        tag: u16,
+> +    ) -> Result {
+> +        // Rejecting misaligned images here allows us to avoid checking
+> +        // inside the loops.
+> +        if img.len() % 4 !=3D 0 {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        let port =3D usize::from(port);
+> +
+> +        match target_mem {
+> +            FalconMem::ImemSecure | FalconMem::ImemNonSecure =3D> {
+> +                regs::NV_PFALCON_FALCON_IMEMC::default()
+> +                    .set_secure(target_mem =3D=3D FalconMem::ImemSecure)
+> +                    .set_aincw(true)
+> +                    .set_offs(mem_base)
+> +                    .write(bar, &E::ID, port);
+> +
+> +                let mut tag =3D tag;
+> +                for block in img.chunks(256) {
 
-Thanks!
+	for (n, block) in img.chunks(256).iter().enumerate() {
+	    regs::NV_PFALCON_FALCON_IMEMT::default()
+	        .set_tag(tag + n)
+	        .write(bar, &E::ID, port);
+	}
+
+This way you don't need the mutable shadow of tag. Besides that, how do we =
+know
+this doesn't overflow? Don't we need a checked_add()?
+
+> +                    regs::NV_PFALCON_FALCON_IMEMT::default()
+> +                        .set_tag(tag)
+> +                        .write(bar, &E::ID, port);
+> +                    for word in block.chunks_exact(4) {
+> +                        let w =3D [word[0], word[1], word[2], word[3]];
+> +                        regs::NV_PFALCON_FALCON_IMEMD::default()
+> +                            .set_data(u32::from_le_bytes(w))
+> +                            .write(bar, &E::ID, port);
+> +                    }
+> +                    tag +=3D 1;
+> +                }
+> +            }
+> +            FalconMem::Dmem =3D> {
+> +                regs::NV_PFALCON_FALCON_DMEMC::default()
+> +                    .set_aincw(true)
+> +                    .set_offs(mem_base)
+> +                    .write(bar, &E::ID, port);
+> +
+> +                for block in img.chunks(256) {
+> +                    for word in block.chunks_exact(4) {
+> +                        let w =3D [word[0], word[1], word[2], word[3]];
+> +                        regs::NV_PFALCON_FALCON_DMEMD::default()
+> +                            .set_data(u32::from_le_bytes(w))
+> +                            .write(bar, &E::ID, port);
+> +                    }
+> +                }
+> +            }
+> +        }
+> +
+> +        Ok(())
+> +    }
+> +
+> +    fn pio_wr<F: FalconFirmware<Target =3D E>>(
+> +        &self,
+> +        bar: &Bar0,
+> +        fw: &F,
+> +        target_mem: FalconMem,
+> +        load_offsets: &FalconLoadTarget,
+> +        port: u8,
+> +        tag: u16,
+> +    ) -> Result {
+> +        let start =3D usize::from_safe_cast(load_offsets.src_start);
+> +        let len =3D usize::from_safe_cast(load_offsets.len);
+> +        let mem_base =3D u16::try_from(load_offsets.dst_start)?;
+> +
+> +        // SAFETY: we are the only user of the firmware image at this st=
+age
+> +        let data =3D unsafe { fw.as_slice(start, len).map_err(|_| EINVAL=
+)? };
+
+Why do we need the firmware image to be backed by a DMA object at this poin=
+t
+when you load the firmware image through PIO anyways?
+
+> diff --git a/drivers/gpu/nova-core/falcon/hal.rs b/drivers/gpu/nova-core/=
+falcon/hal.rs
+> index 49501aa6ff7f..3a882b7d8aa8 100644
+> --- a/drivers/gpu/nova-core/falcon/hal.rs
+> +++ b/drivers/gpu/nova-core/falcon/hal.rs
+> @@ -15,6 +15,11 @@
+>  mod ga102;
+>  mod tu102;
+> =20
+> +pub(crate) enum LoadMethod {
+> +    Pio,
+> +    Dma,
+> +}
+
+Seems obvious, but still, please add some documentation explaining that thi=
+s is
+the load method for falcon firmware images, etc.
+
+> +pub(crate) struct GenericBootloader {
+> +    pub desc: BootloaderDesc,
+> +    pub ucode: Vec<u8, kernel::alloc::allocator::Kmalloc>,
+
+	pub ucode: KVec<u8>,
+
+Also, we may want to use KVVec<u8> or just VVec<u8> instead. What's the ima=
+ge
+size?
+
+> +}
+> +
+>  /// The FWSEC microcode, extracted from the BIOS and to be run on the GS=
+P falcon.
+>  ///
+>  /// It is responsible for e.g. carving out the WPR2 region as the first =
+step of the GSP bootflow.
+> @@ -221,6 +286,8 @@ pub(crate) struct FwsecFirmware {
+>      desc: FalconUCodeDesc,
+>      /// GPU-accessible DMA object containing the firmware.
+>      ucode: FirmwareDmaObject<Self, Signed>,
+> +    /// Generic bootloader
+> +    gen_bootloader: Option<GenericBootloader>,
+
+I'm not convinced this is a good idea. We probably want a HAL here and have
+different FwsecFirmware types:
+
+One with a DMA object and one with a system memory object when the architec=
+ture
+uses PIO. In the latter case the object can have a GenericBootloader field,=
+ i.e.
+this also gets us rid of the Option and all the subsequent 'if chipset <
+Chipset::GA102' checks and 'match gbl_fw' matches below.
+
+>  }
+> =20
+>  impl FalconLoadParams for FwsecFirmware {
+> @@ -275,7 +342,19 @@ fn brom_params(&self) -> FalconBromParams {
+>      }
+> =20
+>      fn boot_addr(&self) -> u32 {
+> -        0
+> +        match &self.desc {
+> +            FalconUCodeDesc::V2(_v2) =3D> {
+> +                // On V2 platforms, the boot address is extracted from t=
+he
+> +                // generic bootloader, because the gbl is what actually =
+copies
+> +                // FWSEC into memory, so that is what needs to be booted=
+.
+> +                if let Some(ref gbl) =3D self.gen_bootloader {
+> +                    gbl.desc.start_tag << 8
+> +                } else {
+> +                    0
+> +                }
+> +            }
+> +            FalconUCodeDesc::V3(_v3) =3D> 0,
+> +        }
+>      }
+>  }
+> =20
+> @@ -376,6 +455,7 @@ impl FwsecFirmware {
+>      /// command.
+>      pub(crate) fn new(
+>          dev: &Device<device::Bound>,
+> +        chipset: Chipset,
+>          falcon: &Falcon<Gsp>,
+>          bar: &Bar0,
+>          bios: &Vbios,
+> @@ -432,9 +512,54 @@ pub(crate) fn new(
+>              ucode_dma.no_patch_signature()
+>          };
+> =20
+> +        // The Generic Bootloader exists only on Turing and GA100.  To a=
+void a bogus
+> +        // console error message on other platforms, only try to load it=
+ if it's
+> +        // supposed to be there.
+> +        let gbl_fw =3D if chipset < Chipset::GA102 {
+> +            Some(super::request_firmware(
+> +                dev,
+> +                chipset,
+> +                "gen_bootloader",
+> +                FIRMWARE_VERSION,
+> +            )?)
+> +        } else {
+> +            None
+> +        };
+> +
+> +        let gbl =3D match gbl_fw {
+> +            Some(fw) =3D> {
+> +                let hdr =3D fw
+> +                    .data()
+> +                    .get(0..size_of::<BinHdr>())
+> +                    .and_then(BinHdr::from_bytes_copy)
+> +                    .ok_or(EINVAL)?;
+> +
+> +                let desc_offset =3D usize::from_safe_cast(hdr.header_off=
+set);
+> +                let desc =3D fw
+> +                    .data()
+> +                    .get(desc_offset..desc_offset + size_of::<Bootloader=
+Desc>())
+> +                    .and_then(BootloaderDesc::from_bytes_copy)
+> +                    .ok_or(EINVAL)?;
+> +
+> +                let ucode_start =3D usize::from_safe_cast(hdr.data_offse=
+t);
+> +                let ucode_size =3D usize::from_safe_cast(hdr.data_size);
+> +                let ucode_data =3D fw
+> +                    .data()
+> +                    .get(ucode_start..ucode_start + ucode_size)
+> +                    .ok_or(EINVAL)?;
+> +
+> +                let mut ucode =3D KVec::new();
+> +                ucode.extend_from_slice(ucode_data, GFP_KERNEL)?;
+> +
+> +                Some(GenericBootloader { desc, ucode })
+> +            }
+> +            None =3D> None,
+> +        };
+> +
+>          Ok(FwsecFirmware {
+>              desc,
+>              ucode: ucode_signed,
+> +            gen_bootloader: gbl,
+>          })
+>      }
