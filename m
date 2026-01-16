@@ -1,158 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC67C22068F
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 20:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB59128DB49
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 21:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768596637; cv=none; b=F1uIIOZR8oeR9qZoCGG+8HUyM5xjyDy6ttfgVGqOZJ+lwmBIixzaoBkF7IisXHPl4Ok4tzxUsGuuzGv6rb6A0E7TnmY/ZawMzIxSrsVeGwWGAlgGNvsO7Kd92ZQIzf3zAGEjl83gOoKcvkyyh7EGnLtBtxs6cYlr11pOW9NeZdc=
+	t=1768597296; cv=none; b=dfR0XK2oBw7MYarXi6Z82eF998L+ZyOFzr7D+Nve+T7gG/HdhhNlrKrcJ6VCCM5gjD91ElXKw2yavZCyELr/8yZHhBqSyvA1F0/KfsPUVwRSWUx/NVTWrXABF/VoFwBaiRmtPVQnvHuyvNA/oXeSCHcctU8kKfauRpwKQ2NmKT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768596637; c=relaxed/simple;
-	bh=1RkNBJupzvZArqOqWgVZokElFboQ4rTBOglEjr/NA+I=;
+	s=arc-20240116; t=1768597296; c=relaxed/simple;
+	bh=J0lJBA34IyECQmfgD92fGI60ptA7n2oNGGMd+JT3TvY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q+y6/xKAXwpuEsuMIrjTvhHnQrX2ld1A1OW2CBIkWYOPyh5TDa9eeE2SNQR1nQ7buO2gf82qll4RVkz+GY0WIz2uUwtfY5haPiVzMxua8n6JtFoql7ZmEj++MQDlVJbQntJrWXkdtzFoLIgAzQPOBD1iah4m9CtLB3m/1W+KpDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uPjqJtNS; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=aO5OWKKB9EnsXSzr4fPPrZWmhyF2VAdWnpp7iP/f2+6LyT90FCZfTFnaG8T50DWYjgCNz3iWxFqh6olliTo6gvHG38aTEA0uk6t/R4kxmKFJnKfFV2pNyy7tb4CY3IVe47ogoUbVtGDeQ2+tcrc/JLKoA8ujLlt39/klwIksscM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ms+nqqtq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uPjqJtNS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95182C2BC86
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 20:50:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ms+nqqtq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74ABCC19424
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 21:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768596637;
-	bh=1RkNBJupzvZArqOqWgVZokElFboQ4rTBOglEjr/NA+I=;
+	s=k20201202; t=1768597296;
+	bh=J0lJBA34IyECQmfgD92fGI60ptA7n2oNGGMd+JT3TvY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uPjqJtNStfyiyLmJCZNtepHZKxhBRsnjEb+5sZ0qjk/hR/GDb+By/0tYX5NOapxTT
-	 JqRLc1wxmRxad/c5HzsdKroFM2Mbj8EQlY02Ce1Gibi/DWbon9t0VQxK3Z12ZpF/t3
-	 X7TVMY4H5Mrfm/8CU3Tx9Bc/bDEIgBfOt/zRUwnX88+3YptSz6JYQC3Kl0q9kim6Ga
-	 3swMiwIug0Vk/EBnFsRHGOri2vcg0z0g9pmpNkgs456A6Iu+tHFLqrmbf1DE9IDunx
-	 Hy9ByJ8ivO+bMUluDvCti776B+YpvaQqh9tWf5NmX55AO9RGp996Eej7XL0O5BAZLO
-	 Yy7AwGACO+wXA==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-382fd45a1feso22136651fa.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 12:50:37 -0800 (PST)
-X-Gm-Message-State: AOJu0YxvXbqmWnsAde/Ucrd2ZUX7xQ04g+SvrhFHIqeBEtVaSW4F3Usv
-	DQ4ch4zNH6pgcKT/xpjNWMy604SoBBynxqhiqJUUAwYLCpdmx7n5Oi4KRoai3M9N6avLeD/X5oL
-	/Tf6dmbQQFlXNQtfd8PRVzfabyIYLMIg=
-X-Received: by 2002:a05:651c:325c:b0:383:236:1e0 with SMTP id
- 38308e7fff4ca-38384cf0710mr13634171fa.9.1768596636098; Fri, 16 Jan 2026
- 12:50:36 -0800 (PST)
+	b=ms+nqqtqWziS37esdp6Sa2S0Lai+i0peH1IAicZOHCxG3DU0pBJk+qLSwBu1Ivv4k
+	 ygC3b+wjz/vbqFwTdAQtPBxAWOBvaWFlTnvs5j2+Z8K6hvIe05M9E6A17i/areFnXl
+	 JsWj3Jzsl7gkR4+v1i2+6Lm21is56fZI3U8Dbf2pJue3Zyo8SxkXhV9/8NQ8O9vpQH
+	 8WIs3OC1h+xpkqX3bfnd8hTdD3CaYFEpr/+E5ox9Wc/COrEZ3VcGuVn87/DJ2MfoTf
+	 Z3Glc/62I/KwHF9bhBVj8fLtwKlzhxEfzUExO7HFXwuj8rsMjqLjcd11niUa9CLJtk
+	 iIJcjjHYOOxTg==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3831c18b23bso19707931fa.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 13:01:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWIvKClYwNC2ds8KRQQq/1SCGHQfjUXDYv9Nlo0jDP84/SIH1JxQQaoVsa+u15vfJwDCu+K0y81+TktGkwPzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTUNuVNawiCkZvqmCQAIz0odeV3pdleoNdKlqqYsr2Gm5JN2+J
+	vzMDFicNE6hnylo2CFvCV1TuEbQokfefvD+8FXumxw3mbh0QxE6WbgtISmqWOdukxqLf2OE5/ps
+	sYJHWZwnPElJ4tTzv3aenYOme8DKDqmo=
+X-Received: by 2002:a05:6512:ba9:b0:59b:7e26:2fc4 with SMTP id
+ 2adb3069b0e04-59baef0176cmr1369404e87.53.1768597295104; Fri, 16 Jan 2026
+ 13:01:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260116-rust-analyzer-sysroot-v2-1-094aedc33208@kernel.org>
-In-Reply-To: <20260116-rust-analyzer-sysroot-v2-1-094aedc33208@kernel.org>
+References: <20260116-rust-analyzer-pin-init-duplication-v1-1-5e85c5824a02@kernel.org>
+ <CANiq72=O-+UTxP-eATh1yMAzX6B-O8h7v8FYVG7F-Ym0rA6F_A@mail.gmail.com>
+In-Reply-To: <CANiq72=O-+UTxP-eATh1yMAzX6B-O8h7v8FYVG7F-Ym0rA6F_A@mail.gmail.com>
 From: Tamir Duberstein <tamird@kernel.org>
-Date: Fri, 16 Jan 2026 15:49:57 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9n7CivAbzx6yhTNw8C5EacQ3VQGF1GVmTHGGf6iTiFabw@mail.gmail.com>
-X-Gm-Features: AZwV_QgBheXGFYXDQFHIV9AVLp7wkSHhh-QdjW3LaY2BUZkhEzUaXWZ0ppAZzu4
-Message-ID: <CAJ-ks9n7CivAbzx6yhTNw8C5EacQ3VQGF1GVmTHGGf6iTiFabw@mail.gmail.com>
-Subject: Re: [PATCH v2] scripts: generate_rust_analyzer: compile sysroot with
- correct edition
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Fri, 16 Jan 2026 16:00:59 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9nz+mbT1Po+mu4LeuZ-+aff9dTjP2aamX-Zpzt1YtTmBA@mail.gmail.com>
+X-Gm-Features: AZwV_QjIY5Hf7e6fJmOvQvKFXksRAdhvfCwkh4qHdNw23CZZoJXggGYpYK4Mgq0
+Message-ID: <CAJ-ks9nz+mbT1Po+mu4LeuZ-+aff9dTjP2aamX-Zpzt1YtTmBA@mail.gmail.com>
+Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: reduce cfg plumbing
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, Jesung Yang <y.j3ms.n@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 16, 2026 at 3:46=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
-> wrote:
+On Fri, Jan 16, 2026 at 2:42=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Use `core_edition` for all sysroot crates rather than just core as all
-> were updated to edition 2024 in Rust 1.87.
+> On Fri, Jan 16, 2026 at 5:11=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
+rg> wrote:
+> >
+> > Plumb `pin-init{,-internal}` cfgs from Makefile to rust-analyzer and
+> > automatically interpret `--cfg <crate>=3D<cfg>` as applying to <crate>.
 >
-> Fixes: f4daa80d6be7 ("rust: compile libcore with edition 2024 for 1.87+")
-> Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-> ---
-> Changes in v2:
-> - Revert rust/Makefile changes and add Miguel's analysis.
-> - Link to v1: https://patch.msgid.link/20260115-rust-analyzer-sysroot-v1-=
-1-4de831df234a@gmail.com
-> ---
->  scripts/generate_rust_analyzer.py | 29 ++++++++++++++++++++++++++---
->  1 file changed, 26 insertions(+), 3 deletions(-)
+> So I guess the goal is to simplify things and avoid duplicate
+> information, which is good, but in general commits should explain why
+> the change is done (i.e. not just what is done), even if it may seem
+> obvious (for patches you receive, then you should ask the same to
+> submitters! :).
 >
-> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_an=
-alyzer.py
-> index 6061bd6e2ebd..187243f7f7a8 100755
-> --- a/scripts/generate_rust_analyzer.py
-> +++ b/scripts/generate_rust_analyzer.py
-> @@ -61,7 +61,6 @@ def generate_crates(srctree, objtree, sysroot_src, exte=
-rnal_src, cfgs, core_edit
->          display_name,
->          deps,
->          cfg=3D[],
-> -        edition=3D"2021",
->      ):
->          append_crate(
->              display_name,
-> @@ -69,13 +68,37 @@ def generate_crates(srctree, objtree, sysroot_src, ex=
-ternal_src, cfgs, core_edit
->              deps,
->              cfg,
->              is_workspace_member=3DFalse,
-> -            edition=3Dedition,
-> +            # Miguel Ojeda writes:
-> +            #
-> +            # > ... in principle even the sysroot crates may have differ=
-ent
-> +            # > editions.
-> +            #
-> +            # > For instance, in the move to 2024, it seems all happened=
- at once
-> +            # > in 1.87.0 in these upstream commits:
-> +            #
-> +            # >     0e071c2c6a58 ("Migrate core to Rust 2024")
-> +            # >     f505d4e8e380 ("Migrate alloc to Rust 2024")
-> +            # >     0b2489c226c3 ("Migrate proc_macro to Rust 2024")
-> +            # >     993359e70112 ("Migrate std to Rust 2024")
-> +            #
-> +            # > But in the previous move to 2021, `std` moved in 1.59.0,=
- while
-> +            # > the others in 1.60.0:
-> +            #
-> +            # >     b656384d8398 ("Update stdlib to the 2021 edition")
-> +            # >     06a1c14d52a8 ("Switch all libraries to the 2021 edit=
-ion")
-> +            #
-> +            # Link: https://lore.kernel.org/all/CANiq72kd9bHdKaAm=3D8xCU=
-hSHMy2csyVed69bOc4dXyFAW4sfuw@mail.gmail.com/
+> In addition, for the `rust/Makefile` ones, I try to mark those as
+> "rust: kbuild:" where possible/reasonable -- for instance, this could
+> be split into two patches. The first one would be the "rust: kbuild:"
+> factoring out the flags into the new variables and the second would
+> then be the rust-analyzer one that only would need the extra two
+> arguments in `rust/Makefile`.
 
-Oops, the blank lines between paragraphs should probably begin with
-`>` so that it is all one big block quote. Happy to send v3 or let
-this happen on apply.
+Sounds good, will send as two patches in v2.
 
-> +            #
-> +            # At the time of writing all rust versions we support build =
-the
-> +            # sysroot crates with the same edition. We may need to relax=
- this
-> +            # assumption if future edition moves span multiple rust vers=
-ions.
-> +            edition=3Dcore_edition,
->          )
+> The changes themselves seem fine.
 >
->      # NB: sysroot crates reexport items from one another so setting up o=
-ur transitive dependencies
->      # here is important for ensuring that rust-analyzer can resolve symb=
-ols. The sources of truth
->      # for this dependency graph are `(sysroot_src / crate / "Cargo.toml"=
- for crate in crates)`.
-> -    append_sysroot_crate("core", [], cfg=3Dcrates_cfgs.get("core", []), =
-edition=3Dcore_edition)
-> +    append_sysroot_crate("core", [], cfg=3Dcrates_cfgs.get("core", []))
->      append_sysroot_crate("alloc", ["core"])
->      append_sysroot_crate("std", ["alloc", "core"])
->      append_sysroot_crate("proc_macro", ["core", "std"])
+> Cc'ing Kbuild as well (there is no major change here, but still, I do
+> it out of habit).
 >
-> ---
-> base-commit: 74e15ac34b098934895fd27655d098971d2b43d9
-> change-id: 20260115-rust-analyzer-sysroot-5fb95aa985d2
+> Thanks!
 >
-> Best regards,
-> --
-> Tamir Duberstein <tamird@kernel.org>
->
+> Cheers,
+> Miguel
+
+Thanks!
