@@ -1,155 +1,367 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021119.outbound.protection.outlook.com [52.101.100.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB92F19B5A3;
-	Fri, 16 Jan 2026 12:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE90A238171;
+	Fri, 16 Jan 2026 13:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.119
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768566475; cv=pass; b=DbOfvvT8QtTI7kbD3/sgYt0Rs47w9+Z2arZl9nYn/o/MjF7oBMzl7Z000pRD/ATtRH1Zc/XFX+mAyoE0a1w7LoC9dyTmF+CqUUdnL3ejRvz20grBJAMUtZmwef74HSRQm0DWwJV0vWbIO+gXp1e8zox9JpUHPizofpFuPMHDgio=
+	t=1768568442; cv=fail; b=ZN0noijvhcV/1P+4T+xpBXuDAZFFciGuXaGkBx136d369rzMLaJ8AcDMePj3l5lhTeLdSsYhS0tTEkJ5mwPb0XoIttWd6Apo6JxjMxPfZZXlX7iDc0E0ND3gCKFGKQy3lEGL1Oh7Re1kogn8XZSiX7xv8MR62aC0iz4hUE3i4Yo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768566475; c=relaxed/simple;
-	bh=AyhVXfeISRMdUr6Rp6ySVFR6F2RrWO1MxoXmDJYuwGE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=u8zUuf9ABt9rV9sct4LsAwGaIAjpZjzJGiFYRIk+EKAp/bm8n5MOO5I2O6S4cwCWowrJDuZRjMKcxESipvp8yPKhafRNLqZT3N3zESdGgX769B5QJBQQt2so4ICwyjRozywHI46dmmnvSmJs9fOpKClY1WItpi95B2gx9dENK7E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=XfFI5+0a; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1768568442; c=relaxed/simple;
+	bh=UmGJk9yiX/crpXSYU2PV7i1htczj6SkE2CH8m9Xpt48=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=KRe5tOOou9svq1T9ez87LDnUJHmSSj6w+r3oqskDnmYGl0Up+s5KAnO1FRpQzOp12ayRwi8oVI7HiIUmug1IbbN/9fnBmW1ylHld0QtRbVAFrhpWhiRyWqTXh90dLfuyI82z5b5He2rx9zepPIGPyzW5aECbhfssgEtIdI5eHag=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=xGLZ4xvi; arc=fail smtp.client-ip=52.101.100.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="XfFI5+0a"
-ARC-Seal: i=1; a=rsa-sha256; t=1768566435; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=XztM6jXcggCoSAdRQhx7ulTk76U7pV8YwGRkO7TnPNgoaVztEjJsy2++/n58bI77cwmRaDfJoVdr4Qa0i2CkQ396GOyhqnd33FfG+tO5rx2W49fdATqqEmhS3tPzK7A5eSIoxkxUNHAPpygYxiS2I7Qsv/+lzzlpGvHHaDoRs+A=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768566435; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=vBfAEgyGBaloJD+gDr2a3D9GTaH00nj/0Atxxx5/vhA=; 
-	b=DCdmP1ByQqir2BQM5uGG/rzv7tr9DWbaQWS0vaG48hjvlR0OqZmYsoWR9/FIT7DMnpjs2zkKB4zjh6hAhL0sqZXo7cbWGCuEwk+aI4+cvhqXvd5YQXCeqUew1rNWcuQaqdbejZ1p/HCv6TOfYJNw7OyH0O6dJTZKvqepwUSQT1w=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768566435;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=vBfAEgyGBaloJD+gDr2a3D9GTaH00nj/0Atxxx5/vhA=;
-	b=XfFI5+0aH9b6MOxsWTdNDxgZ305ALBA0GN82wKazNq5mu2V4/vcGPURLn/tNn3wA
-	y13L+uhclztPByheXrJOF12eEI6XQiljbR//pownUl0x+SHLShLkrCKuM0M4zxE5Fcn
-	zFz9Fk+ifOzyV8sCNxhUHrvjeBbwELmBpmoZp4uI=
-Received: by mx.zohomail.com with SMTPS id 176856643300881.11206264439409;
-	Fri, 16 Jan 2026 04:27:13 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="xGLZ4xvi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nckFl93U3xE1dnjJu6ANIu/WcVSndNy/WQdd/lPrg7FO+GvC2gZ/yUU32EMk3Tpey3/8V1Bj+lIut9DIOhBkvrFDqbPKfuPd31bvGgXi81PLBfc3UrvNVe/XZoq4Rfy8+C5/ZWgsgVFJG4QHRMMHV+uAEevV0zOmsdqiGtpb1uhZ8gor6+t4xs8L2VbJ0uhwKr45Wx6AJsfY1wJLX7Nw90jGknHDq2uboXFellGisKHUxwR8Pb7nMin5x3AOBSfBIRYdksy5acsLYJbtTMqeHygw7prWKGN33rJW1eOR3Y2kziZwUd3f5QajWUCwbVI2S9FRDnH74TwM/F0TkMRinQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BG99axf7/MA5lFnOSF3noM6SfMSzAQ0x8p7geFYYDxY=;
+ b=yxMOLgrIfd/zQ2k5jQutB/p18VOfmBwKOWsPms4wDSBqbjfmQcMKRdcxJUEwa7Bs37++Bh07+Ir+A5QCQDuSpqER/Q3/a1Cqu093gNQnKmqqvkvfWT/DjW8jLMh2DpkImtSjZHHJT8YQ4oyrbBQOpAF3gdeX/NXwxcoI+k7qV+Kn71yF+Urft8YpxTlIgQWQR+bWTc0aqxwXeLnp+pLXrrqhwgYbdJSYLYFbTFwW9prlkyhalNCcq/ENqYzLxWKbd0VMdTxR2ZmXbS6Uv5Dp95xv5Wej/lLAMwr+BznsA9tJFCbJx+vDwUIyD+NNeHtOtWCpnvBTh6ghdZPSa4jZfQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BG99axf7/MA5lFnOSF3noM6SfMSzAQ0x8p7geFYYDxY=;
+ b=xGLZ4xviVob8PK45Ri2PPMw4Zgbu0kxO7YcBs1g+Do5QeKwi+KwlGuDfyYBEy/RUM+wgAbHWERTbiInGTfOE23gsD3xzDjmJmRE98VlDT3cYylUpSXI+R98oSMtcGZr7UnhykytSkbxQ2jzcB4S1geeenhWHjqmaLZuTs2axmTg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB6260.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:24f::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Fri, 16 Jan
+ 2026 13:00:35 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.006; Fri, 16 Jan 2026
+ 13:00:35 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 16 Jan 2026 13:00:35 +0000
+Message-Id: <DFQ16QS1RAEL.1Z0ESXE0MBA7G@garyguo.net>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Steven Price" <steven.price@arm.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] rust/drm: tyr: Convert to the register!() macro
+From: "Gary Guo" <gary@garyguo.net>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Dirk Behme"
+ <dirk.behme@gmail.com>
+X-Mailer: aerc 0.21.0
+References: <20260114-tyr-register-v1-1-7deb1b33627a@collabora.com>
+ <f7ff8b11-b1a5-4537-9227-e42a3a40aa96@gmail.com>
+ <A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com>
+In-Reply-To: <A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com>
+X-ClientProxiedBy: LO4P123CA0693.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:37b::9) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] rust/drm: tyr: Convert to the register!() macro
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <fdc39008-ba4a-4170-b7ce-cca2deda5652@de.bosch.com>
-Date: Fri, 16 Jan 2026 09:26:55 -0300
-Cc: Dirk Behme <dirk.behme@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Steven Price <steven.price@arm.com>,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- Alexandre Courbot <acourbot@nvidia.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1EF6A3B7-216F-47C3-8631-25C38994BAC1@collabora.com>
-References: <20260114-tyr-register-v1-1-7deb1b33627a@collabora.com>
- <f7ff8b11-b1a5-4537-9227-e42a3a40aa96@gmail.com>
- <fdc39008-ba4a-4170-b7ce-cca2deda5652@de.bosch.com>
-To: Dirk Behme <Dirk.Behme@de.bosch.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6260:EE_
+X-MS-Office365-Filtering-Correlation-Id: b39338b0-84cd-4cce-e684-08de54ff3d3a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|366016|1800799024|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WVp5ZUpmbUpFMDBLeU5ndWJnZFQ2dU9GbFBlYVlUcmREbWg0MXRMbEFVTkMz?=
+ =?utf-8?B?MGRRUDRUaEpjNnlQQjV1VFlhVkZXVHhsVHBPcU5VODA3cFZCUUQzbElGYXIx?=
+ =?utf-8?B?YVdnUU40a0JQUFlyL0lid1E4aFFSRXU2dEtsVlNvSHFRdTBoWXIvNHNiQ3ZB?=
+ =?utf-8?B?bzZKTU9LeXNpUitHRWs4VkFCdytNa1BwQzE5ejY4Vm1UTWlEM0JTckwvTm1p?=
+ =?utf-8?B?UXVVQU5EeUdYM2lWTit1d3hHU25GL3c0eWtkK1pDcytzdlZldXFwclAzQzB0?=
+ =?utf-8?B?cllzTnZSSEpYV1plRDlqTjZ4SWUwbUpIT1g5RG1qYmFjWGVhSjFISGNSRGNP?=
+ =?utf-8?B?djJGcXdnc1p2UFhjNE9LZmVBVmFaM2JSN3dIdVlzRmNIMmFKczMxUVlTWG52?=
+ =?utf-8?B?UjRQSG1Zd3MwR0x1ajduaTl6VnZsR2lCUFBzWnMrQlFlNG5CRmlwNlEzNFND?=
+ =?utf-8?B?ZytPQnk3a2tOcGVYQVJXWUdyMkVWYnlZOTBqTHdxQ1B5ZFJyWlBielAvK2tk?=
+ =?utf-8?B?bGlLNkFIdEQxMlBaMmx2N0QyaWEyQnBWYk1EZEdSZVU1d0dqWGxPQklTVWtv?=
+ =?utf-8?B?LzJ5d3ZEYzVGWDVCKzZpMFpqUlZJWlBqV2IyenMxWGdmdkhWWStoZWdqUEhE?=
+ =?utf-8?B?Rm83ZHVEbGRkZnNOYkkvZEtJWVhzR1Q2RVUvNFdVSlU2cUlTVUxkdG9MWjFS?=
+ =?utf-8?B?bTFVMDZnak1EVlMwOWlxWlptTENwLzBmTS9JbDZOTmttV2lzOVEyMUR6K1R3?=
+ =?utf-8?B?OUZuL2orRUwwdkRuVEhNTUoyZGY2R2pmd0FnU21qRWtZb3d6T3VTNE9Pb2pv?=
+ =?utf-8?B?QWlmSFp0TTBMK3I3U3pQdlcvMVBjcGtzQU5ESzJ4WlpqbVJPUGYzMXR3Q3h3?=
+ =?utf-8?B?NjNTNUVsbE5odzJOWkx4VGRUcjNkV09EcG1BMGVqWllWTEhNQkZhQjhVY3hZ?=
+ =?utf-8?B?UDdzWVZPTElBVVRFTmFoRGlhUDZDNU9oRkZFZC9PRDVuZ3R1ZDk0WTd3VkRL?=
+ =?utf-8?B?WndUYXloUm9OaFBkdnJNUWpvZENicTlkWHArNGl1cXhPUXZINFhqNUFlWnha?=
+ =?utf-8?B?OXg5WExXdXdhNVMwcTUwWnM2NzlVTk10NkxSRXhocDlKOTMybG5uS2RpSUxW?=
+ =?utf-8?B?aXV2TFdIMVlxVE9WU3RyUEtBK3Y1YmVJTzQyaEpiaU01VjlCdlloSlNDWjdk?=
+ =?utf-8?B?M2NRZllxczRteC84NnByWnY0clhvcjUyR2tuNm1rcDJpcENpYzVYZ0l2ZTJB?=
+ =?utf-8?B?bzlIMWZUNnlLZ2hIYUJvTUtPUFJ5RTFNYy9aOVBYeWpMYTRDZzJFQk56MkdC?=
+ =?utf-8?B?aW9OdUc1K3RoRUdvUnBMZmk3R1dJVlB4TmljNmhIdHo2MHFCVWZLYnF5WERG?=
+ =?utf-8?B?NkF6Vm5LaSthZlRpWUgrKytqOCtLNDVDREVuVncydlY0UHNWclFDZFBsQWFz?=
+ =?utf-8?B?NU9aZ1RSVmExMVFWVThFUVpBTzUvNkIwQzRCQllJOVJGK2NzOGEzT0wzVHVG?=
+ =?utf-8?B?alQ1ZFI2SFQrVjRWNUsvUkVza2RsbnZnWHoyNUIxRlJaUVFlR290VHlwRXlT?=
+ =?utf-8?B?Mzcxd0VkUVNMcGVIMnZFSzNlYnduQjYzZThRdTYvdEtaMU9rMXl4L2J2U2pR?=
+ =?utf-8?B?UkFoSUlLWFQxTEZEZjlvazJnUDhETEhQdG1EeElNWml3TzhxbGZ1eVBOSUQ1?=
+ =?utf-8?B?NlhTdThpMHMrTjFEcjFZZFp5MEozcW9Hc0pLenJiU21RZFh3dXA5aTdvYWdQ?=
+ =?utf-8?B?YU5ZWktlMnZmZWlpWW1US2x3MmI4emJIRHRpTU5JZk92Nmx3dnd3cFh5bVVy?=
+ =?utf-8?B?T0xOMmVjVGNqTXgvRXI5UHYrYTlyZG8xeTZHQ3RudkJrMTE0eEVyVnl2eVlG?=
+ =?utf-8?B?aS9GaWJBNG5IZEVzVXQxSThlMGVLVzl1NFV5Q2M0aCs5N0FSdUNUOGM5QkRm?=
+ =?utf-8?B?b1FqVXpuUGtLL2ZOODNSTHZlWndYc2lvK2ZRK1l5MmpRUW1NTVladW1FYTg1?=
+ =?utf-8?B?MU03UlBUVUVCVk1WdkxPTGJRSlJ0M2lHQnZwM0VkeDFKTjRBQkpFRjVWaGtl?=
+ =?utf-8?B?NlF3YVBkVTAvUlpNMEdleVcxSEdabFhIeFZJU3JkbnZuOS9vYzZNY0owdXlS?=
+ =?utf-8?Q?VP2A=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MS9QTEFHWTE3SkVtQnBJaWJDSkZ0K2pqYUJHSE93bGxLVGtlbmFHYlNJWFJ2?=
+ =?utf-8?B?cXFVNGFDZllnT0NDbWN2VFVMVzJGL1Q0cXVqb1Y5K1kySmw1dmtRRzZwSGVK?=
+ =?utf-8?B?eHliUnpNYm1RSW83c3ltQXRoQjBMMytYSTdwdC8ydS8zS3hOTmxuNU4xT2dJ?=
+ =?utf-8?B?TitkcDZ0Z1Z0OU9IWWorNTNNMm5BbFdCbXNUVFF2VUdBLzZEaVZ0NURsN09B?=
+ =?utf-8?B?VkVaV256UDdvQ2xrVzM1OWlUT3NCT0dnZkF6VzJYS0Z6c0dsc2dyMG9wdlh5?=
+ =?utf-8?B?Mko0ckduUkxQY2FCVGhhdldqZm8xQkt3QW1kOGRKNDJXY3lsMFQ1N0gyUnBs?=
+ =?utf-8?B?dm8wRWovM3JVSXA5b2lyOFpuWEV3a2ZaMzhOeUYrYjV1QlNOVXhGaXZCS2Fu?=
+ =?utf-8?B?eGVVR3EzU3R5d2JNVFhrYi9jcHNCM29ZK2t1ZDVOZE5iZmtnSk5xYTR2dEp5?=
+ =?utf-8?B?ZlpzblJjYVpKaGg2M24ydkRKSGQvZC9ZbGhkbFNvSFJEYmxhVnNsTTNDUlla?=
+ =?utf-8?B?SEJFNnNZZzNsUU5sOWc0Yi9uc2E2OWgrSndQbVBxOTYreGEzbUgxKytiUmdy?=
+ =?utf-8?B?MHVYL2pGRFpOYzlBQkt2MFpBKzNwbi92VEpFazdEZlRPSHhOTmFDc1YwMEtO?=
+ =?utf-8?B?clBuL2lvbkYwNEl2TzBtK0NpSUl0cTFLRmxzbVFBM0EvTFNEYW9zVytjT1Zx?=
+ =?utf-8?B?YlErRkhNemE4cTRJcEZrMXlJbFpLd1VPMXBsNTAzSVlqMEY4cW1UTFZ1bmxz?=
+ =?utf-8?B?SkkzNUQ2TTZ2VHVvZ1hYL0JTbzJCbUtUSlJnRi9wK0h2Skx6Q0E2ZGdaZFl5?=
+ =?utf-8?B?V0F1bDEvWlhuN0hJTWo1SWFiWExPOHc0ZlFHMUV4a2lWeXdMVEZXUE5kZjI5?=
+ =?utf-8?B?TEJlS3pvMzlGYXd1N0x0UStRNHJIK1pEWXZhQjZpOVlBYnRmdkJ4b0Z2WXFV?=
+ =?utf-8?B?Z1BFWmlsRUhmb0o5dm1SUnBCbWdwaXdiRmNwVFNzYm5ZSkNuT1g3TmdXZFlX?=
+ =?utf-8?B?VjRBaG1UcmYxb0JTTFZ2VnAyOVhKRVJONFdKUU5IRzR1RkZDVTdVWUJ3UjRI?=
+ =?utf-8?B?NUJMNmV4dnoxUiswamJocEpmT3puWDJwQ2FuaHFjSkZ2ZHNwdGQ3bFdQdjM2?=
+ =?utf-8?B?RWdOZG96cHBRWFp6cStoUkIyMlUvbzRPL1dick45eWJrSWIyR0c5dHhEb1RX?=
+ =?utf-8?B?eW1IeWlkT1BpWWkxMmluU3YxR1JPRGNsVVRieXdjOTNTVi9PdWd4NHBLdUNk?=
+ =?utf-8?B?RWJOOSs4SEM3bWRMRTNsTXZ6cVdvUy9BVlNTUngxSXora25PejlNMWNvSW5L?=
+ =?utf-8?B?VDE3VFo5S1NkNFdQTjlzaE1zUmprNzhLUWJTNGh4OFYyWXA0MHpJcnp1d1Az?=
+ =?utf-8?B?Q2lncUlNcVMrYnppMGR6bHZ6a00xMmhoTnBwUEhNSlZOMnB3RjZyWWVjelFD?=
+ =?utf-8?B?K2szY0VoWmZVb0JrNWRlckUxRWN2WW1vcElPYlpxREpHUXRWbjNLSW15WUxq?=
+ =?utf-8?B?djBRZWhUNlRrZTZFeWhrMzhNZkVtRjAxTCtkSDFNNHdvMGNBT2NmcVh6UlMr?=
+ =?utf-8?B?S3VvckdneUwvNFVWeURHWWNmVDdLS3dSRE92RFhKVkY4VHJlblJWU3ZPT2sr?=
+ =?utf-8?B?S1pHdXFPeXBkTWQ1WXYvNy9tVmFlZWFSbDdhbXB2aTBlRGlLWXRzbmxyR0Rj?=
+ =?utf-8?B?ZDc2ampnbzQyOUgyR2I1TXVya3MvLzdyclQ5TGlTMkQzVk5jVWtIMkZJQnpu?=
+ =?utf-8?B?Zmo4dFRxMGpkdUxWTVB0R1llVEFETFQ2d1lzNENXTjAwRENnUVl0WWMwdm1p?=
+ =?utf-8?B?OVdKTklWYU1qOFFrN0VYeGdBMm9EZFdyRDNXVzYwdXVUUkdWb0FLbEliMVlk?=
+ =?utf-8?B?V1U0d1EyeTBJMEFuZ05ZdmVVWWZvYzVrd2x0R0FzU2hRVnkwUTJSbVQzRUR4?=
+ =?utf-8?B?ZUVOa20vdUxjNllhU1RYVC8xVkpwVkhtR0RWdTBTMTBhcS81MmlvMlBJMzUz?=
+ =?utf-8?B?aFJyYnJZelpCbmxVTnJEWG5uSWpMWjVCWU80VEQ1NmhNQ1c5OURYWTdrMU1E?=
+ =?utf-8?B?L0VZQXlSRnNyQWVDeWlLV3NnQnZBMGFaVWJJWjQxdjNKdlp0Rk5JRlhuRWZV?=
+ =?utf-8?B?SEJDS011RlhZWFVUWXZQdnM4REhsVWhlbEVXWGI1UmRaZmtlUktyVGdBdmlP?=
+ =?utf-8?B?T3NuUDh4SytaUGoxcytwMTB3azk3MldSUE9Oemo3MitoTHE5aS9xOGxCQ3Fr?=
+ =?utf-8?B?a20raTB1dnJrKytSSlRXMm9hYTAxZWRFL2NFMW5udlJiZXdqb1NzY0Fqc2xz?=
+ =?utf-8?B?Rnp5aXFBeFp6Q1FsZkoyMHB6b1BNZU55K2RTemo3S0JkMU1KQnpqdz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: b39338b0-84cd-4cce-e684-08de54ff3d3a
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 13:00:35.4614
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: u4FNoiMjkeOf4jwoVlDg17IR1R5wkQy7zcvcYxJQ58vlsO4Te+OKqq8od7LZe6HmLi0SBEXDXLRDEoqEBFSYQw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6260
 
-+cc Alex,
-
-
->>> +    31:0    l2_pwractive_hi as u32, "Bitmap of L2 caches active =
-(higher 32 bits)";
->>> +});
+On Fri Jan 16, 2026 at 12:23 PM GMT, Daniel Almeida wrote:
+> Hi Dirk, thanks for the review!
+>
+>> On 15 Jan 2026, at 14:05, Dirk Behme <dirk.behme@gmail.com> wrote:
+>>=20
+>> Hi Daniel,
+>>=20
+>> On 14.01.26 23:53, Daniel Almeida wrote:
+>>> Replace regs::Register with kernel::register. This allow us to more
+>>> succinctly express the register set by introducing the ability to descr=
+ibe
+>>> fields and their documentation and to auto-generate the accessors. In
+>>> particular, this is very helpful as it does away with a lot of manual m=
+asks
+>>> and shifts.
+>>=20
+>>=20
+>> As mentioned somewhere else already I really like switching to
+>> register!(). Thanks!
+>>=20
+>> Some coments below:
+>>=20
+>>=20
+>>> A future commit will eliminate HI/LO pairs once there is support for 64=
+bit
+>>> reads and writes in kernel::register.
+>>>=20
+>>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>>> ---
+>>> Note that this patch depends on a rebased version of Joel's patch at [0=
+].
+>>>=20
+>>> That version is stale, so I ended up rebasing it locally myself for the
+>>> purpose of developing this patch and gathering some reviews on the list=
+. In
+>>> other words, the current patch does not apply for the time being, but w=
+ill
+>>> once a v7 for Joel's series is out.
+>>>=20
+>>> [0]: https://lore.kernel.org/rust-for-linux/20251003154748.1687160-1-jo=
+elagnelf@nvidia.com/
+>>> ---
+>>> drivers/gpu/drm/tyr/driver.rs |  15 ++-
+>>> drivers/gpu/drm/tyr/gpu.rs    |  55 ++++----
+>>> drivers/gpu/drm/tyr/regs.rs   | 302 ++++++++++++++++++++++++++++++++---=
+-------
+>>> 3 files changed, 267 insertions(+), 105 deletions(-)
+>>>=20
+>>> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver=
+.rs
+>>> index 0389c558c036..8e06db5320bf 100644
+>>> --- a/drivers/gpu/drm/tyr/driver.rs
+>>> +++ b/drivers/gpu/drm/tyr/driver.rs
+>>> @@ -66,19 +66,20 @@ unsafe impl Send for TyrData {}
+>>> unsafe impl Sync for TyrData {}
+>>>=20
+>>> fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Resu=
+lt {
+>>> -    regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
+>>> +    let io =3D iomem.access(dev)?;
 >>> +
->>>  pub(crate) const MCU_CONTROL_ENABLE: u32 =3D 1;
->>>  pub(crate) const MCU_CONTROL_AUTO: u32 =3D 2;
->>>  pub(crate) const MCU_CONTROL_DISABLE: u32 =3D 0;
->>>  -pub(crate) const MCU_STATUS: Register<0x704> =3D Register;
->>> +register!(McuControl @ 0x700, "Controls the execution state of the =
-MCU subsystem" {
->>> +    1:0     req as u32, "Request state change";
->>> +});
->> Any reason why req is a u32 and not a u8? Same for some other places.
->> And would it be an option to move the const MCU_CONTROL* to an =C3=ACmp=
-l
->> McuControl Same for STATUS below.
->=20
-> Just fyi something like [1] builds for me.
->=20
-> This is inspired by
->=20
-> =
-https://lore.kernel.org/rust-for-linux/20251003154748.1687160-6-joelagnelf=
-@nvidia.com/
->=20
-> Best regards
->=20
-> Dirk
->=20
-> [1]
->=20
-> #[repr(u32)]
-> #[derive(Debug, Default, Clone, Copy, PartialEq)]
-> enum McuControl {
->    #[default]
->    Disable =3D 0,
->    Enable =3D 1,
->    Auto =3D 2,
-> }
->=20
-> impl From<McuControl> for u8 {
->    fn from(ctrl: McuControl) -> Self {
->        ctrl as u8
->    }
-> }
->=20
-> impl From<u8> for McuControl {
->    fn from(req: u8) -> Self {
->        match req & 0x3 {
->            0 =3D> McuControl::Disable,
->            1 =3D> McuControl::Enable,
->            2 =3D> McuControl::Auto,
->            _ =3D> McuControl::Disable,
->        }
->    }
-> }
->=20
-> register!(MCUCONTROL @ 0x700, "Controls the execution state of the MCU =
-subsystem" {
->    1:0     req as u8 =3D> McuControl, "Request state change";
-> });
+>>> +    regs::GpuCommand::default()
+>>> +        .set_command(regs::GPU_CMD_SOFT_RESET)
+>>> +        .write(io);
+>>>=20
+>>>     // TODO: We cannot poll, as there is no support in Rust currently, =
+so we
+>>>     // sleep. Change this when read_poll_timeout() is implemented in Ru=
+st.
+>>>     kernel::time::delay::fsleep(time::Delta::from_millis(100));
+>>>=20
+>>> -    if regs::GPU_IRQ_RAWSTAT.read(dev, iomem)? & regs::GPU_IRQ_RAWSTAT=
+_RESET_COMPLETED =3D=3D 0 {
+>>> +    let rawstat =3D regs::GpuIrqRawstat::read(io);
+>>> +    if !rawstat.reset_completed() {
+>>>         dev_err!(dev, "GPU reset failed with errno\n");
+>>> -        dev_err!(
+>>> -            dev,
+>>> -            "GPU_INT_RAWSTAT is {}\n",
+>>> -            regs::GPU_IRQ_RAWSTAT.read(dev, iomem)?
+>>> -        );
+>>> +        dev_err!(dev, "GPU_INT_RAWSTAT is {}\n", u32::from(rawstat));
+>>=20
+>>=20
+>> This is pre-existing, but printing `... INT ...` for `...IRQ...`
+>> register looks confusing (wrong?).
+>
+> Yeah, this needs to change indeed.
+>
+>>=20
+>>=20
+>>>         return Err(EIO);
+>>>     }
+>>> diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
+>>> index 6c582910dd5d..7c698fb1e36a 100644
+>>> --- a/drivers/gpu/drm/tyr/gpu.rs
+>>> +++ b/drivers/gpu/drm/tyr/gpu.rs
+>>> @@ -44,34 +44,36 @@ pub(crate) struct GpuInfo {
+>>>=20
+>>> impl GpuInfo {
+>>>     pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Re=
+sult<Self> {
+>>> -        let gpu_id =3D regs::GPU_ID.read(dev, iomem)?;
+>>> -        let csf_id =3D regs::GPU_CSF_ID.read(dev, iomem)?;
+>>> -        let gpu_rev =3D regs::GPU_REVID.read(dev, iomem)?;
+>>> -        let core_features =3D regs::GPU_CORE_FEATURES.read(dev, iomem)=
+?;
+>>> -        let l2_features =3D regs::GPU_L2_FEATURES.read(dev, iomem)?;
+>>> -        let tiler_features =3D regs::GPU_TILER_FEATURES.read(dev, iome=
+m)?;
+>>> -        let mem_features =3D regs::GPU_MEM_FEATURES.read(dev, iomem)?;
+>>> -        let mmu_features =3D regs::GPU_MMU_FEATURES.read(dev, iomem)?;
+>>> -        let thread_features =3D regs::GPU_THREAD_FEATURES.read(dev, io=
+mem)?;
+>>> -        let max_threads =3D regs::GPU_THREAD_MAX_THREADS.read(dev, iom=
+em)?;
+>>> -        let thread_max_workgroup_size =3D regs::GPU_THREAD_MAX_WORKGRO=
+UP_SIZE.read(dev, iomem)?;
+>>> -        let thread_max_barrier_size =3D regs::GPU_THREAD_MAX_BARRIER_S=
+IZE.read(dev, iomem)?;
+>>> -        let coherency_features =3D regs::GPU_COHERENCY_FEATURES.read(d=
+ev, iomem)?;
+>>> -
+>>> -        let texture_features =3D regs::GPU_TEXTURE_FEATURES0.read(dev,=
+ iomem)?;
+>>> -
+>>> -        let as_present =3D regs::GPU_AS_PRESENT.read(dev, iomem)?;
+>>> -
+>>> -        let shader_present =3D u64::from(regs::GPU_SHADER_PRESENT_LO.r=
+ead(dev, iomem)?);
+>>> +        let io =3D (*iomem).access(dev)?;
+>>> +
+>>> +        let gpu_id =3D regs::GpuId::read(io).into();
+>>> +        let csf_id =3D regs::CsfId::read(io).into();
+>>> +        let gpu_rev =3D regs::RevIdr::read(io).into();
+>>> +        let core_features =3D regs::CoreFeatures::read(io).into();
+>>> +        let l2_features =3D regs::L2Features::read(io).into();
+>>> +        let tiler_features =3D regs::TilerFeatures::read(io).into();
+>>> +        let mem_features =3D regs::MemFeatures::read(io).into();
+>>> +        let mmu_features =3D regs::MmuFeatures::read(io).into();
+>>> +        let thread_features =3D regs::ThreadFeatures::read(io).into();
+>>> +        let max_threads =3D regs::ThreadMaxThreads::read(io).into();
+>>> +        let thread_max_workgroup_size =3D regs::ThreadMaxWorkgroupSize=
+::read(io).into();
+>>> +        let thread_max_barrier_size =3D regs::ThreadMaxBarrierSize::re=
+ad(io).into();
+>>> +        let coherency_features =3D regs::CoherencyFeatures::read(io).i=
+nto();
+>>=20
+>>=20
+>> Is there any reason why you replace the UPPERCASE register names with
+>> CamelCase ones?
+>>=20
+>> I was under the impression that we want to use UPPERCASE for register
+>> names. Like in nova
+>>=20
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+drivers/gpu/nova-core/regs.rs
+>
+> Not really. UPPERCASE for non-const items will trigger the linter. The No=
+va
+> people chose to #[allow] this to align with OpenRM and, IIRC from the LPC
+> discussions, their registers are automatically generated from some intern=
+al
+> docs.
+>
+> We have only a few, we can simply convert them to CamelCase.
 
-Alex, looking at the above, I wonder if a =E2=80=9Cas Foo=E2=80=9D would =
-be a good
-addition to the macro? That would then invoke a Try=46rom =
-implementation, i.e.:
+Frankly, register names do look nicer in UPPER_CASE, especially that they'r=
+e in
+many cases, packed with acronyms.
 
+Best,
+Gary
 
-register!(MCUCONTROL @ 0x700, "Controls the execution state of the MCU =
-subsystem" {
-   1:0     req as McuControl =3D> McuControl, "Request state change";
-});
+>>=20
+>>=20
+>>=20
+>>> +        let texture_features =3D regs::TextureFeatures::read(io, 0).in=
+to();
+>>> +
+>>> +        let as_present =3D regs::AsPresent::read(io).into();
+>>> +
+>>> +        let shader_present =3D u64::from(u32::from(regs::ShaderPresent=
+Lo::read(io)));
+>>>         let shader_present =3D
+>>> -            shader_present | u64::from(regs::GPU_SHADER_PRESENT_HI.rea=
+d(dev, iomem)?) << 32;
+>>> +            shader_present | u64::from(u32::from(regs::ShaderPresentHi=
+::read(io))) << 32;
 
