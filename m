@@ -1,198 +1,116 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0042882DB;
-	Fri, 16 Jan 2026 14:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768572036; cv=pass; b=OptEDnLQVtCKw/Id6UVV36cp1izgGU4KOKpMWEFJZ221EK2dP045dXPjzVPctMFnRPIG4Wbmo3YD/53bINPusQsHKVP6lq6JhqGLv6XKFKOxEVmqqJGxwW5JBakU7zyKszr6rzijOKPBAXcoYdZdoL3RtrCMvSKQZY6adnASQb4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768572036; c=relaxed/simple;
-	bh=8GLwr5GhNcRKgG8Om+iyCZHdKpGbLeGchdHbrWtTZoE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Y/CAiTVMEHVrQpUp426xyV9andtwdOiLv5lrUOdGEw7FkffPnKhbxOBsKtKhhcAR0WTnWyW8r3ss24XsTIyPBwR3CIOT5RQMJTVlMj4kudqmAmBbhxURwGEMUhwBzFIztEPoEikYdhx0BjPQvFimGnJEV7hifOhMxXof+VKD7Ho=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LDX1l3F/; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F96284665
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 14:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768572209; cv=none; b=V/mEaqRxBNhYsLLiNOpiLK+GSOW4/UZlgPL/j5d9qJoO+sMIq9PU4w8wzX5KZdq9Las6ImgogccGTTsRvlNuOHhrL5aBlrFGQMcZ+/0LjkhNajFNzVJH7gUbifH803UvS/QvgvFvDNRQJMdWiNKBVlcHzc0at9ayHIxIji8nqbs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768572209; c=relaxed/simple;
+	bh=d6XekRFpFbC24wVpSWktZt2sB87rdVYmhA81AsP/zSw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u3u0m4usRxkB7L40173n9yETYGh1PsdtprFJHioNrBrVOR2eZTtKu4WPxoUlJeo2Czj31iCrK3J/MRQE3bCLk3jjfxgtQoXEjM/95Khwwa6iks0TQzFipPj5NYeEIfnFvu6d9UcKJddnpNM06Vl06ti9Tyk14BUNoHNAZVIZiaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHbH8zF7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LDX1l3F/"
-ARC-Seal: i=1; a=rsa-sha256; t=1768572007; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=bLiQLj7XAZz7gZWqRd7A9ueSyyF+pIL2jia1lHEhdiuybP06XRBKDvJeTiB9/rFS7lANeLcXd+ezVtMFdqQMYn1pQ5s19WnpV0JGoGdlLx8x/le0HGS0oO1faGXq6Uzzf8bH8JjZ5JyTPDgSQsc7unc2oYv7Sf7dIaeX+VDwUWI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1768572007; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=nV6t9dP529iRTpOgseILMS7reXIydZJXQKP41jzKjrI=; 
-	b=ZDhLCvfCv++BVcIkT422NRhM4MrNi/RUJj4aoQXtpHSgJ+yhmwUqyGIUbwp/pWQRQuuxA/iQOuO46RYvke7FEnktHrENpqPJ7eXWGHxd7va0dOJvn9uq7XImsKJtqxv21ETCZ6WpbFLfKzffOAJMGkDlE2BDkZu0GfQszmUtgxU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768572007;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=nV6t9dP529iRTpOgseILMS7reXIydZJXQKP41jzKjrI=;
-	b=LDX1l3F/cejc0BXnEdpDJ6UjS8PgAiZdrhVzKDWjD3KUG+tI+LIoWZ2Dh55GF86i
-	kjGq3aicqRqwk6Z97r1IUALyzaKP0lYSwg612RSR6uzbHFn0VToAVS/Wd3jP2TEpqKt
-	jgmmi9CUOjCWm1RTirxjml80i1fle9qfqLPv/wh0=
-Received: by mx.zohomail.com with SMTPS id 1768572005245379.4413591038924;
-	Fri, 16 Jan 2026 06:00:05 -0800 (PST)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHbH8zF7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9E1C2BC86
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 14:03:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768572209;
+	bh=d6XekRFpFbC24wVpSWktZt2sB87rdVYmhA81AsP/zSw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SHbH8zF7fZ8ro2o7RAYJ7uQwfeQbQ/9vgWUP18VkuF9e35BqMuQnizzYECzv4ine4
+	 IQekXivAozBsefAPVQstP/f+QshnmVW6LCCgr9V/8Ln5tfe+Kj5OP8HAOH8IdKrLjV
+	 w1tCrcNqbDxgQrXyZpu/Bv7sU9EJJIctmYP5ZIUumZ+17FghJG8oeuP2L6+DvPZ55F
+	 YToU2LVJ+58lN7Ju/k6xKTM+SY1vYVJp4sAb093ClJF66rad2XqHQeWp2wSi1heVs7
+	 SBy66g8OiPNkE2KPc/RCmOBzAJPnfE8X3CCR8Ja3o1GG6HlwS62DMuNpWKHR8MariW
+	 wcCRtcDKTa0ug==
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64baaa754c6so3146002a12.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 06:03:29 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXGx6yeb1NuZt211/hH3sQxOeT0vGATEnTlzMM9S9mnlghIZQRGl1iTu70zOsm8bT64Ej34fH7vbN/EUx8l2g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlXEmYWdJhLQ7UT0LvLRNx9AJYj3BfwfIExBX5eBV14353v9Av
+	0n9CygdwcnlCEtaByPA22MM68FFGES2MJXzvavhVLkjCf69hrLb7XpN3qqYcfYdGluyTDdYi5j6
+	LiSBuTIKZmgjdkGFxLLvQ89r+TBU+eFQ=
+X-Received: by 2002:a05:6402:5242:b0:64b:6007:d8dc with SMTP id
+ 4fb4d7f45d1cf-654524d1c5emr2557406a12.7.1768572203288; Fri, 16 Jan 2026
+ 06:03:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH] rust/drm: tyr: Convert to the register!() macro
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <cc73ce51-39c1-4f2d-8bcb-99fd220fd34c@de.bosch.com>
-Date: Fri, 16 Jan 2026 10:59:48 -0300
-Cc: Dirk Behme <dirk.behme@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Steven Price <steven.price@arm.com>,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
+MIME-Version: 1.0
+References: <20260115-rust-analyzer-sysroot-v1-1-4de831df234a@gmail.com>
+ <CANiq72kd9bHdKaAm=8xCUhSHMy2csyVed69bOc4dXyFAW4sfuw@mail.gmail.com>
+ <DFPQG929N5CE.34Y24PGBZN2ED@gmail.com> <DFPZRKQC7ZHT.BVYWCE0GGW96@garyguo.net>
+In-Reply-To: <DFPZRKQC7ZHT.BVYWCE0GGW96@garyguo.net>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Fri, 16 Jan 2026 09:02:46 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9k_VLyJyxL_pXrq2dW2r+0birOWUmW72Zq9QLXPNjabrg@mail.gmail.com>
+X-Gm-Features: AZwV_QhzyTKD8NoAXqd1hQhuEX67ZG-QwHx-QZBawD7O0ZGCJ5N3vwir8KBWj88
+Message-ID: <CAJ-ks9k_VLyJyxL_pXrq2dW2r+0birOWUmW72Zq9QLXPNjabrg@mail.gmail.com>
+Subject: Re: [PATCH] scripts: generate_rust_analyzer: compile sysroot with
+ correct edition
+To: Gary Guo <gary@garyguo.net>
+Cc: Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <E9B69FEC-0A99-4F2C-AA59-59B8C34B4E4E@collabora.com>
-References: <20260114-tyr-register-v1-1-7deb1b33627a@collabora.com>
- <f7ff8b11-b1a5-4537-9227-e42a3a40aa96@gmail.com>
- <A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com>
- <cc73ce51-39c1-4f2d-8bcb-99fd220fd34c@de.bosch.com>
-To: Dirk Behme <Dirk.Behme@de.bosch.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
+On Fri, Jan 16, 2026 at 6:53=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
+>
+> On Fri Jan 16, 2026 at 4:35 AM GMT, Jesung Yang wrote:
+> > On Fri Jan 16, 2026 at 6:22 AM KST, Miguel Ojeda wrote:
+> >> On Thu, Jan 15, 2026 at 5:35=E2=80=AFPM Tamir Duberstein <tamird@kerne=
+l.org> wrote:
+> >>>
+> >>> Rename `core-edition` to `sysroot-edition` to align with the naming u=
+sed
+> >>> to refer to standard library crates in `generate_rust_analyzer.py` an=
+d
+> >>> apply it to all standard library crates rather than just core.
+> >>
+> >> I think, in principle, even the sysroot crates may have different
+> >> editions, which I think I used that variable name.
+> >>
+> >> For instance, in the move to 2024, it seems all happened at once in
+> >> 1.87.0 in these upstream commits, so that seems OK:
+> >>
+> >>     0e071c2c6a58 ("Migrate core to Rust 2024")
+> >>     f505d4e8e380 ("Migrate alloc to Rust 2024")
+> >>     0b2489c226c3 ("Migrate proc_macro to Rust 2024")
+> >>     993359e70112 ("Migrate std to Rust 2024")
+> >>
+> >> But in the previous move to 2021, `std` moved in 1.59.0, while the
+> >> others in 1.60.0:
+> >>
+> >>     b656384d8398 ("Update stdlib to the 2021 edition")
+> >>     06a1c14d52a8 ("Switch all libraries to the 2021 edition")
+> >>
+> >> Hmm... I guess the new name is fine, but we may need to go back to
+> >> separate naming eventually if they get updated at different times next
+> >> time.
+> >
+> > Perhaps we should introduce `std-edition` and `proc_macro-edition` in
+> > `rust/Makefile`? Passing those down to the script would make things mor=
+e
+> > future-proof.
+> >
+>
+> We don't build std nor proc-macro ourselves in rust/Makefile, so I don't =
+think
+> this should got there.
+>
+> I wonder if we should encode the fact about Rust version -> crate edition
+> mapping inside the Rust analyzer script? then we still call the variable
+> core-edition (which is the crate we need to build).
 
->>>=20
->>> Is there any reason why you replace the UPPERCASE register names =
-with
->>> CamelCase ones?
->>>=20
->>> I was under the impression that we want to use UPPERCASE for =
-register
->>> names. Like in nova
->>>=20
->>> =
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/gpu/nova-core/regs.rs
->> Not really. UPPERCASE for non-const items will trigger the linter. =
-The Nova
->> people chose to #[allow] this to align with OpenRM and, IIRC from the =
-LPC
->> discussions, their registers are automatically generated from some =
-internal
->> docs.
->> We have only a few, we can simply convert them to CamelCase.
->=20
->=20
-> I'm under the impression that we define the "future RFL register!() =
-style standard" here.
->=20
-> So we want to make the CamelCase the default? And nova is the =
-exception?
-
-I=E2=80=99m not sure I would say this. It=E2=80=99s just that you would =
-hit this lint
-[0]. If UPPER_CASE was the =E2=80=9Cdefault", we would have to have the =
-#[allow] on
-every driver.=20
-
->=20
-> I'm fine with that. Just want to make sure we talked about it :)
->=20
->=20
-> ....
->>>> pub(crate) const MCU_CONTROL_ENABLE: u32 =3D 1;
->>>> pub(crate) const MCU_CONTROL_AUTO: u32 =3D 2;
->>>> pub(crate) const MCU_CONTROL_DISABLE: u32 =3D 0;
->>>>=20
->>>> -pub(crate) const MCU_STATUS: Register<0x704> =3D Register;
->>>> +register!(McuControl @ 0x700, "Controls the execution state of the =
-MCU subsystem" {
->>>> +    1:0     req as u32, "Request state change";
->>>> +});
->>>=20
->>>=20
->>> Any reason why req is a u32 and not a u8? Same for some other =
-places.
->> I tend to default to u32/i32 in general, as that=E2=80=99s usually =
-the native machine integer type.
->> All we get from smaller types is a spam of `into()`, `from()` and =
-their `try_`
->> equivalents. When stored in a struct, they usually do not save space =
-due to
->> padding that is usually inserted to fix the alignment for the type. =
-IMHO not
->> worth it unless it really matters. Correct me if I'm wrong, but it =
-doesn't seem
->> to be the case here.
->=20
->=20
-> Wouldn't using u8 prevent any accidental access to 31:8 ?
-
-The macro is doing the appropriate masking according to the bit ranges =
-you pass
-in (i.e.: 31:8), not according to the type (u8 or u32), i.e.:
-
-        const [<$field:upper _RANGE>]: ::core::ops::RangeInclusive<u8> =3D=
- $lo..=3D$hi; <------
-        const [<$field:upper _MASK>]: $storage =3D {
-            // Generate mask for shifting
-            match ::core::mem::size_of::<$storage>() {
-                1 =3D> ::kernel::bits::genmask_u8($lo..=3D$hi) as =
-$storage,
-                2 =3D> ::kernel::bits::genmask_u16($lo..=3D$hi) as =
-$storage,
-                4 =3D> ::kernel::bits::genmask_u32($lo..=3D$hi) as =
-$storage,
-                8 =3D> ::kernel::bits::genmask_u64($lo..=3D$hi) as =
-$storage,
-                _ =3D> ::kernel::build_error!("Unsupported storage type =
-size")
-            }
-        };
-        const [<$field:upper _SHIFT>]: u32 =3D $lo;
-        );
-
-        $(
-        #[doc=3D"Returns the value of this field:"]
-        #[doc=3D$comment]
-        )?
-        #[inline(always)]
-        $vis fn $field(self) -> $res_type {
-            ::kernel::macros::paste!(
-            const MASK: $storage =3D $name::[<$field:upper _MASK>];
-            const SHIFT: u32 =3D $name::[<$field:upper _SHIFT>];
-            );
-            let field =3D ((self.0 & MASK) >> SHIFT);
-
-            $process(field)
-        }
-
-
->=20
->=20
-> Best regards
->=20
-> Dirk
-
-
-[0]: =
-https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/nonstandard_styl=
-e/static.NON_CAMEL_CASE_TYPES.html
-
+If that's the approach we want to take, that would likely build on
+https://lore.kernel.org/all/20260109-ra-fix-primitive-v2-1-249852a4145a@gma=
+il.com/.
