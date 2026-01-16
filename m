@@ -1,40 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F96284665
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 14:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768572209; cv=none; b=V/mEaqRxBNhYsLLiNOpiLK+GSOW4/UZlgPL/j5d9qJoO+sMIq9PU4w8wzX5KZdq9Las6ImgogccGTTsRvlNuOHhrL5aBlrFGQMcZ+/0LjkhNajFNzVJH7gUbifH803UvS/QvgvFvDNRQJMdWiNKBVlcHzc0at9ayHIxIji8nqbs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768572209; c=relaxed/simple;
-	bh=d6XekRFpFbC24wVpSWktZt2sB87rdVYmhA81AsP/zSw=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8066C3A0B01
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 14:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768574598; cv=pass; b=dDkGPfKfdzRwuWJl1U7b0KYwn3X6qKXj+jgnfwZXn4ZdIupgmikugz1aa0cm6ajN3cbp88Pwgfu89wB9PA5zL7M736WFJ1oerO2L9LZ7LzzA7f3ZYgF2ZnSHNnO/aRg2CP+71z9N0vMc+1s+mP2icXSejVMdnw1vZCirH2fdGoQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768574598; c=relaxed/simple;
+	bh=2CLIV10bQuTgiOMg9YS+3Nr791qXTIVYs2YFt1tUITY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u3u0m4usRxkB7L40173n9yETYGh1PsdtprFJHioNrBrVOR2eZTtKu4WPxoUlJeo2Czj31iCrK3J/MRQE3bCLk3jjfxgtQoXEjM/95Khwwa6iks0TQzFipPj5NYeEIfnFvu6d9UcKJddnpNM06Vl06ti9Tyk14BUNoHNAZVIZiaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHbH8zF7; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=BBf2oVuo8ZAglYoO9QYW4zojIAcarzez6VOhnu0Mp42NUPDzp8cqbMPTeHyWYu+V+a3zNGmnCYnH63bqpokmTRYlWy55HZuCrnxCF0uBjIAQCeQCDR3Du4YaSF97VE5z0sA7PqyFFG8jfOsHI/c6AdnKwYaaj2Ls37U/6M4XFjQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I3DqIK0J; arc=pass smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHbH8zF7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9E1C2BC86
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 14:03:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768572209;
-	bh=d6XekRFpFbC24wVpSWktZt2sB87rdVYmhA81AsP/zSw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SHbH8zF7fZ8ro2o7RAYJ7uQwfeQbQ/9vgWUP18VkuF9e35BqMuQnizzYECzv4ine4
-	 IQekXivAozBsefAPVQstP/f+QshnmVW6LCCgr9V/8Ln5tfe+Kj5OP8HAOH8IdKrLjV
-	 w1tCrcNqbDxgQrXyZpu/Bv7sU9EJJIctmYP5ZIUumZ+17FghJG8oeuP2L6+DvPZ55F
-	 YToU2LVJ+58lN7Ju/k6xKTM+SY1vYVJp4sAb093ClJF66rad2XqHQeWp2wSi1heVs7
-	 SBy66g8OiPNkE2KPc/RCmOBzAJPnfE8X3CCR8Ja3o1GG6HlwS62DMuNpWKHR8MariW
-	 wcCRtcDKTa0ug==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-64baaa754c6so3146002a12.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 06:03:29 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXGx6yeb1NuZt211/hH3sQxOeT0vGATEnTlzMM9S9mnlghIZQRGl1iTu70zOsm8bT64Ej34fH7vbN/EUx8l2g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlXEmYWdJhLQ7UT0LvLRNx9AJYj3BfwfIExBX5eBV14353v9Av
-	0n9CygdwcnlCEtaByPA22MM68FFGES2MJXzvavhVLkjCf69hrLb7XpN3qqYcfYdGluyTDdYi5j6
-	LiSBuTIKZmgjdkGFxLLvQ89r+TBU+eFQ=
-X-Received: by 2002:a05:6402:5242:b0:64b:6007:d8dc with SMTP id
- 4fb4d7f45d1cf-654524d1c5emr2557406a12.7.1768572203288; Fri, 16 Jan 2026
- 06:03:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I3DqIK0J"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2ae5283dae8so164025eec.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 06:43:17 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768574596; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MwEKU7miZ7twyOdDjN7qkLfQHvoj0nyOj3stgRwHdat3Dts5gxTIzifX4AaJrBurge
+         2Nb2o9GJ/gTmYhAqenJBeVd1ogqufLGDI3G//zBLdAwpgYk77ikA2viZ1NktloiVWfCF
+         Z0o45GmoG8kl7th4PX1+WWMqWoUDfG51Jjx1I+m+3s+xRcj5h2Ulpwfl2Vt0j8Il/54/
+         5ywCtvoLq3vxr90qJSpn7rroOmgWuviG/0RKP3+rOP8259+QOdjwCqRA2XSrPFimvRuj
+         DhakYLtCW1emDmSWgHmBRDiLvdwQdp7Y3kh3I1Q/7MZ8BpjL6RtCuK96x1OXQg9NmGg6
+         SPpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2CLIV10bQuTgiOMg9YS+3Nr791qXTIVYs2YFt1tUITY=;
+        fh=h1GuVb4cX/ArE+v8LEsUpAMfnfrbj5HZw+yOMcH0RDc=;
+        b=QGSVWnPjZthzZWx6uTPXPy6glULjhr5QziYY2WMtNY35gcgyFWAcncZKRUpUne4g14
+         x65ABtL7v445rhj4bciHpHUgXNA66XpfDn82ow9oztdmyLm9UVEoy3YRNztlZfcfG+Go
+         QYAqIEeIKKyTDL4tUVxWgSxYTWJAnBKQ86lY3tW0ks+eExNmxd1Mjtzysk4eeNFLKnww
+         xMtW0NG7MFpu/FrKOoxgsvcJWH0mNtfDZpn4IjhzDusFPfCQj2s6MYNallh9SbK0oPud
+         n/cDKVB8s3gRDYra0FXWAs4NMgXyLxHNQU9BockLN2kt0JP/Qsol3/Iz9YavbYBgp4BA
+         tQXg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768574596; x=1769179396; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2CLIV10bQuTgiOMg9YS+3Nr791qXTIVYs2YFt1tUITY=;
+        b=I3DqIK0JD6jycH6v+GmF+t4RIiDQgxmSjPJt/Ls5CIoEHTGbDJYJ3gb8oJQEe+K9R9
+         A8X+s/1aRREpoFaSGdlcxBmpYZtmfNcNPPm9xyluYwJWEh7qR/bnRAWHD4aO1SmmLxcW
+         38em5InYbU2dyRmjqbwkc6zRPPqkqcaV7JgHio2pAob852IliK8yqG1Lxo6s5yzrzz5X
+         N26+3sYydZ3vzYc9EwC7eeAfFGdkXOLW5Wy2frVcrQX1x/MSaAlz4TFqD9RFksuVRmUR
+         M1RovSlbPoo6+ftCui1uLba++L9ZrSgLjegDooix5RWCkJyXNJc6laxdod0BPIe0vewf
+         hhAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768574596; x=1769179396;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2CLIV10bQuTgiOMg9YS+3Nr791qXTIVYs2YFt1tUITY=;
+        b=bGqkp+kLfYN49znaPp/5yCKf/m/dwwcPFx31rNI32p/X/9kSbCCfmnShAs9ZNfg1Jq
+         v60RuRD6YtpuhPm+oruXbpLgath3dzzbqMZiVnFNb5cUu1DCNCGJVFThisqqFwlkCobV
+         VXlfg0cwC/x6Qdbi08fzazfAxNBY8kP+qKWWXlBuBG2Fex3z9iJUThgkDa2UiUZDxXat
+         fkTnSMHCQvoBs5AqvxF//GGLMWWgLtLK8wUrS3gIuBi2fjwLokSXfHs3+N5bw+QZiMLb
+         b/xvBo7uSfXFODrGr4PSXR5ipa1yfMV46YzrNQU6SaKA2Yd+LjQ2Zq35I845UpnEfP11
+         WTVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUnS4nxVGV5B5haUZZ3K7RnNqnbISjxwQKrhrRyYJJaGFAc15qs26HkQEuOhpfJrM5uJx8qHtOHr0suI2XRdA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7uNMaIH7BIE+g7NtLNEV0TyHrL1cUvaaIqqw4W5ODJmWWOQxU
+	tie43Pl6lPWCjkob2+EGy9+p1/ueM1A/WRKly/3Pv9zxtFTiwr6qaag8ThkyBX68FYH9q4TlQpn
+	H25Imjzr1vnpohVNiq5WcZh6O00GgjrzzdApQ
+X-Gm-Gg: AY/fxX5DFSTWoztyXbwcmdBxo0/BbzkoRDp79OGx8+YDisV4vq3VxdxUaHjlAMs5ZSf
+	b/cIv+wz7CaA7av6Qloj6DgOk8/3SnK2Jm4rTuJM8zCKkZ20ih729Oj/WtHeHTXGkkr58lniP1g
+	UIIuj9Y+9GfXlGeAAcvIUTGb1tLHKRKgCh8FQSOhZalZFqkIeCbjRBsBIMWPe5XS4Ep4HeYQRqa
+	NyUd+7xo+Hnz9m9B1b4oxW+j4qUdUjn7PofksXyoYYrQ3KqFKFWB+hqE0ib3roa+MDhuvJa5cJQ
+	s25PsVvwYEY4gduCd2mLrLpysMg2wXElbrtpbglRnqELqUVo6E2ZKXnNsgQDSJCLTg/HWlSH30H
+	bEU4Agcx5pV1HbM2+1OLgaGc=
+X-Received: by 2002:a05:7301:fa0e:b0:2ae:5abf:ecff with SMTP id
+ 5a478bee46e88-2b6b41078c7mr1342012eec.7.1768574594954; Fri, 16 Jan 2026
+ 06:43:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,16 +85,16 @@ MIME-Version: 1.0
 References: <20260115-rust-analyzer-sysroot-v1-1-4de831df234a@gmail.com>
  <CANiq72kd9bHdKaAm=8xCUhSHMy2csyVed69bOc4dXyFAW4sfuw@mail.gmail.com>
  <DFPQG929N5CE.34Y24PGBZN2ED@gmail.com> <DFPZRKQC7ZHT.BVYWCE0GGW96@garyguo.net>
-In-Reply-To: <DFPZRKQC7ZHT.BVYWCE0GGW96@garyguo.net>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Fri, 16 Jan 2026 09:02:46 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9k_VLyJyxL_pXrq2dW2r+0birOWUmW72Zq9QLXPNjabrg@mail.gmail.com>
-X-Gm-Features: AZwV_QhzyTKD8NoAXqd1hQhuEX67ZG-QwHx-QZBawD7O0ZGCJ5N3vwir8KBWj88
-Message-ID: <CAJ-ks9k_VLyJyxL_pXrq2dW2r+0birOWUmW72Zq9QLXPNjabrg@mail.gmail.com>
+ <CAJ-ks9k_VLyJyxL_pXrq2dW2r+0birOWUmW72Zq9QLXPNjabrg@mail.gmail.com>
+In-Reply-To: <CAJ-ks9k_VLyJyxL_pXrq2dW2r+0birOWUmW72Zq9QLXPNjabrg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 16 Jan 2026 15:43:01 +0100
+X-Gm-Features: AZwV_Qg8eV_38hoIp1d_U33SKqphNmdLAAbbmggoRf2sXBF2Rl3naIu2VFlmBrQ
+Message-ID: <CANiq72kMNBm8AJwDAQz3D9yq_Gy9iAKoQ2bpoJ69yTpW86HCsA@mail.gmail.com>
 Subject: Re: [PATCH] scripts: generate_rust_analyzer: compile sysroot with
  correct edition
-To: Gary Guo <gary@garyguo.net>
-Cc: Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Jesung Yang <y.j3ms.n@gmail.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
@@ -63,54 +104,45 @@ Cc: Jesung Yang <y.j3ms.n@gmail.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 16, 2026 at 6:53=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
+On Fri, Jan 16, 2026 at 3:03=E2=80=AFPM Tamir Duberstein <tamird@kernel.org=
+> wrote:
 >
-> On Fri Jan 16, 2026 at 4:35 AM GMT, Jesung Yang wrote:
-> > On Fri Jan 16, 2026 at 6:22 AM KST, Miguel Ojeda wrote:
-> >> On Thu, Jan 15, 2026 at 5:35=E2=80=AFPM Tamir Duberstein <tamird@kerne=
-l.org> wrote:
-> >>>
-> >>> Rename `core-edition` to `sysroot-edition` to align with the naming u=
-sed
-> >>> to refer to standard library crates in `generate_rust_analyzer.py` an=
-d
-> >>> apply it to all standard library crates rather than just core.
-> >>
-> >> I think, in principle, even the sysroot crates may have different
-> >> editions, which I think I used that variable name.
-> >>
-> >> For instance, in the move to 2024, it seems all happened at once in
-> >> 1.87.0 in these upstream commits, so that seems OK:
-> >>
-> >>     0e071c2c6a58 ("Migrate core to Rust 2024")
-> >>     f505d4e8e380 ("Migrate alloc to Rust 2024")
-> >>     0b2489c226c3 ("Migrate proc_macro to Rust 2024")
-> >>     993359e70112 ("Migrate std to Rust 2024")
-> >>
-> >> But in the previous move to 2021, `std` moved in 1.59.0, while the
-> >> others in 1.60.0:
-> >>
-> >>     b656384d8398 ("Update stdlib to the 2021 edition")
-> >>     06a1c14d52a8 ("Switch all libraries to the 2021 edition")
-> >>
-> >> Hmm... I guess the new name is fine, but we may need to go back to
-> >> separate naming eventually if they get updated at different times next
-> >> time.
+> On Fri, Jan 16, 2026 at 6:53=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote=
+:
 > >
-> > Perhaps we should introduce `std-edition` and `proc_macro-edition` in
-> > `rust/Makefile`? Passing those down to the script would make things mor=
+> > We don't build std nor proc-macro ourselves in rust/Makefile, so I don'=
+t think
+> > this should got there.
+> >
+> > I wonder if we should encode the fact about Rust version -> crate editi=
+on
+> > mapping inside the Rust analyzer script? then we still call the variabl=
 e
-> > future-proof.
-> >
+> > core-edition (which is the crate we need to build).
 >
-> We don't build std nor proc-macro ourselves in rust/Makefile, so I don't =
-think
-> this should got there.
->
-> I wonder if we should encode the fact about Rust version -> crate edition
-> mapping inside the Rust analyzer script? then we still call the variable
-> core-edition (which is the crate we need to build).
+> If that's the approach we want to take, that would likely build on
+> https://lore.kernel.org/all/20260109-ra-fix-primitive-v2-1-249852a4145a@g=
+mail.com/.
 
-If that's the approach we want to take, that would likely build on
-https://lore.kernel.org/all/20260109-ra-fix-primitive-v2-1-249852a4145a@gma=
-il.com/.
+For fixes, we try to keep them simple as possible in general, i.e.
+like this patch. Or, actually, even simpler: we could keep the
+variable name but use it as the sysroot edition on the other side,
+since it happens to match at the moment.
+
+After all, it is a script call -- the script wants the sysroot
+edition, and we happen to have it from our `core` edition, so it all
+works fine.
+
+i.e. we can just drop the `rust/Makefile` side change for the fix,
+which also means a smaller backport (if we don't use the
+prerrequisite).
+
+Another option is dropping these, if there are no practical
+consequences (did you notice anything very broken using rust-analyzer?
+It would be nice to mention those in the commit message, if you saw
+any), but it seems best to fix it, especially since it comes from the
+sysroot and thus I imagine it could have an impact later on due to
+change in upstream code.
+
+Cheers,
+Miguel
