@@ -1,202 +1,138 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011022.outbound.protection.outlook.com [40.107.208.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8923A1D02
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 20:27:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768595238; cv=fail; b=O1Re9GPqEiB3F9fyKxbqWaJIn8ECVVY+GjVhIXrWwlGZ6WBeYxM+YkZZczhuwGsmVj8aEcdWFdZmYEbxKUBvNhBlLK8/30mWvNqAxab5dFmH71unCMGBoRiVi4L5klcbmIrSTjTWza7IqlZBtcHcEITkYJ0qpWWlWySAuSdiPbY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768595238; c=relaxed/simple;
-	bh=NAUFR80L6i7wWx+473G1ghFrOVYvUVTHCQj0ToA2RWw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=GfjiS80dDdNzcymIVMm73Z2/53RJUL5WcoJR2WP20vG3JP5E3TS+dPt+NqEY4dNJrchvp5sip8Rom93K0CsDfiPJNvLIihM/0i8UrpYt8onC7d1REPFAMCUojtCqjkyjzlyJThQfCj4vNrpfxNQ6XBFUAXyrRruHoCYPaGqUJDs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NENiFhnK; arc=fail smtp.client-ip=40.107.208.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CF033C532;
+	Fri, 16 Jan 2026 20:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768596368; cv=none; b=T/KBM6aeDukrVkB6UZUbSdV8iKQISdwM1kkvQftAW7WEQ7zxue5zeB1i39obOY5T/MGycGvKvMe9rA65TCc+Rd+kapnnOmqR5EacrGw9b7Ve19/0vS+xOtP/poDZDn0FFvMqfUV08E74iCrZjny9BiwnV4888K02mLbcv7HVu+8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768596368; c=relaxed/simple;
+	bh=ZAfu8fO2jdVJa4lMD8PWbP4kBRyvOewQpP82j8KuwNA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=X5eCou0PFtv/uPx5Ozc9vRQznz9JtAsK2Jknu4NNEotx6mzMDpemfeSq8hbGdRBl43YRgacYbS3uD/lGd+FKw7x9IHeYxiHbx4poZT37natKen0xXwjaKcJwXLkIvu+8/eYbzm99gD4xG0lS2LneT4VJJ21FlWKcod25wLnpyRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pYLcCeHf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NENiFhnK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FpNrG6AvS5b3/zS7GGL1//hxqGZp7/5qDwPyJ+g1iMXBwAFuBJpuXDRK5M4pWDRk7CYCFrj3FWQ3gGiyLi7ACazPLXQ4NrQT3XF26pgE31xw38Qq2Pn4hTHS5S1QuLZTrAPHxgk3M1Mkeeyf17P4GjoXS+XkMfVc/GLgE+XqDiVCkzS9RI7wX8NKaSrD4e2cMKusTER77qkQnX1Ud72Q/AZyKySQCsMAHL1fJvYJLSf/xNCc4HksfDLD3oCxdoR+rWUXsxAmnH95CvzfKmDQLl8sUX8qQBwv1L9jAsjQs0ABrCjxXKIfZbIwJBNZvGpsj5FVuDBIjgH/YJYZ0kjqeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ox9nCDqoWupLzGWizIrct6NxSMZkH26wP6VuWWjq/08=;
- b=MvCRZu4W4NO6nvPgerH5SfWUuvSXw6oUW5QjG4aht0m+iI5n1PpToPWUW/e2KsY6KV0cd3Vi3YUybs7RhkvuzaCS1nR/ACgvo+TFWeV35vMsGZo2A6eOgYLJ5CMiEtpOlwpioAbzw3/15n2mud5OfYJbh7T3MlUeaGVWdpckSFh6vSHtwjIuPYWykwlBwxNRqP/SVqtW7VjH7f/kyepNMpLN6nLINopIIJyj8XNOXDsBNVZ4upS2DRw5T9T0boP+brf9mAhF2paH7ajKjdOG3ag8eKOZUT32IRKyFM2V6CTC5K8IhXmbJj02w7/VXwrKKe3ifNah4gdggJm8SygPuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ox9nCDqoWupLzGWizIrct6NxSMZkH26wP6VuWWjq/08=;
- b=NENiFhnKeYV20QXv3w/TLs+E6O5Pa81dJic+hcqHRQwnizgf50ZAituxUy0qOtxc5s7XatG6gKC6TToTnWefjYqzw6TxssugfVRctUbRLk1KSyPK6ftCBPFffWRvZQhEO4txFbqbO3LvqAJk6QI6nP5GGIDMTU0f5PWqrPEaJRHzDwyOQdfSeXLyzL9BSp+vc4mLBoifp6F3cFnALoTUwGTn0367ZZNfTvXukZc3jjbfu/SU7PjhxBR1iJYeRz674E+FeGlJm6KFj6p6/Dnw9y7f/rmu9U6ofLAPKe/znDJAeLwmTiOvcQzd7BcYPazmtSOHA8cNt64cq+ImotwGNg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9412.namprd12.prod.outlook.com (2603:10b6:408:211::18)
- by DS4PR12MB9707.namprd12.prod.outlook.com (2603:10b6:8:278::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Fri, 16 Jan
- 2026 20:27:14 +0000
-Received: from LV3PR12MB9412.namprd12.prod.outlook.com
- ([fe80::c319:33b5:293:6ec4]) by LV3PR12MB9412.namprd12.prod.outlook.com
- ([fe80::c319:33b5:293:6ec4%5]) with mapi id 15.20.9520.005; Fri, 16 Jan 2026
- 20:27:14 +0000
-Message-ID: <62a28e20-0a83-48e3-8e25-0dc53a614467@nvidia.com>
-Date: Fri, 16 Jan 2026 12:27:10 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/11] gpu: nova-core: move some functions into the HAL
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Timur Tabi <ttabi@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, nouveau@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org
-References: <20260114192950.1143002-1-ttabi@nvidia.com>
- <20260114192950.1143002-7-ttabi@nvidia.com>
- <DFQA0S0IXLNS.NBNHXPS9OHOV@kernel.org>
- <b476ead7-f9af-4194-a848-dcb3f415cd34@nvidia.com>
- <DFQACNZ42CNK.27BOZPAO1T33R@kernel.org>
- <9489bcba-6c0c-43b5-baf4-5f1dc9a888aa@nvidia.com>
- <DFQAKCP72Y4W.3SD00GX4Y29N3@kernel.org>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <DFQAKCP72Y4W.3SD00GX4Y29N3@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0209.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::34) To LV3PR12MB9412.namprd12.prod.outlook.com
- (2603:10b6:408:211::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pYLcCeHf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845CAC19423;
+	Fri, 16 Jan 2026 20:46:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768596367;
+	bh=ZAfu8fO2jdVJa4lMD8PWbP4kBRyvOewQpP82j8KuwNA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=pYLcCeHfPwhcL1MVWyzjKTsa5IPa4SW1EkfahcU3sTgNsCKZDcZiw1Uxyo7ACOxvc
+	 ZT6J9dr/L4nZBKwyaj6LYgFXc1DFc6DyGXown522qCPszr6Dj1Sx57iKJCU2gb0cRG
+	 3u/jThdV3T5KLXvZZLhLix/p1vpWtfhFdXDhhq2cSEh5bjRflk4Fh/bZNUMD56Satu
+	 96UgFAcymh6FfF16DvW5fCjZjzSVzbDgRtYnAowzwjFmdRCUcXaLcDPTYuneY0zq7q
+	 q+5W3HyP/Hqx1cN0O536svyu2elMzmtXEe9pE483gblnKmhfORaC3QCe3At8WJYM8f
+	 NWGLreOnQWgBA==
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Fri, 16 Jan 2026 15:46:04 -0500
+Subject: [PATCH v2] scripts: generate_rust_analyzer: compile sysroot with
+ correct edition
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9412:EE_|DS4PR12MB9707:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34c8ba22-bf82-483a-6312-08de553da2b2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UGRwWDhiT3FRR2xscm1UR2hyYXM4dmxWb293SDFxcDdmUE15NGdwUXBxa1hI?=
- =?utf-8?B?TTVHSHZ6b3hCazZ5WnZtQ2d1ZVJOTkIzWWE0SFZrRVlmT1k1dlF2MDFQWjNs?=
- =?utf-8?B?WC9EN0ZncWtmNTB2NUREWGZWbFphRUZscEVvd1g4RFpKTHRsdWM5MHU4ekc5?=
- =?utf-8?B?NnBCZnJCclpHelp0Ky95SXlWSVVDL3VMeW1jYUI4UHMvVWwzamNka2QvRUdD?=
- =?utf-8?B?VDlIQVVURUZrNHFLeHAybVpKdFRHN2hQSkd4ZldMd2dXc2NTUDErOVdyem43?=
- =?utf-8?B?NFlwYlVPWnN5VFRCQmlNQ05DckZPU2FJN2NIRXJKZ1JINGFSQ2JiVnRFVmVl?=
- =?utf-8?B?dFJPMk5BemlnOXBSTURqVGpwOHFuQkgzUkxINWtVZ3ZJbWF6MC9QUUJ3M2xx?=
- =?utf-8?B?ellRazdiV2h3aGkrd2ZIUlNEYmN4SDZPOEQzNEtpR2JDVHRiWE9KUStxZEJs?=
- =?utf-8?B?eGRYMzV5WGxtQkRzQTNaQ3pqUUozSFRFVnRibUUxb0QyZjZudWNTcmRjYW9m?=
- =?utf-8?B?cldBeE9tVmlDM3g5V0RUWWVZV3NYS3lGekhYek5zUDBlTWxIQnM5Y0ZYLzBQ?=
- =?utf-8?B?a2FjNmMvc3NTSkNDNWtyV2NCZ24xUVZ2VXlIU2gvYnBrbWdKYi9aWkZLOHFZ?=
- =?utf-8?B?aW9FcnZCdDhLMmwwM2dkMWp0TkZlcXNHRFl2UW92SURET1pNdU15dnhvSU1v?=
- =?utf-8?B?K1lUV3A5czczZjNJdXloOFg1bWlBWGx4WmFLdHp2eTBndWZkNWR0VkJOV0NG?=
- =?utf-8?B?Y3ZuWXhHT2ErcEQwTVpmTW5wQ3VqY2NjQVd3T09DQnltSFJvTS94d1piVk5h?=
- =?utf-8?B?YXpZWW5oL20wNzJQUGp5ZnpzYUtDNjJWS1JyZEZVM2ljeXFrampTV3RHa2Za?=
- =?utf-8?B?TGpMZHRxMUE1MzdUcUttbFd2bHhzVGd5WS9US3pYVTVHamxoS0d1Z2psWDlW?=
- =?utf-8?B?Y2QyZVBSR0htMzA2TUdtVTQyYVhMQVczSnFyOCs5bHRoOG80S3R4Q3F2Y1c4?=
- =?utf-8?B?YS9uRWN6RURSK05mYTU0bmF4UGFUV2hYUkZyYWkzOFVVSllmRGZHTnZIWHBr?=
- =?utf-8?B?TGJYbmRJeVI5R0habUV3cEEzNGszQjVFVVJIU2ZaUlhXd05UN1dVekVBN0Nw?=
- =?utf-8?B?bzhOV1BZTlVsQlQzY0ljdkFpTzV4YmVncWwxbjZTOXY5Y2duY25Cajc4R1Fp?=
- =?utf-8?B?Y0J5ZndMeEhUcEQ1Ky9QaFVLVThsblVJTkw4ekFBeCt3YXpEOVFTSHRMVDVj?=
- =?utf-8?B?akw4dldMR0o5MGppUFNVblN0dC9DV1huRGorci9teFkvUFVWd1N1a0JMMjN4?=
- =?utf-8?B?UlJoQnZpMUIyb3hUOW1FMzFobXN6djZELzBuMFZPc3VvTk4rVWlmb3ZuWlpw?=
- =?utf-8?B?bDI3Y0ZvWlR0K2VraXFmNUdkUmJwcHRRUUl3cTVGRGt4VVlOeVU5SWdzMXRv?=
- =?utf-8?B?YUFkTEZxMENCaEdBY29vSmhCZjl4cDdrRFNsR05tUjZZZ2E0R2FSU2FHYlN4?=
- =?utf-8?B?UXIwZW5tUURtZ1FuY2swYWpvMWFNQ29QemoycTY3ckN6Y0NwOHdHVXZzS0Fi?=
- =?utf-8?B?K0c5dUlXdExtd1NEM1NIbmFtRFlyZGxoOWVYUWpiNlJYUTVUa0Y0YkZZYkFB?=
- =?utf-8?B?aStJcUZ3NHQyUFdpS1FMc1ljdVpKOEkyNHNhT2U2VXo1OWFKc1ZVOEp1emhw?=
- =?utf-8?B?RmxpZnhDUmFuMVVwNHlTclQ5c3ZiRlpmRUJiSDZuVWMvU1VFRjh1YWRWU21x?=
- =?utf-8?B?NjVNc0Q3Z09uTUNjaEFSeVdqazVzS0kwZ3B0cVd3RFpzT0VIUTdmUjlLckZC?=
- =?utf-8?B?RCtWMVByb1c2YnJhWEdNL25LZXlyL3hZR01XR0l3cmVuaWczLzhkOE8xMEVS?=
- =?utf-8?B?d1UvaW5reVJja3d5WWxJRWdqcHdSRDl1UGp3QWhtT2VZV1p2dmNyd0FMek9u?=
- =?utf-8?B?ZjJaVys5OVFXbmxUM1hMcVY0dDBmSnVvTEVqVGsycWlWVU5SM0NsVzBzaFEr?=
- =?utf-8?B?allma0lBWkpNRE9Jb2MxK1FDOExOWHBrYWxzYXRBWTA1Um5tMk9tOFRoazc3?=
- =?utf-8?B?QkdlV3h3ZlBYeUN0VXZGR3dWTk9ianZWb1RKbkhXUHBHaUVEaTZ1ZURsSkZ0?=
- =?utf-8?Q?g1Mo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NXFlSGxvZk9JVVk0SkkxU1REbDNkQk9RMFlOR2gzeEZGdjJwY21DNXlnMW1O?=
- =?utf-8?B?N2h2K1Uxc01TMUgyTGVOQjlwNjlQcTJCYjc1aEZxUThNNHR1Rmd0a01OODZt?=
- =?utf-8?B?Y2ZLZlJBRGZWQTdhaDdUSTlDQWFtd2p0SzdOZUVSSHBtTUdCOWp4bWxCTGt4?=
- =?utf-8?B?UStYcFZmNmNjcGxHQnJRNjF3c1J6UjlwallSY1VjVzNyRjVOWFNIYVVWR1Jw?=
- =?utf-8?B?eE9zaSs0SElKcmI4QWN4S05yaTF5bGZFcGI5RkRXaEVESmJQQTY4SGpHcmRD?=
- =?utf-8?B?emlLWlBmVTN6TmhLZlZGOXNXTkR0UmoyUWhmd2ZOeUlnb2ZPTmdVNzhBSUlz?=
- =?utf-8?B?cXNuVWxHWjdnQWxqSlN2RDJBdTczK3MzYmxoYWw2Zis3NUFGQTl6Q1RIaFU3?=
- =?utf-8?B?dlMrcVNtZ0orbm9ScXJPRDQycjk1a212bW1NYnlKQm5FM2F1amNtNFZCdnpW?=
- =?utf-8?B?Q1hSelJpTjBHeHFINUZ4bDVpZTBDTlJabHpUVVRZQnkwemI5TUJJZDZTUVJm?=
- =?utf-8?B?b1BVU1RlUVQ4K3JtcDZwbWs2SEN0RkhBT3VJTXIrOExTaU1WRFMweTM1Yldw?=
- =?utf-8?B?eWlJQldUcktIN1lHb3Urc3puam5CRzhWNkU5Y09KSThGZTljWi81TjdtUWQr?=
- =?utf-8?B?M2I3K1VoVjhTa2dOendNMmR6KzlKdnphNjdxZlQ4b1J3Y2xDVVlkbTZVOUVT?=
- =?utf-8?B?UzA1bGNNYW41WDNWYlNtTzRLY2F0dWlXUGFlTzF6UzFqci91RHFScDhTQWZS?=
- =?utf-8?B?c3Rrcjk5a2FtR3haSy9wbnh2R09VSjJoNlZLc1lPVGZEM05aNFhuUEovRWMw?=
- =?utf-8?B?cjRCSlF0Z0l4UDZLeG1aSmQ1ZkxwaWJlcytUR2YvU1VIWTNWQXBaSHlqRHUv?=
- =?utf-8?B?WitQNERPTHJGYzBYQzdENDk2cFdkRit2RTNLM25DeFpRcXUxQ01hbE0vLzF2?=
- =?utf-8?B?NWJVd1Evc0R0TVd5WjFTYVpDNVlKUiswaVFQMFRwcDY3ekFqNDF1ZEZUdS9F?=
- =?utf-8?B?Qkg1RlNWS0syZEwxcHQrcmFwVlJMdHpZYVA1a1VYU1ZFWE0wbFRBK2I4T2JH?=
- =?utf-8?B?RytIY0FINExoVUluVXBhZTAvdUZxYURMMzU5Tnpsdk13L3JOSEpzTWY2dUpR?=
- =?utf-8?B?ZCtUSnhCOE9qai90QmRKV0F1MG1BRHhydWoyWU93d1Nwd3RXQkwrQXNNaThG?=
- =?utf-8?B?UDc0RjlhcnFPelFSTW1lVmZDVVRmVU1zcnlURFlOVjgzQmtQU05taHpGSUk2?=
- =?utf-8?B?RjdOMnZZR3hZZHVVNXdMeTc1dnBFY1psWWNuN0o1aWdabW5PUFJEbnN6TFdy?=
- =?utf-8?B?blFFVHMwK2ZoWFExU0RvYmZFSVkwWUwzdHQyc3hOemd6SnNBWmVsZk90RGp1?=
- =?utf-8?B?bmtuQXdiWUNja2kveUJabEF6RTNybzFFZ25USStLd0E3NEd4aGduRDRwWHJz?=
- =?utf-8?B?QkFZc0VmSGlZWXlxZVgrTnp5NFhzdEloc0NGRTRQRnVTUm1CNGI2M1pxUkh2?=
- =?utf-8?B?MTNvNVBCZ2EzM0pac3lxaVd5WEU1dFRDd290ZmxYNVZpSWNnSnZ0cEVvZXd0?=
- =?utf-8?B?WW9mRUx6MnpsT3hmU2RISm01TzNlbHQ5bFFqK0d1QzNXRDByUURmR29Ybm5N?=
- =?utf-8?B?bkYvY0llSjRNRThsKzNvOVp2bWxBaEJMN3JNQTE1ZXpxTFhycWxKbUxIa0Y4?=
- =?utf-8?B?NTVIMEVUQmc5NEhjd3JQU0dLUUd6aXI0UTdNU0xjMXdHS0VPRlZUNG52eEhj?=
- =?utf-8?B?UG84WU15OUxaakMvcHZpU2VFMUZ6M3pRK0dtM3YzZXdCRVg1Y29uSUVTMlEz?=
- =?utf-8?B?L3FBVG50a1pQNDU5MmtPbTZLbUYvZVVlcCtDVWR5S3JRM0VLQ1FKN0VDTWxk?=
- =?utf-8?B?V25RRGx5T0tGUmtHWnFpdlFaZEdrcnVzK1MwMWRkNWdOMTYwNndReVlZUUhv?=
- =?utf-8?B?Q3ZsTVlYcE9HK2h5T0ZOY0dhU1ZXaGFTVzRvMmZHK05kYVRoeXRJclpEbThi?=
- =?utf-8?B?bllhMU1ad3NoTDFodkYvcVdVWEQ0T2R5MnprTVJXVHVZbWlhZGxzZmFrQnQr?=
- =?utf-8?B?a25ENXV2ZUU4L0JtMXp5QnBpUXk1ZUlFZHYxeEVNK3BMd0c3ZkFVbGF5UDkr?=
- =?utf-8?B?dS9NaWxPUjA3SU1haW1ic3U2WXlVRDhJQ0FrWTVpY0hSdVNrNW9LSTdGSHJQ?=
- =?utf-8?B?NHd1NU4vOHk0MGg5RTBONVZMR0drYWQ2bUROSmJkUng0QitzWGRaZ3pLaHlr?=
- =?utf-8?B?cW9VcXdHM2g1OWNGN3Y4clVvQ2g2T3ZQV3JHcTE4bXNSUDRNQTlpVTlacXRC?=
- =?utf-8?B?cjIyWFlROGxIWUdjdXJVMFQvUzJlR0VYK0RpS2ZkTTk1aEFjWEJkQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34c8ba22-bf82-483a-6312-08de553da2b2
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9412.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 20:27:14.6157
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GcfbuAheQvO3q4GeOWDVHHiAgwr8U5spHU2e23FciS8++pBYE1xxGD5XKWSLPaP1DRv5QRlqfKxE4LKuKE1jNw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9707
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260116-rust-analyzer-sysroot-v2-1-094aedc33208@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBBFr0JmbQ0t1IAr72FYFDrAGKCkU4hIu
+ LuAB3D5kvffX4HREzLcoxU8zsTkhh3UJYKqNUODguzOoGJ1i6XUwk8chBlMt3zQC17YOxeErst
+ cG5Nn2irYt6PHmt5n91n8mKfyhVU4YofREgfnl/N4lof372OWQorUYpZIW6skNY+mN9RdK9dDs
+ W3bF5RLu/XMAAAA
+X-Change-ID: 20260115-rust-analyzer-sysroot-5fb95aa985d2
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1768596366; l=3360;
+ i=tamird@kernel.org; h=from:subject:message-id;
+ bh=ZAfu8fO2jdVJa4lMD8PWbP4kBRyvOewQpP82j8KuwNA=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QAFv/uF8sKPUSH7xM4aOKLq2KMnB/sn7q0kYgqtS5Dd43S0sn1v594WyCtfEQlKhoPhjTqZk47/
+ 3f0jyReRCgQs=
+X-Developer-Key: i=tamird@kernel.org; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-On 1/16/26 12:21 PM, Danilo Krummrich wrote:
-> On Fri Jan 16, 2026 at 9:15 PM CET, John Hubbard wrote:
->> I missed something here. Could you elaborate just a bit more on
->> your proposal please?
-> 
-> Both HALs Ampere and Turing implement the same code to reset the falcon engine:
-> 
-> 	regs::NV_PFALCON_FALCON_ENGINE::update(bar, &E::ID, |v| v.set_reset(true));
-> 
-> 	// TIMEOUT: falcon engine should not take more than 10us to reset.
-> 	fsleep(Delta::from_micros(10));
-> 
-> 	regs::NV_PFALCON_FALCON_ENGINE::update(bar, &E::ID, |v| v.set_reset(false));
-> 
-> Instead of repeating this code we can just add a new function
-> regs::NV_PFALCON_FALCON_ENGINE::reset() that toggles the bit with a
-> corresponding delay.
-> 
-> So far the delay is always the same, should a different delay be required for
-> another architecture, we can also pass it to
-> regs::NV_PFALCON_FALCON_ENGINE::reset() as argument, but that doesn't seem to be
-> necessary.
+Use `core_edition` for all sysroot crates rather than just core as all
+were updated to edition 2024 in Rust 1.87.
 
-That sounds like exactly the right factoring, yes. Thanks for spelling
-it out in detail.
+Fixes: f4daa80d6be7 ("rust: compile libcore with edition 2024 for 1.87+")
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+---
+Changes in v2:
+- Revert rust/Makefile changes and add Miguel's analysis.
+- Link to v1: https://patch.msgid.link/20260115-rust-analyzer-sysroot-v1-1-4de831df234a@gmail.com
+---
+ scripts/generate_rust_analyzer.py | 29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 6061bd6e2ebd..187243f7f7a8 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -61,7 +61,6 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+         display_name,
+         deps,
+         cfg=[],
+-        edition="2021",
+     ):
+         append_crate(
+             display_name,
+@@ -69,13 +68,37 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+             deps,
+             cfg,
+             is_workspace_member=False,
+-            edition=edition,
++            # Miguel Ojeda writes:
++            #
++            # > ... in principle even the sysroot crates may have different
++            # > editions.
++            #
++            # > For instance, in the move to 2024, it seems all happened at once
++            # > in 1.87.0 in these upstream commits:
++            #
++            # >     0e071c2c6a58 ("Migrate core to Rust 2024")
++            # >     f505d4e8e380 ("Migrate alloc to Rust 2024")
++            # >     0b2489c226c3 ("Migrate proc_macro to Rust 2024")
++            # >     993359e70112 ("Migrate std to Rust 2024")
++            #
++            # > But in the previous move to 2021, `std` moved in 1.59.0, while
++            # > the others in 1.60.0:
++            #
++            # >     b656384d8398 ("Update stdlib to the 2021 edition")
++            # >     06a1c14d52a8 ("Switch all libraries to the 2021 edition")
++            #
++            # Link: https://lore.kernel.org/all/CANiq72kd9bHdKaAm=8xCUhSHMy2csyVed69bOc4dXyFAW4sfuw@mail.gmail.com/
++            #
++            # At the time of writing all rust versions we support build the
++            # sysroot crates with the same edition. We may need to relax this
++            # assumption if future edition moves span multiple rust versions.
++            edition=core_edition,
+         )
+ 
+     # NB: sysroot crates reexport items from one another so setting up our transitive dependencies
+     # here is important for ensuring that rust-analyzer can resolve symbols. The sources of truth
+     # for this dependency graph are `(sysroot_src / crate / "Cargo.toml" for crate in crates)`.
+-    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []), edition=core_edition)
++    append_sysroot_crate("core", [], cfg=crates_cfgs.get("core", []))
+     append_sysroot_crate("alloc", ["core"])
+     append_sysroot_crate("std", ["alloc", "core"])
+     append_sysroot_crate("proc_macro", ["core", "std"])
 
-thanks,
--- 
-John Hubbard
+---
+base-commit: 74e15ac34b098934895fd27655d098971d2b43d9
+change-id: 20260115-rust-analyzer-sysroot-5fb95aa985d2
+
+Best regards,
+--  
+Tamir Duberstein <tamird@kernel.org>
 
