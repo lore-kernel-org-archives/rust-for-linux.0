@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2686B29ACC0;
-	Fri, 16 Jan 2026 10:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC53E356A22;
+	Fri, 16 Jan 2026 10:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768560952; cv=none; b=eZg5Lef58vmF/ndiU7OwdR/Nj/TRCOq0oM0wb7Z/y53M8DMlRfjeNaNjhu3/+AXb1Duvmbod11zcLY8ZGkbBdhrFGxglyFSDmjArNj7VDuIH7x/GmrIqE5W77eLpEg+GrIrwOMOrVgiQjRfb554p2XkUakk0ki/hgWc+OZt5L7g=
+	t=1768560955; cv=none; b=d/SLoQLYkHvMBwan1KU6OFZ+PCKdFRx4aB/GWAlRWPCWkJWLWGQnNKy5Dry+zhsnucC+jFbsY9wuYdBk+yYhhSkFxA6T6HZ0d1yEtn/S7UaO7rKb2DzxBKqpnXceMSIbips0UeCtSteM9MsL2kWBcH8Dk15GuCREaGyaRgRRRiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768560952; c=relaxed/simple;
-	bh=TPh+XUwlVAKMZ5uWAYgAY7bxrOgtlRJ70mwGUv5jGqg=;
+	s=arc-20240116; t=1768560955; c=relaxed/simple;
+	bh=nmMLuroM0g1vhgYaajNuwlEGX4J8jLH4/9NeYtTNe30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vGPq+djdfLXyiTOIIvyQb4WytdmkNgI3MxuSJZaIkKlzqgi7QzBk0Y1v4+zVIP190SZLxyonn7nKtH0HwxRezRaIDEkd3TtfIgHr9eiBgmd+UPW+QV5EMEhjUqYMf2lGW76rbFNWOr6QiuxWR3Sn94ff/S7y/C0desuNfmz7V7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PimokD+1; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=EmUuz9p0zyOpEGxBuVnHaexA+I3AOxocGTpzw/FJipTKMHFLM3oKp3abGHfW89yesFIm6kLSNlQB5WLvCPXlhGSWOlqQV/nV5cv1CDm3RoLJgfFbYMuCdZPKlHDAhtI6NwXDozAXTCdvccFZm7XFV1o0Q6E5c4NTs95XjrYzmBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nOf10bf9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PimokD+1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01953C116C6;
-	Fri, 16 Jan 2026 10:55:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nOf10bf9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4C8C19425;
+	Fri, 16 Jan 2026 10:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768560951;
-	bh=TPh+XUwlVAKMZ5uWAYgAY7bxrOgtlRJ70mwGUv5jGqg=;
+	s=k20201202; t=1768560955;
+	bh=nmMLuroM0g1vhgYaajNuwlEGX4J8jLH4/9NeYtTNe30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PimokD+1RcHL3wTR/SJsskSi16N0b2beHvsZDe9AAWTHzfAjjppXyeXIWw+yzxcdl
-	 HJvBo7TY4GcMjSmJHcocjlGdIRGH8QQ/nK9xCLHlkg39Ov+3VUe/pgimEnqUqEC7v5
-	 +dyIoo6k8Fr1xtSzeSrK38x4yfbIYANpfwrlkH3Axll0rTCO5hvwJAVOkAErMxmkOB
-	 o5eECxY1VIalZMwHrEs+vgjZh7r/T/tAUbGb1lt9zZS2USMBhAlVjlKDaNHdJmTRar
-	 irof6Rt+6IvN8vx6e4ESE+cZbix00e/a9Xc4EcgPtgjlVQvUG/UdMA4ddTLECuo+dF
-	 RhuG7/mtpLpDw==
+	b=nOf10bf9yVedLSqaqnGYM9szkNc0hOqgrNjdMF3Zz5jwTA/wY3Fw/Iih3W+/86rr+
+	 Eq9yMPgvJvcTe7SYZnFp7nNHiADZW7kaxMDazJr5QHc5WeyXsWkvDLBQi8vPv2Vc4Q
+	 NHpjFHLuSY1TLcXOafDvinN5w8cY7qPJe91gwQCG2EKvjR/aINNYd6krLT32pZsRZK
+	 dIzbOKDlwrX+0eodyhXaKXKpvYiCtLzmin6YwigxCDZlU2dh4/o84tb2PxvPMdT7ND
+	 BevTWnZ7oiDbzne5TP3K91sOMrxUx6/0yvvePgypysvicUoqLTBjpzX9OLOuQWTSZ6
+	 v0Ci9Q/9DWPEg==
 From: Benno Lossin <lossin@kernel.org>
 To: Benno Lossin <lossin@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -40,9 +40,9 @@ To: Benno Lossin <lossin@kernel.org>,
 	Christian Schrefl <chrisi.schrefl@gmail.com>
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 01/15] rust: pin-init: remove `try_` versions of the initializer macros
-Date: Fri, 16 Jan 2026 11:54:16 +0100
-Message-ID: <20260116105514.3794384-2-lossin@kernel.org>
+Subject: [PATCH v4 02/15] rust: pin-init: allow the crate to refer to itself as `pin-init` in doc tests
+Date: Fri, 16 Jan 2026 11:54:17 +0100
+Message-ID: <20260116105514.3794384-3-lossin@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260116105514.3794384-1-lossin@kernel.org>
 References: <20260116105514.3794384-1-lossin@kernel.org>
@@ -54,18 +54,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The `try_[pin_]init!` versions of the initializer macros are
-superfluous. Instead of forcing the user to always write an error in
-`try_[pin_]init!` and not allowing one in `[pin_]init!`, combine them
-into `[pin_]init!` that defaults the error to
-`core::convert::Infallible`, but also allows to specify a custom one.
-
-Projects using pin-init still can provide their own defaulting
-initializers using the `try_` prefix by using the `#[default_error]`
-attribute added in a future patch.
-
-[ Adjust the definition of the kernel's version of the `try_`
-  initializer macros - Benno]
+The `syn` approach requires use of `::pin_init::...` instead of the
+`$crate::...` construct available to declarative macros. To be able to
+use the `pin_init` crate from itself (which includes doc tests), we have
+to declare it as such.
 
 Reviewed-by: Gary Guo <gary@garyguo.net>
 Tested-by: Andreas Hindborg <a.hindborg@kernel.org>
@@ -75,342 +67,25 @@ Changes in v4: none
 Changes in v3: none
 Changes in v2: none
 ---
- rust/kernel/init.rs                     |   8 +-
- rust/pin-init/README.md                 |   2 +-
- rust/pin-init/examples/linked_list.rs   |  19 ++--
- rust/pin-init/examples/pthread_mutex.rs |  10 +-
- rust/pin-init/src/lib.rs                | 118 ++++--------------------
- 5 files changed, 35 insertions(+), 122 deletions(-)
+ rust/pin-init/src/lib.rs | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 899b9a962762..917f7ef001fd 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -222,14 +222,14 @@ macro_rules! try_init {
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }) => {
--        ::pin_init::try_init!($(&$this in)? $t $(::<$($generics),*>)? {
-+        ::pin_init::init!($(&$this in)? $t $(::<$($generics),*>)? {
-             $($fields)*
-         }? $crate::error::Error)
-     };
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }? $err:ty) => {
--        ::pin_init::try_init!($(&$this in)? $t $(::<$($generics),*>)? {
-+        ::pin_init::init!($(&$this in)? $t $(::<$($generics),*>)? {
-             $($fields)*
-         }? $err)
-     };
-@@ -282,14 +282,14 @@ macro_rules! try_pin_init {
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }) => {
--        ::pin_init::try_pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
-+        ::pin_init::pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
-             $($fields)*
-         }? $crate::error::Error)
-     };
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }? $err:ty) => {
--        ::pin_init::try_pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
-+        ::pin_init::pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
-             $($fields)*
-         }? $err)
-     };
-diff --git a/rust/pin-init/README.md b/rust/pin-init/README.md
-index 74bbb4e0a2f7..6cee6ab1eb57 100644
---- a/rust/pin-init/README.md
-+++ b/rust/pin-init/README.md
-@@ -135,7 +135,7 @@ struct DriverData {
- 
- impl DriverData {
-     fn new() -> impl PinInit<Self, Error> {
--        try_pin_init!(Self {
-+        pin_init!(Self {
-             status <- CMutex::new(0),
-             buffer: Box::init(pin_init::init_zeroed())?,
-         }? Error)
-diff --git a/rust/pin-init/examples/linked_list.rs b/rust/pin-init/examples/linked_list.rs
-index f9e117c7dfe0..8445a5890cb7 100644
---- a/rust/pin-init/examples/linked_list.rs
-+++ b/rust/pin-init/examples/linked_list.rs
-@@ -6,7 +6,6 @@
- 
- use core::{
-     cell::Cell,
--    convert::Infallible,
-     marker::PhantomPinned,
-     pin::Pin,
-     ptr::{self, NonNull},
-@@ -31,31 +30,31 @@ pub struct ListHead {
- 
- impl ListHead {
-     #[inline]
--    pub fn new() -> impl PinInit<Self, Infallible> {
--        try_pin_init!(&this in Self {
-+    pub fn new() -> impl PinInit<Self> {
-+        pin_init!(&this in Self {
-             next: unsafe { Link::new_unchecked(this) },
-             prev: unsafe { Link::new_unchecked(this) },
-             pin: PhantomPinned,
--        }? Infallible)
-+        })
-     }
- 
-     #[inline]
-     #[allow(dead_code)]
--    pub fn insert_next(list: &ListHead) -> impl PinInit<Self, Infallible> + '_ {
--        try_pin_init!(&this in Self {
-+    pub fn insert_next(list: &ListHead) -> impl PinInit<Self> + '_ {
-+        pin_init!(&this in Self {
-             prev: list.next.prev().replace(unsafe { Link::new_unchecked(this)}),
-             next: list.next.replace(unsafe { Link::new_unchecked(this)}),
-             pin: PhantomPinned,
--        }? Infallible)
-+        })
-     }
- 
-     #[inline]
--    pub fn insert_prev(list: &ListHead) -> impl PinInit<Self, Infallible> + '_ {
--        try_pin_init!(&this in Self {
-+    pub fn insert_prev(list: &ListHead) -> impl PinInit<Self> + '_ {
-+        pin_init!(&this in Self {
-             next: list.prev.next().replace(unsafe { Link::new_unchecked(this)}),
-             prev: list.prev.replace(unsafe { Link::new_unchecked(this)}),
-             pin: PhantomPinned,
--        }? Infallible)
-+        })
-     }
- 
-     #[inline]
-diff --git a/rust/pin-init/examples/pthread_mutex.rs b/rust/pin-init/examples/pthread_mutex.rs
-index 49b004c8c137..4e082ec7d5de 100644
---- a/rust/pin-init/examples/pthread_mutex.rs
-+++ b/rust/pin-init/examples/pthread_mutex.rs
-@@ -98,11 +98,11 @@ fn init_raw() -> impl PinInit<UnsafeCell<libc::pthread_mutex_t>, Error> {
-                 // SAFETY: mutex has been initialized
-                 unsafe { pin_init_from_closure(init) }
-             }
--            try_pin_init!(Self {
--            data: UnsafeCell::new(data),
--            raw <- init_raw(),
--            pin: PhantomPinned,
--        }? Error)
-+            pin_init!(Self {
-+                data: UnsafeCell::new(data),
-+                raw <- init_raw(),
-+                pin: PhantomPinned,
-+            }? Error)
-         }
- 
-         #[allow(dead_code)]
 diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index 8dc9dd5ac6fd..8673008f45d2 100644
+index 8673008f45d2..0e707f00061f 100644
 --- a/rust/pin-init/src/lib.rs
 +++ b/rust/pin-init/src/lib.rs
-@@ -146,7 +146,7 @@
- //!
- //! impl DriverData {
- //!     fn new() -> impl PinInit<Self, Error> {
--//!         try_pin_init!(Self {
-+//!         pin_init!(Self {
- //!             status <- CMutex::new(0),
- //!             buffer: Box::init(pin_init::init_zeroed())?,
- //!         }? Error)
-@@ -528,7 +528,7 @@ macro_rules! stack_pin_init {
- ///     x: u32,
- /// }
- ///
--/// stack_try_pin_init!(let foo: Foo = try_pin_init!(Foo {
-+/// stack_try_pin_init!(let foo: Foo = pin_init!(Foo {
- ///     a <- CMutex::new(42),
- ///     b: Box::try_new(Bar {
- ///         x: 64,
-@@ -555,7 +555,7 @@ macro_rules! stack_pin_init {
- ///     x: u32,
- /// }
- ///
--/// stack_try_pin_init!(let foo: Foo =? try_pin_init!(Foo {
-+/// stack_try_pin_init!(let foo: Foo =? pin_init!(Foo {
- ///     a <- CMutex::new(42),
- ///     b: Box::try_new(Bar {
- ///         x: 64,
-@@ -584,10 +584,10 @@ macro_rules! stack_try_pin_init {
-     };
- }
+@@ -290,6 +290,11 @@
+     ptr::{self, NonNull},
+ };
  
--/// Construct an in-place, pinned initializer for `struct`s.
-+/// Construct an in-place, fallible pinned initializer for `struct`s.
- ///
--/// This macro defaults the error to [`Infallible`]. If you need a different error, then use
--/// [`try_pin_init!`].
-+/// The error type defaults to [`Infallible`]; if you need a different one, write `? Error` at the
-+/// end, after the struct initializer.
- ///
- /// The syntax is almost identical to that of a normal `struct` initializer:
- ///
-@@ -783,54 +783,10 @@ macro_rules! pin_init {
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }) => {
--        $crate::try_pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
-+        $crate::pin_init!($(&$this in)? $t $(::<$($generics),*>)? {
-             $($fields)*
-         }? ::core::convert::Infallible)
-     };
--}
--
--/// Construct an in-place, fallible pinned initializer for `struct`s.
--///
--/// If the initialization can complete without error (or [`Infallible`]), then use [`pin_init!`].
--///
--/// You can use the `?` operator or use `return Err(err)` inside the initializer to stop
--/// initialization and return the error.
--///
--/// IMPORTANT: if you have `unsafe` code inside of the initializer you have to ensure that when
--/// initialization fails, the memory can be safely deallocated without any further modifications.
--///
--/// The syntax is identical to [`pin_init!`] with the following exception: you must append `? $type`
--/// after the `struct` initializer to specify the error type you want to use.
--///
--/// # Examples
--///
--/// ```rust
--/// # #![feature(allocator_api)]
--/// # #[path = "../examples/error.rs"] mod error; use error::Error;
--/// use pin_init::{pin_data, try_pin_init, PinInit, InPlaceInit, init_zeroed};
--///
--/// #[pin_data]
--/// struct BigBuf {
--///     big: Box<[u8; 1024 * 1024 * 1024]>,
--///     small: [u8; 1024 * 1024],
--///     ptr: *mut u8,
--/// }
--///
--/// impl BigBuf {
--///     fn new() -> impl PinInit<Self, Error> {
--///         try_pin_init!(Self {
--///             big: Box::init(init_zeroed())?,
--///             small: [0; 1024 * 1024],
--///             ptr: core::ptr::null_mut(),
--///         }? Error)
--///     }
--/// }
--/// # let _ = Box::pin_init(BigBuf::new());
--/// ```
--// For a detailed example of how this macro works, see the module documentation of the hidden
--// module `macros` inside of `macros.rs`.
--#[macro_export]
--macro_rules! try_pin_init {
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }? $err:ty) => {
-@@ -847,10 +803,10 @@ macro_rules! try_pin_init {
-     }
- }
- 
--/// Construct an in-place initializer for `struct`s.
-+/// Construct an in-place, fallible initializer for `struct`s.
- ///
--/// This macro defaults the error to [`Infallible`]. If you need a different error, then use
--/// [`try_init!`].
-+/// This macro defaults the error to [`Infallible`]; if you need a different one, write `? Error`
-+/// at the end, after the struct initializer.
- ///
- /// The syntax is identical to [`pin_init!`] and its safety caveats also apply:
- /// - `unsafe` code must guarantee either full initialization or return an error and allow
-@@ -890,52 +846,10 @@ macro_rules! init {
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }) => {
--        $crate::try_init!($(&$this in)? $t $(::<$($generics),*>)? {
-+        $crate::init!($(&$this in)? $t $(::<$($generics),*>)? {
-             $($fields)*
-         }? ::core::convert::Infallible)
--    }
--}
--
--/// Construct an in-place fallible initializer for `struct`s.
--///
--/// If the initialization can complete without error (or [`Infallible`]), then use
--/// [`init!`].
--///
--/// The syntax is identical to [`try_pin_init!`]. You need to specify a custom error
--/// via `? $type` after the `struct` initializer.
--/// The safety caveats from [`try_pin_init!`] also apply:
--/// - `unsafe` code must guarantee either full initialization or return an error and allow
--///   deallocation of the memory.
--/// - the fields are initialized in the order given in the initializer.
--/// - no references to fields are allowed to be created inside of the initializer.
--///
--/// # Examples
--///
--/// ```rust
--/// # #![feature(allocator_api)]
--/// # use core::alloc::AllocError;
--/// # use pin_init::InPlaceInit;
--/// use pin_init::{try_init, Init, init_zeroed};
--///
--/// struct BigBuf {
--///     big: Box<[u8; 1024 * 1024 * 1024]>,
--///     small: [u8; 1024 * 1024],
--/// }
--///
--/// impl BigBuf {
--///     fn new() -> impl Init<Self, AllocError> {
--///         try_init!(Self {
--///             big: Box::init(init_zeroed())?,
--///             small: [0; 1024 * 1024],
--///         }? AllocError)
--///     }
--/// }
--/// # let _ = Box::init(BigBuf::new());
--/// ```
--// For a detailed example of how this macro works, see the module documentation of the hidden
--// module `macros` inside of `macros.rs`.
--#[macro_export]
--macro_rules! try_init {
-+    };
-     ($(&$this:ident in)? $t:ident $(::<$($generics:ty),* $(,)?>)? {
-         $($fields:tt)*
-     }? $err:ty) => {
-@@ -1410,14 +1324,14 @@ pub fn pin_init_array_from_fn<I, const N: usize, T, E>(
- /// fn init_foo() -> impl PinInit<Foo, Error> {
- ///     pin_init_scope(|| {
- ///         let bar = lookup_bar()?;
--///         Ok(try_pin_init!(Foo { a: bar.a.into(), b: bar.b }? Error))
-+///         Ok(pin_init!(Foo { a: bar.a.into(), b: bar.b }? Error))
- ///     })
- /// }
- /// ```
- ///
- /// This initializer will first execute `lookup_bar()`, match on it, if it returned an error, the
- /// initializer itself will fail with that error. If it returned `Ok`, then it will run the
--/// initializer returned by the [`try_pin_init!`] invocation.
-+/// initializer returned by the [`pin_init!`] invocation.
- pub fn pin_init_scope<T, E, F, I>(make_init: F) -> impl PinInit<T, E>
- where
-     F: FnOnce() -> Result<I, E>,
-@@ -1453,14 +1367,14 @@ pub fn pin_init_scope<T, E, F, I>(make_init: F) -> impl PinInit<T, E>
- /// fn init_foo() -> impl Init<Foo, Error> {
- ///     init_scope(|| {
- ///         let bar = lookup_bar()?;
--///         Ok(try_init!(Foo { a: bar.a.into(), b: bar.b }? Error))
-+///         Ok(init!(Foo { a: bar.a.into(), b: bar.b }? Error))
- ///     })
- /// }
- /// ```
- ///
- /// This initializer will first execute `lookup_bar()`, match on it, if it returned an error, the
- /// initializer itself will fail with that error. If it returned `Ok`, then it will run the
--/// initializer returned by the [`try_init!`] invocation.
-+/// initializer returned by the [`init!`] invocation.
- pub fn init_scope<T, E, F, I>(make_init: F) -> impl Init<T, E>
- where
-     F: FnOnce() -> Result<I, E>,
++// This is used by doc-tests -- the proc-macros expand to `::pin_init::...` and without this the
++// doc-tests wouldn't have an extern crate named `pin_init`.
++#[allow(unused_extern_crates)]
++extern crate self as pin_init;
++
+ #[doc(hidden)]
+ pub mod __internal;
+ #[doc(hidden)]
 -- 
 2.52.0
 
