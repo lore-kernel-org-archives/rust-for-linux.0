@@ -1,367 +1,332 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021119.outbound.protection.outlook.com [52.101.100.119])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010019.outbound.protection.outlook.com [52.101.69.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE90A238171;
-	Fri, 16 Jan 2026 13:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2511C4A20;
+	Fri, 16 Jan 2026 13:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768568442; cv=fail; b=ZN0noijvhcV/1P+4T+xpBXuDAZFFciGuXaGkBx136d369rzMLaJ8AcDMePj3l5lhTeLdSsYhS0tTEkJ5mwPb0XoIttWd6Apo6JxjMxPfZZXlX7iDc0E0ND3gCKFGKQy3lEGL1Oh7Re1kogn8XZSiX7xv8MR62aC0iz4hUE3i4Yo=
+	t=1768568485; cv=fail; b=qG6Llvnm3E6P3sZc/tWYRtk08LtUnIIyfVErom+KRn3sehascia8gu5WNC66gM6pexbN2UxfMEUASjInDUpkFoDZcnwFwoAEWpfOwWDSwOwl5p3YjPfNr7Oq6SL5aGkB/xEa4zcYdv/9H5Tc+qSqrubFSv0DB9Z5ZdiW3Hewxfw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768568442; c=relaxed/simple;
-	bh=UmGJk9yiX/crpXSYU2PV7i1htczj6SkE2CH8m9Xpt48=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=KRe5tOOou9svq1T9ez87LDnUJHmSSj6w+r3oqskDnmYGl0Up+s5KAnO1FRpQzOp12ayRwi8oVI7HiIUmug1IbbN/9fnBmW1ylHld0QtRbVAFrhpWhiRyWqTXh90dLfuyI82z5b5He2rx9zepPIGPyzW5aECbhfssgEtIdI5eHag=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=xGLZ4xvi; arc=fail smtp.client-ip=52.101.100.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1768568485; c=relaxed/simple;
+	bh=nPbIeWIzr3d0wZLqwQuluicTWqIVNxdQUxrmNp11xPI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=DUgRNjRWOycRsGbTbZ0XXB+RGsz+sQ8ldUu1N9pARrE/MQHlHt0Akxs+NB7aIsy+YMr6QQKdW0mhDWytjeL3qHglqWQ2S59sKCxWDwNikmyTVC8BNq2FKsTaQUU+ojdU71IjA8c8HVprT5ryZtbx1BxOwX+aHwJxMAsEGOWicz0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=GGvuf/Rv; arc=fail smtp.client-ip=52.101.69.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="xGLZ4xvi"
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="GGvuf/Rv"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nckFl93U3xE1dnjJu6ANIu/WcVSndNy/WQdd/lPrg7FO+GvC2gZ/yUU32EMk3Tpey3/8V1Bj+lIut9DIOhBkvrFDqbPKfuPd31bvGgXi81PLBfc3UrvNVe/XZoq4Rfy8+C5/ZWgsgVFJG4QHRMMHV+uAEevV0zOmsdqiGtpb1uhZ8gor6+t4xs8L2VbJ0uhwKr45Wx6AJsfY1wJLX7Nw90jGknHDq2uboXFellGisKHUxwR8Pb7nMin5x3AOBSfBIRYdksy5acsLYJbtTMqeHygw7prWKGN33rJW1eOR3Y2kziZwUd3f5QajWUCwbVI2S9FRDnH74TwM/F0TkMRinQ==
+ b=KfjbjvXCaByqF7EJvm5WYVkxmdvlZhHbF77mL3X67nSJGnI1d2Hgez6bltqB2NiI2LZaLpDsLYZEmghyWo9RLmBjPh2E9GHEISjvLmxNSFbk/0Ks3+UUJyEGvzZuTxV72IlZHXTpUCOZGnDI4NilC6Uas/kgxR3+C+UVN3PNCc9uuyIdroTf2+wh0qWhoItd0syFnnuCEidTdzktxVtbIYbfr2Nk1Vf3ZGq9kMcV9wrKh4hFhjQr7/Zun3pTnPi4DrHVKF3nlcX9oWeRhsZeTKcvCPPGLt8K3m5QQpHlD7xLe1XUCa6yoyZa8MuJcxpmHEv9ySBSaqmMb4rmiqvqjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BG99axf7/MA5lFnOSF3noM6SfMSzAQ0x8p7geFYYDxY=;
- b=yxMOLgrIfd/zQ2k5jQutB/p18VOfmBwKOWsPms4wDSBqbjfmQcMKRdcxJUEwa7Bs37++Bh07+Ir+A5QCQDuSpqER/Q3/a1Cqu093gNQnKmqqvkvfWT/DjW8jLMh2DpkImtSjZHHJT8YQ4oyrbBQOpAF3gdeX/NXwxcoI+k7qV+Kn71yF+Urft8YpxTlIgQWQR+bWTc0aqxwXeLnp+pLXrrqhwgYbdJSYLYFbTFwW9prlkyhalNCcq/ENqYzLxWKbd0VMdTxR2ZmXbS6Uv5Dp95xv5Wej/lLAMwr+BznsA9tJFCbJx+vDwUIyD+NNeHtOtWCpnvBTh6ghdZPSa4jZfQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ bh=AW76cf1Dg71zs+R2Hey9cmUFO3dSxbJWYz4m42ONmhs=;
+ b=TPw4LGwJIuYCUfOERYTWtRuhYNGD9rhr/f6K80wepj1P/irfTFazkonz7ooFwxznLKVOtGjrNxAicoxkSz2q3G2itX++LjFgpecWAVK1BkCw4XEIWyw+ftcu+caoncxSrJ9Wxy0JNhkHrIVvSvsUvYcS+Zxdu60A2EA/DQYZEG77bNnRMWPyRVut5k6aGMCA9NPlb/2veE7N7p4KGOpFWIBRQpOFKlYPSxr+C0TmyizSHw8ZlkmVfXZ2RK6E/mOPtS5FL80eaVX277m/24R8qeaEIo4b8se0eplBVWjR1mFM7dzEr2f9G2mgVQBaA5hv8LA/Msg84WwbDZPXxZQnzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=collabora.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BG99axf7/MA5lFnOSF3noM6SfMSzAQ0x8p7geFYYDxY=;
- b=xGLZ4xviVob8PK45Ri2PPMw4Zgbu0kxO7YcBs1g+Do5QeKwi+KwlGuDfyYBEy/RUM+wgAbHWERTbiInGTfOE23gsD3xzDjmJmRE98VlDT3cYylUpSXI+R98oSMtcGZr7UnhykytSkbxQ2jzcB4S1geeenhWHjqmaLZuTs2axmTg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB6260.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:24f::5) with
+ bh=AW76cf1Dg71zs+R2Hey9cmUFO3dSxbJWYz4m42ONmhs=;
+ b=GGvuf/RvJw9HOqdtv2UuAXJwmce+uT0a9s9L5dMpgxWQNei3D8cKpQc91DNU2FAMpbxum+h8hCT6STGBNfSTXQ40tp3CZle9gntKzjInh86I5v+44ac3TfX1yLXi+a1p2S6hdbLL2wqa78bjfb6Cx02+0xA8VHjyQauutMDidI8IA0gKh8qKxatwR0d+XNXtaq8Z97oxpKpCRIwwGzzfbgZXB8baF/tspBYcdc2yYOYU9vVEVvCRT+zPzDih21XjZdhH+2fwUxgS4i6sCXiYj5DYXp2bKUWMOB+quHM+NHtjlHomNOGVya9lkq3Nuod7F0DaIInqF+2P42p9QRBsDQ==
+Received: from DU7P251CA0012.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:551::18)
+ by AS8PR10MB6889.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:5b5::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Fri, 16 Jan
- 2026 13:00:35 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.006; Fri, 16 Jan 2026
- 13:00:35 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 16 Jan 2026 13:00:35 +0000
-Message-Id: <DFQ16QS1RAEL.1Z0ESXE0MBA7G@garyguo.net>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Steven Price" <steven.price@arm.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust/drm: tyr: Convert to the register!() macro
-From: "Gary Guo" <gary@garyguo.net>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Dirk Behme"
- <dirk.behme@gmail.com>
-X-Mailer: aerc 0.21.0
-References: <20260114-tyr-register-v1-1-7deb1b33627a@collabora.com>
- <f7ff8b11-b1a5-4537-9227-e42a3a40aa96@gmail.com>
- <A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com>
-In-Reply-To: <A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com>
-X-ClientProxiedBy: LO4P123CA0693.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:37b::9) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Fri, 16 Jan
+ 2026 13:01:19 +0000
+Received: from DB3PEPF00008859.eurprd02.prod.outlook.com
+ (2603:10a6:10:551:cafe::bf) by DU7P251CA0012.outlook.office365.com
+ (2603:10a6:10:551::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.8 via Frontend Transport; Fri,
+ 16 Jan 2026 13:01:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DB3PEPF00008859.mail.protection.outlook.com (10.167.242.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.4 via Frontend Transport; Fri, 16 Jan 2026 13:01:19 +0000
+Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Fri, 16 Jan
+ 2026 14:01:01 +0100
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Fri, 16 Jan
+ 2026 14:01:00 +0100
+Message-ID: <cc73ce51-39c1-4f2d-8bcb-99fd220fd34c@de.bosch.com>
+Date: Fri, 16 Jan 2026 14:00:54 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] rust/drm: tyr: Convert to the register!() macro
+To: Daniel Almeida <daniel.almeida@collabora.com>, Dirk Behme
+	<dirk.behme@gmail.com>
+CC: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+	<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda
+	<ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, "Steven
+ Price" <steven.price@arm.com>, <dri-devel@lists.freedesktop.org>,
+	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+References: <20260114-tyr-register-v1-1-7deb1b33627a@collabora.com>
+ <f7ff8b11-b1a5-4537-9227-e42a3a40aa96@gmail.com>
+ <A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6260:EE_
-X-MS-Office365-Filtering-Correlation-Id: b39338b0-84cd-4cce-e684-08de54ff3d3a
+X-MS-TrafficTypeDiagnostic: DB3PEPF00008859:EE_|AS8PR10MB6889:EE_
+X-MS-Office365-Filtering-Correlation-Id: e149276d-b391-440b-f6f0-08de54ff5768
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|1800799024|376014|7053199007;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700013|82310400026|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WVp5ZUpmbUpFMDBLeU5ndWJnZFQ2dU9GbFBlYVlUcmREbWg0MXRMbEFVTkMz?=
- =?utf-8?B?MGRRUDRUaEpjNnlQQjV1VFlhVkZXVHhsVHBPcU5VODA3cFZCUUQzbElGYXIx?=
- =?utf-8?B?YVdnUU40a0JQUFlyL0lid1E4aFFSRXU2dEtsVlNvSHFRdTBoWXIvNHNiQ3ZB?=
- =?utf-8?B?bzZKTU9LeXNpUitHRWs4VkFCdytNa1BwQzE5ejY4Vm1UTWlEM0JTckwvTm1p?=
- =?utf-8?B?UXVVQU5EeUdYM2lWTit1d3hHU25GL3c0eWtkK1pDcytzdlZldXFwclAzQzB0?=
- =?utf-8?B?cllzTnZSSEpYV1plRDlqTjZ4SWUwbUpIT1g5RG1qYmFjWGVhSjFISGNSRGNP?=
- =?utf-8?B?djJGcXdnc1p2UFhjNE9LZmVBVmFaM2JSN3dIdVlzRmNIMmFKczMxUVlTWG52?=
- =?utf-8?B?UjRQSG1Zd3MwR0x1ajduaTl6VnZsR2lCUFBzWnMrQlFlNG5CRmlwNlEzNFND?=
- =?utf-8?B?ZytPQnk3a2tOcGVYQVJXWUdyMkVWYnlZOTBqTHdxQ1B5ZFJyWlBielAvK2tk?=
- =?utf-8?B?bGlLNkFIdEQxMlBaMmx2N0QyaWEyQnBWYk1EZEdSZVU1d0dqWGxPQklTVWtv?=
- =?utf-8?B?LzJ5d3ZEYzVGWDVCKzZpMFpqUlZJWlBqV2IyenMxWGdmdkhWWStoZWdqUEhE?=
- =?utf-8?B?Rm83ZHVEbGRkZnNOYkkvZEtJWVhzR1Q2RVUvNFdVSlU2cUlTVUxkdG9MWjFS?=
- =?utf-8?B?bTFVMDZnak1EVlMwOWlxWlptTENwLzBmTS9JbDZOTmttV2lzOVEyMUR6K1R3?=
- =?utf-8?B?OUZuL2orRUwwdkRuVEhNTUoyZGY2R2pmd0FnU21qRWtZb3d6T3VTNE9Pb2pv?=
- =?utf-8?B?QWlmSFp0TTBMK3I3U3pQdlcvMVBjcGtzQU5ESzJ4WlpqbVJPUGYzMXR3Q3h3?=
- =?utf-8?B?NjNTNUVsbE5odzJOWkx4VGRUcjNkV09EcG1BMGVqWllWTEhNQkZhQjhVY3hZ?=
- =?utf-8?B?UDdzWVZPTElBVVRFTmFoRGlhUDZDNU9oRkZFZC9PRDVuZ3R1ZDk0WTd3VkRL?=
- =?utf-8?B?WndUYXloUm9OaFBkdnJNUWpvZENicTlkWHArNGl1cXhPUXZINFhqNUFlWnha?=
- =?utf-8?B?OXg5WExXdXdhNVMwcTUwWnM2NzlVTk10NkxSRXhocDlKOTMybG5uS2RpSUxW?=
- =?utf-8?B?aXV2TFdIMVlxVE9WU3RyUEtBK3Y1YmVJTzQyaEpiaU01VjlCdlloSlNDWjdk?=
- =?utf-8?B?M2NRZllxczRteC84NnByWnY0clhvcjUyR2tuNm1rcDJpcENpYzVYZ0l2ZTJB?=
- =?utf-8?B?bzlIMWZUNnlLZ2hIYUJvTUtPUFJ5RTFNYy9aOVBYeWpMYTRDZzJFQk56MkdC?=
- =?utf-8?B?aW9OdUc1K3RoRUdvUnBMZmk3R1dJVlB4TmljNmhIdHo2MHFCVWZLYnF5WERG?=
- =?utf-8?B?NkF6Vm5LaSthZlRpWUgrKytqOCtLNDVDREVuVncydlY0UHNWclFDZFBsQWFz?=
- =?utf-8?B?NU9aZ1RSVmExMVFWVThFUVpBTzUvNkIwQzRCQllJOVJGK2NzOGEzT0wzVHVG?=
- =?utf-8?B?alQ1ZFI2SFQrVjRWNUsvUkVza2RsbnZnWHoyNUIxRlJaUVFlR290VHlwRXlT?=
- =?utf-8?B?Mzcxd0VkUVNMcGVIMnZFSzNlYnduQjYzZThRdTYvdEtaMU9rMXl4L2J2U2pR?=
- =?utf-8?B?UkFoSUlLWFQxTEZEZjlvazJnUDhETEhQdG1EeElNWml3TzhxbGZ1eVBOSUQ1?=
- =?utf-8?B?NlhTdThpMHMrTjFEcjFZZFp5MEozcW9Hc0pLenJiU21RZFh3dXA5aTdvYWdQ?=
- =?utf-8?B?YU5ZWktlMnZmZWlpWW1US2x3MmI4emJIRHRpTU5JZk92Nmx3dnd3cFh5bVVy?=
- =?utf-8?B?T0xOMmVjVGNqTXgvRXI5UHYrYTlyZG8xeTZHQ3RudkJrMTE0eEVyVnl2eVlG?=
- =?utf-8?B?aS9GaWJBNG5IZEVzVXQxSThlMGVLVzl1NFV5Q2M0aCs5N0FSdUNUOGM5QkRm?=
- =?utf-8?B?b1FqVXpuUGtLL2ZOODNSTHZlWndYc2lvK2ZRK1l5MmpRUW1NTVladW1FYTg1?=
- =?utf-8?B?MU03UlBUVUVCVk1WdkxPTGJRSlJ0M2lHQnZwM0VkeDFKTjRBQkpFRjVWaGtl?=
- =?utf-8?B?NlF3YVBkVTAvUlpNMEdleVcxSEdabFhIeFZJU3JkbnZuOS9vYzZNY0owdXlS?=
- =?utf-8?Q?VP2A=3D?=
+	=?utf-8?B?bXBzVjFWYXBzOFZHejZseTdLcWVwSGUwQUpVVXhVSjZTSHlHNVNOWTdDWUYv?=
+ =?utf-8?B?c1Y1K0NyWjFudDRKd09QVXNBVTRPNllHVktDUUV2VWY3d0Y5bzMyTVkyTWFT?=
+ =?utf-8?B?MW5DN3pjZU91WGdQcUh4UGFDbksyb1FISG9NclV4VzNEa3ZITDR3THZraTk3?=
+ =?utf-8?B?VlhKeGtpekhzWXNNV3BPNEpPUDA2dTV4aUIrbUh5TGUxRkp3MG5BZWd5Qzh0?=
+ =?utf-8?B?Y3A4bTVnZ3dlVWk1VTUxZjY4cmdFWXd4eC9TV2ROYkF1ZjRNeHM2dSs1ZTJE?=
+ =?utf-8?B?Y3VudEZxaXVwUC9SSFVsdVFVOWdtNmRrbkpNNS9BbkFjb2dHcFAwV0Y0SUdR?=
+ =?utf-8?B?WEQ3Mlo1UkI2b3JBeGg5SkhEN0VuZ3FYdnc4NGVneEhGbzBTTUZlSUk1YnRu?=
+ =?utf-8?B?cDJEazdkVjhXalpzRzJBdXZ3cUNIYVFUdGI4dnlwQzY2UE96SFk0dEhpRENr?=
+ =?utf-8?B?NlRBdUV6SHVrZkUySSsvMmt6VzJkVjFpZE5NSWlnNGtCTDdUZkFoMVpJdys4?=
+ =?utf-8?B?YWc5aGw2bkZnN0x1Rk5CUEsrVjFHQVV4eWFPTmI1eFhJbnhmL0Zyalhyd0ZW?=
+ =?utf-8?B?V2tGVlU0alYySDM3WVNvQmlHVzJwRGlWTTlkcFp3dWdjemM4NTR4WjNMODdR?=
+ =?utf-8?B?K1ArNFNoMlRTK2g0cUV3SWdkRkRUT3VoTE5xalFOQWNTZUhzODQxOElRV3BS?=
+ =?utf-8?B?MzkwY0s2MWw4b1MzS2FLZHNaMzNaTEFEbVJSMGtpdHRGQy92OHhFbm93ck1D?=
+ =?utf-8?B?R0kwWS9vbXNDcUVWemhGbS9WUUYrYXVvVDhqQkt4amhiVnNTd0NFemJTclY1?=
+ =?utf-8?B?Tld2cjFXRVRKSk5ZcHdROVF5OWROQVRoRk5BaWdRMXZyT3Npc3FIazlsbTJO?=
+ =?utf-8?B?NGlpYko2UFFJQWpmVkdKR01iK2k2RGVQMkZxUm92QndieWhoQmhCeXV1ZGdq?=
+ =?utf-8?B?K0RFT3dtRDFKQjJtcTQ1aXg5YkMxSVBqSlJWNElVSnNZUlJ1ZERFamp5R1Mz?=
+ =?utf-8?B?Qmc4SkhPK3BUWmROM0c3d3BCTHYzbWk0WTVVeE9yNTI2UmRTRmxtRXNzUzUv?=
+ =?utf-8?B?TitTa3YxYTJVck05YUhPN2REa2tiMDZLMGl5Q2dSNG9LQkhkVCthYVl0UjBZ?=
+ =?utf-8?B?REU3SWo2U3VyNFlGcXBUU3hsV1cvY3R0bU9DcnppVUthK2JwMHVUaDYydVhy?=
+ =?utf-8?B?WGNna1JqdG9Gcm5kWVZ4b0xnK0M5Nm1DRXJzdWtOQ0o4bzJLTFYxV1hYTnRQ?=
+ =?utf-8?B?QW5hQ3pacU1tYm1scFp0L0lESUthSGV3T0FiM1h2OUdadnpveVJHZWNJa3hV?=
+ =?utf-8?B?Q3pYR2FGMFVvejhCYVNYajVSeXpBVjk3QTlNbjNidE81R1kvNlBWYVFMSTJl?=
+ =?utf-8?B?Z3UwZXZ4YkhWQk4zaFZJV3h5Z2RYV2dJdUkzU3VoQlZQanNyZDFPOXBPUlZG?=
+ =?utf-8?B?d0xFRHVhNHprRkI5RjB4K29PVEFteERSb1VUOCt2QU1zN0hCT09CMmJ3ZDFa?=
+ =?utf-8?B?SHhzeWR3QWRyV3VXcEZUSEMwd21JeEk5aCtKT0dLU0ZFK0RLVXk5MlhiR0c5?=
+ =?utf-8?B?Q245akV6Ri85cmFWbC9pcFM3L0FkdTBDMlJOZUhaZmF1bHRFdlp5TkRNb2Ev?=
+ =?utf-8?B?cUl0bzRyVThsVkJXdzB6b3cyWWNnYXBkUnhFV3RPc09WTFFBUmRjajBWdlA0?=
+ =?utf-8?B?K3h4Sk9OMEVoRGRTUFQzOCszc0k2bG0rcUtsdkdGa3lxYW9SMm1EcDRCOUpM?=
+ =?utf-8?B?K2gvOHhtSHc0bzBHWENXbW4vWTM3WHUxTndWZFMvYmVjYmczUzJkQWRqS3ha?=
+ =?utf-8?B?STJtVVNEZkpUbGkwMy9WTUdUWnJRVGpPSWhoOU1aS0o4eXoyYVJJRTlMTUZs?=
+ =?utf-8?B?dVdhallZQ1c2Ukt1V2s1OTlSY2dhdFJrS01jSkdBTUV2dzVsWmdocThPRDNk?=
+ =?utf-8?B?cjlZZXNpTkJwYm5IM0JaNHJmcXRaU29PcVN5SFRheUhYamxzNU9SMnJUOTVk?=
+ =?utf-8?B?djBVWTJuSHd0eTN4RlEzVktaUStVbjhURFlsMkpYaExEQllPUUNCS01YT2RO?=
+ =?utf-8?B?QUIyQlVTZkk1ZGxKeW5lcmlvWWhCVEszdkZQUmlnK2pUQlF5Qmo0bzhuSXlE?=
+ =?utf-8?B?Z0ZwTGNVWTBTc3l1bjloRHMva0tXMXQ3YkU2bUtsMkRvVUNZUjAyeGFqSUdB?=
+ =?utf-8?B?eWRkOWtpL0NOS2tRQmZaUHc2QkszRDVpMEVlSUR4azhqTzZrdUkxZ2NUVFgx?=
+ =?utf-8?B?M01OV1lPS05MSG9GWXF3WXI0aVhBPT0=?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MS9QTEFHWTE3SkVtQnBJaWJDSkZ0K2pqYUJHSE93bGxLVGtlbmFHYlNJWFJ2?=
- =?utf-8?B?cXFVNGFDZllnT0NDbWN2VFVMVzJGL1Q0cXVqb1Y5K1kySmw1dmtRRzZwSGVK?=
- =?utf-8?B?eHliUnpNYm1RSW83c3ltQXRoQjBMMytYSTdwdC8ydS8zS3hOTmxuNU4xT2dJ?=
- =?utf-8?B?TitkcDZ0Z1Z0OU9IWWorNTNNMm5BbFdCbXNUVFF2VUdBLzZEaVZ0NURsN09B?=
- =?utf-8?B?VkVaV256UDdvQ2xrVzM1OWlUT3NCT0dnZkF6VzJYS0Z6c0dsc2dyMG9wdlh5?=
- =?utf-8?B?Mko0ckduUkxQY2FCVGhhdldqZm8xQkt3QW1kOGRKNDJXY3lsMFQ1N0gyUnBs?=
- =?utf-8?B?dm8wRWovM3JVSXA5b2lyOFpuWEV3a2ZaMzhOeUYrYjV1QlNOVXhGaXZCS2Fu?=
- =?utf-8?B?eGVVR3EzU3R5d2JNVFhrYi9jcHNCM29ZK2t1ZDVOZE5iZmtnSk5xYTR2dEp5?=
- =?utf-8?B?ZlpzblJjYVpKaGg2M24ydkRKSGQvZC9ZbGhkbFNvSFJEYmxhVnNsTTNDUlla?=
- =?utf-8?B?SEJFNnNZZzNsUU5sOWc0Yi9uc2E2OWgrSndQbVBxOTYreGEzbUgxKytiUmdy?=
- =?utf-8?B?MHVYL2pGRFpOYzlBQkt2MFpBKzNwbi92VEpFazdEZlRPSHhOTmFDc1YwMEtO?=
- =?utf-8?B?clBuL2lvbkYwNEl2TzBtK0NpSUl0cTFLRmxzbVFBM0EvTFNEYW9zVytjT1Zx?=
- =?utf-8?B?YlErRkhNemE4cTRJcEZrMXlJbFpLd1VPMXBsNTAzSVlqMEY4cW1UTFZ1bmxz?=
- =?utf-8?B?SkkzNUQ2TTZ2VHVvZ1hYL0JTbzJCbUtUSlJnRi9wK0h2Skx6Q0E2ZGdaZFl5?=
- =?utf-8?B?V0F1bDEvWlhuN0hJTWo1SWFiWExPOHc0ZlFHMUV4a2lWeXdMVEZXUE5kZjI5?=
- =?utf-8?B?TEJlS3pvMzlGYXd1N0x0UStRNHJIK1pEWXZhQjZpOVlBYnRmdkJ4b0Z2WXFV?=
- =?utf-8?B?Z1BFWmlsRUhmb0o5dm1SUnBCbWdwaXdiRmNwVFNzYm5ZSkNuT1g3TmdXZFlX?=
- =?utf-8?B?VjRBaG1UcmYxb0JTTFZ2VnAyOVhKRVJONFdKUU5IRzR1RkZDVTdVWUJ3UjRI?=
- =?utf-8?B?NUJMNmV4dnoxUiswamJocEpmT3puWDJwQ2FuaHFjSkZ2ZHNwdGQ3bFdQdjM2?=
- =?utf-8?B?RWdOZG96cHBRWFp6cStoUkIyMlUvbzRPL1dick45eWJrSWIyR0c5dHhEb1RX?=
- =?utf-8?B?eW1IeWlkT1BpWWkxMmluU3YxR1JPRGNsVVRieXdjOTNTVi9PdWd4NHBLdUNk?=
- =?utf-8?B?RWJOOSs4SEM3bWRMRTNsTXZ6cVdvUy9BVlNTUngxSXora25PejlNMWNvSW5L?=
- =?utf-8?B?VDE3VFo5S1NkNFdQTjlzaE1zUmprNzhLUWJTNGh4OFYyWXA0MHpJcnp1d1Az?=
- =?utf-8?B?Q2lncUlNcVMrYnppMGR6bHZ6a00xMmhoTnBwUEhNSlZOMnB3RjZyWWVjelFD?=
- =?utf-8?B?K2szY0VoWmZVb0JrNWRlckUxRWN2WW1vcElPYlpxREpHUXRWbjNLSW15WUxq?=
- =?utf-8?B?djBRZWhUNlRrZTZFeWhrMzhNZkVtRjAxTCtkSDFNNHdvMGNBT2NmcVh6UlMr?=
- =?utf-8?B?S3VvckdneUwvNFVWeURHWWNmVDdLS3dSRE92RFhKVkY4VHJlblJWU3ZPT2sr?=
- =?utf-8?B?S1pHdXFPeXBkTWQ1WXYvNy9tVmFlZWFSbDdhbXB2aTBlRGlLWXRzbmxyR0Rj?=
- =?utf-8?B?ZDc2ampnbzQyOUgyR2I1TXVya3MvLzdyclQ5TGlTMkQzVk5jVWtIMkZJQnpu?=
- =?utf-8?B?Zmo4dFRxMGpkdUxWTVB0R1llVEFETFQ2d1lzNENXTjAwRENnUVl0WWMwdm1p?=
- =?utf-8?B?OVdKTklWYU1qOFFrN0VYeGdBMm9EZFdyRDNXVzYwdXVUUkdWb0FLbEliMVlk?=
- =?utf-8?B?V1U0d1EyeTBJMEFuZ05ZdmVVWWZvYzVrd2x0R0FzU2hRVnkwUTJSbVQzRUR4?=
- =?utf-8?B?ZUVOa20vdUxjNllhU1RYVC8xVkpwVkhtR0RWdTBTMTBhcS81MmlvMlBJMzUz?=
- =?utf-8?B?aFJyYnJZelpCbmxVTnJEWG5uSWpMWjVCWU80VEQ1NmhNQ1c5OURYWTdrMU1E?=
- =?utf-8?B?L0VZQXlSRnNyQWVDeWlLV3NnQnZBMGFaVWJJWjQxdjNKdlp0Rk5JRlhuRWZV?=
- =?utf-8?B?SEJDS011RlhZWFVUWXZQdnM4REhsVWhlbEVXWGI1UmRaZmtlUktyVGdBdmlP?=
- =?utf-8?B?T3NuUDh4SytaUGoxcytwMTB3azk3MldSUE9Oemo3MitoTHE5aS9xOGxCQ3Fr?=
- =?utf-8?B?a20raTB1dnJrKytSSlRXMm9hYTAxZWRFL2NFMW5udlJiZXdqb1NzY0Fqc2xz?=
- =?utf-8?B?Rnp5aXFBeFp6Q1FsZkoyMHB6b1BNZU55K2RTemo3S0JkMU1KQnpqdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: b39338b0-84cd-4cce-e684-08de54ff3d3a
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 13:00:35.4614
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700013)(82310400026)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 13:01:19.2056
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: u4FNoiMjkeOf4jwoVlDg17IR1R5wkQy7zcvcYxJQ58vlsO4Te+OKqq8od7LZe6HmLi0SBEXDXLRDEoqEBFSYQw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6260
+X-MS-Exchange-CrossTenant-Network-Message-Id: e149276d-b391-440b-f6f0-08de54ff5768
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB3PEPF00008859.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB6889
 
-On Fri Jan 16, 2026 at 12:23 PM GMT, Daniel Almeida wrote:
+Hi Daniel,
+
+On 16/01/2026 13:23, Daniel Almeida wrote:
 > Hi Dirk, thanks for the review!
->
+> 
 >> On 15 Jan 2026, at 14:05, Dirk Behme <dirk.behme@gmail.com> wrote:
->>=20
+>>
 >> Hi Daniel,
->>=20
+>>
 >> On 14.01.26 23:53, Daniel Almeida wrote:
 >>> Replace regs::Register with kernel::register. This allow us to more
->>> succinctly express the register set by introducing the ability to descr=
-ibe
+>>> succinctly express the register set by introducing the ability to describe
 >>> fields and their documentation and to auto-generate the accessors. In
->>> particular, this is very helpful as it does away with a lot of manual m=
-asks
+>>> particular, this is very helpful as it does away with a lot of manual masks
 >>> and shifts.
->>=20
->>=20
+>>
+>>
 >> As mentioned somewhere else already I really like switching to
 >> register!(). Thanks!
->>=20
+>>
 >> Some coments below:
->>=20
->>=20
->>> A future commit will eliminate HI/LO pairs once there is support for 64=
-bit
+>>
+>>
+>>> A future commit will eliminate HI/LO pairs once there is support for 64bit
 >>> reads and writes in kernel::register.
->>>=20
+>>>
 >>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 >>> ---
->>> Note that this patch depends on a rebased version of Joel's patch at [0=
-].
->>>=20
+>>> Note that this patch depends on a rebased version of Joel's patch at [0].
+>>>
 >>> That version is stale, so I ended up rebasing it locally myself for the
->>> purpose of developing this patch and gathering some reviews on the list=
-. In
->>> other words, the current patch does not apply for the time being, but w=
-ill
+>>> purpose of developing this patch and gathering some reviews on the list. In
+>>> other words, the current patch does not apply for the time being, but will
 >>> once a v7 for Joel's series is out.
->>>=20
->>> [0]: https://lore.kernel.org/rust-for-linux/20251003154748.1687160-1-jo=
-elagnelf@nvidia.com/
+>>>
+>>> [0]: https://lore.kernel.org/rust-for-linux/20251003154748.1687160-1-joelagnelf@nvidia.com/
 >>> ---
 >>> drivers/gpu/drm/tyr/driver.rs |  15 ++-
 >>> drivers/gpu/drm/tyr/gpu.rs    |  55 ++++----
->>> drivers/gpu/drm/tyr/regs.rs   | 302 ++++++++++++++++++++++++++++++++---=
--------
+>>> drivers/gpu/drm/tyr/regs.rs   | 302 ++++++++++++++++++++++++++++++++----------
 >>> 3 files changed, 267 insertions(+), 105 deletions(-)
->>>=20
->>> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver=
-.rs
+>>>
+>>> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
 >>> index 0389c558c036..8e06db5320bf 100644
 >>> --- a/drivers/gpu/drm/tyr/driver.rs
 >>> +++ b/drivers/gpu/drm/tyr/driver.rs
 >>> @@ -66,19 +66,20 @@ unsafe impl Send for TyrData {}
 >>> unsafe impl Sync for TyrData {}
->>>=20
->>> fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Resu=
-lt {
+>>>
+>>> fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
 >>> -    regs::GPU_CMD.write(dev, iomem, regs::GPU_CMD_SOFT_RESET)?;
->>> +    let io =3D iomem.access(dev)?;
+>>> +    let io = iomem.access(dev)?;
 >>> +
 >>> +    regs::GpuCommand::default()
 >>> +        .set_command(regs::GPU_CMD_SOFT_RESET)
 >>> +        .write(io);
->>>=20
->>>     // TODO: We cannot poll, as there is no support in Rust currently, =
-so we
->>>     // sleep. Change this when read_poll_timeout() is implemented in Ru=
-st.
->>>     kernel::time::delay::fsleep(time::Delta::from_millis(100));
->>>=20
->>> -    if regs::GPU_IRQ_RAWSTAT.read(dev, iomem)? & regs::GPU_IRQ_RAWSTAT=
-_RESET_COMPLETED =3D=3D 0 {
->>> +    let rawstat =3D regs::GpuIrqRawstat::read(io);
+>>>
+>>>      // TODO: We cannot poll, as there is no support in Rust currently, so we
+>>>      // sleep. Change this when read_poll_timeout() is implemented in Rust.
+>>>      kernel::time::delay::fsleep(time::Delta::from_millis(100));
+>>>
+>>> -    if regs::GPU_IRQ_RAWSTAT.read(dev, iomem)? & regs::GPU_IRQ_RAWSTAT_RESET_COMPLETED == 0 {
+>>> +    let rawstat = regs::GpuIrqRawstat::read(io);
 >>> +    if !rawstat.reset_completed() {
->>>         dev_err!(dev, "GPU reset failed with errno\n");
+>>>          dev_err!(dev, "GPU reset failed with errno\n");
 >>> -        dev_err!(
 >>> -            dev,
 >>> -            "GPU_INT_RAWSTAT is {}\n",
 >>> -            regs::GPU_IRQ_RAWSTAT.read(dev, iomem)?
 >>> -        );
 >>> +        dev_err!(dev, "GPU_INT_RAWSTAT is {}\n", u32::from(rawstat));
->>=20
->>=20
+>>
+>>
 >> This is pre-existing, but printing `... INT ...` for `...IRQ...`
 >> register looks confusing (wrong?).
->
+> 
 > Yeah, this needs to change indeed.
->
->>=20
->>=20
->>>         return Err(EIO);
->>>     }
+> 
+>>
+>>
+>>>          return Err(EIO);
+>>>      }
 >>> diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
 >>> index 6c582910dd5d..7c698fb1e36a 100644
 >>> --- a/drivers/gpu/drm/tyr/gpu.rs
 >>> +++ b/drivers/gpu/drm/tyr/gpu.rs
 >>> @@ -44,34 +44,36 @@ pub(crate) struct GpuInfo {
->>>=20
+>>>
 >>> impl GpuInfo {
->>>     pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Re=
-sult<Self> {
->>> -        let gpu_id =3D regs::GPU_ID.read(dev, iomem)?;
->>> -        let csf_id =3D regs::GPU_CSF_ID.read(dev, iomem)?;
->>> -        let gpu_rev =3D regs::GPU_REVID.read(dev, iomem)?;
->>> -        let core_features =3D regs::GPU_CORE_FEATURES.read(dev, iomem)=
-?;
->>> -        let l2_features =3D regs::GPU_L2_FEATURES.read(dev, iomem)?;
->>> -        let tiler_features =3D regs::GPU_TILER_FEATURES.read(dev, iome=
-m)?;
->>> -        let mem_features =3D regs::GPU_MEM_FEATURES.read(dev, iomem)?;
->>> -        let mmu_features =3D regs::GPU_MMU_FEATURES.read(dev, iomem)?;
->>> -        let thread_features =3D regs::GPU_THREAD_FEATURES.read(dev, io=
-mem)?;
->>> -        let max_threads =3D regs::GPU_THREAD_MAX_THREADS.read(dev, iom=
-em)?;
->>> -        let thread_max_workgroup_size =3D regs::GPU_THREAD_MAX_WORKGRO=
-UP_SIZE.read(dev, iomem)?;
->>> -        let thread_max_barrier_size =3D regs::GPU_THREAD_MAX_BARRIER_S=
-IZE.read(dev, iomem)?;
->>> -        let coherency_features =3D regs::GPU_COHERENCY_FEATURES.read(d=
-ev, iomem)?;
+>>>      pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
+>>> -        let gpu_id = regs::GPU_ID.read(dev, iomem)?;
+>>> -        let csf_id = regs::GPU_CSF_ID.read(dev, iomem)?;
+>>> -        let gpu_rev = regs::GPU_REVID.read(dev, iomem)?;
+>>> -        let core_features = regs::GPU_CORE_FEATURES.read(dev, iomem)?;
+>>> -        let l2_features = regs::GPU_L2_FEATURES.read(dev, iomem)?;
+>>> -        let tiler_features = regs::GPU_TILER_FEATURES.read(dev, iomem)?;
+>>> -        let mem_features = regs::GPU_MEM_FEATURES.read(dev, iomem)?;
+>>> -        let mmu_features = regs::GPU_MMU_FEATURES.read(dev, iomem)?;
+>>> -        let thread_features = regs::GPU_THREAD_FEATURES.read(dev, iomem)?;
+>>> -        let max_threads = regs::GPU_THREAD_MAX_THREADS.read(dev, iomem)?;
+>>> -        let thread_max_workgroup_size = regs::GPU_THREAD_MAX_WORKGROUP_SIZE.read(dev, iomem)?;
+>>> -        let thread_max_barrier_size = regs::GPU_THREAD_MAX_BARRIER_SIZE.read(dev, iomem)?;
+>>> -        let coherency_features = regs::GPU_COHERENCY_FEATURES.read(dev, iomem)?;
 >>> -
->>> -        let texture_features =3D regs::GPU_TEXTURE_FEATURES0.read(dev,=
- iomem)?;
+>>> -        let texture_features = regs::GPU_TEXTURE_FEATURES0.read(dev, iomem)?;
 >>> -
->>> -        let as_present =3D regs::GPU_AS_PRESENT.read(dev, iomem)?;
+>>> -        let as_present = regs::GPU_AS_PRESENT.read(dev, iomem)?;
 >>> -
->>> -        let shader_present =3D u64::from(regs::GPU_SHADER_PRESENT_LO.r=
-ead(dev, iomem)?);
->>> +        let io =3D (*iomem).access(dev)?;
+>>> -        let shader_present = u64::from(regs::GPU_SHADER_PRESENT_LO.read(dev, iomem)?);
+>>> +        let io = (*iomem).access(dev)?;
 >>> +
->>> +        let gpu_id =3D regs::GpuId::read(io).into();
->>> +        let csf_id =3D regs::CsfId::read(io).into();
->>> +        let gpu_rev =3D regs::RevIdr::read(io).into();
->>> +        let core_features =3D regs::CoreFeatures::read(io).into();
->>> +        let l2_features =3D regs::L2Features::read(io).into();
->>> +        let tiler_features =3D regs::TilerFeatures::read(io).into();
->>> +        let mem_features =3D regs::MemFeatures::read(io).into();
->>> +        let mmu_features =3D regs::MmuFeatures::read(io).into();
->>> +        let thread_features =3D regs::ThreadFeatures::read(io).into();
->>> +        let max_threads =3D regs::ThreadMaxThreads::read(io).into();
->>> +        let thread_max_workgroup_size =3D regs::ThreadMaxWorkgroupSize=
-::read(io).into();
->>> +        let thread_max_barrier_size =3D regs::ThreadMaxBarrierSize::re=
-ad(io).into();
->>> +        let coherency_features =3D regs::CoherencyFeatures::read(io).i=
-nto();
->>=20
->>=20
+>>> +        let gpu_id = regs::GpuId::read(io).into();
+>>> +        let csf_id = regs::CsfId::read(io).into();
+>>> +        let gpu_rev = regs::RevIdr::read(io).into();
+>>> +        let core_features = regs::CoreFeatures::read(io).into();
+>>> +        let l2_features = regs::L2Features::read(io).into();
+>>> +        let tiler_features = regs::TilerFeatures::read(io).into();
+>>> +        let mem_features = regs::MemFeatures::read(io).into();
+>>> +        let mmu_features = regs::MmuFeatures::read(io).into();
+>>> +        let thread_features = regs::ThreadFeatures::read(io).into();
+>>> +        let max_threads = regs::ThreadMaxThreads::read(io).into();
+>>> +        let thread_max_workgroup_size = regs::ThreadMaxWorkgroupSize::read(io).into();
+>>> +        let thread_max_barrier_size = regs::ThreadMaxBarrierSize::read(io).into();
+>>> +        let coherency_features = regs::CoherencyFeatures::read(io).into();
+>>
+>>
 >> Is there any reason why you replace the UPPERCASE register names with
 >> CamelCase ones?
->>=20
+>>
 >> I was under the impression that we want to use UPPERCASE for register
 >> names. Like in nova
->>=20
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-drivers/gpu/nova-core/regs.rs
->
-> Not really. UPPERCASE for non-const items will trigger the linter. The No=
-va
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/nova-core/regs.rs
+> 
+> Not really. UPPERCASE for non-const items will trigger the linter. The Nova
 > people chose to #[allow] this to align with OpenRM and, IIRC from the LPC
-> discussions, their registers are automatically generated from some intern=
-al
+> discussions, their registers are automatically generated from some internal
 > docs.
->
+> 
 > We have only a few, we can simply convert them to CamelCase.
 
-Frankly, register names do look nicer in UPPER_CASE, especially that they'r=
-e in
-many cases, packed with acronyms.
 
-Best,
-Gary
+I'm under the impression that we define the "future RFL register!() 
+style standard" here.
 
->>=20
->>=20
->>=20
->>> +        let texture_features =3D regs::TextureFeatures::read(io, 0).in=
-to();
->>> +
->>> +        let as_present =3D regs::AsPresent::read(io).into();
->>> +
->>> +        let shader_present =3D u64::from(u32::from(regs::ShaderPresent=
-Lo::read(io)));
->>>         let shader_present =3D
->>> -            shader_present | u64::from(regs::GPU_SHADER_PRESENT_HI.rea=
-d(dev, iomem)?) << 32;
->>> +            shader_present | u64::from(u32::from(regs::ShaderPresentHi=
-::read(io))) << 32;
+So we want to make the CamelCase the default? And nova is the exception?
 
+I'm fine with that. Just want to make sure we talked about it :)
+
+
+....
+>>> pub(crate) const MCU_CONTROL_ENABLE: u32 = 1;
+>>> pub(crate) const MCU_CONTROL_AUTO: u32 = 2;
+>>> pub(crate) const MCU_CONTROL_DISABLE: u32 = 0;
+>>>
+>>> -pub(crate) const MCU_STATUS: Register<0x704> = Register;
+>>> +register!(McuControl @ 0x700, "Controls the execution state of the MCU subsystem" {
+>>> +    1:0     req as u32, "Request state change";
+>>> +});
+>>
+>>
+>> Any reason why req is a u32 and not a u8? Same for some other places.
+> 
+> 
+> I tend to default to u32/i32 in general, as that’s usually the native machine integer type.
+> 
+> All we get from smaller types is a spam of `into()`, `from()` and their `try_`
+> equivalents. When stored in a struct, they usually do not save space due to
+> padding that is usually inserted to fix the alignment for the type. IMHO not
+> worth it unless it really matters. Correct me if I'm wrong, but it doesn't seem
+> to be the case here.
+
+
+Wouldn't using u8 prevent any accidental access to 31:8 ?
+
+
+Best regards
+
+Dirk
