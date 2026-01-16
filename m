@@ -1,72 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F01155757;
-	Fri, 16 Jan 2026 00:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FED188CC9;
+	Fri, 16 Jan 2026 00:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768523025; cv=none; b=llgCqkonW3ao8ogf1Oo+EwGwcbfj2dEshmaUYalgGteDJMUjj5dXFHW9WUILQGl5DmNVjbDBtpNk+onRiLdSWHzULcx2GBxn34bjWvYfwuJjFff2LtqQG3qZs3S6IjXPzyHrFlKGYIeOlkMPgYFyPcx+IJIITC5vfVS6n4LJQms=
+	t=1768523766; cv=none; b=n4/cax/zXRHB5Od8AzKXKOi2rl2Hzxqsc8IvRVm4tRG6X8TbFTg3OO8H3GB5am0KgXRv7JO3C9ydVzAZ0bx5EU+6buFC5tXcqHAzSci+nei/m49aFozFAAqzNsKHAtoEJ+Wer9Ht7QRd4Hfk7h8444sXvHT5U3ptHXNPZgTzZ6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768523025; c=relaxed/simple;
-	bh=gRr6r85Dw9DNmNU3LbuuzoPVN962amU36uxrHqZxdOY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ac5Qxs4/TnB+x3//gBzHmbNlBAVNXx08WsqUSDY+kLFIk41XkiWDN3Qjkr192cWM/+dRcEpCRjQprIXNeIVGv5l+A7v0WN3vHIuLSg1vUHTIJNmtu9Jl1L1CkTEgtMOuupXQWs9rzI1f2hPwY/4YmW8tAMSRz2nVG0kngdaNZoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VEK90QXs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768523766; c=relaxed/simple;
+	bh=E+ekq3M7DK/UcfRaVUQRzGbW3dunWhCit0SKY6nqEyg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iqs2qsLLv1cEHMnjeYnLuYWCK44BVExtD8DxHAwWrlYUlYrLLVsmMQAivM4i5kxyC7W5NPrHR7uw8+RcoJpg/Kjn5xScUvTr8I9mBLmRbmhSXqA8hIS+WIpEr/V1Xv2Qg31RygHL/AepSRxysSqwNvhlv180PPTF2SP/tP45Dzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=bHfqrQdE; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VEK90QXs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0EFC116D0;
-	Fri, 16 Jan 2026 00:23:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768523024;
-	bh=gRr6r85Dw9DNmNU3LbuuzoPVN962amU36uxrHqZxdOY=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=VEK90QXsVwStggroWyCYy8XdGKFUHHY29zS8oNRAxJENn9j+ejZ4RlCE7hAnC8UoR
-	 oKgQ1Atuphj+b4YiaH1xpHALuyP4DF7W9hEgWLfaMDw/GQAYGGJTzx7VH061l2Z8Hd
-	 jLBTo/Wuaxz3KQDFPWLibZWKvK8YZR9flUMLnScmMSg2aZFRMNbc/daoWYywZOX4wc
-	 3LWuw+UI+fmk+8GfkUHe8Fx23hHvB9cfsK/zDhOFnFfRGQSYk7JPaLPg0a+u9ON9K3
-	 UUJ36nX9LE4F2dhxovyOP29Ayq9kF+LOd82L2za8nqC7A3bbOU4m6SMnFaJYsnDmC+
-	 qpVlF8lSO9gcA==
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="bHfqrQdE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1768523763;
+	bh=E+ekq3M7DK/UcfRaVUQRzGbW3dunWhCit0SKY6nqEyg=;
+	h=From:Subject:Date:To:Cc:From;
+	b=bHfqrQdE1WGwOpXNIvHjOQcJEDLG4ohndq2hePP/J2IIck8iITLyjz1e88tu6a+Ig
+	 sZFiajmLam3kyXSa8DuZQUzShB70oiNeVRaV20cGLb6aVCdprZYWNK802knnB6rM2b
+	 NPxr3EQGdnYKJUUkx8ze8QUrovSxOsvgnKebQp0DufRTJ3TgYJeW0YGiOeJFU6T6Z/
+	 jZ1VJ85hSNjOgNLMG0fPy/0dSQ0refrO52Ijx+Nw9B1BplOldE+f6l8QU9Dz5viAVS
+	 z9Kh3Rr7HaAtSlrQzLeQIkxMo9XPNifMOBZXRME+8DDtthZg9/v+TenLcTq9UgdRUe
+	 O6YnQjhF1JZUQ==
+Received: from [192.168.0.79] (unknown [IPv6:2804:14d:72b4:81ae:67c:16ff:fe57:b5a3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dwlsalmeida)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id AB3D117E12FE;
+	Fri, 16 Jan 2026 01:36:00 +0100 (CET)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH 0/4] rust: Add ARef support for work items
+Date: Thu, 15 Jan 2026 21:35:56 -0300
+Message-Id: <20260115-aref-workitem-v1-0-9883e00f0509@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 16 Jan 2026 01:23:38 +0100
-Message-Id: <DFPL36VGXC4U.2VIGN6HU8DQDJ@kernel.org>
-Subject: Re: [PATCH 0/6] Address race condition with Device::drvdata()
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <linux-i2c@vger.kernel.org>
-To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- <igor.korotin.linux@gmail.com>, <ojeda@kernel.org>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
- <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <wsa+renesas@sang-engineering.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260107103511.570525-1-dakr@kernel.org>
-In-Reply-To: <20260107103511.570525-1-dakr@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOyHaWkC/x2MQQqAIBAAvyJ7TlDJir4SHczWWiINjQqkvycdh
+ 2EmQ8JImKBnGSJelCj4ArJiYFfjF+Q0FwYlVCOk1NxEdPwOcaMTdy6cbrF2UyetgdIcxdLz/4b
+ xfT/hWnKiXwAAAA==
+X-Change-ID: 20260115-aref-workitem-0f57e4fb81ca
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.3
 
-On Wed Jan 7, 2026 at 11:34 AM CET, Danilo Krummrich wrote:
-> Danilo Krummrich (6):
->   rust: i2c: do not drop device private data on shutdown()
->   rust: auxiliary: add Driver::unbind() callback
->   rust: driver: introduce a common Driver trait
+This series adds ARef<T> support for both regular and delayed work items. 
 
-    [ Rename driver::Driver to driver::DriverLayout, as it represents the
-      layout of a driver structure rather than the driver structure itself.
-      - Danilo ]
+- Patches 1 and 3 actually implement the support in workqueue.rs
+- Patches 2 and 4 adds a corresponding implementation in drm::Device that
+  dispatches the calls to the underlying T::Data.
 
->   rust: driver: add DEVICE_DRIVER_OFFSET to the Driver trait
->   rust: driver: add DriverData type to the generic Driver trait
->   rust: driver: drop device private data post unbind
+This was tested on Tyr, and is actually needed in order to obtain a
+&drm::Device when handling work items. This is then needed in order to
+allocate GEM objects inside the work handler that processes the tiler OOM
+(out of memory) events. The current series sets the stage so that the above
+is possible in the future.
 
-    [ Remove #ifdef CONFIG_RUST, rename post_unbind() to post_unbind_rust()=
-.
-     - Danilo]
+This is currently based on v6.19-rc5. I hope we can land all four commits
+on a single tree, but otherwise let me know whether I should split the
+workqueue.rs changes from the drm::Device ones and rebase accordingly.
 
-Applied to driver-core-linus, thanks!
+---
+Daniel Almeida (4):
+      rust: workqueue: add support for ARef<T>
+      rust: drm: dispatch work items to the private data
+      rust: workqueue: add delayed work support for ARef<T>
+      rust: drm: dispatch delayed work items to the private data
+
+ rust/kernel/drm/device.rs | 66 ++++++++++++++++++++++++++++++--
+ rust/kernel/workqueue.rs  | 96 ++++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 152 insertions(+), 10 deletions(-)
+---
+base-commit: 0f61b1860cc3f52aef9036d7235ed1f017632193
+change-id: 20260115-aref-workitem-0f57e4fb81ca
+
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
+
