@@ -1,226 +1,302 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021083.outbound.protection.outlook.com [52.101.95.83])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EFD2848BB;
-	Fri, 16 Jan 2026 13:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768571600; cv=fail; b=bwQPIbB789YBg/kgSwNTk651WRfofeEIRkK6rhxWf8F1Lgt+6QYk+ubX9rzZ8gCbSFUWYxjJ2Lr22PNfmmi5rGQQPpmA1vnBDCX8WCBNyTsb2xBEtq0HshgBPwRn3Jg26qMKCbHdDCcMZgnTFVcV1fdIlJfx67IsKMfh3Tf4jh4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768571600; c=relaxed/simple;
-	bh=3rYjiJb8TZBwCZ3DioqZDO/AB5eMdSNWJueRCyjqDGo=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=cExRgmCfi2doTTuNEqcTZ/vDvjw0fSbMdAZN0xwLL8ddvnCr70ZStD0PXZygCfarmscpysd4x2UJ+el6+EJEKi1c2kJn+8zn99N1ak7PoMLqGBJZ55QizolA3iGaBXqUrZhFN2nJ0aq4C6EEYYa87PApXdcP6Wb5sDnR7s2IUZI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=rF6ADrav; arc=fail smtp.client-ip=52.101.95.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CFC2505AA
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 13:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768571864; cv=none; b=SGCOVlqxIvtUXVzazPrQ74mVfnRMYqWjkrjWiszzOjdWT0IMLRZBlFX7SdIaQ6zwAWcqyL7P+aUGsFAjMrdGM8ilOLNv/U8KAkHHniviRuMODGvc7t1JzXeT1l2J+WdtaB595Q3jb5bDd4R/EMNtNsQPeQwv6Xpk1VdZ8dGWJ9E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768571864; c=relaxed/simple;
+	bh=1tQJsd7iXjjxus53VyDjtHpbaTTaU0lZRlI9haMNmiI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=u7TNtUb3mxEB1D7XKkfavSGAQLKWS5nExyRj6G4tFwXjB/O86yqwrkbkmiv0TOGB5UcHPq6br0Cn9/AlXrO7LBKBGTvoAoprTvfcwCHCFA+Uom4JkVjPcDgt/e10Su9fjvdQqs9avUOue8c2Toyu/GiKk4WAl8di7YR64HntFIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=H+QFkpKR; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="rF6ADrav"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gdeZdkqERTuhrZ8bEF00KxgdA5yzRopujpIptSPX3DfI7lTLMz0IhOfjH/mrPj8KwHD+Ska7fy+iN77nFtcX8NBFItMlyKxOe6Wdbnk+ANvYlbXk8Bha4XRQJkK3fW/2dzfbyrXHlNy0c+CD9nCNzSWiWUdGcRSIWX/bkannWvKVpISDjHSfTnynjUD13m71NE77gUzTkQW68AUhAD31XRxCFJ2mAf7H88URva7X3Z8zKnA9EETvnPUOyhn9Y/TCrKydyQ21VgbLwMBnXpx+pTPcHZf8lHYDlMntRqZfgd1iQfw9njLoUyVJuullJZTxkInD2pFBGPf2DbdgZ7XmeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3rYjiJb8TZBwCZ3DioqZDO/AB5eMdSNWJueRCyjqDGo=;
- b=FPIJ6Od0shrSNZJv5Ds+Gzdg24o61NysnRQyUJXnDv8nQhYhFNnt+17jW64RuHu/DzgHfSGmQkyO3SQDLLqL6cxGzb63OGuYEKXy9t8dINvDCyNcEd7aPGYRtNAamsa4BadF/sT4sU7a2fcHDtiZZpI6WFiECKaelQ9i+zHKGj79oKHuV8UYbyF2dSf2nudWarhYl7eggler0fP5OeRJ7+SJVf1RwWg0iRlfLfUsnuDsEN2lt6vt2/dyAYVazd5HPB4ntAsAd/c0XWzcjCHNQ7hmi4MTgEGtD2x2ROvKcN9XdTsaJP2YCp8nm+7y2SXe0swLmI5/N0oUsztCJRDibg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3rYjiJb8TZBwCZ3DioqZDO/AB5eMdSNWJueRCyjqDGo=;
- b=rF6ADravmVECXRby1DzGBsLP+lv74SYumeLX6IV374qMTWVXFvRUGRCEivkmiJUqAThTBbEbmpcZ0Ug7Jg0/JNeHxY5KPoT3GvWLvb0kxInOcd/OhsSPHab9w4T76PkVtTTXed4Onj1XjbJP+qg/uPEYLqkvfe2CPBrm2vJhT2w=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO4P265MB3631.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:1bf::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Fri, 16 Jan
- 2026 13:53:10 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.006; Fri, 16 Jan 2026
- 13:53:10 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 16 Jan 2026 13:53:10 +0000
-Message-Id: <DFQ2B06J0U0T.M8K7D98WCZYI@garyguo.net>
-Cc: "Dirk Behme" <dirk.behme@gmail.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Steven Price" <steven.price@arm.com>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust/drm: tyr: Convert to the register!() macro
-From: "Gary Guo" <gary@garyguo.net>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Gary Guo"
- <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260114-tyr-register-v1-1-7deb1b33627a@collabora.com>
- <f7ff8b11-b1a5-4537-9227-e42a3a40aa96@gmail.com>
- <A04F0357-896E-4ACC-BC0E-DEE8608CE518@collabora.com>
- <DFQ16QS1RAEL.1Z0ESXE0MBA7G@garyguo.net>
- <25EE982E-B03D-4C50-B973-34AC4FFA96B6@collabora.com>
-In-Reply-To: <25EE982E-B03D-4C50-B973-34AC4FFA96B6@collabora.com>
-X-ClientProxiedBy: LO4P302CA0009.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:2c2::17) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="H+QFkpKR"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 2DDEC240105
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 14:57:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1768571854; bh=RrFaP2szCaQivKfNbTX6qWof933IJE11wwKe8XlBzEY=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=H+QFkpKRASvDndidspqvyVGXAxCMJ2D+rgPjPhZJcHibHiQkjgQSvtTXbbeKirGe/
+	 rSxjRp9ZOJ7BxX5pN/nxaFgfLpWTFcUI1/KYsfhVGOcVppX29Rdwr5EDQLFsZ7iFWI
+	 3OR7PZyS3fMzERj+0Qcuv5sDFgB+y5cZDZZmxYltFL7vYg9kiM25+buZMopP8I+aZ7
+	 TjdUSdAuCw4kjkzHlYJOg2H3uW4xkOH/Igm6Vo/Sb1asD3KoJxCu7/ZUQ5bjjKeXk3
+	 6qxovpDkV+ho+MLCFuUFUqlXlAlUtgI9daCxGY2ZS0r5zyFqwh6odxuF4cPcZ+weDb
+	 4tacC+TFeTVpQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4dt1d52TmMz6tm8;
+	Fri, 16 Jan 2026 14:57:29 +0100 (CET)
+Message-ID: <08956b4fe99619064a4424d500837807ba4c92e6.camel@posteo.de>
+Subject: Re: [PATCH v9 2/5] rust: io: factor common I/O helpers into Io trait
+From: Markus Probst <markus.probst@posteo.de>
+To: Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: dakr@kernel.org, aliceryhl@google.com, bhelgaas@google.com, 
+	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
+ helgaas@kernel.org, 	cjia@nvidia.com, smitra@nvidia.com, ankita@nvidia.com,
+ aniketa@nvidia.com, 	kwankhede@nvidia.com, targupta@nvidia.com,
+ acourbot@nvidia.com, 	joelagnelf@nvidia.com, jhubbard@nvidia.com,
+ zhiwang@kernel.org, 	daniel.almeida@collabora.com
+Date: Fri, 16 Jan 2026 13:57:32 +0000
+In-Reply-To: <20260115212657.399231-3-zhiw@nvidia.com>
+References: <20260115212657.399231-1-zhiw@nvidia.com>
+	 <20260115212657.399231-3-zhiw@nvidia.com>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ 66sLA9g==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-0l0YM7+hBS4rt3w0z3cp"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB3631:EE_
-X-MS-Office365-Filtering-Correlation-Id: ccb8a65d-214d-4ef5-4eef-08de550695cb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YWU1MFpDTVQwaHMweUpSWWJaVnhIUFZzY0NkV2thYWxWWTlrVHRqVWhqRFhU?=
- =?utf-8?B?elVSVHV2a1piUnlpSjlrR0hCOVM5S0RtaXpqbnl0dm13cCtwcDhFY2s3Nmlu?=
- =?utf-8?B?SDE0L3IvdkkrZkM2emh3eVZNS0hQMzQ2d3hUeDVhSmFhNjBGWHRIbGVqN0lY?=
- =?utf-8?B?c3k5S0JGMlN3NmdXaHlxUk1aNHZyOUIzSkg4VVQ2cnA4enBsOVlXa1hIakg4?=
- =?utf-8?B?OVFPSStPQWljZDJVb01EV2ZxV1VCbEZuZXJ4MW5JMTVnQlNYZ0FBbDg1bDRS?=
- =?utf-8?B?NWk2ZEZoTytZRXpTd2ZpdGJLVDNLUzBneGkvbTYwNG5xaXJ3YnZJWGVUNUVE?=
- =?utf-8?B?bkV5YUJiZlk1VGtaWm9CdU5YbVp6MVJUQ2ZvcjA4STVoNVZ5SGxHV2NWZ2NI?=
- =?utf-8?B?ckl2Yi9RNlE3OGxFWTI5bFNvV1cxQzVVclZmdTFTVm9WdTJuR3RLMy9udWlH?=
- =?utf-8?B?ZS9tTjhIVy9SdGJBeEozaktkSGdFbDBwaG5vK3RDS0puQVl3QU44b2hNWE9h?=
- =?utf-8?B?MnA5OWVrejFESUc3NGg5UE9DMURheFdIVksrMk1ySmNEQkd0c0RCM09DbVhy?=
- =?utf-8?B?K2lGUmtTMmFnb2VaZnlpSmVtMG85MDdFL3hWTWNUWGhOd3hvdTJGR3R5WDlr?=
- =?utf-8?B?RG11Qjg2ZGJMZVBxVnB1QXJOaU9UOG1VS1MzNkhUUUhwSzE2eUtoUlFaSGVi?=
- =?utf-8?B?NUNYNXpLUVZUZk0zRk12TDJTWFJkbk8rRWdMWExIQnhsN1NBQkxYMHo5TmlJ?=
- =?utf-8?B?SXRvT0dTN1AzR1dkdlFucWhqQVBTcjlSZ2laWjNvS1pGZnJYYmNiTzcyUkZx?=
- =?utf-8?B?S1c0cUdrekhUSVF4MG1WeXVGRkloR2JoKzM3ZzdENEpaeUdQdk9XQ0Z2czY2?=
- =?utf-8?B?aFFnN0lxYW1ZRVJ2bUJwclBHc3FWT2ZFaDc0NnFPSkN4aHJLZDJEMlRwSnFO?=
- =?utf-8?B?MVg1TCtEeFNzNnZ2N2VMa0lHbDROTHhrbXFWZzZtcC90QUQwSGtqbWVMRTRK?=
- =?utf-8?B?ZXJGajZKYXpEeml2M2ZpSk5kV3BNeHpXNGxiS2J0QWhXQjJEamJrS2ltN1N2?=
- =?utf-8?B?WVMrOGwrVEE0alZkUGZ0SzhEMjIvTXVYcTlGbmt3cys5bCtrVnhsN08rdU5w?=
- =?utf-8?B?L1pVdndqY2krcjRraXZZK2QrVis1VFBnZkR0NitiK2NINTNKaWwrMk5aOCs1?=
- =?utf-8?B?Q3JtUHBwU1BFTFB4VjVXa1l6ekpPMEtxRklacHg2d2cvOFZtMG1lVXRSY2dD?=
- =?utf-8?B?blJCSUFDdTExNUx3akZGQU8yRHRDVGJVVElRbXYwWURvc2xOK3IwNnFYa1Rh?=
- =?utf-8?B?Z3RkdGZQOWI1VXlVUmsvam4vR01ZMlpOUmpHWjZDS25kZEFaU3ZTbzlQVWhS?=
- =?utf-8?B?RXF5blJHM3U3KzdqKzBzZlM3SVRDYWFkT3NtUitaRGlGenkzeGc3TFplWkFP?=
- =?utf-8?B?L09FdVVtd2FhdXh4MDJCT05ZNkN0dE0xZ3QrYnhPbWxBK0lUd1Ixd3dUWlRZ?=
- =?utf-8?B?aDlMUHBwN1pGd1daQzZZNmswYnh2NC9Wd3RIVE1oUUNvT2F6OUJSTzZrMkdp?=
- =?utf-8?B?czNRZ2VwdDliV3NPY09aRkE2dXFJNFJGV05uRXowQlpxeDZxQlcxRyt2V2Fs?=
- =?utf-8?B?U2RuNzFrY1Q1RnZKa0o3MDRyb0wrT2VVRVlEUXh2VGdZK2xibDZqc0FLb2Jq?=
- =?utf-8?B?ZjhHWXltZXBoWHRUOWF1WmtPZE0xbnlKTTJscXpZVnZ4bThZUkZBbENkZTBm?=
- =?utf-8?B?eVhYc2JYMWRvOGs1NTFtcWE3OGk4aTVCNW5xRTdEOHhxeDdhMGFsSUtDcHlN?=
- =?utf-8?B?cTRLYmxrbUtEY3ZUUGwxQmZCU1MxWjZBN0ErYXpSMTBVT1ZsV1N1QmdxV0FW?=
- =?utf-8?B?cmptdkZudmJOcytqZCtQcmtJQUVtUFZsZVhNYjdkcFp6cXBpb2FWbnNSclZh?=
- =?utf-8?B?cGhLYlBsckZ5TkFXQjdDODR4OTNyWTBxK3J6d3NCM2hEbG1uSnNJZ1JHL0w0?=
- =?utf-8?B?WkFNbjRtaEtUc2xOR2QrSzlPRlJyc2ppL3JiQm5KNGo2UVYwQXpQVnQ0ZElN?=
- =?utf-8?B?cGdFQm5wK1AwS2htUTU4RUpqOUlTRmxTS2I5ZWtZUCtHMVFic1B2YWZvMmsr?=
- =?utf-8?Q?fnKM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WTV4MW5QQlFLM0h6ZUVMWlVFQklUT0V6NnM0TjVrQkxHdDYrUDFhZy9EUkR3?=
- =?utf-8?B?RFJqeDgzRVlQT3dlMk5UK0NGV0Vmajc3T0JIZlNLZkN0bkxERFV3WHR2Rmpr?=
- =?utf-8?B?Q2czSDg0VERTUGU0Wk5GcWg3VHplWWo3MkUxSVNrZ3VKWVNRa0k2L2lBZlFX?=
- =?utf-8?B?SFJOUUVaSCtnb0hlUzVEczA4ZDZobGVrb1pRVHk5bEhZejVWZFpjWXlMQWxF?=
- =?utf-8?B?SHRZTC9wYit4NThXTjZ3VDZZV0pkZkNhL0c1eTRjSmZRVjBlZ21oRkdvcWlp?=
- =?utf-8?B?ZnFaSDVvUXJyNng0dGo0ZCtlcmVqZURzVU9FbFViYjJmaFpjMmhIN1hzSDBh?=
- =?utf-8?B?Qk93emNOdklvM2g4NjA3MmVRTElUSXQ0SWRORitxMHdqTzVZdVVsQVJzWnc5?=
- =?utf-8?B?YmdqZGI4Y3dweTdoaW1rQi9hSW45bm0wVlNpZldJelRJT3JPTEw2R08xTVhJ?=
- =?utf-8?B?KzV0M3lVYWRnWElkWDd2VVVrOUw1MUZXZW4veXBTRE5TVVZ3RWkvNFhxcWpI?=
- =?utf-8?B?RzVhT0Fiek1tLzQ4WERRS05VT25ZM1VzZmhQY0xvalNINjJ0U3hQUWhsZW5s?=
- =?utf-8?B?UVVyT284SmJhTE5iWllpTXF0bjgwQms5QzBsN2VqY3lPOGhjK1Z4dzNGWjk0?=
- =?utf-8?B?cDJyQ3Y2SlFESkJpTjd1dXpVZ1VuVVlVSi9XU1d2a2h3N2NUVmtnOUllNDBm?=
- =?utf-8?B?TEp2bE5EMkNsVEs4SFBFRUJ4dnhrOWFCemwrVENzK1M2ZjNZU2lVS256cVhr?=
- =?utf-8?B?T0V0eWx6Z09sb1psZ1hQRjk4U2J0d2E0bC8zbk1jZ1lKUVpFZGxUWURNWXB1?=
- =?utf-8?B?bFU3UWdoWWJsNTc3VncwcVl4ZE5LeXhRWWhNSkREYXpoNHdPVVYvS1l4YkVr?=
- =?utf-8?B?Vjk4N05IYXp6eUFPVVRXSVZzTGt1Y1Q4TVd2MC8wQjVCUjNsVVVXSjNmS2w2?=
- =?utf-8?B?MTBsRXpJRDhYL0hmZEJXU3d2VFVONFFkUEJhajdXVVhyWmJGNHB3MWtlazRI?=
- =?utf-8?B?Vzk1MGtPTmNPaVQwU3lrK2tuWC8vRVlMTFdMYUNRR0RxeGxBdTk3dkZwU0k3?=
- =?utf-8?B?ZnliOUw5bWtCb3JWR2EwbWdTUUlRbzRCenhNdDRRbDNMdkJsTHRIT3I5YldP?=
- =?utf-8?B?NSt5MFJNV3VwRzFqRDlZYjU0NVA1d20ySnVUUHlyT3dRUmY1ZGt5VzZpZy9L?=
- =?utf-8?B?OFIzczc5eU5nMHFGRnVEN0p6OVpZYXV0NC9zYTUrQ0J4ZHN4WFhpK1RQbmw5?=
- =?utf-8?B?S0diTnd6Z0hBS3RTOS9yOVhqTlRjTTgzZGdnZlkvK21DVnZCVkk1bnpoaExY?=
- =?utf-8?B?ei9ENlcwWW9BaGpCMGNZeUd2bWMvMk5JMDA3bnprclk4Q1RoZFZzbmgrVGUv?=
- =?utf-8?B?N0xONWFXSWJsUHo1MzFNWXB4SC8xQ2R0QitBS1hiaWZiWTZ2dmZyS2pjWE1t?=
- =?utf-8?B?THlPUGVib2d4SXJMaDY3M05QMWdic0l5L1RUWnloZlZKcG95OWNta1JTd1hT?=
- =?utf-8?B?VnlBM1pYcVQxSDZyZHlVOW1UQUJOOGdJWXZNaGg0Y2VITGpWSll2Q0g0Ly9p?=
- =?utf-8?B?NU02alh0MWVYM0xOc3BaWjNaR29KRmJjN2hXTmZMWjdhNEw5eVNrOUUzMzNy?=
- =?utf-8?B?RnAzT3hmb3YzMEFvR1pHSlI5d0hsaTEybUtGT1J5MzRoZzNCck9mWGFZVUQ3?=
- =?utf-8?B?aEt4Z3A2dWlpWUNFTTZ0OS93ek1lNk5Od1plZFM3a0Faa0pYazZKSUlmaEYw?=
- =?utf-8?B?Z2dWdXY0TUViMGdtUHBmK2VHMTUxRzRJMDZuTU55a3huVzFtMUZQUC8raFB0?=
- =?utf-8?B?K3lEcWhXVEdsMXNmeGNaWi9XUURtZ1JDYXhMVTg4c1NPMHJIM1F0RU15Ykpr?=
- =?utf-8?B?Y2dsWW03NG1LaFZlVzlkblhIOWxKc3JUZUhHTmNpQjlQME1QMkkrVXFBVTJq?=
- =?utf-8?B?WWR6MmwwRzdTWkRhaXdtUkJIMHltUDUrSHY1S0lRUkZXZ0wyZWxvRDhLd28x?=
- =?utf-8?B?YzJsVi90elJhTjF6OG5IZmd2dHZUL0hYbnpjUy9uMldIcHBZRExzdTNDTDJ2?=
- =?utf-8?B?OXMyUVdoOUVnVHlFbWtwTDgyZWg5SXcrNzErRktOeU9UVncySVZZdWNuRGc1?=
- =?utf-8?B?QU1YT1JNbXgxVHBzQnZ5V0U2MCswWnlNUndrY2hQU1laL0pyVTk5NEExUnpm?=
- =?utf-8?B?K1UybW5uOWFrWWxYVzZsdjVHL2FoelU0NEFHRUFYbHlVenkxbVY3dGNHa25C?=
- =?utf-8?B?UHlpZGFVR3d0OHlwKzZNU3NBSzI5N3lzQ1RuaXpjcUhqRnVsZVBZYU04bUox?=
- =?utf-8?B?QVRrMzhqYjJCV2ZXemFzWEZFaDFYdjNLY1NTZ25CQjdScFBZQytMQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ccb8a65d-214d-4ef5-4eef-08de550695cb
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 13:53:10.5418
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gVWWS+N38XAP7pCkeiIBxj0ydBuZij8RO6w4R1ZtZjqp6sjWMsLCfJEs1m18Lwmc51oAMocZr0gSMQhTbj/Bqg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB3631
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Fri Jan 16, 2026 at 1:38 PM GMT, Daniel Almeida wrote:
->
->>>>=20
->>>> Is there any reason why you replace the UPPERCASE register names with
->>>> CamelCase ones?
->>>>=20
->>>> I was under the impression that we want to use UPPERCASE for register
->>>> names. Like in nova
->>>>=20
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
-e/drivers/gpu/nova-core/regs.rs
->>>=20
->>> Not really. UPPERCASE for non-const items will trigger the linter. The =
-Nova
->>> people chose to #[allow] this to align with OpenRM and, IIRC from the L=
-PC
->>> discussions, their registers are automatically generated from some inte=
-rnal
->>> docs.
->>>=20
->>> We have only a few, we can simply convert them to CamelCase.
->>=20
->> Frankly, register names do look nicer in UPPER_CASE, especially that the=
-y're in
->> many cases, packed with acronyms.
->>=20
->> Best,
->> Gary
->>=20
->
-> I don=E2=80=99t have an opinion here, to be honest. I think CamelCase doe=
-s make it
-> easier on the eyes since our register names look quite simple,
 
-You're on the lucky side! Most hardware don't enjoy that, especially if
-you want to match register names with the ones documented on the datasheet.
+--=-0l0YM7+hBS4rt3w0z3cp
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> specially when
-> compared to Nova. However, I can switch to UPPER_CASE and add an
-> #![allow(non_camel_case_types)] if more people chime in.
+On Thu, 2026-01-15 at 23:26 +0200, Zhi Wang wrote:
+> The previous Io<SIZE> type combined both the generic I/O access helpers
+> and MMIO implementation details in a single struct.
+>=20
+> To establish a cleaner layering between the I/O interface and its concret=
+e
+> backends, paving the way for supporting additional I/O mechanisms in the
+> future, Io<SIZE> need to be factored.
+>=20
+> Factor the common helpers into new {Io, Io64} traits, and move the
+> MMIO-specific logic into a dedicated Mmio<SIZE> type implementing that
+> trait. Rename the IoRaw to MmioRaw and update the bus MMIO implementation=
+s
+> to use MmioRaw.
+>=20
+> No functional change intended.
+>=20
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: Bjorn Helgaas <helgaas@kernel.org>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> ---
+>  drivers/gpu/drm/tyr/regs.rs            |   1 +
+>  drivers/gpu/nova-core/gsp/sequencer.rs |   5 +-
+>  drivers/gpu/nova-core/regs/macros.rs   |  90 +++++---
+>  drivers/gpu/nova-core/vbios.rs         |   1 +
+>  rust/kernel/devres.rs                  |  14 +-
+>  rust/kernel/io.rs                      | 291 +++++++++++++++++++------
+>  rust/kernel/io/mem.rs                  |  16 +-
+>  rust/kernel/io/poll.rs                 |  16 +-
+>  rust/kernel/pci/io.rs                  |  12 +-
+>  samples/rust/rust_driver_pci.rs        |   2 +
+>  10 files changed, 317 insertions(+), 131 deletions(-)
 
-I wonder if we should just such allow `non_camel_case_types` to the registe=
-r
-macro? I don't have an opinion on whether we want to enforce using UPPER_CA=
-SE,
-but at least I think we should allow it.
+>=20
+> +/// Represents a region of I/O space of a fixed size.
+> +///
+> +/// This is an abstract representation to be implemented by arbitrary I/=
+O
+> +/// backends (e.g. MMIO, I2C, etc.).
+> +///
+> +/// Provides common helpers for offset validation and address
+> +/// calculation on top of a base address and maximum size.
+> +pub trait IoBase {
+> +    /// Minimum usable size of this region.
+> +    const MIN_SIZE: usize;
+> =20
+>      /// Returns the base address of this mapping.
+> -    #[inline]
+> -    pub fn addr(&self) -> usize {
+> -        self.0.addr()
+> -    }
+> +    fn addr(&self) -> usize;
+> =20
+>      /// Returns the maximum size of this mapping.
+> -    #[inline]
+> -    pub fn maxsize(&self) -> usize {
+> -        self.0.maxsize()
+> -    }
+> -
+> -    #[inline]
+> -    const fn offset_valid<U>(offset: usize, size: usize) -> bool {
+> -        let type_size =3D core::mem::size_of::<U>();
+> -        if let Some(end) =3D offset.checked_add(type_size) {
+> -            end <=3D size && offset % type_size =3D=3D 0
+> -        } else {
+> -            false
+> -        }
+> -    }
+> +    fn maxsize(&self) -> usize;
+> =20
+> +    /// Returns the absolute I/O address for a given `offset`,
+> +    /// performing runtime bound checks.
+>      #[inline]
+>      fn io_addr<U>(&self, offset: usize) -> Result<usize> {
+> -        if !Self::offset_valid::<U>(offset, self.maxsize()) {
+> +        if !offset_valid::<U>(offset, self.maxsize()) {
+>              return Err(EINVAL);
+>          }
+> =20
+> @@ -239,50 +242,198 @@ fn io_addr<U>(&self, offset: usize) -> Result<usiz=
+e> {
+>          self.addr().checked_add(offset).ok_or(EINVAL)
+>      }
+> =20
+> +    /// Returns the absolute I/O address for a given `offset`,
+> +    /// performing compile-time bound checks.
+>      #[inline]
+>      fn io_addr_assert<U>(&self, offset: usize) -> usize {
+> -        build_assert!(Self::offset_valid::<U>(offset, SIZE));
+> +        build_assert!(offset_valid::<U>(offset, Self::MIN_SIZE));
+> =20
+>          self.addr() + offset
+>      }
+> +}
+> +
+> +/// Types implementing this trait (e.g. MMIO BARs or PCI config regions)
+> +/// can share the same IoKnownSize accessors.
+> +///
+> +/// In this context, "known size" represents the static guarantee regard=
+ing
+> +/// the minimum accessible size requested from the I/O backend.
+> +///
+> +/// Note that the actual size of the resource provided by the hardware
+> +/// (e.g., the physical BAR size) might be larger than this "known size"=
+.
+> +pub trait IoKnownSize: IoBase {
+> +    /// Infallible 8-bit read with compile-time bounds check.
+> +    fn read8(&self, offset: usize) -> u8;
+> +
+> +    /// Infallible 16-bit read with compile-time bounds check.
+> +    fn read16(&self, offset: usize) -> u16;
+> +
+> +    /// Infallible 32-bit read with compile-time bounds check.
+> +    fn read32(&self, offset: usize) -> u32;
+> +
+> +    /// Infallible 8-bit write with compile-time bounds check.
+> +    fn write8(&self, value: u8, offset: usize);
+> +
+> +    /// Infallible 16-bit write with compile-time bounds check.
+> +    fn write16(&self, value: u16, offset: usize);
+> =20
+> -    define_read!(read8, try_read8, readb -> u8);
+> -    define_read!(read16, try_read16, readw -> u16);
+> -    define_read!(read32, try_read32, readl -> u32);
+> +    /// Infallible 32-bit write with compile-time bounds check.
+> +    fn write32(&self, value: u32, offset: usize);
+> +}
+> +
+> +/// Types implementing this trait (e.g. MMIO BARs or PCI config regions)
+> +/// can share the same Io accessors.
+> +///
+> +/// This trait defines the accessors for performing runtime-checked
+> +/// operations on an I/O region. Note that due to the runtime checks, th=
+ese
+> +/// operations may be more expensive than those provided by
+> +/// [`IoKnownSize`].
+> +///
+> +/// Implement this trait when:
+> +/// - The I/O backend cannot guarantee a minimum accessible size for the
+> +///   region.
+> +/// - The I/O backend wishes to return meaningful error codes when the
+> +///   driver accesses the region.
+> +pub trait Io: IoBase {
+> +    /// Fallible 8-bit read with runtime bounds check.
+> +    fn try_read8(&self, offset: usize) -> Result<u8>;
+> +
+> +    /// Fallible 16-bit read with runtime bounds check.
+> +    fn try_read16(&self, offset: usize) -> Result<u16>;
+> +
+> +    /// Fallible 32-bit read with runtime bounds check.
+> +    fn try_read32(&self, offset: usize) -> Result<u32>;
+> +
+> +    /// Fallible 8-bit write with runtime bounds check.
+> +    fn try_write8(&self, value: u8, offset: usize) -> Result;
+> +
+> +    /// Fallible 16-bit write with runtime bounds check.
+> +    fn try_write16(&self, value: u16, offset: usize) -> Result;
+> +
+> +    /// Fallible 32-bit write with runtime bounds check.
+> +    fn try_write32(&self, value: u32, offset: usize) -> Result;
 
-Best,
-Gary
+How would this work with I2C as a IO backend?
+
+I2C by itself doesn't have 32-bit IO, which the trait requires.
+
+There is
+"byte data" - 8 bit
+"word data" - 16 bit
+"block data" - arbitrary number of bytes (in SMBus limited to 32 bytes.
+Outside of SMBus it could be higher)
+
+Note that I only require "byte data" for my led driver.
+
+Thanks
+- Markus Probst
+
+
+--=-0l0YM7+hBS4rt3w0z3cp
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmlqQ7QbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTEsMiwyAAoJEDR2H/jnrUPSwOkQAKpxRR+LhyFgHOI9f+dl
+P0Mh8IBr+ngCVcxNmRABpwGsoMXcxEALhFKOrSuDLOnhTsU5aZz8WWGdH4IQ1dDe
+xe0BWT5B51/yegMNaLSzcYjPyY3oO7zlyKk9wsEIL73MkleIg8RrnMEWCAexeTNk
+dpbFjwkDoULgd34dpG83yC8cPE5MEW1U9NVUk+v2lnjewbHJH31ffzbFJ0NILz0F
+m9SUC44FOLXyGKW8e/azA1cH9rnb3wp3bmJmKtpyrUPFE3hdmXnFG2BhZIzRPrHx
+oJdZKRkZlZ0DCdn5V9dBwNSFKas5ktgcI+HKOqTH4MqvwDl9oPmgrWT5CzIeOTUg
+XW08hqC/nDIOIfe7KRCm/vydasWoTZWSTelFHTrP404eovQvsO9b8GcFTYA0tzT+
+lDERJu/tOf28P4vl8usPa2PPB84OqM+etTU6k3CRz0vRpUUxDCLka0FMM97okFpx
+Wq9W+ataPZVL1JObJij0zhBfuHERMCXD7CQB5AONNG5KPp4I8lDh+4UEruW+s0l3
+u11/Gr5laIzHo+2Wkc5bnbxlurVkp4f0rtetRLsST+SWnN1oInttxplN/H+haoBU
+hCOp2jvXy2Jgvnb7s/w1KvtF7D81lvxOUt3zhhpjpXjZMov1GnwdFeSYsWaugMKy
+mSuQxOXLG4unCKQoGXEUFwv/
+=MkT8
+-----END PGP SIGNATURE-----
+
+--=-0l0YM7+hBS4rt3w0z3cp--
