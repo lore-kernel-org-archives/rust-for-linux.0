@@ -1,139 +1,129 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316CE78F3A
-	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 14:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768659804; cv=none; b=KggWOUwxJATxPQ8Mum4bfNsqv/a2F2fB7L6WdV3MnnPVLWBtmkUdiSoXOkP8l0s1hxENXYfE/eRsweJ0YVAwVpBCHLhGUhFD2GS8fryYXk7McfKaKZByvRhOoRMNTxqCP+WARgoxF9z8qQftcoEMtAmr9requ6bhB2ukV3VhTQs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768659804; c=relaxed/simple;
-	bh=hwFy+Xj+aNPtgocIuwcKMs7980OO7I7rOEDovG/IHyI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WXHNQMvHeJdOuuDjvIORciPy/nsD6aaJaj2xw+trwGISPcdtzvt1DsOGiZrw1uziDLAQw5vRUNWXI361M7z61W02cRBB0MUYVOPYOI632gsr9MHhw5RIZ+8LEHZ/+Z4ZyywYlyn/OHE9hylNRzR4FngVb3iRkVSDq1QmfeyroQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pyHA8Q+6; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B630C1D6187
+	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 14:26:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768659967; cv=pass; b=sRcHkS25RTCLVeJzECrOstYv924D1bNg+/X0cws1Npsgl/HNoW9o6rDhbjcP/SF+LxpfGHzOomx8K3HKNz8dCdfIMxVPvR6r5IYva1KJ8dqR3s6Lxgr37nTKw09m+AK/pMvU9y5iR4PDlKGk9VIXPKqu6rXFM3qeJvKC0Idpj+A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768659967; c=relaxed/simple;
+	bh=6I3ekjB8E1VMKnZVZd8dxWrw1GLq7S9KRWKs5xrZa8k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xrm5V1bKIgKnlGey3Vyy1bhNM7NLMBQ5Gu3EXhyKg5GXXyJMd1ARC/BVT1IWlZtM0rTySF10EjTMp6DE/9VbNCowqtUezkZHgZ+piVLTV6opzFeJ3d4gGZjvI04N8lwkjhWZ6eOyeLIOfqvZnBNpuuSlLiamIlp+QT32oo9GZps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AHy639Ng; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pyHA8Q+6"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b871e14de77so868507266b.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 06:23:22 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AHy639Ng"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b6a868ad45so223822eec.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 06:26:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768659966; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DNJzxBjydM9EKImOqiWXc5O1gGruMfsKN292WWuyKNt+aktDlQw7N+240gQUiTtqbB
+         KOf48Z8WZheydjWI8eikGA22wxkRFptytiovxUAgUL7EhfY/R8Ep/BRkppUsSqlB4WxQ
+         u8rp7dy0cYwojkFDJH72ljGdms/fSQ7X0e2s2lCuznhXcFHyWULJhv8TMex7s8zY1cfO
+         7RIiBhqBJJ1n34/n/Ezxn4c9zCZDiBQhd8Kb5rLnwI6x+wBma7Ykh3FkxbBoHvyRHhIH
+         fO3PV8ZhEPE5czbAM2cRbgshWwmfD3jPB4GX53wDxUoCc7UpKvKHjviSz7QHEOXvH4fB
+         r9WQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6I3ekjB8E1VMKnZVZd8dxWrw1GLq7S9KRWKs5xrZa8k=;
+        fh=hHux6sHEBQT+mV3Z/LxvfwQSOH1vbbqZhiQRGHhl9oI=;
+        b=loayHF4lPkaKia1L3iKDQILYoDDsqpDz7bRzkQTAbfFl3Ip22YYybLSYmgQ/KJp3pd
+         0TnOEnyO9hVeXiM3motHvJzsUqWSwnA/+iTounQD4fQW4dPL9x9MejSRAt+sXRTSHtDF
+         Z0zh1b4TB2P6qnVxm837qDP6WnA/Q9ORKBLh7UHPp51pzFYO3FBE1m5VK6t1L0OZHMLS
+         Ospx6+2UL3vx7Cr/eHu/zW9aaQnzUugCCQNfycZEp4FXVbTKduG8MgukUztgv2iE10rY
+         r2X+mxG05vHf4uJqDlWOVSTFKqVWGWmFal5hX/lOvq2WLPD/J9kqxjthNePctyq2OT/Z
+         EN0g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768659801; x=1769264601; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GtP5uzdWcGvvJD9r4XrRDlpVG1GSu8NNIFG2QNPypag=;
-        b=pyHA8Q+64KZx/ah2aQPlD5oxvt9V48+yAz8EaaNLxRGpCc9cmWkG/i7EhFstft85uT
-         2bWeuPDBbL2enGLIkZy7PKiAYuqd/p8L5rnthVer/yJYiiuCFBCIec4VK5OZ7FWer0+E
-         r3cBUNtfXMmS3m7jheFw8grInZRLX1hBuYAfbOU+BcciFAj9qXbWoeW3eYHq91SbuoqX
-         4VFwYicUqXPWLEkaEV5E/wtN3L3p4jd6MQXLUiI1ERIYQEvEcBQd2P+sepCXcc3l+n4e
-         yn1uPK893Oh82wlO9oEvB7VZCLD1e3KqtAgHGSO5buUwicw5v5Ym+/OeX8ryeQ9BVtKz
-         xAkA==
+        d=gmail.com; s=20230601; t=1768659966; x=1769264766; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6I3ekjB8E1VMKnZVZd8dxWrw1GLq7S9KRWKs5xrZa8k=;
+        b=AHy639Ng+WtBcv/Wghw4w+mtrHL1Al1tUWv69K8VMOEUV4LBrrDbHzjbPvszo0fIBe
+         VpLnsYFJZ4gFnziFzzOC/D1yUWQ2u5ScL/7ACfTPtKxe1c4Wxh8gCZIvY8tw7JZiTcAI
+         lfqTId0RdsEtKMuLrwvk3DYnId9nAOS0UPqOh9pRSQhSbTASjeurii8aDDbNqevOv4DN
+         QeqgspVxtgY6Tyig1riTdbBWKQmxgeVyKkZzZqUc2jLQdETF4tKkYieuGca+l7Ho4Du6
+         xsZJW+1gSObRJ0E+eiP61zdLSIsqvVFNIfnwjCqSeHgnmiGyO5Ci1/ICPa4FicKfTQqu
+         cmgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768659801; x=1769264601;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GtP5uzdWcGvvJD9r4XrRDlpVG1GSu8NNIFG2QNPypag=;
-        b=h9r0lD/xF/XU99ovi/gEVGLlxXvNN5LUhUh4DuKEe7U9lcCXKBCXGT2PirrVWYeiUP
-         X2oD+GDty4CWmbxK3uQQr9N5VdjM7p+W9/MYKF6R6wyofA4NKtXOQ4Bhg3qcxcFl8uf3
-         O0DUr/KjgMxk8IfGlOjYbQlUep2nw9gTjCN54iIAgX9k5FRZ7oEnyvRxTclJwSlRNxsS
-         +mAon67zHHt5gw3z3W7zuIrKuKl+IuPA2zT33hMfyVqur6OhIxwxBT0t9txxet1csbeU
-         lFAlQutWvAqDKipuyzHw1xua5HWGRZFDOQ7vZKBTIvJ5qdaCJGT77RpQ2dz2BOiLcgA0
-         llIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVgH2gGAghWt6EwGxD+laeCJA1WNTgKIOWUKFucfq8fK9p6F3TMNCwiXFw0dC6NCoVvv9u5XH0Ml0racBWS8g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKGWsh+1IgdQT8zzJ33480DRQhQsQG+x91w6q1eFDu6ijv/TWq
-	+KkYyF9SKOea2NDi8z2OgVuJ3HLRNvswcS903JcUij18pHIbNtq5gnZZ6RIVyfWx2bIUoIrYL3I
-	ZG9NhiQyv+hhRj62zBA==
-X-Received: from ejbot8.prod.google.com ([2002:a17:906:ccc8:b0:b87:1dc5:b346])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:786:b0:b87:12bc:24e7 with SMTP id a640c23a62f3a-b8793256e99mr598790466b.62.1768659801506;
- Sat, 17 Jan 2026 06:23:21 -0800 (PST)
-Date: Sat, 17 Jan 2026 14:23:20 +0000
-In-Reply-To: <aWuNbUywGRH1zo-0@google.com>
+        d=1e100.net; s=20230601; t=1768659966; x=1769264766;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6I3ekjB8E1VMKnZVZd8dxWrw1GLq7S9KRWKs5xrZa8k=;
+        b=k5VQ+TkdqDC+/EyMZQUUn104qKibt4pOoPWlPpSf07TPbeDNRJ0SGwfdPpBs3fRARc
+         ePNmdWZ59mX/cy7E2Lozl4ZYL2wum3p2Cxh+/DkbSipMTOxKcTKrpND1Q63UfoSl9itL
+         l0BWO4oCuylqSLsV3uxz1Cilp7iFxl7EnG+jJiXcKu7qu/PWjXIEWfgYJhg6ng343oks
+         2fYMGfIU2wJAur7LWJP6AzUmo3dTNyABbQZan1S7OiM9No1SzMSGKpqWDsHaK2mO31O2
+         qOO+NgbNeWBEch+Mr6stkZZUpE232OpBKlqNDvUR9CYrJC5VWd55ds8GuwC2z0la/8DD
+         qNlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9zlaIiDZk8/NibQFf7/SW6UHKY2Z5RtZiJsFpauj13KKf5mR3QU7yWdedxUt+yFGjQ6BXxikHK6qt+PyXzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIuBxcTt3WYeeAndL6SvDMwq8RLBbZ9akU11kHSw9fzLzvO6TI
+	IhReZCgcHyCorZpPp7pjEwXRKYwFZFrBRrFmgl5gKGNUI0kH9t+YF0e0IrI2ZS3YtOsVdPMEkBI
+	/eb7nFfeMAiLckS9lGL0R4HOnAO2OhdE=
+X-Gm-Gg: AY/fxX7Ho/4m6s2St2vmVbgBn/EZ2F1hjchFbPFcTvXsIg8zxkAcDy+4kEZPYOWEsoF
+	puCN0T1PXAkvG701XJrTPS1dOttia2BT8852E90XhsXhbKnqUe+C5OJ6a0S4cs29zZs2sUQa72k
+	lEKGaVSA/JSg8OdFxpUQ3dEeViGPlKil84ZKoxOr2gxd3crKDYxAvf8Aj8IJJKOdgYXFf1MjbqS
+	UjQqJWJ8jR59dW5Ee9SvhvAZWURi2oHAvhnRtmk7OaeQRbjOmA5OBs99ZEAjysEaxVZ6Bouxh6b
+	/ZN9FUDCqBSZ+03ddr95fglwdUodaDoalsFu9hXut8jpNSNZxB0WmIk8mIHSfvu9ACysvNCa/KQ
+	szWqtv+U42Icl
+X-Received: by 2002:a05:7300:df4c:b0:2b0:4f9a:724b with SMTP id
+ 5a478bee46e88-2b6b40e44b2mr2629049eec.6.1768659964254; Sat, 17 Jan 2026
+ 06:26:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260116214959.641032-1-ttabi@nvidia.com> <20260116214959.641032-4-ttabi@nvidia.com>
- <aWuNbUywGRH1zo-0@google.com>
-Message-ID: <aWubWE4kstGI42P9@google.com>
-Subject: Re: [PATCH v5 3/8] rust: uaccess: add UserSliceWriter::write_buffer()
- for raw pointer writes
-From: Alice Ryhl <aliceryhl@google.com>
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: Matthew Maurer <mmaurer@google.com>, Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	John Hubbard <jhubbard@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Alexandre Courbot <acourbot@nvidia.com>, nouveau@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260117094710.24301-1-work@onurozkan.dev> <20260117094710.24301-2-work@onurozkan.dev>
+ <2026011725-contour-salary-d3d1@gregkh> <20260117140240.15d1120c@nimda>
+In-Reply-To: <20260117140240.15d1120c@nimda>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 17 Jan 2026 15:25:52 +0100
+X-Gm-Features: AZwV_QhFy4A2Zynn1rTen7q8dcuc2-wIF1pSD5HWCNOcNkB9PHsr51QcOT7qD3w
+Message-ID: <CANiq72=Jzr4SUH3G5AWS4iLoN7o5gM5s6+K_Y-fJk5uuFnMDwg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] rust: simplify `Adapter::id_info`
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: Greg KH <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, 
+	rafael@kernel.org, dakr@kernel.org, ojeda@kernel.org, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 17, 2026 at 01:23:57PM +0000, Alice Ryhl wrote:
-> On Fri, Jan 16, 2026 at 03:49:54PM -0600, Timur Tabi wrote:
-> > Add a new method to UserSliceWriter that copies data from a raw kernel
-> > pointer to userspace, without requiring a Rust slice reference.
-> > 
-> > The method takes:
-> >   - data: raw pointer to the source buffer
-> >   - len: total size of the source buffer (for bounds checking)
-> >   - offset: byte offset into the source buffer to start copying from
-> >   - count: number of bytes to copy
-> > 
-> > The method is marked unsafe because the caller must ensure the pointer
-> > is valid for the specified length and that the memory is not mutated
-> > during the call.
-> > 
-> > Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> > ---
-> >  rust/kernel/uaccess.rs | 50 ++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 50 insertions(+)
-> > 
-> > diff --git a/rust/kernel/uaccess.rs b/rust/kernel/uaccess.rs
-> > index f989539a31b4..8bbb0084abb1 100644
-> > --- a/rust/kernel/uaccess.rs
-> > +++ b/rust/kernel/uaccess.rs
-> > @@ -481,6 +481,56 @@ pub fn write_slice(&mut self, data: &[u8]) -> Result {
-> >          Ok(())
-> >      }
-> >  
-> > +    /// Writes raw data to this user pointer from a raw kernel pointer.
-> > +    ///
-> > +    /// This is similar to [`Self::write_slice`] but takes a raw pointer instead of a slice,
-> > +    /// along with a total buffer length, an offset into the that buffer, and a count of bytes
-> > +    /// to copy.
-> > +    ///
-> > +    /// Returns error if the offset+count exceeds the buffer size.
-> > +    ///
-> > +    /// Fails with [`EFAULT`] if the write happens on a bad address, or if the write goes out of
-> > +    /// bounds of this [`UserSliceWriter`]. This call may modify the associated userspace slice
-> > +    /// even if it returns an error.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// - `data` must point to a valid memory region of at least `len` bytes that remains allocated
-> > +    ///   for the duration of this call.
-> > +    ///
-> > +    /// Note: Unlike [`Self::write_slice`], this method does not require exclusive access to the
-> > +    /// source memory. The memory may be concurrently modified by other threads or hardware (e.g.,
-> > +    /// DMA buffers). In such cases, the copied data may be inconsistent, but this does not cause
-> > +    /// undefined behavior.
-> > +    pub unsafe fn write_buffer(
-> > +        &mut self,
-> > +        data: *const u8,
-> > +        len: usize,
-> > +        offset: usize,
-> > +        count: usize,
-> > +    ) -> Result {
-> 
-> Why not this signature?
-> 
-> 	unsafe fn write_raw_slice(&mut self, data: *const [u8]) -> Result;
-> 
-> You can implement `write_slice` in terms of it.
+On Sat, Jan 17, 2026 at 12:03=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.de=
+v> wrote:
+>
+> I don't know what "rust golf" means, the main motivation here was to use
+> a more idiomatic Rust pattern.
 
-To clarify, I think this would be a simpler signature for
-`write_buffer()`. And `write_raw_slice()` can be used both for DMA and
-to simplify the existing `write_slice`.
+I have seen some patches recently arguing certain methods being more
+idiomatic etc.
 
-Alice
+I would like to caution that the fact that a method exists doesn't
+make it a good idea to automatically apply it in every case, and I
+don't think using a maximally functional style is actually idiomatic
+in Rust to begin with.
+
+Even if it were actually more idiomatic, the idiomatic argument isn't
+very strong anyway, i.e. what matters is making the code look best,
+and the change needs to be a fair improvement -- otherwise it may not
+be worth it to shuffle the code around etc.
+
+In this particular instance, it is a significant reduction in lines,
+indeed, but I don't think the original code is "annoying" at all -- it
+was already easy to follow.
+
+In general, I think authors and maintainers should pick whatever style
+they think suits best for each situation, since both can be overdone.
+
+Cheers,
+Miguel
