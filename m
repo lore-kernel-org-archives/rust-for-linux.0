@@ -1,69 +1,75 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021126.outbound.protection.outlook.com [52.101.95.126])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022108.outbound.protection.outlook.com [52.101.96.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2139475;
-	Sat, 17 Jan 2026 16:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.126
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0972F35959;
+	Sat, 17 Jan 2026 17:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.108
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768668542; cv=fail; b=fX2ZEyWZOvo+QAMLLuNVBtcFJGUc4XOAuy/ejlIxlw9pHWV1+1pNxPctU8iChDczll6wR2yuEadVVZAhc1bi057UdMiW2MpZYyJSTIlYhmu79CGnC7HsvBqansyRG5dvu4zmFeaB6XOrn5cNof6QdaQRuy0W/Uu08jzolibxrlc=
+	t=1768669402; cv=fail; b=mtbHY1mQGT7+hVbTJ+moKMpVFGBnYkNIMVVxxvTPR2SZbehjmbZ2QhSLZhTGUbrbKriwNIDX+h7mBBjhfzWr6poUSYKdU6HuFC0GXVYtQpu6gm/o0CZ3m1EHwk4ZUYfcXgh1sOkMjzh0WjF5V3C1h5uSWt2sT8aBdsRj01QyVxI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768668542; c=relaxed/simple;
-	bh=2IjmlUNxNk4bkWnQ9Al56UTZbn7lpSTzFZAmH6MbenU=;
+	s=arc-20240116; t=1768669402; c=relaxed/simple;
+	bh=aqOCcwCfWVSY2Chs7T4nnRo7ogsAEm2n4q2nwuVxJ7U=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=PL8qj4gqiDaqJgrDmBaTmjK4or5QlOFLrROFvz8l7/9SsWiBkkn8t9JWYhpX2TOMBGC395ZEmgFrkABC4JIY0UyCJix7quawIQKGwLK+xS9r64AuNVamrKLEs231RI0MM++QVYzOlV4WrM+Zt3MZUlmHzvoeSJiNwkQ7j2aLBjs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=DmfmcCWI; arc=fail smtp.client-ip=52.101.95.126
+	 In-Reply-To:MIME-Version; b=Ix1rnqbFD7RDX639yLI8ES4kbrOC253bxpV1otvkb4BJW5zTHP2MOxM052z4epyfnPpGqWhnhNFHxlK2oo5y9yrYb2CqeALW6Gi33yrYiFD5HN3IbgGE+N6NE4SBCh58giI8sc1hr90Y96AI2fL6ZASw+Jce8LqoQybZAkYLSbk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=TLum0tcn; arc=fail smtp.client-ip=52.101.96.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="DmfmcCWI"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="TLum0tcn"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TBFttfXaYJPGVy3rj9cfRzQwXmT6I3Q179UynOytdEvg4hhBSnMi3PZ0J6x8HyG7S/zv2NOk1Zms2hOY/yDbpx3GQsZtpay8xgQv5utblPfDl5aK5xkjTw4V1ez3XGfqlp3bnCX/OMCTKKpCu6UCp/LCLTwO9hrhvuMOuikIdxqb6zGZqcWgVDTioifzBv+zUDh2Tlqve9su6ohNV2pT0w1qXGKgA8oc7JO/pl00tc8JjZ2RMnbHxRQdLgnzNVJEn3b6/4bQ34AvtBpJR4bSOjKGQ2zWnLPmD/ekD0uMkVecyxQRhsoBSBvTKhxW0f1u/P+t+jsa3VP5Lcutw1Ifiw==
+ b=hJ7xD/5k8fuBlypOmQ3BpA9j5AwmFHx6a+zmzZ9eKC1So1iazhp1KZzv74vwkXo3NKOVzN0t/KgUoKmBbX0JLQuSNnDuKfL1OHLbMW8Na9Z+vuSu6De71DzWXxNQer403i3Od76ZEhK2ChiBIfcmd7hotHe34Nw2nnyTq++LR5vJiZV8bcFPK/JO2kff3BrYY3k2gtHYrAPSl8+EByBrLo67AshbfcNVWpv9mOIQHbovPUQUmSnMogkZ05BqcjobExmmsY6Un96Kf+ffUlww1V0+YipdwVaHZIgDlI4O78TQE5KoYACcN9ZNLCl9Mr5bUVLmJscewoBHq+DqR7rvSQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2IjmlUNxNk4bkWnQ9Al56UTZbn7lpSTzFZAmH6MbenU=;
- b=Lh9VahP9XBdIsjzToegIsp/ge+MpssftaS4z53MxLaMKYMAyvup8aWXF5t08HZ3rIwZzKr3sHPG+WVoF6464803Mq6vD+1tLlLEEGWTn+kFFkxSmZKU8LhG7hKiwMvtGOlhSgT5C9FUO4fznDDVct6DWi7/hx1r+6FFWWO1xntc0oo2tl2TcdD8GwNq97M6G8sfDc/Nmkx+Z7ZpIrCOYRCiI7DGfZwiS1rR17J2N7cFPExz7FD5v/Q8qWqagCiwjiB026IXrX3pQyyr4AqXqaWGNbYbKXW9gkfNoieqA98QsxLsdQXpqH+AH323KtdNhjSD4xMe+f9OumJC5af4yKw==
+ bh=2viXxzIoCJQ03508/1IJQFljWEp1j2YIA51mMpQgsVU=;
+ b=Zc4b5acNS7YQbczLjQFGswHbShs9dsgKz51xddOFf7/JsY1eec0RIMKVwJ1CNI+lQiRtoR+zS7jhQ2RPZXS2KTp4zzp8GuNd+A7Z9kLpTpamoQT4S6UYDDc2RY84PXPyhkFZUj7Y8Roz8/A6IWnEbJiP/GthDXkUvQHh7WzYvMRWakgqC48Uh8vgNC8R4Dbir2DzGh3bNdh2tUZFiqE6tih2LLa9mspEakJGSlNVA4xIf2ZhymlxJ38QR/u0Zt3gXfpTswWIG8FAO2W/5Sxfa2WXB7lQ+IifrI+tdv97ebsSGyj308O/wRXPP62QCabaEFNoB/6186knQDCn7vpSQg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2IjmlUNxNk4bkWnQ9Al56UTZbn7lpSTzFZAmH6MbenU=;
- b=DmfmcCWIkkxTd8v/JDUZWLeTVnRRIsBT99XjVfrHEKMk5jR1HG3sPTr7Htv22beygB/QPntoJGt21Bt1SRLp+lLY13lARGkFTaQG6XzWi4/W55Lh7KP2yxe1RGwzWIy5hjT6HsdZD4K8kb9877/kpsYnuAmw1PD4WgZQPQh9b8s=
+ bh=2viXxzIoCJQ03508/1IJQFljWEp1j2YIA51mMpQgsVU=;
+ b=TLum0tcnPtCseabLiu09LfUrIh5c6Q4qsWeSxfuLsH9BNyfP2+53w3kbMAfiSs+CcIYZIYtfZb1fbDKIzoKgy4VhkLL9PSYuO7GUBTFbUtgDKBjNbtYKeD5EkufyrMmg+LNY+t8QNc61SBW/zrnSZQ07XBDLBiPxblaX/FpvINU=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO4P265MB6350.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2e5::10) with
+ by LO2P265MB3215.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:156::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.10; Sat, 17 Jan
- 2026 16:48:58 +0000
+ 2026 17:03:16 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9520.009; Sat, 17 Jan 2026
- 16:48:58 +0000
+ 17:03:16 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 17 Jan 2026 16:48:57 +0000
-Message-Id: <DFR0O5DP2BNY.1SI7IWT0J1YU4@garyguo.net>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+Date: Sat, 17 Jan 2026 17:03:15 +0000
+Message-Id: <DFR0Z3KHYS62.37Y0R286DPTUQ@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: ptr: replace unneeded use of `build_assert`
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Mark Rutland" <mark.rutland@arm.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>, "Frederic Weisbecker"
+ <frederic@kernel.org>, "Neeraj Upadhyay" <neeraj.upadhyay@kernel.org>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Josh Triplett"
+ <josh@joshtriplett.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Steven
+ Rostedt" <rostedt@goodmis.org>, "Mathieu Desnoyers"
+ <mathieu.desnoyers@efficios.com>, "Lai Jiangshan" <jiangshanlai@gmail.com>,
+ "Zqiang" <qiang.zhang@linux.dev>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH 4/5] rust: sync: atomic: Add Atomic<*mut T> support
 From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>
+To: "Boqun Feng" <boqun.feng@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rcu@vger.kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20251216-ptr_assert-v1-1-d8b2d5c5741d@nvidia.com>
- <CAH5fLgjP6O0KTsm+dioy0VUm791zrktLTkAtQsG2uN3JSQFUVw@mail.gmail.com>
- <DFQJEAPGK791.17H92ET2Z9B8Z@nvidia.com>
- <CANiq72k-69Q2iZ4zwyUZ3QOXXkiUc1zSDeO6AuhyDWnsTWv_Pw@mail.gmail.com>
-In-Reply-To: <CANiq72k-69Q2iZ4zwyUZ3QOXXkiUc1zSDeO6AuhyDWnsTWv_Pw@mail.gmail.com>
-X-ClientProxiedBy: LO6P265CA0011.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:339::17) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260117122243.24404-1-boqun.feng@gmail.com>
+ <20260117122243.24404-5-boqun.feng@gmail.com>
+In-Reply-To: <20260117122243.24404-5-boqun.feng@gmail.com>
+X-ClientProxiedBy: LO2P265CA0503.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:13b::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -72,119 +78,354 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB6350:EE_
-X-MS-Office365-Filtering-Correlation-Id: e3864281-b60d-44a5-b102-08de55e84f3a
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB3215:EE_
+X-MS-Office365-Filtering-Correlation-Id: 393cd55a-1c4d-4416-6072-08de55ea4ed2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024;
+	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Rm11T1FLdCtIT1k1VVdGVEJFYTJ0eEY2YmpoWUdLM1o2cGVVQTdxVUZoUGV2?=
- =?utf-8?B?TVZscUh5OVdXWmVBZjk2dWNMQ0krNWdXVTBmSitDS2NNWHdmREFrU1VyczF1?=
- =?utf-8?B?aHB5WUVOY0JuZDVpdFdUSFZ1L0pYTHVTNUx4WlZyS09waGQzRkVHUXk1VXl6?=
- =?utf-8?B?OXJONW9iSFE4N2RsRnNvN0tta2s5TCtRMXNRSnVUUFl1WUpib082WnFEMC9W?=
- =?utf-8?B?aFN1SWx2NnZWUTF3a050aW1YUGsrQm1SSXRxeDV3SmdnWk1nRXVvQmF4SVJk?=
- =?utf-8?B?QmN5TGQvUTAxall2TjIxVzQ3eXpBQ28rNG9MbndZc0R5NGdRT2ljSXU1SjUr?=
- =?utf-8?B?OFd1T20zaVYvK1lxVlVmV2hhVHRHeGFFN3pQRjRFYlA0Q2lNVDFrNGMyclFh?=
- =?utf-8?B?L3orNXlDVU5pcXhoc3hVZVlDdXM3endTMHl5RFkvSURWWHVQeFNtS3Fsa0x4?=
- =?utf-8?B?YVZWQXQ1RkF2TUxEVGk5R0NxNWhmSjZPdnZtQUhTSkY4UmJEL2NuTTlqcksz?=
- =?utf-8?B?M0NDRSt1U2VYcGlSYlBKWld4Yy9ZcmJXS2l2Z2xVVkdQS0tKTHY3WG5CS3pm?=
- =?utf-8?B?eGs0UHZPcXBqay9qemhNR0Mwd3ROZzRLeStJNnZwZE1JUUcwYVBjbE13NjhI?=
- =?utf-8?B?dlBwV2ZTakEwZ010WTRXenJHdDNXOHhYL0ZPeTVNWFV1blZmdmFNZW9BM3dw?=
- =?utf-8?B?emV1NGtteG1Dc1RtR2tYM1ROempaZTBBUWIrSDVzazhNdGhRU1gwZysxRmxC?=
- =?utf-8?B?dDlOZnFKM2x5MUs5STJ1d09XTk1GdmdtcnJoZ24vUFBTWDdYTElUZmpkMVRu?=
- =?utf-8?B?UFdHa05TaDBXc2JqSTI3WUE3ZmNqWmgvRVZCTEhPSlRCbHlVNzc3MnN2MWVF?=
- =?utf-8?B?NDZERHoxamtYdkhFN2E3ZktpMnA0Vm1vK3oxa1hCN2lmRWwwZWM1by9ZWFdk?=
- =?utf-8?B?S2xMMkZiWHVEbnFTemY5eUZ3Z043VmhVYzlHY1NITHBuUEozZCtrOXJHMUZi?=
- =?utf-8?B?TE9ScTFLZndGOE90YkpacjRhS1ZTSzl3cFRCclgvcWtOQkRPZmVHV3NqYS9V?=
- =?utf-8?B?RHV4WmdaV2puK01hek0wclNvNy9hS0srdE5iSGlFVkQ5TXlRRitQanRZNDFK?=
- =?utf-8?B?bXhJVzl1NnVNN0N2K2tXcjRhYmd1QlhnYUs2Zmp0WEJBc1g5MjlsZlVFWGJm?=
- =?utf-8?B?dml3bXBVUTlZZEFxYUZhOGlVeDJ6T2xkeU8zNUQvZm9nOFJ4aHAraHJSS2F5?=
- =?utf-8?B?MFZrRlFMYmJmaDNSakJHTXN1SWVHR2FTVE4rVzVKek4wVFVHRVY1SVA1ZFlP?=
- =?utf-8?B?ZEFYRGxSOXg1R25iQmwvTno4a0g1Rk5lMy9jdmZWYTV6bUdSL1N6TWtIMTU1?=
- =?utf-8?B?Z0JPZmlqNUVocXNlcysxdmxaTDBVSkplNVNMRk5mL3ZhQytDd2d6WFZuNkdi?=
- =?utf-8?B?UUZEZzdUTUc3YUoydzZHYU9qL0k4YWY2VzIzd01OQ2Ruc3d4QlBOZ0tFZFFn?=
- =?utf-8?B?Z0c2MmZnZENUWEFTQ1VGZkpxV2xOcHp4OUhHeUdVa05jSFFodU5leGwxcmVp?=
- =?utf-8?B?NkIySTh1Z3l5R1NtZUovcit3czdqcWZmWkU3WXNRK2lZRlF1cU9IeVFVYnlh?=
- =?utf-8?B?Qmo1WnBXVS9mUU54aVphbDZEdVNBZ1dFWGNyeEpURnVnOUZWOXM4OTRNbHVh?=
- =?utf-8?B?SUNVSS95ZjR2WTNJdVFSMXl4ZXF5YmUrNDJQMmoveEpLN2dwTFhSMkR5bFEx?=
- =?utf-8?B?czBXdi8wbTUxWXhGWXJVOWp2ajhJb2pRUUZRMlh2UDNLSGI3THpzNjRYQjB2?=
- =?utf-8?B?TWc5THZxUFczKzFnbThKNFgwOHFPOUpuekJOTGZlb1poaFB1TjBZU081SEVD?=
- =?utf-8?B?cTdVZWt4NWlSWmNxY2lnaHh3V1hCOWdCZzIxbGlrVjRLZU1NN3pRRjdvTGFO?=
- =?utf-8?B?WjBFOGM5MWF2MFRyWGswNHBUb3l1NmF3TXdkNlVrS2pCcHJpQzdrSnF0K1JU?=
- =?utf-8?B?aGt5ZlIxWDZjbVV2S3VWbjB0RFl0cGFCY2tmc2lJWVNJTEs2R0hYYjV0S2FT?=
- =?utf-8?B?VkFYVFFWdXNMUzlITTkvV0tKMCtZdDBDeFY3QzNWUmR3V3dQWkh2SElCeTkr?=
- =?utf-8?Q?PQ48=3D?=
+	=?utf-8?B?cWQ5VkVWVXhRRTYyNmFCRjhoVTJkVS9TVUpNdVU2eVJ5L3lLbElFZW5jQnVn?=
+ =?utf-8?B?UXRTVUZIa1F2bUg0eGZyNzh0eldsaHRMUFVGQnFVNCtBN1JDbzcwb0JBWS9v?=
+ =?utf-8?B?eWpxUzUvbkVXQnhOM0NNdkx2QnVneGt0N3R6OUVGcVJkZGdkSGVLYnlzSkMw?=
+ =?utf-8?B?UjZSL1V5T2hVVHYwSFJ1b3ozK0lHZ0tDTE1YcngxZlhsRTNtazhZYjVEWSs3?=
+ =?utf-8?B?MFBuc2QreUR1dlBXSzNDUjFndWRsZVRkL1dLaFhMY2hyMk5RaGhFOWxUc0tU?=
+ =?utf-8?B?TktDYzF2UGs4SU16NEYvNGVLRGpQOG9CZ2RzaGFsWFFwZGpvL21Zc08vYmhY?=
+ =?utf-8?B?RU9Zb29vOWpPajJ4YjZLN0lRdFNLbmVhbDdyV2JBZUMvOVB4ZkZTVVFsS3dU?=
+ =?utf-8?B?SStUeWNiMlRNNTB1VmJoVDc1eS9WNFczRGFHU05MZlpDTEE0bVVoQzZqTklZ?=
+ =?utf-8?B?VGRQODh5d1ZRWis1V0U4WDdyNjdRMUdLRE1Xb1QwUU5ZM3lyZThwNWhxOVJ2?=
+ =?utf-8?B?cnJIUHo4MzhCMWxXTjN5WWFnM3hxNjY0c0tzZnM0T1d4Qjh5d0VNM3hIMTFU?=
+ =?utf-8?B?OFdldkhCUlNHR0lDUGNWb1FkLzQzYWdCb0JoM0JRdmIzazhiQkhFTTIyVVBR?=
+ =?utf-8?B?Y3hHWlZYcEduVStWVjFjSDJqWDZ1TEV2bU1VTldxemtYUG11YnVYVmY4S2tr?=
+ =?utf-8?B?eG9NbUU0MHlqNzVsRE1yWVZpRWQwTTVJWDNkMElvRldsQkxmbldEUTRybG5M?=
+ =?utf-8?B?YUtmNDd5eUkyRG1iZTZqRkwzVUJySGkwZXdhZ2I5VmlqN1N2akVkRGhpV0Mz?=
+ =?utf-8?B?SDBSN1ZJUHJaNlZGUmg5LzZoWUF5NS9QNHJkd25VQ1R5RCtTY0dNTVc0SE52?=
+ =?utf-8?B?MHJUS0EyTUhkYktqdHVJSXJPeWZONEhnSnFjZUtNamNGYXdxL0x1cGJnZGxE?=
+ =?utf-8?B?REJUVENFeEVwdmVNM0dCeXhYTW80dHRmK0ZlOWZraTZVVTA5anlMTDd0T2to?=
+ =?utf-8?B?N0sydWg5dkdUd1Bra1JXU2VJT0xUVkl3aVNmYStqL0VmUHhaU1pwbFc2QTJ4?=
+ =?utf-8?B?WXpjbTdiQktnZnp3WEI2eHpBdmxHUGd6RzM1dzlsTGU5NWszNFA3TW5nVDFQ?=
+ =?utf-8?B?cTRpZjB4OGRJV3dsNElOQVo2cTJiNitUZi83SDQ5SFFNRk95OUZKQ2FVL1BC?=
+ =?utf-8?B?MGxaYWhMbkFrWnpzY2NCdEYzbjJiOFpWbk5wNkZJUmgyT2NONVRJbjRYbkpz?=
+ =?utf-8?B?OXovazIwOTdsVmMxRWdNWUpXYUprK0xFSWFsV3YwR0FEUUF4UDQ2d2dySXlX?=
+ =?utf-8?B?M3NSRzBuRi8rcm05TjlFZC9xdmFLMytpZEk3aFNQcDd0Zmc5SFZOM1c2MnU3?=
+ =?utf-8?B?RzRLdmp4cVQ0blhLcWpYQ2c0azRSM0RDdWVxcXM2dHRxR2crR1lwSzJRMWJP?=
+ =?utf-8?B?RVJpY3dhbDh1NStYSlFuSDJmNEVoMEN6TW9ZQmZ3Uk5TTStSWXFkMHlOUENj?=
+ =?utf-8?B?WTBYY0cvcS9MV2JjUUs3VERDVDM5Mm5hazg0VDdqV05hQmtpeHJ5R05GZkM1?=
+ =?utf-8?B?VlJMcitlUVNCU3MyM2dDcDJCL0lhYzg1cFQrdWtORkZpemdLNUExVXpzcjBK?=
+ =?utf-8?B?U0lYa1RtZ1NCZjRPYUcxTTkzbW50SlVUTnVQZWoxK3QwWVFocE9vUnl2SmZD?=
+ =?utf-8?B?ZXF6ZlpIRG0yZ01sQm12RzdxckdHZ3V4cHlQZG5WcDg1TSsrUnVMY0s0TGdV?=
+ =?utf-8?B?RXpQTFA1T3RjMURPaVR5SVB6VXZWTEZXMFNIb1hJQyt6MmgzZnlPeWxTQUk2?=
+ =?utf-8?B?eUdSZWRNNUdPYjNKWHZhOXk0M3o5M09mRmRzcWZkalVLWmppbUFZV2dvMVZM?=
+ =?utf-8?B?NlE5WXRPb0s3dy9NU0RjQUN6ZmdhWUNHd0VtaGNPOFpSeW9UbnZIRmcvV21k?=
+ =?utf-8?B?cDVBVGcwL2NWTlNOMCtUS3dsMFU1MGVnRXpDdDRGMGFSOUlBMUYyeDJtRkN1?=
+ =?utf-8?B?Nk1RRWdGWDZzZ2pIb0FGUVAyTEl4QTJoTy9jQW95TTlpcG51UXpqVXgyTlJj?=
+ =?utf-8?B?RGI5VndEQVhSaWFKSDVCM2VRMmJVdGRoQm4yYjRReS9qazVvMUFocnRidjg4?=
+ =?utf-8?Q?i0R8=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UG55aUtUK2F5YXNmODVGRG1IdDJKYmZqeElyV2hqRXFWQVY1ZVpoc1NrbC9w?=
- =?utf-8?B?bUJ1NHc1ejZGaHJ2em5XK3E1NEJGV3d3Um1DUlVCK2lNNmFoYmtyeTVVN2N4?=
- =?utf-8?B?eWJicUZnOVUraVY2M0ZDRHRPdktlRzFOeDBQUEtjR0RtWXplVS9waVhsQnJw?=
- =?utf-8?B?aU5HbG1GWlNJMlZDMzRHdTdHblZFMkpMOVByZFZBb2VSSWtPbW1kd290cjAw?=
- =?utf-8?B?MURyUm5wTW5jdXd1VHNKWkJwZjRIdWE4ZHBNQUI2NW8zRkttODJqN1VZRHFV?=
- =?utf-8?B?TWttR2ZpcTZVOW42UkM3QTJUbXc2cGFrZUFZeUU2SW55UktjQURnekJPVko0?=
- =?utf-8?B?cjlwajZ3cjcrYlNaKzYyRzRKWVc3dDRNTG5kRUlYZkIzNFlKeWtPN0dtTTlI?=
- =?utf-8?B?a2h4aDUzdkczekM2ZnhwZGVUYWE0RVdRQnorL3VCdUxoaWdwSFR6MzczTmpR?=
- =?utf-8?B?dGdXSkE0R2NqbmVack5LcE92N2YrNHpWVHJsT0E0ZUNjNVpJaDhqb0Vrbkxx?=
- =?utf-8?B?K3V0cnJzZnM1Nkt3eGl0NXFRUXp4ZGQ0b3JxZ3kvdk9zWS9GS0JQVXZKbHln?=
- =?utf-8?B?T05oYzdlY1VZY2JNQW1mWTcrZW9RbGlWTGxYQ0pGQ2s3YmNDQWsxb0VMOEJR?=
- =?utf-8?B?MjhRbTRlVWNVRmlsV1JCdXdBUSttdWY2dzUybzVrT09rNGVEZTdiRmxJN1kz?=
- =?utf-8?B?QjVua1p4T2h5MUhYU1hjdGhKaStPWGV4cTVjSHlPWjg4alhZOSt4MHF0R1Vx?=
- =?utf-8?B?d0tnRjR3dkJQSWR2Z2Rybm81NXRCMVBURGtWc01SRStCK0ZIbEJtYmxweWtz?=
- =?utf-8?B?NmJob2RZRFdxdEVIOUdvemtnVU42WWw2TDhjNlFYQXJ0ZEJvdUt6WjdoQW5N?=
- =?utf-8?B?aS9xVWUrY2gvMzNJZEhZRG1rMmc4WS9MdkhLL3JNQTBPeWtadEpVYU9ENCtX?=
- =?utf-8?B?NEd6WnB2M3ArVnlZQXBIOExJazZvdmhsWlBKV2ptMHhBNmpKQ25SY2poUGli?=
- =?utf-8?B?TVBMNE00dyt4RHFOci9oQlpLSi9sUzlKSE5UVWptZ25PQS9EeVRkNmdCQStB?=
- =?utf-8?B?bUY2Zks4ZTRQVW5YQTljV2haMVFPTjhrWDREZUUwWDBhczAvTEVwdkpsTnJz?=
- =?utf-8?B?MVl1MUpoeUdRRGt3VzdSL2VWcExpbW0zbUFxOVBaMVc2VFYrdlhzN1hvY2s0?=
- =?utf-8?B?Q0txWUh4eE13RS81NVJ3SlEwaW9wZVczWlBqZXBWSXE1bmQzQWsvdk1mQzND?=
- =?utf-8?B?enZEemhhV2p4cmgvd0pSR3VwZEtsd0cvUEE4TnhReFRzYVd4OEpOV3FFak5J?=
- =?utf-8?B?ajRxWHNvQ05sVHBycHJKQjM4S3pYKzlGM3psWkVxVnNuSWpEOVhDcGl1R2Q1?=
- =?utf-8?B?eWFaVEVsWGprTGlQcCtoSVpPbHJtVVN5M0Y0elc0TDBvQkY3SzRTeVN1SEFm?=
- =?utf-8?B?UEtrMkY1WlpTcC9sQTF2MzFaY3R6VzZtcFhQVS9WUklWcERmMk02cDdjWTVh?=
- =?utf-8?B?NCtuam5lMzcxRzNTYlN2djJ5ZGFMSmtkM3hHWER1OXkzSmViNGNtbDhZRDky?=
- =?utf-8?B?UWRCNW5JZDRaM1BaOHRoM0xLY1NOdnhaOWNrSFZTZ29DZFFWUWhhNHFFd0F2?=
- =?utf-8?B?WE13SzZaU0VvVWhUTGpyOU9qbkpKWTlPRW05eFp0Sk91bFpxWkdEdHR6QUNT?=
- =?utf-8?B?MGNGSkx2djBWVGlUWjJ2RVVjYngyMjIrZm9NcGhpS01QZ3czeTFteFhTRDUx?=
- =?utf-8?B?MXh2cncwc2hkRFVuUlFKdzZCalZXK3JRZHltUjZzRmZNSHFIZk9tOVJ4dEtM?=
- =?utf-8?B?SE1lTWdQU1lpOU81UDBYa2psU25sTGI2dE1QdDFuSWJXdUc2cWtFTTFyaWRW?=
- =?utf-8?B?Y1dLVWQxYlRLSlUzbGR3V1QvOXVNaVJPV1ZKME80VzZKbjVhaHFzMzBiT2dX?=
- =?utf-8?B?NlZRa2lPYXYvS2s5OGgrN0R2MWhlWlAzVUdVUkgrdHA0MTdFYjVCSW85R0E1?=
- =?utf-8?B?WS9VRFQ0U3gzQTk0ZXI3T0lOazA4ZzBSc2JVYTJVOW9GYnhUcm0rQUEzWWFG?=
- =?utf-8?B?UmxzSWdUcWpycDZjcmFmVjZUN0cvV01mYWVtQjVGc3hwd3dhR2lrWTd1VFB2?=
- =?utf-8?B?QmFxL0g2d0hXTG5iajJCSVE2RVVKSVA5LzJCcGNOamhOSFZ2R0E5ellPbVBz?=
- =?utf-8?B?eFpiM3Z0UVN3KyszbmowTndJS0lOZTgvajNDdGhOeFJEbjhNQXJVaHBlb1FP?=
- =?utf-8?B?TldQLzBmc1FyYlJKV1lLdVl1ZUlUMXpoQ2NnVFFMY2M5cnhBcUM3aWpwWjVm?=
- =?utf-8?B?dUNNTFRqQlFoMTI0a3BiV0tBNzJBbW54UDNGdVllZFh0NjRSeEpYMmdIYVAw?=
- =?utf-8?Q?2raX7IEiF3q+1/haD3uDF4th7CtlqCFdvZNOi?=
+	=?utf-8?B?Q09IZEpBdENKOUtYNzJqRDYwcHN3YjBjeW9OdlNxRm1hd1d2STRadXpka080?=
+ =?utf-8?B?eC9id29uRFZLSFRoTnpXc09sVmpxZndqYkRaUGN2UTVQRUpYSEZ4QkQxRnhM?=
+ =?utf-8?B?bmJqeThyMEJ5cXovR21hQk1JSVViZlZlSFJHRmpzUGJ4d2o5Y05hNEtOSnFJ?=
+ =?utf-8?B?NDNjeWxLVk5ydmhkWEVuc21EblNOcmlycnVpRGZRdHBoRkxQbU9uRnBid3Vs?=
+ =?utf-8?B?a2N2OHl4VFpKVjZwVXdCa3VtOXdnR3pkV0EzUHpmWGEwUndiOWd6VkNKckNy?=
+ =?utf-8?B?MXBKODVITng3cTNlbTg2amFkTUo1MGRNdGF5VVNrMlhoTWY1UWZETENwOUYx?=
+ =?utf-8?B?NjRTaWtkQ3VVM1FvZVJLR0EvQmVWeUhQZEpRdlVta3ZhT2JINzRIejZFbnps?=
+ =?utf-8?B?YXROK2lIVzgzeFFicHlEbVFQSWlmNE9CZW1QczlLMG5idUVrL3JZTmxvVkx0?=
+ =?utf-8?B?TXpHU1hBSFh0N1JQZUQ1VS9jK1JCbmRXN0FpRytyMjBzblBsSmVmRS8xS0J4?=
+ =?utf-8?B?ZG5lQ3R3a3B1WjQ2S2VxSFFlNXgrTGg2UVc2NUpqZ0o5YzIva2pPZG1hWXFU?=
+ =?utf-8?B?QWZjV0FwZDAwTjc3dVRMVnNuY2VGTzlxbmZ0Smt6NEJEcnMvckhOSnkvQ0Za?=
+ =?utf-8?B?V2E0WStqeVo1NW5MaHUrRUlCTklOdHlqdlYrQkNGWFhJMm5pbEhKaTRqR3k5?=
+ =?utf-8?B?c0hwMHVrSXZNT0FlT0xlNFhBRkMvY0t1bTMwUDFhNms2SFpDN20rOGhwOGs5?=
+ =?utf-8?B?WlBpeERGRUIrWmE3L3IzQmVMU1JCOEhoblgxZTZUT2pTUXh5MmdzMjlxNmFv?=
+ =?utf-8?B?YTI5L3NFZTVNbjNCYmxZVmlDV25XVWNYektPN2dpZDl2eVd4M1FUY2lneXZO?=
+ =?utf-8?B?WENZMmNoeFk1RTQzMW1ZNVpvRWtyZlR2MGhkeFMzbjdQTUYxKzd3ei9ybjhv?=
+ =?utf-8?B?eSt5R21xK0lYdG5PcGdmZkxtNENEV0JkYi9ET3JQN3FKc0YyWU9YZ2x5WTVs?=
+ =?utf-8?B?N2NoNXlvZmJVNUQyY1N5UmVjVjI4ZTZvREF4cUhYUlpQdXVuNUU5TGYyVlQ3?=
+ =?utf-8?B?SkU0RFlJL1ZvbkYydnJ5cEQ0K1o0WERHRnBlSExZRC9hRnUwbXZUZldtL25q?=
+ =?utf-8?B?cHByVlNlb29rWkJLaSs4R0sxdE1hWDFUYWtheU8xdE5JODJ2L0JpQ0FIclhp?=
+ =?utf-8?B?aG9rMmlpRVZsWkdBR2RpYzBTdnFKUjE2dmMzRHhoN1V5QnNhYWZvdTdHQ3Vp?=
+ =?utf-8?B?STI1L1VobW96aTNJMFh2ZDBPbU9ETGhDWm1wVEo0WWhaNldveStTUWlUUGxh?=
+ =?utf-8?B?YklvRVB6N0FOaDdWaWdZK2prQmcvMDhaWFlPM3ZabXZ5enBobm1QNW9yRk91?=
+ =?utf-8?B?VFF1a3AzbDFvRkl6Q2Z6SFpiQ013OFdwRnI3Z3dZRG0zNzZDS1lOa1hTL1p4?=
+ =?utf-8?B?aDBhN1VtVlZpeGFib05xOWZYMm5XdUhIV3BOMEE5bjBwQnV0QnFvejVBbHNy?=
+ =?utf-8?B?L0d0MGFwakF0Znl5WGhEN3JXamc5VjNyWEhheFZEdmVxaHJ4cDBiMU8vM0tU?=
+ =?utf-8?B?S3FST2hQRDBHWG84azhKSzlhZkV3bGEwQ2o2d2RvU0RiNEt1SkZpZEg4UUc0?=
+ =?utf-8?B?Lzl0cFJDbVVRQzdiZktucStoNW1Sc043RkEzblBWWm9OMTkxYmpWOU1tSE9x?=
+ =?utf-8?B?WnJEb0NUaWErWnkvMVVTb0FSK1FwbDc0T2p6b1IyRlFSOEZJRGR4NTB3RmFt?=
+ =?utf-8?B?azdLTkd5UkxPRUx6N0FOREZYWE05Q3ZJTk1pbUtlU0dKZWZ1ZmFtRmgyZlhu?=
+ =?utf-8?B?YWNrTGsxOWI2eUU1VmhYVmYza0F1TktMSVAwVlE2cUVlT0xVTUZSQm9TUHc3?=
+ =?utf-8?B?c3hGZHUrWHdzRkJqZ3NTUGVac3ZoOXhDZmtrRGJXeks0RlVVWkRhUzRyeW5n?=
+ =?utf-8?B?cWsvWmQ1OE5LS1NJU3FyMW9qd2FaclFkOElqRk5VVXhBTHAzb3FwY29OUGd2?=
+ =?utf-8?B?SjdBQkJLMUtLZzBOaDdEZllOWmJUc2RnUVgzTkFhL2pRenFHRUpUL1g1MWVN?=
+ =?utf-8?B?STl6MndnYnJIT3c5NlN6SUtGY1dabi9ZNk9YV2FzYk9oMUFGclhwMUFSVFlF?=
+ =?utf-8?B?K1Vaa3FYZGJYQkZ0MnAxVTZ1ZkRRYmhqSVBDdGRFTnNGb3ZuKzg0Slp0R3Qv?=
+ =?utf-8?B?VUNQVmZqdXFzTEhVT2NINVlrbWE1L1hvS1V4WVlsRndtWVhEZStvNnltN04z?=
+ =?utf-8?B?SjlnL2J6QTRHTVAwOVBCT1Q2UTYzNFRyd1hTNWJuSlZvSkF0aFdIOHZuUlhy?=
+ =?utf-8?B?U0lIYUdCR1dpRENzcDYyZ1BOS3l4ZDdBNG1zejdVTGdTSEl3LzVBTDVkR3JN?=
+ =?utf-8?Q?z/zjr+eT8882E3qUMKWCOtz8WVLTNDA6GWzZR?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3864281-b60d-44a5-b102-08de55e84f3a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 393cd55a-1c4d-4416-6072-08de55ea4ed2
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2026 16:48:58.3728
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2026 17:03:16.6932
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1K0AEK8GzUxj73HpZOs/tfX8YK9vEPPnSzGpY2gvfpcZHuphzgw9uusK5dt09+KmMJNjkcCqitRWWzPOEa/Q+g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6350
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2OTJOSv4AELkXfZhzz6CMhiiRNpw3FQUT+KMO1Y67eNoofMhHRCLjf831iLQo5xvLXWTQgsqL1YoYnCtFs8PFg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3215
 
-On Sat Jan 17, 2026 at 2:30 PM GMT, Miguel Ojeda wrote:
-> On Sat, Jan 17, 2026 at 4:17=E2=80=AFAM Alexandre Courbot <acourbot@nvidi=
-a.com> wrote:
->>rtable taking this through the Rust tree for this
->> cycle?
+On Sat Jan 17, 2026 at 12:22 PM GMT, Boqun Feng wrote:
+> Atomic pointer support is an important piece of synchronization
+> algorithm, e.g. RCU, hence provide the support for that.
 >
-> That file is maintained in the Rust tree, so it should be taken
-> through the Rust tree barring other reasons, yeah. I didn't start
-> applying yet for -next.
+> Note that instead of relying on atomic_long or the implementation of
+> `Atomic<usize>`, a new set of helpers (atomic_ptr_*) is introduced for
+> atomic pointer specifically, this is because ptr2int casting would
+> lose the provenance of a pointer and even though in theory there are a
+> few tricks the provenance can be restored, it'll still be a simpler
+> implementation if C could provide atomic pointers directly. The side
+> effects of this approach are: we don't have the arithmetic and logical
+> operations for pointers yet and the current implementation only works
+> on ARCH_SUPPORTS_ATOMIC_RMW architectures, but these are implementation
+> issues and can be added later.
 >
-> (By the way, we have `static_assert!` for this -- we should probably
-> discuss if we want to start using `const { ... }` more instead.)
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-static_assert! creates an item and thus cannot refer to generic parameters.
+I am happy that this is now using dedicated helpers for pointers, and not g=
+oing
+through an intermediate integer which can lose provenance.
 
-Best,
-Gary
+Some feedbacks below, but in general LGTM.
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
+> ---
+>  rust/helpers/atomic_ext.c            |  3 +++
+>  rust/kernel/sync/atomic.rs           | 12 +++++++++++-
+>  rust/kernel/sync/atomic/internal.rs  | 21 +++++++++++++++------
+>  rust/kernel/sync/atomic/predefine.rs | 23 +++++++++++++++++++++++
+>  4 files changed, 52 insertions(+), 7 deletions(-)
+>
+> diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
+> index 240218e2e708..c267d5190529 100644
+> --- a/rust/helpers/atomic_ext.c
+> +++ b/rust/helpers/atomic_ext.c
+> @@ -36,6 +36,7 @@ __rust_helper void rust_helper_atomic_##tname##_set_rel=
+ease(type *ptr, type val)
+> =20
+>  GEN_READ_SET_HELPERS(i8, s8)
+>  GEN_READ_SET_HELPERS(i16, s16)
+> +GEN_READ_SET_HELPERS(ptr, const void *)
+> =20
+>  /*
+>   * xchg helpers depend on ARCH_SUPPORTS_ATOMIC_RMW and on the
+> @@ -59,6 +60,7 @@ rust_helper_atomic_##tname##_xchg##suffix(type *ptr, ty=
+pe new)			\
+> =20
+>  GEN_XCHG_HELPERS(i8, s8)
+>  GEN_XCHG_HELPERS(i16, s16)
+> +GEN_XCHG_HELPERS(ptr, const void *)
+> =20
+>  /*
+>   * try_cmpxchg helpers depend on ARCH_SUPPORTS_ATOMIC_RMW and on the
+> @@ -82,3 +84,4 @@ rust_helper_atomic_##tname##_try_cmpxchg##suffix(type *=
+ptr, type *old, type new)
+> =20
+>  GEN_TRY_CMPXCHG_HELPERS(i8, s8)
+>  GEN_TRY_CMPXCHG_HELPERS(i16, s16)
+> +GEN_TRY_CMPXCHG_HELPERS(ptr, const void *)
+> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+> index 4aebeacb961a..4d2a5228c2e4 100644
+> --- a/rust/kernel/sync/atomic.rs
+> +++ b/rust/kernel/sync/atomic.rs
+> @@ -51,6 +51,10 @@
+>  #[repr(transparent)]
+>  pub struct Atomic<T: AtomicType>(AtomicRepr<T::Repr>);
+> =20
+> +// SAFETY: `Atomic<T>` is safe to transfer between execution contexts be=
+cause of the safety
+> +// requirement of `AtomicType`.
+> +unsafe impl<T: AtomicType> Send for Atomic<T> {}
+> +
+>  // SAFETY: `Atomic<T>` is safe to share among execution contexts because=
+ all accesses are atomic.
+>  unsafe impl<T: AtomicType> Sync for Atomic<T> {}
+> =20
+> @@ -68,6 +72,11 @@ unsafe impl<T: AtomicType> Sync for Atomic<T> {}
+>  ///
+>  /// - [`Self`] must have the same size and alignment as [`Self::Repr`].
+>  /// - [`Self`] must be [round-trip transmutable] to  [`Self::Repr`].
+> +/// - [`Self`] must be safe to transfer between execution contexts, if i=
+t's [`Send`], this is
+> +///   automatically satisfied. The exception is pointer types that are e=
+ven though marked as
+> +///   `!Send` (e.g. raw pointers and [`NonNull<T>`]) but requiring `unsa=
+fe` to do anything
+> +///   meaningful on them. This is because transferring pointer values be=
+tween execution contexts is
+> +///   safe as long as the actual `unsafe` dereferencing is justified.
+
+I think the discussion about `Send` on pointers should be moved to the `imp=
+l<T>
+AtomicType for *mut T` side.
+
+>  ///
+>  /// Note that this is more relaxed than requiring the bi-directional tra=
+nsmutability (i.e.
+>  /// [`transmute()`] is always sound between `U` and `T`) because of the =
+support for atomic
+> @@ -108,7 +117,8 @@ unsafe impl<T: AtomicType> Sync for Atomic<T> {}
+>  /// [`transmute()`]: core::mem::transmute
+>  /// [round-trip transmutable]: AtomicType#round-trip-transmutability
+>  /// [Examples]: AtomicType#examples
+> -pub unsafe trait AtomicType: Sized + Send + Copy {
+> +/// [`NonNull<T>`]: core::ptr::NonNull
+> +pub unsafe trait AtomicType: Sized + Copy {
+>      /// The backing atomic implementation type.
+>      type Repr: AtomicImpl;
+>  }
+> diff --git a/rust/kernel/sync/atomic/internal.rs b/rust/kernel/sync/atomi=
+c/internal.rs
+> index 0dac58bca2b3..93f5a7846645 100644
+> --- a/rust/kernel/sync/atomic/internal.rs
+> +++ b/rust/kernel/sync/atomic/internal.rs
+> @@ -7,6 +7,7 @@
+>  use crate::bindings;
+>  use crate::macros::paste;
+>  use core::cell::UnsafeCell;
+> +use ffi::c_void;
+> =20
+>  mod private {
+>      /// Sealed trait marker to disable customized impls on atomic implem=
+entation traits.
+> @@ -14,10 +15,11 @@ pub trait Sealed {}
+>  }
+> =20
+>  // The C side supports atomic primitives only for `i32` and `i64` (`atom=
+ic_t` and `atomic64_t`),
+> -// while the Rust side also layers provides atomic support for `i8` and =
+`i16`
+> -// on top of lower-level C primitives.
+> +// while the Rust side also provides atomic support for `i8`, `i16` and =
+`*const c_void` on top of
+> +// lower-level C primitives.
+>  impl private::Sealed for i8 {}
+>  impl private::Sealed for i16 {}
+> +impl private::Sealed for *const c_void {}
+>  impl private::Sealed for i32 {}
+>  impl private::Sealed for i64 {}
+> =20
+> @@ -26,10 +28,10 @@ impl private::Sealed for i64 {}
+>  /// This trait is sealed, and only types that map directly to the C side=
+ atomics
+>  /// or can be implemented with lower-level C primitives are allowed to i=
+mplement this:
+>  ///
+> -/// - `i8` and `i16` are implemented with lower-level C primitives.
+> +/// - `i8`, `i16` and `*const c_void` are implemented with lower-level C=
+ primitives.
+>  /// - `i32` map to `atomic_t`
+>  /// - `i64` map to `atomic64_t`
+> -pub trait AtomicImpl: Sized + Send + Copy + private::Sealed {
+> +pub trait AtomicImpl: Sized + Copy + private::Sealed {
+>      /// The type of the delta in arithmetic or logical operations.
+>      ///
+>      /// For example, in `atomic_add(ptr, v)`, it's the type of `v`. Usua=
+lly it's the same type of
+> @@ -51,6 +53,13 @@ impl AtomicImpl for i16 {
+>      type Delta =3D Self;
+>  }
+> =20
+> +// The current helpers of load/store uses `{WRITE,READ}_ONCE()` hence th=
+e atomicity is only
+> +// guaranteed against read-modify-write operations if the architecture s=
+upports native atomic RmW.
+> +#[cfg(CONFIG_ARCH_SUPPORTS_ATOMIC_RMW)]
+> +impl AtomicImpl for *const c_void {
+> +    type Delta =3D isize;
+> +}
+> +
+>  // `atomic_t` implements atomic operations on `i32`.
+>  impl AtomicImpl for i32 {
+>      type Delta =3D Self;
+> @@ -262,7 +271,7 @@ macro_rules! declare_and_impl_atomic_methods {
+>  }
+> =20
+>  declare_and_impl_atomic_methods!(
+> -    [ i8 =3D> atomic_i8, i16 =3D> atomic_i16, i32 =3D> atomic, i64 =3D> =
+atomic64 ]
+> +    [ i8 =3D> atomic_i8, i16 =3D> atomic_i16, *const c_void =3D> atomic_=
+ptr, i32 =3D> atomic, i64 =3D> atomic64 ]
+>      /// Basic atomic operations
+>      pub trait AtomicBasicOps {
+>          /// Atomic read (load).
+> @@ -280,7 +289,7 @@ fn set[release](a: &AtomicRepr<Self>, v: Self) {
+>  );
+> =20
+>  declare_and_impl_atomic_methods!(
+> -    [ i8 =3D> atomic_i8, i16 =3D> atomic_i16, i32 =3D> atomic, i64 =3D> =
+atomic64 ]
+> +    [ i8 =3D> atomic_i8, i16 =3D> atomic_i16, *const c_void =3D> atomic_=
+ptr, i32 =3D> atomic, i64 =3D> atomic64 ]
+>      /// Exchange and compare-and-exchange atomic operations
+>      pub trait AtomicExchangeOps {
+>          /// Atomic exchange.
+> diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atom=
+ic/predefine.rs
+> index 42067c6a266c..1a4670d225b5 100644
+> --- a/rust/kernel/sync/atomic/predefine.rs
+> +++ b/rust/kernel/sync/atomic/predefine.rs
+> @@ -4,6 +4,7 @@
+> =20
+>  use crate::static_assert;
+>  use core::mem::{align_of, size_of};
+> +use ffi::c_void;
+> =20
+>  // Ensure size and alignment requirements are checked.
+>  static_assert!(size_of::<bool>() =3D=3D size_of::<i8>());
+> @@ -28,6 +29,16 @@ unsafe impl super::AtomicType for i16 {
+>      type Repr =3D i16;
+>  }
+> =20
+> +// SAFETY:
+> +//
+> +// - `*mut T` has the same size and alignment with `*const c_void`, and =
+is round-trip
+> +//   transmutable to `*const c_void`.
+> +// - `*mut T` is safe to transfer between execution contexts. See the sa=
+fety requirement of
+> +//   [`AtomicType`].
+> +unsafe impl<T: Sized> super::AtomicType for *mut T {
+> +    type Repr =3D *const c_void;
+> +}
+
+How about *const T?
+
+> +
+>  // SAFETY: `i32` has the same size and alignment with itself, and is rou=
+nd-trip transmutable to
+>  // itself.
+>  unsafe impl super::AtomicType for i32 {
+> @@ -215,4 +226,16 @@ fn atomic_bool_tests() {
+>          assert_eq!(false, x.load(Relaxed));
+>          assert_eq!(Ok(false), x.cmpxchg(false, true, Full));
+>      }
+> +
+> +    #[test]
+> +    fn atomic_ptr_tests() {
+> +        let mut v =3D 42;
+> +        let mut u =3D 43;
+> +        let x =3D Atomic::new(&raw mut v);
+> +
+> +        assert_eq!(x.load(Acquire), &raw mut v);
+> +        assert_eq!(x.cmpxchg(&raw mut u, &raw mut u, Relaxed), Err(&raw =
+mut v));
+> +        assert_eq!(x.cmpxchg(&raw mut v, &raw mut u, Relaxed), Ok(&raw m=
+ut v));
+> +        assert_eq!(x.load(Relaxed), &raw mut u);
+> +    }
+>  }
+
