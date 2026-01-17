@@ -1,84 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward501d.mail.yandex.net (forward501d.mail.yandex.net [178.154.239.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924204A3C;
-	Sat, 17 Jan 2026 12:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8917B1D6187;
+	Sat, 17 Jan 2026 13:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768654416; cv=none; b=bAMSegoD3HqWdjbn/iHWoUqUaywd5M6XcoDwrpZ5YFBK5/mBIbuex2dRLeFk1IZskS+XAwkHl6v+UahbPv7WFfplMnhewRlrHNTdRVN0KyP5RYa72BYpIVOiRsG6tJN1x6DXt9ZuE7IfWL7zecXzAIKoo/WP8bH55NN1KdpH9TY=
+	t=1768655126; cv=none; b=i2zKyYByf+fktK3OPXRNAZxebD6fm30xXwmX5Ypcn2S/jzQuytV86xMy1Q0jHBzC+E3uH2b1ldPyyASFaBcNB7s1+OFz/sPLe5QVkMKQRZouPA53+iV5IoBXlvkO/iglTHzp4UeSkBwyNqfQsNfFX2xewZH5tOD0opZ8WLVDJD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768654416; c=relaxed/simple;
-	bh=pRNi6AkxLH0mAfdj3yn69/e5sljxPgp+PznlEPPuUAc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=tUiV8289UJHYyVKKJ9zyhqqqpvvtT65PqeI0e0Bjeix9G1ttrXsedMGDQ9JZ2MNM9aKHU7023QVtemM/86ct5iShsysmu47qUcvnjbdjg8wvvO/KcC6ULKTpVuT5ylkZM82IqVGIUUMA8QlanIv7as0G9QvaR3gJtjnxDpW5u+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIIQYGKP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768655126; c=relaxed/simple;
+	bh=BY4h0gCIdzIzZNIyWzL4gR7I5uWwRAs+jwkbGODHvWQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t/iqSsnxJt/DZIlQaZVsKCbuNClIDsVRPT8gKetXlPvu3KcZPCzATNU2RNQXMMn7VUrkyBwH4eMFgKk/fp+ibtc8fjFPERvg+9eMezqpscqQWa7sDvHYl4V0Otf2KD+X+NoccWL4rAiTyCixa6bV55YXGjDvIWYbD9HWDNpnTiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=YL8x1XAq; arc=none smtp.client-ip=178.154.239.209
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIIQYGKP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8602CC4CEF7;
-	Sat, 17 Jan 2026 12:53:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768654416;
-	bh=pRNi6AkxLH0mAfdj3yn69/e5sljxPgp+PznlEPPuUAc=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=oIIQYGKPiLyONdUIqRV7MNXBHLXWkWaqfv36poPtojiE0FEbvD2Tl+AJ2SKMZWuJi
-	 y3NhllrptNb9rVp6bvNlmWOrQC9M+2q5RFdmF9kaRitX5xle4VnYm1RsDiwhQAWkox
-	 hi46UyChIZppeAvEzq9lFjcp6kYMzTloyDIFGnlzd6gOX/I3/kCTGVamd0JD7kPHR2
-	 RgwXt4yBTpgZVwA9r1OcFkoo8YgDhGZoSh2lXlG4Kd6h2wLtUkZy4XGXdkzVukDfUJ
-	 5+EM3s/1Ii3UlnmwaC83CXMb1mdPX55oa26azcBmyJm68M5NV7DgzSGXhhrQyETf3c
-	 VUKTYn4AQBN3g==
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="YL8x1XAq"
+Received: from mail-nwsmtp-smtp-production-main-77.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-77.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:9a4b:0:640:e388:0])
+	by forward501d.mail.yandex.net (Yandex) with ESMTPS id 7C0DF81320;
+	Sat, 17 Jan 2026 15:56:37 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-77.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id XuW9n1NGpa60-eOtB0v00;
+	Sat, 17 Jan 2026 15:56:36 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1768654596;
+	bh=wYx/drHJKsunxl3UzLgHglN3zEFvMfYLPRJCE21E/Kk=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=YL8x1XAqvn+Kh26cKZOrZzQBH6BpCgsNcWsF2FCuv91Xl++KwtEwciR5pp1mwe5KA
+	 Xqi2pHLbgn8hwCXQRJgHky6rHppFbT8ZcXhcU5/JGQgEAYWfcO2B2mkJDCptkeoQw7
+	 xbVUrMbmpY1z74BPbEU0fvu2CzAioX/7rytkGlwk=
+Authentication-Results: mail-nwsmtp-smtp-production-main-77.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Sat, 17 Jan 2026 15:56:31 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rust-for-linux@vger.kernel.org, rafael@kernel.org, dakr@kernel.org,
+ ojeda@kernel.org, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] rust: simplify `Adapter::id_info`
+Message-ID: <20260117155631.5a65b3c6@nimda>
+In-Reply-To: <2026011703-bony-unloader-9099@gregkh>
+References: <20260117094710.24301-1-work@onurozkan.dev>
+	<20260117094710.24301-2-work@onurozkan.dev>
+	<2026011725-contour-salary-d3d1@gregkh>
+	<20260117140240.15d1120c@nimda>
+	<2026011703-bony-unloader-9099@gregkh>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 17 Jan 2026 13:53:31 +0100
-Message-Id: <DFQVNVYZCDPB.3IB8IA2KWUD4B@kernel.org>
-Subject: Re: [PATCH v2 1/1] rust: simplify `Adapter::id_info`
-Cc: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <rust-for-linux@vger.kernel.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>
-To: "Greg KH" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260117094710.24301-1-work@onurozkan.dev>
- <20260117094710.24301-2-work@onurozkan.dev>
- <2026011725-contour-salary-d3d1@gregkh> <20260117140240.15d1120c@nimda>
- <2026011703-bony-unloader-9099@gregkh>
-In-Reply-To: <2026011703-bony-unloader-9099@gregkh>
+Content-Transfer-Encoding: quoted-printable
 
-On Sat Jan 17, 2026 at 1:07 PM CET, Greg KH wrote:
+On Sat, 17 Jan 2026 13:07:54 +0100
+Greg KH <gregkh@linuxfoundation.org> wrote:
+
+> On Sat, Jan 17, 2026 at 02:02:40PM +0300, Onur =C3=96zkan wrote:
+> > On Sat, 17 Jan 2026 11:00:11 +0100
+> > Greg KH <gregkh@linuxfoundation.org> wrote:
+> >=20
+> > > On Sat, Jan 17, 2026 at 12:47:10PM +0300, Onur =C3=96zkan wrote:
+> > > > id_info() checks ACPI first and falls back to OF.
+> > > >=20
+> > > > This replaces the unnecessarily verbose approach with a
+> > > > simple or_else() chain and drops temporary variables.
+> > > >=20
+> > > > No functional change intended.
+> > > >=20
+> > > > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> > > > ---
+> > > >  rust/kernel/driver.rs | 12 +-----------
+> > > >  1 file changed, 1 insertion(+), 11 deletions(-)
+> > > >=20
+> > > > diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+> > > > index 649d06468f41..6cef792d54e4 100644
+> > > > --- a/rust/kernel/driver.rs
+> > > > +++ b/rust/kernel/driver.rs
+> > > > @@ -307,16 +307,6 @@ fn of_id_info(dev: &device::Device) ->
+> > > > Option<&'static Self::IdInfo> { /// If this returns `None`, it
+> > > > means that there is no match in any of the ID tables directly
+> > > > /// associated with a [`device::Device`]. fn id_info(dev:
+> > > > &device::Device) -> Option<&'static Self::IdInfo> {
+> > > > -        let id =3D Self::acpi_id_info(dev);
+> > > > -        if id.is_some() {
+> > > > -            return id;
+> > > > -        }
+> > > > -
+> > > > -        let id =3D Self::of_id_info(dev);
+> > > > -        if id.is_some() {
+> > > > -            return id;
+> > > > -        }
+> > > > -
+> > > > -        None
+> > > > +        Self::acpi_id_info(dev).or_else(||
+> > > > Self::of_id_info(dev))
+> > >=20
+> > > Have we already started the game of "rust golf" on the kernel?
+> > > The original code here is much easier to read, and the compiler
+> > > should produce the same thing for both, right?
+> > >=20
+> > > thanks,
+> > >=20
+> > > greg k-h
+> >=20
+> > Hi Greg,
+> >=20
+> > I don't know what "rust golf" means, the main motivation here was
+> > to use a more idiomatic Rust pattern.
+>=20
+> I was referring to this:
+> 	https://en.wikipedia.org/wiki/Code_golf
+> sorry for not being explicit :)
+>=20
+
+I didn't know this term before - good to know :)
+
+> > Functions called in Adapter::id_info already return the same Result
+> > type and it's quite annoying(IMO) to do "if x.is_some() { return x
+> > }" in cases like this. Clippy would argue on many cases similar to
+> > this. Readability is subjective, but to me the new code is slightly
+> > simpler to follow (as it does the "try X, then Y" thing in a
+> > shorter way).
+>=20
 > Does clippy complain about this one?
+>=20
 
-No, it does not.
+No, it doesn't.
 
+> > That said, I don't have strong feelings on the new code. The main
+> > motivation was to drop the "annoying" code with more idiomatic one,
+> > but seems like not everyone agrees with it. Feel free to ignore the
+> > patch if you prefer the original code.
+>=20
 > I don't have strong feelings either, but the original is "easier" for
 > those of us used to C code.
+>=20
 
-I think it's a matter of preference. Personally, I like those functional
-characteristics of Rust and the corresponding possibility of compact expres=
-sions
-as long as it is not overdone.
+Fair point, you are right.
 
-This case seems pretty simple though. :)
+Thanks,
+Onur =C3=96zkan
 
-In comparison, this is code from allocating the level 1 page directory for =
-the
-GSP (radix3) firmware, which is probably a bit too much.
+> thanks,
+>=20
+> greg k-h
 
-	level1 <- {
-	    // Allocate the level 1 page table, map the level 2 page table onto it=
-, and map it
-	    // into the device address space.
-	    VVec::<u8>::with_capacity(
-	        level2.iter().count() * size_of::<u64>(),
-	        GFP_KERNEL,
-	    )
-	    .map_err(|_| ENOMEM)
-	    .and_then(|level1| map_into_lvl(&level2, level1))
-	    .map(|level1| SGTable::new(dev, level1, DataDirection::ToDevice, GFP_K=
-ERNEL))?
-	},
