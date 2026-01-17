@@ -1,200 +1,190 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011026.outbound.protection.outlook.com [40.107.208.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECDC2FE05B
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 21:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768600250; cv=fail; b=S6H+HFfPTN2v2LBwNzCIiT0Bcfckua9BR4rwg+prdkjoyj1Dl47ZOy87AAatMGgx7N2BBsOQY3WKgHNRej/3xY0EvF3QvXsl71/BVDnB3Jdku330E59168TsKSmcPWnl+BB0xV3klOR0dvtXVy857G9bDvoODSe6mmXdThVjJmg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768600250; c=relaxed/simple;
-	bh=nqEKh3dWf7aaSXGDFEm0AEWUMDCXKli0vFUTVQdgT48=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OCaQ8cVunqXHAVBSuJXPmaBzdfMzN0+FiurdLbxfD+bvzB0qqz5uxwMEGirphEqqYLJCrFiN20Y8g/1XJch6QCQ0bPklu/ayCHhSTXgP+5Gjx73Kcd+QhaB3wsy5lOSwxBiU+XD7D9L7s4ov5mxEAM6v7j9s2aau5iFKYo0DStE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=G7xD5jFa; arc=fail smtp.client-ip=40.107.208.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253F01FC7
+	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 00:06:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768608406; cv=none; b=Yv25h/LB/qTIcwXJkC3Icw4r8/1kET0o1aFx7siTd5uRtlZPNkoC9AsHy+hLQyYAijLHmYjnQz7D1JY/tW1voog1qquOc6iIb6iNJ3G6drCnozRnpHUIGxV8SZdR9BDL7RozPSurQBeuw2TW205d+DsqYQiBnHk9t15NPtYR6Ow=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768608406; c=relaxed/simple;
+	bh=Cbb0OwS1PY2jkwETG9wvSSZ9cReY1BDgkXB6tyZ4ViQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pm4W77mVCck7AuYcBj6gPpJmTDNyMVL8CqrGA8EB+/1EZfgVIrBnjXhk0xYVaBhYudP/Oved9ODe1ro0hhGy2Fl4xIpWhePRRxvMWs1BkIerCEbV3t+oaoFbImzENQy9r+0xE/ZpjewQlzYbOTblwW7kQ0C0miCEJ9QRmw76+pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R8YjtdOi; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="G7xD5jFa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GO4iqbkOqfmhTpXa/u0xsNA3DnCkQ55lr705kB/Jin5RGzOshdORUkO7SMWHkj7QW0/GiUzsnLA1udAnYYLI1onw0oG2uRvWf1xUQ//q9vD4Rd4VeYs4Uk9we+MTzxodA0d1BQXsaGQklBpj5Wg2FfKE8xfPc7lCV2TEsVnQpDGgV7EhmKI1VKsg+4MlTQntKdh0xWtppClvr3ubdkY1hOSk+QP4Smgj0XfoujuVI5BBgjpsCvHMqCu4o3k+Qk2vh8+3Lpgx619AqfO5OYm95HZg5HindyDqfYR2IjZ8W78VRPpzCYURAMpYMwqEsBwsvz7W67W7PKeGdKs8AlhU4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jsdJjAszzNmQrNWGonSKHtIrOeUTa0xb+b9DGsMG5D8=;
- b=E9oqM2qUEIKR+B73kaPCgOK6s3TqgeF/YV7F6q7Qy9hD3NQsBRrTnGNfb302uWRW1KiocnRKPT9B8p44bqm4dz6fZ2j/jk/+mb1R2/Eu0pJQasNL35IggCmefH2suWDux97m5rdz4dbO17qHGpKGOw+y+L4EzyPFGhTEPIuBNH4PnOY5jZs3Q8s8Zn3uc3lgXv0shWJY8x4ham+c1ZlB6Gj7iTByWqchA0LupNI6dAP6URqQXEJnwW8WaJN2rvYQqwGvPf0T3rPVlRdk2j6w5ckfXjM6cQOS8zN3KDAm3xHEl10hmMKdpnUUUrddk6DTAqHkb58pe2dslC7YdS9GiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jsdJjAszzNmQrNWGonSKHtIrOeUTa0xb+b9DGsMG5D8=;
- b=G7xD5jFaO4ILH/lXC2suICzmQvdyOER9TOSdhR/R41f4j5hh7JVp5ogZkR0s+waMhQR867z5TeKQ7jyAnMy5tbFLRHUEiD0v2l1w3AEWIdkm+686z+tE699dE1UFF8Sr9OCCsbzkMe6/eXtTVyTUO9T3312TjCQPK6RyCkNNImMtE3f6Fpzdrqg5FVgQvUqr6uukln4sQtCuM5OsD5NCnNKjffbNFeL1w7YCP8PFsk/T4tnC0QqZOa3pkZPC5A1F/ApyIVqqmSRCqkXDCC117DqIRjro6rjLr9v3POPEE9kghUa6hDkjcV44I20ZVl6gWbA0XyA6Enn4VBBFGfX5RA==
-Received: from SN7P220CA0009.NAMP220.PROD.OUTLOOK.COM (2603:10b6:806:123::14)
- by DS4PR12MB9586.namprd12.prod.outlook.com (2603:10b6:8:27e::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Fri, 16 Jan
- 2026 21:50:38 +0000
-Received: from SN1PEPF0002529D.namprd05.prod.outlook.com
- (2603:10b6:806:123:cafe::5f) by SN7P220CA0009.outlook.office365.com
- (2603:10b6:806:123::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.7 via Frontend Transport; Fri,
- 16 Jan 2026 21:50:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SN1PEPF0002529D.mail.protection.outlook.com (10.167.242.4) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.4 via Frontend Transport; Fri, 16 Jan 2026 21:50:38 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 16 Jan
- 2026 13:50:18 -0800
-Received: from ttabi.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 16 Jan
- 2026 13:50:17 -0800
-From: Timur Tabi <ttabi@nvidia.com>
-To: Matthew Maurer <mmaurer@google.com>, Danilo Krummrich <dakr@kernel.org>,
-	Gary Guo <gary@garyguo.net>, John Hubbard <jhubbard@nvidia.com>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>,
-	<nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-Subject: [PATCH v5 6/8] gpu: nova-core: use pin projection in method boot()
-Date: Fri, 16 Jan 2026 15:49:57 -0600
-Message-ID: <20260116214959.641032-7-ttabi@nvidia.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260116214959.641032-1-ttabi@nvidia.com>
-References: <20260116214959.641032-1-ttabi@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R8YjtdOi"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8887f43b224so48245126d6.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 16 Jan 2026 16:06:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768608404; x=1769213204; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sDkOv8xyeBo7PdDVE07s2ucba4/fDLaQQcXd3ir6y64=;
+        b=R8YjtdOiJYGUepUbscbM4R/SaTpN0mm+6XIeAHeJ3o2xBxWRNzebiOZDKntgunRU9t
+         kQksNiyquiKZbGFM2Gg4RqtPLqbTc9lpQpnIJ5/VTtNXa94PGCyd1g0BJawFdN4llweB
+         ajfCaxdgkjihzmT7knPncM2GWSLIYk9W35jTL1avvrnt7KTnyB2NqbwLQMRSTQ8vSZCb
+         HKJT1lCnVNGKwrVQgL7sldleUoniMcSkS735fupDia8r/vhR/OuFcqGt0MLGkkwUe7Vf
+         eF11K/9OkR6zK/fVfZ6PWQus2kfc6pmRi0DrFIioSFGpxN51EB08ZcC3zNAdWW5dsu/2
+         jUfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768608404; x=1769213204;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sDkOv8xyeBo7PdDVE07s2ucba4/fDLaQQcXd3ir6y64=;
+        b=m/zQboz8F0EwS4niHdE2rAOXbD4BGcio0h/FINT+6dy4Mk/s5e//+qZiyP/EQxc1RD
+         Xs7FaBRSKiyejG4Ss+LiRNIeePiBDGL40TjoSywc9ebcNxL7luiLUV0Xi9lBy/rmoJPD
+         OfQ1SU7hiRM/XBhGYk0dJjmuyl2TLxfMey8IoYcsTdqZRqbq3l8cigX2tj6LC1m0ysvQ
+         U2dsJQmuQmm0RWGi8H3oPLculldy+Nzljb5XjNt1dWra9Bw9bF1XzfaoePfadiAKuAzT
+         ZaDUcuujK5Jw+8wtigvlCWnD+5sGJCAFj8PyLPJ/3ZEEO2jb1f4d7SNb3UBrNshBiDwJ
+         xz3w==
+X-Forwarded-Encrypted: i=1; AJvYcCXy4cw+HmCnqLauSwT9f2bwdZ/QCQvU1SAWxF1GAvIy6oiBqLXRLOcPOtd6mXaHbfGl6s3Z8FkwcaZVCPdemw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz980v1Ghubzn+ttflcXMekiqzgIkAo5i98poVhCid32lDtO/c3
+	7MHTCQp06z1BQU2f6IHHliZBDglONoK6OEW/0xIez7oKgYW6sObZPCzt
+X-Gm-Gg: AY/fxX6X51MM33B64Q81Wq555qhsr5QNxT4tyniwNqHLNmM2ncSu3fdfcSeqXmaaVhQ
+	IundMEhqph+zEED0qTLU8jI2a92lAbiaMfJqew5BmvxCc/H7qaSR9IW1efSv9TXTXiKvCNRUORY
+	suzzcYJQcH1fNiYfcfiN245pb//SN2hrKDXbPF8NhKS3RxYv1yV6p5WbVKXkuLBEfztjKpRQbW6
+	tM5N+mgkfKyqDzAbi58W/zV84uYfuxjiE57JVyj97HXB4//Xwpfd2UkVB4+oism2fJw4uHPAcwc
+	XDEO+AYwbY3bRQCUZyjYljO3tQ9rpplSCMNzjdJdHMik3I0G/1WebYj0KD8U6Ftnp7i5d2/r2dv
+	7igT6+nBHOFaT98zWXvqNU/qY+5fiH07vyQ1gDhqn3jFvbFtlcVk2fyuf9qfm8Igew87NdAVT6Q
+	KrOoArICeqz6ptlz4CoorDEYjhZiD1r+qLecf3F+vV+WRGjxZOPxMM3pg5szepaNO4iBW3SyQFJ
+	h1y22FV6eUFlQs=
+X-Received: by 2002:a05:6214:5189:b0:7f1:c596:e1cc with SMTP id 6a1803df08f44-8942e2c9a62mr63452806d6.19.1768608403919;
+        Fri, 16 Jan 2026 16:06:43 -0800 (PST)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e5e526dsm36097626d6.12.2026.01.16.16.06.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jan 2026 16:06:43 -0800 (PST)
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C43F6F4008C;
+	Fri, 16 Jan 2026 19:06:42 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Fri, 16 Jan 2026 19:06:42 -0500
+X-ME-Sender: <xms:ktJqaZjli6pSPr0lgEwuRW55b0H4U8LD8NLR3lHOGXSYxrQbmppdcQ>
+    <xme:ktJqad7Q2ebf2mdrvMxHZdE1tuosI0weMpqp_qGjTc-r_uMwNX8xdm3oVVBo88oEp
+    bgbKS4Ei9V7uaoGwpRt911P4XQoj3zWdbYLgocbt0Dp-SNJt5-C3WE>
+X-ME-Received: <xmr:ktJqaWZp5WMcwhlHYy7JlSwiCyzKZ_MJadXzsfsf9CyJ-qdJMK281ips>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufedtfeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedvvdeh
+    tdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
+    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
+    pedviedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihgtvghrhihhlhesgh
+    hoohhglhgvrdgtohhmpdhrtghpthhtohepphgruhhlmhgtkheskhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtph
+    htthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopehojhgvuggrsehk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrg
+    hilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtmh
+    hgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:ktJqaac7GCuaHwgTeMm0CU46aZa71lO254tPUYfOJTYnIkQG64vhng>
+    <xmx:ktJqaT5FZSWzmlGLskLIJJkJ8VeOpZRTfg5LmlEkXYGgfvDHZy1ttw>
+    <xmx:ktJqaWV1VtSnPpJ4juZeUACUDbCYRq2vgS98xl_4viBjOZw038X5vQ>
+    <xmx:ktJqaaZ1tQM38pJy5xhs8t_-UQ_m75VB8rd_OfxBiH4VDSrwBa0-XA>
+    <xmx:ktJqaVzUQm-GAC-h9ll--b7tadH8zpOT6MqbHzKuHn-RYqIr994ewhOu>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 16 Jan 2026 19:06:42 -0500 (EST)
+Date: Sat, 17 Jan 2026 08:06:40 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	rcu@vger.kernel.org, maple-tree@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
+Message-ID: <aWrSkAPFkdH_tvtN@tardis-2.local>
+References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002529D:EE_|DS4PR12MB9586:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14a921c6-3c21-4ea6-f455-08de55494949
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2bmAZk9UHuXpO+suD+FaxNGDcSxshM+DmzNsLlbxfPG4RR5Q+q2nQF5IsNjx?=
- =?us-ascii?Q?HEjtUrzZxo31ORTzaDUzO3ytzCWx12CS1znLbuXMaOsRRPK3R5RnistYhRJl?=
- =?us-ascii?Q?qzTkWhQooPJ7KMGAs/f41v3PZmtYlXIRIMPVEneieatPM9H8x1hg8ngPlIQf?=
- =?us-ascii?Q?NHhvhPEZEPnSaIQGQ8IpxPtXAt5VKOAlfAgEcNZyfCoLkL99ESFH/R+8UvWP?=
- =?us-ascii?Q?DWCzbTH/DLgagQaw06Xn8fiXtkl/ejMu22kNfcpqdTQ7BzJutIL63A2vrXEA?=
- =?us-ascii?Q?QfbYR74rBDxp8mx5aJBNPu7qMv+p1OEboODad96/40ufedf/IJxBTl4zFBtM?=
- =?us-ascii?Q?0AWTHqFZELuLlymv9uuu7nDh13HKFeOeN7dS79HDyjAf6+yb6TI6WO1LaEKM?=
- =?us-ascii?Q?0YGLOczqRipgrd4/EgPg1M1KIeX+jjf9DJbrm9N42K6ilUeSq7uYIVmbLdpq?=
- =?us-ascii?Q?hWL77eOkefKeEcD/5SKO0uFZf1LSz1nISsWq/LMfPwQoIwmpJMAGNNK60Nms?=
- =?us-ascii?Q?PhRfct3xWYJa/dhoSbon5eBnn0CrOKju4ffRkddeSjXbgiPJPvSHoHRre5nJ?=
- =?us-ascii?Q?xrArSZQD2C2BR7xEvikLA4UAMAs7e4lJEG/EC08bMUQRYW3c/mqO84aak3pH?=
- =?us-ascii?Q?NcRCS6LRv3Y4DLtQaH5YNOuRrmwZeFjeEWvCqmU8naA/WfcLNVCrfEe7RIbD?=
- =?us-ascii?Q?XDQm2sWKFdYX/SQAxQCWxQr0U7VUO/wRdfCzDPIHS1+KfeLCNUK6/samjhHZ?=
- =?us-ascii?Q?VVJe3m6QoeIr7lYnQ2COH7FPc2+1IzCVQ3sOZNKweDQzWI05LvL6Gm++S+gL?=
- =?us-ascii?Q?aabae2Zl75HeKhTrDIhMVpIrz5YTMBWooPdq8yL/pfjENGp1kFQjWwpIZLZU?=
- =?us-ascii?Q?Pjg0QurUX/fBxl+5GUcJn0guj3veK8FMOn/IXuYmpM6dNssyKbqDauecsVGE?=
- =?us-ascii?Q?8zHsdfzamrkGuHwYYJi2VNLkStUcVTkbOJXqR0sae4vx0DwEKGiBePNKoVPo?=
- =?us-ascii?Q?dzOrV2aJofJE0frx7xJGDeDbEYCcCk88dlbPNflBLnyFXEgDg6Xw9a3FnDm6?=
- =?us-ascii?Q?5MMilDL7Omz7grhXjssStHx8WIZgzI5p2n73oe631uBMb02PAzIGbvHudzoM?=
- =?us-ascii?Q?Jlz9XjbNtAR5r9jpfe4+MWYiEYqxDIDSa23K2Pi42VWWerif4MQeEdth4swy?=
- =?us-ascii?Q?vkE3fG5tjHQa5Tj0L6bLRQyD6ug91d9JISVAavcauvUp6PFx9B4OO3qizvoT?=
- =?us-ascii?Q?MggGHm4HGPoZGm3W3BWrFIFK3YQWDPNIXqza7FBy8gdPDiFI1bRFM0xyDFcZ?=
- =?us-ascii?Q?IWkah2Ye7lV+4uvk2/1U8GpFw3aPI3KRg2YFuKZ8Q3vXtuTTgdQru5BjP0RD?=
- =?us-ascii?Q?1++olh0ppmMEZDasJVuHplxAmMeO4XyDM5jFOfc0BXToTq+SjIdZ7WrP/tAT?=
- =?us-ascii?Q?S8vrVBSbQUH75xxLjQCDVWTz+VTyDjyQtgxnUqooXwzdrJRDhAzxZsm5LlKW?=
- =?us-ascii?Q?JsRcqE1fv9nOb8oq9FyVxQYOOIhV0pc2zpSCtmONjeaJiWBOE6754AcKZ97K?=
- =?us-ascii?Q?ZNJ0idJyUknK7ctTg/o898BDym/4YcS3g9ojuRF+O4LvVbwjRtGCMXPsCepQ?=
- =?us-ascii?Q?2PKCYBV2ut2TAyqoc1cXTsUTAEtvUmp6rvJ9ogMdk+Dqv5v8aCJwVIphGAms?=
- =?us-ascii?Q?JvGbvA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 21:50:38.2250
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14a921c6-3c21-4ea6-f455-08de55494949
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002529D.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9586
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
 
-Struct Gsp in gsp.rs is tagged with #[pin_data], which allows any of its
-fields to be pinned (i.e. with #[pin]).  When #[pin] is added to any
-field in a #[pin_data] struct, fields can no longer be directly accessed
-via normal field access.  Instead, pin projection must be used to access
-those fields.
+On Fri, Jan 16, 2026 at 03:46:35PM +0000, Alice Ryhl wrote:
+> I'm sending this RFC to share an experiment I'm looking at. This may let
+> us replace the range allocator in Rust Binder with a maple tree.
+> 
 
-Currently, no fields are pinned, but that will change.  The boot() method
-receives self: Pin<&mut Self>. When struct Gsp contains any pinned
-fields, direct field access like self.cmdq is not allowed through
-Pin<&mut Self>, as Pin prevents obtaining &mut Self to protect pinned
-data from being moved.
+Thank you, Alice.
 
-Use pin projection via self.as_mut().project() to access struct fields.
-The project() method, generated by #[pin_data], returns a projection
-struct providing &mut references to non-pinned fields, enabling mutable
-access while preserving pin invariants.
+> An RcuBox is like a Box except that it lets you obtain a &T that
+> outlives the box by a grace period. It does not allow mutable access to
 
-Signed-off-by: Timur Tabi <ttabi@nvidia.com>
----
- drivers/gpu/nova-core/gsp/boot.rs | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+I think the `RcuBox` can be folded into the more generic RCU pointer api
+[1], e.g. Rcu<Box<RcuBoxInner<T>>> where RcuBoxInner<T>: HasRcuHead. The
+benefits are at least 1) we use relaxed atomic read for RCU readers
+which guarantees address dependency that RCU needs under LKMM (while in
+the RcuBox here, we just use plain reads), 2) we also support mutable
+access as well.
 
-diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
-index 581b412554dc..68a8acaf8c54 100644
---- a/drivers/gpu/nova-core/gsp/boot.rs
-+++ b/drivers/gpu/nova-core/gsp/boot.rs
-@@ -159,12 +159,14 @@ pub(crate) fn boot(
-             CoherentAllocation::<GspFwWprMeta>::alloc_coherent(dev, 1, GFP_KERNEL | __GFP_ZERO)?;
-         dma_write!(wpr_meta[0] = GspFwWprMeta::new(&gsp_fw, &fb_layout))?;
- 
--        self.cmdq
-+        let this = self.as_mut().project();
-+
-+        this.cmdq
-             .send_command(bar, commands::SetSystemInfo::new(pdev))?;
--        self.cmdq.send_command(bar, commands::SetRegistry::new())?;
-+        this.cmdq.send_command(bar, commands::SetRegistry::new())?;
- 
-         gsp_falcon.reset(bar)?;
--        let libos_handle = self.libos.dma_handle();
-+        let libos_handle = this.libos.dma_handle();
-         let (mbox0, mbox1) = gsp_falcon.boot(
-             bar,
-             Some(libos_handle as u32),
-@@ -231,13 +233,13 @@ pub(crate) fn boot(
-             dev: pdev.as_ref().into(),
-             bar,
-         };
--        GspSequencer::run(&mut self.cmdq, seq_params)?;
-+        GspSequencer::run(this.cmdq, seq_params)?;
- 
-         // Wait until GSP is fully initialized.
--        commands::wait_gsp_init_done(&mut self.cmdq)?;
-+        commands::wait_gsp_init_done(this.cmdq)?;
- 
-         // Obtain and display basic GPU information.
--        let info = commands::get_gsp_info(&mut self.cmdq, bar)?;
-+        let info = commands::get_gsp_info(this.cmdq, bar)?;
-         match info.gpu_name() {
-             Ok(name) => dev_info!(pdev.as_ref(), "GPU name: {}\n", name),
-             Err(e) => dev_warn!(pdev.as_ref(), "GPU name unavailable: {:?}\n", e),
--- 
-2.52.0
+As for the progress of that effort, the Rcu atomic pointer is almost
+ready [2], I will likely send it early next week. For the `HasRcuHead`
+part, as you may be aware, I'm working on a generic `HasField` approach
+to avoid duplication of `Has*` trait and macros [3], that requires some
+syn adjustments from Gary and Benno, but they should be available next
+cycle. I will probably send the patches for reviews before that. Once we
+have that `HasRcuHead` should be easily to add.
 
+Given the WIP code I have, I *think* we are not that far from providing
+what you need for binder.
+
+> the inner value (Binder would probably use LockedBy for inner values).
+> 
+
+[1]: https://lore.kernel.org/rust-for-linux/20250421164221.1121805-13-boqun.feng@gmail.com/
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/log/?h=rust-sync
+[3]: https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/log/?h=rust-field
+
+Regards,
+Boqun
+
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Alice Ryhl (2):
+>       rust: rcu: add RcuBox type
+>       rust: maple_tree: add load_rcu()
+> 
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/kernel/maple_tree.rs       |  52 ++++++++++++++
+>  rust/kernel/sync/rcu.rs         |  31 ++++++++-
+>  rust/kernel/sync/rcu/rcu_box.rs | 145 ++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 228 insertions(+), 1 deletion(-)
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20260116-rcu-box-7a8e4c9f2180
+> 
+> Best regards,
+> -- 
+> Alice Ryhl <aliceryhl@google.com>
+> 
