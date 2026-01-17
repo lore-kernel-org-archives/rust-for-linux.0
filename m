@@ -1,125 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779162D1F64
-	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 11:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62067309EF4
+	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 11:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768649046; cv=none; b=OrIJwpkY7RtVsmFFQqcgJM9XtzWZrVTKGIYUoKwm2Jrz1wsjHdGrkebRmhJR5J4+RivzGVjHUqj5cdAjX3/EWSoijiq2qniu/42oGtxXW8oiltUmG/7JTh1CelmZ76yG2rL/KTgm1lKtq76uYoESrw3Rs23l51I5LGYkJ1IC6JI=
+	t=1768650910; cv=none; b=lV/9YQw2En1qh/DqKMOSwwlecc96EEHH5VwuVQ7Gg0hQg56Vezge1pxhD60lHNY7FTZNqyLJCi1wwJWHSxICIb1zPcgbv1ibh13r/qk9f9jXrcQgojzRgmIhxEJmTy52iLQLU4tEGmYh6D65xs/U9xObkS1tRLiV7fzypik1Oik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768649046; c=relaxed/simple;
-	bh=y1VqaXEkPKmolU8tuUd7ehCwYdrV2lX2sTBowpAwuGE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=U6H0gx663AsEqCq0u2G8VTxwDSihOZyLRDrGxeQ9tPSHUEDxKOxSymxI0nkRKcvJ5dOBJP+gMJydvkBZlWL6Tl2u43kCafxRzMB7jUBemYlBjO/Hs0xEj6+yiSb/TZLVroVqREJxPLbifjPmuqKNZ8opWp6e6boIZiZxOBxkurU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JadbjWt8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768650910; c=relaxed/simple;
+	bh=JKuiMJd4b5PrjzGihqsZ2lYXtmBAHUr5Vx2YzFo1CFo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fxLi49QIMXFknADGzOl/XE95p0WlB96bH52h0ysKo8AbkqfzXttz63z0hz4CxCtvHrvea8jBVTKZdy3htg8hR71K9EJobGSFarmTmmJkjj2n8ZIIoykG5AyVPLGdOiYupd8OyUGp18Nfoa4XWmEPcx02BFV1/tNw85BmWZ8wB/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yKa25yV2; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JadbjWt8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E6EC4CEF7;
-	Sat, 17 Jan 2026 11:24:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768649046;
-	bh=y1VqaXEkPKmolU8tuUd7ehCwYdrV2lX2sTBowpAwuGE=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=JadbjWt8wCHgJkTrvTK+O2Xf7dHwdsca3hEosLp8S7+IqgMtVQmW+ukBAISkpZ0xp
-	 2/vvvXZVXu6I0vK41Al3PRhYFrpeMARqmpx535iqVdHDcfzbKshyVsr+DZsRpGQ0fv
-	 gK5ifup+WWV1K25heb2ygdldWiEFJOuJOT+lUSVIF9PKHAYdZo0nA92kuXSFsBOBUf
-	 9awmRbPKrBKg5pSBeYNEBvDY4K3HKdlgczx1m+/HdWXLiv7B73GiQ+o6zELGMWHD0K
-	 pQfubArMSP/t+p50OkZ/urj5k+iQBJ9Gn0ZWMW84JYc62KwALaj9WF6or4vBvOBZQI
-	 Yx20OVzQsWUOQ==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yKa25yV2"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47ee868f5adso22703045e9.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 03:55:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768650908; x=1769255708; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aLzmroCaS/6bTcyxw8v2f5hrQAsPrQS2nRkMsKAP0sg=;
+        b=yKa25yV2suGryY/7Wd+kPBR52nUFlBA1IQlqVhoc9Iak9NqFa95KfIZVZKTwp39gJy
+         ry7kICaBUNkNcvZlw7Nqf3wdT9kpzgj8tDJnxkDgyPX/WDTUw6iycTeb0Esr9y2VJWHv
+         RoWvjzYlZ2ZrbbS5u0stqa2Ij+j0/HC3Vk1G7CJ3UdRodhWHzKZBDuq/ob8D5j2D0qcS
+         ItooGlyPpvuVX1AHWRxMz4yF6lUAniB0Pc2XE0VJ3z599P8ywGAw/LePCCgwROVPl8zc
+         MMXRhH7TSn2cop0zwBOSRnQyGt3slsxS2golg4WHt0aNv/6K41XEy8j+IpZMmDf1ntzl
+         SnyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768650908; x=1769255708;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aLzmroCaS/6bTcyxw8v2f5hrQAsPrQS2nRkMsKAP0sg=;
+        b=VemkrBnSR8TPtAY2MQ1l9FM6+i0YKshO2pTZiH3SvsBs6HSXE6uglZz//03CJq4Fsl
+         slXkaVOBcazJpxchK+vKyuZr1ThJMOMdanG0SGFakHUdSg2DJv5YX8eSoMGaI4JPhyig
+         bWo35wr9pD7Q6WMW1sgrO45bEtXmnA5TZO8WKv7pF1P4i1ZQ6qqMVQleVBvuaz5suqHi
+         W0c1oX30BEADsHbTZdVTI/FHcoZLKTmcwd2HIze4lTACJ5+iRGzAo2hbrpvGJpSFJ7/a
+         qfedkD8ur5Zcq77hG+t9xn64YY7HLwpv5MUy/FrxniDYZpc2qC8CLw+ozaiQi3G8TVQ6
+         LvlA==
+X-Forwarded-Encrypted: i=1; AJvYcCV2n/qqlOMZOdmqmfuLr+G/D/x3jBGG6eadvKrWHkZYR7ZzqNp1vzsa02ZZFflHL3R6lIEzyCZlF//yBR1ERw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxs59tOphJYIhOpBil97x+wDiFWBo51tj0UmKMly+QJh/lBJUsu
+	rspn3IEdgkYP1GheQwBMhy6qIl7EtLGCs4cZXlyMVyZIef1zXmlrVeek78bvJR9/3i+GBlULax6
+	zV6/PK+h+/9dJVl1ygA==
+X-Received: from wmpx37.prod.google.com ([2002:a05:600c:18a5:b0:476:ddb0:2391])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:458d:b0:47f:f952:d207 with SMTP id 5b1f17b1804b1-4801e341e2emr60365675e9.19.1768650907837;
+ Sat, 17 Jan 2026 03:55:07 -0800 (PST)
+Date: Sat, 17 Jan 2026 11:55:06 +0000
+In-Reply-To: <aWrSkAPFkdH_tvtN@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 17 Jan 2026 12:24:02 +0100
-Message-Id: <DFQTRDK9BO2M.995Y3QDQM7CG@kernel.org>
-Subject: Re: [PATCH v5 5/8] gpu: nova-core: Replace module_pci_driver! with
- explicit module init
-Cc: "Matthew Maurer" <mmaurer@google.com>, "Gary Guo" <gary@garyguo.net>,
- "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-To: "Timur Tabi" <ttabi@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260116214959.641032-1-ttabi@nvidia.com>
- <20260116214959.641032-6-ttabi@nvidia.com>
-In-Reply-To: <20260116214959.641032-6-ttabi@nvidia.com>
+References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com> <aWrSkAPFkdH_tvtN@tardis-2.local>
+Message-ID: <aWt4muGXbe7lBmXt@google.com>
+Subject: Re: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
+	Andrew Ballance <andrewjballance@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, rcu@vger.kernel.org, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
 
-On Fri Jan 16, 2026 at 10:49 PM CET, Timur Tabi wrote:
-> Replace the module_pci_driver! macro with an explicit module
-> initialization using the standard module! macro and InPlaceModule
-> trait implementation.  No functional change intended, with the
-> exception that the driver now prints a message when loaded.
->
-> This change is necessary so that we can create a top-level "nova_core"
-> debugfs entry when the driver is loaded.
->
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> ---
->  drivers/gpu/nova-core/nova_core.rs | 26 +++++++++++++++++++++++---
->  1 file changed, 23 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/n=
-ova_core.rs
-> index c1121e7c64c5..d0df8db3693d 100644
-> --- a/drivers/gpu/nova-core/nova_core.rs
-> +++ b/drivers/gpu/nova-core/nova_core.rs
-> @@ -2,6 +2,13 @@
-> =20
->  //! Nova Core GPU Driver
-> =20
-> +use kernel::{
-> +    error::Error,
+On Sat, Jan 17, 2026 at 08:06:40AM +0800, Boqun Feng wrote:
+> On Fri, Jan 16, 2026 at 03:46:35PM +0000, Alice Ryhl wrote:
+> > I'm sending this RFC to share an experiment I'm looking at. This may let
+> > us replace the range allocator in Rust Binder with a maple tree.
+> > 
+> 
+> Thank you, Alice.
+> 
+> > An RcuBox is like a Box except that it lets you obtain a &T that
+> > outlives the box by a grace period. It does not allow mutable access to
+> 
+> I think the `RcuBox` can be folded into the more generic RCU pointer api
+> [1], e.g. Rcu<Box<RcuBoxInner<T>>> where RcuBoxInner<T>: HasRcuHead. The
+> benefits are at least 1) we use relaxed atomic read for RCU readers
+> which guarantees address dependency that RCU needs under LKMM (while in
+> the RcuBox here, we just use plain reads), 2) we also support mutable
+> access as well.
 
-This should be covered by prelude.
+1) But mtree_load() does use rcu_dereference() to obtain the pointer?
+1) "relaxed atomic" does not sound like something that provides an
+   address dependency to me.
+2) How do you intend to provide mutable access? By waiting a grace
+   period?
 
-> +    pci,
-> +    prelude::*,
-> +    InPlaceModule, //
-> +};
-> +
->  #[macro_use]
->  mod bitfield;
-> =20
-> @@ -20,13 +27,26 @@
-> =20
->  pub(crate) const MODULE_NAME: &kernel::str::CStr =3D <LocalModule as ker=
-nel::ModuleMetadata>::NAME;
-> =20
-> -kernel::module_pci_driver! {
-> -    type: driver::NovaCore,
-> +#[pin_data]
-> +struct NovaCoreModule {
-> +    #[pin]
-> +    _driver: kernel::driver::Registration<pci::Adapter<driver::NovaCore>=
->,
+> As for the progress of that effort, the Rcu atomic pointer is almost
+> ready [2], I will likely send it early next week. For the `HasRcuHead`
+> part, as you may be aware, I'm working on a generic `HasField` approach
+> to avoid duplication of `Has*` trait and macros [3], that requires some
+> syn adjustments from Gary and Benno, but they should be available next
+> cycle. I will probably send the patches for reviews before that. Once we
+> have that `HasRcuHead` should be easily to add.
+> 
+> Given the WIP code I have, I *think* we are not that far from providing
+> what you need for binder.
 
-Let's import driver, such that this becomes driver::Registration<_>.
+Hmm, so I looked over [2], and I think my RcuBox is an RcuOld<_> rather
+than an Rcu<_> under this model. Though I can't afford to pay
+synchronize_rcu() for cleanup - I need kfree_rcu().
 
-> +}
-> +
-> +impl InPlaceModule for NovaCoreModule {
-> +    fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, E=
-rror> {
-> +        try_pin_init!(Self {
-> +            _driver <- kernel::driver::Registration::new(MODULE_NAME, mo=
-dule),
-
-Same here.
-
-> +        })
-> +    }
-> +}
-> +
-> +module! {
-> +    type: NovaCoreModule,
->      name: "NovaCore",
->      authors: ["Danilo Krummrich"],
->      description: "Nova Core GPU driver",
->      license: "GPL v2",
-> -    firmware: [],
-
-Should be a separate patch.
+Alice
