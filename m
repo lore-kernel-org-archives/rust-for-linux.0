@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BED18E1F
-	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 12:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924204A3C;
+	Sat, 17 Jan 2026 12:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768652952; cv=none; b=lXDdvwb5tqMQk2l1uRCYJrA3fDyJcwAd6AEzHJ7K10CAaSAhhXfBgmQ3/nVEdO0vvF1xFIoHShE5HCEoeM35oB6GTyp7HhkoRJxqa/p0McFV3xKtwe0aSK+Y8/dwmYl2G79zE+EChvvtrDttpBFi4+Lp8E4iWuFdHTjQ+QK8Zko=
+	t=1768654416; cv=none; b=bAMSegoD3HqWdjbn/iHWoUqUaywd5M6XcoDwrpZ5YFBK5/mBIbuex2dRLeFk1IZskS+XAwkHl6v+UahbPv7WFfplMnhewRlrHNTdRVN0KyP5RYa72BYpIVOiRsG6tJN1x6DXt9ZuE7IfWL7zecXzAIKoo/WP8bH55NN1KdpH9TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768652952; c=relaxed/simple;
-	bh=HG5hgAyjnHeCRKwT0pEgowcnSPcvb6xXyeze46219Ds=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=Lv/lcwSB7Ebd6gt8pbYxu4vbwdhAcI230JWSRC9Odg9fBwHSzZCQRS91MPTAZoch89/mdj8A5eU1Yxw0PcW/yWuNzKgIJRisKmRBlile+TUJL5Ga8r0poVELr+c0aPd3I5Xa+8nagFZAhNjkT+AD6ZG4uLqDjNNI6fwv5e8T7+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s8r7Yvn3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768654416; c=relaxed/simple;
+	bh=pRNi6AkxLH0mAfdj3yn69/e5sljxPgp+PznlEPPuUAc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=tUiV8289UJHYyVKKJ9zyhqqqpvvtT65PqeI0e0Bjeix9G1ttrXsedMGDQ9JZ2MNM9aKHU7023QVtemM/86ct5iShsysmu47qUcvnjbdjg8wvvO/KcC6ULKTpVuT5ylkZM82IqVGIUUMA8QlanIv7as0G9QvaR3gJtjnxDpW5u+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIIQYGKP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s8r7Yvn3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0386C4CEF7;
-	Sat, 17 Jan 2026 12:29:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIIQYGKP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8602CC4CEF7;
+	Sat, 17 Jan 2026 12:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768652952;
-	bh=HG5hgAyjnHeCRKwT0pEgowcnSPcvb6xXyeze46219Ds=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=s8r7Yvn3xHVTo++zcQUou7S4ULij0ReQmIQdjc1xUgYxx3ph6gOkmrRVmirYG8CXP
-	 iRyYd4O525223VBAxmKoQC6+4YYyeG563Usjq8bF/M4EAaakf+47w87Ha9ilCQUlvm
-	 0ztMIq2OAfrCIs6SCl7udctAWWKquFjy2DXM0HHB081PnXN565lhvlKYAuS9soV8Ib
-	 X9qfRBNTNf1yhEKHZf66JCwwu6fFsEdJQbkLOWsQXEB2LzfS3ZS53TGz41l2WSALYW
-	 OL06EpySiQUlEr1vzx8G0aCk4YzQVV44ARYI6Mke7tSwzVno0p+CWvmPjSnjllDHK3
-	 j7jocZAJi7tJw==
+	s=k20201202; t=1768654416;
+	bh=pRNi6AkxLH0mAfdj3yn69/e5sljxPgp+PznlEPPuUAc=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=oIIQYGKPiLyONdUIqRV7MNXBHLXWkWaqfv36poPtojiE0FEbvD2Tl+AJ2SKMZWuJi
+	 y3NhllrptNb9rVp6bvNlmWOrQC9M+2q5RFdmF9kaRitX5xle4VnYm1RsDiwhQAWkox
+	 hi46UyChIZppeAvEzq9lFjcp6kYMzTloyDIFGnlzd6gOX/I3/kCTGVamd0JD7kPHR2
+	 RgwXt4yBTpgZVwA9r1OcFkoo8YgDhGZoSh2lXlG4Kd6h2wLtUkZy4XGXdkzVukDfUJ
+	 5+EM3s/1Ii3UlnmwaC83CXMb1mdPX55oa26azcBmyJm68M5NV7DgzSGXhhrQyETf3c
+	 VUKTYn4AQBN3g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,31 +34,51 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 17 Jan 2026 13:29:08 +0100
-Message-Id: <DFQV57XCLMB6.1A0IW206EXE3H@kernel.org>
-To: "Timur Tabi" <ttabi@nvidia.com>
+Date: Sat, 17 Jan 2026 13:53:31 +0100
+Message-Id: <DFQVNVYZCDPB.3IB8IA2KWUD4B@kernel.org>
+Subject: Re: [PATCH v2 1/1] rust: simplify `Adapter::id_info`
+Cc: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ <rust-for-linux@vger.kernel.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>
+To: "Greg KH" <gregkh@linuxfoundation.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v5 7/8] gpu: nova-core: create debugfs root in module
- init
-Cc: "Matthew Maurer" <mmaurer@google.com>, "Gary Guo" <gary@garyguo.net>,
- "John Hubbard" <jhubbard@nvidia.com>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>,
- <nouveau@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-References: <20260116214959.641032-1-ttabi@nvidia.com>
- <20260116214959.641032-8-ttabi@nvidia.com>
-In-Reply-To: <20260116214959.641032-8-ttabi@nvidia.com>
+References: <20260117094710.24301-1-work@onurozkan.dev>
+ <20260117094710.24301-2-work@onurozkan.dev>
+ <2026011725-contour-salary-d3d1@gregkh> <20260117140240.15d1120c@nimda>
+ <2026011703-bony-unloader-9099@gregkh>
+In-Reply-To: <2026011703-bony-unloader-9099@gregkh>
 
-On Fri Jan 16, 2026 at 10:49 PM CET, Timur Tabi wrote:
->  impl InPlaceModule for NovaCoreModule {
->      fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, E=
-rror> {
-> +        let dir =3D Dir::new(kernel::c_str!("nova_core"));
-> +
-> +        // SAFETY: we are the only driver code running, so there cannot =
-be any concurrent access to
-> +        // `DEBUGFS_ROOT`.
-> +        unsafe { DEBUGFS_ROOT =3D Some(dir) };
+On Sat Jan 17, 2026 at 1:07 PM CET, Greg KH wrote:
+> Does clippy complain about this one?
 
-I think you forgot to add a new Kconfig to nova-core to enable this and in =
-case
-not set leave it as None.
+No, it does not.
+
+> I don't have strong feelings either, but the original is "easier" for
+> those of us used to C code.
+
+I think it's a matter of preference. Personally, I like those functional
+characteristics of Rust and the corresponding possibility of compact expres=
+sions
+as long as it is not overdone.
+
+This case seems pretty simple though. :)
+
+In comparison, this is code from allocating the level 1 page directory for =
+the
+GSP (radix3) firmware, which is probably a bit too much.
+
+	level1 <- {
+	    // Allocate the level 1 page table, map the level 2 page table onto it=
+, and map it
+	    // into the device address space.
+	    VVec::<u8>::with_capacity(
+	        level2.iter().count() * size_of::<u64>(),
+	        GFP_KERNEL,
+	    )
+	    .map_err(|_| ENOMEM)
+	    .and_then(|level1| map_into_lvl(&level2, level1))
+	    .map(|level1| SGTable::new(dev, level1, DataDirection::ToDevice, GFP_K=
+ERNEL))?
+	},
