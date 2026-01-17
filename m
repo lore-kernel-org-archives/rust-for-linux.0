@@ -1,171 +1,165 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488AE221543
-	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 15:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8277D2248AE
+	for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 15:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768663533; cv=none; b=VP1ye04ZtOJRH71veA/kes+vbE0eFNx1ngSn7FbsJ9Bjg1x2v9TmKPbvniJDErRG1Zhg4iHZUwnjzh71lf/6TOllIwhCmbh26sVjysJx4N3An8Q3OwZuqK+/NAv6P0/26+XstwYWL/9rKsXIO1ea7x5MwPdLfQR0A1towOkgvSg=
+	t=1768664392; cv=none; b=goWkzW9UE6rCHrY2IHrco3JbMrNNT0MlAehFvgwcBbhrmwH4z5dOMVDel1tALAmxHEKz/jznixiNnVnYFMrj+fzxxTwE/jr9qu185jtwdMCzRm7Ah62fqlm81YWG85J8fhAOer28Z2TLuKKAWyREVu/so68uv2hUkJcPR16tZYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768663533; c=relaxed/simple;
-	bh=9ipAyLskKwi1ksx9hkkM2iyTNIPdZ0fYz79QhCj4ffA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AUESI6byYwujR1ghzN9rEpq3HjxSCBJw0XG2PX4oxvd2yG2xGlk+asIKC3BacEH7VMmpXgAvjgoZLy72d8l8TeRubDn9qj1iAYffHi3vNqlJCF7siSnCwcls6a0F8zE/07q19F0WvXQmUkwX72hszw+NEEAl793YjtRK//v2k6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w0zaPWxa; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1768664392; c=relaxed/simple;
+	bh=c5ukZxvOx3XxqLMLZ0Qq3WedxhGaSgozV+pTMWZLD8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nqUTlhiUyVNtS6Fvi4hPPubi0H5kCgPOf6eBlzlJw4RD4q543JweCFmCDKNFYWy5b5pMPiaBbT1z5TbVsgQl48bb68VsEBp9//GZpGgbZ+1KV1s/4VTH9JzRqKREY3eaHF2MVaHvHDgrbB1fyM7qtSIQve2TWg680KjCaMVBzco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nz2LLOFK; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w0zaPWxa"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47edfdc6c1aso24848065e9.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 07:25:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nz2LLOFK"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8c69ffb226eso356725985a.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 17 Jan 2026 07:39:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768663530; x=1769268330; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KqqLu+rK83FYvuu43UqacZgGarS1nyPWiHaErFCcx+s=;
-        b=w0zaPWxac3n44oJeA2yYz1htROIZE7YRtAhUA3iMpqpD3spou6UQkDfZ9D1Z60Xunb
-         t701e3bTfAsypHwmmhCIiZ50wTlGC2ATfm5ZP2f1snD0NsexfT0Zt2/9EDYnEuHm+D8Q
-         0VPSoEcBalbdCSCgFojMfBWvYIhWewyjiXvzT/nDQDQx2mz1PkNgSqPdN8A0Vzd/oir6
-         ROBx/Npis/R4NvmqSwD88+qMe67DOcXz9He8mlsYQy3g45scwZ1DP2MeUNeefpc0LLID
-         34J3UsjwJ3fO0oPwhxAiwpMae3t++3rE5PnFYGxLYTmo/7n6BRq8DFcu5pp6wDu34JZn
-         90sA==
+        d=gmail.com; s=20230601; t=1768664390; x=1769269190; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MsFwJU0uorXcDejUHSz8mT5Xd1nNN5P7vGbzkPiWNoc=;
+        b=Nz2LLOFKWxMLty6p6md1zG72q5To12QNClOU5AbzDry1rdX2WKl6JxdMhMJ2ut5sLO
+         jchrgckLaNK2YoRUIjA9z7VG/33R0Qx3tzJlEE3YrDQNmQeG8EjV4wNzc4/UIWpHwDVC
+         uOnAvrBEnW1wePra1VQAA+5ordBaxHI49v+EU8w6A89rT4f4JLck8QTZBkMtS73GybrV
+         cYwj14GnwTlLi/bb+a68hjBDWHouPnUX/FjENEUScOZ8vrDN3yoeBkTG/sza2lpvGK4s
+         KSD4HGlkHscgpFSPRy5PYoQpUHoRqHLaIbQs+590bXEk+gcz/rSxkw32Wta2XN6o/EQT
+         NrOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768663530; x=1769268330;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KqqLu+rK83FYvuu43UqacZgGarS1nyPWiHaErFCcx+s=;
-        b=bqfsMbNOROTqGUbBaQO6Max++O+756aMIIYk7KuhiwpeCXc+mhrL/YbEDYp2qmw+tr
-         Qrt+7vxlZM1v5UQ2fL3t5sKCD3K0wDZlw1LwBaIzHyUnAlOwtyMUl5ZqkIL5J6xHoADL
-         SL4A8bL+pT3mNIRojhck0SpOMggPWJSLITf5FV17KIs8BeHo1RxlYit8f2zkHZh5HH2z
-         hfBDHehLXION79FrU/NzwdVWNZz/PSwRWLX6qlqzEzuRtqXZ3+FL4AIIc1+GCOEILkVK
-         9m6cjCE5PEawy/Bmc+A/FoeV9ruAmRcgSjCu7A4V5h5QkEFFIqmiLPBcKrrJq4/+6uPn
-         IRAA==
-X-Forwarded-Encrypted: i=1; AJvYcCWupitu7XQq0OfvVY/breHIBrg7gg4uavktz7mEVZZdBOb0o1D7lK2z2WjFsMbL3du87pSZg05GjwTZzzXriQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywumar5uTOia83xYZXRN5h+duJPTUA7SsstqKw8hacTShBtWzyk
-	FepgJQsk8e9XxG5IaqB61Jumeo7CN0xJtLC+S0TsivhWaXQOkyZ+sc7F5Ioz+cICLpRNxVQKUAL
-	78s3qGIOmS0Mnu40W/Q==
-X-Received: from wmhm8.prod.google.com ([2002:a05:600c:40c8:b0:477:7893:c737])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e0f:b0:47e:e779:36e with SMTP id 5b1f17b1804b1-4801eb0375amr70230175e9.19.1768663529817;
- Sat, 17 Jan 2026 07:25:29 -0800 (PST)
-Date: Sat, 17 Jan 2026 15:25:20 +0000
-In-Reply-To: <20260117-upgrade-poll-v1-0-179437b7bd49@google.com>
+        d=1e100.net; s=20230601; t=1768664390; x=1769269190;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MsFwJU0uorXcDejUHSz8mT5Xd1nNN5P7vGbzkPiWNoc=;
+        b=Kn+KUFgQQbk9onZWyK/5AfM/TvTxUV9NcTQOpHO1B26QL7pHMkFwwmaw+e9j4wGMED
+         AOFi3tV1V1pM85NiWaRXJY2aSttGjpJWuJ/2yffrTHf7gLNKR0Dq1UPxOHyGbRtmRCHk
+         nIFN4SmaFgJHb0uEiErzMwvr5g+PnQGIWYSaTuPBWLCk84pI2mAju2SHXMhyttRDhr5X
+         GDbAx5HAavqTNx/l+LmVcTbNvgZmd1tKCFHpNW8fkJYnxjE3BIXlAEmgvVJHT8oMM33R
+         6VZr9N6Menv5Yhd8CLZa/yGn9xC9zx+hAHT3xoyLk1Vgm2lWU8bgLP3OOF/ddJ8Vu59O
+         cVzA==
+X-Forwarded-Encrypted: i=1; AJvYcCVhWUUG4es0VUBEDOnlvUIDhpoHKbvpl81ONGReT6SPaUYk4SrfD3J1suEawPtQ0jclnxGJedeV4ZHzfMjvtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwN16iABBoqqEvUmABfn/FJaUB7+zAX7nd0vhvZYNjDymDcqGtF
+	FIzmMJX4caW6I3Aq6NmbJDilUwrCwzRsjCSgfnf6rOJRjAWiOpLZyIik
+X-Gm-Gg: AY/fxX5zhM27PnlUGcKmW958beqwtOrcGAG2dLA5JZugAYF1cXcdovfXQONgcQNsijr
+	8yYgGgfGVDpydXYMNHK88d5wdlivZi07KvPtw2i1DjGWqNEFTi3U0iIABWePWHnJqXsU5aQkBib
+	nqtiYwK3CTjkO7UuzxtgHzAgmpwb+bwm6tbSGkAIG37LoQN6mp+fDsRmiICdLN9hBQDkTa50y6U
+	mZPvtCkDeRAN1haHtHmB7+OE3rV7T8UbIS+WaMmoP1TaL+aaqKCxFHYARCNR4QVnZLztn7AtxC5
+	PHO810nFSw0Y1za0t+EvTqybkou+9PzLdgilQAKqv456UJLqqMmDnQ9A/fsSfgyZyJJBW3dfIQj
+	3ISY/J11o6UEBe7b2345cmIgbb6PB8VLq1jb26kzg+RGZ3maGSOvNCAQyxhOy6ASeaDO70L7sMK
+	9c6Vw+FFpwMOXXrWigcXARVkqj+p0fL4923AYLdpeA/kLW54ADb1QJdBumkrn6AVy6jzAyDiKRp
+	gcadBJJb+ze64A=
+X-Received: by 2002:a05:620a:128a:b0:8c6:a84e:2a2d with SMTP id af79cd13be357-8c6a84e2ee8mr540589085a.31.1768664390250;
+        Sat, 17 Jan 2026 07:39:50 -0800 (PST)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a70f1fe1sm448624185a.0.2026.01.17.07.39.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Jan 2026 07:39:49 -0800 (PST)
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E79BEF40076;
+	Sat, 17 Jan 2026 10:39:48 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Sat, 17 Jan 2026 10:39:48 -0500
+X-ME-Sender: <xms:RK1rab7rMRnYmsuxO2M1OdMHbLRJ20HzxQGGz1hSxMBvL3L2kKxgXg>
+    <xme:RK1raQyTGMwWDE-CnPIbW4LvN47vOtGrZw5YPszRdp09rnr04-lKWyypz0OfxziFm
+    h8sTsqbwxqJAunQsRoo1wmXXgA4Uo2a_BTBE3yCIRm41oDwmcW9>
+X-ME-Received: <xmr:RK1rafxqe0j0nt1CDDmhNxFXOsqrVhhr9viUfCa1T363Z3G6Z80GHbkt>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddufedvudelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffei
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepvdeipdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehprg
+    hulhhmtghksehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvght
+    thesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvg
+    htpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghj
+    ohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsih
+    hnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:RK1raYWsq87pmfvRbXi5JFYKA_KCUBH5rc8-Mh499582NEFspw52aQ>
+    <xmx:RK1racTHO9OTXGWTd7Wnhwlih0XeJmAB1RGE3NlLFjGVsnwaNSHX6g>
+    <xmx:RK1raXNseBlDOCe-yq54TrACSTafu1k1JEYQ2xxtYpx1H86yRv8lQQ>
+    <xmx:RK1raZw6CtwWC6dWv9737pBYAt5rbNe75kHWG8wKFyHucpyyabEaKg>
+    <xmx:RK1raRq1F5u7Sb-JBFPV5Zyr8y0nl5XkLXjd6h2Kjb2wBYoAbWbfzQfi>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 17 Jan 2026 10:39:48 -0500 (EST)
+Date: Sat, 17 Jan 2026 23:39:46 +0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	rcu@vger.kernel.org, maple-tree@lists.infradead.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH RFC 0/2] rcu box container for Rust + maple tree load_rcu
+Message-ID: <aWutQuJAaBXG2JY1@tardis-2.local>
+References: <20260116-rcu-box-v1-0-38ebfbcd53f0@google.com>
+ <aWrSkAPFkdH_tvtN@tardis-2.local>
+ <aWt4muGXbe7lBmXt@google.com>
+ <aWt8Ze-otTkexNIe@tardis-2.local>
+ <aWuKlR4a-VJhBeWj@tardis-2.local>
+ <aWuOtUa0mPDrnbke@google.com>
+ <aWuXHkGZlMvr0uxD@tardis-2.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260117-upgrade-poll-v1-0-179437b7bd49@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3796; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=9ipAyLskKwi1ksx9hkkM2iyTNIPdZ0fYz79QhCj4ffA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpa6nlFxHRFC9Er4fNiBw9GYpYeu3Uu4ieGDJeI
- wo6v3Mb5H6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaWup5QAKCRAEWL7uWMY5
- RtG8EACdXCwXlePrBnRXKgNEHXkdYMvJULH49b5iki2wcp8iujIwa+FEoFXm1Y69eN5UCCZtcQH
- zylpEINsHKVe4/to8zHNwCmm5tLMwDeEWjNTv2t2g9W5UXD4Zw/F9RrerMh4va+TshAnCJGLJXu
- 04229CYQkUTlNmMwREG+u9/+6hcT1fMQgYSijDpVy1gdhpBb1PPyCgcx7AmiYkX+V/4JihValTI
- hU8iO7IyLpKIlH6kuT2gRS9bCG4At0CSusPaMiH45agzSNWx+3HWRp9PtxcbjsQXOxXQ7Z7DsWf
- CUGEAxYfVXI6OTKm3Nz9IzdyZtkrxqjT+KyHKNCbH1VAKXqrp9kaJAYbmgMSkkEkOZGAYBiVCTu
- +K8UtmVC9olOfl/EDZNYg9PLy13SnSorCw6hO5i610hJVHp6kllzrwdbjfV25/P+hjP3K8oNRAw
- rGMIGCeT1h1wmNC5ddkhoe6q+jH+CVhkaBQDuI6R6XSg6VgtTkx+Psi8L78z5mR7h8iM5j3EY4Z
- jrhvuVEHQJKj1FaVH5+oMhINwBUn092wKAxAk4S6RPiL1yH+saaVfT05jl72QSYKxV5AfMNVvwD
- exsQTHgSAT1OQyHjhwsRtP+bE/AJHnT4On9+oN0IeJdPXLy4I4TuuYgCegpoj/IEYnvGYMHEQyb 0ULwk+2ADGWOyqw==
-X-Mailer: b4 0.14.2
-Message-ID: <20260117-upgrade-poll-v1-2-179437b7bd49@google.com>
-Subject: [PATCH RFC 2/2] rust_binder: use UpgradePollCondVar
-From: Alice Ryhl <aliceryhl@google.com>
-To: Christian Brauner <brauner@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Carlos Llamas <cmllamas@google.com>, linux-fsdevel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWuXHkGZlMvr0uxD@tardis-2.local>
 
-Most processes do not use Rust Binder with epoll, so avoid paying the
-synchronize_rcu() cost in drop for those that don't need it. For those
-that do, we also manage to replace synchronize_rcu() with kfree_rcu(),
-though we introduce an extra allocation.
+On Sat, Jan 17, 2026 at 10:05:18PM +0800, Boqun Feng wrote:
+> On Sat, Jan 17, 2026 at 01:29:25PM +0000, Alice Ryhl wrote:
+> > On Sat, Jan 17, 2026 at 09:11:49PM +0800, Boqun Feng wrote:
+> > > In Rcu + RcuOld design, RcuBox is just a Box
+> > > because these two pointer types handle reclaim + accesses.
+> > 
+> > How would that work? Dropping my RcuBox<_> must use kfree_rcu() or
+> > synchronize_rcu() or it is unsound. So it can't just be a Box.
+> > 
+> 
+> RcuOld<P: ForeignOwnable> will call synchronize_rcu() before dropping
+> `P`. And I think we can have an asynchronous drop pointer type like
+> `RcuOld<P, Async>` that requires `P` is a type like `Box<HasRcuHead>`,
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/process.rs |  2 +-
- drivers/android/binder/thread.rs  | 18 +++++++++++-------
- 2 files changed, 12 insertions(+), 8 deletions(-)
+One blocker on that is Drop impls cannot be specialized. We probably
+need a different pointer type like RcuOldAsync...
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 132055b4790f0ec69a87635b498909df2bf475e2..9374f1a86766c09321b57e565b6317cc290ea32b 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1684,7 +1684,7 @@ pub(crate) fn poll(
-         table: PollTable<'_>,
-     ) -> Result<u32> {
-         let thread = this.get_current_thread()?;
--        let (from_proc, mut mask) = thread.poll(file, table);
-+        let (from_proc, mut mask) = thread.poll(file, table)?;
-         if mask == 0 && from_proc && !this.inner.lock().work.is_empty() {
-             mask |= bindings::POLLIN;
-         }
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 82264db06507d4641b60cbed96af482a9d36e7b2..8f09cf1599ae7edcf2ee60b2cb1b08cc2d0afd3f 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -16,7 +16,7 @@
-     seq_file::SeqFile,
-     seq_print,
-     sync::atomic::{ordering::Relaxed, Atomic},
--    sync::poll::{PollCondVar, PollTable},
-+    sync::poll::{PollTable, UpgradePollCondVar},
-     sync::{Arc, SpinLock},
-     task::Task,
-     types::ARef,
-@@ -412,7 +412,7 @@ pub(crate) struct Thread {
-     #[pin]
-     inner: SpinLock<InnerThread>,
-     #[pin]
--    work_condvar: PollCondVar,
-+    work_condvar: UpgradePollCondVar,
-     /// Used to insert this thread into the process' `ready_threads` list.
-     ///
-     /// INVARIANT: May never be used for any other list than the `self.process.ready_threads`.
-@@ -443,7 +443,7 @@ pub(crate) fn new(id: i32, process: Arc<Process>) -> Result<Arc<Self>> {
-                 process,
-                 task: ARef::from(&**kernel::current!()),
-                 inner <- kernel::new_spinlock!(inner, "Thread::inner"),
--                work_condvar <- kernel::new_poll_condvar!("Thread::work_condvar"),
-+                work_condvar <- kernel::new_upgrade_poll_condvar!("Thread::work_condvar"),
-                 links <- ListLinks::new(),
-                 links_track <- AtomicTracker::new(),
-             }),
-@@ -1484,10 +1484,15 @@ pub(crate) fn write_read(self: &Arc<Self>, data: UserSlice, wait: bool) -> Resul
-         ret
-     }
- 
--    pub(crate) fn poll(&self, file: &File, table: PollTable<'_>) -> (bool, u32) {
--        table.register_wait(file, &self.work_condvar);
-+    pub(crate) fn poll(&self, file: &File, table: PollTable<'_>) -> Result<(bool, u32)> {
-+        let condvar = self.work_condvar.poll(
-+            &self.inner,
-+            c"Thread::work_condvar (upgraded)",
-+            kernel::static_lock_class!(),
-+        )?;
-+        table.register_wait(file, condvar);
-         let mut inner = self.inner.lock();
--        (inner.should_use_process_work_queue(), inner.poll())
-+        Ok((inner.should_use_process_work_queue(), inner.poll()))
-     }
- 
-     /// Make the call to `get_work` or `get_work_local` return immediately, if any.
-@@ -1523,7 +1528,6 @@ pub(crate) fn notify_if_poll_ready(&self, sync: bool) {
-     pub(crate) fn release(self: &Arc<Self>) {
-         self.inner.lock().is_dead = true;
- 
--        //self.work_condvar.clear();
-         self.unwind_transaction_stack();
- 
-         // Cancel all pending work items.
+Regards,
+Boqun
 
--- 
-2.52.0.457.g6b5491de43-goog
-
+> and the drop of `RcuOld<Box<HasRcuHead>, Async>` would be `call_rcu()`
+> or `kfree_rcu()`.
+> 
+> Regards,
+> Boqun
+> 
+> > Alice
