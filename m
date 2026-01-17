@@ -1,181 +1,179 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010043.outbound.protection.outlook.com [52.101.56.43])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF7126B0B3;
-	Sat, 17 Jan 2026 08:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768638449; cv=fail; b=HB128ZR3jtXs2eaF2nPYWmCb7fbfWgCa9i5X+Ty8qcqoAmlctmeTElT3HYuj8w2E8m/961YzEp3+mETs3IYITT3WBAnZfn+59JwS+y4vstFM8QmQwMSPjxghmbY090P1KBkZ0HvxNub/6Hmho+sZPS5zAgmFhXAVtIzwFCKV6TY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768638449; c=relaxed/simple;
-	bh=7tlsE0eNTKaF5MXNIwtVKOvDZlbzdiz55Nlmd974s8E=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L3tHpJmTr7ZZkkt+9gJCvg3wSEhaQszjShKQ4WXrJ/NR6Wv1GGx1ht7nsQK0+PNVwbIE+/7iLDurvioHsUUklLUEFykM6iXjvWramXDHFhSCj1M1WP06YNBEnkEfvEiS4D4zFI0NRUrCTTm8RmiIiSU/+43MCqW2TJoFSZojB9Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gP/0JFhO; arc=fail smtp.client-ip=52.101.56.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC0729BDBF;
+	Sat, 17 Jan 2026 09:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768643653; cv=none; b=EsIg1pnaQEJVP4qyrmq5+HTP+tj0QtKMISbmy9FcNPxyAMfN+fviEYFXO6phBQ4E6diVotT4eY7X979z1ufvXe8i1XD3fqiDKe4udj11oupnPf1/u+R3jS3z3WcSbajRebjO4V8PODO8/t5yT1OnmR9qwngliCoVeCKyUPXjhHA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768643653; c=relaxed/simple;
+	bh=yq4UXAzlquWJ3t2DAxoeo/B25V19AzAWWrM7XKFLydA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=eIvI5lnutpTXDNVfj38CYB18I66sW8P3wQwkx1kRBxG+V+LBZYyjrgXunNvwhcdjYcN5QY5HbeBou7e6kq7lOBqaKrQcecDwj8z0dtK8sinroj4Dw/pCDMzjlbfB7CUAAln1oyUP5q4q/cXXbgjlhalfFjeLzHkVyFqAnBLGtck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yu6x1H14; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gP/0JFhO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=itZFQzIhAD6ngUxByijsO1bHhj/kmlBbDgrQQHphHq08t0kmHwYaGIM9bEWiL7Mbh6ZvfHgXaeaXVCZZFhI5d0J/Khqac7zJPsHWnGl6ufJtkvcSF2mv6HNp39AS0PoXgr0IaemLrv3u2gFO1av1ixugnI6LwyIzDRKS7O97L4iQuy2cwxju/ENit+NRpMPc7zcG9d7/77JdEj9BhBFqVKiupxQuSpd52TCjfGCIxjgkzXF53tHo8cqwEe7YcogILa82SulGWmb7sQLbsxzlitBZ4yPOt3YzE+38JctHAlKOltBdz+qMjvStUxhmwBEQpwF1lOxiCYpLvOsSltirLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2lTcPrnx38nCD+jNvn9bUmhh00swWwFXsR+BX1HcAfI=;
- b=TkS7HI0pPVgDgYfvLz+Znx/G2tU9WUa3MjuC8E7xYVTVLt3mBrkRsH405rmLcpdNPFKWr5iqNY3k6BXTqtUi3FfKZjih87a9l3nE6OxH64NrDPFD2Ao5HAPN4Np3G2lJ+l5oi4X9opRlDmg+AKXUiUGkUdn1glo9TNKF/esQEETLjkINrj5Wc/eNHkQ9cmPGOgp8jIiM47+N7CzQ4a9KgwXKtXWBSc2PJUgpT6NVydBMgamC5UTG92Rzi5l+E9ykIPaWsvFaK7rbVvH/lXjBd5UB6Fk8WHV4BRKPBBN2Q/2aKxIXo46fBQMGW4YCyvjgHB/JyW/T6CS2zA1rDJ5azQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2lTcPrnx38nCD+jNvn9bUmhh00swWwFXsR+BX1HcAfI=;
- b=gP/0JFhO0PJOrueK6GBXi6TenBZySXHmfDcD9PZWExyBbpNMCoTGyB+bx2UMWC8wN+v803YvT/9HzyUt5D2iYS/N5gPApI618vjxtgd81hyZ7EIe61CZcc/lwK0zBPcYFqy2TGiMUUbqJJeH2GXEp3PbQlOD1YBy/cqM/v29wvygA6WUXzR9xSvKCCwNGT1qJvgg222PqJIEkvquAkll7JAuLTR65uac8VWG4uyYZSN/38KLu+AbSs7e7hFpGNAtpP1eQkdeUNIeieVu+IjapXx7n2aSvHOSfwjDGwKR5EwhXdv5GHS+1eicMZLEI7xay/uLqKuElBpP3U1Mo5084w==
-Received: from BYAPR04CA0010.namprd04.prod.outlook.com (2603:10b6:a03:40::23)
- by BL1PR12MB5969.namprd12.prod.outlook.com (2603:10b6:208:398::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.6; Sat, 17 Jan
- 2026 08:27:23 +0000
-Received: from CO1PEPF000066EB.namprd05.prod.outlook.com
- (2603:10b6:a03:40:cafe::df) by BYAPR04CA0010.outlook.office365.com
- (2603:10b6:a03:40::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.9 via Frontend Transport; Sat,
- 17 Jan 2026 08:27:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CO1PEPF000066EB.mail.protection.outlook.com (10.167.249.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.4 via Frontend Transport; Sat, 17 Jan 2026 08:27:23 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sat, 17 Jan
- 2026 00:27:09 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sat, 17 Jan
- 2026 00:27:09 -0800
-Received: from inno-notebook (10.127.8.9) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Sat, 17
- Jan 2026 00:27:03 -0800
-Date: Sat, 17 Jan 2026 10:27:01 +0200
-From: Zhi Wang <zhiw@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-CC: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
-	<rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bhelgaas@google.com>,
-	<kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
-	<boqun.feng@gmail.com>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
-	<a.hindborg@kernel.org>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
-	<helgaas@kernel.org>, <cjia@nvidia.com>, <smitra@nvidia.com>,
-	<ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
-	<targupta@nvidia.com>, <acourbot@nvidia.com>, <joelagnelf@nvidia.com>,
-	<jhubbard@nvidia.com>, <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
-Subject: Re: [PATCH v9 2/5] rust: io: factor common I/O helpers into Io
- trait
-Message-ID: <20260117102701.3aecf2ce@inno-notebook>
-In-Reply-To: <DFQ4B7CJR5EW.TMEE2YAES7O2@kernel.org>
-References: <20260115212657.399231-1-zhiw@nvidia.com>
-	<20260115212657.399231-3-zhiw@nvidia.com>
-	<aWoWntMxyhBc9Unx@google.com>
-	<DFQ481S2NI1S.3HMMZMYEQ9QP8@garyguo.net>
-	<DFQ4B7CJR5EW.TMEE2YAES7O2@kernel.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yu6x1H14"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFA6C4CEF7;
+	Sat, 17 Jan 2026 09:54:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768643652;
+	bh=yq4UXAzlquWJ3t2DAxoeo/B25V19AzAWWrM7XKFLydA=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Yu6x1H14+WF9l+Hrn05CwDoh3YYS+EY/GyBBbt6Ep2FjiG8TvJ2lmUdXqGlAg12py
+	 A75RoLCVxYtcdzCBH0TspVAG1/n2GbiB9ziwUyfhurgAWwW60r8FbxPT5ezVL5S0q0
+	 yZLCp2hPGTLDx4/cnENf7XKqKnlW3FhhUvExCkKqyDcdelC/6TCZEem0GUOG748Zqv
+	 OQhtjvqDs60DCGQFdXs/pQcYbr8BwkoWKlXTExaQt3/KknV5YvOW0t38EAIB5Bigy5
+	 BrusA3vrZLdhF2v2XAJnMt+8oQ+Px65F96XDukZaPV+sKpwn1s8yKTOzW8pRyRT41k
+	 0eBac8V4pIADw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066EB:EE_|BL1PR12MB5969:EE_
-X-MS-Office365-Filtering-Correlation-Id: 196e3e5f-cad6-4784-3639-08de55a23d5c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700013|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?e4N+6BvJDCc24J3mBeVTAmshDmwI4frt+6IOIK0ZVlQaJmwsvqzgORZW/R/3?=
- =?us-ascii?Q?bMbsIbGGE9gJgYWcfAZul1DnTOadBtv88Mlp/m4pCvAbRvrhVf22bQk10GqA?=
- =?us-ascii?Q?rj0EZFh3/dKjPkx4QfIQs9O9iS/eFOxnw7hW2DYYQJ1PAvXLM3Jk/G3mVj4o?=
- =?us-ascii?Q?sGzVBWYZ14Ndj5nwfff9l8n1kcNGdHTI3vzbmQD8jPCjslCtZvGZK5wMDdBD?=
- =?us-ascii?Q?cloGMfqNCy6KWQrSdA1FcaLVLfZYpQVbPURCizsWko/W0y4sbCEdEqpEhuxb?=
- =?us-ascii?Q?mIe0pPn88pf9or28qKvNLZVhcJ+zxea2ffYKfipQ4wJN3JUIfKVIkcNPYSmU?=
- =?us-ascii?Q?XDZ6bXi6dPOWOYK5x5Ip9+FluxeAoueUvkew04yFMnyp2kpctGx/S1L3h1T0?=
- =?us-ascii?Q?BndO9Wv+XmTs6J4lUyGv4vBtWrYcvUX7DTKyZGvfmhsCYaC/HOaKKA7W1BjK?=
- =?us-ascii?Q?3QsydFnFLlYiA1QHbtKTKCUkLJUpYwJicGE5kZBCh+HB/8v2lQY6Ts2r+I3a?=
- =?us-ascii?Q?8RpRpGvJ1fXPOlHik3spZDnMb4i3WR9//MPbbfBblbeEBGGHjB2RAsyLeQS+?=
- =?us-ascii?Q?0mWh+4UQNmKdi7/8124E7yvS/YvqP+EQE/97gZodjj0cAJHT06LLSUizmHGf?=
- =?us-ascii?Q?hqKPc3r1kqm/iYnW9ACgAZVRguEC+CelHjTgIb2IGdeN+o6tsKTz3OfNrGeA?=
- =?us-ascii?Q?7sAeTBm2oVwbvS0gBjQK2i+pZny0LnszWoniDZlOaCbcpzJjuxVivORa7BZc?=
- =?us-ascii?Q?FnSeJEOayEXIQbdYvrMIcDxl8RUc8OqBPntNQl8J9RMT3dWZm4tCgfyi6mT0?=
- =?us-ascii?Q?8QmLDwgyzvoHoI34u6m8pNI13DvUQcL0/yKLV7kzlzwGVRTfNeROkCxIkzgL?=
- =?us-ascii?Q?l48NQoLzuQlx1l3pTrvcPWZR2uyE7yFej/Q9UkdoHfOQF2L4ZI2bL1Y3Zs0U?=
- =?us-ascii?Q?P6qMm0YBiCNM1oDFou0hAEf49CKI8i6VDP6deWofCfPgHlAnBk8TobnkPdyy?=
- =?us-ascii?Q?oQmZUe8dL8lGOXKtOCft8Fl3gaiAJB/h3nn98qM++eIj1JqLCOBsljpZVhbi?=
- =?us-ascii?Q?B2m9qogq/Tokqd3AdB9SIzgz7XcTHbPJuGD5dJ6qHxU8T2CAkBkXvt6pRK7e?=
- =?us-ascii?Q?OkZda1Vb/mYfk2n0+eBtQEFh4brwV99czmzZiHZt5yOVrvKrLY2yziePxr7N?=
- =?us-ascii?Q?69JnJqQhUvwo4D70aHFjK8Cw5c4CW03bQY+lHCD72+kXTIftzXvnGBpTJTlj?=
- =?us-ascii?Q?6ExIqEroI5J1vQSZUra9LtCI/gdkP3t/G5OF48mGD19SbEIVumYhWJD3ja/T?=
- =?us-ascii?Q?RjiL/4T9zoBaSiIayn8JAay/MRg9QPfZLiZesBZ9smQr/7ZOiBtsj9oegRpL?=
- =?us-ascii?Q?HVXFyL1LVBfKPrpKm1E2dnA5YS4qwtQ1yXytMZCIdHyMpvGqLhYEVy7IMXzu?=
- =?us-ascii?Q?pdhFXLfAuXGvNS5hFQ8PbPUUqHpjwkzRr7hKbnWYEidj5STIhTGjlI1u6t4P?=
- =?us-ascii?Q?gHwtNGTcZaF3P10RqXS6CjUIvKc0CJ9NVc0U8ygyUeUcIUvyAAUIgwFUqfYw?=
- =?us-ascii?Q?zgnyDcad6cvgTBrM8J081WTDqht0vfHmZHkoSh6qP0AghyLTcCI1ui1AGjU6?=
- =?us-ascii?Q?18//pLrA+qjGyncAV1q/bdlsIP8+RFLeLqUcofQhfIFVVKUkHnXlvCTR1c1W?=
- =?us-ascii?Q?hjcNbw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700013)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2026 08:27:23.4697
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 196e3e5f-cad6-4784-3639-08de55a23d5c
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066EB.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5969
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 17 Jan 2026 10:54:08 +0100
+Message-Id: <DFQRUJ8PXGXN.QV9QHIRO3K03@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v4 00/15] `syn` rewrite of pin-init
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260116105514.3794384-1-lossin@kernel.org>
+In-Reply-To: <20260116105514.3794384-1-lossin@kernel.org>
 
-On Fri, 16 Jan 2026 16:27:27 +0100
-"Danilo Krummrich" <dakr@kernel.org> wrote:
+On Fri Jan 16, 2026 at 11:54 AM CET, Benno Lossin wrote:
+> Rewrite the proc-macros of pin-init by using the `syn` crate for Rust
+> syntax parsing. This series has been a long way coming. At the very
+> start of pin-init, I initially implemented everything using syn, since
+> parsing is so much easier with it. Now after several years it is finally
+> time to remove the dreaded 1600 lines of declarative macros required to
+> parse and expand the initializer syntax.
+>
+> The move to syn is not only a blessing for the maintenance work, but
+> also improves the implementation of new features. This series includes
+> many such improvements.
+>
+> * Patch 1, 2, 3 and 4 prepare for the rewrite. The first removes the
+>   superfluous `try_` variants of the initializer macros from pin-init.
+>   Note that the kernel defines its own, so no code changes in the kernel
+>   are required. The second patch allows using `::pin_init` in the
+>   pin-init crate. The third adds the syn dependency and cleans up some
+>   old workarounds and new clippy warnings. The fourth adds better error
+>   handling on top of `syn`.
+> * Patch 5, 6, 7, and 9 rewrite the derive macros for Zeroable,
+>   `#[pinned_drop]` attribute macro, `#[pin_data]` attribute macro, and
+>   the initializer macros respectively using `syn`.
+> * Patch 8 ensures soundness in the future by fixing generic bounds in
+>   generated code by `#[pin_data]`.
+> * Patch 10 adds the `#[default_error(type)]` attribute to initializer
+>   macros allowing them to specify a default error that is used when no
+>   error is manually specified.
+> * Patch 11 uses `#[default_error(type)]` in the definition of the
+>   kernel's `try_` variants of the initializer macros (which defaults to
+>   the kernel's `Error` type).
+> * Patch 12 allows putting attributes on fields in initializer macros
+>   (for example `cfg` attributes).
+> * Patch 13 adds `#[disable_initialized_field_access]` to support packed
+>   structs.
+> * Patch 14 simplifies the code generated by the initializer macros.
+> * Patch 15 adds Gary as a maintainer.
+>
+> In addition to the new features, using syn results in much cleaner error
+> messages and more accurate span information. The code is much easier to
+> read as well and hopefully easier to understand as well.
+>
+> As always, tests that ensure the correctness of the macro output are
+> included and updated in the upstream pin-init repository. Take a look at
+> the pull request on GitHub for the diff in the test output:
+>
+>     https://github.com/Rust-for-Linux/pin-init/pull/89
+>
+> I would greatly appreciate Tested-by's from people actively using
+> pin-init weather in the kernel or outside.
+>
+> The commit adding syn support to pin-init is also used by Gary's series
+> to rewrite the `macros` crate using `syn`:
+>
+>     https://lore.kernel.org/all/20260112170919.1888584-1-gary@kernel.org
+>
+> My series can be found at:
+>
+>     https://github.com/BennoLossin/linux/commits/pin-init/sync
+>
+> The rust-dev branch in the RfL repository will be updated to contain
+> both patch series for ease of use & testing.
+>
+> Link to previous versions:
+>
+> - v3: https://lore.kernel.org/all/20260114181934.1782470-1-lossin@kernel.=
+org
+> - v2: https://lore.kernel.org/all/20260111122554.2662175-1-lossin@kernel.=
+org
+> - v1: https://lore.kernel.org/all/20260108135127.3153925-1-lossin@kernel.=
+org
+>
+> Cheers,
+> Benno
+>
+>
+> Benno Lossin (15):
+>   rust: pin-init: remove `try_` versions of the initializer macros
+>   rust: pin-init: allow the crate to refer to itself as `pin-init` in
+>     doc tests
+>   rust: pin-init: add `syn` dependency and remove `proc-macro[2]` and
+>     `quote` workarounds
+>   rust: pin-init: internal: add utility API for syn error handling
+>   rust: pin-init: rewrite `derive(Zeroable)` and `derive(MaybeZeroable)`
+>     using `syn`
+>   rust: pin-init: rewrite the `#[pinned_drop]` attribute macro using
+>     `syn`
+>   rust: pin-init: rewrite `#[pin_data]` using `syn`
+>   rust: pin-init: add `?Sized` bounds to traits in `#[pin_data]` macro
+>   rust: pin-init: rewrite the initializer macros using `syn`
+>   rust: pin-init: add `#[default_error(<type>)]` attribute to
+>     initializer macros
+>   rust: init: use `#[default_error(err)]` for the initializer macros
+>   rust: pin-init: internal: init: add support for attributes on
+>     initializer fields
+>   rust: pin-init: internal: init: add escape hatch for referencing
+>     initialized fields
+>   rust: pin-init: internal: init: simplify Zeroable safety check
+>   MAINTAINERS: add Gary Guo to pin-init
 
-> (Cc: Markus)
-> 
-> On Fri Jan 16, 2026 at 4:23 PM CET, Gary Guo wrote:
-> > I wonder if we can keep all methods on `Io` trait. And then have
-> > marker trait to represent capability on performing Io access.
-> >
-> > Something like:
-> >
-> > trait IoCapable<T> {}
-> >
-> > trait Io {
-> >      fn read8(&self, offset: usize) -> u8 where Self: IoCapable<u8>;
-> >      fn read16(&self, offset: usize) -> u16 where Self:
-> > IoCapable<u16>; fn read32(&self, offset: usize) -> u32 where Self:
-> > IoCapable<u32>; fn read64(&self, offset: usize) -> u64 where Self:
-> > IoCapable<u64>; }
-> >
-> > Then you have a single (non-marker) trait and not a hierachy of
-> > them.
-> 
-> I think that is a great idea. I think it will also help with
-> supporting I/O backends based on regmap.
+Applied to pin-init-next, thanks everyone!
 
-Agreed. The IoCapable<T> marker trait approach is much cleaner and
-solves the hierarchy complexity Alice pointed out.
+Cheers,
+Benno
 
-I'll pick this up for v10. Thanks!
+>  MAINTAINERS                               |    1 +
+>  rust/Makefile                             |   16 +-
+>  rust/kernel/init.rs                       |   40 +-
+>  rust/pin-init/README.md                   |    2 +-
+>  rust/pin-init/examples/linked_list.rs     |   19 +-
+>  rust/pin-init/examples/pthread_mutex.rs   |   10 +-
+>  rust/pin-init/internal/src/diagnostics.rs |   30 +
+>  rust/pin-init/internal/src/helpers.rs     |  152 --
+>  rust/pin-init/internal/src/init.rs        |  548 +++++++
+>  rust/pin-init/internal/src/lib.rs         |   48 +-
+>  rust/pin-init/internal/src/pin_data.rs    |  615 ++++++--
+>  rust/pin-init/internal/src/pinned_drop.rs |   88 +-
+>  rust/pin-init/internal/src/zeroable.rs    |  157 +-
+>  rust/pin-init/src/lib.rs                  |  173 +--
+>  rust/pin-init/src/macros.rs               | 1677 ---------------------
+>  scripts/generate_rust_analyzer.py         |    2 +-
+>  16 files changed, 1278 insertions(+), 2300 deletions(-)
+>  create mode 100644 rust/pin-init/internal/src/diagnostics.rs
+>  delete mode 100644 rust/pin-init/internal/src/helpers.rs
+>  create mode 100644 rust/pin-init/internal/src/init.rs
+>  delete mode 100644 rust/pin-init/src/macros.rs
+>
+>
+> base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
 
-Z.
